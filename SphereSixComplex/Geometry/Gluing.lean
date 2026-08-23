@@ -40,6 +40,46 @@ public theorem piece_isOpenEmbedding (D : TopCat.GlueData.{w}) (i : D.J) :
     IsOpenEmbedding (D.toGlueData.ι i) :=
   D.ι_isOpenEmbedding i
 
+/-- A gluing of finitely many compact pieces is compact. -/
+public theorem compactSpace_gluedSpace (D : TopCat.GlueData.{w}) [Finite D.J]
+    [∀ i, CompactSpace (D.U i)] : CompactSpace (GluedSpace D) := by
+  rw [← isCompact_univ_iff]
+  have huniv : (Set.univ : Set (GluedSpace D)) =
+      ⋃ i, Set.range (D.toGlueData.ι i) := by
+    ext x
+    simp only [mem_univ, mem_iUnion, mem_range, true_iff]
+    obtain ⟨i, y, hy⟩ := D.ι_jointly_surjective x
+    exact ⟨i, y, hy⟩
+  rw [huniv]
+  exact isCompact_iUnion fun i ↦ by
+    simpa only [image_univ] using
+      isCompact_univ.image (D.ι_isOpenEmbedding i).continuous
+
+/-- Connectivity of the graph whose vertices are pieces and whose edges are nonempty overlaps. -/
+public def GluingIntersectionGraphConnected (D : TopCat.GlueData.{w}) : Prop :=
+  ∀ i j, Relation.ReflTransGen
+    (fun i j : D.J ↦ (Set.range (D.toGlueData.ι i) ∩
+      Set.range (D.toGlueData.ι j)).Nonempty) i j
+
+/-- Connected pieces with a connected overlap graph have connected gluing. -/
+public theorem connectedSpace_gluedSpace (D : TopCat.GlueData.{w}) [Nonempty D.J]
+    [∀ i, ConnectedSpace (D.U i)] (h : GluingIntersectionGraphConnected D) :
+    ConnectedSpace (GluedSpace D) := by
+  rw [connectedSpace_iff_univ]
+  have huniv : (Set.univ : Set (GluedSpace D)) =
+      ⋃ i, Set.range (D.toGlueData.ι i) := by
+    ext x
+    simp only [mem_univ, mem_iUnion, mem_range, true_iff]
+    obtain ⟨i, y, hy⟩ := D.ι_jointly_surjective x
+    exact ⟨i, y, hy⟩
+  rw [huniv]
+  apply IsConnected.iUnion_of_reflTransGen
+  · intro i
+    simpa only [image_univ] using
+      isConnected_univ.image (D.toGlueData.ι i)
+        (D.ι_isOpenEmbedding i).continuous.continuousOn
+  · exact h
+
 variable (D : TopCat.GlueData.{w})
 
 /-- Choose a piece containing a given point of the glued space. -/

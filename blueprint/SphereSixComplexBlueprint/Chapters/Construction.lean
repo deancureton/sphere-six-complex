@@ -4,17 +4,20 @@ import VersoManual
 import SphereSixComplex.Construction
 import SphereSixComplex.Geometry.AtlasTransport
 import SphereSixComplex.Geometry.ComplexTorus
+import SphereSixComplex.Geometry.ComplexThreefoldGluing
 import SphereSixComplex.Geometry.Gluing
 import SphereSixComplex.Geometry.Quotient
 import SphereSixComplex.Geometry.TorusFamily
 import SphereSixComplex.LatticeData
 import SphereSixComplex.Periods.Domain
+import SphereSixComplex.Periods.Functions
 import SphereSixComplex.Periods.Invariant
 import SphereSixComplex.Periods.Matrix
 import SphereSixComplex.Periods.Nondegeneracy
 import SphereSixComplex.Periods.Transformations
 import SphereSixComplex.Topology.FundamentalGroup
 import SphereSixComplex.Topology.HomologySphere
+import SphereSixComplex.Topology.SmoothRecognition
 import SphereSixComplex.Topology.SphereSimplyConnected
 import SphereSixComplex.Topology.StandardSphere
 import SphereSixComplex.Topology.TwistObstruction
@@ -105,7 +108,7 @@ The Setup inequalities make the four period columns a real basis of $`\mathbb C^
 is preserved by the triangle-group action.
 :::
 
-:::theorem "period-functions" (parent := "construction_spine") (priority := "high")
+:::theorem "period-functions" (parent := "construction_spine") (lean := "SphereSixComplex.Periods.Theorem3_4Existence") (priority := "high")
 There are holomorphic functions $`\tau,\mu,\beta` on the upper half-plane satisfying the transformation,
 cusp-growth, and nondegeneracy conditions listed in the Setup.
 :::
@@ -114,6 +117,11 @@ cusp-growth, and nondegeneracy conditions listed in the Setup.
 Use {uses "monodromy-identities"}[the monodromy identities] and construct the three functions directly
 from modular forms. Their transformation laws feed
 {uses "period-matrix-equivariance"}[the period-matrix equivariance identities].
+:::
+
+:::theorem "normalized-modular-function" (parent := "period-functions") (lean := "SphereSixComplex.Periods.normalizedJ_mdifferentiable, SphereSixComplex.Periods.normalizedJ_modular_invariant")
+The normalized level-one modular function $`E_4^3/\Delta` is holomorphic on the upper half-plane and
+invariant under $`\mathrm{SL}_2(\mathbb Z)`.
 :::
 
 :::theorem "torus-family" (parent := "construction_spine") (priority := "high")
@@ -160,9 +168,15 @@ Glue {uses "cusp-filling"}[the cusp filling] and
 {uses "torus-family"}[torus family], and verify the resulting charts and transition maps.
 :::
 
-:::theorem "manifold-gluing" (parent := "compact-complex-threefold") (lean := "SphereSixComplex.gluedChartedSpace, SphereSixComplex.isManifold_gluedChartedSpace")
+:::theorem "manifold-gluing" (parent := "compact-complex-threefold") (lean := "SphereSixComplex.gluedChartedSpace, SphereSixComplex.isManifold_gluedChartedSpace, SphereSixComplex.compactSpace_gluedSpace, SphereSixComplex.connectedSpace_gluedSpace")
 Compatible atlases on the filling pieces transport to their topological gluing and make the glued
-space a manifold.
+space a manifold.  Finitely many compact pieces give a compact gluing, while connected pieces with
+a connected overlap graph give a connected gluing.
+:::
+
+:::definition "complex-threefold-from-gluing" (parent := "compact-complex-threefold") (lean := "SphereSixComplex.complexThreefoldOfGluing")
+A finite connected gluing of compact complex pieces with compatible complex and underlying real
+atlases produces the exact compact connected `ComplexThreefold` contract used by the main theorem.
 :::
 
 :::theorem "fundamental-group" (parent := "construction_spine") (priority := "high")
@@ -200,6 +214,12 @@ singular homology equivalence with the standard six-sphere.
 
 :::theorem "smooth-recognition" (parent := "construction_spine") (lean := "SphereSixComplex.exists_complex_threefold_diffeomorphic_sixSphere") (priority := "high")
 The underlying standard smooth manifold of $`X` is diffeomorphic to $`S^6`.
+:::
+
+:::definition "smooth-recognition-obligations" (parent := "smooth-recognition") (lean := "SphereSixComplex.HomologyToHomotopySixSphereObligation, SphereSixComplex.HomotopyToDiffeomorphismSixSphereObligation, SphereSixComplex.smoothSixSphereRecognition_of_obligations")
+The recognition step splits into the Whitehead--Hurewicz implication from a simply-connected
+integral homology sphere to a homotopy sphere, followed by the dimension-six smooth Poincaré
+classification.  Their composition gives the exact diffeomorphism required by the construction.
 :::
 
 :::proof "smooth-recognition"
