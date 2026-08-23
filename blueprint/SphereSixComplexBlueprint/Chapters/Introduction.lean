@@ -1,7 +1,7 @@
 import Verso
 import VersoBlueprint
 import VersoManual
-import SphereSixComplex.ComplexStructure
+import SphereSixComplex.Construction
 
 open Informal
 open Verso.Genre
@@ -32,7 +32,7 @@ source := {
   document := "s6-paper"
   spans := #[
     {
-      page := "4"
+      page := "2"
       pdf := some { path := "source/s6.pdf" }
     }
   ]

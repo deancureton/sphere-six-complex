@@ -6,8 +6,9 @@ public import Mathlib.LinearAlgebra.Complex.FiniteDimensional
 /-!
 # Complex Structures on the Six-Sphere
 
-The final theorem is stated as the existence of a complex atlas on the standard topological
-six-sphere. This is stronger than the existence of an almost-complex tangent endomorphism.
+The final theorem is stated as the existence of a complex atlas compatible with the standard smooth
+structure on the six-sphere. This is stronger than the existence of an almost-complex tangent
+endomorphism.
 -/
 
 open scoped ContDiff Manifold
@@ -35,7 +36,7 @@ public noncomputable def complexModelRealChartedSpace : ChartedSpace RealModel C
   complexToRealModel.symm.toHomeomorph.chartedSpace
 
 /-- The real atlas underlying a complex atlas. -/
-@[instance_reducible]
+@[instance_reducible, expose]
 public noncomputable def underlyingRealChartedSpace {M : Type*} [TopologicalSpace M]
     (c : ChartedSpace ComplexModel M) : ChartedSpace RealModel M :=
   letI : ChartedSpace RealModel ComplexModel := complexModelRealChartedSpace
@@ -47,6 +48,7 @@ A complex atlas is compatible with a specified smooth six-dimensional atlas when
 atlas is diffeomorphic to that atlas. This prevents the final statement from forgetting the standard smooth
 structure on the sphere.
 -/
+@[expose]
 public def SmoothlyCompatible {M : Type*} [TopologicalSpace M]
     (standard : ChartedSpace RealModel M) (complex : ChartedSpace ComplexModel M) : Prop :=
   Nonempty
@@ -58,14 +60,11 @@ public def SmoothlyCompatible {M : Type*} [TopologicalSpace M]
 A standard smooth six-manifold admits a complex structure when it has a complex-differentiable atlas whose
 underlying real smooth structure is diffeomorphic to the specified one.
 -/
+@[expose]
 public def AdmitsComplexStructure (M : Type*) [TopologicalSpace M]
     [standard : ChartedSpace RealModel M] : Prop :=
   ∃ c : ChartedSpace ComplexModel M,
     @IsManifold ℂ inferInstance ComplexModel inferInstance inferInstance ComplexModel inferInstance
       𝓘(ℂ, ComplexModel) ∞ M inferInstance c ∧ SmoothlyCompatible standard c
-
-/-- The standard six-sphere admits an integrable complex structure. -/
-public theorem sphere_six_admits_complex_structure : AdmitsComplexStructure SixSphere := by
-  sorry
 
 end SphereSixComplex
