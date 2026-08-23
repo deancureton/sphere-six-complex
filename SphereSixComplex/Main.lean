@@ -17,6 +17,7 @@ public import SphereSixComplex.Periods.Nondegeneracy
 public import SphereSixComplex.Periods.Transformations
 public import SphereSixComplex.Topology.FundamentalGroup
 public import SphereSixComplex.Topology.HomologySphere
+public import SphereSixComplex.Topology.MayerVietoris
 public import SphereSixComplex.Topology.SmoothRecognition
 public import SphereSixComplex.Topology.SphereSimplyConnected
 public import SphereSixComplex.Topology.StandardSphere

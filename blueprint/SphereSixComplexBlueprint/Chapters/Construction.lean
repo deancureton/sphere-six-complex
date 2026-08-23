@@ -17,6 +17,7 @@ import SphereSixComplex.Periods.Nondegeneracy
 import SphereSixComplex.Periods.Transformations
 import SphereSixComplex.Topology.FundamentalGroup
 import SphereSixComplex.Topology.HomologySphere
+import SphereSixComplex.Topology.MayerVietoris
 import SphereSixComplex.Topology.SmoothRecognition
 import SphereSixComplex.Topology.SphereSimplyConnected
 import SphereSixComplex.Topology.StandardSphere
@@ -158,7 +159,7 @@ specified in the Setup.
 Use {uses "torus-family"}[the torus family] and the invariant twist vectors fixed by $`A_1` and $`A_2`.
 :::
 
-:::theorem "compact-complex-threefold" (parent := "construction_spine") (lean := "SphereSixComplex.ComplexThreefold") (priority := "high")
+:::theorem "compact-complex-threefold" (parent := "construction_spine") (lean := "SphereSixComplex.ComplexThreefold, SphereSixComplex.CompletedPaperThreefold, SphereSixComplex.exists_completedPaperThreefold") (priority := "high")
 The global family and the three fillings glue to a compact connected complex threefold $`X`.
 :::
 
@@ -179,7 +180,7 @@ A finite connected gluing of compact complex pieces with compatible complex and 
 atlases produces the exact compact connected `ComplexThreefold` contract used by the main theorem.
 :::
 
-:::theorem "fundamental-group" (parent := "construction_spine") (priority := "high")
+:::theorem "fundamental-group" (parent := "construction_spine") (lean := "SphereSixComplex.CompletedPaperThreefold.fundamentalGroup") (priority := "high")
 For the twists $`(\ell_0,\ell_1,\ell_2)=(0,1,-1)`, the fundamental group of $`X` is trivial.
 :::
 
@@ -198,7 +199,7 @@ Once van Kampen identifies the fundamental group with the obstruction group, the
 make it trivial and hence make the path-connected threefold simply connected.
 :::
 
-:::theorem "integral-homology" (parent := "construction_spine") (priority := "high")
+:::theorem "integral-homology" (parent := "construction_spine") (lean := "SphereSixComplex.CompletedPaperThreefold.integralHomology") (priority := "high")
 The integral homology of $`X` is the integral homology of $`S^6`.
 :::
 
@@ -212,7 +213,13 @@ The recognition input records path connectedness, simple connectedness, and degr
 singular homology equivalence with the standard six-sphere.
 :::
 
-:::theorem "smooth-recognition" (parent := "construction_spine") (lean := "SphereSixComplex.exists_complex_threefold_diffeomorphic_sixSphere") (priority := "high")
+:::definition "mayer-vietoris-contract" (parent := "integral-homology") (lean := "SphereSixComplex.FourPieceMayerVietorisExactness, SphereSixComplex.FourPieceHomologyComputation, SphereSixComplex.FourPieceMayerVietorisContract.hasIntegralHomologyOfSixSphere")
+The four-piece gluing is organized into three successive open unions.  Mayer--Vietoris exactness is
+separated from the final finite chain-level computation, expressed as a quasi-isomorphism to the
+integral singular chains of $`S^6`.
+:::
+
+:::theorem "smooth-recognition" (parent := "construction_spine") (lean := "SphereSixComplex.completedPaperThreefold_smoothRecognition, SphereSixComplex.exists_complex_threefold_diffeomorphic_sixSphere") (priority := "high")
 The underlying standard smooth manifold of $`X` is diffeomorphic to $`S^6`.
 :::
 

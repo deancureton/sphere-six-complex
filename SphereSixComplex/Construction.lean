@@ -1,6 +1,8 @@
 module
 
 public import SphereSixComplex.Geometry.AtlasTransport
+public import SphereSixComplex.Topology.FundamentalGroup
+public import SphereSixComplex.Topology.SmoothRecognition
 
 /-!
 # Minimal construction target
@@ -43,10 +45,61 @@ public def DiffeomorphicToSixSphere (X : ComplexThreefold) : Prop :=
       X.Carrier X.topology (@underlyingRealChartedSpace X.Carrier X.topology X.charts) SixSphere
       inferInstance inferInstance ∞)
 
+/-- The exact geometric and topological output claimed for the completed torus family, before smooth
+sphere recognition is applied. -/
+public structure CompletedPaperThreefold where
+  /-- The compact connected complex threefold obtained from the family and its three fillings. -/
+  X : ComplexThreefold
+  /-- The van Kampen computation with the selected twists. -/
+  fundamentalGroup :
+    @Topology.HasPaperFundamentalGroup X.Carrier X.topology
+  /-- The integral Mayer--Vietoris computation. -/
+  integralHomology :
+    @HasIntegralHomologyOfSixSphere X.Carrier X.topology
+
+/-- A completed paper threefold supplies all inputs to smooth six-sphere recognition. -/
+public theorem CompletedPaperThreefold.smoothRecognitionInput
+    (C : CompletedPaperThreefold) :
+    letI := C.X.topology
+    letI := underlyingRealChartedSpace C.X.charts
+    SmoothSimplyConnectedIntegralHomologySixSphere C.X.Carrier := by
+  let _ : TopologicalSpace C.X.Carrier := C.X.topology
+  let _ : ChartedSpace ComplexModel C.X.Carrier := C.X.charts
+  let _ : ChartedSpace RealModel C.X.Carrier :=
+    underlyingRealChartedSpace C.X.charts
+  let _ : ConnectedSpace C.X.Carrier := C.X.connected
+  let _ : LocallyPathConnectedSpace C.X.Carrier :=
+    ChartedSpace.locallyPathConnectedSpace ComplexModel C.X.Carrier
+  let _ : PathConnectedSpace C.X.Carrier :=
+    PathConnectedSpace.of_locallyPathConnectedSpace
+  let hsimple : SimplyConnectedSpace C.X.Carrier :=
+    Topology.simplyConnectedSpace_of_hasPaperFundamentalGroup C.fundamentalGroup
+  exact
+    { isManifold := C.X.realManifold
+      compact := C.X.compact
+      connected := C.X.connected
+      integralHomology := C.integralHomology
+      simplyConnected := hsimple }
+
+/-- The construction and filling calculations asserted on the first two pages. -/
+public theorem exists_completedPaperThreefold : Nonempty CompletedPaperThreefold := by
+  sorry
+
+/-- The dimension-six smooth recognition step required for the completed paper threefold. -/
+public theorem completedPaperThreefold_smoothRecognition (C : CompletedPaperThreefold) :
+    letI := C.X.topology
+    letI := underlyingRealChartedSpace C.X.charts
+    SmoothSixSphereRecognitionObligation C.X.Carrier := by
+  sorry
+
 /-- The minimal construction-and-recognition theorem extracted from the source's two-page summary. -/
 public theorem exists_complex_threefold_diffeomorphic_sixSphere :
     ∃ X : ComplexThreefold, DiffeomorphicToSixSphere X := by
-  sorry
+  obtain ⟨C⟩ := exists_completedPaperThreefold
+  refine ⟨C.X, ?_⟩
+  let _ : TopologicalSpace C.X.Carrier := C.X.topology
+  let _ : ChartedSpace RealModel C.X.Carrier := underlyingRealChartedSpace C.X.charts
+  exact completedPaperThreefold_smoothRecognition C C.smoothRecognitionInput
 
 /-- The construction already yields a complex atlas on the topological six-sphere. -/
 public theorem sixSphere_admits_topological_complex_structure :
