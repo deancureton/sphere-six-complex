@@ -1,0 +1,8 @@
+/.lake/
+/_out/
+/.ci/
+/blueprint/.lake/
+/blueprint/_out/
+__pycache__/
+*.pyc
+.DS_Store

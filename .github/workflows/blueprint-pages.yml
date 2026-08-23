@@ -1,0 +1,48 @@
+name: Blueprint Pages Reusable
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: ${{ github.repository }}-blueprint-pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build Blueprint Site
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/configure-pages@v6
+      - name: Install elan
+        run: |
+          curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Build formalization
+        run: |
+          lake exe cache get
+          lake build
+      - name: Build Blueprint site
+        working-directory: blueprint
+        run: ./scripts/ci-pages.sh
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: blueprint/_out/site/html-multi
+
+  deploy:
+    name: Deploy Blueprint Site
+    if: github.event_name != 'pull_request'
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5
