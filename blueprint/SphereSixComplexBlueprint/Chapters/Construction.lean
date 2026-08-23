@@ -3,11 +3,22 @@ import VersoBlueprint
 import VersoManual
 import SphereSixComplex.Construction
 import SphereSixComplex.Geometry.AtlasTransport
+import SphereSixComplex.Geometry.ComplexTorus
+import SphereSixComplex.Geometry.Gluing
 import SphereSixComplex.Geometry.Quotient
+import SphereSixComplex.Geometry.TorusFamily
 import SphereSixComplex.LatticeData
+import SphereSixComplex.Periods.Domain
+import SphereSixComplex.Periods.Invariant
 import SphereSixComplex.Periods.Matrix
+import SphereSixComplex.Periods.Nondegeneracy
+import SphereSixComplex.Periods.Transformations
+import SphereSixComplex.Topology.FundamentalGroup
+import SphereSixComplex.Topology.HomologySphere
+import SphereSixComplex.Topology.SphereSimplyConnected
 import SphereSixComplex.Topology.StandardSphere
 import SphereSixComplex.Topology.TwistObstruction
+import SphereSixComplex.TriangleGroup.ModularParameter
 import SphereSixComplex.TriangleGroup.Representation
 
 open Informal
@@ -41,6 +52,12 @@ does not use a native evaluator.
 :::theorem "triangle-representation" (parent := "construction_spine") (lean := "SphereSixComplex.TriangleGroup.rhoV, SphereSixComplex.TriangleGroup.rhoLambda, SphereSixComplex.TriangleGroup.rhoV_g₀, SphereSixComplex.TriangleGroup.rhoLambda_g₀")
 The free product $`(\mathbb Z/3)*(\mathbb Z/4)` acts on the rank-four lattice and its dual with the
 prescribed monodromies at the two elliptic points and the cusp.
+:::
+
+:::theorem "modular-parameter-action" (parent := "triangle-representation") (lean := "SphereSixComplex.TriangleGroup.rhoTau, SphereSixComplex.TriangleGroup.rhoTauReal_g1_smul, SphereSixComplex.TriangleGroup.rhoTauReal_g2_smul, SphereSixComplex.TriangleGroup.rhoTauReal_g0_smul")
+The same triangle group acts on the upper half-plane by the displayed fractional-linear
+transformations $`\tau \mapsto (\tau-1)/\tau`, $`\tau \mapsto -1/\tau`, and
+$`\tau \mapsto \tau-1` at the cusp.
 :::
 
 :::proof "triangle-representation"
@@ -83,6 +100,11 @@ Substitute the three transformation laws for $`\tau,\mu,\beta` and verify the re
 identities entry by entry.
 :::
 
+:::theorem "period-lattice-nondegeneracy" (parent := "construction_spine") (lean := "SphereSixComplex.Periods.periodRealLinearEquiv, SphereSixComplex.Periods.setupInequalities_transformOne, SphereSixComplex.Periods.rhoParameters")
+The Setup inequalities make the four period columns a real basis of $`\mathbb C^2`; the period domain
+is preserved by the triangle-group action.
+:::
+
 :::theorem "period-functions" (parent := "construction_spine") (priority := "high")
 There are holomorphic functions $`\tau,\mu,\beta` on the upper half-plane satisfying the transformation,
 cusp-growth, and nondegeneracy conditions listed in the Setup.
@@ -102,6 +124,11 @@ two-tori over the thrice-punctured sphere.
 :::proof "torus-family"
 Use {uses "period-functions"}[the period functions] to prove that each period subgroup is a lattice and
 that the monodromy action descends freely away from the elliptic fixed points.
+:::
+
+:::theorem "complex-torus-fibres" (parent := "torus-family") (lean := "SphereSixComplex.Geometry.ComplexTorus.torus_compactSpace, SphereSixComplex.Geometry.ComplexTorus.torus_of_setupInequalities")
+At each nondegenerate parameter, the four periods act freely and properly discontinuously by
+holomorphic translations on $`\mathbb C^2`, and the quotient is a compact complex two-manifold.
 :::
 
 :::theorem "cusp-filling" (parent := "construction_spine") (priority := "high")
@@ -133,6 +160,11 @@ Glue {uses "cusp-filling"}[the cusp filling] and
 {uses "torus-family"}[torus family], and verify the resulting charts and transition maps.
 :::
 
+:::theorem "manifold-gluing" (parent := "compact-complex-threefold") (lean := "SphereSixComplex.gluedChartedSpace, SphereSixComplex.isManifold_gluedChartedSpace")
+Compatible atlases on the filling pieces transport to their topological gluing and make the glued
+space a manifold.
+:::
+
 :::theorem "fundamental-group" (parent := "construction_spine") (priority := "high")
 For the twists $`(\ell_0,\ell_1,\ell_2)=(0,1,-1)`, the fundamental group of $`X` is trivial.
 :::
@@ -147,6 +179,11 @@ For the chosen twist vectors the obstruction integer
 $`12\ell_0-4\ell_1-3\ell_2` has absolute value one, so its cyclic quotient is trivial.
 :::
 
+:::theorem "fundamental-group-recognition" (parent := "fundamental-group") (lean := "SphereSixComplex.Topology.HasPaperFundamentalGroup, SphereSixComplex.Topology.simplyConnectedSpace_of_hasPaperFundamentalGroup")
+Once van Kampen identifies the fundamental group with the obstruction group, the selected twists
+make it trivial and hence make the path-connected threefold simply connected.
+:::
+
 :::theorem "integral-homology" (parent := "construction_spine") (priority := "high")
 The integral homology of $`X` is the integral homology of $`S^6`.
 :::
@@ -154,6 +191,11 @@ The integral homology of $`X` is the integral homology of $`S^6`.
 :::proof "integral-homology"
 Compute the Mayer--Vietoris sequence of {uses "compact-complex-threefold"}[the same gluing], including
 the integral specialization maps and their saturation.
+:::
+
+:::definition "homology-sphere-contract" (parent := "integral-homology") (lean := "SphereSixComplex.HasIntegralHomologyOfSixSphere, SphereSixComplex.SixSphereRecognitionInput")
+The recognition input records path connectedness, simple connectedness, and degreewise integral
+singular homology equivalence with the standard six-sphere.
 :::
 
 :::theorem "smooth-recognition" (parent := "construction_spine") (lean := "SphereSixComplex.exists_complex_threefold_diffeomorphic_sixSphere") (priority := "high")
@@ -168,4 +210,9 @@ smooth homotopy-sphere recognition.
 
 :::theorem "standard-six-sphere" (parent := "smooth-recognition") (lean := "SphereSixComplex.sixSphere_isCompact, SphereSixComplex.sixSphere_isPathConnected, SphereSixComplex.sixSphere_isManifold")
 The target $`S^6` is compact, path-connected, and carries the standard smooth six-manifold atlas.
+:::
+
+:::theorem "sphere-stereographic-simple-connectivity" (parent := "standard-six-sphere") (lean := "SphereSixComplex.sixSphere_compl_singleton_simplyConnected, SphereSixComplex.sixSphere_simplyConnected_iff_loops_nullhomotopic")
+Removing any point from the standard six-sphere gives a simply-connected Euclidean chart.  Global
+simple connectedness is reduced exactly to nullhomotopy of every based loop.
 :::
