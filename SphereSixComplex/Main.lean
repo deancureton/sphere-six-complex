@@ -1,6 +1,7 @@
 module
 
 public import SphereSixComplex.ComplexStructure
+public import SphereSixComplex.LatticeData
 
 /-!
 # A Complex Structure on the Six-Sphere

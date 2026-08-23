@@ -23,7 +23,7 @@ Construction and recognition of the complex threefold.
 
 :::definition "six-sphere-complex-structure" (parent := "main_construction") (lean := "SphereSixComplex.AdmitsComplexStructure, SphereSixComplex.SixSphere")
 An integrable complex structure on the standard six-sphere is a complex-manifold atlas modeled on
-$`\mathbb{C}^3` whose underlying topology is the usual topology of $`S^6`.
+$`\mathbb{C}^3` whose underlying real atlas is diffeomorphic to the standard smooth atlas of $`S^6`.
 :::
 
 :::theorem "sphere-six-admits-complex-structure" (parent := "main_construction") (lean := "SphereSixComplex.sphere_six_admits_complex_structure") (tags := "main theorem, complex geometry") (priority := "high")
@@ -40,11 +40,11 @@ source := {
 %%%
 
 The standard smooth six-sphere $`S^6` admits an integrable complex structure.
-This is the final consequence of {uses "six-sphere-complex-structure"}[the definition above].
+This is the final consequence of {uses "six-sphere-complex-structure"}[the definition above] and
+{uses "smooth-recognition"}[smooth recognition of the constructed threefold].
 :::
 
 :::proof "sphere-six-admits-complex-structure"
-Construct the compact complex threefold $`X` of the paper, prove that it is simply connected and has
-the integral homology of $`S^6`, and identify its smooth manifold with the standard sphere. Transport
-the complex atlas of $`X` along that diffeomorphism.
+Transport the complex atlas of the constructed threefold along the diffeomorphism supplied by
+{uses "smooth-recognition"}[smooth recognition].
 :::
