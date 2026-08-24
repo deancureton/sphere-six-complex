@@ -26,8 +26,8 @@ to the Fuchsian uniformization, rather than changing the descent argument below.
 
 noncomputable section
 
-open Matrix UpperHalfPlane
-open scoped ContDiff Manifold
+open Filter Matrix Metric Set UpperHalfPlane
+open scoped ContDiff Manifold Real Topology
 
 namespace SphereSixComplex.Geometry.CuspPeriodExpansion
 
@@ -71,12 +71,113 @@ namespace Established
 /-- The classical removable-singularity theorem for the exponential quotient of a half-plane.
 This is a general one-variable analytic theorem, independent of the period family and of the
 paper's toric construction. -/
-public axiom periodicBoundedHolomorphicCuspDescent
+public theorem periodicBoundedHolomorphicCuspDescent
     (H : ℝ) (f : ℂ → ℂ)
     (holomorphic : DifferentiableOn ℂ f (cuspHalfPlane H))
     (periodic : ∀ s ∈ cuspHalfPlane H, f (s - 1) = f s)
     (bounded : NormBoundedOn f (cuspHalfPlane H)) :
-    Nonempty (HolomorphicCuspDescent H f)
+    Nonempty (HolomorphicCuspDescent H f) := by
+  classical
+  let F : ℂ → ℂ := fun z ↦ if z ∈ cuspHalfPlane H then f z else 0
+  have hopen : IsOpen (cuspHalfPlane H) := by
+    exact isOpen_Ioi.preimage Complex.continuous_im
+  have hF_eq (z : ℂ) (hz : z ∈ cuspHalfPlane H) : F z = f z := by
+    simp [F, hz]
+  have hF_periodic : Function.Periodic F (1 : ℂ) := by
+    intro z
+    by_cases hz : z ∈ cuspHalfPlane H
+    · have hz1 : z + (1 : ℂ) ∈ cuspHalfPlane H := by
+        simpa [cuspHalfPlane] using hz
+      rw [hF_eq _ hz1, hF_eq _ hz]
+      simpa using (periodic (z + 1) hz1).symm
+    · have hz1 : z + (1 : ℂ) ∉ cuspHalfPlane H := by
+        simpa [cuspHalfPlane] using hz
+      simp [F, hz, hz1]
+  have hF_differentiableAt (z : ℂ) (hz : z ∈ cuspHalfPlane H) :
+      DifferentiableAt ℂ F z := by
+    have hff : DifferentiableAt ℂ f z :=
+      (holomorphic z hz).differentiableAt (hopen.mem_nhds hz)
+    have heq : F =ᶠ[nhds z] f :=
+      eventually_of_mem (hopen.mem_nhds hz) (fun w hw ↦ hF_eq w hw)
+    exact heq.differentiableAt_iff.mpr hff
+  have hF_holomorphic :
+      ∀ᶠ z in comap Complex.im atTop, DifferentiableAt ℂ F z := by
+    refine eventually_of_mem (preimage_mem_comap (Ioi_mem_atTop H)) ?_
+    intro z hz
+    exact hF_differentiableAt z hz
+  obtain ⟨A, _hA, hbound⟩ := bounded
+  have hF_bounded : BoundedAtFilter (comap Complex.im atTop) F := by
+    rw [BoundedAtFilter, Asymptotics.isBigO_iff]
+    refine ⟨A, eventually_of_mem (preimage_mem_comap (Ioi_mem_atTop H)) ?_⟩
+    intro z hz
+    simp only [Pi.one_apply, norm_one, mul_one]
+    rw [hF_eq z hz]
+    exact hbound z hz
+  let e : ℂ → ℂ := Function.Periodic.cuspFunction (1 : ℝ) F
+  have he_zero : DifferentiableAt ℂ e 0 := by
+    dsimp only [e]
+    exact Function.Periodic.differentiableAt_cuspFunction_zero one_pos hF_periodic
+      hF_holomorphic hF_bounded
+  have hinv_mem (q : ℂ) (hq0 : q ≠ 0) (hq : q ∈ Metric.ball 0 (cuspRadius H)) :
+      Function.Periodic.invQParam (1 : ℝ) q ∈ cuspHalfPlane H := by
+    refine (Function.Periodic.norm_qParam_lt_iff (h := (1 : ℝ)) one_pos H _).mp ?_
+    rw [Function.Periodic.qParam_right_inv (h := (1 : ℝ)) one_ne_zero hq0]
+    simpa [cuspRadius] using (mem_ball_zero_iff.mp hq)
+  have he_differentiable : DifferentiableOn ℂ e (Metric.ball 0 (cuspRadius H)) := by
+    intro q hq
+    by_cases hq0 : q = 0
+    · subst q
+      exact he_zero.differentiableWithinAt
+    · have hs := hinv_mem q hq0 hq
+      have hd : DifferentiableAt ℂ e
+          (Function.Periodic.qParam (1 : ℝ)
+            (Function.Periodic.invQParam (1 : ℝ) q)) := by
+        dsimp only [e]
+        exact Function.Periodic.differentiableAt_cuspFunction one_ne_zero hF_periodic
+          (hF_differentiableAt _ hs)
+      rw [Function.Periodic.qParam_right_inv (h := (1 : ℝ)) one_ne_zero hq0] at hd
+      exact hd.differentiableWithinAt
+  have he_factorization : ∀ s ∈ cuspHalfPlane H, e (cuspQ s) = f s := by
+    intro s hs
+    simpa [e, Function.Periodic.qParam, cuspQ, F, hs] using
+      (Function.Periodic.eq_cuspFunction (h := (1 : ℝ)) one_ne_zero hF_periodic s)
+  refine ⟨{
+    extension := e
+    extension_holomorphic := he_differentiable
+    factorization := he_factorization
+    unique := ?_
+  }⟩
+  intro g hg hgf q hq
+  have hnonzero (q : ℂ) (hq : q ∈ Metric.ball 0 (cuspRadius H)) (hq0 : q ≠ 0) :
+      g q = e q := by
+    have hs := hinv_mem q hq0 hq
+    have hqeq : cuspQ (Function.Periodic.invQParam (1 : ℝ) q) = q := by
+      simpa [cuspQ, Function.Periodic.qParam] using
+        (Function.Periodic.qParam_right_inv (h := (1 : ℝ)) one_ne_zero hq0)
+    rw [← hqeq, hgf _ hs, he_factorization _ hs]
+  by_cases hq0 : q = 0
+  · subst q
+    have hzero : (0 : ℂ) ∈ Metric.ball 0 (cuspRadius H) :=
+      Metric.mem_ball_self (cuspRadius_pos H)
+    have hg_cont : ContinuousAt g 0 :=
+      (hg.differentiableAt (Metric.isOpen_ball.mem_nhds hzero)).continuousAt
+    have he_cont : ContinuousAt e 0 :=
+      (he_differentiable.differentiableAt
+        (Metric.isOpen_ball.mem_nhds hzero)).continuousAt
+    have hball : ∀ᶠ q in nhdsWithin (0 : ℂ) {0}ᶜ,
+        q ∈ Metric.ball 0 (cuspRadius H) :=
+      Filter.Eventually.filter_mono nhdsWithin_le_nhds
+        (Metric.ball_mem_nhds 0 (cuspRadius_pos H))
+    have hne : ∀ᶠ q in nhdsWithin (0 : ℂ) {0}ᶜ, q ≠ 0 := by
+      filter_upwards [self_mem_nhdsWithin] with q hq
+      simpa using hq
+    have heq : g =ᶠ[nhdsWithin (0 : ℂ) {0}ᶜ] e := by
+      filter_upwards [hball, hne] with q hq hq0
+      exact hnonzero q hq hq0
+    exact tendsto_nhds_unique_of_eventuallyEq
+      (hg_cont.tendsto.mono_left nhdsWithin_le_nhds)
+      (he_cont.tendsto.mono_left nhdsWithin_le_nhds) heq
+  · exact hnonzero q hq hq0
 
 end Established
 
