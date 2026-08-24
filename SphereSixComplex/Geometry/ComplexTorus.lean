@@ -82,6 +82,13 @@ public noncomputable def FullRank.ofSetupInequalities (x : Parameters) (h : Setu
     rw [periodRealLinearEquiv_apply, periodRealLinear_eq_mulVec]
     rfl
 
+@[simp]
+public theorem FullRank.ofSetupInequalities_realEquiv_apply
+    (x : Parameters) (h : SetupInequalities x) (a : RealPeriods) :
+    (FullRank.ofSetupInequalities x h).realEquiv a = periodRealLinear x a := by
+  change periodRealLinearEquiv x h a = periodRealLinear x a
+  exact periodRealLinearEquiv_apply x h a
+
 /-- The standard integral lattice in `ℝ⁴` escapes every compact set. -/
 public theorem integerToReal_tendsto_cofinite_cocompact :
     Tendsto integerToReal cofinite (cocompact RealPeriods) := by

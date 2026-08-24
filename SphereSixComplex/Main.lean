@@ -9,6 +9,7 @@ public import SphereSixComplex.Geometry.ComplexModelRechart
 public import SphereSixComplex.Geometry.ComplexTorus
 public import SphereSixComplex.Geometry.ComplexThreefoldGluing
 public import SphereSixComplex.Geometry.ClosedRelationGluing
+public import SphereSixComplex.Geometry.CompactTorusFamilyOverBase
 public import SphereSixComplex.Geometry.CuspCombinatorics
 public import SphereSixComplex.Geometry.CuspFilling
 public import SphereSixComplex.Geometry.CuspLocalPhaseAction
