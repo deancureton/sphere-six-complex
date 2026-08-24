@@ -44,6 +44,23 @@ public theorem exists_paperAnalyticData
   obtain ⟨M⟩ := StandardInfiniteA2ToricModel.Established.model
   exact ⟨⟨E, D, N, M⟩⟩
 
+/-- The standard analytic descent theorem supplies the dependent `mu` and `beta` certificates
+needed for the coherent paper package. -/
+public theorem exists_paperAnalyticData_of_establishedAnalyticDescent
+    (E : EstablishedFuchsianModularParameter)
+    (F : ExactLiftedModularNegOneFrame E) :
+    Nonempty PaperAnalyticData :=
+  exists_paperAnalyticData E F
+    (establishedFuchsianMuAnalyticDescentData E F)
+    (establishedFuchsianBetaAnalyticDescentData E F)
+
+/-- The established modular parameter, modular frame, general analytic descent, cusp
+normalization, and toric model produce the coherent analytic package unconditionally. -/
+public theorem exists_establishedPaperAnalyticData : Nonempty PaperAnalyticData := by
+  obtain ⟨E⟩ := exists_establishedFuchsianModularParameter
+  obtain ⟨F⟩ := establishedExactLiftedModularNegOneFrame E
+  exact exists_paperAnalyticData_of_establishedAnalyticDescent E F
+
 /-- A coherent choice of the analytic data supplied by concrete affine-descent certificates. -/
 @[expose] public noncomputable def paperAnalyticData
     (E : EstablishedFuchsianModularParameter)
@@ -52,6 +69,16 @@ public theorem exists_paperAnalyticData
     (Abeta : FuchsianBetaAnalyticDescentData E F Amu) :
     PaperAnalyticData :=
   Classical.choice (exists_paperAnalyticData E F Amu Abeta)
+
+/-- A coherent production choice requiring only the exact modular parameter and modular frame. -/
+@[expose] public noncomputable def paperAnalyticDataOfEstablishedAnalyticDescent
+    (E : EstablishedFuchsianModularParameter)
+    (F : ExactLiftedModularNegOneFrame E) : PaperAnalyticData :=
+  Classical.choice (exists_paperAnalyticData_of_establishedAnalyticDescent E F)
+
+/-- A coherent production choice of all analytic inputs. -/
+@[expose] public noncomputable def establishedPaperAnalyticData : PaperAnalyticData :=
+  Classical.choice exists_establishedPaperAnalyticData
 
 namespace PaperAnalyticData
 

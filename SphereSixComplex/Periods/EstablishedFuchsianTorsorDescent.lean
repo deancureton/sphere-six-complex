@@ -2,7 +2,7 @@ module
 
 public import SphereSixComplex.Periods.ExactFuchsianModularFrameData
 public import SphereSixComplex.Periods.ExactFuchsianModularFrameConstruction
-public import SphereSixComplex.Periods.EstablishedOrbifoldAffineTorsorDescent
+public import SphereSixComplex.Periods.EstablishedOrbifoldAffineTorsorAnalyticDescent
 import all SphereSixComplex.Periods.Functions
 import all SphereSixComplex.Periods.FuchsianModularParameterExistence
 import SphereSixComplex.TriangleGroup.FuchsianTessellation
@@ -1131,6 +1131,26 @@ public abbrev FuchsianBetaAnalyticDescentData
   (fuchsianBetaDescentProblem E F
     ((muAffineCechSectionsOfAnalyticDescentData E F Amu).toLocalData E F)).AnalyticDescentData
 
+/-- The production `mu` analytic-descent certificate selected from the general
+Cartan--B/Cousin theorem. -/
+@[expose] public noncomputable def establishedFuchsianMuAnalyticDescentData :
+    (fuchsianMuDescentProblem E F).AnalyticDescentData :=
+  Classical.choice
+    (establishedOrbifoldAffineLineTorsorAnalyticDescent (fuchsianMuDescentProblem E F)
+      (Or.inl ⟨rfl, rfl, rfl⟩))
+
+/-- The production `beta` analytic-descent certificate.  Its type depends on the actual `mu`
+certificate selected above, so both certificates determine one coherent period package. -/
+@[expose] public noncomputable def establishedFuchsianBetaAnalyticDescentData :
+    FuchsianBetaAnalyticDescentData E F
+      (establishedFuchsianMuAnalyticDescentData E F) :=
+  Classical.choice
+    (establishedOrbifoldAffineLineTorsorAnalyticDescent
+      (fuchsianBetaDescentProblem E F
+        ((muAffineCechSectionsOfAnalyticDescentData E F
+          (establishedFuchsianMuAnalyticDescentData E F)).toLocalData E F))
+      (Or.inr ⟨rfl, rfl, rfl⟩))
+
 /-- Explicit analytic descent certificates discharge both concrete local-triviality problems. -/
 public theorem establishedFuchsianAffineTorsorLocalTriviality
     (Amu : (fuchsianMuDescentProblem E F).AnalyticDescentData)
@@ -1171,5 +1191,25 @@ public theorem exists_establishedFuchsianPeriodFunctions
     Nonempty (PeriodFunctions E.modularParameter.toTriangleUniformization) := by
   obtain ⟨D⟩ := exists_fuchsianPeriodLocalData E F Amu Abeta
   exact exists_assembledFuchsianPeriodFunctions E D
+
+/-- The two production analytic-descent certificates construct the complete local period data. -/
+public theorem exists_fuchsianPeriodLocalData_of_establishedAnalyticDescent
+    (F : ExactLiftedModularNegOneFrame E) :
+    Nonempty (FuchsianPeriodLocalData E) :=
+  exists_fuchsianPeriodLocalData E F
+    (establishedFuchsianMuAnalyticDescentData E F)
+    (establishedFuchsianBetaAnalyticDescentData E F)
+
+/-- A coherent production choice of the local period package. -/
+@[expose] public noncomputable def establishedFuchsianPeriodLocalData
+    (F : ExactLiftedModularNegOneFrame E) : FuchsianPeriodLocalData E :=
+  Classical.choice (exists_fuchsianPeriodLocalData_of_establishedAnalyticDescent E F)
+
+/-- The general analytic descent theorem and exact Fuchsian inputs produce nondegenerate period
+functions without any paper-specific existence assumption. -/
+public theorem exists_establishedFuchsianPeriodFunctions_of_generalDescent
+    (F : ExactLiftedModularNegOneFrame E) :
+    Nonempty (PeriodFunctions E.modularParameter.toTriangleUniformization) :=
+  exists_assembledFuchsianPeriodFunctions E (establishedFuchsianPeriodLocalData E F)
 
 end SphereSixComplex.Periods
