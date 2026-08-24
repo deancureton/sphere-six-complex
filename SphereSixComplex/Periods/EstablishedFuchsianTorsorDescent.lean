@@ -430,6 +430,15 @@ general orbifold affine-torsor descent theorem. -/
   cuspSection_equivariant := fun _ ↦ rfl
   cusp_coordinate_ne_zero := F.coordinate_ne_zero_on_cusp
   cuspNormalize := fun _ mu ↦ mu
+  cuspNormalize_sub := by
+    intro z u v
+    rfl
+  cuspNormalize_holomorphic := by
+    intro s hs
+    exact hs
+  cuspNormalize_equivariant := by
+    intro z u
+    rfl
   cuspSection_normalized_bounded := (cuspLocalMu_properties E).2.2
 
 /-- The exact modular frame supplies the full `O(-1)` frame portion of the paper's Cech
@@ -460,13 +469,13 @@ public structure MuAffineCechSections where
   sectionInfinity_cusp_bounded :
     BoundedOn sectionInfinity fuchsianCuspRegion
 
-/-- General orbifold affine-torsor descent supplies the two exact `mu` chart sections from the
-explicit modular frame, finite-cycle certificate, elliptic primitives, and cusp primitive. -/
-public theorem exists_muAffineCechSections :
-    Nonempty (MuAffineCechSections E F) := by
-  obtain ⟨S⟩ := establishedOrbifoldAffineLineTorsorTwoChartDescent
-    (fuchsianMuDescentProblem E F)
-  refine ⟨{
+/-- Convert one concrete analytic descent certificate into the exact `mu` Cech sections consumed
+by the Fuchsian construction. -/
+@[expose] public def muAffineCechSectionsOfAnalyticDescentData
+    (A : (fuchsianMuDescentProblem E F).AnalyticDescentData) :
+    MuAffineCechSections E F := by
+  let S := A.toTwoChartSections
+  refine {
     sectionZero := S.sectionZero
     sectionInfinity := S.sectionInfinity
     sectionZero_holomorphic := S.sectionZero_holomorphic
@@ -478,7 +487,7 @@ public theorem exists_muAffineCechSections :
     overlapCocycle := S.overlapCocycle
     overlapCocycle_holomorphic := S.overlapCocycle_holomorphic
     section_mismatch := S.section_mismatch
-    sectionInfinity_cusp_bounded := S.sectionInfinity_normalized_cusp_bounded }⟩
+    sectionInfinity_cusp_bounded := S.sectionInfinity_normalized_cusp_bounded }
   · intro z
     exact S.sectionZero_one z
   · intro z
@@ -487,6 +496,13 @@ public theorem exists_muAffineCechSections :
     exact S.sectionInfinity_one z hz
   · intro z hz
     exact S.sectionInfinity_two z hz
+
+/-- Analytic orbifold affine-torsor descent supplies the two exact `mu` chart sections from the
+explicit modular frame, finite-cycle certificate, elliptic primitives, and cusp primitive. -/
+public theorem exists_muAffineCechSections
+    (A : (fuchsianMuDescentProblem E F).AnalyticDescentData) :
+    Nonempty (MuAffineCechSections E F) :=
+  ⟨muAffineCechSectionsOfAnalyticDescentData E F A⟩
 
 /-- Combining the independent modular-frame theorem with affine local triviality gives exactly the
 `mu` local data consumed by the Cech splitting theorem. -/
@@ -964,15 +980,29 @@ invoked. -/
     cuspSection_equivariant := (cuspLocalBeta_properties E).2.1
     cusp_coordinate_ne_zero := F.coordinate_ne_zero_on_cusp
     cuspNormalize := fun z beta ↦ beta + E.modularParameter.tau z
+    cuspNormalize_sub := by
+      intro z u v
+      ring
+    cuspNormalize_holomorphic := by
+      intro s hs
+      exact hs.add (tau_coe_mdifferentiable E)
+    cuspNormalize_equivariant := by
+      intro z u
+      have htau := congrArg (fun w : UpperHalfPlane ↦ (w : ℂ))
+        (E.modularParameter.equivariant g₀ z)
+      rw [rhoTauReal_g0_smul] at htau
+      rw [htau]
+      ring
     cuspSection_normalized_bounded := (cuspLocalBeta_properties E).2.2 }
 
 /-- General orbifold affine-torsor descent supplies the exact local structure-sheaf data for
 `beta` once the descended `mu` has been selected. -/
 public theorem exists_betaAffineCechSections
-    (F : ExactLiftedModularNegOneFrame E) (Dmu : MuTorsorCechLocalData E) :
+    (F : ExactLiftedModularNegOneFrame E) (Dmu : MuTorsorCechLocalData E)
+    (A : (fuchsianBetaDescentProblem E F Dmu).AnalyticDescentData) :
     Nonempty (BetaAffineCechSections E (descendedFuchsianMu E Dmu)) := by
   obtain ⟨S⟩ := establishedOrbifoldAffineLineTorsorTwoChartDescent
-    (fuchsianBetaDescentProblem E F Dmu)
+    (fuchsianBetaDescentProblem E F Dmu) A
   refine ⟨⟨{
     zeroRegion := Set.univ
     infinityRegion := liftedInfinityRegion E
@@ -1036,12 +1066,20 @@ cyclic consistency check have been supplied. -/
     Nonempty (BetaAffineCechSections E
       (descendedFuchsianMu E (Smu.toLocalData E F)))
 
-/-- The general orbifold affine-torsor descent theorem discharges both concrete local
-triviality problems. -/
-public theorem establishedFuchsianAffineTorsorLocalTriviality :
+/-- The single beta descent certificate needed after applying a chosen mu descent certificate. -/
+public abbrev FuchsianBetaAnalyticDescentData
+    (Amu : (fuchsianMuDescentProblem E F).AnalyticDescentData) :=
+  (fuchsianBetaDescentProblem E F
+    ((muAffineCechSectionsOfAnalyticDescentData E F Amu).toLocalData E F)).AnalyticDescentData
+
+/-- Explicit analytic descent certificates discharge both concrete local-triviality problems. -/
+public theorem establishedFuchsianAffineTorsorLocalTriviality
+    (Amu : (fuchsianMuDescentProblem E F).AnalyticDescentData)
+    (Abeta : FuchsianBetaAnalyticDescentData E F Amu) :
     FuchsianAffineTorsorLocalTriviality E F := by
-  obtain ⟨Smu⟩ := exists_muAffineCechSections E F
+  let Smu := muAffineCechSectionsOfAnalyticDescentData E F Amu
   obtain ⟨Sbeta⟩ := exists_betaAffineCechSections E F (Smu.toLocalData E F)
+    Abeta
   exact ⟨Smu, ⟨Sbeta⟩⟩
 
 /-- A general affine-torsor local-triviality theorem, once supplied, completes the exact local
@@ -1054,18 +1092,25 @@ public theorem exists_fuchsianPeriodLocalData_of_affineTorsorLocalTriviality
   obtain ⟨Smu, ⟨Sbeta⟩⟩ := hdescent F
   exact ⟨exactFuchsianPeriodLocalData E F Smu Sbeta⟩
 
-/-- The exact established modular and general orbifold-descent inputs construct the complete
-local period package for the normalized Fuchsian modular parameter. -/
-public theorem exists_fuchsianPeriodLocalData :
-    Nonempty (FuchsianPeriodLocalData E) :=
-  exists_fuchsianPeriodLocalData_of_affineTorsorLocalTriviality E
-    (establishedFuchsianAffineTorsorLocalTriviality E)
+/-- One concrete modular frame and its two explicit analytic descent certificates construct the
+complete local period package used by the paper. -/
+public theorem exists_fuchsianPeriodLocalData
+    (F : ExactLiftedModularNegOneFrame E)
+    (Amu : (fuchsianMuDescentProblem E F).AnalyticDescentData)
+    (Abeta : FuchsianBetaAnalyticDescentData E F Amu) :
+    Nonempty (FuchsianPeriodLocalData E) := by
+  obtain ⟨Smu, ⟨Sbeta⟩⟩ :=
+    establishedFuchsianAffineTorsorLocalTriviality E F Amu Abeta
+  exact ⟨exactFuchsianPeriodLocalData E F Smu Sbeta⟩
 
-/-- The established modular and orbifold-descent inputs therefore produce the paper's actual
-nondegenerate Fuchsian period functions. -/
-public theorem exists_establishedFuchsianPeriodFunctions :
+/-- One concrete modular frame and its explicit analytic descent certificates therefore produce
+the paper's actual nondegenerate Fuchsian period functions. -/
+public theorem exists_establishedFuchsianPeriodFunctions
+    (F : ExactLiftedModularNegOneFrame E)
+    (Amu : (fuchsianMuDescentProblem E F).AnalyticDescentData)
+    (Abeta : FuchsianBetaAnalyticDescentData E F Amu) :
     Nonempty (PeriodFunctions E.modularParameter.toTriangleUniformization) := by
-  obtain ⟨D⟩ := exists_fuchsianPeriodLocalData E
+  obtain ⟨D⟩ := exists_fuchsianPeriodLocalData E F Amu Abeta
   exact exists_assembledFuchsianPeriodFunctions E D
 
 end SphereSixComplex.Periods
