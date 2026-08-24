@@ -8,9 +8,11 @@ import SphereSixComplex.Geometry.ComplexTorus
 import SphereSixComplex.Geometry.ComplexThreefoldGluing
 import SphereSixComplex.Geometry.CuspCombinatorics
 import SphereSixComplex.Geometry.CuspFilling
+import SphereSixComplex.Geometry.EllipticComplexFilling
 import SphereSixComplex.Geometry.EllipticFilling
 import SphereSixComplex.Geometry.FamilyEquivariance
 import SphereSixComplex.Geometry.Gluing
+import SphereSixComplex.Geometry.PaperAssembly
 import SphereSixComplex.Geometry.Quotient
 import SphereSixComplex.Geometry.TorusFamily
 import SphereSixComplex.LatticeData
@@ -21,10 +23,12 @@ import SphereSixComplex.Periods.Matrix
 import SphereSixComplex.Periods.Nondegeneracy
 import SphereSixComplex.Periods.Transformations
 import SphereSixComplex.Periods.TorsorAlgebra
+import SphereSixComplex.Periods.ProjectiveLineTorsors
 import SphereSixComplex.Topology.FundamentalGroup
 import SphereSixComplex.Topology.FundamentalGroupComputation
 import SphereSixComplex.Topology.HomologyComputation
 import SphereSixComplex.Topology.HomologySphere
+import SphereSixComplex.Topology.HurewiczWhitehead
 import SphereSixComplex.Topology.MayerVietoris
 import SphereSixComplex.Topology.SmoothRecognition
 import SphereSixComplex.Topology.SphereSimplyConnected
@@ -157,6 +161,13 @@ order-four orbits.  The inhomogeneous $`\beta` cocycles sum to zero, and weighte
 the explicit local primitives used to build the two analytic torsors.
 :::
 
+:::theorem "projective-line-cech-splitting" (parent := "period-functions") (lean := "SphereSixComplex.Periods.ProjectiveLineCech.cechDifferentialNegOne_surjective, SphereSixComplex.Periods.ProjectiveLineCech.cechDifferentialZero_surjective, SphereSixComplex.Periods.ProjectiveLineCech.exists_compatible_negOne_adjustments, SphereSixComplex.Periods.ProjectiveLineCech.exists_compatible_zero_adjustments")
+Every Laurent-polynomial overlap cocycle on the standard two-chart cover of the projective line is a
+Čech coboundary for both $`\mathcal O(-1)` and $`\mathcal O`. This proves the algebraic splitting
+underlying the paper's two torsor arguments; extending it to arbitrary holomorphic overlap functions
+requires analytic Laurent-series infrastructure.
+:::
+
 :::theorem "torus-family" (parent := "construction_spine") (priority := "high")
 The period matrix built from $`\tau,\mu,\beta` defines a proper holomorphic family of compact complex
 two-tori over the thrice-punctured sphere.
@@ -194,7 +205,7 @@ The three $`A_2` directions sum to zero and consecutive pairs form integral base
 the degree-six del Pezzo fan occur in opposite pairs, and every two-dimensional cone is unimodular.
 :::
 
-:::theorem "cusp-action" (parent := "cusp-filling") (lean := "SphereSixComplex.Geometry.CuspFilling.shearMap_add, SphereSixComplex.Geometry.CuspFilling.CuspActionData.action_free, SphereSixComplex.Geometry.CuspFilling.CuspActionData.properlyDiscontinuous, SphereSixComplex.Geometry.CuspFilling.quotient_isQuotientCoveringMap, SphereSixComplex.Geometry.CuspFilling.cuspQuotient_isManifold")
+:::theorem "cusp-action" (parent := "cusp-filling") (lean := "SphereSixComplex.Geometry.CuspFilling.shearMap_add, SphereSixComplex.Geometry.CuspFilling.CuspActionData.action_free, SphereSixComplex.Geometry.CuspFilling.CuspActionData.properlyDiscontinuous, SphereSixComplex.Geometry.CuspFilling.quotient_isQuotientCoveringMap, SphereSixComplex.Geometry.CuspFilling.cuspQuotient_isManifold, SphereSixComplex.Geometry.CuspFilling.cuspQuotient_projection_isLocalDiffeomorph")
 The $`B_0` shear preserves the cusp height and translates both classes of $`A_2` triangles.  Given
 the phase estimates of Theorem 4.5, the corrected maps form a free, properly discontinuous lattice
 action.  Local sheets differ by analytic deck maps, so the covering quotient inherits a complex
@@ -206,9 +217,10 @@ Use {uses "torus-family"}[the torus family] and the unimodular cusp lattice map 
 {uses "monodromy-identities"}[the explicit nilpotent monodromy].
 :::
 
-:::theorem "elliptic-fillings" (parent := "construction_spine") (lean := "SphereSixComplex.Geometry.epsilon_action_free, SphereSixComplex.Geometry.neg_epsilonPrime_action_free, SphereSixComplex.Geometry.quotient_isQuotientCoveringMap, SphereSixComplex.Geometry.quotient_chartedSpace") (priority := "high")
+:::theorem "elliptic-fillings" (parent := "construction_spine") (lean := "SphereSixComplex.Geometry.epsilon_action_free, SphereSixComplex.Geometry.neg_epsilonPrime_action_free, SphereSixComplex.Geometry.quotient_isQuotientCoveringMap, SphereSixComplex.Geometry.epsilonQuotient_isManifold, SphereSixComplex.Geometry.negEpsilonPrimeQuotient_isManifold") (priority := "high")
 The order-three and order-four ends admit free logarithmic-transform fillings with the twist vectors
-specified in the Setup.
+specified in the Setup.  When the local affine actions are analytic, both covering quotients inherit
+complex-manifold atlases.
 :::
 
 :::proof "elliptic-fillings"
@@ -234,6 +246,12 @@ a connected overlap graph give a connected gluing.
 :::definition "complex-threefold-from-gluing" (parent := "compact-complex-threefold") (lean := "SphereSixComplex.complexThreefoldOfGluing")
 A finite connected gluing of compact complex pieces with compatible complex and underlying real
 atlases produces the exact compact connected `ComplexThreefold` contract used by the main theorem.
+:::
+
+:::theorem "paper-threefold-assembly" (parent := "compact-complex-threefold") (lean := "SphereSixComplex.completedPaperThreefoldOfGluing, SphereSixComplex.smoothRecognitionInputOfGluing")
+If that gluing carries the concrete van Kampen generators with no extra relations and the
+four-piece Mayer--Vietoris comparison, it produces the exact `CompletedPaperThreefold` object and
+the simply connected integral-homology-sphere input for smooth recognition.
 :::
 
 :::theorem "fundamental-group" (parent := "construction_spine") (lean := "SphereSixComplex.CompletedPaperThreefold.fundamentalGroup") (priority := "high")
@@ -297,6 +315,13 @@ The underlying standard smooth manifold of $`X` is diffeomorphic to $`S^6`.
 The recognition step splits into the Whitehead--Hurewicz implication from a simply-connected
 integral homology sphere to a homotopy sphere, followed by the dimension-six smooth Poincaré
 classification.  Their composition gives the exact diffeomorphism required by the construction.
+:::
+
+:::theorem "hurewicz-whitehead-reduction" (parent := "smooth-recognition") (lean := "SphereSixComplex.HasIntegralHomologyComparisonToSixSphere, SphereSixComplex.homotopyEquivSixSphere_of_comparison_of_whitehead, SphereSixComplex.homologyToHomotopySixSphere_of_comparison_of_whitehead")
+The homology-to-homotopy step is reduced to constructing one coherent integral-homology comparison
+map $`X \to S^6` and applying the integral-homology Whitehead property to that map. Homotopy
+equivalences are proved to induce integral singular-homology equivalences using Mathlib's homotopy
+invariance theorem.
 :::
 
 :::proof "smooth-recognition"

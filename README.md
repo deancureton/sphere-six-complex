@@ -12,6 +12,19 @@ period functions, the torus family, its three local fillings, the glued compact 
 topology, and six-dimensional smooth recognition. The later computations of analytic invariants are outside
 the dependency closure of the main theorem.
 
+## Status
+
+This is an active formalization, not yet a proof of the headline theorem. The root project and the
+Verso Blueprint build, but `SphereSixComplex/Construction.lean` still contains two development
+`sorry`s: construction of the completed threefold and dimension-six smooth recognition. The
+`sorry` in `Challenge.lean` is the trusted Comparator challenge boundary.
+
+The verified frontier includes the explicit lattice and monodromy calculations, period-domain and
+two-chart Čech torsor algebra, the analytic torus-family quotient, locally biholomorphic elliptic
+and cusp quotient machinery, the integer van Kampen presentation, Section 7 matrix computations,
+generic complex gluing, the paper-assembly theorem, and the map-level Hurewicz--Whitehead reduction.
+The Blueprint work queue records the remaining mathematical obligations.
+
 ## Build
 
 ```sh

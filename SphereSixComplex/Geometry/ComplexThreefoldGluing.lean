@@ -18,7 +18,7 @@ noncomputable section
 
 /-- A finite connected gluing of compact complex pieces, with compatible complex and underlying
 real atlases, supplies the precise compact complex-threefold object used by the construction. -/
-public noncomputable def complexThreefoldOfGluing (D : TopCat.GlueData)
+@[expose] public noncomputable def complexThreefoldOfGluing (D : TopCat.GlueData)
     [Finite D.J] [Nonempty D.J] [∀ i, Nonempty (D.U i)]
     [∀ i, CompactSpace (D.U i)] [∀ i, ConnectedSpace (D.U i)]
     [∀ i, ChartedSpace ComplexModel (D.U i)]

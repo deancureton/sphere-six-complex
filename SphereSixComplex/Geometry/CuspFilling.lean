@@ -496,6 +496,130 @@ public theorem quotient_isManifold
   let _ : HasGroupoid Q (contDiffGroupoid ω I) := quotient_hasGroupoid I hf hdeck
   exact IsManifold.mk
 
+/-- A local sheet of a smooth quotient covering is smooth in both directions. -/
+public theorem quotient_localSheet_contMDiffOn
+    {G Y Q E H : Type*} [Group G] [TopologicalSpace Y] [TopologicalSpace Q]
+    [TopologicalSpace H] [NormedAddCommGroup E] [NormedSpace ℂ E]
+    (I : ModelWithCorners ℂ E H)
+    [ChartedSpace H Y] [IsManifold I ω Y]
+    [MulAction G Y] [ContinuousConstSMul G Y]
+    {f : Y → Q} (hf : IsQuotientCoveringMap f G)
+    (hdeck : ∀ g : G, ContMDiff I I ω fun z : Y ↦ g • z)
+    (x : Y) :
+    letI : ChartedSpace H Q :=
+      hf.isCoveringMap.isLocalHomeomorph.chartedSpace hf.surjective
+    letI : IsManifold I ω Q := quotient_isManifold I hf hdeck
+    let l := hf.isCoveringMap.isLocalHomeomorph.localInverseAt x
+    ContMDiffOn I I ω l.symm l.target ∧ ContMDiffOn I I ω l l.source := by
+  let hloc := hf.isCoveringMap.isLocalHomeomorph
+  let _ : ChartedSpace H Q := hloc.chartedSpace hf.surjective
+  let _ : IsManifold I ω Q := quotient_isManifold I hf hdeck
+  let l := hloc.localInverseAt x
+  apply (isLocalStructomorphOn_contDiffGroupoid_iff l.symm).mp
+  intro z hz
+  refine ⟨(l.symm.continuousAt hz).continuousWithinAt, ?_⟩
+  unfold StructureGroupoid.IsLocalStructomorphWithinAt
+  intro _
+  let q := f z
+  let a := hf.surjective.hasRightInverse.choose q
+  let l₂ := hloc.localInverseAt a
+  let c₁ := chartAt H z
+  let c₂ := chartAt H a
+  have hfa : f a = q := hf.surjective.hasRightInverse.choose_spec q
+  have hqsource : q ∈ l₂.source := by
+    rw [← hfa]
+    exact hloc.apply_self_mem_localInverseAt_source
+  have hzsource : z ∈ (hloc.localInverseAt z).target :=
+    hloc.self_mem_localInverseAt_target
+  have hy : z ∈ ((hloc.localInverseAt z).symm.trans l₂).source := by
+    rw [OpenPartialHomeomorph.trans_source]
+    refine ⟨hzsource, ?_⟩
+    change (hloc.localInverseAt z).symm z ∈ l₂.source
+    rw [show (hloc.localInverseAt z).symm z = f z by
+      exact congrFun (hloc.localInverseAt_symm z) z]
+    exact hqsource
+  obtain ⟨g, U, hU, hzU, hUsub, hEq⟩ :=
+    localInverse_transition_eq_deck hf z a z hy
+  let d : Y ≃ₜ Y := Homeomorph.mk (MulAction.toPerm g)
+    (hdeck g).continuous (by
+      change Continuous fun y : Y ↦ g⁻¹ • y
+      exact (hdeck g⁻¹).continuous)
+  let delta := c₁.symm.trans (d.toOpenPartialHomeomorph.trans c₂)
+  have hdelta : delta ∈ contDiffGroupoid ω I := by
+    apply IsManifold.compatible_of_mem_maximalAtlas
+    · exact IsManifold.chart_mem_maximalAtlas z
+    · exact deck_trans_chart_mem_maximalAtlas I hdeck g a
+  let s := c₁.target ∩ c₁.symm ⁻¹' U
+  have hs : IsOpen s :=
+    c₁.symm.continuousOn_toFun.isOpen_inter_preimage c₁.open_target hU
+  refine ⟨delta.restr s, closedUnderRestriction' hdelta hs, ?_, ?_⟩
+  · intro y hy'
+    change (chartAt H (l.symm z) ∘ l.symm ∘ (chartAt H z).symm) y = delta y
+    have hys : y ∈ s := by
+      rw [OpenPartialHomeomorph.restr_source, hs.interior_eq] at hy'
+      exact hy'.2.2
+    have hyU' : c₁.symm y ∈ U := hys.2
+    have hyEq : l₂ (f (c₁.symm y)) = g • c₁.symm y := by
+      simpa [l₂, hloc.localInverseAt_symm] using hEq ⟨hUsub hyU', hyU'⟩
+    have hlz : l.symm z = f z := congrFun (hloc.localInverseAt_symm x) z
+    rw [hlz]
+    change (l₂.trans c₂) (l.symm (c₁.symm y)) = delta y
+    rw [show l.symm (c₁.symm y) = f (c₁.symm y) by
+      exact congrFun (hloc.localInverseAt_symm x) (c₁.symm y)]
+    simp only [delta, OpenPartialHomeomorph.coe_trans, Function.comp_apply]
+    change c₂ (l₂ (f (c₁.symm y))) = c₂ (g • c₁.symm y)
+    rw [hyEq]
+  · rw [OpenPartialHomeomorph.restr_source, hs.interior_eq]
+    have hcz : c₁ z ∈ c₁.target := c₁.map_source (mem_chart_source H z)
+    have hleft : c₁.symm (c₁ z) = z := c₁.left_inv (mem_chart_source H z)
+    refine ⟨?_, ⟨hcz, ?_⟩⟩
+    · change c₁ z ∈ (c₁.symm.trans (d.toOpenPartialHomeomorph.trans c₂)).source
+      rw [OpenPartialHomeomorph.trans_source]
+      refine ⟨hcz, ?_⟩
+      change c₁.symm (c₁ z) ∈ d.toOpenPartialHomeomorph.source ∧
+        d (c₁.symm (c₁ z)) ∈ c₂.source
+      rw [hleft]
+      refine ⟨Set.mem_univ z, ?_⟩
+      change g • z ∈ c₂.source
+      have hzEq : l₂ (f z) = g • z := by
+        simpa [l₂, hloc.localInverseAt_symm] using hEq ⟨hUsub hzU, hzU⟩
+      rw [← hzEq, show f z = q from rfl, ← hfa]
+      change l₂ (f a) ∈ c₂.source
+      rw [show l₂ (f a) = a by exact hloc.localInverseAt_apply_self]
+      exact mem_chart_source H a
+    · change c₁.symm (c₁ z) ∈ U
+      rw [hleft]
+      exact hzU
+
+/-- The projection of a smooth quotient covering is a smooth local diffeomorphism. -/
+public theorem quotient_projection_isLocalDiffeomorph
+    {G Y Q E H : Type*} [Group G] [TopologicalSpace Y] [TopologicalSpace Q]
+    [TopologicalSpace H] [NormedAddCommGroup E] [NormedSpace ℂ E]
+    (I : ModelWithCorners ℂ E H)
+    [ChartedSpace H Y] [IsManifold I ω Y]
+    [MulAction G Y] [ContinuousConstSMul G Y]
+    {f : Y → Q} (hf : IsQuotientCoveringMap f G)
+    (hdeck : ∀ g : G, ContMDiff I I ω fun z : Y ↦ g • z) :
+    letI : ChartedSpace H Q :=
+      hf.isCoveringMap.isLocalHomeomorph.chartedSpace hf.surjective
+    letI : IsManifold I ω Q := quotient_isManifold I hf hdeck
+    IsLocalDiffeomorph I I ω f := by
+  let hloc := hf.isCoveringMap.isLocalHomeomorph
+  let _ : ChartedSpace H Q := hloc.chartedSpace hf.surjective
+  let _ : IsManifold I ω Q := quotient_isManifold I hf hdeck
+  intro x
+  let l := hloc.localInverseAt x
+  have h := quotient_localSheet_contMDiffOn I hf hdeck x
+  let phi : PartialDiffeomorph I I Y Q ω :=
+    { toPartialEquiv := l.symm.toPartialEquiv
+      open_source := l.open_target
+      open_target := l.open_source
+      contMDiffOn_toFun := h.1
+      contMDiffOn_invFun := h.2 }
+  refine ⟨phi, hloc.self_mem_localInverseAt_target, ?_⟩
+  intro y _
+  exact (congrFun (hloc.localInverseAt_symm x) y).symm
+
 /-- The phase-corrected cusp quotient is a complex manifold when all deck maps are analytic. -/
 public theorem cuspQuotient_isManifold
     {Y Phase E H : Type*} [CommGroup Phase] [TopologicalSpace Y] [TopologicalSpace H]
@@ -530,6 +654,54 @@ public theorem cuspQuotient_isManifold
   intro gamma
   change ContMDiff I I ω (D.psiMap (Multiplicative.toAdd gamma))
   exact hholomorphic _
+
+/-- The cusp quotient projection is a complex-analytic local diffeomorphism. -/
+public theorem cuspQuotient_projection_isLocalDiffeomorph
+    {Y Phase E H : Type*} [CommGroup Phase] [TopologicalSpace Y] [TopologicalSpace H]
+    [NormedAddCommGroup E] [NormedSpace ℂ E]
+    (I : ModelWithCorners ℂ E H)
+    [T2Space Y] [LocallyCompactSpace Y] [ChartedSpace H Y] [IsManifold I ω Y]
+    (D : CuspActionData Y Phase)
+    (hholomorphic : ∀ lambda : ParameterLattice, ContMDiff I I ω (D.psiMap lambda))
+    (hcompact : ∀ K L : Set Y, IsCompact K → IsCompact L →
+      {lambda : ParameterLattice |
+        (D.psiMap lambda '' K ∩ L).Nonempty}.Finite) :
+    letI := D.psiAction
+    let hf := quotient_isQuotientCoveringMap D
+      (fun lambda ↦ (hholomorphic lambda).continuous) hcompact
+    let hdeck : ∀ gamma : Multiplicative ParameterLattice,
+        ContMDiff I I ω fun y : Y ↦ gamma • y := fun gamma ↦ by
+      change ContMDiff I I ω (D.psiMap (Multiplicative.toAdd gamma))
+      exact hholomorphic _
+    letI : ContinuousConstSMul (Multiplicative ParameterLattice) Y :=
+      ⟨fun gamma ↦ (hdeck gamma).continuous⟩
+    letI : ChartedSpace H
+      (MulAction.orbitRel.Quotient (Multiplicative ParameterLattice) Y) :=
+      hf.isCoveringMap.isLocalHomeomorph.chartedSpace hf.surjective
+    letI : IsManifold I ω
+      (MulAction.orbitRel.Quotient (Multiplicative ParameterLattice) Y) :=
+      quotient_isManifold I hf hdeck
+    IsLocalDiffeomorph I I ω
+      (Quotient.mk (MulAction.orbitRel (Multiplicative ParameterLattice) Y)) := by
+  let _ := D.psiAction
+  let _ : ContinuousConstSMul (Multiplicative ParameterLattice) Y :=
+    ⟨by
+      intro gamma
+      change Continuous (D.psiMap (Multiplicative.toAdd gamma))
+      exact (hholomorphic _).continuous⟩
+  let hf := quotient_isQuotientCoveringMap D
+    (fun lambda ↦ (hholomorphic lambda).continuous) hcompact
+  let hdeck : ∀ gamma : Multiplicative ParameterLattice,
+      ContMDiff I I ω fun y : Y ↦ gamma • y := fun gamma ↦ by
+    change ContMDiff I I ω (D.psiMap (Multiplicative.toAdd gamma))
+    exact hholomorphic _
+  let _ : ChartedSpace H
+      (MulAction.orbitRel.Quotient (Multiplicative ParameterLattice) Y) :=
+    hf.isCoveringMap.isLocalHomeomorph.chartedSpace hf.surjective
+  let _ : IsManifold I ω
+      (MulAction.orbitRel.Quotient (Multiplicative ParameterLattice) Y) :=
+    quotient_isManifold I hf hdeck
+  exact quotient_projection_isLocalDiffeomorph I hf hdeck
 
 /-- A local homeomorphism between charted spaces is a local diffeomorphism at regularity zero.
 This is the strongest implication available without smooth compatibility of the target atlas. -/
