@@ -16,6 +16,7 @@ public import SphereSixComplex.Geometry.EllipticFamilySpecialization
 public import SphereSixComplex.Geometry.EllipticFixedPointCriterion
 public import SphereSixComplex.Geometry.EllipticLocalCoordinates
 public import SphereSixComplex.Geometry.EllipticLocalTrivialization
+public import SphereSixComplex.Geometry.EllipticWholeFiberCompactCover
 public import SphereSixComplex.Geometry.EllipticWholeFiberTrivialization
 public import SphereSixComplex.Geometry.FamilyEquivariance
 public import SphereSixComplex.Geometry.FuchsianRegularTorusFamily
@@ -37,6 +38,7 @@ public import SphereSixComplex.Periods.EstablishedModularUniformization
 public import SphereSixComplex.Periods.EstablishedProjectiveLineCohomology
 public import SphereSixComplex.Periods.FuchsianCompactCore
 public import SphereSixComplex.Periods.FuchsianModularParameterExistence
+public import SphereSixComplex.Periods.FuchsianMuTorsor
 public import SphereSixComplex.Periods.FuchsianUniformizationBridge
 public import SphereSixComplex.Periods.Invariant
 public import SphereSixComplex.Periods.LocalOrbifoldCompatibility

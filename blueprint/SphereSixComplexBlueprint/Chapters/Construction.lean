@@ -16,6 +16,7 @@ import SphereSixComplex.Geometry.EllipticFamilySpecialization
 import SphereSixComplex.Geometry.EllipticFixedPointCriterion
 import SphereSixComplex.Geometry.EllipticLocalCoordinates
 import SphereSixComplex.Geometry.EllipticLocalTrivialization
+import SphereSixComplex.Geometry.EllipticWholeFiberCompactCover
 import SphereSixComplex.Geometry.EllipticWholeFiberTrivialization
 import SphereSixComplex.Geometry.FamilyEquivariance
 import SphereSixComplex.Geometry.FuchsianRegularTorusFamily
@@ -37,6 +38,7 @@ import SphereSixComplex.Periods.EstablishedModularUniformization
 import SphereSixComplex.Periods.EstablishedProjectiveLineCohomology
 import SphereSixComplex.Periods.FuchsianCompactCore
 import SphereSixComplex.Periods.FuchsianModularParameterExistence
+import SphereSixComplex.Periods.FuchsianMuTorsor
 import SphereSixComplex.Periods.FuchsianUniformizationBridge
 import SphereSixComplex.Periods.Invariant
 import SphereSixComplex.Periods.LocalOrbifoldCompatibility
@@ -279,6 +281,13 @@ external inputs. The remaining paper-specific task is to descend the $`\mu`- and
 to these exact overlap cocycles.
 :::
 
+:::theorem "fuchsian-mu-torsor-descent" (parent := "projective-line-cech-splitting") (lean := "SphereSixComplex.Periods.MuTorsorCechLocalData, SphereSixComplex.Periods.exists_compatibleAdjustedMuSections, SphereSixComplex.Periods.gluedAdjustedMu_holomorphic, SphereSixComplex.Periods.gluedAdjustedMu_transform_one, SphereSixComplex.Periods.gluedAdjustedMu_transform_two, SphereSixComplex.Periods.gluedAdjustedMu_cusp_bounded, SphereSixComplex.Periods.exists_globalFuchsianMu")
+Exact local $`\mathcal O(-1)` torsor data on two invariant quotient charts glues to a global
+holomorphic $`\mu` with both affine generator laws and the required cusp bound. The remaining
+paper-specific input is the construction of that local quotient-chart data and its infinity-frame
+estimate; the global Čech correction and gluing are complete.
+:::
+
 :::theorem "torus-family" (parent := "construction_spine") (priority := "high")
 The period matrix built from $`\tau,\mu,\beta` defines a proper holomorphic family of compact complex
 two-tori over the thrice-punctured sphere.
@@ -372,15 +381,15 @@ data then gives the free logarithmic-transform quotient manifolds.
 :::theorem "elliptic-local-trivialization" (parent := "elliptic-local-coordinates") (lean := "SphereSixComplex.Geometry.EllipticLocalTrivialization.cayleyDiffeomorph, SphereSixComplex.Geometry.EllipticLocalTrivialization.orderThreeCoverDiffeomorph, SphereSixComplex.Geometry.EllipticLocalTrivialization.orderFourCoverDiffeomorph, SphereSixComplex.Geometry.EllipticLocalTrivialization.orderThreeFamilyCayleyLocalDiffeomorph, SphereSixComplex.Geometry.EllipticLocalTrivialization.orderFourFamilyCayleyLocalDiffeomorph, SphereSixComplex.Geometry.EllipticLocalTrivialization.orderThreeChartDeckEquiv_pow, SphereSixComplex.Geometry.EllipticLocalTrivialization.orderFourChartDeckEquiv_pow, SphereSixComplex.Geometry.EllipticLocalTrivialization.orderThreeFamilyParam_generator_equivariant, SphereSixComplex.Geometry.EllipticLocalTrivialization.orderFourFamilyParam_generator_equivariant")
 The Cayley coordinate and the locally biholomorphic varying-lattice quotient give honest
 pointwise complex charts near both elliptic fibres, with exact cyclic generator formulas and
-descent to the family quotient. Extending these compatible pointwise charts to one equivariant
-whole-fibre product neighborhood is the remaining local filling bridge.
+descent to the family quotient. Compactness gives finite chart covers of the central fibres, but
+the filling must retain the varying lattice rather than replace it by a fixed torus.
 :::
 
-:::definition "elliptic-whole-fibre-compatibility" (parent := "elliptic-local-trivialization") (lean := "SphereSixComplex.Geometry.EllipticWholeFiberTrivialization.OrderThreeWholeFiberCompatibility, SphereSixComplex.Geometry.EllipticWholeFiberTrivialization.OrderFourWholeFiberCompatibility, SphereSixComplex.Geometry.EllipticWholeFiberTrivialization.CompatiblePartialDiffeomorphs.toPartialDiffeomorph, SphereSixComplex.Geometry.EllipticWholeFiberTrivialization.OrderThreeWholeFiberCompatibility.trivialization_equivariant, SphereSixComplex.Geometry.EllipticWholeFiberTrivialization.OrderFourWholeFiberCompatibility.trivialization_equivariant, SphereSixComplex.Geometry.EllipticWholeFiberTrivialization.OrderThreeWholeFiberCompatibility.collar, SphereSixComplex.Geometry.EllipticWholeFiberTrivialization.OrderFourWholeFiberCompatibility.collar")
-Compatible pointwise charts glue to an equivariant analytic whole-fibre trivialization and its
-punctured filling collar. The exact remaining input is an inhabitant of the order-three and
-order-four compatibility structures, asserting compact-uniform chart agreement and cyclic
-equivariance across each entire torus fibre.
+:::definition "elliptic-whole-fibre-compatibility" (parent := "elliptic-local-trivialization") (lean := "SphereSixComplex.Geometry.EllipticWholeFiberCompactCover.familyFiber_isCompact, SphereSixComplex.Geometry.EllipticWholeFiberCompactCover.exists_finite_orderThree_local_chart_cover, SphereSixComplex.Geometry.EllipticWholeFiberCompactCover.exists_finite_orderFour_local_chart_cover, SphereSixComplex.Geometry.EllipticWholeFiberCompactCover.orderThree_pointwise_maps_agree_on_central_fiber, SphereSixComplex.Geometry.EllipticWholeFiberCompactCover.orderFour_pointwise_maps_agree_on_central_fiber, SphereSixComplex.Geometry.EllipticWholeFiberCompactCover.orderThree_overlap_agreement_exact_obstruction, SphereSixComplex.Geometry.EllipticWholeFiberCompactCover.orderFour_overlap_agreement_exact_obstruction")
+The central torus fibres are compact and admit finite covers by the pointwise charts. Their maps
+agree on the central fibre, while agreement on a neighborhood is equivalent to the varying deck
+period lying in the fixed central lattice. Thus a fixed-torus product is only a conditional
+isotrivial model; the paper's required construction is the direct varying-family affine quotient.
 :::
 
 :::theorem "elliptic-family-specialization" (parent := "elliptic-local-trivialization") (lean := "SphereSixComplex.Geometry.EllipticFamilySpecialization.generatorOneAddEquiv_mk, SphereSixComplex.Geometry.EllipticFamilySpecialization.generatorTwoAddEquiv_mk, SphereSixComplex.Geometry.EllipticFamilySpecialization.orderThreeTranslation_torsion, SphereSixComplex.Geometry.EllipticFamilySpecialization.orderFourTranslation_torsion, SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderThreeFiberFixedPointCriterion, SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderFourFiberFixedPointCriterion, SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderThreeFiberData, SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderFourFiberData, SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderThreeAction_free, SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderFourAction_free")
