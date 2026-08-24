@@ -1,6 +1,7 @@
 module
 
 public import SphereSixComplex.Geometry.EllipticFamilySpecialization
+public import SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
 public import SphereSixComplex.Topology.SectionSevenLocalEulerModels
 
 /-!
@@ -54,6 +55,7 @@ public structure AdditiveFourTorusBundleRealization
     (X : Type) [TopologicalSpace X] where
   toFiniteCWBundleModelSix : FiniteCWBundleModelSix X
   fiberParameter : SphereSixComplex.Periods.Parameters
+  fiberFullRank : SphereSixComplex.Geometry.ComplexTorus.FullRank fiberParameter
   fiberHomeomorph :
     let _ := toFiniteCWBundleModelSix.fiberTopology
     toFiniteCWBundleModelSix.Fiber ≃ₜ
@@ -98,24 +100,21 @@ namespace Geometry.PaperAnalyticData
 
 variable (A : PaperAnalyticData)
 
-/-- The actual central family has the required four-torus bundle model, using only the standard
-CW model of its identified additive torus fibre. -/
-public noncomputable def centralFourTorusBundleModel
-    (torusCells : ∀ p : SphereSixComplex.Periods.Parameters,
-      FourTorusCellModel
-        (SphereSixComplex.Geometry.EllipticFamilySpecialization.AdditiveTorus p)) :
+/-- The actual central family has the required four-torus bundle model. -/
+public noncomputable def centralFourTorusBundleModel :
     FourTorusBundleModel A.openEmbeddingStarData.central :=
   let R := EstablishedTorusBundleTopology.centralFamilyBundleRealization A
-  R.toFourTorusBundleModel (torusCells R.fiberParameter)
+  R.toFourTorusBundleModel
+    (EstablishedFiniteCWTopology.additiveTorusFourTorusCellModel
+      R.fiberParameter R.fiberFullRank)
 
 /-- Every actual cusp or elliptic collar source has the required four-torus bundle model. -/
 public noncomputable def collarFourTorusBundleModel
-    (torusCells : ∀ p : SphereSixComplex.Periods.Parameters,
-      FourTorusCellModel
-        (SphereSixComplex.Geometry.EllipticFamilySpecialization.AdditiveTorus p))
     (i : Fin 3) : FourTorusBundleModel (A.openEmbeddingStarData.collarSource i) :=
   let R := EstablishedTorusBundleTopology.collarBundleRealization A i
-  R.toFourTorusBundleModel (torusCells R.fiberParameter)
+  R.toFourTorusBundleModel
+    (EstablishedFiniteCWTopology.additiveTorusFourTorusCellModel
+      R.fiberParameter R.fiberFullRank)
 
 end Geometry.PaperAnalyticData
 
