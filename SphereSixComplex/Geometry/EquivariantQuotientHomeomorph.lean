@@ -93,10 +93,18 @@ public theorem restrictedActionMap_mul
   apply Subtype.ext
   simp [restrictedActionMap, actionMap, mul_smul]
 
-/-- The ambient orbit relation restricted to an invariant carrier. -/
+@[expose, instance_reducible]
+public def restrictedMulAction (A : MulAction G X) (S : InvariantOpenCarrier A) :
+    MulAction G S.carrier where
+  smul := restrictedActionMap S
+  one_smul := restrictedActionMap_one S
+  mul_smul := restrictedActionMap_mul S
+
+/-- The orbit relation of the action restricted to an invariant carrier. -/
 @[expose] public def restrictedOrbitRel
     (A : MulAction G X) (S : InvariantOpenCarrier A) : Setoid S.carrier :=
-  (orbitRelOf A).comap Subtype.val
+  letI := restrictedMulAction A S
+  MulAction.orbitRel G S.carrier
 
 /-- An equivariant homeomorphism for two explicitly supplied actions.  This version permits the
 source and target actions to live on the same ambient type. -/
@@ -137,22 +145,14 @@ ambient point type. -/
     Quotient (restrictedOrbitRel AX S) ≃ₜ
       Quotient (restrictedOrbitRel AY T) :=
   Homeomorph.Quotient.congr e.toHomeomorph fun x y => by
-    change (∃ g : G, actionMap AX g y = x) ↔
-      ∃ g : G, actionMap AY g (e.toHomeomorph y) = e.toHomeomorph x
+    change (∃ g : G, restrictedActionMap S g y = x) ↔
+      ∃ g : G, restrictedActionMap T g (e.toHomeomorph y) = e.toHomeomorph x
     constructor
     · rintro ⟨g, hg⟩
       refine ⟨g, ?_⟩
-      have hxy :
-          restrictedActionMap S g y = x :=
-        Subtype.ext hg
-      exact congrArg Subtype.val
-        ((e.equivariant g y).symm.trans (congrArg e.toHomeomorph hxy))
+      exact (e.equivariant g y).symm.trans (congrArg e.toHomeomorph hg)
     · rintro ⟨g, hg⟩
-      have hinj :
-          restrictedActionMap S g y = x :=
-        e.toHomeomorph.injective
-          ((e.equivariant g y).trans (Subtype.ext hg))
-      exact ⟨g, congrArg Subtype.val hinj⟩
+      exact ⟨g, e.toHomeomorph.injective ((e.equivariant g y).trans hg)⟩
 
 omit [MulAction G X] [MulAction G Y] in
 @[simp]

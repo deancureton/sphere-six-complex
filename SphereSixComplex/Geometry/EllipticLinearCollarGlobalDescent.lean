@@ -606,23 +606,23 @@ family quotient. -/
       (orderThreeLinearPuncturedCarrier F hsource r)) → PuncturedGlobalFamily F := by
   let _ := orderThreeLinearFamilyAction F
   let _ := regularFamilyDeckAction F
-  exact Quotient.map (orderThreeCollarToRegular F hproper D) fun q x hqx => by
-    change MulAction.orbitRel (FiniteCyclic 3) (TotalSpace (parameterMap F))
-      (q : TotalSpace (parameterMap F)) x at hqx
-    change MulAction.orbitRel Delta _
-      (orderThreeCollarToRegular F hproper D q)
-      (orderThreeCollarToRegular F hproper D x)
-    rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff] at hqx ⊢
-    obtain ⟨a, ha⟩ := hqx
-    refine ⟨Monoid.Coprod.inl a, ?_⟩
-    change regularFamilyDeckMap F (Monoid.Coprod.inl a)
-      (orderThreeCollarToRegular F hproper D x) =
-        orderThreeCollarToRegular F hproper D q
-    have hsub : restrictedActionMap (orderThreeLinearPuncturedCarrier F hsource r) a x = q := by
-      apply Subtype.ext
-      exact ha
-    exact (orderThreeCollarToRegular_action F hproper hsource D a x).symm.trans
-      (congrArg (orderThreeCollarToRegular F hproper D) hsub)
+  refine Quotient.map (orderThreeCollarToRegular F hproper D) ?_
+  intro q x hqx
+  let _ := restrictedMulAction (orderThreeLinearFamilyAction F)
+    (orderThreeLinearPuncturedCarrier F hsource r)
+  change MulAction.orbitRel (FiniteCyclic 3) _ q x at hqx
+  rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff] at hqx
+  change MulAction.orbitRel Delta _
+    (orderThreeCollarToRegular F hproper D q)
+    (orderThreeCollarToRegular F hproper D x)
+  rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff]
+  obtain ⟨a, ha⟩ := hqx
+  refine ⟨Monoid.Coprod.inl a, ?_⟩
+  change regularFamilyDeckMap F (Monoid.Coprod.inl a)
+    (orderThreeCollarToRegular F hproper D x) =
+      orderThreeCollarToRegular F hproper D q
+  exact (orderThreeCollarToRegular_action F hproper hsource D a x).symm.trans
+    (congrArg (orderThreeCollarToRegular F hproper D) ha)
 
 /-- The restricted order-four linear collar maps canonically to the paper's punctured global
 family quotient. -/
@@ -634,23 +634,43 @@ family quotient. -/
       (orderFourLinearPuncturedCarrier F hsource r)) → PuncturedGlobalFamily F := by
   let _ := orderFourLinearFamilyAction F
   let _ := regularFamilyDeckAction F
-  exact Quotient.map (orderFourCollarToRegular F hproper D) fun q x hqx => by
-    change MulAction.orbitRel (FiniteCyclic 4) (TotalSpace (parameterMap F))
-      (q : TotalSpace (parameterMap F)) x at hqx
-    change MulAction.orbitRel Delta _
-      (orderFourCollarToRegular F hproper D q)
-      (orderFourCollarToRegular F hproper D x)
-    rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff] at hqx ⊢
-    obtain ⟨a, ha⟩ := hqx
-    refine ⟨Monoid.Coprod.inr a, ?_⟩
-    change regularFamilyDeckMap F (Monoid.Coprod.inr a)
-      (orderFourCollarToRegular F hproper D x) =
-        orderFourCollarToRegular F hproper D q
-    have hsub : restrictedActionMap (orderFourLinearPuncturedCarrier F hsource r) a x = q := by
-      apply Subtype.ext
-      exact ha
-    exact (orderFourCollarToRegular_action F hproper hsource D a x).symm.trans
-      (congrArg (orderFourCollarToRegular F hproper D) hsub)
+  refine Quotient.map (orderFourCollarToRegular F hproper D) ?_
+  intro q x hqx
+  let _ := restrictedMulAction (orderFourLinearFamilyAction F)
+    (orderFourLinearPuncturedCarrier F hsource r)
+  change MulAction.orbitRel (FiniteCyclic 4) _ q x at hqx
+  rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff] at hqx
+  change MulAction.orbitRel Delta _
+    (orderFourCollarToRegular F hproper D q)
+    (orderFourCollarToRegular F hproper D x)
+  rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff]
+  obtain ⟨a, ha⟩ := hqx
+  refine ⟨Monoid.Coprod.inr a, ?_⟩
+  change regularFamilyDeckMap F (Monoid.Coprod.inr a)
+    (orderFourCollarToRegular F hproper D x) =
+      orderFourCollarToRegular F hproper D q
+  exact (orderFourCollarToRegular_action F hproper hsource D a x).symm.trans
+    (congrArg (orderFourCollarToRegular F hproper D) ha)
+
+@[simp]
+public theorem orderThreeLinearCollarToPuncturedGlobalFamily_mk
+    (hproper : SourceActionProperlyDiscontinuous (U := U))
+    (hsource : U.sourceAction = fuchsianSourceAction)
+    (D : OrderThreeLinearCollarSourceData (U := U) r)
+    (q : (orderThreeLinearPuncturedCarrier F hsource r).carrier) :
+    orderThreeLinearCollarToPuncturedGlobalFamily F hproper hsource D (Quotient.mk _ q) =
+      Quotient.mk _ (orderThreeCollarToRegular F hproper D q) :=
+  rfl
+
+@[simp]
+public theorem orderFourLinearCollarToPuncturedGlobalFamily_mk
+    (hproper : SourceActionProperlyDiscontinuous (U := U))
+    (hsource : U.sourceAction = fuchsianSourceAction)
+    (D : OrderFourLinearCollarSourceData (U := U) r)
+    (q : (orderFourLinearPuncturedCarrier F hsource r).carrier) :
+    orderFourLinearCollarToPuncturedGlobalFamily F hproper hsource D (Quotient.mk _ q) =
+      Quotient.mk _ (orderFourCollarToRegular F hproper D q) :=
+  rfl
 
 public theorem orderThreeLinearCollarToPuncturedGlobalFamily_injective
     (hproper : SourceActionProperlyDiscontinuous (U := U))
@@ -664,8 +684,8 @@ public theorem orderThreeLinearCollarToPuncturedGlobalFamily_injective
     induction R using Quotient.inductionOn with
     | _ x =>
       let _ := regularFamilyDeckAction F
-      change Quotient.mk _ (orderThreeCollarToRegular F hproper D q) =
-        Quotient.mk _ (orderThreeCollarToRegular F hproper D x) at hQR
+      rw [orderThreeLinearCollarToPuncturedGlobalFamily_mk,
+        orderThreeLinearCollarToPuncturedGlobalFamily_mk] at hQR
       rw [Quotient.eq, MulAction.orbitRel_apply, MulAction.mem_orbit_iff] at hQR
       obtain ⟨g, hg⟩ := hQR
       change regularFamilyDeckMap F g (orderThreeCollarToRegular F hproper D x) =
@@ -690,9 +710,12 @@ public theorem orderThreeLinearCollarToPuncturedGlobalFamily_injective
         (by simpa only [orderThreePuncturedFamilyCollar.eq_def, Set.mem_ofPred_eq,
           orderThreeFamilyRadius.eq_def] using x.property.2) g hbase
       apply Quotient.sound
-      change MulAction.orbitRel (FiniteCyclic 3) (TotalSpace (parameterMap F)) q x
+      let _ := restrictedMulAction (orderThreeLinearFamilyAction F)
+        (orderThreeLinearPuncturedCarrier F hsource r)
+      change MulAction.orbitRel (FiniteCyclic 3) _ q x
       rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff]
       refine ⟨a, ?_⟩
+      apply Subtype.ext
       change actionMap (orderThreeLinearFamilyAction F) a x = q
       rw [orderThreeLinear_actionMap, ← ha]
       exact htotal
@@ -709,8 +732,8 @@ public theorem orderFourLinearCollarToPuncturedGlobalFamily_injective
     induction R using Quotient.inductionOn with
     | _ x =>
       let _ := regularFamilyDeckAction F
-      change Quotient.mk _ (orderFourCollarToRegular F hproper D q) =
-        Quotient.mk _ (orderFourCollarToRegular F hproper D x) at hQR
+      rw [orderFourLinearCollarToPuncturedGlobalFamily_mk,
+        orderFourLinearCollarToPuncturedGlobalFamily_mk] at hQR
       rw [Quotient.eq, MulAction.orbitRel_apply, MulAction.mem_orbit_iff] at hQR
       obtain ⟨g, hg⟩ := hQR
       change regularFamilyDeckMap F g (orderFourCollarToRegular F hproper D x) =
@@ -735,9 +758,12 @@ public theorem orderFourLinearCollarToPuncturedGlobalFamily_injective
         (by simpa only [orderFourPuncturedFamilyCollar.eq_def, Set.mem_ofPred_eq,
           orderFourFamilyRadius.eq_def] using x.property.2) g hbase
       apply Quotient.sound
-      change MulAction.orbitRel (FiniteCyclic 4) (TotalSpace (parameterMap F)) q x
+      let _ := restrictedMulAction (orderFourLinearFamilyAction F)
+        (orderFourLinearPuncturedCarrier F hsource r)
+      change MulAction.orbitRel (FiniteCyclic 4) _ q x
       rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff]
       refine ⟨a, ?_⟩
+      apply Subtype.ext
       change actionMap (orderFourLinearFamilyAction F) a x = q
       rw [orderFourLinear_actionMap, ← ha]
       exact htotal
@@ -786,7 +812,7 @@ public theorem orderThreeLinearCollarToPuncturedGlobalFamily_isOpenMap
       e.isOpenMap)
   convert hopen using 1
   funext q
-  rfl
+  exact orderThreeLinearCollarToPuncturedGlobalFamily_mk F hproper hsource D q
 
 public theorem orderFourLinearCollarToPuncturedGlobalFamily_isOpenMap
     (hproper : SourceActionProperlyDiscontinuous (U := U))
@@ -814,7 +840,7 @@ public theorem orderFourLinearCollarToPuncturedGlobalFamily_isOpenMap
       e.isOpenMap)
   convert hopen using 1
   funext q
-  rfl
+  exact orderFourLinearCollarToPuncturedGlobalFamily_mk F hproper hsource D q
 
 public theorem orderThreeLinearCollarToPuncturedGlobalFamily_isOpenEmbedding
     (hproper : SourceActionProperlyDiscontinuous (U := U))

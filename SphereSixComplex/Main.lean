@@ -17,6 +17,7 @@ public import SphereSixComplex.Geometry.CuspPhaseEstimates
 public import SphereSixComplex.Geometry.CuspToricPhaseAction
 public import SphereSixComplex.Geometry.CyclicCuspQuotient
 public import SphereSixComplex.Geometry.EllipticActualActionTopology
+public import SphereSixComplex.Geometry.EllipticAnalyticCollarDescent
 public import SphereSixComplex.Geometry.EllipticAffineGlobalSeparation
 public import SphereSixComplex.Geometry.EllipticCayleyHomeomorph
 public import SphereSixComplex.Geometry.EllipticComplexFilling
@@ -45,6 +46,7 @@ public import SphereSixComplex.Geometry.GlobalDeckSmoothness
 public import SphereSixComplex.Geometry.GlobalDeckQuotient
 public import SphereSixComplex.Geometry.OpenEmbeddingStarGluing
 public import SphereSixComplex.Geometry.PaperAnalyticData
+public import SphereSixComplex.Geometry.PaperAnalyticFillingPieces
 public import SphereSixComplex.Geometry.PaperCentralFamilyTopology
 public import SphereSixComplex.Geometry.PaperAssembly
 public import SphereSixComplex.Geometry.ProperlyDiscontinuousSlice
