@@ -2,6 +2,8 @@ module
 
 public import SphereSixComplex.Geometry.CuspFilling
 public import SphereSixComplex.ComplexStructure
+import Mathlib.Topology.Algebra.IsOpenUnits
+import Mathlib.Geometry.Manifold.Algebra.Structures
 
 /-!
 # The standard infinite `A₂` toric model
@@ -246,6 +248,126 @@ public instance (M : Model) :
 public instance (M : Model) : T2Space M.Carrier := M.t2
 public instance (M : Model) : SecondCountableTopology M.Carrier := M.secondCountable
 public instance (M : Model) : ConnectedSpace M.Carrier := M.connected
+
+/-- The canonical coordinate map from the dense algebraic torus to the open subset
+`(ℂˣ)³ ⊆ ℂ³`. -/
+public def denseTorusComplexCoordinates (x : DenseTorus) : ComplexModel :=
+  WithLp.toLp 2 (fun i ↦ (x i : ℂ))
+
+public theorem denseTorusComplexCoordinates_isOpenEmbedding :
+    Topology.IsOpenEmbedding denseTorusComplexCoordinates := by
+  have hpi : Topology.IsOpenEmbedding
+      (Pi.map fun _ : Fin 3 ↦ (Units.val : ℂˣ → ℂ)) :=
+    Topology.IsOpenEmbedding.piMap fun _ ↦ IsOpenUnits.isOpenEmbedding_unitsVal
+  exact (PiLp.homeomorph 2 (fun _ : Fin 3 ↦ ℂ)).symm.isOpenEmbedding.comp hpi
+
+/-- The complex atlas on the dense algebraic torus induced by its standard open embedding
+in `ℂ³`. -/
+@[instance_reducible]
+public noncomputable def denseTorusCharts : ChartedSpace ComplexModel DenseTorus :=
+  denseTorusComplexCoordinates_isOpenEmbedding.singletonChartedSpace
+
+public theorem denseTorus_isManifold :
+    letI := denseTorusCharts
+    IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞ DenseTorus :=
+  denseTorusComplexCoordinates_isOpenEmbedding.isManifold_singleton
+
+public theorem denseTorusComplexCoordinates_contMDiff :
+    letI := denseTorusCharts
+    ContMDiff (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ComplexModel) ∞ denseTorusComplexCoordinates :=
+  contMDiff_isOpenEmbedding denseTorusComplexCoordinates_isOpenEmbedding
+
+private theorem denseTorus_coordinate_contMDiff (i : Fin 3) :
+    letI := denseTorusCharts
+    ContMDiff (modelWithCornersSelf ℂ ComplexModel) (modelWithCornersSelf ℂ ℂ) ∞
+      (fun x : DenseTorus ↦ (x i : ℂ)) := by
+  let _ := denseTorusCharts
+  convert (EuclideanSpace.proj i).contMDiff.comp denseTorusComplexCoordinates_contMDiff using 1
+  funext x
+  rfl
+
+private theorem denseTorus_coordinate_zpow_contMDiff (i : Fin 3) (m : ℤ) :
+    letI := denseTorusCharts
+    ContMDiff (modelWithCornersSelf ℂ ComplexModel) (modelWithCornersSelf ℂ ℂ) ∞
+      (fun x : DenseTorus ↦ (x i : ℂ) ^ m) := by
+  let _ := denseTorusCharts
+  intro x
+  have hz : AnalyticAt ℂ (fun z : ℂ ↦ z ^ m) (x i : ℂ) :=
+    analyticAt_id.zpow (Units.ne_zero (x i))
+  exact hz.contDiffAt.contMDiffAt.comp x
+    ((denseTorus_coordinate_contMDiff i).contMDiffAt)
+
+/-- Every integral character of the dense algebraic torus is holomorphic. -/
+public theorem evaluateCharacter_contMDiff (m : FanLattice) :
+    letI := denseTorusCharts
+    ContMDiff (modelWithCornersSelf ℂ ComplexModel) (modelWithCornersSelf ℂ ℂ) ∞
+      (fun x : DenseTorus ↦ (evaluateCharacter m x : ℂ)) := by
+  let _ := denseTorusCharts
+  convert contMDiff_finsetProd (t := Finset.univ)
+    (f := fun i (x : DenseTorus) ↦ (x i : ℂ) ^ m i)
+    (fun i _ ↦ denseTorus_coordinate_zpow_contMDiff i (m i)) using 1
+  funext x
+  simp [evaluateCharacter]
+
+/-- The standard character formulas prove holomorphicity of the dense-torus inclusion in every
+affine toric chart. -/
+public theorem toricChart_comp_torusEmbedding_contMDiff
+    (M : Model) (upper : Bool) (v : ToricLattice) :
+    letI := denseTorusCharts
+    letI := M.topology
+    letI := M.charts
+    ContMDiff (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ComplexModel) ∞
+      (fun x : DenseTorus ↦ M.toricChart upper v (M.torusEmbedding x)) := by
+  let _ := denseTorusCharts
+  let _ := M.topology
+  let _ := M.charts
+  have hpi : ContMDiff (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ (Fin 3 → ℂ)) ∞
+      (fun x : DenseTorus ↦ fun i ↦
+        (evaluateCharacter (a2DualCharacter upper v i) x : ℂ)) :=
+    contMDiff_pi_space.mpr fun i ↦ evaluateCharacter_contMDiff
+      (a2DualCharacter upper v i)
+  have hmodel := (EuclideanSpace.equiv (Fin 3) ℂ).symm.contDiff.contMDiff.comp hpi
+  have heq : (EuclideanSpace.equiv (Fin 3) ℂ).symm ∘
+      (fun x : DenseTorus ↦ fun i ↦
+        (evaluateCharacter (a2DualCharacter upper v i) x : ℂ)) =
+      fun x : DenseTorus ↦ M.toricChart upper v (M.torusEmbedding x) := by
+    funext x
+    apply (EuclideanSpace.equiv (Fin 3) ℂ).injective
+    funext i
+    simpa using (M.toricChart_torus_character upper v x i).symm
+  rw [heq] at hmodel
+  exact hmodel
+
+/-- The standard character formulas imply that the dense-torus inclusion is holomorphic; this
+is derived from the toric chart interface and is not an additional field of `Model`. -/
+public theorem torusEmbedding_holomorphic (M : Model) :
+    letI := denseTorusCharts
+    letI := M.topology
+    letI := M.charts
+    ContMDiff (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ComplexModel) ∞ M.torusEmbedding := by
+  let _ := denseTorusCharts
+  let _ := M.topology
+  let _ := M.charts
+  intro x
+  let e := M.toricChart false 0
+  have hx : M.torusEmbedding x ∈ e.source := M.torus_mem_toricChart false 0 x
+  have hcomp : ContMDiffAt (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ComplexModel) ∞
+      (fun y : DenseTorus ↦ e (M.torusEmbedding y)) x :=
+    (toricChart_comp_torusEmbedding_contMDiff M false 0).contMDiffAt
+  have htarget : e (M.torusEmbedding x) ∈ e.target := e.map_source hx
+  have hinv : ContMDiffAt (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ComplexModel) ∞
+      e.invFun (e (M.torusEmbedding x)) :=
+    e.contMDiffOn_invFun.contMDiffAt (e.open_target.mem_nhds htarget)
+  have h := hinv.comp x hcomp
+  convert h using 1
+  funext y
+  exact (e.left_inv (M.torus_mem_toricChart false 0 y)).symm
 
 end Model
 
