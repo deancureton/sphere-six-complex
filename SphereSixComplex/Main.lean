@@ -12,6 +12,7 @@ public import SphereSixComplex.Geometry.CuspCombinatorics
 public import SphereSixComplex.Geometry.CuspFilling
 public import SphereSixComplex.Geometry.CuspLocalPhaseAction
 public import SphereSixComplex.Geometry.CuspPeriodExpansion
+public import SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 public import SphereSixComplex.Geometry.CuspPhaseEstimates
 public import SphereSixComplex.Geometry.CuspToricPhaseAction
 public import SphereSixComplex.Geometry.CyclicCuspQuotient
