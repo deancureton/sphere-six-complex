@@ -37,6 +37,7 @@ import SphereSixComplex.Periods.Functions
 import SphereSixComplex.Periods.EstablishedModularUniformization
 import SphereSixComplex.Periods.EstablishedProjectiveLineCohomology
 import SphereSixComplex.Periods.FuchsianCompactCore
+import SphereSixComplex.Periods.FuchsianBetaTorsor
 import SphereSixComplex.Periods.FuchsianModularParameterExistence
 import SphereSixComplex.Periods.FuchsianMuTorsor
 import SphereSixComplex.Periods.FuchsianUniformizationBridge
@@ -74,6 +75,7 @@ import SphereSixComplex.Topology.SingularExcision
 import SphereSixComplex.Topology.SingularBarycentricAllDegrees
 import SphereSixComplex.Topology.SingularBarycentricOuterFaces
 import SphereSixComplex.Topology.SingularBarycentricHomotopy
+import SphereSixComplex.Topology.SingularStandardSimplexCone
 import SphereSixComplex.Topology.SingularBarycentricChains
 import SphereSixComplex.Topology.SingularSubdivision
 import SphereSixComplex.Topology.TwistObstruction
@@ -286,6 +288,13 @@ Exact local $`\mathcal O(-1)` torsor data on two invariant quotient charts glues
 holomorphic $`\mu` with both affine generator laws and the required cusp bound. The remaining
 paper-specific input is the construction of that local quotient-chart data and its infinity-frame
 estimate; the global Čech correction and gluing are complete.
+:::
+
+:::theorem "fuchsian-beta-torsor-descent" (parent := "fuchsian-mu-torsor-descent") (lean := "SphereSixComplex.Periods.BetaTorsorCechLocalData, SphereSixComplex.Periods.exists_compatibleAdjustedBetaSections, SphereSixComplex.Periods.gluedAdjustedBeta_holomorphic, SphereSixComplex.Periods.gluedAdjustedBeta_transform_one, SphereSixComplex.Periods.gluedAdjustedBeta_transform_two, SphereSixComplex.Periods.gluedAdjustedBeta_add_tau_cusp_bounded, SphereSixComplex.Periods.exists_globalFuchsianBeta")
+For a fixed global $`\mu`, exact local $`\mathcal O` torsor data likewise glues to a global
+holomorphic $`\beta` with both affine generator laws and the normalized $`\beta+\tau` cusp bound.
+The remaining paper-specific input is the construction of the two local beta sections, their
+overlap cocycle, and their local cusp estimates.
 :::
 
 :::theorem "torus-family" (parent := "construction_spine") (priority := "high")
@@ -571,15 +580,16 @@ collapsed basepoint tracked through a reduced-chain isomorphism. The canonical r
 is explicit; proving it is a homology isomorphism is precisely the remaining excision step.
 :::
 
-:::theorem "singular-small-chain-excision" (parent := "disk-boundary-collapse") (lean := "SphereSixComplex.CoverSmallChainRetractionData.approximation, SphereSixComplex.coverSmallIntegralSingularHomologyIso, SphereSixComplex.diskSevenExcisionCover_isOpen, SphereSixComplex.diskSevenExcisionCover_iUnion, SphereSixComplex.diskBoundaryToDiskSevenCoverSmallIntegralSingularChains_comp_inclusion, SphereSixComplex.DiskSevenSmallChainApproximation, SphereSixComplex.simplexSubdivisionLastVertex, SphereSixComplex.subdivisionLastVertex, SphereSixComplex.subdivisionLastVertexLiftChainMap_comp_inclusion, SphereSixComplex.barycentricOuterFaceIdentity, SphereSixComplex.barycentricSubdivisionChainMapCanonical, SphereSixComplex.BarycentricLastVertexPrismData, SphereSixComplex.barycentricSubdivisionLastVertexHomotopy")
+:::theorem "singular-small-chain-excision" (parent := "disk-boundary-collapse") (lean := "SphereSixComplex.CoverSmallChainRetractionData.approximation, SphereSixComplex.coverSmallIntegralSingularHomologyIso, SphereSixComplex.diskSevenExcisionCover_isOpen, SphereSixComplex.diskSevenExcisionCover_iUnion, SphereSixComplex.diskBoundaryToDiskSevenCoverSmallIntegralSingularChains_comp_inclusion, SphereSixComplex.DiskSevenSmallChainApproximation, SphereSixComplex.simplexSubdivisionLastVertex, SphereSixComplex.subdivisionLastVertex, SphereSixComplex.subdivisionLastVertexLiftChainMap_comp_inclusion, SphereSixComplex.barycentricOuterFaceIdentity, SphereSixComplex.barycentricSubdivisionChainMapCanonical, SphereSixComplex.standardSimplexZeroConeComponent_boundary_succ, SphereSixComplex.canonicalBarycentricLastVertexPrism_boundary, SphereSixComplex.barycentricLastVertexPrismDataCanonical, SphereSixComplex.barycentricSubdivisionLastVertexHomotopyCanonical")
 The cover-small singular subcomplex and its monomorphic inclusion into all singular chains are
 explicit. Retraction data yields a chain-homotopy equivalence and homology isomorphisms. For the
 seven-disk, the boundary factors through the small chains for an explicit open two-set cover. The
 global subdivision last-vertex map, induced chain map, and subcomplex lifts are constructed from
 Mathlib's left-Kan-extension API. Signed maximal-flag chains give the canonical natural barycentric
 subdivision chain map. A universal standard-simplex prism boundary identity now produces the actual
-Mathlib chain homotopy from last-vertex-after-subdivision to the identity. Constructing that prism
-by the classical cone contraction, then proving the Lebesgue-number iteration, remain.
+Mathlib chain homotopy from last-vertex-after-subdivision to the identity. The prism is constructed
+recursively by the classical zero-vertex cone contraction in every degree. Only the
+Lebesgue-number subdivision iteration remains for small-chain excision.
 :::
 
 :::theorem "sphere-stereographic-simple-connectivity" (parent := "standard-six-sphere") (lean := "SphereSixComplex.sixSphere_compl_singleton_simplyConnected, SphereSixComplex.sixSphere_simplyConnected_iff_loops_nullhomotopic")
