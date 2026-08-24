@@ -1426,38 +1426,41 @@ public noncomputable def totalRealizationEquiv
 
 end SectionSevenStarIntersectionChainModels
 
-/-- Chain-level matrix data still needed after the integer matrices in
-`SectionSevenLerayChainModel` have been verified: a basis identification in every total degree and
-the assertion that, in those bases, the actual total differential is the displayed Section 7
-differential. -/
-public structure SectionSevenMatrixChainIdentification
+/-- Exact transferred-complex data connecting the finite Section 7 Leray `d₂` model to the
+ordered Čech total complex.  The maps include normalization away from degenerate ordered tuples
+and the contraction of the complementary summands.  In particular, no degreewise isomorphism
+between the finite model and the unnormalized Čech total is asserted. -/
+public structure SectionSevenTransferredChainContraction
     {A : FourPieceStarGluingData}
     (L : SectionSevenStarIntersectionChainModels A) where
-  degreeIso : ∀ n,
-    (sectionSevenLerayChainModel (-1)).X n ≅ L.localLerayCechTotal.X n
-  differential_comm : ∀ i j, (ComplexShape.down ℕ).Rel i j →
-    (degreeIso i).hom ≫ L.localLerayCechTotal.d i j =
-      (sectionSevenLerayChainModel (-1)).d i j ≫ (degreeIso j).hom
+  /-- Transfer the finite complex, whose differential is the matrix encoded by
+  `sectionSevenLerayBoundary (-1)`, into the full ordered Čech total. -/
+  transfer : sectionSevenLerayChainModel (-1) ⟶ L.localLerayCechTotal
+  /-- Normalize degenerate tuples and project the remaining total complex onto the transferred
+  finite model. -/
+  collapse : L.localLerayCechTotal ⟶ sectionSevenLerayChainModel (-1)
+  /-- The transferred finite model is a homotopy retract of the Čech total. -/
+  homotopyTransferCollapse : Homotopy (transfer ≫ collapse)
+    (𝟙 (sectionSevenLerayChainModel (-1)))
+  /-- Degenerate tuples and the complementary transferred summands form a contractible
+  subcomplex. -/
+  homotopyCollapseTransfer : Homotopy (collapse ≫ transfer)
+    (𝟙 L.localLerayCechTotal)
 
-namespace SectionSevenMatrixChainIdentification
+namespace SectionSevenTransferredChainContraction
 
-/-- The degreewise Section 7 basis identifications and the checked differential matrices form an
-isomorphism of chain complexes. -/
-public noncomputable def chainIso
-    {A : FourPieceStarGluingData} {L : SectionSevenStarIntersectionChainModels A}
-    (h : SectionSevenMatrixChainIdentification L) :
-    sectionSevenLerayChainModel (-1) ≅ L.localLerayCechTotal :=
-  HomologicalComplex.Hom.isoOfComponents h.degreeIso h.differential_comm
-
-/-- The matrix chain isomorphism, regarded as the homotopy equivalence used in the final
-comparison. -/
+/-- Package the explicit normalization and transferred-complex contraction as the homotopy
+equivalence used by the Leray-Čech comparison. -/
 public noncomputable def homotopyEquiv
     {A : FourPieceStarGluingData} {L : SectionSevenStarIntersectionChainModels A}
-    (h : SectionSevenMatrixChainIdentification L) :
-    HomotopyEquiv (sectionSevenLerayChainModel (-1)) L.localLerayCechTotal :=
-  HomotopyEquiv.ofIso h.chainIso
+    (h : SectionSevenTransferredChainContraction L) :
+    HomotopyEquiv (sectionSevenLerayChainModel (-1)) L.localLerayCechTotal where
+  hom := h.transfer
+  inv := h.collapse
+  homotopyHomInvId := h.homotopyTransferCollapse
+  homotopyInvHomId := h.homotopyCollapseTransfer
 
-end SectionSevenMatrixChainIdentification
+end SectionSevenTransferredChainContraction
 
 /-- Degreewise geometric identification of ordered singular intersection chains with the chain
 complex of Mathlib's pullback Čech nerve, including compatibility with every simplicial face and
@@ -1502,27 +1505,28 @@ public noncomputable def homotopyEquiv
 
 end SectionSevenCechNerveChainIdentification
 
-/-- Exact geometric and matrix inputs identifying the paper's Section 7 complex with the
-canonical Leray--Čech total complex of the actual four-piece star cover. -/
+/-- Exact geometric and transferred-complex inputs identifying the paper's Section 7 complex
+with the canonical Leray--Čech total complex of the actual four-piece star cover. -/
 public structure SectionSevenPaperCoverIdentification (A : FourPieceStarGluingData) where
   /-- Explicit chain models and face-compatible local realizations for every nonempty
   intersection of star-cover pieces. -/
   localModels : SectionSevenStarIntersectionChainModels A
   /-- Degreewise geometric identification with Mathlib's canonical Čech nerve. -/
   cechNerveChainIdentification : SectionSevenCechNerveChainIdentification A
-  /-- The actual total differential is the displayed Section 7 matrix in the chosen bases. -/
-  matrixChainIdentification : SectionSevenMatrixChainIdentification localModels
+  /-- Normalization and transfer contract the ordered Čech total onto the finite complex carrying
+  the displayed Section 7 differential. -/
+  transferredChainContraction : SectionSevenTransferredChainContraction localModels
 
 namespace SectionSevenPaperCoverIdentification
 
-/-- Assemble the explicit matrix calculation, coherent local realizations, and canonical Čech
+/-- Assemble the transferred finite calculation, coherent local realizations, and canonical Čech
 nerve identification into the exact input required by the general Leray-cover comparison. -/
 public noncomputable def toLerayCechIdentification
     {A : FourPieceStarGluingData} (h : SectionSevenPaperCoverIdentification A) :
     SectionSevenLerayCechIdentification (GluedSpace A.glueData)
       (sectionSevenStarOpenCover A) where
   identification :=
-    h.matrixChainIdentification.homotopyEquiv |>.trans
+    h.transferredChainContraction.homotopyEquiv |>.trans
       (SectionSevenStarIntersectionChainModels.totalRealizationEquiv
         h.localModels) |>.trans
           h.cechNerveChainIdentification.homotopyEquiv
