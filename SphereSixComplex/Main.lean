@@ -51,6 +51,7 @@ public import SphereSixComplex.Geometry.GlobalDeckQuotient
 public import SphereSixComplex.Geometry.OpenEmbeddingStarGluing
 public import SphereSixComplex.Geometry.PaperAnalyticData
 public import SphereSixComplex.Geometry.PaperAnalyticFillingPieces
+public import SphereSixComplex.Geometry.PaperBiholomorphicStar
 public import SphereSixComplex.Geometry.PaperCentralFamilyTopology
 public import SphereSixComplex.Geometry.PaperCollarSeparation
 public import SphereSixComplex.Geometry.PaperLocalCuspFillingConnected

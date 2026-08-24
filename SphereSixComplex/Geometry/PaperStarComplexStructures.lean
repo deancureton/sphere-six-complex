@@ -23,12 +23,12 @@ namespace PaperAnalyticData
 variable (A : PaperAnalyticData)
 
 /-- The selected complex atlas on the central piece of the star. -/
-@[instance_reducible] public noncomputable def starCentralCharts :
+@[instance_reducible, expose] public noncomputable def starCentralCharts :
     ChartedSpace ComplexModel A.CentralFamily :=
   A.centralFamilyComplexCharts
 
 /-- The quotient complex atlases on the cusp, order-three, and order-four fillings. -/
-@[instance_reducible] public noncomputable def starFillingCharts :
+@[instance_reducible, expose] public noncomputable def starFillingCharts :
     ∀ i, ChartedSpace ComplexModel (A.starFillingType i) :=
   Fin.cases (actualLocalCuspFillingCharts A.starCuspWitness) fun i ↦
     Fin.cases
