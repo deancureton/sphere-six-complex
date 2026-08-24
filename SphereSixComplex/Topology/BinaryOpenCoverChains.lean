@@ -38,7 +38,7 @@ namespace SphereSixComplex.BinaryOpenCover
 
 /-- Integral chains of a simplicial set. -/
 public noncomputable abbrev integralSimplicialChains :
-    SSet ⟤ ChainComplex AddCommGrpCat ℕ :=
+    SSet ⥤ ChainComplex AddCommGrpCat ℕ :=
   (SSet.chainComplexFunctor AddCommGrpCat).obj (AddCommGrpCat.of ℤ)
 
 /-- The subcomplex of `Simp(X)` consisting of simplices which factor through `U`. -/
@@ -158,6 +158,8 @@ public instance integralSimplicialChains_preservesMonomorphisms :
     integralSimplicialChains.PreservesMonomorphisms where
   preserves f _ := by
     dsimp [integralSimplicialChains, SSet.chainComplexFunctor]
+    apply +allowSynthFailures Functor.map_mono
+    dsimp [SSet, SimplicialObject.whiskering, SimplicialObject]
     infer_instance
 
 /-- Applying integral chains to the meet--join square again gives a pushout. -/

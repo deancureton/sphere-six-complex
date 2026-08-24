@@ -185,7 +185,7 @@ public theorem eventuallySmall_of_generators {X : TopCat} {U V : Opens X}
     ∀ n c, IsEventuallyCoverSmallChain U V f n c := by
   intro n c
   let S := eventuallyCoverSmallAddSubgroup U V f hf n
-  let q : (singularChains X).X n ⟶ AddCommGrpCat.of ((singularChains X).X n ⨸ S) :=
+  let q : (singularChains X).X n ⟶ AddCommGrpCat.of ((singularChains X).X n ⧸ S) :=
     AddCommGrpCat.ofHom (QuotientAddGroup.mk' S)
   have hq : q = 0 := by
     apply (TopCat.toSSet.obj X).chainComplex_hom_ext

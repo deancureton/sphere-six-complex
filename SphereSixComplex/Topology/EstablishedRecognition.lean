@@ -1,13 +1,16 @@
 module
 
 public import SphereSixComplex.Topology.SmoothRecognition
+public import SphereSixComplex.Topology.SmoothSixSphereClassification
 
 /-!
 # Established six-sphere recognition inputs
 
-This module isolates the two classical external theorems used to recognize a smooth integral
-homology six-sphere. They are explicit axioms because their proofs are not yet available in
-Mathlib. No paper-specific construction claim is assumed here.
+This module isolates the classical external theorems used to recognize a smooth integral homology
+six-sphere. They are explicit axioms because their proofs are not yet available in Mathlib. The
+smooth Poincare step is decomposed into generalized topological Poincare and the classification
+of smooth structures on a topological six-sphere; no paper-specific construction claim is
+assumed here.
 -/
 
 open scoped ContDiff Manifold
@@ -21,13 +24,26 @@ public axiom establishedHomologyToHomotopySixSphere
     [ChartedSpace RealModel X] :
     HomologyToHomotopySixSphereObligation X
 
-/-- The smooth Poincare theorem in dimension six for classical smooth manifolds: every compact,
-connected, Hausdorff, second-countable smooth homotopy six-sphere is diffeomorphic to the standard
-sphere. This combines the h-cobordism theorem with the computation `Theta_6 = 0`. -/
-public axiom establishedSmoothPoincareSix
+/-- Smale's generalized topological Poincare theorem in dimension six. -/
+public axiom establishedGeneralizedTopologicalPoincareSix :
+    GeneralizedTopologicalPoincareSix
+
+/-- The h-cobordism theorem and the Kervaire--Milnor computation `Theta_6 = 0`, stated as their
+exact consequence for unoriented smooth structures on a topological six-sphere. -/
+public axiom establishedMarkedSmoothSixSphereClassesTrivial :
+    MarkedSmoothSixSphere.DiffeomorphismClassesTrivial
+
+/-- The three classical stages imply smooth Poincare in dimension six. -/
+public theorem establishedSmoothPoincareSix
     {X : Type} [TopologicalSpace X] [T2Space X] [SecondCountableTopology X]
     [ChartedSpace RealModel X] :
-    SmoothHomotopySixSphere X → SmoothDiffeomorphicToSixSphere X
+    SmoothHomotopySixSphere X → SmoothDiffeomorphicToSixSphere X := by
+  intro hX
+  let _ : CompactSpace X := hX.compact
+  let _ : IsManifold 𝓘(ℝ, RealModel) ∞ X := hX.isManifold
+  exact smoothPoincareSixStandardModel_of_classicalStages
+    establishedGeneralizedTopologicalPoincareSix
+    establishedMarkedSmoothSixSphereClassesTrivial X hX.homotopyEquiv
 
 /-- The two established external inputs give the exact smooth-recognition obligation used by the
 construction. -/

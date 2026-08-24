@@ -95,7 +95,7 @@ public noncomputable def denseTorusCharts : ChartedSpace ComplexModel DenseTorus
 three-manifold.  Mathlib currently has no scheme-theoretic divisor/reducedness layer for this
 construction, so the exact local squarefree normal form `t = z₀ z₁ z₂`, together with its
 three coordinate-hyperplane components, is the topological/analytic substitute for
-scheme-theoretic reducedness.  `cone_unimodular` belongs to the standard fan construction. -/
+scheme-theoretic reducedness. -/
 public structure Model where
   /-- The toric variety associated to the infinite fan. -/
   Carrier : Type
@@ -113,8 +113,6 @@ public structure Model where
   secondCountable : @SecondCountableTopology Carrier topology
   /-- All affine toric charts meet the dense torus, hence the variety is connected. -/
   connected : @ConnectedSpace Carrier topology
-  /-- Every maximal cone of the explicit infinite `A₂` fan is unimodular. -/
-  cone_unimodular : ∀ upper v, IsUnit (a2ConeMatrix upper v).det
   /-- The character associated to the height coordinate. -/
   t : Carrier → ℂ
   /-- The height character is holomorphic. -/

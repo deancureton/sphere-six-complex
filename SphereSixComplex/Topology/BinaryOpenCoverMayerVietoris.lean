@@ -138,14 +138,14 @@ public noncomputable def generatedExactAtUnion {X : TopCat}
 
 /-- Integral singular homology as a functor on topological spaces. -/
 public noncomputable abbrev integralHomologyFunctor (n : ℕ) :
-    TopCat ⟤ AddCommGrpCat :=
+    TopCat ⥤ AddCommGrpCat :=
   (singularHomologyFunctor AddCommGrpCat n).obj (AddCommGrpCat.of ℤ)
 
 /-- The alternating map from intersection homology to the biproduct of piece homologies. -/
 public noncomputable def integralMVToBiprod {X : TopCat}
     (U V : Opens X) (n : ℕ) :
     (integralHomologyFunctor n).obj ((Opens.toTopCat X).obj (U ⊓ V)) ⟶
-      (integralHomologyFunctor n).obj ((Opens.toTopCat X).obj U) ⨞
+      (integralHomologyFunctor n).obj ((Opens.toTopCat X).obj U) ⊞
         (integralHomologyFunctor n).obj ((Opens.toTopCat X).obj V) :=
   biprod.lift
     ((integralHomologyFunctor n).map
@@ -156,7 +156,7 @@ public noncomputable def integralMVToBiprod {X : TopCat}
 /-- The sum of the two inclusion maps from the pieces to the ambient space. -/
 public noncomputable def integralMVFromBiprod {X : TopCat}
     (U V : Opens X) (n : ℕ) :
-    (integralHomologyFunctor n).obj ((Opens.toTopCat X).obj U) ⨞
+    (integralHomologyFunctor n).obj ((Opens.toTopCat X).obj U) ⊞
         (integralHomologyFunctor n).obj ((Opens.toTopCat X).obj V) ⟶
       (integralHomologyFunctor n).obj X :=
   biprod.desc
@@ -185,7 +185,7 @@ public structure OpenCoverHomologyComparison {X : TopCat} (U V : Opens X) where
       (integralHomologyFunctor n).obj ((Opens.toTopCat X).obj (U ⊓ V))
   biprodIso (n : ℕ) :
     generatedBiprodHomology U V n ≅
-      (integralHomologyFunctor n).obj ((Opens.toTopCat X).obj U) ⨞
+      (integralHomologyFunctor n).obj ((Opens.toTopCat X).obj U) ⊞
         (integralHomologyFunctor n).obj ((Opens.toTopCat X).obj V)
   unionIso (n : ℕ) :
     generatedUnionHomology U V n ≅ (integralHomologyFunctor n).obj X
