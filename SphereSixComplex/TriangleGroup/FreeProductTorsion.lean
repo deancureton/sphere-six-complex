@@ -307,7 +307,7 @@ public theorem fixed_by_conjugate_inr_iff (c : Delta) (a : CyclicFour) (ha : a �
     rw [(fuchsianSourceAction_inr_fixed_iff a ha _).mpr rfl]
 
 /-- The complement of the two elliptic orbits for the explicit Fuchsian action. -/
-public def IsFuchsianRegularPoint (z : UpperHalfPlane) : Prop :=
+@[expose] public def IsFuchsianRegularPoint (z : UpperHalfPlane) : Prop :=
   ∀ g : Delta,
     fuchsianSourceAction g • z ≠ fuchsianOneFixedPoint ∧
       fuchsianSourceAction g • z ≠ fuchsianTwoFixedPoint

@@ -24,7 +24,8 @@ namespace SphereSixComplex.Periods
 open SphereSixComplex.TriangleGroup
 
 /-- Equivariance of a candidate modular parameter at one triangle-group element. -/
-public def FuchsianTauEquivariant (tau : UpperHalfPlane → UpperHalfPlane) (g : Delta) : Prop :=
+@[expose] public def FuchsianTauEquivariant
+    (tau : UpperHalfPlane → UpperHalfPlane) (g : Delta) : Prop :=
   ∀ z, tau (fuchsianSourceAction g • z) = rhoTauReal g • tau z
 
 public theorem fuchsianTauEquivariant_one (tau : UpperHalfPlane → UpperHalfPlane) :
