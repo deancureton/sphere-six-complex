@@ -2,11 +2,22 @@ name = "sphere-six-complex"
 version = "0.1.0"
 defaultTargets = ["SphereSixComplex", "Challenge", "Solution"]
 
-# Mathlib v4.33.1 plus the fundamental-groupoid van Kampen development from PR #41603.
+# Tau Ceti's Mathlib pin plus the fundamental-groupoid van Kampen development from PR #41603.
 [[require]]
 name = "mathlib"
 git = "https://github.com/Paul-Lez/mathlib4"
-rev = "dba911505e5f973d80c20bb1e3f6952f34081e29"
+rev = "97d303eb50436be7c4bac4388bdb49459ae9140b"
+
+[[require]]
+name = "TauCeti"
+git = "https://github.com/TauCetiProject/TauCeti.git"
+rev = "c15c6f90c283c3ecce9e01ddda0e7912e2a1fb87"
+
+[[require]]
+name = "JordanCurveTheorem"
+git = "https://github.com/Paul-Lez/jordan-curve-theorem.git"
+rev = "61a188babe190258db2b6f0a69a9c26f243fe9bd"
+subDir = "HOLLight-Lean"
 
 [[lean_lib]]
 name = "SphereSixComplex"

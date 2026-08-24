@@ -157,8 +157,6 @@ public instance integralSimplicialChains_preservesMonomorphisms :
   preserves f _ := by
     dsimp [integralSimplicialChains, SSet.chainComplexFunctor]
     apply +allowSynthFailures Functor.map_mono
-    dsimp [SSet, SimplicialObject.whiskering, SimplicialObject]
-    infer_instance
 
 /-- Applying integral chains to the meet--join square again gives a pushout. -/
 public noncomputable def coverChainIsPushout {X : TopCat} (U V : Opens X) :=
