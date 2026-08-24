@@ -8,6 +8,7 @@ import SphereSixComplex.Geometry.ComplexTorus
 import SphereSixComplex.Geometry.ComplexThreefoldGluing
 import SphereSixComplex.Geometry.CuspCombinatorics
 import SphereSixComplex.Geometry.CuspFilling
+import SphereSixComplex.Geometry.CyclicCuspQuotient
 import SphereSixComplex.Geometry.EllipticComplexFilling
 import SphereSixComplex.Geometry.EllipticFilling
 import SphereSixComplex.Geometry.FamilyEquivariance
@@ -46,6 +47,7 @@ import SphereSixComplex.Topology.SmoothRecognition
 import SphereSixComplex.Topology.SmoothRecognitionFoundations
 import SphereSixComplex.Topology.SphereSimplyConnected
 import SphereSixComplex.Topology.StandardSphere
+import SphereSixComplex.Topology.StandardSphereHomologyZero
 import SphereSixComplex.Topology.TwistObstruction
 import SphereSixComplex.TriangleGroup.ModularParameter
 import SphereSixComplex.TriangleGroup.FuchsianAction
@@ -249,6 +251,11 @@ The three $`A_2` directions sum to zero and consecutive pairs form integral base
 the degree-six del Pezzo fan occur in opposite pairs, and every two-dimensional cone is unimodular.
 :::
 
+:::theorem "cyclic-cusp-quotient" (parent := "cusp-filling") (lean := "SphereSixComplex.Geometry.CyclicCuspQuotient.cuspTranslate_eq_fuchsian_gZero_zpow, SphereSixComplex.Geometry.CyclicCuspQuotient.cuspHorodisc_action_free, SphereSixComplex.Geometry.CyclicCuspQuotient.cuspHorodisc_action_properlyDiscontinuous, SphereSixComplex.Geometry.CyclicCuspQuotient.cuspHorodisc_quotient_isQuotientCoveringMap, SphereSixComplex.Geometry.CyclicCuspQuotient.cuspProduct_generator_agrees_with_familyDeckMap")
+The explicit parabolic source generator acts by integer translations of the invariant horodisc.
+This cyclic action and its product lift are free, properly discontinuous covering actions.
+:::
+
 :::theorem "cusp-action" (parent := "cusp-filling") (lean := "SphereSixComplex.Geometry.CuspFilling.shearMap_add, SphereSixComplex.Geometry.CuspFilling.CuspActionData.action_free, SphereSixComplex.Geometry.CuspFilling.CuspActionData.properlyDiscontinuous, SphereSixComplex.Geometry.CuspFilling.quotient_isQuotientCoveringMap, SphereSixComplex.Geometry.CuspFilling.cuspQuotient_isManifold, SphereSixComplex.Geometry.CuspFilling.cuspQuotient_projection_isLocalDiffeomorph")
 The $`B_0` shear preserves the cusp height and translates both classes of $`A_2` triangles.  Given
 the phase estimates of Theorem 4.5, the corrected maps form a free, properly discontinuous lattice
@@ -410,6 +417,11 @@ smooth homotopy-sphere recognition.
 
 :::theorem "standard-six-sphere" (parent := "smooth-recognition") (lean := "SphereSixComplex.sixSphere_isCompact, SphereSixComplex.sixSphere_isPathConnected, SphereSixComplex.sixSphere_isManifold")
 The target $`S^6` is compact, path-connected, and carries the standard smooth six-manifold atlas.
+:::
+
+:::theorem "standard-sphere-homology-zero" (parent := "standard-six-sphere") (lean := "SphereSixComplex.sixSphereHomeomorphTopCatSphereSix, SphereSixComplex.sixSphere_integralSingularHomology_zero_equiv_integer, SphereSixComplex.sixSphere_sectionSevenHomologyRealization_zero, SphereSixComplex.topCatDiskSeven_contractibleSpace, SphereSixComplex.topCatDiskSeven_integralSingularHomology_isZero")
+The standard sphere has degree-zero integral homology $`\mathbb Z`; it is the boundary of the
+contractible seven-disk, whose positive-degree integral homology vanishes.
 :::
 
 :::theorem "sphere-stereographic-simple-connectivity" (parent := "standard-six-sphere") (lean := "SphereSixComplex.sixSphere_compl_singleton_simplyConnected, SphereSixComplex.sixSphere_simplyConnected_iff_loops_nullhomotopic")

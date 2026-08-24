@@ -8,6 +8,7 @@ public import SphereSixComplex.Geometry.ComplexTorus
 public import SphereSixComplex.Geometry.ComplexThreefoldGluing
 public import SphereSixComplex.Geometry.CuspCombinatorics
 public import SphereSixComplex.Geometry.CuspFilling
+public import SphereSixComplex.Geometry.CyclicCuspQuotient
 public import SphereSixComplex.Geometry.EllipticComplexFilling
 public import SphereSixComplex.Geometry.EllipticFilling
 public import SphereSixComplex.Geometry.FamilyEquivariance
@@ -46,6 +47,7 @@ public import SphereSixComplex.Topology.SmoothRecognition
 public import SphereSixComplex.Topology.SmoothRecognitionFoundations
 public import SphereSixComplex.Topology.SphereSimplyConnected
 public import SphereSixComplex.Topology.StandardSphere
+public import SphereSixComplex.Topology.StandardSphereHomologyZero
 public import SphereSixComplex.Topology.TwistObstruction
 public import SphereSixComplex.TriangleGroup.ModularParameter
 public import SphereSixComplex.TriangleGroup.FuchsianAction
