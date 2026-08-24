@@ -13,9 +13,9 @@ namespace SphereSixComplex.Topology.TwistObstruction
 
 open LatticeData
 
-public def v₁ : LatticeData.Lattice := epsilon
+@[expose] public def v₁ : LatticeData.Lattice := epsilon
 
-public def v₂ : LatticeData.Lattice := -epsilon'
+@[expose] public def v₂ : LatticeData.Lattice := -epsilon'
 
 public def ell₀ : ℤ := 0
 

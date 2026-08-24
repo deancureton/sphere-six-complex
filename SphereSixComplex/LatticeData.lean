@@ -91,13 +91,13 @@ public theorem N_sq : N ^ 2 = 0 := by
   fin_cases i <;> fin_cases j <;>
     norm_num [pow_succ, Matrix.mul_apply, Fin.sum_univ_succ]
 
-public def A₁ : Matrix (Fin 4) (Fin 4) ℤ :=
+@[expose] public def A₁ : Matrix (Fin 4) (Fin 4) ℤ :=
   !![1, 0, 0, 0;
      6, 0, 1, 0;
      -6, -1, -1, 0;
      -2, 1, 0, 1]
 
-public def A₂ : Matrix (Fin 4) (Fin 4) ℤ :=
+@[expose] public def A₂ : Matrix (Fin 4) (Fin 4) ℤ :=
   !![1, 0, 0, 0;
      0, 0, -1, 0;
      -6, 1, 0, 0;
@@ -128,7 +128,7 @@ public theorem A₁_mul_A₂_mul_M₀ : A₁ * A₂ * M₀ = 1 := by
   fin_cases i <;> fin_cases j <;>
     norm_num [A₁, A₂, M₀, Matrix.mul_apply, Fin.sum_univ_succ]
 
-public def gamma : Lattice →ₗ[ℤ] ℤ where
+@[expose] public def gamma : Lattice →ₗ[ℤ] ℤ where
   toFun x := x 0
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
@@ -142,9 +142,9 @@ public theorem gamma_A₂ (x : Lattice) : gamma (A₂ *ᵥ x) = gamma x := by
 public theorem gamma_M₀ (x : Lattice) : gamma (M₀ *ᵥ x) = gamma x := by
   simp [gamma, M₀, dotProduct, Fin.sum_univ_succ]
 
-public def epsilon : Lattice := ![1, 2, -4, 0]
+@[expose] public def epsilon : Lattice := ![1, 2, -4, 0]
 
-public def epsilon' : Lattice := ![1, 3, -3, 0]
+@[expose] public def epsilon' : Lattice := ![1, 3, -3, 0]
 
 public def deltaHat : Lattice := ![0, 0, 0, 1]
 
@@ -170,13 +170,13 @@ public theorem gamma_epsilon : gamma epsilon = 1 := by
 public theorem gamma_neg_epsilon' : gamma (-epsilon') = -1 := by
   rfl
 
-public def gammaVec : Lattice := ![1, 0, 0, 0]
+@[expose] public def gammaVec : Lattice := ![1, 0, 0, 0]
 
-public def uVec : Lattice := ![0, 1, 0, 0]
+@[expose] public def uVec : Lattice := ![0, 1, 0, 0]
 
-public def wVec : Lattice := ![0, 0, 1, 0]
+@[expose] public def wVec : Lattice := ![0, 0, 1, 0]
 
-public def deltaVec : Lattice := ![0, 0, 0, 1]
+@[expose] public def deltaVec : Lattice := ![0, 0, 0, 1]
 
 public theorem N_mulVec (x : Lattice) : N *ᵥ x = ![x 3, -x 2, 0, 0] := by
   funext i
