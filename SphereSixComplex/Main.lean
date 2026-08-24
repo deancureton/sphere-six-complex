@@ -89,6 +89,7 @@ public import SphereSixComplex.Topology.SectionSevenLerayDuality
 public import SphereSixComplex.Topology.SectionSevenLerayChainDuality
 public import SphereSixComplex.Topology.SectionSevenLerayHomologyDuality
 public import SphereSixComplex.Topology.SectionSevenLerayRealization
+public import SphereSixComplex.Topology.SectionSevenPaperCoverIdentification
 public import SphereSixComplex.Topology.EstablishedLerayCoverComparison
 public import SphereSixComplex.Topology.EstablishedMayerVietoris
 public import SphereSixComplex.Topology.EstablishedRecognition
