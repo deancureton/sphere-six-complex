@@ -133,6 +133,7 @@ public import SphereSixComplex.Topology.FundamentalGroupComputation
 public import SphereSixComplex.Topology.FullVanKampenReduction
 public import SphereSixComplex.Topology.VanKampenGeometry
 public import SphereSixComplex.Topology.ConcreteVanKampen
+public import SphereSixComplex.Topology.PaperActualVanKampenCover
 public import SphereSixComplex.Topology.BinaryOpenCoverChains
 public import SphereSixComplex.Topology.BinaryOpenCoverCorestriction
 public import SphereSixComplex.Topology.BinaryOpenCoverExcision
@@ -160,6 +161,7 @@ public import SphereSixComplex.Topology.PaperSectionSevenStarIntersections
 public import SphereSixComplex.Topology.PaperSectionSevenMayerVietoris
 public import SphereSixComplex.Topology.PaperSectionSevenFinalDegreeZero
 public import SphereSixComplex.Topology.PaperSectionSevenHomologyAssembly
+public import SphereSixComplex.Topology.PaperSectionSevenPositiveDegreeBases
 public import SphereSixComplex.Topology.SectionSevenMayerVietorisChainAssembly
 public import SphereSixComplex.Topology.SectionSevenMayerVietorisGradedAlgebra
 public import SphereSixComplex.Topology.SectionSevenMayerVietorisHomologyAssembly
