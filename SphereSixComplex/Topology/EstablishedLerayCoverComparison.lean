@@ -105,10 +105,9 @@ section SectionSevenReduction
 
 variable {X : Type} [TopologicalSpace X] {C : FourPieceOpenCover X}
 
-/-- The remaining Section 7 input after applying the general cover theorem.  Its homotopy
-equivalence is precisely where the explicit chain models for the four pieces and their
-intersections, together with the displayed alternating and transferred-differential matrices,
-must be checked. -/
+/-- A strong chain-level comparison with the finite algebraic model.  This is sufficient for the
+general cover theorem, but it is not asserted by Section 7 of the paper: the paper computes a
+Leray spectral sequence rather than a contraction of the four-piece Cech total. -/
 public structure SectionSevenLerayCechIdentification
     (X : Type) [TopologicalSpace X] (C : FourPieceOpenCover X) where
   identification : HomotopyEquiv (sectionSevenLerayChainModel (-1))
