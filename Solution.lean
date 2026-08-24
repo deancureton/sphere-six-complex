@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Construction
+public import SphereSixComplex.Final
 
 open SphereSixComplex
 

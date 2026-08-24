@@ -22,6 +22,7 @@ import SphereSixComplex.Geometry.GlobalTorusFamily
 import SphereSixComplex.Geometry.GlobalDeckSmoothness
 import SphereSixComplex.Geometry.GlobalDeckQuotient
 import SphereSixComplex.Geometry.PaperAssembly
+import SphereSixComplex.Final
 import SphereSixComplex.Geometry.Quotient
 import SphereSixComplex.Geometry.RegularBaseTopology
 import SphereSixComplex.Geometry.RegularTorusFamily
@@ -71,6 +72,7 @@ import SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 import SphereSixComplex.TriangleGroup.FuchsianFundamentalDomain
 import SphereSixComplex.TriangleGroup.FuchsianPingPong
 import SphereSixComplex.TriangleGroup.FuchsianTessellation
+import SphereSixComplex.TriangleGroup.FuchsianTriangleCover
 import SphereSixComplex.TriangleGroup.FuchsianSmoothAction
 import SphereSixComplex.TriangleGroup.FreeProductTorsion
 import SphereSixComplex.TriangleGroup.BinaryIndexedCoprod
@@ -196,13 +198,13 @@ The two real half-planes form ping-pong regions for the cyclic factors. Hence th
 projective source representation of their free product is faithful.
 :::
 
-:::theorem "fuchsian-fundamental-triangle" (parent := "fuchsian-source-action") (lean := "SphereSixComplex.TriangleGroup.FuchsianFundamentalDomain.fuchsianOneFixedPoint_mem_fundamentalTriangle, SphereSixComplex.TriangleGroup.FuchsianFundamentalDomain.fuchsianTwoFixedPoint_mem_fundamentalTriangle, SphereSixComplex.TriangleGroup.FuchsianFundamentalDomain.gOne_rightSide_normSq, SphereSixComplex.TriangleGroup.FuchsianFundamentalDomain.gTwo_leftSide_normSq, SphereSixComplex.TriangleGroup.FuchsianFundamentalDomain.finite_product_zpow_intersections_of_isCompact")
-The explicit reflection triangle contains both elliptic vertices and its sides satisfy the expected
-pairing identities. Exact cusp displacement gives compact-set local finiteness for every integral
-power of the parabolic product; local finiteness of all triangle translates remains.
+:::theorem "fuchsian-fundamental-region" (parent := "fuchsian-source-action") (lean := "SphereSixComplex.TriangleGroup.FuchsianFundamentalDomain.fuchsianOneFixedPoint_mem_fundamentalTriangle, SphereSixComplex.TriangleGroup.FuchsianFundamentalDomain.fuchsianTwoFixedPoint_mem_fundamentalTriangle, SphereSixComplex.TriangleGroup.FuchsianFundamentalDomain.gOne_rightSide_normSq, SphereSixComplex.TriangleGroup.FuchsianFundamentalDomain.gTwo_leftSide_normSq, SphereSixComplex.TriangleGroup.FuchsianTriangleCover.orientedFundamentalRegion, SphereSixComplex.TriangleGroup.FuchsianTriangleCover.exists_smul_mem_orientedFundamentalRegion")
+The explicit triangle is one reflection chamber. Since $`\Delta=C_3*C_4` is the
+orientation-preserving subgroup, its fundamental region is the union of two adjacent chambers.
+Every upper-half-plane point has a $`\Delta`-translate in this doubled region.
 :::
 
-:::theorem "fuchsian-reduction" (parent := "fuchsian-fundamental-triangle") (lean := "SphereSixComplex.TriangleGroup.FuchsianTessellation.product_zpow_apply, SphereSixComplex.TriangleGroup.FuchsianTessellation.exists_product_zpow_mem_centered_strip, SphereSixComplex.TriangleGroup.FuchsianTessellation.reductionStep_mem_or_im_lt, SphereSixComplex.TriangleGroup.FuchsianTessellation.exists_smul_mem_coarseFordRegion")
+:::theorem "fuchsian-reduction" (parent := "fuchsian-fundamental-region") (lean := "SphereSixComplex.TriangleGroup.FuchsianTessellation.product_zpow_apply, SphereSixComplex.TriangleGroup.FuchsianTessellation.exists_product_zpow_mem_centered_strip, SphereSixComplex.TriangleGroup.FuchsianTessellation.reductionStep_mem_or_im_lt, SphereSixComplex.TriangleGroup.FuchsianTessellation.exists_smul_mem_coarseFordRegion")
 Integral cusp powers center every point in a fixed strip. Outside the coarse Ford region, the
 order-three generator strictly raises height. An orbit-height maximum therefore supplies a
 translate in the region.
@@ -220,10 +222,10 @@ denominator sublevels are finite, orbit heights attain maxima, every orbit meets
 region, and the source action is properly discontinuous. The regular-locus action is free.
 :::
 
-:::theorem "fuchsian-compact-core" (parent := "fuchsian-fundamental-triangle") (lean := "SphereSixComplex.Periods.fuchsianFundamentalCompactCore_isCompact, SphereSixComplex.Periods.fundamentalTriangle_mem_cusp_or_compactCore, SphereSixComplex.Periods.fuchsianQuotientCompactCore, SphereSixComplex.Periods.FuchsianPrePeriodData.theorem3_4Existence_of_triangleCover")
-The part of the fundamental triangle below the standard horodisc lies in an explicit compact
-rectangle. Thus a translate-covering theorem supplies the compact quotient core required by the
-Schur argument and converts Fuchsian pre-period data into the full period family.
+:::theorem "fuchsian-compact-core" (parent := "fuchsian-fundamental-region") (lean := "SphereSixComplex.Periods.orientedFuchsianCompactCore_isCompact, SphereSixComplex.Periods.orientedFundamentalRegion_mem_cusp_or_compactCore, SphereSixComplex.Periods.orientedFuchsianQuotientCompactCore, SphereSixComplex.Periods.FuchsianPrePeriodData.theorem3_4Existence_of_orientedTriangleCover")
+The part of the doubled fundamental region below the standard horodisc lies in an explicit compact
+rectangle. This gives the compact quotient core required by the Schur argument and converts
+Fuchsian pre-period data into the full period family without a false single-chamber premise.
 :::
 
 :::theorem "fuchsian-uniformization-bridge" (parent := "period-functions") (lean := "SphereSixComplex.Periods.FuchsianModularParameter.equivariant, SphereSixComplex.Periods.FuchsianModularParameter.coordinate_invariant, SphereSixComplex.Periods.FuchsianModularParameter.toTriangleUniformization, SphereSixComplex.Periods.FuchsianPrePeriodData.toPrePeriodFunctions, SphereSixComplex.Periods.FuchsianPrePeriodData.theorem3_4Existence")

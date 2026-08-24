@@ -22,6 +22,7 @@ public import SphereSixComplex.Geometry.GlobalTorusFamily
 public import SphereSixComplex.Geometry.GlobalDeckSmoothness
 public import SphereSixComplex.Geometry.GlobalDeckQuotient
 public import SphereSixComplex.Geometry.PaperAssembly
+public import SphereSixComplex.Final
 public import SphereSixComplex.Geometry.Quotient
 public import SphereSixComplex.Geometry.RegularBaseTopology
 public import SphereSixComplex.Geometry.RegularTorusFamily
@@ -71,6 +72,7 @@ public import SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 public import SphereSixComplex.TriangleGroup.FuchsianFundamentalDomain
 public import SphereSixComplex.TriangleGroup.FuchsianPingPong
 public import SphereSixComplex.TriangleGroup.FuchsianTessellation
+public import SphereSixComplex.TriangleGroup.FuchsianTriangleCover
 public import SphereSixComplex.TriangleGroup.FuchsianSmoothAction
 public import SphereSixComplex.TriangleGroup.FreeProductTorsion
 public import SphereSixComplex.TriangleGroup.BinaryIndexedCoprod
