@@ -16,6 +16,7 @@ import SphereSixComplex.Geometry.EllipticFamilySpecialization
 import SphereSixComplex.Geometry.EllipticFixedPointCriterion
 import SphereSixComplex.Geometry.EllipticLocalCoordinates
 import SphereSixComplex.Geometry.EllipticLocalTrivialization
+import SphereSixComplex.Geometry.EllipticWholeFiberTrivialization
 import SphereSixComplex.Geometry.FamilyEquivariance
 import SphereSixComplex.Geometry.FuchsianRegularTorusFamily
 import SphereSixComplex.Geometry.Gluing
@@ -33,6 +34,7 @@ import SphereSixComplex.Periods.Domain
 import SphereSixComplex.Periods.CanonicalObstruction
 import SphereSixComplex.Periods.Functions
 import SphereSixComplex.Periods.FuchsianCompactCore
+import SphereSixComplex.Periods.FuchsianModularParameterExistence
 import SphereSixComplex.Periods.FuchsianUniformizationBridge
 import SphereSixComplex.Periods.Invariant
 import SphereSixComplex.Periods.LocalOrbifoldCompatibility
@@ -54,7 +56,9 @@ import SphereSixComplex.Topology.SectionSevenLerayDuality
 import SphereSixComplex.Topology.SectionSevenLerayChainDuality
 import SphereSixComplex.Topology.SectionSevenLerayHomologyDuality
 import SphereSixComplex.Topology.SectionSevenLerayRealization
+import SphereSixComplex.Topology.EstablishedMayerVietoris
 import SphereSixComplex.Topology.EstablishedRecognition
+import SphereSixComplex.Topology.EstablishedSphereHomology
 import SphereSixComplex.Topology.SmoothRecognition
 import SphereSixComplex.Topology.SmoothRecognitionFoundations
 import SphereSixComplex.Topology.SphereSimplyConnected
@@ -64,6 +68,7 @@ import SphereSixComplex.Topology.DiskBoundaryQuotient
 import SphereSixComplex.Topology.RelativeSingularHomology
 import SphereSixComplex.Topology.SingularExcision
 import SphereSixComplex.Topology.SingularBarycentricAllDegrees
+import SphereSixComplex.Topology.SingularBarycentricOuterFaces
 import SphereSixComplex.Topology.SingularBarycentricChains
 import SphereSixComplex.Topology.SingularSubdivision
 import SphereSixComplex.Topology.TwistObstruction
@@ -236,6 +241,14 @@ normalized modular invariant supplies the quotient coordinate, and explicit addi
 plus a compact quotient core gives the nondegenerate period family.
 :::
 
+:::definition "normalized-fuchsian-modular-lift-obligation" (parent := "fuchsian-uniformization-bridge") (lean := "SphereSixComplex.Periods.ExactFuchsianOrbifoldCoordinate, SphereSixComplex.Periods.NormalizedFuchsianModularJLift, SphereSixComplex.Periods.NormalizedFuchsianModularJLiftingExistence, SphereSixComplex.Periods.NormalizedFuchsianModularJLift.exists_fuchsianModularParameter_with_normalization, SphereSixComplex.Periods.NormalizedFuchsianModularJLift.tau_invariant_under_two_square, SphereSixComplex.Periods.NormalizedFuchsianModularJLift.tau_transform_cusp, SphereSixComplex.Periods.NormalizedFuchsianModularJLift.cuspQ_invariant")
+The future classical theorem `NormalizedFuchsianModularJLiftingExistence` quantifies only over
+exact quotient coordinates: their fibres are precisely the source orbits, with exact order-three
+and order-four branching and a simple cusp. A normalized modular lift then gives full equivariance,
+both elliptic values, the order-four-to-order-two branching identity, the cusp translation, and the
+invariant cusp parameter; arbitrary invariant holomorphic functions are not admitted.
+:::
+
 :::theorem "local-orbifold-compatibility" (parent := "period-functions") (lean := "SphereSixComplex.Periods.orderOf_targetOnePerm, SphereSixComplex.Periods.orderOf_targetTwoPerm, SphereSixComplex.Periods.explicitLocalOrbifoldActionData, SphereSixComplex.Periods.IsLocallyOrbifoldCompatible.invariant_under_two_square, SphereSixComplex.Periods.IsLocallyOrbifoldCompatible.cusp_value_translation")
 The order-three source and target actions agree, while the order-four source stabilizer maps to an
 order-two target stabilizer. The explicit source and target cusp widths give the local branching
@@ -359,6 +372,13 @@ descent to the family quotient. Extending these compatible pointwise charts to o
 whole-fibre product neighborhood is the remaining local filling bridge.
 :::
 
+:::definition "elliptic-whole-fibre-compatibility" (parent := "elliptic-local-trivialization") (lean := "SphereSixComplex.Geometry.EllipticWholeFiberTrivialization.OrderThreeWholeFiberCompatibility, SphereSixComplex.Geometry.EllipticWholeFiberTrivialization.OrderFourWholeFiberCompatibility, SphereSixComplex.Geometry.EllipticWholeFiberTrivialization.CompatiblePartialDiffeomorphs.toPartialDiffeomorph, SphereSixComplex.Geometry.EllipticWholeFiberTrivialization.OrderThreeWholeFiberCompatibility.trivialization_equivariant, SphereSixComplex.Geometry.EllipticWholeFiberTrivialization.OrderFourWholeFiberCompatibility.trivialization_equivariant, SphereSixComplex.Geometry.EllipticWholeFiberTrivialization.OrderThreeWholeFiberCompatibility.collar, SphereSixComplex.Geometry.EllipticWholeFiberTrivialization.OrderFourWholeFiberCompatibility.collar")
+Compatible pointwise charts glue to an equivariant analytic whole-fibre trivialization and its
+punctured filling collar. The exact remaining input is an inhabitant of the order-three and
+order-four compatibility structures, asserting compact-uniform chart agreement and cyclic
+equivariance across each entire torus fibre.
+:::
+
 :::theorem "elliptic-family-specialization" (parent := "elliptic-local-trivialization") (lean := "SphereSixComplex.Geometry.EllipticFamilySpecialization.generatorOneAddEquiv_mk, SphereSixComplex.Geometry.EllipticFamilySpecialization.generatorTwoAddEquiv_mk, SphereSixComplex.Geometry.EllipticFamilySpecialization.orderThreeTranslation_torsion, SphereSixComplex.Geometry.EllipticFamilySpecialization.orderFourTranslation_torsion, SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderThreeFiberFixedPointCriterion, SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderFourFiberFixedPointCriterion, SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderThreeFiberData, SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderFourFiberData, SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderThreeAction_free, SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderFourAction_free")
 The actual period-torus fibres carry the descended generator transports and the prescribed
 $`\varepsilon/3` and $`-\varepsilon'/4` translations. Their affine automorphisms have exact orders
@@ -382,13 +402,15 @@ Glue {uses "cusp-filling"}[the cusp filling] and
 
 :::theorem "manifold-gluing" (parent := "compact-complex-threefold") (lean := "SphereSixComplex.gluedChartedSpace, SphereSixComplex.isManifold_gluedChartedSpace, SphereSixComplex.compactSpace_gluedSpace, SphereSixComplex.connectedSpace_gluedSpace")
 Compatible atlases on the filling pieces transport to their topological gluing and make the glued
-space a manifold.  Finitely many compact pieces give a compact gluing, while connected pieces with
-a connected overlap graph give a connected gluing.
+space a manifold. Connected pieces with a connected overlap graph give a connected gluing;
+compactness of the completed space is a separate global construction obligation, since the open
+punctured and filling pieces need not themselves be compact.
 :::
 
 :::definition "complex-threefold-from-gluing" (parent := "compact-complex-threefold") (lean := "SphereSixComplex.complexThreefoldOfGluing")
-A finite connected gluing of compact complex pieces with compatible complex and underlying real
-atlases produces the exact compact connected `ComplexThreefold` contract used by the main theorem.
+A finite connected gluing of complex pieces with compatible complex and underlying real atlases,
+together with global compactness of the glued space, produces the exact compact connected
+`ComplexThreefold` contract used by the main theorem.
 :::
 
 :::theorem "paper-threefold-assembly" (parent := "compact-complex-threefold") (lean := "SphereSixComplex.completedPaperThreefoldOfGluing, SphereSixComplex.smoothRecognitionInputOfGluing, SphereSixComplex.PaperGluingData.toCompletedPaperThreefold, SphereSixComplex.exists_completedPaperThreefold_of_paperGluingData")
@@ -439,10 +461,10 @@ The recognition input records path connectedness, simple connectedness, and degr
 singular homology equivalence with the standard six-sphere.
 :::
 
-:::definition "mayer-vietoris-contract" (parent := "integral-homology") (lean := "SphereSixComplex.FourPieceMayerVietorisExactness, SphereSixComplex.FourPieceHomologyComputation, SphereSixComplex.FourPieceMayerVietorisContract.hasIntegralHomologyOfSixSphere")
-The four-piece gluing is organized into three successive open unions.  Mayer--Vietoris exactness is
-separated from the final finite chain-level computation, expressed as a quasi-isomorphism to the
-integral singular chains of $`S^6`.
+:::definition "mayer-vietoris-contract" (parent := "integral-homology") (lean := "SphereSixComplex.establishedIntegralMayerVietorisExactSequence, SphereSixComplex.establishedFourPieceMayerVietorisExactness, SphereSixComplex.fourPieceMayerVietorisContract_of_homologyComputation, SphereSixComplex.FourPieceMayerVietorisExactness, SphereSixComplex.FourPieceHomologyComputation")
+Binary open-cover exactness for integral singular homology is an explicit established external
+input. It supplies exactness for the three successive unions in the four-piece cover; the
+paper-specific chain comparison remains separate.
 :::
 
 :::theorem "section-seven-integer-algebra" (parent := "integral-homology") (lean := "SphereSixComplex.firstHomologyPresentation_exact, SphereSixComplex.alphaOne_kernel, SphereSixComplex.alphaTwoPresentation_exact, SphereSixComplex.chosenLerayDifferential_bijective, SphereSixComplex.hasIntegralHomologyOfSixSphere_of_sectionSevenRealizations")
@@ -472,11 +494,11 @@ whose homology maps give complementary-degree isomorphisms. Realizing this adjoi
 glued space is the remaining topological Poincaré-duality bridge.
 :::
 
-:::theorem "section-seven-coherent-realization" (parent := "integral-homology") (lean := "SphereSixComplex.SectionSevenLerayAlgebraicDuality.modelHomologyEquivComputed, SphereSixComplex.SectionSevenLerayCoherentRealization.sectionSevenHomologyRealization, SphereSixComplex.SectionSevenLerayCoherentRealization.hasIntegralHomologyOfSixSphere")
-One chain map from the finite Leray model to singular chains, inducing homology isomorphisms in
-every degree, supplies the project’s Section 7 realization contract. Coherent realizations for the
-glued space and the standard six-sphere give their degreewise integral homology equivalences.
-Constructing those chain comparisons remains the singular Leray/cellular realization step.
+:::theorem "section-seven-coherent-realization" (parent := "integral-homology") (lean := "SphereSixComplex.SectionSevenLerayCoherentRealization, SphereSixComplex.SectionSevenLerayCoherentRealization.sectionSevenHomologyRealization, SphereSixComplex.establishedSixSphereSectionSevenHomology, SphereSixComplex.SectionSevenLerayCoherentRealization.hasIntegralHomologyOfSixSphere_established")
+The standard $`S^6` homology calculation is an explicit established external input. The exact
+paper-specific remaining obligation is `SectionSevenLerayCoherentRealization X` for the glued
+space: one coherent chain map from the finite Leray model to singular chains, inducing homology
+isomorphisms in every degree.
 :::
 
 :::theorem "smooth-recognition" (parent := "construction_spine") (lean := "SphereSixComplex.completedPaperThreefold_smoothRecognition, SphereSixComplex.exists_complex_threefold_diffeomorphic_sixSphere") (priority := "high")
@@ -536,14 +558,14 @@ collapsed basepoint tracked through a reduced-chain isomorphism. The canonical r
 is explicit; proving it is a homology isomorphism is precisely the remaining excision step.
 :::
 
-:::theorem "singular-small-chain-excision" (parent := "disk-boundary-collapse") (lean := "SphereSixComplex.CoverSmallChainRetractionData.approximation, SphereSixComplex.coverSmallIntegralSingularHomologyIso, SphereSixComplex.diskSevenExcisionCover_isOpen, SphereSixComplex.diskSevenExcisionCover_iUnion, SphereSixComplex.diskBoundaryToDiskSevenCoverSmallIntegralSingularChains_comp_inclusion, SphereSixComplex.DiskSevenSmallChainApproximation, SphereSixComplex.simplexSubdivisionLastVertex, SphereSixComplex.subdivisionLastVertex, SphereSixComplex.subdivisionLastVertexChainMap_naturality, SphereSixComplex.subdivisionLastVertexLiftChainMap_comp_inclusion, SphereSixComplex.barycentricSubdivisionChainMapZero, SphereSixComplex.subdividedOneSimplexFundamentalChain, SphereSixComplex.subdividedOneSimplexBoundaryChain, SphereSixComplex.subdividedSimplexFundamentalChain, SphereSixComplex.subdividedSimplexInteriorFaceSum_eq_zero, SphereSixComplex.subdividedSimplexFundamentalChain_boundary_eq_outer, SphereSixComplex.barycentricFundamentalBoundaryIdentity_iff_outerFaceIdentity, SphereSixComplex.barycentricSubdivisionChainMapOfOuterFaceIdentity")
+:::theorem "singular-small-chain-excision" (parent := "disk-boundary-collapse") (lean := "SphereSixComplex.CoverSmallChainRetractionData.approximation, SphereSixComplex.coverSmallIntegralSingularHomologyIso, SphereSixComplex.diskSevenExcisionCover_isOpen, SphereSixComplex.diskSevenExcisionCover_iUnion, SphereSixComplex.diskBoundaryToDiskSevenCoverSmallIntegralSingularChains_comp_inclusion, SphereSixComplex.DiskSevenSmallChainApproximation, SphereSixComplex.simplexSubdivisionLastVertex, SphereSixComplex.subdivisionLastVertex, SphereSixComplex.subdivisionLastVertexChainMap_naturality, SphereSixComplex.subdivisionLastVertexLiftChainMap_comp_inclusion, SphereSixComplex.subdividedSimplexFundamentalChain, SphereSixComplex.barycentricOuterFaceIdentity, SphereSixComplex.barycentricFundamentalBoundaryIdentity, SphereSixComplex.barycentricSubdivisionChainMapCanonical, SphereSixComplex.barycentricSubdivisionChainMapCanonical_naturality")
 The cover-small singular subcomplex and its monomorphic inclusion into all singular chains are
 explicit. Retraction data yields a chain-homotopy equivalence and homology isomorphisms. For the
 seven-disk, the boundary factors through the small chains for an explicit open two-set cover. The
 global subdivision last-vertex map, induced chain map, and subcomplex lifts are constructed from
-Mathlib's left-Kan-extension API. Signed maximal-flag chains are constructed in every degree and
-all interior boundary faces cancel by an explicit involution. The remaining combinatorial step is
-the outer-face permutation/sign reindexing; after it, only the prism homotopy and Lebesgue-number
+Mathlib's left-Kan-extension API. Signed maximal-flag chains are constructed in every degree; all
+interior faces cancel, and the outer faces reindex with the correct signs. This gives the canonical
+natural barycentric subdivision chain map. Only its prism homotopy and the Lebesgue-number
 iteration remain.
 :::
 

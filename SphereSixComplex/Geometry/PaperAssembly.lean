@@ -7,8 +7,8 @@ public import SphereSixComplex.Topology.MayerVietoris
 /-!
 # Assembly of the completed paper threefold
 
-This file connects the generic complex gluing, van Kampen presentation, and four-piece integral
-homology calculation to the exact `CompletedPaperThreefold` contract used by the final theorem.
+This file connects the generic complex gluing, van Kampen presentation, and integral-homology
+calculation to the exact `CompletedPaperThreefold` contract used by the final theorem.
 -/
 
 open scoped ContDiff Manifold
@@ -17,11 +17,11 @@ namespace SphereSixComplex
 
 noncomputable section
 
-/-- A finite complex gluing with the paper's verified van Kampen data and four-piece homology
-comparison produces the exact completed-threefold object used by smooth recognition. -/
+/-- A finite complex gluing with the paper's verified van Kampen and integral-homology data
+produces the exact completed-threefold object used by smooth recognition. -/
 public noncomputable def completedPaperThreefoldOfGluing (D : TopCat.GlueData)
     [Finite D.J] [Nonempty D.J] [∀ i, Nonempty (D.U i)]
-    [∀ i, CompactSpace (D.U i)] [∀ i, ConnectedSpace (D.U i)]
+    [∀ i, ConnectedSpace (D.U i)]
     [∀ i, ChartedSpace ComplexModel (D.U i)]
     [T2Space (GluedSpace D)] [SecondCountableTopology (GluedSpace D)]
     (hcomplex : GluingAtlasCompatible
@@ -29,20 +29,20 @@ public noncomputable def completedPaperThreefoldOfGluing (D : TopCat.GlueData)
     (hreal : @IsManifold ℝ inferInstance RealModel inferInstance inferInstance RealModel
       inferInstance (modelWithCornersSelf ℝ RealModel) ∞ (GluedSpace D) inferInstance
       (underlyingRealChartedSpace (gluedChartedSpace D)))
+    (hcompact : CompactSpace (GluedSpace D))
     (hconnected : GluingIntersectionGraphConnected D)
     (hvanKampen : Topology.HasVanKampenData (GluedSpace D) 0 1 (-1))
-    (C : FourPieceOpenCover (GluedSpace D))
-    (hMayerVietoris : FourPieceMayerVietorisContract C) : CompletedPaperThreefold where
-  X := complexThreefoldOfGluing D hcomplex hreal hconnected
+    (hhomology : HasIntegralHomologyOfSixSphere (GluedSpace D)) : CompletedPaperThreefold where
+  X := complexThreefoldOfGluing D hcomplex hreal hcompact hconnected
   fundamentalGroup :=
     hvanKampen.hasVanKampenPresentation.hasPaperFundamentalGroup
-  integralHomology := hMayerVietoris.hasIntegralHomologyOfSixSphere
+  integralHomology := hhomology
 
 /-- The assembled gluing supplies the simply connected integral-homology-sphere input required by
 the remaining six-dimensional smooth-recognition theorem. -/
 public theorem smoothRecognitionInputOfGluing (D : TopCat.GlueData)
     [Finite D.J] [Nonempty D.J] [∀ i, Nonempty (D.U i)]
-    [∀ i, CompactSpace (D.U i)] [∀ i, ConnectedSpace (D.U i)]
+    [∀ i, ConnectedSpace (D.U i)]
     [∀ i, ChartedSpace ComplexModel (D.U i)]
     [T2Space (GluedSpace D)] [SecondCountableTopology (GluedSpace D)]
     (hcomplex : GluingAtlasCompatible
@@ -50,17 +50,17 @@ public theorem smoothRecognitionInputOfGluing (D : TopCat.GlueData)
     (hreal : @IsManifold ℝ inferInstance RealModel inferInstance inferInstance RealModel
       inferInstance (modelWithCornersSelf ℝ RealModel) ∞ (GluedSpace D) inferInstance
       (underlyingRealChartedSpace (gluedChartedSpace D)))
+    (hcompact : CompactSpace (GluedSpace D))
     (hconnected : GluingIntersectionGraphConnected D)
     (hvanKampen : Topology.HasVanKampenData (GluedSpace D) 0 1 (-1))
-    (C : FourPieceOpenCover (GluedSpace D))
-    (hMayerVietoris : FourPieceMayerVietorisContract C) :
-    let P := completedPaperThreefoldOfGluing D hcomplex hreal hconnected hvanKampen C
-      hMayerVietoris
+    (hhomology : HasIntegralHomologyOfSixSphere (GluedSpace D)) :
+    let P := completedPaperThreefoldOfGluing D hcomplex hreal hcompact hconnected hvanKampen
+      hhomology
     letI := P.X.topology
     letI := underlyingRealChartedSpace P.X.charts
     SmoothSimplyConnectedIntegralHomologySixSphere P.X.Carrier := by
-  exact (completedPaperThreefoldOfGluing D hcomplex hreal hconnected hvanKampen C
-    hMayerVietoris).smoothRecognitionInput
+  exact (completedPaperThreefoldOfGluing D hcomplex hreal hcompact hconnected hvanKampen
+    hhomology).smoothRecognitionInput
 
 end
 

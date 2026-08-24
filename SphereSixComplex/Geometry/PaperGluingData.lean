@@ -1,6 +1,8 @@
 module
 
 public import SphereSixComplex.Geometry.PaperAssembly
+public import SphereSixComplex.Topology.EstablishedMayerVietoris
+public import SphereSixComplex.Topology.EstablishedSphereHomology
 
 /-!
 # Exact gluing data for the completed paper threefold
@@ -26,8 +28,6 @@ public structure PaperGluingData where
   nonemptyIndex : Nonempty D.J
   /-- Every piece is nonempty. -/
   nonemptyPiece : ∀ i, Nonempty (D.U i)
-  /-- Every piece is compact. -/
-  compactPiece : ∀ i, CompactSpace (D.U i)
   /-- Every piece is connected. -/
   connectedPiece : ∀ i, ConnectedSpace (D.U i)
   /-- Every piece carries its specified complex charts. -/
@@ -36,12 +36,13 @@ public structure PaperGluingData where
   gluedT2 : T2Space (GluedSpace D)
   /-- The glued topology is second countable. -/
   gluedSecondCountable : SecondCountableTopology (GluedSpace D)
+  /-- The completed glued space is compact. -/
+  gluedCompact : CompactSpace (GluedSpace D)
   /-- The complex charts agree on every gluing overlap. -/
   complexCompatible :
     letI := finiteIndex
     letI := nonemptyIndex
     letI := nonemptyPiece
-    letI := compactPiece
     letI := connectedPiece
     letI := complexCharts
     GluingAtlasCompatible (I := modelWithCornersSelf ℂ ComplexModel) (n := ∞) D
@@ -50,7 +51,6 @@ public structure PaperGluingData where
     letI := finiteIndex
     letI := nonemptyIndex
     letI := nonemptyPiece
-    letI := compactPiece
     letI := connectedPiece
     letI := complexCharts
     @IsManifold ℝ inferInstance RealModel inferInstance inferInstance RealModel inferInstance
@@ -62,25 +62,35 @@ public structure PaperGluingData where
   vanKampen : Topology.HasVanKampenData (GluedSpace D) 0 1 (-1)
   /-- The four-piece cover used for the integral homology calculation. -/
   cover : FourPieceOpenCover (GluedSpace D)
-  /-- The cover's Mayer--Vietoris maps have the asserted exact algebraic form. -/
-  mayerVietoris : FourPieceMayerVietorisContract cover
+  /-- One coherent comparison from the verified finite Section 7 model to the glued space's
+  integral singular chains. -/
+  homologyRealization : SectionSevenLerayCoherentRealization (GluedSpace D)
 
 namespace PaperGluingData
 
 variable (A : PaperGluingData)
+
+/-- The standard open-cover Mayer--Vietoris theorem applies to all three stages of the paper's
+four-piece cover. -/
+public theorem mayerVietorisExactness : FourPieceMayerVietorisExactness A.cover :=
+  establishedFourPieceMayerVietorisExactness A.cover
+
+/-- The coherent Section 7 realization, compared with the established singular homology of the
+standard sphere, gives the assembly layer's homology contract. -/
+public theorem integralHomology : HasIntegralHomologyOfSixSphere (GluedSpace A.D) :=
+  A.homologyRealization.hasIntegralHomologyOfSixSphere_established
 
 /-- Exact assembly of packaged gluing data into the completed-threefold contract. -/
 @[expose] public noncomputable def toCompletedPaperThreefold : CompletedPaperThreefold := by
   letI := A.finiteIndex
   letI := A.nonemptyIndex
   letI := A.nonemptyPiece
-  letI := A.compactPiece
   letI := A.connectedPiece
   letI := A.complexCharts
   letI := A.gluedT2
   letI := A.gluedSecondCountable
-  exact completedPaperThreefoldOfGluing A.D A.complexCompatible A.realManifold
-    A.intersectionConnected A.vanKampen A.cover A.mayerVietoris
+  exact completedPaperThreefoldOfGluing A.D A.complexCompatible A.realManifold A.gluedCompact
+    A.intersectionConnected A.vanKampen A.integralHomology
 
 end PaperGluingData
 

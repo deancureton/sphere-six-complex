@@ -16,6 +16,7 @@ public import SphereSixComplex.Geometry.EllipticFamilySpecialization
 public import SphereSixComplex.Geometry.EllipticFixedPointCriterion
 public import SphereSixComplex.Geometry.EllipticLocalCoordinates
 public import SphereSixComplex.Geometry.EllipticLocalTrivialization
+public import SphereSixComplex.Geometry.EllipticWholeFiberTrivialization
 public import SphereSixComplex.Geometry.FamilyEquivariance
 public import SphereSixComplex.Geometry.FuchsianRegularTorusFamily
 public import SphereSixComplex.Geometry.Gluing
@@ -33,6 +34,7 @@ public import SphereSixComplex.Periods.Domain
 public import SphereSixComplex.Periods.CanonicalObstruction
 public import SphereSixComplex.Periods.Functions
 public import SphereSixComplex.Periods.FuchsianCompactCore
+public import SphereSixComplex.Periods.FuchsianModularParameterExistence
 public import SphereSixComplex.Periods.FuchsianUniformizationBridge
 public import SphereSixComplex.Periods.Invariant
 public import SphereSixComplex.Periods.LocalOrbifoldCompatibility
@@ -54,7 +56,9 @@ public import SphereSixComplex.Topology.SectionSevenLerayDuality
 public import SphereSixComplex.Topology.SectionSevenLerayChainDuality
 public import SphereSixComplex.Topology.SectionSevenLerayHomologyDuality
 public import SphereSixComplex.Topology.SectionSevenLerayRealization
+public import SphereSixComplex.Topology.EstablishedMayerVietoris
 public import SphereSixComplex.Topology.EstablishedRecognition
+public import SphereSixComplex.Topology.EstablishedSphereHomology
 public import SphereSixComplex.Topology.SmoothRecognition
 public import SphereSixComplex.Topology.SmoothRecognitionFoundations
 public import SphereSixComplex.Topology.SphereSimplyConnected
@@ -64,6 +68,7 @@ public import SphereSixComplex.Topology.DiskBoundaryQuotient
 public import SphereSixComplex.Topology.RelativeSingularHomology
 public import SphereSixComplex.Topology.SingularExcision
 public import SphereSixComplex.Topology.SingularBarycentricAllDegrees
+public import SphereSixComplex.Topology.SingularBarycentricOuterFaces
 public import SphereSixComplex.Topology.SingularBarycentricChains
 public import SphereSixComplex.Topology.SingularSubdivision
 public import SphereSixComplex.Topology.TwistObstruction
