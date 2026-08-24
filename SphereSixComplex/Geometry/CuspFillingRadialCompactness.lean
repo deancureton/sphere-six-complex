@@ -25,7 +25,7 @@ open CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
 noncomputable section
 
 /-- The `ℓ¹` size of a real two-vector. -/
-public def realL1 (x : Fin 2 → ℝ) : ℝ :=
+@[expose] public def realL1 (x : Fin 2 → ℝ) : ℝ :=
   |x 0| + |x 1|
 
 public theorem realL1_nonneg (x : Fin 2 → ℝ) : 0 ≤ realL1 x :=
