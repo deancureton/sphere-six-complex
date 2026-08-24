@@ -66,10 +66,12 @@ public import SphereSixComplex.Geometry.PaperStarClosedRelationReduction
 public import SphereSixComplex.Geometry.PaperStarCollarPairProperness
 public import SphereSixComplex.Geometry.PaperStarComplexStructures
 public import SphereSixComplex.Geometry.PaperStarHausdorff
+public import SphereSixComplex.Geometry.PaperStarCompactness
 public import SphereSixComplex.Geometry.PaperStarPieceHausdorff
 public import SphereSixComplex.Geometry.PaperStarPieceTopology
 public import SphereSixComplex.Geometry.PaperAssembly
 public import SphereSixComplex.Geometry.ProperlyDiscontinuousSlice
+public import SphereSixComplex.Geometry.PuncturedAffineCompactCore
 public import SphereSixComplex.Final
 public import SphereSixComplex.Geometry.Quotient
 public import SphereSixComplex.Geometry.RegularBaseTopology
