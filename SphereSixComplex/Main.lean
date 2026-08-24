@@ -116,7 +116,9 @@ public import SphereSixComplex.Periods.ProjectiveLineTorsors
 public import SphereSixComplex.Periods.SchurCompactness
 public import SphereSixComplex.Topology.FundamentalGroup
 public import SphereSixComplex.Topology.FundamentalGroupComputation
+public import SphereSixComplex.Topology.FullVanKampenReduction
 public import SphereSixComplex.Topology.VanKampenGeometry
+public import SphereSixComplex.Topology.ConcreteVanKampen
 public import SphereSixComplex.Topology.BinaryOpenCoverChains
 public import SphereSixComplex.Topology.BinaryOpenCoverCorestriction
 public import SphereSixComplex.Topology.BinaryOpenCoverExcision
@@ -129,6 +131,7 @@ public import SphereSixComplex.Topology.HurewiczWhitehead
 public import SphereSixComplex.Topology.HurewiczWhiteheadStages
 public import SphereSixComplex.Topology.MayerVietoris
 public import SphereSixComplex.Topology.SectionSevenChainModel
+public import SphereSixComplex.Topology.SectionSevenHomologyBridge
 public import SphereSixComplex.Topology.SectionSevenLerayChainModel
 public import SphereSixComplex.Topology.SectionSevenLerayDuality
 public import SphereSixComplex.Topology.SectionSevenLerayChainDuality
@@ -150,6 +153,7 @@ public import SphereSixComplex.Topology.ActualCuspCentralFiberRetraction
 public import SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
 public import SphereSixComplex.Topology.StandardInfiniteA2PositiveRetraction
 public import SphereSixComplex.Topology.EstablishedLerayCoverComparison
+public import SphereSixComplex.Topology.FiniteCoverCechRows
 public import SphereSixComplex.Topology.EstablishedMayerVietoris
 public import SphereSixComplex.Topology.EstablishedRecognition
 public import SphereSixComplex.Topology.EstablishedSphereHomology

@@ -2,10 +2,11 @@ name = "sphere-six-complex"
 version = "0.1.0"
 defaultTargets = ["SphereSixComplex", "Challenge", "Solution"]
 
+# Mathlib v4.33.1 plus the fundamental-groupoid van Kampen development from PR #41603.
 [[require]]
 name = "mathlib"
-git = "https://github.com/leanprover-community/mathlib4"
-rev = "v4.33.1"
+git = "https://github.com/Paul-Lez/mathlib4"
+rev = "dba911505e5f973d80c20bb1e3f6952f34081e29"
 
 [[lean_lib]]
 name = "SphereSixComplex"
