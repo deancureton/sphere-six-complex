@@ -5,7 +5,7 @@ set -euo pipefail
 project_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 tools_root="$project_root/.ci"
 lean4export_rev="15f6055e299ad5b89345e533cc2192f4cc00f659"
-comparator_rev="3927ad383f208ae977c340a91c48ac9b497d2097"
+comparator_rev="10dd2b33dc43751af3257f4d684535375306f162"
 
 mkdir -p "$tools_root"
 
