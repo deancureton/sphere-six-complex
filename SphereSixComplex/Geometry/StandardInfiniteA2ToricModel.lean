@@ -73,6 +73,24 @@ public theorem denseTorusShear_last
     denseTorusShear lambda x 2 = x 2 :=
   rfl
 
+/-- The canonical coordinate map from the dense algebraic torus to the open subset
+`(ℂˣ)³ ⊆ ℂ³`. -/
+public def denseTorusComplexCoordinates (x : DenseTorus) : ComplexModel :=
+  WithLp.toLp 2 (fun i ↦ (x i : ℂ))
+
+public theorem denseTorusComplexCoordinates_isOpenEmbedding :
+    Topology.IsOpenEmbedding denseTorusComplexCoordinates := by
+  have hpi : Topology.IsOpenEmbedding
+      (Pi.map fun _ : Fin 3 ↦ (Units.val : ℂˣ → ℂ)) :=
+    Topology.IsOpenEmbedding.piMap fun _ ↦ IsOpenUnits.isOpenEmbedding_unitsVal
+  exact (PiLp.homeomorph 2 (fun _ : Fin 3 ↦ ℂ)).symm.isOpenEmbedding.comp hpi
+
+/-- The complex atlas on the dense algebraic torus induced by its standard open embedding
+in `ℂ³`. -/
+@[instance_reducible]
+public noncomputable def denseTorusCharts : ChartedSpace ComplexModel DenseTorus :=
+  denseTorusComplexCoordinates_isOpenEmbedding.singletonChartedSpace
+
 /-- A bundled realization of the infinite height-one `A₂` fan as a complex toric
 three-manifold.  Mathlib currently has no scheme-theoretic divisor/reducedness layer for this
 construction, so the exact local squarefree normal form `t = z₀ z₁ z₂`, together with its
@@ -111,6 +129,14 @@ public structure Model where
   torus_openEmbedding :
     letI := topology
     Topology.IsOpenEmbedding torusEmbedding
+  /-- The dense-torus inclusion is locally biholomorphic for the canonical torus atlas and the
+  standard toric atlas. -/
+  torusEmbedding_isLocalDiffeomorph :
+    letI := denseTorusCharts
+    letI := topology
+    letI := charts
+    IsLocalDiffeomorph (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ComplexModel) ∞ torusEmbedding
   /-- The open torus is dense. -/
   torus_dense :
     letI := topology
@@ -249,24 +275,7 @@ public instance (M : Model) : T2Space M.Carrier := M.t2
 public instance (M : Model) : SecondCountableTopology M.Carrier := M.secondCountable
 public instance (M : Model) : ConnectedSpace M.Carrier := M.connected
 
-/-- The canonical coordinate map from the dense algebraic torus to the open subset
-`(ℂˣ)³ ⊆ ℂ³`. -/
-public def denseTorusComplexCoordinates (x : DenseTorus) : ComplexModel :=
-  WithLp.toLp 2 (fun i ↦ (x i : ℂ))
-
-public theorem denseTorusComplexCoordinates_isOpenEmbedding :
-    Topology.IsOpenEmbedding denseTorusComplexCoordinates := by
-  have hpi : Topology.IsOpenEmbedding
-      (Pi.map fun _ : Fin 3 ↦ (Units.val : ℂˣ → ℂ)) :=
-    Topology.IsOpenEmbedding.piMap fun _ ↦ IsOpenUnits.isOpenEmbedding_unitsVal
-  exact (PiLp.homeomorph 2 (fun _ : Fin 3 ↦ ℂ)).symm.isOpenEmbedding.comp hpi
-
-/-- The complex atlas on the dense algebraic torus induced by its standard open embedding
-in `ℂ³`. -/
-@[instance_reducible]
-public noncomputable def denseTorusCharts : ChartedSpace ComplexModel DenseTorus :=
-  denseTorusComplexCoordinates_isOpenEmbedding.singletonChartedSpace
-
+/-- The canonical dense-torus atlas is a complex three-manifold. -/
 public theorem denseTorus_isManifold :
     letI := denseTorusCharts
     IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞ DenseTorus :=

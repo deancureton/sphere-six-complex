@@ -11,6 +11,7 @@ public import SphereSixComplex.Geometry.ComplexThreefoldGluing
 public import SphereSixComplex.Geometry.ClosedRelationGluing
 public import SphereSixComplex.Geometry.CompactTorusFamilyOverBase
 public import SphereSixComplex.Geometry.CuspCombinatorics
+public import SphereSixComplex.Geometry.CuspAnalyticFillingCollar
 public import SphereSixComplex.Geometry.CuspFilling
 public import SphereSixComplex.Geometry.CuspLocalPhaseAction
 public import SphereSixComplex.Geometry.CuspPeriodExpansion
@@ -20,6 +21,7 @@ public import SphereSixComplex.Geometry.CuspToricPhaseAction
 public import SphereSixComplex.Geometry.CyclicCuspQuotient
 public import SphereSixComplex.Geometry.EllipticActualActionTopology
 public import SphereSixComplex.Geometry.EllipticAnalyticCollarDescent
+public import SphereSixComplex.Geometry.EllipticAnalyticFillingCollars
 public import SphereSixComplex.Geometry.EllipticAffineGlobalSeparation
 public import SphereSixComplex.Geometry.EllipticCayleyHomeomorph
 public import SphereSixComplex.Geometry.EllipticComplexFilling

@@ -22,14 +22,14 @@ public noncomputable def globalDeckComplexModelEquiv :
     simp [ComplexModel, ComplexTwoSpace])
 
 /-- Remove Mathlib's product-model type tag without changing the atlas. -/
-@[instance_reducible]
+@[expose, instance_reducible]
 public def globalDeckProductCharts
     {M : Type*} [TopologicalSpace M] [c : ChartedSpace (ModelProd ℂ ComplexTwoSpace) M] :
     ChartedSpace (ℂ × ComplexTwoSpace) M :=
   c
 
 /-- The canonical `ℂ³` recharting of an atlas expressed in the product coordinates. -/
-@[instance_reducible]
+@[expose, instance_reducible]
 public noncomputable def globalDeckComplexCharts
     {M : Type*} [TopologicalSpace M] [ChartedSpace (ModelProd ℂ ComplexTwoSpace) M] :
     ChartedSpace ComplexModel M :=

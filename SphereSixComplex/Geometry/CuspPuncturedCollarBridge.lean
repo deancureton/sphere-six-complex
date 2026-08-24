@@ -1209,6 +1209,28 @@ public noncomputable def additiveCuspCoverToGlobal
   fun p ↦ actualPuncturedGlobalCuspPoint W p.1.2
     (additiveCuspRadiusCover_halfPlane W.localWitness.radius_le p) p.2 p.1.1
 
+/-- The additive cusp map is exactly the composite of the two defining family quotients on the
+normalized regular bundle chart. -/
+public theorem additiveCuspCoverToGlobal_eq_quotientProjections
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M)
+    (p : additiveCuspRadiusCover W.localWitness.radius) :
+    letI := regularFamilyDeckAction (assembledFuchsianPeriodFunctions E D)
+    additiveCuspCoverToGlobal W p =
+      (quotientProjection : RegularTotalSpace (assembledFuchsianPeriodFunctions E D) →
+        PuncturedGlobalFamily (assembledFuchsianPeriodFunctions E D))
+        ((projection
+          (regularParameterMap (assembledFuchsianPeriodFunctions E D)) :
+            RegularBase (U := E.modularParameter.toTriangleUniformization) × ComplexTwoSpace →
+              RegularTotalSpace (assembledFuchsianPeriodFunctions E D))
+          ((additiveCuspBundleHomeomorph W p).1)) := by
+  let _ := regularFamilyDeckAction (assembledFuchsianPeriodFunctions E D)
+  unfold additiveCuspCoverToGlobal actualPuncturedGlobalCuspPoint
+    puncturedGlobalCuspPoint regularCuspFamilyPoint
+  rw [TorusFamily.projection.eq_def, quotientProjection.eq_def]
+  rfl
+
 public theorem additiveCuspCoverToGlobal_continuous
     {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}

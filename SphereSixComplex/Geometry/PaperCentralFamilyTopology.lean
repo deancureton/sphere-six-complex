@@ -198,7 +198,7 @@ namespace PaperAnalyticData
 variable (A : PaperAnalyticData)
 
 /-- Product-model charts on the selected central family. -/
-@[instance_reducible] public noncomputable def centralFamilyProductCharts :
+@[expose, instance_reducible] public noncomputable def centralFamilyProductCharts :
     ChartedSpace (ModelProd ℂ ComplexTwoSpace) A.CentralFamily := by
   let hproper : SourceActionProperlyDiscontinuous :=
     sourceActionProperlyDiscontinuous_of_eq
@@ -233,7 +233,7 @@ variable (A : PaperAnalyticData)
   infer_instance
 
 /-- Complex threefold charts on the selected central family. -/
-@[instance_reducible] public noncomputable def centralFamilyComplexCharts :
+@[expose, instance_reducible] public noncomputable def centralFamilyComplexCharts :
     ChartedSpace ComplexModel A.CentralFamily := by
   let _ := A.centralFamilyProductCharts
   exact globalDeckComplexCharts
