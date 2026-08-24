@@ -5,7 +5,6 @@ public import SphereSixComplex.Geometry.FourPieceStarGluing
 public import SphereSixComplex.Geometry.EstablishedBiholomorphicStarGluing
 public import SphereSixComplex.Geometry.EstablishedComplexToRealManifold
 public import SphereSixComplex.Topology.EstablishedMayerVietoris
-public import SphereSixComplex.Topology.SectionSevenCoherentRealizationReduction
 
 /-!
 # Exact gluing data for the completed paper threefold
@@ -57,10 +56,8 @@ public structure PaperGluingData where
   gluedCompact : CompactSpace (GluedSpace star.glueData)
   /-- The selected filling twists give the required van Kampen presentation. -/
   vanKampen : Topology.HasVanKampenData (GluedSpace star.glueData) 0 1 (-1)
-  /-- The paper-specific comparison from the verified finite Section 7 model to chains small with
-  respect to the canonical open images of these four pieces. -/
-  homologyComparison : SectionSevenFourPieceSmallChainComparison
-    (GluedSpace star.glueData) star.openCover
+  /-- The integral Mayer--Vietoris calculation for the completed star. -/
+  integralHomology : HasIntegralHomologyOfSixSphere (GluedSpace star.glueData)
 
 namespace PaperGluingData
 
@@ -94,12 +91,6 @@ public theorem gluedSecondCountable : SecondCountableTopology (GluedSpace A.D) :
 four-piece cover. -/
 public theorem mayerVietorisExactness : FourPieceMayerVietorisExactness A.star.openCover :=
   establishedFourPieceMayerVietorisExactness A.star.openCover
-
-/-- The paper-specific small-chain comparison for the actual four-piece cover, together with
-general open-cover subdivision and the established homology of the standard sphere, gives the
-assembly layer's homology contract. -/
-public theorem integralHomology : HasIntegralHomologyOfSixSphere (GluedSpace A.D) :=
-  A.homologyComparison.hasIntegralHomologyOfSixSphere
 
 /-- Restricting the glued complex atlas to real scalars supplies its smooth real
 six-manifold atlas. -/

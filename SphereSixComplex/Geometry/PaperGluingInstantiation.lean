@@ -12,7 +12,7 @@ public import SphereSixComplex.Geometry.PaperStarPieceTopology
 # Instantiating the paper gluing package
 
 All geometric and point-set-topological fields of `PaperGluingData` are supplied by the actual
-analytic four-piece star.  The constructor below leaves only the two global topology calculations
+analytic four-piece star. The constructor below leaves only the two global topology calculations
 as explicit inputs.
 -/
 
@@ -29,9 +29,8 @@ have been supplied. -/
 @[expose] public noncomputable def toPaperGluingData
     (vanKampen : Topology.HasVanKampenData
       (GluedSpace P.openEmbeddingStarData.toFourPieceStarGluingData.glueData) 0 1 (-1))
-    (homologyComparison : SectionSevenFourPieceSmallChainComparison
-      (GluedSpace P.openEmbeddingStarData.toFourPieceStarGluingData.glueData)
-      P.openEmbeddingStarData.toFourPieceStarGluingData.openCover) :
+    (integralHomology : HasIntegralHomologyOfSixSphere
+      (GluedSpace P.openEmbeddingStarData.toFourPieceStarGluingData.glueData)) :
     SphereSixComplex.PaperGluingData where
   star := P.openEmbeddingStarData.toFourPieceStarGluingData
   connectedPiece := P.starPiece_connected
@@ -41,7 +40,7 @@ have been supplied. -/
   gluedT2 := P.starGluedT2
   gluedCompact := P.starGluedCompact
   vanKampen := vanKampen
-  homologyComparison := homologyComparison
+  integralHomology := integralHomology
 
 end PaperAnalyticData
 
