@@ -55,6 +55,7 @@ public import SphereSixComplex.Geometry.PaperLocalCuspFillingConnected
 public import SphereSixComplex.Geometry.PaperOpenEmbeddingStar
 public import SphereSixComplex.Geometry.PaperOpenEmbeddingStarNonempty
 public import SphereSixComplex.Geometry.PaperStarClosedRelationReduction
+public import SphereSixComplex.Geometry.PaperStarCollarPairProperness
 public import SphereSixComplex.Geometry.PaperStarComplexStructures
 public import SphereSixComplex.Geometry.PaperStarPieceHausdorff
 public import SphereSixComplex.Geometry.PaperStarPieceTopology

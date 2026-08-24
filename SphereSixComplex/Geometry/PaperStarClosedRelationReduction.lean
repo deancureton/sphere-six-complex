@@ -22,7 +22,7 @@ namespace OpenEmbeddingStarData
 variable (A : OpenEmbeddingStarData)
 
 /-- The two collar embeddings, regarded as one map into the product of the adjacent pieces. -/
-public def collarPairMap (i : Fin 3) :
+@[expose] public def collarPairMap (i : Fin 3) :
     A.collarSource i → A.central × A.filling i :=
   fun x ↦ (A.toCentral i x, A.toFilling i x)
 
