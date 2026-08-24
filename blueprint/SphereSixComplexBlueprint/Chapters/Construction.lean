@@ -56,6 +56,7 @@ import SphereSixComplex.Topology.StandardSphere
 import SphereSixComplex.Topology.StandardSphereHomologyZero
 import SphereSixComplex.Topology.DiskBoundaryQuotient
 import SphereSixComplex.Topology.RelativeSingularHomology
+import SphereSixComplex.Topology.SingularExcision
 import SphereSixComplex.Topology.TwistObstruction
 import SphereSixComplex.TriangleGroup.ModularParameter
 import SphereSixComplex.TriangleGroup.FuchsianAction
@@ -281,9 +282,10 @@ finite and therefore proves the regular action free; both properties then lift t
 The remaining step is proper discontinuity of the explicit projective Fuchsian source action.
 :::
 
-:::theorem "regular-base-topology" (parent := "elliptic-orbit-freeness") (lean := "SphereSixComplex.Geometry.GlobalTorusFamily.sourceOrbitSingletons_locallyFinite, SphereSixComplex.Geometry.GlobalTorusFamily.sourceOrbitSet_isClosed, SphereSixComplex.Geometry.GlobalTorusFamily.isOpen_isRegularBasePoint, SphereSixComplex.Geometry.GlobalTorusFamily.regularBase_isManifold")
+:::theorem "regular-base-topology" (parent := "elliptic-orbit-freeness") (lean := "SphereSixComplex.Geometry.GlobalTorusFamily.sourceOrbitSingletons_locallyFinite, SphereSixComplex.Geometry.GlobalTorusFamily.sourceOrbitSet_isClosed, SphereSixComplex.Geometry.GlobalTorusFamily.isOpen_isRegularBasePoint, SphereSixComplex.Geometry.GlobalTorusFamily.regularBase_isManifold, SphereSixComplex.Geometry.GlobalTorusFamily.regularDeckMap_contMDiff")
 Proper discontinuity makes both elliptic orbits locally finite and closed. Their complement is
 therefore an open complex one-manifold, giving the correct regular base for the punctured family.
+Every lifted deck transformation restricts to a complex-smooth map over this base.
 :::
 
 :::theorem "analytic-torus-family" (parent := "torus-family") (lean := "SphereSixComplex.Geometry.AnalyticTorusFamily.parameterMap_contMDiff, SphereSixComplex.Geometry.AnalyticTorusFamily.periodSection_contMDiff, SphereSixComplex.Geometry.AnalyticTorusFamily.parameterMap_compactUniformLowerBound, SphereSixComplex.Geometry.AnalyticTorusFamily.totalSpace_isManifold_and_projection_isLocalDiffeomorph")
@@ -498,6 +500,13 @@ $`H_n(S^6)`; the remaining standard-sphere calculation is the relative disk-cell
 Collapsing the boundary of the seven-disk is homeomorphic to the standard seven-sphere, with the
 collapsed basepoint tracked through a reduced-chain isomorphism. The canonical relative-chain map
 is explicit; proving it is a homology isomorphism is precisely the remaining excision step.
+:::
+
+:::theorem "singular-small-chain-excision" (parent := "disk-boundary-collapse") (lean := "SphereSixComplex.CoverSmallChainRetractionData.approximation, SphereSixComplex.coverSmallIntegralSingularHomologyIso, SphereSixComplex.diskSevenExcisionCover_isOpen, SphereSixComplex.diskSevenExcisionCover_iUnion, SphereSixComplex.diskBoundaryToDiskSevenCoverSmallIntegralSingularChains_comp_inclusion, SphereSixComplex.DiskSevenSmallChainApproximation")
+The cover-small singular subcomplex and its monomorphic inclusion into all singular chains are
+explicit. Retraction data yields a chain-homotopy equivalence and homology isomorphisms. For the
+seven-disk, the boundary factors through the small chains for an explicit open two-set cover; the
+remaining step is to construct the subdivision approximation for that cover.
 :::
 
 :::theorem "sphere-stereographic-simple-connectivity" (parent := "standard-six-sphere") (lean := "SphereSixComplex.sixSphere_compl_singleton_simplyConnected, SphereSixComplex.sixSphere_simplyConnected_iff_loops_nullhomotopic")

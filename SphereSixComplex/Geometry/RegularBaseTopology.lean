@@ -18,6 +18,7 @@ open scoped ContDiff Manifold
 namespace SphereSixComplex.Geometry.GlobalTorusFamily
 
 open Set SphereSixComplex.Periods SphereSixComplex.TriangleGroup
+open SphereSixComplex.Geometry.ComplexTorus
 
 noncomputable section
 
@@ -124,6 +125,43 @@ public theorem regularBase_isManifold
   let _ := regularBaseChartedSpace hproper
   change IsManifold (modelWithCornersSelf ℂ ℂ) ∞ (regularBaseOpen hproper)
   infer_instance
+
+/-- Every lifted deck transformation restricts to a complex-smooth map on the regular vector
+bundle cover. -/
+public theorem regularDeckMap_contMDiff
+    (F : PeriodFunctions U) (hproper : SourceActionProperlyDiscontinuous (U := U))
+    (g : Delta) :
+    letI := regularBaseChartedSpace hproper
+    ContMDiff GlobalDeckTotalModel GlobalDeckTotalModel ∞ (regularDeckMap F g) := by
+  let _ := regularBaseChartedSpace hproper
+  have hval : ContMDiff GlobalDeckBaseModel GlobalDeckBaseModel ∞
+      (fun z : RegularBase (U := U) ↦ z.1) := by
+    change ContMDiff GlobalDeckBaseModel GlobalDeckBaseModel ∞
+      (Subtype.val : regularBaseOpen hproper → UpperHalfPlane)
+    exact contMDiff_subtype_val
+  have hinclude : ContMDiff GlobalDeckTotalModel GlobalDeckTotalModel ∞
+      (fun p : RegularBase (U := U) × ComplexTwoSpace ↦ (p.1.1, p.2)) :=
+    (hval.comp contMDiff_fst).prodMk contMDiff_snd
+  have hfull : ContMDiff GlobalDeckTotalModel GlobalDeckTotalModel ∞
+      (deckMap F g ∘ fun p : RegularBase (U := U) × ComplexTwoSpace ↦ (p.1.1, p.2)) :=
+    (deckMap_contMDiff F g ∞).comp hinclude
+  have hbaseVal : ContMDiff GlobalDeckTotalModel GlobalDeckBaseModel ∞
+      (fun p : RegularBase (U := U) × ComplexTwoSpace ↦
+        (regularSourceEquiv g p.1).1) := by
+    exact (U.sourceAction_contMDiff g ∞).comp
+      (hval.comp contMDiff_fst)
+  have hbase : ContMDiff GlobalDeckTotalModel GlobalDeckBaseModel ∞
+      (fun p : RegularBase (U := U) × ComplexTwoSpace ↦ regularSourceEquiv g p.1) := by
+    apply (ContMDiff.subtypeVal_comp_iff (regularBaseOpen hproper) _).mp
+    convert hbaseVal using 1
+    rfl
+  have hfiber : ContMDiff GlobalDeckTotalModel GlobalDeckFiberModel ∞
+      (fun p : RegularBase (U := U) × ComplexTwoSpace ↦
+        periodTransport g (regularParameterMap F p.1) p.2) := by
+    have hsnd := contMDiff_snd.comp hfull
+    convert hsnd using 1
+    rfl
+  exact hbase.prodMk hfiber
 
 end
 

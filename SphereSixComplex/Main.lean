@@ -56,6 +56,7 @@ public import SphereSixComplex.Topology.StandardSphere
 public import SphereSixComplex.Topology.StandardSphereHomologyZero
 public import SphereSixComplex.Topology.DiskBoundaryQuotient
 public import SphereSixComplex.Topology.RelativeSingularHomology
+public import SphereSixComplex.Topology.SingularExcision
 public import SphereSixComplex.Topology.TwistObstruction
 public import SphereSixComplex.TriangleGroup.ModularParameter
 public import SphereSixComplex.TriangleGroup.FuchsianAction
