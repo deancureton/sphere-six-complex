@@ -2,6 +2,7 @@ module
 
 public import SphereSixComplex.Geometry.PaperGluingInstantiation
 public import SphereSixComplex.Topology.PaperSectionSevenHomologyAssembly
+public import SphereSixComplex.Topology.PaperSectionSevenLocalEulerModelAssembly
 public import SphereSixComplex.Topology.SectionSevenMayerVietorisEuler
 public import SphereSixComplex.Topology.SectionSevenLocalEulerModels
 
@@ -96,6 +97,15 @@ public noncomputable def toPaperGluingData_of_positiveDegreeAndLocalModels
     (M : P.SectionSevenLocalEulerModels) : SphereSixComplex.PaperGluingData :=
   P.toPaperGluingData_of_sectionSevenLocalModels vanKampen
     H.toSectionSevenMayerVietorisHomologyAssembly M
+
+/-- The completed local topology is inserted automatically; only the positive-degree
+Mayer--Vietoris calculation and van Kampen datum remain. -/
+public noncomputable def toPaperGluingData_of_positiveDegree
+    (vanKampen : Topology.HasVanKampenData
+      (GluedSpace P.openEmbeddingStarData.toFourPieceStarGluingData.glueData) 0 1 (-1))
+    (H : P.SectionSevenPositiveDegreeHomologyAssembly) : SphereSixComplex.PaperGluingData :=
+  P.toPaperGluingData_of_positiveDegreeAndLocalModels vanKampen H
+    P.sectionSevenLocalEulerModels
 
 end PaperAnalyticData
 
