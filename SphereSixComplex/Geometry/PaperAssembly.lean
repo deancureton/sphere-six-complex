@@ -23,6 +23,7 @@ public noncomputable def completedPaperThreefoldOfGluing (D : TopCat.GlueData)
     [Finite D.J] [Nonempty D.J] [∀ i, Nonempty (D.U i)]
     [∀ i, CompactSpace (D.U i)] [∀ i, ConnectedSpace (D.U i)]
     [∀ i, ChartedSpace ComplexModel (D.U i)]
+    [T2Space (GluedSpace D)] [SecondCountableTopology (GluedSpace D)]
     (hcomplex : GluingAtlasCompatible
       (I := modelWithCornersSelf ℂ ComplexModel) (n := ∞) D)
     (hreal : @IsManifold ℝ inferInstance RealModel inferInstance inferInstance RealModel
@@ -43,6 +44,7 @@ public theorem smoothRecognitionInputOfGluing (D : TopCat.GlueData)
     [Finite D.J] [Nonempty D.J] [∀ i, Nonempty (D.U i)]
     [∀ i, CompactSpace (D.U i)] [∀ i, ConnectedSpace (D.U i)]
     [∀ i, ChartedSpace ComplexModel (D.U i)]
+    [T2Space (GluedSpace D)] [SecondCountableTopology (GluedSpace D)]
     (hcomplex : GluingAtlasCompatible
       (I := modelWithCornersSelf ℂ ComplexModel) (n := ∞) D)
     (hreal : @IsManifold ℝ inferInstance RealModel inferInstance inferInstance RealModel

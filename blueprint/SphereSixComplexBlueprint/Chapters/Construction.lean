@@ -16,6 +16,7 @@ import SphereSixComplex.Geometry.EllipticFamilySpecialization
 import SphereSixComplex.Geometry.EllipticFixedPointCriterion
 import SphereSixComplex.Geometry.EllipticLocalCoordinates
 import SphereSixComplex.Geometry.FamilyEquivariance
+import SphereSixComplex.Geometry.FuchsianRegularTorusFamily
 import SphereSixComplex.Geometry.Gluing
 import SphereSixComplex.Geometry.GlobalTorusFamily
 import SphereSixComplex.Geometry.GlobalDeckSmoothness
@@ -51,6 +52,7 @@ import SphereSixComplex.Topology.SectionSevenLerayDuality
 import SphereSixComplex.Topology.SectionSevenLerayChainDuality
 import SphereSixComplex.Topology.SectionSevenLerayHomologyDuality
 import SphereSixComplex.Topology.SectionSevenLerayRealization
+import SphereSixComplex.Topology.EstablishedRecognition
 import SphereSixComplex.Topology.SmoothRecognition
 import SphereSixComplex.Topology.SmoothRecognitionFoundations
 import SphereSixComplex.Topology.SphereSimplyConnected
@@ -59,11 +61,13 @@ import SphereSixComplex.Topology.StandardSphereHomologyZero
 import SphereSixComplex.Topology.DiskBoundaryQuotient
 import SphereSixComplex.Topology.RelativeSingularHomology
 import SphereSixComplex.Topology.SingularExcision
+import SphereSixComplex.Topology.SingularBarycentricChains
 import SphereSixComplex.Topology.SingularSubdivision
 import SphereSixComplex.Topology.TwistObstruction
 import SphereSixComplex.TriangleGroup.ModularParameter
 import SphereSixComplex.TriangleGroup.FuchsianAction
 import SphereSixComplex.TriangleGroup.FuchsianArithmetic
+import SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 import SphereSixComplex.TriangleGroup.FuchsianFundamentalDomain
 import SphereSixComplex.TriangleGroup.FuchsianPingPong
 import SphereSixComplex.TriangleGroup.FuchsianTessellation
@@ -200,14 +204,20 @@ power of the parabolic product; local finiteness of all triangle translates rema
 
 :::theorem "fuchsian-reduction" (parent := "fuchsian-fundamental-triangle") (lean := "SphereSixComplex.TriangleGroup.FuchsianTessellation.product_zpow_apply, SphereSixComplex.TriangleGroup.FuchsianTessellation.exists_product_zpow_mem_centered_strip, SphereSixComplex.TriangleGroup.FuchsianTessellation.reductionStep_mem_or_im_lt, SphereSixComplex.TriangleGroup.FuchsianTessellation.exists_smul_mem_coarseFordRegion")
 Integral cusp powers center every point in a fixed strip. Outside the coarse Ford region, the
-order-three generator strictly raises height. Thus an orbit-height maximum supplies a translate in
-the region; existence of such maxima is the remaining arithmetic discreteness step.
+order-three generator strictly raises height. An orbit-height maximum therefore supplies a
+translate in the region.
 :::
 
 :::theorem "fuchsian-arithmetic" (parent := "fuchsian-reduction") (lean := "SphereSixComplex.TriangleGroup.FuchsianArithmetic.quadraticProjectiveRepresentation, SphereSixComplex.TriangleGroup.FuchsianArithmetic.quadraticProjectiveRepresentation_inl_generator, SphereSixComplex.TriangleGroup.FuchsianArithmetic.quadraticProjectiveRepresentation_inr_generator, SphereSixComplex.TriangleGroup.FuchsianArithmetic.positive_bottomRow_bounded_of_normSq_le, SphereSixComplex.TriangleGroup.FuchsianArithmetic.finite_bottomRows_of_normSq_le_of_conjugate_bounded")
 The Fuchsian generators lift to an explicit projective representation over $`\mathbb Z[\sqrt2]`.
 Paired real embeddings make bounded denominator sublevels finite once the conjugate bottom rows are
-uniformly bounded; proving that last bound is the remaining arithmetic termination step.
+uniformly bounded. The coefficient-cone invariant below supplies this bound.
+:::
+
+:::theorem "fuchsian-arithmetic-termination" (parent := "fuchsian-arithmetic") (lean := "SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination.wordMatrix_matrixInCoefficientCone, SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination.finite_wordBottomRows_of_normSq_le, SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination.exists_fuchsian_orbitHeightMaximal, SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination.exists_smul_mem_coarseFordRegion, SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination.fuchsianSourceAction_properlyDiscontinuous, SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination.sourceActionProperlyDiscontinuous_of_eq, SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination.fuchsianRegular_isCancelSMul")
+Reduced words have entrywise conjugate norm bounded by the distinguished embedding. Consequently,
+denominator sublevels are finite, orbit heights attain maxima, every orbit meets the coarse Ford
+region, and the source action is properly discontinuous. The regular-locus action is free.
 :::
 
 :::theorem "fuchsian-compact-core" (parent := "fuchsian-fundamental-triangle") (lean := "SphereSixComplex.Periods.fuchsianFundamentalCompactCore_isCompact, SphereSixComplex.Periods.fundamentalTriangle_mem_cusp_or_compactCore, SphereSixComplex.Periods.fuchsianQuotientCompactCore, SphereSixComplex.Periods.FuchsianPrePeriodData.theorem3_4Existence_of_triangleCover")
@@ -268,7 +278,7 @@ The exact period-matrix identities descend to locally complex-diffeomorphic maps
 quotients over all three triangle-group generators.
 :::
 
-:::theorem "global-torus-family-action" (parent := "torus-family") (lean := "SphereSixComplex.Geometry.GlobalTorusFamily.periodTransport_isComplexLinear, SphereSixComplex.Geometry.GlobalTorusFamily.parameterMap_equivariant, SphereSixComplex.Geometry.GlobalTorusFamily.regularDeckMap_orbitRel_iff, SphereSixComplex.Geometry.GlobalTorusFamily.regularFamilyDeckMap_mul, SphereSixComplex.Geometry.GlobalTorusFamily.regularParameterMap_compactUniformLowerBound, SphereSixComplex.Geometry.GlobalTorusFamily.regularTotalSpace_isManifold_and_projection_isLocalDiffeomorph, SphereSixComplex.Geometry.GlobalTorusFamily.regularFamilyDeckMap_contMDiff, SphereSixComplex.Geometry.GlobalTorusFamily.regularFamilyDeckAction_isCancelSMul_of_fuchsian, SphereSixComplex.Geometry.GlobalTorusFamily.regularFamilyDeckAction_properlyDiscontinuous_of_source, SphereSixComplex.Geometry.GlobalTorusFamily.puncturedGlobalFamily_isManifold_and_projection_isLocalDiffeomorph, SphereSixComplex.Geometry.GlobalTorusFamily.PuncturedGlobalFamily")
+:::theorem "global-torus-family-action" (parent := "torus-family") (lean := "SphereSixComplex.Geometry.GlobalTorusFamily.periodTransport_isComplexLinear, SphereSixComplex.Geometry.GlobalTorusFamily.parameterMap_equivariant, SphereSixComplex.Geometry.GlobalTorusFamily.regularDeckMap_orbitRel_iff, SphereSixComplex.Geometry.GlobalTorusFamily.regularFamilyDeckMap_mul, SphereSixComplex.Geometry.GlobalTorusFamily.regularParameterMap_compactUniformLowerBound, SphereSixComplex.Geometry.GlobalTorusFamily.regularTotalSpace_isManifold_and_projection_isLocalDiffeomorph, SphereSixComplex.Geometry.GlobalTorusFamily.regularFamilyDeckMap_contMDiff, SphereSixComplex.Geometry.GlobalTorusFamily.regularFamilyDeckAction_isCancelSMul_of_fuchsian, SphereSixComplex.Geometry.GlobalTorusFamily.regularFamilyDeckAction_properlyDiscontinuous_of_source, SphereSixComplex.Geometry.GlobalTorusFamily.puncturedGlobalFamily_isManifold_and_projection_isLocalDiffeomorph, SphereSixComplex.Geometry.GlobalTorusFamily.fuchsianPuncturedGlobalFamily_isManifold_and_projection_isLocalDiffeomorph, SphereSixComplex.Geometry.GlobalTorusFamily.PuncturedGlobalFamily")
 Integral monodromy extends to complex-linear fibre transport for every triangle-group element.
 The resulting deck action respects the varying period lattice and defines the punctured global
 torus-family quotient before the three local fillings are attached. The regular lattice quotient
@@ -467,6 +477,13 @@ integral homology sphere to a homotopy sphere, followed by the dimension-six smo
 classification.  Their composition gives the exact diffeomorphism required by the construction.
 :::
 
+:::theorem "established-smooth-recognition" (parent := "smooth-recognition") (lean := "SphereSixComplex.establishedHomologyToHomotopySixSphere, SphereSixComplex.establishedSmoothPoincareSix, SphereSixComplex.establishedSmoothSixSphereRecognition")
+The Whitehead--Hurewicz implication for simply connected smooth integral homology six-spheres and
+the dimension-six smooth Poincare theorem are isolated as explicit established external inputs.
+Their exact Lean statements imply the smooth-recognition obligation; neither input assumes any
+part of the paper's complex-geometric construction.
+:::
+
 :::theorem "hurewicz-whitehead-reduction" (parent := "smooth-recognition") (lean := "SphereSixComplex.HasIntegralHomologyComparisonToSixSphere, SphereSixComplex.homotopyEquivSixSphere_of_comparison_of_whitehead, SphereSixComplex.homologyToHomotopySixSphere_of_comparison_of_whitehead")
 The homology-to-homotopy step is reduced to constructing one coherent integral-homology comparison
 map $`X \to S^6` and applying the integral-homology Whitehead property to that map. Homotopy
@@ -507,12 +524,13 @@ collapsed basepoint tracked through a reduced-chain isomorphism. The canonical r
 is explicit; proving it is a homology isomorphism is precisely the remaining excision step.
 :::
 
-:::theorem "singular-small-chain-excision" (parent := "disk-boundary-collapse") (lean := "SphereSixComplex.CoverSmallChainRetractionData.approximation, SphereSixComplex.coverSmallIntegralSingularHomologyIso, SphereSixComplex.diskSevenExcisionCover_isOpen, SphereSixComplex.diskSevenExcisionCover_iUnion, SphereSixComplex.diskBoundaryToDiskSevenCoverSmallIntegralSingularChains_comp_inclusion, SphereSixComplex.DiskSevenSmallChainApproximation, SphereSixComplex.simplexSubdivisionLastVertex, SphereSixComplex.subdivisionLastVertex, SphereSixComplex.subdivisionLastVertexChainMap_naturality, SphereSixComplex.subdivisionLastVertexLiftChainMap_comp_inclusion")
+:::theorem "singular-small-chain-excision" (parent := "disk-boundary-collapse") (lean := "SphereSixComplex.CoverSmallChainRetractionData.approximation, SphereSixComplex.coverSmallIntegralSingularHomologyIso, SphereSixComplex.diskSevenExcisionCover_isOpen, SphereSixComplex.diskSevenExcisionCover_iUnion, SphereSixComplex.diskBoundaryToDiskSevenCoverSmallIntegralSingularChains_comp_inclusion, SphereSixComplex.DiskSevenSmallChainApproximation, SphereSixComplex.simplexSubdivisionLastVertex, SphereSixComplex.subdivisionLastVertex, SphereSixComplex.subdivisionLastVertexChainMap_naturality, SphereSixComplex.subdivisionLastVertexLiftChainMap_comp_inclusion, SphereSixComplex.barycentricSubdivisionChainMapZero, SphereSixComplex.subdividedOneSimplexFundamentalChain, SphereSixComplex.subdividedOneSimplexBoundaryChain")
 The cover-small singular subcomplex and its monomorphic inclusion into all singular chains are
 explicit. Retraction data yields a chain-homotopy equivalence and homology isomorphisms. For the
 seven-disk, the boundary factors through the small chains for an explicit open two-set cover. The
 global subdivision last-vertex map, induced chain map, and subcomplex lifts are constructed from
-Mathlib's left-Kan-extension API. The remaining step is the oriented barycentric chain operator,
+Mathlib's left-Kan-extension API. The barycentric chain operator and its boundary identity are
+constructed in degrees zero and one. The remaining step is the all-degree signed flag operator,
 its prism homotopy, and the Lebesgue-number iteration for this cover.
 :::
 

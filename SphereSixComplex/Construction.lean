@@ -2,7 +2,7 @@ module
 
 public import SphereSixComplex.Geometry.AtlasTransport
 public import SphereSixComplex.Topology.FundamentalGroup
-public import SphereSixComplex.Topology.SmoothRecognition
+public import SphereSixComplex.Topology.EstablishedRecognition
 
 /-!
 # Minimal construction target
@@ -36,6 +36,10 @@ public structure ComplexThreefold where
   compact : @CompactSpace Carrier topology
   /-- Connectedness. -/
   connected : @ConnectedSpace Carrier topology
+  /-- Hausdorffness of the underlying space. -/
+  t2 : @T2Space Carrier topology
+  /-- Second countability of the underlying space. -/
+  secondCountable : @SecondCountableTopology Carrier topology
 
 /-- The underlying real smooth manifold of a complex threefold is diffeomorphic to standard `S⁶`. -/
 public def DiffeomorphicToSixSphere (X : ComplexThreefold) : Prop :=
@@ -90,7 +94,12 @@ public theorem completedPaperThreefold_smoothRecognition (C : CompletedPaperThre
     letI := C.X.topology
     letI := underlyingRealChartedSpace C.X.charts
     SmoothSixSphereRecognitionObligation C.X.Carrier := by
-  sorry
+  let _ : TopologicalSpace C.X.Carrier := C.X.topology
+  let _ : ChartedSpace RealModel C.X.Carrier :=
+    underlyingRealChartedSpace C.X.charts
+  let _ : T2Space C.X.Carrier := C.X.t2
+  let _ : SecondCountableTopology C.X.Carrier := C.X.secondCountable
+  exact establishedSmoothSixSphereRecognition
 
 /-- The minimal construction-and-recognition theorem extracted from the source's two-page summary. -/
 public theorem exists_complex_threefold_diffeomorphic_sixSphere :

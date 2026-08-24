@@ -16,6 +16,7 @@ public import SphereSixComplex.Geometry.EllipticFamilySpecialization
 public import SphereSixComplex.Geometry.EllipticFixedPointCriterion
 public import SphereSixComplex.Geometry.EllipticLocalCoordinates
 public import SphereSixComplex.Geometry.FamilyEquivariance
+public import SphereSixComplex.Geometry.FuchsianRegularTorusFamily
 public import SphereSixComplex.Geometry.Gluing
 public import SphereSixComplex.Geometry.GlobalTorusFamily
 public import SphereSixComplex.Geometry.GlobalDeckSmoothness
@@ -51,6 +52,7 @@ public import SphereSixComplex.Topology.SectionSevenLerayDuality
 public import SphereSixComplex.Topology.SectionSevenLerayChainDuality
 public import SphereSixComplex.Topology.SectionSevenLerayHomologyDuality
 public import SphereSixComplex.Topology.SectionSevenLerayRealization
+public import SphereSixComplex.Topology.EstablishedRecognition
 public import SphereSixComplex.Topology.SmoothRecognition
 public import SphereSixComplex.Topology.SmoothRecognitionFoundations
 public import SphereSixComplex.Topology.SphereSimplyConnected
@@ -59,11 +61,13 @@ public import SphereSixComplex.Topology.StandardSphereHomologyZero
 public import SphereSixComplex.Topology.DiskBoundaryQuotient
 public import SphereSixComplex.Topology.RelativeSingularHomology
 public import SphereSixComplex.Topology.SingularExcision
+public import SphereSixComplex.Topology.SingularBarycentricChains
 public import SphereSixComplex.Topology.SingularSubdivision
 public import SphereSixComplex.Topology.TwistObstruction
 public import SphereSixComplex.TriangleGroup.ModularParameter
 public import SphereSixComplex.TriangleGroup.FuchsianAction
 public import SphereSixComplex.TriangleGroup.FuchsianArithmetic
+public import SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 public import SphereSixComplex.TriangleGroup.FuchsianFundamentalDomain
 public import SphereSixComplex.TriangleGroup.FuchsianPingPong
 public import SphereSixComplex.TriangleGroup.FuchsianTessellation
