@@ -7,6 +7,7 @@ module
 
 public import SphereSixComplex.Topology.BinaryOpenCoverMayerVietoris
 public import Mathlib.Algebra.Homology.HomologicalComplexBiprod
+public import Mathlib.AlgebraicTopology.SimplicialSet.TopAdj
 
 /-!
 # Assembly of the ordinary open-cover Mayer--Vietoris comparison
@@ -228,6 +229,29 @@ theorem openMVFromBiprodChain_naturality {X : TopCat}
       biprod.inr_map_assoc, biprod.inr_desc_assoc, biprod.inr_desc] using
       rightCorestriction_comp_union U V
 
+private theorem coverUnion_ι_app_zero_surjective {X : TopCat}
+    (U V : Opens X) (hcover : U ⊔ V = ⊤) :
+    Function.Surjective
+      ((coverUnion U V).ι.app (Opposite.op (SimplexCategory.mk 0))) := by
+  intro σ
+  let x := TopCat.toSSetObj₀Equiv σ
+  refine ⟨⟨σ, ?_⟩, rfl⟩
+  have hx : x ∈ U ⊔ V := by
+    rw [hcover]
+    trivial
+  change
+    (∃ a, (TopCat.toSSet.map (Opens.inclusion' U)).app _ a = σ) ∨
+      ∃ b, (TopCat.toSSet.map (Opens.inclusion' V)).app _ b = σ
+  rcases Opens.mem_sup.mp hx with hx | hx
+  · left
+    refine ⟨TopCat.toSSetObj₀Equiv.symm ⟨x, hx⟩, ?_⟩
+    apply TopCat.toSSetObj₀Equiv.injective
+    rfl
+  · right
+    refine ⟨TopCat.toSSetObj₀Equiv.symm ⟨x, hx⟩, ?_⟩
+    apply TopCat.toSSetObj₀Equiv.injective
+    rfl
+
 /-! ## Homology isomorphisms and the two naturality squares -/
 
 noncomputable abbrev homologyFunctor (n : ℕ) :
@@ -319,6 +343,45 @@ private theorem homology_openMVFromBiprodChain {X : TopCat}
       (openSingularChains U) (openSingularChains V)
       (integralSimplicialChains.map (TopCat.toSSet.map (Opens.inclusion' U)))
       (integralSimplicialChains.map (TopCat.toSSet.map (Opens.inclusion' V))))
+
+/-- The degree-zero map from the homology of the two open sets covers ambient homology. -/
+public theorem integralMVFromBiprod_zero_surjective
+    {X : TopCat} (U V : Opens X) (hcover : U ⊔ V = ⊤) :
+    Function.Surjective (integralMVFromBiprod U V 0) := by
+  let _ : IsIso
+      ((coverUnion U V).ι.app (Opposite.op (SimplexCategory.mk 0))) :=
+    (isIso_iff_bijective _).mpr
+      ⟨Subtype.coe_injective, coverUnion_ι_app_zero_surjective U V hcover⟩
+  let _ : IsIso ((coverChainInclusion U V).f 0) := by
+    change IsIso ((sigmaConst.obj (AddCommGrpCat.of ℤ)).map
+      ((coverUnion U V).ι.app (Opposite.op (SimplexCategory.mk 0))))
+    infer_instance
+  let _ : Epi ((coverChainInclusion U V).f 0) := inferInstance
+  let _ : Epi (coverChainShortComplex U V).g :=
+    (coverChainShortComplex_shortExact U V).epi_g
+  let _ : Epi ((coverChainShortComplex U V).g.f 0) := inferInstance
+  let _ : Epi ((biprodForwardChain U V).f 0) := inferInstance
+  let _ : Epi ((openMVFromBiprodChain U V).f 0) := by
+    have h := HomologicalComplex.congr_hom
+      (openMVFromBiprodChain_naturality U V) 0
+    simp only [HomologicalComplex.comp_f] at h
+    rw [← h]
+    change Epi ((biprodForwardChain U V).f 0 ≫
+      ((coverChainShortComplex U V).g.f 0 ≫ (coverChainInclusion U V).f 0))
+    exact epi_comp'
+      (inferInstance : Epi ((biprodForwardChain U V).f 0))
+      (epi_comp'
+        (inferInstance : Epi ((coverChainShortComplex U V).g.f 0))
+        (inferInstance : Epi ((coverChainInclusion U V).f 0)))
+  let hHomologyEpi : Epi
+      ((homologyFunctor 0).map (openMVFromBiprodChain U V)) := by
+    change Epi (HomologicalComplex.homologyMap
+      (openMVFromBiprodChain U V) 0)
+    apply HomologicalComplex.epi_homologyMap_of_epi_of_not_rel
+    simp [ComplexShape.down_Rel]
+  exact (AddCommGrpCat.epi_iff_surjective _).mp
+    (@epi_of_epi_fac _ _ _ _ _ _ _ _ hHomologyEpi
+      (homology_openMVFromBiprodChain U V 0))
 
 private theorem homologyFunctor_map_comp_mapIso_symm_hom_assoc
     {K L : ChainComplex AddCommGrpCat ℕ} (f : K ⟶ L) [IsIso f]
@@ -423,3 +486,5 @@ public theorem integralOpenCoverComparisonStatement_of_binaryOpenCoverSubdivisio
   exact ⟨openCoverHomologyComparisonOfSubdivision D⟩
 
 end SphereSixComplex.BinaryOpenCover
+
+#print axioms SphereSixComplex.BinaryOpenCover.integralMVFromBiprod_zero_surjective
