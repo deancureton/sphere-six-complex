@@ -11,6 +11,7 @@ import SphereSixComplex.Geometry.CuspFilling
 import SphereSixComplex.Geometry.CyclicCuspQuotient
 import SphereSixComplex.Geometry.EllipticComplexFilling
 import SphereSixComplex.Geometry.EllipticFilling
+import SphereSixComplex.Geometry.EllipticLocalCoordinates
 import SphereSixComplex.Geometry.FamilyEquivariance
 import SphereSixComplex.Geometry.Gluing
 import SphereSixComplex.Geometry.GlobalTorusFamily
@@ -23,6 +24,7 @@ import SphereSixComplex.LatticeData
 import SphereSixComplex.Periods.Domain
 import SphereSixComplex.Periods.CanonicalObstruction
 import SphereSixComplex.Periods.Functions
+import SphereSixComplex.Periods.FuchsianUniformizationBridge
 import SphereSixComplex.Periods.Invariant
 import SphereSixComplex.Periods.LocalOrbifoldCompatibility
 import SphereSixComplex.Periods.Matrix
@@ -48,9 +50,11 @@ import SphereSixComplex.Topology.SmoothRecognitionFoundations
 import SphereSixComplex.Topology.SphereSimplyConnected
 import SphereSixComplex.Topology.StandardSphere
 import SphereSixComplex.Topology.StandardSphereHomologyZero
+import SphereSixComplex.Topology.RelativeSingularHomology
 import SphereSixComplex.Topology.TwistObstruction
 import SphereSixComplex.TriangleGroup.ModularParameter
 import SphereSixComplex.TriangleGroup.FuchsianAction
+import SphereSixComplex.TriangleGroup.FuchsianPingPong
 import SphereSixComplex.TriangleGroup.FuchsianSmoothAction
 import SphereSixComplex.TriangleGroup.FreeProductTorsion
 import SphereSixComplex.TriangleGroup.BinaryIndexedCoprod
@@ -171,6 +175,17 @@ cusp generator is a horizontal translation preserving the chosen horodisc. Every
 acts complex-smoothly by free-product induction.
 :::
 
+:::theorem "fuchsian-source-faithfulness" (parent := "fuchsian-source-action") (lean := "SphereSixComplex.TriangleGroup.FuchsianPingPong.inl_maps_left_to_right, SphereSixComplex.TriangleGroup.FuchsianPingPong.inr_maps_right_to_left, SphereSixComplex.TriangleGroup.FuchsianPingPong.factorAction_ping_pong, SphereSixComplex.TriangleGroup.FuchsianPingPong.fuchsianSourceAction_injective")
+The two real half-planes form ping-pong regions for the cyclic factors. Hence the explicit
+projective source representation of their free product is faithful.
+:::
+
+:::theorem "fuchsian-uniformization-bridge" (parent := "period-functions") (lean := "SphereSixComplex.Periods.FuchsianModularParameter.equivariant, SphereSixComplex.Periods.FuchsianModularParameter.coordinate_invariant, SphereSixComplex.Periods.FuchsianModularParameter.toTriangleUniformization, SphereSixComplex.Periods.FuchsianPrePeriodData.toPrePeriodFunctions, SphereSixComplex.Periods.FuchsianPrePeriodData.theorem3_4Existence")
+The two generator laws for a holomorphic modular parameter extend to the full free product. Its
+normalized modular invariant supplies the quotient coordinate, and explicit additive period data
+plus a compact quotient core gives the nondegenerate period family.
+:::
+
 :::theorem "local-orbifold-compatibility" (parent := "period-functions") (lean := "SphereSixComplex.Periods.orderOf_targetOnePerm, SphereSixComplex.Periods.orderOf_targetTwoPerm, SphereSixComplex.Periods.explicitLocalOrbifoldActionData, SphereSixComplex.Periods.IsLocallyOrbifoldCompatible.invariant_under_two_square, SphereSixComplex.Periods.IsLocallyOrbifoldCompatible.cusp_value_translation")
 The order-three source and target actions agree, while the order-four source stabilizer maps to an
 order-two target stabilizer. The explicit source and target cusp widths give the local branching
@@ -272,6 +287,12 @@ Use {uses "torus-family"}[the torus family] and the unimodular cusp lattice map 
 The order-three and order-four ends admit free logarithmic-transform fillings with the twist vectors
 specified in the Setup.  When the local affine actions are analytic, both covering quotients inherit
 complex-manifold atlases.
+:::
+
+:::theorem "elliptic-local-coordinates" (parent := "elliptic-fillings") (lean := "SphereSixComplex.Geometry.EllipticLocalCoordinates.norm_cayleyCoordinate_lt_one, SphereSixComplex.Geometry.EllipticLocalCoordinates.orderThreeCayley_generator, SphereSixComplex.Geometry.EllipticLocalCoordinates.orderFourCayley_generator, SphereSixComplex.Geometry.EllipticLocalCoordinates.orderThreeDiscCoordinate_equivariant, SphereSixComplex.Geometry.EllipticLocalCoordinates.orderFourDiscCoordinate_equivariant, SphereSixComplex.Geometry.EllipticLocalCoordinates.EllipticFiberData.orderThreeActionData_quotient_isManifold, SphereSixComplex.Geometry.EllipticLocalCoordinates.EllipticFiberData.orderFourActionData_quotient_isManifold")
+Cayley coordinates identify neighborhoods of the two explicit elliptic fixed points with the unit
+disc and conjugate the source generators to rotations of orders three and four. The remaining
+affine fibre data then gives the free logarithmic-transform quotient manifolds.
 :::
 
 :::proof "elliptic-fillings"
@@ -422,6 +443,12 @@ The target $`S^6` is compact, path-connected, and carries the standard smooth si
 :::theorem "standard-sphere-homology-zero" (parent := "standard-six-sphere") (lean := "SphereSixComplex.sixSphereHomeomorphTopCatSphereSix, SphereSixComplex.sixSphere_integralSingularHomology_zero_equiv_integer, SphereSixComplex.sixSphere_sectionSevenHomologyRealization_zero, SphereSixComplex.topCatDiskSeven_contractibleSpace, SphereSixComplex.topCatDiskSeven_integralSingularHomology_isZero")
 The standard sphere has degree-zero integral homology $`\mathbb Z`; it is the boundary of the
 contractible seven-disk, whose positive-degree integral homology vanishes.
+:::
+
+:::theorem "relative-disk-sphere-homology" (parent := "standard-six-sphere") (lean := "SphereSixComplex.relativeIntegralSingularShortComplex_shortExact, SphereSixComplex.relativeIntegralSingular_homology_exact_ambient, SphereSixComplex.relativeIntegralSingular_homology_exact_relative, SphereSixComplex.relativeIntegralSingular_homology_exact_subspace, SphereSixComplex.diskSevenSphereSix_relativeBoundaryIso")
+Relative singular chains are defined as a categorical cokernel and fit into the long exact
+homology sequence. For positive degrees, its boundary identifies $`H_{n+1}(D^7,S^6)` with
+$`H_n(S^6)`; the remaining standard-sphere calculation is the relative disk-cell computation.
 :::
 
 :::theorem "sphere-stereographic-simple-connectivity" (parent := "standard-six-sphere") (lean := "SphereSixComplex.sixSphere_compl_singleton_simplyConnected, SphereSixComplex.sixSphere_simplyConnected_iff_loops_nullhomotopic")
