@@ -72,6 +72,42 @@ public structure TriangleUniformization where
   cuspRegion_nonempty : cuspRegion.Nonempty
   cuspRegion_invariant : ∀ z, sourceAction g₀ • z ∈ cuspRegion ↔ z ∈ cuspRegion
 
+/-- The explicit modular action and normalized modular coordinate provide the algebraic and local
+fixed-point data required by `TriangleUniformization`.  Its cusp region is initially taken to be the
+whole upper half-plane; later analytic estimates may replace it by a smaller invariant region. -/
+public noncomputable def canonicalTriangleUniformization : TriangleUniformization where
+  sourceAction := rhoTauReal
+  source_det_pos g := by
+    rw [show (rhoTauReal g).det = 1 by
+      exact Matrix.SpecialLinearGroup.det_mapGL (S := ℝ) (rhoTau g)]
+    norm_num
+  coordinate z := normalizedJ z / 1728
+  coordinate_holomorphic :=
+    normalizedJ_mdifferentiable.div mdifferentiable_const (by norm_num)
+  coordinate_invariant g z := by
+    rw [show rhoTauReal g = Matrix.SpecialLinearGroup.mapGL ℝ (rhoTau g) by
+      simp [rhoTauReal, modularToReal]]
+    rw [normalizedJ_modular_invariant]
+  zOne := ellipticThreeParameter
+  zTwo := UpperHalfPlane.I
+  zOne_fixed := by
+    apply UpperHalfPlane.coe_injective
+    rw [rhoTauReal_g1_smul]
+    have hz : (ellipticThreeParameter : ℂ) ≠ 0 := ellipticThreeParameter.ne_zero
+    field_simp [hz]
+    rw [show (ellipticThreeParameter : ℂ) = UpperHalfPlane.ρ + 1 by rfl]
+    rw [show ((UpperHalfPlane.ρ : ℂ) + 1) ^ 2 =
+        (UpperHalfPlane.ρ : ℂ) ^ 2 + 2 * UpperHalfPlane.ρ + 1 by ring]
+    rw [UpperHalfPlane.ρ_sq]
+    ring
+  zTwo_fixed := by
+    apply UpperHalfPlane.coe_injective
+    rw [rhoTauReal_g2_smul]
+    norm_num [UpperHalfPlane.I]
+  cuspRegion := Set.univ
+  cuspRegion_nonempty := Set.univ_nonempty
+  cuspRegion_invariant _ := by simp
+
 @[expose] public def periodValues (tau : UpperHalfPlane → UpperHalfPlane)
     (mu beta : UpperHalfPlane → ℂ) (z : UpperHalfPlane) : Parameters where
   tau := tau z

@@ -25,13 +25,13 @@ public theorem PeriodDomain.tau_ne_one (x : PeriodDomain) : x.1.tau ≠ 1 := by
   intro h
   simpa [h] using x.2.tau_im_pos.ne'
 
-public noncomputable def transformOneDomain (x : PeriodDomain) : PeriodDomain :=
+@[expose] public noncomputable def transformOneDomain (x : PeriodDomain) : PeriodDomain :=
   ⟨transformOne x.1, setupInequalities_transformOne x.1 x.2⟩
 
-public noncomputable def transformTwoDomain (x : PeriodDomain) : PeriodDomain :=
+@[expose] public noncomputable def transformTwoDomain (x : PeriodDomain) : PeriodDomain :=
   ⟨transformTwo x.1, setupInequalities_transformTwo x.1 x.2⟩
 
-public noncomputable def transformCuspDomain (x : PeriodDomain) : PeriodDomain :=
+@[expose] public noncomputable def transformCuspDomain (x : PeriodDomain) : PeriodDomain :=
   ⟨transformCusp x.1, setupInequalities_transformCusp x.1 x.2⟩
 
 public noncomputable def transformOneEquiv : Equiv.Perm PeriodDomain where

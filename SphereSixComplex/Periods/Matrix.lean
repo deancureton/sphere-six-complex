@@ -48,11 +48,14 @@ public noncomputable def rightOne (x : Parameters) : Matrix (Fin 2) (Fin 2) ℂ 
 public noncomputable def rightTwo (x : Parameters) : Matrix (Fin 2) (Fin 2) ℂ :=
   !![1 / x.tau, 0; -x.mu / x.tau, 1]
 
-public def A₁Complex : Matrix (Fin 4) (Fin 4) ℂ := A₁.map (Int.castRingHom ℂ)
+@[expose] public def A₁Complex : Matrix (Fin 4) (Fin 4) ℂ :=
+  A₁.map (Int.castRingHom ℂ)
 
-public def A₂Complex : Matrix (Fin 4) (Fin 4) ℂ := A₂.map (Int.castRingHom ℂ)
+@[expose] public def A₂Complex : Matrix (Fin 4) (Fin 4) ℂ :=
+  A₂.map (Int.castRingHom ℂ)
 
-public def M₀Complex : Matrix (Fin 4) (Fin 4) ℂ := M₀.map (Int.castRingHom ℂ)
+@[expose] public def M₀Complex : Matrix (Fin 4) (Fin 4) ℂ :=
+  M₀.map (Int.castRingHom ℂ)
 
 public theorem A₁_eq_explicit : A₁ =
     !![(1 : ℤ), 0, 0, 0; 6, 0, 1, 0; -6, -1, -1, 0; -2, 1, 0, 1] := by

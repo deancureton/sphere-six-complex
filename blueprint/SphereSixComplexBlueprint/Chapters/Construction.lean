@@ -5,6 +5,9 @@ import SphereSixComplex.Construction
 import SphereSixComplex.Geometry.AtlasTransport
 import SphereSixComplex.Geometry.ComplexTorus
 import SphereSixComplex.Geometry.ComplexThreefoldGluing
+import SphereSixComplex.Geometry.CuspCombinatorics
+import SphereSixComplex.Geometry.EllipticFilling
+import SphereSixComplex.Geometry.FamilyEquivariance
 import SphereSixComplex.Geometry.Gluing
 import SphereSixComplex.Geometry.Quotient
 import SphereSixComplex.Geometry.TorusFamily
@@ -16,6 +19,7 @@ import SphereSixComplex.Periods.Matrix
 import SphereSixComplex.Periods.Nondegeneracy
 import SphereSixComplex.Periods.Transformations
 import SphereSixComplex.Topology.FundamentalGroup
+import SphereSixComplex.Topology.HomologyComputation
 import SphereSixComplex.Topology.HomologySphere
 import SphereSixComplex.Topology.MayerVietoris
 import SphereSixComplex.Topology.SmoothRecognition
@@ -125,6 +129,12 @@ The normalized level-one modular function $`E_4^3/\Delta` is holomorphic on the 
 invariant under $`\mathrm{SL}_2(\mathbb Z)`.
 :::
 
+:::definition "canonical-triangle-uniformization" (parent := "period-functions") (lean := "SphereSixComplex.Periods.canonicalTriangleUniformization")
+The explicit integral modular representation, the invariant coordinate $`E_4^3/(1728\Delta)`, and
+the order-three and order-four fixed points provide the source-action data for the analytic period
+problem.
+:::
+
 :::theorem "torus-family" (parent := "construction_spine") (priority := "high")
 The period matrix built from $`\tau,\mu,\beta` defines a proper holomorphic family of compact complex
 two-tori over the thrice-punctured sphere.
@@ -140,9 +150,19 @@ At each nondegenerate parameter, the four periods act freely and properly discon
 holomorphic translations on $`\mathbb C^2`, and the quotient is a compact complex two-manifold.
 :::
 
+:::theorem "torus-family-equivariance" (parent := "torus-family") (lean := "SphereSixComplex.Geometry.FamilyEquivariance.rhoGOneTorusHomeomorph, SphereSixComplex.Geometry.FamilyEquivariance.rhoGTwoTorusHomeomorph, SphereSixComplex.Geometry.FamilyEquivariance.rhoGZeroTorusHomeomorph, SphereSixComplex.Geometry.FamilyEquivariance.generatorOneTorusHomeomorph_isLocalDiffeomorph")
+The exact period-matrix identities descend to locally complex-diffeomorphic maps between the torus
+quotients over all three triangle-group generators.
+:::
+
 :::theorem "cusp-filling" (parent := "construction_spine") (priority := "high")
 The unipotent end admits the toric filling whose central fibre is the opposite-edge quotient of the
 degree-six del Pezzo surface.
+:::
+
+:::theorem "cusp-fan-combinatorics" (parent := "cusp-filling") (lean := "SphereSixComplex.Geometry.CuspCombinatorics.direction_sum_zero, SphereSixComplex.Geometry.CuspCombinatorics.direction_pair_det, SphereSixComplex.Geometry.CuspCombinatorics.hexagonRay_opposite, SphereSixComplex.Geometry.CuspCombinatorics.hexagonCone_det")
+The three $`A_2` directions sum to zero and consecutive pairs form integral bases.  The six rays of
+the degree-six del Pezzo fan occur in opposite pairs, and every two-dimensional cone is unimodular.
 :::
 
 :::proof "cusp-filling"
@@ -150,7 +170,7 @@ Use {uses "torus-family"}[the torus family] and the unimodular cusp lattice map 
 {uses "monodromy-identities"}[the explicit nilpotent monodromy].
 :::
 
-:::theorem "elliptic-fillings" (parent := "construction_spine") (priority := "high")
+:::theorem "elliptic-fillings" (parent := "construction_spine") (lean := "SphereSixComplex.Geometry.epsilon_action_free, SphereSixComplex.Geometry.neg_epsilonPrime_action_free, SphereSixComplex.Geometry.quotient_isQuotientCoveringMap, SphereSixComplex.Geometry.quotient_chartedSpace") (priority := "high")
 The order-three and order-four ends admit free logarithmic-transform fillings with the twist vectors
 specified in the Setup.
 :::
@@ -217,6 +237,12 @@ singular homology equivalence with the standard six-sphere.
 The four-piece gluing is organized into three successive open unions.  Mayer--Vietoris exactness is
 separated from the final finite chain-level computation, expressed as a quasi-isomorphism to the
 integral singular chains of $`S^6`.
+:::
+
+:::theorem "section-seven-integer-algebra" (parent := "integral-homology") (lean := "SphereSixComplex.firstHomologyPresentation_exact, SphereSixComplex.alphaOne_kernel, SphereSixComplex.alphaTwoPresentation_exact, SphereSixComplex.chosenLerayDifferential_bijective, SphereSixComplex.hasIntegralHomologyOfSixSphere_of_sectionSevenRealizations")
+The integral presentation, specialization, and Leray differential matrices from Section 7 have the
+claimed kernels and images.  For the selected twists the final differential is an isomorphism; an
+explicit realization contract records the remaining passage from these matrices to singular homology.
 :::
 
 :::theorem "smooth-recognition" (parent := "construction_spine") (lean := "SphereSixComplex.completedPaperThreefold_smoothRecognition, SphereSixComplex.exists_complex_threefold_diffeomorphic_sixSphere") (priority := "high")

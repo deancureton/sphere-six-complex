@@ -5,6 +5,9 @@ public import SphereSixComplex.Construction
 public import SphereSixComplex.Geometry.AtlasTransport
 public import SphereSixComplex.Geometry.ComplexTorus
 public import SphereSixComplex.Geometry.ComplexThreefoldGluing
+public import SphereSixComplex.Geometry.CuspCombinatorics
+public import SphereSixComplex.Geometry.EllipticFilling
+public import SphereSixComplex.Geometry.FamilyEquivariance
 public import SphereSixComplex.Geometry.Gluing
 public import SphereSixComplex.Geometry.Quotient
 public import SphereSixComplex.Geometry.TorusFamily
@@ -16,6 +19,7 @@ public import SphereSixComplex.Periods.Matrix
 public import SphereSixComplex.Periods.Nondegeneracy
 public import SphereSixComplex.Periods.Transformations
 public import SphereSixComplex.Topology.FundamentalGroup
+public import SphereSixComplex.Topology.HomologyComputation
 public import SphereSixComplex.Topology.HomologySphere
 public import SphereSixComplex.Topology.MayerVietoris
 public import SphereSixComplex.Topology.SmoothRecognition

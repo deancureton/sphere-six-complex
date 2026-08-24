@@ -66,10 +66,10 @@ public theorem rhoTau_g₀ : rhoTau g₀ = modularCusp := by
   rw [SphereSixComplex.TriangleGroup.g₀.eq_def, map_inv, map_mul, rhoTau_g₁, rhoTau_g₂]
   exact inv_eq_of_mul_eq_one_right modularOne_mul_modularTwo_mul_modularCusp
 
-public noncomputable def modularToReal : ModularMatrix →* GL (Fin 2) ℝ :=
+@[expose] public noncomputable def modularToReal : ModularMatrix →* GL (Fin 2) ℝ :=
   Matrix.SpecialLinearGroup.mapGL ℝ
 
-public noncomputable def rhoTauReal : Delta →* GL (Fin 2) ℝ :=
+@[expose] public noncomputable def rhoTauReal : Delta →* GL (Fin 2) ℝ :=
   modularToReal.comp rhoTau
 
 public theorem modularOne_real_matrix :

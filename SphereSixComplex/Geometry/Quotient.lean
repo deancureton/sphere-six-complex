@@ -27,7 +27,7 @@ variable {M G : Type*} [Group G] [MulAction G M]
 public abbrev OrbitQuotient := MulAction.orbitRel.Quotient G M
 
 /-- The projection to the orbit quotient. -/
-public def quotientProjection : M → OrbitQuotient (M := M) (G := G) :=
+@[expose] public def quotientProjection : M → OrbitQuotient (M := M) (G := G) :=
   Quotient.mk _
 
 /-- The orbit projection is surjective. -/
