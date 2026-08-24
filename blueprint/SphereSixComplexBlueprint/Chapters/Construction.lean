@@ -439,9 +439,10 @@ Glue {uses "cusp-filling"}[the cusp filling] and
 {uses "torus-family"}[torus family], and verify the resulting charts and transition maps.
 :::
 
-:::theorem "manifold-gluing" (parent := "compact-complex-threefold") (lean := "SphereSixComplex.gluedChartedSpace, SphereSixComplex.isManifold_gluedChartedSpace, SphereSixComplex.compactSpace_gluedSpace, SphereSixComplex.connectedSpace_gluedSpace")
+:::theorem "manifold-gluing" (parent := "compact-complex-threefold") (lean := "SphereSixComplex.gluedChartedSpace, SphereSixComplex.isManifold_gluedChartedSpace, SphereSixComplex.secondCountableTopology_gluedSpace, SphereSixComplex.compactSpace_gluedSpace, SphereSixComplex.connectedSpace_gluedSpace, SphereSixComplex.PaperGluingData.gluedSecondCountable")
 Compatible atlases on the filling pieces transport to their topological gluing and make the glued
-space a manifold. Connected pieces with a connected overlap graph give a connected gluing;
+space a manifold. A countable open gluing of second-countable pieces is second countable, and
+connected pieces with a connected overlap graph give a connected gluing;
 compactness of the completed space is a separate global construction obligation, since the open
 punctured and filling pieces need not themselves be compact.
 :::

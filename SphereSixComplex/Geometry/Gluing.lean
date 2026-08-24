@@ -40,6 +40,23 @@ public theorem piece_isOpenEmbedding (D : TopCat.GlueData.{w}) (i : D.J) :
     IsOpenEmbedding (D.toGlueData.ι i) :=
   D.ι_isOpenEmbedding i
 
+/-- A gluing over a countable index type is second countable when every piece is second
+countable. -/
+public theorem secondCountableTopology_gluedSpace (D : TopCat.GlueData.{w}) [Countable D.J]
+    [∀ i, SecondCountableTopology (D.U i)] :
+    SecondCountableTopology (GluedSpace D) := by
+  let _ (i : D.J) : SecondCountableTopology
+      (Set.range (D.toGlueData.ι i)) :=
+    (D.ι_isOpenEmbedding i).isEmbedding.toHomeomorph.symm.secondCountableTopology
+  apply TopologicalSpace.secondCountableTopology_of_countable_cover
+    (U := fun i ↦ Set.range (D.toGlueData.ι i))
+  · intro i
+    exact (D.ι_isOpenEmbedding i).isOpen_range
+  · ext x
+    simp only [Set.mem_iUnion, Set.mem_range, Set.mem_univ, iff_true]
+    obtain ⟨i, y, hy⟩ := D.ι_jointly_surjective x
+    exact ⟨i, y, hy⟩
+
 /-- A gluing of finitely many compact pieces is compact. -/
 public theorem compactSpace_gluedSpace (D : TopCat.GlueData.{w}) [Finite D.J]
     [∀ i, CompactSpace (D.U i)] : CompactSpace (GluedSpace D) := by

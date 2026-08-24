@@ -32,10 +32,10 @@ public structure PaperGluingData where
   connectedPiece : ∀ i, ConnectedSpace (D.U i)
   /-- Every piece carries its specified complex charts. -/
   complexCharts : ∀ i, ChartedSpace ComplexModel (D.U i)
+  /-- Every piece is second countable. -/
+  pieceSecondCountable : ∀ i, SecondCountableTopology (D.U i)
   /-- The glued topology is Hausdorff. -/
   gluedT2 : T2Space (GluedSpace D)
-  /-- The glued topology is second countable. -/
-  gluedSecondCountable : SecondCountableTopology (GluedSpace D)
   /-- The completed glued space is compact. -/
   gluedCompact : CompactSpace (GluedSpace D)
   /-- The complex charts agree on every gluing overlap. -/
@@ -69,6 +69,12 @@ public structure PaperGluingData where
 namespace PaperGluingData
 
 variable (A : PaperGluingData)
+
+/-- Countability of the four-piece gluing follows from countability of its pieces. -/
+public theorem gluedSecondCountable : SecondCountableTopology (GluedSpace A.D) := by
+  let _ := A.finiteIndex
+  let _ (i : A.D.J) := A.pieceSecondCountable i
+  exact secondCountableTopology_gluedSpace A.D
 
 /-- The standard open-cover Mayer--Vietoris theorem applies to all three stages of the paper's
 four-piece cover. -/
