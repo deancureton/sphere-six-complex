@@ -82,19 +82,36 @@ public theorem collapseQuotientMap_comp_subspace (a : A) :
 /-- Points outside the collapsed image. -/
 public abbrev CollapseComplement := {x : X // x ∉ Set.range i}
 
+/-- The prequotient collapse map: points of the complement remain finite and points in the
+collapsed image are sent to infinity. -/
+public noncomputable def collapseToOnePointComplement : X →
+    OnePoint (CollapseComplement i) := by
+  classical
+  exact fun x ↦ if hx : x ∈ Set.range i then OnePoint.infty
+    else (↑(⟨x, hx⟩ : CollapseComplement i))
+
+@[simp]
+public theorem collapseToOnePointComplement_of_mem {x : X} (hx : x ∈ Set.range i) :
+    collapseToOnePointComplement i x = OnePoint.infty := by
+  simp [collapseToOnePointComplement, hx]
+
+@[simp]
+public theorem collapseToOnePointComplement_of_notMem {x : X} (hx : x ∉ Set.range i) :
+    collapseToOnePointComplement i x = (↑(⟨x, hx⟩ : CollapseComplement i)) := by
+  simp [collapseToOnePointComplement, hx]
+
 /-- The underlying point-set quotient is the one-point extension of the complement. -/
 public noncomputable def collapseQuotientEquivOnePointComplement (a : A) :
     CollapseQuotient i ≃ OnePoint (CollapseComplement i) := by
   classical
-  let f : X → OnePoint (CollapseComplement i) := fun x ↦
-    dite (x ∈ Set.range i) (fun _ ↦ OnePoint.infty)
-      (fun hx ↦ (⟨x, hx⟩ : CollapseComplement i))
+  let f := collapseToOnePointComplement i
   have hf : ∀ x y, collapseSetoid i x y → f x = f y := by
     intro x y hxy
     rcases hxy with rfl | ⟨hx, hy⟩
     · rfl
     · dsimp [f]
-      rw [dif_pos hx, dif_pos hy]
+      rw [collapseToOnePointComplement_of_mem i hx,
+        collapseToOnePointComplement_of_mem i hy]
   let g : OnePoint (CollapseComplement i) → CollapseQuotient i := fun p ↦
     p.elim (@Quotient.mk' X (collapseSetoid i) (i a))
       (fun x ↦ @Quotient.mk' X (collapseSetoid i) x.1)
@@ -109,8 +126,7 @@ public noncomputable def collapseQuotientEquivOnePointComplement (a : A) :
     by_cases hx : x ∈ Set.range i
     · change g (f x) = @Quotient.mk' X (collapseSetoid i) x
       have hfx : f x = OnePoint.infty := by
-        dsimp [f]
-        rw [dif_pos hx]
+        exact collapseToOnePointComplement_of_mem i hx
       rw [hfx]
       change @Quotient.mk' X (collapseSetoid i) (i a) =
         @Quotient.mk' X (collapseSetoid i) x
@@ -119,8 +135,7 @@ public noncomputable def collapseQuotientEquivOnePointComplement (a : A) :
     · change g (f x) = @Quotient.mk' X (collapseSetoid i) x
       have hfx : f x = (↑(⟨x, hx⟩ : CollapseComplement i) :
           OnePoint (CollapseComplement i)) := by
-        dsimp [f]
-        rw [dif_neg hx]
+        exact collapseToOnePointComplement_of_notMem i hx
       rw [hfx]
       rfl
   · intro p
@@ -128,13 +143,75 @@ public noncomputable def collapseQuotientEquivOnePointComplement (a : A) :
     | infty =>
         change Quotient.lift f hf (@Quotient.mk' X (collapseSetoid i) (i a)) = _
         change f (i a) = _
-        dsimp [f]
-        rw [dif_pos ⟨a, rfl⟩]
+        exact collapseToOnePointComplement_of_mem i ⟨a, rfl⟩
     | coe x =>
         change Quotient.lift f hf (@Quotient.mk' X (collapseSetoid i) x.1) = _
         change f x.1 = _
-        dsimp [f]
-        rw [dif_neg x.2]
+        exact collapseToOnePointComplement_of_notMem i x.2
+
+@[simp]
+public theorem collapseQuotientEquivOnePointComplement_mk (a : A) (x : X) :
+    collapseQuotientEquivOnePointComplement i a
+        (@Quotient.mk' X (collapseSetoid i) x) = collapseToOnePointComplement i x :=
+  rfl
+
+/-- If the uncollapsed complement is open in a Hausdorff ambient space, the prequotient collapse
+map to its one-point compactification is continuous. -/
+public theorem continuous_collapseToOnePointComplement [T2Space X]
+    (hopen : IsOpen {x : X | x ∉ Set.range i}) :
+    Continuous (collapseToOnePointComplement i) := by
+  classical
+  rw [continuous_def]
+  intro s hs
+  have hs' := OnePoint.isOpen_def.mp hs
+  by_cases hinf : OnePoint.infty ∈ s
+  · have hpre : collapseToOnePointComplement i ⁻¹' s =
+        (((↑) : CollapseComplement i → X) ''
+          (((↑) : CollapseComplement i → OnePoint (CollapseComplement i)) ⁻¹' s)ᶜ)ᶜ := by
+      ext x
+      by_cases hx : x ∈ Set.range i
+      · constructor
+        · intro _ hImage
+          obtain ⟨z, _, hzx⟩ := hImage
+          exact z.2 (by simpa [← hzx] using hx)
+        · intro _
+          change collapseToOnePointComplement i x ∈ s
+          rw [collapseToOnePointComplement_of_mem i hx]
+          exact hinf
+      · change collapseToOnePointComplement i x ∈ s ↔ _
+        rw [collapseToOnePointComplement_of_notMem i hx]
+        constructor
+        · intro hxs hImage
+          obtain ⟨z, hz, hzx⟩ := hImage
+          have hzEq : z = ⟨x, hx⟩ := Subtype.ext hzx
+          subst z
+          exact hz hxs
+        · intro hnot
+          by_contra hxs
+          apply hnot
+          exact ⟨⟨x, hx⟩, hxs, rfl⟩
+    rw [hpre]
+    exact ((hs'.1 hinf).image continuous_subtype_val).isClosed.isOpen_compl
+  · have hpre : collapseToOnePointComplement i ⁻¹' s =
+        ((↑) : CollapseComplement i → X) ''
+          (((↑) : CollapseComplement i → OnePoint (CollapseComplement i)) ⁻¹' s) := by
+      ext x
+      by_cases hx : x ∈ Set.range i
+      · constructor
+        · intro hxs
+          exact (hinf (by simpa [collapseToOnePointComplement_of_mem i hx] using hxs)).elim
+        · rintro ⟨z, _, hzx⟩
+          exact (z.2 (by simpa [← hzx] using hx)).elim
+      · change collapseToOnePointComplement i x ∈ s ↔ _
+        rw [collapseToOnePointComplement_of_notMem i hx]
+        constructor
+        · intro hxs
+          exact ⟨⟨x, hx⟩, hxs, rfl⟩
+        · rintro ⟨z, hzs, hzx⟩
+          have hzEq : z = ⟨x, hx⟩ := Subtype.ext hzx
+          simpa [hzEq] using hzs
+    rw [hpre]
+    exact hopen.isOpenMap_subtype_val _ hs'.2
 
 /-- Reduced singular chains based at `b`, modeled as the cokernel of the singular chains of the
 basepoint inclusion. -/
@@ -259,6 +336,34 @@ public noncomputable def diskSevenComplementBoundaryEquivBall :
         apply Subtype.ext
         rfl }
 
+/-- The disk interior, viewed as the complement of the boundary image, is open in the closed
+disk. -/
+public theorem diskSevenCollapseComplement_isOpen :
+    IsOpen {x : (TopCat.disk.{0} 7 : Type) |
+      x ∉ Set.range (TopCat.diskBoundaryInclusion.{0} 7)} := by
+  have hset : {x : (TopCat.disk.{0} 7 : Type) |
+      x ∉ Set.range (TopCat.diskBoundaryInclusion.{0} 7)} =
+      {x | ‖x.down.1‖ < 1} := by
+    ext x
+    constructor
+    · intro hx
+      have hle : ‖x.down.1‖ ≤ 1 := by
+        simpa only [Metric.mem_closedBall, dist_zero_right] using x.down.2
+      exact lt_of_le_of_ne hle fun heq ↦ hx
+        ⟨ULift.up ⟨x.down.1, by
+          simpa only [Metric.mem_sphere, dist_zero_right] using heq⟩, rfl⟩
+    · intro hlt hx
+      obtain ⟨y, hy⟩ := hx
+      have hxy : y.down.1 = x.down.1 :=
+        congrArg (fun z : TopCat.disk.{0} 7 ↦ z.down.1) hy
+      have hyNorm : ‖y.down.1‖ = 1 := by
+        simpa only [Metric.mem_sphere, dist_zero_right] using y.down.2
+      exact hlt.ne (hxy ▸ hyNorm)
+  rw [hset]
+  exact isOpen_lt
+    (continuous_norm.comp (continuous_subtype_val.comp continuous_uliftDown))
+    continuous_const
+
 /-- The preceding point-set equivalence is a homeomorphism. -/
 public noncomputable def diskSevenComplementBoundaryHomeomorphBall :
     CollapseComplement (TopCat.diskBoundaryInclusion.{0} 7) ≃ₜ
@@ -282,8 +387,7 @@ public noncomputable def onePointBallSevenHomeomorphSphereSeven :
     (onePointEquivSphereOfFinrankEq (V := EuclideanSpace ℝ (Fin 7)) (by simp)).trans
       Homeomorph.ulift.symm
 
-/-- The explicit point-set equivalence `D⁷/S⁶ ≃ S⁷`.  The only unproved topological
-property is continuity of its first factor from the quotient to the one-point compactification. -/
+/-- The explicit point-set equivalence `D⁷/S⁶ ≃ S⁷`. -/
 public noncomputable def diskBoundaryQuotientSevenEquivSphereSeven :
     DiskBoundaryQuotientSeven ≃ (TopCat.sphere.{0} 7 : Type) :=
   (collapseQuotientEquivOnePointComplement
@@ -296,14 +400,32 @@ public noncomputable def diskBoundaryQuotientSevenSphereBasepoint :
     TopCat.sphere.{0} 7 :=
   onePointBallSevenHomeomorphSphereSeven OnePoint.infty
 
-/-- The exact geometric continuity statement absent from mathlib: the explicit quotient-to-one-
-point-complement equivalence respects the quotient topology. -/
+/-- The geometric continuity statement that the explicit quotient-to-one-point-complement
+equivalence respects the quotient topology. -/
 public def DiskBoundaryCollapseToOnePointContinuous : Prop :=
   Continuous (collapseQuotientEquivOnePointComplement
     (TopCat.diskBoundaryInclusion.{0} 7) diskBoundarySevenBasepoint)
 
-/-- The precise quotient-topology statement needed to promote the point-set equivalence to a
-homeomorphism. -/
+/-- The explicit quotient-to-one-point-complement equivalence is continuous. -/
+public theorem diskBoundaryCollapseToOnePointContinuous :
+    DiskBoundaryCollapseToOnePointContinuous := by
+  let _ : T2Space (TopCat.disk.{0} 7 : Type) := Homeomorph.ulift.symm.t2Space
+  change Continuous (collapseQuotientEquivOnePointComplement
+    (TopCat.diskBoundaryInclusion.{0} 7) diskBoundarySevenBasepoint)
+  rw [isQuotientMap_quotient_mk'.continuous_iff]
+  have hfun :
+      (collapseQuotientEquivOnePointComplement
+        (TopCat.diskBoundaryInclusion.{0} 7) diskBoundarySevenBasepoint) ∘
+          (@Quotient.mk' (TopCat.disk.{0} 7 : Type)
+            (collapseSetoid (TopCat.diskBoundaryInclusion.{0} 7))) =
+        collapseToOnePointComplement (TopCat.diskBoundaryInclusion.{0} 7) := by
+    funext x
+    exact collapseQuotientEquivOnePointComplement_mk _ _ x
+  rw [hfun]
+  exact continuous_collapseToOnePointComplement (TopCat.diskBoundaryInclusion.{0} 7)
+    diskSevenCollapseComplement_isOpen
+
+/-- The quotient-topology statement promoting the point-set equivalence to a homeomorphism. -/
 public def DiskBoundaryQuotientSevenTopologyComparison : Prop :=
   Continuous diskBoundaryQuotientSevenEquivSphereSeven
 
@@ -314,14 +436,54 @@ public theorem diskBoundaryQuotientSevenTopologyComparison_of_collapseContinuous
   (diskSevenComplementBoundaryHomeomorphBall.onePointCongr.trans
     onePointBallSevenHomeomorphSphereSeven).continuous.comp h
 
+/-- The explicit point-set equivalence `D⁷/S⁶ ≃ S⁷` is continuous. -/
+public theorem diskBoundaryQuotientSevenTopologyComparison :
+    DiskBoundaryQuotientSevenTopologyComparison :=
+  diskBoundaryQuotientSevenTopologyComparison_of_collapseContinuous
+    diskBoundaryCollapseToOnePointContinuous
+
 /-- Continuity of the explicit equivalence gives the expected homeomorphism.  Its inverse is
 automatic because the quotient is compact and the sphere is Hausdorff. -/
 public noncomputable def diskBoundaryQuotientSevenHomeomorphSphereSeven
-    (h : DiskBoundaryQuotientSevenTopologyComparison) :
-    DiskBoundaryQuotientSeven ≃ₜ (TopCat.sphere.{0} 7 : Type) := by
+    : DiskBoundaryQuotientSeven ≃ₜ (TopCat.sphere.{0} 7 : Type) := by
   letI : T2Space (TopCat.sphere.{0} 7 : Type) :=
     Homeomorph.ulift.symm.t2Space
-  exact h.homeoOfEquivCompactToT2
+  exact diskBoundaryQuotientSevenTopologyComparison.homeoOfEquivCompactToT2
+
+/-- The collapse quotient as a categorical space is isomorphic to the standard seven-sphere. -/
+public noncomputable def diskBoundaryQuotientSevenSphereIso :
+    DiskBoundaryQuotientSevenObj ≅ TopCat.sphere.{0} 7 :=
+  TopCat.isoOfHomeo diskBoundaryQuotientSevenHomeomorphSphereSeven
+
+/-- The image on the sphere of the collapsed boundary basepoint. -/
+public noncomputable def sphereSevenCollapsedBoundaryBasepoint :
+    TopCat.of PUnit ⟶ TopCat.sphere.{0} 7 :=
+  TopCat.ofHom ⟨fun _ ↦ diskBoundaryQuotientSevenHomeomorphSphereSeven
+    (diskBoundaryQuotientSevenBasepoint PUnit.unit), continuous_const⟩
+
+/-- The quotient-to-sphere isomorphism preserves the specified basepoint. -/
+public theorem diskBoundaryQuotientSevenSphereIso_basepoint :
+    diskBoundaryQuotientSevenBasepoint ≫ diskBoundaryQuotientSevenSphereIso.hom =
+      sphereSevenCollapsedBoundaryBasepoint := by
+  ext x
+  cases x
+  rfl
+
+/-- Reduced singular chains of the quotient are isomorphic to reduced singular chains of the
+standard seven-sphere, based at the image of the collapsed boundary. -/
+public noncomputable def reducedDiskBoundaryQuotientChainsIsoReducedSphereSevenChains :
+    ReducedIntegralSingularChainComplex diskBoundaryQuotientSevenBasepoint ≅
+      ReducedIntegralSingularChainComplex sphereSevenCollapsedBoundaryBasepoint := by
+  let F := (singularChainComplexFunctor AddCommGrpCat).obj (AddCommGrpCat.of ℤ)
+  exact cokernel.mapIso (integralSingularChainMapObj diskBoundaryQuotientSevenBasepoint)
+    (integralSingularChainMapObj sphereSevenCollapsedBoundaryBasepoint)
+    (Iso.refl (IntegralSingularChainComplexObj (TopCat.of PUnit)))
+    (F.mapIso diskBoundaryQuotientSevenSphereIso) (by
+      change F.map diskBoundaryQuotientSevenBasepoint ≫
+          F.map diskBoundaryQuotientSevenSphereIso.hom =
+        (Iso.refl _).hom ≫ F.map sphereSevenCollapsedBoundaryBasepoint
+      rw [← F.map_comp, diskBoundaryQuotientSevenSphereIso_basepoint,
+        Iso.refl_hom, Category.id_comp])
 
 /-- The canonical relative-to-reduced chain comparison for the pair `(D⁷,S⁶)`. -/
 public noncomputable abbrev diskSevenRelativeChainsToReducedQuotientChains :
@@ -330,12 +492,31 @@ public noncomputable abbrev diskSevenRelativeChainsToReducedQuotientChains :
   relativeChainsToReducedCollapseChains
     (TopCat.diskBoundaryInclusion.{0} 7) diskBoundarySevenBasepoint
 
+/-- The canonical comparison transported along `D⁷/S⁶ ≃ₜ S⁷`, now landing in reduced
+singular chains of the standard seven-sphere. -/
+public noncomputable def diskSevenRelativeChainsToReducedSphereSevenChains :
+    DiskSevenSphereSixRelativeIntegralSingularChainComplex ⟶
+      ReducedIntegralSingularChainComplex sphereSevenCollapsedBoundaryBasepoint :=
+  diskSevenRelativeChainsToReducedQuotientChains ≫
+    reducedDiskBoundaryQuotientChainsIsoReducedSphereSevenChains.hom
+
 /-- The exact missing excision statement: the canonical chain map from relative chains of
 `(D⁷,S⁶)` to reduced chains of `D⁷/S⁶` induces homology isomorphisms. -/
 public def DiskSevenRelativeQuotientExcision : Prop :=
   ∀ n : ℕ,
     IsIso (HomologicalComplex.homologyMap
       diskSevenRelativeChainsToReducedQuotientChains n)
+
+/-- Excision would make the transported comparison to the standard sphere a homology
+isomorphism in every degree. -/
+public theorem diskSevenRelativeSphereComparison_isIso
+    (h : DiskSevenRelativeQuotientExcision) (n : ℕ) :
+    IsIso (HomologicalComplex.homologyMap
+      diskSevenRelativeChainsToReducedSphereSevenChains n) := by
+  let _ := h n
+  dsimp [diskSevenRelativeChainsToReducedSphereSevenChains]
+  rw [HomologicalComplex.homologyMap_comp]
+  infer_instance
 
 end SevenDisk
 

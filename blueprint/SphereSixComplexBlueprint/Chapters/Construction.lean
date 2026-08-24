@@ -11,6 +11,8 @@ import SphereSixComplex.Geometry.CuspFilling
 import SphereSixComplex.Geometry.CyclicCuspQuotient
 import SphereSixComplex.Geometry.EllipticComplexFilling
 import SphereSixComplex.Geometry.EllipticFilling
+import SphereSixComplex.Geometry.EllipticCayleyHomeomorph
+import SphereSixComplex.Geometry.EllipticFamilySpecialization
 import SphereSixComplex.Geometry.EllipticLocalCoordinates
 import SphereSixComplex.Geometry.FamilyEquivariance
 import SphereSixComplex.Geometry.Gluing
@@ -19,6 +21,7 @@ import SphereSixComplex.Geometry.GlobalDeckSmoothness
 import SphereSixComplex.Geometry.GlobalDeckQuotient
 import SphereSixComplex.Geometry.PaperAssembly
 import SphereSixComplex.Geometry.Quotient
+import SphereSixComplex.Geometry.RegularBaseTopology
 import SphereSixComplex.Geometry.TorusFamily
 import SphereSixComplex.LatticeData
 import SphereSixComplex.Periods.Domain
@@ -56,6 +59,7 @@ import SphereSixComplex.Topology.RelativeSingularHomology
 import SphereSixComplex.Topology.TwistObstruction
 import SphereSixComplex.TriangleGroup.ModularParameter
 import SphereSixComplex.TriangleGroup.FuchsianAction
+import SphereSixComplex.TriangleGroup.FuchsianArithmetic
 import SphereSixComplex.TriangleGroup.FuchsianFundamentalDomain
 import SphereSixComplex.TriangleGroup.FuchsianPingPong
 import SphereSixComplex.TriangleGroup.FuchsianTessellation
@@ -196,6 +200,12 @@ order-three generator strictly raises height. Thus an orbit-height maximum suppl
 the region; existence of such maxima is the remaining arithmetic discreteness step.
 :::
 
+:::theorem "fuchsian-arithmetic" (parent := "fuchsian-reduction") (lean := "SphereSixComplex.TriangleGroup.FuchsianArithmetic.quadraticProjectiveRepresentation, SphereSixComplex.TriangleGroup.FuchsianArithmetic.quadraticProjectiveRepresentation_inl_generator, SphereSixComplex.TriangleGroup.FuchsianArithmetic.quadraticProjectiveRepresentation_inr_generator, SphereSixComplex.TriangleGroup.FuchsianArithmetic.positive_bottomRow_bounded_of_normSq_le, SphereSixComplex.TriangleGroup.FuchsianArithmetic.finite_bottomRows_of_normSq_le_of_conjugate_bounded")
+The Fuchsian generators lift to an explicit projective representation over $`\mathbb Z[\sqrt2]`.
+Paired real embeddings make bounded denominator sublevels finite once the conjugate bottom rows are
+uniformly bounded; proving that last bound is the remaining arithmetic termination step.
+:::
+
 :::theorem "fuchsian-compact-core" (parent := "fuchsian-fundamental-triangle") (lean := "SphereSixComplex.Periods.fuchsianFundamentalCompactCore_isCompact, SphereSixComplex.Periods.fundamentalTriangle_mem_cusp_or_compactCore, SphereSixComplex.Periods.fuchsianQuotientCompactCore, SphereSixComplex.Periods.FuchsianPrePeriodData.theorem3_4Existence_of_triangleCover")
 The part of the fundamental triangle below the standard horodisc lies in an explicit compact
 rectangle. Thus a translate-covering theorem supplies the compact quotient core required by the
@@ -271,6 +281,11 @@ finite and therefore proves the regular action free; both properties then lift t
 The remaining step is proper discontinuity of the explicit projective Fuchsian source action.
 :::
 
+:::theorem "regular-base-topology" (parent := "elliptic-orbit-freeness") (lean := "SphereSixComplex.Geometry.GlobalTorusFamily.sourceOrbitSingletons_locallyFinite, SphereSixComplex.Geometry.GlobalTorusFamily.sourceOrbitSet_isClosed, SphereSixComplex.Geometry.GlobalTorusFamily.isOpen_isRegularBasePoint, SphereSixComplex.Geometry.GlobalTorusFamily.regularBase_isManifold")
+Proper discontinuity makes both elliptic orbits locally finite and closed. Their complement is
+therefore an open complex one-manifold, giving the correct regular base for the punctured family.
+:::
+
 :::theorem "analytic-torus-family" (parent := "torus-family") (lean := "SphereSixComplex.Geometry.AnalyticTorusFamily.parameterMap_contMDiff, SphereSixComplex.Geometry.AnalyticTorusFamily.periodSection_contMDiff, SphereSixComplex.Geometry.AnalyticTorusFamily.parameterMap_compactUniformLowerBound, SphereSixComplex.Geometry.AnalyticTorusFamily.totalSpace_isManifold_and_projection_isLocalDiffeomorph")
 The period domain is an open complex three-manifold, the analytic period map and every integral
 period section are complex smooth.  Pointwise full rank gives a uniform lower bound over compact
@@ -311,10 +326,16 @@ specified in the Setup.  When the local affine actions are analytic, both coveri
 complex-manifold atlases.
 :::
 
-:::theorem "elliptic-local-coordinates" (parent := "elliptic-fillings") (lean := "SphereSixComplex.Geometry.EllipticLocalCoordinates.norm_cayleyCoordinate_lt_one, SphereSixComplex.Geometry.EllipticLocalCoordinates.orderThreeCayley_generator, SphereSixComplex.Geometry.EllipticLocalCoordinates.orderFourCayley_generator, SphereSixComplex.Geometry.EllipticLocalCoordinates.orderThreeDiscCoordinate_equivariant, SphereSixComplex.Geometry.EllipticLocalCoordinates.orderFourDiscCoordinate_equivariant, SphereSixComplex.Geometry.EllipticLocalCoordinates.EllipticFiberData.orderThreeActionData_quotient_isManifold, SphereSixComplex.Geometry.EllipticLocalCoordinates.EllipticFiberData.orderFourActionData_quotient_isManifold")
-Cayley coordinates identify neighborhoods of the two explicit elliptic fixed points with the unit
-disc and conjugate the source generators to rotations of orders three and four. The remaining
-affine fibre data then gives the free logarithmic-transform quotient manifolds.
+:::theorem "elliptic-local-coordinates" (parent := "elliptic-fillings") (lean := "SphereSixComplex.Geometry.EllipticLocalCoordinates.norm_cayleyCoordinate_lt_one, SphereSixComplex.Geometry.EllipticLocalCoordinates.orderThreeCayley_generator, SphereSixComplex.Geometry.EllipticLocalCoordinates.orderFourCayley_generator, SphereSixComplex.Geometry.EllipticCayleyHomeomorph.cayleyHomeomorph, SphereSixComplex.Geometry.EllipticCayleyHomeomorph.orderThreeCayleyHomeomorph_generator, SphereSixComplex.Geometry.EllipticCayleyHomeomorph.orderFourCayleyHomeomorph_generator, SphereSixComplex.Geometry.EllipticLocalCoordinates.EllipticFiberData.orderThreeActionData_quotient_isManifold, SphereSixComplex.Geometry.EllipticLocalCoordinates.EllipticFiberData.orderFourActionData_quotient_isManifold")
+The explicit Cayley formulas give homeomorphisms from the upper half-plane to the unit disc and
+conjugate the source generators to rotations of orders three and four. The remaining affine fibre
+data then gives the free logarithmic-transform quotient manifolds.
+:::
+
+:::theorem "elliptic-family-specialization" (parent := "elliptic-local-coordinates") (lean := "SphereSixComplex.Geometry.EllipticFamilySpecialization.generatorOneAddEquiv_mk, SphereSixComplex.Geometry.EllipticFamilySpecialization.generatorTwoAddEquiv_mk, SphereSixComplex.Geometry.EllipticFamilySpecialization.orderThreeTranslation_torsion, SphereSixComplex.Geometry.EllipticFamilySpecialization.orderFourTranslation_torsion, SphereSixComplex.Geometry.EllipticFamilySpecialization.orderThreeFiberAutomorphism_pow, SphereSixComplex.Geometry.EllipticFamilySpecialization.orderFourFiberAutomorphism_pow, SphereSixComplex.Geometry.EllipticFamilySpecialization.orderThreeActualAction_free, SphereSixComplex.Geometry.EllipticFamilySpecialization.orderFourActualAction_free")
+The actual period-torus fibres carry the descended generator transports and the prescribed
+$`\varepsilon/3` and $`-\varepsilon'/4` translations. Their affine automorphisms have exact orders
+three and four; freeness is reduced to the two explicit fixed-point divisibility criteria.
 :::
 
 :::proof "elliptic-fillings"
@@ -473,10 +494,10 @@ homology sequence. For positive degrees, its boundary identifies $`H_{n+1}(D^7,S
 $`H_n(S^6)`; the remaining standard-sphere calculation is the relative disk-cell computation.
 :::
 
-:::theorem "disk-boundary-collapse" (parent := "relative-disk-sphere-homology") (lean := "SphereSixComplex.diskBoundaryQuotientSevenMap_isQuotientMap, SphereSixComplex.diskSevenComplementBoundaryHomeomorphBall, SphereSixComplex.onePointBallSevenHomeomorphSphereSeven, SphereSixComplex.diskBoundaryQuotientSevenTopologyComparison_of_collapseContinuous, SphereSixComplex.relativeChainsToReducedCollapseChains")
-Collapsing the boundary of the seven-disk gives the one-point extension of its interior at the
-point-set level, and the interior is an open seven-ball. The canonical relative-to-reduced chain
-map is explicit; continuity of the comparison and its excision quasi-isomorphism remain.
+:::theorem "disk-boundary-collapse" (parent := "relative-disk-sphere-homology") (lean := "SphereSixComplex.diskBoundaryQuotientSevenMap_isQuotientMap, SphereSixComplex.diskBoundaryCollapseToOnePointContinuous, SphereSixComplex.diskBoundaryQuotientSevenHomeomorphSphereSeven, SphereSixComplex.diskBoundaryQuotientSevenSphereIso_basepoint, SphereSixComplex.reducedDiskBoundaryQuotientChainsIsoReducedSphereSevenChains, SphereSixComplex.diskSevenRelativeChainsToReducedSphereSevenChains")
+Collapsing the boundary of the seven-disk is homeomorphic to the standard seven-sphere, with the
+collapsed basepoint tracked through a reduced-chain isomorphism. The canonical relative-chain map
+is explicit; proving it is a homology isomorphism is precisely the remaining excision step.
 :::
 
 :::theorem "sphere-stereographic-simple-connectivity" (parent := "standard-six-sphere") (lean := "SphereSixComplex.sixSphere_compl_singleton_simplyConnected, SphereSixComplex.sixSphere_simplyConnected_iff_loops_nullhomotopic")
