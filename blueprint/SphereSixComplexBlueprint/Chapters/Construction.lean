@@ -8,12 +8,14 @@ import SphereSixComplex.Geometry.ComplexTorus
 import SphereSixComplex.Geometry.ComplexThreefoldGluing
 import SphereSixComplex.Geometry.CuspCombinatorics
 import SphereSixComplex.Geometry.CuspFilling
+import SphereSixComplex.Geometry.CuspPeriodExpansion
 import SphereSixComplex.Geometry.CuspToricPhaseAction
 import SphereSixComplex.Geometry.CyclicCuspQuotient
 import SphereSixComplex.Geometry.EllipticComplexFilling
 import SphereSixComplex.Geometry.EllipticFilling
 import SphereSixComplex.Geometry.EllipticCayleyHomeomorph
 import SphereSixComplex.Geometry.EllipticFamilySpecialization
+import SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient
 import SphereSixComplex.Geometry.EllipticFixedPointCriterion
 import SphereSixComplex.Geometry.EllipticLocalCoordinates
 import SphereSixComplex.Geometry.EllipticLocalTrivialization
@@ -26,6 +28,7 @@ import SphereSixComplex.Geometry.GlobalTorusFamily
 import SphereSixComplex.Geometry.GlobalDeckSmoothness
 import SphereSixComplex.Geometry.GlobalDeckQuotient
 import SphereSixComplex.Geometry.PaperAssembly
+import SphereSixComplex.Geometry.ProperlyDiscontinuousSlice
 import SphereSixComplex.Final
 import SphereSixComplex.Geometry.Quotient
 import SphereSixComplex.Geometry.RegularBaseTopology
@@ -355,6 +358,14 @@ finite and therefore proves the regular action free; both properties then lift t
 The remaining step is proper discontinuity of the explicit projective Fuchsian source action.
 :::
 
+:::theorem "properly-discontinuous-stabilizer-slice" (parent := "elliptic-orbit-freeness") (lean := "SphereSixComplex.Geometry.exists_open_stabilizer_slice")
+For a properly discontinuous continuous action on a locally compact Hausdorff space, every point
+has an open neighborhood invariant under its finite stabilizer, and a translate meets that
+neighborhood exactly when the translating element belongs to the stabilizer. This is the general
+local separation theorem needed to compare each finite elliptic quotient with the global affine
+free-product quotient.
+:::
+
 :::theorem "regular-base-topology" (parent := "elliptic-orbit-freeness") (lean := "SphereSixComplex.Geometry.GlobalTorusFamily.sourceOrbitSingletons_locallyFinite, SphereSixComplex.Geometry.GlobalTorusFamily.sourceOrbitSet_isClosed, SphereSixComplex.Geometry.GlobalTorusFamily.isOpen_isRegularBasePoint, SphereSixComplex.Geometry.GlobalTorusFamily.regularBase_isManifold, SphereSixComplex.Geometry.GlobalTorusFamily.regularDeckMap_contMDiff")
 Proper discontinuity makes both elliptic orbits locally finite and closed. Their complement is
 therefore an open complex one-manifold, giving the correct regular base for the punctured family.
@@ -391,6 +402,14 @@ The two phase coordinates embed in the dense torus, preserve the height characte
 with every integral fan shear. Exact holomorphic phase coefficients therefore produce the
 corrected lattice action and its holomorphic maps. The fixed-point and compact-overlap estimates
 from the cusp analysis remain explicit hypotheses for freeness and proper discontinuity.
+:::
+
+:::theorem "cusp-period-expansion" (parent := "toric-phase-correction") (lean := "SphereSixComplex.Geometry.CuspPeriodExpansion.Established.periodicBoundedHolomorphicCuspDescent, SphereSixComplex.Geometry.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.periodBlock_eq_smul_B₀_add_correction, SphereSixComplex.Geometry.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.phaseCoefficient_add, SphereSixComplex.Geometry.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.phaseCoefficient_holomorphicOn, SphereSixComplex.Geometry.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.localHolomorphicPhaseCoefficients")
+On an exact normalized cusp lift, bounded periodic holomorphic coefficients descend through
+$`q=\exp(2\pi i s)` and extend over $`q=0`. This gives the local expansion
+$`Z(s)=sB_0+C(q)` and the holomorphic phase factors
+$`c_\lambda(q)=\exp(2\pi i C(q)\lambda)`. The normalization of the cusp lift remains an explicit
+paper-specific obligation; no unjustified entire extension of the local coefficients is assumed.
 :::
 
 :::theorem "cyclic-cusp-quotient" (parent := "cusp-filling") (lean := "SphereSixComplex.Geometry.CyclicCuspQuotient.cuspTranslate_eq_fuchsian_gZero_zpow, SphereSixComplex.Geometry.CyclicCuspQuotient.cuspHorodisc_action_free, SphereSixComplex.Geometry.CyclicCuspQuotient.cuspHorodisc_action_properlyDiscontinuous, SphereSixComplex.Geometry.CyclicCuspQuotient.cuspHorodisc_quotient_isQuotientCoveringMap, SphereSixComplex.Geometry.CyclicCuspQuotient.cuspProduct_generator_agrees_with_familyDeckMap")
@@ -441,6 +460,15 @@ The actual period-torus fibres carry the descended generator transports and the 
 $`\varepsilon/3` and $`-\varepsilon'/4` translations. Their affine automorphisms have exact orders
 three and four. An invariant integral coordinate proves the two fixed-point divisibility criteria,
 so both actual local affine actions are unconditionally free.
+:::
+
+:::theorem "elliptic-varying-family-quotients" (parent := "elliptic-family-specialization") (lean := "SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient.orderThreeAffineFamilyAction_free, SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient.orderFourAffineFamilyAction_free, SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient.orderThreeVaryingFamilyQuotient_isManifold_actual, SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient.orderFourVaryingFamilyQuotient_isManifold_actual, SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient.affineGlobalFamilyRepresentation, SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient.affineGlobalFamilyRepresentation_contMDiff, SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient.orderThreePuncturedCollarQuotientRegion_isOpen, SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient.orderFourPuncturedCollarQuotientRegion_isOpen, SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient.exists_orderThree_injective_affine_collar, SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient.exists_orderFour_injective_affine_collar")
+The actual varying torus family carries free analytic affine actions of orders three and four, so
+their finite quotients are complex three-manifolds with locally biholomorphic projections. The two
+actions extend by the free-product universal property to the honest affine $`\Delta` action; this
+is distinct from the purely linear deck action. Open invariant punctured Cayley collars are
+constructed, and their maps to the affine global quotient are injective once the exact local
+orbit-separation propositions are proved from global properness and stabilizer identification.
 :::
 
 :::proof "elliptic-fillings"
