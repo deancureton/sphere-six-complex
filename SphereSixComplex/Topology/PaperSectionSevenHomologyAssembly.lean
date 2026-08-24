@@ -20,43 +20,10 @@ namespace SphereSixComplex.Geometry.PaperAnalyticData
 
 variable (A : PaperAnalyticData)
 
-/-- The Section 7 homology identifications that remain after the canonical final `H₀` calculation.
-No field describes the homology of the completed star. -/
+/-- The final positive-degree cusp-attachment identifications that remain after the canonical
+`H₀` calculation.  No field describes the homology of the completed star.  The paper's earlier
+`α₁` and `α₂` calculation uses a separate two-set cover. -/
 public structure SectionSevenPositiveDegreeHomologyAssembly where
-  interiorOneSource :
-    IntegralSingularHomology 1
-        ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (1 : Fin 4) ∩
-          (A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 2 :
-            Set A.openEmbeddingStarData.SectionSevenMayerVietorisSpace) ≃+
-      (Fin 4 → ℤ)
-  interiorOneTarget :
-    (IntegralSingularHomology 1
-          ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (1 : Fin 4)) ×
-        IntegralSingularHomology 1
-          ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 2)) ≃+
-      (Fin 4 → ℤ)
-  interiorOne_comm : ∀ x,
-    interiorOneTarget (IntegralMayerVietoris.differenceMap
-      ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (1 : Fin 4))
-        ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 2) 1 x) =
-      alphaOneMatrix.mulVec (interiorOneSource x)
-  interiorTwoSource :
-    IntegralSingularHomology 2
-        ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (1 : Fin 4) ∩
-          (A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 2 :
-            Set A.openEmbeddingStarData.SectionSevenMayerVietorisSpace) ≃+
-      (Fin 6 → ℤ)
-  interiorTwoTarget :
-    (IntegralSingularHomology 2
-          ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (1 : Fin 4)) ×
-        IntegralSingularHomology 2
-          ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 2)) ≃+
-      (Fin 4 → ℤ)
-  interiorTwo_comm : ∀ x,
-    interiorTwoTarget (IntegralMayerVietoris.differenceMap
-      ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (1 : Fin 4))
-        ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 2) 2 x) =
-      alphaTwoMatrix.mulVec (interiorTwoSource x)
   finalOneSource :
     IntegralSingularHomology 1
         ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4) ∩
@@ -109,12 +76,6 @@ public noncomputable def toSectionSevenMayerVietorisHomologyAssembly
     (IntegralSingularHomology k
       ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage r.castSucc))
   stageEquiv _ _ := AddEquiv.refl _
-  interiorOneSource := H.interiorOneSource
-  interiorOneTarget := H.interiorOneTarget
-  interiorOne_comm := H.interiorOne_comm
-  interiorTwoSource := H.interiorTwoSource
-  interiorTwoTarget := H.interiorTwoTarget
-  interiorTwo_comm := H.interiorTwo_comm
   finalZeroSource := A.sectionSevenFinalZeroSource
   finalZeroTarget := A.sectionSevenFinalZeroTarget
   finalZero_comm := A.sectionSevenFinalZero_comm

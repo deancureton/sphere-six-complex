@@ -114,9 +114,10 @@ public abbrev SectionSevenMayerVietorisSpace :=
 public abbrev SectionSevenMayerVietorisCover :=
   sectionSevenMayerVietorisOpenCover A
 
-/-- Homology-level identifications for the source-stated Mayer--Vietoris calculation.  The local
-and partial-stage families expose all comparison objects; the final three map squares are the
-only fields used to derive low-degree vanishing. -/
+/-- Homology-level identifications for the final cusp attachment in the source-stated
+Mayer--Vietoris calculation.  The local and partial-stage families expose all comparison objects;
+the final three map squares are the only fields used to derive low-degree vanishing.  The paper's
+earlier `α₁` and `α₂` maps belong to a different two-set cover and are deliberately not stored here. -/
 public structure SectionSevenMayerVietorisHomologyAssembly where
   /-- Degreewise models for the four actual open pieces. -/
   pieceModel : Fin 4 → ℕ → AddCommGrpCat
@@ -134,42 +135,6 @@ public structure SectionSevenMayerVietorisHomologyAssembly where
   stageEquiv : ∀ r k,
     IntegralSingularHomology k
       ((SectionSevenMayerVietorisCover A).stage r.castSucc) ≃+ stageModel r k
-  /-- The degree-one basis on the order-four collar in the interior union. -/
-  interiorOneSource :
-    IntegralSingularHomology 1
-      ((SectionSevenMayerVietorisCover A).stage (1 : Fin 4) ∩
-        (SectionSevenMayerVietorisCover A).piece 2 :
-          Set (SectionSevenMayerVietorisSpace A)) ≃+ (Fin 4 → ℤ)
-  /-- The degree-one basis on the two sides of the interior union. -/
-  interiorOneTarget :
-    (IntegralSingularHomology 1
-        ((SectionSevenMayerVietorisCover A).stage (1 : Fin 4)) ×
-      IntegralSingularHomology 1
-        ((SectionSevenMayerVietorisCover A).piece 2)) ≃+ (Fin 4 → ℤ)
-  /-- The actual interior degree-one map is the displayed `α₁`. -/
-  interiorOne_comm : ∀ x,
-    interiorOneTarget (IntegralMayerVietoris.differenceMap
-      ((SectionSevenMayerVietorisCover A).stage (1 : Fin 4))
-        ((SectionSevenMayerVietorisCover A).piece 2) 1 x) =
-      alphaOneMatrix.mulVec (interiorOneSource x)
-  /-- The degree-two basis on the order-four collar in the interior union. -/
-  interiorTwoSource :
-    IntegralSingularHomology 2
-      ((SectionSevenMayerVietorisCover A).stage (1 : Fin 4) ∩
-        (SectionSevenMayerVietorisCover A).piece 2 :
-          Set (SectionSevenMayerVietorisSpace A)) ≃+ (Fin 6 → ℤ)
-  /-- The degree-two basis on the two sides of the interior union. -/
-  interiorTwoTarget :
-    (IntegralSingularHomology 2
-        ((SectionSevenMayerVietorisCover A).stage (1 : Fin 4)) ×
-      IntegralSingularHomology 2
-        ((SectionSevenMayerVietorisCover A).piece 2)) ≃+ (Fin 4 → ℤ)
-  /-- The actual interior degree-two map is the displayed `α₂`. -/
-  interiorTwo_comm : ∀ x,
-    interiorTwoTarget (IntegralMayerVietoris.differenceMap
-      ((SectionSevenMayerVietorisCover A).stage (1 : Fin 4))
-        ((SectionSevenMayerVietorisCover A).piece 2) 2 x) =
-      alphaTwoMatrix.mulVec (interiorTwoSource x)
   /-- The degree-zero basis on the final overlap. -/
   finalZeroSource :
     IntegralSingularHomology 0
