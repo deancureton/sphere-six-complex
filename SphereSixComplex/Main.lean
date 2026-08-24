@@ -159,6 +159,7 @@ public import SphereSixComplex.Topology.ActualCuspPhaseSpreading
 public import SphereSixComplex.Topology.PaperCuspCentralFiberCWModel
 public import SphereSixComplex.Topology.CuspToricCellularAlgebra
 public import SphereSixComplex.Topology.CuspToricCellularHomologyBridge
+public import SphereSixComplex.Topology.PaperCuspCentralFiberHomology
 public import SphereSixComplex.Topology.PaperCuspSpecializationAlgebra
 public import SphereSixComplex.Topology.PaperCentralCollarTorusBundleModels
 public import SphereSixComplex.Topology.PaperCollarMappingTorusAdapters
