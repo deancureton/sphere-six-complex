@@ -22,7 +22,9 @@ open SphereSixComplex.Geometry.EllipticCayleyHomeomorph
 open SphereSixComplex.Geometry.EllipticLocalCoordinates
 open SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient
 open SphereSixComplex.Geometry.EllipticWholeFiberCompactCover
+open SphereSixComplex.Geometry.EllipticWholeFiberTrivialization
 open SphereSixComplex.Geometry.FamilyEquivariance
+open SphereSixComplex.LatticeData
 
 noncomputable section
 
@@ -443,6 +445,22 @@ public theorem fixedProductToFamily_continuous (z₀ : UpperHalfPlane) :
     (orderFourCayleyHomeomorph.prodCongr
       (Homeomorph.refl (AdditiveTorus (parameterMap F U.zTwo).1)))
 
+@[simp]
+public theorem orderThreeRealPeriodProductHomeomorph_mk
+    (p : UpperHalfPlane × ComplexTwoSpace) :
+    orderThreeRealPeriodProductHomeomorph F (Quotient.mk _ p) =
+      (orderThreeCayleyHomeomorph p.1,
+        Quotient.mk _ (movingToFixedCover F U.zOne p).2) :=
+  rfl
+
+@[simp]
+public theorem orderFourRealPeriodProductHomeomorph_mk
+    (p : UpperHalfPlane × ComplexTwoSpace) :
+    orderFourRealPeriodProductHomeomorph F (Quotient.mk _ p) =
+      (orderFourCayleyHomeomorph p.1,
+        Quotient.mk _ (movingToFixedCover F U.zTwo p).2) :=
+  rfl
+
 public theorem orderThreeRealPeriodProductHomeomorph_fst
     (q : TotalSpace (parameterMap F)) :
     (orderThreeRealPeriodProductHomeomorph F q).1 =
@@ -515,6 +533,255 @@ public theorem orderFour_movingToFixedCover_deckMap
     change _ = (fullRankDomain (rhoParameters g₂ (parameterMap F U.zTwo))).realEquiv _
     rw [parameterMap_zTwo_fixed F]
     simp [movingToFixedCover]
+
+/-- The varying one-third-period translation has constant real period coordinates. -/
+public theorem periodCoordinates_orderThreeTwistSection (z : UpperHalfPlane) :
+    periodCoordinates (parameterMap F z) (orderThreeTwistSection F z) =
+      (3 : ℝ)⁻¹ • integerToReal epsilon := by
+  apply (fullRankDomain (parameterMap F z)).realEquiv.injective
+  change (fullRankDomain (parameterMap F z)).realEquiv
+      ((fullRankDomain (parameterMap F z)).realEquiv.symm
+        (orderThreeTwistSection F z)) = _
+  rw [(fullRankDomain (parameterMap F z)).realEquiv.apply_symm_apply, map_smul,
+    (fullRankDomain (parameterMap F z)).map_integer]
+  ext i
+  simp [orderThreeTwistSection]
+
+/-- The varying one-quarter-period translation has constant real period coordinates. -/
+public theorem periodCoordinates_orderFourTwistSection (z : UpperHalfPlane) :
+    periodCoordinates (parameterMap F z) (orderFourTwistSection F z) =
+      (4 : ℝ)⁻¹ • integerToReal (-epsilon') := by
+  apply (fullRankDomain (parameterMap F z)).realEquiv.injective
+  change (fullRankDomain (parameterMap F z)).realEquiv
+      ((fullRankDomain (parameterMap F z)).realEquiv.symm
+        (orderFourTwistSection F z)) = _
+  rw [(fullRankDomain (parameterMap F z)).realEquiv.apply_symm_apply, map_smul,
+    (fullRankDomain (parameterMap F z)).map_integer]
+  ext i
+  simp [orderFourTwistSection]
+
+/-- Real-period coordinates turn the varying order-three torsion translation into the fixed
+central-fibre translation. -/
+public theorem orderThree_movingToFixedCover_translation
+    (p : UpperHalfPlane × ComplexTwoSpace) :
+    movingToFixedCover F U.zOne
+        (familyTranslationCover (orderThreeTwistSection F) p) =
+      (p.1, orderThreeTwistSection F U.zOne +
+        (movingToFixedCover F U.zOne p).2) := by
+  apply Prod.ext
+  · rfl
+  · change (fullRankDomain (parameterMap F U.zOne)).realEquiv
+        (periodCoordinates (parameterMap F p.1)
+          (orderThreeTwistSection F p.1 + p.2)) = _
+    rw [show periodCoordinates (parameterMap F p.1)
+          (orderThreeTwistSection F p.1 + p.2) =
+        periodCoordinates (parameterMap F p.1) (orderThreeTwistSection F p.1) +
+          periodCoordinates (parameterMap F p.1) p.2 by
+        exact map_add (fullRankDomain (parameterMap F p.1)).realEquiv.symm _ _,
+      periodCoordinates_orderThreeTwistSection, map_add,
+      ← periodCoordinates_orderThreeTwistSection F U.zOne]
+    change (fullRankDomain (parameterMap F U.zOne)).realEquiv
+          ((fullRankDomain (parameterMap F U.zOne)).realEquiv.symm
+            (orderThreeTwistSection F U.zOne)) + _ = _
+    rw [(fullRankDomain (parameterMap F U.zOne)).realEquiv.apply_symm_apply]
+    rfl
+
+/-- Real-period coordinates turn the varying order-four torsion translation into the fixed
+central-fibre translation. -/
+public theorem orderFour_movingToFixedCover_translation
+    (p : UpperHalfPlane × ComplexTwoSpace) :
+    movingToFixedCover F U.zTwo
+        (familyTranslationCover (orderFourTwistSection F) p) =
+      (p.1, orderFourTwistSection F U.zTwo +
+        (movingToFixedCover F U.zTwo p).2) := by
+  apply Prod.ext
+  · rfl
+  · change (fullRankDomain (parameterMap F U.zTwo)).realEquiv
+        (periodCoordinates (parameterMap F p.1)
+          (orderFourTwistSection F p.1 + p.2)) = _
+    rw [show periodCoordinates (parameterMap F p.1)
+          (orderFourTwistSection F p.1 + p.2) =
+        periodCoordinates (parameterMap F p.1) (orderFourTwistSection F p.1) +
+          periodCoordinates (parameterMap F p.1) p.2 by
+        exact map_add (fullRankDomain (parameterMap F p.1)).realEquiv.symm _ _,
+      periodCoordinates_orderFourTwistSection, map_add,
+      ← periodCoordinates_orderFourTwistSection F U.zTwo]
+    change (fullRankDomain (parameterMap F U.zTwo)).realEquiv
+          ((fullRankDomain (parameterMap F U.zTwo)).realEquiv.symm
+            (orderFourTwistSection F U.zTwo)) + _ = _
+    rw [(fullRankDomain (parameterMap F U.zTwo)).realEquiv.apply_symm_apply]
+    rfl
+
+/-- The order-three product chart intertwines the actual affine generator with the fixed-product
+diagonal generator. -/
+public theorem orderThreeRealPeriodProductHomeomorph_generator
+    (hsource : U.sourceAction = fuchsianSourceAction)
+    (q : TotalSpace (parameterMap F)) :
+    orderThreeRealPeriodProductHomeomorph F (orderThreeAffineFamilyGenerator F q) =
+      (orderThreeActionData F).diagonalGenerator
+        (orderThreeRealPeriodProductHomeomorph F q) := by
+  induction q using Quotient.inductionOn with
+  | _ p =>
+      simp only [orderThreeAffineFamilyGenerator.eq_def, Equiv.Perm.mul_apply,
+        familyDeckEquiv_apply, familyDeckMap_mk, familyTranslationEquiv_apply,
+        familyTranslationMap_mk, orderThreeRealPeriodProductHomeomorph_mk]
+      apply Prod.ext
+      · change orderThreeCayleyHomeomorph (U.sourceAction g₁ • p.1) =
+          orderThreeDiscRotation (orderThreeCayleyHomeomorph p.1)
+        rw [hsource]
+        rw [orderThreeCayleyHomeomorph_generator]
+      · change (Quotient.mk _
+            (movingToFixedCover F U.zOne
+              (familyTranslationCover (orderThreeTwistSection F) (deckMap F g₁ p))).2 :
+            AdditiveTorus (parameterMap F U.zOne).1) = _
+        rw [orderThree_movingToFixedCover_translation,
+          orderThree_movingToFixedCover_deckMap]
+        change Quotient.mk _
+            (orderThreeTwistSection F U.zOne +
+              periodTransport g₁ (parameterMap F U.zOne)
+                (movingToFixedCover F U.zOne p).2) = _
+        change (Quotient.mk _
+            (orderThreeTwistSection F U.zOne +
+              periodTransport g₁ (parameterMap F U.zOne)
+                (movingToFixedCover F U.zOne p).2) :
+              AdditiveTorus (parameterMap F U.zOne).1) =
+          affineEquiv (orderThreeFiberAutomorphism F)
+            (orderThreeTranslation (parameterMap F U.zOne).1)
+            (Quotient.mk _ (movingToFixedCover F U.zOne p).2)
+        rw [affineEquiv_apply, orderThreeFiberAutomorphism_mk]
+        change Quotient.mk _
+            (orderThreeTwistSection F U.zOne +
+              periodTransport g₁ (parameterMap F U.zOne)
+                (movingToFixedCover F U.zOne p).2) =
+          (Quotient.mk _
+              (periodTransport g₁ (parameterMap F U.zOne)
+                (movingToFixedCover F U.zOne p).2) :
+            AdditiveTorus (parameterMap F U.zOne).1) +
+          Quotient.mk _ (orderThreeTwistSection F U.zOne)
+        rw [← additiveTorus_mk_add]
+        apply congrArg (Quotient.mk _)
+        exact add_comm _ _
+
+/-- The analogous affine-generator intertwining at the order-four elliptic point. -/
+public theorem orderFourRealPeriodProductHomeomorph_generator
+    (hsource : U.sourceAction = fuchsianSourceAction)
+    (q : TotalSpace (parameterMap F)) :
+    orderFourRealPeriodProductHomeomorph F (orderFourAffineFamilyGenerator F q) =
+      (orderFourActionData F).diagonalGenerator
+        (orderFourRealPeriodProductHomeomorph F q) := by
+  induction q using Quotient.inductionOn with
+  | _ p =>
+      simp only [orderFourAffineFamilyGenerator.eq_def, Equiv.Perm.mul_apply,
+        familyDeckEquiv_apply, familyDeckMap_mk, familyTranslationEquiv_apply,
+        familyTranslationMap_mk, orderFourRealPeriodProductHomeomorph_mk]
+      apply Prod.ext
+      · change orderFourCayleyHomeomorph (U.sourceAction g₂ • p.1) =
+          orderFourDiscRotation (orderFourCayleyHomeomorph p.1)
+        rw [hsource]
+        rw [orderFourCayleyHomeomorph_generator]
+      · change (Quotient.mk _
+            (movingToFixedCover F U.zTwo
+              (familyTranslationCover (orderFourTwistSection F) (deckMap F g₂ p))).2 :
+            AdditiveTorus (parameterMap F U.zTwo).1) = _
+        rw [orderFour_movingToFixedCover_translation,
+          orderFour_movingToFixedCover_deckMap]
+        change Quotient.mk _
+            (orderFourTwistSection F U.zTwo +
+              periodTransport g₂ (parameterMap F U.zTwo)
+                (movingToFixedCover F U.zTwo p).2) = _
+        change (Quotient.mk _
+            (orderFourTwistSection F U.zTwo +
+              periodTransport g₂ (parameterMap F U.zTwo)
+                (movingToFixedCover F U.zTwo p).2) :
+              AdditiveTorus (parameterMap F U.zTwo).1) =
+          affineEquiv (orderFourFiberAutomorphism F)
+            (orderFourTranslation (parameterMap F U.zTwo).1)
+            (Quotient.mk _ (movingToFixedCover F U.zTwo p).2)
+        rw [affineEquiv_apply, orderFourFiberAutomorphism_mk]
+        change Quotient.mk _
+            (orderFourTwistSection F U.zTwo +
+              periodTransport g₂ (parameterMap F U.zTwo)
+                (movingToFixedCover F U.zTwo p).2) =
+          (Quotient.mk _
+              (periodTransport g₂ (parameterMap F U.zTwo)
+                (movingToFixedCover F U.zTwo p).2) :
+            AdditiveTorus (parameterMap F U.zTwo).1) +
+          Quotient.mk _ (orderFourTwistSection F U.zTwo)
+        rw [← additiveTorus_mk_add]
+        apply congrArg (Quotient.mk _)
+        exact add_comm _ _
+
+public theorem orderThreeRealPeriodProductHomeomorph_generator_pow
+    (hsource : U.sourceAction = fuchsianSourceAction) (k : ℕ)
+    (q : TotalSpace (parameterMap F)) :
+    orderThreeRealPeriodProductHomeomorph F
+        ((orderThreeAffineFamilyGenerator F ^ k) q) =
+      ((orderThreeActionData F).diagonalGenerator ^ k)
+        (orderThreeRealPeriodProductHomeomorph F q) := by
+  induction k with
+  | zero => rfl
+  | succ k ih =>
+      rw [pow_succ', Equiv.Perm.mul_apply, pow_succ', Equiv.Perm.mul_apply]
+      calc
+        orderThreeRealPeriodProductHomeomorph F
+            (orderThreeAffineFamilyGenerator F
+              ((orderThreeAffineFamilyGenerator F ^ k) q)) =
+            (orderThreeActionData F).diagonalGenerator
+              (orderThreeRealPeriodProductHomeomorph F
+                ((orderThreeAffineFamilyGenerator F ^ k) q)) :=
+          orderThreeRealPeriodProductHomeomorph_generator F hsource _
+        _ = _ := congrArg (orderThreeActionData F).diagonalGenerator ih
+
+public theorem orderFourRealPeriodProductHomeomorph_generator_pow
+    (hsource : U.sourceAction = fuchsianSourceAction) (k : ℕ)
+    (q : TotalSpace (parameterMap F)) :
+    orderFourRealPeriodProductHomeomorph F
+        ((orderFourAffineFamilyGenerator F ^ k) q) =
+      ((orderFourActionData F).diagonalGenerator ^ k)
+        (orderFourRealPeriodProductHomeomorph F q) := by
+  induction k with
+  | zero => rfl
+  | succ k ih =>
+      rw [pow_succ', Equiv.Perm.mul_apply, pow_succ', Equiv.Perm.mul_apply]
+      calc
+        orderFourRealPeriodProductHomeomorph F
+            (orderFourAffineFamilyGenerator F
+              ((orderFourAffineFamilyGenerator F ^ k) q)) =
+            (orderFourActionData F).diagonalGenerator
+              (orderFourRealPeriodProductHomeomorph F
+                ((orderFourAffineFamilyGenerator F ^ k) q)) :=
+          orderFourRealPeriodProductHomeomorph_generator F hsource _
+        _ = _ := congrArg (orderFourActionData F).diagonalGenerator ih
+
+/-- The whole-family order-three chart is equivariant for every finite-cyclic element. -/
+public theorem orderThreeRealPeriodProductHomeomorph_equivariant
+    (hsource : U.sourceAction = fuchsianSourceAction)
+    (g : FiniteCyclic 3) (q : TotalSpace (parameterMap F)) :
+    orderThreeRealPeriodProductHomeomorph F
+        (orderThreeAffineFamilyRepresentation F g q) =
+      (orderThreeActionData F).representation g
+        (orderThreeRealPeriodProductHomeomorph F q) := by
+  rw [cyclic_eq_generator_pow g, map_pow, map_pow]
+  change orderThreeRealPeriodProductHomeomorph F
+      (((cyclicRepresentation 3 (orderThreeAffineFamilyGenerator F)
+        (orderThreeAffineFamilyGenerator_pow F)) (Multiplicative.ofAdd 1) ^ _) q) = _
+  rw [cyclicRepresentation_generator, (orderThreeActionData F).representation_generator]
+  exact orderThreeRealPeriodProductHomeomorph_generator_pow F hsource _ q
+
+/-- The whole-family order-four chart is equivariant for every finite-cyclic element. -/
+public theorem orderFourRealPeriodProductHomeomorph_equivariant
+    (hsource : U.sourceAction = fuchsianSourceAction)
+    (g : FiniteCyclic 4) (q : TotalSpace (parameterMap F)) :
+    orderFourRealPeriodProductHomeomorph F
+        (orderFourAffineFamilyRepresentation F g q) =
+      (orderFourActionData F).representation g
+        (orderFourRealPeriodProductHomeomorph F q) := by
+  rw [cyclic_eq_generator_pow g, map_pow, map_pow]
+  change orderFourRealPeriodProductHomeomorph F
+      (((cyclicRepresentation 4 (orderFourAffineFamilyGenerator F)
+        (orderFourAffineFamilyGenerator_pow F)) (Multiplicative.ofAdd 1) ^ _) q) = _
+  rw [cyclicRepresentation_generator, (orderFourActionData F).representation_generator]
+  exact orderFourRealPeriodProductHomeomorph_generator_pow F hsource _ q
 
 end
 
