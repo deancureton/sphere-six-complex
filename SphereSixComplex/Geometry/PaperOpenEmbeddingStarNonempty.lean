@@ -102,26 +102,26 @@ public theorem fourPieceStarGluingData_nonemptyCentralCollar :
 
 end PaperAnalyticData
 
-/-- The three collar sources for the fixed paper analytic data are nonempty. -/
-public theorem paperStarCollarSourceType_nonempty :
-    ∀ i, Nonempty (paperAnalyticData.starCollarSourceType i) :=
-  paperAnalyticData.starCollarSourceType_nonempty
+/-- The three collar sources for supplied paper analytic data are nonempty. -/
+public theorem paperStarCollarSourceType_nonempty (A : PaperAnalyticData) :
+    ∀ i, Nonempty (A.starCollarSourceType i) :=
+  A.starCollarSourceType_nonempty
 
-/-- The central collars of the fixed paper open-embedding star are nonempty. -/
-public theorem paperOpenEmbeddingStarData_centralCollar_nonempty :
-    ∀ i, Nonempty (paperAnalyticData.openEmbeddingStarData.centralCollar i) :=
-  paperAnalyticData.openEmbeddingStarData_centralCollar_nonempty
+/-- The central collars of a supplied paper open-embedding star are nonempty. -/
+public theorem paperOpenEmbeddingStarData_centralCollar_nonempty (A : PaperAnalyticData) :
+    ∀ i, Nonempty (A.openEmbeddingStarData.centralCollar i) :=
+  A.openEmbeddingStarData_centralCollar_nonempty
 
-/-- The filling collars of the fixed paper open-embedding star are nonempty. -/
-public theorem paperOpenEmbeddingStarData_fillingCollar_nonempty :
-    ∀ i, Nonempty (paperAnalyticData.openEmbeddingStarData.fillingCollar i) :=
-  paperAnalyticData.openEmbeddingStarData_fillingCollar_nonempty
+/-- The filling collars of a supplied paper open-embedding star are nonempty. -/
+public theorem paperOpenEmbeddingStarData_fillingCollar_nonempty (A : PaperAnalyticData) :
+    ∀ i, Nonempty (A.openEmbeddingStarData.fillingCollar i) :=
+  A.openEmbeddingStarData_fillingCollar_nonempty
 
-/-- The fixed paper four-piece gluing datum has nonempty central collars. -/
-public theorem paperFourPieceStarGluingData_nonemptyCentralCollar :
+/-- A supplied paper four-piece gluing datum has nonempty central collars. -/
+public theorem paperFourPieceStarGluingData_nonemptyCentralCollar (A : PaperAnalyticData) :
     ∀ i, Nonempty
-      (paperAnalyticData.openEmbeddingStarData.toFourPieceStarGluingData.centralCollar i) :=
-  paperAnalyticData.fourPieceStarGluingData_nonemptyCentralCollar
+      (A.openEmbeddingStarData.toFourPieceStarGluingData.centralCollar i) :=
+  A.fourPieceStarGluingData_nonemptyCentralCollar
 
 end
 

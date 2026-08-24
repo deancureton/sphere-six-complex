@@ -31,18 +31,27 @@ public structure PaperAnalyticData where
   cuspCoordinate : CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate modular localPeriods
   toricModel : StandardInfiniteA2ToricModel.Model
 
-/-- The established modular, descent, cusp-normalization, and toric inputs supply one coherent
-analytic package. -/
-public theorem exists_paperAnalyticData : Nonempty PaperAnalyticData := by
-  obtain ⟨E⟩ := exists_establishedFuchsianModularParameter
-  obtain ⟨D⟩ := exists_fuchsianPeriodLocalData E
+/-- The established modular, explicit affine-descent, cusp-normalization, and toric inputs supply
+one coherent analytic package. -/
+public theorem exists_paperAnalyticData
+    (E : EstablishedFuchsianModularParameter)
+    (F : ExactLiftedModularNegOneFrame E)
+    (Amu : (fuchsianMuDescentProblem E F).AnalyticDescentData)
+    (Abeta : FuchsianBetaAnalyticDescentData E F Amu) :
+    Nonempty PaperAnalyticData := by
+  obtain ⟨D⟩ := exists_fuchsianPeriodLocalData E F Amu Abeta
   obtain ⟨N⟩ := FuchsianCuspNormalization.exists_normalizedFuchsianCuspCoordinate E D
   obtain ⟨M⟩ := StandardInfiniteA2ToricModel.Established.model
   exact ⟨⟨E, D, N, M⟩⟩
 
-/-- A fixed coherent choice of the analytic data. -/
-@[expose] public noncomputable def paperAnalyticData : PaperAnalyticData :=
-  Classical.choice exists_paperAnalyticData
+/-- A coherent choice of the analytic data supplied by concrete affine-descent certificates. -/
+@[expose] public noncomputable def paperAnalyticData
+    (E : EstablishedFuchsianModularParameter)
+    (F : ExactLiftedModularNegOneFrame E)
+    (Amu : (fuchsianMuDescentProblem E F).AnalyticDescentData)
+    (Abeta : FuchsianBetaAnalyticDescentData E F Amu) :
+    PaperAnalyticData :=
+  Classical.choice (exists_paperAnalyticData E F Amu Abeta)
 
 namespace PaperAnalyticData
 
