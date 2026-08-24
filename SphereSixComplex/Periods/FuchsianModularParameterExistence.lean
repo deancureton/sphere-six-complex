@@ -94,10 +94,18 @@ function of the completed cusp parameter and remains nonzero at the added point.
 public structure HasExactFuchsianCusp (C : FuchsianOrbifoldCoordinate) where
   /-- The holomorphic unit in the completed cusp coordinate. -/
   cuspUnit : ℂ → ℂ
-  /-- The unit extends holomorphically across the completed cusp. -/
-  cuspUnit_holomorphic : MDiff cuspUnit
+  /-- Radius of a completed cusp-coordinate neighbourhood. -/
+  cuspRadius : ℝ
+  /-- The completed cusp-coordinate neighbourhood is nontrivial. -/
+  cuspRadius_pos : 0 < cuspRadius
+  /-- The unit is holomorphic on a neighbourhood of the completed cusp. -/
+  cuspUnit_holomorphic : ∀ q, q ∈ Metric.ball 0 cuspRadius → MDiffAt cuspUnit q
   /-- The extending factor is nonzero at the added cusp point. -/
   cuspUnit_zero_ne : cuspUnit 0 ≠ 0
+  /-- The canonical source cusp parameter eventually lies in the unit's domain. -/
+  cuspParameter_eventually_mem :
+    ∀ᶠ z in upperHalfPlaneAtInfinity,
+      fuchsianSourceCuspQ z ∈ Metric.ball 0 cuspRadius
   /-- The quotient coordinate has no zero sufficiently far into the cusp. -/
   coordinate_eventually_ne_zero :
     ∀ᶠ z in upperHalfPlaneAtInfinity, C.coordinate z ≠ 0
@@ -157,10 +165,17 @@ public theorem normalizedModularJCoordinate_invariant
 public structure HasExactNormalizedModularJCusp where
   /-- The holomorphic unit in the target completed cusp coordinate. -/
   cuspUnit : ℂ → ℂ
-  /-- The target cusp unit extends holomorphically across zero. -/
-  cuspUnit_holomorphic : MDiff cuspUnit
+  /-- Radius of a completed target-cusp neighbourhood. -/
+  cuspRadius : ℝ
+  /-- The completed target-cusp neighbourhood is nontrivial. -/
+  cuspRadius_pos : 0 < cuspRadius
+  /-- The target cusp unit is holomorphic on a neighbourhood of zero. -/
+  cuspUnit_holomorphic : ∀ q, q ∈ Metric.ball 0 cuspRadius → MDiffAt cuspUnit q
   /-- The target cusp unit remains nonzero at zero. -/
   cuspUnit_zero_ne : cuspUnit 0 ≠ 0
+  /-- The canonical target cusp parameter eventually lies in the unit's domain. -/
+  cuspParameter_eventually_mem :
+    ∀ᶠ z in upperHalfPlaneAtInfinity, modularCuspQ z ∈ Metric.ball 0 cuspRadius
   /-- The normalized modular coordinate is eventually nonzero at the cusp. -/
   coordinate_eventually_ne_zero : ∀ᶠ z in upperHalfPlaneAtInfinity,
     normalizedModularJCoordinate z ≠ 0

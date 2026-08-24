@@ -8,6 +8,7 @@ import SphereSixComplex.Geometry.ComplexTorus
 import SphereSixComplex.Geometry.ComplexThreefoldGluing
 import SphereSixComplex.Geometry.CuspCombinatorics
 import SphereSixComplex.Geometry.CuspFilling
+import SphereSixComplex.Geometry.CuspToricPhaseAction
 import SphereSixComplex.Geometry.CyclicCuspQuotient
 import SphereSixComplex.Geometry.EllipticComplexFilling
 import SphereSixComplex.Geometry.EllipticFilling
@@ -36,6 +37,7 @@ import SphereSixComplex.Periods.Domain
 import SphereSixComplex.Periods.CanonicalObstruction
 import SphereSixComplex.Periods.Functions
 import SphereSixComplex.Periods.EstablishedModularUniformization
+import SphereSixComplex.Periods.EstablishedFuchsianTorsorDescent
 import SphereSixComplex.Periods.EstablishedProjectiveLineCohomology
 import SphereSixComplex.Periods.FuchsianCompactCore
 import SphereSixComplex.Periods.FuchsianBetaTorsor
@@ -285,7 +287,16 @@ external inputs. The remaining paper-specific task is to descend the $`\mu`- and
 to these exact overlap cocycles.
 :::
 
-:::theorem "fuchsian-mu-torsor-descent" (parent := "projective-line-cech-splitting") (lean := "SphereSixComplex.Periods.MuTorsorCechLocalData, SphereSixComplex.Periods.exists_compatibleAdjustedMuSections, SphereSixComplex.Periods.gluedAdjustedMu_holomorphic, SphereSixComplex.Periods.gluedAdjustedMu_transform_one, SphereSixComplex.Periods.gluedAdjustedMu_transform_two, SphereSixComplex.Periods.gluedAdjustedMu_cusp_bounded, SphereSixComplex.Periods.exists_globalFuchsianMu")
+:::theorem "fuchsian-modular-neg-one-frame" (parent := "projective-line-cech-splitting") (lean := "SphereSixComplex.Periods.ExactLiftedModularNegOneFrame, SphereSixComplex.Periods.establishedExactLiftedModularNegOneFrame, SphereSixComplex.Periods.liftedNegOneInfinityFrame, SphereSixComplex.Periods.establishedFuchsianAffineCycleCertificate, SphereSixComplex.Periods.MuAffineCechSections.toLocalData, SphereSixComplex.Periods.exists_fuchsianPeriodLocalData_of_affineTorsorLocalTriviality")
+The classical divisor and cusp behavior of
+$`E_4^2\sqrt{E_6}/\Delta` supplies the two local frames for the pulled-back
+$`\mathcal O(-1)` bundle, including the exact elliptic vanishing orders and cusp pole. The finite
+affine cycle identities are explicit. What remains is the general analytic local-triviality step
+constructing compatible local sections of the $`\mu` and $`\beta` affine torsors; it is kept as an
+explicit proposition rather than assumed as part of the modular-form input.
+:::
+
+:::theorem "fuchsian-mu-torsor-descent" (parent := "fuchsian-modular-neg-one-frame") (lean := "SphereSixComplex.Periods.MuTorsorCechLocalData, SphereSixComplex.Periods.exists_compatibleAdjustedMuSections, SphereSixComplex.Periods.gluedAdjustedMu_holomorphic, SphereSixComplex.Periods.gluedAdjustedMu_transform_one, SphereSixComplex.Periods.gluedAdjustedMu_transform_two, SphereSixComplex.Periods.gluedAdjustedMu_cusp_bounded, SphereSixComplex.Periods.exists_globalFuchsianMu")
 Exact local $`\mathcal O(-1)` torsor data on two invariant quotient charts glues to a global
 holomorphic $`\mu` with both affine generator laws and the required cusp bound. The remaining
 paper-specific input is the construction of that local quotient-chart data and its infinity-frame
@@ -375,12 +386,19 @@ unimodular $`\mathbb C^3` charts with squarefree equation $`t=z_0z_1z_2`, the ra
 the integral fan shears. It contains no phase estimates or quotient assertions.
 :::
 
+:::theorem "toric-phase-correction" (parent := "standard-infinite-a2-toric-model") (lean := "SphereSixComplex.Geometry.CuspToricPhaseAction.phaseEmbedding, SphereSixComplex.Geometry.CuspToricPhaseAction.denseTorusShear_phase_commute, SphereSixComplex.Geometry.CuspToricPhaseAction.ToricModel.fanShear_phase_commute, SphereSixComplex.Geometry.CuspToricPhaseAction.ExactHolomorphicPhaseCoefficients.psiMap_add, SphereSixComplex.Geometry.CuspToricPhaseAction.ExactHolomorphicPhaseCoefficients.psiMap_holomorphic, SphereSixComplex.Geometry.CuspToricPhaseAction.ExactHolomorphicPhaseCoefficients.properlyDiscontinuous")
+The two phase coordinates embed in the dense torus, preserve the height character, and commute
+with every integral fan shear. Exact holomorphic phase coefficients therefore produce the
+corrected lattice action and its holomorphic maps. The fixed-point and compact-overlap estimates
+from the cusp analysis remain explicit hypotheses for freeness and proper discontinuity.
+:::
+
 :::theorem "cyclic-cusp-quotient" (parent := "cusp-filling") (lean := "SphereSixComplex.Geometry.CyclicCuspQuotient.cuspTranslate_eq_fuchsian_gZero_zpow, SphereSixComplex.Geometry.CyclicCuspQuotient.cuspHorodisc_action_free, SphereSixComplex.Geometry.CyclicCuspQuotient.cuspHorodisc_action_properlyDiscontinuous, SphereSixComplex.Geometry.CyclicCuspQuotient.cuspHorodisc_quotient_isQuotientCoveringMap, SphereSixComplex.Geometry.CyclicCuspQuotient.cuspProduct_generator_agrees_with_familyDeckMap")
 The explicit parabolic source generator acts by integer translations of the invariant horodisc.
 This cyclic action and its product lift are free, properly discontinuous covering actions.
 :::
 
-:::theorem "cusp-action" (parent := "cusp-filling") (lean := "SphereSixComplex.Geometry.CuspFilling.shearMap_add, SphereSixComplex.Geometry.CuspFilling.CuspActionData.action_free, SphereSixComplex.Geometry.CuspFilling.CuspActionData.properlyDiscontinuous, SphereSixComplex.Geometry.CuspFilling.quotient_isQuotientCoveringMap, SphereSixComplex.Geometry.CuspFilling.cuspQuotient_isManifold, SphereSixComplex.Geometry.CuspFilling.cuspQuotient_projection_isLocalDiffeomorph")
+:::theorem "cusp-action" (parent := "toric-phase-correction") (lean := "SphereSixComplex.Geometry.CuspFilling.shearMap_add, SphereSixComplex.Geometry.CuspFilling.CuspActionData.action_free, SphereSixComplex.Geometry.CuspFilling.CuspActionData.properlyDiscontinuous, SphereSixComplex.Geometry.CuspFilling.quotient_isQuotientCoveringMap, SphereSixComplex.Geometry.CuspFilling.cuspQuotient_isManifold, SphereSixComplex.Geometry.CuspFilling.cuspQuotient_projection_isLocalDiffeomorph")
 The $`B_0` shear preserves the cusp height and translates both classes of $`A_2` triangles.  Given
 the phase estimates of Theorem 4.5, the corrected maps form a free, properly discontinuous lattice
 action.  Local sheets differ by analytic deck maps, so the covering quotient inherits a complex
