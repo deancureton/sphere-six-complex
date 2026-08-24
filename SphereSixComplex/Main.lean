@@ -115,6 +115,7 @@ public import SphereSixComplex.Topology.HomologyComputation
 public import SphereSixComplex.Topology.HomologySphere
 public import SphereSixComplex.Topology.HurewiczWhitehead
 public import SphereSixComplex.Topology.MayerVietoris
+public import SphereSixComplex.Topology.ConnectedMayerVietorisDegreeZero
 public import SphereSixComplex.Topology.SectionSevenChainModel
 public import SphereSixComplex.Topology.SectionSevenLerayChainModel
 public import SphereSixComplex.Topology.SectionSevenLerayDuality
