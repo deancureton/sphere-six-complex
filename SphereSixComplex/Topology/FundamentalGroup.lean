@@ -29,7 +29,7 @@ public theorem simplyConnectedSpace_of_fundamentalGroup_subsingleton
   exact Subsingleton.elim _ _
 
 /-- The precise group-theoretic output claimed by the paper for the selected fillings. -/
-public def HasPaperFundamentalGroup (X : Type*) [TopologicalSpace X] : Prop :=
+@[expose] public def HasPaperFundamentalGroup (X : Type*) [TopologicalSpace X] : Prop :=
   ∃ x₀ : X, Nonempty
     (FundamentalGroup X x₀ ≃* Multiplicative TwistObstruction.ObstructionGroup)
 

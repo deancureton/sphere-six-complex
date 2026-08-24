@@ -3,9 +3,11 @@ module
 public import SphereSixComplex.ComplexStructure
 public import SphereSixComplex.Construction
 public import SphereSixComplex.Geometry.AtlasTransport
+public import SphereSixComplex.Geometry.AnalyticTorusFamily
 public import SphereSixComplex.Geometry.ComplexTorus
 public import SphereSixComplex.Geometry.ComplexThreefoldGluing
 public import SphereSixComplex.Geometry.CuspCombinatorics
+public import SphereSixComplex.Geometry.CuspFilling
 public import SphereSixComplex.Geometry.EllipticFilling
 public import SphereSixComplex.Geometry.FamilyEquivariance
 public import SphereSixComplex.Geometry.Gluing
@@ -18,7 +20,9 @@ public import SphereSixComplex.Periods.Invariant
 public import SphereSixComplex.Periods.Matrix
 public import SphereSixComplex.Periods.Nondegeneracy
 public import SphereSixComplex.Periods.Transformations
+public import SphereSixComplex.Periods.TorsorAlgebra
 public import SphereSixComplex.Topology.FundamentalGroup
+public import SphereSixComplex.Topology.FundamentalGroupComputation
 public import SphereSixComplex.Topology.HomologyComputation
 public import SphereSixComplex.Topology.HomologySphere
 public import SphereSixComplex.Topology.MayerVietoris

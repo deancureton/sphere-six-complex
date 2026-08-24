@@ -58,7 +58,7 @@ public theorem periodVector_add (x : Parameters) (a b : IntegerPeriods) :
   (periodHom x).range
 
 /-- The standard inclusion of `ℤ⁴` into `ℝ⁴`. -/
-public def integerToReal (n : IntegerPeriods) : RealPeriods := fun i ↦ n i
+@[expose] public def integerToReal (n : IntegerPeriods) : RealPeriods := fun i ↦ n i
 
 /-- The standard inclusion of integral coefficients into real coefficients is injective. -/
 public theorem integerToReal_injective : Function.Injective integerToReal := by

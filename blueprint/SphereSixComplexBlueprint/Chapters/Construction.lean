@@ -2,10 +2,12 @@ import Verso
 import VersoBlueprint
 import VersoManual
 import SphereSixComplex.Construction
+import SphereSixComplex.Geometry.AnalyticTorusFamily
 import SphereSixComplex.Geometry.AtlasTransport
 import SphereSixComplex.Geometry.ComplexTorus
 import SphereSixComplex.Geometry.ComplexThreefoldGluing
 import SphereSixComplex.Geometry.CuspCombinatorics
+import SphereSixComplex.Geometry.CuspFilling
 import SphereSixComplex.Geometry.EllipticFilling
 import SphereSixComplex.Geometry.FamilyEquivariance
 import SphereSixComplex.Geometry.Gluing
@@ -18,7 +20,9 @@ import SphereSixComplex.Periods.Invariant
 import SphereSixComplex.Periods.Matrix
 import SphereSixComplex.Periods.Nondegeneracy
 import SphereSixComplex.Periods.Transformations
+import SphereSixComplex.Periods.TorsorAlgebra
 import SphereSixComplex.Topology.FundamentalGroup
+import SphereSixComplex.Topology.FundamentalGroupComputation
 import SphereSixComplex.Topology.HomologyComputation
 import SphereSixComplex.Topology.HomologySphere
 import SphereSixComplex.Topology.MayerVietoris
@@ -135,6 +139,24 @@ the order-three and order-four fixed points provide the source-action data for t
 problem.
 :::
 
+:::definition "canonical-mu-beta-reduction" (parent := "period-functions") (lean := "SphereSixComplex.Periods.CanonicalMuBetaData, SphereSixComplex.Periods.theorem3_4Existence_canonical_of_muBeta")
+For the explicit modular uniformization, the remaining part of Theorem 3.4 is exactly the
+construction of two holomorphic functions $`\mu` and $`\beta` with the stated additive
+transformation laws, cusp bounds, and Setup inequalities.
+:::
+
+:::theorem "period-negative-shift" (parent := "period-functions") (lean := "SphereSixComplex.Periods.CanonicalMuBetaPreData.exists_shiftedData, SphereSixComplex.Periods.theorem3_4Existence_canonical_of_preData")
+Once the equivariant functions have an upper bound for the invariant Schur quantity, subtracting a
+sufficiently large positive multiple of $`i` from $`\beta` makes the period determinant strictly
+negative everywhere without changing any transformation or cusp condition.
+:::
+
+:::theorem "period-torsor-algebra" (parent := "period-functions") (lean := "SphereSixComplex.Periods.muAutomorphyOne_cycle, SphereSixComplex.Periods.muAutomorphyTwo_cycle, SphereSixComplex.Periods.betaCocycleOne_cycle, SphereSixComplex.Periods.betaCocycleTwo_cycle, SphereSixComplex.Periods.localBetaOne_transform, SphereSixComplex.Periods.localBetaTwo_transform")
+The homogeneous automorphy factors and affine substitutions close around the order-three and
+order-four orbits.  The inhomogeneous $`\beta` cocycles sum to zero, and weighted orbit sums give
+the explicit local primitives used to build the two analytic torsors.
+:::
+
 :::theorem "torus-family" (parent := "construction_spine") (priority := "high")
 The period matrix built from $`\tau,\mu,\beta` defines a proper holomorphic family of compact complex
 two-tori over the thrice-punctured sphere.
@@ -155,6 +177,13 @@ The exact period-matrix identities descend to locally complex-diffeomorphic maps
 quotients over all three triangle-group generators.
 :::
 
+:::theorem "analytic-torus-family" (parent := "torus-family") (lean := "SphereSixComplex.Geometry.AnalyticTorusFamily.parameterMap_contMDiff, SphereSixComplex.Geometry.AnalyticTorusFamily.periodSection_contMDiff, SphereSixComplex.Geometry.AnalyticTorusFamily.parameterMap_compactUniformLowerBound, SphereSixComplex.Geometry.AnalyticTorusFamily.totalSpace_isManifold_and_projection_isLocalDiffeomorph")
+The period domain is an open complex three-manifold, the analytic period map and every integral
+period section are complex smooth.  Pointwise full rank gives a uniform lower bound over compact
+base sets, hence a properly discontinuous quotient complex manifold with locally biholomorphic
+projection.
+:::
+
 :::theorem "cusp-filling" (parent := "construction_spine") (priority := "high")
 The unipotent end admits the toric filling whose central fibre is the opposite-edge quotient of the
 degree-six del Pezzo surface.
@@ -163,6 +192,13 @@ degree-six del Pezzo surface.
 :::theorem "cusp-fan-combinatorics" (parent := "cusp-filling") (lean := "SphereSixComplex.Geometry.CuspCombinatorics.direction_sum_zero, SphereSixComplex.Geometry.CuspCombinatorics.direction_pair_det, SphereSixComplex.Geometry.CuspCombinatorics.hexagonRay_opposite, SphereSixComplex.Geometry.CuspCombinatorics.hexagonCone_det")
 The three $`A_2` directions sum to zero and consecutive pairs form integral bases.  The six rays of
 the degree-six del Pezzo fan occur in opposite pairs, and every two-dimensional cone is unimodular.
+:::
+
+:::theorem "cusp-action" (parent := "cusp-filling") (lean := "SphereSixComplex.Geometry.CuspFilling.shearMap_add, SphereSixComplex.Geometry.CuspFilling.CuspActionData.action_free, SphereSixComplex.Geometry.CuspFilling.CuspActionData.properlyDiscontinuous, SphereSixComplex.Geometry.CuspFilling.quotient_isQuotientCoveringMap, SphereSixComplex.Geometry.CuspFilling.cuspQuotient_isManifold")
+The $`B_0` shear preserves the cusp height and translates both classes of $`A_2` triangles.  Given
+the phase estimates of Theorem 4.5, the corrected maps form a free, properly discontinuous lattice
+action.  Local sheets differ by analytic deck maps, so the covering quotient inherits a complex
+manifold atlas.
 :::
 
 :::proof "cusp-filling"
@@ -217,6 +253,14 @@ $`12\ell_0-4\ell_1-3\ell_2` has absolute value one, so its cyclic quotient is tr
 :::theorem "fundamental-group-recognition" (parent := "fundamental-group") (lean := "SphereSixComplex.Topology.HasPaperFundamentalGroup, SphereSixComplex.Topology.simplyConnectedSpace_of_hasPaperFundamentalGroup")
 Once van Kampen identifies the fundamental group with the obstruction group, the selected twists
 make it trivial and hence make the path-connected threefold simply connected.
+:::
+
+:::theorem "fundamental-group-presentation" (parent := "fundamental-group") (lean := "SphereSixComplex.Topology.paperRelation_iff_classifier_zero, SphereSixComplex.Topology.paperPresentedGroupEquiv, SphereSixComplex.Topology.paperCanonicalEquiv, SphereSixComplex.Topology.HasVanKampenData.hasVanKampenPresentation, SphereSixComplex.Topology.HasVanKampenPresentation.hasPaperFundamentalGroup")
+The three van Kampen generators reduce to a two-generator integral presentation.  Its relation
+lattice is exactly the kernel of the cyclic classifier, so the quotient has order
+$`|12\ell_0-4\ell_1-3\ell_2|`.  Concrete generators satisfying the relations, generating the
+fundamental group, and having no additional exponent relations give the canonical presentation;
+for the selected twists it supplies the paper's fundamental-group contract.
 :::
 
 :::theorem "integral-homology" (parent := "construction_spine") (lean := "SphereSixComplex.CompletedPaperThreefold.integralHomology") (priority := "high")

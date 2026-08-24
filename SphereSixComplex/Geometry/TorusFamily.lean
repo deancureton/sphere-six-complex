@@ -105,7 +105,7 @@ public theorem familyContinuousConstSMul [TopologicalSpace B] (x : B → PeriodD
 
 /-- Compact-uniform properness of a varying period family.  This is the precise finiteness
 condition needed for proper discontinuity of the fibrewise action. -/
-public def CompactlyUniformPeriods [TopologicalSpace B] (x : B → PeriodDomain) : Prop :=
+@[expose] public def CompactlyUniformPeriods [TopologicalSpace B] (x : B → PeriodDomain) : Prop :=
   ∀ {K L : Set (B × ComplexTwoSpace)}, IsCompact K → IsCompact L →
     {g : FamilyPeriodGroup x | ((g • ·) '' K ∩ L).Nonempty}.Finite
 

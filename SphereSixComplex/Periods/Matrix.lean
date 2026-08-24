@@ -24,7 +24,7 @@ public structure Parameters where
 public def periodBlock (x : Parameters) : Matrix (Fin 2) (Fin 2) ℂ :=
   !![6 * x.mu, x.tau; x.beta, x.mu]
 
-public def periodMatrix (x : Parameters) : Matrix (Fin 2) (Fin 4) ℂ :=
+@[expose] public def periodMatrix (x : Parameters) : Matrix (Fin 2) (Fin 4) ℂ :=
   !![6 * x.mu, x.tau, 1, 0; x.beta, x.mu, 0, 1]
 
 public noncomputable def transformOne (x : Parameters) : Parameters where
