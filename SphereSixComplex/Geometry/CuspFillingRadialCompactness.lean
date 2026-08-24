@@ -47,9 +47,25 @@ public theorem realL1_eq_zero_iff (x : Fin 2 → ℝ) : realL1 x = 0 ↔ x = 0 :
   · rintro rfl
     simp [realL1]
 
+@[simp]
+public theorem realL1_neg (x : Fin 2 → ℝ) : realL1 (-x) = realL1 x := by
+  simp [realL1]
+
 /-- The real inverse of the integral fan shear `B₀`. -/
-public def realFanShearInverse (d : Fin 2 → ℝ) : Fin 2 → ℝ :=
+@[expose] public def realFanShearInverse (d : Fin 2 → ℝ) : Fin 2 → ℝ :=
   ![-d 1, d 0]
+
+@[simp]
+public theorem realFanShearInverse_add (x y : Fin 2 → ℝ) :
+    realFanShearInverse (x + y) = realFanShearInverse x + realFanShearInverse y := by
+  ext i
+  fin_cases i <;> simp [realFanShearInverse, add_comm]
+
+@[simp]
+public theorem realFanShearInverse_smul (c : ℝ) (x : Fin 2 → ℝ) :
+    realFanShearInverse (c • x) = c • realFanShearInverse x := by
+  ext i
+  fin_cases i <;> simp [realFanShearInverse]
 
 @[simp]
 public theorem realL1_realFanShearInverse (d : Fin 2 → ℝ) :
@@ -83,7 +99,7 @@ public theorem realL1_fractionalPartVector_le_two (x : Fin 2 → ℝ) :
   linarith
 
 /-- The phase-corrected real fan displacement at a nonzero height. -/
-public noncomputable def effectiveFanDisplacement
+@[expose] public noncomputable def effectiveFanDisplacement
     {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (q : ℂ) (d : Fin 2 → ℝ) :
     Fin 2 → ℝ :=
@@ -92,7 +108,7 @@ public noncomputable def effectiveFanDisplacement
       N q).mulVec (realFanShearInverse d) i / Real.log ‖q‖
 
 /-- The effective fan displacement is real-linear. -/
-public noncomputable def effectiveFanDisplacementLinearMap
+@[expose] public noncomputable def effectiveFanDisplacementLinearMap
     {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (q : ℂ) :
     (Fin 2 → ℝ) →ₗ[ℝ] (Fin 2 → ℝ) where
@@ -107,6 +123,13 @@ public noncomputable def effectiveFanDisplacementLinearMap
     fin_cases i <;>
       simp [effectiveFanDisplacement, realFanShearInverse, Matrix.mulVec, dotProduct,
         Fin.sum_univ_two] <;> ring
+
+@[simp]
+public theorem effectiveFanDisplacementLinearMap_apply
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    (N : NormalizedFuchsianCuspCoordinate E D) (q : ℂ) (d : Fin 2 → ℝ) :
+    effectiveFanDisplacementLinearMap N q d = effectiveFanDisplacement N q d :=
+  rfl
 
 public theorem phaseLog_mulVec_real_le
     {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
