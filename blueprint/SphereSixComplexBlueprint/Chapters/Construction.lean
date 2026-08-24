@@ -13,6 +13,8 @@ import SphereSixComplex.Geometry.EllipticFilling
 import SphereSixComplex.Geometry.FamilyEquivariance
 import SphereSixComplex.Geometry.Gluing
 import SphereSixComplex.Geometry.GlobalTorusFamily
+import SphereSixComplex.Geometry.GlobalDeckSmoothness
+import SphereSixComplex.Geometry.GlobalDeckQuotient
 import SphereSixComplex.Geometry.PaperAssembly
 import SphereSixComplex.Geometry.Quotient
 import SphereSixComplex.Geometry.TorusFamily
@@ -36,6 +38,7 @@ import SphereSixComplex.Topology.HurewiczWhitehead
 import SphereSixComplex.Topology.MayerVietoris
 import SphereSixComplex.Topology.SectionSevenChainModel
 import SphereSixComplex.Topology.SectionSevenLerayChainModel
+import SphereSixComplex.Topology.SectionSevenLerayDuality
 import SphereSixComplex.Topology.SmoothRecognition
 import SphereSixComplex.Topology.SmoothRecognitionFoundations
 import SphereSixComplex.Topology.SphereSimplyConnected
@@ -45,6 +48,7 @@ import SphereSixComplex.TriangleGroup.ModularParameter
 import SphereSixComplex.TriangleGroup.FuchsianAction
 import SphereSixComplex.TriangleGroup.FuchsianSmoothAction
 import SphereSixComplex.TriangleGroup.FreeProductTorsion
+import SphereSixComplex.TriangleGroup.BinaryIndexedCoprod
 import SphereSixComplex.TriangleGroup.Representation
 
 open Informal
@@ -207,17 +211,20 @@ The exact period-matrix identities descend to locally complex-diffeomorphic maps
 quotients over all three triangle-group generators.
 :::
 
-:::theorem "global-torus-family-action" (parent := "torus-family") (lean := "SphereSixComplex.Geometry.GlobalTorusFamily.periodTransport_isComplexLinear, SphereSixComplex.Geometry.GlobalTorusFamily.parameterMap_equivariant, SphereSixComplex.Geometry.GlobalTorusFamily.regularDeckMap_orbitRel_iff, SphereSixComplex.Geometry.GlobalTorusFamily.regularFamilyDeckMap_mul, SphereSixComplex.Geometry.GlobalTorusFamily.PuncturedGlobalFamily")
+:::theorem "global-torus-family-action" (parent := "torus-family") (lean := "SphereSixComplex.Geometry.GlobalTorusFamily.periodTransport_isComplexLinear, SphereSixComplex.Geometry.GlobalTorusFamily.parameterMap_equivariant, SphereSixComplex.Geometry.GlobalTorusFamily.regularDeckMap_orbitRel_iff, SphereSixComplex.Geometry.GlobalTorusFamily.regularFamilyDeckMap_mul, SphereSixComplex.Geometry.GlobalTorusFamily.deckMap_contMDiff, SphereSixComplex.Geometry.GlobalTorusFamily.globalDeckOrbitQuotient_isManifold_and_projection_isLocalDiffeomorph, SphereSixComplex.Geometry.GlobalTorusFamily.familyDeckMap_contMDiff_of_projection_isLocalDiffeomorph, SphereSixComplex.Geometry.GlobalTorusFamily.PuncturedGlobalFamily")
 Integral monodromy extends to complex-linear fibre transport for every triangle-group element.
 The resulting deck action respects the varying period lattice and defines the punctured global
-torus-family quotient before the three local fillings are attached.
+torus-family quotient before the three local fillings are attached. Every lifted deck map on the
+vector-bundle cover is complex-smooth. Freeness and proper discontinuity on the base transfer to
+the lifted action and give a complex-manifold quotient with locally biholomorphic projection.
 :::
 
-:::theorem "elliptic-orbit-freeness" (parent := "torus-family") (lean := "SphereSixComplex.TriangleGroup.FreeProductTorsion.ReducedWord.cyclicallyReduced_not_isOfFinOrder, SphereSixComplex.TriangleGroup.FreeProductTorsion.fuchsianSourceAction_inl_fixed_iff, SphereSixComplex.TriangleGroup.FreeProductTorsion.fuchsianSourceAction_inr_fixed_iff, SphereSixComplex.TriangleGroup.FreeProductTorsion.regular_not_fixed_by_conjugate_inl, SphereSixComplex.TriangleGroup.FreeProductTorsion.regular_not_fixed_by_conjugate_inr")
+:::theorem "elliptic-orbit-freeness" (parent := "torus-family") (lean := "SphereSixComplex.TriangleGroup.BinaryIndexedCoprod.deltaIndexedEquiv, SphereSixComplex.TriangleGroup.BinaryIndexedCoprod.deltaNormalForm, SphereSixComplex.TriangleGroup.BinaryIndexedCoprod.finiteOrder_isConj_inl_or_inr, SphereSixComplex.TriangleGroup.BinaryIndexedCoprod.finiteOrder_fixed_regular_eq_one, SphereSixComplex.TriangleGroup.FreeProductTorsion.fuchsianSourceAction_inl_fixed_iff, SphereSixComplex.TriangleGroup.FreeProductTorsion.fuchsianSourceAction_inr_fixed_iff, SphereSixComplex.TriangleGroup.FreeProductTorsion.regular_not_fixed_by_conjugate_inl, SphereSixComplex.TriangleGroup.FreeProductTorsion.regular_not_fixed_by_conjugate_inr")
 Every nonidentity element of either cyclic factor fixes exactly its marked elliptic point, and its
 conjugates fix exactly the corresponding elliptic orbit. Removing those orbits eliminates all such
-stabilizers. Completing freeness requires transporting indexed reduced-word torsion theory to the
-binary free product used by the triangle group and proving discreteness of the explicit image.
+stabilizers. An explicit equivalence with the indexed free product proves every nontrivial
+finite-order element is conjugate into a factor. Completing freeness now requires only showing
+that point-stabilizer elements have finite order, normally from discreteness of the Fuchsian image.
 :::
 
 :::theorem "analytic-torus-family" (parent := "torus-family") (lean := "SphereSixComplex.Geometry.AnalyticTorusFamily.parameterMap_contMDiff, SphereSixComplex.Geometry.AnalyticTorusFamily.periodSection_contMDiff, SphereSixComplex.Geometry.AnalyticTorusFamily.parameterMap_compactUniformLowerBound, SphereSixComplex.Geometry.AnalyticTorusFamily.totalSpace_isManifold_and_projection_isLocalDiffeomorph")
@@ -350,6 +357,13 @@ The three differentials computed in Section 7 define a finite integral chain com
 homology in degrees one through three and top homology $`\mathbb Z`. The paper's fourth coefficient
 is kept explicit; if it is a unit, degrees four and five vanish as well. The missing unit proof is
 the precise Poincaré-duality or Leray-convergence step.
+:::
+
+:::theorem "section-seven-algebraic-duality" (parent := "integral-homology") (lean := "SphereSixComplex.sectionSevenOneFivePairingMatrix_bijective, SphereSixComplex.sectionSevenTwoFourPairingMatrix_bijective, SphereSixComplex.SectionSevenLerayAlgebraicDuality.top_eq_one_or_neg_one, SphereSixComplex.SectionSevenLerayAlgebraicDuality.sphere_shaped_model_homology")
+Explicit unimodular complementary-degree pairings reduce the remaining duality calculation to one
+boundary-adjointness identity. That identity forces the fourth coefficient to be $`\pm1` and gives
+the complete sphere-shaped homology of the finite model. Realizing this adjointness for the glued
+space is the remaining topological Poincaré-duality bridge.
 :::
 
 :::theorem "smooth-recognition" (parent := "construction_spine") (lean := "SphereSixComplex.completedPaperThreefold_smoothRecognition, SphereSixComplex.exists_complex_threefold_diffeomorphic_sixSphere") (priority := "high")

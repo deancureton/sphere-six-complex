@@ -13,6 +13,8 @@ public import SphereSixComplex.Geometry.EllipticFilling
 public import SphereSixComplex.Geometry.FamilyEquivariance
 public import SphereSixComplex.Geometry.Gluing
 public import SphereSixComplex.Geometry.GlobalTorusFamily
+public import SphereSixComplex.Geometry.GlobalDeckSmoothness
+public import SphereSixComplex.Geometry.GlobalDeckQuotient
 public import SphereSixComplex.Geometry.PaperAssembly
 public import SphereSixComplex.Geometry.Quotient
 public import SphereSixComplex.Geometry.TorusFamily
@@ -36,6 +38,7 @@ public import SphereSixComplex.Topology.HurewiczWhitehead
 public import SphereSixComplex.Topology.MayerVietoris
 public import SphereSixComplex.Topology.SectionSevenChainModel
 public import SphereSixComplex.Topology.SectionSevenLerayChainModel
+public import SphereSixComplex.Topology.SectionSevenLerayDuality
 public import SphereSixComplex.Topology.SmoothRecognition
 public import SphereSixComplex.Topology.SmoothRecognitionFoundations
 public import SphereSixComplex.Topology.SphereSimplyConnected
@@ -45,6 +48,7 @@ public import SphereSixComplex.TriangleGroup.ModularParameter
 public import SphereSixComplex.TriangleGroup.FuchsianAction
 public import SphereSixComplex.TriangleGroup.FuchsianSmoothAction
 public import SphereSixComplex.TriangleGroup.FreeProductTorsion
+public import SphereSixComplex.TriangleGroup.BinaryIndexedCoprod
 public import SphereSixComplex.TriangleGroup.Representation
 
 /-!
