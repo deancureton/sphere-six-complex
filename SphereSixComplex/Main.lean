@@ -12,6 +12,7 @@ public import SphereSixComplex.Geometry.ClosedRelationGluing
 public import SphereSixComplex.Geometry.CompactTorusFamilyOverBase
 public import SphereSixComplex.Geometry.CuspCombinatorics
 public import SphereSixComplex.Geometry.CuspAnalyticFillingCollar
+public import SphereSixComplex.Geometry.CuspCollarPairProperness
 public import SphereSixComplex.Geometry.CuspFilling
 public import SphereSixComplex.Geometry.CuspLocalPhaseAction
 public import SphereSixComplex.Geometry.CuspPeriodExpansion
@@ -61,6 +62,7 @@ public import SphereSixComplex.Geometry.PaperOpenEmbeddingStarNonempty
 public import SphereSixComplex.Geometry.PaperStarClosedRelationReduction
 public import SphereSixComplex.Geometry.PaperStarCollarPairProperness
 public import SphereSixComplex.Geometry.PaperStarComplexStructures
+public import SphereSixComplex.Geometry.PaperStarHausdorff
 public import SphereSixComplex.Geometry.PaperStarPieceHausdorff
 public import SphereSixComplex.Geometry.PaperStarPieceTopology
 public import SphereSixComplex.Geometry.PaperAssembly
