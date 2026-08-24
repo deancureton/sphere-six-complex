@@ -2,6 +2,7 @@ module
 
 public import SphereSixComplex.Topology.PaperCentralCollarTorusBundleModels
 public import SphereSixComplex.Topology.PaperCuspCentralFiberCWModel
+public import SphereSixComplex.Topology.PaperCuspPhaseSpreading
 
 /-!
 # Assembly of the actual Section 7 local Euler models
@@ -44,5 +45,35 @@ public theorem sectionSevenLocalEulerExpression_eq_two_of_cuspRetraction
     (R : ActualLocalCuspCentralFiberRetractionData A.starCuspWitness) :
     A.openEmbeddingStarData.sectionSevenLocalEulerExpression = 2 :=
   (A.sectionSevenLocalEulerModelsOfCuspRetraction R).sectionSevenLocalEulerExpression_eq_two
+
+/-- Assemble the seven local models using the standard phase-spread cusp retraction. -/
+public noncomputable def sectionSevenLocalEulerModels :
+    A.SectionSevenLocalEulerModels :=
+  A.sectionSevenLocalEulerModelsOfCuspRetraction A.cuspCentralFiberRetractionData
+
+/-- All seven local spaces have finite integral homology. -/
+public theorem sectionSevenLocalIntegralHomologyFiniteSix :
+    IntegralHomologyFiniteSix A.openEmbeddingStarData.central ∧
+      (∀ i : Fin 3, IntegralHomologyFiniteSix (A.openEmbeddingStarData.filling i)) ∧
+      (∀ i : Fin 3, IntegralHomologyFiniteSix
+        (A.openEmbeddingStarData.collarSource i)) :=
+  A.sectionSevenLocalIntegralHomologyFiniteSixOfCuspRetraction
+    A.cuspCentralFiberRetractionData
+
+/-- The unconditional local Section 7 Euler expression is two. -/
+public theorem sectionSevenLocalEulerExpression_eq_two :
+    A.openEmbeddingStarData.sectionSevenLocalEulerExpression = 2 :=
+  A.sectionSevenLocalEulerExpression_eq_two_of_cuspRetraction
+    A.cuspCentralFiberRetractionData
+
+/-- The assembled local models for the globally selected analytic package. -/
+public noncomputable def selectedSectionSevenLocalEulerModels :
+    paperAnalyticData.SectionSevenLocalEulerModels :=
+  paperAnalyticData.sectionSevenLocalEulerModels
+
+/-- The selected paper data have local Section 7 Euler expression two. -/
+public theorem selectedSectionSevenLocalEulerExpression_eq_two :
+    paperAnalyticData.openEmbeddingStarData.sectionSevenLocalEulerExpression = 2 :=
+  paperAnalyticData.sectionSevenLocalEulerExpression_eq_two
 
 end SphereSixComplex.Geometry.PaperAnalyticData
