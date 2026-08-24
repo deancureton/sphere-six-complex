@@ -2,6 +2,7 @@ module
 
 public import SphereSixComplex.Geometry.PaperGluingInstantiation
 public import SphereSixComplex.Topology.SectionSevenMayerVietorisEuler
+public import SphereSixComplex.Topology.SectionSevenLocalEulerModels
 
 /-!
 # Section 7 homology for the analytic star
@@ -63,6 +64,27 @@ public theorem star_hasIntegralHomologyOfSixSphere
   exact H.hasIntegralHomologyOfSixSphere_of_localEulerCalculation
     (A := P.openEmbeddingStarData) hManifold P.starGluedCompact hConnected
       hCentralFinite hFillingFinite hCollarFinite hLocal
+
+/-- Geometric local CW, bundle, cover, and retraction models discharge every finiteness and
+Euler-characteristic input in the Section 7 homology calculation. -/
+public theorem star_hasIntegralHomologyOfSixSphere_of_localModels
+    (H : P.openEmbeddingStarData.SectionSevenMayerVietorisHomologyAssembly)
+    (M : P.SectionSevenLocalEulerModels) :
+    HasIntegralHomologyOfSixSphere
+      (GluedSpace P.openEmbeddingStarData.toFourPieceStarGluingData.glueData) := by
+  obtain ⟨hCentral, hFilling, hCollar⟩ := M.localIntegralHomologyFiniteSix
+  exact P.star_hasIntegralHomologyOfSixSphere H hCentral hFilling hCollar
+    M.sectionSevenLocalEulerExpression_eq_two
+
+/-- Once the actual Mayer--Vietoris map bases and van Kampen calculation are supplied, the
+geometric local models assemble directly into the paper's complete gluing package. -/
+@[expose] public noncomputable def toPaperGluingData_of_sectionSevenLocalModels
+    (vanKampen : Topology.HasVanKampenData
+      (GluedSpace P.openEmbeddingStarData.toFourPieceStarGluingData.glueData) 0 1 (-1))
+    (H : P.openEmbeddingStarData.SectionSevenMayerVietorisHomologyAssembly)
+    (M : P.SectionSevenLocalEulerModels) : SphereSixComplex.PaperGluingData :=
+  P.toPaperGluingData vanKampen
+    (P.star_hasIntegralHomologyOfSixSphere_of_localModels H M)
 
 end PaperAnalyticData
 
