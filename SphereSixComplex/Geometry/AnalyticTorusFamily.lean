@@ -252,7 +252,7 @@ public theorem periodRealLinear_parameterMap_continuous :
 /-- Quantitative compact-uniform nondegeneracy of a period family.  It is the smallest estimate
 needed below: on every compact base set, period vectors dominate integral coefficient norm by a
 single positive constant. -/
-public def CompactUniformLowerBound {B : Type*} [TopologicalSpace B]
+@[expose] public def CompactUniformLowerBound {B : Type*} [TopologicalSpace B]
     (x : B → PeriodDomain) : Prop :=
   ∀ K : Set B, IsCompact K → ∃ c : ℝ, 0 < c ∧
     ∀ b ∈ K, ∀ a : IntegerPeriods,

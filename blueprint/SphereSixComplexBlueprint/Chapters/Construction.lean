@@ -13,6 +13,7 @@ import SphereSixComplex.Geometry.EllipticComplexFilling
 import SphereSixComplex.Geometry.EllipticFilling
 import SphereSixComplex.Geometry.EllipticCayleyHomeomorph
 import SphereSixComplex.Geometry.EllipticFamilySpecialization
+import SphereSixComplex.Geometry.EllipticFixedPointCriterion
 import SphereSixComplex.Geometry.EllipticLocalCoordinates
 import SphereSixComplex.Geometry.FamilyEquivariance
 import SphereSixComplex.Geometry.Gluing
@@ -22,6 +23,7 @@ import SphereSixComplex.Geometry.GlobalDeckQuotient
 import SphereSixComplex.Geometry.PaperAssembly
 import SphereSixComplex.Geometry.Quotient
 import SphereSixComplex.Geometry.RegularBaseTopology
+import SphereSixComplex.Geometry.RegularTorusFamily
 import SphereSixComplex.Geometry.TorusFamily
 import SphereSixComplex.LatticeData
 import SphereSixComplex.Periods.Domain
@@ -57,6 +59,7 @@ import SphereSixComplex.Topology.StandardSphereHomologyZero
 import SphereSixComplex.Topology.DiskBoundaryQuotient
 import SphereSixComplex.Topology.RelativeSingularHomology
 import SphereSixComplex.Topology.SingularExcision
+import SphereSixComplex.Topology.SingularSubdivision
 import SphereSixComplex.Topology.TwistObstruction
 import SphereSixComplex.TriangleGroup.ModularParameter
 import SphereSixComplex.TriangleGroup.FuchsianAction
@@ -265,12 +268,13 @@ The exact period-matrix identities descend to locally complex-diffeomorphic maps
 quotients over all three triangle-group generators.
 :::
 
-:::theorem "global-torus-family-action" (parent := "torus-family") (lean := "SphereSixComplex.Geometry.GlobalTorusFamily.periodTransport_isComplexLinear, SphereSixComplex.Geometry.GlobalTorusFamily.parameterMap_equivariant, SphereSixComplex.Geometry.GlobalTorusFamily.regularDeckMap_orbitRel_iff, SphereSixComplex.Geometry.GlobalTorusFamily.regularFamilyDeckMap_mul, SphereSixComplex.Geometry.GlobalTorusFamily.deckMap_contMDiff, SphereSixComplex.Geometry.GlobalTorusFamily.globalDeckOrbitQuotient_isManifold_and_projection_isLocalDiffeomorph, SphereSixComplex.Geometry.GlobalTorusFamily.familyDeckMap_contMDiff_of_projection_isLocalDiffeomorph, SphereSixComplex.Geometry.GlobalTorusFamily.PuncturedGlobalFamily")
+:::theorem "global-torus-family-action" (parent := "torus-family") (lean := "SphereSixComplex.Geometry.GlobalTorusFamily.periodTransport_isComplexLinear, SphereSixComplex.Geometry.GlobalTorusFamily.parameterMap_equivariant, SphereSixComplex.Geometry.GlobalTorusFamily.regularDeckMap_orbitRel_iff, SphereSixComplex.Geometry.GlobalTorusFamily.regularFamilyDeckMap_mul, SphereSixComplex.Geometry.GlobalTorusFamily.regularParameterMap_compactUniformLowerBound, SphereSixComplex.Geometry.GlobalTorusFamily.regularTotalSpace_isManifold_and_projection_isLocalDiffeomorph, SphereSixComplex.Geometry.GlobalTorusFamily.regularFamilyDeckMap_contMDiff, SphereSixComplex.Geometry.GlobalTorusFamily.regularFamilyDeckAction_isCancelSMul_of_fuchsian, SphereSixComplex.Geometry.GlobalTorusFamily.regularFamilyDeckAction_properlyDiscontinuous_of_source, SphereSixComplex.Geometry.GlobalTorusFamily.puncturedGlobalFamily_isManifold_and_projection_isLocalDiffeomorph, SphereSixComplex.Geometry.GlobalTorusFamily.PuncturedGlobalFamily")
 Integral monodromy extends to complex-linear fibre transport for every triangle-group element.
 The resulting deck action respects the varying period lattice and defines the punctured global
-torus-family quotient before the three local fillings are attached. Every lifted deck map on the
-vector-bundle cover is complex-smooth. Freeness and proper discontinuity on the base transfer to
-the lifted action and give a complex-manifold quotient with locally biholomorphic projection.
+torus-family quotient before the three local fillings are attached. The regular lattice quotient
+and every descended deck map are complex smooth. Source freeness and proper discontinuity transfer
+through both quotients, giving the punctured family a complex-threefold atlas with locally
+biholomorphic projection.
 :::
 
 :::theorem "elliptic-orbit-freeness" (parent := "torus-family") (lean := "SphereSixComplex.TriangleGroup.BinaryIndexedCoprod.deltaIndexedEquiv, SphereSixComplex.TriangleGroup.BinaryIndexedCoprod.deltaNormalForm, SphereSixComplex.TriangleGroup.BinaryIndexedCoprod.finiteOrder_isConj_inl_or_inr, SphereSixComplex.TriangleGroup.BinaryIndexedCoprod.finiteOrder_fixed_regular_eq_one, SphereSixComplex.TriangleGroup.FreeProductTorsion.fuchsianSourceAction_inl_fixed_iff, SphereSixComplex.TriangleGroup.FreeProductTorsion.fuchsianSourceAction_inr_fixed_iff, SphereSixComplex.TriangleGroup.FuchsianProperFreeness.isOfFinOrder_of_fixed_of_properlyDiscontinuous, SphereSixComplex.TriangleGroup.FuchsianProperFreeness.fuchsian_fixed_regular_eq_one, SphereSixComplex.TriangleGroup.FuchsianProperFreeness.regularLiftedDeckAction_isCancelSMul_of_fuchsian, SphereSixComplex.TriangleGroup.FuchsianProperFreeness.regularLiftedDeckAction_properlyDiscontinuous_of_source")
@@ -334,10 +338,11 @@ conjugate the source generators to rotations of orders three and four. The remai
 data then gives the free logarithmic-transform quotient manifolds.
 :::
 
-:::theorem "elliptic-family-specialization" (parent := "elliptic-local-coordinates") (lean := "SphereSixComplex.Geometry.EllipticFamilySpecialization.generatorOneAddEquiv_mk, SphereSixComplex.Geometry.EllipticFamilySpecialization.generatorTwoAddEquiv_mk, SphereSixComplex.Geometry.EllipticFamilySpecialization.orderThreeTranslation_torsion, SphereSixComplex.Geometry.EllipticFamilySpecialization.orderFourTranslation_torsion, SphereSixComplex.Geometry.EllipticFamilySpecialization.orderThreeFiberAutomorphism_pow, SphereSixComplex.Geometry.EllipticFamilySpecialization.orderFourFiberAutomorphism_pow, SphereSixComplex.Geometry.EllipticFamilySpecialization.orderThreeActualAction_free, SphereSixComplex.Geometry.EllipticFamilySpecialization.orderFourActualAction_free")
+:::theorem "elliptic-family-specialization" (parent := "elliptic-local-coordinates") (lean := "SphereSixComplex.Geometry.EllipticFamilySpecialization.generatorOneAddEquiv_mk, SphereSixComplex.Geometry.EllipticFamilySpecialization.generatorTwoAddEquiv_mk, SphereSixComplex.Geometry.EllipticFamilySpecialization.orderThreeTranslation_torsion, SphereSixComplex.Geometry.EllipticFamilySpecialization.orderFourTranslation_torsion, SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderThreeFiberFixedPointCriterion, SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderFourFiberFixedPointCriterion, SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderThreeFiberData, SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderFourFiberData, SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderThreeAction_free, SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderFourAction_free")
 The actual period-torus fibres carry the descended generator transports and the prescribed
 $`\varepsilon/3` and $`-\varepsilon'/4` translations. Their affine automorphisms have exact orders
-three and four; freeness is reduced to the two explicit fixed-point divisibility criteria.
+three and four. An invariant integral coordinate proves the two fixed-point divisibility criteria,
+so both actual local affine actions are unconditionally free.
 :::
 
 :::proof "elliptic-fillings"
@@ -502,11 +507,13 @@ collapsed basepoint tracked through a reduced-chain isomorphism. The canonical r
 is explicit; proving it is a homology isomorphism is precisely the remaining excision step.
 :::
 
-:::theorem "singular-small-chain-excision" (parent := "disk-boundary-collapse") (lean := "SphereSixComplex.CoverSmallChainRetractionData.approximation, SphereSixComplex.coverSmallIntegralSingularHomologyIso, SphereSixComplex.diskSevenExcisionCover_isOpen, SphereSixComplex.diskSevenExcisionCover_iUnion, SphereSixComplex.diskBoundaryToDiskSevenCoverSmallIntegralSingularChains_comp_inclusion, SphereSixComplex.DiskSevenSmallChainApproximation")
+:::theorem "singular-small-chain-excision" (parent := "disk-boundary-collapse") (lean := "SphereSixComplex.CoverSmallChainRetractionData.approximation, SphereSixComplex.coverSmallIntegralSingularHomologyIso, SphereSixComplex.diskSevenExcisionCover_isOpen, SphereSixComplex.diskSevenExcisionCover_iUnion, SphereSixComplex.diskBoundaryToDiskSevenCoverSmallIntegralSingularChains_comp_inclusion, SphereSixComplex.DiskSevenSmallChainApproximation, SphereSixComplex.simplexSubdivisionLastVertex, SphereSixComplex.subdivisionLastVertex, SphereSixComplex.subdivisionLastVertexChainMap_naturality, SphereSixComplex.subdivisionLastVertexLiftChainMap_comp_inclusion")
 The cover-small singular subcomplex and its monomorphic inclusion into all singular chains are
 explicit. Retraction data yields a chain-homotopy equivalence and homology isomorphisms. For the
-seven-disk, the boundary factors through the small chains for an explicit open two-set cover; the
-remaining step is to construct the subdivision approximation for that cover.
+seven-disk, the boundary factors through the small chains for an explicit open two-set cover. The
+global subdivision last-vertex map, induced chain map, and subcomplex lifts are constructed from
+Mathlib's left-Kan-extension API. The remaining step is the oriented barycentric chain operator,
+its prism homotopy, and the Lebesgue-number iteration for this cover.
 :::
 
 :::theorem "sphere-stereographic-simple-connectivity" (parent := "standard-six-sphere") (lean := "SphereSixComplex.sixSphere_compl_singleton_simplyConnected, SphereSixComplex.sixSphere_simplyConnected_iff_loops_nullhomotopic")

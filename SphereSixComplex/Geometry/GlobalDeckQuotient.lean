@@ -33,7 +33,7 @@ public def SourceActionFree : Prop :=
 
 /-- Proper discontinuity of the source action on the base, stated directly by the compact-set
 criterion. -/
-public def SourceActionProperlyDiscontinuous : Prop :=
+@[expose] public def SourceActionProperlyDiscontinuous : Prop :=
   ∀ {K L : Set UpperHalfPlane}, IsCompact K → IsCompact L →
     Set.Finite {g : Delta |
       (((fun z : UpperHalfPlane ↦ U.sourceAction g • z) '' K) ∩ L).Nonempty}

@@ -13,6 +13,7 @@ public import SphereSixComplex.Geometry.EllipticComplexFilling
 public import SphereSixComplex.Geometry.EllipticFilling
 public import SphereSixComplex.Geometry.EllipticCayleyHomeomorph
 public import SphereSixComplex.Geometry.EllipticFamilySpecialization
+public import SphereSixComplex.Geometry.EllipticFixedPointCriterion
 public import SphereSixComplex.Geometry.EllipticLocalCoordinates
 public import SphereSixComplex.Geometry.FamilyEquivariance
 public import SphereSixComplex.Geometry.Gluing
@@ -22,6 +23,7 @@ public import SphereSixComplex.Geometry.GlobalDeckQuotient
 public import SphereSixComplex.Geometry.PaperAssembly
 public import SphereSixComplex.Geometry.Quotient
 public import SphereSixComplex.Geometry.RegularBaseTopology
+public import SphereSixComplex.Geometry.RegularTorusFamily
 public import SphereSixComplex.Geometry.TorusFamily
 public import SphereSixComplex.LatticeData
 public import SphereSixComplex.Periods.Domain
@@ -57,6 +59,7 @@ public import SphereSixComplex.Topology.StandardSphereHomologyZero
 public import SphereSixComplex.Topology.DiskBoundaryQuotient
 public import SphereSixComplex.Topology.RelativeSingularHomology
 public import SphereSixComplex.Topology.SingularExcision
+public import SphereSixComplex.Topology.SingularSubdivision
 public import SphereSixComplex.Topology.TwistObstruction
 public import SphereSixComplex.TriangleGroup.ModularParameter
 public import SphereSixComplex.TriangleGroup.FuchsianAction
