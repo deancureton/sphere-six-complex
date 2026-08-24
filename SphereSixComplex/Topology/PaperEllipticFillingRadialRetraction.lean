@@ -185,7 +185,7 @@ public abbrev FillingQuotient :=
   Quotient (orbitRelOf D.actionData.diagonalAction)
 
 /-- The central slice before taking the cyclic quotient. -/
-public def centralSlice : Set D.Product := {p | p.1 = discCenter}
+@[expose] public def centralSlice : Set D.Product := {p | p.1 = discCenter}
 
 /-- Retraction of the fixed product to the central slice. -/
 @[expose] public def retract : C(D.Product, D.Product) where
@@ -234,7 +234,7 @@ public theorem homotopy_equivariant (g : FiniteCyclic m) (s : unitInterval)
   exact D.radial_equivariant g s p
 
 /-- The image of the central slice in the orbit quotient: the reduced central bielliptic fibre. -/
-public def reducedCentralFiber : Set D.FillingQuotient :=
+@[expose] public def reducedCentralFiber : Set D.FillingQuotient :=
   Quotient.mk (orbitRelOf D.actionData.diagonalAction) '' D.centralSlice
 
 /-- The radial retraction descended to the finite cyclic quotient. -/
