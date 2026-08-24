@@ -29,6 +29,7 @@ import SphereSixComplex.Final
 import SphereSixComplex.Geometry.Quotient
 import SphereSixComplex.Geometry.RegularBaseTopology
 import SphereSixComplex.Geometry.RegularTorusFamily
+import SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
 import SphereSixComplex.Geometry.TorusFamily
 import SphereSixComplex.LatticeData
 import SphereSixComplex.Periods.Domain
@@ -40,6 +41,7 @@ import SphereSixComplex.Periods.FuchsianCompactCore
 import SphereSixComplex.Periods.FuchsianBetaTorsor
 import SphereSixComplex.Periods.FuchsianModularParameterExistence
 import SphereSixComplex.Periods.FuchsianMuTorsor
+import SphereSixComplex.Periods.FuchsianPeriodAssembly
 import SphereSixComplex.Periods.FuchsianUniformizationBridge
 import SphereSixComplex.Periods.Invariant
 import SphereSixComplex.Periods.LocalOrbifoldCompatibility
@@ -297,6 +299,13 @@ The remaining paper-specific input is the construction of the two local beta sec
 overlap cocycle, and their local cusp estimates.
 :::
 
+:::theorem "fuchsian-period-assembly" (parent := "fuchsian-beta-torsor-descent") (lean := "SphereSixComplex.Periods.FuchsianPeriodLocalData, SphereSixComplex.Periods.assembledFuchsianPrePeriodData, SphereSixComplex.Periods.descendedFuchsianMu_transform_cusp, SphereSixComplex.Periods.descendedFuchsianBeta_transform_cusp, SphereSixComplex.Periods.exists_assembledFuchsianPeriodFunctions, SphereSixComplex.Periods.assembledFuchsianPeriodFunctions")
+The two local torsor packages assemble with the established modular parameter into full pre-period
+data. The elliptic generator laws imply the parabolic $`\mu` and $`\beta` laws, and the doubled
+Fuchsian compact core supplies the Schur shift to an actual nondegenerate period family. Thus the
+remaining period-specific obligation is exactly an inhabitant of the two local-data packages.
+:::
+
 :::theorem "torus-family" (parent := "construction_spine") (priority := "high")
 The period matrix built from $`\tau,\mu,\beta` defines a proper holomorphic family of compact complex
 two-tori over the thrice-punctured sphere.
@@ -356,6 +365,14 @@ degree-six del Pezzo surface.
 :::theorem "cusp-fan-combinatorics" (parent := "cusp-filling") (lean := "SphereSixComplex.Geometry.CuspCombinatorics.direction_sum_zero, SphereSixComplex.Geometry.CuspCombinatorics.direction_pair_det, SphereSixComplex.Geometry.CuspCombinatorics.hexagonRay_opposite, SphereSixComplex.Geometry.CuspCombinatorics.hexagonCone_det")
 The three $`A_2` directions sum to zero and consecutive pairs form integral bases.  The six rays of
 the degree-six del Pezzo fan occur in opposite pairs, and every two-dimensional cone is unimodular.
+:::
+
+:::definition "standard-infinite-a2-toric-model" (parent := "cusp-fan-combinatorics") (lean := "SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.heightOneRay, SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.a2ConeMatrix, SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.denseTorusShear, SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Model, SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established.model")
+The standard toric construction for the countable smooth fan over the height-one $`A_2`
+triangulation is an explicit classical external input. Its exact interface gives a connected
+Hausdorff second-countable complex three-manifold, the dense torus and height character, global
+unimodular $`\mathbb C^3` charts with squarefree equation $`t=z_0z_1z_2`, the ray components, and
+the integral fan shears. It contains no phase estimates or quotient assertions.
 :::
 
 :::theorem "cyclic-cusp-quotient" (parent := "cusp-filling") (lean := "SphereSixComplex.Geometry.CyclicCuspQuotient.cuspTranslate_eq_fuchsian_gZero_zpow, SphereSixComplex.Geometry.CyclicCuspQuotient.cuspHorodisc_action_free, SphereSixComplex.Geometry.CyclicCuspQuotient.cuspHorodisc_action_properlyDiscontinuous, SphereSixComplex.Geometry.CyclicCuspQuotient.cuspHorodisc_quotient_isQuotientCoveringMap, SphereSixComplex.Geometry.CyclicCuspQuotient.cuspProduct_generator_agrees_with_familyDeckMap")

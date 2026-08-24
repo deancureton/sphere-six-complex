@@ -29,6 +29,7 @@ public import SphereSixComplex.Final
 public import SphereSixComplex.Geometry.Quotient
 public import SphereSixComplex.Geometry.RegularBaseTopology
 public import SphereSixComplex.Geometry.RegularTorusFamily
+public import SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
 public import SphereSixComplex.Geometry.TorusFamily
 public import SphereSixComplex.LatticeData
 public import SphereSixComplex.Periods.Domain
@@ -40,6 +41,7 @@ public import SphereSixComplex.Periods.FuchsianCompactCore
 public import SphereSixComplex.Periods.FuchsianBetaTorsor
 public import SphereSixComplex.Periods.FuchsianModularParameterExistence
 public import SphereSixComplex.Periods.FuchsianMuTorsor
+public import SphereSixComplex.Periods.FuchsianPeriodAssembly
 public import SphereSixComplex.Periods.FuchsianUniformizationBridge
 public import SphereSixComplex.Periods.Invariant
 public import SphereSixComplex.Periods.LocalOrbifoldCompatibility
