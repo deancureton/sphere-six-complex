@@ -1,9 +1,10 @@
 module
 
-public import SphereSixComplex.Final
+public import SphereSixComplex.Topology.NormalizedComplexStructure
 
 open SphereSixComplex
 
 /-- Comparator wrapper around the completed project theorem. -/
 public theorem sphere_six_admits_complex_structure : AdmitsComplexStructure SixSphere := by
-  exact SphereSixComplex.sphere_six_admits_complex_structure
+  obtain ⟨c⟩ := SphereSixComplex.sixSphere_has_normalizedComplexStructure
+  exact c.toAdmitsComplexStructure
