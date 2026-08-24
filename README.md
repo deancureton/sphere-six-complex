@@ -19,11 +19,9 @@ Verso Blueprint build, but `SphereSixComplex/Construction.lean` still contains t
 `sorry`s: construction of the completed threefold and dimension-six smooth recognition. The
 `sorry` in `Challenge.lean` is the trusted Comparator challenge boundary.
 
-The verified frontier includes the explicit lattice and monodromy calculations, period-domain and
-two-chart Čech torsor algebra, the analytic torus-family quotient, locally biholomorphic elliptic
-and cusp quotient machinery, the integer van Kampen presentation, Section 7 matrix computations,
-generic complex gluing, the paper-assembly theorem, and the map-level Hurewicz--Whitehead reduction.
-The Blueprint work queue records the remaining mathematical obligations.
+The verified development covers the construction's algebraic foundations and several analytic and
+topological reductions. The source triangle action is kept distinct from the modular target action;
+the Blueprint records the remaining construction and smooth-recognition obligations.
 
 ## Build
 

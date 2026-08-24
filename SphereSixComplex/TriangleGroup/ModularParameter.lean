@@ -2,6 +2,7 @@ module
 
 public import SphereSixComplex.TriangleGroup.Representation
 public import Mathlib.Analysis.Complex.UpperHalfPlane.MoebiusAction
+public import Mathlib.LinearAlgebra.Matrix.FixedDetMatrices
 import all SphereSixComplex.TriangleGroup.Representation
 
 /-!
@@ -65,6 +66,30 @@ public theorem rhoTau_g₂ : rhoTau g₂ = modularTwo := by
 public theorem rhoTau_g₀ : rhoTau g₀ = modularCusp := by
   rw [SphereSixComplex.TriangleGroup.g₀.eq_def, map_inv, map_mul, rhoTau_g₁, rhoTau_g₂]
   exact inv_eq_of_mul_eq_one_right modularOne_mul_modularTwo_mul_modularCusp
+
+/-- The modular-parameter representation reaches every element of `SL(2, ℤ)`. -/
+public theorem rhoTau_surjective : Function.Surjective rhoTau := by
+  rw [← MonoidHom.range_eq_top]
+  apply top_unique
+  have hle : Subgroup.closure ({ModularGroup.S, ModularGroup.T} : Set ModularMatrix) ≤
+      MonoidHom.range rhoTau := by
+    rw [Subgroup.closure_le]
+    intro x hx
+    simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hx
+    rcases hx with rfl | rfl
+    · refine ⟨g₂, ?_⟩
+      rw [rhoTau_g₂]
+      apply Subtype.ext
+      rfl
+    · refine ⟨g₀⁻¹, ?_⟩
+      rw [map_inv, rhoTau_g₀]
+      have hcusp : modularCusp = ModularGroup.T⁻¹ := by
+        apply Subtype.ext
+        rw [ModularGroup.coe_T_inv]
+        rfl
+      rw [hcusp, inv_inv]
+  rw [SpecialLinearGroup.SL2Z_generators] at hle
+  exact hle
 
 @[expose] public noncomputable def modularToReal : ModularMatrix →* GL (Fin 2) ℝ :=
   Matrix.SpecialLinearGroup.mapGL ℝ

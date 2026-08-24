@@ -59,8 +59,7 @@ public theorem normalizedJ_modular_invariant (g : ModularMatrix) (z : UpperHalfP
   ⟨(UpperHalfPlane.ρ : ℂ) + 1, by simpa using UpperHalfPlane.ρ.im_pos⟩
 
 public structure TriangleUniformization where
-  sourceAction : Delta →* GL (Fin 2) ℝ
-  source_det_pos : ∀ g, 0 < (sourceAction g).det.val
+  sourceAction : Delta →* Equiv.Perm UpperHalfPlane
   coordinate : UpperHalfPlane → ℂ
   coordinate_holomorphic : MDiff coordinate
   coordinate_invariant : ∀ g z, coordinate (sourceAction g • z) = coordinate z
@@ -72,24 +71,24 @@ public structure TriangleUniformization where
   cuspRegion_nonempty : cuspRegion.Nonempty
   cuspRegion_invariant : ∀ z, sourceAction g₀ • z ∈ cuspRegion ↔ z ∈ cuspRegion
 
-/-- The explicit modular action, normalized modular coordinate, fixed points, and invariant
-horodisc provide the data required by `TriangleUniformization`. -/
+/-- The identity-source modular model. This is a useful diagnostic instance of
+`TriangleUniformization`, but it is not the paper's source uniformization: the source triangle
+upper half-plane has a genuine order-four action. `CanonicalObstruction.lean` proves that this
+instance admits no compatible `mu` transformation laws. -/
 public noncomputable def canonicalTriangleUniformization : TriangleUniformization where
-  sourceAction := rhoTauReal
-  source_det_pos g := by
-    rw [show (rhoTauReal g).det = 1 by
-      exact Matrix.SpecialLinearGroup.det_mapGL (S := ℝ) (rhoTau g)]
-    norm_num
+  sourceAction := (MulAction.toPermHom (GL (Fin 2) ℝ) UpperHalfPlane).comp rhoTauReal
   coordinate z := normalizedJ z / 1728
   coordinate_holomorphic :=
     normalizedJ_mdifferentiable.div mdifferentiable_const (by norm_num)
   coordinate_invariant g z := by
+    change normalizedJ (rhoTauReal g • z) / 1728 = normalizedJ z / 1728
     rw [show rhoTauReal g = Matrix.SpecialLinearGroup.mapGL ℝ (rhoTau g) by
       simp [rhoTauReal, modularToReal]]
     rw [normalizedJ_modular_invariant]
   zOne := ellipticThreeParameter
   zTwo := UpperHalfPlane.I
   zOne_fixed := by
+    change rhoTauReal g₁ • ellipticThreeParameter = ellipticThreeParameter
     apply UpperHalfPlane.coe_injective
     rw [rhoTauReal_g1_smul]
     have hz : (ellipticThreeParameter : ℂ) ≠ 0 := ellipticThreeParameter.ne_zero
@@ -100,6 +99,7 @@ public noncomputable def canonicalTriangleUniformization : TriangleUniformizatio
     rw [UpperHalfPlane.ρ_sq]
     ring
   zTwo_fixed := by
+    change rhoTauReal g₂ • UpperHalfPlane.I = UpperHalfPlane.I
     apply UpperHalfPlane.coe_injective
     rw [rhoTauReal_g2_smul]
     norm_num [UpperHalfPlane.I]
@@ -131,7 +131,7 @@ public theorem BoundedOn.sub_const {f : UpperHalfPlane → ℂ} {s : Set UpperHa
   intro z hz
   exact (norm_sub_le (f z) c).trans (add_le_add (hbound z hz) le_rfl)
 
-public structure PeriodFunctions (U : TriangleUniformization) where
+public structure PrePeriodFunctions (U : TriangleUniformization) where
   tau : UpperHalfPlane → UpperHalfPlane
   mu : UpperHalfPlane → ℂ
   beta : UpperHalfPlane → ℂ
@@ -153,6 +153,9 @@ public structure PeriodFunctions (U : TriangleUniformization) where
   mu_cusp_bounded : BoundedOn mu U.cuspRegion
   beta_add_tau_cusp_bounded :
     BoundedOn (fun z ↦ beta z + (tau z : ℂ)) U.cuspRegion
+
+/-- Equivariant analytic period functions before the final nondegeneracy shift. -/
+public structure PeriodFunctions (U : TriangleUniformization) extends PrePeriodFunctions U where
   setup_inequalities : ∀ z, SetupInequalities (periodValues tau mu beta z)
 
 namespace PeriodFunctions

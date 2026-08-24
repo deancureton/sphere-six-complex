@@ -12,11 +12,13 @@ import SphereSixComplex.Geometry.EllipticComplexFilling
 import SphereSixComplex.Geometry.EllipticFilling
 import SphereSixComplex.Geometry.FamilyEquivariance
 import SphereSixComplex.Geometry.Gluing
+import SphereSixComplex.Geometry.GlobalTorusFamily
 import SphereSixComplex.Geometry.PaperAssembly
 import SphereSixComplex.Geometry.Quotient
 import SphereSixComplex.Geometry.TorusFamily
 import SphereSixComplex.LatticeData
 import SphereSixComplex.Periods.Domain
+import SphereSixComplex.Periods.CanonicalObstruction
 import SphereSixComplex.Periods.Functions
 import SphereSixComplex.Periods.Invariant
 import SphereSixComplex.Periods.Matrix
@@ -24,17 +26,21 @@ import SphereSixComplex.Periods.Nondegeneracy
 import SphereSixComplex.Periods.Transformations
 import SphereSixComplex.Periods.TorsorAlgebra
 import SphereSixComplex.Periods.ProjectiveLineTorsors
+import SphereSixComplex.Periods.SchurCompactness
 import SphereSixComplex.Topology.FundamentalGroup
 import SphereSixComplex.Topology.FundamentalGroupComputation
 import SphereSixComplex.Topology.HomologyComputation
 import SphereSixComplex.Topology.HomologySphere
 import SphereSixComplex.Topology.HurewiczWhitehead
 import SphereSixComplex.Topology.MayerVietoris
+import SphereSixComplex.Topology.SectionSevenChainModel
 import SphereSixComplex.Topology.SmoothRecognition
+import SphereSixComplex.Topology.SmoothRecognitionFoundations
 import SphereSixComplex.Topology.SphereSimplyConnected
 import SphereSixComplex.Topology.StandardSphere
 import SphereSixComplex.Topology.TwistObstruction
 import SphereSixComplex.TriangleGroup.ModularParameter
+import SphereSixComplex.TriangleGroup.FuchsianAction
 import SphereSixComplex.TriangleGroup.Representation
 
 open Informal
@@ -127,8 +133,9 @@ cusp-growth, and nondegeneracy conditions listed in the Setup.
 :::
 
 :::proof "period-functions"
-Use {uses "monodromy-identities"}[the monodromy identities] and construct the three functions directly
-from modular forms. Their transformation laws feed
+Use {uses "monodromy-identities"}[the monodromy identities], the distinct
+$`(3,4,\infty)` source uniformization, and the two analytic torsor-vanishing arguments. Their
+transformation laws feed
 {uses "period-matrix-equivariance"}[the period-matrix equivariance identities].
 :::
 
@@ -137,22 +144,23 @@ The normalized level-one modular function $`E_4^3/\Delta` is holomorphic on the 
 invariant under $`\mathrm{SL}_2(\mathbb Z)`.
 :::
 
-:::definition "canonical-triangle-uniformization" (parent := "period-functions") (lean := "SphereSixComplex.Periods.canonicalTriangleUniformization")
-The explicit integral modular representation, the invariant coordinate $`E_4^3/(1728\Delta)`, and
-the order-three and order-four fixed points provide the source-action data for the analytic period
-problem.
+:::theorem "identity-source-obstruction" (parent := "period-functions") (lean := "SphereSixComplex.Periods.rhoTauReal_g2_smul_twice, SphereSixComplex.Periods.not_exists_tau_mu_for_rhoTauReal, SphereSixComplex.Periods.not_nonempty_canonicalMuBetaEquivariantData")
+The modular target upper half-plane cannot also serve as the source uniformizing upper half-plane.
+The modular image of the order-four generator acts with order two, while the affine $`\mu` law has
+genuine order four; identifying the two forces the impossible equation $`\tau=0`.
 :::
 
-:::definition "canonical-mu-beta-reduction" (parent := "period-functions") (lean := "SphereSixComplex.Periods.CanonicalMuBetaData, SphereSixComplex.Periods.theorem3_4Existence_canonical_of_muBeta")
-For the explicit modular uniformization, the remaining part of Theorem 3.4 is exactly the
-construction of two holomorphic functions $`\mu` and $`\beta` with the stated additive
-transformation laws, cusp bounds, and Setup inequalities.
+:::theorem "fuchsian-source-action" (parent := "period-functions") (lean := "SphereSixComplex.TriangleGroup.orderOf_fuchsianOnePerm, SphereSixComplex.TriangleGroup.orderOf_fuchsianTwoPerm, SphereSixComplex.TriangleGroup.fuchsianOneFixedPoint_fixed, SphereSixComplex.TriangleGroup.fuchsianTwoFixedPoint_fixed, SphereSixComplex.TriangleGroup.fuchsianSourceAction_g₀_apply, SphereSixComplex.TriangleGroup.fuchsianCuspRegion_invariant")
+Explicit real special-linear matrices give the distinct source action of signature
+$`(3,4,\infty)`: its elliptic generators have exact projective orders three and four, while the
+cusp generator is a horizontal translation preserving the chosen horodisc.
 :::
 
-:::theorem "period-negative-shift" (parent := "period-functions") (lean := "SphereSixComplex.Periods.CanonicalMuBetaPreData.exists_shiftedData, SphereSixComplex.Periods.theorem3_4Existence_canonical_of_preData")
-Once the equivariant functions have an upper bound for the invariant Schur quantity, subtracting a
-sufficiently large positive multiple of $`i` from $`\beta` makes the period determinant strictly
-negative everywhere without changing any transformation or cusp condition.
+:::theorem "schur-compactness" (parent := "period-functions") (lean := "SphereSixComplex.Periods.PrePeriodFunctions.schurQuantity_invariant, SphereSixComplex.Periods.PrePeriodFunctions.schurQuantity_cusp_bounded_above, SphereSixComplex.Periods.PrePeriodFunctions.schurQuantity_bounded_above_of_compactCore, SphereSixComplex.Periods.PrePeriodFunctions.exists_shiftedPeriodFunctions")
+The Schur quantity is continuous and invariant under the full triangle group. Its cusp-growth law
+bounds it above on the distinguished horodisc; a compact core meeting every remaining orbit then
+gives the global upper bound needed for the final imaginary shift of $`\beta`, producing the
+nondegenerate period family.
 :::
 
 :::theorem "period-torsor-algebra" (parent := "period-functions") (lean := "SphereSixComplex.Periods.muAutomorphyOne_cycle, SphereSixComplex.Periods.muAutomorphyTwo_cycle, SphereSixComplex.Periods.betaCocycleOne_cycle, SphereSixComplex.Periods.betaCocycleTwo_cycle, SphereSixComplex.Periods.localBetaOne_transform, SphereSixComplex.Periods.localBetaTwo_transform")
@@ -186,6 +194,12 @@ holomorphic translations on $`\mathbb C^2`, and the quotient is a compact comple
 :::theorem "torus-family-equivariance" (parent := "torus-family") (lean := "SphereSixComplex.Geometry.FamilyEquivariance.rhoGOneTorusHomeomorph, SphereSixComplex.Geometry.FamilyEquivariance.rhoGTwoTorusHomeomorph, SphereSixComplex.Geometry.FamilyEquivariance.rhoGZeroTorusHomeomorph, SphereSixComplex.Geometry.FamilyEquivariance.generatorOneTorusHomeomorph_isLocalDiffeomorph")
 The exact period-matrix identities descend to locally complex-diffeomorphic maps between the torus
 quotients over all three triangle-group generators.
+:::
+
+:::theorem "global-torus-family-action" (parent := "torus-family") (lean := "SphereSixComplex.Geometry.GlobalTorusFamily.periodTransport_isComplexLinear, SphereSixComplex.Geometry.GlobalTorusFamily.parameterMap_equivariant, SphereSixComplex.Geometry.GlobalTorusFamily.regularDeckMap_orbitRel_iff, SphereSixComplex.Geometry.GlobalTorusFamily.regularFamilyDeckMap_mul, SphereSixComplex.Geometry.GlobalTorusFamily.PuncturedGlobalFamily")
+Integral monodromy extends to complex-linear fibre transport for every triangle-group element.
+The resulting deck action respects the varying period lattice and defines the punctured global
+torus-family quotient before the three local fillings are attached.
 :::
 
 :::theorem "analytic-torus-family" (parent := "torus-family") (lean := "SphereSixComplex.Geometry.AnalyticTorusFamily.parameterMap_contMDiff, SphereSixComplex.Geometry.AnalyticTorusFamily.periodSection_contMDiff, SphereSixComplex.Geometry.AnalyticTorusFamily.parameterMap_compactUniformLowerBound, SphereSixComplex.Geometry.AnalyticTorusFamily.totalSpace_isManifold_and_projection_isLocalDiffeomorph")
@@ -307,6 +321,12 @@ claimed kernels and images.  For the selected twists the final differential is a
 explicit realization contract records the remaining passage from these matrices to singular homology.
 :::
 
+:::theorem "section-seven-chain-model" (parent := "integral-homology") (lean := "SphereSixComplex.sectionSevenFirstBoundaryMatrix_det, SphereSixComplex.sectionSevenDegreeOneCellularComplex_homology_one_isZero, SphereSixComplex.sectionSevenDegreeOneCellularComplex_homology_two_isZero, SphereSixComplex.integralSingularHomology_one_subsingleton_of_sectionSevenCellularComparison")
+The first two paper relations and final attachment form an explicit unimodular boundary matrix.
+The resulting finite chain complex has zero homology in degrees one and two; a degreewise
+cellular-to-singular comparison transfers this calculation to singular homology.
+:::
+
 :::theorem "smooth-recognition" (parent := "construction_spine") (lean := "SphereSixComplex.completedPaperThreefold_smoothRecognition, SphereSixComplex.exists_complex_threefold_diffeomorphic_sixSphere") (priority := "high")
 The underlying standard smooth manifold of $`X` is diffeomorphic to $`S^6`.
 :::
@@ -322,6 +342,12 @@ The homology-to-homotopy step is reduced to constructing one coherent integral-h
 map $`X \to S^6` and applying the integral-homology Whitehead property to that map. Homotopy
 equivalences are proved to induce integral singular-homology equivalences using Mathlib's homotopy
 invariance theorem.
+:::
+
+:::theorem "smooth-recognition-foundations" (parent := "smooth-recognition") (lean := "SphereSixComplex.SmoothSimplyConnectedIntegralHomologySixSphere.homotopyGroup_zero_subsingleton, SphereSixComplex.SmoothSimplyConnectedIntegralHomologySixSphere.homotopyGroup_one_subsingleton, SphereSixComplex.homotopyToDiffeomorphismSixSphere_iff_topologicalPoincare_and_noExotic, SphereSixComplex.smoothSixSphereRecognition_of_comparison_whitehead_and_classification")
+Simple connectivity kills the cubical zeroth and first homotopy groups. The remaining recognition
+chain factors exactly through the Hurewicz--Whitehead comparison, generalized topological Poincaré,
+and the dimension-six absence of exotic smooth spheres.
 :::
 
 :::proof "smooth-recognition"

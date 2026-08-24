@@ -7,9 +7,10 @@ public import SphereSixComplex.Topology.MayerVietoris
 
 This file isolates the map-level content missing from the current topological API.  Mathlib has
 singular homology and homotopy invariance, so homotopy equivalences can be proved to induce
-isomorphisms on integral homology.  It does not currently define higher homotopy groups or the
-Hurewicz homomorphism, and it has no Whitehead theorem or CW approximation theorem for topological
-manifolds.  In particular, the abstract degreewise group isomorphisms in
+isomorphisms on integral homology. It defines higher cubical homotopy groups, but currently has no
+induced-map API or Hurewicz homomorphism for them, and it has no homological Whitehead theorem or CW
+approximation theorem for topological manifolds. In particular, the abstract degreewise group
+isomorphisms in
 `HasIntegralHomologyOfSixSphere` do not construct a single map to the sphere.
 -/
 
@@ -105,7 +106,7 @@ public theorem HasIntegralHomologyComparisonToSixSphere.hasIntegralHomologyOfSix
 
 /-- The precise map-level Whitehead property needed after constructing a homology comparison map.
 It is deliberately separated from the abstract homology-sphere condition: proving it for simply
-connected CW-type spaces requires higher homotopy groups, Hurewicz, and Whitehead, which are not
+connected CW-type spaces requires Hurewicz maps and the homological Whitehead theorem, which are not
 yet available in mathlib's topological-space API. -/
 public def IntegralHomologyWhiteheadProperty (X Y : Type) [TopologicalSpace X]
     [TopologicalSpace Y] : Prop :=

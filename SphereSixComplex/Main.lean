@@ -12,11 +12,13 @@ public import SphereSixComplex.Geometry.EllipticComplexFilling
 public import SphereSixComplex.Geometry.EllipticFilling
 public import SphereSixComplex.Geometry.FamilyEquivariance
 public import SphereSixComplex.Geometry.Gluing
+public import SphereSixComplex.Geometry.GlobalTorusFamily
 public import SphereSixComplex.Geometry.PaperAssembly
 public import SphereSixComplex.Geometry.Quotient
 public import SphereSixComplex.Geometry.TorusFamily
 public import SphereSixComplex.LatticeData
 public import SphereSixComplex.Periods.Domain
+public import SphereSixComplex.Periods.CanonicalObstruction
 public import SphereSixComplex.Periods.Functions
 public import SphereSixComplex.Periods.Invariant
 public import SphereSixComplex.Periods.Matrix
@@ -24,17 +26,21 @@ public import SphereSixComplex.Periods.Nondegeneracy
 public import SphereSixComplex.Periods.Transformations
 public import SphereSixComplex.Periods.TorsorAlgebra
 public import SphereSixComplex.Periods.ProjectiveLineTorsors
+public import SphereSixComplex.Periods.SchurCompactness
 public import SphereSixComplex.Topology.FundamentalGroup
 public import SphereSixComplex.Topology.FundamentalGroupComputation
 public import SphereSixComplex.Topology.HomologyComputation
 public import SphereSixComplex.Topology.HomologySphere
 public import SphereSixComplex.Topology.HurewiczWhitehead
 public import SphereSixComplex.Topology.MayerVietoris
+public import SphereSixComplex.Topology.SectionSevenChainModel
 public import SphereSixComplex.Topology.SmoothRecognition
+public import SphereSixComplex.Topology.SmoothRecognitionFoundations
 public import SphereSixComplex.Topology.SphereSimplyConnected
 public import SphereSixComplex.Topology.StandardSphere
 public import SphereSixComplex.Topology.TwistObstruction
 public import SphereSixComplex.TriangleGroup.ModularParameter
+public import SphereSixComplex.TriangleGroup.FuchsianAction
 public import SphereSixComplex.TriangleGroup.Representation
 
 /-!
