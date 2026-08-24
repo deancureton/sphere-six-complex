@@ -73,6 +73,7 @@ public import SphereSixComplex.Geometry.PaperStarPieceHausdorff
 public import SphereSixComplex.Geometry.PaperStarPieceTopology
 public import SphereSixComplex.Geometry.PaperAssembly
 public import SphereSixComplex.Geometry.PaperGluingInstantiation
+public import SphereSixComplex.Geometry.PaperSectionSevenHomology
 public import SphereSixComplex.Geometry.ProperlyDiscontinuousSlice
 public import SphereSixComplex.Geometry.PuncturedAffineCompactCore
 public import SphereSixComplex.Final
