@@ -33,6 +33,8 @@ import SphereSixComplex.LatticeData
 import SphereSixComplex.Periods.Domain
 import SphereSixComplex.Periods.CanonicalObstruction
 import SphereSixComplex.Periods.Functions
+import SphereSixComplex.Periods.EstablishedModularUniformization
+import SphereSixComplex.Periods.EstablishedProjectiveLineCohomology
 import SphereSixComplex.Periods.FuchsianCompactCore
 import SphereSixComplex.Periods.FuchsianModularParameterExistence
 import SphereSixComplex.Periods.FuchsianUniformizationBridge
@@ -69,6 +71,7 @@ import SphereSixComplex.Topology.RelativeSingularHomology
 import SphereSixComplex.Topology.SingularExcision
 import SphereSixComplex.Topology.SingularBarycentricAllDegrees
 import SphereSixComplex.Topology.SingularBarycentricOuterFaces
+import SphereSixComplex.Topology.SingularBarycentricHomotopy
 import SphereSixComplex.Topology.SingularBarycentricChains
 import SphereSixComplex.Topology.SingularSubdivision
 import SphereSixComplex.Topology.TwistObstruction
@@ -241,12 +244,12 @@ normalized modular invariant supplies the quotient coordinate, and explicit addi
 plus a compact quotient core gives the nondegenerate period family.
 :::
 
-:::definition "normalized-fuchsian-modular-lift-obligation" (parent := "fuchsian-uniformization-bridge") (lean := "SphereSixComplex.Periods.ExactFuchsianOrbifoldCoordinate, SphereSixComplex.Periods.NormalizedFuchsianModularJLift, SphereSixComplex.Periods.NormalizedFuchsianModularJLiftingExistence, SphereSixComplex.Periods.NormalizedFuchsianModularJLift.exists_fuchsianModularParameter_with_normalization, SphereSixComplex.Periods.NormalizedFuchsianModularJLift.tau_invariant_under_two_square, SphereSixComplex.Periods.NormalizedFuchsianModularJLift.tau_transform_cusp, SphereSixComplex.Periods.NormalizedFuchsianModularJLift.cuspQ_invariant")
-The future classical theorem `NormalizedFuchsianModularJLiftingExistence` quantifies only over
-exact quotient coordinates: their fibres are precisely the source orbits, with exact order-three
-and order-four branching and a simple cusp. A normalized modular lift then gives full equivariance,
-both elliptic values, the order-four-to-order-two branching identity, the cusp translation, and the
-invariant cusp parameter; arbitrary invariant holomorphic functions are not admitted.
+:::definition "normalized-fuchsian-modular-lift-obligation" (parent := "fuchsian-uniformization-bridge") (lean := "SphereSixComplex.Periods.ExactFuchsianOrbifoldCoordinate, SphereSixComplex.Periods.ExactNormalizedModularJUniformization, SphereSixComplex.Periods.NormalizedFuchsianModularJLiftingExistence, SphereSixComplex.Periods.establishedExactFuchsianOrbifoldCoordinate, SphereSixComplex.Periods.establishedExactNormalizedModularJUniformization, SphereSixComplex.Periods.establishedNormalizedFuchsianModularJLifting, SphereSixComplex.Periods.exists_establishedFuchsianModularParameter")
+Exact source and modular quotient uniformization, and the compatible branched-lifting theorem, are
+explicit classical external inputs. Their statements include orbit fibres, special values, exact
+elliptic branching, ordinary covering away from the branch values, and a simple completed cusp.
+They produce the normalized modular parameter; arbitrary invariant holomorphic functions are not
+admitted.
 :::
 
 :::theorem "local-orbifold-compatibility" (parent := "period-functions") (lean := "SphereSixComplex.Periods.orderOf_targetOnePerm, SphereSixComplex.Periods.orderOf_targetTwoPerm, SphereSixComplex.Periods.explicitLocalOrbifoldActionData, SphereSixComplex.Periods.IsLocallyOrbifoldCompatible.invariant_under_two_square, SphereSixComplex.Periods.IsLocallyOrbifoldCompatible.cusp_value_translation")
@@ -268,11 +271,12 @@ order-four orbits.  The inhomogeneous $`\beta` cocycles sum to zero, and weighte
 the explicit local primitives used to build the two analytic torsors.
 :::
 
-:::theorem "projective-line-cech-splitting" (parent := "period-functions") (lean := "SphereSixComplex.Periods.ProjectiveLineCech.cechDifferentialNegOne_surjective, SphereSixComplex.Periods.ProjectiveLineCech.cechDifferentialZero_surjective, SphereSixComplex.Periods.ProjectiveLineCech.exists_compatible_negOne_adjustments, SphereSixComplex.Periods.ProjectiveLineCech.exists_compatible_zero_adjustments")
+:::theorem "projective-line-cech-splitting" (parent := "period-functions") (lean := "SphereSixComplex.Periods.ProjectiveLineCech.cechDifferentialNegOne_surjective, SphereSixComplex.Periods.ProjectiveLineCech.cechDifferentialZero_surjective, SphereSixComplex.Periods.establishedProjectiveLineCechNegOne, SphereSixComplex.Periods.establishedProjectiveLineCechZero, SphereSixComplex.Periods.exists_compatibleProjectiveLineNegOneAdjustments, SphereSixComplex.Periods.exists_compatibleProjectiveLineZeroAdjustments")
 Every Laurent-polynomial overlap cocycle on the standard two-chart cover of the projective line is a
-Čech coboundary for both $`\mathcal O(-1)` and $`\mathcal O`. This proves the algebraic splitting
-underlying the paper's two torsor arguments; extending it to arbitrary holomorphic overlap functions
-requires analytic Laurent-series infrastructure.
+Čech coboundary for both $`\mathcal O(-1)` and $`\mathcal O`. The corresponding analytic Laurent
+splittings for arbitrary holomorphic functions on $`\mathbb C^\times` are explicit established
+external inputs. The remaining paper-specific task is to descend the $`\mu`- and $`\beta`-torsors
+to these exact overlap cocycles.
 :::
 
 :::theorem "torus-family" (parent := "construction_spine") (priority := "high")
@@ -558,15 +562,15 @@ collapsed basepoint tracked through a reduced-chain isomorphism. The canonical r
 is explicit; proving it is a homology isomorphism is precisely the remaining excision step.
 :::
 
-:::theorem "singular-small-chain-excision" (parent := "disk-boundary-collapse") (lean := "SphereSixComplex.CoverSmallChainRetractionData.approximation, SphereSixComplex.coverSmallIntegralSingularHomologyIso, SphereSixComplex.diskSevenExcisionCover_isOpen, SphereSixComplex.diskSevenExcisionCover_iUnion, SphereSixComplex.diskBoundaryToDiskSevenCoverSmallIntegralSingularChains_comp_inclusion, SphereSixComplex.DiskSevenSmallChainApproximation, SphereSixComplex.simplexSubdivisionLastVertex, SphereSixComplex.subdivisionLastVertex, SphereSixComplex.subdivisionLastVertexChainMap_naturality, SphereSixComplex.subdivisionLastVertexLiftChainMap_comp_inclusion, SphereSixComplex.subdividedSimplexFundamentalChain, SphereSixComplex.barycentricOuterFaceIdentity, SphereSixComplex.barycentricFundamentalBoundaryIdentity, SphereSixComplex.barycentricSubdivisionChainMapCanonical, SphereSixComplex.barycentricSubdivisionChainMapCanonical_naturality")
+:::theorem "singular-small-chain-excision" (parent := "disk-boundary-collapse") (lean := "SphereSixComplex.CoverSmallChainRetractionData.approximation, SphereSixComplex.coverSmallIntegralSingularHomologyIso, SphereSixComplex.diskSevenExcisionCover_isOpen, SphereSixComplex.diskSevenExcisionCover_iUnion, SphereSixComplex.diskBoundaryToDiskSevenCoverSmallIntegralSingularChains_comp_inclusion, SphereSixComplex.DiskSevenSmallChainApproximation, SphereSixComplex.simplexSubdivisionLastVertex, SphereSixComplex.subdivisionLastVertex, SphereSixComplex.subdivisionLastVertexLiftChainMap_comp_inclusion, SphereSixComplex.barycentricOuterFaceIdentity, SphereSixComplex.barycentricSubdivisionChainMapCanonical, SphereSixComplex.BarycentricLastVertexPrismData, SphereSixComplex.barycentricSubdivisionLastVertexHomotopy")
 The cover-small singular subcomplex and its monomorphic inclusion into all singular chains are
 explicit. Retraction data yields a chain-homotopy equivalence and homology isomorphisms. For the
 seven-disk, the boundary factors through the small chains for an explicit open two-set cover. The
 global subdivision last-vertex map, induced chain map, and subcomplex lifts are constructed from
-Mathlib's left-Kan-extension API. Signed maximal-flag chains are constructed in every degree; all
-interior faces cancel, and the outer faces reindex with the correct signs. This gives the canonical
-natural barycentric subdivision chain map. Only its prism homotopy and the Lebesgue-number
-iteration remain.
+Mathlib's left-Kan-extension API. Signed maximal-flag chains give the canonical natural barycentric
+subdivision chain map. A universal standard-simplex prism boundary identity now produces the actual
+Mathlib chain homotopy from last-vertex-after-subdivision to the identity. Constructing that prism
+by the classical cone contraction, then proving the Lebesgue-number iteration, remain.
 :::
 
 :::theorem "sphere-stereographic-simple-connectivity" (parent := "standard-six-sphere") (lean := "SphereSixComplex.sixSphere_compl_singleton_simplyConnected, SphereSixComplex.sixSphere_simplyConnected_iff_loops_nullhomotopic")

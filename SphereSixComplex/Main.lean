@@ -33,6 +33,8 @@ public import SphereSixComplex.LatticeData
 public import SphereSixComplex.Periods.Domain
 public import SphereSixComplex.Periods.CanonicalObstruction
 public import SphereSixComplex.Periods.Functions
+public import SphereSixComplex.Periods.EstablishedModularUniformization
+public import SphereSixComplex.Periods.EstablishedProjectiveLineCohomology
 public import SphereSixComplex.Periods.FuchsianCompactCore
 public import SphereSixComplex.Periods.FuchsianModularParameterExistence
 public import SphereSixComplex.Periods.FuchsianUniformizationBridge
@@ -69,6 +71,7 @@ public import SphereSixComplex.Topology.RelativeSingularHomology
 public import SphereSixComplex.Topology.SingularExcision
 public import SphereSixComplex.Topology.SingularBarycentricAllDegrees
 public import SphereSixComplex.Topology.SingularBarycentricOuterFaces
+public import SphereSixComplex.Topology.SingularBarycentricHomotopy
 public import SphereSixComplex.Topology.SingularBarycentricChains
 public import SphereSixComplex.Topology.SingularSubdivision
 public import SphereSixComplex.Topology.TwistObstruction
