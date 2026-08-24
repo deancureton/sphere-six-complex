@@ -1,3 +1,0 @@
-import SphereSixComplex.Geometry.CuspPeriodExpansion
-
-#print axioms SphereSixComplex.Geometry.CuspPeriodExpansion.Established.periodicBoundedHolomorphicCuspDescent

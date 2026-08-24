@@ -36,9 +36,4 @@ public noncomputable def cuspCentralFiberRetractionData :
   actualLocalCuspCentralFiberRetractionData A.starCuspWitness
     A.cuspPhaseSpreadingPackage.1 A.cuspPhaseSpreadingPackage.2
 
-/-- The actual central-fibre retraction for the globally selected analytic package. -/
-public noncomputable def selectedCuspCentralFiberRetractionData :
-    ActualLocalCuspCentralFiberRetractionData paperAnalyticData.starCuspWitness :=
-  paperAnalyticData.cuspCentralFiberRetractionData
-
 end SphereSixComplex.Geometry.PaperAnalyticData

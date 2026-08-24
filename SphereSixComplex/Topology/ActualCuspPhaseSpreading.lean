@@ -251,15 +251,4 @@ public noncomputable def paperCuspCentralFiberRetractionData
   actualLocalCuspCentralFiberRetractionData A.starCuspWitness
     (selectedPolarHoneycombData A.starCuspWitness) F
 
-/-- The remaining compatibility input specialized to the globally selected analytic data. -/
-public abbrev PaperCuspPhaseSpreadingData :=
-  FrozenLocalCuspPhaseSpreadingData paperAnalyticData.cuspCoordinate
-    paperAnalyticData.toricModel paperAnalyticData.starCuspWitness.localWitness.radius
-    (selectedPolarHoneycombData paperAnalyticData.starCuspWitness)
-
-public noncomputable def selectedPaperCuspCentralFiberRetractionData
-    (F : PaperCuspPhaseSpreadingData) :
-    ActualLocalCuspCentralFiberRetractionData paperAnalyticData.starCuspWitness :=
-  paperCuspCentralFiberRetractionData paperAnalyticData F
-
 end SphereSixComplex.Geometry.CuspStraighteningRetraction

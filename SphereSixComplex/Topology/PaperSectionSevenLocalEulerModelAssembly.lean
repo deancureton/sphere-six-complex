@@ -66,14 +66,4 @@ public theorem sectionSevenLocalEulerExpression_eq_two :
   A.sectionSevenLocalEulerExpression_eq_two_of_cuspRetraction
     A.cuspCentralFiberRetractionData
 
-/-- The assembled local models for the globally selected analytic package. -/
-public noncomputable def selectedSectionSevenLocalEulerModels :
-    paperAnalyticData.SectionSevenLocalEulerModels :=
-  paperAnalyticData.sectionSevenLocalEulerModels
-
-/-- The selected paper data have local Section 7 Euler expression two. -/
-public theorem selectedSectionSevenLocalEulerExpression_eq_two :
-    paperAnalyticData.openEmbeddingStarData.sectionSevenLocalEulerExpression = 2 :=
-  paperAnalyticData.sectionSevenLocalEulerExpression_eq_two
-
 end SphereSixComplex.Geometry.PaperAnalyticData

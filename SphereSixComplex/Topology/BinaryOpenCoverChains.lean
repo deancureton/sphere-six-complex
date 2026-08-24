@@ -141,7 +141,6 @@ public noncomputable def coverSubcomplexIsPushout {X : TopCat} (U V : Opens X) :
       (SSet.Subcomplex.homOfLE (coverSubcomplexBicartSq U V).le₃₄) :=
   (coverSubcomplexBicartSq U V).isPushout
 
-set_option backward.defeqAttrib.useBackward true in
 /-- Integral simplicial chains preserve pushout diagrams. -/
 public noncomputable instance integralSimplicialChains_preservesPushouts :
     PreservesColimitsOfShape WalkingSpan integralSimplicialChains := by
@@ -152,7 +151,6 @@ public noncomputable instance integralSimplicialChains_preservesPushouts :
       sigmaConst.obj (AddCommGrpCat.of ℤ))
   infer_instance
 
-set_option backward.defeqAttrib.useBackward true in
 /-- Integral simplicial chains preserve monomorphisms of simplicial sets. -/
 public instance integralSimplicialChains_preservesMonomorphisms :
     integralSimplicialChains.PreservesMonomorphisms where
