@@ -426,62 +426,129 @@ end CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
 /-- Indices for the two translated families of bounded affine regions in Lemma 4.4. -/
 public abbrev ToricRegionIndex := Bool × ToricLattice
 
-/-- The precise quantitative chart input still absent from the standard toric model.  The
-regions form a locally finite cover, and an overlap after applying `Psi_lambda` forces the chart
-index displacement to differ from `B₀ lambda` by one of finitely many errors.  In the paper this
-is obtained from the bounded polydiscs in Lemma 4.4(ii), the formula
-`y(Psi_lambda p) = y(p) + B_t lambda`, and the bound `‖B_t - B₀‖ ≤ 1/2`.
+/-- The elementary `ℓ¹` size of a rescaled position vector. -/
+public def positionL1 (y : Fin 2 → ℝ) : ℝ :=
+  |y 0| + |y 1|
 
-Unlike `CompactOverlapEstimate`, this records the actual locally finite toric regions and the
-finite index-displacement conclusion from which compact overlap follows. -/
+/-- The elementary `ℓ¹` size of an integral rank-two vector. -/
+public def latticeL1 (lambda : ParameterLattice) : ℝ :=
+  |(lambda 0 : ℝ)| + |(lambda 1 : ℝ)|
+
+public theorem positionL1_nonneg (y : Fin 2 → ℝ) : 0 ≤ positionL1 y := by
+  exact add_nonneg (abs_nonneg _) (abs_nonneg _)
+
+public theorem positionL1_sub_le (y z : Fin 2 → ℝ) :
+    positionL1 (y - z) ≤ positionL1 y + positionL1 z := by
+  simp only [positionL1, Pi.sub_apply]
+  linarith [abs_sub (y 0) (z 0), abs_sub (y 1) (z 1)]
+
+/-- An `ℓ¹`-bounded subset of the integral rank-two lattice is finite. -/
+public theorem latticeL1_sublevel_finite (B : ℝ) :
+    {lambda : ParameterLattice | latticeL1 lambda ≤ B}.Finite := by
+  let n : ℤ := ⌈B⌉
+  apply (Set.Finite.pi' fun _ : Fin 2 ↦ Set.finite_Icc (-n) n).subset
+  intro lambda hlambda i
+  have hi : |(lambda i : ℝ)| ≤ B := by
+    fin_cases i
+    · exact (le_add_of_nonneg_right (abs_nonneg (lambda 1 : ℝ))).trans hlambda
+    · exact (le_add_of_nonneg_left (abs_nonneg (lambda 0 : ℝ))).trans hlambda
+  have hi' : |(lambda i : ℝ)| ≤ (n : ℝ) := hi.trans (Int.le_ceil B)
+  constructor
+  · exact_mod_cast (abs_le.mp hi').1
+  · exact_mod_cast (abs_le.mp hi').2
+
+/-- The nonzero fibres are dense in every open cusp neighbourhood. -/
+public theorem offCentral_dense (M : Model) (r : ℝ) :
+    Dense {p : LocalCarrier M r | M.t p ≠ 0} := by
+  have htorus : Dense {p : M.Carrier | M.t p ≠ 0} := by
+    rw [← M.torus_range]
+    exact M.torus_dense
+  exact htorus.preimage (cuspNeighborhood M r).isOpen.isOpenMap_subtype_val
+
+/-- The exact quantitative content of Lemma 4.4 and Theorem 4.5, Step 2.  The open bounded
+regions cover the cusp model.  Their rescaled positions are bounded chart by chart, while the
+actual `B_t` estimate gives a uniform positive lower bound for the displacement of a nonzero
+lattice parameter.
+
+This formulation deliberately does not require a globally finite error for
+`b - a - B₀ lambda`: the term `(B_t - B₀) lambda` need not be uniformly bounded as `lambda`
+varies.  What the argument uses is finiteness of `lambda` for each fixed pair of bounded
+regions. -/
 public structure QuantitativeToricRegionCover
     {M : Model} {r : ℝ} (C : ExactLocalHolomorphicPhaseCoefficients M r) where
   region : ToricRegionIndex → Set (LocalCarrier M r)
+  region_isOpen : ∀ a, IsOpen (region a)
   cover : ∀ p, ∃ a, p ∈ region a
-  compact_indices_finite : ∀ K : Set (LocalCarrier M r), IsCompact K →
-    {a | (region a ∩ K).Nonempty}.Finite
-  displacementError : Set ToricLattice
-  displacementError_finite : displacementError.Finite
-  overlap_displacement : ∀ lambda a b,
-    (C.psiMap lambda '' region a ∩ region b).Nonempty →
-      b.2 - a.2 - shearVector lambda ∈ displacementError
+  position : LocalCarrier M r → Fin 2 → ℝ
+  region_position_bounded : ∀ a, ∃ B : ℝ, ∀ p ∈ region a,
+    M.t p ≠ 0 → positionL1 (position p) ≤ B
+  displacement_lower : ∃ c : ℝ, 0 < c ∧ ∀ lambda (p : LocalCarrier M r),
+    M.t p ≠ 0 →
+      c * latticeL1 lambda ≤ positionL1 (position (C.psiMap lambda p) - position p)
 
 namespace QuantitativeToricRegionCover
 
 variable {M : Model} {r : ℝ} {C : ExactLocalHolomorphicPhaseCoefficients M r}
 
-/-- The locally finite quantitative chart cover proves the compact-overlap estimate of
-Theorem 4.5, Step 3. -/
+/-- An overlap of a fixed pair of bounded regions is possible for only finitely many lattice
+parameters.  Density of the nonzero fibres is what permits the `B_t` estimate to control an
+overlap which may initially be witnessed on the central fibre. -/
+public theorem chartPairOverlapFinite (Q : QuantitativeToricRegionCover C)
+    (a b : ToricRegionIndex) :
+    {lambda : ParameterLattice |
+      (C.psiMap lambda '' Q.region a ∩ Q.region b).Nonempty}.Finite := by
+  obtain ⟨A, hA⟩ := Q.region_position_bounded a
+  obtain ⟨B, hB⟩ := Q.region_position_bounded b
+  obtain ⟨c, hc, hdisplacement⟩ := Q.displacement_lower
+  apply (latticeL1_sublevel_finite ((A + B) / c)).subset
+  intro lambda hoverlap
+  obtain ⟨q, ⟨p, hpa, hpq⟩, hqb⟩ := hoverlap
+  let U := Q.region a ∩ C.psiMap lambda ⁻¹' Q.region b
+  have hU_open : IsOpen U :=
+    (Q.region_isOpen a).inter ((Q.region_isOpen b).preimage
+      (C.psiMap_holomorphic lambda).continuous)
+  have hU_nonempty : U.Nonempty := ⟨p, hpa, by simpa only [Set.mem_preimage, hpq] using hqb⟩
+  obtain ⟨p', hp't, hp'U⟩ := (offCentral_dense M r).exists_mem_open hU_open hU_nonempty
+  have hp'a : p' ∈ Q.region a := hp'U.1
+  have hp'b : C.psiMap lambda p' ∈ Q.region b := hp'U.2
+  have hp'qt : M.t (C.psiMap lambda p') ≠ 0 := by
+    rw [C.psiMap_preserves_t]
+    exact hp't
+  have hupper : positionL1 (Q.position (C.psiMap lambda p') - Q.position p') ≤ A + B :=
+    (positionL1_sub_le _ _).trans (by
+      simpa only [add_comm] using add_le_add (hB _ hp'b hp'qt) (hA _ hp'a hp't))
+  have hlower := hdisplacement lambda p' hp't
+  apply (le_div_iff₀ hc).mpr
+  simpa only [mul_comm] using hlower.trans hupper
+
+/-- The bounded affine cover and fixed-chart-pair estimate prove the compact-overlap conclusion
+of Theorem 4.5, Step 3. -/
 public theorem compactOverlapEstimate (Q : QuantitativeToricRegionCover C) :
     C.CompactOverlapEstimate := by
   intro K L hK hL
-  let IK : Set ToricRegionIndex := {a | (Q.region a ∩ K).Nonempty}
-  let IL : Set ToricRegionIndex := {b | (Q.region b ∩ L).Nonempty}
-  let triples : Set ((ToricRegionIndex × ToricRegionIndex) × ToricLattice) :=
-    (IK ×ˢ IL) ×ˢ Q.displacementError
-  let displacement : ((ToricRegionIndex × ToricRegionIndex) × ToricLattice) →
-      ToricLattice := fun z ↦ z.1.2.2 - z.1.1.2 - z.2
-  let V : Set ToricLattice := displacement '' triples
-  have hIK : IK.Finite := Q.compact_indices_finite K hK
-  have hIL : IL.Finite := Q.compact_indices_finite L hL
-  have htriples : triples.Finite :=
-    (hIK.prod hIL).prod Q.displacementError_finite
-  have hV : V.Finite := htriples.image displacement
-  apply (hV.preimage shearVector_injective.injOn).subset
+  obtain ⟨IK, hIK⟩ := hK.elim_finite_subcover Q.region Q.region_isOpen fun p _ ↦ by
+    obtain ⟨a, ha⟩ := Q.cover p
+    exact Set.mem_iUnion.2 ⟨a, ha⟩
+  obtain ⟨IL, hIL⟩ := hL.elim_finite_subcover Q.region Q.region_isOpen fun p _ ↦ by
+    obtain ⟨a, ha⟩ := Q.cover p
+    exact Set.mem_iUnion.2 ⟨a, ha⟩
+  let pairOverlap : ToricRegionIndex × ToricRegionIndex → Set ParameterLattice :=
+    fun ab ↦ {lambda | (C.psiMap lambda '' Q.region ab.1 ∩ Q.region ab.2).Nonempty}
+  have hfinite : (⋃ ab ∈ IK ×ˢ IL, pairOverlap ab).Finite := by
+    apply Set.Finite.biUnion (IK.product IL).finite_toSet
+    intro ab hab
+    exact Q.chartPairOverlapFinite ab.1 ab.2
+  apply hfinite.subset
   intro lambda hoverlap
-  obtain ⟨z, ⟨x, hxK, rfl⟩, hzL⟩ := hoverlap
-  obtain ⟨a, hxa⟩ := Q.cover x
-  obtain ⟨b, hzb⟩ := Q.cover (C.psiMap lambda x)
-  have ha : a ∈ IK := ⟨x, hxa, hxK⟩
-  have hb : b ∈ IL := ⟨C.psiMap lambda x, hzb, hzL⟩
-  have herr : b.2 - a.2 - shearVector lambda ∈ Q.displacementError := by
-    apply Q.overlap_displacement lambda a b
-    exact ⟨C.psiMap lambda x, ⟨x, hxa, rfl⟩, hzb⟩
-  change shearVector lambda ∈ V
-  refine ⟨((a, b), b.2 - a.2 - shearVector lambda), ?_, ?_⟩
-  · exact ⟨⟨ha, hb⟩, herr⟩
-  · dsimp [displacement]
-    abel
+  obtain ⟨q, ⟨p, hpK, hpq⟩, hqL⟩ := hoverlap
+  have hpcover := hIK hpK
+  have hqcover := hIL hqL
+  simp only [Set.mem_iUnion] at hpcover hqcover
+  obtain ⟨a, haIK, hpa⟩ := hpcover
+  obtain ⟨b, hbIL, hqb⟩ := hqcover
+  have hab : (a, b) ∈ IK.product IL := Finset.mem_product.2 ⟨haIK, hbIL⟩
+  refine Set.mem_iUnion.2 ⟨(a, b), Set.mem_iUnion.2 ⟨hab, ?_⟩⟩
+  exact ⟨q, ⟨p, hpa, hpq⟩, hqb⟩
 
 end QuantitativeToricRegionCover
 

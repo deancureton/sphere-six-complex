@@ -231,6 +231,59 @@ public noncomputable def glueData : TopCat.GlueData :=
     t_inter := fun _ _ k x hx ↦ transition_inter A k x hx
     cocycle := transition_cocycle A }
 
+/-- The central piece and the `i`th filling overlap whenever their collar is nonempty. -/
+public theorem centralFillingOverlap_nonempty (i : Fin 3)
+    (h : Nonempty (A.centralCollar i)) :
+    (Set.range (A.glueData.toGlueData.ι none) ∩
+      Set.range (A.glueData.toGlueData.ι (some i))).Nonempty := by
+  let D := A.glueData
+  let ni : D.J := none
+  let si : D.J := some i
+  have hni : Nonempty (D.toGlueData.V (ni, si)) := by
+    change Nonempty (A.centralCollar i)
+    exact h
+  rw [show Set.range (D.toGlueData.ι ni) ∩ Set.range (D.toGlueData.ι si) =
+      Set.range (D.toGlueData.f ni si ≫ D.toGlueData.ι ni) from
+    D.image_inter ni si]
+  let _ : Nonempty (D.toGlueData.V (ni, si)) := hni
+  exact Set.range_nonempty _
+
+/-- Nonempty collars connect the intersection graph of the four-piece star through its central
+vertex. -/
+public theorem intersectionGraphConnected
+    (h : ∀ i, Nonempty (A.centralCollar i)) :
+    GluingIntersectionGraphConnected A.glueData := by
+  intro i j
+  change Relation.ReflTransGen
+    (fun i j : Option (Fin 3) =>
+      (Set.range (A.glueData.toGlueData.ι i) ∩
+        Set.range (A.glueData.toGlueData.ι j)).Nonempty) i j
+  cases i with
+  | none =>
+      cases j with
+      | none => exact Relation.ReflTransGen.refl
+      | some j =>
+          exact Relation.ReflTransGen.single (A.centralFillingOverlap_nonempty j (h j))
+  | some i =>
+      have hi : (Set.range (A.glueData.toGlueData.ι (some i)) ∩
+          Set.range (A.glueData.toGlueData.ι none)).Nonempty := by
+        simpa [Set.inter_comm] using A.centralFillingOverlap_nonempty i (h i)
+      cases j with
+      | none => exact Relation.ReflTransGen.single hi
+      | some j =>
+          exact (Relation.ReflTransGen.single hi).tail
+            (A.centralFillingOverlap_nonempty j (h j))
+
+/-- Nonempty attaching collars make all four pieces nonempty. -/
+public theorem nonemptyPieceOfCollars
+    (h : ∀ i, Nonempty (A.centralCollar i)) :
+    ∀ i, Nonempty (A.glueData.U i) := by
+  change ∀ i : Option (Fin 3), Nonempty (A.piece i)
+  intro i
+  cases i with
+  | none => exact ⟨(h 0).some.1⟩
+  | some i => exact ⟨(A.collarEquiv i (h i).some).1⟩
+
 end FourPieceStarGluingData
 
 end SphereSixComplex

@@ -41,6 +41,22 @@ public def a2ConeMatrix (upper : Bool) (v : ToricLattice) :
     Matrix (Fin 3) (Fin 3) ℤ :=
   fun i j ↦ heightOneRay (a2Triangle upper v j) i
 
+/-- The dual character basis of a maximal `A₂` cone. -/
+public def a2DualCharacter
+    (upper : Bool) (v : ToricLattice) : Fin 3 → FanLattice :=
+  if upper then
+    ![![0, -1, v 1 + 1],
+      ![-1, 0, v 0 + 1],
+      ![1, 1, -v 0 - v 1 - 1]]
+  else
+    ![![-1, -1, v 0 + v 1 + 1],
+      ![1, 0, -v 0],
+      ![0, 1, -v 1]]
+
+/-- Evaluation of an integral character on the dense algebraic torus. -/
+public def evaluateCharacter (m : FanLattice) (x : DenseTorus) : ℂˣ :=
+  ∏ j, x j ^ m j
+
 /-- The integral fan shear on the dense torus.  The last coordinate is `t`; the first two are
 multiplied by the corresponding integral powers of `t`. -/
 public def denseTorusShear
@@ -143,6 +159,25 @@ public structure Model where
     letI := topology
     letI := charts
     ∀ p, ∃ upper v, p ∈ (toricChart upper v).source
+  /-- Every affine maximal-cone chart contains the dense torus. -/
+  torus_mem_toricChart :
+    letI := topology
+    letI := charts
+    ∀ upper v x, torusEmbedding x ∈ (toricChart upper v).source
+  /-- On the dense torus, affine chart coordinates are the characters dual to the cone rays. -/
+  toricChart_torus_character :
+    letI := topology
+    letI := charts
+    ∀ upper v x i,
+      toricChart upper v (torusEmbedding x) i =
+        ((evaluateCharacter (a2DualCharacter upper v i) x : ℂˣ) : ℂ)
+  /-- The compact closed unit polydiscs of the locally finite fan form a locally finite family. -/
+  closedUnitPolydisc_locallyFinite :
+    letI := topology
+    letI := charts
+    LocallyFinite fun a : Bool × ToricLattice ↦
+      {p | p ∈ (toricChart a.1 a.2).source ∧
+        ∀ i, ‖toricChart a.1 a.2 p i‖ ≤ 1}
   /-- In every unimodular chart the height character is the squarefree monomial
   `z₀ z₁ z₂`. -/
   toricChart_t :
@@ -169,6 +204,9 @@ public structure Model where
     letI := charts
     ∀ upper v w, w ∉ Set.range (a2Triangle upper v) →
       Disjoint (centralComponent w) (toricChart upper v).source
+  /-- The dense torus fixes every ray-orbit closure setwise. -/
+  torusAction_centralComponent : ∀ g v p,
+    torusAction g p ∈ centralComponent v ↔ p ∈ centralComponent v
   /-- Integral translations of the `A₂` fan induce toric automorphisms. -/
   fanShear : ParameterLattice →+ Additive (Equiv.Perm Carrier)
   /-- Every induced fan automorphism is biholomorphic. -/

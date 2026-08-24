@@ -21,8 +21,27 @@ public structure Parameters where
   mu : ℂ
   beta : ℂ
 
-public def periodBlock (x : Parameters) : Matrix (Fin 2) (Fin 2) ℂ :=
+@[expose] public def periodBlock (x : Parameters) : Matrix (Fin 2) (Fin 2) ℂ :=
   !![6 * x.mu, x.tau; x.beta, x.mu]
+
+@[simp] public theorem periodBlock_zero_zero (x : Parameters) :
+    periodBlock x 0 0 = 6 * x.mu := rfl
+
+@[simp] public theorem periodBlock_zero_one (x : Parameters) :
+    periodBlock x 0 1 = x.tau := rfl
+
+@[simp] public theorem periodBlock_one_zero (x : Parameters) :
+    periodBlock x 1 0 = x.beta := rfl
+
+@[simp] public theorem periodBlock_one_one (x : Parameters) :
+    periodBlock x 1 1 = x.mu := rfl
+
+public theorem periodBlock_mulVec (x : Parameters) (v : Fin 2 → ℂ) :
+    (periodBlock x).mulVec v =
+      ![6 * x.mu * v 0 + x.tau * v 1,
+        x.beta * v 0 + x.mu * v 1] := by
+  ext i
+  fin_cases i <;> simp [Matrix.mulVec]
 
 @[expose] public def periodMatrix (x : Parameters) : Matrix (Fin 2) (Fin 4) ℂ :=
   !![6 * x.mu, x.tau, 1, 0; x.beta, x.mu, 0, 1]

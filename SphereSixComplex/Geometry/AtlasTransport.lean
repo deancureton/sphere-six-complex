@@ -113,6 +113,156 @@ public noncomputable def transportDiffeomorph [ChartedSpace H M] [IsManifold I n
     change ContMDiffOn I I n (⇑h.symm) univ at hsmooth'
     exact hsmooth'
 
+/-- Re-express an atlas on a normed vector-space model through a continuous linear equivalence. -/
+@[instance_reducible]
+public noncomputable def linearRechart
+    {V V' : Type*} [NormedAddCommGroup V] [NormedSpace 𝕜 V]
+    [NormedAddCommGroup V'] [NormedSpace 𝕜 V'] [ChartedSpace V M]
+    (L : V ≃L[𝕜] V') : ChartedSpace V' M := by
+  let cV : ChartedSpace V' V := transportChartedSpace L.symm.toHomeomorph
+  let _ : ChartedSpace V' V := cV
+  exact ChartedSpace.comp V' V M
+
+/-- A recharted local chart is the original chart followed by the linear coordinate change. -/
+public theorem linearRechart_chartAt
+    {V V' : Type*} [NormedAddCommGroup V] [NormedSpace 𝕜 V]
+    [NormedAddCommGroup V'] [NormedSpace 𝕜 V'] [c : ChartedSpace V M]
+    (L : V ≃L[𝕜] V') (x : M) :
+    @chartAt V' inferInstance M inferInstance (linearRechart L) x =
+      (chartAt V x).trans L.toHomeomorph.toOpenPartialHomeomorph := by
+  change (chartAt V x).trans
+      (L.toHomeomorph.toOpenPartialHomeomorph.trans
+        (chartAt V' (L (chartAt V x x)))) =
+    (chartAt V x).trans L.toHomeomorph.toOpenPartialHomeomorph
+  rw [chartAt_self_eq, trans_refl]
+
+/-- The identity map is smooth from an atlas to its linear recharting. -/
+public theorem contMDiff_id_linearRechart
+    {V V' : Type*} [NormedAddCommGroup V] [NormedSpace 𝕜 V]
+    [NormedAddCommGroup V'] [NormedSpace 𝕜 V'] [c : ChartedSpace V M]
+    (L : V ≃L[𝕜] V') :
+    @ContMDiff 𝕜 inferInstance V inferInstance inferInstance V inferInstance
+      𝓘(𝕜, V) M inferInstance c V' inferInstance inferInstance V' inferInstance
+      𝓘(𝕜, V') M inferInstance (linearRechart L) n id := by
+  let _ : ChartedSpace V' M := linearRechart L
+  intro x
+  change ContMDiffWithinAt 𝓘(𝕜, V) 𝓘(𝕜, V') n id univ x
+  rw [contMDiffWithinAt_iff']
+  constructor
+  · exact continuousAt_id.continuousWithinAt
+  · apply L.contDiff.contDiffWithinAt.congr_of_mem (fun y hy ↦ ?_) (by simp)
+    simp only [Function.comp_apply, id_eq, extChartAt_coe, extChartAt_coe_symm,
+      modelWithCornersSelf_coe, modelWithCornersSelf_coe_symm, Function.comp_id]
+    rw [linearRechart_chartAt]
+    change L ((chartAt V x) ((chartAt V x).symm y)) = L y
+    have hy' : y ∈ (chartAt V x).target := by
+      simpa [extChartAt_target] using hy.1
+    exact congrArg L ((chartAt V x).right_inv hy')
+
+/-- The identity map is smooth from a linear recharting back to the original atlas. -/
+public theorem contMDiff_id_linearRechart_symm
+    {V V' : Type*} [NormedAddCommGroup V] [NormedSpace 𝕜 V]
+    [NormedAddCommGroup V'] [NormedSpace 𝕜 V'] [c : ChartedSpace V M]
+    (L : V ≃L[𝕜] V') :
+    @ContMDiff 𝕜 inferInstance V' inferInstance inferInstance V' inferInstance
+      𝓘(𝕜, V') M inferInstance (linearRechart L) V inferInstance inferInstance V
+      inferInstance 𝓘(𝕜, V) M inferInstance c n id := by
+  let _ : ChartedSpace V' M := linearRechart L
+  intro x
+  change ContMDiffWithinAt 𝓘(𝕜, V') 𝓘(𝕜, V) n id univ x
+  rw [contMDiffWithinAt_iff']
+  constructor
+  · exact continuousAt_id.continuousWithinAt
+  · apply L.symm.contDiff.contDiffWithinAt.congr_of_mem (fun y hy ↦ ?_) (by simp)
+    simp only [Function.comp_apply, id_eq, extChartAt_coe, extChartAt_coe_symm,
+      modelWithCornersSelf_coe, modelWithCornersSelf_coe_symm, Function.comp_id]
+    rw [linearRechart_chartAt]
+    have hy' : y ∈
+        ((chartAt V x).trans L.toHomeomorph.toOpenPartialHomeomorph).target := by
+      have hyt := hy.1
+      rw [extChartAt_target] at hyt
+      simpa [linearRechart_chartAt] using hyt
+    have hright :=
+      ((chartAt V x).trans L.toHomeomorph.toOpenPartialHomeomorph).right_inv hy'
+    have hright' := congrArg L.symm hright
+    change L.symm
+        (L ((chartAt V x)
+          (((chartAt V x).trans L.toHomeomorph.toOpenPartialHomeomorph).symm y))) =
+      L.symm y at hright'
+    simpa only [L.symm_apply_apply] using hright'
+
+/-- The identity equivalence is a diffeomorphism between an atlas and its linear recharting. -/
+public noncomputable def linearRechartDiffeomorph
+    {V V' : Type*} [NormedAddCommGroup V] [NormedSpace 𝕜 V]
+    [NormedAddCommGroup V'] [NormedSpace 𝕜 V'] [c : ChartedSpace V M]
+    [IsManifold 𝓘(𝕜, V) n M] (L : V ≃L[𝕜] V') :
+    let _ : ChartedSpace V' M := linearRechart L
+    @Diffeomorph 𝕜 inferInstance V inferInstance inferInstance V' inferInstance inferInstance
+      V inferInstance V' inferInstance 𝓘(𝕜, V) 𝓘(𝕜, V') M inferInstance c M
+      inferInstance inferInstance n := by
+  let _ : ChartedSpace V' M := linearRechart L
+  exact
+    { toEquiv := Equiv.refl M
+      contMDiff_toFun := contMDiff_id_linearRechart L
+      contMDiff_invFun := contMDiff_id_linearRechart_symm L }
+
+/-- Linear recharting preserves the manifold structure and differentiability order. -/
+public theorem isManifold_linearRechart
+    {V V' : Type*} [NormedAddCommGroup V] [NormedSpace 𝕜 V]
+    [NormedAddCommGroup V'] [NormedSpace 𝕜 V'] [ChartedSpace V M]
+    [IsManifold 𝓘(𝕜, V) n M] (L : V ≃L[𝕜] V') :
+    @IsManifold 𝕜 inferInstance V' inferInstance inferInstance V' inferInstance
+      𝓘(𝕜, V') n M inferInstance (linearRechart L) := by
+  let cV : ChartedSpace V' V := transportChartedSpace L.symm.toHomeomorph
+  let _ : ChartedSpace V' V := cV
+  let mV : IsManifold 𝓘(𝕜, V') n V :=
+    isManifold_transportChartedSpace L.symm.toHomeomorph
+  let _ : IsManifold 𝓘(𝕜, V') n V := mV
+  let cM : ChartedSpace V' M := ChartedSpace.comp V' V M
+  change @IsManifold 𝕜 inferInstance V' inferInstance inferInstance V' inferInstance
+    𝓘(𝕜, V') n M inferInstance cM
+  let _ : ChartedSpace V' M := cM
+  have smooth_rechart (f : V → V) (s : Set V)
+      (hf : ContMDiffOn 𝓘(𝕜, V) 𝓘(𝕜, V) n f s) :
+      ContMDiffOn 𝓘(𝕜, V') 𝓘(𝕜, V') n f s := by
+    have hfcd : ContDiffOn 𝕜 n f s := contMDiffOn_iff_contDiffOn.mp hf
+    have hpre : ContDiffOn 𝕜 n (fun z : V' ↦ f (L.symm z)) (L.symm ⁻¹' s) :=
+      hfcd.comp L.symm.contDiff.contDiffOn (mapsTo_preimage _ _)
+    have hmid : ContDiffOn 𝕜 n (fun z : V' ↦ L (f (L.symm z))) (L.symm ⁻¹' s) :=
+      L.contDiff.comp_contDiffOn hpre
+    have hmidM : ContMDiffOn 𝓘(𝕜, V') 𝓘(𝕜, V') n
+        (fun z : V' ↦ L (f (L.symm z))) (L.symm ⁻¹' s) :=
+      contMDiffOn_iff_contDiffOn.mpr hmid
+    let d : V' ≃ₘ^n⟮𝓘(𝕜, V'), 𝓘(𝕜, V')⟯ V :=
+      transportDiffeomorph L.symm.toHomeomorph
+    have hds : ContMDiffOn 𝓘(𝕜, V') 𝓘(𝕜, V') n (fun x : V ↦ L x) s :=
+      d.symm.contMDiff.contMDiffOn
+    have hcomp : ContMDiffOn 𝓘(𝕜, V') 𝓘(𝕜, V') n
+        ((fun z : V' ↦ L (f (L.symm z))) ∘ fun x : V ↦ L x) s :=
+      hmidM.comp hds (by
+        intro x hx
+        simp only [Set.mem_preimage]
+        simpa using hx)
+    have hd : ContMDiff 𝓘(𝕜, V') 𝓘(𝕜, V') n (fun z : V' ↦ L.symm z) :=
+      d.contMDiff
+    have hfinal : ContMDiffOn 𝓘(𝕜, V') 𝓘(𝕜, V') n
+        ((fun z : V' ↦ L.symm z) ∘
+          ((fun z : V' ↦ L (f (L.symm z))) ∘ fun x : V ↦ L x)) s :=
+      hd.comp_contMDiffOn hcomp
+    convert hfinal using 1
+    funext x
+    simp
+  let hG : HasGroupoid M (contDiffGroupoid n 𝓘(𝕜, V')) := by
+    refine StructureGroupoid.HasGroupoid.comp (contDiffGroupoid n 𝓘(𝕜, V)) ?_
+    intro f hf
+    rw [isLocalStructomorphOn_contDiffGroupoid_iff]
+    exact ⟨smooth_rechart f f.source (contMDiffOn_of_mem_contDiffGroupoid hf),
+      smooth_rechart f.symm f.target
+        (contMDiffOn_of_mem_contDiffGroupoid
+          ((contDiffGroupoid n 𝓘(𝕜, V)).symm hf))⟩
+  exact @IsManifold.mk' 𝕜 inferInstance V' inferInstance inferInstance V' inferInstance
+    𝓘(𝕜, V') n M inferInstance cM hG
+
 /-- The topological part of admitting a complex manifold structure. -/
 public def AdmitsTopologicalComplexStructure (M : Type*) [TopologicalSpace M] : Prop :=
   ∃ c : ChartedSpace ComplexModel M,
