@@ -24,6 +24,7 @@ import SphereSixComplex.LatticeData
 import SphereSixComplex.Periods.Domain
 import SphereSixComplex.Periods.CanonicalObstruction
 import SphereSixComplex.Periods.Functions
+import SphereSixComplex.Periods.FuchsianCompactCore
 import SphereSixComplex.Periods.FuchsianUniformizationBridge
 import SphereSixComplex.Periods.Invariant
 import SphereSixComplex.Periods.LocalOrbifoldCompatibility
@@ -50,11 +51,14 @@ import SphereSixComplex.Topology.SmoothRecognitionFoundations
 import SphereSixComplex.Topology.SphereSimplyConnected
 import SphereSixComplex.Topology.StandardSphere
 import SphereSixComplex.Topology.StandardSphereHomologyZero
+import SphereSixComplex.Topology.DiskBoundaryQuotient
 import SphereSixComplex.Topology.RelativeSingularHomology
 import SphereSixComplex.Topology.TwistObstruction
 import SphereSixComplex.TriangleGroup.ModularParameter
 import SphereSixComplex.TriangleGroup.FuchsianAction
+import SphereSixComplex.TriangleGroup.FuchsianFundamentalDomain
 import SphereSixComplex.TriangleGroup.FuchsianPingPong
+import SphereSixComplex.TriangleGroup.FuchsianTessellation
 import SphereSixComplex.TriangleGroup.FuchsianSmoothAction
 import SphereSixComplex.TriangleGroup.FreeProductTorsion
 import SphereSixComplex.TriangleGroup.BinaryIndexedCoprod
@@ -178,6 +182,24 @@ acts complex-smoothly by free-product induction.
 :::theorem "fuchsian-source-faithfulness" (parent := "fuchsian-source-action") (lean := "SphereSixComplex.TriangleGroup.FuchsianPingPong.inl_maps_left_to_right, SphereSixComplex.TriangleGroup.FuchsianPingPong.inr_maps_right_to_left, SphereSixComplex.TriangleGroup.FuchsianPingPong.factorAction_ping_pong, SphereSixComplex.TriangleGroup.FuchsianPingPong.fuchsianSourceAction_injective")
 The two real half-planes form ping-pong regions for the cyclic factors. Hence the explicit
 projective source representation of their free product is faithful.
+:::
+
+:::theorem "fuchsian-fundamental-triangle" (parent := "fuchsian-source-action") (lean := "SphereSixComplex.TriangleGroup.FuchsianFundamentalDomain.fuchsianOneFixedPoint_mem_fundamentalTriangle, SphereSixComplex.TriangleGroup.FuchsianFundamentalDomain.fuchsianTwoFixedPoint_mem_fundamentalTriangle, SphereSixComplex.TriangleGroup.FuchsianFundamentalDomain.gOne_rightSide_normSq, SphereSixComplex.TriangleGroup.FuchsianFundamentalDomain.gTwo_leftSide_normSq, SphereSixComplex.TriangleGroup.FuchsianFundamentalDomain.finite_product_zpow_intersections_of_isCompact")
+The explicit reflection triangle contains both elliptic vertices and its sides satisfy the expected
+pairing identities. Exact cusp displacement gives compact-set local finiteness for every integral
+power of the parabolic product; local finiteness of all triangle translates remains.
+:::
+
+:::theorem "fuchsian-reduction" (parent := "fuchsian-fundamental-triangle") (lean := "SphereSixComplex.TriangleGroup.FuchsianTessellation.product_zpow_apply, SphereSixComplex.TriangleGroup.FuchsianTessellation.exists_product_zpow_mem_centered_strip, SphereSixComplex.TriangleGroup.FuchsianTessellation.reductionStep_mem_or_im_lt, SphereSixComplex.TriangleGroup.FuchsianTessellation.exists_smul_mem_coarseFordRegion")
+Integral cusp powers center every point in a fixed strip. Outside the coarse Ford region, the
+order-three generator strictly raises height. Thus an orbit-height maximum supplies a translate in
+the region; existence of such maxima is the remaining arithmetic discreteness step.
+:::
+
+:::theorem "fuchsian-compact-core" (parent := "fuchsian-fundamental-triangle") (lean := "SphereSixComplex.Periods.fuchsianFundamentalCompactCore_isCompact, SphereSixComplex.Periods.fundamentalTriangle_mem_cusp_or_compactCore, SphereSixComplex.Periods.fuchsianQuotientCompactCore, SphereSixComplex.Periods.FuchsianPrePeriodData.theorem3_4Existence_of_triangleCover")
+The part of the fundamental triangle below the standard horodisc lies in an explicit compact
+rectangle. Thus a translate-covering theorem supplies the compact quotient core required by the
+Schur argument and converts Fuchsian pre-period data into the full period family.
 :::
 
 :::theorem "fuchsian-uniformization-bridge" (parent := "period-functions") (lean := "SphereSixComplex.Periods.FuchsianModularParameter.equivariant, SphereSixComplex.Periods.FuchsianModularParameter.coordinate_invariant, SphereSixComplex.Periods.FuchsianModularParameter.toTriangleUniformization, SphereSixComplex.Periods.FuchsianPrePeriodData.toPrePeriodFunctions, SphereSixComplex.Periods.FuchsianPrePeriodData.theorem3_4Existence")
@@ -449,6 +471,12 @@ contractible seven-disk, whose positive-degree integral homology vanishes.
 Relative singular chains are defined as a categorical cokernel and fit into the long exact
 homology sequence. For positive degrees, its boundary identifies $`H_{n+1}(D^7,S^6)` with
 $`H_n(S^6)`; the remaining standard-sphere calculation is the relative disk-cell computation.
+:::
+
+:::theorem "disk-boundary-collapse" (parent := "relative-disk-sphere-homology") (lean := "SphereSixComplex.diskBoundaryQuotientSevenMap_isQuotientMap, SphereSixComplex.diskSevenComplementBoundaryHomeomorphBall, SphereSixComplex.onePointBallSevenHomeomorphSphereSeven, SphereSixComplex.diskBoundaryQuotientSevenTopologyComparison_of_collapseContinuous, SphereSixComplex.relativeChainsToReducedCollapseChains")
+Collapsing the boundary of the seven-disk gives the one-point extension of its interior at the
+point-set level, and the interior is an open seven-ball. The canonical relative-to-reduced chain
+map is explicit; continuity of the comparison and its excision quasi-isomorphism remain.
 :::
 
 :::theorem "sphere-stereographic-simple-connectivity" (parent := "standard-six-sphere") (lean := "SphereSixComplex.sixSphere_compl_singleton_simplyConnected, SphereSixComplex.sixSphere_simplyConnected_iff_loops_nullhomotopic")

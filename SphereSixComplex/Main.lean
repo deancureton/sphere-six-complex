@@ -24,6 +24,7 @@ public import SphereSixComplex.LatticeData
 public import SphereSixComplex.Periods.Domain
 public import SphereSixComplex.Periods.CanonicalObstruction
 public import SphereSixComplex.Periods.Functions
+public import SphereSixComplex.Periods.FuchsianCompactCore
 public import SphereSixComplex.Periods.FuchsianUniformizationBridge
 public import SphereSixComplex.Periods.Invariant
 public import SphereSixComplex.Periods.LocalOrbifoldCompatibility
@@ -50,11 +51,14 @@ public import SphereSixComplex.Topology.SmoothRecognitionFoundations
 public import SphereSixComplex.Topology.SphereSimplyConnected
 public import SphereSixComplex.Topology.StandardSphere
 public import SphereSixComplex.Topology.StandardSphereHomologyZero
+public import SphereSixComplex.Topology.DiskBoundaryQuotient
 public import SphereSixComplex.Topology.RelativeSingularHomology
 public import SphereSixComplex.Topology.TwistObstruction
 public import SphereSixComplex.TriangleGroup.ModularParameter
 public import SphereSixComplex.TriangleGroup.FuchsianAction
+public import SphereSixComplex.TriangleGroup.FuchsianFundamentalDomain
 public import SphereSixComplex.TriangleGroup.FuchsianPingPong
+public import SphereSixComplex.TriangleGroup.FuchsianTessellation
 public import SphereSixComplex.TriangleGroup.FuchsianSmoothAction
 public import SphereSixComplex.TriangleGroup.FreeProductTorsion
 public import SphereSixComplex.TriangleGroup.BinaryIndexedCoprod
