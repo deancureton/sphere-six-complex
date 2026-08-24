@@ -109,6 +109,17 @@ public structure Model where
     letI := charts
     ∀ g, ContMDiff (modelWithCornersSelf ℂ ComplexModel)
       (modelWithCornersSelf ℂ ComplexModel) ∞ (torusAction g)
+  /-- The algebraic torus action is jointly holomorphic, in the coefficientwise form needed on
+  open subsets of the toric variety. -/
+  variableTorusAction_holomorphic :
+    letI := topology
+    letI := charts
+    ∀ (U : TopologicalSpace.Opens Carrier) (c : U → DenseTorus),
+      (∀ i, ContMDiff (modelWithCornersSelf ℂ ComplexModel)
+        (modelWithCornersSelf ℂ ℂ) ∞ (fun p : U ↦ (c p i : ℂ))) →
+      ContMDiff (modelWithCornersSelf ℂ ComplexModel)
+        (modelWithCornersSelf ℂ ComplexModel) ∞
+        (fun p : U ↦ torusAction (c p) (p : Carrier))
   /-- The action restricts to multiplication on the dense torus. -/
   torusAction_torus : ∀ g x,
     torusAction g (torusEmbedding x) = torusEmbedding (g * x)

@@ -8,12 +8,14 @@ public import SphereSixComplex.Geometry.ComplexTorus
 public import SphereSixComplex.Geometry.ComplexThreefoldGluing
 public import SphereSixComplex.Geometry.CuspCombinatorics
 public import SphereSixComplex.Geometry.CuspFilling
+public import SphereSixComplex.Geometry.CuspLocalPhaseAction
 public import SphereSixComplex.Geometry.CuspPeriodExpansion
 public import SphereSixComplex.Geometry.CuspToricPhaseAction
 public import SphereSixComplex.Geometry.CyclicCuspQuotient
 public import SphereSixComplex.Geometry.EllipticComplexFilling
 public import SphereSixComplex.Geometry.EllipticFilling
 public import SphereSixComplex.Geometry.EllipticCayleyHomeomorph
+public import SphereSixComplex.Geometry.EllipticAffineGlobalSeparation
 public import SphereSixComplex.Geometry.EllipticFamilySpecialization
 public import SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient
 public import SphereSixComplex.Geometry.EllipticFixedPointCriterion
@@ -43,6 +45,7 @@ public import SphereSixComplex.Periods.EstablishedModularUniformization
 public import SphereSixComplex.Periods.EstablishedFuchsianTorsorDescent
 public import SphereSixComplex.Periods.EstablishedProjectiveLineCohomology
 public import SphereSixComplex.Periods.FuchsianCompactCore
+public import SphereSixComplex.Periods.FuchsianCuspNormalization
 public import SphereSixComplex.Periods.FuchsianBetaTorsor
 public import SphereSixComplex.Periods.FuchsianModularParameterExistence
 public import SphereSixComplex.Periods.FuchsianMuTorsor

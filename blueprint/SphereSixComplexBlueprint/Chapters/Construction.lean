@@ -8,12 +8,14 @@ import SphereSixComplex.Geometry.ComplexTorus
 import SphereSixComplex.Geometry.ComplexThreefoldGluing
 import SphereSixComplex.Geometry.CuspCombinatorics
 import SphereSixComplex.Geometry.CuspFilling
+import SphereSixComplex.Geometry.CuspLocalPhaseAction
 import SphereSixComplex.Geometry.CuspPeriodExpansion
 import SphereSixComplex.Geometry.CuspToricPhaseAction
 import SphereSixComplex.Geometry.CyclicCuspQuotient
 import SphereSixComplex.Geometry.EllipticComplexFilling
 import SphereSixComplex.Geometry.EllipticFilling
 import SphereSixComplex.Geometry.EllipticCayleyHomeomorph
+import SphereSixComplex.Geometry.EllipticAffineGlobalSeparation
 import SphereSixComplex.Geometry.EllipticFamilySpecialization
 import SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient
 import SphereSixComplex.Geometry.EllipticFixedPointCriterion
@@ -43,6 +45,7 @@ import SphereSixComplex.Periods.EstablishedModularUniformization
 import SphereSixComplex.Periods.EstablishedFuchsianTorsorDescent
 import SphereSixComplex.Periods.EstablishedProjectiveLineCohomology
 import SphereSixComplex.Periods.FuchsianCompactCore
+import SphereSixComplex.Periods.FuchsianCuspNormalization
 import SphereSixComplex.Periods.FuchsianBetaTorsor
 import SphereSixComplex.Periods.FuchsianModularParameterExistence
 import SphereSixComplex.Periods.FuchsianMuTorsor
@@ -320,6 +323,13 @@ Fuchsian compact core supplies the Schur shift to an actual nondegenerate period
 remaining period-specific obligation is exactly an inhabitant of the two local-data packages.
 :::
 
+:::theorem "fuchsian-cusp-normalization" (parent := "fuchsian-period-assembly") (lean := "SphereSixComplex.Periods.FuchsianCuspNormalization.ParabolicCuspLocalInverse, SphereSixComplex.Periods.FuchsianCuspNormalization.Established.parabolicCuspLocalInverse, SphereSixComplex.Periods.FuchsianCuspNormalization.assembledPeriodFunctions_tau_translate, SphereSixComplex.Periods.FuchsianCuspNormalization.exists_normalizedFuchsianCuspCoordinate")
+A general degree-one parabolic cusp theorem turns a holomorphic map intertwining positive source
+and target translations into a coherent holomorphic inverse high in the cusp. Applied to the
+assembled period parameter, it constructs the normalized cusp lift, proves its exact translation
+law, and places its image inside the distinguished source horodisc.
+:::
+
 :::theorem "torus-family" (parent := "construction_spine") (priority := "high")
 The period matrix built from $`\tau,\mu,\beta` defines a proper holomorphic family of compact complex
 two-tori over the thrice-punctured sphere.
@@ -389,12 +399,13 @@ The three $`A_2` directions sum to zero and consecutive pairs form integral base
 the degree-six del Pezzo fan occur in opposite pairs, and every two-dimensional cone is unimodular.
 :::
 
-:::definition "standard-infinite-a2-toric-model" (parent := "cusp-fan-combinatorics") (lean := "SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.heightOneRay, SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.a2ConeMatrix, SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.denseTorusShear, SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Model, SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established.model")
+:::definition "standard-infinite-a2-toric-model" (parent := "cusp-fan-combinatorics") (lean := "SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.heightOneRay, SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.a2ConeMatrix, SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.denseTorusShear, SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Model, SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Model.variableTorusAction_holomorphic, SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established.model")
 The standard toric construction for the countable smooth fan over the height-one $`A_2`
 triangulation is an explicit classical external input. Its exact interface gives a connected
 Hausdorff second-countable complex three-manifold, the dense torus and height character, global
 unimodular $`\mathbb C^3` charts with squarefree equation $`t=z_0z_1z_2`, the ray components, and
-the integral fan shears. It contains no phase estimates or quotient assertions.
+the integral fan shears. The torus action is jointly holomorphic in coefficientwise form on open
+subsets. The model contains no phase estimates or quotient assertions.
 :::
 
 :::theorem "toric-phase-correction" (parent := "standard-infinite-a2-toric-model") (lean := "SphereSixComplex.Geometry.CuspToricPhaseAction.phaseEmbedding, SphereSixComplex.Geometry.CuspToricPhaseAction.denseTorusShear_phase_commute, SphereSixComplex.Geometry.CuspToricPhaseAction.ToricModel.fanShear_phase_commute, SphereSixComplex.Geometry.CuspToricPhaseAction.ExactHolomorphicPhaseCoefficients.psiMap_add, SphereSixComplex.Geometry.CuspToricPhaseAction.ExactHolomorphicPhaseCoefficients.psiMap_holomorphic, SphereSixComplex.Geometry.CuspToricPhaseAction.ExactHolomorphicPhaseCoefficients.properlyDiscontinuous")
@@ -408,8 +419,17 @@ from the cusp analysis remain explicit hypotheses for freeness and proper discon
 On an exact normalized cusp lift, bounded periodic holomorphic coefficients descend through
 $`q=\exp(2\pi i s)` and extend over $`q=0`. This gives the local expansion
 $`Z(s)=sB_0+C(q)` and the holomorphic phase factors
-$`c_\lambda(q)=\exp(2\pi i C(q)\lambda)`. The normalization of the cusp lift remains an explicit
-paper-specific obligation; no unjustified entire extension of the local coefficients is assumed.
+$`c_\lambda(q)=\exp(2\pi i C(q)\lambda)`. The normalized lift is supplied by
+{uses "fuchsian-cusp-normalization"}[the parabolic cusp theorem], and no unjustified entire
+extension of the local coefficients is assumed.
+:::
+
+:::theorem "cusp-local-phase-action" (parent := "cusp-period-expansion") (lean := "SphereSixComplex.Geometry.CuspLocalPhaseAction.cuspNeighborhood, SphereSixComplex.Geometry.CuspLocalPhaseAction.ExactLocalHolomorphicPhaseCoefficients.localPhaseTwist_holomorphic, SphereSixComplex.Geometry.CuspLocalPhaseAction.ExactLocalHolomorphicPhaseCoefficients.psiMap_add, SphereSixComplex.Geometry.CuspLocalPhaseAction.ExactLocalHolomorphicPhaseCoefficients.psiMap_holomorphic, SphereSixComplex.Geometry.CuspLocalPhaseAction.ExactLocalHolomorphicPhaseCoefficients.quotient_isQuotientCoveringMap, SphereSixComplex.Geometry.CuspLocalPhaseAction.ExactLocalHolomorphicPhaseCoefficients.quotient_isManifold, SphereSixComplex.Geometry.CuspLocalPhaseAction.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.toExactLocalHolomorphicPhaseCoefficients")
+Restricting the toric model to the open cusp disc makes the local phase coefficients sufficient.
+Joint holomorphicity of the standard torus action proves the variable phase twist is holomorphic,
+so no entire extension is required. The corrected lattice quotient is a complex three-manifold
+once the two fixed-point estimates and compact-overlap finiteness from the cusp analysis are
+supplied on this restricted carrier.
 :::
 
 :::theorem "cyclic-cusp-quotient" (parent := "cusp-filling") (lean := "SphereSixComplex.Geometry.CyclicCuspQuotient.cuspTranslate_eq_fuchsian_gZero_zpow, SphereSixComplex.Geometry.CyclicCuspQuotient.cuspHorodisc_action_free, SphereSixComplex.Geometry.CyclicCuspQuotient.cuspHorodisc_action_properlyDiscontinuous, SphereSixComplex.Geometry.CyclicCuspQuotient.cuspHorodisc_quotient_isQuotientCoveringMap, SphereSixComplex.Geometry.CyclicCuspQuotient.cuspProduct_generator_agrees_with_familyDeckMap")
@@ -417,7 +437,7 @@ The explicit parabolic source generator acts by integer translations of the inva
 This cyclic action and its product lift are free, properly discontinuous covering actions.
 :::
 
-:::theorem "cusp-action" (parent := "toric-phase-correction") (lean := "SphereSixComplex.Geometry.CuspFilling.shearMap_add, SphereSixComplex.Geometry.CuspFilling.CuspActionData.action_free, SphereSixComplex.Geometry.CuspFilling.CuspActionData.properlyDiscontinuous, SphereSixComplex.Geometry.CuspFilling.quotient_isQuotientCoveringMap, SphereSixComplex.Geometry.CuspFilling.cuspQuotient_isManifold, SphereSixComplex.Geometry.CuspFilling.cuspQuotient_projection_isLocalDiffeomorph")
+:::theorem "cusp-action" (parent := "cusp-local-phase-action") (lean := "SphereSixComplex.Geometry.CuspFilling.shearMap_add, SphereSixComplex.Geometry.CuspFilling.CuspActionData.action_free, SphereSixComplex.Geometry.CuspFilling.CuspActionData.properlyDiscontinuous, SphereSixComplex.Geometry.CuspFilling.quotient_isQuotientCoveringMap, SphereSixComplex.Geometry.CuspFilling.cuspQuotient_isManifold, SphereSixComplex.Geometry.CuspFilling.cuspQuotient_projection_isLocalDiffeomorph")
 The $`B_0` shear preserves the cusp height and translates both classes of $`A_2` triangles.  Given
 the phase estimates of Theorem 4.5, the corrected maps form a free, properly discontinuous lattice
 action.  Local sheets differ by analytic deck maps, so the covering quotient inherits a complex
@@ -462,13 +482,16 @@ three and four. An invariant integral coordinate proves the two fixed-point divi
 so both actual local affine actions are unconditionally free.
 :::
 
-:::theorem "elliptic-varying-family-quotients" (parent := "elliptic-family-specialization") (lean := "SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient.orderThreeAffineFamilyAction_free, SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient.orderFourAffineFamilyAction_free, SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient.orderThreeVaryingFamilyQuotient_isManifold_actual, SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient.orderFourVaryingFamilyQuotient_isManifold_actual, SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient.affineGlobalFamilyRepresentation, SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient.affineGlobalFamilyRepresentation_contMDiff, SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient.orderThreePuncturedCollarQuotientRegion_isOpen, SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient.orderFourPuncturedCollarQuotientRegion_isOpen, SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient.exists_orderThree_injective_affine_collar, SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient.exists_orderFour_injective_affine_collar")
+:::theorem "elliptic-varying-family-quotients" (parent := "elliptic-family-specialization") (lean := "SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient.orderThreeAffineFamilyAction_free, SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient.orderFourAffineFamilyAction_free, SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient.orderThreeVaryingFamilyQuotient_isManifold_actual, SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient.orderFourVaryingFamilyQuotient_isManifold_actual, SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient.affineGlobalFamilyRepresentation, SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient.affineGlobalFamilyRepresentation_contMDiff, SphereSixComplex.Geometry.EllipticAffineGlobalSeparation.affineGlobalFamilyAction_properlyDiscontinuous, SphereSixComplex.TriangleGroup.establishedFuchsianOneStabilizerExact, SphereSixComplex.TriangleGroup.establishedFuchsianTwoStabilizerExact, SphereSixComplex.Geometry.EllipticAffineGlobalSeparation.orderThreeSmallAffineCollarOrbitSeparation, SphereSixComplex.Geometry.EllipticAffineGlobalSeparation.orderFourSmallAffineCollarOrbitSeparation, SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient.exists_orderThree_injective_affine_collar, SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient.exists_orderFour_injective_affine_collar")
 The actual varying torus family carries free analytic affine actions of orders three and four, so
 their finite quotients are complex three-manifolds with locally biholomorphic projections. The two
 actions extend by the free-product universal property to the honest affine $`\Delta` action; this
 is distinct from the purely linear deck action. Open invariant punctured Cayley collars are
 constructed, and their maps to the affine global quotient are injective once the exact local
-orbit-separation propositions are proved from global properness and stabilizer identification.
+orbit-separation propositions are proved. Proper discontinuity, stabilizer slices, and radius
+refinement are complete. The classical calculation that the two elliptic source stabilizers are
+precisely the embedded $`C_3` and $`C_4` factors is isolated as exact established input and closes
+both collar separations.
 :::
 
 :::proof "elliptic-fillings"
