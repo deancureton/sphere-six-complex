@@ -56,6 +56,7 @@ public import SphereSixComplex.Geometry.PaperAnalyticFillingPieces
 public import SphereSixComplex.Geometry.PaperBiholomorphicStar
 public import SphereSixComplex.Geometry.PaperCentralFamilyTopology
 public import SphereSixComplex.Geometry.PaperCentralCompactCore
+public import SphereSixComplex.Geometry.PaperCentralEndCover
 public import SphereSixComplex.Geometry.PaperCollarSeparation
 public import SphereSixComplex.Geometry.PaperEllipticCentralEscape
 public import SphereSixComplex.Geometry.PaperFillingCompactCores
@@ -70,6 +71,7 @@ public import SphereSixComplex.Geometry.PaperStarCompactness
 public import SphereSixComplex.Geometry.PaperStarPieceHausdorff
 public import SphereSixComplex.Geometry.PaperStarPieceTopology
 public import SphereSixComplex.Geometry.PaperAssembly
+public import SphereSixComplex.Geometry.PaperGluingInstantiation
 public import SphereSixComplex.Geometry.ProperlyDiscontinuousSlice
 public import SphereSixComplex.Geometry.PuncturedAffineCompactCore
 public import SphereSixComplex.Final
@@ -116,6 +118,7 @@ public import SphereSixComplex.Topology.SectionSevenLerayChainDuality
 public import SphereSixComplex.Topology.SectionSevenLerayHomologyDuality
 public import SphereSixComplex.Topology.SectionSevenLerayRealization
 public import SphereSixComplex.Topology.SectionSevenPaperCoverIdentification
+public import SphereSixComplex.Topology.PaperSectionSevenStarIntersections
 public import SphereSixComplex.Topology.EstablishedLerayCoverComparison
 public import SphereSixComplex.Topology.EstablishedMayerVietoris
 public import SphereSixComplex.Topology.EstablishedRecognition

@@ -71,6 +71,18 @@ public theorem closure_region_regular
 
 end Data
 
+/-- A compact set of source representatives for the complement of a selected normalized
+horodisc. -/
+public structure CompactTruncationData
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {upperRadius : ℝ}
+    (H : Data N upperRadius) where
+  core : Set UpperHalfPlane
+  core_isCompact : IsCompact core
+  orbit_covers : ∀ z : UpperHalfPlane, ∃ g : Delta,
+    fuchsianSourceAction g • z ∈ normalizedCuspRegion N H.radius ∨
+      fuchsianSourceAction g • z ∈ core
+
 namespace Established
 
 /-- A sufficiently deep normalized horodisc is regular and precisely invariant under the
@@ -80,6 +92,13 @@ public axiom data
     {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (upperRadius : ℝ)
     (hupper : 0 < upperRadius) : Nonempty (Data N upperRadius)
+
+/-- Removing a precisely invariant horodisc from the explicit cofinite Fuchsian quotient leaves
+a compact truncated quotient. -/
+public axiom compactTruncation
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {upperRadius : ℝ}
+    (H : Data N upperRadius) : Nonempty (CompactTruncationData H)
 
 end Established
 

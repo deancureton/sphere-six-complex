@@ -679,6 +679,14 @@ public structure ActualLocalCuspQuotientWitness
   radius : ℝ
   radius_pos : 0 < radius
   radius_le : radius ≤ cuspRadius N.height
+  radius_lt_one : radius < 1
+  phaseBound : ℝ
+  phaseBound_nonneg : 0 ≤ phaseBound
+  phaseLogMatrix_entry_bound : ∀ (p : LocalCarrier M radius) i j,
+    |CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.phaseLogMatrix
+      N (M.t p) i j| ≤ phaseBound
+  phaseLog_dominates : ∀ (p : LocalCarrier M radius), M.t p ≠ 0 →
+    4 * phaseBound ≤ |Real.log ‖M.t p‖|
   fixedPoint :
     (CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
       N M radius radius_pos radius_le).FixedPointEstimates
@@ -766,7 +774,12 @@ public theorem exists_actualLocalCuspQuotientWitness
       N M hrone C rfl hentry hlog
   let R := standardBoundedPolydiscRegions M r hr hrone
   let T : QuantitativeToricRegionCover C := R.toQuantitativeToricRegionCover C hdisplacement
-  exact ⟨⟨r, hr, hradius, hfixed, T.compactOverlapEstimate⟩⟩
+  refine ⟨⟨r, hr, hradius, hrone, A, hA, ?_, hlog, hfixed,
+    T.compactOverlapEstimate⟩⟩
+  intro p i j
+  apply hR
+  rw [mem_closedBall_zero_iff]
+  exact (le_of_lt (mem_ball_zero_iff.mp p.property)).trans (min_le_left _ _)
 
 namespace ActualLocalCuspQuotientWitness
 
