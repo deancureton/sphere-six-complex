@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Geometry.FourPieceStarGluing
+public import SphereSixComplex.Geometry.EstablishedBiholomorphicStarGluing
 
 /-!
 # Four-piece stars from common collar sources
@@ -11,6 +11,7 @@ maps into the open-subspace homeomorphisms required by `FourPieceStarGluingData`
 -/
 
 open CategoryTheory TopologicalSpace Topology
+open scoped ContDiff Manifold
 
 namespace SphereSixComplex
 
@@ -96,6 +97,24 @@ public noncomputable def toFourPieceStarGluingData : FourPieceStarGluingData whe
     intro i j hij
     exact Opens.coe_disjoint.mp (A.centralRange_disjoint hij)
 
+/-- A nonempty common collar source has nonempty images in both pieces. -/
+public theorem centralCollar_nonempty (i : Fin 3) [Nonempty (A.collarSource i)] :
+    Nonempty (A.centralCollar i) :=
+  ⟨A.centralCollarPoint i (Classical.arbitrary (A.collarSource i))⟩
+
+/-- A nonempty common collar source has a nonempty filling image. -/
+public theorem fillingCollar_nonempty (i : Fin 3) [Nonempty (A.collarSource i)] :
+    Nonempty (A.fillingCollar i) :=
+  ⟨A.fillingCollarPoint i (Classical.arbitrary (A.collarSource i))⟩
+
+/-- Nonempty common sources supply the nonempty-collar field used by `PaperGluingData`. -/
+public theorem toFourPieceStarGluingData_nonemptyCentralCollar
+    [∀ i, Nonempty (A.collarSource i)] :
+    ∀ i, Nonempty (A.toFourPieceStarGluingData.centralCollar i) :=
+  fun i ↦ by
+    change Nonempty (A.centralCollar i)
+    exact A.centralCollar_nonempty i
+
 @[simp]
 public theorem collarEquiv_toCentral (i : Fin 3) (x : A.collarSource i) :
     A.collarEquiv i (A.centralCollarPoint i x) = A.fillingCollarPoint i x := by
@@ -117,6 +136,58 @@ public theorem collarEquiv_symm_toFilling (i : Fin 3) (x : A.collarSource i) :
     exact (A.toFillingCollarHomeomorph i).symm_apply_apply x
   rw [hx]
   exact A.toCentralCollarHomeomorph_apply i x
+
+/-- Complex atlases and common-source partial diffeomorphisms refining an open-embedding star. -/
+public structure BiholomorphicData where
+  centralCharts : ChartedSpace ComplexModel A.central
+  fillingCharts : ∀ i, ChartedSpace ComplexModel (A.filling i)
+  centralManifold :
+    letI := centralCharts
+    IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞ A.central
+  fillingManifold :
+    letI (i : Fin 3) := fillingCharts i
+    ∀ i, IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞ (A.filling i)
+  collar :
+    letI := centralCharts
+    letI (i : Fin 3) := fillingCharts i
+    ∀ i, PartialDiffeomorph (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ComplexModel) A.central (A.filling i) ∞
+  collar_source :
+    letI := centralCharts
+    letI (i : Fin 3) := fillingCharts i
+    ∀ i, (collar i).source = A.centralCollar i
+  collar_target :
+    letI := centralCharts
+    letI (i : Fin 3) := fillingCharts i
+    ∀ i, (collar i).target = A.fillingCollar i
+  collar_toCentral :
+    letI := centralCharts
+    letI (i : Fin 3) := fillingCharts i
+    ∀ i (x : A.collarSource i), collar i (A.toCentral i x) = A.toFilling i x
+
+namespace BiholomorphicData
+
+variable (B : A.BiholomorphicData)
+
+/-- Common-source biholomorphic collars supply the analytic data for the canonical star gluing. -/
+public noncomputable def toBiholomorphicFourPieceStarData :
+    Geometry.EstablishedBiholomorphicStarGluing.BiholomorphicFourPieceStarData
+      A.toFourPieceStarGluingData where
+  centralCharts := B.centralCharts
+  fillingCharts := B.fillingCharts
+  centralManifold := B.centralManifold
+  fillingManifold := B.fillingManifold
+  collar := B.collar
+  collar_source := B.collar_source
+  collar_target := B.collar_target
+  collar_apply := by
+    intro i x
+    rcases x with ⟨x, hx⟩
+    obtain ⟨y, rfl⟩ := hx
+    rw [B.collar_toCentral]
+    exact congrArg Subtype.val (A.collarEquiv_toCentral i y).symm
+
+end BiholomorphicData
 
 end OpenEmbeddingStarData
 
