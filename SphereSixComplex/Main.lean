@@ -17,6 +17,7 @@ public import SphereSixComplex.Geometry.CuspFilling
 public import SphereSixComplex.Geometry.CuspFillingRadialCompactness
 public import SphereSixComplex.Geometry.CuspStraighteningAlgebra
 public import SphereSixComplex.Geometry.CuspStraighteningExtension
+public import SphereSixComplex.Geometry.CuspStraighteningHomeomorph
 public import SphereSixComplex.Geometry.CuspLocalPhaseAction
 public import SphereSixComplex.Geometry.CuspPeriodExpansion
 public import SphereSixComplex.Geometry.CuspPuncturedCollarBridge
