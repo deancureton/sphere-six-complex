@@ -1,18 +1,19 @@
 module
 
-public import SphereSixComplex.Periods.FuchsianPeriodAssembly
+public import SphereSixComplex.Periods.ExactFuchsianModularFrameData
+public import SphereSixComplex.Periods.ExactFuchsianModularFrameConstruction
 public import SphereSixComplex.Periods.EstablishedOrbifoldAffineTorsorDescent
 import all SphereSixComplex.Periods.Functions
 import all SphereSixComplex.Periods.FuchsianModularParameterExistence
+import SphereSixComplex.TriangleGroup.FuchsianTessellation
 
 /-!
 # Exact modular-form input for the additive Fuchsian torsors
 
 The paper's identification of the homogeneous `mu` sheaf with `O(-1)` is not a formal consequence
 of cyclic consistency.  It uses the divisor and cusp behavior of
-`E4^2 * sqrt(E6) / Delta` after pullback by the modular parameter.  This file isolates exactly
-that classical modular-form input, derives the required two-chart frame, and identifies the
-remaining affine-torsor local-triviality obligation without assuming a global `mu` or `beta`.
+`E4^2 * sqrt(E6) / Delta` after pullback by the modular parameter.  This file isolates that
+classical modular-form interface and the resulting affine-torsor assembly.
 -/
 
 open scoped Manifold
@@ -22,132 +23,31 @@ noncomputable section
 namespace SphereSixComplex.Periods
 
 open SphereSixComplex.TriangleGroup
+open SphereSixComplex.TriangleGroup.FuchsianTessellation
+open SphereSixComplex.TriangleGroup.FuchsianFundamentalDomain
+open Filter Set Metric
 
 variable (E : EstablishedFuchsianModularParameter)
 
-/-- Pullback of the normalized weight-four Eisenstein series by the established modular
-parameter. -/
-@[expose] public def liftedEisensteinFour (z : UpperHalfPlane) : ℂ :=
-  ModularForm.E₄ (E.modularParameter.tau z)
-
-/-- Pullback of the normalized weight-six Eisenstein series by the established modular
-parameter. -/
-@[expose] public def liftedEisensteinSix (z : UpperHalfPlane) : ℂ :=
-  ModularForm.E₆ (E.modularParameter.tau z)
-
-/-- Pullback of the modular discriminant by the established modular parameter. -/
-@[expose] public def liftedModularDiscriminant (z : UpperHalfPlane) : ℂ :=
-  ModularForm.discriminant (E.modularParameter.tau z)
-
-/-- Exact classical modular-form data used in Lemma 3.10 of the paper.
-
-The square root is included together with its square identity and exact divisor data: no assertion
-is made that an arbitrary nowhere-zero or arbitrary holomorphic function has a global square root.
-The final cusp identity says that `coordinate⁻¹ * frame` extends as a holomorphic unit in the
-completed cusp coordinate. -/
-public structure ExactLiftedModularNegOneFrame where
-  /-- The chosen holomorphic square root of the pulled-back weight-six Eisenstein series. -/
-  sqrtEisensteinSix : UpperHalfPlane → ℂ
-  /-- Holomorphicity of the chosen square root. -/
-  sqrtEisensteinSix_holomorphic : MDiff sqrtEisensteinSix
-  /-- The chosen function really is a square root. -/
-  sqrtEisensteinSix_sq : ∀ z,
-    sqrtEisensteinSix z ^ 2 = liftedEisensteinSix E z
-  /-- The meromorphic modular expression, holomorphic on the source because the discriminant never
-  vanishes there. -/
-  frame : UpperHalfPlane → ℂ
-  /-- Identification with the normalized modular-form expression. -/
-  frame_eq : ∀ z,
-    frame z = liftedEisensteinFour E z ^ 2 * sqrtEisensteinSix z /
-      liftedModularDiscriminant E z
-  /-- Holomorphicity of the pulled-back frame. -/
-  frame_holomorphic : MDiff frame
-  /-- Exact order-two zero over the order-three orbifold point. -/
-  frame_branch_one : HasExactHolomorphicBranchAt frame fuchsianOneFixedPoint 0 2
-  /-- Exact order-one zero over the order-four orbifold point. -/
-  frame_branch_two : HasExactHolomorphicBranchAt frame fuchsianTwoFixedPoint 0 1
-  /-- There are no further zeros. -/
-  frame_zero_iff : ∀ z, frame z = 0 ↔
-    (∃ g : Delta, fuchsianSourceAction g • fuchsianOneFixedPoint = z) ∨
-      ∃ g : Delta, fuchsianSourceAction g • fuchsianTwoFixedPoint = z
-  /-- The order-three homogeneous automorphy factor. -/
-  frame_one : ∀ z, frame (fuchsianSourceAction g₁ • z) =
-    -frame z / E.modularParameter.tau z
-  /-- The order-four homogeneous automorphy factor. -/
-  frame_two : ∀ z, frame (fuchsianSourceAction g₂ • z) =
-    frame z / E.modularParameter.tau z
-  /-- The affine quotient coordinate does not vanish on the distinguished cusp component. -/
-  coordinate_ne_zero_on_cusp : ∀ z, z ∈ fuchsianCuspRegion →
-    E.sourceCoordinate.coordinate z ≠ 0
-  /-- The holomorphic unit after removing the simple pole at the completed cusp. -/
-  cuspUnit : ℂ → ℂ
-  /-- Radius of a completed cusp-coordinate neighbourhood. -/
-  cuspRadius : ℝ
-  /-- The completed cusp-coordinate neighbourhood is nontrivial. -/
-  cuspRadius_pos : 0 < cuspRadius
-  /-- The cusp unit is holomorphic on a neighbourhood of zero. -/
-  cuspUnit_holomorphic : ∀ q, q ∈ Metric.ball 0 cuspRadius → MDiffAt cuspUnit q
-  /-- The cusp unit is nonzero at the completed point. -/
-  cuspUnit_zero_ne : cuspUnit 0 ≠ 0
-  /-- The chosen distinguished cusp component maps into a compact subdisc of the unit's domain. -/
-  inverse_coordinate_mem_closedBall : ∀ z, z ∈ fuchsianCuspRegion →
-    (E.sourceCoordinate.coordinate z)⁻¹ ∈ Metric.closedBall 0 (cuspRadius / 2)
-  /-- Exact simple-pole normalization on the distinguished cusp component. -/
-  cusp_factorization : ∀ z, z ∈ fuchsianCuspRegion →
-    (E.sourceCoordinate.coordinate z)⁻¹ * frame z =
-      cuspUnit ((E.sourceCoordinate.coordinate z)⁻¹)
-
-/-- Classical divisor, automorphy, and cusp theorem for the normalized modular-form expression in
-Lemma 3.10.  It is independent of the affine `mu` and `beta` problems and of the six-sphere
-construction. -/
-public axiom establishedExactLiftedModularNegOneFrame
-    (E : EstablishedFuchsianModularParameter) :
-    Nonempty (ExactLiftedModularNegOneFrame E)
-
 variable (F : ExactLiftedModularNegOneFrame E)
-
-/-- The local cusp-unit theorem implies boundedness of every entire Cech correction on the fixed
-distinguished cusp component. -/
-public theorem ExactLiftedModularNegOneFrame.cusp_correction_bounded
-    (f : ℂ → ℂ) (hf : MDiff f) :
-    BoundedOn
-      (fun z ↦ f ((E.sourceCoordinate.coordinate z)⁻¹) *
-        ((E.sourceCoordinate.coordinate z)⁻¹ * F.frame z))
-      fuchsianCuspRegion := by
-  let K : Set ℂ := Metric.closedBall 0 (F.cuspRadius / 2)
-  have hK : IsCompact K := isCompact_closedBall 0 (F.cuspRadius / 2)
-  have hKsub : K ⊆ Metric.ball 0 F.cuspRadius := by
-    intro q hq
-    have hdist := Metric.mem_closedBall.mp hq
-    apply Metric.mem_ball.mpr
-    linarith [F.cuspRadius_pos]
-  have hunit : ContinuousOn F.cuspUnit K := by
-    intro q hq
-    exact (F.cuspUnit_holomorphic q (hKsub hq)).continuousAt.continuousWithinAt
-  have hproduct : ContinuousOn (fun q ↦ f q * F.cuspUnit q) K :=
-    hf.continuous.continuousOn.mul hunit
-  obtain ⟨C, hC⟩ := hK.bddAbove_image hproduct.norm
-  rw [SphereSixComplex.Periods.BoundedOn.eq_def]
-  refine ⟨max C 0, le_max_right C 0, ?_⟩
-  intro z hz
-  have hq := F.inverse_coordinate_mem_closedBall z hz
-  rw [F.cusp_factorization z hz]
-  exact (hC ⟨_, hq, rfl⟩).trans (le_max_left C 0)
 
 /-- Every entire coefficient evaluated in the completed infinity coordinate is bounded on the
 fixed distinguished cusp component. -/
 public theorem ExactLiftedModularNegOneFrame.infinity_coordinate_cusp_bounded
-    (F : ExactLiftedModularNegOneFrame E) (f : ℂ → ℂ) (hf : MDiff f) :
+    (_F : ExactLiftedModularNegOneFrame E) (f : ℂ → ℂ) (hf : MDiff f) :
     BoundedOn (fun z ↦ f ((E.sourceCoordinate.coordinate z)⁻¹))
       fuchsianCuspRegion := by
-  let K : Set ℂ := Metric.closedBall 0 (F.cuspRadius / 2)
-  have hK : IsCompact K := isCompact_closedBall 0 (F.cuspRadius / 2)
-  obtain ⟨C, hC⟩ := hK.bddAbove_image (hf.continuous.continuousOn.norm)
-  rw [SphereSixComplex.Periods.BoundedOn.eq_def]
-  refine ⟨max C 0, le_max_right C 0, ?_⟩
+  obtain ⟨B, hB, hqB⟩ :=
+    E.sourceCoordinate.inverse_coordinate_bounded_on_cusp
+  let K : Set ℂ := Metric.closedBall 0 B
+  have hK : IsCompact K := isCompact_closedBall 0 B
+  obtain ⟨A, hA⟩ := hK.bddAbove_image (hf.continuous.continuousOn.norm)
+  refine ⟨max A 0, le_max_right A 0, ?_⟩
   intro z hz
-  have hq := F.inverse_coordinate_mem_closedBall z hz
-  exact (hC ⟨_, hq, rfl⟩).trans (le_max_left C 0)
+  have hqK : (E.sourceCoordinate.coordinate z)⁻¹ ∈ K := by
+    rw [Metric.mem_closedBall, dist_zero_right]
+    exact hqB z hz
+  exact (hA ⟨_, hqK, rfl⟩).trans (le_max_left A 0)
 
 /-- The pullback of the infinity-chart `O(-1)` frame.  Parentheses record that the reciprocal is
 taken before multiplication by the modular frame. -/
@@ -174,6 +74,163 @@ public theorem liftedNegOneInfinityFrame_two (z : UpperHalfPlane) :
     E.sourceCoordinate.coordinate_invariant, F.frame_two]
   ring
 
+/-- The two finite-generator laws imply invariance of the infinity frame under the positive cusp
+translation. -/
+public theorem liftedNegOneInfinityFrame_product_invariant (z : UpperHalfPlane) :
+    liftedNegOneInfinityFrame E F
+        (fuchsianSourceAction (g₁ * g₂) • z) =
+      liftedNegOneInfinityFrame E F z := by
+  rw [map_mul, mul_smul, liftedNegOneInfinityFrame_one,
+    liftedNegOneInfinityFrame_two]
+  have htau := congrArg (fun w : UpperHalfPlane ↦ (w : ℂ))
+    (E.modularParameter.transform_two z)
+  rw [rhoTauReal_g₂_smul] at htau
+  rw [htau]
+  field_simp [(E.modularParameter.tau z).ne_zero]
+
+/-- Hence the infinity frame is invariant under every integral cusp translation. -/
+public theorem liftedNegOneInfinityFrame_zpow_invariant (n : ℤ) (z : UpperHalfPlane) :
+    liftedNegOneInfinityFrame E F
+        (fuchsianSourceAction ((g₁ * g₂) ^ n) • z) =
+      liftedNegOneInfinityFrame E F z := by
+  have hnat (m : ℕ) (w : UpperHalfPlane) :
+      liftedNegOneInfinityFrame E F
+          (fuchsianSourceAction ((g₁ * g₂) ^ m) • w) =
+        liftedNegOneInfinityFrame E F w := by
+    induction m with
+    | zero => simp
+    | succ m ih =>
+        rw [pow_succ', map_mul, mul_smul,
+          liftedNegOneInfinityFrame_product_invariant E F, ih]
+  cases n with
+  | ofNat m => simpa [zpow_ofNat] using hnat m z
+  | negSucc m =>
+      have h := hnat (m + 1)
+        (fuchsianSourceAction ((g₁ * g₂) ^ (Int.negSucc m)) • z)
+      have hcancel :
+          fuchsianSourceAction ((g₁ * g₂) ^ (m + 1)) •
+              (fuchsianSourceAction
+                ((g₁ * g₂) ^ (Int.negSucc m)) • z) = z := by
+        rw [← mul_smul, ← map_mul]
+        simp [zpow_negSucc]
+      rw [hcancel] at h
+      exact h.symm
+
+private def frameCenteredCuspTruncation (H : ℝ) : Set UpperHalfPlane :=
+  {z | -cuspWidth / 2 ≤ z.re ∧ z.re ≤ cuspWidth / 2 ∧
+    1 ≤ z.im ∧ z.im ≤ max 1 H}
+
+private theorem frameCenteredCuspTruncation_isCompact (H : ℝ) :
+    IsCompact (frameCenteredCuspTruncation H) := by
+  have hrect : IsCompact
+      ((Set.Icc (-cuspWidth / 2) (cuspWidth / 2)) ×ℂ
+        Set.Icc (1 : ℝ) (max 1 H)) :=
+    isCompact_Icc.reProdIm isCompact_Icc
+  rw [UpperHalfPlane.isEmbedding_coe.isCompact_iff]
+  convert hrect using 1
+  ext z
+  constructor
+  · rintro ⟨w, ⟨hwreLower, hwreUpper, hwimLower, hwimUpper⟩, rfl⟩
+    exact ⟨⟨hwreLower, hwreUpper⟩, hwimLower, hwimUpper⟩
+  · rintro ⟨⟨hzreLower, hzreUpper⟩, hzimLower, hzimUpper⟩
+    have hzimPos : 0 < z.im := lt_of_lt_of_le (by norm_num) hzimLower
+    let w : UpperHalfPlane := ⟨z, hzimPos⟩
+    exact ⟨w, ⟨hzreLower, hzreUpper, hzimLower, hzimUpper⟩, rfl⟩
+
+private theorem boundedOn_cusp_of_eventually_bounded
+    (h : UpperHalfPlane → ℂ)
+    (hcontinuous : ContinuousOn h fuchsianCuspRegion)
+    (hinvariant : ∀ (n : ℤ) z,
+      h (fuchsianSourceAction ((g₁ * g₂) ^ n) • z) = h z)
+    {B : ℝ} (hB : 0 ≤ B)
+    (heventually : ∀ᶠ z in upperHalfPlaneAtInfinity, ‖h z‖ ≤ B) :
+    BoundedOn h fuchsianCuspRegion := by
+  rw [upperHalfPlaneAtInfinity, eventually_comap, eventually_atTop] at heventually
+  obtain ⟨H, hH⟩ := heventually
+  let K := frameCenteredCuspTruncation H
+  have hK : IsCompact K := frameCenteredCuspTruncation_isCompact H
+  have hKsub : K ⊆ fuchsianCuspRegion := fun _ hz ↦ hz.2.2.1
+  obtain ⟨A, hA⟩ := hK.bddAbove_image (hcontinuous.mono hKsub).norm
+  refine ⟨max A B, le_max_of_le_right hB, ?_⟩
+  intro z hz
+  by_cases hhigh : H ≤ z.im
+  · exact (hH z.im hhigh z rfl).trans (le_max_right A B)
+  · let w := centerPoint z
+    have hwmem : w ∈ K := by
+      refine ⟨centerPoint_re_lower z, (centerPoint_re_upper z).le, ?_, ?_⟩
+      · rw [centerPoint_im]
+        exact hz
+      · rw [centerPoint_im]
+        exact (le_of_not_ge hhigh).trans (le_max_right 1 H)
+    calc
+      ‖h z‖ = ‖h w‖ := by
+        exact congrArg norm (hinvariant (centerExponent z) z).symm
+      _ ≤ A := hA ⟨_, hwmem, rfl⟩
+      _ ≤ max A B := le_max_left A B
+
+/-- The eventual completed-cusp factorization and parabolic invariance imply boundedness on the
+whole distinguished cusp component. -/
+public theorem ExactLiftedModularNegOneFrame.infinity_frame_cusp_bounded :
+    BoundedOn (liftedNegOneInfinityFrame E F) fuchsianCuspRegion := by
+  let K : Set ℂ := Metric.closedBall 0 (F.cuspRadius / 2)
+  have hK : IsCompact K := isCompact_closedBall 0 (F.cuspRadius / 2)
+  have hKsub : K ⊆ Metric.ball 0 F.cuspRadius := by
+    intro q hq
+    have hdist := Metric.mem_closedBall.mp hq
+    apply Metric.mem_ball.mpr
+    linarith [F.cuspRadius_pos]
+  have hunit : ContinuousOn F.cuspUnit K := by
+    intro q hq
+    exact (F.cuspUnit_holomorphic q (hKsub hq)).continuousAt.continuousWithinAt
+  obtain ⟨B, hBound⟩ := hK.bddAbove_image hunit.norm
+  have heventually : ∀ᶠ z in upperHalfPlaneAtInfinity,
+      ‖liftedNegOneInfinityFrame E F z‖ ≤ max B 0 := by
+    filter_upwards [F.inverse_coordinate_eventually_mem_closedBall,
+      F.cusp_factorization_eventually] with z hzmem hzfactor
+    rw [liftedNegOneInfinityFrame, hzfactor]
+    exact (hBound ⟨_, hzmem, rfl⟩).trans (le_max_left B 0)
+  apply boundedOn_cusp_of_eventually_bounded
+    (liftedNegOneInfinityFrame E F)
+  · intro z hz
+    exact (liftedNegOneInfinityFrame_holomorphicAt E F
+      (E.sourceCoordinate.coordinate_ne_zero_on_cusp z hz)).continuousAt.continuousWithinAt
+  · exact liftedNegOneInfinityFrame_zpow_invariant E F
+  · exact le_max_right B 0
+  · exact heventually
+
+private theorem bounded_comp_mul_of_bounded
+    {q h : UpperHalfPlane → ℂ} {s : Set UpperHalfPlane}
+    (hq : BoundedOn q s) (hh : BoundedOn h s)
+    (f : ℂ → ℂ) (hf : MDiff f) :
+    BoundedOn (fun z ↦ f (q z) * h z) s := by
+  obtain ⟨B, hB, hqB⟩ := hq
+  obtain ⟨D, hD, hhD⟩ := hh
+  let K : Set ℂ := Metric.closedBall 0 B
+  have hK : IsCompact K := isCompact_closedBall 0 B
+  obtain ⟨A, hA⟩ := hK.bddAbove_image (hf.continuous.continuousOn.norm)
+  refine ⟨max A 0 * D, mul_nonneg (le_max_right A 0) hD, ?_⟩
+  intro z hz
+  have hqK : q z ∈ K := by
+    rw [Metric.mem_closedBall, dist_zero_right]
+    exact hqB z hz
+  have hfA : ‖f (q z)‖ ≤ max A 0 :=
+    (hA ⟨q z, hqK, rfl⟩).trans (le_max_left A 0)
+  rw [norm_mul]
+  exact mul_le_mul hfA (hhD z hz) (norm_nonneg _) (le_max_right A 0)
+
+/-- The local cusp-unit theorem implies boundedness of every entire Cech correction on the fixed
+distinguished cusp component. -/
+public theorem ExactLiftedModularNegOneFrame.cusp_correction_bounded
+    (f : ℂ → ℂ) (hf : MDiff f) :
+    BoundedOn
+      (fun z ↦ f ((E.sourceCoordinate.coordinate z)⁻¹) *
+        ((E.sourceCoordinate.coordinate z)⁻¹ * F.frame z))
+      fuchsianCuspRegion := by
+  simpa only [liftedNegOneInfinityFrame] using
+    bounded_comp_mul_of_bounded
+      E.sourceCoordinate.inverse_coordinate_bounded_on_cusp
+      (F.infinity_frame_cusp_bounded E) f hf
+
 /-- The source preimage of the standard infinity chart. -/
 @[expose] public def liftedInfinityRegion : Set UpperHalfPlane :=
   {z | E.sourceCoordinate.coordinate z ≠ 0}
@@ -187,10 +244,10 @@ public theorem liftedInfinityRegion_invariant (g : Delta) (z : UpperHalfPlane) :
   rw [E.sourceCoordinate.coordinate_invariant]
 
 public theorem fuchsianCuspRegion_subset_liftedInfinityRegion
-    (F : ExactLiftedModularNegOneFrame E) :
+    (_F : ExactLiftedModularNegOneFrame E) :
     fuchsianCuspRegion ⊆ liftedInfinityRegion E := by
   intro z hz
-  exact F.coordinate_ne_zero_on_cusp z hz
+  exact E.sourceCoordinate.coordinate_ne_zero_on_cusp z hz
 
 /-- The paper's local beta section at the completed cusp. -/
 @[expose] public def cuspLocalBeta (z : UpperHalfPlane) : ℂ :=
@@ -411,10 +468,10 @@ general orbifold affine-torsor descent theorem. -/
   cuspFrameRadius_pos := F.cuspRadius_pos
   cuspFrameUnit_holomorphic := F.cuspUnit_holomorphic
   cuspFrameUnit_zero_ne := F.cuspUnit_zero_ne
-  inverse_coordinate_mem_closedBall := F.inverse_coordinate_mem_closedBall
-  frameInfinity_cusp_factorization := by
-    intro z hz
-    exact F.cusp_factorization z hz
+  inverse_coordinate_eventually_mem_closedBall :=
+    F.inverse_coordinate_eventually_mem_closedBall
+  frameInfinity_cusp_factorization_eventually :=
+    F.cusp_factorization_eventually
   ellipticOne := ellipticMuOne E
   ellipticTwo := ellipticMuTwo E
   ellipticOne_holomorphic := ellipticMuOne_holomorphic E
@@ -428,7 +485,7 @@ general orbifold affine-torsor descent theorem. -/
   cuspSection := cuspLocalMu E
   cuspSection_holomorphic := (cuspLocalMu_properties E).1
   cuspSection_equivariant := fun _ ↦ rfl
-  cusp_coordinate_ne_zero := F.coordinate_ne_zero_on_cusp
+  cusp_coordinate_ne_zero := E.sourceCoordinate.coordinate_ne_zero_on_cusp
   cuspNormalize := fun _ mu ↦ mu
   cuspNormalize_sub := by
     intro z u v
@@ -967,8 +1024,10 @@ invoked. -/
     cuspFrameRadius_pos := F.cuspRadius_pos
     cuspFrameUnit_holomorphic := fun _ _ ↦ mdifferentiableAt_const
     cuspFrameUnit_zero_ne := one_ne_zero
-    inverse_coordinate_mem_closedBall := F.inverse_coordinate_mem_closedBall
-    frameInfinity_cusp_factorization := fun _ _ ↦ rfl
+    inverse_coordinate_eventually_mem_closedBall :=
+      F.inverse_coordinate_eventually_mem_closedBall
+    frameInfinity_cusp_factorization_eventually :=
+      Filter.Eventually.of_forall (by simp)
     ellipticOne := ellipticBetaOne E mu
     ellipticTwo := ellipticBetaTwo E mu
     ellipticOne_holomorphic := ellipticBetaOne_holomorphic E hmu.1
@@ -978,7 +1037,7 @@ invoked. -/
     cuspSection := cuspLocalBeta E
     cuspSection_holomorphic := (cuspLocalBeta_properties E).1
     cuspSection_equivariant := (cuspLocalBeta_properties E).2.1
-    cusp_coordinate_ne_zero := F.coordinate_ne_zero_on_cusp
+    cusp_coordinate_ne_zero := E.sourceCoordinate.coordinate_ne_zero_on_cusp
     cuspNormalize := fun z beta ↦ beta + E.modularParameter.tau z
     cuspNormalize_sub := by
       intro z u v

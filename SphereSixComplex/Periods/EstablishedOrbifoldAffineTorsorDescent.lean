@@ -114,10 +114,17 @@ public structure OrbifoldAffineLineTorsorDescentProblem where
   cuspFrameUnit_holomorphic : ∀ q, q ∈ Metric.ball 0 cuspFrameRadius →
     MDiffAt cuspFrameUnit q
   cuspFrameUnit_zero_ne : cuspFrameUnit 0 ≠ 0
-  inverse_coordinate_mem_closedBall : ∀ z, z ∈ fuchsianCuspRegion →
-    (quotient.coordinate z)⁻¹ ∈ Metric.closedBall 0 (cuspFrameRadius / 2)
-  frameInfinity_cusp_factorization : ∀ z, z ∈ fuchsianCuspRegion →
-    frameInfinity z = cuspFrameUnit ((quotient.coordinate z)⁻¹)
+  /-- Sufficiently far into the cusp, the completed coordinate lies in a compact subdisc of the
+  unit's domain.  This is germ data; the fixed closed horodisc need not fit in an arbitrarily
+  small analytic neighbourhood of the completed point. -/
+  inverse_coordinate_eventually_mem_closedBall :
+    ∀ᶠ z in upperHalfPlaneAtInfinity,
+      (quotient.coordinate z)⁻¹ ∈ Metric.closedBall 0 (cuspFrameRadius / 2)
+  /-- The infinity frame is represented by the completed cusp unit sufficiently far into the
+  cusp. -/
+  frameInfinity_cusp_factorization_eventually :
+    ∀ᶠ z in upperHalfPlaneAtInfinity,
+      frameInfinity z = cuspFrameUnit ((quotient.coordinate z)⁻¹)
   /-- Explicit local primitives at the two finite orbifold points. -/
   ellipticOne : UpperHalfPlane → ℂ
   ellipticTwo : UpperHalfPlane → ℂ
