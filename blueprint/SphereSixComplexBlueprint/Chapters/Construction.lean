@@ -15,6 +15,7 @@ import SphereSixComplex.Geometry.EllipticCayleyHomeomorph
 import SphereSixComplex.Geometry.EllipticFamilySpecialization
 import SphereSixComplex.Geometry.EllipticFixedPointCriterion
 import SphereSixComplex.Geometry.EllipticLocalCoordinates
+import SphereSixComplex.Geometry.EllipticLocalTrivialization
 import SphereSixComplex.Geometry.FamilyEquivariance
 import SphereSixComplex.Geometry.FuchsianRegularTorusFamily
 import SphereSixComplex.Geometry.Gluing
@@ -62,6 +63,7 @@ import SphereSixComplex.Topology.StandardSphereHomologyZero
 import SphereSixComplex.Topology.DiskBoundaryQuotient
 import SphereSixComplex.Topology.RelativeSingularHomology
 import SphereSixComplex.Topology.SingularExcision
+import SphereSixComplex.Topology.SingularBarycentricAllDegrees
 import SphereSixComplex.Topology.SingularBarycentricChains
 import SphereSixComplex.Topology.SingularSubdivision
 import SphereSixComplex.Topology.TwistObstruction
@@ -350,7 +352,14 @@ conjugate the source generators to rotations of orders three and four. The remai
 data then gives the free logarithmic-transform quotient manifolds.
 :::
 
-:::theorem "elliptic-family-specialization" (parent := "elliptic-local-coordinates") (lean := "SphereSixComplex.Geometry.EllipticFamilySpecialization.generatorOneAddEquiv_mk, SphereSixComplex.Geometry.EllipticFamilySpecialization.generatorTwoAddEquiv_mk, SphereSixComplex.Geometry.EllipticFamilySpecialization.orderThreeTranslation_torsion, SphereSixComplex.Geometry.EllipticFamilySpecialization.orderFourTranslation_torsion, SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderThreeFiberFixedPointCriterion, SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderFourFiberFixedPointCriterion, SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderThreeFiberData, SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderFourFiberData, SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderThreeAction_free, SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderFourAction_free")
+:::theorem "elliptic-local-trivialization" (parent := "elliptic-local-coordinates") (lean := "SphereSixComplex.Geometry.EllipticLocalTrivialization.cayleyDiffeomorph, SphereSixComplex.Geometry.EllipticLocalTrivialization.orderThreeCoverDiffeomorph, SphereSixComplex.Geometry.EllipticLocalTrivialization.orderFourCoverDiffeomorph, SphereSixComplex.Geometry.EllipticLocalTrivialization.orderThreeFamilyCayleyLocalDiffeomorph, SphereSixComplex.Geometry.EllipticLocalTrivialization.orderFourFamilyCayleyLocalDiffeomorph, SphereSixComplex.Geometry.EllipticLocalTrivialization.orderThreeChartDeckEquiv_pow, SphereSixComplex.Geometry.EllipticLocalTrivialization.orderFourChartDeckEquiv_pow, SphereSixComplex.Geometry.EllipticLocalTrivialization.orderThreeFamilyParam_generator_equivariant, SphereSixComplex.Geometry.EllipticLocalTrivialization.orderFourFamilyParam_generator_equivariant")
+The Cayley coordinate and the locally biholomorphic varying-lattice quotient give honest
+pointwise complex charts near both elliptic fibres, with exact cyclic generator formulas and
+descent to the family quotient. Extending these compatible pointwise charts to one equivariant
+whole-fibre product neighborhood is the remaining local filling bridge.
+:::
+
+:::theorem "elliptic-family-specialization" (parent := "elliptic-local-trivialization") (lean := "SphereSixComplex.Geometry.EllipticFamilySpecialization.generatorOneAddEquiv_mk, SphereSixComplex.Geometry.EllipticFamilySpecialization.generatorTwoAddEquiv_mk, SphereSixComplex.Geometry.EllipticFamilySpecialization.orderThreeTranslation_torsion, SphereSixComplex.Geometry.EllipticFamilySpecialization.orderFourTranslation_torsion, SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderThreeFiberFixedPointCriterion, SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderFourFiberFixedPointCriterion, SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderThreeFiberData, SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderFourFiberData, SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderThreeAction_free, SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderFourAction_free")
 The actual period-torus fibres carry the descended generator transports and the prescribed
 $`\varepsilon/3` and $`-\varepsilon'/4` translations. Their affine automorphisms have exact orders
 three and four. An invariant integral coordinate proves the two fixed-point divisibility criteria,
@@ -361,7 +370,7 @@ so both actual local affine actions are unconditionally free.
 Use {uses "torus-family"}[the torus family] and the invariant twist vectors fixed by $`A_1` and $`A_2`.
 :::
 
-:::theorem "compact-complex-threefold" (parent := "construction_spine") (lean := "SphereSixComplex.ComplexThreefold, SphereSixComplex.CompletedPaperThreefold, SphereSixComplex.exists_completedPaperThreefold") (priority := "high")
+:::theorem "compact-complex-threefold" (parent := "construction_spine") (lean := "SphereSixComplex.ComplexThreefold, SphereSixComplex.CompletedPaperThreefold, SphereSixComplex.PaperGluingData, SphereSixComplex.exists_paperGluingData, SphereSixComplex.exists_completedPaperThreefold") (priority := "high")
 The global family and the three fillings glue to a compact connected complex threefold $`X`.
 :::
 
@@ -382,10 +391,11 @@ A finite connected gluing of compact complex pieces with compatible complex and 
 atlases produces the exact compact connected `ComplexThreefold` contract used by the main theorem.
 :::
 
-:::theorem "paper-threefold-assembly" (parent := "compact-complex-threefold") (lean := "SphereSixComplex.completedPaperThreefoldOfGluing, SphereSixComplex.smoothRecognitionInputOfGluing")
+:::theorem "paper-threefold-assembly" (parent := "compact-complex-threefold") (lean := "SphereSixComplex.completedPaperThreefoldOfGluing, SphereSixComplex.smoothRecognitionInputOfGluing, SphereSixComplex.PaperGluingData.toCompletedPaperThreefold, SphereSixComplex.exists_completedPaperThreefold_of_paperGluingData")
 If that gluing carries the concrete van Kampen generators with no extra relations and the
 four-piece Mayer--Vietoris comparison, it produces the exact `CompletedPaperThreefold` object and
-the simply connected integral-homology-sphere input for smooth recognition.
+the simply connected integral-homology-sphere input for smooth recognition. `PaperGluingData`
+lists every required compactness, separation, atlas, overlap, van Kampen, and homology field.
 :::
 
 :::theorem "fundamental-group" (parent := "construction_spine") (lean := "SphereSixComplex.CompletedPaperThreefold.fundamentalGroup") (priority := "high")
@@ -526,14 +536,15 @@ collapsed basepoint tracked through a reduced-chain isomorphism. The canonical r
 is explicit; proving it is a homology isomorphism is precisely the remaining excision step.
 :::
 
-:::theorem "singular-small-chain-excision" (parent := "disk-boundary-collapse") (lean := "SphereSixComplex.CoverSmallChainRetractionData.approximation, SphereSixComplex.coverSmallIntegralSingularHomologyIso, SphereSixComplex.diskSevenExcisionCover_isOpen, SphereSixComplex.diskSevenExcisionCover_iUnion, SphereSixComplex.diskBoundaryToDiskSevenCoverSmallIntegralSingularChains_comp_inclusion, SphereSixComplex.DiskSevenSmallChainApproximation, SphereSixComplex.simplexSubdivisionLastVertex, SphereSixComplex.subdivisionLastVertex, SphereSixComplex.subdivisionLastVertexChainMap_naturality, SphereSixComplex.subdivisionLastVertexLiftChainMap_comp_inclusion, SphereSixComplex.barycentricSubdivisionChainMapZero, SphereSixComplex.subdividedOneSimplexFundamentalChain, SphereSixComplex.subdividedOneSimplexBoundaryChain")
+:::theorem "singular-small-chain-excision" (parent := "disk-boundary-collapse") (lean := "SphereSixComplex.CoverSmallChainRetractionData.approximation, SphereSixComplex.coverSmallIntegralSingularHomologyIso, SphereSixComplex.diskSevenExcisionCover_isOpen, SphereSixComplex.diskSevenExcisionCover_iUnion, SphereSixComplex.diskBoundaryToDiskSevenCoverSmallIntegralSingularChains_comp_inclusion, SphereSixComplex.DiskSevenSmallChainApproximation, SphereSixComplex.simplexSubdivisionLastVertex, SphereSixComplex.subdivisionLastVertex, SphereSixComplex.subdivisionLastVertexChainMap_naturality, SphereSixComplex.subdivisionLastVertexLiftChainMap_comp_inclusion, SphereSixComplex.barycentricSubdivisionChainMapZero, SphereSixComplex.subdividedOneSimplexFundamentalChain, SphereSixComplex.subdividedOneSimplexBoundaryChain, SphereSixComplex.subdividedSimplexFundamentalChain, SphereSixComplex.subdividedSimplexInteriorFaceSum_eq_zero, SphereSixComplex.subdividedSimplexFundamentalChain_boundary_eq_outer, SphereSixComplex.barycentricFundamentalBoundaryIdentity_iff_outerFaceIdentity, SphereSixComplex.barycentricSubdivisionChainMapOfOuterFaceIdentity")
 The cover-small singular subcomplex and its monomorphic inclusion into all singular chains are
 explicit. Retraction data yields a chain-homotopy equivalence and homology isomorphisms. For the
 seven-disk, the boundary factors through the small chains for an explicit open two-set cover. The
 global subdivision last-vertex map, induced chain map, and subcomplex lifts are constructed from
-Mathlib's left-Kan-extension API. The barycentric chain operator and its boundary identity are
-constructed in degrees zero and one. The remaining step is the all-degree signed flag operator,
-its prism homotopy, and the Lebesgue-number iteration for this cover.
+Mathlib's left-Kan-extension API. Signed maximal-flag chains are constructed in every degree and
+all interior boundary faces cancel by an explicit involution. The remaining combinatorial step is
+the outer-face permutation/sign reindexing; after it, only the prism homotopy and Lebesgue-number
+iteration remain.
 :::
 
 :::theorem "sphere-stereographic-simple-connectivity" (parent := "standard-six-sphere") (lean := "SphereSixComplex.sixSphere_compl_singleton_simplyConnected, SphereSixComplex.sixSphere_simplyConnected_iff_loops_nullhomotopic")

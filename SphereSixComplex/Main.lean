@@ -15,6 +15,7 @@ public import SphereSixComplex.Geometry.EllipticCayleyHomeomorph
 public import SphereSixComplex.Geometry.EllipticFamilySpecialization
 public import SphereSixComplex.Geometry.EllipticFixedPointCriterion
 public import SphereSixComplex.Geometry.EllipticLocalCoordinates
+public import SphereSixComplex.Geometry.EllipticLocalTrivialization
 public import SphereSixComplex.Geometry.FamilyEquivariance
 public import SphereSixComplex.Geometry.FuchsianRegularTorusFamily
 public import SphereSixComplex.Geometry.Gluing
@@ -62,6 +63,7 @@ public import SphereSixComplex.Topology.StandardSphereHomologyZero
 public import SphereSixComplex.Topology.DiskBoundaryQuotient
 public import SphereSixComplex.Topology.RelativeSingularHomology
 public import SphereSixComplex.Topology.SingularExcision
+public import SphereSixComplex.Topology.SingularBarycentricAllDegrees
 public import SphereSixComplex.Topology.SingularBarycentricChains
 public import SphereSixComplex.Topology.SingularSubdivision
 public import SphereSixComplex.Topology.TwistObstruction

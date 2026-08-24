@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Geometry.PaperAssembly
+public import SphereSixComplex.Geometry.PaperGluingData
 public import SphereSixComplex.Topology.EstablishedRecognition
 
 /-!
@@ -15,9 +15,14 @@ open scoped ContDiff Manifold
 
 namespace SphereSixComplex
 
-/-- The construction and filling calculations asserted on the first two pages. -/
-public theorem exists_completedPaperThreefold : Nonempty CompletedPaperThreefold := by
+/-- The paper-specific construction target: the explicit torus family, three fillings, and their
+overlap maps provide the exact finite gluing data consumed by the assembly theorem. -/
+public theorem exists_paperGluingData : Nonempty PaperGluingData := by
   sorry
+
+/-- The verified assembly map turns the paper's gluing data into a completed threefold. -/
+public theorem exists_completedPaperThreefold : Nonempty CompletedPaperThreefold :=
+  exists_completedPaperThreefold_of_paperGluingData exists_paperGluingData
 
 /-- The dimension-six smooth recognition step required for the completed paper threefold. -/
 public theorem completedPaperThreefold_smoothRecognition (C : CompletedPaperThreefold) :
