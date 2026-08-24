@@ -6,15 +6,17 @@ public import SphereSixComplex.Geometry.PaperStarComplexStructures
 public import SphereSixComplex.Topology.ConnectedMayerVietorisDegreeZero
 public import SphereSixComplex.Topology.SectionSevenMayerVietorisEuler
 public import SphereSixComplex.Topology.SectionSevenMayerVietorisHomologyAssembly
+public import Mathlib.Analysis.Convex.Basic
+public import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
 /-!
 # The final degree-zero Mayer--Vietoris map of the analytic star
 
 The central family and all three filling pieces are path-connected because they are connected
 complex manifolds.  Hence the penultimate stage and the final cusp piece are path-connected.
-The remaining geometric input is stated exactly: path-connectedness of the punctured cusp collar.
-Its homeomorphism with the actual final overlap then gives canonical augmentation bases in which
-the final degree-zero Mayer--Vietoris map is `x ↦ (x, -x)`.
+The punctured cusp collar is the quotient of a convex additive half-space, so it too is
+path-connected.  Its homeomorphism with the actual final overlap then gives canonical augmentation
+bases in which the final degree-zero Mayer--Vietoris map is `x ↦ (x, -x)`.
 -/
 
 @[expose] public section
@@ -42,6 +44,81 @@ public noncomputable def integerPairToFinTwoAddEquiv : (ℤ × ℤ) ≃+ (Fin 2 
   right_inv f := by funext i; fin_cases i <;> rfl
   map_add' x y := by funext i; fin_cases i <;> rfl
 
+namespace Geometry.CuspPuncturedCollarBridge
+
+open SphereSixComplex.Geometry
+open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
+open SphereSixComplex.Geometry.CuspLocalPhaseAction
+open SphereSixComplex.Geometry.CuspPeriodExpansion
+open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
+open SphereSixComplex.Geometry.StandardInfiniteA2ToricQuantitativeRegions
+open SphereSixComplex.Geometry.StandardInfiniteA2ToricQuantitativeRegions.BoundedPolydiscRegions
+
+/-- The radial condition on the additive cusp cover is an affine half-space condition. -/
+public theorem mem_additiveCuspRadiusCover_iff_halfSpace
+    (r : ℝ) (hr : 0 < r) (p : AdditiveCuspCover) :
+    p ∈ additiveCuspRadiusCover r ↔
+      -2 * Real.pi * p.2.im < Real.log r := by
+  change ‖cuspQ p.2‖ < r ↔ _
+  rw [norm_cuspQ, ← Real.lt_log_iff_exp_lt hr]
+
+/-- The additive cusp-radius cover is nonempty at every positive radius. -/
+public theorem additiveCuspRadiusCover_nonempty (r : ℝ) (hr : 0 < r) :
+    (additiveCuspRadiusCover r).Nonempty := by
+  let c : ℝ := (|Real.log r| + 1) / (2 * Real.pi)
+  let s : ℂ := (c : ℂ) * Complex.I
+  refine ⟨(0, s), (mem_additiveCuspRadiusCover_iff_halfSpace r hr _).mpr ?_⟩
+  rw [show s.im = c by simp [s],
+    show c = (|Real.log r| + 1) / (2 * Real.pi) by rfl]
+  have hcancel :
+      -2 * Real.pi * ((|Real.log r| + 1) / (2 * Real.pi)) =
+        -(|Real.log r| + 1) := by
+    field_simp
+  rw [hcancel]
+  linarith [neg_abs_le (Real.log r)]
+
+/-- The additive cusp-radius cover is convex as a real subset. -/
+public theorem additiveCuspRadiusCover_convex (r : ℝ) (hr : 0 < r) :
+    Convex ℝ (additiveCuspRadiusCover r) := by
+  rw [show additiveCuspRadiusCover r =
+      {p : AdditiveCuspCover | -2 * Real.pi * p.2.im < Real.log r} by
+    ext p
+    exact mem_additiveCuspRadiusCover_iff_halfSpace r hr p]
+  apply convex_halfSpace_lt
+  exact .mk (by intro x y; simp; ring) (by intro c x; simp; ring)
+
+/-- The additive cusp-radius cover is path-connected. -/
+public theorem additiveCuspRadiusCover_pathConnected (r : ℝ) (hr : 0 < r) :
+    PathConnectedSpace (additiveCuspRadiusCover r) :=
+  isPathConnected_iff_pathConnectedSpace.mp
+    ((additiveCuspRadiusCover_convex r hr).isPathConnected
+      (additiveCuspRadiusCover_nonempty r hr))
+
+/-- Removing the central toric fibre from a positive-radius local cusp carrier leaves a
+path-connected space. -/
+public theorem puncturedLocalCarrier_pathConnected
+    (M : Model) (r : ℝ) (hr : 0 < r) :
+    PathConnectedSpace {p : LocalCarrier M r // M.t p ≠ 0} := by
+  let _ : PathConnectedSpace (additiveCuspRadiusCover r) :=
+    additiveCuspRadiusCover_pathConnected r hr
+  let _ : PathConnectedSpace
+      (Quotient (Setoid.ker (denseCuspExponentialRadius r))) := inferInstance
+  exact pathConnectedSpace_of_homeomorph (additiveToPuncturedLocalHomeomorph M r)
+
+/-- The actual phase-action quotient of the punctured local cusp carrier is path-connected. -/
+public theorem puncturedLocalCuspQuotient_pathConnected
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) :
+    PathConnectedSpace (puncturedLocalCuspQuotient W) := by
+  let _ : PathConnectedSpace
+      {p : LocalCarrier M W.localWitness.radius // M.t p ≠ 0} :=
+    puncturedLocalCarrier_pathConnected M W.localWitness.radius W.localWitness.radius_pos
+  change PathConnectedSpace (Quotient (puncturedPsiOrbitRel W))
+  infer_instance
+
+end Geometry.CuspPuncturedCollarBridge
+
 namespace Geometry.PaperAnalyticData
 
 variable (A : PaperAnalyticData)
@@ -62,6 +139,13 @@ public theorem starFilling_pathConnected (i : Fin 3) :
   let _ : LocallyPathConnectedSpace (A.starFillingType i) :=
     ChartedSpace.locallyPathConnectedSpace ComplexModel (A.starFillingType i)
   exact PathConnectedSpace.of_locallyPathConnectedSpace
+
+/-- The punctured cusp collar source in the analytic star is path-connected. -/
+public theorem starCuspCollarSource_pathConnected :
+    PathConnectedSpace (A.openEmbeddingStarData.collarSource 0) := by
+  change PathConnectedSpace
+    (CuspPuncturedCollarBridge.puncturedLocalCuspQuotient A.starCuspWitness)
+  exact CuspPuncturedCollarBridge.puncturedLocalCuspQuotient_pathConnected A.starCuspWitness
 
 /-- The penultimate Mayer--Vietoris stage is the union of the central, order-three, and
 order-four pieces. -/
@@ -223,24 +307,22 @@ public noncomputable def cuspCollarToSectionSevenFinalOverlapHomeomorph :
       exact (A.sectionSevenFinalOverlap_eq_centralCuspIntersection).symm))
 
 /-- Path-connectedness of the punctured cusp collar transports to the actual final overlap. -/
-public theorem sectionSevenFinalOverlap_pathConnected
-    (hCuspCollar : PathConnectedSpace (A.openEmbeddingStarData.collarSource 0)) :
+public theorem sectionSevenFinalOverlap_pathConnected :
     PathConnectedSpace
       ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4) ∩
         (A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3 :
           Set A.openEmbeddingStarData.SectionSevenMayerVietorisSpace) := by
-  let _ := hCuspCollar
+  let _ := A.starCuspCollarSource_pathConnected
   exact pathConnectedSpace_of_homeomorph
     A.cuspCollarToSectionSevenFinalOverlapHomeomorph
 
 /-- The canonical augmentation basis on the actual final overlap. -/
-public noncomputable def sectionSevenFinalZeroSource
-    (hCuspCollar : PathConnectedSpace (A.openEmbeddingStarData.collarSource 0)) :
+public noncomputable def sectionSevenFinalZeroSource :
     IntegralSingularHomology 0
       ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4) ∩
         (A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3 :
           Set A.openEmbeddingStarData.SectionSevenMayerVietorisSpace) ≃+ (Fin 1 → ℤ) := by
-  let _ := A.sectionSevenFinalOverlap_pathConnected hCuspCollar
+  let _ := A.sectionSevenFinalOverlap_pathConnected
   exact (pathConnectedIntegralHomologyZeroEquivInteger _).trans integerToFinOneAddEquiv
 
 /-- The product of the canonical augmentation bases on the two final sides. -/
@@ -258,7 +340,6 @@ public noncomputable def sectionSevenFinalZeroTarget :
 /-- In the canonical augmentation bases, the actual final degree-zero difference map is the
 displayed `Fin 1 → Fin 2` antidiagonal. -/
 public theorem sectionSevenFinalZero_comm
-    (hCuspCollar : PathConnectedSpace (A.openEmbeddingStarData.collarSource 0))
     (x : IntegralSingularHomology 0
       ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4) ∩
         (A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3 :
@@ -268,10 +349,10 @@ public theorem sectionSevenFinalZero_comm
           ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4))
           ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3) 0 x) =
       sectionSevenMayerVietorisFinalZeroHom
-        (A.sectionSevenFinalZeroSource hCuspCollar x) := by
+        (A.sectionSevenFinalZeroSource x) := by
   let _ := A.sectionSevenFinalStage_pathConnected
   let _ := A.sectionSevenFinalCuspPiece_pathConnected
-  let _ := A.sectionSevenFinalOverlap_pathConnected hCuspCollar
+  let _ := A.sectionSevenFinalOverlap_pathConnected
   have hnormal :=
     IntegralMayerVietoris.differenceMap_zero_apply_normalForm
       ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4))
@@ -287,15 +368,14 @@ public theorem sectionSevenFinalZero_comm
 
 /-- The actual final degree-zero Mayer--Vietoris difference map is injective; no chosen homology
 basis or compatibility square is an input. -/
-public theorem sectionSevenFinalDifferenceZero_injective
-    (hCuspCollar : PathConnectedSpace (A.openEmbeddingStarData.collarSource 0)) :
+public theorem sectionSevenFinalDifferenceZero_injective :
     Function.Injective
       (IntegralMayerVietoris.differenceMap
         ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4))
         ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3) 0) := by
   let _ := A.sectionSevenFinalStage_pathConnected
   let _ := A.sectionSevenFinalCuspPiece_pathConnected
-  let _ := A.sectionSevenFinalOverlap_pathConnected hCuspCollar
+  let _ := A.sectionSevenFinalOverlap_pathConnected
   exact IntegralMayerVietoris.differenceMap_zero_injective _ _
 
 end Geometry.PaperAnalyticData
