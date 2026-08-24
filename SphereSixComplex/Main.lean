@@ -14,6 +14,7 @@ public import SphereSixComplex.Geometry.CuspCombinatorics
 public import SphereSixComplex.Geometry.CuspAnalyticFillingCollar
 public import SphereSixComplex.Geometry.CuspCollarPairProperness
 public import SphereSixComplex.Geometry.CuspFilling
+public import SphereSixComplex.Geometry.CuspFillingRadialCompactness
 public import SphereSixComplex.Geometry.CuspLocalPhaseAction
 public import SphereSixComplex.Geometry.CuspPeriodExpansion
 public import SphereSixComplex.Geometry.CuspPuncturedCollarBridge
@@ -54,6 +55,7 @@ public import SphereSixComplex.Geometry.PaperAnalyticData
 public import SphereSixComplex.Geometry.PaperAnalyticFillingPieces
 public import SphereSixComplex.Geometry.PaperBiholomorphicStar
 public import SphereSixComplex.Geometry.PaperCentralFamilyTopology
+public import SphereSixComplex.Geometry.PaperCentralCompactCore
 public import SphereSixComplex.Geometry.PaperCollarSeparation
 public import SphereSixComplex.Geometry.PaperEllipticCentralEscape
 public import SphereSixComplex.Geometry.PaperFillingCompactCores

@@ -57,7 +57,7 @@ variable (P : PaperAnalyticData)
 /-- The exact remaining compactness boundary on the phase-corrected toric cusp quotient.  It is
 local at the missing central fibre: every closed radial sublevel strictly inside the chosen open
 filling radius must be compact. -/
-public def ActualLocalCuspRadialCoreCompactness : Prop :=
+@[expose] public def ActualLocalCuspRadialCoreCompactness : Prop :=
   ∀ a, a < P.starCuspWitness.localWitness.radius →
     IsCompact {y : actualLocalCuspFilling P.starCuspWitness |
       actualLocalCuspFillingRadius P.starCuspWitness y ≤ a}
