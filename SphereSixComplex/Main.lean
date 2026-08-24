@@ -39,6 +39,9 @@ public import SphereSixComplex.Topology.MayerVietoris
 public import SphereSixComplex.Topology.SectionSevenChainModel
 public import SphereSixComplex.Topology.SectionSevenLerayChainModel
 public import SphereSixComplex.Topology.SectionSevenLerayDuality
+public import SphereSixComplex.Topology.SectionSevenLerayChainDuality
+public import SphereSixComplex.Topology.SectionSevenLerayHomologyDuality
+public import SphereSixComplex.Topology.SectionSevenLerayRealization
 public import SphereSixComplex.Topology.SmoothRecognition
 public import SphereSixComplex.Topology.SmoothRecognitionFoundations
 public import SphereSixComplex.Topology.SphereSimplyConnected
@@ -49,6 +52,7 @@ public import SphereSixComplex.TriangleGroup.FuchsianAction
 public import SphereSixComplex.TriangleGroup.FuchsianSmoothAction
 public import SphereSixComplex.TriangleGroup.FreeProductTorsion
 public import SphereSixComplex.TriangleGroup.BinaryIndexedCoprod
+public import SphereSixComplex.TriangleGroup.FuchsianProperFreeness
 public import SphereSixComplex.TriangleGroup.Representation
 
 /-!

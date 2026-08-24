@@ -39,6 +39,9 @@ import SphereSixComplex.Topology.MayerVietoris
 import SphereSixComplex.Topology.SectionSevenChainModel
 import SphereSixComplex.Topology.SectionSevenLerayChainModel
 import SphereSixComplex.Topology.SectionSevenLerayDuality
+import SphereSixComplex.Topology.SectionSevenLerayChainDuality
+import SphereSixComplex.Topology.SectionSevenLerayHomologyDuality
+import SphereSixComplex.Topology.SectionSevenLerayRealization
 import SphereSixComplex.Topology.SmoothRecognition
 import SphereSixComplex.Topology.SmoothRecognitionFoundations
 import SphereSixComplex.Topology.SphereSimplyConnected
@@ -49,6 +52,7 @@ import SphereSixComplex.TriangleGroup.FuchsianAction
 import SphereSixComplex.TriangleGroup.FuchsianSmoothAction
 import SphereSixComplex.TriangleGroup.FreeProductTorsion
 import SphereSixComplex.TriangleGroup.BinaryIndexedCoprod
+import SphereSixComplex.TriangleGroup.FuchsianProperFreeness
 import SphereSixComplex.TriangleGroup.Representation
 
 open Informal
@@ -219,12 +223,13 @@ vector-bundle cover is complex-smooth. Freeness and proper discontinuity on the 
 the lifted action and give a complex-manifold quotient with locally biholomorphic projection.
 :::
 
-:::theorem "elliptic-orbit-freeness" (parent := "torus-family") (lean := "SphereSixComplex.TriangleGroup.BinaryIndexedCoprod.deltaIndexedEquiv, SphereSixComplex.TriangleGroup.BinaryIndexedCoprod.deltaNormalForm, SphereSixComplex.TriangleGroup.BinaryIndexedCoprod.finiteOrder_isConj_inl_or_inr, SphereSixComplex.TriangleGroup.BinaryIndexedCoprod.finiteOrder_fixed_regular_eq_one, SphereSixComplex.TriangleGroup.FreeProductTorsion.fuchsianSourceAction_inl_fixed_iff, SphereSixComplex.TriangleGroup.FreeProductTorsion.fuchsianSourceAction_inr_fixed_iff, SphereSixComplex.TriangleGroup.FreeProductTorsion.regular_not_fixed_by_conjugate_inl, SphereSixComplex.TriangleGroup.FreeProductTorsion.regular_not_fixed_by_conjugate_inr")
+:::theorem "elliptic-orbit-freeness" (parent := "torus-family") (lean := "SphereSixComplex.TriangleGroup.BinaryIndexedCoprod.deltaIndexedEquiv, SphereSixComplex.TriangleGroup.BinaryIndexedCoprod.deltaNormalForm, SphereSixComplex.TriangleGroup.BinaryIndexedCoprod.finiteOrder_isConj_inl_or_inr, SphereSixComplex.TriangleGroup.BinaryIndexedCoprod.finiteOrder_fixed_regular_eq_one, SphereSixComplex.TriangleGroup.FreeProductTorsion.fuchsianSourceAction_inl_fixed_iff, SphereSixComplex.TriangleGroup.FreeProductTorsion.fuchsianSourceAction_inr_fixed_iff, SphereSixComplex.TriangleGroup.FuchsianProperFreeness.isOfFinOrder_of_fixed_of_properlyDiscontinuous, SphereSixComplex.TriangleGroup.FuchsianProperFreeness.fuchsian_fixed_regular_eq_one, SphereSixComplex.TriangleGroup.FuchsianProperFreeness.regularLiftedDeckAction_isCancelSMul_of_fuchsian, SphereSixComplex.TriangleGroup.FuchsianProperFreeness.regularLiftedDeckAction_properlyDiscontinuous_of_source")
 Every nonidentity element of either cyclic factor fixes exactly its marked elliptic point, and its
 conjugates fix exactly the corresponding elliptic orbit. Removing those orbits eliminates all such
 stabilizers. An explicit equivalence with the indexed free product proves every nontrivial
-finite-order element is conjugate into a factor. Completing freeness now requires only showing
-that point-stabilizer elements have finite order, normally from discreteness of the Fuchsian image.
+finite-order element is conjugate into a factor. Proper discontinuity makes point stabilizers
+finite and therefore proves the regular action free; both properties then lift to the deck action.
+The remaining step is proper discontinuity of the explicit projective Fuchsian source action.
 :::
 
 :::theorem "analytic-torus-family" (parent := "torus-family") (lean := "SphereSixComplex.Geometry.AnalyticTorusFamily.parameterMap_contMDiff, SphereSixComplex.Geometry.AnalyticTorusFamily.periodSection_contMDiff, SphereSixComplex.Geometry.AnalyticTorusFamily.parameterMap_compactUniformLowerBound, SphereSixComplex.Geometry.AnalyticTorusFamily.totalSpace_isManifold_and_projection_isLocalDiffeomorph")
@@ -359,11 +364,19 @@ is kept explicit; if it is a unit, degrees four and five vanish as well. The mis
 the precise Poincaré-duality or Leray-convergence step.
 :::
 
-:::theorem "section-seven-algebraic-duality" (parent := "integral-homology") (lean := "SphereSixComplex.sectionSevenOneFivePairingMatrix_bijective, SphereSixComplex.sectionSevenTwoFourPairingMatrix_bijective, SphereSixComplex.SectionSevenLerayAlgebraicDuality.top_eq_one_or_neg_one, SphereSixComplex.SectionSevenLerayAlgebraicDuality.sphere_shaped_model_homology")
+:::theorem "section-seven-algebraic-duality" (parent := "integral-homology") (lean := "SphereSixComplex.sectionSevenOneFivePairingMatrix_bijective, SphereSixComplex.sectionSevenTwoFourPairingMatrix_bijective, SphereSixComplex.SectionSevenLerayAlgebraicDuality.top_eq_one_or_neg_one, SphereSixComplex.SectionSevenLerayAlgebraicDuality.sphere_shaped_model_homology, SphereSixComplex.sectionSevenDegreeComplementCompatible_iff, SphereSixComplex.exists_sectionSevenDegreeComplementCompatible_iff, SphereSixComplex.SectionSevenLerayAlgebraicDuality.chainSelfDualityIso, SphereSixComplex.SectionSevenLerayAlgebraicDuality.homologyDegreeComplementIso, SphereSixComplex.SectionSevenLerayAlgebraicDuality.reversed_sphere_shaped_model_homology")
 Explicit unimodular complementary-degree pairings reduce the remaining duality calculation to one
-boundary-adjointness identity. That identity forces the fourth coefficient to be $`\pm1` and gives
-the complete sphere-shaped homology of the finite model. Realizing this adjointness for the glued
-space is the remaining topological Poincaré-duality bridge.
+boundary-adjointness identity. That identity forces the fourth coefficient to be $`\pm1`, gives
+the complete sphere-shaped homology, and yields a genuine chain-complex self-duality isomorphism
+whose homology maps give complementary-degree isomorphisms. Realizing this adjointness for the
+glued space is the remaining topological Poincaré-duality bridge.
+:::
+
+:::theorem "section-seven-coherent-realization" (parent := "integral-homology") (lean := "SphereSixComplex.SectionSevenLerayAlgebraicDuality.modelHomologyEquivComputed, SphereSixComplex.SectionSevenLerayCoherentRealization.sectionSevenHomologyRealization, SphereSixComplex.SectionSevenLerayCoherentRealization.hasIntegralHomologyOfSixSphere")
+One chain map from the finite Leray model to singular chains, inducing homology isomorphisms in
+every degree, supplies the project’s Section 7 realization contract. Coherent realizations for the
+glued space and the standard six-sphere give their degreewise integral homology equivalences.
+Constructing those chain comparisons remains the singular Leray/cellular realization step.
 :::
 
 :::theorem "smooth-recognition" (parent := "construction_spine") (lean := "SphereSixComplex.completedPaperThreefold_smoothRecognition, SphereSixComplex.exists_complex_threefold_diffeomorphic_sixSphere") (priority := "high")
