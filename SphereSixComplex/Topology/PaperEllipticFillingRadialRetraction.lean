@@ -81,6 +81,49 @@ public theorem discRadialHomotopy_discScalarEquiv_pow
     lambda ^ k * (((1 - (s : ℝ) : ℝ) : ℂ) * w.1)
   ring
 
+/-- Radius-`r` ball in a fixed disc--torus product. -/
+public abbrev RadialProductBall (r : ℝ) (T : Type) [TopologicalSpace T] :=
+  {p : ComplexUnitDisc × T // ‖(p.1 : ℂ)‖ < r}
+
+/-- Positive radial rescaling identifies a radius-`r` product ball with the full unit-disc
+product. -/
+@[expose] public def radialProductBallHomeomorph
+    {T : Type} [TopologicalSpace T] {r : ℝ} (hr : 0 < r) (hr1 : r < 1) :
+    RadialProductBall r T ≃ₜ ComplexUnitDisc × T where
+  toFun p :=
+    (⟨p.1.1.1 / (r : ℂ), by
+      rw [norm_div, Complex.norm_real, Real.norm_of_nonneg hr.le]
+      exact (div_lt_one hr).mpr p.2⟩, p.1.2)
+  invFun p :=
+    ⟨(⟨(r : ℂ) * p.1.1, by
+      rw [norm_mul, Complex.norm_real, Real.norm_of_nonneg hr.le]
+      have h := mul_lt_mul_of_pos_left p.1.2 hr
+      have h' : r * ‖p.1.1‖ < r := by simpa using h
+      exact h'.trans hr1⟩, p.2), by
+      rw [norm_mul, Complex.norm_real, Real.norm_of_nonneg hr.le]
+      simpa using mul_lt_mul_of_pos_left p.1.2 hr⟩
+  left_inv p := by
+    apply Subtype.ext
+    apply Prod.ext
+    · apply Subtype.ext
+      have hrc : (r : ℂ) ≠ 0 := by exact_mod_cast hr.ne'
+      field_simp
+    · rfl
+  right_inv p := by
+    apply Prod.ext
+    · apply Subtype.ext
+      have hrc : (r : ℂ) ≠ 0 := by exact_mod_cast hr.ne'
+      field_simp
+    · rfl
+  continuous_toFun :=
+    (Continuous.subtype_mk
+      ((continuous_subtype_val.comp (continuous_fst.comp continuous_subtype_val)).div_const _)
+      _).prodMk (continuous_snd.comp continuous_subtype_val)
+  continuous_invFun := Continuous.subtype_mk
+    ((Continuous.subtype_mk
+      (continuous_const.mul (continuous_subtype_val.comp continuous_fst)) _).prodMk
+        continuous_snd) _
+
 /-- A diagonal finite-cyclic action for which the radial contraction is equivariant. -/
 public structure RadialEllipticActionData
     (m : ℕ) [NeZero m] (T : Type) [TopologicalSpace T] [AddCommGroup T] where
@@ -469,6 +512,63 @@ central bielliptic fibre. -/
 
 end EquivariantRadialProductIdentification
 
+/-- An analytic whole-filling chart whose target is exactly a radial ball in a fixed product.
+Unlike the earlier neighbourhood-only compatibility, the source here is the already restricted
+varying filling, so `source_eq_univ` says that the chart covers the entire filling. -/
+public structure RadialWholeFillingChart
+    {m : ℕ} [NeZero m] (X : Type) [TopologicalSpace X]
+    {T : Type} [TopologicalSpace T] [AddCommGroup T]
+    (D : RadialEllipticActionData m T) (r : ℝ) where
+  radius_pos : 0 < r
+  radius_lt_one : r < 1
+  gluing : OpenPartialHomeomorph X D.Product
+  source_eq_univ : gluing.source = Set.univ
+  target_eq_ball : gluing.target = {p | ‖(p.1 : ℂ)‖ < r}
+
+namespace RadialWholeFillingChart
+
+variable {m : ℕ} [NeZero m] {X T : Type} [TopologicalSpace X] [TopologicalSpace T]
+    [AddCommGroup T] {D : RadialEllipticActionData m T} {r : ℝ}
+    (C : RadialWholeFillingChart X D r)
+
+/-- The whole-filling chart followed by radial rescaling is a genuine homeomorphism to the full
+fixed product. -/
+@[expose] public def toProductHomeomorph : X ≃ₜ D.Product :=
+  (Homeomorph.Set.univ X).symm |>.trans
+    (Homeomorph.setCongr C.source_eq_univ.symm) |>.trans
+    C.gluing.toHomeomorphSourceTarget |>.trans
+    (Homeomorph.setCongr C.target_eq_ball) |>.trans
+    (radialProductBallHomeomorph C.radius_pos C.radius_lt_one)
+
+end RadialWholeFillingChart
+
+/-- Action-correct affine whole-filling compatibility.  The action is supplied explicitly so the
+varying affine action cannot be confused with the unshifted family deck action. -/
+public structure AffineRadialWholeFillingCompatibility
+    {m : ℕ} [NeZero m] {X T : Type} [TopologicalSpace X] [TopologicalSpace T]
+    [AddCommGroup T] (sourceAction : MulAction (FiniteCyclic m) X)
+    (D : RadialEllipticActionData m T) (r : ℝ) where
+  chart : RadialWholeFillingChart X D r
+  equivariant : ∀ (g : FiniteCyclic m) (x : X),
+    chart.toProductHomeomorph (actionMap sourceAction g x) =
+      actionMap D.actionData.diagonalAction g (chart.toProductHomeomorph x)
+
+namespace AffineRadialWholeFillingCompatibility
+
+variable {m : ℕ} [NeZero m] {X T : Type} [TopologicalSpace X] [TopologicalSpace T]
+    [AddCommGroup T] {sourceAction : MulAction (FiniteCyclic m) X}
+    {D : RadialEllipticActionData m T} {r : ℝ}
+    (C : AffineRadialWholeFillingCompatibility sourceAction D r)
+
+/-- An affine radial whole-filling chart supplies exactly the pre-quotient identification used by
+the quotient strong deformation retraction. -/
+@[expose] public def toProductIdentification :
+    EquivariantRadialProductIdentification sourceAction D where
+  toHomeomorph := C.chart.toProductHomeomorph
+  equivariant := C.equivariant
+
+end AffineRadialWholeFillingCompatibility
+
 variable (A : PaperAnalyticData) (r : ℝ)
 
 /-- The missing exact topology bridge for the order-three varying filling. -/
@@ -480,6 +580,28 @@ public abbrev OrderThreeVaryingFillingProductIdentification :=
 public abbrev OrderFourVaryingFillingProductIdentification :=
   EquivariantRadialProductIdentification (A.orderFourFillingAction r)
     (orderFourRadialActionData A.periods)
+
+/-- Accurate affine radial whole-filling input for the actual order-three varying family. -/
+public abbrev OrderThreeAffineRadialWholeFillingCompatibility :=
+  AffineRadialWholeFillingCompatibility (A.orderThreeFillingAction r)
+    (orderThreeRadialActionData A.periods) r
+
+/-- Accurate affine radial whole-filling input for the actual order-four varying family. -/
+public abbrev OrderFourAffineRadialWholeFillingCompatibility :=
+  AffineRadialWholeFillingCompatibility (A.orderFourFillingAction r)
+    (orderFourRadialActionData A.periods) r
+
+/-- The accurate order-three affine whole-filling input instantiates the radial product contract. -/
+@[expose] public def OrderThreeAffineRadialWholeFillingCompatibility.toVaryingFillingProductIdentification
+    (C : OrderThreeAffineRadialWholeFillingCompatibility A r) :
+    OrderThreeVaryingFillingProductIdentification A r :=
+  C.toProductIdentification
+
+/-- The accurate order-four affine whole-filling input instantiates the radial product contract. -/
+@[expose] public def OrderFourAffineRadialWholeFillingCompatibility.toVaryingFillingProductIdentification
+    (C : OrderFourAffineRadialWholeFillingCompatibility A r) :
+    OrderFourVaryingFillingProductIdentification A r :=
+  C.toProductIdentification
 
 /-- The exact order-three varying-filling conclusion obtained from the equivariant product
 identification. -/
@@ -506,6 +628,33 @@ identification. -/
     (e : OrderFourVaryingFillingProductIdentification A r) :=
   integralSingularChainHomotopyEquiv
     (orderFourVaryingFillingHomotopyEquivCentralFiber A r e)
+
+/-- The action-correct order-three affine whole-filling chart yields the desired filling
+homotopy equivalence; the conclusion is derived, not stored in the chart. -/
+@[expose] public def orderThreeVaryingFillingHomotopyEquivCentralFiber_of_affineRadialChart
+    (C : OrderThreeAffineRadialWholeFillingCompatibility A r) :
+    A.OrderThreeVaryingFilling r ≃ₕ OrderThreeReducedCentralFiber A.periods :=
+  orderThreeVaryingFillingHomotopyEquivCentralFiber A r
+    C.toVaryingFillingProductIdentification
+
+/-- The analogous order-four affine whole-filling conclusion. -/
+@[expose] public def orderFourVaryingFillingHomotopyEquivCentralFiber_of_affineRadialChart
+    (C : OrderFourAffineRadialWholeFillingCompatibility A r) :
+    A.OrderFourVaryingFilling r ≃ₕ OrderFourReducedCentralFiber A.periods :=
+  orderFourVaryingFillingHomotopyEquivCentralFiber A r
+    C.toVaryingFillingProductIdentification
+
+/-- Integral singular-chain realization derived from the order-three affine radial chart. -/
+@[expose] public def orderThreeVaryingFillingSingularChainHomotopyEquiv_of_affineRadialChart
+    (C : OrderThreeAffineRadialWholeFillingCompatibility A r) :=
+  integralSingularChainHomotopyEquiv
+    (orderThreeVaryingFillingHomotopyEquivCentralFiber_of_affineRadialChart A r C)
+
+/-- Integral singular-chain realization derived from the order-four affine radial chart. -/
+@[expose] public def orderFourVaryingFillingSingularChainHomotopyEquiv_of_affineRadialChart
+    (C : OrderFourAffineRadialWholeFillingCompatibility A r) :=
+  integralSingularChainHomotopyEquiv
+    (orderFourVaryingFillingHomotopyEquivCentralFiber_of_affineRadialChart A r C)
 
 end
 
