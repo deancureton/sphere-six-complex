@@ -72,6 +72,7 @@ public import SphereSixComplex.Geometry.RegularTorusFamily
 public import SphereSixComplex.Geometry.StandardInfiniteA2ToricComponentPreservation
 public import SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
 public import SphereSixComplex.Geometry.StandardInfiniteA2ToricQuantitativeRegions
+public import SphereSixComplex.Geometry.StarCompactCover
 public import SphereSixComplex.Geometry.TorusFamily
 public import SphereSixComplex.LatticeData
 public import SphereSixComplex.Periods.Domain
