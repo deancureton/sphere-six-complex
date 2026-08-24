@@ -15,9 +15,8 @@ the dependency closure of the main theorem.
 ## Status
 
 This is an active formalization, not yet a proof of the headline theorem. The root project and the
-Verso Blueprint build, but `SphereSixComplex/Construction.lean` still contains two development
-`sorry`s: construction of the completed threefold and dimension-six smooth recognition. The
-`sorry` in `Challenge.lean` is the trusted Comparator challenge boundary.
+Verso Blueprint build, but `SphereSixComplex/Final.lean` still contains the paper-specific gluing
+`sorry`. The `sorry` in `Challenge.lean` is the trusted Comparator challenge boundary.
 
 The verified development covers the construction's algebraic foundations and several analytic and
 topological reductions. The source triangle action is kept distinct from the modular target action;
