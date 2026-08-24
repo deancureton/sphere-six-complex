@@ -1426,24 +1426,20 @@ public noncomputable def totalRealizationEquiv
 
 end SectionSevenStarIntersectionChainModels
 
-/-- Exact transferred-complex data connecting the finite Section 7 Leray `d₂` model to the
-ordered Čech total complex.  The maps include normalization away from degenerate ordered tuples
-and the contraction of the complementary summands.  In particular, no degreewise isomorphism
-between the finite model and the unnormalized Čech total is asserted. -/
+/-- A conditional chain contraction connecting the finite Section 7 Leray `d₂` model to an
+ordered Cech total complex.  This is a strictly stronger input than the paper's spectral-sequence
+calculation and is retained only as a reusable sufficient criterion. -/
 public structure SectionSevenTransferredChainContraction
     {A : FourPieceStarGluingData}
     (L : SectionSevenStarIntersectionChainModels A) where
-  /-- Transfer the finite complex, whose differential is the matrix encoded by
-  `sectionSevenLerayBoundary (-1)`, into the full ordered Čech total. -/
+  /-- Transfer the finite algebraic complex into the full ordered Cech total. -/
   transfer : sectionSevenLerayChainModel (-1) ⟶ L.localLerayCechTotal
-  /-- Normalize degenerate tuples and project the remaining total complex onto the transferred
-  finite model. -/
+  /-- Project the total complex onto the transferred finite model. -/
   collapse : L.localLerayCechTotal ⟶ sectionSevenLerayChainModel (-1)
   /-- The transferred finite model is a homotopy retract of the Čech total. -/
   homotopyTransferCollapse : Homotopy (transfer ≫ collapse)
     (𝟙 (sectionSevenLerayChainModel (-1)))
-  /-- Degenerate tuples and the complementary transferred summands form a contractible
-  subcomplex. -/
+  /-- The complementary summands form a contractible subcomplex. -/
   homotopyCollapseTransfer : Homotopy (collapse ≫ transfer)
     (𝟙 L.localLerayCechTotal)
 
@@ -1505,22 +1501,23 @@ public noncomputable def homotopyEquiv
 
 end SectionSevenCechNerveChainIdentification
 
-/-- Exact geometric and transferred-complex inputs identifying the paper's Section 7 complex
-with the canonical Leray--Čech total complex of the actual four-piece star cover. -/
+/-- A strong sufficient package identifying the finite algebraic model with the canonical
+Leray--Cech total complex of the actual four-piece star cover.  No existence claim is made: the
+paper's actual Section 7 argument proceeds through Mayer--Vietoris and the Leray spectral
+sequence, not through this chain contraction. -/
 public structure SectionSevenPaperCoverIdentification (A : FourPieceStarGluingData) where
   /-- Explicit chain models and face-compatible local realizations for every nonempty
   intersection of star-cover pieces. -/
   localModels : SectionSevenStarIntersectionChainModels A
   /-- Degreewise geometric identification with Mathlib's canonical Čech nerve. -/
   cechNerveChainIdentification : SectionSevenCechNerveChainIdentification A
-  /-- Normalization and transfer contract the ordered Čech total onto the finite complex carrying
-  the displayed Section 7 differential. -/
+  /-- An explicitly supplied contraction of the ordered Cech total onto the finite complex. -/
   transferredChainContraction : SectionSevenTransferredChainContraction localModels
 
 namespace SectionSevenPaperCoverIdentification
 
-/-- Assemble the transferred finite calculation, coherent local realizations, and canonical Čech
-nerve identification into the exact input required by the general Leray-cover comparison. -/
+/-- Assemble the strong conditional contraction, coherent local realizations, and canonical Cech
+nerve identification into the input required by the general Leray-cover comparison. -/
 public noncomputable def toLerayCechIdentification
     {A : FourPieceStarGluingData} (h : SectionSevenPaperCoverIdentification A) :
     SectionSevenLerayCechIdentification (GluedSpace A.glueData)
