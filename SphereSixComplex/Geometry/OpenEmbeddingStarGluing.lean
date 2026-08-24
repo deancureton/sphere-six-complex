@@ -34,21 +34,21 @@ namespace OpenEmbeddingStarData
 variable (A : OpenEmbeddingStarData)
 
 /-- The image of the `i`th common collar source in the central piece. -/
-public def centralCollar (i : Fin 3) : Opens A.central :=
+@[expose] public def centralCollar (i : Fin 3) : Opens A.central :=
   ⟨Set.range (A.toCentral i), (A.toCentral_isOpenEmbedding i).isOpen_range⟩
 
 /-- The image of the `i`th common collar source in its filling piece. -/
-public def fillingCollar (i : Fin 3) : Opens (A.filling i) :=
+@[expose] public def fillingCollar (i : Fin 3) : Opens (A.filling i) :=
   ⟨Set.range (A.toFilling i), (A.toFilling_isOpenEmbedding i).isOpen_range⟩
 
 /-- A point of a common collar source, viewed in its central image. -/
-public def centralCollarPoint (i : Fin 3) (x : A.collarSource i) : A.centralCollar i :=
+@[expose] public def centralCollarPoint (i : Fin 3) (x : A.collarSource i) : A.centralCollar i :=
   ⟨A.toCentral i x, by
     change ∃ y, A.toCentral i y = A.toCentral i x
     exact ⟨x, rfl⟩⟩
 
 /-- A point of a common collar source, viewed in its filling image. -/
-public def fillingCollarPoint (i : Fin 3) (x : A.collarSource i) : A.fillingCollar i :=
+@[expose] public def fillingCollarPoint (i : Fin 3) (x : A.collarSource i) : A.fillingCollar i :=
   ⟨A.toFilling i x, by
     change ∃ y, A.toFilling i y = A.toFilling i x
     exact ⟨x, rfl⟩⟩
@@ -82,12 +82,12 @@ public theorem toFillingCollarHomeomorph_apply (i : Fin 3) (x : A.collarSource i
     (A.toFilling_isOpenEmbedding i).isEmbedding x
 
 /-- The collar homeomorphism obtained by identifying both images with their common source. -/
-public noncomputable def collarEquiv (i : Fin 3) :
+@[expose] public noncomputable def collarEquiv (i : Fin 3) :
     A.centralCollar i ≃ₜ A.fillingCollar i :=
   (A.toCentralCollarHomeomorph i).symm.trans (A.toFillingCollarHomeomorph i)
 
 /-- Common-source open embeddings canonically determine a four-piece star gluing. -/
-public noncomputable def toFourPieceStarGluingData : FourPieceStarGluingData where
+@[expose] public noncomputable def toFourPieceStarGluingData : FourPieceStarGluingData where
   central := A.central
   filling := A.filling
   centralCollar := A.centralCollar

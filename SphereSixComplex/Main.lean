@@ -8,6 +8,7 @@ public import SphereSixComplex.Geometry.AnalyticTorusFamily
 public import SphereSixComplex.Geometry.ComplexModelRechart
 public import SphereSixComplex.Geometry.ComplexTorus
 public import SphereSixComplex.Geometry.ComplexThreefoldGluing
+public import SphereSixComplex.Geometry.ClosedRelationGluing
 public import SphereSixComplex.Geometry.CuspCombinatorics
 public import SphereSixComplex.Geometry.CuspFilling
 public import SphereSixComplex.Geometry.CuspLocalPhaseAction
@@ -49,7 +50,13 @@ public import SphereSixComplex.Geometry.PaperAnalyticData
 public import SphereSixComplex.Geometry.PaperAnalyticFillingPieces
 public import SphereSixComplex.Geometry.PaperCentralFamilyTopology
 public import SphereSixComplex.Geometry.PaperCollarSeparation
+public import SphereSixComplex.Geometry.PaperLocalCuspFillingConnected
 public import SphereSixComplex.Geometry.PaperOpenEmbeddingStar
+public import SphereSixComplex.Geometry.PaperOpenEmbeddingStarNonempty
+public import SphereSixComplex.Geometry.PaperStarClosedRelationReduction
+public import SphereSixComplex.Geometry.PaperStarComplexStructures
+public import SphereSixComplex.Geometry.PaperStarPieceHausdorff
+public import SphereSixComplex.Geometry.PaperStarPieceTopology
 public import SphereSixComplex.Geometry.PaperAssembly
 public import SphereSixComplex.Geometry.ProperlyDiscontinuousSlice
 public import SphereSixComplex.Final
