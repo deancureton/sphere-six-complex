@@ -2,6 +2,7 @@ module
 
 public import SphereSixComplex.Topology.EstablishedAffineVanKampen
 public import Mathlib.GroupTheory.QuotientGroup.Defs
+public import Mathlib.GroupTheory.SemidirectProduct
 
 /-!
 # Unwrapped affine filling covers
@@ -92,6 +93,129 @@ public theorem fillingDeckMap_fillingRelation
   exact Subgroup.subset_normalClosure (Set.mem_singleton D.fillingRelation)
 
 end UnwrappedCyclicAffineBoundaryDeckData
+
+/-! ### The canonical semidirect boundary deck group -/
+
+/-- Integral powers of an additive automorphism, as an additive homomorphism. -/
+public def integerPowersAddAut {Λ : Type*} [AddCommGroup Λ] (φ : AddAut Λ) :
+    ℤ →+ AddAut Λ where
+  toFun n := n • φ
+  map_zero' := zero_zsmul φ
+  map_add' n k := add_zsmul φ n k
+
+/-- The action of the unwrapped angular deck group on the translation lattice. -/
+public def integerAffineMonodromy {Λ : Type*} [AddCommGroup Λ] (φ : AddAut Λ) :
+    Multiplicative ℤ →* MulAut (Multiplicative Λ) :=
+  (MulAutMultiplicative Λ).symm.toMonoidHom.comp (integerPowersAddAut φ).toMultiplicative
+
+/-- The canonical unwrapped cyclic-affine boundary deck group. -/
+public abbrev CanonicalCyclicAffineBoundaryDeck
+    {Λ : Type*} [AddCommGroup Λ] (φ : AddAut Λ) :=
+  Multiplicative Λ ⋊[integerAffineMonodromy φ] Multiplicative ℤ
+
+/-- The canonical translation embedding in an unwrapped cyclic-affine boundary deck group. -/
+public def canonicalCyclicAffineTranslation
+    {Λ : Type*} [AddCommGroup Λ] (φ : AddAut Λ) :
+    Λ →+ Additive (CanonicalCyclicAffineBoundaryDeck φ) where
+  toFun a := Additive.ofMul
+    (SemidirectProduct.inl (φ := integerAffineMonodromy φ) (Multiplicative.ofAdd a))
+  map_zero' := by
+    apply Additive.toMul.injective
+    exact (SemidirectProduct.inl (φ := integerAffineMonodromy φ)).map_one
+  map_add' a b := by
+    apply Additive.toMul.injective
+    exact (SemidirectProduct.inl (φ := integerAffineMonodromy φ)).map_mul
+      (Multiplicative.ofAdd a) (Multiplicative.ofAdd b)
+
+/-- The positive angular meridian in the canonical unwrapped cyclic-affine deck group. -/
+public def canonicalCyclicAffineMeridian
+    {Λ : Type*} [AddCommGroup Λ] (φ : AddAut Λ) :
+    CanonicalCyclicAffineBoundaryDeck φ :=
+  SemidirectProduct.inr (Multiplicative.ofAdd 1)
+
+/-- Canonical cyclic-affine translations embed faithfully. -/
+public theorem canonicalCyclicAffineTranslation_injective
+    {Λ : Type*} [AddCommGroup Λ] (φ : AddAut Λ) :
+    Function.Injective (canonicalCyclicAffineTranslation φ) := by
+  intro a b h
+  have h' := congrArg SemidirectProduct.left (congrArg Additive.toMul h)
+  change Multiplicative.ofAdd a = Multiplicative.ofAdd b at h'
+  exact Multiplicative.ofAdd.injective h'
+
+/-- Conjugation by the positive angular meridian is the chosen affine monodromy. -/
+public theorem canonicalCyclicAffine_conjugate
+    {Λ : Type*} [AddCommGroup Λ] (φ : AddAut Λ) (a : Λ) :
+    canonicalCyclicAffineMeridian φ *
+          Additive.toMul (canonicalCyclicAffineTranslation φ a) *
+        (canonicalCyclicAffineMeridian φ)⁻¹ =
+      Additive.toMul (canonicalCyclicAffineTranslation φ (φ a)) := by
+  symm
+  change SemidirectProduct.inl
+      (φ := integerAffineMonodromy φ) (Multiplicative.ofAdd (φ a)) =
+    SemidirectProduct.inr (Multiplicative.ofAdd 1) *
+      SemidirectProduct.inl (Multiplicative.ofAdd a) *
+        (SemidirectProduct.inr (Multiplicative.ofAdd 1))⁻¹
+  convert SemidirectProduct.inl_aut
+    (φ := integerAffineMonodromy φ) (Multiplicative.ofAdd 1)
+      (Multiplicative.ofAdd a) using 1
+  · rfl
+  · rw [map_inv]
+
+/-- Translations and the positive meridian generate the canonical unwrapped cyclic-affine deck
+group. -/
+public theorem canonicalCyclicAffine_generators_generate
+    {Λ : Type*} [AddCommGroup Λ] (φ : AddAut Λ) :
+    Subgroup.closure
+      (Set.range (fun a ↦ Additive.toMul (canonicalCyclicAffineTranslation φ a)) ∪
+        {canonicalCyclicAffineMeridian φ}) = ⊤ := by
+  apply top_unique
+  intro d _
+  have hleft :
+      SemidirectProduct.inl (φ := integerAffineMonodromy φ) d.left ∈
+        Subgroup.closure
+          (Set.range (fun a ↦ Additive.toMul (canonicalCyclicAffineTranslation φ a)) ∪
+            {canonicalCyclicAffineMeridian φ}) :=
+    Subgroup.subset_closure (Or.inl ⟨d.left.toAdd, rfl⟩)
+  have hmeridian :
+      canonicalCyclicAffineMeridian φ ∈
+        Subgroup.closure
+          (Set.range (fun a ↦ Additive.toMul (canonicalCyclicAffineTranslation φ a)) ∪
+            {canonicalCyclicAffineMeridian φ}) :=
+    Subgroup.subset_closure
+      (Or.inr (Set.mem_singleton (canonicalCyclicAffineMeridian φ)))
+  have hright :
+      SemidirectProduct.inr d.right ∈
+        Subgroup.closure
+          (Set.range (fun a ↦ Additive.toMul (canonicalCyclicAffineTranslation φ a)) ∪
+            {canonicalCyclicAffineMeridian φ}) := by
+    rw [show SemidirectProduct.inr d.right =
+        (canonicalCyclicAffineMeridian φ) ^ d.right.toAdd by
+      change SemidirectProduct.inr d.right =
+        (SemidirectProduct.inr (Multiplicative.ofAdd 1)) ^ d.right.toAdd
+      rw [← map_zpow]
+      congr 1
+      apply Multiplicative.toAdd.injective
+      simp]
+    exact Subgroup.zpow_mem _ hmeridian d.right.toAdd
+  rw [← SemidirectProduct.inl_left_mul_inr_right d]
+  exact Subgroup.mul_mem _ hleft hright
+
+/-- Canonical algebraic data for an unwrapped cyclic-affine collar. -/
+public def canonicalCyclicAffineBoundaryDeckData
+    {m : ℕ} {Λ : Type*} [NeZero m] [AddCommGroup Λ]
+    (φ : AddAut Λ) (twist : Λ)
+    (hφ : (Multiplicative.ofAdd φ) ^ m = 1) (htwist : φ twist = twist) :
+    UnwrappedCyclicAffineBoundaryDeckData m Λ
+      (CanonicalCyclicAffineBoundaryDeck φ) where
+  translation := canonicalCyclicAffineTranslation φ
+  translation_injective := canonicalCyclicAffineTranslation_injective φ
+  meridian := canonicalCyclicAffineMeridian φ
+  monodromy := Multiplicative.ofAdd φ
+  conjugate := canonicalCyclicAffine_conjugate φ
+  generators_generate := canonicalCyclicAffine_generators_generate φ
+  twist := twist
+  monodromy_pow := hφ
+  twist_fixed := htwist
 
 /-- A simply connected unwrapped cover square for a cyclic affine filling.
 
@@ -238,6 +362,91 @@ public theorem fillingDeckMap_meridian (D : UnwrappedToricBoundaryDeckData Λ K 
   exact Or.inr (Set.mem_singleton D.meridian)
 
 end UnwrappedToricBoundaryDeckData
+
+/-! ### The canonical toric boundary deck group -/
+
+/-- The canonical deck group of an unwrapped toric cusp boundary. -/
+public abbrev CanonicalToricBoundaryDeck (Λ : Type*) [AddCommGroup Λ] :=
+  Multiplicative Λ × Multiplicative ℤ
+
+/-- The canonical translation embedding in an unwrapped toric boundary deck group. -/
+public def canonicalToricTranslation {Λ : Type*} [AddCommGroup Λ] :
+    Λ →+ Additive (CanonicalToricBoundaryDeck Λ) where
+  toFun a := Additive.ofMul (Multiplicative.ofAdd a, 1)
+  map_zero' := by
+    apply Additive.toMul.injective
+    ext <;> simp
+  map_add' a b := by
+    apply Additive.toMul.injective
+    ext <;> simp
+
+/-- The positive angular meridian in the canonical unwrapped toric boundary deck group. -/
+public def canonicalToricMeridian {Λ : Type*} [AddCommGroup Λ] :
+    CanonicalToricBoundaryDeck Λ :=
+  (1, Multiplicative.ofAdd 1)
+
+/-- Canonical toric translations embed faithfully. -/
+public theorem canonicalToricTranslation_injective
+    {Λ : Type*} [AddCommGroup Λ] :
+    Function.Injective (canonicalToricTranslation (Λ := Λ)) := by
+  intro a b h
+  have h' := congrArg Prod.fst (congrArg Additive.toMul h)
+  change Multiplicative.ofAdd a = Multiplicative.ofAdd b at h'
+  exact Multiplicative.ofAdd.injective h'
+
+/-- The angular meridian commutes with every toric translation. -/
+public theorem canonicalToricMeridian_commutes
+    {Λ : Type*} [AddCommGroup Λ] (a : Λ) :
+    Commute (canonicalToricMeridian (Λ := Λ))
+      (Additive.toMul (canonicalToricTranslation a)) := by
+  simp [canonicalToricMeridian, canonicalToricTranslation, Commute]
+
+/-- Translations and the positive meridian generate the canonical unwrapped toric deck group. -/
+public theorem canonicalToric_generators_generate
+    {Λ : Type*} [AddCommGroup Λ] :
+    Subgroup.closure
+      (Set.range (fun a ↦ Additive.toMul (canonicalToricTranslation a)) ∪
+        {canonicalToricMeridian (Λ := Λ)}) = ⊤ := by
+  apply top_unique
+  intro d _
+  have hleft :
+      (d.1, 1) ∈
+        Subgroup.closure
+          (Set.range (fun a ↦ Additive.toMul (canonicalToricTranslation a)) ∪
+            {canonicalToricMeridian (Λ := Λ)}) :=
+    Subgroup.subset_closure (Or.inl ⟨d.1.toAdd, rfl⟩)
+  have hmeridian :
+      canonicalToricMeridian (Λ := Λ) ∈
+        Subgroup.closure
+          (Set.range (fun a ↦ Additive.toMul (canonicalToricTranslation a)) ∪
+            {canonicalToricMeridian (Λ := Λ)}) :=
+    Subgroup.subset_closure
+      (Or.inr (Set.mem_singleton (canonicalToricMeridian (Λ := Λ))))
+  have hright :
+      (1, d.2) ∈
+        Subgroup.closure
+          (Set.range (fun a ↦ Additive.toMul (canonicalToricTranslation a)) ∪
+            {canonicalToricMeridian (Λ := Λ)}) := by
+    rw [show (1, d.2) = (canonicalToricMeridian (Λ := Λ)) ^ d.2.toAdd by
+      change (1, d.2) =
+        ((1, Multiplicative.ofAdd 1) : CanonicalToricBoundaryDeck Λ) ^ d.2.toAdd
+      ext
+      · simp
+      · apply Multiplicative.toAdd.injective
+        simp]
+    exact Subgroup.zpow_mem _ hmeridian d.2.toAdd
+  rw [show d = (d.1, 1) * (1, d.2) by ext <;> simp]
+  exact Subgroup.mul_mem _ hleft hright
+
+/-- Canonical algebraic data for an unwrapped toric cusp collar. -/
+public def canonicalToricBoundaryDeckData
+    {Λ K : Type*} [AddCommGroup Λ] [AddCommGroup K] (vanishing : K →+ Λ) :
+    UnwrappedToricBoundaryDeckData Λ K (CanonicalToricBoundaryDeck Λ) where
+  translation := canonicalToricTranslation
+  translation_injective := canonicalToricTranslation_injective
+  meridian := canonicalToricMeridian
+  vanishing := vanishing
+  generators_generate := canonicalToric_generators_generate
 
 /-- A simply connected unwrapped cover square for a toric cusp filling. -/
 public structure UnwrappedToricFillingCover
