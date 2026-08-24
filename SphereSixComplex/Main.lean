@@ -56,6 +56,7 @@ public import SphereSixComplex.Geometry.PaperAnalyticFillingPieces
 public import SphereSixComplex.Geometry.PaperBiholomorphicStar
 public import SphereSixComplex.Geometry.PaperCentralFamilyTopology
 public import SphereSixComplex.Geometry.PaperCentralCompactCore
+public import SphereSixComplex.Geometry.PaperCentralEndCover
 public import SphereSixComplex.Geometry.PaperCollarSeparation
 public import SphereSixComplex.Geometry.PaperEllipticCentralEscape
 public import SphereSixComplex.Geometry.PaperFillingCompactCores

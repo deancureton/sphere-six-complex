@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Geometry.CuspFillingRadialCompactness
-public import SphereSixComplex.Geometry.PaperCentralCompactCore
+public import SphereSixComplex.Geometry.PaperCentralEndCover
 public import SphereSixComplex.Geometry.PaperStarHausdorff
 
 /-!
@@ -33,6 +33,13 @@ public noncomputable def compactCoverData_of_endControl
   hcentral.toOpenEmbeddingStarCompactCoverData
     (P.actualLocalCuspRadialCoreCompactness_of_twoChartRepresentatives hcusp)
 
+/-- Compact-cover data for the actual paper star. -/
+@[expose] public noncomputable def compactCoverData :
+    P.openEmbeddingStarData.CompactCoverData :=
+  P.compactCoverData_of_endControl
+    (actualA2TwoChartRadialSublevelRepresentatives P.starCuspWitness)
+    P.thresholdedCentralEndCoverData
+
 /-- Conditional compactness of the completed four-piece star. -/
 public theorem starGluedCompact_of_endControl
     (hcusp : ActualA2TwoChartRadialSublevelRepresentatives P.starCuspWitness)
@@ -40,6 +47,12 @@ public theorem starGluedCompact_of_endControl
     CompactSpace
       (GluedSpace P.openEmbeddingStarData.toFourPieceStarGluingData.glueData) :=
   (P.compactCoverData_of_endControl hcusp hcentral).compactSpace
+
+/-- The completed four-piece star is compact. -/
+public theorem starGluedCompact :
+    CompactSpace
+      (GluedSpace P.openEmbeddingStarData.toFourPieceStarGluingData.glueData) :=
+  P.compactCoverData.compactSpace
 
 /-- The two end-control obligations and the proved closed collar pairs provide the exact
 topological completion data consumed downstream by the paper assembly. -/
@@ -54,6 +67,18 @@ public noncomputable def gluingCompletionData_of_endControl
     change T2Space (P.starFillingType i)
     exact P.starFilling_t2 i
   exact (P.compactCoverData_of_endControl hcusp hcentral).toGluingCompletionData
+    P.closedCollarPairData.relComponent_isClosed
+
+/-- Exact Hausdorff and compact completion data for the actual paper star. -/
+@[expose] public noncomputable def gluingCompletionData :
+    GluingCompletionData P.openEmbeddingStarData.toFourPieceStarGluingData.glueData := by
+  let _ : T2Space P.openEmbeddingStarData.central := by
+    change T2Space P.CentralFamily
+    exact P.centralFamily_t2
+  let _ (i : Fin 3) : T2Space (P.openEmbeddingStarData.filling i) := by
+    change T2Space (P.starFillingType i)
+    exact P.starFilling_t2 i
+  exact P.compactCoverData.toGluingCompletionData
     P.closedCollarPairData.relComponent_isClosed
 
 end PaperAnalyticData

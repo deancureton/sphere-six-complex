@@ -593,6 +593,13 @@ public noncomputable def restrictActualLocalCuspQuotientWitness
   radius := r
   radius_pos := hr
   radius_le := hrW.trans W.radius_le
+  radius_lt_one := hrW.trans_lt W.radius_lt_one
+  phaseBound := W.phaseBound
+  phaseBound_nonneg := W.phaseBound_nonneg
+  phaseLogMatrix_entry_bound p i j :=
+    W.phaseLogMatrix_entry_bound (localCarrierInclusion M hrW p) i j
+  phaseLog_dominates p hp :=
+    W.phaseLog_dominates (localCarrierInclusion M hrW p) hp
   fixedPoint := by
     constructor
     · intro lambda p hp hfixed
