@@ -493,4 +493,412 @@ public theorem continuousAt_extendedInverseStraighteningExponent_of_mem_region
       inverseStraighteningExponent, Matrix.mulVec, dotProduct, Fin.sum_univ_two,
       Matrix.sub_apply, v]
 
+/-- On a standard chart, the inverse multiplier tends to one at the central fibre. -/
+public theorem continuousAt_extendedInverseStraighteningPhase_of_mem_region
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M)
+    (a : CuspPhaseEstimates.ToricRegionIndex)
+    (p₀ : LocalCarrier M W.localWitness.radius) (hp₀ : M.t p₀ = 0)
+    (hregion : p₀ ∈ (standardBoundedPolydiscRegions M W.localWitness.radius
+      W.localWitness.radius_pos W.localWitness.radius_lt_one).region a) :
+    ContinuousAt (extendedInverseStraighteningPhase W) p₀ := by
+  apply continuousAt_pi.mpr
+  intro i
+  rw [Units.isEmbedding_val₀.isInducing.continuousAt_iff]
+  exact Complex.continuous_exp.continuousAt.comp
+    ((continuous_apply i).continuousAt.comp
+      (continuousAt_extendedInverseStraighteningExponent_of_mem_region W a p₀ hp₀ hregion))
+
+private noncomputable def inversePuncturedLiftAt
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M)
+    (p₀ : LocalCarrier M W.localWitness.radius) (hp₀ : M.t p₀ ≠ 0)
+    (p : LocalCarrier M W.localWitness.radius) : PuncturedLocalCarrier W :=
+  if hp : M.t p ≠ 0 then ⟨p, hp⟩ else ⟨p₀, hp₀⟩
+
+private theorem continuousAt_inversePuncturedLiftAt
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M)
+    (p₀ : LocalCarrier M W.localWitness.radius) (hp₀ : M.t p₀ ≠ 0) :
+    ContinuousAt (inversePuncturedLiftAt W p₀ hp₀) p₀ := by
+  rw [show ContinuousAt (inversePuncturedLiftAt W p₀ hp₀) p₀ =
+      Filter.Tendsto (inversePuncturedLiftAt W p₀ hp₀) (𝓝 p₀)
+        (𝓝 (inversePuncturedLiftAt W p₀ hp₀ p₀)) from rfl,
+    tendsto_subtype_rng]
+  have ht : Continuous (fun p : LocalCarrier M W.localWitness.radius ↦ M.t p) :=
+    M.t_holomorphic.continuous.comp continuous_subtype_val
+  have heventually : ∀ᶠ p : LocalCarrier M W.localWitness.radius in 𝓝 p₀, M.t p ≠ 0 :=
+    (isOpen_compl_singleton.preimage ht).mem_nhds hp₀
+  apply continuousAt_id.congr
+  filter_upwards [heventually] with p hp
+  simp [inversePuncturedLiftAt, hp]
+
+/-- The extended inverse multiplier is continuous everywhere. -/
+public theorem continuous_extendedInverseStraighteningPhase
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) :
+    Continuous (extendedInverseStraighteningPhase W) := by
+  rw [continuous_iff_continuousAt]
+  intro p
+  by_cases hp : M.t p = 0
+  · let R := standardBoundedPolydiscRegions M W.localWitness.radius
+      W.localWitness.radius_pos W.localWitness.radius_lt_one
+    obtain ⟨a, ha⟩ := R.cover p
+    exact continuousAt_extendedInverseStraighteningPhase_of_mem_region W a p hp ha
+  · have hpunctured : ContinuousAt
+        (fun q ↦ inverseStraighteningPhase W (inversePuncturedLiftAt W p hp q)) p :=
+      (continuous_inverseStraighteningPhase W).continuousAt.comp
+        (continuousAt_inversePuncturedLiftAt W p hp)
+    have ht : Continuous (fun q : LocalCarrier M W.localWitness.radius ↦ M.t q) :=
+      M.t_holomorphic.continuous.comp continuous_subtype_val
+    have heventually : ∀ᶠ q : LocalCarrier M W.localWitness.radius in 𝓝 p, M.t q ≠ 0 :=
+      (isOpen_compl_singleton.preimage ht).mem_nhds hp
+    apply hpunctured.congr
+    filter_upwards [heventually] with q hq
+    have hlift : inversePuncturedLiftAt W p hp q = ⟨q, hq⟩ := by
+      apply Subtype.ext
+      simp [inversePuncturedLiftAt, hq]
+    rw [hlift, extendedInverseStraighteningPhase_of_t_ne_zero W q hq]
+
+/-- The inverse point formula on the entire local carrier. -/
+public noncomputable def pointUnstraightening
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M)
+    (p : LocalCarrier M W.localWitness.radius) : LocalCarrier M W.localWitness.radius :=
+  ⟨M.torusAction (phaseEmbedding (extendedInverseStraighteningPhase W p)) p, by
+    change M.t (M.torusAction (phaseEmbedding (extendedInverseStraighteningPhase W p)) p) ∈
+      Metric.ball 0 W.localWitness.radius
+    have ht : M.t (M.torusAction (phaseEmbedding (extendedInverseStraighteningPhase W p)) p) =
+        M.t p := by
+      rw [M.t_torusAction, phaseEmbedding_apply_two]
+      norm_num
+    exact ht.symm ▸ p.property⟩
+
+@[simp]
+public theorem pointUnstraightening_of_t_eq_zero
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M)
+    (p : LocalCarrier M W.localWitness.radius) (hp : M.t p = 0) :
+    pointUnstraightening W p = p := by
+  apply Subtype.ext
+  simp [pointUnstraightening, extendedInverseStraighteningPhase_of_t_eq_zero W p hp]
+
+/-- Under joint continuity of the standard torus action, the inverse point formula is continuous. -/
+public theorem continuous_pointUnstraightening
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (J : ContinuousTorusAction M)
+    (W : ActualPuncturedCuspCollarWitness N M) :
+    Continuous (pointUnstraightening W) := by
+  have hphase : Continuous
+      (fun p ↦ phaseEmbedding (extendedInverseStraighteningPhase W p)) := by
+    apply continuous_pi
+    intro i
+    fin_cases i
+    · change Continuous (fun p ↦ extendedInverseStraighteningPhase W p 0)
+      exact (continuous_apply (0 : Fin 2)).comp
+        (continuous_extendedInverseStraighteningPhase W)
+    · change Continuous (fun p ↦ extendedInverseStraighteningPhase W p 1)
+      exact (continuous_apply (1 : Fin 2)).comp
+        (continuous_extendedInverseStraighteningPhase W)
+    · exact continuous_const
+  change Continuous (fun p : LocalCarrier M W.localWitness.radius ↦
+    (⟨M.torusAction (phaseEmbedding (extendedInverseStraighteningPhase W p)) p, _⟩ :
+      LocalCarrier M W.localWitness.radius))
+  exact (J.variable_action hphase continuous_subtype_val).subtype_mk _
+
+/-- The reconstructed inverse point has the prescribed dense-torus coordinates. -/
+public theorem torusCoordinates_puncturedPointUnstraightening
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) (p : PuncturedLocalCarrier W) :
+    torusCoordinates M (puncturedPointUnstraightening W p).1 =
+      phaseEmbedding (inverseStraighteningPhase W p) * torusCoordinates M p.1 := by
+  apply torusCoordinates_unique M (puncturedPointUnstraightening W p).2
+  rfl
+
+/-- The logarithmic modulus of the inverse multiplier has the opposite matrix difference. -/
+public theorem log_norm_inverseStraighteningPhase
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M)
+    (p : PuncturedLocalCarrier W) (i : Fin 2) :
+    Real.log ‖((inverseStraighteningPhase W p i : ℂˣ) : ℂ)‖ =
+      ((phaseLogMatrix N (M.t p.1) - phaseLogMatrix N 0).mulVec
+        (inverseStraighteningRealParameter W p)) i := by
+  simp only [inverseStraighteningPhase,
+    CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.exponentialUnit,
+    Units.val_mk0, Complex.norm_exp, Real.log_exp, inverseStraighteningExponent,
+    phaseLogMatrix, Matrix.mulVec, dotProduct, Fin.sum_univ_two, Matrix.sub_apply]
+  fin_cases i <;>
+    simp [Complex.mul_re, Complex.mul_im] <;> ring
+
+/-- Applying the inverse point formula changes rescaled position from `y` to
+`B_t B₀,t⁻¹ y`. -/
+public theorem rescaledPosition_puncturedPointUnstraightening
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) (p : PuncturedLocalCarrier W) :
+    rescaledPosition M (puncturedPointUnstraightening W p).1 =
+      effectiveFanDisplacement N (M.t p.1)
+        (puncturedFrozenInverseDisplacement W p (rescaledPosition M p.1)) := by
+  ext i
+  have ht : M.t (puncturedPointUnstraightening W p).1 = M.t p.1 := by
+    change M.t (M.torusEmbedding
+      (phaseEmbedding (inverseStraighteningPhase W p) * torusCoordinates M p.1)) = M.t p.1
+    rw [M.t_torus, Pi.mul_apply, phaseEmbedding_apply_two, one_mul,
+      torusCoordinates_last M p.2]
+  have hcoord := congrFun (torusCoordinates_puncturedPointUnstraightening W p) i.castSucc
+  change Real.log ‖((torusCoordinates M (puncturedPointUnstraightening W p).1
+      i.castSucc : ℂˣ) : ℂ)‖ / Real.log ‖M.t (puncturedPointUnstraightening W p).1‖ = _
+  rw [hcoord, ht]
+  have hphasecast : phaseEmbedding (inverseStraighteningPhase W p) i.castSucc =
+      inverseStraighteningPhase W p i := by fin_cases i <;> rfl
+  simp only [Pi.mul_apply, Units.val_mul, hphasecast]
+  rw [norm_mul, Real.log_mul (norm_ne_zero_iff.mpr (Units.ne_zero _))
+      (norm_ne_zero_iff.mpr (Units.ne_zero _)),
+    log_norm_inverseStraighteningPhase W p i]
+  rw [effectiveFanDisplacement, inverseStraighteningRealParameter]
+  simp only [Pi.add_apply]
+  have hlog : Real.log ‖M.t p.1‖ ≠ 0 :=
+    Real.log_ne_zero_of_pos_of_ne_one (norm_pos_iff.mpr p.2)
+      (ne_of_lt ((mem_ball_zero_iff.mp p.1.property).trans W.localWitness.radius_lt_one))
+  have hright := congrFun
+    (frozenEffectiveFanDisplacement_puncturedFrozenInverseDisplacement W p
+      (rescaledPosition M p.1)) i
+  simp only [frozenEffectiveFanDisplacement, Pi.add_apply, rescaledPosition] at hright
+  field_simp at hright
+  field_simp
+  have hsub : ((phaseLogMatrix N (M.t p.1) - phaseLogMatrix N 0).mulVec
+      (realFanShearInverse
+        (puncturedFrozenInverseDisplacement W p (rescaledPosition M p.1)))) i =
+      (phaseLogMatrix N (M.t p.1)).mulVec
+          (realFanShearInverse
+            (puncturedFrozenInverseDisplacement W p (rescaledPosition M p.1))) i -
+        (phaseLogMatrix N 0).mulVec
+          (realFanShearInverse
+            (puncturedFrozenInverseDisplacement W p (rescaledPosition M p.1))) i := by
+    simp only [Matrix.mulVec, dotProduct, Fin.sum_univ_two, Matrix.sub_apply]
+    ring
+  rw [hsub]
+  linarith
+
+/-- The inverse formula recovers the same real parameter after the forward straightening. -/
+public theorem inverseStraighteningRealParameter_puncturedPointStraightening
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) (p : PuncturedLocalCarrier W) :
+    inverseStraighteningRealParameter W (puncturedPointStraightening W p) =
+      straighteningRealParameter W p := by
+  rw [inverseStraighteningRealParameter, straighteningRealParameter]
+  congr 1
+  let q := puncturedPointStraightening W p
+  have ht : M.t q.1 = M.t p.1 := by
+    change M.t (M.torusEmbedding
+      (phaseEmbedding (straighteningPhase W p) * torusCoordinates M p.1)) = M.t p.1
+    rw [M.t_torus, Pi.mul_apply, phaseEmbedding_apply_two, one_mul,
+      torusCoordinates_last M p.2]
+  have hinj : Function.Injective (frozenDisplacementMatrix N (M.t q.1)).mulVec :=
+    Matrix.mulVec_injective_iff_isUnit.mpr
+      ((frozenDisplacementMatrix N (M.t q.1)).isUnit_iff_isUnit_det.mpr
+        (isUnit_iff_ne_zero.mpr (frozenDisplacementMatrix_det_ne_zero W q)))
+  apply hinj
+  rw [frozenDisplacementMatrix_mulVec,
+    frozenEffectiveFanDisplacement_puncturedFrozenInverseDisplacement]
+  rw [ht]
+  exact rescaledPosition_puncturedPointStraightening W p
+
+/-- The forward formula recovers the same real parameter after the inverse straightening. -/
+public theorem straighteningRealParameter_puncturedPointUnstraightening
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) (p : PuncturedLocalCarrier W) :
+    straighteningRealParameter W (puncturedPointUnstraightening W p) =
+      inverseStraighteningRealParameter W p := by
+  rw [straighteningRealParameter, inverseStraighteningRealParameter]
+  congr 1
+  let q := puncturedPointUnstraightening W p
+  have ht : M.t q.1 = M.t p.1 := by
+    change M.t (M.torusEmbedding
+      (phaseEmbedding (inverseStraighteningPhase W p) * torusCoordinates M p.1)) = M.t p.1
+    rw [M.t_torus, Pi.mul_apply, phaseEmbedding_apply_two, one_mul,
+      torusCoordinates_last M p.2]
+  have hinj : Function.Injective (actualDisplacementMatrix N (M.t q.1)).mulVec :=
+    Matrix.mulVec_injective_iff_isUnit.mpr
+      ((actualDisplacementMatrix N (M.t q.1)).isUnit_iff_isUnit_det.mpr
+        (isUnit_iff_ne_zero.mpr (actualDisplacementMatrix_det_ne_zero W q)))
+  apply hinj
+  simp only [actualDisplacementMatrix_mulVec]
+  rw [effectiveFanDisplacement_puncturedActualInverseDisplacement]
+  rw [ht]
+  exact rescaledPosition_puncturedPointUnstraightening W p
+
+/-- Forward and inverse multipliers cancel after forward straightening. -/
+public theorem inverseStraighteningPhase_puncturedPointStraightening_mul
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) (p : PuncturedLocalCarrier W) :
+    inverseStraighteningPhase W (puncturedPointStraightening W p) *
+      straighteningPhase W p = 1 := by
+  funext i
+  apply Units.ext
+  simp only [Pi.mul_apply, inverseStraighteningPhase, straighteningPhase,
+    CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.exponentialUnit,
+    Units.val_mul, Units.val_mk0, ← Complex.exp_add]
+  rw [inverseStraighteningExponent, straighteningExponent,
+    inverseStraighteningRealParameter_puncturedPointStraightening W p]
+  have ht : M.t (puncturedPointStraightening W p).1 = M.t p.1 := by
+    change M.t (M.torusEmbedding
+      (phaseEmbedding (straighteningPhase W p) * torusCoordinates M p.1)) = M.t p.1
+    rw [M.t_torus, Pi.mul_apply, phaseEmbedding_apply_two, one_mul,
+      torusCoordinates_last M p.2]
+  rw [ht]
+  ring_nf
+  exact Complex.exp_zero
+
+/-- Forward and inverse multipliers cancel after inverse straightening. -/
+public theorem straighteningPhase_puncturedPointUnstraightening_mul
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) (p : PuncturedLocalCarrier W) :
+    straighteningPhase W (puncturedPointUnstraightening W p) *
+      inverseStraighteningPhase W p = 1 := by
+  funext i
+  apply Units.ext
+  simp only [Pi.mul_apply, inverseStraighteningPhase, straighteningPhase,
+    CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.exponentialUnit,
+    Units.val_mul, Units.val_mk0, ← Complex.exp_add]
+  rw [straighteningExponent, inverseStraighteningExponent,
+    straighteningRealParameter_puncturedPointUnstraightening W p]
+  have ht : M.t (puncturedPointUnstraightening W p).1 = M.t p.1 := by
+    change M.t (M.torusEmbedding
+      (phaseEmbedding (inverseStraighteningPhase W p) * torusCoordinates M p.1)) = M.t p.1
+    rw [M.t_torus, Pi.mul_apply, phaseEmbedding_apply_two, one_mul,
+      torusCoordinates_last M p.2]
+  rw [ht]
+  ring_nf
+  exact Complex.exp_zero
+
+/-- On the punctured carrier, inverse after forward straightening is the identity. -/
+public theorem puncturedPointUnstraightening_puncturedPointStraightening
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) (p : PuncturedLocalCarrier W) :
+    puncturedPointUnstraightening W (puncturedPointStraightening W p) = p := by
+  apply Subtype.ext
+  apply Subtype.ext
+  change M.torusEmbedding
+      (phaseEmbedding (inverseStraighteningPhase W (puncturedPointStraightening W p)) *
+        torusCoordinates M (puncturedPointStraightening W p).1) = p.1
+  rw [torusCoordinates_puncturedPointStraightening]
+  conv_rhs => rw [← torusEmbedding_torusCoordinates M p.2]
+  congr 1
+  rw [← mul_assoc, ← map_mul,
+    inverseStraighteningPhase_puncturedPointStraightening_mul W p, map_one, one_mul]
+
+/-- On the punctured carrier, forward after inverse straightening is the identity. -/
+public theorem puncturedPointStraightening_puncturedPointUnstraightening
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) (p : PuncturedLocalCarrier W) :
+    puncturedPointStraightening W (puncturedPointUnstraightening W p) = p := by
+  apply Subtype.ext
+  apply Subtype.ext
+  change M.torusEmbedding
+      (phaseEmbedding (straighteningPhase W (puncturedPointUnstraightening W p)) *
+        torusCoordinates M (puncturedPointUnstraightening W p).1) = p.1
+  rw [torusCoordinates_puncturedPointUnstraightening]
+  conv_rhs => rw [← torusEmbedding_torusCoordinates M p.2]
+  congr 1
+  rw [← mul_assoc, ← map_mul,
+    straighteningPhase_puncturedPointUnstraightening_mul W p, map_one, one_mul]
+
+/-- Off the central fibre, the whole-carrier inverse agrees with the punctured formula. -/
+public theorem pointUnstraightening_of_t_ne_zero
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M)
+    (p : LocalCarrier M W.localWitness.radius) (hp : M.t p ≠ 0) :
+    pointUnstraightening W p = (puncturedPointUnstraightening W ⟨p, hp⟩).1 := by
+  apply Subtype.ext
+  change M.torusAction (phaseEmbedding (extendedInverseStraighteningPhase W p)) p =
+    M.torusEmbedding
+      (phaseEmbedding (inverseStraighteningPhase W ⟨p, hp⟩) * torusCoordinates M p)
+  rw [extendedInverseStraighteningPhase_of_t_ne_zero W p hp]
+  calc
+    M.torusAction (phaseEmbedding (inverseStraighteningPhase W ⟨p, hp⟩)) p =
+        M.torusAction (phaseEmbedding (inverseStraighteningPhase W ⟨p, hp⟩))
+          (M.torusEmbedding (torusCoordinates M p)) := by
+            rw [torusEmbedding_torusCoordinates M hp]
+    _ = _ := M.torusAction_torus _ _
+
+/-- The whole-carrier forward and inverse maps are mutual inverses. -/
+public theorem pointUnstraightening_pointStraightening
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M)
+    (p : LocalCarrier M W.localWitness.radius) :
+    pointUnstraightening W (pointStraightening W p) = p := by
+  by_cases hp : M.t p = 0
+  · rw [pointStraightening_of_t_eq_zero W p hp,
+      pointUnstraightening_of_t_eq_zero W p hp]
+  · have hforward : M.t (pointStraightening W p) ≠ 0 := by
+      change M.t (M.torusAction (phaseEmbedding (extendedStraighteningPhase W p)) p) ≠ 0
+      rw [M.t_torusAction, phaseEmbedding_apply_two]
+      simpa using hp
+    rw [pointUnstraightening_of_t_ne_zero W _ hforward]
+    have hpunctured :
+        (⟨pointStraightening W p, hforward⟩ : PuncturedLocalCarrier W) =
+          puncturedPointStraightening W ⟨p, hp⟩ := by
+      apply Subtype.ext
+      exact pointStraightening_of_t_ne_zero W p hp
+    rw [hpunctured]
+    exact congrArg Subtype.val
+      (puncturedPointUnstraightening_puncturedPointStraightening W ⟨p, hp⟩)
+
+/-- The whole-carrier inverse and forward maps are mutual inverses. -/
+public theorem pointStraightening_pointUnstraightening
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M)
+    (p : LocalCarrier M W.localWitness.radius) :
+    pointStraightening W (pointUnstraightening W p) = p := by
+  by_cases hp : M.t p = 0
+  · rw [pointUnstraightening_of_t_eq_zero W p hp,
+      pointStraightening_of_t_eq_zero W p hp]
+  · have hinverse : M.t (pointUnstraightening W p) ≠ 0 := by
+      change M.t (M.torusAction (phaseEmbedding (extendedInverseStraighteningPhase W p)) p) ≠ 0
+      rw [M.t_torusAction, phaseEmbedding_apply_two]
+      simpa using hp
+    rw [pointStraightening_of_t_ne_zero W _ hinverse]
+    have hpunctured :
+        (⟨pointUnstraightening W p, hinverse⟩ : PuncturedLocalCarrier W) =
+          puncturedPointUnstraightening W ⟨p, hp⟩ := by
+      apply Subtype.ext
+      exact pointUnstraightening_of_t_ne_zero W p hp
+    rw [hpunctured]
+    exact congrArg Subtype.val
+      (puncturedPointStraightening_puncturedPointUnstraightening W ⟨p, hp⟩)
+
+/-- Lemma 7.5's point-level homeomorphism, conditional only on the separate standard joint
+continuity interface for the algebraic torus action. -/
+public noncomputable def pointStraighteningHomeomorph
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (J : ContinuousTorusAction M)
+    (W : ActualPuncturedCuspCollarWitness N M) :
+    LocalCarrier M W.localWitness.radius ≃ₜ LocalCarrier M W.localWitness.radius where
+  toFun := pointStraightening W
+  invFun := pointUnstraightening W
+  left_inv := pointUnstraightening_pointStraightening W
+  right_inv := pointStraightening_pointUnstraightening W
+  continuous_toFun := continuous_pointStraightening J W
+  continuous_invFun := continuous_pointUnstraightening J W
+
 end SphereSixComplex.Geometry.CuspStraighteningHomeomorph
