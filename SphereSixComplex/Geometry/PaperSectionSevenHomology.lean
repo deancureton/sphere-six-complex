@@ -1,6 +1,7 @@
 module
 
 public import SphereSixComplex.Geometry.PaperGluingInstantiation
+public import SphereSixComplex.Topology.PaperSectionSevenHomologyAssembly
 public import SphereSixComplex.Topology.SectionSevenMayerVietorisEuler
 public import SphereSixComplex.Topology.SectionSevenLocalEulerModels
 
@@ -85,6 +86,16 @@ geometric local models assemble directly into the paper's complete gluing packag
     (M : P.SectionSevenLocalEulerModels) : SphereSixComplex.PaperGluingData :=
   P.toPaperGluingData vanKampen
     (P.star_hasIntegralHomologyOfSixSphere_of_localModels H M)
+
+/-- Assemble the paper gluing package while obtaining the final degree-zero Mayer--Vietoris data
+from the actual analytic star rather than from an input. -/
+public noncomputable def toPaperGluingData_of_positiveDegreeAndLocalModels
+    (vanKampen : Topology.HasVanKampenData
+      (GluedSpace P.openEmbeddingStarData.toFourPieceStarGluingData.glueData) 0 1 (-1))
+    (H : P.SectionSevenPositiveDegreeHomologyAssembly)
+    (M : P.SectionSevenLocalEulerModels) : SphereSixComplex.PaperGluingData :=
+  P.toPaperGluingData_of_sectionSevenLocalModels vanKampen
+    H.toSectionSevenMayerVietorisHomologyAssembly M
 
 end PaperAnalyticData
 
