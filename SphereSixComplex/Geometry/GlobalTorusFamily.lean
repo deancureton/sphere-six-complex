@@ -268,7 +268,7 @@ public theorem transportIsComplexLinear_gTwo : TransportIsComplexLinear g₂ := 
   exact ⟨rightTwoLinearEquiv x.1 x.tau_ne_zero, periodTransport_gTwo x⟩
 
 /-- Equivariance of a map into the period domain under one triangle-group element. -/
-public def ParameterEquivariant {U : TriangleUniformization} (F : PeriodFunctions U)
+@[expose] public def ParameterEquivariant {U : TriangleUniformization} (F : PeriodFunctions U)
     (g : Delta) : Prop :=
   ∀ z, parameterMap F (U.sourceAction g • z) = rhoParameters g (parameterMap F z)
 
