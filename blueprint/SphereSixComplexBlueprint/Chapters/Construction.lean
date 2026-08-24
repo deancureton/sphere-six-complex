@@ -21,6 +21,7 @@ import SphereSixComplex.Periods.Domain
 import SphereSixComplex.Periods.CanonicalObstruction
 import SphereSixComplex.Periods.Functions
 import SphereSixComplex.Periods.Invariant
+import SphereSixComplex.Periods.LocalOrbifoldCompatibility
 import SphereSixComplex.Periods.Matrix
 import SphereSixComplex.Periods.Nondegeneracy
 import SphereSixComplex.Periods.Transformations
@@ -34,6 +35,7 @@ import SphereSixComplex.Topology.HomologySphere
 import SphereSixComplex.Topology.HurewiczWhitehead
 import SphereSixComplex.Topology.MayerVietoris
 import SphereSixComplex.Topology.SectionSevenChainModel
+import SphereSixComplex.Topology.SectionSevenLerayChainModel
 import SphereSixComplex.Topology.SmoothRecognition
 import SphereSixComplex.Topology.SmoothRecognitionFoundations
 import SphereSixComplex.Topology.SphereSimplyConnected
@@ -41,6 +43,8 @@ import SphereSixComplex.Topology.StandardSphere
 import SphereSixComplex.Topology.TwistObstruction
 import SphereSixComplex.TriangleGroup.ModularParameter
 import SphereSixComplex.TriangleGroup.FuchsianAction
+import SphereSixComplex.TriangleGroup.FuchsianSmoothAction
+import SphereSixComplex.TriangleGroup.FreeProductTorsion
 import SphereSixComplex.TriangleGroup.Representation
 
 open Informal
@@ -150,10 +154,17 @@ The modular image of the order-four generator acts with order two, while the aff
 genuine order four; identifying the two forces the impossible equation $`\tau=0`.
 :::
 
-:::theorem "fuchsian-source-action" (parent := "period-functions") (lean := "SphereSixComplex.TriangleGroup.orderOf_fuchsianOnePerm, SphereSixComplex.TriangleGroup.orderOf_fuchsianTwoPerm, SphereSixComplex.TriangleGroup.fuchsianOneFixedPoint_fixed, SphereSixComplex.TriangleGroup.fuchsianTwoFixedPoint_fixed, SphereSixComplex.TriangleGroup.fuchsianSourceAction_g₀_apply, SphereSixComplex.TriangleGroup.fuchsianCuspRegion_invariant")
+:::theorem "fuchsian-source-action" (parent := "period-functions") (lean := "SphereSixComplex.TriangleGroup.orderOf_fuchsianOnePerm, SphereSixComplex.TriangleGroup.orderOf_fuchsianTwoPerm, SphereSixComplex.TriangleGroup.fuchsianOneFixedPoint_fixed, SphereSixComplex.TriangleGroup.fuchsianTwoFixedPoint_fixed, SphereSixComplex.TriangleGroup.fuchsianSourceAction_g₀_apply, SphereSixComplex.TriangleGroup.fuchsianCuspRegion_invariant, SphereSixComplex.TriangleGroup.fuchsianSourceAction_contMDiff, SphereSixComplex.TriangleGroup.explicitFuchsianTriangleSource")
 Explicit real special-linear matrices give the distinct source action of signature
 $`(3,4,\infty)`: its elliptic generators have exact projective orders three and four, while the
-cusp generator is a horizontal translation preserving the chosen horodisc.
+cusp generator is a horizontal translation preserving the chosen horodisc. Every group element
+acts complex-smoothly by free-product induction.
+:::
+
+:::theorem "local-orbifold-compatibility" (parent := "period-functions") (lean := "SphereSixComplex.Periods.orderOf_targetOnePerm, SphereSixComplex.Periods.orderOf_targetTwoPerm, SphereSixComplex.Periods.explicitLocalOrbifoldActionData, SphereSixComplex.Periods.IsLocallyOrbifoldCompatible.invariant_under_two_square, SphereSixComplex.Periods.IsLocallyOrbifoldCompatible.cusp_value_translation")
+The order-three source and target actions agree, while the order-four source stabilizer maps to an
+order-two target stabilizer. The explicit source and target cusp widths give the local branching
+and translation conditions that the analytic modular parameter must satisfy.
 :::
 
 :::theorem "schur-compactness" (parent := "period-functions") (lean := "SphereSixComplex.Periods.PrePeriodFunctions.schurQuantity_invariant, SphereSixComplex.Periods.PrePeriodFunctions.schurQuantity_cusp_bounded_above, SphereSixComplex.Periods.PrePeriodFunctions.schurQuantity_bounded_above_of_compactCore, SphereSixComplex.Periods.PrePeriodFunctions.exists_shiftedPeriodFunctions")
@@ -200,6 +211,13 @@ quotients over all three triangle-group generators.
 Integral monodromy extends to complex-linear fibre transport for every triangle-group element.
 The resulting deck action respects the varying period lattice and defines the punctured global
 torus-family quotient before the three local fillings are attached.
+:::
+
+:::theorem "elliptic-orbit-freeness" (parent := "torus-family") (lean := "SphereSixComplex.TriangleGroup.FreeProductTorsion.ReducedWord.cyclicallyReduced_not_isOfFinOrder, SphereSixComplex.TriangleGroup.FreeProductTorsion.fuchsianSourceAction_inl_fixed_iff, SphereSixComplex.TriangleGroup.FreeProductTorsion.fuchsianSourceAction_inr_fixed_iff, SphereSixComplex.TriangleGroup.FreeProductTorsion.regular_not_fixed_by_conjugate_inl, SphereSixComplex.TriangleGroup.FreeProductTorsion.regular_not_fixed_by_conjugate_inr")
+Every nonidentity element of either cyclic factor fixes exactly its marked elliptic point, and its
+conjugates fix exactly the corresponding elliptic orbit. Removing those orbits eliminates all such
+stabilizers. Completing freeness requires transporting indexed reduced-word torsion theory to the
+binary free product used by the triangle group and proving discreteness of the explicit image.
 :::
 
 :::theorem "analytic-torus-family" (parent := "torus-family") (lean := "SphereSixComplex.Geometry.AnalyticTorusFamily.parameterMap_contMDiff, SphereSixComplex.Geometry.AnalyticTorusFamily.periodSection_contMDiff, SphereSixComplex.Geometry.AnalyticTorusFamily.parameterMap_compactUniformLowerBound, SphereSixComplex.Geometry.AnalyticTorusFamily.totalSpace_isManifold_and_projection_isLocalDiffeomorph")
@@ -325,6 +343,13 @@ explicit realization contract records the remaining passage from these matrices 
 The first two paper relations and final attachment form an explicit unimodular boundary matrix.
 The resulting finite chain complex has zero homology in degrees one and two; a degreewise
 cellular-to-singular comparison transfers this calculation to singular homology.
+:::
+
+:::theorem "section-seven-leray-chain-model" (parent := "integral-homology") (lean := "SphereSixComplex.sectionSevenLerayBoundary_comp, SphereSixComplex.sectionSevenLerayChainModel_homology_one_isZero, SphereSixComplex.sectionSevenLerayChainModel_homology_two_isZero, SphereSixComplex.sectionSevenLerayChainModel_homology_three_isZero, SphereSixComplex.sectionSevenLerayChainModel_middle_homology_isZero, SphereSixComplex.sectionSevenLerayChainModel_homology_six_equiv")
+The three differentials computed in Section 7 define a finite integral chain complex with vanishing
+homology in degrees one through three and top homology $`\mathbb Z`. The paper's fourth coefficient
+is kept explicit; if it is a unit, degrees four and five vanish as well. The missing unit proof is
+the precise Poincaré-duality or Leray-convergence step.
 :::
 
 :::theorem "smooth-recognition" (parent := "construction_spine") (lean := "SphereSixComplex.completedPaperThreefold_smoothRecognition, SphereSixComplex.exists_complex_threefold_diffeomorphic_sixSphere") (priority := "high")

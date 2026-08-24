@@ -60,6 +60,8 @@ public theorem normalizedJ_modular_invariant (g : ModularMatrix) (z : UpperHalfP
 
 public structure TriangleUniformization where
   sourceAction : Delta →* Equiv.Perm UpperHalfPlane
+  sourceAction_contMDiff : ∀ g (n : WithTop ℕ∞), ContMDiff (modelWithCornersSelf ℂ ℂ)
+    (modelWithCornersSelf ℂ ℂ) n (fun z : UpperHalfPlane ↦ sourceAction g • z)
   coordinate : UpperHalfPlane → ℂ
   coordinate_holomorphic : MDiff coordinate
   coordinate_invariant : ∀ g z, coordinate (sourceAction g • z) = coordinate z
@@ -77,6 +79,9 @@ upper half-plane has a genuine order-four action. `CanonicalObstruction.lean` pr
 instance admits no compatible `mu` transformation laws. -/
 public noncomputable def canonicalTriangleUniformization : TriangleUniformization where
   sourceAction := (MulAction.toPermHom (GL (Fin 2) ℝ) UpperHalfPlane).comp rhoTauReal
+  sourceAction_contMDiff g n := by
+    apply UpperHalfPlane.contMDiff_smul
+    simp [rhoTauReal, modularToReal]
   coordinate z := normalizedJ z / 1728
   coordinate_holomorphic :=
     normalizedJ_mdifferentiable.div mdifferentiable_const (by norm_num)

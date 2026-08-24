@@ -21,6 +21,7 @@ public import SphereSixComplex.Periods.Domain
 public import SphereSixComplex.Periods.CanonicalObstruction
 public import SphereSixComplex.Periods.Functions
 public import SphereSixComplex.Periods.Invariant
+public import SphereSixComplex.Periods.LocalOrbifoldCompatibility
 public import SphereSixComplex.Periods.Matrix
 public import SphereSixComplex.Periods.Nondegeneracy
 public import SphereSixComplex.Periods.Transformations
@@ -34,6 +35,7 @@ public import SphereSixComplex.Topology.HomologySphere
 public import SphereSixComplex.Topology.HurewiczWhitehead
 public import SphereSixComplex.Topology.MayerVietoris
 public import SphereSixComplex.Topology.SectionSevenChainModel
+public import SphereSixComplex.Topology.SectionSevenLerayChainModel
 public import SphereSixComplex.Topology.SmoothRecognition
 public import SphereSixComplex.Topology.SmoothRecognitionFoundations
 public import SphereSixComplex.Topology.SphereSimplyConnected
@@ -41,6 +43,8 @@ public import SphereSixComplex.Topology.StandardSphere
 public import SphereSixComplex.Topology.TwistObstruction
 public import SphereSixComplex.TriangleGroup.ModularParameter
 public import SphereSixComplex.TriangleGroup.FuchsianAction
+public import SphereSixComplex.TriangleGroup.FuchsianSmoothAction
+public import SphereSixComplex.TriangleGroup.FreeProductTorsion
 public import SphereSixComplex.TriangleGroup.Representation
 
 /-!
