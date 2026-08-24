@@ -44,6 +44,7 @@ public import SphereSixComplex.Geometry.GlobalDeckSmoothness
 public import SphereSixComplex.Geometry.GlobalDeckQuotient
 public import SphereSixComplex.Geometry.OpenEmbeddingStarGluing
 public import SphereSixComplex.Geometry.PaperAnalyticData
+public import SphereSixComplex.Geometry.PaperCentralFamilyTopology
 public import SphereSixComplex.Geometry.PaperAssembly
 public import SphereSixComplex.Geometry.ProperlyDiscontinuousSlice
 public import SphereSixComplex.Final
