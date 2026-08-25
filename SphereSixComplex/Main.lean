@@ -235,6 +235,7 @@ public import SphereSixComplex.Topology.StandardSphereHomologyZero
 public import SphereSixComplex.Topology.StandardSpherePositiveHomology
 public import SphereSixComplex.Topology.StandardSphereHomologyAssembly
 public import SphereSixComplex.Topology.StandardSpherePunctures
+public import SphereSixComplex.Topology.StandardSphereMayerVietoris
 public import SphereSixComplex.Topology.DiskBoundaryQuotient
 public import SphereSixComplex.Topology.RelativeSingularHomology
 public import SphereSixComplex.Topology.SingularExcision
