@@ -454,9 +454,6 @@ public theorem diskSevenCoverLocalRelativeDifference_mono :
     dsimp [diskSevenCoverRangeIntersectionToRangeChains, SSet.chainComplexMap,
       SSet.chainComplexFunctor]
     apply +allowSynthFailures Functor.map_mono
-    apply +allowSynthFailures Functor.map_mono
-    dsimp [SSet, SimplicialObject.whiskering, SimplicialObject]
-    infer_instance
   let _ : Mono (diskSevenCoverLocalRelativeDifference ≫
       (biprod.fst : DiskSevenCoverLocalRelativeMiddleChainComplex ⟶
         DiskSevenCoverRangeChainComplex true)) := by
