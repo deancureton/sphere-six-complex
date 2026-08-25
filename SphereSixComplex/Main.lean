@@ -238,6 +238,7 @@ public import SphereSixComplex.Topology.StandardSpherePunctures
 public import SphereSixComplex.Topology.DiskBoundaryQuotient
 public import SphereSixComplex.Topology.RelativeSingularHomology
 public import SphereSixComplex.Topology.SingularExcision
+public import SphereSixComplex.Topology.SingularExcisionOpenCover
 public import SphereSixComplex.Topology.SingularBarycentricAllDegrees
 public import SphereSixComplex.Topology.SingularBarycentricOuterFaces
 public import SphereSixComplex.Topology.SingularBarycentricHomotopy
