@@ -29,6 +29,8 @@ jobs:
           lake build
       - name: Check import coverage
         run: ./scripts/check-imports.py
+      - name: Check for stray proof placeholders
+        run: ./scripts/check-sorries.py
       - name: Check the axiom trust boundary
         run: CHECK_AXIOMS_SKIP_BUILD=1 ./scripts/check-axioms.sh
       - name: Build Blueprint site

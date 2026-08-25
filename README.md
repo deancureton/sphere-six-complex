@@ -67,6 +67,11 @@ justification. Set `CHECK_AXIOMS_SKIP_BUILD=1` to reuse an existing build.
 `SphereSixComplex/` and marks whether it is reachable from `Final` (so the headline theorem may
 come to depend on it), only from `Main`, or from neither.
 
+`./scripts/check-sorries.py` checks that no `sorry`, `admit`, or `native_decide` appears outside
+the two declared boundaries: the paper-specific gluing `sorry` in `Final.lean` and the trusted
+Comparator statements in `Challenge.lean`. It counts them, so a second placeholder in an already
+listed file also fails.
+
 `./scripts/check-imports.py` checks that every module is reachable from `SphereSixComplex.Main`.
 A module outside the build cone is elaborated by nothing and its axioms are invisible to the
 audit, so this keeps the two scripts above honest.
