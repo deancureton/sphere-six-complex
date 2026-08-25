@@ -114,9 +114,54 @@ public structure QuotientCoverMapData
   commutes : ∀ z, baseMap (p z) = q (lift z)
   equivariant : ∀ g z, lift (g • z) = deckMap g • lift z
 
+/-- Pointwise equal continuous maps induce the same map on path homotopy classes, up to the
+endpoint cast. -/
+public theorem quotient_map_congr {A D : Type*} [TopologicalSpace A] [TopologicalSpace D]
+    {a b : A} (Γ : Path.Homotopic.Quotient a b) (u v : C(A, D)) (h : ∀ z, u z = v z) :
+    Γ.map u = (Γ.map v).cast (h a) (h b) := by
+  induction Γ using Quotient.ind with
+  | _ Γ =>
+    apply Path.Homotopic.Quotient.eq.mpr
+    refine ⟨?_⟩
+    exact (Path.Homotopy.refl _).cast (by ext t; exact (h (Γ t)).symm) rfl
+
+/-- Monodromy is natural along a map of covering spaces: transporting a lifted path by an
+equivariant map gives the lift of the transported path. -/
+public theorem monodromy_naturality
+    {E E' X X' : Type*}
+    [TopologicalSpace E] [TopologicalSpace E'] [TopologicalSpace X] [TopologicalSpace X']
+    {p : C(E, X)} {q : C(E', X')}
+    (hp : IsCoveringMap p) (hq : IsCoveringMap q)
+    (lift : C(E, E')) (baseMap : C(X, X'))
+    (commutes : ∀ z, baseMap (p z) = q (lift z))
+    (e : E) (γ : FundamentalGroup X (p e)) :
+    (hq.monodromy (FundamentalGroup.mapOfEq baseMap (commutes e) γ) ⟨lift e, rfl⟩ : E') =
+      lift (hp.monodromy γ ⟨e, rfl⟩ : E) := by
+  have hfib : q (lift ((hp.monodromy γ ⟨e, rfl⟩ : E))) = q (lift e) := by
+    rw [← commutes, ← commutes]
+    exact congrArg baseMap (hp.monodromy γ ⟨e, rfl⟩).2
+  set ey : q ⁻¹' {q (lift e)} := ⟨lift ((hp.monodromy γ ⟨e, rfl⟩ : E)), hfib⟩ with hey
+  have hmain :
+      hq.monodromy (FundamentalGroup.mapOfEq baseMap (commutes e) γ) ⟨lift e, rfl⟩ = ey := by
+    refine hq.monodromy_eq_of_map_eq ((hp.liftPathQuotient γ ⟨e, rfl⟩).map lift) ?_
+    rw [← Path.Homotopic.Quotient.map_comp]
+    rw [quotient_map_congr _ ((⟨q, hq.continuous⟩ : C(E', X')).comp lift)
+      ((⟨baseMap, baseMap.continuous⟩ : C(X, X')).comp ⟨p, hp.continuous⟩)
+      (fun z => (commutes z).symm)]
+    rw [Path.Homotopic.Quotient.map_comp, hp.map_liftPathQuotient]
+    simp only [FundamentalGroup.mapOfEq_apply]
+    induction γ using Quotient.ind with
+    | _ g => rfl
+  rw [hmain]
+
 /-- Equivariant maps of simply connected regular covers induce the corresponding deck-group
-homomorphism under the standard fundamental-group equivalences. -/
-public axiom establishedQuotientCoverFundamentalGroupNaturality
+homomorphism under the standard fundamental-group equivalences.
+
+Both sides are pinned down by their action on the chosen basepoint lift: Mathlib's
+`fundamentalGroupToMulOpposite_apply_eq_Iff` says the equivalence sends `γ` to the unique group
+element moving the lift along the monodromy of `γ`, and `monodromy_naturality` says the equivariant
+map carries one monodromy to the other. -/
+public theorem establishedQuotientCoverFundamentalGroupNaturality
     {E E' X X' G H : Type*}
     [TopologicalSpace E] [TopologicalSpace E'] [TopologicalSpace X] [TopologicalSpace X']
     [Group G] [Group H] [MulAction G E] [MulAction H E']
@@ -127,7 +172,16 @@ public axiom establishedQuotientCoverFundamentalGroupNaturality
     (γ : FundamentalGroup X (p e)) :
     (MonoidHom.op D.deckMap) (hp.fundamentalGroupEquiv ⟨e, rfl⟩ γ) =
       hq.fundamentalGroupEquiv ⟨D.lift e, rfl⟩
-        (FundamentalGroup.mapOfEq D.baseMap (D.commutes e) γ)
+        (FundamentalGroup.mapOfEq D.baseMap (D.commutes e) γ) := by
+  symm
+  refine (hq.fundamentalGroupToMulOpposite_apply_eq_Iff).mpr ?_
+  show D.deckMap ((hp.fundamentalGroupEquiv ⟨e, rfl⟩ γ).unop) • D.lift e = _
+  rw [← D.equivariant]
+  rw [show (hp.fundamentalGroupEquiv ⟨e, rfl⟩ γ).unop • e
+      = (hp.isCoveringMap.monodromy γ ⟨e, rfl⟩ : E) from
+    hp.unop_fundamentalGroupToMulOpposite_smul]
+  exact (monodromy_naturality hp.isCoveringMap hq.isCoveringMap D.lift D.baseMap D.commutes
+    e γ).symm
 
 /-! ## Algebraic output of an affine torus core -/
 
