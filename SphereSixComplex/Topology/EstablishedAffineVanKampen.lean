@@ -2,6 +2,7 @@ module
 
 public import SphereSixComplex.Topology.WangHomologyPresentation
 public import Mathlib.Topology.Homotopy.Lifting
+public import Mathlib.Algebra.Group.Subgroup.MulOppositeLemmas
 
 /-!
 # Established fundamental-group inputs for affine torus gluings
@@ -319,14 +320,246 @@ public structure ToricFillingPiOneData
       Subgroup.normalClosure
         (Set.range (fun k ↦ Additive.toMul (translation (D.vanishing k))) ∪ {meridian})
 
+section GroupTransport
+
+open Subgroup MulOpposite
+
+variable {A B₀ : Type*} [Group A] [Group B₀]
+
+/-- The kernel of the opposite of a homomorphism is the opposite of its kernel. -/
+public theorem ker_monoidHom_op (f : A →* B₀) : (MonoidHom.op f).ker = f.ker.op := by
+  ext x
+  simp [MonoidHom.mem_ker, Subgroup.mem_op]
+
+/-- Normal closure commutes with passage to the opposite group. -/
+public theorem op_normalClosure (S : Set A) :
+    (normalClosure S).op = normalClosure (MulOpposite.op '' S) := by
+  refine le_antisymm ?_ ?_
+  · intro x hx
+    have hx' : x.unop ∈ normalClosure S := hx
+    have hle : normalClosure S ≤ (normalClosure (MulOpposite.op '' S)).unop := by
+      refine normalClosure_le_normal ?_
+      intro s hs
+      exact subset_normalClosure ⟨s, hs, rfl⟩
+    exact hle hx'
+  · refine normalClosure_le_normal ?_
+    rintro _ ⟨s, hs, rfl⟩
+    exact (Subgroup.mem_op).2 (subset_normalClosure hs)
+
+
+end GroupTransport
+
+/-! ## Transport of the induced map along the deck identifications -/
+
+section CoverSquare
+
+open Subgroup MulOpposite CategoryTheory
+
+variable {E E' X X' G H : Type*}
+  [TopologicalSpace E] [TopologicalSpace E'] [TopologicalSpace X] [TopologicalSpace X']
+  [Group G] [Group H] [MulAction G E] [MulAction H E']
+  [SimplyConnectedSpace E] [SimplyConnectedSpace E']
+  {p : C(E, X)} {q : C(E', X')}
+  (hp : IsQuotientCoveringMap p G) (hq : IsQuotientCoveringMap q H)
+  (cm : QuotientCoverMapData (G := G) (H := H) p q) (base : E)
+
+/-- The `π₁` element attached to a deck transformation of the source cover. -/
+public noncomputable def ofDeck (g : G) : FundamentalGroup X (p base) :=
+  (hp.fundamentalGroupEquiv ⟨base, rfl⟩).symm (MulOpposite.op g)
+
+@[simp]
+public theorem fundamentalGroupEquiv_ofDeck (g : G) :
+    hp.fundamentalGroupEquiv ⟨base, rfl⟩ (ofDeck hp base g) = MulOpposite.op g :=
+  (hp.fundamentalGroupEquiv ⟨base, rfl⟩).apply_symm_apply _
+
+public theorem ofDeck_mul_comm {g h : G} (hgh : g * h = h * g) :
+    ofDeck hp base g * ofDeck hp base h = ofDeck hp base h * ofDeck hp base g := by
+  apply (hp.fundamentalGroupEquiv ⟨base, rfl⟩).injective
+  simp only [map_mul, fundamentalGroupEquiv_ofDeck, ← MulOpposite.op_mul, hgh]
+
+/-- The basepoint-corrected induced map differs from the plain one by an isomorphism. -/
+public noncomputable def basepointIso :
+    FundamentalGroup X' (cm.baseMap (p base)) ≃* FundamentalGroup X' (q (cm.lift base)) :=
+  (eqToIso (congr_arg FundamentalGroupoid.mk (cm.commutes base))).conj
+
+public theorem mapOfEq_eq (γ : FundamentalGroup X (p base)) :
+    FundamentalGroup.mapOfEq cm.baseMap (cm.commutes base) γ =
+      basepointIso cm base (FundamentalGroup.map cm.baseMap (p base) γ) :=
+  rfl
+
+include hp hq in
+/-- A surjective deck homomorphism induces a surjection on fundamental groups. -/
+public theorem map_surjective_of_deckMap_surjective (hsurj : Function.Surjective cm.deckMap) :
+    Function.Surjective (FundamentalGroup.map cm.baseMap (p base)) := by
+  have hsurj' : Function.Surjective
+      (FundamentalGroup.mapOfEq cm.baseMap (cm.commutes base)) := by
+    intro y
+    obtain ⟨g, hg⟩ := hsurj (hq.fundamentalGroupEquiv ⟨cm.lift base, rfl⟩ y).unop
+    refine ⟨ofDeck hp base g, ?_⟩
+    apply (hq.fundamentalGroupEquiv ⟨cm.lift base, rfl⟩).injective
+    rw [← establishedQuotientCoverFundamentalGroupNaturality hp hq cm base]
+    simp only [fundamentalGroupEquiv_ofDeck]
+    exact MulOpposite.unop_injective (by simpa using hg)
+  intro y
+  obtain ⟨x, hx⟩ := hsurj' (basepointIso cm base y)
+  refine ⟨x, ?_⟩
+  apply (basepointIso cm base).injective
+  rw [← mapOfEq_eq, hx]
+
+include hq in
+/-- The kernel of the induced map is the deck kernel, read through the identification. -/
+public theorem ker_map_of_deckMap_ker (S : Set G) (hker : cm.deckMap.ker = normalClosure S) :
+    (FundamentalGroup.map cm.baseMap (p base)).ker = normalClosure (ofDeck hp base '' S) := by
+  have hkerEq : (FundamentalGroup.map cm.baseMap (p base)).ker =
+      (FundamentalGroup.mapOfEq cm.baseMap (cm.commutes base)).ker := by
+    ext x
+    simp only [MonoidHom.mem_ker]
+    constructor
+    · intro h
+      rw [mapOfEq_eq, h, map_one]
+    · intro h
+      refine (basepointIso cm base).injective ?_
+      rw [map_one, ← mapOfEq_eq]
+      exact h
+  rw [hkerEq]
+  have hcomap : (FundamentalGroup.mapOfEq cm.baseMap (cm.commutes base)).ker =
+      Subgroup.comap ((hp.fundamentalGroupEquiv ⟨base, rfl⟩ : _ →* Gᵐᵒᵖ))
+        ((MonoidHom.op cm.deckMap).ker) := by
+    ext x
+    simp only [MonoidHom.mem_ker, Subgroup.mem_comap]
+    constructor
+    · intro h
+      show (MonoidHom.op cm.deckMap) (hp.fundamentalGroupEquiv ⟨base, rfl⟩ x) = 1
+      rw [establishedQuotientCoverFundamentalGroupNaturality hp hq cm base, h, map_one]
+    · intro h
+      have h' : (MonoidHom.op cm.deckMap) (hp.fundamentalGroupEquiv ⟨base, rfl⟩ x) = 1 := h
+      rw [establishedQuotientCoverFundamentalGroupNaturality hp hq cm base] at h'
+      refine (hq.fundamentalGroupEquiv ⟨cm.lift base, rfl⟩).injective ?_
+      rw [map_one]
+      exact h'
+  rw [hcomap, ker_monoidHom_op, hker, op_normalClosure,
+    ← Subgroup.comap_normalClosure _ (hp.fundamentalGroupEquiv ⟨base, rfl⟩)]
+  congr 1
+  ext x
+  simp only [Set.mem_preimage, Set.mem_image]
+  constructor
+  · rintro ⟨s, hs, hx⟩
+    refine ⟨s, hs, ?_⟩
+    refine (hp.fundamentalGroupEquiv ⟨base, rfl⟩).injective ?_
+    rw [fundamentalGroupEquiv_ofDeck, hx]
+  · rintro ⟨s, hs, rfl⟩
+    exact ⟨s, hs, by rw [fundamentalGroupEquiv_ofDeck]⟩
+
+public theorem ofDeck_mul (g h : G) :
+    ofDeck hp base (g * h) = ofDeck hp base h * ofDeck hp base g := by
+  apply (hp.fundamentalGroupEquiv ⟨base, rfl⟩).injective
+  rw [map_mul, fundamentalGroupEquiv_ofDeck, fundamentalGroupEquiv_ofDeck,
+    fundamentalGroupEquiv_ofDeck, ← MulOpposite.op_mul]
+
+@[simp]
+public theorem ofDeck_one : ofDeck hp base (1 : G) = 1 := by
+  apply (hp.fundamentalGroupEquiv ⟨base, rfl⟩).injective
+  rw [fundamentalGroupEquiv_ofDeck, map_one, MulOpposite.op_one]
+
+public theorem ofDeck_inv (g : G) : ofDeck hp base g⁻¹ = (ofDeck hp base g)⁻¹ := by
+  apply (hp.fundamentalGroupEquiv ⟨base, rfl⟩).injective
+  rw [fundamentalGroupEquiv_ofDeck, map_inv, fundamentalGroupEquiv_ofDeck, ← MulOpposite.op_inv]
+
+public theorem ofDeck_pow (g : G) (n : ℕ) : ofDeck hp base (g ^ n) = (ofDeck hp base g) ^ n := by
+  apply (hp.fundamentalGroupEquiv ⟨base, rfl⟩).injective
+  rw [fundamentalGroupEquiv_ofDeck, map_pow, fundamentalGroupEquiv_ofDeck, ← MulOpposite.op_pow]
+
+end CoverSquare
+
+open Subgroup in
+/-- Normal closures of `a * b` and `b * a` agree. -/
+public theorem normalClosure_singleton_mul_comm {A : Type*} [Group A] (a b : A) :
+    normalClosure ({a * b} : Set A) = normalClosure ({b * a} : Set A) := by
+  refine le_antisymm (normalClosure_le_normal ?_) (normalClosure_le_normal ?_)
+  · rintro x rfl
+    have hmem : b * a ∈ normalClosure ({b * a} : Set A) := subset_normalClosure rfl
+    have hconj := (normalClosure_normal (s := ({b * a} : Set A))).conj_mem _ hmem a
+    have heq : a * (b * a) * a⁻¹ = a * b := by group
+    rwa [heq] at hconj
+  · rintro x rfl
+    have hmem : a * b ∈ normalClosure ({a * b} : Set A) := subset_normalClosure rfl
+    have hconj := (normalClosure_normal (s := ({a * b} : Set A))).conj_mem _ hmem b
+    have heq : b * (a * b) * b⁻¹ = b * a := by group
+    rwa [heq] at hconj
+
+/-! ## The toric filling -/
+
+namespace ToricFillingCoverModel
+
+open Subgroup MulOpposite
+
+variable {Λ K : Type*} [AddCommGroup Λ] [AddCommGroup K]
+variable {G H E E' B N : Type*} [Group G] [Group H]
+variable [TopologicalSpace E] [TopologicalSpace E'] [TopologicalSpace B] [TopologicalSpace N]
+variable [MulAction G E] [MulAction H E']
+variable (D : ToricFillingCoverModel Λ K G H E E' B N)
+
+/-- The lattice of boundary translations, as fundamental-group elements. -/
+public noncomputable def piOneTranslation :
+    Λ →+ Additive (FundamentalGroup B (D.boundaryProjection D.base)) := by
+  let _ : SimplyConnectedSpace E := D.boundarySimplyConnected
+  exact
+    { toFun := fun a ↦
+        Additive.ofMul (ofDeck D.boundaryQuotient D.base (Additive.toMul (D.deckTranslation a)))
+      map_zero' := by simp
+      map_add' := fun a b ↦ by
+        have hab : D.deckTranslation (a + b) = D.deckTranslation a + D.deckTranslation b :=
+          map_add _ _ _
+        have hmul : Additive.toMul (D.deckTranslation (a + b))
+            = Additive.toMul (D.deckTranslation a) * Additive.toMul (D.deckTranslation b) := by
+          rw [hab]
+          rfl
+        have hmul' : Additive.toMul (D.deckTranslation (b + a))
+            = Additive.toMul (D.deckTranslation b) * Additive.toMul (D.deckTranslation a) := by
+          rw [map_add]
+          rfl
+        have hcomm : Additive.toMul (D.deckTranslation b) * Additive.toMul (D.deckTranslation a)
+            = Additive.toMul (D.deckTranslation a) * Additive.toMul (D.deckTranslation b) := by
+          rw [← hmul', ← hmul, add_comm b a]
+        show Additive.ofMul (ofDeck D.boundaryQuotient D.base
+            (Additive.toMul (D.deckTranslation (a + b)))) = _
+        rw [hmul, ofDeck_mul]
+        exact congrArg Additive.ofMul
+          (ofDeck_mul_comm D.boundaryQuotient D.base hcomm) }
+
+/-- The toric filling `π₁` package, derived from the deck-group presentation. -/
+public noncomputable def toPiOneData : ToricFillingPiOneData D := by
+  let _ : SimplyConnectedSpace E := D.boundarySimplyConnected
+  let _ : SimplyConnectedSpace E' := D.fillingSimplyConnected
+  refine
+    { translation := D.piOneTranslation
+      meridian := ofDeck D.boundaryQuotient D.base D.deckMeridian
+      translation_deck := fun a ↦ ?_
+      meridian_deck := ?_
+      map_surjective := ?_
+      ker_map := ?_ }
+  · exact fundamentalGroupEquiv_ofDeck D.boundaryQuotient D.base _
+  · exact fundamentalGroupEquiv_ofDeck D.boundaryQuotient D.base _
+  · exact map_surjective_of_deckMap_surjective D.boundaryQuotient D.fillingQuotient
+      D.coverMap D.base D.deckMap_surjective
+  · rw [ker_map_of_deckMap_ker D.boundaryQuotient D.fillingQuotient D.coverMap D.base
+      (Set.range (fun k ↦ Additive.toMul (D.deckTranslation (D.vanishing k))) ∪ {D.deckMeridian})
+      D.deckMap_kernel]
+    congr 1
+    rw [Set.image_union, Set.image_singleton, ← Set.range_comp]
+    rfl
+
+end ToricFillingCoverModel
+
 /-- The standard toric-filling computation obtained from an equivariant regular-cover square. -/
-public axiom establishedToricFillingPiOne
+public noncomputable def establishedToricFillingPiOne
     {Λ K G H E E' B N : Type*}
     [AddCommGroup Λ] [AddCommGroup K] [Group G] [Group H]
     [TopologicalSpace E] [TopologicalSpace E'] [TopologicalSpace B] [TopologicalSpace N]
     [MulAction G E] [MulAction H E']
     (D : ToricFillingCoverModel Λ K G H E E' B N) :
-    ToricFillingPiOneData D
+    ToricFillingPiOneData D :=
+  D.toPiOneData
 
 /-- A regular-cover model for a cyclic affine filling and its boundary inclusion. -/
 public structure CyclicAffineFillingCoverModel
@@ -390,14 +623,75 @@ public structure CyclicAffineFillingPiOneData
       Subgroup.normalClosure
         {meridian ^ m * (Additive.toMul (translation D.twist))⁻¹}
 
+/-! ## The cyclic affine filling -/
+
+namespace CyclicAffineFillingCoverModel
+
+open Subgroup MulOpposite
+
+variable {m : ℕ} {Λ : Type*} [NeZero m] [AddCommGroup Λ]
+variable {G H E E' B N : Type*} [Group G] [Group H]
+variable [TopologicalSpace E] [TopologicalSpace E'] [TopologicalSpace B] [TopologicalSpace N]
+variable [MulAction G E] [MulAction H E']
+variable (D : CyclicAffineFillingCoverModel m Λ G H E E' B N)
+
+/-- The lattice of boundary translations, as fundamental-group elements. -/
+public noncomputable def piOneTranslation :
+    Λ →+ Additive (FundamentalGroup B (D.boundaryProjection D.base)) := by
+  let _ : SimplyConnectedSpace E := D.boundarySimplyConnected
+  exact
+    { toFun := fun a ↦
+        Additive.ofMul (ofDeck D.boundaryQuotient D.base (Additive.toMul (D.deckTranslation a)))
+      map_zero' := by simp
+      map_add' := fun a b ↦ by
+        have hmul : Additive.toMul (D.deckTranslation (a + b))
+            = Additive.toMul (D.deckTranslation a) * Additive.toMul (D.deckTranslation b) := by
+          rw [map_add]
+          rfl
+        have hmul' : Additive.toMul (D.deckTranslation (b + a))
+            = Additive.toMul (D.deckTranslation b) * Additive.toMul (D.deckTranslation a) := by
+          rw [map_add]
+          rfl
+        have hcomm : Additive.toMul (D.deckTranslation b) * Additive.toMul (D.deckTranslation a)
+            = Additive.toMul (D.deckTranslation a) * Additive.toMul (D.deckTranslation b) := by
+          rw [← hmul', ← hmul, add_comm b a]
+        show Additive.ofMul (ofDeck D.boundaryQuotient D.base
+            (Additive.toMul (D.deckTranslation (a + b)))) = _
+        rw [hmul, ofDeck_mul]
+        exact congrArg Additive.ofMul
+          (ofDeck_mul_comm D.boundaryQuotient D.base hcomm) }
+
+/-- The cyclic affine filling `π₁` package, derived from the deck-group presentation. -/
+public noncomputable def toPiOneData : CyclicAffineFillingPiOneData D := by
+  let _ : SimplyConnectedSpace E := D.boundarySimplyConnected
+  let _ : SimplyConnectedSpace E' := D.fillingSimplyConnected
+  refine
+    { translation := D.piOneTranslation
+      meridian := ofDeck D.boundaryQuotient D.base D.deckMeridian
+      translation_deck := fun a ↦ ?_
+      meridian_deck := ?_
+      map_surjective := ?_
+      ker_map := ?_ }
+  · exact fundamentalGroupEquiv_ofDeck D.boundaryQuotient D.base _
+  · exact fundamentalGroupEquiv_ofDeck D.boundaryQuotient D.base _
+  · exact map_surjective_of_deckMap_surjective D.boundaryQuotient D.fillingQuotient
+      D.coverMap D.base D.deckMap_surjective
+  · rw [ker_map_of_deckMap_ker D.boundaryQuotient D.fillingQuotient D.coverMap D.base
+      {D.deckMeridian ^ m * (Additive.toMul (D.deckTranslation D.twist))⁻¹} D.deckMap_kernel,
+      Set.image_singleton, ofDeck_mul, ofDeck_inv, ofDeck_pow]
+    exact normalClosure_singleton_mul_comm _ _
+
+end CyclicAffineFillingCoverModel
+
 /-- The standard cyclic-affine-filling computation from an equivariant regular-cover square. -/
-public axiom establishedCyclicAffineFillingPiOne
+public noncomputable def establishedCyclicAffineFillingPiOne
     {m : ℕ} {Λ G H E E' B N : Type*}
     [NeZero m] [AddCommGroup Λ] [Group G] [Group H]
     [TopologicalSpace E] [TopologicalSpace E'] [TopologicalSpace B] [TopologicalSpace N]
     [MulAction G E] [MulAction H E']
     (D : CyclicAffineFillingCoverModel m Λ G H E E' B N) :
-    CyclicAffineFillingPiOneData D
+    CyclicAffineFillingPiOneData D :=
+  D.toPiOneData
 
 end SphereSixComplex
 
