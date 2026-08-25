@@ -226,6 +226,7 @@ public import SphereSixComplex.Topology.SmoothSixSphereClassification
 public import SphereSixComplex.Topology.SmoothRecognition
 public import SphereSixComplex.Topology.SmoothRecognitionFoundations
 public import SphereSixComplex.Topology.StableFraming
+public import SphereSixComplex.Topology.StableFramingBufferedRadialClutching
 public import SphereSixComplex.Topology.StableFramingHomotopySixSphere
 public import SphereSixComplex.Topology.StableFramingHomotopySixSphereClutching
 public import SphereSixComplex.Topology.StableFramingStandardSixSphereCover
