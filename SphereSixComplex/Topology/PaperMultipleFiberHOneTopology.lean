@@ -20,6 +20,7 @@ open Geometry Geometry.AnalyticTorusFamily Geometry.ComplexTorus Geometry.Global
 open Geometry.EllipticFamilySpecialization Geometry.EllipticFixedPointCriterion
 open LatticeData Periods TriangleGroup
 open PaperEllipticFillingRadialRetraction
+open PaperEllipticReducedCentralFiberCoverModels
 open PaperLemmaSevenThirteenAlgebra TwistObstruction
 
 noncomputable section
@@ -48,6 +49,46 @@ public structure AffineCyclicCentralFiberPresentationData
 
 namespace EstablishedAffineCyclicQuotientHomology
 
+variable {m : ℕ} [NeZero m] {p : SphereSixComplex.Periods.Parameters}
+  {D : RadialEllipticActionData m (AdditiveTorus p)}
+
+/-- The standard degree-one homology basis on the source torus of the affine cyclic cover. -/
+@[expose] public noncomputable def centralFiberCoverSourceDegreeOneBasis
+    (P : AffineCyclicCentralFiberPresentationData m p D) :
+    IntegralSingularHomology 1
+        (RadialEllipticActionData.centralFiberCoverSource D) ≃+ Lattice :=
+  ((EstablishedTorusHomology.additiveTorusHomologyBasis p P.fullRank).homeomorph
+    (RadialEllipticActionData.centralFiberCoverSourceHomeomorph D)).degreeOne
+
+/-- The canonical map from the covering lattice to the abelian multiple-fibre presentation. -/
+@[expose] public def latticeProjection
+    (P : AffineCyclicCentralFiberPresentationData m p D) :
+    Lattice →ₗ[ℤ]
+      MultipleFiberHOnePresentation P.latticeDifference P.twist (m : ℤ) :=
+  (LinearMap.range
+      (multipleFiberRelationMap P.latticeDifference P.twist (m : ℤ))).mkQ.comp
+    ((LinearMap.range P.latticeDifference).mkQ.prod
+      (0 : Lattice →ₗ[ℤ] ℤ))
+
+/-- The standard affine-cyclic quotient calculation together with its naturality under the
+covering projection. -/
+public structure ReducedCentralFiberHOnePresentation
+    (P : AffineCyclicCentralFiberPresentationData m p D) where
+  equiv : IntegralSingularHomology 1 D.reducedCentralFiber ≃ₗ[ℤ]
+    MultipleFiberHOnePresentation P.latticeDifference P.twist (m : ℤ)
+  projection : ∀ x : Lattice,
+    equiv
+        (integralSingularHomologyMap 1
+          (RadialEllipticActionData.centralFiberCoverProjection D)
+          ((centralFiberCoverSourceDegreeOneBasis P).symm x)) =
+      latticeProjection P x
+
+/-- The usual presentation theorem for a free affine cyclic torus quotient, including the
+canonical value of the presentation coordinates on the covering torus. -/
+public axiom reducedCentralFiberHOnePresentation
+    (P : AffineCyclicCentralFiberPresentationData m p D) :
+    ReducedCentralFiberHOnePresentation P
+
 /-- For a free affine action of a finite cyclic group on a full-rank torus, first integral
 homology is the abelianization of the standard covering-group presentation.  Thus it is the
 coinvariants of the lattice together with a meridian, subject to the relation that `m` times
@@ -56,13 +97,23 @@ the meridian is the full-iterate lattice translation.
 This combines the standard identification of first homology with the abelianized fundamental
 group and the usual presentation of the fundamental group of a free affine cyclic torus
 quotient. -/
-public axiom reducedCentralFiberHOneEquivPresentation
-    {m : ℕ} [NeZero m] {p : SphereSixComplex.Periods.Parameters}
-    {D : RadialEllipticActionData m (AdditiveTorus p)}
+public noncomputable def reducedCentralFiberHOneEquivPresentation
     (P : AffineCyclicCentralFiberPresentationData m p D) :
     IntegralSingularHomology 1 D.reducedCentralFiber ≃ₗ[ℤ]
       MultipleFiberHOnePresentation
-        P.latticeDifference P.twist (m : ℤ)
+        P.latticeDifference P.twist (m : ℤ) :=
+  (reducedCentralFiberHOnePresentation P).equiv
+
+/-- The presentation equivalence sends the homology map of the covering torus to the canonical
+lattice-to-presentation map. -/
+public theorem reducedCentralFiberHOneEquivPresentation_projection
+    (P : AffineCyclicCentralFiberPresentationData m p D) (x : Lattice) :
+    reducedCentralFiberHOneEquivPresentation P
+        (integralSingularHomologyMap 1
+          (RadialEllipticActionData.centralFiberCoverProjection D)
+          ((centralFiberCoverSourceDegreeOneBasis P).symm x)) =
+      latticeProjection P x :=
+  (reducedCentralFiberHOnePresentation P).projection x
 
 end EstablishedAffineCyclicQuotientHomology
 

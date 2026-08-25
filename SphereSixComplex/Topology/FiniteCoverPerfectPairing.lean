@@ -108,14 +108,20 @@ The existing general theorem exposes the abstract presentation equivalence but n
 the covering projection.  Mathlib has neither the required fundamental-group presentation for a
 free affine cyclic quotient nor a natural `H₁ = pi₁^ab` comparison, so this is the smallest
 general functorial boundary. -/
-public axiom establishedAffineCyclicHOnePresentation_projection
+public theorem establishedAffineCyclicHOnePresentation_projection
     (P : AffineCyclicCentralFiberPresentationData m p D) (x : Lattice) :
     affineCyclicHOnePresentationEquiv P
         (integralSingularHomologyMap 1
           (RadialEllipticActionData.centralFiberCoverProjection D)
           ((affineCyclicCentralFiberCoverSourceHomologyBasis P).degreeOne.symm x)) =
       latticeToMultipleFiberHOnePresentation
-        P.latticeDifference P.twist (m : ℤ) x
+        P.latticeDifference P.twist (m : ℤ) x := by
+  simpa only [affineCyclicHOnePresentationEquiv,
+    affineCyclicCentralFiberCoverSourceHomologyBasis,
+    latticeToMultipleFiberHOnePresentation,
+    EstablishedAffineCyclicQuotientHomology.centralFiberCoverSourceDegreeOneBasis,
+    EstablishedAffineCyclicQuotientHomology.latticeProjection] using
+    EstablishedAffineCyclicQuotientHomology.reducedCentralFiberHOneEquivPresentation_projection P x
 
 /-- Exposed order-three presentation coordinates. -/
 public noncomputable def orderOnePresentationEquivIntSquared :
