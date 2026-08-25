@@ -9,7 +9,7 @@ import all Mathlib.Geometry.Manifold.LocalDiffeomorph
 /-!
 # Transporting local diffeomorphisms
 
-Three general facts about `IsLocalDiffeomorph` that the analytic construction needs and Mathlib
+Two general facts about `IsLocalDiffeomorph` that the analytic construction needs and Mathlib
 does not yet provide.
 
 * `isLocalDiffeomorph_of_contDiff_of_hasFDerivAt_equiv`: the inverse function theorem, packaged as
@@ -18,8 +18,6 @@ does not yet provide.
 * `isLocalDiffeomorph_of_comp_isOpenEmbedding`: if the charted-space structure on the target comes
   from an open embedding, a map into it is a local diffeomorphism as soon as its composite with
   that embedding is.
-* `isLocalDiffeomorph_comp`: local diffeomorphisms compose, across three different models.
-
 Together they reduce a local-biholomorphism claim about an explicitly coordinatized map to a
 derivative computation.
 -/
@@ -123,38 +121,6 @@ public theorem isLocalDiffeomorph_of_comp_isOpenEmbedding {f : M → N}
     rw [hgy, hg.toOpenPartialHomeomorph_left_inv]
 
 end OfCompOpenEmbedding
-
-/-! ## Composition -/
-
-section Comp
-
-variable {G : Type*} [NormedAddCommGroup G] [NormedSpace 𝕜 G] {H'' : Type*} [TopologicalSpace H'']
-  {K : ModelWithCorners 𝕜 G H''}
-  {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
-  {N : Type*} [TopologicalSpace N] [ChartedSpace H' N]
-  {P : Type*} [TopologicalSpace P] [ChartedSpace H'' P]
-
-/-- Local diffeomorphisms compose. -/
-public theorem isLocalDiffeomorph_comp {f : M → N} {g : N → P}
-    (hg : IsLocalDiffeomorph J K n g) (hf : IsLocalDiffeomorph I J n f) :
-    IsLocalDiffeomorph I K n (g ∘ f) := by
-  intro x
-  obtain ⟨Φ, hxΦ, hΦ⟩ := hf x
-  obtain ⟨Ψ, hyΨ, hΨ⟩ := hg (f x)
-  have hxsource : x ∈ (Φ.trans Ψ).source := by
-    refine ⟨hxΦ, ?_⟩
-    show (Φ : M → N) x ∈ Ψ.source
-    rw [← hΦ hxΦ]
-    exact hyΨ
-  refine ⟨Φ.trans Ψ, hxsource, ?_⟩
-  intro y hy
-  have hy1 : y ∈ Φ.source := hy.1
-  have hy2 : (Φ : M → N) y ∈ Ψ.source := hy.2
-  show g (f y) = Ψ ((Φ : M → N) y)
-  rw [hΦ hy1]
-  exact hΨ hy2
-
-end Comp
 
 /-! ## The inclusion of an open subset -/
 

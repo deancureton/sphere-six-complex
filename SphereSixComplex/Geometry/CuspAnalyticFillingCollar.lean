@@ -616,9 +616,11 @@ public theorem denseCuspExponentialCover_isLocalDiffeomorph (r : ℝ) :
       (fun p : additiveCuspRadiusCover r ↦ denseCuspExponentialCover p) := by
   letI := additiveCuspRadiusCoverCharts r
   letI := denseTorusCharts
-  exact isLocalDiffeomorph_comp isLocalDiffeomorph_denseCuspExponentialCover
+  intro p
+  exact IsLocalDiffeomorphAt.comp (modelWithCornersSelf ℂ ComplexModel) DenseTorus
     (openSubtypeVal_isLocalDiffeomorph
-      ⟨additiveCuspRadiusCover r, additiveCuspRadiusCover_isOpen r⟩)
+      ⟨additiveCuspRadiusCover r, additiveCuspRadiusCover_isOpen r⟩ p)
+    (isLocalDiffeomorph_denseCuspExponentialCover p)
 
 end Established
 
