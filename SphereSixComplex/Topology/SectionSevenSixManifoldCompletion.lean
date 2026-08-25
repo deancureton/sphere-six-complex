@@ -2,6 +2,7 @@ module
 
 public import SphereSixComplex.Topology.EstablishedCompactSmoothOrientedManifoldHomology
 public import SphereSixComplex.Topology.EstablishedSphereHomology
+public import SphereSixComplex.Topology.IntegralHomologyEuler
 public import SphereSixComplex.Topology.SectionSevenMayerVietorisHomologyAssembly
 public import Mathlib.AlgebraicTopology.SingularHomology.HomologyZero
 

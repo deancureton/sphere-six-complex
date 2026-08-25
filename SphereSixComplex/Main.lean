@@ -141,6 +141,8 @@ public import SphereSixComplex.Topology.EstablishedUnwrappedAffineFillings
 public import SphereSixComplex.Topology.PaperActualFillingCoverSquares
 public import SphereSixComplex.Topology.PaperCentralAffineDeckCover
 public import SphereSixComplex.Topology.PaperVanKampenAlgebraAdapter
+public import SphereSixComplex.Topology.FiniteExactSequenceEuler
+public import SphereSixComplex.Topology.IntegralHomologyEuler
 public import SphereSixComplex.Topology.BinaryOpenCoverChains
 public import SphereSixComplex.Topology.BinaryOpenCoverCorestriction
 public import SphereSixComplex.Topology.BinaryOpenCoverExcision
@@ -152,6 +154,7 @@ public import SphereSixComplex.Topology.HomologySphere
 public import SphereSixComplex.Topology.HurewiczWhitehead
 public import SphereSixComplex.Topology.HurewiczWhiteheadStages
 public import SphereSixComplex.Topology.MayerVietoris
+public import SphereSixComplex.Topology.MayerVietorisDegreeZeroBridge
 public import SphereSixComplex.Topology.ConnectedMayerVietorisDegreeZero
 public import SphereSixComplex.Topology.SectionSevenChainModel
 public import SphereSixComplex.Topology.SectionSevenCoherentRealizationReduction
@@ -173,6 +176,7 @@ public import SphereSixComplex.Topology.SectionSevenMayerVietorisChainAssembly
 public import SphereSixComplex.Topology.SectionSevenMayerVietorisGradedAlgebra
 public import SphereSixComplex.Topology.SectionSevenMayerVietorisHomologyAssembly
 public import SphereSixComplex.Topology.SectionSevenSixManifoldCompletion
+public import SphereSixComplex.Topology.IntegralMayerVietorisEuler
 public import SphereSixComplex.Topology.SectionSevenMayerVietorisEuler
 public import SphereSixComplex.Topology.SectionSevenLocalEulerCalculation
 public import SphereSixComplex.Topology.SectionSevenLocalEulerModels

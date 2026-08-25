@@ -486,5 +486,3 @@ public theorem integralOpenCoverComparisonStatement_of_binaryOpenCoverSubdivisio
   exact ⟨openCoverHomologyComparisonOfSubdivision D⟩
 
 end SphereSixComplex.BinaryOpenCover
-
-#print axioms SphereSixComplex.BinaryOpenCover.integralMVFromBiprod_zero_surjective
