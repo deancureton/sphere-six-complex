@@ -411,8 +411,10 @@ Glue {uses "cusp-filling"}[the cusp filling] and
 Compatible atlases on the filling pieces transport to their topological gluing and make the glued
 space a manifold. A countable open gluing of second-countable pieces is second countable, and
 connected pieces with a connected overlap graph give a connected gluing. Restriction of a complex atlas to
-the underlying real manifold is now proved from `ContDiffOn.restrict_scalars`, so compatibility of
-the paper's four biholomorphic pieces is the sole remaining explicit external gluing boundary. Compactness is a separate construction
+the underlying real manifold is proved from `ContDiffOn.restrict_scalars`, and compatibility of the
+paper's four biholomorphic pieces is proved by identifying the six piece transitions with the collar
+partial diffeomorphisms, their inverses, and the empty transitions between distinct fillings. The
+gluing step therefore has no remaining external boundary. Compactness is a separate construction
 obligation, since the open punctured and filling pieces need not themselves be compact.
 :::
 
