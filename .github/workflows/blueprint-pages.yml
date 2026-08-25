@@ -27,6 +27,10 @@ jobs:
         run: |
           lake exe cache get
           lake build
+      - name: Check import coverage
+        run: ./scripts/check-imports.py
+      - name: Check the axiom trust boundary
+        run: CHECK_AXIOMS_SKIP_BUILD=1 ./scripts/check-axioms.sh
       - name: Build Blueprint site
         working-directory: blueprint
         run: ./scripts/ci-pages.sh
