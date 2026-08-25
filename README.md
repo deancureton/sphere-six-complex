@@ -16,6 +16,24 @@ Verso Blueprint build, but `SphereSixComplex/Final.lean` still contains the pape
 The library now includes the construction's analytic, gluing, homology, van Kampen, and smooth
 recognition foundations. The Blueprint records the remaining paper-specific obligation.
 
+`exists_paperGluingData` is the sole remaining `sorry`, and
+`toPaperGluingData_of_positiveDegree` reduces it to three inputs:
+
+1. `HasVanKampenData` for the glued star. The generic van Kampen machinery is proved, and
+   `hasVanKampenData_of_overlapSurjective_of_relations` derives the datum from two geometric
+   facts about the fillings: that each collar surjects on its filling's fundamental group, and
+   the three star filling relations. Both come from a filling cover square (issues #1, #2).
+2. `SectionSevenPositiveDegreeHomologyAssembly`: the actual H₁/H₂ bases and compatibility
+   squares of Section 7 (issues #6, #7).
+3. `SectionSevenStageTopDegreeVanishing`, which reduces to each collar source having no sixth
+   integral homology.
+
+Past that, the headline theorem rests on four axioms: the general integral Mayer--Vietoris exact
+sequence, and the three classical recognition inputs (Hurewicz--Whitehead for smooth manifolds,
+the generalized topological Poincare theorem in dimension six, and the triviality of the group of
+smooth structures on the six-sphere). `./scripts/check-axioms.sh` prints and enforces exactly that
+list.
+
 ## Build
 
 ```sh
