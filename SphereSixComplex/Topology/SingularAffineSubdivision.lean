@@ -137,7 +137,7 @@ public theorem nonemptyFiniteChainBarycenter_apply {n : ℕ}
   unfold nonemptyFiniteChainBarycenter
   simp only [stdSimplex.map_coe, FunOnFinite.linearMap_apply_apply]
   by_cases hi : ULift.up i ∈ A.finset
-  · rw [ite_eq_left hi]
+  · rw [if_pos hi]
     have hfilter :
         Finset.univ.filter (fun a : A.finset ↦ a.1.down = i) =
           {(⟨ULift.up i, hi⟩ : A.finset)} := by
@@ -154,7 +154,7 @@ public theorem nonemptyFiniteChainBarycenter_apply {n : ℕ}
     simp only [Finset.sum_singleton]
     change (stdSimplex.barycenter : stdSimplex ℝ A.finset).val _ = _
     rw [stdSimplex.barycenter_apply, Fintype.card_coe]
-  · rw [ite_eq_right hi]
+  · rw [if_neg hi]
     have hfilter :
         Finset.univ.filter (fun a : A.finset ↦ a.1.down = i) = ∅ := by
       apply Finset.filter_eq_empty_iff.mpr
@@ -233,7 +233,7 @@ public theorem nonemptyFiniteChainBarycenter_face
       simp [hx, hx']
   · rw [stdSimplex_map_apply_eq_zero_of_not_mem_range
       p.succAbove _ y hy]
-    rw [nonemptyFiniteChainBarycenter_apply, ite_eq_right]
+    rw [nonemptyFiniteChainBarycenter_apply, if_neg]
     intro hmem
     rw [NonemptyFiniteChains.mem_map_iff] at hmem
     obtain ⟨a, _, hga⟩ := hmem
