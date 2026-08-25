@@ -141,6 +141,7 @@ public import SphereSixComplex.Topology.EstablishedBasedVanKampen
 public import SphereSixComplex.Topology.AffineVanKampenTransport
 public import SphereSixComplex.Topology.EstablishedUnwrappedAffineFillings
 public import SphereSixComplex.Topology.PaperActualFillingCoverSquares
+public import SphereSixComplex.Topology.PaperCuspActualAffineFillingCoverSquare
 public import SphereSixComplex.Topology.PaperCentralAffineDeckCover
 public import SphereSixComplex.Topology.PaperVanKampenAlgebraAdapter
 public import SphereSixComplex.Topology.FiniteExactSequenceEuler
