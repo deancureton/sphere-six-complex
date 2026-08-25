@@ -240,6 +240,7 @@ public import SphereSixComplex.Topology.RelativeSingularHomology
 public import SphereSixComplex.Topology.SingularExcision
 public import SphereSixComplex.Topology.SingularExcisionOpenCover
 public import SphereSixComplex.Topology.BoundarySevenCechTotalQuasiIsoProof
+public import SphereSixComplex.Topology.BoundarySevenDegreeTheoryProof
 public import SphereSixComplex.Topology.SingularBarycentricAllDegrees
 public import SphereSixComplex.Topology.SingularBarycentricOuterFaces
 public import SphereSixComplex.Topology.SingularBarycentricHomotopy
