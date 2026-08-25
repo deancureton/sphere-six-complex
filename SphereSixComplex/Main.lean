@@ -274,6 +274,13 @@ public import SphereSixComplex.TriangleGroup.FuchsianProperFreeness
 public import SphereSixComplex.TriangleGroup.FuchsianOneFixedCommutation
 public import SphereSixComplex.TriangleGroup.FuchsianTwoFixedCommutation
 public import SphereSixComplex.TriangleGroup.Representation
+public import SphereSixComplex.Topology.ConnectedSumQuotient
+public import SphereSixComplex.Topology.GeometricWangSplitting
+public import SphereSixComplex.Topology.KervaireMilnorSix
+public import SphereSixComplex.Topology.PaperCuspGeometricSpecialization
+public import SphereSixComplex.Topology.SingularSubdivisionIteration
+public import SphereSixComplex.Topology.EstablishedEquivariantUniversalCover
+public import SphereSixComplex.Topology.PaperActualAffineCoreData
 
 /-!
 # A Complex Structure on the Six-Sphere
