@@ -79,3 +79,22 @@ open SphereSixComplex
 /-- Trusted statement used by Comparator. -/
 public theorem sphere_six_admits_complex_structure : AdmitsComplexStructure SixSphere := by
   sorry
+
+namespace ComplexStructures
+
+/-- The standard unit six-sphere in seven-dimensional Euclidean space. -/
+public abbrev SixSphere := Metric.sphere (0 : EuclideanSpace ℝ (Fin 7)) 1
+
+/-- The complex model space of a complex threefold. -/
+public abbrev ComplexThreeSpace := EuclideanSpace ℂ (Fin 3)
+
+/-- The standard six-sphere carries an integrable complex structure of complex dimension three. -/
+public theorem sixSphere_admits_complex_structure :
+    ∃ (_ : ChartedSpace ComplexThreeSpace SixSphere)
+      (_ : IsManifold 𝓘(ℂ, ComplexThreeSpace) 1 SixSphere)
+      (_ : IsManifold 𝓘(ℝ, ComplexThreeSpace) ∞ SixSphere),
+      ∃ e : SixSphere ≃ₘ⟮𝓡 6, 𝓘(ℝ, ComplexThreeSpace)⟯ SixSphere,
+        e.toEquiv = Equiv.refl SixSphere := by
+  sorry
+
+end ComplexStructures
