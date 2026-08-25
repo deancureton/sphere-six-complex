@@ -80,19 +80,22 @@ open SphereSixComplex
 public theorem sphere_six_admits_complex_structure : AdmitsComplexStructure SixSphere := by
   sorry
 
-namespace ComplexStructures
+public section
 
-/-- The standard unit six-sphere in seven-dimensional Euclidean space. -/
-public abbrev SixSphere := Metric.sphere (0 : EuclideanSpace ℝ (Fin 7)) 1
+namespace Mathoverflow1973
 
-/-- The complex model space of a complex threefold. -/
-public abbrev ComplexThreeSpace := EuclideanSpace ℂ (Fin 3)
+/-- The unit `n`-sphere, defined as `Metric.sphere 0 1` in `EuclideanSpace ℝ (Fin (n + 1))`. -/
+abbrev unitSphere (n : ℕ) : Set (EuclideanSpace ℝ (Fin (n + 1))) := Metric.sphere 0 1
 
-/-- The standard six-sphere carries an integrable complex structure of complex dimension three. -/
-public theorem sixSphere_admits_complex_structure :
-    ∃ (_ : ChartedSpace ComplexThreeSpace SixSphere)
-      (_ : IsManifold 𝓘(ℂ, ComplexThreeSpace) 1 SixSphere),
-      IsManifold 𝓘(ℝ, ComplexThreeSpace) ∞ SixSphere := by
+/--
+Does the 6-sphere admit a complex structure, i.e. an atlas of holomorphically compatible charts
+relating it to `EuclideanSpace ℂ (Fin 3)`?
+-/
+theorem mathoverflow_1973 :
+    ∃ atlas : ChartedSpace (EuclideanSpace ℂ (Fin 3)) (unitSphere 6),
+      IsManifold 𝓘(ℂ, EuclideanSpace ℂ (Fin 3)) 1 (unitSphere 6) := by
   sorry
 
-end ComplexStructures
+end Mathoverflow1973
+
+end
