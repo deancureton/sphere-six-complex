@@ -23,6 +23,18 @@ lake exe cache get
 lake build
 ```
 
+## Dependencies and acknowledgements
+
+This formalization depends on:
+
+- [Mathlib](https://github.com/leanprover-community/mathlib4)
+- [Tau Ceti](https://github.com/TauCetiProject/TauCeti)
+- the [Jordan Curve Theorem project](https://github.com/epfl-lara/jordan-curve-theorem)
+- Thomas Zhu's fundamental-groupoid van Kampen development in Mathlib
+  [PR #41603](https://github.com/leanprover-community/mathlib4/pull/41603)
+
+We thank Thomas Zhu for giving us permission to use and port the van Kampen development.
+
 ## Comparator
 
 ```sh
