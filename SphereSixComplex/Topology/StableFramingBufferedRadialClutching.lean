@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Topology.StableFramingHomotopySixSphereClutching
+public import SphereSixComplex.Topology.StableFramingLocalFrameCoefficients
 public import Mathlib.Analysis.Normed.Module.Ball.RadialEquiv
 public import Mathlib.LinearAlgebra.Matrix.GeneralLinearGroup.Defs
 

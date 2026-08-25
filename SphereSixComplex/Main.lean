@@ -229,6 +229,7 @@ public import SphereSixComplex.Topology.StableFraming
 public import SphereSixComplex.Topology.StableFramingBufferedRadialClutching
 public import SphereSixComplex.Topology.StableFramingHomotopySixSphere
 public import SphereSixComplex.Topology.StableFramingHomotopySixSphereClutching
+public import SphereSixComplex.Topology.StableFramingSmoothClutchingNullhomotopy
 public import SphereSixComplex.Topology.StableFramingStandardSixSphereCover
 public import SphereSixComplex.Topology.SphereFiniteCWModel
 public import SphereSixComplex.Topology.SphereLoopContraction
