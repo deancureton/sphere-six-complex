@@ -134,6 +134,7 @@ public import SphereSixComplex.Topology.FullVanKampenReduction
 public import SphereSixComplex.Topology.VanKampenGeometry
 public import SphereSixComplex.Topology.ConcreteVanKampen
 public import SphereSixComplex.Topology.PaperActualVanKampenCover
+public import SphereSixComplex.Topology.PaperActualVanKampenNiceness
 public import SphereSixComplex.Topology.EstablishedAffineVanKampen
 public import SphereSixComplex.Topology.EstablishedBasedVanKampen
 public import SphereSixComplex.Topology.AffineVanKampenTransport
