@@ -4,8 +4,10 @@ This project formalizes the construction in [`references/s6.pdf`](https://alpo.g
 compact complex threefold diffeomorphic to the standard smooth six-sphere.
 
 The Lean development is in `SphereSixComplex/`. The `blueprint/` directory tracks the
-paper-to-Lean dependency graph. `Challenge.lean`, `Solution.lean`, and `comparator.json` form the
-Comparator boundary for the final theorem.
+paper-to-Lean dependency graph. `ChallengeDefs.lean`, `Challenge.lean`, `Solution.lean`, and
+`comparator.json` form the Comparator boundary for the final theorem. `ChallengeDefs.lean` holds
+every definition the statement mentions and depends only on Mathlib; both `Challenge` and the
+development import it, so Comparator compares one shared copy. Nothing imports `Challenge` itself.
 
 ## Status
 

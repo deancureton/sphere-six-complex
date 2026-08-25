@@ -22,6 +22,11 @@ subDir = "HOLLight-Lean"
 [[lean_lib]]
 name = "SphereSixComplex"
 
+# The definitions the trusted statement mentions. Imported by both `Challenge` and the
+# development, so Comparator sees one shared copy rather than two elaborations.
+[[lean_lib]]
+name = "ChallengeDefs"
+
 [[lean_lib]]
 name = "Challenge"
 

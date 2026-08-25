@@ -2,6 +2,7 @@ module
 
 public import SphereSixComplex.ComplexStructure
 import all SphereSixComplex.ComplexStructure
+import all ChallengeDefs
 
 /-!
 # Restricting a complex manifold atlas to the real scalars
