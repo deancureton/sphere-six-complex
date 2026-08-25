@@ -80,10 +80,6 @@ open SphereSixComplex
 public theorem sphere_six_admits_complex_structure : AdmitsComplexStructure SixSphere := by
   sorry
 
-public section
-
-namespace Mathoverflow1973
-
 /-- The unit `n`-sphere, defined as `Metric.sphere 0 1` in `EuclideanSpace ℝ (Fin (n + 1))`. -/
 abbrev unitSphere (n : ℕ) : Set (EuclideanSpace ℝ (Fin (n + 1))) := Metric.sphere 0 1
 
@@ -95,7 +91,3 @@ theorem mathoverflow_1973 :
     ∃ atlas : ChartedSpace (EuclideanSpace ℂ (Fin 3)) (unitSphere 6),
       IsManifold 𝓘(ℂ, EuclideanSpace ℂ (Fin 3)) 1 (unitSphere 6) := by
   sorry
-
-end Mathoverflow1973
-
-end
