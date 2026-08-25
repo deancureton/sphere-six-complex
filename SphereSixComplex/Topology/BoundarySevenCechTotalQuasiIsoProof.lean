@@ -4,6 +4,7 @@ public import SphereSixComplex.Topology.BoundarySevenCechOrderedSource
 public import SphereSixComplex.Topology.BoundarySevenCechOrderedTarget
 public import SphereSixComplex.Topology.BoundarySevenCechOrderedLocalComparison
 public import SphereSixComplex.Topology.BoundarySevenCechComparisonAssemblyProof
+public import SphereSixComplex.Topology.BoundarySevenDegreeTransportProof
 public import SphereSixComplex.Topology.DiskSevenRelativeHomologyLowAcyclic
 public import SphereSixComplex.Topology.DiskSevenRelativeHomologyModTwo
 
@@ -236,6 +237,13 @@ public theorem boundarySeven_integralComparison_proof :
       (∂Δ[7] : SSet.{0}) (AddCommGrpCat.of ℤ) :=
   boundarySeven_integralComparison_of_faceCechTotalMap_quasiIso
     boundarySevenFaceCechTotalMap_quasiIso
+
+/-- The completed canonical boundary comparison supplies the full degree theory of the standard
+six-sphere. -/
+public theorem sixSphereDegreeTheory_proof :
+    Nonempty OrientedMarkedSmoothHomotopySixSphere.SixSphereDegreeTheory :=
+  sixSphereDegreeTheory_of_boundarySevenComparison
+    boundarySeven_integralComparison_proof
 
 /-- The low-degree integral comparison used by the disk-cover and Kervaire branches. -/
 public theorem boundarySevenLowIntegralComparison_proof :
