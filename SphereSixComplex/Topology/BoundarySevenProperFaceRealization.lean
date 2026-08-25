@@ -97,7 +97,7 @@ public theorem boundarySevenProperFaceAffineFlagAmbientMap_mem_boundary
   have hjle : F.obj j ≤ F.obj (Fin.last k) :=
     leOfHom (F.map (homOfLE (Fin.le_last j)))
   have hij : i ∉ (F.obj j).1 := fun hij ↦ hi (hjle hij)
-  rw [boundarySevenProperFaceBarycenter_apply, if_neg hij, mul_zero]
+  rw [boundarySevenProperFaceBarycenter_apply, ite_eq_right hij, mul_zero]
 
 /-- The affine flag simplex, intrinsically valued in the ordinary simplex boundary. -/
 public noncomputable def boundarySevenProperFaceAffineFlagMap

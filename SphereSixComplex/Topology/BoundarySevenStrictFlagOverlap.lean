@@ -104,7 +104,7 @@ public theorem boundarySevenStrictFlagTail_le_coordinate_of_mem
   · have hal : a ∈ (F.obj l).1 :=
       boundarySevenStrictFlag_obj_mono k F hjl ha
     simp [hjl, hal]
-  · simp only [if_neg hjl]
+  · simp only [ite_eq_right hjl]
     exact mul_nonneg (w.2.1 l) (by positivity)
 
 /-- Outside the level-`j` face the coordinate is strictly below the `j`-tail whenever its
@@ -126,11 +126,11 @@ public theorem boundarySevenStrictFlag_coordinate_lt_tail_of_not_mem
         exact ha (boundarySevenStrictFlag_obj_mono k F hlj hal)
       simp [hal, hjl]
     · by_cases hjl : j ≤ l
-      · simp only [if_neg hal, if_pos hjl, mul_zero]
+      · simp only [ite_eq_right hal, ite_eq_left hjl, mul_zero]
         exact mul_nonneg (w.2.1 l) (by positivity)
       · simp [hal, hjl]
   · refine ⟨j, Finset.mem_univ _, ?_⟩
-    rw [if_neg ha, if_pos le_rfl]
+    rw [ite_eq_right ha, ite_eq_left le_rfl]
     simp only [mul_zero]
     have hcard : 0 < (((F.obj j).1.card : ℝ)⁻¹) := by
       apply inv_pos.mpr
@@ -164,7 +164,7 @@ public theorem boundarySevenStrictFlagTail_pos
   rw [boundarySevenStrictFlagTail]
   apply (Finset.sum_pos_iff_of_nonneg (s := Finset.univ) ?_).mpr
   · refine ⟨j, Finset.mem_univ _, ?_⟩
-    rw [if_pos le_rfl]
+    rw [ite_eq_left le_rfl]
     apply mul_pos hw
     apply inv_pos.mpr
     exact_mod_cast (F.obj j).2.1.card_pos
@@ -237,7 +237,7 @@ public theorem boundarySevenStrictFlag_overlap_exists_positive_face_eq
       by_contra hql
       simp [hql] at hlpos
     have hvl : 0 < v l := by
-      rw [if_pos hql] at hlpos
+      rw [ite_eq_left hql] at hlpos
       rcases mul_pos_iff.mp hlpos with hpos | hneg
       · exact hpos.1
       · exact (not_lt_of_ge (v.2.1 l) hneg.1).elim

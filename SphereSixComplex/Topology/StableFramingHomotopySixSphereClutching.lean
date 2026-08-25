@@ -171,18 +171,18 @@ public def toSmoothStableFraming (c : SmoothRankSevenClutchingExtensionSix p) :
         contMDiffOn := ?_ }
     · intro x _
       by_cases hxN : x ∈ p.north
-      · simpa only [gluedSections, dif_pos hxN] using p.northFrame.linearIndependent hxN
+      · simpa only [gluedSections, dite_eq_left hxN] using p.northFrame.linearIndependent hxN
       · have hxS : x ∈ p.south := by
           have hx : x ∈ p.north ∪ p.south := by rw [p.cover]; exact Set.mem_univ x
           exact hx.resolve_left hxN
-        simpa only [gluedSections, dif_neg hxN] using c.adjustedSouthFrame.linearIndependent hxS
+        simpa only [gluedSections, dite_eq_right hxN] using c.adjustedSouthFrame.linearIndependent hxS
     · intro x _
       by_cases hxN : x ∈ p.north
-      · simpa only [gluedSections, dif_pos hxN] using p.northFrame.generating hxN
+      · simpa only [gluedSections, dite_eq_left hxN] using p.northFrame.generating hxN
       · have hxS : x ∈ p.south := by
           have hx : x ∈ p.north ∪ p.south := by rw [p.cover]; exact Set.mem_univ x
           exact hx.resolve_left hxN
-        simpa only [gluedSections, dif_neg hxN] using c.adjustedSouthFrame.generating hxS
+        simpa only [gluedSections, dite_eq_right hxN] using c.adjustedSouthFrame.generating hxS
     · intro i
       have hN : ContMDiffOn 𝓘(ℝ, RealModel)
           (𝓘(ℝ, RealModel).prod 𝓘(ℝ, RealModel × ℝ)) ∞
@@ -193,7 +193,7 @@ public def toSmoothStableFraming (c : SmoothRankSevenClutchingExtensionSix p) :
           (fun x ↦ TotalSpace.mk' (RealModel × ℝ) x (c.gluedSections i x)) p.south :=
         (c.adjustedSouthFrame.contMDiffOn i).congr fun x hxS ↦ by
           by_cases hxN : x ∈ p.north
-          · simp only [gluedSections, dif_pos hxN]
+          · simp only [gluedSections, dite_eq_left hxN]
             exact congrArg (TotalSpace.mk' (RealModel × ℝ) x)
               (c.adjustedSouthSections_eq_northSections i x hxN hxS).symm
           · simp [gluedSections, hxN]
