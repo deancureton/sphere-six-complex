@@ -43,6 +43,13 @@ public def SmoothPoincareSixStandardModel : Prop :=
     [CompactSpace M],
     Nonempty (M ≃ₕ SixSphere) → SmoothDiffeomorphicToSixSphere M
 
+/-- Smooth Poincare in dimension six implies generalized topological Poincare in dimension six. -/
+public theorem generalizedTopologicalPoincareSix_of_smoothPoincareSixStandardModel
+    (hSmooth : SmoothPoincareSixStandardModel) : GeneralizedTopologicalPoincareSix := by
+  intro M _ _ _ _ _ _ hHomotopy
+  obtain ⟨d⟩ := hSmooth M hHomotopy
+  exact ⟨d.toHomeomorph⟩
+
 /-- A smooth real six-manifold whose underlying topological space is the standard six-sphere. -/
 public structure MarkedSmoothSixSphere where
   Carrier : Type
@@ -112,6 +119,28 @@ public theorem diffeomorphic_standard_of_classes_trivial
   exact @Subsingleton.elim DiffeomorphismClass h (classOf X) (classOf standard)
 
 end MarkedSmoothSixSphere
+
+/-- Smooth Poincare in dimension six makes the smooth-structure quotient of the topological
+six-sphere trivial. -/
+public theorem markedSmoothSixSphereClassesTrivial_of_smoothPoincareSixStandardModel
+    (hSmooth : SmoothPoincareSixStandardModel) :
+    MarkedSmoothSixSphere.DiffeomorphismClassesTrivial := by
+  constructor
+  intro a b
+  refine Quotient.inductionOn₂ a b ?_
+  intro X Y
+  apply Quotient.sound
+  obtain ⟨eX⟩ := X.homeomorph
+  obtain ⟨eY⟩ := Y.homeomorph
+  let _ : T2Space X.Carrier := eX.symm.t2Space
+  let _ : SecondCountableTopology X.Carrier := eX.secondCountableTopology
+  let _ : CompactSpace X.Carrier := eX.symm.compactSpace
+  let _ : T2Space Y.Carrier := eY.symm.t2Space
+  let _ : SecondCountableTopology Y.Carrier := eY.secondCountableTopology
+  let _ : CompactSpace Y.Carrier := eY.symm.compactSpace
+  obtain ⟨dX⟩ := hSmooth X.Carrier ⟨eX.toHomotopyEquiv⟩
+  obtain ⟨dY⟩ := hSmooth Y.Carrier ⟨eY.toHomotopyEquiv⟩
+  exact ⟨dX.trans dY.symm⟩
 
 /-- A relation that an eventual geometric theory may instantiate by smooth h-cobordism. -/
 public structure SmoothHCobordismRelation where

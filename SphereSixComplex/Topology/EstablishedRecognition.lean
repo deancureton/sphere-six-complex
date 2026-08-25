@@ -24,14 +24,22 @@ public axiom establishedHomologyToHomotopySixSphere
     [ChartedSpace RealModel X] :
     HomologyToHomotopySixSphereObligation X
 
+/-- The standard-model smooth Poincare theorem in dimension six. -/
+public axiom establishedSmoothPoincareSixStandardModel :
+    SmoothPoincareSixStandardModel
+
 /-- Smale's generalized topological Poincare theorem in dimension six. -/
-public axiom establishedGeneralizedTopologicalPoincareSix :
-    GeneralizedTopologicalPoincareSix
+public theorem establishedGeneralizedTopologicalPoincareSix :
+    GeneralizedTopologicalPoincareSix :=
+  generalizedTopologicalPoincareSix_of_smoothPoincareSixStandardModel
+    establishedSmoothPoincareSixStandardModel
 
 /-- The h-cobordism theorem and the Kervaire--Milnor computation `Theta_6 = 0`, stated as their
 exact consequence for unoriented smooth structures on a topological six-sphere. -/
-public axiom establishedMarkedSmoothSixSphereClassesTrivial :
-    MarkedSmoothSixSphere.DiffeomorphismClassesTrivial
+public theorem establishedMarkedSmoothSixSphereClassesTrivial :
+    MarkedSmoothSixSphere.DiffeomorphismClassesTrivial :=
+  markedSmoothSixSphereClassesTrivial_of_smoothPoincareSixStandardModel
+    establishedSmoothPoincareSixStandardModel
 
 /-- The three classical stages imply smooth Poincare in dimension six. -/
 public theorem establishedSmoothPoincareSix
