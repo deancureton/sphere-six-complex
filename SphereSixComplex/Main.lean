@@ -274,6 +274,7 @@ public import SphereSixComplex.TriangleGroup.FuchsianProperFreeness
 public import SphereSixComplex.TriangleGroup.FuchsianOneFixedCommutation
 public import SphereSixComplex.TriangleGroup.FuchsianTwoFixedCommutation
 public import SphereSixComplex.TriangleGroup.Representation
+public import SphereSixComplex.Topology.SectionSevenStageTopDegree
 
 /-!
 # A Complex Structure on the Six-Sphere
