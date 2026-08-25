@@ -281,6 +281,7 @@ public import SphereSixComplex.Topology.PaperCuspGeometricSpecialization
 public import SphereSixComplex.Topology.SingularSubdivisionIteration
 public import SphereSixComplex.Topology.EstablishedEquivariantUniversalCover
 public import SphereSixComplex.Topology.PaperActualAffineCoreData
+public import SphereSixComplex.Topology.SectionSevenStageTopDegree
 
 /-!
 # A Complex Structure on the Six-Sphere
