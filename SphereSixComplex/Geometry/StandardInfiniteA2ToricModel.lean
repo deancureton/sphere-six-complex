@@ -2,6 +2,7 @@ module
 
 public import SphereSixComplex.Geometry.CuspFilling
 public import SphereSixComplex.ComplexStructure
+public import Mathlib.AlgebraicTopology.FundamentalGroupoid.SimplyConnected
 import Mathlib.Topology.Algebra.IsOpenUnits
 import Mathlib.Geometry.Manifold.Algebra.Structures
 
@@ -115,6 +116,11 @@ public structure Model where
   connected : @ConnectedSpace Carrier topology
   /-- The character associated to the height coordinate. -/
   t : Carrier → ℂ
+  /-- Every positive height sublevel is simply connected. -/
+  localCarrierSimplyConnected :
+    ∀ r, 0 < r →
+      letI := topology
+      SimplyConnectedSpace {p : Carrier // p ∈ t ⁻¹' Metric.ball 0 r}
   /-- The height character is holomorphic. -/
   t_holomorphic :
     letI := topology
