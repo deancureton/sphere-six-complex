@@ -282,6 +282,16 @@ public import SphereSixComplex.Topology.SingularSubdivisionIteration
 public import SphereSixComplex.Topology.EstablishedEquivariantUniversalCover
 public import SphereSixComplex.Topology.PaperActualAffineCoreData
 public import SphereSixComplex.Topology.SectionSevenStageTopDegree
+public import SphereSixComplex.Topology.EstablishedChosenAffineFillings
+public import SphereSixComplex.Topology.EstablishedAffineStarBridge
+public import SphereSixComplex.Topology.PaperActualAffineFillingCoverModels
+public import SphereSixComplex.Topology.FiniteCoverPerfectPairing
+public import SphereSixComplex.Topology.NormalizedWangHomologySplitting
+public import SphereSixComplex.Topology.PaperCuspCollarHomologyBases
+public import SphereSixComplex.Topology.PaperSectionSevenEllipticTwoDiscCoverRealization
+public import SphereSixComplex.Topology.PaperEllipticInteriorNormalizedSplitting
+public import SphereSixComplex.Topology.PaperSectionSevenNormalizedLocalBases
+public import SphereSixComplex.Topology.PaperEllipticInteriorCycleDecomposition
 
 /-!
 # A Complex Structure on the Six-Sphere
