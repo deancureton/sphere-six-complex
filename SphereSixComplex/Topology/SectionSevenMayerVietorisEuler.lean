@@ -63,18 +63,64 @@ public theorem integralHomologyEulerCharacteristicSix_homeomorph
 
 /-- Euler additivity for an open binary cover, together with the finite-generation consequence of
 the Mayer--Vietoris long exact sequence.  This is a standard general singular-homology theorem;
-the local finiteness hypotheses ensure that all displayed ranks are genuine finite ranks. -/
-public axiom establishedIntegralMayerVietorisEulerAdditivitySix
+the local finiteness hypotheses ensure that all displayed ranks are genuine finite ranks.
+
+The union acquires one extra degree.  Writing the Mayer--Vietoris sequence with the vanishing
+`H₇(U) = H₇(V) = H₇(U ∩ V) = 0` inserted, its tail
+
+`0 → H₇(U ∪ V) → H₆(U ∩ V) → H₆(U) ⊕ H₆(V) → H₆(U ∪ V) → ⋯ → H₀(U ∪ V) → 0`
+
+is a finite exact sequence of finitely generated groups, so its alternating rank sum vanishes.
+That identity is exactly the formula below, including the degree-seven correction term; the union
+itself can genuinely carry homology in degree seven, and only degrees above seven vanish.
+
+The correction term is not optional.  Covering `S⁷` by two contractible open sets whose
+intersection is homotopy equivalent to `S⁶` gives pieces satisfying every hypothesis, while
+`H₇(S⁷) = ℤ`: both the truncated dimension bound and the uncorrected identity
+`1 = 1 + 1 - 2` fail for that cover.  See `integralMayerVietorisEulerAdditivitySix_of_topDegreeVanishing`
+for the truncated form, which is available exactly when the union has no seventh homology. -/
+public axiom establishedIntegralMayerVietorisEulerAdditivitySeven
     {X : Type} [TopologicalSpace X] (U V : Set X)
     (hUOpen : IsOpen U) (hVOpen : IsOpen V)
     (hUFinite : IntegralHomologyFiniteSix U)
     (hVFinite : IntegralHomologyFiniteSix V)
     (hInterFinite : IntegralHomologyFiniteSix (U ∩ V : Set X)) :
+    (∀ k, Module.Finite ℤ (IntegralSingularHomology k (U ∪ V : Set X))) ∧
+      (∀ k, 7 < k → Subsingleton (IntegralSingularHomology k (U ∪ V : Set X))) ∧
+      integralHomologyEulerCharacteristicSix (U ∪ V : Set X) =
+        integralHomologyEulerCharacteristicSix U +
+        integralHomologyEulerCharacteristicSix V -
+        integralHomologyEulerCharacteristicSix (U ∩ V : Set X) +
+        (Module.finrank ℤ (IntegralSingularHomology 7 (U ∪ V : Set X)) : ℤ)
+
+/-- The degree-six truncated form of Mayer--Vietoris Euler additivity, available exactly when the
+union has no seventh integral homology.  Every use in the Section 7 calculation goes through this
+theorem, so the top-degree hypothesis stays visible. -/
+public theorem integralMayerVietorisEulerAdditivitySix_of_topDegreeVanishing
+    {X : Type} [TopologicalSpace X] (U V : Set X)
+    (hUOpen : IsOpen U) (hVOpen : IsOpen V)
+    (hUFinite : IntegralHomologyFiniteSix U)
+    (hVFinite : IntegralHomologyFiniteSix V)
+    (hInterFinite : IntegralHomologyFiniteSix (U ∩ V : Set X))
+    (hTop : Subsingleton (IntegralSingularHomology 7 (U ∪ V : Set X))) :
     IntegralHomologyFiniteSix (U ∪ V : Set X) ∧
       integralHomologyEulerCharacteristicSix (U ∪ V : Set X) =
         integralHomologyEulerCharacteristicSix U +
         integralHomologyEulerCharacteristicSix V -
-        integralHomologyEulerCharacteristicSix (U ∩ V : Set X)
+        integralHomologyEulerCharacteristicSix (U ∩ V : Set X) := by
+  obtain ⟨hFinite, hAbove, hEuler⟩ :=
+    establishedIntegralMayerVietorisEulerAdditivitySeven U V hUOpen hVOpen hUFinite hVFinite
+      hInterFinite
+  have hTopRank : Module.finrank ℤ (IntegralSingularHomology 7 (U ∪ V : Set X)) = 0 := by
+    have := hTop
+    exact Module.finrank_zero_of_subsingleton
+  refine ⟨⟨hFinite, ?_⟩, ?_⟩
+  · intro k hk
+    rcases eq_or_lt_of_le (Nat.succ_le_of_lt hk) with hk7 | hk7
+    · exact hk7 ▸ hTop
+    · exact hAbove k hk7
+  · rw [hEuler, hTopRank]
+    simp
 
 namespace OpenEmbeddingStarData
 
@@ -82,6 +128,19 @@ variable (A : OpenEmbeddingStarData)
 
 public abbrev SectionSevenEulerCover :=
   sectionSevenStarOpenCover A.toFourPieceStarGluingData
+
+/-- The three intermediate Mayer--Vietoris unions of the star cover carry no seventh integral
+homology.
+
+This is the exact top-degree hypothesis that makes the degree-six truncated Euler additivity
+formula applicable at each of the three gluing steps; without it the truncated formula is false
+(an `S⁷` cover by two contractible opens is a counterexample).  For the actual analytic star each
+union is an open subset of the completed six-manifold, where the standard dimension bound gives
+the vanishing. -/
+public def SectionSevenStageTopDegreeVanishing : Prop :=
+  ∀ r : Fin 3, Subsingleton (IntegralSingularHomology 7
+    ((A.SectionSevenEulerCover).stage r.castSucc ∪ (A.SectionSevenEulerCover).piece r.succ :
+      Set (GluedSpace A.toFourPieceStarGluingData.glueData)))
 
 /-- The central source is homeomorphic to the first actual open piece. -/
 public noncomputable def centralToSectionSevenEulerPieceHomeomorph :
@@ -135,7 +194,8 @@ seven local source spaces.  No numerical local rank is assumed by this theorem. 
 public theorem integralHomologyEulerCharacteristicSix_eq_localExpression
     (hCentralFinite : IntegralHomologyFiniteSix A.central)
     (hFillingFinite : ∀ i, IntegralHomologyFiniteSix (A.filling i))
-    (hCollarFinite : ∀ i, IntegralHomologyFiniteSix (A.collarSource i)) :
+    (hCollarFinite : ∀ i, IntegralHomologyFiniteSix (A.collarSource i))
+    (hTop : A.SectionSevenStageTopDegreeVanishing) :
     integralHomologyEulerCharacteristicSix
         (GluedSpace A.toFourPieceStarGluingData.glueData) =
       A.sectionSevenLocalEulerExpression := by
@@ -166,9 +226,9 @@ public theorem integralHomologyEulerCharacteristicSix_eq_localExpression
   have hStageZero : IntegralHomologyFiniteSix (C.stage (0 : Fin 4)) :=
     hCentralFinite.homeomorph eCentralStage
   obtain ⟨hUnionZero, hAddZero⟩ :=
-    establishedIntegralMayerVietorisEulerAdditivitySix
+    integralMayerVietorisEulerAdditivitySix_of_topDegreeVanishing
       (C.stage (0 : Fin 4)) (C.piece 1)
-      (C.isOpen_stage 0) (C.isOpen_piece 1) hStageZero (hPiece 0) (hOverlap 0)
+      (C.isOpen_stage 0) (C.isOpen_piece 1) hStageZero (hPiece 0) (hOverlap 0) (hTop 0)
   have hStageOne : IntegralHomologyFiniteSix (C.stage (1 : Fin 4)) :=
     hUnionZero.homeomorph (eNext 0)
   have hAddZero' :
@@ -180,9 +240,9 @@ public theorem integralHomologyEulerCharacteristicSix_eq_localExpression
     simpa using
       (integralHomologyEulerCharacteristicSix_homeomorph (eNext 0)).symm.trans hAddZero
   obtain ⟨hUnionOne, hAddOne⟩ :=
-    establishedIntegralMayerVietorisEulerAdditivitySix
+    integralMayerVietorisEulerAdditivitySix_of_topDegreeVanishing
       (C.stage (1 : Fin 4)) (C.piece 2)
-      (C.isOpen_stage 1) (C.isOpen_piece 2) hStageOne (hPiece 1) (hOverlap 1)
+      (C.isOpen_stage 1) (C.isOpen_piece 2) hStageOne (hPiece 1) (hOverlap 1) (hTop 1)
   have hStageTwo : IntegralHomologyFiniteSix (C.stage (2 : Fin 4)) :=
     hUnionOne.homeomorph (eNext 1)
   have hAddOne' :
@@ -194,9 +254,9 @@ public theorem integralHomologyEulerCharacteristicSix_eq_localExpression
     simpa using
       (integralHomologyEulerCharacteristicSix_homeomorph (eNext 1)).symm.trans hAddOne
   obtain ⟨-, hAddTwo⟩ :=
-    establishedIntegralMayerVietorisEulerAdditivitySix
+    integralMayerVietorisEulerAdditivitySix_of_topDegreeVanishing
       (C.stage (2 : Fin 4)) (C.piece 3)
-      (C.isOpen_stage 2) (C.isOpen_piece 3) hStageTwo (hPiece 2) (hOverlap 2)
+      (C.isOpen_stage 2) (C.isOpen_piece 3) hStageTwo (hPiece 2) (hOverlap 2) (hTop 2)
   have hAddTwo' :
       integralHomologyEulerCharacteristicSix (C.stage (3 : Fin 4)) =
         integralHomologyEulerCharacteristicSix (C.stage (2 : Fin 4)) +
@@ -256,11 +316,12 @@ public theorem integralHomologyEulerCharacteristicSix_eq_two_of_localCalculation
     (hCentralFinite : IntegralHomologyFiniteSix A.central)
     (hFillingFinite : ∀ i, IntegralHomologyFiniteSix (A.filling i))
     (hCollarFinite : ∀ i, IntegralHomologyFiniteSix (A.collarSource i))
+    (hTop : A.SectionSevenStageTopDegreeVanishing)
     (hLocal : A.sectionSevenLocalEulerExpression = 2) :
     integralHomologyEulerCharacteristicSix
         (GluedSpace A.toFourPieceStarGluingData.glueData) = 2 := by
   rw [A.integralHomologyEulerCharacteristicSix_eq_localExpression
-    hCentralFinite hFillingFinite hCollarFinite, hLocal]
+    hCentralFinite hFillingFinite hCollarFinite hTop, hLocal]
 
 namespace SectionSevenMayerVietorisHomologyAssembly
 
@@ -278,12 +339,13 @@ public theorem hasIntegralHomologyOfSixSphere_of_localEulerCalculation
     (hCentralFinite : IntegralHomologyFiniteSix A.central)
     (hFillingFinite : ∀ i, IntegralHomologyFiniteSix (A.filling i))
     (hCollarFinite : ∀ i, IntegralHomologyFiniteSix (A.collarSource i))
+    (hTop : A.SectionSevenStageTopDegreeVanishing)
     (hLocal : A.sectionSevenLocalEulerExpression = 2) :
     HasIntegralHomologyOfSixSphere (A.SectionSevenMayerVietorisSpace) :=
   H.hasIntegralHomologyOfSixSphere_of_closedComplexThreefold
     hManifold hCompact hConnected
       (A.integralHomologyEulerCharacteristicSix_eq_two_of_localCalculation
-        hCentralFinite hFillingFinite hCollarFinite hLocal)
+        hCentralFinite hFillingFinite hCollarFinite hTop hLocal)
 
 end SectionSevenMayerVietorisHomologyAssembly
 
