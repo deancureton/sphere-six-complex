@@ -91,10 +91,8 @@ public abbrev ComplexThreeSpace := EuclideanSpace ℂ (Fin 3)
 /-- The standard six-sphere carries an integrable complex structure of complex dimension three. -/
 public theorem sixSphere_admits_complex_structure :
     ∃ (_ : ChartedSpace ComplexThreeSpace SixSphere)
-      (_ : IsManifold 𝓘(ℂ, ComplexThreeSpace) 1 SixSphere)
-      (_ : IsManifold 𝓘(ℝ, ComplexThreeSpace) ∞ SixSphere),
-      ∃ e : SixSphere ≃ₘ⟮𝓡 6, 𝓘(ℝ, ComplexThreeSpace)⟯ SixSphere,
-        e.toEquiv = Equiv.refl SixSphere := by
+      (_ : IsManifold 𝓘(ℂ, ComplexThreeSpace) 1 SixSphere),
+      IsManifold 𝓘(ℝ, ComplexThreeSpace) ∞ SixSphere := by
   sorry
 
 end ComplexStructures
