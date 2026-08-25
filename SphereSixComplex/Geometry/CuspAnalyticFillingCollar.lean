@@ -2,6 +2,7 @@ module
 
 public import SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 public import SphereSixComplex.Geometry.PaperCentralFamilyTopology
+public import SphereSixComplex.Geometry.LocalDiffeomorphTransport
 import all Mathlib.Geometry.Manifold.LocalDiffeomorph
 
 /-!
@@ -474,16 +475,150 @@ private noncomputable def additiveCuspBundleDiffeomorph
       contMDiff_toFun := additiveCuspBundleHomeomorph_contMDiff W
       contMDiff_invFun := additiveCuspBundleHomeomorph_symm_contMDiff W }
 
+/-! ## The coordinatewise exponential is locally biholomorphic
+
+The dense torus is charted by its open embedding into `ℂ³`, so the exponential cover reads in
+coordinates as `(z₀, z₁, s) ↦ (e^{2πi z₀}, e^{2πi z₁}, e^{2πi s})`.  That map is holomorphic with
+everywhere invertible derivative — the diagonal scaling by the three nonzero numbers
+`2πi e^{2πi ·}` — so the inverse function theorem makes it a local biholomorphism, and the two
+transport lemmas move that back to the manifolds. -/
+
+/-- The scalar `2πi`, the frequency of the cusp exponential. -/
+private noncomputable def twoPiI : ℂ := 2 * Real.pi * Complex.I
+
+private theorem twoPiI_ne_zero : twoPiI ≠ 0 :=
+  mul_ne_zero (mul_ne_zero (by norm_num) (Complex.ofReal_ne_zero.mpr Real.pi_ne_zero))
+    Complex.I_ne_zero
+
+/-- The coordinate representative of the cusp exponential cover. -/
+private noncomputable def expCoords (p : AdditiveCuspCover) : ComplexModel :=
+  denseTorusComplexCoordinates (denseCuspExponentialCover p)
+
+/-- The linear identification of the additive cusp cover `ℂ² × ℂ` with `ℂ³`. -/
+private noncomputable def additiveCoordEquiv : AdditiveCuspCover ≃L[ℂ] ComplexModel :=
+  (ContinuousLinearEquiv.equivOfInverse
+      (ContinuousLinearMap.pi
+        ![(ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin 2 ↦ ℂ) 0).comp
+            (ContinuousLinearMap.fst ℂ (Fin 2 → ℂ) ℂ),
+          (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin 2 ↦ ℂ) 1).comp
+            (ContinuousLinearMap.fst ℂ (Fin 2 → ℂ) ℂ),
+          ContinuousLinearMap.snd ℂ (Fin 2 → ℂ) ℂ])
+      ((ContinuousLinearMap.pi
+          ![ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin 3 ↦ ℂ) 0,
+            ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin 3 ↦ ℂ) 1]).prod
+        (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin 3 ↦ ℂ) 2))
+      (by
+        intro v
+        ext i
+        · fin_cases i <;> rfl
+        · rfl)
+      (by
+        intro v
+        funext i
+        fin_cases i <;> rfl)).trans
+    (PiLp.continuousLinearEquiv 2 ℂ (fun _ : Fin 3 ↦ ℂ)).symm
+
+/-- The exponential in the three coordinates of `ℂ³`. -/
+private noncomputable def expOnThree (x : ComplexModel) : ComplexModel :=
+  WithLp.toLp 2 (fun i ↦ Complex.exp (twoPiI * WithLp.ofLp x i))
+
+private theorem expCoords_eq : expCoords = expOnThree ∘ additiveCoordEquiv := by
+  funext p
+  apply congrArg (WithLp.toLp 2)
+  funext i
+  fin_cases i <;> rfl
+
+private theorem contDiff_expOnThree : ContDiff ℂ ∞ expOnThree := by
+  have h : ContDiff ℂ ∞
+      (fun x : ComplexModel ↦ (fun i ↦ Complex.exp (twoPiI * WithLp.ofLp x i))) := by
+    refine contDiff_pi.mpr fun i ↦ ?_
+    have hcoord : ContDiff ℂ ∞ (fun x : ComplexModel ↦ WithLp.ofLp x i) :=
+      (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin 3 ↦ ℂ) i).contDiff.comp
+        (PiLp.continuousLinearEquiv 2 ℂ (fun _ : Fin 3 ↦ ℂ)).contDiff
+    exact Complex.contDiff_exp.comp (contDiff_const.mul hcoord)
+  exact (PiLp.continuousLinearEquiv 2 ℂ (fun _ : Fin 3 ↦ ℂ)).symm.contDiff.comp h
+
+/-- Diagonal scaling of `ℂ³` by three nonzero factors. -/
+private noncomputable def diagScale (a : Fin 3 → ℂˣ) : ComplexModel ≃L[ℂ] ComplexModel :=
+  ((PiLp.continuousLinearEquiv 2 ℂ (fun _ : Fin 3 ↦ ℂ)).trans
+    (ContinuousLinearEquiv.piCongrRight
+      (fun i ↦ ContinuousLinearEquiv.unitsEquivAut ℂ (a i)))).trans
+    (PiLp.continuousLinearEquiv 2 ℂ (fun _ : Fin 3 ↦ ℂ)).symm
+
+/-- The derivative of the coordinate exponential at a point of `ℂ³`. -/
+private noncomputable def expOnThreeDeriv (x : ComplexModel) : ComplexModel ≃L[ℂ] ComplexModel :=
+  diagScale (fun i ↦ Units.mk0 (twoPiI * Complex.exp (twoPiI * WithLp.ofLp x i))
+    (mul_ne_zero twoPiI_ne_zero (Complex.exp_ne_zero _)))
+
+set_option maxRecDepth 8000 in
+set_option maxHeartbeats 1000000 in
+private theorem hasFDerivAt_expOnThree (x : ComplexModel) :
+    HasFDerivAt expOnThree ((expOnThreeDeriv x : ComplexModel →L[ℂ] ComplexModel)) x := by
+  set c : Fin 3 → ℂ := fun i ↦ twoPiI * Complex.exp (twoPiI * WithLp.ofLp x i) with hc
+  have hpi : HasFDerivAt (fun y : ComplexModel ↦ (fun i ↦ Complex.exp (twoPiI * WithLp.ofLp y i)))
+      (ContinuousLinearMap.pi fun i ↦ (c i) •
+        ((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin 3 ↦ ℂ) i).comp
+          (PiLp.continuousLinearEquiv 2 ℂ (fun _ : Fin 3 ↦ ℂ) :
+            ComplexModel →L[ℂ] (Fin 3 → ℂ)))) x := by
+    refine hasFDerivAt_pi.mpr fun i ↦ ?_
+    set L : ComplexModel →L[ℂ] ℂ :=
+      (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin 3 ↦ ℂ) i).comp
+        (PiLp.continuousLinearEquiv 2 ℂ (fun _ : Fin 3 ↦ ℂ) :
+          ComplexModel →L[ℂ] (Fin 3 → ℂ)) with hL
+    have hcoord : HasFDerivAt (fun y : ComplexModel ↦ WithLp.ofLp y i) L x := L.hasFDerivAt
+    have hmul := hcoord.const_mul twoPiI
+    have hexp := (Complex.hasDerivAt_exp (twoPiI * WithLp.ofLp x i)).comp_hasFDerivAt x hmul
+    have hsmul : Complex.exp (twoPiI * WithLp.ofLp x i) • (twoPiI • L) = c i • L := by
+      rw [smul_smul, hc]
+      congr 1
+      exact mul_comm _ _
+    rwa [hsmul] at hexp
+  have hcomp := (PiLp.continuousLinearEquiv 2 ℂ (fun _ : Fin 3 ↦ ℂ)).symm.hasFDerivAt.comp x hpi
+  refine hcomp.congr_fderiv ?_
+  ext y i
+  show c i * WithLp.ofLp y i = WithLp.ofLp y i * c i
+  exact mul_comm _ _
+
+set_option maxHeartbeats 1000000 in
+private theorem isLocalDiffeomorph_expCoords :
+    IsLocalDiffeomorph (modelWithCornersSelf ℂ AdditiveCuspCover)
+      (modelWithCornersSelf ℂ ComplexModel) ∞ expCoords := by
+  rw [expCoords_eq]
+  refine isLocalDiffeomorph_of_contDiff_of_hasFDerivAt_equiv
+    (contDiff_expOnThree.comp additiveCoordEquiv.contDiff) fun p ↦ ?_
+  refine ⟨additiveCoordEquiv.trans (expOnThreeDeriv (additiveCoordEquiv p)), ?_⟩
+  have hchain :=
+    (hasFDerivAt_expOnThree (additiveCoordEquiv p)).comp p additiveCoordEquiv.hasFDerivAt
+  refine hchain.congr_fderiv ?_
+  apply ContinuousLinearMap.ext
+  intro v
+  rfl
+
+private theorem isLocalDiffeomorph_denseCuspExponentialCover :
+    letI := denseTorusCharts
+    IsLocalDiffeomorph (modelWithCornersSelf ℂ AdditiveCuspCover)
+      (modelWithCornersSelf ℂ ComplexModel) ∞ denseCuspExponentialCover := by
+  refine isLocalDiffeomorph_of_comp_isOpenEmbedding
+    denseTorusComplexCoordinates_isOpenEmbedding ?_
+  exact isLocalDiffeomorph_expCoords
+
 namespace Established
 
 /-- The coordinatewise complex exponential is locally biholomorphic on every open radius
-restriction.  This is the standard finite-product exponential covering theorem. -/
-public axiom denseCuspExponentialCover_isLocalDiffeomorph (r : ℝ) :
+restriction: in the charts of both sides it is
+`(z₀, z₁, s) ↦ (e^{2πi z₀}, e^{2πi z₁}, e^{2πi s})`, whose derivative is the diagonal scaling by
+the nonzero numbers `2πi e^{2πi ·}`. -/
+public theorem denseCuspExponentialCover_isLocalDiffeomorph (r : ℝ) :
     letI := additiveCuspRadiusCoverCharts r
     letI := denseTorusCharts
     IsLocalDiffeomorph (modelWithCornersSelf ℂ AdditiveCuspCover)
       (modelWithCornersSelf ℂ ComplexModel) ∞
-      (fun p : additiveCuspRadiusCover r ↦ denseCuspExponentialCover p)
+      (fun p : additiveCuspRadiusCover r ↦ denseCuspExponentialCover p) := by
+  letI := additiveCuspRadiusCoverCharts r
+  letI := denseTorusCharts
+  exact isLocalDiffeomorph_comp isLocalDiffeomorph_denseCuspExponentialCover
+    (openSubtypeVal_isLocalDiffeomorph
+      ⟨additiveCuspRadiusCover r, additiveCuspRadiusCover_isOpen r⟩)
 
 end Established
 
