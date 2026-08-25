@@ -410,9 +410,9 @@ Glue {uses "cusp-filling"}[the cusp filling] and
 :::theorem "manifold-gluing" (parent := "compact-complex-threefold") (lean := "SphereSixComplex.CrossPieceGluingCompatible, SphereSixComplex.gluingAtlasCompatible_of_crossPiece, SphereSixComplex.pieceInclusion_contMDiff_of_crossPiece, SphereSixComplex.gluedChartedSpace, SphereSixComplex.isManifold_gluedChartedSpace, SphereSixComplex.secondCountableTopology_gluedSpace, SphereSixComplex.compactSpace_gluedSpace, SphereSixComplex.connectedSpace_gluedSpace, SphereSixComplex.Geometry.EstablishedBiholomorphicStarGluing.establishedFourPieceBiholomorphicGluingAtlasCompatible, SphereSixComplex.Geometry.EstablishedComplexToRealManifold.establishedUnderlyingRealIsManifold, SphereSixComplex.PaperGluingData.gluedSecondCountable")
 Compatible atlases on the filling pieces transport to their topological gluing and make the glued
 space a manifold. A countable open gluing of second-countable pieces is second countable, and
-connected pieces with a connected overlap graph give a connected gluing. Compatibility of the
-paper's four biholomorphic pieces and restriction of its complex atlas to the underlying real
-manifold are the two explicit external gluing boundaries. Compactness is a separate construction
+connected pieces with a connected overlap graph give a connected gluing. Restriction of a complex atlas to
+the underlying real manifold is now proved from `ContDiffOn.restrict_scalars`, so compatibility of
+the paper's four biholomorphic pieces is the sole remaining explicit external gluing boundary. Compactness is a separate construction
 obligation, since the open punctured and filling pieces need not themselves be compact.
 :::
 
