@@ -245,6 +245,7 @@ public import SphereSixComplex.Topology.StableFramingStandardSixSphereCover
 public import SphereSixComplex.Topology.SphereFiniteCWModel
 public import SphereSixComplex.Topology.SphereLoopContraction
 public import SphereSixComplex.Topology.SixSphereFiveCubePuncturedContraction
+public import SphereSixComplex.Topology.SixSphereFiveCubeRelativeApproximation
 public import SphereSixComplex.Topology.SixSphereHCobordismAdapter
 public import SphereSixComplex.Topology.SphereSimplyConnected
 public import SphereSixComplex.Topology.StandardSphere
