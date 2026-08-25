@@ -2,7 +2,8 @@
   "challenge_module": "Challenge",
   "solution_module": "Solution",
   "theorem_names": [
-    "sphere_six_admits_complex_structure"
+    "sphere_six_admits_complex_structure",
+    "mathoverflow_1973"
   ],
   "definition_names": [],
   "permitted_axioms": [

@@ -27,13 +27,13 @@ public theorem sphere_six_admits_complex_structure : AdmitsComplexStructure SixS
   sorry
 
 /-- The unit `n`-sphere, defined as `Metric.sphere 0 1` in `EuclideanSpace ℝ (Fin (n + 1))`. -/
-abbrev unitSphere (n : ℕ) : Set (EuclideanSpace ℝ (Fin (n + 1))) := Metric.sphere 0 1
+public abbrev unitSphere (n : ℕ) : Set (EuclideanSpace ℝ (Fin (n + 1))) := Metric.sphere 0 1
 
 /--
 Does the 6-sphere admit a complex structure, i.e. an atlas of holomorphically compatible charts
 relating it to `EuclideanSpace ℂ (Fin 3)`?
 -/
-theorem mathoverflow_1973 :
+public theorem mathoverflow_1973 :
     ∃ atlas : ChartedSpace (EuclideanSpace ℂ (Fin 3)) (unitSphere 6),
       IsManifold 𝓘(ℂ, EuclideanSpace ℂ (Fin 3)) 1 (unitSphere 6) := by
   sorry
