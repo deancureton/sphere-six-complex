@@ -576,10 +576,20 @@ The standard sphere has degree-zero integral homology $`\mathbb Z`; it is the bo
 contractible seven-disk, whose positive-degree integral homology vanishes.
 :::
 
-:::theorem "standard-sphere-positive-homology" (parent := "standard-six-sphere") (lean := "SphereSixComplex.SixSpherePositiveHomologyInputs, SphereSixComplex.establishedSixSpherePositiveHomologyInputs, SphereSixComplex.SixSpherePositiveHomologyInputs.sectionSevenHomologyRealization, SphereSixComplex.establishedSixSphereSectionSevenHomology")
-The positive-degree integral homology of the standard six-sphere is isolated as the exact external
-input `establishedSixSpherePositiveHomologyInputs`; the proved degree-zero comparison then assembles
-the full Section 7 realization.
+:::theorem "standard-sphere-positive-homology" (parent := "standard-six-sphere") (lean := "SphereSixComplex.SixSpherePositiveHomologyInputs, SphereSixComplex.StandardSphereMayerVietorisInputs, SphereSixComplex.standardSphereMayerVietorisInputs, SphereSixComplex.establishedSixSpherePositiveHomologyInputs, SphereSixComplex.SixSpherePositiveHomologyInputs.sectionSevenHomologyRealization, SphereSixComplex.establishedSixSphereSectionSevenHomology")
+The positive-degree integral homology of the standard six-sphere is derived from the two-puncture
+cover of each standard sphere: both punctured spheres are contractible by stereographic projection,
+and their intersection is homotopy equivalent to the sphere of one dimension lower. The
+Mayer--Vietoris boundary gives the suspension shifts $`H_{k+1}(S^{d+1})\cong H_k(S^d)` for
+$`k\ge 1`, the degree-zero augmentation normal form kills $`H_1(S^d)` for $`d\ge 2`, and the
+reduced degree-zero homology of the two-component intersection gives $`H_1(S^1)\cong\mathbb Z`.
+The only external input is the binary open-cover Mayer--Vietoris theorem; the proved degree-zero
+comparison then assembles the full Section 7 realization.
+:::
+
+:::proof "standard-sphere-positive-homology"
+Apply {uses "mayer-vietoris-contract"}[the binary open-cover Mayer--Vietoris sequence] to the
+complements of two antipodal points of $`S^{d+1}` and induct on the dimension from the circle.
 :::
 
 :::theorem "normalized-complex-structure" (parent := "smooth-recognition") (lean := "SphereSixComplex.NormalizedComplexStructure, SphereSixComplex.normalizedComplexStructure_of_diffeomorphicToSixSphere, SphereSixComplex.sixSphere_has_normalizedComplexStructure")

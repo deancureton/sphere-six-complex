@@ -1,21 +1,25 @@
 module
 
 public import SphereSixComplex.Topology.StandardSphereHomologyAssembly
+public import SphereSixComplex.Topology.StandardSphereMayerVietoris
 
 /-!
-# Established integral homology of the standard six-sphere
+# Integral homology of the standard six-sphere
 
-The degreewise singular-homology calculation for a standard sphere is classical, but Mathlib does
-not yet expose the relative-homology or excision theorem needed by the local development. This file
-isolates the positive-degree calculation; the proved degree-zero comparison and local assembly then
-derive the Section 7 graded realization.
+The degreewise singular-homology calculation for a standard sphere is derived in
+`StandardSphereMayerVietoris` from the two-puncture cover of the sphere and the established binary
+open-cover Mayer--Vietoris sequence. The only external input behind the positive-degree calculation
+is therefore `establishedIntegralMayerVietorisExactSequence`; this file assembles it with the proved
+degree-zero comparison into the Section 7 graded realization.
 -/
 
 namespace SphereSixComplex
 
-/-- The classical positive-degree integral homology calculation for the standard six-sphere. -/
-public axiom establishedSixSpherePositiveHomologyInputs :
-    SixSpherePositiveHomologyInputs
+/-- The classical positive-degree integral homology calculation for the standard six-sphere,
+derived from the established Mayer--Vietoris theorem alone. -/
+public theorem establishedSixSpherePositiveHomologyInputs :
+    SixSpherePositiveHomologyInputs :=
+  sixSpherePositiveHomologyInputs_of_mayerVietorisInputs standardSphereMayerVietorisInputs
 
 /-- The standard six-sphere has integral singular homology `ℤ` in degrees zero and six and zero in
 every other degree, derived from the exact Mayer--Vietoris boundary above. -/
