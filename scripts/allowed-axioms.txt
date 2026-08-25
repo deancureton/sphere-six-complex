@@ -16,12 +16,8 @@ sorryAx
 # it.  Classical Hurewicz plus Whitehead; absent from Mathlib.
 SphereSixComplex.establishedHomologyToHomotopySixSphere
 
-# The generalized topological Poincare conjecture in dimension six (Newman, after Smale): a closed
-# topological six-manifold homotopy equivalent to the six-sphere is homeomorphic to it.
-SphereSixComplex.establishedGeneralizedTopologicalPoincareSix
-
-# Kervaire--Milnor: the group of homotopy six-spheres is trivial, so a smooth structure on the
-# six-sphere marked by a homeomorphism is diffeomorphic to the standard one.
-SphereSixComplex.establishedMarkedSmoothSixSphereClassesTrivial
+# The standard-model smooth Poincare theorem in dimension six, combining generalized topological
+# Poincare with the Kervaire--Milnor computation that the group of homotopy six-spheres is trivial.
+SphereSixComplex.establishedSmoothPoincareSixStandardModel
 
 # The gluing step is axiom-free since #33 and #35, so nothing is listed for it here.
