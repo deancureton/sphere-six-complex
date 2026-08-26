@@ -561,7 +561,8 @@ production construction does not consume it.
 :::
 
 :::theorem "section-seven-coherent-realization" (parent := "integral-homology") (lean := "SphereSixComplex.SectionSevenLerayCoherentRealization, SphereSixComplex.SectionSevenLerayCoherentRealization.sectionSevenHomologyRealization, SphereSixComplex.establishedSixSphereSectionSevenHomology, SphereSixComplex.SectionSevenLerayCoherentRealization.hasIntegralHomologyOfSixSphere_established")
-The standard $`S^6` homology calculation is proved from its two-puncture Mayer--Vietoris cover.
+The standard $`S^6` homology calculation is proved by comparing singular chains with the
+simplicial chains of the boundary of the seven-simplex.
 `SectionSevenLerayCoherentRealization X` remains a stronger optional route for the glued space: one
 coherent chain map from the finite Leray model to singular chains, inducing homology isomorphisms
 in every degree. No such realization is constructed for the actual space, but it is not used by
@@ -643,20 +644,17 @@ The standard sphere has degree-zero integral homology $`\mathbb Z`; it is the bo
 contractible seven-disk, whose positive-degree integral homology vanishes.
 :::
 
-:::theorem "standard-sphere-positive-homology" (parent := "standard-six-sphere") (lean := "SphereSixComplex.SixSpherePositiveHomologyInputs, SphereSixComplex.StandardSphereMayerVietorisInputs, SphereSixComplex.standardSphereMayerVietorisInputs, SphereSixComplex.establishedSixSpherePositiveHomologyInputs, SphereSixComplex.SixSpherePositiveHomologyInputs.sectionSevenHomologyRealization, SphereSixComplex.establishedSixSphereSectionSevenHomology")
-The positive-degree integral homology of the standard six-sphere is derived from the two-puncture
-cover of each standard sphere: both punctured spheres are contractible by stereographic projection,
-and their intersection is homotopy equivalent to the sphere of one dimension lower. The
-Mayer--Vietoris boundary gives the suspension shifts $`H_{k+1}(S^{d+1})\cong H_k(S^d)` for
-$`k\ge 1`, the degree-zero augmentation normal form kills $`H_1(S^d)` for $`d\ge 2`, and the
-reduced degree-zero homology of the two-component intersection gives $`H_1(S^1)\cong\mathbb Z`.
-The proved binary open-cover Mayer--Vietoris theorem and degree-zero comparison then assemble the
-full Section 7 realization without another external homology input.
+:::theorem "standard-sphere-positive-homology" (parent := "standard-six-sphere") (lean := "SphereSixComplex.SixSpherePositiveHomologyInputs, SphereSixComplex.boundarySeven_simplicialHomology_isZero_of_pos_of_lt_six, SphereSixComplex.boundarySeven_simplicialHomology_isZero_of_six_lt, SphereSixComplex.sixSphere_integralSingularHomology_isZero_of_boundarySeven, SphereSixComplex.establishedSixSpherePositiveHomologyInputs_proof, SphereSixComplex.establishedSixSpherePositiveHomologyInputs, SphereSixComplex.SixSpherePositiveHomologyInputs.sectionSevenHomologyRealization, SphereSixComplex.establishedSixSphereSectionSevenHomology")
+The positive-degree integral homology of the standard six-sphere is transported from the
+simplicial homology of the boundary of the seven-simplex. The zero-vertex cone contracts degrees
+one through five, normalization and the dimension bound kill degrees above six, and the explicit
+top cycle gives $`\mathbb Z` in degree six. The proved simplicial-to-singular comparison and the
+homeomorphism from the boundary realization to $`S^6` then give the full Section 7 realization.
 :::
 
 :::proof "standard-sphere-positive-homology"
-Apply {uses "mayer-vietoris-contract"}[the binary open-cover Mayer--Vietoris sequence] to the
-complements of two antipodal points of $`S^{d+1}` and induct on the dimension from the circle.
+Transport the elementary boundary-of-simplex calculation through the proved chain comparison and
+the homeomorphism from its realization to the standard six-sphere.
 :::
 
 :::theorem "normalized-complex-structure" (parent := "smooth-recognition") (lean := "SphereSixComplex.NormalizedComplexStructure, SphereSixComplex.normalizedComplexStructure_of_diffeomorphicToSixSphere, SphereSixComplex.sixSphere_has_normalizedComplexStructure")
