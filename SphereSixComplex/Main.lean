@@ -297,6 +297,7 @@ public import SphereSixComplex.Topology.PaperActualAffineCoreData
 public import SphereSixComplex.Topology.SectionSevenStageTopDegree
 public import SphereSixComplex.Topology.CuspCollarTopDegreeVanishing
 public import SphereSixComplex.Topology.EllipticCollarTopDegreeVanishing
+public import SphereSixComplex.Topology.PaperCuspCollarFourTorusFibre
 public import SphereSixComplex.Topology.EstablishedChosenAffineFillings
 public import SphereSixComplex.Topology.EstablishedAffineStarBridge
 public import SphereSixComplex.Topology.PaperActualAffineFillingCoverModels
