@@ -6,6 +6,7 @@ Authors: Paul Lezeau
 module
 
 public import SphereSixComplex.Topology.BinaryOpenCoverMayerVietoris
+public import SphereSixComplex.Topology.SingularExcisionOpenCover
 public import Mathlib.Algebra.Homology.HomologicalComplexBiprod
 public import Mathlib.AlgebraicTopology.SimplicialSet.TopAdj
 
@@ -27,6 +28,67 @@ noncomputable section
 open AlgebraicTopology CategoryTheory Limits TopologicalSpace
 
 namespace SphereSixComplex.BinaryOpenCover
+
+/-! ## Identification with the general small-chain construction -/
+
+/-- The set-valued binary cover associated to two open subsets. -/
+public def binaryCoverFamily {X : TopCat} (U V : Opens X) : Bool → Set X :=
+  fun b ↦ if b then (V : Set X) else (U : Set X)
+
+/-- Every member of the set-valued binary cover is open. -/
+public theorem binaryCoverFamily_isOpen {X : TopCat} (U V : Opens X) :
+    ∀ b, IsOpen (binaryCoverFamily U V b) := by
+  intro b
+  cases b
+  · exact U.2
+  · exact V.2
+
+/-- A lattice cover by `U` and `V` is a set-theoretic cover by the associated Bool family. -/
+public theorem binaryCoverFamily_iUnion {X : TopCat} (U V : Opens X)
+    (hcover : U ⊔ V = ⊤) :
+    ⋃ b, binaryCoverFamily U V b = Set.univ := by
+  ext x
+  simp [binaryCoverFamily]
+  have hx : x ∈ (U ⊔ V : Opens X) := by rw [hcover]; trivial
+  simpa using hx
+
+/-- For a binary cover, the general cover-small singular subcomplex is exactly the join of the
+two singular open-image subcomplexes. -/
+public theorem coverSmallSingularSubcomplex_binaryCoverFamily {X : TopCat}
+    (U V : Opens X) :
+    coverSmallSingularSubcomplex X (binaryCoverFamily U V) = coverUnion U V := by
+  unfold coverSmallSingularSubcomplex binaryCoverFamily coverUnion singularOpenSubcomplex
+  rw [iSup_bool_eq]
+  change
+    SSet.Subcomplex.range (TopCat.toSSet.map (topologicalSubsetInclusion X (V : Set X))) ⊔
+      SSet.Subcomplex.range (TopCat.toSSet.map (topologicalSubsetInclusion X (U : Set X))) =
+    SSet.Subcomplex.range (TopCat.toSSet.map U.inclusion') ⊔
+      SSet.Subcomplex.range (TopCat.toSSet.map V.inclusion')
+  rw [sup_comm]
+  congr 1
+
+/-- The generated binary-cover inclusion is a quasi-isomorphism whenever the opens cover the
+ambient space. -/
+public theorem coverChainInclusion_quasiIso_of_sup_eq_top {X : TopCat}
+    (U V : Opens X) (hcover : U ⊔ V = ⊤) :
+    QuasiIso (coverChainInclusion U V) := by
+  have h := coverSmallChainQuasiIsomorphism_of_openCover X
+    (binaryCoverFamily U V) (binaryCoverFamily_isOpen U V)
+      (binaryCoverFamily_iUnion U V hcover)
+  change QuasiIso
+    (SSet.chainComplexMap (coverSmallSingularSubcomplex X (binaryCoverFamily U V)).ι
+      (AddCommGrpCat.of ℤ)) at h
+  rw [coverSmallSingularSubcomplex_binaryCoverFamily U V] at h
+  exact h
+
+/-- In every degree, the generated binary-cover inclusion induces a homology isomorphism. -/
+public theorem coverChainInclusion_isIso_homologyMap_of_sup_eq_top {X : TopCat}
+    (U V : Opens X) (hcover : U ⊔ V = ⊤) (n : ℕ) :
+    IsIso (HomologicalComplex.homologyMap (coverChainInclusion U V) n) := by
+  let _ : QuasiIso (coverChainInclusion U V) :=
+    coverChainInclusion_quasiIso_of_sup_eq_top U V hcover
+  rw [← quasiIsoAt_iff_isIso_homologyMap]
+  infer_instance
 
 /-! ## Chains of an open subset and their image subcomplex -/
 
@@ -283,18 +345,32 @@ noncomputable def biprodHomologyIso {X : TopCat}
   (homologyFunctor n).mapIso (asIso (biprodForwardChain U V)).symm ≪≫
     (homologyFunctor n).mapBiprod (openSingularChains U) (openSingularChains V)
 
-/-- Subdivision supplies the generated-union homology isomorphism. -/
-noncomputable def unionHomologyIso {X : TopCat} {U V : Opens X}
-    (D : CoverSubdivisionData U V) (n : ℕ) :
+/-- A quasi-isomorphism from cover-generated chains supplies the generated-union homology
+isomorphism. -/
+public noncomputable def unionHomologyIsoOfQuasiIso {X : TopCat} {U V : Opens X}
+    (h : QuasiIso (coverChainInclusion U V)) (n : ℕ) :
     generatedUnionHomology U V n ≅ (integralHomologyFunctor n).obj X := by
   change (homologyFunctor n).obj
       (integralSimplicialChains.obj (coverUnion U V)) ≅
     (homologyFunctor n).obj
       (integralSimplicialChains.obj (TopCat.toSSet.obj X))
-  letI : IsIso (HomologicalComplex.homologyMap (coverChainInclusion U V) n) :=
-    D.isIso_homologyMap n
+  let _ : QuasiIso (coverChainInclusion U V) := h
   let e := asIso (HomologicalComplex.homologyMap (coverChainInclusion U V) n)
   exact e
+
+/-- A subdivision certificate is one way to obtain the generated-union homology isomorphism. -/
+noncomputable def unionHomologyIso {X : TopCat} {U V : Opens X}
+    (D : CoverSubdivisionData U V) (n : ℕ) :
+    generatedUnionHomology U V n ≅ (integralHomologyFunctor n).obj X :=
+  unionHomologyIsoOfQuasiIso D.coverChainInclusion_quasiIso n
+
+/-- An actual open cover supplies the generated-union homology isomorphism without a separate
+subdivision certificate. -/
+public noncomputable def unionHomologyIsoOfCover {X : TopCat} {U V : Opens X}
+    (hcover : U ⊔ V = ⊤) (n : ℕ) :
+    generatedUnionHomology U V n ≅ (integralHomologyFunctor n).obj X :=
+  unionHomologyIsoOfQuasiIso
+    (coverChainInclusion_quasiIso_of_sup_eq_top U V hcover) n
 
 private theorem homology_openMVToBiprodChain {X : TopCat}
     (U V : Opens X) (n : ℕ) :
@@ -443,13 +519,14 @@ private theorem homology_openMVFromBiprodChain_raw_naturality
       ((homologyFunctor n).map_comp
         (coverChainShortComplex U V).g (coverChainInclusion U V))
 
-/-- The three canonical comparison isomorphisms supplied by a subdivision certificate. -/
-noncomputable def openCoverHomologyComparisonOfSubdivision
-    {X : TopCat} {U V : Opens X} (D : CoverSubdivisionData U V) :
+/-- The three canonical comparison isomorphisms supplied by a quasi-isomorphism from
+cover-generated chains. -/
+public noncomputable def openCoverHomologyComparisonOfQuasiIso
+    {X : TopCat} {U V : Opens X} (h : QuasiIso (coverChainInclusion U V)) :
     OpenCoverHomologyComparison U V where
   intersectionIso := intersectionHomologyIso U V
   biprodIso := biprodHomologyIso U V
-  unionIso := unionHomologyIso D
+  unionIso := unionHomologyIsoOfQuasiIso h
   toBiprod_comm n := by
     apply (cancel_epi (intersectionHomologyIso U V n).inv).mp
     rw [(intersectionHomologyIso U V n).inv_hom_id_assoc]
@@ -476,6 +553,25 @@ noncomputable def openCoverHomologyComparisonOfSubdivision
     rw [homologyFunctor_map_comp_mapIso_symm_hom_assoc,
       homology_openMVFromBiprodChain]
     exact homology_openMVFromBiprodChain_raw_naturality U V n
+
+/-- A subdivision certificate is one way to obtain the canonical open-cover comparison. -/
+noncomputable def openCoverHomologyComparisonOfSubdivision
+    {X : TopCat} {U V : Opens X} (D : CoverSubdivisionData U V) :
+    OpenCoverHomologyComparison U V :=
+  openCoverHomologyComparisonOfQuasiIso D.coverChainInclusion_quasiIso
+
+/-- The canonical homology comparison for two open subsets which cover their ambient space. -/
+public noncomputable def openCoverHomologyComparisonOfCover
+    {X : TopCat} {U V : Opens X} (hcover : U ⊔ V = ⊤) :
+    OpenCoverHomologyComparison U V :=
+  openCoverHomologyComparisonOfQuasiIso
+    (coverChainInclusion_quasiIso_of_sup_eq_top U V hcover)
+
+/-- Every binary open cover admits the complete ordinary singular-homology comparison. -/
+public theorem integralOpenCoverComparisonStatement :
+    IntegralOpenCoverComparisonStatement := by
+  intro X U V hcover
+  exact ⟨openCoverHomologyComparisonOfCover hcover⟩
 
 /-- Binary-cover subdivision implies the complete ordinary open-cover comparison. -/
 public theorem integralOpenCoverComparisonStatement_of_binaryOpenCoverSubdivision
