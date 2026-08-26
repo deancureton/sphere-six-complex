@@ -316,6 +316,7 @@ public import SphereSixComplex.Topology.PaperSectionSevenPositiveDegreeRealizati
 public import SphereSixComplex.Topology.PaperSectionSevenCuspBasisReduction
 public import SphereSixComplex.Topology.PaperSectionSevenCuspCoverNaturality
 public import SphereSixComplex.Topology.PaperSectionSevenPositiveDegreeGeometricReduction
+public import SphereSixComplex.Topology.PaperSectionSevenPositiveDegreeCuspReduction
 
 /-!
 # A Complex Structure on the Six-Sphere

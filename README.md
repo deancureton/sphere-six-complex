@@ -18,22 +18,13 @@ Verso Blueprint build, but `SphereSixComplex/Final.lean` still contains the pape
 The library now includes the construction's analytic, gluing, homology, van Kampen, and smooth
 recognition foundations. The Blueprint records the remaining paper-specific obligation.
 
-`exists_paperGluingData` is the sole remaining `sorry`, and
-`toPaperGluingData_of_positiveDegree` reduces it to three inputs:
+`exists_paperGluingData` is the sole remaining development `sorry`. Van Kampen and top-degree
+vanishing are assembled; the remaining target is `SectionSevenPositiveDegreeHomologyAssembly`,
+now reduced to the radial two-disc realization and its marked cusp-cycle comparisons.
 
-1. `HasVanKampenData` for the glued star. The generic van Kampen machinery is proved, and
-   `hasVanKampenData_of_overlapSurjective_of_relations` derives the datum from two geometric
-   facts about the fillings: that each collar surjects on its filling's fundamental group, and
-   the three star filling relations. Both come from a filling cover square (issues #1, #2).
-2. `SectionSevenPositiveDegreeHomologyAssembly`: the actual H₁/H₂ bases and compatibility
-   squares of Section 7 (issues #6, #7).
-3. `SectionSevenStageTopDegreeVanishing`, supplied by
-   `sectionSevenStageTopDegreeVanishing_actual`. Its dimension argument is proved; the cusp collar
-   step rests on the fibre identification recorded in `EstablishedActualCuspRadialClutching.data`.
-
-Past the paper-specific construction, the final recognition step uses three external axioms absent
-from Mathlib: integral Mayer--Vietoris, Hurewicz--Whitehead for smooth manifolds, and the
-standard-model smooth Poincare theorem in dimension six.
+Past the paper-specific construction, the final recognition step uses two external axioms absent
+from Mathlib: Hurewicz--Whitehead for smooth manifolds and the standard-model smooth Poincare
+theorem in dimension six.
 
 While `exists_paperGluingData` remains a `sorry`, `./scripts/check-axioms.sh` sees only the two
 recognition axioms plus `sorryAx`; `./scripts/axiom_inventory.py` statically lists the broader
