@@ -1,13 +1,13 @@
 module
 
-public import SphereSixComplex.Topology.OpenUnionHomotopyEquivalence
+public import SphereSixComplex.Topology.NumeratedCoverHomotopyExcisionProof
 
 /-!
 # Numerated open covers are homotopy excisive
 
-This file records the classical Dold theorem for a numerated two-set cover. The constructive
-interface fixes the inverse of the double-mapping-cylinder collapse pointwise from the
-numeration, so the established boundary contains no paper-specific space or conclusion.
+Dold's theorem for a two-set cover, proved from a partition of unity with closed supports.
+The former open-support interface fixed the inverse of the double-mapping-cylinder collapse
+pointwise, which forced a discontinuous section; see `NumeratedCoverHomotopyExcisionProof`.
 -/
 
 @[expose] public section
@@ -17,20 +17,6 @@ noncomputable section
 open Set Topology
 
 namespace SphereSixComplex
-
-namespace EstablishedGeneralTopology
-
-open OpenUnionHomotopy
-
-universe u
-
-/-- Dold's numerated-cover theorem: the canonical collapse from the double mapping cylinder of
-the two inclusions to their union is a homotopy equivalence. -/
-public axiom numeratedTwoSetCoverHomotopyExcisionData
-    {X : Type u} [TopologicalSpace X] {U V : Set X}
-    (N : TwoSetNumeration U V) : N.HomotopyExcisionData
-
-end EstablishedGeneralTopology
 
 namespace OpenUnionHomotopy
 
@@ -44,11 +30,8 @@ public theorem leftToUnion_isHomotopyEquivalence_of_normal_paracompact
     (U V : Set X) (hU : IsOpen U) (hV : IsOpen V)
     [NormalSpace ↥(U ∪ V)] [ParacompactSpace ↥(U ∪ V)]
     (hinter : IsHomotopyEquivalence (interToRight U V).hom) :
-    IsHomotopyEquivalence (leftToUnion U V).hom := by
-  let N := Classical.choice (exists_twoSetNumeration U V hU hV)
-  let D := EstablishedGeneralTopology.numeratedTwoSetCoverHomotopyExcisionData N
-  exact leftToUnion_isHomotopyEquivalence U V hU hV hinter
-    (TwoSetNumeration.HomotopyExcisionData.isHomotopyExcisiveSpan N D hU hV)
+    IsHomotopyEquivalence (leftToUnion U V).hom :=
+  ClosedCover.leftToUnion_isHomotopyEquivalence_of_normal_paracompact_proved U V hU hV hinter
 
 end OpenUnionHomotopy
 
