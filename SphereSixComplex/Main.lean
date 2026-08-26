@@ -234,6 +234,7 @@ public import SphereSixComplex.Topology.NormalizedComplexStructure
 public import SphereSixComplex.Topology.SingularHomologyDegreeZero
 public import SphereSixComplex.Topology.SmoothSixSphereClassification
 public import SphereSixComplex.Topology.SmoothRecognition
+public import SphereSixComplex.Topology.CollarProductVanishing
 public import SphereSixComplex.Topology.SmoothRecognitionFoundations
 public import SphereSixComplex.Topology.SphereFiniteCWModel
 public import SphereSixComplex.Topology.SphereLoopContraction
