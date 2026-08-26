@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
-"""Fail if a proof placeholder appears outside the two declared boundaries.
+"""Fail if a proof placeholder appears outside the three declared boundaries.
 
 Project policy (#11) is that no `sorry`, `admit`, or `native_decide` survives except:
 
-* the single paper-specific gluing `sorry` in `SphereSixComplex/Final.lean`, and
-* the trusted Comparator challenge statements in `Challenge.lean`.
+* `SphereSixComplex.exists_paperGluingData` in `SphereSixComplex/Final.lean`, and
+* the two trusted Comparator challenge declarations in `Challenge.lean`.
 
-Both are listed in ALLOWED below, with the exact number of occurrences expected, so that a new
-placeholder anywhere — including a second one in `Final.lean` — is a failure rather than a silent
-regression. Comments and docstrings are ignored, so prose like "germs admit a comparison" does not
-trip the check.
+Each allowed `(file, declaration, token)` is listed below with its exact count, so relocating or
+substituting a placeholder fails even when the total in that file is unchanged. Comments and
+docstrings are ignored, so prose like "germs admit a comparison" does not trip the check.
 """
 
 from __future__ import annotations
@@ -20,14 +19,22 @@ import sys
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir)
 
-#: file -> number of placeholder occurrences that are expected and accepted.
+#: Exact (file, enclosing declaration, token) identities accepted once each.
 ALLOWED = {
-    "SphereSixComplex/Final.lean": 1,
-    "Challenge.lean": 2,
+    ("SphereSixComplex/Final.lean", "exists_paperGluingData", "sorry"),
+    ("Challenge.lean", "sphere_six_admits_complex_structure", "sorry"),
+    ("Challenge.lean", "mathoverflow_1973", "sorry"),
 }
 
 TOKEN_RE = re.compile(r"(?<![\w.])(sorry|admit|native_decide)(?![\w'])")
-LINE_COMMENT_RE = re.compile(r"--.*$")
+LINE_COMMENT_RE = re.compile(r"--.*$", re.MULTILINE)
+DECL_RE = re.compile(
+    r"^(?:@\[[^\n]*\][ \t]*)?"
+    r"(?:(?:public|private|protected|noncomputable|unsafe)[ \t]+)*"
+    r"(?:(?:theorem|lemma|def|abbrev|instance|axiom|opaque|structure|class|inductive)"
+    r"[ \t]+(?P<name>[A-Za-z_][\w'.]*)|example\b)",
+    re.MULTILINE,
+)
 
 
 def strip_comments(source: str) -> str:
@@ -57,32 +64,41 @@ def sources() -> list[str]:
     return sorted(found)
 
 
+def check_source(path: str, source: str) -> list[str]:
+    """Compare one source against its exact declaration-level allowance."""
+    text = strip_comments(source)
+    headers = iter(DECL_RE.finditer(text))
+    next_header = next(headers, None)
+    declaration = "<outside declaration>"
+    seen: set[tuple[str, str, str]] = set()
+    failures: list[str] = []
+    for match in TOKEN_RE.finditer(text):
+        while next_header is not None and next_header.start() < match.start():
+            declaration = next_header.group("name") or "<anonymous example>"
+            next_header = next(headers, None)
+        key = (path, declaration, match.group(1))
+        if key not in ALLOWED or key in seen:
+            line = text.count("\n", 0, match.start()) + 1
+            failures.append(f"  {path}:{line}: {key[2]} in {declaration}")
+        seen.add(key)
+    for expected in sorted(key for key in ALLOWED if key[0] == path):
+        if expected not in seen:
+            failures.append(f"  {path}: expected {expected[2]} in {expected[1]}, found none")
+    return failures
+
+
 def main() -> int:
     failures: list[str] = []
     for path in sources():
         with open(os.path.join(ROOT, path), encoding="utf-8") as handle:
-            text = strip_comments(handle.read())
-        hits = [
-            (number, match.group(1))
-            for number, line in enumerate(text.splitlines(), start=1)
-            for match in TOKEN_RE.finditer(LINE_COMMENT_RE.sub("", line))
-        ]
-        budget = ALLOWED.get(path, 0)
-        if len(hits) > budget:
-            for number, token in hits[budget:]:
-                failures.append(f"  {path}:{number}: {token}")
-        elif len(hits) < budget:
-            failures.append(
-                f"  {path}: expected {budget} declared placeholder(s), found {len(hits)}"
-                " — update ALLOWED in scripts/check-sorries.py"
-            )
+            failures.extend(check_source(path, handle.read()))
 
     if failures:
         print("Placeholder check FAILED:")
         print("\n".join(failures))
         return 1
 
-    total = sum(ALLOWED.values())
+    total = len(ALLOWED)
     print(f"Placeholder check passed: {total} declared placeholder(s), none elsewhere.")
     return 0
 
