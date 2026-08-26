@@ -317,6 +317,7 @@ public import SphereSixComplex.Topology.PaperSectionSevenCuspBasisReduction
 public import SphereSixComplex.Topology.PaperSectionSevenCuspCoverNaturality
 public import SphereSixComplex.Topology.PaperSectionSevenPositiveDegreeGeometricReduction
 public import SphereSixComplex.Topology.PaperSectionSevenPositiveDegreeCuspReduction
+public import SphereSixComplex.Topology.PaperSectionSevenEllipticBaseCoordinate
 
 /-!
 # A Complex Structure on the Six-Sphere

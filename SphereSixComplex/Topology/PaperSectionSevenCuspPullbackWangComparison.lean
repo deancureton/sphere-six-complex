@@ -128,6 +128,53 @@ public theorem actualCuspSecondWangBoundaryCoordinateHom_eq_rawCoordinate (A : P
   intro x
   rfl
 
+/-- The actual Wang connecting class before restricting to monodromy invariants or taking a
+coordinate. -/
+public noncomputable def actualCuspWangBoundary
+    (A : PaperAnalyticData)
+    (x : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0)) :
+    let G := A.actualCuspRadialClutchingData
+    let _ := G.fiberTopology
+    IntegralSingularHomology 1 G.Fiber := by
+  let G := A.actualCuspRadialClutchingData
+  letI := G.fiberTopology
+  let P := circleMappingTorusHTwoPresentation G.clutching
+  exact P.boundary (integralSingularHomologyEquivOfHomotopyEquiv 2 G.totalHomotopyEquiv x)
+
+/-- The second invariant Wang coordinate is the fourth marked fibre coordinate of the actual
+Wang connecting class. -/
+public theorem actualCuspSecondWangBoundaryCoordinateHom_apply_eq_fiberCoordinate
+    (A : PaperAnalyticData)
+    (x : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0)) :
+    actualCuspSecondWangBoundaryCoordinateHom A x =
+      let G := A.actualCuspRadialClutchingData
+      let _ := G.fiberTopology
+      G.monodromyCoordinates.degreeOne (actualCuspWangBoundary A x) 3 := by
+  rfl
+
+/-- The elliptic invariant coordinate is the fourth marked coordinate of the boundary in the
+actual band overlap. -/
+public theorem cuspPulledBackBoundaryCoordinateHom_apply_eq_bandCoordinate
+    (N : A.EllipticBandHomologyAlignment D)
+    (x : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0)) :
+    D.cuspPulledBackBoundaryCoordinateHom N x =
+      N.actualHomologyCoordinates.bandOne (D.cuspPulledBackBoundary x) 3 := by
+  rfl
+
+/-- The smallest geometric boundary interface exposed by the current Wang API: the canonical
+Mayer--Vietoris boundary and the Wang connecting class have the same fourth marked fibre
+coordinate.  The Wang theorem currently exposes its connecting map only on homology, so this is
+the strongest chain-comparison statement that can be formulated without choosing a chain-level
+model for that theorem. -/
+public structure SectionSevenCuspMarkedBoundaryComparison
+    (N : A.EllipticBandHomologyAlignment D) : Prop where
+  fourthCoordinate : ∀ x :
+      IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0),
+    N.actualHomologyCoordinates.bandOne (D.cuspPulledBackBoundary x) 3 =
+      let G := A.actualCuspRadialClutchingData
+      let _ := G.fiberTopology
+      G.monodromyCoordinates.degreeOne (actualCuspWangBoundary A x) 3
+
 /-- The one remaining geometric interface: the boundary of the elliptic cover pulled back to the
 actual radial cusp collar is the second invariant coordinate of its Wang boundary.  This is an
 equality of homomorphisms between the two exact-sequence constructions, rather than six unrelated
@@ -137,6 +184,29 @@ public structure SectionSevenCuspPulledBackWangBoundaryComparison
   boundaryCoordinateHom :
     D.cuspPulledBackBoundaryCoordinateHom N =
       actualCuspSecondWangBoundaryCoordinateHom A
+
+/-- Equality of the marked boundary coordinates is exactly the Wang comparison needed by the
+Section 7 basis calculation. -/
+public theorem SectionSevenCuspMarkedBoundaryComparison.toPulledBackWangBoundaryComparison
+    (N : A.EllipticBandHomologyAlignment D)
+    (G : D.SectionSevenCuspMarkedBoundaryComparison N) :
+    D.SectionSevenCuspPulledBackWangBoundaryComparison N where
+  boundaryCoordinateHom := by
+    apply AddMonoidHom.ext
+    intro x
+    rw [D.cuspPulledBackBoundaryCoordinateHom_apply_eq_bandCoordinate,
+      actualCuspSecondWangBoundaryCoordinateHom_apply_eq_fiberCoordinate]
+    exact G.fourthCoordinate x
+
+/-- Conversely, the bundled homomorphism comparison gives the marked boundary comparison. -/
+public theorem SectionSevenCuspPulledBackWangBoundaryComparison.toMarkedBoundaryComparison
+    (N : A.EllipticBandHomologyAlignment D)
+    (G : D.SectionSevenCuspPulledBackWangBoundaryComparison N) :
+    D.SectionSevenCuspMarkedBoundaryComparison N where
+  fourthCoordinate x := by
+    rw [← D.cuspPulledBackBoundaryCoordinateHom_apply_eq_bandCoordinate,
+      ← actualCuspSecondWangBoundaryCoordinateHom_apply_eq_fiberCoordinate,
+      G.boundaryCoordinateHom]
 
 /-- A comparison of the pulled-back cover boundary with the actual cusp Wang coordinate proves
 all five vanishing basis calculations and the positive final boundary calculation. -/
