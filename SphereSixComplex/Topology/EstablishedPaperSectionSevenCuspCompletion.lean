@@ -5,6 +5,8 @@ public import SphereSixComplex.Topology.PaperSectionSevenCuspEllipticMappingToru
 public import SphereSixComplex.Topology.PaperSectionSevenCuspInvariantSuspensionPrismNaturality
 public import SphereSixComplex.Topology.PaperSectionSevenCuspMeridianProjectionNaturality
 public import SphereSixComplex.Topology.PaperSectionSevenCuspWangOpenCoverChainRealization
+public import SphereSixComplex.Topology.PaperSectionSevenCuspPrismGeometricDataProof
+public import SphereSixComplex.Topology.PaperSectionSevenCuspIndexFourPrismCoefficientProof
 
 /-!
 # Established cusp comparison for Section 7
@@ -19,9 +21,12 @@ then supplies the corresponding statements for the actual cusp collar.
 
 noncomputable section
 
+open AlgebraicTopology
+
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 
 open SectionSevenEllipticTwoDiscCoverData
+open SectionSevenEllipticInteriorMarkedCycleData
 
 variable {A : PaperAnalyticData}
 
@@ -36,21 +41,54 @@ public theorem canonicalWangBoundaryNaturality
     R.twoDiscCover
     (EstablishedActualCuspWangOpenCoverChainRealization.realization R.twoDiscCover)
 
-/-- The structural Section 7 cusp model: its reference map and homotopy, meridian projection
-square, explicit singular-cycle basis, chain images, and swept descriptions away from index four. -/
-public axiom cuspEllipticMappingTorusPrismGeometricData
+/-- The two remaining cusp coordinate identities: the meridian is the elliptic degree-one
+generator, and the cusp fibre degree-two classes have the marked normalized elliptic fibre
+coordinate.  Everything else in the Section 7 cusp model is derived. -/
+public structure ActualCuspFiberEllipticCoordinateIdentities
+    (R : A.SectionSevenAffineRadialCompletionInput)
+    (W : R.twoDiscCover.SectionSevenCuspWangBandCompatibility R.homologyAlignment) : Prop where
+  /-- The meridian projection is the elliptic degree-one coordinate. -/
+  degreeOne : (R.twoDiscCover.ellipticInteriorDegreeOneCoordinateHom R.homologyAlignment).comp
+      (integralSingularHomologyMap 1
+        R.twoDiscCover.cuspMappingTorusToEllipticInteriorMap) =
+    let G := A.actualCuspRadialClutchingData
+    let _ := G.fiberTopology
+    coordinateAfterAddEquiv G.geometricWangSections.circleMappingTorusHOneAddEquiv 2
+  /-- The cusp fibre degree-two basis classes have marked elliptic fibre coordinates. -/
+  degreeTwo : ∀ i : Fin 6, i ≠ 5 →
+    R.twoDiscCover.ellipticInteriorDegreeTwoFiberCoordinateHom R.homologyAlignment
+        W.pulledBackBoundaryBasisBridge
+        (integralSingularHomologyMap 2 R.twoDiscCover.cuspToEllipticInteriorMap.hom
+          (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1)))
+      = if i = 4 then 1 else 0
+
+/-- The remaining geometric input for the Section 7 cusp comparison. -/
+public axiom actualCuspFiberEllipticCoordinateIdentities
+    (R : A.SectionSevenAffineRadialCompletionInput)
+    (W : R.twoDiscCover.SectionSevenCuspWangBandCompatibility R.homologyAlignment) :
+    ActualCuspFiberEllipticCoordinateIdentities R W
+
+/-- The structural Section 7 cusp model, derived from the two coordinate identities. -/
+public noncomputable def cuspEllipticMappingTorusPrismGeometricData
     (R : A.SectionSevenAffineRadialCompletionInput)
     (W : R.twoDiscCover.SectionSevenCuspWangBandCompatibility R.homologyAlignment) :
     R.twoDiscCover.CuspEllipticMappingTorusPrismGeometricData R.homologyAlignment
-      W.pulledBackBoundaryBasisBridge
+      W.pulledBackBoundaryBasisBridge :=
+  cuspEllipticMappingTorusPrismGeometricData_proved_of_coordinateIdentities R W
+    (actualCuspFiberEllipticCoordinateIdentities R W).degreeOne
+    (fun i hi4 hi5 => by
+      have h := (actualCuspFiberEllipticCoordinateIdentities R W).degreeTwo i hi5
+      simp only [hi4, ↓reduceIte] at h
+      exact h)
 
-/-- The remaining orientation calculation: the fourth target prism has coefficient one on the
-first normalized elliptic-interior degree-two basis class. -/
-public axiom normalizedIndexFourPrismCoefficientCalculation
+/-- The orientation calculation at index four, derived from the same coordinate identities. -/
+public theorem normalizedIndexFourPrismCoefficientCalculation
     (R : A.SectionSevenAffineRadialCompletionInput)
     (W : R.twoDiscCover.SectionSevenCuspWangBandCompatibility R.homologyAlignment) :
     R.twoDiscCover.NormalizedIndexFourPrismCoefficientCalculation
-      (cuspEllipticMappingTorusPrismGeometricData R W)
+      (cuspEllipticMappingTorusPrismGeometricData R W) :=
+  normalizedIndexFourPrismCoefficientCalculation_of_actualCuspFiberCoordinate R W _
+    (by simpa using (actualCuspFiberEllipticCoordinateIdentities R W).degreeTwo 4 (by decide))
 
 end EstablishedSectionSevenCuspTopology
 
