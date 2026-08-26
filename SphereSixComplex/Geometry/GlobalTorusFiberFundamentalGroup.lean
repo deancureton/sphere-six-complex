@@ -948,4 +948,97 @@ public theorem regularFamilyDeckPathLoop_conjugates_period
     _ = pathLoopClass ((regularFamilyPeriodLoop F p (rhoLambda g a)).map
           (regularFamilyQuotientMap F).continuous) := htransport.symm
 
+set_option backward.isDefEq.respectTransparency.types false in
+/-- Conjugation of a labelled period depends only on the outer deck label of the loop.
+
+This is the class-level form of `regularFamilyDeckPathLoop_conjugates_period`: an arbitrary
+based loop is lifted through the regular-family covering, and its endpoint is identified from
+the covering monodromy.  It is useful when the loop is specified geometrically rather than by
+an already chosen path between two deck-related representatives. -/
+public theorem fundamentalGroup_conjugates_period_of_outerDeck
+    (hsource : U.sourceAction = fuchsianSourceAction)
+    (hproper : SourceActionProperlyDiscontinuous (U := U))
+    (g : Delta) (p : RegularBase (U := U) × ComplexTwoSpace)
+    (delta : FundamentalGroup (PuncturedGlobalFamily F)
+      (regularFamilyQuotientMap F (regularFamilyCoverProjection F p)))
+    (hdelta :
+      letI := regularFamilyDeckAction F
+      let hp := regularFamilyQuotientMap_isQuotientCoveringMap F hsource hproper
+      hp.fundamentalGroupToMulOpposite
+          ⟨regularFamilyCoverProjection F p, rfl⟩ delta = MulOpposite.op g)
+    (a : IntegerPeriods) :
+    delta⁻¹ *
+        pathLoopClass ((regularFamilyPeriodLoop F p a).map
+          (regularFamilyQuotientMap F).continuous) *
+        delta =
+      pathLoopClass ((regularFamilyPeriodLoop F p (rhoLambda g a)).map
+        (regularFamilyQuotientMap F).continuous) := by
+  let _ := regularFamilyDeckAction F
+  let hp := regularFamilyQuotientMap_isQuotientCoveringMap F hsource hproper
+  let x := regularFamilyCoverProjection F p
+  let e : (regularFamilyQuotientMap F) ⁻¹'
+      {regularFamilyQuotientMap F x} := ⟨x, rfl⟩
+  induction delta using Quotient.ind with
+  | _ P =>
+      have hmove := (hp.fundamentalGroupToMulOpposite_apply_eq_Iff).mp hdelta
+      have hend : regularFamilyDeckMap F g x =
+          hp.isCoveringMap.liftPath P x (P.source.trans rfl) 1 := by
+        have hmono :
+            (hp.isCoveringMap.monodromy
+                (Path.Homotopic.Quotient.mk P) e : RegularTotalSpace F) =
+              hp.isCoveringMap.liftPath P x (P.source.trans rfl) 1 := rfl
+        change regularFamilyDeckMap F g x =
+          (hp.isCoveringMap.monodromy
+            (Path.Homotopic.Quotient.mk P) e : RegularTotalSpace F) at hmove
+        have hmove' : regularFamilyDeckMap F g x =
+            (hp.isCoveringMap.monodromy
+              (Path.Homotopic.Quotient.mk P) e : RegularTotalSpace F) := by
+          simpa only [MulOpposite.unop_op] using hmove
+        exact hmove'.trans hmono
+      let W : Path x (regularFamilyDeckMap F g x) := {
+        toFun := hp.isCoveringMap.liftPath P x (P.source.trans rfl)
+        continuous_toFun := by fun_prop
+        source' := hp.isCoveringMap.liftPath_zero P x (P.source.trans rfl)
+        target' := hend.symm
+      }
+      have hloop : regularFamilyDeckPathLoop F g p W = P := by
+        apply Path.ext
+        funext t
+        change regularFamilyQuotientMap F
+            (hp.isCoveringMap.liftPath P x (P.source.trans rfl) t) = P t
+        exact congrFun
+          (hp.isCoveringMap.liftPath_lifts P x (P.source.trans rfl)) t
+      have hconj :=
+        regularFamilyDeckPathLoop_conjugates_period F hproper g p W a
+      rw [hloop] at hconj
+      exact eq_of_heq (heq_of_eq hconj)
+
+set_option backward.isDefEq.respectTransparency.types false in
+/-- Basepoint-equality form of `fundamentalGroup_conjugates_period_of_outerDeck`. -/
+public theorem fundamentalGroup_conjugates_period_of_outerDeck_of_baseEq
+    (hsource : U.sourceAction = fuchsianSourceAction)
+    (hproper : SourceActionProperlyDiscontinuous (U := U))
+    (g : Delta) (p : RegularBase (U := U) × ComplexTwoSpace)
+    {z : PuncturedGlobalFamily F}
+    (hbase : regularFamilyQuotientMap F (regularFamilyCoverProjection F p) = z)
+    (delta : FundamentalGroup (PuncturedGlobalFamily F) z)
+    (hdelta :
+      letI := regularFamilyDeckAction F
+      let hp := regularFamilyQuotientMap_isQuotientCoveringMap F hsource hproper
+      hp.fundamentalGroupToMulOpposite
+          ⟨regularFamilyCoverProjection F p, hbase⟩ delta = MulOpposite.op g)
+    (a : IntegerPeriods) :
+    delta⁻¹ *
+        (show FundamentalGroup (PuncturedGlobalFamily F) z from
+          Path.Homotopic.Quotient.cast
+            (pathLoopClass ((regularFamilyPeriodLoop F p a).map
+              (regularFamilyQuotientMap F).continuous)) hbase.symm hbase.symm) *
+        delta =
+      (show FundamentalGroup (PuncturedGlobalFamily F) z from
+        Path.Homotopic.Quotient.cast
+          (pathLoopClass ((regularFamilyPeriodLoop F p (rhoLambda g a)).map
+            (regularFamilyQuotientMap F).continuous)) hbase.symm hbase.symm) := by
+  subst z
+  exact fundamentalGroup_conjugates_period_of_outerDeck F hsource hproper g p delta hdelta a
+
 end SphereSixComplex.Geometry.GlobalTorusFamily

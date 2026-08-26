@@ -274,6 +274,93 @@ public theorem actualCuspCentralTranslation_eq_periodLoop (a : Lattice) :
         (A.actualCuspBoundaryTranslationCentralLoop_eq_periodLoop a)
 
 set_option backward.isDefEq.respectTransparency.types false in
+/-- Any loop at the actual cusp point acts on the actual period translations through its
+outer triangle-group deck label. -/
+public theorem actualCuspCentralLoop_conjugates_translation_of_outerDeck
+    (g : Delta)
+    (delta : FundamentalGroup A.CentralFamily A.actualCuspCentralBase)
+    (hdelta :
+      letI := regularFamilyDeckAction A.periods
+      let hp := regularFamilyQuotientMap_isQuotientCoveringMap A.periods
+        A.modular.modularParameter.toTriangleUniformization_sourceAction
+        (sourceActionProperlyDiscontinuous_of_eq
+          A.modular.modularParameter.toTriangleUniformization_sourceAction)
+      hp.fundamentalGroupToMulOpposite
+          ⟨A.actualCuspRegularRepresentative,
+            A.actualCuspRegularRepresentative_projects⟩ delta = MulOpposite.op g)
+    (a : Lattice) :
+    delta⁻¹ * Additive.toMul (A.actualCuspCentralTranslation a) * delta =
+      Additive.toMul (A.actualCuspCentralTranslation (rhoLambda g a)) := by
+  rw [A.actualCuspCentralTranslation_eq_periodLoop,
+    A.actualCuspCentralTranslation_eq_periodLoop]
+  exact fundamentalGroup_conjugates_period_of_outerDeck_of_baseEq A.periods
+    A.modular.modularParameter.toTriangleUniformization_sourceAction
+    (sourceActionProperlyDiscontinuous_of_eq
+      A.modular.modularParameter.toTriangleUniformization_sourceAction)
+    g A.actualCuspRegularCoverPoint A.actualCuspRegularRepresentative_projects
+    delta hdelta a
+
+/-- The ordinary (non-opposite) deck label of the clockwise inverse of the first geometric
+finite meridian. -/
+public noncomputable def geometricCentralClockwiseOneDeck : Delta :=
+  MulOpposite.unop
+    (A.actualCuspOuterDeckHom A.geometricCentralRhoOne⁻¹)
+
+/-- The analogous clockwise deck label at the order-four puncture. -/
+public noncomputable def geometricCentralClockwiseTwoDeck : Delta :=
+  MulOpposite.unop
+    (A.actualCuspOuterDeckHom A.geometricCentralRhoTwo⁻¹)
+
+/-- The first geometric meridian acts on actual cusp translations through its exact, retained
+outer deck label. -/
+public theorem geometricCentralRhoOne_conjugates_actualTranslation (a : Lattice) :
+    A.geometricCentralRhoOne *
+        Additive.toMul (A.actualCuspCentralTranslation a) *
+        A.geometricCentralRhoOne⁻¹ =
+      Additive.toMul (A.actualCuspCentralTranslation
+        (rhoLambda A.geometricCentralClockwiseOneDeck a)) := by
+  simpa only [inv_inv] using
+    (A.actualCuspCentralLoop_conjugates_translation_of_outerDeck
+      A.geometricCentralClockwiseOneDeck A.geometricCentralRhoOne⁻¹ rfl a)
+
+/-- The second geometric meridian has the analogous labelled action. -/
+public theorem geometricCentralRhoTwo_conjugates_actualTranslation (a : Lattice) :
+    A.geometricCentralRhoTwo *
+        Additive.toMul (A.actualCuspCentralTranslation a) *
+        A.geometricCentralRhoTwo⁻¹ =
+      Additive.toMul (A.actualCuspCentralTranslation
+        (rhoLambda A.geometricCentralClockwiseTwoDeck a)) := by
+  simpa only [inv_inv] using
+    (A.actualCuspCentralLoop_conjugates_translation_of_outerDeck
+      A.geometricCentralClockwiseTwoDeck A.geometricCentralRhoTwo⁻¹ rfl a)
+
+/-- The retained clockwise labels multiply to the positive peripheral word.  This is the exact
+deck-level shadow of the geometric pair-of-pants relation. -/
+public theorem geometricCentralClockwiseDeck_mul :
+    A.geometricCentralClockwiseOneDeck *
+        A.geometricCentralClockwiseTwoDeck = g₁ * g₂ := by
+  apply MulOpposite.op_injective
+  rw [MulOpposite.op_mul]
+  unfold geometricCentralClockwiseOneDeck geometricCentralClockwiseTwoDeck
+  simp only [MulOpposite.op_unop]
+  calc
+    A.actualCuspOuterDeckHom A.geometricCentralRhoTwo⁻¹ *
+          A.actualCuspOuterDeckHom A.geometricCentralRhoOne⁻¹ =
+        A.actualCuspOuterDeckHom
+          ((A.geometricCentralRhoOne * A.geometricCentralRhoTwo)⁻¹) := by
+      simp only [map_inv, map_mul, mul_inv_rev]
+    _ = A.actualCuspOuterDeckHom A.actualCuspCentralMeridian⁻¹ := by
+      rw [A.actualCuspCentralMeridian_eq_geometricRhoProduct]
+    _ = (MulOpposite.op g₀)⁻¹ := by
+      rw [map_inv, A.actualCuspOuterDeckHom_meridian]
+    _ = MulOpposite.op (g₁ * g₂) := by
+      rw [← MulOpposite.op_inv]
+      congr 1
+      have h := congrArg Inv.inv
+        (inv_eq_of_mul_eq_one_right g₁_mul_g₂_mul_g₀)
+      simpa only [inv_inv] using h.symm
+
+set_option backward.isDefEq.respectTransparency.types false in
 /-- The literal cusp meridian acts on the literal cusp translations by the prescribed
 parabolic lattice monodromy.  This is the paper's usual conjugation formula, written in
 Mathlib's reversed path-composition convention. -/

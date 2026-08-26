@@ -148,7 +148,7 @@ public theorem actualCuspAngularCentralLoop_eq_actualRegularDeckLoop :
     A.actualCuspAngularCentralLoop =
       A.actualCuspRegularDeckLoop.cast
           A.actualCuspRegularRepresentative_projects.symm
-          A.actualCuspRegularRepresentative_projects.symm := by
+      A.actualCuspRegularRepresentative_projects.symm := by
   apply Path.ext
   funext t
   change A.actualCuspOverlapToCentral
@@ -158,6 +158,19 @@ public theorem actualCuspAngularCentralLoop_eq_actualRegularDeckLoop :
       (A.actualCuspBoundaryProjection (A.actualCuspAngularLiftPoint t)) = _
   rw [A.actualCuspOverlapToCentral_boundaryProjection]
   rfl
+
+/-- Outer triangle-group monodromy at the actual cusp representative. -/
+public noncomputable def actualCuspOuterDeckHom :
+    FundamentalGroup A.CentralFamily A.actualCuspCentralBase →*
+      Deltaᵐᵒᵖ := by
+  let _ := regularFamilyDeckAction A.periods
+  let hp := regularFamilyQuotientMap_isQuotientCoveringMap A.periods
+    A.modular.modularParameter.toTriangleUniformization_sourceAction
+    (sourceActionProperlyDiscontinuous_of_eq
+      A.modular.modularParameter.toTriangleUniformization_sourceAction)
+  exact hp.fundamentalGroupToMulOpposite
+    ⟨A.actualCuspRegularRepresentative,
+      A.actualCuspRegularRepresentative_projects⟩
 
 set_option backward.isDefEq.respectTransparency.types false in
 /-- The actual cusp meridian has outer deck label `g₀`. -/
@@ -207,6 +220,10 @@ public theorem actualCuspCentralMeridian_outerDeck :
         Path.Homotopic.Quotient.cast_cast]
       simp only [Path.Homotopic.Quotient.cast_rfl_rfl])
   simpa only [MulOpposite.unop_op] using congrArg Subtype.val hm.symm
+
+public theorem actualCuspOuterDeckHom_meridian :
+    A.actualCuspOuterDeckHom A.actualCuspCentralMeridian = MulOpposite.op g₀ := by
+  exact A.actualCuspCentralMeridian_outerDeck
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 
