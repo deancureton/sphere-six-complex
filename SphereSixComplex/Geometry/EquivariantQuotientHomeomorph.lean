@@ -67,22 +67,41 @@ public theorem orbitQuotientHomeomorph_mk
 
 /-- An open carrier invariant under an explicitly supplied action. -/
 public structure InvariantOpenCarrier (A : MulAction G X) where
-  carrier : Set X
-  isOpen_carrier : IsOpen carrier
-  invariant : ∀ (g : G), MapsTo (actionMap A g) carrier carrier
+  toSubMulAction : letI := A; SubMulAction G X
+  isOpen_carrier : IsOpen (toSubMulAction : Set X)
+
+/-- The underlying carrier, retained as compatibility API for the open-carrier wrapper. -/
+public abbrev InvariantOpenCarrier.carrier
+    {A : MulAction G X} (S : InvariantOpenCarrier A) : Set X :=
+  letI := A
+  S.toSubMulAction.carrier
+
+omit [MulAction G X] in
+/-- Invariance of the underlying carrier, retained as compatibility API. -/
+public theorem InvariantOpenCarrier.invariant
+    {A : MulAction G X} (S : InvariantOpenCarrier A) :
+    ∀ (g : G), MapsTo (actionMap A g) S.carrier S.carrier := by
+  intro g x hx
+  exact S.toSubMulAction.smul_mem' g hx
 
 /-- The action restricted to an invariant open carrier. -/
+@[expose, instance_reducible] public def restrictedMulAction
+  (A : MulAction G X) (S : InvariantOpenCarrier A) : MulAction G S.carrier := by
+  letI := A
+  exact S.toSubMulAction.mulAction
+
 @[expose] public def restrictedActionMap
     {A : MulAction G X} (S : InvariantOpenCarrier A)
     (g : G) (x : S.carrier) : S.carrier :=
-  ⟨actionMap A g x, S.invariant g x.property⟩
+  letI := restrictedMulAction A S
+  g • x
 
 omit [MulAction G X] in
+@[simp]
 public theorem restrictedActionMap_one
     {A : MulAction G X} (S : InvariantOpenCarrier A) (x : S.carrier) :
     restrictedActionMap S 1 x = x := by
-  apply Subtype.ext
-  simp [restrictedActionMap, actionMap]
+  exact (restrictedMulAction A S).one_smul x
 
 omit [MulAction G X] in
 public theorem restrictedActionMap_mul
@@ -90,15 +109,7 @@ public theorem restrictedActionMap_mul
     (g h : G) (x : S.carrier) :
     restrictedActionMap S (g * h) x =
       restrictedActionMap S g (restrictedActionMap S h x) := by
-  apply Subtype.ext
-  simp [restrictedActionMap, actionMap, mul_smul]
-
-@[expose, instance_reducible]
-public def restrictedMulAction (A : MulAction G X) (S : InvariantOpenCarrier A) :
-    MulAction G S.carrier where
-  smul := restrictedActionMap S
-  one_smul := restrictedActionMap_one S
-  mul_smul := restrictedActionMap_mul S
+  exact (restrictedMulAction A S).mul_smul g h x
 
 /-- The orbit relation of the action restricted to an invariant carrier. -/
 @[expose] public def restrictedOrbitRel

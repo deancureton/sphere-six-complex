@@ -2,6 +2,7 @@ module
 
 public import SphereSixComplex.Geometry.CuspToricPhaseAction
 public import SphereSixComplex.Periods.FuchsianPeriodAssembly
+public import Mathlib.Analysis.Complex.Periodic
 import all SphereSixComplex.LatticeData
 import all SphereSixComplex.Periods.Functions
 import all SphereSixComplex.Periods.Matrix
@@ -68,15 +69,186 @@ public structure HolomorphicCuspDescent (H : ℝ) (f : ℂ → ℂ) where
 
 namespace Established
 
-/-- The classical removable-singularity theorem for the exponential quotient of a half-plane.
-This is a general one-variable analytic theorem, independent of the period family and of the
-paper's toric construction. -/
-public axiom periodicBoundedHolomorphicCuspDescent
+/- The mathlib periodic API is formulated for globally periodic functions.  A function periodic
+on a half-plane has the canonical zero extension below that half-plane; because real translation
+does not change the imaginary part, this extension is globally periodic and agrees with the
+original function where the latter is used. -/
+public def periodicExtension (H : ℝ) (f : ℂ → ℂ) : ℂ → ℂ :=
+  by
+    classical
+    exact fun s ↦ if s ∈ cuspHalfPlane H then f s else 0
+
+public theorem periodicExtension_periodic
+    (H : ℝ) (f : ℂ → ℂ)
+    (periodic : ∀ s ∈ cuspHalfPlane H, f (s - 1) = f s) :
+    Function.Periodic (periodicExtension H f) 1 := by
+  classical
+  intro s
+  by_cases hs : s ∈ cuspHalfPlane H
+  · have hs' : s + 1 ∈ cuspHalfPlane H := by
+      simpa [cuspHalfPlane] using hs
+    change H < s.im at hs
+    change H < (s + 1).im at hs'
+    have hs'' : H < (1 + s).im := by simpa [add_comm] using hs
+    have hsmem : s ∈ cuspHalfPlane H := hs
+    have hs'mem : 1 + s ∈ cuspHalfPlane H := hs''
+    have hsplusmem : s + 1 ∈ cuspHalfPlane H := hs'
+    simp [periodicExtension, hsplusmem, hsmem]
+    have hp := periodic (s + 1) hs'
+    convert hp.symm using 1; ring_nf
+  · have hs' : s + 1 ∉ cuspHalfPlane H := by
+      simpa [cuspHalfPlane] using hs
+    change ¬ H < s.im at hs
+    change ¬ H < (s + 1).im at hs'
+    have hs'' : ¬ H < (1 + s).im := by simpa [add_comm] using hs
+    have hsmem : s ∉ cuspHalfPlane H := hs
+    have hs'mem : 1 + s ∉ cuspHalfPlane H := hs''
+    have hsplusmem : s + 1 ∉ cuspHalfPlane H := hs'
+    simp [periodicExtension, hsplusmem, hsmem]
+
+public theorem periodicExtension_eq
+    (H : ℝ) (f : ℂ → ℂ) {s : ℂ} (hs : s ∈ cuspHalfPlane H) :
+    periodicExtension H f s = f s := by
+  classical
+  change H < s.im at hs
+  have hsmem : s ∈ cuspHalfPlane H := hs
+  simp [periodicExtension, hsmem]
+
+public theorem periodicExtension_differentiableAt
+    (H : ℝ) (f : ℂ → ℂ)
+    (holomorphic : DifferentiableOn ℂ f (cuspHalfPlane H))
+    {s : ℂ} (hs : s ∈ cuspHalfPlane H) :
+    DifferentiableAt ℂ (periodicExtension H f) s := by
+  classical
+  have hopen : IsOpen (cuspHalfPlane H) := by
+    exact isOpen_lt continuous_const Complex.continuous_im
+  apply (holomorphic.differentiableAt (hopen.mem_nhds hs)).congr_of_eventuallyEq
+  filter_upwards [hopen.mem_nhds hs] with z hz
+  change H < z.im at hz
+  have hzmem : z ∈ cuspHalfPlane H := hz
+  simp [periodicExtension, hzmem]
+
+public theorem periodicExtension_eventually_differentiableAt
+    (H : ℝ) (f : ℂ → ℂ)
+    (holomorphic : DifferentiableOn ℂ f (cuspHalfPlane H)) :
+    ∀ᶠ s in Filter.comap Complex.im Filter.atTop,
+      DifferentiableAt ℂ (periodicExtension H f) s := by
+  rw [Filter.eventually_comap]
+  filter_upwards [Filter.eventually_gt_atTop H] with y hy s hsy
+  exact periodicExtension_differentiableAt H f holomorphic (by
+    change H < s.im
+    simpa [hsy] using hy)
+
+public theorem periodicExtension_boundedAtFilter
+    (H : ℝ) (f : ℂ → ℂ) (bounded : NormBoundedOn f (cuspHalfPlane H)) :
+    Filter.BoundedAtFilter (Filter.comap Complex.im Filter.atTop)
+      (periodicExtension H f) := by
+  classical
+  obtain ⟨A, hA, hbound⟩ := bounded
+  rw [Filter.BoundedAtFilter]
+  apply Asymptotics.IsBigO.of_bound A
+  rw [Filter.eventually_comap]
+  filter_upwards [Filter.eventually_gt_atTop H] with y hy s hsy
+  have hs : H < s.im := by
+    simpa [hsy] using hy
+  simp only [Pi.one_apply, norm_one, mul_one]
+  change ‖if s ∈ cuspHalfPlane H then f s else 0‖ ≤ A
+  have hs' : s ∈ cuspHalfPlane H := hs
+  simp [hs']
+  exact hbound s hs
+
+/- The local/global bridge: the selected mathlib cusp function is differentiable on the whole
+disc of radius `exp (-2πH)`, even when that radius is larger than the unit disc. -/
+public theorem periodic_cuspFunction_differentiableOn
     (H : ℝ) (f : ℂ → ℂ)
     (holomorphic : DifferentiableOn ℂ f (cuspHalfPlane H))
     (periodic : ∀ s ∈ cuspHalfPlane H, f (s - 1) = f s)
     (bounded : NormBoundedOn f (cuspHalfPlane H)) :
-    Nonempty (HolomorphicCuspDescent H f)
+    DifferentiableOn ℂ
+      (Function.Periodic.cuspFunction 1 (periodicExtension H f))
+      (Metric.ball 0 (cuspRadius H)) := by
+  let g := periodicExtension H f
+  have hgper : Function.Periodic g 1 := periodicExtension_periodic H f periodic
+  have hghol : ∀ᶠ s in Filter.comap Complex.im Filter.atTop,
+      DifferentiableAt ℂ g s := periodicExtension_eventually_differentiableAt H f holomorphic
+  have hgbd : Filter.BoundedAtFilter (Filter.comap Complex.im Filter.atTop) g :=
+    periodicExtension_boundedAtFilter H f bounded
+  have hzero : DifferentiableAt ℂ (Function.Periodic.cuspFunction 1 g) 0 :=
+    Function.Periodic.differentiableAt_cuspFunction_zero one_pos hgper hghol hgbd
+  intro q hq
+  rcases eq_or_ne q 0 with rfl | hq0
+  · exact hzero.differentiableWithinAt
+  · have him : H < (Function.Periodic.invQParam 1 q).im := by
+      rw [← Function.Periodic.norm_qParam_lt_iff one_pos H]
+      rw [Function.Periodic.qParam_right_inv one_ne_zero hq0]
+      simpa [cuspRadius] using hq
+    have hd := Function.Periodic.differentiableAt_cuspFunction one_ne_zero hgper
+      (periodicExtension_differentiableAt H f holomorphic him)
+    rw [Function.Periodic.qParam_right_inv one_ne_zero hq0] at hd
+    simpa [g] using hd.differentiableWithinAt
+
+/- Compatibility wrapper retaining the established local API while delegating all analytic work
+to `Function.Periodic.cuspFunction` and its removable-singularity theorem. -/
+public theorem periodicBoundedHolomorphicCuspDescent
+    (H : ℝ) (f : ℂ → ℂ)
+    (holomorphic : DifferentiableOn ℂ f (cuspHalfPlane H))
+    (periodic : ∀ s ∈ cuspHalfPlane H, f (s - 1) = f s)
+    (bounded : NormBoundedOn f (cuspHalfPlane H)) :
+    Nonempty (HolomorphicCuspDescent H f) := by
+  let g := periodicExtension H f
+  let F := Function.Periodic.cuspFunction 1 g
+  have hgper : Function.Periodic g 1 := periodicExtension_periodic H f periodic
+  have hF : DifferentiableOn ℂ F (Metric.ball 0 (cuspRadius H)) := by
+    simpa [F, g] using periodic_cuspFunction_differentiableOn H f holomorphic periodic bounded
+  refine ⟨⟨F, hF, ?_, ?_⟩⟩
+  · intro s hs
+    have heq := Function.Periodic.eq_cuspFunction one_ne_zero hgper s
+    simpa [F, g, cuspQ, Function.Periodic.qParam, periodicExtension, hs] using heq
+  · intro G hG hGfactor q hq
+    rcases eq_or_ne q 0 with rfl | hq0
+    · have hF0 : DifferentiableAt ℂ F 0 :=
+        hF.differentiableAt (Metric.ball_mem_nhds (0 : ℂ) (by simpa using cuspRadius_pos H))
+      have hG0 : DifferentiableAt ℂ G 0 :=
+        hG.differentiableAt (Metric.ball_mem_nhds (0 : ℂ) (by simpa using cuspRadius_pos H))
+      let : (Filter.comap Complex.im Filter.atTop).NeBot :=
+        Filter.NeBot.comap_of_surj inferInstance Complex.im_surjective
+      have hqt : Filter.Tendsto (fun s : ℂ ↦ Function.Periodic.qParam 1 s)
+          (Filter.comap Complex.im Filter.atTop) (nhds 0) :=
+        (Function.Periodic.qParam_tendsto one_pos).mono_right nhdsWithin_le_nhds
+      have heq : (fun s : ℂ ↦ G (Function.Periodic.qParam 1 s)) =ᶠ[
+          Filter.comap Complex.im Filter.atTop]
+          (fun s ↦ F (Function.Periodic.qParam 1 s)) := by
+        change ∀ᶠ s in Filter.comap Complex.im Filter.atTop,
+          G (Function.Periodic.qParam 1 s) = F (Function.Periodic.qParam 1 s)
+        rw [Filter.eventually_comap]
+        filter_upwards [Filter.eventually_gt_atTop H] with y hy s hsy
+        have hs : H < s.im := by simpa [hsy] using hy
+        have hGs := hGfactor s hs
+        have hFs := Function.Periodic.eq_cuspFunction one_ne_zero hgper s
+        have hGs' : G (Function.Periodic.qParam 1 s) = f s := by
+          simpa [cuspQ, Function.Periodic.qParam] using hGs
+        exact hGs'.trans ((periodicExtension_eq H f hs).symm.trans (by
+          simpa [F] using hFs.symm))
+      exact tendsto_nhds_unique
+        ((hG0.continuousAt.tendsto.comp hqt).congr' heq)
+        (hF0.continuousAt.tendsto.comp hqt)
+    · have him : H < (Function.Periodic.invQParam 1 q).im := by
+        rw [← Function.Periodic.norm_qParam_lt_iff one_pos H]
+        rw [Function.Periodic.qParam_right_inv one_ne_zero hq0]
+        simpa [cuspRadius] using hq
+      have hGq := hGfactor (Function.Periodic.invQParam 1 q) him
+      have hGq' : G (Function.Periodic.qParam 1
+          (Function.Periodic.invQParam 1 q)) = g (Function.Periodic.invQParam 1 q) := by
+        calc
+          G (Function.Periodic.qParam 1 (Function.Periodic.invQParam 1 q)) =
+              f (Function.Periodic.invQParam 1 q) := by
+                simpa [cuspQ, Function.Periodic.qParam] using hGq
+          _ = g (Function.Periodic.invQParam 1 q) :=
+            (periodicExtension_eq H f him).symm
+      rw [Function.Periodic.qParam_right_inv one_ne_zero hq0] at hGq'
+      have hFq : F q = g (Function.Periodic.invQParam 1 q) := by
+        simpa [F] using Function.Periodic.cuspFunction_eq_of_nonzero 1 g hq0
+      exact hGq'.trans hFq.symm
 
 end Established
 

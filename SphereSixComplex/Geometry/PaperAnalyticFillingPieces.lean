@@ -59,41 +59,55 @@ public theorem restrictedContinuousConstSMul
   exact ⟨fun g => Continuous.subtype_mk
     ((continuous_const_smul g).comp continuous_subtype_val) _⟩
 
+/-! The radial open set used by every indexed elliptic filling. -/
+public abbrev indexedFillingOpen {X : Type*} [TopologicalSpace X]
+    (radius : X → ℝ) (hradius : Continuous radius) (r : ℝ) :
+    TopologicalSpace.Opens X :=
+  ⟨{q | radius q < r}, isOpen_lt hradius continuous_const⟩
+
 namespace PaperAnalyticData
 
 variable (A : PaperAnalyticData)
 
 @[expose] public noncomputable def orderThreeFillingOpen (r : ℝ) :
     TopologicalSpace.Opens (TotalSpace (parameterMap A.periods)) :=
-  ⟨{q | orderThreeFamilyRadius A.periods q < r},
-    isOpen_lt (orderThreeFamilyRadius_continuous A.periods) continuous_const⟩
+  indexedFillingOpen (orderThreeFamilyRadius A.periods)
+    (orderThreeFamilyRadius_continuous A.periods) r
 
 @[expose] public noncomputable def orderFourFillingOpen (r : ℝ) :
     TopologicalSpace.Opens (TotalSpace (parameterMap A.periods)) :=
-  ⟨{q | orderFourFamilyRadius A.periods q < r},
-    isOpen_lt (orderFourFamilyRadius_continuous A.periods) continuous_const⟩
+  indexedFillingOpen (orderFourFamilyRadius A.periods)
+    (orderFourFamilyRadius_continuous A.periods) r
 
 @[expose] public noncomputable def orderThreeFillingCarrier (r : ℝ) :
     InvariantOpenCarrier (orderThreeAffineFamilyAction A.periods) where
-  carrier := A.orderThreeFillingOpen r
+  toSubMulAction := by
+    letI := orderThreeAffineFamilyAction A.periods
+    exact {
+      carrier := A.orderThreeFillingOpen r
+      smul_mem' := by
+        intro g q hq
+        change orderThreeFamilyRadius A.periods
+          (orderThreeAffineFamilyRepresentation A.periods g q) < r
+        rw [orderThreeFamilyRadius_representation A.periods
+          A.modular.modularParameter.toTriangleUniformization_sourceAction]
+        exact hq }
   isOpen_carrier := (A.orderThreeFillingOpen r).2
-  invariant g q hq := by
-    change orderThreeFamilyRadius A.periods
-      (orderThreeAffineFamilyRepresentation A.periods g q) < r
-    rw [orderThreeFamilyRadius_representation A.periods
-      A.modular.modularParameter.toTriangleUniformization_sourceAction]
-    exact hq
 
 @[expose] public noncomputable def orderFourFillingCarrier (r : ℝ) :
     InvariantOpenCarrier (orderFourAffineFamilyAction A.periods) where
-  carrier := A.orderFourFillingOpen r
+  toSubMulAction := by
+    letI := orderFourAffineFamilyAction A.periods
+    exact {
+      carrier := A.orderFourFillingOpen r
+      smul_mem' := by
+        intro g q hq
+        change orderFourFamilyRadius A.periods
+          (orderFourAffineFamilyRepresentation A.periods g q) < r
+        rw [orderFourFamilyRadius_representation A.periods
+          A.modular.modularParameter.toTriangleUniformization_sourceAction]
+        exact hq }
   isOpen_carrier := (A.orderFourFillingOpen r).2
-  invariant g q hq := by
-    change orderFourFamilyRadius A.periods
-      (orderFourAffineFamilyRepresentation A.periods g q) < r
-    rw [orderFourFamilyRadius_representation A.periods
-      A.modular.modularParameter.toTriangleUniformization_sourceAction]
-    exact hq
 
 @[expose, instance_reducible]
 public noncomputable def orderThreeFillingAction (r : ℝ) :
@@ -772,43 +786,53 @@ public theorem orderFourPuncturedCollarToCentralFamily_isOpenEmbedding
       A.modular.modularParameter.toTriangleUniformization_sourceAction)
     A.modular.modularParameter.toTriangleUniformization_sourceAction D
 
-public structure OrderThreeFillingPiece where
-  radius : ℝ
-  radius_pos : 0 < radius
-  radius_lt_one : radius < 1
-  sourceData : OrderThreeLinearCollarSourceData
-    (U := A.modular.modularParameter.toTriangleUniformization) radius
+/-! A filling piece only varies in its radius and in the source-side separation proof.  This
+indexed record is shared by the two elliptic orders; the order-specific names below are aliases
+kept for the paper-facing API. -/
 
-public structure OrderFourFillingPiece where
+public structure IndexedFillingPiece (SourceData : ℝ → Prop) where
   radius : ℝ
   radius_pos : 0 < radius
   radius_lt_one : radius < 1
-  sourceData : OrderFourLinearCollarSourceData
-    (U := A.modular.modularParameter.toTriangleUniformization) radius
+  sourceData : SourceData radius
+
+/-- A monotone source collar yields filling pieces of every positive smaller radius. -/
+public theorem exists_indexedFillingPiece_below
+    {SourceData : ℝ → Prop}
+    (hExists : Nonempty (IndexedFillingPiece SourceData))
+    (hmono : ∀ {r' r : ℝ}, r' ≤ r → SourceData r → SourceData r')
+    {R : ℝ} (hR : 0 < R) :
+    ∃ P : IndexedFillingPiece SourceData, P.radius < R := by
+  obtain ⟨P⟩ := hExists
+  let r := min P.radius (R / 2)
+  have hr : 0 < r := lt_min P.radius_pos (half_pos hR)
+  have hrr : r ≤ P.radius := min_le_left _ _
+  have hrR : r < R := (min_le_right _ _).trans_lt (half_lt_self hR)
+  exact ⟨⟨r, hr, hrr.trans_lt P.radius_lt_one, hmono hrr P.sourceData⟩, hrR⟩
+
+public abbrev OrderThreeFillingPiece :=
+  IndexedFillingPiece (fun r => OrderThreeLinearCollarSourceData
+    (U := A.modular.modularParameter.toTriangleUniformization) r)
+
+public abbrev OrderFourFillingPiece :=
+  IndexedFillingPiece (fun r => OrderFourLinearCollarSourceData
+    (U := A.modular.modularParameter.toTriangleUniformization) r)
 
 public theorem orderThreeLinearCollarSourceData_mono {r' r : ℝ} (hrr : r' ≤ r)
     (D : OrderThreeLinearCollarSourceData
       (U := A.modular.modularParameter.toTriangleUniformization) r) :
     OrderThreeLinearCollarSourceData
-      (U := A.modular.modularParameter.toTriangleUniformization) r' := by
-  rw [OrderThreeLinearCollarSourceData.eq_def] at D ⊢
-  constructor
-  · intro z hz hzr
-    exact D.1 z hz (hzr.trans_le hrr)
-  · intro z x hzr hxr g hg
-    exact D.2 z x (hzr.trans_le hrr) (hxr.trans_le hrr) g hg
+      (U := A.modular.modularParameter.toTriangleUniformization) r' :=
+  linearCollarSourceData_mono (U := A.modular.modularParameter.toTriangleUniformization)
+    3 (M := orderThreeLinearCollarModel) hrr D
 
 public theorem orderFourLinearCollarSourceData_mono {r' r : ℝ} (hrr : r' ≤ r)
     (D : OrderFourLinearCollarSourceData
       (U := A.modular.modularParameter.toTriangleUniformization) r) :
     OrderFourLinearCollarSourceData
-      (U := A.modular.modularParameter.toTriangleUniformization) r' := by
-  rw [OrderFourLinearCollarSourceData.eq_def] at D ⊢
-  constructor
-  · intro z hz hzr
-    exact D.1 z hz (hzr.trans_le hrr)
-  · intro z x hzr hxr g hg
-    exact D.2 z x (hzr.trans_le hrr) (hxr.trans_le hrr) g hg
+      (U := A.modular.modularParameter.toTriangleUniformization) r' :=
+  linearCollarSourceData_mono (U := A.modular.modularParameter.toTriangleUniformization)
+    4 (M := orderFourLinearCollarModel) hrr D
 
 public theorem exists_orderThreeFillingPiece : Nonempty A.OrderThreeFillingPiece := by
   obtain ⟨r, hr, hr1, D⟩ := exists_orderThreeLinearCollarSourceData
@@ -825,24 +849,14 @@ public theorem exists_orderFourFillingPiece : Nonempty A.OrderFourFillingPiece :
   exact ⟨⟨r, hr, hr1, D⟩⟩
 
 public theorem exists_orderThreeFillingPiece_below {R : ℝ} (hR : 0 < R) :
-    ∃ P : A.OrderThreeFillingPiece, P.radius < R := by
-  obtain ⟨P⟩ := A.exists_orderThreeFillingPiece
-  let r := min P.radius (R / 2)
-  have hr : 0 < r := lt_min P.radius_pos (half_pos hR)
-  have hrr : r ≤ P.radius := min_le_left _ _
-  have hrR : r < R := (min_le_right _ _).trans_lt (half_lt_self hR)
-  exact ⟨⟨r, hr, hrr.trans_lt P.radius_lt_one,
-    A.orderThreeLinearCollarSourceData_mono hrr P.sourceData⟩, hrR⟩
+    ∃ P : A.OrderThreeFillingPiece, P.radius < R :=
+  exists_indexedFillingPiece_below A.exists_orderThreeFillingPiece
+    (fun hrr D => A.orderThreeLinearCollarSourceData_mono hrr D) hR
 
 public theorem exists_orderFourFillingPiece_below {R : ℝ} (hR : 0 < R) :
-    ∃ P : A.OrderFourFillingPiece, P.radius < R := by
-  obtain ⟨P⟩ := A.exists_orderFourFillingPiece
-  let r := min P.radius (R / 2)
-  have hr : 0 < r := lt_min P.radius_pos (half_pos hR)
-  have hrr : r ≤ P.radius := min_le_left _ _
-  have hrR : r < R := (min_le_right _ _).trans_lt (half_lt_self hR)
-  exact ⟨⟨r, hr, hrr.trans_lt P.radius_lt_one,
-    A.orderFourLinearCollarSourceData_mono hrr P.sourceData⟩, hrR⟩
+    ∃ P : A.OrderFourFillingPiece, P.radius < R :=
+  exists_indexedFillingPiece_below A.exists_orderFourFillingPiece
+    (fun hrr D => A.orderFourLinearCollarSourceData_mono hrr D) hR
 
 @[expose] public noncomputable def orderThreeFillingPiece : A.OrderThreeFillingPiece :=
   Classical.choice A.exists_orderThreeFillingPiece

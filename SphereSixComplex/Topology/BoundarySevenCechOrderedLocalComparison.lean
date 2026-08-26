@@ -113,15 +113,15 @@ public noncomputable def boundarySevenProperCechTupleCoordinatePoint
 
 /-- In barycentric coordinates, realizing the common-face inclusion is the literal insertion
 of the complementary coordinates. -/
-public theorem boundarySevenComparisonToStdSimplex_faceToBoundary_faceIso
+public theorem boundarySevenRealizationToStdSimplex_faceToBoundary_faceIso
     {n : SimplexCategoryᵒᵖ} (a : BoundarySevenProperCechTuple n)
     (x : SSet.toTop.obj
       (Δ[boundarySevenProperCechTupleFaceDimension a] : SSet.{0})) :
-    boundarySevenComparisonToStdSimplex
+    boundarySevenRealizationToStdSimplex
         (SSet.toTop.map (boundarySevenProperCechTupleFaceToBoundarySSetMap a)
           (SSet.toTop.map (boundarySevenProperCechTupleFaceIso a).hom x)) =
       boundarySevenProperCechTupleCoordinatePoint a x := by
-  unfold boundarySevenComparisonToStdSimplex
+  unfold boundarySevenRealizationToStdSimplex
   change SimplexCategory.toTopHomeo (SimplexCategory.mk 7)
       (SSet.toTop.map (SSet.boundary 7).ι
         (SSet.toTop.map (boundarySevenProperCechTupleFaceToBoundarySSetMap a)
@@ -179,7 +179,7 @@ public noncomputable def boundarySevenProperCechTupleStandardSimplexToIntersecti
     rw [mem_boundarySevenFaceNeighborhoodIntersection_iff]
     intro i hi
     have hcoord :
-        boundarySevenComparisonToStdSimplex
+        boundarySevenRealizationToStdSimplex
             (boundarySevenRealizationHomeomorphStandardBoundary.symm (q x)) i = 0 := by
       rw [← boundarySevenRealizationHomeomorphStandardBoundary_apply_val]
       rw [Homeomorph.apply_symm_apply]
@@ -250,7 +250,7 @@ public theorem boundarySevenProperCechTupleFaceToIntersection_comp_ambientInclus
         (boundarySevenProperCechTupleFaceToBoundarySSetMap a) x) :
           stdSimplex ℝ (Fin 8))
   rw [boundarySevenRealizationHomeomorphStandardBoundary_apply_val]
-  rw [← boundarySevenComparisonToStdSimplex_faceToBoundary_faceIso a
+  rw [← boundarySevenRealizationToStdSimplex_faceToBoundary_faceIso a
     (SSet.toTop.map J.inv x)]
   congr 2
   rw [← ConcreteCategory.comp_apply, ← SSet.toTop.map_comp,

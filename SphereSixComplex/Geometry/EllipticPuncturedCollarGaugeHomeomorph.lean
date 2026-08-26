@@ -642,52 +642,68 @@ public theorem orderFourFamilyRadius_linearRepresentation
 @[expose] public noncomputable def orderThreeAffinePuncturedCarrier
     (hsource : U.sourceAction = fuchsianSourceAction) (r : ℝ) :
     InvariantOpenCarrier (orderThreeAffineFamilyAction F) where
-  carrier := orderThreePuncturedFamilyCollar F r
+  toSubMulAction := by
+    letI := orderThreeAffineFamilyAction F
+    exact {
+      carrier := orderThreePuncturedFamilyCollar F r
+      smul_mem' := by
+        intro g q hq
+        change orderThreeAffineFamilyRepresentation F g q ∈
+          orderThreePuncturedFamilyCollar F r
+        exact (orderThreePuncturedFamilyCollar_invariant F hsource r g q).2 hq }
   isOpen_carrier := orderThreePuncturedFamilyCollar_isOpen F r
-  invariant := by
-    intro g q hq
-    rw [actionMap.eq_def]
-    exact (orderThreePuncturedFamilyCollar_invariant F hsource r g q).2 hq
 
 @[expose] public noncomputable def orderFourAffinePuncturedCarrier
     (hsource : U.sourceAction = fuchsianSourceAction) (r : ℝ) :
     InvariantOpenCarrier (orderFourAffineFamilyAction F) where
-  carrier := orderFourPuncturedFamilyCollar F r
+  toSubMulAction := by
+    letI := orderFourAffineFamilyAction F
+    exact {
+      carrier := orderFourPuncturedFamilyCollar F r
+      smul_mem' := by
+        intro g q hq
+        change orderFourAffineFamilyRepresentation F g q ∈
+          orderFourPuncturedFamilyCollar F r
+        exact (orderFourPuncturedFamilyCollar_invariant F hsource r g q).2 hq }
   isOpen_carrier := orderFourPuncturedFamilyCollar_isOpen F r
-  invariant := by
-    intro g q hq
-    rw [actionMap.eq_def]
-    exact (orderFourPuncturedFamilyCollar_invariant F hsource r g q).2 hq
 
 @[expose] public noncomputable def orderThreeLinearPuncturedCarrier
     (hsource : U.sourceAction = fuchsianSourceAction) (r : ℝ) :
     InvariantOpenCarrier (orderThreeLinearFamilyAction F) where
-  carrier := orderThreePuncturedFamilyCollar F r
+  toSubMulAction := by
+    letI := orderThreeLinearFamilyAction F
+    exact {
+      carrier := orderThreePuncturedFamilyCollar F r
+      smul_mem' := by
+        intro g q hq
+        have hr : orderThreeFamilyRadius F
+          (orderThreeFamilyRepresentation F g q) =
+          orderThreeFamilyRadius F q := by
+          exact orderThreeFamilyRadius_linearRepresentation F hsource g q
+        change 0 < orderThreeFamilyRadius F (orderThreeFamilyRepresentation F g q) ∧
+          orderThreeFamilyRadius F (orderThreeFamilyRepresentation F g q) < r
+        rw [hr]
+        exact hq }
   isOpen_carrier := orderThreePuncturedFamilyCollar_isOpen F r
-  invariant := by
-    intro g q hq
-    have hr : orderThreeFamilyRadius F
-        (actionMap (orderThreeLinearFamilyAction F) g q) =
-      orderThreeFamilyRadius F q := by
-      rw [actionMap.eq_def]
-      change orderThreeFamilyRadius F (orderThreeFamilyRepresentation F g q) = _
-      exact orderThreeFamilyRadius_linearRepresentation F hsource g q
-    simpa only [orderThreePuncturedFamilyCollar.eq_def, Set.mem_ofPred_eq, hr] using hq
 
 @[expose] public noncomputable def orderFourLinearPuncturedCarrier
     (hsource : U.sourceAction = fuchsianSourceAction) (r : ℝ) :
     InvariantOpenCarrier (orderFourLinearFamilyAction F) where
-  carrier := orderFourPuncturedFamilyCollar F r
+  toSubMulAction := by
+    letI := orderFourLinearFamilyAction F
+    exact {
+      carrier := orderFourPuncturedFamilyCollar F r
+      smul_mem' := by
+        intro g q hq
+        have hr : orderFourFamilyRadius F
+          (orderFourFamilyRepresentation F g q) =
+          orderFourFamilyRadius F q := by
+          exact orderFourFamilyRadius_linearRepresentation F hsource g q
+        change 0 < orderFourFamilyRadius F (orderFourFamilyRepresentation F g q) ∧
+          orderFourFamilyRadius F (orderFourFamilyRepresentation F g q) < r
+        rw [hr]
+        exact hq }
   isOpen_carrier := orderFourPuncturedFamilyCollar_isOpen F r
-  invariant := by
-    intro g q hq
-    have hr : orderFourFamilyRadius F
-        (actionMap (orderFourLinearFamilyAction F) g q) =
-      orderFourFamilyRadius F q := by
-      rw [actionMap.eq_def]
-      change orderFourFamilyRadius F (orderFourFamilyRepresentation F g q) = _
-      exact orderFourFamilyRadius_linearRepresentation F hsource g q
-    simpa only [orderFourPuncturedFamilyCollar.eq_def, Set.mem_ofPred_eq, hr] using hq
 
 public theorem orderThreePrincipalGauge_generator
     (hsource : U.sourceAction = fuchsianSourceAction) (r : ℝ)

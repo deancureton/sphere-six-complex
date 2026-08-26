@@ -1,6 +1,7 @@
 module
 
 public import SphereSixComplex.Topology.SimplicialSingularComparison
+public import SphereSixComplex.Topology.BoundarySevenStandardSimplexMap
 public import SphereSixComplex.Topology.SingularExcisionOpenCover
 
 /-!
@@ -107,44 +108,18 @@ public theorem simplicialToSingularComparisonQuasiIsomorphism_iff_coverSmallLift
   rw [← simplicialToCoverSmallSingularChainMap_comp_inclusion K U hsmall]
   exact quasiIso_iff_comp_right _ _ (hφ' := hcover)
 
-/-- The canonical map from the boundary realization to the ordinary affine standard
-seven-simplex, duplicated here so that the comparison proof is independent of any later geometric
-identification of the boundary realization. -/
-public noncomputable def boundarySevenComparisonToStdSimplex :
-    C((SSet.toTop.obj (∂Δ[7] : SSet.{0}) : Type), stdSimplex ℝ (Fin 8)) :=
-  ⟨fun x ↦ SimplexCategory.toTopHomeo (SimplexCategory.mk 7)
-      (SSet.toTop.map (SSet.boundary 7).ι x),
-    (SimplexCategory.toTopHomeo (SimplexCategory.mk 7)).continuous.comp
-      (SSet.toTop.map (SSet.boundary 7).ι).hom.continuous⟩
-
-/-- On a codimension-one face, the comparison map is the usual affine face inclusion. -/
-public theorem boundarySevenComparisonToStdSimplex_face
-    (i : Fin 8) (x : (SSet.toTop.obj (Δ[6] : SSet.{0}) : Type)) :
-    boundarySevenComparisonToStdSimplex
-        (SSet.toTop.map (SSet.boundary.ι i) x) =
-      stdSimplex.map i.succAbove
-        (SimplexCategory.toTopHomeo (SimplexCategory.mk 6) x) := by
-  unfold boundarySevenComparisonToStdSimplex
-  change SimplexCategory.toTopHomeo (SimplexCategory.mk 7)
-      (SSet.toTop.map (SSet.boundary 7).ι
-        (SSet.toTop.map (SSet.boundary.ι i) x)) = _
-  rw [← ConcreteCategory.comp_apply]
-  rw [← SSet.toTop.map_comp]
-  rw [SSet.boundary.ι_ι]
-  exact SimplexCategory.toTopHomeo_naturality_apply (SimplexCategory.δ i) x
-
 /-- An open neighborhood of the `i`-th affine face, pulled back to the realization of
 `∂Δ[7]`. -/
 public def boundarySevenComparisonFaceNeighborhood (i : Fin 8) :
     Set (SSet.toTop.obj (∂Δ[7] : SSet.{0})) :=
-  {x | boundarySevenComparisonToStdSimplex x i < (1 : ℝ) / 8}
+  {x | boundarySevenRealizationToStdSimplex x i < (1 : ℝ) / 8}
 
 /-- The affine face neighborhoods are open. -/
 public theorem boundarySevenComparisonFaceNeighborhood_isOpen (i : Fin 8) :
     IsOpen (boundarySevenComparisonFaceNeighborhood i) := by
   apply isOpen_lt
   · exact ((continuous_apply i).comp continuous_subtype_val).comp
-      boundarySevenComparisonToStdSimplex.continuous
+      boundarySevenRealizationToStdSimplex.continuous
   · exact continuous_const
 
 /-- The realization of the `i`-th simplicial face lands in its corresponding open affine
@@ -155,9 +130,9 @@ public noncomputable def boundarySevenFaceToComparisonFaceNeighborhood (i : Fin 
   refine TopCat.ofHom
     { toFun := fun x ↦ ⟨SSet.toTop.map (SSet.boundary.ι i) x, ?_⟩
       continuous_toFun := ?_ }
-  · change boundarySevenComparisonToStdSimplex
+  · change boundarySevenRealizationToStdSimplex
         (SSet.toTop.map (SSet.boundary.ι i) x) i < (1 : ℝ) / 8
-    rw [boundarySevenComparisonToStdSimplex_face]
+    rw [boundarySevenRealizationToStdSimplex_face]
     change stdSimplex.map i.succAbove
       (SimplexCategory.toTopHomeo (SimplexCategory.mk 6) x) i < (1 : ℝ) / 8
     have hz : stdSimplex.map i.succAbove
@@ -241,7 +216,7 @@ neighborhoods cover the whole realization.  It states precisely that the compari
 realized simplicial boundary lands in the affine boundary. -/
 public def BoundarySevenComparisonMapLandsInAffineBoundary : Prop :=
   ∀ x : SSet.toTop.obj (∂Δ[7] : SSet.{0}),
-    ∃ i : Fin 8, boundarySevenComparisonToStdSimplex x i = 0
+    ∃ i : Fin 8, boundarySevenRealizationToStdSimplex x i = 0
 
 /-- If the comparison map lands in the affine boundary, the eight explicit face neighborhoods
 cover the realization. -/
@@ -253,7 +228,7 @@ public theorem boundarySevenComparisonFaceNeighborhood_iUnion
   obtain ⟨i, hi⟩ := hboundary x
   apply Set.mem_iUnion.2
   refine ⟨i, ?_⟩
-  change boundarySevenComparisonToStdSimplex x i < (1 : ℝ) / 8
+  change boundarySevenRealizationToStdSimplex x i < (1 : ℝ) / 8
   rw [hi]
   norm_num
 

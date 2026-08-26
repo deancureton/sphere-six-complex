@@ -284,21 +284,59 @@ public theorem discScalarEquiv_pow_fixed_iff (lambda : ℂ) (hlambda : ‖lambda
     apply Subtype.ext
     simp [discScalarEquiv_pow_apply_val, discCenter]
 
+/-! The finite cyclic disc action depends on only two pieces of varying mathematical data: its
+multiplier and its order.  The common construction is indexed by that order; the explicit
+order-three and order-four records below are intentionally tiny specializations. -/
+
+public structure IndexedDiscRotationData (m : ℕ) [NeZero m] where
+  multiplier : ℂ
+  multiplier_norm : ‖multiplier‖ = 1
+  multiplier_pow : multiplier ^ m = 1
+
+public noncomputable abbrev indexedDiscRotation
+    (m : ℕ) [NeZero m] (D : IndexedDiscRotationData m) : Equiv.Perm ComplexUnitDisc :=
+  discScalarEquiv D.multiplier D.multiplier_norm
+
+public noncomputable abbrev indexedDiscRepresentation
+    (m : ℕ) [NeZero m] (D : IndexedDiscRotationData m) :
+    FiniteCyclic m →* Equiv.Perm ComplexUnitDisc :=
+  cyclicRepresentation m (indexedDiscRotation m D)
+    (discScalarEquiv_pow_eq_one D.multiplier D.multiplier_norm m D.multiplier_pow)
+
+public theorem indexedDiscRotation_pow
+    (m : ℕ) [NeZero m] (D : IndexedDiscRotationData m) :
+    (indexedDiscRotation m D) ^ m = 1 :=
+  discScalarEquiv_pow_eq_one D.multiplier D.multiplier_norm m D.multiplier_pow
+
+public theorem indexedDiscRepresentation_generator
+    (m : ℕ) [NeZero m] (D : IndexedDiscRotationData m) :
+    indexedDiscRepresentation m D (cyclicGenerator m) = indexedDiscRotation m D :=
+  cyclicRepresentation_generator m (indexedDiscRotation m D)
+    (indexedDiscRotation_pow m D)
+
+public abbrev orderThreeDiscRotationData : IndexedDiscRotationData 3 :=
+  { multiplier := orderThreeMultiplier
+    multiplier_norm := norm_orderThreeMultiplier
+    multiplier_pow := orderThreeMultiplier_pow_three }
+
+public abbrev orderFourDiscRotationData : IndexedDiscRotationData 4 :=
+  { multiplier := orderFourMultiplier
+    multiplier_norm := norm_orderFourMultiplier
+    multiplier_pow := orderFourMultiplier_pow_four }
+
 /-- The order-three rotation on the explicit Cayley disc. -/
-@[expose] public noncomputable def orderThreeDiscRotation : Equiv.Perm ComplexUnitDisc :=
-  discScalarEquiv orderThreeMultiplier norm_orderThreeMultiplier
+public noncomputable abbrev orderThreeDiscRotation : Equiv.Perm ComplexUnitDisc :=
+  indexedDiscRotation 3 orderThreeDiscRotationData
 
 /-- The order-four rotation on the explicit Cayley disc. -/
-@[expose] public noncomputable def orderFourDiscRotation : Equiv.Perm ComplexUnitDisc :=
-  discScalarEquiv orderFourMultiplier norm_orderFourMultiplier
+public noncomputable abbrev orderFourDiscRotation : Equiv.Perm ComplexUnitDisc :=
+  indexedDiscRotation 4 orderFourDiscRotationData
 
 public theorem orderThreeDiscRotation_pow : orderThreeDiscRotation ^ 3 = 1 :=
-  discScalarEquiv_pow_eq_one orderThreeMultiplier norm_orderThreeMultiplier 3
-    orderThreeMultiplier_pow_three
+  indexedDiscRotation_pow 3 orderThreeDiscRotationData
 
 public theorem orderFourDiscRotation_pow : orderFourDiscRotation ^ 4 = 1 :=
-  discScalarEquiv_pow_eq_one orderFourMultiplier norm_orderFourMultiplier 4
-    orderFourMultiplier_pow_four
+  indexedDiscRotation_pow 4 orderFourDiscRotationData
 
 @[expose] public def discOffCenter : ComplexUnitDisc := ⟨1 / 2, by norm_num⟩
 
@@ -340,24 +378,24 @@ public theorem orderFourDiscRotation_fixed_iff
   ⟨orderFourCayley z, norm_orderFourCayley_lt_one z⟩
 
 /-- Local cyclic representation at the order-three elliptic point. -/
-@[expose] public noncomputable def orderThreeDiscRepresentation :
-    FiniteCyclic 3 →* Equiv.Perm ComplexUnitDisc :=
-  cyclicRepresentation 3 orderThreeDiscRotation orderThreeDiscRotation_pow
+public noncomputable abbrev orderThreeDiscRepresentation :
+  FiniteCyclic 3 →* Equiv.Perm ComplexUnitDisc :=
+  indexedDiscRepresentation 3 orderThreeDiscRotationData
 
 /-- Local cyclic representation at the order-four elliptic point. -/
-@[expose] public noncomputable def orderFourDiscRepresentation :
+public noncomputable abbrev orderFourDiscRepresentation :
     FiniteCyclic 4 →* Equiv.Perm ComplexUnitDisc :=
-  cyclicRepresentation 4 orderFourDiscRotation orderFourDiscRotation_pow
+  indexedDiscRepresentation 4 orderFourDiscRotationData
 
 @[simp]
 public theorem orderThreeDiscRepresentation_generator :
     orderThreeDiscRepresentation (cyclicGenerator 3) = orderThreeDiscRotation :=
-  cyclicRepresentation_generator 3 orderThreeDiscRotation orderThreeDiscRotation_pow
+  indexedDiscRepresentation_generator 3 orderThreeDiscRotationData
 
 @[simp]
 public theorem orderFourDiscRepresentation_generator :
     orderFourDiscRepresentation (cyclicGenerator 4) = orderFourDiscRotation :=
-  cyclicRepresentation_generator 4 orderFourDiscRotation orderFourDiscRotation_pow
+  indexedDiscRepresentation_generator 4 orderFourDiscRotationData
 
 /-- The order-three Cayley coordinate intertwines the Fuchsian stabilizer generator with the
 local cyclic disc representation. -/
@@ -397,45 +435,65 @@ public structure EllipticFiberData (m : ℕ) [NeZero m]
     ((∃ x : Torus, (affineEquiv automorphism translation ^ k) x = x) ↔
       (m : ℤ) ∣ (k : ℤ) * gamma translationVector)
 
+/-! Assemble the common elliptic action record from the genuinely varying base and fibre data. -/
+public structure IndexedBaseActionData (m : ℕ) [NeZero m] (Base : Type*) where
+  rotation : Equiv.Perm Base
+  center : Base
+  offCenter : Base
+  offCenter_ne : offCenter ≠ center
+  rotation_pow : rotation ^ m = 1
+  rotation_fixed_iff : ∀ k, 0 < k → k < m → ∀ z,
+    (rotation ^ k) z = z ↔ z = center
+
+@[expose] public def assembleEllipticActionData
+    {m : ℕ} [NeZero m] {Base Torus : Type*} [AddCommGroup Torus]
+    (B : IndexedBaseActionData m Base) (D : EllipticFiberData m Torus) :
+    EllipticActionData m Base Torus where
+  rotation := B.rotation
+  center := B.center
+  offCenter := B.offCenter
+  offCenter_ne := B.offCenter_ne
+  rotation_pow := B.rotation_pow
+  rotation_fixed_iff := B.rotation_fixed_iff
+  automorphism := D.automorphism
+  translation := D.translation
+  translationVector := D.translationVector
+  translation_fixed := D.translation_fixed
+  automorphism_pow := D.automorphism_pow
+  translation_torsion := D.translation_torsion
+  fiber_fixed_iff := D.fiber_fixed_iff
+
 namespace EllipticFiberData
 
 variable {Torus : Type*} [AddCommGroup Torus]
 
+public abbrev orderThreeBaseActionData : IndexedBaseActionData 3 ComplexUnitDisc :=
+  { rotation := orderThreeDiscRotation
+    center := discCenter
+    offCenter := discOffCenter
+    offCenter_ne := discOffCenter_ne
+    rotation_pow := orderThreeDiscRotation_pow
+    rotation_fixed_iff := orderThreeDiscRotation_fixed_iff }
+
+public abbrev orderFourBaseActionData : IndexedBaseActionData 4 ComplexUnitDisc :=
+  { rotation := orderFourDiscRotation
+    center := discCenter
+    offCenter := discOffCenter
+    offCenter_ne := discOffCenter_ne
+    rotation_pow := orderFourDiscRotation_pow
+    rotation_fixed_iff := orderFourDiscRotation_fixed_iff }
+
 /-- Complete order-three filling data obtained by adjoining the explicit Cayley-disc base. -/
 @[expose] public noncomputable def orderThreeActionData
     (D : EllipticFiberData 3 Torus) :
-    EllipticActionData 3 ComplexUnitDisc Torus where
-  rotation := orderThreeDiscRotation
-  center := discCenter
-  offCenter := discOffCenter
-  offCenter_ne := discOffCenter_ne
-  rotation_pow := orderThreeDiscRotation_pow
-  rotation_fixed_iff := orderThreeDiscRotation_fixed_iff
-  automorphism := D.automorphism
-  translation := D.translation
-  translationVector := D.translationVector
-  translation_fixed := D.translation_fixed
-  automorphism_pow := D.automorphism_pow
-  translation_torsion := D.translation_torsion
-  fiber_fixed_iff := D.fiber_fixed_iff
+    EllipticActionData 3 ComplexUnitDisc Torus :=
+  assembleEllipticActionData orderThreeBaseActionData D
 
 /-- Complete order-four filling data obtained by adjoining the explicit Cayley-disc base. -/
 @[expose] public noncomputable def orderFourActionData
     (D : EllipticFiberData 4 Torus) :
-    EllipticActionData 4 ComplexUnitDisc Torus where
-  rotation := orderFourDiscRotation
-  center := discCenter
-  offCenter := discOffCenter
-  offCenter_ne := discOffCenter_ne
-  rotation_pow := orderFourDiscRotation_pow
-  rotation_fixed_iff := orderFourDiscRotation_fixed_iff
-  automorphism := D.automorphism
-  translation := D.translation
-  translationVector := D.translationVector
-  translation_fixed := D.translation_fixed
-  automorphism_pow := D.automorphism_pow
-  translation_torsion := D.translation_torsion
-  fiber_fixed_iff := D.fiber_fixed_iff
+    EllipticActionData 4 ComplexUnitDisc Torus :=
+  assembleEllipticActionData orderFourBaseActionData D
 
 /-- The existing order-three filling freeness theorem applies directly to the explicit local
 Cayley base. -/

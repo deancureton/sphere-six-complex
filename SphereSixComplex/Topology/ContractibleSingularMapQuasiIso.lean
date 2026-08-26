@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Topology.StandardSimplexSimplicialSingularComparisonGeneral
+public import SphereSixComplex.Topology.StandardSimplexSimplicialSingularComparison
 public import Mathlib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 
 /-!
@@ -88,7 +88,7 @@ public theorem standardSimplexToContractibleSingularChainMap_quasiIso
     standardSimplexRealization_contractibleSpace n
   let hstandard : QuasiIso
       (simplicialToRealizationSingularChainMap (Δ[n] : SSet.{0}) R) :=
-    standardSimplex_simplicialToRealizationSingularChainMap_quasiIso_general R n
+    standardSimplex_simplicialToRealizationSingularChainMap_quasiIso R n
   let htarget : QuasiIso
       (SSet.chainComplexMap (TopCat.toSSet.map (TopCat.ofHom f)) R) :=
     singularChainMap_quasiIso_of_contractibleSpaces R f

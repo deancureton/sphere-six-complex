@@ -549,7 +549,7 @@ public theorem standardBoundarySevenFaceNeighborhoodIntersection_pathConnectedSp
 /-- The common affine face inside the geometric realization. -/
 public def boundarySevenAffineFaceIntersection (s : Finset (Fin 8)) :
     Set (SSet.toTop.obj (∂Δ[7] : SSet.{0})) :=
-  {x | ∀ i ∈ s, boundarySevenComparisonToStdSimplex x i = 0}
+  {x | ∀ i ∈ s, boundarySevenRealizationToStdSimplex x i = 0}
 
 /-- The canonical barycentric homeomorphism restricted to an intersection of face
 neighbourhoods. -/
@@ -559,7 +559,7 @@ public noncomputable def boundarySevenFaceNeighborhoodIntersectionHomeomorphStan
       standardBoundarySevenFaceNeighborhoodIntersection s :=
   boundarySevenRealizationHomeomorphStandardBoundary.subtype fun x ↦ by
     rw [mem_boundarySevenFaceNeighborhoodIntersection_iff]
-    change (∀ i ∈ s, boundarySevenComparisonToStdSimplex x i < (1 : ℝ) / 8) ↔
+    change (∀ i ∈ s, boundarySevenRealizationToStdSimplex x i < (1 : ℝ) / 8) ↔
       ∀ i ∈ s,
         (boundarySevenRealizationHomeomorphStandardBoundary x :
           stdSimplex ℝ (Fin 8)) i < (1 : ℝ) / 8
@@ -570,7 +570,7 @@ public noncomputable def boundarySevenAffineFaceIntersectionHomeomorphStandard
     (s : Finset (Fin 8)) :
     boundarySevenAffineFaceIntersection s ≃ₜ standardBoundarySevenAffineFace s :=
   boundarySevenRealizationHomeomorphStandardBoundary.subtype fun x ↦ by
-    change (∀ i ∈ s, boundarySevenComparisonToStdSimplex x i = 0) ↔
+    change (∀ i ∈ s, boundarySevenRealizationToStdSimplex x i = 0) ↔
       ∀ i ∈ s,
         (boundarySevenRealizationHomeomorphStandardBoundary x :
           stdSimplex ℝ (Fin 8)) i = 0
