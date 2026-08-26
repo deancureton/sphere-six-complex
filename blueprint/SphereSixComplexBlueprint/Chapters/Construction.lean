@@ -400,9 +400,11 @@ The global family and the three fillings glue to a compact connected complex thr
 affine radial completion and cusp comparison supply the marked completion input, whose direct
 Mayer--Vietoris/Wang construction produces the positive-degree homology assembly. The production
 library is source-sorry-free, but the result is not axiom-free. Its audited final cone still uses
-the paper-specific established inputs tracked by issues #134, #135, #137, and #138. The axiom
-`establishedActualCuspCentralNaturality` tracked by #136 is Main-only at this checkpoint; the final
-cone instead reaches the broader `establishedActualAffineFillingCoverSquares` boundary.
+the regular-lift geometry and marked projection squares (#134), cusp Wang chain and prism inputs
+(#135), cusp radial clutching and degree specializations (#137), and central/collar/band
+trivializations (#138). The axiom `establishedActualCuspCentralNaturality` tracked by #136 is
+Main-only at this checkpoint; the final cone instead reaches the broader
+`establishedActualAffineFillingCoverSquares` boundary.
 :::
 
 :::proof "compact-complex-threefold"
