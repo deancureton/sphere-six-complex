@@ -152,13 +152,4 @@ public noncomputable def positiveEquivariantStrongDeformationRetraction :
 
 end PolarHoneycombData
 
-namespace Established
-
-/-- The standard infinite `A₂` fan has its canonical polar positive part and honeycomb package
-over every positive cusp radius. This is the sole standard-toric existence boundary in this file. -/
-public axiom polarHoneycombData (M : Model) (r : ℝ) (hr : 0 < r) :
-  Nonempty (PolarHoneycombData M r)
-
-end Established
-
 end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
