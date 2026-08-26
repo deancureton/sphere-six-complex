@@ -195,6 +195,7 @@ public import SphereSixComplex.Topology.ActualCuspPhaseSpreading
 public import SphereSixComplex.Topology.PaperCuspCentralFiberCWModel
 public import SphereSixComplex.Topology.CuspToricCellularAlgebra
 public import SphereSixComplex.Topology.CuspToricCellularHomologyBridge
+public import SphereSixComplex.Topology.CellularDimensionVanishing
 public import SphereSixComplex.Topology.PaperCuspCentralFiberHomology
 public import SphereSixComplex.Topology.PaperCuspPhaseSpreading
 public import SphereSixComplex.Topology.PaperCuspSpecializationAlgebra
@@ -219,6 +220,7 @@ public import SphereSixComplex.Topology.PaperCuspFinalInclusionAdapter
 public import SphereSixComplex.Topology.PaperSectionSevenLocalHomologyBases
 public import SphereSixComplex.Topology.PaperPropositionSevenFourteenDegreeTwoAlgebra
 public import SphereSixComplex.Topology.WangHomologyPresentation
+public import SphereSixComplex.Topology.WangDimensionVanishing
 public import SphereSixComplex.Topology.LatticeWangAlgebra
 public import SphereSixComplex.Topology.StandardInfiniteA2PositiveRetraction
 public import SphereSixComplex.Topology.EstablishedA2PhaseSpreading
