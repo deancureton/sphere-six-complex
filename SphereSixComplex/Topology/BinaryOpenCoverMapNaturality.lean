@@ -54,6 +54,14 @@ public theorem pullbackOpenSubcomplexMap_app_val {X Y : TopCat}
     (pullbackOpenSubcomplexMap_comp_inclusion f U)
   exact h
 
+@[reassoc]
+public theorem openPreimageMap_comp_corestriction {X Y : TopCat}
+    (f : X ⟶ Y) (U : Opens Y) :
+    TopCat.toSSet.map (openPreimageMap f U) ≫ singularOpenCorestriction U =
+      singularOpenCorestriction ((Opens.map f).obj U) ≫ pullbackOpenSubcomplexMap f U := by
+  rw [← cancel_mono (singularOpenSubcomplex U).ι]
+  simp [← Functor.map_comp, openPreimageMap_comp_inclusion]
+
 /-- The map on the intersection subcomplex of a pulled-back binary cover. -/
 public noncomputable def coverIntersectionPullbackMap {X Y : TopCat}
     (f : X ⟶ Y) (U V : Opens Y) :
@@ -218,17 +226,89 @@ public noncomputable def coverChainShortComplexPullback {X Y : TopCat}
     · rw [biprod.inr_map_assoc, biprod.inr_desc, biprod.inr_desc_assoc]
       rw [← Functor.map_comp, ← Functor.map_comp, pullbackOpenSubcomplexMap_inr]
 
+/-- The induced map between generated intersection homology groups. -/
+public noncomputable def generatedIntersectionPullbackHomologyMap {X Y : TopCat}
+    (f : X ⟶ Y) (U V : Opens Y) (n : ℕ) :
+    generatedIntersectionHomology ((Opens.map f).obj U) ((Opens.map f).obj V) n ⟶
+      generatedIntersectionHomology U V n :=
+  HomologicalComplex.homologyMap (coverIntersectionPullbackChainMap f U V) n
+
+/-- The induced map between generated union homology groups. -/
+public noncomputable def generatedUnionPullbackHomologyMap {X Y : TopCat}
+    (f : X ⟶ Y) (U V : Opens Y) (n : ℕ) :
+    generatedUnionHomology ((Opens.map f).obj U) ((Opens.map f).obj V) n ⟶
+      generatedUnionHomology U V n :=
+  HomologicalComplex.homologyMap (coverUnionPullbackChainMap f U V) n
+
 /-- The generated Mayer--Vietoris boundary is natural for a continuous map and a pulled-back
 binary open cover. -/
+@[reassoc]
 public theorem generatedBoundary_pullback_naturality {X Y : TopCat}
     (f : X ⟶ Y) (U V : Opens Y) (n : ℕ) :
     generatedBoundary ((Opens.map f).obj U) ((Opens.map f).obj V) n ≫
-        HomologicalComplex.homologyMap (coverIntersectionPullbackChainMap f U V) n =
-      HomologicalComplex.homologyMap (coverUnionPullbackChainMap f U V) (n + 1) ≫
+        generatedIntersectionPullbackHomologyMap f U V n =
+      generatedUnionPullbackHomologyMap f U V (n + 1) ≫
         generatedBoundary U V n :=
   HomologicalComplex.HomologySequence.δ_naturality
     (coverChainShortComplexPullback f U V)
     (coverChainShortComplex_shortExact ((Opens.map f).obj U) ((Opens.map f).obj V))
     (coverChainShortComplex_shortExact U V) (n + 1) n rfl
+
+/-- The ordinary homology map between the intersections of a binary cover and its pullback. -/
+public noncomputable def openIntersectionPullbackHomologyMap {X Y : TopCat}
+    (f : X ⟶ Y) (U V : Opens Y) (n : ℕ) :
+    (integralHomologyFunctor n).obj
+        ((Opens.toTopCat X).obj ((Opens.map f).obj U ⊓ (Opens.map f).obj V)) ⟶
+      (integralHomologyFunctor n).obj ((Opens.toTopCat Y).obj (U ⊓ V)) :=
+  (integralHomologyFunctor n).map (openPreimageMap f (U ⊓ V))
+
+/-- Compatibility of the generated-cover comparisons with a continuous map. -/
+public structure OpenCoverHomologyComparison.PullbackNaturality {X Y : TopCat}
+    (f : X ⟶ Y) (U V : Opens Y)
+    (source : OpenCoverHomologyComparison ((Opens.map f).obj U) ((Opens.map f).obj V))
+    (target : OpenCoverHomologyComparison U V) : Prop where
+  intersection (n : ℕ) :
+    generatedIntersectionPullbackHomologyMap f U V n ≫ (target.intersectionIso n).hom =
+      (source.intersectionIso n).hom ≫ openIntersectionPullbackHomologyMap f U V n
+  union (n : ℕ) :
+    generatedUnionPullbackHomologyMap f U V n ≫ (target.unionIso n).hom =
+      (source.unionIso n).hom ≫ (integralHomologyFunctor n).map f
+
+/-- Naturality of the ordinary singular Mayer--Vietoris boundary follows from compatibility of
+the generated-cover comparison isomorphisms. -/
+public theorem OpenCoverHomologyComparison.boundary_pullback_naturality {X Y : TopCat}
+    (f : X ⟶ Y) (U V : Opens Y)
+    (source : OpenCoverHomologyComparison ((Opens.map f).obj U) ((Opens.map f).obj V))
+    (target : OpenCoverHomologyComparison U V)
+    (h : source.PullbackNaturality f U V target) (n : ℕ) :
+    source.boundary n ≫ openIntersectionPullbackHomologyMap f U V n =
+      (integralHomologyFunctor (n + 1)).map f ≫ target.boundary n := by
+  rw [← cancel_epi (source.unionIso (n + 1)).hom]
+  conv_lhs => rw [← Category.assoc]
+  rw [source.unionIso_hom_comp_boundary, Category.assoc, ← h.intersection]
+  have hn := congrArg (fun q ↦ q ≫ (target.intersectionIso n).hom)
+    (generatedBoundary_pullback_naturality f U V n)
+  calc
+    generatedBoundary ((Opens.map f).obj U) ((Opens.map f).obj V) n ≫
+        (generatedIntersectionPullbackHomologyMap f U V n ≫
+          (target.intersectionIso n).hom) =
+      (generatedBoundary ((Opens.map f).obj U) ((Opens.map f).obj V) n ≫
+        generatedIntersectionPullbackHomologyMap f U V n) ≫
+          (target.intersectionIso n).hom := (Category.assoc _ _ _).symm
+    _ = (generatedUnionPullbackHomologyMap f U V (n + 1) ≫
+        generatedBoundary U V n) ≫ (target.intersectionIso n).hom := by
+      simpa only [generatedIntersectionHomology, generatedUnionHomology] using hn
+    _ = generatedUnionPullbackHomologyMap f U V (n + 1) ≫
+        (generatedBoundary U V n ≫ (target.intersectionIso n).hom) :=
+      Category.assoc _ _ _
+    _ = generatedUnionPullbackHomologyMap f U V (n + 1) ≫
+        ((target.unionIso (n + 1)).hom ≫ target.boundary n) := by
+      rw [target.unionIso_hom_comp_boundary]
+    _ = (generatedUnionPullbackHomologyMap f U V (n + 1) ≫
+        (target.unionIso (n + 1)).hom) ≫ target.boundary n :=
+      (Category.assoc _ _ _).symm
+    _ = ((source.unionIso (n + 1)).hom ≫
+        (integralHomologyFunctor (n + 1)).map f) ≫ target.boundary n := by
+      rw [h.union]
 
 end SphereSixComplex.BinaryOpenCover
