@@ -58,7 +58,7 @@ public theorem orderThreeCollarToRegular_base
     (hproper : SourceActionProperlyDiscontinuous (U := U))
     (hsource : U.sourceAction = fuchsianSourceAction)
     {r : ℝ} (D : OrderThreeLinearCollarSourceData (U := U) r)
-    (q : (orderThreeLinearPuncturedCarrier F hsource r).carrier) :
+    (q : orderThreeLinearPuncturedCarrier F hsource r) :
     (regularTotalSpaceBase F (orderThreeCollarToRegular F hproper D q)).1 =
       familyTotalSpaceBase F q := by
   have h := congrArg (familyTotalSpaceBase F)
@@ -71,7 +71,7 @@ public theorem orderFourCollarToRegular_base
     (hproper : SourceActionProperlyDiscontinuous (U := U))
     (hsource : U.sourceAction = fuchsianSourceAction)
     {r : ℝ} (D : OrderFourLinearCollarSourceData (U := U) r)
-    (q : (orderFourLinearPuncturedCarrier F hsource r).carrier) :
+    (q : orderFourLinearPuncturedCarrier F hsource r) :
     (regularTotalSpaceBase F (orderFourCollarToRegular F hproper D q)).1 =
       familyTotalSpaceBase F q := by
   have h := congrArg (familyTotalSpaceBase F)
@@ -176,10 +176,14 @@ public theorem exists_collarSeparationData
   have hr₄ : 0 < r₄ := lt_min P₄.radius_pos hs₄
   let P₃' : A.OrderThreeFillingPiece :=
     ⟨r₃, hr₃, (min_le_left _ _).trans_lt P₃.radius_lt_one,
-      A.orderThreeLinearCollarSourceData_mono (min_le_left _ _) P₃.sourceData⟩
+      linearCollarSourceData_mono
+        (U := A.modular.modularParameter.toTriangleUniformization)
+        3 (M := orderThreeLinearCollarModel) (min_le_left _ _) P₃.sourceData⟩
   let P₄' : A.OrderFourFillingPiece :=
     ⟨r₄, hr₄, (min_le_left _ _).trans_lt P₄.radius_lt_one,
-      A.orderFourLinearCollarSourceData_mono (min_le_left _ _) P₄.sourceData⟩
+      linearCollarSourceData_mono
+        (U := A.modular.modularParameter.toTriangleUniformization)
+        4 (M := orderFourLinearCollarModel) (min_le_left _ _) P₄.sourceData⟩
   refine ⟨⟨P₃', P₄', ?_, ?_, ?_⟩⟩
   · intro z hz
     exact (hs₃S z (hz.trans_le (min_le_right _ _))).2

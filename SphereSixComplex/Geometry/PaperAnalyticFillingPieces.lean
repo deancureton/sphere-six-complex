@@ -24,41 +24,6 @@ open EllipticLinearCollarGlobalDescent EquivariantQuotientHomeomorph
 
 noncomputable section
 
-universe u
-
-variable {G X : Type u} [Group G] [TopologicalSpace X]
-
-public theorem restrictedOrbitRel_eq_mulActionOrbitRel
-    (A : MulAction G X) (S : InvariantOpenCarrier A) :
-    restrictedOrbitRel A S =
-      letI := restrictedMulAction A S
-      MulAction.orbitRel G S.carrier := by
-  rfl
-
-public theorem restrictedIsCancelSMul
-    (A : MulAction G X) (S : InvariantOpenCarrier A)
-    (hfree : letI := A; IsCancelSMul G X) :
-    letI := restrictedMulAction A S
-    IsCancelSMul G S.carrier := by
-  let _ := A
-  let _ : IsCancelSMul G X := hfree
-  let _ := restrictedMulAction A S
-  rw [isCancelSMul_iff_eq_one_of_smul_eq]
-  intro g x hx
-  apply IsCancelSMul.eq_one_of_smul (x := (x : X))
-  exact congrArg Subtype.val hx
-
-public theorem restrictedContinuousConstSMul
-    (A : MulAction G X) (S : InvariantOpenCarrier A)
-    (hcontinuous : letI := A; ContinuousConstSMul G X) :
-    letI := restrictedMulAction A S
-    ContinuousConstSMul G S.carrier := by
-  let _ := A
-  let _ : ContinuousConstSMul G X := hcontinuous
-  let _ := restrictedMulAction A S
-  exact ⟨fun g => Continuous.subtype_mk
-    ((continuous_const_smul g).comp continuous_subtype_val) _⟩
-
 /-! The radial open set used by every indexed elliptic filling. -/
 public abbrev indexedFillingOpen {X : Type*} [TopologicalSpace X]
     (radius : X → ℝ) (hradius : Continuous radius) (r : ℝ) :
@@ -80,7 +45,7 @@ variable (A : PaperAnalyticData)
     (orderFourFamilyRadius_continuous A.periods) r
 
 @[expose] public noncomputable def orderThreeFillingCarrier (r : ℝ) :
-    InvariantOpenCarrier (orderThreeAffineFamilyAction A.periods) where
+    OpenSubMulAction (orderThreeAffineFamilyAction A.periods) where
   toSubMulAction := by
     letI := orderThreeAffineFamilyAction A.periods
     exact {
@@ -95,7 +60,7 @@ variable (A : PaperAnalyticData)
   isOpen_carrier := (A.orderThreeFillingOpen r).2
 
 @[expose] public noncomputable def orderFourFillingCarrier (r : ℝ) :
-    InvariantOpenCarrier (orderFourAffineFamilyAction A.periods) where
+    OpenSubMulAction (orderFourAffineFamilyAction A.periods) where
   toSubMulAction := by
     letI := orderFourAffineFamilyAction A.periods
     exact {
@@ -505,28 +470,28 @@ public theorem orderFourFilling_secondCountable (r : ℝ) :
   exact ContinuousConstSMul.secondCountableTopology
 
 public theorem orderThreePuncturedCarrier_subset_filling (r : ℝ) :
-    (orderThreeAffinePuncturedCarrier A.periods
-      A.modular.modularParameter.toTriangleUniformization_sourceAction r).carrier ⊆
+    ((orderThreeAffinePuncturedCarrier A.periods
+      A.modular.modularParameter.toTriangleUniformization_sourceAction r).toSubMulAction :
+        Set (TotalSpace (parameterMap A.periods))) ⊆
       A.orderThreeFillingOpen r := by
   intro q hq
   exact hq.2
 
 public theorem orderFourPuncturedCarrier_subset_filling (r : ℝ) :
-    (orderFourAffinePuncturedCarrier A.periods
-      A.modular.modularParameter.toTriangleUniformization_sourceAction r).carrier ⊆
+    ((orderFourAffinePuncturedCarrier A.periods
+      A.modular.modularParameter.toTriangleUniformization_sourceAction r).toSubMulAction :
+        Set (TotalSpace (parameterMap A.periods))) ⊆
       A.orderFourFillingOpen r := by
   intro q hq
   exact hq.2
 
 @[expose] public def orderThreePuncturedSourceToFillingSource (r : ℝ) :
-    (orderThreeAffinePuncturedCarrier A.periods
-      A.modular.modularParameter.toTriangleUniformization_sourceAction r).carrier →
+    (orderThreeAffinePuncturedCarrier A.periods A.modular.modularParameter.toTriangleUniformization_sourceAction r) →
       A.orderThreeFillingOpen r :=
   Set.inclusion (A.orderThreePuncturedCarrier_subset_filling r)
 
 @[expose] public def orderFourPuncturedSourceToFillingSource (r : ℝ) :
-    (orderFourAffinePuncturedCarrier A.periods
-      A.modular.modularParameter.toTriangleUniformization_sourceAction r).carrier →
+    (orderFourAffinePuncturedCarrier A.periods A.modular.modularParameter.toTriangleUniformization_sourceAction r) →
       A.orderFourFillingOpen r :=
   Set.inclusion (A.orderFourPuncturedCarrier_subset_filling r)
 
@@ -547,16 +512,11 @@ public theorem orderFourPuncturedSourceToFillingSource_isOpenEmbedding (r : ℝ)
       continuous_subtype_val
 
 @[expose] public noncomputable def orderThreePuncturedCollarToFilling (r : ℝ) :
-    Quotient (restrictedOrbitRel (orderThreeAffineFamilyAction A.periods)
-      (orderThreeAffinePuncturedCarrier A.periods
-        A.modular.modularParameter.toTriangleUniformization_sourceAction r)) →
+    (orderThreeAffinePuncturedCarrier A.periods A.modular.modularParameter.toTriangleUniformization_sourceAction r).OrbitQuotient →
       A.OrderThreeVaryingFilling r := by
   let _ := A.orderThreeFillingAction r
   refine Quotient.map (A.orderThreePuncturedSourceToFillingSource r) ?_
   intro x y hxy
-  let _ := restrictedMulAction (orderThreeAffineFamilyAction A.periods)
-    (orderThreeAffinePuncturedCarrier A.periods
-      A.modular.modularParameter.toTriangleUniformization_sourceAction r)
   change MulAction.orbitRel (FiniteCyclic 3) _ x y at hxy
   rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff] at hxy
   change MulAction.orbitRel (FiniteCyclic 3) _
@@ -569,16 +529,11 @@ public theorem orderFourPuncturedSourceToFillingSource_isOpenEmbedding (r : ℝ)
   exact congrArg Subtype.val hg
 
 @[expose] public noncomputable def orderFourPuncturedCollarToFilling (r : ℝ) :
-    Quotient (restrictedOrbitRel (orderFourAffineFamilyAction A.periods)
-      (orderFourAffinePuncturedCarrier A.periods
-        A.modular.modularParameter.toTriangleUniformization_sourceAction r)) →
+    (orderFourAffinePuncturedCarrier A.periods A.modular.modularParameter.toTriangleUniformization_sourceAction r).OrbitQuotient →
       A.OrderFourVaryingFilling r := by
   let _ := A.orderFourFillingAction r
   refine Quotient.map (A.orderFourPuncturedSourceToFillingSource r) ?_
   intro x y hxy
-  let _ := restrictedMulAction (orderFourAffineFamilyAction A.periods)
-    (orderFourAffinePuncturedCarrier A.periods
-      A.modular.modularParameter.toTriangleUniformization_sourceAction r)
   change MulAction.orbitRel (FiniteCyclic 4) _ x y at hxy
   rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff] at hxy
   change MulAction.orbitRel (FiniteCyclic 4) _
@@ -592,8 +547,7 @@ public theorem orderFourPuncturedSourceToFillingSource_isOpenEmbedding (r : ℝ)
 
 @[simp]
 public theorem orderThreePuncturedCollarToFilling_mk (r : ℝ)
-    (q : (orderThreeAffinePuncturedCarrier A.periods
-      A.modular.modularParameter.toTriangleUniformization_sourceAction r).carrier) :
+    (q : (orderThreeAffinePuncturedCarrier A.periods A.modular.modularParameter.toTriangleUniformization_sourceAction r)) :
     A.orderThreePuncturedCollarToFilling r (Quotient.mk _ q) =
       Quotient.mk _ (A.orderThreePuncturedSourceToFillingSource r q) :=
   by
@@ -602,8 +556,7 @@ public theorem orderThreePuncturedCollarToFilling_mk (r : ℝ)
 
 @[simp]
 public theorem orderFourPuncturedCollarToFilling_mk (r : ℝ)
-    (q : (orderFourAffinePuncturedCarrier A.periods
-      A.modular.modularParameter.toTriangleUniformization_sourceAction r).carrier) :
+    (q : (orderFourAffinePuncturedCarrier A.periods A.modular.modularParameter.toTriangleUniformization_sourceAction r)) :
     A.orderFourPuncturedCollarToFilling r (Quotient.mk _ q) =
       Quotient.mk _ (A.orderFourPuncturedSourceToFillingSource r q) :=
   by
@@ -631,9 +584,6 @@ public theorem orderThreePuncturedCollarToFilling_injective (r : ℝ) :
     induction y using Quotient.inductionOn with
     | _ y =>
       apply Quotient.sound
-      let _ := restrictedMulAction (orderThreeAffineFamilyAction A.periods)
-        (orderThreeAffinePuncturedCarrier A.periods
-          A.modular.modularParameter.toTriangleUniformization_sourceAction r)
       change MulAction.orbitRel (FiniteCyclic 3) _ x y
       rw [A.orderThreePuncturedCollarToFilling_mk,
         A.orderThreePuncturedCollarToFilling_mk] at hxy
@@ -653,9 +603,6 @@ public theorem orderFourPuncturedCollarToFilling_injective (r : ℝ) :
     induction y using Quotient.inductionOn with
     | _ y =>
       apply Quotient.sound
-      let _ := restrictedMulAction (orderFourAffineFamilyAction A.periods)
-        (orderFourAffinePuncturedCarrier A.periods
-          A.modular.modularParameter.toTriangleUniformization_sourceAction r)
       change MulAction.orbitRel (FiniteCyclic 4) _ x y
       rw [A.orderFourPuncturedCollarToFilling_mk,
         A.orderFourPuncturedCollarToFilling_mk] at hxy
@@ -673,9 +620,7 @@ public theorem orderThreePuncturedCollarToFilling_isOpenMap (r : ℝ) :
   let _ : ContinuousConstSMul (FiniteCyclic 3) (A.orderThreeFillingOpen r) :=
     A.orderThreeFillingAction_continuousConstSMul r
   intro U hU
-  let pS := Quotient.mk (restrictedOrbitRel (orderThreeAffineFamilyAction A.periods)
-    (orderThreeAffinePuncturedCarrier A.periods
-      A.modular.modularParameter.toTriangleUniformization_sourceAction r))
+  let pS := Quotient.mk (orderThreeAffinePuncturedCarrier A.periods A.modular.modularParameter.toTriangleUniformization_sourceAction r).orbitRel
   let pT := Quotient.mk (MulAction.orbitRel (FiniteCyclic 3)
     (A.orderThreeFillingOpen r))
   have hpre : IsOpen (pS ⁻¹' U) := continuous_quot_mk.isOpen_preimage U hU
@@ -701,9 +646,7 @@ public theorem orderFourPuncturedCollarToFilling_isOpenMap (r : ℝ) :
   let _ : ContinuousConstSMul (FiniteCyclic 4) (A.orderFourFillingOpen r) :=
     A.orderFourFillingAction_continuousConstSMul r
   intro U hU
-  let pS := Quotient.mk (restrictedOrbitRel (orderFourAffineFamilyAction A.periods)
-    (orderFourAffinePuncturedCarrier A.periods
-      A.modular.modularParameter.toTriangleUniformization_sourceAction r))
+  let pS := Quotient.mk (orderFourAffinePuncturedCarrier A.periods A.modular.modularParameter.toTriangleUniformization_sourceAction r).orbitRel
   let pT := Quotient.mk (MulAction.orbitRel (FiniteCyclic 4)
     (A.orderFourFillingOpen r))
   have hpre : IsOpen (pS ⁻¹' U) := continuous_quot_mk.isOpen_preimage U hU
@@ -739,9 +682,7 @@ public theorem orderFourPuncturedCollarToFilling_isOpenEmbedding (r : ℝ) :
 @[expose] public noncomputable def orderThreePuncturedCollarToCentralFamily
     {r : ℝ} (D : OrderThreeLinearCollarSourceData
       (U := A.modular.modularParameter.toTriangleUniformization) r) :
-    Quotient (restrictedOrbitRel (orderThreeAffineFamilyAction A.periods)
-      (orderThreeAffinePuncturedCarrier A.periods
-        A.modular.modularParameter.toTriangleUniformization_sourceAction r)) →
+    (orderThreeAffinePuncturedCarrier A.periods A.modular.modularParameter.toTriangleUniformization_sourceAction r).OrbitQuotient →
       A.CentralFamily := by
   let _ := A.totalSpaceCharts
   exact orderThreeAffineCollarToPuncturedGlobalFamily A.periods
@@ -753,9 +694,7 @@ public theorem orderFourPuncturedCollarToFilling_isOpenEmbedding (r : ℝ) :
 @[expose] public noncomputable def orderFourPuncturedCollarToCentralFamily
     {r : ℝ} (D : OrderFourLinearCollarSourceData
       (U := A.modular.modularParameter.toTriangleUniformization) r) :
-    Quotient (restrictedOrbitRel (orderFourAffineFamilyAction A.periods)
-      (orderFourAffinePuncturedCarrier A.periods
-        A.modular.modularParameter.toTriangleUniformization_sourceAction r)) →
+    (orderFourAffinePuncturedCarrier A.periods A.modular.modularParameter.toTriangleUniformization_sourceAction r).OrbitQuotient →
       A.CentralFamily := by
   let _ := A.totalSpaceCharts
   exact orderFourAffineCollarToPuncturedGlobalFamily A.periods
@@ -786,29 +725,14 @@ public theorem orderFourPuncturedCollarToCentralFamily_isOpenEmbedding
       A.modular.modularParameter.toTriangleUniformization_sourceAction)
     A.modular.modularParameter.toTriangleUniformization_sourceAction D
 
-/-! A filling piece only varies in its radius and in the source-side separation proof.  This
-indexed record is shared by the two elliptic orders; the order-specific names below are aliases
-kept for the paper-facing API. -/
+/-! A filling piece only varies in its radius and in the source-side separation proof.  The
+order-specific abbreviations identify the two mathematical filling types used in the paper. -/
 
 public structure IndexedFillingPiece (SourceData : ℝ → Prop) where
   radius : ℝ
   radius_pos : 0 < radius
   radius_lt_one : radius < 1
   sourceData : SourceData radius
-
-/-- A monotone source collar yields filling pieces of every positive smaller radius. -/
-public theorem exists_indexedFillingPiece_below
-    {SourceData : ℝ → Prop}
-    (hExists : Nonempty (IndexedFillingPiece SourceData))
-    (hmono : ∀ {r' r : ℝ}, r' ≤ r → SourceData r → SourceData r')
-    {R : ℝ} (hR : 0 < R) :
-    ∃ P : IndexedFillingPiece SourceData, P.radius < R := by
-  obtain ⟨P⟩ := hExists
-  let r := min P.radius (R / 2)
-  have hr : 0 < r := lt_min P.radius_pos (half_pos hR)
-  have hrr : r ≤ P.radius := min_le_left _ _
-  have hrR : r < R := (min_le_right _ _).trans_lt (half_lt_self hR)
-  exact ⟨⟨r, hr, hrr.trans_lt P.radius_lt_one, hmono hrr P.sourceData⟩, hrR⟩
 
 public abbrev OrderThreeFillingPiece :=
   IndexedFillingPiece (fun r => OrderThreeLinearCollarSourceData
@@ -817,22 +741,6 @@ public abbrev OrderThreeFillingPiece :=
 public abbrev OrderFourFillingPiece :=
   IndexedFillingPiece (fun r => OrderFourLinearCollarSourceData
     (U := A.modular.modularParameter.toTriangleUniformization) r)
-
-public theorem orderThreeLinearCollarSourceData_mono {r' r : ℝ} (hrr : r' ≤ r)
-    (D : OrderThreeLinearCollarSourceData
-      (U := A.modular.modularParameter.toTriangleUniformization) r) :
-    OrderThreeLinearCollarSourceData
-      (U := A.modular.modularParameter.toTriangleUniformization) r' :=
-  linearCollarSourceData_mono (U := A.modular.modularParameter.toTriangleUniformization)
-    3 (M := orderThreeLinearCollarModel) hrr D
-
-public theorem orderFourLinearCollarSourceData_mono {r' r : ℝ} (hrr : r' ≤ r)
-    (D : OrderFourLinearCollarSourceData
-      (U := A.modular.modularParameter.toTriangleUniformization) r) :
-    OrderFourLinearCollarSourceData
-      (U := A.modular.modularParameter.toTriangleUniformization) r' :=
-  linearCollarSourceData_mono (U := A.modular.modularParameter.toTriangleUniformization)
-    4 (M := orderFourLinearCollarModel) hrr D
 
 public theorem exists_orderThreeFillingPiece : Nonempty A.OrderThreeFillingPiece := by
   obtain ⟨r, hr, hr1, D⟩ := exists_orderThreeLinearCollarSourceData
@@ -847,16 +755,6 @@ public theorem exists_orderFourFillingPiece : Nonempty A.OrderFourFillingPiece :
     (sourceActionProperlyDiscontinuous_of_eq
       A.modular.modularParameter.toTriangleUniformization_sourceAction)
   exact ⟨⟨r, hr, hr1, D⟩⟩
-
-public theorem exists_orderThreeFillingPiece_below {R : ℝ} (hR : 0 < R) :
-    ∃ P : A.OrderThreeFillingPiece, P.radius < R :=
-  exists_indexedFillingPiece_below A.exists_orderThreeFillingPiece
-    (fun hrr D => A.orderThreeLinearCollarSourceData_mono hrr D) hR
-
-public theorem exists_orderFourFillingPiece_below {R : ℝ} (hR : 0 < R) :
-    ∃ P : A.OrderFourFillingPiece, P.radius < R :=
-  exists_indexedFillingPiece_below A.exists_orderFourFillingPiece
-    (fun hrr D => A.orderFourLinearCollarSourceData_mono hrr D) hR
 
 @[expose] public noncomputable def orderThreeFillingPiece : A.OrderThreeFillingPiece :=
   Classical.choice A.exists_orderThreeFillingPiece
@@ -991,16 +889,14 @@ public theorem orderFourFilling_connected {r : ℝ} (hr : 0 < r) (hr1 : r < 1) :
   infer_instance
 
 public abbrev SelectedOrderThreePuncturedCollar :=
-  Quotient (restrictedOrbitRel (orderThreeAffineFamilyAction A.periods)
-    (orderThreeAffinePuncturedCarrier A.periods
-      A.modular.modularParameter.toTriangleUniformization_sourceAction
-      A.orderThreeFillingPiece.radius))
+  (orderThreeAffinePuncturedCarrier A.periods
+    A.modular.modularParameter.toTriangleUniformization_sourceAction
+    A.orderThreeFillingPiece.radius).OrbitQuotient
 
 public abbrev SelectedOrderFourPuncturedCollar :=
-  Quotient (restrictedOrbitRel (orderFourAffineFamilyAction A.periods)
-    (orderFourAffinePuncturedCarrier A.periods
-      A.modular.modularParameter.toTriangleUniformization_sourceAction
-      A.orderFourFillingPiece.radius))
+  (orderFourAffinePuncturedCarrier A.periods
+    A.modular.modularParameter.toTriangleUniformization_sourceAction
+    A.orderFourFillingPiece.radius).OrbitQuotient
 
 @[instance_reducible]
 public noncomputable def selectedOrderThreeFillingComplexCharts :

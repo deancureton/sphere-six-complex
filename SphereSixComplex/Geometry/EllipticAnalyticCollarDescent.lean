@@ -32,48 +32,48 @@ variable {H : Type*} [TopologicalSpace H] (I : ModelWithCorners 𝕜 E H)
 
 public structure EquivariantOpenDiffeomorphOfActions
     (AX : MulAction G X) (AY : MulAction G Y)
-    (S : InvariantOpenCarrier AX) (T : InvariantOpenCarrier AY)
-    [ChartedSpace H S.carrier] [ChartedSpace H T.carrier] where
-  toDiffeomorph : S.carrier ≃ₘ^∞⟮I, I⟯ T.carrier
-  equivariant : ∀ (g : G) (x : S.carrier),
-    toDiffeomorph (restrictedActionMap S g x) =
-      restrictedActionMap T g (toDiffeomorph x)
+    (S : OpenSubMulAction AX) (T : OpenSubMulAction AY)
+    [ChartedSpace H S] [ChartedSpace H T] where
+  toDiffeomorph : S ≃ₘ^∞⟮I, I⟯ T
+  equivariant : ∀ (g : G) (x : S),
+    toDiffeomorph (g • x) =
+      g • toDiffeomorph x
 
 namespace EquivariantOpenDiffeomorphOfActions
 
 variable {I} {AX : MulAction G X} {AY : MulAction G Y}
-variable {S : InvariantOpenCarrier AX} {T : InvariantOpenCarrier AY}
-variable [ChartedSpace H S.carrier] [ChartedSpace H T.carrier]
+variable {S : OpenSubMulAction AX} {T : OpenSubMulAction AY}
+variable [ChartedSpace H S] [ChartedSpace H T]
 
 public noncomputable def toEquivariantHomeomorph
     (e : EquivariantOpenDiffeomorphOfActions I AX AY S T) :
-    EquivariantOpenHomeomorphOfActions AX AY S T where
+    EquivariantOpenHomeomorph AX AY S T where
   toHomeomorph := e.toDiffeomorph.toHomeomorph
   equivariant := e.equivariant
 
-public theorem restrictedOrbitQuotientHomeomorph_mk
-    (e : EquivariantOpenDiffeomorphOfActions I AX AY S T) (x : S.carrier) :
-    restrictedOrbitQuotientHomeomorph e.toEquivariantHomeomorph (Quotient.mk _ x) =
+public theorem orbitQuotientHomeomorph_mk
+    (e : EquivariantOpenDiffeomorphOfActions I AX AY S T) (x : S) :
+    orbitQuotientHomeomorph e.toEquivariantHomeomorph (Quotient.mk _ x) =
       Quotient.mk _ (e.toDiffeomorph x) :=
   rfl
 
 public noncomputable def restrictedOrbitQuotientDiffeomorph
     (e : EquivariantOpenDiffeomorphOfActions I AX AY S T)
-    [ChartedSpace H (Quotient (restrictedOrbitRel AX S))]
-    [ChartedSpace H (Quotient (restrictedOrbitRel AY T))]
+    [ChartedSpace H (S.OrbitQuotient)]
+    [ChartedSpace H (T.OrbitQuotient)]
     (hsource : IsLocalDiffeomorph I I ∞
-      (Quotient.mk (restrictedOrbitRel AX S)))
+      (Quotient.mk S.orbitRel))
     (htarget : IsLocalDiffeomorph I I ∞
-      (Quotient.mk (restrictedOrbitRel AY T))) :
-    Quotient (restrictedOrbitRel AX S) ≃ₘ^∞⟮I, I⟯
-      Quotient (restrictedOrbitRel AY T) where
-  toEquiv := (restrictedOrbitQuotientHomeomorph e.toEquivariantHomeomorph).toEquiv
+      (Quotient.mk T.orbitRel)) :
+    S.OrbitQuotient ≃ₘ^∞⟮I, I⟯
+      T.OrbitQuotient where
+  toEquiv := (orbitQuotientHomeomorph e.toEquivariantHomeomorph).toEquiv
   contMDiff_toFun := by
     intro q
     induction q using Quotient.inductionOn with
     | _ x =>
-      let πS := Quotient.mk (restrictedOrbitRel AX S)
-      let πT := Quotient.mk (restrictedOrbitRel AY T)
+      let πS := Quotient.mk S.orbitRel
+      let πT := Quotient.mk T.orbitRel
       let loc := (hsource x).localInverse
       have hlocal : ContMDiffAt I I ∞ loc (πS x) :=
         (hsource x).localInverse_contMDiffAt
@@ -84,23 +84,23 @@ public noncomputable def restrictedOrbitQuotientDiffeomorph
       have hrhs : ContMDiffAt I I ∞ (πT ∘ e.toDiffeomorph ∘ loc) (πS x) :=
         (htarget (e.toDiffeomorph x)).contMDiffAt.comp_of_eq hmiddle (by
           simp [hlocalx])
-      have hevent : restrictedOrbitQuotientHomeomorph e.toEquivariantHomeomorph =ᶠ[
+      have hevent : orbitQuotientHomeomorph e.toEquivariantHomeomorph =ᶠ[
           nhds (πS x)] (πT ∘ e.toDiffeomorph ∘ loc) := by
         filter_upwards [(hsource x).localInverse_eventuallyEq_right] with y hy
         calc
-          restrictedOrbitQuotientHomeomorph e.toEquivariantHomeomorph y =
-              restrictedOrbitQuotientHomeomorph e.toEquivariantHomeomorph (πS (loc y)) :=
+          orbitQuotientHomeomorph e.toEquivariantHomeomorph y =
+              orbitQuotientHomeomorph e.toEquivariantHomeomorph (πS (loc y)) :=
             congrArg _ hy.symm
           _ = πT (e.toDiffeomorph (loc y)) :=
-            restrictedOrbitQuotientHomeomorph_mk e (loc y)
+            orbitQuotientHomeomorph_mk e (loc y)
       exact hrhs.congr_of_eventuallyEq hevent
 
   contMDiff_invFun := by
     intro q
     induction q using Quotient.inductionOn with
     | _ y =>
-      let πS := Quotient.mk (restrictedOrbitRel AX S)
-      let πT := Quotient.mk (restrictedOrbitRel AY T)
+      let πS := Quotient.mk S.orbitRel
+      let πT := Quotient.mk T.orbitRel
       let loc := (htarget y).localInverse
       have hlocal : ContMDiffAt I I ∞ loc (πT y) :=
         (htarget y).localInverse_contMDiffAt
@@ -111,31 +111,31 @@ public noncomputable def restrictedOrbitQuotientDiffeomorph
       have hrhs : ContMDiffAt I I ∞ (πS ∘ e.toDiffeomorph.symm ∘ loc) (πT y) :=
         (hsource (e.toDiffeomorph.symm y)).contMDiffAt.comp_of_eq hmiddle (by
           simp [hlocaly])
-      have hevent : (restrictedOrbitQuotientHomeomorph
+      have hevent : (orbitQuotientHomeomorph
           e.toEquivariantHomeomorph).symm =ᶠ[nhds (πT y)]
           (πS ∘ e.toDiffeomorph.symm ∘ loc) := by
         filter_upwards [(htarget y).localInverse_eventuallyEq_right] with z hz
         calc
-          (restrictedOrbitQuotientHomeomorph e.toEquivariantHomeomorph).symm z =
-              (restrictedOrbitQuotientHomeomorph
+          (orbitQuotientHomeomorph e.toEquivariantHomeomorph).symm z =
+              (orbitQuotientHomeomorph
                 e.toEquivariantHomeomorph).symm (πT (loc z)) := congrArg _ hz.symm
           _ = πS (e.toDiffeomorph.symm (loc z)) := by
-            apply (restrictedOrbitQuotientHomeomorph
+            apply (orbitQuotientHomeomorph
               e.toEquivariantHomeomorph).injective
             rw [Homeomorph.apply_symm_apply,
-              restrictedOrbitQuotientHomeomorph_mk]
+              orbitQuotientHomeomorph_mk]
             rw [e.toDiffeomorph.apply_symm_apply]
       exact hrhs.congr_of_eventuallyEq hevent
 
 @[simp]
 public theorem restrictedOrbitQuotientDiffeomorph_mk
     (e : EquivariantOpenDiffeomorphOfActions I AX AY S T)
-    [ChartedSpace H (Quotient (restrictedOrbitRel AX S))]
-    [ChartedSpace H (Quotient (restrictedOrbitRel AY T))]
+    [ChartedSpace H (S.OrbitQuotient)]
+    [ChartedSpace H (T.OrbitQuotient)]
     (hsource : IsLocalDiffeomorph I I ∞
-      (Quotient.mk (restrictedOrbitRel AX S)))
+      (Quotient.mk S.orbitRel))
     (htarget : IsLocalDiffeomorph I I ∞
-      (Quotient.mk (restrictedOrbitRel AY T))) (x : S.carrier) :
+      (Quotient.mk T.orbitRel)) (x : S) :
     restrictedOrbitQuotientDiffeomorph e hsource htarget (Quotient.mk _ x) =
       Quotient.mk _ (e.toDiffeomorph x) :=
   rfl
@@ -446,7 +446,7 @@ public noncomputable instance orderThreeAffinePuncturedCarrierCharts
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
     (hsource : U.sourceAction = fuchsianSourceAction) (r : ℝ) :
     ChartedSpace (ModelProd ℂ ComplexTwoSpace)
-      (orderThreeAffinePuncturedCarrier F hsource r).carrier := by
+      (orderThreeAffinePuncturedCarrier F hsource r) := by
   change ChartedSpace (ModelProd ℂ ComplexTwoSpace)
     (orderThreePuncturedFamilyCollar F r)
   infer_instance
@@ -455,7 +455,7 @@ public noncomputable instance orderThreeLinearPuncturedCarrierCharts
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
     (hsource : U.sourceAction = fuchsianSourceAction) (r : ℝ) :
     ChartedSpace (ModelProd ℂ ComplexTwoSpace)
-      (orderThreeLinearPuncturedCarrier F hsource r).carrier := by
+      (orderThreeLinearPuncturedCarrier F hsource r) := by
   change ChartedSpace (ModelProd ℂ ComplexTwoSpace)
     (orderThreePuncturedFamilyCollar F r)
   infer_instance
@@ -464,7 +464,7 @@ public noncomputable instance orderFourAffinePuncturedCarrierCharts
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
     (hsource : U.sourceAction = fuchsianSourceAction) (r : ℝ) :
     ChartedSpace (ModelProd ℂ ComplexTwoSpace)
-      (orderFourAffinePuncturedCarrier F hsource r).carrier := by
+      (orderFourAffinePuncturedCarrier F hsource r) := by
   change ChartedSpace (ModelProd ℂ ComplexTwoSpace)
     (orderFourPuncturedFamilyCollar F r)
   infer_instance
@@ -473,7 +473,7 @@ public noncomputable instance orderFourLinearPuncturedCarrierCharts
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
     (hsource : U.sourceAction = fuchsianSourceAction) (r : ℝ) :
     ChartedSpace (ModelProd ℂ ComplexTwoSpace)
-      (orderFourLinearPuncturedCarrier F hsource r).carrier := by
+      (orderFourLinearPuncturedCarrier F hsource r) := by
   change ChartedSpace (ModelProd ℂ ComplexTwoSpace)
     (orderFourPuncturedFamilyCollar F r)
   infer_instance

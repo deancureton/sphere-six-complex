@@ -618,9 +618,9 @@ public theorem orderThreeFamilyRadius_linearRepresentation
   | succ k ih =>
       rw [pow_succ', Equiv.Perm.mul_apply]
       change orderThreeFamilyRadius F
-        (actionMap (orderThreeLinearFamilyAction F) (cyclicGenerator 3)
+        (smulOf (orderThreeLinearFamilyAction F) (cyclicGenerator 3)
           (((orderThreeFamilyRepresentation F) (cyclicGenerator 3) ^ k) q)) = _
-      rw [orderThreeLinear_actionMap_generator,
+      rw [orderThreeLinear_smulOf_generator,
         orderThreeFamilyRadius_linearGenerator F hsource, ih]
 
 public theorem orderFourFamilyRadius_linearRepresentation
@@ -634,14 +634,14 @@ public theorem orderFourFamilyRadius_linearRepresentation
   | succ k ih =>
       rw [pow_succ', Equiv.Perm.mul_apply]
       change orderFourFamilyRadius F
-        (actionMap (orderFourLinearFamilyAction F) (cyclicGenerator 4)
+        (smulOf (orderFourLinearFamilyAction F) (cyclicGenerator 4)
           (((orderFourFamilyRepresentation F) (cyclicGenerator 4) ^ k) q)) = _
-      rw [orderFourLinear_actionMap_generator,
+      rw [orderFourLinear_smulOf_generator,
         orderFourFamilyRadius_linearGenerator F hsource, ih]
 
 @[expose] public noncomputable def orderThreeAffinePuncturedCarrier
     (hsource : U.sourceAction = fuchsianSourceAction) (r : ℝ) :
-    InvariantOpenCarrier (orderThreeAffineFamilyAction F) where
+    OpenSubMulAction (orderThreeAffineFamilyAction F) where
   toSubMulAction := by
     letI := orderThreeAffineFamilyAction F
     exact {
@@ -655,7 +655,7 @@ public theorem orderFourFamilyRadius_linearRepresentation
 
 @[expose] public noncomputable def orderFourAffinePuncturedCarrier
     (hsource : U.sourceAction = fuchsianSourceAction) (r : ℝ) :
-    InvariantOpenCarrier (orderFourAffineFamilyAction F) where
+    OpenSubMulAction (orderFourAffineFamilyAction F) where
   toSubMulAction := by
     letI := orderFourAffineFamilyAction F
     exact {
@@ -669,7 +669,7 @@ public theorem orderFourFamilyRadius_linearRepresentation
 
 @[expose] public noncomputable def orderThreeLinearPuncturedCarrier
     (hsource : U.sourceAction = fuchsianSourceAction) (r : ℝ) :
-    InvariantOpenCarrier (orderThreeLinearFamilyAction F) where
+    OpenSubMulAction (orderThreeLinearFamilyAction F) where
   toSubMulAction := by
     letI := orderThreeLinearFamilyAction F
     exact {
@@ -688,7 +688,7 @@ public theorem orderFourFamilyRadius_linearRepresentation
 
 @[expose] public noncomputable def orderFourLinearPuncturedCarrier
     (hsource : U.sourceAction = fuchsianSourceAction) (r : ℝ) :
-    InvariantOpenCarrier (orderFourLinearFamilyAction F) where
+    OpenSubMulAction (orderFourLinearFamilyAction F) where
   toSubMulAction := by
     letI := orderFourLinearFamilyAction F
     exact {
@@ -810,7 +810,7 @@ public theorem orderFourPrincipalGauge_generator
     (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel n
       (projection (parameterMap F)))
     (hsource : U.sourceAction = fuchsianSourceAction) (r : ℝ) :
-    EquivariantOpenHomeomorphOfActions
+    EquivariantOpenHomeomorph
       (orderThreeAffineFamilyAction F) (orderThreeLinearFamilyAction F)
       (orderThreeAffinePuncturedCarrier F hsource r)
       (orderThreeLinearPuncturedCarrier F hsource r) where
@@ -824,11 +824,11 @@ public theorem orderFourPrincipalGauge_generator
       intro q
       apply Subtype.ext
       change orderThreePrincipalGaugeEquiv F
-          (actionMap (orderThreeAffineFamilyAction F) (cyclicGenerator 3) q) =
-        actionMap (orderThreeLinearFamilyAction F) (cyclicGenerator 3)
+          (smulOf (orderThreeAffineFamilyAction F) (cyclicGenerator 3) q) =
+        smulOf (orderThreeLinearFamilyAction F) (cyclicGenerator 3)
           (orderThreePrincipalGaugeEquiv F q)
-      rw [orderThreeAffine_actionMap_generator,
-        orderThreeLinear_actionMap_generator]
+      rw [orderThreeAffine_smulOf_generator,
+        orderThreeLinear_smulOf_generator]
       exact orderThreePrincipalGauge_generator F hsource r q q.property)
 
 @[expose] public noncomputable def orderFourPuncturedGaugeEquivariantHomeomorph
@@ -836,7 +836,7 @@ public theorem orderFourPrincipalGauge_generator
     (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel n
       (projection (parameterMap F)))
     (hsource : U.sourceAction = fuchsianSourceAction) (r : ℝ) :
-    EquivariantOpenHomeomorphOfActions
+    EquivariantOpenHomeomorph
       (orderFourAffineFamilyAction F) (orderFourLinearFamilyAction F)
       (orderFourAffinePuncturedCarrier F hsource r)
       (orderFourLinearPuncturedCarrier F hsource r) where
@@ -850,11 +850,11 @@ public theorem orderFourPrincipalGauge_generator
       intro q
       apply Subtype.ext
       change orderFourPrincipalGaugeEquiv F
-          (actionMap (orderFourAffineFamilyAction F) (cyclicGenerator 4) q) =
-        actionMap (orderFourLinearFamilyAction F) (cyclicGenerator 4)
+          (smulOf (orderFourAffineFamilyAction F) (cyclicGenerator 4) q) =
+        smulOf (orderFourLinearFamilyAction F) (cyclicGenerator 4)
           (orderFourPrincipalGaugeEquiv F q)
-      rw [orderFourAffine_actionMap_generator,
-        orderFourLinear_actionMap_generator]
+      rw [orderFourAffine_smulOf_generator,
+        orderFourLinear_smulOf_generator]
       exact orderFourPrincipalGauge_generator F hsource r q q.property)
 
 /-- The actual full order-three punctured affine collar quotient is homeomorphic to the
@@ -864,11 +864,9 @@ corresponding restricted linear cyclic quotient. -/
     (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel n
       (projection (parameterMap F)))
     (hsource : U.sourceAction = fuchsianSourceAction) (r : ℝ) :
-    Quotient (restrictedOrbitRel (orderThreeAffineFamilyAction F)
-      (orderThreeAffinePuncturedCarrier F hsource r)) ≃ₜ
-    Quotient (restrictedOrbitRel (orderThreeLinearFamilyAction F)
-      (orderThreeLinearPuncturedCarrier F hsource r)) :=
-  restrictedOrbitQuotientHomeomorph
+    (orderThreeAffinePuncturedCarrier F hsource r).OrbitQuotient ≃ₜ
+    (orderThreeLinearPuncturedCarrier F hsource r).OrbitQuotient :=
+  orbitQuotientHomeomorph
     (orderThreePuncturedGaugeEquivariantHomeomorph F hprojection hsource r)
 
 /-- The actual full order-four punctured affine collar quotient is homeomorphic to the
@@ -878,11 +876,9 @@ corresponding restricted linear cyclic quotient. -/
     (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel n
       (projection (parameterMap F)))
     (hsource : U.sourceAction = fuchsianSourceAction) (r : ℝ) :
-    Quotient (restrictedOrbitRel (orderFourAffineFamilyAction F)
-      (orderFourAffinePuncturedCarrier F hsource r)) ≃ₜ
-    Quotient (restrictedOrbitRel (orderFourLinearFamilyAction F)
-      (orderFourLinearPuncturedCarrier F hsource r)) :=
-  restrictedOrbitQuotientHomeomorph
+    (orderFourAffinePuncturedCarrier F hsource r).OrbitQuotient ≃ₜ
+    (orderFourLinearPuncturedCarrier F hsource r).OrbitQuotient :=
+  orbitQuotientHomeomorph
     (orderFourPuncturedGaugeEquivariantHomeomorph F hprojection hsource r)
 
 end

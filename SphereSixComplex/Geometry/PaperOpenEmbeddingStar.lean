@@ -39,14 +39,12 @@ public noncomputable abbrev starSeparation := A.collarSeparationData
 @[expose] public noncomputable def starCollarSourceType : Fin 3 → Type :=
   Fin.cases (puncturedLocalCuspQuotient A.starCuspWitness) fun i ↦
     Fin.cases
-      (Quotient (restrictedOrbitRel (orderThreeAffineFamilyAction A.periods)
-        (orderThreeAffinePuncturedCarrier A.periods
-          A.modular.modularParameter.toTriangleUniformization_sourceAction
-          A.starSeparation.orderThree.radius)))
-      (fun _ ↦ Quotient (restrictedOrbitRel (orderFourAffineFamilyAction A.periods)
-        (orderFourAffinePuncturedCarrier A.periods
-          A.modular.modularParameter.toTriangleUniformization_sourceAction
-          A.starSeparation.orderFour.radius))) i
+      (orderThreeAffinePuncturedCarrier A.periods
+        A.modular.modularParameter.toTriangleUniformization_sourceAction
+        A.starSeparation.orderThree.radius).OrbitQuotient
+      (fun _ ↦ (orderFourAffinePuncturedCarrier A.periods
+        A.modular.modularParameter.toTriangleUniformization_sourceAction
+        A.starSeparation.orderFour.radius).OrbitQuotient) i
 
 public noncomputable instance starFillingTopology (i : Fin 3) :
     TopologicalSpace (A.starFillingType i) := by
@@ -67,17 +65,13 @@ public noncomputable instance starCollarSourceTopology (i : Fin 3) :
   · change TopologicalSpace (puncturedLocalCuspQuotient A.starCuspWitness)
     infer_instance
   · refine Fin.cases ?_ (fun _ ↦ ?_) j
-    · change TopologicalSpace (Quotient (restrictedOrbitRel
-        (orderThreeAffineFamilyAction A.periods)
-        (orderThreeAffinePuncturedCarrier A.periods
-          A.modular.modularParameter.toTriangleUniformization_sourceAction
-          A.starSeparation.orderThree.radius)))
+    · change TopologicalSpace ((orderThreeAffinePuncturedCarrier A.periods
+        A.modular.modularParameter.toTriangleUniformization_sourceAction
+        A.starSeparation.orderThree.radius).OrbitQuotient)
       infer_instance
-    · change TopologicalSpace (Quotient (restrictedOrbitRel
-        (orderFourAffineFamilyAction A.periods)
-        (orderFourAffinePuncturedCarrier A.periods
-          A.modular.modularParameter.toTriangleUniformization_sourceAction
-          A.starSeparation.orderFour.radius)))
+    · change TopologicalSpace ((orderFourAffinePuncturedCarrier A.periods
+        A.modular.modularParameter.toTriangleUniformization_sourceAction
+        A.starSeparation.orderFour.radius).OrbitQuotient)
       infer_instance
 
 /-- The three collar maps into the punctured global family. -/
