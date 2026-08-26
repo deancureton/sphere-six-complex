@@ -324,6 +324,8 @@ public import SphereSixComplex.Topology.PaperSectionSevenCuspWangNaturalityInter
 public import SphereSixComplex.Topology.PaperSectionSevenCuspEllipticInclusionNaturality
 public import SphereSixComplex.Topology.PaperSectionSevenAffineCompletionReduction
 public import SphereSixComplex.Topology.WangBoundarySignAmbiguity
+public import SphereSixComplex.Topology.PuncturedAffineHalfPlaneRadial
+public import SphereSixComplex.Topology.OpenUnionHomotopyEquivalence
 
 /-!
 # A Complex Structure on the Six-Sphere
