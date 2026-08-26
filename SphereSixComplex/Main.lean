@@ -301,6 +301,7 @@ public import SphereSixComplex.Topology.PaperCuspCollarFourTorusFibre
 public import SphereSixComplex.Topology.EstablishedChosenAffineFillings
 public import SphereSixComplex.Topology.EstablishedAffineStarBridge
 public import SphereSixComplex.Topology.PaperActualAffineFillingCoverModels
+public import SphereSixComplex.Geometry.PaperGluingDataReduction
 public import SphereSixComplex.Topology.FiniteCoverPerfectPairing
 public import SphereSixComplex.Topology.PaperEllipticFiniteCoverHomologyRealization
 public import SphereSixComplex.Topology.NormalizedWangHomologySplitting
@@ -309,6 +310,7 @@ public import SphereSixComplex.Topology.PaperSectionSevenEllipticTwoDiscCoverRea
 public import SphereSixComplex.Topology.PaperEllipticInteriorNormalizedSplitting
 public import SphereSixComplex.Topology.PaperSectionSevenNormalizedLocalBases
 public import SphereSixComplex.Topology.PaperEllipticInteriorCycleDecomposition
+public import SphereSixComplex.Topology.PaperSectionSevenPositiveDegreeRealization
 
 /-!
 # A Complex Structure on the Six-Sphere

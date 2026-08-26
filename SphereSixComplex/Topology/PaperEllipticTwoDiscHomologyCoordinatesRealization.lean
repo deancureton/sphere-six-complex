@@ -2,6 +2,7 @@ module
 
 public import SphereSixComplex.Topology.ConnectedMayerVietorisDegreeZero
 public import SphereSixComplex.Topology.PaperAffineCyclicQuotientHomologyCoordinates
+public import SphereSixComplex.Topology.PaperEllipticFiniteCoverHomologyRealization
 public import SphereSixComplex.Topology.PaperEllipticInteriorMayerVietorisBases
 
 /-!
@@ -398,6 +399,13 @@ public noncomputable def homologyCoordinates :
   sidesTwo := sidesTwo (D := D) R
   differenceTwo := differenceTwo (D := D) R N
   differenceZero_injective := differenceZero_injective
+
+/-- The actual finite-cover realization leaves only band-basis naturality as input to the
+elliptic-interior Mayer--Vietoris coordinates. -/
+public noncomputable def actualHomologyCoordinates :
+    A.SectionSevenEllipticTwoDiscHomologyCoordinates D :=
+  homologyCoordinates (D := D)
+    (Topology.FiniteCoverPerfectPairing.ellipticFiniteCoverHomologyRealization A.periods) N
 
 end EllipticBandHomologyAlignment
 
