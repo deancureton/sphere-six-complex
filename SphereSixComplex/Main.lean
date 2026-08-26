@@ -314,6 +314,7 @@ public import SphereSixComplex.Topology.PaperSectionSevenNormalizedLocalBases
 public import SphereSixComplex.Topology.PaperEllipticInteriorCycleDecomposition
 public import SphereSixComplex.Topology.PaperSectionSevenPositiveDegreeRealization
 public import SphereSixComplex.Topology.PaperSectionSevenCuspBasisReduction
+public import SphereSixComplex.Topology.PaperSectionSevenCuspCoverNaturality
 public import SphereSixComplex.Topology.PaperSectionSevenPositiveDegreeGeometricReduction
 
 /-!

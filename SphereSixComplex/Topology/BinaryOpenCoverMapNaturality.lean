@@ -103,6 +103,13 @@ public theorem coverIntersectionPullbackMap_comp_inclusion {X Y : TopCat}
         TopCat.toSSet.map f :=
   SSet.Subcomplex.lift_ι _ _
 
+@[reassoc (attr := simp)]
+public theorem openIntersectionComparison_comp_inclusion {X : TopCat}
+    (U V : Opens X) :
+    openIntersectionComparison U V ≫ (coverIntersection U V).ι =
+      (singularOpenSubcomplex (U ⊓ V)).ι := by
+  rfl
+
 /-- The map on the union subcomplex of a pulled-back binary cover. -/
 public noncomputable def coverUnionPullbackMap {X Y : TopCat}
     (f : X ⟶ Y) (U V : Opens Y) :
@@ -173,10 +180,12 @@ public noncomputable def pullbackOpenChainMap {X Y : TopCat}
 /-- The induced chain map on the intersection term. -/
 public noncomputable def coverIntersectionPullbackChainMap {X Y : TopCat}
     (f : X ⟶ Y) (U V : Opens Y) :
-    integralSimplicialChains.obj
-        (coverIntersection ((Opens.map f).obj U) ((Opens.map f).obj V)) ⟶
-      integralSimplicialChains.obj (coverIntersection U V) :=
-  integralSimplicialChains.map (coverIntersectionPullbackMap f U V)
+    (coverChainShortComplex ((Opens.map f).obj U) ((Opens.map f).obj V)).X₁ ⟶
+      (coverChainShortComplex U V).X₁ := by
+  change integralSimplicialChains.obj
+      (coverIntersection ((Opens.map f).obj U) ((Opens.map f).obj V)) ⟶
+    integralSimplicialChains.obj (coverIntersection U V)
+  exact integralSimplicialChains.map (coverIntersectionPullbackMap f U V)
 
 /-- The induced chain map on the biproduct of the two cover members. -/
 public noncomputable def coverBiprodPullbackChainMap {X Y : TopCat}
@@ -211,10 +220,12 @@ public noncomputable def coverChainShortComplexPullback {X Y : TopCat}
     apply biprod.hom_ext
     · rw [Category.assoc, biprod.lift_fst]
       rw [Category.assoc, biprod.map_fst, biprod.lift_fst_assoc]
+      change integralSimplicialChains.map (coverIntersectionPullbackMap f U V) ≫ _ = _
       rw [← Functor.map_comp, ← Functor.map_comp, coverIntersectionPullbackMap_fst]
     · rw [Category.assoc, biprod.lift_snd]
       rw [Category.assoc, biprod.map_snd, biprod.lift_snd_assoc]
-      rw [Preadditive.comp_neg, Preadditive.neg_comp,
+      change -integralSimplicialChains.map (coverIntersectionPullbackMap f U V) ≫ _ = _
+      rw [Preadditive.neg_comp,
         ← Functor.map_comp, ← Functor.map_comp, coverIntersectionPullbackMap_snd]
   comm₂₃ := by
     dsimp [coverUnionPullbackChainMap, coverBiprodPullbackChainMap,
@@ -254,13 +265,29 @@ public theorem generatedBoundary_pullback_naturality {X Y : TopCat}
     (coverChainShortComplex_shortExact ((Opens.map f).obj U) ((Opens.map f).obj V))
     (coverChainShortComplex_shortExact U V) (n + 1) n rfl
 
+/-- The restriction map between the intersections of a binary cover and its pullback. -/
+public def openIntersectionPreimageMap {X Y : TopCat}
+    (f : X ⟶ Y) (U V : Opens Y) :
+    (Opens.toTopCat X).obj ((Opens.map f).obj U ⊓ (Opens.map f).obj V) ⟶
+      (Opens.toTopCat Y).obj (U ⊓ V) :=
+  TopCat.ofHom
+    { toFun := fun x ↦ ⟨f x, ⟨x.2.1, x.2.2⟩⟩
+      continuous_toFun := (f.hom.continuous.comp continuous_subtype_val).subtype_mk _ }
+
+@[reassoc]
+public theorem openIntersectionPreimageMap_comp_inclusion {X Y : TopCat}
+    (f : X ⟶ Y) (U V : Opens Y) :
+    openIntersectionPreimageMap f U V ≫ Opens.inclusion' (U ⊓ V) =
+      Opens.inclusion' ((Opens.map f).obj U ⊓ (Opens.map f).obj V) ≫ f := by
+  rfl
+
 /-- The ordinary homology map between the intersections of a binary cover and its pullback. -/
 public noncomputable def openIntersectionPullbackHomologyMap {X Y : TopCat}
     (f : X ⟶ Y) (U V : Opens Y) (n : ℕ) :
     (integralHomologyFunctor n).obj
         ((Opens.toTopCat X).obj ((Opens.map f).obj U ⊓ (Opens.map f).obj V)) ⟶
       (integralHomologyFunctor n).obj ((Opens.toTopCat Y).obj (U ⊓ V)) :=
-  (integralHomologyFunctor n).map (openPreimageMap f (U ⊓ V))
+  (integralHomologyFunctor n).map (openIntersectionPreimageMap f U V)
 
 /-- Compatibility of the generated-cover comparisons with a continuous map. -/
 public structure OpenCoverHomologyComparison.PullbackNaturality {X Y : TopCat}
