@@ -35,10 +35,11 @@ if ! cmp -s "$work/allowed-in-order.txt" "$work/comparator-allowed.txt"; then
   exit 1
 fi
 
-# Build before inspecting the compiled environment so a normal invocation cannot audit stale
-# object files. `CHECK_AXIOMS_SKIP_BUILD=1` is only for callers that already built this exact tree.
+# Build every default target before inspecting the compiled environment: the construction probe
+# imports `Main`, while the Comparator probe imports the separate `Solution` library.
+# `CHECK_AXIOMS_SKIP_BUILD=1` is only for callers that already built this exact tree.
 if [[ -z "${CHECK_AXIOMS_SKIP_BUILD:-}" ]]; then
-  lake build SphereSixComplex.Main >/dev/null
+  lake build >/dev/null
 fi
 
 lake env lean "$project_root/scripts/ComparatorAxiomClosure.lean" \
