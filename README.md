@@ -35,9 +35,12 @@ Past the paper-specific construction, the final recognition step uses three exte
 from Mathlib: integral Mayer--Vietoris, Hurewicz--Whitehead for smooth manifolds, and the
 standard-model smooth Poincare theorem in dimension six.
 
-While `exists_paperGluingData` remains a `sorry`, `./scripts/check-axioms.sh` sees only the two
-recognition axioms plus `sorryAx`; `./scripts/axiom_inventory.py` statically lists the broader
-construction cone that becomes reachable when the placeholder is discharged.
+While `exists_paperGluingData` remains a `sorry`, the final-cone part of
+`./scripts/check-axioms.sh` sees, beyond Lean's logical axioms, only the two recognition axioms
+plus `sorryAx`; a second, deliberately partial check records the dependencies already visible
+through implemented construction targets. `./scripts/axiom_inventory.py` instead lists every
+source `axiom` declaration and classifies its module by import reachability from `Final` and
+`Main`.
 
 ## Build
 
@@ -62,9 +65,14 @@ We thank Thomas Zhu for giving us permission to use and port the van Kampen deve
 
 Every `axiom` in the development is a trust boundary, so two scripts keep them visible.
 
-`./scripts/check-axioms.sh` is the gate: it runs `#print axioms` on the final theorem and fails if
-anything appears outside `scripts/allowed-axioms.txt`, which lists each permitted constant with a
-justification. Set `CHECK_AXIOMS_SKIP_BUILD=1` to reuse an existing build.
+`./scripts/check-axioms.sh` is the gate: it runs `#print axioms` on the final endpoints and on five
+implemented-construction targets. Their exact dependency sets are recorded in
+`scripts/allowed-axioms.txt` and `scripts/allowed-construction-axioms.txt`; the gate fails if a
+printed dependency is missing or if an entry remains after that dependency disappears, so both
+lists must shrink as assumptions are discharged. The construction check is deliberately partial:
+it omits the absent production `SectionSevenPositiveDegreeHomologyAssembly` witness and therefore
+does not represent the whole construction boundary. Set `CHECK_AXIOMS_SKIP_BUILD=1` to reuse an
+existing build.
 
 `./scripts/axiom_inventory.py` is the static counterpart: it lists every `axiom` declaration in
 `SphereSixComplex/` and marks whether it is reachable from `Final` (so the headline theorem may

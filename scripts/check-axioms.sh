@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 #
-# Trust gate: assert that the final theorem depends on nothing beyond the declared allowlist.
+# Trust gate: assert that the audited dependency cones exactly match their declared allowlists.
 #
-# Runs `#print axioms` on the project endpoint and on the Comparator wrapper, and fails if any
-# constant appears that is not listed in `scripts/allowed-axioms.txt`.  Add a line to that file
-# only together with a written justification of the new trust boundary.
+# Runs `#print axioms` on the project endpoints and fails if a constant is missing from an
+# allowlist or remains there after it is no longer reached. Add a line only together with a
+# written justification of the new trust boundary; remove it when the dependency is discharged.
 #
 # Usage: ./scripts/check-axioms.sh
 #
@@ -100,6 +100,16 @@ if ! extra="$(comm -23 "$work/found.txt" "$work/allowed.txt")" || [[ -n "$extra"
   exit 1
 fi
 
+if ! stale="$(comm -13 "$work/found.txt" "$work/allowed.txt")" || [[ -n "$stale" ]]; then
+  echo "Axiom audit FAILED: the final allowlist contains constants not reached by the final" >&2
+  echo "theorem:" >&2
+  echo "$stale" | sed 's/^/  /' >&2
+  echo >&2
+  echo "Remove them from scripts/allowed-axioms.txt; the allowlist should shrink as" >&2
+  echo "dependencies are discharged." >&2
+  exit 1
+fi
+
 echo "Axiom audit passed. The final theorem depends on:"
 sed 's/^/  /' "$work/found.txt"
 
@@ -108,9 +118,9 @@ if grep -qx 'sorryAx' "$work/found.txt"; then
   echo "Note: sorryAx is still present, so the development is not yet complete."
 fi
 
-# The construction cone is a separate ratchet: it fails only on constants outside its own list, so
-# a new `established*` axiom cannot appear unnoticed while the final cone is still masked by
-# `sorry`.  Deleting a line as its axiom is discharged is the point; this file should only shrink.
+# The construction cone is a separate exact ratchet, so a new `established*` axiom cannot appear
+# unnoticed while the final cone is still masked by `sorry`, and a discharged dependency must be
+# removed from its list. This file should only shrink.
 { grep -v '^[[:space:]]*#' "$construction_allowlist" || true; } \
   | { grep -v '^[[:space:]]*$' || true; } | sort -u > "$work/construction-allowed.txt"
 
@@ -122,6 +132,18 @@ if ! extra="$(comm -23 "$work/construction.txt" "$work/construction-allowed.txt"
   echo >&2
   echo "Either prove them, or add them to scripts/allowed-construction-axioms.txt with a" >&2
   echo "justification." >&2
+  exit 1
+fi
+
+if ! stale="$(comm -13 "$work/construction.txt" "$work/construction-allowed.txt")" \
+    || [[ -n "$stale" ]]; then
+  echo >&2
+  echo "Axiom audit FAILED: the construction allowlist contains constants not reached by the" >&2
+  echo "implemented-construction targets:" >&2
+  echo "$stale" | sed 's/^/  /' >&2
+  echo >&2
+  echo "Remove them from scripts/allowed-construction-axioms.txt; the allowlist should shrink" >&2
+  echo "as dependencies are discharged." >&2
   exit 1
 fi
 
