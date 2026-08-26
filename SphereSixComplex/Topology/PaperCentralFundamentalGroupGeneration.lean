@@ -444,4 +444,150 @@ public theorem centralFundamentalGroup_generated_by_translations_and_zeroSection
 
 end SphereSixComplex.Geometry.GlobalTorusFamily
 
+namespace SphereSixComplex.Geometry.PaperAnalyticData
+
+open SphereSixComplex
+open SphereSixComplex.Topology SphereSixComplex.Periods SphereSixComplex.TriangleGroup
+open SphereSixComplex.Geometry.GlobalTorusFamily
+open SphereSixComplex.Geometry.ComplexTorus
+open SphereSixComplex.LatticeData
+open SphereSixComplex.TriangleGroup.FuchsianProperFreeness
+open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
+
+variable (A : PaperAnalyticData)
+
+/-- A concrete regular-source representative of the marked ordinary basepoint. -/
+public noncomputable def markedRegularBaseLift :
+    RegularBase (U := A.paperTriangleUniformization) :=
+  Classical.choose (A.regularCoordinate_surjective twicePuncturedComplexBasepoint)
+
+@[simp]
+public theorem markedRegularBaseLift_coordinate :
+    A.regularCoordinate A.markedRegularBaseLift = twicePuncturedComplexBasepoint :=
+  Classical.choose_spec (A.regularCoordinate_surjective twicePuncturedComplexBasepoint)
+
+/-- The chosen regular-source representative projects to the marked quotient basepoint. -/
+public theorem markedRegularBaseLift_projects :
+    regularBaseQuotientMap (U := A.paperTriangleUniformization)
+        A.markedRegularBaseLift =
+      A.markedPuncturedBasepoint := by
+  apply A.puncturedBaseHomeomorphTwicePuncturedComplex.injective
+  calc
+    A.puncturedBaseHomeomorphTwicePuncturedComplex
+        (regularBaseQuotientMap (U := A.paperTriangleUniformization)
+          A.markedRegularBaseLift) =
+        A.regularCoordinate A.markedRegularBaseLift :=
+      A.puncturedBaseHomeomorphTwicePuncturedComplex_mk A.markedRegularBaseLift
+    _ = twicePuncturedComplexBasepoint := A.markedRegularBaseLift_coordinate
+    _ = A.puncturedBaseHomeomorphTwicePuncturedComplex
+        A.markedPuncturedBasepoint := by
+      rw [markedPuncturedBasepoint,
+        A.puncturedBaseHomeomorphTwicePuncturedComplex.apply_symm_apply]
+
+/-- At the chosen lift, the literal quotient point is the marked point of the central zero
+section. -/
+public theorem markedCentralBase_eq_lift :
+    A.centralZeroSection A.markedPuncturedBasepoint =
+      regularFamilyQuotientMap A.periods
+        (regularFamilyCoverProjection A.periods
+          (A.markedRegularBaseLift, (0 : ComplexTwoSpace))) := by
+  rw [← A.markedRegularBaseLift_projects]
+  rfl
+
+/-- Geometric labelled-period translations at the marked central-family basepoint. -/
+public noncomputable def markedBaseFundamentalGroupEquiv :
+    FundamentalGroup (PuncturedOrbifoldBase
+        (U := A.paperTriangleUniformization))
+        (regularBaseQuotientMap (U := A.paperTriangleUniformization)
+          A.markedRegularBaseLift) ≃*
+      FundamentalGroup (PuncturedOrbifoldBase
+        (U := A.paperTriangleUniformization)) A.markedPuncturedBasepoint :=
+  SphereSixComplex.Topology.fundamentalGroupMulEquivOfEq
+    A.markedRegularBaseLift_projects
+
+/-- Based transport from the literal quotient representative to the marked zero-section
+basepoint. -/
+public noncomputable def markedCentralBaseEquiv :
+    FundamentalGroup A.CentralFamily
+        (regularFamilyQuotientMap A.periods
+          (regularFamilyCoverProjection A.periods
+            (A.markedRegularBaseLift, (0 : ComplexTwoSpace)))) ≃*
+      FundamentalGroup A.CentralFamily
+        (A.centralZeroSection A.markedPuncturedBasepoint) :=
+  SphereSixComplex.Topology.fundamentalGroupMulEquivOfEq
+    A.markedCentralBase_eq_lift.symm
+
+/-- Geometric labelled-period translations at the marked central-family basepoint. -/
+public noncomputable def markedCentralTranslation :
+    Lattice →+ Additive
+      (FundamentalGroup A.CentralFamily
+        (A.centralZeroSection A.markedPuncturedBasepoint)) :=
+  A.markedCentralBaseEquiv.toMonoidHom.toAdditive.comp
+    (centralTranslationAtZero A.periods A.markedRegularBaseLift)
+
+/-- Transporting the literal zero-section map to the marked endpoints agrees with the map
+defined directly at the marked basepoint. -/
+public theorem markedCentralZeroSection_naturality
+    (γ : FundamentalGroup (PuncturedOrbifoldBase
+      (U := A.paperTriangleUniformization))
+      (regularBaseQuotientMap (U := A.paperTriangleUniformization)
+        A.markedRegularBaseLift)) :
+    A.markedCentralBaseEquiv
+        (centralZeroSectionAtLiftMap A.periods A.markedRegularBaseLift γ) =
+      A.centralZeroSectionFundamentalGroupMap
+        (A.markedBaseFundamentalGroupEquiv γ) := by
+  unfold markedCentralBaseEquiv markedBaseFundamentalGroupEquiv
+    centralZeroSectionFundamentalGroupMap centralZeroSectionAtLiftMap
+  rw [SphereSixComplex.Topology.fundamentalGroupMulEquivOfEq_apply,
+    SphereSixComplex.Topology.fundamentalGroupMulEquivOfEq_apply,
+    FundamentalGroup.mapOfEq_apply]
+  induction γ using Quotient.ind with
+  | _ P =>
+      apply congrArg Path.Homotopic.Quotient.mk
+      apply Path.ext
+      funext t
+      rfl
+
+/-- The marked central fundamental group is generated by its geometric fibre translations and
+all loops in the literal zero section. -/
+public theorem markedCentralFundamentalGroup_generated_by_translations_and_zeroSection :
+    Subgroup.closure
+      (Set.range (fun a ↦ Additive.toMul (A.markedCentralTranslation a)) ∪
+        Set.range A.centralZeroSectionFundamentalGroupMap) = ⊤ := by
+  let E := A.markedCentralBaseEquiv
+  let S := Set.range (fun a ↦ Additive.toMul
+      (centralTranslationAtZero A.periods A.markedRegularBaseLift a)) ∪
+    Set.range (centralZeroSectionAtLiftMap A.periods A.markedRegularBaseLift)
+  let K := Subgroup.closure
+    (Set.range (fun a ↦ Additive.toMul (A.markedCentralTranslation a)) ∪
+      Set.range A.centralZeroSectionFundamentalGroupMap)
+  have hle : Subgroup.closure S ≤ K.comap E.toMonoidHom := by
+    apply (Subgroup.closure_le _).mpr
+    intro g hg
+    change E g ∈ K
+    apply Subgroup.subset_closure
+    rcases hg with ⟨a, rfl⟩ | ⟨γ, rfl⟩
+    · apply Or.inl
+      refine ⟨a, ?_⟩
+      rfl
+    · apply Or.inr
+      refine ⟨A.markedBaseFundamentalGroupEquiv γ, ?_⟩
+      exact (A.markedCentralZeroSection_naturality γ).symm
+  have hgen := centralFundamentalGroup_generated_by_translations_and_zeroSection
+    A.periods
+    A.modular.modularParameter.toTriangleUniformization_sourceAction
+    (sourceActionProperlyDiscontinuous_of_eq
+      A.modular.modularParameter.toTriangleUniformization_sourceAction)
+    A.markedRegularBaseLift
+  change K = ⊤
+  apply top_unique
+  intro g _
+  obtain ⟨δ, rfl⟩ := E.surjective g
+  change E δ ∈ K
+  apply hle
+  rw [hgen]
+  trivial
+
+end SphereSixComplex.Geometry.PaperAnalyticData
+
 end
