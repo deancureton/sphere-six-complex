@@ -76,11 +76,74 @@ public structure SectionSevenEllipticInteriorCycleDecomposition
             (sectionSevenMayerVietorisFinalTwoHom
               (A.actualCuspSectionSevenHomologyTwoEquiv x) 1))
 
+/-- The first final degree-one coordinate is the raw cusp meridian coordinate. -/
+public theorem sectionSevenFirstBoundaryHom_actualCusp_zero
+    (x : IntegralSingularHomology 1 (A.openEmbeddingStarData.collarSource 0)) :
+    sectionSevenFirstBoundaryHom (A.actualCuspSectionSevenHomologyOneEquiv x) 0 =
+      A.actualCuspRawHomologyOneEquiv x 2 := by
+  simp [actualCuspSectionSevenHomologyOneEquiv, cuspSectionSevenOneCoordinateChange,
+    sectionSevenFirstBoundaryHom, sectionSevenFirstBoundaryMatrix, Matrix.mulVec,
+    dotProduct, Fin.sum_univ_succ]
+  ring
+
+/-- The first final degree-two coordinate is the first raw cusp suspension coordinate. -/
+public theorem sectionSevenMayerVietorisFinalTwoHom_actualCusp_zero
+    (x : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0)) :
+    sectionSevenMayerVietorisFinalTwoHom
+        (A.actualCuspSectionSevenHomologyTwoEquiv x) 0 =
+      A.actualCuspRawHomologyTwoEquiv x 4 := by
+  simp [actualCuspSectionSevenHomologyTwoEquiv, cuspSectionSevenTwoCoordinateChange,
+    sectionSevenMayerVietorisFinalTwoHom, sectionSevenMayerVietorisFinalTwoMatrix,
+    Matrix.mulVec, dotProduct, Fin.sum_univ_succ]
+
+/-- The second final degree-two coordinate is the second raw cusp suspension coordinate. -/
+public theorem sectionSevenMayerVietorisFinalTwoHom_actualCusp_one
+    (x : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0)) :
+    sectionSevenMayerVietorisFinalTwoHom
+        (A.actualCuspSectionSevenHomologyTwoEquiv x) 1 =
+      A.actualCuspRawHomologyTwoEquiv x 5 := by
+  simp [actualCuspSectionSevenHomologyTwoEquiv, cuspSectionSevenTwoCoordinateChange,
+    sectionSevenMayerVietorisFinalTwoHom, sectionSevenMayerVietorisFinalTwoMatrix,
+    Matrix.mulVec, dotProduct, Fin.sum_univ_succ]
+
 namespace SectionSevenEllipticInteriorCycleDecomposition
 
 variable {B : A.SectionSevenEllipticTwoDiscHomologyCoordinates D}
   {S : WangHomologyPresentation.NormalizedSplitting (presentationTwo (D := D))}
-  (C : A.SectionSevenEllipticInteriorCycleDecomposition B S)
+
+/-- Construct the cycle decomposition from the three scalar identities supplied by a marked
+cycle-level comparison. -/
+public theorem ofRawScalarCoordinates
+    (hOne : ∀ x : IntegralSingularHomology 1
+        (A.openEmbeddingStarData.collarSource 0),
+      B.normalizedUnionHomologyOneEquiv (cuspToEllipticUnionHomology D 1 x) 0 =
+        A.actualCuspRawHomologyOneEquiv x 2)
+    (hTwoZero : ∀ x : IntegralSingularHomology 2
+        (A.openEmbeddingStarData.collarSource 0),
+      B.normalizedUnionHomologyTwoEquiv S (cuspToEllipticUnionHomology D 2 x) 0 =
+        A.actualCuspRawHomologyTwoEquiv x 4)
+    (hTwoOne : ∀ x : IntegralSingularHomology 2
+        (A.openEmbeddingStarData.collarSource 0),
+      B.normalizedUnionHomologyTwoEquiv S (cuspToEllipticUnionHomology D 2 x) 1 =
+        A.actualCuspRawHomologyTwoEquiv x 5) :
+    A.SectionSevenEllipticInteriorCycleDecomposition B S where
+  degreeOne x := by
+    apply B.normalizedUnionHomologyOneEquiv.injective
+    rw [B.normalizedUnionHomologyOneEquiv_coinvariantsToTotal,
+      LinearEquiv.apply_symm_apply]
+    funext i
+    fin_cases i
+    simpa [sectionSevenFirstBoundaryHom_actualCusp_zero] using hOne x
+  degreeTwo x := by
+    apply (B.normalizedUnionHomologyTwoEquiv S).injective
+    rw [B.normalizedUnionHomologyTwoEquiv_add, LinearEquiv.apply_symm_apply,
+      LinearEquiv.apply_symm_apply]
+    funext i
+    fin_cases i
+    · simpa [sectionSevenMayerVietorisFinalTwoHom_actualCusp_zero] using hTwoZero x
+    · simpa [sectionSevenMayerVietorisFinalTwoHom_actualCusp_one] using hTwoOne x
+
+variable (C : A.SectionSevenEllipticInteriorCycleDecomposition B S)
 
 include C in
 /-- The degree-one cycle decomposition gives the first interior coordinate. -/
