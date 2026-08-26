@@ -37,6 +37,7 @@ construction_targets=(
   "SphereSixComplex.completedPaperThreefold_smoothRecognition"
   "SphereSixComplex.Geometry.PaperAnalyticData.sectionSevenStageTopDegreeVanishing_actual"
   "SphereSixComplex.Geometry.PaperAnalyticData.actualStarHasVanKampenData"
+  "SphereSixComplex.Topology.FiniteCoverPerfectPairing.ellipticFiniteCoverHomologyRealization"
 )
 
 work="$(mktemp -d)"
