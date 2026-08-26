@@ -2,6 +2,7 @@ module
 
 public import SphereSixComplex.Topology.CellularChainModel
 public import SphereSixComplex.Topology.SectionSevenLocalEulerCalculation
+public import SphereSixComplex.Topology.SectionSevenLocalEulerModelsProof
 public import Mathlib.Topology.CWComplex.Classical.Finite
 public import Mathlib.Topology.FiberBundle.Basic
 
@@ -46,16 +47,20 @@ public noncomputable def cellCount (M : FiniteCWModelSix X) (n : ℕ) : ℕ := b
 
 /-- Cellular Euler--Poincaré over the integers.
 
-Mathlib has finite CW complexes, singular homology, and the Euler characteristics of a chain
-complex and of its homology, but not the theorem that the two agree.
-
 Reference: [Hat02, Theorem 2.44] (the Euler characteristic equals the alternating sum of the cell
 counts).  Truncating the sum at degree six is sound because `FiniteCWModelSix` records that there
-are no cells above degree six. -/
-public axiom establishedIntegralCellularEulerPoincareSix (M : FiniteCWModelSix X) :
+are no cells above degree six.  The proof is the rank bookkeeping of
+`CellularEulerPoincare.integralHomologyEulerCharacteristicSix_eq_cellSum` on the cellular chain
+complex of the chosen carrier. -/
+public theorem establishedIntegralCellularEulerPoincareSix (M : FiniteCWModelSix X) :
     integralHomologyEulerCharacteristicSix X =
       (M.cellCount 0 : ℤ) - M.cellCount 1 + M.cellCount 2 - M.cellCount 3 +
-        M.cellCount 4 - M.cellCount 5 + M.cellCount 6
+        M.cellCount 4 - M.cellCount 5 + M.cellCount 6 := by
+  let _ := M.topology
+  let _ := M.cwComplex
+  let _ := M.finite
+  exact CellularEulerPoincare.integralHomologyEulerCharacteristicSix_eq_cellSum
+    M.homotopyEquiv M.cellsAboveSix
 
 /-- Finite generation and the dimension bound are consequences of the cellular chain model, not
 extra assumptions: the chain groups are free on finitely many cells, homology is a subquotient of
