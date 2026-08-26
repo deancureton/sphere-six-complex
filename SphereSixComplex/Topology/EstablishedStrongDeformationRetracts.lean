@@ -248,9 +248,14 @@ public theorem liftTrack_smul {G E B : Type*} [Group G] [TopologicalSpace E] [To
 
 namespace EstablishedGeneralTopology
 
-/-- The inclusion of the base of a relative CW complex has the homotopy-extension property. -/
+/-- The inclusion of the base of a relative CW complex has the homotopy-extension property.
+
+The Hausdorff hypothesis is genuine rather than cosmetic: Mathlib's `RelCWComplex` deliberately
+does not require it, and without it the closed cells of the complex need not be closed
+(`RelCWComplex.isClosed_closedCell` assumes `T2Space`), which is what the standard cell-by-cell
+proof uses to recognise continuity on the complex. -/
 public axiom hasHomotopyExtensionProperty_of_relativeCWComplex
-    {X : Type*} [TopologicalSpace X] (A : Set X)
+    {X : Type*} [TopologicalSpace X] [T2Space X] (A : Set X)
     (hCW : RelCWComplex (Set.univ : Set X) A) :
     HasHomotopyExtensionProperty A
 

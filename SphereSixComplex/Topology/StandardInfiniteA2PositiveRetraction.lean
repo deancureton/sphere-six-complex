@@ -95,6 +95,9 @@ public structure PolarHoneycombData (M : Model) (r : ℝ) where
     Topology.RelCWComplex
       (Set.univ : Set (PolarHoneycombData.OrbitQuotient positivePart))
       (PolarHoneycombData.orbitCore central)
+  quotient_t2 :
+    letI := positiveDeckAction
+    T2Space (PolarHoneycombData.OrbitQuotient positivePart)
 
 namespace PolarHoneycombData
 
@@ -127,6 +130,7 @@ public noncomputable def quotientStrongDeformationRetraction :
       (OrbitQuotient P.positivePart)
       (orbitCore P.central) := by
   letI := P.positiveDeckAction
+  letI := P.quotient_t2
   let hHEP :=
     SphereSixComplex.EstablishedGeneralTopology.hasHomotopyExtensionProperty_of_relativeCWComplex
       (orbitCore P.central) P.quotient_relativeCW
