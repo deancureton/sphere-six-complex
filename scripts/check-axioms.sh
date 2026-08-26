@@ -35,6 +35,12 @@ if ! cmp -s "$work/allowed-in-order.txt" "$work/comparator-allowed.txt"; then
   exit 1
 fi
 
+# Build before inspecting the compiled environment so a normal invocation cannot audit stale
+# object files. `CHECK_AXIOMS_SKIP_BUILD=1` is only for callers that already built this exact tree.
+if [[ -z "${CHECK_AXIOMS_SKIP_BUILD:-}" ]]; then
+  lake build SphereSixComplex.Main >/dev/null
+fi
+
 lake env lean "$project_root/scripts/ComparatorAxiomClosure.lean" \
   > "$work/comparator-closure.txt"
 sort -u "$work/allowed-in-order.txt" > "$work/allowed-sorted.txt"
@@ -57,9 +63,6 @@ sort -u "$work/construction-closure.txt" > "$work/construction.txt"
   done
 } > "$work/PrintAxioms.lean"
 
-if [[ -z "${CHECK_AXIOMS_SKIP_BUILD:-}" ]]; then
-  lake build SphereSixComplex.Main >/dev/null
-fi
 lake env lean "$work/PrintAxioms.lean" > "$work/out.txt"
 
 # `#print axioms` prints one bracketed comma-separated list per target, wrapped over several
