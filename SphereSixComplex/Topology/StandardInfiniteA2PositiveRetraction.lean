@@ -1,6 +1,7 @@
 module
 
 public import SphereSixComplex.Topology.EstablishedStrongDeformationRetracts
+public import SphereSixComplex.Topology.RelativeCWHomotopyExtensionProof
 public import SphereSixComplex.Geometry.CuspLocalPhaseAction
 public import Mathlib.Analysis.Complex.Circle
 
@@ -132,7 +133,7 @@ public noncomputable def quotientStrongDeformationRetraction :
   letI := P.positiveDeckAction
   letI := P.quotient_t2
   let hHEP :=
-    SphereSixComplex.EstablishedGeneralTopology.hasHomotopyExtensionProperty_of_relativeCWComplex
+    SphereSixComplex.EstablishedGeneralTopology.hasHomotopyExtensionProperty_of_relativeCWComplex_proved
       (orbitCore P.central) P.quotient_relativeCW
   let hEquiv :=
     SphereSixComplex.EstablishedGeneralTopology.isHomotopyEquivalenceInclusion_of_contractible_regularCover
@@ -157,3 +158,4 @@ public noncomputable def positiveEquivariantStrongDeformationRetraction :
 end PolarHoneycombData
 
 end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
+

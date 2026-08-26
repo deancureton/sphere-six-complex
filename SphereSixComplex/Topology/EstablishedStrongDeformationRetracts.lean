@@ -41,12 +41,14 @@ through which the rest of the library consumes them.
 space, as Hatcher's proof of Cor. 0.20 applies the homotopy-extension property with the targets
 `A` and `X` themselves.
 
-The two remaining `axiom`s of `EstablishedGeneralTopology` — the homotopy-extension property of a
-relative CW pair and the uniqueness of `K(G, 1)` spaces
-(`isHomotopyEquivalenceInclusion_of_isAspherical_of_bijective_fundamentalGroup`) — are tracked as
-separate follow-ups.  Both are now purely CW-theoretic: all covering-space and homotopy-group
-content of the former `K(G, 1)` axiom is proved in `ContractibleRegularCoverInclusionProof`, and
-`isHomotopyEquivalenceInclusion_of_contractible_regularCover` is a theorem deduced from it.
+The one remaining `axiom` of `EstablishedGeneralTopology` is the uniqueness of `K(G, 1)` spaces
+(`isHomotopyEquivalenceInclusion_of_isAspherical_of_bijective_fundamentalGroup`), tracked as a
+separate follow-up.  It is purely CW-theoretic: all covering-space and homotopy-group content of
+the former `K(G, 1)` axiom is proved in `ContractibleRegularCoverInclusionProof`, and
+`isHomotopyEquivalenceInclusion_of_contractible_regularCover` is a theorem deduced from it.  The
+homotopy-extension property of a relative CW pair, formerly an axiom here, is proved in
+`RelativeCWHomotopyExtensionProof` as
+`hasHomotopyExtensionProperty_of_relativeCWComplex_proved`.
 
 The subspace-inclusion definitions `topologicalSubsetInclusionMap` and
 `IsHomotopyEquivalenceInclusion` live in `EstablishedStrongDeformationRetractsDefs`, upstream of
@@ -251,17 +253,6 @@ public theorem liftTrack_smul {G E B : Type*} [Group G] [TopologicalSpace E] [To
   · rw [liftTrack_zero]
 
 namespace EstablishedGeneralTopology
-
-/-- The inclusion of the base of a relative CW complex has the homotopy-extension property.
-
-The Hausdorff hypothesis is genuine rather than cosmetic: Mathlib's `RelCWComplex` deliberately
-does not require it, and without it the closed cells of the complex need not be closed
-(`RelCWComplex.isClosed_closedCell` assumes `T2Space`), which is what the standard cell-by-cell
-proof uses to recognise continuity on the complex. -/
-public axiom hasHomotopyExtensionProperty_of_relativeCWComplex
-    {X : Type*} [TopologicalSpace X] [T2Space X] (A : Set X)
-    (hCW : RelCWComplex (Set.univ : Set X) A) :
-    HasHomotopyExtensionProperty A
 
 /-- **Uniqueness of `K(G, 1)` spaces for a relative CW pair.**  If both spaces of a relative CW
 pair are aspherical and the subspace inclusion is an isomorphism on fundamental groups, then the
