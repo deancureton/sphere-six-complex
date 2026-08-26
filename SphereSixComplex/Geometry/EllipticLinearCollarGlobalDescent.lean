@@ -264,27 +264,93 @@ public theorem ellipticFixedPoints_eq_of_fuchsian
   · apply (FreeProductTorsion.fuchsianSourceAction_gTwo_fixed_iff U.zTwo).mp
     simpa only [← hsource] using U.zTwo_fixed
 
-@[expose] public def OrderThreeLinearCollarSourceData (r : ℝ) : Prop :=
+/-! The two local collars have the same source-side input.  Keeping the varying data in this
+record makes the order-specific declarations below aliases, rather than parallel propositions. -/
+
+/-- Indexed data for one elliptic linear collar. -/
+public structure IndexedLinearCollarModel (m : ℕ) [NeZero m] where
+  center : UpperHalfPlane
+  other : UpperHalfPlane
+  cayley : UpperHalfPlane → ComplexUnitDisc
+  cayley_eq : ∀ z, cayley z = cayleyHomeomorph center z
+  cyclicInclusion : FiniteCyclic m → Delta
+
+/-- Source regularity and separation data for an indexed elliptic linear collar. -/
+@[expose] public def LinearCollarSourceData
+    (m : ℕ) [NeZero m] (M : IndexedLinearCollarModel m) (r : ℝ) : Prop :=
   (∀ z : UpperHalfPlane,
-      0 < ‖(orderThreeCayleyHomeomorph z : ℂ)‖ →
-      ‖(orderThreeCayleyHomeomorph z : ℂ)‖ < r →
+      0 < ‖(M.cayley z : ℂ)‖ →
+      ‖(M.cayley z : ℂ)‖ < r →
       IsRegularBasePoint (U := U) z) ∧
     ∀ z x : UpperHalfPlane,
-      ‖(orderThreeCayleyHomeomorph z : ℂ)‖ < r →
-      ‖(orderThreeCayleyHomeomorph x : ℂ)‖ < r →
+      ‖(M.cayley z : ℂ)‖ < r →
+      ‖(M.cayley x : ℂ)‖ < r →
       ∀ g : Delta, U.sourceAction g • x = z →
-        ∃ a : CyclicThree, g = Monoid.Coprod.inl a
+        ∃ a : FiniteCyclic m, g = M.cyclicInclusion a
+
+public theorem linearCollarSourceData_mono
+    (m : ℕ) [NeZero m] {M : IndexedLinearCollarModel m} {r' r : ℝ} (hrr : r' ≤ r)
+    (D : LinearCollarSourceData (U := U) m M r) :
+    LinearCollarSourceData (U := U) m M r' := by
+  rw [LinearCollarSourceData.eq_def] at D ⊢
+  constructor
+  · intro z hz hzr
+    exact D.1 z hz (hzr.trans_le hrr)
+  · intro z x hzr hxr g hg
+    exact D.2 z x (hzr.trans_le hrr) (hxr.trans_le hrr) g hg
+
+public theorem exists_indexedCollarSlice_radius
+    {m : ℕ} [NeZero m] {M : IndexedLinearCollarModel m}
+    (hsource : U.sourceAction = fuchsianSourceAction)
+    (hproper : SourceActionProperlyDiscontinuous (U := U))
+    (hcenterOther : M.center ∉ sourceOrbitSet (U := U) M.other) :
+    let _ : MulAction Delta UpperHalfPlane := fuchsianSourceMulAction
+    ∃ S : Set UpperHalfPlane, IsOpen S ∧ M.center ∈ S ∧
+      (∀ g : Delta, ((fun y : UpperHalfPlane => g • y) '' S ∩ S).Nonempty ↔
+        g ∈ MulAction.stabilizer Delta M.center) ∧
+      ∃ r : ℝ, 0 < r ∧ r < 1 ∧
+        (∀ z : UpperHalfPlane, ‖(M.cayley z : ℂ)‖ < r →
+          z ∈ S ∩ (sourceOrbitSet (U := U) M.other)ᶜ) := by
+  let _ : MulAction Delta UpperHalfPlane := fuchsianSourceMulAction
+  let _ : ProperlyDiscontinuousSMul Delta UpperHalfPlane :=
+    fuchsianProperlyDiscontinuous_of_source hsource hproper
+  let _ : ContinuousConstSMul Delta UpperHalfPlane :=
+    ⟨fun g => (fuchsianSourceAction_contMDiff g 0).continuous⟩
+  obtain ⟨S, hSopen, hcenterS, _hSinvariant, htranslate⟩ :=
+    exists_open_stabilizer_slice (G := Delta) M.center
+  let T := S ∩ (sourceOrbitSet (U := U) M.other)ᶜ
+  have hTopen : IsOpen T := hSopen.inter
+    (sourceOrbitSet_isClosed hproper M.other).isOpen_compl
+  have hcenterT : M.center ∈ T := ⟨hcenterS, hcenterOther⟩
+  obtain ⟨r, hr, hr1, hrT⟩ :=
+    exists_cayleyRadius_subset M.center hTopen hcenterT
+  exact ⟨S, hSopen, hcenterS, htranslate, r, hr, hr1, fun z hz =>
+    ⟨(hrT z (by simpa [M.cayley_eq z] using hz)).1, (hrT z
+      (by simpa [M.cayley_eq z] using hz)).2⟩⟩
+
+/-- The order-three Cayley coordinate and its inclusion into the deck group. -/
+public abbrev orderThreeLinearCollarModel :
+  IndexedLinearCollarModel 3 :=
+  { center := fuchsianOneFixedPoint
+    other := fuchsianTwoFixedPoint
+    cayley := orderThreeCayleyHomeomorph
+    cayley_eq := by intro z; rfl
+    cyclicInclusion := Monoid.Coprod.inl }
+
+/-- The order-four Cayley coordinate and its inclusion into the deck group. -/
+public abbrev orderFourLinearCollarModel :
+  IndexedLinearCollarModel 4 :=
+  { center := fuchsianTwoFixedPoint
+    other := fuchsianOneFixedPoint
+    cayley := orderFourCayleyHomeomorph
+    cayley_eq := by intro z; rfl
+    cyclicInclusion := Monoid.Coprod.inr }
+
+@[expose] public def OrderThreeLinearCollarSourceData (r : ℝ) : Prop :=
+  LinearCollarSourceData (U := U) 3 orderThreeLinearCollarModel r
 
 @[expose] public def OrderFourLinearCollarSourceData (r : ℝ) : Prop :=
-  (∀ z : UpperHalfPlane,
-      0 < ‖(orderFourCayleyHomeomorph z : ℂ)‖ →
-      ‖(orderFourCayleyHomeomorph z : ℂ)‖ < r →
-      IsRegularBasePoint (U := U) z) ∧
-    ∀ z x : UpperHalfPlane,
-      ‖(orderFourCayleyHomeomorph z : ℂ)‖ < r →
-      ‖(orderFourCayleyHomeomorph x : ℂ)‖ < r →
-      ∀ g : Delta, U.sourceAction g • x = z →
-        ∃ a : CyclicFour, g = Monoid.Coprod.inr a
+  LinearCollarSourceData (U := U) 4 orderFourLinearCollarModel r
 
 public theorem exists_orderThreeLinearCollarSourceData
     (hsource : U.sourceAction = fuchsianSourceAction)
@@ -295,27 +361,25 @@ public theorem exists_orderThreeLinearCollarSourceData
     fuchsianProperlyDiscontinuous_of_source hsource hproper
   let _ : ContinuousConstSMul Delta UpperHalfPlane :=
     ⟨fun g => (fuchsianSourceAction_contMDiff g 0).continuous⟩
-  obtain ⟨S, hSopen, hcenterS, _hSinvariant, htranslate⟩ :=
-    exists_open_stabilizer_slice (G := Delta) fuchsianOneFixedPoint
   obtain ⟨hzOne, hzTwo⟩ := ellipticFixedPoints_eq_of_fuchsian hsource
-  let T := S ∩ (sourceOrbitSet (U := U) U.zTwo)ᶜ
-  have hTopen : IsOpen T := hSopen.inter
-    (sourceOrbitSet_isClosed hproper U.zTwo).isOpen_compl
   have hcenterNotTwo : fuchsianOneFixedPoint ∉ sourceOrbitSet (U := U) U.zTwo := by
     simp only [sourceOrbitSet.eq_def, mem_iUnion, mem_singleton_iff]
     rintro ⟨g, hg⟩
     apply fuchsianTwo_orbit_ne_one g
     simpa only [hsource, hzOne, hzTwo] using hg.symm
-  have hcenterT : fuchsianOneFixedPoint ∈ T := ⟨hcenterS, hcenterNotTwo⟩
-  obtain ⟨r, hr, hr1, hrT⟩ :=
-    exists_cayleyRadius_subset fuchsianOneFixedPoint hTopen hcenterT
+  obtain ⟨S, hSopen, hcenterS, htranslate, r, hr, hr1, hrT⟩ :=
+    exists_indexedCollarSlice_radius hsource hproper
+      (M := orderThreeLinearCollarModel)
+      (by simpa [orderThreeLinearCollarModel, hzTwo] using hcenterNotTwo)
+  let T := S ∩ (sourceOrbitSet (U := U) U.zTwo)ᶜ
   refine ⟨r, hr, hr1, ?_⟩
   rw [OrderThreeLinearCollarSourceData.eq_def]
   constructor
   · intro z hzpos hzr
     unfold IsRegularBasePoint
     intro g
-    have hzT : z ∈ T := hrT z hzr
+    have hzT : z ∈ T := by
+      simpa [T, orderThreeLinearCollarModel, hzTwo] using hrT z hzr
     constructor
     · intro hgone
       have hzEq : fuchsianSourceAction g⁻¹ • fuchsianOneFixedPoint = z := by
@@ -330,7 +394,9 @@ public theorem exists_orderThreeLinearCollarSourceData
       have hzcenter : z = fuchsianOneFixedPoint := by
         rw [← hzEq]
         exact hfix
-      rw [hzcenter, orderThreeCayleyHomeomorph.eq_def] at hzpos
+      rw [hzcenter] at hzpos
+      change 0 < ‖(orderThreeCayleyHomeomorph fuchsianOneFixedPoint : ℂ)‖ at hzpos
+      rw [orderThreeCayleyHomeomorph.eq_def] at hzpos
       have hc : cayleyHomeomorph fuchsianOneFixedPoint fuchsianOneFixedPoint =
           discCenter := by
         apply Subtype.ext
@@ -368,27 +434,25 @@ public theorem exists_orderFourLinearCollarSourceData
     fuchsianProperlyDiscontinuous_of_source hsource hproper
   let _ : ContinuousConstSMul Delta UpperHalfPlane :=
     ⟨fun g => (fuchsianSourceAction_contMDiff g 0).continuous⟩
-  obtain ⟨S, hSopen, hcenterS, _hSinvariant, htranslate⟩ :=
-    exists_open_stabilizer_slice (G := Delta) fuchsianTwoFixedPoint
   obtain ⟨hzOne, hzTwo⟩ := ellipticFixedPoints_eq_of_fuchsian hsource
-  let T := S ∩ (sourceOrbitSet (U := U) U.zOne)ᶜ
-  have hTopen : IsOpen T := hSopen.inter
-    (sourceOrbitSet_isClosed hproper U.zOne).isOpen_compl
   have hcenterNotOne : fuchsianTwoFixedPoint ∉ sourceOrbitSet (U := U) U.zOne := by
     simp only [sourceOrbitSet.eq_def, mem_iUnion, mem_singleton_iff]
     rintro ⟨g, hg⟩
     apply fuchsianOne_orbit_ne_two g
     simpa only [hsource, hzOne, hzTwo] using hg.symm
-  have hcenterT : fuchsianTwoFixedPoint ∈ T := ⟨hcenterS, hcenterNotOne⟩
-  obtain ⟨r, hr, hr1, hrT⟩ :=
-    exists_cayleyRadius_subset fuchsianTwoFixedPoint hTopen hcenterT
+  obtain ⟨S, hSopen, hcenterS, htranslate, r, hr, hr1, hrT⟩ :=
+    exists_indexedCollarSlice_radius hsource hproper
+      (M := orderFourLinearCollarModel)
+      (by simpa [orderFourLinearCollarModel, hzOne] using hcenterNotOne)
+  let T := S ∩ (sourceOrbitSet (U := U) U.zOne)ᶜ
   refine ⟨r, hr, hr1, ?_⟩
   rw [OrderFourLinearCollarSourceData.eq_def]
   constructor
   · intro z hzpos hzr
     unfold IsRegularBasePoint
     intro g
-    have hzT : z ∈ T := hrT z hzr
+    have hzT : z ∈ T := by
+      simpa [T, orderFourLinearCollarModel, hzOne] using hrT z hzr
     constructor
     · intro hgone
       have hzOrbit : z ∈ sourceOrbitSet (U := U) U.zOne := by
@@ -414,7 +478,9 @@ public theorem exists_orderFourLinearCollarSourceData
       have hzcenter : z = fuchsianTwoFixedPoint := by
         rw [← hzEq]
         exact hfix
-      rw [hzcenter, orderFourCayleyHomeomorph.eq_def] at hzpos
+      rw [hzcenter] at hzpos
+      change 0 < ‖(orderFourCayleyHomeomorph fuchsianTwoFixedPoint : ℂ)‖ at hzpos
+      rw [orderFourCayleyHomeomorph.eq_def] at hzpos
       have hc : cayleyHomeomorph fuchsianTwoFixedPoint fuchsianTwoFixedPoint =
           discCenter := by
         apply Subtype.ext
@@ -705,10 +771,10 @@ public theorem orderThreeLinearCollarToPuncturedGlobalFamily_injective
       rw [familyTotalSpaceBase_familyDeckMap] at hbase
       rw [OrderThreeLinearCollarSourceData.eq_def] at D
       obtain ⟨a, ha⟩ := D.2 (familyTotalSpaceBase F q) (familyTotalSpaceBase F x)
-        (by simpa only [orderThreePuncturedFamilyCollar.eq_def, Set.mem_ofPred_eq,
-          orderThreeFamilyRadius.eq_def] using q.property.2)
-        (by simpa only [orderThreePuncturedFamilyCollar.eq_def, Set.mem_ofPred_eq,
-          orderThreeFamilyRadius.eq_def] using x.property.2) g hbase
+        (by simpa [orderThreeLinearCollarModel, orderThreePuncturedFamilyCollar.eq_def,
+          Set.mem_ofPred_eq, orderThreeFamilyRadius.eq_def] using q.property.2)
+        (by simpa [orderThreeLinearCollarModel, orderThreePuncturedFamilyCollar.eq_def,
+          Set.mem_ofPred_eq, orderThreeFamilyRadius.eq_def] using x.property.2) g hbase
       apply Quotient.sound
       let _ := restrictedMulAction (orderThreeLinearFamilyAction F)
         (orderThreeLinearPuncturedCarrier F hsource r)
@@ -717,7 +783,9 @@ public theorem orderThreeLinearCollarToPuncturedGlobalFamily_injective
       refine ⟨a, ?_⟩
       apply Subtype.ext
       change actionMap (orderThreeLinearFamilyAction F) a x = q
-      rw [orderThreeLinear_actionMap, ← ha]
+      have ha' : g = Monoid.Coprod.inl a := by
+        simpa [orderThreeLinearCollarModel] using ha
+      rw [orderThreeLinear_actionMap, ← ha']
       exact htotal
 
 public theorem orderFourLinearCollarToPuncturedGlobalFamily_injective
@@ -753,10 +821,10 @@ public theorem orderFourLinearCollarToPuncturedGlobalFamily_injective
       rw [familyTotalSpaceBase_familyDeckMap] at hbase
       rw [OrderFourLinearCollarSourceData.eq_def] at D
       obtain ⟨a, ha⟩ := D.2 (familyTotalSpaceBase F q) (familyTotalSpaceBase F x)
-        (by simpa only [orderFourPuncturedFamilyCollar.eq_def, Set.mem_ofPred_eq,
-          orderFourFamilyRadius.eq_def] using q.property.2)
-        (by simpa only [orderFourPuncturedFamilyCollar.eq_def, Set.mem_ofPred_eq,
-          orderFourFamilyRadius.eq_def] using x.property.2) g hbase
+        (by simpa [orderFourLinearCollarModel, orderFourPuncturedFamilyCollar.eq_def,
+          Set.mem_ofPred_eq, orderFourFamilyRadius.eq_def] using q.property.2)
+        (by simpa [orderFourLinearCollarModel, orderFourPuncturedFamilyCollar.eq_def,
+          Set.mem_ofPred_eq, orderFourFamilyRadius.eq_def] using x.property.2) g hbase
       apply Quotient.sound
       let _ := restrictedMulAction (orderFourLinearFamilyAction F)
         (orderFourLinearPuncturedCarrier F hsource r)
@@ -765,7 +833,9 @@ public theorem orderFourLinearCollarToPuncturedGlobalFamily_injective
       refine ⟨a, ?_⟩
       apply Subtype.ext
       change actionMap (orderFourLinearFamilyAction F) a x = q
-      rw [orderFourLinear_actionMap, ← ha]
+      have ha' : g = Monoid.Coprod.inr a := by
+        simpa [orderFourLinearCollarModel] using ha
+      rw [orderFourLinear_actionMap, ← ha']
       exact htotal
 
 public theorem orderThreeLinearCollarToPuncturedGlobalFamily_continuous

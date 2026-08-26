@@ -64,7 +64,8 @@ public theorem boundarySevenFaceNeighborhoodLocalIntegralComparison_quasiIso
   let hstandard : QuasiIso
       (simplicialToRealizationSingularChainMap
         (Δ[6] : SSet.{0}) (AddCommGrpCat.of ℤ)) :=
-    standardSimplex_simplicialToRealizationSingularChainMap_quasiIso 6
+    standardSimplex_simplicialToRealizationSingularChainMap_quasiIso
+      (AddCommGrpCat.of ℤ) 6
   let hneighborhood : QuasiIso
       (boundarySevenFaceNeighborhoodIntegralSingularChainMap i) :=
     boundarySevenFaceNeighborhoodIntegralSingularChainMap_quasiIso i

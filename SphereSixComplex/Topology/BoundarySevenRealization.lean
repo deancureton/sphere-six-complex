@@ -1,5 +1,6 @@
 module
 
+public import SphereSixComplex.Topology.BoundarySevenStandardSimplexMap
 public import SphereSixComplex.Topology.SimplicialSingularComparison
 public import Mathlib.AlgebraicTopology.SimplicialSet.SubcomplexColimits
 public import Mathlib.Analysis.Convex.GaugeRescale
@@ -26,31 +27,6 @@ namespace SphereSixComplex
 /-- The ordinary boundary of a standard simplex: at least one barycentric coordinate vanishes. -/
 public abbrev StandardSimplexBoundary (n : ℕ) :=
   {w : stdSimplex ℝ (Fin (n + 1)) // ∃ i, w i = 0}
-
-/-- The canonical map from realization of the simplicial boundary into the ordinary standard
-seven-simplex. -/
-public noncomputable def boundarySevenRealizationToStdSimplex :
-    C((SSet.toTop.obj (∂Δ[7] : SSet.{0}) : Type), stdSimplex ℝ (Fin 8)) :=
-  ⟨fun x ↦ SimplexCategory.toTopHomeo (SimplexCategory.mk 7)
-      (SSet.toTop.map (SSet.boundary 7).ι x),
-    (SimplexCategory.toTopHomeo (SimplexCategory.mk 7)).continuous.comp
-      (SSet.toTop.map (SSet.boundary 7).ι).hom.continuous⟩
-
-/-- On each simplicial face, the canonical realization map is the usual affine face inclusion. -/
-public theorem boundarySevenRealizationToStdSimplex_face
-    (i : Fin 8) (x : (SSet.toTop.obj (Δ[6] : SSet.{0}) : Type)) :
-    boundarySevenRealizationToStdSimplex
-        (SSet.toTop.map (SSet.boundary.ι i) x) =
-      stdSimplex.map i.succAbove
-        (SimplexCategory.toTopHomeo (SimplexCategory.mk 6) x) := by
-  unfold boundarySevenRealizationToStdSimplex
-  change SimplexCategory.toTopHomeo (SimplexCategory.mk 7)
-      (SSet.toTop.map (SSet.boundary 7).ι
-        (SSet.toTop.map (SSet.boundary.ι i) x)) = _
-  rw [← ConcreteCategory.comp_apply]
-  rw [← SSet.toTop.map_comp]
-  rw [SSet.boundary.ι_ι]
-  exact SimplexCategory.toTopHomeo_naturality_apply (SimplexCategory.δ i) x
 
 /-- The ordinary affine inclusion of a codimension-one face lands in the topological boundary. -/
 public noncomputable def standardSimplexFaceToBoundary

@@ -37,7 +37,7 @@ public def boundarySevenFaceNeighborhoodIntersection (s : Finset (Fin 8)) :
 public theorem mem_boundarySevenFaceNeighborhoodIntersection_iff
     (s : Finset (Fin 8)) (x : SSet.toTop.obj (∂Δ[7] : SSet.{0})) :
     x ∈ boundarySevenFaceNeighborhoodIntersection s ↔
-      ∀ i ∈ s, boundarySevenComparisonToStdSimplex x i < (1 : ℝ) / 8 := by
+      ∀ i ∈ s, boundarySevenRealizationToStdSimplex x i < (1 : ℝ) / 8 := by
   simp [boundarySevenFaceNeighborhoodIntersection,
     boundarySevenComparisonFaceNeighborhood]
 
@@ -56,7 +56,7 @@ public theorem boundarySevenFaceNeighborhoodIntersection_univ_eq_empty :
   have hcoord :=
     (mem_boundarySevenFaceNeighborhoodIntersection_iff Finset.univ x).mp hx
   have hsum :
-      ∑ i : Fin 8, boundarySevenComparisonToStdSimplex x i <
+      ∑ i : Fin 8, boundarySevenRealizationToStdSimplex x i <
         ∑ _i : Fin 8, (1 : ℝ) / 8 := by
     apply Finset.sum_lt_sum
     · intro i _
@@ -107,7 +107,7 @@ public theorem boundarySevenComparisonMapLandsInAffineBoundary :
   intro x
   obtain ⟨i, y, rfl⟩ := boundarySevenRealization_exists_face_representation x
   refine ⟨i, ?_⟩
-  rw [boundarySevenComparisonToStdSimplex_face]
+  rw [boundarySevenRealizationToStdSimplex_face]
   classical
   simp only [stdSimplex.map_coe, FunOnFinite.linearMap_apply_apply]
   apply Finset.sum_eq_zero

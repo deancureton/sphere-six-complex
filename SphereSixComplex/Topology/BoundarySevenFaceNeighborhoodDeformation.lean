@@ -328,7 +328,7 @@ public noncomputable def boundarySevenRealizationHomeomorphStandardBoundary :
 public theorem boundarySevenRealizationHomeomorphStandardBoundary_apply_val
     (x : SSet.toTop.obj (∂Δ[7] : SSet.{0})) :
     (boundarySevenRealizationHomeomorphStandardBoundary x :
-        stdSimplex ℝ (Fin 8)) = boundarySevenComparisonToStdSimplex x :=
+        stdSimplex ℝ (Fin 8)) = boundarySevenRealizationToStdSimplex x :=
   rfl
 
 /-- The actual realization face neighbourhood is homeomorphic to its ordinary barycentric
@@ -338,7 +338,7 @@ public noncomputable def boundarySevenFaceNeighborhoodHomeomorphStandard
     boundarySevenComparisonFaceNeighborhood i ≃ₜ
       standardBoundarySevenFaceNeighborhood i :=
   boundarySevenRealizationHomeomorphStandardBoundary.subtype fun x ↦ by
-    change boundarySevenComparisonToStdSimplex x i < (1 : ℝ) / 8 ↔
+    change boundarySevenRealizationToStdSimplex x i < (1 : ℝ) / 8 ↔
       (boundarySevenRealizationHomeomorphStandardBoundary x :
         stdSimplex ℝ (Fin 8)) i < (1 : ℝ) / 8
     rw [boundarySevenRealizationHomeomorphStandardBoundary_apply_val]
@@ -362,11 +362,11 @@ public theorem boundarySevenFaceNeighborhoodHomeomorphStandard_comp_face
   intro y
   apply Subtype.ext
   apply Subtype.ext
-  change boundarySevenComparisonToStdSimplex
+  change boundarySevenRealizationToStdSimplex
       (SSet.toTop.map (SSet.boundary.ι i) y) =
     stdSimplex.map i.succAbove
       (SimplexCategory.toTopHomeo (SimplexCategory.mk 6) y)
-  exact boundarySevenComparisonToStdSimplex_face i y
+  exact boundarySevenRealizationToStdSimplex_face i y
 
 /-- Every canonical realized face is a homotopy equivalence onto its open affine
 neighbourhood. -/

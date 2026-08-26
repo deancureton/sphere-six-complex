@@ -38,11 +38,8 @@ public noncomputable def chainComplexXZeroIsoCyclesZero
 /-- The canonical augmentation on degree-zero simplicial homology is natural in the simplicial
 set.  This is the residual naturality calculation needed in the standard-simplex comparison. -/
 public theorem simplicialHomologyZeroAugmentation_naturality
-    {X Y : SSet.{0}} (f : X ⟶ Y) :
-    SSet.homologyMap f (AddCommGrpCat.of ℤ) 0 ≫
-        Y.homology₀ε (AddCommGrpCat.of ℤ) =
-      X.homology₀ε (AddCommGrpCat.of ℤ) := by
-  let R := AddCommGrpCat.of ℤ
+    {X Y : SSet.{0}} (f : X ⟶ Y) (R : AddCommGrpCat) :
+    SSet.homologyMap f R 0 ≫ Y.homology₀ε R = X.homology₀ε R := by
   let K := X.chainComplex R
   let L := Y.chainComplex R
   let φ := SSet.chainComplexMap f R
@@ -125,7 +122,7 @@ public theorem standardSimplex_isConnected (n : ℕ) :
 public theorem standardSimplexRealization_contractibleSpace (n : ℕ) :
     ContractibleSpace
       (SSet.toTop.obj (SSet.stdSimplex.obj (SimplexCategory.mk n)) : Type) := by
-  letI : ContractibleSpace (stdSimplex ℝ (Fin (n + 1))) :=
+  let : ContractibleSpace (stdSimplex ℝ (Fin (n + 1))) :=
     (convex_stdSimplex ℝ (Fin (n + 1))).contractibleSpace
       ⟨stdSimplex.vertex (0 : Fin (n + 1)),
         (stdSimplex.vertex (0 : Fin (n + 1))).2⟩
@@ -134,10 +131,10 @@ public theorem standardSimplexRealization_contractibleSpace (n : ℕ) :
 /-- Simplicial chains of a standard simplex are exact in every positive degree, by the canonical
 extra degeneracy. -/
 public theorem standardSimplex_simplicialChains_exactAt
-    (n k : ℕ) (hk : k ≠ 0) :
-    ((Δ[n] : SSet.{0}).chainComplex (AddCommGrpCat.of ℤ)).ExactAt k := by
+    (R : AddCommGrpCat) (n k : ℕ) (hk : k ≠ 0) :
+    ((Δ[n] : SSet.{0}).chainComplex R).ExactAt k := by
   let ed := (SSet.Augmented.StandardSimplex.extraDegeneracy
-    (SimplexCategory.mk n)).map (sigmaConst.obj (AddCommGrpCat.of ℤ))
+    (SimplexCategory.mk n)).map (sigmaConst.obj R)
   let e := ed.homotopyEquiv
   exact (exactAt_iff_of_quasiIsoAt e.hom k).mpr
     (HomologicalComplex.exactAt_single_obj _ _ _ _ hk)
@@ -145,73 +142,71 @@ public theorem standardSimplex_simplicialChains_exactAt
 /-- Singular chains of the realization of a standard simplex are exact in every positive degree,
 by contractibility and homotopy invariance. -/
 public theorem standardSimplexRealization_singularChains_exactAt
-    (n k : ℕ) (hk : k ≠ 0) :
-    ((TopCat.toSSet.obj (SSet.toTop.obj (Δ[n] : SSet.{0}))).chainComplex
-      (AddCommGrpCat.of ℤ)).ExactAt k := by
-  letI : ContractibleSpace (SSet.toTop.obj (Δ[n] : SSet.{0}) : Type) :=
+    (R : AddCommGrpCat) (n k : ℕ) (hk : k ≠ 0) :
+    ((TopCat.toSSet.obj (SSet.toTop.obj (Δ[n] : SSet.{0}))).chainComplex R).ExactAt k := by
+  let : ContractibleSpace (SSet.toTop.obj (Δ[n] : SSet.{0}) : Type) :=
     standardSimplexRealization_contractibleSpace n
   obtain ⟨e⟩ := ContractibleSpace.hequiv_unit
     (SSet.toTop.obj (Δ[n] : SSet.{0}) : Type)
   have hunit := AlgebraicTopology.isZero_singularHomologyFunctor_of_totallyDisconnectedSpace
-    AddCommGrpCat k (AddCommGrpCat.of ℤ) (TopCat.of Unit) hk
+    AddCommGrpCat k R (TopCat.of Unit) hk
   have hzero := hunit.of_iso (singularHomologyIsoOfHomotopyEquiv
-    (AddCommGrpCat.of ℤ) k e)
+    R k e)
   rw [HomologicalComplex.exactAt_iff_isZero_homology]
   exact hzero
 
 /-- The canonical realization/singular adjunction-unit chain map is a quasi-isomorphism for every
 standard simplex. -/
 public theorem standardSimplex_simplicialToRealizationSingularChainMap_quasiIso
-    (n : ℕ) :
+    (R : AddCommGrpCat) (n : ℕ) :
     QuasiIso (simplicialToRealizationSingularChainMap
-      (Δ[n] : SSet.{0}) (AddCommGrpCat.of ℤ)) := by
+      (Δ[n] : SSet.{0}) R) := by
   rw [quasiIso_iff]
   intro k
   by_cases hk : k = 0
   · subst hk
     rw [quasiIsoAt_iff_isIso_homologyMap]
-    letI : (SSet.stdSimplex.obj (SimplexCategory.mk n)).IsConnected :=
+    let : (SSet.stdSimplex.obj (SimplexCategory.mk n)).IsConnected :=
       standardSimplex_isConnected n
-    letI : ContractibleSpace
+    let : ContractibleSpace
         (SSet.toTop.obj (Δ[n] : SSet.{0}) : Type) :=
       standardSimplexRealization_contractibleSpace n
-    letI : PathConnectedSpace
+    let : PathConnectedSpace
         (SSet.toTop.obj (Δ[n] : SSet.{0}) : Type) := inferInstance
-    letI : (TopCat.toSSet.obj (SSet.toTop.obj (Δ[n] : SSet.{0}))).IsConnected :=
+    let : (TopCat.toSSet.obj (SSet.toTop.obj (Δ[n] : SSet.{0}))).IsConnected :=
       inferInstance
     let φ := simplicialToRealizationSingularChainMap
-      (Δ[n] : SSet.{0}) (AddCommGrpCat.of ℤ)
+      (Δ[n] : SSet.{0}) R
     have hε : HomologicalComplex.homologyMap φ 0 ≫
         (SSet.toTop.obj (Δ[n] : SSet.{0})).singularHomology₀ε
-          (AddCommGrpCat.of ℤ) =
-      (Δ[n] : SSet.{0}).homology₀ε (AddCommGrpCat.of ℤ) := by
+          R = (Δ[n] : SSet.{0}).homology₀ε R := by
       exact simplicialHomologyZeroAugmentation_naturality
-        (sSetTopAdj.unit.app (Δ[n] : SSet.{0}))
-    let hsource : IsIso ((Δ[n] : SSet.{0}).homology₀ε
-        (AddCommGrpCat.of ℤ)) := inferInstance
+        (sSetTopAdj.unit.app (Δ[n] : SSet.{0})) R
+    let hsource : IsIso ((Δ[n] : SSet.{0}).homology₀ε R) := inferInstance
     let htarget : IsIso
         ((SSet.toTop.obj (Δ[n] : SSet.{0})).singularHomology₀ε
-          (AddCommGrpCat.of ℤ)) :=
+          R) :=
       inferInstanceAs (IsIso ((TopCat.toSSet.obj
-        (SSet.toTop.obj (Δ[n] : SSet.{0}))).homology₀ε (AddCommGrpCat.of ℤ)))
+        (SSet.toTop.obj (Δ[n] : SSet.{0}))).homology₀ε R))
     have hcomp : IsIso (HomologicalComplex.homologyMap φ 0 ≫
         (SSet.toTop.obj (Δ[n] : SSet.{0})).singularHomology₀ε
-          (AddCommGrpCat.of ℤ)) := by
+          R) := by
       rw [hε]
       exact hsource
     exact @IsIso.of_isIso_comp_right _ _ _ _ _
       (HomologicalComplex.homologyMap φ 0)
       ((SSet.toTop.obj (Δ[n] : SSet.{0})).singularHomology₀ε
-        (AddCommGrpCat.of ℤ)) htarget hcomp
+        R) htarget hcomp
   · exact (quasiIsoAt_iff_exactAt _ k
-      (standardSimplex_simplicialChains_exactAt n k hk)).mpr
-        (standardSimplexRealization_singularChains_exactAt n k hk)
+      (standardSimplex_simplicialChains_exactAt R n k hk)).mpr
+        (standardSimplexRealization_singularChains_exactAt R n k hk)
 
 /-- In the terminology used by the project, every standard simplex satisfies the canonical
 integral simplicial--singular comparison. -/
 public theorem standardSimplex_integralComparison (n : ℕ) :
     SimplicialToSingularComparisonQuasiIsomorphism
       (Δ[n] : SSet.{0}) (AddCommGrpCat.of ℤ) :=
-  standardSimplex_simplicialToRealizationSingularChainMap_quasiIso n
+  standardSimplex_simplicialToRealizationSingularChainMap_quasiIso
+    (AddCommGrpCat.of ℤ) n
 
 end SphereSixComplex
