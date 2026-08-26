@@ -222,6 +222,37 @@ public noncomputable def withActualGeometricCuspBases
   cuspCollarTwo := A.actualCuspSectionSevenHomologyTwoEquiv
   ellipticInteriorTwo := B.ellipticInteriorTwo
 
+/-- Build the local basis package from the elliptic interior alone.
+
+The cusp collar's own degree-one and degree-two bases are already available geometrically, so the
+elliptic interior's are the only ones the package still has to be given.  `withActualGeometricCuspBases`
+says the same thing but needs a package to start from; this one does not. -/
+public noncomputable def sectionSevenCollarInteriorHomologyBasesOfEllipticInterior
+    (ellipticOne : IntegralSingularHomology 1
+        ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4)) ≃+
+      (Fin 1 → ℤ))
+    (ellipticTwo : IntegralSingularHomology 2
+        ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4)) ≃+
+      (Fin 2 → ℤ)) :
+    A.SectionSevenCollarInteriorHomologyBases where
+  cuspCollarOne := A.actualCuspSectionSevenHomologyOneEquiv
+  ellipticInteriorOne := ellipticOne
+  cuspCollarTwo := A.actualCuspSectionSevenHomologyTwoEquiv
+  ellipticInteriorTwo := ellipticTwo
+
+/-- The package built from the elliptic interior already carries the geometric cusp bases. -/
+public theorem withActualGeometricCuspBases_ofEllipticInterior
+    (ellipticOne : IntegralSingularHomology 1
+        ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4)) ≃+
+      (Fin 1 → ℤ))
+    (ellipticTwo : IntegralSingularHomology 2
+        ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4)) ≃+
+      (Fin 2 → ℤ)) :
+    A.withActualGeometricCuspBases
+        (A.sectionSevenCollarInteriorHomologyBasesOfEllipticInterior ellipticOne ellipticTwo) =
+      A.sectionSevenCollarInteriorHomologyBasesOfEllipticInterior ellipticOne ellipticTwo :=
+  rfl
+
 /-- The actual cusp inclusion has the degree-one and degree-two coordinates required by the
 final Section 7 attachment. -/
 public theorem actualCuspFillingInclusionCoordinates
