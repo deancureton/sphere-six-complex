@@ -1,6 +1,7 @@
 module
 
 public import SphereSixComplex.Topology.CollarProductVanishing
+public import SphereSixComplex.Topology.PaperSectionSevenLocalEulerModelAssembly
 public import SphereSixComplex.Topology.FiniteCWModelVanishing
 public import SphereSixComplex.Topology.PaperEllipticCollarFundamentalDomain
 public import SphereSixComplex.Topology.SectionSevenStageTopDegree
@@ -72,6 +73,26 @@ public theorem subsingleton_homology_six_collarSource_of_cusp
   · exact hcusp
   · exact A.subsingleton_homology_six_orderThreeCollar
   · exact A.subsingleton_homology_six_orderFourCollar
+
+/-- The whole Section 7 top-degree obligation for the actual star, reduced to the cusp collar.
+
+The local Euler models already supply the finiteness of the central piece and the three fillings,
+and both elliptic collars are settled above, so the cusp collar's sixth homology is the only thing
+still asked for. -/
+public theorem sectionSevenStageTopDegreeVanishing_of_cuspCollar
+    (M : A.SectionSevenLocalEulerModels)
+    (hcusp : Subsingleton (IntegralSingularHomology 6 (A.starCollarSourceType 0))) :
+    A.openEmbeddingStarData.SectionSevenStageTopDegreeVanishing :=
+  A.openEmbeddingStarData.sectionSevenStageTopDegreeVanishing_of_localFinite
+    M.localIntegralHomologyFiniteSix.1 M.localIntegralHomologyFiniteSix.2.1
+    (A.subsingleton_homology_six_collarSource_of_cusp hcusp)
+
+/-- The same for the production choice of local Euler models: the actual star's Section 7
+top-degree obligation holds as soon as the cusp collar has no sixth homology. -/
+public theorem sectionSevenStageTopDegreeVanishing_of_actualCuspCollar
+    (hcusp : Subsingleton (IntegralSingularHomology 6 (A.starCollarSourceType 0))) :
+    A.openEmbeddingStarData.SectionSevenStageTopDegreeVanishing :=
+  A.sectionSevenStageTopDegreeVanishing_of_cuspCollar A.sectionSevenLocalEulerModels hcusp
 
 end Geometry.PaperAnalyticData
 
