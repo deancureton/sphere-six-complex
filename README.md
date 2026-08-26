@@ -27,14 +27,17 @@ recognition foundations. The Blueprint records the remaining paper-specific obli
    the three star filling relations. Both come from a filling cover square (issues #1, #2).
 2. `SectionSevenPositiveDegreeHomologyAssembly`: the actual H₁/H₂ bases and compatibility
    squares of Section 7 (issues #6, #7).
-3. `SectionSevenStageTopDegreeVanishing`, which reduces to each collar source having no sixth
-   integral homology.
+3. `SectionSevenStageTopDegreeVanishing`, supplied by
+   `sectionSevenStageTopDegreeVanishing_actual`. Its dimension argument is proved; the cusp collar
+   step rests on the fibre identification recorded in `EstablishedActualCuspRadialClutching.data`.
 
-Past that, the headline theorem rests on four axioms: the general integral Mayer--Vietoris exact
-sequence, and the three classical recognition inputs (Hurewicz--Whitehead for smooth manifolds,
-the generalized topological Poincare theorem in dimension six, and the triviality of the group of
-smooth structures on the six-sphere). `./scripts/check-axioms.sh` prints and enforces exactly that
-list.
+Past the paper-specific construction, the final recognition step uses three external axioms absent
+from Mathlib: integral Mayer--Vietoris, Hurewicz--Whitehead for smooth manifolds, and the
+standard-model smooth Poincare theorem in dimension six.
+
+While `exists_paperGluingData` remains a `sorry`, `./scripts/check-axioms.sh` sees only the two
+recognition axioms plus `sorryAx`; `./scripts/axiom_inventory.py` statically lists the broader
+construction cone that becomes reachable when the placeholder is discharged.
 
 ## Build
 
