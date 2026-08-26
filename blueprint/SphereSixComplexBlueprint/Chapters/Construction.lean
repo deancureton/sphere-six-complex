@@ -394,16 +394,15 @@ $`C_3` and $`C_4` factors, closing both collar separations without an external a
 Use {uses "torus-family"}[the torus family] and the invariant twist vectors fixed by $`A_1` and $`A_2`.
 :::
 
-:::theorem "compact-complex-threefold" (parent := "construction_spine") (lean := "SphereSixComplex.ComplexThreefold, SphereSixComplex.CompletedPaperThreefold, SphereSixComplex.PaperGluingData, SphereSixComplex.Geometry.exists_establishedPaperAnalyticData, SphereSixComplex.Geometry.PaperAnalyticData.toPaperGluingData, SphereSixComplex.Geometry.exists_paperGluingData_of_positiveDegreeAssembly, SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenEllipticInteriorMarkedCycleData.ofCuspBoundaryBasisCoordinates, SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenPositiveDegreeGeometricRealization, SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenPositiveDegreeGeometricRealization.positiveDegreeHomologyAssembly, SphereSixComplex.exists_paperGluingData, SphereSixComplex.exists_completedPaperThreefold") (priority := "high")
+:::theorem "compact-complex-threefold" (parent := "construction_spine") (lean := "SphereSixComplex.ComplexThreefold, SphereSixComplex.CompletedPaperThreefold, SphereSixComplex.PaperGluingData, SphereSixComplex.Geometry.exists_establishedPaperAnalyticData, SphereSixComplex.Geometry.PaperAnalyticData.sectionSevenAffineRadialCompletionInput, SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenAffineRadialCompletionInput.sectionSevenAffineMarkedCompletionInput, SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenAffineMarkedCompletionInput.exists_paperGluingData, SphereSixComplex.exists_paperGluingData_from_sectionSeven, SphereSixComplex.exists_paperGluingData, SphereSixComplex.exists_completedPaperThreefold") (priority := "high")
 The global family and the three fillings glue to a compact connected complex threefold $`X`.
-`exists_paperGluingData` is the sole remaining sorry in the library. The analytic package is now
-unconditional, and `exists_paperGluingData_of_positiveDegreeAssembly` reduces the placeholder to
-the positive-degree Section 7 homology assembly alone: the actual star's `HasVanKampenData` and
-top-degree vanishing are already supplied. `SectionSevenPositiveDegreeGeometricRealization`
-packages the exact remaining central allocation, radial realization, marked band transport,
-splitting, and cusp-cycle data. Its marked-cycle constructor reduces the remaining coordinate
-identities to checks on the three degree-one and six degree-two raw basis vectors. The resulting
-realization produces the assembly; no such realization is yet supplied.
+`exists_paperGluingData` is now proved by `exists_paperGluingData_from_sectionSeven`: the selected
+affine radial completion and cusp comparison supply the marked completion input, whose direct
+Mayer--Vietoris/Wang construction produces the positive-degree homology assembly. The production
+library is source-sorry-free, but the result is not axiom-free. Its audited final cone still uses
+the paper-specific established inputs tracked by issues #134, #135, #137, and #138. The axiom
+`establishedActualCuspCentralNaturality` tracked by #136 is Main-only at this checkpoint; the final
+cone instead reaches the broader `establishedActualAffineFillingCoverSquares` boundary.
 :::
 
 :::proof "compact-complex-threefold"
@@ -433,7 +432,8 @@ together with global compactness of the glued space, produces the exact compact 
 If that gluing carries the concrete van Kampen generators with no extra relations and the
 four-piece Mayer--Vietoris comparison, it produces the exact `CompletedPaperThreefold` object and
 the simply connected integral-homology-sphere input for smooth recognition. `PaperGluingData`
-lists every required compactness, separation, atlas, overlap, van Kampen, and homology field.
+lists every required compactness, separation, atlas, overlap, van Kampen, and homology field; the
+current Section 7 completion supplies this record from the audited established geometric inputs.
 :::
 
 :::theorem "fundamental-group" (parent := "construction_spine") (lean := "SphereSixComplex.CompletedPaperThreefold.fundamentalGroup") (priority := "high")
@@ -498,22 +498,25 @@ singular homology equivalence with the standard six-sphere.
 :::
 
 :::definition "mayer-vietoris-contract" (parent := "integral-homology") (lean := "SphereSixComplex.BinaryOpenCover.integralOpenCoverComparisonStatement_of_binaryOpenCoverSubdivision, SphereSixComplex.establishedIntegralMayerVietorisExactSequence, SphereSixComplex.establishedFourPieceMayerVietorisExactness, SphereSixComplex.fourPieceMayerVietorisContract_of_homologyComputation, SphereSixComplex.FourPieceMayerVietorisExactness, SphereSixComplex.FourPieceHomologyComputation")
-Binary open-cover exactness for integral singular homology is an explicit established external
-input. The chain corestriction, subdivision, excision, and binary-cover assembly reducing to that
-statement are proved. The external theorem supplies exactness for the three successive unions in
-the four-piece cover; the paper-specific comparison remains separate.
+Binary open-cover exactness for integral singular homology is proved from chain corestriction,
+subdivision, excision, and binary-cover assembly. The production Section 7 proof uses the
+resulting three successive Mayer--Vietoris sequences together with the cusp Wang-boundary
+comparison. Its paper-specific map identifications remain audited established inputs; it does not
+require a chain equivalence from the finite Leray model to all singular chains.
 :::
 
 :::theorem "section-seven-integer-algebra" (parent := "integral-homology") (lean := "SphereSixComplex.Topology.PaperLemmaSevenThirteenAlgebra.range_orderOneRelationMap_eq_ker, SphereSixComplex.Topology.PaperLemmaSevenThirteenAlgebra.range_orderTwoRelationMap_eq_ker, SphereSixComplex.Topology.PaperCuspSpecializationAlgebra.mZeroExteriorTwoSpecialization_surjective, SphereSixComplex.Topology.PaperCuspSpecializationAlgebra.ker_mZeroExteriorTwoSpecialization, SphereSixComplex.Topology.PaperPropositionSevenFourteenDegreeTwoAlgebra.orderFourCandidateQuotientEquivZModTwo_q, SphereSixComplex.firstHomologyPresentation_exact, SphereSixComplex.alphaOne_kernel, SphereSixComplex.alphaTwoPresentation_exact, SphereSixComplex.chosenLerayDifferential_bijective, SphereSixComplex.hasIntegralHomologyOfSixSphere_of_sectionSevenRealizations")
 The integral presentation, specialization, and Leray differential matrices from Section 7 have the
-claimed kernels and images.  For the selected twists the final differential is an isomorphism; an
-explicit realization contract records the remaining passage from these matrices to singular homology.
+claimed kernels and images. For the selected twists the final differential is an isomorphism.
+The realization contract records an alternate coherent route from these matrices to singular
+homology; the production construction instead uses the direct Mayer--Vietoris/Wang assembly below.
 :::
 
-:::definition "section-seven-paper-assembly" (parent := "integral-homology") (lean := "SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenPositiveDegreeHomologyAssembly, SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenPositiveDegreeHomologyAssembly.toSectionSevenMayerVietorisHomologyAssembly")
-For the actual four-piece star, degree zero is proved canonically. The exact remaining source-stated
-boundary is `SectionSevenPositiveDegreeHomologyAssembly`: the positive-degree cusp-attachment
-identifications and compatibility squares, with no field assuming the completed star's homology.
+:::definition "section-seven-paper-assembly" (parent := "integral-homology") (lean := "SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenPositiveDegreeHomologyAssembly, SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenPositiveDegreeHomologyAssembly.toSectionSevenMayerVietorisHomologyAssembly, SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenAffineMarkedCompletionInput.positiveDegreeHomologyAssembly")
+For the actual four-piece star, degree zero is proved canonically. The affine marked-completion
+input now constructs `SectionSevenPositiveDegreeHomologyAssembly`, which supplies the positive-
+degree cusp-attachment identifications and compatibility squares without assuming the completed
+star's homology. Its paper-specific geometric premises remain explicit in the audited axiom cone.
 :::
 
 :::theorem "cusp-filling-homology" (parent := "section-seven-paper-assembly") (lean := "SphereSixComplex.EstablishedCellularHomology.integralCWCellularChainModel, SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberCWDecomposition, SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberCellularIncidence, SphereSixComplex.Geometry.PaperAnalyticData.cuspFillingHomologyOneEquiv, SphereSixComplex.Geometry.PaperAnalyticData.cuspFillingHomologyTwoEquiv, SphereSixComplex.Geometry.PaperAnalyticData.cuspFillingHomologyThreeEquiv, SphereSixComplex.Geometry.PaperAnalyticData.cuspFillingHomologyFourEquiv")
@@ -544,7 +547,8 @@ cellular-to-singular comparison transfers this calculation to singular homology.
 The three differentials computed in Section 7 define a finite integral chain complex with vanishing
 homology in degrees one through three and top homology $`\mathbb Z`. The paper's fourth coefficient
 is kept explicit; if it is a unit, degrees four and five vanish as well. The missing unit proof is
-the precise Poincaré-duality or Leray-convergence step.
+the precise Poincaré-duality or Leray-convergence step for this alternate Leray route, not an input
+to the production Mayer--Vietoris construction.
 :::
 
 :::theorem "section-seven-algebraic-duality" (parent := "integral-homology") (lean := "SphereSixComplex.sectionSevenOneFivePairingMatrix_bijective, SphereSixComplex.sectionSevenTwoFourPairingMatrix_bijective, SphereSixComplex.SectionSevenLerayAlgebraicDuality.top_eq_one_or_neg_one, SphereSixComplex.SectionSevenLerayAlgebraicDuality.sphere_shaped_model_homology, SphereSixComplex.sectionSevenDegreeComplementCompatible_iff, SphereSixComplex.exists_sectionSevenDegreeComplementCompatible_iff, SphereSixComplex.SectionSevenLerayAlgebraicDuality.chainSelfDualityIso, SphereSixComplex.SectionSevenLerayAlgebraicDuality.homologyDegreeComplementIso, SphereSixComplex.SectionSevenLerayAlgebraicDuality.reversed_sphere_shaped_model_homology")
@@ -552,14 +556,17 @@ Explicit unimodular complementary-degree pairings reduce the remaining duality c
 boundary-adjointness identity. That identity forces the fourth coefficient to be $`\pm1`, gives
 the complete sphere-shaped homology, and yields a genuine chain-complex self-duality isomorphism
 whose homology maps give complementary-degree isomorphisms. Realizing this adjointness for the
-glued space is the remaining topological Poincaré-duality bridge.
+glued space remains the topological Poincaré-duality bridge for the alternate Leray route; the
+production construction does not consume it.
 :::
 
 :::theorem "section-seven-coherent-realization" (parent := "integral-homology") (lean := "SphereSixComplex.SectionSevenLerayCoherentRealization, SphereSixComplex.SectionSevenLerayCoherentRealization.sectionSevenHomologyRealization, SphereSixComplex.establishedSixSphereSectionSevenHomology, SphereSixComplex.SectionSevenLerayCoherentRealization.hasIntegralHomologyOfSixSphere_established")
-The standard $`S^6` homology calculation is an explicit established external input. The exact
-paper-specific remaining obligation is `SectionSevenLerayCoherentRealization X` for the glued
-space: one coherent chain map from the finite Leray model to singular chains, inducing homology
-isomorphisms in every degree.
+The standard $`S^6` homology calculation is proved from its two-puncture Mayer--Vietoris cover.
+`SectionSevenLerayCoherentRealization X` remains a stronger optional route for the glued space: one
+coherent chain map from the finite Leray model to singular chains, inducing homology isomorphisms
+in every degree. No such realization is constructed for the actual space, but it is not used by
+`exists_paperGluingData_from_sectionSeven` and does not occur in the final theorem's recursive
+dependency closure.
 :::
 
 :::theorem "section-seven-top-degree-vanishing" (parent := "integral-homology") (lean := "SphereSixComplex.subsingleton_integralSingularHomology_of_isEmpty_cell, SphereSixComplex.FiniteCWModelSix.subsingleton_homology_of_cellCount_eq_zero, SphereSixComplex.FourTorusCellModel.subsingleton_homology_five, SphereSixComplex.FourTorusCellModel.subsingleton_homology_six, SphereSixComplex.subsingleton_homology_succ_finiteBouquetMappingTorus, SphereSixComplex.contractibleSpace_openInterval, SphereSixComplex.subsingleton_homology_prod_of_contractible, SphereSixComplex.subsingleton_homology_seven_union, SphereSixComplex.OpenEmbeddingStarData.sectionSevenStageTopDegreeVanishing_of_localFinite, SphereSixComplex.subsingleton_homology_six_of_radialMappingTorus, SphereSixComplex.Geometry.PaperAnalyticData.subsingleton_homology_six_cuspCollar, SphereSixComplex.Geometry.PaperAnalyticData.subsingleton_homology_six_actualCuspCollar, SphereSixComplex.Geometry.PaperAnalyticData.subsingleton_homology_six_orderThreeCollar, SphereSixComplex.Geometry.PaperAnalyticData.subsingleton_homology_six_orderFourCollar, SphereSixComplex.Geometry.PaperAnalyticData.subsingleton_homology_six_collarSource_of_cusp, SphereSixComplex.Geometry.PaperAnalyticData.sectionSevenStageTopDegreeVanishing_of_actualCuspCollar, SphereSixComplex.Geometry.PaperAnalyticData.sectionSevenStageTopDegreeVanishing_actual")
@@ -643,8 +650,8 @@ and their intersection is homotopy equivalent to the sphere of one dimension low
 Mayer--Vietoris boundary gives the suspension shifts $`H_{k+1}(S^{d+1})\cong H_k(S^d)` for
 $`k\ge 1`, the degree-zero augmentation normal form kills $`H_1(S^d)` for $`d\ge 2`, and the
 reduced degree-zero homology of the two-component intersection gives $`H_1(S^1)\cong\mathbb Z`.
-The only external input is the binary open-cover Mayer--Vietoris theorem; the proved degree-zero
-comparison then assembles the full Section 7 realization.
+The proved binary open-cover Mayer--Vietoris theorem and degree-zero comparison then assemble the
+full Section 7 realization without another external homology input.
 :::
 
 :::proof "standard-sphere-positive-homology"
