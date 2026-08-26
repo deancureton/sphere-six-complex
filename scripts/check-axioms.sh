@@ -22,25 +22,39 @@ targets=(
   "SphereSixComplex.exists_complex_threefold_diffeomorphic_sixSphere"
 )
 
-# The *implemented-construction* cone.  While `exists_paperGluingData` is a placeholder the final
-# cone above cannot see any construction axiom, because `sorry` short-circuits axiom tracking; this
-# second list restores what is visible today.
-#
-# It is deliberately a partial cone, not the whole construction.  No production
-# `SectionSevenPositiveDegreeHomologyAssembly` witness exists yet, so the assembly `H` contributes
-# nothing here; when one lands it should be added as a target.  What this does pin is the assembly
-# path, the recognition step, and the two obligations already discharged, so that a new axiom in
-# any of them cannot pass unnoticed.
+# The implemented-construction cone is audited separately from smooth recognition so changes in
+# either trust boundary are reported directly.
 construction_targets=(
+  "SphereSixComplex.exists_paperGluingData_from_sectionSeven"
   "SphereSixComplex.Geometry.PaperAnalyticData.toPaperGluingData_of_positiveDegree"
   "SphereSixComplex.exists_completedPaperThreefold_of_paperGluingData"
-  "SphereSixComplex.completedPaperThreefold_smoothRecognition"
   "SphereSixComplex.Geometry.PaperAnalyticData.sectionSevenStageTopDegreeVanishing_actual"
   "SphereSixComplex.Geometry.PaperAnalyticData.actualStarHasVanKampenData"
 )
 
 work="$(mktemp -d)"
 trap 'rm -rf "$work"' EXIT
+
+{ grep -v '^[[:space:]]*#' "$allowlist" || true; } \
+  | { grep -v '^[[:space:]]*$' || true; } > "$work/allowed-in-order.txt"
+jq -r '.permitted_axioms[]' "$project_root/comparator.json" > "$work/comparator-allowed.txt"
+
+if ! cmp -s "$work/allowed-in-order.txt" "$work/comparator-allowed.txt"; then
+  echo "Axiom audit FAILED: comparator.json permitted_axioms differs from scripts/allowed-axioms.txt." >&2
+  diff -u "$work/allowed-in-order.txt" "$work/comparator-allowed.txt" >&2 || true
+  exit 1
+fi
+
+lake env lean "$project_root/scripts/ComparatorAxiomClosure.lean" \
+  > "$work/comparator-closure.txt"
+sort -u "$work/allowed-in-order.txt" > "$work/allowed-sorted.txt"
+sort -u "$work/comparator-closure.txt" > "$work/comparator-closure-sorted.txt"
+
+if ! cmp -s "$work/allowed-sorted.txt" "$work/comparator-closure-sorted.txt"; then
+  echo "Axiom audit FAILED: Comparator's recursive axiom closure differs from the allowlist." >&2
+  diff -u "$work/allowed-sorted.txt" "$work/comparator-closure-sorted.txt" >&2 || true
+  exit 1
+fi
 
 {
   echo "import SphereSixComplex.Main"

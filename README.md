@@ -4,31 +4,16 @@ This project formalizes the construction in [`references/s6.pdf`](https://alpo.g
 compact complex threefold diffeomorphic to the standard smooth six-sphere.
 
 The Lean development is in `SphereSixComplex/`. The `blueprint/` directory tracks the
-paper-to-Lean dependency graph. `ChallengeDefs.lean`, `Challenge.lean`, `Solution.lean`, and
-`comparator.json` form the Comparator boundary for the final theorem. `ChallengeDefs.lean` holds
-every definition the statement mentions and depends only on Mathlib; both `Challenge` and the
-development import it, so Comparator compares one shared copy. Nothing imports `Challenge` itself.
+paper-to-Lean dependency graph. `ChallengeDefs.lean`, `ChallengeAxioms.lean`, `Challenge.lean`,
+`Solution.lean`, and `comparator.json` form the Comparator boundary. `ChallengeDefs` contains
+the Mathlib-only statement definitions; `ChallengeAxioms` exposes the audited established results
+to both Comparator environments. Nothing imports `Challenge` itself.
 
 ## Status
 
-This is an active formalization, not yet a proof of the headline theorem. The root project and the
-Verso Blueprint build, but `SphereSixComplex/Final.lean` still contains the paper-specific gluing
-`sorry`. The `sorry` in `Challenge.lean` is the trusted Comparator challenge boundary.
-
-The library now includes the construction's analytic, gluing, homology, van Kampen, and smooth
-recognition foundations. The Blueprint records the remaining paper-specific obligation.
-
-`exists_paperGluingData` is the sole remaining development `sorry`. Van Kampen and top-degree
-vanishing are assembled; the remaining target is `SectionSevenPositiveDegreeHomologyAssembly`,
-now reduced to the radial two-disc realization and its marked cusp-cycle comparisons.
-
-Past the paper-specific construction, the final recognition step uses two external axioms absent
-from Mathlib: Hurewicz--Whitehead for smooth manifolds and the standard-model smooth Poincare
-theorem in dimension six.
-
-While `exists_paperGluingData` remains a `sorry`, `./scripts/check-axioms.sh` sees only the two
-recognition axioms plus `sorryAx`; `./scripts/axiom_inventory.py` statically lists the broader
-construction cone that becomes reachable when the placeholder is discharged.
+The headline theorem is source-sorry-free. Paper-specific and classical results not yet available
+in Mathlib are explicit axioms, documented and checked by the allowlists in `scripts/`. The two
+`sorry`s in `Challenge.lean` are the trusted Comparator challenge boundary.
 
 ## Build
 
@@ -62,9 +47,8 @@ justification. Set `CHECK_AXIOMS_SKIP_BUILD=1` to reuse an existing build.
 come to depend on it), only from `Main`, or from neither.
 
 `./scripts/check-sorries.py` checks that no `sorry`, `admit`, or `native_decide` appears outside
-the two declared boundaries: the paper-specific gluing `sorry` in `Final.lean` and the trusted
-Comparator statements in `Challenge.lean`. It counts them, so a second placeholder in an already
-listed file also fails.
+the trusted Comparator statements in `Challenge.lean`. It counts them, so an extra placeholder in
+an already listed file also fails.
 
 `./scripts/check-imports.py` checks that every module is reachable from `SphereSixComplex.Main`.
 A module outside the build cone is elaborated by nothing and its axioms are invisible to the

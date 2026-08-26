@@ -36,6 +36,11 @@ public def ActualCuspFiberPeriodMarkingCompatibility (A : PaperAnalyticData) : P
         (integralSingularHomologyMap 1 G.fiberHomeomorph x) =
       G.monodromyCoordinates.degreeOne x
 
+/-- The chosen radial clutching coordinates carry their defining period marking. -/
+public theorem actualCuspFiberPeriodMarkingCompatibility (A : PaperAnalyticData) :
+    A.ActualCuspFiberPeriodMarkingCompatibility :=
+  A.actualCuspRadialClutchingData.fiberMarkingCompatibility
+
 variable {A : PaperAnalyticData} (D : A.SectionSevenEllipticTwoDiscCoverData)
 
 namespace SectionSevenEllipticTwoDiscCoverData

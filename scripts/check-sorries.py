@@ -1,15 +1,11 @@
 #!/usr/bin/env python3
-"""Fail if a proof placeholder appears outside the two declared boundaries.
+"""Fail if a proof placeholder appears outside the Comparator challenge boundary.
 
-Project policy (#11) is that no `sorry`, `admit`, or `native_decide` survives except:
+Project policy (#11) is that no `sorry`, `admit`, or `native_decide` survives except the trusted
+Comparator challenge statements in `Challenge.lean`.
 
-* the single paper-specific gluing `sorry` in `SphereSixComplex/Final.lean`, and
-* the trusted Comparator challenge statements in `Challenge.lean`.
-
-Both are listed in ALLOWED below, with the exact number of occurrences expected, so that a new
-placeholder anywhere — including a second one in `Final.lean` — is a failure rather than a silent
-regression. Comments and docstrings are ignored, so prose like "germs admit a comparison" does not
-trip the check.
+They are listed in ALLOWED below with the exact number of occurrences expected. Comments and
+docstrings are ignored, so prose like "germs admit a comparison" does not trip the check.
 """
 
 from __future__ import annotations
@@ -22,7 +18,6 @@ ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir)
 
 #: file -> number of placeholder occurrences that are expected and accepted.
 ALLOWED = {
-    "SphereSixComplex/Final.lean": 1,
     "Challenge.lean": 2,
 }
 
