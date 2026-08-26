@@ -83,13 +83,20 @@ namespace EstablishedTorusBundleTopology
 
 /-- The regular global quotient is the total space of the finite-CW four-torus bundle obtained by
 descending the varying-lattice torus family over the regular triangle-group quotient.  This is the
-precise quotient-bundle/local-triviality and finite-CW theorem absent from the current APIs. -/
+precise quotient-bundle/local-triviality and finite-CW theorem absent from the current APIs. 
+Reference: the classical ingredient is Ehresmann's fibration theorem -- a proper submersion is a
+locally trivial fibre bundle -- applied to the descended torus family, together with the finite CW
+structure of a compact manifold.  That the specific quotient here is such a family is the
+paper-specific part (Section 6). -/
 public axiom centralFamilyBundleRealization
     (A : SphereSixComplex.Geometry.PaperAnalyticData) :
     AdditiveFourTorusBundleRealization A.openEmbeddingStarData.central
 
 /-- Each common collar quotient is the total space of its descended finite-CW four-torus bundle
-over the corresponding punctured-disc quotient. -/
+over the corresponding punctured-disc quotient. 
+Reference: as for `centralFamilyBundleRealization`, Ehresmann's fibration theorem applied over
+the punctured-disc quotient; the identification of each collar with such a bundle is
+paper-specific (Section 6). -/
 public axiom collarBundleRealization
     (A : SphereSixComplex.Geometry.PaperAnalyticData) (i : Fin 3) :
     AdditiveFourTorusBundleRealization (A.openEmbeddingStarData.collarSource i)

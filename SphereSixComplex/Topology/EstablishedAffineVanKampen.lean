@@ -95,7 +95,10 @@ public structure MappingTorusFundamentalGroupUP {F : Type} [TopologicalSpace F]
     f (circleMappingTorusMeridian φ x δ) =
       g (circleMappingTorusMeridian φ x δ) → f = g
 
-/-- The standard HNN-extension presentation of the fundamental group of a mapping torus. -/
+/-- The standard HNN-extension presentation of the fundamental group of a mapping torus. 
+Reference: van Kampen [Hat02, Theorem 1.20] applied to the standard two-piece cover of a mapping
+torus gives `pi_1(M_phi) = pi_1(F) rtimes_phi Z`, the HNN presentation recorded here; see
+[Hat02, Section 1.2, `Examples']. -/
 public axiom establishedMappingTorusFundamentalGroupUP
     {F : Type} [TopologicalSpace F] [PathConnectedSpace F]
     (φ : F ≃ₜ F) (x : F) (δ : Path (φ x) x) :

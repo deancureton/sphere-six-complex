@@ -84,7 +84,12 @@ public structure ReducedCentralFiberHOnePresentation
       latticeProjection P x
 
 /-- The usual presentation theorem for a free affine cyclic torus quotient, including the
-canonical value of the presentation coordinates on the covering torus. -/
+canonical value of the presentation coordinates on the covering torus.
+Reference: a free action of a finite cyclic group is a covering space action, so
+`pi_1` of the quotient is the extension of the cyclic group by the torus lattice
+[Hat02, Proposition 1.40]; `H_1` is its abelianization.  The exact presentation coordinates on the
+covering torus recorded in the conclusion are specific to this construction and are not part of
+that citation. -/
 public axiom reducedCentralFiberHOnePresentation
     (P : AffineCyclicCentralFiberPresentationData m p D) :
     ReducedCentralFiberHOnePresentation P

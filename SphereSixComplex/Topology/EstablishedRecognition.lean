@@ -18,13 +18,18 @@ open scoped ContDiff Manifold
 namespace SphereSixComplex
 
 /-- A simply connected smooth integral homology six-sphere is a homotopy sphere. This is the
-standard finite-CW-type, Hurewicz, and Whitehead argument for smooth manifolds. -/
+standard finite-CW-type, Hurewicz, and Whitehead argument for smooth manifolds.
+Reference: Hurewicz [Hat02, Theorem 4.32] and Whitehead [Hat02, Theorem 4.5]; a compact smooth
+manifold has the homotopy type of a finite CW complex, so both apply. -/
 public axiom establishedHomologyToHomotopySixSphere
     {X : Type} [TopologicalSpace X] [T2Space X] [SecondCountableTopology X]
     [ChartedSpace RealModel X] :
     HomologyToHomotopySixSphereObligation X
 
-/-- The standard-model smooth Poincare theorem in dimension six. -/
+/-- The standard-model smooth Poincare theorem in dimension six.
+Reference: the generalized Poincare theorem [Sma61] via the h-cobordism theorem [Mil65] gives a
+homeomorphism, and Theta_6 = 0 [KM63, Section 7] upgrades it to a diffeomorphism.  This is the
+same pair of citations the source paper uses in its Section 8. -/
 public axiom establishedSmoothPoincareSixStandardModel :
     SmoothPoincareSixStandardModel
 

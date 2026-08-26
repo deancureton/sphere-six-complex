@@ -93,7 +93,10 @@ public structure FiniteOpenCoverLerayCechComparison (U : iota → Set X) where
 
 /-- Standard Leray--Čech augmentation for a finite open cover.  This theorem does not assume
 that any nonempty intersection is acyclic: the full singular chain complex of every iterated
-intersection occurs in `finiteCoverLerayCechTotal`. -/
+intersection occurs in `finiteCoverLerayCechTotal`. 
+Reference: the Cech/Mayer-Vietoris double complex of a finite open cover, together with the
+small-simplices theorem [Hat02, Proposition 2.21] which makes cover-small chains compute singular
+homology.  No acyclicity of the intersections is assumed here. -/
 public axiom establishedFiniteOpenCoverLerayCechComparison
     [Fintype iota] (U : iota → Set X)
     (hOpen : ∀ i, IsOpen (U i)) (hCover : ⋃ i, U i = Set.univ) :

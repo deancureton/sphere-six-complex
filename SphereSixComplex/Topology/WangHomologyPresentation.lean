@@ -196,7 +196,10 @@ public structure FiniteBouquetMappingTorusWangSequence (φ : ι → F ≃ₜ F) 
 
 /-- Mathlib currently has singular homology and exact-sequence algebra but no Wang theorem.
 This is the standard integral Wang exact sequence for the explicit finite-bouquet mapping-torus
-quotient above.  It is the sole general-topology boundary in this module. -/
+quotient above.  It is the sole general-topology boundary in this module.
+Reference: the Wang sequence of a fibre bundle over a sphere [Wang49]; for a mapping torus it is
+the Mayer-Vietoris sequence of the two-piece cover of the bundle over the circle, [Hat02,
+Section 2.2].  The bouquet case is the same argument with one edge per index. -/
 public axiom establishedFiniteBouquetMappingTorusWangSequence
     [DiscreteTopology ι]
     (φ : ι → F ≃ₜ F) (k : ℕ) :

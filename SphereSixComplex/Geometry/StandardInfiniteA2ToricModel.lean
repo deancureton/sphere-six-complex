@@ -168,6 +168,12 @@ public structure Model where
       ContMDiff (modelWithCornersSelf ℂ ComplexModel)
         (modelWithCornersSelf ℂ ComplexModel) ∞
         (fun p : U ↦ torusAction (c p) (p : Carrier))
+  /-- The algebraic torus action is jointly continuous.  An algebraic group action on a variety is
+  a morphism, hence continuous in both variables at once; the holomorphy fields above only give
+  this one variable at a time. -/
+  torusAction_continuous :
+    letI := topology
+    Continuous (fun z : DenseTorus × Carrier ↦ torusAction z.1 z.2)
   /-- The action restricts to multiplication on the dense torus. -/
   torusAction_torus : ∀ g x,
     torusAction g (torusEmbedding x) = torusEmbedding (g * x)
@@ -388,7 +394,12 @@ namespace Established
 
 /-- Standard toric geometry for the countable smooth fan obtained by coning the `A₂`
 triangulation at height one.  This is precisely the external toric input of Lemma 4.2 and
-Lemma 4.3(i)--(ii), with no paper-specific analytic or quotient assertions. -/
+Lemma 4.3(i)--(ii), with no paper-specific analytic or quotient assertions.
+Reference: standard toric geometry for the countable smooth fan obtained by coning the `A_2`
+triangulation at height one: existence of the toric variety with its algebraic torus action and
+orbit stratification [Ful93, Sections 1.4 and 3.1] or [Oda88, Sections 1.2--1.3]; simple
+connectivity of the sublevel sets is the toric fundamental-group computation [Ful93, Section 3.2],
+which the source paper uses in the same way for its Corollary 4.8. -/
 public axiom model : Nonempty Model
 
 end Established

@@ -115,7 +115,8 @@ public theorem liftTrack_smul {G E B : Type*} [Group G] [TopologicalSpace E] [To
 
 namespace EstablishedGeneralTopology
 
-/-- The inclusion of the base of a relative CW complex has the homotopy-extension property. -/
+/-- The inclusion of the base of a relative CW complex has the homotopy-extension property. 
+Reference: [Hat02, Proposition 0.16] -- a CW pair has the homotopy extension property. -/
 public axiom hasHomotopyExtensionProperty_of_relativeCWComplex
     {X : Type*} [TopologicalSpace X] (A : Set X)
     (hCW : RelCWComplex (Set.univ : Set X) A) :
@@ -123,7 +124,11 @@ public axiom hasHomotopyExtensionProperty_of_relativeCWComplex
 
 /-- If a regular covering and the full inverse image of a subspace are contractible, their
 quotients are `K(G,1)` spaces. For a relative CW pair, the subspace inclusion is therefore a
-homotopy equivalence. -/
+homotopy equivalence. 
+Reference: a regular covering with contractible total space exhibits its base as a `K(G,1)`
+[Hat02, Section 1.B]; two `K(G,1)`s with the same group are homotopy equivalent
+[Hat02, Theorem 1B.8], and for a CW pair the inclusion realizing that equivalence is itself one
+by Whitehead [Hat02, Theorem 4.5]. -/
 public axiom isHomotopyEquivalenceInclusion_of_contractible_regularCover
     {G E B : Type*} [Group G] [TopologicalSpace E] [TopologicalSpace B]
     [MulAction G E] (p : C(E, B)) (A : Set E) (D : Set B)
@@ -133,7 +138,9 @@ public axiom isHomotopyEquivalenceInclusion_of_contractible_regularCover
     IsHomotopyEquivalenceInclusion D
 
 /-- A cofibrant inclusion which is a homotopy equivalence is the inclusion of a strong
-deformation retract. This is the standard homotopy-extension-property theorem. -/
+deformation retract. This is the standard homotopy-extension-property theorem. 
+Reference: [Hat02, Corollary 0.20] -- if `(X, A)` has the homotopy extension property and the
+inclusion is a homotopy equivalence, then `A` is a deformation retract of `X`. -/
 public axiom strongDeformationRetraction_of_cofibration_homotopyEquivalence
     {X : Type*} [TopologicalSpace X] (A : Set X)
     (hHEP : HasHomotopyExtensionProperty A)

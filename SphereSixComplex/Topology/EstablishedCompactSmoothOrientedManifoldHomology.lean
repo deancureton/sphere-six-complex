@@ -24,7 +24,10 @@ compact smooth oriented manifold without boundary.
 
 The self model gives a manifold without boundary.  Hausdorffness and second countability are the
 standard hypotheses used in smooth triangulation/finite-CW arguments.  This is the only new axiom:
-its conclusion is the reduced homological interface, not an application-specific homology answer. -/
+its conclusion is the reduced homological interface, not an application-specific homology answer.
+Reference: Poincare duality [Hat02, Theorem 3.30], the universal coefficient theorem
+[Hat02, Theorem 3.2] whose `Ext` term vanishes exactly under the freeness hypothesis recorded in
+`IntegralPoincareUCTData`, and finite generation of the homology of a compact manifold. -/
 public axiom establishedCompactSmoothOrientedManifoldHomologyTheory
     (d : ℕ) (E X : Type)
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]

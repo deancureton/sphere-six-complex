@@ -87,14 +87,19 @@ namespace Established
 
 /-- A sufficiently deep normalized horodisc is regular and precisely invariant under the
 parabolic cyclic subgroup.  This is the standard cusp-neighbourhood theorem for a cofinite
-Fuchsian group. -/
+Fuchsian group.
+Reference: the standard cusp-neighbourhood theorem for a cofinite Fuchsian group -- a
+sufficiently deep horodisc at a cusp is precisely invariant under the parabolic stabilizer.  This
+is Shimizu's lemma together with the horocyclic neighbourhood construction; see [Bea83]. -/
 public axiom data
     {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (upperRadius : ℝ)
     (hupper : 0 < upperRadius) : Nonempty (Data N upperRadius)
 
 /-- Removing a precisely invariant horodisc from the explicit cofinite Fuchsian quotient leaves
-a compact truncated quotient. -/
+a compact truncated quotient. 
+Reference: a cofinite Fuchsian group has finite-area quotient which is compact after removing
+finitely many precisely invariant horocyclic cusp neighbourhoods; see [Bea83, Chapter 10]. -/
 public axiom compactTruncation
     {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {upperRadius : ℝ}

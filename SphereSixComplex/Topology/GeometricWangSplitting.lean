@@ -155,7 +155,9 @@ end CuspGeometricWangSections
 namespace EstablishedCircleMappingTorusGeometricSections
 
 /-- The singular prism construction supplies canonical suspension sections for a circle mapping
-torus.  Mathlib currently has the Wang exact sequence but not its chain-level geometric section. -/
+torus.  Mathlib currently has the Wang exact sequence but not its chain-level geometric section. 
+Reference: [Wang49].  The sections recorded here are the chain-level suspension sections behind
+that sequence, which Mathlib does not construct. -/
 public axiom sections
     {F : Type} [TopologicalSpace F] {phi : F ≃ₜ F}
     (B : CuspMonodromyCoordinates phi) : CuspGeometricWangSections B

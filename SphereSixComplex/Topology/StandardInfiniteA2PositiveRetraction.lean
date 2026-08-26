@@ -154,10 +154,10 @@ end PolarHoneycombData
 
 namespace Established
 
-/-- The standard infinite `A₂` fan has its canonical polar positive part and honeycomb package
-over every positive cusp radius. This is the sole standard-toric existence boundary in this file. -/
-public axiom polarHoneycombData (M : Model) (r : ℝ) (hr : 0 < r) :
-  Nonempty (PolarHoneycombData M r)
+/- The positive part and honeycomb package for a cusp radius are supplied by
+`Established.polarHoneycombPhaseSpreadingPackage`, whose sigma type carries a `PolarHoneycombData`
+together with the phase-spreading data it must be compatible with.  Selecting the two
+independently would allow a honeycomb to be paired with spreading data for a different one. -/
 
 end Established
 

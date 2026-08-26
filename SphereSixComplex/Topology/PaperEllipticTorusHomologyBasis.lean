@@ -114,14 +114,19 @@ end FourTorusHomologyBasis
 namespace EstablishedTorusHomology
 
 /-- The integral singular homology of a full-rank complex two-torus, in the period basis.  This
-is the standard circle-product and Kunneth calculation currently absent from Mathlib. -/
+is the standard circle-product and Kunneth calculation currently absent from Mathlib.
+Reference: the Kunneth formula [Hat02, Theorem 3B.6] applied to `(S^1)^4`, giving
+`H_k = Lambda^k(H_1)` with `H_1` the period lattice. -/
 public axiom additiveTorusHomologyBasis
     (p : SphereSixComplex.Periods.Parameters) (hfull : FullRank p) :
     AdditiveTorusHomologyBasis p
 
 /-- Naturality of the standard torus bases under a descended affine automorphism.  Translation
 acts trivially, the degree-one map is the integral lattice map, and degree two is its exterior
-square. -/
+square. 
+Reference: naturality of the Kunneth isomorphism [Hat02, Theorem 3B.6].  A translation is
+homotopic to the identity, so it acts trivially; a descended affine automorphism therefore acts
+through its linear part, in degree two by the exterior square. -/
 public axiom additiveTorusHomologyBasis_naturality
     (p : SphereSixComplex.Periods.Parameters) (hfull : FullRank p)
     (D : DescendedAffineTorusAutomorphism p) :

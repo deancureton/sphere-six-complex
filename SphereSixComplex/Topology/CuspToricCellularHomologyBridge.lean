@@ -129,7 +129,8 @@ public structure IntegralCWCellularChainModel
 namespace EstablishedCellularHomology
 
 /-- Cellular chains of a CW complex are naturally quasi-isomorphic to singular chains.  Mathlib
-does not currently construct the cellular boundary or this comparison map. -/
+does not currently construct the cellular boundary or this comparison map.
+Reference: [Hat02, Theorem 2.35] (cellular homology agrees with singular homology). -/
 public axiom integralCWCellularChainModel
     (Y : Type) [TopologicalSpace Y] [Topology.CWComplex (Set.univ : Set Y)] :
     IntegralCWCellularChainModel Y

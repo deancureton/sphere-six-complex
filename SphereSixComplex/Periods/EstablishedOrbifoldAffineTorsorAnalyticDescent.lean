@@ -29,7 +29,10 @@ cusp, and explicit local elliptic and cusp primitives.  The conclusion consists 
 holomorphic affine sections over the two Stein quotient charts and holomorphic descent of their
 homogeneous overlap mismatch through the quotient coordinate.  Besides Cartan--B, this standard
 package includes finite-orbifold descent, finite-jet interpolation at the two branch points, and
-the removable-singularity estimate at the completed cusp. -/
+the removable-singularity estimate at the completed cusp. 
+Reference: Cartan's Theorem B for Stein spaces (vanishing of coherent cohomology), see [GrRe],
+together with descent along a finite orbifold quotient and the removable-singularity theorem at
+the completed cusp. -/
 public axiom establishedOrbifoldAffineLineTorsorAnalyticDescent
     (P : OrbifoldAffineLineTorsorDescentProblem)
     (hP : P.HasAcyclicProjectiveLineFrame) :

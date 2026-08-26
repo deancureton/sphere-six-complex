@@ -46,7 +46,10 @@ public noncomputable def cellCount (M : FiniteCWModelSix X) (n : ℕ) : ℕ := b
 /-- Cellular Euler--Poincaré over the integers, including finite generation of homology.
 
 Mathlib has finite CW complexes and singular homology, but currently has no cellular homology or
-Euler--Poincaré comparison theorem joining these APIs. -/
+Euler--Poincaré comparison theorem joining these APIs.
+Reference: [Hat02, Theorem 2.44] (the Euler characteristic equals the alternating sum of the cell
+counts).  Truncating the sum at degree six is sound because `FiniteCWModelSix` records that there
+are no cells above degree six. -/
 public axiom establishedIntegralCellularEulerPoincareSix (M : FiniteCWModelSix X) :
     IntegralHomologyFiniteSix X ∧
       integralHomologyEulerCharacteristicSix X =
@@ -128,7 +131,10 @@ namespace FiniteCWBundleModelSix
 variable {X : Type} [TopologicalSpace X]
 
 /-- Euler characteristic is multiplicative for a locally trivial bundle of finite CW complexes.
-This is the standard Serre-spectral-sequence Euler theorem missing from Mathlib. -/
+This is the standard Serre-spectral-sequence Euler theorem missing from Mathlib. 
+Reference: the Euler characteristic is multiplicative in a fibration over a connected base, by
+the Leray-Serre spectral sequence.  The truncation at degree six is sound because base, fibre and
+total space all carry `FiniteCWModelSix`, hence have no cells above degree six. -/
 public axiom establishedEulerMultiplicativity (M : FiniteCWBundleModelSix X) :
     let _ := M.baseTopology
     let _ := M.fiberTopology
@@ -187,7 +193,10 @@ namespace FiniteCoverModelSix
 
 variable {X : Type} [TopologicalSpace X]
 
-/-- Euler characteristic multiplies by the degree of a finite covering. -/
+/-- Euler characteristic multiplies by the degree of a finite covering. 
+Reference: the Euler characteristic is multiplicative in a fibration over a connected base, by
+the Leray-Serre spectral sequence.  The truncation at degree six is sound because base, fibre and
+total space all carry `FiniteCWModelSix`, hence have no cells above degree six. -/
 public axiom establishedEulerMultiplicativity (M : FiniteCoverModelSix X) :
     let _ := M.coverTopology
     integralHomologyEulerCharacteristicSix M.Cover =

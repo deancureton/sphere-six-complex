@@ -74,7 +74,12 @@ homeomorphism, has quotient equal to the radial interval times the corresponding
 
 This is the general quotient/fundamental-domain theorem missing from Mathlib.  The mapping-torus
 orientation uses the sector from the generator ray to the identity ray, so its clutching map is
-`D.clutching` rather than its inverse. -/
+`D.clutching` rather than its inverse. 
+Reference: the standard angular fundamental-domain computation.  A free cyclic action on a
+punctured disc that rotates by a primitive `m`-th root of unity has the sector between the
+generator ray and the identity ray as fundamental domain, and the induced identification of its
+two edges is the clutching map; the quotient is therefore the radial interval times the mapping
+torus, cf. [Hat02, Section 0, `Mapping tori']. -/
 public axiom quotientHomeomorphRadialMappingTorus
     {m : ℕ} [NeZero m] {T : Type} [TopologicalSpace T] {r : ℝ}
     (D : CyclicPuncturedProductData m T r) :

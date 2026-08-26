@@ -52,7 +52,10 @@ public structure ActualCuspRadialClutchingData
 namespace EstablishedActualCuspRadialClutching
 
 /-- Polar coordinates and a fundamental strip for the normalized cusp parameter give the radial
-mapping-torus quotient.  Period transport across the strip is the matrix `M₀`. -/
+mapping-torus quotient.  Period transport across the strip is the matrix `M₀`. 
+Reference: the classical ingredient is Mumford's toric degeneration of a family of abelian
+varieties with unipotent monodromy [Mum72], in the toroidal form of [KKMS]; the radial
+fundamental strip for this particular normalized cusp parameter is paper-specific (Section 4). -/
 public axiom data
     {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}

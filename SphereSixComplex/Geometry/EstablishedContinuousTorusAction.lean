@@ -20,9 +20,15 @@ namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
 open SphereSixComplex.Geometry.CuspStraighteningExtension
 open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
 
-/-- Joint continuity of the algebraic torus action on the standard infinite `A₂` toric
-model.  This is an API boundary until the explicit chart formulas are exposed in a form from
-which Mathlib's continuity lemmas can derive the result directly. -/
-public axiom establishedContinuousTorusAction (M : Model) : ContinuousTorusAction M
+/-- Joint continuity of the algebraic torus action on the standard infinite `A₂` toric model.
+
+Read off `Model.torusAction_continuous`.  This does not derive joint continuity from the other
+`Model` fields: it is carried by the same toric-geometry boundary that
+`StandardInfiniteA2ToricModel.Established.model` asserts, namely that the countable smooth fan of
+the `A₂` triangulation has an associated toric variety with its algebraic torus action
+[Ful93, Sections 1.4 and 3.1], [Oda88, Sections 1.2--1.3].  An algebraic group action on a variety
+is a morphism, hence continuous in both variables at once. -/
+public theorem establishedContinuousTorusAction (M : Model) : ContinuousTorusAction M :=
+  ⟨M.torusAction_continuous⟩
 
 end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established

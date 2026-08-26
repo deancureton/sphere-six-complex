@@ -23,7 +23,10 @@ open Geometry.EllipticFamilySpecialization
 
 /-- A full-rank complex two-torus has the standard product CW decomposition of a real
 four-torus. This is the standard torus/product-CW theorem currently missing from Mathlib's CW
-API. -/
+API.
+Reference: a complex two-torus of full rank is `R^4/Z^4` as a real Lie group, whose standard
+product cell structure has `binom(4,k)` cells in degree `k`; see [Hat02, Section 0] for the product
+cell structure on a product of circles. -/
 public axiom additiveTorusFourTorusCellModel (p : SphereSixComplex.Periods.Parameters)
     (h : FullRank p) :
     FourTorusCellModel (AdditiveTorus p)

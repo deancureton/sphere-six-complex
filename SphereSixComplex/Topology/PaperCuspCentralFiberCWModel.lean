@@ -108,7 +108,12 @@ open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
 
 /-- Standard toric-orbit CW decomposition for the compact quotient of the periodic `A₂` central
 fibre.  This is the exact general toric-topology boundary absent from Mathlib: it supplies a CW
-realization and labels its cells by the orbit strata, but asserts no homology or Euler value. -/
+realization and labels its cells by the orbit strata, but asserts no homology or Euler value.
+This is a paper-specific geometric boundary, not a classical citation.  The orbit-cone
+correspondence [Ful93, Section 3.1], [Oda88, Section 1.3] gives the torus-orbit stratification, but
+that is not by itself a CW decomposition: a positive-dimensional orbit is a torus `(C*)^k`, not an
+open cell.  Producing cells and attaching maps from the stratification is the content of the source
+paper's appendix for this particular periodic `A₂` fibre, and is what is assumed here. -/
 public axiom establishedStandardA2ToricCentralFiberCWDecomposition
     {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
