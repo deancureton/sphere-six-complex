@@ -9,9 +9,9 @@
 # placeholder, because `sorry` short-circuits axiom tracking.  Read on its own it reports a trust
 # boundary much smaller than the one actually being built; this list is the honest one.
 #
-# Seeded from the cone as it stood when the gate was added, so it catches *new* trust assumptions
-# rather than re-litigating the existing ones.  Deleting a line as its axiom is discharged is the
-# point: this file should only ever shrink.
+# Seeded from the exact union of the audited endpoints. Adding an endpoint also requires adding
+# each pre-existing dependency that it exposes, with justification. For a fixed target set,
+# deleting a line as its axiom is discharged is the point: this file should only shrink.
 Classical.choice
 Quot.sound
 SphereSixComplex.EstablishedCellularHomology.integralCWCellularChainModel
@@ -22,6 +22,7 @@ SphereSixComplex.EstablishedGeneralTopology.isHomotopyEquivalenceInclusion_of_co
 SphereSixComplex.EstablishedGeneralTopology.strongDeformationRetraction_of_cofibration_homotopyEquivalence
 SphereSixComplex.EstablishedTorusBundleTopology.centralFamilyBundleRealization
 SphereSixComplex.EstablishedTorusBundleTopology.collarBundleRealization
+SphereSixComplex.EstablishedTorusHomology.additiveTorusHomologyBasis
 SphereSixComplex.FiniteCWBundleModelSix.establishedEulerMultiplicativity
 SphereSixComplex.FiniteCWModelSix.establishedIntegralCellularEulerPoincareSix
 SphereSixComplex.FiniteCoverModelSix.establishedEulerMultiplicativity
@@ -35,9 +36,9 @@ SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established.polarHoneycom
 SphereSixComplex.Topology.FiniteCoverPerfectPairing.establishedEllipticDegreeTwoPullbackRealizations
 SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels.orderFourReducedCentralFiberFiniteCWModelSix
 SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels.orderThreeReducedCentralFiberFiniteCWModelSix
+SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.EstablishedAffineCyclicQuotientHomology.reducedCentralFiberHOnePresentation
 SphereSixComplex.establishedCompactSmoothOrientedManifoldHomologyTheory
 SphereSixComplex.establishedFiniteBouquetMappingTorusWangSequence
 SphereSixComplex.establishedHomologyToHomotopySixSphere
-SphereSixComplex.establishedIntegralMayerVietorisExactSequence
 SphereSixComplex.establishedSmoothPoincareSixStandardModel
 propext

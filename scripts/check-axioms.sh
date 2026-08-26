@@ -121,7 +121,8 @@ fi
 
 # The construction cone is a separate exact ratchet, so a new `established*` axiom cannot appear
 # unnoticed while the final cone is still masked by `sorry`, and a discharged dependency must be
-# removed from its list. This file should only shrink.
+# removed from its list. For a fixed target set this file should only shrink; adding an audited
+# endpoint can expose pre-existing dependencies that must be justified and added explicitly.
 { grep -v '^[[:space:]]*#' "$construction_allowlist" || true; } \
   | { grep -v '^[[:space:]]*$' || true; } | sort -u > "$work/construction-allowed.txt"
 

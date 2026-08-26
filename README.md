@@ -31,9 +31,10 @@ recognition foundations. The Blueprint records the remaining paper-specific obli
    `sectionSevenStageTopDegreeVanishing_actual`. Its dimension argument is proved; the cusp collar
    step rests on the fibre identification recorded in `EstablishedActualCuspRadialClutching.data`.
 
-Past the paper-specific construction, the final recognition step uses three external axioms absent
-from Mathlib: integral Mayer--Vietoris, Hurewicz--Whitehead for smooth manifolds, and the
-standard-model smooth Poincare theorem in dimension six.
+Past the paper-specific construction, the final recognition step uses two external axioms absent
+from Mathlib: Hurewicz--Whitehead for smooth manifolds and the standard-model smooth Poincare
+theorem in dimension six. The integral Mayer--Vietoris sequence is now derived from the binary
+open-cover chain construction.
 
 While `exists_paperGluingData` remains a `sorry`, the final cone of
 `./scripts/check-axioms.sh` sees, beyond Lean's logical axioms, only the two recognition axioms
