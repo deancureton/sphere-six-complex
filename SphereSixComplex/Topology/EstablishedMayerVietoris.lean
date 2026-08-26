@@ -1,23 +1,24 @@
 module
 
-public import SphereSixComplex.Topology.MayerVietoris
+public import SphereSixComplex.Topology.BinaryOpenCoverLegacyMayerVietoris
 
 /-!
 # Established singular-homology Mayer--Vietoris theorem
 
-Mathlib does not yet provide the excision theorem needed to construct the connecting maps for
-singular homology.  We isolate precisely that standard external input for two open subsets.  The
-paper-specific homology calculation is not part of this axiom.
+The chain-level binary open-cover construction supplies the integral singular-homology
+Mayer--Vietoris theorem for arbitrary open subsets. The paper-specific homology calculation is
+separate from this general theorem.
 -/
 
 namespace SphereSixComplex
 
 /-- The integral singular-homology Mayer--Vietoris sequence for two open subsets, with difference
 map `(i_*, -j_*)` and sum map `k_* + l_*` as defined in `IntegralMayerVietoris`. -/
-public axiom establishedIntegralMayerVietorisExactSequence
+public theorem establishedIntegralMayerVietorisExactSequence
     {X : Type} [TopologicalSpace X] (A B : Set X)
     (hA : IsOpen A) (hB : IsOpen B) :
-    IntegralMayerVietoris.ExactSequence A B
+    IntegralMayerVietoris.ExactSequence A B :=
+  BinaryOpenCover.integralMayerVietorisExactSequence_of_isOpen A B hA hB
 
 /-- The established binary theorem supplies exactness at each stage of an ordered four-piece open
 cover. -/
