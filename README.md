@@ -38,9 +38,10 @@ We thank Thomas Zhu for giving us permission to use and port the van Kampen deve
 
 Every `axiom` in the development is a trust boundary, so two scripts keep them visible.
 
-`./scripts/check-axioms.sh` is the gate: it runs `#print axioms` on the final theorem and fails if
-anything appears outside `scripts/allowed-axioms.txt`, which lists each permitted constant with a
-justification. Set `CHECK_AXIOMS_SKIP_BUILD=1` to reuse an existing build.
+`./scripts/check-axioms.sh` is the gate: it requires the recursive final and implemented-construction
+dependency closures to match `scripts/allowed-axioms.txt` and
+`scripts/allowed-construction-axioms.txt` exactly. Entries must be removed when dependencies are
+discharged. Set `CHECK_AXIOMS_SKIP_BUILD=1` to reuse an existing build.
 
 `./scripts/axiom_inventory.py` is the static counterpart: it lists every `axiom` declaration in
 `SphereSixComplex/` and marks whether it is reachable from `Final` (so the headline theorem may

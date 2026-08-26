@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 #
-# Trust gate: assert that the final theorem depends on nothing beyond the declared allowlist.
+# Trust gate: assert that the audited dependency cones match their declared allowlists.
 #
-# Runs `#print axioms` on the project endpoint and on the Comparator wrapper, and fails if any
-# constant appears that is not listed in `scripts/allowed-axioms.txt`.  Add a line to that file
-# only together with a written justification of the new trust boundary.
+# Computes recursive compiled-environment closures for the Comparator and implemented construction,
+# and also runs `#print axioms` on the project endpoints. Add an allowlist entry only together with
+# a written justification of the new trust boundary; remove it when the dependency is discharged.
 #
 # Usage: ./scripts/check-axioms.sh
 #
@@ -22,16 +22,6 @@ targets=(
   "SphereSixComplex.exists_complex_threefold_diffeomorphic_sixSphere"
 )
 
-# The implemented-construction cone is audited separately from smooth recognition so changes in
-# either trust boundary are reported directly.
-construction_targets=(
-  "SphereSixComplex.exists_paperGluingData_from_sectionSeven"
-  "SphereSixComplex.Geometry.PaperAnalyticData.toPaperGluingData_of_positiveDegree"
-  "SphereSixComplex.exists_completedPaperThreefold_of_paperGluingData"
-  "SphereSixComplex.Geometry.PaperAnalyticData.sectionSevenStageTopDegreeVanishing_actual"
-  "SphereSixComplex.Geometry.PaperAnalyticData.actualStarHasVanKampenData"
-)
-
 work="$(mktemp -d)"
 trap 'rm -rf "$work"' EXIT
 
@@ -45,6 +35,13 @@ if ! cmp -s "$work/allowed-in-order.txt" "$work/comparator-allowed.txt"; then
   exit 1
 fi
 
+# Build every default target before inspecting the compiled environment: the construction probe
+# imports `Main`, while the Comparator probe imports the separate `Solution` library.
+# `CHECK_AXIOMS_SKIP_BUILD=1` is only for callers that already built this exact tree.
+if [[ -z "${CHECK_AXIOMS_SKIP_BUILD:-}" ]]; then
+  lake build >/dev/null
+fi
+
 lake env lean "$project_root/scripts/ComparatorAxiomClosure.lean" \
   > "$work/comparator-closure.txt"
 sort -u "$work/allowed-in-order.txt" > "$work/allowed-sorted.txt"
@@ -56,16 +53,17 @@ if ! cmp -s "$work/allowed-sorted.txt" "$work/comparator-closure-sorted.txt"; th
   exit 1
 fi
 
+lake env lean "$project_root/scripts/ConstructionAxiomClosure.lean" \
+  > "$work/construction-closure.txt"
+sort -u "$work/construction-closure.txt" > "$work/construction.txt"
+
 {
   echo "import SphereSixComplex.Main"
-  for target in "${targets[@]}" "${construction_targets[@]}"; do
+  for target in "${targets[@]}"; do
     echo "#print axioms $target"
   done
 } > "$work/PrintAxioms.lean"
 
-if [[ -z "${CHECK_AXIOMS_SKIP_BUILD:-}" ]]; then
-  lake build SphereSixComplex.Main >/dev/null
-fi
 lake env lean "$work/PrintAxioms.lean" > "$work/out.txt"
 
 # `#print axioms` prints one bracketed comma-separated list per target, wrapped over several
@@ -87,13 +85,11 @@ collect_for() {
 }
 
 printf '%s\n' "${targets[@]}" > "$work/final-names.txt"
-printf '%s\n' "${construction_targets[@]}" > "$work/construction-names.txt"
 collect_for "$work/final-names.txt" > "$work/found.txt"
-collect_for "$work/construction-names.txt" > "$work/construction.txt"
 
 # A target that printed nothing at all means the name did not resolve; fail loudly rather than
 # silently auditing an empty cone.
-for target in "${targets[@]}" "${construction_targets[@]}"; do
+for target in "${targets[@]}"; do
   if ! grep -q "^${target} " "$work/pairs.txt" \
       && ! grep -qF "'${target}' does not depend on any axioms" "$work/out.txt"; then
     echo "Axiom audit FAILED: no '#print axioms' output for ${target}." >&2
@@ -122,9 +118,8 @@ if grep -qx 'sorryAx' "$work/found.txt"; then
   echo "Note: sorryAx is still present, so the development is not yet complete."
 fi
 
-# The construction cone is a separate ratchet: it fails only on constants outside its own list, so
-# a new `established*` axiom cannot appear unnoticed while the final cone is still masked by
-# `sorry`.  Deleting a line as its axiom is discharged is the point; this file should only shrink.
+# The construction cone is a separate exact recursive ratchet. A new dependency cannot appear
+# unnoticed, and a discharged dependency must be removed from its list.
 { grep -v '^[[:space:]]*#' "$construction_allowlist" || true; } \
   | { grep -v '^[[:space:]]*$' || true; } | sort -u > "$work/construction-allowed.txt"
 
@@ -136,6 +131,18 @@ if ! extra="$(comm -23 "$work/construction.txt" "$work/construction-allowed.txt"
   echo >&2
   echo "Either prove them, or add them to scripts/allowed-construction-axioms.txt with a" >&2
   echo "justification." >&2
+  exit 1
+fi
+
+if ! stale="$(comm -13 "$work/construction.txt" "$work/construction-allowed.txt")" \
+    || [[ -n "$stale" ]]; then
+  echo >&2
+  echo "Axiom audit FAILED: the construction allowlist contains constants not reached by the" >&2
+  echo "implemented-construction targets:" >&2
+  echo "$stale" | sed 's/^/  /' >&2
+  echo >&2
+  echo "Remove them from scripts/allowed-construction-axioms.txt; the allowlist should shrink" >&2
+  echo "as dependencies are discharged." >&2
   exit 1
 fi
 
