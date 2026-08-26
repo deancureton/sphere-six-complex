@@ -1,16 +1,42 @@
 module
 
 public import SphereSixComplex.Topology.ActualCuspCentralFiberRetraction
+public import SphereSixComplex.Topology.CollarHomotopyExtension
 public import Mathlib.Topology.Homotopy.Lifting
 public import Mathlib.Topology.CWComplex.Classical.Basic
+import SphereSixComplex.Topology.RelativeHomotopy
 
 /-!
 # Established strong-deformation-retract principles
 
-This file isolates two standard general-topology results not currently packaged in Mathlib: the
-upgrade from a cofibrant homotopy-equivalent inclusion to a strong deformation retract, and the
-equivariant lift of such a retraction through a regular covering.  Their hypotheses contain the
-full homotopy-extension and quotient-covering data used below.
+This file proves two standard general-topology principles that are not packaged in Mathlib, in
+the interfaces (`HasHomotopyExtensionProperty`, `IsHomotopyEquivalenceInclusion`,
+`StrongDeformationRetraction`, `IsQuotientCoveringMap`, `EquivariantStrongDeformationRetraction`)
+through which the rest of the library consumes them.
+
+## Main results
+
+* `EstablishedGeneralTopology.strongDeformationRetraction_of_cofibration_homotopyEquivalence`: a
+  subspace inclusion with the homotopy-extension property which is a homotopy equivalence is the
+  inclusion of a strong deformation retract (Hatcher, *Algebraic Topology*, Cor. 0.20).  Hatcher's
+  Prop. 0.19 is already formalised for an arbitrary map in `RelativeHomotopy.lean`
+  (`HomotopyExtensionProperty.exists_strongDeformationRetractData`, built on
+  `CollarHomotopyExtension.lean` and `PushoutHomotopy.lean`); the theorem reads it through the
+  translations `hasHomotopyExtensionProperty_iff`, `isHomotopyEquivalenceInclusion_iff` and the
+  converter `TopCat.StrongDeformationRetractData.toStrongDeformationRetraction`, via
+  `HomotopyExtensionProperty.nonempty_strongDeformationRetraction` (Cor. 0.20 for a map).
+* `EstablishedGeneralTopology.equivariantStrongDeformationRetraction_lift`: a strong deformation
+  retraction of the base lifts through the orbit map of a covering space action to a
+  deck-equivariant strong deformation retraction of the total space onto the full preimage
+  (Hatcher, Prop. 1.30 with Prop. 1.40(a)), from Mathlib's `IsCoveringMap.liftPath` and
+  `IsLocalHomeomorph.continuous_lift` (`liftTrack` and its API below).
+
+`HasHomotopyExtensionProperty` quantifies its target spaces over the universe of the ambient
+space, as Hatcher's proof of Cor. 0.20 applies the homotopy-extension property with the targets
+`A` and `X` themselves.
+
+The two remaining `axiom`s of `EstablishedGeneralTopology` — the homotopy-extension property of a
+relative CW pair and the `K(G, 1)` inclusion statement — are tracked as separate follow-ups.
 -/
 
 @[expose] public section
@@ -20,16 +46,19 @@ noncomputable section
 open Set Topology unitInterval
 open scoped ContinuousMap
 
+universe u
+
 namespace SphereSixComplex
 
 /-- The continuous inclusion of a subspace. -/
-public def topologicalSubsetInclusionMap {X : Type*} [TopologicalSpace X] (A : Set X) : C(A, X) where
+public def topologicalSubsetInclusionMap {X : Type*} [TopologicalSpace X] (A : Set X) :
+    C(A, X) where
   toFun := Subtype.val
   continuous_toFun := continuous_subtype_val
 
 /-- The homotopy-extension property for the inclusion `A ⊆ X`. -/
-public def HasHomotopyExtensionProperty {X : Type*} [TopologicalSpace X] (A : Set X) : Prop :=
-  ∀ (Y : Type) (_ : TopologicalSpace Y) (f : C(X, Y)) (g : C(A, Y))
+public def HasHomotopyExtensionProperty {X : Type u} [TopologicalSpace X] (A : Set X) : Prop :=
+  ∀ (Y : Type u) (_ : TopologicalSpace Y) (f : C(X, Y)) (g : C(A, Y))
     (h : ContinuousMap.Homotopy (f.comp (topologicalSubsetInclusionMap A)) g),
     ∃ (f₁ : C(X, Y)) (H : ContinuousMap.Homotopy f f₁),
       ∀ s (a : A), H (s, (a : X)) = h (s, a)
@@ -75,6 +104,80 @@ public def StrongDeformationRetraction.toHomotopyEquiv
     ext a
     exact R.retract_fixed a a.2
   rw [h]
+
+/-! ## Interface translations -/
+
+/-- The subspace form of the homotopy-extension property is the map form for the subspace
+inclusion.  Source: Hatcher, *Algebraic Topology*, §0 p. 14 (definition of the homotopy extension
+property). -/
+public theorem hasHomotopyExtensionProperty_iff {X : Type u} [TopologicalSpace X] (A : Set X) :
+    HasHomotopyExtensionProperty A ↔ HomotopyExtensionProperty (topologicalSubsetInclusionMap A) :=
+  ⟨.mk, HomotopyExtensionProperty.extend⟩
+
+public alias ⟨HasHomotopyExtensionProperty.homotopyExtensionProperty,
+  HomotopyExtensionProperty.hasHomotopyExtensionProperty⟩ := hasHomotopyExtensionProperty_iff
+
+/-- The subspace inclusion is a homotopy equivalence in the sense of `IsHomotopyEquivalence` iff it
+is one in the sense of `IsHomotopyEquivalenceInclusion`.  Source: Hatcher, *Algebraic Topology*,
+Cor. 0.20 p. 16 (hypothesis "the inclusion `A ↪ X` is a homotopy equivalence"). -/
+public theorem isHomotopyEquivalenceInclusion_iff {X : Type*} [TopologicalSpace X] (A : Set X) :
+    IsHomotopyEquivalenceInclusion A ↔
+      IsHomotopyEquivalence ⇑(topologicalSubsetInclusionMap A) :=
+  ⟨fun ⟨e, he⟩ ↦ ⟨e.symm, congrArg DFunLike.coe he⟩, fun ⟨e, he⟩ ↦ ⟨e.symm, DFunLike.ext' he⟩⟩
+
+public alias ⟨IsHomotopyEquivalenceInclusion.isHomotopyEquivalence,
+  IsHomotopyEquivalence.isHomotopyEquivalenceInclusion⟩ := isHomotopyEquivalenceInclusion_iff
+
+end SphereSixComplex
+
+/-! ## From `TopCat` retract data -/
+
+namespace TopCat.StrongDeformationRetractData
+
+variable {A' X : TopCat.{u}} {i : A' ⟶ X} (D : StrongDeformationRetractData i) {S : Set X}
+  (hS : Set.range i.hom = S)
+
+/-- Strong-deformation-retract data for `i : A' ⟶ X`, whose homotopy runs from `retraction ≫ i`
+to the identity, gives a `SphereSixComplex.StrongDeformationRetraction` of `X` onto the range of
+`i`, with the homotopy reversed.  Source: Hatcher, *Algebraic Topology*, p. 2 (definition of a
+deformation retraction). -/
+public def toStrongDeformationRetraction : SphereSixComplex.StrongDeformationRetraction X S where
+  retract := i.hom.comp D.retraction.hom
+  homotopy := D.homotopy.symm
+  retract_mem _ := hS ▸ ⟨_, rfl⟩
+  retract_fixed := hS ▸ Set.forall_mem_range.2 fun a ↦
+    congrArg i.hom (CategoryTheory.ConcreteCategory.congr_hom D.retract a)
+  homotopy_fixed t := hS ▸ Set.forall_mem_range.2 fun a ↦ D.fixed (σ t) a
+
+/-- The retraction of `toStrongDeformationRetraction` is `i ∘ retraction`. -/
+@[simp]
+public theorem toStrongDeformationRetraction_retract_apply (x : X) :
+    (D.toStrongDeformationRetraction hS).retract x = i (D.retraction x) :=
+  rfl
+
+/-- The homotopy of `toStrongDeformationRetraction` is the homotopy of `D` run backwards. -/
+@[simp]
+public theorem toStrongDeformationRetraction_homotopy_apply (t : I) (x : X) :
+    (D.toStrongDeformationRetraction hS).homotopy (t, x) = D.homotopy (σ t, x) :=
+  rfl
+
+end TopCat.StrongDeformationRetractData
+
+namespace SphereSixComplex
+
+/-! ## Cofibrant homotopy-equivalent maps -/
+
+/-- A map with the homotopy-extension property which is a homotopy equivalence exhibits its range
+as a strong deformation retract: Hatcher's Corollary 0.20 for an arbitrary map, read off from
+`HomotopyExtensionProperty.exists_strongDeformationRetractData` (`RelativeHomotopy.lean`).
+Source: Hatcher, *Algebraic Topology*, Cor. 0.20 p. 16 via Prop. 0.19 pp. 16–17. -/
+public theorem HomotopyExtensionProperty.nonempty_strongDeformationRetraction
+    {A' X : Type u} [TopologicalSpace A'] [TopologicalSpace X] {i : C(A', X)}
+    (hep : HomotopyExtensionProperty i) (hi : IsHomotopyEquivalence ⇑i)
+    {S : Set X} (hS : Set.range i = S) : Nonempty (StrongDeformationRetraction X S) :=
+  (hep.exists_strongDeformationRetractData hi).map fun D ↦ D.toStrongDeformationRetraction hS
+
+/-! ## Lifting a strong deformation retraction through a covering -/
 
 /-- The track through `e` of a base homotopy, lifted through a covering. -/
 public noncomputable def liftTrack {E B : Type*} [TopologicalSpace E] [TopologicalSpace B]
@@ -163,12 +266,17 @@ public axiom isHomotopyEquivalenceInclusion_of_contractible_regularCover
     IsHomotopyEquivalenceInclusion D
 
 /-- A cofibrant inclusion which is a homotopy equivalence is the inclusion of a strong
-deformation retract. This is the standard homotopy-extension-property theorem. -/
-public axiom strongDeformationRetraction_of_cofibration_homotopyEquivalence
+deformation retract. This is the standard homotopy-extension-property theorem (Hatcher,
+*Algebraic Topology*, Cor. 0.20), obtained from
+`HomotopyExtensionProperty.nonempty_strongDeformationRetraction` through the interface
+translations `hasHomotopyExtensionProperty_iff` and `isHomotopyEquivalenceInclusion_iff`. -/
+public theorem strongDeformationRetraction_of_cofibration_homotopyEquivalence
     {X : Type*} [TopologicalSpace X] (A : Set X)
     (hHEP : HasHomotopyExtensionProperty A)
     (hEquiv : IsHomotopyEquivalenceInclusion A) :
-    Nonempty (StrongDeformationRetraction X A)
+    Nonempty (StrongDeformationRetraction X A) :=
+  hHEP.homotopyExtensionProperty.nonempty_strongDeformationRetraction hEquiv.isHomotopyEquivalence
+    Subtype.range_coe
 
 /-- Package the standard cofibration upgrade directly as a homotopy equivalence to the
 subspace, retaining the literal inclusion as inverse. -/
