@@ -184,6 +184,23 @@ public theorem establishedQuotientCoverFundamentalGroupNaturality
   exact (monodromy_naturality hp.isCoveringMap hq.isCoveringMap D.lift D.baseMap D.commutes
     e γ).symm
 
+/-- Naturality with the target cover basepoint replaced by an equal selected lift. -/
+public theorem establishedQuotientCoverFundamentalGroupNaturality_of_lift_eq
+    {E E' X X' G H : Type*}
+    [TopologicalSpace E] [TopologicalSpace E'] [TopologicalSpace X] [TopologicalSpace X']
+    [Group G] [Group H] [MulAction G E] [MulAction H E']
+    [SimplyConnectedSpace E] [SimplyConnectedSpace E']
+    {p : C(E, X)} {q : C(E', X')}
+    (hp : IsQuotientCoveringMap p G) (hq : IsQuotientCoveringMap q H)
+    (D : QuotientCoverMapData (G := G) (H := H) p q) (e : E) (e' : E')
+    (he' : D.lift e = e') (γ : FundamentalGroup X (p e)) :
+    (MonoidHom.op D.deckMap) (hp.fundamentalGroupEquiv ⟨e, rfl⟩ γ) =
+      hq.fundamentalGroupEquiv ⟨e', rfl⟩
+        (FundamentalGroup.mapOfEq D.baseMap
+          ((D.commutes e).trans (congrArg q he')) γ) := by
+  subst e'
+  exact establishedQuotientCoverFundamentalGroupNaturality hp hq D e γ
+
 /-- A bijective equivariant deck comparison gives the corresponding equivalence of the two
 based fundamental groups. -/
 public noncomputable def quotientCoverFundamentalGroupEquiv
@@ -286,6 +303,24 @@ public noncomputable def quotientCoverMapDataOfBaseMap
     ((hq.continuous_const_smul (deckMap g)).comp lift.continuous)
     hcomp e hbase
   exact congrFun hlifts z
+
+/-- The canonical lift constructed from a based quotient map takes the selected source point to
+the selected target point. -/
+@[simp]
+public theorem quotientCoverMapDataOfBaseMap_lift_base
+    {E E' X X' G H : Type*}
+    [TopologicalSpace E] [TopologicalSpace E'] [TopologicalSpace X] [TopologicalSpace X']
+    [Group G] [Group H] [MulAction G E] [MulAction H E']
+    [SimplyConnectedSpace E] [SimplyConnectedSpace E']
+    [LocallyPathConnectedSpace E]
+    {p : C(E, X)} {q : C(E', X')}
+    (hp : IsQuotientCoveringMap p G) (hq : IsQuotientCoveringMap q H)
+    (baseMap : C(X, X')) (e : E) (e' : E')
+    (he : q e' = baseMap (p e)) :
+    (quotientCoverMapDataOfBaseMap hp hq baseMap e e' he).lift e = e' := by
+  exact Classical.choose_spec
+    (hq.isCoveringMap.existsUnique_continuousMap_lifts
+      (baseMap.comp p) e e' he) |>.1.1
 
 /-! ## Algebraic output of an affine torus core -/
 

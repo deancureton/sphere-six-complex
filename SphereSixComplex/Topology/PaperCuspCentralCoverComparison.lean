@@ -28,79 +28,6 @@ open CuspPuncturedCollarBridge
 
 variable (A : PaperAnalyticData)
 
-/-- The exact cusp-overlap chart into the actual central family. -/
-public noncomputable def actualCuspOverlapToCentral :
-    C((A.actualVanKampenFourPieceCover.core ∩ A.actualVanKampenFourPieceCover.cusp :
-        Set A.VanKampenSpace), A.CentralFamily) where
-  toFun x := puncturedLocalCuspQuotientMap A.starCuspWitness
-    (A.cuspCollarToStarOverlapHomeomorph.symm x)
-  continuous_toFun :=
-    (puncturedLocalCuspQuotientMap_continuous A.starCuspWitness).comp
-      A.cuspCollarToStarOverlapHomeomorph.symm.continuous
-
-/-- On the additive universal cover, the actual overlap chart is the already constructed
-normalized map into the global cusp collar. -/
-@[simp]
-public theorem actualCuspOverlapToCentral_boundaryProjection
-    (p : additiveCuspRadiusCover A.starCuspWitness.localWitness.radius) :
-    A.actualCuspOverlapToCentral (A.actualCuspBoundaryProjection p) =
-      additiveCuspCoverToGlobal A.starCuspWitness p := by
-  let q : A.openEmbeddingStarData.collarSource 0 :=
-    additiveCuspBoundaryProjection A.starCuspWitness p
-  change puncturedLocalCuspQuotientMap A.starCuspWitness
-      (A.cuspCollarToStarOverlapHomeomorph.symm
-        (A.cuspCollarToStarOverlapHomeomorph q)) = _
-  rw [A.cuspCollarToStarOverlapHomeomorph.symm_apply_apply]
-  change puncturedLocalCuspQuotientMap A.starCuspWitness
-      (additiveCuspBoundaryProjection A.starCuspWitness p) = _
-  exact puncturedLocalCuspQuotientMap_additiveCuspBoundaryProjection
-    A.starCuspWitness p
-
-/-- A point of the selected central affine universal cover above the image of the actual cusp
-base point. -/
-public noncomputable def actualCuspBoundaryCoverBase :
-    additiveCuspRadiusCover A.starCuspWitness.localWitness.radius :=
-  paperCuspBoundaryBasePreimage A.starCuspWitness A.actualCuspLocalBoundaryBase
-
-@[simp]
-public theorem actualCuspBoundaryCoverBase_projects :
-    A.actualCuspBoundaryProjection A.actualCuspBoundaryCoverBase =
-      A.actualCuspOverlapBase := by
-  change A.cuspCollarToStarOverlapHomeomorph
-      (additiveCuspBoundaryProjection A.starCuspWitness
-        (paperCuspBoundaryBasePreimage A.starCuspWitness
-          A.actualCuspLocalBoundaryBase)) = A.actualCuspOverlapBase
-  rw [additiveCuspBoundaryProjection_basePreimage]
-  exact A.cuspCollarToStarOverlapHomeomorph.apply_symm_apply _
-
-/-- A point of the selected central affine universal cover above the image of the actual cusp
-base point. -/
-public noncomputable def actualCuspCentralLiftPoint :
-    A.centralAffineUniversalCover.Cover := by
-  let D := A.centralAffineUniversalCover
-  let _ := D.topology
-  let _ := D.action
-  exact Classical.choose
-    (D.data.quotientCovering.surjective
-      (A.actualCuspOverlapToCentral
-        (A.actualCuspBoundaryProjection A.actualCuspBoundaryCoverBase)))
-
-@[simp]
-public theorem actualCuspCentralLiftPoint_projects :
-    let D := A.centralAffineUniversalCover
-    letI := D.topology
-    letI := D.action
-    D.data.projection A.actualCuspCentralLiftPoint =
-      A.actualCuspOverlapToCentral
-        (A.actualCuspBoundaryProjection A.actualCuspBoundaryCoverBase) := by
-  let D := A.centralAffineUniversalCover
-  let _ := D.topology
-  let _ := D.action
-  exact Classical.choose_spec
-    (D.data.quotientCovering.surjective
-      (A.actualCuspOverlapToCentral
-        (A.actualCuspBoundaryProjection A.actualCuspBoundaryCoverBase)))
-
 /-- The canonical comparison from the actual additive cusp cover to the selected central affine
 universal cover.  Both the lift and its deck homomorphism are derived from the literal collar
 map by the universal lifting property. -/
@@ -132,8 +59,46 @@ public noncomputable def actualCuspCentralCoverComparison :
     D.data.quotientCovering
     A.actualCuspOverlapToCentral
     A.actualCuspBoundaryCoverBase
-    A.actualCuspCentralLiftPoint
-    A.actualCuspCentralLiftPoint_projects
+    A.centralAffineUniversalCoverPoint
+    (by
+      rw [A.centralAffineUniversalCoverPoint_projects,
+        actualCuspCentralBase, A.actualCuspBoundaryCoverBase_projects]
+      rfl)
+
+/-- The canonical comparison lift preserves the selected cover basepoints. -/
+public theorem actualCuspCentralCoverComparison_lift_base :
+    let W := A.starCuspWitness
+    letI := paperCuspBoundaryDeckAction W
+    let D := A.centralAffineUniversalCover
+    letI := D.topology
+    letI := D.action
+    letI : SimplyConnectedSpace
+        (additiveCuspRadiusCover W.localWitness.radius) :=
+      additiveCuspBoundaryCover_simplyConnected W
+    letI : LocallyPathConnectedSpace
+        (additiveCuspRadiusCover W.localWitness.radius) :=
+      (additiveCuspRadiusCover_convex W.localWitness.radius
+        W.localWitness.radius_pos).locallyPathConnectedSpace
+    letI : SimplyConnectedSpace D.Cover := D.data.simplyConnected
+    A.actualCuspCentralCoverComparison.lift A.actualCuspBoundaryCoverBase =
+      A.centralAffineUniversalCoverPoint := by
+  let W := A.starCuspWitness
+  let _ := paperCuspBoundaryDeckAction W
+  let D := A.centralAffineUniversalCover
+  let _ := D.topology
+  let _ := D.action
+  let _ : SimplyConnectedSpace
+      (additiveCuspRadiusCover W.localWitness.radius) :=
+    additiveCuspBoundaryCover_simplyConnected W
+  let _ : LocallyPathConnectedSpace
+      (additiveCuspRadiusCover W.localWitness.radius) :=
+    (additiveCuspRadiusCover_convex W.localWitness.radius
+      W.localWitness.radius_pos).locallyPathConnectedSpace
+  let _ : SimplyConnectedSpace D.Cover := D.data.simplyConnected
+  apply quotientCoverMapDataOfBaseMap_lift_base
+  rw [A.centralAffineUniversalCoverPoint_projects,
+    actualCuspCentralBase, A.actualCuspBoundaryCoverBase_projects]
+  rfl
 
 /-- The comparison square uses the actual cusp quotient projection and the actual central-family
 projection. -/
@@ -218,6 +183,57 @@ public theorem actualCuspCentralCoverComparison_ofDeck
   simpa using
     (establishedQuotientCoverFundamentalGroupNaturality hp D.data.quotientCovering C
       A.actualCuspBoundaryCoverBase
+      (ofDeck hp A.actualCuspBoundaryCoverBase g)).symm
+
+/-- Based form of the cover naturality theorem at the actual overlap and selected central
+basepoints. -/
+public theorem actualCuspCentralCoverComparison_ofDeck_actualBase
+    (g : paperCuspBoundaryDeck) :
+    let W := A.starCuspWitness
+    letI := paperCuspBoundaryDeckAction W
+    let D := A.centralAffineUniversalCover
+    letI := D.topology
+    letI := D.action
+    letI : SimplyConnectedSpace
+        (additiveCuspRadiusCover W.localWitness.radius) :=
+      additiveCuspBoundaryCover_simplyConnected W
+    letI : SimplyConnectedSpace D.Cover := D.data.simplyConnected
+    let hp : IsQuotientCoveringMap A.actualCuspBoundaryProjection
+        paperCuspBoundaryDeck :=
+      (additiveCuspBoundaryProjection_isQuotientCoveringMap W).homeomorph_comp
+        A.cuspCollarToStarOverlapHomeomorph
+    D.data.quotientCovering.fundamentalGroupEquiv
+        ⟨A.centralAffineUniversalCoverPoint, rfl⟩
+        (FundamentalGroup.mapOfEq A.actualCuspOverlapToCentral
+          (by
+            rw [A.actualCuspBoundaryCoverBase_projects]
+            exact A.centralAffineBase_eq_actualCuspCentralBase.symm)
+          (ofDeck hp A.actualCuspBoundaryCoverBase g)) =
+      MulOpposite.op (A.actualCuspCentralCoverComparison.deckMap g) := by
+  let W := A.starCuspWitness
+  let _ := paperCuspBoundaryDeckAction W
+  let D := A.centralAffineUniversalCover
+  let _ := D.topology
+  let _ := D.action
+  let _ : SimplyConnectedSpace
+      (additiveCuspRadiusCover W.localWitness.radius) :=
+    additiveCuspBoundaryCover_simplyConnected W
+  let _ : SimplyConnectedSpace D.Cover := D.data.simplyConnected
+  let hp : IsQuotientCoveringMap A.actualCuspBoundaryProjection
+      paperCuspBoundaryDeck :=
+    (additiveCuspBoundaryProjection_isQuotientCoveringMap W).homeomorph_comp
+      A.cuspCollarToStarOverlapHomeomorph
+  let C := A.actualCuspCentralCoverComparison
+  change D.data.quotientCovering.fundamentalGroupEquiv
+      ⟨A.centralAffineUniversalCoverPoint, rfl⟩
+      (FundamentalGroup.mapOfEq C.baseMap _
+        (ofDeck hp A.actualCuspBoundaryCoverBase g)) =
+    MulOpposite.op (C.deckMap g)
+  simpa using
+    (establishedQuotientCoverFundamentalGroupNaturality_of_lift_eq
+      hp D.data.quotientCovering C A.actualCuspBoundaryCoverBase
+      A.centralAffineUniversalCoverPoint
+      A.actualCuspCentralCoverComparison_lift_base
       (ofDeck hp A.actualCuspBoundaryCoverBase g)).symm
 
 end SphereSixComplex.Geometry.PaperAnalyticData

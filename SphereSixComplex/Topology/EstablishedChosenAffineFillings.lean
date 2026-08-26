@@ -44,6 +44,17 @@ public noncomputable def fundamentalGroupAddHomOfBaseEq
   subst b'
   exact f
 
+/-- Mapping a loop is unchanged when its source basepoint is transported along an equality. -/
+public theorem mapOfEq_fundamentalGroupElementOfBaseEq
+    {B N : Type*} [TopologicalSpace B] [TopologicalSpace N]
+    {b b' : B} {n : N} (hb : b = b') (f : C(B, N))
+    (h : f b = n) (h' : f b' = n) (g : FundamentalGroup B b) :
+    FundamentalGroup.mapOfEq f h'
+        (fundamentalGroupElementOfBaseEq hb g) =
+      FundamentalGroup.mapOfEq f h g := by
+  subst b'
+  rfl
+
 /-- Surjectivity is preserved by based transport. -/
 public theorem fundamentalGroupHomOfBaseEq_surjective
     {B N : Type*} [TopologicalSpace B] [TopologicalSpace N]
