@@ -551,4 +551,30 @@ public instance orderTwoSelectedPresentation_noZeroSMulDivisors :
         simpa using congrFun h' i
       simpa using (mul_eq_zero.mp hi).resolve_left hc
 
+/-- Maps out of the multiple-fibre presentation are exactly pairs: a map killing the difference,
+together with a meridian image whose `m`-th multiple is the image of the twist.
+
+This is the universal property that an identification of `H₁` of a free affine cyclic quotient with
+this presentation has to go through, in either direction; see issue #148. -/
+public noncomputable def multipleFiberLift {B : Type} [AddCommGroup B]
+    (D : Lattice →ₗ[ℤ] Lattice) (v : Lattice) (m : ℤ)
+    (φ : Lattice →ₗ[ℤ] B) (hφ : ∀ x, φ (D x) = 0) (b : B) (hb : m • b = φ v) :
+    MultipleFiberHOnePresentation D v m →ₗ[ℤ] B := by
+  refine Submodule.liftQ _ ((Submodule.liftQ _ φ ?_).coprod
+    (LinearMap.toSpanSingleton ℤ B b)) ?_
+  · rintro x ⟨y, rfl⟩; exact hφ y
+  · rintro x ⟨k, rfl⟩
+    simp [multipleFiberRelationMap, LinearMap.toSpanSingleton, hb.symm, mul_comm]
+    rw [smul_smul, mul_comm k m]
+    exact neg_add_cancel _
+
+/-- The lift sends the class of `(x, k)` to `φ x + k • b`. -/
+public theorem multipleFiberLift_mk {B : Type} [AddCommGroup B]
+    (D : Lattice →ₗ[ℤ] Lattice) (v : Lattice) (m : ℤ)
+    (φ : Lattice →ₗ[ℤ] B) (hφ : ∀ x, φ (D x) = 0) (b : B) (hb : m • b = φ v)
+    (x : Lattice) (k : ℤ) :
+    multipleFiberLift D v m φ hφ b hb
+        (Submodule.Quotient.mk (Submodule.Quotient.mk x, k)) = φ x + k • b := by
+  simp [multipleFiberLift, LinearMap.toSpanSingleton]
+
 end SphereSixComplex.Topology.PaperLemmaSevenThirteenAlgebra
