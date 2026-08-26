@@ -149,6 +149,7 @@ public import SphereSixComplex.Topology.PaperCuspFillingDeckAction
 public import SphereSixComplex.Topology.PaperCuspUnwrappedFillingCover
 public import SphereSixComplex.Topology.PaperCuspChosenAffineFilling
 public import SphereSixComplex.Topology.PaperCuspCentralNaturality
+public import SphereSixComplex.Topology.PaperCuspAffineFillingBridge
 public import SphereSixComplex.Topology.PaperCentralAffineDeckCover
 public import SphereSixComplex.Topology.PaperVanKampenAlgebraAdapter
 public import SphereSixComplex.Topology.FiniteExactSequenceEuler
