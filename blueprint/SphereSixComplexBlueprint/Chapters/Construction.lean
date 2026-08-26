@@ -519,10 +519,16 @@ through four. The exact external boundaries are the standard cellular-to-singula
 the chosen standard $`A_2` CW decomposition with its incidence formula.
 :::
 
-:::theorem "elliptic-multiple-fibre-homology" (parent := "section-seven-paper-assembly") (lean := "SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.EstablishedAffineCyclicQuotientHomology.reducedCentralFiberHOneEquivPresentation, SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.orderThreeReducedCentralFiberHOneEquivIntSquared, SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.orderFourReducedCentralFiberHOneEquivIntSquared")
-The order-three and order-four reduced central fibres have the explicit first-homology
-presentations used in Section 7. Their reduction to $`\mathbb Z^2` is proved; the exact external
-boundary is the general affine cyclic-quotient abelianization theorem.
+:::theorem "elliptic-multiple-fibre-homology" (parent := "section-seven-paper-assembly") (lean := "SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.EstablishedAffineCyclicQuotientHomology.reducedCentralFiberHOneEquivPresentation, SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.orderThreeReducedCentralFiberHOneEquivIntSquared, SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.orderFourReducedCentralFiberHOneEquivIntSquared, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderThreeFixedHOneBasis_projection, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderFourFixedHOneBasis_projection, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderThreeHOneNaturality, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderFourHOneNaturality, SphereSixComplex.Topology.FiniteCoverPerfectPairing.DegreeTwoPullbackRealization.toFiniteCoverDegreeTwoPullbackBasis, SphereSixComplex.Topology.FiniteCoverPerfectPairing.EllipticDegreeTwoPullbackBases.ofRealizations, SphereSixComplex.Topology.FiniteCoverPerfectPairing.establishedEllipticDegreeTwoPullbackRealizations, SphereSixComplex.Topology.FiniteCoverPerfectPairing.ellipticDegreeTwoPullbackBases, SphereSixComplex.Topology.FiniteCoverPerfectPairing.ellipticFiniteCoverHomologyRealization")
+The order-three and order-four reduced central fibres have explicit first-homology presentations,
+and the fixed bases satisfy the required covering-projection coordinate formulas. These degree-one
+naturality results require no additional realization parameter, while retaining the established
+general affine cyclic-quotient abelianization theorem as their external boundary.
+
+In degree two, explicit quotient-homology realizations are converted to perfect-pairing packages;
+together these give the full `ellipticFiniteCoverHomologyRealization` for the two covers. The exact
+external boundary is `establishedEllipticDegreeTwoPullbackRealizations`, which records the
+Proposition 7.14 calculation for the actual covers.
 :::
 
 :::theorem "section-seven-chain-model" (parent := "integral-homology") (lean := "SphereSixComplex.sectionSevenFirstBoundaryMatrix_det, SphereSixComplex.sectionSevenDegreeOneCellularComplex_homology_one_isZero, SphereSixComplex.sectionSevenDegreeOneCellularComplex_homology_two_isZero, SphereSixComplex.integralSingularHomology_one_subsingleton_of_sectionSevenCellularComparison")
