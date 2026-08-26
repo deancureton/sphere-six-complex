@@ -235,6 +235,7 @@ public import SphereSixComplex.Topology.NormalizedComplexStructure
 public import SphereSixComplex.Topology.SingularHomologyDegreeZero
 public import SphereSixComplex.Topology.SmoothSixSphereClassification
 public import SphereSixComplex.Topology.SmoothRecognition
+public import SphereSixComplex.Topology.CollarProductVanishing
 public import SphereSixComplex.Topology.SmoothRecognitionFoundations
 public import SphereSixComplex.Topology.SphereFiniteCWModel
 public import SphereSixComplex.Topology.SphereLoopContraction
@@ -291,6 +292,7 @@ public import SphereSixComplex.Topology.SingularSubdivisionIteration
 public import SphereSixComplex.Topology.EstablishedEquivariantUniversalCover
 public import SphereSixComplex.Topology.PaperActualAffineCoreData
 public import SphereSixComplex.Topology.SectionSevenStageTopDegree
+public import SphereSixComplex.Topology.CuspCollarTopDegreeVanishing
 public import SphereSixComplex.Topology.EstablishedChosenAffineFillings
 public import SphereSixComplex.Topology.EstablishedAffineStarBridge
 public import SphereSixComplex.Topology.PaperActualAffineFillingCoverModels
