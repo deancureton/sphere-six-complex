@@ -321,6 +321,9 @@ public import SphereSixComplex.Topology.PaperSectionSevenEllipticBaseCoordinate
 public import SphereSixComplex.Topology.PaperSectionSevenAffineBandTrivialization
 public import SphereSixComplex.Topology.PaperSectionSevenEllipticBandHomologyAlignment
 public import SphereSixComplex.Topology.PaperSectionSevenCuspWangNaturalityInterface
+public import SphereSixComplex.Topology.PaperSectionSevenCuspEllipticInclusionNaturality
+public import SphereSixComplex.Topology.PaperSectionSevenAffineCompletionReduction
+public import SphereSixComplex.Topology.WangBoundarySignAmbiguity
 
 /-!
 # A Complex Structure on the Six-Sphere
