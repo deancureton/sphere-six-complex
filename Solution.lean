@@ -1,6 +1,7 @@
 module
 
 public import SphereSixComplex.Final
+public import ChallengeAxioms
 
 open scoped ContDiff Manifold
 
@@ -10,9 +11,6 @@ open SphereSixComplex
 public theorem sphere_six_admits_complex_structure : AdmitsComplexStructure SixSphere := by
   exact SphereSixComplex.sphere_six_admits_complex_structure
 
-/-- The unit `n`-sphere, defined as `Metric.sphere 0 1` in `EuclideanSpace ℝ (Fin (n + 1))`. -/
-public abbrev unitSphere (n : ℕ) : Set (EuclideanSpace ℝ (Fin (n + 1))) := Metric.sphere 0 1
-
 /--
 Does the 6-sphere admit a complex structure, i.e. an atlas of holomorphically compatible charts
 relating it to `EuclideanSpace ℂ (Fin 3)`?
@@ -21,9 +19,12 @@ The project theorem is stronger in two ways: its atlas is smooth to all orders, 
 compatible with the standard smooth structure. Forgetting both gives the statement below.
 -/
 public theorem mathoverflow_1973 :
-    ∃ atlas : ChartedSpace (EuclideanSpace ℂ (Fin 3)) (unitSphere 6),
-      IsManifold 𝓘(ℂ, EuclideanSpace ℂ (Fin 3)) 1 (unitSphere 6) := by
+    ∃ atlas : ChartedSpace ComplexModel (unitSphere 6),
+      @IsManifold ℂ inferInstance ComplexModel inferInstance inferInstance
+        ComplexModel inferInstance 𝓘(ℂ, ComplexModel) 1
+        (unitSphere 6) inferInstance atlas := by
   obtain ⟨c, hc, -⟩ := SphereSixComplex.sphere_six_admits_complex_structure
   refine ⟨c, ?_⟩
-  have hinf : IsManifold 𝓘(ℂ, ComplexModel) ∞ SixSphere := hc
+  letI : ChartedSpace ComplexModel (unitSphere 6) := c
+  letI : IsManifold 𝓘(ℂ, ComplexModel) ∞ (unitSphere 6) := hc
   infer_instance

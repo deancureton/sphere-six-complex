@@ -1,5 +1,6 @@
 module
 
+public import SphereSixComplex.Topology.CellularChainModel
 public import SphereSixComplex.Topology.SectionSevenLocalEulerCalculation
 public import Mathlib.Topology.CWComplex.Classical.Finite
 public import Mathlib.Topology.FiberBundle.Basic
@@ -16,7 +17,7 @@ covering models.  The resulting Section 7 contract contains no homology ranks an
 
 noncomputable section
 
-open AlgebraicTopology Set
+open AlgebraicTopology CategoryTheory Set
 open scoped ContinuousMap
 
 namespace SphereSixComplex
@@ -43,19 +44,50 @@ public noncomputable def cellCount (M : FiniteCWModelSix X) (n : ℕ) : ℕ := b
   let _ := M.finite
   exact Nat.card (Topology.CWComplex.cell (Set.univ : Set M.Carrier) n)
 
-/-- Cellular Euler--Poincaré over the integers, including finite generation of homology.
+/-- Cellular Euler--Poincaré over the integers.
 
-Mathlib has finite CW complexes and singular homology, but currently has no cellular homology or
-Euler--Poincaré comparison theorem joining these APIs. -/
+Mathlib has finite CW complexes, singular homology, and the Euler characteristics of a chain
+complex and of its homology, but not the theorem that the two agree.
+
+Reference: [Hat02, Theorem 2.44] (the Euler characteristic equals the alternating sum of the cell
+counts).  Truncating the sum at degree six is sound because `FiniteCWModelSix` records that there
+are no cells above degree six. -/
 public axiom establishedIntegralCellularEulerPoincareSix (M : FiniteCWModelSix X) :
-    IntegralHomologyFiniteSix X ∧
-      integralHomologyEulerCharacteristicSix X =
-        (M.cellCount 0 : ℤ) - M.cellCount 1 + M.cellCount 2 - M.cellCount 3 +
-          M.cellCount 4 - M.cellCount 5 + M.cellCount 6
+    integralHomologyEulerCharacteristicSix X =
+      (M.cellCount 0 : ℤ) - M.cellCount 1 + M.cellCount 2 - M.cellCount 3 +
+        M.cellCount 4 - M.cellCount 5 + M.cellCount 6
 
+/-- Finite generation and the dimension bound are consequences of the cellular chain model, not
+extra assumptions: the chain groups are free on finitely many cells, homology is a subquotient of
+them, and there are no cells above degree six. -/
 public theorem integralHomologyFiniteSix (M : FiniteCWModelSix X) :
-    IntegralHomologyFiniteSix X :=
-  M.establishedIntegralCellularEulerPoincareSix.1
+    IntegralHomologyFiniteSix X where
+  finiteHomology k := by
+    let _ := M.topology
+    let _ := M.cwComplex
+    let _ := M.finite
+    let CM := EstablishedCellularHomology.integralCWCellularChainModel M.Carrier
+    have hfin : Finite (Topology.CWComplex.cell (Set.univ : Set M.Carrier) k) :=
+      Topology.CWComplex.FiniteType.finite_cell (C := (Set.univ : Set M.Carrier)) k
+    have hX : Module.Finite ℤ (CM.chainComplex.X k) :=
+      Module.Finite.equiv (CM.cellBasis k).toIntLinearEquiv
+    have hhom : Module.Finite ℤ (CM.chainComplex.homology k) :=
+      module_finite_homology _ k hX
+    have hiso := CM.comparison_homology_isIso k
+    have hcar : Module.Finite ℤ (IntegralSingularHomology k M.Carrier) :=
+      Module.Finite.equiv (asIso (CM.chainComplex.homologyMap CM.comparison k)
+        |>.addCommGroupIsoToAddEquiv).toIntLinearEquiv
+    exact Module.Finite.equiv
+      (integralSingularHomologyEquivOfHomotopyEquiv k M.homotopyEquiv).symm.toIntLinearEquiv
+  homologyAboveDimension k hk := by
+    let _ := M.topology
+    let _ := M.cwComplex
+    have _hempty : IsEmpty (Topology.CWComplex.cell (Set.univ : Set M.Carrier) k) :=
+      M.cellsAboveSix k hk
+    have _hcar := subsingleton_integralSingularHomology_of_isEmpty_cell M.Carrier k
+    exact ⟨fun _ _ =>
+      (integralSingularHomologyEquivOfHomotopyEquiv k M.homotopyEquiv).injective
+        (Subsingleton.elim _ _)⟩
 
 end FiniteCWModelSix
 
@@ -98,7 +130,7 @@ public theorem integralHomologyFiniteSix (M : FourTorusCellModel X) :
 /-- Euler characteristic zero is derived from the standard four-torus cell counts. -/
 public theorem euler_eq_zero (M : FourTorusCellModel X) :
     integralHomologyEulerCharacteristicSix X = 0 := by
-  rw [M.toFiniteCWModelSix.establishedIntegralCellularEulerPoincareSix.2,
+  rw [M.toFiniteCWModelSix.establishedIntegralCellularEulerPoincareSix,
     M.cellsZero, M.cellsOne, M.cellsTwo, M.cellsThree, M.cellsFour,
     M.cellsFive, M.cellsSix]
   norm_num
@@ -246,7 +278,7 @@ public theorem integralHomologyFiniteSix (M : CuspToricCellModel X) :
 /-- The toric cusp cell decomposition has Euler characteristic two. -/
 public theorem euler_eq_two (M : CuspToricCellModel X) :
     integralHomologyEulerCharacteristicSix X = 2 := by
-  rw [M.toFiniteCWModelSix.establishedIntegralCellularEulerPoincareSix.2,
+  rw [M.toFiniteCWModelSix.establishedIntegralCellularEulerPoincareSix,
     M.cellsZero, M.cellsOne, M.cellsTwo, M.cellsThree, M.cellsFour,
     M.cellsFive, M.cellsSix]
   norm_num

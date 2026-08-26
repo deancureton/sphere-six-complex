@@ -80,3 +80,7 @@ public def AdmitsComplexStructure (M : Type*) [TopologicalSpace M]
       𝓘(ℂ, ComplexModel) ∞ M inferInstance c ∧ SmoothlyCompatible standard c
 
 end SphereSixComplex
+
+/-- The unit `n`-sphere in `(n + 1)`-dimensional Euclidean space. -/
+public abbrev unitSphere (n : ℕ) : Set (EuclideanSpace ℝ (Fin (n + 1))) :=
+  Metric.sphere 0 1

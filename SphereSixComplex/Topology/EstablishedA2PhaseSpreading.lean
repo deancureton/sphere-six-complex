@@ -1,6 +1,8 @@
 module
 
-public import SphereSixComplex.Topology.ActualCuspPhaseSpreading
+public import SphereSixComplex.Periods.EstablishedFuchsianTorsorDescent
+public import SphereSixComplex.Periods.FuchsianCuspNormalization
+public import SphereSixComplex.Topology.CuspPhaseSpreadingData
 
 /-!
 # Established phase spreading for the standard infinite `A₂` toric model
@@ -27,5 +29,15 @@ public axiom polarHoneycombPhaseSpreadingPackage
     (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) (r : ℝ) (hr : 0 < r) :
     Nonempty (Σ P : PolarHoneycombData M r,
       FrozenLocalCuspPhaseSpreadingData N M r P)
+
+/-- Forgetting the phase-spreading compatibility gives the underlying polar-honeycomb model. -/
+public theorem polarHoneycombData (M : Model) (r : ℝ) (hr : 0 < r) :
+    Nonempty (PolarHoneycombData M r) := by
+  obtain ⟨E⟩ := exists_establishedFuchsianModularParameter
+  obtain ⟨F⟩ := establishedExactLiftedModularNegOneFrame E
+  let D := establishedFuchsianPeriodLocalData E F
+  obtain ⟨N⟩ := FuchsianCuspNormalization.exists_normalizedFuchsianCuspCoordinate E D
+  exact Nonempty.map (fun package ↦ package.1)
+    (polarHoneycombPhaseSpreadingPackage N M r hr)
 
 end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established

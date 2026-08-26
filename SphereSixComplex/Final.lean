@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Geometry.PaperGluingData
+public import SphereSixComplex.Topology.PaperSectionSevenCompletion
 public import SphereSixComplex.Topology.EstablishedRecognition
 
 /-!
@@ -18,7 +18,7 @@ namespace SphereSixComplex
 /-- The paper-specific construction target: the explicit torus family, three fillings, and their
 overlap maps provide the exact finite gluing data consumed by the assembly theorem. -/
 public theorem exists_paperGluingData : Nonempty PaperGluingData := by
-  sorry
+  exact exists_paperGluingData_from_sectionSeven
 
 /-- The verified assembly map turns the paper's gluing data into a completed threefold. -/
 public theorem exists_completedPaperThreefold : Nonempty CompletedPaperThreefold :=

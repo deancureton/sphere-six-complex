@@ -6,6 +6,7 @@ Authors: Paul Lezeau
 module
 
 public import SphereSixComplex.Topology.BinaryOpenCoverMayerVietoris
+public import SphereSixComplex.Topology.BinaryOpenCoverMapNaturality
 public import SphereSixComplex.Topology.SingularExcisionOpenCover
 public import Mathlib.Algebra.Homology.HomologicalComplexBiprod
 public import Mathlib.AlgebraicTopology.SimplicialSet.TopAdj
@@ -138,6 +139,53 @@ noncomputable def intersectionForwardChain {X : TopCat} (U V : Opens X) :
     integralSimplicialChains.obj (coverIntersection U V)
   exact singularOpenCorestrictionChainMap (U ⊓ V) ≫
     openIntersectionChainComparison U V
+
+private noncomputable def openIntersectionPullbackChainMap {X Y : TopCat}
+    (f : X ⟶ Y) (U V : Opens Y) :
+    openSingularChains ((Opens.map f).obj U ⊓ (Opens.map f).obj V) ⟶
+      openSingularChains (U ⊓ V) :=
+  integralSimplicialChains.map
+    (TopCat.toSSet.map (openIntersectionPreimageMap f U V))
+
+private theorem intersectionForwardSSet_pullback_naturality {X Y : TopCat}
+    (f : X ⟶ Y) (U V : Opens Y) :
+    TopCat.toSSet.map (openIntersectionPreimageMap f U V) ≫
+        singularOpenCorestriction (U ⊓ V) ≫ openIntersectionComparison U V =
+      singularOpenCorestriction ((Opens.map f).obj U ⊓ (Opens.map f).obj V) ≫
+        openIntersectionComparison ((Opens.map f).obj U) ((Opens.map f).obj V) ≫
+          coverIntersectionPullbackMap f U V := by
+  rw [← cancel_mono (coverIntersection U V).ι]
+  simp [← Functor.map_comp, openIntersectionPreimageMap_comp_inclusion]
+
+private theorem intersectionForwardChain_pullback_naturality {X Y : TopCat}
+    (f : X ⟶ Y) (U V : Opens Y) :
+    openIntersectionPullbackChainMap f U V ≫ intersectionForwardChain U V =
+      intersectionForwardChain ((Opens.map f).obj U) ((Opens.map f).obj V) ≫
+        coverIntersectionPullbackChainMap f U V := by
+  change
+    integralSimplicialChains.map
+          (TopCat.toSSet.map (openIntersectionPreimageMap f U V)) ≫
+        (singularOpenCorestrictionChainMap (U ⊓ V) ≫
+          openIntersectionChainComparison U V) =
+      (singularOpenCorestrictionChainMap
+          ((Opens.map f).obj U ⊓ (Opens.map f).obj V) ≫
+        openIntersectionChainComparison
+          ((Opens.map f).obj U) ((Opens.map f).obj V)) ≫
+        integralSimplicialChains.map (coverIntersectionPullbackMap f U V)
+  simpa only [singularOpenCorestrictionChainMap, openIntersectionChainComparison,
+    Functor.map_comp, Category.assoc] using
+    congrArg integralSimplicialChains.map
+      (intersectionForwardSSet_pullback_naturality f U V)
+
+private theorem coverChainInclusion_pullback_naturality {X Y : TopCat}
+    (f : X ⟶ Y) (U V : Opens Y) :
+    coverUnionPullbackChainMap f U V ≫ coverChainInclusion U V =
+      coverChainInclusion ((Opens.map f).obj U) ((Opens.map f).obj V) ≫
+        integralSimplicialChains.map (TopCat.toSSet.map f) := by
+  simpa only [coverUnionPullbackChainMap, coverChainInclusion,
+    Functor.map_comp] using
+    congrArg integralSimplicialChains.map
+      (coverUnionPullbackMap_comp_inclusion f U V)
 
 /-- The forward comparison from the actual open sets to the generated biproduct. -/
 noncomputable def biprodForwardChain {X : TopCat} (U V : Opens X) :
@@ -372,6 +420,40 @@ public noncomputable def unionHomologyIsoOfCover {X : TopCat} {U V : Opens X}
   unionHomologyIsoOfQuasiIso
     (coverChainInclusion_quasiIso_of_sup_eq_top U V hcover) n
 
+private theorem intersectionHomologyIso_inv_pullback_naturality {X Y : TopCat}
+    (f : X ⟶ Y) (U V : Opens Y) (n : ℕ) :
+    (intersectionHomologyIso ((Opens.map f).obj U) ((Opens.map f).obj V) n).inv ≫
+        generatedIntersectionPullbackHomologyMap f U V n =
+      openIntersectionPullbackHomologyMap f U V n ≫
+        (intersectionHomologyIso U V n).inv := by
+  change
+    HomologicalComplex.homologyMap
+          (intersectionForwardChain ((Opens.map f).obj U) ((Opens.map f).obj V)) n ≫
+        HomologicalComplex.homologyMap (coverIntersectionPullbackChainMap f U V) n =
+      HomologicalComplex.homologyMap (openIntersectionPullbackChainMap f U V) n ≫
+        HomologicalComplex.homologyMap (intersectionForwardChain U V) n
+  rw [← HomologicalComplex.homologyMap_comp,
+    ← HomologicalComplex.homologyMap_comp,
+    intersectionForwardChain_pullback_naturality]
+
+private theorem unionHomologyIsoOfCover_hom_pullback_naturality {X Y : TopCat}
+    (f : X ⟶ Y) (U V : Opens Y)
+    (hsource : (Opens.map f).obj U ⊔ (Opens.map f).obj V = ⊤)
+    (htarget : U ⊔ V = ⊤) (n : ℕ) :
+    generatedUnionPullbackHomologyMap f U V n ≫
+        (unionHomologyIsoOfCover htarget n).hom =
+      (unionHomologyIsoOfCover hsource n).hom ≫
+        (integralHomologyFunctor n).map f := by
+  change
+    (homologyFunctor n).map (coverUnionPullbackChainMap f U V) ≫
+        (homologyFunctor n).map (coverChainInclusion U V) =
+      (homologyFunctor n).map
+          (coverChainInclusion ((Opens.map f).obj U) ((Opens.map f).obj V)) ≫
+        (homologyFunctor n).map
+          (integralSimplicialChains.map (TopCat.toSSet.map f))
+  simpa only [Functor.map_comp] using congrArg (homologyFunctor n).map
+    (coverChainInclusion_pullback_naturality f U V)
+
 private theorem homology_openMVToBiprodChain {X : TopCat}
     (U V : Opens X) (n : ℕ) :
     (homologyFunctor n).map (openMVToBiprodChain U V) ≫
@@ -566,6 +648,31 @@ public noncomputable def openCoverHomologyComparisonOfCover
     OpenCoverHomologyComparison U V :=
   openCoverHomologyComparisonOfQuasiIso
     (coverChainInclusion_quasiIso_of_sup_eq_top U V hcover)
+
+/-- The canonical ordinary homology comparisons commute with pullback along a continuous map. -/
+public theorem openCoverHomologyComparisonOfCover_pullbackNaturality
+    {X Y : TopCat} (f : X ⟶ Y) (U V : Opens Y)
+    (hsource : (Opens.map f).obj U ⊔ (Opens.map f).obj V = ⊤)
+    (htarget : U ⊔ V = ⊤) :
+    (openCoverHomologyComparisonOfCover hsource).PullbackNaturality f U V
+      (openCoverHomologyComparisonOfCover htarget) where
+  intersection n := by
+    change generatedIntersectionPullbackHomologyMap f U V n ≫
+        (intersectionHomologyIso U V n).hom =
+      (intersectionHomologyIso
+          ((Opens.map f).obj U) ((Opens.map f).obj V) n).hom ≫
+        openIntersectionPullbackHomologyMap f U V n
+    apply (cancel_epi
+      (intersectionHomologyIso ((Opens.map f).obj U) ((Opens.map f).obj V) n).inv).mp
+    rw [← Category.assoc,
+      intersectionHomologyIso_inv_pullback_naturality,
+      Category.assoc,
+      (intersectionHomologyIso U V n).inv_hom_id,
+      Category.comp_id,
+      (intersectionHomologyIso
+        ((Opens.map f).obj U) ((Opens.map f).obj V) n).inv_hom_id_assoc]
+  union n := unionHomologyIsoOfCover_hom_pullback_naturality
+    f U V hsource htarget n
 
 /-- Every binary open cover admits the complete ordinary singular-homology comparison. -/
 public theorem integralOpenCoverComparisonStatement :

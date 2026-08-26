@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Topology.EstablishedA2PhaseSpreading
+public import SphereSixComplex.Topology.ActualCuspPhaseSpreading
 
 /-!
 # The phase-spread retraction for the paper cusp

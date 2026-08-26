@@ -9,8 +9,8 @@ public import SphereSixComplex.Topology.PaperCuspCollarFourTorusFibre
 
 `toPaperGluingData_of_positiveDegree` asks for three things: the van Kampen datum for the glued
 star, the positive-degree homology assembly, and the Section 7 top-degree vanishing.  Two of the
-three are available for the production analytic package, so the gluing data -- and with it the
-`sorry` in `Final.lean` -- rests on the assembly alone.
+three are available for the production analytic package, so the gluing data rests on the
+positive-degree assembly alone.
 -/
 
 @[expose] public section

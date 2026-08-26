@@ -31,6 +31,20 @@ public structure GeometricSection
   lift : P.Invariants →ₗ[ℤ] Total
   rightInverse : P.totalToInvariants.comp lift = LinearMap.id
 
+namespace GeometricSection
+
+/-- Choose a section of the Wang boundary when its invariant term is projective. -/
+public noncomputable def ofProjective
+    (P : WangHomologyPresentation HighRelations High Total LowRelations Low)
+    [Module.Projective ℤ P.Invariants] : P.GeometricSection := by
+  let lifting := Module.projective_lifting_property P.totalToInvariants LinearMap.id
+    P.totalToInvariants_surjective
+  exact
+    { lift := Classical.choose lifting
+      rightInverse := Classical.choose_spec lifting }
+
+end GeometricSection
+
 /-- Split a Wang presentation using a specified geometric section. -/
 public noncomputable def totalLinearEquivCoinvariantsProdInvariantsOfSection
     (P : WangHomologyPresentation HighRelations High Total LowRelations Low)
@@ -154,11 +168,27 @@ end CuspGeometricWangSections
 
 namespace EstablishedCircleMappingTorusGeometricSections
 
-/-- The singular prism construction supplies canonical suspension sections for a circle mapping
-torus.  Mathlib currently has the Wang exact sequence but not its chain-level geometric section. -/
-public axiom sections
+/-- Projectivity of the two invariant lattices supplies sections of the Wang boundary maps. -/
+public noncomputable def sections
     {F : Type} [TopologicalSpace F] {phi : F ≃ₜ F}
-    (B : CuspMonodromyCoordinates phi) : CuspGeometricWangSections B
+    (B : CuspMonodromyCoordinates phi) : CuspGeometricWangSections B := by
+  let degreeOnePresentation := circleMappingTorusHOnePresentation phi
+  let degreeOneInvariants :=
+    (invariantsEquivOfConjugacy B.degreeZero.toIntLinearEquiv
+      (circleMonodromyDifference phi 0).toIntLinearMap 0
+      B.degreeZeroDifference_conjugacy).trans zeroKernelEquivInt
+  letI : Module.Projective ℤ degreeOnePresentation.Invariants :=
+    Module.Projective.of_equiv' degreeOneInvariants.symm
+  let degreeTwoPresentation := circleMappingTorusHTwoPresentation phi
+  let degreeTwoInvariants :=
+    (invariantsEquivOfConjugacy B.degreeOne.toIntLinearEquiv
+      (circleMonodromyDifference phi 1).toIntLinearMap mZeroDifference
+      B.degreeOneDifference_conjugacy).trans mZeroInvariantsEquivIntSquared
+  letI : Module.Projective ℤ degreeTwoPresentation.Invariants :=
+    Module.Projective.of_equiv' degreeTwoInvariants.symm
+  exact
+    { degreeOne := WangHomologyPresentation.GeometricSection.ofProjective degreeOnePresentation
+      degreeTwo := WangHomologyPresentation.GeometricSection.ofProjective degreeTwoPresentation }
 
 end EstablishedCircleMappingTorusGeometricSections
 
