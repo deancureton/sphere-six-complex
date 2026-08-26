@@ -504,13 +504,15 @@ The recognition input records path connectedness, simple connectedness, and degr
 singular homology equivalence with the standard six-sphere.
 :::
 
-:::definition "mayer-vietoris-contract" (parent := "integral-homology") (lean := "SphereSixComplex.BinaryOpenCover.integralOpenCoverComparisonStatement_of_binaryOpenCoverSubdivision, SphereSixComplex.establishedIntegralMayerVietorisExactSequence, SphereSixComplex.establishedFourPieceMayerVietorisExactness, SphereSixComplex.fourPieceMayerVietorisContract_of_homologyComputation, SphereSixComplex.FourPieceMayerVietorisExactness, SphereSixComplex.FourPieceHomologyComputation")
+:::definition "mayer-vietoris-contract" (parent := "integral-homology") (lean := "SphereSixComplex.BinaryOpenCover.integralOpenCoverComparisonStatement_of_binaryOpenCoverSubdivision, SphereSixComplex.establishedIntegralMayerVietorisExactSequence, SphereSixComplex.establishedFourPieceMayerVietorisExactness, SphereSixComplex.fourPieceMayerVietorisContract_of_homologyComputation, SphereSixComplex.FourPieceMayerVietorisExactness, SphereSixComplex.FourPieceHomologyComputation, SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenEllipticTwoDiscHomologyCoordinates.ellipticInteriorHomologyOneEquiv, SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenEllipticTwoDiscHomologyCoordinates.ellipticInteriorHomologyTwoEquiv, SphereSixComplex.OpenEmbeddingStarData.SectionSevenMayerVietorisHomologyAssembly.homologyOne_subsingleton, SphereSixComplex.OpenEmbeddingStarData.SectionSevenMayerVietorisHomologyAssembly.homologyTwo_subsingleton, SphereSixComplex.OpenEmbeddingStarData.integralHomologyEulerCharacteristicSix_eq_localExpression")
 Binary open-cover exactness for integral singular homology is proved from chain corestriction,
-subdivision, excision, and binary-cover assembly. The production Section 7 proof uses the
-resulting three successive Mayer--Vietoris sequences together with the cusp Wang-boundary
-comparison to prove that $`H_1` and $`H_2` vanish. Its paper-specific map identifications remain
-audited established inputs. Higher degrees are completed by the six-manifold and Euler argument
-below, without a chain equivalence from the finite Leray model to all singular chains.
+subdivision, excision, and binary-cover assembly. The production Section 7 proof first uses a
+separate elliptic two-disc sequence to calculate the interior groups. Its final cusp-attachment
+sequence, together with the cusp Wang-boundary comparison, proves that $`H_1` and $`H_2` vanish.
+All three successive sequences of the four-piece cover are used separately for Euler additivity.
+The paper-specific map identifications remain audited established inputs. Higher degrees are
+completed by the six-manifold and Euler argument below, without a chain equivalence from the
+finite Leray model to all singular chains.
 :::
 
 :::theorem "section-seven-integer-algebra" (parent := "integral-homology") (lean := "SphereSixComplex.Topology.PaperLemmaSevenThirteenAlgebra.range_orderOneRelationMap_eq_ker, SphereSixComplex.Topology.PaperLemmaSevenThirteenAlgebra.range_orderTwoRelationMap_eq_ker, SphereSixComplex.Topology.PaperCuspSpecializationAlgebra.mZeroExteriorTwoSpecialization_surjective, SphereSixComplex.Topology.PaperCuspSpecializationAlgebra.ker_mZeroExteriorTwoSpecialization, SphereSixComplex.Topology.PaperPropositionSevenFourteenDegreeTwoAlgebra.orderFourCandidateQuotientEquivZModTwo_q, SphereSixComplex.firstHomologyPresentation_exact, SphereSixComplex.alphaOne_kernel, SphereSixComplex.alphaTwoPresentation_exact, SphereSixComplex.chosenLerayDifferential_bijective, SphereSixComplex.hasIntegralHomologyOfSixSphere_of_sectionSevenRealizations")
@@ -524,13 +526,14 @@ model is a separate, stronger alternate route.
 
 :::definition "section-seven-paper-assembly" (parent := "integral-homology") (lean := "SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenPositiveDegreeHomologyAssembly, SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenPositiveDegreeHomologyAssembly.toSectionSevenMayerVietorisHomologyAssembly, SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenAffineMarkedCompletionInput.positiveDegreeHomologyAssembly, SphereSixComplex.establishedCompactSmoothOrientedManifoldHomologyTheory, SphereSixComplex.establishedCompactComplexThreefoldHomologyTheory, SphereSixComplex.OpenEmbeddingStarData.SectionSevenMayerVietorisHomologyAssembly.hasIntegralHomologyOfSixSphere_of_closedComplexThreefold, SphereSixComplex.OpenEmbeddingStarData.SectionSevenMayerVietorisHomologyAssembly.hasIntegralHomologyOfSixSphere_of_localEulerCalculation, SphereSixComplex.Geometry.PaperAnalyticData.star_hasIntegralHomologyOfSixSphere_of_localModels")
 For the actual four-piece star, degree zero is proved canonically. The affine marked-completion
-input now constructs `SectionSevenPositiveDegreeHomologyAssembly`, which supplies the positive-
-degree cusp-attachment identifications and compatibility squares without assuming the completed
-star's homology. Mayer--Vietoris uses those data to kill $`H_1` and $`H_2`; the compact oriented
-six-manifold package supplies finite generation, the dimension bound, and Poincaré-duality/UCT
-pairings, while the proved local Euler calculation gives Euler characteristic $`2`. Together they
-construct the degreewise sphere-homology comparison. The manifold theorem remains an explicit
-general trust boundary, alongside the paper-specific geometric premises in the audited cone.
+input now constructs `SectionSevenPositiveDegreeHomologyAssembly`, which supplies the
+positive-degree cusp-attachment identifications and compatibility squares without assuming the
+completed star's homology. Mayer--Vietoris uses those data to kill $`H_1` and $`H_2`; the compact
+oriented six-manifold package supplies finite generation, the dimension bound, and
+Poincaré-duality/UCT pairings, while the proved local Euler calculation gives Euler
+characteristic $`2`. Together they construct the degreewise sphere-homology comparison. The
+manifold theorem remains an explicit general trust boundary, alongside the paper-specific
+geometric premises in the audited cone.
 :::
 
 :::theorem "cusp-filling-homology" (parent := "section-seven-paper-assembly") (lean := "SphereSixComplex.EstablishedCellularHomology.integralCWCellularChainModel, SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberCWDecomposition, SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberCellularIncidence, SphereSixComplex.Geometry.PaperAnalyticData.cuspFillingHomologyOneEquiv, SphereSixComplex.Geometry.PaperAnalyticData.cuspFillingHomologyTwoEquiv, SphereSixComplex.Geometry.PaperAnalyticData.cuspFillingHomologyThreeEquiv, SphereSixComplex.Geometry.PaperAnalyticData.cuspFillingHomologyFourEquiv")
