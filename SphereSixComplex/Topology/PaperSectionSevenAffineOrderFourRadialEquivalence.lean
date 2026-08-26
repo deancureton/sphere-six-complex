@@ -2,6 +2,7 @@ module
 
 public import SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
 public import SphereSixComplex.Topology.PaperSectionSevenAffineRegularBaseRadialEquivalence
+public import SphereSixComplex.Topology.PaperSectionSevenAffineRegularLiftCarriers
 
 /-!
 # The order-four lifted affine radial equivalence

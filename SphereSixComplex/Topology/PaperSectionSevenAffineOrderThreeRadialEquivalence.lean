@@ -2,6 +2,7 @@ module
 
 public import SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
 public import SphereSixComplex.Topology.PaperSectionSevenAffineRegularBaseRadialEquivalence
+public import SphereSixComplex.Topology.PaperSectionSevenAffineRegularLiftCarriers
 
 /-!
 # The order-three affine radial equivalence on the regular torus family
