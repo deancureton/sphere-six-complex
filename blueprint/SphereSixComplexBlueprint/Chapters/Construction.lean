@@ -631,7 +631,7 @@ collapsed basepoint tracked through a reduced-chain isomorphism. The canonical r
 is explicit; proving it is a homology isomorphism is precisely the remaining excision step.
 :::
 
-:::theorem "singular-small-chain-excision" (parent := "disk-boundary-collapse") (lean := "SphereSixComplex.CoverSmallChainRetractionData.approximation, SphereSixComplex.coverSmallIntegralSingularHomologyIso, SphereSixComplex.diskSevenExcisionCover_isOpen, SphereSixComplex.diskSevenExcisionCover_iUnion, SphereSixComplex.diskBoundaryToDiskSevenCoverSmallIntegralSingularChains_comp_inclusion, SphereSixComplex.DiskSevenSmallChainApproximation, SphereSixComplex.simplexSubdivisionLastVertex, SphereSixComplex.subdivisionLastVertex, SphereSixComplex.subdivisionLastVertexLiftChainMap_comp_inclusion, SphereSixComplex.barycentricOuterFaceIdentity, SphereSixComplex.barycentricSubdivisionChainMapCanonical, SphereSixComplex.standardSimplexZeroConeComponent_boundary_succ, SphereSixComplex.canonicalBarycentricLastVertexPrism_boundary, SphereSixComplex.barycentricLastVertexPrismDataCanonical, SphereSixComplex.barycentricSubdivisionLastVertexHomotopyCanonical")
+:::theorem "singular-small-chain-excision" (parent := "disk-boundary-collapse") (lean := "SphereSixComplex.CoverSmallChainRetractionData.approximation, SphereSixComplex.coverSmallIntegralSingularHomologyIso, SphereSixComplex.coverSmallAffineSubdivisionEventuallySmall_of_openCover, SphereSixComplex.coverSmallChainQuasiIsomorphism_of_openCover, SphereSixComplex.coverSmallChainApproximation_of_openCover, SphereSixComplex.coverSmallChainRetractionData_of_openCover, SphereSixComplex.diskSevenExcisionCover_isOpen, SphereSixComplex.diskSevenExcisionCover_iUnion, SphereSixComplex.diskBoundaryToDiskSevenCoverSmallIntegralSingularChains_comp_inclusion, SphereSixComplex.DiskSevenSmallChainApproximation, SphereSixComplex.simplexSubdivisionLastVertex, SphereSixComplex.subdivisionLastVertex, SphereSixComplex.subdivisionLastVertexLiftChainMap_comp_inclusion, SphereSixComplex.barycentricOuterFaceIdentity, SphereSixComplex.barycentricSubdivisionChainMapCanonical, SphereSixComplex.standardSimplexZeroConeComponent_boundary_succ, SphereSixComplex.canonicalBarycentricLastVertexPrism_boundary, SphereSixComplex.barycentricLastVertexPrismDataCanonical, SphereSixComplex.barycentricSubdivisionLastVertexHomotopyCanonical")
 The cover-small singular subcomplex and its monomorphic inclusion into all singular chains are
 explicit. Retraction data yields a chain-homotopy equivalence and homology isomorphisms. For the
 seven-disk, the boundary factors through the small chains for an explicit open two-set cover. The
@@ -639,8 +639,11 @@ global subdivision last-vertex map, induced chain map, and subcomplex lifts are 
 Mathlib's left-Kan-extension API. Signed maximal-flag chains give the canonical natural barycentric
 subdivision chain map. A universal standard-simplex prism boundary identity now produces the actual
 Mathlib chain homotopy from last-vertex-after-subdivision to the identity. The prism is constructed
-recursively by the classical zero-vertex cone contraction in every degree. Only the
-Lebesgue-number subdivision iteration remains for small-chain excision.
+recursively by the classical zero-vertex cone contraction in every degree. Affine mesh and
+Lebesgue-number control now prove eventual smallness for every open cover, hence
+the cover-small inclusion is a quasi-isomorphism and a chain-homotopy equivalence with explicit
+retraction data. The canonical relative-to-reduced comparison for $`(D^7,S^6)` remains a separate
+excision obligation.
 :::
 
 :::theorem "sphere-stereographic-simple-connectivity" (parent := "standard-six-sphere") (lean := "SphereSixComplex.sixSphere_compl_singleton_simplyConnected, SphereSixComplex.sixSphere_simplyConnected_iff_loops_nullhomotopic")
