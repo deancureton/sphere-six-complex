@@ -327,7 +327,11 @@ public import SphereSixComplex.Topology.PaperCuspEllipticCoverCoordinates
 public import SphereSixComplex.Topology.PaperSectionSevenAffineCompletionReduction
 public import SphereSixComplex.Topology.WangBoundarySignAmbiguity
 public import SphereSixComplex.Topology.PuncturedAffineHalfPlaneRadial
+public import SphereSixComplex.Topology.ProductTrivializationHomotopyEquivalence
 public import SphereSixComplex.Topology.OpenUnionHomotopyEquivalence
+public import SphereSixComplex.Topology.EstablishedNumeratedOpenCoverHomotopyExcision
+public import SphereSixComplex.Topology.PaperSectionSevenCuspClutchingCompatibility
+public import SphereSixComplex.Topology.PaperSectionSevenCanonicalCuspFiberBandMap
 
 /-!
 # A Complex Structure on the Six-Sphere
