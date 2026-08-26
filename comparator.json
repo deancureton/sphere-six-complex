@@ -20,7 +20,6 @@
     "SphereSixComplex.EstablishedGeneralTopology.hasHomotopyExtensionProperty_of_relativeCWComplex",
     "SphereSixComplex.EstablishedGeneralTopology.isHomotopyEquivalenceInclusion_of_contractible_regularCover",
     "SphereSixComplex.EstablishedGeneralTopology.numeratedTwoSetCoverHomotopyExcisionData",
-    "SphereSixComplex.EstablishedGeneralTopology.strongDeformationRetraction_of_cofibration_homotopyEquivalence",
     "SphereSixComplex.EstablishedTorusBundleTopology.centralFamilyBundleRealization",
     "SphereSixComplex.EstablishedTorusBundleTopology.collarBundleRealization",
     "SphereSixComplex.EstablishedTorusHomology.additiveTorusHomologyBasis",
