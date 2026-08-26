@@ -1,6 +1,7 @@
 module
 
 public import SphereSixComplex.Geometry.PuncturedAffineCompactCore
+import all SphereSixComplex.TriangleGroup.Representation
 
 /-!
 # The three end cover of the paper's central family
@@ -35,6 +36,121 @@ public theorem fuchsianSourceAction_isOpenMap (g : Delta) :
   intro z
   rw [map_inv]
   rfl
+
+private theorem cyclicThree_cases (a : CyclicThree) :
+    a = 1 ∨ a = Multiplicative.ofAdd (1 : ZMod 3) ∨
+      a = Multiplicative.ofAdd (2 : ZMod 3) := by
+  have hlt : a.toAdd.val < 3 := ZMod.val_lt a.toAdd
+  interval_cases h : a.toAdd.val
+  · left
+    apply Multiplicative.toAdd.injective
+    apply ZMod.val_injective 3
+    norm_num at h ⊢
+    exact h
+  · right; left
+    apply Multiplicative.toAdd.injective
+    apply ZMod.val_injective 3
+    norm_num at h ⊢
+    exact h
+  · right; right
+    apply Multiplicative.toAdd.injective
+    apply ZMod.val_injective 3
+    norm_num at h ⊢
+    exact h
+
+private theorem cyclicFour_cases (a : CyclicFour) :
+    a = 1 ∨ a = Multiplicative.ofAdd (1 : ZMod 4) ∨
+      a = Multiplicative.ofAdd (2 : ZMod 4) ∨
+        a = Multiplicative.ofAdd (3 : ZMod 4) := by
+  have hlt : a.toAdd.val < 4 := ZMod.val_lt a.toAdd
+  interval_cases h : a.toAdd.val
+  · left
+    apply Multiplicative.toAdd.injective
+    apply ZMod.val_injective 4
+    norm_num at h ⊢
+    exact h
+  · right; left
+    apply Multiplicative.toAdd.injective
+    apply ZMod.val_injective 4
+    norm_num at h ⊢
+    exact h
+  · right; right; left
+    apply Multiplicative.toAdd.injective
+    apply ZMod.val_injective 4
+    norm_num at h ⊢
+    exact h
+  · right; right; right
+    apply Multiplicative.toAdd.injective
+    apply ZMod.val_injective 4
+    norm_num at h ⊢
+    exact h
+
+private theorem inl_two :
+    Monoid.Coprod.inl (Multiplicative.ofAdd (2 : ZMod 3)) = g₁ * g₁ := by
+  calc
+    _ = Monoid.Coprod.inl (Multiplicative.ofAdd (1 : ZMod 3) *
+        Multiplicative.ofAdd (1 : ZMod 3)) := by congr 1
+    _ = _ := by rw [map_mul]; rfl
+
+private theorem inr_two :
+    Monoid.Coprod.inr (Multiplicative.ofAdd (2 : ZMod 4)) = g₂ * g₂ := by
+  calc
+    _ = Monoid.Coprod.inr (Multiplicative.ofAdd (1 : ZMod 4) *
+        Multiplicative.ofAdd (1 : ZMod 4)) := by congr 1
+    _ = _ := by rw [map_mul]; rfl
+
+private theorem inr_three :
+    Monoid.Coprod.inr (Multiplicative.ofAdd (3 : ZMod 4)) = g₂ * g₂ * g₂ := by
+  calc
+    _ = Monoid.Coprod.inr ((Multiplicative.ofAdd (1 : ZMod 4) *
+        Multiplicative.ofAdd (1 : ZMod 4)) *
+          Multiplicative.ofAdd (1 : ZMod 4)) := by congr 1
+    _ = _ := by rw [map_mul, map_mul]; rfl
+
+public theorem orderThreeCayleyHomeomorph_norm_inl
+    (a : CyclicThree) (z : UpperHalfPlane) :
+    ‖(orderThreeCayleyHomeomorph
+      (fuchsianSourceAction (Monoid.Coprod.inl a) • z) : ℂ)‖ =
+      ‖(orderThreeCayleyHomeomorph z : ℂ)‖ := by
+  rcases cyclicThree_cases a with rfl | rfl | rfl
+  · rw [map_one]
+    rfl
+  · change ‖orderThreeCayley (fuchsianSourceAction g₁ • z)‖ =
+      ‖orderThreeCayley z‖
+    rw [orderThreeCayley_generator, norm_mul, norm_orderThreeMultiplier, one_mul]
+  · rw [inl_two]
+    change ‖orderThreeCayley (fuchsianSourceAction (g₁ * g₁) • z)‖ =
+      ‖orderThreeCayley z‖
+    rw [map_mul, mul_smul, orderThreeCayley_generator,
+      orderThreeCayley_generator]
+    rw [norm_mul, norm_mul, norm_orderThreeMultiplier]
+    simp
+
+public theorem orderFourCayleyHomeomorph_norm_inr
+    (a : CyclicFour) (z : UpperHalfPlane) :
+    ‖(orderFourCayleyHomeomorph
+      (fuchsianSourceAction (Monoid.Coprod.inr a) • z) : ℂ)‖ =
+      ‖(orderFourCayleyHomeomorph z : ℂ)‖ := by
+  rcases cyclicFour_cases a with rfl | rfl | rfl | rfl
+  · rw [map_one]
+    rfl
+  · change ‖orderFourCayley (fuchsianSourceAction g₂ • z)‖ =
+      ‖orderFourCayley z‖
+    rw [orderFourCayley_generator, norm_mul, norm_orderFourMultiplier, one_mul]
+  · rw [inr_two]
+    change ‖orderFourCayley (fuchsianSourceAction (g₂ * g₂) • z)‖ =
+      ‖orderFourCayley z‖
+    rw [map_mul, mul_smul, orderFourCayley_generator,
+      orderFourCayley_generator]
+    rw [norm_mul, norm_mul, norm_orderFourMultiplier]
+    simp
+  · rw [inr_three]
+    change ‖orderFourCayley (fuchsianSourceAction (g₂ * g₂ * g₂) • z)‖ =
+      ‖orderFourCayley z‖
+    rw [map_mul, map_mul, mul_smul, mul_smul, orderFourCayley_generator,
+      orderFourCayley_generator, orderFourCayley_generator]
+    rw [norm_mul, norm_mul, norm_mul, norm_orderFourMultiplier]
+    simp
 
 namespace PaperAnalyticData
 
@@ -128,6 +244,182 @@ public theorem exists_orderFour_coordinate_radius
     rw [← hg, ← mul_smul, ← map_mul, inv_mul_cancel, map_one, one_smul]
   rw [hback]
   exact hx
+
+/-- A path contained in a sufficiently small order-three affine neighborhood has finite-order
+deck monodromy.  The proof moves its initial point into the linear collar and uses connectedness
+to keep the whole translated path there. -/
+public theorem orderThree_path_deck_isOfFinOrder_of_coordinate_small
+    {R inner delta : ℝ} (hinnerR : inner < R)
+    (D : OrderThreeLinearCollarSourceData
+      (U := P.modular.modularParameter.toTriangleUniformization) R)
+    (hcoordinate : ∀ z : UpperHalfPlane,
+      ‖P.modular.sourceCoordinate.coordinate z‖ < delta →
+        ∃ k : Delta,
+          ‖(orderThreeCayleyHomeomorph
+            (fuchsianSourceAction k • z) : ℂ)‖ < inner)
+    (z : UpperHalfPlane) (g : Delta)
+    (Q : Path z (fuchsianSourceAction g • z))
+    (hQ : ∀ t, ‖P.modular.sourceCoordinate.coordinate (Q t)‖ < delta) :
+    IsOfFinOrder g := by
+  let middle := (inner + R) / 2
+  have hinnerMiddle : inner < middle := by dsimp [middle]; linarith
+  have hmiddleR : middle < R := by dsimp [middle]; linarith
+  obtain ⟨h, hh⟩ := hcoordinate z (by simpa using hQ 0)
+  have hstay : ∀ t, ‖(orderThreeCayleyHomeomorph
+      (fuchsianSourceAction h • Q t) : ℂ)‖ < middle := by
+    intro t
+    by_contra hnot
+    have hge : middle ≤ ‖(orderThreeCayleyHomeomorph
+        (fuchsianSourceAction h • Q t) : ℂ)‖ := le_of_not_gt hnot
+    let f : unitInterval → ℝ := fun u ↦
+      ‖(orderThreeCayleyHomeomorph
+        (fuchsianSourceAction h • Q u) : ℂ)‖
+    have hf : Continuous f := by
+      apply continuous_norm.comp
+      exact (continuous_subtype_val.comp orderThreeCayleyHomeomorph.continuous).comp
+        ((fuchsianSourceAction_contMDiff h 0).continuous.comp Q.continuous)
+    have hfzero : f 0 < middle := by simpa [f] using hh.trans hinnerMiddle
+    have hmem : middle ∈ Set.Icc (f 0) (f t) := ⟨hfzero.le, hge⟩
+    obtain ⟨u, hu⟩ := (intermediate_value_univ 0 t hf) hmem
+    obtain ⟨k, hk⟩ := hcoordinate (Q u) (hQ u)
+    rw [OrderThreeLinearCollarSourceData.eq_def] at D
+    obtain ⟨a, ha⟩ := D.2
+      (fuchsianSourceAction h • Q u)
+      (fuchsianSourceAction k • Q u)
+      (by
+        change f u < R
+        rw [hu]
+        exact hmiddleR)
+      (hk.trans hinnerR) (h * k⁻¹) (by
+        rw [P.modular.modularParameter.toTriangleUniformization_sourceAction]
+        rw [map_mul, map_inv, mul_smul, inv_smul_smul])
+    have heq : ‖(orderThreeCayleyHomeomorph
+        (fuchsianSourceAction h • Q u) : ℂ)‖ =
+        ‖(orderThreeCayleyHomeomorph
+          (fuchsianSourceAction k • Q u) : ℂ)‖ := by
+      rw [← show fuchsianSourceAction (h * k⁻¹) •
+            (fuchsianSourceAction k • Q u) =
+          fuchsianSourceAction h • Q u by
+            rw [map_mul, map_inv, mul_smul, inv_smul_smul], ha]
+      exact orderThreeCayleyHomeomorph_norm_inl a _
+    have : middle < inner := by
+      calc
+        middle = ‖(orderThreeCayleyHomeomorph
+            (fuchsianSourceAction h • Q u) : ℂ)‖ := hu.symm
+        _ = ‖(orderThreeCayleyHomeomorph
+            (fuchsianSourceAction k • Q u) : ℂ)‖ := heq
+        _ < inner := hk
+    exact (not_lt_of_ge hinnerMiddle.le) this
+  rw [OrderThreeLinearCollarSourceData.eq_def] at D
+  obtain ⟨a, ha⟩ := D.2
+    (fuchsianSourceAction h • (fuchsianSourceAction g • z))
+    (fuchsianSourceAction h • z)
+    (by simpa [Q.target] using (hstay 1).trans hmiddleR)
+    (hh.trans hinnerR) (h * g * h⁻¹) (by
+      rw [P.modular.modularParameter.toTriangleUniformization_sourceAction]
+      simp only [map_mul, map_inv, mul_smul, inv_smul_smul])
+  apply isOfFinOrder_iff_pow_eq_one.mpr
+  refine ⟨3, by norm_num, ?_⟩
+  have ha3 : (Monoid.Coprod.inl a : Delta) ^ 3 = 1 := by
+    have haPow : a ^ 3 = 1 := by
+      rcases cyclicThree_cases a with rfl | rfl | rfl
+      · simp
+      · decide
+      · decide
+    rw [← map_pow, haPow, map_one]
+  have hpow := congrArg (fun x : Delta ↦ x ^ 3) ha
+  rw [conj_pow, ha3] at hpow
+  calc
+    g ^ 3 = h⁻¹ * (h * g ^ 3 * h⁻¹) * h := by group
+    _ = 1 := by rw [hpow]; group
+
+/-- A path contained in a sufficiently small order-four affine neighborhood has finite-order
+deck monodromy. -/
+public theorem orderFour_path_deck_isOfFinOrder_of_coordinate_small
+    {R inner delta : ℝ} (hinnerR : inner < R)
+    (D : OrderFourLinearCollarSourceData
+      (U := P.modular.modularParameter.toTriangleUniformization) R)
+    (hcoordinate : ∀ z : UpperHalfPlane,
+      ‖P.modular.sourceCoordinate.coordinate z - 1‖ < delta →
+        ∃ k : Delta,
+          ‖(orderFourCayleyHomeomorph
+            (fuchsianSourceAction k • z) : ℂ)‖ < inner)
+    (z : UpperHalfPlane) (g : Delta)
+    (Q : Path z (fuchsianSourceAction g • z))
+    (hQ : ∀ t, ‖P.modular.sourceCoordinate.coordinate (Q t) - 1‖ < delta) :
+    IsOfFinOrder g := by
+  let middle := (inner + R) / 2
+  have hinnerMiddle : inner < middle := by dsimp [middle]; linarith
+  have hmiddleR : middle < R := by dsimp [middle]; linarith
+  obtain ⟨h, hh⟩ := hcoordinate z (by simpa using hQ 0)
+  have hstay : ∀ t, ‖(orderFourCayleyHomeomorph
+      (fuchsianSourceAction h • Q t) : ℂ)‖ < middle := by
+    intro t
+    by_contra hnot
+    have hge : middle ≤ ‖(orderFourCayleyHomeomorph
+        (fuchsianSourceAction h • Q t) : ℂ)‖ := le_of_not_gt hnot
+    let f : unitInterval → ℝ := fun u ↦
+      ‖(orderFourCayleyHomeomorph
+        (fuchsianSourceAction h • Q u) : ℂ)‖
+    have hf : Continuous f := by
+      apply continuous_norm.comp
+      exact (continuous_subtype_val.comp orderFourCayleyHomeomorph.continuous).comp
+        ((fuchsianSourceAction_contMDiff h 0).continuous.comp Q.continuous)
+    have hfzero : f 0 < middle := by simpa [f] using hh.trans hinnerMiddle
+    have hmem : middle ∈ Set.Icc (f 0) (f t) := ⟨hfzero.le, hge⟩
+    obtain ⟨u, hu⟩ := (intermediate_value_univ 0 t hf) hmem
+    obtain ⟨k, hk⟩ := hcoordinate (Q u) (hQ u)
+    rw [OrderFourLinearCollarSourceData.eq_def] at D
+    obtain ⟨a, ha⟩ := D.2
+      (fuchsianSourceAction h • Q u)
+      (fuchsianSourceAction k • Q u)
+      (by
+        change f u < R
+        rw [hu]
+        exact hmiddleR)
+      (hk.trans hinnerR) (h * k⁻¹) (by
+        rw [P.modular.modularParameter.toTriangleUniformization_sourceAction]
+        rw [map_mul, map_inv, mul_smul, inv_smul_smul])
+    have heq : ‖(orderFourCayleyHomeomorph
+        (fuchsianSourceAction h • Q u) : ℂ)‖ =
+        ‖(orderFourCayleyHomeomorph
+          (fuchsianSourceAction k • Q u) : ℂ)‖ := by
+      rw [← show fuchsianSourceAction (h * k⁻¹) •
+            (fuchsianSourceAction k • Q u) =
+          fuchsianSourceAction h • Q u by
+            rw [map_mul, map_inv, mul_smul, inv_smul_smul], ha]
+      exact orderFourCayleyHomeomorph_norm_inr a _
+    have : middle < inner := by
+      calc
+        middle = ‖(orderFourCayleyHomeomorph
+            (fuchsianSourceAction h • Q u) : ℂ)‖ := hu.symm
+        _ = ‖(orderFourCayleyHomeomorph
+            (fuchsianSourceAction k • Q u) : ℂ)‖ := heq
+        _ < inner := hk
+    exact (not_lt_of_ge hinnerMiddle.le) this
+  rw [OrderFourLinearCollarSourceData.eq_def] at D
+  obtain ⟨a, ha⟩ := D.2
+    (fuchsianSourceAction h • (fuchsianSourceAction g • z))
+    (fuchsianSourceAction h • z)
+    (by simpa [Q.target] using (hstay 1).trans hmiddleR)
+    (hh.trans hinnerR) (h * g * h⁻¹) (by
+      rw [P.modular.modularParameter.toTriangleUniformization_sourceAction]
+      simp only [map_mul, map_inv, mul_smul, inv_smul_smul])
+  apply isOfFinOrder_iff_pow_eq_one.mpr
+  refine ⟨4, by norm_num, ?_⟩
+  have ha4 : (Monoid.Coprod.inr a : Delta) ^ 4 = 1 := by
+    have haPow : a ^ 4 = 1 := by
+      rcases cyclicFour_cases a with rfl | rfl | rfl | rfl
+      · simp
+      · decide
+      · decide
+      · decide
+    rw [← map_pow, haPow, map_one]
+  have hpow := congrArg (fun x : Delta ↦ x ^ 4) ha
+  rw [conj_pow, ha4] at hpow
+  calc
+    g ^ 4 = h⁻¹ * (h * g ^ 4 * h⁻¹) * h := by group
+    _ = 1 := by rw [hpow]; group
 
 public theorem centralQuotientProjection_familyDeckMap
     (g : Delta) (q : RegularTotalSpace P.periods) :

@@ -1,6 +1,7 @@
 module
 
 public import SphereSixComplex.Topology.PaperGeometricCentralMonodromy
+public import SphereSixComplex.Topology.PaperMarkedEllipticMonodromy
 
 /-!
 # Geometric generators for the actual central family
@@ -310,6 +311,51 @@ public noncomputable def geometricCentralClockwiseOneDeck : Delta :=
 public noncomputable def geometricCentralClockwiseTwoDeck : Delta :=
   MulOpposite.unop
     (A.actualCuspOuterDeckHom A.geometricCentralRhoTwo⁻¹)
+
+/-- The actual first clockwise meridian retains finite outer deck order after transport from the
+marked zero section to the selected cusp point. -/
+public theorem geometricCentralClockwiseOneDeck_isOfFinOrder :
+    IsOfFinOrder A.geometricCentralClockwiseOneDeck := by
+  let _ := regularFamilyDeckAction A.periods
+  let hp := regularFamilyQuotientMap_isQuotientCoveringMap A.periods
+    A.modular.modularParameter.toTriangleUniformization_sourceAction
+    (sourceActionProperlyDiscontinuous_of_eq
+      A.modular.modularParameter.toTriangleUniformization_sourceAction)
+  have hfin := fundamentalGroupToMulOpposite_isOfFinOrder_transport hp
+    A.actualCuspMarkedCentralWhisker
+    ⟨regularFamilyZeroSection A.periods A.markedRegularBaseLift,
+      A.markedCentralBase_eq_lift.symm⟩
+    ⟨A.actualCuspRegularRepresentative,
+      A.actualCuspRegularRepresentative_projects⟩
+    A.markedZeroCentralMeridianClass
+    A.markedCentralOuterDeckHom_zero_isOfFinOrder
+  have hrho : A.geometricCentralRhoOne⁻¹ =
+      A.markedCentralToActualCuspEquiv A.markedZeroCentralMeridianClass := by
+    simp only [geometricCentralRhoOne, map_inv, inv_inv]
+  rw [geometricCentralClockwiseOneDeck, hrho]
+  exact hfin
+
+/-- The actual second clockwise meridian likewise retains finite outer deck order. -/
+public theorem geometricCentralClockwiseTwoDeck_isOfFinOrder :
+    IsOfFinOrder A.geometricCentralClockwiseTwoDeck := by
+  let _ := regularFamilyDeckAction A.periods
+  let hp := regularFamilyQuotientMap_isQuotientCoveringMap A.periods
+    A.modular.modularParameter.toTriangleUniformization_sourceAction
+    (sourceActionProperlyDiscontinuous_of_eq
+      A.modular.modularParameter.toTriangleUniformization_sourceAction)
+  have hfin := fundamentalGroupToMulOpposite_isOfFinOrder_transport hp
+    A.actualCuspMarkedCentralWhisker
+    ⟨regularFamilyZeroSection A.periods A.markedRegularBaseLift,
+      A.markedCentralBase_eq_lift.symm⟩
+    ⟨A.actualCuspRegularRepresentative,
+      A.actualCuspRegularRepresentative_projects⟩
+    A.markedOneCentralMeridianClass
+    A.markedCentralOuterDeckHom_one_isOfFinOrder
+  have hrho : A.geometricCentralRhoTwo⁻¹ =
+      A.markedCentralToActualCuspEquiv A.markedOneCentralMeridianClass := by
+    simp only [geometricCentralRhoTwo, map_inv, inv_inv]
+  rw [geometricCentralClockwiseTwoDeck, hrho]
+  exact hfin
 
 /-- The first geometric meridian acts on actual cusp translations through its exact, retained
 outer deck label. -/

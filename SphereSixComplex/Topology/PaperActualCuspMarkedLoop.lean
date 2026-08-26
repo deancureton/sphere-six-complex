@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Geometry.PaperMarkedPuncturedBase
-public import SphereSixComplex.Topology.PaperCuspCentralCoverComparison
+public import SphereSixComplex.Topology.PaperActualCuspCentralBaseMap
 
 /-!
 # The actual marked angular loop of the paper cusp
