@@ -233,6 +233,18 @@ public theorem homotopy_equivariant (g : FiniteCyclic m) (s : unitInterval)
       actionMap D.actionData.diagonalAction g (D.homotopy (s, p)) := by
   exact D.radial_equivariant g s p
 
+/-- The cyclic filling quotient is Hausdorff.  A finite group acts properly discontinuously, and
+the disc times a locally compact Hausdorff fibre is locally compact Hausdorff, so the orbit
+quotient is Hausdorff. -/
+public theorem fillingQuotient_t2Space [T2Space T] [LocallyCompactSpace T] :
+    T2Space D.FillingQuotient := by
+  let _ := D.actionData.diagonalAction
+  let _ : LocallyCompactSpace ComplexUnitDisc :=
+    (isOpen_lt continuous_norm continuous_const).locallyCompactSpace
+  let _ : ContinuousConstSMul (FiniteCyclic m) (ComplexUnitDisc × T) :=
+    ⟨fun g => D.representation_continuous g⟩
+  exact inferInstanceAs (T2Space (Quotient (MulAction.orbitRel _ _)))
+
 /-- The image of the central slice in the orbit quotient: the reduced central bielliptic fibre. -/
 @[expose] public def reducedCentralFiber : Set D.FillingQuotient :=
   Quotient.mk (orbitRelOf D.actionData.diagonalAction) '' D.centralSlice

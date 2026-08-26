@@ -32,7 +32,7 @@ public axiom additiveTorusFourTorusCellModel (p : SphereSixComplex.Periods.Param
 with no increase in the dimension bound. This is the standard finite-cover CW theorem currently
 missing from Mathlib's CW API. -/
 public axiom finiteCoverBaseModelSix
-    {E X : Type} [TopologicalSpace E] [TopologicalSpace X]
+    {E X : Type} [TopologicalSpace E] [TopologicalSpace X] [T2Space X]
     (p : C(E, X)) (hp : IsCoveringMap p) (degree : ℕ) (hdegree : 0 < degree)
     (hcard : ∀ x, Nat.card {y : E // p y = x} = degree)
     (coverModel : FiniteCWModelSix E) : FiniteCWModelSix X
@@ -67,7 +67,7 @@ end FourTorusCellModel
 
 /-- Package an explicit constant-degree finite cover by a four-torus into the Section 7 model. -/
 @[expose] public noncomputable def finiteFourTorusCoverModelOfFiniteCover
-    {E X : Type} [TopologicalSpace E] [TopologicalSpace X]
+    {E X : Type} [TopologicalSpace E] [TopologicalSpace X] [T2Space X]
     (p : C(E, X)) (hp : IsCoveringMap p) (degree : ℕ) (hdegree : 0 < degree)
     (hcard : ∀ x, Nat.card {y : E // p y = x} = degree)
     (coverCells : FourTorusCellModel E) : FiniteFourTorusCoverModel X where
@@ -253,6 +253,8 @@ four-torus. -/
   let _ : LocallyCompactSpace (AdditiveTorus p.1) := inferInstance
   let _ : LocallyCompactSpace ComplexUnitDisc :=
     (isOpen_lt continuous_norm continuous_const).locallyCompactSpace
+  let _ : T2Space (orderThreeRadialActionData A.periods).FillingQuotient :=
+    RadialEllipticActionData.fillingQuotient_t2Space _
   let D := orderThreeRadialActionData A.periods
   let coverCells : FourTorusCellModel (RadialEllipticActionData.centralFiberCoverSource D) :=
     (EstablishedFiniteCWTopology.additiveTorusFourTorusCellModel
@@ -282,6 +284,8 @@ four-torus. -/
   let _ : LocallyCompactSpace (AdditiveTorus p.1) := inferInstance
   let _ : LocallyCompactSpace ComplexUnitDisc :=
     (isOpen_lt continuous_norm continuous_const).locallyCompactSpace
+  let _ : T2Space (orderFourRadialActionData A.periods).FillingQuotient :=
+    RadialEllipticActionData.fillingQuotient_t2Space _
   let D := orderFourRadialActionData A.periods
   let coverCells : FourTorusCellModel (RadialEllipticActionData.centralFiberCoverSource D) :=
     (EstablishedFiniteCWTopology.additiveTorusFourTorusCellModel
