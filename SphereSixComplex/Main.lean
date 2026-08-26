@@ -198,6 +198,7 @@ public import SphereSixComplex.Topology.PaperCuspCentralFiberCWModel
 public import SphereSixComplex.Topology.CuspToricCellularAlgebra
 public import SphereSixComplex.Topology.CuspToricCellularHomologyBridge
 public import SphereSixComplex.Topology.CellularDimensionVanishing
+public import SphereSixComplex.Topology.FiniteCWModelVanishing
 public import SphereSixComplex.Topology.PaperCuspCentralFiberHomology
 public import SphereSixComplex.Topology.PaperCuspPhaseSpreading
 public import SphereSixComplex.Topology.PaperCuspSpecializationAlgebra
