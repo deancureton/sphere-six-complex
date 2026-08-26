@@ -509,6 +509,20 @@ public noncomputable def orderTwoSelectedPresentationEquivIntSquared :
     (orderTwoPresentationCoordinates.quotKerEquivOfSurjective
       orderTwoPresentationCoordinates_surjective)
 
+@[simp]
+public theorem orderOneSelectedPresentationEquivIntSquared_mk
+    (x : OrderOneCoinvariants × ℤ) :
+    orderOneSelectedPresentationEquivIntSquared (Submodule.Quotient.mk x) =
+      orderOnePresentationCoordinates x := by
+  rfl
+
+@[simp]
+public theorem orderTwoSelectedPresentationEquivIntSquared_mk
+    (x : OrderTwoCoinvariants × ℤ) :
+    orderTwoSelectedPresentationEquivIntSquared (Submodule.Quotient.mk x) =
+      orderTwoPresentationCoordinates x := by
+  rfl
+
 public instance orderOneSelectedPresentation_noZeroSMulDivisors :
     NoZeroSMulDivisors ℤ OrderOneSelectedPresentation where
   eq_zero_or_eq_zero_of_smul_eq_zero {c x} h := by

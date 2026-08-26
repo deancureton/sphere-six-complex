@@ -240,6 +240,64 @@ public noncomputable def orderFourReducedCentralFiberHOneEquivIntSquared :
   (orderFourReducedCentralFiberHOneEquivPresentation F).trans
     orderTwoSelectedPresentationEquivIntSquared
 
+/-- The fixed order-three coordinates of the covering projection, before evaluating the explicit
+presentation-coordinate map. -/
+public theorem orderThreeReducedCentralFiberHOneEquivIntSquared_projection_raw (x : Lattice) :
+    orderThreeReducedCentralFiberHOneEquivIntSquared F
+        (integralSingularHomologyMap 1
+          (RadialEllipticActionData.centralFiberCoverProjection
+            (orderThreeRadialActionData F))
+          ((orderThreeCentralFiberCoverSourceHomologyBasis F).degreeOne.symm x)) =
+      orderOneSelectedPresentationEquivIntSquared
+        (Submodule.Quotient.mk (Submodule.Quotient.mk x, 0)) := by
+  have h :=
+    EstablishedAffineCyclicQuotientHomology.reducedCentralFiberHOneEquivPresentation_projection
+      (orderThreeCentralFiberPresentationData F) x
+  change orderThreeReducedCentralFiberHOneEquivPresentation F
+      (integralSingularHomologyMap 1
+        (RadialEllipticActionData.centralFiberCoverProjection
+          (orderThreeRadialActionData F))
+        ((orderThreeCentralFiberCoverSourceHomologyBasis F).degreeOne.symm x)) =
+      EstablishedAffineCyclicQuotientHomology.latticeProjection
+        (orderThreeCentralFiberPresentationData F) x at h
+  have hc := congrArg orderOneSelectedPresentationEquivIntSquared h
+  change orderOneSelectedPresentationEquivIntSquared
+      (orderThreeReducedCentralFiberHOneEquivPresentation F
+        (integralSingularHomologyMap 1
+          (RadialEllipticActionData.centralFiberCoverProjection
+            (orderThreeRadialActionData F))
+          ((orderThreeCentralFiberCoverSourceHomologyBasis F).degreeOne.symm x))) = _
+  exact hc
+
+/-- The fixed order-four coordinates of the covering projection, before evaluating the explicit
+presentation-coordinate map. -/
+public theorem orderFourReducedCentralFiberHOneEquivIntSquared_projection_raw (x : Lattice) :
+    orderFourReducedCentralFiberHOneEquivIntSquared F
+        (integralSingularHomologyMap 1
+          (RadialEllipticActionData.centralFiberCoverProjection
+            (orderFourRadialActionData F))
+          ((orderFourCentralFiberCoverSourceHomologyBasis F).degreeOne.symm x)) =
+      orderTwoSelectedPresentationEquivIntSquared
+        (Submodule.Quotient.mk (Submodule.Quotient.mk x, 0)) := by
+  have h :=
+    EstablishedAffineCyclicQuotientHomology.reducedCentralFiberHOneEquivPresentation_projection
+      (orderFourCentralFiberPresentationData F) x
+  change orderFourReducedCentralFiberHOneEquivPresentation F
+      (integralSingularHomologyMap 1
+        (RadialEllipticActionData.centralFiberCoverProjection
+          (orderFourRadialActionData F))
+        ((orderFourCentralFiberCoverSourceHomologyBasis F).degreeOne.symm x)) =
+      EstablishedAffineCyclicQuotientHomology.latticeProjection
+        (orderFourCentralFiberPresentationData F) x at h
+  have hc := congrArg orderTwoSelectedPresentationEquivIntSquared h
+  change orderTwoSelectedPresentationEquivIntSquared
+      (orderFourReducedCentralFiberHOneEquivPresentation F
+        (integralSingularHomologyMap 1
+          (RadialEllipticActionData.centralFiberCoverProjection
+            (orderFourRadialActionData F))
+          ((orderFourCentralFiberCoverSourceHomologyBasis F).degreeOne.symm x))) = _
+  exact hc
+
 end
 
 end SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
