@@ -198,6 +198,7 @@ public structure FiniteBouquetMappingTorusWangSequence (φ : ι → F ≃ₜ F) 
 This is the standard integral Wang exact sequence for the explicit finite-bouquet mapping-torus
 quotient above.  It is the sole general-topology boundary in this module. -/
 public axiom establishedFiniteBouquetMappingTorusWangSequence
+    [DiscreteTopology ι]
     (φ : ι → F ≃ₜ F) (k : ℕ) :
     FiniteBouquetMappingTorusWangSequence φ k
 

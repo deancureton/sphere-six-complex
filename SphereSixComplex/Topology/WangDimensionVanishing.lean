@@ -23,12 +23,12 @@ noncomputable section
 namespace SphereSixComplex
 
 variable {ι F : Type}
-  [Fintype ι] [Inhabited ι] [TopologicalSpace ι] [DiscreteTopology ι] [TopologicalSpace F]
+  [Fintype ι] [Inhabited ι] [TopologicalSpace ι] [TopologicalSpace F]
 
-omit [DiscreteTopology ι] in
 /-- A finite-bouquet mapping torus has no `(k+1)`-st homology once its fibre has none in degrees
 `k` and `k + 1`. -/
 public theorem subsingleton_homology_succ_finiteBouquetMappingTorus
+    [DiscreteTopology ι]
     (φ : ι → F ≃ₜ F) (k : ℕ)
     (hsucc : Subsingleton (IntegralSingularHomology (k + 1) F))
     (hk : Subsingleton (IntegralSingularHomology k F)) :
@@ -43,11 +43,11 @@ public theorem subsingleton_homology_succ_finiteBouquetMappingTorus
     rw [← hw, show w = 0 from Subsingleton.elim _ _, map_zero]
   exact ⟨fun x y => by rw [key x, key y]⟩
 
-omit [DiscreteTopology ι] in
 /-- A mapping torus over a fibre carrying the standard `A₂` toric cell labelling has no sixth
 integral singular homology.  This is the shape of the remaining Section 7 collar obligation: the
 labelling stops at degree four, so the fibre contributes nothing in degrees five and six. -/
 public theorem subsingleton_homology_six_finiteBouquetMappingTorus_of_labelledA2Cells
+    [DiscreteTopology ι]
     [Topology.CWComplex (Set.univ : Set F)]
     (e : ∀ n, Topology.CWComplex.cell (Set.univ : Set F) n ≃ cuspWCellIndex n)
     (φ : ι → F ≃ₜ F) :
