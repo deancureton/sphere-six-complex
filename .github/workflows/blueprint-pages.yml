@@ -23,10 +23,31 @@ jobs:
         run: |
           curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y
           echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
-      - name: Build formalization
+      - name: Prepare Lean dependency caches
         run: |
           lake exe cache get
-          lake build
+          (cd blueprint && lake exe cache get)
+      - name: Restore incremental Lean build cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            .lake/build
+            .lake/packages/TauCeti/.lake/build
+            .lake/packages/JordanCurveTheorem/HOLLight-Lean/.lake/build
+            blueprint/.lake/build
+            blueprint/.lake/packages/VersoBlueprint/.lake/build
+            blueprint/.lake/packages/verso/.lake/build
+            blueprint/.lake/packages/verso-slides/.lake/build
+            blueprint/.lake/packages/illuminate/.lake/build
+            blueprint/.lake/packages/MD4Lean/.lake/build
+            blueprint/.lake/packages/subverso/.lake/build
+            blueprint/.lake/packages/TauCeti/.lake/build
+            blueprint/.lake/packages/JordanCurveTheorem/HOLLight-Lean/.lake/build
+          key: lean-build-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'blueprint/lean-toolchain', 'blueprint/lake-manifest.json') }}-${{ github.sha }}
+          restore-keys: |
+            lean-build-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'blueprint/lean-toolchain', 'blueprint/lake-manifest.json') }}-
+      - name: Build formalization
+        run: lake build
       - name: Check import coverage
         run: ./scripts/check-imports.py
       - name: Check for stray proof placeholders
@@ -35,6 +56,8 @@ jobs:
         run: CHECK_AXIOMS_SKIP_BUILD=1 ./scripts/check-axioms.sh
       - name: Build Blueprint site
         working-directory: blueprint
+        env:
+          BLUEPRINT_SKIP_CACHE_GET: "1"
         run: ./scripts/ci-pages.sh
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v5
