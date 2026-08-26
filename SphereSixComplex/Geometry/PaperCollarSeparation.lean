@@ -20,7 +20,7 @@ open EllipticWholeFiberCompactCover EllipticPuncturedCollarGaugeHomeomorph
 open EllipticVaryingFamilyQuotient EllipticAffineGlobalSeparation
 open EllipticLinearCollarGlobalDescent StandardInfiniteA2ToricModel
 open StandardInfiniteA2ToricQuantitativeRegions.BoundedPolydiscRegions
-open CuspPuncturedCollarBridge EstablishedFuchsianCuspNeighborhood
+open CuspPeriodExpansion CuspPuncturedCollarBridge EstablishedFuchsianCuspNeighborhood
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 open SphereSixComplex.TriangleGroup.FuchsianProperFreeness
 
@@ -29,6 +29,19 @@ noncomputable section
 namespace PaperAnalyticData
 
 variable (A : PaperAnalyticData)
+
+private theorem eventually_upperHalfPlaneAtInfinity_iff
+    {P : UpperHalfPlane → Prop} :
+    (∀ᶠ z in upperHalfPlaneAtInfinity, P z) ↔
+      ∃ H : ℝ, ∀ z : UpperHalfPlane, H ≤ z.im → P z := by
+  change {z | P z} ∈ Filter.comap UpperHalfPlane.im Filter.atTop ↔ _
+  rw [(Filter.atTop_basis.comap UpperHalfPlane.im).mem_iff]
+  simp only [true_and]
+  constructor
+  · rintro ⟨H, hH⟩
+    exact ⟨H, fun z hz ↦ hH hz⟩
+  · rintro ⟨H, hH⟩
+    exact ⟨H, fun z hz ↦ hH z hz⟩
 
 /-- Equality in the punctured global family forces the corresponding regular source points to
 lie in one triangle-group orbit. -/
@@ -85,10 +98,228 @@ public theorem orderFourCollarToRegular_base
   Classical.choice (exists_actualLocalCuspQuotientWitness A.cuspCoordinate A.toricModel
     A.toricModel.toTorusActionPreservesComponents)
 
-/-- The common-radius cusp witness, after imposing precise Fuchsian separation. -/
+/-- The fixed exact modular uniformization used to control the paper cusp collar. -/
+@[expose] public noncomputable def actualNormalizedModularJUniformization
+    (_A : PaperAnalyticData) : ExactNormalizedModularJUniformization :=
+  Classical.choice establishedExactNormalizedModularJUniformization
+
+/-- Analytic facts retained by the quantitative choice of the actual cusp collar. -/
+public structure ActualCuspCoordinateControl
+    (W : ActualPuncturedCuspCollarWitness A.cuspCoordinate A.toricModel) : Prop where
+  coordinate_exterior : ∀ s : ℂ, s ∈ cuspHalfPlane A.cuspCoordinate.height →
+    ‖cuspQ s‖ < W.localWitness.radius →
+      2 < ‖A.modular.sourceCoordinate.coordinate (A.cuspCoordinate.lift s)‖
+  radius_le_cuspUnitRadius :
+    W.localWitness.radius ≤ A.actualNormalizedModularJUniformization.cusp.cuspRadius
+  cuspUnit_ne : ∀ q : ℂ, ‖q‖ < W.localWitness.radius →
+    A.actualNormalizedModularJUniformization.cusp.cuspUnit q ≠ 0
+  cuspProduct_norm_lt_half : ∀ q : ℂ, ‖q‖ < W.localWitness.radius →
+    ‖q * A.actualNormalizedModularJUniformization.cusp.cuspUnit q‖ < (1 / 2 : ℝ)
+  reciprocal_factorization : ∀ s : ℂ,
+    s ∈ cuspHalfPlane A.cuspCoordinate.height →
+    ‖cuspQ s‖ < W.localWitness.radius →
+      (A.modular.sourceCoordinate.coordinate (A.cuspCoordinate.lift s))⁻¹ =
+        cuspQ s * A.actualNormalizedModularJUniformization.cusp.cuspUnit (cuspQ s)
+
+/-- A common-radius cusp witness chosen far enough into the cusp that its quotient coordinate is
+uniformly exterior and its exact reciprocal factorization holds throughout the collar. -/
+public theorem exists_actualPuncturedCuspWitness_coordinate_exterior :
+    ∃ W : ActualPuncturedCuspCollarWitness A.cuspCoordinate A.toricModel,
+      A.ActualCuspCoordinateControl W := by
+  let J : ExactNormalizedModularJUniformization :=
+    A.actualNormalizedModularJUniformization
+  obtain ⟨H, hH⟩ :=
+    (eventually_upperHalfPlaneAtInfinity_iff (P := fun z ↦
+      (normalizedModularJCoordinate z)⁻¹ =
+          modularCuspQ z * J.cusp.cuspUnit (modularCuspQ z) ∧
+        normalizedModularJCoordinate z ≠ 0)).mp
+      (J.cusp.reciprocal_factorization.and
+        J.cusp.coordinate_eventually_ne_zero)
+  let M : ℝ := ‖J.cusp.cuspUnit 0‖ + 1
+  have hM : 0 < M := by
+    dsimp [M]
+    positivity
+  have hunitContinuous : ContinuousAt J.cusp.cuspUnit 0 :=
+    (J.cusp.cuspUnit_holomorphic 0
+      (by simpa using J.cusp.cuspRadius_pos)).continuousAt
+  have hunitEventually : ∀ᶠ q in nhds (0 : ℂ), ‖J.cusp.cuspUnit q‖ < M :=
+    hunitContinuous.norm.eventually
+      (gt_mem_nhds (by dsimp [M]; linarith))
+  have hunitNeEventually : ∀ᶠ q in nhds (0 : ℂ), J.cusp.cuspUnit q ≠ 0 :=
+    hunitContinuous.eventually_ne J.cusp.cuspUnit_zero_ne
+  obtain ⟨δ, hδ, hδunit⟩ :=
+    Metric.mem_nhds_iff.mp (hunitEventually.and hunitNeEventually)
+  let r : ℝ := min A.actualLocalCuspWitness.radius
+    (min δ (min J.cusp.cuspRadius (min (cuspRadius H) (1 / (2 * M)))))
+  have hr : 0 < r := by
+    dsimp [r]
+    exact lt_min A.actualLocalCuspWitness.radius_pos
+      (lt_min hδ (lt_min J.cusp.cuspRadius_pos
+        (lt_min (cuspRadius_pos H) (by positivity))))
+  have hrLocal : r ≤ A.actualLocalCuspWitness.radius := min_le_left _ _
+  let W₀ := restrictActualLocalCuspQuotientWitness
+    A.actualLocalCuspWitness r hr hrLocal
+  obtain ⟨S⟩ := EstablishedFuchsianCuspNeighborhood.Established.data
+    A.cuspCoordinate W₀.radius W₀.radius_pos
+  let W₁ := restrictActualLocalCuspQuotientWitness
+    W₀ S.radius S.radius_pos S.radius_le_upper
+  let W : ActualPuncturedCuspCollarWitness A.cuspCoordinate A.toricModel :=
+    ⟨W₁, S.region_open, S.region_regular, S.orbitClosure_region_regular,
+      S.translates_meet_only_parabolic⟩
+  refine ⟨W, ?_⟩
+  have hWr : W.localWitness.radius ≤ r := S.radius_le_upper
+  have hWJ : W.localWitness.radius ≤ J.cusp.cuspRadius :=
+    hWr.trans ((min_le_right _ _).trans ((min_le_right _ _).trans (min_le_left _ _)))
+  have hWunit : ∀ q : ℂ, ‖q‖ < W.localWitness.radius → J.cusp.cuspUnit q ≠ 0 := by
+    intro q hq
+    apply (hδunit ?_).2
+    rw [Metric.mem_ball, dist_zero_right]
+    exact hq.trans_le (hWr.trans ((min_le_right _ _).trans (min_le_left _ _)))
+  have hWproduct : ∀ q : ℂ, ‖q‖ < W.localWitness.radius →
+      ‖q * J.cusp.cuspUnit q‖ < (1 / 2 : ℝ) := by
+    intro q hq
+    by_cases hq0 : q = 0
+    · simp [hq0]
+    have hqr : ‖q‖ < r := hq.trans_le hWr
+    have hqδ : q ∈ Metric.ball (0 : ℂ) δ := by
+      rw [Metric.mem_ball, dist_zero_right]
+      exact hqr.trans_le ((min_le_right _ _).trans (min_le_left _ _))
+    have hunit : ‖J.cusp.cuspUnit q‖ < M := (hδunit hqδ).1
+    have hqsmall : ‖q‖ < 1 / (2 * M) :=
+      hqr.trans_le ((min_le_right _ _).trans
+        ((min_le_right _ _).trans ((min_le_right _ _).trans (min_le_right _ _))))
+    rw [norm_mul]
+    calc
+      ‖q‖ * ‖J.cusp.cuspUnit q‖ < ‖q‖ * M :=
+        mul_lt_mul_of_pos_left hunit (norm_pos_iff.mpr hq0)
+      _ < (1 / (2 * M)) * M := mul_lt_mul_of_pos_right hqsmall hM
+      _ = 1 / 2 := by field_simp
+  refine ⟨?_, hWJ, hWunit, hWproduct, ?_⟩
+  · intro s hs hq
+    have hqr : ‖cuspQ s‖ < r := hq.trans_le hWr
+    have hqδ : cuspQ s ∈ Metric.ball (0 : ℂ) δ := by
+      rw [Metric.mem_ball, dist_zero_right]
+      exact hqr.trans_le ((min_le_right _ _).trans (min_le_left _ _))
+    have hunit : ‖J.cusp.cuspUnit (cuspQ s)‖ < M := (hδunit hqδ).1
+    have hqsmall : ‖cuspQ s‖ < 1 / (2 * M) :=
+      hqr.trans_le ((min_le_right _ _).trans
+        ((min_le_right _ _).trans ((min_le_right _ _).trans (min_le_right _ _))))
+    have himH : H ≤ s.im := by
+      have hsH : s ∈ cuspHalfPlane H :=
+        mem_cuspHalfPlane_of_norm_cuspQ_lt
+          ((min_le_right _ _).trans ((min_le_right _ _).trans
+            ((min_le_right _ _).trans (min_le_left _ _)))) hqr
+      exact le_of_lt hsH
+    let z : UpperHalfPlane := A.periods.tau (A.cuspCoordinate.lift s)
+    have hzcoe : (z : ℂ) = s := A.cuspCoordinate.lift_tau s hs
+    have hzH : H ≤ z.im := by
+      change H ≤ (z : ℂ).im
+      rw [hzcoe]
+      exact himH
+    have hfactor := (hH z hzH).1
+    have hcoordNe := (hH z hzH).2
+    have hqeq : modularCuspQ z = cuspQ s := by
+      unfold modularCuspQ cuspQ Function.Periodic.qParam
+      rw [hzcoe]
+      congr 1
+      norm_num
+    rw [hqeq] at hfactor
+    have hproduct : ‖cuspQ s * J.cusp.cuspUnit (cuspQ s)‖ < (1 / 2 : ℝ) := by
+      rw [norm_mul]
+      calc
+        ‖cuspQ s‖ * ‖J.cusp.cuspUnit (cuspQ s)‖ < ‖cuspQ s‖ * M :=
+          mul_lt_mul_of_pos_left hunit (norm_pos_iff.mpr (Complex.exp_ne_zero _))
+        _ < (1 / (2 * M)) * M := mul_lt_mul_of_pos_right hqsmall hM
+        _ = 1 / 2 := by field_simp
+    have hinv : ‖(normalizedModularJCoordinate z)⁻¹‖ < (1 / 2 : ℝ) := by
+      rw [hfactor]
+      exact hproduct
+    have hnormPos : 0 < ‖normalizedModularJCoordinate z‖ := norm_pos_iff.mpr hcoordNe
+    have hlarge : 2 < ‖normalizedModularJCoordinate z‖ := by
+      rw [norm_inv] at hinv
+      have h := (inv_lt_comm₀ hnormPos (by norm_num : (0 : ℝ) < 1 / 2)).mp hinv
+      norm_num at h
+      exact h
+    have hsource : A.modular.sourceCoordinate.coordinate (A.cuspCoordinate.lift s) =
+        normalizedModularJCoordinate z := by
+      have hperiod := A.periods.modular_equation (A.cuspCoordinate.lift s)
+      change normalizedJ z = 1728 *
+        A.modular.modularParameter.coordinate (A.cuspCoordinate.lift s) at hperiod
+      rw [A.modular.induced_coordinate] at hperiod
+      change _ = normalizedJ z / 1728
+      rw [hperiod]
+      ring
+    rw [hsource]
+    exact hlarge
+  · intro s hs hq
+    have hqr : ‖cuspQ s‖ < r := hq.trans_le hWr
+    have himH : H ≤ s.im := by
+      have hsH : s ∈ cuspHalfPlane H :=
+        mem_cuspHalfPlane_of_norm_cuspQ_lt
+          ((min_le_right _ _).trans ((min_le_right _ _).trans
+            ((min_le_right _ _).trans (min_le_left _ _)))) hqr
+      exact le_of_lt hsH
+    let z : UpperHalfPlane := A.periods.tau (A.cuspCoordinate.lift s)
+    have hzcoe : (z : ℂ) = s := A.cuspCoordinate.lift_tau s hs
+    have hzH : H ≤ z.im := by
+      change H ≤ (z : ℂ).im
+      rw [hzcoe]
+      exact himH
+    have hfactor := (hH z hzH).1
+    have hqeq : modularCuspQ z = cuspQ s := by
+      unfold modularCuspQ cuspQ Function.Periodic.qParam
+      rw [hzcoe]
+      congr 1
+      norm_num
+    rw [hqeq] at hfactor
+    have hsource : A.modular.sourceCoordinate.coordinate (A.cuspCoordinate.lift s) =
+        normalizedModularJCoordinate z := by
+      have hperiod := A.periods.modular_equation (A.cuspCoordinate.lift s)
+      change normalizedJ z = 1728 *
+        A.modular.modularParameter.coordinate (A.cuspCoordinate.lift s) at hperiod
+      rw [A.modular.induced_coordinate] at hperiod
+      change _ = normalizedJ z / 1728
+      rw [hperiod]
+      ring
+    rw [hsource]
+    exact hfactor
+
+/-- The quantitatively normalized common-radius cusp witness used by the paper star. -/
 @[expose] public noncomputable def actualPuncturedCuspWitness :
     ActualPuncturedCuspCollarWitness A.cuspCoordinate A.toricModel :=
-  Classical.choice (exists_actualPuncturedCuspCollarWitness A.actualLocalCuspWitness)
+  Classical.choose A.exists_actualPuncturedCuspWitness_coordinate_exterior
+
+public theorem actualPuncturedCuspWitness_coordinate_exterior
+    (s : ℂ) (hs : s ∈ cuspHalfPlane A.cuspCoordinate.height)
+    (hq : ‖cuspQ s‖ < A.actualPuncturedCuspWitness.localWitness.radius) :
+    2 < ‖A.modular.sourceCoordinate.coordinate (A.cuspCoordinate.lift s)‖ :=
+  (Classical.choose_spec A.exists_actualPuncturedCuspWitness_coordinate_exterior).coordinate_exterior
+    s hs hq
+
+public theorem actualPuncturedCuspWitness_radius_le_cuspUnitRadius :
+    A.actualPuncturedCuspWitness.localWitness.radius ≤
+      A.actualNormalizedModularJUniformization.cusp.cuspRadius :=
+  (Classical.choose_spec
+    A.exists_actualPuncturedCuspWitness_coordinate_exterior).radius_le_cuspUnitRadius
+
+public theorem actualPuncturedCuspWitness_cuspUnit_ne
+    (q : ℂ) (hq : ‖q‖ < A.actualPuncturedCuspWitness.localWitness.radius) :
+    A.actualNormalizedModularJUniformization.cusp.cuspUnit q ≠ 0 :=
+  (Classical.choose_spec A.exists_actualPuncturedCuspWitness_coordinate_exterior).cuspUnit_ne q hq
+
+public theorem actualPuncturedCuspWitness_cuspProduct_norm_lt_half
+    (q : ℂ) (hq : ‖q‖ < A.actualPuncturedCuspWitness.localWitness.radius) :
+    ‖q * A.actualNormalizedModularJUniformization.cusp.cuspUnit q‖ < (1 / 2 : ℝ) :=
+  (Classical.choose_spec
+    A.exists_actualPuncturedCuspWitness_coordinate_exterior).cuspProduct_norm_lt_half q hq
+
+public theorem actualPuncturedCuspWitness_reciprocal_factorization
+    (s : ℂ) (hs : s ∈ cuspHalfPlane A.cuspCoordinate.height)
+    (hq : ‖cuspQ s‖ < A.actualPuncturedCuspWitness.localWitness.radius) :
+    (A.modular.sourceCoordinate.coordinate (A.cuspCoordinate.lift s))⁻¹ =
+      cuspQ s * A.actualNormalizedModularJUniformization.cusp.cuspUnit (cuspQ s) :=
+  (Classical.choose_spec
+    A.exists_actualPuncturedCuspWitness_coordinate_exterior).reciprocal_factorization s hs hq
 
 /-- Simultaneously shrunk elliptic radii, separated from one another and from the cusp orbit. -/
 public structure CollarSeparationData
