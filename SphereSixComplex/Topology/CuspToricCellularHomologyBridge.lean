@@ -1,5 +1,6 @@
 module
 
+public import SphereSixComplex.Topology.CellularChainModel
 public import SphereSixComplex.Topology.CuspToricCellularAlgebra
 public import Mathlib.Algebra.Homology.ShortComplex.Ab
 
@@ -115,26 +116,6 @@ public noncomputable def cuspToricCellularChainComplex_homologyFourEquiv :
         ((ComplexShape.down ℕ).next_eq' (ComplexShape.down_mk 4 3 (by omega))))).trans
       h.left.homologyIso).addCommGroupIsoToAddEquiv.trans
       cuspToricCellularDegreeFourEquiv
-
-/-- The standard integral cellular chain complex of a CW complex, with one free generator for
-each open cell and a comparison map to singular chains. -/
-public structure IntegralCWCellularChainModel
-    (Y : Type) [TopologicalSpace Y] [Topology.CWComplex (Set.univ : Set Y)] where
-  chainComplex : ChainComplex AddCommGrpCat ℕ
-  cellBasis : ∀ n,
-    (Topology.CWComplex.cell (Set.univ : Set Y) n →₀ ℤ) ≃+ chainComplex.X n
-  comparison : chainComplex ⟶ IntegralSingularChainComplex Y
-  comparison_homology_isIso : ∀ n, IsIso (chainComplex.homologyMap comparison n)
-
-namespace EstablishedCellularHomology
-
-/-- Cellular chains of a CW complex are naturally quasi-isomorphic to singular chains.  Mathlib
-does not currently construct the cellular boundary or this comparison map. -/
-public axiom integralCWCellularChainModel
-    (Y : Type) [TopologicalSpace Y] [Topology.CWComplex (Set.univ : Set Y)] :
-    IntegralCWCellularChainModel Y
-
-end EstablishedCellularHomology
 
 public theorem cuspWCellIndexFinite (n : ℕ) : Finite (cuspWCellIndex n) := by
   rcases n with (_ | _ | _ | _ | _ | n)
