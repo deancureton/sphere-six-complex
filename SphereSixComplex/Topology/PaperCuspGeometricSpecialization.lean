@@ -41,6 +41,13 @@ public structure ActualCuspRadialClutchingData
       OpenRadialInterval W.localWitness.radius × CircleMappingTorus clutching
   monodromyCoordinates : let _ := fiberTopology
     CuspMonodromyCoordinates clutching
+  /-- The fibre named in this structure's summary, recorded rather than left implicit: it is the
+  additive four-torus of a full-rank period parameter.  The same three fields appear on
+  `AdditiveFourTorusBundleRealization`, which records the identification for the bundle picture. -/
+  fiberParameter : SphereSixComplex.Periods.Parameters
+  fiberFullRank : SphereSixComplex.Geometry.ComplexTorus.FullRank fiberParameter
+  fiberHomeomorph : let _ := fiberTopology
+    Fiber ≃ₜ SphereSixComplex.Geometry.EllipticFamilySpecialization.AdditiveTorus fiberParameter
 
 namespace EstablishedActualCuspRadialClutching
 
