@@ -48,13 +48,38 @@ def imports_of(path: str) -> set[str]:
     return found
 
 
+NAMESPACE_RE = re.compile(r"^\s*namespace\s+([\w.'\u2080-\u2089]+)")
+SECTION_RE = re.compile(r"^\s*(?:@\[[^\]]*\]\s*)?(?:public\s+|noncomputable\s+)*section\b")
+END_RE = re.compile(r"^\s*end\b\s*([\w.'\u2080-\u2089]*)")
+
+
 def axioms_of(path: str) -> list[tuple[int, str]]:
+    """Axioms of one module, fully qualified.
+
+    `#print axioms` reports qualified names, so the enclosing `namespace` blocks have to be
+    tracked to compare against it.  Anonymous `section`s are pushed too: they take a bare `end`,
+    which would otherwise pop a namespace that is still open.
+    """
     found = []
+    scopes: list[str | None] = []
     with open(os.path.join(ROOT, path), encoding="utf-8") as handle:
         for number, line in enumerate(handle, start=1):
+            namespace = NAMESPACE_RE.match(line)
+            if namespace:
+                scopes.append(namespace.group(1))
+                continue
+            if SECTION_RE.match(line):
+                scopes.append(None)
+                continue
+            if END_RE.match(line):
+                if scopes:
+                    scopes.pop()
+                continue
             match = AXIOM_RE.match(line)
             if match:
-                found.append((number, match.group(1)))
+                prefix = ".".join(scope for scope in scopes if scope is not None)
+                name = match.group(1)
+                found.append((number, f"{prefix}.{name}" if prefix else name))
     return found
 
 
