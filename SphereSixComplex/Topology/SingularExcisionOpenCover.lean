@@ -45,8 +45,10 @@ public theorem coverSmallChainApproximation_of_openCover
   coverSmallChainApproximation_of_eventuallySmall X U
     (coverSmallAffineSubdivisionEventuallySmall_of_openCover X U hUopen hUcover)
 
-/-- An open cover supplies explicit smallification data by selecting the inverse and homotopies
-from its small-chain homotopy equivalence. -/
+/-- An open cover supplies explicit smallification data by selecting
+`coverSmallChainHomotopyEquiv`, taking its inverse as `smallify`, and transporting its two
+homotopies along `coverSmallChainHomotopyEquiv_hom`, which identifies its forward map with the
+cover-small inclusion.  This is the converse of `CoverSmallChainRetractionData.toHomotopyEquiv`. -/
 public noncomputable def coverSmallChainRetractionData_of_openCover
     (hUopen : ∀ i, IsOpen (U i)) (hUcover : ⋃ i, U i = Set.univ) :
     CoverSmallChainRetractionData X U := by

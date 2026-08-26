@@ -41,8 +41,9 @@ public def sectionSevenLerayAlgebraicDualityNegOne :
       chosenLerayDifferential, twistObstruction, Matrix.mulVec, dotProduct,
       Fin.sum_univ_succ]
 
-/-- The general open-cover smallification theorem in the interface used by the Section 7
-reduction. -/
+/-- Open-cover smallification data in the interface used by the Section 7 reduction.  Formerly an
+axiom, this is now a thin wrapper around `coverSmallChainRetractionData_of_openCover`; the
+established name is retained so existing consumers remain unchanged. -/
 public noncomputable def establishedOpenCoverSmallChainRetractionData
     {ι X : Type} [TopologicalSpace X] (U : ι → Set X)
     (hOpen : ∀ i, IsOpen (U i)) (hCover : ⋃ i, U i = Set.univ) :
