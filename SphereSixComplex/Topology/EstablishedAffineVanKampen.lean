@@ -184,6 +184,109 @@ public theorem establishedQuotientCoverFundamentalGroupNaturality
   exact (monodromy_naturality hp.isCoveringMap hq.isCoveringMap D.lift D.baseMap D.commutes
     e γ).symm
 
+/-- A bijective equivariant deck comparison gives the corresponding equivalence of the two
+based fundamental groups. -/
+public noncomputable def quotientCoverFundamentalGroupEquiv
+    {E E' X X' G H : Type*}
+    [TopologicalSpace E] [TopologicalSpace E'] [TopologicalSpace X] [TopologicalSpace X']
+    [Group G] [Group H] [MulAction G E] [MulAction H E']
+    [SimplyConnectedSpace E] [SimplyConnectedSpace E']
+    {p : C(E, X)} {q : C(E', X')}
+    (hp : IsQuotientCoveringMap p G) (hq : IsQuotientCoveringMap q H)
+    (D : QuotientCoverMapData (G := G) (H := H) p q)
+    (hdeck : Function.Bijective D.deckMap) (e : E) :
+    FundamentalGroup X (p e) ≃* FundamentalGroup X' (q (D.lift e)) :=
+  (hp.fundamentalGroupEquiv ⟨e, rfl⟩).trans <|
+    (MulEquiv.op (MulEquiv.ofBijective D.deckMap hdeck)).trans <|
+      (hq.fundamentalGroupEquiv ⟨D.lift e, rfl⟩).symm
+
+/-- The fundamental-group equivalence obtained from a bijective equivariant cover comparison is
+exactly the map induced by the comparison on the quotient bases. -/
+public theorem quotientCoverFundamentalGroupEquiv_apply
+    {E E' X X' G H : Type*}
+    [TopologicalSpace E] [TopologicalSpace E'] [TopologicalSpace X] [TopologicalSpace X']
+    [Group G] [Group H] [MulAction G E] [MulAction H E']
+    [SimplyConnectedSpace E] [SimplyConnectedSpace E']
+    {p : C(E, X)} {q : C(E', X')}
+    (hp : IsQuotientCoveringMap p G) (hq : IsQuotientCoveringMap q H)
+    (D : QuotientCoverMapData (G := G) (H := H) p q)
+    (hdeck : Function.Bijective D.deckMap) (e : E)
+    (γ : FundamentalGroup X (p e)) :
+    quotientCoverFundamentalGroupEquiv hp hq D hdeck e γ =
+      FundamentalGroup.mapOfEq D.baseMap (D.commutes e) γ := by
+  have h := congrArg (hq.fundamentalGroupEquiv ⟨D.lift e, rfl⟩).symm
+    (establishedQuotientCoverFundamentalGroupNaturality hp hq D e γ)
+  simpa [quotientCoverFundamentalGroupEquiv] using h
+
+/-- A based map between the quotient bases of two simply connected regular covers has a
+canonical equivariant lift.  The deck homomorphism is obtained from the induced map on
+fundamental groups, so no independent generator-identification hypothesis is needed. -/
+public noncomputable def quotientCoverMapDataOfBaseMap
+    {E E' X X' G H : Type*}
+    [TopologicalSpace E] [TopologicalSpace E'] [TopologicalSpace X] [TopologicalSpace X']
+    [Group G] [Group H] [MulAction G E] [MulAction H E']
+    [SimplyConnectedSpace E] [SimplyConnectedSpace E']
+    [LocallyPathConnectedSpace E]
+    {p : C(E, X)} {q : C(E', X')}
+    (hp : IsQuotientCoveringMap p G) (hq : IsQuotientCoveringMap q H)
+    (baseMap : C(X, X')) (e : E) (e' : E')
+    (he : q e' = baseMap (p e)) : QuotientCoverMapData (G := G) (H := H) p q := by
+  let liftExists := hq.isCoveringMap.existsUnique_continuousMap_lifts
+    (baseMap.comp p) e e' he
+  let lift : C(E, E') := liftExists.choose
+  have lift_base : lift e = e' := liftExists.choose_spec.1.1
+  have lift_projects : q ∘ lift = baseMap.comp p := liftExists.choose_spec.1.2
+  have commutes : ∀ z, baseMap (p z) = q (lift z) := by
+    intro z
+    exact congrFun lift_projects z |>.symm
+  let deckMap : G →* H := MonoidHom.unop
+    ((hq.fundamentalGroupEquiv ⟨lift e, rfl⟩).toMonoidHom.comp
+      ((FundamentalGroup.mapOfEq baseMap (commutes e)).comp
+        (hp.fundamentalGroupEquiv ⟨e, rfl⟩).symm.toMonoidHom))
+  refine
+    { deckMap := deckMap
+      lift := lift
+      baseMap := baseMap
+      commutes := commutes
+      equivariant := ?_ }
+  intro g z
+  have hbase : lift (g • e) = deckMap g • lift e := by
+    let γ : FundamentalGroup X (p e) :=
+      (hp.fundamentalGroupEquiv ⟨e, rfl⟩).symm (MulOpposite.op g)
+    let δ : FundamentalGroup X' (q (lift e)) :=
+      FundamentalGroup.mapOfEq baseMap (commutes e) γ
+    have hsource : g • e = (hp.isCoveringMap.monodromy γ ⟨e, rfl⟩ : E) := by
+      have hγ : hp.fundamentalGroupEquiv ⟨e, rfl⟩ γ = MulOpposite.op g := by
+        exact (hp.fundamentalGroupEquiv ⟨e, rfl⟩).apply_symm_apply _
+      rw [show g = (hp.fundamentalGroupEquiv ⟨e, rfl⟩ γ).unop by
+        rw [hγ]
+        rfl]
+      exact hp.unop_fundamentalGroupToMulOpposite_smul
+    have htarget :
+        deckMap g • lift e =
+          (hq.isCoveringMap.monodromy δ ⟨lift e, rfl⟩ : E') := by
+      change (hq.fundamentalGroupEquiv ⟨lift e, rfl⟩ δ).unop • lift e = _
+      exact hq.unop_fundamentalGroupToMulOpposite_smul
+    calc
+      lift (g • e) =
+          lift (hp.isCoveringMap.monodromy γ ⟨e, rfl⟩ : E) :=
+        congrArg lift hsource
+      _ = (hq.isCoveringMap.monodromy δ ⟨lift e, rfl⟩ : E') :=
+        (monodromy_naturality hp.isCoveringMap hq.isCoveringMap lift baseMap commutes
+          e γ).symm
+      _ = deckMap g • lift e := htarget.symm
+  have hcomp :
+      q ∘ (fun w ↦ lift (g • w)) =
+        q ∘ (fun w ↦ deckMap g • lift w) := by
+    funext w
+    rw [Function.comp_apply, Function.comp_apply, ← commutes, hq.map_smul,
+      ← commutes, hp.map_smul]
+  have hlifts := hq.isCoveringMap.eq_of_comp_eq
+    (lift.continuous.comp (hp.continuous_const_smul g))
+    ((hq.continuous_const_smul (deckMap g)).comp lift.continuous)
+    hcomp e hbase
+  exact congrFun hlifts z
+
 /-! ## Algebraic output of an affine torus core -/
 
 /-- The based fundamental-group presentation of an affine torus bundle over a bouquet of two
