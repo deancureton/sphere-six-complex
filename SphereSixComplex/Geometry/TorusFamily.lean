@@ -120,7 +120,7 @@ public abbrev TotalSpace (x : B → PeriodDomain) :=
   OrbitQuotient (M := B × ComplexTwoSpace) (G := FamilyPeriodGroup x)
 
 /-- The quotient projection from the trivial vector bundle to the torus family. -/
-public def projection (x : B → PeriodDomain) :
+@[expose] public def projection (x : B → PeriodDomain) :
     B × ComplexTwoSpace → TotalSpace x :=
   quotientProjection
 

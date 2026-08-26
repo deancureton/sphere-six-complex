@@ -163,6 +163,15 @@ public theorem regularDeckMap_contMDiff
     rfl
   exact hbase.prodMk hfiber
 
+/-- Every regular deck transformation is continuous on the vector-bundle cover.  This
+topological form is convenient when transporting explicit paths by a named deck element. -/
+public theorem regularDeckMap_continuous
+    (F : PeriodFunctions U) (hproper : SourceActionProperlyDiscontinuous (U := U))
+    (g : Delta) :
+    Continuous (regularDeckMap F g) := by
+  let _ := regularBaseChartedSpace hproper
+  exact (regularDeckMap_contMDiff F hproper g).continuous
+
 end
 
 end SphereSixComplex.Geometry.GlobalTorusFamily

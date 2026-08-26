@@ -1531,6 +1531,14 @@ public noncomputable def toLerayCechIdentification
         h.localModels) |>.trans
           h.cechNerveChainIdentification.homotopyEquiv
 
+/-- The explicit local models, transferred contraction, and Čech-nerve identification supply the
+small-chain comparison stored by `PaperGluingData`. -/
+public noncomputable def toFourPieceSmallChainComparison
+    {A : FourPieceStarGluingData} (h : SectionSevenPaperCoverIdentification A) :
+    SectionSevenFourPieceSmallChainComparison (GluedSpace A.glueData)
+      (sectionSevenStarOpenCover A) :=
+  h.toLerayCechIdentification.toFourPieceSmallChainComparison
+
 end SectionSevenPaperCoverIdentification
 
 end SphereSixComplex

@@ -48,6 +48,64 @@ variable {U : TriangleUniformization} (F : PeriodFunctions U)
     (p : UpperHalfPlane × ComplexTwoSpace) : UpperHalfPlane × ComplexTwoSpace :=
   (p.1, s p.1 + p.2)
 
+/-- Translation by a base-dependent vector section as an equivalence of the vector-bundle
+cover, before taking the varying period-lattice quotient. -/
+@[expose] public def familyTranslationCoverEquiv
+    (s : UpperHalfPlane → ComplexTwoSpace) :
+    Equiv.Perm (UpperHalfPlane × ComplexTwoSpace) where
+  toFun := familyTranslationCover s
+  invFun := familyTranslationCover (-s)
+  left_inv p := by
+    apply Prod.ext
+    · rfl
+    · simp [familyTranslationCover]
+  right_inv p := by
+    apply Prod.ext
+    · rfl
+    · simp [familyTranslationCover]
+
+@[simp]
+public theorem familyTranslationCoverEquiv_apply
+    (s : UpperHalfPlane → ComplexTwoSpace)
+    (p : UpperHalfPlane × ComplexTwoSpace) :
+    familyTranslationCoverEquiv s p = familyTranslationCover s p :=
+  rfl
+
+/-- Iteration on the vector-bundle cover records the actual accumulated translation rather than
+discarding it modulo the period lattice. -/
+public theorem familyTranslationCoverEquiv_pow_apply
+    (s : UpperHalfPlane → ComplexTwoSpace) (k : ℕ)
+    (p : UpperHalfPlane × ComplexTwoSpace) :
+    (familyTranslationCoverEquiv s ^ k) p =
+      (p.1, k • s p.1 + p.2) := by
+  induction k generalizing p with
+  | zero => simp
+  | succ k ih =>
+      rw [pow_succ, Equiv.Perm.mul_apply, familyTranslationCoverEquiv_apply]
+      change (familyTranslationCoverEquiv s ^ k)
+        (p.1, s p.1 + p.2) = _
+      rw [ih]
+      apply Prod.ext
+      · rfl
+      · change k • s p.1 + (s p.1 + p.2) = (k + 1) • s p.1 + p.2
+        simp only [add_nsmul, one_nsmul]
+        abel
+
+/-- Deck transport commutes with a cover translation whose section is transported naturally. -/
+public theorem deckEquiv_commutes_familyTranslationCoverEquiv
+    (g : Delta) (s : UpperHalfPlane → ComplexTwoSpace)
+    (hnatural : ∀ z, periodTransport g (parameterMap F z) (s z) =
+      s (U.sourceAction g • z)) :
+    Commute (deckEquiv F g) (familyTranslationCoverEquiv s) := by
+  apply Equiv.ext
+  intro p
+  apply Prod.ext
+  · rfl
+  · change periodTransport g (parameterMap F p.1) (s p.1 + p.2) =
+      s (U.sourceAction g • p.1) +
+        periodTransport g (parameterMap F p.1) p.2
+    rw [map_add, hnatural]
+
 /-- A fibrewise translation preserves the varying period-lattice orbit relation. -/
 public theorem familyTranslationCover_orbitRel
     (s : UpperHalfPlane → ComplexTwoSpace)
@@ -278,6 +336,94 @@ public theorem periodTransport_orderFourTwistSection (z : UpperHalfPlane) :
       (parameterMap F z).tau_ne_zero (-epsilon')]
   congr 2
   rw [a₂_apply, Matrix.mulVec_neg, A₂_epsilon']
+
+/-- The order-three affine generator lifted all the way to the vector-bundle cover.  Unlike the
+descended finite cyclic action, its third power retains the accumulated integral period. -/
+@[expose] public noncomputable def orderThreeAffineFamilyCoverGenerator :
+    Equiv.Perm (UpperHalfPlane × ComplexTwoSpace) :=
+  familyTranslationCoverEquiv (orderThreeTwistSection F) * deckEquiv F g₁
+
+/-- The analogous order-four affine generator on the vector-bundle cover. -/
+@[expose] public noncomputable def orderFourAffineFamilyCoverGenerator :
+    Equiv.Perm (UpperHalfPlane × ComplexTwoSpace) :=
+  familyTranslationCoverEquiv (orderFourTwistSection F) * deckEquiv F g₂
+
+@[simp]
+public theorem orderThreeAffineFamilyCoverGenerator_apply
+    (p : UpperHalfPlane × ComplexTwoSpace) :
+    orderThreeAffineFamilyCoverGenerator F p =
+      (U.sourceAction g₁ • p.1,
+        orderThreeTwistSection F (U.sourceAction g₁ • p.1) +
+          periodTransport g₁ (parameterMap F p.1) p.2) :=
+  rfl
+
+@[simp]
+public theorem orderFourAffineFamilyCoverGenerator_apply
+    (p : UpperHalfPlane × ComplexTwoSpace) :
+    orderFourAffineFamilyCoverGenerator F p =
+      (U.sourceAction g₂ • p.1,
+        orderFourTwistSection F (U.sourceAction g₂ • p.1) +
+          periodTransport g₂ (parameterMap F p.1) p.2) :=
+  rfl
+
+/-- The lifted order-three affine generator is continuous before quotienting by the period
+lattice. -/
+public theorem orderThreeAffineFamilyCoverGenerator_continuous :
+    Continuous (orderThreeAffineFamilyCoverGenerator F) := by
+  change Continuous (fun p =>
+    familyTranslationCover (orderThreeTwistSection F) (deckMap F g₁ p))
+  exact (familyTranslationCover_contMDiff
+      (orderThreeTwistSection F) (orderThreeTwistSection_contMDiff F 0)).continuous.comp
+    (deckMap_contMDiff F g₁ 0).continuous
+
+/-- The lifted order-four affine generator is likewise continuous. -/
+public theorem orderFourAffineFamilyCoverGenerator_continuous :
+    Continuous (orderFourAffineFamilyCoverGenerator F) := by
+  change Continuous (fun p =>
+    familyTranslationCover (orderFourTwistSection F) (deckMap F g₂ p))
+  exact (familyTranslationCover_contMDiff
+      (orderFourTwistSection F) (orderFourTwistSection_contMDiff F 0)).continuous.comp
+    (deckMap_contMDiff F g₂ 0).continuous
+
+/-- Three iterations of the lifted affine generator return to the original base and translate
+the fibre by the exact period vector `epsilon`.  This is the universal-cover endpoint behind the
+order-three van Kampen power relation. -/
+public theorem orderThreeAffineFamilyCoverGenerator_pow_apply
+    (p : UpperHalfPlane × ComplexTwoSpace) :
+    (orderThreeAffineFamilyCoverGenerator F ^ 3) p =
+      (p.1, periodVector (parameterMap F p.1).1 epsilon + p.2) := by
+  let T := familyTranslationCoverEquiv (orderThreeTwistSection F)
+  let D := deckEquiv F g₁
+  have hcomm : Commute T D :=
+    (deckEquiv_commutes_familyTranslationCoverEquiv F g₁
+      (orderThreeTwistSection F) (periodTransport_orderThreeTwistSection F)).symm
+  change ((T * D) ^ 3) p = _
+  rw [hcomm.mul_pow]
+  have hD : D ^ 3 = 1 := by
+    change ((deckRepresentation F) g₁) ^ 3 = 1
+    rw [← map_pow (deckRepresentation F) g₁, g₁_pow_three, map_one]
+  rw [hD, mul_one, familyTranslationCoverEquiv_pow_apply,
+    orderThreeTwistSection_nsmul]
+
+/-- Four iterations of the lifted affine generator return to the original base and translate
+the fibre by the exact period vector `-epsilon'`.  This is the universal-cover endpoint behind
+the order-four van Kampen power relation. -/
+public theorem orderFourAffineFamilyCoverGenerator_pow_apply
+    (p : UpperHalfPlane × ComplexTwoSpace) :
+    (orderFourAffineFamilyCoverGenerator F ^ 4) p =
+      (p.1, periodVector (parameterMap F p.1).1 (-epsilon') + p.2) := by
+  let T := familyTranslationCoverEquiv (orderFourTwistSection F)
+  let D := deckEquiv F g₂
+  have hcomm : Commute T D :=
+    (deckEquiv_commutes_familyTranslationCoverEquiv F g₂
+      (orderFourTwistSection F) (periodTransport_orderFourTwistSection F)).symm
+  change ((T * D) ^ 4) p = _
+  rw [hcomm.mul_pow]
+  have hD : D ^ 4 = 1 := by
+    change ((deckRepresentation F) g₂) ^ 4 = 1
+    rw [← map_pow (deckRepresentation F) g₂, g₂_pow_four, map_one]
+  rw [hD, mul_one, familyTranslationCoverEquiv_pow_apply,
+    orderFourTwistSection_nsmul]
 
 /-- A deck equivalence commutes with a fibre translation when its section is transported
 naturally. -/
@@ -907,6 +1053,62 @@ public theorem orderFourFamilyRadius_continuous :
   continuous_norm.comp
     (continuous_subtype_val.comp
       (orderFourCayleyHomeomorph.continuous.comp (familyTotalSpaceBase_continuous F)))
+
+/-- A closed order-three radial neighborhood strictly inside the Cayley disc is compact in the
+full varying-torus family. -/
+public theorem orderThreeFamilyRadius_le_isCompact
+    {r : ℝ} (hr : r < 1) :
+    IsCompact {q : TotalSpace (parameterMap F) | orderThreeFamilyRadius F q ≤ r} := by
+  have hbase : IsCompact
+      {z : UpperHalfPlane | ‖(orderThreeCayleyHomeomorph z).1‖ ≤ r} := by
+    rw [orderThreeCayleyHomeomorph.eq_def]
+    exact isCompact_cayleyClosedDisc fuchsianOneFixedPoint hr
+  have hpreimage := (familyTotalSpaceBase_isProperMap F).isCompact_preimage hbase
+  convert hpreimage using 1
+  ext q
+  simp only [Set.mem_ofPred_eq, Set.mem_preimage, orderThreeFamilyRadius.eq_def]
+
+/-- A closed order-four radial neighborhood strictly inside the Cayley disc is compact in the
+full varying-torus family. -/
+public theorem orderFourFamilyRadius_le_isCompact
+    {r : ℝ} (hr : r < 1) :
+    IsCompact {q : TotalSpace (parameterMap F) | orderFourFamilyRadius F q ≤ r} := by
+  have hbase : IsCompact
+      {z : UpperHalfPlane | ‖(orderFourCayleyHomeomorph z).1‖ ≤ r} := by
+    rw [orderFourCayleyHomeomorph.eq_def]
+    exact isCompact_cayleyClosedDisc fuchsianTwoFixedPoint hr
+  have hpreimage := (familyTotalSpaceBase_isProperMap F).isCompact_preimage hbase
+  convert hpreimage using 1
+  ext q
+  simp only [Set.mem_ofPred_eq, Set.mem_preimage, orderFourFamilyRadius.eq_def]
+
+/-- Closed order-three collar annuli are compact as long as their outer radius stays inside the
+unit Cayley disc. -/
+public theorem orderThreeFamilyClosedAnnulus_isCompact
+    (s : ℝ) {r : ℝ} (hr : r < 1) :
+    IsCompact {q : TotalSpace (parameterMap F) |
+      s ≤ orderThreeFamilyRadius F q ∧ orderThreeFamilyRadius F q ≤ r} := by
+  have hclosed : IsClosed {q : TotalSpace (parameterMap F) |
+      s ≤ orderThreeFamilyRadius F q} :=
+    isClosed_Ici.preimage (orderThreeFamilyRadius_continuous F)
+  have h := (orderThreeFamilyRadius_le_isCompact F hr).inter_right hclosed
+  convert h using 1
+  ext q
+  simp [and_comm]
+
+/-- Closed order-four collar annuli are compact as long as their outer radius stays inside the
+unit Cayley disc. -/
+public theorem orderFourFamilyClosedAnnulus_isCompact
+    (s : ℝ) {r : ℝ} (hr : r < 1) :
+    IsCompact {q : TotalSpace (parameterMap F) |
+      s ≤ orderFourFamilyRadius F q ∧ orderFourFamilyRadius F q ≤ r} := by
+  have hclosed : IsClosed {q : TotalSpace (parameterMap F) |
+      s ≤ orderFourFamilyRadius F q} :=
+    isClosed_Ici.preimage (orderFourFamilyRadius_continuous F)
+  have h := (orderFourFamilyRadius_le_isCompact F hr).inter_right hclosed
+  convert h using 1
+  ext q
+  simp [and_comm]
 
 public theorem orderThreeFamilyRadius_generator
     (hsource : U.sourceAction = fuchsianSourceAction)

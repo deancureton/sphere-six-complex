@@ -4,6 +4,7 @@ public import SphereSixComplex.Geometry.CuspFilling
 public import SphereSixComplex.ComplexStructure
 import Mathlib.Topology.Algebra.IsOpenUnits
 import Mathlib.Geometry.Manifold.Algebra.Structures
+import all Mathlib.Geometry.Manifold.LocalDiffeomorph
 
 /-!
 # The standard infinite `A₂` toric model
@@ -278,7 +279,37 @@ public theorem denseTorusComplexCoordinates_contMDiff :
       (modelWithCornersSelf ℂ ComplexModel) ∞ denseTorusComplexCoordinates :=
   contMDiff_isOpenEmbedding denseTorusComplexCoordinates_isOpenEmbedding
 
-private theorem denseTorus_coordinate_contMDiff (i : Fin 3) :
+/-- The standard dense-torus coordinate embedding is locally biholomorphic for the singleton
+atlas that it induces. -/
+public theorem denseTorusComplexCoordinates_isLocalDiffeomorph :
+    letI := denseTorusCharts
+    IsLocalDiffeomorph (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ComplexModel) ∞ denseTorusComplexCoordinates := by
+  let _ := denseTorusCharts
+  intro x
+  let e := denseTorusComplexCoordinates_isOpenEmbedding.toOpenPartialHomeomorph
+    denseTorusComplexCoordinates
+  let Φ : PartialDiffeomorph (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ComplexModel) DenseTorus ComplexModel ∞ :=
+    { toPartialEquiv := e.toPartialEquiv
+      open_source := e.open_source
+      open_target := e.open_target
+      contMDiffOn_toFun := denseTorusComplexCoordinates_contMDiff.contMDiffOn
+      contMDiffOn_invFun :=
+        by
+          simpa [e] using
+            (contMDiffOn_isOpenEmbedding_symm
+              (I := modelWithCornersSelf ℂ ComplexModel) (n := ∞)
+              denseTorusComplexCoordinates_isOpenEmbedding) }
+  have hx : x ∈ Φ.source := by
+    simp [Φ, e]
+  have hΦ := Φ.isLocalDiffeomorphAt
+    (modelWithCornersSelf ℂ ComplexModel) (modelWithCornersSelf ℂ ComplexModel) ∞ hx
+  have heq : (Φ : DenseTorus → ComplexModel) = denseTorusComplexCoordinates := by
+    rfl
+  rwa [heq] at hΦ
+
+public theorem denseTorus_coordinate_contMDiff (i : Fin 3) :
     letI := denseTorusCharts
     ContMDiff (modelWithCornersSelf ℂ ComplexModel) (modelWithCornersSelf ℂ ℂ) ∞
       (fun x : DenseTorus ↦ (x i : ℂ)) := by
@@ -298,6 +329,28 @@ private theorem denseTorus_coordinate_zpow_contMDiff (i : Fin 3) (m : ℤ) :
   exact hz.contDiffAt.contMDiffAt.comp x
     ((denseTorus_coordinate_contMDiff i).contMDiffAt)
 
+public theorem denseTorusMap_contMDiff_of_coordinates
+    (f : DenseTorus → DenseTorus) :
+    letI := denseTorusCharts
+    (∀ i, ContMDiff (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ℂ) ∞ (fun x ↦ (f x i : ℂ))) →
+    ContMDiff (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ComplexModel) ∞ f := by
+  let _ := denseTorusCharts
+  intro hf
+  apply ContMDiff.of_comp_isOpenEmbedding denseTorusComplexCoordinates_isOpenEmbedding
+  have hpi : ContMDiff (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ (Fin 3 → ℂ)) ∞
+      (fun x ↦ fun i ↦ (f x i : ℂ)) :=
+    contMDiff_pi_space.mpr hf
+  have htoLp : ContMDiff (modelWithCornersSelf ℂ (Fin 3 → ℂ))
+      (modelWithCornersSelf ℂ ComplexModel) ∞ (WithLp.toLp 2) :=
+    (PiLp.continuousLinearEquiv 2 ℂ (fun _ : Fin 3 ↦ ℂ)).symm.toDiffeomorph.contMDiff
+  have hmodel := htoLp.comp hpi
+  apply hmodel.congr
+  intro x
+  rfl
+
 /-- Every integral character of the dense algebraic torus is holomorphic. -/
 public theorem evaluateCharacter_contMDiff (m : FanLattice) :
     letI := denseTorusCharts
@@ -309,6 +362,46 @@ public theorem evaluateCharacter_contMDiff (m : FanLattice) :
     (fun i _ ↦ denseTorus_coordinate_zpow_contMDiff i (m i)) using 1
   funext x
   simp [evaluateCharacter]
+
+/-- The monomial change of dense-torus coordinates belonging to the lower `A₂` cone based at
+the origin. -/
+public def baseConeDenseTorusEquiv : DenseTorus ≃ DenseTorus where
+  toFun x := ![(x 0)⁻¹ * (x 1)⁻¹ * x 2, x 0, x 1]
+  invFun y := ![y 1, y 2, y 0 * y 1 * y 2]
+  left_inv x := by
+    funext i
+    fin_cases i <;> simp [mul_assoc, mul_comm, mul_left_comm]
+  right_inv y := by
+    funext i
+    fin_cases i <;> simp [mul_assoc, mul_comm, mul_left_comm]
+
+/-- The lower base-cone monomial coordinate change is a biholomorphism of the dense torus. -/
+public noncomputable def baseConeDenseTorusDiffeomorph :
+    letI := denseTorusCharts
+    DenseTorus ≃ₘ^∞⟮(modelWithCornersSelf ℂ ComplexModel),
+      (modelWithCornersSelf ℂ ComplexModel)⟯ DenseTorus := by
+  let _ := denseTorusCharts
+  refine
+    { toEquiv := baseConeDenseTorusEquiv
+      contMDiff_toFun := denseTorusMap_contMDiff_of_coordinates _ ?_
+      contMDiff_invFun := denseTorusMap_contMDiff_of_coordinates _ ?_ }
+  · intro i
+    convert evaluateCharacter_contMDiff (a2DualCharacter false 0 i) using 1
+    funext x
+    fin_cases i <;>
+      simp [baseConeDenseTorusEquiv, a2DualCharacter, evaluateCharacter,
+        Fin.prod_univ_succ, mul_assoc, mul_comm, mul_left_comm] <;> ac_rfl
+  · intro i
+    fin_cases i
+    · convert evaluateCharacter_contMDiff ![0, 1, 0] using 1
+      funext x
+      simp [baseConeDenseTorusEquiv, evaluateCharacter, Fin.prod_univ_succ]
+    · convert evaluateCharacter_contMDiff ![0, 0, 1] using 1
+      funext x
+      simp [baseConeDenseTorusEquiv, evaluateCharacter, Fin.prod_univ_succ]
+    · convert evaluateCharacter_contMDiff ![1, 1, 1] using 1
+      funext x
+      simp [baseConeDenseTorusEquiv, evaluateCharacter, Fin.prod_univ_succ, mul_assoc]
 
 /-- The standard character formulas prove holomorphicity of the dense-torus inclusion in every
 affine toric chart. -/
@@ -340,6 +433,72 @@ public theorem toricChart_comp_torusEmbedding_contMDiff
     simpa using (M.toricChart_torus_character upper v x i).symm
   rw [heq] at hmodel
   exact hmodel
+
+/-- In the lower base-cone chart, the dense-torus inclusion is the explicit monomial
+biholomorphism followed by the standard coordinate embedding. -/
+public theorem baseConeChart_comp_torusEmbedding
+    (M : Model) (x : DenseTorus) :
+    M.toricChart false 0 (M.torusEmbedding x) =
+      denseTorusComplexCoordinates (baseConeDenseTorusEquiv x) := by
+  apply PiLp.ext
+  intro i
+  rw [M.toricChart_torus_character]
+  fin_cases i <;>
+    simp [baseConeDenseTorusEquiv, denseTorusComplexCoordinates,
+      a2DualCharacter, evaluateCharacter, Fin.prod_univ_succ,
+      mul_assoc, mul_comm, mul_left_comm] <;> ac_rfl
+
+/-- The lower base-cone chart composed with the dense-torus inclusion is locally
+biholomorphic. -/
+public theorem baseConeChart_comp_torusEmbedding_isLocalDiffeomorph (M : Model) :
+    letI := denseTorusCharts
+    letI := M.topology
+    letI := M.charts
+    IsLocalDiffeomorph (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ComplexModel) ∞
+      (fun x : DenseTorus ↦ M.toricChart false 0 (M.torusEmbedding x)) := by
+  let _ := denseTorusCharts
+  let _ := M.topology
+  let _ := M.charts
+  let d := baseConeDenseTorusDiffeomorph
+  have hcomp : IsLocalDiffeomorph (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ComplexModel) ∞
+      (denseTorusComplexCoordinates ∘ d) := by
+    intro x
+    exact (d.isLocalDiffeomorph x).comp (modelWithCornersSelf ℂ ComplexModel)
+      ComplexModel (denseTorusComplexCoordinates_isLocalDiffeomorph (d x))
+  have heq : (denseTorusComplexCoordinates ∘ d) =
+      fun x : DenseTorus ↦ M.toricChart false 0 (M.torusEmbedding x) := by
+    funext x
+    exact (baseConeChart_comp_torusEmbedding M x).symm
+  rwa [heq] at hcomp
+
+/-- The dense algebraic torus is an open complex submanifold of the standard toric model. -/
+public theorem torusEmbedding_isLocalDiffeomorph (M : Model) :
+    letI := denseTorusCharts
+    letI := M.topology
+    letI := M.charts
+    IsLocalDiffeomorph (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ComplexModel) ∞ M.torusEmbedding := by
+  let _ := denseTorusCharts
+  let _ := M.topology
+  let _ := M.charts
+  intro x
+  let e := M.toricChart false 0
+  have hx : M.torusEmbedding x ∈ e.source := M.torus_mem_toricChart false 0 x
+  have htarget : e (M.torusEmbedding x) ∈ e.target := e.map_source hx
+  have hchart := baseConeChart_comp_torusEmbedding_isLocalDiffeomorph M x
+  have hinv := e.symm.isLocalDiffeomorphAt
+    (modelWithCornersSelf ℂ ComplexModel) (modelWithCornersSelf ℂ ComplexModel) ∞ htarget
+  have hcomp : IsLocalDiffeomorphAt (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ComplexModel) ∞
+      (e.symm ∘ fun y : DenseTorus ↦ e (M.torusEmbedding y)) x :=
+    hchart.comp (modelWithCornersSelf ℂ ComplexModel) M.Carrier hinv
+  have heq : (e.symm ∘ fun y : DenseTorus ↦ e (M.torusEmbedding y)) =
+      M.torusEmbedding := by
+    funext y
+    exact e.left_inv (M.torus_mem_toricChart false 0 y)
+  rwa [heq] at hcomp
 
 /-- The standard character formulas imply that the dense-torus inclusion is holomorphic; this
 is derived from the toric chart interface and is not an additional field of `Model`. -/

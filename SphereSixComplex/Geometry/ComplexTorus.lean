@@ -82,6 +82,13 @@ public noncomputable def FullRank.ofSetupInequalities (x : Parameters) (h : Setu
     rw [periodRealLinearEquiv_apply, periodRealLinear_eq_mulVec]
     rfl
 
+@[simp]
+public theorem FullRank.ofSetupInequalities_realEquiv_apply
+    (x : Parameters) (h : SetupInequalities x) (r : RealPeriods) :
+    (FullRank.ofSetupInequalities x h).realEquiv r = periodRealLinear x r := by
+  change periodRealLinearEquiv x h r = periodRealLinear x r
+  exact periodRealLinearEquiv_apply x h r
+
 /-- The standard integral lattice in `ℝ⁴` escapes every compact set. -/
 public theorem integerToReal_tendsto_cofinite_cocompact :
     Tendsto integerToReal cofinite (cocompact RealPeriods) := by
@@ -174,7 +181,7 @@ public abbrev Torus (x : Parameters) :=
   SphereSixComplex.Geometry.OrbitQuotient (M := ComplexTwoSpace) (G := PeriodGroup x)
 
 /-- Projection from `ℂ²` to its period-lattice quotient. -/
-public def torusProjection (x : Parameters) : ComplexTwoSpace → Torus x :=
+@[expose] public def torusProjection (x : Parameters) : ComplexTwoSpace → Torus x :=
   SphereSixComplex.Geometry.quotientProjection
 
 /-- A full-rank period quotient is compact.  The image of the standard closed unit cube in

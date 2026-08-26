@@ -128,10 +128,12 @@ public theorem A₁_mul_A₂_mul_M₀ : A₁ * A₂ * M₀ = 1 := by
   fin_cases i <;> fin_cases j <;>
     norm_num [A₁, A₂, M₀, Matrix.mul_apply, Fin.sum_univ_succ]
 
-public def gamma : Lattice →ₗ[ℤ] ℤ where
+@[expose] public def gamma : Lattice →ₗ[ℤ] ℤ where
   toFun x := x 0
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
+
+public theorem gamma_apply (x : Lattice) : gamma x = x 0 := rfl
 
 public theorem gamma_A₁ (x : Lattice) : gamma (A₁ *ᵥ x) = gamma x := by
   simp [gamma, A₁, dotProduct, Fin.sum_univ_succ]
@@ -170,13 +172,37 @@ public theorem gamma_epsilon : gamma epsilon = 1 := by
 public theorem gamma_neg_epsilon' : gamma (-epsilon') = -1 := by
   rfl
 
-public def gammaVec : Lattice := ![1, 0, 0, 0]
+@[expose] public def gammaVec : Lattice := ![1, 0, 0, 0]
 
-public def uVec : Lattice := ![0, 1, 0, 0]
+@[expose] public def uVec : Lattice := ![0, 1, 0, 0]
 
-public def wVec : Lattice := ![0, 0, 1, 0]
+@[expose] public def wVec : Lattice := ![0, 0, 1, 0]
 
 public def deltaVec : Lattice := ![0, 0, 0, 1]
+
+@[simp]
+public theorem gammaVec_zero : gammaVec 0 = 1 := rfl
+
+@[simp]
+public theorem gammaVec_one : gammaVec 1 = 0 := rfl
+
+@[simp]
+public theorem uVec_zero : uVec 0 = 0 := rfl
+
+@[simp]
+public theorem uVec_one : uVec 1 = 1 := rfl
+
+@[simp]
+public theorem wVec_zero : wVec 0 = 0 := rfl
+
+@[simp]
+public theorem wVec_one : wVec 1 = 0 := rfl
+
+/-- The first elliptic monodromy carries the toric `w` direction to `u-w`. -/
+public theorem A₁_mulVec_wVec : A₁ *ᵥ wVec = uVec - wVec := by
+  funext i
+  fin_cases i <;>
+    norm_num [A₁, uVec, wVec, Matrix.mulVec, dotProduct, Fin.sum_univ_succ]
 
 public theorem N_mulVec (x : Lattice) : N *ᵥ x = ![x 3, -x 2, 0, 0] := by
   funext i
@@ -451,11 +477,14 @@ public theorem dualCoinvariantRelations_eq_ker_gamma :
   apply le_antisymm
   · apply Submodule.span_le.mpr
     rintro y (⟨x, rfl⟩ | ⟨x, rfl⟩)
-    · simp [LinearMap.mem_ker, gamma_A₁]
-    · simp [LinearMap.mem_ker, gamma_A₂]
+    · change gamma (A₁ *ᵥ x - x) = 0
+      rw [map_sub, gamma_A₁, sub_self]
+    · change gamma (A₂ *ᵥ x - x) = 0
+      rw [map_sub, gamma_A₂, sub_self]
   · intro x hx
     have hx0 : x 0 = 0 := by
-      simpa [LinearMap.mem_ker, gamma] using hx
+      change gamma x = 0 at hx
+      rwa [gamma_apply] at hx
     have hA1w : A₁ *ᵥ wVec - wVec ∈ dualCoinvariantRelations :=
       Submodule.subset_span (Or.inl ⟨wVec, rfl⟩)
     have hA2u : A₂ *ᵥ uVec - uVec ∈ dualCoinvariantRelations :=

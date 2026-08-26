@@ -100,8 +100,10 @@ public def restrictedMulAction (A : MulAction G X) (S : InvariantOpenCarrier A) 
   one_smul := restrictedActionMap_one S
   mul_smul := restrictedActionMap_mul S
 
-/-- The orbit relation of the action restricted to an invariant carrier. -/
-@[expose] public def restrictedOrbitRel
+/-- The orbit relation of the action restricted to an invariant carrier.  This is an abbreviation
+so the explicit-action quotient is definitionally the standard orbit quotient once the restricted
+action is installed. -/
+public abbrev restrictedOrbitRel
     (A : MulAction G X) (S : InvariantOpenCarrier A) : Setoid S.carrier :=
   letI := restrictedMulAction A S
   MulAction.orbitRel G S.carrier
