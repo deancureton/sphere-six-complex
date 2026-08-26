@@ -181,7 +181,7 @@ public abbrev Torus (x : Parameters) :=
   SphereSixComplex.Geometry.OrbitQuotient (M := ComplexTwoSpace) (G := PeriodGroup x)
 
 /-- Projection from `ℂ²` to its period-lattice quotient. -/
-public def torusProjection (x : Parameters) : ComplexTwoSpace → Torus x :=
+@[expose] public def torusProjection (x : Parameters) : ComplexTwoSpace → Torus x :=
   SphereSixComplex.Geometry.quotientProjection
 
 /-- A full-rank period quotient is compact.  The image of the standard closed unit cube in

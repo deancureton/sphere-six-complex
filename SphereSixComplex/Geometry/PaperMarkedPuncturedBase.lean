@@ -18,6 +18,7 @@ a literal section of the central torus family over that ordinary base.
 noncomputable section
 
 open Set Topology
+open scoped ContDiff Manifold
 open scoped ContinuousMap
 
 namespace SphereSixComplex.Geometry.GlobalTorusFamily
@@ -45,6 +46,37 @@ public noncomputable def regularBaseQuotientMap :
     C(RegularBase (U := U), PuncturedOrbifoldBase (U := U)) := by
   let _ := regularSourceMulAction U
   exact ⟨quotientProjection, continuous_quot_mk⟩
+
+/-- Away from the two elliptic fixed-point orbits, the source quotient is an honest quotient
+covering. -/
+public theorem regularBaseQuotientMap_isQuotientCoveringMap
+    (hsource : U.sourceAction = fuchsianSourceAction)
+    (hproper : SourceActionProperlyDiscontinuous (U := U)) :
+    letI := regularSourceMulAction U
+    IsQuotientCoveringMap (regularBaseQuotientMap (U := U)) Delta := by
+  let _ : MulAction Delta (RegularBase (U := U)) := regularSourceMulAction U
+  let _ : LocallyCompactSpace (RegularBase (U := U)) :=
+    (isOpen_isRegularBasePoint hproper).locallyCompactSpace
+  let _ : ContinuousConstSMul Delta (RegularBase (U := U)) :=
+    ⟨fun g ↦ by
+      apply Continuous.subtype_mk
+      exact (U.sourceAction_contMDiff g ∞).continuous.comp continuous_subtype_val⟩
+  let _ : IsCancelSMul Delta (RegularBase (U := U)) :=
+    regularSource_isCancelSMul_of_fuchsian hsource hproper
+  let _ : ProperlyDiscontinuousSMul Delta (RegularBase (U := U)) := by
+    constructor
+    intro K L hK hL
+    have hK' : IsCompact ((fun z : RegularBase (U := U) ↦ z.1) '' K) :=
+      hK.image continuous_subtype_val
+    have hL' : IsCompact ((fun z : RegularBase (U := U) ↦ z.1) '' L) :=
+      hL.image continuous_subtype_val
+    apply (hproper hK' hL').subset
+    intro g hg
+    rcases hg with ⟨z, ⟨w, hwK, hwz⟩, hzL⟩
+    refine ⟨z.1, ?_, ⟨z, hzL, rfl⟩⟩
+    refine ⟨w.1, ⟨w, hwK, rfl⟩, ?_⟩
+    exact congrArg Subtype.val hwz
+  exact isQuotientCoveringMap_quotientMk_of_properlyDiscontinuousSMul
 
 /-- The zero section before the varying period-lattice quotient. -/
 public def regularFamilyZeroSection :
