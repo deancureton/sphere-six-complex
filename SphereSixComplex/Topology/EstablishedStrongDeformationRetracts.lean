@@ -38,6 +38,18 @@ public def HasHomotopyExtensionProperty {X : Type*} [TopologicalSpace X] (A : Se
 public def IsHomotopyEquivalenceInclusion {X : Type*} [TopologicalSpace X] (A : Set X) : Prop :=
   ∃ e : X ≃ₕ A, e.invFun = topologicalSubsetInclusionMap A
 
+/-- Extract the homotopy equivalence recorded by a homotopy-equivalent subspace inclusion. -/
+public noncomputable def IsHomotopyEquivalenceInclusion.toHomotopyEquiv
+    {X : Type*} [TopologicalSpace X] {A : Set X}
+    (h : IsHomotopyEquivalenceInclusion A) : X ≃ₕ A :=
+  Classical.choose h
+
+public theorem IsHomotopyEquivalenceInclusion.toHomotopyEquiv_invFun
+    {X : Type*} [TopologicalSpace X] {A : Set X}
+    (h : IsHomotopyEquivalenceInclusion A) :
+    h.toHomotopyEquiv.invFun = topologicalSubsetInclusionMap A :=
+  Classical.choose_spec h
+
 /-- A non-equivariant strong deformation retraction onto a subspace. -/
 public structure StrongDeformationRetraction (X : Type*) [TopologicalSpace X] (A : Set X) where
   retract : C(X, X)
@@ -45,6 +57,24 @@ public structure StrongDeformationRetraction (X : Type*) [TopologicalSpace X] (A
   retract_mem : ∀ x, retract x ∈ A
   retract_fixed : ∀ x, x ∈ A → retract x = x
   homotopy_fixed : ∀ s x, x ∈ A → homotopy (s, x) = x
+
+/-- A strong deformation retraction gives a homotopy equivalence to the retract, whose inverse
+is the literal subspace inclusion. -/
+public def StrongDeformationRetraction.toHomotopyEquiv
+    {X : Type*} [TopologicalSpace X] {A : Set X}
+    (R : StrongDeformationRetraction X A) : X ≃ₕ A := by
+  let r : C(X, A) :=
+    { toFun := fun x ↦ ⟨R.retract x, R.retract_mem x⟩
+      continuous_toFun := R.retract.continuous.subtype_mk _ }
+  refine
+    { toFun := r
+      invFun := topologicalSubsetInclusionMap A
+      left_inv := ⟨R.homotopy.symm⟩
+      right_inv := ?_ }
+  have h : r.comp (topologicalSubsetInclusionMap A) = ContinuousMap.id A := by
+    ext a
+    exact R.retract_fixed a a.2
+  rw [h]
 
 /-- The track through `e` of a base homotopy, lifted through a covering. -/
 public noncomputable def liftTrack {E B : Type*} [TopologicalSpace E] [TopologicalSpace B]
@@ -139,6 +169,15 @@ public axiom strongDeformationRetraction_of_cofibration_homotopyEquivalence
     (hHEP : HasHomotopyExtensionProperty A)
     (hEquiv : IsHomotopyEquivalenceInclusion A) :
     Nonempty (StrongDeformationRetraction X A)
+
+/-- Package the standard cofibration upgrade directly as a homotopy equivalence to the
+subspace, retaining the literal inclusion as inverse. -/
+public noncomputable def homotopyEquivOfCofibrationHomotopyEquivalence
+    {X : Type*} [TopologicalSpace X] (A : Set X)
+    (hHEP : HasHomotopyExtensionProperty A)
+    (hEquiv : IsHomotopyEquivalenceInclusion A) : X ≃ₕ A :=
+  (Classical.choice
+    (strongDeformationRetraction_of_cofibration_homotopyEquivalence A hHEP hEquiv)).toHomotopyEquiv
 
 /-- A strong deformation retraction lifts uniquely through a regular quotient covering. The
 lift is equivariant under the deck group and retracts onto the full inverse image of the base
