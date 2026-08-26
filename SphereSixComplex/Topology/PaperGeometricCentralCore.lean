@@ -20,6 +20,11 @@ namespace SphereSixComplex.Geometry.PaperAnalyticData
 
 open SphereSixComplex
 open SphereSixComplex.LatticeData SphereSixComplex.Topology
+open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
+open SphereSixComplex.Geometry.ComplexTorus
+open SphereSixComplex.Geometry.GlobalTorusFamily
+open CuspPuncturedCollarBridge
+open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 
 variable (A : PaperAnalyticData)
 
@@ -29,6 +34,303 @@ public noncomputable def geometricCentralTranslation :
       (FundamentalGroup A.CentralFamily A.actualCuspCentralBase) :=
   A.markedCentralToActualCuspEquiv.toMonoidHom.toAdditive.comp
     A.markedCentralTranslation
+
+/-- The literal straight period-translation path in the normalized additive cusp cover. -/
+public noncomputable def actualCuspBoundaryTranslationLiftPoint
+    (a : Lattice) (t : unitInterval) :
+    additiveCuspRadiusCover A.starCuspWitness.localWitness.radius :=
+  ⟨((t : ℝ) • periodVector
+        (regularParameterMap A.periods
+          (A.actualCuspAngularRegularBasePoint 0)).1 a +
+      A.actualCuspBoundaryCoverBase.1.1,
+    A.actualCuspBoundaryCoverBase.1.2), A.actualCuspBoundaryCoverBase.2⟩
+
+@[simp]
+public theorem actualCuspBoundaryTranslationLiftPoint_zero (a : Lattice) :
+    A.actualCuspBoundaryTranslationLiftPoint a 0 =
+      A.actualCuspBoundaryCoverBase := by
+  apply Subtype.ext
+  apply Prod.ext
+  · simp [actualCuspBoundaryTranslationLiftPoint]
+  · rfl
+
+@[simp]
+public theorem actualCuspBoundaryTranslationLiftPoint_one (a : Lattice) :
+    A.actualCuspBoundaryTranslationLiftPoint a 1 =
+      cuspBoundaryLatticeTranslate A.starCuspWitness a
+        A.actualCuspBoundaryCoverBase := by
+  apply Subtype.ext
+  apply Prod.ext
+  · simp [actualCuspBoundaryTranslationLiftPoint,
+      cuspBoundaryLatticeTranslate, actualCuspAngularRegularBasePoint,
+      actualCuspAngularLiftPoint]
+    rfl
+  · rfl
+
+/-- The literal straight path from the selected cusp lift to its `a`-period translate. -/
+public noncomputable def actualCuspBoundaryTranslationLift (a : Lattice) :
+    Path A.actualCuspBoundaryCoverBase
+      (cuspBoundaryLatticeTranslate A.starCuspWitness a
+        A.actualCuspBoundaryCoverBase) where
+  toFun := A.actualCuspBoundaryTranslationLiftPoint a
+  continuous_toFun := by
+    apply Continuous.subtype_mk
+    apply Continuous.prodMk
+    · fun_prop
+    · exact continuous_const
+  source' := A.actualCuspBoundaryTranslationLiftPoint_zero a
+  target' := A.actualCuspBoundaryTranslationLiftPoint_one a
+
+/-- Projection of the literal cusp translation lift to the actual overlap. -/
+public noncomputable def actualCuspBoundaryTranslationLoop (a : Lattice) :
+    Path
+      (A.actualCuspBoundaryProjection A.actualCuspBoundaryCoverBase)
+      (A.actualCuspBoundaryProjection A.actualCuspBoundaryCoverBase) :=
+  ((A.actualCuspBoundaryTranslationLift a).map
+    A.actualCuspBoundaryProjection.continuous).cast rfl (by
+      exact (congrArg A.cuspCollarToStarOverlapHomeomorph
+        (additiveCuspBoundaryProjection_latticeTranslate
+          A.starCuspWitness a A.actualCuspBoundaryCoverBase)).symm)
+
+/-- The explicit straight cusp translation loop is the loop classified by the corresponding
+boundary deck transformation. -/
+public theorem actualCuspBoundaryTranslationLoop_class_eq_ofDeck (a : Lattice) :
+    let W := A.starCuspWitness
+    letI := paperCuspBoundaryDeckAction W
+    letI : SimplyConnectedSpace
+        (additiveCuspRadiusCover W.localWitness.radius) :=
+      additiveCuspBoundaryCover_simplyConnected W
+    let hp : IsQuotientCoveringMap A.actualCuspBoundaryProjection
+        paperCuspBoundaryDeck :=
+      (additiveCuspBoundaryProjection_isQuotientCoveringMap W).homeomorph_comp
+        A.cuspCollarToStarOverlapHomeomorph
+    Path.Homotopic.Quotient.mk (A.actualCuspBoundaryTranslationLoop a) =
+      ofDeck hp A.actualCuspBoundaryCoverBase
+        (Additive.toMul (paperCuspBoundaryTranslation a)) := by
+  let W := A.starCuspWitness
+  let _ := paperCuspBoundaryDeckAction W
+  let _ : SimplyConnectedSpace
+      (additiveCuspRadiusCover W.localWitness.radius) :=
+    additiveCuspBoundaryCover_simplyConnected W
+  let hp : IsQuotientCoveringMap A.actualCuspBoundaryProjection
+      paperCuspBoundaryDeck :=
+    (additiveCuspBoundaryProjection_isQuotientCoveringMap W).homeomorph_comp
+      A.cuspCollarToStarOverlapHomeomorph
+  let e : A.actualCuspBoundaryProjection ⁻¹'
+      {A.actualCuspBoundaryProjection A.actualCuspBoundaryCoverBase} :=
+    ⟨A.actualCuspBoundaryCoverBase, rfl⟩
+  apply (hp.fundamentalGroupEquiv e).injective
+  rw [fundamentalGroupEquiv_ofDeck]
+  apply (hp.fundamentalGroupToMulOpposite_apply_eq_Iff).mpr
+  have hsmul :
+      Additive.toMul (paperCuspBoundaryTranslation a) •
+          A.actualCuspBoundaryCoverBase =
+        cuspBoundaryLatticeTranslate A.starCuspWitness a
+          A.actualCuspBoundaryCoverBase := by
+    simp [paperCuspBoundaryDeck_smul_apply, paperCuspBoundaryTranslation,
+      canonicalCyclicAffineTranslation]
+  change Additive.toMul (paperCuspBoundaryTranslation a) •
+      A.actualCuspBoundaryCoverBase =
+    (hp.isCoveringMap.monodromy
+      (Path.Homotopic.Quotient.mk (A.actualCuspBoundaryTranslationLoop a)) e :
+        additiveCuspRadiusCover W.localWitness.radius)
+  rw [hsmul]
+  let e' : A.actualCuspBoundaryProjection ⁻¹'
+      {A.actualCuspBoundaryProjection A.actualCuspBoundaryCoverBase} :=
+    ⟨cuspBoundaryLatticeTranslate W a A.actualCuspBoundaryCoverBase, by
+      exact congrArg A.cuspCollarToStarOverlapHomeomorph
+        (additiveCuspBoundaryProjection_latticeTranslate
+          A.starCuspWitness a A.actualCuspBoundaryCoverBase)⟩
+  let Γ : Path.Homotopic.Quotient A.actualCuspBoundaryCoverBase
+      (cuspBoundaryLatticeTranslate W a A.actualCuspBoundaryCoverBase) :=
+    Path.Homotopic.Quotient.mk (A.actualCuspBoundaryTranslationLift a)
+  have hm := hp.isCoveringMap.monodromy_eq_of_map_eq
+    (ex := e) (ey := e') Γ (by
+      dsimp [e, e']
+      change (Path.Homotopic.Quotient.mk
+          (A.actualCuspBoundaryTranslationLift a)).map
+            A.actualCuspBoundaryProjection =
+        (Path.Homotopic.Quotient.mk
+          (A.actualCuspBoundaryTranslationLoop a)).cast _ _
+      rw [← Path.Homotopic.Quotient.mk_map]
+      unfold actualCuspBoundaryTranslationLoop
+      rw [Path.Homotopic.Quotient.mk_cast]
+      exact eq_of_heq
+        ((Path.Homotopic.Quotient.cast_heq _ _).trans
+          (Path.Homotopic.Quotient.cast_heq _ _)).symm)
+  simpa using congrArg Subtype.val hm.symm
+
+/-- The straight cusp translation loop after applying the literal overlap chart to the central
+family. -/
+public noncomputable def actualCuspBoundaryTranslationCentralLoop (a : Lattice) :
+    Path A.actualCuspCentralBase A.actualCuspCentralBase :=
+  ((A.actualCuspBoundaryTranslationLoop a).map
+    A.actualCuspOverlapToCentral.continuous).cast
+      (congrArg A.actualCuspOverlapToCentral
+        A.actualCuspBoundaryCoverBase_projects).symm
+      (congrArg A.actualCuspOverlapToCentral
+        A.actualCuspBoundaryCoverBase_projects).symm
+
+/-- The same labelled period drawn directly in the two-stage regular torus-family cover. -/
+public noncomputable def actualCuspCentralPeriodLoop (a : Lattice) :
+    Path A.actualCuspCentralBase A.actualCuspCentralBase :=
+  ((regularFamilyPeriodLoop A.periods A.actualCuspRegularCoverPoint a).map
+    (regularFamilyQuotientMap A.periods).continuous).cast
+      A.actualCuspRegularRepresentative_projects.symm
+      A.actualCuspRegularRepresentative_projects.symm
+
+/-- Endpoint-casting a loop realizes the elementary based transport of its fundamental-group
+class. -/
+public theorem pathLoopClass_cast_eq_elementOfBaseEq
+    {X : Type*} [TopologicalSpace X] {x y : X}
+    (L : Path x x) (h : x = y) :
+    pathLoopClass (L.cast h.symm h.symm) =
+      fundamentalGroupElementOfBaseEq h (pathLoopClass L) := by
+  subst y
+  rfl
+
+/-- The additive cusp chart sends the literal straight translation to the globally labelled
+period loop, point for point. -/
+public theorem actualCuspBoundaryTranslationCentralLoop_eq_periodLoop (a : Lattice) :
+    A.actualCuspBoundaryTranslationCentralLoop a =
+      A.actualCuspCentralPeriodLoop a := by
+  apply Path.ext
+  funext t
+  simp only [actualCuspBoundaryTranslationCentralLoop,
+    actualCuspCentralPeriodLoop]
+  change A.actualCuspOverlapToCentral
+      (A.actualCuspBoundaryProjection
+        (A.actualCuspBoundaryTranslationLiftPoint a t)) = _
+  rw [A.actualCuspOverlapToCentral_boundaryProjection]
+  rw [additiveCuspCoverToGlobal_eq_quotientProjections]
+  change regularFamilyQuotientMap A.periods
+      (regularFamilyCoverProjection A.periods
+        ((additiveCuspBundleHomeomorph A.starCuspWitness
+          (A.actualCuspBoundaryTranslationLiftPoint a t)).1 :
+            RegularBase (U := A.paperTriangleUniformization) × ComplexTwoSpace)) =
+    regularFamilyQuotientMap A.periods
+      (regularFamilyPeriodLoop A.periods A.actualCuspRegularCoverPoint a t)
+  rw [regularFamilyPeriodLoop_apply]
+  apply congrArg (regularFamilyQuotientMap A.periods)
+  apply congrArg (regularFamilyCoverProjection A.periods)
+  apply Prod.ext
+  · apply Subtype.ext
+    change A.cuspCoordinate.lift A.actualCuspBoundaryCoverBase.1.2 =
+      A.cuspCoordinate.lift (A.actualCuspAngularLiftPoint 0).1.2
+    rw [A.actualCuspAngularLiftPoint_zero]
+  · rfl
+
+/-- The translation selected by the affine filling is represented, after transport to the
+prescribed overlap point, by the literal straight boundary loop. -/
+public theorem actualCuspAffineBridgeTranslation_eq_boundaryLoop (a : Lattice) :
+    fundamentalGroupElementOfBaseEq
+        A.actualCuspChosenAffineFillingCover_boundaryBase_eq
+        (Additive.toMul (A.actualCuspChosenAffineFillingCover.translation a)) =
+      fundamentalGroupElementOfBaseEq
+        A.actualCuspChosenAffineFillingCover_boundaryBase_eq
+        (Path.Homotopic.Quotient.mk
+          (A.actualCuspBoundaryTranslationLoop a)) := by
+  rw [A.actualCuspChosenAffineFillingCover_translation_eq_ofDeck]
+  apply congrArg
+    (fundamentalGroupElementOfBaseEq
+      A.actualCuspChosenAffineFillingCover_boundaryBase_eq)
+  exact (A.actualCuspBoundaryTranslationLoop_class_eq_ofDeck a).symm
+
+/-- The actual cusp translation is exactly the globally labelled period loop in the central
+family. -/
+public theorem actualCuspCentralTranslation_eq_periodLoop (a : Lattice) :
+    Additive.toMul (A.actualCuspCentralTranslation a) =
+      Path.Homotopic.Quotient.mk (A.actualCuspCentralPeriodLoop a) := by
+  unfold actualCuspCentralTranslation
+  simp only [AddMonoidHom.comp_apply, MonoidHom.coe_toAdditive,
+    Function.comp_apply]
+  rw [fundamentalGroupAddHomOfBaseEq_apply, toMul_ofMul]
+  rw [A.actualCuspAffineBridgeTranslation_eq_boundaryLoop]
+  unfold actualCuspOverlapToCentralPiOne
+  rw [← TauCeti.FundamentalGroup.mapOfEq_rfl]
+  have hsource :
+      A.actualCuspOverlapToCentral
+          A.actualCuspChosenAffineFillingCover.boundaryBase =
+        A.actualCuspCentralBase := by
+    rw [A.actualCuspChosenAffineFillingCover_boundaryBase_eq]
+    rfl
+  calc
+    _ = FundamentalGroup.mapOfEq A.actualCuspOverlapToCentral hsource
+          (Path.Homotopic.Quotient.mk
+            (A.actualCuspBoundaryTranslationLoop a)) :=
+      mapOfEq_fundamentalGroupElementOfBaseEq
+        A.actualCuspChosenAffineFillingCover_boundaryBase_eq
+        A.actualCuspOverlapToCentral hsource rfl _
+    _ = Path.Homotopic.Quotient.mk
+          (A.actualCuspBoundaryTranslationCentralLoop a) := by
+      rw [FundamentalGroup.mapOfEq_apply]
+      apply congrArg Path.Homotopic.Quotient.mk
+      apply Path.ext
+      funext t
+      rfl
+    _ = Path.Homotopic.Quotient.mk
+          (A.actualCuspCentralPeriodLoop a) := by
+      exact congrArg Path.Homotopic.Quotient.mk
+        (A.actualCuspBoundaryTranslationCentralLoop_eq_periodLoop a)
+
+set_option backward.isDefEq.respectTransparency.types false in
+/-- The literal cusp meridian acts on the literal cusp translations by the prescribed
+parabolic lattice monodromy.  This is the paper's usual conjugation formula, written in
+Mathlib's reversed path-composition convention. -/
+public theorem actualCuspCentralMeridian_conjugates_translation (a : Lattice) :
+    A.actualCuspCentralMeridian⁻¹ *
+        Additive.toMul (A.actualCuspCentralTranslation a) *
+        A.actualCuspCentralMeridian =
+      Additive.toMul
+        (A.actualCuspCentralTranslation (rhoLambda g₀ a)) := by
+  rw [A.actualCuspCentralMeridian_eq_angularLoop,
+    A.actualCuspAngularCentralLoop_eq_actualRegularDeckLoop,
+    A.actualCuspCentralTranslation_eq_periodLoop,
+    A.actualCuspCentralTranslation_eq_periodLoop]
+  have h := regularFamilyDeckPathLoop_conjugates_period A.periods
+    (sourceActionProperlyDiscontinuous_of_eq
+      A.modular.modularParameter.toTriangleUniformization_sourceAction)
+    g₀ A.actualCuspRegularCoverPoint A.actualCuspRegularDeckPath a
+  have hbase :
+      regularFamilyQuotientMap A.periods
+          (regularFamilyCoverProjection A.periods
+            A.actualCuspRegularCoverPoint) =
+        A.actualCuspCentralBase :=
+    A.actualCuspRegularRepresentative_projects
+  change
+    (pathLoopClass
+        ((regularFamilyDeckPathLoop A.periods g₀
+          A.actualCuspRegularCoverPoint A.actualCuspRegularDeckPath).cast
+            hbase.symm hbase.symm))⁻¹ *
+        pathLoopClass
+          (((regularFamilyPeriodLoop A.periods
+            A.actualCuspRegularCoverPoint a).map
+              (regularFamilyQuotientMap A.periods).continuous).cast
+                hbase.symm hbase.symm) *
+        pathLoopClass
+          ((regularFamilyDeckPathLoop A.periods g₀
+            A.actualCuspRegularCoverPoint A.actualCuspRegularDeckPath).cast
+              hbase.symm hbase.symm) =
+      pathLoopClass
+        (((regularFamilyPeriodLoop A.periods A.actualCuspRegularCoverPoint
+          (rhoLambda g₀ a)).map
+            (regularFamilyQuotientMap A.periods).continuous).cast
+              hbase.symm hbase.symm)
+  rw [pathLoopClass_cast_eq_elementOfBaseEq
+      (regularFamilyDeckPathLoop A.periods g₀
+        A.actualCuspRegularCoverPoint A.actualCuspRegularDeckPath) hbase,
+    pathLoopClass_cast_eq_elementOfBaseEq
+      ((regularFamilyPeriodLoop A.periods
+        A.actualCuspRegularCoverPoint a).map
+          (regularFamilyQuotientMap A.periods).continuous) hbase,
+    pathLoopClass_cast_eq_elementOfBaseEq
+      ((regularFamilyPeriodLoop A.periods A.actualCuspRegularCoverPoint
+        (rhoLambda g₀ a)).map
+          (regularFamilyQuotientMap A.periods).continuous) hbase]
+  have htransport := congrArg
+    (fundamentalGroupElementOfBaseEq hbase) h
+  simpa only [fundamentalGroupElementOfBaseEq_mul,
+    fundamentalGroupElementOfBaseEq_inv] using htransport
 
 /-- At the marked zero-section point, the geometric translations and the two concrete finite
 meridians generate the central fundamental group. -/
