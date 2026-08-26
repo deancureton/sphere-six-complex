@@ -107,6 +107,12 @@ public structure CollarSeparationData
         (fun x : UpperHalfPlane ↦
           A.modular.modularParameter.toTriangleUniformization.sourceAction g • x) ''
             normalizedCuspRegion A.cuspCoordinate W.localWitness.radius)
+  orderThree_coordinate_bound : ∀ z : UpperHalfPlane,
+    ‖(orderThreeCayleyHomeomorph z : ℂ)‖ < orderThree.radius →
+      ‖A.modular.sourceCoordinate.coordinate z‖ < 1 / 3
+  orderFour_coordinate_bound : ∀ z : UpperHalfPlane,
+    ‖(orderFourCayleyHomeomorph z : ℂ)‖ < orderFour.radius →
+      ‖A.modular.sourceCoordinate.coordinate z - 1‖ < 1 / 3
   elliptic_orbits_disjoint : ∀ z x : UpperHalfPlane,
     ‖(orderThreeCayleyHomeomorph z : ℂ)‖ < orderThree.radius →
     ‖(orderFourCayleyHomeomorph x : ℂ)‖ < orderFour.radius →
@@ -156,14 +162,31 @@ public theorem exists_collarSeparationData
     exact fuchsianTwo_orbit_ne_one g hg
   obtain ⟨S, T, hSopen, hTopen, hqOne, hqTwo, hST⟩ :=
     t2_separation hquotientNe
-  let S' := q ⁻¹' S ∩ Cᶜ
-  let T' := q ⁻¹' T ∩ Cᶜ
+  let S' := q ⁻¹' S ∩ Cᶜ ∩
+    {z | ‖A.modular.sourceCoordinate.coordinate z‖ < 1 / 3}
+  let T' := q ⁻¹' T ∩ Cᶜ ∩
+    {z | ‖A.modular.sourceCoordinate.coordinate z - 1‖ < 1 / 3}
   have hS'open : IsOpen S' :=
-    (hSopen.preimage continuous_quot_mk).inter isClosed_closure.isOpen_compl
+    ((hSopen.preimage continuous_quot_mk).inter isClosed_closure.isOpen_compl).inter
+      (isOpen_lt
+        (continuous_norm.comp A.modular.sourceCoordinate.coordinate_holomorphic.continuous)
+        continuous_const)
   have hT'open : IsOpen T' :=
-    (hTopen.preimage continuous_quot_mk).inter isClosed_closure.isOpen_compl
-  have hOneS' : fuchsianOneFixedPoint ∈ S' := ⟨hqOne, hnotCOne⟩
-  have hTwoT' : fuchsianTwoFixedPoint ∈ T' := ⟨hqTwo, hnotCTwo⟩
+    ((hTopen.preimage continuous_quot_mk).inter isClosed_closure.isOpen_compl).inter
+      (isOpen_lt
+        (continuous_norm.comp
+          (A.modular.sourceCoordinate.coordinate_holomorphic.continuous.sub continuous_const))
+        continuous_const)
+  have hOneS' : fuchsianOneFixedPoint ∈ S' := by
+    refine ⟨⟨hqOne, hnotCOne⟩, ?_⟩
+    change ‖A.modular.sourceCoordinate.coordinate fuchsianOneFixedPoint‖ < 1 / 3
+    rw [A.modular.sourceCoordinate.coordinate_at_one]
+    norm_num
+  have hTwoT' : fuchsianTwoFixedPoint ∈ T' := by
+    refine ⟨⟨hqTwo, hnotCTwo⟩, ?_⟩
+    change ‖A.modular.sourceCoordinate.coordinate fuchsianTwoFixedPoint - 1‖ < 1 / 3
+    rw [A.modular.sourceCoordinate.coordinate_at_two]
+    norm_num
   obtain ⟨s₃, hs₃, hs₃one, hs₃S⟩ :=
     exists_cayleyRadius_subset fuchsianOneFixedPoint hS'open hOneS'
   obtain ⟨s₄, hs₄, hs₄one, hs₄T⟩ :=
@@ -180,14 +203,18 @@ public theorem exists_collarSeparationData
   let P₄' : A.OrderFourFillingPiece :=
     ⟨r₄, hr₄, (min_le_left _ _).trans_lt P₄.radius_lt_one,
       A.orderFourLinearCollarSourceData_mono (min_le_left _ _) P₄.sourceData⟩
-  refine ⟨⟨P₃', P₄', ?_, ?_, ?_⟩⟩
+  refine ⟨⟨P₃', P₄', ?_, ?_, ?_, ?_, ?_⟩⟩
+  · intro z hz
+    exact (hs₃S z (hz.trans_le (min_le_right _ _))).1.2
+  · intro z hz
+    exact (hs₄T z (hz.trans_le (min_le_right _ _))).1.2
   · intro z hz
     exact (hs₃S z (hz.trans_le (min_le_right _ _))).2
   · intro z hz
     exact (hs₄T z (hz.trans_le (min_le_right _ _))).2
   · intro z x hz hx g hg
-    have hzS : q z ∈ S := (hs₃S z (hz.trans_le (min_le_right _ _))).1
-    have hxT : q x ∈ T := (hs₄T x (hx.trans_le (min_le_right _ _))).1
+    have hzS : q z ∈ S := (hs₃S z (hz.trans_le (min_le_right _ _))).1.1
+    have hxT : q x ∈ T := (hs₄T x (hx.trans_le (min_le_right _ _))).1.1
     have hqxz : q x = q z := by
       apply Quotient.sound
       change MulAction.orbitRel Delta UpperHalfPlane x z

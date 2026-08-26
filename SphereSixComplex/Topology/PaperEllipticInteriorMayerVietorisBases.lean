@@ -16,7 +16,7 @@ interior.  No basis of the interior is assumed.
 
 noncomputable section
 
-open AlgebraicTopology Matrix Set
+open AlgebraicTopology Matrix Set TopologicalSpace
 
 namespace SphereSixComplex
 
@@ -269,6 +269,36 @@ namespace SectionSevenEllipticTwoDiscHomologyCoordinates
 variable {D : A.SectionSevenEllipticTwoDiscCoverData}
   (B : A.SectionSevenEllipticTwoDiscHomologyCoordinates D)
 
+/-- The order-three side as an open subspace of the elliptic interior. -/
+public def orderThreeOpen (D : A.SectionSevenEllipticTwoDiscCoverData) :
+    Opens (TopCat.of A.SectionSevenEllipticInterior) where
+  carrier := D.orderThreeSide
+  is_open' := D.orderThreeSide_isOpen
+
+/-- The order-four side as an open subspace of the elliptic interior. -/
+public def orderFourOpen (D : A.SectionSevenEllipticTwoDiscCoverData) :
+    Opens (TopCat.of A.SectionSevenEllipticInterior) where
+  carrier := D.orderFourSide
+  is_open' := D.orderFourSide_isOpen
+
+/-- The two paper sides form a binary open cover of the elliptic interior. -/
+public theorem ellipticOpenCover (D : A.SectionSevenEllipticTwoDiscCoverData) :
+    orderThreeOpen D ⊔ orderFourOpen D = ⊤ := by
+  ext x
+  simpa [orderThreeOpen, orderFourOpen] using Set.ext_iff.mp D.sides_cover x
+
+/-- The canonical chain-level Mayer--Vietoris data for the elliptic two-disc cover. -/
+public noncomputable def canonicalMayerVietorisData
+    (D : A.SectionSevenEllipticTwoDiscCoverData) :=
+  BinaryOpenCover.OpenCoverHomologyComparison.toIntegralMayerVietorisData
+    (BinaryOpenCover.openCoverHomologyComparisonOfCover (ellipticOpenCover D))
+    (ellipticOpenCover D)
+
+/-- The canonical connecting map for the elliptic two-disc cover. -/
+public noncomputable def canonicalBoundary
+    (D : A.SectionSevenEllipticTwoDiscCoverData) (n : ℕ) :=
+  (canonicalMayerVietorisData D).legacyBoundary n
+
 theorem differenceOne_linear_comm :
     B.sidesOne.toIntLinearEquiv.toLinearMap.comp
         (IntegralMayerVietoris.differenceMap
@@ -304,13 +334,13 @@ noncomputable def presentationOne :
         (D.orderThreeSide ∩ D.orderFourSide : Set A.SectionSevenEllipticInterior))
       (IntegralSingularHomology 0 D.orderThreeSide ×
         IntegralSingularHomology 0 D.orderFourSide) := by
-  let boundary := Classical.choose (exactSequence (D := D))
-  have h := Classical.choose_spec (exactSequence (D := D))
+  let M := canonicalMayerVietorisData D
+  have h := M.legacyBoundary_exact
   exact
     { highDifference := IntegralMayerVietoris.differenceMap
         D.orderThreeSide D.orderFourSide 1
       inclusion := IntegralMayerVietoris.sumMap D.orderThreeSide D.orderFourSide 1
-      boundary := boundary 0
+      boundary := M.legacyBoundary 0
       lowDifference := IntegralMayerVietoris.differenceMap
         D.orderThreeSide D.orderFourSide 0
       exact_highDifference_inclusion := (h 1).2.2
@@ -329,18 +359,28 @@ noncomputable def presentationTwo :
         (D.orderThreeSide ∩ D.orderFourSide : Set A.SectionSevenEllipticInterior))
       (IntegralSingularHomology 1 D.orderThreeSide ×
         IntegralSingularHomology 1 D.orderFourSide) := by
-  let boundary := Classical.choose (exactSequence (D := D))
-  have h := Classical.choose_spec (exactSequence (D := D))
+  let M := canonicalMayerVietorisData D
+  have h := M.legacyBoundary_exact
   exact
     { highDifference := IntegralMayerVietoris.differenceMap
         D.orderThreeSide D.orderFourSide 2
       inclusion := IntegralMayerVietoris.sumMap D.orderThreeSide D.orderFourSide 2
-      boundary := boundary 1
+      boundary := M.legacyBoundary 1
       lowDifference := IntegralMayerVietoris.differenceMap
         D.orderThreeSide D.orderFourSide 1
       exact_highDifference_inclusion := (h 2).2.2
       exact_inclusion_boundary := (h 1).1
       exact_boundary_lowDifference := (h 1).2.1 }
+
+/-- The degree-one presentation uses the canonical open-cover connecting map. -/
+public theorem presentationOne_boundary :
+    (presentationOne (D := D)).boundary = canonicalBoundary D 0 := by
+  rfl
+
+/-- The degree-two presentation uses the canonical open-cover connecting map. -/
+public theorem presentationTwo_boundary :
+    (presentationTwo (D := D)).boundary = canonicalBoundary D 1 := by
+  rfl
 
 /-- The two-disc coordinate calculation constructs `H₁(X°; ℤ) ≅ ℤ`. -/
 public noncomputable def ellipticInteriorHomologyOneEquiv :

@@ -48,6 +48,12 @@ public structure ActualCuspRadialClutchingData
   fiberFullRank : SphereSixComplex.Geometry.ComplexTorus.FullRank fiberParameter
   fiberHomeomorph : let _ := fiberTopology
     Fiber ≃ₜ SphereSixComplex.Geometry.EllipticFamilySpecialization.AdditiveTorus fiberParameter
+  fiberMarkingCompatibility : let _ := fiberTopology
+    ∀ x : IntegralSingularHomology 1 Fiber,
+      (EstablishedTorusHomology.additiveTorusHomologyBasis
+          fiberParameter fiberFullRank).degreeOne
+          (integralSingularHomologyMap 1 fiberHomeomorph x) =
+        monodromyCoordinates.degreeOne x
 
 namespace EstablishedActualCuspRadialClutching
 

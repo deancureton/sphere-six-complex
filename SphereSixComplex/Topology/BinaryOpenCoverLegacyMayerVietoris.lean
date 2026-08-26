@@ -239,12 +239,17 @@ public noncomputable def IntegralMayerVietorisData.legacyBoundary {X : TopCat}
     ((opensUnionHomologyIso U V hcover (n + 1)).hom ≫ D.boundary n ≫
       (opensIntersectionHomologyIso U V n).inv)
 
-/-- The categorical binary-open-cover sequence supplies the exact set-subtype interface. -/
-public theorem IntegralMayerVietorisData.toLegacyExactSequence {X : TopCat}
+/-- The transported connecting map is exact with the legacy difference and sum maps. -/
+public theorem IntegralMayerVietorisData.legacyBoundary_exact {X : TopCat}
     {U V : Opens X} {hcover : U ⊔ V = ⊤}
-    (D : IntegralMayerVietorisData U V hcover) :
-    IntegralMayerVietoris.ExactSequence (U : Set X) (V : Set X) := by
-  refine ⟨D.legacyBoundary, fun n ↦ ⟨?_, ?_, ?_⟩⟩
+    (D : IntegralMayerVietorisData U V hcover) (n : ℕ) :
+    Function.Exact (IntegralMayerVietoris.sumMap (U : Set X) (V : Set X) (n + 1))
+        (D.legacyBoundary n) ∧
+      Function.Exact (D.legacyBoundary n)
+        (IntegralMayerVietoris.differenceMap (U : Set X) (V : Set X) n) ∧
+      Function.Exact (IntegralMayerVietoris.differenceMap (U : Set X) (V : Set X) n)
+        (IntegralMayerVietoris.sumMap (U : Set X) (V : Set X) n) := by
+  refine ⟨?_, ?_, ?_⟩
   · let ePieces := (piecesHomologyIso U V (n + 1)).addCommGroupIsoToAddEquiv
     let eUnion :=
       (opensUnionHomologyIso U V hcover (n + 1)).symm.addCommGroupIsoToAddEquiv
@@ -291,6 +296,13 @@ public theorem IntegralMayerVietorisData.toLegacyExactSequence {X : TopCat}
     · rw [← legacySumMorphism_hom]
       exact congrArg ConcreteCategory.hom (sumMorphism_comm U V hcover n)
     exact D.exact_at_biprod n
+
+/-- The categorical binary-open-cover sequence supplies the exact set-subtype interface. -/
+public theorem IntegralMayerVietorisData.toLegacyExactSequence {X : TopCat}
+    {U V : Opens X} {hcover : U ⊔ V = ⊤}
+    (D : IntegralMayerVietorisData U V hcover) :
+    IntegralMayerVietoris.ExactSequence (U : Set X) (V : Set X) :=
+  ⟨D.legacyBoundary, D.legacyBoundary_exact⟩
 
 /-- An open-cover homology comparison yields the exact legacy Mayer--Vietoris sequence. -/
 public theorem OpenCoverHomologyComparison.toLegacyExactSequence {X : TopCat}

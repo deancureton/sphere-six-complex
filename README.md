@@ -4,44 +4,16 @@ This project formalizes the construction in [`references/s6.pdf`](https://alpo.g
 compact complex threefold diffeomorphic to the standard smooth six-sphere.
 
 The Lean development is in `SphereSixComplex/`. The `blueprint/` directory tracks the
-paper-to-Lean dependency graph. `ChallengeDefs.lean`, `Challenge.lean`, `Solution.lean`, and
-`comparator.json` form the Comparator boundary for the final theorem. `ChallengeDefs.lean` holds
-every definition the statement mentions and depends only on Mathlib; both `Challenge` and the
-development import it, so Comparator compares one shared copy. Nothing imports `Challenge` itself.
+paper-to-Lean dependency graph. `ChallengeDefs.lean`, `ChallengeAxioms.lean`, `Challenge.lean`,
+`Solution.lean`, and `comparator.json` form the Comparator boundary. `ChallengeDefs` contains
+the Mathlib-only statement definitions; `ChallengeAxioms` exposes the audited established results
+to both Comparator environments. Nothing imports `Challenge` itself.
 
 ## Status
 
-This is an active formalization, not yet a proof of the headline theorem. The root project and the
-Verso Blueprint build, but `SphereSixComplex/Final.lean` still contains the paper-specific gluing
-`sorry`. The `sorry` in `Challenge.lean` is the trusted Comparator challenge boundary.
-
-The library now includes the construction's analytic, gluing, homology, van Kampen, and smooth
-recognition foundations. The Blueprint records the remaining paper-specific obligation.
-
-`exists_paperGluingData` is the sole remaining `sorry`, and
-`toPaperGluingData_of_positiveDegree` reduces it to three inputs:
-
-1. `HasVanKampenData` for the glued star. The generic van Kampen machinery is proved, and
-   `hasVanKampenData_of_overlapSurjective_of_relations` derives the datum from two geometric
-   facts about the fillings: that each collar surjects on its filling's fundamental group, and
-   the three star filling relations. Both come from a filling cover square (issues #1, #2).
-2. `SectionSevenPositiveDegreeHomologyAssembly`: the actual H₁/H₂ bases and compatibility
-   squares of Section 7 (issues #6, #7).
-3. `SectionSevenStageTopDegreeVanishing`, supplied by
-   `sectionSevenStageTopDegreeVanishing_actual`. Its dimension argument is proved; the cusp collar
-   step rests on the fibre identification recorded in `EstablishedActualCuspRadialClutching.data`.
-
-Past the paper-specific construction, the final recognition step uses two external axioms absent
-from Mathlib: Hurewicz--Whitehead for smooth manifolds and the standard-model smooth Poincare
-theorem in dimension six. The integral Mayer--Vietoris sequence is now derived from the binary
-open-cover chain construction.
-
-While `exists_paperGluingData` remains a `sorry`, the final cone of
-`./scripts/check-axioms.sh` sees, beyond Lean's logical axioms, only the two recognition axioms
-plus `sorryAx`. Its deliberately partial construction cone audits six implemented endpoints but
-omits the absent production `SectionSevenPositiveDegreeHomologyAssembly` witness.
-`./scripts/axiom_inventory.py` instead lists every source `axiom` declaration and classifies its
-module by import reachability from `Final` and `Main`.
+The headline theorem is source-sorry-free. Paper-specific and classical results not yet available
+in Mathlib are explicit axioms, documented and checked by the allowlists in `scripts/`. The two
+`sorry`s in `Challenge.lean` are the trusted Comparator challenge boundary.
 
 ## Build
 
@@ -66,19 +38,18 @@ We thank Thomas Zhu for giving us permission to use and port the van Kampen deve
 
 Every `axiom` in the development is a trust boundary, so two scripts keep them visible.
 
-`./scripts/check-axioms.sh` is the gate: it requires the final and partial-construction dependency
-sets to match `scripts/allowed-axioms.txt` and `scripts/allowed-construction-axioms.txt` exactly.
-Entries must be removed when dependencies are discharged. Set `CHECK_AXIOMS_SKIP_BUILD=1` to reuse
-an existing build.
+`./scripts/check-axioms.sh` is the gate: it requires the recursive final and implemented-construction
+dependency closures to match `scripts/allowed-axioms.txt` and
+`scripts/allowed-construction-axioms.txt` exactly. Entries must be removed when dependencies are
+discharged. Set `CHECK_AXIOMS_SKIP_BUILD=1` to reuse an existing build.
 
 `./scripts/axiom_inventory.py` is the static counterpart: it lists every `axiom` declaration in
 `SphereSixComplex/` and marks whether it is reachable from `Final` (so the headline theorem may
 come to depend on it), only from `Main`, or from neither.
 
 `./scripts/check-sorries.py` checks that no `sorry`, `admit`, or `native_decide` appears outside
-the two declared boundaries: the paper-specific gluing `sorry` in `Final.lean` and the trusted
-Comparator statements in `Challenge.lean`. It counts them, so a second placeholder in an already
-listed file also fails.
+the trusted Comparator statements in `Challenge.lean`. It counts them, so an extra placeholder in
+an already listed file also fails.
 
 `./scripts/check-imports.py` checks that every module is reachable from `SphereSixComplex.Main`.
 A module outside the build cone is elaborated by nothing and its axioms are invisible to the

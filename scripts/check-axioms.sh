@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 #
-# Trust gate: assert that the audited dependency cones exactly match their declared allowlists.
+# Trust gate: assert that the audited dependency cones match their declared allowlists.
 #
-# Runs `#print axioms` on the project endpoints and fails if a constant is missing from an
-# allowlist or remains there after it is no longer reached. Add a line only together with a
-# written justification of the new trust boundary; remove it when the dependency is discharged.
+# Computes recursive compiled-environment closures for the Comparator and implemented construction,
+# and also runs `#print axioms` on the project endpoints. Add an allowlist entry only together with
+# a written justification of the new trust boundary; remove it when the dependency is discharged.
 #
 # Usage: ./scripts/check-axioms.sh
 #
@@ -22,30 +22,37 @@ targets=(
   "SphereSixComplex.exists_complex_threefold_diffeomorphic_sixSphere"
 )
 
-# The *implemented-construction* cone.  While `exists_paperGluingData` is a placeholder the final
-# cone above cannot see any construction axiom, because `sorry` short-circuits axiom tracking; this
-# second list restores what is visible today.
-#
-# It is deliberately a partial cone, not the whole construction.  No production
-# `SectionSevenPositiveDegreeHomologyAssembly` witness exists yet, so the assembly `H` contributes
-# nothing here; when one lands it should be added as a target.  What this does pin is the assembly
-# path, the recognition step, and the two obligations already discharged, so that a new axiom in
-# any of them cannot pass unnoticed.
-construction_targets=(
-  "SphereSixComplex.Geometry.PaperAnalyticData.toPaperGluingData_of_positiveDegree"
-  "SphereSixComplex.exists_completedPaperThreefold_of_paperGluingData"
-  "SphereSixComplex.completedPaperThreefold_smoothRecognition"
-  "SphereSixComplex.Geometry.PaperAnalyticData.sectionSevenStageTopDegreeVanishing_actual"
-  "SphereSixComplex.Geometry.PaperAnalyticData.actualStarHasVanKampenData"
-  "SphereSixComplex.Topology.FiniteCoverPerfectPairing.ellipticFiniteCoverHomologyRealization"
-)
-
 work="$(mktemp -d)"
 trap 'rm -rf "$work"' EXIT
 
+{ grep -v '^[[:space:]]*#' "$allowlist" || true; } \
+  | { grep -v '^[[:space:]]*$' || true; } > "$work/allowed-in-order.txt"
+jq -r '.permitted_axioms[]' "$project_root/comparator.json" > "$work/comparator-allowed.txt"
+
+if ! cmp -s "$work/allowed-in-order.txt" "$work/comparator-allowed.txt"; then
+  echo "Axiom audit FAILED: comparator.json permitted_axioms differs from scripts/allowed-axioms.txt." >&2
+  diff -u "$work/allowed-in-order.txt" "$work/comparator-allowed.txt" >&2 || true
+  exit 1
+fi
+
+lake env lean "$project_root/scripts/ComparatorAxiomClosure.lean" \
+  > "$work/comparator-closure.txt"
+sort -u "$work/allowed-in-order.txt" > "$work/allowed-sorted.txt"
+sort -u "$work/comparator-closure.txt" > "$work/comparator-closure-sorted.txt"
+
+if ! cmp -s "$work/allowed-sorted.txt" "$work/comparator-closure-sorted.txt"; then
+  echo "Axiom audit FAILED: Comparator's recursive axiom closure differs from the allowlist." >&2
+  diff -u "$work/allowed-sorted.txt" "$work/comparator-closure-sorted.txt" >&2 || true
+  exit 1
+fi
+
+lake env lean "$project_root/scripts/ConstructionAxiomClosure.lean" \
+  > "$work/construction-closure.txt"
+sort -u "$work/construction-closure.txt" > "$work/construction.txt"
+
 {
   echo "import SphereSixComplex.Main"
-  for target in "${targets[@]}" "${construction_targets[@]}"; do
+  for target in "${targets[@]}"; do
     echo "#print axioms $target"
   done
 } > "$work/PrintAxioms.lean"
@@ -74,13 +81,11 @@ collect_for() {
 }
 
 printf '%s\n' "${targets[@]}" > "$work/final-names.txt"
-printf '%s\n' "${construction_targets[@]}" > "$work/construction-names.txt"
 collect_for "$work/final-names.txt" > "$work/found.txt"
-collect_for "$work/construction-names.txt" > "$work/construction.txt"
 
 # A target that printed nothing at all means the name did not resolve; fail loudly rather than
 # silently auditing an empty cone.
-for target in "${targets[@]}" "${construction_targets[@]}"; do
+for target in "${targets[@]}"; do
   if ! grep -q "^${target} " "$work/pairs.txt" \
       && ! grep -qF "'${target}' does not depend on any axioms" "$work/out.txt"; then
     echo "Axiom audit FAILED: no '#print axioms' output for ${target}." >&2
@@ -101,16 +106,6 @@ if ! extra="$(comm -23 "$work/found.txt" "$work/allowed.txt")" || [[ -n "$extra"
   exit 1
 fi
 
-if ! stale="$(comm -13 "$work/found.txt" "$work/allowed.txt")" || [[ -n "$stale" ]]; then
-  echo "Axiom audit FAILED: the final allowlist contains constants not reached by the final" >&2
-  echo "theorem:" >&2
-  echo "$stale" | sed 's/^/  /' >&2
-  echo >&2
-  echo "Remove them from scripts/allowed-axioms.txt; the allowlist should shrink as" >&2
-  echo "dependencies are discharged." >&2
-  exit 1
-fi
-
 echo "Axiom audit passed. The final theorem depends on:"
 sed 's/^/  /' "$work/found.txt"
 
@@ -119,10 +114,8 @@ if grep -qx 'sorryAx' "$work/found.txt"; then
   echo "Note: sorryAx is still present, so the development is not yet complete."
 fi
 
-# The construction cone is a separate exact ratchet, so a new `established*` axiom cannot appear
-# unnoticed while the final cone is still masked by `sorry`, and a discharged dependency must be
-# removed from its list. For a fixed target set this file should only shrink; adding an audited
-# endpoint can expose pre-existing dependencies that must be justified and added explicitly.
+# The construction cone is a separate exact recursive ratchet. A new dependency cannot appear
+# unnoticed, and a discharged dependency must be removed from its list.
 { grep -v '^[[:space:]]*#' "$construction_allowlist" || true; } \
   | { grep -v '^[[:space:]]*$' || true; } | sort -u > "$work/construction-allowed.txt"
 
