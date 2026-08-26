@@ -310,6 +310,7 @@ public import SphereSixComplex.Topology.PaperSectionSevenEllipticTwoDiscCoverRea
 public import SphereSixComplex.Topology.PaperEllipticInteriorNormalizedSplitting
 public import SphereSixComplex.Topology.PaperSectionSevenNormalizedLocalBases
 public import SphereSixComplex.Topology.PaperEllipticInteriorCycleDecomposition
+public import SphereSixComplex.Topology.PaperSectionSevenPositiveDegreeRealization
 
 /-!
 # A Complex Structure on the Six-Sphere

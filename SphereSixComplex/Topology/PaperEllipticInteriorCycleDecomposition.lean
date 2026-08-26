@@ -33,23 +33,6 @@ public noncomputable def sectionSevenActualNormalizedLocalBases
     (A.sectionSevenNormalizedCollarInteriorHomologyBases
       A.actualCuspCollarRadialMappingTorusRealization B S)
 
-/-- Pull the actual cusp-collar inclusion into the literal union used by the elliptic
-Mayer--Vietoris presentation. -/
-public noncomputable def cuspToEllipticUnionHomology
-    (D : A.SectionSevenEllipticTwoDiscCoverData) (k : ℕ)
-    (x : IntegralSingularHomology k (A.openEmbeddingStarData.collarSource 0)) :
-    IntegralSingularHomology k
-        (D.orderThreeSide ∪ D.orderFourSide : Set A.SectionSevenEllipticInterior) :=
-  (integralSingularHomologyEquiv k
-    (topologicalSubsetHomeomorphOfEqUniv (TopCat.of A.SectionSevenEllipticInterior)
-      (D.orderThreeSide ∪ D.orderFourSide) D.sides_cover)).symm
-    (integralSingularHomologyMap k
-      (IntegralMayerVietoris.interToLeft
-        ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4))
-        ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3))
-      (integralSingularHomologyEquiv k
-        A.cuspCollarToSectionSevenFinalOverlapHomeomorph x))
-
 /-- The geometric content of Lemma 7.19 at the remaining cusp boundary.
 
 This records equalities of actual singular-homology cycles in the two-disc Mayer--Vietoris total
@@ -249,5 +232,14 @@ public noncomputable def positiveDegreeHomologyAssembly :
     (A.sectionSevenActualNormalizedLocalBases B S) C.finalInclusionCoordinates
 
 end SectionSevenEllipticInteriorCycleDecomposition
+
+/-- Once the actual finite-cover calculations are fixed, band naturality, a normalized swept
+section, and the three cycle identities are the complete positive-degree input. -/
+public noncomputable def sectionSevenPositiveDegreeHomologyAssemblyOfActualEllipticData
+    (N : A.EllipticBandHomologyAlignment D)
+    (S : WangHomologyPresentation.NormalizedSplitting (presentationTwo (D := D)))
+    (C : A.SectionSevenEllipticInteriorCycleDecomposition N.actualHomologyCoordinates S) :
+    A.SectionSevenPositiveDegreeHomologyAssembly :=
+  C.positiveDegreeHomologyAssembly
 
 end SphereSixComplex.Geometry.PaperAnalyticData

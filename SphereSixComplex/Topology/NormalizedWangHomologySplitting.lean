@@ -29,6 +29,16 @@ public structure NormalizedSplitting where
 
 namespace NormalizedSplitting
 
+/-- An arbitrary projective lift supplies a splitting.  This construction makes no geometric
+normalization claim about the chosen section. -/
+public noncomputable def ofProjective [Module.Projective ℤ P.Invariants] :
+    NormalizedSplitting P := by
+  let lifting := Module.projective_lifting_property P.totalToInvariants LinearMap.id
+    P.totalToInvariants_surjective
+  exact
+    { sweptSection := Classical.choose lifting
+      rightInverse := Classical.choose_spec lifting }
+
 variable (S : NormalizedSplitting P)
 
 public def residual : Total →ₗ[ℤ] Total :=
