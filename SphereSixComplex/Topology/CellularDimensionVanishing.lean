@@ -23,7 +23,7 @@ open CategoryTheory CategoryTheory.Limits
 
 namespace SphereSixComplex
 
-variable (Y : Type) [TopologicalSpace Y] [Topology.CWComplex (Set.univ : Set Y)]
+variable (Y : Type) [TopologicalSpace Y] [T2Space Y] [Topology.CWComplex (Set.univ : Set Y)]
 
 /-- A space homeomorphic to a CW complex with no `n`-cells has no `n`-th integral singular
 homology.  The collars of Section 7 are described analytically and only then identified with a

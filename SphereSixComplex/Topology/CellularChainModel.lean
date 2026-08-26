@@ -37,9 +37,14 @@ namespace EstablishedCellularHomology
 /-- Cellular chains of a CW complex are naturally quasi-isomorphic to singular chains.  Mathlib
 does not currently construct the cellular boundary or this comparison map.
 
+The Hausdorff hypothesis is essential and may not be dropped: `Topology.CWComplex` carries no
+separation axiom, and `SphereSixComplex.isEmpty_forall_integralCWCellularChainModel` refutes the
+`T2Space`-free form of this statement using the two-point indiscrete space, which is a finite
+`Topology.CWComplex` with two zero-cells but has the singular homology of a point.
+
 Reference: [Hat02, Theorem 2.35] (cellular homology agrees with singular homology). -/
 public axiom integralCWCellularChainModel
-    (Y : Type) [TopologicalSpace Y] [Topology.CWComplex (Set.univ : Set Y)] :
+    (Y : Type) [TopologicalSpace Y] [T2Space Y] [Topology.CWComplex (Set.univ : Set Y)] :
     IntegralCWCellularChainModel Y
 
 end EstablishedCellularHomology
@@ -54,8 +59,8 @@ public theorem isZero_cellularChain_of_isEmpty_cell
   have : Subsingleton (M.chainComplex.X n) := (M.cellBasis n).symm.injective.subsingleton
   exact AddCommGrpCat.isZero_of_subsingleton _
 
-/-- A CW complex has no `n`-th integral singular homology once it has no `n`-cells. -/
-public theorem subsingleton_integralSingularHomology_of_isEmpty_cell (n : ℕ)
+/-- A Hausdorff CW complex has no `n`-th integral singular homology once it has no `n`-cells. -/
+public theorem subsingleton_integralSingularHomology_of_isEmpty_cell (n : ℕ) [T2Space Y]
     [IsEmpty (Topology.CWComplex.cell (Set.univ : Set Y) n)] :
     Subsingleton (IntegralSingularHomology n Y) := by
   obtain M := EstablishedCellularHomology.integralCWCellularChainModel Y

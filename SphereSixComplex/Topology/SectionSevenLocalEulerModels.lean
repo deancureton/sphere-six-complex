@@ -27,6 +27,10 @@ namespace SphereSixComplex
 public structure FiniteCWModelSix (X : Type) [TopologicalSpace X] where
   Carrier : Type
   topology : TopologicalSpace Carrier
+  /-- The carrier is Hausdorff.  `Topology.CWComplex` carries no separation axiom, and the
+  cellular chain model is false without one; see
+  `SphereSixComplex.isEmpty_forall_integralCWCellularChainModel`. -/
+  t2 : let _ := topology; T2Space Carrier
   homotopyEquiv : let _ := topology; X ≃ₕ Carrier
   cwComplex : let _ := topology; Topology.CWComplex (Set.univ : Set Carrier)
   finite : let _ := topology; let _ := cwComplex
@@ -57,6 +61,7 @@ public theorem establishedIntegralCellularEulerPoincareSix (M : FiniteCWModelSix
       (M.cellCount 0 : ℤ) - M.cellCount 1 + M.cellCount 2 - M.cellCount 3 +
         M.cellCount 4 - M.cellCount 5 + M.cellCount 6 := by
   let _ := M.topology
+  let _ := M.t2
   let _ := M.cwComplex
   let _ := M.finite
   exact CellularEulerPoincare.integralHomologyEulerCharacteristicSix_eq_cellSum
@@ -69,6 +74,7 @@ public theorem integralHomologyFiniteSix (M : FiniteCWModelSix X) :
     IntegralHomologyFiniteSix X where
   finiteHomology k := by
     let _ := M.topology
+    let _ := M.t2
     let _ := M.cwComplex
     let _ := M.finite
     let CM := EstablishedCellularHomology.integralCWCellularChainModel M.Carrier
@@ -86,6 +92,7 @@ public theorem integralHomologyFiniteSix (M : FiniteCWModelSix X) :
       (integralSingularHomologyEquivOfHomotopyEquiv k M.homotopyEquiv).symm.toIntLinearEquiv
   homologyAboveDimension k hk := by
     let _ := M.topology
+    let _ := M.t2
     let _ := M.cwComplex
     have _hempty : IsEmpty (Topology.CWComplex.cell (Set.univ : Set M.Carrier) k) :=
       M.cellsAboveSix k hk

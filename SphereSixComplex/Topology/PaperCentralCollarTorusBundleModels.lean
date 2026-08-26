@@ -35,6 +35,7 @@ public noncomputable def pullbackHomeomorph
     exact
       { Carrier := M.toFiniteCWModelSix.Carrier
         topology := inferInstance
+        t2 := M.toFiniteCWModelSix.t2
         homotopyEquiv := e.toHomotopyEquiv.trans M.toFiniteCWModelSix.homotopyEquiv
         cwComplex := M.toFiniteCWModelSix.cwComplex
         finite := M.toFiniteCWModelSix.finite

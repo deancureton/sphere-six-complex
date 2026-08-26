@@ -25,6 +25,7 @@ public theorem FiniteCWModelSix.subsingleton_homology_of_cellCount_eq_zero
     (M : FiniteCWModelSix X) (n : ℕ) (h : M.cellCount n = 0) :
     Subsingleton (IntegralSingularHomology n X) := by
   let _ := M.topology
+  let _ := M.t2
   let _ := M.cwComplex
   let _ := M.finite
   have hfin : Finite (Topology.CWComplex.cell (Set.univ : Set M.Carrier) n) :=

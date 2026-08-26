@@ -243,6 +243,7 @@ public noncomputable def establishedIntegralCellularChainModel
     let _ := D.cwComplex
     IntegralCWCellularChainModel D.Carrier := by
   letI := D.topology
+  letI := D.t2
   letI := D.cwComplex
   exact EstablishedCellularHomology.integralCWCellularChainModel D.Carrier
 

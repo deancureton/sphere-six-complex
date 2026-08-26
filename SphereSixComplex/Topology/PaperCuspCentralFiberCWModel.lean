@@ -50,6 +50,10 @@ public structure StandardA2ToricCentralFiberCWDecomposition
     (X : Type) [TopologicalSpace X] where
   Carrier : Type
   topology : TopologicalSpace Carrier
+  /-- The carrier is Hausdorff.  `Topology.CWComplex` carries no separation axiom, and the
+  cellular chain model is false without one; see
+  `SphereSixComplex.isEmpty_forall_integralCWCellularChainModel`. -/
+  t2 : let _ := topology; T2Space Carrier
   homotopyEquiv : let _ := topology; X ≃ₕ Carrier
   cwComplex : let _ := topology; Topology.CWComplex (Set.univ : Set Carrier)
   finite : let _ := topology; let _ := cwComplex
@@ -66,6 +70,7 @@ public noncomputable def toFiniteCWModelSix
     (D : StandardA2ToricCentralFiberCWDecomposition X) : FiniteCWModelSix X where
   Carrier := D.Carrier
   topology := D.topology
+  t2 := D.t2
   homotopyEquiv := D.homotopyEquiv
   cwComplex := D.cwComplex
   finite := D.finite

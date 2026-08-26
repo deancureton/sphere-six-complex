@@ -168,7 +168,7 @@ public theorem alternating_finrank_six (K : ChainComplex AddCommGrpCat ℕ)
 /-- The truncated integral-homology Euler characteristic of a space homotopy equivalent to a
 finite CW complex with no cells above degree six is the alternating sum of its cell counts. -/
 public theorem integralHomologyEulerCharacteristicSix_eq_cellSum
-    {X : Type} [TopologicalSpace X] {Y : Type} [TopologicalSpace Y]
+    {X : Type} [TopologicalSpace X] {Y : Type} [TopologicalSpace Y] [T2Space Y]
     [Topology.CWComplex (Set.univ : Set Y)] [Topology.CWComplex.Finite (Set.univ : Set Y)]
     (e : X ≃ₕ Y)
     (hempty : ∀ n, 6 < n → IsEmpty (Topology.CWComplex.cell (Set.univ : Set Y) n)) :

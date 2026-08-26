@@ -47,7 +47,7 @@ public theorem subsingleton_homology_succ_finiteBouquetMappingTorus
 integral singular homology.  This is the shape of the remaining Section 7 collar obligation: the
 labelling stops at degree four, so the fibre contributes nothing in degrees five and six. -/
 public theorem subsingleton_homology_six_finiteBouquetMappingTorus_of_labelledA2Cells
-    [DiscreteTopology ι]
+    [DiscreteTopology ι] [T2Space F]
     [Topology.CWComplex (Set.univ : Set F)]
     (e : ∀ n, Topology.CWComplex.cell (Set.univ : Set F) n ≃ cuspWCellIndex n)
     (φ : ι → F ≃ₜ F) :
