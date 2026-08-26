@@ -159,6 +159,7 @@ public import SphereSixComplex.Topology.BinaryOpenCoverCorestriction
 public import SphereSixComplex.Topology.BinaryOpenCoverExcision
 public import SphereSixComplex.Topology.BinaryOpenCoverMayerVietoris
 public import SphereSixComplex.Topology.BinaryOpenCoverNaturality
+public import SphereSixComplex.Topology.BinaryOpenCoverMapNaturality
 public import SphereSixComplex.Topology.BinaryOpenCoverSubdivision
 public import SphereSixComplex.Topology.BinaryOpenCoverAssembly
 public import SphereSixComplex.Topology.HomologyComputation
@@ -313,6 +314,7 @@ public import SphereSixComplex.Topology.PaperSectionSevenNormalizedLocalBases
 public import SphereSixComplex.Topology.PaperEllipticInteriorCycleDecomposition
 public import SphereSixComplex.Topology.PaperSectionSevenPositiveDegreeRealization
 public import SphereSixComplex.Topology.PaperSectionSevenCuspBasisReduction
+public import SphereSixComplex.Topology.PaperSectionSevenPositiveDegreeGeometricReduction
 
 /-!
 # A Complex Structure on the Six-Sphere
