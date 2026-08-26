@@ -171,6 +171,7 @@ public import SphereSixComplex.Topology.MayerVietoris
 public import SphereSixComplex.Topology.CellularChainModel
 public import SphereSixComplex.Topology.MayerVietorisDegreeZeroBridge
 public import SphereSixComplex.Topology.ConnectedMayerVietorisDegreeZero
+public import SphereSixComplex.Geometry.PaperCentralFundamentalGroupSurjectivity
 public import SphereSixComplex.Topology.SectionSevenChainModel
 public import SphereSixComplex.Topology.SectionSevenCoherentRealizationReduction
 public import SphereSixComplex.Topology.SectionSevenHomologyBridge

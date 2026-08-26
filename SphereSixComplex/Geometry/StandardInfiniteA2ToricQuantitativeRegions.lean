@@ -1,6 +1,7 @@
 module
 
 public import SphereSixComplex.Geometry.StandardInfiniteA2ToricComponentPreservation
+import all SphereSixComplex.LatticeData
 
 /-!
 # Quantitative regions in the standard infinite `A₂` toric model
@@ -246,6 +247,43 @@ public theorem exists_a2Barycentric_nonneg (y : Fin 2 → ℝ) :
   · refine ⟨true, v, fun i ↦ ?_⟩
     fin_cases i <;> norm_num [a2Barycentric] <;> linarith
 
+/-- The floor construction selecting a standard `A₂` triangle also bounds its lattice index by
+the `ℓ¹` size of the point, up to the two coordinate-rounding errors. -/
+public theorem exists_a2Barycentric_nonneg_with_index_bound (y : Fin 2 → ℝ) :
+    ∃ upper v, (∀ i, 0 ≤ a2Barycentric upper v y i) ∧
+      latticeL1 v ≤ positionL1 y + 2 := by
+  let v : ToricLattice := ![⌊y 0⌋, ⌊y 1⌋]
+  have h0 : (v 0 : ℝ) ≤ y 0 := by
+    simpa [v] using Int.floor_le (y 0)
+  have h0' : y 0 < (v 0 : ℝ) + 1 := by
+    change y 0 < (⌊y 0⌋ : ℝ) + 1
+    exact Int.lt_floor_add_one (y 0)
+  have h1 : (v 1 : ℝ) ≤ y 1 := by
+    simpa [v] using Int.floor_le (y 1)
+  have h1' : y 1 < (v 1 : ℝ) + 1 := by
+    change y 1 < (⌊y 1⌋ : ℝ) + 1
+    exact Int.lt_floor_add_one (y 1)
+  have hv0 : |(v 0 : ℝ)| ≤ |y 0| + 1 := by
+    have hdiff := abs_sub_abs_le_abs_sub (v 0 : ℝ) (y 0)
+    have hgap : |(v 0 : ℝ) - y 0| < 1 := by
+      rw [abs_of_nonpos (sub_nonpos.2 h0)]
+      linarith
+    linarith
+  have hv1 : |(v 1 : ℝ)| ≤ |y 1| + 1 := by
+    have hdiff := abs_sub_abs_le_abs_sub (v 1 : ℝ) (y 1)
+    have hgap : |(v 1 : ℝ) - y 1| < 1 := by
+      rw [abs_of_nonpos (sub_nonpos.2 h1)]
+      linarith
+    linarith
+  have hvbound : latticeL1 v ≤ positionL1 y + 2 := by
+    simp only [latticeL1, positionL1]
+    linarith
+  by_cases hsum : (y 0 - (v 0 : ℝ)) + (y 1 - (v 1 : ℝ)) ≤ 1
+  · refine ⟨false, v, fun i ↦ ?_, hvbound⟩
+    fin_cases i <;> norm_num [a2Barycentric] <;> linarith
+  · refine ⟨true, v, fun i ↦ ?_, hvbound⟩
+    fin_cases i <;> norm_num [a2Barycentric] <;> linarith
+
 /-- The open triangle dilation `sigma(eta) = {theta_i > -eta}` from §4.4. -/
 public def a2TriangleDilation
     (upper : Bool) (v : ToricLattice) (eta : ℝ) : Set (Fin 2 → ℝ) :=
@@ -322,6 +360,27 @@ public theorem compact_closedToricPolydisc
   rw [← himage]
   exact (compact_closedCoordinatePolydisc S).image_of_continuousOn
     (e.toOpenPartialHomeomorph.continuousOn_invFun.mono htarget)
+
+/-- The finite set of affine-chart indices in a fixed lattice `ℓ¹` ball. -/
+public def boundedToricRegionIndices (B : ℝ) : Set ToricRegionIndex :=
+  {a | latticeL1 a.2 ≤ B}
+
+public theorem boundedToricRegionIndices_finite (B : ℝ) :
+    (boundedToricRegionIndices B).Finite := by
+  have hbool : (Set.univ : Set Bool).Finite := Set.finite_univ
+  have hproduct := hbool.prod (latticeL1_sublevel_finite B)
+  apply hproduct.subset
+  rintro ⟨upper, v⟩ hv
+  exact ⟨Set.mem_univ upper, hv⟩
+
+/-- The finite union of closed unit polydiscs with bounded lattice index. -/
+public def boundedClosedUnitToricPolydiscs (M : Model) (B : ℝ) : Set M.Carrier :=
+  ⋃ a ∈ boundedToricRegionIndices B, closedToricPolydisc M a.1 a.2 1
+
+public theorem compact_boundedClosedUnitToricPolydiscs (M : Model) (B : ℝ) :
+    IsCompact (boundedClosedUnitToricPolydiscs M B) :=
+  (boundedToricRegionIndices_finite B).isCompact_biUnion
+    (fun a _ ↦ compact_closedToricPolydisc M a.1 a.2 1)
 
 public theorem closedToricPolydisc_eq
     (M : Model) (upper : Bool) (v : ToricLattice) (S : ℝ) :
@@ -400,6 +459,24 @@ public theorem exists_closedUnitToricPolydisc_of_ne_zero
     rw [log_norm_toricChart M hp ht upper v i]
     exact mul_nonpos_of_nonpos_of_nonneg (le_of_lt (Real.log_neg (norm_pos_iff.mpr hp) ht)) (hv i)
 
+/-- A bounded rescaled position is represented in a closed unit polydisc whose lattice index
+has a corresponding uniform bound. -/
+public theorem exists_closedUnitToricPolydisc_with_index_bound
+    (M : Model) {p : M.Carrier} (hp : M.t p ≠ 0) (ht : ‖M.t p‖ < 1)
+    {B : ℝ} (hposition : positionL1 (rescaledPosition M p) ≤ B) :
+    ∃ upper v, p ∈ (M.toricChart upper v).source ∧
+      (∀ i, ‖M.toricChart upper v p i‖ ≤ 1) ∧ latticeL1 v ≤ B + 2 := by
+  obtain ⟨upper, v, hv, hvbound⟩ :=
+    exists_a2Barycentric_nonneg_with_index_bound (rescaledPosition M p)
+  refine ⟨upper, v, ?_, ?_, hvbound.trans (by linarith)⟩
+  · rw [← torusEmbedding_torusCoordinates M hp]
+    exact M.torus_mem_toricChart upper v (torusCoordinates M p)
+  · intro i
+    apply (Real.log_nonpos_iff (norm_nonneg _)).mp
+    rw [log_norm_toricChart M hp ht upper v i]
+    exact mul_nonpos_of_nonpos_of_nonneg
+      (le_of_lt (Real.log_neg (norm_pos_iff.mpr hp) ht)) (hv i)
+
 /-- Local finiteness and density extend the dense-torus unit-polydisc cover across the central
 fibre. -/
 public theorem exists_closedUnitToricPolydisc
@@ -435,6 +512,127 @@ public theorem exists_closedUnitToricPolydisc
   obtain ⟨⟨upper, v⟩, hpV⟩ := Set.mem_iUnion.1 (hUV hpU)
   rw [closedToricPolydisc_eq] at hpV
   exact ⟨upper, v, hpV⟩
+
+/-- The translation-independent vertex offset of one of the two standard `A₂` triangles. -/
+public def a2TriangleOffset (upper : Bool) (i : Fin 3) : ToricLattice :=
+  a2Triangle upper 0 i
+
+public theorem a2Triangle_eq_add_offset
+    (upper : Bool) (v : ToricLattice) (i : Fin 3) :
+    a2Triangle upper v i = v + a2TriangleOffset upper i := by
+  cases upper <;> fin_cases i <;>
+    simp [a2Triangle, a2TriangleOffset] <;> abel_nf
+
+/-- Only finitely many maximal cones contain a fixed height-one ray. -/
+public theorem finite_toricRegionIndex_containing_vertex (w : ToricLattice) :
+    {a : ToricRegionIndex | w ∈ Set.range (a2Triangle a.1 a.2)}.Finite := by
+  let index : Bool × Fin 3 → ToricRegionIndex :=
+    fun a ↦ (a.1, w - a2TriangleOffset a.1 a.2)
+  apply (Set.finite_range index).subset
+  rintro ⟨upper, v⟩ ⟨i, hi⟩
+  refine ⟨(upper, i), ?_⟩
+  apply Prod.ext
+  · rfl
+  · rw [a2Triangle_eq_add_offset] at hi
+    exact ((eq_sub_iff_add_eq).2 hi).symm
+
+/-- Every ray component of the standard infinite toric central fibre is closed. -/
+public theorem closed_centralComponent (M : Model) (w : ToricLattice) :
+    IsClosed (M.centralComponent w) := by
+  rw [← isOpen_compl_iff]
+  apply isOpen_iff_mem_nhds.2
+  intro p hp
+  obtain ⟨upper, v, hpchart⟩ := M.toricChart_cover p
+  by_cases hw : w ∈ Set.range (a2Triangle upper v)
+  · obtain ⟨i, hi⟩ := hw
+    let e := M.toricChart upper v
+    let U : Set M.Carrier := e.source ∩
+      e ⁻¹' {z : ComplexModel | z i ≠ 0}
+    have hUopen : IsOpen U := by
+      exact e.toOpenPartialHomeomorph.continuousOn.isOpen_inter_preimage
+        e.open_source
+          (isOpen_compl_singleton.preimage (EuclideanSpace.proj i).continuous)
+    have hcoord : e p i ≠ 0 := by
+      intro hzero
+      apply hp
+      have hmem : p ∈ M.centralComponent (a2Triangle upper v i) :=
+        (M.centralComponent_in_chart upper v i p hpchart).2 hzero
+      simpa only [hi] using hmem
+    have hpU : p ∈ U := by
+      change p ∈ e.source ∧ e p i ≠ 0
+      exact ⟨hpchart, hcoord⟩
+    apply Filter.mem_of_superset (hUopen.mem_nhds hpU)
+    intro q hq hqw
+    have hmem : q ∈ M.centralComponent (a2Triangle upper v i) := by
+      simpa only [hi] using hqw
+    exact hq.2 ((M.centralComponent_in_chart upper v i q hq.1).1 hmem)
+  · have hdisjoint := M.otherCentralComponent_disjoint_chart upper v w hw
+    apply Filter.mem_of_superset ((M.toricChart upper v).open_source.mem_nhds hpchart)
+    exact fun q hq hqw ↦ Set.disjoint_left.1 hdisjoint hqw hq
+
+/-- A ray component is covered by the compact unit polydiscs of the finitely many maximal
+cones containing its vertex. -/
+public theorem centralComponent_subset_finite_closedUnitPolydiscs
+    (M : Model) (w : ToricLattice) :
+    M.centralComponent w ⊆ ⋃ a ∈
+      {a : ToricRegionIndex | w ∈ Set.range (a2Triangle a.1 a.2)},
+        closedToricPolydisc M a.1 a.2 1 := by
+  intro p hp
+  obtain ⟨upper, v, hpchart, hpcoord⟩ :=
+    exists_closedUnitToricPolydisc M (p := p) (by
+      have hzero : M.t p = 0 := by
+        have hpzero : p ∈ M.t ⁻¹' {0} := by
+          rw [M.centralFiber_eq_iUnion]
+          exact Set.mem_iUnion.2 ⟨w, hp⟩
+        exact hpzero
+      rw [hzero, norm_zero]
+      norm_num)
+  have hw : w ∈ Set.range (a2Triangle upper v) := by
+    by_contra hnot
+    exact Set.disjoint_left.1
+      (M.otherCentralComponent_disjoint_chart upper v w hnot) hp hpchart
+  apply Set.mem_iUnion.2
+  refine ⟨(upper, v), Set.mem_iUnion.2 ⟨hw, ?_⟩⟩
+  rw [closedToricPolydisc_eq]
+  exact ⟨hpchart, hpcoord⟩
+
+/-- Every height-one ray component is a compact toric surface.  This is derived from the local
+finite-fan interface: a component is closed and is contained in finitely many compact unit
+polydiscs. -/
+public theorem compact_centralComponent (M : Model) (w : ToricLattice) :
+    IsCompact (M.centralComponent w) := by
+  let S : Set ToricRegionIndex :=
+    {a | w ∈ Set.range (a2Triangle a.1 a.2)}
+  let K : Set M.Carrier := ⋃ a ∈ S, closedToricPolydisc M a.1 a.2 1
+  have hK : IsCompact K :=
+    (finite_toricRegionIndex_containing_vertex w).isCompact_biUnion
+      (fun a _ ↦ compact_closedToricPolydisc M a.1 a.2 1)
+  exact hK.of_isClosed_subset (closed_centralComponent M w)
+    (centralComponent_subset_finite_closedUnitPolydiscs M w)
+
+/-- Every point of the central fibre can be moved into the component indexed by zero by the
+phase-corrected lattice action.  The fan shear moves the component index, while the torus phase
+preserves that component. -/
+public theorem central_orbit_meets_zero_component
+    {r : ℝ} (M : Model) (C : ExactLocalHolomorphicPhaseCoefficients M r)
+    (Q : TorusActionPreservesComponents M) (p : LocalCarrier M r)
+    (hp : M.t p = 0) :
+    ∃ lambda : ParameterLattice,
+      (C.psiMap lambda p : M.Carrier) ∈ M.centralComponent 0 := by
+  have hpcentral : (p : M.Carrier) ∈ M.t ⁻¹' {0} := hp
+  rw [M.centralFiber_eq_iUnion] at hpcentral
+  obtain ⟨v, hv⟩ := Set.mem_iUnion.1 hpcentral
+  obtain ⟨lambda, hlambda⟩ := shearVector_surjective (-v)
+  refine ⟨lambda, ?_⟩
+  have hshear : Additive.toMul (M.fanShear lambda) (p : M.Carrier) ∈
+      M.centralComponent (v + shearVector lambda) := by
+    rw [← M.fanShear_component lambda v]
+    exact ⟨p, hv, rfl⟩
+  have hphase := (Q.phaseAction_component
+    (C.phase lambda (M.t p)) (v + shearVector lambda)
+      (Additive.toMul (M.fanShear lambda) (p : M.Carrier))).2 hshear
+  rw [C.psiMap_coe]
+  simpa only [hlambda, add_neg_cancel] using hphase
 
 /-- Every fixed dilated `A₂` triangle has bounded `ℓ¹` position. -/
 public theorem exists_positionL1_bound_a2TriangleDilation
@@ -678,8 +876,8 @@ public structure ActualLocalCuspQuotientWitness
     (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) where
   radius : ℝ
   radius_pos : 0 < radius
-  radius_le : radius ≤ cuspRadius N.height
   radius_lt_one : radius < 1
+  radius_le : radius ≤ cuspRadius N.height
   phaseBound : ℝ
   phaseBound_nonneg : 0 ≤ phaseBound
   phaseLogMatrix_entry_bound : ∀ (p : LocalCarrier M radius) i j,
@@ -719,20 +917,25 @@ public theorem exists_actualLocalCuspQuotientWitness
   let C :=
     CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
       N M r hr hradius
+  have hmatrix : ∀ (p : LocalCarrier M r), M.t p ≠ 0 → ∀ i j,
+      |CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.phaseLogMatrix
+        N (M.t p) i j| ≤ A := by
+    intro p _hp i j
+    have hpball : ‖M.t p‖ < r := mem_ball_zero_iff.mp p.property
+    have hq : M.t p ∈ Metric.closedBall (0 : ℂ) rho := by
+      rw [mem_closedBall_zero_iff]
+      exact (le_of_lt hpball).trans (min_le_left _ _)
+    exact hR (M.t p) hq i j
   have hentry : ∀ (p : LocalCarrier M r), M.t p ≠ 0 → ∀ lambda i,
       |(CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.phaseLogMatrix
         N (M.t p)).mulVec
           (CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.realParameter
             lambda) i| ≤ A * latticeL1 lambda := by
-    intro p _hp lambda i
-    have hpball : ‖M.t p‖ < r := mem_ball_zero_iff.mp p.property
-    have hq : M.t p ∈ Metric.closedBall (0 : ℂ) rho := by
-      rw [mem_closedBall_zero_iff]
-      exact (le_of_lt hpball).trans (min_le_left _ _)
+    intro p hp lambda i
     simpa only [latticeL1,
       CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.parameterL1] using
         CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.phaseLog_mulVec_le
-          N (hR (M.t p) hq) lambda i
+          N (hmatrix p hp) lambda i
   have hlog : ∀ (p : LocalCarrier M r), M.t p ≠ 0 →
       4 * A ≤ |Real.log ‖M.t p‖| := by
     intro p hp
@@ -774,7 +977,7 @@ public theorem exists_actualLocalCuspQuotientWitness
       N M hrone C rfl hentry hlog
   let R := standardBoundedPolydiscRegions M r hr hrone
   let T : QuantitativeToricRegionCover C := R.toQuantitativeToricRegionCover C hdisplacement
-  refine ⟨⟨r, hr, hradius, hrone, A, hA, ?_, hlog, hfixed,
+  refine ⟨⟨r, hr, hrone, hradius, A, hA, ?_, hlog, hfixed,
     T.compactOverlapEstimate⟩⟩
   intro p i j
   apply hR
@@ -784,6 +987,190 @@ public theorem exists_actualLocalCuspQuotientWitness
 namespace ActualLocalCuspQuotientWitness
 
 variable {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+
+/-- The integral cusp shear, regarded as a real matrix. -/
+public def realCuspShearMatrix : Matrix (Fin 2) (Fin 2) ℝ :=
+  fun i j ↦ (SphereSixComplex.LatticeData.B₀ i j : ℝ)
+
+/-- The normalized phase correction `R(t) / log |t|` at a noncentral local point. -/
+public noncomputable def normalizedPhaseCorrectionMatrix
+    (W : ActualLocalCuspQuotientWitness N M) (p : LocalCarrier M W.radius) :
+    Matrix (Fin 2) (Fin 2) ℝ :=
+  fun i j ↦
+    CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.phaseLogMatrix
+      N (M.t p) i j / Real.log ‖M.t p‖
+
+/-- The real matrix `B_t` governing the change of rescaled position under the actual lattice
+action. -/
+public noncomputable def rescaledDisplacementMatrix
+    (W : ActualLocalCuspQuotientWitness N M) (p : LocalCarrier M W.radius) :
+    Matrix (Fin 2) (Fin 2) ℝ :=
+  realCuspShearMatrix + normalizedPhaseCorrectionMatrix W p
+
+public theorem normalizedPhaseCorrectionMatrix_entry_le
+    (W : ActualLocalCuspQuotientWitness N M) (p : LocalCarrier M W.radius)
+    (hp : M.t p ≠ 0) (i j : Fin 2) :
+    |normalizedPhaseCorrectionMatrix W p i j| ≤ 1 / 4 := by
+  have hnorm_pos : 0 < ‖M.t p‖ := norm_pos_iff.mpr hp
+  have hnorm_lt : ‖M.t p‖ < 1 :=
+    (mem_ball_zero_iff.mp p.property).trans W.radius_lt_one
+  have hlog_ne : Real.log ‖M.t p‖ ≠ 0 :=
+    Real.log_ne_zero_of_pos_of_ne_one hnorm_pos (ne_of_lt hnorm_lt)
+  have habslog : 0 < |Real.log ‖M.t p‖| := abs_pos.mpr hlog_ne
+  rw [normalizedPhaseCorrectionMatrix, abs_div]
+  apply (div_le_iff₀ habslog).2
+  have hentry := W.phaseLogMatrix_entry_bound p i j
+  have hlog := W.phaseLog_dominates p hp
+  nlinarith
+
+public theorem rescaledDisplacementMatrix_entry_le
+    (W : ActualLocalCuspQuotientWitness N M) (p : LocalCarrier M W.radius)
+    (hp : M.t p ≠ 0) (i j : Fin 2) :
+    |rescaledDisplacementMatrix W p i j| ≤ 5 / 4 := by
+  calc
+    |rescaledDisplacementMatrix W p i j| =
+        |realCuspShearMatrix i j + normalizedPhaseCorrectionMatrix W p i j| := rfl
+    _ ≤ |realCuspShearMatrix i j| +
+        |normalizedPhaseCorrectionMatrix W p i j| := abs_add_le _ _
+    _ ≤ 1 + 1 / 4 := add_le_add (by
+      fin_cases i <;> fin_cases j <;>
+        norm_num [realCuspShearMatrix, SphereSixComplex.LatticeData.B₀])
+      (W.normalizedPhaseCorrectionMatrix_entry_le p hp i j)
+    _ = 5 / 4 := by norm_num
+
+/-- The small phase correction cannot make the real displacement matrix singular. -/
+public theorem rescaledDisplacementMatrix_det_pos
+    (W : ActualLocalCuspQuotientWitness N M) (p : LocalCarrier M W.radius)
+    (hp : M.t p ≠ 0) :
+    0 < (rescaledDisplacementMatrix W p).det := by
+  let e00 := normalizedPhaseCorrectionMatrix W p 0 0
+  let e01 := normalizedPhaseCorrectionMatrix W p 0 1
+  let e10 := normalizedPhaseCorrectionMatrix W p 1 0
+  let e11 := normalizedPhaseCorrectionMatrix W p 1 1
+  have h00 := W.normalizedPhaseCorrectionMatrix_entry_le p hp 0 0
+  have h01 := W.normalizedPhaseCorrectionMatrix_entry_le p hp 0 1
+  have h10 := W.normalizedPhaseCorrectionMatrix_entry_le p hp 1 0
+  have h11 := W.normalizedPhaseCorrectionMatrix_entry_le p hp 1 1
+  change |e00| ≤ 1 / 4 at h00
+  change |e01| ≤ 1 / 4 at h01
+  change |e10| ≤ 1 / 4 at h10
+  change |e11| ≤ 1 / 4 at h11
+  have h0011 : |e00 * e11| ≤ 1 / 16 := by
+    rw [abs_mul]
+    nlinarith [abs_nonneg e00, abs_nonneg e11]
+  have h0110 : |e01 * e10| ≤ 1 / 16 := by
+    rw [abs_mul]
+    nlinarith [abs_nonneg e01, abs_nonneg e10]
+  rw [Matrix.det_fin_two]
+  norm_num [rescaledDisplacementMatrix, realCuspShearMatrix,
+    SphereSixComplex.LatticeData.B₀]
+  change (1 + e01) * (-1 + e10) < e00 * e11
+  rcases abs_le.mp h00 with ⟨h00l, h00u⟩
+  rcases abs_le.mp h01 with ⟨h01l, h01u⟩
+  rcases abs_le.mp h10 with ⟨h10l, h10u⟩
+  rcases abs_le.mp h11 with ⟨h11l, h11u⟩
+  rcases abs_le.mp h0011 with ⟨h0011l, h0011u⟩
+  rcases abs_le.mp h0110 with ⟨h0110l, h0110u⟩
+  nlinarith
+
+public theorem realCuspShearMatrix_mulVec_realParameter
+    (lambda : ParameterLattice) :
+    realCuspShearMatrix.mulVec
+        (CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.realParameter
+          lambda) =
+      fun i ↦ (shearVector lambda i : ℝ) := by
+  funext i
+  fin_cases i <;>
+    simp [realCuspShearMatrix, SphereSixComplex.LatticeData.B₀, shearVector,
+      Matrix.mulVec, dotProduct, Fin.sum_univ_two,
+      CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.realParameter]
+
+public theorem rescaledPosition_psiMap_sub_eq_mulVec
+    (W : ActualLocalCuspQuotientWitness N M) (lambda : ParameterLattice)
+    (p : LocalCarrier M W.radius) (hp : M.t p ≠ 0) :
+    rescaledPosition M
+        ((CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
+          N M W.radius W.radius_pos W.radius_le).psiMap lambda p) -
+      rescaledPosition M p =
+        (rescaledDisplacementMatrix W p).mulVec
+          (CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.realParameter
+            lambda) := by
+  let C :=
+    CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
+      N M W.radius W.radius_pos W.radius_le
+  rw [CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.rescaledPosition_psiMap_sub
+    N M W.radius_lt_one C rfl lambda p hp]
+  rw [rescaledDisplacementMatrix, Matrix.add_mulVec,
+    realCuspShearMatrix_mulVec_realParameter]
+  funext i
+  simp only [Pi.add_apply]
+  change (shearVector lambda i : ℝ) +
+      (CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.phaseLogMatrix
+        N (M.t p)).mulVec
+          (CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.realParameter
+            lambda) i / Real.log ‖M.t p‖ =
+    (shearVector lambda i : ℝ) +
+      (normalizedPhaseCorrectionMatrix W p).mulVec
+        (CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.realParameter
+          lambda) i
+  congr 1
+  fin_cases i <;>
+    simp [normalizedPhaseCorrectionMatrix, Matrix.mulVec, dotProduct, Fin.sum_univ_two,
+      CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.realParameter] <;>
+    ring
+
+/-- Uniform lattice reduction for every noncentral point: one actual phase-corrected lattice
+translate has rescaled position in the fixed `ℓ¹` ball of radius five. -/
+public theorem exists_psiMap_positionL1_le_five
+    (W : ActualLocalCuspQuotientWitness N M) (p : LocalCarrier M W.radius)
+    (hp : M.t p ≠ 0) :
+    ∃ lambda : ParameterLattice,
+      positionL1 (rescaledPosition M
+        ((CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
+          N M W.radius W.radius_pos W.radius_le).psiMap lambda p)) ≤ 5 := by
+  let A := rescaledDisplacementMatrix W p
+  have hdet : A.det ≠ 0 := ne_of_gt (W.rescaledDisplacementMatrix_det_pos p hp)
+  have hunit : IsUnit A.det := isUnit_iff_ne_zero.mpr hdet
+  have hAunit : IsUnit A := (Matrix.isUnit_iff_isUnit_det A).2 hunit
+  have hsurj : Function.Surjective A.mulVec :=
+    Matrix.mulVec_surjective_iff_isUnit.2 hAunit
+  obtain ⟨x, hx⟩ := hsurj (-rescaledPosition M p)
+  let lambda : ParameterLattice := fun i ↦ ⌊x i⌋
+  let xr : Fin 2 → ℝ :=
+    CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.realParameter lambda
+  let err : Fin 2 → ℝ := xr - x
+  have herr (i : Fin 2) : |err i| ≤ 1 := by
+    have hfloor : (⌊x i⌋ : ℝ) ≤ x i := Int.floor_le (x i)
+    have hceil : x i < (⌊x i⌋ : ℝ) + 1 := Int.lt_floor_add_one (x i)
+    change |(⌊x i⌋ : ℝ) - x i| ≤ 1
+    rw [abs_le]
+    constructor <;> linarith
+  have hcoord (i : Fin 2) : |A.mulVec err i| ≤ 5 / 2 := by
+    have hterm (j : Fin 2) : |A i j * err j| ≤ 5 / 4 := by
+      rw [abs_mul]
+      exact (mul_le_of_le_one_right (abs_nonneg (A i j)) (herr j)).trans
+        (W.rescaledDisplacementMatrix_entry_le p hp i j)
+    simp only [Matrix.mulVec, dotProduct, Fin.sum_univ_two]
+    exact (abs_add_le _ _).trans (by linarith [hterm 0, hterm 1])
+  let C :=
+    CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
+      N M W.radius W.radius_pos W.radius_le
+  have hdisp := W.rescaledPosition_psiMap_sub_eq_mulVec lambda p hp
+  have hposition : rescaledPosition M (C.psiMap lambda p) = A.mulVec err := by
+    funext i
+    have hdisp_i := congrFun ((sub_eq_iff_eq_add).1 hdisp) i
+    have hx_i := congrFun hx i
+    change rescaledPosition M (C.psiMap lambda p) i = A.mulVec err i
+    rw [hdisp_i]
+    change A.mulVec xr i + rescaledPosition M p i = A.mulVec (xr - x) i
+    rw [Matrix.mulVec_sub]
+    simp only [Pi.sub_apply]
+    rw [hx_i]
+    simp
+  refine ⟨lambda, ?_⟩
+  rw [hposition]
+  simp only [positionL1]
+  linarith [hcoord 0, hcoord 1]
 
 public theorem quotient_isQuotientCoveringMap
     (W : ActualLocalCuspQuotientWitness N M) :

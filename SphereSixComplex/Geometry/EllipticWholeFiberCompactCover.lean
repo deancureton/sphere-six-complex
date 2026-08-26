@@ -1,6 +1,7 @@
 module
 
 public import SphereSixComplex.Geometry.EllipticWholeFiberTrivialization
+public import Mathlib.Topology.Maps.Proper.CompactlyGenerated
 import all SphereSixComplex.Geometry.Quotient
 import all SphereSixComplex.Geometry.TorusFamily
 
@@ -125,6 +126,69 @@ public theorem familyFiber_isCompact (z : UpperHalfPlane) :
     IsCompact (familyFiber F z) := by
   rw [familyFiber_eq_image_unitCube F z]
   exact isCompact_Icc.image (familyFiberRealParam_continuous F z)
+
+/-- Every point of the varying torus family lies in the fibre over its descended base point. -/
+public theorem mem_familyFiber_familyTotalSpaceBase
+    (q : TotalSpace (parameterMap F)) :
+    q ∈ familyFiber F (familyTotalSpaceBase F q) := by
+  induction q using Quotient.inductionOn with
+  | _ p =>
+      exact ⟨p.2, rfl⟩
+
+/-- Simultaneous fundamental-cube parametrization of the varying torus family. -/
+@[expose] public noncomputable def familyFundamentalCubeParam
+    (p : UpperHalfPlane × RealPeriods) : TotalSpace (parameterMap F) :=
+  projection (parameterMap F)
+    (p.1, (fullRankDomain (parameterMap F p.1)).realEquiv p.2)
+
+/-- The fundamental-cube parametrization varies continuously with the base point. -/
+public theorem familyFundamentalCubeParam_continuous :
+    Continuous (familyFundamentalCubeParam F) := by
+  have h : Continuous (fun p : UpperHalfPlane × RealPeriods ↦
+      projection (parameterMap F)
+        (p.1, periodRealLinear (parameterMap F p.1).1 p.2)) := by
+    rw [projection.eq_def, quotientProjection.eq_def]
+    exact continuous_quot_mk.comp
+      (continuous_fst.prodMk (periodRealLinear_parameterMap_continuous F))
+  convert h using 1
+  funext p
+  rw [familyFundamentalCubeParam.eq_def, fullRankDomain.eq_def]
+  rw [FullRank.ofSetupInequalities_realEquiv_apply]
+
+/-- The inverse image of a compact base set is covered exactly by its compact family of real
+fundamental cubes.  This is the uniform compactness statement needed to control collar ends. -/
+public theorem familyTotalSpaceBase_preimage_eq_fundamentalCube_image
+    (K : Set UpperHalfPlane) :
+    familyTotalSpaceBase F ⁻¹' K =
+      familyFundamentalCubeParam F '' (K ×ˢ Set.Icc (0 : RealPeriods) 1) := by
+  ext q
+  constructor
+  · intro hq
+    have hfiber := mem_familyFiber_familyTotalSpaceBase F q
+    rw [familyFiber_eq_image_unitCube F (familyTotalSpaceBase F q)] at hfiber
+    obtain ⟨r, hr, hparam⟩ := hfiber
+    exact ⟨(familyTotalSpaceBase F q, r), ⟨hq, hr⟩, hparam⟩
+  · rintro ⟨p, hp, rfl⟩
+    change familyTotalSpaceBase F
+      (projection (parameterMap F)
+        (p.1, (fullRankDomain (parameterMap F p.1)).realEquiv p.2)) ∈ K
+    simpa using hp.1
+
+/-- The base projection of the varying torus family has compact inverse images of compact sets.
+This strengthens pointwise compactness of the fibres to the uniform compactness needed at the
+boundary of a gluing collar. -/
+public theorem familyTotalSpaceBase_isCompact_preimage
+    {K : Set UpperHalfPlane} (hK : IsCompact K) :
+    IsCompact (familyTotalSpaceBase F ⁻¹' K) := by
+  rw [familyTotalSpaceBase_preimage_eq_fundamentalCube_image F K]
+  exact (hK.prod isCompact_Icc).image (familyFundamentalCubeParam_continuous F)
+
+/-- The base projection of the varying compact tori is proper. -/
+public theorem familyTotalSpaceBase_isProperMap :
+    IsProperMap (familyTotalSpaceBase F) := by
+  rw [isProperMap_iff_isCompact_preimage]
+  exact ⟨continuous_quot_lift (familyTotalSpaceBase_respects F) continuous_fst,
+    fun _ hK ↦ familyTotalSpaceBase_isCompact_preimage F hK⟩
 
 public theorem familyTotalSpaceBase_eq_of_mem_familyFiber
     {z : UpperHalfPlane} {q : TotalSpace (parameterMap F)}

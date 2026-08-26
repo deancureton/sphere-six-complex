@@ -144,6 +144,30 @@ unit disc. -/
   continuous_toFun := continuous_cayleyDiscCoordinate a
   continuous_invFun := continuous_cayleyInverseUpper a
 
+/-- A closed Cayley disc whose radius stays inside the unit disc is compact in the upper
+half-plane. -/
+public theorem isCompact_cayleyClosedDisc
+    (a : UpperHalfPlane) {r : ℝ} (hr : r < 1) :
+    IsCompact {z : UpperHalfPlane | ‖(cayleyHomeomorph a z).1‖ ≤ r} := by
+  let S : Set ComplexUnitDisc := {w | ‖w.1‖ ≤ r}
+  have hS : IsCompact S := by
+    rw [Subtype.isCompact_iff]
+    have himage : ((↑) : ComplexUnitDisc → ℂ) '' S = Metric.closedBall 0 r := by
+      ext z
+      constructor
+      · rintro ⟨w, hw, rfl⟩
+        change ‖w.1‖ ≤ r at hw
+        simpa [Metric.mem_closedBall, dist_zero_right] using hw
+      · intro hz
+        have hzr : ‖z‖ ≤ r := by
+          simpa [Metric.mem_closedBall, dist_zero_right] using hz
+        refine ⟨⟨z, hzr.trans_lt hr⟩, ?_, rfl⟩
+        exact hzr
+    rw [himage]
+    exact isCompact_closedBall 0 r
+  change IsCompact (cayleyHomeomorph a ⁻¹' S)
+  exact (cayleyHomeomorph a).isCompact_preimage.mpr hS
+
 /-- The order-three elliptic base chart. -/
 @[expose] public noncomputable def orderThreeCayleyHomeomorph :
     UpperHalfPlane ≃ₜ ComplexUnitDisc :=

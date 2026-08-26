@@ -5,7 +5,13 @@ public import SphereSixComplex.Geometry.GlobalDeckSmoothness
 public import SphereSixComplex.Geometry.EstablishedFuchsianCuspNeighborhood
 public import SphereSixComplex.Geometry.RegularTorusFamily
 public import SphereSixComplex.Geometry.FuchsianRegularTorusFamily
+public import SphereSixComplex.Geometry.AtlasTransport
+public import SphereSixComplex.TriangleGroup.ModularCuspEscape
 public import Mathlib.Analysis.Complex.CoveringMap
+public import Mathlib.Analysis.Calculus.FDeriv.Analytic
+public import Mathlib.Geometry.Manifold.Instances.UnitsOfNormedAlgebra
+import all Mathlib.Geometry.Manifold.LocalDiffeomorph
+import all SphereSixComplex.Periods.FuchsianUniformizationBridge
 
 /-!
 # The punctured cusp collar and the global torus family
@@ -19,6 +25,7 @@ normalized period coordinates on the punctured global family.
 noncomputable section
 
 open Matrix Topology
+open scoped ContDiff Manifold
 
 namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 
@@ -34,6 +41,7 @@ open SphereSixComplex.Geometry.CuspPhaseEstimates
 open SphereSixComplex.Geometry.CuspToricPhaseAction
 open SphereSixComplex.Geometry.GlobalTorusFamily
 open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
+open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Model
 open SphereSixComplex.Geometry.StandardInfiniteA2ToricQuantitativeRegions
 open SphereSixComplex.Geometry.StandardInfiniteA2ToricQuantitativeRegions.BoundedPolydiscRegions
 open SphereSixComplex.Geometry.EstablishedFuchsianCuspNeighborhood
@@ -82,9 +90,175 @@ private theorem two_pi_mul_I_ne_zero : (2 * Real.pi * Complex.I : ℂ) ≠ 0 := 
   exact mul_ne_zero (mul_ne_zero (by norm_num) (Complex.ofReal_ne_zero.mpr Real.pi_ne_zero))
     Complex.I_ne_zero
 
+/-- The complex exponential is locally biholomorphic at every point.  This packages the
+analytic inverse-function theorem as a manifold `PartialDiffeomorph`, so it can subsequently be
+restricted and multiplied coordinatewise in the cusp exponential cover. -/
+public theorem complexExp_isLocalDiffeomorph :
+    IsLocalDiffeomorph (modelWithCornersSelf ℂ ℂ) (modelWithCornersSelf ℂ ℂ) ∞
+      Complex.exp := by
+  intro x
+  let L : ℂ ≃L[ℂ] ℂ := ContinuousLinearEquiv.unitsEquivAut ℂ
+    (Units.mk0 (Complex.exp x) (Complex.exp_ne_zero x))
+  have hstrict : HasStrictFDerivAt Complex.exp (L : ℂ →L[ℂ] ℂ) x := by
+    exact (Complex.hasStrictDerivAt_exp x).hasStrictFDerivAt_equiv
+      (Complex.exp_ne_zero x)
+  let e : OpenPartialHomeomorph ℂ ℂ := hstrict.toOpenPartialHomeomorph Complex.exp
+  let Φ : PartialDiffeomorph (modelWithCornersSelf ℂ ℂ)
+      (modelWithCornersSelf ℂ ℂ) ℂ ℂ ∞ :=
+    { toPartialEquiv := e.toPartialEquiv
+      open_source := e.open_source
+      open_target := e.open_target
+      contMDiffOn_toFun := by
+        exact (contMDiff_iff_contDiff.mpr Complex.contDiff_exp).contMDiffOn
+      contMDiffOn_invFun := by
+        intro y hy
+        let Ly : ℂ ≃L[ℂ] ℂ := ContinuousLinearEquiv.unitsEquivAut ℂ
+          (Units.mk0 (Complex.exp (e.symm y))
+            (Complex.exp_ne_zero (e.symm y)))
+        have hderiv : fderiv ℂ Complex.exp (e.symm y) =
+            (Ly : ℂ →L[ℂ] ℂ) := by
+          exact ((Complex.hasDerivAt_exp (e.symm y)).hasFDerivAt_equiv
+            (Complex.exp_ne_zero (e.symm y))).fderiv
+        have hanalytic : AnalyticAt ℂ e.symm y :=
+          e.analyticAt_symm hy analyticAt_cexp hderiv
+        exact (contMDiffAt_iff_contDiffAt.mpr hanalytic.contDiffAt).contMDiffWithinAt }
+  have hx : x ∈ Φ.source := hstrict.mem_toOpenPartialHomeomorph_source
+  have hΦ := Φ.isLocalDiffeomorphAt
+    (modelWithCornersSelf ℂ ℂ) (modelWithCornersSelf ℂ ℂ) ∞ hx
+  have heq : (Φ : ℂ → ℂ) = Complex.exp := by
+    rfl
+  rwa [heq] at hΦ
+
+/-- The nonzero complex exponential, with codomain bundled as `ℂˣ`, is locally
+biholomorphic for the standard open-submanifold atlas on the units. -/
+public theorem exponentialUnit_isLocalDiffeomorph :
+    IsLocalDiffeomorph (modelWithCornersSelf ℂ ℂ) (modelWithCornersSelf ℂ ℂ) ∞
+      NormalizedFuchsianCuspCoordinate.exponentialUnit := by
+  intro x
+  have hlocal := complexExp_isLocalDiffeomorph x
+  rw [IsLocalDiffeomorphAt.eq_def] at hlocal
+  obtain ⟨Φ, hx, heq⟩ := hlocal
+  let Ψ : PartialDiffeomorph (modelWithCornersSelf ℂ ℂ)
+      (modelWithCornersSelf ℂ ℂ) ℂ ℂˣ ∞ :=
+    { toPartialEquiv :=
+        { toFun := NormalizedFuchsianCuspCoordinate.exponentialUnit
+          invFun := fun u ↦ Φ.symm (u : ℂ)
+          source := Φ.source
+          target := {u | (u : ℂ) ∈ Φ.target}
+          map_source' := by
+            intro z hz
+            change Complex.exp z ∈ Φ.target
+            rw [heq hz]
+            exact Φ.map_source hz
+          map_target' := by
+            intro u hu
+            exact Φ.map_target hu
+          left_inv' := by
+            intro z hz
+            change Φ.symm (Complex.exp z) = z
+            rw [heq hz]
+            exact Φ.left_inv hz
+          right_inv' := by
+            intro u hu
+            apply Units.ext
+            change Complex.exp (Φ.symm (u : ℂ)) = (u : ℂ)
+            have hsource : Φ.symm (u : ℂ) ∈ Φ.source := Φ.map_target hu
+            rw [heq hsource]
+            exact Φ.right_inv hu }
+      open_source := Φ.open_source
+      open_target := Φ.open_target.preimage Units.isOpenEmbedding_val.continuous
+      contMDiffOn_toFun := by
+        have hunit : ContMDiff (modelWithCornersSelf ℂ ℂ)
+            (modelWithCornersSelf ℂ ℂ) ∞
+            NormalizedFuchsianCuspCoordinate.exponentialUnit := by
+          apply ContMDiff.of_comp_isOpenEmbedding Units.isOpenEmbedding_val
+          exact contMDiff_iff_contDiff.mpr Complex.contDiff_exp
+        exact hunit.contMDiffOn
+      contMDiffOn_invFun := by
+        exact Φ.contMDiffOn_invFun.comp Units.contMDiff_val.contMDiffOn
+          (by intro u hu; exact hu) }
+  have hΨ := Ψ.isLocalDiffeomorphAt
+    (modelWithCornersSelf ℂ ℂ) (modelWithCornersSelf ℂ ℂ) ∞ hx
+  have hΨeq : (Ψ : ℂ → ℂˣ) =
+      NormalizedFuchsianCuspCoordinate.exponentialUnit := by
+    rfl
+  rwa [hΨeq] at hΨ
+
 public def scaledExponentialUnit (z : ℂ) : ℂˣ :=
   NormalizedFuchsianCuspCoordinate.exponentialUnit
     (2 * Real.pi * Complex.I * z)
+
+/-- Scaling by `2πi` followed by the exponential remains locally biholomorphic. -/
+public theorem scaledExponentialUnit_isLocalDiffeomorph :
+    IsLocalDiffeomorph (modelWithCornersSelf ℂ ℂ) (modelWithCornersSelf ℂ ℂ) ∞
+      scaledExponentialUnit := by
+  let c : ℂˣ := Units.mk0 (2 * Real.pi * Complex.I) two_pi_mul_I_ne_zero
+  let d : ℂ ≃ₘ^∞⟮(modelWithCornersSelf ℂ ℂ),
+      (modelWithCornersSelf ℂ ℂ)⟯ ℂ :=
+    Diffeomorph.smul (modelWithCornersSelf ℂ ℂ)
+      (modelWithCornersSelf ℂ ℂ) ∞ c
+  have hcomp : IsLocalDiffeomorph (modelWithCornersSelf ℂ ℂ)
+      (modelWithCornersSelf ℂ ℂ) ∞
+      (NormalizedFuchsianCuspCoordinate.exponentialUnit ∘ d) := by
+    intro x
+    exact (d.isLocalDiffeomorph x).comp (modelWithCornersSelf ℂ ℂ) ℂˣ
+      (exponentialUnit_isLocalDiffeomorph (d x))
+  have heq : (NormalizedFuchsianCuspCoordinate.exponentialUnit ∘ d) =
+      scaledExponentialUnit := by
+    funext z
+    rfl
+  rwa [heq] at hcomp
+
+/-- Product of two scalar partial biholomorphisms.  Mathlib provides the product operation for
+the underlying open partial homeomorphisms; this adds the corresponding complex-smooth data. -/
+public noncomputable def complexPartialDiffeomorphProd
+    {E E' F F' H H' G G' M N P Q : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℂ E]
+    [NormedAddCommGroup E'] [NormedSpace ℂ E']
+    [NormedAddCommGroup F] [NormedSpace ℂ F]
+    [NormedAddCommGroup F'] [NormedSpace ℂ F']
+    [TopologicalSpace H] [TopologicalSpace H']
+    [TopologicalSpace G] [TopologicalSpace G']
+    {I : ModelWithCorners ℂ E H} {I' : ModelWithCorners ℂ E' H'}
+    {J : ModelWithCorners ℂ F G} {J' : ModelWithCorners ℂ F' G'}
+    [TopologicalSpace M] [TopologicalSpace N]
+    [TopologicalSpace P] [TopologicalSpace Q]
+    [ChartedSpace H M] [ChartedSpace H' N]
+    [ChartedSpace G P] [ChartedSpace G' Q]
+    (f : PartialDiffeomorph I I' M N ∞)
+    (g : PartialDiffeomorph J J' P Q ∞) :
+    PartialDiffeomorph (I.prod J) (I'.prod J') (M × P) (N × Q) ∞ where
+  toPartialEquiv := f.toPartialEquiv.prod g.toPartialEquiv
+  open_source := f.open_source.prod g.open_source
+  open_target := f.open_target.prod g.open_target
+  contMDiffOn_toFun := f.contMDiffOn_toFun.prodMap g.contMDiffOn_toFun
+  contMDiffOn_invFun := f.contMDiffOn_invFun.prodMap g.contMDiffOn_invFun
+
+/-- The three coordinatewise scaled exponentials form a local biholomorphism before the
+additive and dense-torus coordinates are repackaged as `ComplexModel`. -/
+public theorem scaledExponentialUnitProduct_isLocalDiffeomorph :
+    IsLocalDiffeomorph
+      (((modelWithCornersSelf ℂ ℂ).prod (modelWithCornersSelf ℂ ℂ)).prod
+        (modelWithCornersSelf ℂ ℂ))
+      (((modelWithCornersSelf ℂ ℂ).prod (modelWithCornersSelf ℂ ℂ)).prod
+        (modelWithCornersSelf ℂ ℂ)) ∞
+      (Prod.map (Prod.map scaledExponentialUnit scaledExponentialUnit)
+        scaledExponentialUnit) := by
+  intro p
+  have h₀ := scaledExponentialUnit_isLocalDiffeomorph p.1.1
+  have h₁ := scaledExponentialUnit_isLocalDiffeomorph p.1.2
+  have h₂ := scaledExponentialUnit_isLocalDiffeomorph p.2
+  rw [IsLocalDiffeomorphAt.eq_def] at h₀ h₁ h₂ ⊢
+  obtain ⟨Φ₀, hp₀, heq₀⟩ := h₀
+  obtain ⟨Φ₁, hp₁, heq₁⟩ := h₁
+  obtain ⟨Φ₂, hp₂, heq₂⟩ := h₂
+  let Φ₀₁ := complexPartialDiffeomorphProd Φ₀ Φ₁
+  let Φ := complexPartialDiffeomorphProd Φ₀₁ Φ₂
+  refine ⟨Φ, ⟨⟨hp₀, hp₁⟩, hp₂⟩, ?_⟩
+  intro q hq
+  rcases hq with ⟨⟨hq₀, hq₁⟩, hq₂⟩
+  exact Prod.ext
+    (Prod.ext (heq₀ hq₀) (heq₁ hq₁)) (heq₂ hq₂)
 
 private theorem scaledExponentialUnit_eq (z : ℂ) :
     scaledExponentialUnit z =
@@ -175,6 +349,122 @@ private def denseTorusProductHomeomorph :
     · exact continuous_snd.comp continuous_fst
     · exact continuous_snd
 
+/-- The product repackaging of additive cusp coordinates is complex linear in both directions. -/
+private noncomputable def additiveCuspCoverProductDiffeomorph :
+    AdditiveCuspCover ≃ₘ^∞⟮
+      ((modelWithCornersSelf ℂ ComplexTwoSpace).prod (modelWithCornersSelf ℂ ℂ)),
+      (((modelWithCornersSelf ℂ ℂ).prod (modelWithCornersSelf ℂ ℂ)).prod
+        (modelWithCornersSelf ℂ ℂ))⟯ (((ℂ × ℂ) × ℂ)) where
+  toEquiv := additiveCuspCoverProductHomeomorph.toEquiv
+  contMDiff_toFun := by
+    have hfst : ContMDiff
+        ((modelWithCornersSelf ℂ ComplexTwoSpace).prod (modelWithCornersSelf ℂ ℂ))
+        (modelWithCornersSelf ℂ ComplexTwoSpace) ∞
+        (Prod.fst : AdditiveCuspCover → ComplexTwoSpace) := contMDiff_fst
+    have h₀ : ContMDiff
+        ((modelWithCornersSelf ℂ ComplexTwoSpace).prod (modelWithCornersSelf ℂ ℂ))
+        (modelWithCornersSelf ℂ ℂ) ∞
+        (fun p : AdditiveCuspCover ↦ p.1 0) := by
+      exact ((contMDiff_pi_space.mp
+        (contMDiff_id : ContMDiff (modelWithCornersSelf ℂ ComplexTwoSpace)
+          (modelWithCornersSelf ℂ ComplexTwoSpace) ∞ id)) 0).comp hfst
+    have h₁ : ContMDiff
+        ((modelWithCornersSelf ℂ ComplexTwoSpace).prod (modelWithCornersSelf ℂ ℂ))
+        (modelWithCornersSelf ℂ ℂ) ∞
+        (fun p : AdditiveCuspCover ↦ p.1 1) := by
+      exact ((contMDiff_pi_space.mp
+        (contMDiff_id : ContMDiff (modelWithCornersSelf ℂ ComplexTwoSpace)
+          (modelWithCornersSelf ℂ ComplexTwoSpace) ∞ id)) 1).comp hfst
+    exact (h₀.prodMk h₁).prodMk contMDiff_snd
+  contMDiff_invFun := by
+    have hpi : ContMDiff
+        (((modelWithCornersSelf ℂ ℂ).prod (modelWithCornersSelf ℂ ℂ)).prod
+          (modelWithCornersSelf ℂ ℂ))
+        (modelWithCornersSelf ℂ (Fin 2 → ℂ)) ∞
+        (fun p : ((ℂ × ℂ) × ℂ) ↦ ![(p.1.1 : ℂ), p.1.2]) := by
+      apply contMDiff_pi_space.mpr
+      intro i
+      fin_cases i
+      · exact contMDiff_fst.comp contMDiff_fst
+      · exact contMDiff_snd.comp contMDiff_fst
+    exact hpi.prodMk contMDiff_snd
+
+@[instance_reducible] local instance cuspDenseTorusCharts :
+    ChartedSpace ComplexModel DenseTorus := denseTorusCharts
+
+/-- The product repackaging of dense-torus coordinates is biholomorphic for the standard
+singleton atlas on `(C×)³`. -/
+private noncomputable def denseTorusProductDiffeomorph :
+    DenseTorus ≃ₘ^∞⟮(modelWithCornersSelf ℂ ComplexModel),
+      (((modelWithCornersSelf ℂ ℂ).prod (modelWithCornersSelf ℂ ℂ)).prod
+        (modelWithCornersSelf ℂ ℂ))⟯ (((ℂˣ × ℂˣ) × ℂˣ)) := by
+  let coordSmooth (i : Fin 3) : ContMDiff (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ℂ) ∞ (fun x : DenseTorus ↦ x i) := by
+    apply ContMDiff.of_comp_isOpenEmbedding Units.isOpenEmbedding_val
+    have hcoordinates : ContMDiff (modelWithCornersSelf ℂ ComplexModel)
+        (modelWithCornersSelf ℂ ComplexModel) ∞ denseTorusComplexCoordinates := by
+      simpa only [cuspDenseTorusCharts] using denseTorusComplexCoordinates_contMDiff
+    convert (EuclideanSpace.proj i).contMDiff.comp hcoordinates using 1
+    funext x
+    rfl
+  refine
+    { toEquiv := denseTorusProductHomeomorph.toEquiv
+      contMDiff_toFun := ?_
+      contMDiff_invFun := ?_ }
+  · exact ((coordSmooth 0).prodMk (coordSmooth 1)).prodMk (coordSmooth 2)
+  · apply ContMDiff.of_comp_isOpenEmbedding
+      denseTorusComplexCoordinates_isOpenEmbedding
+    have hpi : ContMDiff
+        (((modelWithCornersSelf ℂ ℂ).prod (modelWithCornersSelf ℂ ℂ)).prod
+          (modelWithCornersSelf ℂ ℂ))
+        (modelWithCornersSelf ℂ (Fin 3 → ℂ)) ∞
+        (fun p : ((ℂˣ × ℂˣ) × ℂˣ) ↦
+          ![((p.1.1 : ℂˣ) : ℂ), ((p.1.2 : ℂˣ) : ℂ), ((p.2 : ℂˣ) : ℂ)]) := by
+      apply contMDiff_pi_space.mpr
+      intro i
+      fin_cases i
+      · exact Units.contMDiff_val.comp (contMDiff_fst.comp contMDiff_fst)
+      · exact Units.contMDiff_val.comp (contMDiff_snd.comp contMDiff_fst)
+      · exact Units.contMDiff_val.comp contMDiff_snd
+    have htoLp : ContMDiff (modelWithCornersSelf ℂ (Fin 3 → ℂ))
+        (modelWithCornersSelf ℂ ComplexModel) ∞ (WithLp.toLp 2) :=
+      (PiLp.continuousLinearEquiv 2 ℂ (fun _ : Fin 3 ↦ ℂ)).symm.toDiffeomorph.contMDiff
+    have hmodel := htoLp.comp hpi
+    apply hmodel.congr
+    intro p
+    apply PiLp.ext
+    intro i
+    fin_cases i <;> rfl
+
+/-- The explicit coordinatewise exponential from normalized additive cusp coordinates to the
+dense algebraic torus is locally biholomorphic. -/
+public theorem denseCuspExponentialCover_isLocalDiffeomorph :
+    IsLocalDiffeomorph
+      ((modelWithCornersSelf ℂ ComplexTwoSpace).prod (modelWithCornersSelf ℂ ℂ))
+      (modelWithCornersSelf ℂ ComplexModel) ∞ denseCuspExponentialCover := by
+  let dS := additiveCuspCoverProductDiffeomorph
+  let dT := denseTorusProductDiffeomorph
+  let rawMap : ((ℂ × ℂ) × ℂ) → ((ℂˣ × ℂˣ) × ℂˣ) :=
+    Prod.map (Prod.map scaledExponentialUnit scaledExponentialUnit)
+      scaledExponentialUnit
+  have hcomp : IsLocalDiffeomorph
+      ((modelWithCornersSelf ℂ ComplexTwoSpace).prod (modelWithCornersSelf ℂ ℂ))
+      (modelWithCornersSelf ℂ ComplexModel) ∞
+      (dT.symm ∘ rawMap ∘ dS) := by
+    intro p
+    have hS := dS.isLocalDiffeomorph p
+    have hraw := scaledExponentialUnitProduct_isLocalDiffeomorph (dS p)
+    have hmiddle := hS.comp
+      (((modelWithCornersSelf ℂ ℂ).prod (modelWithCornersSelf ℂ ℂ)).prod
+        (modelWithCornersSelf ℂ ℂ)) ((ℂˣ × ℂˣ) × ℂˣ) hraw
+    exact hmiddle.comp (modelWithCornersSelf ℂ ComplexModel) DenseTorus
+      (dT.symm.isLocalDiffeomorph (rawMap (dS p)))
+  have heq : (dT.symm ∘ rawMap ∘ dS) = denseCuspExponentialCover := by
+    funext p
+    ext i
+    fin_cases i <;> rfl
+  rwa [heq] at hcomp
+
 /-- The explicit coordinatewise exponential is a quotient map onto the dense algebraic torus. -/
 public theorem denseCuspExponentialCover_isQuotientMap :
     IsQuotientMap denseCuspExponentialCover := by
@@ -236,9 +526,397 @@ public def denseTorusCuspRegion (r : ℝ) : Set DenseTorus :=
 public def additiveCuspRadiusCover (r : ℝ) : Set AdditiveCuspCover :=
   denseCuspExponentialCover ⁻¹' denseTorusCuspRegion r
 
+public theorem mem_additiveCuspRadiusCover_iff
+    (r : ℝ) (p : AdditiveCuspCover) :
+    p ∈ additiveCuspRadiusCover r ↔
+      Real.exp (-2 * Real.pi * p.2.im) < r := by
+  change ‖Complex.exp (2 * Real.pi * Complex.I * p.2)‖ < r ↔ _
+  rw [Complex.norm_exp]
+  simp [Complex.mul_re]
+
+public theorem additiveCuspRadiusCover_convex (r : ℝ) :
+    Convex ℝ (additiveCuspRadiusCover r) := by
+  intro p hp q hq a b ha hb hab
+  rw [mem_additiveCuspRadiusCover_iff] at hp hq ⊢
+  have hr : 0 < r := (Real.exp_pos _).trans hp
+  have hp' : -2 * Real.pi * p.2.im < Real.log r :=
+    (Real.lt_log_iff_exp_lt hr).2 hp
+  have hq' : -2 * Real.pi * q.2.im < Real.log r :=
+    (Real.lt_log_iff_exp_lt hr).2 hq
+  apply (Real.lt_log_iff_exp_lt hr).1
+  have hcomb :
+      a * (-2 * Real.pi * p.2.im) + b * (-2 * Real.pi * q.2.im) <
+        Real.log r := by
+    by_cases ha0 : a = 0
+    · subst a
+      simp only [zero_add] at hab
+      simpa [hab] using hq'
+    · have ha_pos : 0 < a := lt_of_le_of_ne ha (Ne.symm ha0)
+      calc
+        a * (-2 * Real.pi * p.2.im) + b * (-2 * Real.pi * q.2.im) <
+            a * Real.log r + b * Real.log r :=
+          add_lt_add_of_lt_of_le (mul_lt_mul_of_pos_left hp' ha_pos)
+            (mul_le_mul_of_nonneg_left (le_of_lt hq') hb)
+        _ = Real.log r := by rw [← add_mul, hab, one_mul]
+  convert hcomb using 1
+  simp [mul_add]
+  ring
+
+/-- A basepoint in the additive cover over every positive cusp radius. -/
+public noncomputable def additiveCuspRadiusPoint
+    {r : ℝ} (hr : 0 < r) : additiveCuspRadiusCover r := by
+  let s : ℂ := ⟨0, (1 - Real.log r) / (2 * Real.pi)⟩
+  refine ⟨(0, s), ?_⟩
+  rw [mem_additiveCuspRadiusCover_iff]
+  apply (Real.lt_log_iff_exp_lt hr).1
+  have hsim : s.im = (1 - Real.log r) / (2 * Real.pi) := rfl
+  rw [hsim]
+  have heq : -2 * Real.pi * ((1 - Real.log r) / (2 * Real.pi)) =
+      Real.log r - 1 := by
+    field_simp [Real.pi_ne_zero]
+    ring
+  rw [heq]
+  linarith
+
+public theorem additiveCuspRadiusCover_connected
+    {r : ℝ} (hr : 0 < r) : ConnectedSpace (additiveCuspRadiusCover r) := by
+  apply isConnected_iff_connectedSpace.mp
+  exact (additiveCuspRadiusCover_convex r).isConnected
+    ⟨additiveCuspRadiusPoint hr, (additiveCuspRadiusPoint hr).property⟩
+
+public def denseTorusCuspOpen (r : ℝ) : TopologicalSpace.Opens DenseTorus :=
+  ⟨denseTorusCuspRegion r, by
+    have hcoord : Continuous (fun x : DenseTorus ↦ ((x 2 : ℂˣ) : ℂ)) :=
+      Units.continuous_val.comp (continuous_apply 2)
+    exact isOpen_lt (continuous_norm.comp hcoord) continuous_const⟩
+
+public def additiveCuspRadiusOpen (r : ℝ) : TopologicalSpace.Opens AdditiveCuspCover :=
+  ⟨additiveCuspRadiusCover r,
+    (denseTorusCuspOpen r).isOpen.preimage
+      denseCuspExponentialCover_isOpenQuotientMap.continuous⟩
+
+@[instance_reducible]
+public noncomputable def additiveCuspRadiusCoverCharts (r : ℝ) :
+    ChartedSpace (ModelProd ComplexTwoSpace ℂ) (additiveCuspRadiusCover r) :=
+  (additiveCuspRadiusOpen r).instChartedSpace
+
+@[instance_reducible]
+public noncomputable def denseTorusCuspRegionCharts (r : ℝ) :
+    ChartedSpace ComplexModel (denseTorusCuspRegion r) :=
+  (denseTorusCuspOpen r).instChartedSpace
+
+/-- The open dense-torus radius locus inherits the complex-manifold structure of the dense
+algebraic torus. -/
+public theorem denseTorusCuspRegion_isManifold (r : ℝ) :
+    letI := denseTorusCharts
+    letI : IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞ DenseTorus :=
+      denseTorus_isManifold
+    letI : ChartedSpace ComplexModel (denseTorusCuspRegion r) :=
+      (denseTorusCuspOpen r).instChartedSpace
+    IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞
+      (denseTorusCuspRegion r) := by
+  let _ := denseTorusCharts
+  let _ : IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞ DenseTorus :=
+    denseTorus_isManifold
+  let _ : ChartedSpace ComplexModel (denseTorusCuspRegion r) :=
+    (denseTorusCuspOpen r).instChartedSpace
+  change IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞
+    (denseTorusCuspOpen r)
+  infer_instance
+
 public def denseCuspExponentialRadius (r : ℝ) :
     additiveCuspRadiusCover r → denseTorusCuspRegion r :=
   (denseTorusCuspRegion r).restrictPreimage denseCuspExponentialCover
+
+private theorem openSubtypeVal_isLocalDiffeomorph_complex
+    {X : Type*} [TopologicalSpace X] [ChartedSpace ComplexModel X]
+    (U : TopologicalSpace.Opens X) :
+    IsLocalDiffeomorph (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ComplexModel) ∞ (Subtype.val : U → X) := by
+  intro x
+  let _ : Nonempty U := ⟨x⟩
+  let e := U.openPartialHomeomorphSubtypeCoe (inferInstance : Nonempty U)
+  let Φ : PartialDiffeomorph (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ComplexModel) U X ∞ :=
+    { toPartialEquiv := e.toPartialEquiv
+      open_source := e.open_source
+      open_target := e.open_target
+      contMDiffOn_toFun := contMDiff_subtype_val.contMDiffOn
+      contMDiffOn_invFun := by
+        intro y hy
+        apply (ContMDiffWithinAt.subtypeVal_comp_iff U _ e.target y).mp
+        apply contMDiffAt_id.contMDiffWithinAt.congr_of_mem _ hy
+        intro z hz
+        change e (e.symm z) = z
+        exact e.right_inv hz }
+  have hx : x ∈ Φ.source := by
+    simp [Φ, e]
+  have hΦ := Φ.isLocalDiffeomorphAt
+    (modelWithCornersSelf ℂ ComplexModel) (modelWithCornersSelf ℂ ComplexModel) ∞ hx
+  have heq : (Φ : U → X) = Subtype.val := by
+    funext y
+    rfl
+  rwa [heq] at hΦ
+
+private theorem openSubtypeVal_isLocalDiffeomorph_additiveCusp
+    {X : Type*} [TopologicalSpace X] [ChartedSpace (ModelProd ComplexTwoSpace ℂ) X]
+    (U : TopologicalSpace.Opens X) :
+    IsLocalDiffeomorph
+      ((modelWithCornersSelf ℂ ComplexTwoSpace).prod (modelWithCornersSelf ℂ ℂ))
+      ((modelWithCornersSelf ℂ ComplexTwoSpace).prod (modelWithCornersSelf ℂ ℂ))
+      ∞ (Subtype.val : U → X) := by
+  intro x
+  let _ : Nonempty U := ⟨x⟩
+  let e := U.openPartialHomeomorphSubtypeCoe (inferInstance : Nonempty U)
+  let I := (modelWithCornersSelf ℂ ComplexTwoSpace).prod (modelWithCornersSelf ℂ ℂ)
+  let Φ : PartialDiffeomorph I I U X ∞ :=
+    { toPartialEquiv := e.toPartialEquiv
+      open_source := e.open_source
+      open_target := e.open_target
+      contMDiffOn_toFun := contMDiff_subtype_val.contMDiffOn
+      contMDiffOn_invFun := by
+        intro y hy
+        apply (ContMDiffWithinAt.subtypeVal_comp_iff U _ e.target y).mp
+        apply contMDiffAt_id.contMDiffWithinAt.congr_of_mem _ hy
+        intro z hz
+        change e (e.symm z) = z
+        exact e.right_inv hz }
+  have hx : x ∈ Φ.source := by
+    simp [Φ, e]
+  have hΦ := Φ.isLocalDiffeomorphAt I I ∞ hx
+  have heq : (Φ : U → X) = Subtype.val := by
+    funext y
+    rfl
+  rwa [heq] at hΦ
+
+/-- Inclusion of an open submanifold in the regular rank-two vector-bundle model is locally
+biholomorphic. -/
+private theorem openSubtypeVal_isLocalDiffeomorph_globalDeck
+    {X : Type*} [TopologicalSpace X] [ChartedSpace (ModelProd ℂ ComplexTwoSpace) X]
+    (U : TopologicalSpace.Opens X) :
+    IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel
+      RegularSmoothnessOrder (Subtype.val : U → X) := by
+  intro x
+  let _ : Nonempty U := ⟨x⟩
+  let e := U.openPartialHomeomorphSubtypeCoe (inferInstance : Nonempty U)
+  let Φ : PartialDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel U X
+      RegularSmoothnessOrder :=
+    { toPartialEquiv := e.toPartialEquiv
+      open_source := e.open_source
+      open_target := e.open_target
+      contMDiffOn_toFun := contMDiff_subtype_val.contMDiffOn
+      contMDiffOn_invFun := by
+        intro y hy
+        apply (ContMDiffWithinAt.subtypeVal_comp_iff U _ e.target y).mp
+        apply contMDiffAt_id.contMDiffWithinAt.congr_of_mem _ hy
+        intro z hz
+        change e (e.symm z) = z
+        exact e.right_inv hz }
+  have hx : x ∈ Φ.source := by
+    simp [Φ, e]
+  have hΦ := Φ.isLocalDiffeomorphAt GlobalDeckTotalModel GlobalDeckTotalModel
+    RegularSmoothnessOrder hx
+  have heq : (Φ : U → X) = Subtype.val := by
+    funext y
+    rfl
+  rwa [heq] at hΦ
+
+private theorem isLocalDiffeomorphAt_congr_eventuallyEq_complex
+    {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
+    [ChartedSpace (ModelProd ComplexTwoSpace ℂ) X] [ChartedSpace ComplexModel Y]
+    {f g : X → Y} {x : X}
+    (hf : IsLocalDiffeomorphAt
+      ((modelWithCornersSelf ℂ ComplexTwoSpace).prod (modelWithCornersSelf ℂ ℂ))
+      (modelWithCornersSelf ℂ ComplexModel) ∞ f x)
+    (hfg : f =ᶠ[nhds x] g) :
+    IsLocalDiffeomorphAt
+      ((modelWithCornersSelf ℂ ComplexTwoSpace).prod (modelWithCornersSelf ℂ ℂ))
+      (modelWithCornersSelf ℂ ComplexModel) ∞ g x := by
+  rw [IsLocalDiffeomorphAt.eq_def] at hf ⊢
+  obtain ⟨Φ, hx, hfΦ⟩ := hf
+  obtain ⟨s, hs, hfgs⟩ := hfg.exists_mem
+  obtain ⟨t, hts, htopen, hxt⟩ := mem_nhds_iff.mp hs
+  let Ψ : PartialDiffeomorph
+      ((modelWithCornersSelf ℂ ComplexTwoSpace).prod (modelWithCornersSelf ℂ ℂ))
+      (modelWithCornersSelf ℂ ComplexModel) X Y ∞ :=
+    { toPartialEquiv := (Φ.toOpenPartialHomeomorph.restrOpen t htopen).toPartialEquiv
+      open_source := (Φ.toOpenPartialHomeomorph.restrOpen t htopen).open_source
+      open_target := (Φ.toOpenPartialHomeomorph.restrOpen t htopen).open_target
+      contMDiffOn_toFun := Φ.contMDiffOn_toFun.mono Set.inter_subset_left
+      contMDiffOn_invFun := Φ.contMDiffOn_invFun.mono Set.inter_subset_left }
+  refine ⟨Ψ, ⟨hx, hxt⟩, ?_⟩
+  intro y hy
+  change y ∈ Φ.source ∩ t at hy
+  calc
+    g y = f y := (hfgs (hts hy.2)).symm
+    _ = Φ y := hfΦ hy.1
+    _ = Ψ y := rfl
+
+private theorem isLocalDiffeomorphAt_congr_eventuallyEq_complexToGlobalDeck
+    {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
+    [ChartedSpace ComplexModel X] [ChartedSpace (ModelProd ℂ ComplexTwoSpace) Y]
+    {f g : X → Y} {x : X}
+    (hf : IsLocalDiffeomorphAt (modelWithCornersSelf ℂ ComplexModel)
+      GlobalDeckTotalModel RegularSmoothnessOrder f x)
+    (hfg : f =ᶠ[nhds x] g) :
+    IsLocalDiffeomorphAt (modelWithCornersSelf ℂ ComplexModel)
+      GlobalDeckTotalModel RegularSmoothnessOrder g x := by
+  rw [IsLocalDiffeomorphAt.eq_def] at hf ⊢
+  obtain ⟨Φ, hx, hfΦ⟩ := hf
+  obtain ⟨s, hs, hfgs⟩ := hfg.exists_mem
+  obtain ⟨t, hts, htopen, hxt⟩ := mem_nhds_iff.mp hs
+  let Ψ : PartialDiffeomorph (modelWithCornersSelf ℂ ComplexModel)
+      GlobalDeckTotalModel X Y RegularSmoothnessOrder :=
+    { toPartialEquiv := (Φ.toOpenPartialHomeomorph.restrOpen t htopen).toPartialEquiv
+      open_source := (Φ.toOpenPartialHomeomorph.restrOpen t htopen).open_source
+      open_target := (Φ.toOpenPartialHomeomorph.restrOpen t htopen).open_target
+      contMDiffOn_toFun := Φ.contMDiffOn_toFun.mono Set.inter_subset_left
+      contMDiffOn_invFun := Φ.contMDiffOn_invFun.mono Set.inter_subset_left }
+  refine ⟨Ψ, ⟨hx, hxt⟩, ?_⟩
+  intro y hy
+  change y ∈ Φ.source ∩ t at hy
+  calc
+    g y = f y := (hfgs (hts hy.2)).symm
+    _ = Φ y := hfΦ hy.1
+    _ = Ψ y := rfl
+
+/-- Restricting a local biholomorphism to open source and target submanifolds preserves local
+biholomorphicity. -/
+private theorem localDiffeomorph_openRestriction
+    {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
+    [ChartedSpace (ModelProd ComplexTwoSpace ℂ) X] [ChartedSpace ComplexModel Y]
+    (U : TopologicalSpace.Opens X) (V : TopologicalSpace.Opens Y)
+    (f : X → Y)
+    (hf : IsLocalDiffeomorph
+      ((modelWithCornersSelf ℂ ComplexTwoSpace).prod (modelWithCornersSelf ℂ ℂ))
+      (modelWithCornersSelf ℂ ComplexModel) ∞ f)
+    (hmap : Set.MapsTo f U V) :
+    IsLocalDiffeomorph
+      ((modelWithCornersSelf ℂ ComplexTwoSpace).prod (modelWithCornersSelf ℂ ℂ))
+      (modelWithCornersSelf ℂ ComplexModel) ∞
+      (fun x : U ↦ (⟨f x, hmap x.2⟩ : V)) := by
+  intro x
+  have hsource := openSubtypeVal_isLocalDiffeomorph_additiveCusp U x
+  have htotal : IsLocalDiffeomorphAt
+      ((modelWithCornersSelf ℂ ComplexTwoSpace).prod (modelWithCornersSelf ℂ ℂ))
+      (modelWithCornersSelf ℂ ComplexModel) ∞
+      (f ∘ (Subtype.val : U → X)) x :=
+    hsource.comp (modelWithCornersSelf ℂ ComplexModel) Y (hf x.1)
+  let y : V := ⟨f x, hmap x.2⟩
+  let hval := openSubtypeVal_isLocalDiffeomorph_complex V y
+  let loc := hval.localInverse
+  have hloc : IsLocalDiffeomorphAt (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ComplexModel) ∞ loc (f x) := by
+    change IsLocalDiffeomorphAt (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ComplexModel) ∞ loc y.1
+    exact hval.localInverse_isLocalDiffeomorphAt
+  have hcomp : IsLocalDiffeomorphAt
+      ((modelWithCornersSelf ℂ ComplexTwoSpace).prod (modelWithCornersSelf ℂ ℂ))
+      (modelWithCornersSelf ℂ ComplexModel) ∞
+      (loc ∘ (f ∘ (Subtype.val : U → X))) x :=
+    htotal.comp (modelWithCornersSelf ℂ ComplexModel) V hloc
+  have hmem : (f ∘ (Subtype.val : U → X)) ⁻¹' loc.source ∈ nhds x :=
+    htotal.contMDiffAt.continuousAt
+      (loc.open_source.mem_nhds hval.localInverse_mem_source)
+  have hevent : (loc ∘ (f ∘ (Subtype.val : U → X))) =ᶠ[nhds x]
+      (fun z : U ↦ (⟨f z, hmap z.2⟩ : V)) := by
+    filter_upwards [hmem] with z hz
+    apply Subtype.ext
+    exact hval.localInverse_right_inv hz
+  exact isLocalDiffeomorphAt_congr_eventuallyEq_complex hcomp hevent
+
+private theorem isLocalDiffeomorphAt_congr_eventuallyEq_complexModel
+    {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
+    [ChartedSpace ComplexModel X] [ChartedSpace ComplexModel Y]
+    {f g : X → Y} {x : X}
+    (hf : IsLocalDiffeomorphAt (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ComplexModel) ∞ f x)
+    (hfg : f =ᶠ[nhds x] g) :
+    IsLocalDiffeomorphAt (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ComplexModel) ∞ g x := by
+  rw [IsLocalDiffeomorphAt.eq_def] at hf ⊢
+  obtain ⟨Φ, hx, hfΦ⟩ := hf
+  obtain ⟨s, hs, hfgs⟩ := hfg.exists_mem
+  obtain ⟨t, hts, htopen, hxt⟩ := mem_nhds_iff.mp hs
+  let Ψ : PartialDiffeomorph (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ComplexModel) X Y ∞ :=
+    { toPartialEquiv := (Φ.toOpenPartialHomeomorph.restrOpen t htopen).toPartialEquiv
+      open_source := (Φ.toOpenPartialHomeomorph.restrOpen t htopen).open_source
+      open_target := (Φ.toOpenPartialHomeomorph.restrOpen t htopen).open_target
+      contMDiffOn_toFun := Φ.contMDiffOn_toFun.mono Set.inter_subset_left
+      contMDiffOn_invFun := Φ.contMDiffOn_invFun.mono Set.inter_subset_left }
+  refine ⟨Ψ, ⟨hx, hxt⟩, ?_⟩
+  intro y hy
+  change y ∈ Φ.source ∩ t at hy
+  calc
+    g y = f y := (hfgs (hts hy.2)).symm
+    _ = Φ y := hfΦ hy.1
+    _ = Ψ y := rfl
+
+/-- A local biholomorphism restricted to open complex submanifolds of its source and target is
+again locally biholomorphic. -/
+public theorem localDiffeomorph_openRestriction_complexModel
+    {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
+    [ChartedSpace ComplexModel X] [ChartedSpace ComplexModel Y]
+    (U : TopologicalSpace.Opens X) (V : TopologicalSpace.Opens Y)
+    (f : X → Y)
+    (hf : IsLocalDiffeomorph (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ComplexModel) ∞ f)
+    (hmap : Set.MapsTo f U V) :
+    IsLocalDiffeomorph (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ComplexModel) ∞
+      (fun x : U ↦ (⟨f x, hmap x.2⟩ : V)) := by
+  intro x
+  have hsource := openSubtypeVal_isLocalDiffeomorph_complex U x
+  have htotal : IsLocalDiffeomorphAt (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ComplexModel) ∞
+      (f ∘ (Subtype.val : U → X)) x :=
+    hsource.comp (modelWithCornersSelf ℂ ComplexModel) Y (hf x.1)
+  let y : V := ⟨f x, hmap x.2⟩
+  let hval := openSubtypeVal_isLocalDiffeomorph_complex V y
+  let loc := hval.localInverse
+  have hloc : IsLocalDiffeomorphAt (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ComplexModel) ∞ loc (f x) := by
+    change IsLocalDiffeomorphAt (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ComplexModel) ∞ loc y.1
+    exact hval.localInverse_isLocalDiffeomorphAt
+  have hcomp : IsLocalDiffeomorphAt (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ComplexModel) ∞
+      (loc ∘ (f ∘ (Subtype.val : U → X))) x :=
+    htotal.comp (modelWithCornersSelf ℂ ComplexModel) V hloc
+  have hmem : (f ∘ (Subtype.val : U → X)) ⁻¹' loc.source ∈ nhds x :=
+    htotal.contMDiffAt.continuousAt
+      (loc.open_source.mem_nhds hval.localInverse_mem_source)
+  have hevent : (loc ∘ (f ∘ (Subtype.val : U → X))) =ᶠ[nhds x]
+      (fun z : U ↦ (⟨f z, hmap z.2⟩ : V)) := by
+    filter_upwards [hmem] with z hz
+    apply Subtype.ext
+    exact hval.localInverse_right_inv hz
+  exact isLocalDiffeomorphAt_congr_eventuallyEq_complexModel hcomp hevent
+
+/-- The coordinatewise exponential remains locally biholomorphic after restriction to the
+actual punctured radius collar. -/
+public theorem denseCuspExponentialRadius_isLocalDiffeomorph (r : ℝ) :
+    letI : ChartedSpace (ModelProd ComplexTwoSpace ℂ) (additiveCuspRadiusCover r) :=
+      (additiveCuspRadiusOpen r).instChartedSpace
+    letI : ChartedSpace ComplexModel (denseTorusCuspRegion r) :=
+      (denseTorusCuspOpen r).instChartedSpace
+    IsLocalDiffeomorph
+      ((modelWithCornersSelf ℂ ComplexTwoSpace).prod (modelWithCornersSelf ℂ ℂ))
+      (modelWithCornersSelf ℂ ComplexModel) ∞ (denseCuspExponentialRadius r) := by
+  let _ : ChartedSpace (ModelProd ComplexTwoSpace ℂ) (additiveCuspRadiusCover r) :=
+    (additiveCuspRadiusOpen r).instChartedSpace
+  let _ : ChartedSpace ComplexModel (denseTorusCuspRegion r) :=
+    (denseTorusCuspOpen r).instChartedSpace
+  have h := localDiffeomorph_openRestriction (additiveCuspRadiusOpen r)
+    (denseTorusCuspOpen r) denseCuspExponentialCover
+    denseCuspExponentialCover_isLocalDiffeomorph (by
+      intro x hx
+      exact hx)
+  change IsLocalDiffeomorph
+    ((modelWithCornersSelf ℂ ComplexTwoSpace).prod (modelWithCornersSelf ℂ ℂ))
+    (modelWithCornersSelf ℂ ComplexModel) ∞ (denseCuspExponentialRadius r) at h
+  exact h
 
 public theorem denseCuspExponentialRadius_isOpenQuotientMap (r : ℝ) :
     IsOpenQuotientMap (denseCuspExponentialRadius r) :=
@@ -252,6 +930,266 @@ public noncomputable def additiveCuspRadiusQuotientHomeomorph (r : ℝ) :
   have hf : IsQuotientMap f :=
     (denseCuspExponentialRadius_isOpenQuotientMap r).isQuotientMap
   exact hf.homeomorph
+
+@[simp]
+public theorem additiveCuspRadiusQuotientHomeomorph_mk
+    (r : ℝ) (p : additiveCuspRadiusCover r) :
+    additiveCuspRadiusQuotientHomeomorph r (Quotient.mk _ p) =
+      denseCuspExponentialRadius r p :=
+  rfl
+
+/-- The exponential-fibre quotient carries the atlas transported from the dense-torus radius
+locus. -/
+@[instance_reducible]
+public noncomputable def additiveCuspRadiusQuotientCharts (r : ℝ) :
+    ChartedSpace ComplexModel
+      (Quotient (Setoid.ker (denseCuspExponentialRadius r))) := by
+  let _ : ChartedSpace ComplexModel (denseTorusCuspRegion r) :=
+    (denseTorusCuspOpen r).instChartedSpace
+  exact transportChartedSpace (additiveCuspRadiusQuotientHomeomorph r).symm
+
+/-- The exact exponential-fibre quotient is biholomorphic to the radius locus in the dense
+torus. -/
+public noncomputable def additiveCuspRadiusQuotientDiffeomorph (r : ℝ) :
+    letI := denseTorusCharts
+    letI : IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞ DenseTorus :=
+      denseTorus_isManifold
+    letI : ChartedSpace ComplexModel (denseTorusCuspRegion r) :=
+      (denseTorusCuspOpen r).instChartedSpace
+    letI : IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞
+        (denseTorusCuspRegion r) := denseTorusCuspRegion_isManifold r
+    letI := additiveCuspRadiusQuotientCharts r
+    Quotient (Setoid.ker (denseCuspExponentialRadius r))
+      ≃ₘ^∞⟮(modelWithCornersSelf ℂ ComplexModel),
+        (modelWithCornersSelf ℂ ComplexModel)⟯ denseTorusCuspRegion r := by
+  let _ := denseTorusCharts
+  let _ : IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞ DenseTorus :=
+    denseTorus_isManifold
+  let _ : ChartedSpace ComplexModel (denseTorusCuspRegion r) :=
+    (denseTorusCuspOpen r).instChartedSpace
+  let _ : IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞
+      (denseTorusCuspRegion r) := denseTorusCuspRegion_isManifold r
+  let _ := additiveCuspRadiusQuotientCharts r
+  exact (transportDiffeomorph (additiveCuspRadiusQuotientHomeomorph r).symm).symm
+
+/-- The quotient projection by the exact exponential fibres is locally biholomorphic for the
+transported quotient atlas. -/
+public theorem additiveCuspRadiusQuotient_projection_isLocalDiffeomorph (r : ℝ) :
+    letI : ChartedSpace (ModelProd ComplexTwoSpace ℂ) (additiveCuspRadiusCover r) :=
+      (additiveCuspRadiusOpen r).instChartedSpace
+    letI := denseTorusCharts
+    letI : IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞ DenseTorus :=
+      denseTorus_isManifold
+    letI : ChartedSpace ComplexModel (denseTorusCuspRegion r) :=
+      (denseTorusCuspOpen r).instChartedSpace
+    letI : IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞
+        (denseTorusCuspRegion r) := denseTorusCuspRegion_isManifold r
+    letI := additiveCuspRadiusQuotientCharts r
+    IsLocalDiffeomorph
+      ((modelWithCornersSelf ℂ ComplexTwoSpace).prod (modelWithCornersSelf ℂ ℂ))
+      (modelWithCornersSelf ℂ ComplexModel) ∞
+      (Quotient.mk _ : additiveCuspRadiusCover r →
+        Quotient (Setoid.ker (denseCuspExponentialRadius r))) := by
+  let _ : ChartedSpace (ModelProd ComplexTwoSpace ℂ) (additiveCuspRadiusCover r) :=
+    (additiveCuspRadiusOpen r).instChartedSpace
+  let _ := denseTorusCharts
+  let _ : IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞ DenseTorus :=
+    denseTorus_isManifold
+  let _ : ChartedSpace ComplexModel (denseTorusCuspRegion r) :=
+    (denseTorusCuspOpen r).instChartedSpace
+  let _ : IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞
+      (denseTorusCuspRegion r) := denseTorusCuspRegion_isManifold r
+  let _ := additiveCuspRadiusQuotientCharts r
+  let d := additiveCuspRadiusQuotientDiffeomorph r
+  have hcomp : IsLocalDiffeomorph
+      ((modelWithCornersSelf ℂ ComplexTwoSpace).prod (modelWithCornersSelf ℂ ℂ))
+      (modelWithCornersSelf ℂ ComplexModel) ∞
+      ((fun y => d.symm.toEquiv y) ∘ denseCuspExponentialRadius r) := by
+    intro p
+    exact (denseCuspExponentialRadius_isLocalDiffeomorph r p).comp
+      (modelWithCornersSelf ℂ ComplexModel)
+      (Quotient (Setoid.ker (denseCuspExponentialRadius r)))
+      (d.symm.isLocalDiffeomorph (denseCuspExponentialRadius r p))
+  have heq : ((fun y => d.symm.toEquiv y) ∘ denseCuspExponentialRadius r) =
+      (Quotient.mk _ : additiveCuspRadiusCover r →
+        Quotient (Setoid.ker (denseCuspExponentialRadius r))) := by
+    funext p
+    change (additiveCuspRadiusQuotientHomeomorph r).symm
+      (denseCuspExponentialRadius r p) = Quotient.mk _ p
+    apply (additiveCuspRadiusQuotientHomeomorph r).injective
+    rw [(additiveCuspRadiusQuotientHomeomorph r).apply_symm_apply]
+    exact additiveCuspRadiusQuotientHomeomorph_mk r p
+  rwa [heq] at hcomp
+
+/-- The flat punctured radius locus in the toric model. -/
+public def toricPuncturedRadiusOpen (M : Model) (r : ℝ) :
+    TopologicalSpace.Opens M.Carrier :=
+  ⟨{p | M.t p ≠ 0 ∧ ‖M.t p‖ < r},
+    (isOpen_ne_fun M.t_holomorphic.continuous continuous_const).inter
+      (isOpen_lt (continuous_norm.comp M.t_holomorphic.continuous) continuous_const)⟩
+
+/-- Dense-torus inclusion restricted to the punctured radius locus. -/
+public def torusEmbeddingPuncturedRadius (M : Model) (r : ℝ) :
+    denseTorusCuspOpen r → toricPuncturedRadiusOpen M r :=
+  fun x ↦ ⟨M.torusEmbedding x, by
+    constructor
+    · rw [M.t_torus]
+      exact Units.ne_zero (x.1 2)
+    · rw [M.t_torus]
+      exact x.2⟩
+
+/-- The dense-torus inclusion remains locally biholomorphic on the punctured radius locus. -/
+public theorem torusEmbeddingPuncturedRadius_isLocalDiffeomorph
+    (M : Model) (r : ℝ) :
+    letI := denseTorusCharts
+    letI := M.topology
+    letI := M.charts
+    IsLocalDiffeomorph (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ComplexModel) ∞
+      (torusEmbeddingPuncturedRadius M r) := by
+  let _ := denseTorusCharts
+  let _ := M.topology
+  let _ := M.charts
+  have h := localDiffeomorph_openRestriction_complexModel
+    (denseTorusCuspOpen r) (toricPuncturedRadiusOpen M r) M.torusEmbedding
+    (M.torusEmbedding_isLocalDiffeomorph) (by
+      intro x hx
+      constructor
+      · rw [M.t_torus]
+        exact Units.ne_zero (x 2)
+      · rw [M.t_torus]
+        exact hx)
+  change IsLocalDiffeomorph (modelWithCornersSelf ℂ ComplexModel)
+    (modelWithCornersSelf ℂ ComplexModel) ∞
+    (torusEmbeddingPuncturedRadius M r) at h
+  exact h
+
+public theorem torusEmbeddingPuncturedRadius_bijective (M : Model) (r : ℝ) :
+    Function.Bijective (torusEmbeddingPuncturedRadius M r) := by
+  constructor
+  · intro x y hxy
+    apply Subtype.ext
+    apply M.torus_openEmbedding.injective
+    exact congrArg Subtype.val hxy
+  · intro y
+    have hyRange : y.1 ∈ Set.range M.torusEmbedding := by
+      rw [M.torus_range]
+      exact y.2.1
+    obtain ⟨x, hx⟩ := hyRange
+    have hxRadius : x ∈ denseTorusCuspRegion r := by
+      change ‖((x 2 : ℂˣ) : ℂ)‖ < r
+      rw [← M.t_torus, hx]
+      exact y.2.2
+    refine ⟨⟨x, hxRadius⟩, ?_⟩
+    apply Subtype.ext
+    exact hx
+
+/-- The punctured radius locus of the dense torus and its flat toric image are biholomorphic. -/
+public noncomputable def torusPuncturedRadiusDiffeomorph (M : Model) (r : ℝ) :
+    letI := denseTorusCharts
+    letI := M.topology
+    letI := M.charts
+    denseTorusCuspOpen r ≃ₘ^∞⟮(modelWithCornersSelf ℂ ComplexModel),
+      (modelWithCornersSelf ℂ ComplexModel)⟯ toricPuncturedRadiusOpen M r :=
+  (torusEmbeddingPuncturedRadius_isLocalDiffeomorph M r).diffeomorphOfBijective
+    (torusEmbeddingPuncturedRadius_bijective M r)
+
+/-- The nonzero part of the local toric carrier, as an open complex submanifold. -/
+public def puncturedLocalCarrierOpen (M : Model) (r : ℝ) :
+    TopologicalSpace.Opens (LocalCarrier M r) :=
+  ⟨{p | M.t p ≠ 0},
+    isOpen_ne_fun (M.t_holomorphic.continuous.comp continuous_subtype_val)
+      continuous_const⟩
+
+/-- The inherited filling atlas on the punctured local carrier, exposed with the exact subtype
+used by the topological collar construction. -/
+@[instance_reducible]
+public noncomputable def puncturedLocalCarrierCharts (M : Model) (r : ℝ) :
+    letI := M.topology
+    letI := M.charts
+    ChartedSpace ComplexModel {p : LocalCarrier M r // M.t p ≠ 0} := by
+  let _ := M.topology
+  let _ := M.charts
+  change ChartedSpace ComplexModel (puncturedLocalCarrierOpen M r)
+  exact (puncturedLocalCarrierOpen M r).instChartedSpace
+
+/-- Reassociate the two open-subtype conditions defining the punctured local toric carrier. -/
+public def flatPuncturedRadiusEquiv (M : Model) (r : ℝ) :
+    toricPuncturedRadiusOpen M r ≃ puncturedLocalCarrierOpen M r where
+  toFun p := ⟨⟨p.1, by
+    rw [mem_cuspNeighborhood_iff, mem_ball_zero_iff]
+    exact p.2.2⟩, p.2.1⟩
+  invFun p := ⟨p.1.1, ⟨p.2, by
+    exact mem_ball_zero_iff.mp p.1.2⟩⟩
+  left_inv _ := rfl
+  right_inv _ := rfl
+
+/-- Reassociating the nonzero and radius open-subtype conditions is biholomorphic. -/
+public noncomputable def flatPuncturedRadiusDiffeomorph (M : Model) (r : ℝ) :
+    letI := M.topology
+    letI := M.charts
+    toricPuncturedRadiusOpen M r ≃ₘ^∞⟮(modelWithCornersSelf ℂ ComplexModel),
+      (modelWithCornersSelf ℂ ComplexModel)⟯ puncturedLocalCarrierOpen M r := by
+  let _ := M.topology
+  let _ := M.charts
+  refine
+    { toEquiv := flatPuncturedRadiusEquiv M r
+      contMDiff_toFun := ?_
+      contMDiff_invFun := ?_ }
+  · apply (ContMDiff.subtypeVal_comp_iff (puncturedLocalCarrierOpen M r) _).mp
+    apply (ContMDiff.subtypeVal_comp_iff (cuspNeighborhood M r) _).mp
+    exact contMDiff_subtype_val
+  · apply (ContMDiff.subtypeVal_comp_iff (toricPuncturedRadiusOpen M r) _).mp
+    change ContMDiff (modelWithCornersSelf ℂ ComplexModel)
+        (modelWithCornersSelf ℂ ComplexModel) ∞
+        (fun p : puncturedLocalCarrierOpen M r ↦ (p.1.1 : M.Carrier))
+    exact (contMDiff_subtype_val (I := modelWithCornersSelf ℂ ComplexModel)
+        (U := cuspNeighborhood M r)).comp
+          (contMDiff_subtype_val (I := modelWithCornersSelf ℂ ComplexModel)
+            (U := puncturedLocalCarrierOpen M r))
+
+/-- Dense-torus coordinates give a biholomorphism onto the punctured local toric carrier with
+its atlas inherited from the actual toric filling. -/
+public noncomputable def torusPuncturedLocalDiffeomorph (M : Model) (r : ℝ) :
+    letI := denseTorusCharts
+    letI := M.topology
+    letI := M.charts
+    denseTorusCuspOpen r ≃ₘ^∞⟮(modelWithCornersSelf ℂ ComplexModel),
+      (modelWithCornersSelf ℂ ComplexModel)⟯ puncturedLocalCarrierOpen M r :=
+  (torusPuncturedRadiusDiffeomorph M r).trans (flatPuncturedRadiusDiffeomorph M r)
+
+/-- The exact additive exponential cover, now landing in the punctured local toric carrier with
+the atlas inherited from the actual filling. -/
+public noncomputable def additiveCuspToPuncturedLocal (M : Model) (r : ℝ) :
+    additiveCuspRadiusOpen r → puncturedLocalCarrierOpen M r :=
+  fun p ↦ torusPuncturedLocalDiffeomorph M r (denseCuspExponentialRadius r p)
+
+/-- The additive exponential cover of the punctured local toric carrier is locally
+biholomorphic. -/
+public theorem additiveCuspToPuncturedLocal_isLocalDiffeomorph (M : Model) (r : ℝ) :
+    letI : ChartedSpace (ModelProd ComplexTwoSpace ℂ) (additiveCuspRadiusCover r) :=
+      (additiveCuspRadiusOpen r).instChartedSpace
+    letI := denseTorusCharts
+    letI : ChartedSpace ComplexModel (denseTorusCuspRegion r) :=
+      (denseTorusCuspOpen r).instChartedSpace
+    letI := M.topology
+    letI := M.charts
+    IsLocalDiffeomorph
+      ((modelWithCornersSelf ℂ ComplexTwoSpace).prod (modelWithCornersSelf ℂ ℂ))
+      (modelWithCornersSelf ℂ ComplexModel) ∞
+      (additiveCuspToPuncturedLocal M r) := by
+  let _ : ChartedSpace (ModelProd ComplexTwoSpace ℂ) (additiveCuspRadiusCover r) :=
+    (additiveCuspRadiusOpen r).instChartedSpace
+  let _ := denseTorusCharts
+  let _ : ChartedSpace ComplexModel (denseTorusCuspRegion r) :=
+    (denseTorusCuspOpen r).instChartedSpace
+  let _ := M.topology
+  let _ := M.charts
+  intro p
+  exact (denseCuspExponentialRadius_isLocalDiffeomorph r p).comp
+    (modelWithCornersSelf ℂ ComplexModel) (puncturedLocalCarrierOpen M r)
+      ((torusPuncturedLocalDiffeomorph M r).isLocalDiffeomorph
+        (denseCuspExponentialRadius r p))
 
 public noncomputable def torusNonzeroHomeomorph (M : Model) :
     DenseTorus ≃ₜ {p : M.Carrier // M.t p ≠ 0} :=
@@ -297,6 +1235,31 @@ public noncomputable def additiveToPuncturedLocalHomeomorph (M : Model) (r : ℝ
     Quotient (Setoid.ker (denseCuspExponentialRadius r)) ≃ₜ
       {p : LocalCarrier M r // M.t p ≠ 0} :=
   (additiveCuspRadiusQuotientHomeomorph r).trans (torusPuncturedLocalHomeomorph M r)
+
+/-- The exact additive exponential-fibre quotient is biholomorphic to the punctured part of
+the actual local toric carrier. -/
+public noncomputable def additiveToPuncturedLocalDiffeomorph (M : Model) (r : ℝ) :
+    letI := denseTorusCharts
+    letI := M.topology
+    letI := M.charts
+    letI : ChartedSpace ComplexModel (denseTorusCuspRegion r) :=
+      (denseTorusCuspOpen r).instChartedSpace
+    letI : IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞
+        (denseTorusCuspRegion r) := denseTorusCuspRegion_isManifold r
+    letI := additiveCuspRadiusQuotientCharts r
+    Quotient (Setoid.ker (denseCuspExponentialRadius r))
+      ≃ₘ^∞⟮(modelWithCornersSelf ℂ ComplexModel),
+        (modelWithCornersSelf ℂ ComplexModel)⟯ puncturedLocalCarrierOpen M r := by
+  let _ := denseTorusCharts
+  let _ := M.topology
+  let _ := M.charts
+  let _ : ChartedSpace ComplexModel (denseTorusCuspRegion r) :=
+    (denseTorusCuspOpen r).instChartedSpace
+  let _ : IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞
+      (denseTorusCuspRegion r) := denseTorusCuspRegion_isManifold r
+  let _ := additiveCuspRadiusQuotientCharts r
+  exact (additiveCuspRadiusQuotientDiffeomorph r).trans
+    (torusPuncturedLocalDiffeomorph M r)
 
 @[simp]
 public theorem denseCuspExponential_apply_zero (zeta : ComplexTwoSpace) (s : ℂ) :
@@ -550,6 +1513,15 @@ public theorem localCuspExponentialPoint_t (M : Model) (r : ℝ)
     M.t (localCuspExponentialPoint M r zeta s hs) = cuspQ s := by
   rw [localCuspExponentialPoint_coe, M.t_torus, denseCuspExponential_last]
 
+@[simp]
+public theorem additiveCuspToPuncturedLocal_apply
+    (M : Model) (r : ℝ) (p : additiveCuspRadiusCover r) :
+    (additiveCuspToPuncturedLocal M r p).1 =
+      localCuspExponentialPoint M r p.1.1 p.1.2
+        (mem_ball_zero_iff.mpr p.2) := by
+  apply Subtype.ext
+  rfl
+
 /-- Inclusion of a smaller toric cusp disc into a larger one. -/
 public def localCarrierInclusion (M : Model) {r R : ℝ} (hrR : r ≤ R) :
     LocalCarrier M r → LocalCarrier M R :=
@@ -592,8 +1564,8 @@ public noncomputable def restrictActualLocalCuspQuotientWitness
     ActualLocalCuspQuotientWitness N M where
   radius := r
   radius_pos := hr
+  radius_lt_one := lt_of_le_of_lt hrW W.radius_lt_one
   radius_le := hrW.trans W.radius_le
-  radius_lt_one := hrW.trans_lt W.radius_lt_one
   phaseBound := W.phaseBound
   phaseBound_nonneg := W.phaseBound_nonneg
   phaseLogMatrix_entry_bound p i j :=
@@ -694,6 +1666,56 @@ public abbrev regularCuspBundleRegion
   {p : RegularBase (U := E.modularParameter.toTriangleUniformization) × ComplexTwoSpace //
     p.1.1 ∈ normalizedCuspRegion N W.localWitness.radius}
 
+/-- The same vector-bundle region, recorded as an open set so that it inherits the actual
+regular-base product atlas. -/
+public noncomputable def regularCuspBundleOpen
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) :
+    TopologicalSpace.Opens
+      (RegularBase (U := E.modularParameter.toTriangleUniformization) × ComplexTwoSpace) :=
+  ⟨{p | p.1.1 ∈ normalizedCuspRegion N W.localWitness.radius},
+    W.region_open.preimage (continuous_subtype_val.comp continuous_fst)⟩
+
+/-- The inherited complex atlas on the normalized regular vector-bundle region. -/
+@[instance_reducible]
+public noncomputable def regularCuspBundleRegionCharts
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) :
+    let hproper : SourceActionProperlyDiscontinuous :=
+      sourceActionProperlyDiscontinuous_of_eq
+        E.modularParameter.toTriangleUniformization_sourceAction
+    letI := regularBaseChartedSpace hproper
+    ChartedSpace (ModelProd ℂ ComplexTwoSpace) (regularCuspBundleRegion W) := by
+  let hproper : SourceActionProperlyDiscontinuous :=
+    sourceActionProperlyDiscontinuous_of_eq
+      E.modularParameter.toTriangleUniformization_sourceAction
+  let _ := regularBaseChartedSpace hproper
+  change ChartedSpace (ModelProd ℂ ComplexTwoSpace) (regularCuspBundleOpen W)
+  infer_instance
+
+public theorem contMDiffOn_of_mdifferentiableOn_toUpperHalfPlane
+    {f : ℂ → UpperHalfPlane} {s : Set ℂ} (hs : IsOpen s)
+    (hf : MDiff[s] f) :
+    ContMDiffOn (modelWithCornersSelf ℂ ℂ) (modelWithCornersSelf ℂ ℂ) ∞ f s := by
+  have hcoeMDiff : MDiff[s] (fun z ↦ (f z : ℂ)) :=
+    UpperHalfPlane.mdifferentiable_coe.comp_mdifferentiableOn hf
+  have hcoeDiff : DifferentiableOn ℂ (fun z ↦ (f z : ℂ)) s := by
+    rw [← mdifferentiableOn_iff_differentiableOn]
+    exact hcoeMDiff
+  have hcoeSmooth : ContMDiffOn (modelWithCornersSelf ℂ ℂ)
+      (modelWithCornersSelf ℂ ℂ) ∞ (fun z ↦ (f z : ℂ)) s :=
+    contMDiffOn_iff_contDiffOn.mpr (hcoeDiff.contDiffOn hs)
+  intro z hz
+  have hcomp := (UpperHalfPlane.contMDiffAt_ofComplex (n := ∞) (f z).im_pos)
+    |>.comp_contMDiffWithinAt z (hcoeSmooth z hz)
+  have heq : (UpperHalfPlane.ofComplex ∘ fun w ↦ (f w : ℂ)) = f := by
+    funext w
+    exact UpperHalfPlane.ofComplex_apply (f w)
+  rw [heq] at hcomp
+  exact hcomp
+
 /-- Normalized additive coordinates are homeomorphic to the regular vector-bundle region over
 the chosen horodisc. -/
 public noncomputable def additiveCuspBundleHomeomorph
@@ -753,6 +1775,106 @@ public noncomputable def additiveCuspBundleHomeomorph
         ((assembledFuchsianPeriodFunctions E D).tau_holomorphic.continuous.comp
           (continuous_subtype_val.comp
             (continuous_fst.comp continuous_subtype_val))))
+
+/-- Normalized additive coordinates are biholomorphic to the open regular vector-bundle region
+for the inherited complex atlases on both sides. -/
+public noncomputable def additiveCuspBundleDiffeomorph
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) :
+    let hproper : SourceActionProperlyDiscontinuous :=
+      sourceActionProperlyDiscontinuous_of_eq
+        E.modularParameter.toTriangleUniformization_sourceAction
+    letI := regularBaseChartedSpace hproper
+    letI : ChartedSpace (ModelProd ComplexTwoSpace ℂ)
+        (additiveCuspRadiusCover W.localWitness.radius) :=
+      (additiveCuspRadiusOpen W.localWitness.radius).instChartedSpace
+    letI := regularCuspBundleRegionCharts W
+    additiveCuspRadiusCover W.localWitness.radius
+      ≃ₘ^∞⟮((modelWithCornersSelf ℂ ComplexTwoSpace).prod
+          (modelWithCornersSelf ℂ ℂ)),
+        ((modelWithCornersSelf ℂ ℂ).prod
+          (modelWithCornersSelf ℂ ComplexTwoSpace))⟯ regularCuspBundleRegion W := by
+  let hproper : SourceActionProperlyDiscontinuous :=
+    sourceActionProperlyDiscontinuous_of_eq
+      E.modularParameter.toTriangleUniformization_sourceAction
+  let _ := regularBaseChartedSpace hproper
+  let _ : ChartedSpace (ModelProd ComplexTwoSpace ℂ)
+      (additiveCuspRadiusCover W.localWitness.radius) :=
+    (additiveCuspRadiusOpen W.localWitness.radius).instChartedSpace
+  let _ := regularCuspBundleRegionCharts W
+  refine
+    { toEquiv := (additiveCuspBundleHomeomorph W).toEquiv
+      contMDiff_toFun := ?_
+      contMDiff_invFun := ?_ }
+  · apply (ContMDiff.subtypeVal_comp_iff (regularCuspBundleOpen W) _).mp
+    have hs : ContMDiff
+        ((modelWithCornersSelf ℂ ComplexTwoSpace).prod (modelWithCornersSelf ℂ ℂ))
+        (modelWithCornersSelf ℂ ℂ) ∞
+        (fun p : additiveCuspRadiusCover W.localWitness.radius ↦ p.1.2) :=
+      contMDiff_snd.comp
+        (contMDiff_subtype_val
+          (I := ((modelWithCornersSelf ℂ ComplexTwoSpace).prod
+            (modelWithCornersSelf ℂ ℂ)))
+          (U := additiveCuspRadiusOpen W.localWitness.radius))
+    have hliftOn : ContMDiffOn (modelWithCornersSelf ℂ ℂ)
+        (modelWithCornersSelf ℂ ℂ) ∞ N.lift (cuspHalfPlane N.height) :=
+      contMDiffOn_of_mdifferentiableOn_toUpperHalfPlane
+        (isOpen_lt continuous_const Complex.continuous_im) N.lift_holomorphic
+    have hlift : ContMDiff
+        ((modelWithCornersSelf ℂ ComplexTwoSpace).prod (modelWithCornersSelf ℂ ℂ))
+        (modelWithCornersSelf ℂ ℂ) ∞
+        (fun p : additiveCuspRadiusCover W.localWitness.radius ↦ N.lift p.1.2) := by
+      rw [← contMDiffOn_univ]
+      exact hliftOn.comp hs.contMDiffOn (by
+        intro p hp
+        exact additiveCuspRadiusCover_halfPlane W.localWitness.radius_le p)
+    have hbase : ContMDiff
+        ((modelWithCornersSelf ℂ ComplexTwoSpace).prod (modelWithCornersSelf ℂ ℂ))
+        (modelWithCornersSelf ℂ ℂ) ∞
+        (fun p : additiveCuspRadiusCover W.localWitness.radius ↦
+          (⟨N.lift p.1.2,
+            W.lift_regular
+              (additiveCuspRadiusCover_halfPlane W.localWitness.radius_le p) p.2⟩ :
+            RegularBase (U := E.modularParameter.toTriangleUniformization))) := by
+      apply (ContMDiff.subtypeVal_comp_iff (regularBaseOpen hproper) _).mp
+      exact hlift
+    exact hbase.prodMk (contMDiff_fst.comp
+      (contMDiff_subtype_val
+        (I := ((modelWithCornersSelf ℂ ComplexTwoSpace).prod
+          (modelWithCornersSelf ℂ ℂ)))
+        (U := additiveCuspRadiusOpen W.localWitness.radius)))
+  · apply (ContMDiff.subtypeVal_comp_iff
+      (additiveCuspRadiusOpen W.localWitness.radius) _).mp
+    have hregionVal : ContMDiff
+        ((modelWithCornersSelf ℂ ℂ).prod (modelWithCornersSelf ℂ ComplexTwoSpace))
+        ((modelWithCornersSelf ℂ ℂ).prod (modelWithCornersSelf ℂ ComplexTwoSpace)) ∞
+        (Subtype.val : regularCuspBundleRegion W →
+          RegularBase (U := E.modularParameter.toTriangleUniformization) ×
+            ComplexTwoSpace) :=
+      contMDiff_subtype_val
+        (I := ((modelWithCornersSelf ℂ ℂ).prod
+          (modelWithCornersSelf ℂ ComplexTwoSpace)))
+        (U := regularCuspBundleOpen W)
+    have hzeta : ContMDiff
+        ((modelWithCornersSelf ℂ ℂ).prod (modelWithCornersSelf ℂ ComplexTwoSpace))
+        (modelWithCornersSelf ℂ ComplexTwoSpace) ∞
+        (fun p : regularCuspBundleRegion W ↦ p.1.2) :=
+      contMDiff_snd.comp hregionVal
+    have hbase : ContMDiff
+        ((modelWithCornersSelf ℂ ℂ).prod (modelWithCornersSelf ℂ ComplexTwoSpace))
+        (modelWithCornersSelf ℂ ℂ) ∞
+        (fun p : regularCuspBundleRegion W ↦ (p.1.1.1 : UpperHalfPlane)) :=
+      (contMDiff_subtype_val
+        (I := modelWithCornersSelf ℂ ℂ) (U := regularBaseOpen hproper)).comp
+          (contMDiff_fst.comp hregionVal)
+    have htau : ContMDiff
+        ((modelWithCornersSelf ℂ ℂ).prod (modelWithCornersSelf ℂ ComplexTwoSpace))
+        (modelWithCornersSelf ℂ ℂ) ∞
+        (fun p : regularCuspBundleRegion W ↦
+          (((assembledFuchsianPeriodFunctions E D).tau p.1.1.1 : UpperHalfPlane) : ℂ)) :=
+      (tau_contMDiff (assembledFuchsianPeriodFunctions E D) ∞).comp hbase
+    exact hzeta.prodMk htau
 
 public theorem additiveCuspBundleMap_isOpenEmbedding
     {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
@@ -1265,6 +2387,111 @@ public theorem additiveCuspCoverToGlobal_continuous
         (additiveCuspRadiusCover_halfPlane W.localWitness.radius_le p) p.2) p.1.1)))
   exact continuous_quot_mk.comp (continuous_quot_mk.comp hbundle)
 
+/-- The normalized additive cover map is locally biholomorphic: first by the normalized lift
+into the open regular vector bundle, then through the period-lattice and Fuchsian deck
+projections. -/
+public theorem additiveCuspCoverToGlobal_isLocalDiffeomorph
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) :
+    let F := assembledFuchsianPeriodFunctions E D
+    let hproper : SourceActionProperlyDiscontinuous :=
+      sourceActionProperlyDiscontinuous_of_eq
+        E.modularParameter.toTriangleUniformization_sourceAction
+    let hsource := E.modularParameter.toTriangleUniformization_sourceAction
+    letI := regularBaseChartedSpace hproper
+    letI : LocallyCompactSpace
+        (RegularBase (U := E.modularParameter.toTriangleUniformization)) :=
+      (isOpen_isRegularBasePoint hproper).locallyCompactSpace
+    letI : IsManifold GlobalDeckBaseModel RegularSmoothnessOrder
+        (RegularBase (U := E.modularParameter.toTriangleUniformization)) :=
+      regularBase_isManifold hproper
+    letI := familyIsCancelSMul (regularParameterMap F)
+    letI := familyContinuousConstSMul (regularParameterMap F)
+      fun a ↦ (regularPeriodSection_contMDiff F hproper a
+        RegularSmoothnessOrder).continuous
+    letI := familyProperlyDiscontinuousSMul (regularParameterMap F)
+      (compactlyUniformPeriods_of_compactUniformLowerBound
+        (regularParameterMap F) (regularParameterMap_compactUniformLowerBound F))
+    let hregular := regularTotalSpace_isManifold_and_projection_isLocalDiffeomorph
+      F hproper RegularSmoothnessOrder
+    letI : IsManifold GlobalDeckTotalModel RegularSmoothnessOrder
+        (RegularTotalSpace F) := hregular.1
+    letI : LocallyCompactSpace (RegularTotalSpace F) :=
+      Manifold.locallyCompact_of_finiteDimensional GlobalDeckTotalModel
+    letI := regularFamilyDeckAction F
+    letI := regularFamilyDeckAction_isCancelSMul_of_fuchsian F hsource hproper
+    letI := regularFamilyDeckAction_properlyDiscontinuous_of_source F hproper
+    letI := regularFamilyDeckAction_continuousConstSMul F hproper
+    letI : ChartedSpace (ModelProd ComplexTwoSpace ℂ)
+        (additiveCuspRadiusCover W.localWitness.radius) :=
+      (additiveCuspRadiusOpen W.localWitness.radius).instChartedSpace
+    letI := regularCuspBundleRegionCharts W
+    IsLocalDiffeomorph
+      ((modelWithCornersSelf ℂ ComplexTwoSpace).prod (modelWithCornersSelf ℂ ℂ))
+      GlobalDeckTotalModel RegularSmoothnessOrder (additiveCuspCoverToGlobal W) := by
+  let F := assembledFuchsianPeriodFunctions E D
+  let hproper : SourceActionProperlyDiscontinuous :=
+    sourceActionProperlyDiscontinuous_of_eq
+      E.modularParameter.toTriangleUniformization_sourceAction
+  let hsource := E.modularParameter.toTriangleUniformization_sourceAction
+  let _ := regularBaseChartedSpace hproper
+  let _ : LocallyCompactSpace
+      (RegularBase (U := E.modularParameter.toTriangleUniformization)) :=
+    (isOpen_isRegularBasePoint hproper).locallyCompactSpace
+  let _ : IsManifold GlobalDeckBaseModel RegularSmoothnessOrder
+      (RegularBase (U := E.modularParameter.toTriangleUniformization)) :=
+    regularBase_isManifold hproper
+  let _ := familyIsCancelSMul (regularParameterMap F)
+  let _ := familyContinuousConstSMul (regularParameterMap F)
+    fun a ↦ (regularPeriodSection_contMDiff F hproper a
+      RegularSmoothnessOrder).continuous
+  let _ := familyProperlyDiscontinuousSMul (regularParameterMap F)
+    (compactlyUniformPeriods_of_compactUniformLowerBound
+      (regularParameterMap F) (regularParameterMap_compactUniformLowerBound F))
+  have hregular := regularTotalSpace_isManifold_and_projection_isLocalDiffeomorph
+    F hproper RegularSmoothnessOrder
+  let _ : IsManifold GlobalDeckTotalModel RegularSmoothnessOrder
+      (RegularTotalSpace F) := hregular.1
+  let _ : LocallyCompactSpace (RegularTotalSpace F) :=
+    Manifold.locallyCompact_of_finiteDimensional GlobalDeckTotalModel
+  let _ := regularFamilyDeckAction F
+  let _ : IsCancelSMul Delta (RegularTotalSpace F) :=
+    regularFamilyDeckAction_isCancelSMul_of_fuchsian F hsource hproper
+  let _ : ProperlyDiscontinuousSMul Delta (RegularTotalSpace F) :=
+    regularFamilyDeckAction_properlyDiscontinuous_of_source F hproper
+  let _ : ContinuousConstSMul Delta (RegularTotalSpace F) :=
+    regularFamilyDeckAction_continuousConstSMul F hproper
+  let _ : ChartedSpace (ModelProd ComplexTwoSpace ℂ)
+      (additiveCuspRadiusCover W.localWitness.radius) :=
+    (additiveCuspRadiusOpen W.localWitness.radius).instChartedSpace
+  let _ := regularCuspBundleRegionCharts W
+  have hglobal := puncturedGlobalFamily_isManifold_and_projection_isLocalDiffeomorph
+    F hsource hproper
+  let d := additiveCuspBundleDiffeomorph W
+  let q₁ : RegularBase (U := E.modularParameter.toTriangleUniformization) ×
+      ComplexTwoSpace → RegularTotalSpace F := quotientProjection
+  let q₂ : RegularTotalSpace F → PuncturedGlobalFamily F := quotientProjection
+  have hcomp : IsLocalDiffeomorph
+      ((modelWithCornersSelf ℂ ComplexTwoSpace).prod (modelWithCornersSelf ℂ ℂ))
+      GlobalDeckTotalModel RegularSmoothnessOrder
+      (q₂ ∘ q₁ ∘ Subtype.val ∘ fun p ↦ d.toEquiv p) := by
+    intro p
+    have hd := d.isLocalDiffeomorph p
+    have hinc := openSubtypeVal_isLocalDiffeomorph_globalDeck
+      (regularCuspBundleOpen W) (d.toEquiv p)
+    have h₁ := hd.comp GlobalDeckTotalModel
+      (RegularBase (U := E.modularParameter.toTriangleUniformization) × ComplexTwoSpace) hinc
+    have h₂ := h₁.comp GlobalDeckTotalModel (RegularTotalSpace F)
+      (hregular.2 ((d.toEquiv p).1))
+    exact h₂.comp GlobalDeckTotalModel (PuncturedGlobalFamily F)
+      (hglobal.2 (q₁ (d.toEquiv p).1))
+  have heq : (q₂ ∘ q₁ ∘ Subtype.val ∘ fun p ↦ d.toEquiv p) =
+      additiveCuspCoverToGlobal W := by
+    funext p
+    rfl
+  rwa [heq] at hcomp
+
 public theorem additiveCuspCoverToGlobal_isOpenMap
     {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
@@ -1378,6 +2605,129 @@ public theorem additiveCuspQuotientToGlobal_mk
       additiveCuspCoverToGlobal W p :=
   rfl
 
+/-- The map descended through the exact exponential fibres is locally biholomorphic.  The proof
+cancels the locally biholomorphic exponential quotient projection using its explicit local
+inverse. -/
+public theorem additiveCuspQuotientToGlobal_isLocalDiffeomorph
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) :
+    let F := assembledFuchsianPeriodFunctions E D
+    let r := W.localWitness.radius
+    let hproper : SourceActionProperlyDiscontinuous :=
+      sourceActionProperlyDiscontinuous_of_eq
+        E.modularParameter.toTriangleUniformization_sourceAction
+    let hsource := E.modularParameter.toTriangleUniformization_sourceAction
+    letI := denseTorusCharts
+    letI : IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞ DenseTorus :=
+      denseTorus_isManifold
+    letI : ChartedSpace ComplexModel (denseTorusCuspRegion r) :=
+      (denseTorusCuspOpen r).instChartedSpace
+    letI : IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞
+        (denseTorusCuspRegion r) := denseTorusCuspRegion_isManifold r
+    letI := additiveCuspRadiusQuotientCharts r
+    letI : ChartedSpace (ModelProd ComplexTwoSpace ℂ)
+        (additiveCuspRadiusCover r) := (additiveCuspRadiusOpen r).instChartedSpace
+    letI := regularBaseChartedSpace hproper
+    letI : LocallyCompactSpace
+        (RegularBase (U := E.modularParameter.toTriangleUniformization)) :=
+      (isOpen_isRegularBasePoint hproper).locallyCompactSpace
+    letI : IsManifold GlobalDeckBaseModel RegularSmoothnessOrder
+        (RegularBase (U := E.modularParameter.toTriangleUniformization)) :=
+      regularBase_isManifold hproper
+    letI := familyIsCancelSMul (regularParameterMap F)
+    letI := familyContinuousConstSMul (regularParameterMap F)
+      fun a ↦ (regularPeriodSection_contMDiff F hproper a
+        RegularSmoothnessOrder).continuous
+    letI := familyProperlyDiscontinuousSMul (regularParameterMap F)
+      (compactlyUniformPeriods_of_compactUniformLowerBound
+        (regularParameterMap F) (regularParameterMap_compactUniformLowerBound F))
+    let hregular := regularTotalSpace_isManifold_and_projection_isLocalDiffeomorph
+      F hproper RegularSmoothnessOrder
+    letI : IsManifold GlobalDeckTotalModel RegularSmoothnessOrder
+        (RegularTotalSpace F) := hregular.1
+    letI : LocallyCompactSpace (RegularTotalSpace F) :=
+      Manifold.locallyCompact_of_finiteDimensional GlobalDeckTotalModel
+    letI := regularFamilyDeckAction F
+    letI := regularFamilyDeckAction_isCancelSMul_of_fuchsian F hsource hproper
+    letI := regularFamilyDeckAction_properlyDiscontinuous_of_source F hproper
+    letI := regularFamilyDeckAction_continuousConstSMul F hproper
+    letI := regularCuspBundleRegionCharts W
+    IsLocalDiffeomorph (modelWithCornersSelf ℂ ComplexModel) GlobalDeckTotalModel
+      RegularSmoothnessOrder (additiveCuspQuotientToGlobal W) := by
+  let F := assembledFuchsianPeriodFunctions E D
+  let r := W.localWitness.radius
+  let hproper : SourceActionProperlyDiscontinuous :=
+    sourceActionProperlyDiscontinuous_of_eq
+      E.modularParameter.toTriangleUniformization_sourceAction
+  let hsource := E.modularParameter.toTriangleUniformization_sourceAction
+  let _ := denseTorusCharts
+  let _ : IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞ DenseTorus :=
+    denseTorus_isManifold
+  let _ : ChartedSpace ComplexModel (denseTorusCuspRegion r) :=
+    (denseTorusCuspOpen r).instChartedSpace
+  let _ : IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞
+      (denseTorusCuspRegion r) := denseTorusCuspRegion_isManifold r
+  let _ := additiveCuspRadiusQuotientCharts r
+  let _ : ChartedSpace (ModelProd ComplexTwoSpace ℂ) (additiveCuspRadiusCover r) :=
+    (additiveCuspRadiusOpen r).instChartedSpace
+  let _ := regularBaseChartedSpace hproper
+  let _ : LocallyCompactSpace
+      (RegularBase (U := E.modularParameter.toTriangleUniformization)) :=
+    (isOpen_isRegularBasePoint hproper).locallyCompactSpace
+  let _ : IsManifold GlobalDeckBaseModel RegularSmoothnessOrder
+      (RegularBase (U := E.modularParameter.toTriangleUniformization)) :=
+    regularBase_isManifold hproper
+  let _ := familyIsCancelSMul (regularParameterMap F)
+  let _ := familyContinuousConstSMul (regularParameterMap F)
+    fun a ↦ (regularPeriodSection_contMDiff F hproper a
+      RegularSmoothnessOrder).continuous
+  let _ := familyProperlyDiscontinuousSMul (regularParameterMap F)
+    (compactlyUniformPeriods_of_compactUniformLowerBound
+      (regularParameterMap F) (regularParameterMap_compactUniformLowerBound F))
+  have hregular := regularTotalSpace_isManifold_and_projection_isLocalDiffeomorph
+    F hproper RegularSmoothnessOrder
+  let _ : IsManifold GlobalDeckTotalModel RegularSmoothnessOrder
+      (RegularTotalSpace F) := hregular.1
+  let _ : LocallyCompactSpace (RegularTotalSpace F) :=
+    Manifold.locallyCompact_of_finiteDimensional GlobalDeckTotalModel
+  let _ := regularFamilyDeckAction F
+  let _ : IsCancelSMul Delta (RegularTotalSpace F) :=
+    regularFamilyDeckAction_isCancelSMul_of_fuchsian F hsource hproper
+  let _ : ProperlyDiscontinuousSMul Delta (RegularTotalSpace F) :=
+    regularFamilyDeckAction_properlyDiscontinuous_of_source F hproper
+  let _ : ContinuousConstSMul Delta (RegularTotalSpace F) :=
+    regularFamilyDeckAction_continuousConstSMul F hproper
+  let _ := regularCuspBundleRegionCharts W
+  change IsLocalDiffeomorph (modelWithCornersSelf ℂ ComplexModel)
+    GlobalDeckTotalModel RegularSmoothnessOrder (additiveCuspQuotientToGlobal W)
+  intro q
+  induction q using Quotient.inductionOn with
+  | _ p =>
+    let π : additiveCuspRadiusCover r →
+        Quotient (Setoid.ker (denseCuspExponentialRadius r)) := Quotient.mk _
+    have hπ := additiveCuspRadiusQuotient_projection_isLocalDiffeomorph r p
+    let loc := hπ.localInverse
+    have hloc : IsLocalDiffeomorphAt (modelWithCornersSelf ℂ ComplexModel)
+        ((modelWithCornersSelf ℂ ComplexTwoSpace).prod (modelWithCornersSelf ℂ ℂ))
+        RegularSmoothnessOrder loc.toPartialEquiv.toFun (π p) := by
+      simpa only [RegularSmoothnessOrder] using hπ.localInverse_isLocalDiffeomorphAt
+    have hcomp : IsLocalDiffeomorphAt (modelWithCornersSelf ℂ ComplexModel)
+        GlobalDeckTotalModel RegularSmoothnessOrder
+        (additiveCuspCoverToGlobal W ∘ loc.toPartialEquiv.toFun) (π p) :=
+      hloc.comp GlobalDeckTotalModel (PuncturedGlobalFamily F)
+        (additiveCuspCoverToGlobal_isLocalDiffeomorph W
+          (loc.toPartialEquiv.toFun (π p)))
+    have hright := hπ.localInverse_eventuallyEq_right
+    have hevent : (additiveCuspCoverToGlobal W ∘ loc.toPartialEquiv.toFun) =ᶠ[nhds (π p)]
+        additiveCuspQuotientToGlobal W := by
+      filter_upwards [hright] with y hy
+      calc
+        additiveCuspCoverToGlobal W (loc.toPartialEquiv.toFun y) =
+            additiveCuspQuotientToGlobal W (π (loc.toPartialEquiv.toFun y)) := rfl
+        _ = additiveCuspQuotientToGlobal W y := congrArg _ hy
+    exact isLocalDiffeomorphAt_congr_eventuallyEq_complexToGlobalDeck hcomp hevent
+
 public theorem additiveToPuncturedLocalHomeomorph_mk
     (M : Model) (r : ℝ) (p : additiveCuspRadiusCover r) :
     ((additiveToPuncturedLocalHomeomorph M r (Quotient.mk _ p)).1 :
@@ -1386,6 +2736,35 @@ public theorem additiveToPuncturedLocalHomeomorph_mk
         (mem_ball_zero_iff.mpr p.2) := by
   apply Subtype.ext
   rfl
+
+/-- The analytic and topological constructions of the exact exponential quotient collar have
+the same underlying map. -/
+public theorem additiveToPuncturedLocalDiffeomorph_apply
+    (M : Model) (r : ℝ)
+    (q : Quotient (Setoid.ker (denseCuspExponentialRadius r))) :
+    letI := denseTorusCharts
+    letI := M.topology
+    letI := M.charts
+    letI : ChartedSpace ComplexModel (denseTorusCuspRegion r) :=
+      (denseTorusCuspOpen r).instChartedSpace
+    letI : IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞
+        (denseTorusCuspRegion r) := denseTorusCuspRegion_isManifold r
+    letI := additiveCuspRadiusQuotientCharts r
+    (additiveToPuncturedLocalDiffeomorph M r).toEquiv q =
+      additiveToPuncturedLocalHomeomorph M r q := by
+  let _ := denseTorusCharts
+  let _ := M.topology
+  let _ := M.charts
+  let _ : ChartedSpace ComplexModel (denseTorusCuspRegion r) :=
+    (denseTorusCuspOpen r).instChartedSpace
+  let _ : IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞
+      (denseTorusCuspRegion r) := denseTorusCuspRegion_isManifold r
+  let _ := additiveCuspRadiusQuotientCharts r
+  induction q using Quotient.inductionOn with
+  | _ p =>
+    apply Subtype.ext
+    apply Subtype.ext
+    rfl
 
 /-- Before dividing by the phase-corrected parameter-lattice action, the punctured local toric
 carrier maps continuously to the global cusp collar. -/
@@ -1397,6 +2776,137 @@ public noncomputable def puncturedLocalCuspPrequotientMap
       PuncturedGlobalFamily (assembledFuchsianPeriodFunctions E D) :=
   additiveCuspQuotientToGlobal W ∘
     (additiveToPuncturedLocalHomeomorph M W.localWitness.radius).symm
+
+/-- The punctured actual toric carrier maps locally biholomorphically to the global cusp collar
+before the parameter-lattice quotient. -/
+public theorem puncturedLocalCuspPrequotientMap_isLocalDiffeomorph
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) :
+    let F := assembledFuchsianPeriodFunctions E D
+    let r := W.localWitness.radius
+    let hproper : SourceActionProperlyDiscontinuous :=
+      sourceActionProperlyDiscontinuous_of_eq
+        E.modularParameter.toTriangleUniformization_sourceAction
+    let hsource := E.modularParameter.toTriangleUniformization_sourceAction
+    letI := M.topology
+    letI := M.charts
+    letI : ChartedSpace ComplexModel {p : LocalCarrier M r // M.t p ≠ 0} :=
+      (puncturedLocalCarrierOpen M r).instChartedSpace
+    letI := denseTorusCharts
+    letI : IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞ DenseTorus :=
+      denseTorus_isManifold
+    letI : ChartedSpace ComplexModel (denseTorusCuspRegion r) :=
+      (denseTorusCuspOpen r).instChartedSpace
+    letI : IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞
+        (denseTorusCuspRegion r) := denseTorusCuspRegion_isManifold r
+    letI := additiveCuspRadiusQuotientCharts r
+    letI : ChartedSpace (ModelProd ComplexTwoSpace ℂ)
+        (additiveCuspRadiusCover r) := (additiveCuspRadiusOpen r).instChartedSpace
+    letI := regularBaseChartedSpace hproper
+    letI : LocallyCompactSpace
+        (RegularBase (U := E.modularParameter.toTriangleUniformization)) :=
+      (isOpen_isRegularBasePoint hproper).locallyCompactSpace
+    letI : IsManifold GlobalDeckBaseModel RegularSmoothnessOrder
+        (RegularBase (U := E.modularParameter.toTriangleUniformization)) :=
+      regularBase_isManifold hproper
+    letI := familyIsCancelSMul (regularParameterMap F)
+    letI := familyContinuousConstSMul (regularParameterMap F)
+      fun a ↦ (regularPeriodSection_contMDiff F hproper a
+        RegularSmoothnessOrder).continuous
+    letI := familyProperlyDiscontinuousSMul (regularParameterMap F)
+      (compactlyUniformPeriods_of_compactUniformLowerBound
+        (regularParameterMap F) (regularParameterMap_compactUniformLowerBound F))
+    let hregular := regularTotalSpace_isManifold_and_projection_isLocalDiffeomorph
+      F hproper RegularSmoothnessOrder
+    letI : IsManifold GlobalDeckTotalModel RegularSmoothnessOrder
+        (RegularTotalSpace F) := hregular.1
+    letI : LocallyCompactSpace (RegularTotalSpace F) :=
+      Manifold.locallyCompact_of_finiteDimensional GlobalDeckTotalModel
+    letI := regularFamilyDeckAction F
+    letI := regularFamilyDeckAction_isCancelSMul_of_fuchsian F hsource hproper
+    letI := regularFamilyDeckAction_properlyDiscontinuous_of_source F hproper
+    letI := regularFamilyDeckAction_continuousConstSMul F hproper
+    letI := regularCuspBundleRegionCharts W
+    IsLocalDiffeomorph (modelWithCornersSelf ℂ ComplexModel) GlobalDeckTotalModel
+      RegularSmoothnessOrder (puncturedLocalCuspPrequotientMap W) := by
+  let F := assembledFuchsianPeriodFunctions E D
+  let r := W.localWitness.radius
+  let hproper : SourceActionProperlyDiscontinuous :=
+    sourceActionProperlyDiscontinuous_of_eq
+      E.modularParameter.toTriangleUniformization_sourceAction
+  let hsource := E.modularParameter.toTriangleUniformization_sourceAction
+  let _ := M.topology
+  let _ := M.charts
+  let _ : ChartedSpace ComplexModel {p : LocalCarrier M r // M.t p ≠ 0} :=
+    (puncturedLocalCarrierOpen M r).instChartedSpace
+  let _ := denseTorusCharts
+  let _ : IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞ DenseTorus :=
+    denseTorus_isManifold
+  let _ : ChartedSpace ComplexModel (denseTorusCuspRegion r) :=
+    (denseTorusCuspOpen r).instChartedSpace
+  let _ : IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞
+      (denseTorusCuspRegion r) := denseTorusCuspRegion_isManifold r
+  let _ := additiveCuspRadiusQuotientCharts r
+  let _ : ChartedSpace (ModelProd ComplexTwoSpace ℂ) (additiveCuspRadiusCover r) :=
+    (additiveCuspRadiusOpen r).instChartedSpace
+  let _ := regularBaseChartedSpace hproper
+  let _ : LocallyCompactSpace
+      (RegularBase (U := E.modularParameter.toTriangleUniformization)) :=
+    (isOpen_isRegularBasePoint hproper).locallyCompactSpace
+  let _ : IsManifold GlobalDeckBaseModel RegularSmoothnessOrder
+      (RegularBase (U := E.modularParameter.toTriangleUniformization)) :=
+    regularBase_isManifold hproper
+  let _ := familyIsCancelSMul (regularParameterMap F)
+  let _ := familyContinuousConstSMul (regularParameterMap F)
+    fun a ↦ (regularPeriodSection_contMDiff F hproper a
+      RegularSmoothnessOrder).continuous
+  let _ := familyProperlyDiscontinuousSMul (regularParameterMap F)
+    (compactlyUniformPeriods_of_compactUniformLowerBound
+      (regularParameterMap F) (regularParameterMap_compactUniformLowerBound F))
+  have hregular := regularTotalSpace_isManifold_and_projection_isLocalDiffeomorph
+    F hproper RegularSmoothnessOrder
+  let _ : IsManifold GlobalDeckTotalModel RegularSmoothnessOrder
+      (RegularTotalSpace F) := hregular.1
+  let _ : LocallyCompactSpace (RegularTotalSpace F) :=
+    Manifold.locallyCompact_of_finiteDimensional GlobalDeckTotalModel
+  let _ := regularFamilyDeckAction F
+  let _ : IsCancelSMul Delta (RegularTotalSpace F) :=
+    regularFamilyDeckAction_isCancelSMul_of_fuchsian F hsource hproper
+  let _ : ProperlyDiscontinuousSMul Delta (RegularTotalSpace F) :=
+    regularFamilyDeckAction_properlyDiscontinuous_of_source F hproper
+  let _ : ContinuousConstSMul Delta (RegularTotalSpace F) :=
+    regularFamilyDeckAction_continuousConstSMul F hproper
+  let _ := regularCuspBundleRegionCharts W
+  change IsLocalDiffeomorph (modelWithCornersSelf ℂ ComplexModel)
+    GlobalDeckTotalModel RegularSmoothnessOrder (puncturedLocalCuspPrequotientMap W)
+  let d : Quotient (Setoid.ker (denseCuspExponentialRadius r))
+      ≃ₘ^∞⟮(modelWithCornersSelf ℂ ComplexModel),
+        (modelWithCornersSelf ℂ ComplexModel)⟯
+        {p : LocalCarrier M r // M.t p ≠ 0} :=
+    additiveToPuncturedLocalDiffeomorph M r
+  let e := additiveToPuncturedLocalHomeomorph M r
+  have hinv : (fun p ↦ d.symm.toEquiv p) = e.symm := by
+    funext p
+    apply d.toEquiv.injective
+    calc
+      d.toEquiv (d.symm.toEquiv p) = p := d.toEquiv.apply_symm_apply p
+      _ = d.toEquiv (e.symm p) := by
+        change p = (additiveToPuncturedLocalDiffeomorph M r).toEquiv (e.symm p)
+        rw [additiveToPuncturedLocalDiffeomorph_apply]
+        exact (e.apply_symm_apply p).symm
+  have hcomp : IsLocalDiffeomorph (modelWithCornersSelf ℂ ComplexModel)
+      GlobalDeckTotalModel RegularSmoothnessOrder
+      (additiveCuspQuotientToGlobal W ∘ fun p ↦ d.symm.toEquiv p) := by
+    intro p
+    exact (d.symm.isLocalDiffeomorph p).comp GlobalDeckTotalModel
+      (PuncturedGlobalFamily F)
+      (additiveCuspQuotientToGlobal_isLocalDiffeomorph W (d.symm.toEquiv p))
+  have heq : (additiveCuspQuotientToGlobal W ∘ fun p ↦ d.symm.toEquiv p) =
+      puncturedLocalCuspPrequotientMap W := by
+    rw [hinv]
+    rfl
+  rwa [heq] at hcomp
 
 public theorem puncturedLocalCuspPrequotientMap_continuous
     {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
@@ -1509,6 +3019,56 @@ public noncomputable abbrev puncturedLocalCuspQuotient
     (W : ActualPuncturedCuspCollarWitness N M) :=
   Quotient (puncturedPsiOrbitRel W)
 
+/-- The connected additive radius cover surjects onto the punctured phase quotient. -/
+public noncomputable def additiveCuspRadiusToPuncturedLocalCuspQuotient
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) :
+    additiveCuspRadiusCover W.localWitness.radius → puncturedLocalCuspQuotient W :=
+  fun a ↦ Quotient.mk _
+    (additiveToPuncturedLocalHomeomorph M W.localWitness.radius (Quotient.mk _ a))
+
+public theorem additiveCuspRadiusToPuncturedLocalCuspQuotient_continuous
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) :
+    Continuous (additiveCuspRadiusToPuncturedLocalCuspQuotient W) :=
+  continuous_quot_mk.comp
+    ((additiveToPuncturedLocalHomeomorph M W.localWitness.radius).continuous.comp
+      continuous_quot_mk)
+
+public theorem additiveCuspRadiusToPuncturedLocalCuspQuotient_surjective
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) :
+    Function.Surjective (additiveCuspRadiusToPuncturedLocalCuspQuotient W) := by
+  intro q
+  induction q using Quotient.inductionOn with
+  | _ p =>
+    obtain ⟨u, rfl⟩ :=
+      (additiveToPuncturedLocalHomeomorph M W.localWitness.radius).surjective p
+    induction u using Quotient.inductionOn with
+    | _ a => exact ⟨a, rfl⟩
+
+public theorem puncturedLocalCuspQuotient_connected
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) :
+    ConnectedSpace (puncturedLocalCuspQuotient W) := by
+  let _ : ConnectedSpace (additiveCuspRadiusCover W.localWitness.radius) :=
+    additiveCuspRadiusCover_connected W.localWitness.radius_pos
+  exact (additiveCuspRadiusToPuncturedLocalCuspQuotient_surjective W).connectedSpace
+    (additiveCuspRadiusToPuncturedLocalCuspQuotient_continuous W)
+
+/-- The noncentral torus locus remains dense after restriction to an open cusp neighborhood. -/
+public theorem puncturedLocalCarrier_dense (M : Model) (r : ℝ) :
+    Dense {p : LocalCarrier M r | M.t p ≠ 0} := by
+  have hdense : Dense {p : M.Carrier | M.t p ≠ 0} := by
+    rw [← M.torus_range]
+    exact M.torus_dense
+  change Dense (Subtype.val ⁻¹' {p : M.Carrier | M.t p ≠ 0})
+  exact hdense.preimage (cuspNeighborhood M r).isOpen.isOpenMap_subtype_val
+
 /-- The actual phase-corrected action on the full local toric cusp, including its central
 fibre. -/
 @[instance_reducible] public noncomputable def actualLocalPsiAction
@@ -1550,6 +3110,371 @@ public noncomputable abbrev actualLocalCuspFilling
   MulAction.orbitRel.Quotient (Multiplicative ParameterLattice)
     (LocalCarrier M W.localWitness.radius)
 
+/-- The norm of the toric cusp coordinate is constant on the full local phase action. -/
+public theorem actualLocalCuspFillingRadius_respects
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M)
+    (p q : LocalCarrier M W.localWitness.radius)
+    (h : actualLocalPsiOrbitRel W p q) :
+    ‖M.t p‖ = ‖M.t q‖ := by
+  rw [actualLocalPsiOrbitRel] at h
+  let C :=
+    CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
+      N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
+  let _ : MulAction (Multiplicative ParameterLattice)
+      (LocalCarrier M W.localWitness.radius) :=
+    (C.toCuspActionData W.localWitness.fixedPoint).psiAction
+  change MulAction.orbitRel (Multiplicative ParameterLattice) _ p q at h
+  rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff] at h
+  obtain ⟨lambda, hlambda⟩ := h
+  rw [show lambda = Multiplicative.ofAdd (Multiplicative.toAdd lambda) from rfl,
+    (C.toCuspActionData W.localWitness.fixedPoint).psi_smul] at hlambda
+  rw [← hlambda, ← C.psiMap_eq_generic W.localWitness.fixedPoint,
+    CuspLocalPhaseAction.ExactLocalHolomorphicPhaseCoefficients.psiMap_preserves_t]
+
+/-- Radial coordinate on the full actual local cusp filling. -/
+public noncomputable def actualLocalCuspFillingRadius
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) :
+    actualLocalCuspFilling W → ℝ := by
+  let C :=
+    CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
+      N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
+  let _ : MulAction (Multiplicative ParameterLattice)
+      (LocalCarrier M W.localWitness.radius) :=
+    (C.toCuspActionData W.localWitness.fixedPoint).psiAction
+  exact Quotient.lift (fun p ↦ ‖M.t p‖)
+    (actualLocalCuspFillingRadius_respects W)
+
+@[simp]
+public theorem actualLocalCuspFillingRadius_mk
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M)
+    (p : LocalCarrier M W.localWitness.radius) :
+    actualLocalCuspFillingRadius W (Quotient.mk _ p) = ‖M.t p‖ := by
+  rw [actualLocalCuspFillingRadius.eq_def]
+  rfl
+
+/-- The descended cusp-filling radius is continuous. -/
+public theorem actualLocalCuspFillingRadius_continuous
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) :
+    Continuous (actualLocalCuspFillingRadius W) := by
+  rw [actualLocalCuspFillingRadius.eq_def]
+  exact continuous_quot_lift (actualLocalCuspFillingRadius_respects W)
+    (continuous_norm.comp
+      (M.t_holomorphic.continuous.comp continuous_subtype_val))
+
+/-- The descended cusp-filling radius is nonnegative. -/
+public theorem actualLocalCuspFillingRadius_nonneg
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M)
+    (Q : actualLocalCuspFilling W) :
+    0 ≤ actualLocalCuspFillingRadius W Q := by
+  induction Q using Quotient.inductionOn with
+  | _ p =>
+      rw [actualLocalCuspFillingRadius_mk]
+      exact norm_nonneg _
+
+/-- The compact component indexed by zero, regarded as a subset of the open local cusp
+carrier. -/
+public def actualLocalCuspZeroComponent
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) :
+    Set (LocalCarrier M W.localWitness.radius) :=
+  {p | (p : M.Carrier) ∈ M.centralComponent 0}
+
+/-- The distinguished local central component remains compact after restriction to the open
+cusp carrier. -/
+public theorem actualLocalCuspZeroComponent_isCompact
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) :
+    IsCompact (actualLocalCuspZeroComponent W) := by
+  rw [Topology.IsEmbedding.subtypeVal.isCompact_iff]
+  have heq : Subtype.val '' actualLocalCuspZeroComponent W = M.centralComponent 0 := by
+    ext p
+    constructor
+    · rintro ⟨q, hq, rfl⟩
+      exact hq
+    · intro hp
+      have hzero : M.t p = 0 := by
+        have hpzero : p ∈ M.t ⁻¹' {0} := by
+          rw [M.centralFiber_eq_iUnion]
+          exact Set.mem_iUnion.2 ⟨0, hp⟩
+        exact hpzero
+      let q : LocalCarrier M W.localWitness.radius := ⟨p, by
+        rw [mem_cuspNeighborhood_iff, mem_ball_zero_iff, hzero, norm_zero]
+        exact W.localWitness.radius_pos⟩
+      exact ⟨q, hp, rfl⟩
+  rw [heq]
+  exact compact_centralComponent M 0
+
+/-- The zero-radius fibre of the actual cusp filling is exactly the quotient image of one
+compact toric component. -/
+public theorem actualLocalCuspFilling_zeroFiber_eq_image_zeroComponent
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) :
+    actualLocalCuspFillingRadius W ⁻¹' {0} =
+      (Quotient.mk _ : LocalCarrier M W.localWitness.radius →
+        actualLocalCuspFilling W) '' actualLocalCuspZeroComponent W := by
+  let C :=
+    CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
+      N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
+  let _ : MulAction (Multiplicative ParameterLattice)
+      (LocalCarrier M W.localWitness.radius) :=
+    (C.toCuspActionData W.localWitness.fixedPoint).psiAction
+  ext Q
+  induction Q using Quotient.inductionOn with
+  | _ p =>
+      constructor
+      · intro hzero
+        change actualLocalCuspFillingRadius W (Quotient.mk _ p) = 0 at hzero
+        rw [actualLocalCuspFillingRadius_mk] at hzero
+        have ht : M.t p = 0 := norm_eq_zero.mp hzero
+        obtain ⟨lambda, hlambda⟩ := central_orbit_meets_zero_component
+          M C M.toTorusActionPreservesComponents p ht
+        let q : LocalCarrier M W.localWitness.radius := C.psiMap lambda p
+        refine ⟨q, hlambda, ?_⟩
+        have hrel : MulAction.orbitRel (Multiplicative ParameterLattice)
+            (LocalCarrier M W.localWitness.radius) q p := by
+          rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff]
+          refine ⟨Multiplicative.ofAdd lambda, ?_⟩
+          rw [(C.toCuspActionData W.localWitness.fixedPoint).psi_smul,
+            ← C.psiMap_eq_generic W.localWitness.fixedPoint]
+        exact Quotient.sound hrel
+      · rintro ⟨q, hq, hqp⟩
+        change actualLocalCuspFillingRadius W (Quotient.mk _ p) = 0
+        rw [← hqp, actualLocalCuspFillingRadius_mk]
+        have hqzero : M.t q = 0 := by
+          have hmem : (q : M.Carrier) ∈ M.t ⁻¹' {0} := by
+            rw [M.centralFiber_eq_iUnion]
+            exact Set.mem_iUnion.2 ⟨0, hq⟩
+          exact hmem
+        rw [hqzero, norm_zero]
+
+/-- The entire central fibre of the actual local cusp quotient is compact. -/
+public theorem actualLocalCuspFilling_zeroFiber_isCompact
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) :
+    IsCompact (actualLocalCuspFillingRadius W ⁻¹' {0}) := by
+  rw [actualLocalCuspFilling_zeroFiber_eq_image_zeroComponent W]
+  exact (actualLocalCuspZeroComponent_isCompact W).image continuous_quot_mk
+
+/-- A compact set of local representatives for a closed radial sublevel: the distinguished
+central component together with the finitely many bounded-index unit polydiscs. -/
+public def actualLocalCuspCompactRepresentatives
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) (R : ℝ) :
+    Set (LocalCarrier M W.localWitness.radius) :=
+  actualLocalCuspZeroComponent W ∪
+    {p | (p : M.Carrier) ∈ boundedClosedUnitToricPolydiscs M 7 ∧ ‖M.t p‖ ≤ R}
+
+public theorem actualLocalCuspCompactRepresentatives_isCompact
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) {R : ℝ}
+    (hR : R < W.localWitness.radius) :
+    IsCompact (actualLocalCuspCompactRepresentatives W R) := by
+  apply (actualLocalCuspZeroComponent_isCompact W).union
+  rw [Topology.IsEmbedding.subtypeVal.isCompact_iff]
+  have heq : Subtype.val ''
+      {p : LocalCarrier M W.localWitness.radius |
+        (p : M.Carrier) ∈ boundedClosedUnitToricPolydiscs M 7 ∧ ‖M.t p‖ ≤ R} =
+      boundedClosedUnitToricPolydiscs M 7 ∩ {p | ‖M.t p‖ ≤ R} := by
+    ext p
+    constructor
+    · rintro ⟨q, hq, rfl⟩
+      exact hq
+    · rintro ⟨hpbounded, hpR⟩
+      let q : LocalCarrier M W.localWitness.radius := ⟨p, by
+        rw [mem_cuspNeighborhood_iff, mem_ball_zero_iff]
+        exact hpR.trans_lt hR⟩
+      exact ⟨q, ⟨hpbounded, hpR⟩, rfl⟩
+  rw [heq]
+  exact (compact_boundedClosedUnitToricPolydiscs M 7).inter_right
+    (isClosed_le (continuous_norm.comp M.t_holomorphic.continuous) continuous_const)
+
+/-- Every local point in a closed radial sublevel has an orbit representative in the fixed
+compact representative set. -/
+public theorem exists_orbit_mem_actualLocalCuspCompactRepresentatives
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) {R : ℝ}
+    (p : LocalCarrier M W.localWitness.radius) (hpR : ‖M.t p‖ ≤ R) :
+    ∃ q ∈ actualLocalCuspCompactRepresentatives W R,
+      (Quotient.mk _ q : actualLocalCuspFilling W) = Quotient.mk _ p := by
+  let C :=
+    CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
+      N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
+  let _ : MulAction (Multiplicative ParameterLattice)
+      (LocalCarrier M W.localWitness.radius) :=
+    (C.toCuspActionData W.localWitness.fixedPoint).psiAction
+  by_cases hp : M.t p = 0
+  · obtain ⟨lambda, hlambda⟩ := central_orbit_meets_zero_component
+      M C M.toTorusActionPreservesComponents p hp
+    let q : LocalCarrier M W.localWitness.radius := C.psiMap lambda p
+    refine ⟨q, Or.inl hlambda, ?_⟩
+    apply Quotient.sound
+    change MulAction.orbitRel (Multiplicative ParameterLattice)
+      (LocalCarrier M W.localWitness.radius) q p
+    rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff]
+    refine ⟨Multiplicative.ofAdd lambda, ?_⟩
+    rw [(C.toCuspActionData W.localWitness.fixedPoint).psi_smul,
+      ← C.psiMap_eq_generic W.localWitness.fixedPoint]
+  · obtain ⟨lambda, hlambda⟩ := W.localWitness.exists_psiMap_positionL1_le_five p hp
+    let q : LocalCarrier M W.localWitness.radius := C.psiMap lambda p
+    have hqt : M.t q ≠ 0 := by
+      rw [CuspLocalPhaseAction.ExactLocalHolomorphicPhaseCoefficients.psiMap_preserves_t]
+      exact hp
+    have hqnorm : ‖M.t q‖ < 1 := by
+      exact (mem_ball_zero_iff.mp q.property).trans W.localWitness.radius_lt_one
+    obtain ⟨upper, v, hqchart, hqcoord, hv⟩ :=
+      exists_closedUnitToricPolydisc_with_index_bound M hqt hqnorm hlambda
+    have hqbounded : (q : M.Carrier) ∈ boundedClosedUnitToricPolydiscs M 7 := by
+      apply Set.mem_iUnion.2
+      refine ⟨(upper, v), Set.mem_iUnion.2 ⟨?_, ?_⟩⟩
+      · change latticeL1 v ≤ 7
+        norm_num at hv ⊢
+        exact hv
+      rw [closedToricPolydisc_eq]
+      exact ⟨hqchart, hqcoord⟩
+    have hqR : ‖M.t q‖ ≤ R := by
+      rw [CuspLocalPhaseAction.ExactLocalHolomorphicPhaseCoefficients.psiMap_preserves_t]
+      exact hpR
+    refine ⟨q, Or.inr ⟨hqbounded, hqR⟩, ?_⟩
+    apply Quotient.sound
+    change MulAction.orbitRel (Multiplicative ParameterLattice)
+      (LocalCarrier M W.localWitness.radius) q p
+    rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff]
+    refine ⟨Multiplicative.ofAdd lambda, ?_⟩
+    rw [(C.toCuspActionData W.localWitness.fixedPoint).psi_smul,
+      ← C.psiMap_eq_generic W.localWitness.fixedPoint]
+
+/-- Every proper closed radial sublevel of the actual local cusp filling is compact. -/
+public theorem actualLocalCuspFilling_sublevel_isCompact
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) {R : ℝ}
+    (hRnonneg : 0 ≤ R) (hR : R < W.localWitness.radius) :
+    IsCompact (actualLocalCuspFillingRadius W ⁻¹' Set.Iic R) := by
+  have heq : actualLocalCuspFillingRadius W ⁻¹' Set.Iic R =
+      (Quotient.mk _ : LocalCarrier M W.localWitness.radius →
+        actualLocalCuspFilling W) '' actualLocalCuspCompactRepresentatives W R := by
+    ext Q
+    induction Q using Quotient.inductionOn with
+    | _ p =>
+        constructor
+        · intro hpR
+          change actualLocalCuspFillingRadius W (Quotient.mk _ p) ≤ R at hpR
+          rw [actualLocalCuspFillingRadius_mk] at hpR
+          exact exists_orbit_mem_actualLocalCuspCompactRepresentatives W p hpR
+        · rintro ⟨q, hq, hqp⟩
+          change actualLocalCuspFillingRadius W (Quotient.mk _ p) ≤ R
+          rw [← hqp, actualLocalCuspFillingRadius_mk]
+          rcases hq with hqzero | hqbounded
+          · have ht : M.t q = 0 := by
+              have hmem : (q : M.Carrier) ∈ M.t ⁻¹' {0} := by
+                rw [M.centralFiber_eq_iUnion]
+                exact Set.mem_iUnion.2 ⟨0, hqzero⟩
+              exact hmem
+            rw [ht, norm_zero]
+            exact hRnonneg
+          · exact hqbounded.2
+  rw [heq]
+  exact (actualLocalCuspCompactRepresentatives_isCompact W hR).image continuous_quot_mk
+
+/-- The full local cusp filling is Hausdorff: it is the quotient of the Hausdorff local toric
+carrier by the properly discontinuous phase action supplied by the quantitative witness. -/
+public theorem actualLocalCuspFilling_t2
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) :
+    T2Space (actualLocalCuspFilling W) := by
+  let C :=
+    CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
+      N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
+  let _ : MulAction (Multiplicative ParameterLattice)
+      (LocalCarrier M W.localWitness.radius) :=
+    (C.toCuspActionData W.localWitness.fixedPoint).psiAction
+  let _ : ContinuousConstSMul (Multiplicative ParameterLattice)
+      (LocalCarrier M W.localWitness.radius) := ⟨by
+    intro lambda
+    rw [show lambda = Multiplicative.ofAdd (Multiplicative.toAdd lambda) from rfl]
+    change Continuous ((C.toCuspActionData W.localWitness.fixedPoint).psiMap
+      (Multiplicative.toAdd lambda))
+    exact (C.genericPsiMap_holomorphic W.localWitness.fixedPoint _).continuous⟩
+  let _ : ProperlyDiscontinuousSMul (Multiplicative ParameterLattice)
+      (LocalCarrier M W.localWitness.radius) :=
+    C.properlyDiscontinuous W.localWitness.fixedPoint W.localWitness.compactOverlap
+  let _ : LocallyCompactSpace M.Carrier :=
+    ChartedSpace.locallyCompactSpace ComplexModel M.Carrier
+  let _ : LocallyCompactSpace (LocalCarrier M W.localWitness.radius) :=
+    (cuspNeighborhood M W.localWitness.radius).isOpen.locallyCompactSpace
+  let _ : T2Space (LocalCarrier M W.localWitness.radius) := by infer_instance
+  infer_instance
+
+/-- The norm of the toric cusp coordinate is constant on the punctured local phase action. -/
+public theorem puncturedLocalCuspRadius_respects
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M)
+    (p q : {p : LocalCarrier M W.localWitness.radius // M.t p ≠ 0})
+    (h : puncturedPsiOrbitRel W p q) :
+    ‖M.t p.1‖ = ‖M.t q.1‖ := by
+  rw [puncturedPsiOrbitRel] at h
+  let _ : MulAction (Multiplicative ParameterLattice)
+      {p : LocalCarrier M W.localWitness.radius // M.t p ≠ 0} := puncturedPsiAction W
+  change MulAction.orbitRel (Multiplicative ParameterLattice) _ p q at h
+  rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff] at h
+  obtain ⟨lambda, hlambda⟩ := h
+  change puncturedPsiMap W (Multiplicative.toAdd lambda) q = p at hlambda
+  calc
+    ‖M.t p.1‖ = ‖M.t (puncturedPsiMap W (Multiplicative.toAdd lambda) q).1‖ :=
+      congrArg (fun x ↦ ‖M.t x.1‖) hlambda.symm
+    _ = ‖M.t q.1‖ := by
+      rw [puncturedPsiMap,
+        CuspLocalPhaseAction.ExactLocalHolomorphicPhaseCoefficients.psiMap_preserves_t]
+
+/-- Radial coordinate on the punctured actual cusp collar quotient. -/
+public noncomputable def puncturedLocalCuspRadius
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) :
+    puncturedLocalCuspQuotient W → ℝ :=
+  Quotient.lift (fun p ↦ ‖M.t p.1‖) (puncturedLocalCuspRadius_respects W)
+
+@[simp]
+public theorem puncturedLocalCuspRadius_mk
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M)
+    (p : {p : LocalCarrier M W.localWitness.radius // M.t p ≠ 0}) :
+    puncturedLocalCuspRadius W (Quotient.mk _ p) = ‖M.t p.1‖ := by
+  rw [puncturedLocalCuspRadius.eq_def]
+  rfl
+
+/-- The descended punctured cusp-collar radius is continuous. -/
+public theorem puncturedLocalCuspRadius_continuous
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) :
+    Continuous (puncturedLocalCuspRadius W) := by
+  rw [puncturedLocalCuspRadius.eq_def]
+  exact continuous_quot_lift (puncturedLocalCuspRadius_respects W)
+    (continuous_norm.comp
+      (M.t_holomorphic.continuous.comp
+        (continuous_subtype_val.comp continuous_subtype_val)))
+
 /-- Inclusion of the punctured collar quotient into the full local cusp filling. -/
 public noncomputable def puncturedLocalCuspToFilling
     {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
@@ -1587,6 +3512,19 @@ public theorem puncturedLocalCuspToFilling_mk
     (p : {p : LocalCarrier M W.localWitness.radius // M.t p ≠ 0}) :
     puncturedLocalCuspToFilling W (Quotient.mk _ p) = Quotient.mk _ p.1 :=
   rfl
+
+/-- The punctured and filled cusp radii agree under the filling-side collar map. -/
+public theorem actualLocalCuspFillingRadius_puncturedLocalCuspToFilling
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M)
+    (Q : puncturedLocalCuspQuotient W) :
+    actualLocalCuspFillingRadius W (puncturedLocalCuspToFilling W Q) =
+      puncturedLocalCuspRadius W Q := by
+  induction Q using Quotient.inductionOn with
+  | _ p =>
+      rw [puncturedLocalCuspToFilling_mk,
+        actualLocalCuspFillingRadius_mk, puncturedLocalCuspRadius_mk]
 
 public theorem puncturedLocalCuspToFilling_continuous
     {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
@@ -1686,6 +3624,80 @@ public theorem actualLocalCuspFillingCollar_isOpen
     IsOpen (actualLocalCuspFillingCollar W) :=
   (puncturedLocalCuspToFilling_isOpenEmbedding W).isOpen_range
 
+public theorem actualLocalCuspFillingCollar_eq_image
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) :
+    actualLocalCuspFillingCollar W =
+      (Quotient.mk _ : LocalCarrier M W.localWitness.radius →
+        actualLocalCuspFilling W) ''
+        {p : LocalCarrier M W.localWitness.radius | M.t p ≠ 0} := by
+  ext q
+  constructor
+  · rintro ⟨x, rfl⟩
+    induction x using Quotient.inductionOn with
+    | _ p => exact ⟨p.1, p.2, rfl⟩
+  · rintro ⟨p, hp, rfl⟩
+    exact ⟨Quotient.mk _ ⟨p, hp⟩, rfl⟩
+
+/-- The punctured filling collar is exactly the positive-radius locus of the full cusp filling. -/
+public theorem actualLocalCuspFillingCollar_eq_positiveRadius
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) :
+    actualLocalCuspFillingCollar W =
+      {Q | 0 < actualLocalCuspFillingRadius W Q} := by
+  ext Q
+  induction Q using Quotient.inductionOn with
+  | _ p =>
+    constructor
+    · intro h
+      rw [actualLocalCuspFillingCollar_eq_image W] at h
+      obtain ⟨q, hq, hqp⟩ := h
+      change 0 < actualLocalCuspFillingRadius W (Quotient.mk _ p)
+      rw [← hqp, actualLocalCuspFillingRadius_mk]
+      exact norm_pos_iff.mpr hq
+    · intro h
+      rw [actualLocalCuspFillingCollar_eq_image W]
+      refine ⟨p, ?_, rfl⟩
+      change 0 < actualLocalCuspFillingRadius W (Quotient.mk _ p) at h
+      rw [actualLocalCuspFillingRadius_mk] at h
+      exact norm_pos_iff.mp h
+
+/-- The punctured collar is dense in the full local cusp filling. -/
+public theorem actualLocalCuspFillingCollar_dense
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) :
+    Dense (actualLocalCuspFillingCollar W) := by
+  let C :=
+    CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
+      N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
+  let _ : MulAction (Multiplicative ParameterLattice)
+      (LocalCarrier M W.localWitness.radius) :=
+    (C.toCuspActionData W.localWitness.fixedPoint).psiAction
+  let π : LocalCarrier M W.localWitness.radius → actualLocalCuspFilling W := Quotient.mk _
+  have hπ : DenseRange π := Quotient.mk_surjective.denseRange
+  have himage := hπ.dense_image continuous_quot_mk
+    (puncturedLocalCarrier_dense M W.localWitness.radius)
+  rw [actualLocalCuspFillingCollar_eq_image W]
+  exact himage
+
+/-- The full local cusp filling is connected because its punctured collar is connected and
+dense. -/
+public theorem actualLocalCuspFilling_connected
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) :
+    ConnectedSpace (actualLocalCuspFilling W) := by
+  let _ : ConnectedSpace (puncturedLocalCuspQuotient W) :=
+    puncturedLocalCuspQuotient_connected W
+  have hcollar : IsConnected (actualLocalCuspFillingCollar W) := by
+    exact isConnected_range (puncturedLocalCuspToFilling_continuous W)
+  have hclosure := hcollar.closure
+  rw [(actualLocalCuspFillingCollar_dense W).closure_eq] at hclosure
+  exact connectedSpace_iff_univ.mpr hclosure
+
 /-- The quotient atlas on the full local cusp filling. -/
 @[instance_reducible]
 public noncomputable def actualLocalCuspFillingCharts
@@ -1752,6 +3764,189 @@ public theorem actualLocalCuspFilling_projection_isLocalDiffeomorph
   exact CuspFilling.quotient_projection_isLocalDiffeomorph
     (modelWithCornersSelf ℂ ComplexModel) hf hdeck
 
+/-- Complex charts on the punctured local cusp quotient, transported from its open image in the
+actual toric filling.  This is the collar-source atlas used to compare both attaching maps. -/
+@[instance_reducible]
+public noncomputable def puncturedLocalCuspQuotientCharts
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) :
+    ChartedSpace ComplexModel (puncturedLocalCuspQuotient W) := by
+  let _ := actualLocalCuspFillingCharts W
+  let V : TopologicalSpace.Opens (actualLocalCuspFilling W) :=
+    ⟨Set.range (puncturedLocalCuspToFilling W),
+      (puncturedLocalCuspToFilling_isOpenEmbedding W).isOpen_range⟩
+  let e : puncturedLocalCuspQuotient W ≃ₜ V :=
+    (puncturedLocalCuspToFilling_isOpenEmbedding W).isEmbedding.toHomeomorph
+  exact transportChartedSpace e.symm
+
+/-- For the transported collar-source atlas, inclusion of the punctured cusp quotient into the
+full toric filling is locally biholomorphic. -/
+public theorem puncturedLocalCuspToFilling_isLocalDiffeomorph
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) :
+    letI := puncturedLocalCuspQuotientCharts W
+    letI := actualLocalCuspFillingCharts W
+    IsLocalDiffeomorph (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ComplexModel) ∞
+      (puncturedLocalCuspToFilling W) := by
+  let _ := actualLocalCuspFillingCharts W
+  let _ : IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞
+      (actualLocalCuspFilling W) := actualLocalCuspFilling_isManifold W
+  let V : TopologicalSpace.Opens (actualLocalCuspFilling W) :=
+    ⟨Set.range (puncturedLocalCuspToFilling W),
+      (puncturedLocalCuspToFilling_isOpenEmbedding W).isOpen_range⟩
+  let e : puncturedLocalCuspQuotient W ≃ₜ V :=
+    (puncturedLocalCuspToFilling_isOpenEmbedding W).isEmbedding.toHomeomorph
+  let _ := puncturedLocalCuspQuotientCharts W
+  let dback : V ≃ₘ^∞⟮(modelWithCornersSelf ℂ ComplexModel),
+      (modelWithCornersSelf ℂ ComplexModel)⟯ puncturedLocalCuspQuotient W :=
+    transportDiffeomorph e.symm
+  let d := dback.symm
+  have hval : IsLocalDiffeomorph (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ComplexModel) ∞ (Subtype.val : V →
+        actualLocalCuspFilling W) := by
+    intro y
+    let _ : Nonempty V := ⟨y⟩
+    let inc := V.openPartialHomeomorphSubtypeCoe (inferInstance : Nonempty V)
+    let Φ : PartialDiffeomorph (modelWithCornersSelf ℂ ComplexModel)
+        (modelWithCornersSelf ℂ ComplexModel) V (actualLocalCuspFilling W) ∞ :=
+      { toPartialEquiv := inc.toPartialEquiv
+        open_source := inc.open_source
+        open_target := inc.open_target
+        contMDiffOn_toFun := contMDiff_subtype_val.contMDiffOn
+        contMDiffOn_invFun := by
+          intro z hz
+          apply (ContMDiffWithinAt.subtypeVal_comp_iff V _ inc.target z).mp
+          apply contMDiffAt_id.contMDiffWithinAt.congr_of_mem _ hz
+          intro u hu
+          change inc (inc.symm u) = u
+          exact inc.right_inv hu }
+    have hy : y ∈ Φ.source := by
+      simp [Φ, inc]
+    have hΦ := Φ.isLocalDiffeomorphAt
+      (modelWithCornersSelf ℂ ComplexModel) (modelWithCornersSelf ℂ ComplexModel) ∞ hy
+    have heq : (Φ : V → actualLocalCuspFilling W) = Subtype.val := by
+      funext z
+      rfl
+    rwa [heq] at hΦ
+  have hcomp : IsLocalDiffeomorph (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ComplexModel) ∞ (Subtype.val ∘ d) := by
+    intro x
+    exact (d.isLocalDiffeomorph x).comp (modelWithCornersSelf ℂ ComplexModel)
+      (actualLocalCuspFilling W) (hval (d x))
+  have heq : (Subtype.val ∘ d) = puncturedLocalCuspToFilling W := by
+    funext x
+    change ((e x : V) : actualLocalCuspFilling W) = puncturedLocalCuspToFilling W x
+    exact Topology.IsEmbedding.toHomeomorph_apply_coe
+      (puncturedLocalCuspToFilling_isOpenEmbedding W).isEmbedding x
+  rwa [heq] at hcomp
+
+/-- The restricted phase-action quotient projection is locally biholomorphic for the collar
+atlas inherited from the full toric filling. -/
+public theorem puncturedLocalCusp_projection_isLocalDiffeomorph
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) :
+    let r := W.localWitness.radius
+    letI := M.topology
+    letI := M.charts
+    letI := puncturedLocalCarrierCharts M r
+    letI := actualLocalCuspFillingCharts W
+    letI := puncturedLocalCuspQuotientCharts W
+    IsLocalDiffeomorph (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ComplexModel) RegularSmoothnessOrder
+      (Quotient.mk _ : {p : LocalCarrier M r // M.t p ≠ 0} →
+        puncturedLocalCuspQuotient W) := by
+  let r := W.localWitness.radius
+  let _ := M.topology
+  let _ := M.charts
+  let _ := puncturedLocalCarrierCharts M r
+  let _ := actualLocalCuspFillingCharts W
+  let _ := puncturedLocalCuspQuotientCharts W
+  let π : {p : LocalCarrier M r // M.t p ≠ 0} →
+      puncturedLocalCuspQuotient W := Quotient.mk _
+  let πfull : LocalCarrier M r → actualLocalCuspFilling W := Quotient.mk _
+  change IsLocalDiffeomorph (modelWithCornersSelf ℂ ComplexModel)
+    (modelWithCornersSelf ℂ ComplexModel) RegularSmoothnessOrder π
+  intro p
+  have hinc : IsLocalDiffeomorphAt (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ComplexModel) RegularSmoothnessOrder
+      (Subtype.val : {p : LocalCarrier M r // M.t p ≠ 0} → LocalCarrier M r) p := by
+    let U := puncturedLocalCarrierOpen M r
+    let _ : Nonempty U := ⟨p⟩
+    let e := U.openPartialHomeomorphSubtypeCoe (inferInstance : Nonempty U)
+    let Φ : PartialDiffeomorph (modelWithCornersSelf ℂ ComplexModel)
+        (modelWithCornersSelf ℂ ComplexModel)
+        {p : LocalCarrier M r // M.t p ≠ 0} (LocalCarrier M r)
+        RegularSmoothnessOrder :=
+      { toPartialEquiv := e.toPartialEquiv
+        open_source := e.open_source
+        open_target := e.open_target
+        contMDiffOn_toFun := contMDiff_subtype_val.contMDiffOn
+        contMDiffOn_invFun := by
+          intro y hy
+          apply (ContMDiffWithinAt.subtypeVal_comp_iff U _ e.target y).mp
+          apply contMDiffAt_id.contMDiffWithinAt.congr_of_mem _ hy
+          intro z hz
+          change e (e.symm z) = z
+          exact e.right_inv hz }
+    have hp : p ∈ Φ.source := by
+      change p ∈ Set.univ
+      exact Set.mem_univ p
+    have hΦ := Φ.isLocalDiffeomorphAt
+      (modelWithCornersSelf ℂ ComplexModel) (modelWithCornersSelf ℂ ComplexModel)
+      RegularSmoothnessOrder hp
+    have heq : (Φ : {p : LocalCarrier M r // M.t p ≠ 0} → LocalCarrier M r) =
+        Subtype.val := by
+      funext y
+      rfl
+    rwa [heq] at hΦ
+  have hfull : IsLocalDiffeomorphAt (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ComplexModel) RegularSmoothnessOrder πfull p.1 := by
+    simpa only [RegularSmoothnessOrder, πfull] using
+      actualLocalCuspFilling_projection_isLocalDiffeomorph W p.1
+  have htotal : IsLocalDiffeomorphAt (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ComplexModel) RegularSmoothnessOrder
+      (πfull ∘ (Subtype.val : {p : LocalCarrier M r // M.t p ≠ 0} →
+        LocalCarrier M r)) p :=
+    hinc.comp (modelWithCornersSelf ℂ ComplexModel) (actualLocalCuspFilling W) hfull
+  have htoFilling : IsLocalDiffeomorphAt (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ComplexModel) RegularSmoothnessOrder
+      (puncturedLocalCuspToFilling W) (π p) := by
+    simpa only [RegularSmoothnessOrder] using
+      puncturedLocalCuspToFilling_isLocalDiffeomorph W (π p)
+  let loc := htoFilling.localInverse
+  have hloc : IsLocalDiffeomorphAt (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ComplexModel) RegularSmoothnessOrder
+      loc.toPartialEquiv.toFun (πfull p.1) := by
+    have h := htoFilling.localInverse_isLocalDiffeomorphAt
+    change IsLocalDiffeomorphAt (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ComplexModel) RegularSmoothnessOrder
+      loc.toPartialEquiv.toFun (puncturedLocalCuspToFilling W (π p)) at h
+    have hpoint : puncturedLocalCuspToFilling W (π p) = πfull p.1 := rfl
+    rw [hpoint] at h
+    exact h
+  have hcomp : IsLocalDiffeomorphAt (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ComplexModel) RegularSmoothnessOrder
+      (loc.toPartialEquiv.toFun ∘
+        (πfull ∘ (Subtype.val : {p : LocalCarrier M r // M.t p ≠ 0} →
+          LocalCarrier M r))) p :=
+    htotal.comp (modelWithCornersSelf ℂ ComplexModel)
+      (puncturedLocalCuspQuotient W) hloc
+  have hmem : π ⁻¹' loc.target ∈ nhds p :=
+    continuous_quot_mk.continuousAt
+      (loc.open_target.mem_nhds htoFilling.localInverse_mem_target)
+  have hevent : (loc.toPartialEquiv.toFun ∘
+      (πfull ∘ (Subtype.val : {p : LocalCarrier M r // M.t p ≠ 0} →
+        LocalCarrier M r))) =ᶠ[nhds p] π := by
+    filter_upwards [hmem] with z hz
+    change loc.toPartialEquiv.toFun (πfull z.1) = π z
+    rw [show πfull z.1 = puncturedLocalCuspToFilling W (π z) by rfl]
+    exact htoFilling.localInverse_left_inv hz
+  exact isLocalDiffeomorphAt_congr_eventuallyEq_complexModel hcomp hevent
+
 /-- The punctured local quotient map into the actual global family. -/
 public noncomputable def puncturedLocalCuspQuotientMap
     {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
@@ -1778,6 +3973,138 @@ public theorem puncturedLocalCuspQuotientMap_mk
     puncturedLocalCuspQuotientMap W (Quotient.mk _ p) =
       puncturedLocalCuspPrequotientMap W p :=
   rfl
+
+/-- The phase-action quotient collar embeds locally biholomorphically in the actual punctured
+global family. -/
+public theorem puncturedLocalCuspQuotientMap_isLocalDiffeomorph
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) :
+    let F := assembledFuchsianPeriodFunctions E D
+    let r := W.localWitness.radius
+    let hproper : SourceActionProperlyDiscontinuous :=
+      sourceActionProperlyDiscontinuous_of_eq
+        E.modularParameter.toTriangleUniformization_sourceAction
+    let hsource := E.modularParameter.toTriangleUniformization_sourceAction
+    letI := M.topology
+    letI := M.charts
+    letI := puncturedLocalCarrierCharts M r
+    letI := denseTorusCharts
+    letI : IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞ DenseTorus :=
+      denseTorus_isManifold
+    letI : ChartedSpace ComplexModel (denseTorusCuspRegion r) :=
+      (denseTorusCuspOpen r).instChartedSpace
+    letI : IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞
+        (denseTorusCuspRegion r) := denseTorusCuspRegion_isManifold r
+    letI := additiveCuspRadiusQuotientCharts r
+    letI : ChartedSpace (ModelProd ComplexTwoSpace ℂ)
+        (additiveCuspRadiusCover r) := (additiveCuspRadiusOpen r).instChartedSpace
+    letI := regularBaseChartedSpace hproper
+    letI : LocallyCompactSpace
+        (RegularBase (U := E.modularParameter.toTriangleUniformization)) :=
+      (isOpen_isRegularBasePoint hproper).locallyCompactSpace
+    letI : IsManifold GlobalDeckBaseModel RegularSmoothnessOrder
+        (RegularBase (U := E.modularParameter.toTriangleUniformization)) :=
+      regularBase_isManifold hproper
+    letI := familyIsCancelSMul (regularParameterMap F)
+    letI := familyContinuousConstSMul (regularParameterMap F)
+      fun a ↦ (regularPeriodSection_contMDiff F hproper a
+        RegularSmoothnessOrder).continuous
+    letI := familyProperlyDiscontinuousSMul (regularParameterMap F)
+      (compactlyUniformPeriods_of_compactUniformLowerBound
+        (regularParameterMap F) (regularParameterMap_compactUniformLowerBound F))
+    let hregular := regularTotalSpace_isManifold_and_projection_isLocalDiffeomorph
+      F hproper RegularSmoothnessOrder
+    letI : IsManifold GlobalDeckTotalModel RegularSmoothnessOrder
+        (RegularTotalSpace F) := hregular.1
+    letI : LocallyCompactSpace (RegularTotalSpace F) :=
+      Manifold.locallyCompact_of_finiteDimensional GlobalDeckTotalModel
+    letI := regularFamilyDeckAction F
+    letI := regularFamilyDeckAction_isCancelSMul_of_fuchsian F hsource hproper
+    letI := regularFamilyDeckAction_properlyDiscontinuous_of_source F hproper
+    letI := regularFamilyDeckAction_continuousConstSMul F hproper
+    letI := regularCuspBundleRegionCharts W
+    letI := actualLocalCuspFillingCharts W
+    letI := puncturedLocalCuspQuotientCharts W
+    IsLocalDiffeomorph (modelWithCornersSelf ℂ ComplexModel) GlobalDeckTotalModel
+      RegularSmoothnessOrder (puncturedLocalCuspQuotientMap W) := by
+  let F := assembledFuchsianPeriodFunctions E D
+  let r := W.localWitness.radius
+  let hproper : SourceActionProperlyDiscontinuous :=
+    sourceActionProperlyDiscontinuous_of_eq
+      E.modularParameter.toTriangleUniformization_sourceAction
+  let hsource := E.modularParameter.toTriangleUniformization_sourceAction
+  let _ := M.topology
+  let _ := M.charts
+  let _ := puncturedLocalCarrierCharts M r
+  let _ := denseTorusCharts
+  let _ : IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞ DenseTorus :=
+    denseTorus_isManifold
+  let _ : ChartedSpace ComplexModel (denseTorusCuspRegion r) :=
+    (denseTorusCuspOpen r).instChartedSpace
+  let _ : IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞
+      (denseTorusCuspRegion r) := denseTorusCuspRegion_isManifold r
+  let _ := additiveCuspRadiusQuotientCharts r
+  let _ : ChartedSpace (ModelProd ComplexTwoSpace ℂ) (additiveCuspRadiusCover r) :=
+    (additiveCuspRadiusOpen r).instChartedSpace
+  let _ := regularBaseChartedSpace hproper
+  let _ : LocallyCompactSpace
+      (RegularBase (U := E.modularParameter.toTriangleUniformization)) :=
+    (isOpen_isRegularBasePoint hproper).locallyCompactSpace
+  let _ : IsManifold GlobalDeckBaseModel RegularSmoothnessOrder
+      (RegularBase (U := E.modularParameter.toTriangleUniformization)) :=
+    regularBase_isManifold hproper
+  let _ := familyIsCancelSMul (regularParameterMap F)
+  let _ := familyContinuousConstSMul (regularParameterMap F)
+    fun a ↦ (regularPeriodSection_contMDiff F hproper a
+      RegularSmoothnessOrder).continuous
+  let _ := familyProperlyDiscontinuousSMul (regularParameterMap F)
+    (compactlyUniformPeriods_of_compactUniformLowerBound
+      (regularParameterMap F) (regularParameterMap_compactUniformLowerBound F))
+  have hregular := regularTotalSpace_isManifold_and_projection_isLocalDiffeomorph
+    F hproper RegularSmoothnessOrder
+  let _ : IsManifold GlobalDeckTotalModel RegularSmoothnessOrder
+      (RegularTotalSpace F) := hregular.1
+  let _ : LocallyCompactSpace (RegularTotalSpace F) :=
+    Manifold.locallyCompact_of_finiteDimensional GlobalDeckTotalModel
+  let _ := regularFamilyDeckAction F
+  let _ : IsCancelSMul Delta (RegularTotalSpace F) :=
+    regularFamilyDeckAction_isCancelSMul_of_fuchsian F hsource hproper
+  let _ : ProperlyDiscontinuousSMul Delta (RegularTotalSpace F) :=
+    regularFamilyDeckAction_properlyDiscontinuous_of_source F hproper
+  let _ : ContinuousConstSMul Delta (RegularTotalSpace F) :=
+    regularFamilyDeckAction_continuousConstSMul F hproper
+  let _ := regularCuspBundleRegionCharts W
+  let _ := actualLocalCuspFillingCharts W
+  let _ := puncturedLocalCuspQuotientCharts W
+  change IsLocalDiffeomorph (modelWithCornersSelf ℂ ComplexModel)
+    GlobalDeckTotalModel RegularSmoothnessOrder (puncturedLocalCuspQuotientMap W)
+  intro q
+  induction q using Quotient.inductionOn with
+  | _ p =>
+    let π : {p : LocalCarrier M r // M.t p ≠ 0} →
+        puncturedLocalCuspQuotient W := Quotient.mk _
+    have hπ := puncturedLocalCusp_projection_isLocalDiffeomorph W p
+    let loc := hπ.localInverse
+    have hloc : IsLocalDiffeomorphAt (modelWithCornersSelf ℂ ComplexModel)
+        (modelWithCornersSelf ℂ ComplexModel) RegularSmoothnessOrder
+        loc.toPartialEquiv.toFun (π p) :=
+      hπ.localInverse_isLocalDiffeomorphAt
+    have hcomp : IsLocalDiffeomorphAt (modelWithCornersSelf ℂ ComplexModel)
+        GlobalDeckTotalModel RegularSmoothnessOrder
+        (puncturedLocalCuspPrequotientMap W ∘ loc.toPartialEquiv.toFun) (π p) :=
+      hloc.comp GlobalDeckTotalModel (PuncturedGlobalFamily F)
+        (puncturedLocalCuspPrequotientMap_isLocalDiffeomorph W
+          (loc.toPartialEquiv.toFun (π p)))
+    have hright := hπ.localInverse_eventuallyEq_right
+    have hevent : (puncturedLocalCuspPrequotientMap W ∘ loc.toPartialEquiv.toFun)
+        =ᶠ[nhds (π p)] puncturedLocalCuspQuotientMap W := by
+      filter_upwards [hright] with y hy
+      calc
+        puncturedLocalCuspPrequotientMap W (loc.toPartialEquiv.toFun y) =
+            puncturedLocalCuspQuotientMap W (π (loc.toPartialEquiv.toFun y)) := rfl
+        _ = puncturedLocalCuspQuotientMap W y := congrArg _ hy
+    exact isLocalDiffeomorphAt_congr_eventuallyEq_complexToGlobalDeck hcomp hevent
 
 public theorem puncturedLocalCuspQuotientMap_continuous
     {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
@@ -2144,5 +4471,234 @@ public theorem actualPuncturedCuspCollarOpenPartialHomeomorph_apply
     (puncturedLocalCuspQuotientMap_isOpenEmbedding W).toOpenPartialHomeomorph_left_inv]
   exact congrFun
     ((puncturedLocalCuspToFilling_isOpenEmbedding W).toOpenPartialHomeomorph_apply) q
+
+/-- Every source point has an open neighborhood avoided by all sufficiently deep translates of
+the normalized cusp.  The proof transports a compact source neighborhood through the assembled
+modular parameter and applies the integral modular height dichotomy. -/
+public theorem exists_sourceNeighborhood_avoids_deep_cusp_translates
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) (z₀ : UpperHalfPlane) :
+    ∃ U : Set UpperHalfPlane, IsOpen U ∧ z₀ ∈ U ∧
+      ∃ r : ℝ, 0 < r ∧ r ≤ W.localWitness.radius ∧
+        ∀ (g : Delta) (s : ℂ), ‖cuspQ s‖ < r →
+          fuchsianSourceAction g • N.lift s ∉ U := by
+  let F := assembledFuchsianPeriodFunctions E D
+  let P : FuchsianModularParameter :=
+    { tau := F.tau
+      tau_holomorphic := F.tau_holomorphic
+      transform_one := F.tau_equivariant_g1
+      transform_two := F.tau_equivariant_g2 }
+  obtain ⟨K, hKnhds, hKcompact, hKclosed⟩ :=
+    exists_mem_nhds_isCompact_isClosed z₀
+  obtain ⟨U, hUK, hUopen, hzU⟩ := mem_nhds_iff.mp hKnhds
+  let L : Set UpperHalfPlane := F.tau '' K
+  have hLcompact : IsCompact L := hKcompact.image F.tau_holomorphic.continuous
+  obtain ⟨H, hH, hHavoid⟩ := exists_height_modularTranslates_avoid_compact hLcompact
+  let r := min W.localWitness.radius (cuspRadius H)
+  have hr : 0 < r := lt_min W.localWitness.radius_pos (Real.exp_pos _)
+  refine ⟨U, hUopen, hzU, r, hr, min_le_left _ _, ?_⟩
+  intro g s hsr hmem
+  have hsN : s ∈ cuspHalfPlane N.height :=
+    mem_cuspHalfPlane_of_norm_cuspQ_lt
+      (min_le_left W.localWitness.radius (cuspRadius H) |>.trans
+        W.localWitness.radius_le) hsr
+  have hsH : s ∈ cuspHalfPlane H :=
+    mem_cuspHalfPlane_of_norm_cuspQ_lt (min_le_right _ _) hsr
+  have htau : ((F.tau (N.lift s) : UpperHalfPlane) : ℂ) = s := N.lift_tau s hsN
+  have hheight : H < (F.tau (N.lift s)).im := by
+    change H < ((F.tau (N.lift s) : UpperHalfPlane) : ℂ).im
+    rw [htau]
+    exact hsH
+  have himage : F.tau (fuchsianSourceAction g • N.lift s) ∈ L :=
+    ⟨fuchsianSourceAction g • N.lift s, hUK hmem, rfl⟩
+  have hequiv : F.tau (fuchsianSourceAction g • N.lift s) =
+      rhoTauReal g • F.tau (N.lift s) := P.equivariant g (N.lift s)
+  rw [hequiv] at himage
+  exact hHavoid (rhoTau g) (F.tau (N.lift s)) hheight himage
+
+/-- Eventual assertions at the upper-half-plane cusp are exactly assertions holding above some
+fixed imaginary height. -/
+public theorem eventually_upperHalfPlaneAtInfinity_iff
+    {P : UpperHalfPlane → Prop} :
+    (∀ᶠ z in upperHalfPlaneAtInfinity, P z) ↔
+      ∃ H : ℝ, ∀ z : UpperHalfPlane, H ≤ z.im → P z := by
+  change {z | P z} ∈ Filter.comap UpperHalfPlane.im Filter.atTop ↔ _
+  rw [(Filter.atTop_basis.comap UpperHalfPlane.im).mem_iff]
+  simp only [true_and]
+  constructor
+  · rintro ⟨H, hH⟩
+    exact ⟨H, fun z hz ↦ hH hz⟩
+  · rintro ⟨H, hH⟩
+    exact ⟨H, fun z hz ↦ hH z hz⟩
+
+/-- The simple completed modular-cusp factor `q ↦ q u(q)` maps a neighborhood of zero
+onto a neighborhood of zero.  This is the analytic inverse theorem applied using `u(0) ≠ 0`. -/
+public theorem exists_cuspProduct_preimage_in_ball
+    (J : ExactNormalizedModularJUniformization) (r : ℝ) (hr : 0 < r) :
+    ∃ ε : ℝ, 0 < ε ∧ ∀ u ∈ Metric.ball (0 : ℂ) ε,
+      ∃ q : ℂ, q ∈ Metric.ball 0 r ∧
+        q * J.cusp.cuspUnit q = u := by
+  let f : ℂ → ℂ := fun q ↦ q * J.cusp.cuspUnit q
+  have huAnalytic : AnalyticAt ℂ J.cusp.cuspUnit 0 := by
+    rw [Complex.analyticAt_iff_eventually_differentiableAt]
+    filter_upwards [Metric.ball_mem_nhds 0 J.cusp.cuspRadius_pos] with q hq
+    exact mdifferentiableAt_iff_differentiableAt.mp
+      (J.cusp.cuspUnit_holomorphic q hq)
+  have hfAnalytic : AnalyticAt ℂ f 0 := by
+    exact (by fun_prop : AnalyticAt ℂ (fun q : ℂ ↦ q) 0).mul huAnalytic
+  have hfDeriv : deriv f 0 = J.cusp.cuspUnit 0 := by
+    rw [show f = fun q : ℂ ↦ q * J.cusp.cuspUnit q from rfl,
+      deriv_fun_mul (by fun_prop) huAnalytic.differentiableAt]
+    simp
+  have hfStrict : HasStrictDerivAt f (J.cusp.cuspUnit 0) 0 := by
+    rw [← hfDeriv]
+    exact hfAnalytic.hasStrictDerivAt
+  have hstrictEquiv :=
+    hfStrict.hasStrictFDerivAt_equiv J.cusp.cuspUnit_zero_ne
+  let e : OpenPartialHomeomorph ℂ ℂ :=
+    hstrictEquiv.toOpenPartialHomeomorph f
+  have hzeroSource : (0 : ℂ) ∈ e.source :=
+    hstrictEquiv.mem_toOpenPartialHomeomorph_source
+  have hzeroTarget : (0 : ℂ) ∈ e.target := by
+    have h := e.map_source hzeroSource
+    simpa [e, f] using h
+  have hinvzero : e.symm (0 : ℂ) = 0 := by
+    have h := e.left_inv hzeroSource
+    simpa [e, f] using h
+  have hpre : e.symm ⁻¹' Metric.ball (0 : ℂ) r ∈ nhds (0 : ℂ) := by
+    apply (e.continuousAt_symm hzeroTarget).preimage_mem_nhds
+    rw [hinvzero]
+    exact Metric.ball_mem_nhds 0 hr
+  have htarget : e.target ∈ nhds (0 : ℂ) :=
+    e.open_target.mem_nhds hzeroTarget
+  obtain ⟨ε, hε, hεsub⟩ :=
+    Metric.mem_nhds_iff.mp (Filter.inter_mem htarget hpre)
+  refine ⟨ε, hε, ?_⟩
+  intro u hu
+  have hut : u ∈ e.target := (hεsub hu).1
+  have huq : e.symm u ∈ Metric.ball (0 : ℂ) r := (hεsub hu).2
+  refine ⟨e.symm u, huq, ?_⟩
+  have heq := e.right_inv hut
+  change f (e.symm u) = u at heq
+  simpa [f] using heq
+
+/-- Every sufficiently large normalized modular coordinate has a representative in the selected
+normalized cusp half-plane, with cusp radius inside the actual filling's compact half-core. -/
+public theorem exists_normalizedModularCusp_preimage_of_large_coordinate
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) :
+    ∃ R : ℝ, 0 < R ∧ ∀ w : ℂ, R < ‖w‖ →
+      ∃ s : ℂ, s ∈ cuspHalfPlane N.height ∧
+        ‖cuspQ s‖ < W.localWitness.radius / 2 ∧
+        normalizedModularJCoordinate
+            ((assembledFuchsianPeriodFunctions E D).tau (N.lift s)) = w := by
+  let J : ExactNormalizedModularJUniformization :=
+    Classical.choice establishedExactNormalizedModularJUniformization
+  obtain ⟨H, hfactor⟩ :=
+    (eventually_upperHalfPlaneAtInfinity_iff (P := fun z ↦
+      (normalizedModularJCoordinate z)⁻¹ =
+        modularCuspQ z * J.cusp.cuspUnit (modularCuspQ z))).mp
+      J.cusp.reciprocal_factorization
+  let r : ℝ := min (W.localWitness.radius / 2)
+    (min J.cusp.cuspRadius (cuspRadius H))
+  have hr : 0 < r := lt_min (half_pos W.localWitness.radius_pos)
+    (lt_min J.cusp.cuspRadius_pos (Real.exp_pos _))
+  obtain ⟨ε, hε, hsolve⟩ := exists_cuspProduct_preimage_in_ball J r hr
+  refine ⟨ε⁻¹, inv_pos.mpr hε, ?_⟩
+  intro w hwLarge
+  have hwNormPos : 0 < ‖w‖ := (inv_pos.mpr hε).trans hwLarge
+  have hw : w ≠ 0 := norm_pos_iff.mp hwNormPos
+  have hwinvNorm : ‖w⁻¹‖ < ε := by
+    rw [norm_inv]
+    exact (inv_lt_comm₀ hwNormPos hε).2 hwLarge
+  obtain ⟨q, hqBall, hqProduct⟩ :=
+    hsolve w⁻¹ (mem_ball_zero_iff.mpr hwinvNorm)
+  have hqNorm : ‖q‖ < r := mem_ball_zero_iff.mp hqBall
+  have hqNe : q ≠ 0 := by
+    intro hq
+    rw [hq, zero_mul] at hqProduct
+    exact (inv_ne_zero hw) hqProduct.symm
+  let s : ℂ := Function.Periodic.invQParam 1 q
+  have hcuspQ : cuspQ s = q := by
+    simpa [cuspQ, Function.Periodic.qParam] using
+      (Function.Periodic.qParam_right_inv one_ne_zero hqNe)
+  have hqHalf : ‖cuspQ s‖ < W.localWitness.radius / 2 := by
+    rw [hcuspQ]
+    exact hqNorm.trans_le (min_le_left _ _)
+  have hqFull : ‖cuspQ s‖ < W.localWitness.radius :=
+    hqHalf.trans (half_lt_self W.localWitness.radius_pos)
+  have hsN : s ∈ cuspHalfPlane N.height :=
+    mem_cuspHalfPlane_of_norm_cuspQ_lt W.localWitness.radius_le hqFull
+  have hqH : ‖cuspQ s‖ < cuspRadius H := by
+    rw [hcuspQ]
+    exact hqNorm.trans_le ((min_le_right _ _).trans (min_le_right _ _))
+  have hsH : s ∈ cuspHalfPlane H :=
+    mem_cuspHalfPlane_of_norm_cuspQ_lt le_rfl hqH
+  let F := assembledFuchsianPeriodFunctions E D
+  have htau : ((F.tau (N.lift s) : UpperHalfPlane) : ℂ) = s :=
+    N.lift_tau s hsN
+  have hzHeight : H ≤ (F.tau (N.lift s)).im := by
+    apply le_of_lt
+    change H < ((F.tau (N.lift s) : UpperHalfPlane) : ℂ).im
+    rw [htau]
+    exact hsH
+  have hmodularQ : modularCuspQ (F.tau (N.lift s)) = q := by
+    rw [modularCuspQ, htau]
+    exact Function.Periodic.qParam_right_inv one_ne_zero hqNe
+  have hrecip := hfactor (F.tau (N.lift s)) hzHeight
+  rw [hmodularQ, hqProduct] at hrecip
+  have hcoordinate : normalizedModularJCoordinate (F.tau (N.lift s)) = w := by
+    exact inv_injective hrecip
+  exact ⟨s, hsN, hqHalf, hcoordinate⟩
+
+/-- Two normalized cusp lifts representing the same full source orbit have the same `q`-radius.
+Precise invariance of the selected horodisc reduces the intervening deck element to a power of
+the parabolic generator. -/
+public theorem norm_cuspQ_eq_of_lift_orbit_eq
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M)
+    (s t : ℂ) (hs : s ∈ cuspHalfPlane N.height)
+    (ht : t ∈ cuspHalfPlane N.height)
+    (hqs : ‖cuspQ s‖ < W.localWitness.radius)
+    (hqt : ‖cuspQ t‖ < W.localWitness.radius)
+    (h : letI := FuchsianProperFreeness.triangleSourceMulAction
+          E.modularParameter.toTriangleUniformization
+      (Quotient.mk _ (N.lift s) :
+          Quotient (MulAction.orbitRel Delta UpperHalfPlane)) =
+        Quotient.mk _ (N.lift t)) :
+    ‖cuspQ s‖ = ‖cuspQ t‖ := by
+  let U := E.modularParameter.toTriangleUniformization
+  let _ := FuchsianProperFreeness.triangleSourceMulAction U
+  have hrel := Quotient.exact h
+  change MulAction.orbitRel Delta UpperHalfPlane (N.lift s) (N.lift t) at hrel
+  rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff] at hrel
+  obtain ⟨g, hg⟩ := hrel
+  have hmeet :
+      ((fun z : UpperHalfPlane ↦ U.sourceAction g • z) ''
+          normalizedCuspRegion N W.localWitness.radius ∩
+        normalizedCuspRegion N W.localWitness.radius).Nonempty := by
+    refine ⟨N.lift s, ?_, ?_⟩
+    · exact ⟨N.lift t, ⟨t, ⟨ht, hqt⟩, rfl⟩, hg⟩
+    · exact ⟨s, ⟨hs, hqs⟩, rfl⟩
+  obtain ⟨k, rfl⟩ := W.translates_meet_only_parabolic g hmeet
+  have htSub : t - k ∈ cuspHalfPlane N.height := by
+    simpa [sub_eq_add_neg] using cuspHalfPlane_add_int ht (-k)
+  have hlift : N.lift (t - k) = N.lift s := by
+    exact (lift_sub_int N t ht k).trans hg
+  have hst : s = t - k := by
+    calc
+      s = (((assembledFuchsianPeriodFunctions E D).tau (N.lift s) :
+          UpperHalfPlane) : ℂ) := (N.lift_tau s hs).symm
+      _ = (((assembledFuchsianPeriodFunctions E D).tau (N.lift (t - k)) :
+          UpperHalfPlane) : ℂ) := congrArg (fun z ↦
+            (((assembledFuchsianPeriodFunctions E D).tau z : UpperHalfPlane) : ℂ)) hlift.symm
+      _ = t - k := N.lift_tau (t - k) htSub
+  have hcusp : cuspQ s = cuspQ t := by
+    rw [hst]
+    simpa [sub_eq_add_neg] using cuspQ_add_int t (-k)
+  exact congrArg norm hcusp
 
 end SphereSixComplex.Geometry.CuspPuncturedCollarBridge

@@ -2,6 +2,7 @@ module
 
 public import SphereSixComplex.LatticeData
 public import Mathlib.Data.ZMod.Basic
+public import Mathlib.Algebra.Group.Subgroup.MulOppositeLemmas
 public import Mathlib.GroupTheory.Coprod.Basic
 public import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
 
@@ -29,6 +30,50 @@ public def g₁ : Delta := Monoid.Coprod.inl (Multiplicative.ofAdd 1)
 public def g₂ : Delta := Monoid.Coprod.inr (Multiplicative.ofAdd 1)
 
 public def g₀ : Delta := (g₁ * g₂)⁻¹
+
+/-- The two standard torsion elements generate the free product `C₃ * C₄`. -/
+public theorem delta_generators_generate :
+    Subgroup.closure ({g₁, g₂} : Set Delta) = ⊤ := by
+  apply top_unique
+  rw [← Monoid.Coprod.closure_range_inl_union_inr]
+  apply (Subgroup.closure_le _).2
+  intro g hg
+  rcases hg with hg | hg
+  · obtain ⟨a, rfl⟩ := hg
+    change Monoid.Coprod.inl a ∈ Subgroup.closure ({g₁, g₂} : Set Delta)
+    have hgen : g₁ ∈ Subgroup.closure ({g₁, g₂} : Set Delta) :=
+      Subgroup.subset_closure (Set.mem_insert g₁ {g₂})
+    have hp := (Subgroup.closure ({g₁, g₂} : Set Delta)).pow_mem hgen a.toAdd.val
+    have ha : Multiplicative.ofAdd (1 : ZMod 3) ^ a.toAdd.val = a := by
+      change a.toAdd.val • (1 : ZMod 3) = a.toAdd
+      simp [nsmul_eq_mul]
+    simpa [g₁, ← map_pow, ha] using hp
+  · obtain ⟨a, rfl⟩ := hg
+    change Monoid.Coprod.inr a ∈ Subgroup.closure ({g₁, g₂} : Set Delta)
+    have hgen : g₂ ∈ Subgroup.closure ({g₁, g₂} : Set Delta) :=
+      Subgroup.subset_closure (Set.mem_insert_of_mem g₁ (Set.mem_singleton g₂))
+    have hp := (Subgroup.closure ({g₁, g₂} : Set Delta)).pow_mem hgen a.toAdd.val
+    have ha : Multiplicative.ofAdd (1 : ZMod 4) ^ a.toAdd.val = a := by
+      change a.toAdd.val • (1 : ZMod 4) = a.toAdd
+      simp [nsmul_eq_mul]
+    simpa [g₂, ← map_pow, ha] using hp
+
+/-- The corresponding two elements generate the opposite triangle group used by covering
+monodromy. -/
+public theorem delta_op_generators_generate :
+    Subgroup.closure
+      ({MulOpposite.op g₁, MulOpposite.op g₂} : Set Deltaᵐᵒᵖ) = ⊤ := by
+  have h := congrArg Subgroup.op delta_generators_generate
+  rw [Subgroup.op_closure, Subgroup.op_top] at h
+  rw [show MulOpposite.unop ⁻¹' ({g₁, g₂} : Set Delta) =
+      ({MulOpposite.op g₁, MulOpposite.op g₂} : Set Deltaᵐᵒᵖ) by
+    ext x
+    constructor
+    · rintro (hx | hx)
+      · exact Or.inl (MulOpposite.unop_injective hx)
+      · exact Or.inr (MulOpposite.unop_injective hx)
+    · rintro (rfl | rfl) <;> simp] at h
+  exact h
 
 public theorem g₁_pow_three : g₁ ^ 3 = 1 := by
   let a := Multiplicative.ofAdd (1 : ZMod 3)
@@ -268,6 +313,44 @@ public theorem rhoLambda_g₂_apply (x : DualLattice) : rhoLambda g₂ x = A₂ 
 @[simp]
 public theorem rhoLambda_g₀_apply (x : DualLattice) : rhoLambda g₀ x = M₀ *ᵥ x := by
   simp
+
+private theorem multiplicativeZMod_eq_generator_pow {k : ℕ} [NeZero k]
+    (x : Multiplicative (ZMod k)) :
+    x = Multiplicative.ofAdd (1 : ZMod k) ^ x.toAdd.val := by
+  apply Multiplicative.toAdd.injective
+  simp
+
+private theorem gamma_a₁_pow (n : ℕ) (x : DualLattice) :
+    gamma ((a₁ ^ n) x) = gamma x := by
+  induction n generalizing x with
+  | zero => simp
+  | succ n ih =>
+      rw [pow_succ, LinearEquiv.mul_apply, ih, a₁_apply, gamma_A₁]
+
+private theorem gamma_a₂_pow (n : ℕ) (x : DualLattice) :
+    gamma ((a₂ ^ n) x) = gamma x := by
+  induction n generalizing x with
+  | zero => simp
+  | succ n ih =>
+      rw [pow_succ, LinearEquiv.mul_apply, ih, a₂_apply, gamma_A₂]
+
+/-- Every triangle-group monodromy preserves the lattice coordinate which survives the toric
+filling.  This extends the displayed `A₁`/`A₂` calculations to arbitrary deck corrections. -/
+public theorem gamma_rhoLambda (g : Delta) (x : DualLattice) :
+    gamma (rhoLambda g x) = gamma x := by
+  induction g using Monoid.Coprod.induction_on generalizing x with
+  | inl a =>
+      rw [multiplicativeZMod_eq_generator_pow a, map_pow]
+      rw [map_pow, show Monoid.Coprod.inl (Multiplicative.ofAdd (1 : ZMod 3)) = g₁ by
+        exact g₁.eq_def.symm, rhoLambda_g₁]
+      exact gamma_a₁_pow _ _
+  | inr a =>
+      rw [multiplicativeZMod_eq_generator_pow a, map_pow]
+      rw [map_pow, show Monoid.Coprod.inr (Multiplicative.ofAdd (1 : ZMod 4)) = g₂ by
+        exact g₂.eq_def.symm, rhoLambda_g₂]
+      exact gamma_a₂_pow _ _
+  | mul g h hg hh =>
+      rw [map_mul, LinearEquiv.mul_apply, hg, hh]
 
 public theorem rhoLambda_relation : rhoLambda (g₁ * g₂ * g₀) = 1 := by
   rw [g₁_mul_g₂_mul_g₀, map_one]

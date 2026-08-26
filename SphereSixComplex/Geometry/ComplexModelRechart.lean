@@ -49,6 +49,67 @@ public theorem globalDeckComplexManifold
   let _ : IsManifold 𝓘(ℂ, ℂ × ComplexTwoSpace) n M := hproduct
   exact isManifold_linearRechart globalDeckComplexModelEquiv
 
+/-- A local diffeomorphism in the product coordinates remains a local biholomorphism after both
+source and target are recharted as the canonical `ℂ³` model. -/
+public theorem globalDeckComplexLocalDiffeomorph
+    {M N : Type*} [TopologicalSpace M] [TopologicalSpace N]
+    [cM : ChartedSpace (ModelProd ℂ ComplexTwoSpace) M]
+    [cN : ChartedSpace (ModelProd ℂ ComplexTwoSpace) N]
+    {f : M → N}
+    (hf : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ∞ f) :
+    letI : ChartedSpace ComplexModel M := globalDeckComplexCharts
+    letI : ChartedSpace ComplexModel N := globalDeckComplexCharts
+    IsLocalDiffeomorph (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ComplexModel) ∞ f := by
+  letI productM : ChartedSpace (ℂ × ComplexTwoSpace) M := globalDeckProductCharts
+  letI productN : ChartedSpace (ℂ × ComplexTwoSpace) N := globalDeckProductCharts
+  letI complexM : ChartedSpace ComplexModel M := globalDeckComplexCharts
+  letI complexN : ChartedSpace ComplexModel N := globalDeckComplexCharts
+  let dM : M ≃ₘ^∞⟮(modelWithCornersSelf ℂ (ℂ × ComplexTwoSpace)),
+      (modelWithCornersSelf ℂ ComplexModel)⟯ M :=
+    { toEquiv := Equiv.refl M
+      contMDiff_toFun := contMDiff_id_linearRechart globalDeckComplexModelEquiv
+      contMDiff_invFun := contMDiff_id_linearRechart_symm globalDeckComplexModelEquiv }
+  let dN : N ≃ₘ^∞⟮(modelWithCornersSelf ℂ (ℂ × ComplexTwoSpace)),
+      (modelWithCornersSelf ℂ ComplexModel)⟯ N :=
+    { toEquiv := Equiv.refl N
+      contMDiff_toFun := contMDiff_id_linearRechart globalDeckComplexModelEquiv
+      contMDiff_invFun := contMDiff_id_linearRechart_symm globalDeckComplexModelEquiv }
+  intro x
+  have hsource := dM.symm.isLocalDiffeomorph x
+  have hproduct : IsLocalDiffeomorphAt (modelWithCornersSelf ℂ (ℂ × ComplexTwoSpace))
+      (modelWithCornersSelf ℂ (ℂ × ComplexTwoSpace)) ∞ f x := by
+    simpa only [modelWithCornersSelf_prod] using hf x
+  have hmiddle := hsource.comp (modelWithCornersSelf ℂ (ℂ × ComplexTwoSpace)) N hproduct
+  have htarget := dN.isLocalDiffeomorph (f x)
+  exact hmiddle.comp (modelWithCornersSelf ℂ ComplexModel) N htarget
+
+/-- A local biholomorphism whose source already uses the canonical `ℂ³` atlas remains locally
+biholomorphic when only its product-model target is recharted as `ComplexModel`. -/
+public theorem globalDeckComplexLocalDiffeomorph_target
+    {M N : Type*} [TopologicalSpace M] [TopologicalSpace N]
+    [cM : ChartedSpace ComplexModel M]
+    [cN : ChartedSpace (ModelProd ℂ ComplexTwoSpace) N]
+    {f : M → N}
+    (hf : IsLocalDiffeomorph (modelWithCornersSelf ℂ ComplexModel)
+      GlobalDeckTotalModel ∞ f) :
+    letI : ChartedSpace ComplexModel N := globalDeckComplexCharts
+    IsLocalDiffeomorph (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ ComplexModel) ∞ f := by
+  letI productN : ChartedSpace (ℂ × ComplexTwoSpace) N := globalDeckProductCharts
+  letI complexN : ChartedSpace ComplexModel N := globalDeckComplexCharts
+  let dN : N ≃ₘ^∞⟮(modelWithCornersSelf ℂ (ℂ × ComplexTwoSpace)),
+      (modelWithCornersSelf ℂ ComplexModel)⟯ N :=
+    { toEquiv := Equiv.refl N
+      contMDiff_toFun := contMDiff_id_linearRechart globalDeckComplexModelEquiv
+      contMDiff_invFun := contMDiff_id_linearRechart_symm globalDeckComplexModelEquiv }
+  intro x
+  have hproduct : IsLocalDiffeomorphAt (modelWithCornersSelf ℂ ComplexModel)
+      (modelWithCornersSelf ℂ (ℂ × ComplexTwoSpace)) ∞ f x := by
+    simpa only [modelWithCornersSelf_prod] using hf x
+  exact hproduct.comp (modelWithCornersSelf ℂ ComplexModel) N
+    (dN.isLocalDiffeomorph (f x))
+
 end
 
 end SphereSixComplex.Geometry
