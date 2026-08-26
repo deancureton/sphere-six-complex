@@ -1,5 +1,6 @@
 module
 
+public import SphereSixComplex.Topology.CellularChainModel
 public import SphereSixComplex.Topology.CuspToricCellularHomologyBridge
 
 /-!
@@ -23,27 +24,6 @@ open CategoryTheory CategoryTheory.Limits
 namespace SphereSixComplex
 
 variable (Y : Type) [TopologicalSpace Y] [Topology.CWComplex (Set.univ : Set Y)]
-
-/-- The cellular chain group of a degree carrying no cells is a zero object. -/
-public theorem isZero_cellularChain_of_isEmpty_cell
-    (M : IntegralCWCellularChainModel Y) (n : ℕ)
-    [IsEmpty (Topology.CWComplex.cell (Set.univ : Set Y) n)] :
-    IsZero (M.chainComplex.X n) := by
-  have : Subsingleton (M.chainComplex.X n) := (M.cellBasis n).symm.injective.subsingleton
-  exact AddCommGrpCat.isZero_of_subsingleton _
-
-/-- A CW complex has no `n`-th integral singular homology once it has no `n`-cells. -/
-public theorem subsingleton_integralSingularHomology_of_isEmpty_cell (n : ℕ)
-    [IsEmpty (Topology.CWComplex.cell (Set.univ : Set Y) n)] :
-    Subsingleton (IntegralSingularHomology n Y) := by
-  obtain M := EstablishedCellularHomology.integralCWCellularChainModel Y
-  have hcell : IsZero (M.chainComplex.homology n) :=
-    (HomologicalComplex.ExactAt.of_isZero
-      (isZero_cellularChain_of_isEmpty_cell Y M n)).isZero_homology
-  have hiso : IsIso (M.chainComplex.homologyMap M.comparison n) := M.comparison_homology_isIso n
-  have : IsZero ((IntegralSingularChainComplex Y).homology n) :=
-    hcell.of_iso (asIso (M.chainComplex.homologyMap M.comparison n)).symm
-  exact AddCommGrpCat.subsingleton_of_isZero this
 
 /-- A space homeomorphic to a CW complex with no `n`-cells has no `n`-th integral singular
 homology.  The collars of Section 7 are described analytically and only then identified with a

@@ -168,6 +168,7 @@ public import SphereSixComplex.Topology.HomologySphere
 public import SphereSixComplex.Topology.HurewiczWhitehead
 public import SphereSixComplex.Topology.HurewiczWhiteheadStages
 public import SphereSixComplex.Topology.MayerVietoris
+public import SphereSixComplex.Topology.CellularChainModel
 public import SphereSixComplex.Topology.MayerVietorisDegreeZeroBridge
 public import SphereSixComplex.Topology.ConnectedMayerVietorisDegreeZero
 public import SphereSixComplex.Topology.SectionSevenChainModel
