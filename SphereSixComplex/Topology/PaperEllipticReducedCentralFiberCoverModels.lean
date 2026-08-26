@@ -7,8 +7,8 @@ public import SphereSixComplex.Topology.SectionSevenLocalEulerModels
 # Finite-cover models of the reduced elliptic central fibres
 
 The reduced central fibres are the actual finite cyclic quotients of the central four-tori.
-This file constructs their covering projections and isolates the two general finite-CW inputs
-that are not currently available in Mathlib.
+This file constructs their covering projections and isolates the finite-CW inputs that are not
+currently available in Mathlib.
 -/
 
 open AlgebraicTopology Set
@@ -27,15 +27,6 @@ API. -/
 public axiom additiveTorusFourTorusCellModel (p : SphereSixComplex.Periods.Parameters)
     (h : FullRank p) :
     FourTorusCellModel (AdditiveTorus p)
-
-/-- The base of a positive constant-degree finite covering of finite CW type has finite CW type,
-with no increase in the dimension bound. This is the standard finite-cover CW theorem currently
-missing from Mathlib's CW API. -/
-public axiom finiteCoverBaseModelSix
-    {E X : Type} [TopologicalSpace E] [TopologicalSpace X]
-    (p : C(E, X)) (hp : IsCoveringMap p) (degree : ℕ) (hdegree : 0 < degree)
-    (hcard : ∀ x, Nat.card {y : E // p y = x} = degree)
-    (coverModel : FiniteCWModelSix E) : FiniteCWModelSix X
 
 end EstablishedFiniteCWTopology
 
@@ -70,7 +61,8 @@ end FourTorusCellModel
     {E X : Type} [TopologicalSpace E] [TopologicalSpace X]
     (p : C(E, X)) (hp : IsCoveringMap p) (degree : ℕ) (hdegree : 0 < degree)
     (hcard : ∀ x, Nat.card {y : E // p y = x} = degree)
-    (coverCells : FourTorusCellModel E) : FiniteFourTorusCoverModel X where
+    (coverCells : FourTorusCellModel E) (quotientFiniteCW : FiniteCWModelSix X) :
+    FiniteFourTorusCoverModel X where
   toFiniteCoverModelSix :=
     { Cover := E
       coverTopology := inferInstance
@@ -80,8 +72,7 @@ end FourTorusCellModel
       degree_pos := hdegree
       fiberCardinality := hcard
       coverFiniteCW := coverCells.toFiniteCWModelSix
-      quotientFiniteCW := EstablishedFiniteCWTopology.finiteCoverBaseModelSix
-        p hp degree hdegree hcard coverCells.toFiniteCWModelSix }
+      quotientFiniteCW := quotientFiniteCW }
   coverCells := coverCells
 
 namespace Topology.PaperEllipticReducedCentralFiberCoverModels
@@ -239,6 +230,16 @@ open Geometry.AnalyticTorusFamily Geometry.EllipticFamilySpecialization
 
 variable (A : PaperAnalyticData)
 
+/-- A free affine order-three quotient of the full-rank central four-torus has finite CW type of
+dimension four. -/
+public axiom orderThreeReducedCentralFiberFiniteCWModelSix :
+    FiniteCWModelSix (OrderThreeReducedCentralFiber A.periods)
+
+/-- A free affine order-four quotient of the full-rank central four-torus has finite CW type of
+dimension four. -/
+public axiom orderFourReducedCentralFiberFiniteCWModelSix :
+    FiniteCWModelSix (OrderFourReducedCentralFiber A.periods)
+
 /-- The actual order-three reduced central fibre is a three-sheeted quotient of its central
 four-torus. -/
 @[expose] public noncomputable def orderThreeReducedCentralFiberCoverModel :
@@ -267,6 +268,7 @@ four-torus. -/
     (RadialEllipticActionData.centralFiberCoverProjection_fiberCardinality D
       A.orderThreeAction_free)
     coverCells
+    (orderThreeReducedCentralFiberFiniteCWModelSix A)
 
 /-- The actual order-four reduced central fibre is a four-sheeted quotient of its central
 four-torus. -/
@@ -296,6 +298,7 @@ four-torus. -/
     (RadialEllipticActionData.centralFiberCoverProjection_fiberCardinality D
       A.orderFourAction_free)
     coverCells
+    (orderFourReducedCentralFiberFiniteCWModelSix A)
 
 end
 

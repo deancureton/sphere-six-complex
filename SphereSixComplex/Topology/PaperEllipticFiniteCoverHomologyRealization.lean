@@ -5,8 +5,8 @@ public import SphereSixComplex.Topology.FiniteCoverPerfectPairing
 /-!
 # Homology realization for the two elliptic finite covers
 
-The affine-cyclic presentation supplies degree-one naturality in the fixed production bases.  The
-remaining input is exactly the pair of degree-two perfect-pairing realizations.
+The affine-cyclic presentation supplies degree-one naturality in the fixed production bases. The
+degree-two coordinates are supplied by the exact integral calculation in Proposition 7.14.
 -/
 
 @[expose] public section
@@ -87,6 +87,13 @@ public def toEllipticFiniteCoverHomologyRealization
   orderFourTwo := P.orderFourRealization
 
 end EllipticDegreeTwoPullbackBases
+
+/-- The actual degree-one and degree-two homology realization for both elliptic finite
+covers. -/
+public noncomputable def ellipticFiniteCoverHomologyRealization :
+    EllipticFiniteCoverHomologyRealization F :=
+  EllipticDegreeTwoPullbackBases.toEllipticFiniteCoverHomologyRealization F
+    (ellipticDegreeTwoPullbackBases F)
 
 end SphereSixComplex.Topology.FiniteCoverPerfectPairing
 

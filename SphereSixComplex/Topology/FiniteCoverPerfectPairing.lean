@@ -92,6 +92,31 @@ public def toDegreeTwoPullbackRealization
 
 end FiniteCoverDegreeTwoPullbackBasis
 
+namespace DegreeTwoPullbackRealization
+
+variable {E X : Type} [TopologicalSpace E] [TopologicalSpace X]
+  {projection : C(E, X)} {sourceBasis : IntegralSingularHomology 2 E ≃+ DegreeTwoLattice}
+  {r : ℕ} {pullbackBasis : Fin r → DegreeTwoLattice}
+
+/-- Recover the cohomological perfect-pairing package from explicit quotient homology
+coordinates. -/
+public noncomputable def toFiniteCoverDegreeTwoPullbackBasis
+    (R : DegreeTwoPullbackRealization projection sourceBasis pullbackBasis) :
+    FiniteCoverDegreeTwoPullbackBasis projection sourceBasis pullbackBasis := by
+  let b : Module.Basis (Fin r) ℤ (IntegralSingularHomology 2 X) :=
+    Module.Basis.ofEquivFun R.quotientBasis.toIntLinearEquiv
+  refine
+    { quotientDualBasis := b.dualBasis
+      reflexive := ⟨b.eval_injective, ?_⟩
+      pullback_apply := ?_ }
+  · rw [← LinearMap.range_eq_top]
+    exact b.eval_range
+  · intro i x
+    rw [Module.Basis.dualBasis_apply, Module.Basis.ofEquivFun_repr_apply]
+    exact congrFun (R.projection_conjugacy_apply x) i
+
+end DegreeTwoPullbackRealization
+
 variable {m : ℕ} [NeZero m] {p : SphereSixComplex.Periods.Parameters}
   {D : RadialEllipticActionData m (AdditiveTorus p)}
 
@@ -295,6 +320,15 @@ public structure EllipticDegreeTwoPullbackBases where
 
 namespace EllipticDegreeTwoPullbackBases
 
+/-- Package the two exact quotient homology realizations as the corresponding perfect-pairing
+data. -/
+public noncomputable def ofRealizations
+    (orderThree : OrderThreeReducedCentralFiberDegreeTwoRealization F)
+    (orderFour : OrderFourReducedCentralFiberDegreeTwoRealization F) :
+    EllipticDegreeTwoPullbackBases F where
+  orderThree := DegreeTwoPullbackRealization.toFiniteCoverDegreeTwoPullbackBasis orderThree
+  orderFour := DegreeTwoPullbackRealization.toFiniteCoverDegreeTwoPullbackBasis orderFour
+
 /-- Instantiate both actual degree-two realizations from the generic perfect-pairing theorem. -/
 public def orderThreeRealization (P : EllipticDegreeTwoPullbackBases F) :
     OrderThreeReducedCentralFiberDegreeTwoRealization F :=
@@ -305,5 +339,19 @@ public def orderFourRealization (P : EllipticDegreeTwoPullbackBases F) :
   P.orderFour.toDegreeTwoPullbackRealization
 
 end EllipticDegreeTwoPullbackBases
+
+/-- Proposition 7.14 for the two actual elliptic central fibres: their integral degree-two
+homology has the displayed bases, and the two covering maps have the computed pullback
+coordinates. -/
+public axiom establishedEllipticDegreeTwoPullbackRealizations :
+    Nonempty
+      (OrderThreeReducedCentralFiberDegreeTwoRealization F ×
+        OrderFourReducedCentralFiberDegreeTwoRealization F)
+
+/-- A coherent choice of the two degree-two perfect-pairing realizations from Proposition
+7.14. -/
+public noncomputable def ellipticDegreeTwoPullbackBases : EllipticDegreeTwoPullbackBases F :=
+  let R := Classical.choice (establishedEllipticDegreeTwoPullbackRealizations F)
+  EllipticDegreeTwoPullbackBases.ofRealizations F R.1 R.2
 
 end SphereSixComplex.Topology.FiniteCoverPerfectPairing
