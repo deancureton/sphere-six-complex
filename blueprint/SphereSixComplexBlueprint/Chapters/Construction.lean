@@ -394,13 +394,14 @@ $`C_3` and $`C_4` factors, closing both collar separations without an external a
 Use {uses "torus-family"}[the torus family] and the invariant twist vectors fixed by $`A_1` and $`A_2`.
 :::
 
-:::theorem "compact-complex-threefold" (parent := "construction_spine") (lean := "SphereSixComplex.ComplexThreefold, SphereSixComplex.CompletedPaperThreefold, SphereSixComplex.PaperGluingData, SphereSixComplex.Geometry.exists_paperAnalyticData, SphereSixComplex.Geometry.PaperAnalyticData.toPaperGluingData, SphereSixComplex.exists_paperGluingData, SphereSixComplex.exists_completedPaperThreefold") (priority := "high")
+:::theorem "compact-complex-threefold" (parent := "construction_spine") (lean := "SphereSixComplex.ComplexThreefold, SphereSixComplex.CompletedPaperThreefold, SphereSixComplex.PaperGluingData, SphereSixComplex.Geometry.exists_paperAnalyticData, SphereSixComplex.Geometry.PaperAnalyticData.toPaperGluingData, SphereSixComplex.Geometry.exists_paperGluingData_of_positiveDegreeAssembly, SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenPositiveDegreeGeometricRealization, SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenPositiveDegreeGeometricRealization.positiveDegreeHomologyAssembly, SphereSixComplex.exists_paperGluingData, SphereSixComplex.exists_completedPaperThreefold") (priority := "high")
 The global family and the three fillings glue to a compact connected complex threefold $`X`.
 `exists_paperGluingData` is the sole remaining sorry in the library. The analytic package is now
-unconditional; the remaining inputs are the actual star's `HasVanKampenData` and positive-degree
-Section 7 homology assembly. The gluing package supplies every other field. The van Kampen input
-is itself reduced to two geometric obligations by
-{uses "local-fundamental-groups"}[the local fundamental-group computations].
+unconditional, and `exists_paperGluingData_of_positiveDegreeAssembly` reduces the placeholder to
+the positive-degree Section 7 homology assembly alone: the actual star's `HasVanKampenData` and
+top-degree vanishing are already supplied. `SectionSevenPositiveDegreeGeometricRealization`
+packages the exact remaining central allocation, radial realization, marked band transport,
+splitting, and cusp-cycle data and produces that assembly; no such realization is yet supplied.
 :::
 
 :::proof "compact-complex-threefold"
