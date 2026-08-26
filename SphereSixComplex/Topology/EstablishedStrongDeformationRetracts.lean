@@ -2,6 +2,7 @@ module
 
 public import SphereSixComplex.Topology.ActualCuspCentralFiberRetraction
 public import SphereSixComplex.Topology.CollarHomotopyExtension
+public import SphereSixComplex.Topology.ContractibleRegularCoverInclusionProof
 public import Mathlib.Topology.Homotopy.Lifting
 public import Mathlib.Topology.CWComplex.Classical.Basic
 import SphereSixComplex.Topology.RelativeHomotopy
@@ -25,6 +26,11 @@ through which the rest of the library consumes them.
   translations `hasHomotopyExtensionProperty_iff`, `isHomotopyEquivalenceInclusion_iff` and the
   converter `TopCat.StrongDeformationRetractData.toStrongDeformationRetraction`, via
   `HomotopyExtensionProperty.nonempty_strongDeformationRetraction` (Cor. 0.20 for a map).
+* `EstablishedGeneralTopology.isHomotopyEquivalenceInclusion_of_contractible_regularCover`: if a
+  regular covering and the full inverse image of a subspace are contractible then, for a relative
+  CW pair, the subspace inclusion is a homotopy equivalence.  The covering-space content is proved
+  in `ContractibleRegularCoverInclusionProof`; only the uniqueness of `K(G, 1)` spaces
+  (`isHomotopyEquivalenceInclusion_of_isAspherical_of_bijective_fundamentalGroup`) is assumed.
 * `EstablishedGeneralTopology.equivariantStrongDeformationRetraction_lift`: a strong deformation
   retraction of the base lifts through the orbit map of a covering space action to a
   deck-equivariant strong deformation retraction of the total space onto the full preimage
@@ -36,7 +42,15 @@ space, as Hatcher's proof of Cor. 0.20 applies the homotopy-extension property w
 `A` and `X` themselves.
 
 The two remaining `axiom`s of `EstablishedGeneralTopology` — the homotopy-extension property of a
-relative CW pair and the `K(G, 1)` inclusion statement — are tracked as separate follow-ups.
+relative CW pair and the uniqueness of `K(G, 1)` spaces
+(`isHomotopyEquivalenceInclusion_of_isAspherical_of_bijective_fundamentalGroup`) — are tracked as
+separate follow-ups.  Both are now purely CW-theoretic: all covering-space and homotopy-group
+content of the former `K(G, 1)` axiom is proved in `ContractibleRegularCoverInclusionProof`, and
+`isHomotopyEquivalenceInclusion_of_contractible_regularCover` is a theorem deduced from it.
+
+The subspace-inclusion definitions `topologicalSubsetInclusionMap` and
+`IsHomotopyEquivalenceInclusion` live in `EstablishedStrongDeformationRetractsDefs`, upstream of
+that proof file, and are re-exported here.
 -/
 
 @[expose] public section
@@ -50,22 +64,12 @@ universe u
 
 namespace SphereSixComplex
 
-/-- The continuous inclusion of a subspace. -/
-public def topologicalSubsetInclusionMap {X : Type*} [TopologicalSpace X] (A : Set X) :
-    C(A, X) where
-  toFun := Subtype.val
-  continuous_toFun := continuous_subtype_val
-
 /-- The homotopy-extension property for the inclusion `A ⊆ X`. -/
 public def HasHomotopyExtensionProperty {X : Type u} [TopologicalSpace X] (A : Set X) : Prop :=
   ∀ (Y : Type u) (_ : TopologicalSpace Y) (f : C(X, Y)) (g : C(A, Y))
     (h : ContinuousMap.Homotopy (f.comp (topologicalSubsetInclusionMap A)) g),
     ∃ (f₁ : C(X, Y)) (H : ContinuousMap.Homotopy f f₁),
       ∀ s (a : A), H (s, (a : X)) = h (s, a)
-
-/-- The inclusion `A ⊆ X` is a homotopy equivalence, with its inverse map recorded explicitly. -/
-public def IsHomotopyEquivalenceInclusion {X : Type*} [TopologicalSpace X] (A : Set X) : Prop :=
-  ∃ e : X ≃ₕ A, e.invFun = topologicalSubsetInclusionMap A
 
 /-- Extract the homotopy equivalence recorded by a homotopy-equivalent subspace inclusion. -/
 public noncomputable def IsHomotopyEquivalenceInclusion.toHomotopyEquiv
@@ -259,16 +263,51 @@ public axiom hasHomotopyExtensionProperty_of_relativeCWComplex
     (hCW : RelCWComplex (Set.univ : Set X) A) :
     HasHomotopyExtensionProperty A
 
+/-- **Uniqueness of `K(G, 1)` spaces for a relative CW pair.**  If both spaces of a relative CW
+pair are aspherical and the subspace inclusion is an isomorphism on fundamental groups, then the
+inclusion is a homotopy equivalence.
+
+This is the Whitehead/compression step: the inclusion is a weak homotopy equivalence by the two
+asphericity hypotheses together with the `π₁`-isomorphism, and a weak homotopy equivalence which
+is the inclusion of the base of a relative CW complex is a deformation retract (Hatcher,
+*Algebraic Topology*, Prop. 0.19 and Prop. 4.72 / Cor. 4.5).  Neither Mathlib nor Tau Ceti has
+any homotopy theory of CW complexes, so this remains an axiom.
+
+The `π₁` hypothesis is **not** removable, and no combination of the asphericity hypotheses
+replaces it: let `B` be the solid torus `S¹ × D²` and `D` the embedded circle
+`θ ↦ (e^{2iθ}, ½ e^{iθ})`.  Then `(B, D)` is a relative CW pair of two `K(ℤ, 1)` spaces, but the
+inclusion is multiplication by `2` on `π₁` and is not a homotopy equivalence. -/
+public axiom isHomotopyEquivalenceInclusion_of_isAspherical_of_bijective_fundamentalGroup
+    {B : Type*} [TopologicalSpace B] (D : Set B) (b : B) (hb : b ∈ D)
+    (hB : TauCeti.IsAspherical B b)
+    (hD : TauCeti.IsAspherical D ⟨b, hb⟩)
+    (hπ : Function.Bijective (FundamentalGroup.mapOfEq (topologicalSubsetInclusionMap D)
+      (show (topologicalSubsetInclusionMap D) (⟨b, hb⟩ : D) = b from rfl)))
+    (hCW : RelCWComplex (Set.univ : Set B) D) :
+    IsHomotopyEquivalenceInclusion D
+
 /-- If a regular covering and the full inverse image of a subspace are contractible, their
 quotients are `K(G,1)` spaces. For a relative CW pair, the subspace inclusion is therefore a
-homotopy equivalence. -/
-public axiom isHomotopyEquivalenceInclusion_of_contractible_regularCover
+homotopy equivalence.
+
+All of the covering-space content is proved in `ContractibleRegularCoverInclusionProof`: the
+higher homotopy groups of a contractible space vanish, a quotient covering map restricts to a
+quotient covering map over the full preimage of a subspace with the same deck group, so `B` and
+`D` are `K(G, 1)` spaces for one and the same `G`, and the two identifications of the fundamental
+groups with the deck group are compatible with the inclusion, so the inclusion is a `π₁`
+isomorphism.  Only the Whitehead step
+`isHomotopyEquivalenceInclusion_of_isAspherical_of_bijective_fundamentalGroup` is assumed. -/
+public theorem isHomotopyEquivalenceInclusion_of_contractible_regularCover
     {G E B : Type*} [Group G] [TopologicalSpace E] [TopologicalSpace B]
     [MulAction G E] (p : C(E, B)) (A : Set E) (D : Set B)
     (hp : IsQuotientCoveringMap p G) (hpreimage : p ⁻¹' D = A)
     (hE : ContractibleSpace E) (hA : ContractibleSpace A)
     (hCW : RelCWComplex (Set.univ : Set B) D) :
-    IsHomotopyEquivalenceInclusion D
+    IsHomotopyEquivalenceInclusion D :=
+  isHomotopyEquivalenceInclusion_of_contractible_regularCover_of_whitehead p A D hp hpreimage
+    hE hA hCW fun b hb hB hD hπ hCW' =>
+      isHomotopyEquivalenceInclusion_of_isAspherical_of_bijective_fundamentalGroup
+        D b hb hB hD hπ hCW'
 
 /-- A cofibrant inclusion which is a homotopy equivalence is the inclusion of a strong
 deformation retract. This is the standard homotopy-extension-property theorem (Hatcher,
