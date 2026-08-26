@@ -568,8 +568,7 @@ simplicial chains of the boundary of the seven-simplex.
 `SectionSevenLerayCoherentRealization X` remains a stronger optional route for the glued space: one
 coherent chain map from the finite Leray model to singular chains, inducing homology isomorphisms
 in every degree. No such realization is constructed for the actual space, but it is not used by
-`exists_paperGluingData_from_sectionSeven` and does not occur in the final theorem's recursive
-dependency closure.
+`exists_paperGluingData_from_sectionSeven`.
 :::
 
 :::theorem "section-seven-top-degree-vanishing" (parent := "integral-homology") (lean := "SphereSixComplex.subsingleton_integralSingularHomology_of_isEmpty_cell, SphereSixComplex.FiniteCWModelSix.subsingleton_homology_of_cellCount_eq_zero, SphereSixComplex.FourTorusCellModel.subsingleton_homology_five, SphereSixComplex.FourTorusCellModel.subsingleton_homology_six, SphereSixComplex.subsingleton_homology_succ_finiteBouquetMappingTorus, SphereSixComplex.contractibleSpace_openInterval, SphereSixComplex.subsingleton_homology_prod_of_contractible, SphereSixComplex.subsingleton_homology_seven_union, SphereSixComplex.OpenEmbeddingStarData.sectionSevenStageTopDegreeVanishing_of_localFinite, SphereSixComplex.subsingleton_homology_six_of_radialMappingTorus, SphereSixComplex.Geometry.PaperAnalyticData.subsingleton_homology_six_cuspCollar, SphereSixComplex.Geometry.PaperAnalyticData.subsingleton_homology_six_actualCuspCollar, SphereSixComplex.Geometry.PaperAnalyticData.subsingleton_homology_six_orderThreeCollar, SphereSixComplex.Geometry.PaperAnalyticData.subsingleton_homology_six_orderFourCollar, SphereSixComplex.Geometry.PaperAnalyticData.subsingleton_homology_six_collarSource_of_cusp, SphereSixComplex.Geometry.PaperAnalyticData.sectionSevenStageTopDegreeVanishing_of_actualCuspCollar, SphereSixComplex.Geometry.PaperAnalyticData.sectionSevenStageTopDegreeVanishing_actual")
