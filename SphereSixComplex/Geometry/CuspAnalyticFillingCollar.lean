@@ -551,7 +551,6 @@ private noncomputable def expOnThreeDeriv (x : ComplexModel) : ComplexModel ≃L
     (mul_ne_zero twoPiI_ne_zero (Complex.exp_ne_zero _)))
 
 set_option maxRecDepth 8000 in
-set_option maxHeartbeats 1000000 in
 private theorem hasFDerivAt_expOnThree (x : ComplexModel) :
     HasFDerivAt expOnThree ((expOnThreeDeriv x : ComplexModel →L[ℂ] ComplexModel)) x := by
   set c : Fin 3 → ℂ := fun i ↦ twoPiI * Complex.exp (twoPiI * WithLp.ofLp x i) with hc
@@ -579,7 +578,6 @@ private theorem hasFDerivAt_expOnThree (x : ComplexModel) :
   show c i * WithLp.ofLp y i = WithLp.ofLp y i * c i
   exact mul_comm _ _
 
-set_option maxHeartbeats 1000000 in
 private theorem isLocalDiffeomorph_expCoords :
     IsLocalDiffeomorph (modelWithCornersSelf ℂ AdditiveCuspCover)
       (modelWithCornersSelf ℂ ComplexModel) ∞ expCoords := by

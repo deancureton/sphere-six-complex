@@ -252,7 +252,6 @@ private theorem sumMap_flattenPair_zero
             (rightOpenInUnionToRight A B hB) v) = _
   rw [hLeft', hRight']
 
-set_option maxHeartbeats 600000 in
 private theorem sumMap_flattenPair_eq_integralMVFromProduct
     {X : Type} [TopologicalSpace X] (A B : Set X)
     (hA : IsOpen A) (hB : IsOpen B)
@@ -274,7 +273,6 @@ private theorem sumMap_flattenPair_eq_integralMVFromProduct
     (integralMVFromProduct_pair_apply (Y := TopCat.of (A ∪ B : Set X))
       (leftOpenInUnion A B hA) (rightOpenInUnion A B hB) u v).symm
 
-set_option maxHeartbeats 600000 in
 private theorem sumMap_zero_has_preimage
     {X : Type} [TopologicalSpace X] (A B : Set X)
     (hA : IsOpen A) (hB : IsOpen B)
