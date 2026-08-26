@@ -154,90 +154,6 @@ public theorem actualCuspOverlapToCore_eq_central
   rw [← hhom]
   rfl
 
-/-- If the induced deck map has the marked algebraic value, cover naturality identifies every
-actual cusp deck loop with that marked central loop. -/
-public theorem actualCuspOverlapToCore_ofDeck
-    (hdeck :
-      let W := A.starCuspWitness
-      letI := paperCuspBoundaryDeckAction W
-      let D := A.centralAffineUniversalCover
-      letI := D.topology
-      letI := D.action
-      A.actualCuspCentralCoverComparison.deckMap =
-        paperCuspBoundaryToCentralDeck)
-    (g : paperCuspBoundaryDeck) :
-    let W := A.starCuspWitness
-    letI := paperCuspBoundaryDeckAction W
-    let D := A.centralAffineUniversalCover
-    letI := D.topology
-    letI := D.action
-    letI : SimplyConnectedSpace
-        (additiveCuspRadiusCover W.localWitness.radius) :=
-      additiveCuspBoundaryCover_simplyConnected W
-    letI : SimplyConnectedSpace D.Cover := D.data.simplyConnected
-    let hp : IsQuotientCoveringMap A.actualCuspBoundaryProjection
-        paperCuspBoundaryDeck :=
-      (additiveCuspBoundaryProjection_isQuotientCoveringMap W).homeomorph_comp
-        A.cuspCollarToStarOverlapHomeomorph
-    A.actualCuspOverlapToCore
-        (fundamentalGroupElementOfBaseEq
-          A.actualCuspChosenAffineFillingCover_boundaryBase_eq
-          (ofDeck hp
-            (paperCuspBoundaryBasePreimage W A.actualCuspLocalBoundaryBase) g)) =
-      A.actualCuspCentralToCoreEquiv
-        ((D.data.quotientCovering.fundamentalGroupEquiv
-          ⟨A.centralAffineUniversalCoverPoint, rfl⟩).symm
-          (MulOpposite.op (paperCuspBoundaryToCentralDeck g))) := by
-  let W := A.starCuspWitness
-  let _ := paperCuspBoundaryDeckAction W
-  let D := A.centralAffineUniversalCover
-  let _ := D.topology
-  let _ := D.action
-  let _ : SimplyConnectedSpace
-      (additiveCuspRadiusCover W.localWitness.radius) :=
-    additiveCuspBoundaryCover_simplyConnected W
-  let _ : SimplyConnectedSpace D.Cover := D.data.simplyConnected
-  let hp : IsQuotientCoveringMap A.actualCuspBoundaryProjection
-      paperCuspBoundaryDeck :=
-    (additiveCuspBoundaryProjection_isQuotientCoveringMap W).homeomorph_comp
-      A.cuspCollarToStarOverlapHomeomorph
-  dsimp only
-  dsimp only at hdeck
-  rw [A.actualCuspOverlapToCore_eq_central]
-  congr 1
-  apply (D.data.quotientCovering.fundamentalGroupEquiv
-    ⟨A.centralAffineUniversalCoverPoint, rfl⟩).injective
-  rw [(D.data.quotientCovering.fundamentalGroupEquiv
-    ⟨A.centralAffineUniversalCoverPoint, rfl⟩).apply_symm_apply]
-  have hsource :
-      A.actualCuspOverlapToCentral
-          (A.actualCuspBoundaryProjection
-            (paperCuspBoundaryBasePreimage W A.actualCuspLocalBoundaryBase)) =
-        A.centralAffineBase := by
-    change A.actualCuspOverlapToCentral
-        (A.actualCuspBoundaryProjection A.actualCuspBoundaryCoverBase) =
-      A.centralAffineBase
-    rw [A.actualCuspBoundaryCoverBase_projects]
-    exact A.centralAffineBase_eq_actualCuspCentralBase.symm
-  calc
-    _ = D.data.quotientCovering.fundamentalGroupEquiv
-        ⟨A.centralAffineUniversalCoverPoint, rfl⟩
-        (FundamentalGroup.mapOfEq A.actualCuspOverlapToCentral hsource
-          (ofDeck hp
-            (paperCuspBoundaryBasePreimage W A.actualCuspLocalBoundaryBase) g)) :=
-      congrArg (D.data.quotientCovering.fundamentalGroupEquiv
-        ⟨A.centralAffineUniversalCoverPoint, rfl⟩)
-        (mapOfEq_fundamentalGroupElementOfBaseEq
-          A.actualCuspChosenAffineFillingCover_boundaryBase_eq
-          A.actualCuspOverlapToCentral hsource
-          A.centralAffineBase_eq_actualCuspCentralBase.symm
-          (ofDeck hp
-            (paperCuspBoundaryBasePreimage W A.actualCuspLocalBoundaryBase) g))
-    _ = MulOpposite.op (A.actualCuspCentralCoverComparison.deckMap g) :=
-      A.actualCuspCentralCoverComparison_ofDeck_actualBase g
-    _ = MulOpposite.op (paperCuspBoundaryToCentralDeck g) :=
-      congrArg (fun k ↦ MulOpposite.op (k g)) hdeck
-
 /-- Marked peripheral naturality between the explicit cusp cover and the actual affine core.
 
 The equivalence is part of the marking data. In particular, it is not identified with the
@@ -260,33 +176,72 @@ public structure ActualCuspCentralNaturality where
       centralToCore
         (A.centralAffineCorePiOneData.rhoOne * A.centralAffineCorePiOneData.rhoTwo)
 
-/-- The actual cover square supplies marked peripheral naturality once its induced deck map is
-identified with the explicit algebraic cusp inclusion. -/
-public noncomputable def actualCuspCentralNaturality_of_deckMap_eq
-    (hdeck :
-      let W := A.starCuspWitness
-      letI := paperCuspBoundaryDeckAction W
-      let D := A.centralAffineUniversalCover
-      letI := D.topology
-      letI := D.action
-      A.actualCuspCentralCoverComparison.deckMap =
-        paperCuspBoundaryToCentralDeck) :
+/-- The central-to-core equivalence, viewed directly from the literal actual cusp base. -/
+public noncomputable def actualCuspToCoreEquiv :
+    FundamentalGroup A.CentralFamily A.actualCuspCentralBase ≃*
+      FundamentalGroup A.actualVanKampenFourPieceCover.core
+        ⟨A.vanKampenBase, A.actualVanKampenFourPieceCover.base_mem_core⟩ :=
+  A.actualCuspToCentralAffineBaseEquiv.trans A.actualCuspCentralToCoreEquiv
+
+/-- The geometric core marking corrected by the appropriate inner cusp power. -/
+public noncomputable def geometricMarkedCentralToCoreEquiv :
+    FundamentalGroup A.CentralFamily A.centralAffineBase ≃*
+      FundamentalGroup A.actualVanKampenFourPieceCover.core
+        ⟨A.vanKampenBase, A.actualVanKampenFourPieceCover.base_mem_core⟩ :=
+  A.actualCuspToCentralAffineBaseEquiv.symm.trans
+    (A.actualCuspCentralMarkingCorrection.trans A.actualCuspToCoreEquiv)
+
+/-- Evaluation of the corrected geometric marking on a class transported from the literal
+actual cusp base. -/
+public theorem geometricMarkedCentralToCoreEquiv_apply_actualCusp
+    (gamma : FundamentalGroup A.CentralFamily A.actualCuspCentralBase) :
+    A.geometricMarkedCentralToCoreEquiv
+        (A.actualCuspToCentralAffineBaseEquiv gamma) =
+      A.actualCuspToCoreEquiv
+        (A.actualCuspCentralMarkingCorrection gamma) := by
+  unfold geometricMarkedCentralToCoreEquiv
+  change A.actualCuspToCoreEquiv
+      (A.actualCuspCentralMarkingCorrection
+        (A.actualCuspToCentralAffineBaseEquiv.symm
+          (A.actualCuspToCentralAffineBaseEquiv gamma))) = _
+  rw [A.actualCuspToCentralAffineBaseEquiv.symm_apply_apply]
+
+/-- Monoid-hom form of the corrected geometric marking evaluation lemma. -/
+public theorem geometricMarkedCentralToCoreEquiv_toMonoidHom_apply_actualCusp
+    (gamma : FundamentalGroup A.CentralFamily A.actualCuspCentralBase) :
+    A.geometricMarkedCentralToCoreEquiv.toMonoidHom
+        (A.actualCuspToCentralAffineBaseEquiv gamma) =
+      A.actualCuspToCoreEquiv
+        (A.actualCuspCentralMarkingCorrection gamma) := by
+  exact A.geometricMarkedCentralToCoreEquiv_apply_actualCusp gamma
+
+/-- The literal cusp chart followed by the core inclusion is compatible with the direct
+actual-cusp-to-core equivalence. -/
+public theorem actualCuspOverlapToCore_eq_fromActual
+    (gamma : FundamentalGroup
+      (A.actualVanKampenFourPieceCover.core ∩
+        A.actualVanKampenFourPieceCover.cusp : Set A.VanKampenSpace)
+      A.actualCuspOverlapBase) :
+    A.actualCuspOverlapToCore gamma =
+      A.actualCuspToCoreEquiv (A.actualCuspOverlapToCentralPiOne gamma) := by
+  rw [A.actualCuspOverlapToCore_eq_central]
+  unfold actualCuspToCoreEquiv actualCuspToCentralAffineBaseEquiv
+    actualCuspOverlapToCentralPiOne
+  change A.actualCuspCentralToCoreEquiv
+      (FundamentalGroup.mapOfEq A.actualCuspOverlapToCentral _ gamma) =
+    A.actualCuspCentralToCoreEquiv
+      (SphereSixComplex.Topology.fundamentalGroupMulEquivOfEq
+        A.centralAffineBase_eq_actualCuspCentralBase.symm
+        (FundamentalGroup.map A.actualCuspOverlapToCentral
+          A.actualCuspOverlapBase gamma))
+  congr 1
+
+/-- Marked cusp-to-central naturality constructed from the literal cusp loops, geometric finite
+meridians, and their proved common peripheral conjugator. -/
+public noncomputable def actualCuspCentralNaturality :
     A.ActualCuspCentralNaturality := by
-  let W := A.starCuspWitness
-  let _ := paperCuspBoundaryDeckAction W
-  let D := A.centralAffineUniversalCover
-  let _ := D.topology
-  let _ := D.action
-  let _ : SimplyConnectedSpace
-      (additiveCuspRadiusCover W.localWitness.radius) :=
-    additiveCuspBoundaryCover_simplyConnected W
-  let _ : SimplyConnectedSpace D.Cover := D.data.simplyConnected
-  let E : FundamentalGroup A.CentralFamily A.centralAffineBase ≃*
-      paperCentralFreeAffineDeckᵐᵒᵖ :=
-    D.data.quotientCovering.fundamentalGroupEquiv
-      ⟨A.centralAffineUniversalCoverPoint, rfl⟩
   refine {
-    centralToCore := A.actualCuspCentralToCoreEquiv
+    centralToCore := A.geometricMarkedCentralToCoreEquiv
     translation_naturality := ?_
     meridian_naturality := ?_
   }
@@ -296,56 +251,18 @@ public noncomputable def actualCuspCentralNaturality_of_deckMap_eq
     simp only [AddMonoidHom.comp_apply, MonoidHom.coe_toAdditive,
       Function.comp_apply, toMul_ofMul]
     rw [fundamentalGroupAddHomOfBaseEq_apply, toMul_ofMul]
-    rw [A.actualCuspChosenAffineFillingCover_translation_eq_ofDeck]
-    calc
-      _ = A.actualCuspCentralToCoreEquiv
-          (E.symm (MulOpposite.op (paperCuspBoundaryToCentralDeck
-            (Additive.toMul (paperCuspBoundaryTranslation a))))) :=
-        A.actualCuspOverlapToCore_ofDeck hdeck _
-      _ = A.actualCuspCentralToCoreEquiv
-          (Additive.toMul (A.centralAffineCorePiOneData.translation a)) := by
-        congr 1
-        apply E.injective
-        rw [E.apply_symm_apply, paperCuspBoundaryToCentralDeck_translation]
-        exact (A.centralAffineCorePiOneData_translation_deck a).symm
-  · rw [A.actualCuspChosenAffineFillingCover_meridian_eq_ofDeck]
-    calc
-      _ = A.actualCuspCentralToCoreEquiv
-          (E.symm (MulOpposite.op
-            (paperCuspBoundaryToCentralDeck paperCuspBoundaryMeridian))) :=
-        A.actualCuspOverlapToCore_ofDeck hdeck _
-      _ = A.actualCuspCentralToCoreEquiv
-          (A.centralAffineCorePiOneData.rhoOne *
-            A.centralAffineCorePiOneData.rhoTwo) := by
-        congr 1
-        apply E.injective
-        rw [E.apply_symm_apply, map_mul,
-          paperCuspBoundaryToCentralDeck_meridian]
-        calc
-          MulOpposite.op
-              (freeAffineLift (M := paperCentralFreeMonodromy)
-                paperCuspCentralBaseMeridian) =
-              (oppositeFreeAffineCorePiOneData paperCentralFreeMonodromy).rhoOne *
-                (oppositeFreeAffineCorePiOneData paperCentralFreeMonodromy).rhoTwo :=
-            opposite_paperCuspCentralBaseMeridian_eq_rhoOne_mul_rhoTwo
-          _ = E A.centralAffineCorePiOneData.rhoOne *
-              E A.centralAffineCorePiOneData.rhoTwo :=
-            congrArg₂ (· * ·)
-              A.centralAffineCorePiOneData_rhoOne_deck.symm
-              A.centralAffineCorePiOneData_rhoTwo_deck.symm
-
-/-- The established marked peripheral naturality theorem for the actual cusp collar.
-
-This is only the geometric identification of the cusp translation and meridian in the marked
-central affine presentation. It is neither a filling relation nor a conclusion about the final
-glued space. -/
-public axiom establishedActualCuspCentralNaturality :
-    Nonempty A.ActualCuspCentralNaturality
-
-/-- A coherent choice of the marked cusp-to-central naturality data. -/
-public noncomputable def actualCuspCentralNaturality :
-    A.ActualCuspCentralNaturality :=
-  Classical.choice A.establishedActualCuspCentralNaturality
+    rw [A.actualCuspOverlapToCore_eq_fromActual]
+    rw [A.actualCuspOverlapToCentralPiOne_translation]
+    rw [A.centralAffineCorePiOneData_translation]
+    rw [A.geometricMarkedCentralToCoreEquiv_toMonoidHom_apply_actualCusp]
+    rw [A.actualCuspCentralMarkingCorrection_translation]
+  · rw [A.actualCuspOverlapToCore_eq_fromActual]
+    rw [A.actualCuspOverlapToCentralPiOne_meridian]
+    rw [A.centralAffineCorePiOneData_rhoOne,
+      A.centralAffineCorePiOneData_rhoTwo, ← map_mul]
+    rw [← A.actualCuspCentralMeridian_eq_geometricRhoProduct]
+    rw [A.geometricMarkedCentralToCoreEquiv_apply_actualCusp]
+    rw [A.actualCuspCentralMarkingCorrection_meridian]
 
 namespace ActualCuspCentralNaturality
 

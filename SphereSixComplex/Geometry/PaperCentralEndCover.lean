@@ -245,10 +245,10 @@ public theorem exists_orderFour_coordinate_radius
   rw [hback]
   exact hx
 
-/-- A path contained in a sufficiently small order-three affine neighborhood has finite-order
-deck monodromy.  The proof moves its initial point into the linear collar and uses connectedness
-to keep the whole translated path there. -/
-public theorem orderThree_path_deck_isOfFinOrder_of_coordinate_small
+/-- A path contained in a sufficiently small order-three affine neighborhood has deck
+monodromy whose cube is trivial.  The proof moves its initial point into the linear collar and
+uses connectedness to keep the whole translated path there. -/
+public theorem orderThree_path_deck_pow_three_of_coordinate_small
     {R inner delta : ℝ} (hinnerR : inner < R)
     (D : OrderThreeLinearCollarSourceData
       (U := P.modular.modularParameter.toTriangleUniformization) R)
@@ -260,7 +260,7 @@ public theorem orderThree_path_deck_isOfFinOrder_of_coordinate_small
     (z : UpperHalfPlane) (g : Delta)
     (Q : Path z (fuchsianSourceAction g • z))
     (hQ : ∀ t, ‖P.modular.sourceCoordinate.coordinate (Q t)‖ < delta) :
-    IsOfFinOrder g := by
+    g ^ 3 = 1 := by
   let middle := (inner + R) / 2
   have hinnerMiddle : inner < middle := by dsimp [middle]; linarith
   have hmiddleR : middle < R := by dsimp [middle]; linarith
@@ -318,8 +318,6 @@ public theorem orderThree_path_deck_isOfFinOrder_of_coordinate_small
     (hh.trans hinnerR) (h * g * h⁻¹) (by
       rw [P.modular.modularParameter.toTriangleUniformization_sourceAction]
       simp only [map_mul, map_inv, mul_smul, inv_smul_smul])
-  apply isOfFinOrder_iff_pow_eq_one.mpr
-  refine ⟨3, by norm_num, ?_⟩
   have ha3 : (Monoid.Coprod.inl a : Delta) ^ 3 = 1 := by
     have haPow : a ^ 3 = 1 := by
       rcases cyclicThree_cases a with rfl | rfl | rfl
@@ -333,9 +331,28 @@ public theorem orderThree_path_deck_isOfFinOrder_of_coordinate_small
     g ^ 3 = h⁻¹ * (h * g ^ 3 * h⁻¹) * h := by group
     _ = 1 := by rw [hpow]; group
 
-/-- A path contained in a sufficiently small order-four affine neighborhood has finite-order
-deck monodromy. -/
-public theorem orderFour_path_deck_isOfFinOrder_of_coordinate_small
+/-- Finite-order wrapper around the exact order-three collar calculation. -/
+public theorem orderThree_path_deck_isOfFinOrder_of_coordinate_small
+    {R inner delta : ℝ} (hinnerR : inner < R)
+    (D : OrderThreeLinearCollarSourceData
+      (U := P.modular.modularParameter.toTriangleUniformization) R)
+    (hcoordinate : ∀ z : UpperHalfPlane,
+      ‖P.modular.sourceCoordinate.coordinate z‖ < delta →
+        ∃ k : Delta,
+          ‖(orderThreeCayleyHomeomorph
+            (fuchsianSourceAction k • z) : ℂ)‖ < inner)
+    (z : UpperHalfPlane) (g : Delta)
+    (Q : Path z (fuchsianSourceAction g • z))
+    (hQ : ∀ t, ‖P.modular.sourceCoordinate.coordinate (Q t)‖ < delta) :
+    IsOfFinOrder g := by
+  apply isOfFinOrder_iff_pow_eq_one.mpr
+  exact ⟨3, by norm_num,
+    P.orderThree_path_deck_pow_three_of_coordinate_small
+      hinnerR D hcoordinate z g Q hQ⟩
+
+/-- A path contained in a sufficiently small order-four affine neighborhood has deck monodromy
+whose fourth power is trivial. -/
+public theorem orderFour_path_deck_pow_four_of_coordinate_small
     {R inner delta : ℝ} (hinnerR : inner < R)
     (D : OrderFourLinearCollarSourceData
       (U := P.modular.modularParameter.toTriangleUniformization) R)
@@ -347,7 +364,7 @@ public theorem orderFour_path_deck_isOfFinOrder_of_coordinate_small
     (z : UpperHalfPlane) (g : Delta)
     (Q : Path z (fuchsianSourceAction g • z))
     (hQ : ∀ t, ‖P.modular.sourceCoordinate.coordinate (Q t) - 1‖ < delta) :
-    IsOfFinOrder g := by
+    g ^ 4 = 1 := by
   let middle := (inner + R) / 2
   have hinnerMiddle : inner < middle := by dsimp [middle]; linarith
   have hmiddleR : middle < R := by dsimp [middle]; linarith
@@ -405,8 +422,6 @@ public theorem orderFour_path_deck_isOfFinOrder_of_coordinate_small
     (hh.trans hinnerR) (h * g * h⁻¹) (by
       rw [P.modular.modularParameter.toTriangleUniformization_sourceAction]
       simp only [map_mul, map_inv, mul_smul, inv_smul_smul])
-  apply isOfFinOrder_iff_pow_eq_one.mpr
-  refine ⟨4, by norm_num, ?_⟩
   have ha4 : (Monoid.Coprod.inr a : Delta) ^ 4 = 1 := by
     have haPow : a ^ 4 = 1 := by
       rcases cyclicFour_cases a with rfl | rfl | rfl | rfl
@@ -420,6 +435,25 @@ public theorem orderFour_path_deck_isOfFinOrder_of_coordinate_small
   calc
     g ^ 4 = h⁻¹ * (h * g ^ 4 * h⁻¹) * h := by group
     _ = 1 := by rw [hpow]; group
+
+/-- Finite-order wrapper around the exact order-four collar calculation. -/
+public theorem orderFour_path_deck_isOfFinOrder_of_coordinate_small
+    {R inner delta : ℝ} (hinnerR : inner < R)
+    (D : OrderFourLinearCollarSourceData
+      (U := P.modular.modularParameter.toTriangleUniformization) R)
+    (hcoordinate : ∀ z : UpperHalfPlane,
+      ‖P.modular.sourceCoordinate.coordinate z - 1‖ < delta →
+        ∃ k : Delta,
+          ‖(orderFourCayleyHomeomorph
+            (fuchsianSourceAction k • z) : ℂ)‖ < inner)
+    (z : UpperHalfPlane) (g : Delta)
+    (Q : Path z (fuchsianSourceAction g • z))
+    (hQ : ∀ t, ‖P.modular.sourceCoordinate.coordinate (Q t) - 1‖ < delta) :
+    IsOfFinOrder g := by
+  apply isOfFinOrder_iff_pow_eq_one.mpr
+  exact ⟨4, by norm_num,
+    P.orderFour_path_deck_pow_four_of_coordinate_small
+      hinnerR D hcoordinate z g Q hQ⟩
 
 public theorem centralQuotientProjection_familyDeckMap
     (g : Delta) (q : RegularTotalSpace P.periods) :

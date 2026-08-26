@@ -3,13 +3,15 @@ module
 public import SphereSixComplex.Topology.EstablishedEquivariantUniversalCover
 public import SphereSixComplex.Topology.PaperVanKampenAlgebraAdapter
 public import SphereSixComplex.Topology.PaperActualCuspCentralBaseMap
+public import SphereSixComplex.Topology.PaperGeometricCentralCore
 
 /-!
 # The affine fundamental-group data of the paper's central family
 
-The generic punctured-Fuchsian universal-cover classification specializes to the period family
-selected by the paper.  Its free meridians have precisely the two integral monodromy matrices
-used by the final van Kampen calculation.
+The universal cover is retained for the filling-cover comparison.  The affine core marking itself
+is built from the literal cusp period loops and the two geometric finite meridians, whose common
+peripheral conjugator gives precisely the two integral monodromy matrices used by the final van
+Kampen calculation.
 -/
 
 @[expose] public section
@@ -61,132 +63,42 @@ public theorem centralAffineBase_eq_actualCuspCentralBase :
     A.centralAffineBase = A.actualCuspCentralBase := by
   exact A.centralAffineUniversalCoverPoint_projects
 
-/-- The two free meridians and the period lattice give the actual central-family
-fundamental-group presentation. -/
+/-- Equality transport from the literal actual cusp base to the displayed affine base. -/
+public noncomputable def actualCuspToCentralAffineBaseEquiv :
+    FundamentalGroup A.CentralFamily A.actualCuspCentralBase ≃*
+      FundamentalGroup A.CentralFamily A.centralAffineBase :=
+  SphereSixComplex.Topology.fundamentalGroupMulEquivOfEq
+    A.centralAffineBase_eq_actualCuspCentralBase.symm
+
+/-- The actual geometric affine-core presentation, transported across the definitional affine
+basepoint equality.  Its marking is therefore fixed by literal cusp loops rather than by an
+arbitrary labelling of the chosen universal cover. -/
 public noncomputable def centralAffineCorePiOneData :
     AffineTorusCorePiOneData (FundamentalGroup A.CentralFamily A.centralAffineBase)
-      Lattice paperMonodromyOne paperMonodromyTwo := by
-  let D := A.centralAffineUniversalCover
-  let _ := D.topology
-  let _ := D.action
-  let C := D.data.fundamentalGroupCorePiOneData A.centralAffineUniversalCoverPoint
-  have hOne :
-      firstFreeMonodromy
-          (freeTwoMeridianMonodromy (twoMeridianOrbifoldMap g₁ g₂)
-            integralOrbifoldPeriodMonodromy) =
-        paperMonodromyOne := by
-    apply AddMonoidHom.ext
-    intro a
-    simp [firstFreeMonodromy, freeTwoMeridianMonodromy,
-      integralOrbifoldPeriodMonodromy, paperMonodromyOne]
-  have hTwo :
-      secondFreeMonodromy
-          (freeTwoMeridianMonodromy (twoMeridianOrbifoldMap g₁ g₂)
-            integralOrbifoldPeriodMonodromy) =
-        paperMonodromyTwo := by
-    apply AddMonoidHom.ext
-    intro a
-    simp [secondFreeMonodromy, freeTwoMeridianMonodromy,
-      integralOrbifoldPeriodMonodromy, paperMonodromyTwo]
-  change AffineTorusCorePiOneData
-    (FundamentalGroup (PuncturedGlobalFamily A.periods)
-      (D.data.projection A.centralAffineUniversalCoverPoint))
-    Lattice paperMonodromyOne paperMonodromyTwo
-  exact {
-    translation := C.translation
-    rhoOne := C.rhoOne
-    rhoTwo := C.rhoTwo
-    conjugate_one := fun a ↦ by simpa only [hOne] using C.conjugate_one a
-    conjugate_two := fun a ↦ by simpa only [hTwo] using C.conjugate_two a
-    generators_generate := C.generators_generate
-  }
+      Lattice paperMonodromyOne paperMonodromyTwo :=
+  A.actualCuspGeometricCorePiOneData.mapSurjective
+    A.actualCuspToCentralAffineBaseEquiv.toMonoidHom
+    A.actualCuspToCentralAffineBaseEquiv.surjective
 
-/-- The lattice marking in the central fundamental-group presentation is the lattice subgroup
-of the selected affine deck group. -/
-public theorem centralAffineCorePiOneData_translation_deck (a : Lattice) :
-    let D := A.centralAffineUniversalCover
-    letI := D.topology
-    letI := D.action
-    letI : SimplyConnectedSpace D.Cover := D.data.simplyConnected
-    D.data.quotientCovering.fundamentalGroupEquiv
-        ⟨A.centralAffineUniversalCoverPoint, rfl⟩
-        (Additive.toMul (A.centralAffineCorePiOneData.translation a)) =
-      MulOpposite.op
-        (Additive.toMul
-          (freeAffineTranslation (M := freeTwoMeridianMonodromy
-            (twoMeridianOrbifoldMap g₁ g₂) integralOrbifoldPeriodMonodromy) a)) := by
-  let D := A.centralAffineUniversalCover
-  let _ := D.topology
-  let _ := D.action
-  let _ : SimplyConnectedSpace D.Cover := D.data.simplyConnected
-  change D.data.quotientCovering.fundamentalGroupEquiv
-      ⟨A.centralAffineUniversalCoverPoint, rfl⟩
-      ((D.data.quotientCovering.fundamentalGroupEquiv
-        ⟨A.centralAffineUniversalCoverPoint, rfl⟩).symm
-        (MulOpposite.op
-          (Additive.toMul
-            (freeAffineTranslation (M := freeTwoMeridianMonodromy
-              (twoMeridianOrbifoldMap g₁ g₂) integralOrbifoldPeriodMonodromy) a)))) = _
-  exact (D.data.quotientCovering.fundamentalGroupEquiv
-    ⟨A.centralAffineUniversalCoverPoint, rfl⟩).apply_symm_apply _
+/-- The affine core's translation field is the corrected literal cusp marking transported to
+the displayed affine base. -/
+public theorem centralAffineCorePiOneData_translation (a : Lattice) :
+    Additive.toMul (A.centralAffineCorePiOneData.translation a) =
+      A.actualCuspToCentralAffineBaseEquiv
+        (Additive.toMul (A.correctedActualCuspCentralTranslation a)) := by
+  rfl
 
-/-- The first marked core meridian is the inverse first free deck lift, in covering-space
-orientation. -/
-public theorem centralAffineCorePiOneData_rhoOne_deck :
-    let D := A.centralAffineUniversalCover
-    letI := D.topology
-    letI := D.action
-    letI : SimplyConnectedSpace D.Cover := D.data.simplyConnected
-    D.data.quotientCovering.fundamentalGroupEquiv
-        ⟨A.centralAffineUniversalCoverPoint, rfl⟩
-        A.centralAffineCorePiOneData.rhoOne =
-      MulOpposite.op
-        (freeAffineLift (M := freeTwoMeridianMonodromy
-          (twoMeridianOrbifoldMap g₁ g₂) integralOrbifoldPeriodMonodromy)
-          firstMeridian)⁻¹ := by
-  let D := A.centralAffineUniversalCover
-  let _ := D.topology
-  let _ := D.action
-  let _ : SimplyConnectedSpace D.Cover := D.data.simplyConnected
-  change D.data.quotientCovering.fundamentalGroupEquiv
-      ⟨A.centralAffineUniversalCoverPoint, rfl⟩
-      ((D.data.quotientCovering.fundamentalGroupEquiv
-        ⟨A.centralAffineUniversalCoverPoint, rfl⟩).symm
-        (MulOpposite.op
-          (freeAffineLift (M := freeTwoMeridianMonodromy
-            (twoMeridianOrbifoldMap g₁ g₂) integralOrbifoldPeriodMonodromy)
-            firstMeridian)⁻¹)) = _
-  exact (D.data.quotientCovering.fundamentalGroupEquiv
-    ⟨A.centralAffineUniversalCoverPoint, rfl⟩).apply_symm_apply _
+/-- The first core meridian is the transported first geometric meridian. -/
+public theorem centralAffineCorePiOneData_rhoOne :
+    A.centralAffineCorePiOneData.rhoOne =
+      A.actualCuspToCentralAffineBaseEquiv A.geometricCentralRhoOne := by
+  rfl
 
-/-- The second marked core meridian is the inverse second free deck lift, in covering-space
-orientation. -/
-public theorem centralAffineCorePiOneData_rhoTwo_deck :
-    let D := A.centralAffineUniversalCover
-    letI := D.topology
-    letI := D.action
-    letI : SimplyConnectedSpace D.Cover := D.data.simplyConnected
-    D.data.quotientCovering.fundamentalGroupEquiv
-        ⟨A.centralAffineUniversalCoverPoint, rfl⟩
-        A.centralAffineCorePiOneData.rhoTwo =
-      MulOpposite.op
-        (freeAffineLift (M := freeTwoMeridianMonodromy
-          (twoMeridianOrbifoldMap g₁ g₂) integralOrbifoldPeriodMonodromy)
-          secondMeridian)⁻¹ := by
-  let D := A.centralAffineUniversalCover
-  let _ := D.topology
-  let _ := D.action
-  let _ : SimplyConnectedSpace D.Cover := D.data.simplyConnected
-  change D.data.quotientCovering.fundamentalGroupEquiv
-      ⟨A.centralAffineUniversalCoverPoint, rfl⟩
-      ((D.data.quotientCovering.fundamentalGroupEquiv
-        ⟨A.centralAffineUniversalCoverPoint, rfl⟩).symm
-        (MulOpposite.op
-          (freeAffineLift (M := freeTwoMeridianMonodromy
-            (twoMeridianOrbifoldMap g₁ g₂) integralOrbifoldPeriodMonodromy)
-            secondMeridian)⁻¹)) = _
-  exact (D.data.quotientCovering.fundamentalGroupEquiv
-    ⟨A.centralAffineUniversalCoverPoint, rfl⟩).apply_symm_apply _
+/-- The second core meridian is the transported second geometric meridian. -/
+public theorem centralAffineCorePiOneData_rhoTwo :
+    A.centralAffineCorePiOneData.rhoTwo =
+      A.actualCuspToCentralAffineBaseEquiv A.geometricCentralRhoTwo := by
+  rfl
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

@@ -2,6 +2,7 @@ module
 
 public import SphereSixComplex.Topology.PaperGeometricCentralMonodromy
 public import SphereSixComplex.Topology.PaperMarkedEllipticMonodromy
+public import SphereSixComplex.Periods.Uniformization.PeripheralEllipticRigidity
 
 /-!
 # Geometric generators for the actual central family
@@ -274,6 +275,165 @@ public theorem actualCuspCentralTranslation_eq_periodLoop (a : Lattice) :
       exact congrArg Path.Homotopic.Quotient.mk
         (A.actualCuspBoundaryTranslationCentralLoop_eq_periodLoop a)
 
+/-- Pointwise form of the definition of the literal cusp translation through the overlap
+chart. -/
+public theorem actualCuspOverlapToCentralPiOne_translation (a : Lattice) :
+    A.actualCuspOverlapToCentralPiOne
+        (fundamentalGroupElementOfBaseEq
+          A.actualCuspChosenAffineFillingCover_boundaryBase_eq
+          (Additive.toMul (A.actualCuspChosenAffineFillingCover.translation a))) =
+      Additive.toMul (A.actualCuspCentralTranslation a) := by
+  unfold actualCuspCentralTranslation
+  simp only [AddMonoidHom.comp_apply, MonoidHom.coe_toAdditive,
+    Function.comp_apply]
+  rw [fundamentalGroupAddHomOfBaseEq_apply, toMul_ofMul]
+  congr 1
+
+/-- Pointwise form of the definition of the literal cusp meridian through the overlap chart. -/
+public theorem actualCuspOverlapToCentralPiOne_meridian :
+    A.actualCuspOverlapToCentralPiOne
+        (fundamentalGroupElementOfBaseEq
+          A.actualCuspChosenAffineFillingCover_boundaryBase_eq
+          A.actualCuspChosenAffineFillingCover.meridian) =
+      A.actualCuspCentralMeridian := by
+  rfl
+
+set_option backward.isDefEq.respectTransparency.types false in
+/-- Transport from the marked zero section to the actual cusp point changes the global period
+label only by one triangle-group automorphism.  In particular, the transported marked periods
+and the literal cusp periods are the same subgroup, with no universal-cover marking involved. -/
+public theorem exists_geometricCentralTranslationReindexing :
+    ∃ g : Delta, ∀ a : Lattice,
+      Additive.toMul (A.geometricCentralTranslation a) =
+        Additive.toMul
+          (A.actualCuspCentralTranslation (rhoLambda g⁻¹ a)) := by
+  let _ := regularFamilyDeckAction A.periods
+  let hp := regularFamilyQuotientMap_isQuotientCoveringMap A.periods
+    A.modular.modularParameter.toTriangleUniformization_sourceAction
+    (sourceActionProperlyDiscontinuous_of_eq
+      A.modular.modularParameter.toTriangleUniformization_sourceAction)
+  let p₀ : RegularBase (U := A.paperTriangleUniformization) × ComplexTwoSpace :=
+    (A.markedRegularBaseLift, (0 : ComplexTwoSpace))
+  let x₀ : RegularTotalSpace A.periods :=
+    regularFamilyCoverProjection A.periods p₀
+  let W := A.actualCuspMarkedCentralWhisker
+  have hx₀ : regularFamilyQuotientMap A.periods x₀ =
+      A.centralZeroSection A.markedPuncturedBasepoint := by
+    exact A.markedCentralBase_eq_lift.symm
+  let L := hp.isCoveringMap.liftPath W x₀ (W.source.trans hx₀.symm)
+  let Q : Path x₀ (L 1) := {
+    toFun := L
+    continuous_toFun := by fun_prop
+    source' := hp.isCoveringMap.liftPath_zero W x₀ (W.source.trans hx₀.symm)
+    target' := rfl
+  }
+  have hQprojects : ∀ t, regularFamilyQuotientMap A.periods (Q t) = W t := by
+    intro t
+    exact congrFun
+      (hp.isCoveringMap.liftPath_lifts W x₀ (W.source.trans hx₀.symm)) t
+  have hQend : regularFamilyQuotientMap A.periods (Q 1) =
+      A.actualCuspCentralBase := by
+    rw [hQprojects]
+    exact W.target
+  let eQ : (regularFamilyQuotientMap A.periods) ⁻¹'
+      {A.actualCuspCentralBase} := ⟨Q 1, hQend⟩
+  let eC : (regularFamilyQuotientMap A.periods) ⁻¹'
+      {A.actualCuspCentralBase} :=
+    ⟨A.actualCuspRegularRepresentative,
+      A.actualCuspRegularRepresentative_projects⟩
+  letI fiberAction : MulAction Delta
+      ((regularFamilyQuotientMap A.periods) ⁻¹'
+        {A.actualCuspCentralBase}) :=
+    hp.mulActionFiber A.actualCuspCentralBase
+  have hpre : MulAction.IsPretransitive Delta
+      ((regularFamilyQuotientMap A.periods) ⁻¹'
+        {A.actualCuspCentralBase}) :=
+    hp.mulActionFiber_isPretransitive A.actualCuspCentralBase
+  obtain ⟨g, hg⟩ := hpre.exists_smul_eq eC eQ
+  have hgraw := congrArg Subtype.val hg
+  have hg' : regularFamilyDeckMap A.periods g A.actualCuspRegularRepresentative =
+      Q 1 := by
+    change regularFamilyDeckMap A.periods g A.actualCuspRegularRepresentative =
+      Q 1 at hgraw
+    exact hgraw
+  refine ⟨g, ?_⟩
+  intro a
+  let p₁ := regularDeckMap A.periods g A.actualCuspRegularCoverPoint
+  have hp₁ : regularFamilyCoverProjection A.periods p₁ = Q 1 := by
+    calc
+      regularFamilyCoverProjection A.periods p₁ =
+          regularFamilyDeckMap A.periods g A.actualCuspRegularRepresentative := by
+        exact regularFamilyCoverProjection_regularDeckMap A.periods g
+          A.actualCuspRegularCoverPoint
+      _ = Q 1 := hg'
+  let Q' : Path (regularFamilyCoverProjection A.periods p₀)
+      (regularFamilyCoverProjection A.periods p₁) := Q.cast rfl hp₁
+  have htransport := regularFamilyPeriodLoop_transport_map_of_path A.periods
+    (sourceActionProperlyDiscontinuous_of_eq
+      A.modular.modularParameter.toTriangleUniformization_sourceAction)
+    Q' a (regularFamilyQuotientMap A.periods)
+  have hp₁outer : regularFamilyQuotientMap A.periods
+      (regularFamilyCoverProjection A.periods p₁) =
+        A.actualCuspCentralBase := by
+    rw [hp₁]
+    exact hQend
+  have hQmap : (Q'.map (regularFamilyQuotientMap A.periods).continuous).cast
+      hx₀.symm hp₁outer.symm = W := by
+    apply Path.ext
+    funext t
+    exact hQprojects t
+  have hdeck := regularFamilyPeriodLoop_deck A.periods g
+    A.actualCuspRegularCoverPoint (rhoLambda g⁻¹ a)
+  have hrho : rhoLambda g (rhoLambda g⁻¹ a) = a := by simp
+  rw [hrho] at hdeck
+  unfold geometricCentralTranslation markedCentralTranslation
+  simp only [AddMonoidHom.comp_apply, MonoidHom.coe_toAdditive,
+    Function.comp_apply, toMul_ofMul]
+  unfold markedCentralToActualCuspEquiv markedCentralBaseEquiv
+  unfold centralTranslationAtZero
+  simp only [AddMonoidHom.comp_apply, MonoidHom.coe_toAdditive,
+    Function.comp_apply, toMul_ofMul]
+  rw [regularFamilyTranslationAtZero_apply_eq_periodLoop]
+  rw [FundamentalGroup.map_apply, ← Path.Homotopic.Quotient.mk_map]
+  change (FundamentalGroup.fundamentalGroupMulEquivOfPath W)
+      (SphereSixComplex.Topology.fundamentalGroupMulEquivOfEq
+        A.markedCentralBase_eq_lift.symm
+        (pathLoopClass ((regularFamilyPeriodLoop A.periods p₀ a).map
+          (regularFamilyQuotientMap A.periods).continuous))) = _
+  rw [SphereSixComplex.Topology.fundamentalGroupMulEquivOfEq_apply]
+  rw [A.actualCuspCentralTranslation_eq_periodLoop]
+  let E := FundamentalGroup.fundamentalGroupMulEquivOfPath W
+  apply E.symm.injective
+  rw [E.symm_apply_apply]
+  dsimp only [E]
+  change _ = (FundamentalGroup.fundamentalGroupMulEquivOfPath W).symm
+    (pathLoopClass (A.actualCuspCentralPeriodLoop (rhoLambda g⁻¹ a)))
+  rw [fundamentalGroupMulEquivOfPath_symm_apply_eq_whiskeredLoopClass]
+  rw [htransport]
+  rw [← hQmap]
+  unfold actualCuspCentralPeriodLoop
+  rw [← hdeck]
+  unfold whiskeredLoopClass
+  rfl
+
+/-- The transported marked translations and the literal cusp translations have exactly the
+same range in the actual central fundamental group. -/
+public theorem geometricCentralTranslation_range_eq_actualCuspCentralTranslation :
+    Set.range (fun a ↦ Additive.toMul (A.geometricCentralTranslation a)) =
+      Set.range (fun a ↦ Additive.toMul (A.actualCuspCentralTranslation a)) := by
+  obtain ⟨g, hg⟩ := A.exists_geometricCentralTranslationReindexing
+  ext z
+  constructor
+  · rintro ⟨a, rfl⟩
+    exact ⟨rhoLambda g⁻¹ a, (hg a).symm⟩
+  · rintro ⟨a, rfl⟩
+    refine ⟨rhoLambda g a, ?_⟩
+    calc
+      Additive.toMul (A.geometricCentralTranslation (rhoLambda g a)) =
+          Additive.toMul (A.actualCuspCentralTranslation
+            (rhoLambda g⁻¹ (rhoLambda g a))) := hg _
+      _ = Additive.toMul (A.actualCuspCentralTranslation a) := by simp
+
 set_option backward.isDefEq.respectTransparency.types false in
 /-- Any loop at the actual cusp point acts on the actual period translations through its
 outer triangle-group deck label. -/
@@ -312,50 +472,62 @@ public noncomputable def geometricCentralClockwiseTwoDeck : Delta :=
   MulOpposite.unop
     (A.actualCuspOuterDeckHom A.geometricCentralRhoTwo⁻¹)
 
-/-- The actual first clockwise meridian retains finite outer deck order after transport from the
-marked zero section to the selected cusp point. -/
-public theorem geometricCentralClockwiseOneDeck_isOfFinOrder :
-    IsOfFinOrder A.geometricCentralClockwiseOneDeck := by
+/-- The actual first clockwise meridian retains its exact trivial third deck power after
+transport from the marked zero section to the selected cusp point. -/
+public theorem geometricCentralClockwiseOneDeck_pow_three :
+    A.geometricCentralClockwiseOneDeck ^ 3 = 1 := by
   let _ := regularFamilyDeckAction A.periods
   let hp := regularFamilyQuotientMap_isQuotientCoveringMap A.periods
     A.modular.modularParameter.toTriangleUniformization_sourceAction
     (sourceActionProperlyDiscontinuous_of_eq
       A.modular.modularParameter.toTriangleUniformization_sourceAction)
-  have hfin := fundamentalGroupToMulOpposite_isOfFinOrder_transport hp
+  have hpow := fundamentalGroupToMulOpposite_pow_transport hp
     A.actualCuspMarkedCentralWhisker
     ⟨regularFamilyZeroSection A.periods A.markedRegularBaseLift,
       A.markedCentralBase_eq_lift.symm⟩
     ⟨A.actualCuspRegularRepresentative,
       A.actualCuspRegularRepresentative_projects⟩
-    A.markedZeroCentralMeridianClass
-    A.markedCentralOuterDeckHom_zero_isOfFinOrder
+    A.markedZeroCentralMeridianClass 3
+    A.markedCentralOuterDeckHom_zero_pow_three
   have hrho : A.geometricCentralRhoOne⁻¹ =
       A.markedCentralToActualCuspEquiv A.markedZeroCentralMeridianClass := by
     simp only [geometricCentralRhoOne, map_inv, inv_inv]
   rw [geometricCentralClockwiseOneDeck, hrho]
-  exact hfin
+  exact hpow
 
-/-- The actual second clockwise meridian likewise retains finite outer deck order. -/
-public theorem geometricCentralClockwiseTwoDeck_isOfFinOrder :
-    IsOfFinOrder A.geometricCentralClockwiseTwoDeck := by
+/-- Finite-order form of the exact first geometric elliptic monodromy calculation. -/
+public theorem geometricCentralClockwiseOneDeck_isOfFinOrder :
+    IsOfFinOrder A.geometricCentralClockwiseOneDeck := by
+  apply isOfFinOrder_iff_pow_eq_one.mpr
+  exact ⟨3, by norm_num, A.geometricCentralClockwiseOneDeck_pow_three⟩
+
+/-- The actual second clockwise meridian likewise retains its exact trivial fourth deck power. -/
+public theorem geometricCentralClockwiseTwoDeck_pow_four :
+    A.geometricCentralClockwiseTwoDeck ^ 4 = 1 := by
   let _ := regularFamilyDeckAction A.periods
   let hp := regularFamilyQuotientMap_isQuotientCoveringMap A.periods
     A.modular.modularParameter.toTriangleUniformization_sourceAction
     (sourceActionProperlyDiscontinuous_of_eq
       A.modular.modularParameter.toTriangleUniformization_sourceAction)
-  have hfin := fundamentalGroupToMulOpposite_isOfFinOrder_transport hp
+  have hpow := fundamentalGroupToMulOpposite_pow_transport hp
     A.actualCuspMarkedCentralWhisker
     ⟨regularFamilyZeroSection A.periods A.markedRegularBaseLift,
       A.markedCentralBase_eq_lift.symm⟩
     ⟨A.actualCuspRegularRepresentative,
       A.actualCuspRegularRepresentative_projects⟩
-    A.markedOneCentralMeridianClass
-    A.markedCentralOuterDeckHom_one_isOfFinOrder
+    A.markedOneCentralMeridianClass 4
+    A.markedCentralOuterDeckHom_one_pow_four
   have hrho : A.geometricCentralRhoTwo⁻¹ =
       A.markedCentralToActualCuspEquiv A.markedOneCentralMeridianClass := by
     simp only [geometricCentralRhoTwo, map_inv, inv_inv]
   rw [geometricCentralClockwiseTwoDeck, hrho]
-  exact hfin
+  exact hpow
+
+/-- Finite-order form of the exact second geometric elliptic monodromy calculation. -/
+public theorem geometricCentralClockwiseTwoDeck_isOfFinOrder :
+    IsOfFinOrder A.geometricCentralClockwiseTwoDeck := by
+  apply isOfFinOrder_iff_pow_eq_one.mpr
+  exact ⟨4, by norm_num, A.geometricCentralClockwiseTwoDeck_pow_four⟩
 
 /-- The first geometric meridian acts on actual cusp translations through its exact, retained
 outer deck label. -/
@@ -405,6 +577,105 @@ public theorem geometricCentralClockwiseDeck_mul :
       have h := congrArg Inv.inv
         (inv_eq_of_mul_eq_one_right g₁_mul_g₂_mul_g₀)
       simpa only [inv_inv] using h.symm
+
+/-- The actual geometric elliptic pair is the standard pair conjugated by one common cusp
+power.  This is forced by its exact local orders and its geometric peripheral product. -/
+public theorem exists_geometricCentralCuspConjugatorExponent :
+    ∃ n : ℤ,
+      A.geometricCentralClockwiseOneDeck =
+          (g₁ * g₂) ^ n * g₁ * ((g₁ * g₂) ^ n)⁻¹ ∧
+        A.geometricCentralClockwiseTwoDeck =
+          (g₁ * g₂) ^ n * g₂ * ((g₁ * g₂) ^ n)⁻¹ := by
+  exact SphereSixComplex.Periods.PeripheralEllipticRigidity.elliptic_pair_eq_cusp_conjugates
+      A.geometricCentralClockwiseOneDeck
+      A.geometricCentralClockwiseTwoDeck
+      A.geometricCentralClockwiseOneDeck_pow_three
+      A.geometricCentralClockwiseTwoDeck_pow_four
+      A.geometricCentralClockwiseDeck_mul
+
+/-- A coherent exponent supplied by geometric elliptic-pair rigidity. -/
+public noncomputable def geometricCentralCuspConjugatorExponent : ℤ :=
+  Classical.choose A.exists_geometricCentralCuspConjugatorExponent
+
+public theorem geometricCentralClockwiseOneDeck_eq_cuspConjugate :
+    A.geometricCentralClockwiseOneDeck =
+      (g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent * g₁ *
+        ((g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent)⁻¹ :=
+  (Classical.choose_spec A.exists_geometricCentralCuspConjugatorExponent).1
+
+public theorem geometricCentralClockwiseTwoDeck_eq_cuspConjugate :
+    A.geometricCentralClockwiseTwoDeck =
+      (g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent * g₂ *
+      ((g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent)⁻¹ :=
+  (Classical.choose_spec A.exists_geometricCentralCuspConjugatorExponent).2
+
+/-- The literal cusp translations, reindexed by the common peripheral conjugator.  With this
+marking the two geometric finite meridians act by the paper's standard monodromy matrices. -/
+public noncomputable def correctedActualCuspCentralTranslation :
+    Lattice →+ Additive
+      (FundamentalGroup A.CentralFamily A.actualCuspCentralBase) :=
+  A.actualCuspCentralTranslation.comp
+    (rhoLambda
+      ((g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent)).toLinearMap.toAddMonoidHom
+
+/-- The first geometric meridian acts on the corrected literal cusp marking by
+`paperMonodromyOne`. -/
+public theorem geometricCentralRhoOne_conjugates_correctedTranslation (a : Lattice) :
+    A.geometricCentralRhoOne *
+        Additive.toMul (A.correctedActualCuspCentralTranslation a) *
+        A.geometricCentralRhoOne⁻¹ =
+      Additive.toMul
+        (A.correctedActualCuspCentralTranslation (paperMonodromyOne a)) := by
+  let q := (g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent
+  rw [show Additive.toMul (A.correctedActualCuspCentralTranslation a) =
+      Additive.toMul (A.actualCuspCentralTranslation (rhoLambda q a)) by rfl]
+  rw [A.geometricCentralRhoOne_conjugates_actualTranslation]
+  rw [A.geometricCentralClockwiseOneDeck_eq_cuspConjugate]
+  change Additive.toMul
+      (A.actualCuspCentralTranslation (rhoLambda (q * g₁ * q⁻¹) (rhoLambda q a))) =
+    Additive.toMul
+      (A.actualCuspCentralTranslation (rhoLambda q (paperMonodromyOne a)))
+  congr 2
+  simp only [map_mul, map_inv]
+  simp [paperMonodromyOne]
+
+/-- The second geometric meridian acts on the corrected literal cusp marking by
+`paperMonodromyTwo`. -/
+public theorem geometricCentralRhoTwo_conjugates_correctedTranslation (a : Lattice) :
+    A.geometricCentralRhoTwo *
+        Additive.toMul (A.correctedActualCuspCentralTranslation a) *
+        A.geometricCentralRhoTwo⁻¹ =
+      Additive.toMul
+        (A.correctedActualCuspCentralTranslation (paperMonodromyTwo a)) := by
+  let q := (g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent
+  rw [show Additive.toMul (A.correctedActualCuspCentralTranslation a) =
+      Additive.toMul (A.actualCuspCentralTranslation (rhoLambda q a)) by rfl]
+  rw [A.geometricCentralRhoTwo_conjugates_actualTranslation]
+  rw [A.geometricCentralClockwiseTwoDeck_eq_cuspConjugate]
+  change Additive.toMul
+      (A.actualCuspCentralTranslation (rhoLambda (q * g₂ * q⁻¹) (rhoLambda q a))) =
+    Additive.toMul
+      (A.actualCuspCentralTranslation (rhoLambda q (paperMonodromyTwo a)))
+  congr 2
+  simp only [map_mul, map_inv]
+  simp [paperMonodromyTwo]
+
+/-- Reindexing by the peripheral conjugator does not change the literal cusp translation
+subgroup. -/
+public theorem correctedActualCuspCentralTranslation_range_eq_actual :
+    Set.range (fun a ↦ Additive.toMul (A.correctedActualCuspCentralTranslation a)) =
+      Set.range (fun a ↦ Additive.toMul (A.actualCuspCentralTranslation a)) := by
+  let q := (g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent
+  ext z
+  constructor
+  · rintro ⟨a, rfl⟩
+    exact ⟨rhoLambda q a, rfl⟩
+  · rintro ⟨a, rfl⟩
+    refine ⟨rhoLambda q⁻¹ a, ?_⟩
+    change Additive.toMul
+        (A.actualCuspCentralTranslation (rhoLambda q (rhoLambda q⁻¹ a))) =
+      Additive.toMul (A.actualCuspCentralTranslation a)
+    simp
 
 set_option backward.isDefEq.respectTransparency.types false in
 /-- The literal cusp meridian acts on the literal cusp translations by the prescribed
@@ -464,6 +735,61 @@ public theorem actualCuspCentralMeridian_conjugates_translation (a : Lattice) :
     (fundamentalGroupElementOfBaseEq hbase) h
   simpa only [fundamentalGroupElementOfBaseEq_mul,
     fundamentalGroupElementOfBaseEq_inv] using htransport
+
+/-- Inner correction by the chosen cusp power.  It removes the common peripheral conjugator
+from the corrected translation marking while leaving the cusp meridian fixed. -/
+public noncomputable def actualCuspCentralMarkingCorrection :
+    MulAut (FundamentalGroup A.CentralFamily A.actualCuspCentralBase) :=
+  MulAut.conj
+    ((A.actualCuspCentralMeridian ^
+      A.geometricCentralCuspConjugatorExponent)⁻¹)
+
+set_option backward.isDefEq.respectTransparency.types false in
+/-- The inner cusp correction sends each corrected translation to the literal translation with
+the original lattice label. -/
+public theorem actualCuspCentralMarkingCorrection_translation (a : Lattice) :
+    A.actualCuspCentralMarkingCorrection
+        (Additive.toMul (A.correctedActualCuspCentralTranslation a)) =
+      Additive.toMul (A.actualCuspCentralTranslation a) := by
+  let n := A.geometricCentralCuspConjugatorExponent
+  let M := A.actualCuspCentralMeridian
+  have hdeck : A.actualCuspOuterDeckHom (M ^ n) =
+      MulOpposite.op (g₀ ^ n) := by
+    dsimp only [M]
+    rw [map_zpow, A.actualCuspOuterDeckHom_meridian]
+    rfl
+  have hconj := A.actualCuspCentralLoop_conjugates_translation_of_outerDeck
+    (g₀ ^ n) (M ^ n) hdeck
+      (rhoLambda ((g₁ * g₂) ^ n) a)
+  unfold actualCuspCentralMarkingCorrection correctedActualCuspCentralTranslation
+  simp only [MulAut.conj_apply, AddMonoidHom.comp_apply, inv_inv]
+  change (A.actualCuspCentralMeridian ^
+          A.geometricCentralCuspConjugatorExponent)⁻¹ *
+        Additive.toMul (A.actualCuspCentralTranslation
+          (rhoLambda ((g₁ * g₂) ^
+            A.geometricCentralCuspConjugatorExponent) a)) *
+        A.actualCuspCentralMeridian ^
+          A.geometricCentralCuspConjugatorExponent = _
+  rw [hconj]
+  congr 2
+  calc
+    rhoLambda (g₀ ^ n) (rhoLambda ((g₁ * g₂) ^ n) a) =
+        rhoLambda (g₀ ^ n * (g₁ * g₂) ^ n) a := by
+      rw [map_mul]
+      rfl
+    _ = a := by
+      have hgzero : g₀ = (g₁ * g₂)⁻¹ :=
+        eq_inv_of_mul_eq_one_right g₁_mul_g₂_mul_g₀
+      rw [hgzero, inv_zpow, inv_mul_cancel, map_one]
+      rfl
+
+/-- The inner cusp correction fixes the literal cusp meridian. -/
+public theorem actualCuspCentralMarkingCorrection_meridian :
+    A.actualCuspCentralMarkingCorrection A.actualCuspCentralMeridian =
+      A.actualCuspCentralMeridian := by
+  unfold actualCuspCentralMarkingCorrection
+  simp only [MulAut.conj_apply]
+  group
 
 /-- At the marked zero-section point, the geometric translations and the two concrete finite
 meridians generate the central fundamental group. -/
@@ -548,6 +874,30 @@ public theorem geometricCentralFundamentalGroup_generated :
   apply hle
   rw [A.markedCentralFundamentalGroup_generated_by_translations_and_meridians]
   trivial
+
+/-- The literal cusp translations together with the two geometric finite meridians generate
+the actual central fundamental group. -/
+public theorem actualCuspCentralFundamentalGroup_generated :
+    Subgroup.closure
+      (Set.range (fun a ↦ Additive.toMul (A.actualCuspCentralTranslation a)) ∪
+        {A.geometricCentralRhoOne, A.geometricCentralRhoTwo}) = ⊤ := by
+  rw [← A.geometricCentralTranslation_range_eq_actualCuspCentralTranslation]
+  exact A.geometricCentralFundamentalGroup_generated
+
+/-- The actual cusp translations with the peripheral-conjugator marking and the two geometric
+finite meridians form an affine-core presentation with the paper's monodromy matrices. -/
+public noncomputable def actualCuspGeometricCorePiOneData :
+    AffineTorusCorePiOneData
+      (FundamentalGroup A.CentralFamily A.actualCuspCentralBase)
+      Lattice paperMonodromyOne paperMonodromyTwo where
+  translation := A.correctedActualCuspCentralTranslation
+  rhoOne := A.geometricCentralRhoOne
+  rhoTwo := A.geometricCentralRhoTwo
+  conjugate_one := A.geometricCentralRhoOne_conjugates_correctedTranslation
+  conjugate_two := A.geometricCentralRhoTwo_conjugates_correctedTranslation
+  generators_generate := by
+    rw [A.correctedActualCuspCentralTranslation_range_eq_actual]
+    exact A.actualCuspCentralFundamentalGroup_generated
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

@@ -861,6 +861,69 @@ public theorem regularFamilyPeriodLoop_transport_map
           ((regularFamilyCoverWhisker F P).map f.continuous).symm))
   simpa only [Path.map_trans, ← Path.map_symm] using h
 
+/-- A labelled period loop is invariant under transport along an arbitrary path in the
+period-quotient family.  The path is lifted once to the vector-bundle cover; changing the
+resulting endpoint representative only translates it by an integral period and hence does not
+change the labelled loop. -/
+public theorem regularFamilyPeriodLoop_transport_of_path
+    (hproper : SourceActionProperlyDiscontinuous (U := U))
+    {p₀ p₁ : RegularBase (U := U) × ComplexTwoSpace}
+    (W : Path (regularFamilyCoverProjection F p₀)
+      (regularFamilyCoverProjection F p₁))
+    (a : IntegerPeriods) :
+    pathLoopClass (regularFamilyPeriodLoop F p₀ a) =
+      whiskeredLoopClass W (regularFamilyPeriodLoop F p₁ a) := by
+  let P := regularFamilyPathLift F W hproper p₀ rfl
+  let q := P 1
+  have hq : regularFamilyCoverProjection F q =
+      regularFamilyCoverProjection F p₁ := by
+    calc
+      regularFamilyCoverProjection F q = W 1 :=
+        regularFamilyPathLift_projects F W hproper p₀ rfl 1
+      _ = regularFamilyCoverProjection F p₁ := W.target
+  have hW : (regularFamilyCoverWhisker F P).cast rfl hq.symm = W := by
+    apply Path.ext
+    funext t
+    exact regularFamilyPathLift_projects F W hproper p₀ rfl t
+  have hloop := regularFamilyPeriodLoop_eq_of_projection_eq F q p₁ a hq
+  have htransport := regularFamilyPeriodLoop_transport F P a
+  rw [← hW]
+  convert htransport using 1
+  rw [← hloop]
+  unfold whiskeredLoopClass
+  apply congrArg pathLoopClass
+  apply Path.ext
+  funext t
+  rfl
+
+/-- The arbitrary-path transport identity after applying a continuous map out of the regular
+torus family. -/
+public theorem regularFamilyPeriodLoop_transport_map_of_path
+    (hproper : SourceActionProperlyDiscontinuous (U := U))
+    {p₀ p₁ : RegularBase (U := U) × ComplexTwoSpace}
+    (W : Path (regularFamilyCoverProjection F p₀)
+      (regularFamilyCoverProjection F p₁))
+    (a : IntegerPeriods)
+    {Y : Type*} [TopologicalSpace Y] (f : C(RegularTotalSpace F, Y)) :
+    pathLoopClass ((regularFamilyPeriodLoop F p₀ a).map f.continuous) =
+      whiskeredLoopClass (W.map f.continuous)
+        ((regularFamilyPeriodLoop F p₁ a).map f.continuous) := by
+  have h := congrArg (FundamentalGroup.map f (regularFamilyCoverProjection F p₀))
+    (regularFamilyPeriodLoop_transport_of_path F hproper W a)
+  rw [FundamentalGroup.map_apply] at h
+  change (Path.Homotopic.Quotient.mk (regularFamilyPeriodLoop F p₀ a)).map f =
+    (Path.Homotopic.Quotient.mk
+      (W.trans ((regularFamilyPeriodLoop F p₁ a).trans W.symm))).map f at h
+  rw [← Path.Homotopic.Quotient.mk_map,
+    ← Path.Homotopic.Quotient.mk_map] at h
+  change Path.Homotopic.Quotient.mk
+      ((regularFamilyPeriodLoop F p₀ a).map f.continuous) =
+    Path.Homotopic.Quotient.mk
+      ((W.map f.continuous).trans
+        (((regularFamilyPeriodLoop F p₁ a).map f.continuous).trans
+          (W.map f.continuous).symm))
+  simpa only [Path.map_trans, ← Path.map_symm] using h
+
 /-- A genuine path to the `g`-deck translate acts on labelled period loops by `rhoLambda g`.
 
 The inverse conjugation on the left is intentional: Mathlib's fundamental-group multiplication
