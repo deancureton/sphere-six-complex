@@ -3,6 +3,7 @@ module
 public import SphereSixComplex.Topology.PaperSectionSevenEllipticBaseCoordinate
 public import SphereSixComplex.Topology.TwicePuncturedComplexFundamentalGroupGeneration
 public import SphereSixComplex.TriangleGroup.FuchsianProperFreeness
+public import TauCeti.AlgebraicTopology.FundamentalGroup.Homeomorph
 
 /-!
 # The marked ordinary base and zero section of the central family
@@ -230,6 +231,176 @@ public noncomputable def markedOneCentralMeridian :
     Path (A.centralZeroSection A.markedPuncturedBasepoint)
       (A.centralZeroSection A.markedPuncturedBasepoint) :=
   A.markedOneBaseMeridian.map A.centralZeroSection.continuous
+
+/-! ## The induced marked fundamental-group classes -/
+
+/-- The exact coordinate homeomorphism on based fundamental groups. -/
+public noncomputable def puncturedBaseFundamentalGroupEquiv :
+    FundamentalGroup (PuncturedOrbifoldBase
+        (U := A.paperTriangleUniformization)) A.markedPuncturedBasepoint ≃*
+      FundamentalGroup TwicePuncturedComplex twicePuncturedComplexBasepoint :=
+  TauCeti.FundamentalGroup.homeomorphMulEquivOfEq
+    A.puncturedBaseHomeomorphTwicePuncturedComplex (by
+      simp only [markedPuncturedBasepoint]
+      exact A.puncturedBaseHomeomorphTwicePuncturedComplex.apply_symm_apply _)
+
+/-- The two finite-puncture classes in the actual ordinary quotient base.  Defining them
+through the based homeomorphism records the endpoint transport forced by `e (e⁻¹ b) = b`.
+They are represented by `markedZeroBaseMeridian` and `markedOneBaseMeridian`, respectively. -/
+public noncomputable def markedZeroBaseMeridianClass :
+    FundamentalGroup (PuncturedOrbifoldBase
+      (U := A.paperTriangleUniformization)) A.markedPuncturedBasepoint :=
+  A.puncturedBaseFundamentalGroupEquiv.symm
+    TwicePuncturedComplex.zeroMeridianClass
+
+public noncomputable def markedOneBaseMeridianClass :
+    FundamentalGroup (PuncturedOrbifoldBase
+      (U := A.paperTriangleUniformization)) A.markedPuncturedBasepoint :=
+  A.puncturedBaseFundamentalGroupEquiv.symm
+    TwicePuncturedComplex.oneMeridianClass
+
+@[simp]
+public theorem puncturedBaseFundamentalGroupEquiv_zero :
+    A.puncturedBaseFundamentalGroupEquiv A.markedZeroBaseMeridianClass =
+      TwicePuncturedComplex.zeroMeridianClass :=
+  A.puncturedBaseFundamentalGroupEquiv.apply_symm_apply _
+
+@[simp]
+public theorem puncturedBaseFundamentalGroupEquiv_one :
+    A.puncturedBaseFundamentalGroupEquiv A.markedOneBaseMeridianClass =
+      TwicePuncturedComplex.oneMeridianClass :=
+  A.puncturedBaseFundamentalGroupEquiv.apply_symm_apply _
+
+public theorem markedZeroBaseMeridianClass_eq_pathLoopClass :
+    A.markedZeroBaseMeridianClass =
+      Path.Homotopic.Quotient.mk A.markedZeroBaseMeridian := by
+  unfold markedZeroBaseMeridianClass puncturedBaseFundamentalGroupEquiv
+    markedZeroBaseMeridian TwicePuncturedComplex.zeroMeridianClass
+  rw [TauCeti.FundamentalGroup.homeomorphMulEquivOfEq_symm_apply,
+    FundamentalGroup.mapOfEq_apply, ← Path.Homotopic.Quotient.mk_map]
+  rfl
+
+public theorem markedOneBaseMeridianClass_eq_pathLoopClass :
+    A.markedOneBaseMeridianClass =
+      Path.Homotopic.Quotient.mk A.markedOneBaseMeridian := by
+  unfold markedOneBaseMeridianClass puncturedBaseFundamentalGroupEquiv
+    markedOneBaseMeridian TwicePuncturedComplex.oneMeridianClass
+  rw [TauCeti.FundamentalGroup.homeomorphMulEquivOfEq_symm_apply,
+    FundamentalGroup.mapOfEq_apply, ← Path.Homotopic.Quotient.mk_map]
+  rfl
+
+/-- The two exact finite-puncture meridians generate the actual ordinary quotient base. -/
+public theorem markedBaseMeridians_generate :
+    Subgroup.closure ({A.markedZeroBaseMeridianClass,
+        A.markedOneBaseMeridianClass} :
+      Set (FundamentalGroup (PuncturedOrbifoldBase
+        (U := A.paperTriangleUniformization)) A.markedPuncturedBasepoint)) = ⊤ := by
+  let K := Subgroup.closure ({A.markedZeroBaseMeridianClass,
+    A.markedOneBaseMeridianClass} :
+      Set (FundamentalGroup (PuncturedOrbifoldBase
+        (U := A.paperTriangleUniformization)) A.markedPuncturedBasepoint))
+  apply top_unique
+  intro γ _
+  have himage : A.puncturedBaseFundamentalGroupEquiv γ ∈
+      Subgroup.closure ({TwicePuncturedComplex.zeroMeridianClass,
+        TwicePuncturedComplex.oneMeridianClass} :
+        Set (FundamentalGroup TwicePuncturedComplex
+          twicePuncturedComplexBasepoint)) := by
+    rw [TwicePuncturedComplex.markedMeridians_generate]
+    trivial
+  have hmap : A.puncturedBaseFundamentalGroupEquiv γ ∈
+      K.map A.puncturedBaseFundamentalGroupEquiv.toMonoidHom := by
+    rw [MonoidHom.map_closure]
+    have hset : A.puncturedBaseFundamentalGroupEquiv.toMonoidHom ''
+        ({A.markedZeroBaseMeridianClass, A.markedOneBaseMeridianClass} :
+          Set (FundamentalGroup (PuncturedOrbifoldBase
+            (U := A.paperTriangleUniformization)) A.markedPuncturedBasepoint)) =
+        ({TwicePuncturedComplex.zeroMeridianClass,
+          TwicePuncturedComplex.oneMeridianClass} :
+          Set (FundamentalGroup TwicePuncturedComplex
+            twicePuncturedComplexBasepoint)) := by
+      ext x
+      simp [eq_comm]
+    rw [hset]
+    exact himage
+  obtain ⟨δ, hδ, hδeq⟩ := hmap
+  have : δ = γ := A.puncturedBaseFundamentalGroupEquiv.injective hδeq
+  exact this ▸ hδ
+
+/-- Inclusion of the marked base fundamental group along the literal zero section. -/
+public noncomputable def centralZeroSectionFundamentalGroupMap :
+    FundamentalGroup (PuncturedOrbifoldBase
+        (U := A.paperTriangleUniformization)) A.markedPuncturedBasepoint →*
+      FundamentalGroup A.CentralFamily
+        (A.centralZeroSection A.markedPuncturedBasepoint) :=
+  FundamentalGroup.map A.centralZeroSection A.markedPuncturedBasepoint
+
+/-- The two finite-puncture classes in the actual central family, along its zero section. -/
+public noncomputable def markedZeroCentralMeridianClass :
+    FundamentalGroup A.CentralFamily
+      (A.centralZeroSection A.markedPuncturedBasepoint) :=
+  A.centralZeroSectionFundamentalGroupMap A.markedZeroBaseMeridianClass
+
+public noncomputable def markedOneCentralMeridianClass :
+    FundamentalGroup A.CentralFamily
+      (A.centralZeroSection A.markedPuncturedBasepoint) :=
+  A.centralZeroSectionFundamentalGroupMap A.markedOneBaseMeridianClass
+
+@[simp]
+public theorem centralZeroSectionFundamentalGroupMap_zero :
+    A.centralZeroSectionFundamentalGroupMap A.markedZeroBaseMeridianClass =
+      A.markedZeroCentralMeridianClass := rfl
+
+@[simp]
+public theorem centralZeroSectionFundamentalGroupMap_one :
+    A.centralZeroSectionFundamentalGroupMap A.markedOneBaseMeridianClass =
+      A.markedOneCentralMeridianClass := rfl
+
+public theorem markedZeroCentralMeridianClass_eq_pathLoopClass :
+    A.markedZeroCentralMeridianClass =
+      Path.Homotopic.Quotient.mk A.markedZeroCentralMeridian := by
+  unfold markedZeroCentralMeridianClass
+  rw [A.markedZeroBaseMeridianClass_eq_pathLoopClass]
+  unfold centralZeroSectionFundamentalGroupMap markedZeroCentralMeridian
+  rw [FundamentalGroup.map_apply, ← Path.Homotopic.Quotient.mk_map]
+
+public theorem markedOneCentralMeridianClass_eq_pathLoopClass :
+    A.markedOneCentralMeridianClass =
+      Path.Homotopic.Quotient.mk A.markedOneCentralMeridian := by
+  unfold markedOneCentralMeridianClass
+  rw [A.markedOneBaseMeridianClass_eq_pathLoopClass]
+  unfold centralZeroSectionFundamentalGroupMap markedOneCentralMeridian
+  rw [FundamentalGroup.map_apply, ← Path.Homotopic.Quotient.mk_map]
+
+/-- Every zero-section loop belongs to the subgroup generated by the two marked central
+meridians. -/
+public theorem centralZeroSectionFundamentalGroupMap_range_le_markedClosure :
+    A.centralZeroSectionFundamentalGroupMap.range ≤
+      Subgroup.closure ({A.markedZeroCentralMeridianClass,
+        A.markedOneCentralMeridianClass} :
+        Set (FundamentalGroup A.CentralFamily
+          (A.centralZeroSection A.markedPuncturedBasepoint))) := by
+  intro γ hγ
+  obtain ⟨δ, rfl⟩ := hγ
+  let K := Subgroup.closure ({A.markedZeroCentralMeridianClass,
+    A.markedOneCentralMeridianClass} :
+      Set (FundamentalGroup A.CentralFamily
+        (A.centralZeroSection A.markedPuncturedBasepoint)))
+  have hle : Subgroup.closure ({A.markedZeroBaseMeridianClass,
+      A.markedOneBaseMeridianClass} :
+      Set (FundamentalGroup (PuncturedOrbifoldBase
+        (U := A.paperTriangleUniformization)) A.markedPuncturedBasepoint)) ≤
+      K.comap A.centralZeroSectionFundamentalGroupMap := by
+    apply (Subgroup.closure_le _).mpr
+    intro x hx
+    rcases hx with rfl | rfl
+    · apply Subgroup.subset_closure
+      simp
+    · apply Subgroup.subset_closure
+      simp
+  apply hle
+  rw [A.markedBaseMeridians_generate]
+  trivial
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 
