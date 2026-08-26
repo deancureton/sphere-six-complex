@@ -25,19 +25,29 @@ noncomputable section
 
 namespace SphereSixComplex
 
-/-- A space realized as a radial interval times a mapping torus with four-torus fibre has no sixth
-integral singular homology. -/
+/-- A space realized as a radial interval times a mapping torus has no sixth integral singular
+homology once its fibre has none in degrees five and six. -/
+public theorem subsingleton_homology_six_of_radialMappingTorus
+    {T : Type} [TopologicalSpace T] (φ : T ≃ₜ T) {r : ℝ} (hr : 0 < r)
+    {Z : Type} [TopologicalSpace Z]
+    (e : Z ≃ₜ OpenRadialInterval r × CircleMappingTorus φ)
+    (h5 : Subsingleton (IntegralSingularHomology 5 T))
+    (h6 : Subsingleton (IntegralSingularHomology 6 T)) :
+    Subsingleton (IntegralSingularHomology 6 Z) := by
+  have hMT : Subsingleton (IntegralSingularHomology 6 (CircleMappingTorus φ)) :=
+    subsingleton_homology_succ_finiteBouquetMappingTorus _ 5 h6 h5
+  let _ : ContractibleSpace (OpenRadialInterval r) := contractibleSpace_openInterval hr
+  exact OpenEmbeddingStarData.subsingleton_homology_of_homeomorph 6 e.symm
+    (subsingleton_homology_prod_of_contractible _ _ 6 hMT)
+
+/-- The four-torus case: a cell model on the fibre supplies both vanishing hypotheses. -/
 public theorem subsingleton_homology_six_of_radialMappingTorus_fourTorusFibre
     {T : Type} [TopologicalSpace T] (M : FourTorusCellModel T) (φ : T ≃ₜ T) {r : ℝ} (hr : 0 < r)
     {Z : Type} [TopologicalSpace Z]
     (e : Z ≃ₜ OpenRadialInterval r × CircleMappingTorus φ) :
-    Subsingleton (IntegralSingularHomology 6 Z) := by
-  have hMT : Subsingleton (IntegralSingularHomology 6 (CircleMappingTorus φ)) :=
-    subsingleton_homology_succ_finiteBouquetMappingTorus _ 5
-      M.subsingleton_homology_six M.subsingleton_homology_five
-  let _ : ContractibleSpace (OpenRadialInterval r) := contractibleSpace_openInterval hr
-  exact OpenEmbeddingStarData.subsingleton_homology_of_homeomorph 6 e.symm
-    (subsingleton_homology_prod_of_contractible _ _ 6 hMT)
+    Subsingleton (IntegralSingularHomology 6 Z) :=
+  subsingleton_homology_six_of_radialMappingTorus φ hr e
+    M.subsingleton_homology_five M.subsingleton_homology_six
 
 namespace Geometry.PaperAnalyticData
 
