@@ -55,6 +55,16 @@ public theorem subsingleton_integralSingularHomology_of_homeomorph_cwComplex
   ⟨fun _ _ => (integralSingularHomologyEquiv n e).injective
     (@Subsingleton.elim _ (subsingleton_integralSingularHomology_of_isEmpty_cell Y n) _ _)⟩
 
+/-- A space carrying the standard `A₂` toric cell labelling has no integral singular homology
+above degree four: that labelling has no cells there. -/
+public theorem subsingleton_integralSingularHomology_of_labelledA2Cells
+    (e : ∀ n, Topology.CWComplex.cell (Set.univ : Set Y) n ≃ cuspWCellIndex n)
+    (n : ℕ) (hn : 4 < n) :
+    Subsingleton (IntegralSingularHomology n Y) :=
+  letI : IsEmpty (cuspWCellIndex n) := cuspWCellIndex_isEmpty n hn
+  letI : IsEmpty (Topology.CWComplex.cell (Set.univ : Set Y) n) := Function.isEmpty (e n)
+  subsingleton_integralSingularHomology_of_isEmpty_cell Y n
+
 end SphereSixComplex
 
 end
