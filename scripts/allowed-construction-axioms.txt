@@ -1,0 +1,42 @@
+# Allowlist for the *implemented-construction* cone: the sorry-free assembly and recognition path
+# together with the obligations already discharged.
+#
+# This is deliberately a partial cone. No production `SectionSevenPositiveDegreeHomologyAssembly`
+# witness exists yet, so the assembly `H` contributes nothing to it; when one lands its target
+# should be added to `check-axioms.sh` and whatever it reaches added here.
+#
+# The final cone in `allowed-axioms.txt` cannot see any of this while `exists_paperGluingData` is a
+# placeholder, because `sorry` short-circuits axiom tracking.  Read on its own it reports a trust
+# boundary much smaller than the one actually being built; this list is the honest one.
+#
+# Seeded from the cone as it stood when the gate was added, so it catches *new* trust assumptions
+# rather than re-litigating the existing ones.  Deleting a line as its axiom is discharged is the
+# point: this file should only ever shrink.
+Classical.choice
+Quot.sound
+SphereSixComplex.EstablishedCellularHomology.integralCWCellularChainModel
+SphereSixComplex.EstablishedCyclicAngularFundamentalDomain.quotientHomeomorphRadialMappingTorus
+SphereSixComplex.EstablishedFiniteCWTopology.additiveTorusFourTorusCellModel
+SphereSixComplex.EstablishedFiniteCWTopology.finiteCoverBaseModelSix
+SphereSixComplex.EstablishedGeneralTopology.equivariantStrongDeformationRetraction_lift
+SphereSixComplex.EstablishedGeneralTopology.hasHomotopyExtensionProperty_of_relativeCWComplex
+SphereSixComplex.EstablishedGeneralTopology.isHomotopyEquivalenceInclusion_of_contractible_regularCover
+SphereSixComplex.EstablishedGeneralTopology.strongDeformationRetraction_of_cofibration_homotopyEquivalence
+SphereSixComplex.EstablishedTorusBundleTopology.centralFamilyBundleRealization
+SphereSixComplex.EstablishedTorusBundleTopology.collarBundleRealization
+SphereSixComplex.FiniteCWBundleModelSix.establishedEulerMultiplicativity
+SphereSixComplex.FiniteCWModelSix.establishedIntegralCellularEulerPoincareSix
+SphereSixComplex.FiniteCoverModelSix.establishedEulerMultiplicativity
+SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedActualCuspRadialClutching.data
+SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberCWDecomposition
+SphereSixComplex.Geometry.EstablishedFuchsianCuspNeighborhood.Established.compactTruncation
+SphereSixComplex.Geometry.EstablishedFuchsianCuspNeighborhood.Established.data
+SphereSixComplex.Geometry.PaperAnalyticData.establishedActualAffineFillingCoverSquares
+SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established.establishedContinuousTorusAction
+SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established.polarHoneycombPhaseSpreadingPackage
+SphereSixComplex.establishedCompactSmoothOrientedManifoldHomologyTheory
+SphereSixComplex.establishedFiniteBouquetMappingTorusWangSequence
+SphereSixComplex.establishedHomologyToHomotopySixSphere
+SphereSixComplex.establishedIntegralMayerVietorisExactSequence
+SphereSixComplex.establishedSmoothPoincareSixStandardModel
+propext
