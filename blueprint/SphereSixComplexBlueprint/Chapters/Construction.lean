@@ -398,13 +398,16 @@ Use {uses "torus-family"}[the torus family] and the invariant twist vectors fixe
 The global family and the three fillings glue to a compact connected complex threefold $`X`.
 `exists_paperGluingData` is now proved by `exists_paperGluingData_from_sectionSeven`: the selected
 affine radial completion and cusp comparison supply the marked completion input, whose direct
-Mayer--Vietoris/Wang construction produces the positive-degree homology assembly. The production
-library is source-sorry-free, but the result is not axiom-free. Its audited final cone still uses
+Mayer--Vietoris/Wang construction produces the degree-one and degree-two map assembly. Compact
+oriented six-manifold homology and the local Euler calculation then complete the remaining degrees.
+The production library is source-sorry-free, but the result is not axiom-free. Among the newly
+split Section 7 boundaries, its audited final cone still uses
 the regular-lift geometry and marked projection squares (#134), cusp Wang chain and prism inputs
 (#135), cusp radial clutching and degree specializations (#137), and central/collar/band
 trivializations (#138). The axiom `establishedActualCuspCentralNaturality` tracked by #136 is
-Main-only at this checkpoint; the final cone instead reaches the broader
-`establishedActualAffineFillingCoverSquares` boundary.
+Main-only at this checkpoint, but the same semantic cusp-central comparison remains subsumed by
+the broader final-reachable `establishedActualAffineFillingCoverSquares` boundary. These issues are
+not an exhaustive list of the paper-specific final cone.
 :::
 
 :::proof "compact-complex-threefold"
@@ -490,8 +493,10 @@ The integral homology of $`X` is the integral homology of $`S^6`.
 :::
 
 :::proof "integral-homology"
-Compute the Mayer--Vietoris sequence of {uses "compact-complex-threefold"}[the same gluing], including
-the integral specialization maps and their saturation.
+Compute $`H_1` and $`H_2` from the Mayer--Vietoris sequence of
+{uses "compact-complex-threefold"}[the same gluing], including the integral specialization maps
+and their saturation. Then use compact oriented six-manifold Poincaré duality and UCT together
+with the local Euler characteristic $`2` to obtain the remaining degrees.
 :::
 
 :::definition "homology-sphere-contract" (parent := "integral-homology") (lean := "SphereSixComplex.HasIntegralHomologyOfSixSphere, SphereSixComplex.SixSphereRecognitionInput")
@@ -503,22 +508,29 @@ singular homology equivalence with the standard six-sphere.
 Binary open-cover exactness for integral singular homology is proved from chain corestriction,
 subdivision, excision, and binary-cover assembly. The production Section 7 proof uses the
 resulting three successive Mayer--Vietoris sequences together with the cusp Wang-boundary
-comparison. Its paper-specific map identifications remain audited established inputs; it does not
-require a chain equivalence from the finite Leray model to all singular chains.
+comparison to prove that $`H_1` and $`H_2` vanish. Its paper-specific map identifications remain
+audited established inputs. Higher degrees are completed by the six-manifold and Euler argument
+below, without a chain equivalence from the finite Leray model to all singular chains.
 :::
 
 :::theorem "section-seven-integer-algebra" (parent := "integral-homology") (lean := "SphereSixComplex.Topology.PaperLemmaSevenThirteenAlgebra.range_orderOneRelationMap_eq_ker, SphereSixComplex.Topology.PaperLemmaSevenThirteenAlgebra.range_orderTwoRelationMap_eq_ker, SphereSixComplex.Topology.PaperCuspSpecializationAlgebra.mZeroExteriorTwoSpecialization_surjective, SphereSixComplex.Topology.PaperCuspSpecializationAlgebra.ker_mZeroExteriorTwoSpecialization, SphereSixComplex.Topology.PaperPropositionSevenFourteenDegreeTwoAlgebra.orderFourCandidateQuotientEquivZModTwo_q, SphereSixComplex.firstHomologyPresentation_exact, SphereSixComplex.alphaOne_kernel, SphereSixComplex.alphaTwoPresentation_exact, SphereSixComplex.chosenLerayDifferential_bijective, SphereSixComplex.hasIntegralHomologyOfSixSphere_of_sectionSevenRealizations")
 The integral presentation, specialization, and Leray differential matrices from Section 7 have the
 claimed kernels and images. For the selected twists the final differential is an isomorphism.
-The realization contract records an alternate coherent route from these matrices to singular
-homology; the production construction instead uses the direct Mayer--Vietoris/Wang assembly below.
+The generic degreewise realization interface is shared with the production proof, which uses
+connectedness in degree zero, Mayer--Vietoris in degrees one and two, and six-manifold topology
+with the Euler calculation from degree three onward. A coherent chain map from the finite Leray
+model is a separate, stronger alternate route.
 :::
 
-:::definition "section-seven-paper-assembly" (parent := "integral-homology") (lean := "SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenPositiveDegreeHomologyAssembly, SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenPositiveDegreeHomologyAssembly.toSectionSevenMayerVietorisHomologyAssembly, SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenAffineMarkedCompletionInput.positiveDegreeHomologyAssembly")
+:::definition "section-seven-paper-assembly" (parent := "integral-homology") (lean := "SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenPositiveDegreeHomologyAssembly, SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenPositiveDegreeHomologyAssembly.toSectionSevenMayerVietorisHomologyAssembly, SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenAffineMarkedCompletionInput.positiveDegreeHomologyAssembly, SphereSixComplex.establishedCompactSmoothOrientedManifoldHomologyTheory, SphereSixComplex.establishedCompactComplexThreefoldHomologyTheory, SphereSixComplex.OpenEmbeddingStarData.SectionSevenMayerVietorisHomologyAssembly.hasIntegralHomologyOfSixSphere_of_closedComplexThreefold, SphereSixComplex.OpenEmbeddingStarData.SectionSevenMayerVietorisHomologyAssembly.hasIntegralHomologyOfSixSphere_of_localEulerCalculation, SphereSixComplex.Geometry.PaperAnalyticData.star_hasIntegralHomologyOfSixSphere_of_localModels")
 For the actual four-piece star, degree zero is proved canonically. The affine marked-completion
 input now constructs `SectionSevenPositiveDegreeHomologyAssembly`, which supplies the positive-
 degree cusp-attachment identifications and compatibility squares without assuming the completed
-star's homology. Its paper-specific geometric premises remain explicit in the audited axiom cone.
+star's homology. Mayer--Vietoris uses those data to kill $`H_1` and $`H_2`; the compact oriented
+six-manifold package supplies finite generation, the dimension bound, and Poincaré-duality/UCT
+pairings, while the proved local Euler calculation gives Euler characteristic $`2`. Together they
+construct the degreewise sphere-homology comparison. The manifold theorem remains an explicit
+general trust boundary, alongside the paper-specific geometric premises in the audited cone.
 :::
 
 :::theorem "cusp-filling-homology" (parent := "section-seven-paper-assembly") (lean := "SphereSixComplex.EstablishedCellularHomology.integralCWCellularChainModel, SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberCWDecomposition, SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberCellularIncidence, SphereSixComplex.Geometry.PaperAnalyticData.cuspFillingHomologyOneEquiv, SphereSixComplex.Geometry.PaperAnalyticData.cuspFillingHomologyTwoEquiv, SphereSixComplex.Geometry.PaperAnalyticData.cuspFillingHomologyThreeEquiv, SphereSixComplex.Geometry.PaperAnalyticData.cuspFillingHomologyFourEquiv")
