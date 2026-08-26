@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Topology.PaperActualCuspCentralLoopRelation
-public import SphereSixComplex.Topology.PaperActualAffineCoreData
 
 /-!
 # Geometric peripheral classes in the actual central family
