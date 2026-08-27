@@ -456,8 +456,15 @@ geometric peripheral loop follows. The one theoretical escape — prove generati
 semidirect-product relations for the geometric triple and then deduce injectivity from Hopficity of
 `ℤ⁴ ⋊ FreeGroup (Fin 2)` — needs Malcev's theorem that finitely generated residually finite groups
 are Hopfian, which is not in Mathlib. -/
-public axiom establishedActualStarPeripheralNaturality :
-    Nonempty A.ActualStarPeripheralNaturality
+public axiom establishedActualEllipticCentralNaturality :
+    Nonempty (ActualEllipticCentralNaturality A A.actualCuspCentralNaturality)
+
+/-- Marked peripheral naturality for all three actual collars.  The cusp half is now proved
+(`actualCuspCentralNaturality`), so only the elliptic half remains assumed. -/
+public theorem establishedActualStarPeripheralNaturality :
+    Nonempty A.ActualStarPeripheralNaturality :=
+  A.establishedActualEllipticCentralNaturality.elim fun E ↦
+    ⟨{ cusp := A.actualCuspCentralNaturality, elliptic := E }⟩
 
 /-- The three actual regular cover squares exist, given the star's peripheral naturality. -/
 public theorem nonempty_actualAffineFillingCoverSquares :
