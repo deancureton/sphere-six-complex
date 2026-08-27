@@ -2,14 +2,15 @@ module
 
 public import SphereSixComplex.Geometry.EllipticActualActionTopology
 public import SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
+public import SphereSixComplex.Topology.PaperEllipticTorusHomologyBasisProof
 
 /-!
 # Integral homology bases for the elliptic period tori
 
 This file gives the standard integral degree-one and degree-two models of a full-rank period
-torus.  The degree-two action is defined by the actual second compound matrix.  The only missing
-topology input is the standard torus/Kunneth calculation and its naturality under descended
-affine automorphisms.
+torus.  The degree-two action is defined by the actual second compound matrix.  The bases
+themselves are constructed in `PaperEllipticTorusHomologyBasisProof`; the only missing topology
+input is their naturality under descended affine automorphisms.
 -/
 
 open AlgebraicTopology Matrix Set
@@ -114,14 +115,37 @@ end FourTorusHomologyBasis
 namespace EstablishedTorusHomology
 
 /-- The integral singular homology of a full-rank complex two-torus, in the period basis.  This
-is the standard circle-product and Kunneth calculation currently absent from Mathlib. -/
-public axiom additiveTorusHomologyBasis
+is the standard circle-product and Kunneth calculation, carried out in
+`PaperEllipticTorusHomologyBasisProof` by iterating the Wang sequence of the mapping torus of an
+identity map. -/
+@[expose] public def additiveTorusHomologyBasis
     (p : SphereSixComplex.Periods.Parameters) (hfull : FullRank p) :
-    AdditiveTorusHomologyBasis p
+    AdditiveTorusHomologyBasis p where
+  degreeOne := StandardTorusHomology.additiveTorusHomologyDegreeOne p hfull
+  degreeTwo := StandardTorusHomology.additiveTorusHomologyDegreeTwo p hfull
+
+/-- The two components of the basis.  `additiveTorusHomologyDegreeOne` and
+`additiveTorusHomologyDegreeTwo` are deliberately not exposed, so downstream modules see the
+basis exactly as opaquely as they saw the axiom this definition replaced. -/
+public theorem additiveTorusHomologyBasis_degreeOne
+    (p : SphereSixComplex.Periods.Parameters) (hfull : FullRank p) :
+    (additiveTorusHomologyBasis p hfull).degreeOne =
+      StandardTorusHomology.additiveTorusHomologyDegreeOne p hfull := rfl
+
+public theorem additiveTorusHomologyBasis_degreeTwo
+    (p : SphereSixComplex.Periods.Parameters) (hfull : FullRank p) :
+    (additiveTorusHomologyBasis p hfull).degreeTwo =
+      StandardTorusHomology.additiveTorusHomologyDegreeTwo p hfull := rfl
 
 /-- Naturality of the standard torus bases under a descended affine automorphism.  Translation
 acts trivially, the degree-one map is the integral lattice map, and degree two is its exterior
-square. -/
+square.
+
+This is the one remaining input.  The bases of `additiveTorusHomologyBasis` are produced by an
+iterated Wang splitting, whose sections are chosen by projectivity rather than geometrically, so
+they carry no relation to the period lattice; deriving this statement requires the natural
+identification `H₁(V/Λ) ≃ Λ` (and its exterior square in degree two), which the Wang
+route does not supply. -/
 public axiom additiveTorusHomologyBasis_naturality
     (p : SphereSixComplex.Periods.Parameters) (hfull : FullRank p)
     (D : DescendedAffineTorusAutomorphism p) :

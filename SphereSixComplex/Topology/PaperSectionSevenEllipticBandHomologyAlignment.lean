@@ -48,15 +48,23 @@ private theorem homologyEquiv_map_trans_symm
 namespace EstablishedTorusHomology
 
 /-- The real-period-coordinate homeomorphism between full-rank period tori preserves the
-standard integral period bases in degrees one and two.  This is the cross-parameter naturality
-part of the usual homology calculation for a real four-torus. -/
-public axiom fullRankAdditiveTorusHomeomorph_naturality
+standard integral period bases in degrees one and two.  Both bases are transports of the
+coordinates of the standard real four-torus along the real-period-coordinate identification, so
+this is functoriality of integral singular homology. -/
+public theorem fullRankAdditiveTorusHomeomorph_naturality
     (x y : Periods.Parameters) (hx : FullRank x) (hy : FullRank y) :
     let e := Geometry.PaperAnalyticData.fullRankAdditiveTorusHomeomorph x y hx hy
     let Bx := additiveTorusHomologyBasis x hx
     let By := additiveTorusHomologyBasis y hy
     (∀ z, By.degreeOne (integralSingularHomologyMap 1 e z) = Bx.degreeOne z) ∧
-      (∀ z, By.degreeTwo (integralSingularHomologyMap 2 e z) = Bx.degreeTwo z)
+      (∀ z, By.degreeTwo (integralSingularHomologyMap 2 e z) = Bx.degreeTwo z) := by
+  have he : ∀ z : ComplexTwoSpace,
+      Geometry.PaperAnalyticData.fullRankAdditiveTorusHomeomorph x y hx hy (Quotient.mk _ z) =
+        Quotient.mk _ (hy.realEquiv (hx.realEquiv.symm z)) := fun _ ↦ rfl
+  exact ⟨fun z ↦ StandardTorusHomology.additiveTorusHomologyDegreeOne_naturality x y hx hy
+      (Geometry.PaperAnalyticData.fullRankAdditiveTorusHomeomorph x y hx hy) he z,
+    fun z ↦ StandardTorusHomology.additiveTorusHomologyDegreeTwo_naturality x y hx hy
+      (Geometry.PaperAnalyticData.fullRankAdditiveTorusHomeomorph x y hx hy) he z⟩
 
 end EstablishedTorusHomology
 
