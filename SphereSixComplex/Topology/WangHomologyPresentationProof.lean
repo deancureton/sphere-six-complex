@@ -1,16 +1,17 @@
 module
 
-public import SphereSixComplex.Topology.WangHomologyPresentation
+public import SphereSixComplex.Topology.WangHomologyPresentationDefs
 public import SphereSixComplex.Topology.EstablishedMayerVietoris
 public import SphereSixComplex.Topology.MayerVietorisDegreeZeroBridge
 
 /-!
 # The Wang sequence of a finite-bouquet mapping torus, from Mayer--Vietoris
 
-`WangHomologyPresentation.lean` isolates the Wang exact sequence of the explicit finite-bouquet
-mapping torus as `establishedFiniteBouquetMappingTorusWangSequence`.  This file removes the
-homological bookkeeping from that boundary: everything except the geometric identification of the
-Mayer--Vietoris cover is proved here, unconditionally.
+`WangHomologyPresentationDefs.lean` isolates the shape of the Wang exact sequence of the explicit
+finite-bouquet mapping torus as `FiniteBouquetMappingTorusWangSequence`.  This file constructs
+that sequence outright, from the Mayer--Vietoris sequence of an explicit open cover: the geometric
+identification of the cover and the homological bookkeeping are both carried out here,
+unconditionally.
 
 ## Main results
 
@@ -41,8 +42,8 @@ The remaining sections prepare that geometric input.
   `vertexPiece_union_edgePiece`, `vertexPiece_inter_edgePiece` and
   `bouquetMk_injOn_edgeBand`, which says that the cylinder interiors are embedded.
 
-The geometric identification of that cover is then carried out in full, so that the axiom
-`establishedFiniteBouquetMappingTorusWangSequence` is discharged outright.
+The geometric identification of that cover is then carried out in full, so that the Wang exact
+sequence `FiniteBouquetMappingTorusWangSequence` is constructed outright.
 
 * `subsingleton_integralSingularHomology_of_isEmpty` and `coverSumMap_bijective`: integral singular
   homology is additive over a finite disjoint open cover.
@@ -274,8 +275,8 @@ public noncomputable def finiteBouquetFiberInclusionMap (φ : ι → F ≃ₜ F)
       IntegralSingularHomology k (FiniteBouquetMappingTorus φ) :=
   integralSingularHomologyMap k (finiteBouquetMappingTorusFiberInclusion φ)
 
-/-- The axiom `establishedFiniteBouquetMappingTorusWangSequence` follows from the geometric
-Mayer--Vietoris input alone.
+/-- A `FiniteBouquetMappingTorusWangSequence` follows from the geometric Mayer--Vietoris input
+alone.
 
 The hypotheses are exactly what the two-set open cover of the mapping torus supplies: `S` is the
 Mayer--Vietoris sum map of the cover, read through the identification of the homology of the

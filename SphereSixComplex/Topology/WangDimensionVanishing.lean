@@ -33,7 +33,7 @@ public theorem subsingleton_homology_succ_finiteBouquetMappingTorus
     (hsucc : Subsingleton (IntegralSingularHomology (k + 1) F))
     (hk : Subsingleton (IntegralSingularHomology k F)) :
     Subsingleton (IntegralSingularHomology (k + 1) (FiniteBouquetMappingTorus φ)) := by
-  let W := establishedFiniteBouquetMappingTorusWangSequence φ k
+  let W := finiteBouquetMappingTorusWangSequenceOfCover φ k
   have key : ∀ z : IntegralSingularHomology (k + 1) (FiniteBouquetMappingTorus φ), z = 0 := by
     intro z
     -- The fibre has no `k`-th homology, so the Wang boundary of `z` vanishes and `z` comes from

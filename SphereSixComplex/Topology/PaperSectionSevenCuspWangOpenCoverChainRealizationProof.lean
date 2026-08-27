@@ -6,8 +6,9 @@ public import SphereSixComplex.Topology.PaperSectionSevenCuspWangOpenCoverChainR
 # Sign rigidity of the cusp Wang chain realization
 
 The Wang input used by the cusp collar is supplied by
-`establishedFiniteBouquetMappingTorusWangSequence`, whose specification consists of three
-exactness statements and nothing else.  This file records what that leaves undetermined.
+`finiteBouquetMappingTorusWangSequenceOfCover`, whose specification
+`FiniteBouquetMappingTorusWangSequence` consists of three exactness statements and nothing else.
+This file records what that specification leaves undetermined.
 
 `FiniteBouquetMappingTorusWangSequence.neg` shows the specification is blind to the sign of the
 connecting map: negating the boundary produces another finite-bouquet Wang sequence, so the
@@ -22,8 +23,9 @@ contradiction with the Section 7 boundary basis computation.
 
 Consequently the chain realization is not a consequence of the exactness data alone: it also
 fixes an orientation.  Pinning that orientation requires a Wang boundary that is constructed
-rather than axiomatized, for instance the Mayer--Vietoris boundary of the vertex/edge cover of
-the mapping torus.
+rather than merely specified.  That is now the case: the boundary in use is the Mayer--Vietoris
+boundary of the vertex/edge cover of the mapping torus, exposed by
+`finiteBouquetMappingTorusWangSequenceOfCover_boundary`.
 -/
 
 @[expose] public section
@@ -63,7 +65,7 @@ public def FiniteBouquetMappingTorusWangSequence.neg {φ : ι → F ≃ₜ F} {k
       exact ⟨-x, by simp⟩
 
 /-- The circle Wang connecting map read off from an arbitrary one-loop bouquet Wang sequence,
-rather than from the axiom-supplied one. -/
+rather than from the constructed one. -/
 public noncomputable def circleBoundaryOf {F : Type} [TopologicalSpace F] {φ : F ≃ₜ F}
     {k : ℕ} (W : FiniteBouquetMappingTorusWangSequence (fun _ : Unit ↦ φ) k) :
     IntegralSingularHomology (k + 1) (CircleMappingTorus φ) →+
@@ -72,11 +74,11 @@ public noncomputable def circleBoundaryOf {F : Type} [TopologicalSpace F] {φ : 
   map_zero' := by simp
   map_add' := by simp
 
-/-- The axiom-supplied one-loop Wang sequence gives exactly the boundary of the circle Wang
+/-- The constructed one-loop Wang sequence gives exactly the boundary of the circle Wang
 presentation used throughout the development. -/
 public theorem circleBoundaryOf_established {F : Type} [TopologicalSpace F] (φ : F ≃ₜ F)
     (k : ℕ) :
-    circleBoundaryOf (establishedFiniteBouquetMappingTorusWangSequence (fun _ : Unit ↦ φ) k) =
+    circleBoundaryOf (finiteBouquetMappingTorusWangSequenceOfCover (fun _ : Unit ↦ φ) k) =
       (circleMappingTorusWangPresentation φ k).boundary :=
   rfl
 
@@ -208,7 +210,8 @@ public theorem cuspPulledBackBoundaryHom_eq_zero_of_both_signs
     (ActualCuspWangOpenCoverChainRealization.toChainRealizationFor D R) R'
 
 /-- A one-loop bouquet Wang sequence for the actual radial cusp clutching map: exactly the data
-the established Wang axiom supplies, with nothing beyond its three exactness fields. -/
+`FiniteBouquetMappingTorusWangSequence` supplies, with nothing beyond its three exactness
+fields. -/
 public abbrev CuspClutchingWangSequence (A : PaperAnalyticData) : Type :=
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
@@ -222,14 +225,15 @@ public noncomputable def cuspWangBoundaryHomOf (A : PaperAnalyticData)
   exact (circleBoundaryOf W).comp
     (integralSingularHomologyEquivOfHomotopyEquiv 2 G.totalHomotopyEquiv).toAddMonoidHom
 
-/-- The Wang sequence actually supplied by the established axiom. -/
+/-- The Wang sequence actually used, constructed from the vertex/edge open cover of the mapping
+torus. -/
 public noncomputable def establishedCuspClutchingWangSequence (A : PaperAnalyticData) :
     CuspClutchingWangSequence A := by
   let G := A.actualCuspRadialClutchingData
   letI := G.fiberTopology
-  exact establishedFiniteBouquetMappingTorusWangSequence (fun _ : Unit ↦ G.clutching) 1
+  exact finiteBouquetMappingTorusWangSequenceOfCover (fun _ : Unit ↦ G.clutching) 1
 
-/-- At the axiom-supplied Wang sequence this is the actual cusp Wang connecting map. -/
+/-- At that Wang sequence this is the actual cusp Wang connecting map. -/
 public theorem cuspWangBoundaryHomOf_established (A : PaperAnalyticData) :
     cuspWangBoundaryHomOf A (establishedCuspClutchingWangSequence A) =
       actualCuspWangBoundaryHom A :=
