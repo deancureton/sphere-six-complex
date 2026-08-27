@@ -240,6 +240,7 @@ public import SphereSixComplex.Topology.EstablishedSphereHomology
 public import SphereSixComplex.Topology.EstablishedStrongDeformationRetracts
 public import SphereSixComplex.Topology.NormalizedComplexStructure
 public import SphereSixComplex.Topology.SingularHomologyDegreeZero
+public import SphereSixComplex.Topology.CellularChainModelProof
 public import SphereSixComplex.Topology.SmoothSixSphereClassification
 public import SphereSixComplex.Topology.SmoothRecognition
 public import SphereSixComplex.Topology.CollarProductVanishing
