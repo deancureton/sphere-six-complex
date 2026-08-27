@@ -298,7 +298,6 @@ public theorem actualCuspOverlapToCentralPiOne_meridian :
       A.actualCuspCentralMeridian := by
   rfl
 
-set_option backward.isDefEq.respectTransparency.types false in
 /-- Transport from the marked zero section to the actual cusp point changes the global period
 label only by one triangle-group automorphism.  In particular, the transported marked periods
 and the literal cusp periods are the same subgroup, with no universal-cover marking involved. -/
@@ -434,7 +433,6 @@ public theorem geometricCentralTranslation_range_eq_actualCuspCentralTranslation
             (rhoLambda g⁻¹ (rhoLambda g a))) := hg _
       _ = Additive.toMul (A.actualCuspCentralTranslation a) := by simp
 
-set_option backward.isDefEq.respectTransparency.types false in
 /-- Any loop at the actual cusp point acts on the actual period translations through its
 outer triangle-group deck label. -/
 public theorem actualCuspCentralLoop_conjugates_translation_of_outerDeck
@@ -677,7 +675,6 @@ public theorem correctedActualCuspCentralTranslation_range_eq_actual :
       Additive.toMul (A.actualCuspCentralTranslation a)
     simp
 
-set_option backward.isDefEq.respectTransparency.types false in
 /-- The literal cusp meridian acts on the literal cusp translations by the prescribed
 parabolic lattice monodromy.  This is the paper's usual conjugation formula, written in
 Mathlib's reversed path-composition convention. -/
@@ -744,7 +741,6 @@ public noncomputable def actualCuspCentralMarkingCorrection :
     ((A.actualCuspCentralMeridian ^
       A.geometricCentralCuspConjugatorExponent)⁻¹)
 
-set_option backward.isDefEq.respectTransparency.types false in
 /-- The inner cusp correction sends each corrected translation to the literal translation with
 the original lattice label. -/
 public theorem actualCuspCentralMarkingCorrection_translation (a : Lattice) :

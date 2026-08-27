@@ -172,7 +172,6 @@ public noncomputable def actualCuspOuterDeckHom :
     ⟨A.actualCuspRegularRepresentative,
       A.actualCuspRegularRepresentative_projects⟩
 
-set_option backward.isDefEq.respectTransparency.types false in
 /-- The actual cusp meridian has outer deck label `g₀`. -/
 public theorem actualCuspCentralMeridian_outerDeck :
     letI := regularFamilyDeckAction A.periods
@@ -216,9 +215,13 @@ public theorem actualCuspCentralMeridian_outerDeck :
               A.actualCuspRegularRepresentative_projects.symm)).cast _ _
       rw [← Path.Homotopic.Quotient.mk_map]
       unfold actualCuspRegularDeckLoop
-      simp only [Path.Homotopic.Quotient.mk_cast,
-        Path.Homotopic.Quotient.cast_cast]
-      simp only [Path.Homotopic.Quotient.cast_rfl_rfl])
+      rw [Path.Homotopic.Quotient.mk_cast]
+      rw [Path.Homotopic.Quotient.mk_cast]
+      apply eq_of_heq
+      symm
+      exact (Path.Homotopic.Quotient.cast_heq _ _).trans
+        ((Path.Homotopic.Quotient.cast_heq _ _).trans
+          (Path.Homotopic.Quotient.cast_heq _ _)))
   simpa only [MulOpposite.unop_op] using congrArg Subtype.val hm.symm
 
 public theorem actualCuspOuterDeckHom_meridian :

@@ -1011,7 +1011,6 @@ public theorem regularFamilyDeckPathLoop_conjugates_period
     _ = pathLoopClass ((regularFamilyPeriodLoop F p (rhoLambda g a)).map
           (regularFamilyQuotientMap F).continuous) := htransport.symm
 
-set_option backward.isDefEq.respectTransparency.types false in
 /-- Conjugation of a labelled period depends only on the outer deck label of the loop.
 
 This is the class-level form of `regularFamilyDeckPathLoop_conjugates_period`: an arbitrary
@@ -1076,7 +1075,6 @@ public theorem fundamentalGroup_conjugates_period_of_outerDeck
       rw [hloop] at hconj
       exact eq_of_heq (heq_of_eq hconj)
 
-set_option backward.isDefEq.respectTransparency.types false in
 /-- Basepoint-equality form of `fundamentalGroup_conjugates_period_of_outerDeck`. -/
 public theorem fundamentalGroup_conjugates_period_of_outerDeck_of_baseEq
     (hsource : U.sourceAction = fuchsianSourceAction)

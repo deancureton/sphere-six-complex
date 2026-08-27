@@ -140,7 +140,6 @@ public theorem actualCuspAngularCoordinateLoop_norm_gt_two (t : unitInterval) :
     rw [norm_cuspQ] at hbase ⊢
     simpa using hbase
 
-set_option backward.isDefEq.respectTransparency.types false in
 /-- The explicit projected angular loop is exactly the `ofDeck` meridian class used by the
 chosen affine cusp filling. -/
 theorem actualCuspAngularProjectedLoop_class_eq_ofDeck :
@@ -195,9 +194,11 @@ theorem actualCuspAngularProjectedLoop_class_eq_ofDeck :
         (Path.Homotopic.Quotient.mk A.actualCuspAngularProjectedLoop).cast _ _
       rw [← Path.Homotopic.Quotient.mk_map]
       unfold actualCuspAngularProjectedLoop
-      rw [Path.Homotopic.Quotient.mk_cast,
-        Path.Homotopic.Quotient.cast_cast]
-      simp only [Path.Homotopic.Quotient.cast_rfl_rfl])
+      rw [Path.Homotopic.Quotient.mk_cast]
+      apply eq_of_heq
+      symm
+      exact (Path.Homotopic.Quotient.cast_heq _ _).trans
+        (Path.Homotopic.Quotient.cast_heq _ _))
   simpa only [MulOpposite.unop_op] using congrArg Subtype.val hmono.symm
 
 end SphereSixComplex.Geometry.PaperAnalyticData
