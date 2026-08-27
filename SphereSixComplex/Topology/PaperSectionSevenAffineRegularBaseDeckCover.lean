@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Topology.EquivariantCoveringHomotopyLift
-public import SphereSixComplex.Topology.PaperSectionSevenAffineRegularLiftCarriers
+public import SphereSixComplex.Geometry.PaperCentralCompactCore
 
 /-!
 # The full-deck regular-base covering for affine radial lifts
@@ -22,6 +22,19 @@ open SphereSixComplex.Geometry.EquivariantQuotientHomeomorph
 open SphereSixComplex.Geometry.GlobalTorusFamily
 
 variable (A : PaperAnalyticData)
+
+/-- The affine coordinate on the regular base is the exact full-deck covering, transported
+through the regular-base preimage homeomorphism. -/
+public theorem regularCoordinate_isCoveringMap :
+    IsCoveringMap A.regularCoordinate := by
+  let e := A.regularBaseCoordinatePreimageHomeomorph
+  let f := ({0, 1} : Set ℂ)ᶜ.restrictPreimage
+    A.modular.sourceCoordinate.coordinate
+  have hf : IsCoveringMap f :=
+    A.modular.sourceCoordinate.regular_covering.isCoveringMap_restrictPreimage
+  have hcomp : IsCoveringMap (f ∘ e) := hf.comp_homeomorph e
+  convert hcomp using 1
+  rfl
 
 /-- The triangle-group action on the regular upper-half-plane base. -/
 public noncomputable abbrev regularBaseDeckAction : MulAction Delta

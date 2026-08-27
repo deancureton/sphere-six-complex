@@ -2,6 +2,7 @@ module
 
 public import SphereSixComplex.Topology.EquivariantHomotopyEquivalenceDescent
 public import SphereSixComplex.Topology.PaperSectionSevenAffineSideHomotopyEquivalence
+public import SphereSixComplex.Topology.PaperSectionSevenAffineRegularBaseDeckCover
 public import SphereSixComplex.Topology.RestrictedOrbitQuotientOpenEmbedding
 
 /-!
@@ -29,19 +30,6 @@ open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 open SphereSixComplex.OpenUnionHomotopy
 
 variable (A : PaperAnalyticData)
-
-/-- The affine coordinate on the regular base is the exact full-deck covering, transported
-through the regular-base preimage homeomorphism. -/
-public theorem regularCoordinate_isCoveringMap :
-    IsCoveringMap A.regularCoordinate := by
-  let e := A.regularBaseCoordinatePreimageHomeomorph
-  let f := ({0, 1} : Set ℂ)ᶜ.restrictPreimage
-    A.modular.sourceCoordinate.coordinate
-  have hf : IsCoveringMap f :=
-    A.modular.sourceCoordinate.regular_covering.isCoveringMap_restrictPreimage
-  have hcomp : IsCoveringMap (f ∘ e) := hf.comp_homeomorph e
-  convert hcomp using 1
-  rfl
 
 /-- The regular total-space lift of the order-three punctured affine disc. -/
 public noncomputable def orderThreeAffineDiscLiftCarrier (r : ℝ) :

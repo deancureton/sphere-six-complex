@@ -101,6 +101,19 @@ public theorem regularBase_connected (U : TriangleUniformization) :
     isConnected_iff_connectedSpace.mp hpath.isConnected
   exact (regularBaseHomeomorphComplexComplement U).connectedSpace_iff.mpr hconnected
 
+/-- Removing the two countable elliptic orbits leaves the regular base path connected. -/
+public theorem regularBase_pathConnected (U : TriangleUniformization) :
+    PathConnectedSpace (RegularBase (U := U)) := by
+  have hrank : 1 < Module.rank ℝ ℂ := by
+    rw [Complex.rank_real_complex]
+    norm_num
+  have hpath : IsPathConnected (regularBadSet U)ᶜ :=
+    (regularBadSet_countable U).isPathConnected_compl_of_one_lt_rank hrank
+  let _ : PathConnectedSpace ↥((regularBadSet U)ᶜ) :=
+    isPathConnected_iff_pathConnectedSpace.mp hpath
+  exact (regularBaseHomeomorphComplexComplement U).symm.surjective.pathConnectedSpace
+    (regularBaseHomeomorphComplexComplement U).symm.continuous
+
 /-- The regular base inherits second-countability from the upper half-plane. -/
 public theorem regularBase_secondCountable (U : TriangleUniformization) :
     SecondCountableTopology (RegularBase (U := U)) := by
@@ -111,6 +124,12 @@ public theorem regularBase_secondCountable (U : TriangleUniformization) :
 public theorem regularTotalSpace_connected (F : PeriodFunctions U) :
     ConnectedSpace (RegularTotalSpace F) := by
   let _ : ConnectedSpace (RegularBase (U := U)) := regularBase_connected U
+  infer_instance
+
+/-- The varying torus family over the regular base is path connected. -/
+public theorem regularTotalSpace_pathConnected (F : PeriodFunctions U) :
+    PathConnectedSpace (RegularTotalSpace F) := by
+  let _ : PathConnectedSpace (RegularBase (U := U)) := regularBase_pathConnected U
   infer_instance
 
 /-- The quotient of the regular torus family by the triangle group is connected. -/
