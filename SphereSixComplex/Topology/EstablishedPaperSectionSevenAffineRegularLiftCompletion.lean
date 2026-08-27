@@ -1,14 +1,17 @@
 module
 
-public import SphereSixComplex.Topology.PaperSectionSevenAffineRegularLiftCompletionAssembly
+public import SphereSixComplex.Topology.PaperSectionSevenAffineOverlapInterleaving
 
 /-!
 # Established overlap input for the affine completion
 
 The paper's remaining affine topology is recorded at exactly the level used by the radial
-completion: the two overlap inclusions are homotopy equivalences and the induced band maps are
-homotopic to the two marked finite-cover projections.  No quotient model or set-level
-identification of an overlap with an affine disc is assumed.
+completion.  Both overlap inclusions are now *proved* to be homotopy equivalences, by the radial
+shrink of the Cayley star collars in
+`SphereSixComplex.Topology.PaperSectionSevenAffineOverlapInterleaving`.  What is still assumed is
+only the pair of marked band squares: the induced band maps are homotopic to the two marked
+finite-cover projections.  No quotient model or set-level identification of an overlap with an
+affine disc is assumed.
 -/
 
 @[expose] public section
@@ -19,11 +22,29 @@ namespace SphereSixComplex.Geometry.PaperAnalyticData
 
 namespace EstablishedSectionSevenAffineRegularLiftTopology
 
-/-- The exact residual affine input from the paper: radial contraction of each actual overlap and
-the two marked band homotopies.  The proposition-level assembly theorem shows that this is all the
-completion uses. -/
-public axiom overlapCompletionInput (A : PaperAnalyticData) :
-    A.SectionSevenAffineOverlapCompletionInput
+/-- The exact residual affine input from the paper: the two marked band square homotopies.
+
+**Do not weaken the trivialization used here.**  This statement was *false* in an earlier form of
+the development, and is sound only because the band trivialization is taken at a *named* lift.
+Historically `sectionSevenAffineCentralBandProductHomeomorph` was
+`(establishedActualCentralBandProductTrivialization A S).choose`.  Since
+`IsHomeomorphicTrivialFiberBundle` pins only the *base* coordinate, that left the fibre coordinate
+entirely free: post-composing the chosen trivialization with a fibrewise self-homeomorphism lying
+outside the order-three subgroup of `GL₄(ℤ)` falsifies the band square, so no proof of the
+un-marked statement could exist.  The current
+`sectionSevenAffineCentralBandMarkedProductHomeomorph` is built from the named
+`sectionSevenAffineNamedStripLift`, which pins the fibre coordinate and makes
+`SectionSevenAffineOverlapBandCompatibility` a true statement.  Anyone tempted to "simplify" the
+marked product homeomorphism back to an `Exists.choose` would be reintroducing a false axiom. -/
+public axiom overlapBandCompatibility (A : PaperAnalyticData) :
+    A.SectionSevenAffineOverlapBandCompatibility
+
+/-- The full residual affine input: radial contraction of each actual overlap and the two marked
+band homotopies.  The two overlap homotopy equivalences are supplied by the proved collar shrinks,
+so only the band squares are assumed. -/
+public theorem overlapCompletionInput (A : PaperAnalyticData) :
+    A.SectionSevenAffineOverlapCompletionInput :=
+  (overlapBandCompatibility A).toOverlapCompletionInput
 
 /-- Exact drop-in replacement for the former broad radial-completion existence assumption. -/
 public theorem radialCompletionInput_nonempty

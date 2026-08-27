@@ -875,6 +875,645 @@ public theorem exists_orderThreeCayleyRadius_coordinate_lt {a : ℝ} (ha : 0 < a
     exists_cayleyRadius_subset SphereSixComplex.TriangleGroup.fuchsianOneFixedPoint hopen hmem
   exact ⟨t, ht, fun z hz ↦ hsub z hz⟩
 
+
+/-- The reversed shrink parameter path.  The disc scaling factor `1 - collarShrinkParam c t`
+runs from `c` at `t = 0` up to `1` at `t = 1`. -/
+public def collarShrinkParam (c t : unitInterval) : unitInterval :=
+  ⟨(1 - (t : ℝ)) * (1 - (c : ℝ)), by
+    obtain ⟨ht0, ht1⟩ := t.2
+    obtain ⟨hc0, hc1⟩ := c.2
+    constructor
+    · nlinarith
+    · nlinarith⟩
+
+public theorem collarShrinkParam_continuous (c : unitInterval) :
+    Continuous fun t : unitInterval ↦ collarShrinkParam c t :=
+  (((continuous_const.sub continuous_subtype_val).mul continuous_const)).subtype_mk _
+
+@[simp]
+public theorem collarShrinkParam_one (c : unitInterval) :
+    collarShrinkParam c 1 = 0 := by
+  apply Subtype.ext
+  show (1 - (1 : ℝ)) * (1 - (c : ℝ)) = 0
+  ring
+
+public theorem collarShrinkParam_lt_one {c : unitInterval} (hc : 0 < (c : ℝ))
+    (t : unitInterval) : ((collarShrinkParam c t : unitInterval) : ℝ) < 1 := by
+  obtain ⟨ht0, ht1⟩ := t.2
+  obtain ⟨hc0, hc1⟩ := c.2
+  show (1 - (t : ℝ)) * (1 - (c : ℝ)) < 1
+  have h1 : (1 - (t : ℝ)) * (1 - (c : ℝ)) ≤ 1 * (1 - (c : ℝ)) :=
+    mul_le_mul_of_nonneg_right (by linarith) (by linarith)
+  linarith
+
+public theorem one_sub_collarShrinkParam_zero (c : unitInterval) :
+    1 - ((collarShrinkParam c 0 : unitInterval) : ℝ) = (c : ℝ) := by
+  show 1 - (1 - ((0 : unitInterval) : ℝ)) * (1 - (c : ℝ)) = (c : ℝ)
+  norm_num
+
+/-- Shrinking preserves the selected order-three collar carrier. -/
+public theorem orderThreeFamilyShrink_mem_collarCarrier {s : unitInterval}
+    (hs : (s : ℝ) < 1) {q : TotalSpace (parameterMap A.periods)}
+    (hq : q ∈ A.orderThreeCollarCarrier.carrier) :
+    A.orderThreeFamilyShrink s q ∈ A.orderThreeCollarCarrier.carrier := by
+  rw [A.mem_orderThreeCollarCarrier] at hq ⊢
+  rw [A.orderThreeFamilyRadius_familyShrink]
+  obtain ⟨hpos, hlt⟩ := hq
+  have hs1 : (0 : ℝ) < 1 - (s : ℝ) := by linarith
+  have hs2 : 1 - (s : ℝ) ≤ 1 := by have := s.2.1; linarith
+  constructor
+  · positivity
+  · nlinarith
+
+
+/-- The setoid presenting the order-three star collar as an orbit quotient. -/
+public noncomputable abbrev orderThreeCollarSetoid : Setoid A.orderThreeCollarCarrier.carrier :=
+  restrictedOrbitRel (orderThreeAffineFamilyAction A.periods) A.orderThreeCollarCarrier
+
+/-- The radial shrink of the order-three collar carrier at time `t`. -/
+public noncomputable def orderThreeCollarShrinkCarrier {c : unitInterval} (hc : 0 < (c : ℝ))
+    (t : unitInterval) (q : A.orderThreeCollarCarrier.carrier) :
+    A.orderThreeCollarCarrier.carrier :=
+  ⟨A.orderThreeFamilyShrink (collarShrinkParam c t) q.1,
+    A.orderThreeFamilyShrink_mem_collarCarrier (collarShrinkParam_lt_one hc t) q.2⟩
+
+public theorem orderThreeCollarShrinkCarrier_continuous {c : unitInterval} (hc : 0 < (c : ℝ)) :
+    Continuous fun z : unitInterval × A.orderThreeCollarCarrier.carrier ↦
+      A.orderThreeCollarShrinkCarrier hc z.1 z.2 :=
+  (A.orderThreeFamilyShrink_continuous.comp
+    (((collarShrinkParam_continuous c).comp continuous_fst).prodMk
+      (continuous_subtype_val.comp continuous_snd))).subtype_mk _
+
+public theorem orderThreeCollarShrinkCarrier_equivariant {c : unitInterval} (hc : 0 < (c : ℝ))
+    (t : unitInterval) (g : FiniteCyclic 3) (q : A.orderThreeCollarCarrier.carrier) :
+    A.orderThreeCollarShrinkCarrier hc t
+        (restrictedActionMap A.orderThreeCollarCarrier g q) =
+      restrictedActionMap A.orderThreeCollarCarrier g
+        (A.orderThreeCollarShrinkCarrier hc t q) :=
+  Subtype.ext (A.orderThreeFamilyShrink_equivariant _ g q.1)
+
+/-- The descended radial shrink homotopy on the order-three star collar quotient. -/
+public noncomputable def orderThreeCollarShrinkFun {c : unitInterval} (hc : 0 < (c : ℝ)) :
+    unitInterval × Quotient A.orderThreeCollarSetoid → Quotient A.orderThreeCollarSetoid :=
+  fun z ↦ Quotient.lift
+    (fun q ↦ Quotient.mk A.orderThreeCollarSetoid (A.orderThreeCollarShrinkCarrier hc z.1 q))
+    (by
+      intro a b hab
+      apply Quotient.sound
+      change ∃ g : FiniteCyclic 3, restrictedActionMap A.orderThreeCollarCarrier g b = a at hab
+      change ∃ g : FiniteCyclic 3,
+        restrictedActionMap A.orderThreeCollarCarrier g
+            (A.orderThreeCollarShrinkCarrier hc z.1 b) =
+          A.orderThreeCollarShrinkCarrier hc z.1 a
+      obtain ⟨g, rfl⟩ := hab
+      exact ⟨g, (A.orderThreeCollarShrinkCarrier_equivariant hc z.1 g b).symm⟩) z.2
+
+public theorem orderThreeCollarShrinkFun_mk {c : unitInterval} (hc : 0 < (c : ℝ))
+    (t : unitInterval) (q : A.orderThreeCollarCarrier.carrier) :
+    A.orderThreeCollarShrinkFun hc (t, Quotient.mk A.orderThreeCollarSetoid q) =
+      Quotient.mk A.orderThreeCollarSetoid (A.orderThreeCollarShrinkCarrier hc t q) :=
+  rfl
+
+public theorem orderThreeCollarShrinkFun_continuous {c : unitInterval} (hc : 0 < (c : ℝ)) :
+    Continuous (A.orderThreeCollarShrinkFun hc) := by
+  let _ := A.totalSpaceCharts
+  let _ := restrictedMulAction (orderThreeAffineFamilyAction A.periods) A.orderThreeCollarCarrier
+  let _ : ContinuousConstSMul (FiniteCyclic 3) A.orderThreeCollarCarrier.carrier :=
+    ⟨fun g ↦ (A.orderThreeAffinePuncturedAction_contMDiff
+      A.starSeparation.orderThree.radius g).continuous⟩
+  have hq : IsOpenQuotientMap (Prod.map (id : unitInterval → unitInterval)
+      (Quotient.mk A.orderThreeCollarSetoid)) :=
+    IsOpenQuotientMap.id.prodMap
+      (MulAction.isOpenQuotientMap_quotientMk (Γ := FiniteCyclic 3)
+        (T := A.orderThreeCollarCarrier.carrier))
+  apply hq.isQuotientMap.continuous_iff.mpr
+  exact continuous_quot_mk.comp (A.orderThreeCollarShrinkCarrier_continuous hc)
+
+
+@[simp]
+public theorem orderThreeCollarShrinkFun_one {c : unitInterval} (hc : 0 < (c : ℝ))
+    (x : Quotient A.orderThreeCollarSetoid) :
+    A.orderThreeCollarShrinkFun hc (1, x) = x := by
+  induction x using Quotient.inductionOn with
+  | _ q =>
+      rw [A.orderThreeCollarShrinkFun_mk]
+      congr 1
+      apply Subtype.ext
+      show A.orderThreeFamilyShrink (collarShrinkParam c 1) q.1 = q.1
+      rw [collarShrinkParam_one, A.orderThreeFamilyShrink_zero]
+
+/-- At time zero the descended shrink scales the collar radius by the factor `c`. -/
+public theorem starCollarRadius_orderThreeCollarShrinkFun_zero {c : unitInterval}
+    (hc : 0 < (c : ℝ)) (x : Quotient A.orderThreeCollarSetoid) :
+    A.starCollarRadius (1 : Fin 3) (A.orderThreeCollarShrinkFun hc (0, x)) =
+      (c : ℝ) * A.starCollarRadius (1 : Fin 3) x := by
+  induction x using Quotient.inductionOn with
+  | _ q =>
+      rw [A.orderThreeCollarShrinkFun_mk, A.orderThreeStarCollarRadius_mk,
+        A.orderThreeStarCollarRadius_mk]
+      show orderThreeFamilyRadius A.periods
+        (A.orderThreeFamilyShrink (collarShrinkParam c 0) q.1) = _
+      rw [A.orderThreeFamilyRadius_familyShrink, one_sub_collarShrinkParam_zero]
+
+/-- Every point of the order-three star collar has radius below the selected separation. -/
+public theorem starCollarRadius_lt_orderThreeSeparation
+    (x : Quotient A.orderThreeCollarSetoid) :
+    A.starCollarRadius (1 : Fin 3) x < A.starSeparation.orderThree.radius := by
+  induction x using Quotient.inductionOn with
+  | _ q =>
+      rw [A.orderThreeStarCollarRadius_mk]
+      exact (A.mem_orderThreeCollarCarrier.mp q.2).2
+
+/-- **The order-three overlap inclusion is a homotopy equivalence.**  The radial shrink of the
+Cayley star collar towards its elliptic centre lands in an affine `lambda`-disc region, and is
+homotopic to the identity through collar shrinks; the interleaving reduction then applies. -/
+public theorem orderThreeOverlapIsHomotopyEquivalence :
+    IsHomotopyEquivalence (interToRight A.sectionSevenOrderThreeFillingImage
+      A.sectionSevenAffineOrderThreeCentralRegion).hom := by
+  obtain ⟨a, ha0, ha3, hsub⟩ := A.exists_discRegion_subset_orderThreeOverlap
+  obtain ⟨tc, htc0, htc⟩ := A.exists_orderThreeCayleyRadius_coordinate_lt ha0
+  have hs0 : 0 < A.starSeparation.orderThree.radius := A.starSeparation.orderThree.radius_pos
+  have hcr0 : 0 < min 1 (tc / A.starSeparation.orderThree.radius) :=
+    lt_min one_pos (by positivity)
+  set c : unitInterval :=
+    ⟨min 1 (tc / A.starSeparation.orderThree.radius), hcr0.le, min_le_left _ _⟩ with hcdef
+  have hc : 0 < (c : ℝ) := hcr0
+  have hcs : (c : ℝ) * A.starSeparation.orderThree.radius ≤ tc := by
+    have : (c : ℝ) ≤ tc / A.starSeparation.orderThree.radius := min_le_right _ _
+    calc (c : ℝ) * A.starSeparation.orderThree.radius
+        ≤ (tc / A.starSeparation.orderThree.radius) * A.starSeparation.orderThree.radius :=
+          mul_le_mul_of_nonneg_right this hs0.le
+      _ = tc := div_mul_cancel₀ _ hs0.ne'
+  have hradius : ∀ x : Quotient A.orderThreeCollarSetoid,
+      A.starCollarRadius (1 : Fin 3) (A.orderThreeCollarShrinkFun hc (0, x)) < tc := by
+    intro x
+    rw [A.starCollarRadius_orderThreeCollarShrinkFun_zero hc]
+    have hlt := A.starCollarRadius_lt_orderThreeSeparation x
+    calc (c : ℝ) * A.starCollarRadius (1 : Fin 3) x
+        < (c : ℝ) * A.starSeparation.orderThree.radius := by
+          exact mul_lt_mul_of_pos_left hlt hc
+      _ ≤ tc := hcs
+  have key : ∀ u : ↥(A.sectionSevenOrderThreeFillingImage ∩
+      A.sectionSevenAffineOrderThreeCentralRegion),
+      (A.orderThreeOverlapCollarHomeomorph.symm
+          (A.orderThreeCollarShrinkFun hc
+            (0, A.orderThreeOverlapCollarHomeomorph u))).1 ∈
+        A.sectionSevenAffineOrderThreeDiscRegion a := by
+    intro u
+    set z := A.orderThreeCollarShrinkFun hc (0, A.orderThreeOverlapCollarHomeomorph u) with hz
+    set v := A.orderThreeOverlapCollarHomeomorph.symm z with hv
+    refine ⟨⟨v.1, A.mem_centralImage_of_mem_centralHeightLowerRegion
+      A.sectionSevenEllipticCentralHeight (2 / 3 : ℝ) v.2.2⟩, ?_, rfl⟩
+    show ‖(A.centralFamilyCoordinate
+      (A.sectionSevenEllipticCentralImageHomeomorph _)).1‖ < a
+    rw [A.starToCentral_orderThreeOverlapCollarHomeomorph_symm z]
+    exact A.orderThreeStarCollar_centralCoordinate_norm_lt_of_radius htc z (hradius _)
+  refine A.orderThreeOverlapIsHomotopyEquivalence_of_shrink ha0 ha3 hsub
+    ⟨fun u ↦ ⟨(A.orderThreeOverlapCollarHomeomorph.symm
+        (A.orderThreeCollarShrinkFun hc
+          (0, A.orderThreeOverlapCollarHomeomorph u))).1, key u⟩,
+      (continuous_subtype_val.comp
+        (A.orderThreeOverlapCollarHomeomorph.symm.continuous.comp
+          ((A.orderThreeCollarShrinkFun_continuous hc).comp
+            (continuous_const.prodMk
+              A.orderThreeOverlapCollarHomeomorph.continuous)))).subtype_mk _⟩ ⟨?_⟩
+  refine
+    { toFun := fun z ↦ A.orderThreeOverlapCollarHomeomorph.symm
+        (A.orderThreeCollarShrinkFun hc (z.1, A.orderThreeOverlapCollarHomeomorph z.2))
+      continuous_toFun := A.orderThreeOverlapCollarHomeomorph.symm.continuous.comp
+        ((A.orderThreeCollarShrinkFun_continuous hc).comp
+          (continuous_fst.prodMk
+            (A.orderThreeOverlapCollarHomeomorph.continuous.comp continuous_snd)))
+      map_zero_left := fun u ↦ Subtype.ext rfl
+      map_one_left := fun u ↦ ?_ }
+  show A.orderThreeOverlapCollarHomeomorph.symm
+      (A.orderThreeCollarShrinkFun hc (1, A.orderThreeOverlapCollarHomeomorph u)) = u
+  exact (congrArg A.orderThreeOverlapCollarHomeomorph.symm
+    (A.orderThreeCollarShrinkFun_one hc (A.orderThreeOverlapCollarHomeomorph u))).trans
+      (A.orderThreeOverlapCollarHomeomorph.symm_apply_apply u)
+
+
+
+/-! ## The order-four side
+
+Every step of the order-three argument is repeated verbatim in the order-four chart, where the
+disc coordinate is the order-four Cayley radius and the affine centre is `lambda = 1`. -/
+
+/-- A central-image point of the order-four filling image already lies in the order-four central
+region. -/
+public theorem mem_orderFourCentralRegion_of_mem_fillingImage
+    (x : A.sectionSevenEllipticCentralImage)
+    (hx : x.1 ∈ A.sectionSevenOrderFourFillingImage) :
+    x.1 ∈ A.sectionSevenAffineOrderFourCentralRegion := by
+  obtain ⟨q, hq⟩ := (A.mem_orderFourFillingImage_iff_mem_starToCentral_range x).mp hx
+  refine ⟨x, ?_, rfl⟩
+  show (1 : ℝ) / 3 < A.sectionSevenEllipticCentralHeight x
+  change (1 : ℝ) / 3 <
+    (A.centralFamilyCoordinate (A.sectionSevenEllipticCentralImageHomeomorph x)).1.re
+  rw [← hq]
+  have hnorm := A.orderFourStarCollar_centralCoordinate_norm_lt q
+  have hre := Complex.abs_re_le_norm
+    ((A.centralFamilyCoordinate (A.starToCentral 2 q)).1 - 1)
+  simp only [Complex.sub_re, Complex.one_re] at hre
+  have hlow : -‖(A.centralFamilyCoordinate (A.starToCentral 2 q)).1 - 1‖ ≤
+      (A.centralFamilyCoordinate (A.starToCentral 2 q)).1.re - 1 := (abs_le.mp hre).1
+  linarith
+
+/-- The order-four star overlap, as a subspace of the elliptic interior, is exactly the
+order-four star collar quotient. -/
+public noncomputable def orderFourOverlapCollarHomeomorph :
+    ↥(A.sectionSevenOrderFourFillingImage ∩
+        A.sectionSevenAffineOrderFourCentralRegion) ≃ₜ
+      A.starCollarSourceType (2 : Fin 3) :=
+  let e₁ : ↥(A.sectionSevenOrderFourFillingImage ∩
+      A.sectionSevenAffineOrderFourCentralRegion) ≃ₜ
+      {x : A.sectionSevenEllipticCentralImage //
+        x.1 ∈ A.sectionSevenOrderFourFillingImage} :=
+    { toFun := fun u ↦ ⟨⟨u.1, A.mem_centralImage_of_mem_centralHeightUpperRegion
+        A.sectionSevenEllipticCentralHeight (1 / 3 : ℝ) u.2.2⟩, u.2.1⟩
+      invFun := fun v ↦ ⟨v.1.1,
+        ⟨v.2, A.mem_orderFourCentralRegion_of_mem_fillingImage v.1 v.2⟩⟩
+      left_inv := fun _ ↦ rfl
+      right_inv := fun _ ↦ rfl
+      continuous_toFun := (continuous_subtype_val.subtype_mk _).subtype_mk _
+      continuous_invFun := (continuous_subtype_val.comp continuous_subtype_val).subtype_mk _ }
+  let e₂ := A.sectionSevenEllipticCentralImageHomeomorph.subtype
+    A.mem_orderFourFillingImage_iff_mem_starToCentral_range
+  let e₃ := (A.starToCentral_isOpenEmbedding (2 : Fin 3)).isEmbedding.toHomeomorph
+  e₁.trans (e₂.trans e₃.symm)
+
+public theorem starToCentral_orderFourOverlapCollarHomeomorph
+    (u : ↥(A.sectionSevenOrderFourFillingImage ∩
+      A.sectionSevenAffineOrderFourCentralRegion)) :
+    A.starToCentral 2 (A.orderFourOverlapCollarHomeomorph u) =
+      A.sectionSevenEllipticCentralImageHomeomorph
+        ⟨u.1, A.mem_centralImage_of_mem_centralHeightUpperRegion
+          A.sectionSevenEllipticCentralHeight (1 / 3 : ℝ) u.2.2⟩ := by
+  let e₃ := (A.starToCentral_isOpenEmbedding (2 : Fin 3)).isEmbedding.toHomeomorph
+  let w : ↥(Set.range (A.starToCentral (2 : Fin 3))) :=
+    ⟨A.sectionSevenEllipticCentralImageHomeomorph
+        ⟨u.1, A.mem_centralImage_of_mem_centralHeightUpperRegion
+          A.sectionSevenEllipticCentralHeight (1 / 3 : ℝ) u.2.2⟩,
+      (A.mem_orderFourFillingImage_iff_mem_starToCentral_range _).mp u.2.1⟩
+  have hcoe := Topology.IsEmbedding.toHomeomorph_apply_coe
+    (A.starToCentral_isOpenEmbedding (2 : Fin 3)).isEmbedding (e₃.symm w)
+  show A.starToCentral 2 (e₃.symm w) = _
+  exact hcoe.symm.trans (congrArg Subtype.val (e₃.apply_symm_apply w))
+
+public theorem starToCentral_orderFourOverlapCollarHomeomorph_symm
+    (z : A.starCollarSourceType (2 : Fin 3)) :
+    A.sectionSevenEllipticCentralImageHomeomorph
+        ⟨(A.orderFourOverlapCollarHomeomorph.symm z).1,
+          A.mem_centralImage_of_mem_centralHeightUpperRegion
+            A.sectionSevenEllipticCentralHeight (1 / 3 : ℝ)
+            (A.orderFourOverlapCollarHomeomorph.symm z).2.2⟩ =
+      A.starToCentral 2 z := by
+  have h := A.starToCentral_orderFourOverlapCollarHomeomorph
+    (A.orderFourOverlapCollarHomeomorph.symm z)
+  rw [A.orderFourOverlapCollarHomeomorph.apply_symm_apply] at h
+  exact h.symm
+
+/-- Quantitative form of the order-four collar coordinate bound. -/
+public theorem orderFourStarCollar_centralCoordinate_norm_lt_of_radius
+    {a t : ℝ}
+    (ht : ∀ z : UpperHalfPlane, ‖(orderFourCayleyHomeomorph z : ℂ)‖ < t →
+      ‖A.modular.sourceCoordinate.coordinate z - 1‖ < a)
+    (z : A.starCollarSourceType (2 : Fin 3))
+    (hz : A.starCollarRadius (2 : Fin 3) z < t) :
+    ‖(A.centralFamilyCoordinate (A.starToCentral 2 z)).1 - 1‖ < a := by
+  induction z using Quotient.inductionOn with
+  | _ q =>
+      let hproper : SourceActionProperlyDiscontinuous
+          (U := A.modular.modularParameter.toTriangleUniformization) :=
+        sourceActionProperlyDiscontinuous_of_eq
+          A.modular.modularParameter.toTriangleUniformization_sourceAction
+      let qlin := orderFourPuncturedCollarGaugeEquiv A.periods
+        A.starSeparation.orderFour.radius q
+      let qreg := orderFourCollarToRegular A.periods hproper
+        A.starSeparation.orderFour.sourceData qlin
+      have hbase : ‖(orderFourCayleyHomeomorph
+          (regularTotalSpaceBase A.periods qreg).1).1‖ =
+          orderFourFamilyRadius A.periods qlin := by
+        rw [orderFourFamilyRadius.eq_def]
+        exact congrArg (fun y : UpperHalfPlane ↦ ‖(orderFourCayleyHomeomorph y).1‖)
+          (orderFourCollarToRegular_base A.periods hproper
+            A.modular.modularParameter.toTriangleUniformization_sourceAction
+            A.starSeparation.orderFour.sourceData qlin)
+      have key : ‖(orderFourCayleyHomeomorph
+          (regularTotalSpaceBase A.periods qreg).1).1‖ =
+          A.starCollarRadius (2 : Fin 3) (Quotient.mk _ q) := by
+        calc ‖(orderFourCayleyHomeomorph
+              (regularTotalSpaceBase A.periods qreg).1).1‖
+            = orderFourFamilyRadius A.periods qlin := hbase
+          _ = orderFourFamilyRadius A.periods q :=
+              orderFourFamilyRadius_principalGauge A.periods q
+          _ = A.starCollarRadius (2 : Fin 3) (Quotient.mk _ q) :=
+              (A.orderFourStarCollarRadius_mk q).symm
+      have hgoal : ‖A.modular.sourceCoordinate.coordinate
+          (regularTotalSpaceBase A.periods qreg).1 - 1‖ < a := by
+        refine ht _ ?_
+        rw [key]
+        exact hz
+      rw [A.orderFourStarToCentral_mk q, A.centralFamilyCoordinate_centralQuotientProjection]
+      exact hgoal
+
+/-- Radial shrinking of the varying order-four family, read in the product chart. -/
+public noncomputable def orderFourFamilyShrink (s : unitInterval)
+    (q : TotalSpace (parameterMap A.periods)) : TotalSpace (parameterMap A.periods) :=
+  (orderFourRealPeriodProductHomeomorph A.periods).symm
+    (discRadialHomotopy (s, (orderFourRealPeriodProductHomeomorph A.periods q).1),
+      (orderFourRealPeriodProductHomeomorph A.periods q).2)
+
+public theorem orderFourFamilyShrink_continuous :
+    Continuous fun z : unitInterval × TotalSpace (parameterMap A.periods) ↦
+      A.orderFourFamilyShrink z.1 z.2 := by
+  apply (orderFourRealPeriodProductHomeomorph A.periods).symm.continuous.comp
+  refine Continuous.prodMk ?_ ?_
+  · exact discRadialHomotopy_continuous.comp (continuous_fst.prodMk
+      ((continuous_fst.comp
+        ((orderFourRealPeriodProductHomeomorph A.periods).continuous.comp continuous_snd))))
+  · exact continuous_snd.comp
+      ((orderFourRealPeriodProductHomeomorph A.periods).continuous.comp continuous_snd)
+
+@[simp]
+public theorem orderFourFamilyShrink_zero (q : TotalSpace (parameterMap A.periods)) :
+    A.orderFourFamilyShrink 0 q = q := by
+  rw [orderFourFamilyShrink, discRadialHomotopy_zero]
+  exact (orderFourRealPeriodProductHomeomorph A.periods).symm_apply_apply q
+
+public theorem orderFourFamilyRadius_familyShrink (s : unitInterval)
+    (q : TotalSpace (parameterMap A.periods)) :
+    orderFourFamilyRadius A.periods (A.orderFourFamilyShrink s q) =
+      (1 - (s : ℝ)) * orderFourFamilyRadius A.periods q := by
+  rw [orderFourFamilyRadius_eq_productNorm, orderFourFamilyRadius_eq_productNorm,
+    orderFourFamilyShrink, Homeomorph.apply_symm_apply]
+  have hval : ((discRadialHomotopy
+      (s, (orderFourRealPeriodProductHomeomorph A.periods q).1) : ComplexUnitDisc) : ℂ) =
+      ((1 - (s : ℝ) : ℝ) : ℂ) *
+        ((orderFourRealPeriodProductHomeomorph A.periods q).1 : ℂ) := rfl
+  have hs0 : (0 : ℝ) ≤ 1 - (s : ℝ) := by
+    have := s.2.2
+    linarith
+  simp only [hval, norm_mul, Complex.norm_real, Real.norm_of_nonneg hs0]
+
+public theorem orderFourFamilyShrink_equivariant (s : unitInterval)
+    (g : FiniteCyclic 4) (q : TotalSpace (parameterMap A.periods)) :
+    A.orderFourFamilyShrink s (actionMap (orderFourAffineFamilyAction A.periods) g q) =
+      actionMap (orderFourAffineFamilyAction A.periods) g (A.orderFourFamilyShrink s q) := by
+  have hP : ∀ y : TotalSpace (parameterMap A.periods),
+      orderFourRealPeriodProductHomeomorph A.periods
+          (actionMap (orderFourAffineFamilyAction A.periods) g y) =
+        actionMap
+          (SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderFourActionData
+            A.periods).diagonalAction g
+          (orderFourRealPeriodProductHomeomorph A.periods y) :=
+    fun y ↦ orderFourRealPeriodProductHomeomorph_equivariant A.periods
+      A.modular.modularParameter.toTriangleUniformization_sourceAction g y
+  apply (orderFourRealPeriodProductHomeomorph A.periods).injective
+  rw [orderFourFamilyShrink, Homeomorph.apply_symm_apply, hP, hP,
+    orderFourFamilyShrink, Homeomorph.apply_symm_apply]
+  exact (orderFourRadialActionData A.periods).radial_equivariant g s
+    (orderFourRealPeriodProductHomeomorph A.periods q)
+
+/-- The selected order-four collar carrier. -/
+public noncomputable abbrev orderFourCollarCarrier :
+    InvariantOpenCarrier (orderFourAffineFamilyAction A.periods) :=
+  orderFourAffinePuncturedCarrier A.periods
+    A.modular.modularParameter.toTriangleUniformization_sourceAction
+    A.starSeparation.orderFour.radius
+
+public theorem mem_orderFourCollarCarrier
+    {q : TotalSpace (parameterMap A.periods)} :
+    q ∈ A.orderFourCollarCarrier.carrier ↔
+      0 < orderFourFamilyRadius A.periods q ∧
+        orderFourFamilyRadius A.periods q < A.starSeparation.orderFour.radius :=
+  Iff.rfl
+
+/-- A Cayley radius small enough to force a prescribed order-four affine coordinate bound. -/
+public theorem exists_orderFourCayleyRadius_coordinate_lt {a : ℝ} (ha : 0 < a) :
+    ∃ t : ℝ, 0 < t ∧ ∀ z : UpperHalfPlane,
+      ‖(orderFourCayleyHomeomorph z : ℂ)‖ < t →
+        ‖A.modular.sourceCoordinate.coordinate z - 1‖ < a := by
+  have hopen : IsOpen {z : UpperHalfPlane |
+      ‖A.modular.sourceCoordinate.coordinate z - 1‖ < a} :=
+    isOpen_lt (continuous_norm.comp
+      (A.modular.sourceCoordinate.coordinate_holomorphic.continuous.sub continuous_const))
+      continuous_const
+  have hmem : SphereSixComplex.TriangleGroup.fuchsianTwoFixedPoint ∈
+      {z : UpperHalfPlane | ‖A.modular.sourceCoordinate.coordinate z - 1‖ < a} := by
+    show ‖A.modular.sourceCoordinate.coordinate
+      SphereSixComplex.TriangleGroup.fuchsianTwoFixedPoint - 1‖ < a
+    rw [A.modular.sourceCoordinate.coordinate_at_two]
+    simpa using ha
+  obtain ⟨t, ht, -, hsub⟩ :=
+    exists_cayleyRadius_subset SphereSixComplex.TriangleGroup.fuchsianTwoFixedPoint hopen hmem
+  exact ⟨t, ht, fun z hz ↦ hsub z hz⟩
+
+/-- Shrinking preserves the selected order-four collar carrier. -/
+public theorem orderFourFamilyShrink_mem_collarCarrier {s : unitInterval}
+    (hs : (s : ℝ) < 1) {q : TotalSpace (parameterMap A.periods)}
+    (hq : q ∈ A.orderFourCollarCarrier.carrier) :
+    A.orderFourFamilyShrink s q ∈ A.orderFourCollarCarrier.carrier := by
+  rw [A.mem_orderFourCollarCarrier] at hq ⊢
+  rw [A.orderFourFamilyRadius_familyShrink]
+  obtain ⟨hpos, hlt⟩ := hq
+  have hs1 : (0 : ℝ) < 1 - (s : ℝ) := by linarith
+  have hs2 : 1 - (s : ℝ) ≤ 1 := by have := s.2.1; linarith
+  constructor
+  · positivity
+  · nlinarith
+
+/-- The setoid presenting the order-four star collar as an orbit quotient. -/
+public noncomputable abbrev orderFourCollarSetoid : Setoid A.orderFourCollarCarrier.carrier :=
+  restrictedOrbitRel (orderFourAffineFamilyAction A.periods) A.orderFourCollarCarrier
+
+/-- The radial shrink of the order-four collar carrier at time `t`. -/
+public noncomputable def orderFourCollarShrinkCarrier {c : unitInterval} (hc : 0 < (c : ℝ))
+    (t : unitInterval) (q : A.orderFourCollarCarrier.carrier) :
+    A.orderFourCollarCarrier.carrier :=
+  ⟨A.orderFourFamilyShrink (collarShrinkParam c t) q.1,
+    A.orderFourFamilyShrink_mem_collarCarrier (collarShrinkParam_lt_one hc t) q.2⟩
+
+public theorem orderFourCollarShrinkCarrier_continuous {c : unitInterval} (hc : 0 < (c : ℝ)) :
+    Continuous fun z : unitInterval × A.orderFourCollarCarrier.carrier ↦
+      A.orderFourCollarShrinkCarrier hc z.1 z.2 :=
+  (A.orderFourFamilyShrink_continuous.comp
+    (((collarShrinkParam_continuous c).comp continuous_fst).prodMk
+      (continuous_subtype_val.comp continuous_snd))).subtype_mk _
+
+public theorem orderFourCollarShrinkCarrier_equivariant {c : unitInterval} (hc : 0 < (c : ℝ))
+    (t : unitInterval) (g : FiniteCyclic 4) (q : A.orderFourCollarCarrier.carrier) :
+    A.orderFourCollarShrinkCarrier hc t
+        (restrictedActionMap A.orderFourCollarCarrier g q) =
+      restrictedActionMap A.orderFourCollarCarrier g
+        (A.orderFourCollarShrinkCarrier hc t q) :=
+  Subtype.ext (A.orderFourFamilyShrink_equivariant _ g q.1)
+
+/-- The descended radial shrink homotopy on the order-four star collar quotient. -/
+public noncomputable def orderFourCollarShrinkFun {c : unitInterval} (hc : 0 < (c : ℝ)) :
+    unitInterval × Quotient A.orderFourCollarSetoid → Quotient A.orderFourCollarSetoid :=
+  fun z ↦ Quotient.lift
+    (fun q ↦ Quotient.mk A.orderFourCollarSetoid (A.orderFourCollarShrinkCarrier hc z.1 q))
+    (by
+      intro a b hab
+      apply Quotient.sound
+      change ∃ g : FiniteCyclic 4, restrictedActionMap A.orderFourCollarCarrier g b = a at hab
+      change ∃ g : FiniteCyclic 4,
+        restrictedActionMap A.orderFourCollarCarrier g
+            (A.orderFourCollarShrinkCarrier hc z.1 b) =
+          A.orderFourCollarShrinkCarrier hc z.1 a
+      obtain ⟨g, rfl⟩ := hab
+      exact ⟨g, (A.orderFourCollarShrinkCarrier_equivariant hc z.1 g b).symm⟩) z.2
+
+public theorem orderFourCollarShrinkFun_mk {c : unitInterval} (hc : 0 < (c : ℝ))
+    (t : unitInterval) (q : A.orderFourCollarCarrier.carrier) :
+    A.orderFourCollarShrinkFun hc (t, Quotient.mk A.orderFourCollarSetoid q) =
+      Quotient.mk A.orderFourCollarSetoid (A.orderFourCollarShrinkCarrier hc t q) :=
+  rfl
+
+public theorem orderFourCollarShrinkFun_continuous {c : unitInterval} (hc : 0 < (c : ℝ)) :
+    Continuous (A.orderFourCollarShrinkFun hc) := by
+  let _ := A.totalSpaceCharts
+  let _ := restrictedMulAction (orderFourAffineFamilyAction A.periods) A.orderFourCollarCarrier
+  let _ : ContinuousConstSMul (FiniteCyclic 4) A.orderFourCollarCarrier.carrier :=
+    ⟨fun g ↦ (A.orderFourAffinePuncturedAction_contMDiff
+      A.starSeparation.orderFour.radius g).continuous⟩
+  have hq : IsOpenQuotientMap (Prod.map (id : unitInterval → unitInterval)
+      (Quotient.mk A.orderFourCollarSetoid)) :=
+    IsOpenQuotientMap.id.prodMap
+      (MulAction.isOpenQuotientMap_quotientMk (Γ := FiniteCyclic 4)
+        (T := A.orderFourCollarCarrier.carrier))
+  apply hq.isQuotientMap.continuous_iff.mpr
+  exact continuous_quot_mk.comp (A.orderFourCollarShrinkCarrier_continuous hc)
+
+@[simp]
+public theorem orderFourCollarShrinkFun_one {c : unitInterval} (hc : 0 < (c : ℝ))
+    (x : Quotient A.orderFourCollarSetoid) :
+    A.orderFourCollarShrinkFun hc (1, x) = x := by
+  induction x using Quotient.inductionOn with
+  | _ q =>
+      rw [A.orderFourCollarShrinkFun_mk]
+      congr 1
+      apply Subtype.ext
+      show A.orderFourFamilyShrink (collarShrinkParam c 1) q.1 = q.1
+      rw [collarShrinkParam_one, A.orderFourFamilyShrink_zero]
+
+public theorem starCollarRadius_orderFourCollarShrinkFun_zero {c : unitInterval}
+    (hc : 0 < (c : ℝ)) (x : Quotient A.orderFourCollarSetoid) :
+    A.starCollarRadius (2 : Fin 3) (A.orderFourCollarShrinkFun hc (0, x)) =
+      (c : ℝ) * A.starCollarRadius (2 : Fin 3) x := by
+  induction x using Quotient.inductionOn with
+  | _ q =>
+      rw [A.orderFourCollarShrinkFun_mk, A.orderFourStarCollarRadius_mk,
+        A.orderFourStarCollarRadius_mk]
+      show orderFourFamilyRadius A.periods
+        (A.orderFourFamilyShrink (collarShrinkParam c 0) q.1) = _
+      rw [A.orderFourFamilyRadius_familyShrink, one_sub_collarShrinkParam_zero]
+
+public theorem starCollarRadius_lt_orderFourSeparation
+    (x : Quotient A.orderFourCollarSetoid) :
+    A.starCollarRadius (2 : Fin 3) x < A.starSeparation.orderFour.radius := by
+  induction x using Quotient.inductionOn with
+  | _ q =>
+      rw [A.orderFourStarCollarRadius_mk]
+      exact (A.mem_orderFourCollarCarrier.mp q.2).2
+
+/-- **The order-four overlap inclusion is a homotopy equivalence.** -/
+public theorem orderFourOverlapIsHomotopyEquivalence :
+    IsHomotopyEquivalence (interToRight A.sectionSevenOrderFourFillingImage
+      A.sectionSevenAffineOrderFourCentralRegion).hom := by
+  obtain ⟨a, ha0, ha3, hsub⟩ := A.exists_discRegion_subset_orderFourOverlap
+  obtain ⟨tc, htc0, htc⟩ := A.exists_orderFourCayleyRadius_coordinate_lt ha0
+  have hs0 : 0 < A.starSeparation.orderFour.radius := A.starSeparation.orderFour.radius_pos
+  have hcr0 : 0 < min 1 (tc / A.starSeparation.orderFour.radius) :=
+    lt_min one_pos (by positivity)
+  set c : unitInterval :=
+    ⟨min 1 (tc / A.starSeparation.orderFour.radius), hcr0.le, min_le_left _ _⟩ with hcdef
+  have hc : 0 < (c : ℝ) := hcr0
+  have hcs : (c : ℝ) * A.starSeparation.orderFour.radius ≤ tc := by
+    have : (c : ℝ) ≤ tc / A.starSeparation.orderFour.radius := min_le_right _ _
+    calc (c : ℝ) * A.starSeparation.orderFour.radius
+        ≤ (tc / A.starSeparation.orderFour.radius) * A.starSeparation.orderFour.radius :=
+          mul_le_mul_of_nonneg_right this hs0.le
+      _ = tc := div_mul_cancel₀ _ hs0.ne'
+  have hradius : ∀ x : Quotient A.orderFourCollarSetoid,
+      A.starCollarRadius (2 : Fin 3) (A.orderFourCollarShrinkFun hc (0, x)) < tc := by
+    intro x
+    rw [A.starCollarRadius_orderFourCollarShrinkFun_zero hc]
+    have hlt := A.starCollarRadius_lt_orderFourSeparation x
+    calc (c : ℝ) * A.starCollarRadius (2 : Fin 3) x
+        < (c : ℝ) * A.starSeparation.orderFour.radius := mul_lt_mul_of_pos_left hlt hc
+      _ ≤ tc := hcs
+  have key : ∀ u : ↥(A.sectionSevenOrderFourFillingImage ∩
+      A.sectionSevenAffineOrderFourCentralRegion),
+      (A.orderFourOverlapCollarHomeomorph.symm
+          (A.orderFourCollarShrinkFun hc
+            (0, A.orderFourOverlapCollarHomeomorph u))).1 ∈
+        A.sectionSevenAffineOrderFourDiscRegion a := by
+    intro u
+    set z := A.orderFourCollarShrinkFun hc (0, A.orderFourOverlapCollarHomeomorph u) with hz
+    set v := A.orderFourOverlapCollarHomeomorph.symm z with hv
+    refine ⟨⟨v.1, A.mem_centralImage_of_mem_centralHeightUpperRegion
+      A.sectionSevenEllipticCentralHeight (1 / 3 : ℝ) v.2.2⟩, ?_, rfl⟩
+    show ‖(A.centralFamilyCoordinate
+      (A.sectionSevenEllipticCentralImageHomeomorph _)).1 - 1‖ < a
+    rw [A.starToCentral_orderFourOverlapCollarHomeomorph_symm z]
+    exact A.orderFourStarCollar_centralCoordinate_norm_lt_of_radius htc z (hradius _)
+  refine A.orderFourOverlapIsHomotopyEquivalence_of_shrink ha0 ha3 hsub
+    ⟨fun u ↦ ⟨(A.orderFourOverlapCollarHomeomorph.symm
+        (A.orderFourCollarShrinkFun hc
+          (0, A.orderFourOverlapCollarHomeomorph u))).1, key u⟩,
+      (continuous_subtype_val.comp
+        (A.orderFourOverlapCollarHomeomorph.symm.continuous.comp
+          ((A.orderFourCollarShrinkFun_continuous hc).comp
+            (continuous_const.prodMk
+              A.orderFourOverlapCollarHomeomorph.continuous)))).subtype_mk _⟩ ⟨?_⟩
+  refine
+    { toFun := fun z ↦ A.orderFourOverlapCollarHomeomorph.symm
+        (A.orderFourCollarShrinkFun hc (z.1, A.orderFourOverlapCollarHomeomorph z.2))
+      continuous_toFun := A.orderFourOverlapCollarHomeomorph.symm.continuous.comp
+        ((A.orderFourCollarShrinkFun_continuous hc).comp
+          (continuous_fst.prodMk
+            (A.orderFourOverlapCollarHomeomorph.continuous.comp continuous_snd)))
+      map_zero_left := fun u ↦ Subtype.ext rfl
+      map_one_left := fun u ↦ ?_ }
+  exact (congrArg A.orderFourOverlapCollarHomeomorph.symm
+    (A.orderFourCollarShrinkFun_one hc (A.orderFourOverlapCollarHomeomorph u))).trans
+      (A.orderFourOverlapCollarHomeomorph.symm_apply_apply u)
+
+
+/-! ## Residual affine overlap data
+
+Both overlap homotopy equivalences of `SectionSevenAffineOverlapCompletionInput` are now proved.
+What remains of that structure is exactly the two marked band square homotopies. -/
+
+/-- The two marked band square homotopies, stated against the *proved* overlap homotopy
+equivalences.  By proof irrelevance the band maps do not depend on which proof is used, so this
+is the exact residue of `SectionSevenAffineOverlapCompletionInput`. -/
+public structure SectionSevenAffineOverlapBandCompatibility where
+  orderThree :
+    (sectionSevenAffineOrderThreeBandToReducedFiber
+      (orderThreeOverlapIsHomotopyEquivalence_inclusion
+        A.orderThreeOverlapIsHomotopyEquivalence)).Homotopic
+      (sectionSevenAffineBandOrderThreeCoverMap A)
+  orderFour :
+    (sectionSevenAffineOrderFourBandToReducedFiber
+      (orderFourOverlapIsHomotopyEquivalence_inclusion
+        A.orderFourOverlapIsHomotopyEquivalence)).Homotopic
+      (sectionSevenAffineBandOrderFourCoverMap A)
+
+/-- The full affine overlap completion input, assembled from the two proved overlap homotopy
+equivalences and the residual marked band squares. -/
+public theorem SectionSevenAffineOverlapBandCompatibility.toOverlapCompletionInput
+    (B : A.SectionSevenAffineOverlapBandCompatibility) :
+    A.SectionSevenAffineOverlapCompletionInput where
+  orderThreeOverlap := A.orderThreeOverlapIsHomotopyEquivalence
+  orderFourOverlap := A.orderFourOverlapIsHomotopyEquivalence
+  orderThreeCompatibility := B.orderThree
+  orderFourCompatibility := B.orderFour
+
+
 end SphereSixComplex.Geometry.PaperAnalyticData
 
 end
+
