@@ -41,10 +41,26 @@ The remaining sections prepare that geometric input.
   `vertexPiece_union_edgePiece`, `vertexPiece_inter_edgePiece` and
   `bouquetMk_injOn_edgeBand`, which says that the cylinder interiors are embedded.
 
-What is still missing for an unconditional proof of the axiom is the homological identification of
-that cover: the vertex piece deformation-retracts to the fibre, the edge piece and the overlap are
-finite disjoint unions of copies of the fibre, and integral singular homology takes those finite
-disjoint unions to finite products.
+The geometric identification of that cover is then carried out in full, so that the axiom
+`establishedFiniteBouquetMappingTorusWangSequence` is discharged outright.
+
+* `subsingleton_integralSingularHomology_of_isEmpty` and `coverSumMap_bijective`: integral singular
+  homology is additive over a finite disjoint open cover.
+* `vertexPieceHomotopyEquiv`: the vertex piece deformation-retracts to the fibre over the bouquet
+  vertex.
+* `bandPt_sum_bijective`: a saturated piece over a band inside the cylinder interiors has the
+  homology of a disjoint union of copies of the fibre, one for each loop and each sub-band, and the
+  isomorphism is realised by the explicit slice inclusions.
+* `wangSumMap_apply` and `differenceMap_overlapEquiv`: the Mayer--Vietoris sum and difference maps
+  of the cover are exactly the maps `S` and `coverDifference` of the algebraic splice.
+* `finiteBouquetMappingTorusWangSequenceOfCover`: the resulting unconditional Wang exact sequence,
+  together with `finiteBouquetMappingTorusWangSequenceOfCover_boundary`, which exposes its boundary
+  as the first leg `coverWangBoundary` of the Mayer--Vietoris boundary `coverBoundary` of the
+  vertex/edge cover.  Exposing the boundary rather than merely asserting its existence is what pins
+  its sign.
+* `finiteBouquetMappingTorusWangPresentationOfCover` and
+  `circleMappingTorusWangPresentationOfCover`: axiom-free replacements for the two presentations
+  built from the axiom in `WangHomologyPresentation.lean`.
 -/
 
 @[expose] public section
@@ -1427,5 +1443,1234 @@ public theorem coverSumMap_bijective {J : Type} [Fintype J] :
       (v none) + y) (Finset.sum_congr rfl fun j _ ↦ (htail j (v (some j))).symm)
 
 end FiniteAdditivity
+
+/-! ## Functoriality and homotopy invariance of the induced maps -/
+
+section Functoriality
+
+open CategoryTheory AlgebraicTopology
+
+/-- Integral singular homology is functorial in the continuous map. -/
+public theorem integralSingularHomologyMap_comp_wang {X Y Z : Type} [TopologicalSpace X]
+    [TopologicalSpace Y] [TopologicalSpace Z] (k : ℕ) (f : C(X, Y)) (g : C(Y, Z))
+    (z : IntegralSingularHomology k X) :
+    integralSingularHomologyMap k g (integralSingularHomologyMap k f z) =
+      integralSingularHomologyMap k (g.comp f) z := by
+  symm
+  change ConcreteCategory.hom
+    (((singularHomologyFunctor AddCommGrpCat k).obj (AddCommGrpCat.of ℤ)).map
+      (TopCat.ofHom (g.comp f))) z = _
+  rw [show TopCat.ofHom (g.comp f) = TopCat.ofHom f ≫ TopCat.ofHom g by rfl,
+    Functor.map_comp]
+  rfl
+
+/-- The identity induces the identity. -/
+public theorem integralSingularHomologyMap_id_wang {X : Type} [TopologicalSpace X] (k : ℕ)
+    (z : IntegralSingularHomology k X) :
+    integralSingularHomologyMap k (ContinuousMap.id X) z = z := by
+  change ConcreteCategory.hom
+    (((singularHomologyFunctor AddCommGrpCat k).obj (AddCommGrpCat.of ℤ)).map
+      (TopCat.ofHom (ContinuousMap.id X))) z = z
+  rw [show TopCat.ofHom (ContinuousMap.id X) = 𝟙 (TopCat.of X) from rfl,
+    CategoryTheory.Functor.map_id]
+  rfl
+
+/-- Homotopic maps induce the same map on integral singular homology. -/
+public theorem integralSingularHomologyMap_eq_of_homotopy {X Y : Type} [TopologicalSpace X]
+    [TopologicalSpace Y] (k : ℕ) {f g : C(X, Y)} (H : ContinuousMap.Homotopy f g) :
+    integralSingularHomologyMap k f = integralSingularHomologyMap k g := by
+  unfold integralSingularHomologyMap
+  congr 1
+  exact TopCat.Homotopy.congr_homologyMap_singularChainComplexFunctor
+    (f := TopCat.ofHom f) (g := TopCat.ofHom g) H (AddCommGrpCat.of ℤ) k
+
+public theorem integralSingularHomologyMap_congr_of_homotopic {X Y : Type} [TopologicalSpace X]
+    [TopologicalSpace Y] (k : ℕ) {f g : C(X, Y)} (H : f.Homotopic g) :
+    integralSingularHomologyMap k f = integralSingularHomologyMap k g :=
+  integralSingularHomologyMap_eq_of_homotopy k H.some
+
+/-- A homotopy equivalence induces a bijection on integral singular homology. -/
+public theorem integralSingularHomologyMap_bijective_of_homotopyEquiv {X Y : Type}
+    [TopologicalSpace X] [TopologicalSpace Y] (k : ℕ) (e : X ≃ₕ Y) :
+    Function.Bijective (integralSingularHomologyMap k e.toFun) := by
+  have hleft : ∀ a, integralSingularHomologyMap k e.invFun
+      (integralSingularHomologyMap k e.toFun a) = a := by
+    intro a
+    rw [integralSingularHomologyMap_comp_wang,
+      integralSingularHomologyMap_congr_of_homotopic k e.left_inv,
+      integralSingularHomologyMap_id_wang]
+  have hright : ∀ b, integralSingularHomologyMap k e.toFun
+      (integralSingularHomologyMap k e.invFun b) = b := by
+    intro b
+    rw [integralSingularHomologyMap_comp_wang,
+      integralSingularHomologyMap_congr_of_homotopic k e.right_inv,
+      integralSingularHomologyMap_id_wang]
+  exact ⟨fun a b hab ↦ by rw [← hleft a, ← hleft b, hab], fun b ↦ ⟨_, hright b⟩⟩
+
+end Functoriality
+
+/-! ## Injective quotient maps -/
+
+section InjectiveQuotient
+
+open Topology
+
+/-- An injective quotient map is a homeomorphism. -/
+public noncomputable def homeomorphOfIsQuotientMapOfInjective {A B : Type*} [TopologicalSpace A]
+    [TopologicalSpace B] {f : A → B} (hf : IsQuotientMap f) (hinj : Function.Injective f) :
+    A ≃ₜ B :=
+  Equiv.toHomeomorphOfContinuousOpen (Equiv.ofBijective f ⟨hinj, hf.surjective⟩)
+    hf.continuous (fun U hU ↦ by
+      have himg : (Equiv.ofBijective f ⟨hinj, hf.surjective⟩) '' U = f '' U := rfl
+      rw [himg, ← hf.isCoinducing.isOpen_preimage, hinj.preimage_image]
+      exact hU)
+
+@[simp]
+public theorem homeomorphOfIsQuotientMapOfInjective_apply {A B : Type*} [TopologicalSpace A]
+    [TopologicalSpace B] {f : A → B} (hf : IsQuotientMap f) (hinj : Function.Injective f)
+    (a : A) : homeomorphOfIsQuotientMapOfInjective hf hinj a = f a := rfl
+
+end InjectiveQuotient
+
+/-! ## Open bands of the cylinder parameter -/
+
+section Band
+
+/-- The open band of cylinder parameters strictly between `a` and `b`. -/
+public def openBand (a b : ℝ) : Set unitInterval := {t | a < (t : ℝ) ∧ (t : ℝ) < b}
+
+public theorem mem_openBand {a b : ℝ} {t : unitInterval} :
+    t ∈ openBand a b ↔ a < (t : ℝ) ∧ (t : ℝ) < b := Iff.rfl
+
+public theorem isOpen_openBand (a b : ℝ) : IsOpen (openBand a b) :=
+  (isOpen_lt continuous_const continuous_subtype_val).inter
+    (isOpen_lt continuous_subtype_val continuous_const)
+
+public theorem edgeBand_eq_openBand : edgeBand = openBand (1 / 6) (5 / 6) := rfl
+
+/-- A convex combination of two points above `a` stays above `a`. -/
+public theorem lt_convexCombination {a t u s : ℝ} (ht : a < t) (hu : a < u)
+    (hs0 : 0 ≤ s) (hs1 : s ≤ 1) : a < (1 - s) * t + s * u := by
+  rcases le_or_gt s (1 / 2) with h | h
+  · nlinarith
+  · nlinarith
+
+/-- A convex combination of two points below `b` stays below `b`. -/
+public theorem convexCombination_lt {b t u s : ℝ} (ht : t < b) (hu : u < b)
+    (hs0 : 0 ≤ s) (hs1 : s ≤ 1) : (1 - s) * t + s * u < b := by
+  rcases le_or_gt s (1 / 2) with h | h
+  · nlinarith
+  · nlinarith
+
+/-- The straight-line interpolation of the cylinder parameter towards a chosen centre. -/
+public def slideVal (t₀ : unitInterval) (s t : unitInterval) : ℝ :=
+  (1 - (s : ℝ)) * (t : ℝ) + (s : ℝ) * (t₀ : ℝ)
+
+public theorem slideVal_mem_unitInterval (t₀ s t : unitInterval) :
+    slideVal t₀ s t ∈ Set.Icc (0 : ℝ) 1 := by
+  have hs0 : (0 : ℝ) ≤ (s : ℝ) := s.2.1
+  have hs1 : (s : ℝ) ≤ 1 := s.2.2
+  have ht0 : (0 : ℝ) ≤ (t : ℝ) := t.2.1
+  have ht1 : (t : ℝ) ≤ 1 := t.2.2
+  have hu0 : (0 : ℝ) ≤ (t₀ : ℝ) := t₀.2.1
+  have hu1 : (t₀ : ℝ) ≤ 1 := t₀.2.2
+  constructor
+  · show (0 : ℝ) ≤ (1 - (s : ℝ)) * (t : ℝ) + (s : ℝ) * (t₀ : ℝ)
+    nlinarith
+  · show (1 - (s : ℝ)) * (t : ℝ) + (s : ℝ) * (t₀ : ℝ) ≤ 1
+    nlinarith
+
+/-- The interpolation of the cylinder parameter, as a point of the unit interval. -/
+public def slidePoint (t₀ s t : unitInterval) : unitInterval :=
+  ⟨slideVal t₀ s t, slideVal_mem_unitInterval t₀ s t⟩
+
+@[simp]
+public theorem slidePoint_coe (t₀ s t : unitInterval) :
+    ((slidePoint t₀ s t : unitInterval) : ℝ) = slideVal t₀ s t := rfl
+
+public theorem slidePoint_zero (t₀ t : unitInterval) : slidePoint t₀ 0 t = t := by
+  refine Subtype.ext ?_
+  show (1 - ((0 : unitInterval) : ℝ)) * (t : ℝ) + ((0 : unitInterval) : ℝ) * (t₀ : ℝ) = (t : ℝ)
+  norm_num
+
+public theorem slidePoint_one (t₀ t : unitInterval) : slidePoint t₀ 1 t = t₀ := by
+  refine Subtype.ext ?_
+  show (1 - ((1 : unitInterval) : ℝ)) * (t : ℝ) + ((1 : unitInterval) : ℝ) * (t₀ : ℝ) = (t₀ : ℝ)
+  have h : ((1 : unitInterval) : ℝ) = 1 := rfl
+  rw [h]
+  ring
+
+public theorem slidePoint_mem_openBand {a b : ℝ} {t₀ t : unitInterval}
+    (h₀ : t₀ ∈ openBand a b) (ht : t ∈ openBand a b) (s : unitInterval) :
+    slidePoint t₀ s t ∈ openBand a b :=
+  ⟨lt_convexCombination ht.1 h₀.1 s.2.1 s.2.2,
+    convexCombination_lt ht.2 h₀.2 s.2.1 s.2.2⟩
+
+public theorem continuous_slideVal (t₀ : unitInterval) :
+    Continuous fun q : unitInterval × unitInterval ↦ slideVal t₀ q.1 q.2 :=
+  ((continuous_const.sub (continuous_subtype_val.comp continuous_fst)).mul
+      (continuous_subtype_val.comp continuous_snd)).add
+    ((continuous_subtype_val.comp continuous_fst).mul continuous_const)
+
+end Band
+
+/-! ## A band times a fibre is homotopy equivalent to the fibre -/
+
+section BandFiber
+
+variable {F : Type} [TopologicalSpace F]
+
+/-- The slice of a band times a fibre through the centre of the band. -/
+public def fiberToBandProd {a b : ℝ} {t₀ : unitInterval} (h₀ : t₀ ∈ openBand a b) :
+    C(F, ↥(openBand a b) × F) :=
+  ⟨fun x ↦ (⟨t₀, h₀⟩, x), continuous_const.prodMk continuous_id⟩
+
+/-- The straight-line contraction of a band times a fibre onto the central slice. -/
+public def bandProdSlide {a b : ℝ} {t₀ : unitInterval} (h₀ : t₀ ∈ openBand a b) :
+    ContinuousMap.Homotopy (ContinuousMap.id (↥(openBand a b) × F))
+      ((fiberToBandProd (F := F) h₀).comp ⟨Prod.snd, continuous_snd⟩) where
+  toFun q := (⟨slidePoint t₀ q.1 q.2.1.1, slidePoint_mem_openBand h₀ q.2.1.2 q.1⟩, q.2.2)
+  continuous_toFun := by
+    refine Continuous.prodMk (Continuous.subtype_mk (Continuous.subtype_mk ?_ _) _) ?_
+    · exact (continuous_slideVal t₀).comp
+        (continuous_fst.prodMk
+          (continuous_subtype_val.comp (continuous_fst.comp continuous_snd)))
+    · exact continuous_snd.comp continuous_snd
+  map_zero_left q := by
+    refine Prod.ext (Subtype.ext ?_) rfl
+    exact slidePoint_zero t₀ q.1.1
+  map_one_left q := by
+    refine Prod.ext (Subtype.ext ?_) rfl
+    exact slidePoint_one t₀ q.1.1
+
+/-- Including the fibre as the central slice of a band times the fibre is a homotopy
+equivalence. -/
+public def fiberBandProdHomotopyEquiv {a b : ℝ} {t₀ : unitInterval} (h₀ : t₀ ∈ openBand a b) :
+    F ≃ₕ (↥(openBand a b) × F) where
+  toFun := fiberToBandProd h₀
+  invFun := ⟨Prod.snd, continuous_snd⟩
+  left_inv := ⟨ContinuousMap.Homotopy.refl _⟩
+  right_inv := ⟨(bandProdSlide h₀).symm⟩
+
+@[simp]
+public theorem fiberBandProdHomotopyEquiv_toFun {a b : ℝ} {t₀ : unitInterval}
+    (h₀ : t₀ ∈ openBand a b) (x : F) :
+    (fiberBandProdHomotopyEquiv h₀).toFun x = (⟨t₀, h₀⟩, x) := rfl
+
+end BandFiber
+
+/-! ## Pieces over bands inside the cylinder interiors -/
+
+section BandPiece
+
+open Topology
+
+variable {ι F : Type} [TopologicalSpace ι] [TopologicalSpace F]
+
+public theorem ends_of_subset_edgeBand {c : Set unitInterval} (hc : c ⊆ edgeBand) :
+    (0 : unitInterval) ∈ c ↔ (1 : unitInterval) ∈ c :=
+  ⟨fun h ↦ absurd rfl (ne_zero_of_mem_edgeBand (hc h)),
+    fun h ↦ absurd rfl (ne_one_of_mem_edgeBand (hc h))⟩
+
+omit [TopologicalSpace ι] in
+public theorem pieceMk_injective (φ : ι → F ≃ₜ F) {c : Set unitInterval} (hc : c ⊆ edgeBand) :
+    Function.Injective (pieceMk φ c) := fun p q hpq ↦
+  Subtype.ext (bouquetMk_injOn_edgeBand φ (hc p.2) (hc q.2) (congrArg Subtype.val hpq))
+
+/-- A saturated piece over a band inside the cylinder interiors is the band of cylinders. -/
+public noncomputable def pieceHomeo (φ : ι → F ≃ₜ F) {c : Set unitInterval} (hopen : IsOpen c)
+    (hc : c ⊆ edgeBand) :
+    {p : ι × unitInterval × F // p.2.1 ∈ c} ≃ₜ ↥(bouquetPiece φ c) :=
+  homeomorphOfIsQuotientMapOfInjective
+    (isQuotientMap_pieceMk φ hopen (ends_of_subset_edgeBand hc)) (pieceMk_injective φ hc)
+
+/-- A band of cylinders is a product of the loops, the band and the fibre. -/
+public def bandProdHomeo (c : Set unitInterval) :
+    ι × ↥c × F ≃ₜ {p : ι × unitInterval × F // p.2.1 ∈ c} where
+  toFun q := ⟨(q.1, q.2.1.1, q.2.2), q.2.1.2⟩
+  invFun p := (p.1.1, ⟨p.1.2.1, p.2⟩, p.1.2.2)
+  left_inv _ := rfl
+  right_inv _ := rfl
+  continuous_toFun :=
+    Continuous.subtype_mk
+      (continuous_fst.prodMk
+        ((continuous_subtype_val.comp (continuous_fst.comp continuous_snd)).prodMk
+          (continuous_snd.comp continuous_snd))) _
+  continuous_invFun :=
+    (continuous_fst.comp continuous_subtype_val).prodMk
+      (((continuous_fst.comp (continuous_snd.comp continuous_subtype_val)).subtype_mk _).prodMk
+        (continuous_snd.comp (continuous_snd.comp continuous_subtype_val)))
+
+/-- A saturated piece over a band inside the cylinder interiors, as a product. -/
+public noncomputable def bandPieceHomeo (φ : ι → F ≃ₜ F) {c : Set unitInterval} (hopen : IsOpen c)
+    (hc : c ⊆ edgeBand) : ι × ↥c × F ≃ₜ ↥(bouquetPiece φ c) :=
+  (bandProdHomeo c).trans (pieceHomeo φ hopen hc)
+
+/-- The fibre included at the cylinder parameter `s` over the loop `i`. -/
+public def bandPt (φ : ι → F ≃ₜ F) {c : Set unitInterval} {s : unitInterval} (hs : s ∈ c)
+    (i : ι) : C(F, ↥(bouquetPiece φ c)) :=
+  ⟨fun x ↦ pieceMk φ c ⟨(i, s, x), hs⟩,
+    (continuous_pieceMk φ c).comp
+      (Continuous.subtype_mk
+        (continuous_const.prodMk (continuous_const.prodMk continuous_id)) _)⟩
+
+@[simp]
+public theorem bandPt_apply (φ : ι → F ≃ₜ F) {c : Set unitInterval} {s : unitInterval}
+    (hs : s ∈ c) (i : ι) (x : F) :
+    bandPt φ hs i x = pieceMk φ c ⟨(i, s, x), hs⟩ := rfl
+
+/-- The part of a band of cylinders over the loop `i` and the sub-band `d`. -/
+public def bandComponent {c : Set unitInterval} (i : ι) (d : Set unitInterval) :
+    Set (ι × ↥c × F) := {q | q.1 = i ∧ (q.2.1 : unitInterval) ∈ d}
+
+public theorem isOpen_bandComponent [DiscreteTopology ι] {c : Set unitInterval} (i : ι)
+    {d : Set unitInterval} (hd : IsOpen d) : IsOpen (bandComponent (F := F) (c := c) i d) :=
+  ((isOpen_discrete ({i} : Set ι)).preimage continuous_fst).inter
+    (hd.preimage (continuous_subtype_val.comp (continuous_fst.comp continuous_snd)))
+
+/-- Each part of a band of cylinders is a sub-band times the fibre. -/
+public def bandComponentHomeo {c : Set unitInterval} (i : ι) {d : Set unitInterval}
+    (hdc : d ⊆ c) : ↥d × F ≃ₜ ↥(bandComponent (F := F) (c := c) i d) where
+  toFun p := ⟨(i, ⟨p.1.1, hdc p.1.2⟩, p.2), ⟨rfl, p.1.2⟩⟩
+  invFun q := (⟨(q.1.2.1 : unitInterval), q.2.2⟩, q.1.2.2)
+  left_inv _ := rfl
+  right_inv q := Subtype.ext (Prod.ext q.2.1.symm (Prod.ext (Subtype.ext rfl) rfl))
+  continuous_toFun :=
+    Continuous.subtype_mk
+      (continuous_const.prodMk
+        (((continuous_subtype_val.comp continuous_fst).subtype_mk _).prodMk continuous_snd)) _
+  continuous_invFun :=
+    ((continuous_subtype_val.comp
+        (continuous_fst.comp (continuous_snd.comp continuous_subtype_val))).subtype_mk _).prodMk
+      (continuous_snd.comp (continuous_snd.comp continuous_subtype_val))
+
+/-- The fibre slice through the centre of a sub-band is a homotopy equivalence onto the
+corresponding part of a band of cylinders. -/
+public def fiberBandComponentHomotopyEquiv {c : Set unitInterval} (i : ι) {a b : ℝ}
+    {t₀ : unitInterval} (h₀ : t₀ ∈ openBand a b) (hdc : openBand a b ⊆ c) :
+    F ≃ₕ ↥(bandComponent (F := F) (c := c) i (openBand a b)) :=
+  (fiberBandProdHomotopyEquiv h₀).trans (bandComponentHomeo i hdc).toHomotopyEquiv
+
+end BandPiece
+
+/-! ## Homology of a piece over a band, as a product over loops and sub-bands -/
+
+section BandPieceHomology
+
+open Topology IntegralMayerVietoris
+
+variable {ι F : Type} [TopologicalSpace ι] [DiscreteTopology ι] [Fintype ι]
+  [TopologicalSpace F]
+
+/-- Integral singular homology of a saturated piece over a band inside the cylinder interiors is
+the product, over the loops and the sub-bands, of the homology of the fibre, and the isomorphism
+is realised by the slice inclusions at the centres of the sub-bands. -/
+public theorem bandPt_sum_bijective (φ : ι → F ≃ₜ F)
+    {c : Set unitInterval} (hopen : IsOpen c) (hcsub : c ⊆ edgeBand)
+    {J : Type} [Fintype J] {a b : J → ℝ} {t₀ : J → unitInterval}
+    (hmem : ∀ j, t₀ j ∈ openBand (a j) (b j))
+    (hsub : ∀ j, openBand (a j) (b j) ⊆ c)
+    (hdisj : ∀ j j', j ≠ j' → Disjoint (openBand (a j) (b j)) (openBand (a j') (b j')))
+    (hcov : c ⊆ ⋃ j, openBand (a j) (b j)) (k : ℕ) :
+    Function.Bijective (fun v : ι × J → IntegralSingularHomology k F ↦
+      ∑ q : ι × J, integralSingularHomologyMap k
+        (bandPt φ (hsub q.2 (hmem q.2)) q.1) (v q)) := by
+  classical
+  set A : ι × J → Set (ι × ↥c × F) :=
+    fun q ↦ bandComponent q.1 (openBand (a q.2) (b q.2)) with hA
+  have hAopen : ∀ q, IsOpen (A q) := fun q ↦ isOpen_bandComponent _ (isOpen_openBand _ _)
+  have hAdisj : ∀ q q', q ≠ q' → Disjoint (A q) (A q') := by
+    intro q q' hqq'
+    rw [Set.disjoint_left]
+    rintro x ⟨hx1, hx2⟩ ⟨hx1', hx2'⟩
+    have hfst : q.1 = q'.1 := hx1 ▸ hx1'
+    by_cases hsnd : q.2 = q'.2
+    · exact hqq' (Prod.ext hfst hsnd)
+    · exact Set.disjoint_left.mp (hdisj q.2 q'.2 hsnd) hx2 hx2'
+  have hAcover : ⋃ q, A q = Set.univ := by
+    refine Set.eq_univ_of_forall fun x ↦ ?_
+    obtain ⟨-, ⟨j, rfl⟩, hj⟩ := hcov x.2.1.2
+    exact Set.mem_iUnion.mpr ⟨(x.1, j), rfl, hj⟩
+  have hsum := coverSumMap_bijective (J := ι × J) (ι × ↥c × F) inferInstance A hAopen hAdisj
+    hAcover k
+  let e : ∀ q : ι × J, F ≃ₕ ↥(A q) := fun q ↦
+    fiberBandComponentHomotopyEquiv q.1 (hmem q.2) (hsub q.2)
+  have he : ∀ q, Function.Bijective (integralSingularHomologyMap k (e q).toFun) :=
+    fun q ↦ integralSingularHomologyMap_bijective_of_homotopyEquiv k (e q)
+  have hpi : Function.Bijective (fun v : ι × J → IntegralSingularHomology k F ↦
+      fun q ↦ integralSingularHomologyMap k (e q).toFun (v q)) :=
+    (Equiv.piCongrRight fun q ↦ Equiv.ofBijective _ (he q)).bijective
+  let E := bandPieceHomeo φ hopen hcsub
+  have hE : Function.Bijective
+      (integralSingularHomologyMap k E.toHomotopyEquiv.toFun) :=
+    integralSingularHomologyMap_bijective_of_homotopyEquiv k E.toHomotopyEquiv
+  have hkey : (fun v : ι × J → IntegralSingularHomology k F ↦
+      ∑ q : ι × J, integralSingularHomologyMap k
+        (bandPt φ (hsub q.2 (hmem q.2)) q.1) (v q)) =
+      (integralSingularHomologyMap k E.toHomotopyEquiv.toFun) ∘ (coverSumMap A k) ∘
+        (fun v : ι × J → IntegralSingularHomology k F ↦
+          fun q ↦ integralSingularHomologyMap k (e q).toFun (v q)) := by
+    funext v
+    show _ = integralSingularHomologyMap k E.toHomotopyEquiv.toFun
+      (∑ q : ι × J, integralSingularHomologyMap k (subsetInclusion (A q))
+        (integralSingularHomologyMap k (e q).toFun (v q)))
+    rw [map_sum]
+    refine Finset.sum_congr rfl fun q _ ↦ ?_
+    rw [integralSingularHomologyMap_comp_wang, integralSingularHomologyMap_comp_wang]
+    rfl
+  rw [hkey]
+  exact hE.comp (hsum.comp hpi)
+
+end BandPieceHomology
+
+/-! ## Transport of exactness along isomorphisms -/
+
+section ExactCongr
+
+/-- Exactness transports along a ladder of additive isomorphisms. -/
+public theorem exact_congr {P Q R P' Q' R' : Type*} [AddCommGroup P] [AddCommGroup Q]
+    [AddCommGroup R] [AddCommGroup P'] [AddCommGroup Q'] [AddCommGroup R']
+    {f : P →+ Q} {g : Q →+ R} (h : Function.Exact f g)
+    (p : P' ≃+ P) (q : Q' ≃+ Q) (r : R' ≃+ R) {f' : P' →+ Q'} {g' : Q' →+ R'}
+    (hf : ∀ x, q (f' x) = f (p x)) (hg : ∀ y, r (g' y) = g (q y)) :
+    Function.Exact f' g' := by
+  intro y
+  constructor
+  · intro hy
+    have h1 : g (q y) = 0 := by rw [← hg, hy, map_zero]
+    obtain ⟨x, hx⟩ := (h (q y)).mp h1
+    refine ⟨p.symm x, ?_⟩
+    apply q.injective
+    rw [hf, AddEquiv.apply_symm_apply, hx]
+  · rintro ⟨x, rfl⟩
+    apply r.injective
+    rw [hg, map_zero, hf]
+    exact h.apply_apply_eq_zero (p x)
+
+end ExactCongr
+
+/-! ## Marked points of the cylinder -/
+
+section MarkedPoints
+
+public def uQuarter : unitInterval := ⟨1 / 4, by constructor <;> norm_num⟩
+
+public def uHalf : unitInterval := ⟨1 / 2, by constructor <;> norm_num⟩
+
+public def uThreeQuarters : unitInterval := ⟨3 / 4, by constructor <;> norm_num⟩
+
+/-- The low collar band. -/
+public abbrev lowBand : Set unitInterval := openBand (1 / 6) (1 / 3)
+
+/-- The high collar band. -/
+public abbrev highBand : Set unitInterval := openBand (2 / 3) (5 / 6)
+
+public theorem uHalf_mem_edgeBand : uHalf ∈ edgeBand := by
+  refine ⟨?_, ?_⟩
+  · show (1 : ℝ) / 6 < 1 / 2
+    norm_num
+  · show (1 : ℝ) / 2 < 5 / 6
+    norm_num
+
+public theorem uQuarter_mem_lowBand : uQuarter ∈ lowBand := by
+  refine ⟨?_, ?_⟩
+  · show (1 : ℝ) / 6 < 1 / 4
+    norm_num
+  · show (1 : ℝ) / 4 < 1 / 3
+    norm_num
+
+public theorem uThreeQuarters_mem_highBand : uThreeQuarters ∈ highBand := by
+  refine ⟨?_, ?_⟩
+  · show (2 : ℝ) / 3 < 3 / 4
+    norm_num
+  · show (3 : ℝ) / 4 < 5 / 6
+    norm_num
+
+public theorem uHalf_mem_edgeOpenBand : uHalf ∈ openBand (1 / 6) (5 / 6) := uHalf_mem_edgeBand
+
+/-- The overlap band of the two-set cover. -/
+public abbrev overlapBand : Set unitInterval := vertexBand ∩ edgeBand
+
+public theorem overlapBand_subset_edgeBand : overlapBand ⊆ edgeBand := Set.inter_subset_right
+
+public theorem lowBand_subset_overlapBand : lowBand ⊆ overlapBand := by
+  rintro t ⟨h1, h2⟩
+  exact ⟨Or.inl h2, ⟨h1, by linarith⟩⟩
+
+public theorem highBand_subset_overlapBand : highBand ⊆ overlapBand := by
+  rintro t ⟨h1, h2⟩
+  exact ⟨Or.inr h1, ⟨by linarith, h2⟩⟩
+
+public theorem uQuarter_mem_overlapBand : uQuarter ∈ overlapBand :=
+  lowBand_subset_overlapBand uQuarter_mem_lowBand
+
+public theorem uThreeQuarters_mem_overlapBand : uThreeQuarters ∈ overlapBand :=
+  highBand_subset_overlapBand uThreeQuarters_mem_highBand
+
+public theorem uQuarter_mem_edgeBand : uQuarter ∈ edgeBand :=
+  overlapBand_subset_edgeBand uQuarter_mem_overlapBand
+
+public theorem uThreeQuarters_mem_edgeBand : uThreeQuarters ∈ edgeBand :=
+  overlapBand_subset_edgeBand uThreeQuarters_mem_overlapBand
+
+public theorem disjoint_lowBand_highBand : Disjoint lowBand highBand := by
+  rw [Set.disjoint_left]
+  rintro t ⟨-, h2⟩ ⟨h3, -⟩
+  linarith
+
+public theorem overlapBand_subset_union : overlapBand ⊆ lowBand ∪ highBand := by
+  rintro t ⟨h | h, ⟨h1, h2⟩⟩
+  · exact Or.inl ⟨h1, h⟩
+  · exact Or.inr ⟨h, h2⟩
+
+public theorem isOpen_overlapBand : IsOpen overlapBand :=
+  isOpen_vertexBand.inter isOpen_edgeBand
+
+end MarkedPoints
+
+/-! ## Sliding a slice inside a band, and towards the fibre -/
+
+section Slides
+
+open Topology
+
+variable {ι F : Type} [TopologicalSpace ι] [TopologicalSpace F]
+
+/-- Sliding the cylinder parameter inside a band is a homotopy of slice inclusions. -/
+public def bandPtSlideHomotopy (φ : ι → F ≃ₜ F) {c : Set unitInterval} {a b : ℝ}
+    (hab : openBand a b ⊆ c) {s s' : unitInterval} (hs : s ∈ openBand a b)
+    (hs' : s' ∈ openBand a b) (i : ι) :
+    ContinuousMap.Homotopy (bandPt φ (hab hs) i) (bandPt φ (hab hs') i) where
+  toFun q := pieceMk φ c
+    ⟨(i, slidePoint s' q.1 s, q.2), hab (slidePoint_mem_openBand hs' hs q.1)⟩
+  continuous_toFun :=
+    (continuous_pieceMk φ c).comp
+      (Continuous.subtype_mk
+        (continuous_const.prodMk
+          ((Continuous.subtype_mk
+            ((continuous_slideVal s').comp (continuous_fst.prodMk continuous_const)) _).prodMk
+              continuous_snd)) _)
+  map_zero_left x :=
+    Subtype.ext (congrArg (fun t : unitInterval ↦ bouquetMk φ (i, t, x)) (slidePoint_zero s' s))
+  map_one_left x :=
+    Subtype.ext (congrArg (fun t : unitInterval ↦ bouquetMk φ (i, t, x)) (slidePoint_one s' s))
+
+/-- Slice inclusions at two parameters of one band induce the same map on homology. -/
+public theorem bandPt_homologyMap_eq (φ : ι → F ≃ₜ F) {c : Set unitInterval} {a b : ℝ}
+    (hab : openBand a b ⊆ c) {s s' : unitInterval} (hs : s ∈ openBand a b)
+    (hs' : s' ∈ openBand a b) (hsc : s ∈ c) (hsc' : s' ∈ c) (i : ι) (k : ℕ) :
+    integralSingularHomologyMap k (bandPt φ hsc i) =
+      integralSingularHomologyMap k (bandPt φ hsc' i) :=
+  integralSingularHomologyMap_eq_of_homotopy k (bandPtSlideHomotopy φ hab hs hs' i)
+
+/-- The fibre included at the cylinder parameter `s` over the loop `i`, in the total space. -/
+public def torusPt (φ : ι → F ≃ₜ F) (i : ι) (s : unitInterval) :
+    C(F, FiniteBouquetMappingTorus φ) :=
+  ⟨fun x ↦ bouquetMk φ (i, s, x),
+    (continuous_bouquetMk φ).comp
+      (continuous_const.prodMk (continuous_const.prodMk continuous_id))⟩
+
+variable [Inhabited ι]
+
+/-- Every slice of every cylinder is homotopic, in the total space, to the fibre over the bouquet
+vertex. -/
+public def torusPtHomotopy (φ : ι → F ≃ₜ F) (i : ι) (s : unitInterval) :
+    ContinuousMap.Homotopy (torusPt φ i s) (finiteBouquetMappingTorusFiberInclusion φ) where
+  toFun q := bouquetMk φ (i, slidePoint 0 q.1 s, q.2)
+  continuous_toFun :=
+    (continuous_bouquetMk φ).comp
+      (continuous_const.prodMk
+        ((Continuous.subtype_mk
+          ((continuous_slideVal 0).comp (continuous_fst.prodMk continuous_const)) _).prodMk
+            continuous_snd))
+  map_zero_left x :=
+    congrArg (fun t : unitInterval ↦ bouquetMk φ (i, t, x)) (slidePoint_zero 0 s)
+  map_one_left x := by
+    have h : bouquetMk φ (i, slidePoint 0 1 s, x) = bouquetMk φ (i, 0, x) :=
+      congrArg (fun t : unitInterval ↦ bouquetMk φ (i, t, x)) (slidePoint_one 0 s)
+    rw [show finiteBouquetMappingTorusFiberInclusion φ x = bouquetMk φ (default, 0, x) from rfl]
+    refine h.trans ((bouquetMk_eq_iff φ _ _).mpr ?_)
+    rw [bouquetKey_zero, bouquetKey_zero]
+
+public theorem torusPt_homologyMap_eq (φ : ι → F ≃ₜ F) (i : ι) (s : unitInterval) (k : ℕ) :
+    integralSingularHomologyMap k (torusPt φ i s) =
+      integralSingularHomologyMap k (finiteBouquetMappingTorusFiberInclusion φ) :=
+  integralSingularHomologyMap_eq_of_homotopy k (torusPtHomotopy φ i s)
+
+end Slides
+
+/-! ## The three legs of the Mayer--Vietoris cover -/
+
+section CoverLegs
+
+open Topology IntegralMayerVietoris
+
+variable {ι F : Type} [Fintype ι] [Inhabited ι] [TopologicalSpace ι] [DiscreteTopology ι]
+  [TopologicalSpace F]
+
+/-- The overlap of the two pieces is the saturated piece over the overlap band. -/
+public noncomputable def overlapHomeo (φ : ι → F ≃ₜ F) :
+    ↥(bouquetPiece φ overlapBand) ≃ₜ ↥(vertexPiece φ ∩ edgePiece φ) :=
+  Homeomorph.setCongr (vertexPiece_inter_edgePiece φ).symm
+
+/-- The overlap of the two pieces is the saturated piece over the overlap band, as a continuous
+map. -/
+public noncomputable def overlapHomeoCM (φ : ι → F ≃ₜ F) :
+    C(↥(bouquetPiece φ overlapBand), ↥(vertexPiece φ ∩ edgePiece φ)) :=
+  (overlapHomeo φ).toHomotopyEquiv.toFun
+
+/-- The fibre included at a collar parameter over the loop `i`, inside the overlap. -/
+public noncomputable def overlapPt (φ : ι → F ≃ₜ F) {s : unitInterval} (hs : s ∈ overlapBand)
+    (i : ι) : C(F, ↥(vertexPiece φ ∩ edgePiece φ)) :=
+  (overlapHomeoCM φ).comp (bandPt φ hs i)
+
+/-- The fibre included at the midpoint of the cylinder of the loop `i`, in the edge piece. -/
+public def edgePt (φ : ι → F ≃ₜ F) (i : ι) : C(F, ↥(edgePiece φ)) :=
+  bandPt φ uHalf_mem_edgeBand i
+
+/-- The fibre included at the low collar of the cylinder of the loop `i`, in the vertex piece. -/
+public def vertexLowPt (φ : ι → F ≃ₜ F) (i : ι) : C(F, ↥(vertexPiece φ)) :=
+  bandPt φ uQuarter_mem_overlapBand.1 i
+
+/-- The fibre included at the high collar of the cylinder of the loop `i`, in the vertex piece. -/
+public def vertexHighPt (φ : ι → F ≃ₜ F) (i : ι) : C(F, ↥(vertexPiece φ)) :=
+  bandPt φ uThreeQuarters_mem_overlapBand.1 i
+
+/-- The fibre included at the low collar of the cylinder of the loop `i`, in the edge piece. -/
+public def edgeLowPt (φ : ι → F ≃ₜ F) (i : ι) : C(F, ↥(edgePiece φ)) :=
+  bandPt φ uQuarter_mem_edgeBand i
+
+/-- The fibre included at the high collar of the cylinder of the loop `i`, in the edge piece. -/
+public def edgeHighPt (φ : ι → F ≃ₜ F) (i : ι) : C(F, ↥(edgePiece φ)) :=
+  bandPt φ uThreeQuarters_mem_edgeBand i
+
+/-- The fibre inclusion into the vertex piece, on homology. -/
+public noncomputable def vertexLeg (φ : ι → F ≃ₜ F) (k : ℕ) :
+    IntegralSingularHomology k F →+ IntegralSingularHomology k ↥(vertexPiece φ) :=
+  integralSingularHomologyMap k (vertexFiberInclusion φ)
+
+omit [Fintype ι] in
+public theorem vertexLeg_bijective (φ : ι → F ≃ₜ F) (k : ℕ) :
+    Function.Bijective (vertexLeg φ k) :=
+  integralSingularHomologyMap_bijective_of_homotopyEquiv k (vertexPieceHomotopyEquiv φ).symm
+
+/-- The sum of the edge legs: the fibre included at the midpoint of each cylinder. -/
+public noncomputable def edgeLegSum (φ : ι → F ≃ₜ F) (k : ℕ) :
+    (ι → IntegralSingularHomology k F) →+ IntegralSingularHomology k ↥(edgePiece φ) where
+  toFun v := ∑ i, integralSingularHomologyMap k (edgePt φ i) (v i)
+  map_zero' := by simp
+  map_add' u v := by
+    simp only [Pi.add_apply, map_add]
+    exact Finset.sum_add_distrib
+
+omit [Inhabited ι] [DiscreteTopology ι] in
+@[simp]
+public theorem edgeLegSum_apply (φ : ι → F ≃ₜ F) (k : ℕ)
+    (v : ι → IntegralSingularHomology k F) :
+    edgeLegSum φ k v = ∑ i, integralSingularHomologyMap k (edgePt φ i) (v i) := rfl
+
+omit [Inhabited ι] in
+public theorem edgeLegSum_bijective (φ : ι → F ≃ₜ F) (k : ℕ) :
+    Function.Bijective (edgeLegSum φ k) := by
+  have h : Function.Bijective (fun v : ι × Unit → IntegralSingularHomology k F ↦
+      ∑ q : ι × Unit, integralSingularHomologyMap k (edgePt φ q.1) (v q)) :=
+    bandPt_sum_bijective (J := Unit) φ isOpen_edgeBand (fun _ ht ↦ ht)
+      (a := fun _ ↦ 1 / 6) (b := fun _ ↦ 5 / 6) (t₀ := fun _ ↦ uHalf)
+      (fun _ ↦ uHalf_mem_edgeBand) (fun _ _ ht ↦ ht)
+      (fun j j' hjj' ↦ absurd (Subsingleton.elim j j') hjj')
+      (fun t ht ↦ Set.mem_iUnion.mpr ⟨(), ht⟩) k
+  have hre : Function.Bijective
+      (fun (v : ι → IntegralSingularHomology k F) (q : ι × Unit) ↦ v q.1) :=
+    ⟨fun u v huv ↦ funext fun i ↦ congrFun huv (i, ()),
+      fun w ↦ ⟨fun i ↦ w (i, ()), funext fun _ ↦ rfl⟩⟩
+  have heq : ⇑(edgeLegSum φ k) =
+      (fun v : ι × Unit → IntegralSingularHomology k F ↦
+        ∑ q : ι × Unit, integralSingularHomologyMap k (edgePt φ q.1) (v q)) ∘
+        (fun (v : ι → IntegralSingularHomology k F) (q : ι × Unit) ↦ v q.1) := by
+    funext v
+    exact Fintype.sum_equiv (Equiv.prodUnique ι Unit).symm _ _ fun i ↦ rfl
+  rw [heq]
+  exact h.comp hre
+
+/-- The two legs of the overlap: the low collars and the high collars of the cylinders. -/
+public noncomputable def overlapLegSum (φ : ι → F ≃ₜ F) (k : ℕ) :
+    ((ι → IntegralSingularHomology k F) × (ι → IntegralSingularHomology k F)) →+
+      IntegralSingularHomology k ↥(vertexPiece φ ∩ edgePiece φ) where
+  toFun p :=
+    ∑ i, integralSingularHomologyMap k (overlapPt φ uQuarter_mem_overlapBand i) (p.1 i) +
+      ∑ i, integralSingularHomologyMap k (overlapPt φ uThreeQuarters_mem_overlapBand i) (p.2 i)
+  map_zero' := by simp
+  map_add' p q := by
+    simp only [Prod.fst_add, Prod.snd_add, Pi.add_apply, map_add]
+    rw [Finset.sum_add_distrib, Finset.sum_add_distrib]
+    abel
+
+omit [Inhabited ι] [DiscreteTopology ι] in
+@[simp]
+public theorem overlapLegSum_apply (φ : ι → F ≃ₜ F) (k : ℕ)
+    (p : (ι → IntegralSingularHomology k F) × (ι → IntegralSingularHomology k F)) :
+    overlapLegSum φ k p =
+      ∑ i, integralSingularHomologyMap k (overlapPt φ uQuarter_mem_overlapBand i) (p.1 i) +
+        ∑ i, integralSingularHomologyMap k
+          (overlapPt φ uThreeQuarters_mem_overlapBand i) (p.2 i) := rfl
+
+omit [Inhabited ι] in
+public theorem overlapLegSum_bijective (φ : ι → F ≃ₜ F) (k : ℕ) :
+    Function.Bijective (overlapLegSum φ k) := by
+  have hcond : ∀ s : Bool, (cond s uThreeQuarters uQuarter) ∈ overlapBand := by
+    intro s
+    cases s
+    · exact uQuarter_mem_overlapBand
+    · exact uThreeQuarters_mem_overlapBand
+  have h := bandPt_sum_bijective (J := Bool) φ isOpen_overlapBand overlapBand_subset_edgeBand
+    (a := fun j ↦ cond j (2 / 3) (1 / 6)) (b := fun j ↦ cond j (5 / 6) (1 / 3))
+    (t₀ := fun j ↦ cond j uThreeQuarters uQuarter)
+    (fun j ↦ by cases j; exacts [uQuarter_mem_lowBand, uThreeQuarters_mem_highBand])
+    (fun j ↦ by cases j; exacts [lowBand_subset_overlapBand, highBand_subset_overlapBand])
+    (fun j j' hjj' ↦ by
+      cases j <;> cases j'
+      · exact absurd rfl hjj'
+      · exact disjoint_lowBand_highBand
+      · exact disjoint_lowBand_highBand.symm
+      · exact absurd rfl hjj')
+    (fun t ht ↦ (overlapBand_subset_union ht).elim
+      (fun hl ↦ Set.mem_iUnion.mpr ⟨false, hl⟩) (fun hh ↦ Set.mem_iUnion.mpr ⟨true, hh⟩)) k
+  have h' : Function.Bijective (fun v : ι × Bool → IntegralSingularHomology k F ↦
+      ∑ q : ι × Bool, integralSingularHomologyMap k (bandPt φ (hcond q.2) q.1) (v q)) := h
+  have hre : Function.Bijective
+      (fun (p : (ι → IntegralSingularHomology k F) × (ι → IntegralSingularHomology k F))
+        (q : ι × Bool) ↦ cond q.2 (p.2 q.1) (p.1 q.1)) := by
+    constructor
+    · intro p p' hpp'
+      exact Prod.ext (funext fun i ↦ congrFun hpp' (i, false))
+        (funext fun i ↦ congrFun hpp' (i, true))
+    · intro w
+      refine ⟨(fun i ↦ w (i, false), fun i ↦ w (i, true)), funext fun q ↦ ?_⟩
+      obtain ⟨i, s⟩ := q
+      cases s <;> rfl
+  have hhom : Function.Bijective
+      (integralSingularHomologyMap k (overlapHomeoCM φ)) :=
+    integralSingularHomologyMap_bijective_of_homotopyEquiv k (overlapHomeo φ).toHomotopyEquiv
+  have heq : ⇑(overlapLegSum φ k) =
+      (integralSingularHomologyMap k (overlapHomeoCM φ)) ∘
+        (fun v : ι × Bool → IntegralSingularHomology k F ↦
+          ∑ q : ι × Bool, integralSingularHomologyMap k (bandPt φ (hcond q.2) q.1) (v q)) ∘
+        (fun (p : (ι → IntegralSingularHomology k F) × (ι → IntegralSingularHomology k F))
+          (q : ι × Bool) ↦ cond q.2 (p.2 q.1) (p.1 q.1)) := by
+    funext p
+    show _ = integralSingularHomologyMap k (overlapHomeoCM φ)
+      (∑ q : ι × Bool, integralSingularHomologyMap k (bandPt φ (hcond q.2) q.1)
+        (cond q.2 (p.2 q.1) (p.1 q.1)))
+    rw [map_sum, Fintype.sum_prod_type]
+    have hstep : ∀ i : ι, ∑ s : Bool, integralSingularHomologyMap k (overlapHomeoCM φ)
+        (integralSingularHomologyMap k (bandPt φ (hcond s) i) (cond s (p.2 i) (p.1 i))) =
+        integralSingularHomologyMap k (overlapPt φ uQuarter_mem_overlapBand i) (p.1 i) +
+          integralSingularHomologyMap k
+            (overlapPt φ uThreeQuarters_mem_overlapBand i) (p.2 i) := by
+      intro i
+      rw [Fintype.sum_bool, integralSingularHomologyMap_comp_wang, integralSingularHomologyMap_comp_wang]
+      exact add_comm _ _
+    rw [Finset.sum_congr rfl fun i _ ↦ hstep i, Finset.sum_add_distrib]
+    rfl
+  rw [heq]
+  exact hhom.comp (h'.comp hre)
+
+end CoverLegs
+
+/-! ## Naming the maps of the cover -/
+
+section CoverMaps
+
+open Topology IntegralMayerVietoris
+
+variable {ι F : Type} [Fintype ι] [Inhabited ι] [TopologicalSpace ι] [DiscreteTopology ι]
+  [TopologicalSpace F]
+
+omit [Fintype ι] [Inhabited ι] [DiscreteTopology ι] in
+public theorem interToLeft_comp_overlapLowPt (φ : ι → F ≃ₜ F) (i : ι) :
+    (interToLeft (vertexPiece φ) (edgePiece φ)).comp
+        (overlapPt φ uQuarter_mem_overlapBand i) = vertexLowPt φ i :=
+  ContinuousMap.ext fun _ ↦ rfl
+
+omit [Fintype ι] [Inhabited ι] [DiscreteTopology ι] in
+public theorem interToLeft_comp_overlapHighPt (φ : ι → F ≃ₜ F) (i : ι) :
+    (interToLeft (vertexPiece φ) (edgePiece φ)).comp
+        (overlapPt φ uThreeQuarters_mem_overlapBand i) = vertexHighPt φ i :=
+  ContinuousMap.ext fun _ ↦ rfl
+
+omit [Fintype ι] [Inhabited ι] [DiscreteTopology ι] in
+public theorem interToRight_comp_overlapLowPt (φ : ι → F ≃ₜ F) (i : ι) :
+    (interToRight (vertexPiece φ) (edgePiece φ)).comp
+        (overlapPt φ uQuarter_mem_overlapBand i) = edgeLowPt φ i :=
+  ContinuousMap.ext fun _ ↦ rfl
+
+omit [Fintype ι] [Inhabited ι] [DiscreteTopology ι] in
+public theorem interToRight_comp_overlapHighPt (φ : ι → F ≃ₜ F) (i : ι) :
+    (interToRight (vertexPiece φ) (edgePiece φ)).comp
+        (overlapPt φ uThreeQuarters_mem_overlapBand i) = edgeHighPt φ i :=
+  ContinuousMap.ext fun _ ↦ rfl
+
+omit [Fintype ι] [Inhabited ι] in
+/-- On the low collar the retraction of the vertex piece is the identity of the fibre. -/
+public theorem vertexRetract_comp_vertexLowPt (φ : ι → F ≃ₜ F) (i : ι) :
+    (vertexRetract φ).comp (vertexLowPt φ i) = ContinuousMap.id F :=
+  ContinuousMap.ext fun x ↦ by
+    show vertexRetract φ (pieceMk φ vertexBand ⟨(i, uQuarter, x), _⟩) = x
+    rw [vertexRetract_pieceMk]
+    exact vertexRetractFun_of_lt φ (show (1 : ℝ) / 4 < 1 / 3 by norm_num)
+
+omit [Fintype ι] [Inhabited ι] in
+/-- On the high collar the retraction of the vertex piece is the monodromy of the loop. -/
+public theorem vertexRetract_comp_vertexHighPt (φ : ι → F ≃ₜ F) (i : ι) :
+    (vertexRetract φ).comp (vertexHighPt φ i) = (φ i : C(F, F)) :=
+  ContinuousMap.ext fun x ↦ by
+    show vertexRetract φ (pieceMk φ vertexBand ⟨(i, uThreeQuarters, x), _⟩) = φ i x
+    rw [vertexRetract_pieceMk]
+    exact vertexRetractFun_of_gt φ (show ¬ (3 : ℝ) / 4 < 1 / 3 by norm_num)
+
+omit [Fintype ι] in
+public theorem vertexRetract_comp_vertexFiberInclusion (φ : ι → F ≃ₜ F) :
+    (vertexRetract φ).comp (vertexFiberInclusion φ) = ContinuousMap.id F :=
+  ContinuousMap.ext fun x ↦ vertexRetract_vertexFiberInclusion φ x
+
+omit [Fintype ι] in
+/-- The low-collar leg of the overlap enters the vertex piece as the fibre. -/
+public theorem vertexLowPt_homologyMap (φ : ι → F ≃ₜ F) (i : ι) (k : ℕ) :
+    integralSingularHomologyMap k (vertexLowPt φ i) = vertexLeg φ k := by
+  have hbij := integralSingularHomologyMap_bijective_of_homotopyEquiv k
+    (vertexPieceHomotopyEquiv φ)
+  refine AddMonoidHom.ext fun z ↦ hbij.1 ?_
+  show integralSingularHomologyMap k (vertexRetract φ)
+      (integralSingularHomologyMap k (vertexLowPt φ i) z) = _
+  rw [integralSingularHomologyMap_comp_wang, vertexRetract_comp_vertexLowPt]
+  show _ = integralSingularHomologyMap k (vertexRetract φ)
+    (integralSingularHomologyMap k (vertexFiberInclusion φ) z)
+  rw [integralSingularHomologyMap_comp_wang, vertexRetract_comp_vertexFiberInclusion]
+
+omit [Fintype ι] in
+/-- The high-collar leg of the overlap enters the vertex piece through the monodromy. -/
+public theorem vertexHighPt_homologyMap (φ : ι → F ≃ₜ F) (i : ι) (k : ℕ) :
+    integralSingularHomologyMap k (vertexHighPt φ i) =
+      (vertexLeg φ k).comp (integralSingularHomologyMap k (φ i)) := by
+  have hbij := integralSingularHomologyMap_bijective_of_homotopyEquiv k
+    (vertexPieceHomotopyEquiv φ)
+  refine AddMonoidHom.ext fun z ↦ hbij.1 ?_
+  show integralSingularHomologyMap k (vertexRetract φ)
+      (integralSingularHomologyMap k (vertexHighPt φ i) z) = _
+  rw [integralSingularHomologyMap_comp_wang, vertexRetract_comp_vertexHighPt]
+  show _ = integralSingularHomologyMap k (vertexRetract φ)
+    (integralSingularHomologyMap k (vertexFiberInclusion φ)
+      (integralSingularHomologyMap k (φ i) z))
+  rw [integralSingularHomologyMap_comp_wang, vertexRetract_comp_vertexFiberInclusion,
+    integralSingularHomologyMap_id_wang]
+
+omit [Fintype ι] [Inhabited ι] [DiscreteTopology ι] in
+/-- The two collar legs enter the edge piece as its midpoint slice. -/
+public theorem edgeLowPt_homologyMap (φ : ι → F ≃ₜ F) (i : ι) (k : ℕ) :
+    integralSingularHomologyMap k (edgeLowPt φ i) =
+      integralSingularHomologyMap k (edgePt φ i) :=
+  bandPt_homologyMap_eq φ (a := 1 / 6) (b := 5 / 6) (fun _ ht ↦ ht)
+    uQuarter_mem_edgeBand uHalf_mem_edgeBand uQuarter_mem_edgeBand uHalf_mem_edgeBand i k
+
+omit [Fintype ι] [Inhabited ι] [DiscreteTopology ι] in
+public theorem edgeHighPt_homologyMap (φ : ι → F ≃ₜ F) (i : ι) (k : ℕ) :
+    integralSingularHomologyMap k (edgeHighPt φ i) =
+      integralSingularHomologyMap k (edgePt φ i) :=
+  bandPt_homologyMap_eq φ (a := 1 / 6) (b := 5 / 6) (fun _ ht ↦ ht)
+    uThreeQuarters_mem_edgeBand uHalf_mem_edgeBand uThreeQuarters_mem_edgeBand
+    uHalf_mem_edgeBand i k
+
+/-- The two pieces cover the mapping torus. -/
+public noncomputable def coverUnionHomeo (φ : ι → F ≃ₜ F) :
+    ↥(vertexPiece φ ∪ edgePiece φ) ≃ₜ FiniteBouquetMappingTorus φ :=
+  (Homeomorph.setCongr (vertexPiece_union_edgePiece φ)).trans
+    (Homeomorph.Set.univ (FiniteBouquetMappingTorus φ))
+
+/-- The two pieces cover the mapping torus, as a continuous map. -/
+public noncomputable def coverUnionCM (φ : ι → F ≃ₜ F) :
+    C(↥(vertexPiece φ ∪ edgePiece φ), FiniteBouquetMappingTorus φ) :=
+  (coverUnionHomeo φ).toHomotopyEquiv.toFun
+
+omit [Fintype ι] [DiscreteTopology ι] in
+public theorem coverUnion_comp_left (φ : ι → F ≃ₜ F) :
+    ((coverUnionCM φ).comp (leftToUnion (vertexPiece φ) (edgePiece φ))).comp
+        (vertexFiberInclusion φ) =
+      finiteBouquetMappingTorusFiberInclusion φ :=
+  ContinuousMap.ext fun _ ↦ rfl
+
+omit [Fintype ι] [Inhabited ι] [DiscreteTopology ι] in
+public theorem coverUnion_comp_right (φ : ι → F ≃ₜ F) (i : ι) :
+    ((coverUnionCM φ).comp (rightToUnion (vertexPiece φ) (edgePiece φ))).comp (edgePt φ i) =
+      torusPt φ i uHalf :=
+  ContinuousMap.ext fun _ ↦ rfl
+
+end CoverMaps
+
+/-! ## The Wang sequence of the vertex/edge cover -/
+
+section WangFromCover
+
+open Topology IntegralMayerVietoris WangFromMayerVietoris
+
+variable {ι F : Type} [Fintype ι] [Inhabited ι] [TopologicalSpace ι] [DiscreteTopology ι]
+  [TopologicalSpace F]
+
+/-- Homology of the vertex piece, identified with that of the fibre. -/
+public noncomputable def vertexEquiv (φ : ι → F ≃ₜ F) (k : ℕ) :
+    IntegralSingularHomology k F ≃+ IntegralSingularHomology k ↥(vertexPiece φ) :=
+  AddEquiv.ofBijective (vertexLeg φ k) (vertexLeg_bijective φ k)
+
+/-- Homology of the edge piece, identified with the loop-indexed product of that of the fibre. -/
+public noncomputable def edgeEquiv (φ : ι → F ≃ₜ F) (k : ℕ) :
+    (ι → IntegralSingularHomology k F) ≃+ IntegralSingularHomology k ↥(edgePiece φ) :=
+  AddEquiv.ofBijective (edgeLegSum φ k) (edgeLegSum_bijective φ k)
+
+/-- Homology of the overlap, identified with two loop-indexed products. -/
+public noncomputable def overlapEquiv (φ : ι → F ≃ₜ F) (k : ℕ) :
+    ((ι → IntegralSingularHomology k F) × (ι → IntegralSingularHomology k F)) ≃+
+      IntegralSingularHomology k ↥(vertexPiece φ ∩ edgePiece φ) :=
+  AddEquiv.ofBijective (overlapLegSum φ k) (overlapLegSum_bijective φ k)
+
+/-- Homology of the union of the two pieces is that of the mapping torus. -/
+public noncomputable def unionEquiv (φ : ι → F ≃ₜ F) (k : ℕ) :
+    IntegralSingularHomology k ↥(vertexPiece φ ∪ edgePiece φ) ≃+
+      IntegralSingularHomology k (FiniteBouquetMappingTorus φ) :=
+  AddEquiv.ofBijective (integralSingularHomologyMap k (coverUnionCM φ))
+    (integralSingularHomologyMap_bijective_of_homotopyEquiv k
+      (coverUnionHomeo φ).toHomotopyEquiv)
+
+/-- Homology of the two pieces of the cover, identified together. -/
+public noncomputable def piecesEquiv (φ : ι → F ≃ₜ F) (k : ℕ) :
+    (IntegralSingularHomology k F × (ι → IntegralSingularHomology k F)) ≃+
+      (IntegralSingularHomology k ↥(vertexPiece φ) ×
+        IntegralSingularHomology k ↥(edgePiece φ)) :=
+  (vertexEquiv φ k).prodCongr (edgeEquiv φ k)
+
+/-- The Mayer--Vietoris sum map of the cover, read through the identifications. -/
+public noncomputable def wangSumMap (φ : ι → F ≃ₜ F) (k : ℕ) :
+    IntegralSingularHomology k F × (ι → IntegralSingularHomology k F) →+
+      IntegralSingularHomology k (FiniteBouquetMappingTorus φ) :=
+  (unionEquiv φ k).toAddMonoidHom.comp
+    ((sumMap (vertexPiece φ) (edgePiece φ) k).comp (piecesEquiv φ k).toAddMonoidHom)
+
+omit [Fintype ι] [DiscreteTopology ι] in
+public theorem vertexLeg_apply (φ : ι → F ≃ₜ F) (k : ℕ) (z : IntegralSingularHomology k F) :
+    vertexLeg φ k z = integralSingularHomologyMap k (vertexFiberInclusion φ) z := rfl
+
+public theorem piecesEquiv_apply (φ : ι → F ≃ₜ F) (k : ℕ)
+    (x : IntegralSingularHomology k F × (ι → IntegralSingularHomology k F)) :
+    piecesEquiv φ k x = (vertexLeg φ k x.1, edgeLegSum φ k x.2) := rfl
+
+public theorem wangSumMap_eq (φ : ι → F ≃ₜ F) (k : ℕ)
+    (p : IntegralSingularHomology k F × (ι → IntegralSingularHomology k F)) :
+    wangSumMap φ k p = integralSingularHomologyMap k (coverUnionCM φ)
+      (integralSingularHomologyMap k (leftToUnion (vertexPiece φ) (edgePiece φ))
+          (vertexLeg φ k p.1) +
+        integralSingularHomologyMap k (rightToUnion (vertexPiece φ) (edgePiece φ))
+          (edgeLegSum φ k p.2)) := rfl
+
+/-- Each edge of the bouquet enters the total space through the fibre over the vertex. -/
+public theorem wangSumMap_apply (φ : ι → F ≃ₜ F) (k : ℕ)
+    (p : IntegralSingularHomology k F × (ι → IntegralSingularHomology k F)) :
+    wangSumMap φ k p =
+      integralSingularHomologyMap k (finiteBouquetMappingTorusFiberInclusion φ)
+        (p.1 + ∑ i, p.2 i) := by
+  have h1 : integralSingularHomologyMap k (coverUnionCM φ)
+      (integralSingularHomologyMap k (leftToUnion (vertexPiece φ) (edgePiece φ))
+        (vertexLeg φ k p.1)) =
+      integralSingularHomologyMap k (finiteBouquetMappingTorusFiberInclusion φ) p.1 := by
+    rw [vertexLeg_apply, integralSingularHomologyMap_comp_wang, integralSingularHomologyMap_comp_wang,
+      coverUnion_comp_left]
+  have h2 : ∀ i : ι, integralSingularHomologyMap k (coverUnionCM φ)
+      (integralSingularHomologyMap k (rightToUnion (vertexPiece φ) (edgePiece φ))
+        (integralSingularHomologyMap k (edgePt φ i) (p.2 i))) =
+      integralSingularHomologyMap k (finiteBouquetMappingTorusFiberInclusion φ) (p.2 i) := by
+    intro i
+    rw [integralSingularHomologyMap_comp_wang, integralSingularHomologyMap_comp_wang,
+      coverUnion_comp_right, torusPt_homologyMap_eq]
+  have h3 : integralSingularHomologyMap k (coverUnionCM φ)
+      (integralSingularHomologyMap k (rightToUnion (vertexPiece φ) (edgePiece φ))
+        (edgeLegSum φ k p.2)) =
+      integralSingularHomologyMap k (finiteBouquetMappingTorusFiberInclusion φ)
+        (∑ i, p.2 i) := by
+    rw [edgeLegSum_apply, map_sum, map_sum, map_sum]
+    exact Finset.sum_congr rfl fun i _ ↦ h2 i
+  rw [wangSumMap_eq, map_add, h1, h3, ← map_add]
+
+/-- The low and high collar legs of the overlap enter the vertex piece as the fibre, the latter
+through the monodromy of its loop. -/
+public theorem interToLeft_overlapLegSum (φ : ι → F ≃ₜ F) (k : ℕ)
+    (p : (ι → IntegralSingularHomology k F) × (ι → IntegralSingularHomology k F)) :
+    integralSingularHomologyMap k (interToLeft (vertexPiece φ) (edgePiece φ))
+        (overlapLegSum φ k p) =
+      vertexLeg φ k (∑ i, (p.1 i + integralSingularHomologyMap k (φ i) (p.2 i))) := by
+  rw [overlapLegSum_apply, map_add, map_sum, map_sum, map_sum]
+  simp only [map_add]
+  rw [Finset.sum_add_distrib]
+  refine congrArg₂ (· + ·) (Finset.sum_congr rfl fun i _ ↦ ?_)
+    (Finset.sum_congr rfl fun i _ ↦ ?_)
+  · rw [integralSingularHomologyMap_comp_wang, interToLeft_comp_overlapLowPt,
+      vertexLowPt_homologyMap]
+  · rw [integralSingularHomologyMap_comp_wang, interToLeft_comp_overlapHighPt,
+      vertexHighPt_homologyMap]
+    rfl
+
+omit [Inhabited ι] [DiscreteTopology ι] in
+/-- Both collar legs of the overlap enter the edge piece as its midpoint slice. -/
+public theorem interToRight_overlapLegSum (φ : ι → F ≃ₜ F) (k : ℕ)
+    (p : (ι → IntegralSingularHomology k F) × (ι → IntegralSingularHomology k F)) :
+    integralSingularHomologyMap k (interToRight (vertexPiece φ) (edgePiece φ))
+        (overlapLegSum φ k p) = edgeLegSum φ k (p.1 + p.2) := by
+  rw [overlapLegSum_apply, map_add, map_sum, map_sum, edgeLegSum_apply]
+  simp only [Pi.add_apply, map_add]
+  rw [Finset.sum_add_distrib]
+  refine congrArg₂ (· + ·) (Finset.sum_congr rfl fun i _ ↦ ?_)
+    (Finset.sum_congr rfl fun i _ ↦ ?_)
+  · rw [integralSingularHomologyMap_comp_wang, interToRight_comp_overlapLowPt,
+      edgeLowPt_homologyMap]
+  · rw [integralSingularHomologyMap_comp_wang, interToRight_comp_overlapHighPt,
+      edgeHighPt_homologyMap]
+
+/-- The Mayer--Vietoris difference map of the cover, computed on the collar legs. -/
+public theorem differenceMap_overlapLegSum (φ : ι → F ≃ₜ F) (k : ℕ)
+    (p : (ι → IntegralSingularHomology k F) × (ι → IntegralSingularHomology k F)) :
+    differenceMap (vertexPiece φ) (edgePiece φ) k (overlapLegSum φ k p) =
+      (vertexLeg φ k (∑ i, (p.1 i + integralSingularHomologyMap k (φ i) (p.2 i))),
+        edgeLegSum φ k (-(p.1 + p.2))) := by
+  rw [show differenceMap (vertexPiece φ) (edgePiece φ) k =
+      (integralSingularHomologyMap k (interToLeft (vertexPiece φ) (edgePiece φ))).prod
+        (-(integralSingularHomologyMap k (interToRight (vertexPiece φ) (edgePiece φ))))
+      from rfl,
+    AddMonoidHom.prod_apply, AddMonoidHom.neg_apply, interToLeft_overlapLegSum,
+    interToRight_overlapLegSum, ← map_neg]
+
+/-- The Mayer--Vietoris difference map of the cover is the algebraic cover difference of the
+monodromies. -/
+public theorem differenceMap_overlapEquiv (φ : ι → F ≃ₜ F) (k : ℕ)
+    (p : (ι → IntegralSingularHomology k F) × (ι → IntegralSingularHomology k F)) :
+    differenceMap (vertexPiece φ) (edgePiece φ) k (overlapLegSum φ k p) =
+      piecesEquiv φ k
+        (coverDifference (fun i ↦ integralSingularHomologyMap k (φ i)) p) := by
+  rw [differenceMap_overlapLegSum, piecesEquiv_apply, coverDifference_apply]
+
+omit [Fintype ι] [Inhabited ι] [DiscreteTopology ι] in
+/-- The Mayer--Vietoris sequence of the vertex/edge open cover of the mapping torus. -/
+public theorem coverMayerVietoris (φ : ι → F ≃ₜ F) :
+    IntegralMayerVietoris.ExactSequence (vertexPiece φ) (edgePiece φ) :=
+  establishedIntegralMayerVietorisExactSequence (vertexPiece φ) (edgePiece φ)
+    (isOpen_vertexPiece φ) (isOpen_edgePiece φ)
+
+/-- The Mayer--Vietoris boundary of the vertex/edge open cover. -/
+public noncomputable def coverBoundary (φ : ι → F ≃ₜ F) (k : ℕ) :
+    IntegralSingularHomology (k + 1) ↥(vertexPiece φ ∪ edgePiece φ) →+
+      IntegralSingularHomology k ↥(vertexPiece φ ∩ edgePiece φ) :=
+  (coverMayerVietoris φ).choose k
+
+omit [Fintype ι] [Inhabited ι] [DiscreteTopology ι] in
+public theorem coverBoundary_spec (φ : ι → F ≃ₜ F) (k : ℕ) :
+    Function.Exact (sumMap (vertexPiece φ) (edgePiece φ) (k + 1)) (coverBoundary φ k) ∧
+      Function.Exact (coverBoundary φ k) (differenceMap (vertexPiece φ) (edgePiece φ) k) ∧
+      Function.Exact (differenceMap (vertexPiece φ) (edgePiece φ) k)
+        (sumMap (vertexPiece φ) (edgePiece φ) k) :=
+  (coverMayerVietoris φ).choose_spec k
+
+/-- The two-legged Wang boundary carried by the Mayer--Vietoris boundary of the cover. -/
+public noncomputable def coverWangBoundary (φ : ι → F ≃ₜ F) (k : ℕ) :
+    IntegralSingularHomology (k + 1) (FiniteBouquetMappingTorus φ) →+
+      (ι → IntegralSingularHomology k F) × (ι → IntegralSingularHomology k F) :=
+  (overlapEquiv φ k).symm.toAddMonoidHom.comp
+    ((coverBoundary φ k).comp (unionEquiv φ (k + 1)).symm.toAddMonoidHom)
+
+omit [Inhabited ι] in
+@[simp]
+public theorem coverWangBoundary_apply (φ : ι → F ≃ₜ F) (k : ℕ)
+    (z : IntegralSingularHomology (k + 1) (FiniteBouquetMappingTorus φ)) :
+    coverWangBoundary φ k z =
+      (overlapEquiv φ k).symm (coverBoundary φ k ((unionEquiv φ (k + 1)).symm z)) := rfl
+
+public theorem exact_coverDifference_wangSumMap (φ : ι → F ≃ₜ F) (k : ℕ) :
+    Function.Exact (coverDifference (fun i ↦ integralSingularHomologyMap k (φ i)))
+      (wangSumMap φ k) :=
+  exact_congr (coverBoundary_spec φ k).2.2 (overlapEquiv φ k) (piecesEquiv φ k)
+    (unionEquiv φ k).symm (fun x ↦ (differenceMap_overlapEquiv φ k x).symm)
+    (fun _ ↦ (unionEquiv φ k).symm_apply_apply _)
+
+public theorem exact_wangSumMap_coverWangBoundary (φ : ι → F ≃ₜ F) (k : ℕ) :
+    Function.Exact (wangSumMap φ (k + 1)) (coverWangBoundary φ k) :=
+  exact_congr (coverBoundary_spec φ k).1 (piecesEquiv φ (k + 1))
+    (unionEquiv φ (k + 1)).symm (overlapEquiv φ k)
+    (fun _ ↦ (unionEquiv φ (k + 1)).symm_apply_apply _)
+    (fun _ ↦ (overlapEquiv φ k).apply_symm_apply _)
+
+public theorem exact_coverWangBoundary_coverDifference (φ : ι → F ≃ₜ F) (k : ℕ) :
+    Function.Exact (coverWangBoundary φ k)
+      (coverDifference (fun i ↦ integralSingularHomologyMap k (φ i))) :=
+  exact_congr (coverBoundary_spec φ k).2.1 (unionEquiv φ (k + 1)).symm (overlapEquiv φ k)
+    (piecesEquiv φ k) (fun _ ↦ (overlapEquiv φ k).apply_symm_apply _)
+    (fun y ↦ (differenceMap_overlapEquiv φ k y).symm)
+
+/-- The Wang exact sequence of the explicit finite-bouquet mapping torus, proved outright from
+the Mayer--Vietoris sequence of its vertex/edge open cover. -/
+public noncomputable def finiteBouquetMappingTorusWangSequenceOfCover (φ : ι → F ≃ₜ F) (k : ℕ) :
+    FiniteBouquetMappingTorusWangSequence φ k :=
+  finiteBouquetMappingTorusWangSequence_of_mayerVietoris φ k (wangSumMap φ (k + 1))
+    (coverWangBoundary φ k) (fun p ↦ wangSumMap_apply φ (k + 1) p)
+    (exact_coverDifference_wangSumMap φ (k + 1))
+    (exact_wangSumMap_coverWangBoundary φ k)
+    (exact_coverWangBoundary_coverDifference φ k)
+
+/-- The boundary of the constructed Wang sequence is the first leg of the Mayer--Vietoris boundary
+of the vertex/edge cover, read through the identification of the overlap with two loop-indexed
+copies of the fibre.  This pins the sign of the Wang boundary. -/
+@[simp]
+public theorem finiteBouquetMappingTorusWangSequenceOfCover_boundary (φ : ι → F ≃ₜ F) (k : ℕ) :
+    (finiteBouquetMappingTorusWangSequenceOfCover φ k).boundary =
+      wangBoundary (coverWangBoundary φ k) := rfl
+
+public theorem finiteBouquetMappingTorusWangSequenceOfCover_boundary_apply (φ : ι → F ≃ₜ F)
+    (k : ℕ) (z : IntegralSingularHomology (k + 1) (FiniteBouquetMappingTorus φ)) :
+    (finiteBouquetMappingTorusWangSequenceOfCover φ k).boundary z =
+      ((overlapEquiv φ k).symm
+        (coverBoundary φ k ((unionEquiv φ (k + 1)).symm z))).1 := rfl
+
+/-- The Wang exact sequence of a finite-bouquet mapping torus exists unconditionally. -/
+public theorem nonempty_finiteBouquetMappingTorusWangSequence (φ : ι → F ≃ₜ F) (k : ℕ) :
+    Nonempty (FiniteBouquetMappingTorusWangSequence φ k) :=
+  ⟨finiteBouquetMappingTorusWangSequenceOfCover φ k⟩
+
+end WangFromCover
+
+
+/-! ## Axiom-free replacements for the Wang presentations -/
+
+section Presentations
+
+variable {ι F : Type} [Fintype ι] [Inhabited ι] [TopologicalSpace ι] [DiscreteTopology ι]
+  [TopologicalSpace F]
+
+/-- The Wang presentation of a finite-bouquet mapping torus, carried by an arbitrary Wang
+sequence. -/
+public noncomputable def finiteBouquetMappingTorusWangPresentationOf (φ : ι → F ≃ₜ F) (k : ℕ)
+    (W : FiniteBouquetMappingTorusWangSequence φ k) :
+    WangHomologyPresentation
+      (ι → IntegralSingularHomology (k + 1) F)
+      (IntegralSingularHomology (k + 1) F)
+      (IntegralSingularHomology (k + 1) (FiniteBouquetMappingTorus φ))
+      (ι → IntegralSingularHomology k F)
+      (IntegralSingularHomology k F) where
+  highDifference := finiteBouquetMonodromyDifference φ (k + 1)
+  inclusion := integralSingularHomologyMap (k + 1)
+    (finiteBouquetMappingTorusFiberInclusion φ)
+  boundary := W.boundary
+  lowDifference := finiteBouquetMonodromyDifference φ k
+  exact_highDifference_inclusion := W.exact_highDifference_inclusion
+  exact_inclusion_boundary := W.exact_inclusion_boundary
+  exact_boundary_lowDifference := W.exact_boundary_lowDifference
+
+/-- The Wang presentation of a finite-bouquet mapping torus, from the Mayer--Vietoris sequence of
+its vertex/edge open cover.  This is an axiom-free replacement for
+`finiteBouquetMappingTorusWangPresentation`. -/
+public noncomputable def finiteBouquetMappingTorusWangPresentationOfCover (φ : ι → F ≃ₜ F)
+    (k : ℕ) :
+    WangHomologyPresentation
+      (ι → IntegralSingularHomology (k + 1) F)
+      (IntegralSingularHomology (k + 1) F)
+      (IntegralSingularHomology (k + 1) (FiniteBouquetMappingTorus φ))
+      (ι → IntegralSingularHomology k F)
+      (IntegralSingularHomology k F) :=
+  finiteBouquetMappingTorusWangPresentationOf φ k
+    (finiteBouquetMappingTorusWangSequenceOfCover φ k)
+
+/-- The boundary of the axiom-free presentation is the first leg of the Mayer--Vietoris boundary
+of the vertex/edge cover. -/
+@[simp]
+public theorem finiteBouquetMappingTorusWangPresentationOfCover_boundary (φ : ι → F ≃ₜ F)
+    (k : ℕ) :
+    (finiteBouquetMappingTorusWangPresentationOfCover φ k).boundary =
+      WangFromMayerVietoris.wangBoundary (coverWangBoundary φ k) := rfl
+
+end Presentations
+
+section CirclePresentation
+
+variable {F : Type} [TopologicalSpace F]
+
+/-- The circle Wang presentation carried by an arbitrary one-loop bouquet Wang sequence. -/
+public noncomputable def circleMappingTorusWangPresentationOf (φ : F ≃ₜ F) (k : ℕ)
+    (W : FiniteBouquetMappingTorusWangSequence (fun _ : Unit ↦ φ) k) :
+    WangHomologyPresentation
+      (IntegralSingularHomology (k + 1) F)
+      (IntegralSingularHomology (k + 1) F)
+      (IntegralSingularHomology (k + 1) (CircleMappingTorus φ))
+      (IntegralSingularHomology k F)
+      (IntegralSingularHomology k F) := by
+  let δ : IntegralSingularHomology (k + 1) (CircleMappingTorus φ) →+
+      IntegralSingularHomology k F :=
+    { toFun := fun x ↦ W.boundary x ()
+      map_zero' := by simp
+      map_add' := by simp }
+  refine
+    { highDifference := circleMonodromyDifference φ (k + 1)
+      inclusion := integralSingularHomologyMap (k + 1)
+        (finiteBouquetMappingTorusFiberInclusion (fun _ : Unit ↦ φ))
+      boundary := δ
+      lowDifference := circleMonodromyDifference φ k
+      exact_highDifference_inclusion := ?_
+      exact_inclusion_boundary := ?_
+      exact_boundary_lowDifference := ?_ }
+  · intro y
+    rw [W.exact_highDifference_inclusion y]
+    constructor
+    · rintro ⟨x, hx⟩
+      exact ⟨x (), by
+        rw [← finiteBouquetMonodromyDifference_unit_apply φ (k + 1) x]
+        exact hx⟩
+    · rintro ⟨x, hx⟩
+      exact ⟨fun _ ↦ x, by
+        rw [finiteBouquetMonodromyDifference_unit_apply]
+        exact hx⟩
+  · intro y
+    rw [← W.exact_inclusion_boundary y]
+    constructor
+    · intro h
+      funext i
+      cases i
+      exact h
+    · intro h
+      exact congrFun h ()
+  · intro y
+    rw [← finiteBouquetMonodromyDifference_unit_apply φ k (fun _ ↦ y),
+      W.exact_boundary_lowDifference (fun _ ↦ y)]
+    constructor
+    · rintro ⟨x, hx⟩
+      exact ⟨x, congrFun hx ()⟩
+    · rintro ⟨x, hx⟩
+      refine ⟨x, funext fun i ↦ ?_⟩
+      cases i
+      exact hx
+
+/-- The circle Wang presentation from the Mayer--Vietoris sequence of the vertex/edge open cover.
+This is an axiom-free replacement for `circleMappingTorusWangPresentation`. -/
+public noncomputable def circleMappingTorusWangPresentationOfCover (φ : F ≃ₜ F) (k : ℕ) :
+    WangHomologyPresentation
+      (IntegralSingularHomology (k + 1) F)
+      (IntegralSingularHomology (k + 1) F)
+      (IntegralSingularHomology (k + 1) (CircleMappingTorus φ))
+      (IntegralSingularHomology k F)
+      (IntegralSingularHomology k F) :=
+  circleMappingTorusWangPresentationOf φ k
+    (finiteBouquetMappingTorusWangSequenceOfCover (fun _ : Unit ↦ φ) k)
+
+/-- The boundary of the axiom-free circle presentation is the low-collar leg of the
+Mayer--Vietoris boundary of the vertex/edge cover. -/
+public theorem circleMappingTorusWangPresentationOfCover_boundary_apply (φ : F ≃ₜ F) (k : ℕ)
+    (z : IntegralSingularHomology (k + 1) (CircleMappingTorus φ)) :
+    (circleMappingTorusWangPresentationOfCover φ k).boundary z =
+      ((overlapEquiv (fun _ : Unit ↦ φ) k).symm
+        (coverBoundary (fun _ : Unit ↦ φ) k
+          ((unionEquiv (fun _ : Unit ↦ φ) (k + 1)).symm z))).1 () := rfl
+
+end CirclePresentation
+
 
 end SphereSixComplex
