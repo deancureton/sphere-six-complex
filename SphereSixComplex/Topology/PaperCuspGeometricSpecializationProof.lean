@@ -3,35 +3,51 @@ module
 public import SphereSixComplex.Topology.PaperCuspGeometricSpecialization
 
 /-!
-# Regression test for overbroad geometric cusp specialization equations
+# Regression test: the cusp clutching datum must be normalized
 
-The established specialization equations use the fixed normalized datum
-`A.actualCuspRadialClutchingData`. This file proves that the tempting stronger formulations,
-quantified over every `G : ActualCuspRadialClutchingData W`, are false.
+The Section 7 specialization equations
+`EstablishedStandardA2CuspSpecialization.degreeOne` and `.degreeTwo` have a left-hand side that
+does not mention the clutching datum at all.  They are therefore only sound if the datum is
+*rigid*.  This file proves that the un-normalized shape of the datum,
+`UnnormalizedCuspRadialClutchingData`, is **not** rigid, so that quantifying either equation over
+every `G : UnnormalizedCuspRadialClutchingData W` yields a false statement.  This is the reason
+`ActualCuspRadialClutchingData` carries the normalization fields
+`fiberMarkingCompatibilityTwo`, `fiberParameter_eq` and `fiberNormalization`; **do not remove
+them.**
 
-`ActualCuspRadialClutchingData` records a fibre marking
+*Degree two.*  `UnnormalizedCuspRadialClutchingData` records a fibre marking
 `monodromyCoordinates : CuspMonodromyCoordinates clutching` whose degree-two component
 `degreeTwo` is constrained *only* by `degreeTwo_monodromy`, an equation that is invariant under
 negation because `mZeroExteriorTwoMatrix *ᵥ (-v) = -(mZeroExteriorTwoMatrix *ᵥ v)`.  Hence
-`ActualCuspRadialClutchingData.negDegreeTwo` is a second, equally valid, clutching datum for the
-same `W`, and `geometricHomologyTwoEquiv_negDegreeTwo` shows that it reverses the sign of exactly
-the four degree-two coinvariant coordinates that `degreeTwo` pins down.  This refutes the
+`UnnormalizedCuspRadialClutchingData.negDegreeTwo` is a second, equally valid, un-normalized datum
+for the same `W`, and `geometricHomologyTwoEquiv_negDegreeTwo` shows that it reverses the sign of
+exactly the four degree-two coinvariant coordinates that the equation pins down.  This refutes the
 degree-two statement: `not_standardA2CuspSpecializationDegreeTwoStatement`.
 
-The degree-one marking `degreeOne` is additionally tied to the standard period basis by
-`fiberMarkingCompatibility`, but that constraint is not rigid either.  Negation of a period
-torus is a descended affine automorphism whose integral lattice map is `-1`
+*Degree one.*  The degree-one marking `degreeOne` is additionally tied to the standard period
+basis by `fiberMarkingCompatibility`, but that constraint is not rigid either.  Negation of a
+period torus is a descended affine automorphism whose integral lattice map is `-1`
 (`negDescendedAffineTorusAutomorphism`), so composing the marking homeomorphism with it produces
-a second clutching datum `ActualCuspRadialClutchingData.negDegreeOne` whose degree-one marking is
-the negative of the original and which still satisfies `fiberMarkingCompatibility`.  Since `-1`
-commutes with the cusp monodromy matrix `M₀`, `degreeOne_monodromy` survives as well.  This
-refutes the degree-one statement: `not_standardA2CuspSpecializationDegreeOneStatement`.
+a second un-normalized datum `UnnormalizedCuspRadialClutchingData.negDegreeOne` whose degree-one
+marking is the negative of the original and which still satisfies `fiberMarkingCompatibility`.
+Since `-1` commutes with the cusp monodromy matrix `M₀`, `degreeOne_monodromy` survives as well.
+This refutes the degree-one statement: `not_standardA2CuspSpecializationDegreeOneStatement`.
 
-Both refutations take a radial clutching datum as an input. They show that either overbroad
-universal specialization statement would make the type of clutching data empty: see
-`isEmpty_actualCuspRadialClutchingData_of_degreeOneStatement` and
-`isEmpty_actualCuspRadialClutchingData_of_degreeTwoStatement`. The current established equations
-avoid this defect by naming a single normalized choice.
+Both refutations take an un-normalized datum as an input. They show that either overbroad
+universal specialization statement would make the type of un-normalized data empty: see
+`isEmpty_unnormalizedCuspRadialClutchingData_of_degreeOneStatement` and
+`isEmpty_unnormalizedCuspRadialClutchingData_of_degreeTwoStatement`.
+
+## The gate
+
+Neither construction survives the normalization.  `negDegreeTwo` cannot supply
+`fiberMarkingCompatibilityTwo` because the second compound of `-I` is `I`, so the torus basis does
+not see the sign it reverses: `not_degreeTwoMarkingCompatible_negDegreeTwo`.  `negDegreeOne`
+cannot supply `fiberNormalization` because the actual period coordinate of the collar is pinned
+pointwise, and a normalized fibre coordinate is unique
+(`IsActualCuspFiberPeriodCoordinate.fiberCoordinate_unique`):
+`not_isActualCuspFiberPeriodCoordinate_neg`.  Both are stated below against a genuine normalized
+datum, so they fail as soon as anybody weakens the normalization.
 -/
 
 @[expose] public section
@@ -84,6 +100,27 @@ public theorem additiveTorusHomologyBasis_degreeOne_neg (hfull : FullRank p)
       -(EstablishedTorusHomology.additiveTorusHomologyBasis p hfull).degreeOne x :=
   (EstablishedTorusHomology.additiveTorusHomologyBasis_naturality p hfull
     (negDescendedAffineTorusAutomorphism p)).1 x
+
+/-- Composing a fibre marking homeomorphism with negation of the period torus reverses the
+degree-one period marking it induces.  This is the whole content of the degree-one sign
+ambiguity. -/
+public theorem additiveTorusHomologyBasis_degreeOne_comp_neg
+    {F : Type} [TopologicalSpace F] (hfull : FullRank p) (e : F ≃ₜ AdditiveTorus p)
+    (x : IntegralSingularHomology 1 F) :
+    (EstablishedTorusHomology.additiveTorusHomologyBasis p hfull).degreeOne
+        (integralSingularHomologyMap 1 (e.trans (additiveTorusNegHomeomorph p)) x) =
+      -(EstablishedTorusHomology.additiveTorusHomologyBasis p hfull).degreeOne
+        (integralSingularHomologyMap 1 e x) := by
+  have hcomp :
+      (⟨e.trans (additiveTorusNegHomeomorph p),
+          (e.trans (additiveTorusNegHomeomorph p)).continuous⟩ : C(F, AdditiveTorus p)) =
+        (negDescendedAffineTorusAutomorphism p).map.comp ⟨e, e.continuous⟩ := rfl
+  show (EstablishedTorusHomology.additiveTorusHomologyBasis p hfull).degreeOne
+      (integralSingularHomologyMap 1
+        (⟨e.trans (additiveTorusNegHomeomorph p),
+          (e.trans (additiveTorusNegHomeomorph p)).continuous⟩ : C(F, AdditiveTorus p)) x) = _
+  rw [hcomp, integralSingularHomologyMap_comp]
+  exact additiveTorusHomologyBasis_degreeOne_neg p hfull _
 
 end TorusNegation
 
@@ -255,11 +292,16 @@ variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData 
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
 
 /-- The same geometric radial clutching data with the sign of its degree-two fibre marking
-reversed.  Nothing in `ActualCuspRadialClutchingData` constrains that sign: only the degree-one
-marking is tied to the period basis by `fiberMarkingCompatibility`. -/
-public def ActualCuspRadialClutchingData.negDegreeTwo
-    {W : ActualPuncturedCuspCollarWitness N M} (G : ActualCuspRadialClutchingData W) :
-    ActualCuspRadialClutchingData W := by
+reversed.  Nothing in `UnnormalizedCuspRadialClutchingData` constrains that sign: only the
+degree-one marking is tied to the period basis by `fiberMarkingCompatibility`.
+
+This does *not* produce an `ActualCuspRadialClutchingData`: it cannot supply
+`fiberMarkingCompatibilityTwo`, which is exactly what the normalization added.  See
+`not_degreeTwoMarkingCompatible_negDegreeTwo`. -/
+public def UnnormalizedCuspRadialClutchingData.negDegreeTwo
+    {W : ActualPuncturedCuspCollarWitness N M}
+    (G : UnnormalizedCuspRadialClutchingData W) :
+    UnnormalizedCuspRadialClutchingData W := by
   letI := G.fiberTopology
   exact
     { Fiber := G.Fiber
@@ -274,7 +316,7 @@ public def ActualCuspRadialClutchingData.negDegreeTwo
 
 /-- The sign-reversed marking changes the raw degree-two coinvariant coordinates by a sign. -/
 public theorem geometricHomologyTwoEquiv_negDegreeTwo
-    {W : ActualPuncturedCuspCollarWitness N M} (G : ActualCuspRadialClutchingData W)
+    {W : ActualPuncturedCuspCollarWitness N M} (G : UnnormalizedCuspRadialClutchingData W)
     (x : IntegralSingularHomology 2 (puncturedLocalCuspQuotient W)) (i : Fin 4) :
     G.negDegreeTwo.geometricHomologyTwoEquiv x (Fin.castAdd 2 i) =
       -G.geometricHomologyTwoEquiv x (Fin.castAdd 2 i) := by
@@ -285,10 +327,15 @@ public theorem geometricHomologyTwoEquiv_negDegreeTwo
 /-- The same geometric radial clutching data with the sign of its degree-one fibre marking
 reversed.  The marking compatibility with the period basis is preserved because the marking
 homeomorphism is composed with negation of the period torus, whose integral lattice map is
-`-1`, and `-1` commutes with the cusp monodromy matrix `M₀`. -/
-public def ActualCuspRadialClutchingData.negDegreeOne
-    {W : ActualPuncturedCuspCollarWitness N M} (G : ActualCuspRadialClutchingData W) :
-    ActualCuspRadialClutchingData W := by
+`-1`, and `-1` commutes with the cusp monodromy matrix `M₀`.
+
+This does *not* produce an `ActualCuspRadialClutchingData`: composing the fibre coordinate with
+the hyperelliptic involution destroys `fiberNormalization`, which is exactly what the
+normalization added.  See `not_isActualCuspFiberPeriodCoordinate_neg`. -/
+public def UnnormalizedCuspRadialClutchingData.negDegreeOne
+    {W : ActualPuncturedCuspCollarWitness N M}
+    (G : UnnormalizedCuspRadialClutchingData W) :
+    UnnormalizedCuspRadialClutchingData W := by
   letI := G.fiberTopology
   exact
     { Fiber := G.Fiber
@@ -301,34 +348,17 @@ public def ActualCuspRadialClutchingData.negDegreeOne
       fiberHomeomorph := G.fiberHomeomorph.trans (additiveTorusNegHomeomorph G.fiberParameter)
       fiberMarkingCompatibility := by
         intro _ x
-        have hcomp :
-            (⟨G.fiberHomeomorph.trans (additiveTorusNegHomeomorph G.fiberParameter),
-                (G.fiberHomeomorph.trans
-                  (additiveTorusNegHomeomorph G.fiberParameter)).continuous⟩ :
-              C(G.Fiber, Geometry.EllipticFamilySpecialization.AdditiveTorus
-                G.fiberParameter)) =
-            (negDescendedAffineTorusAutomorphism G.fiberParameter).map.comp
-              ⟨G.fiberHomeomorph, G.fiberHomeomorph.continuous⟩ := rfl
         show (EstablishedTorusHomology.additiveTorusHomologyBasis G.fiberParameter
               G.fiberFullRank).degreeOne
             (integralSingularHomologyMap 1
-              ⟨G.fiberHomeomorph.trans (additiveTorusNegHomeomorph G.fiberParameter),
-                (G.fiberHomeomorph.trans
-                  (additiveTorusNegHomeomorph G.fiberParameter)).continuous⟩ x) =
+              (G.fiberHomeomorph.trans (additiveTorusNegHomeomorph G.fiberParameter)) x) =
           -G.monodromyCoordinates.degreeOne x
-        rw [hcomp, integralSingularHomologyMap_comp]
-        show (EstablishedTorusHomology.additiveTorusHomologyBasis G.fiberParameter
-              G.fiberFullRank).degreeOne
-            (integralSingularHomologyMap 1
-              (negDescendedAffineTorusAutomorphism G.fiberParameter).map
-              (integralSingularHomologyMap 1
-                ⟨G.fiberHomeomorph, G.fiberHomeomorph.continuous⟩ x)) = _
-        rw [additiveTorusHomologyBasis_degreeOne_neg, G.fiberMarkingCompatibility x] }
+        rw [additiveTorusHomologyBasis_degreeOne_comp_neg, G.fiberMarkingCompatibility x] }
 
 /-- The sign-reversed degree-one marking changes the raw degree-one coinvariant coordinates by
 a sign. -/
 public theorem geometricHomologyOneEquiv_negDegreeOne
-    {W : ActualPuncturedCuspCollarWitness N M} (G : ActualCuspRadialClutchingData W)
+    {W : ActualPuncturedCuspCollarWitness N M} (G : UnnormalizedCuspRadialClutchingData W)
     (x : IntegralSingularHomology 1 (puncturedLocalCuspQuotient W)) (i : Fin 2) :
     G.negDegreeOne.geometricHomologyOneEquiv x (Fin.castAdd 1 i) =
       -G.geometricHomologyOneEquiv x (Fin.castAdd 1 i) := by
@@ -336,13 +366,14 @@ public theorem geometricHomologyOneEquiv_negDegreeOne
   exact circleMappingTorusHOneAddEquiv_negDegreeOne_castAdd G.monodromyCoordinates
     (integralSingularHomologyEquivOfHomotopyEquiv 1 G.totalHomotopyEquiv x) i
 
-/-- The false overbroad degree-one statement obtained by quantifying over every clutching datum. -/
+/-- The false overbroad degree-one statement obtained by quantifying over every *un-normalized*
+clutching datum. -/
 public def StandardA2CuspSpecializationDegreeOneStatement : Prop :=
   ∀ {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W)
-    (G : ActualCuspRadialClutchingData W)
+    (G : UnnormalizedCuspRadialClutchingData W)
     (x : IntegralSingularHomology 1 (puncturedLocalCuspQuotient W)),
       actualLocalCuspFillingHomologyOneEquiv W R
           (integralSingularHomologyMap 1
@@ -354,7 +385,7 @@ fibre marking. -/
 public theorem not_standardA2CuspSpecializationDegreeOneStatement
     {W : ActualPuncturedCuspCollarWitness N M}
     (R : ActualLocalCuspCentralFiberRetractionData W)
-    (G : ActualCuspRadialClutchingData W) :
+    (G : UnnormalizedCuspRadialClutchingData W) :
     ¬ StandardA2CuspSpecializationDegreeOneStatement := by
   intro h
   set x := G.geometricHomologyOneEquiv.symm (fun _ ↦ 1) with hx
@@ -368,13 +399,14 @@ public theorem not_standardA2CuspSpecializationDegreeOneStatement
   rw [hval] at hi
   omega
 
-/-- The false overbroad degree-two statement obtained by quantifying over every clutching datum. -/
+/-- The false overbroad degree-two statement obtained by quantifying over every *un-normalized*
+clutching datum. -/
 public def StandardA2CuspSpecializationDegreeTwoStatement : Prop :=
   ∀ {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W)
-    (G : ActualCuspRadialClutchingData W)
+    (G : UnnormalizedCuspRadialClutchingData W)
     (x : IntegralSingularHomology 2 (puncturedLocalCuspQuotient W)),
       actualLocalCuspFillingHomologyTwoEquiv W R
           (integralSingularHomologyMap 2
@@ -387,7 +419,7 @@ does, and the clutching data is not rigid. -/
 public theorem not_standardA2CuspSpecializationDegreeTwoStatement
     {W : ActualPuncturedCuspCollarWitness N M}
     (R : ActualLocalCuspCentralFiberRetractionData W)
-    (G : ActualCuspRadialClutchingData W) :
+    (G : UnnormalizedCuspRadialClutchingData W) :
     ¬ StandardA2CuspSpecializationDegreeTwoStatement := by
   intro h
   set x := G.geometricHomologyTwoEquiv.symm (fun _ ↦ 1) with hx
@@ -402,22 +434,84 @@ public theorem not_standardA2CuspSpecializationDegreeTwoStatement
   omega
 
 /-- If the overbroad degree-one specialization equation held, no punctured cusp collar witness
-carrying a central-fibre retraction could carry a radial clutching datum. -/
-public theorem isEmpty_actualCuspRadialClutchingData_of_degreeOneStatement
+carrying a central-fibre retraction could carry an un-normalized radial clutching datum, hence
+none could carry a normalized one either. -/
+public theorem isEmpty_unnormalizedCuspRadialClutchingData_of_degreeOneStatement
     (h : StandardA2CuspSpecializationDegreeOneStatement)
     {W : ActualPuncturedCuspCollarWitness N M}
     (R : ActualLocalCuspCentralFiberRetractionData W) :
-    IsEmpty (ActualCuspRadialClutchingData W) :=
+    IsEmpty (UnnormalizedCuspRadialClutchingData W) :=
   ⟨fun G ↦ not_standardA2CuspSpecializationDegreeOneStatement R G h⟩
 
 /-- The degree-two counterpart of
-`isEmpty_actualCuspRadialClutchingData_of_degreeOneStatement`. -/
-public theorem isEmpty_actualCuspRadialClutchingData_of_degreeTwoStatement
+`isEmpty_unnormalizedCuspRadialClutchingData_of_degreeOneStatement`. -/
+public theorem isEmpty_unnormalizedCuspRadialClutchingData_of_degreeTwoStatement
     (h : StandardA2CuspSpecializationDegreeTwoStatement)
     {W : ActualPuncturedCuspCollarWitness N M}
     (R : ActualLocalCuspCentralFiberRetractionData W) :
-    IsEmpty (ActualCuspRadialClutchingData W) :=
+    IsEmpty (UnnormalizedCuspRadialClutchingData W) :=
   ⟨fun G ↦ not_standardA2CuspSpecializationDegreeTwoStatement R G h⟩
+
+/-! ## The gate: neither refutation survives the normalization
+
+Both constructions above are stated for `UnnormalizedCuspRadialClutchingData` because they no
+longer produce an `ActualCuspRadialClutchingData`: the normalization fields cannot be filled in.
+The two theorems below make that failure explicit, each measured against a genuine normalized
+datum, so they break immediately if anybody weakens the normalization. -/
+
+/-- The degree-two refutation stops applying.  `negDegreeTwo` keeps the fibre coordinate and
+reverses only the degree-two marking, so it cannot satisfy
+`ActualCuspRadialClutchingData.fiberMarkingCompatibilityTwo`: negation of the fibre coordinate
+would not help either, because the second compound of `-I` is `I`. -/
+public theorem not_degreeTwoMarkingCompatible_negDegreeTwo
+    {W : ActualPuncturedCuspCollarWitness N M} (G : ActualCuspRadialClutchingData W) :
+    let _ := G.fiberTopology
+    ¬ ∀ x : IntegralSingularHomology 2 G.Fiber,
+        (EstablishedTorusHomology.additiveTorusHomologyBasis
+            G.fiberParameter G.fiberFullRank).degreeTwo
+            (integralSingularHomologyMap 2 G.fiberHomeomorph x) =
+          G.monodromyCoordinates.negDegreeTwo.degreeTwo x := by
+  intro _ h
+  set x := G.monodromyCoordinates.degreeTwo.symm (fun _ ↦ 1) with hx
+  have hval : G.monodromyCoordinates.degreeTwo x = fun _ ↦ 1 := by
+    rw [hx, AddEquiv.apply_symm_apply]
+  have hneg : G.monodromyCoordinates.degreeTwo x = -G.monodromyCoordinates.degreeTwo x :=
+    (G.fiberMarkingCompatibilityTwo x).symm.trans (h x)
+  have hi : (1 : ℤ) = -1 := by
+    have h0 : G.monodromyCoordinates.degreeTwo x (0 : Fin 6) =
+        -G.monodromyCoordinates.degreeTwo x (0 : Fin 6) := congrFun hneg 0
+    rwa [hval] at h0
+  omega
+
+/-- The degree-one refutation stops applying.  `negDegreeOne` composes the fibre coordinate with
+the hyperelliptic involution of the torus fibre, and a normalized fibre coordinate is unique, so
+the composite cannot itself be a period coordinate of the collar. -/
+public theorem not_isActualCuspFiberPeriodCoordinate_neg
+    {W : ActualPuncturedCuspCollarWitness N M} (G : ActualCuspRadialClutchingData W) :
+    let _ := G.fiberTopology
+    ¬ IsActualCuspFiberPeriodCoordinate G.totalHomeomorph G.markingRadius
+        G.markingParameter_mem G.fiberParameter
+        (G.fiberHomeomorph.trans (additiveTorusNegHomeomorph G.fiberParameter)) := by
+  intro _ h
+  have heq := G.fiberNormalization.fiberCoordinate_unique h
+  set x := G.monodromyCoordinates.degreeOne.symm (fun _ ↦ 1) with hx
+  have hval : G.monodromyCoordinates.degreeOne x = fun _ ↦ 1 := by
+    rw [hx, AddEquiv.apply_symm_apply]
+  have hneg : G.monodromyCoordinates.degreeOne x = -G.monodromyCoordinates.degreeOne x := by
+    calc G.monodromyCoordinates.degreeOne x
+        = (EstablishedTorusHomology.additiveTorusHomologyBasis
+            G.fiberParameter G.fiberFullRank).degreeOne
+            (integralSingularHomologyMap 1
+              (G.fiberHomeomorph.trans (additiveTorusNegHomeomorph G.fiberParameter)) x) := by
+          rw [← heq]
+          exact (G.fiberMarkingCompatibility x).symm
+      _ = -G.monodromyCoordinates.degreeOne x := by
+          rw [additiveTorusHomologyBasis_degreeOne_comp_neg, G.fiberMarkingCompatibility x]
+  have hi : (1 : ℤ) = -1 := by
+    have h0 : G.monodromyCoordinates.degreeOne x (0 : Fin 4) =
+        -G.monodromyCoordinates.degreeOne x (0 : Fin 4) := congrFun hneg 0
+    rwa [hval] at h0
+  omega
 
 end Geometry.CuspPuncturedCollarBridge
 
