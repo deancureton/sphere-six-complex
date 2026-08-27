@@ -19,7 +19,6 @@ open AlgebraicTopology CategoryTheory ContinuousMap Simplicial
 
 namespace SphereSixComplex
 
-set_option maxHeartbeats 800000
 
 /-- The dimension of the standard simplex whose vertices are the complement of a proper Cech
 tuple's support. -/
@@ -88,7 +87,6 @@ public theorem boundarySevenProperCechTupleFaceToBoundarySSetMap_comp_inclusion
       (SSet.stdSimplex.face a.1.supportᶜ).ι := by
   simp [boundarySevenProperCechTupleFaceToBoundarySSetMap]
 
-set_option backward.isDefEq.respectTransparency false in
 /-- The representability isomorphism uses exactly the increasing complementary-vertex
 inclusion. -/
 public theorem boundarySevenProperCechTupleFaceIso_hom_comp_faceInclusion
@@ -223,7 +221,6 @@ public def boundarySevenFaceNeighborhoodIntersectionToBoundary
       (SSet.toTop.obj (∂Δ[7] : SSet.{0}) : Type)) :=
   ⟨Subtype.val, continuous_subtype_val⟩
 
-set_option backward.isDefEq.respectTransparency false in
 /-- The literal local coordinate map, followed by the ambient inclusion, is exactly the
 realization of the canonical inclusion of the common face in the simplicial boundary. -/
 public theorem boundarySevenProperCechTupleFaceToIntersection_comp_ambientInclusion
@@ -297,7 +294,6 @@ public noncomputable def boundarySevenProperCechTupleLocalIntegralComparison
     (boundarySevenProperCechTupleLocalComparisonSSetMap a)
       (AddCommGrpCat.of ℤ)
 
-set_option backward.isDefEq.respectTransparency false in
 /-- Precomposing the face comparison by its canonical representability isomorphism gives the
 standard-simplex comparison associated to the literal coordinate inclusion. -/
 public theorem boundarySevenProperCechTupleFaceIso_hom_comp_localComparisonSSetMap

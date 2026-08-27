@@ -43,9 +43,6 @@ variable
   (B₀₁ : SmoothCollaredBordism.{uE, uH, uM} I M₀ M₁)
   (B₁₂ : SmoothCollaredBordism.{uE, uH, uM} I M₁ M₂)
 
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.types false
-
 /-- The manifold instance produced by the smoothly compatible three-piece presentation. -/
 public noncomputable instance instIsManifoldOpenGluedCarrier :
     IsManifold (I.prod (𝓡∂ 1)) ∞ (OpenGluedCarrier B₀₁ B₁₂) :=

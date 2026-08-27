@@ -416,7 +416,6 @@ public noncomputable def diskSevenCoverIntersectionRangeHomologyIso (k : ℕ) :
   (HomologicalComplex.homologyFunctor AddCommGrpCat
     (ComplexShape.down ℕ) k).mapIso diskSevenCoverIntersectionRangeChainsIso
 
-set_option backward.isDefEq.respectTransparency false in
 /-- Combining the range identification with radial normalization identifies intersection-range
 homology with the integral singular homology of the standard six-sphere. -/
 public noncomputable def diskSevenCoverRangeIntersectionHomologyIsoSphereSix (k : ℕ) :

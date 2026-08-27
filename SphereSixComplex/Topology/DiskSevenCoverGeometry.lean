@@ -28,7 +28,6 @@ public noncomputable def diskSevenCoverTrueHomeomorphBall :
   change CollapseComplement (TopCat.diskBoundaryInclusion.{0} 7) ≃ₜ _
   exact diskSevenComplementBoundaryHomeomorphBall
 
-set_option linter.style.haveILetI false in
 /-- The true cover member is contractible. -/
 public theorem diskSevenCoverTrue_contractibleSpace :
     ContractibleSpace (diskSevenExcisionCover true : Set (TopCat.disk.{0} 7)) := by
@@ -208,7 +207,6 @@ public theorem diskSevenFalseRadialHomotopyFunction_vector
       diskSevenFalseRadialScale t x • diskSevenVector x.1 :=
   rfl
 
-set_option backward.isDefEq.respectTransparency false in
 /-- At time zero the radial homotopy is radial normalization. -/
 @[simp]
 public theorem diskSevenFalseRadialHomotopyFunction_zero
@@ -256,7 +254,6 @@ public theorem diskSevenFalseRadialHomotopy_vector
       diskSevenFalseRadialScale t x • diskSevenVector x.1 :=
   rfl
 
-set_option backward.isDefEq.respectTransparency false in
 /-- The radial homotopy fixes boundary points pointwise. -/
 public theorem diskSevenFalseRadialHomotopy_fixed
     (t : unitInterval) (x : TopCat.sphere.{0} 6) :
@@ -484,7 +481,6 @@ public theorem diskSevenFalseToIntersectionHalfFunction_vector
       (2 : ℝ)⁻¹ • diskSevenVector x.1 :=
   rfl
 
-set_option backward.isDefEq.respectTransparency false in
 /-- On the false member, halving followed by inclusion is homotopic to the identity. -/
 public noncomputable def diskSevenFalseHalfHomotopy :
     TopCat.Homotopy
@@ -547,7 +543,6 @@ public theorem diskSevenIntersectionHalfHomotopyFunction_vector
       diskSevenHalfToIdentityScale t • diskSevenVector x.1 :=
   rfl
 
-set_option backward.isDefEq.respectTransparency false in
 /-- On the intersection, inclusion followed by radial halving is homotopic to the identity. -/
 public noncomputable def diskSevenIntersectionHalfHomotopy :
     TopCat.Homotopy

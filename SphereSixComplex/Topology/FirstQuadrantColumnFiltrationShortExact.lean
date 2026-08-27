@@ -20,7 +20,6 @@ open CategoryTheory CategoryTheory.Limits ZeroObject
 
 namespace SphereSixComplex
 
-set_option backward.isDefEq.respectTransparency false in
 /-- The differential of a finite prefix, transported to the original bicomplex in two
 retained degrees. -/
 public theorem firstQuadrantColumnPrefix_d_eq
@@ -29,13 +28,20 @@ public theorem firstQuadrantColumnPrefix_d_eq
       (firstQuadrantColumnPrefixXIso K n i hi).hom ≫ K.d i j ≫
         (firstQuadrantColumnPrefixXIso K n j hj).inv := by
   let e := firstQuadrantColumnPrefixEmbedding n
-  have h := HomologicalComplex.extend_d_eq
-    (K := K.restriction e) (e := e)
-    (i' := i) (j' := j) (i := ⟨i, hi⟩) (j := ⟨j, hj⟩) (hi := rfl) (hj := rfl)
-  simpa [e, firstQuadrantColumnPrefix, firstQuadrantColumnPrefixXIso,
-    firstQuadrantColumnPrefixEmbedding, ComplexShape.Embedding.mk',
-    HomologicalComplex.stupidTrunc, HomologicalComplex.stupidTruncXIso,
-    HomologicalComplex.restriction] using h
+  have hei : e.f (⟨i, hi⟩ : FirstQuadrantColumnPrefixIndex n) = i := rfl
+  have hej : e.f (⟨j, hj⟩ : FirstQuadrantColumnPrefixIndex n) = j := rfl
+  change ((K.restriction e).extend e).d i j =
+    (((K.restriction e).extendXIso e hei ≪≫ K.restrictionXIso e hei).hom ≫
+      K.d i j ≫
+        ((K.restriction e).extendXIso e hej ≪≫ K.restrictionXIso e hej).inv)
+  calc
+    _ = ((K.restriction e).extendXIso e hei).hom ≫
+          (K.restriction e).d ⟨i, hi⟩ ⟨j, hj⟩ ≫
+            ((K.restriction e).extendXIso e hej).inv :=
+      HomologicalComplex.extend_d_eq (K.restriction e) e hei hej
+    _ = _ := by
+      rw [HomologicalComplex.restriction_d_eq K e hei hej]
+      simp only [Iso.trans_hom, Iso.trans_inv, Category.assoc]
 
 /-- Component of the canonical inclusion of two consecutive finite column prefixes. -/
 public noncomputable def firstQuadrantColumnPrefixSuccInclusionComponent
@@ -60,7 +66,6 @@ public theorem firstQuadrantColumnPrefixSuccInclusionComponent_eq_zero
     firstQuadrantColumnPrefixSuccInclusionComponent K p q = 0 := by
   simp [firstQuadrantColumnPrefixSuccInclusionComponent, show ¬ q ≤ p by omega]
 
-set_option backward.isDefEq.respectTransparency false in
 /-- Canonical inclusion from the prefix through `p` into the prefix through `p + 1`. -/
 public noncomputable def firstQuadrantColumnPrefixSuccInclusion
     (K : FirstQuadrantBicomplex) (p : ℕ) :

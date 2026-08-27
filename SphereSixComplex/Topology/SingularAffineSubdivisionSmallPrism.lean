@@ -106,7 +106,6 @@ public theorem coverSmallAffinePrismComponent_comp_inclusion
   simp only [SSet.ι_chainComplexMap_f_assoc]
   exact coverSmallAffinePrismSimplexChain_comp_inclusion X U n x
 
-set_option linter.style.haveILetI false in
 /-- The cover-small prism gives the chain-homotopy equation in positive degrees. -/
 public theorem coverSmallAffinePrismComponent_identity_succ
     (n : ℕ) :
@@ -184,7 +183,6 @@ public theorem coverSmallAffinePrismComponent_identity_succ
           (Category.assoc _ _ _).symm
   · rfl
 
-set_option linter.style.haveILetI false in
 /-- The cover-small prism gives the chain-homotopy equation in degree zero. -/
 public theorem coverSmallAffinePrismComponent_identity_zero :
     (coverSmallAffineSubdivisionChainMap X U).f 0 =

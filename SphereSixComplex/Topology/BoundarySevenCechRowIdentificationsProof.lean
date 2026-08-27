@@ -55,7 +55,6 @@ noncomputable def cechPresentationEvaluationIso
   exact preservesLimitIso E D ≪≫ HasLimit.isoOfNatIso
     (cechPresentationWideCospanEvaluationIso A p q)
 
-set_option backward.isDefEq.respectTransparency false in
 @[reassoc]
 theorem cechPresentationEvaluationIso_hom_π
     (A : Arrow SSet) (p q : ℕ) (i : Fin (p + 1)) :
@@ -84,7 +83,6 @@ theorem cechPresentationEvaluationIso_hom_π
     (cechPresentationWideCospanEvaluationIso A p q) (some i)]
   rw [← Category.assoc, preservesLimitIso_hom_π]
 
-set_option backward.isDefEq.respectTransparency false in
 @[reassoc]
 theorem cechPresentationEvaluationIso_hom_base
     (A : Arrow SSet) (p q : ℕ) :
@@ -112,7 +110,6 @@ theorem cechPresentationEvaluationIso_hom_base
     (cechPresentationWideCospanEvaluationIso A p q) none]
   rw [← Category.assoc, preservesLimitIso_hom_π]
 
-set_option backward.isDefEq.respectTransparency false in
 theorem cechPresentationEvaluation_map_π_comp_diagramIso
     (A : Arrow SSet) (p q : ℕ) (i : Fin (p + 1)) :
     ((evaluation SimplexCategoryᵒᵖ (Type 0)).obj
@@ -124,7 +121,6 @@ theorem cechPresentationEvaluation_map_π_comp_diagramIso
           (WidePullback.π (fun _ : Fin (p + 1) ↦ A.hom) i) := by
   rfl
 
-set_option backward.isDefEq.respectTransparency false in
 theorem cechPresentationEvaluation_map_base_comp_diagramIso
     (A : Arrow SSet) (p q : ℕ) :
     ((evaluation SimplexCategoryᵒᵖ (Type 0)).obj
@@ -136,7 +132,6 @@ theorem cechPresentationEvaluation_map_base_comp_diagramIso
           (WidePullback.base (fun _ : Fin (p + 1) ↦ A.hom)) := by
   rfl
 
-set_option backward.isDefEq.respectTransparency false in
 theorem cechPresentationEvaluationIso_naturality
     (A : Arrow SSet) (q : ℕ) {a b : SimplexCategoryᵒᵖ} (f : a ⟶ b) :
     ((evaluation SimplexCategoryᵒᵖ (Type 0)).obj
@@ -145,16 +140,14 @@ theorem cechPresentationEvaluationIso_naturality
         (cechPresentationEvaluationIso A b.unop.len q).hom =
       (cechPresentationEvaluationIso A a.unop.len q).hom ≫
         (cechPresentationEvaluationArrow A q).augmentedCechNerve.left.map f := by
-  let B := cechPresentationEvaluationArrow A q
-  let D := WidePullbackShape.wideCospan B.right
-    (fun _ : Fin (b.unop.len + 1) ↦ B.left) (fun _ ↦ B.hom)
-  apply limit.hom_ext (F := D)
-  intro j
-  cases j with
-  | some i =>
-    rw [Category.assoc, cechPresentationEvaluationIso_hom_π]
+  unfold Arrow.augmentedCechNerve Arrow.cechNerve
+  apply WidePullback.hom_ext
+      (fun _ : Fin (b.unop.len + 1) ↦
+        (cechPresentationEvaluationArrow A q).hom)
+  · intro i
+    erw [Category.assoc, cechPresentationEvaluationIso_hom_π]
     rw [cechPresentationEvaluation_map_π_comp_diagramIso]
-    rw [← Functor.map_comp]
+    erw [← Functor.map_comp]
     change ((evaluation SimplexCategoryᵒᵖ (Type 0)).obj
         (Opposite.op (SimplexCategory.mk q))).map
           (A.cechNerve.map f ≫
@@ -164,13 +157,23 @@ theorem cechPresentationEvaluationIso_naturality
           WidePullback.π
             (fun _ : Fin (b.unop.len + 1) ↦
               (cechPresentationEvaluationArrow A q).hom) i)
-    simp only [Arrow.cechNerve_map, WidePullback.lift_π]
-    rw [cechPresentationEvaluationIso_hom_π,
+    have hmap :
+        (cechPresentationEvaluationArrow A q).cechNerve.map f ≫
+          WidePullback.π
+            (fun _ : Fin (b.unop.len + 1) ↦
+              (cechPresentationEvaluationArrow A q).hom) i =
+        WidePullback.π
+          (fun _ : Fin (a.unop.len + 1) ↦
+            (cechPresentationEvaluationArrow A q).hom)
+          (f.unop.toOrderHom i) := by
+      rw [Arrow.cechNerve_map, WidePullback.lift_π]
+    erw [hmap]
+    erw [cechPresentationEvaluationIso_hom_π,
       cechPresentationEvaluation_map_π_comp_diagramIso]
-  | none =>
-    rw [Category.assoc, cechPresentationEvaluationIso_hom_base]
+    rw [Arrow.cechNerve_map, WidePullback.lift_π]
+  · erw [Category.assoc, cechPresentationEvaluationIso_hom_base]
     rw [cechPresentationEvaluation_map_base_comp_diagramIso]
-    rw [← Functor.map_comp]
+    erw [← Functor.map_comp]
     change ((evaluation SimplexCategoryᵒᵖ (Type 0)).obj
         (Opposite.op (SimplexCategory.mk q))).map
           (A.cechNerve.map f ≫
@@ -180,9 +183,19 @@ theorem cechPresentationEvaluationIso_naturality
           WidePullback.base
             (fun _ : Fin (b.unop.len + 1) ↦
               (cechPresentationEvaluationArrow A q).hom))
-    simp only [Arrow.cechNerve_map, WidePullback.lift_base]
-    rw [cechPresentationEvaluationIso_hom_base,
+    have hmap :
+        (cechPresentationEvaluationArrow A q).cechNerve.map f ≫
+          WidePullback.base
+            (fun _ : Fin (b.unop.len + 1) ↦
+              (cechPresentationEvaluationArrow A q).hom) =
+        WidePullback.base
+          (fun _ : Fin (a.unop.len + 1) ↦
+            (cechPresentationEvaluationArrow A q).hom) := by
+      rw [Arrow.cechNerve_map, WidePullback.lift_base]
+    erw [hmap]
+    erw [cechPresentationEvaluationIso_hom_base,
       cechPresentationEvaluation_map_base_comp_diagramIso]
+    rw [Arrow.cechNerve_map, WidePullback.lift_base]
 
 noncomputable def cechPresentationSimplicialEvaluationIso
     (A : Arrow SSet) (q : ℕ) :
@@ -284,7 +297,6 @@ noncomputable def boundarySevenFaceNeighborhoodCechEvaluationIso
   exact preservesLimitIso E D ≪≫ HasLimit.isoOfNatIso
     (boundarySevenFaceNeighborhoodWideCospanEvaluationIso p q)
 
-set_option backward.isDefEq.respectTransparency false in
 @[reassoc]
 private theorem boundarySevenFaceNeighborhoodCechEvaluationIso_hom_π
     (p q : ℕ) (i : Fin (p + 1)) :
@@ -321,7 +333,6 @@ private theorem boundarySevenFaceNeighborhoodCechEvaluationIso_hom_π
     (boundarySevenFaceNeighborhoodWideCospanEvaluationIso p q) (some i)]
   rw [← Category.assoc, preservesLimitIso_hom_π]
 
-set_option backward.isDefEq.respectTransparency false in
 @[reassoc]
 private theorem boundarySevenFaceNeighborhoodCechEvaluationIso_hom_base
     (p q : ℕ) :
@@ -356,7 +367,6 @@ private theorem boundarySevenFaceNeighborhoodCechEvaluationIso_hom_base
     (boundarySevenFaceNeighborhoodWideCospanEvaluationIso p q) none]
   rw [← Category.assoc, preservesLimitIso_hom_π]
 
-set_option backward.isDefEq.respectTransparency false in
 @[simp]
 private theorem boundarySevenFaceNeighborhoodEvaluation_map_π_comp_diagramIso
     (p q : ℕ) (i : Fin (p + 1)) :
@@ -374,7 +384,6 @@ private theorem boundarySevenFaceNeighborhoodEvaluation_map_π_comp_diagramIso
               boundarySevenFaceNeighborhoodPresentationArrow.hom) i) := by
   rfl
 
-set_option backward.isDefEq.respectTransparency false in
 @[simp]
 private theorem boundarySevenFaceNeighborhoodEvaluation_map_base_comp_diagramIso
     (p q : ℕ) :
@@ -401,7 +410,6 @@ private noncomputable def boundarySevenFaceNeighborhoodCechRowXIso
   (sigmaConst.obj (AddCommGrpCat.of ℤ)).mapIso
     (boundarySevenFaceNeighborhoodCechEvaluationIso p q)
 
-set_option backward.isDefEq.respectTransparency false in
 private theorem boundarySevenFaceNeighborhoodCechEvaluationIso_naturality
     (q : ℕ) {a b : SimplexCategoryᵒᵖ} (f : a ⟶ b) :
     ((evaluation SimplexCategoryᵒᵖ (Type 0)).obj
@@ -411,18 +419,16 @@ private theorem boundarySevenFaceNeighborhoodCechEvaluationIso_naturality
       (boundarySevenFaceNeighborhoodCechEvaluationIso a.unop.len q).hom ≫
         (boundarySevenFaceNeighborhoodPresentationEvaluationArrow
           (Opposite.op (SimplexCategory.mk q))).augmentedCechNerve.left.map f := by
-  let A := boundarySevenFaceNeighborhoodPresentationEvaluationArrow
-    (Opposite.op (SimplexCategory.mk q))
-  let D := WidePullbackShape.wideCospan A.right
-    (fun _ : Fin (b.unop.len + 1) ↦ A.left) (fun _ ↦ A.hom)
-  apply limit.hom_ext (F := D)
-  intro j
-  cases j with
-  | some i =>
-    rw [Category.assoc,
+  unfold Arrow.augmentedCechNerve Arrow.cechNerve
+  apply WidePullback.hom_ext
+      (fun _ : Fin (b.unop.len + 1) ↦
+        (boundarySevenFaceNeighborhoodPresentationEvaluationArrow
+          (Opposite.op (SimplexCategory.mk q))).hom)
+  · intro i
+    erw [Category.assoc,
       boundarySevenFaceNeighborhoodCechEvaluationIso_hom_π]
     rw [boundarySevenFaceNeighborhoodEvaluation_map_π_comp_diagramIso]
-    rw [← Functor.map_comp]
+    erw [← Functor.map_comp]
     change ((evaluation SimplexCategoryᵒᵖ (Type 0)).obj
         (Opposite.op (SimplexCategory.mk q))).map
           (boundarySevenFaceNeighborhoodPresentationArrow.cechNerve.map f ≫
@@ -436,14 +442,27 @@ private theorem boundarySevenFaceNeighborhoodCechEvaluationIso_naturality
             (fun _ : Fin (b.unop.len + 1) ↦
               (boundarySevenFaceNeighborhoodPresentationEvaluationArrow
                 (Opposite.op (SimplexCategory.mk q))).hom) i)
-    simp only [Arrow.cechNerve_map, WidePullback.lift_π]
-    rw [boundarySevenFaceNeighborhoodCechEvaluationIso_hom_π,
+    have hmap :
+        (boundarySevenFaceNeighborhoodPresentationEvaluationArrow
+            (Opposite.op (SimplexCategory.mk q))).cechNerve.map f ≫
+          WidePullback.π
+            (fun _ : Fin (b.unop.len + 1) ↦
+              (boundarySevenFaceNeighborhoodPresentationEvaluationArrow
+                (Opposite.op (SimplexCategory.mk q))).hom) i =
+        WidePullback.π
+          (fun _ : Fin (a.unop.len + 1) ↦
+            (boundarySevenFaceNeighborhoodPresentationEvaluationArrow
+              (Opposite.op (SimplexCategory.mk q))).hom)
+          (f.unop.toOrderHom i) := by
+      rw [Arrow.cechNerve_map, WidePullback.lift_π]
+    erw [hmap]
+    erw [boundarySevenFaceNeighborhoodCechEvaluationIso_hom_π,
       boundarySevenFaceNeighborhoodEvaluation_map_π_comp_diagramIso]
-  | none =>
-    rw [Category.assoc,
+    rw [Arrow.cechNerve_map, WidePullback.lift_π]
+  · erw [Category.assoc,
       boundarySevenFaceNeighborhoodCechEvaluationIso_hom_base]
     rw [boundarySevenFaceNeighborhoodEvaluation_map_base_comp_diagramIso]
-    rw [← Functor.map_comp]
+    erw [← Functor.map_comp]
     change ((evaluation SimplexCategoryᵒᵖ (Type 0)).obj
         (Opposite.op (SimplexCategory.mk q))).map
           (boundarySevenFaceNeighborhoodPresentationArrow.cechNerve.map f ≫
@@ -457,9 +476,22 @@ private theorem boundarySevenFaceNeighborhoodCechEvaluationIso_naturality
             (fun _ : Fin (b.unop.len + 1) ↦
               (boundarySevenFaceNeighborhoodPresentationEvaluationArrow
                 (Opposite.op (SimplexCategory.mk q))).hom))
-    simp only [Arrow.cechNerve_map, WidePullback.lift_base]
-    rw [boundarySevenFaceNeighborhoodCechEvaluationIso_hom_base,
+    have hmap :
+        (boundarySevenFaceNeighborhoodPresentationEvaluationArrow
+            (Opposite.op (SimplexCategory.mk q))).cechNerve.map f ≫
+          WidePullback.base
+            (fun _ : Fin (b.unop.len + 1) ↦
+              (boundarySevenFaceNeighborhoodPresentationEvaluationArrow
+                (Opposite.op (SimplexCategory.mk q))).hom) =
+        WidePullback.base
+          (fun _ : Fin (a.unop.len + 1) ↦
+            (boundarySevenFaceNeighborhoodPresentationEvaluationArrow
+              (Opposite.op (SimplexCategory.mk q))).hom) := by
+      rw [Arrow.cechNerve_map, WidePullback.lift_base]
+    erw [hmap]
+    erw [boundarySevenFaceNeighborhoodCechEvaluationIso_hom_base,
       boundarySevenFaceNeighborhoodEvaluation_map_base_comp_diagramIso]
+    rw [Arrow.cechNerve_map, WidePullback.lift_base]
 
 noncomputable def boundarySevenFaceNeighborhoodCechSimplicialEvaluationIso
     (q : ℕ) :
@@ -516,7 +548,6 @@ noncomputable def boundarySevenFaceNeighborhoodIntegralCechAugmentedRowIso
       boundarySevenFaceNeighborhoodIntegralEvaluationCech q :=
   Functor.mapIso _ (boundarySevenFaceNeighborhoodCechAugmentedEvaluationIso q)
 
-set_option backward.isDefEq.respectTransparency false in
 noncomputable def boundarySevenFaceNeighborhoodCechRowArrowIso
     (q : ℕ) :
     Arrow.mk (firstQuadrantHorizontalRowMap
@@ -536,7 +567,7 @@ noncomputable def boundarySevenFaceNeighborhoodCechRowArrowIso
       boundarySevenFaceNeighborhoodCechBicomplex q ≅
       AlternatingFaceMapComplex.obj
         (SimplicialObject.Augmented.drop.obj X) :=
-    eqToIso (Functor.congr_obj (map_alternatingFaceMapComplex F) Y)
+    (alternatingFaceMapComplexCompMapHomologicalComplexIso F).app Y
   let r₀ : firstQuadrantHorizontalRow
       ((ChainComplex.single₀ (ChainComplex AddCommGrpCat ℕ)).obj
         (CoverSmallIntegralSingularChainComplex
@@ -555,28 +586,16 @@ noncomputable def boundarySevenFaceNeighborhoodCechRowArrowIso
     Arrow.isoMk' _ _ l₀ r₀ (by
       ext n x
       rcases n with _ | n
-      · simp [l₀, r₀, X, F, Y, firstQuadrantHorizontalRowMap,
+      · simp [l₀, r₀, X, F, firstQuadrantHorizontalRowMap,
           firstQuadrantHorizontalRow,
           boundarySevenFaceNeighborhoodCechOuterAugmentation,
           boundarySevenFaceNeighborhoodCechBicomplex,
           boundarySevenFaceNeighborhoodAugmentedCechChains,
-          SSet.chainComplexFunctor,
-          AlternatingFaceMapComplex.ε_app_f_zero]
-        change (AddCommGrpCat.Hom.hom
-            ((sigmaConst.obj (AddCommGrpCat.of ℤ)).map
-              ((boundarySevenFaceNeighborhoodAugmentedCechNerve.hom.app
-                (Opposite.op (SimplexCategory.mk 0))).app
-                  (Opposite.op (SimplexCategory.mk q))))) x =
-          (AddCommGrpCat.Hom.hom
-            ((sigmaConst.obj (AddCommGrpCat.of ℤ)).map
-              ((boundarySevenFaceNeighborhoodAugmentedCechNerve.hom.app
-                (Opposite.op (SimplexCategory.mk 0))).app
-                  (Opposite.op (SimplexCategory.mk q))))) x
-        rfl
-      · simp [l₀, r₀, X, F, Y, firstQuadrantHorizontalRowMap,
-          firstQuadrantHorizontalRow,
-          boundarySevenFaceNeighborhoodCechOuterAugmentation,
-          AlternatingFaceMapComplex.ε_app_f_succ])
+          SSet.chainComplexFunctor]
+        erw [HomologicalComplex.comp_f]
+      · rw [HomologicalComplex.comp_f,
+          AlternatingFaceMapComplex.ε_app_f_succ, comp_zero]
+        rfl)
   let e₁ := Arrow.isoMk'
     (AlternatingFaceMapComplex.ε.app X)
     (boundarySevenFaceNeighborhoodCechOuterAugmentationRow q)
@@ -601,7 +620,6 @@ noncomputable def boundarySevenSimplicialFaceIntegralCechAugmentedRowIso
     (cechPresentationAugmentedEvaluationIso
       boundarySevenSimplicialFacePresentationArrow q)
 
-set_option backward.isDefEq.respectTransparency false in
 noncomputable def boundarySevenSimplicialFaceCechRowArrowIso
     (q : ℕ) :
     Arrow.mk (firstQuadrantHorizontalRowMap
@@ -622,7 +640,7 @@ noncomputable def boundarySevenSimplicialFaceCechRowArrowIso
       boundarySevenSimplicialFaceCechBicomplex q ≅
       AlternatingFaceMapComplex.obj
         (SimplicialObject.Augmented.drop.obj X) :=
-    eqToIso (Functor.congr_obj (map_alternatingFaceMapComplex F) Y)
+    (alternatingFaceMapComplexCompMapHomologicalComplexIso F).app Y
   let r₀ : firstQuadrantHorizontalRow
       (firstQuadrantSingleZeroBicomplex
         ((∂Δ[7] : SSet.{0}).chainComplex (AddCommGrpCat.of ℤ))) q ≅
@@ -637,28 +655,16 @@ noncomputable def boundarySevenSimplicialFaceCechRowArrowIso
     Arrow.isoMk' _ _ l₀ r₀ (by
       ext n x
       rcases n with _ | n
-      · simp [l₀, r₀, X, F, Y, firstQuadrantHorizontalRowMap,
+      · simp [l₀, r₀, X, F, firstQuadrantHorizontalRowMap,
           firstQuadrantHorizontalRow,
           boundarySevenSimplicialFaceCechOuterAugmentation,
           boundarySevenSimplicialFaceCechBicomplex,
           boundarySevenSimplicialFaceAugmentedCechChains,
-          SSet.chainComplexFunctor,
-          AlternatingFaceMapComplex.ε_app_f_zero]
-        change (AddCommGrpCat.Hom.hom
-            ((sigmaConst.obj (AddCommGrpCat.of ℤ)).map
-              ((boundarySevenSimplicialFaceAugmentedCechNerve.hom.app
-                (Opposite.op (SimplexCategory.mk 0))).app
-                  (Opposite.op (SimplexCategory.mk q))))) x =
-          (AddCommGrpCat.Hom.hom
-            ((sigmaConst.obj (AddCommGrpCat.of ℤ)).map
-              ((boundarySevenSimplicialFaceAugmentedCechNerve.hom.app
-                (Opposite.op (SimplexCategory.mk 0))).app
-                  (Opposite.op (SimplexCategory.mk q))))) x
-        rfl
-      · simp [l₀, r₀, X, F, Y, firstQuadrantHorizontalRowMap,
-          firstQuadrantHorizontalRow,
-          boundarySevenSimplicialFaceCechOuterAugmentation,
-          AlternatingFaceMapComplex.ε_app_f_succ])
+          SSet.chainComplexFunctor]
+        erw [HomologicalComplex.comp_f]
+      · rw [HomologicalComplex.comp_f,
+          AlternatingFaceMapComplex.ε_app_f_succ, comp_zero]
+        rfl)
   let e₁ := Arrow.isoMk'
     (AlternatingFaceMapComplex.ε.app X)
     (AlternatingFaceMapComplex.ε.app

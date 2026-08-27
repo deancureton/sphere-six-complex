@@ -134,7 +134,6 @@ public theorem coverSmallAffineSubdivisionComponent_comp_inclusion
     iota_affineSingularSubdivisionComponent]
   exact coverSmallAffineSubdivisionSimplexChain_comp_inclusion X U n x
 
-set_option linter.style.haveILetI false in
 /-- The cover-small affine subdivision components commute with the small-chain boundary. -/
 public theorem coverSmallAffineSubdivisionComponents_commute
     (n : ℕ) :

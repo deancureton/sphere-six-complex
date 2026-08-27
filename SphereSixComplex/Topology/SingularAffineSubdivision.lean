@@ -124,7 +124,6 @@ public noncomputable def nonemptyFiniteChainBarycenter {n : ℕ}
   exact stdSimplex.map (fun a : A.finset ↦ a.1.down)
     (stdSimplex.barycenter : stdSimplex ℝ A.finset)
 
-set_option linter.style.haveILetI false in
 /-- Coordinate formula for the barycenter of a face. -/
 @[simp]
 public theorem nonemptyFiniteChainBarycenter_apply {n : ℕ}
@@ -181,7 +180,6 @@ public theorem standardSimplexFaceVertexOrderHom_eq_toPartOrd
   induction a
   rfl
 
-set_option linter.style.haveILetI false in
 /-- Face inclusions send face barycenters to the corresponding ambient face barycenters. -/
 public theorem nonemptyFiniteChainBarycenter_face
     (n : ℕ) (p : Fin (n + 2))

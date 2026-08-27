@@ -81,7 +81,6 @@ public theorem standardSevenNormalizedChainsXSevenIsoTopCycles_hom_ι :
     StandardSevenNormalizedIntegralChains.d 7 6
   exact IsLimit.conePointUniqueUpToIso_hom_comp _ _ WalkingParallelPair.zero
 
-set_option backward.isDefEq.respectTransparency false in
 /-- The canonical cycle-kernel comparison commutes with the inclusions into normalized
 degree six. -/
 @[reassoc]
@@ -100,27 +99,13 @@ theorem boundarySevenTopCyclesIsoStandardSevenTopCycles_hom_ι :
   change (((BoundarySevenNormalizedIntegralChains.sc' 7 6 5).cyclesIsoKernel).inv ≫
       ShortComplex.cyclesMap φ ≫
       ((StandardSevenNormalizedIntegralChains.sc' 7 6 5).cyclesIsoKernel).hom) ≫
-        kernel.ι (StandardSevenNormalizedIntegralChains.d 6 5) =
-    kernel.ι (BoundarySevenNormalizedIntegralChains.d 6 5) ≫ f.f 6
-  have hB :
-      ((StandardSevenNormalizedIntegralChains.sc' 7 6 5).cyclesIsoKernel).hom ≫
-          kernel.ι (StandardSevenNormalizedIntegralChains.d 6 5) =
-        (StandardSevenNormalizedIntegralChains.sc' 7 6 5).iCycles := by
-    apply kernel.lift_ι
-  have hmap := ShortComplex.cyclesMap_i φ
-  have hmap' :
-      ShortComplex.cyclesMap φ ≫
-          (StandardSevenNormalizedIntegralChains.sc' 7 6 5).iCycles =
-        (BoundarySevenNormalizedIntegralChains.sc' 7 6 5).iCycles ≫ f.f 6 := by
-    exact hmap
-  have hA :
-      ((BoundarySevenNormalizedIntegralChains.sc' 7 6 5).cyclesIsoKernel).inv ≫
-          (BoundarySevenNormalizedIntegralChains.sc' 7 6 5).iCycles =
-        kernel.ι (BoundarySevenNormalizedIntegralChains.d 6 5) := by
-    apply ShortComplex.liftCycles_i
-  simp only [Category.assoc]
-  rw [hB, hmap']
-  rw [← Category.assoc, hA]
+        kernel.ι ((StandardSevenNormalizedIntegralChains.sc' 7 6 5).g) =
+    kernel.ι ((BoundarySevenNormalizedIntegralChains.sc' 7 6 5).g) ≫ φ.τ₂
+  rw [Category.assoc, Category.assoc, ShortComplex.cyclesIsoKernel_hom,
+    kernel.lift_ι]
+  rw [ShortComplex.cyclesMap_i]
+  rw [← Category.assoc, ShortComplex.cyclesIsoKernel_inv,
+    ShortComplex.liftCycles_i]
 
 /-- Transporting the standard cycle kernel back to the boundary and then including the
 boundary normalized chains is the standard kernel inclusion. -/

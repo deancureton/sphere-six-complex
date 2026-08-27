@@ -20,7 +20,6 @@ open AlgebraicTopology CategoryTheory CategoryTheory.Limits Simplicial
 
 namespace SphereSixComplex
 
-set_option linter.style.haveILetI false in
 /-- A map of simplicial sets which, after conjugating by coproduct isomorphisms, is a finite
 coproduct of integral chain quasi-isomorphisms is itself an integral chain quasi-isomorphism. -/
 public theorem quasiIso_sSetIntegralChains_of_finiteCoproduct_conjugation
@@ -63,7 +62,6 @@ public theorem boundarySevenFaceCechTotalMap_quasiIso_of_columns
   exact firstQuadrantSingleColumnTotal_quasiIso
     boundarySevenFaceCechBicomplexMap p (hcolumn p)
 
-set_option linter.style.haveILetI false in
 /-- The canonical integral comparison follows directly from the quasi-isomorphism of the two
 Cech totals.  No chain-level section of the source augmentation is required. -/
 public theorem boundarySeven_integralComparison_of_faceCechTotalMap_quasiIso

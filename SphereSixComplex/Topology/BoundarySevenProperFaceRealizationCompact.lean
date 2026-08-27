@@ -31,14 +31,13 @@ public theorem boundarySevenProperFaceNerve_finite :
   change (CategoryTheory.nerve BoundarySevenProperFace).Finite
   exact finitePartialOrderNerve_finite BoundarySevenProperFace
 
-set_option linter.style.haveILetI false in
 /-- The realization of the finite proper-face nerve is compact. -/
 public theorem boundarySevenProperFaceRealization_isCompact :
     IsCompact (Set.univ : Set
       (SSet.toTop.obj BoundarySevenProperFaceNerve : Type)) := by
-  letI : BoundarySevenProperFaceNerve.Finite :=
+  let : BoundarySevenProperFaceNerve.Finite :=
     boundarySevenProperFaceNerve_finite
-  letI : BoundarySevenProperFaceNerve.Nonsingular :=
+  let : BoundarySevenProperFaceNerve.Nonsingular :=
     boundarySevenProperFaceNerve_nonsingular
   exact finiteNonsingularSSet_realization_isCompact BoundarySevenProperFaceNerve
 

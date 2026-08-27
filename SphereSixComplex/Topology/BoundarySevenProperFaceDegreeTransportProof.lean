@@ -557,7 +557,6 @@ public theorem boundarySevenOriginalSingularSphereHomologyClass_mapsToOne
     (boundarySevenOriginalSingularSphereHomologyClass e |>.hom (1 : ℤ)) = 1
   exact h
 
-set_option backward.isDefEq.respectTransparency false in
 /-- Transporting first to the ordinary boundary and then along `e` gives the same sphere class
 as the composite realization homeomorphism. -/
 public theorem boundarySevenOriginalSingularSphereHomologyClass_eq_boundary
@@ -568,7 +567,6 @@ public theorem boundarySevenOriginalSingularSphereHomologyClass_eq_boundary
           (AddCommGrpCat.of ℤ)).map (TopCat.ofHom e) := by
   rfl
 
-set_option backward.isDefEq.respectTransparency false in
 /-- The scalar action on the original boundary generator transports to the conjugate sphere
 self-map. -/
 public theorem boundarySevenOriginalSingularSphereHomologyClass_permutation
@@ -590,10 +588,12 @@ public theorem boundarySevenOriginalSingularSphereHomologyClass_permutation
     TopCat.isoOfHomeo e
   let eIso := H.mapIso eTopIso
   let P := H.map (standardSimplexBoundaryPermTopMap sigma)
+  let b : AddCommGrpCat.of ℤ ⟶
+      H.obj (TopCat.of (StandardSimplexBoundary 7)) :=
+    boundarySevenOriginalSingularBoundaryHomologyClass
   have hboundary :=
     boundarySevenOriginalSingularBoundaryHomologyClass_permutation sigma z h
-  change boundarySevenOriginalSingularBoundaryHomologyClass ≫ P =
-    z • boundarySevenOriginalSingularBoundaryHomologyClass at hboundary
+  change b ≫ P = z • b at hboundary
   have htop :
       TopCat.ofHom (boundarySevenPermutationSphereMap e sigma) =
         eTopIso.inv ≫
@@ -604,21 +604,21 @@ public theorem boundarySevenOriginalSingularSphereHomologyClass_permutation
   simp only [Functor.map_comp] at hmap
   change H.map (TopCat.ofHom (boundarySevenPermutationSphereMap e sigma)) =
     eIso.inv ≫ P ≫ eIso.hom at hmap
-  rw [boundarySevenOriginalSingularSphereHomologyClass_eq_boundary]
+  change (b ≫ eIso.hom) ≫
+      H.map (TopCat.ofHom (boundarySevenPermutationSphereMap e sigma)) =
+    z • (b ≫ eIso.hom)
   calc
-    (boundarySevenOriginalSingularBoundaryHomologyClass ≫ eIso.hom) ≫
+    (b ≫ eIso.hom) ≫
           H.map (TopCat.ofHom (boundarySevenPermutationSphereMap e sigma)) =
-        (boundarySevenOriginalSingularBoundaryHomologyClass ≫ eIso.hom) ≫
+        (b ≫ eIso.hom) ≫
           (eIso.inv ≫ P ≫ eIso.hom) := by rw [hmap]
-    _ = (boundarySevenOriginalSingularBoundaryHomologyClass ≫ P) ≫
+    _ = (b ≫ P) ≫
           eIso.hom := by simp only [Category.assoc, Iso.hom_inv_id_assoc]
-    _ = (z • boundarySevenOriginalSingularBoundaryHomologyClass) ≫
+    _ = (z • b) ≫
           eIso.hom := congrArg (fun q ↦ q ≫ eIso.hom) hboundary
-    _ = z •
-          (boundarySevenOriginalSingularBoundaryHomologyClass ≫ eIso.hom) :=
+    _ = z • (b ≫ eIso.hom) :=
       Preadditive.zsmul_comp _ _ z
 
-set_option backward.isDefEq.respectTransparency false in
 /-- The proper-face fundamental cycle computes the homological degree for every vertex
 permutation.  No generator-transport assumption remains: the explicit normalized orientation
 computes the degree first, and orientation-independence transfers the result to the orientation

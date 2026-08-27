@@ -96,16 +96,13 @@ public abbrev glueData (U : J → Type u) [∀ i, TopologicalSpace (U i)]
     (e : ∀ i, U i → X) (he : ∀ i, IsOpenEmbedding (e i)) : TopCat.GlueData.{u} :=
   TopCat.GlueData.mk' (mkCore U e he)
 
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.types false
-
 /-- The canonical map of a source piece into the abstract gluing. -/
 public def pieceInclusion (i : J) : U i → (glueData U e he).toGlueData.glued :=
   (glueData U e he).toGlueData.ι i
 
 /-- The canonical map from the abstract gluing to the covered space. -/
 public def gluedTo : (glueData U e he).toGlueData.glued ⟶ TopCat.of X :=
-  Multicoequalizer.desc _ _ (fun i ↦ TopCat.ofHom ⟨e i, (he i).continuous⟩) (by
+  Multicoequalizer.desc _ _ (fun i : J ↦ TopCat.ofHom ⟨e i, (he i).continuous⟩) (by
     rintro ⟨i, j⟩
     ext x
     change e i x.1 = e j (transition U e he i j x)
@@ -117,21 +114,29 @@ public theorem ι_gluedTo (i : J) :
       TopCat.ofHom ⟨e i, (he i).continuous⟩ :=
   Multicoequalizer.π_desc _ _ _ _ _
 
-set_option backward.isDefEq.respectTransparency.types false in
+@[simp]
+private theorem pieceInclusion_gluedTo (i : J) (x : U i) :
+    gluedTo U e he (pieceInclusion U e he i x) = e i x := by
+  exact ι_gluedTo_apply U e he i x
+
 /-- The canonical map is injective. -/
 public theorem gluedTo_injective : Function.Injective (gluedTo U e he) := by
   intro x y hxy
   obtain ⟨i, xi, rfl⟩ := (glueData U e he).ι_jointly_surjective x
   obtain ⟨j, yj, rfl⟩ := (glueData U e he).ι_jointly_surjective y
-  rw [ι_gluedTo_apply, ι_gluedTo_apply] at hxy
-  rw [(glueData U e he).ι_eq_iff_rel]
+  change J at i j
+  change U i at xi
+  change U j at yj
+  change gluedTo U e he (pieceInclusion U e he i xi) =
+    gluedTo U e he (pieceInclusion U e he j yj) at hxy
+  rw [pieceInclusion_gluedTo, pieceInclusion_gluedTo] at hxy
+  apply ((glueData U e he).ι_eq_iff_rel i j xi yj).2
   let z : overlap U e he i j := ⟨xi, ⟨yj, hxy.symm⟩⟩
   refine ⟨z, rfl, ?_⟩
   change (transition U e he i j z).1 = yj
   apply (he j).injective
   exact (map_transition U e he i j z).trans hxy
 
-set_option backward.isDefEq.respectTransparency false in
 /-- The canonical map is open. -/
 public theorem gluedTo_isOpenMap : IsOpenMap (gluedTo U e he) := by
   intro s hs
@@ -144,8 +149,8 @@ public theorem gluedTo_isOpenMap : IsOpenMap (gluedTo U e he) := by
   refine ⟨gluedTo U e he '' s ∩ Set.range (e i), Set.inter_subset_left, ?_, ?_⟩
   · rw [← Set.image_preimage_eq_inter_range]
     apply (he i).isOpenMap
-    have hsi : IsOpen (pieceInclusion U e he i ⁻¹' s) := by
-      simpa only [pieceInclusion, glueData, TopCat.GlueData.mk', mkCore] using hs i
+    have hsi := hs i
+    change IsOpen (pieceInclusion U e he i ⁻¹' s) at hsi
     convert hsi using 1
     ext x
     rw [Set.mem_preimage, Set.mem_preimage]
@@ -160,7 +165,8 @@ public theorem gluedTo_isOpenMap : IsOpenMap (gluedTo U e he) := by
       exact ⟨pieceInclusion U e he i x, hx, ι_gluedTo_apply U e he i x⟩
   · constructor
     · exact Set.mem_image_of_mem _ hx
-    · rw [ι_gluedTo_apply]
+    · change gluedTo U e he (pieceInclusion U e he i xi) ∈ Set.range (e i)
+      rw [pieceInclusion_gluedTo]
       exact Set.mem_range_self xi
 
 /-- The range of the canonical map is the union of the ranges of the pieces. -/
@@ -170,7 +176,10 @@ public theorem range_gluedTo :
   constructor
   · rintro ⟨q, rfl⟩
     obtain ⟨i, y, rfl⟩ := (glueData U e he).ι_jointly_surjective q
-    rw [ι_gluedTo_apply]
+    change J at i
+    change U i at y
+    change gluedTo U e he (pieceInclusion U e he i y) ∈ ⋃ i, Set.range (e i)
+    rw [pieceInclusion_gluedTo]
     exact Set.subset_iUnion (fun i ↦ Set.range (e i)) i ⟨y, rfl⟩
   · rintro ⟨_, ⟨i, rfl⟩, y, rfl⟩
     exact ⟨(glueData U e he).toGlueData.ι i y, ι_gluedTo_apply U e he i y⟩

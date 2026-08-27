@@ -42,9 +42,6 @@ variable
   (B₀₁ : SmoothCollaredBordism.{uE, uH, uM} I M₀ M₁)
   (B₁₂ : SmoothCollaredBordism.{uE, uH, uM} I M₁ M₂)
 
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.types false
-
 /-- Every source in the three-piece cover carries the ambient bordism model's charted
 structure. -/
 public instance (i : OpenPieceIndex) :

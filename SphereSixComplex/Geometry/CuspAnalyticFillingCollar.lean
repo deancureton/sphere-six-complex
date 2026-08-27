@@ -550,7 +550,6 @@ private noncomputable def expOnThreeDeriv (x : ComplexModel) : ComplexModel ≃L
   diagScale (fun i ↦ Units.mk0 (twoPiI * Complex.exp (twoPiI * WithLp.ofLp x i))
     (mul_ne_zero twoPiI_ne_zero (Complex.exp_ne_zero _)))
 
-set_option maxRecDepth 8000 in
 private theorem hasFDerivAt_expOnThree (x : ComplexModel) :
     HasFDerivAt expOnThree ((expOnThreeDeriv x : ComplexModel →L[ℂ] ComplexModel)) x := by
   set c : Fin 3 → ℂ := fun i ↦ twoPiI * Complex.exp (twoPiI * WithLp.ofLp x i) with hc

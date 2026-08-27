@@ -166,8 +166,15 @@ public theorem diskSevenCoverRangeIntersectionToSmallChains_eq :
   apply Subtype.ext
   rfl
 
-set_option backward.isDefEq.respectTransparency false in
 /-- Integral simplicial chains preserve the preceding pushout square. -/
+private theorem diskSevenPushoutCocone_condition_f
+    (s : PushoutCocone
+      (diskSevenCoverRangeIntersectionToRangeChains true)
+      (diskSevenCoverRangeIntersectionToRangeChains false)) (n : ℕ) :
+    (diskSevenCoverRangeIntersectionToRangeChains true).f n ≫ s.inl.f n =
+      (diskSevenCoverRangeIntersectionToRangeChains false).f n ≫ s.inr.f n := by
+  exact HomologicalComplex.congr_hom s.condition n
+
 public theorem diskSevenCoverRangeChains_isPushout :
     IsPushout
       (diskSevenCoverRangeIntersectionToRangeChains true)
@@ -192,7 +199,7 @@ public theorem diskSevenCoverRangeChains_isPushout :
   · intro s
     exact
       { f := fun n ↦ (hdegree n).desc (s.inl.f n) (s.inr.f n)
-          (HomologicalComplex.congr_hom s.condition n)
+          (diskSevenPushoutCocone_condition_f s n)
         comm' := by
           intro i j _
           apply (hdegree i).hom_ext
@@ -244,19 +251,21 @@ public noncomputable def diskBoundaryToDiskSevenFalseRangeChains :
     SSet.chainComplexMap (diskSevenCoverMemberToRangeSingularSet false)
       (AddCommGrpCat.of ℤ)
 
-set_option backward.isDefEq.respectTransparency false
-/-- The boundary-to-small map factors through the false member range. -/
-public theorem diskBoundaryToDiskSevenFalseRangeChains_comp_small :
-    diskBoundaryToDiskSevenFalseRangeChains ≫
+private theorem diskBoundaryToDiskSevenFalseRangeChains_eq :
+    diskBoundaryToDiskSevenFalseRangeChains =
+      integralSingularChainMapObj diskBoundaryToDiskSevenExcisionCoverFalse ≫
+        SSet.chainComplexMap (diskSevenCoverMemberToRangeSingularSet false)
+          (AddCommGrpCat.of ℤ) := by
+  rfl
+
+private theorem diskSevenCoverMemberToRangeChains_comp_small :
+    SSet.chainComplexMap (diskSevenCoverMemberToRangeSingularSet false)
+          (AddCommGrpCat.of ℤ) ≫
         diskSevenCoverRangeToSmallChains false =
-      diskBoundaryToDiskSevenCoverSmallIntegralSingularChains := by
-  rw [diskBoundaryToDiskSevenFalseRangeChains,
-    diskBoundaryToDiskSevenCoverSmallIntegralSingularChains,
-    diskSevenCoverRangeToSmallChains,
-    coverMemberToSmallIntegralSingularChains,
-    integralSingularChainMapObj,
-    Category.assoc]
-  congr 1
+      coverMemberToSmallIntegralSingularChains
+        (TopCat.disk.{0} 7) diskSevenExcisionCover false := by
+  rw [diskSevenCoverRangeToSmallChains,
+    coverMemberToSmallIntegralSingularChains]
   change
     ((SSet.chainComplexFunctor AddCommGrpCat).obj (AddCommGrpCat.of ℤ)).map
           (diskSevenCoverMemberToRangeSingularSet false) ≫
@@ -266,8 +275,44 @@ public theorem diskBoundaryToDiskSevenFalseRangeChains_comp_small :
         (coverMemberToSmallSingularSet
           (TopCat.disk.{0} 7) diskSevenExcisionCover false)
   rw [← Functor.map_comp, diskSevenCoverMemberToRange_comp_small]
-set_option backward.isDefEq.respectTransparency true
 
+private theorem diskBoundaryToDiskSevenCoverSmallIntegralSingularChains_eq :
+    diskBoundaryToDiskSevenCoverSmallIntegralSingularChains =
+      integralSingularChainMapObj diskBoundaryToDiskSevenExcisionCoverFalse ≫
+        coverMemberToSmallIntegralSingularChains
+          (TopCat.disk.{0} 7) diskSevenExcisionCover false := by
+  rfl
+
+private theorem diskBoundaryToDiskSevenFalseRangeChains_comp_small_aux :
+    diskBoundaryToDiskSevenFalseRangeChains ≫
+        diskSevenCoverRangeToSmallChains false =
+      diskBoundaryToDiskSevenCoverSmallIntegralSingularChains := by
+  calc
+    _ = (integralSingularChainMapObj diskBoundaryToDiskSevenExcisionCoverFalse ≫
+          SSet.chainComplexMap (diskSevenCoverMemberToRangeSingularSet false)
+            (AddCommGrpCat.of ℤ)) ≫
+        diskSevenCoverRangeToSmallChains false :=
+      congrArg (fun q ↦ q ≫ diskSevenCoverRangeToSmallChains false)
+        diskBoundaryToDiskSevenFalseRangeChains_eq
+    _ = integralSingularChainMapObj diskBoundaryToDiskSevenExcisionCoverFalse ≫
+        (SSet.chainComplexMap (diskSevenCoverMemberToRangeSingularSet false)
+            (AddCommGrpCat.of ℤ) ≫
+          diskSevenCoverRangeToSmallChains false) := Category.assoc _ _ _
+    _ = integralSingularChainMapObj diskBoundaryToDiskSevenExcisionCoverFalse ≫
+        coverMemberToSmallIntegralSingularChains
+          (TopCat.disk.{0} 7) diskSevenExcisionCover false :=
+      congrArg
+        (fun q ↦ integralSingularChainMapObj
+          diskBoundaryToDiskSevenExcisionCoverFalse ≫ q)
+        diskSevenCoverMemberToRangeChains_comp_small
+    _ = _ := diskBoundaryToDiskSevenCoverSmallIntegralSingularChains_eq.symm
+
+/-- The boundary-to-small map factors through the false member range. -/
+public theorem diskBoundaryToDiskSevenFalseRangeChains_comp_small :
+    diskBoundaryToDiskSevenFalseRangeChains ≫
+        diskSevenCoverRangeToSmallChains false =
+      diskBoundaryToDiskSevenCoverSmallIntegralSingularChains :=
+  diskBoundaryToDiskSevenFalseRangeChains_comp_small_aux
 /-- The false range modulo boundary chains. -/
 public noncomputable def DiskSevenFalseRangeRelativeChainComplex :
     ChainComplex AddCommGrpCat ℕ :=
@@ -278,6 +323,11 @@ public noncomputable def diskSevenFalseRangeRelativeProjection :
     DiskSevenCoverRangeChainComplex false ⟶
       DiskSevenFalseRangeRelativeChainComplex :=
   cokernel.π diskBoundaryToDiskSevenFalseRangeChains
+
+private theorem diskSevenFalseRangeRelativeProjection_condition :
+    diskBoundaryToDiskSevenFalseRangeChains ≫
+      diskSevenFalseRangeRelativeProjection = 0 := by
+  exact cokernel.condition _
 
 /-- The false-range relative complex maps canonically to the cover-small relative complex. -/
 public noncomputable def diskSevenFalseRangeRelativeToCoverSmallRelative :
@@ -301,7 +351,62 @@ public theorem diskSevenFalseRangeRelativeProjection_comp_toCoverSmallRelative :
           cokernel.π diskBoundaryToDiskSevenCoverSmallIntegralSingularChains) _ = _
   exact cokernel.π_desc _ _ _
 
-set_option backward.isDefEq.respectTransparency false in
+private theorem diskSevenFalseRangePushoutDesc_condition
+    (s : PushoutCocone
+      (diskSevenCoverRangeToSmallChains false)
+      diskSevenFalseRangeRelativeProjection) :
+    diskBoundaryToDiskSevenCoverSmallIntegralSingularChains ≫ s.inl = 0 := by
+  rw [← diskBoundaryToDiskSevenFalseRangeChains_comp_small,
+    Category.assoc, s.condition]
+  rw [← Category.assoc,
+    diskSevenFalseRangeRelativeProjection_condition, zero_comp]
+
+private noncomputable def diskSevenFalseRangePushoutDesc
+    (s : PushoutCocone
+      (diskSevenCoverRangeToSmallChains false)
+      diskSevenFalseRangeRelativeProjection) :
+    DiskSevenCoverSmallRelativeIntegralSingularChainComplex ⟶ s.pt :=
+  cokernel.desc diskBoundaryToDiskSevenCoverSmallIntegralSingularChains
+    s.inl (diskSevenFalseRangePushoutDesc_condition s)
+
+private theorem diskSevenCoverSmallRelativeProjection_comp_pushoutDesc
+    (s : PushoutCocone
+      (diskSevenCoverRangeToSmallChains false)
+      diskSevenFalseRangeRelativeProjection) :
+    diskSevenCoverSmallRelativeChainProjection ≫
+      diskSevenFalseRangePushoutDesc s = s.inl := by
+  exact cokernel.π_desc _ _ _
+
+private theorem diskSevenFalseRangeRelative_comp_pushoutDesc
+    (s : PushoutCocone
+      (diskSevenCoverRangeToSmallChains false)
+      diskSevenFalseRangeRelativeProjection) :
+    diskSevenFalseRangeRelativeToCoverSmallRelative ≫
+      diskSevenFalseRangePushoutDesc s = s.inr := by
+  let _ : Epi diskSevenFalseRangeRelativeProjection := by
+    dsimp [diskSevenFalseRangeRelativeProjection]
+    exact coequalizer.π_epi
+  apply (cancel_epi diskSevenFalseRangeRelativeProjection).1
+  calc
+    diskSevenFalseRangeRelativeProjection ≫
+          (diskSevenFalseRangeRelativeToCoverSmallRelative ≫
+            diskSevenFalseRangePushoutDesc s) =
+        (diskSevenFalseRangeRelativeProjection ≫
+            diskSevenFalseRangeRelativeToCoverSmallRelative) ≫
+          diskSevenFalseRangePushoutDesc s := (Category.assoc _ _ _).symm
+    _ = (diskSevenCoverRangeToSmallChains false ≫
+          diskSevenCoverSmallRelativeChainProjection) ≫
+        diskSevenFalseRangePushoutDesc s :=
+      congrArg (fun q ↦ q ≫ diskSevenFalseRangePushoutDesc s)
+        diskSevenFalseRangeRelativeProjection_comp_toCoverSmallRelative
+    _ = diskSevenCoverRangeToSmallChains false ≫
+        (diskSevenCoverSmallRelativeChainProjection ≫
+          diskSevenFalseRangePushoutDesc s) := Category.assoc _ _ _
+    _ = diskSevenCoverRangeToSmallChains false ≫ s.inl :=
+      congrArg (fun q ↦ diskSevenCoverRangeToSmallChains false ≫ q)
+        (diskSevenCoverSmallRelativeProjection_comp_pushoutDesc s)
+    _ = diskSevenFalseRangeRelativeProjection ≫ s.inr := s.condition
+
 /-- Quotienting the false range and the total cover-small complex by the same boundary chains
 is a pushout square. -/
 public theorem diskSevenFalseRangeRelativeSquare_isPushout :
@@ -312,40 +417,22 @@ public theorem diskSevenFalseRangeRelativeSquare_isPushout :
       diskSevenFalseRangeRelativeToCoverSmallRelative := by
   let _ : Epi diskSevenFalseRangeRelativeProjection := by
     dsimp [diskSevenFalseRangeRelativeProjection]
-    infer_instance
+    exact coequalizer.π_epi
   let _ : Epi diskSevenCoverSmallRelativeChainProjection := by
     dsimp [diskSevenCoverSmallRelativeChainProjection]
-    infer_instance
+    exact coequalizer.π_epi
   refine ⟨⟨diskSevenFalseRangeRelativeProjection_comp_toCoverSmallRelative.symm⟩,
     ⟨PushoutCocone.IsColimit.mk _ ?_ ?_ ?_ ?_⟩⟩
   · intro s
-    exact cokernel.desc diskBoundaryToDiskSevenCoverSmallIntegralSingularChains
-      s.inl (by
-        rw [← diskBoundaryToDiskSevenFalseRangeChains_comp_small,
-          Category.assoc, s.condition]
-        simp [diskSevenFalseRangeRelativeProjection])
+    exact diskSevenFalseRangePushoutDesc s
   · intro s
-    exact cokernel.π_desc _ _ _
+    exact diskSevenCoverSmallRelativeProjection_comp_pushoutDesc s
   · intro s
-    apply (cancel_epi diskSevenFalseRangeRelativeProjection).1
-    rw [← Category.assoc,
-      diskSevenFalseRangeRelativeProjection_comp_toCoverSmallRelative,
-      Category.assoc]
-    change diskSevenCoverRangeToSmallChains false ≫
-        (cokernel.π diskBoundaryToDiskSevenCoverSmallIntegralSingularChains ≫
-          cokernel.desc diskBoundaryToDiskSevenCoverSmallIntegralSingularChains
-            s.inl _) =
-      diskSevenFalseRangeRelativeProjection ≫ s.inr
-    rw [cokernel.π_desc]
-    exact s.condition
+    exact diskSevenFalseRangeRelative_comp_pushoutDesc s
   · intro s m hm₁ _
     apply (cancel_epi diskSevenCoverSmallRelativeChainProjection).1
     rw [hm₁]
-    change s.inl =
-      cokernel.π diskBoundaryToDiskSevenCoverSmallIntegralSingularChains ≫
-        cokernel.desc diskBoundaryToDiskSevenCoverSmallIntegralSingularChains
-          s.inl _
-    exact (cokernel.π_desc _ _ _).symm
+    exact (diskSevenCoverSmallRelativeProjection_comp_pushoutDesc s).symm
 
 /-- The local middle term: true-range chains together with false-range chains modulo boundary. -/
 public noncomputable abbrev DiskSevenCoverLocalRelativeMiddleChainComplex :
@@ -362,7 +449,6 @@ public noncomputable def diskSevenCoverRangeSum :
   biprod.desc (diskSevenCoverRangeToSmallChains true)
     (diskSevenCoverRangeToSmallChains false)
 
-set_option backward.isDefEq.respectTransparency false
 /-- Every cover-small simplex belongs to one of the two range subcomplexes, so the range-sum map
 is an epimorphism. -/
 public theorem diskSevenCoverRangeSum_epi : Epi diskSevenCoverRangeSum := by
@@ -376,7 +462,7 @@ public theorem diskSevenCoverRangeSum_epi : Epi diskSevenCoverRangeSum := by
   obtain ⟨b, hb⟩ :=
     (mem_coverSmallSingularSubcomplex_iff
       (TopCat.disk.{0} 7) diskSevenExcisionCover x.1).mp x.2
-  let xb : (diskSevenCoverRangeSubcomplex b).obj
+  let xb : (diskSevenCoverRangeSubcomplex b : SSet).obj
       (Opposite.op (SimplexCategory.mk n)) := ⟨x.1, hb⟩
   have heqn : (diskSevenCoverRangeSum.f n) ≫ g.f n =
       (diskSevenCoverRangeSum.f n) ≫ h.f n := by
@@ -424,8 +510,6 @@ public theorem diskSevenCoverRangeSum_epi : Epi diskSevenCoverRangeSum := by
         congr 1
       rw [hι] at hx'
       exact hx'
-set_option backward.isDefEq.respectTransparency true
-
 /-- Quotienting the false summand sends the absolute two-range middle term to the relative
 middle term. -/
 public noncomputable def diskSevenCoverRangeSumToLocalRelativeMiddle :
@@ -482,7 +566,6 @@ public theorem diskSevenCoverRangeSumToLocalRelativeMiddle_comp_sum :
   · simp [diskSevenCoverRangeSumToLocalRelativeMiddle,
       diskSevenCoverLocalRelativeSum, diskSevenCoverRangeSum]
 
-set_option backward.isDefEq.respectTransparency false in
 /-- The local relative sum is epi.  This is already forced by the explicit absolute
 range-sum decomposition, after projection to relative chains. -/
 public theorem diskSevenCoverLocalRelativeSum_epi :
@@ -491,7 +574,7 @@ public theorem diskSevenCoverLocalRelativeSum_epi :
     diskSevenCoverRangeSum_epi
   let _ : Epi diskSevenCoverSmallRelativeChainProjection := by
     dsimp [diskSevenCoverSmallRelativeChainProjection]
-    infer_instance
+    exact coequalizer.π_epi
   exact epi_of_epi_fac
     diskSevenCoverRangeSumToLocalRelativeMiddle_comp_sum
 
@@ -530,12 +613,12 @@ public noncomputable def diskSevenCoverSmallRelativeMayerVietorisShortComplex :
 public def DiskSevenCoverSmallRelativeMayerVietoris : Prop :=
   diskSevenCoverSmallRelativeMayerVietorisShortComplex.ShortExact
 
-set_option backward.isDefEq.respectTransparency false in
 /-- Exactness of the relative Mayer--Vietoris short complex follows from the concrete pasted
 pushout square. -/
 public theorem diskSevenCoverSmallRelativeMayerVietoris_exact :
     diskSevenCoverSmallRelativeMayerVietorisShortComplex.Exact := by
-  apply diskSevenCoverSmallRelativeMayerVietorisShortComplex.exact_of_g_is_cokernel
+  unfold diskSevenCoverSmallRelativeMayerVietorisShortComplex
+  apply ShortComplex.exact_of_g_is_cokernel
   let h := diskSevenCoverLocalRelativeSquare_isPushout
   refine Cofork.IsColimit.mk _
     (fun s ↦ h.desc (biprod.inl ≫ s.π) (biprod.inr ≫ s.π) (by
@@ -559,10 +642,8 @@ public theorem diskSevenCoverSmallRelativeMayerVietoris_exact :
       exact hs))
     (fun s ↦ by
       apply biprod.hom_ext'
-      · simp [diskSevenCoverSmallRelativeMayerVietorisShortComplex,
-          diskSevenCoverLocalRelativeSum]
-      · simp [diskSevenCoverSmallRelativeMayerVietorisShortComplex,
-          diskSevenCoverLocalRelativeSum])
+      · simp [diskSevenCoverLocalRelativeSum]
+      · simp [diskSevenCoverLocalRelativeSum])
     (fun s m hm ↦ by
       change diskSevenCoverLocalRelativeSum ≫ m = s.π at hm
       apply h.hom_ext

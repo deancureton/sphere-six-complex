@@ -22,9 +22,6 @@ namespace ClosedEmbeddingGluing
 
 universe u
 
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.types false
-
 variable {Z X Y : Type u}
   [TopologicalSpace Z] [TopologicalSpace X] [TopologicalSpace Y]
   (f : Z → X) (g : Z → Y)

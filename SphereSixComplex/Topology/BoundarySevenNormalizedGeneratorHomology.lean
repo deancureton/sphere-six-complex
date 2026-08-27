@@ -88,7 +88,6 @@ private theorem cycle_homologySixIsoScTopCycles
   rw [N.cyclesIsoSc'_hom_iCycles]
   exact hz
 
-set_option backward.isDefEq.respectTransparency false in
 /-- A normalized cycle followed by the canonical normalized `H₆`--top-cycle isomorphism is
 the corresponding element of the differential kernel. -/
 private theorem normalizedCycle_homologySixIsoTopCycles

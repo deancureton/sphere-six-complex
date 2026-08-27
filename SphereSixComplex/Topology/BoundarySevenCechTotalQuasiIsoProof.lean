@@ -27,7 +27,6 @@ open AlgebraicTopology CategoryTheory CategoryTheory.Limits Simplicial
 
 namespace SphereSixComplex
 
-set_option backward.isDefEq.respectTransparency false in
 /-- The map of augmented Cech nerves commutes with every projection to a selected presentation
 leg. -/
 @[reassoc]
@@ -37,9 +36,17 @@ public theorem boundarySevenFaceAugmentedCechNerveMap_comp_projection
         boundarySevenTargetCechProjection n i =
       boundarySevenSourceCechProjection n i ≫
         boundarySevenFacePresentationSourceMap := by
-  change WidePullback.lift _ _ _ ≫ WidePullback.π _ i = _
-  rw [WidePullback.lift_π]
-  rfl
+  change boundarySevenFaceAugmentedCechNerveMap.left.app n ≫
+      WidePullback.π (fun _ : Fin (n.unop.len + 1) ↦
+        boundarySevenFaceNeighborhoodPresentation) i =
+    WidePullback.π (fun _ : Fin (n.unop.len + 1) ↦
+        boundarySevenSimplicialFacePresentation) i ≫
+      boundarySevenFacePresentationSourceMap
+  unfold boundarySevenFaceAugmentedCechNerveMap
+  change WidePullback.lift _ _ _ ≫
+      WidePullback.π (fun _ : Fin (n.unop.len + 1) ↦
+        boundarySevenFaceNeighborhoodPresentation) i = _
+  exact WidePullback.lift_π _ _ _ _ i
 
 /-- The two independently constructed common-face inclusions into the simplicial boundary are
 equal. -/
@@ -51,8 +58,6 @@ public theorem boundarySevenProperCechTupleFaceToBoundarySSetMap_eq_source
   rw [boundarySevenOrderedSourceCommonFaceToBoundary_comp_inclusion]
   simp [boundarySevenProperCechTupleFaceToBoundarySSetMap]
 
-set_option linter.style.haveILetI false in
-set_option backward.isDefEq.respectTransparency false in
 /-- On realized spaces, passing from a common face through a selected facet is the same as
 passing through its full ordered intersection. -/
 public theorem boundarySevenOrderedCommonFace_local_topologicalCompatibility
@@ -62,7 +67,7 @@ public theorem boundarySevenOrderedCommonFace_local_topologicalCompatibility
         boundarySevenFaceToComparisonFaceNeighborhood (a.1 i) =
       TopCat.ofHom (boundarySevenProperCechTupleFaceToIntersection a) ≫
         boundarySevenTargetIntersectionToMember a i := by
-  letI : Mono
+  let : Mono
       (topologicalSubsetInclusion
         (SSet.toTop.obj (∂Δ[7] : SSet.{0}))
         (boundarySevenComparisonFaceNeighborhood (a.1 i))) :=
@@ -80,8 +85,6 @@ public theorem boundarySevenOrderedCommonFace_local_topologicalCompatibility
     boundarySevenOrderedSourceCommonFaceToFacet_comp_boundary]
   rw [boundarySevenProperCechTupleFaceToBoundarySSetMap_eq_source]
 
-set_option linter.style.haveILetI false in
-set_option backward.isDefEq.respectTransparency false in
 /-- Simplicially, the local tuple comparison commutes with every selected facet leg. -/
 public theorem boundarySevenProperCechTupleLocalComparison_comp_member
     {n : SimplexCategoryᵒᵖ} (a : BoundarySevenProperCechTuple n)
@@ -114,7 +117,6 @@ public theorem boundarySevenProperCechTupleLocalComparison_comp_member
   exact TopCat.toSSet.congr_map
     (boundarySevenOrderedCommonFace_local_topologicalCompatibility a i)
 
-set_option backward.isDefEq.respectTransparency false in
 /-- The compatibility square on one ordered-tuple summand of a fixed outer Cech degree. -/
 public theorem boundarySevenOrderedCechComparison_summand
     {n : SimplexCategoryᵒᵖ} (a : BoundarySevenProperCechTuple n) :
@@ -126,8 +128,17 @@ public theorem boundarySevenOrderedCechComparison_summand
       boundarySevenTargetIntersectionToCechSummand a ≫
           boundarySevenTargetCechProjection n i =
         boundarySevenTargetIntersectionToPresentationLeg a i := by
-    change WidePullback.lift _ _ _ ≫ WidePullback.π _ i = _
-    rw [WidePullback.lift_π]
+    change boundarySevenTargetIntersectionToCechSummand a ≫
+        WidePullback.π (fun _ : Fin (n.unop.len + 1) ↦
+          boundarySevenFaceNeighborhoodPresentation) i =
+      boundarySevenTargetIntersectionToPresentationLeg a i
+    unfold boundarySevenTargetIntersectionToCechSummand
+    exact WidePullback.lift_π
+      (fun _ : Fin (n.unop.len + 1) ↦
+        boundarySevenFaceNeighborhoodPresentation)
+      (boundarySevenTargetIntersectionToSmall a)
+      (boundarySevenTargetIntersectionToPresentationLeg a)
+      (boundarySevenTargetIntersectionToPresentationLeg_condition a) i
   have hproj (i : Fin (n.unop.len + 1)) :
       (boundarySevenOrderedSourceCechSummand a ≫
           boundarySevenFaceAugmentedCechNerveMap.left.app n) ≫
@@ -149,26 +160,49 @@ public theorem boundarySevenOrderedCechComparison_summand
         (fun j : Fin 8 ↦ TopCat.toSSet.obj
           (TopCat.of (boundarySevenComparisonFaceNeighborhood j))) (a.1 i))
       (boundarySevenProperCechTupleLocalComparison_comp_member a i)
+  let l : boundarySevenOrderedSourceCommonFace a ⟶
+      widePullback
+        (coverSmallSingularSubcomplex boundarySevenTargetAmbient
+          boundarySevenComparisonFaceNeighborhood)
+        (fun _ : Fin (n.unop.len + 1) ↦
+          boundarySevenFaceNeighborhoodPresentationSource)
+        (fun _ : Fin (n.unop.len + 1) ↦
+          boundarySevenFaceNeighborhoodPresentation) :=
+    boundarySevenOrderedSourceCechSummand a ≫
+      boundarySevenFaceAugmentedCechNerveMap.left.app n
+  let r : boundarySevenOrderedSourceCommonFace a ⟶
+      widePullback
+        (coverSmallSingularSubcomplex boundarySevenTargetAmbient
+          boundarySevenComparisonFaceNeighborhood)
+        (fun _ : Fin (n.unop.len + 1) ↦
+          boundarySevenFaceNeighborhoodPresentationSource)
+        (fun _ : Fin (n.unop.len + 1) ↦
+          boundarySevenFaceNeighborhoodPresentation) :=
+    boundarySevenProperCechTupleLocalComparisonSSetMap a ≫
+      boundarySevenTargetIntersectionToCechSummand a
+  change l = r
+  have hproj' (i : Fin (n.unop.len + 1)) :
+      l ≫ WidePullback.π
+          (fun _ : Fin (n.unop.len + 1) ↦
+            boundarySevenFaceNeighborhoodPresentation) i =
+        r ≫ WidePullback.π
+          (fun _ : Fin (n.unop.len + 1) ↦
+            boundarySevenFaceNeighborhoodPresentation) i := by
+    exact hproj i
   apply WidePullback.hom_ext
-  · exact hproj
-  · change _ ≫ WidePullback.base
+  · exact hproj'
+  · rw [show WidePullback.base
         (fun _ : Fin (n.unop.len + 1) ↦
           boundarySevenFaceNeighborhoodPresentation) =
-      _ ≫ WidePullback.base
+      WidePullback.π
         (fun _ : Fin (n.unop.len + 1) ↦
-          boundarySevenFaceNeighborhoodPresentation)
-    rw [show WidePullback.base
-        (fun _ : Fin (n.unop.len + 1) ↦
-          boundarySevenFaceNeighborhoodPresentation) =
-        boundarySevenTargetCechProjection n 0 ≫
-          boundarySevenFaceNeighborhoodPresentation by
+          boundarySevenFaceNeighborhoodPresentation) 0 ≫
+        boundarySevenFaceNeighborhoodPresentation by
       exact (WidePullback.π_arrow
         (fun _ : Fin (n.unop.len + 1) ↦
           boundarySevenFaceNeighborhoodPresentation) 0).symm]
-    simp only [← Category.assoc]
-    rw [hproj 0]
+    rw [← Category.assoc, ← Category.assoc, hproj' 0]
 
-set_option backward.isDefEq.respectTransparency false in
 /-- In a fixed outer degree, conjugating the actual Cech map by the two objectwise
 decompositions gives the coproduct of the tuplewise local comparisons. -/
 public theorem boundarySevenOrderedCechComparison_component

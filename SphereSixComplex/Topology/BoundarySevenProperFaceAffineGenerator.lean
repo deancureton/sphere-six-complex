@@ -26,7 +26,6 @@ public noncomputable def standardSimplexRealizationToStdSimplexTopMap (n : ℕ) 
   TopCat.ofHom ⟨SimplexCategory.toTopHomeo (SimplexCategory.mk n),
     (SimplexCategory.toTopHomeo (SimplexCategory.mk n)).continuous⟩
 
-set_option backward.isDefEq.respectTransparency false in
 /-- The top simplex sent through the realization/singular adjunction unit and the standard
 realization homeomorphism is the universal identity singular simplex. -/
 theorem standardSimplexTopSimplex_comparison_realization
@@ -72,12 +71,10 @@ theorem standardSimplexTopSimplex_comparison_realization
       (((sSetTopAdj.unit.app (Δ[n] : SSet.{0})).app
         (Opposite.op (SimplexCategory.mk n))
         (standardSimplexTopSimplex n)).down.hom (ULift.up w)) = w
-  rw [hpoint]
-  calc
-    _ = SimplexCategory.toTopHomeo (SimplexCategory.mk n)
-        ((SimplexCategory.toTopHomeo (SimplexCategory.mk n)).symm w) :=
-      congrArg (SimplexCategory.toTopHomeo (SimplexCategory.mk n)) hinv
-    _ = w := Homeomorph.apply_symm_apply _ _
+  exact
+    (congrArg (SimplexCategory.toTopHomeo (SimplexCategory.mk n)) hpoint).trans
+      ((congrArg (SimplexCategory.toTopHomeo (SimplexCategory.mk n)) hinv).trans
+        (Homeomorph.apply_symm_apply _ _))
 
 /-- Chain-level form of `standardSimplexTopSimplex_comparison_realization`. -/
 public theorem standardSimplexTopSimplexChain_comparison_realization

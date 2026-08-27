@@ -40,7 +40,6 @@ public theorem firstQuadrantColumnPrefixToOriginalComponent_eq_zero
     firstQuadrantColumnPrefixToOriginalComponent K N p = 0 := by
   simp [firstQuadrantColumnPrefixToOriginalComponent, show ¬ p ≤ N by omega]
 
-set_option backward.isDefEq.respectTransparency false in
 /-- Canonical map from a finite outer-column prefix to the original bicomplex. -/
 public noncomputable def firstQuadrantColumnPrefixToOriginal
     (K : FirstQuadrantBicomplex) (N : ℕ) :
@@ -79,7 +78,6 @@ public noncomputable def firstQuadrantColumnPrefixTotalToOriginalInverseComponen
       (firstQuadrantColumnPrefix K N).ιTotal
         (ComplexShape.down ℕ) p q n hpq)
 
-set_option backward.isDefEq.respectTransparency false in
 public theorem firstQuadrantColumnPrefixTotalToOriginal_hom_inv
     (K : FirstQuadrantBicomplex) (N n : ℕ) (hn : n ≤ N) :
     (firstQuadrantColumnPrefixTotalToOriginal K N).f n ≫
@@ -97,9 +95,15 @@ public theorem firstQuadrantColumnPrefixTotalToOriginal_hom_inv
   rw [
     firstQuadrantColumnPrefixToOriginalComponent_of_le K N p hp,
     HomologicalComplex₂.ι_totalDesc]
-  simp
+  rw [Category.comp_id, ← Category.assoc]
+  have hcancel :
+      (firstQuadrantColumnPrefixXIso K N p hp).hom.f q ≫
+        (firstQuadrantColumnPrefixXIso K N p hp).inv.f q = 𝟙 _ := by
+    simpa only [HomologicalComplex.comp_f, HomologicalComplex.id_f] using
+      congrArg (fun g ↦ g.f q)
+        (firstQuadrantColumnPrefixXIso K N p hp).hom_inv_id
+  rw [hcancel, Category.id_comp]
 
-set_option backward.isDefEq.respectTransparency false in
 public theorem firstQuadrantColumnPrefixTotalToOriginal_inv_hom
     (K : FirstQuadrantBicomplex) (N n : ℕ) (hn : n ≤ N) :
     firstQuadrantColumnPrefixTotalToOriginalInverseComponent K N n hn ≫
@@ -116,7 +120,14 @@ public theorem firstQuadrantColumnPrefixTotalToOriginal_inv_hom
   change (firstQuadrantColumnPrefixXIso K N p _).inv.f q ≫
     (firstQuadrantColumnPrefixToOriginalComponent K N p).f q ≫ _ = _
   rw [firstQuadrantColumnPrefixToOriginalComponent_of_le K N p hp]
-  simp
+  rw [Category.comp_id, ← Category.assoc]
+  have hcancel :
+      (firstQuadrantColumnPrefixXIso K N p hp).inv.f q ≫
+        (firstQuadrantColumnPrefixXIso K N p hp).hom.f q = 𝟙 _ := by
+    simpa only [HomologicalComplex.comp_f, HomologicalComplex.id_f] using
+      congrArg (fun g ↦ g.f q)
+        (firstQuadrantColumnPrefixXIso K N p hp).inv_hom_id
+  rw [hcancel, Category.id_comp]
 
 /-- The finite-prefix total and full total are isomorphic componentwise through the cutoff. -/
 public noncomputable def firstQuadrantColumnPrefixTotalToOriginalComponentIso
@@ -133,7 +144,6 @@ public theorem firstQuadrantColumnPrefixTotalToOriginal_component_isIso
     IsIso ((firstQuadrantColumnPrefixTotalToOriginal K N).f n) :=
   (firstQuadrantColumnPrefixTotalToOriginalComponentIso K N n hn).isIso_hom
 
-set_option linter.style.haveILetI false in
 /-- Once the cutoff contains degree `n + 1`, the prefix-to-full total map is a
 quasi-isomorphism in degree `n`.  The extra degree is exactly the incoming differential needed
 to compute homology in degree `n`. -/
@@ -152,14 +162,14 @@ public theorem firstQuadrantColumnPrefixTotalToOriginal_quasiIsoAt
     · simp
     · simp
       omega
-  letI : IsIso φ.τ₁ :=
+  let _ : IsIso φ.τ₁ :=
     firstQuadrantColumnPrefixTotalToOriginal_component_isIso K N (n + 1) hn
-  letI : IsIso φ.τ₂ :=
+  let _ : IsIso φ.τ₂ :=
     firstQuadrantColumnPrefixTotalToOriginal_component_isIso K N n (by omega)
-  letI : IsIso φ.τ₃ :=
+  let _ : IsIso φ.τ₃ :=
     firstQuadrantColumnPrefixTotalToOriginal_component_isIso K N
       ((ComplexShape.down ℕ).next n) hnext
-  letI : IsIso φ := ShortComplex.isIso_of_isIso φ
+  let _ : IsIso φ := ShortComplex.isIso_of_isIso φ
   change ShortComplex.QuasiIso φ
   infer_instance
 
@@ -202,7 +212,6 @@ public theorem firstQuadrantColumnPrefixTotalToOriginal_naturality
     (fun g => HomologicalComplex₂.total.map g (ComplexShape.down ℕ))
     (firstQuadrantColumnPrefixMap_toOriginal_naturality f N)
 
-set_option linter.style.haveILetI false in
 /-- A quasi-isomorphism on one sufficiently large finite prefix induces a
 quasi-isomorphism of full totals in the requested degree. -/
 public theorem firstQuadrantTotal_quasiIsoAt_of_prefix
@@ -212,13 +221,13 @@ public theorem firstQuadrantTotal_quasiIsoAt_of_prefix
       (HomologicalComplex₂.total.map (firstQuadrantColumnPrefixMap f N)
         (ComplexShape.down ℕ))) :
     QuasiIsoAt (HomologicalComplex₂.total.map f (ComplexShape.down ℕ)) n := by
-  letI : QuasiIsoAt
+  let _ : QuasiIsoAt
       (firstQuadrantColumnPrefixTotalToOriginal K N) n :=
     firstQuadrantColumnPrefixTotalToOriginal_quasiIsoAt K N n hn
-  letI : QuasiIsoAt
+  let _ : QuasiIsoAt
       (firstQuadrantColumnPrefixTotalToOriginal L N) n :=
     firstQuadrantColumnPrefixTotalToOriginal_quasiIsoAt L N n hn
-  letI : QuasiIso
+  let _ : QuasiIso
       (HomologicalComplex₂.total.map (firstQuadrantColumnPrefixMap f N)
         (ComplexShape.down ℕ)) := hprefix
   have hcomp : QuasiIsoAt
@@ -274,7 +283,6 @@ public noncomputable def firstQuadrantSingleColumnTotalXInv
     (firstQuadrantSingleColumn K p).ιTotal
       (ComplexShape.down ℕ) p q (p + q) rfl
 
-set_option backward.isDefEq.respectTransparency false in
 public theorem firstQuadrantSingleColumnTotalXHom_inv
     (K : FirstQuadrantBicomplex) (p q : ℕ) :
     firstQuadrantSingleColumnTotalXHom K p q ≫
@@ -290,7 +298,14 @@ public theorem firstQuadrantSingleColumnTotalXHom_inv
     dsimp [firstQuadrantSingleColumnTotalXHom,
       firstQuadrantSingleColumnTotalXInv]
     rw [HomologicalComplex₂.ι_totalDesc_assoc]
-    simp
+    simp only [dite_true, Category.comp_id]
+    rw [← Category.assoc]
+    have hcancel :
+        (firstQuadrantSingleColumnXIso K p).hom.f q ≫
+          (firstQuadrantSingleColumnXIso K p).inv.f q = 𝟙 _ := by
+      simpa only [HomologicalComplex.comp_f, HomologicalComplex.id_f] using
+        congrArg (fun g ↦ g.f q) (firstQuadrantSingleColumnXIso K p).hom_inv_id
+    rw [hcancel, Category.id_comp]
   · have hz : IsZero (((firstQuadrantSingleColumn K p).X r).X s) :=
       (HomologicalComplex.eval AddCommGrpCat
         (ComplexShape.down ℕ) s).map_isZero
@@ -298,7 +313,6 @@ public theorem firstQuadrantSingleColumnTotalXHom_inv
           (ComplexShape.down ℕ) p (K.X p) r hr)
     exact hz.eq_of_src _ _
 
-set_option backward.isDefEq.respectTransparency false in
 public theorem firstQuadrantSingleColumnTotalXInv_hom
     (K : FirstQuadrantBicomplex) (p q : ℕ) :
     firstQuadrantSingleColumnTotalXInv K p q ≫
@@ -306,7 +320,9 @@ public theorem firstQuadrantSingleColumnTotalXInv_hom
   dsimp [firstQuadrantSingleColumnTotalXHom,
     firstQuadrantSingleColumnTotalXInv]
   rw [Category.assoc, HomologicalComplex₂.ι_totalDesc]
-  simp
+  simp only [dite_true]
+  simpa only [HomologicalComplex.comp_f, HomologicalComplex.id_f] using
+    congrArg (fun g ↦ g.f q) (firstQuadrantSingleColumnXIso K p).inv_hom_id
 
 /-- In degree `p + q`, a total supported in outer column `p` is canonically its sole
 summand in inner degree `q`. -/
@@ -319,7 +335,6 @@ public noncomputable def firstQuadrantSingleColumnTotalXIso
   hom_inv_id := firstQuadrantSingleColumnTotalXHom_inv K p q
   inv_hom_id := firstQuadrantSingleColumnTotalXInv_hom K p q
 
-set_option backward.isDefEq.respectTransparency false in
 /-- Under the sole-summand identification, the differential on the total supported in
 outer column `p` is the vertical differential multiplied by the total-complex sign at `p`. -/
 public theorem firstQuadrantSingleColumnTotalXIso_d
@@ -344,8 +359,10 @@ public theorem firstQuadrantSingleColumnTotalXIso_d
       HomologicalComplex₂.ι_D₁, HomologicalComplex₂.ι_D₂]
     have hd₁ : (firstQuadrantSingleColumn K p).d₁
         (ComplexShape.down ℕ) p i (p + j) = 0 := by
-      dsimp [HomologicalComplex₂.d₁]
-      simp
+      unfold HomologicalComplex₂.d₁ HomologicalComplex₂.toGradedObject
+        firstQuadrantSingleColumn
+      rw [HomologicalComplex.single_obj_d, HomologicalComplex.zero_f,
+        zero_comp, smul_zero]
     rw [hd₁, zero_add]
     rw [HomologicalComplex₂.d₂_eq
       (firstQuadrantSingleColumn K p) (ComplexShape.down ℕ)
@@ -373,7 +390,6 @@ public noncomputable def firstQuadrantSingleColumnTotalScaledXIso
   ((ComplexShape.down ℕ).ε p) ^ q •
     firstQuadrantSingleColumnTotalXIso K p q
 
-set_option backward.isDefEq.respectTransparency false in
 /-- The scaled sole-summand identifications commute with the differentials. -/
 public theorem firstQuadrantSingleColumnTotalScaledXIso_d
     (K : FirstQuadrantBicomplex) (p i j : ℕ)
@@ -403,7 +419,6 @@ public abbrev firstQuadrantColumnDegreeEmbedding (p : ℕ) :
     change p + j + 1 = p + i
     omega
 
-set_option backward.isDefEq.respectTransparency false in
 /-- Naturality of the unscaled sole-summand identification. -/
 public theorem firstQuadrantSingleColumnTotalXIso_naturality
     {K L : FirstQuadrantBicomplex} (f : K ⟶ L) (p q : ℕ) :
@@ -427,7 +442,17 @@ public theorem firstQuadrantSingleColumnTotalXIso_naturality
     dsimp [firstQuadrantSingleColumnMap,
       firstQuadrantSingleColumnXIso]
     rw [HomologicalComplex.single_map_f_self]
-    simp
+    simp only [HomologicalComplex.comp_f, ite_true]
+    rw [Category.assoc, Category.assoc]
+    have hcancel :
+        (HomologicalComplex.singleObjXSelf (ComplexShape.down ℕ) p (L.X p)).inv.f q ≫
+          (HomologicalComplex.singleObjXSelf (ComplexShape.down ℕ) p (L.X p)).hom.f q =
+            𝟙 _ := by
+      simpa only [HomologicalComplex.comp_f, HomologicalComplex.id_f] using
+        congrArg (fun g ↦ g.f q)
+          (HomologicalComplex.singleObjXSelf
+            (ComplexShape.down ℕ) p (L.X p)).inv_hom_id
+    rw [hcancel, Category.comp_id]
   · have hz : IsZero (((firstQuadrantSingleColumn K p).X r).X s) :=
       (HomologicalComplex.eval AddCommGrpCat
         (ComplexShape.down ℕ) s).map_isZero
@@ -435,7 +460,6 @@ public theorem firstQuadrantSingleColumnTotalXIso_naturality
           (ComplexShape.down ℕ) p (K.X p) r hr)
     exact hz.eq_of_src _ _
 
-set_option backward.isDefEq.respectTransparency false in
 /-- Naturality of the sign-twisted sole-summand identification. -/
 public theorem firstQuadrantSingleColumnTotalScaledXIso_naturality
     {K L : FirstQuadrantBicomplex} (f : K ⟶ L) (p q : ℕ) :
@@ -582,7 +606,6 @@ public noncomputable def firstQuadrantSingleColumnTotalExtendedIso
     (firstQuadrantSingleColumnTotalExtendedXIso K p)
     (firstQuadrantSingleColumnTotalExtendedXIso_d K p)
 
-set_option backward.isDefEq.respectTransparency false in
 /-- Naturality of the extended comparison in a degree explicitly in the image. -/
 public theorem firstQuadrantSingleColumnTotalExtendedXIsoOfEq_naturality
     {K L : FirstQuadrantBicomplex} (f : K ⟶ L) (p q n : ℕ)
@@ -628,7 +651,6 @@ public theorem firstQuadrantSingleColumnTotalExtendedXIso_naturality
         omega)
     exact hz.eq_of_src _ _
 
-set_option backward.isDefEq.respectTransparency false in
 /-- Naturality of the single-column total/extension chain isomorphism. -/
 @[reassoc]
 public theorem firstQuadrantSingleColumnTotalExtendedIso_naturality
@@ -643,7 +665,6 @@ public theorem firstQuadrantSingleColumnTotalExtendedIso_naturality
   funext n
   exact firstQuadrantSingleColumnTotalExtendedXIso_naturality f p n
 
-set_option linter.style.haveILetI false in
 /-- A quasi-isomorphism on the sole column remains a quasi-isomorphism after placing that
 column in any outer degree and totalizing. -/
 public theorem firstQuadrantSingleColumnTotal_quasiIso
@@ -657,32 +678,30 @@ public theorem firstQuadrantSingleColumnTotal_quasiIso
   let c := (firstQuadrantSingleColumnTotalExtendedIso K p).hom
   let d := HomologicalComplex.extendMap (f.f p)
     (firstQuadrantColumnDegreeEmbedding p)
-  letI : IsIso b := by dsimp [b]; infer_instance
-  letI : IsIso c := by dsimp [c]; infer_instance
-  letI : QuasiIso (f.f p) := hcolumn
-  letI : QuasiIso d := by
+  let _ : IsIso b := by dsimp [b]; infer_instance
+  let _ : IsIso c := by dsimp [c]; infer_instance
+  let _ : QuasiIso (f.f p) := hcolumn
+  let _ : QuasiIso d := by
     dsimp [d]
     infer_instance
-  letI : QuasiIso (a ≫ b) := by
+  let _ : QuasiIso (a ≫ b) := by
     rw [show a ≫ b = c ≫ d from
       firstQuadrantSingleColumnTotalExtendedIso_naturality f p]
     infer_instance
   exact quasiIso_of_comp_right a b
 
-set_option linter.unnecessarySimpa false in
-set_option backward.isDefEq.respectTransparency false in
 @[reassoc]
 public theorem firstQuadrantColumnPrefixMap_XIso_hom
     {K L : FirstQuadrantBicomplex} (f : K ⟶ L) (N p : ℕ) (hp : p ≤ N) :
     (firstQuadrantColumnPrefixMap f N).f p ≫
       (firstQuadrantColumnPrefixXIso L N p hp).hom =
     (firstQuadrantColumnPrefixXIso K N p hp).hom ≫ f.f p := by
-  simpa [firstQuadrantColumnPrefixMap, firstQuadrantColumnPrefixXIso] using
-    (HomologicalComplex.stupidTruncMap_stupidTruncXIso_hom
-      f (firstQuadrantColumnPrefixEmbedding N)
-      (i := ⟨p, hp⟩) (i' := p) rfl)
+  dsimp only [firstQuadrantColumnPrefixMap, firstQuadrantColumnPrefixXIso,
+    firstQuadrantColumnPrefix]
+  exact HomologicalComplex.stupidTruncMap_stupidTruncXIso_hom
+    f (firstQuadrantColumnPrefixEmbedding N)
+    (i := ⟨p, hp⟩) (i' := p) rfl
 
-set_option backward.isDefEq.respectTransparency false in
 @[reassoc]
 public theorem firstQuadrantColumnPrefixSuccInclusion_naturality
     {K L : FirstQuadrantBicomplex} (f : K ⟶ L) (p : ℕ) :
@@ -716,7 +735,6 @@ public theorem firstQuadrantColumnPrefixSuccInclusion_naturality
       firstQuadrantColumnPrefixSuccInclusionComponent_eq_zero K p q hpq,
       comp_zero, zero_comp]
 
-set_option backward.isDefEq.respectTransparency false in
 @[reassoc]
 public theorem firstQuadrantColumnPrefixToLast_naturality
     {K L : FirstQuadrantBicomplex} (f : K ⟶ L) (p : ℕ) :
@@ -760,12 +778,11 @@ public noncomputable def firstQuadrantColumnPrefixSuccShortComplexMap
   comm₁₂ := firstQuadrantColumnPrefixSuccInclusion_naturality f p
   comm₂₃ := firstQuadrantColumnPrefixToLast_naturality f (p + 1)
 
-set_option linter.style.haveILetI false in
 /-- The zeroth prefix is already its sole-column quotient. -/
 public theorem firstQuadrantColumnPrefixToLast_zero_isIso
     (K : FirstQuadrantBicomplex) :
     IsIso (firstQuadrantColumnPrefixToLast K 0) := by
-  letI : ∀ q : ℕ, IsIso ((firstQuadrantColumnPrefixToLast K 0).f q) := fun q => by
+  let _ : ∀ q : ℕ, IsIso ((firstQuadrantColumnPrefixToLast K 0).f q) := fun q => by
     by_cases hq : q = 0
     · subst q
       change IsIso (firstQuadrantColumnPrefixToLastComponent K 0 0)
@@ -796,7 +813,6 @@ public theorem firstQuadrantColumnPrefixToLast_total_naturality
     (fun g => HomologicalComplex₂.total.map g (ComplexShape.down ℕ))
     (firstQuadrantColumnPrefixToLast_naturality f p)
 
-set_option linter.style.haveILetI false in
 /-- If every single-column layer map becomes a quasi-isomorphism on totalization, then every
 finite column-prefix map does as well. -/
 public theorem firstQuadrantFinitePrefixTotal_quasiIso_of_singleColumns
@@ -818,22 +834,22 @@ public theorem firstQuadrantFinitePrefixTotal_quasiIso_of_singleColumns
         (ComplexShape.down ℕ)
       let d := HomologicalComplex₂.total.map (firstQuadrantSingleColumnMap f 0)
         (ComplexShape.down ℕ)
-      letI : IsIso (firstQuadrantColumnPrefixToLast K 0) :=
+      let _ : IsIso (firstQuadrantColumnPrefixToLast K 0) :=
         firstQuadrantColumnPrefixToLast_zero_isIso K
-      letI : IsIso (firstQuadrantColumnPrefixToLast L 0) :=
+      let _ : IsIso (firstQuadrantColumnPrefixToLast L 0) :=
         firstQuadrantColumnPrefixToLast_zero_isIso L
-      letI : IsIso b := by
+      let _ : IsIso b := by
         dsimp [b]
         exact (HomologicalComplex₂.total.mapIso
           (asIso (firstQuadrantColumnPrefixToLast L 0))
           (ComplexShape.down ℕ)).isIso_hom
-      letI : IsIso c := by
+      let _ : IsIso c := by
         dsimp [c]
         exact (HomologicalComplex₂.total.mapIso
           (asIso (firstQuadrantColumnPrefixToLast K 0))
           (ComplexShape.down ℕ)).isIso_hom
-      letI : QuasiIso d := hsingle 0
-      letI : QuasiIso (a ≫ b) := by
+      let _ : QuasiIso d := hsingle 0
+      let _ : QuasiIso (a ≫ b) := by
         rw [show a ≫ b = c ≫ d from
           firstQuadrantColumnPrefixToLast_total_naturality f 0]
         infer_instance
@@ -909,7 +925,6 @@ public theorem firstQuadrantFlipMap_column_eq_horizontalRowMap
     (firstQuadrantFlipMap f).f q = firstQuadrantHorizontalRowMap f q := by
   rfl
 
-set_option backward.isDefEq.respectTransparency false in
 @[reassoc]
 public theorem firstQuadrant_totalFlipIso_naturality
     {K L : FirstQuadrantBicomplex} (f : K ⟶ L) :
@@ -930,7 +945,6 @@ public theorem firstQuadrant_totalFlipIso_naturality
   rw [Linear.comp_units_smul, Linear.units_smul_comp,
     HomologicalComplex₂.ιTotal_map]
 
-set_option linter.style.haveILetI false in
 /-- It is enough to prove the single-column total statement after flipping: total symmetry then
 returns the desired quasi-isomorphism for the original bicomplex map. -/
 public theorem firstQuadrantTotal_quasiIso_of_flipped_singleColumns
@@ -945,11 +959,11 @@ public theorem firstQuadrantTotal_quasiIso_of_flipped_singleColumns
   let eK := (K.totalFlipIso (ComplexShape.down ℕ)).hom
   let eL := (L.totalFlipIso (ComplexShape.down ℕ)).hom
   let h := HomologicalComplex₂.total.map f (ComplexShape.down ℕ)
-  letI : QuasiIso g := firstQuadrantTotal_quasiIso_of_singleColumns
+  let _ : QuasiIso g := firstQuadrantTotal_quasiIso_of_singleColumns
     (firstQuadrantFlipMap f) hsingle
-  letI : IsIso eK := by dsimp [eK]; infer_instance
-  letI : IsIso eL := by dsimp [eL]; infer_instance
-  letI : QuasiIso (eK ≫ h) := by
+  let _ : IsIso eK := by dsimp [eK]; infer_instance
+  let _ : IsIso eL := by dsimp [eL]; infer_instance
+  let _ : QuasiIso (eK ≫ h) := by
     rw [← show g ≫ eL = eK ≫ h from firstQuadrant_totalFlipIso_naturality f]
     infer_instance
   exact quasiIso_of_comp_left eK h

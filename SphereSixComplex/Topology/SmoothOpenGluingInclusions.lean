@@ -16,8 +16,6 @@ piece inclusions are `C^n`; at infinite regularity they bundle as smooth open em
 
 noncomputable section
 
-set_option linter.style.haveILetI false
-
 open Filter Function Set TopologicalSpace Topology
 open scoped ContDiff Manifold Topology
 

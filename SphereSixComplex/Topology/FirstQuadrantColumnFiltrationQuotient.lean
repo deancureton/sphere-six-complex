@@ -53,7 +53,6 @@ public theorem firstQuadrantColumnPrefixToLastComponent_eq_zero
     firstQuadrantColumnPrefixToLastComponent K p q = 0 := by
   simp [firstQuadrantColumnPrefixToLastComponent, hq]
 
-set_option backward.isDefEq.respectTransparency false in
 /-- Projection of the finite prefix to its final outer column. -/
 public noncomputable def firstQuadrantColumnPrefixToLast
     (K : FirstQuadrantBicomplex) (p : ℕ) :

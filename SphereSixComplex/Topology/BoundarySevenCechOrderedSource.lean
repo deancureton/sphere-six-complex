@@ -117,24 +117,24 @@ public noncomputable def boundarySevenSourceCechProjection
     (fun _ : Fin (n.unop.len + 1) ↦
       boundarySevenSimplicialFacePresentation) i
 
-set_option backward.isDefEq.respectTransparency false in
 @[reassoc]
 public theorem boundarySevenOrderedSourceCechSummand_comp_projection
     {n : SimplexCategoryᵒᵖ} (a : BoundarySevenProperCechTuple n)
     (i : Fin (n.unop.len + 1)) :
     boundarySevenOrderedSourceCechSummand a ≫
-        boundarySevenSourceCechProjection n i =
+      boundarySevenSourceCechProjection n i =
       boundarySevenOrderedSourcePresentationLeg a i := by
-  simpa [boundarySevenOrderedSourceCechSummand,
-    boundarySevenSourceCechProjection,
-    boundarySevenSimplicialFaceAugmentedCechNerve,
-    boundarySevenSimplicialFacePresentationArrow] using
-      (WidePullback.lift_π
-        (fun _ : Fin (n.unop.len + 1) ↦
-          boundarySevenSimplicialFacePresentation)
-        (boundarySevenOrderedSourceCommonFaceToBoundary a)
-        (boundarySevenOrderedSourcePresentationLeg a)
-        (boundarySevenOrderedSourcePresentationLeg_comp_presentation a) i)
+  change boundarySevenOrderedSourceCechSummand a ≫
+      WidePullback.π (fun _ : Fin (n.unop.len + 1) ↦
+        boundarySevenSimplicialFacePresentation) i =
+    boundarySevenOrderedSourcePresentationLeg a i
+  unfold boundarySevenOrderedSourceCechSummand
+  exact WidePullback.lift_π
+    (fun _ : Fin (n.unop.len + 1) ↦
+      boundarySevenSimplicialFacePresentation)
+    (boundarySevenOrderedSourceCommonFaceToBoundary a)
+    (boundarySevenOrderedSourcePresentationLeg a)
+    (boundarySevenOrderedSourcePresentationLeg_comp_presentation a) i
 
 @[reassoc]
 public theorem boundarySevenOrderedSourceToCech_comp_projection

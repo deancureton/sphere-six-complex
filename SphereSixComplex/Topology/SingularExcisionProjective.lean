@@ -29,7 +29,6 @@ public def CoverSmallChainQuasiIsomorphism
     {i : Type} (X : TopCat) (U : i → Set X) : Prop :=
   QuasiIso (coverSmallIntegralSingularChainInclusion X U)
 
-set_option linter.style.haveILetI false in
 /-- A quasi-isomorphism from cover-small to full singular chains supplies the existing
 small-chain approximation interface. -/
 public theorem coverSmallChainApproximation_of_quasiIso

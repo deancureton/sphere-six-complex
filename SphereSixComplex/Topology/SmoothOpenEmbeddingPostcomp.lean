@@ -16,8 +16,6 @@ theorem for smooth embeddings.
 
 noncomputable section
 
-set_option linter.style.haveILetI false
-
 open Function Set Topology TopologicalSpace
 open scoped ContDiff Manifold Topology
 

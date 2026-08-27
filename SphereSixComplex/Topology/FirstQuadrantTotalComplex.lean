@@ -135,7 +135,6 @@ public theorem firstQuadrantTotal_shortExact
       (ComplexShape.down ℕ) (ComplexShape.down ℕ) (ComplexShape.down ℕ))).ShortExact :=
   hS.map_of_exact _
 
-set_option linter.style.haveILetI false in
 /-- The middle-map version of two-out-of-three for a morphism of short exact sequences of
 complexes.  Mathlib currently only packages the corresponding result for `τ₃`; this form is
 the induction step needed for finite filtrations. -/
@@ -150,17 +149,17 @@ public theorem quasiIso_middle_of_shortExact
   have hi₁ : QuasiIsoAt f.τ₁ i := (quasiIso_iff f.τ₁).mp h₁ i
   have hi₃ : QuasiIsoAt f.τ₃ i := (quasiIso_iff f.τ₃).mp h₃ i
   let φ := (HomologicalComplex.homologyFunctor C c i).mapShortComplex.map f
-  letI : IsIso φ.τ₁ := by
+  let _ : IsIso φ.τ₁ := by
     dsimp [φ]
     exact (quasiIsoAt_iff_isIso_homologyMap f.τ₁ i).mp hi₁
-  letI : IsIso φ.τ₃ := by
+  let _ : IsIso φ.τ₃ := by
     dsimp [φ]
     exact (quasiIsoAt_iff_isIso_homologyMap f.τ₃ i).mp hi₃
-  letI : Mono φ.τ₂ := by
+  let _ : Mono φ.τ₂ := by
     by_cases hi : ∃ k, c.Rel k i
     · obtain ⟨k, hki⟩ := hi
       have hk₃ : QuasiIsoAt f.τ₃ k := (quasiIso_iff f.τ₃).mp h₃ k
-      letI : IsIso (HomologicalComplex.homologyMap f.τ₃ k) :=
+      let _ : IsIso (HomologicalComplex.homologyMap f.τ₃ k) :=
         (quasiIsoAt_iff_isIso_homologyMap f.τ₃ k).mp hk₃
       let Φ := ((CategoryTheory.ComposableArrows.δ₀Functor ⋙
         CategoryTheory.ComposableArrows.δ₀Functor).map
@@ -177,7 +176,7 @@ public theorem quasiIso_middle_of_shortExact
         infer_instance
       · change Mono (HomologicalComplex.homologyMap f.τ₃ i)
         infer_instance
-    · letI : Mono (HomologicalComplex.homologyMap S₂.f i) := by
+    · let _ : Mono (HomologicalComplex.homologyMap S₂.f i) := by
         have := hS₂.mono_f
         exact HomologicalComplex.mono_homologyMap_of_mono_of_not_rel S₂.f i
           (by simpa using hi)
@@ -185,11 +184,11 @@ public theorem quasiIso_middle_of_shortExact
       · change Mono (HomologicalComplex.homologyMap S₂.f i)
         infer_instance
       all_goals infer_instance
-  letI : Epi φ.τ₂ := by
+  let _ : Epi φ.τ₂ := by
     by_cases hi : ∃ j, c.Rel i j
     · obtain ⟨j, hij⟩ := hi
       have hj₁ : QuasiIsoAt f.τ₁ j := (quasiIso_iff f.τ₁).mp h₁ j
-      letI : IsIso (HomologicalComplex.homologyMap f.τ₁ j) :=
+      let _ : IsIso (HomologicalComplex.homologyMap f.τ₁ j) :=
         (quasiIsoAt_iff_isIso_homologyMap f.τ₁ j).mp hj₁
       let Φ := ((CategoryTheory.ComposableArrows.δlastFunctor ⋙
         CategoryTheory.ComposableArrows.δlastFunctor).map
@@ -206,7 +205,7 @@ public theorem quasiIso_middle_of_shortExact
         infer_instance
       · change Mono (HomologicalComplex.homologyMap f.τ₁ j)
         infer_instance
-    · letI : Epi (HomologicalComplex.homologyMap S₁.g i) := by
+    · let _ : Epi (HomologicalComplex.homologyMap S₁.g i) := by
         have := hS₁.epi_g
         exact HomologicalComplex.epi_homologyMap_of_epi_of_not_rel S₁.g i
           (by simpa using hi)
@@ -217,7 +216,6 @@ public theorem quasiIso_middle_of_shortExact
   change IsIso φ.τ₂
   apply isIso_of_mono_of_epi
 
-set_option linter.style.haveILetI false in
 /-- A map between two filtrations is a quasi-isomorphism at every finite stage if it is one on
 the initial subobject and on every successive quotient.  The isomorphisms `glue` allow adjacent
 short exact sequences to use merely isomorphic (rather than definitionally equal) models for a
@@ -235,7 +233,7 @@ public theorem quasiIso_of_successive_shortExact_extensions
   | zero =>
       exact quasiIso_middle_of_shortExact (f 0) (hA 0) (hB 0) hbase (hgraded 0)
   | succ n ih =>
-      letI : QuasiIso (f n).τ₂ := ih
+      let _ : QuasiIso (f n).τ₂ := ih
       have hleft : QuasiIso (f (n + 1)).τ₁ :=
         quasiIso_of_arrow_mk_iso
           (f n).τ₂ (f (n + 1)).τ₁ (glue n)

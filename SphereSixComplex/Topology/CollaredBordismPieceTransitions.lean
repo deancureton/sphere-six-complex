@@ -24,9 +24,6 @@ namespace QuotientGluing
 
 universe uE uH uM
 
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.types false
-
 variable {E : Type uE} {H : Type uH} {M₀ M₁ M₂ : Type uM}
   [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
   [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
@@ -57,6 +54,12 @@ private noncomputable local instance openEmbeddingGlueDataPieceChartedSpace (i :
   change ChartedSpace (ModelProd H (EuclideanHalfSpace 1)) (U i)
   infer_instance
 
+private theorem openEmbeddingPieceTransition_source (p q : Sigma fun i ↦ U i) :
+    (openGluingPieceTransition (OpenEmbeddingGluing.glueData U e he) p q).source =
+      Set.range ((OpenEmbeddingGluing.glueData U e he).f p.1 q.1) := by
+  exact openGluingPieceTransition_source
+    (OpenEmbeddingGluing.glueData U e he) p q
+
 /-- For a gluing presented by open embeddings, smoothness of its concrete overlap maps implies
 smoothness of the corresponding canonical partial changes of pieces. -/
 private theorem contMDiffOn_pieceTransition_of_contMDiff_transition
@@ -67,7 +70,7 @@ private theorem contMDiffOn_pieceTransition_of_contMDiff_transition
     ContMDiffOn (I.prod (𝓡∂ 1)) (I.prod (𝓡∂ 1)) ∞
       (openGluingPieceTransition (OpenEmbeddingGluing.glueData U e he) p q)
       (openGluingPieceTransition (OpenEmbeddingGluing.glueData U e he) p q).source := by
-  rw [openGluingPieceTransition_source]
+  rw [openEmbeddingPieceTransition_source]
   rintro x ⟨z, rfl⟩
   have hsmooth : ContMDiff (I.prod (𝓡∂ 1)) (I.prod (𝓡∂ 1)) ∞
       (fun z : OpenEmbeddingGluing.overlap U e he p.1 q.1 ↦
@@ -137,16 +140,18 @@ public noncomputable instance instOpenPresentationPieceChartedSpace
     (i : (openPresentation B₀₁ B₁₂).J) :
     ChartedSpace (ModelProd H (EuclideanHalfSpace 1))
       ((openPresentation B₀₁ B₁₂).U i) := by
-  change ChartedSpace (ModelProd H (EuclideanHalfSpace 1)) (OpenPiece B₀₁ B₁₂ i)
-  infer_instance
+  change OpenPieceIndex at i
+  change ChartedSpace (ModelProd H (EuclideanHalfSpace 1))
+    (OpenPiece B₀₁ B₁₂ i)
+  exact instOpenPieceChartedSpace B₀₁ B₁₂ i
 
 /-- The same manifold family, exposed through the `U` field of the gluing data. -/
 public instance instOpenPresentationPieceIsManifold
     (i : (openPresentation B₀₁ B₁₂).J) :
     IsManifold (I.prod (𝓡∂ 1)) ∞
       ((openPresentation B₀₁ B₁₂).U i) := by
-  change IsManifold (I.prod (𝓡∂ 1)) ∞ (OpenPiece B₀₁ B₁₂ i)
-  infer_instance
+  change OpenPieceIndex at i
+  exact instOpenPieceIsManifold B₀₁ B₁₂ i
 
 /-- A self-overlap has the identity as its change of pieces. -/
 private theorem contMDiff_openPieceTransition_refl (i : OpenPieceIndex) :

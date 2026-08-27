@@ -63,7 +63,6 @@ public noncomputable def firstQuadrantSingleZeroToTotal
     K ⟶ (firstQuadrantSingleZeroBicomplex K).total (ComplexShape.down ℕ) :=
   (firstQuadrantSingleZeroColumnIso K).inv ≫ firstQuadrantZeroColumnToTotal K
 
-set_option backward.isDefEq.respectTransparency false in
 /-- The componentwise projection used to descend from the total complex. -/
 public noncomputable def firstQuadrantSingleZeroTotalComponent
     (K : FirstQuadrantChainComplex) (n p q : ℕ)
@@ -84,7 +83,6 @@ public theorem firstQuadrantSingleZeroTotalComponent_zero
       (firstQuadrantSingleZeroColumnIso K).hom.f q := by
   rfl
 
-set_option backward.isDefEq.respectTransparency false in
 /-- Project the total complex supported in horizontal degree zero back to its unique column. -/
 public noncomputable def firstQuadrantTotalToSingleZero
     (K : FirstQuadrantChainComplex) :
@@ -121,7 +119,12 @@ public noncomputable def firstQuadrantTotalToSingleZero
       rw [HomologicalComplex₂.d₂_eq
         (firstQuadrantSingleZeroBicomplex K)
         (ComplexShape.down ℕ) 0 hij j (by simp)]
-      simp
+      have heps : ComplexShape.ε₂ (ComplexShape.down ℕ) (ComplexShape.down ℕ)
+          (ComplexShape.down ℕ) (0, i) = 1 := by
+        change (ComplexShape.down ℕ).ε 0 = 1
+        rfl
+      rw [heps, one_smul, Category.assoc, HomologicalComplex₂.ι_totalDesc,
+        firstQuadrantSingleZeroTotalComponent_zero]
     · have hzcol : IsZero
           ((firstQuadrantSingleZeroBicomplex K).X (p + 1)) :=
         HomologicalComplex.isZero_single_obj_X
@@ -132,7 +135,6 @@ public noncomputable def firstQuadrantTotalToSingleZero
           (ComplexShape.down ℕ) q).map_isZero hzcol
       exact hz.eq_of_src _ _
 
-set_option backward.isDefEq.respectTransparency false in
 /-- Projection after inclusion is the identity of the unique column. -/
 public theorem firstQuadrantSingleZeroToTotal_comp_projection
     (K : FirstQuadrantChainComplex) :
@@ -140,14 +142,12 @@ public theorem firstQuadrantSingleZeroToTotal_comp_projection
       𝟙 K := by
   apply HomologicalComplex.Hom.ext
   funext n
-  change (firstQuadrantSingleZeroBicomplex K).ιTotal
-      (ComplexShape.down ℕ) 0 n n (by simp) ≫
-      (firstQuadrantSingleZeroBicomplex K).totalDesc _ = 𝟙 _
-  rw [HomologicalComplex₂.ι_totalDesc]
-  simp [firstQuadrantSingleZeroTotalComponent,
-    firstQuadrantSingleZeroColumnIso]
+  dsimp only [firstQuadrantSingleZeroToTotal, firstQuadrantZeroColumnToTotal,
+    firstQuadrantTotalToSingleZero, HomologicalComplex.comp_f, HomologicalComplex.id_f]
+  rw [Category.assoc, HomologicalComplex₂.ι_totalDesc,
+    firstQuadrantSingleZeroTotalComponent_zero]
+  exact congrArg (fun f ↦ f.f n) (firstQuadrantSingleZeroColumnIso K).inv_hom_id
 
-set_option backward.isDefEq.respectTransparency false in
 /-- Inclusion after projection is the identity of the total complex. -/
 public theorem firstQuadrantTotalToSingleZero_comp_inclusion
     (K : FirstQuadrantChainComplex) :

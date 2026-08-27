@@ -470,7 +470,6 @@ public theorem coverSmallAffineSubdivisionEventuallySmall_of_ancestries
   exact exists_affineSubdivisionIterate_mem_range_of_ancestries
     X U n (hsmall n) c
 
-set_option linter.unnecessarySimpa false in
 /-- Zero-dimensional singular simplices are already subordinate to any covering family. -/
 public theorem exists_zero_dimensional_ancestry_depth_subordinate
     (hUcover : ⋃ i, U i = Set.univ)

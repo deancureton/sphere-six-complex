@@ -25,7 +25,6 @@ namespace SphereSixComplex
 
 universe u v
 
-set_option linter.style.haveILetI false in
 /-- A finite coproduct of quasi-isomorphisms of chain complexes is a quasi-isomorphism. -/
 public theorem quasiIso_finite_coproduct
     {I : Type} [Finite I]
@@ -60,7 +59,6 @@ public theorem quasiIso_finite_coproduct
   exact @IsIso.of_isIso_comp_left _ _ _ _ _ σK
     (H.map (CategoryTheory.Limits.Sigma.map f)) inferInstance inferInstance
 
-set_option linter.style.haveILetI false in
 /-- A functor to chain complexes which preserves a finite coproduct carries a coproduct of
 maps sent to quasi-isomorphisms to a quasi-isomorphism. -/
 public theorem quasiIso_map_finite_coproduct
@@ -175,7 +173,6 @@ public theorem boundarySevenFacePresentationSourceMap_eq_sigmaMap :
     CategoryTheory.Limits.Sigma.ι_map]
   rfl
 
-set_option linter.style.haveILetI false in
 /-- Consequently the canonical map on the degree-zero Cech presentation objects induces a
 quasi-isomorphism on integral chains.  This is the first graded piece of the vertical-column
 filtration of the Cech total map. -/
@@ -320,7 +317,6 @@ public theorem boundarySevenFaceCechBicomplexMap_comp_outerAugmentation :
   exact AlternatingFaceMapComplex.ε.naturality
     boundarySevenFaceAugmentedCechChainMap
 
-set_option backward.isDefEq.respectTransparency false in
 /-- The inclusion into the total of a zero-column bicomplex is natural in the column. -/
 public theorem firstQuadrantSingleZeroToTotal_naturality
     {K L : FirstQuadrantChainComplex} (f : K ⟶ L) :
@@ -335,15 +331,10 @@ public theorem firstQuadrantSingleZeroToTotal_naturality
   dsimp only [firstQuadrantSingleZeroToTotal,
     firstQuadrantZeroColumnToTotal]
   simp only [HomologicalComplex.comp_f]
-  simp only [show firstQuadrantSingleZeroColumnIso K = Iso.refl K by
-      exact ChainComplex.single₀ObjXSelf K,
-    show firstQuadrantSingleZeroColumnIso L = Iso.refl L by
-      exact ChainComplex.single₀ObjXSelf L,
-    Iso.refl_inv, HomologicalComplex.id_f, Category.id_comp]
-  rw [HomologicalComplex₂.ιTotal_map]
-  simp
+  rw [Category.assoc, HomologicalComplex₂.ιTotal_map]
+  rw [HomologicalComplex.single_map_f_self]
+  rfl
 
-set_option linter.style.haveILetI false in
 /-- The projection from the total of a zero-column bicomplex is natural in the column. -/
 public theorem firstQuadrantTotalToSingleZero_naturality
     {K L : FirstQuadrantChainComplex} (f : K ⟶ L) :

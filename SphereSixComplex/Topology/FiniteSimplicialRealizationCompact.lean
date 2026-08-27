@@ -38,7 +38,6 @@ public theorem finitePartialOrderNerve_hasDimensionLT
     simpa using Fintype.card_le_of_injective _ hinj
   omega
 
-set_option linter.style.haveILetI false in
 /-- The nerve of a finite partially ordered type is a finite simplicial set. -/
 public theorem finitePartialOrderNerve_finite
     (T : Type) [PartialOrder T] [Finite T] :

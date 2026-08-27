@@ -31,7 +31,6 @@ namespace SphereSixComplex
 
 section Transport
 
-set_option linter.style.haveILetI false in
 /-- A quotient covering map for one group is a quotient covering map for any isomorphic group,
 acting through the isomorphism. -/
 public theorem isQuotientCoveringMap_compHom
@@ -119,7 +118,6 @@ public structure PuncturedGlobalFamilyAffineFundamentalGroup
           integralOrbifoldPeriodMonodromy) ≃*
       FundamentalGroup (PuncturedGlobalFamily F) base
 
-set_option linter.style.haveILetI false in
 /-- The affine fundamental-group identification constructs the chosen equivariant affine
 universal cover outright. -/
 public noncomputable def puncturedGlobalFamilyEquivariantUniversalCover_of_fundamentalGroup
