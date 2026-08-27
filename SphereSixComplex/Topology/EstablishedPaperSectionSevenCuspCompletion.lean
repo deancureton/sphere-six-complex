@@ -39,7 +39,7 @@ public theorem canonicalWangBoundaryNaturality
     R.twoDiscCover.CanonicalCuspWangBoundaryNaturality :=
   ActualCuspWangOpenCoverChainRealization.canonicalWangBoundaryNaturality
     R.twoDiscCover
-    (EstablishedActualCuspWangOpenCoverChainRealization.realization R.twoDiscCover)
+    (EstablishedActualCuspWangOpenCoverChainRealization.realization R)
 
 /-- The two remaining cusp coordinate identities: the meridian is the elliptic degree-one
 generator, and the cusp fibre degree-two classes have the marked normalized elliptic fibre

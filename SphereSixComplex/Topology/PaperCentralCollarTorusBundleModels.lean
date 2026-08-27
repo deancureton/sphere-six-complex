@@ -82,15 +82,12 @@ end AdditiveFourTorusBundleRealization
 
 namespace EstablishedTorusBundleTopology
 
-/-- The regular global quotient is the total space of the finite-CW four-torus bundle obtained by
-descending the varying-lattice torus family over the regular triangle-group quotient.  This is the
-precise quotient-bundle/local-triviality and finite-CW theorem absent from the current APIs. -/
+/-- A finite-CW four-torus-bundle homotopy model for the regular global quotient. -/
 public axiom centralFamilyBundleRealization
     (A : SphereSixComplex.Geometry.PaperAnalyticData) :
     AdditiveFourTorusBundleRealization A.openEmbeddingStarData.central
 
-/-- Each common collar quotient is the total space of its descended finite-CW four-torus bundle
-over the corresponding punctured-disc quotient. -/
+/-- A finite-CW four-torus-bundle homotopy model for each common collar quotient. -/
 public axiom collarBundleRealization
     (A : SphereSixComplex.Geometry.PaperAnalyticData) (i : Fin 3) :
     AdditiveFourTorusBundleRealization (A.openEmbeddingStarData.collarSource i)

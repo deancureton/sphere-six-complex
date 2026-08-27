@@ -203,13 +203,14 @@ public structure Model where
     ∀ upper v x i,
       toricChart upper v (torusEmbedding x) i =
         ((evaluateCharacter (a2DualCharacter upper v i) x : ℂˣ) : ℂ)
-  /-- The compact closed unit polydiscs of the locally finite fan form a locally finite family. -/
-  closedUnitPolydisc_locallyFinite :
+  /-- Below every height bound strictly less than one, the union of the closed unit
+  polydiscs is closed. -/
+  closedUnitPolydisc_union_below_closed :
     letI := topology
     letI := charts
-    LocallyFinite fun a : Bool × ToricLattice ↦
+    ∀ c : ℝ, c < 1 → IsClosed (⋃ a : Bool × ToricLattice,
       {p | p ∈ (toricChart a.1 a.2).source ∧
-        ∀ i, ‖toricChart a.1 a.2 p i‖ ≤ 1}
+        ∀ i, ‖toricChart a.1 a.2 p i‖ ≤ 1} ∩ {p | ‖t p‖ ≤ c})
   /-- In every unimodular chart the height character is the squarefree monomial
   `z₀ z₁ z₂`. -/
   toricChart_t :

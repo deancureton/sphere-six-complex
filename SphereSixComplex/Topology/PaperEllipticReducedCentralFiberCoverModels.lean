@@ -232,12 +232,12 @@ open Geometry.AnalyticTorusFamily Geometry.EllipticFamilySpecialization
 variable (A : PaperAnalyticData)
 
 /-- A free affine order-three quotient of the full-rank central four-torus has finite CW type of
-dimension four. -/
+dimension at most six. -/
 public axiom orderThreeReducedCentralFiberFiniteCWModelSix :
     FiniteCWModelSix (OrderThreeReducedCentralFiber A.periods)
 
 /-- A free affine order-four quotient of the full-rank central four-torus has finite CW type of
-dimension four. -/
+dimension at most six. -/
 public axiom orderFourReducedCentralFiberFiniteCWModelSix :
     FiniteCWModelSix (OrderFourReducedCentralFiber A.periods)
 

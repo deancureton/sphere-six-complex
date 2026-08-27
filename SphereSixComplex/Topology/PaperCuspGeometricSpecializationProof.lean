@@ -3,15 +3,11 @@ module
 public import SphereSixComplex.Topology.PaperCuspGeometricSpecialization
 
 /-!
-# The geometric cusp specialization equations are over-determined
+# Regression test for overbroad geometric cusp specialization equations
 
-`EstablishedStandardA2CuspSpecialization.degreeOne` and
-`EstablishedStandardA2CuspSpecialization.degreeTwo` each assert an equation whose left-hand side
-is built only from the punctured cusp collar `W`, its central-fibre retraction `R` and the
-inclusion into the local filling, while whose right-hand side is read off from an arbitrary
-radial clutching datum `G : ActualCuspRadialClutchingData W`.  Both are universally quantified
-over `G`, so they can only hold if the coordinates they name are the same for every `G`.  They
-are not.
+The established specialization equations use the fixed normalized datum
+`A.actualCuspRadialClutchingData`. This file proves that the tempting stronger formulations,
+quantified over every `G : ActualCuspRadialClutchingData W`, are false.
 
 `ActualCuspRadialClutchingData` records a fibre marking
 `monodromyCoordinates : CuspMonodromyCoordinates clutching` whose degree-two component
@@ -31,16 +27,11 @@ the negative of the original and which still satisfies `fiberMarkingCompatibilit
 commutes with the cusp monodromy matrix `M₀`, `degreeOne_monodromy` survives as well.  This
 refutes the degree-one statement: `not_standardA2CuspSpecializationDegreeOneStatement`.
 
-Both refutations take a radial clutching datum as an input, so what they establish precisely is
-that `EstablishedActualCuspRadialClutching.data` is inconsistent with either of the two
-specialization equations: see
+Both refutations take a radial clutching datum as an input. They show that either overbroad
+universal specialization statement would make the type of clutching data empty: see
 `isEmpty_actualCuspRadialClutchingData_of_degreeOneStatement` and
-`isEmpty_actualCuspRadialClutchingData_of_degreeTwoStatement`.  The defect is in the two
-equations, not in the existence statement: nothing here suggests that
-`ActualCuspRadialClutchingData W` is empty, and the constructions below build new inhabitants out
-of old ones.  A correct replacement for the two specialization equations has to quantify the
-right-hand side over a *normalized* clutching datum, or state the conclusion only up to the
-automorphisms of the marking exhibited here.
+`isEmpty_actualCuspRadialClutchingData_of_degreeTwoStatement`. The current established equations
+avoid this defect by naming a single normalized choice.
 -/
 
 @[expose] public section
@@ -345,8 +336,7 @@ public theorem geometricHomologyOneEquiv_negDegreeOne
   exact circleMappingTorusHOneAddEquiv_negDegreeOne_castAdd G.monodromyCoordinates
     (integralSingularHomologyEquivOfHomotopyEquiv 1 G.totalHomotopyEquiv x) i
 
-/-- The exact statement asserted by the axiom
-`EstablishedStandardA2CuspSpecialization.degreeOne`. -/
+/-- The false overbroad degree-one statement obtained by quantifying over every clutching datum. -/
 public def StandardA2CuspSpecializationDegreeOneStatement : Prop :=
   ∀ {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
@@ -378,8 +368,7 @@ public theorem not_standardA2CuspSpecializationDegreeOneStatement
   rw [hval] at hi
   omega
 
-/-- The exact statement asserted by the axiom
-`EstablishedStandardA2CuspSpecialization.degreeTwo`. -/
+/-- The false overbroad degree-two statement obtained by quantifying over every clutching datum. -/
 public def StandardA2CuspSpecializationDegreeTwoStatement : Prop :=
   ∀ {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
@@ -412,10 +401,8 @@ public theorem not_standardA2CuspSpecializationDegreeTwoStatement
   rw [hval] at hi
   omega
 
-/-- If the degree-one specialization equation held, then no punctured cusp collar witness
-carrying a central-fibre retraction could carry a radial clutching datum at all.  Since
-`EstablishedActualCuspRadialClutching.data` asserts that such a datum always exists, the two
-established statements are jointly contradictory. -/
+/-- If the overbroad degree-one specialization equation held, no punctured cusp collar witness
+carrying a central-fibre retraction could carry a radial clutching datum. -/
 public theorem isEmpty_actualCuspRadialClutchingData_of_degreeOneStatement
     (h : StandardA2CuspSpecializationDegreeOneStatement)
     {W : ActualPuncturedCuspCollarWitness N M}

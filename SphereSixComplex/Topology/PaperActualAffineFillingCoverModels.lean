@@ -31,8 +31,9 @@ variable (A : PaperAnalyticData)
 /-- The exact regular-cover classifications of the three actual collar-to-filling maps.
 
 The `HEq` fields identify the maps carried by the chosen cover models with the actual based
-overlap maps despite their propositionally equal chosen base points. The bridge retains only the
-resulting local kernels and based gluing squares, not the final relations. -/
+overlap maps despite their propositionally equal chosen base points. The bridge records the
+resulting local kernels, based gluing squares, and the local vanishing statements from which the
+final relations are derived. -/
 public structure ActualAffineFillingCoverSquares where
   coreData : AffineTorusCorePiOneData
     (FundamentalGroup A.actualVanKampenFourPieceCover.core
@@ -106,9 +107,9 @@ public structure ActualAffineFillingCoverSquares where
 /-- Universal-cover classification for the actual affine torus collars and their cyclic and toric
 fillings.
 
-This established boundary is geometric: it chooses the three regular cover squares, identifies
-their induced maps with the actual overlap inclusions, and records based naturality with the
-central universal cover. It asserts neither the final filling relations nor `HasVanKampenData`.
+This established boundary chooses the three regular cover squares, identifies their induced maps
+with the actual overlap inclusions, and records based naturality and the exact local vanishing
+statements. The final filling relations and `HasVanKampenData` are derived from this package.
 -/
 public axiom establishedActualAffineFillingCoverSquares :
     Nonempty A.ActualAffineFillingCoverSquares

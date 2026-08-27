@@ -400,41 +400,45 @@ public theorem exists_closedUnitToricPolydisc_of_ne_zero
     rw [log_norm_toricChart M hp ht upper v i]
     exact mul_nonpos_of_nonpos_of_nonneg (le_of_lt (Real.log_neg (norm_pos_iff.mpr hp) ht)) (hv i)
 
-/-- Local finiteness and density extend the dense-torus unit-polydisc cover across the central
-fibre. -/
+/-- Closedness and density extend the dense-torus unit-polydisc cover across the central fibre. -/
 public theorem exists_closedUnitToricPolydisc
     (M : Model) {p : M.Carrier} (ht : ‖M.t p‖ < 1) :
     ∃ upper v, p ∈ (M.toricChart upper v).source ∧
       ∀ i, ‖M.toricChart upper v p i‖ ≤ 1 := by
-  let U : Set M.Carrier := cuspNeighborhood M 1
+  let c : ℝ := (‖M.t p‖ + 1) / 2
+  have hpc : ‖M.t p‖ < c := by
+    dsimp [c]
+    linarith
+  have hc : c < 1 := by
+    dsimp [c]
+    linarith
+  let U : Set M.Carrier := cuspNeighborhood M c
   let V : Set M.Carrier := ⋃ a : Bool × ToricLattice,
-    closedToricPolydisc M a.1 a.2 1
-  have hlocal : LocallyFinite fun a : Bool × ToricLattice ↦
-      closedToricPolydisc M a.1 a.2 1 := by
-    simpa only [closedToricPolydisc_eq] using M.closedUnitPolydisc_locallyFinite
+    closedToricPolydisc M a.1 a.2 1 ∩ {q | ‖M.t q‖ ≤ c}
   have hVclosed : IsClosed V := by
-    exact hlocal.isClosed_iUnion fun a ↦
-      (compact_closedToricPolydisc M a.1 a.2 1).isClosed
+    simpa only [V, closedToricPolydisc_eq] using
+      M.closedUnitPolydisc_union_below_closed c hc
   have htorus : Dense {q : M.Carrier | M.t q ≠ 0} := by
     rw [← M.torus_range]
     exact M.torus_dense
   have hsub : U ∩ {q : M.Carrier | M.t q ≠ 0} ⊆ V := by
     intro q hq
+    have hqc : ‖M.t q‖ < c := mem_ball_zero_iff.mp hq.1
     have hqt : ‖M.t q‖ < 1 := by
-      exact mem_ball_zero_iff.mp hq.1
+      exact hqc.trans hc
     obtain ⟨upper, v, hsource, hcoord⟩ :=
       exists_closedUnitToricPolydisc_of_ne_zero M hq.2 hqt
     apply Set.mem_iUnion.2
     refine ⟨(upper, v), ?_⟩
-    rw [closedToricPolydisc_eq]
-    exact ⟨hsource, hcoord⟩
+    rw [Set.mem_inter_iff, closedToricPolydisc_eq]
+    exact ⟨⟨hsource, hcoord⟩, hqc.le⟩
   have hUV : U ⊆ V := by
-    exact (htorus.open_subset_closure_inter (cuspNeighborhood M 1).isOpen).trans
+    exact (htorus.open_subset_closure_inter (cuspNeighborhood M c).isOpen).trans
       (closure_minimal hsub hVclosed)
-  have hpU : p ∈ U := mem_ball_zero_iff.mpr ht
+  have hpU : p ∈ U := mem_ball_zero_iff.mpr hpc
   obtain ⟨⟨upper, v⟩, hpV⟩ := Set.mem_iUnion.1 (hUV hpU)
-  rw [closedToricPolydisc_eq] at hpV
-  exact ⟨upper, v, hpV⟩
+  rw [Set.mem_inter_iff, closedToricPolydisc_eq] at hpV
+  exact ⟨upper, v, hpV.1⟩
 
 /-- Every fixed dilated `A₂` triangle has bounded `ℓ¹` position. -/
 public theorem exists_positionL1_bound_a2TriangleDilation
