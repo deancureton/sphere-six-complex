@@ -26,8 +26,13 @@ open SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
 
 variable {A : PaperAnalyticData}
 
-/-- The selected product homeomorphism supplied by the established triviality of the actual
-central torus bundle over the affine strip. -/
+/-- The named product homeomorphism of the actual central torus bundle over the affine strip.
+
+This is the *marked* trivialization at `sectionSevenAffineNamedStripLift`, not an `Exists.choose`
+of the unmarked triviality statement: the unmarked statement pins the base coordinate only, so its
+chosen witness leaves the fibre coordinate free (see
+`exists_productTrivialization_fiberCoordinate_comp`) and every downstream square built on it would
+be false as stated. -/
 public noncomputable def sectionSevenAffineCentralBandProductHomeomorph
     (S : A.SectionSevenAffineCentralSeparation) :
     centralHeightBand
@@ -36,8 +41,7 @@ public noncomputable def sectionSevenAffineCentralBandProductHomeomorph
         (A.sectionSevenAffineCentralHeightSplit S).upper ≃ₜ
       sectionSevenAffineVerticalStrip ×
         AdditiveTorus A.duplicatedSectionSevenBandParameter :=
-  (EstablishedSectionSevenAffineBandTopology.establishedActualCentralBandProductTrivialization
-    A S).choose
+  A.sectionSevenAffineCentralBandMarkedProductHomeomorph S
 
 /-- The fibre coordinate of the selected actual central-band product trivialization. -/
 public noncomputable def sectionSevenAffineCentralBandFiberCoordinate

@@ -98,13 +98,17 @@ public def SectionSevenAffineCentralBandProductTrivialization
     (AdditiveTorus A.duplicatedSectionSevenBandParameter)
     (A.sectionSevenAffineCentralBandProjection S)
 
-/-- A trivial bundle over a contractible base is homotopy equivalent to its fibre. -/
+/-- A product decomposition over a contractible base is a homotopy equivalence onto the fibre.
+
+The product homeomorphism is taken as *data*.  Passing only the proposition
+`IsHomeomorphicTrivialFiberBundle` and selecting a witness with `Exists.choose` would leave the
+resulting fibre coordinate completely undetermined, because that proposition constrains the base
+coordinate alone; see `exists_productTrivialization_fiberCoordinate_comp`. -/
 public noncomputable def homotopyEquivFiberOfTrivialBundle
     {B F Z : Type*} [TopologicalSpace B] [TopologicalSpace F] [TopologicalSpace Z]
-    [ContractibleSpace B] {proj : Z → B}
-    (h : IsHomeomorphicTrivialFiberBundle F proj) :
+    [ContractibleSpace B] (e : Z ≃ₜ B × F) :
     Z ≃ₕ F :=
-  h.choose.toHomotopyEquiv.trans
+  e.toHomotopyEquiv.trans
     (((ContractibleSpace.hequiv_unit B).some.prodCongr
       (ContinuousMap.HomotopyEquiv.refl F)).trans
         (Homeomorph.uniqueProd Unit F).toHomotopyEquiv)

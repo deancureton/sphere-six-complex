@@ -2,6 +2,7 @@ module
 
 public import SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
 public import SphereSixComplex.Topology.PaperCollarMappingTorusAdapters
+public import SphereSixComplex.Topology.PaperEllipticCollarFundamentalDomainProof
 
 /-!
 # Angular fundamental domains for the elliptic collars
@@ -69,17 +70,42 @@ end CyclicPuncturedProductData
 
 namespace EstablishedCyclicAngularFundamentalDomain
 
-/-- A free primitive scalar cyclic action on a punctured disc, diagonal with a fibre
-homeomorphism, has quotient equal to the radial interval times the corresponding mapping torus.
+/-- A free scalar cyclic action on a punctured disc, diagonal with a fibre homeomorphism, has
+quotient equal to the radial interval times the corresponding mapping torus, provided its
+generator rotates the disc clockwise by exactly one `m`-th of a full turn.
 
 This is the general quotient/fundamental-domain theorem missing from Mathlib.  The mapping-torus
 orientation uses the sector from the generator ray to the identity ray, so its clutching map is
-`D.clutching` rather than its inverse. -/
-public axiom quotientHomeomorphRadialMappingTorus
+`D.clutching` rather than its inverse.
+
+The hypothesis `hmul` is not a normalisation convenience and must not be dropped: primitivity of
+`D.multiplier` alone is *not* enough.  For a general primitive multiplier `exp (2 π I j / m)` the
+angular fundamental sector still spans the angle `2 π / m`, so the group element gluing its two
+ends is `g ^ (j⁻¹ mod m)` rather than `g`, and the quotient is the mapping torus of
+`D.clutching ^ (j⁻¹ mod m)`.  That agrees with the mapping torus of `D.clutching` only when
+`j ≡ ± 1 [MOD m]`, hence only for `m ∈ {1, 2, 3, 4, 6}`.
+
+The unhypothesised form is refuted by `m = 5`, `j = 2`, with `T` a genus-two surface carrying the
+free-away-from-branch-points `C₅`-action with branch data `(1, 1, 3)`: the branch multisets of
+`φ`, `φ ^ 2` and `φ⁻¹` are `{1, 1, 3}`, `{1, 2, 2}` and `{2, 4, 4}`, so `φ ^ 2` is conjugate to
+neither `φ` nor `φ⁻¹`; the two mapping tori then have non-isomorphic fundamental groups, and
+their products with the radial interval remain non-homeomorphic.  All fields of
+`CyclicPuncturedProductData` are satisfiable for that data.
+
+Both collars of this paper have `multiplier = exp (-2 π I / m)`, that is `j = -1`, so `hmul`
+holds for them by `CyclicAngularFundamentalDomain.orderThreeMultiplier_eq_standardMultiplier` and
+`CyclicAngularFundamentalDomain.orderFourMultiplier_eq_standardMultiplier`. -/
+public noncomputable def quotientHomeomorphRadialMappingTorus
     {m : ℕ} [NeZero m] {T : Type} [TopologicalSpace T] {r : ℝ}
-    (D : CyclicPuncturedProductData m T r) :
+    (D : CyclicPuncturedProductData m T r)
+    (hmul : D.multiplier = CyclicAngularFundamentalDomain.standardMultiplier m) :
     Quotient (restrictedOrbitRel D.action D.carrier) ≃ₜ
-      OpenRadialInterval r × CircleMappingTorus D.clutching
+      OpenRadialInterval r × CircleMappingTorus D.clutching :=
+  CyclicAngularFundamentalDomain.quotientHomeomorphRadialMappingTorusOfStandardMultiplier
+    D.action D.clutching D.radius_lt_one.le D.carrier rfl
+    (CyclicAngularFundamentalDomain.isStandardGenerator_of_multiplier_eq D.action D.clutching
+      D.multiplier D.multiplier_norm hmul D.generator_formula)
+    D.action_continuous
 
 end EstablishedCyclicAngularFundamentalDomain
 
@@ -265,7 +291,8 @@ public noncomputable def orderThreeCollarRadialMappingTorusHomeomorph :
     A.modular.modularParameter.toTriangleUniformization_sourceAction
     A.starSeparation.orderThree.radius A.starSeparation.orderThree.radius_pos
     A.starSeparation.orderThree.radius_lt_one).trans
-      (EstablishedCyclicAngularFundamentalDomain.quotientHomeomorphRadialMappingTorus D)
+      (EstablishedCyclicAngularFundamentalDomain.quotientHomeomorphRadialMappingTorus D
+        CyclicAngularFundamentalDomain.orderThreeMultiplier_eq_standardMultiplier)
 
 /-- Correct radial-mapping-torus model of the actual order-four open collar. -/
 public noncomputable def orderFourCollarRadialMappingTorusHomeomorph :
@@ -281,7 +308,8 @@ public noncomputable def orderFourCollarRadialMappingTorusHomeomorph :
     A.modular.modularParameter.toTriangleUniformization_sourceAction
     A.starSeparation.orderFour.radius A.starSeparation.orderFour.radius_pos
     A.starSeparation.orderFour.radius_lt_one).trans
-      (EstablishedCyclicAngularFundamentalDomain.quotientHomeomorphRadialMappingTorus D)
+      (EstablishedCyclicAngularFundamentalDomain.quotientHomeomorphRadialMappingTorus D
+        CyclicAngularFundamentalDomain.orderFourMultiplier_eq_standardMultiplier)
 
 end PaperAnalyticData
 

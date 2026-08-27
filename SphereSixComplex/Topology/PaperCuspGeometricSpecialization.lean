@@ -105,40 +105,6 @@ public noncomputable def geometricHomologyTwoEquiv :
 
 end ActualCuspRadialClutchingData
 
-namespace EstablishedStandardA2CuspSpecialization
-
-open SphereSixComplex.CircleMappingTorusHomologyBases
-
-/-- Cellular-to-singular naturality for the standard periodic `A₂` degeneration in degree one:
-specialization preserves the two fibre coinvariants and kills the base circle. -/
-public axiom degreeOne
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
-    (W : ActualPuncturedCuspCollarWitness N M)
-    (R : ActualLocalCuspCentralFiberRetractionData W)
-    (G : ActualCuspRadialClutchingData W)
-    (x : IntegralSingularHomology 1 (puncturedLocalCuspQuotient W)) :
-      actualLocalCuspFillingHomologyOneEquiv W R
-          (integralSingularHomologyMap 1
-            ⟨puncturedLocalCuspToFilling W, puncturedLocalCuspToFilling_continuous W⟩ x) =
-        fun i ↦ G.geometricHomologyOneEquiv x (Fin.castAdd 1 i)
-
-/-- Cellular-to-singular naturality for the standard periodic `A₂` degeneration in degree two:
-specialization preserves the four fibre coinvariants and kills the two invariant suspensions. -/
-public axiom degreeTwo
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
-    (W : ActualPuncturedCuspCollarWitness N M)
-    (R : ActualLocalCuspCentralFiberRetractionData W)
-    (G : ActualCuspRadialClutchingData W)
-    (x : IntegralSingularHomology 2 (puncturedLocalCuspQuotient W)) :
-      actualLocalCuspFillingHomologyTwoEquiv W R
-          (integralSingularHomologyMap 2
-            ⟨puncturedLocalCuspToFilling W, puncturedLocalCuspToFilling_continuous W⟩ x) =
-        fun i ↦ G.geometricHomologyTwoEquiv x (Fin.castAdd 2 i)
-
-end EstablishedStandardA2CuspSpecialization
-
 end Geometry.CuspPuncturedCollarBridge
 
 /-! ## The integral basis changes used by Section 7 -/
@@ -196,6 +162,46 @@ cusp witness. -/
 public noncomputable def actualCuspRadialClutchingData :
     ActualCuspRadialClutchingData A.starCuspWitness :=
   EstablishedActualCuspRadialClutching.data A.starCuspWitness
+
+end Geometry.PaperAnalyticData
+
+namespace Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization
+
+open Geometry.PaperAnalyticData
+
+/-- Cellular-to-singular naturality for the paper's selected periodic `A₂` cusp marking in
+degree one: specialization preserves its two fibre coinvariants and kills the base circle. -/
+public axiom degreeOne
+    (A : PaperAnalyticData)
+    (x : IntegralSingularHomology 1 (A.openEmbeddingStarData.collarSource 0)) :
+    actualLocalCuspFillingHomologyOneEquiv A.starCuspWitness
+        A.cuspCentralFiberRetractionData
+        (integralSingularHomologyMap 1
+          ⟨puncturedLocalCuspToFilling A.starCuspWitness,
+            puncturedLocalCuspToFilling_continuous A.starCuspWitness⟩ x) =
+      fun i ↦ A.actualCuspRadialClutchingData.geometricHomologyOneEquiv x (Fin.castAdd 1 i)
+
+/-- Cellular-to-singular naturality for the paper's selected periodic `A₂` cusp marking in
+degree two: specialization preserves its four fibre coinvariants and kills the two invariant
+suspensions. -/
+public axiom degreeTwo
+    (A : PaperAnalyticData)
+    (x : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0)) :
+    actualLocalCuspFillingHomologyTwoEquiv A.starCuspWitness
+        A.cuspCentralFiberRetractionData
+        (integralSingularHomologyMap 2
+          ⟨puncturedLocalCuspToFilling A.starCuspWitness,
+            puncturedLocalCuspToFilling_continuous A.starCuspWitness⟩ x) =
+      fun i ↦ A.actualCuspRadialClutchingData.geometricHomologyTwoEquiv x (Fin.castAdd 2 i)
+
+end Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization
+
+namespace Geometry.PaperAnalyticData
+
+open CuspPuncturedCollarBridge
+open SphereSixComplex.CircleMappingTorusHomologyBases
+
+variable (A : PaperAnalyticData)
 
 /-- The corresponding dimensionally correct realization of the paper's cusp collar. -/
 public noncomputable def actualCuspCollarRadialMappingTorusRealization :
@@ -277,9 +283,7 @@ public theorem actualCuspFillingInclusionCoordinates
           (integralSingularHomologyMap 1
             ⟨puncturedLocalCuspToFilling A.starCuspWitness,
               puncturedLocalCuspToFilling_continuous A.starCuspWitness⟩ x) = _
-    rw [EstablishedStandardA2CuspSpecialization.degreeOne A.starCuspWitness
-      A.cuspCentralFiberRetractionData A.actualCuspRadialClutchingData
-      x]
+    rw [EstablishedStandardA2CuspSpecialization.degreeOne A x]
     exact cuspSectionSevenOneCoordinateChange_specialization
       (A.actualCuspRawHomologyOneEquiv x)
   degreeTwo x := by
@@ -288,9 +292,7 @@ public theorem actualCuspFillingInclusionCoordinates
           (integralSingularHomologyMap 2
             ⟨puncturedLocalCuspToFilling A.starCuspWitness,
               puncturedLocalCuspToFilling_continuous A.starCuspWitness⟩ x) = _
-    rw [EstablishedStandardA2CuspSpecialization.degreeTwo A.starCuspWitness
-      A.cuspCentralFiberRetractionData A.actualCuspRadialClutchingData
-      x]
+    rw [EstablishedStandardA2CuspSpecialization.degreeTwo A x]
     exact cuspSectionSevenTwoCoordinateChange_specialization
       (A.actualCuspRawHomologyTwoEquiv x)
 
