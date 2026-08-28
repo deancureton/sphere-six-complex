@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Topology.EstablishedLerayCoverComparison
+public import SphereSixComplex.Topology.FiniteCoverCechDefs
 public import Mathlib.AlgebraicTopology.ExtraDegeneracy
 
 /-!

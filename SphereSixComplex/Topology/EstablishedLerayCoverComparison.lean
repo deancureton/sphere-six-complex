@@ -1,23 +1,22 @@
 module
 
-public import SphereSixComplex.Topology.SectionSevenCoherentRealizationReduction
-public import Mathlib.Algebra.Homology.TotalComplex
-public import Mathlib.AlgebraicTopology.CechNerve
+public import SphereSixComplex.Topology.FiniteCoverCechRows
+public import SphereSixComplex.Topology.FirstQuadrantRowwiseTotalizationProof
+public import SphereSixComplex.Topology.BoundarySevenCechRowIdentificationsProof
 
 /-!
-# Leray--Čech comparison for a finite open cover
+# Leray--Cech comparison for a finite open cover
 
-The cover Čech nerve below retains the singular chains of every iterated intersection.  No
-acyclicity or contractibility hypothesis is imposed on an intersection.  The only external input
-is the standard augmentation theorem comparing the total Čech--singular bicomplex with chains
-small for the cover.
+The cover Cech nerve retains the singular chains of every iterated intersection.  Its
+augmentation is a quasi-isomorphism because every horizontal row is the Cech resolution of a
+surjection of sets and hence has an extra degeneracy.
 -/
 
 @[expose] public section
 
 noncomputable section
 
-open AlgebraicTopology CategoryTheory CategoryTheory.Limits Set
+open AlgebraicTopology CategoryTheory CategoryTheory.Limits Set Simplicial
 
 namespace SphereSixComplex
 
@@ -25,79 +24,120 @@ section FiniteCoverCech
 
 variable {iota X : Type} [TopologicalSpace X]
 
-/-- The intersection selected by a finite set of cover indices.  The empty intersection is the
-whole space, as usual. -/
-public def finiteCoverIntersection (U : iota → Set X) (s : Finset iota) : Set X :=
-  ⋂ i ∈ s, U i
+/-- Integral chains carry the canonical comparison between evaluation of the simplicial-set
+Cech nerve and the Cech nerve of the evaluated presentation. -/
+public noncomputable def finiteCoverIntegralCechAugmentedRowIso
+    (U : iota → Set X) (q : ℕ) :
+    ((SimplicialObject.Augmented.whiskering (Type 0) AddCommGrpCat).obj
+      (sigmaConst.obj (AddCommGrpCat.of ℤ))).obj
+        (((SimplicialObject.Augmented.whiskering SSet (Type 0)).obj
+          ((evaluation SimplexCategoryᵒᵖ (Type 0)).obj
+            (Opposite.op (SimplexCategory.mk q)))).obj
+              (finiteCoverAugmentedCechNerve U)) ≅
+      finiteCoverIntegralAugmentedCechRow U
+        (Opposite.op (SimplexCategory.mk q)) :=
+  Functor.mapIso _
+    (cechPresentationAugmentedEvaluationIso (finiteCoverPresentationArrow U) q)
 
-omit [TopologicalSpace X] in
-@[simp]
-public theorem mem_finiteCoverIntersection_iff (U : iota → Set X) (s : Finset iota)
-    (x : X) :
-    x ∈ finiteCoverIntersection U s ↔ ∀ i ∈ s, x ∈ U i := by
-  simp [finiteCoverIntersection]
+/-- The actual horizontal row of the Cech bicomplex augmentation is canonically the evaluated
+row contracted by `finiteCoverCechRowHomotopyEquiv`. -/
+public noncomputable def finiteCoverCechRowArrowIso
+    (U : iota → Set X) (q : ℕ) :
+    Arrow.mk (firstQuadrantHorizontalRowMap
+        (finiteCoverLerayCechOuterAugmentation U) q) ≅
+      Arrow.mk (AlternatingFaceMapComplex.ε.app
+        (finiteCoverIntegralAugmentedCechRow U
+          (Opposite.op (SimplexCategory.mk q)))) := by
+  let e := finiteCoverIntegralCechAugmentedRowIso U q
+  let R := ((SimplicialObject.Augmented.whiskering (Type 0) AddCommGrpCat).obj
+    (sigmaConst.obj (AddCommGrpCat.of ℤ))).obj
+      (((SimplicialObject.Augmented.whiskering SSet (Type 0)).obj
+        ((evaluation SimplexCategoryᵒᵖ (Type 0)).obj
+          (Opposite.op (SimplexCategory.mk q)))).obj
+            (finiteCoverAugmentedCechNerve U))
+  let F := HomologicalComplex.eval AddCommGrpCat (ComplexShape.down ℕ) q
+  let Y := SimplicialObject.Augmented.drop.obj (finiteCoverAugmentedCechChains U)
+  let l₀ : firstQuadrantHorizontalRow
+      (finiteCoverLerayCechBicomplex U) q ≅
+      AlternatingFaceMapComplex.obj
+        (SimplicialObject.Augmented.drop.obj R) :=
+    (alternatingFaceMapComplexCompMapHomologicalComplexIso F).app Y
+  let r₀ : firstQuadrantHorizontalRow
+      (firstQuadrantSingleZeroBicomplex
+        (CoverSmallIntegralSingularChainComplex (TopCat.of X) U)) q ≅
+      (ChainComplex.single₀ AddCommGrpCat).obj
+        (SimplicialObject.Augmented.point.obj R) :=
+    (HomologicalComplex.singleMapHomologicalComplex F
+      (ComplexShape.down ℕ) 0).app
+        (CoverSmallIntegralSingularChainComplex (TopCat.of X) U)
+  let e₀ : Arrow.mk (firstQuadrantHorizontalRowMap
+      (finiteCoverLerayCechOuterAugmentation U) q) ≅
+      Arrow.mk (AlternatingFaceMapComplex.ε.app R) :=
+    Arrow.isoMk' _ _ l₀ r₀ (by
+      ext n x
+      rcases n with _ | n
+      · simp [l₀, r₀, R, F, firstQuadrantHorizontalRowMap,
+          firstQuadrantHorizontalRow, finiteCoverLerayCechOuterAugmentation,
+          finiteCoverLerayCechBicomplex, finiteCoverCechChainSimplicialObject,
+          finiteCoverAugmentedCechChains, SSet.chainComplexFunctor]
+        erw [HomologicalComplex.comp_f]
+      · rw [HomologicalComplex.comp_f,
+          AlternatingFaceMapComplex.ε_app_f_succ, comp_zero]
+        rfl)
+  let e₁ := Arrow.isoMk'
+    (AlternatingFaceMapComplex.ε.app R)
+    (AlternatingFaceMapComplex.ε.app
+      (finiteCoverIntegralAugmentedCechRow U
+        (Opposite.op (SimplexCategory.mk q))))
+    ((alternatingFaceMapComplex AddCommGrpCat).mapIso
+      (SimplicialObject.Augmented.drop.mapIso e))
+    ((ChainComplex.single₀ AddCommGrpCat).mapIso
+      (SimplicialObject.Augmented.point.mapIso e))
+    (by
+      exact AlternatingFaceMapComplex.ε.naturality e.hom)
+  exact e₀ ≪≫ e₁
 
-/-- Finite intersections stay open; no assertion about their homology is made. -/
-public theorem isOpen_finiteCoverIntersection (U : iota → Set X)
-    (hOpen : ∀ i, IsOpen (U i)) (s : Finset iota) :
-    IsOpen (finiteCoverIntersection U s) := by
-  apply isOpen_biInter_finset
-  intro i _
-  exact hOpen i
+/-- Every evaluated horizontal Cech augmentation is a quasi-isomorphism. -/
+public theorem finiteCoverIntegralCechRowAugmentation_quasiIso
+    (U : iota → Set X) (q : SimplexCategoryᵒᵖ) :
+    QuasiIso (AlternatingFaceMapComplex.ε.app
+      (finiteCoverIntegralAugmentedCechRow U q)) :=
+  (finiteCoverCechRowHomotopyEquiv U q).quasiIso_hom
 
-/-- The coproduct of the singular simplicial sets of all cover members. -/
-public noncomputable abbrev finiteCoverPresentationSource (U : iota → Set X) : SSet :=
-  ∐ fun i : iota ↦ TopCat.toSSet.obj (TopCat.of (U i))
-
-/-- The canonical cover presentation onto the simplicial set of cover-small simplices. -/
-public noncomputable def finiteCoverPresentation (U : iota → Set X) :
-    finiteCoverPresentationSource U ⟶ coverSmallSingularSubcomplex (TopCat.of X) U :=
-  Sigma.desc fun i ↦ coverMemberToSmallSingularSet (TopCat.of X) U i
-
-/-- The cover presentation, bundled as an arrow so that Mathlib's canonical Čech nerve applies. -/
-public noncomputable def finiteCoverPresentationArrow (U : iota → Set X) : Arrow SSet :=
-  Arrow.mk (finiteCoverPresentation U)
-
-/-- The Čech nerve of the cover presentation.  Its degree-`p` object records `(p+1)` compatible
-lifts of a small singular simplex, hence all ordered `(p+1)`-fold cover intersections, including
-repetitions. -/
-public noncomputable def finiteCoverCechNerve (U : iota → Set X) : SimplicialObject SSet :=
-  (finiteCoverPresentationArrow U).cechNerve
-
-/-- Apply integral simplicial chains in the singular direction to the cover Čech nerve. -/
-public noncomputable def finiteCoverCechChainSimplicialObject (U : iota → Set X) :
-    SimplicialObject (ChainComplex AddCommGrpCat ℕ) :=
-  ((SimplicialObject.whiskering SSet (ChainComplex AddCommGrpCat ℕ)).obj
-    ((SSet.chainComplexFunctor AddCommGrpCat).obj (AddCommGrpCat.of ℤ))).obj
-      (finiteCoverCechNerve U)
-
-/-- The Čech--singular bicomplex: the outer differential is the alternating Čech boundary,
-while the inner differential is the ordinary singular boundary on each iterated intersection. -/
-public noncomputable def finiteCoverLerayCechBicomplex (U : iota → Set X) :
-    HomologicalComplex₂ AddCommGrpCat (ComplexShape.down ℕ) (ComplexShape.down ℕ) :=
-  (alternatingFaceMapComplex (ChainComplex AddCommGrpCat ℕ)).obj
-    (finiteCoverCechChainSimplicialObject U)
-
-/-- The direct-sum total complex of the Čech--singular bicomplex. -/
-public noncomputable def finiteCoverLerayCechTotal (U : iota → Set X) :
-    ChainComplex AddCommGrpCat ℕ :=
-  (finiteCoverLerayCechBicomplex U).total (ComplexShape.down ℕ)
-
-/-- The output of the classical augmentation theorem for the cover Čech resolution. -/
-public structure FiniteOpenCoverLerayCechComparison (U : iota → Set X) where
-  /-- Augmentation from the canonical total Čech--singular complex to cover-small chains. -/
-  augmentation : finiteCoverLerayCechTotal U ⟶
-    CoverSmallIntegralSingularChainComplex (TopCat.of X) U
-  /-- The augmentation is a quasi-isomorphism. -/
-  quasiIso : QuasiIso augmentation
-
-/-- Standard Leray--Čech augmentation for a finite open cover.  This theorem does not assume
-that any nonempty intersection is acyclic: the full singular chain complex of every iterated
-intersection occurs in `finiteCoverLerayCechTotal`. -/
-public axiom establishedFiniteOpenCoverLerayCechComparison
+/-- The Leray--Cech augmentation for a finite open cover.  In fact the proof only uses that the
+target consists of cover-small simplices: its presentation by cover members is degreewise
+surjective for every family of subsets. -/
+public noncomputable def establishedFiniteOpenCoverLerayCechComparison
     [Fintype iota] (U : iota → Set X)
-    (hOpen : ∀ i, IsOpen (U i)) (hCover : ⋃ i, U i = Set.univ) :
-    FiniteOpenCoverLerayCechComparison U
+    (_hOpen : ∀ i, IsOpen (U i)) (_hCover : ⋃ i, U i = Set.univ) :
+    FiniteOpenCoverLerayCechComparison U := by
+  let T := HomologicalComplex₂.total.map
+    (finiteCoverLerayCechOuterAugmentation U) (ComplexShape.down ℕ)
+  have hT : QuasiIso T := by
+    apply firstQuadrantTotal_quasiIso_of_rows
+      (finiteCoverLerayCechOuterAugmentation U)
+    intro q
+    let _ : QuasiIso (AlternatingFaceMapComplex.ε.app
+        (finiteCoverIntegralAugmentedCechRow U
+          (Opposite.op (SimplexCategory.mk q)))) :=
+      finiteCoverIntegralCechRowAugmentation_quasiIso U _
+    exact quasiIso_of_arrow_mk_iso
+      (AlternatingFaceMapComplex.ε.app
+        (finiteCoverIntegralAugmentedCechRow U
+          (Opposite.op (SimplexCategory.mk q))))
+      (firstQuadrantHorizontalRowMap
+        (finiteCoverLerayCechOuterAugmentation U) q)
+      (finiteCoverCechRowArrowIso U q).symm
+  let P := firstQuadrantTotalToSingleZero
+    (CoverSmallIntegralSingularChainComplex (TopCat.of X) U)
+  have hP : QuasiIso P := by
+    let _ : IsIso P :=
+      (firstQuadrantSingleZeroTotalIso
+        (CoverSmallIntegralSingularChainComplex (TopCat.of X) U)).isIso_hom
+    infer_instance
+  refine ⟨finiteCoverLerayCechTotalAugmentation U, ?_⟩
+  change QuasiIso (T ≫ P)
+  exact quasiIso_comp T P
 
 end FiniteCoverCech
 
