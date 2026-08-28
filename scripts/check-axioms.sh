@@ -6,11 +6,27 @@
 # and also runs `#print axioms` on the project endpoints. Add an allowlist entry only together with
 # a written justification of the new trust boundary; remove it when the dependency is discharged.
 #
-# Usage: ./scripts/check-axioms.sh
+# Usage: ./scripts/check-axioms.sh [--fix]
+#
+# With `--fix`, the three declared lists and the axiom catalog are rewritten from the computed
+# closures instead of being checked against them.  Discharging an axiom otherwise means editing `scripts/allowed-axioms.txt`,
+# `scripts/allowed-construction-axioms.txt` and `comparator.json` by hand and keeping them in
+# agreement, which is what drifts.  Surviving entries keep their position and section comment, and
+# new ones are appended under a marker to be filed by hand.  Review the resulting diff: `--fix`
+# records what the development currently assumes, it does not judge whether assuming it is
+# acceptable.
 #
 # Set CHECK_AXIOMS_SKIP_BUILD=1 to reuse an existing build instead of running `lake build`.
 
 set -euo pipefail
+
+fix_mode=0
+for arg in "$@"; do
+  case "$arg" in
+    --fix) fix_mode=1 ;;
+    *) echo "unknown argument: $arg" >&2; exit 2 ;;
+  esac
+done
 
 project_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 allowlist="$project_root/scripts/allowed-axioms.txt"
@@ -29,7 +45,7 @@ trap 'rm -rf "$work"' EXIT
   | { grep -v '^[[:space:]]*$' || true; } > "$work/allowed-in-order.txt"
 jq -r '.permitted_axioms[]' "$project_root/comparator.json" > "$work/comparator-allowed.txt"
 
-if ! cmp -s "$work/allowed-in-order.txt" "$work/comparator-allowed.txt"; then
+if [[ "$fix_mode" -eq 0 ]] && ! cmp -s "$work/allowed-in-order.txt" "$work/comparator-allowed.txt"; then
   echo "Axiom audit FAILED: comparator.json permitted_axioms differs from scripts/allowed-axioms.txt." >&2
   diff -u "$work/allowed-in-order.txt" "$work/comparator-allowed.txt" >&2 || true
   exit 1
@@ -42,14 +58,16 @@ if [[ -z "${CHECK_AXIOMS_SKIP_BUILD:-}" ]]; then
   lake build >/dev/null
 fi
 
-"$project_root/scripts/update-axiom-catalog.sh" --check
+if [[ "$fix_mode" -eq 0 ]]; then
+  "$project_root/scripts/update-axiom-catalog.sh" --check
+fi
 
 lake env lean "$project_root/scripts/ComparatorAxiomClosure.lean" \
   > "$work/comparator-closure.txt"
 sort -u "$work/allowed-in-order.txt" > "$work/allowed-sorted.txt"
 sort -u "$work/comparator-closure.txt" > "$work/comparator-closure-sorted.txt"
 
-if ! cmp -s "$work/allowed-sorted.txt" "$work/comparator-closure-sorted.txt"; then
+if [[ "$fix_mode" -eq 0 ]] && ! cmp -s "$work/allowed-sorted.txt" "$work/comparator-closure-sorted.txt"; then
   echo "Axiom audit FAILED: Comparator's recursive axiom closure differs from the allowlist." >&2
   diff -u "$work/allowed-sorted.txt" "$work/comparator-closure-sorted.txt" >&2 || true
   exit 1
@@ -58,6 +76,24 @@ fi
 lake env lean "$project_root/scripts/ConstructionAxiomClosure.lean" \
   > "$work/construction-closure.txt"
 sort -u "$work/construction-closure.txt" > "$work/construction.txt"
+
+if [[ "$fix_mode" -eq 1 ]]; then
+  echo "Rewriting the declared lists from the computed closures:"
+  python3 "$project_root/scripts/rewrite_axiom_list.py" "$allowlist" "$work/comparator-closure-sorted.txt"
+  python3 "$project_root/scripts/rewrite_axiom_list.py" "$construction_allowlist" "$work/construction.txt"
+  # comparator.json must list the same constants in the same order as the allowlist.
+  { grep -v '^[[:space:]]*#' "$allowlist" || true; } \
+    | { grep -v '^[[:space:]]*$' || true; } > "$work/allowed-rewritten.txt"
+  jq --slurpfile a <(jq -R -s -c 'split("\n") | map(select(length > 0))' "$work/allowed-rewritten.txt") \
+    '.permitted_axioms = $a[0]' "$project_root/comparator.json" > "$work/comparator.json"
+  mv "$work/comparator.json" "$project_root/comparator.json"
+  echo "  comparator.json: permitted_axioms set from the allowlist, same order"
+  "$project_root/scripts/update-axiom-catalog.sh" --write
+  echo "  ChallengeAxioms.lean: axiom catalog regenerated"
+  echo
+  echo "Review the diff before committing: this records what is assumed, not whether it is acceptable."
+  exit 0
+fi
 
 {
   echo "import SphereSixComplex.Main"
