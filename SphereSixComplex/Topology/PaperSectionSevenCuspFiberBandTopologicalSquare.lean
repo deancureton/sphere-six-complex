@@ -56,6 +56,67 @@ public noncomputable def canonicalCuspFiberToEllipticInteriorMap
       C((D.orderThreeSide ∩ D.orderFourSide : Set A.SectionSevenEllipticInterior),
         A.SectionSevenEllipticInterior)).comp D.canonicalCuspFiberToBandMap
 
+/-- The fibre over the lower overlap collar in the explicit vertex--edge cover of the actual
+cusp mapping torus. -/
+public noncomputable def actualCuspMappingTorusLowOverlapFiberMap (A : PaperAnalyticData) :
+    let G := A.actualCuspRadialClutchingData
+    let _ := G.fiberTopology
+    C(G.Fiber, (vertexPiece (fun _ : Unit ↦ G.clutching) ∩
+      edgePiece (fun _ : Unit ↦ G.clutching) :
+        Set (CircleMappingTorus G.clutching))) := by
+  let G := A.actualCuspRadialClutchingData
+  letI := G.fiberTopology
+  exact overlapPt (fun _ : Unit ↦ G.clutching) uQuarter_mem_overlapBand ()
+
+/-- Map the oriented lower-overlap fibre into the elliptic interior through the radial cusp
+model. -/
+public noncomputable def actualCuspMappingTorusLowOverlapFiberToEllipticInteriorMap :
+    let G := A.actualCuspRadialClutchingData
+    let _ := G.fiberTopology
+    C(G.Fiber, A.SectionSevenEllipticInterior) := by
+  let G := A.actualCuspRadialClutchingData
+  letI := G.fiberTopology
+  exact D.cuspToEllipticInteriorMap.hom.comp
+    (G.totalHomotopyEquiv.invFun.comp
+      ((⟨Subtype.val, continuous_subtype_val⟩ :
+        C((vertexPiece (fun _ : Unit ↦ G.clutching) ∩
+            edgePiece (fun _ : Unit ↦ G.clutching) :
+              Set (CircleMappingTorus G.clutching)),
+          CircleMappingTorus G.clutching)).comp
+        (actualCuspMappingTorusLowOverlapFiberMap A)))
+
+/-- After forgetting that the lower fibre lies in the overlap, it is the mapping-torus slice at
+the quarter point. -/
+public theorem actualCuspMappingTorusLowOverlapFiberToEllipticInteriorMap_eq :
+    let G := A.actualCuspRadialClutchingData
+    let _ := G.fiberTopology
+    D.actualCuspMappingTorusLowOverlapFiberToEllipticInteriorMap =
+      D.cuspToEllipticInteriorMap.hom.comp
+        (G.totalHomotopyEquiv.invFun.comp
+          (torusPt (fun _ : Unit ↦ G.clutching) () uQuarter)) := by
+  let G := A.actualCuspRadialClutchingData
+  let _ := G.fiberTopology
+  apply ContinuousMap.ext
+  intro x
+  rfl
+
+/-- Moving the mapping-torus fibre from the vertex to the oriented lower overlap gives a
+homotopic map into the elliptic interior. -/
+public theorem actualCuspMappingTorusFiberToEllipticInteriorMap_homotopic_lowOverlap :
+    let G := A.actualCuspRadialClutchingData
+    let _ := G.fiberTopology
+    ContinuousMap.Homotopic
+      D.actualCuspMappingTorusFiberToEllipticInteriorMap
+      D.actualCuspMappingTorusLowOverlapFiberToEllipticInteriorMap := by
+  let G := A.actualCuspRadialClutchingData
+  let _ := G.fiberTopology
+  rw [D.actualCuspMappingTorusLowOverlapFiberToEllipticInteriorMap_eq]
+  exact ContinuousMap.Homotopic.comp
+    (.refl D.cuspToEllipticInteriorMap.hom)
+    (ContinuousMap.Homotopic.comp
+      (.refl G.totalHomotopyEquiv.invFun)
+      ⟨(torusPtHomotopy (fun _ : Unit ↦ G.clutching) () uQuarter).symm⟩)
+
 /-- The missing geometric compatibility: the period-marked fibre map is the restriction of the
 actual cusp-to-elliptic map to the fibre of the radial mapping torus, up to homotopy. -/
 public def CanonicalCuspFiberBandTopologicalCompatibility : Prop :=
@@ -63,6 +124,25 @@ public def CanonicalCuspFiberBandTopologicalCompatibility : Prop :=
   let _ := G.fiberTopology
   ContinuousMap.Homotopic (actualCuspMappingTorusFiberToEllipticInteriorMap D)
     (canonicalCuspFiberToEllipticInteriorMap D)
+
+/-- The topological cusp--band square is equivalent to its oriented low-overlap form.  Thus the
+remaining comparison is exactly between the explicit overlap leg of the Wang cover and the
+canonical affine-band map. -/
+public theorem canonicalCuspFiberBandTopologicalCompatibility_iff_lowOverlap :
+    D.CanonicalCuspFiberBandTopologicalCompatibility ↔
+      let G := A.actualCuspRadialClutchingData
+      let _ := G.fiberTopology
+      ContinuousMap.Homotopic
+        D.actualCuspMappingTorusLowOverlapFiberToEllipticInteriorMap
+        D.canonicalCuspFiberToEllipticInteriorMap := by
+  let G := A.actualCuspRadialClutchingData
+  let _ := G.fiberTopology
+  unfold CanonicalCuspFiberBandTopologicalCompatibility
+  constructor
+  · intro h
+    exact D.actualCuspMappingTorusFiberToEllipticInteriorMap_homotopic_lowOverlap.symm.trans h
+  · intro h
+    exact D.actualCuspMappingTorusFiberToEllipticInteriorMap_homotopic_lowOverlap.trans h
 
 /-- The space-level compatibility induces the corresponding equality on singular homology. -/
 public theorem canonicalCuspFiberBand_homology_naturality
