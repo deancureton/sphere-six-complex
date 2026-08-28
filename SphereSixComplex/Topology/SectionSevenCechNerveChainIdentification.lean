@@ -75,7 +75,7 @@ private noncomputable def intersectionToCechSummand {n : SimplexCategoryᵒᵖ}
     (a : CechTuple n) :
     TopCat.toSSet.obj (TopCat.of (finiteCoverIntersection (U A) a.support)) ⟶
       (finiteCoverCechNerve (U A)).obj n :=
-  WidePullback.lift (intersectionToSmall A a)
+  finiteCoverCechLift (U A) n (intersectionToSmall A a)
     (intersectionToPresentationLeg A a)
     (intersectionToPresentationLeg_condition A a)
 
@@ -114,8 +114,7 @@ private theorem sSetCoproduct_app_injective {ι : Type} (X : ι → SSet)
 private noncomputable def cechProjection (n : SimplexCategoryᵒᵖ)
     (i : Fin (n.unop.len + 1)) :
     (finiteCoverCechNerve (U A)).obj n ⟶ finiteCoverPresentationSource (U A) :=
-  WidePullback.π (fun _ : Fin (n.unop.len + 1) ↦
-    finiteCoverPresentation (U A)) i
+  finiteCoverCechProjection (U A) n i
 
 private theorem cech_app_ext {n q : SimplexCategoryᵒᵖ}
     (x y : ((finiteCoverCechNerve (U A)).obj n).obj q)
@@ -146,13 +145,11 @@ private theorem orderedIntersectionsToCech_π {n : SimplexCategoryᵒᵖ}
       TopCat.toSSet.map (intersectionToMember A a i) ≫
         Sigma.ι (fun j ↦ TopCat.toSSet.obj (TopCat.of (U A j))) (a i) := by
   rw [← Category.assoc, orderedIntersectionsToCech, Sigma.ι_desc]
-  simpa [intersectionToCechSummand, cechProjection, finiteCoverCechNerve,
-    finiteCoverPresentationArrow, intersectionToPresentationLeg] using
-      (WidePullback.lift_π
-        (fun _ : Fin (n.unop.len + 1) ↦ finiteCoverPresentation (U A))
-        (intersectionToSmall A a)
+  simpa only [intersectionToCechSummand, cechProjection,
+    intersectionToPresentationLeg] using
+      finiteCoverCechLift_projection (U A) n (intersectionToSmall A a)
         (intersectionToPresentationLeg A a)
-        (intersectionToPresentationLeg_condition A a) i)
+        (intersectionToPresentationLeg_condition A a) i
 
 private theorem intersectionToMember_app_injective {n q : SimplexCategoryᵒᵖ}
     (a : CechTuple n) (i : Fin (n.unop.len + 1)) :

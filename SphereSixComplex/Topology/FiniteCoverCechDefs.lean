@@ -68,6 +68,32 @@ repetitions. -/
 public noncomputable def finiteCoverCechNerve (U : iota → Set X) : SimplicialObject SSet :=
   SimplicialObject.Augmented.drop.obj (finiteCoverAugmentedCechNerve U)
 
+/-- The projection from one degree of the cover Cech nerve to a selected presentation leg. -/
+public noncomputable def finiteCoverCechProjection (U : iota → Set X)
+    (n : SimplexCategoryᵒᵖ) (i : Fin (n.unop.len + 1)) :
+    (finiteCoverCechNerve U).obj n ⟶ finiteCoverPresentationSource U :=
+  WidePullback.π (fun _ : Fin (n.unop.len + 1) ↦ finiteCoverPresentation U) i
+
+/-- Lift a compatible family of presentation legs into one degree of the cover Cech nerve. -/
+public noncomputable def finiteCoverCechLift (U : iota → Set X)
+    (n : SimplexCategoryᵒᵖ) {Z : SSet}
+    (f : Z ⟶ coverSmallSingularSubcomplex (TopCat.of X) U)
+    (fs : ∀ _ : Fin (n.unop.len + 1), Z ⟶ finiteCoverPresentationSource U)
+    (w : ∀ i, fs i ≫ finiteCoverPresentation U = f) :
+    Z ⟶ (finiteCoverCechNerve U).obj n :=
+  WidePullback.lift f fs w
+
+@[reassoc]
+public theorem finiteCoverCechLift_projection (U : iota → Set X)
+    (n : SimplexCategoryᵒᵖ) {Z : SSet}
+    (f : Z ⟶ coverSmallSingularSubcomplex (TopCat.of X) U)
+    (fs : ∀ _ : Fin (n.unop.len + 1), Z ⟶ finiteCoverPresentationSource U)
+    (w : ∀ i, fs i ≫ finiteCoverPresentation U = f)
+    (i : Fin (n.unop.len + 1)) :
+    finiteCoverCechLift U n f fs w ≫ finiteCoverCechProjection U n i = fs i := by
+  exact WidePullback.lift_π
+    (fun _ : Fin (n.unop.len + 1) ↦ finiteCoverPresentation U) f fs w i
+
 /-- Apply integral simplicial chains to the augmented cover Cech nerve. -/
 public noncomputable def finiteCoverAugmentedCechChains (U : iota → Set X) :
     SimplicialObject.Augmented (ChainComplex AddCommGrpCat ℕ) :=
