@@ -140,6 +140,14 @@ public def CanonicalCuspFiberOrderThreePeriodMarking : Prop :=
           (D.canonicalCuspFiberToBandTorusHomologyOne x)) =
       G.monodromyCoordinates.degreeOne x
 
+theorem actualHomologyCoordinates_bandOne_apply
+    (N : A.EllipticBandHomologyAlignment D)
+    (x : IntegralSingularHomology 1
+      (D.orderThreeSide ∩ D.orderFourSide : Set A.SectionSevenEllipticInterior)) :
+    N.actualHomologyCoordinates.bandOne x =
+      EllipticBandHomologyAlignment.bandOne (D := D) x := by
+  rfl
+
 /-- The order-three period-marking comparison implies naturality of the complete marking on the
 actual band. -/
 public theorem canonicalCuspFiberBandPeriodMarking_of_orderThree
@@ -153,9 +161,8 @@ public theorem canonicalCuspFiberBandPeriodMarking_of_orderThree
   change N.actualHomologyCoordinates.bandOne
       (D.canonicalCuspFiberToBandHomologyOne x) =
     G.monodromyCoordinates.degreeOne x
-  simp only [EllipticBandHomologyAlignment.actualHomologyCoordinates,
-    EllipticBandHomologyAlignment.homologyCoordinates,
-    EllipticBandHomologyAlignment.bandOne, AddEquiv.trans_apply]
+  rw [D.actualHomologyCoordinates_bandOne_apply]
+  rw [EllipticBandHomologyAlignment.bandOne_apply]
   rw [D.bandHomologyEquiv_canonicalCuspFiberToBandHomologyOne]
   exact h x
 

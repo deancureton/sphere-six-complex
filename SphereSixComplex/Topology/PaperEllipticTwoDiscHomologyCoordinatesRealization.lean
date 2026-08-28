@@ -273,6 +273,59 @@ theorem orderFourTwo_projection (x : IntegralSingularHomology 2 (AdditiveTorus D
   funext i
   fin_cases i <;> rfl
 
+theorem bandOne_apply (x) :
+    bandOne (D := D) x =
+      (orderThreeCentralFiberCoverSourceHomologyBasis A.periods).degreeOne
+        (integralSingularHomologyMap 1
+          ⟨D.bandToOrderThreeCoverSource, D.bandToOrderThreeCoverSource.continuous⟩
+          (D.bandHomologyEquiv 1 x)) := by
+  unfold bandOne
+  rw [AddEquiv.trans_apply, AddEquiv.trans_apply, integralHomologyEquiv_apply]
+
+theorem orderThreeOne_projection_bandOne (x) :
+    R.orderThreeOneBasis A.periods
+        (integralSingularHomologyMap 1 D.orderThreeBandProjection
+          (D.bandHomologyEquiv 1 x)) =
+      ![3 * gamma (bandOne (D := D) x), psiOne (bandOne (D := D) x)] := by
+  rw [orderThreeOne_projection R]
+  rw [bandOne_apply]
+
+include N in
+theorem orderFourOne_projection_bandOne (x) :
+    R.orderFourOneBasis A.periods
+        (integralSingularHomologyMap 1 D.orderFourBandProjection
+          (D.bandHomologyEquiv 1 x)) =
+      ![4 * gamma (bandOne (D := D) x), psiTwo (bandOne (D := D) x)] := by
+  rw [orderFourOne_projection R N]
+  rw [bandOne_apply]
+
+theorem bandTwo_apply (x) :
+    bandTwo (D := D) x =
+      (orderThreeCentralFiberCoverSourceHomologyBasis A.periods).degreeTwo
+        (integralSingularHomologyMap 2
+          ⟨D.bandToOrderThreeCoverSource, D.bandToOrderThreeCoverSource.continuous⟩
+          (D.bandHomologyEquiv 2 x)) := by
+  unfold bandTwo
+  rw [AddEquiv.trans_apply, AddEquiv.trans_apply]
+  rfl
+
+theorem orderThreeTwo_projection_bandTwo (x) :
+    R.orderThreeTwoBasis A.periods
+        (integralSingularHomologyMap 2 D.orderThreeBandProjection
+          (D.bandHomologyEquiv 2 x)) =
+      fun i ↦ (alphaTwoMatrix *ᵥ bandTwo (D := D) x) (Fin.castAdd 2 i) := by
+  rw [orderThreeTwo_projection R]
+  rw [bandTwo_apply]
+
+include N in
+theorem orderFourTwo_projection_bandTwo (x) :
+    R.orderFourTwoBasis A.periods
+        (integralSingularHomologyMap 2 D.orderFourBandProjection
+          (D.bandHomologyEquiv 2 x)) =
+      fun i ↦ -(alphaTwoMatrix *ᵥ bandTwo (D := D) x) (Fin.natAdd 2 i) := by
+  rw [orderFourTwo_projection R N]
+  rw [bandTwo_apply]
+
 include N in
 theorem differenceOne (x) :
     sidesOne R
@@ -301,13 +354,7 @@ theorem differenceOne (x) :
         (-integralSingularHomologyMap 1 D.orderFourBandProjection
           (D.bandHomologyEquiv 1 x)) 1] = _
   rw [map_neg]
-  rw [orderThreeOne_projection R, orderFourOne_projection R N]
-  let y := (orderThreeCentralFiberCoverSourceHomologyBasis A.periods).degreeOne
-    (integralSingularHomologyMap 1
-      ⟨D.bandToOrderThreeCoverSource, D.bandToOrderThreeCoverSource.continuous⟩
-      (D.bandHomologyEquiv 1 x))
-  change ![3 * gamma y, psiOne y, -(4 * gamma y), -psiTwo y] =
-    ellipticActualHOneDifferenceMatrix *ᵥ y
+  rw [orderThreeOne_projection_bandOne R, orderFourOne_projection_bandOne R N]
   funext i
   fin_cases i <;>
     simp [ellipticActualHOneDifferenceMatrix, Matrix.mulVec, dotProduct,
@@ -342,14 +389,7 @@ theorem differenceTwo (x) :
         (-integralSingularHomologyMap 2 D.orderFourBandProjection
           (D.bandHomologyEquiv 2 x)) 1] = _
   rw [map_neg]
-  rw [orderThreeTwo_projection R, orderFourTwo_projection R N]
-  let y := (orderThreeCentralFiberCoverSourceHomologyBasis A.periods).degreeTwo
-    (integralSingularHomologyMap 2
-      ⟨D.bandToOrderThreeCoverSource, D.bandToOrderThreeCoverSource.continuous⟩
-      (D.bandHomologyEquiv 2 x))
-  change ![(alphaTwoMatrix *ᵥ y) 0, (alphaTwoMatrix *ᵥ y) 1,
-    -(-(alphaTwoMatrix *ᵥ y) 2), -(-(alphaTwoMatrix *ᵥ y) 3)] =
-      alphaTwoMatrix *ᵥ y
+  rw [orderThreeTwo_projection_bandTwo R, orderFourTwo_projection_bandTwo R N]
   funext i
   fin_cases i <;> simp
 
