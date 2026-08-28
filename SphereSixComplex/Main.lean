@@ -138,6 +138,7 @@ public import SphereSixComplex.Topology.PaperActualVanKampenCover
 public import SphereSixComplex.Topology.PaperActualVanKampenNiceness
 public import SphereSixComplex.Topology.PaperActualVanKampenAssembly
 public import SphereSixComplex.Topology.EstablishedAffineVanKampen
+public import SphereSixComplex.Topology.EstablishedMappingTorusFundamentalGroup
 public import SphereSixComplex.Topology.EstablishedBasedVanKampen
 public import SphereSixComplex.Topology.AffineVanKampenTransport
 public import SphereSixComplex.Topology.EstablishedUnwrappedAffineFillings
