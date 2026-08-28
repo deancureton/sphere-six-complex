@@ -101,16 +101,17 @@ namespace Geometry.GlobalTorusFamily
 
 open Periods TriangleGroup Geometry.ComplexTorus
 
-/-- The classification input retained by `EstablishedEquivariantUniversalCover`: the punctured
-global family is locally nice, and its fundamental group at some base point is the
-affine deck group `IntegerPeriods ⋊ FreeGroup (Fin 2)` with the two free meridians acting by the
-order-three and order-four integral period monodromies.  No covering space is postulated. -/
+/-- The classification input retained by `EstablishedEquivariantUniversalCover`: the fundamental
+group of the punctured global family at some base point is the affine deck group
+`IntegerPeriods ⋊ FreeGroup (Fin 2)`, with the two free meridians acting by the order-three and
+order-four integral period monodromies.  No covering space is postulated.
+
+The point-set hypotheses of the based-path universal cover are not recorded here.  Over a Fuchsian
+modular parameter the family is a complex manifold and connected, so path connectedness, local path
+connectedness and semilocal simple connectedness are all proved in
+`Geometry.FuchsianPuncturedGlobalFamilyNiceness` and passed as instances below. -/
 public structure PuncturedGlobalFamilyAffineFundamentalGroup
     {U : TriangleUniformization} (F : PeriodFunctions U) where
-  locallyPathConnected : LocallyPathConnectedSpace (PuncturedGlobalFamily F)
-  pathConnected : PathConnectedSpace (PuncturedGlobalFamily F)
-  semilocallySimplyConnected :
-    TauCeti.SemilocallySimplyConnectedSpace (PuncturedGlobalFamily F)
   base : PuncturedGlobalFamily F
   identification :
     FreeTwoMeridianAffineDeck IntegerPeriods
@@ -122,13 +123,13 @@ public structure PuncturedGlobalFamilyAffineFundamentalGroup
 universal cover outright. -/
 public noncomputable def puncturedGlobalFamilyEquivariantUniversalCover_of_fundamentalGroup
     {U : TriangleUniformization} (F : PeriodFunctions U)
+    [PathConnectedSpace (PuncturedGlobalFamily F)]
+    [LocallyPathConnectedSpace (PuncturedGlobalFamily F)]
+    [TauCeti.SemilocallySimplyConnectedSpace (PuncturedGlobalFamily F)]
     (P : PuncturedGlobalFamilyAffineFundamentalGroup F) :
     ChosenEquivariantAffineUniversalCover IntegerPeriods Delta (PuncturedGlobalFamily F)
-      (twoMeridianOrbifoldMap g₁ g₂) integralOrbifoldPeriodMonodromy := by
-  letI := P.locallyPathConnected
-  letI := P.pathConnected
-  letI := P.semilocallySimplyConnected
-  exact chosenEquivariantAffineUniversalCover_of_fundamentalGroupEquiv P.base P.identification
+      (twoMeridianOrbifoldMap g₁ g₂) integralOrbifoldPeriodMonodromy :=
+  chosenEquivariantAffineUniversalCover_of_fundamentalGroupEquiv P.base P.identification
 
 /-- Exact residual statement: the equivariant universal-cover classification for the punctured
 global family follows from the affine fundamental-group identification above.  Conversely the
@@ -136,6 +137,9 @@ only thing the classification is used for downstream is that identification, thr
 `EquivariantAffineUniversalCover.fundamentalGroupCorePiOneData`. -/
 public theorem nonempty_chosenEquivariantAffineUniversalCover_of_fundamentalGroup
     {U : TriangleUniformization} (F : PeriodFunctions U)
+    [PathConnectedSpace (PuncturedGlobalFamily F)]
+    [LocallyPathConnectedSpace (PuncturedGlobalFamily F)]
+    [TauCeti.SemilocallySimplyConnectedSpace (PuncturedGlobalFamily F)]
     (P : PuncturedGlobalFamilyAffineFundamentalGroup F) :
     Nonempty (ChosenEquivariantAffineUniversalCover IntegerPeriods Delta
       (PuncturedGlobalFamily F) (twoMeridianOrbifoldMap g₁ g₂)
