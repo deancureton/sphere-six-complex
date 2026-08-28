@@ -42,6 +42,8 @@ if [[ -z "${CHECK_AXIOMS_SKIP_BUILD:-}" ]]; then
   lake build >/dev/null
 fi
 
+"$project_root/scripts/update-axiom-catalog.sh" --check
+
 lake env lean "$project_root/scripts/ComparatorAxiomClosure.lean" \
   > "$work/comparator-closure.txt"
 sort -u "$work/allowed-in-order.txt" > "$work/allowed-sorted.txt"

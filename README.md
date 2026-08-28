@@ -7,7 +7,7 @@ The Lean development is in `SphereSixComplex/`. The `blueprint/` directory track
 paper-to-Lean dependency graph. `ChallengeDefs.lean`, `ChallengeAxioms.lean`, `Challenge.lean`,
 `Solution.lean`, and `comparator.json` form the Comparator boundary. `ChallengeDefs` contains
 the Mathlib-only statement definitions; `ChallengeAxioms` exposes the audited established results
-to both Comparator environments. Nothing imports `Challenge` itself.
+to both Comparator environments and catalogs every exact assumption. Nothing imports `Challenge`.
 
 ## Status
 
@@ -41,7 +41,8 @@ Every `axiom` in the development is a trust boundary, so two scripts keep them v
 `./scripts/check-axioms.sh` is the gate: it requires the recursive final and implemented-construction
 dependency closures to match `scripts/allowed-axioms.txt` and
 `scripts/allowed-construction-axioms.txt` exactly. Entries must be removed when dependencies are
-discharged. Set `CHECK_AXIOMS_SKIP_BUILD=1` to reuse an existing build.
+discharged, and the generated catalog in `ChallengeAxioms.lean` must be current. Set
+`CHECK_AXIOMS_SKIP_BUILD=1` to reuse an existing build.
 
 `./scripts/axiom_inventory.py` is the static counterpart: it lists every `axiom` declaration in
 `SphereSixComplex/` and marks whether it is reachable from `Final` (so the headline theorem may
