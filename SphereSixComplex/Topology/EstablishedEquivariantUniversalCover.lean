@@ -1,6 +1,7 @@
 module
 
 public import SphereSixComplex.Topology.EstablishedEquivariantUniversalCoverProof
+public import SphereSixComplex.Geometry.FuchsianPuncturedGlobalFamilyNiceness
 public import SphereSixComplex.Periods.FuchsianUniformizationBridge
 
 /-!
@@ -15,12 +16,17 @@ family and derives the equivariant universal cover from it.
 
 ## What is assumed, and why in this form
 
-The retained input is `establishedPuncturedGlobalFamilyAffineFundamentalGroup`: the punctured
-global family is locally nice and its fundamental group is the affine deck group
+The retained input is `establishedPuncturedGlobalFamilyAffineFundamentalGroup`: the fundamental
+group of the punctured global family is the affine deck group
 `IntegerPeriods ⋊ FreeGroup (Fin 2)`, the two free meridians acting by the order-three and
 order-four integral period monodromies.  The equivariant universal cover itself is then a
 theorem, `establishedPuncturedGlobalFamilyEquivariantUniversalCover`, obtained from Tau Ceti's
 based-path universal cover in `EstablishedEquivariantUniversalCoverProof`.
+
+The based-path cover also needs the base to be path connected, locally path connected and
+semilocally simply connected.  None of the three is assumed: over a Fuchsian modular parameter the
+family is a complex manifold and connected, so all three follow
+(`Geometry.FuchsianPuncturedGlobalFamilyNiceness`).
 
 Two changes from the earlier form of this boundary are deliberate.
 
@@ -55,7 +61,7 @@ For a Fuchsian modular parameter, the regular locus of the uniformizing half-pla
 twice-punctured disc, so the punctured global family is an affine torus bundle over a pair of
 pants: its fundamental group is the lattice extended by the free group on the two meridians,
 which map to the order-three and order-four orbifold generators.  No covering space, filling
-relation or van Kampen conclusion is asserted. -/
+relation, van Kampen conclusion or local point-set property is asserted. -/
 public axiom establishedPuncturedGlobalFamilyAffineFundamentalGroup
     {P : Periods.FuchsianModularParameter}
     (F : PeriodFunctions P.toTriangleUniformization) :
@@ -72,6 +78,9 @@ public noncomputable def establishedPuncturedGlobalFamilyEquivariantUniversalCov
     (F : PeriodFunctions P.toTriangleUniformization) :
     ChosenEquivariantAffineUniversalCover IntegerPeriods Delta (PuncturedGlobalFamily F)
       (twoMeridianOrbifoldMap g₁ g₂) integralOrbifoldPeriodMonodromy :=
+  letI := fuchsianPuncturedGlobalFamily_locallyPathConnected P F
+  letI := fuchsianPuncturedGlobalFamily_pathConnected P F
+  letI := fuchsianPuncturedGlobalFamily_semilocallySimplyConnected P F
   puncturedGlobalFamilyEquivariantUniversalCover_of_fundamentalGroup F
     (establishedPuncturedGlobalFamilyAffineFundamentalGroup F)
 
