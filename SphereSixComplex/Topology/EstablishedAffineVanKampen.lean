@@ -7,8 +7,10 @@ public import Mathlib.Algebra.Group.Subgroup.MulOppositeLemmas
 /-!
 # Established fundamental-group inputs for affine torus gluings
 
-This module isolates the quotient-cover squares used to compute filling maps, together with the
-geometric loops and monodromy maps for mapping tori.
+This module isolates source-independent nonabelian topology missing from Mathlib: the fundamental
+group presentation of a mapping torus and the quotient-cover squares used to compute filling maps.
+The interfaces retain the deck groups and their kernels, so no paper-specific presentation is
+assumed here.
 -/
 
 @[expose] public section
@@ -63,6 +65,41 @@ public def circleMappingTorusMeridian {F : Type} [TopologicalSpace F]
     (Path.Homotopic.Quotient.mk
       ((circleMappingTorusEdgePath φ x).trans
         (δ.map (finiteBouquetMappingTorusFiberInclusion (fun _ : Unit ↦ φ)).continuous)))
+
+/-- The universal fundamental-group presentation of a mapping torus.
+
+The distinguished element is the positively oriented base-circle meridian, closed using `δ`.
+The universal property records both generation and the absence of additional relations. -/
+public structure MappingTorusFundamentalGroupUP {F : Type} [TopologicalSpace F]
+    (φ : F ≃ₜ F) (x : F) (δ : Path (φ x) x) where
+  conjugate : ∀ a,
+    circleMappingTorusMeridian φ x δ * circleMappingTorusFiberHom φ x a *
+        (circleMappingTorusMeridian φ x δ)⁻¹ =
+      circleMappingTorusFiberHom φ x (mappingTorusMonodromyHom φ x δ a)
+  lift : ∀ {H : Type} [Group H]
+    (f : FundamentalGroup F x →* H) (t : H),
+    (∀ a, t * f a * t⁻¹ = f (mappingTorusMonodromyHom φ x δ a)) →
+      FundamentalGroup (CircleMappingTorus φ) (circleMappingTorusBase φ x) →* H
+  lift_fiber : ∀ {H : Type} [Group H]
+    (f : FundamentalGroup F x →* H) (t : H)
+    (h : ∀ a, t * f a * t⁻¹ = f (mappingTorusMonodromyHom φ x δ a)) (a),
+      lift f t h (circleMappingTorusFiberHom φ x a) = f a
+  lift_meridian : ∀ {H : Type} [Group H]
+    (f : FundamentalGroup F x →* H) (t : H)
+    (h : ∀ a, t * f a * t⁻¹ = f (mappingTorusMonodromyHom φ x δ a)),
+      lift f t h (circleMappingTorusMeridian φ x δ) = t
+  hom_ext : ∀ {H : Type} [Group H]
+    (f g : FundamentalGroup (CircleMappingTorus φ) (circleMappingTorusBase φ x) →* H),
+    (∀ a, f (circleMappingTorusFiberHom φ x a) =
+      g (circleMappingTorusFiberHom φ x a)) →
+    f (circleMappingTorusMeridian φ x δ) =
+      g (circleMappingTorusMeridian φ x δ) → f = g
+
+/-- The standard HNN-extension presentation of the fundamental group of a mapping torus. -/
+public axiom establishedMappingTorusFundamentalGroupUP
+    {F : Type} [TopologicalSpace F] [PathConnectedSpace F]
+    (φ : F ≃ₜ F) (x : F) (δ : Path (φ x) x) :
+    MappingTorusFundamentalGroupUP φ x δ
 
 /-! ## Affine torus-family quotient covers -/
 

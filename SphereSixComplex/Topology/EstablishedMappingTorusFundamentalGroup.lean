@@ -7,6 +7,8 @@ public import Mathlib.AlgebraicTopology.FundamentalGroupoid.InducedMaps
 # Mapping-torus fundamental-group relations
 
 The cylinder homotopy proves the conjugation relation in the mapping-torus fundamental group.
+The remaining universal-property fields in `establishedMappingTorusFundamentalGroupUP` require
+identifying the van Kampen groupoid colimit for the disconnected overlap with an HNN extension.
 -/
 
 @[expose] public section
