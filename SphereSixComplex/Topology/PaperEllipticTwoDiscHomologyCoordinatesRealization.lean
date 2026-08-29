@@ -445,7 +445,8 @@ elliptic-interior Mayer--Vietoris coordinates. -/
 public noncomputable def actualHomologyCoordinates :
     A.SectionSevenEllipticTwoDiscHomologyCoordinates D :=
   homologyCoordinates (D := D)
-    (Topology.FiniteCoverPerfectPairing.ellipticFiniteCoverHomologyRealization A.periods) N
+    (Topology.FiniteCoverPerfectPairing.ellipticFiniteCoverHomologyRealization A.periods
+      (Topology.FiniteCoverPerfectPairing.establishedActualEllipticDegreeTwoHomologyBasisFiniteData A)) N
 
 end EllipticBandHomologyAlignment
 

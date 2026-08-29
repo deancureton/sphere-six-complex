@@ -789,16 +789,19 @@ public structure EllipticDegreeTwoHomologyBasisFiniteData where
   orderFourBasis_one :
     orderFourBasis 1 = orderFourProjectedDegreeTwoGenerator F 3
 
-/-- The remaining primal finite calculation for the two elliptic cyclic quotients. -/
-public axiom establishedEllipticDegreeTwoHomologyBasisFiniteData :
-    Nonempty (EllipticDegreeTwoHomologyBasisFiniteData F)
+/-- The remaining primal finite calculation for the two elliptic cyclic quotients attached to
+the actual paper data. -/
+public axiom establishedActualEllipticDegreeTwoHomologyBasisFiniteData
+    (A : PaperAnalyticData) :
+    Nonempty (EllipticDegreeTwoHomologyBasisFiniteData A.periods)
 
 /-- The exact finite residual transfer statement: the two computed pullback families are dual
 bases, their values are specified by eight scalar entries, and the quotient degree-two
 homology groups contain no torsion. -/
-public theorem establishedEllipticDegreeTwoDualPullbackFiniteData :
+public theorem establishedEllipticDegreeTwoDualPullbackFiniteData
+    (hBasis : Nonempty (EllipticDegreeTwoHomologyBasisFiniteData F)) :
     Nonempty (EllipticDegreeTwoDualPullbackFiniteData F) := by
-  obtain ⟨D⟩ := establishedEllipticDegreeTwoHomologyBasisFiniteData F
+  obtain ⟨D⟩ := hBasis
   refine ⟨{
     orderThreeDualBasis := D.orderThreeBasis.dualBasis
     orderThreeTorsionFree := ?_
@@ -868,9 +871,10 @@ public theorem establishedEllipticDegreeTwoDualPullbackFiniteData :
 
 /-- The exact residual transfer statement: the two computed pullback families are dual bases,
 and the quotient degree-two homology groups contain no torsion. -/
-public theorem establishedEllipticDegreeTwoDualPullbackData :
+public theorem establishedEllipticDegreeTwoDualPullbackData
+    (hBasis : Nonempty (EllipticDegreeTwoHomologyBasisFiniteData F)) :
     Nonempty (EllipticDegreeTwoDualPullbackData F) := by
-  obtain ⟨D⟩ := establishedEllipticDegreeTwoDualPullbackFiniteData F
+  obtain ⟨D⟩ := establishedEllipticDegreeTwoDualPullbackFiniteData F hBasis
   refine ⟨{
     orderThreeDualBasis := D.orderThreeDualBasis
     orderThreeTorsionFree := D.orderThreeTorsionFree
@@ -941,9 +945,10 @@ public theorem establishedEllipticDegreeTwoDualPullbackData :
 /-- The exact remaining cohomological input from Proposition 7.14: the displayed pullback
 classes are bases of the integral dual lattices of the two elliptic central fibres, and their
 integral evaluation pairings are perfect. -/
-public theorem establishedEllipticDegreeTwoPullbackBases :
+public theorem establishedEllipticDegreeTwoPullbackBases
+    (hBasis : Nonempty (EllipticDegreeTwoHomologyBasisFiniteData F)) :
     Nonempty (EllipticDegreeTwoPullbackBases F) := by
-  obtain ⟨D⟩ := establishedEllipticDegreeTwoDualPullbackData F
+  obtain ⟨D⟩ := establishedEllipticDegreeTwoDualPullbackData F hBasis
   refine ⟨{ orderThree := ?_, orderFour := ?_ }⟩
   · exact
       { quotientDualBasis := D.orderThreeDualBasis
@@ -962,16 +967,19 @@ public theorem establishedEllipticDegreeTwoPullbackBases :
 /-- Proposition 7.14 for the two actual elliptic central fibres: their integral degree-two
 homology has the displayed bases, and the two covering maps have the computed pullback
 coordinates. -/
-public theorem establishedEllipticDegreeTwoPullbackRealizations :
+public theorem establishedEllipticDegreeTwoPullbackRealizations
+    (hBasis : Nonempty (EllipticDegreeTwoHomologyBasisFiniteData F)) :
     Nonempty
       (OrderThreeReducedCentralFiberDegreeTwoRealization F ×
         OrderFourReducedCentralFiberDegreeTwoRealization F) := by
-  obtain ⟨P⟩ := establishedEllipticDegreeTwoPullbackBases F
+  obtain ⟨P⟩ := establishedEllipticDegreeTwoPullbackBases F hBasis
   exact ⟨P.orderThreeRealization F, P.orderFourRealization F⟩
 
 /-- A coherent choice of the two degree-two perfect-pairing realizations from Proposition
 7.14. -/
-public noncomputable def ellipticDegreeTwoPullbackBases : EllipticDegreeTwoPullbackBases F :=
-  Classical.choice (establishedEllipticDegreeTwoPullbackBases F)
+public noncomputable def ellipticDegreeTwoPullbackBases
+    (hBasis : Nonempty (EllipticDegreeTwoHomologyBasisFiniteData F)) :
+    EllipticDegreeTwoPullbackBases F :=
+  Classical.choice (establishedEllipticDegreeTwoPullbackBases F hBasis)
 
 end SphereSixComplex.Topology.FiniteCoverPerfectPairing

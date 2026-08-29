@@ -90,10 +90,11 @@ end EllipticDegreeTwoPullbackBases
 
 /-- The actual degree-one and degree-two homology realization for both elliptic finite
 covers. -/
-public noncomputable def ellipticFiniteCoverHomologyRealization :
+public noncomputable def ellipticFiniteCoverHomologyRealization
+    (hBasis : Nonempty (EllipticDegreeTwoHomologyBasisFiniteData F)) :
     EllipticFiniteCoverHomologyRealization F :=
   EllipticDegreeTwoPullbackBases.toEllipticFiniteCoverHomologyRealization F
-    (ellipticDegreeTwoPullbackBases F)
+    (ellipticDegreeTwoPullbackBases F hBasis)
 
 end SphereSixComplex.Topology.FiniteCoverPerfectPairing
 
