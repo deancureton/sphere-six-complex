@@ -25,10 +25,54 @@ open PaperEllipticFillingRadialRetraction
 
 noncomputable section
 
-/-- The classical smooth-triangulation theorem in exactly the form needed for a free affine
-finite-cyclic quotient of a full-rank complex two-torus. -/
-public axiom finiteCWModelSix_reducedCentralFiber_of_affineGenerator
-    {m : ℕ} [NeZero m] (p : Parameters) (hfull : FullRank p)
+/-- The two cyclic orders that occur in the elliptic central-fibre calculation. -/
+public inductive AffineFiniteCyclicOrder : ℕ → Type
+  | orderThree : AffineFiniteCyclicOrder 3
+  | orderFour : AffineFiniteCyclicOrder 4
+
+/-- An inferred certificate restricting the affine quotient construction to order three or
+order four. -/
+public class SupportedAffineFiniteCyclicOrder (m : ℕ) where
+  order : AffineFiniteCyclicOrder m
+
+public instance : SupportedAffineFiniteCyclicOrder 3 := ⟨.orderThree⟩
+public instance : SupportedAffineFiniteCyclicOrder 4 := ⟨.orderFour⟩
+
+/-- The classical smooth-triangulation input, restricted exactly to the order-three and
+order-four affine torus quotients used in this development. -/
+public structure OrderThreeFourAffineGeneratorFiniteCWModels where
+  orderThree :
+    ∀ (p : Parameters) (_hfull : FullRank p)
+      (D : RadialEllipticActionData 3 (AdditiveTorus p))
+      (lift : ComplexTwoSpace ≃ₗ[ℝ] ComplexTwoSpace) (translation : ComplexTwoSpace)
+      (_generator_mk : ∀ z,
+        D.actionData.fiberGenerator (Quotient.mk _ z) =
+          Quotient.mk _ (lift z + translation))
+      (_hfree : letI := D.actionData.diagonalAction
+        IsCancelSMul (FiniteCyclic 3) D.Product),
+      FiniteCWModelSix D.reducedCentralFiber
+  orderFour :
+    ∀ (p : Parameters) (_hfull : FullRank p)
+      (D : RadialEllipticActionData 4 (AdditiveTorus p))
+      (lift : ComplexTwoSpace ≃ₗ[ℝ] ComplexTwoSpace) (translation : ComplexTwoSpace)
+      (_generator_mk : ∀ z,
+        D.actionData.fiberGenerator (Quotient.mk _ z) =
+          Quotient.mk _ (lift z + translation))
+      (_hfree : letI := D.actionData.diagonalAction
+        IsCancelSMul (FiniteCyclic 4) D.Product),
+      FiniteCWModelSix D.reducedCentralFiber
+
+/-- Smooth triangulation for the two actual finite cyclic orders.  This is the sole residual
+input in the module. -/
+public axiom orderThreeFourAffineGeneratorFiniteCWModels :
+    OrderThreeFourAffineGeneratorFiniteCWModels
+
+/-- A common wrapper for the two supported cyclic orders.  The order certificate is inferred at
+all current call sites, while the classical residual itself is stated only for orders three and
+four. -/
+public noncomputable def finiteCWModelSix_reducedCentralFiber_of_affineGenerator
+    {m : ℕ} [NeZero m] [SupportedAffineFiniteCyclicOrder m]
+    (p : Parameters) (hfull : FullRank p)
     (D : RadialEllipticActionData m (AdditiveTorus p))
     (lift : ComplexTwoSpace ≃ₗ[ℝ] ComplexTwoSpace) (translation : ComplexTwoSpace)
     (generator_mk : ∀ z,
@@ -36,7 +80,14 @@ public axiom finiteCWModelSix_reducedCentralFiber_of_affineGenerator
         Quotient.mk _ (lift z + translation))
     (hfree : letI := D.actionData.diagonalAction
       IsCancelSMul (FiniteCyclic m) D.Product) :
-    FiniteCWModelSix D.reducedCentralFiber
+    FiniteCWModelSix D.reducedCentralFiber := by
+  cases SupportedAffineFiniteCyclicOrder.order (m := m) with
+  | orderThree =>
+      exact orderThreeFourAffineGeneratorFiniteCWModels.orderThree
+        p hfull D lift translation generator_mk hfree
+  | orderFour =>
+      exact orderThreeFourAffineGeneratorFiniteCWModels.orderFour
+        p hfull D lift translation generator_mk hfree
 
 variable (A : PaperAnalyticData)
 

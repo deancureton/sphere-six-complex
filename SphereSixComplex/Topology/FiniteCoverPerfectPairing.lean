@@ -416,10 +416,113 @@ public structure EllipticDegreeTwoDualPullbackData where
           ((orderFourCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm x)) =
       degreeTwoEvaluation (orderFourPullbackBasis i) x
 
+/-- The finite residual transfer calculation.  It retains the two dual bases and torsion-free
+assertions exactly, but checks each pullback functional only on the six standard generators of
+`DegreeTwoLattice`. -/
+public structure EllipticDegreeTwoDualPullbackFiniteData where
+  orderThreeDualBasis : Module.Basis (Fin 2) ℤ
+    (Module.Dual ℤ (IntegralSingularHomology 2 (OrderThreeReducedCentralFiber F)))
+  orderThreeTorsionFree :
+    Module.IsTorsionFree ℤ
+      (IntegralSingularHomology 2 (OrderThreeReducedCentralFiber F))
+  orderThreePullback_generator (i : Fin 2) (j : Fin 6) :
+    orderThreeDualBasis i
+        (integralSingularHomologyMap 2
+          (RadialEllipticActionData.centralFiberCoverProjection
+            (orderThreeRadialActionData F))
+          ((orderThreeCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm
+            (Pi.single j 1))) =
+      degreeTwoEvaluation (orderThreePullbackBasis i) (Pi.single j 1)
+  orderFourDualBasis : Module.Basis (Fin 2) ℤ
+    (Module.Dual ℤ (IntegralSingularHomology 2 (OrderFourReducedCentralFiber F)))
+  orderFourTorsionFree :
+    Module.IsTorsionFree ℤ
+      (IntegralSingularHomology 2 (OrderFourReducedCentralFiber F))
+  orderFourPullback_generator (i : Fin 2) (j : Fin 6) :
+    orderFourDualBasis i
+        (integralSingularHomologyMap 2
+          (RadialEllipticActionData.centralFiberCoverProjection
+            (orderFourRadialActionData F))
+          ((orderFourCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm
+            (Pi.single j 1))) =
+      degreeTwoEvaluation (orderFourPullbackBasis i) (Pi.single j 1)
+
+/-- Pull a quotient covector back to the standard degree-two lattice coordinates. -/
+private noncomputable def degreeTwoDualPullbackAddHom
+    {E X : Type} [TopologicalSpace E] [TopologicalSpace X]
+    (projection : C(E, X))
+    (sourceBasis : IntegralSingularHomology 2 E ≃+ DegreeTwoLattice)
+    (b : Module.Dual ℤ (IntegralSingularHomology 2 X)) : DegreeTwoLattice →+ ℤ :=
+  b.toAddMonoidHom.comp
+    ((integralSingularHomologyMap 2 projection).comp sourceBasis.symm.toAddMonoidHom)
+
+/-- Evaluation against a fixed exterior-square class, as an additive homomorphism. -/
+private def degreeTwoEvaluationAddHom (a : DegreeTwoLattice) : DegreeTwoLattice →+ ℤ where
+  toFun := degreeTwoEvaluation a
+  map_zero' := by simp [degreeTwoEvaluation]
+  map_add' x y := by simp [degreeTwoEvaluation, dotProduct_add]
+
+private theorem degreeTwoAddMonoidHom_ext_standardGenerators
+    (f g : DegreeTwoLattice →+ ℤ)
+    (h : ∀ j : Fin 6, f (Pi.single j 1) = g (Pi.single j 1)) : f = g := by
+  apply AddMonoidHom.ext
+  intro x
+  apply Pi.single_induction (M := fun _ : Fin 6 ↦ ℤ) (p := fun z ↦ f z = g z) x
+  · simp
+  · intro a b ha hb
+    simpa using congrArg₂ (· + ·) ha hb
+  · intro i z
+    have hz : (Pi.single i z : Fin 6 → ℤ) =
+        z • (Pi.single i 1 : Fin 6 → ℤ) := by
+      ext j
+      classical
+      by_cases hji : j = i
+      · subst j
+        simp
+      · simp [hji]
+    rw [hz, map_zsmul, map_zsmul, h i]
+
+/-- The exact finite residual transfer statement: the two computed pullback families are dual
+bases, their values are specified by twenty-four scalar generator entries, and the quotient
+degree-two homology groups contain no torsion. -/
+public axiom establishedEllipticDegreeTwoDualPullbackFiniteData :
+    Nonempty (EllipticDegreeTwoDualPullbackFiniteData F)
+
 /-- The exact residual transfer statement: the two computed pullback families are dual bases,
 and the quotient degree-two homology groups contain no torsion. -/
-public axiom establishedEllipticDegreeTwoDualPullbackData :
-    Nonempty (EllipticDegreeTwoDualPullbackData F)
+public theorem establishedEllipticDegreeTwoDualPullbackData :
+    Nonempty (EllipticDegreeTwoDualPullbackData F) := by
+  obtain ⟨D⟩ := establishedEllipticDegreeTwoDualPullbackFiniteData F
+  refine ⟨{
+    orderThreeDualBasis := D.orderThreeDualBasis
+    orderThreeTorsionFree := D.orderThreeTorsionFree
+    orderThreePullback_apply := ?_
+    orderFourDualBasis := D.orderFourDualBasis
+    orderFourTorsionFree := D.orderFourTorsionFree
+    orderFourPullback_apply := ?_
+  }⟩
+  · intro i x
+    let lhs := degreeTwoDualPullbackAddHom
+      (RadialEllipticActionData.centralFiberCoverProjection
+        (orderThreeRadialActionData F))
+      (orderThreeCentralFiberCoverSourceHomologyBasis F).degreeTwo
+      (D.orderThreeDualBasis i)
+    let rhs := degreeTwoEvaluationAddHom (orderThreePullbackBasis i)
+    have h : lhs = rhs := by
+      apply degreeTwoAddMonoidHom_ext_standardGenerators
+      exact D.orderThreePullback_generator i
+    exact DFunLike.congr_fun h x
+  · intro i x
+    let lhs := degreeTwoDualPullbackAddHom
+      (RadialEllipticActionData.centralFiberCoverProjection
+        (orderFourRadialActionData F))
+      (orderFourCentralFiberCoverSourceHomologyBasis F).degreeTwo
+      (D.orderFourDualBasis i)
+    let rhs := degreeTwoEvaluationAddHom (orderFourPullbackBasis i)
+    have h : lhs = rhs := by
+      apply degreeTwoAddMonoidHom_ext_standardGenerators
+      exact D.orderFourPullback_generator i
+    exact DFunLike.congr_fun h x
 
 /-- The exact remaining cohomological input from Proposition 7.14: the displayed pullback
 classes are bases of the integral dual lattices of the two elliptic central fibres, and their

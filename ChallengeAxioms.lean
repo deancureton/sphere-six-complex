@@ -95,25 +95,10 @@ axiom SphereSixComplex.FiniteCWBundleModelSix.establishedEulerMultiplicativity :
 axiom SphereSixComplex.Periods.establishedOrbifoldAffineLineTorsorCuspBoundedCousinCorrection : ∀
   (P : SphereSixComplex.Periods.OrbifoldAffineLineTorsorDescentProblem),
   P.HasAcyclicProjectiveLineFrame → Nonempty P.CuspBoundedEllipticOneCorrection
-axiom SphereSixComplex.Topology.FiniteCoverPerfectPairing.establishedEllipticDegreeTwoDualPullbackData : ∀
+axiom SphereSixComplex.Topology.FiniteCoverPerfectPairing.establishedEllipticDegreeTwoDualPullbackFiniteData : ∀
   {U : SphereSixComplex.Periods.TriangleUniformization} (F : SphereSixComplex.Periods.PeriodFunctions U),
-  Nonempty (SphereSixComplex.Topology.FiniteCoverPerfectPairing.EllipticDegreeTwoDualPullbackData F)
-axiom SphereSixComplex.Topology.AffineFiniteCyclicTorusCW.finiteCWModelSix_reducedCentralFiber_of_affineGenerator : {m :
-    ℕ} →
-  [inst : NeZero m] →
-    (p : SphereSixComplex.Periods.Parameters) →
-      SphereSixComplex.Geometry.ComplexTorus.FullRank p →
-        (D :
-            SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction.RadialEllipticActionData m
-              (SphereSixComplex.Geometry.EllipticFamilySpecialization.AdditiveTorus p)) →
-          (lift :
-              SphereSixComplex.Geometry.ComplexTorus.ComplexTwoSpace ≃ₗ[ℝ]
-                SphereSixComplex.Geometry.ComplexTorus.ComplexTwoSpace) →
-            (translation : SphereSixComplex.Geometry.ComplexTorus.ComplexTwoSpace) →
-              (∀ (z : SphereSixComplex.Geometry.ComplexTorus.ComplexTwoSpace),
-                  D.actionData.fiberGenerator ⟦z⟧ = ⟦lift z + translation⟧) →
-                IsCancelSMul (SphereSixComplex.Geometry.FiniteCyclic m) D.Product →
-                  SphereSixComplex.FiniteCWModelSix ↑D.reducedCentralFiber
+  Nonempty (SphereSixComplex.Topology.FiniteCoverPerfectPairing.EllipticDegreeTwoDualPullbackFiniteData F)
+axiom SphereSixComplex.Topology.AffineFiniteCyclicTorusCW.orderThreeFourAffineGeneratorFiniteCWModels : SphereSixComplex.Topology.AffineFiniteCyclicTorusCW.OrderThreeFourAffineGeneratorFiniteCWModels
 axiom SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.EstablishedAffineCyclicQuotientHomology.establishedAffineCyclicHOnePresentationLift_bijective : {m :
     ℕ} →
   [inst : NeZero m] →
