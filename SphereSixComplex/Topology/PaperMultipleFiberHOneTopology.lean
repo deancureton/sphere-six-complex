@@ -1,6 +1,7 @@
 module
 
 public import SphereSixComplex.Topology.PaperMultipleFiberHOneTopologyProof
+public import SphereSixComplex.Topology.CyclicExtensionAbelianization
 
 /-!
 # First homology of the reduced elliptic fibres
@@ -29,7 +30,187 @@ namespace EstablishedAffineCyclicQuotientHomology
 variable {m : ℕ} [NeZero m] {p : SphereSixComplex.Periods.Parameters}
   {D : RadialEllipticActionData m (AdditiveTorus p)}
 
-/-- The exact remaining data in the affine cyclic first-homology calculation. -/
+/-- The canonical map from the affine universal-cover coordinates to the reduced central fibre. -/
+@[expose] public def complexTwoReducedCentralFiberProjection :
+    C(ComplexTwoSpace, D.reducedCentralFiber) :=
+  (RadialEllipticActionData.centralFiberCoverProjection D).comp
+    ((⟨(RadialEllipticActionData.centralFiberCoverSourceHomeomorph D).symm,
+      (RadialEllipticActionData.centralFiberCoverSourceHomeomorph D).symm.continuous⟩ :
+        C(AdditiveTorus p, RadialEllipticActionData.centralFiberCoverSource D)).comp
+      ⟨torusProjection p, continuous_quot_mk⟩)
+
+/-- The exact geometric input left by the `ℂ²/Γ` proof of the affine cyclic
+first-homology calculation.
+
+The marked deck group acts on `ℂ²`, with orbit map the canonical projection to the reduced
+central fibre.  It is a cyclic extension of the period lattice; the lattice subgroup acts by
+period translations, and its marked generator acts by the chosen affine lift.  The last two fields
+are the degree-one Hurewicz identification and its naturality on lattice deck transformations. -/
+public structure AffineCyclicUniversalCoverHOneIdentification
+    (P : AffineCyclicCentralFiberPresentationData m p D) where
+  deckGroup : GrpCat
+  deckAction : MulAction deckGroup ComplexTwoSpace
+  extension : SphereSixComplex.Topology.CyclicExtension.Data m Lattice deckGroup
+  quotientCovering :
+    let _ := deckAction
+    IsQuotientCoveringMap (complexTwoReducedCentralFiberProjection (p := p) (D := D)) deckGroup
+  incl_smul :
+    let _ := deckAction
+    ∀ x z, extension.incl x • z = z + periodVector p x
+  gen_smul :
+    let _ := deckAction
+    ∀ z, extension.gen • z = affineEquiv P.affine.lift P.liftTranslation z
+  action_eq : extension.act = P.affine.latticeMap
+  twist_eq : extension.twist = P.twist
+  hOneEquiv : Additive (Abelianization deckGroup) ≃ₗ[ℤ]
+    IntegralSingularHomology 1 D.reducedCentralFiber
+  projection : ∀ x, hOneEquiv (extension.kernelToAbelianization x) =
+    coverProjectionLatticeMap P x
+
+/-- The remaining geometric input: the marked affine transformations give the quotient covering
+`ℂ² → D.reducedCentralFiber`, together with its degree-one Hurewicz marking. -/
+public axiom establishedAffineCyclicUniversalCoverHOneIdentification
+    (P : AffineCyclicCentralFiberPresentationData m p D) :
+    AffineCyclicUniversalCoverHOneIdentification P
+
+namespace AffineCyclicUniversalCoverHOneIdentification
+
+variable (P : AffineCyclicCentralFiberPresentationData m p D)
+  (I : AffineCyclicUniversalCoverHOneIdentification P)
+
+public theorem difference_eq : I.extension.difference = P.latticeDifference := by
+  rw [SphereSixComplex.Topology.CyclicExtension.Data.difference, I.action_eq,
+    P.latticeDifference_eq]
+
+/-- The homology class of the marked affine deck generator. -/
+@[expose] public def meridian : IntegralSingularHomology 1 D.reducedCentralFiber :=
+  I.hOneEquiv (Additive.ofMul (Abelianization.of I.extension.gen))
+
+/-- The full cyclic iterate of the marked meridian is the twist lattice class. -/
+public theorem fullIterate :
+    (m : ℤ) • I.meridian P = coverProjectionLatticeMap P P.twist := by
+  rw [meridian, ← map_smul]
+  change I.hOneEquiv
+      (Additive.ofMul (Abelianization.of I.extension.gen ^ (m : ℤ))) = _
+  rw [← map_zpow, zpow_natCast, I.extension.gen_pow]
+  change I.hOneEquiv (I.extension.kernelToAbelianization I.extension.twist) = _
+  rw [I.projection, I.twist_eq]
+
+/-- The canonical map from the multiple-fibre presentation to the abelianized affine deck
+group. -/
+@[expose] public noncomputable def toAbelianization :
+    MultipleFiberHOnePresentation P.latticeDifference P.twist (m : ℤ) →ₗ[ℤ]
+      Additive (Abelianization I.deckGroup) :=
+  multipleFiberLift P.latticeDifference P.twist (m : ℤ)
+    I.extension.kernelToAbelianization (by
+      intro x
+      rw [P.latticeDifference_eq, ← I.action_eq]
+      exact I.extension.kernelToAbelianization_difference x)
+    (Additive.ofMul (Abelianization.of I.extension.gen)) (by
+      rw [← ofMul_zpow, ← map_zpow, zpow_natCast, I.extension.gen_pow,
+        ← I.extension.kernelToAbelianization_apply, I.twist_eq])
+
+@[simp] public theorem toAbelianization_mk (x : Lattice) (k : ℤ) :
+    I.toAbelianization P (Submodule.Quotient.mk (Submodule.Quotient.mk x, k)) =
+      Additive.ofMul
+        (Abelianization.of (I.extension.incl x) * Abelianization.of I.extension.gen ^ k) := by
+  rw [toAbelianization, multipleFiberLift_mk,
+    SphereSixComplex.Topology.CyclicExtension.Data.kernelToAbelianization_apply,
+    ← ofMul_zpow, ← ofMul_mul]
+
+public theorem toAbelianization_surjective : Function.Surjective (I.toAbelianization P) := by
+  intro y
+  obtain ⟨x, hx⟩ := Quot.exists_rep (Additive.toMul y)
+  obtain ⟨k, l, rfl⟩ := I.extension.exists_zpow_mul_incl x
+  refine ⟨Submodule.Quotient.mk (Submodule.Quotient.mk l, k), ?_⟩
+  rw [I.toAbelianization_mk]
+  have hval : Abelianization.of (I.extension.gen ^ k * I.extension.incl l) =
+      Additive.toMul y := hx
+  rw [map_mul, map_zpow, mul_comm] at hval
+  rw [hval]
+  rfl
+
+public theorem toAbelianization_injective : Function.Injective (I.toAbelianization P) := by
+  have key : ∀ y, I.toAbelianization P y = 0 → y = 0 := by
+    intro y hy
+    obtain ⟨⟨lq, k⟩, rfl⟩ := Submodule.Quotient.mk_surjective _ y
+    obtain ⟨l, rfl⟩ := Submodule.Quotient.mk_surjective _ lq
+    rw [I.toAbelianization_mk] at hy
+    have h1 : Abelianization.of (I.extension.incl l * I.extension.gen ^ k) = 1 := by
+      rw [map_mul, map_zpow]
+      exact hy
+    have h2 : I.extension.incl l * I.extension.gen ^ k ∈ commutator I.deckGroup := by
+      rw [← Abelianization.ker_of, MonoidHom.mem_ker]
+      exact h1
+    obtain ⟨μ, hμ⟩ := I.extension.commutator_le_differenceSubgroup h2
+    have hprojl : I.extension.proj (I.extension.incl l) = 1 :=
+      (I.extension.proj_eq_one_iff _).mpr ⟨l, rfl⟩
+    have hprojd : I.extension.proj (I.extension.incl (I.extension.difference μ)) = 1 :=
+      (I.extension.proj_eq_one_iff _).mpr ⟨I.extension.difference μ, rfl⟩
+    have hgk : I.extension.proj (I.extension.gen ^ k) = 1 := by
+      have hcong := congrArg I.extension.proj hμ
+      rw [hprojd, map_mul, hprojl, one_mul] at hcong
+      exact hcong.symm
+    have hzero : ((k : ℤ) : ZMod m) = 0 := by
+      rw [map_zpow, I.extension.proj_gen, ← ofAdd_zsmul, zsmul_eq_mul, mul_one] at hgk
+      exact hgk
+    obtain ⟨j, rfl⟩ := (ZMod.intCast_zmod_eq_zero_iff_dvd k m).mp hzero
+    have hgpow : I.extension.gen ^ ((m : ℤ) * j) =
+        I.extension.incl (j • I.extension.twist) := by
+      rw [zpow_mul, zpow_natCast, I.extension.gen_pow, I.extension.incl_zsmul]
+    have heq : I.extension.difference μ = l + j • I.extension.twist := by
+      apply I.extension.incl_injective
+      rw [I.extension.incl_add, ← hgpow, hμ]
+    have heqP : P.latticeDifference μ = l + j • P.twist := by
+      rw [← I.difference_eq P, ← I.twist_eq]
+      exact heq
+    rw [Submodule.Quotient.mk_eq_zero]
+    refine ⟨j, ?_⟩
+    have hmk :
+        (Submodule.Quotient.mk l : Lattice ⧸ LinearMap.range P.latticeDifference) =
+          -(j • Submodule.Quotient.mk P.twist) := by
+      have hz :
+          (Submodule.Quotient.mk (P.latticeDifference μ) :
+            Lattice ⧸ LinearMap.range P.latticeDifference) = 0 :=
+        (Submodule.Quotient.mk_eq_zero _).mpr ⟨μ, rfl⟩
+      rw [heqP] at hz
+      rw [Submodule.Quotient.mk_add, Submodule.Quotient.mk_smul] at hz
+      linear_combination (norm := abel) hz
+    rw [multipleFiberRelationMap]
+    simp only [LinearMap.coe_mk, AddHom.coe_mk, Prod.smul_mk, smul_neg, Prod.mk.injEq]
+    exact ⟨by rw [hmk], by rw [smul_eq_mul, mul_comm]⟩
+  intro a b hab
+  have hsub : I.toAbelianization P (a - b) = 0 := by
+    rw [map_sub, hab, sub_self]
+  exact sub_eq_zero.mp (key _ hsub)
+
+public theorem presentationLift_eq :
+    presentationLift isCentralFiberCoverSourceCoordinate P (I.meridian P) (I.fullIterate P) =
+      I.hOneEquiv.toLinearMap.comp (I.toAbelianization P) := by
+  apply LinearMap.ext
+  intro q
+  obtain ⟨⟨lq, k⟩, rfl⟩ := Submodule.Quotient.mk_surjective _ q
+  obtain ⟨x, rfl⟩ := Submodule.Quotient.mk_surjective _ lq
+  rw [presentationLift_mk, LinearMap.comp_apply, I.toAbelianization_mk, meridian]
+  change coverProjectionLatticeMap P x +
+      k • I.hOneEquiv (Additive.ofMul (Abelianization.of I.extension.gen)) =
+    I.hOneEquiv
+      (Additive.ofMul
+        (Abelianization.of (I.extension.incl x) * Abelianization.of I.extension.gen ^ k))
+  rw [← I.projection, ← map_smul, ← map_add]
+  congr 1
+
+public theorem presentationLift_bijective :
+    Function.Bijective
+      (presentationLift isCentralFiberCoverSourceCoordinate P (I.meridian P)
+        (I.fullIterate P)) := by
+  rw [I.presentationLift_eq P]
+  exact ⟨I.hOneEquiv.injective.comp (I.toAbelianization_injective P),
+    I.hOneEquiv.surjective.comp (I.toAbelianization_surjective P)⟩
+
+end AffineCyclicUniversalCoverHOneIdentification
+
+/-- The exact data consumed by the final presentation wrapper. -/
 public structure AffineCyclicHOnePresentationLiftWitness
     (P : AffineCyclicCentralFiberPresentationData m p D) where
   meridian : IntegralSingularHomology 1 D.reducedCentralFiber
@@ -37,12 +218,16 @@ public structure AffineCyclicHOnePresentationLiftWitness
   bijective : Function.Bijective
     (presentationLift isCentralFiberCoverSourceCoordinate P meridian fullIterate)
 
-/-- The remaining classical input: a meridian class satisfies the full-iterate relation, and
-the resulting explicit map from the multiple-fibre presentation generates first homology with
-no further relations. -/
-public axiom establishedAffineCyclicHOnePresentationLift_bijective
+/-- The marked universal-cover identification supplies the meridian, its full-iterate relation,
+and bijectivity of the presentation map. -/
+public noncomputable def establishedAffineCyclicHOnePresentationLift_bijective
     (P : AffineCyclicCentralFiberPresentationData m p D) :
-    AffineCyclicHOnePresentationLiftWitness P
+    AffineCyclicHOnePresentationLiftWitness P := by
+  let I := establishedAffineCyclicUniversalCoverHOneIdentification P
+  exact {
+    meridian := I.meridian P
+    fullIterate := I.fullIterate P
+    bijective := I.presentationLift_bijective P }
 
 /-- The usual presentation theorem for a free affine cyclic torus quotient, including the
 canonical value of the presentation coordinates on the covering torus. -/

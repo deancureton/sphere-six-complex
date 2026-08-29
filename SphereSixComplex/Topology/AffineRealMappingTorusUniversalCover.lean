@@ -13,7 +13,7 @@ properly discontinuous independently of the dynamics of `φ`.  Consequently the 
 torus quotient map is a covering map.
 -/
 
-open Set
+open Set Topology
 
 namespace SphereSixComplex.CyclicAngularFundamentalDomain
 
@@ -426,6 +426,53 @@ public def affineTorusMappingTorusDeckMeridian
     AffineTorusMappingTorusDeck D :=
   SemidirectProduct.inr (Multiplicative.ofAdd 1)
 
+/-- The period translations embed faithfully in the affine mapping-torus deck group. -/
+public theorem affineTorusMappingTorusDeckTranslation_injective
+    {p : Parameters} (D : DescendedAffineTorusAutomorphism p) :
+    Function.Injective (affineTorusMappingTorusDeckTranslation D) := by
+  intro a b h
+  have h' := congrArg SemidirectProduct.left (congrArg Additive.toMul h)
+  simp only [affineTorusMappingTorusDeckTranslation] at h'
+  change Multiplicative.ofAdd a = Multiplicative.ofAdd b at h'
+  exact Multiplicative.ofAdd.injective h'
+
+/-- The period translations and inverse angular meridian generate the full affine
+mapping-torus deck group. -/
+public theorem affineTorusMappingTorusDeck_inverseMeridian_generators_generate
+    {p : Parameters} (D : DescendedAffineTorusAutomorphism p) :
+    Subgroup.closure
+      (Set.range (fun a ↦
+          Additive.toMul (affineTorusMappingTorusDeckTranslation D a)) ∪
+        {(affineTorusMappingTorusDeckMeridian D)⁻¹}) = ⊤ := by
+  apply top_unique
+  intro d _
+  let S : Subgroup (AffineTorusMappingTorusDeck D) := Subgroup.closure
+    (Set.range (fun a ↦
+        Additive.toMul (affineTorusMappingTorusDeckTranslation D a)) ∪
+      {(affineTorusMappingTorusDeckMeridian D)⁻¹})
+  have hleft :
+      SemidirectProduct.inl
+          (φ := affineDeckIntegerMonodromy D.latticeMap.toAddEquiv) d.left ∈ S :=
+    Subgroup.subset_closure (Or.inl ⟨d.left.toAdd, rfl⟩)
+  have hinverse : (affineTorusMappingTorusDeckMeridian D)⁻¹ ∈ S :=
+    Subgroup.subset_closure
+      (Or.inr (Set.mem_singleton (affineTorusMappingTorusDeckMeridian D)⁻¹))
+  have hmeridian : affineTorusMappingTorusDeckMeridian D ∈ S := by
+    simpa using Subgroup.inv_mem S hinverse
+  have hright :
+      SemidirectProduct.inr d.right ∈ S := by
+    rw [show SemidirectProduct.inr d.right =
+        (affineTorusMappingTorusDeckMeridian D) ^ d.right.toAdd by
+      change SemidirectProduct.inr d.right =
+        (SemidirectProduct.inr (Multiplicative.ofAdd 1)) ^ d.right.toAdd
+      rw [← map_zpow]
+      congr 1
+      apply Multiplicative.toAdd.injective
+      simp]
+    exact Subgroup.zpow_mem S hmeridian d.right.toAdd
+  rw [← SemidirectProduct.inl_left_mul_inr_right d]
+  exact Subgroup.mul_mem S hleft hright
+
 public theorem affineDeckIntegerMonodromy_apply
     {p : Parameters} (D : DescendedAffineTorusAutomorphism p)
     (k : Multiplicative ℤ) (n : Multiplicative IntegerPeriods) :
@@ -463,6 +510,37 @@ public theorem affineDeckIntegerMonodromy_apply
         Equiv.Perm.mul_apply]
       apply congrArg (D.latticeMap.toEquiv ^ (- (i : ℤ)))
       rfl
+
+/-- Conjugation by the inverse angular deck transformation realizes inverse lattice
+monodromy. -/
+public theorem affineTorusMappingTorusDeck_inverseMeridian_conjugate
+    {p : Parameters} (D : DescendedAffineTorusAutomorphism p)
+    (a : IntegerPeriods) :
+    (affineTorusMappingTorusDeckMeridian D)⁻¹ *
+          Additive.toMul (affineTorusMappingTorusDeckTranslation D a) *
+        ((affineTorusMappingTorusDeckMeridian D)⁻¹)⁻¹ =
+      Additive.toMul
+        (affineTorusMappingTorusDeckTranslation D (D.latticeMap.symm a)) := by
+  symm
+  simp only [affineTorusMappingTorusDeckMeridian,
+    affineTorusMappingTorusDeckTranslation]
+  change SemidirectProduct.inl
+      (φ := affineDeckIntegerMonodromy D.latticeMap.toAddEquiv)
+        (Multiplicative.ofAdd (D.latticeMap.symm a)) =
+    (SemidirectProduct.inr (Multiplicative.ofAdd 1))⁻¹ *
+      SemidirectProduct.inl (Multiplicative.ofAdd a) *
+        ((SemidirectProduct.inr (Multiplicative.ofAdd 1))⁻¹)⁻¹
+  have haction :
+      affineDeckIntegerMonodromy D.latticeMap.toAddEquiv
+          (Multiplicative.ofAdd (-1)) (Multiplicative.ofAdd a) =
+        Multiplicative.ofAdd (D.latticeMap.symm a) := by
+    apply Multiplicative.toAdd.injective
+    rw [affineDeckIntegerMonodromy_apply]
+    simp
+  rw [← haction]
+  simpa using SemidirectProduct.inl_aut
+    (φ := affineDeckIntegerMonodromy D.latticeMap.toAddEquiv)
+      (Multiplicative.ofAdd (-1)) (Multiplicative.ofAdd a)
 
 /-- The explicit action of a combined lattice/angular deck element on the affine universal-cover
 coordinates. -/
@@ -574,6 +652,105 @@ public theorem affineTorusMappingTorusDeckAction_free
     simpa using hn
   · exact hright
 
+/-- Every integral power of a continuous affine equivalence is continuous. -/
+public theorem continuous_affineEquiv_zpow
+    {V : Type*} [TopologicalSpace V] [AddCommGroup V] [IsTopologicalAddGroup V]
+    (L : V ≃+ V) (b : V) (hL : Continuous L) (hLinv : Continuous L.symm) (k : ℤ) :
+    Continuous (Geometry.affineEquiv L b ^ k) := by
+  let a := Geometry.affineEquiv L b
+  have ha : Continuous a := hL.add continuous_const
+  have hainv : Continuous a.symm := hLinv.comp (continuous_id.sub continuous_const)
+  induction k using Int.induction_on with
+  | zero => simpa using continuous_id
+  | succ i ih =>
+      rw [zpow_add_one]
+      exact ih.comp ha
+  | pred i ih =>
+      rw [show a ^ (- (i : ℤ) - 1) = a ^ (- (i : ℤ)) * a⁻¹ by
+        rw [zpow_sub, zpow_one]]
+      exact ih.comp hainv
+
+/-- The combined affine mapping-torus deck action is continuous whenever its linear lift and
+inverse are continuous. -/
+public theorem affineTorusMappingTorusDeckAction_continuous
+    {p : Parameters} (D : DescendedAffineTorusAutomorphism p) (b : ComplexTwoSpace)
+    (hL : Continuous D.lift) (hLinv : Continuous D.lift.symm) :
+    letI := affineTorusMappingTorusDeckAction D b
+    ContinuousConstSMul (AffineTorusMappingTorusDeck D) (ℝ × ComplexTwoSpace) := by
+  let _ := affineTorusMappingTorusDeckAction D b
+  refine ⟨fun d ↦ ?_⟩
+  change Continuous fun w : ℝ × ComplexTwoSpace ↦
+    (w.1 - d.right.toAdd,
+      periodVector p d.left.toAdd + (Geometry.affineEquiv D.lift b ^ d.right.toAdd) w.2)
+  exact (continuous_fst.sub continuous_const).prodMk
+    (continuous_const.add
+      ((continuous_affineEquiv_zpow D.lift b hL hLinv d.right.toAdd).comp continuous_snd))
+
+/-- Full rank makes the combined affine mapping-torus deck action properly discontinuous. -/
+public theorem affineTorusMappingTorusDeckAction_properlyDiscontinuous
+    {p : Parameters} (hfull : FullRank p)
+    (D : DescendedAffineTorusAutomorphism p) (b : ComplexTwoSpace)
+    (hL : Continuous D.lift) (hLinv : Continuous D.lift.symm) :
+    letI := affineTorusMappingTorusDeckAction D b
+    ProperlyDiscontinuousSMul (AffineTorusMappingTorusDeck D) (ℝ × ComplexTwoSpace) := by
+  let _ := affineTorusMappingTorusDeckAction D b
+  refine ⟨?_⟩
+  intro K L hK hLcompact
+  let S : Set (AffineTorusMappingTorusDeck D) :=
+    {d | ((d • ·) '' K ∩ L).Nonempty}
+  change S.Finite
+  have hKreal : IsCompact (Prod.fst '' K) := hK.image continuous_fst
+  have hLreal : IsCompact (Prod.fst '' L) := hLcompact.image continuous_fst
+  obtain ⟨aK, haK⟩ := hKreal.bddBelow
+  obtain ⟨bK, hbK⟩ := hKreal.bddAbove
+  obtain ⟨aL, haL⟩ := hLreal.bddBelow
+  obtain ⟨bL, hbL⟩ := hLreal.bddAbove
+  apply Set.Finite.of_finite_fibers (fun d ↦ d.right.toAdd)
+  · apply (Set.finite_Icc (Int.ceil (aK - bL)) (Int.floor (bK - aL))).subset
+    rintro k ⟨d, hd, rfl⟩
+    rcases hd with ⟨q, ⟨w, hwK, hwdq⟩, hqL⟩
+    have hwLower : aK ≤ w.1 := haK ⟨w, hwK, rfl⟩
+    have hwUpper : w.1 ≤ bK := hbK ⟨w, hwK, rfl⟩
+    have hqLower : aL ≤ q.1 := haL ⟨q, hqL, rfl⟩
+    have hqUpper : q.1 ≤ bL := hbL ⟨q, hqL, rfl⟩
+    have htime := congrArg Prod.fst hwdq
+    change w.1 - ((d.right.toAdd : ℤ) : ℝ) = q.1 at htime
+    constructor
+    · rw [Int.ceil_le]
+      linarith
+    · rw [Int.le_floor]
+      linarith
+  · intro k hk
+    let C : Set ComplexTwoSpace :=
+      (fun zw : ComplexTwoSpace × ComplexTwoSpace ↦
+        zw.1 - (Geometry.affineEquiv D.lift b ^ k) zw.2) ''
+        ((Prod.snd '' L) ×ˢ (Prod.snd '' K))
+    have hC : IsCompact C := by
+      apply ((hLcompact.image continuous_snd).prod (hK.image continuous_snd)).image
+      exact continuous_fst.sub
+        ((continuous_affineEquiv_zpow D.lift b hL hLinv k).comp continuous_snd)
+    have hperiod : {n : IntegerPeriods | periodVector p n ∈ C}.Finite := by
+      exact (tendsto_cofinite_cocompact_iff.mp
+        (periodHom_tendsto_cofinite_cocompact hfull) C hC)
+    apply Set.Finite.of_finite_image (f := fun d ↦ d.left.toAdd)
+    · apply hperiod.subset
+      rintro n ⟨d, ⟨hdS, hdright⟩, rfl⟩
+      have hdright' : d.right.toAdd = k := by simpa using hdright
+      rcases hdS with ⟨q, ⟨w, hwK, hwdq⟩, hqL⟩
+      have hspace := congrArg Prod.snd hwdq
+      change periodVector p d.left.toAdd +
+          (Geometry.affineEquiv D.lift b ^ d.right.toAdd) w.2 = q.2 at hspace
+      rw [hdright'] at hspace
+      refine ⟨(q.2, w.2), ⟨⟨q, hqL, rfl⟩, ⟨w, hwK, rfl⟩⟩, ?_⟩
+      exact (eq_sub_iff_add_eq.mpr hspace).symm
+    · intro d hd e he hde
+      apply SemidirectProduct.ext
+      · exact Multiplicative.toAdd.injective hde
+      · apply Multiplicative.toAdd.injective
+        have hdright : d.right.toAdd = k := by simpa using hd.2
+        have heright : e.right.toAdd = k := by simpa using he.2
+        exact hdright.trans heright.symm
+
 /-- The affine mapping-torus projection is invariant under every combined semidirect deck
 transformation. -/
 public theorem affineTorusMappingTorusLiftProjection_deckTransform
@@ -633,6 +810,50 @@ public theorem affineTorusMappingTorusLiftProjection_eq_iff_orbitRel
     rw [← hd]
     exact affineTorusMappingTorusLiftProjection_deckTransform
       p φ D b hlift d w'
+
+/-- The explicit affine mapping-torus projection is open. -/
+public theorem affineTorusMappingTorusLiftProjection_isOpenMap
+    (p : Parameters) (φ : AdditiveTorus p ≃ₜ AdditiveTorus p) :
+    IsOpenMap (affineTorusMappingTorusLiftProjection p φ) := by
+  exact ((realMappingTorusHomeomorph φ).isOpenMap.comp
+    (isOpenMap_realMappingTorusMk φ)).comp
+      (IsOpenMap.id.prodMap isOpenMap_quotient_mk'_mul)
+
+/-- The explicit affine mapping-torus projection is a quotient map. -/
+public theorem affineTorusMappingTorusLiftProjection_isQuotientMap
+    (p : Parameters) (φ : AdditiveTorus p ≃ₜ AdditiveTorus p) :
+    IsQuotientMap (affineTorusMappingTorusLiftProjection p φ) :=
+  IsOpenMap.isQuotientMap
+    (affineTorusMappingTorusLiftProjection_isOpenMap p φ)
+    (affineTorusMappingTorusLiftProjection p φ).continuous
+    (affineTorusMappingTorusLiftProjection_surjective p φ)
+
+/-- The explicit affine mapping-torus projection is the regular quotient covering by its full
+semidirect deck group. -/
+public theorem affineTorusMappingTorusLiftProjection_isQuotientCoveringMap
+    (p : Parameters) (hfull : FullRank p)
+    (φ : AdditiveTorus p ≃ₜ AdditiveTorus p)
+    (D : DescendedAffineTorusAutomorphism p) (b : ComplexTwoSpace)
+    (hlift : ∀ z, φ (Quotient.mk _ z) = Quotient.mk _ (D.lift z + b))
+    (hL : Continuous D.lift) (hLinv : Continuous D.lift.symm) :
+    letI := affineTorusMappingTorusDeckAction D b
+    IsQuotientCoveringMap (affineTorusMappingTorusLiftProjection p φ)
+      (AffineTorusMappingTorusDeck D) := by
+  let _ := affineTorusMappingTorusDeckAction D b
+  let _ : IsCancelSMul (AffineTorusMappingTorusDeck D) (ℝ × ComplexTwoSpace) :=
+    affineTorusMappingTorusDeckAction_free hfull D b
+  let _ : ContinuousConstSMul (AffineTorusMappingTorusDeck D) (ℝ × ComplexTwoSpace) :=
+    affineTorusMappingTorusDeckAction_continuous D b hL hLinv
+  let _ : ProperlyDiscontinuousSMul
+      (AffineTorusMappingTorusDeck D) (ℝ × ComplexTwoSpace) :=
+    affineTorusMappingTorusDeckAction_properlyDiscontinuous hfull D b hL hLinv
+  exact (affineTorusMappingTorusLiftProjection_isQuotientMap p φ)
+    |>.isQuotientCoveringMap_of_properlyDiscontinuousSMul
+      (by
+        intro e₁ e₂
+        simpa only [MulAction.orbitRel_apply] using
+          (affineTorusMappingTorusLiftProjection_eq_iff_orbitRel
+            p φ D b hlift e₁ e₂))
 
 section EllipticSpecializations
 
@@ -753,6 +974,42 @@ public theorem orderFourAffineMappingTorusLiftProjection_eq_iff_orbitRel
         (ℝ × ComplexTwoSpace) w w' :=
   affineTorusMappingTorusLiftProjection_eq_iff_orbitRel _ _ _ _
     (orderFourAffineClutching_lift F) w w'
+
+/-- The order-three affine mapping-torus lift is its explicit regular semidirect quotient
+covering. -/
+public theorem orderThreeAffineMappingTorusLiftProjection_isQuotientCoveringMap :
+    letI := orderThreeAffineMappingTorusDeckAction F
+    IsQuotientCoveringMap (orderThreeAffineMappingTorusLiftProjection F)
+      (OrderThreeAffineMappingTorusDeck F) := by
+  apply affineTorusMappingTorusLiftProjection_isQuotientCoveringMap
+    (parameterMap F U.zOne).1
+    (FullRank.ofSetupInequalities _ (parameterMap F U.zOne).2)
+    (Geometry.orderThreeAffineClutchingHomeomorph F)
+    (orderThreeDescendedAffineTorusAutomorphism F)
+    ((3 : ℂ)⁻¹ • periodVector (parameterMap F U.zOne).1 epsilon)
+    (orderThreeAffineClutching_lift F)
+  · exact LinearMap.continuous_of_finiteDimensional
+      (periodTransport g₁ (parameterMap F U.zOne)).toLinearMap
+  · exact LinearMap.continuous_of_finiteDimensional
+      (periodTransport g₁ (parameterMap F U.zOne)).symm.toLinearMap
+
+/-- The order-four affine mapping-torus lift is its explicit regular semidirect quotient
+covering. -/
+public theorem orderFourAffineMappingTorusLiftProjection_isQuotientCoveringMap :
+    letI := orderFourAffineMappingTorusDeckAction F
+    IsQuotientCoveringMap (orderFourAffineMappingTorusLiftProjection F)
+      (OrderFourAffineMappingTorusDeck F) := by
+  apply affineTorusMappingTorusLiftProjection_isQuotientCoveringMap
+    (parameterMap F U.zTwo).1
+    (FullRank.ofSetupInequalities _ (parameterMap F U.zTwo).2)
+    (Geometry.orderFourAffineClutchingHomeomorph F)
+    (orderFourDescendedAffineTorusAutomorphism F)
+    ((4 : ℂ)⁻¹ • periodVector (parameterMap F U.zTwo).1 (-epsilon'))
+    (orderFourAffineClutching_lift F)
+  · exact LinearMap.continuous_of_finiteDimensional
+      (periodTransport g₂ (parameterMap F U.zTwo)).toLinearMap
+  · exact LinearMap.continuous_of_finiteDimensional
+      (periodTransport g₂ (parameterMap F U.zTwo)).symm.toLinearMap
 
 /-- The lifted order-three affine generator is a deck transformation of the explicit source
 map. -/

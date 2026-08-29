@@ -2,6 +2,7 @@ module
 
 public import SphereSixComplex.Topology.PaperActualAffineFillingCoverModelsDefs
 public import SphereSixComplex.Topology.PaperCuspAffineFillingBridge
+public import SphereSixComplex.Topology.AffineRealMappingTorusUniversalCover
 
 /-!
 # Reduction of the actual affine filling-cover squares to the two elliptic inputs
@@ -77,6 +78,51 @@ end SphereSixComplex.Topology
 
 namespace SphereSixComplex
 
+/-- The action on a product which leaves the first coordinate fixed. -/
+@[instance_reducible] public def passiveProdAction
+    (G R E : Type*) [Group G] [MulAction G E] : MulAction G (R × E) where
+  smul g p := (p.1, g • p.2)
+  one_smul p := Prod.ext rfl (one_smul G p.2)
+  mul_smul g h p := Prod.ext rfl (mul_smul g h p.2)
+
+/-- A regular quotient cover remains one after adjoining a passive product coordinate. -/
+public theorem passiveProd_isQuotientCoveringMap
+    {G R E B : Type*} [Group G] [TopologicalSpace R]
+    [TopologicalSpace E] [TopologicalSpace B] [MulAction G E]
+    {f : E → B} (hf : IsQuotientCoveringMap f G) :
+    letI := passiveProdAction G R E
+    IsQuotientCoveringMap (fun p : R × E ↦ (p.1, f p.2)) G := by
+  let _ : MulAction G (R × E) := passiveProdAction G R E
+  refine
+    { toIsQuotientMap := ?_
+      continuous_const_smul := ?_
+      apply_eq_iff_mem_orbit := ?_
+      disjoint := ?_ }
+  · exact ((IsOpenMap.id.prodMap hf.isCoveringMap.isOpenMap).isQuotientMap
+      (continuous_id.prodMap hf.toIsQuotientMap.continuous)
+      (Function.Surjective.prodMap Function.surjective_id
+        hf.toIsQuotientMap.surjective))
+  · intro g
+    exact continuous_fst.prodMk
+      ((hf.continuous_const_smul g).comp continuous_snd)
+  · intro p q
+    rw [Prod.ext_iff, MulAction.mem_orbit_iff]
+    constructor
+    · rintro ⟨hr, he⟩
+      obtain ⟨g, hg⟩ := hf.apply_eq_iff_mem_orbit.mp he
+      exact ⟨g, Prod.ext hr.symm hg⟩
+    · rintro ⟨g, hg⟩
+      have hr := congrArg Prod.fst hg
+      have he := congrArg Prod.snd hg
+      exact ⟨hr.symm, hf.apply_eq_iff_mem_orbit.mpr ⟨g, he⟩⟩
+  · intro p
+    obtain ⟨U, hU, hdisj⟩ := hf.disjoint p.2
+    refine ⟨Set.univ ×ˢ U, prod_mem_nhds Filter.univ_mem hU, ?_⟩
+    intro g hg
+    apply hdisj g
+    rcases hg with ⟨q, ⟨w, hw, hgwq⟩, hq⟩
+    exact ⟨q.2, ⟨w.2, hw.2, congrArg Prod.snd hgwq⟩, hq.2⟩
+
 /-- The canonical cyclic affine relation is killed by the transported filling inclusion. -/
 public theorem chosenCyclicRelation_killed
     {m : ℕ} {Λ B N : Type*} [NeZero m] [AddCommGroup Λ]
@@ -98,8 +144,413 @@ namespace SphereSixComplex.Geometry.PaperAnalyticData
 
 open SphereSixComplex.LatticeData SphereSixComplex.Topology
 open SphereSixComplex.Topology.PaperVanKampenFourPieceCover
+open SphereSixComplex.CyclicAngularFundamentalDomain
+open SphereSixComplex.Geometry.ComplexTorus
+open SphereSixComplex.TriangleGroup
+open SphereSixComplex.Geometry.EllipticFamilySpecialization
 
 variable (A : PaperAnalyticData)
+
+/-- The analytic order-three collar source, identified with the exact overlap in the actual
+four-piece cover. -/
+public noncomputable def orderThreeCollarToActualOverlapHomeomorph :
+    A.starCollarSourceType 1 ≃ₜ
+      (A.actualVanKampenFourPieceCover.core ∩
+        A.actualVanKampenFourPieceCover.ellipticThree : Set A.VanKampenSpace) := by
+  refine
+    (A.openEmbeddingStarData.centralFillingIntersectionHomeomorph 1).trans
+      (Homeomorph.setCongr ?_)
+  symm
+  ext x
+  simp [actualVanKampenFourPieceCover, VanKampenOpenCover,
+    finiteCoverIntersection]
+
+/-- The analytic order-four collar source, identified with the exact overlap in the actual
+four-piece cover. -/
+public noncomputable def orderFourCollarToActualOverlapHomeomorph :
+    A.starCollarSourceType 2 ≃ₜ
+      (A.actualVanKampenFourPieceCover.core ∩
+        A.actualVanKampenFourPieceCover.ellipticFour : Set A.VanKampenSpace) := by
+  refine
+    (A.openEmbeddingStarData.centralFillingIntersectionHomeomorph 2).trans
+      (Homeomorph.setCongr ?_)
+  symm
+  ext x
+  simp [actualVanKampenFourPieceCover, VanKampenOpenCover,
+    finiteCoverIntersection]
+
+/-- The radial mapping-torus presentation of the exact actual order-three overlap. -/
+public noncomputable def orderThreeRadialMappingTorusToActualOverlapHomeomorph :
+    OpenRadialInterval A.starSeparation.orderThree.radius ×
+        CircleMappingTorus (orderThreeAffineClutchingHomeomorph A.periods) ≃ₜ
+      (A.actualVanKampenFourPieceCover.core ∩
+        A.actualVanKampenFourPieceCover.ellipticThree : Set A.VanKampenSpace) :=
+  A.orderThreeCollarRadialMappingTorusHomeomorph.symm.trans
+    A.orderThreeCollarToActualOverlapHomeomorph
+
+/-- The radial mapping-torus presentation of the exact actual order-four overlap. -/
+public noncomputable def orderFourRadialMappingTorusToActualOverlapHomeomorph :
+    OpenRadialInterval A.starSeparation.orderFour.radius ×
+        CircleMappingTorus (orderFourAffineClutchingHomeomorph A.periods) ≃ₜ
+      (A.actualVanKampenFourPieceCover.core ∩
+        A.actualVanKampenFourPieceCover.ellipticFour : Set A.VanKampenSpace) :=
+  A.orderFourCollarRadialMappingTorusHomeomorph.symm.trans
+    A.orderFourCollarToActualOverlapHomeomorph
+
+/-- The explicit simply connected cover projection of the exact actual order-three overlap. -/
+public noncomputable def orderThreeActualEllipticBoundaryProjection :
+    C(OpenRadialInterval A.starSeparation.orderThree.radius ×
+        (ℝ × ComplexTwoSpace),
+      (A.actualVanKampenFourPieceCover.core ∩
+        A.actualVanKampenFourPieceCover.ellipticThree : Set A.VanKampenSpace)) where
+  toFun q := A.orderThreeRadialMappingTorusToActualOverlapHomeomorph
+    (q.1, orderThreeAffineMappingTorusLiftProjection A.periods q.2)
+  continuous_toFun :=
+    A.orderThreeRadialMappingTorusToActualOverlapHomeomorph.continuous.comp
+      (continuous_fst.prodMk
+        ((orderThreeAffineMappingTorusLiftProjection A.periods).continuous.comp continuous_snd))
+
+/-- The explicit simply connected cover projection of the exact actual order-four overlap. -/
+public noncomputable def orderFourActualEllipticBoundaryProjection :
+    C(OpenRadialInterval A.starSeparation.orderFour.radius ×
+        (ℝ × ComplexTwoSpace),
+      (A.actualVanKampenFourPieceCover.core ∩
+        A.actualVanKampenFourPieceCover.ellipticFour : Set A.VanKampenSpace)) where
+  toFun q := A.orderFourRadialMappingTorusToActualOverlapHomeomorph
+    (q.1, orderFourAffineMappingTorusLiftProjection A.periods q.2)
+  continuous_toFun :=
+    A.orderFourRadialMappingTorusToActualOverlapHomeomorph.continuous.comp
+      (continuous_fst.prodMk
+        ((orderFourAffineMappingTorusLiftProjection A.periods).continuous.comp continuous_snd))
+
+/-- The analytic order-three filling is the exact order-three piece of the actual cover. -/
+public noncomputable def orderThreeFillingToActualPieceHomeomorph :
+    A.OrderThreeVaryingFilling A.starSeparation.orderThree.radius ≃ₜ
+      A.actualVanKampenFourPieceCover.ellipticThree := by
+  change A.openEmbeddingStarData.filling 1 ≃ₜ
+    (A.openEmbeddingStarData.SectionSevenEulerCover).piece 2
+  exact
+    A.openEmbeddingStarData.fillingToSectionSevenEulerPieceHomeomorph 1
+
+/-- The analytic order-four filling is the exact order-four piece of the actual cover. -/
+public noncomputable def orderFourFillingToActualPieceHomeomorph :
+    A.OrderFourVaryingFilling A.starSeparation.orderFour.radius ≃ₜ
+      A.actualVanKampenFourPieceCover.ellipticFour := by
+  change A.openEmbeddingStarData.filling 2 ≃ₜ
+    (A.openEmbeddingStarData.SectionSevenEulerCover).piece 3
+  exact
+    A.openEmbeddingStarData.fillingToSectionSevenEulerPieceHomeomorph 2
+
+/-- The explicit candidate universal-cover projection of the actual order-three filling. -/
+public noncomputable def orderThreeActualEllipticFillingProjection :
+    C(ComplexDiscBall A.starSeparation.orderThree.radius × ComplexTwoSpace,
+      A.actualVanKampenFourPieceCover.ellipticThree) where
+  toFun q := A.orderThreeFillingToActualPieceHomeomorph
+    (A.orderThreeActualFillingCoverProjection A.starSeparation.orderThree.radius q)
+  continuous_toFun := A.orderThreeFillingToActualPieceHomeomorph.continuous.comp
+    (A.orderThreeActualFillingCoverProjection A.starSeparation.orderThree.radius).continuous
+
+/-- The explicit candidate universal-cover projection of the actual order-four filling. -/
+public noncomputable def orderFourActualEllipticFillingProjection :
+    C(ComplexDiscBall A.starSeparation.orderFour.radius × ComplexTwoSpace,
+      A.actualVanKampenFourPieceCover.ellipticFour) where
+  toFun q := A.orderFourFillingToActualPieceHomeomorph
+    (A.orderFourActualFillingCoverProjection A.starSeparation.orderFour.radius q)
+  continuous_toFun := A.orderFourFillingToActualPieceHomeomorph.continuous.comp
+    (A.orderFourActualFillingCoverProjection A.starSeparation.orderFour.radius).continuous
+
+/-- The actual order-three filling projection is onto. -/
+public theorem orderThreeActualEllipticFillingProjection_surjective :
+    Function.Surjective A.orderThreeActualEllipticFillingProjection :=
+  A.orderThreeFillingToActualPieceHomeomorph.surjective.comp
+    (A.orderThreeActualFillingCoverProjection_surjective
+      A.starSeparation.orderThree.radius)
+
+/-- The actual order-four filling projection is onto. -/
+public theorem orderFourActualEllipticFillingProjection_surjective :
+    Function.Surjective A.orderFourActualEllipticFillingProjection :=
+  A.orderFourFillingToActualPieceHomeomorph.surjective.comp
+    (A.orderFourActualFillingCoverProjection_surjective
+      A.starSeparation.orderFour.radius)
+
+/-- The semidirect deck action on the explicit radial cover of the actual order-three overlap. -/
+@[instance_reducible] public noncomputable def orderThreeActualEllipticBoundaryAction :
+    MulAction (OrderThreeAffineMappingTorusDeck A.periods)
+      (OpenRadialInterval A.starSeparation.orderThree.radius ×
+        (ℝ × ComplexTwoSpace)) := by
+  let _ := orderThreeAffineMappingTorusDeckAction A.periods
+  exact passiveProdAction _ _ _
+
+/-- The semidirect deck action on the explicit radial cover of the actual order-four overlap. -/
+@[instance_reducible] public noncomputable def orderFourActualEllipticBoundaryAction :
+    MulAction (OrderFourAffineMappingTorusDeck A.periods)
+      (OpenRadialInterval A.starSeparation.orderFour.radius ×
+        (ℝ × ComplexTwoSpace)) := by
+  let _ := orderFourAffineMappingTorusDeckAction A.periods
+  exact passiveProdAction _ _ _
+
+/-- The exact actual order-three overlap is the quotient by its explicit semidirect deck action. -/
+public theorem orderThreeActualEllipticBoundaryProjection_isQuotientCoveringMap :
+    letI := A.orderThreeActualEllipticBoundaryAction
+    IsQuotientCoveringMap A.orderThreeActualEllipticBoundaryProjection
+      (OrderThreeAffineMappingTorusDeck A.periods) := by
+  let _ := orderThreeAffineMappingTorusDeckAction A.periods
+  let _ := A.orderThreeActualEllipticBoundaryAction
+  have hprod := passiveProd_isQuotientCoveringMap
+    (R := OpenRadialInterval A.starSeparation.orderThree.radius)
+    (orderThreeAffineMappingTorusLiftProjection_isQuotientCoveringMap A.periods)
+  have h := hprod.homeomorph_comp
+    A.orderThreeRadialMappingTorusToActualOverlapHomeomorph
+  exact h
+
+/-- The exact actual order-four overlap is the quotient by its explicit semidirect deck action. -/
+public theorem orderFourActualEllipticBoundaryProjection_isQuotientCoveringMap :
+    letI := A.orderFourActualEllipticBoundaryAction
+    IsQuotientCoveringMap A.orderFourActualEllipticBoundaryProjection
+      (OrderFourAffineMappingTorusDeck A.periods) := by
+  let _ := orderFourAffineMappingTorusDeckAction A.periods
+  let _ := A.orderFourActualEllipticBoundaryAction
+  have hprod := passiveProd_isQuotientCoveringMap
+    (R := OpenRadialInterval A.starSeparation.orderFour.radius)
+    (orderFourAffineMappingTorusLiftProjection_isQuotientCoveringMap A.periods)
+  have h := hprod.homeomorph_comp
+    A.orderFourRadialMappingTorusToActualOverlapHomeomorph
+  exact h
+
+/-- The explicit radial source of the actual order-three overlap cover is simply connected. -/
+public theorem orderThreeActualEllipticBoundaryCover_simplyConnected :
+    SimplyConnectedSpace
+      (OpenRadialInterval A.starSeparation.orderThree.radius ×
+        (ℝ × ComplexTwoSpace)) := by
+  let _ : ContractibleSpace
+      (OpenRadialInterval A.starSeparation.orderThree.radius) :=
+    (convex_Ioo (0 : ℝ) A.starSeparation.orderThree.radius).contractibleSpace
+      (Set.nonempty_Ioo.mpr A.starSeparation.orderThree.radius_pos)
+  infer_instance
+
+/-- The explicit radial source of the actual order-four overlap cover is simply connected. -/
+public theorem orderFourActualEllipticBoundaryCover_simplyConnected :
+    SimplyConnectedSpace
+      (OpenRadialInterval A.starSeparation.orderFour.radius ×
+        (ℝ × ComplexTwoSpace)) := by
+  let _ : ContractibleSpace
+      (OpenRadialInterval A.starSeparation.orderFour.radius) :=
+    (convex_Ioo (0 : ℝ) A.starSeparation.orderFour.radius).contractibleSpace
+      (Set.nonempty_Ioo.mpr A.starSeparation.orderFour.radius_pos)
+  infer_instance
+
+/-- Canonical inverse-meridian boundary deck data for the actual order-three collar. -/
+public noncomputable def orderThreeActualEllipticBoundaryDeckData :
+    UnwrappedCyclicAffineBoundaryDeckData 3 Lattice
+      (OrderThreeAffineMappingTorusDeck A.periods) where
+  translation := affineTorusMappingTorusDeckTranslation
+    (orderThreeDescendedAffineTorusAutomorphism A.periods)
+  translation_injective := affineTorusMappingTorusDeckTranslation_injective _
+  meridian := (affineTorusMappingTorusDeckMeridian
+    (orderThreeDescendedAffineTorusAutomorphism A.periods))⁻¹
+  monodromy := Multiplicative.ofAdd
+    (orderThreeDescendedAffineTorusAutomorphism A.periods).latticeMap.symm.toAddEquiv
+  conjugate := affineTorusMappingTorusDeck_inverseMeridian_conjugate _
+  generators_generate :=
+    affineTorusMappingTorusDeck_inverseMeridian_generators_generate _
+  twist := epsilon
+  monodromy_pow := by
+    change (Multiplicative.ofAdd (rhoLambda g₁).symm.toAddEquiv) ^ 3 = 1
+    apply Multiplicative.toAdd.injective
+    simp
+    apply AddEquiv.ext
+    intro x
+    change a₁.symm (a₁.symm (a₁.symm x)) = x
+    apply a₁.injective
+    rw [a₁.apply_symm_apply]
+    apply a₁.injective
+    rw [a₁.apply_symm_apply]
+    apply a₁.injective
+    rw [a₁.apply_symm_apply]
+    have h := congrArg (fun f : DualLattice ≃ₗ[ℤ] DualLattice ↦ f x) a₁_pow_three
+    simpa [pow_succ] using h.symm
+  twist_fixed := by
+    change (rhoLambda g₁).symm epsilon = epsilon
+    apply (rhoLambda g₁).injective
+    rw [(rhoLambda g₁).apply_symm_apply, rhoLambda_g₁_apply, A₁_epsilon]
+
+/-- Canonical inverse-meridian boundary deck data for the actual order-four collar. -/
+public noncomputable def orderFourActualEllipticBoundaryDeckData :
+    UnwrappedCyclicAffineBoundaryDeckData 4 Lattice
+      (OrderFourAffineMappingTorusDeck A.periods) where
+  translation := affineTorusMappingTorusDeckTranslation
+    (orderFourDescendedAffineTorusAutomorphism A.periods)
+  translation_injective := affineTorusMappingTorusDeckTranslation_injective _
+  meridian := (affineTorusMappingTorusDeckMeridian
+    (orderFourDescendedAffineTorusAutomorphism A.periods))⁻¹
+  monodromy := Multiplicative.ofAdd
+    (orderFourDescendedAffineTorusAutomorphism A.periods).latticeMap.symm.toAddEquiv
+  conjugate := affineTorusMappingTorusDeck_inverseMeridian_conjugate _
+  generators_generate :=
+    affineTorusMappingTorusDeck_inverseMeridian_generators_generate _
+  twist := -epsilon'
+  monodromy_pow := by
+    change (Multiplicative.ofAdd (rhoLambda g₂).symm.toAddEquiv) ^ 4 = 1
+    apply Multiplicative.toAdd.injective
+    simp
+    apply AddEquiv.ext
+    intro x
+    change a₂.symm (a₂.symm (a₂.symm (a₂.symm x))) = x
+    apply a₂.injective
+    rw [a₂.apply_symm_apply]
+    apply a₂.injective
+    rw [a₂.apply_symm_apply]
+    apply a₂.injective
+    rw [a₂.apply_symm_apply]
+    apply a₂.injective
+    rw [a₂.apply_symm_apply]
+    have h := congrArg (fun f : DualLattice ≃ₗ[ℤ] DualLattice ↦ f x) a₂_pow_four
+    simpa [pow_succ] using h.symm
+  twist_fixed := by
+    change (rhoLambda g₂).symm (-epsilon') = -epsilon'
+    apply (rhoLambda g₂).injective
+    rw [(rhoLambda g₂).apply_symm_apply, map_neg, rhoLambda_g₂_apply,
+      A₂_epsilon']
+
+/-- The remaining order-three filling geometry after fixing the explicit collar cover and deck
+presentation. -/
+public structure OrderThreeActualEllipticFillingExtension where
+  fillingAction : MulAction A.orderThreeActualEllipticBoundaryDeckData.FillingDeck
+    (ComplexDiscBall A.starSeparation.orderThree.radius × ComplexTwoSpace)
+  fillingQuotient : @IsQuotientCoveringMap
+    (ComplexDiscBall A.starSeparation.orderThree.radius × ComplexTwoSpace)
+    A.actualVanKampenFourPieceCover.ellipticThree _ _
+    A.orderThreeActualEllipticFillingProjection
+    A.orderThreeActualEllipticBoundaryDeckData.FillingDeck _ fillingAction
+  lift : C(OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace),
+    ComplexDiscBall A.starSeparation.orderThree.radius × ComplexTwoSpace)
+  commutes : ∀ z,
+    A.actualVanKampenFourPieceCover.ellipticThreeOverlapToPiece
+        (A.orderThreeActualEllipticBoundaryProjection z) =
+      A.orderThreeActualEllipticFillingProjection (lift z)
+  equivariant : ∀ g z,
+    lift (@SMul.smul _ _ A.orderThreeActualEllipticBoundaryAction.toSMul g z) =
+      @SMul.smul _ _ fillingAction.toSMul
+        (A.orderThreeActualEllipticBoundaryDeckData.fillingDeckMap g) (lift z)
+  base : OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)
+
+/-- The remaining order-four filling geometry after fixing the explicit collar cover and deck
+presentation. -/
+public structure OrderFourActualEllipticFillingExtension where
+  fillingAction : MulAction A.orderFourActualEllipticBoundaryDeckData.FillingDeck
+    (ComplexDiscBall A.starSeparation.orderFour.radius × ComplexTwoSpace)
+  fillingQuotient : @IsQuotientCoveringMap
+    (ComplexDiscBall A.starSeparation.orderFour.radius × ComplexTwoSpace)
+    A.actualVanKampenFourPieceCover.ellipticFour _ _
+    A.orderFourActualEllipticFillingProjection
+    A.orderFourActualEllipticBoundaryDeckData.FillingDeck _ fillingAction
+  lift : C(OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace),
+    ComplexDiscBall A.starSeparation.orderFour.radius × ComplexTwoSpace)
+  commutes : ∀ z,
+    A.actualVanKampenFourPieceCover.ellipticFourOverlapToPiece
+        (A.orderFourActualEllipticBoundaryProjection z) =
+      A.orderFourActualEllipticFillingProjection (lift z)
+  equivariant : ∀ g z,
+    lift (@SMul.smul _ _ A.orderFourActualEllipticBoundaryAction.toSMul g z) =
+      @SMul.smul _ _ fillingAction.toSMul
+        (A.orderFourActualEllipticBoundaryDeckData.fillingDeckMap g) (lift z)
+  base : OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)
+
+namespace OrderThreeActualEllipticFillingExtension
+
+/-- Assemble the complete chosen order-three filling-cover model from only the filling
+extension. -/
+public noncomputable def toChosenCover
+    (E : A.OrderThreeActualEllipticFillingExtension) :
+    ChosenCyclicAffineFillingCoverModel 3 Lattice
+      (A.actualVanKampenFourPieceCover.core ∩
+        A.actualVanKampenFourPieceCover.ellipticThree : Set A.VanKampenSpace)
+      A.actualVanKampenFourPieceCover.ellipticThree := by
+  letI := A.orderThreeActualEllipticBoundaryAction
+  letI := E.fillingAction
+  let U : UnwrappedCyclicAffineFillingCover 3 Lattice
+      (OrderThreeAffineMappingTorusDeck A.periods)
+      (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace))
+      (ComplexDiscBall A.starSeparation.orderThree.radius × ComplexTwoSpace)
+      (A.actualVanKampenFourPieceCover.core ∩
+        A.actualVanKampenFourPieceCover.ellipticThree : Set A.VanKampenSpace)
+      A.actualVanKampenFourPieceCover.ellipticThree
+      A.orderThreeActualEllipticBoundaryDeckData := {
+    boundaryProjection := A.orderThreeActualEllipticBoundaryProjection
+    fillingProjection := A.orderThreeActualEllipticFillingProjection
+    boundaryQuotient := A.orderThreeActualEllipticBoundaryProjection_isQuotientCoveringMap
+    fillingQuotient := E.fillingQuotient
+    boundarySimplyConnected := A.orderThreeActualEllipticBoundaryCover_simplyConnected
+    fillingSimplyConnected := orderThreeFillingCoverSource_simplyConnected
+      A.starSeparation.orderThree.radius_pos A.starSeparation.orderThree.radius_lt_one
+    lift := E.lift
+    baseMap := A.actualVanKampenFourPieceCover.ellipticThreeOverlapToPiece
+    commutes := E.commutes
+    equivariant := E.equivariant
+    base := E.base }
+  exact
+    { BoundaryDeck := OrderThreeAffineMappingTorusDeck A.periods
+      FillingDeck := A.orderThreeActualEllipticBoundaryDeckData.FillingDeck
+      BoundaryCover := OpenRadialInterval A.starSeparation.orderThree.radius ×
+        (ℝ × ComplexTwoSpace)
+      FillingCover := ComplexDiscBall A.starSeparation.orderThree.radius × ComplexTwoSpace
+      boundaryDeckGroup := inferInstance
+      fillingDeckGroup := inferInstance
+      boundaryCoverTopology := inferInstance
+      fillingCoverTopology := inferInstance
+      boundaryAction := A.orderThreeActualEllipticBoundaryAction
+      fillingAction := E.fillingAction
+      model := U.toCyclicAffineFillingCoverModel }
+
+end OrderThreeActualEllipticFillingExtension
+
+namespace OrderFourActualEllipticFillingExtension
+
+/-- Assemble the complete chosen order-four filling-cover model from only the filling
+extension. -/
+public noncomputable def toChosenCover
+    (E : A.OrderFourActualEllipticFillingExtension) :
+    ChosenCyclicAffineFillingCoverModel 4 Lattice
+      (A.actualVanKampenFourPieceCover.core ∩
+        A.actualVanKampenFourPieceCover.ellipticFour : Set A.VanKampenSpace)
+      A.actualVanKampenFourPieceCover.ellipticFour := by
+  letI := A.orderFourActualEllipticBoundaryAction
+  letI := E.fillingAction
+  let U : UnwrappedCyclicAffineFillingCover 4 Lattice
+      (OrderFourAffineMappingTorusDeck A.periods)
+      (OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace))
+      (ComplexDiscBall A.starSeparation.orderFour.radius × ComplexTwoSpace)
+      (A.actualVanKampenFourPieceCover.core ∩
+        A.actualVanKampenFourPieceCover.ellipticFour : Set A.VanKampenSpace)
+      A.actualVanKampenFourPieceCover.ellipticFour
+      A.orderFourActualEllipticBoundaryDeckData := {
+    boundaryProjection := A.orderFourActualEllipticBoundaryProjection
+    fillingProjection := A.orderFourActualEllipticFillingProjection
+    boundaryQuotient := A.orderFourActualEllipticBoundaryProjection_isQuotientCoveringMap
+    fillingQuotient := E.fillingQuotient
+    boundarySimplyConnected := A.orderFourActualEllipticBoundaryCover_simplyConnected
+    fillingSimplyConnected := orderFourFillingCoverSource_simplyConnected
+      A.starSeparation.orderFour.radius_pos A.starSeparation.orderFour.radius_lt_one
+    lift := E.lift
+    baseMap := A.actualVanKampenFourPieceCover.ellipticFourOverlapToPiece
+    commutes := E.commutes
+    equivariant := E.equivariant
+    base := E.base }
+  exact
+    { BoundaryDeck := OrderFourAffineMappingTorusDeck A.periods
+      FillingDeck := A.orderFourActualEllipticBoundaryDeckData.FillingDeck
+      BoundaryCover := OpenRadialInterval A.starSeparation.orderFour.radius ×
+        (ℝ × ComplexTwoSpace)
+      FillingCover := ComplexDiscBall A.starSeparation.orderFour.radius × ComplexTwoSpace
+      boundaryDeckGroup := inferInstance
+      fillingDeckGroup := inferInstance
+      boundaryCoverTopology := inferInstance
+      fillingCoverTopology := inferInstance
+      boundaryAction := A.orderFourActualEllipticBoundaryAction
+      fillingAction := E.fillingAction
+      model := U.toCyclicAffineFillingCoverModel }
+
+end OrderFourActualEllipticFillingExtension
 
 /-- The actual order-three overlap included into the core and transported along the specified
 connector to the base point of the four-piece cover. -/

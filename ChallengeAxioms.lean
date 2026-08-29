@@ -81,7 +81,7 @@ axiom SphereSixComplex.Topology.FiniteCoverPerfectPairing.establishedEllipticDeg
   {U : SphereSixComplex.Periods.TriangleUniformization} (F : SphereSixComplex.Periods.PeriodFunctions U),
   Nonempty (SphereSixComplex.Topology.FiniteCoverPerfectPairing.EllipticDegreeTwoDualPullbackFiniteData F)
 axiom SphereSixComplex.Topology.AffineFiniteCyclicTorusCW.orderThreeFourAffineGeneratorFiniteCWModels : SphereSixComplex.Topology.AffineFiniteCyclicTorusCW.OrderThreeFourAffineGeneratorFiniteCWModels
-axiom SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.EstablishedAffineCyclicQuotientHomology.establishedAffineCyclicHOnePresentationLift_bijective : {m :
+axiom SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.EstablishedAffineCyclicQuotientHomology.establishedAffineCyclicUniversalCoverHOneIdentification : {m :
     ℕ} →
   [inst : NeZero m] →
     {p : SphereSixComplex.Periods.Parameters} →
@@ -89,7 +89,7 @@ axiom SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.EstablishedAffine
           SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction.RadialEllipticActionData m
             (SphereSixComplex.Geometry.EllipticFamilySpecialization.AdditiveTorus p)} →
         (P : SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.AffineCyclicCentralFiberPresentationData m p D) →
-          SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.EstablishedAffineCyclicQuotientHomology.AffineCyclicHOnePresentationLiftWitness
+          SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.EstablishedAffineCyclicQuotientHomology.AffineCyclicUniversalCoverHOneIdentification
             P
 
 # Established analytic and toric models from the paper.
@@ -110,9 +110,30 @@ axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2C
 axiom SphereSixComplex.Geometry.PaperAnalyticData.establishedActualEllipticCentralBasisNaturality : ∀
   (A : SphereSixComplex.Geometry.PaperAnalyticData),
   Nonempty (A.ActualEllipticCentralBasisNaturality A.actualCuspCentralNaturality)
-axiom SphereSixComplex.Geometry.GlobalTorusFamily.paperPuncturedGlobalFamilyAffinePresentation_injective : ∀
-  (A : SphereSixComplex.Geometry.PaperAnalyticData),
-  Function.Injective ⇑(SphereSixComplex.Geometry.GlobalTorusFamily.paperPuncturedGlobalFamilyAffinePresentation A)
+axiom SphereSixComplex.Topology.TwicePuncturedComplex.freeTwoGeneratorLift_injective_of_open_union.{u_1} : ∀
+  {X : Type u_1} [inst : TopologicalSpace X] (U V : Set X) (base : X),
+  IsOpen U →
+    IsOpen V →
+      U ∪ V = Set.univ →
+        ∀ (hbaseU : base ∈ U) (hbaseV : base ∈ V),
+          IsPathConnected U →
+            IsPathConnected V →
+              ContractibleSpace ↑(U ∩ V) →
+                ∀ (u : FundamentalGroup ↑U ⟨base, hbaseU⟩) (v : FundamentalGroup ↑V ⟨base, hbaseV⟩),
+                  (Function.Bijective fun n => u ^ n) →
+                    (Function.Bijective fun n => v ^ n) →
+                      Function.Injective
+                        ⇑(FreeGroup.lift fun i =>
+                            if i = 0 then
+                              (FundamentalGroup.map
+                                  (SphereSixComplex.Topology.PaperVanKampenFourPieceCover.subsetInclusion U)
+                                  ⟨base, hbaseU⟩)
+                                u
+                            else
+                              (FundamentalGroup.map
+                                  (SphereSixComplex.Topology.PaperVanKampenFourPieceCover.subsetInclusion V)
+                                  ⟨base, hbaseV⟩)
+                                v)
 axiom SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenAffineRegularLiftTopology.markedBandHomotopies : ∀
   (A : SphereSixComplex.Geometry.PaperAnalyticData), A.SectionSevenAffineOverlapBandCompatibility
 axiom SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTopology.actualCuspFiberEllipticFiniteCoordinateIdentities : ∀
