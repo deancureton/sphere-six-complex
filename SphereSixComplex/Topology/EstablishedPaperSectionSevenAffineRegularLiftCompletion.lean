@@ -23,11 +23,35 @@ namespace SphereSixComplex.Geometry.PaperAnalyticData
 
 namespace EstablishedSectionSevenAffineRegularLiftTopology
 
-/-- The exact remaining paper geometry, independent of the homotopy inverses selected by Lean:
-one marked inverse of each affine side inclusion whose central-band restriction is the named
-finite-cover projection. -/
-public axiom markedRetractionInput_nonempty (A : PaperAnalyticData) :
-    Nonempty A.SectionSevenAffineMarkedRetractionInput
+/-- The exact remaining paper geometry: the two band maps induced by the proved affine overlap
+equivalences are homotopic to the named finite-cover projections. -/
+public axiom markedBandHomotopies (A : PaperAnalyticData) :
+    A.SectionSevenAffineOverlapBandCompatibility
+
+/-- The marked band homotopies and the proved overlap equivalences supply marked retractions.
+The retractions themselves are the canonical homotopy inverses of the two proved inclusion
+equivalences, whose inverse maps are the literal subspace inclusions. -/
+public theorem markedRetractionInput_nonempty (A : PaperAnalyticData) :
+    Nonempty A.SectionSevenAffineMarkedRetractionInput := by
+  let hThree := orderThreeOverlapIsHomotopyEquivalence_inclusion
+    A.orderThreeOverlapIsHomotopyEquivalence
+  let hFour := orderFourOverlapIsHomotopyEquivalence_inclusion
+    A.orderFourOverlapIsHomotopyEquivalence
+  refine ⟨{ orderThree := ?_, orderFour := ?_ }⟩
+  · exact
+      { retraction := hThree.toHomotopyEquiv
+        invFun_eq := hThree.toHomotopyEquiv_invFun
+        markedSquare := by
+          rw [← sectionSevenAffineOrderThreeBandToReducedFiber_eq_bandMapOfRetraction]
+          rw [sectionSevenAffineBandOrderThreeMarkedProjection_eq_coverMap]
+          exact (markedBandHomotopies A).orderThree }
+  · exact
+      { retraction := hFour.toHomotopyEquiv
+        invFun_eq := hFour.toHomotopyEquiv_invFun
+        markedSquare := by
+          rw [← sectionSevenAffineOrderFourBandToReducedFiber_eq_bandMapOfRetraction]
+          rw [sectionSevenAffineBandOrderFourMarkedProjection_eq_coverMap]
+          exact (markedBandHomotopies A).orderFour }
 
 /-- The exact residual affine input from the paper: the two marked band square homotopies.
 

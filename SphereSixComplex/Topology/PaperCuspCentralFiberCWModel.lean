@@ -16,7 +16,7 @@ isolates the precise standard toric-CW realization theorem missing from Mathlib,
 
 noncomputable section
 
-open AlgebraicTopology Set
+open AlgebraicTopology CategoryTheory Set
 open scoped ContinuousMap
 
 namespace SphereSixComplex
@@ -174,6 +174,135 @@ public structure StandardA2ToricCentralFiberCellularRealization
       D.integralCellularChainModel.chainComplex.d n.succ n (D.labelledCellBasis n.succ x) =
         D.labelledCellBasis n (standardA2ToricCellularBoundary n x)
 
+/-- The genuine cellular differential, transported into the labelled orbit-cell coordinates. -/
+public noncomputable def standardA2ToricCellularCoordinateBoundary
+    {X : Type} [TopologicalSpace X]
+    (D : StandardA2ToricCentralFiberCWDecomposition X) (n : ℕ) :
+    (cuspWCellIndex n.succ → ℤ) →+ (cuspWCellIndex n → ℤ) := by
+  letI := D.topology
+  letI := D.cwComplex
+  let d := ConcreteCategory.hom
+    (D.integralCellularChainModel.chainComplex.d n.succ n)
+  exact (D.labelledCellBasis n).symm.toAddMonoidHom.comp
+    (d.comp (D.labelledCellBasis n.succ).toAddMonoidHom)
+
+/-- A labelled standard `A₂` CW decomposition together with the complete finite incidence
+matrix.  There are exactly twenty-eight scalar entries: `3 × 2`, `4 × 3`, `2 × 4`, and
+`1 × 2` in boundary degrees zero through three.  Higher source cell sets are empty. -/
+public structure StandardA2ToricCentralFiberFiniteCellularRealization
+    (X : Type) [TopologicalSpace X] where
+  decomposition : StandardA2ToricCentralFiberCWDecomposition X
+  boundaryZero :
+    let D := decomposition
+    let _ := D.topology
+    let _ := D.cwComplex
+    ∀ (j : Fin 3) (i : Fin 2),
+      standardA2ToricCellularCoordinateBoundary D 0
+          (Pi.single j 1 : Fin 3 → ℤ) i =
+        standardA2ToricCellularBoundary 0 (Pi.single j 1 : Fin 3 → ℤ) i
+  boundaryOne :
+    let D := decomposition
+    let _ := D.topology
+    let _ := D.cwComplex
+    ∀ (j : Fin 4) (i : Fin 3),
+      standardA2ToricCellularCoordinateBoundary D 1
+          (Pi.single j 1 : Fin 4 → ℤ) i =
+        standardA2ToricCellularBoundary 1 (Pi.single j 1 : Fin 4 → ℤ) i
+  boundaryTwo :
+    let D := decomposition
+    let _ := D.topology
+    let _ := D.cwComplex
+    ∀ (j : Fin 2) (i : Fin 4),
+      standardA2ToricCellularCoordinateBoundary D 2
+          (Pi.single j 1 : Fin 2 → ℤ) i =
+        standardA2ToricCellularBoundary 2 (Pi.single j 1 : Fin 2 → ℤ) i
+  boundaryThree :
+    let D := decomposition
+    let _ := D.topology
+    let _ := D.cwComplex
+    ∀ (j : Fin 1) (i : Fin 2),
+      standardA2ToricCellularCoordinateBoundary D 3
+          (Pi.single j 1 : Fin 1 → ℤ) i =
+        standardA2ToricCellularBoundary 3 (Pi.single j 1 : Fin 1 → ℤ) i
+
+private theorem addMonoidHom_ext_pi_single_one
+    {H : Type*} [AddCommGroup H] {n : ℕ} (f g : (Fin n → ℤ) →+ H)
+    (h : ∀ i, f (Pi.single i 1) = g (Pi.single i 1)) : f = g := by
+  apply AddMonoidHom.ext
+  intro x
+  apply Pi.single_induction (M := fun _ : Fin n ↦ ℤ) (p := fun z ↦ f z = g z) x
+  · simp
+  · intro a b ha hb
+    simpa using congrArg₂ (· + ·) ha hb
+  · intro i z
+    have hz : (Pi.single i z : Fin n → ℤ) =
+        z • (Pi.single i 1 : Fin n → ℤ) := by
+      ext j
+      classical
+      by_cases hji : j = i
+      · subst j
+        simp
+      · simp [hji]
+    rw [hz, map_zsmul, map_zsmul, h i]
+
+namespace StandardA2ToricCentralFiberFiniteCellularRealization
+
+variable {X : Type} [TopologicalSpace X]
+
+/-- Additive extension of the finite incidence matrix gives the genuine cellular boundary on
+every chain.  Above degree four the assertion is automatic because there are no source cells. -/
+public noncomputable def toCellularRealization
+    (T : StandardA2ToricCentralFiberFiniteCellularRealization X) :
+    StandardA2ToricCentralFiberCellularRealization X where
+  decomposition := T.decomposition
+  boundary_eq := by
+    dsimp only
+    intro n x
+    let D := T.decomposition
+    let _ := D.topology
+    let _ := D.cwComplex
+    apply (T.decomposition.labelledCellBasis n).symm.injective
+    rw [AddEquiv.symm_apply_apply]
+    change standardA2ToricCellularCoordinateBoundary T.decomposition n x =
+      standardA2ToricCellularBoundary n x
+    rcases n with _ | _ | _ | _ | n
+    · have h : standardA2ToricCellularCoordinateBoundary D 0 =
+          standardA2ToricCellularBoundary 0 := by
+        apply addMonoidHom_ext_pi_single_one
+        intro j
+        funext i
+        exact T.boundaryZero j i
+      exact DFunLike.congr_fun h x
+    · have h : standardA2ToricCellularCoordinateBoundary D 1 =
+          standardA2ToricCellularBoundary 1 := by
+        apply addMonoidHom_ext_pi_single_one
+        intro j
+        funext i
+        exact T.boundaryOne j i
+      exact DFunLike.congr_fun h x
+    · have h : standardA2ToricCellularCoordinateBoundary D 2 =
+          standardA2ToricCellularBoundary 2 := by
+        apply addMonoidHom_ext_pi_single_one
+        intro j
+        funext i
+        exact T.boundaryTwo j i
+      exact DFunLike.congr_fun h x
+    · have h : standardA2ToricCellularCoordinateBoundary D 3 =
+          standardA2ToricCellularBoundary 3 := by
+        apply addMonoidHom_ext_pi_single_one
+        intro j
+        funext i
+        exact T.boundaryThree j i
+      exact DFunLike.congr_fun h x
+    · let _ : IsEmpty (cuspWCellIndex (n + 1 + 1 + 1 + 1).succ) :=
+          cuspWCellIndex_isEmpty _ (by omega)
+      have hx : x = 0 := by
+        funext i
+        exact isEmptyElim i
+      rw [hx, map_zero, map_zero]
+
+end StandardA2ToricCentralFiberFiniteCellularRealization
+
 namespace Geometry.CuspPuncturedCollarBridge
 
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
@@ -181,14 +310,24 @@ open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
 
+/-- The exact remaining geometric-combinatorial input: a labelled CW decomposition of the
+compact periodic `A₂` quotient and its twenty-eight scalar incidence entries. -/
+public axiom establishedStandardA2ToricCentralFiberFiniteCellularRealization
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M)
+    (R : ActualLocalCuspCentralFiberRetractionData W) :
+    StandardA2ToricCentralFiberFiniteCellularRealization (R.quotientCentralFiber W)
+
 /-- The compact periodic `A₂` central fibre has its standard labelled CW realization and exact
 attaching-incidence formula. -/
-public axiom establishedStandardA2ToricCentralFiberCellularRealization
+public noncomputable def establishedStandardA2ToricCentralFiberCellularRealization
     {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W) :
     StandardA2ToricCentralFiberCellularRealization (R.quotientCentralFiber W)
+  := (establishedStandardA2ToricCentralFiberFiniteCellularRealization W R).toCellularRealization
 
 /-- Standard toric-orbit CW decomposition for the compact quotient of the periodic `A₂` central
 fibre.  This is the exact general toric-topology boundary absent from Mathlib: it supplies a CW

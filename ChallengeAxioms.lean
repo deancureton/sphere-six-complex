@@ -126,14 +126,14 @@ axiom SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.EstablishedAffine
             P
 
 # Established analytic and toric models from the paper.
-axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberCellularRealization : {E :
+axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberFiniteCellularRealization : {E :
     SphereSixComplex.Periods.EstablishedFuchsianModularParameter} →
   {D : SphereSixComplex.Periods.FuchsianPeriodLocalData E} →
     {N : SphereSixComplex.Geometry.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate E D} →
       {M : SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Model} →
         (W : SphereSixComplex.Geometry.CuspPuncturedCollarBridge.ActualPuncturedCuspCollarWitness N M) →
           (R : SphereSixComplex.Geometry.CuspPuncturedCollarBridge.ActualLocalCuspCentralFiberRetractionData W) →
-            SphereSixComplex.StandardA2ToricCentralFiberCellularRealization
+            SphereSixComplex.StandardA2ToricCentralFiberFiniteCellularRealization
               ↑(SphereSixComplex.Geometry.CuspPuncturedCollarBridge.ActualLocalCuspCentralFiberRetractionData.quotientCentralFiber
                   W R)
 axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization.establishedFiniteGeneratorSpecializationMatrix : ∀
@@ -147,9 +147,8 @@ axiom SphereSixComplex.Geometry.GlobalTorusFamily.establishedPuncturedGlobalFami
     SphereSixComplex.Periods.FuchsianModularParameter} →
   (F : SphereSixComplex.Periods.PeriodFunctions P.toTriangleUniformization) →
     SphereSixComplex.Geometry.GlobalTorusFamily.PuncturedGlobalFamilyAffineFundamentalGroup F
-axiom SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenAffineRegularLiftTopology.markedRetractionInput_nonempty : ∀
-  (A : SphereSixComplex.Geometry.PaperAnalyticData),
-  Nonempty SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenAffineMarkedRetractionInput
+axiom SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenAffineRegularLiftTopology.markedBandHomotopies : ∀
+  (A : SphereSixComplex.Geometry.PaperAnalyticData), A.SectionSevenAffineOverlapBandCompatibility
 axiom SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTopology.actualCuspFiberEllipticFiniteCoordinateIdentities : ∀
   {A : SphereSixComplex.Geometry.PaperAnalyticData} (R : A.SectionSevenAffineRadialCompletionInput)
   (W :
