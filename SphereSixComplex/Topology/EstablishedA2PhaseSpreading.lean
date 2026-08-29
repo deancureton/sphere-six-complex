@@ -107,14 +107,53 @@ public theorem compactPhaseOrbit_surjective
   apply Subtype.ext
   exact hphi
 
-/-- The remaining geometric construction chooses polar coordinates for which compact phase
-coordinates are open and the lifted cellular homotopy preserves their stabilizers.  Its deck
-correction is reduced to equality of the radial norms of the frozen and positive multipliers. -/
-public axiom polarHoneycombPhaseSpreadingGeometry
+private theorem positiveTwist_eq_normalized_of_basis_aux
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    (N : NormalizedFuchsianCuspCoordinate E D) {M : Model} {r : ℝ}
+    (P : PolarHoneycombData M r)
+    (hP : ∀ j : Fin 2, P.positiveTwist (Pi.single j 1) =
+      normalizedCuspPositiveTwist N (Pi.single j 1)) :
+    P.positiveTwist = normalizedCuspPositiveTwist N := by
+  let pTwist : ParameterLattice →+ Additive DenseTorus := {
+    toFun := fun lambda ↦ Additive.ofMul (P.positiveTwist lambda)
+    map_zero' := congrArg Additive.ofMul P.positiveTwist_zero
+    map_add' := fun lambda mu ↦ congrArg Additive.ofMul (P.positiveTwist_add lambda mu) }
+  let nTwist : ParameterLattice →+ Additive DenseTorus := {
+    toFun := fun lambda ↦ Additive.ofMul (normalizedCuspPositiveTwist N lambda)
+    map_zero' := congrArg Additive.ofMul (normalizedCuspPositiveTwist_zero N)
+    map_add' := fun lambda mu ↦
+      congrArg Additive.ofMul (normalizedCuspPositiveTwist_add N lambda mu) }
+  have hHom : pTwist = nTwist := by
+    apply AddMonoidHom.functions_ext'
+    intro j
+    apply AddMonoidHom.ext_int
+    exact congrArg Additive.ofMul (hP j)
+  funext lambda
+  exact congrArg Additive.toMul (DFunLike.congr_fun hHom lambda)
+
+/-- The remaining geometric construction chooses polar coordinates whose positive deck
+multiplier is the canonical radial part of the frozen multiplier, for which compact phase
+coordinates are open, and whose lifted cellular homotopy preserves phase fibers. -/
+public axiom normalizedPolarHoneycombPhaseGeometry
     {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) (r : ℝ) (hr : 0 < r) :
     Nonempty { P : PolarHoneycombData M r //
-      PolarPhaseRadialCompatibility N M r P ∧ PolarPhaseGeometricCore M r P }
+      (∀ j : Fin 2, P.positiveTwist (Pi.single j 1) =
+        normalizedCuspPositiveTwist N (Pi.single j 1)) ∧ PolarPhaseGeometricCore M r P }
+
+/-- Exact choice of the canonical radial multiplier supplies the radial compatibility required
+by the algebraic deck correction. -/
+public theorem polarHoneycombPhaseSpreadingGeometry
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) (r : ℝ) (hr : 0 < r) :
+    Nonempty { P : PolarHoneycombData M r //
+      PolarPhaseRadialCompatibility N M r P ∧ PolarPhaseGeometricCore M r P } := by
+  obtain ⟨⟨P, hP, G⟩⟩ := normalizedPolarHoneycombPhaseGeometry N M r hr
+  have hTwist := positiveTwist_eq_normalized_of_basis_aux N P hP
+  refine ⟨⟨P, ⟨?_, G⟩⟩⟩
+  refine ⟨fun lambda i ↦ ?_⟩
+  rw [hTwist]
+  exact norm_normalizedCuspPositiveTwist N lambda i
 
 /-- The standard polar-honeycomb model can be chosen compatibly with compact phase orbits, the
 frozen deck action, and the stabilizers of the positive-part cellular homotopy. -/

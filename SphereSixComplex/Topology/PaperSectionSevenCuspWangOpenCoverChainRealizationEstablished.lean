@@ -95,24 +95,62 @@ public theorem actualCuspWangFibreToBandHomologyOne_eq_map
     R.twoDiscCover.cuspCoverIntersectionToEllipticBandHomologyOne_eq_map]
   exact (integralSingularHomologyMap_comp 1 _ _).symm
 
-/-- The exact residual comparison for the constructed full-fibre slice.  The second equality
-fixes the sign of the connecting morphism. -/
+/-- The exact finite residual comparison for the constructed full-fibre slice.  The first four
+equalities use the marked basis of the cusp fibre, while the last six use the geometric basis of
+the cusp collar.  In particular, the latter fix the sign of the connecting morphism. -/
 public structure ActualCuspWangFullFibreSliceComparison
     (R : A.SectionSevenAffineRadialCompletionInput) : Prop where
-  fiberToBand_homology :
+  fiberToBand_homology_basis :
+    let G := A.actualCuspRadialClutchingData
+    let _ := G.fiberTopology
+    ∀ i : Fin 4,
+      R.twoDiscCover.canonicalCuspFiberToBandHomologyOne
+          (G.monodromyCoordinates.degreeOne.symm (Pi.single i 1)) =
+        actualCuspWangFibreToBandHomologyOne (A := A) R
+          (G.monodromyCoordinates.degreeOne.symm (Pi.single i 1))
+  wangBoundary_eq_chainConnecting_basis :
+    let G := A.actualCuspRadialClutchingData
+    let _ := G.fiberTopology
+    ∀ i : Fin 6,
+      ((actualCuspWangFibreToCuspCoverIntersectionHomologyOne (A := A) R).comp
+          (actualCuspWangBoundaryHom A))
+            (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1)) =
+        R.twoDiscCover.cuspOpenCoverConnectingHom
+          (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1))
+
+namespace ActualCuspWangFullFibreSliceComparison
+
+/-- The four marked fibre-basis checks reconstruct the full band-map equality. -/
+public theorem fiberToBand_homology
+    (C : ActualCuspWangFullFibreSliceComparison R) :
     R.twoDiscCover.canonicalCuspFiberToBandHomologyOne =
-      actualCuspWangFibreToBandHomologyOne (A := A) R
-  wangBoundary_eq_chainConnecting :
+      actualCuspWangFibreToBandHomologyOne (A := A) R := by
+  let G := A.actualCuspRadialClutchingData
+  let _ := G.fiberTopology
+  apply SphereSixComplex.addMonoidHom_ext_of_equiv_pi_single_one
+    G.monodromyCoordinates.degreeOne
+  exact C.fiberToBand_homology_basis
+
+/-- The six geometric collar-basis checks reconstruct the oriented connecting-map equality. -/
+public theorem wangBoundary_eq_chainConnecting
+    (C : ActualCuspWangFullFibreSliceComparison R) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     (actualCuspWangFibreToCuspCoverIntersectionHomologyOne (A := A) R).comp
         (actualCuspWangBoundaryHom A) =
-      R.twoDiscCover.cuspOpenCoverConnectingHom
+      R.twoDiscCover.cuspOpenCoverConnectingHom := by
+  let G := A.actualCuspRadialClutchingData
+  let _ := G.fiberTopology
+  apply SphereSixComplex.addMonoidHom_ext_of_equiv_pi_single_one
+    A.actualCuspRawHomologyTwoEquiv
+  exact C.wangBoundary_eq_chainConnecting_basis
+
+end ActualCuspWangFullFibreSliceComparison
 
 namespace EstablishedActualCuspWangOpenCoverChainRealization
 
-/-- The period-marked and oriented chain comparison for the explicitly constructed full-fibre
-slice. -/
+/-- The finite period-marked and oriented chain comparison for the explicitly constructed
+full-fibre slice. -/
 public axiom fullFibreSliceComparison (R : A.SectionSevenAffineRadialCompletionInput) :
     ActualCuspWangFullFibreSliceComparison R
 

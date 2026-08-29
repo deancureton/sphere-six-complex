@@ -10,8 +10,7 @@
     "propext",
     "Quot.sound",
     "Classical.choice",
-    "SphereSixComplex.establishedHomologyToHomotopySixSphere",
-    "SphereSixComplex.establishedSmoothPoincareSixStandardModel",
+    "SphereSixComplex.establishedSmoothIntegralHomologySixSphereRecognition",
     "SphereSixComplex.establishedCompactSmoothOrientedManifoldHomologyTheory",
     "SphereSixComplex.EstablishedCellularHomology.integralCWCellularChainModel",
     "SphereSixComplex.EstablishedGeneralTopology.isHomotopyEquivalenceInclusion_of_relativeCWComplex_of_bijective_homotopyGroups",
@@ -20,14 +19,15 @@
     "SphereSixComplex.Topology.FiniteCoverPerfectPairing.establishedEllipticDegreeTwoDualPullbackFiniteData",
     "SphereSixComplex.Topology.AffineFiniteCyclicTorusCW.finiteCWModelSix_of_fullRankTorusCover",
     "SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.EstablishedAffineCyclicQuotientHomology.establishedAffineCyclicUniversalCoverHOneIdentification",
-    "SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberFiniteCellularRealization",
-    "SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization.establishedFiniteGeneratorSpecializationMatrix",
+    "SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberCellAtlas",
+    "SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberIncidenceResidual",
+    "SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization.establishedFiniteFiberGeneratorSpecializationMatrix",
     "SphereSixComplex.Geometry.PaperAnalyticData.establishedActualEllipticMarkedFillingExtensionNaturality",
     "SphereSixComplex.Topology.TwicePuncturedComplex.freeTwoGeneratorLift_injective_of_open_union",
     "SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenAffineRegularLiftTopology.markedBandHomotopies",
     "SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTopology.establishedActualCuspFiberEllipticMarkedCoordinateCalculation",
     "SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenEllipticTwoDiscCoverData.EstablishedActualCuspWangOpenCoverChainRealization.fullFibreSliceComparison",
-    "SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established.polarHoneycombPhaseSpreadingGeometry"
+    "SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established.normalizedPolarHoneycombPhaseGeometry"
   ],
   "enable_nanoda": false
 }

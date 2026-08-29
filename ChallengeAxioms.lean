@@ -25,12 +25,9 @@ Do not edit it by hand; run ./scripts/update-axiom-catalog.sh --write.
 # precise geometric, analytic, or classical-topological statements; their source docstrings
 # record the corresponding trust boundary.
 #
-# Intended retained project trust kernel (7 constants):
-# establishedHomologyToHomotopySixSphere, establishedSmoothPoincareSixStandardModel,
-# establishedCompactSmoothOrientedManifoldHomologyTheory, integralCWCellularChainModel,
-# isHomotopyEquivalenceInclusion_of_isAspherical_of_bijective_fundamentalGroup,
-# FiniteCoverModelSix.establishedEulerMultiplicativity, and
-# establishedOrbifoldAffineLineTorsorCuspBoundedSection.
+# Intended retained project trust kernel (6 constants): smooth integral-homology-sphere
+# recognition, compact smooth oriented manifold homology, integral cellular chains, relative
+# Whitehead, finite-cover cellular lifting, and orbifold affine-torsor analytic descent.
 # Every other project constant below is a temporary proof obligation to eliminate.
 
 # Lean's standard logical axioms.
@@ -39,10 +36,9 @@ axiom Quot.sound.{u} : ∀ {α : Sort u} {r : α → α → Prop} {a b : α}, r 
 axiom Classical.choice.{u} : {α : Sort u} → Nonempty α → α
 
 # Classical recognition of the standard smooth six-sphere.
-axiom SphereSixComplex.establishedHomologyToHomotopySixSphere : ∀ {X : Type} [inst : TopologicalSpace X] [T2Space X]
-  [SecondCountableTopology X] [inst_3 : ChartedSpace SphereSixComplex.RealModel X],
-  SphereSixComplex.HomologyToHomotopySixSphereObligation X
-axiom SphereSixComplex.establishedSmoothPoincareSixStandardModel : SphereSixComplex.SmoothPoincareSixStandardModel
+axiom SphereSixComplex.establishedSmoothIntegralHomologySixSphereRecognition : ∀ {X : Type} [inst : TopologicalSpace X]
+  [T2Space X] [SecondCountableTopology X] [inst_3 : ChartedSpace SphereSixComplex.RealModel X],
+  SphereSixComplex.SmoothSixSphereRecognitionObligation X
 
 # Established general topology and homology.
 axiom SphereSixComplex.establishedCompactSmoothOrientedManifoldHomologyTheory : (d : ℕ) →
@@ -106,19 +102,32 @@ axiom SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.EstablishedAffine
             P
 
 # Established analytic and toric models from the paper.
-axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberFiniteCellularRealization : {E :
+axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberCellAtlas : {E :
     SphereSixComplex.Periods.EstablishedFuchsianModularParameter} →
   {D : SphereSixComplex.Periods.FuchsianPeriodLocalData E} →
     {N : SphereSixComplex.Geometry.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate E D} →
       {M : SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Model} →
         (W : SphereSixComplex.Geometry.CuspPuncturedCollarBridge.ActualPuncturedCuspCollarWitness N M) →
           (R : SphereSixComplex.Geometry.CuspPuncturedCollarBridge.ActualLocalCuspCentralFiberRetractionData W) →
-            SphereSixComplex.StandardA2ToricCentralFiberFiniteCellularRealization
+            let x := SphereSixComplex.Geometry.PaperAnalyticData.actualLocalCuspFilling_t2 W;
+            let x := inferInstance;
+            SphereSixComplex.StandardA2ToricCentralFiberCellAtlas
               ↑(SphereSixComplex.Geometry.CuspPuncturedCollarBridge.ActualLocalCuspCentralFiberRetractionData.quotientCentralFiber
                   W R)
-axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization.establishedFiniteGeneratorSpecializationMatrix : ∀
+axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberIncidenceResidual : ∀
+  {E : SphereSixComplex.Periods.EstablishedFuchsianModularParameter}
+  {D : SphereSixComplex.Periods.FuchsianPeriodLocalData E}
+  {N : SphereSixComplex.Geometry.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate E D}
+  {M : SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Model}
+  (W : SphereSixComplex.Geometry.CuspPuncturedCollarBridge.ActualPuncturedCuspCollarWitness N M)
+  (R : SphereSixComplex.Geometry.CuspPuncturedCollarBridge.ActualLocalCuspCentralFiberRetractionData W),
+  let x := SphereSixComplex.Geometry.PaperAnalyticData.actualLocalCuspFilling_t2 W;
+  let x := inferInstance;
+  SphereSixComplex.StandardA2ToricCentralFiberIncidenceResidual
+    (SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberCellAtlas W R)
+axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization.establishedFiniteFiberGeneratorSpecializationMatrix : ∀
   (A : SphereSixComplex.Geometry.PaperAnalyticData),
-  SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization.FiniteGeneratorSpecializationMatrix
+  SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization.FiniteFiberGeneratorSpecializationMatrix
     A
 axiom SphereSixComplex.Geometry.PaperAnalyticData.establishedActualEllipticMarkedFillingExtensionNaturality : ∀
   (A : SphereSixComplex.Geometry.PaperAnalyticData),
@@ -160,7 +169,7 @@ axiom SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenEllipticTwoDiscCov
   {A : SphereSixComplex.Geometry.PaperAnalyticData} (R : A.SectionSevenAffineRadialCompletionInput),
   SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenEllipticTwoDiscCoverData.ActualCuspWangFullFibreSliceComparison
     R
-axiom SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established.polarHoneycombPhaseSpreadingGeometry : ∀
+axiom SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established.normalizedPolarHoneycombPhaseGeometry : ∀
   {E : SphereSixComplex.Periods.EstablishedFuchsianModularParameter}
   {D : SphereSixComplex.Periods.FuchsianPeriodLocalData E}
   (N : SphereSixComplex.Geometry.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate E D)
@@ -168,6 +177,9 @@ axiom SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established.polarHo
   0 < r →
     Nonempty
       { P //
-        SphereSixComplex.Geometry.CuspStraighteningRetraction.PolarPhaseRadialCompatibility N M r P ∧
+        (∀ (j : Fin 2),
+            P.positiveTwist (Pi.single j 1) =
+              SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established.normalizedCuspPositiveTwist N
+                (Pi.single j 1)) ∧
           SphereSixComplex.Geometry.CuspStraighteningRetraction.PolarPhaseGeometricCore M r P }
 END GENERATED AXIOM CATALOG -/

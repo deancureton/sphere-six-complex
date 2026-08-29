@@ -4,12 +4,9 @@
 # precise geometric, analytic, or classical-topological statements; their source docstrings
 # record the corresponding trust boundary.
 #
-# Intended retained project trust kernel (7 constants):
-# establishedHomologyToHomotopySixSphere, establishedSmoothPoincareSixStandardModel,
-# establishedCompactSmoothOrientedManifoldHomologyTheory, integralCWCellularChainModel,
-# isHomotopyEquivalenceInclusion_of_isAspherical_of_bijective_fundamentalGroup,
-# FiniteCoverModelSix.establishedEulerMultiplicativity, and
-# establishedOrbifoldAffineLineTorsorCuspBoundedSection.
+# Intended retained project trust kernel (6 constants): smooth integral-homology-sphere
+# recognition, compact smooth oriented manifold homology, integral cellular chains, relative
+# Whitehead, finite-cover cellular lifting, and orbifold affine-torsor analytic descent.
 # Every other project constant below is a temporary proof obligation to eliminate.
 
 # Lean's standard logical axioms.
@@ -18,8 +15,7 @@ Quot.sound
 Classical.choice
 
 # Classical recognition of the standard smooth six-sphere.
-SphereSixComplex.establishedHomologyToHomotopySixSphere
-SphereSixComplex.establishedSmoothPoincareSixStandardModel
+SphereSixComplex.establishedSmoothIntegralHomologySixSphereRecognition
 
 # Established general topology and homology.
 SphereSixComplex.establishedCompactSmoothOrientedManifoldHomologyTheory
@@ -32,11 +28,12 @@ SphereSixComplex.Topology.AffineFiniteCyclicTorusCW.finiteCWModelSix_of_fullRank
 SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.EstablishedAffineCyclicQuotientHomology.establishedAffineCyclicUniversalCoverHOneIdentification
 
 # Established analytic and toric models from the paper.
-SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberFiniteCellularRealization
-SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization.establishedFiniteGeneratorSpecializationMatrix
+SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberCellAtlas
+SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberIncidenceResidual
+SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization.establishedFiniteFiberGeneratorSpecializationMatrix
 SphereSixComplex.Geometry.PaperAnalyticData.establishedActualEllipticMarkedFillingExtensionNaturality
 SphereSixComplex.Topology.TwicePuncturedComplex.freeTwoGeneratorLift_injective_of_open_union
 SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenAffineRegularLiftTopology.markedBandHomotopies
 SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTopology.establishedActualCuspFiberEllipticMarkedCoordinateCalculation
 SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenEllipticTwoDiscCoverData.EstablishedActualCuspWangOpenCoverChainRealization.fullFibreSliceComparison
-SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established.polarHoneycombPhaseSpreadingGeometry
+SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established.normalizedPolarHoneycombPhaseGeometry
