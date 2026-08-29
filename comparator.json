@@ -16,7 +16,7 @@
     "SphereSixComplex.EstablishedCellularHomology.integralCWCellularChainModel",
     "SphereSixComplex.EstablishedGeneralTopology.isHomotopyEquivalenceInclusion_of_isAspherical_of_bijective_fundamentalGroup",
     "SphereSixComplex.EstablishedTorusBundleTopology.centralCollarAdditiveBundleRealization",
-    "SphereSixComplex.EstablishedTorusHomology.additiveTorusHomologyBasis_linearPart_naturality",
+    "SphereSixComplex.StandardTorusHomology.standardFourTorusNaturalRecalibration_nonempty",
     "SphereSixComplex.FiniteCWBundleModelSix.establishedEulerMultiplicativity",
     "SphereSixComplex.Periods.establishedOrbifoldAffineLineTorsorCuspBoundedCousinCorrection",
     "SphereSixComplex.Topology.FiniteCoverPerfectPairing.establishedEllipticDegreeTwoDualPullbackFiniteData",

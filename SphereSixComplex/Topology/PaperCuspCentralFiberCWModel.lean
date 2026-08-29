@@ -2,6 +2,7 @@ module
 
 public import SphereSixComplex.Topology.SectionSevenLocalEulerModels
 public import SphereSixComplex.Topology.CellularChainModel
+public import SphereSixComplex.Topology.PaperCuspCentralFiberCWConstruction
 
 /-!
 # The finite CW model of the cusp central fibre

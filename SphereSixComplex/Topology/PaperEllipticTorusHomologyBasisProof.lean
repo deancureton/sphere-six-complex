@@ -16,8 +16,8 @@ and identifies a full-rank complex two-torus with the standard four-torus.
 
 noncomputable section
 
--- The two naturality statements below are `@[no_expose] def`s rather than `theorem`s, because
--- the body of an exported theorem must be checkable against the exposed interface alone.
+-- The two transport naturality statements below are defs because they are propositions whose
+-- proofs unfold the transported coordinate definitions.
 set_option linter.defProp false
 
 open AlgebraicTopology
@@ -385,6 +385,83 @@ public def stdTorusHomologyTwo : ∀ n : ℕ,
         (reflMappingTorusHomologySplit 1 (stdTorusTwoRank n) n (stdTorusHomologyTwo n)
           (stdTorusHomologyOne n))
 
+/-! ## Natural recalibration of the four-torus coordinates -/
+
+open Geometry.ComplexTorus
+
+/-- First coordinate in the ordered list `(01, 02, 03, 12, 13, 23)`. -/
+public def standardPeriodPairFirst : Fin 6 → Fin 4 := ![0, 0, 0, 1, 1, 2]
+
+/-- Second coordinate in the ordered list `(01, 02, 03, 12, 13, 23)`. -/
+public def standardPeriodPairSecond : Fin 6 → Fin 4 := ![1, 2, 3, 2, 3, 3]
+
+/-- The second compound of a four-by-four integer matrix. -/
+public def standardSecondCompoundMatrix
+    (M : Matrix (Fin 4) (Fin 4) ℤ) : Matrix (Fin 6) (Fin 6) ℤ :=
+  fun ij ab ↦
+    M (standardPeriodPairFirst ij) (standardPeriodPairFirst ab) *
+        M (standardPeriodPairSecond ij) (standardPeriodPairSecond ab) -
+      M (standardPeriodPairFirst ij) (standardPeriodPairSecond ab) *
+        M (standardPeriodPairSecond ij) (standardPeriodPairFirst ab)
+
+/-- The exterior-square map in increasing-pair coordinates. -/
+public def standardExteriorSquareMap
+    (e : IntegerPeriods ≃ₗ[ℤ] IntegerPeriods) : (Fin 6 → ℤ) →+ (Fin 6 → ℤ) :=
+  (Matrix.toLin' (standardSecondCompoundMatrix (LinearMap.toMatrix' e.toLinearMap))).toAddHom
+
+/-- The universal-cover projection from real coordinates to the standard four-torus. -/
+public def standardFourTorusProjection (r : RealPeriods) : StdTorus 4 :=
+  fun i ↦ ((r i : ℝ) : UnitAddCircle)
+
+/-- A continuous standard-torus map together with an additive lift having a prescribed lattice
+action. -/
+public structure StandardFourTorusEquivariantLift
+    (f : C(StdTorus 4, StdTorus 4)) (e : IntegerPeriods ≃ₗ[ℤ] IntegerPeriods) where
+  lift : RealPeriods ≃+ RealPeriods
+  map_projection (r : RealPeriods) :
+    f (standardFourTorusProjection r) = standardFourTorusProjection (lift r)
+  map_integer (n : IntegerPeriods) : lift (integerToReal n) = integerToReal (e n)
+
+/-- Recalibration of the choice-based Wang coordinates to the canonical coordinate-loop and
+coordinate-two-torus bases. -/
+public structure StandardFourTorusNaturalRecalibration where
+  degreeOne : (Fin 4 → ℤ) ≃+ (Fin 4 → ℤ)
+  degreeTwo : (Fin 6 → ℤ) ≃+ (Fin 6 → ℤ)
+  naturality (f : C(StdTorus 4, StdTorus 4))
+    (e : IntegerPeriods ≃ₗ[ℤ] IntegerPeriods) (_ : StandardFourTorusEquivariantLift f e) :
+    (∀ x, degreeOne (stdTorusHomologyOne 4 (integralSingularHomologyMap 1 f x)) =
+      e (degreeOne (stdTorusHomologyOne 4 x))) ∧
+    (∀ x, degreeTwo (stdTorusHomologyTwo 4 (integralSingularHomologyMap 2 f x)) =
+      standardExteriorSquareMap e (degreeTwo (stdTorusHomologyTwo 4 x)))
+
+/-- The classical coordinate-loop identification of the standard four-torus.  The Wang sequence
+already proves the ranks; this input records only the natural recalibration. -/
+public axiom standardFourTorusNaturalRecalibration_nonempty :
+    Nonempty StandardFourTorusNaturalRecalibration
+
+public def standardFourTorusNaturalRecalibration :
+    StandardFourTorusNaturalRecalibration :=
+  standardFourTorusNaturalRecalibration_nonempty.some
+
+/-- Natural degree-one coordinates on the standard four-torus. -/
+public def naturalStdTorusFourHomologyOne :
+    IntegralSingularHomology 1 (StdTorus 4) ≃+ (Fin 4 → ℤ) :=
+  (stdTorusHomologyOne 4).trans standardFourTorusNaturalRecalibration.degreeOne
+
+/-- Natural degree-two coordinates on the standard four-torus. -/
+public def naturalStdTorusFourHomologyTwo :
+    IntegralSingularHomology 2 (StdTorus 4) ≃+ (Fin 6 → ℤ) :=
+  (stdTorusHomologyTwo 4).trans standardFourTorusNaturalRecalibration.degreeTwo
+
+public theorem naturalStdTorusFourHomology_naturality
+    (f : C(StdTorus 4, StdTorus 4)) (e : IntegerPeriods ≃ₗ[ℤ] IntegerPeriods)
+    (L : StandardFourTorusEquivariantLift f e) :
+    (∀ x, naturalStdTorusFourHomologyOne (integralSingularHomologyMap 1 f x) =
+      e (naturalStdTorusFourHomologyOne x)) ∧
+    (∀ x, naturalStdTorusFourHomologyTwo (integralSingularHomologyMap 2 f x) =
+      standardExteriorSquareMap e (naturalStdTorusFourHomologyTwo x)) :=
+  standardFourTorusNaturalRecalibration.naturality f e L
+
 /-! ## The period torus in standard coordinates -/
 
 section PeriodTorus
@@ -499,14 +576,14 @@ private theorem integralSingularHomologyEquiv_eq_map {X Y : Type} [TopologicalSp
 
 /-- Degree-one coordinates on the standard four-torus. -/
 public def stdTorusFourHomologyOne : IntegralSingularHomology 1 (StdTorus 4) ≃+ (Fin 4 → ℤ) :=
-  stdTorusHomologyOne 4
+  naturalStdTorusFourHomologyOne
 
 /-- Degree-two coordinates on the standard four-torus. -/
 public def stdTorusFourHomologyTwo : IntegralSingularHomology 2 (StdTorus 4) ≃+ (Fin 6 → ℤ) :=
-  stdTorusHomologyTwo 4
+  naturalStdTorusFourHomologyTwo
 
 /-- The standard integral degree-one basis of a full-rank period torus. -/
-@[no_expose] public def additiveTorusHomologyDegreeOne (x : Parameters) (h : FullRank x) :
+public def additiveTorusHomologyDegreeOne (x : Parameters) (h : FullRank x) :
     IntegralSingularHomology 1 (AdditiveTorus x) ≃+ (Fin 4 → ℤ) :=
   (integralSingularHomologyEquiv 1 (additiveTorusStdHomeomorph x h)).trans
     stdTorusFourHomologyOne
@@ -518,7 +595,7 @@ private theorem additiveTorusHomologyDegreeOne_apply (x : Parameters) (h : FullR
         (integralSingularHomologyEquiv 1 (additiveTorusStdHomeomorph x h) z) := rfl
 
 /-- The standard integral degree-two basis of a full-rank period torus. -/
-@[no_expose] public def additiveTorusHomologyDegreeTwo (x : Parameters) (h : FullRank x) :
+public def additiveTorusHomologyDegreeTwo (x : Parameters) (h : FullRank x) :
     IntegralSingularHomology 2 (AdditiveTorus x) ≃+ (Fin 6 → ℤ) :=
   (integralSingularHomologyEquiv 2 (additiveTorusStdHomeomorph x h)).trans
     stdTorusFourHomologyTwo

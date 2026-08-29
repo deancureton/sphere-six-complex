@@ -70,21 +70,8 @@ axiom SphereSixComplex.EstablishedGeneralTopology.isHomotopyEquivalenceInclusion
 axiom SphereSixComplex.EstablishedTorusBundleTopology.centralCollarAdditiveBundleRealization : ∀
   (A : SphereSixComplex.Geometry.PaperAnalyticData),
   Nonempty (SphereSixComplex.EstablishedTorusBundleTopology.CentralCollarAdditiveBundleRealization A)
-axiom SphereSixComplex.EstablishedTorusHomology.additiveTorusHomologyBasis_linearPart_naturality : ∀
-  (p : SphereSixComplex.Periods.Parameters) (hfull : SphereSixComplex.Geometry.ComplexTorus.FullRank p)
-  (D : SphereSixComplex.DescendedAffineTorusAutomorphism p),
-  let B := SphereSixComplex.EstablishedTorusHomology.additiveTorusHomologyBasis p hfull;
-  (∀
-      (x :
-        SphereSixComplex.IntegralSingularHomology 1
-          (SphereSixComplex.Geometry.EllipticFamilySpecialization.AdditiveTorus p)),
-      B.degreeOne ((SphereSixComplex.integralSingularHomologyMap 1 D.linearPartMap) x) = D.latticeMap (B.degreeOne x)) ∧
-    ∀
-      (x :
-        SphereSixComplex.IntegralSingularHomology 2
-          (SphereSixComplex.Geometry.EllipticFamilySpecialization.AdditiveTorus p)),
-      B.degreeTwo ((SphereSixComplex.integralSingularHomologyMap 2 D.linearPartMap) x) =
-        (SphereSixComplex.exteriorSquareMap D.latticeMap) (B.degreeTwo x)
+axiom SphereSixComplex.StandardTorusHomology.standardFourTorusNaturalRecalibration_nonempty : Nonempty
+  SphereSixComplex.StandardTorusHomology.StandardFourTorusNaturalRecalibration
 axiom SphereSixComplex.FiniteCWBundleModelSix.establishedEulerMultiplicativity : ∀ {X : Type}
   [inst : TopologicalSpace X] (M : SphereSixComplex.FiniteCWBundleModelSix X),
   let x := M.baseTopology;

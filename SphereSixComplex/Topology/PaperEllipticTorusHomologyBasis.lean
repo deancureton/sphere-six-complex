@@ -156,10 +156,71 @@ end FourTorusHomologyBasis
 
 namespace EstablishedTorusHomology
 
-/-- The integral singular homology of a full-rank complex two-torus, in the period basis.  This
-is the standard circle-product and Kunneth calculation, carried out in
-`PaperEllipticTorusHomologyBasisProof` by iterating the Wang sequence of the mapping torus of an
-identity map. -/
+/-- The linear part of a descended affine automorphism in standard real torus coordinates. -/
+@[expose] public def standardCoordinateMap
+    (p : SphereSixComplex.Periods.Parameters) (hfull : FullRank p)
+    (D : DescendedAffineTorusAutomorphism p) :
+    C(StandardTorusHomology.StdTorus 4, StandardTorusHomology.StdTorus 4) :=
+  (StandardTorusHomology.additiveTorusStdHomeomorph p hfull :
+      C(AdditiveTorus p, StandardTorusHomology.StdTorus 4)).comp
+    (D.linearPartMap.comp
+      (StandardTorusHomology.additiveTorusStdHomeomorph p hfull).symm)
+
+/-- The additive lift of `standardCoordinateMap` obtained by conjugating the given lift with
+real period coordinates. -/
+@[expose] public def standardCoordinateLift
+    (p : SphereSixComplex.Periods.Parameters) (hfull : FullRank p)
+    (D : DescendedAffineTorusAutomorphism p) : RealPeriods ≃+ RealPeriods :=
+  hfull.realEquiv.toLinearEquiv.toAddEquiv |>.trans D.lift |>.trans
+    hfull.realEquiv.toLinearEquiv.toAddEquiv.symm
+
+public theorem standardCoordinateLift_map_integer
+    (p : SphereSixComplex.Periods.Parameters) (hfull : FullRank p)
+    (D : DescendedAffineTorusAutomorphism p) (n : IntegerPeriods) :
+    standardCoordinateLift p hfull D (integerToReal n) = integerToReal (D.latticeMap n) := by
+  apply hfull.realEquiv.injective
+  simp only [standardCoordinateLift, AddEquiv.trans_apply]
+  change hfull.realEquiv
+      (hfull.realEquiv.symm (D.lift (hfull.realEquiv (integerToReal n)))) =
+    hfull.realEquiv (integerToReal (D.latticeMap n))
+  rw [hfull.realEquiv.apply_symm_apply]
+  rw [hfull.map_integer, hfull.map_integer, D.lift_period]
+
+public theorem standardCoordinateMap_projection
+    (p : SphereSixComplex.Periods.Parameters) (hfull : FullRank p)
+    (D : DescendedAffineTorusAutomorphism p) (r : RealPeriods) :
+    standardCoordinateMap p hfull D (StandardTorusHomology.standardFourTorusProjection r) =
+      StandardTorusHomology.standardFourTorusProjection
+        (standardCoordinateLift p hfull D r) := by
+  let e := StandardTorusHomology.additiveTorusStdHomeomorph p hfull
+  have hmk : e.symm (StandardTorusHomology.standardFourTorusProjection r) =
+      Quotient.mk _ (hfull.realEquiv r) := by
+    apply e.injective
+    rw [e.apply_symm_apply]
+    funext i
+    change ((r i : ℝ) : UnitAddCircle) =
+      ((hfull.realEquiv.symm (hfull.realEquiv r) i : ℝ) : UnitAddCircle)
+    rw [hfull.realEquiv.symm_apply_apply]
+  change e (D.linearPartMap
+    (e.symm (StandardTorusHomology.standardFourTorusProjection r))) = _
+  rw [hmk, D.linearPartMap_mk]
+  funext i
+  change ((hfull.realEquiv.symm (D.lift (hfull.realEquiv r)) i : ℝ) : UnitAddCircle) =
+    (((standardCoordinateLift p hfull D r) i : ℝ) : UnitAddCircle)
+  rfl
+
+/-- The coordinate conjugate carries the additive lift and lattice action required by the
+standard four-torus naturality theorem. -/
+@[expose] public def standardCoordinateEquivariantLift
+    (p : SphereSixComplex.Periods.Parameters) (hfull : FullRank p)
+    (D : DescendedAffineTorusAutomorphism p) :
+    StandardTorusHomology.StandardFourTorusEquivariantLift
+      (standardCoordinateMap p hfull D) D.latticeMap where
+  lift := standardCoordinateLift p hfull D
+  map_projection := standardCoordinateMap_projection p hfull D
+  map_integer := standardCoordinateLift_map_integer p hfull D
+
+/-- The integral singular homology of a full-rank complex two-torus, in the period basis. -/
 @[expose] public def additiveTorusHomologyBasis
     (p : SphereSixComplex.Periods.Parameters) (hfull : FullRank p) :
     AdditiveTorusHomologyBasis p where
@@ -180,16 +241,41 @@ public theorem additiveTorusHomologyBasis_degreeTwo
       StandardTorusHomology.additiveTorusHomologyDegreeTwo p hfull := rfl
 
 /-- Naturality of the standard torus bases under the linear part of a descended affine
-automorphism.  This is the remaining classical input: it identifies `H₁(V/Λ)` with `Λ` and
-degree two with its exterior square. -/
-public axiom additiveTorusHomologyBasis_linearPart_naturality
+automorphism, transported from the fixed standard four-torus. -/
+public theorem additiveTorusHomologyBasis_linearPart_naturality
     (p : SphereSixComplex.Periods.Parameters) (hfull : FullRank p)
     (D : DescendedAffineTorusAutomorphism p) :
     let B := additiveTorusHomologyBasis p hfull
     (∀ x, B.degreeOne (integralSingularHomologyMap 1 D.linearPartMap x) =
       D.latticeMap (B.degreeOne x)) ∧
     (∀ x, B.degreeTwo (integralSingularHomologyMap 2 D.linearPartMap x) =
-      exteriorSquareMap D.latticeMap (B.degreeTwo x))
+      exteriorSquareMap D.latticeMap (B.degreeTwo x)) := by
+  let e := StandardTorusHomology.additiveTorusStdHomeomorph p hfull
+  have hnat := StandardTorusHomology.naturalStdTorusFourHomology_naturality
+    (standardCoordinateMap p hfull D) D.latticeMap
+    (standardCoordinateEquivariantLift p hfull D)
+  have hmaps :
+      (standardCoordinateMap p hfull D).comp (e : C(AdditiveTorus p, _)) =
+        (e : C(AdditiveTorus p, _)).comp D.linearPartMap := by
+    apply ContinuousMap.ext
+    intro q
+    change e (D.linearPartMap (e.symm (e q))) = e (D.linearPartMap q)
+    rw [e.symm_apply_apply]
+  have hhomology (k : ℕ) (x : IntegralSingularHomology k (AdditiveTorus p)) :
+      integralSingularHomologyMap k (standardCoordinateMap p hfull D)
+          (integralSingularHomologyMap k (e : C(AdditiveTorus p, _)) x) =
+        integralSingularHomologyMap k (e : C(AdditiveTorus p, _))
+          (integralSingularHomologyMap k D.linearPartMap x) := by
+    rw [integralSingularHomologyMap_comp_wang, integralSingularHomologyMap_comp_wang, hmaps]
+  constructor
+  · intro x
+    have hx := hnat.1 (integralSingularHomologyMap 1 (e : C(_, _)) x)
+    rw [hhomology] at hx
+    exact hx
+  · intro x
+    have hx := hnat.2 (integralSingularHomologyMap 2 (e : C(_, _)) x)
+    rw [hhomology] at hx
+    exact hx
 
 /-- Naturality of the standard torus bases under a descended affine automorphism.  Translation
 acts trivially, the degree-one map is the integral lattice map, and degree two is its exterior
