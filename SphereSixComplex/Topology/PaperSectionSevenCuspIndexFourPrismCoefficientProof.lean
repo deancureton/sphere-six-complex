@@ -100,11 +100,12 @@ actual affine radial input discharges the index-four prism coefficient calculati
 prism geometric package over that input. -/
 public theorem normalizedIndexFourPrismCoefficientCalculation_of_actualCuspFiberCoordinate
     (R : A.SectionSevenAffineRadialCompletionInput)
-    (W : R.twoDiscCover.SectionSevenCuspWangBandCompatibility R.homologyAlignment)
+    (G₀ : R.twoDiscCover.SectionSevenCuspPulledBackBoundaryBasisBridge
+      R.homologyAlignment)
     (C : R.twoDiscCover.CuspEllipticMappingTorusPrismGeometricData R.homologyAlignment
-      W.pulledBackBoundaryBasisBridge)
+      G₀)
     (h : R.twoDiscCover.ellipticInteriorDegreeTwoFiberCoordinateHom R.homologyAlignment
-        W.pulledBackBoundaryBasisBridge
+        G₀
         (integralSingularHomologyMap 2 R.twoDiscCover.cuspToEllipticInteriorMap.hom
           (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) = 1) :
     R.twoDiscCover.NormalizedIndexFourPrismCoefficientCalculation C :=

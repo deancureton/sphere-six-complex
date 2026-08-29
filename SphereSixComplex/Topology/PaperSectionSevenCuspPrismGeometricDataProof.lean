@@ -276,7 +276,8 @@ public noncomputable def cuspEllipticMappingTorusPrismGeometricData_of_coordinat
 two residual geometric coordinate identities. -/
 public noncomputable def cuspEllipticMappingTorusPrismGeometricData_proved_of_coordinateIdentities
     (R : A.SectionSevenAffineRadialCompletionInput)
-    (W : R.twoDiscCover.SectionSevenCuspWangBandCompatibility R.homologyAlignment)
+    (G₀ : R.twoDiscCover.SectionSevenCuspPulledBackBoundaryBasisBridge
+      R.homologyAlignment)
     (hOne : (R.twoDiscCover.ellipticInteriorDegreeOneCoordinateHom R.homologyAlignment).comp
         (integralSingularHomologyMap 1
           R.twoDiscCover.cuspMappingTorusToEllipticInteriorMap) =
@@ -286,11 +287,11 @@ public noncomputable def cuspEllipticMappingTorusPrismGeometricData_proved_of_co
     (hTwo : ∀ i : Fin 6, i ≠ 4 → i ≠ 5 →
       (R.homologyAlignment.actualHomologyCoordinates.normalizedEllipticInteriorHomologyTwoEquiv
         (R.twoDiscCover.cuspNormalizedDegreeTwoSplitting R.homologyAlignment
-          W.pulledBackBoundaryBasisBridge))
+          G₀))
           (integralSingularHomologyMap 2 R.twoDiscCover.cuspToEllipticInteriorMap.hom
             (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1))) 0 = 0) :
     R.twoDiscCover.CuspEllipticMappingTorusPrismGeometricData R.homologyAlignment
-      W.pulledBackBoundaryBasisBridge :=
+      G₀ :=
   cuspEllipticMappingTorusPrismGeometricData_of_coordinateIdentities hOne hTwo
 
 end Geometry.PaperAnalyticData

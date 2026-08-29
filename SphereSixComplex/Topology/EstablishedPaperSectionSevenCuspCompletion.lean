@@ -33,26 +33,45 @@ variable {A : PaperAnalyticData}
 
 namespace EstablishedSectionSevenCuspTopology
 
-/-- The two transported invariant-basis comparisons remaining in the canonical cusp Wang
-boundary square. -/
-public axiom canonicalCuspWangBoundaryInvariantResidual
+/-- The marked coordinate of the cusp Wang connecting morphism agrees with the marked coordinate
+of the pulled-back Mayer--Vietoris boundary. -/
+public axiom cuspMarkedConnectingNaturality
     (R : A.SectionSevenAffineRadialCompletionInput) :
-    CanonicalCuspWangBoundaryInvariantResidual R
+    R.twoDiscCover.CuspMarkedConnectingNaturality R.homologyAlignment
 
-/-- Naturality of the connecting morphism for the canonical map from the radial cusp cover to
-the affine two-disc cover. -/
-public theorem canonicalWangBoundaryNaturality
+/-- The marked connecting square determines the boundary comparison used by the affine
+assembly. -/
+public theorem markedBoundaryComparison
     (R : A.SectionSevenAffineRadialCompletionInput) :
-    R.twoDiscCover.CanonicalCuspWangBoundaryNaturality :=
-  canonicalCuspWangBoundaryNaturality_of_invariantResidual R
-    (canonicalCuspWangBoundaryInvariantResidual R)
+    R.twoDiscCover.SectionSevenCuspMarkedBoundaryComparison R.homologyAlignment :=
+  R.twoDiscCover.sectionSevenCuspMarkedBoundaryComparison_of_connectingNaturality
+    R.homologyAlignment (cuspMarkedConnectingNaturality R)
+
+/-- The canonical boundary basis bridge selected by the marked connecting square. -/
+public theorem pulledBackBoundaryBasisBridge
+    (R : A.SectionSevenAffineRadialCompletionInput) :
+    R.twoDiscCover.SectionSevenCuspPulledBackBoundaryBasisBridge R.homologyAlignment :=
+  SectionSevenCuspMarkedBoundaryComparison.pulledBackBoundaryBasisBridge
+    R.homologyAlignment (markedBoundaryComparison R)
+
+/-- The remaining paper-specific input, reduced to the eight marked coordinate evaluations for
+the canonical boundary basis bridge. -/
+public axiom establishedActualCuspFiberEllipticMarkedCoordinateCalculation
+    (R : A.SectionSevenAffineRadialCompletionInput) :
+    ActualCuspFiberEllipticMarkedCoordinateCalculation R (pulledBackBoundaryBasisBridge R)
+
+/-- The finite marked calculation implies the complete coordinate-homomorphism identities. -/
+public theorem actualCuspFiberEllipticFiniteCoordinateIdentities
+    (R : A.SectionSevenAffineRadialCompletionInput) :
+    ActualCuspFiberEllipticFiniteCoordinateIdentities R (pulledBackBoundaryBasisBridge R) :=
+  markedCoordinateCalculation_iff_finiteCoordinateIdentities.mp
+    (establishedActualCuspFiberEllipticMarkedCoordinateCalculation R)
 
 /-- The two remaining cusp coordinate identities: the meridian is the elliptic degree-one
 generator, and the cusp fibre degree-two classes have the marked normalized elliptic fibre
 coordinate.  Everything else in the Section 7 cusp model is derived. -/
 public structure ActualCuspFiberEllipticCoordinateIdentities
-    (R : A.SectionSevenAffineRadialCompletionInput)
-    (W : R.twoDiscCover.SectionSevenCuspWangBandCompatibility R.homologyAlignment) : Prop where
+    (R : A.SectionSevenAffineRadialCompletionInput) : Prop where
   /-- The meridian projection is the elliptic degree-one coordinate. -/
   degreeOne : (R.twoDiscCover.ellipticInteriorDegreeOneCoordinateHom R.homologyAlignment).comp
       (integralSingularHomologyMap 1
@@ -63,40 +82,39 @@ public structure ActualCuspFiberEllipticCoordinateIdentities
   /-- The cusp fibre degree-two basis classes have marked elliptic fibre coordinates. -/
   degreeTwo : ∀ i : Fin 6, i ≠ 5 →
     R.twoDiscCover.ellipticInteriorDegreeTwoFiberCoordinateHom R.homologyAlignment
-        W.pulledBackBoundaryBasisBridge
+        (pulledBackBoundaryBasisBridge R)
         (integralSingularHomologyMap 2 R.twoDiscCover.cuspToEllipticInteriorMap.hom
           (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1)))
       = if i = 4 then 1 else 0
 
 /-- The finite marked-basis calculation supplies the complete Section 7 cusp comparison. -/
 public theorem actualCuspFiberEllipticCoordinateIdentities
-    (R : A.SectionSevenAffineRadialCompletionInput)
-    (W : R.twoDiscCover.SectionSevenCuspWangBandCompatibility R.homologyAlignment) :
-    ActualCuspFiberEllipticCoordinateIdentities R W :=
-  { degreeOne := (actualCuspFiberEllipticFiniteCoordinateIdentities R W).degreeOneHom
-    degreeTwo := (actualCuspFiberEllipticFiniteCoordinateIdentities R W).degreeTwo }
+    (R : A.SectionSevenAffineRadialCompletionInput) :
+    ActualCuspFiberEllipticCoordinateIdentities R :=
+  { degreeOne := (actualCuspFiberEllipticFiniteCoordinateIdentities R).degreeOneHom
+    degreeTwo := (actualCuspFiberEllipticFiniteCoordinateIdentities R).degreeTwo }
 
 /-- The structural Section 7 cusp model, derived from the two coordinate identities. -/
 public noncomputable def cuspEllipticMappingTorusPrismGeometricData
-    (R : A.SectionSevenAffineRadialCompletionInput)
-    (W : R.twoDiscCover.SectionSevenCuspWangBandCompatibility R.homologyAlignment) :
+    (R : A.SectionSevenAffineRadialCompletionInput) :
     R.twoDiscCover.CuspEllipticMappingTorusPrismGeometricData R.homologyAlignment
-      W.pulledBackBoundaryBasisBridge :=
-  cuspEllipticMappingTorusPrismGeometricData_proved_of_coordinateIdentities R W
-    (actualCuspFiberEllipticCoordinateIdentities R W).degreeOne
+      (pulledBackBoundaryBasisBridge R) :=
+  cuspEllipticMappingTorusPrismGeometricData_proved_of_coordinateIdentities R
+    (pulledBackBoundaryBasisBridge R)
+    (actualCuspFiberEllipticCoordinateIdentities R).degreeOne
     (fun i hi4 hi5 => by
-      have h := (actualCuspFiberEllipticCoordinateIdentities R W).degreeTwo i hi5
+      have h := (actualCuspFiberEllipticCoordinateIdentities R).degreeTwo i hi5
       simp only [hi4, ↓reduceIte] at h
       exact h)
 
 /-- The orientation calculation at index four, derived from the same coordinate identities. -/
 public theorem normalizedIndexFourPrismCoefficientCalculation
-    (R : A.SectionSevenAffineRadialCompletionInput)
-    (W : R.twoDiscCover.SectionSevenCuspWangBandCompatibility R.homologyAlignment) :
+    (R : A.SectionSevenAffineRadialCompletionInput) :
     R.twoDiscCover.NormalizedIndexFourPrismCoefficientCalculation
-      (cuspEllipticMappingTorusPrismGeometricData R W) :=
-  normalizedIndexFourPrismCoefficientCalculation_of_actualCuspFiberCoordinate R W _
-    (by simpa using (actualCuspFiberEllipticCoordinateIdentities R W).degreeTwo 4 (by decide))
+      (cuspEllipticMappingTorusPrismGeometricData R) :=
+  normalizedIndexFourPrismCoefficientCalculation_of_actualCuspFiberCoordinate R
+    (pulledBackBoundaryBasisBridge R) _
+    (by simpa using (actualCuspFiberEllipticCoordinateIdentities R).degreeTwo 4 (by decide))
 
 end EstablishedSectionSevenCuspTopology
 
@@ -104,34 +122,19 @@ namespace SectionSevenAffineRadialCompletionInput
 
 open EstablishedSectionSevenCuspTopology
 
-/-- The established Section 7 cusp comparison supplies the complete unmarked clutching package
-for the actual affine radial cover. -/
-public noncomputable def sectionSevenCuspClutchingCompatibility
-    (R : A.SectionSevenAffineRadialCompletionInput) :
-    R.twoDiscCover.SectionSevenCuspClutchingCompatibility R.homologyAlignment := by
-  let hOrderThree := R.canonicalCuspFiberOrderThreePeriodMarking
-    A.actualCuspFiberPeriodMarkingCompatibility
-  let hMarking := R.twoDiscCover.canonicalCuspFiberBandPeriodMarking_of_orderThree
-    R.homologyAlignment hOrderThree
-  let wang := R.twoDiscCover.sectionSevenCuspWangBandCompatibility_of_canonicalMap
-    R.homologyAlignment
-    (EstablishedSectionSevenCuspTopology.canonicalWangBoundaryNaturality R)
-    hMarking
-  exact
-    { wangBand := wang
-      cycleDecomposition :=
-        SectionSevenCuspEllipticInclusionNaturality.cycleDecomposition
-          (CuspEllipticMappingTorusCoordinateComparison.inclusionNaturality
-            (CuspEllipticMappingTorusPrismGeometricData.coordinateComparison
-              (cuspEllipticMappingTorusPrismGeometricData R wang)
-              (normalizedIndexFourPrismCoefficientCalculation R wang))) }
-
 /-- The two established geometric comparison theorems discharge all three marked-coordinate
 obligations left by the affine reduction. -/
 public theorem sectionSevenAffineMarkedCompletionInput
     (R : A.SectionSevenAffineRadialCompletionInput) :
-    A.SectionSevenAffineMarkedCompletionInput R :=
-  R.sectionSevenCuspClutchingCompatibility.markedCompletionInput
+    A.SectionSevenAffineMarkedCompletionInput R := by
+  refine
+    { connectingNaturality := cuspMarkedConnectingNaturality R
+      inclusionNaturality := ?_ }
+  simpa [markedBoundaryComparison, pulledBackBoundaryBasisBridge] using
+    CuspEllipticMappingTorusCoordinateComparison.inclusionNaturality
+      (CuspEllipticMappingTorusPrismGeometricData.coordinateComparison
+        (cuspEllipticMappingTorusPrismGeometricData R)
+        (normalizedIndexFourPrismCoefficientCalculation R))
 
 end SectionSevenAffineRadialCompletionInput
 
