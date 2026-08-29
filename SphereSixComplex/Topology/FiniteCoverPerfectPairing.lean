@@ -340,18 +340,25 @@ public def orderFourRealization (P : EllipticDegreeTwoPullbackBases F) :
 
 end EllipticDegreeTwoPullbackBases
 
+/-- The exact remaining cohomological input from Proposition 7.14: the displayed pullback
+classes are bases of the integral dual lattices of the two elliptic central fibres, and their
+integral evaluation pairings are perfect. -/
+public axiom establishedEllipticDegreeTwoPullbackBases :
+    Nonempty (EllipticDegreeTwoPullbackBases F)
+
 /-- Proposition 7.14 for the two actual elliptic central fibres: their integral degree-two
 homology has the displayed bases, and the two covering maps have the computed pullback
 coordinates. -/
-public axiom establishedEllipticDegreeTwoPullbackRealizations :
+public theorem establishedEllipticDegreeTwoPullbackRealizations :
     Nonempty
       (OrderThreeReducedCentralFiberDegreeTwoRealization F ×
-        OrderFourReducedCentralFiberDegreeTwoRealization F)
+        OrderFourReducedCentralFiberDegreeTwoRealization F) := by
+  obtain ⟨P⟩ := establishedEllipticDegreeTwoPullbackBases F
+  exact ⟨P.orderThreeRealization F, P.orderFourRealization F⟩
 
 /-- A coherent choice of the two degree-two perfect-pairing realizations from Proposition
 7.14. -/
 public noncomputable def ellipticDegreeTwoPullbackBases : EllipticDegreeTwoPullbackBases F :=
-  let R := Classical.choice (establishedEllipticDegreeTwoPullbackRealizations F)
-  EllipticDegreeTwoPullbackBases.ofRealizations F R.1 R.2
+  Classical.choice (establishedEllipticDegreeTwoPullbackBases F)
 
 end SphereSixComplex.Topology.FiniteCoverPerfectPairing

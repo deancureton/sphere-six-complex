@@ -1,6 +1,7 @@
 module
 
 public import SphereSixComplex.Topology.SectionSevenLocalEulerModels
+public import SphereSixComplex.Topology.CellularChainModel
 
 /-!
 # The finite CW model of the cusp central fibre
@@ -44,6 +45,27 @@ public theorem cuspWCellIndex_isEmpty (n : ℕ) (hn : 4 < n) :
   change IsEmpty Empty
   infer_instance
 
+public theorem cuspWCellIndex_finite (n : ℕ) : Finite (cuspWCellIndex n) := by
+  rcases n with (_ | _ | _ | _ | _ | n)
+  · simpa [cuspWCellIndex] using (inferInstance : Finite (Fin 2))
+  · simpa [cuspWCellIndex] using (inferInstance : Finite (Fin 3))
+  · simpa [cuspWCellIndex] using (inferInstance : Finite (Fin 4))
+  · simpa [cuspWCellIndex] using (inferInstance : Finite (Fin 2))
+  · simpa [cuspWCellIndex] using (inferInstance : Finite (Fin 1))
+  · simpa [cuspWCellIndex] using (inferInstance : Finite Empty)
+
+/-- The oriented edge-incidence map in the standard toric cell coordinates. -/
+public def standardA2ToricCellularBoundaryOne : (Fin 3 → ℤ) →+ (Fin 2 → ℤ) where
+  toFun x := ![-(x 0 + x 1 + x 2), x 0 + x 1 + x 2]
+  map_zero' := by funext i; fin_cases i <;> simp
+  map_add' := by intro x y; funext i; fin_cases i <;> simp <;> ring
+
+/-- The cellular boundary formula of the standard periodic `A₂` toric central fibre. -/
+public def standardA2ToricCellularBoundary :
+    (n : ℕ) → (cuspWCellIndex n.succ → ℤ) →+ (cuspWCellIndex n → ℤ)
+  | 0 => standardA2ToricCellularBoundaryOne
+  | _ + 1 => 0
+
 /-- A geometric CW realization whose cells are the orbit strata of the standard periodic `A₂`
 toric central fibre.  This structure contains no homology groups or Euler characteristic. -/
 public structure StandardA2ToricCentralFiberCWDecomposition
@@ -64,6 +86,41 @@ public structure StandardA2ToricCentralFiberCWDecomposition
 namespace StandardA2ToricCentralFiberCWDecomposition
 
 variable {X : Type} [TopologicalSpace X]
+
+/-- The standard integral cellular chain model selected for the carrier. -/
+public noncomputable def integralCellularChainModel
+    (D : StandardA2ToricCentralFiberCWDecomposition X) :
+    let _ := D.topology
+    let _ := D.cwComplex
+    IntegralCWCellularChainModel D.Carrier := by
+  letI := D.topology
+  letI := D.t2
+  letI := D.cwComplex
+  exact EstablishedCellularHomology.integralCWCellularChainModel D.Carrier
+
+/-- Reindex integer coordinates along the labelled orbit-cell equivalence. -/
+public def standardIntegerFunctionReindexAddEquiv {I J : Type} (e : I ≃ J) :
+    (J → ℤ) ≃+ (I → ℤ) where
+  toFun x i := x (e i)
+  invFun x j := x (e.symm j)
+  left_inv x := by funext j; simp
+  right_inv x := by funext i; simp
+  map_add' _ _ := rfl
+
+/-- The cellular basis in the standard orbit-cell coordinates. -/
+public noncomputable def labelledCellBasis
+    (D : StandardA2ToricCentralFiberCWDecomposition X) (n : ℕ) :
+    let _ := D.topology
+    let _ := D.cwComplex
+    (cuspWCellIndex n → ℤ) ≃+ D.integralCellularChainModel.chainComplex.X n := by
+  letI := D.topology
+  letI := D.cwComplex
+  letI : Finite (cuspWCellIndex n) := cuspWCellIndex_finite n
+  letI : Finite (Topology.CWComplex.cell (Set.univ : Set D.Carrier) n) :=
+    Finite.of_equiv _ (D.cellEquiv n).symm
+  exact
+    (standardIntegerFunctionReindexAddEquiv (D.cellEquiv n)).trans
+      Finsupp.addEquivFunOnFinite.symm |>.trans (D.integralCellularChainModel.cellBasis n)
 
 /-- Forget the exact orbit labels and retain a finite CW model supported below degree seven. -/
 public noncomputable def toFiniteCWModelSix
@@ -104,6 +161,19 @@ public noncomputable def toCuspToricCellModel
 
 end StandardA2ToricCentralFiberCWDecomposition
 
+/-- A standard toric CW realization together with its exact attaching-incidence calculation.
+This is the single geometric-combinatorial input needed from the periodic `A₂` quotient. -/
+public structure StandardA2ToricCentralFiberCellularRealization
+    (X : Type) [TopologicalSpace X] where
+  decomposition : StandardA2ToricCentralFiberCWDecomposition X
+  boundary_eq :
+    let D := decomposition
+    let _ := D.topology
+    let _ := D.cwComplex
+    ∀ (n : ℕ) (x : cuspWCellIndex n.succ → ℤ),
+      D.integralCellularChainModel.chainComplex.d n.succ n (D.labelledCellBasis n.succ x) =
+        D.labelledCellBasis n (standardA2ToricCellularBoundary n x)
+
 namespace Geometry.CuspPuncturedCollarBridge
 
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
@@ -111,15 +181,25 @@ open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
 
-/-- Standard toric-orbit CW decomposition for the compact quotient of the periodic `A₂` central
-fibre.  This is the exact general toric-topology boundary absent from Mathlib: it supplies a CW
-realization and labels its cells by the orbit strata, but asserts no homology or Euler value. -/
-public axiom establishedStandardA2ToricCentralFiberCWDecomposition
+/-- The compact periodic `A₂` central fibre has its standard labelled CW realization and exact
+attaching-incidence formula. -/
+public axiom establishedStandardA2ToricCentralFiberCellularRealization
     {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W) :
-    StandardA2ToricCentralFiberCWDecomposition (R.quotientCentralFiber W)
+    StandardA2ToricCentralFiberCellularRealization (R.quotientCentralFiber W)
+
+/-- Standard toric-orbit CW decomposition for the compact quotient of the periodic `A₂` central
+fibre.  This is the exact general toric-topology boundary absent from Mathlib: it supplies a CW
+realization and labels its cells by the orbit strata, but asserts no homology or Euler value. -/
+public noncomputable def establishedStandardA2ToricCentralFiberCWDecomposition
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M)
+    (R : ActualLocalCuspCentralFiberRetractionData W) :
+    StandardA2ToricCentralFiberCWDecomposition (R.quotientCentralFiber W) :=
+  (establishedStandardA2ToricCentralFiberCellularRealization W R).decomposition
 
 /-- The actual quotient central fibre has the cusp toric cell model required by the local Euler
 calculation. -/

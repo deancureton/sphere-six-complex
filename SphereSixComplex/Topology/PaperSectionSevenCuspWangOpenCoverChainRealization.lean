@@ -108,16 +108,6 @@ public theorem canonicalBoundary_cuspToElliptic_eq_wangBoundary
 
 end ActualCuspWangOpenCoverChainRealization
 
-namespace EstablishedActualCuspWangOpenCoverChainRealization
-
-/-- The standard chain-level Wang theorem for the actual radial mapping-torus cut cover.  Its
-content is the oriented realization of the established Wang connecting map by the explicit
-short exact singular-chain sequence, before transport to the elliptic cover. -/
-public axiom realization (R : A.SectionSevenAffineRadialCompletionInput) :
-    R.twoDiscCover.ActualCuspWangOpenCoverChainRealization
-
-end EstablishedActualCuspWangOpenCoverChainRealization
-
 end SectionSevenEllipticTwoDiscCoverData
 
 end SphereSixComplex.Geometry.PaperAnalyticData

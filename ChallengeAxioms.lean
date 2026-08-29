@@ -67,13 +67,10 @@ axiom SphereSixComplex.EstablishedGeneralTopology.isHomotopyEquivalenceInclusion
               (have this := rfl;
               this)) →
         ∀ (hCW : Topology.RelCWComplex Set.univ D), SphereSixComplex.IsHomotopyEquivalenceInclusion D
-axiom SphereSixComplex.EstablishedTorusBundleTopology.centralFamilyBundleRealization : (A :
-    SphereSixComplex.Geometry.PaperAnalyticData) →
-  SphereSixComplex.AdditiveFourTorusBundleRealization ↑A.openEmbeddingStarData.central
-axiom SphereSixComplex.EstablishedTorusBundleTopology.collarBundleRealization : (A :
-    SphereSixComplex.Geometry.PaperAnalyticData) →
-  (i : Fin 3) → SphereSixComplex.AdditiveFourTorusBundleRealization ↑(A.openEmbeddingStarData.collarSource i)
-axiom SphereSixComplex.EstablishedTorusHomology.additiveTorusHomologyBasis_naturality : ∀
+axiom SphereSixComplex.EstablishedTorusBundleTopology.centralCollarBundleGeometricRealization : ∀
+  (A : SphereSixComplex.Geometry.PaperAnalyticData),
+  Nonempty (SphereSixComplex.EstablishedTorusBundleTopology.CentralCollarBundleGeometricRealization A)
+axiom SphereSixComplex.EstablishedTorusHomology.additiveTorusHomologyBasis_linearPart_naturality : ∀
   (p : SphereSixComplex.Periods.Parameters) (hfull : SphereSixComplex.Geometry.ComplexTorus.FullRank p)
   (D : SphereSixComplex.DescendedAffineTorusAutomorphism p),
   let B := SphereSixComplex.EstablishedTorusHomology.additiveTorusHomologyBasis p hfull;
@@ -81,12 +78,12 @@ axiom SphereSixComplex.EstablishedTorusHomology.additiveTorusHomologyBasis_natur
       (x :
         SphereSixComplex.IntegralSingularHomology 1
           (SphereSixComplex.Geometry.EllipticFamilySpecialization.AdditiveTorus p)),
-      B.degreeOne ((SphereSixComplex.integralSingularHomologyMap 1 D.map) x) = D.latticeMap (B.degreeOne x)) ∧
+      B.degreeOne ((SphereSixComplex.integralSingularHomologyMap 1 D.linearPartMap) x) = D.latticeMap (B.degreeOne x)) ∧
     ∀
       (x :
         SphereSixComplex.IntegralSingularHomology 2
           (SphereSixComplex.Geometry.EllipticFamilySpecialization.AdditiveTorus p)),
-      B.degreeTwo ((SphereSixComplex.integralSingularHomologyMap 2 D.map) x) =
+      B.degreeTwo ((SphereSixComplex.integralSingularHomologyMap 2 D.linearPartMap) x) =
         (SphereSixComplex.exteriorSquareMap D.latticeMap) (B.degreeTwo x)
 axiom SphereSixComplex.FiniteCWBundleModelSix.establishedEulerMultiplicativity : ∀ {X : Type}
   [inst : TopologicalSpace X] (M : SphereSixComplex.FiniteCWBundleModelSix X),
@@ -95,25 +92,29 @@ axiom SphereSixComplex.FiniteCWBundleModelSix.establishedEulerMultiplicativity :
   SphereSixComplex.integralHomologyEulerCharacteristicSix X =
     SphereSixComplex.integralHomologyEulerCharacteristicSix M.Base *
       SphereSixComplex.integralHomologyEulerCharacteristicSix M.Fiber
-axiom SphereSixComplex.Periods.establishedOrbifoldAffineLineTorsorCuspBoundedSection : ∀
+axiom SphereSixComplex.Periods.establishedOrbifoldAffineLineTorsorCuspBoundedCousinCorrection : ∀
   (P : SphereSixComplex.Periods.OrbifoldAffineLineTorsorDescentProblem),
-  P.HasAcyclicProjectiveLineFrame → P.HasCuspBoundedEquivariantSection
-axiom SphereSixComplex.Topology.FiniteCoverPerfectPairing.establishedEllipticDegreeTwoPullbackRealizations : ∀
+  P.HasAcyclicProjectiveLineFrame → Nonempty P.CuspBoundedEllipticOneCorrection
+axiom SphereSixComplex.Topology.FiniteCoverPerfectPairing.establishedEllipticDegreeTwoPullbackBases : ∀
   {U : SphereSixComplex.Periods.TriangleUniformization} (F : SphereSixComplex.Periods.PeriodFunctions U),
-  Nonempty
-    (SphereSixComplex.Topology.PaperFiniteCyclicQuotientDegreeTwoComparison.OrderThreeReducedCentralFiberDegreeTwoRealization
-        F ×
-      SphereSixComplex.Topology.PaperFiniteCyclicQuotientDegreeTwoComparison.OrderFourReducedCentralFiberDegreeTwoRealization
-        F)
-axiom SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels.orderFourReducedCentralFiberFiniteCWModelSix : (A :
-    SphereSixComplex.Geometry.PaperAnalyticData) →
-  SphereSixComplex.FiniteCWModelSix
-    ↑(SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction.OrderFourReducedCentralFiber A.periods)
-axiom SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels.orderThreeReducedCentralFiberFiniteCWModelSix : (A :
-    SphereSixComplex.Geometry.PaperAnalyticData) →
-  SphereSixComplex.FiniteCWModelSix
-    ↑(SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction.OrderThreeReducedCentralFiber A.periods)
-axiom SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.EstablishedAffineCyclicQuotientHomology.reducedCentralFiberHOnePresentation : {m :
+  Nonempty (SphereSixComplex.Topology.FiniteCoverPerfectPairing.EllipticDegreeTwoPullbackBases F)
+axiom SphereSixComplex.Topology.AffineFiniteCyclicTorusCW.finiteCWModelSix_reducedCentralFiber_of_affineGenerator : {m :
+    ℕ} →
+  [inst : NeZero m] →
+    (p : SphereSixComplex.Periods.Parameters) →
+      SphereSixComplex.Geometry.ComplexTorus.FullRank p →
+        (D :
+            SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction.RadialEllipticActionData m
+              (SphereSixComplex.Geometry.EllipticFamilySpecialization.AdditiveTorus p)) →
+          (lift :
+              SphereSixComplex.Geometry.ComplexTorus.ComplexTwoSpace ≃ₗ[ℝ]
+                SphereSixComplex.Geometry.ComplexTorus.ComplexTwoSpace) →
+            (translation : SphereSixComplex.Geometry.ComplexTorus.ComplexTwoSpace) →
+              (∀ (z : SphereSixComplex.Geometry.ComplexTorus.ComplexTwoSpace),
+                  D.actionData.fiberGenerator ⟦z⟧ = ⟦lift z + translation⟧) →
+                IsCancelSMul (SphereSixComplex.Geometry.FiniteCyclic m) D.Product →
+                  SphereSixComplex.FiniteCWModelSix ↑D.reducedCentralFiber
+axiom SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.EstablishedAffineCyclicQuotientHomology.establishedAffineCyclicHOnePresentationLift_bijective : {m :
     ℕ} →
   [inst : NeZero m] →
     {p : SphereSixComplex.Periods.Parameters} →
@@ -121,80 +122,52 @@ axiom SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.EstablishedAffine
           SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction.RadialEllipticActionData m
             (SphereSixComplex.Geometry.EllipticFamilySpecialization.AdditiveTorus p)} →
         (P : SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.AffineCyclicCentralFiberPresentationData m p D) →
-          SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.EstablishedAffineCyclicQuotientHomology.ReducedCentralFiberHOnePresentation
+          SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.EstablishedAffineCyclicQuotientHomology.AffineCyclicHOnePresentationLiftWitness
             P
 
 # Established analytic and toric models from the paper.
-axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberCWDecomposition : {E :
+axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberCellularRealization : {E :
     SphereSixComplex.Periods.EstablishedFuchsianModularParameter} →
   {D : SphereSixComplex.Periods.FuchsianPeriodLocalData E} →
     {N : SphereSixComplex.Geometry.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate E D} →
       {M : SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Model} →
         (W : SphereSixComplex.Geometry.CuspPuncturedCollarBridge.ActualPuncturedCuspCollarWitness N M) →
           (R : SphereSixComplex.Geometry.CuspPuncturedCollarBridge.ActualLocalCuspCentralFiberRetractionData W) →
-            SphereSixComplex.StandardA2ToricCentralFiberCWDecomposition
+            SphereSixComplex.StandardA2ToricCentralFiberCellularRealization
               ↑(SphereSixComplex.Geometry.CuspPuncturedCollarBridge.ActualLocalCuspCentralFiberRetractionData.quotientCentralFiber
                   W R)
-axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberCellularIncidence : ∀
-  {E : SphereSixComplex.Periods.EstablishedFuchsianModularParameter}
-  {D : SphereSixComplex.Periods.FuchsianPeriodLocalData E}
-  {N : SphereSixComplex.Geometry.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate E D}
-  {M : SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Model}
-  (W : SphereSixComplex.Geometry.CuspPuncturedCollarBridge.ActualPuncturedCuspCollarWitness N M)
-  (R : SphereSixComplex.Geometry.CuspPuncturedCollarBridge.ActualLocalCuspCentralFiberRetractionData W),
-  let C :=
-    SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberCWDecomposition W R;
-  C.CellularIncidenceData
-axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization.degreeOne : ∀
-  (A : SphereSixComplex.Geometry.PaperAnalyticData)
-  (x : SphereSixComplex.IntegralSingularHomology 1 ↑(A.openEmbeddingStarData.collarSource 0)),
-  (SphereSixComplex.Geometry.CuspPuncturedCollarBridge.actualLocalCuspFillingHomologyOneEquiv A.starCuspWitness
-        A.cuspCentralFiberRetractionData)
-      ((SphereSixComplex.integralSingularHomologyMap 1
-          { toFun := SphereSixComplex.Geometry.CuspPuncturedCollarBridge.puncturedLocalCuspToFilling A.starCuspWitness,
-            continuous_toFun :=
-              SphereSixComplex.Geometry.CuspPuncturedCollarBridge.puncturedLocalCuspToFilling_continuous
-                A.starCuspWitness })
-        x) =
-    fun i => A.actualCuspRadialClutchingData.geometricHomologyOneEquiv x (Fin.castAdd 1 i)
-axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization.degreeTwo : ∀
-  (A : SphereSixComplex.Geometry.PaperAnalyticData)
-  (x : SphereSixComplex.IntegralSingularHomology 2 ↑(A.openEmbeddingStarData.collarSource 0)),
-  (SphereSixComplex.Geometry.CuspPuncturedCollarBridge.actualLocalCuspFillingHomologyTwoEquiv A.starCuspWitness
-        A.cuspCentralFiberRetractionData)
-      ((SphereSixComplex.integralSingularHomologyMap 2
-          { toFun := SphereSixComplex.Geometry.CuspPuncturedCollarBridge.puncturedLocalCuspToFilling A.starCuspWitness,
-            continuous_toFun :=
-              SphereSixComplex.Geometry.CuspPuncturedCollarBridge.puncturedLocalCuspToFilling_continuous
-                A.starCuspWitness })
-        x) =
-    fun i => A.actualCuspRadialClutchingData.geometricHomologyTwoEquiv x (Fin.castAdd 2 i)
-axiom SphereSixComplex.Geometry.PaperAnalyticData.establishedActualEllipticCentralNaturality : ∀
+axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization.finiteBasisNaturality : ∀
   (A : SphereSixComplex.Geometry.PaperAnalyticData),
-  Nonempty (A.ActualEllipticCentralNaturality A.actualCuspCentralNaturality)
+  SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization.FiniteBasisNaturality A
+axiom SphereSixComplex.Geometry.PaperAnalyticData.establishedActualEllipticCentralBasisNaturality : ∀
+  (A : SphereSixComplex.Geometry.PaperAnalyticData),
+  Nonempty (A.ActualEllipticCentralBasisNaturality A.actualCuspCentralNaturality)
 axiom SphereSixComplex.Geometry.GlobalTorusFamily.establishedPuncturedGlobalFamilyAffineFundamentalGroup : {P :
     SphereSixComplex.Periods.FuchsianModularParameter} →
   (F : SphereSixComplex.Periods.PeriodFunctions P.toTriangleUniformization) →
     SphereSixComplex.Geometry.GlobalTorusFamily.PuncturedGlobalFamilyAffineFundamentalGroup F
-axiom SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenAffineRegularLiftTopology.overlapBandCompatibility : ∀
-  (A : SphereSixComplex.Geometry.PaperAnalyticData), A.SectionSevenAffineOverlapBandCompatibility
-axiom SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTopology.actualCuspFiberEllipticCoordinateIdentities : ∀
+axiom SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenAffineRegularLiftTopology.markedRetractionInput_nonempty : ∀
+  (A : SphereSixComplex.Geometry.PaperAnalyticData),
+  Nonempty SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenAffineMarkedRetractionInput
+axiom SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTopology.actualCuspFiberEllipticFiniteCoordinateIdentities : ∀
   {A : SphereSixComplex.Geometry.PaperAnalyticData} (R : A.SectionSevenAffineRadialCompletionInput)
   (W :
     SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenEllipticTwoDiscCoverData.SectionSevenCuspWangBandCompatibility
       (SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenAffineRadialCompletionInput.homologyAlignment R)),
-  SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTopology.ActualCuspFiberEllipticCoordinateIdentities
+  SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTopology.ActualCuspFiberEllipticFiniteCoordinateIdentities
     R W
-axiom SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenEllipticTwoDiscCoverData.EstablishedActualCuspWangOpenCoverChainRealization.realization : {A :
-    SphereSixComplex.Geometry.PaperAnalyticData} →
-  (R : A.SectionSevenAffineRadialCompletionInput) → R.twoDiscCover.ActualCuspWangOpenCoverChainRealization
-axiom SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established.polarHoneycombPhaseSpreadingPackage : ∀
+axiom SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenEllipticTwoDiscCoverData.EstablishedActualCuspWangOpenCoverChainRealization.fullFibreSliceComparison : ∀
+  {A : SphereSixComplex.Geometry.PaperAnalyticData} (R : A.SectionSevenAffineRadialCompletionInput),
+  SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenEllipticTwoDiscCoverData.ActualCuspWangFullFibreSliceComparison
+    R
+axiom SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established.polarHoneycombPhaseSpreadingGeometry : ∀
   {E : SphereSixComplex.Periods.EstablishedFuchsianModularParameter}
   {D : SphereSixComplex.Periods.FuchsianPeriodLocalData E}
   (N : SphereSixComplex.Geometry.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate E D)
   (M : SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Model) (r : ℝ),
   0 < r →
     Nonempty
-      ((P : SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.PolarHoneycombData M r) ×
-        SphereSixComplex.Geometry.CuspStraighteningRetraction.FrozenLocalCuspPhaseSpreadingData N M r P)
+      { P //
+        SphereSixComplex.Geometry.CuspStraighteningRetraction.PolarPhaseRadialCompatibility N M r P ∧
+          SphereSixComplex.Geometry.CuspStraighteningRetraction.PolarPhaseGeometricCore M r P }
 END GENERATED AXIOM CATALOG -/

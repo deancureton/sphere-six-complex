@@ -4,9 +4,10 @@ public import SphereSixComplex.Topology.PaperSectionSevenAffineCuspFiberPeriodMa
 public import SphereSixComplex.Topology.PaperSectionSevenCuspEllipticMappingTorusComparison
 public import SphereSixComplex.Topology.PaperSectionSevenCuspInvariantSuspensionPrismNaturality
 public import SphereSixComplex.Topology.PaperSectionSevenCuspMeridianProjectionNaturality
-public import SphereSixComplex.Topology.PaperSectionSevenCuspWangOpenCoverChainRealization
+public import SphereSixComplex.Topology.PaperSectionSevenCuspWangOpenCoverChainRealizationEstablished
 public import SphereSixComplex.Topology.PaperSectionSevenCuspPrismGeometricDataProof
 public import SphereSixComplex.Topology.PaperSectionSevenCuspIndexFourPrismCoefficientProof
+public import SphereSixComplex.Topology.PaperSectionSevenCuspEllipticCoordinateFiniteReduction
 
 /-!
 # Established cusp comparison for Section 7
@@ -62,11 +63,13 @@ public structure ActualCuspFiberEllipticCoordinateIdentities
           (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1)))
       = if i = 4 then 1 else 0
 
-/-- The remaining geometric input for the Section 7 cusp comparison. -/
-public axiom actualCuspFiberEllipticCoordinateIdentities
+/-- The finite marked-basis calculation supplies the complete Section 7 cusp comparison. -/
+public theorem actualCuspFiberEllipticCoordinateIdentities
     (R : A.SectionSevenAffineRadialCompletionInput)
     (W : R.twoDiscCover.SectionSevenCuspWangBandCompatibility R.homologyAlignment) :
-    ActualCuspFiberEllipticCoordinateIdentities R W
+    ActualCuspFiberEllipticCoordinateIdentities R W :=
+  { degreeOne := (actualCuspFiberEllipticFiniteCoordinateIdentities R W).degreeOneHom
+    degreeTwo := (actualCuspFiberEllipticFiniteCoordinateIdentities R W).degreeTwo }
 
 /-- The structural Section 7 cusp model, derived from the two coordinate identities. -/
 public noncomputable def cuspEllipticMappingTorusPrismGeometricData

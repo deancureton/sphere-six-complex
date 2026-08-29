@@ -89,6 +89,48 @@ public structure DescendedAffineTorusAutomorphism (p : SphereSixComplex.Periods.
   map : C(AdditiveTorus p, AdditiveTorus p)
   map_mk : ∀ z, map (Quotient.mk _ z) = Quotient.mk _ (lift z) + translation
 
+namespace DescendedAffineTorusAutomorphism
+
+variable {p : SphereSixComplex.Periods.Parameters}
+
+/-- The descended linear part of an affine period-torus automorphism. -/
+@[expose] public def linearPartMap (D : DescendedAffineTorusAutomorphism p) :
+    C(AdditiveTorus p, AdditiveTorus p) :=
+  ⟨fun q ↦ D.map q - D.translation, D.map.continuous.sub continuous_const⟩
+
+public theorem linearPartMap_mk (D : DescendedAffineTorusAutomorphism p)
+    (z : ComplexTwoSpace) :
+    D.linearPartMap (Quotient.mk _ z) = Quotient.mk _ (D.lift z) := by
+  change D.map (Quotient.mk _ z) - D.translation = _
+  rw [D.map_mk]
+  exact add_sub_cancel_right _ _
+
+/-- A path from zero to any point of a period torus, obtained by projecting a straight path
+from a chosen lift. -/
+@[expose] public noncomputable def translationPath (a : AdditiveTorus p) : Path 0 a :=
+  ((Path.segment (0 : ComplexTwoSpace) a.out).map
+    (continuous_quot_mk : Continuous (additiveTorusProjection p))).cast
+      (additiveTorus_mk_zero p).symm (Quotient.out_eq a).symm
+
+/-- Adding the translation part of a descended affine automorphism is homotopic to doing
+nothing after its linear part. -/
+@[expose] public noncomputable def linearPartMapHomotopy
+    (D : DescendedAffineTorusAutomorphism p) : D.linearPartMap.Homotopy D.map where
+  toFun tq := D.linearPartMap tq.2 + translationPath D.translation tq.1
+  continuous_toFun :=
+    (D.linearPartMap.continuous.comp continuous_snd).add
+      ((translationPath D.translation).continuous.comp continuous_fst)
+  map_zero_left q := by
+    rw [show translationPath D.translation 0 = 0 from (translationPath D.translation).source]
+    simp
+  map_one_left q := by
+    rw [show translationPath D.translation 1 = D.translation from
+      (translationPath D.translation).target]
+    change D.map q - D.translation + D.translation = D.map q
+    exact sub_add_cancel _ _
+
+end DescendedAffineTorusAutomorphism
+
 /-- Integral degree-one and degree-two bases with the ranks of a four-torus. -/
 public structure FourTorusHomologyBasis (X : Type) [TopologicalSpace X] where
   degreeOne : IntegralSingularHomology 1 X ≃+ (Fin 4 → ℤ)
@@ -137,23 +179,35 @@ public theorem additiveTorusHomologyBasis_degreeTwo
     (additiveTorusHomologyBasis p hfull).degreeTwo =
       StandardTorusHomology.additiveTorusHomologyDegreeTwo p hfull := rfl
 
+/-- Naturality of the standard torus bases under the linear part of a descended affine
+automorphism.  This is the remaining classical input: it identifies `H₁(V/Λ)` with `Λ` and
+degree two with its exterior square. -/
+public axiom additiveTorusHomologyBasis_linearPart_naturality
+    (p : SphereSixComplex.Periods.Parameters) (hfull : FullRank p)
+    (D : DescendedAffineTorusAutomorphism p) :
+    let B := additiveTorusHomologyBasis p hfull
+    (∀ x, B.degreeOne (integralSingularHomologyMap 1 D.linearPartMap x) =
+      D.latticeMap (B.degreeOne x)) ∧
+    (∀ x, B.degreeTwo (integralSingularHomologyMap 2 D.linearPartMap x) =
+      exteriorSquareMap D.latticeMap (B.degreeTwo x))
+
 /-- Naturality of the standard torus bases under a descended affine automorphism.  Translation
 acts trivially, the degree-one map is the integral lattice map, and degree two is its exterior
-square.
-
-This is the one remaining input.  The bases of `additiveTorusHomologyBasis` are produced by an
-iterated Wang splitting, whose sections are chosen by projectivity rather than geometrically, so
-they carry no relation to the period lattice; deriving this statement requires the natural
-identification `H₁(V/Λ) ≃ Λ` (and its exterior square in degree two), which the Wang
-route does not supply. -/
-public axiom additiveTorusHomologyBasis_naturality
+square. -/
+public theorem additiveTorusHomologyBasis_naturality
     (p : SphereSixComplex.Periods.Parameters) (hfull : FullRank p)
     (D : DescendedAffineTorusAutomorphism p) :
     let B := additiveTorusHomologyBasis p hfull
     (∀ x, B.degreeOne (integralSingularHomologyMap 1 D.map x) =
       D.latticeMap (B.degreeOne x)) ∧
     (∀ x, B.degreeTwo (integralSingularHomologyMap 2 D.map x) =
-      exteriorSquareMap D.latticeMap (B.degreeTwo x))
+      exteriorSquareMap D.latticeMap (B.degreeTwo x)) := by
+  let B := additiveTorusHomologyBasis p hfull
+  have hmaps (k : ℕ) :
+      integralSingularHomologyMap k D.map =
+        integralSingularHomologyMap k D.linearPartMap :=
+    (integralSingularHomologyMap_eq_of_homotopy k D.linearPartMapHomotopy).symm
+  simpa only [hmaps] using additiveTorusHomologyBasis_linearPart_naturality p hfull D
 
 end EstablishedTorusHomology
 

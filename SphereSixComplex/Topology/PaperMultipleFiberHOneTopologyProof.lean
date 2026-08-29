@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+public import SphereSixComplex.Topology.PaperMultipleFiberHOneTopologyDefs
 
 /-!
 # Reducing the multiple-fibre presentation to a single generation statement
@@ -83,6 +83,11 @@ public def IsCentralFiberCoverSourceCoordinate
     (D : RadialEllipticActionData m (AdditiveTorus p)) : Prop :=
   ∀ t : RadialEllipticActionData.centralFiberCoverSource D,
     RadialEllipticActionData.centralFiberCoverSourceHomeomorph D t = t.1.2
+
+/-- The canonical central-fibre covering-source homeomorphism is the torus coordinate. -/
+public theorem isCentralFiberCoverSourceCoordinate :
+    IsCentralFiberCoverSourceCoordinate D :=
+  RadialEllipticActionData.centralFiberCoverSourceHomeomorph_apply D
 
 /-- Points of the covering source sit over the centre of the disc. -/
 public theorem centralFiberCoverSource_fst

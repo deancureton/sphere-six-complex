@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Topology.PaperEllipticFillingRealPeriodRadial
+public import SphereSixComplex.Topology.AffineFiniteCyclicTorusCW
 public import SphereSixComplex.Topology.SectionSevenLocalEulerModels
 
 /-!
@@ -83,14 +83,14 @@ public theorem mem_centralSlice_iff_quotient_mem_reducedCentralFiber (p : D.Prod
     exact ⟨p, hp, rfl⟩
 
 /-- Insert a torus point into the inverse image of the reduced central fibre. -/
-public def centralFiberCoverSourceOfTorus (x : T) : centralFiberCoverSource D :=
+@[expose] public def centralFiberCoverSourceOfTorus (x : T) : centralFiberCoverSource D :=
   ⟨(D.actionData.center, x), by
     apply (mem_centralSlice_iff_quotient_mem_reducedCentralFiber D
       (D.actionData.center, x)).2
     exact D.center_eq⟩
 
 /-- The restricted covering source is canonically the original central four-torus. -/
-public def centralFiberCoverSourceHomeomorph :
+@[expose] public def centralFiberCoverSourceHomeomorph :
     centralFiberCoverSource D ≃ₜ T where
   toFun p := p.1.2
   invFun := centralFiberCoverSourceOfTorus D
@@ -103,6 +103,11 @@ public def centralFiberCoverSourceHomeomorph :
   right_inv _ := rfl
   continuous_toFun := continuous_snd.comp continuous_subtype_val
   continuous_invFun := Continuous.subtype_mk (continuous_const.prodMk continuous_id) _
+
+/-- The central-fibre covering-source homeomorphism is projection to the torus coordinate. -/
+public theorem centralFiberCoverSourceHomeomorph_apply
+    (p : centralFiberCoverSource D) :
+    centralFiberCoverSourceHomeomorph D p = p.1.2 := rfl
 
 variable [T2Space D.Product] [LocallyCompactSpace D.Product]
 
@@ -192,13 +197,15 @@ variable (A : PaperAnalyticData)
 
 /-- A free affine order-three quotient of the full-rank central four-torus has finite CW type of
 dimension at most six. -/
-public axiom orderThreeReducedCentralFiberFiniteCWModelSix :
-    FiniteCWModelSix (OrderThreeReducedCentralFiber A.periods)
+public noncomputable def orderThreeReducedCentralFiberFiniteCWModelSix :
+    FiniteCWModelSix (OrderThreeReducedCentralFiber A.periods) :=
+  AffineFiniteCyclicTorusCW.orderThreeReducedCentralFiberFiniteCWModelSix A
 
 /-- A free affine order-four quotient of the full-rank central four-torus has finite CW type of
 dimension at most six. -/
-public axiom orderFourReducedCentralFiberFiniteCWModelSix :
-    FiniteCWModelSix (OrderFourReducedCentralFiber A.periods)
+public noncomputable def orderFourReducedCentralFiberFiniteCWModelSix :
+    FiniteCWModelSix (OrderFourReducedCentralFiber A.periods) :=
+  AffineFiniteCyclicTorusCW.orderFourReducedCentralFiberFiniteCWModelSix A
 
 /-- The actual order-three reduced central fibre is a three-sheeted quotient of its central
 four-torus. -/

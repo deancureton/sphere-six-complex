@@ -55,15 +55,52 @@ end AdditiveFourTorusBundleRealization
 
 namespace EstablishedTorusBundleTopology
 
-/-- A finite-CW four-torus-bundle homotopy model for the regular global quotient. -/
-public axiom centralFamilyBundleRealization
+/-- The simultaneous finite-CW bundle realization of the central family and its three collars,
+with every model fibre identified with the actual order-three period torus of the paper family. -/
+public structure CentralCollarBundleGeometricRealization
+    (A : SphereSixComplex.Geometry.PaperAnalyticData) where
+  centralModel : FiniteCWBundleModelSix A.openEmbeddingStarData.central
+  centralFiberHomeomorph :
+    let _ := centralModel.fiberTopology
+    centralModel.Fiber ≃ₜ A.orderThreeTorus
+  collarModel : ∀ i : Fin 3,
+    FiniteCWBundleModelSix (A.openEmbeddingStarData.collarSource i)
+  collarFiberHomeomorph : ∀ i : Fin 3,
+    let _ := (collarModel i).fiberTopology
+    (collarModel i).Fiber ≃ₜ A.orderThreeTorus
+
+/-- The exact geometric input that the present Mathlib fibre-bundle API does not construct from
+the equivariant varying-lattice quotient.  One simultaneous witness supplies the global family
+and all three collars, with a common actual period-torus fibre. -/
+public axiom centralCollarBundleGeometricRealization
     (A : SphereSixComplex.Geometry.PaperAnalyticData) :
-    AdditiveFourTorusBundleRealization A.openEmbeddingStarData.central
+    Nonempty (CentralCollarBundleGeometricRealization A)
+
+/-- A finite-CW four-torus-bundle homotopy model for the regular global quotient. -/
+public noncomputable def centralFamilyBundleRealization
+    (A : SphereSixComplex.Geometry.PaperAnalyticData) :
+    AdditiveFourTorusBundleRealization A.openEmbeddingStarData.central := by
+  let R := Classical.choice (centralCollarBundleGeometricRealization A)
+  let p := SphereSixComplex.Geometry.AnalyticTorusFamily.parameterMap A.periods
+    A.modular.modularParameter.toTriangleUniformization.zOne
+  exact
+    { toFiniteCWBundleModelSix := R.centralModel
+      fiberParameter := p.1
+      fiberFullRank := SphereSixComplex.Geometry.ComplexTorus.FullRank.ofSetupInequalities p.1 p.2
+      fiberHomeomorph := R.centralFiberHomeomorph }
 
 /-- A finite-CW four-torus-bundle homotopy model for each common collar quotient. -/
-public axiom collarBundleRealization
+public noncomputable def collarBundleRealization
     (A : SphereSixComplex.Geometry.PaperAnalyticData) (i : Fin 3) :
-    AdditiveFourTorusBundleRealization (A.openEmbeddingStarData.collarSource i)
+    AdditiveFourTorusBundleRealization (A.openEmbeddingStarData.collarSource i) := by
+  let R := Classical.choice (centralCollarBundleGeometricRealization A)
+  let p := SphereSixComplex.Geometry.AnalyticTorusFamily.parameterMap A.periods
+    A.modular.modularParameter.toTriangleUniformization.zOne
+  exact
+    { toFiniteCWBundleModelSix := R.collarModel i
+      fiberParameter := p.1
+      fiberFullRank := SphereSixComplex.Geometry.ComplexTorus.FullRank.ofSetupInequalities p.1 p.2
+      fiberHomeomorph := R.collarFiberHomeomorph i }
 
 end EstablishedTorusBundleTopology
 

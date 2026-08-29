@@ -1,7 +1,6 @@
 module
 
-public import SphereSixComplex.Topology.PaperEllipticTorusHomologyBasis
-public import SphereSixComplex.Topology.PaperLemmaSevenThirteenAlgebra
+public import SphereSixComplex.Topology.PaperMultipleFiberHOneTopologyProof
 
 /-!
 # First homology of the reduced elliptic fibres
@@ -25,69 +24,34 @@ open PaperLemmaSevenThirteenAlgebra TwistObstruction
 
 noncomputable section
 
-/-- Exact input for the standard fundamental-group presentation of a free affine cyclic torus
-quotient.  The last equation says that the chosen lift of the cyclic generator has full iterate
-equal to translation by the lattice vector `twist`. -/
-public structure AffineCyclicCentralFiberPresentationData
-    (m : ℕ) [NeZero m] (p : SphereSixComplex.Periods.Parameters)
-    (D : RadialEllipticActionData m (AdditiveTorus p)) where
-  fullRank : FullRank p
-  affine : DescendedAffineTorusAutomorphism p
-  latticeDifference : Lattice →ₗ[ℤ] Lattice
-  latticeDifference_eq :
-    latticeDifference = affine.latticeMap.toLinearMap - LinearMap.id
-  twist : Lattice
-  translationVector_eq : D.actionData.translationVector = twist
-  liftTranslation : ComplexTwoSpace
-  translation_mk :
-    affine.translation = (Quotient.mk _ liftTranslation : AdditiveTorus p)
-  generator_eq : ∀ x, D.actionData.fiberGenerator x = affine.map x
-  lift_full_iterate : ∀ z,
-    (affineEquiv affine.lift liftTranslation ^ m) z = z + periodVector p twist
-  free : letI := D.actionData.diagonalAction
-    IsCancelSMul (FiniteCyclic m) D.Product
-
 namespace EstablishedAffineCyclicQuotientHomology
 
 variable {m : ℕ} [NeZero m] {p : SphereSixComplex.Periods.Parameters}
   {D : RadialEllipticActionData m (AdditiveTorus p)}
 
-/-- The standard degree-one homology basis on the source torus of the affine cyclic cover. -/
-@[expose] public noncomputable def centralFiberCoverSourceDegreeOneBasis
-    (P : AffineCyclicCentralFiberPresentationData m p D) :
-    IntegralSingularHomology 1
-        (RadialEllipticActionData.centralFiberCoverSource D) ≃+ Lattice :=
-  ((EstablishedTorusHomology.additiveTorusHomologyBasis p P.fullRank).homeomorph
-    (RadialEllipticActionData.centralFiberCoverSourceHomeomorph D)).degreeOne
-
-/-- The canonical map from the covering lattice to the abelian multiple-fibre presentation. -/
-@[expose] public def latticeProjection
-    (P : AffineCyclicCentralFiberPresentationData m p D) :
-    Lattice →ₗ[ℤ]
-      MultipleFiberHOnePresentation P.latticeDifference P.twist (m : ℤ) :=
-  (LinearMap.range
-      (multipleFiberRelationMap P.latticeDifference P.twist (m : ℤ))).mkQ.comp
-    ((LinearMap.range P.latticeDifference).mkQ.prod
-      (0 : Lattice →ₗ[ℤ] ℤ))
-
-/-- The standard affine-cyclic quotient calculation together with its naturality under the
-covering projection. -/
-public structure ReducedCentralFiberHOnePresentation
+/-- The exact remaining data in the affine cyclic first-homology calculation. -/
+public structure AffineCyclicHOnePresentationLiftWitness
     (P : AffineCyclicCentralFiberPresentationData m p D) where
-  equiv : IntegralSingularHomology 1 D.reducedCentralFiber ≃ₗ[ℤ]
-    MultipleFiberHOnePresentation P.latticeDifference P.twist (m : ℤ)
-  projection : ∀ x : Lattice,
-    equiv
-        (integralSingularHomologyMap 1
-          (RadialEllipticActionData.centralFiberCoverProjection D)
-          ((centralFiberCoverSourceDegreeOneBasis P).symm x)) =
-      latticeProjection P x
+  meridian : IntegralSingularHomology 1 D.reducedCentralFiber
+  fullIterate : (m : ℤ) • meridian = coverProjectionLatticeMap P P.twist
+  bijective : Function.Bijective
+    (presentationLift isCentralFiberCoverSourceCoordinate P meridian fullIterate)
+
+/-- The remaining classical input: a meridian class satisfies the full-iterate relation, and
+the resulting explicit map from the multiple-fibre presentation generates first homology with
+no further relations. -/
+public axiom establishedAffineCyclicHOnePresentationLift_bijective
+    (P : AffineCyclicCentralFiberPresentationData m p D) :
+    AffineCyclicHOnePresentationLiftWitness P
 
 /-- The usual presentation theorem for a free affine cyclic torus quotient, including the
 canonical value of the presentation coordinates on the covering torus. -/
-public axiom reducedCentralFiberHOnePresentation
+public noncomputable def reducedCentralFiberHOnePresentation
     (P : AffineCyclicCentralFiberPresentationData m p D) :
-    ReducedCentralFiberHOnePresentation P
+    ReducedCentralFiberHOnePresentation P := by
+  let R := establishedAffineCyclicHOnePresentationLift_bijective P
+  exact reducedCentralFiberHOnePresentation_of_bijective
+    isCentralFiberCoverSourceCoordinate P R.meridian R.fullIterate R.bijective
 
 /-- For a free affine action of a finite cyclic group on a full-rank torus, first integral
 homology is the abelianization of the standard covering-group presentation.  Thus it is the

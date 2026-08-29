@@ -1,5 +1,6 @@
 module
 
+public import SphereSixComplex.Topology.PaperSectionSevenAffineMarkedRetractionGeometry
 public import SphereSixComplex.Topology.PaperSectionSevenAffineOverlapInterleaving
 
 /-!
@@ -22,6 +23,12 @@ namespace SphereSixComplex.Geometry.PaperAnalyticData
 
 namespace EstablishedSectionSevenAffineRegularLiftTopology
 
+/-- The exact remaining paper geometry, independent of the homotopy inverses selected by Lean:
+one marked inverse of each affine side inclusion whose central-band restriction is the named
+finite-cover projection. -/
+public axiom markedRetractionInput_nonempty (A : PaperAnalyticData) :
+    Nonempty A.SectionSevenAffineMarkedRetractionInput
+
 /-- The exact residual affine input from the paper: the two marked band square homotopies.
 
 **Do not weaken the trivialization used here.**  This statement was *false* in an earlier form of
@@ -36,8 +43,28 @@ un-marked statement could exist.  The current
 `sectionSevenAffineNamedStripLift`, which pins the fibre coordinate and makes
 `SectionSevenAffineOverlapBandCompatibility` a true statement.  Anyone tempted to "simplify" the
 marked product homeomorphism back to an `Exists.choose` would be reintroducing a false axiom. -/
-public axiom overlapBandCompatibility (A : PaperAnalyticData) :
-    A.SectionSevenAffineOverlapBandCompatibility
+public theorem overlapBandCompatibility (A : PaperAnalyticData) :
+    A.SectionSevenAffineOverlapBandCompatibility := by
+  let G := (markedRetractionInput_nonempty A).some
+  refine { orderThree := ?_, orderFour := ?_ }
+  · let h := orderThreeOverlapIsHomotopyEquivalence_inclusion
+      A.orderThreeOverlapIsHomotopyEquivalence
+    have hRetraction : h.toHomotopyEquiv.toFun.Homotopic G.orderThree.retraction.toFun :=
+      homotopyEquiv_toFun_homotopic_of_invFun_eq _ _
+        (h.toHomotopyEquiv_invFun.trans G.orderThree.invFun_eq.symm)
+    rw [sectionSevenAffineOrderThreeBandToReducedFiber_eq_bandMapOfRetraction]
+    rw [← sectionSevenAffineBandOrderThreeMarkedProjection_eq_coverMap A]
+    exact (sectionSevenAffineOrderThreeBandMapOfRetraction_homotopic hRetraction).trans
+      G.orderThree.markedSquare
+  · let h := orderFourOverlapIsHomotopyEquivalence_inclusion
+      A.orderFourOverlapIsHomotopyEquivalence
+    have hRetraction : h.toHomotopyEquiv.toFun.Homotopic G.orderFour.retraction.toFun :=
+      homotopyEquiv_toFun_homotopic_of_invFun_eq _ _
+        (h.toHomotopyEquiv_invFun.trans G.orderFour.invFun_eq.symm)
+    rw [sectionSevenAffineOrderFourBandToReducedFiber_eq_bandMapOfRetraction]
+    rw [← sectionSevenAffineBandOrderFourMarkedProjection_eq_coverMap A]
+    exact (sectionSevenAffineOrderFourBandMapOfRetraction_homotopic hRetraction).trans
+      G.orderFour.markedSquare
 
 /-- The full residual affine input: radial contraction of each actual overlap and the two marked
 band homotopies.  The two overlap homotopy equivalences are supplied by the proved collar shrinks,

@@ -28,16 +28,42 @@ open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 
+private theorem standardA2ToricCellularBoundary_eq (n : ℕ)
+    (x : cuspWCellIndex n.succ → ℤ) :
+    standardA2ToricCellularBoundary n x = cuspToricCellularBoundary n x := by
+  rcases n with _ | n
+  · change standardA2ToricCellularBoundaryOne x = cuspToricCellularBoundaryOne x
+    funext i
+    fin_cases i <;>
+      simp [standardA2ToricCellularBoundaryOne, cuspToricCellularBoundaryOne]
+  · rfl
+
 /-- For the standard periodic `A₂` toric decomposition, the cellular attaching maps have the
 incidence formula encoded by `cuspToricCellularBoundary`: the three oriented one-cells run from
 the first vertex to the second, and every higher cellular boundary is zero. -/
-public axiom establishedStandardA2ToricCentralFiberCellularIncidence
+public theorem establishedStandardA2ToricCentralFiberCellularIncidence
     {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W) :
     let C := establishedStandardA2ToricCentralFiberCWDecomposition W R
-    C.CellularIncidenceData
+    C.CellularIncidenceData := by
+  let T := establishedStandardA2ToricCentralFiberCellularRealization W R
+  change T.decomposition.CellularIncidenceData
+  let C := T.decomposition
+  let _ := C.topology
+  let _ := C.cwComplex
+  constructor
+  intro n x
+  change C.establishedIntegralCellularChainModel.chainComplex.d n.succ n
+      (labelledA2CellBasis C.cellEquiv C.establishedIntegralCellularChainModel n.succ x) =
+    labelledA2CellBasis C.cellEquiv C.establishedIntegralCellularChainModel n
+      (cuspToricCellularBoundary n x)
+  rw [← standardA2ToricCellularBoundary_eq]
+  change C.integralCellularChainModel.chainComplex.d n.succ n
+      (C.labelledCellBasis n.succ x) =
+    C.labelledCellBasis n (standardA2ToricCellularBoundary n x)
+  exact T.boundary_eq n x
 
 /-- The actual quotient cusp central fibre has first integral homology `ℤ²`. -/
 public noncomputable def actualCuspCentralFiberHomologyOneEquiv

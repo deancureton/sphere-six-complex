@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Periods.EstablishedOrbifoldAffineTorsorAnalyticDescentProof
+public import SphereSixComplex.Periods.OrbifoldAffineTorsorCuspBoundedCousinCorrection
 
 /-!
 # Established analytic descent for affine-line torsors
@@ -59,10 +59,17 @@ splits; no chart, cover or Cech datum occurs in it.
 Besides Cartan--B, this standard package includes finite-orbifold descent, finite-jet
 interpolation at the two branch points, and the removable-singularity estimate at the completed
 cusp. -/
-public axiom establishedOrbifoldAffineLineTorsorCuspBoundedSection
+public axiom establishedOrbifoldAffineLineTorsorCuspBoundedCousinCorrection
     (P : OrbifoldAffineLineTorsorDescentProblem)
     (hP : P.HasAcyclicProjectiveLineFrame) :
-    P.HasCuspBoundedEquivariantSection
+    Nonempty P.CuspBoundedEllipticOneCorrection
+
+public theorem establishedOrbifoldAffineLineTorsorCuspBoundedSection
+    (P : OrbifoldAffineLineTorsorDescentProblem)
+    (hP : P.HasAcyclicProjectiveLineFrame) :
+    P.HasCuspBoundedEquivariantSection := by
+  obtain ⟨C⟩ := establishedOrbifoldAffineLineTorsorCuspBoundedCousinCorrection P hP
+  exact P.hasCuspBoundedEquivariantSection_of_correction C
 
 /-- Cartan--B/Cousin descent for a holomorphic affine-line torsor under `O(-1)` or `O` over an
 exact orbifold projective line.
@@ -82,4 +89,3 @@ public theorem establishedOrbifoldAffineLineTorsorAnalyticDescent
     (establishedOrbifoldAffineLineTorsorCuspBoundedSection P hP)
 
 end SphereSixComplex.Periods
-

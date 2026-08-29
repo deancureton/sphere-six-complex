@@ -263,6 +263,159 @@ public structure ActualEllipticCentralNaturality (N : A.ActualCuspCentralNatural
           orderFourCover.meridian) =
       N.centralToCore A.centralAffineCorePiOneData.rhoTwo
 
+/-- Two additive homomorphisms out of the rank-four paper lattice agree when they agree on the
+standard integral basis.  The codomain need not be commutative. -/
+public theorem latticeAddHom_ext_integralBasis
+    {G : Type*} [AddGroup G] (f g : Lattice →+ G)
+    (h : ∀ i : Fin 4,
+      f (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector i) =
+        g (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector i)) :
+    f = g := by
+  ext a
+  have ha : a =
+      a 0 • SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 0 +
+      a 1 • SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 1 +
+      a 2 • SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 2 +
+      a 3 • SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 3 := by
+    ext i
+    fin_cases i <;>
+      simp [SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector, Pi.single]
+  rw [ha]
+  simp only [map_add, map_zsmul]
+  rw [h 0, h 1, h 2, h 3]
+
+/-- The order-three collar translations, transported to the central core. -/
+public noncomputable def actualEllipticThreeTranslationToCore
+    (D : ChosenCyclicAffineFillingCoverModel 3 Lattice
+      (A.actualVanKampenFourPieceCover.core ∩
+        A.actualVanKampenFourPieceCover.ellipticThree : Set A.VanKampenSpace)
+      A.actualVanKampenFourPieceCover.ellipticThree)
+    (hb : D.boundaryBase =
+      ⟨A.actualVanKampenFourPieceCover.ellipticThreePoint,
+        A.actualVanKampenFourPieceCover.ellipticThreePoint_mem⟩) :
+    Lattice →+ Additive
+      (FundamentalGroup A.actualVanKampenFourPieceCover.core
+        ⟨A.vanKampenBase, A.actualVanKampenFourPieceCover.base_mem_core⟩) :=
+  A.actualEllipticThreeOverlapToCore.toAdditive.comp
+    (fundamentalGroupAddHomOfBaseEq hb D.translation)
+
+/-- The order-four collar translations, transported to the central core. -/
+public noncomputable def actualEllipticFourTranslationToCore
+    (D : ChosenCyclicAffineFillingCoverModel 4 Lattice
+      (A.actualVanKampenFourPieceCover.core ∩
+        A.actualVanKampenFourPieceCover.ellipticFour : Set A.VanKampenSpace)
+      A.actualVanKampenFourPieceCover.ellipticFour)
+    (hb : D.boundaryBase =
+      ⟨A.actualVanKampenFourPieceCover.ellipticFourPoint,
+        A.actualVanKampenFourPieceCover.ellipticFourPoint_mem⟩) :
+    Lattice →+ Additive
+      (FundamentalGroup A.actualVanKampenFourPieceCover.core
+        ⟨A.vanKampenBase, A.actualVanKampenFourPieceCover.base_mem_core⟩) :=
+  A.actualEllipticFourOverlapToCore.toAdditive.comp
+    (fundamentalGroupAddHomOfBaseEq hb D.translation)
+
+/-- The central-family translations, transported to the central core. -/
+public noncomputable def actualCentralTranslationToCore
+    (N : A.ActualCuspCentralNaturality) :
+    Lattice →+ Additive
+      (FundamentalGroup A.actualVanKampenFourPieceCover.core
+        ⟨A.vanKampenBase, A.actualVanKampenFourPieceCover.base_mem_core⟩) :=
+  N.centralToCore.toMonoidHom.toAdditive.comp A.centralAffineCorePiOneData.translation
+
+/-- The exact elliptic cover geometry and its marking on a finite basis.
+
+The former residual required translation naturality for every lattice vector.  Since the
+translation maps are additive, it is enough to identify the four standard integral basis loops
+on each elliptic side.  All infinite families of translation equalities are derived below. -/
+public structure ActualEllipticCentralBasisNaturality (N : A.ActualCuspCentralNaturality) where
+  orderThreeCover : ChosenCyclicAffineFillingCoverModel 3 Lattice
+    (A.actualVanKampenFourPieceCover.core ∩
+      A.actualVanKampenFourPieceCover.ellipticThree : Set A.VanKampenSpace)
+    A.actualVanKampenFourPieceCover.ellipticThree
+  orderThreeBoundaryBase_eq : orderThreeCover.boundaryBase =
+    ⟨A.actualVanKampenFourPieceCover.ellipticThreePoint,
+      A.actualVanKampenFourPieceCover.ellipticThreePoint_mem⟩
+  orderThreeFillingBase_eq : orderThreeCover.fillingBase =
+    ⟨A.actualVanKampenFourPieceCover.ellipticThreePoint,
+      A.actualVanKampenFourPieceCover.ellipticThreePoint_mem.2⟩
+  orderThreeMap_eq : fundamentalGroupHomOfBaseEq
+    orderThreeBoundaryBase_eq orderThreeFillingBase_eq
+    orderThreeCover.fundamentalGroupMap =
+    A.actualVanKampenFourPieceCover.ellipticThreeOverlapFundamentalGroupMap
+  orderThreeTwist_eq : orderThreeCover.twist = epsilon
+  orderThreeTranslation_basis : ∀ i : Fin 4,
+    A.actualEllipticThreeTranslationToCore orderThreeCover orderThreeBoundaryBase_eq
+        (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector i) =
+      A.actualCentralTranslationToCore N
+        (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector i)
+  orderThreeMeridian_naturality :
+    A.actualEllipticThreeOverlapToCore
+        (fundamentalGroupElementOfBaseEq orderThreeBoundaryBase_eq
+          orderThreeCover.meridian) =
+      N.centralToCore A.centralAffineCorePiOneData.rhoOne
+  orderFourCover : ChosenCyclicAffineFillingCoverModel 4 Lattice
+    (A.actualVanKampenFourPieceCover.core ∩
+      A.actualVanKampenFourPieceCover.ellipticFour : Set A.VanKampenSpace)
+    A.actualVanKampenFourPieceCover.ellipticFour
+  orderFourBoundaryBase_eq : orderFourCover.boundaryBase =
+    ⟨A.actualVanKampenFourPieceCover.ellipticFourPoint,
+      A.actualVanKampenFourPieceCover.ellipticFourPoint_mem⟩
+  orderFourFillingBase_eq : orderFourCover.fillingBase =
+    ⟨A.actualVanKampenFourPieceCover.ellipticFourPoint,
+      A.actualVanKampenFourPieceCover.ellipticFourPoint_mem.2⟩
+  orderFourMap_eq : fundamentalGroupHomOfBaseEq
+    orderFourBoundaryBase_eq orderFourFillingBase_eq
+    orderFourCover.fundamentalGroupMap =
+    A.actualVanKampenFourPieceCover.ellipticFourOverlapFundamentalGroupMap
+  orderFourTwist_eq : orderFourCover.twist = -epsilon'
+  orderFourTranslation_basis : ∀ i : Fin 4,
+    A.actualEllipticFourTranslationToCore orderFourCover orderFourBoundaryBase_eq
+        (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector i) =
+      A.actualCentralTranslationToCore N
+        (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector i)
+  orderFourMeridian_naturality :
+    A.actualEllipticFourOverlapToCore
+        (fundamentalGroupElementOfBaseEq orderFourBoundaryBase_eq
+          orderFourCover.meridian) =
+      N.centralToCore A.centralAffineCorePiOneData.rhoTwo
+
+namespace ActualEllipticCentralBasisNaturality
+
+variable {A} {N : A.ActualCuspCentralNaturality}
+
+/-- Extend the finite basis marking to every lattice translation. -/
+public noncomputable def toActualEllipticCentralNaturality
+    (E : ActualEllipticCentralBasisNaturality A N) :
+    ActualEllipticCentralNaturality A N where
+  orderThreeCover := E.orderThreeCover
+  orderThreeBoundaryBase_eq := E.orderThreeBoundaryBase_eq
+  orderThreeFillingBase_eq := E.orderThreeFillingBase_eq
+  orderThreeMap_eq := E.orderThreeMap_eq
+  orderThreeTwist_eq := E.orderThreeTwist_eq
+  orderThreeTranslation_naturality := fun a ↦ by
+    have h := DFunLike.congr_fun
+      (latticeAddHom_ext_integralBasis
+        (A.actualEllipticThreeTranslationToCore E.orderThreeCover
+          E.orderThreeBoundaryBase_eq)
+        (A.actualCentralTranslationToCore N) E.orderThreeTranslation_basis) a
+    exact congrArg Additive.toMul h
+  orderThreeMeridian_naturality := E.orderThreeMeridian_naturality
+  orderFourCover := E.orderFourCover
+  orderFourBoundaryBase_eq := E.orderFourBoundaryBase_eq
+  orderFourFillingBase_eq := E.orderFourFillingBase_eq
+  orderFourMap_eq := E.orderFourMap_eq
+  orderFourTwist_eq := E.orderFourTwist_eq
+  orderFourTranslation_naturality := fun a ↦ by
+    have h := DFunLike.congr_fun
+      (latticeAddHom_ext_integralBasis
+        (A.actualEllipticFourTranslationToCore E.orderFourCover
+          E.orderFourBoundaryBase_eq)
+        (A.actualCentralTranslationToCore N) E.orderFourTranslation_basis) a
+    exact congrArg Additive.toMul h
+  orderFourMeridian_naturality := E.orderFourMeridian_naturality
+
+end ActualEllipticCentralBasisNaturality
+
 namespace ActualEllipticCentralNaturality
 
 variable {A} {N : A.ActualCuspCentralNaturality}
@@ -456,8 +609,14 @@ geometric peripheral loop follows. The one theoretical escape — prove generati
 semidirect-product relations for the geometric triple and then deduce injectivity from Hopficity of
 `ℤ⁴ ⋊ FreeGroup (Fin 2)` — needs Malcev's theorem that finitely generated residually finite groups
 are Hopfian, which is not in Mathlib. -/
-public axiom establishedActualEllipticCentralNaturality :
-    Nonempty (ActualEllipticCentralNaturality A A.actualCuspCentralNaturality)
+public axiom establishedActualEllipticCentralBasisNaturality :
+    Nonempty (ActualEllipticCentralBasisNaturality A A.actualCuspCentralNaturality)
+
+/-- The full elliptic naturality package, extended from the four standard lattice generators. -/
+public theorem establishedActualEllipticCentralNaturality :
+    Nonempty (ActualEllipticCentralNaturality A A.actualCuspCentralNaturality) :=
+  A.establishedActualEllipticCentralBasisNaturality.map
+    ActualEllipticCentralBasisNaturality.toActualEllipticCentralNaturality
 
 /-- Marked peripheral naturality for all three actual collars.  The cusp half is now proved
 (`actualCuspCentralNaturality`), so only the elliptic half remains assumed. -/

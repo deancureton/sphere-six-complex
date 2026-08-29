@@ -41,7 +41,7 @@ inside the horodisc, and its recorded coordinate is the actual additive period c
 Producing the marking is the same real-period-coordinate construction used for the central band in
 `PaperSectionSevenAffineMarkedBandTrivialization`: lift the contractible base through the
 covering, then read the period coordinate on the lifted sheet. -/
-@[no_expose] public noncomputable def data
+public noncomputable def data
     {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) : ActualCuspRadialClutchingData W :=
@@ -146,11 +146,57 @@ public noncomputable def actualCuspRadialClutchingData :
     ActualCuspRadialClutchingData A.starCuspWitness :=
   EstablishedActualCuspRadialClutching.data A.starCuspWitness
 
+/-- The paper's selected radial clutching datum is the explicit additive-period construction. -/
+public theorem actualCuspRadialClutchingData_eq :
+    A.actualCuspRadialClutchingData =
+      SphereSixComplex.Geometry.CuspRadialClutchingConstruction.actualCuspRadialClutchingData
+        A.starCuspWitness := rfl
+
 end Geometry.PaperAnalyticData
 
 namespace Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization
 
 open Geometry.PaperAnalyticData
+
+/-- Projection from the raw degree-one Wang basis to its two fibre coinvariants. -/
+public def degreeOneFiberProjection : (Fin 3 → ℤ) →+ (Fin 2 → ℤ) where
+  toFun x := fun i ↦ x (Fin.castAdd 1 i)
+  map_zero' := by rfl
+  map_add' _ _ := by rfl
+
+/-- Projection from the raw degree-two Wang basis to its four fibre coinvariants. -/
+public def degreeTwoFiberProjection : (Fin 6 → ℤ) →+ (Fin 4 → ℤ) where
+  toFun x := fun i ↦ x (Fin.castAdd 2 i)
+  map_zero' := by rfl
+  map_add' _ _ := by rfl
+
+/-- The remaining cellular naturality input, stated as two equalities of homomorphisms in the
+explicit finite bases.  The radial coordinates are the constructed additive-period coordinates,
+not an arbitrary clutching datum. -/
+public structure FiniteBasisNaturality (A : PaperAnalyticData) : Prop where
+  degreeOne :
+    (actualLocalCuspFillingHomologyOneEquiv A.starCuspWitness
+      A.cuspCentralFiberRetractionData).toAddMonoidHom.comp
+        (integralSingularHomologyMap 1
+          ⟨puncturedLocalCuspToFilling A.starCuspWitness,
+            puncturedLocalCuspToFilling_continuous A.starCuspWitness⟩) =
+      let G :=
+        SphereSixComplex.Geometry.CuspRadialClutchingConstruction.actualCuspRadialClutchingData
+          A.starCuspWitness
+      degreeOneFiberProjection.comp G.geometricHomologyOneEquiv.toAddMonoidHom
+  degreeTwo :
+    (actualLocalCuspFillingHomologyTwoEquiv A.starCuspWitness
+      A.cuspCentralFiberRetractionData).toAddMonoidHom.comp
+        (integralSingularHomologyMap 2
+          ⟨puncturedLocalCuspToFilling A.starCuspWitness,
+            puncturedLocalCuspToFilling_continuous A.starCuspWitness⟩) =
+      let G :=
+        SphereSixComplex.Geometry.CuspRadialClutchingConstruction.actualCuspRadialClutchingData
+          A.starCuspWitness
+      degreeTwoFiberProjection.comp G.geometricHomologyTwoEquiv.toAddMonoidHom
+
+/-- Cellular-to-singular naturality for the explicit periodic `A₂` cellular basis. -/
+public axiom finiteBasisNaturality (A : PaperAnalyticData) : FiniteBasisNaturality A
 
 /-- Cellular-to-singular naturality for the paper's selected periodic `A₂` cusp marking in
 degree one: specialization preserves its two fibre coinvariants and kills the base circle.
@@ -163,7 +209,7 @@ marking may be composed with the hyperelliptic `±1` involution of the torus fib
 exactly the two coordinates pinned here.  The refutation is
 `not_standardA2CuspSpecializationDegreeOneStatement`,
 kept as a permanent regression test in `PaperCuspGeometricSpecializationProof`. -/
-public axiom degreeOne
+public theorem degreeOne
     (A : PaperAnalyticData)
     (x : IntegralSingularHomology 1 (A.openEmbeddingStarData.collarSource 0)) :
     actualLocalCuspFillingHomologyOneEquiv A.starCuspWitness
@@ -171,7 +217,9 @@ public axiom degreeOne
         (integralSingularHomologyMap 1
           ⟨puncturedLocalCuspToFilling A.starCuspWitness,
             puncturedLocalCuspToFilling_continuous A.starCuspWitness⟩ x) =
-      fun i ↦ A.actualCuspRadialClutchingData.geometricHomologyOneEquiv x (Fin.castAdd 1 i)
+      fun i ↦ A.actualCuspRadialClutchingData.geometricHomologyOneEquiv x (Fin.castAdd 1 i) := by
+  rw [A.actualCuspRadialClutchingData_eq]
+  exact DFunLike.congr_fun (finiteBasisNaturality A).degreeOne x
 
 /-- Cellular-to-singular naturality for the paper's selected periodic `A₂` cusp marking in
 degree two: specialization preserves its four fibre coinvariants and kills the two invariant
@@ -186,7 +234,7 @@ period marking as the degree-one one.  Do not weaken that field.  Over the un-no
 refutation is
 `not_standardA2CuspSpecializationDegreeTwoStatement`,
 kept as a permanent regression test in `PaperCuspGeometricSpecializationProof`. -/
-public axiom degreeTwo
+public theorem degreeTwo
     (A : PaperAnalyticData)
     (x : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0)) :
     actualLocalCuspFillingHomologyTwoEquiv A.starCuspWitness
@@ -194,7 +242,9 @@ public axiom degreeTwo
         (integralSingularHomologyMap 2
           ⟨puncturedLocalCuspToFilling A.starCuspWitness,
             puncturedLocalCuspToFilling_continuous A.starCuspWitness⟩ x) =
-      fun i ↦ A.actualCuspRadialClutchingData.geometricHomologyTwoEquiv x (Fin.castAdd 2 i)
+      fun i ↦ A.actualCuspRadialClutchingData.geometricHomologyTwoEquiv x (Fin.castAdd 2 i) := by
+  rw [A.actualCuspRadialClutchingData_eq]
+  exact DFunLike.congr_fun (finiteBasisNaturality A).degreeTwo x
 
 end Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization
 
@@ -301,4 +351,3 @@ public theorem actualCuspFillingInclusionCoordinates
 end Geometry.PaperAnalyticData
 
 end SphereSixComplex
-
