@@ -95,12 +95,6 @@ public structure MappingTorusFundamentalGroupUP {F : Type} [TopologicalSpace F]
     f (circleMappingTorusMeridian φ x δ) =
       g (circleMappingTorusMeridian φ x δ) → f = g
 
-/-- The standard HNN-extension presentation of the fundamental group of a mapping torus. -/
-public axiom establishedMappingTorusFundamentalGroupUP
-    {F : Type} [TopologicalSpace F] [PathConnectedSpace F]
-    (φ : F ≃ₜ F) (x : F) (δ : Path (φ x) x) :
-    MappingTorusFundamentalGroupUP φ x δ
-
 /-! ## Affine torus-family quotient covers -/
 
 /-- An equivariant map between two regular quotient covers. -/

@@ -2,14 +2,15 @@ module
 
 public import SphereSixComplex.Topology.EstablishedAffineVanKampen
 public import Mathlib.AlgebraicTopology.FundamentalGroupoid.InducedMaps
-import Mathlib.GroupTheory.HNNExtension
+public import Mathlib.GroupTheory.HNNExtension
 
 /-!
 # Mapping-torus fundamental-group relations
 
 The cylinder homotopy proves the conjugation relation in the mapping-torus fundamental group.
-The remaining universal-property fields in `establishedMappingTorusFundamentalGroupUP` require
-identifying the van Kampen groupoid colimit for the disconnected overlap with an HNN extension.
+The mapping-torus universal property is reduced to the bijectivity of the canonical map from its
+HNN extension.  This isolates the missing disconnected-overlap computation as a single precise
+input.
 -/
 
 @[expose] public section
@@ -158,20 +159,20 @@ public theorem circleMappingTorus_conjugate
   rw [hmeridian, hmonodromy]
   exact conjugate_of_groupoid_naturality A B E D hedge
 
-private theorem homeomorph_fundamentalGroupMap_bijective
+public theorem homeomorph_fundamentalGroupMap_bijective
     {F : Type} [TopologicalSpace F] (phi : F ≃ₜ F) (x : F) :
     Function.Bijective (FundamentalGroup.map ⟨phi, phi.continuous⟩ x) := by
   let e := FundamentalGroupoidFunctor.equivOfHomotopyEquiv phi.toHomotopyEquiv
   exact e.fullyFaithfulFunctor.map_bijective _ _
 
-private noncomputable def mappingTorusMonodromyEquiv
+public noncomputable def mappingTorusMonodromyEquiv
     {F : Type} [TopologicalSpace F] (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x) :
     FundamentalGroup F x ≃* FundamentalGroup F x :=
   MulEquiv.ofBijective (mappingTorusMonodromyHom phi x delta)
     ((FundamentalGroup.fundamentalGroupMulEquivOfPath delta).bijective.comp
       (homeomorph_fundamentalGroupMap_bijective phi x))
 
-private def topMulEquiv {G : Type} [Group G] (e : G ≃* G) :
+public def topMulEquiv {G : Type} [Group G] (e : G ≃* G) :
     (⊤ : Subgroup G) ≃* (⊤ : Subgroup G) where
   toFun a := ⟨e a.1, Set.mem_univ _⟩
   invFun a := ⟨e.symm a.1, Set.mem_univ _⟩
@@ -179,12 +180,12 @@ private def topMulEquiv {G : Type} [Group G] (e : G ≃* G) :
   right_inv a := by ext; exact e.apply_symm_apply a.1
   map_mul' a b := by ext; exact e.map_mul a.1 b.1
 
-private abbrev MappingTorusHNN
+public abbrev MappingTorusHNN
     {F : Type} [TopologicalSpace F] (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x) :=
   HNNExtension (FundamentalGroup F x) ⊤ ⊤
     (topMulEquiv (mappingTorusMonodromyEquiv phi x delta))
 
-private noncomputable def mappingTorusHNNToFundamentalGroup
+public noncomputable def mappingTorusHNNToFundamentalGroup
     {F : Type} [TopologicalSpace F] (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x) :
     MappingTorusHNN phi x delta →*
       FundamentalGroup (CircleMappingTorus phi) (circleMappingTorusBase phi x) :=
@@ -206,7 +207,7 @@ private noncomputable def mappingTorusHNNToFundamentalGroup
                 FundamentalGroup F x) * circleMappingTorusMeridian phi x delta := by
               rfl)
 
-private noncomputable def mappingTorusHNNLift
+public noncomputable def mappingTorusHNNLift
     {F H : Type} [TopologicalSpace F] [Group H]
     (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x)
     (f : FundamentalGroup F x →* H) (t : H)
@@ -222,7 +223,7 @@ private noncomputable def mappingTorusHNNLift
           FundamentalGroup F x) * t := by
         rfl)
 
-private noncomputable def mappingTorusFundamentalGroupUP_of_hnn_bijective
+public noncomputable def mappingTorusFundamentalGroupUP_of_bijective
     {F : Type} [TopologicalSpace F] (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x)
     (hbij : Function.Bijective (mappingTorusHNNToFundamentalGroup phi x delta)) :
     MappingTorusFundamentalGroupUP phi x delta := by
@@ -264,5 +265,20 @@ private noncomputable def mappingTorusFundamentalGroupUP_of_hnn_bijective
           g (mappingTorusHNNToFundamentalGroup phi x delta HNNExtension.t)
         simpa [mappingTorusHNNToFundamentalGroup] using ht
     exact DFunLike.congr_fun heq w
+
+/-- The canonical HNN comparison is bijective.  This is the precise disconnected-overlap
+computation required beyond Mathlib's fundamental-groupoid van Kampen theorem. -/
+public axiom establishedMappingTorusHNNToFundamentalGroup_bijective
+    {F : Type} [TopologicalSpace F] [PathConnectedSpace F]
+    (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x) :
+    Function.Bijective (mappingTorusHNNToFundamentalGroup phi x delta)
+
+/-- The standard HNN-extension presentation of the fundamental group of a mapping torus. -/
+public noncomputable def establishedMappingTorusFundamentalGroupUP
+    {F : Type} [TopologicalSpace F] [PathConnectedSpace F]
+    (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x) :
+    MappingTorusFundamentalGroupUP phi x delta :=
+  mappingTorusFundamentalGroupUP_of_bijective phi x delta
+    (establishedMappingTorusHNNToFundamentalGroup_bijective phi x delta)
 
 end SphereSixComplex
