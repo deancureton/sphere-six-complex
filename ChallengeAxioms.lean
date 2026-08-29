@@ -188,8 +188,6 @@ axiom SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTop
 axiom SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenEllipticTwoDiscCoverData.EstablishedActualCuspWangOpenCoverChainRealization.realization : {A :
     SphereSixComplex.Geometry.PaperAnalyticData} →
   (R : A.SectionSevenAffineRadialCompletionInput) → R.twoDiscCover.ActualCuspWangOpenCoverChainRealization
-axiom SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established.model : Nonempty
-  SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Model
 axiom SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established.polarHoneycombPhaseSpreadingPackage : ∀
   {E : SphereSixComplex.Periods.EstablishedFuchsianModularParameter}
   {D : SphereSixComplex.Periods.FuchsianPeriodLocalData E}

@@ -385,13 +385,4 @@ public theorem torusEmbedding_holomorphic (M : Model) :
 
 end Model
 
-namespace Established
-
-/-- Standard toric geometry for the countable smooth fan obtained by coning the `A₂`
-triangulation at height one.  This is precisely the external toric input of Lemma 4.2 and
-Lemma 4.3(i)--(ii), with no paper-specific analytic or quotient assertions. -/
-public axiom model : Nonempty Model
-
-end Established
-
 end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel

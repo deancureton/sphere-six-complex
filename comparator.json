@@ -33,7 +33,6 @@
     "SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenAffineRegularLiftTopology.overlapBandCompatibility",
     "SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTopology.actualCuspFiberEllipticCoordinateIdentities",
     "SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenEllipticTwoDiscCoverData.EstablishedActualCuspWangOpenCoverChainRealization.realization",
-    "SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established.model",
     "SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established.polarHoneycombPhaseSpreadingPackage"
   ],
   "enable_nanoda": false

@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
+public import SphereSixComplex.Geometry.StandardInfiniteA2ToricCarrierGeometryAssembly
 public import SphereSixComplex.Geometry.EllipticFixedPointCriterion
 public import SphereSixComplex.Periods.EstablishedFuchsianTorsorDescent
 public import SphereSixComplex.Periods.FuchsianCuspNormalization

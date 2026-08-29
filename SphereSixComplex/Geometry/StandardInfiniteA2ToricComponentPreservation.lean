@@ -1,6 +1,7 @@
 module
 
 public import SphereSixComplex.Geometry.CuspPhaseEstimates
+public import SphereSixComplex.Geometry.StandardInfiniteA2ToricCarrierGeometryAssembly
 
 /-!
 # Component preservation in the standard infinite `A₂` toric model

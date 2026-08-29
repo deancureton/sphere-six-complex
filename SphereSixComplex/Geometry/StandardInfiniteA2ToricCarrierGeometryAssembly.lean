@@ -6,16 +6,18 @@ Authors: Dean Cureton
 module
 
 public import SphereSixComplex.Geometry.StandardInfiniteA2ToricCentralComponents
+public import SphereSixComplex.Geometry.StandardInfiniteA2ToricClosedPolydisc
 public import SphereSixComplex.Geometry.StandardInfiniteA2ToricFanShears
 public import SphereSixComplex.Geometry.StandardInfiniteA2ToricResidualAnalytic
 public import SphereSixComplex.Geometry.StandardInfiniteA2ToricSublevelSimplyConnected
 
 /-!
-# Remaining geometry for the standard infinite `A₂` toric model
+# Assembly of the standard infinite `A₂` toric model
 
-The glued carrier, height, dense torus, affine charts, and full holomorphic torus action are
-constructed upstream.  This module isolates the smaller residual interface needed to assemble the
-existing `StandardInfiniteA2ToricModel.Model` without changing its statement.
+The glued carrier, height, dense torus, affine charts, full holomorphic torus action, fan shears,
+simply connected sublevels, and closed bounded region are constructed upstream.  This module
+assembles them into the existing `StandardInfiniteA2ToricModel.Model` without changing its
+statement.
 -/
 
 @[expose] public section
@@ -29,17 +31,8 @@ open SphereSixComplex.Geometry.CuspFilling
 
 namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
 
-/-- The geometric facts not yet supplied by the glued-carrier construction. -/
-public structure RemainingGeometry where
-  closedUnitPolydisc_union_below_closed :
-    letI := chartedSpace
-    ∀ c : ℝ, c < 1 → IsClosed (⋃ a : ChartIndex,
-      {p | p ∈ (toricChart a).source ∧ ∀ i, ‖toricChart a p i‖ ≤ 1} ∩
-        {p | ‖carrierHeight p‖ ≤ c})
-
-/-- Assemble the exact public toric-model interface from the constructed carrier and the residual
-geometric package. -/
-public noncomputable def RemainingGeometry.toModel (R : RemainingGeometry) : Model where
+/-- Assemble the exact public toric-model interface from the constructed carrier. -/
+public noncomputable def constructedModel : Model where
   Carrier := Carrier
   topology := inferInstance
   charts := chartedSpace
@@ -68,7 +61,7 @@ public noncomputable def RemainingGeometry.toModel (R : RemainingGeometry) : Mod
     exact ⟨upper, v, hp⟩
   torus_mem_toricChart := fun upper v ↦ carrierTorusEmbedding_mem_toricChart (upper, v)
   toricChart_torus_character := fun upper v ↦ toricChart_torus_character (upper, v)
-  closedUnitPolydisc_union_below_closed := R.closedUnitPolydisc_union_below_closed
+  closedUnitPolydisc_union_below_closed := closedUnitPolydisc_union_below_closed
   toricChart_t := fun upper v ↦ carrierHeight_toricChart (upper, v)
   centralComponent := carrierCentralComponent
   centralFiber_eq_iUnion := carrierCentralFiber_eq_iUnion
@@ -84,3 +77,12 @@ public noncomputable def RemainingGeometry.toModel (R : RemainingGeometry) : Mod
   fanShear_component := carrierFanShear_component_exact
 
 end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+
+namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+
+/-- The explicit standard toric model for the countable smooth fan obtained by coning the `A₂`
+triangulation at height one. -/
+public theorem model : Nonempty Model :=
+  ⟨Construction.constructedModel⟩
+
+end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
