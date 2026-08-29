@@ -16,53 +16,12 @@ open scoped ContinuousMap
 
 namespace SphereSixComplex
 
-namespace EstablishedFiniteCWTopology
-
-open Geometry Geometry.AnalyticTorusFamily Geometry.ComplexTorus
-open Geometry.EllipticFamilySpecialization
-
-/-- A full-rank complex two-torus has the standard product CW decomposition of a real
-four-torus. This is the standard torus/product-CW theorem currently missing from Mathlib's CW
-API. -/
-public axiom additiveTorusFourTorusCellModel (p : SphereSixComplex.Periods.Parameters)
-    (h : FullRank p) :
-    FourTorusCellModel (AdditiveTorus p)
-
-end EstablishedFiniteCWTopology
-
-namespace FourTorusCellModel
-
-variable {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
-
-/-- Transport a four-torus cell model across a homeomorphism. -/
-@[expose] public def homeomorph (M : FourTorusCellModel X) (e : Y ≃ₜ X) :
-    FourTorusCellModel Y where
-  toFiniteCWModelSix := by
-    let _ := M.toFiniteCWModelSix.topology
-    exact
-      { Carrier := M.toFiniteCWModelSix.Carrier
-        topology := inferInstance
-        t2 := M.toFiniteCWModelSix.t2
-        homotopyEquiv := e.toHomotopyEquiv.trans M.toFiniteCWModelSix.homotopyEquiv
-        cwComplex := M.toFiniteCWModelSix.cwComplex
-        finite := M.toFiniteCWModelSix.finite
-        cellsAboveSix := M.toFiniteCWModelSix.cellsAboveSix }
-  cellsZero := M.cellsZero
-  cellsOne := M.cellsOne
-  cellsTwo := M.cellsTwo
-  cellsThree := M.cellsThree
-  cellsFour := M.cellsFour
-  cellsFive := M.cellsFive
-  cellsSix := M.cellsSix
-
-end FourTorusCellModel
-
 /-- Package an explicit constant-degree finite cover by a four-torus into the Section 7 model. -/
 @[expose] public noncomputable def finiteFourTorusCoverModelOfFiniteCover
     {E X : Type} [TopologicalSpace E] [TopologicalSpace X]
     (p : C(E, X)) (hp : IsCoveringMap p) (degree : ℕ) (hdegree : 0 < degree)
     (hcard : ∀ x, Nat.card {y : E // p y = x} = degree)
-    (coverCells : FourTorusCellModel E) (quotientFiniteCW : FiniteCWModelSix X) :
+    (coverHomology : FourTorusHomologicalModel E) (quotientFiniteCW : FiniteCWModelSix X) :
     FiniteFourTorusCoverModel X where
   toFiniteCoverModelSix :=
     { Cover := E
@@ -72,9 +31,9 @@ end FourTorusCellModel
       degree := degree
       degree_pos := hdegree
       fiberCardinality := hcard
-      coverFiniteCW := coverCells.toFiniteCWModelSix
+      coverHomologyFiniteSix := coverHomology.integralHomologyFiniteSix
       quotientFiniteCW := quotientFiniteCW }
-  coverCells := coverCells
+  coverHomology := coverHomology
 
 namespace Topology.PaperEllipticReducedCentralFiberCoverModels
 
@@ -256,8 +215,9 @@ four-torus. -/
   let _ : LocallyCompactSpace ComplexUnitDisc :=
     (isOpen_lt continuous_norm continuous_const).locallyCompactSpace
   let D := orderThreeRadialActionData A.periods
-  let coverCells : FourTorusCellModel (RadialEllipticActionData.centralFiberCoverSource D) :=
-    (EstablishedFiniteCWTopology.additiveTorusFourTorusCellModel
+  let coverHomology : FourTorusHomologicalModel
+      (RadialEllipticActionData.centralFiberCoverSource D) :=
+    (EstablishedFiniteCWTopology.additiveTorusFourTorusHomologicalModel
       (parameterMap A.periods
         A.modular.modularParameter.toTriangleUniformization.zOne).1 hfull).homeomorph
       (RadialEllipticActionData.centralFiberCoverSourceHomeomorph D)
@@ -268,7 +228,7 @@ four-torus. -/
     3 (by norm_num)
     (RadialEllipticActionData.centralFiberCoverProjection_fiberCardinality D
       A.orderThreeAction_free)
-    coverCells
+    coverHomology
     (orderThreeReducedCentralFiberFiniteCWModelSix A)
 
 /-- The actual order-four reduced central fibre is a four-sheeted quotient of its central
@@ -286,8 +246,9 @@ four-torus. -/
   let _ : LocallyCompactSpace ComplexUnitDisc :=
     (isOpen_lt continuous_norm continuous_const).locallyCompactSpace
   let D := orderFourRadialActionData A.periods
-  let coverCells : FourTorusCellModel (RadialEllipticActionData.centralFiberCoverSource D) :=
-    (EstablishedFiniteCWTopology.additiveTorusFourTorusCellModel
+  let coverHomology : FourTorusHomologicalModel
+      (RadialEllipticActionData.centralFiberCoverSource D) :=
+    (EstablishedFiniteCWTopology.additiveTorusFourTorusHomologicalModel
       (parameterMap A.periods
         A.modular.modularParameter.toTriangleUniformization.zTwo).1 hfull).homeomorph
       (RadialEllipticActionData.centralFiberCoverSourceHomeomorph D)
@@ -298,7 +259,7 @@ four-torus. -/
     4 (by norm_num)
     (RadialEllipticActionData.centralFiberCoverProjection_fiberCardinality D
       A.orderFourAction_free)
-    coverCells
+    coverHomology
     (orderFourReducedCentralFiberFiniteCWModelSix A)
 
 end

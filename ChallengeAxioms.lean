@@ -58,10 +58,6 @@ axiom SphereSixComplex.establishedCompactSmoothOrientedManifoldHomologyTheory : 
 axiom SphereSixComplex.EstablishedCellularHomology.integralCWCellularChainModel : (Y : Type) →
   [inst : TopologicalSpace Y] →
     [T2Space Y] → [inst_2 : Topology.CWComplex Set.univ] → SphereSixComplex.IntegralCWCellularChainModel Y
-axiom SphereSixComplex.EstablishedFiniteCWTopology.additiveTorusFourTorusCellModel : (p :
-    SphereSixComplex.Periods.Parameters) →
-  SphereSixComplex.Geometry.ComplexTorus.FullRank p →
-    SphereSixComplex.FourTorusCellModel (SphereSixComplex.Geometry.EllipticFamilySpecialization.AdditiveTorus p)
 axiom SphereSixComplex.EstablishedGeneralTopology.isHomotopyEquivalenceInclusion_of_isAspherical_of_bijective_fundamentalGroup.{u_1} : ∀
   {B : Type u_1} [inst : TopologicalSpace B] (D : Set B) (b : B) (hb : b ∈ D),
   TauCeti.IsAspherical B b →

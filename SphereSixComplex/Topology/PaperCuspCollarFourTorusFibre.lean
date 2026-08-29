@@ -27,8 +27,8 @@ public theorem subsingleton_homology_six_actualCuspCollar :
     Subsingleton (IntegralSingularHomology 6 (A.starCollarSourceType 0)) := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
-  have hT : FourTorusCellModel (AdditiveTorus G.fiberParameter) :=
-    EstablishedFiniteCWTopology.additiveTorusFourTorusCellModel _ G.fiberFullRank
+  have hT : FourTorusHomologicalModel (AdditiveTorus G.fiberParameter) :=
+    EstablishedFiniteCWTopology.additiveTorusFourTorusHomologicalModel _ G.fiberFullRank
   have h5 : Subsingleton (IntegralSingularHomology 5 G.Fiber) :=
     OpenEmbeddingStarData.subsingleton_homology_of_homeomorph 5 G.fiberHomeomorph.symm
       hT.subsingleton_homology_five

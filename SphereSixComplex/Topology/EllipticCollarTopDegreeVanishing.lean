@@ -40,9 +40,10 @@ public theorem subsingleton_homology_six_of_radialMappingTorus
   exact OpenEmbeddingStarData.subsingleton_homology_of_homeomorph 6 e.symm
     (subsingleton_homology_prod_of_contractible _ _ 6 hMT)
 
-/-- The four-torus case: a cell model on the fibre supplies both vanishing hypotheses. -/
+/-- The four-torus case: its homological model supplies both vanishing hypotheses. -/
 public theorem subsingleton_homology_six_of_radialMappingTorus_fourTorusFibre
-    {T : Type} [TopologicalSpace T] (M : FourTorusCellModel T) (φ : T ≃ₜ T) {r : ℝ} (hr : 0 < r)
+    {T : Type} [TopologicalSpace T] (M : FourTorusHomologicalModel T) (φ : T ≃ₜ T)
+    {r : ℝ} (hr : 0 < r)
     {Z : Type} [TopologicalSpace Z]
     (e : Z ≃ₜ OpenRadialInterval r × CircleMappingTorus φ) :
     Subsingleton (IntegralSingularHomology 6 Z) :=
@@ -57,7 +58,7 @@ variable (A : PaperAnalyticData)
 public theorem subsingleton_homology_six_orderThreeCollar :
     Subsingleton (IntegralSingularHomology 6 (A.starCollarSourceType 1)) :=
   subsingleton_homology_six_of_radialMappingTorus_fourTorusFibre
-    (EstablishedFiniteCWTopology.additiveTorusFourTorusCellModel _
+    (EstablishedFiniteCWTopology.additiveTorusFourTorusHomologicalModel _
       (ComplexTorus.FullRank.ofSetupInequalities _
         (AnalyticTorusFamily.parameterMap A.periods _).2))
     _ A.starSeparation.orderThree.radius_pos
@@ -67,7 +68,7 @@ public theorem subsingleton_homology_six_orderThreeCollar :
 public theorem subsingleton_homology_six_orderFourCollar :
     Subsingleton (IntegralSingularHomology 6 (A.starCollarSourceType 2)) :=
   subsingleton_homology_six_of_radialMappingTorus_fourTorusFibre
-    (EstablishedFiniteCWTopology.additiveTorusFourTorusCellModel _
+    (EstablishedFiniteCWTopology.additiveTorusFourTorusHomologicalModel _
       (ComplexTorus.FullRank.ofSetupInequalities _
         (AnalyticTorusFamily.parameterMap A.periods _).2))
     _ A.starSeparation.orderFour.radius_pos

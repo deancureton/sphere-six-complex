@@ -14,7 +14,6 @@
     "SphereSixComplex.establishedSmoothPoincareSixStandardModel",
     "SphereSixComplex.establishedCompactSmoothOrientedManifoldHomologyTheory",
     "SphereSixComplex.EstablishedCellularHomology.integralCWCellularChainModel",
-    "SphereSixComplex.EstablishedFiniteCWTopology.additiveTorusFourTorusCellModel",
     "SphereSixComplex.EstablishedGeneralTopology.isHomotopyEquivalenceInclusion_of_isAspherical_of_bijective_fundamentalGroup",
     "SphereSixComplex.EstablishedTorusBundleTopology.centralFamilyBundleRealization",
     "SphereSixComplex.EstablishedTorusBundleTopology.collarBundleRealization",

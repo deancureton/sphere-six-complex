@@ -7,9 +7,9 @@ public import SphereSixComplex.Topology.SectionSevenLocalEulerModels
 # Vanishing from a finite CW model's cell counts
 
 A `FiniteCWModelSix` records a genuine CW structure on a homotopy-equivalent carrier, so a degree
-whose cell count is zero carries no cells at all and hence no homology.  For a `FourTorusCellModel`
-that is degrees five and six, which is exactly what the Section 7 collar obligation asks of a
-four-torus fibre.
+whose cell count is zero carries no cells at all and hence no homology.  Four-torus vanishing is
+now obtained independently from the iterated Wang calculation in
+`StandardFourTorusHomologicalModel`.
 -/
 
 @[expose] public section
@@ -38,16 +38,6 @@ public theorem FiniteCWModelSix.subsingleton_homology_of_cellCount_eq_zero
     subsingleton_integralSingularHomology_of_isEmpty_cell M.Carrier n
   exact ⟨fun _ _ => (integralSingularHomologyEquivOfHomotopyEquiv n M.homotopyEquiv).injective
     (Subsingleton.elim _ _)⟩
-
-/-- A four-torus cell model has no fifth or sixth integral singular homology. -/
-public theorem FourTorusCellModel.subsingleton_homology_five
-    (M : FourTorusCellModel X) : Subsingleton (IntegralSingularHomology 5 X) :=
-  M.toFiniteCWModelSix.subsingleton_homology_of_cellCount_eq_zero 5 M.cellsFive
-
-/-- A four-torus cell model has no sixth integral singular homology. -/
-public theorem FourTorusCellModel.subsingleton_homology_six
-    (M : FourTorusCellModel X) : Subsingleton (IntegralSingularHomology 6 X) :=
-  M.toFiniteCWModelSix.subsingleton_homology_of_cellCount_eq_zero 6 M.cellsSix
 
 end SphereSixComplex
 

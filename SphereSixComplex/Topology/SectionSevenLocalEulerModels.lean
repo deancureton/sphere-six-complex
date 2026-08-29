@@ -3,6 +3,7 @@ module
 public import SphereSixComplex.Topology.CellularChainModel
 public import SphereSixComplex.Topology.SectionSevenLocalEulerCalculation
 public import SphereSixComplex.Topology.SectionSevenLocalEulerModelsProof
+public import SphereSixComplex.Topology.StandardFourTorusHomologicalModel
 public import Mathlib.Topology.CWComplex.Classical.Finite
 public import Mathlib.Topology.FiberBundle.Basic
 
@@ -174,36 +175,6 @@ public theorem homotopyEquiv {X Y : Type} [TopologicalSpace X] [TopologicalSpace
 
 end IntegralHomologyFiniteSix
 
-/-- The standard product CW structure on a four-torus has cell counts `1, 4, 6, 4, 1`.
-This structure asks for that geometric CW model, not for its homology or Euler characteristic. -/
-public structure FourTorusCellModel (X : Type) [TopologicalSpace X] where
-  toFiniteCWModelSix : FiniteCWModelSix X
-  cellsZero : toFiniteCWModelSix.cellCount 0 = 1
-  cellsOne : toFiniteCWModelSix.cellCount 1 = 4
-  cellsTwo : toFiniteCWModelSix.cellCount 2 = 6
-  cellsThree : toFiniteCWModelSix.cellCount 3 = 4
-  cellsFour : toFiniteCWModelSix.cellCount 4 = 1
-  cellsFive : toFiniteCWModelSix.cellCount 5 = 0
-  cellsSix : toFiniteCWModelSix.cellCount 6 = 0
-
-namespace FourTorusCellModel
-
-variable {X : Type} [TopologicalSpace X]
-
-public theorem integralHomologyFiniteSix (M : FourTorusCellModel X) :
-    IntegralHomologyFiniteSix X :=
-  M.toFiniteCWModelSix.integralHomologyFiniteSix
-
-/-- Euler characteristic zero is derived from the standard four-torus cell counts. -/
-public theorem euler_eq_zero (M : FourTorusCellModel X) :
-    integralHomologyEulerCharacteristicSix X = 0 := by
-  rw [M.toFiniteCWModelSix.establishedIntegralCellularEulerPoincareSix,
-    M.cellsZero, M.cellsOne, M.cellsTwo, M.cellsThree, M.cellsFour,
-    M.cellsFive, M.cellsSix]
-  norm_num
-
-end FourTorusCellModel
-
 /-- A finite-CW locally trivial bundle model for a space. -/
 public structure FiniteCWBundleModelSix (X : Type) [TopologicalSpace X] where
   Base : Type
@@ -220,7 +191,8 @@ public structure FiniteCWBundleModelSix (X : Type) [TopologicalSpace X] where
     X ≃ₕ Bundle.TotalSpace Fiber family
   baseFiniteCW : @FiniteCWModelSix Base baseTopology
   fiberFiniteCW : @FiniteCWModelSix Fiber fiberTopology
-  totalFiniteCW : @FiniteCWModelSix (Bundle.TotalSpace Fiber family) totalTopology
+  totalHomologyFiniteSix : @IntegralHomologyFiniteSix
+    (Bundle.TotalSpace Fiber family) totalTopology
 
 namespace FiniteCWBundleModelSix
 
@@ -241,14 +213,14 @@ public theorem integralHomologyFiniteSix (M : FiniteCWBundleModelSix X) :
   let _ := M.fiberTopology
   let _ := M.familyTopology
   let _ := M.totalTopology
-  exact M.totalFiniteCW.integralHomologyFiniteSix.homotopyEquiv M.totalHomotopyEquiv.symm
+  exact M.totalHomologyFiniteSix.homotopyEquiv M.totalHomotopyEquiv.symm
 
 end FiniteCWBundleModelSix
 
 /-- A finite-CW bundle whose model fibre has the standard four-torus CW structure. -/
 public structure FourTorusBundleModel (X : Type) [TopologicalSpace X] where
   toFiniteCWBundleModelSix : FiniteCWBundleModelSix X
-  fiberCells : @FourTorusCellModel toFiniteCWBundleModelSix.Fiber
+  fiberHomology : @FourTorusHomologicalModel toFiniteCWBundleModelSix.Fiber
     toFiniteCWBundleModelSix.fiberTopology
 
 namespace FourTorusBundleModel
@@ -265,7 +237,7 @@ public theorem euler_eq_zero (M : FourTorusBundleModel X) :
   let _ := M.toFiniteCWBundleModelSix.baseTopology
   let _ := M.toFiniteCWBundleModelSix.fiberTopology
   rw [M.toFiniteCWBundleModelSix.establishedEulerMultiplicativity,
-    M.fiberCells.euler_eq_zero, mul_zero]
+    M.fiberHomology.euler_eq_zero, mul_zero]
 
 end FourTorusBundleModel
 
@@ -279,7 +251,7 @@ public structure FiniteCoverModelSix (X : Type) [TopologicalSpace X] where
   degree_pos : 0 < degree
   fiberCardinality : let _ := coverTopology
     ∀ x, Nat.card {y : Cover // projection y = x} = degree
-  coverFiniteCW : @FiniteCWModelSix Cover coverTopology
+  coverHomologyFiniteSix : @IntegralHomologyFiniteSix Cover coverTopology
   quotientFiniteCW : FiniteCWModelSix X
 
 namespace FiniteCoverModelSix
@@ -397,17 +369,8 @@ private noncomputable def coverAsBundleModel (M : FiniteCoverModelSix X) :
       totalHomotopyEquiv := totalHomeomorph.symm.toHomotopyEquiv
       baseFiniteCW := M.quotientFiniteCW
       fiberFiniteCW := (finiteDiscreteCellModel M.degree).model
-      totalFiniteCW := by
-        let _ := M.coverFiniteCW.topology
-        exact
-          { Carrier := M.coverFiniteCW.Carrier
-            topology := inferInstance
-            t2 := M.coverFiniteCW.t2
-            homotopyEquiv :=
-              totalHomeomorph.toHomotopyEquiv.trans M.coverFiniteCW.homotopyEquiv
-            cwComplex := M.coverFiniteCW.cwComplex
-            finite := M.coverFiniteCW.finite
-            cellsAboveSix := M.coverFiniteCW.cellsAboveSix } }
+      totalHomologyFiniteSix :=
+        M.coverHomologyFiniteSix.homotopyEquiv totalHomeomorph.symm.toHomotopyEquiv }
 
 /-- Euler characteristic multiplies by the degree of a finite covering. -/
 public theorem establishedEulerMultiplicativity (M : FiniteCoverModelSix X) :
@@ -428,7 +391,7 @@ end FiniteCoverModelSix
 /-- A finite quotient of a four-torus, expressed by its actual finite covering projection. -/
 public structure FiniteFourTorusCoverModel (X : Type) [TopologicalSpace X] where
   toFiniteCoverModelSix : FiniteCoverModelSix X
-  coverCells : @FourTorusCellModel toFiniteCoverModelSix.Cover
+  coverHomology : @FourTorusHomologicalModel toFiniteCoverModelSix.Cover
     toFiniteCoverModelSix.coverTopology
 
 namespace FiniteFourTorusCoverModel
@@ -445,7 +408,7 @@ public theorem euler_eq_zero (M : FiniteFourTorusCoverModel X) :
   let _ := M.toFiniteCoverModelSix.coverTopology
   have h := M.toFiniteCoverModelSix.establishedEulerMultiplicativity
   dsimp only at h
-  rw [M.coverCells.euler_eq_zero] at h
+  rw [M.coverHomology.euler_eq_zero] at h
   have hdegree : (M.toFiniteCoverModelSix.degree : ℤ) ≠ 0 := by
     exact_mod_cast (ne_of_gt M.toFiniteCoverModelSix.degree_pos)
   exact (mul_eq_zero.mp h.symm).resolve_left hdegree
