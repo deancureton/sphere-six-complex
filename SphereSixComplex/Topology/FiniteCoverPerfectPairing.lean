@@ -418,8 +418,8 @@ public structure EllipticDegreeTwoDualPullbackData where
       degreeTwoEvaluation (orderFourPullbackBasis i) x
 
 /-- The finite residual transfer calculation.  Deck invariance determines the order-three
-pullback functional from its values in coordinates one and three.  The order-four calculation
-is retained on the six standard generators of `DegreeTwoLattice`. -/
+pullback functional from its values in coordinates one and three, and the order-four pullback
+functional from its values in coordinates zero and three. -/
 public structure EllipticDegreeTwoDualPullbackFiniteData where
   orderThreeDualBasis : Module.Basis (Fin 2) ℤ
     (Module.Dual ℤ (IntegralSingularHomology 2 (OrderThreeReducedCentralFiber F)))
@@ -447,14 +447,22 @@ public structure EllipticDegreeTwoDualPullbackFiniteData where
   orderFourTorsionFree :
     Module.IsTorsionFree ℤ
       (IntegralSingularHomology 2 (OrderFourReducedCentralFiber F))
-  orderFourPullback_generator (i : Fin 2) (j : Fin 6) :
+  orderFourPullback_coordinateZero (i : Fin 2) :
     orderFourDualBasis i
         (integralSingularHomologyMap 2
           (RadialEllipticActionData.centralFiberCoverProjection
             (orderFourRadialActionData F))
           ((orderFourCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm
-            (Pi.single j 1))) =
-      degreeTwoEvaluation (orderFourPullbackBasis i) (Pi.single j 1)
+            (Pi.single 0 1))) =
+      degreeTwoEvaluation (orderFourPullbackBasis i) (Pi.single 0 1)
+  orderFourPullback_coordinateThree (i : Fin 2) :
+    orderFourDualBasis i
+        (integralSingularHomologyMap 2
+          (RadialEllipticActionData.centralFiberCoverProjection
+            (orderFourRadialActionData F))
+          ((orderFourCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm
+            (Pi.single 3 1))) =
+      degreeTwoEvaluation (orderFourPullbackBasis i) (Pi.single 3 1)
 
 /-- Pull a quotient covector back to the standard degree-two lattice coordinates. -/
 private noncomputable def degreeTwoDualPullbackAddHom
@@ -572,6 +580,60 @@ private theorem orderThreeExteriorSquare_singleFive :
       secondCompoundMatrix, A₁, periodPairFirst, periodPairSecond, Matrix.mulVec,
       dotProduct, Fin.sum_univ_succ] <;> decide
 
+private theorem orderFourExteriorSquare_singleZero :
+    exteriorSquareMap (rhoLambda g₂) (Pi.single (0 : Fin 6) 1) =
+      ![0, 1, 0, 0, 0, -3] := by
+  funext i
+  fin_cases i <;>
+    norm_num [exteriorSquareMap, exteriorSquareMatrix, integralMatrix_rhoLambda_gTwo,
+      secondCompoundMatrix, A₂, periodPairFirst, periodPairSecond, Matrix.mulVec,
+      dotProduct, Fin.sum_univ_succ] <;> decide
+
+private theorem orderFourExteriorSquare_singleOne :
+    exteriorSquareMap (rhoLambda g₂) (Pi.single (1 : Fin 6) 1) =
+      ![-1, 0, 1, -6, 3, -6] := by
+  funext i
+  fin_cases i <;>
+    norm_num [exteriorSquareMap, exteriorSquareMatrix, integralMatrix_rhoLambda_gTwo,
+      secondCompoundMatrix, A₂, periodPairFirst, periodPairSecond, Matrix.mulVec,
+      dotProduct, Fin.sum_univ_succ] <;> decide
+
+private theorem orderFourExteriorSquare_singleTwo :
+    exteriorSquareMap (rhoLambda g₂) (Pi.single (2 : Fin 6) 1) =
+      ![0, 0, 1, 0, 0, -6] := by
+  funext i
+  fin_cases i <;>
+    norm_num [exteriorSquareMap, exteriorSquareMatrix, integralMatrix_rhoLambda_gTwo,
+      secondCompoundMatrix, A₂, periodPairFirst, periodPairSecond, Matrix.mulVec,
+      dotProduct, Fin.sum_univ_succ] <;> decide
+
+private theorem orderFourExteriorSquare_singleThree :
+    exteriorSquareMap (rhoLambda g₂) (Pi.single (3 : Fin 6) 1) =
+      ![0, 0, 0, 1, 0, 1] := by
+  funext i
+  fin_cases i <;>
+    norm_num [exteriorSquareMap, exteriorSquareMatrix, integralMatrix_rhoLambda_gTwo,
+      secondCompoundMatrix, A₂, periodPairFirst, periodPairSecond, Matrix.mulVec,
+      dotProduct, Fin.sum_univ_succ] <;> decide
+
+private theorem orderFourExteriorSquare_singleFour :
+    exteriorSquareMap (rhoLambda g₂) (Pi.single (4 : Fin 6) 1) =
+      ![0, 0, 0, 0, 0, 1] := by
+  funext i
+  fin_cases i <;>
+    norm_num [exteriorSquareMap, exteriorSquareMatrix, integralMatrix_rhoLambda_gTwo,
+      secondCompoundMatrix, A₂, periodPairFirst, periodPairSecond, Matrix.mulVec,
+      dotProduct, Fin.sum_univ_succ] <;> decide
+
+private theorem orderFourExteriorSquare_singleFive :
+    exteriorSquareMap (rhoLambda g₂) (Pi.single (5 : Fin 6) 1) =
+      ![0, 0, 0, 0, -1, 0] := by
+  funext i
+  fin_cases i <;>
+    norm_num [exteriorSquareMap, exteriorSquareMatrix, integralMatrix_rhoLambda_gTwo,
+      secondCompoundMatrix, A₂, periodPairFirst, periodPairSecond, Matrix.mulVec,
+      dotProduct, Fin.sum_univ_succ] <;> decide
+
 private theorem orderThreeInvariantAddHom_generator
     (f : DegreeTwoLattice →+ ℤ)
     (hinv : ∀ x, f (exteriorSquareMap (rhoLambda g₁) x) = f x)
@@ -644,8 +706,80 @@ private theorem orderThreeInvariantAddHom_generator
       orderThreePullbackInvariantOne, gammaEpsilonOne, qClass] at hOne hThree ⊢ <;>
     omega
 
+private theorem orderFourInvariantAddHom_generator
+    (f : DegreeTwoLattice →+ ℤ)
+    (hinv : ∀ x, f (exteriorSquareMap (rhoLambda g₂) x) = f x)
+    (i : Fin 2)
+    (hZero : f (Pi.single 0 1) =
+      degreeTwoEvaluation (orderFourPullbackBasis i) (Pi.single 0 1))
+    (hThree : f (Pi.single 3 1) =
+      degreeTwoEvaluation (orderFourPullbackBasis i) (Pi.single 3 1))
+    (j : Fin 6) :
+    f (Pi.single j 1) =
+      degreeTwoEvaluation (orderFourPullbackBasis i) (Pi.single j 1) := by
+  have h0 := hinv (Pi.single (0 : Fin 6) 1)
+  have h1 := hinv (Pi.single (1 : Fin 6) 1)
+  have h2 := hinv (Pi.single (2 : Fin 6) 1)
+  have h3 := hinv (Pi.single (3 : Fin 6) 1)
+  have h4 := hinv (Pi.single (4 : Fin 6) 1)
+  have h5 := hinv (Pi.single (5 : Fin 6) 1)
+  rw [orderFourExteriorSquare_singleZero] at h0
+  rw [orderFourExteriorSquare_singleOne] at h1
+  rw [orderFourExteriorSquare_singleTwo] at h2
+  rw [orderFourExteriorSquare_singleThree] at h3
+  rw [orderFourExteriorSquare_singleFour] at h4
+  rw [orderFourExteriorSquare_singleFive] at h5
+  have e0 := degreeTwoAddMonoidHom_apply_coordinates f
+    (![0, 1, 0, 0, 0, -3] : DegreeTwoLattice)
+  have e1 := degreeTwoAddMonoidHom_apply_coordinates f
+    (![-1, 0, 1, -6, 3, -6] : DegreeTwoLattice)
+  have e2 := degreeTwoAddMonoidHom_apply_coordinates f
+    (![0, 0, 1, 0, 0, -6] : DegreeTwoLattice)
+  have e3 := degreeTwoAddMonoidHom_apply_coordinates f
+    (![0, 0, 0, 1, 0, 1] : DegreeTwoLattice)
+  have e4 := degreeTwoAddMonoidHom_apply_coordinates f
+    (![0, 0, 0, 0, 0, 1] : DegreeTwoLattice)
+  have e5 := degreeTwoAddMonoidHom_apply_coordinates f
+    (![0, 0, 0, 0, -1, 0] : DegreeTwoLattice)
+  change f (![0, 1, 0, 0, 0, -3] : DegreeTwoLattice) =
+    0 * f (Pi.single 0 1) + 1 * f (Pi.single 1 1) +
+      0 * f (Pi.single 2 1) + 0 * f (Pi.single 3 1) +
+      0 * f (Pi.single 4 1) + (-3) * f (Pi.single 5 1) at e0
+  change f (![-1, 0, 1, -6, 3, -6] : DegreeTwoLattice) =
+    (-1) * f (Pi.single 0 1) + 0 * f (Pi.single 1 1) +
+      1 * f (Pi.single 2 1) + (-6) * f (Pi.single 3 1) +
+      3 * f (Pi.single 4 1) + (-6) * f (Pi.single 5 1) at e1
+  change f (![0, 0, 1, 0, 0, -6] : DegreeTwoLattice) =
+    0 * f (Pi.single 0 1) + 0 * f (Pi.single 1 1) +
+      1 * f (Pi.single 2 1) + 0 * f (Pi.single 3 1) +
+      0 * f (Pi.single 4 1) + (-6) * f (Pi.single 5 1) at e2
+  change f (![0, 0, 0, 1, 0, 1] : DegreeTwoLattice) =
+    0 * f (Pi.single 0 1) + 0 * f (Pi.single 1 1) +
+      0 * f (Pi.single 2 1) + 1 * f (Pi.single 3 1) +
+      0 * f (Pi.single 4 1) + 1 * f (Pi.single 5 1) at e3
+  change f (![0, 0, 0, 0, 0, 1] : DegreeTwoLattice) =
+    0 * f (Pi.single 0 1) + 0 * f (Pi.single 1 1) +
+      0 * f (Pi.single 2 1) + 0 * f (Pi.single 3 1) +
+      0 * f (Pi.single 4 1) + 1 * f (Pi.single 5 1) at e4
+  change f (![0, 0, 0, 0, -1, 0] : DegreeTwoLattice) =
+    0 * f (Pi.single 0 1) + 0 * f (Pi.single 1 1) +
+      0 * f (Pi.single 2 1) + 0 * f (Pi.single 3 1) +
+      (-1) * f (Pi.single 4 1) + 0 * f (Pi.single 5 1) at e5
+  rw [e0] at h0
+  rw [e1] at h1
+  rw [e2] at h2
+  rw [e3] at h3
+  rw [e4] at h4
+  rw [e5] at h5
+  norm_num at h0 h1 h2 h3 h4 h5
+  fin_cases i <;> fin_cases j <;>
+    simp [degreeTwoEvaluation, orderFourPullbackBasis,
+      orderFourPullbackClasses, orderFourPullbackInvariantZero,
+      orderFourPullbackInvariantOne, gammaEpsilonTwo, qClass] at hZero hThree ⊢ <;>
+    omega
+
 /-- The exact finite residual transfer statement: the two computed pullback families are dual
-bases, their values are specified by sixteen scalar entries, and the quotient degree-two
+bases, their values are specified by eight scalar entries, and the quotient degree-two
 homology groups contain no torsion. -/
 public axiom establishedEllipticDegreeTwoDualPullbackFiniteData :
     Nonempty (EllipticDegreeTwoDualPullbackFiniteData F)
@@ -701,7 +835,25 @@ public theorem establishedEllipticDegreeTwoDualPullbackData :
     let rhs := degreeTwoEvaluationAddHom (orderFourPullbackBasis i)
     have h : lhs = rhs := by
       apply degreeTwoAddMonoidHom_ext_standardGenerators
-      exact D.orderFourPullback_generator i
+      intro j
+      apply orderFourInvariantAddHom_generator lhs
+      · intro x
+        change D.orderFourDualBasis i
+            (integralSingularHomologyMap 2
+              (RadialEllipticActionData.centralFiberCoverProjection
+                (orderFourRadialActionData F))
+              ((orderFourCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm
+                (exteriorSquareMap (rhoLambda g₂) x))) =
+          D.orderFourDualBasis i
+            (integralSingularHomologyMap 2
+              (RadialEllipticActionData.centralFiberCoverProjection
+                (orderFourRadialActionData F))
+              ((orderFourCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm x))
+        exact congrArg (D.orderFourDualBasis i)
+          (coverProjection_degreeTwo_invariant
+            (orderFourCentralFiberPresentationData F) x)
+      · exact D.orderFourPullback_coordinateZero i
+      · exact D.orderFourPullback_coordinateThree i
     exact DFunLike.congr_fun h x
 
 /-- The exact remaining cohomological input from Proposition 7.14: the displayed pullback
