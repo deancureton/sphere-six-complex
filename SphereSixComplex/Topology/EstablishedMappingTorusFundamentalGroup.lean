@@ -2,6 +2,7 @@ module
 
 public import SphereSixComplex.Topology.EstablishedAffineVanKampen
 public import Mathlib.AlgebraicTopology.FundamentalGroupoid.InducedMaps
+import Mathlib.GroupTheory.HNNExtension
 
 /-!
 # Mapping-torus fundamental-group relations
@@ -156,5 +157,112 @@ public theorem circleMappingTorus_conjugate
     circleMappingTorusFiberHom_monodromy phi x delta a
   rw [hmeridian, hmonodromy]
   exact conjugate_of_groupoid_naturality A B E D hedge
+
+private theorem homeomorph_fundamentalGroupMap_bijective
+    {F : Type} [TopologicalSpace F] (phi : F ≃ₜ F) (x : F) :
+    Function.Bijective (FundamentalGroup.map ⟨phi, phi.continuous⟩ x) := by
+  let e := FundamentalGroupoidFunctor.equivOfHomotopyEquiv phi.toHomotopyEquiv
+  exact e.fullyFaithfulFunctor.map_bijective _ _
+
+private noncomputable def mappingTorusMonodromyEquiv
+    {F : Type} [TopologicalSpace F] (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x) :
+    FundamentalGroup F x ≃* FundamentalGroup F x :=
+  MulEquiv.ofBijective (mappingTorusMonodromyHom phi x delta)
+    ((FundamentalGroup.fundamentalGroupMulEquivOfPath delta).bijective.comp
+      (homeomorph_fundamentalGroupMap_bijective phi x))
+
+private def topMulEquiv {G : Type} [Group G] (e : G ≃* G) :
+    (⊤ : Subgroup G) ≃* (⊤ : Subgroup G) where
+  toFun a := ⟨e a.1, Set.mem_univ _⟩
+  invFun a := ⟨e.symm a.1, Set.mem_univ _⟩
+  left_inv a := by ext; exact e.symm_apply_apply a.1
+  right_inv a := by ext; exact e.apply_symm_apply a.1
+  map_mul' a b := by ext; exact e.map_mul a.1 b.1
+
+private abbrev MappingTorusHNN
+    {F : Type} [TopologicalSpace F] (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x) :=
+  HNNExtension (FundamentalGroup F x) ⊤ ⊤
+    (topMulEquiv (mappingTorusMonodromyEquiv phi x delta))
+
+private noncomputable def mappingTorusHNNToFundamentalGroup
+    {F : Type} [TopologicalSpace F] (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x) :
+    MappingTorusHNN phi x delta →*
+      FundamentalGroup (CircleMappingTorus phi) (circleMappingTorusBase phi x) :=
+  HNNExtension.lift (circleMappingTorusFiberHom phi x)
+    (circleMappingTorusMeridian phi x delta) (by
+      intro a
+      calc
+        circleMappingTorusMeridian phi x delta * circleMappingTorusFiberHom phi x a.1 =
+            (circleMappingTorusMeridian phi x delta * circleMappingTorusFiberHom phi x a.1 *
+              (circleMappingTorusMeridian phi x delta)⁻¹) *
+                circleMappingTorusMeridian phi x delta := by
+              rw [mul_assoc, inv_mul_cancel, mul_one]
+        _ = circleMappingTorusFiberHom phi x
+              (mappingTorusMonodromyHom phi x delta a.1) *
+                circleMappingTorusMeridian phi x delta := by
+              rw [circleMappingTorus_conjugate]
+        _ = circleMappingTorusFiberHom phi x
+              ((topMulEquiv (mappingTorusMonodromyEquiv phi x delta)) a :
+                FundamentalGroup F x) * circleMappingTorusMeridian phi x delta := by
+              rfl)
+
+private noncomputable def mappingTorusHNNLift
+    {F H : Type} [TopologicalSpace F] [Group H]
+    (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x)
+    (f : FundamentalGroup F x →* H) (t : H)
+    (h : ∀ a, t * f a * t⁻¹ = f (mappingTorusMonodromyHom phi x delta a)) :
+    MappingTorusHNN phi x delta →* H :=
+  HNNExtension.lift f t (by
+    intro a
+    calc
+      t * f a.1 = (t * f a.1 * t⁻¹) * t := by
+        rw [mul_assoc, inv_mul_cancel, mul_one]
+      _ = f (mappingTorusMonodromyHom phi x delta a.1) * t := by rw [h]
+      _ = f ((topMulEquiv (mappingTorusMonodromyEquiv phi x delta)) a :
+          FundamentalGroup F x) * t := by
+        rfl)
+
+private noncomputable def mappingTorusFundamentalGroupUP_of_hnn_bijective
+    {F : Type} [TopologicalSpace F] (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x)
+    (hbij : Function.Bijective (mappingTorusHNNToFundamentalGroup phi x delta)) :
+    MappingTorusFundamentalGroupUP phi x delta := by
+  let e : MappingTorusHNN phi x delta ≃*
+      FundamentalGroup (CircleMappingTorus phi) (circleMappingTorusBase phi x) :=
+    MulEquiv.ofBijective (mappingTorusHNNToFundamentalGroup phi x delta) hbij
+  refine
+    { conjugate := circleMappingTorus_conjugate phi x delta
+      lift := fun f t h => (mappingTorusHNNLift phi x delta f t h).comp e.symm.toMonoidHom
+      lift_fiber := ?_
+      lift_meridian := ?_
+      hom_ext := ?_ }
+  · intro H _ f t h a
+    change mappingTorusHNNLift phi x delta f t h
+      (e.symm (circleMappingTorusFiberHom phi x a)) = f a
+    have he : e (HNNExtension.of a) = circleMappingTorusFiberHom phi x a := by
+      change mappingTorusHNNToFundamentalGroup phi x delta (HNNExtension.of a) = _
+      simp [mappingTorusHNNToFundamentalGroup]
+    rw [← he, e.symm_apply_apply]
+    exact HNNExtension.lift_of _ _ _ _
+  · intro H _ f t h
+    change mappingTorusHNNLift phi x delta f t h
+      (e.symm (circleMappingTorusMeridian phi x delta)) = t
+    have he : e HNNExtension.t = circleMappingTorusMeridian phi x delta := by
+      change mappingTorusHNNToFundamentalGroup phi x delta HNNExtension.t = _
+      simp [mappingTorusHNNToFundamentalGroup]
+    rw [← he, e.symm_apply_apply]
+    exact HNNExtension.lift_t _ _ _
+  · intro H _ f g hf ht
+    apply MonoidHom.ext
+    intro z
+    obtain ⟨w, rfl⟩ := e.surjective z
+    have heq : f.comp e.toMonoidHom = g.comp e.toMonoidHom := by
+      apply HNNExtension.hom_ext
+      · ext a
+        exact hf a
+      · change f (e HNNExtension.t) = g (e HNNExtension.t)
+        change f (mappingTorusHNNToFundamentalGroup phi x delta HNNExtension.t) =
+          g (mappingTorusHNNToFundamentalGroup phi x delta HNNExtension.t)
+        simpa [mappingTorusHNNToFundamentalGroup] using ht
+    exact DFunLike.congr_fun heq w
 
 end SphereSixComplex
