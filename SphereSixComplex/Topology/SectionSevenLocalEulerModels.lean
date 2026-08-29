@@ -103,6 +103,61 @@ public theorem integralHomologyFiniteSix (M : FiniteCWModelSix X) :
 
 end FiniteCWModelSix
 
+private structure FiniteDiscreteCellModel (d : ℕ) where
+  model : FiniteCWModelSix (Fin d)
+  cellsZero : model.cellCount 0 = d
+  cellsOne : model.cellCount 1 = 0
+  cellsTwo : model.cellCount 2 = 0
+  cellsThree : model.cellCount 3 = 0
+  cellsFour : model.cellCount 4 = 0
+  cellsFive : model.cellCount 5 = 0
+  cellsSix : model.cellCount 6 = 0
+
+private noncomputable def finiteDiscreteCellModel (d : ℕ) : FiniteDiscreteCellModel d := by
+  let C : Topology.CWComplex (Set.univ : Set (Fin d)) :=
+    Topology.CWComplex.OfDiscreteClosed IsDiscrete.univ isClosed_univ
+  letI : Topology.CWComplex (Set.univ : Set (Fin d)) := C
+  have F : Topology.CWComplex.Finite (Set.univ : Set (Fin d)) := by
+    refine { eventually_isEmpty_cell := ?_, finite_cell := ?_ }
+    · rw [Filter.eventually_atTop]
+      refine ⟨1, fun n hn ↦ ?_⟩
+      change IsEmpty (Topology.CWComplex.cell (Set.univ : Set (Fin d)) n)
+      rw [Topology.CWComplex.OfDiscreteClosed_cell IsDiscrete.univ isClosed_univ]
+      cases n with
+      | zero => omega
+      | succ n => infer_instance
+    · intro n
+      change Finite (Topology.CWComplex.cell (Set.univ : Set (Fin d)) n)
+      rw [Topology.CWComplex.OfDiscreteClosed_cell IsDiscrete.univ isClosed_univ]
+      cases n <;> infer_instance
+  let model : FiniteCWModelSix (Fin d) :=
+    { Carrier := Fin d
+      topology := inferInstance
+      t2 := by dsimp; infer_instance
+      homotopyEquiv := by dsimp; exact (Homeomorph.refl (Fin d)).toHomotopyEquiv
+      cwComplex := C
+      finite := F
+      cellsAboveSix := by
+        dsimp
+        intro n hn
+        change IsEmpty (Topology.CWComplex.cell (Set.univ : Set (Fin d)) n)
+        rw [Topology.CWComplex.OfDiscreteClosed_cell IsDiscrete.univ isClosed_univ]
+        cases n with
+        | zero => omega
+        | succ n => infer_instance }
+  refine ⟨model, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
+  all_goals
+    dsimp [FiniteCWModelSix.cellCount, model]
+    rw [Topology.CWComplex.OfDiscreteClosed_cell IsDiscrete.univ isClosed_univ]
+    simp
+
+private theorem finiteDiscreteEuler (d : ℕ) :
+    integralHomologyEulerCharacteristicSix (Fin d) = (d : ℤ) := by
+  let M := finiteDiscreteCellModel d
+  rw [M.model.establishedIntegralCellularEulerPoincareSix, M.cellsZero, M.cellsOne, M.cellsTwo,
+    M.cellsThree, M.cellsFour, M.cellsFive, M.cellsSix]
+  norm_num
+
 namespace IntegralHomologyFiniteSix
 
 /-- Homological finiteness and the dimension bound transport through a homotopy equivalence. -/
@@ -231,11 +286,142 @@ namespace FiniteCoverModelSix
 
 variable {X : Type} [TopologicalSpace X]
 
+private abbrev coverFiber (M : FiniteCoverModelSix X) (x : X) : Type :=
+  ↥(M.projection ⁻¹' ({x} : Set X))
+
+private noncomputable def coverFiberEquivEq (M : FiniteCoverModelSix X) (x : X) :
+    coverFiber M x ≃ {y : M.Cover // M.projection y = x} :=
+  Equiv.setCongr (show M.projection ⁻¹' ({x} : Set X) =
+    {y : M.Cover | M.projection y = x} by ext y; simp)
+
+private noncomputable def fiberHomeomorphFin (M : FiniteCoverModelSix X) (x : X) :
+    let _ := M.coverTopology
+    coverFiber M x ≃ₜ Fin M.degree := by
+  let _ := M.coverTopology
+  have hcardNat : Nat.card (coverFiber M x) = M.degree := by
+    rw [Nat.card_congr (coverFiberEquivEq M x), M.fiberCardinality x]
+  have hpos : 0 < Nat.card (coverFiber M x) := hcardNat.symm ▸ M.degree_pos
+  letI : Nonempty (coverFiber M x) := (Nat.card_pos_iff.mp hpos).1
+  letI : Finite (coverFiber M x) := (Nat.card_pos_iff.mp hpos).2
+  letI : Fintype (coverFiber M x) := Fintype.ofFinite _
+  have hcard : Fintype.card (coverFiber M x) = M.degree := by
+    rw [← Nat.card_eq_fintype_card, hcardNat]
+  haveI : DiscreteTopology (coverFiber M x) :=
+    (M.isCovering x).discreteTopology_fiber
+  exact ((Fintype.equivFin (coverFiber M x)).trans
+    (Fin.castOrderIso hcard).toEquiv).toHomeomorphOfDiscrete
+
+private noncomputable def coverTotalEquiv (M : FiniteCoverModelSix X) :
+    Bundle.TotalSpace (Fin M.degree) (coverFiber M) ≃ M.Cover where
+  toFun z := z.2.1
+  invFun y := ⟨M.projection y, ⟨y, by simp⟩⟩
+  left_inv z := by
+    rcases z with ⟨x, ⟨y, hy⟩⟩
+    have h : M.projection y = x := by simpa using hy
+    subst x
+    rfl
+  right_inv _ := rfl
+
+private noncomputable def coverAsBundleModel (M : FiniteCoverModelSix X) :
+    let _ := M.coverTopology
+    FiniteCWBundleModelSix M.Cover := by
+  let _ := M.coverTopology
+  let family := coverFiber M
+  let familyTopology : ∀ x, TopologicalSpace (family x) := fun _ ↦ inferInstance
+  letI : ∀ x, TopologicalSpace (family x) := familyTopology
+  let totalEquiv : Bundle.TotalSpace (Fin M.degree) family ≃ M.Cover := coverTotalEquiv M
+  let totalTopology : TopologicalSpace (Bundle.TotalSpace (Fin M.degree) family) :=
+    TopologicalSpace.induced totalEquiv inferInstance
+  letI : TopologicalSpace (Bundle.TotalSpace (Fin M.degree) family) := totalTopology
+  let totalHomeomorph : Bundle.TotalSpace (Fin M.degree) family ≃ₜ M.Cover :=
+    totalEquiv.toHomeomorphOfIsInducing (Topology.IsInducing.induced _)
+  let trivAtData (x : X) :
+      {t : Bundle.Trivialization (Fin M.degree)
+          (fun z : Bundle.TotalSpace (Fin M.degree) family ↦ z.proj) //
+        x ∈ t.baseSet} := by
+    have hcardNat : Nat.card (coverFiber M x) = M.degree := by
+      rw [Nat.card_congr (coverFiberEquivEq M x), M.fiberCardinality x]
+    have hpos : 0 < Nat.card (coverFiber M x) := hcardNat.symm ▸ M.degree_pos
+    letI : Nonempty (coverFiber M x) := (Nat.card_pos_iff.mp hpos).1
+    letI : DiscreteTopology (coverFiber M x) :=
+      (M.isCovering x).discreteTopology_fiber
+    let t := ((M.isCovering x).toTrivialization.transFiberHomeomorph
+      (fiberHomeomorphFin M x)).compHomeomorph totalHomeomorph
+    have hproj :
+        M.projection ∘ (totalHomeomorph : Bundle.TotalSpace (Fin M.degree) family → M.Cover) =
+          (fun z : Bundle.TotalSpace (Fin M.degree) family ↦ z.proj) := by
+      funext z
+      change M.projection z.2.1 = z.proj
+      exact Set.mem_singleton_iff.mp z.2.2
+    let t' : Bundle.Trivialization (Fin M.degree)
+        (fun z : Bundle.TotalSpace (Fin M.degree) family ↦ z.proj) :=
+      { t with
+        source_eq := calc
+          t.source = (M.projection ∘ totalHomeomorph) ⁻¹' t.baseSet := t.source_eq
+          _ = (fun z : Bundle.TotalSpace (Fin M.degree) family ↦ z.proj) ⁻¹' t.baseSet := by
+            ext z
+            change (M.projection ∘ totalHomeomorph) z ∈ t.baseSet ↔ z.proj ∈ t.baseSet
+            rw [congrFun hproj z]
+        proj_toFun := fun z hz ↦ (t.proj_toFun z hz).trans (congrFun hproj z) }
+    refine ⟨t', ?_⟩
+    change x ∈ t.baseSet
+    change x ∈ (M.isCovering x).toTrivialization.baseSet
+    exact (M.isCovering x).mem_toTrivialization_baseSet
+  let trivAt (x : X) := (trivAtData x).1
+  let bundle : FiberBundle (Fin M.degree) family :=
+    { totalSpaceMk_isInducing' := fun x ↦ by
+        refine (totalHomeomorph.isInducing.of_comp_iff).mp ?_
+        have hs : @Topology.IsInducing (family x) M.Cover (familyTopology x)
+            inferInstance Subtype.val := by
+          dsimp [familyTopology, family]
+          exact Topology.IsInducing.subtypeVal
+        have hfun :
+            (totalHomeomorph : Bundle.TotalSpace (Fin M.degree) family → M.Cover) ∘
+                (Bundle.TotalSpace.mk x) =
+              (Subtype.val : family x → M.Cover) := rfl
+        rw [hfun]
+        exact hs
+      trivializationAtlas' := Set.range trivAt
+      trivializationAt' := trivAt
+      mem_baseSet_trivializationAt' := fun x ↦ (trivAtData x).2
+      trivialization_mem_atlas' := fun x ↦ ⟨x, rfl⟩ }
+  exact
+    { Base := X
+      Fiber := Fin M.degree
+      baseTopology := inferInstance
+      fiberTopology := inferInstance
+      family := family
+      familyTopology := familyTopology
+      totalTopology := totalTopology
+      fiberBundle := bundle
+      totalHomotopyEquiv := totalHomeomorph.symm.toHomotopyEquiv
+      baseFiniteCW := M.quotientFiniteCW
+      fiberFiniteCW := (finiteDiscreteCellModel M.degree).model
+      totalFiniteCW := by
+        let _ := M.coverFiniteCW.topology
+        exact
+          { Carrier := M.coverFiniteCW.Carrier
+            topology := inferInstance
+            t2 := M.coverFiniteCW.t2
+            homotopyEquiv :=
+              totalHomeomorph.toHomotopyEquiv.trans M.coverFiniteCW.homotopyEquiv
+            cwComplex := M.coverFiniteCW.cwComplex
+            finite := M.coverFiniteCW.finite
+            cellsAboveSix := M.coverFiniteCW.cellsAboveSix } }
+
 /-- Euler characteristic multiplies by the degree of a finite covering. -/
-public axiom establishedEulerMultiplicativity (M : FiniteCoverModelSix X) :
+public theorem establishedEulerMultiplicativity (M : FiniteCoverModelSix X) :
     let _ := M.coverTopology
     integralHomologyEulerCharacteristicSix M.Cover =
-      (M.degree : ℤ) * integralHomologyEulerCharacteristicSix X
+      (M.degree : ℤ) * integralHomologyEulerCharacteristicSix X := by
+  let _ := M.coverTopology
+  have h := (coverAsBundleModel M).establishedEulerMultiplicativity
+  dsimp only at h
+  change integralHomologyEulerCharacteristicSix M.Cover =
+    integralHomologyEulerCharacteristicSix X *
+      integralHomologyEulerCharacteristicSix (Fin M.degree) at h
+  rw [finiteDiscreteEuler] at h
+  simpa [mul_comm] using h
 
 end FiniteCoverModelSix
 

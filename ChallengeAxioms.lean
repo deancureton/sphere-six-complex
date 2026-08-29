@@ -91,11 +91,6 @@ axiom SphereSixComplex.FiniteCWBundleModelSix.establishedEulerMultiplicativity :
   SphereSixComplex.integralHomologyEulerCharacteristicSix X =
     SphereSixComplex.integralHomologyEulerCharacteristicSix M.Base *
       SphereSixComplex.integralHomologyEulerCharacteristicSix M.Fiber
-axiom SphereSixComplex.FiniteCoverModelSix.establishedEulerMultiplicativity : ∀ {X : Type} [inst : TopologicalSpace X]
-  (M : SphereSixComplex.FiniteCoverModelSix X),
-  let x := M.coverTopology;
-  SphereSixComplex.integralHomologyEulerCharacteristicSix M.Cover =
-    ↑M.degree * SphereSixComplex.integralHomologyEulerCharacteristicSix X
 axiom SphereSixComplex.Periods.establishedOrbifoldAffineLineTorsorCuspBoundedSection : ∀
   (P : SphereSixComplex.Periods.OrbifoldAffineLineTorsorDescentProblem),
   P.HasAcyclicProjectiveLineFrame → P.HasCuspBoundedEquivariantSection

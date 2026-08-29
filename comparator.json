@@ -20,7 +20,6 @@
     "SphereSixComplex.EstablishedTorusBundleTopology.collarBundleRealization",
     "SphereSixComplex.EstablishedTorusHomology.additiveTorusHomologyBasis_naturality",
     "SphereSixComplex.FiniteCWBundleModelSix.establishedEulerMultiplicativity",
-    "SphereSixComplex.FiniteCoverModelSix.establishedEulerMultiplicativity",
     "SphereSixComplex.Periods.establishedOrbifoldAffineLineTorsorCuspBoundedSection",
     "SphereSixComplex.Topology.FiniteCoverPerfectPairing.establishedEllipticDegreeTwoPullbackRealizations",
     "SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels.orderFourReducedCentralFiberFiniteCWModelSix",

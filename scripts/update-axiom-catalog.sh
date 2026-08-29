@@ -43,7 +43,10 @@ candidate="$work/ChallengeAxioms.lean"
 } > "$print_source"
 
 cd "$project_root"
-lake env lean -Dpp.proofs=true "$print_source" > "$print_output"
+if ! lake env lean -Dpp.proofs=true "$print_source" > "$print_output"; then
+  cat "$print_output" >&2
+  exit 1
+fi
 
 expected_count="$({ grep -v '^[[:space:]]*#' "$allowlist" || true; } \
   | { grep -v '^[[:space:]]*$' || true; } | wc -l | tr -d ' ')"
