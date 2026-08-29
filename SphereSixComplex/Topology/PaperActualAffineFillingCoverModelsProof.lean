@@ -284,6 +284,116 @@ public theorem latticeAddHom_ext_integralBasis
   simp only [map_add, map_zsmul]
   rw [h 0, h 1, h 2, h 3]
 
+/-- The order-three monodromy sends the second basis vector to the difference of the fourth and
+third basis vectors. -/
+public theorem paperMonodromyOne_integralBasisVector_one :
+    paperMonodromyOne
+        (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 1) =
+      -SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 2 +
+        SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 3 := by
+  ext i
+  fin_cases i <;>
+    simp [paperMonodromyOne, A₁, dotProduct,
+      SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector, Pi.single,
+      Fin.sum_univ_succ]
+
+/-- The order-four monodromy sends the second basis vector to the third. -/
+public theorem paperMonodromyTwo_integralBasisVector_one :
+    paperMonodromyTwo
+        (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 1) =
+      SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 2 := by
+  ext i
+  fin_cases i <;>
+    simp [paperMonodromyTwo, A₂, dotProduct,
+      SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector, Pi.single,
+      Fin.sum_univ_succ]
+
+/-- The order-four monodromy sends the third basis vector to the difference of the fourth and
+second basis vectors. -/
+public theorem paperMonodromyTwo_integralBasisVector_two :
+    paperMonodromyTwo
+        (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 2) =
+      -SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 1 +
+        SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 3 := by
+  ext i
+  fin_cases i <;>
+    simp [paperMonodromyTwo, A₂, dotProduct,
+      SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector, Pi.single,
+      Fin.sum_univ_succ]
+
+/-- Two lattice markings conjugated by the same meridian propagate equality along their common
+monodromy. -/
+public theorem latticeAddHom_eq_propagates_of_conjugates
+    {Λ G : Type*} [AddCommGroup Λ] [Group G]
+    (M : Λ →+ Λ) (f g : Λ →+ Additive G) (r : G)
+    (hf : ∀ a, r * Additive.toMul (f a) * r⁻¹ = Additive.toMul (f (M a)))
+    (hg : ∀ a, r * Additive.toMul (g a) * r⁻¹ = Additive.toMul (g (M a))) :
+    ∀ a, f a = g a → f (M a) = g (M a) := by
+  intro a h
+  change Additive.toMul (f (M a)) = Additive.toMul (g (M a))
+  rw [← hf, ← hg, h]
+
+/-- For order three, monodromy propagation reduces equality of lattice maps to three marked
+coordinates. -/
+public theorem latticeAddHom_ext_orderThreeMonodromy
+    {G : Type*} [AddGroup G] (f g : Lattice →+ G)
+    (hmonodromy : ∀ a, f a = g a →
+      f (paperMonodromyOne a) = g (paperMonodromyOne a))
+    (hzero : f (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 0) =
+      g (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 0))
+    (hone : f (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 1) =
+      g (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 1))
+    (hthree : f (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 3) =
+      g (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 3)) :
+    f = g := by
+  have hmonodromyOne := hmonodromy
+    (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 1) hone
+  rw [paperMonodromyOne_integralBasisVector_one, map_add, map_add, map_neg, map_neg]
+    at hmonodromyOne
+  rw [hthree] at hmonodromyOne
+  have htwo : f (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 2) =
+      g (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 2) := by
+    exact neg_injective (add_right_cancel hmonodromyOne)
+  apply latticeAddHom_ext_integralBasis
+  intro i
+  fin_cases i
+  · exact hzero
+  · exact hone
+  · exact htwo
+  · exact hthree
+
+/-- For order four, monodromy propagation reduces equality of lattice maps to two marked
+coordinates. -/
+public theorem latticeAddHom_ext_orderFourMonodromy
+    {G : Type*} [AddGroup G] (f g : Lattice →+ G)
+    (hmonodromy : ∀ a, f a = g a →
+      f (paperMonodromyTwo a) = g (paperMonodromyTwo a))
+    (hzero : f (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 0) =
+      g (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 0))
+    (hone : f (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 1) =
+      g (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 1)) :
+    f = g := by
+  have htwo : f (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 2) =
+      g (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 2) := by
+    rw [← paperMonodromyTwo_integralBasisVector_one]
+    exact hmonodromy
+      (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 1) hone
+  have hmonodromyTwo := hmonodromy
+    (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 2) htwo
+  rw [paperMonodromyTwo_integralBasisVector_two, map_add, map_add, map_neg, map_neg]
+    at hmonodromyTwo
+  rw [hone] at hmonodromyTwo
+  have hthree : f (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 3) =
+      g (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 3) := by
+    exact add_left_cancel hmonodromyTwo
+  apply latticeAddHom_ext_integralBasis
+  intro i
+  fin_cases i
+  · exact hzero
+  · exact hone
+  · exact htwo
+  · exact hthree
+
 /-- The order-three collar translations, transported to the central core. -/
 public noncomputable def actualEllipticThreeTranslationToCore
     (D : ChosenCyclicAffineFillingCoverModel 3 Lattice
@@ -322,11 +432,87 @@ public noncomputable def actualCentralTranslationToCore
         ⟨A.vanKampenBase, A.actualVanKampenFourPieceCover.base_mem_core⟩) :=
   N.centralToCore.toMonoidHom.toAdditive.comp A.centralAffineCorePiOneData.translation
 
-/-- The exact elliptic cover geometry and its marking on a finite basis.
+/-- The first central meridian conjugates the transported central marking by the order-three
+monodromy. -/
+public theorem actualCentralRhoOne_conjugatesTranslationToCore
+    (N : A.ActualCuspCentralNaturality) (a : Lattice) :
+    N.centralToCore A.centralAffineCorePiOneData.rhoOne *
+        Additive.toMul (A.actualCentralTranslationToCore N a) *
+        (N.centralToCore A.centralAffineCorePiOneData.rhoOne)⁻¹ =
+      Additive.toMul
+        (A.actualCentralTranslationToCore N (paperMonodromyOne a)) :=
+  (A.coreDataOf N).conjugate_one a
 
-The former residual required translation naturality for every lattice vector.  Since the
-translation maps are additive, it is enough to identify the four standard integral basis loops
-on each elliptic side.  All infinite families of translation equalities are derived below. -/
+/-- The second central meridian conjugates the transported central marking by the order-four
+monodromy. -/
+public theorem actualCentralRhoTwo_conjugatesTranslationToCore
+    (N : A.ActualCuspCentralNaturality) (a : Lattice) :
+    N.centralToCore A.centralAffineCorePiOneData.rhoTwo *
+        Additive.toMul (A.actualCentralTranslationToCore N a) *
+        (N.centralToCore A.centralAffineCorePiOneData.rhoTwo)⁻¹ =
+      Additive.toMul
+        (A.actualCentralTranslationToCore N (paperMonodromyTwo a)) :=
+  (A.coreDataOf N).conjugate_two a
+
+/-- The transported order-three collar meridian conjugates its translations by the paper
+monodromy whenever the selected deck monodromy has the corresponding inverse convention. -/
+public theorem actualEllipticThreeMeridian_conjugatesTranslationToCore
+    (D : ChosenCyclicAffineFillingCoverModel 3 Lattice
+      (A.actualVanKampenFourPieceCover.core ∩
+        A.actualVanKampenFourPieceCover.ellipticThree : Set A.VanKampenSpace)
+      A.actualVanKampenFourPieceCover.ellipticThree)
+    (hb : D.boundaryBase =
+      ⟨A.actualVanKampenFourPieceCover.ellipticThreePoint,
+        A.actualVanKampenFourPieceCover.ellipticThreePoint_mem⟩)
+    (hinv : ∀ a, D.monodromy.toAdd (paperMonodromyOne a) = a) (a : Lattice) :
+    A.actualEllipticThreeOverlapToCore
+          (fundamentalGroupElementOfBaseEq hb D.meridian) *
+        Additive.toMul (A.actualEllipticThreeTranslationToCore D hb a) *
+        (A.actualEllipticThreeOverlapToCore
+          (fundamentalGroupElementOfBaseEq hb D.meridian))⁻¹ =
+      Additive.toMul
+        (A.actualEllipticThreeTranslationToCore D hb (paperMonodromyOne a)) := by
+  have h := D.meridian_conjugates_translation_of_rightInverse paperMonodromyOne hinv a
+  have h' := congrArg
+    (fun z ↦ A.actualEllipticThreeOverlapToCore
+      (fundamentalGroupElementOfBaseEq hb z)) h
+  simpa only [actualEllipticThreeTranslationToCore, AddMonoidHom.comp_apply,
+    fundamentalGroupAddHomOfBaseEq_apply, MonoidHom.coe_toAdditive, Function.comp_apply,
+    toMul_ofMul, fundamentalGroupElementOfBaseEq_mul, fundamentalGroupElementOfBaseEq_inv,
+    map_mul, map_inv] using h'
+
+/-- The transported order-four collar meridian conjugates its translations by the paper
+monodromy whenever the selected deck monodromy has the corresponding inverse convention. -/
+public theorem actualEllipticFourMeridian_conjugatesTranslationToCore
+    (D : ChosenCyclicAffineFillingCoverModel 4 Lattice
+      (A.actualVanKampenFourPieceCover.core ∩
+        A.actualVanKampenFourPieceCover.ellipticFour : Set A.VanKampenSpace)
+      A.actualVanKampenFourPieceCover.ellipticFour)
+    (hb : D.boundaryBase =
+      ⟨A.actualVanKampenFourPieceCover.ellipticFourPoint,
+        A.actualVanKampenFourPieceCover.ellipticFourPoint_mem⟩)
+    (hinv : ∀ a, D.monodromy.toAdd (paperMonodromyTwo a) = a) (a : Lattice) :
+    A.actualEllipticFourOverlapToCore
+          (fundamentalGroupElementOfBaseEq hb D.meridian) *
+        Additive.toMul (A.actualEllipticFourTranslationToCore D hb a) *
+        (A.actualEllipticFourOverlapToCore
+          (fundamentalGroupElementOfBaseEq hb D.meridian))⁻¹ =
+      Additive.toMul
+        (A.actualEllipticFourTranslationToCore D hb (paperMonodromyTwo a)) := by
+  have h := D.meridian_conjugates_translation_of_rightInverse paperMonodromyTwo hinv a
+  have h' := congrArg
+    (fun z ↦ A.actualEllipticFourOverlapToCore
+      (fundamentalGroupElementOfBaseEq hb z)) h
+  simpa only [actualEllipticFourTranslationToCore, AddMonoidHom.comp_apply,
+    fundamentalGroupAddHomOfBaseEq_apply, MonoidHom.coe_toAdditive, Function.comp_apply,
+    toMul_ofMul, fundamentalGroupElementOfBaseEq_mul, fundamentalGroupElementOfBaseEq_inv,
+    map_mul, map_inv] using h'
+
+/-- The exact elliptic cover geometry and a finite marking.
+
+The cover monodromy is required to be inverse to the displayed paper monodromy, as dictated by
+the opposite-deck-group convention.  Conjugation then propagates translation naturality from
+three marked coordinates on the order-three side and two on the order-four side. -/
 public structure ActualEllipticCentralBasisNaturality (N : A.ActualCuspCentralNaturality) where
   orderThreeCover : ChosenCyclicAffineFillingCoverModel 3 Lattice
     (A.actualVanKampenFourPieceCover.core ∩
@@ -343,11 +529,23 @@ public structure ActualEllipticCentralBasisNaturality (N : A.ActualCuspCentralNa
     orderThreeCover.fundamentalGroupMap =
     A.actualVanKampenFourPieceCover.ellipticThreeOverlapFundamentalGroupMap
   orderThreeTwist_eq : orderThreeCover.twist = epsilon
-  orderThreeTranslation_basis : ∀ i : Fin 4,
+  orderThreeMonodromy_inverse : ∀ a,
+    orderThreeCover.monodromy.toAdd (paperMonodromyOne a) = a
+  orderThreeTranslation_zero :
     A.actualEllipticThreeTranslationToCore orderThreeCover orderThreeBoundaryBase_eq
-        (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector i) =
+        (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 0) =
       A.actualCentralTranslationToCore N
-        (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector i)
+        (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 0)
+  orderThreeTranslation_one :
+    A.actualEllipticThreeTranslationToCore orderThreeCover orderThreeBoundaryBase_eq
+        (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 1) =
+      A.actualCentralTranslationToCore N
+        (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 1)
+  orderThreeTranslation_three :
+    A.actualEllipticThreeTranslationToCore orderThreeCover orderThreeBoundaryBase_eq
+        (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 3) =
+      A.actualCentralTranslationToCore N
+        (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 3)
   orderThreeMeridian_naturality :
     A.actualEllipticThreeOverlapToCore
         (fundamentalGroupElementOfBaseEq orderThreeBoundaryBase_eq
@@ -368,11 +566,18 @@ public structure ActualEllipticCentralBasisNaturality (N : A.ActualCuspCentralNa
     orderFourCover.fundamentalGroupMap =
     A.actualVanKampenFourPieceCover.ellipticFourOverlapFundamentalGroupMap
   orderFourTwist_eq : orderFourCover.twist = -epsilon'
-  orderFourTranslation_basis : ∀ i : Fin 4,
+  orderFourMonodromy_inverse : ∀ a,
+    orderFourCover.monodromy.toAdd (paperMonodromyTwo a) = a
+  orderFourTranslation_zero :
     A.actualEllipticFourTranslationToCore orderFourCover orderFourBoundaryBase_eq
-        (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector i) =
+        (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 0) =
       A.actualCentralTranslationToCore N
-        (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector i)
+        (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 0)
+  orderFourTranslation_one :
+    A.actualEllipticFourTranslationToCore orderFourCover orderFourBoundaryBase_eq
+        (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 1) =
+      A.actualCentralTranslationToCore N
+        (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 1)
   orderFourMeridian_naturality :
     A.actualEllipticFourOverlapToCore
         (fundamentalGroupElementOfBaseEq orderFourBoundaryBase_eq
@@ -393,12 +598,31 @@ public noncomputable def toActualEllipticCentralNaturality
   orderThreeMap_eq := E.orderThreeMap_eq
   orderThreeTwist_eq := E.orderThreeTwist_eq
   orderThreeTranslation_naturality := fun a ↦ by
-    have h := DFunLike.congr_fun
-      (latticeAddHom_ext_integralBasis
-        (A.actualEllipticThreeTranslationToCore E.orderThreeCover
-          E.orderThreeBoundaryBase_eq)
-        (A.actualCentralTranslationToCore N) E.orderThreeTranslation_basis) a
-    exact congrArg Additive.toMul h
+    have hf : ∀ x,
+        N.centralToCore A.centralAffineCorePiOneData.rhoOne *
+            Additive.toMul
+              (A.actualEllipticThreeTranslationToCore E.orderThreeCover
+                E.orderThreeBoundaryBase_eq x) *
+            (N.centralToCore A.centralAffineCorePiOneData.rhoOne)⁻¹ =
+          Additive.toMul
+            (A.actualEllipticThreeTranslationToCore E.orderThreeCover
+              E.orderThreeBoundaryBase_eq (paperMonodromyOne x)) := by
+      intro x
+      rw [← E.orderThreeMeridian_naturality]
+      exact A.actualEllipticThreeMeridian_conjugatesTranslationToCore E.orderThreeCover
+        E.orderThreeBoundaryBase_eq E.orderThreeMonodromy_inverse x
+    have hprop := latticeAddHom_eq_propagates_of_conjugates paperMonodromyOne
+      (A.actualEllipticThreeTranslationToCore E.orderThreeCover
+        E.orderThreeBoundaryBase_eq)
+      (A.actualCentralTranslationToCore N)
+      (N.centralToCore A.centralAffineCorePiOneData.rhoOne) hf
+      (A.actualCentralRhoOne_conjugatesTranslationToCore N)
+    have hmaps := latticeAddHom_ext_orderThreeMonodromy
+      (A.actualEllipticThreeTranslationToCore E.orderThreeCover
+        E.orderThreeBoundaryBase_eq)
+      (A.actualCentralTranslationToCore N) hprop E.orderThreeTranslation_zero
+      E.orderThreeTranslation_one E.orderThreeTranslation_three
+    exact congrArg Additive.toMul (DFunLike.congr_fun hmaps a)
   orderThreeMeridian_naturality := E.orderThreeMeridian_naturality
   orderFourCover := E.orderFourCover
   orderFourBoundaryBase_eq := E.orderFourBoundaryBase_eq
@@ -406,12 +630,31 @@ public noncomputable def toActualEllipticCentralNaturality
   orderFourMap_eq := E.orderFourMap_eq
   orderFourTwist_eq := E.orderFourTwist_eq
   orderFourTranslation_naturality := fun a ↦ by
-    have h := DFunLike.congr_fun
-      (latticeAddHom_ext_integralBasis
-        (A.actualEllipticFourTranslationToCore E.orderFourCover
-          E.orderFourBoundaryBase_eq)
-        (A.actualCentralTranslationToCore N) E.orderFourTranslation_basis) a
-    exact congrArg Additive.toMul h
+    have hf : ∀ x,
+        N.centralToCore A.centralAffineCorePiOneData.rhoTwo *
+            Additive.toMul
+              (A.actualEllipticFourTranslationToCore E.orderFourCover
+                E.orderFourBoundaryBase_eq x) *
+            (N.centralToCore A.centralAffineCorePiOneData.rhoTwo)⁻¹ =
+          Additive.toMul
+            (A.actualEllipticFourTranslationToCore E.orderFourCover
+              E.orderFourBoundaryBase_eq (paperMonodromyTwo x)) := by
+      intro x
+      rw [← E.orderFourMeridian_naturality]
+      exact A.actualEllipticFourMeridian_conjugatesTranslationToCore E.orderFourCover
+        E.orderFourBoundaryBase_eq E.orderFourMonodromy_inverse x
+    have hprop := latticeAddHom_eq_propagates_of_conjugates paperMonodromyTwo
+      (A.actualEllipticFourTranslationToCore E.orderFourCover
+        E.orderFourBoundaryBase_eq)
+      (A.actualCentralTranslationToCore N)
+      (N.centralToCore A.centralAffineCorePiOneData.rhoTwo) hf
+      (A.actualCentralRhoTwo_conjugatesTranslationToCore N)
+    have hmaps := latticeAddHom_ext_orderFourMonodromy
+      (A.actualEllipticFourTranslationToCore E.orderFourCover
+        E.orderFourBoundaryBase_eq)
+      (A.actualCentralTranslationToCore N) hprop E.orderFourTranslation_zero
+      E.orderFourTranslation_one
+    exact congrArg Additive.toMul (DFunLike.congr_fun hmaps a)
   orderFourMeridian_naturality := E.orderFourMeridian_naturality
 
 end ActualEllipticCentralBasisNaturality
@@ -586,10 +829,11 @@ Two components are bundled here.
   `PaperCuspFillingDeckAction` → `PaperCuspUnwrappedFillingCover` →
   `PaperCuspActualAffineFillingCoverSquare` → `PaperCuspChosenAffineFilling`; no elliptic
   counterpart of it exists yet.
-* The marked statements `orderThreeTranslation_naturality`, `orderThreeMeridian_naturality`,
-  `orderFourTranslation_naturality` and `orderFourMeridian_naturality`, saying that the collar's
-  lattice translations become the central translations and that its meridian becomes `rhoOne`,
-  respectively `rhoTwo`. These are the elliptic analogue of `ActualCuspCentralNaturality`.
+* The opposite-deck convention identifies each selected deck monodromy as the inverse of the
+  corresponding paper monodromy.  Meridian conjugation then reduces translation naturality to
+  three marked lattice coordinates on the order-three collar and two on the order-four collar;
+  the two meridians are identified with `rhoOne` and `rhoTwo`.  The complete infinite families
+  are theorems above.
 
 ## Raw material that already exists, and what is missing
 
@@ -603,16 +847,14 @@ and `orderFourCollarRadialMappingTorusHomeomorph`. What is missing is the univer
 collar, i.e. of `OpenRadialInterval r × CircleMappingTorus (orderThreeAffineClutchingHomeomorph …)`,
 and the identification of its deck group with the semidirect product.
 
-The marking cannot be recovered from `establishedPuncturedGlobalFamilyAffineFundamentalGroup`:
-that input supplies only an unmarked abstract `MulEquiv`, from which no statement about a specific
-geometric peripheral loop follows. The one theoretical escape — prove generation together with the
-semidirect-product relations for the geometric triple and then deduce injectivity from Hopficity of
-`ℤ⁴ ⋊ FreeGroup (Fin 2)` — needs Malcev's theorem that finitely generated residually finite groups
-are Hopfian, which is not in Mathlib. -/
+The canonical punctured-family presentation now identifies the central translations and
+meridians, but it does not construct the two elliptic collar universal covers or compare their
+deck markings with the corresponding central peripheral loops.  Those two geometric comparison
+packages are precisely what remains here. -/
 public axiom establishedActualEllipticCentralBasisNaturality :
     Nonempty (ActualEllipticCentralBasisNaturality A A.actualCuspCentralNaturality)
 
-/-- The full elliptic naturality package, extended from the four standard lattice generators. -/
+/-- The full elliptic naturality package, extended from finite monodromy-orbit anchors. -/
 public theorem establishedActualEllipticCentralNaturality :
     Nonempty (ActualEllipticCentralNaturality A A.actualCuspCentralNaturality) :=
   A.establishedActualEllipticCentralBasisNaturality.map

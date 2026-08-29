@@ -711,6 +711,9 @@ public structure CyclicAffineFillingCoverModel
   deckTranslation : Λ →+ Additive G
   deckMeridian : G
   monodromy : Multiplicative (AddAut Λ)
+  deck_conjugate : ∀ a,
+    deckMeridian * Additive.toMul (deckTranslation a) * deckMeridian⁻¹ =
+      Additive.toMul (deckTranslation (monodromy.toAdd a))
   twist : Λ
   monodromy_pow : monodromy ^ m = 1
   twist_fixed : monodromy.toAdd twist = twist
@@ -812,6 +815,20 @@ public noncomputable def toPiOneData : CyclicAffineFillingPiOneData D := by
       {D.deckMeridian ^ m * (Additive.toMul (D.deckTranslation D.twist))⁻¹} D.deckMap_kernel,
       Set.image_singleton, ofDeck_mul, ofDeck_inv, ofDeck_pow]
     exact normalClosure_singleton_mul_comm _ _
+
+/-- In the boundary fundamental group, conjugation by the inverse meridian realizes the stored
+affine monodromy.  The inverse appears because the covering-space identification takes values in
+the opposite deck group. -/
+public theorem meridian_inv_conjugates_translation (a : Λ) :
+    D.toPiOneData.meridian⁻¹ * Additive.toMul (D.toPiOneData.translation a) *
+        D.toPiOneData.meridian =
+      Additive.toMul (D.toPiOneData.translation (D.monodromy.toAdd a)) := by
+  let _ : SimplyConnectedSpace E := D.boundarySimplyConnected
+  apply D.boundaryFundamentalGroupEquiv.injective
+  rw [map_mul, map_mul, map_inv, D.toPiOneData.meridian_deck,
+    D.toPiOneData.translation_deck, D.toPiOneData.translation_deck]
+  simpa only [MulOpposite.op_inv, MulOpposite.op_mul, mul_assoc] using
+    congrArg MulOpposite.op (D.deck_conjugate a)
 
 end CyclicAffineFillingCoverModel
 

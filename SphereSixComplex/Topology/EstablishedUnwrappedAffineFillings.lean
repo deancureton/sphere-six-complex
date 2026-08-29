@@ -274,6 +274,7 @@ public def toCyclicAffineFillingCoverModel
   deckTranslation := D.translation
   deckMeridian := D.meridian
   monodromy := D.monodromy
+  deck_conjugate := D.conjugate
   twist := D.twist
   monodromy_pow := D.monodromy_pow
   twist_fixed := D.twist_fixed

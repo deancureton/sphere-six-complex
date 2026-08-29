@@ -1352,10 +1352,477 @@ public theorem standardFourTorusCanonicalHomologyTwo_naturality_of_determinantDe
 public structure StandardFourTorusNaturalRecalibration : Prop where
   matrixDeterminantDegree : StandardTwoTorusMatrixDeterminantDegree
 
-/-- The classical determinant-degree theorem for the standard two-torus.  The coordinate
-reductions above derive the four-torus exterior-square formula from precisely this input. -/
-public axiom standardFourTorusNaturalRecalibration_nonempty :
-    Nonempty StandardFourTorusNaturalRecalibration
+open CategoryTheory
+open SphereSixComplex.StandardCircleHomologyLiftDegree
+
+private theorem simplexFace_comp_simplexFace (n : ℕ) (i j : Fin (n + 2)) (h : i ≤ j) :
+    (simplexFace (n + 1) j.succ).comp (simplexFace n i) =
+      (simplexFace (n + 1) i.castSucc).comp (simplexFace n j) := by
+  apply DFunLike.ext _ _
+  intro s
+  change stdSimplex.map _ (stdSimplex.map _ s) = stdSimplex.map _ (stdSimplex.map _ s)
+  rw [stdSimplex.map_comp_apply, stdSimplex.map_comp_apply]
+  have hδ := congrArg SimplexCategory.Hom.toOrderHom (SimplexCategory.δ_comp_δ h)
+  have hδ' := congrArg
+    (fun f : Fin (n + 1) →o Fin (n + 3) ↦ (f : Fin (n + 1) → Fin (n + 3)))
+    (by simpa [SimplexCategory.comp_toOrderHom] using hδ)
+  exact congrArg (fun f ↦ stdSimplex.map f s) hδ'
+
+private noncomputable def cupOneOne {X : Type} [TopologicalSpace X]
+    (u v : Chains X 1 →+ ℤ) : Chains X 2 →+ ℤ :=
+  chainLift X 2 fun σ ↦
+    u (simplexChain X 1 (σ.comp (simplexFace 1 2))) *
+      v (simplexChain X 1 (σ.comp (simplexFace 1 0)))
+
+private theorem cupOneOne_boundary {X : Type} [TopologicalSpace X]
+    (u v : Chains X 1 →+ ℤ) (hu : u.comp (boundaryTwo X) = 0)
+    (hv : v.comp (boundaryTwo X) = 0) (σ : SingularSimplex X 3) :
+    cupOneOne u v ((IntegralChains X).d 3 2 (simplexChain X 3 σ)) = 0 := by
+  have h02 : (simplexFace 2 0).comp (simplexFace 1 2) =
+      (simplexFace 2 3).comp (simplexFace 1 0) := by
+    simpa using (simplexFace_comp_simplexFace 1 0 2 (by decide)).symm
+  have h12 : (simplexFace 2 1).comp (simplexFace 1 2) =
+      (simplexFace 2 3).comp (simplexFace 1 1) := by
+    simpa using (simplexFace_comp_simplexFace 1 1 2 (by decide)).symm
+  have h10 : (simplexFace 2 1).comp (simplexFace 1 0) =
+      (simplexFace 2 0).comp (simplexFace 1 0) := by
+    simpa using simplexFace_comp_simplexFace 1 0 0 (by decide)
+  have h20 : (simplexFace 2 2).comp (simplexFace 1 0) =
+      (simplexFace 2 0).comp (simplexFace 1 1) := by
+    simpa using simplexFace_comp_simplexFace 1 0 1 (by decide)
+  have h22 : (simplexFace 2 2).comp (simplexFace 1 2) =
+      (simplexFace 2 3).comp (simplexFace 1 2) := by
+    simpa using (simplexFace_comp_simplexFace 1 2 2 (by decide)).symm
+  have eu02 := congrArg (fun e ↦ u (simplexChain X 1 (σ.comp e))) h02
+  have eu12 := congrArg (fun e ↦ u (simplexChain X 1 (σ.comp e))) h12
+  have eu22 := congrArg (fun e ↦ u (simplexChain X 1 (σ.comp e))) h22
+  have ev10 := congrArg (fun e ↦ v (simplexChain X 1 (σ.comp e))) h10
+  have ev20 := congrArg (fun e ↦ v (simplexChain X 1 (σ.comp e))) h20
+  have ev02 := congrArg (fun e ↦ v (simplexChain X 1 (σ.comp e))) h02
+  have huσ := DFunLike.congr_fun hu (simplexChain X 2 (σ.comp (simplexFace 2 3)))
+  have hvσ := DFunLike.congr_fun hv (simplexChain X 2 (σ.comp (simplexFace 2 0)))
+  simp only [AddMonoidHom.comp_apply, boundaryTwo_simplex, map_add, map_sub,
+    AddMonoidHom.zero_apply, ContinuousMap.comp_assoc] at huσ hvσ
+  rw [boundary_simplex, map_sum]
+  simp only [map_zsmul, cupOneOne, chainLift_simplex]
+  simp [Fin.sum_univ_succ]
+  rw [eu02, eu12, ev10, eu22, ev20, ← ev02]
+  linear_combination
+    v (simplexChain X 1 (σ.comp ((simplexFace 2 0).comp (simplexFace 1 0)))) * huσ -
+      u (simplexChain X 1 (σ.comp ((simplexFace 2 3).comp (simplexFace 1 2)))) * hvσ
+
+private def standardTwoTorusCircleCoordinate (i : Fin 2) :
+    C(StdTorus 2, UnitAddCircle) where
+  toFun z := z i
+  continuous_toFun := continuous_apply i
+
+private noncomputable def standardTwoTorusCoordinateWinding (i : Fin 2) :
+    Chains (StdTorus 2) 1 →+ ℤ :=
+  edgeWinding.comp ((singularChainMap (standardTwoTorusCircleCoordinate i)).f 1).hom
+
+private theorem standardTwoTorusCoordinateWinding_cocycle (i : Fin 2) :
+    (standardTwoTorusCoordinateWinding i).comp (boundaryTwo (StdTorus 2)) = 0 := by
+  apply chainHom_ext (StdTorus 2) 2
+  intro σ
+  change edgeWinding (((singularChainMap (standardTwoTorusCircleCoordinate i)).f 1)
+    (boundaryTwo (StdTorus 2) (simplexChain (StdTorus 2) 2 σ))) = 0
+  rw [boundaryTwo_simplex]
+  simp only [map_add, map_sub, singularChainMap_simplex]
+  simpa only [boundaryTwo_simplex, map_add, map_sub, ContinuousMap.comp_assoc] using
+    edgeWinding_boundaryTwo
+      (simplexChain UnitAddCircle 2 ((standardTwoTorusCircleCoordinate i).comp σ))
+
+private noncomputable def standardTwoTorusArea : Chains (StdTorus 2) 2 →+ ℤ :=
+  cupOneOne (standardTwoTorusCoordinateWinding 0) (standardTwoTorusCoordinateWinding 1)
+
+private theorem standardTwoTorusArea_comp_boundary :
+    standardTwoTorusArea.comp ((IntegralChains (StdTorus 2)).d 3 2).hom = 0 := by
+  apply chainHom_ext (StdTorus 2) 3
+  intro σ
+  exact cupOneOne_boundary _ _ (standardTwoTorusCoordinateWinding_cocycle 0)
+    (standardTwoTorusCoordinateWinding_cocycle 1) σ
+
+private noncomputable def standardTwoTorusAreaChainMap :
+    IntegralChains (StdTorus 2) ⟶
+      (HomologicalComplex.single AddCommGrpCat (ComplexShape.down ℕ) 2).obj
+        (AddCommGrpCat.of ℤ) :=
+  HomologicalComplex.mkHomToSingle (AddCommGrpCat.ofHom standardTwoTorusArea) (by
+    intro i hi
+    have hi' : i = 3 := by simpa using hi.symm
+    subst i
+    apply AddCommGrpCat.hom_ext
+    exact standardTwoTorusArea_comp_boundary)
+
+private noncomputable def standardTwoTorusHomologyArea :
+    IntegralSingularHomology 2 (StdTorus 2) →+ ℤ :=
+  (HomologicalComplex.homologyMap standardTwoTorusAreaChainMap 2 ≫
+    (HomologicalComplex.singleObjHomologySelfIso
+      (ComplexShape.down ℕ) 2 (AddCommGrpCat.of ℤ)).hom).hom
+
+private def standardTwoTorusFirstEdge : Fin 2 → ℤ := ![1, 0]
+
+private def standardTwoTorusSecondEdge : Fin 2 → ℤ := ![0, 1]
+
+private def standardTwoTorusIntegerEdge (v : Fin 2 → ℤ) :
+    SingularSimplex (StdTorus 2) 1 where
+  toFun s i :=
+    (((stdSimplexHomeomorphUnitInterval s : ℝ) * (v i : ℝ) : ℝ) : UnitAddCircle)
+  continuous_toFun := by fun_prop
+
+private def standardTwoTorusTriangleA : SingularSimplex (StdTorus 2) 2 where
+  toFun s := ![((s 1 + s 2 : ℝ) : UnitAddCircle), ((s 2 : ℝ) : UnitAddCircle)]
+  continuous_toFun := by
+    have h1 : Continuous (fun s : Simplex 2 ↦ s 1) :=
+      (continuous_apply 1).comp continuous_subtype_val
+    have h2 : Continuous (fun s : Simplex 2 ↦ s 2) :=
+      (continuous_apply 2).comp continuous_subtype_val
+    exact continuous_pi fun i ↦ by
+      fin_cases i
+      · exact (AddCircle.continuous_mk' 1).comp (h1.add h2)
+      · exact (AddCircle.continuous_mk' 1).comp h2
+
+private def standardTwoTorusTriangleB : SingularSimplex (StdTorus 2) 2 where
+  toFun s := ![((s 2 : ℝ) : UnitAddCircle), ((s 1 + s 2 : ℝ) : UnitAddCircle)]
+  continuous_toFun := by
+    have h1 : Continuous (fun s : Simplex 2 ↦ s 1) :=
+      (continuous_apply 1).comp continuous_subtype_val
+    have h2 : Continuous (fun s : Simplex 2 ↦ s 2) :=
+      (continuous_apply 2).comp continuous_subtype_val
+    exact continuous_pi fun i ↦ by
+      fin_cases i
+      · exact (AddCircle.continuous_mk' 1).comp h2
+      · exact (AddCircle.continuous_mk' 1).comp (h1.add h2)
+
+private theorem standardTwoTorusTriangleA_face_zero :
+    standardTwoTorusTriangleA.comp (simplexFace 1 0) =
+      standardTwoTorusIntegerEdge standardTwoTorusSecondEdge := by
+  apply ContinuousMap.ext
+  intro s
+  funext i
+  fin_cases i
+  · apply (unitAddCircle_eq_iff _ _).mpr
+    refine ⟨1, ?_⟩
+    have hs := stdSimplex.sum_eq_one s
+    rw [Fin.sum_univ_two] at hs
+    norm_num [standardTwoTorusSecondEdge]
+    rw [show (1 : Fin 3) = (0 : Fin 3).succAbove (0 : Fin 2) by decide,
+      show (2 : Fin 3) = (0 : Fin 3).succAbove (1 : Fin 2) by decide,
+      simplexFace_apply_succAbove, simplexFace_apply_succAbove]
+    exact hs
+  · apply (unitAddCircle_eq_iff _ _).mpr
+    refine ⟨0, ?_⟩
+    norm_num [standardTwoTorusSecondEdge]
+    rw [show (2 : Fin 3) = (0 : Fin 3).succAbove (1 : Fin 2) by decide,
+      simplexFace_apply_succAbove]
+    exact sub_self _
+
+private theorem standardTwoTorusTriangleA_face_two :
+    standardTwoTorusTriangleA.comp (simplexFace 1 2) =
+      standardTwoTorusIntegerEdge standardTwoTorusFirstEdge := by
+  apply ContinuousMap.ext
+  intro s
+  funext i
+  fin_cases i
+  · apply (unitAddCircle_eq_iff _ _).mpr
+    refine ⟨0, ?_⟩
+    norm_num [standardTwoTorusFirstEdge]
+    rw [show (1 : Fin 3) = (2 : Fin 3).succAbove (1 : Fin 2) by decide,
+      simplexFace_apply_succAbove]
+    exact sub_self _
+  · apply (unitAddCircle_eq_iff _ _).mpr
+    exact ⟨0, by norm_num [standardTwoTorusFirstEdge]⟩
+
+private theorem standardTwoTorusTriangleB_face_zero :
+    standardTwoTorusTriangleB.comp (simplexFace 1 0) =
+      standardTwoTorusIntegerEdge standardTwoTorusFirstEdge := by
+  apply ContinuousMap.ext
+  intro s
+  funext i
+  fin_cases i
+  · apply (unitAddCircle_eq_iff _ _).mpr
+    refine ⟨0, ?_⟩
+    norm_num [standardTwoTorusFirstEdge]
+    rw [show (2 : Fin 3) = (0 : Fin 3).succAbove (1 : Fin 2) by decide,
+      simplexFace_apply_succAbove]
+    exact sub_self _
+  · apply (unitAddCircle_eq_iff _ _).mpr
+    refine ⟨1, ?_⟩
+    have hs := stdSimplex.sum_eq_one s
+    rw [Fin.sum_univ_two] at hs
+    norm_num [standardTwoTorusFirstEdge]
+    rw [show (1 : Fin 3) = (0 : Fin 3).succAbove (0 : Fin 2) by decide,
+      show (2 : Fin 3) = (0 : Fin 3).succAbove (1 : Fin 2) by decide,
+      simplexFace_apply_succAbove, simplexFace_apply_succAbove]
+    exact hs
+
+private theorem standardTwoTorusTriangleB_face_two :
+    standardTwoTorusTriangleB.comp (simplexFace 1 2) =
+      standardTwoTorusIntegerEdge standardTwoTorusSecondEdge := by
+  apply ContinuousMap.ext
+  intro s
+  funext i
+  fin_cases i
+  · apply (unitAddCircle_eq_iff _ _).mpr
+    exact ⟨0, by norm_num [standardTwoTorusSecondEdge]⟩
+  · apply (unitAddCircle_eq_iff _ _).mpr
+    refine ⟨0, ?_⟩
+    norm_num [standardTwoTorusSecondEdge]
+    rw [show (1 : Fin 3) = (2 : Fin 3).succAbove (1 : Fin 2) by decide,
+      simplexFace_apply_succAbove]
+    exact sub_self _
+
+private theorem standardTwoTorusTriangle_face_one :
+    standardTwoTorusTriangleA.comp (simplexFace 1 1) =
+      standardTwoTorusTriangleB.comp (simplexFace 1 1) := by
+  apply ContinuousMap.ext
+  intro s
+  funext i
+  fin_cases i <;>
+    apply (unitAddCircle_eq_iff _ _).mpr <;>
+    exact ⟨0, by norm_num⟩
+
+private def standardTwoTorusFundamentalCycle : Chains (StdTorus 2) 2 :=
+  simplexChain (StdTorus 2) 2 standardTwoTorusTriangleA -
+    simplexChain (StdTorus 2) 2 standardTwoTorusTriangleB
+
+private theorem standardTwoTorusFundamentalCycle_isCycle :
+    boundaryTwo (StdTorus 2) standardTwoTorusFundamentalCycle = 0 := by
+  rw [standardTwoTorusFundamentalCycle, map_sub, boundaryTwo_simplex,
+    boundaryTwo_simplex, standardTwoTorusTriangleA_face_zero,
+    standardTwoTorusTriangle_face_one, standardTwoTorusTriangleA_face_two,
+    standardTwoTorusTriangleB_face_zero, standardTwoTorusTriangleB_face_two]
+  abel
+
+private noncomputable def degreeTwoCycleMap {X : Type} [TopologicalSpace X]
+    (c : Chains X 2) : AddCommGrpCat.of ℤ ⟶ (IntegralChains X).X 2 :=
+  AddCommGrpCat.asHom c
+
+private theorem degreeTwoCycleMap_isCycle {X : Type} [TopologicalSpace X]
+    (c : Chains X 2) (hc : boundaryTwo X c = 0) :
+    degreeTwoCycleMap c ≫ (IntegralChains X).d 2 1 = 0 := by
+  apply AddCommGrpCat.int_hom_ext
+  change boundaryTwo X ((AddCommGrpCat.asHom c) 1) = 0
+  rw [AddCommGrpCat.asHom_hom_apply, one_zsmul]
+  exact hc
+
+private noncomputable def degreeTwoCycleHomologyMap {X : Type} [TopologicalSpace X]
+    (c : Chains X 2) (hc : boundaryTwo X c = 0) :
+    AddCommGrpCat.of ℤ ⟶ (IntegralChains X).homology 2 :=
+  (IntegralChains X).liftCycles (degreeTwoCycleMap c) 1 (by simp)
+      (degreeTwoCycleMap_isCycle c hc) ≫
+    (IntegralChains X).homologyπ 2
+
+private noncomputable def degreeTwoCycleHomologyClass {X : Type} [TopologicalSpace X]
+    (c : Chains X 2) (hc : boundaryTwo X c = 0) : IntegralSingularHomology 2 X :=
+  degreeTwoCycleHomologyMap c hc 1
+
+private theorem degreeTwoMappedCycle_isCycle {X Y : Type} [TopologicalSpace X]
+    [TopologicalSpace Y] (f : C(X, Y)) (c : Chains X 2) (hc : boundaryTwo X c = 0) :
+    boundaryTwo Y ((singularChainMap f).f 2 c) = 0 := by
+  change ((IntegralChains Y).d 2 1).hom (((singularChainMap f).f 2).hom c) = 0
+  rw [← ConcreteCategory.comp_apply, (singularChainMap f).comm]
+  change ((singularChainMap f).f 1).hom (boundaryTwo X c) = 0
+  rw [hc, map_zero]
+
+private theorem degreeTwoCycleMap_naturality {X Y : Type} [TopologicalSpace X]
+    [TopologicalSpace Y] (f : C(X, Y)) (c : Chains X 2) :
+    degreeTwoCycleMap c ≫ (singularChainMap f).f 2 =
+      degreeTwoCycleMap ((singularChainMap f).f 2 c) := by
+  apply AddCommGrpCat.int_hom_ext
+  change (singularChainMap f).f 2 ((AddCommGrpCat.asHom c) 1) =
+    (AddCommGrpCat.asHom ((singularChainMap f).f 2 c)) 1
+  rw [AddCommGrpCat.asHom_hom_apply, AddCommGrpCat.asHom_hom_apply, one_zsmul, one_zsmul]
+
+private theorem degreeTwoCycleHomologyMap_naturality {X Y : Type} [TopologicalSpace X]
+    [TopologicalSpace Y] (f : C(X, Y)) (c : Chains X 2) (hc : boundaryTwo X c = 0) :
+    degreeTwoCycleHomologyMap c hc ≫
+        HomologicalComplex.homologyMap (singularChainMap f) 2 =
+      degreeTwoCycleHomologyMap ((singularChainMap f).f 2 c)
+        (degreeTwoMappedCycle_isCycle f c hc) := by
+  unfold degreeTwoCycleHomologyMap
+  rw [Category.assoc, HomologicalComplex.homologyπ_naturality]
+  rw [← Category.assoc, HomologicalComplex.liftCycles_comp_cyclesMap]
+  simp only [degreeTwoCycleMap_naturality]
+
+private theorem degreeTwoCycleHomologyMap_area (c : Chains (StdTorus 2) 2)
+    (hc : boundaryTwo (StdTorus 2) c = 0) :
+    degreeTwoCycleHomologyMap c hc ≫
+        HomologicalComplex.homologyMap standardTwoTorusAreaChainMap 2 ≫
+          (HomologicalComplex.singleObjHomologySelfIso
+            (ComplexShape.down ℕ) 2 (AddCommGrpCat.of ℤ)).hom =
+      AddCommGrpCat.asHom (standardTwoTorusArea c) := by
+  unfold degreeTwoCycleHomologyMap
+  rw [Category.assoc, HomologicalComplex.homologyπ_naturality_assoc]
+  rw [← Category.assoc, HomologicalComplex.liftCycles_comp_cyclesMap]
+  rw [HomologicalComplex.homologyπ_singleObjHomologySelfIso_hom]
+  rw [HomologicalComplex.singleObjCyclesSelfIso_hom]
+  rw [HomologicalComplex.liftCycles_i_assoc]
+  apply AddCommGrpCat.int_hom_ext
+  simp [standardTwoTorusAreaChainMap, degreeTwoCycleMap]
+  rw [AddCommGrpCat.asHom_hom_apply, one_zsmul]
+
+private theorem standardTwoTorusHomologyArea_cycle
+    (c : Chains (StdTorus 2) 2) (hc : boundaryTwo (StdTorus 2) c = 0) :
+    standardTwoTorusHomologyArea (degreeTwoCycleHomologyClass c hc) =
+      standardTwoTorusArea c := by
+  have h := ConcreteCategory.congr_hom (degreeTwoCycleHomologyMap_area c hc) (1 : ℤ)
+  exact h.trans (by rw [AddCommGrpCat.asHom_hom_apply, one_zsmul])
+
+private noncomputable def standardTwoTorusFundamentalClass :
+    IntegralSingularHomology 2 (StdTorus 2) :=
+  degreeTwoCycleHomologyClass standardTwoTorusFundamentalCycle
+    standardTwoTorusFundamentalCycle_isCycle
+
+private theorem standardTwoTorusCoordinateWinding_integerEdge
+    (v : Fin 2 → ℤ) (i : Fin 2) :
+    standardTwoTorusCoordinateWinding i
+        (simplexChain (StdTorus 2) 1 (standardTwoTorusIntegerEdge v)) = v i := by
+  unfold standardTwoTorusCoordinateWinding
+  rw [AddMonoidHom.comp_apply, singularChainMap_simplex]
+  change edgeWinding (simplexChain UnitAddCircle 1
+    (pathSimplex (unitCircleIntegerLoop (v i)))) = v i
+  rw [edgeWinding_simplex, simplexPath_pathSimplex,
+    basedLoopWinding_cast, basedLoopWinding_integerLoop]
+
+private theorem standardTwoTorusArea_fundamentalCycle :
+    standardTwoTorusArea standardTwoTorusFundamentalCycle = 1 := by
+  rw [standardTwoTorusFundamentalCycle, map_sub]
+  simp only [standardTwoTorusArea, cupOneOne, chainLift_simplex,
+    standardTwoTorusTriangleA_face_two, standardTwoTorusTriangleA_face_zero,
+    standardTwoTorusTriangleB_face_two, standardTwoTorusTriangleB_face_zero,
+    standardTwoTorusCoordinateWinding_integerEdge]
+  norm_num [standardTwoTorusFirstEdge, standardTwoTorusSecondEdge]
+
+private theorem standardTwoTorusHomologyArea_fundamentalClass :
+    standardTwoTorusHomologyArea standardTwoTorusFundamentalClass = 1 := by
+  exact (standardTwoTorusHomologyArea_cycle _ _).trans
+    standardTwoTorusArea_fundamentalCycle
+
+private theorem standardTwoTorusMatrixMap_integerEdge
+    (M : Matrix (Fin 2) (Fin 2) ℤ) (v : Fin 2 → ℤ) (i : Fin 2) :
+    (standardTwoTorusCircleCoordinate i).comp
+        ((standardTwoTorusMatrixMap M).comp (standardTwoTorusIntegerEdge v)) =
+      pathSimplex (unitCircleIntegerLoop (Matrix.mulVec M v i)) := by
+  apply ContinuousMap.ext
+  intro s
+  change (∑ b, M i b •
+      (((stdSimplexHomeomorphUnitInterval s : ℝ) * (v b : ℝ) : ℝ) : UnitAddCircle)) =
+    (((stdSimplexHomeomorphUnitInterval s : ℝ) *
+      ((Matrix.mulVec M v i : ℤ) : ℝ) : ℝ) : UnitAddCircle)
+  simp only [Fin.sum_univ_two, ← AddCircle.coe_zsmul, ← AddCircle.coe_add]
+  congr 1
+  simp [Matrix.mulVec, zsmul_eq_mul]
+  ring
+
+private theorem standardTwoTorusCoordinateWinding_matrix_integerEdge
+    (M : Matrix (Fin 2) (Fin 2) ℤ) (v : Fin 2 → ℤ) (i : Fin 2) :
+    standardTwoTorusCoordinateWinding i
+        (simplexChain (StdTorus 2) 1
+          ((standardTwoTorusMatrixMap M).comp (standardTwoTorusIntegerEdge v))) =
+      Matrix.mulVec M v i := by
+  unfold standardTwoTorusCoordinateWinding
+  rw [AddMonoidHom.comp_apply, singularChainMap_simplex,
+    standardTwoTorusMatrixMap_integerEdge, edgeWinding_simplex,
+    simplexPath_pathSimplex, basedLoopWinding_cast, basedLoopWinding_integerLoop]
+
+private theorem standardTwoTorusArea_matrix_fundamentalCycle
+    (M : Matrix (Fin 2) (Fin 2) ℤ) :
+    standardTwoTorusArea
+        ((singularChainMap (standardTwoTorusMatrixMap M)).f 2
+          standardTwoTorusFundamentalCycle) = Matrix.det M := by
+  rw [standardTwoTorusFundamentalCycle, map_sub]
+  simp only [singularChainMap_simplex, standardTwoTorusArea, cupOneOne]
+  rw [map_sub, chainLift_simplex, chainLift_simplex]
+  simp only [ContinuousMap.comp_assoc]
+  rw [standardTwoTorusTriangleA_face_two, standardTwoTorusTriangleA_face_zero,
+    standardTwoTorusTriangleB_face_two, standardTwoTorusTriangleB_face_zero,
+    standardTwoTorusCoordinateWinding_matrix_integerEdge,
+    standardTwoTorusCoordinateWinding_matrix_integerEdge,
+    standardTwoTorusCoordinateWinding_matrix_integerEdge,
+    standardTwoTorusCoordinateWinding_matrix_integerEdge]
+  simp [standardTwoTorusFirstEdge, standardTwoTorusSecondEdge,
+    Matrix.mulVec, Matrix.det_fin_two, Matrix.vecHead, Matrix.vecTail]
+
+private theorem standardTwoTorusHomologyArea_matrix_fundamentalClass
+    (M : Matrix (Fin 2) (Fin 2) ℤ) :
+    standardTwoTorusHomologyArea
+        (integralSingularHomologyMap 2 (standardTwoTorusMatrixMap M)
+          standardTwoTorusFundamentalClass) = Matrix.det M := by
+  have hmap := ConcreteCategory.congr_hom
+    (degreeTwoCycleHomologyMap_naturality (standardTwoTorusMatrixMap M)
+      standardTwoTorusFundamentalCycle standardTwoTorusFundamentalCycle_isCycle) (1 : ℤ)
+  rw [show integralSingularHomologyMap 2 (standardTwoTorusMatrixMap M)
+      standardTwoTorusFundamentalClass =
+        degreeTwoCycleHomologyClass
+          ((singularChainMap (standardTwoTorusMatrixMap M)).f 2
+            standardTwoTorusFundamentalCycle)
+          (degreeTwoMappedCycle_isCycle (standardTwoTorusMatrixMap M)
+            standardTwoTorusFundamentalCycle standardTwoTorusFundamentalCycle_isCycle) by
+      exact hmap]
+  exact (standardTwoTorusHomologyArea_cycle _ _).trans
+    (standardTwoTorusArea_matrix_fundamentalCycle M)
+
+private noncomputable def standardTwoTorusHomologyAreaCoordinates :
+    IntegralSingularHomology 2 (StdTorus 2) →+ (Fin 1 → ℤ) where
+  toFun x := fun _ : Fin 1 ↦ standardTwoTorusHomologyArea x
+  map_zero' := by
+    funext i
+    simp
+  map_add' x y := by
+    funext i
+    simp
+
+private theorem standardTwoTorusHomologyAreaCoordinates_surjective :
+    Function.Surjective standardTwoTorusHomologyAreaCoordinates := by
+  intro v
+  refine ⟨v 0 • standardTwoTorusFundamentalClass, ?_⟩
+  funext i
+  fin_cases i
+  simp [standardTwoTorusHomologyAreaCoordinates, map_zsmul,
+    standardTwoTorusHomologyArea_fundamentalClass]
+
+private theorem standardTwoTorusHomologyArea_injective :
+    Function.Injective standardTwoTorusHomologyArea := by
+  let F : (Fin 1 → ℤ) →+ (Fin 1 → ℤ) :=
+    standardTwoTorusHomologyAreaCoordinates.comp
+      (stdTorusHomologyTwo 2).symm.toAddMonoidHom
+  have hsurj : Function.Surjective F :=
+    standardTwoTorusHomologyAreaCoordinates_surjective.comp
+      (stdTorusHomologyTwo 2).symm.surjective
+  have hinj : Function.Injective F :=
+    Module.End.injective_of_surjective ℤ (Fin 1 → ℤ) (f := F.toIntLinearMap) hsurj
+  intro x y hxy
+  apply (stdTorusHomologyTwo 2).injective
+  apply hinj
+  change (fun _ ↦ standardTwoTorusHomologyArea
+      ((stdTorusHomologyTwo 2).symm (stdTorusHomologyTwo 2 x))) =
+    fun _ ↦ standardTwoTorusHomologyArea
+      ((stdTorusHomologyTwo 2).symm (stdTorusHomologyTwo 2 y))
+  funext i
+  rw [AddEquiv.symm_apply_apply, AddEquiv.symm_apply_apply]
+  exact hxy
+
+private theorem standardTwoTorus_eq_area_smul_fundamentalClass
+    (x : IntegralSingularHomology 2 (StdTorus 2)) :
+    x = standardTwoTorusHomologyArea x • standardTwoTorusFundamentalClass := by
+  apply standardTwoTorusHomologyArea_injective
+  rw [map_zsmul, standardTwoTorusHomologyArea_fundamentalClass]
+  simp
+
+public theorem standardTwoTorusMatrixDeterminantDegree :
+    StandardTwoTorusMatrixDeterminantDegree := by
+  intro M
+  rw [standardTwoTorus_eq_area_smul_fundamentalClass standardTwoTorusHomologyGenerator,
+    map_zsmul]
+  apply standardTwoTorusHomologyArea_injective
+  simp only [map_zsmul, standardTwoTorusHomologyArea_matrix_fundamentalClass,
+    standardTwoTorusHomologyArea_fundamentalClass]
+  simp [mul_comm]
+
+/-- The determinant-degree theorem supplies the natural four-torus recalibration. -/
+public theorem standardFourTorusNaturalRecalibration_nonempty :
+    Nonempty StandardFourTorusNaturalRecalibration :=
+  ⟨⟨standardTwoTorusMatrixDeterminantDegree⟩⟩
 
 public def standardFourTorusNaturalRecalibration :
     StandardFourTorusNaturalRecalibration :=

@@ -69,8 +69,6 @@ axiom SphereSixComplex.EstablishedGeneralTopology.isHomotopyEquivalenceInclusion
               (have this := rfl;
               this)) →
         ∀ (hCW : Topology.RelCWComplex Set.univ D), SphereSixComplex.IsHomotopyEquivalenceInclusion D
-axiom SphereSixComplex.StandardTorusHomology.standardFourTorusNaturalRecalibration_nonempty : Nonempty
-  SphereSixComplex.StandardTorusHomology.StandardFourTorusNaturalRecalibration
 axiom SphereSixComplex.FiniteCoverModelSix.establishedEulerMultiplicativity : ∀ {X : Type} [inst : TopologicalSpace X]
   (M : SphereSixComplex.FiniteCoverModelSix X),
   let x := M.coverTopology;
@@ -112,10 +110,9 @@ axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2C
 axiom SphereSixComplex.Geometry.PaperAnalyticData.establishedActualEllipticCentralBasisNaturality : ∀
   (A : SphereSixComplex.Geometry.PaperAnalyticData),
   Nonempty (A.ActualEllipticCentralBasisNaturality A.actualCuspCentralNaturality)
-axiom SphereSixComplex.Geometry.GlobalTorusFamily.establishedPuncturedGlobalFamilyAffineFundamentalGroup : {P :
-    SphereSixComplex.Periods.FuchsianModularParameter} →
-  (F : SphereSixComplex.Periods.PeriodFunctions P.toTriangleUniformization) →
-    SphereSixComplex.Geometry.GlobalTorusFamily.PuncturedGlobalFamilyAffineFundamentalGroup F
+axiom SphereSixComplex.Geometry.GlobalTorusFamily.paperPuncturedGlobalFamilyAffinePresentation_injective : ∀
+  (A : SphereSixComplex.Geometry.PaperAnalyticData),
+  Function.Injective ⇑(SphereSixComplex.Geometry.GlobalTorusFamily.paperPuncturedGlobalFamilyAffinePresentation A)
 axiom SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenAffineRegularLiftTopology.markedBandHomotopies : ∀
   (A : SphereSixComplex.Geometry.PaperAnalyticData), A.SectionSevenAffineOverlapBandCompatibility
 axiom SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTopology.actualCuspFiberEllipticFiniteCoordinateIdentities : ∀
