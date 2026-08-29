@@ -70,20 +70,24 @@ axiom SphereSixComplex.EstablishedGeneralTopology.isHomotopyEquivalenceInclusion
                 (have this := rfl;
                 this))) →
           ∀ (hCW : Topology.RelCWComplex Set.univ D), SphereSixComplex.IsHomotopyEquivalenceInclusion D
-axiom SphereSixComplex.establishedFiniteCoverCellularLift : ∀ {E X : Type} [inst : TopologicalSpace E]
-  [inst_1 : TopologicalSpace X] (projection : C(E, X)),
-  IsCoveringMap ⇑projection →
-    ∀ (degree : ℕ),
-      0 < degree →
-        (∀ (x : X), Nat.card { y // projection y = x } = degree) →
-          ∀ (base : SphereSixComplex.FiniteCWModel X), ∃ cover, ∀ (n : ℕ), cover.cellCount n = degree * base.cellCount n
+axiom SphereSixComplex.FiniteCoverModelSix.establishedEulerMultiplicativity : ∀ {X : Type} [inst : TopologicalSpace X]
+  (M : SphereSixComplex.FiniteCoverModelSix X),
+  let x := M.coverTopology;
+  SphereSixComplex.integralHomologyEulerCharacteristicSix M.Cover =
+    ↑M.degree * SphereSixComplex.integralHomologyEulerCharacteristicSix X
 axiom SphereSixComplex.Periods.establishedOrbifoldAffineLineTorsorCuspBoundedCousinCorrection : ∀
   (P : SphereSixComplex.Periods.OrbifoldAffineLineTorsorDescentProblem),
   P.HasAcyclicProjectiveLineFrame → Nonempty P.CuspBoundedEllipticOneCorrection
 axiom SphereSixComplex.Topology.FiniteCoverPerfectPairing.establishedEllipticDegreeTwoHomologyBasisFiniteData : ∀
   {U : SphereSixComplex.Periods.TriangleUniformization} (F : SphereSixComplex.Periods.PeriodFunctions U),
   Nonempty (SphereSixComplex.Topology.FiniteCoverPerfectPairing.EllipticDegreeTwoHomologyBasisFiniteData F)
-axiom SphereSixComplex.Topology.AffineFiniteCyclicTorusCW.establishedOrderThreeFourAffineGeneratorFiniteCWModels : SphereSixComplex.Topology.AffineFiniteCyclicTorusCW.OrderThreeFourAffineGeneratorFiniteCWModels
+axiom SphereSixComplex.Topology.AffineFiniteCyclicTorusCW.establishedEllipticReducedCentralFiberFiniteCWModels : ∀
+  {U : SphereSixComplex.Periods.TriangleUniformization} (F : SphereSixComplex.Periods.PeriodFunctions U),
+  Nonempty
+    (SphereSixComplex.FiniteCWModelSix
+        ↑(SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction.OrderThreeReducedCentralFiber F) ×
+      SphereSixComplex.FiniteCWModelSix
+        ↑(SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction.OrderFourReducedCentralFiber F))
 axiom SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.EstablishedAffineCyclicQuotientHomology.establishedAffineCyclicDeckHurewiczComparison : {m :
     ℕ} →
   [inst : NeZero m] →

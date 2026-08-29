@@ -343,37 +343,13 @@ end EllipticDegreeTwoPullbackBases
 
 private noncomputable def orderThreeReducedCentralFiberFiniteCWModel
     {U : Periods.TriangleUniformization} (F : Periods.PeriodFunctions U) :
-    FiniteCWModelSix (OrderThreeReducedCentralFiber F) := by
-  let p := parameterMap F U.zOne
-  let P := orderThreeCentralFiberPresentationData F
-  apply AffineFiniteCyclicTorusCW.finiteCWModelSix_reducedCentralFiber_of_affineGenerator
-    p.1 P.fullRank (orderThreeRadialActionData F)
-    (periodTransport g₁ p) ((3 : ℂ)⁻¹ • periodVector p.1 epsilon)
-  · intro z
-    change affineEquiv (orderThreeFiberAutomorphism F)
-        (orderThreeTranslation p.1) (Quotient.mk _ z) = _
-    rw [affineEquiv_apply, orderThreeFiberAutomorphism_mk]
-    change Quotient.mk _ (periodTransport g₁ p z) +
-        additiveTorusProjection p.1 ((3 : ℂ)⁻¹ • periodVector p.1 epsilon) = _
-    exact (additiveTorusProjection_add p.1 _ _).symm
-  · exact P.free
+    FiniteCWModelSix (OrderThreeReducedCentralFiber F) :=
+  AffineFiniteCyclicTorusCW.orderThreeReducedCentralFiberFiniteCWModelSixOfPeriodFunctions F
 
 private noncomputable def orderFourReducedCentralFiberFiniteCWModel
     {U : Periods.TriangleUniformization} (F : Periods.PeriodFunctions U) :
-    FiniteCWModelSix (OrderFourReducedCentralFiber F) := by
-  let p := parameterMap F U.zTwo
-  let P := orderFourCentralFiberPresentationData F
-  apply AffineFiniteCyclicTorusCW.finiteCWModelSix_reducedCentralFiber_of_affineGenerator
-    p.1 P.fullRank (orderFourRadialActionData F)
-    (periodTransport g₂ p) ((4 : ℂ)⁻¹ • periodVector p.1 (-epsilon'))
-  · intro z
-    change affineEquiv (orderFourFiberAutomorphism F)
-        (orderFourTranslation p.1) (Quotient.mk _ z) = _
-    rw [affineEquiv_apply, orderFourFiberAutomorphism_mk]
-    change Quotient.mk _ (periodTransport g₂ p z) +
-        additiveTorusProjection p.1 ((4 : ℂ)⁻¹ • periodVector p.1 (-epsilon')) = _
-    exact (additiveTorusProjection_add p.1 _ _).symm
-  · exact P.free
+    FiniteCWModelSix (OrderFourReducedCentralFiber F) :=
+  AffineFiniteCyclicTorusCW.orderFourReducedCentralFiberFiniteCWModelSixOfPeriodFunctions F
 
 private theorem dualEval_bijective_of_finite_torsionFree
     {X : Type} [TopologicalSpace X]

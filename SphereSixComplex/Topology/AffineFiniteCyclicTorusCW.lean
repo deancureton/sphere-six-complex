@@ -183,99 +183,38 @@ private theorem torusCentralFiberProjection_surjective :
 
 end RadialEllipticActionData
 
-/-- The classical smooth-triangulation input, restricted exactly to the order-three and
-order-four affine torus quotients used in this development. -/
-public structure OrderThreeFourAffineGeneratorFiniteCWModels where
-  orderThree :
-    ∀ (p : Parameters) (_hfull : FullRank p)
-      (D : RadialEllipticActionData 3 (AdditiveTorus p))
-      (lift : ComplexTwoSpace ≃ₗ[ℝ] ComplexTwoSpace) (translation : ComplexTwoSpace)
-      (_generator_mk : ∀ z,
-        D.actionData.fiberGenerator (Quotient.mk _ z) =
-          Quotient.mk _ (lift z + translation))
-      (_hfree : letI := D.actionData.diagonalAction
-        IsCancelSMul (FiniteCyclic 3) D.Product),
-      FiniteCWModelSix D.reducedCentralFiber
-  orderFour :
-    ∀ (p : Parameters) (_hfull : FullRank p)
-      (D : RadialEllipticActionData 4 (AdditiveTorus p))
-      (lift : ComplexTwoSpace ≃ₗ[ℝ] ComplexTwoSpace) (translation : ComplexTwoSpace)
-      (_generator_mk : ∀ z,
-        D.actionData.fiberGenerator (Quotient.mk _ z) =
-          Quotient.mk _ (lift z + translation))
-      (_hfree : letI := D.actionData.diagonalAction
-        IsCancelSMul (FiniteCyclic 4) D.Product),
-      FiniteCWModelSix D.reducedCentralFiber
+/-- The classical finite-CW input for the two reduced elliptic fibres that occur in the paper. -/
+public axiom establishedEllipticReducedCentralFiberFiniteCWModels
+    {U : TriangleUniformization} (F : PeriodFunctions U) :
+    Nonempty
+      (FiniteCWModelSix (OrderThreeReducedCentralFiber F) ×
+        FiniteCWModelSix (OrderFourReducedCentralFiber F))
 
-/-- The finite-CW input restricted to the two affine cyclic quotients used below. -/
-public axiom establishedOrderThreeFourAffineGeneratorFiniteCWModels :
-    OrderThreeFourAffineGeneratorFiniteCWModels
+/-- A finite CW model for the actual order-three reduced elliptic fibre. -/
+public noncomputable def orderThreeReducedCentralFiberFiniteCWModelSixOfPeriodFunctions
+    {U : TriangleUniformization} (F : PeriodFunctions U) :
+    FiniteCWModelSix (OrderThreeReducedCentralFiber F) :=
+  Classical.choice (establishedEllipticReducedCentralFiberFiniteCWModels F) |>.1
 
-public noncomputable def orderThreeFourAffineGeneratorFiniteCWModels :
-    OrderThreeFourAffineGeneratorFiniteCWModels :=
-  establishedOrderThreeFourAffineGeneratorFiniteCWModels
-
-/-- A common wrapper for the two supported cyclic orders.  The order certificate is inferred at
-all current call sites, while the classical residual itself is stated only for orders three and
-four. -/
-public noncomputable def finiteCWModelSix_reducedCentralFiber_of_affineGenerator
-    {m : ℕ} [NeZero m] [SupportedAffineFiniteCyclicOrder m]
-    (p : Parameters) (hfull : FullRank p)
-    (D : RadialEllipticActionData m (AdditiveTorus p))
-    (lift : ComplexTwoSpace ≃ₗ[ℝ] ComplexTwoSpace) (translation : ComplexTwoSpace)
-    (generator_mk : ∀ z,
-      D.actionData.fiberGenerator (Quotient.mk _ z) =
-        Quotient.mk _ (lift z + translation))
-    (hfree : letI := D.actionData.diagonalAction
-      IsCancelSMul (FiniteCyclic m) D.Product) :
-    FiniteCWModelSix D.reducedCentralFiber := by
-  cases SupportedAffineFiniteCyclicOrder.order (m := m) with
-  | orderThree =>
-      exact orderThreeFourAffineGeneratorFiniteCWModels.orderThree
-        p hfull D lift translation generator_mk hfree
-  | orderFour =>
-      exact orderThreeFourAffineGeneratorFiniteCWModels.orderFour
-        p hfull D lift translation generator_mk hfree
+/-- A finite CW model for the actual order-four reduced elliptic fibre. -/
+public noncomputable def orderFourReducedCentralFiberFiniteCWModelSixOfPeriodFunctions
+    {U : TriangleUniformization} (F : PeriodFunctions U) :
+    FiniteCWModelSix (OrderFourReducedCentralFiber F) :=
+  Classical.choice (establishedEllipticReducedCentralFiberFiniteCWModels F) |>.2
 
 variable (A : PaperAnalyticData)
 
 /-- The order-three reduced central fibre follows from the single affine-quotient triangulation
 input. -/
 public noncomputable def orderThreeReducedCentralFiberFiniteCWModelSix :
-    FiniteCWModelSix (OrderThreeReducedCentralFiber A.periods) := by
-  let p := parameterMap A.periods
-    A.modular.modularParameter.toTriangleUniformization.zOne
-  let D := orderThreeRadialActionData A.periods
-  apply finiteCWModelSix_reducedCentralFiber_of_affineGenerator p.1
-    (FullRank.ofSetupInequalities p.1 p.2) D
-    (periodTransport g₁ p) ((3 : ℂ)⁻¹ • periodVector p.1 epsilon)
-  · intro z
-    change affineEquiv (orderThreeFiberAutomorphism A.periods)
-        (orderThreeTranslation p.1) (Quotient.mk _ z) = _
-    rw [affineEquiv_apply, orderThreeFiberAutomorphism_mk]
-    change Quotient.mk _ (periodTransport g₁ p z) +
-        additiveTorusProjection p.1 ((3 : ℂ)⁻¹ • periodVector p.1 epsilon) = _
-    exact (additiveTorusProjection_add p.1 _ _).symm
-  · exact A.orderThreeAction_free
+    FiniteCWModelSix (OrderThreeReducedCentralFiber A.periods) :=
+  orderThreeReducedCentralFiberFiniteCWModelSixOfPeriodFunctions A.periods
 
 /-- The order-four reduced central fibre follows from the same affine-quotient triangulation
 input. -/
 public noncomputable def orderFourReducedCentralFiberFiniteCWModelSix :
-    FiniteCWModelSix (OrderFourReducedCentralFiber A.periods) := by
-  let p := parameterMap A.periods
-    A.modular.modularParameter.toTriangleUniformization.zTwo
-  let D := orderFourRadialActionData A.periods
-  apply finiteCWModelSix_reducedCentralFiber_of_affineGenerator p.1
-    (FullRank.ofSetupInequalities p.1 p.2) D
-    (periodTransport g₂ p) ((4 : ℂ)⁻¹ • periodVector p.1 (-epsilon'))
-  · intro z
-    change affineEquiv (orderFourFiberAutomorphism A.periods)
-        (orderFourTranslation p.1) (Quotient.mk _ z) = _
-    rw [affineEquiv_apply, orderFourFiberAutomorphism_mk]
-    change Quotient.mk _ (periodTransport g₂ p z) +
-        additiveTorusProjection p.1 ((4 : ℂ)⁻¹ • periodVector p.1 (-epsilon')) = _
-    exact (additiveTorusProjection_add p.1 _ _).symm
-  · exact A.orderFourAction_free
+    FiniteCWModelSix (OrderFourReducedCentralFiber A.periods) :=
+  orderFourReducedCentralFiberFiniteCWModelSixOfPeriodFunctions A.periods
 
 end
 

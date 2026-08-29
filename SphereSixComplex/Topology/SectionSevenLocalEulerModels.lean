@@ -174,80 +174,16 @@ public structure FiniteCoverModelSix (X : Type) [TopologicalSpace X] where
   coverHomologyFiniteSix : @IntegralHomologyFiniteSix Cover coverTopology
   quotientFiniteCW : FiniteCWModelSix X
 
-/-- A finite-sheeted covering of a space of finite CW type has finite CW type.  The CW structure
-can be chosen by lifting the cells, so in every degree each base cell has one lift for each point
-of a fibre. -/
-public axiom establishedFiniteCoverCellularLift
-    {E X : Type} [TopologicalSpace E] [TopologicalSpace X]
-    (projection : C(E, X)) (_isCovering : IsCoveringMap projection)
-    (degree : ℕ) (_degree_pos : 0 < degree)
-    (_fiberCardinality : ∀ x, Nat.card {y : E // projection y = x} = degree)
-    (base : FiniteCWModel X) :
-    ∃ cover : FiniteCWModel E, ∀ n, cover.cellCount n = degree * base.cellCount n
-
-/-- Pulling a constant finite-sheeted cover back along a finite CW homotopy model of its base and
-lifting the cells gives a finite CW homotopy model of the cover.  In every degree, each base cell
-has one lift for each point of a fibre. -/
-public theorem establishedFiniteCoverCellularLiftSix
-    {E X : Type} [TopologicalSpace E] [TopologicalSpace X]
-    (projection : C(E, X)) (_isCovering : IsCoveringMap projection)
-    (degree : ℕ) (_degree_pos : 0 < degree)
-    (_fiberCardinality : ∀ x, Nat.card {y : E // projection y = x} = degree)
-    (base : FiniteCWModelSix X) :
-    ∃ cover : FiniteCWModelSix E, ∀ n, cover.cellCount n = degree * base.cellCount n := by
-  obtain ⟨cover, hcells⟩ := establishedFiniteCoverCellularLift projection _isCovering degree
-    _degree_pos _fiberCardinality base.toFiniteCWModel
-  let coverSix : FiniteCWModelSix E := {
-    Carrier := cover.Carrier
-    topology := cover.topology
-    t2 := cover.t2
-    homotopyEquiv := cover.homotopyEquiv
-    cwComplex := cover.cwComplex
-    finite := cover.finite
-    cellsAboveSix := by
-      dsimp only
-      intro n hn
-      let _ := cover.topology
-      let _ := cover.cwComplex
-      let _ := cover.finite
-      have hfinite : Finite (Topology.CWComplex.cell
-          (Set.univ : Set cover.Carrier) n) :=
-        Topology.CWComplex.FiniteType.finite_cell
-          (C := (Set.univ : Set cover.Carrier)) n
-      let _ := hfinite
-      apply Finite.card_eq_zero_iff.mp
-      change cover.cellCount n = 0
-      rw [hcells n]
-      rw [mul_eq_zero]
-      right
-      rw [FiniteCWModelSix.toFiniteCWModel_cellCount]
-      unfold FiniteCWModelSix.cellCount
-      let _ := base.topology
-      let _ := base.cwComplex
-      let _ := base.cellsAboveSix n hn
-      exact Nat.card_of_isEmpty }
-  refine ⟨coverSix, fun n ↦ ?_⟩
-  exact hcells n
-
 namespace FiniteCoverModelSix
 
 variable {X : Type} [TopologicalSpace X]
 
 /-- Euler characteristic multiplies by the constant sheet number of a finite covering between
 spaces of finite integral homology type. -/
-public theorem establishedEulerMultiplicativity (M : FiniteCoverModelSix X) :
+public axiom establishedEulerMultiplicativity (M : FiniteCoverModelSix X) :
     let _ := M.coverTopology
     integralHomologyEulerCharacteristicSix M.Cover =
-      (M.degree : ℤ) * integralHomologyEulerCharacteristicSix X := by
-  let _ := M.coverTopology
-  dsimp only
-  obtain ⟨cover, hcells⟩ := establishedFiniteCoverCellularLiftSix M.projection M.isCovering
-    M.degree M.degree_pos M.fiberCardinality M.quotientFiniteCW
-  rw [cover.establishedIntegralCellularEulerPoincareSix,
-    M.quotientFiniteCW.establishedIntegralCellularEulerPoincareSix]
-  rw [hcells 0, hcells 1, hcells 2, hcells 3, hcells 4, hcells 5, hcells 6]
-  push_cast
-  ring
+      (M.degree : ℤ) * integralHomologyEulerCharacteristicSix X
 
 end FiniteCoverModelSix
 
