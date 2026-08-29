@@ -2,6 +2,7 @@ module
 
 public import SphereSixComplex.Topology.PaperMultipleFiberHOneTopologyProof
 public import SphereSixComplex.Topology.CyclicExtensionAbelianization
+public import SphereSixComplex.Topology.EstablishedUnwrappedAffineFillings
 
 /-!
 # First homology of the reduced elliptic fibres
@@ -39,36 +40,104 @@ variable {m : ℕ} [NeZero m] {p : SphereSixComplex.Periods.Parameters}
         C(AdditiveTorus p, RadialEllipticActionData.centralFiberCoverSource D)).comp
       ⟨torusProjection p, continuous_quot_mk⟩)
 
-/-- The exact geometric input left by the `ℂ²/Γ` proof of the affine cyclic
-first-homology calculation.
+private theorem affineEquiv_pow_sub {T : Type*} [AddCommGroup T]
+    (A : T ≃+ T) (b : T) (n : ℕ) (x y : T) :
+    (affineEquiv A b ^ n) x - (affineEquiv A b ^ n) y =
+      (A.toEquiv ^ n) (x - y) := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+      rw [pow_succ', Equiv.Perm.mul_apply, Equiv.Perm.mul_apply,
+        affineEquiv_apply, affineEquiv_apply, add_sub_add_right_eq_sub, ← map_sub, ih]
+      rw [pow_succ', Equiv.Perm.mul_apply]
+      rfl
 
-The marked deck group acts on `ℂ²`, with orbit map the canonical projection to the reduced
-central fibre.  It is a cyclic extension of the period lattice; the lattice subgroup acts by
-period translations, and its marked generator acts by the chosen affine lift.  The last two fields
-are the degree-one Hurewicz identification and its naturality on lattice deck transformations. -/
+private theorem lift_period_pow
+    (A : DescendedAffineTorusAutomorphism p) (n : ℕ) (x : Lattice) :
+    (A.lift.toEquiv ^ n) (periodVector p x) =
+      periodVector p ((A.latticeMap.toEquiv ^ n) x) := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+      rw [pow_succ', Equiv.Perm.mul_apply, pow_succ', Equiv.Perm.mul_apply, ih]
+      exact A.lift_period _
+
+private theorem addAut_nsmul_apply {T : Type*} [AddGroup T]
+    (A : AddAut T) (n : ℕ) (x : T) :
+    (n • A) x = (A.toEquiv ^ n) x := by
+  induction n generalizing x with
+  | zero => simp
+  | succ n ih =>
+      rw [succ_nsmul, AddAut.add_apply, ih, pow_succ, Equiv.Perm.mul_apply]
+      rfl
+
+/-- The full-iterate affine lift forces the integral linear monodromy to have order dividing the
+cyclic degree. -/
+public theorem affineLatticeMap_pow_eq_one
+    (P : AffineCyclicCentralFiberPresentationData m p D) :
+    P.affine.latticeMap.toEquiv ^ m = 1 := by
+  apply Equiv.ext
+  intro x
+  apply (periodHom_injective P.fullRank)
+  change periodVector p ((P.affine.latticeMap.toEquiv ^ m) x) = periodVector p x
+  rw [← lift_period_pow]
+  have h := affineEquiv_pow_sub P.affine.lift P.liftTranslation m
+    (periodVector p x) 0
+  rw [P.lift_full_iterate, P.lift_full_iterate, add_sub_add_right_eq_sub, sub_zero] at h
+  exact h.symm
+
+/-- The full-iterate translation is fixed by the integral linear monodromy. -/
+public theorem affineLatticeMap_twist
+    (P : AffineCyclicCentralFiberPresentationData m p D) :
+    P.affine.latticeMap P.twist = P.twist := by
+  apply (periodHom_injective P.fullRank)
+  change periodVector p (P.affine.latticeMap P.twist) = periodVector p P.twist
+  rw [← P.affine.lift_period]
+  let f := affineEquiv P.affine.lift P.liftTranslation
+  have hcomm : f ((f ^ m) 0) = (f ^ m) (f 0) := by
+    change (f * f ^ m) 0 = (f ^ m * f) 0
+    rw [← pow_succ', ← pow_succ]
+  change P.affine.lift (periodVector p P.twist) = periodVector p P.twist
+  have ht : (f ^ m) 0 = periodVector p P.twist := by
+    simpa [f] using P.lift_full_iterate 0
+  rw [ht] at hcomm
+  rw [P.lift_full_iterate] at hcomm
+  apply add_right_cancel (b := P.liftTranslation)
+  simpa [f, affineEquiv_apply, add_comm] using hcomm
+
+/-- The canonical unwrapped affine deck presentation determined by `P`. -/
+@[expose] public def affineCyclicBoundaryDeckData
+    (P : AffineCyclicCentralFiberPresentationData m p D) :
+    UnwrappedCyclicAffineBoundaryDeckData m Lattice
+      (CanonicalCyclicAffineBoundaryDeck P.affine.latticeMap.toAddEquiv) :=
+  canonicalCyclicAffineBoundaryDeckData P.affine.latticeMap.toAddEquiv P.twist (by
+    apply Multiplicative.toAdd.injective
+    change m • P.affine.latticeMap.toAddEquiv = 0
+    apply AddEquiv.ext
+    intro x
+    have h := congrArg (fun e : Equiv.Perm Lattice ↦ e x) (affineLatticeMap_pow_eq_one P)
+    change (P.affine.latticeMap.toAddEquiv.toEquiv ^ m) x = x at h
+    simpa [addAut_nsmul_apply] using h) (affineLatticeMap_twist P)
+
+/-- The exact input left by the degree-one Hurewicz comparison for the affine cyclic deck
+extension.
+
+The marked group is a cyclic extension of the period lattice with the prescribed monodromy and
+full-iterate translation.  Its abelianization is identified with first homology, naturally on the
+lattice subgroup. -/
 public structure AffineCyclicUniversalCoverHOneIdentification
     (P : AffineCyclicCentralFiberPresentationData m p D) where
-  deckGroup : GrpCat
-  deckAction : MulAction deckGroup ComplexTwoSpace
-  extension : SphereSixComplex.Topology.CyclicExtension.Data m Lattice deckGroup
-  quotientCovering :
-    let _ := deckAction
-    IsQuotientCoveringMap (complexTwoReducedCentralFiberProjection (p := p) (D := D)) deckGroup
-  incl_smul :
-    let _ := deckAction
-    ∀ x z, extension.incl x • z = z + periodVector p x
-  gen_smul :
-    let _ := deckAction
-    ∀ z, extension.gen • z = affineEquiv P.affine.lift P.liftTranslation z
+  extension : SphereSixComplex.Topology.CyclicExtension.Data m Lattice
+    (affineCyclicBoundaryDeckData P).FillingDeck
   action_eq : extension.act = P.affine.latticeMap
   twist_eq : extension.twist = P.twist
-  hOneEquiv : Additive (Abelianization deckGroup) ≃ₗ[ℤ]
+  hOneEquiv : Additive (Abelianization (affineCyclicBoundaryDeckData P).FillingDeck) ≃ₗ[ℤ]
     IntegralSingularHomology 1 D.reducedCentralFiber
   projection : ∀ x, hOneEquiv (extension.kernelToAbelianization x) =
     coverProjectionLatticeMap P x
 
-/-- The remaining geometric input: the marked affine transformations give the quotient covering
-`ℂ² → D.reducedCentralFiber`, together with its degree-one Hurewicz marking. -/
+/-- The remaining classical input: the affine deck extension's abelianization is the first
+homology of the reduced central fibre, with the canonical marking of lattice translations. -/
 public axiom establishedAffineCyclicUniversalCoverHOneIdentification
     (P : AffineCyclicCentralFiberPresentationData m p D) :
     AffineCyclicUniversalCoverHOneIdentification P
@@ -79,8 +148,11 @@ variable (P : AffineCyclicCentralFiberPresentationData m p D)
   (I : AffineCyclicUniversalCoverHOneIdentification P)
 
 public theorem difference_eq : I.extension.difference = P.latticeDifference := by
-  rw [SphereSixComplex.Topology.CyclicExtension.Data.difference, I.action_eq,
-    P.latticeDifference_eq]
+  apply LinearMap.ext
+  intro x
+  rw [SphereSixComplex.Topology.CyclicExtension.Data.difference_apply,
+    P.latticeDifference_eq, LinearMap.sub_apply, LinearMap.id_apply]
+  exact congrArg (fun y ↦ y - x) (LinearEquiv.congr_fun I.action_eq x)
 
 /-- The homology class of the marked affine deck generator. -/
 @[expose] public def meridian : IntegralSingularHomology 1 D.reducedCentralFiber :=
@@ -100,11 +172,11 @@ public theorem fullIterate :
 group. -/
 @[expose] public noncomputable def toAbelianization :
     MultipleFiberHOnePresentation P.latticeDifference P.twist (m : ℤ) →ₗ[ℤ]
-      Additive (Abelianization I.deckGroup) :=
+      Additive (Abelianization (affineCyclicBoundaryDeckData P).FillingDeck) :=
   multipleFiberLift P.latticeDifference P.twist (m : ℤ)
     I.extension.kernelToAbelianization (by
       intro x
-      rw [P.latticeDifference_eq, ← I.action_eq]
+      rw [← I.difference_eq P]
       exact I.extension.kernelToAbelianization_difference x)
     (Additive.ofMul (Abelianization.of I.extension.gen)) (by
       rw [← ofMul_zpow, ← map_zpow, zpow_natCast, I.extension.gen_pow,
@@ -139,7 +211,8 @@ public theorem toAbelianization_injective : Function.Injective (I.toAbelianizati
     have h1 : Abelianization.of (I.extension.incl l * I.extension.gen ^ k) = 1 := by
       rw [map_mul, map_zpow]
       exact hy
-    have h2 : I.extension.incl l * I.extension.gen ^ k ∈ commutator I.deckGroup := by
+    have h2 : I.extension.incl l * I.extension.gen ^ k ∈
+        commutator (affineCyclicBoundaryDeckData P).FillingDeck := by
       rw [← Abelianization.ker_of, MonoidHom.mem_ker]
       exact h1
     obtain ⟨μ, hμ⟩ := I.extension.commutator_le_differenceSubgroup h2

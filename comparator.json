@@ -22,7 +22,7 @@
     "SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.EstablishedAffineCyclicQuotientHomology.establishedAffineCyclicUniversalCoverHOneIdentification",
     "SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberFiniteCellularRealization",
     "SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization.establishedFiniteGeneratorSpecializationMatrix",
-    "SphereSixComplex.Geometry.PaperAnalyticData.establishedActualEllipticCentralBasisNaturality",
+    "SphereSixComplex.Geometry.PaperAnalyticData.establishedActualEllipticMarkedFillingExtensionNaturality",
     "SphereSixComplex.Topology.TwicePuncturedComplex.freeTwoGeneratorLift_injective_of_open_union",
     "SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenAffineRegularLiftTopology.markedBandHomotopies",
     "SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTopology.actualCuspFiberEllipticFiniteCoordinateIdentities",

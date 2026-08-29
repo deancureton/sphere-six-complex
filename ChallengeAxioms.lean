@@ -107,9 +107,9 @@ axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2C
   (A : SphereSixComplex.Geometry.PaperAnalyticData),
   SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization.FiniteGeneratorSpecializationMatrix
     A
-axiom SphereSixComplex.Geometry.PaperAnalyticData.establishedActualEllipticCentralBasisNaturality : ∀
+axiom SphereSixComplex.Geometry.PaperAnalyticData.establishedActualEllipticMarkedFillingExtensionNaturality : ∀
   (A : SphereSixComplex.Geometry.PaperAnalyticData),
-  Nonempty (A.ActualEllipticCentralBasisNaturality A.actualCuspCentralNaturality)
+  Nonempty (A.ActualEllipticMarkedFillingExtensionNaturality A.actualCuspCentralNaturality)
 axiom SphereSixComplex.Topology.TwicePuncturedComplex.freeTwoGeneratorLift_injective_of_open_union.{u_1} : ∀
   {X : Type u_1} [inst : TopologicalSpace X] (U V : Set X) (base : X),
   IsOpen U →

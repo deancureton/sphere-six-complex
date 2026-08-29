@@ -138,6 +138,16 @@ public theorem chosenCyclicRelation_killed
   subst htw
   exact D.fundamentalGroupMap_relation
 
+/-- Transporting the source and target base points of a map does not change its induced
+fundamental-group homomorphism. -/
+public theorem fundamentalGroupHomOfBaseEq_map_transport
+    {B N : Type*} [TopologicalSpace B] [TopologicalSpace N]
+    (f : C(B, N)) {b b' : B} (hb : b = b') (hn : f b = f b') :
+    fundamentalGroupHomOfBaseEq hb hn (FundamentalGroup.map f b) =
+      FundamentalGroup.map f b' := by
+  subst b'
+  rfl
+
 end SphereSixComplex
 
 namespace SphereSixComplex.Geometry.PaperAnalyticData
@@ -317,6 +327,48 @@ public theorem orderFourActualEllipticBoundaryProjection_isQuotientCoveringMap :
     A.orderFourRadialMappingTorusToActualOverlapHomeomorph
   exact h
 
+/-- A canonical choice of lift of the marked order-three overlap point to the explicit radial
+cover. -/
+public noncomputable def orderThreeActualEllipticBoundaryBase :
+    OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace) := by
+  let _ := A.orderThreeActualEllipticBoundaryAction
+  exact Classical.choose
+    (A.orderThreeActualEllipticBoundaryProjection_isQuotientCoveringMap.toIsQuotientMap.surjective
+      ⟨A.actualVanKampenFourPieceCover.ellipticThreePoint,
+        A.actualVanKampenFourPieceCover.ellipticThreePoint_mem⟩)
+
+/-- The selected order-three radial base projects to the marked overlap point. -/
+public theorem orderThreeActualEllipticBoundaryProjection_base :
+    A.orderThreeActualEllipticBoundaryProjection A.orderThreeActualEllipticBoundaryBase =
+      ⟨A.actualVanKampenFourPieceCover.ellipticThreePoint,
+        A.actualVanKampenFourPieceCover.ellipticThreePoint_mem⟩ := by
+  let _ := A.orderThreeActualEllipticBoundaryAction
+  exact Classical.choose_spec
+    (A.orderThreeActualEllipticBoundaryProjection_isQuotientCoveringMap.toIsQuotientMap.surjective
+      ⟨A.actualVanKampenFourPieceCover.ellipticThreePoint,
+        A.actualVanKampenFourPieceCover.ellipticThreePoint_mem⟩)
+
+/-- A canonical choice of lift of the marked order-four overlap point to the explicit radial
+cover. -/
+public noncomputable def orderFourActualEllipticBoundaryBase :
+    OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace) := by
+  let _ := A.orderFourActualEllipticBoundaryAction
+  exact Classical.choose
+    (A.orderFourActualEllipticBoundaryProjection_isQuotientCoveringMap.toIsQuotientMap.surjective
+      ⟨A.actualVanKampenFourPieceCover.ellipticFourPoint,
+        A.actualVanKampenFourPieceCover.ellipticFourPoint_mem⟩)
+
+/-- The selected order-four radial base projects to the marked overlap point. -/
+public theorem orderFourActualEllipticBoundaryProjection_base :
+    A.orderFourActualEllipticBoundaryProjection A.orderFourActualEllipticBoundaryBase =
+      ⟨A.actualVanKampenFourPieceCover.ellipticFourPoint,
+        A.actualVanKampenFourPieceCover.ellipticFourPoint_mem⟩ := by
+  let _ := A.orderFourActualEllipticBoundaryAction
+  exact Classical.choose_spec
+    (A.orderFourActualEllipticBoundaryProjection_isQuotientCoveringMap.toIsQuotientMap.surjective
+      ⟨A.actualVanKampenFourPieceCover.ellipticFourPoint,
+        A.actualVanKampenFourPieceCover.ellipticFourPoint_mem⟩)
+
 /-- The explicit radial source of the actual order-three overlap cover is simply connected. -/
 public theorem orderThreeActualEllipticBoundaryCover_simplyConnected :
     SimplyConnectedSpace
@@ -432,7 +484,6 @@ public structure OrderThreeActualEllipticFillingExtension where
     lift (@SMul.smul _ _ A.orderThreeActualEllipticBoundaryAction.toSMul g z) =
       @SMul.smul _ _ fillingAction.toSMul
         (A.orderThreeActualEllipticBoundaryDeckData.fillingDeckMap g) (lift z)
-  base : OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)
 
 /-- The remaining order-four filling geometry after fixing the explicit collar cover and deck
 presentation. -/
@@ -454,7 +505,6 @@ public structure OrderFourActualEllipticFillingExtension where
     lift (@SMul.smul _ _ A.orderFourActualEllipticBoundaryAction.toSMul g z) =
       @SMul.smul _ _ fillingAction.toSMul
         (A.orderFourActualEllipticBoundaryDeckData.fillingDeckMap g) (lift z)
-  base : OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)
 
 namespace OrderThreeActualEllipticFillingExtension
 
@@ -487,7 +537,7 @@ public noncomputable def toChosenCover
     baseMap := A.actualVanKampenFourPieceCover.ellipticThreeOverlapToPiece
     commutes := E.commutes
     equivariant := E.equivariant
-    base := E.base }
+    base := A.orderThreeActualEllipticBoundaryBase }
   exact
     { BoundaryDeck := OrderThreeAffineMappingTorusDeck A.periods
       FillingDeck := A.orderThreeActualEllipticBoundaryDeckData.FillingDeck
@@ -501,6 +551,26 @@ public noncomputable def toChosenCover
       boundaryAction := A.orderThreeActualEllipticBoundaryAction
       fillingAction := E.fillingAction
       model := U.toCyclicAffineFillingCoverModel }
+
+/-- The chosen order-three cover is based at the marked overlap point. -/
+public theorem toChosenCover_boundaryBase_eq
+    (E : A.OrderThreeActualEllipticFillingExtension) :
+    E.toChosenCover.boundaryBase =
+      ⟨A.actualVanKampenFourPieceCover.ellipticThreePoint,
+        A.actualVanKampenFourPieceCover.ellipticThreePoint_mem⟩ :=
+  A.orderThreeActualEllipticBoundaryProjection_base
+
+/-- The chosen order-three filling base is the marked filling point. -/
+public theorem toChosenCover_fillingBase_eq
+    (E : A.OrderThreeActualEllipticFillingExtension) :
+    E.toChosenCover.fillingBase =
+      ⟨A.actualVanKampenFourPieceCover.ellipticThreePoint,
+        A.actualVanKampenFourPieceCover.ellipticThreePoint_mem.2⟩ := by
+  change A.actualVanKampenFourPieceCover.ellipticThreeOverlapToPiece
+      (A.orderThreeActualEllipticBoundaryProjection
+        A.orderThreeActualEllipticBoundaryBase) = _
+  rw [A.orderThreeActualEllipticBoundaryProjection_base]
+  rfl
 
 end OrderThreeActualEllipticFillingExtension
 
@@ -535,7 +605,7 @@ public noncomputable def toChosenCover
     baseMap := A.actualVanKampenFourPieceCover.ellipticFourOverlapToPiece
     commutes := E.commutes
     equivariant := E.equivariant
-    base := E.base }
+    base := A.orderFourActualEllipticBoundaryBase }
   exact
     { BoundaryDeck := OrderFourAffineMappingTorusDeck A.periods
       FillingDeck := A.orderFourActualEllipticBoundaryDeckData.FillingDeck
@@ -549,6 +619,26 @@ public noncomputable def toChosenCover
       boundaryAction := A.orderFourActualEllipticBoundaryAction
       fillingAction := E.fillingAction
       model := U.toCyclicAffineFillingCoverModel }
+
+/-- The chosen order-four cover is based at the marked overlap point. -/
+public theorem toChosenCover_boundaryBase_eq
+    (E : A.OrderFourActualEllipticFillingExtension) :
+    E.toChosenCover.boundaryBase =
+      ⟨A.actualVanKampenFourPieceCover.ellipticFourPoint,
+        A.actualVanKampenFourPieceCover.ellipticFourPoint_mem⟩ :=
+  A.orderFourActualEllipticBoundaryProjection_base
+
+/-- The chosen order-four filling base is the marked filling point. -/
+public theorem toChosenCover_fillingBase_eq
+    (E : A.OrderFourActualEllipticFillingExtension) :
+    E.toChosenCover.fillingBase =
+      ⟨A.actualVanKampenFourPieceCover.ellipticFourPoint,
+        A.actualVanKampenFourPieceCover.ellipticFourPoint_mem.2⟩ := by
+  change A.actualVanKampenFourPieceCover.ellipticFourOverlapToPiece
+      (A.orderFourActualEllipticBoundaryProjection
+        A.orderFourActualEllipticBoundaryBase) = _
+  rw [A.orderFourActualEllipticBoundaryProjection_base]
+  rfl
 
 end OrderFourActualEllipticFillingExtension
 
@@ -1110,6 +1200,99 @@ public noncomputable def toActualEllipticCentralNaturality
 
 end ActualEllipticCentralBasisNaturality
 
+/-- The exact remaining elliptic filling and marking data after constructing both collar covers
+and their deck presentations.
+
+Only the filling extensions, five lattice anchors, and the two marked meridians remain.  The
+chosen collar-cover models, marked base points, twists, inverse-monodromy identities, and induced
+overlap maps are reconstructed from these fields. -/
+public structure ActualEllipticMarkedFillingExtensionNaturality
+    (N : A.ActualCuspCentralNaturality) where
+  orderThreeExtension : A.OrderThreeActualEllipticFillingExtension
+  orderThreeTranslation_zero :
+    A.actualEllipticThreeTranslationToCore orderThreeExtension.toChosenCover
+        orderThreeExtension.toChosenCover_boundaryBase_eq
+        (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 0) =
+      A.actualCentralTranslationToCore N
+        (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 0)
+  orderThreeTranslation_one :
+    A.actualEllipticThreeTranslationToCore orderThreeExtension.toChosenCover
+        orderThreeExtension.toChosenCover_boundaryBase_eq
+        (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 1) =
+      A.actualCentralTranslationToCore N
+        (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 1)
+  orderThreeTranslation_three :
+    A.actualEllipticThreeTranslationToCore orderThreeExtension.toChosenCover
+        orderThreeExtension.toChosenCover_boundaryBase_eq
+        (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 3) =
+      A.actualCentralTranslationToCore N
+        (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 3)
+  orderThreeMeridian_naturality :
+    A.actualEllipticThreeOverlapToCore
+        (fundamentalGroupElementOfBaseEq orderThreeExtension.toChosenCover_boundaryBase_eq
+          orderThreeExtension.toChosenCover.meridian) =
+      N.centralToCore A.centralAffineCorePiOneData.rhoOne
+  orderFourExtension : A.OrderFourActualEllipticFillingExtension
+  orderFourTranslation_zero :
+    A.actualEllipticFourTranslationToCore orderFourExtension.toChosenCover
+        orderFourExtension.toChosenCover_boundaryBase_eq
+        (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 0) =
+      A.actualCentralTranslationToCore N
+        (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 0)
+  orderFourTranslation_one :
+    A.actualEllipticFourTranslationToCore orderFourExtension.toChosenCover
+        orderFourExtension.toChosenCover_boundaryBase_eq
+        (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 1) =
+      A.actualCentralTranslationToCore N
+        (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 1)
+  orderFourMeridian_naturality :
+    A.actualEllipticFourOverlapToCore
+        (fundamentalGroupElementOfBaseEq orderFourExtension.toChosenCover_boundaryBase_eq
+          orderFourExtension.toChosenCover.meridian) =
+      N.centralToCore A.centralAffineCorePiOneData.rhoTwo
+
+namespace ActualEllipticMarkedFillingExtensionNaturality
+
+variable {A} {N : A.ActualCuspCentralNaturality}
+
+/-- Reconstruct the former elliptic basis-naturality package from the explicit collar covers. -/
+public noncomputable def toActualEllipticCentralBasisNaturality
+    (E : ActualEllipticMarkedFillingExtensionNaturality A N) :
+    ActualEllipticCentralBasisNaturality A N where
+  orderThreeCover := E.orderThreeExtension.toChosenCover
+  orderThreeBoundaryBase_eq := E.orderThreeExtension.toChosenCover_boundaryBase_eq
+  orderThreeFillingBase_eq := E.orderThreeExtension.toChosenCover_fillingBase_eq
+  orderThreeMap_eq := by
+    exact fundamentalGroupHomOfBaseEq_map_transport
+      A.actualVanKampenFourPieceCover.ellipticThreeOverlapToPiece
+      E.orderThreeExtension.toChosenCover_boundaryBase_eq
+      E.orderThreeExtension.toChosenCover_fillingBase_eq
+  orderThreeTwist_eq := rfl
+  orderThreeMonodromy_inverse := fun a ↦ by
+    change (rhoLambda g₁).symm (A₁.mulVec a) = a
+    rw [← rhoLambda_g₁_apply, (rhoLambda g₁).symm_apply_apply]
+  orderThreeTranslation_zero := E.orderThreeTranslation_zero
+  orderThreeTranslation_one := E.orderThreeTranslation_one
+  orderThreeTranslation_three := E.orderThreeTranslation_three
+  orderThreeMeridian_naturality := E.orderThreeMeridian_naturality
+  orderFourCover := E.orderFourExtension.toChosenCover
+  orderFourBoundaryBase_eq := E.orderFourExtension.toChosenCover_boundaryBase_eq
+  orderFourFillingBase_eq := E.orderFourExtension.toChosenCover_fillingBase_eq
+  orderFourMap_eq := by
+    exact fundamentalGroupHomOfBaseEq_map_transport
+      A.actualVanKampenFourPieceCover.ellipticFourOverlapToPiece
+      E.orderFourExtension.toChosenCover_boundaryBase_eq
+      E.orderFourExtension.toChosenCover_fillingBase_eq
+  orderFourTwist_eq := rfl
+  orderFourMonodromy_inverse := fun a ↦ by
+    change (rhoLambda g₂).symm (A₂.mulVec a) = a
+    rw [← rhoLambda_g₂_apply, (rhoLambda g₂).symm_apply_apply]
+  orderFourTranslation_zero := E.orderFourTranslation_zero
+  orderFourTranslation_one := E.orderFourTranslation_one
+  orderFourMeridian_naturality := E.orderFourMeridian_naturality
+
+end ActualEllipticMarkedFillingExtensionNaturality
+
 namespace ActualEllipticCentralNaturality
 
 variable {A} {N : A.ActualCuspCentralNaturality}
@@ -1243,67 +1426,22 @@ public structure ActualStarPeripheralNaturality where
   cusp : A.ActualCuspCentralNaturality
   elliptic : ActualEllipticCentralNaturality A cusp
 
-/-- Marked peripheral naturality and regular cover squares for the three actual collars.
+/-- The exact remaining elliptic filling-extension and finite-marking input.
 
-This replaces the former `establishedActualAffineFillingCoverSquares`, which is now the theorem of
-the same name.
+The collar universal covers, their semidirect deck actions, the quotient-cover proofs, twists,
+inverse monodromies, marked base points, and induced overlap maps are constructed above.  What
+remains is the action and quotient cover on each filling, an equivariant lift of its collar cover,
+five lattice-coordinate comparisons, and the two meridian comparisons with the central family. -/
+public axiom establishedActualEllipticMarkedFillingExtensionNaturality :
+    Nonempty
+      (ActualEllipticMarkedFillingExtensionNaturality A A.actualCuspCentralNaturality)
 
-## Why the two naturalities are bundled
-
-Stated separately, the cusp and elliptic inputs are the more symmetric presentation: one
-peripheral-naturality input per singularity type of the star. They are bundled here because
-`establishedActualCuspCentralNaturality` is not otherwise reachable from the closure roots of the
-construction, so splitting them would add one axiom to the transitive closure of the main theorem
-without changing the mathematics assumed. That standalone cusp axiom remains available and
-unchanged, and `ActualStarPeripheralNaturality.cusp` is exactly its content, for anyone who later
-prefers the symmetric two-axiom presentation at that cost.
-
-## What is assumed, and why in this form
-
-The content behind the removed boundary was, after unwinding the algebraic adapter, exactly that
-`π₁` of the glued four-piece star is trivial, obtained from the paper's peripheral presentation of
-the punctured central family. Everything in that package which is formal has been discharged: the
-cusp square and the whole cusp half of the affine bridge (`PaperCuspChosenAffineFilling`,
-`PaperCuspAffineFillingBridge`), the two elliptic based gluing squares
-(`actualEllipticThreeAffineBridge_square`, `actualEllipticFourAffineBridge_square`), the two
-transported cyclic filling relations (`chosenCyclicRelation_killed`), and the final assembly
-(`nonempty_actualAffineFillingCoverSquares_of_ellipticNaturality`). What is left is the elliptic
-geometry, and only that.
-
-Two components are bundled here.
-
-* The two `ChosenCyclicAffineFillingCoverModel`s, for `m = 3` at twist `epsilon` and for `m = 4`
-  at twist `-epsilon'`: a simply connected quotient covering of the elliptic collar, one of the
-  elliptic filling, an equivariant lift, and the deck presentation
-  `deckMap_kernel = normalClosure {meridian ^ m * translation twist⁻¹}`. The corresponding cusp
-  construction is the five-module chain `PaperCuspBoundaryUniversalCover` →
-  `PaperCuspFillingDeckAction` → `PaperCuspUnwrappedFillingCover` →
-  `PaperCuspActualAffineFillingCoverSquare` → `PaperCuspChosenAffineFilling`; no elliptic
-  counterpart of it exists yet.
-* The opposite-deck convention identifies each selected deck monodromy as the inverse of the
-  corresponding paper monodromy.  Meridian conjugation then reduces translation naturality to
-  three marked lattice coordinates on the order-three collar and two on the order-four collar;
-  the two meridians are identified with `rhoOne` and `rhoTwo`.  The complete infinite families
-  are theorems above.
-
-## Raw material that already exists, and what is missing
-
-On the filling side: `orderThreeFillingCoverSource_simplyConnected` and
-`orderFourFillingCoverSource_simplyConnected`, together with
-`orderThreeActualFillingCoverProjection_surjective` and
-`orderFourActualFillingCoverProjection_surjective`, and `EllipticFilling`'s
-`quotient_isQuotientCoveringMap` with the freeness inputs `epsilon_action_free` and
-`neg_epsilonPrime_action_free`. On the collar side: `orderThreeCollarRadialMappingTorusHomeomorph`
-and `orderFourCollarRadialMappingTorusHomeomorph`. What is missing is the universal cover of the
-collar, i.e. of `OpenRadialInterval r × CircleMappingTorus (orderThreeAffineClutchingHomeomorph …)`,
-and the identification of its deck group with the semidirect product.
-
-The canonical punctured-family presentation now identifies the central translations and
-meridians, but it does not construct the two elliptic collar universal covers or compare their
-deck markings with the corresponding central peripheral loops.  Those two geometric comparison
-packages are precisely what remains here. -/
-public axiom establishedActualEllipticCentralBasisNaturality :
-    Nonempty (ActualEllipticCentralBasisNaturality A A.actualCuspCentralNaturality)
+/-- The former basis-naturality boundary, reconstructed from the explicit collar covers and the
+remaining filling extensions and finite marking. -/
+public theorem establishedActualEllipticCentralBasisNaturality :
+    Nonempty (ActualEllipticCentralBasisNaturality A A.actualCuspCentralNaturality) :=
+  A.establishedActualEllipticMarkedFillingExtensionNaturality.map
+    ActualEllipticMarkedFillingExtensionNaturality.toActualEllipticCentralBasisNaturality
 
 /-- The full elliptic naturality package, extended from finite monodromy-orbit anchors. -/
 public theorem establishedActualEllipticCentralNaturality :
