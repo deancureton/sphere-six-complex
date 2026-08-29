@@ -5,6 +5,7 @@ public import SphereSixComplex.Topology.PaperSectionSevenCuspEllipticMappingToru
 public import SphereSixComplex.Topology.PaperSectionSevenCuspInvariantSuspensionPrismNaturality
 public import SphereSixComplex.Topology.PaperSectionSevenCuspMeridianProjectionNaturality
 public import SphereSixComplex.Topology.PaperSectionSevenCanonicalCuspWangBoundaryNaturalityProof
+public import SphereSixComplex.Topology.PaperSectionSevenCuspMarkedConnectingNaturalityProof
 public import SphereSixComplex.Topology.PaperSectionSevenCuspPrismGeometricDataProof
 public import SphereSixComplex.Topology.PaperSectionSevenCuspIndexFourPrismCoefficientProof
 public import SphereSixComplex.Topology.PaperSectionSevenCuspEllipticCoordinateFiniteReduction
@@ -33,11 +34,20 @@ variable {A : PaperAnalyticData}
 
 namespace EstablishedSectionSevenCuspTopology
 
+/-- The remaining two pulled-back Mayer--Vietoris boundary evaluations on the invariant raw
+degree-two basis.  The explicit cover calculation proves the other four basis cases, while the
+Wang presentation identifies its marked composite with the last raw coordinate. -/
+public axiom establishedCuspPulledBackMarkedInvariantBasisData
+    (R : A.SectionSevenAffineRadialCompletionInput) :
+    CuspPulledBackMarkedInvariantBasisData R
+
 /-- The marked coordinate of the cusp Wang connecting morphism agrees with the marked coordinate
 of the pulled-back Mayer--Vietoris boundary. -/
-public axiom cuspMarkedConnectingNaturality
+public theorem cuspMarkedConnectingNaturality
     (R : A.SectionSevenAffineRadialCompletionInput) :
-    R.twoDiscCover.CuspMarkedConnectingNaturality R.homologyAlignment
+    R.twoDiscCover.CuspMarkedConnectingNaturality R.homologyAlignment :=
+  cuspMarkedConnectingNaturality_of_invariantBasisData R
+    (establishedCuspPulledBackMarkedInvariantBasisData R)
 
 /-- The marked connecting square determines the boundary comparison used by the affine
 assembly. -/
