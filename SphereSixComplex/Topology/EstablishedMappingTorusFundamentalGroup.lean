@@ -1,6 +1,7 @@
 module
 
 public import SphereSixComplex.Topology.EstablishedAffineVanKampen
+public import SphereSixComplex.Topology.CircleMappingTorusOpenCoverHomotopyEquivalences
 public import Mathlib.AlgebraicTopology.FundamentalGroupoid.InducedMaps
 public import Mathlib.GroupTheory.HNNExtension
 
@@ -265,6 +266,64 @@ public noncomputable def mappingTorusFundamentalGroupUP_of_bijective
           g (mappingTorusHNNToFundamentalGroup phi x delta HNNExtension.t)
         simpa [mappingTorusHNNToFundamentalGroup] using ht
     exact DFunLike.congr_fun heq w
+
+/-- The HNN comparison is bijective whenever the mapping-torus fundamental group has the
+corresponding universal property. -/
+public theorem mappingTorusHNNToFundamentalGroup_bijective_of_up
+    {F : Type} [TopologicalSpace F]
+    (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x)
+    (P : MappingTorusFundamentalGroupUP phi x delta) :
+    Function.Bijective (mappingTorusHNNToFundamentalGroup phi x delta) := by
+  let rel : ∀ a : FundamentalGroup F x,
+      (HNNExtension.t : MappingTorusHNN phi x delta) *
+          HNNExtension.of a * HNNExtension.t⁻¹ =
+        HNNExtension.of (mappingTorusMonodromyHom phi x delta a) := by
+    intro a
+    symm
+    exact HNNExtension.equiv_eq_conj
+      (φ := topMulEquiv (mappingTorusMonodromyEquiv phi x delta))
+      (⟨a, Subgroup.mem_top a⟩ : (⊤ : Subgroup (FundamentalGroup F x)))
+  let inv : FundamentalGroup (CircleMappingTorus phi) (circleMappingTorusBase phi x) →*
+      MappingTorusHNN phi x delta :=
+    P.lift HNNExtension.of HNNExtension.t rel
+  have hleft : inv.comp (mappingTorusHNNToFundamentalGroup phi x delta) =
+      MonoidHom.id (MappingTorusHNN phi x delta) := by
+    apply HNNExtension.hom_ext
+    · ext a
+      change inv (circleMappingTorusFiberHom phi x a) = HNNExtension.of a
+      exact P.lift_fiber HNNExtension.of HNNExtension.t rel a
+    · simp only [MonoidHom.comp_apply, MonoidHom.id_apply]
+      rw [show mappingTorusHNNToFundamentalGroup phi x delta HNNExtension.t =
+          circleMappingTorusMeridian phi x delta by
+        simp [mappingTorusHNNToFundamentalGroup]]
+      exact P.lift_meridian HNNExtension.of HNNExtension.t rel
+  have hright : (mappingTorusHNNToFundamentalGroup phi x delta).comp inv =
+      MonoidHom.id
+        (FundamentalGroup (CircleMappingTorus phi) (circleMappingTorusBase phi x)) := by
+    apply P.hom_ext
+    · intro a
+      change mappingTorusHNNToFundamentalGroup phi x delta
+          (inv (circleMappingTorusFiberHom phi x a)) =
+        circleMappingTorusFiberHom phi x a
+      rw [P.lift_fiber HNNExtension.of HNNExtension.t rel]
+      simp [mappingTorusHNNToFundamentalGroup]
+    · change mappingTorusHNNToFundamentalGroup phi x delta
+          (inv (circleMappingTorusMeridian phi x delta)) =
+        circleMappingTorusMeridian phi x delta
+      rw [P.lift_meridian HNNExtension.of HNNExtension.t rel]
+      simp [mappingTorusHNNToFundamentalGroup]
+  constructor
+  · intro a b hab
+    calc
+      a = (inv.comp (mappingTorusHNNToFundamentalGroup phi x delta)) a := by
+        rw [hleft]
+        rfl
+      _ = (inv.comp (mappingTorusHNNToFundamentalGroup phi x delta)) b := congrArg inv hab
+      _ = b := by
+        rw [hleft]
+        rfl
+  · intro y
+    exact ⟨inv y, DFunLike.congr_fun hright y⟩
 
 /-- The canonical HNN comparison is bijective.  This is the precise disconnected-overlap
 computation required beyond Mathlib's fundamental-groupoid van Kampen theorem. -/
