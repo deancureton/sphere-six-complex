@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Topology.PaperSectionSevenCuspWangOpenCoverChainRealization
+public import SphereSixComplex.Topology.PaperSectionSevenCuspWangOpenCoverChainRealizationGeometry
 
 /-!
 # Sign rigidity of the cusp Wang chain realization
