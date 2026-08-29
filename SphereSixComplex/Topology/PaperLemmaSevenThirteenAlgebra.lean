@@ -366,17 +366,18 @@ public noncomputable def orderTwoAnnihilatorEquivIntSquared :
         psiTwo]
 
 /-- The relation map imposing `m * meridian = [v]` after taking coinvariants. -/
-public def multipleFiberRelationMap (D : Lattice →ₗ[ℤ] Lattice) (v : Lattice) (m : ℤ) :
-    ℤ →ₗ[ℤ] ((LatticeData.Lattice ⧸ LinearMap.range D) × ℤ) where
+public def multipleFiberRelationMap {Λ : Type*} [AddCommGroup Λ]
+    (D : Λ →ₗ[ℤ] Λ) (v : Λ) (m : ℤ) :
+    ℤ →ₗ[ℤ] ((Λ ⧸ LinearMap.range D) × ℤ) where
   toFun k := k • (-Submodule.Quotient.mk v, m)
   map_add' a b := by simp [add_smul]
   map_smul' a b := by simp [mul_smul]
 
 /-- The abelian multiple-fibre presentation: coinvariants plus a meridian, modulo
 `m * meridian = [v]`. -/
-public abbrev MultipleFiberHOnePresentation
-    (D : Lattice →ₗ[ℤ] Lattice) (v : Lattice) (m : ℤ) :=
-  ((LatticeData.Lattice ⧸ LinearMap.range D) × ℤ) ⧸
+public abbrev MultipleFiberHOnePresentation {Λ : Type*} [AddCommGroup Λ]
+    (D : Λ →ₗ[ℤ] Λ) (v : Λ) (m : ℤ) :=
+  ((Λ ⧸ LinearMap.range D) × ℤ) ⧸
     LinearMap.range (multipleFiberRelationMap D v m)
 
 public abbrev OrderOneSelectedPresentation :=
@@ -556,9 +557,10 @@ together with a meridian image whose `m`-th multiple is the image of the twist.
 
 This is the universal property that an identification of `H₁` of a free affine cyclic quotient with
 this presentation has to go through, in either direction; see issue #148. -/
-public noncomputable def multipleFiberLift {B : Type} [AddCommGroup B]
-    (D : Lattice →ₗ[ℤ] Lattice) (v : Lattice) (m : ℤ)
-    (φ : Lattice →ₗ[ℤ] B) (hφ : ∀ x, φ (D x) = 0) (b : B) (hb : m • b = φ v) :
+public noncomputable def multipleFiberLift {Λ : Type*} [AddCommGroup Λ]
+    {B : Type*} [AddCommGroup B]
+    (D : Λ →ₗ[ℤ] Λ) (v : Λ) (m : ℤ)
+    (φ : Λ →ₗ[ℤ] B) (hφ : ∀ x, φ (D x) = 0) (b : B) (hb : m • b = φ v) :
     MultipleFiberHOnePresentation D v m →ₗ[ℤ] B := by
   refine Submodule.liftQ _ ((Submodule.liftQ _ φ ?_).coprod
     (LinearMap.toSpanSingleton ℤ B b)) ?_
@@ -569,10 +571,11 @@ public noncomputable def multipleFiberLift {B : Type} [AddCommGroup B]
     exact neg_add_cancel _
 
 /-- The lift sends the class of `(x, k)` to `φ x + k • b`. -/
-public theorem multipleFiberLift_mk {B : Type} [AddCommGroup B]
-    (D : Lattice →ₗ[ℤ] Lattice) (v : Lattice) (m : ℤ)
-    (φ : Lattice →ₗ[ℤ] B) (hφ : ∀ x, φ (D x) = 0) (b : B) (hb : m • b = φ v)
-    (x : Lattice) (k : ℤ) :
+public theorem multipleFiberLift_mk {Λ : Type*} [AddCommGroup Λ]
+    {B : Type*} [AddCommGroup B]
+    (D : Λ →ₗ[ℤ] Λ) (v : Λ) (m : ℤ)
+    (φ : Λ →ₗ[ℤ] B) (hφ : ∀ x, φ (D x) = 0) (b : B) (hb : m • b = φ v)
+    (x : Λ) (k : ℤ) :
     multipleFiberLift D v m φ hφ b hb
         (Submodule.Quotient.mk (Submodule.Quotient.mk x, k)) = φ x + k • b := by
   simp [multipleFiberLift, LinearMap.toSpanSingleton]
