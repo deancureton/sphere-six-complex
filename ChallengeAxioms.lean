@@ -137,34 +137,6 @@ axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2C
 axiom SphereSixComplex.Geometry.PaperAnalyticData.establishedActualEllipticMarkedFillingExtensionNaturality : ∀
   (A : SphereSixComplex.Geometry.PaperAnalyticData),
   Nonempty (A.ActualEllipticMarkedFillingExtensionNaturality A.actualCuspCentralNaturality)
-axiom SphereSixComplex.Topology.TwicePuncturedComplex.fundamentalGroupOpenUnion_lift.{u_1, u_2} : ∀ {X : Type u_1}
-  [inst : TopologicalSpace X] (U V : Set X) (base : X),
-  IsOpen U →
-    IsOpen V →
-      U ∪ V = Set.univ →
-        ∀ (hbaseU : base ∈ U) (hbaseV : base ∈ V),
-          IsPathConnected U →
-            IsPathConnected V →
-              IsPathConnected (U ∩ V) →
-                ∀ {G : Type u_2} [inst_1 : Group G] (fU : FundamentalGroup ↑U ⟨base, hbaseU⟩ →* G)
-                  (fV : FundamentalGroup ↑V ⟨base, hbaseV⟩ →* G),
-                  fU.comp
-                        (FundamentalGroup.map (SphereSixComplex.Topology.TwicePuncturedComplex.intersectionToLeft U V)
-                          ⟨base, ⟨hbaseU, hbaseV⟩⟩) =
-                      fV.comp
-                        (FundamentalGroup.map (SphereSixComplex.Topology.TwicePuncturedComplex.intersectionToRight U V)
-                          ⟨base, ⟨hbaseU, hbaseV⟩⟩) →
-                    ∃ f,
-                      f.comp
-                            (FundamentalGroup.map
-                              (SphereSixComplex.Topology.PaperVanKampenFourPieceCover.subsetInclusion U)
-                              ⟨base, hbaseU⟩) =
-                          fU ∧
-                        f.comp
-                            (FundamentalGroup.map
-                              (SphereSixComplex.Topology.PaperVanKampenFourPieceCover.subsetInclusion V)
-                              ⟨base, hbaseV⟩) =
-                          fV
 axiom SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenAffineRegularLiftTopology.markedBandHomotopies : ∀
   (A : SphereSixComplex.Geometry.PaperAnalyticData), A.SectionSevenAffineOverlapBandCompatibility
 axiom SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTopology.establishedActualCuspFiberEllipticMarkedCoordinateCalculation : ∀
@@ -185,7 +157,8 @@ axiom SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established.normali
   (M : SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Model) (r : ℝ),
   0 < r →
     Nonempty
-      { P //
+      { Q //
+        let P := Q.toPolarHoneycombData;
         (∀ (j i : Fin 2),
             ‖↑(P.positiveTwist (Pi.single j 1) i.castSucc)‖ =
               ‖↑(SphereSixComplex.Geometry.CuspToricPhaseAction.phaseEmbedding (N.phaseCoefficient (Pi.single j 1) 0)

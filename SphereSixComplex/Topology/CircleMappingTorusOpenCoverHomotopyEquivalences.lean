@@ -2,11 +2,13 @@ module
 
 public import SphereSixComplex.Topology.WangHomologyPresentationProof
 public import SphereSixComplex.Topology.EstablishedAffineVanKampen
+public import Mathlib.AlgebraicTopology.FundamentalGroupoid.VanKampen
 public import Mathlib.AlgebraicTopology.FundamentalGroupoid.VanKampen.IsColimit
 
 @[expose] public section
 
 open Set ContinuousMap CategoryTheory TopologicalSpace
+open scoped FundamentalGroupoid
 
 noncomputable section
 
@@ -126,6 +128,19 @@ def groupoidSingleObjNatIsoOfBase
               (fun w : H => B.map (q z) * w * (A.map (q y))⁻¹) h'
       _ = B.map p * (B.map (q y) * u * (A.map (q y))⁻¹) := by group
 
+theorem groupoidSingleObjNatIsoOfBase_app_base
+    {C : Type*} [Groupoid C] {H : Type*} [Group H]
+    (A B : C ⥤ SingleObj H) (b : C)
+    (hconn : ∀ y : C, Nonempty (b ⟶ y)) (u : H)
+    (hu : ∀ a : b ⟶ b, A.map a ≫ u = u ≫ B.map a) :
+    (groupoidSingleObjNatIsoOfBase A B b hconn u hu).hom.app b = u := by
+  let q : ∀ y : C, b ⟶ y := fun y => Classical.choice (hconn y)
+  have hq := hu (q b)
+  change u * A.map (q b) = B.map (q b) * u at hq
+  change B.map (q b) * u * (A.map (q b))⁻¹ = u
+  rw [← hq]
+  group
+
 def fundamentalGroupoidBasedFunctor
     {X H : Type*} [TopologicalSpace X] [PathConnectedSpace X] [Group H]
     (x : X) (f : FundamentalGroup X x →* H) :
@@ -217,6 +232,9 @@ public theorem fundamentalGroupoidBasedFunctor_high_intertwining
 def sumInrContinuousMap {X : Type*} [TopologicalSpace X] : C(X, X ⊕ X) :=
   ⟨Sum.inr, continuous_inr⟩
 
+def sumInlContinuousMap {X : Type*} [TopologicalSpace X] : C(X, X ⊕ X) :=
+  ⟨Sum.inl, continuous_inl⟩
+
 def sumFoldContinuousMap {X : Type*} [TopologicalSpace X] : C(X ⊕ X, X) :=
   ⟨Sum.elim id id, continuous_id.sumElim continuous_id⟩
 
@@ -276,6 +294,106 @@ public theorem fundamentalGroupoid_sumInr_map_bijective
       change Sum.inr (Sum.elim id id (p t)) = p t
       rw [← hz]
       rfl
+
+public theorem fundamentalGroupoid_sumInl_map_bijective
+    {X : Type*} [TopologicalSpace X] (x y : X) :
+    Function.Bijective
+      ((FundamentalGroupoid.map (sumInlContinuousMap (X := X))).map :
+        (FundamentalGroupoid.mk x ⟶ FundamentalGroupoid.mk y) →
+          (FundamentalGroupoid.mk (Sum.inl x) ⟶
+            FundamentalGroupoid.mk (Sum.inl y))) := by
+  constructor
+  · intro p q hpq
+    have h := congrArg
+      (fun r => (FundamentalGroupoid.map (sumFoldContinuousMap (X := X))).map r) hpq
+    induction p using Quotient.ind with
+    | _ p =>
+      induction q using Quotient.ind with
+      | _ q => exact h
+  · intro p
+    induction p using Quotient.ind with
+    | _ p =>
+      have hpconn : IsConnected (Set.range p) :=
+        isConnected_range p.continuous
+      have hprange : Set.range p ⊆ Set.range (Sum.inl : X → X ⊕ X) := by
+        rcases Sum.isConnected_iff.mp hpconn with ⟨s, hs, hrange⟩ | ⟨s, hs, hrange⟩
+        · rw [hrange]
+          exact Set.image_subset_range _ _
+        · exfalso
+          have hsource : Sum.inl x ∈ Set.range p := by
+            refine ⟨0, ?_⟩
+            simpa [sumInlContinuousMap] using p.source
+          rw [hrange] at hsource
+          obtain ⟨z, -, hz⟩ := hsource
+          cases hz
+      let q : Path x y :=
+        { toFun := fun t => Sum.elim id id (p t)
+          continuous_toFun := (sumFoldContinuousMap (X := X)).continuous.comp p.continuous
+          source' := by
+            simpa [sumInlContinuousMap] using
+              congrArg (Sum.elim id id) p.source
+          target' := by
+            simpa [sumInlContinuousMap] using
+              congrArg (Sum.elim id id) p.target }
+      refine ⟨Path.Homotopic.Quotient.mk q, ?_⟩
+      apply congrArg Path.Homotopic.Quotient.mk
+      ext t
+      obtain ⟨z, hz⟩ := hprange ⟨t, rfl⟩
+      change Sum.inl (Sum.elim id id (p t)) = p t
+      rw [← hz]
+      rfl
+
+private theorem fundamentalGroupoid_sum_inl_inr_false
+    {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
+    (x : X) (y : Y)
+    (p : FundamentalGroupoid.mk (Sum.inl x) ⟶ FundamentalGroupoid.mk (Sum.inr y)) :
+    False := by
+  induction p using Quotient.ind with
+  | _ p =>
+    have hpconn : IsConnected (Set.range p) := isConnected_range p.continuous
+    rcases Sum.isConnected_iff.mp hpconn with ⟨s, hs, hrange⟩ | ⟨s, hs, hrange⟩
+    · have htarget : Sum.inr y ∈ Set.range p := by
+        refine ⟨1, ?_⟩
+        exact p.target
+      rw [hrange] at htarget
+      obtain ⟨z, -, hz⟩ := htarget
+      cases hz
+    · have hsource : Sum.inl x ∈ Set.range p := by
+        refine ⟨0, ?_⟩
+        exact p.source
+      rw [hrange] at hsource
+      obtain ⟨z, -, hz⟩ := hsource
+      cases hz
+
+private theorem fundamentalGroupoid_sum_inr_inl_false
+    {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
+    (x : X) (y : Y)
+    (p : FundamentalGroupoid.mk (Sum.inr y) ⟶ FundamentalGroupoid.mk (Sum.inl x)) :
+    False := by
+  exact fundamentalGroupoid_sum_inl_inr_false x y (Groupoid.inv p)
+
+def fundamentalGroupoidNatIsoSum
+    {X H : Type*} [TopologicalSpace X] [Group H]
+    (A B : FundamentalGroupoid (X ⊕ X) ⥤ SingleObj H)
+    (leftIso : FundamentalGroupoid.map
+        (sumInlContinuousMap (X := X)) ⋙ A ≅
+      FundamentalGroupoid.map (sumInlContinuousMap (X := X)) ⋙ B)
+    (rightIso : FundamentalGroupoid.map
+        (sumInrContinuousMap (X := X)) ⋙ A ≅
+      FundamentalGroupoid.map (sumInrContinuousMap (X := X)) ⋙ B) :
+    A ≅ B :=
+  NatIso.ofComponents
+    (fun z => match z.as with
+      | Sum.inl x => leftIso.app (FundamentalGroupoid.mk x)
+      | Sum.inr y => rightIso.app (FundamentalGroupoid.mk y))
+    (by
+      rintro ⟨x | y⟩ ⟨x' | y'⟩ p
+      · obtain ⟨q, rfl⟩ := (fundamentalGroupoid_sumInl_map_bijective x x').2 p
+        exact leftIso.hom.naturality q
+      · exact (fundamentalGroupoid_sum_inl_inr_false x y' p).elim
+      · exact (fundamentalGroupoid_sum_inr_inl_false x' y p).elim
+      · obtain ⟨q, rfl⟩ := (fundamentalGroupoid_sumInr_map_bijective y y').2 p
+        exact rightIso.hom.naturality q)
 
 def unitProdHomeomorph {X : Type} [TopologicalSpace X] : Unit × X ≃ₜ X where
   toFun p := p.2
@@ -458,6 +576,57 @@ public theorem circleMappingTorusOverlapHomotopyEquiv_toFun_inr
       overlapPt (fun _ : Unit ↦ phi) uThreeQuarters_mem_overlapBand () x := by
   rfl
 
+public theorem circleMappingTorusOverlapLow_edgeRetract
+    {F : Type} [TopologicalSpace F] (phi : F ≃ₜ F) :
+    (circleMappingTorusEdgePieceHomotopyEquiv phi).invFun.comp
+        ((interToRight (vertexPiece (fun _ : Unit ↦ phi))
+          (edgePiece (fun _ : Unit ↦ phi))).comp
+            ((circleMappingTorusOverlapHomotopyEquiv phi).toFun.comp
+              (sumInlContinuousMap (X := F)))) =
+      ContinuousMap.id F := by
+  ext x
+  exact circleMappingTorusEdgePieceHomotopyEquiv_invFun_edgeLowPt phi x
+
+public theorem circleMappingTorusOverlapLow_vertexRetract
+    {F : Type} [TopologicalSpace F] (phi : F ≃ₜ F) :
+    (vertexRetract (fun _ : Unit ↦ phi)).comp
+        ((interToLeft (vertexPiece (fun _ : Unit ↦ phi))
+          (edgePiece (fun _ : Unit ↦ phi))).comp
+            ((circleMappingTorusOverlapHomotopyEquiv phi).toFun.comp
+              (sumInlContinuousMap (X := F)))) =
+      ContinuousMap.id F := by
+  ext x
+  change vertexRetract (fun _ : Unit ↦ phi)
+      (vertexLowPt (fun _ : Unit ↦ phi) () x) = x
+  exact congrArg (fun g : C(F, F) => g x)
+    (vertexRetract_comp_vertexLowPt (fun _ : Unit ↦ phi) ())
+
+public theorem circleMappingTorusOverlapLow_intertwining
+    {F H : Type} [TopologicalSpace F] [PathConnectedSpace F] [Group H]
+    (phi : F ≃ₜ F) (x : F) (f : FundamentalGroup F x →* H)
+    (a : FundamentalGroup F x) :
+    (fundamentalGroupoidBasedFunctor x f).map
+          ((FundamentalGroupoid.map
+            ((circleMappingTorusEdgePieceHomotopyEquiv phi).invFun.comp
+              ((interToRight (vertexPiece (fun _ : Unit ↦ phi))
+                (edgePiece (fun _ : Unit ↦ phi))).comp
+                  ((circleMappingTorusOverlapHomotopyEquiv phi).toFun.comp
+                    (sumInlContinuousMap (X := F)))))).map a) ≫ (1 : H) =
+      (1 : H) ≫
+        (fundamentalGroupoidBasedFunctor x f).map
+          ((FundamentalGroupoid.map
+            ((vertexRetract (fun _ : Unit ↦ phi)).comp
+              ((interToLeft (vertexPiece (fun _ : Unit ↦ phi))
+                (edgePiece (fun _ : Unit ↦ phi))).comp
+                  ((circleMappingTorusOverlapHomotopyEquiv phi).toFun.comp
+                    (sumInlContinuousMap (X := F)))))).map a) := by
+  rw [circleMappingTorusOverlapLow_edgeRetract,
+    circleMappingTorusOverlapLow_vertexRetract]
+  rw [show FundamentalGroupoid.map (ContinuousMap.id F) = 𝟭 _ from
+    FundamentalGroupoid.map_id]
+  change (1 : H) * _ = _ * (1 : H)
+  simp
+
 public theorem circleMappingTorusOverlapHigh_edgeRetract
     {F : Type} [TopologicalSpace F] (phi : F ≃ₜ F) :
     (circleMappingTorusEdgePieceHomotopyEquiv phi).invFun.comp
@@ -511,5 +680,829 @@ public theorem circleMappingTorusOverlapHigh_intertwining
   rw [show FundamentalGroupoid.map (ContinuousMap.id F) = 𝟭 _ from
     FundamentalGroupoid.map_id]
   exact fundamentalGroupoidBasedFunctor_high_intertwining phi x delta f t h a
+
+public theorem circleMappingTorusOverlapHigh_intertwining_at_mapped_object
+    {F H : Type} [TopologicalSpace F] [PathConnectedSpace F] [Group H]
+    (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x)
+    (f : FundamentalGroup F x →* H) (t : H)
+    (h : ∀ a : FundamentalGroup F x,
+      t * f a * t⁻¹ = f (mappingTorusMonodromyHom phi x delta a))
+    (a :
+      (FundamentalGroupoid.map
+        (circleMappingTorusOverlapHomotopyEquiv phi).toFun).obj
+          (FundamentalGroupoid.mk (Sum.inr x)) ⟶
+      (FundamentalGroupoid.map
+        (circleMappingTorusOverlapHomotopyEquiv phi).toFun).obj
+          (FundamentalGroupoid.mk (Sum.inr x))) :
+    (fundamentalGroupoidBasedFunctor x f).map
+          ((FundamentalGroupoid.map
+            ((circleMappingTorusEdgePieceHomotopyEquiv phi).invFun.comp
+              (interToRight (vertexPiece (fun _ : Unit ↦ phi))
+                (edgePiece (fun _ : Unit ↦ phi))))).map a) ≫
+        circleMappingTorusHighGauge phi x delta f t =
+      circleMappingTorusHighGauge phi x delta f t ≫
+        (fundamentalGroupoidBasedFunctor x f).map
+          ((FundamentalGroupoid.map
+            ((vertexRetract (fun _ : Unit ↦ phi)).comp
+              (interToLeft (vertexPiece (fun _ : Unit ↦ phi))
+                (edgePiece (fun _ : Unit ↦ phi))))).map a) := by
+  let E := FundamentalGroupoidFunctor.equivOfHomotopyEquiv
+    (circleMappingTorusOverlapHomotopyEquiv phi)
+  have hsurj : Function.Surjective
+      ((FundamentalGroupoid.map
+        (circleMappingTorusOverlapHomotopyEquiv phi).toFun).map :
+          (FundamentalGroupoid.mk (Sum.inr x) ⟶ FundamentalGroupoid.mk (Sum.inr x)) →
+          _) := by
+    exact E.fullyFaithfulFunctor.map_bijective
+      (FundamentalGroupoid.mk (Sum.inr x)) (FundamentalGroupoid.mk (Sum.inr x)) |>.2
+  obtain ⟨q, hq⟩ := hsurj a
+  obtain ⟨p, hp⟩ :=
+    (fundamentalGroupoid_sumInr_map_bijective x x).2 q
+  change circleMappingTorusHighGauge phi x delta f t * _ =
+    _ * circleMappingTorusHighGauge phi x delta f t
+  rw [← hq, ← hp]
+  have hpIntertwining :=
+    circleMappingTorusOverlapHigh_intertwining phi x delta f t h p
+  change circleMappingTorusHighGauge phi x delta f t * _ =
+    _ * circleMappingTorusHighGauge phi x delta f t at hpIntertwining
+  convert hpIntertwining using 1 <;> induction p using Quotient.ind <;> rfl
+
+public theorem circleMappingTorusOverlapHigh_intertwining_all
+    {F H : Type} [TopologicalSpace F] [PathConnectedSpace F] [Group H]
+    (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x)
+    (f : FundamentalGroup F x →* H) (t : H)
+    (h : ∀ a : FundamentalGroup F x,
+      t * f a * t⁻¹ = f (mappingTorusMonodromyHom phi x delta a))
+    (a : FundamentalGroup
+      ↥(vertexPiece (fun _ : Unit ↦ phi) ∩ edgePiece (fun _ : Unit ↦ phi))
+        (overlapPt (fun _ : Unit ↦ phi) uThreeQuarters_mem_overlapBand () x)) :
+    (fundamentalGroupoidBasedFunctor x f).map
+          ((FundamentalGroupoid.map
+            ((circleMappingTorusEdgePieceHomotopyEquiv phi).invFun.comp
+              (interToRight (vertexPiece (fun _ : Unit ↦ phi))
+                (edgePiece (fun _ : Unit ↦ phi))))).map a) ≫
+        circleMappingTorusHighGauge phi x delta f t =
+      circleMappingTorusHighGauge phi x delta f t ≫
+        (fundamentalGroupoidBasedFunctor x f).map
+          ((FundamentalGroupoid.map
+            ((vertexRetract (fun _ : Unit ↦ phi)).comp
+              (interToLeft (vertexPiece (fun _ : Unit ↦ phi))
+                (edgePiece (fun _ : Unit ↦ phi))))).map a) := by
+  exact circleMappingTorusOverlapHigh_intertwining_at_mapped_object
+    phi x delta f t h a
+
+def circleMappingTorusOverlapPullbackNatIso
+    {F H : Type} [TopologicalSpace F] [PathConnectedSpace F] [Group H]
+    (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x)
+    (f : FundamentalGroup F x →* H) (t : H)
+    (h : ∀ a : FundamentalGroup F x,
+      t * f a * t⁻¹ = f (mappingTorusMonodromyHom phi x delta a)) :
+    FundamentalGroupoid.map (circleMappingTorusOverlapHomotopyEquiv phi).toFun ⋙
+          FundamentalGroupoid.map
+            ((circleMappingTorusEdgePieceHomotopyEquiv phi).invFun.comp
+              (interToRight (vertexPiece (fun _ : Unit ↦ phi))
+                (edgePiece (fun _ : Unit ↦ phi)))) ⋙
+          fundamentalGroupoidBasedFunctor x f ≅
+      FundamentalGroupoid.map (circleMappingTorusOverlapHomotopyEquiv phi).toFun ⋙
+          FundamentalGroupoid.map
+            ((vertexRetract (fun _ : Unit ↦ phi)).comp
+              (interToLeft (vertexPiece (fun _ : Unit ↦ phi))
+                (edgePiece (fun _ : Unit ↦ phi)))) ⋙
+          fundamentalGroupoidBasedFunctor x f := by
+  let edgeFunctor :=
+    FundamentalGroupoid.map (circleMappingTorusOverlapHomotopyEquiv phi).toFun ⋙
+      FundamentalGroupoid.map
+        ((circleMappingTorusEdgePieceHomotopyEquiv phi).invFun.comp
+          (interToRight (vertexPiece (fun _ : Unit ↦ phi))
+            (edgePiece (fun _ : Unit ↦ phi)))) ⋙
+      fundamentalGroupoidBasedFunctor x f
+  let vertexFunctor :=
+    FundamentalGroupoid.map (circleMappingTorusOverlapHomotopyEquiv phi).toFun ⋙
+      FundamentalGroupoid.map
+        ((vertexRetract (fun _ : Unit ↦ phi)).comp
+          (interToLeft (vertexPiece (fun _ : Unit ↦ phi))
+            (edgePiece (fun _ : Unit ↦ phi)))) ⋙
+      fundamentalGroupoidBasedFunctor x f
+  let hconn : ∀ y : FundamentalGroupoid F,
+      Nonempty (FundamentalGroupoid.mk x ⟶ y) := fun y =>
+    ⟨Path.Homotopic.Quotient.mk (PathConnectedSpace.somePath x y.as)⟩
+  let leftIso : FundamentalGroupoid.map (sumInlContinuousMap (X := F)) ⋙ edgeFunctor ≅
+      FundamentalGroupoid.map (sumInlContinuousMap (X := F)) ⋙ vertexFunctor :=
+    groupoidSingleObjNatIsoOfBase _ _ (FundamentalGroupoid.mk x) hconn 1 (by
+      intro a
+      have ha := circleMappingTorusOverlapLow_intertwining phi x f a
+      convert ha using 1 <;> induction a using Quotient.ind <;> rfl)
+  let rightIso : FundamentalGroupoid.map (sumInrContinuousMap (X := F)) ⋙ edgeFunctor ≅
+      FundamentalGroupoid.map (sumInrContinuousMap (X := F)) ⋙ vertexFunctor :=
+    groupoidSingleObjNatIsoOfBase _ _ (FundamentalGroupoid.mk x) hconn
+      (circleMappingTorusHighGauge phi x delta f t) (by
+        intro a
+        have ha := circleMappingTorusOverlapHigh_intertwining_at_mapped_object
+          phi x delta f t h
+            ((FundamentalGroupoid.map
+              (circleMappingTorusOverlapHomotopyEquiv phi).toFun).map
+                ((FundamentalGroupoid.map (sumInrContinuousMap (X := F))).map a))
+        convert ha using 1 <;> induction a using Quotient.ind <;> rfl)
+  exact fundamentalGroupoidNatIsoSum edgeFunctor vertexFunctor leftIso rightIso
+
+public theorem circleMappingTorusOverlapPullbackNatIso_app_inr
+    {F H : Type} [TopologicalSpace F] [PathConnectedSpace F] [Group H]
+    (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x)
+    (f : FundamentalGroup F x →* H) (t : H)
+    (h : ∀ a : FundamentalGroup F x,
+      t * f a * t⁻¹ = f (mappingTorusMonodromyHom phi x delta a)) :
+    (circleMappingTorusOverlapPullbackNatIso phi x delta f t h).hom.app
+        (FundamentalGroupoid.mk (Sum.inr x)) =
+      circleMappingTorusHighGauge phi x delta f t := by
+  unfold circleMappingTorusOverlapPullbackNatIso
+  apply groupoidSingleObjNatIsoOfBase_app_base
+  intro a
+  have ha := circleMappingTorusOverlapHigh_intertwining_at_mapped_object
+    phi x delta f t h
+      ((FundamentalGroupoid.map
+        (circleMappingTorusOverlapHomotopyEquiv phi).toFun).map
+          ((FundamentalGroupoid.map (sumInrContinuousMap (X := F))).map a))
+  convert ha using 1 <;> induction a using Quotient.ind <;> rfl
+
+public theorem circleMappingTorusOverlapPullbackNatIso_app_inl
+    {F H : Type} [TopologicalSpace F] [PathConnectedSpace F] [Group H]
+    (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x)
+    (f : FundamentalGroup F x →* H) (t : H)
+    (h : ∀ a : FundamentalGroup F x,
+      t * f a * t⁻¹ = f (mappingTorusMonodromyHom phi x delta a)) :
+    (circleMappingTorusOverlapPullbackNatIso phi x delta f t h).hom.app
+        (FundamentalGroupoid.mk (Sum.inl x)) = 1 := by
+  unfold circleMappingTorusOverlapPullbackNatIso
+  apply groupoidSingleObjNatIsoOfBase_app_base
+  intro a
+  have ha := circleMappingTorusOverlapLow_intertwining phi x f a
+  convert ha using 1 <;> induction a using Quotient.ind <;> rfl
+
+def natIsoOfWhiskerEquivalence
+    {C D E : Type*} [Category C] [Category D] [Category E]
+    (e : C ≌ D) (A B : D ⥤ E) (α : e.functor ⋙ A ≅ e.functor ⋙ B) :
+    A ≅ B :=
+  (Functor.leftUnitor A).symm |>.trans
+    ((Functor.isoWhiskerRight e.counitIso.symm A).trans
+      ((Functor.associator e.inverse e.functor A).trans
+        ((Functor.isoWhiskerLeft e.inverse α).trans
+          ((Functor.associator e.inverse e.functor B).symm.trans
+            ((Functor.isoWhiskerRight e.counitIso B).trans
+              (Functor.leftUnitor B))))))
+
+theorem natIsoOfWhiskerEquivalence_app_obj
+    {C D E : Type*} [Category C] [Category D] [Category E]
+    (e : C ≌ D) (A B : D ⥤ E) (α : e.functor ⋙ A ≅ e.functor ⋙ B)
+    (c : C) :
+    (natIsoOfWhiskerEquivalence e A B α).hom.app (e.functor.obj c) =
+      α.hom.app c := by
+  dsimp [natIsoOfWhiskerEquivalence]
+  simp only [Category.id_comp, Category.comp_id]
+  rw [e.counitInv_app_functor]
+  rw [← Category.assoc]
+  change ((e.functor ⋙ A).map (e.unit.app c) ≫ α.hom.app _) ≫ _ = _
+  rw [α.hom.naturality]
+  change (α.hom.app c ≫ B.map (e.functor.map (e.unit.app c))) ≫
+    B.map (e.counitIso.hom.app (e.functor.obj c)) = α.hom.app c
+  rw [Category.assoc, ← B.map_comp, e.functor_unit_comp, B.map_id]
+  exact Category.comp_id _
+
+def circleMappingTorusOverlapNatIso
+    {F H : Type} [TopologicalSpace F] [PathConnectedSpace F] [Group H]
+    (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x)
+    (f : FundamentalGroup F x →* H) (t : H)
+    (h : ∀ a : FundamentalGroup F x,
+      t * f a * t⁻¹ = f (mappingTorusMonodromyHom phi x delta a)) :
+    FundamentalGroupoid.map
+          ((circleMappingTorusEdgePieceHomotopyEquiv phi).invFun.comp
+            (interToRight (vertexPiece (fun _ : Unit ↦ phi))
+              (edgePiece (fun _ : Unit ↦ phi)))) ⋙
+        fundamentalGroupoidBasedFunctor x f ≅
+      FundamentalGroupoid.map
+          ((vertexRetract (fun _ : Unit ↦ phi)).comp
+            (interToLeft (vertexPiece (fun _ : Unit ↦ phi))
+              (edgePiece (fun _ : Unit ↦ phi)))) ⋙
+        fundamentalGroupoidBasedFunctor x f := by
+  let e := FundamentalGroupoidFunctor.equivOfHomotopyEquiv
+    (circleMappingTorusOverlapHomotopyEquiv phi)
+  exact natIsoOfWhiskerEquivalence e _ _
+    (circleMappingTorusOverlapPullbackNatIso phi x delta f t h)
+
+public theorem circleMappingTorusOverlapNatIso_app_low
+    {F H : Type} [TopologicalSpace F] [PathConnectedSpace F] [Group H]
+    (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x)
+    (f : FundamentalGroup F x →* H) (t : H)
+    (h : ∀ a : FundamentalGroup F x,
+      t * f a * t⁻¹ = f (mappingTorusMonodromyHom phi x delta a)) :
+    (circleMappingTorusOverlapNatIso phi x delta f t h).hom.app
+        (FundamentalGroupoid.mk
+          (overlapPt (fun _ : Unit ↦ phi) uQuarter_mem_overlapBand () x)) = 1 := by
+  let e := FundamentalGroupoidFunctor.equivOfHomotopyEquiv
+    (circleMappingTorusOverlapHomotopyEquiv phi)
+  have happ := natIsoOfWhiskerEquivalence_app_obj e _ _
+    (circleMappingTorusOverlapPullbackNatIso phi x delta f t h)
+      (FundamentalGroupoid.mk (Sum.inl x))
+  rw [circleMappingTorusOverlapPullbackNatIso_app_inl phi x delta f t h] at happ
+  let α := circleMappingTorusOverlapNatIso phi x delta f t h
+  have hobj : e.functor.obj (FundamentalGroupoid.mk (Sum.inl x)) =
+      FundamentalGroupoid.mk
+        (overlapPt (fun _ : Unit ↦ phi) uQuarter_mem_overlapBand () x) := by
+    change FundamentalGroupoid.mk
+        ((circleMappingTorusOverlapHomotopyEquiv phi).toFun (Sum.inl x)) = _
+    rw [circleMappingTorusOverlapHomotopyEquiv_toFun_inl]
+  have htransport := congrArg (fun z => (α.hom.app z : H)) hobj
+  calc
+    (α.hom.app (FundamentalGroupoid.mk
+        (overlapPt (fun _ : Unit ↦ phi) uQuarter_mem_overlapBand () x)) : H) =
+        α.hom.app (e.functor.obj (FundamentalGroupoid.mk (Sum.inl x))) := htransport.symm
+    _ = 1 := by simpa only [α, e, circleMappingTorusOverlapNatIso] using happ
+
+public theorem circleMappingTorusOverlapNatIso_app_high
+    {F H : Type} [TopologicalSpace F] [PathConnectedSpace F] [Group H]
+    (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x)
+    (f : FundamentalGroup F x →* H) (t : H)
+    (h : ∀ a : FundamentalGroup F x,
+      t * f a * t⁻¹ = f (mappingTorusMonodromyHom phi x delta a)) :
+    (circleMappingTorusOverlapNatIso phi x delta f t h).hom.app
+        (FundamentalGroupoid.mk
+          (overlapPt (fun _ : Unit ↦ phi) uThreeQuarters_mem_overlapBand () x)) =
+      circleMappingTorusHighGauge phi x delta f t := by
+  let e := FundamentalGroupoidFunctor.equivOfHomotopyEquiv
+    (circleMappingTorusOverlapHomotopyEquiv phi)
+  have happ := natIsoOfWhiskerEquivalence_app_obj e _ _
+    (circleMappingTorusOverlapPullbackNatIso phi x delta f t h)
+      (FundamentalGroupoid.mk (Sum.inr x))
+  rw [circleMappingTorusOverlapPullbackNatIso_app_inr phi x delta f t h] at happ
+  let α := circleMappingTorusOverlapNatIso phi x delta f t h
+  have hobj : e.functor.obj (FundamentalGroupoid.mk (Sum.inr x)) =
+      FundamentalGroupoid.mk
+        (overlapPt (fun _ : Unit ↦ phi) uThreeQuarters_mem_overlapBand () x) := by
+    change FundamentalGroupoid.mk
+        ((circleMappingTorusOverlapHomotopyEquiv phi).toFun (Sum.inr x)) = _
+    rw [circleMappingTorusOverlapHomotopyEquiv_toFun_inr]
+  have htransport := congrArg (fun z => (α.hom.app z : H)) hobj
+  calc
+    (α.hom.app (FundamentalGroupoid.mk
+        (overlapPt (fun _ : Unit ↦ phi) uThreeQuarters_mem_overlapBand () x)) : H) =
+        α.hom.app (e.functor.obj (FundamentalGroupoid.mk (Sum.inr x))) := htransport.symm
+    _ = circleMappingTorusHighGauge phi x delta f t := by
+      simpa only [α, e, circleMappingTorusOverlapNatIso] using happ
+
+def circleMappingTorusEdgeGauge
+    {F H : Type} [TopologicalSpace F] [PathConnectedSpace F] [Group H]
+    (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x)
+    (f : FundamentalGroup F x →* H) (t : H)
+    (h : ∀ a : FundamentalGroup F x,
+      t * f a * t⁻¹ = f (mappingTorusMonodromyHom phi x delta a))
+    (y : FundamentalGroupoid ↥(edgePiece (fun _ : Unit ↦ phi))) : H := by
+  classical
+  exact if hy : y.as.1 ∈ vertexPiece (fun _ : Unit ↦ phi) then
+      (circleMappingTorusOverlapNatIso phi x delta f t h).hom.app
+        (FundamentalGroupoid.mk ⟨y.as.1, hy, y.as.2⟩)
+    else 1
+
+public theorem circleMappingTorusEdgeGauge_low
+    {F H : Type} [TopologicalSpace F] [PathConnectedSpace F] [Group H]
+    (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x)
+    (f : FundamentalGroup F x →* H) (t : H)
+    (h : ∀ a : FundamentalGroup F x,
+      t * f a * t⁻¹ = f (mappingTorusMonodromyHom phi x delta a)) :
+    circleMappingTorusEdgeGauge phi x delta f t h
+        (FundamentalGroupoid.mk (edgeLowPt (fun _ : Unit ↦ phi) () x)) = 1 := by
+  classical
+  let w := overlapPt (fun _ : Unit ↦ phi) uQuarter_mem_overlapBand () x
+  have hw : (edgeLowPt (fun _ : Unit ↦ phi) () x).1 ∈
+      vertexPiece (fun _ : Unit ↦ phi) := w.2.1
+  unfold circleMappingTorusEdgeGauge
+  rw [dite_eq_left hw]
+  change ((circleMappingTorusOverlapNatIso phi x delta f t h).hom.app
+      (FundamentalGroupoid.mk
+        ⟨(edgeLowPt (fun _ : Unit ↦ phi) () x).1, hw,
+          (edgeLowPt (fun _ : Unit ↦ phi) () x).2⟩) : H) = 1
+  have hpt :
+      (⟨(edgeLowPt (fun _ : Unit ↦ phi) () x).1, hw,
+          (edgeLowPt (fun _ : Unit ↦ phi) () x).2⟩ :
+        ↥(vertexPiece (fun _ : Unit ↦ phi) ∩ edgePiece (fun _ : Unit ↦ phi))) = w := by
+    apply Subtype.ext
+    rfl
+  rw [hpt]
+  exact circleMappingTorusOverlapNatIso_app_low phi x delta f t h
+
+public theorem circleMappingTorusEdgeGauge_high
+    {F H : Type} [TopologicalSpace F] [PathConnectedSpace F] [Group H]
+    (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x)
+    (f : FundamentalGroup F x →* H) (t : H)
+    (h : ∀ a : FundamentalGroup F x,
+      t * f a * t⁻¹ = f (mappingTorusMonodromyHom phi x delta a)) :
+    circleMappingTorusEdgeGauge phi x delta f t h
+        (FundamentalGroupoid.mk (edgeHighPt (fun _ : Unit ↦ phi) () x)) =
+      circleMappingTorusHighGauge phi x delta f t := by
+  classical
+  let w := overlapPt (fun _ : Unit ↦ phi) uThreeQuarters_mem_overlapBand () x
+  have hw : (edgeHighPt (fun _ : Unit ↦ phi) () x).1 ∈
+      vertexPiece (fun _ : Unit ↦ phi) := w.2.1
+  unfold circleMappingTorusEdgeGauge
+  rw [dite_eq_left hw]
+  change ((circleMappingTorusOverlapNatIso phi x delta f t h).hom.app
+      (FundamentalGroupoid.mk
+        ⟨(edgeHighPt (fun _ : Unit ↦ phi) () x).1, hw,
+          (edgeHighPt (fun _ : Unit ↦ phi) () x).2⟩) : H) =
+      circleMappingTorusHighGauge phi x delta f t
+  have hpt :
+      (⟨(edgeHighPt (fun _ : Unit ↦ phi) () x).1, hw,
+          (edgeHighPt (fun _ : Unit ↦ phi) () x).2⟩ :
+        ↥(vertexPiece (fun _ : Unit ↦ phi) ∩ edgePiece (fun _ : Unit ↦ phi))) = w := by
+    apply Subtype.ext
+    rfl
+  rw [hpt]
+  exact circleMappingTorusOverlapNatIso_app_high phi x delta f t h
+
+def circleMappingTorusStrictifiedEdgeFunctor
+    {F H : Type} [TopologicalSpace F] [PathConnectedSpace F] [Group H]
+    (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x)
+    (f : FundamentalGroup F x →* H) (t : H)
+    (h : ∀ a : FundamentalGroup F x,
+      t * f a * t⁻¹ = f (mappingTorusMonodromyHom phi x delta a)) :
+    FundamentalGroupoid ↥(edgePiece (fun _ : Unit ↦ phi)) ⥤ SingleObj H :=
+  singleObjGaugeFunctor
+    (FundamentalGroupoid.map (circleMappingTorusEdgePieceHomotopyEquiv phi).invFun ⋙
+      fundamentalGroupoidBasedFunctor x f)
+    (circleMappingTorusEdgeGauge phi x delta f t h)
+
+public theorem circleMappingTorusStrictifiedEdgeFunctor_restrict
+    {F H : Type} [TopologicalSpace F] [PathConnectedSpace F] [Group H]
+    (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x)
+    (f : FundamentalGroup F x →* H) (t : H)
+    (h : ∀ a : FundamentalGroup F x,
+      t * f a * t⁻¹ = f (mappingTorusMonodromyHom phi x delta a)) :
+    FundamentalGroupoid.map
+          (interToRight (vertexPiece (fun _ : Unit ↦ phi))
+            (edgePiece (fun _ : Unit ↦ phi))) ⋙
+        circleMappingTorusStrictifiedEdgeFunctor phi x delta f t h =
+      FundamentalGroupoid.map
+          ((vertexRetract (fun _ : Unit ↦ phi)).comp
+            (interToLeft (vertexPiece (fun _ : Unit ↦ phi))
+              (edgePiece (fun _ : Unit ↦ phi)))) ⋙
+        fundamentalGroupoidBasedFunctor x f := by
+  fapply CategoryTheory.Functor.hext
+  · intro y
+    rfl
+  intro y z p
+  have hnaturality :=
+    (circleMappingTorusOverlapNatIso phi x delta f t h).hom.naturality p
+  have hgauge (w : FundamentalGroupoid
+      ↥(vertexPiece (fun _ : Unit ↦ phi) ∩ edgePiece (fun _ : Unit ↦ phi))) :
+      circleMappingTorusEdgeGauge phi x delta f t h
+          ((FundamentalGroupoid.map
+            (interToRight (vertexPiece (fun _ : Unit ↦ phi))
+              (edgePiece (fun _ : Unit ↦ phi)))).obj w) =
+        (circleMappingTorusOverlapNatIso phi x delta f t h).hom.app w := by
+    classical
+    unfold circleMappingTorusEdgeGauge
+    have hw :
+        ((FundamentalGroupoid.map
+          (interToRight (vertexPiece (fun _ : Unit ↦ phi))
+            (edgePiece (fun _ : Unit ↦ phi)))).obj w).as.1 ∈
+          vertexPiece (fun _ : Unit ↦ phi) := w.as.2.1
+    rw [dite_eq_left hw]
+    congr 2
+  apply heq_of_eq
+  change
+    circleMappingTorusEdgeGauge phi x delta f t h
+          ((FundamentalGroupoid.map
+            (interToRight (vertexPiece (fun _ : Unit ↦ phi))
+              (edgePiece (fun _ : Unit ↦ phi)))).obj z) *
+        (fundamentalGroupoidBasedFunctor x f).map
+          ((FundamentalGroupoid.map
+            (circleMappingTorusEdgePieceHomotopyEquiv phi).invFun).map
+              ((FundamentalGroupoid.map
+                (interToRight (vertexPiece (fun _ : Unit ↦ phi))
+                  (edgePiece (fun _ : Unit ↦ phi)))).map p)) *
+        (circleMappingTorusEdgeGauge phi x delta f t h
+          ((FundamentalGroupoid.map
+            (interToRight (vertexPiece (fun _ : Unit ↦ phi))
+              (edgePiece (fun _ : Unit ↦ phi)))).obj y))⁻¹ =
+      (fundamentalGroupoidBasedFunctor x f).map
+        ((FundamentalGroupoid.map
+          ((vertexRetract (fun _ : Unit ↦ phi)).comp
+            (interToLeft (vertexPiece (fun _ : Unit ↦ phi))
+              (edgePiece (fun _ : Unit ↦ phi))))).map p)
+  change _ * _ = _ * _ at hnaturality
+  have hkey :
+      (circleMappingTorusOverlapNatIso phi x delta f t h).hom.app z *
+          (fundamentalGroupoidBasedFunctor x f).map
+            ((FundamentalGroupoid.map
+              (circleMappingTorusEdgePieceHomotopyEquiv phi).invFun).map
+                ((FundamentalGroupoid.map
+                  (interToRight (vertexPiece (fun _ : Unit ↦ phi))
+                    (edgePiece (fun _ : Unit ↦ phi)))).map p)) =
+        (fundamentalGroupoidBasedFunctor x f).map
+            ((FundamentalGroupoid.map
+              ((vertexRetract (fun _ : Unit ↦ phi)).comp
+                (interToLeft (vertexPiece (fun _ : Unit ↦ phi))
+                  (edgePiece (fun _ : Unit ↦ phi))))).map p) *
+          (circleMappingTorusOverlapNatIso phi x delta f t h).hom.app y := by
+    convert hnaturality using 1 <;> induction p using Quotient.ind <;> rfl
+  rw [hgauge y, hgauge z]
+  rw [hkey]
+  group
+
+private theorem circleMappingTorus_pairwise_id_single {ι : Type*} (i : ι) :
+    (CategoryTheory.Pairwise.Hom.id_single i :
+      CategoryTheory.Pairwise.single i ⟶ CategoryTheory.Pairwise.single i) =
+        𝟙 (CategoryTheory.Pairwise.single i : CategoryTheory.Pairwise ι) := by
+  rfl
+
+private theorem circleMappingTorus_pairwise_id_pair {ι : Type*} (i j : ι) :
+    (CategoryTheory.Pairwise.Hom.id_pair i j :
+      CategoryTheory.Pairwise.pair i j ⟶ CategoryTheory.Pairwise.pair i j) =
+        𝟙 (CategoryTheory.Pairwise.pair i j : CategoryTheory.Pairwise ι) := by
+  rfl
+
+noncomputable def circleMappingTorusPairwiseCoconeOfCompatible
+    {ι C : Type*} [Category C]
+    (D : CategoryTheory.Pairwise ι ⥤ C) (T : C)
+    (F : ∀ i : ι, D.obj (.single i) ⟶ T)
+    (hF : ∀ i j, D.map (.left i j) ≫ F i = D.map (.right i j) ≫ F j) :
+    CategoryTheory.Limits.Cocone D where
+  pt := T
+  ι.app
+    | .single i => F i
+    | .pair i j => D.map (.left i j) ≫ F i
+  ι.naturality := by
+    intro a b p
+    exact CategoryTheory.Pairwise.Hom.rec
+      (fun i => by
+        rw [circleMappingTorus_pairwise_id_single i]
+        simp)
+      (fun i j => by
+        rw [circleMappingTorus_pairwise_id_pair i j]
+        simp)
+      (fun _ _ => by
+        dsimp
+        simp)
+      (fun i j => by
+        dsimp
+        simpa using (hF i j).symm)
+      p
+
+def circleMappingTorusPairwiseCover
+    {F : Type} [TopologicalSpace F] (phi : F ≃ₜ F) :
+    Bool → Opens (CircleMappingTorus phi)
+  | false => circleMappingTorusVertexOpen phi
+  | true => circleMappingTorusEdgeOpen phi
+
+private def circleMappingTorusSwapIntersection
+    {X : Type*} [TopologicalSpace X] (U V : Set X) :
+    C((V ∩ U : Set X), (U ∩ V : Set X)) where
+  toFun x := ⟨x, x.2.2, x.2.1⟩
+  continuous_toFun := continuous_subtype_val.subtype_mk _
+
+theorem circleMappingTorus_reverse_restricted_eq
+    {X : Type} [TopologicalSpace X] (U V : Set X)
+    {T : Type} [Groupoid T]
+    (FU : FundamentalGroupoid U ⥤ T) (FV : FundamentalGroupoid V ⥤ T)
+    (h : FundamentalGroupoid.map (interToLeft U V) ⋙ FU =
+      FundamentalGroupoid.map (interToRight U V) ⋙ FV) :
+    FundamentalGroupoid.map (interToLeft V U) ⋙ FV =
+      FundamentalGroupoid.map (interToRight V U) ⋙ FU := by
+  have h' := congrArg
+    (fun K => FundamentalGroupoid.map (circleMappingTorusSwapIntersection U V) ⋙ K) h
+  change
+    FundamentalGroupoid.map (circleMappingTorusSwapIntersection U V) ⋙
+        (FundamentalGroupoid.map (interToLeft U V) ⋙ FU) =
+      FundamentalGroupoid.map (circleMappingTorusSwapIntersection U V) ⋙
+        (FundamentalGroupoid.map (interToRight U V) ⋙ FV) at h'
+  rw [← Functor.assoc, ← FundamentalGroupoid.map_comp,
+    ← Functor.assoc, ← FundamentalGroupoid.map_comp] at h'
+  have hleft : (interToLeft U V).comp (circleMappingTorusSwapIntersection U V) =
+      interToRight V U := by
+    ext x
+    rfl
+  have hright : (interToRight U V).comp (circleMappingTorusSwapIntersection U V) =
+      interToLeft V U := by
+    ext x
+    rfl
+  rw [hleft, hright] at h'
+  exact h'.symm
+
+noncomputable def circleMappingTorusTargetCocone
+    {F H : Type} [TopologicalSpace F] [PathConnectedSpace F] [Group H]
+    (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x)
+    (f : FundamentalGroup F x →* H) (t : H)
+    (h : ∀ a : FundamentalGroup F x,
+      t * f a * t⁻¹ = f (mappingTorusMonodromyHom phi x delta a)) :
+    CategoryTheory.Limits.Cocone
+      (CategoryTheory.Pairwise.diagram (circleMappingTorusPairwiseCover phi) ⋙
+        FundamentalGroupoid.opensToGrpd
+          (TopCat.of (CircleMappingTorus phi))) := by
+  let D := CategoryTheory.Pairwise.diagram (circleMappingTorusPairwiseCover phi) ⋙
+    FundamentalGroupoid.opensToGrpd (TopCat.of (CircleMappingTorus phi))
+  let vertexFunctor : FundamentalGroupoid
+        ↥(vertexPiece (fun _ : Unit ↦ phi)) ⥤ SingleObj H :=
+    FundamentalGroupoid.map (vertexRetract (fun _ : Unit ↦ phi)) ⋙
+      fundamentalGroupoidBasedFunctor x f
+  let edgeFunctor : FundamentalGroupoid
+        ↥(edgePiece (fun _ : Unit ↦ phi)) ⥤ SingleObj H :=
+    circleMappingTorusStrictifiedEdgeFunctor phi x delta f t h
+  let localFunctor : ∀ i : Bool, D.obj (.single i) ⟶ Grpd.of (SingleObj H) := fun i => by
+    cases i
+    · exact vertexFunctor
+    · exact edgeFunctor
+  apply circleMappingTorusPairwiseCoconeOfCompatible D (Grpd.of (SingleObj H)) localFunctor
+  intro i j
+  cases i <;> cases j
+  · change FundamentalGroupoid.map
+        (interToLeft (vertexPiece (fun _ : Unit ↦ phi))
+          (vertexPiece (fun _ : Unit ↦ phi))) ⋙ vertexFunctor =
+      FundamentalGroupoid.map
+        (interToRight (vertexPiece (fun _ : Unit ↦ phi))
+          (vertexPiece (fun _ : Unit ↦ phi))) ⋙ vertexFunctor
+    congr 2
+
+  · change FundamentalGroupoid.map
+        (interToLeft (vertexPiece (fun _ : Unit ↦ phi))
+          (edgePiece (fun _ : Unit ↦ phi))) ⋙ vertexFunctor =
+      FundamentalGroupoid.map
+        (interToRight (vertexPiece (fun _ : Unit ↦ phi))
+          (edgePiece (fun _ : Unit ↦ phi))) ⋙ edgeFunctor
+    simpa only [vertexFunctor, edgeFunctor, ← Functor.assoc,
+      ← FundamentalGroupoid.map_comp] using
+        (circleMappingTorusStrictifiedEdgeFunctor_restrict phi x delta f t h).symm
+  · apply circleMappingTorus_reverse_restricted_eq
+      (vertexPiece (fun _ : Unit ↦ phi)) (edgePiece (fun _ : Unit ↦ phi))
+      vertexFunctor edgeFunctor
+    simpa only [vertexFunctor, edgeFunctor, ← Functor.assoc,
+      ← FundamentalGroupoid.map_comp] using
+        (circleMappingTorusStrictifiedEdgeFunctor_restrict phi x delta f t h).symm
+  · change FundamentalGroupoid.map
+        (interToLeft (edgePiece (fun _ : Unit ↦ phi))
+          (edgePiece (fun _ : Unit ↦ phi))) ⋙ edgeFunctor =
+      FundamentalGroupoid.map
+        (interToRight (edgePiece (fun _ : Unit ↦ phi))
+          (edgePiece (fun _ : Unit ↦ phi))) ⋙ edgeFunctor
+    congr 2
+
+@[simp]
+public theorem circleMappingTorusTargetCocone_pt
+    {F H : Type} [TopologicalSpace F] [PathConnectedSpace F] [Group H]
+    (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x)
+    (f : FundamentalGroup F x →* H) (t : H)
+    (h : ∀ a : FundamentalGroup F x,
+      t * f a * t⁻¹ = f (mappingTorusMonodromyHom phi x delta a)) :
+    (circleMappingTorusTargetCocone phi x delta f t h).pt =
+      Grpd.of (SingleObj H) := rfl
+
+noncomputable def circleMappingTorusVanKampenCocone
+    {F : Type} [TopologicalSpace F] (phi : F ≃ₜ F) :=
+  (FundamentalGroupoid.opensToGrpd (TopCat.of (CircleMappingTorus phi))).mapCocone
+    (CategoryTheory.Pairwise.cocone (circleMappingTorusPairwiseCover phi))
+
+public theorem circleMappingTorusVanKampenCocone_isColimit
+    {F : Type} [TopologicalSpace F] (phi : F ≃ₜ F) :
+    Nonempty (CategoryTheory.Limits.IsColimit
+      (circleMappingTorusVanKampenCocone phi)) := by
+  have hsheaf := FundamentalGroupoid.isSheaf_op_opensToGrpd
+    (X := TopCat.of (CircleMappingTorus phi))
+  rcases hsheaf.isSheafPairwiseIntersections
+      (circleMappingTorusPairwiseCover phi) with ⟨h⟩
+  let e :
+      ((circleMappingTorusVanKampenCocone phi).op) ≅
+        ((FundamentalGroupoid.opensToGrpd
+          (TopCat.of (CircleMappingTorus phi))).op.mapCone
+            (CategoryTheory.Pairwise.cocone
+              (circleMappingTorusPairwiseCover phi)).op) :=
+    Functor.mapCoconeOp
+      (G := FundamentalGroupoid.opensToGrpd
+        (TopCat.of (CircleMappingTorus phi)))
+      (t := CategoryTheory.Pairwise.cocone
+        (circleMappingTorusPairwiseCover phi))
+  exact ⟨CategoryTheory.Limits.isColimitOfOp
+    ((CategoryTheory.Limits.IsLimit.equivIsoLimit e).symm h)⟩
+
+noncomputable def circleMappingTorusVanKampenIsColimit
+    {F : Type} [TopologicalSpace F] (phi : F ≃ₜ F) :
+    CategoryTheory.Limits.IsColimit (circleMappingTorusVanKampenCocone phi) :=
+  (circleMappingTorusVanKampenCocone_isColimit phi).some
+
+def circleMappingTorusToPairwiseCover
+    {F : Type} [TopologicalSpace F] (phi : F ≃ₜ F) :
+    C(CircleMappingTorus phi,
+      ↑(iSup (circleMappingTorusPairwiseCover phi))) where
+  toFun y := ⟨y, by
+    rw [Opens.mem_iSup]
+    by_cases hy : y ∈ vertexPiece (fun _ : Unit ↦ phi)
+    · exact ⟨false, hy⟩
+    · have hy' : y ∈ vertexPiece (fun _ : Unit ↦ phi) ∪
+          edgePiece (fun _ : Unit ↦ phi) := by
+        rw [vertexPiece_union_edgePiece]
+        exact Set.mem_univ y
+      exact ⟨true, hy'.resolve_left hy⟩⟩
+  continuous_toFun := continuous_id.subtype_mk _
+
+noncomputable def circleMappingTorusVanKampenDescFunctor
+    {F H : Type} [TopologicalSpace F] [PathConnectedSpace F] [Group H]
+    (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x)
+    (f : FundamentalGroup F x →* H) (t : H)
+    (h : ∀ a : FundamentalGroup F x,
+      t * f a * t⁻¹ = f (mappingTorusMonodromyHom phi x delta a)) :
+    FundamentalGroupoid
+        ↑(iSup (circleMappingTorusPairwiseCover phi)) ⥤ SingleObj H :=
+  (circleMappingTorusVanKampenIsColimit phi).desc
+    (circleMappingTorusTargetCocone phi x delta f t h)
+
+noncomputable def circleMappingTorusVanKampenLiftFunctor
+    {F H : Type} [TopologicalSpace F] [PathConnectedSpace F] [Group H]
+    (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x)
+    (f : FundamentalGroup F x →* H) (t : H)
+    (h : ∀ a : FundamentalGroup F x,
+      t * f a * t⁻¹ = f (mappingTorusMonodromyHom phi x delta a)) :
+    FundamentalGroupoid (CircleMappingTorus phi) ⥤ SingleObj H :=
+  FundamentalGroupoid.map (circleMappingTorusToPairwiseCover phi) ⋙
+    circleMappingTorusVanKampenDescFunctor phi x delta f t h
+
+public theorem circleMappingTorusVanKampenLiftFunctor_vertex
+    {F H : Type} [TopologicalSpace F] [PathConnectedSpace F] [Group H]
+    (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x)
+    (f : FundamentalGroup F x →* H) (t : H)
+    (h : ∀ a : FundamentalGroup F x,
+      t * f a * t⁻¹ = f (mappingTorusMonodromyHom phi x delta a)) :
+    FundamentalGroupoid.map
+          (⟨Subtype.val, continuous_subtype_val⟩ :
+            C(↥(vertexPiece (fun _ : Unit ↦ phi)), CircleMappingTorus phi)) ⋙
+        circleMappingTorusVanKampenLiftFunctor phi x delta f t h =
+      FundamentalGroupoid.map (vertexRetract (fun _ : Unit ↦ phi)) ⋙
+        fundamentalGroupoidBasedFunctor x f := by
+  let P := circleMappingTorusVanKampenIsColimit phi
+  have hleg :
+      FundamentalGroupoid.map
+            (⟨Subtype.val, continuous_subtype_val⟩ :
+              C(↥(vertexPiece (fun _ : Unit ↦ phi)), CircleMappingTorus phi)) ⋙
+          FundamentalGroupoid.map (circleMappingTorusToPairwiseCover phi) =
+        (circleMappingTorusVanKampenCocone phi).ι.app (.single false) := by
+    rw [← FundamentalGroupoid.map_comp]
+    congr 1
+  have hfac := P.fac (circleMappingTorusTargetCocone phi x delta f t h) (.single false)
+  change
+    (circleMappingTorusVanKampenCocone phi).ι.app (.single false) ⋙
+        circleMappingTorusVanKampenDescFunctor phi x delta f t h =
+      FundamentalGroupoid.map (vertexRetract (fun _ : Unit ↦ phi)) ⋙
+        fundamentalGroupoidBasedFunctor x f at hfac
+  rw [← hleg] at hfac
+  change
+    (FundamentalGroupoid.map
+          (⟨Subtype.val, continuous_subtype_val⟩ :
+            C(↥(vertexPiece (fun _ : Unit ↦ phi)), CircleMappingTorus phi)) ⋙
+        FundamentalGroupoid.map (circleMappingTorusToPairwiseCover phi)) ⋙
+          circleMappingTorusVanKampenDescFunctor phi x delta f t h =
+      FundamentalGroupoid.map (vertexRetract (fun _ : Unit ↦ phi)) ⋙
+        fundamentalGroupoidBasedFunctor x f at hfac
+  simpa only [circleMappingTorusVanKampenLiftFunctor, Functor.assoc] using hfac
+
+public theorem circleMappingTorusVanKampenLiftFunctor_edge
+    {F H : Type} [TopologicalSpace F] [PathConnectedSpace F] [Group H]
+    (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x)
+    (f : FundamentalGroup F x →* H) (t : H)
+    (h : ∀ a : FundamentalGroup F x,
+      t * f a * t⁻¹ = f (mappingTorusMonodromyHom phi x delta a)) :
+    FundamentalGroupoid.map
+          (⟨Subtype.val, continuous_subtype_val⟩ :
+            C(↥(edgePiece (fun _ : Unit ↦ phi)), CircleMappingTorus phi)) ⋙
+        circleMappingTorusVanKampenLiftFunctor phi x delta f t h =
+      circleMappingTorusStrictifiedEdgeFunctor phi x delta f t h := by
+  let P := circleMappingTorusVanKampenIsColimit phi
+  have hleg :
+      FundamentalGroupoid.map
+            (⟨Subtype.val, continuous_subtype_val⟩ :
+              C(↥(edgePiece (fun _ : Unit ↦ phi)), CircleMappingTorus phi)) ⋙
+          FundamentalGroupoid.map (circleMappingTorusToPairwiseCover phi) =
+        (circleMappingTorusVanKampenCocone phi).ι.app (.single true) := by
+    rw [← FundamentalGroupoid.map_comp]
+    congr 1
+  have hfac := P.fac (circleMappingTorusTargetCocone phi x delta f t h) (.single true)
+  change
+    (circleMappingTorusVanKampenCocone phi).ι.app (.single true) ⋙
+        circleMappingTorusVanKampenDescFunctor phi x delta f t h =
+      circleMappingTorusStrictifiedEdgeFunctor phi x delta f t h at hfac
+  rw [← hleg] at hfac
+  change
+    (FundamentalGroupoid.map
+          (⟨Subtype.val, continuous_subtype_val⟩ :
+            C(↥(edgePiece (fun _ : Unit ↦ phi)), CircleMappingTorus phi)) ⋙
+        FundamentalGroupoid.map (circleMappingTorusToPairwiseCover phi)) ⋙
+          circleMappingTorusVanKampenDescFunctor phi x delta f t h =
+      circleMappingTorusStrictifiedEdgeFunctor phi x delta f t h at hfac
+  simpa only [circleMappingTorusVanKampenLiftFunctor, Functor.assoc] using hfac
+
+public theorem circleMappingTorusVanKampenLiftFunctor_fiber
+    {F H : Type} [TopologicalSpace F] [PathConnectedSpace F] [Group H]
+    (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x)
+    (f : FundamentalGroup F x →* H) (t : H)
+    (h : ∀ a : FundamentalGroup F x,
+      t * f a * t⁻¹ = f (mappingTorusMonodromyHom phi x delta a)) :
+    FundamentalGroupoid.map
+          (finiteBouquetMappingTorusFiberInclusion (fun _ : Unit ↦ phi)) ⋙
+        circleMappingTorusVanKampenLiftFunctor phi x delta f t h =
+      fundamentalGroupoidBasedFunctor x f := by
+  have hv := congrArg
+    (fun K => FundamentalGroupoid.map
+        (vertexFiberInclusion (fun _ : Unit ↦ phi)) ⋙ K)
+    (circleMappingTorusVanKampenLiftFunctor_vertex phi x delta f t h)
+  simp only [← Functor.assoc, ← FundamentalGroupoid.map_comp] at hv
+  have hleft :
+      (⟨Subtype.val, continuous_subtype_val⟩ :
+          C(↥(vertexPiece (fun _ : Unit ↦ phi)), CircleMappingTorus phi)).comp
+          (vertexFiberInclusion (fun _ : Unit ↦ phi)) =
+        finiteBouquetMappingTorusFiberInclusion (fun _ : Unit ↦ phi) := by
+    ext y
+    rfl
+  have hright :
+      (vertexRetract (fun _ : Unit ↦ phi)).comp
+          (vertexFiberInclusion (fun _ : Unit ↦ phi)) = ContinuousMap.id F := by
+    ext y
+    exact vertexRetract_vertexFiberInclusion (fun _ : Unit ↦ phi) y
+  rw [hleft, hright] at hv
+  have hid : FundamentalGroupoid.map (ContinuousMap.id F) =
+      𝟭 (FundamentalGroupoid F) := by
+    fapply CategoryTheory.Functor.hext
+    · intro y
+      rfl
+    · intro y z p
+      induction p using Quotient.ind
+      rfl
+  rw [hid, Functor.id_comp] at hv
+  exact hv
+
+def circleMappingTorusBaseGauge
+    {F H : Type} [TopologicalSpace F] [PathConnectedSpace F] [Group H]
+    (x : F) (f : FundamentalGroup F x →* H) : H :=
+  f (Path.Homotopic.Quotient.mk (PathConnectedSpace.somePath x x))
+
+noncomputable def circleMappingTorusNormalizedLiftFunctor
+    {F H : Type} [TopologicalSpace F] [PathConnectedSpace F] [Group H]
+    (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x)
+    (f : FundamentalGroup F x →* H) (t : H)
+    (h : ∀ a : FundamentalGroup F x,
+      t * f a * t⁻¹ = f (mappingTorusMonodromyHom phi x delta a)) :
+    FundamentalGroupoid (CircleMappingTorus phi) ⥤ SingleObj H :=
+  singleObjGaugeFunctor
+    (circleMappingTorusVanKampenLiftFunctor phi x delta f t h)
+    (fun _ => circleMappingTorusBaseGauge x f)
+
+noncomputable def circleMappingTorusVanKampenLift
+    {F H : Type} [TopologicalSpace F] [PathConnectedSpace F] [Group H]
+    (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x)
+    (f : FundamentalGroup F x →* H) (t : H)
+    (h : ∀ a : FundamentalGroup F x,
+      t * f a * t⁻¹ = f (mappingTorusMonodromyHom phi x delta a)) :
+    FundamentalGroup (CircleMappingTorus phi) (circleMappingTorusBase phi x) →* H where
+  toFun a := (circleMappingTorusNormalizedLiftFunctor phi x delta f t h).map a
+  map_one' := by
+    change (circleMappingTorusNormalizedLiftFunctor phi x delta f t h).map (𝟙 _) = 𝟙 _
+    exact (circleMappingTorusNormalizedLiftFunctor phi x delta f t h).map_id _
+  map_mul' a b := by
+    change (circleMappingTorusNormalizedLiftFunctor phi x delta f t h).map (b ≫ a) =
+      (circleMappingTorusNormalizedLiftFunctor phi x delta f t h).map b ≫
+        (circleMappingTorusNormalizedLiftFunctor phi x delta f t h).map a
+    exact (circleMappingTorusNormalizedLiftFunctor phi x delta f t h).map_comp b a
+
+public theorem circleMappingTorusVanKampenLift_fiber
+    {F H : Type} [TopologicalSpace F] [PathConnectedSpace F] [Group H]
+    (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x)
+    (f : FundamentalGroup F x →* H) (t : H)
+    (h : ∀ a : FundamentalGroup F x,
+      t * f a * t⁻¹ = f (mappingTorusMonodromyHom phi x delta a))
+    (a : FundamentalGroup F x) :
+    circleMappingTorusVanKampenLift phi x delta f t h
+        (circleMappingTorusFiberHom phi x a) = f a := by
+  have hf := congrArg (fun K => K.map a)
+    (circleMappingTorusVanKampenLiftFunctor_fiber phi x delta f t h)
+  change
+    (circleMappingTorusVanKampenLiftFunctor phi x delta f t h).map
+        (circleMappingTorusFiberHom phi x a) =
+      (fundamentalGroupoidBasedFunctor x f).map a at hf
+  change
+    circleMappingTorusBaseGauge x f *
+        (circleMappingTorusVanKampenLiftFunctor phi x delta f t h).map
+          (circleMappingTorusFiberHom phi x a) *
+      (circleMappingTorusBaseGauge x f)⁻¹ = f a
+  rw [hf]
+  change
+    circleMappingTorusBaseGauge x f *
+        f (Path.Homotopic.Quotient.mk (PathConnectedSpace.somePath x x) ≫ a ≫
+          Groupoid.inv
+            (Path.Homotopic.Quotient.mk (PathConnectedSpace.somePath x x))) *
+      (circleMappingTorusBaseGauge x f)⁻¹ = f a
+  unfold circleMappingTorusBaseGauge
+  let p₀ : FundamentalGroup F x :=
+    Path.Homotopic.Quotient.mk (PathConnectedSpace.somePath x x)
+  have hp :
+      Path.Homotopic.Quotient.mk (PathConnectedSpace.somePath x x) ≫ a ≫
+          Groupoid.inv
+            (Path.Homotopic.Quotient.mk (PathConnectedSpace.somePath x x)) =
+        p₀⁻¹ * a * p₀ := rfl
+  rw [hp, f.map_mul, f.map_mul, f.map_inv]
+  dsimp [p₀]
+  group
 
 end SphereSixComplex

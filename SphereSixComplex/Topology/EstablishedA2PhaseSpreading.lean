@@ -253,13 +253,139 @@ private theorem positiveTwist_eq_normalized_of_basis_aux
   funext lambda
   exact congrArg Additive.toMul (DFunLike.congr_fun hHom lambda)
 
+/-- The genuinely independent input for a polar honeycomb.  Positivity of the height on the
+positive part follows from the modulus identities, while contractibility of the central
+honeycomb follows from its displayed Euclidean homeomorphism. -/
+public structure PolarHoneycombConstructionData (M : Model) (r : ℝ) where
+  positivePart : Set (LocalCarrier M r)
+  modulus : C(LocalCarrier M r, positivePart)
+  modulus_fixed : ∀ q : positivePart, modulus q = q
+  modulus_t : ∀ p, M.t (modulus p) = (‖M.t p‖ : ℝ)
+  polar_surjective : ∀ p : LocalCarrier M r, ∃ phi : CompactTorus,
+    M.torusAction (compactTorusEmbedding phi) (modulus p) = p
+  central : Set positivePart
+  central_eq : central = {q : positivePart | M.t (q : LocalCarrier M r) = 0}
+  honeycomb : (Fin 2 → ℝ) ≃ₜ central
+  positiveTwist : ParameterLattice → DenseTorus
+  positiveTwist_zero : positiveTwist 0 = 1
+  positiveTwist_add : ∀ lambda mu,
+    positiveTwist (lambda + mu) = positiveTwist lambda * positiveTwist mu
+  positiveTwist_last : ∀ lambda, positiveTwist lambda 2 = 1
+  positiveTwist_real : ∀ lambda i,
+    0 < ((positiveTwist lambda i : ℂˣ) : ℂ).re ∧
+      ((positiveTwist lambda i : ℂˣ) : ℂ).im = 0
+  positiveDeckAction : MulAction (Multiplicative ParameterLattice) positivePart
+  positiveDeck_coe : ∀ lambda q,
+    ((((Multiplicative.ofAdd lambda) • q : positivePart) : LocalCarrier M r) : M.Carrier) =
+      M.torusAction (positiveTwist lambda)
+        (Additive.toMul (M.fanShear lambda) (q : M.Carrier))
+  quotientCovering :
+    letI := positiveDeckAction
+    IsQuotientCoveringMap
+      (PolarHoneycombData.orbitProjection positivePart)
+      (Multiplicative ParameterLattice)
+  positive_contractible : ContractibleSpace positivePart
+  quotient_relativeCW :
+    letI := positiveDeckAction
+    Topology.RelCWComplex
+      (Set.univ : Set (PolarHoneycombData.OrbitQuotient positivePart))
+      (PolarHoneycombData.orbitCore central)
+  quotient_t2 :
+    letI := positiveDeckAction
+    T2Space (PolarHoneycombData.OrbitQuotient positivePart)
+
+/-- The displayed formula for the deck action makes each deck transformation continuous. -/
+public theorem PolarHoneycombConstructionData.positiveDeckContinuous
+    {M : Model} {r : ℝ} (Q : PolarHoneycombConstructionData M r) :
+    letI := Q.positiveDeckAction
+    ContinuousConstSMul (Multiplicative ParameterLattice) Q.positivePart := by
+  let _ := Q.positiveDeckAction
+  constructor
+  intro g
+  rw [continuous_induced_rng, continuous_induced_rng]
+  let lambda := Multiplicative.toAdd g
+  have heq :
+      (fun q : Q.positivePart ↦
+        ((((g • q : Q.positivePart) : LocalCarrier M r)) : M.Carrier)) =
+      fun q : Q.positivePart ↦ M.torusAction (Q.positiveTwist lambda)
+        (Additive.toMul (M.fanShear lambda) (q : M.Carrier)) := by
+    funext q
+    simpa [lambda] using Q.positiveDeck_coe lambda q
+  change Continuous (fun q : Q.positivePart ↦
+    ((((g • q : Q.positivePart) : LocalCarrier M r)) : M.Carrier))
+  rw [heq]
+  exact (M.torusAction_holomorphic (Q.positiveTwist lambda)).continuous.comp
+    ((M.fanShear_holomorphic lambda).continuous.comp
+      (continuous_subtype_val.comp continuous_subtype_val))
+
+/-- The central honeycomb is saturated under the deck action because the action preserves the
+height coordinate. -/
+public theorem PolarHoneycombConstructionData.central_preimage
+    {M : Model} {r : ℝ} (Q : PolarHoneycombConstructionData M r) :
+    letI := Q.positiveDeckAction
+    PolarHoneycombData.orbitProjection Q.positivePart ⁻¹'
+        PolarHoneycombData.orbitCore Q.central = Q.central := by
+  let _ := Q.positiveDeckAction
+  have hmem (lambda : ParameterLattice) (q : Q.positivePart) :
+      (Multiplicative.ofAdd lambda) • q ∈ Q.central ↔ q ∈ Q.central := by
+    rw [Q.central_eq]
+    change M.t ((((Multiplicative.ofAdd lambda) • q : Q.positivePart) :
+      LocalCarrier M r)) = 0 ↔ M.t (q : LocalCarrier M r) = 0
+    rw [Q.positiveDeck_coe, M.t_torusAction, Q.positiveTwist_last,
+      M.fanShear_preserves_t]
+    simp
+  ext q
+  constructor
+  · rintro ⟨c, hc, hqc⟩
+    change Quotient.mk _ c = Quotient.mk _ q at hqc
+    rw [Quotient.eq, MulAction.orbitRel_apply, MulAction.mem_orbit_iff] at hqc
+    obtain ⟨g, hg⟩ := hqc
+    rw [← hg] at hc
+    simpa using (hmem (Multiplicative.toAdd g) q).mp hc
+  · intro hq
+    exact ⟨q, hq, rfl⟩
+
+/-- Assemble the full interface, deriving its four redundant geometric fields. -/
+public noncomputable def PolarHoneycombConstructionData.toPolarHoneycombData
+    {M : Model} {r : ℝ} (Q : PolarHoneycombConstructionData M r) :
+    PolarHoneycombData M r where
+  positivePart := Q.positivePart
+  modulus := Q.modulus
+  modulus_fixed := Q.modulus_fixed
+  positive_t := by
+    intro q
+    have h := Q.modulus_t (q : LocalCarrier M r)
+    rw [Q.modulus_fixed q] at h
+    rw [h]
+    exact ⟨by simp, norm_nonneg _⟩
+  modulus_t := Q.modulus_t
+  polar_surjective := Q.polar_surjective
+  central := Q.central
+  central_eq := Q.central_eq
+  honeycomb := Q.honeycomb
+  positiveTwist := Q.positiveTwist
+  positiveTwist_zero := Q.positiveTwist_zero
+  positiveTwist_add := Q.positiveTwist_add
+  positiveTwist_last := Q.positiveTwist_last
+  positiveTwist_real := Q.positiveTwist_real
+  positiveDeckAction := Q.positiveDeckAction
+  positiveDeck_coe := Q.positiveDeck_coe
+  positiveDeckContinuous := Q.positiveDeckContinuous
+  quotientCovering := Q.quotientCovering
+  central_preimage := Q.central_preimage
+  positive_contractible := Q.positive_contractible
+  central_contractible := Q.honeycomb.symm.contractibleSpace
+  quotient_relativeCW := Q.quotient_relativeCW
+  quotient_t2 := Q.quotient_t2
+
 /-- The remaining geometric construction chooses polar coordinates whose positive deck
-multiplier is the canonical radial part of the frozen multiplier, for which compact phase
-coordinates are open, and whose lifted cellular homotopy preserves phase fibers. -/
+multiplier is the canonical radial part of the frozen multiplier and whose lifted cellular
+homotopy preserves compact-phase fibers. -/
 public axiom normalizedPolarHoneycombPhaseGeometry
     {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) (r : ℝ) (hr : 0 < r) :
-    Nonempty { P : PolarHoneycombData M r //
+    Nonempty { Q : PolarHoneycombConstructionData M r //
+      let P := Q.toPolarHoneycombData
       (∀ j i : Fin 2,
         ‖((P.positiveTwist (Pi.single j 1) i.castSucc : ℂˣ) : ℂ)‖ =
           ‖((phaseEmbedding (N.phaseCoefficient (Pi.single j 1) 0)
@@ -272,7 +398,8 @@ public theorem polarHoneycombPhaseSpreadingGeometry
     (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) (r : ℝ) (hr : 0 < r) :
     Nonempty { P : PolarHoneycombData M r //
       PolarPhaseRadialCompatibility N M r P ∧ PolarPhaseGeometricCore M r P } := by
-  obtain ⟨⟨P, hP, G⟩⟩ := normalizedPolarHoneycombPhaseGeometry N M r hr
+  obtain ⟨⟨Q, hP, G⟩⟩ := normalizedPolarHoneycombPhaseGeometry N M r hr
+  let P := Q.toPolarHoneycombData
   have hTwist := positiveTwist_eq_normalized_of_basis_aux N P hP
   refine ⟨⟨P, ⟨?_, G⟩⟩⟩
   refine ⟨fun lambda i ↦ ?_⟩

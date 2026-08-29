@@ -49,6 +49,13 @@ private instance {_G : Type u} [Group _G] : Groupoid.{u} (ConnectorTarget _G) wh
   inv_comp := fun f ↦ mul_inv_cancel f
   comp_inv := fun f ↦ inv_mul_cancel f
 
+private def connectorMapEnd
+    {C : Type u} [Category.{u} C] {G : Type u} [Group G]
+    (F : C ⥤ ConnectorTarget G) (x : C) : End x →* G where
+  toFun := F.map
+  map_one' := F.map_id x
+  map_mul' := fun p q ↦ F.map_comp q p
+
 private noncomputable def connectorFunctor
     {C : Type u} [Groupoid.{u} C] (base : C) {G : Type u} [Group G]
     (connector : ∀ x : C, base ⟶ x) (f : End base →* G) :
@@ -118,7 +125,7 @@ private theorem map_connector_transport
   subst y
   simp
 
-private noncomputable def leftConnector
+private noncomputable def rawLeftConnector
     {X : Type u} [TopologicalSpace X]
     (U V : Set X) (base : (U ∩ V : Set X))
     (hUPath : IsPathConnected U) (hInterPath : IsPathConnected (U ∩ V))
@@ -141,7 +148,7 @@ private noncomputable def leftConnector
     exact eqToHom ebase ≫
       setConnector hUPath (intersectionToLeft U V base) z.as
 
-private noncomputable def rightConnector
+private noncomputable def rawRightConnector
     {X : Type u} [TopologicalSpace X]
     (U V : Set X) (base : (U ∩ V : Set X))
     (hVPath : IsPathConnected V) (hInterPath : IsPathConnected (U ∩ V))
@@ -164,17 +171,17 @@ private noncomputable def rightConnector
     exact eqToHom ebase ≫
       setConnector hVPath (intersectionToRight U V base) z.as
 
-private theorem leftConnector_inter
+private theorem rawLeftConnector_inter
     {X : Type u} [TopologicalSpace X]
     (U V : Set X) (base : (U ∩ V : Set X))
     (hUPath : IsPathConnected U) (hInterPath : IsPathConnected (U ∩ V))
     (x : FundamentalGroupoid (U ∩ V : Set X)) :
-    leftConnector U V base hUPath hInterPath
+    rawLeftConnector U V base hUPath hInterPath
         ((FundamentalGroupoid.map (intersectionToLeft U V)).obj x) =
       (FundamentalGroupoid.map (intersectionToLeft U V)).map
         (setConnector hInterPath base x.as) := by
   rcases x with ⟨x⟩
-  simp only [leftConnector]
+  simp only [rawLeftConnector]
   split
   · rename_i hx
     let xInter : (U ∩ V : Set X) := ⟨x, x.2.1, hx⟩
@@ -188,17 +195,17 @@ private theorem leftConnector_inter
   · rename_i hx
     exact (hx x.2.2).elim
 
-private theorem rightConnector_inter
+private theorem rawRightConnector_inter
     {X : Type u} [TopologicalSpace X]
     (U V : Set X) (base : (U ∩ V : Set X))
     (hVPath : IsPathConnected V) (hInterPath : IsPathConnected (U ∩ V))
     (x : FundamentalGroupoid (U ∩ V : Set X)) :
-    rightConnector U V base hVPath hInterPath
+    rawRightConnector U V base hVPath hInterPath
         ((FundamentalGroupoid.map (intersectionToRight U V)).obj x) =
       (FundamentalGroupoid.map (intersectionToRight U V)).map
         (setConnector hInterPath base x.as) := by
   rcases x with ⟨x⟩
-  simp only [rightConnector]
+  simp only [rawRightConnector]
   split
   · rename_i hx
     let xInter : (U ∩ V : Set X) := ⟨x, hx, x.2.2⟩
@@ -211,6 +218,58 @@ private theorem rightConnector_inter
       (congrArg FundamentalGroupoid.mk e)
   · rename_i hx
     exact (hx x.2.1).elim
+
+private noncomputable def leftConnector
+    {X : Type u} [TopologicalSpace X]
+    (U V : Set X) (base : (U ∩ V : Set X))
+    (hUPath : IsPathConnected U) (hInterPath : IsPathConnected (U ∩ V))
+    (z : FundamentalGroupoid U) :
+    (FundamentalGroupoid.map (intersectionToLeft U V)).obj
+        (FundamentalGroupoid.mk base) ⟶ z :=
+  Groupoid.inv (rawLeftConnector U V base hUPath hInterPath
+      ((FundamentalGroupoid.map (intersectionToLeft U V)).obj
+        (FundamentalGroupoid.mk base))) ≫
+    rawLeftConnector U V base hUPath hInterPath z
+
+private noncomputable def rightConnector
+    {X : Type u} [TopologicalSpace X]
+    (U V : Set X) (base : (U ∩ V : Set X))
+    (hVPath : IsPathConnected V) (hInterPath : IsPathConnected (U ∩ V))
+    (z : FundamentalGroupoid V) :
+    (FundamentalGroupoid.map (intersectionToRight U V)).obj
+        (FundamentalGroupoid.mk base) ⟶ z :=
+  Groupoid.inv (rawRightConnector U V base hVPath hInterPath
+      ((FundamentalGroupoid.map (intersectionToRight U V)).obj
+        (FundamentalGroupoid.mk base))) ≫
+    rawRightConnector U V base hVPath hInterPath z
+
+private theorem leftConnector_inter
+    {X : Type u} [TopologicalSpace X]
+    (U V : Set X) (base : (U ∩ V : Set X))
+    (hUPath : IsPathConnected U) (hInterPath : IsPathConnected (U ∩ V))
+    (x : FundamentalGroupoid (U ∩ V : Set X)) :
+    leftConnector U V base hUPath hInterPath
+        ((FundamentalGroupoid.map (intersectionToLeft U V)).obj x) =
+      (FundamentalGroupoid.map (intersectionToLeft U V)).map
+        (setConnector hInterPath base x.as) := by
+  rw [leftConnector, rawLeftConnector_inter, rawLeftConnector_inter,
+    setConnector_self]
+  rw [CategoryTheory.Functor.map_id]
+  simp only [Groupoid.inv_eq_inv, IsIso.inv_id, Category.id_comp]
+
+private theorem rightConnector_inter
+    {X : Type u} [TopologicalSpace X]
+    (U V : Set X) (base : (U ∩ V : Set X))
+    (hVPath : IsPathConnected V) (hInterPath : IsPathConnected (U ∩ V))
+    (x : FundamentalGroupoid (U ∩ V : Set X)) :
+    rightConnector U V base hVPath hInterPath
+        ((FundamentalGroupoid.map (intersectionToRight U V)).obj x) =
+      (FundamentalGroupoid.map (intersectionToRight U V)).map
+        (setConnector hInterPath base x.as) := by
+  rw [rightConnector, rawRightConnector_inter, rawRightConnector_inter,
+    setConnector_self]
+  rw [CategoryTheory.Functor.map_id]
+  simp only [Groupoid.inv_eq_inv, IsIso.inv_id, Category.id_comp]
 
 private theorem restrictedConnectorFunctors_eq
     {X : Type u} [TopologicalSpace X]
@@ -459,18 +518,15 @@ private theorem twoOpenCover_right_leg
   rw [← FundamentalGroupoid.map_comp]
   congr 1
 
-/-- The existence part of the based Seifert--van Kampen universal property for an open
-two-set cover: compatible homomorphisms from the two local fundamental groups extend to the
-ambient fundamental group. -/
-public axiom fundamentalGroupOpenUnion_lift
-    {X : Type*} [TopologicalSpace X]
+private theorem fundamentalGroupOpenUnion_lift_sameUniverse
+    {X : Type u} [TopologicalSpace X]
     (U V : Set X) (base : X)
     (hUOpen : IsOpen U) (hVOpen : IsOpen V)
     (hcover : U ∪ V = Set.univ)
     (hbaseU : base ∈ U) (hbaseV : base ∈ V)
     (hUPath : IsPathConnected U) (hVPath : IsPathConnected V)
     (hInterPath : IsPathConnected (U ∩ V))
-    {G : Type*} [Group G]
+    {G : Type u} [Group G]
     (fU : FundamentalGroup U (⟨base, hbaseU⟩ : U) →* G)
     (fV : FundamentalGroup V (⟨base, hbaseV⟩ : V) →* G)
     (hagree :
@@ -484,7 +540,187 @@ public axiom fundamentalGroupOpenUnion_lift
         (⟨base, hbaseU⟩ : U)) = fU ∧
       f.comp (FundamentalGroup.map
         (PaperVanKampenFourPieceCover.subsetInclusion V)
-        (⟨base, hbaseV⟩ : V)) = fV
+        (⟨base, hbaseV⟩ : V)) = fV := by
+  let baseInter : (U ∩ V : Set X) := ⟨base, hbaseU, hbaseV⟩
+  let FU : FundamentalGroupoid U ⥤ ConnectorTarget G :=
+    connectorFunctor
+      ((FundamentalGroupoid.map (intersectionToLeft U V)).obj
+        (FundamentalGroupoid.mk baseInter))
+      (leftConnector U V baseInter hUPath hInterPath) fU
+  let FV : FundamentalGroupoid V ⥤ ConnectorTarget G :=
+    connectorFunctor
+      ((FundamentalGroupoid.map (intersectionToRight U V)).obj
+        (FundamentalGroupoid.mk baseInter))
+      (rightConnector U V baseInter hVPath hInterPath) fV
+  have hcompat :
+      FundamentalGroupoid.map (intersectionToLeft U V) ⋙ FU =
+        FundamentalGroupoid.map (intersectionToRight U V) ⋙ FV :=
+    restrictedConnectorFunctors_eq U V baseInter hUPath hVPath hInterPath fU fV hagree
+  let cover := twoOpenCover U V hUOpen hVOpen
+  let sourceCocone := (πₒ (TopCat.of X)).mapCocone
+    (CategoryTheory.Pairwise.cocone cover)
+  let targetCocone :=
+    twoOpenTargetCocone U V hUOpen hVOpen FU FV hcompat
+  let hc : CategoryTheory.Limits.IsColimit sourceCocone :=
+    Classical.choice (twoOpenVanKampenCocone_isColimit cover)
+  let glued : sourceCocone.pt ⥤ Grpd.of (ConnectorTarget G) :=
+    hc.desc targetCocone
+  let toCover := toTwoOpenCover U V hUOpen hVOpen hcover
+  let ambientFunctor : FundamentalGroupoid X ⥤ ConnectorTarget G :=
+    FundamentalGroupoid.map toCover ⋙ glued
+  have hleftFunctor :
+      FundamentalGroupoid.map
+          (PaperVanKampenFourPieceCover.subsetInclusion U) ⋙ ambientFunctor = FU := by
+    have hleg := twoOpenCover_left_leg U V hUOpen hVOpen hcover
+    have hleg' := congrArg (fun K ↦ K ⋙ glued) hleg
+    change (FundamentalGroupoid.map
+        (PaperVanKampenFourPieceCover.subsetInclusion U) ⋙
+      FundamentalGroupoid.map toCover) ⋙ glued = FU
+    exact hleg'.trans (hc.fac targetCocone (.single false))
+  have hrightFunctor :
+      FundamentalGroupoid.map
+          (PaperVanKampenFourPieceCover.subsetInclusion V) ⋙ ambientFunctor = FV := by
+    have hleg := twoOpenCover_right_leg U V hUOpen hVOpen hcover
+    have hleg' := congrArg (fun K ↦ K ⋙ glued) hleg
+    change (FundamentalGroupoid.map
+        (PaperVanKampenFourPieceCover.subsetInclusion V) ⋙
+      FundamentalGroupoid.map toCover) ⋙ glued = FV
+    exact hleg'.trans (hc.fac targetCocone (.single true))
+  let f : FundamentalGroup X base →* G :=
+    connectorMapEnd ambientFunctor (FundamentalGroupoid.mk base)
+  refine ⟨f, ?_, ?_⟩
+  · have hm := congrArg
+      (fun K : FundamentalGroupoid U ⥤ ConnectorTarget G ↦
+        connectorMapEnd K
+          ((FundamentalGroupoid.map (intersectionToLeft U V)).obj
+            (FundamentalGroupoid.mk baseInter)))
+      hleftFunctor
+    change f.comp (FundamentalGroup.map
+        (PaperVanKampenFourPieceCover.subsetInclusion U)
+        (⟨base, hbaseU⟩ : U)) =
+      connectorMapEnd FU
+        ((FundamentalGroupoid.map (intersectionToLeft U V)).obj
+          (FundamentalGroupoid.mk baseInter)) at hm
+    exact hm.trans (by
+      apply MonoidHom.ext
+      intro p
+      dsimp [FU, connectorFunctor]
+      dsimp [connectorMapEnd, leftConnector]
+      simp only [Groupoid.inv_eq_inv, IsIso.inv_hom_id, Category.id_comp,
+        IsIso.inv_id, Category.comp_id])
+  · have hm := congrArg
+      (fun K : FundamentalGroupoid V ⥤ ConnectorTarget G ↦
+        connectorMapEnd K
+          ((FundamentalGroupoid.map (intersectionToRight U V)).obj
+            (FundamentalGroupoid.mk baseInter)))
+      hrightFunctor
+    change f.comp (FundamentalGroup.map
+        (PaperVanKampenFourPieceCover.subsetInclusion V)
+        (⟨base, hbaseV⟩ : V)) =
+      connectorMapEnd FV
+        ((FundamentalGroupoid.map (intersectionToRight U V)).obj
+          (FundamentalGroupoid.mk baseInter)) at hm
+    exact hm.trans (by
+      apply MonoidHom.ext
+      intro p
+      dsimp [FV, connectorFunctor]
+      dsimp [connectorMapEnd, rightConnector]
+      simp only [Groupoid.inv_eq_inv, IsIso.inv_hom_id, Category.id_comp,
+        IsIso.inv_id, Category.comp_id])
+
+/-- The existence part of the based Seifert--van Kampen universal property for an open
+two-set cover: compatible homomorphisms from the two local fundamental groups extend to the
+ambient fundamental group. -/
+public theorem fundamentalGroupOpenUnion_lift
+    {X : Type u} [TopologicalSpace X]
+    (U V : Set X) (base : X)
+    (hUOpen : IsOpen U) (hVOpen : IsOpen V)
+    (hcover : U ∪ V = Set.univ)
+    (hbaseU : base ∈ U) (hbaseV : base ∈ V)
+    (hUPath : IsPathConnected U) (hVPath : IsPathConnected V)
+    (hInterPath : IsPathConnected (U ∩ V))
+    {G : Type v} [Group G]
+    (fU : FundamentalGroup U (⟨base, hbaseU⟩ : U) →* G)
+    (fV : FundamentalGroup V (⟨base, hbaseV⟩ : V) →* G)
+    (hagree :
+      fU.comp (FundamentalGroup.map (intersectionToLeft U V)
+        (⟨base, hbaseU, hbaseV⟩ : (U ∩ V : Set X))) =
+      fV.comp (FundamentalGroup.map (intersectionToRight U V)
+        (⟨base, hbaseU, hbaseV⟩ : (U ∩ V : Set X)))) :
+    ∃ f : FundamentalGroup X base →* G,
+      f.comp (FundamentalGroup.map
+        (PaperVanKampenFourPieceCover.subsetInclusion U)
+        (⟨base, hbaseU⟩ : U)) = fU ∧
+      f.comp (FundamentalGroup.map
+        (PaperVanKampenFourPieceCover.subsetInclusion V)
+        (⟨base, hbaseV⟩ : V)) = fV := by
+  let baseInter : (U ∩ V : Set X) := ⟨base, hbaseU, hbaseV⟩
+  let leftMap : FundamentalGroup (U ∩ V : Set X) baseInter →*
+      FundamentalGroup U (⟨base, hbaseU⟩ : U) :=
+    FundamentalGroup.map (intersectionToLeft U V) baseInter
+  let rightMap : FundamentalGroup (U ∩ V : Set X) baseInter →*
+      FundamentalGroup V (⟨base, hbaseV⟩ : V) :=
+    FundamentalGroup.map (intersectionToRight U V) baseInter
+  let P := Monoid.Coprod
+    (FundamentalGroup U (⟨base, hbaseU⟩ : U))
+    (FundamentalGroup V (⟨base, hbaseV⟩ : V))
+  let rels : Set P := Set.range fun c : FundamentalGroup (U ∩ V : Set X) baseInter ↦
+    Monoid.Coprod.inl (leftMap c) / Monoid.Coprod.inr (rightMap c)
+  let N : Subgroup P := Subgroup.normalClosure rels
+  let q : P →* P ⧸ N := QuotientGroup.mk' N
+  let iU : FundamentalGroup U (⟨base, hbaseU⟩ : U) →* P ⧸ N :=
+    q.comp Monoid.Coprod.inl
+  let iV : FundamentalGroup V (⟨base, hbaseV⟩ : V) →* P ⧸ N :=
+    q.comp Monoid.Coprod.inr
+  have hlocal : iU.comp leftMap = iV.comp rightMap := by
+    apply MonoidHom.ext
+    intro c
+    apply QuotientGroup.eq_iff_div_mem.mpr
+    exact Subgroup.subset_normalClosure (Set.mem_range_self c)
+  obtain ⟨fP, hfPU, hfPV⟩ :=
+    fundamentalGroupOpenUnion_lift_sameUniverse U V base hUOpen hVOpen hcover
+      hbaseU hbaseV hUPath hVPath hInterPath iU iV hlocal
+  let evaluate : P →* G := Monoid.Coprod.lift fU fV
+  have hN : N ≤ evaluate.ker := by
+    apply Subgroup.normalClosure_le_normal
+    rintro _ ⟨c, rfl⟩
+    apply MonoidHom.mem_ker.mpr
+    have hc := DFunLike.congr_fun hagree c
+    change fU (leftMap c) = fV (rightMap c) at hc
+    rw [map_div, Monoid.Coprod.lift_apply_inl, Monoid.Coprod.lift_apply_inr, hc]
+    simp
+  let descend : P ⧸ N →* G := QuotientGroup.lift N evaluate hN
+  refine ⟨descend.comp fP, ?_, ?_⟩
+  · let mapU : FundamentalGroup U (⟨base, hbaseU⟩ : U) →* FundamentalGroup X base :=
+      FundamentalGroup.map (PaperVanKampenFourPieceCover.subsetInclusion U)
+        (⟨base, hbaseU⟩ : U)
+    change (descend.comp fP).comp mapU = fU
+    have hfPU' : fP.comp mapU = iU := hfPU
+    calc
+      (descend.comp fP).comp mapU = descend.comp iU := by
+        rw [MonoidHom.comp_assoc, hfPU']
+      _ = fU := by
+        change descend.comp (q.comp Monoid.Coprod.inl) = fU
+        rw [← MonoidHom.comp_assoc]
+        change ((QuotientGroup.lift N evaluate hN).comp
+          (QuotientGroup.mk' N)).comp Monoid.Coprod.inl = fU
+        rw [QuotientGroup.lift_comp_mk']
+        exact Monoid.Coprod.lift_comp_inl fU fV
+  · let mapV : FundamentalGroup V (⟨base, hbaseV⟩ : V) →* FundamentalGroup X base :=
+      FundamentalGroup.map (PaperVanKampenFourPieceCover.subsetInclusion V)
+        (⟨base, hbaseV⟩ : V)
+    change (descend.comp fP).comp mapV = fV
+    have hfPV' : fP.comp mapV = iV := hfPV
+    calc
+      (descend.comp fP).comp mapV = descend.comp iV := by
+        rw [MonoidHom.comp_assoc, hfPV']
+      _ = fV := by
+        change descend.comp (q.comp Monoid.Coprod.inr) = fV
+        rw [← MonoidHom.comp_assoc]
+        change ((QuotientGroup.lift N evaluate hN).comp
+          (QuotientGroup.mk' N)).comp Monoid.Coprod.inr = fV
+        rw [QuotientGroup.lift_comp_mk']
+        exact Monoid.Coprod.lift_comp_inr fU fV
 
 /-- The based Seifert--van Kampen free-product consequence for two open sets with contractible
 overlap, specialized only to the case where both vertex groups have a selected integral
