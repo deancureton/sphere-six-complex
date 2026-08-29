@@ -7,6 +7,7 @@ module
 
 public import SphereSixComplex.Geometry.StandardInfiniteA2ToricCentralComponents
 public import SphereSixComplex.Geometry.StandardInfiniteA2ToricResidualAnalytic
+public import SphereSixComplex.Geometry.StandardInfiniteA2ToricSublevelSimplyConnected
 
 /-!
 # Remaining geometry for the standard infinite `A₂` toric model
@@ -29,8 +30,6 @@ namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
 
 /-- The geometric facts not yet supplied by the glued-carrier construction. -/
 public structure RemainingGeometry where
-  localCarrierSimplyConnected :
-    ∀ r, 0 < r → SimplyConnectedSpace {p : Carrier // p ∈ carrierHeight ⁻¹' Metric.ball 0 r}
   closedUnitPolydisc_union_below_closed :
     letI := chartedSpace
     ∀ c : ℝ, c < 1 → IsClosed (⋃ a : ChartIndex,
@@ -68,7 +67,7 @@ public noncomputable def RemainingGeometry.toModel (R : RemainingGeometry) : Mod
   secondCountable := secondCountableTopology
   connected := carrierConnectedSpace
   t := carrierHeight
-  localCarrierSimplyConnected := R.localCarrierSimplyConnected
+  localCarrierSimplyConnected := carrierHeightSublevel_simplyConnected
   t_holomorphic := carrierHeight_contMDiff
   torusEmbedding := carrierTorusEmbedding
   torus_openEmbedding := carrierTorusEmbedding_isOpenEmbedding
