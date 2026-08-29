@@ -94,6 +94,7 @@ public import SphereSixComplex.Geometry.RegularBaseTopology
 public import SphereSixComplex.Geometry.RegularTorusFamily
 public import SphereSixComplex.Geometry.StandardInfiniteA2ToricComponentPreservation
 public import SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
+public import SphereSixComplex.Geometry.StandardInfiniteA2ToricCarrier
 public import SphereSixComplex.Geometry.StandardInfiniteA2ToricQuantitativeRegions
 public import SphereSixComplex.Geometry.StarCompactCover
 public import SphereSixComplex.Geometry.A2ConeUnimodularity
