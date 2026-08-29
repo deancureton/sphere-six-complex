@@ -3,6 +3,14 @@
 # Checked by ./scripts/check-axioms.sh. Project axioms are isolated established results with
 # precise geometric, analytic, or classical-topological statements; their source docstrings
 # record the corresponding trust boundary.
+#
+# Intended retained project trust kernel (7 constants):
+# establishedHomologyToHomotopySixSphere, establishedSmoothPoincareSixStandardModel,
+# establishedCompactSmoothOrientedManifoldHomologyTheory, integralCWCellularChainModel,
+# isHomotopyEquivalenceInclusion_of_isAspherical_of_bijective_fundamentalGroup,
+# FiniteCWBundleModelSix.establishedEulerMultiplicativity, and
+# establishedOrbifoldAffineLineTorsorCuspBoundedSection.
+# Every other project constant below is a temporary proof obligation to eliminate.
 
 # Lean's standard logical axioms.
 propext

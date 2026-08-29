@@ -1,5 +1,8 @@
 # Allowlist for the implemented construction cone, excluding only the final smooth-recognition
 # step. Each project axiom is an isolated established theorem documented at its declaration.
+# Intended retained project trust kernel here: compact-manifold homology, cellular homology,
+# relative Whitehead for aspherical CW pairs, general finite-CW bundle Euler multiplicativity,
+# and the orbifold cusp-bounded section theorem. Every other project constant is temporary.
 
 Classical.choice
 Quot.sound
