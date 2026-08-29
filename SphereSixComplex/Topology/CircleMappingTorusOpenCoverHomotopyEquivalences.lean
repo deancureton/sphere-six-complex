@@ -1,6 +1,7 @@
 module
 
 public import SphereSixComplex.Topology.WangHomologyPresentationProof
+public import SphereSixComplex.Topology.EstablishedAffineVanKampen
 public import Mathlib.AlgebraicTopology.FundamentalGroupoid.VanKampen.IsColimit
 
 @[expose] public section
@@ -10,6 +11,8 @@ open Set ContinuousMap CategoryTheory TopologicalSpace
 noncomputable section
 
 namespace SphereSixComplex
+
+open IntegralMayerVietoris
 
 def circleMappingTorusVertexOpen
     {F : Type} [TopologicalSpace F] (phi : F ≃ₜ F) :
@@ -149,11 +152,82 @@ def fundamentalGroupoidBasedFunctor
     change _ ≫ (p ≫ q) ≫ _ = (_ ≫ p ≫ _) ≫ (_ ≫ q ≫ _)
     simp
 
+def circleMappingTorusHighGauge
+    {F H : Type} [TopologicalSpace F] [PathConnectedSpace F] [Group H]
+    (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x)
+    (f : FundamentalGroup F x →* H) (t : H) : H :=
+  (f (Path.Homotopic.Quotient.mk (PathConnectedSpace.somePath x (phi x)) ≫
+      Path.Homotopic.Quotient.mk delta))⁻¹ * t *
+    f (Path.Homotopic.Quotient.mk (PathConnectedSpace.somePath x x))
+
+public theorem fundamentalGroupoidBasedFunctor_high_intertwining
+    {F H : Type} [TopologicalSpace F] [PathConnectedSpace F] [Group H]
+    (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x)
+    (f : FundamentalGroup F x →* H) (t : H)
+    (h : ∀ a : FundamentalGroup F x,
+      t * f a * t⁻¹ = f (mappingTorusMonodromyHom phi x delta a))
+    (a : FundamentalGroup F x) :
+    (fundamentalGroupoidBasedFunctor x f).map a ≫
+        circleMappingTorusHighGauge phi x delta f t =
+      circleMappingTorusHighGauge phi x delta f t ≫
+        (fundamentalGroupoidBasedFunctor x f).map
+          ((FundamentalGroupoid.map (phi : C(F, F))).map a) := by
+  let p₀ : FundamentalGroup F x :=
+    Path.Homotopic.Quotient.mk (PathConnectedSpace.somePath x x)
+  let s : FundamentalGroupoid.mk x ⟶ FundamentalGroupoid.mk (phi x) :=
+    Path.Homotopic.Quotient.mk (PathConnectedSpace.somePath x (phi x))
+  let e : FundamentalGroupoid.mk (phi x) ⟶ FundamentalGroupoid.mk x :=
+    Path.Homotopic.Quotient.mk delta
+  let d : FundamentalGroup F x := s ≫ e
+  let b : FundamentalGroup F (phi x) :=
+    FundamentalGroup.map (phi : C(F, F)) x a
+  have hedge :
+      Path.Homotopic.Quotient.mk (PathConnectedSpace.somePath x x) ≫ a ≫
+          Groupoid.inv
+            (Path.Homotopic.Quotient.mk (PathConnectedSpace.somePath x x)) =
+        p₀⁻¹ * a * p₀ := by
+    rfl
+  have hhigh :
+      s ≫ b ≫ Groupoid.inv s =
+        d⁻¹ * mappingTorusMonodromyHom phi x delta a * d := by
+    change s ≫ b ≫ Groupoid.inv s =
+      (s ≫ e) ≫ (Groupoid.inv e ≫ b ≫ e) ≫ Groupoid.inv (s ≫ e)
+    rw [Groupoid.inv_eq_inv e, Groupoid.inv_eq_inv (s ≫ e), IsIso.inv_comp]
+    simp only [Category.assoc, IsIso.hom_inv_id_assoc]
+    rw [Groupoid.inv_eq_inv]
+  change circleMappingTorusHighGauge phi x delta f t *
+      f (Path.Homotopic.Quotient.mk (PathConnectedSpace.somePath x x) ≫ a ≫
+        Groupoid.inv
+          (Path.Homotopic.Quotient.mk (PathConnectedSpace.somePath x x))) =
+    f (Path.Homotopic.Quotient.mk (PathConnectedSpace.somePath x (phi x)) ≫
+        (FundamentalGroupoid.map (phi : C(F, F))).map a ≫
+          Groupoid.inv
+            (Path.Homotopic.Quotient.mk
+              (PathConnectedSpace.somePath x (phi x)))) *
+      circleMappingTorusHighGauge phi x delta f t
+  change circleMappingTorusHighGauge phi x delta f t *
+      f (p₀ ≫ a ≫ Groupoid.inv p₀) =
+    f (s ≫ b ≫ Groupoid.inv s) * circleMappingTorusHighGauge phi x delta f t
+  rw [hedge, hhigh, map_mul, map_mul, map_mul, map_mul]
+  dsimp [circleMappingTorusHighGauge, d, p₀, s, e]
+  rw [map_inv, ← h a]
+  group
+  rw [map_zpow]
+
 def sumInrContinuousMap {X : Type*} [TopologicalSpace X] : C(X, X ⊕ X) :=
   ⟨Sum.inr, continuous_inr⟩
 
 def sumFoldContinuousMap {X : Type*} [TopologicalSpace X] : C(X ⊕ X, X) :=
   ⟨Sum.elim id id, continuous_id.sumElim continuous_id⟩
+
+public theorem fundamentalGroupoid_map_comp_apply
+    {X Y Z : Type*} [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace Z]
+    (f : C(X, Y)) (g : C(Y, Z)) {x y : X}
+    (p : FundamentalGroupoid.mk x ⟶ FundamentalGroupoid.mk y) :
+    (FundamentalGroupoid.map g).map ((FundamentalGroupoid.map f).map p) =
+      (FundamentalGroupoid.map (g.comp f)).map p := by
+  induction p using Quotient.ind with
+  | _ p => rfl
 
 public theorem fundamentalGroupoid_sumInr_map_bijective
     {X : Type*} [TopologicalSpace X] (x y : X) :
@@ -383,5 +457,59 @@ public theorem circleMappingTorusOverlapHomotopyEquiv_toFun_inr
     (circleMappingTorusOverlapHomotopyEquiv phi).toFun (Sum.inr x) =
       overlapPt (fun _ : Unit ↦ phi) uThreeQuarters_mem_overlapBand () x := by
   rfl
+
+public theorem circleMappingTorusOverlapHigh_edgeRetract
+    {F : Type} [TopologicalSpace F] (phi : F ≃ₜ F) :
+    (circleMappingTorusEdgePieceHomotopyEquiv phi).invFun.comp
+        ((interToRight (vertexPiece (fun _ : Unit ↦ phi))
+          (edgePiece (fun _ : Unit ↦ phi))).comp
+            ((circleMappingTorusOverlapHomotopyEquiv phi).toFun.comp
+              (sumInrContinuousMap (X := F)))) =
+      ContinuousMap.id F := by
+  ext x
+  exact circleMappingTorusEdgePieceHomotopyEquiv_invFun_edgeHighPt phi x
+
+public theorem circleMappingTorusOverlapHigh_vertexRetract
+    {F : Type} [TopologicalSpace F] (phi : F ≃ₜ F) :
+    (vertexRetract (fun _ : Unit ↦ phi)).comp
+        ((interToLeft (vertexPiece (fun _ : Unit ↦ phi))
+          (edgePiece (fun _ : Unit ↦ phi))).comp
+            ((circleMappingTorusOverlapHomotopyEquiv phi).toFun.comp
+              (sumInrContinuousMap (X := F)))) =
+      (phi : C(F, F)) := by
+  ext x
+  change vertexRetract (fun _ : Unit ↦ phi)
+      (vertexHighPt (fun _ : Unit ↦ phi) () x) = phi x
+  exact congrArg (fun f : C(F, F) => f x)
+    (vertexRetract_comp_vertexHighPt (fun _ : Unit ↦ phi) ())
+
+public theorem circleMappingTorusOverlapHigh_intertwining
+    {F H : Type} [TopologicalSpace F] [PathConnectedSpace F] [Group H]
+    (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x)
+    (f : FundamentalGroup F x →* H) (t : H)
+    (h : ∀ a : FundamentalGroup F x,
+      t * f a * t⁻¹ = f (mappingTorusMonodromyHom phi x delta a))
+    (a : FundamentalGroup F x) :
+    (fundamentalGroupoidBasedFunctor x f).map
+          ((FundamentalGroupoid.map
+            ((circleMappingTorusEdgePieceHomotopyEquiv phi).invFun.comp
+              ((interToRight (vertexPiece (fun _ : Unit ↦ phi))
+                (edgePiece (fun _ : Unit ↦ phi))).comp
+                  ((circleMappingTorusOverlapHomotopyEquiv phi).toFun.comp
+                    (sumInrContinuousMap (X := F)))))).map a) ≫
+        circleMappingTorusHighGauge phi x delta f t =
+      circleMappingTorusHighGauge phi x delta f t ≫
+        (fundamentalGroupoidBasedFunctor x f).map
+          ((FundamentalGroupoid.map
+            ((vertexRetract (fun _ : Unit ↦ phi)).comp
+              ((interToLeft (vertexPiece (fun _ : Unit ↦ phi))
+                (edgePiece (fun _ : Unit ↦ phi))).comp
+                  ((circleMappingTorusOverlapHomotopyEquiv phi).toFun.comp
+                    (sumInrContinuousMap (X := F)))))).map a) := by
+  rw [circleMappingTorusOverlapHigh_edgeRetract,
+    circleMappingTorusOverlapHigh_vertexRetract]
+  rw [show FundamentalGroupoid.map (ContinuousMap.id F) = 𝟭 _ from
+    FundamentalGroupoid.map_id]
+  exact fundamentalGroupoidBasedFunctor_high_intertwining phi x delta f t h a
 
 end SphereSixComplex
