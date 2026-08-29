@@ -95,7 +95,7 @@ axiom SphereSixComplex.Topology.AffineFiniteCyclicTorusCW.establishedFiniteCWMod
                   IsCoveringMap ⇑projection →
                     Function.Surjective ⇑projection →
                       SphereSixComplex.Topology.AffineFiniteCyclicTorusCW.FiniteCWModelAtMost 4 X
-axiom SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.EstablishedAffineCyclicQuotientHomology.establishedAffineCyclicUniversalCoverHOneIdentification : {m :
+axiom SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.EstablishedAffineCyclicQuotientHomology.establishedAffineCyclicDeckHurewiczComparison : {m :
     ℕ} →
   [inst : NeZero m] →
     {p : SphereSixComplex.Periods.Parameters} →
@@ -103,7 +103,7 @@ axiom SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.EstablishedAffine
           SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction.RadialEllipticActionData m
             (SphereSixComplex.Geometry.EllipticFamilySpecialization.AdditiveTorus p)} →
         (P : SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.AffineCyclicCentralFiberPresentationData m p D) →
-          SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.EstablishedAffineCyclicQuotientHomology.AffineCyclicUniversalCoverHOneIdentification
+          SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.EstablishedAffineCyclicQuotientHomology.AffineCyclicDeckHurewiczComparison
             P
 
 # Established analytic and toric models from the paper.
@@ -137,30 +137,34 @@ axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2C
 axiom SphereSixComplex.Geometry.PaperAnalyticData.establishedActualEllipticMarkedFillingExtensionNaturality : ∀
   (A : SphereSixComplex.Geometry.PaperAnalyticData),
   Nonempty (A.ActualEllipticMarkedFillingExtensionNaturality A.actualCuspCentralNaturality)
-axiom SphereSixComplex.Topology.TwicePuncturedComplex.freeTwoGeneratorLift_injective_of_open_union.{u_1} : ∀
-  {X : Type u_1} [inst : TopologicalSpace X] (U V : Set X) (base : X),
+axiom SphereSixComplex.Topology.TwicePuncturedComplex.fundamentalGroupOpenUnion_lift.{u_1, u_2} : ∀ {X : Type u_1}
+  [inst : TopologicalSpace X] (U V : Set X) (base : X),
   IsOpen U →
     IsOpen V →
       U ∪ V = Set.univ →
         ∀ (hbaseU : base ∈ U) (hbaseV : base ∈ V),
           IsPathConnected U →
             IsPathConnected V →
-              ContractibleSpace ↑(U ∩ V) →
-                ∀ (u : FundamentalGroup ↑U ⟨base, hbaseU⟩) (v : FundamentalGroup ↑V ⟨base, hbaseV⟩),
-                  (Function.Bijective fun n => u ^ n) →
-                    (Function.Bijective fun n => v ^ n) →
-                      Function.Injective
-                        ⇑(FreeGroup.lift fun i =>
-                            if i = 0 then
-                              (FundamentalGroup.map
-                                  (SphereSixComplex.Topology.PaperVanKampenFourPieceCover.subsetInclusion U)
-                                  ⟨base, hbaseU⟩)
-                                u
-                            else
-                              (FundamentalGroup.map
-                                  (SphereSixComplex.Topology.PaperVanKampenFourPieceCover.subsetInclusion V)
-                                  ⟨base, hbaseV⟩)
-                                v)
+              IsPathConnected (U ∩ V) →
+                ∀ {G : Type u_2} [inst_1 : Group G] (fU : FundamentalGroup ↑U ⟨base, hbaseU⟩ →* G)
+                  (fV : FundamentalGroup ↑V ⟨base, hbaseV⟩ →* G),
+                  fU.comp
+                        (FundamentalGroup.map (SphereSixComplex.Topology.TwicePuncturedComplex.intersectionToLeft U V)
+                          ⟨base, ⟨hbaseU, hbaseV⟩⟩) =
+                      fV.comp
+                        (FundamentalGroup.map (SphereSixComplex.Topology.TwicePuncturedComplex.intersectionToRight U V)
+                          ⟨base, ⟨hbaseU, hbaseV⟩⟩) →
+                    ∃ f,
+                      f.comp
+                            (FundamentalGroup.map
+                              (SphereSixComplex.Topology.PaperVanKampenFourPieceCover.subsetInclusion U)
+                              ⟨base, hbaseU⟩) =
+                          fU ∧
+                        f.comp
+                            (FundamentalGroup.map
+                              (SphereSixComplex.Topology.PaperVanKampenFourPieceCover.subsetInclusion V)
+                              ⟨base, hbaseV⟩) =
+                          fV
 axiom SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenAffineRegularLiftTopology.markedBandHomotopies : ∀
   (A : SphereSixComplex.Geometry.PaperAnalyticData), A.SectionSevenAffineOverlapBandCompatibility
 axiom SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTopology.establishedActualCuspFiberEllipticMarkedCoordinateCalculation : ∀

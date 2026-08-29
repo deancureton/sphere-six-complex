@@ -17,11 +17,50 @@ noncomputable section
 
 namespace SphereSixComplex.Topology.TwicePuncturedComplex
 
+/-- Inclusion of the intersection of two subspaces into the first subspace. -/
+public def intersectionToLeft {X : Type*} [TopologicalSpace X] (U V : Set X) :
+    C((U ∩ V : Set X), U) where
+  toFun x := ⟨x, x.2.1⟩
+  continuous_toFun := continuous_subtype_val.subtype_mk _
+
+/-- Inclusion of the intersection of two subspaces into the second subspace. -/
+public def intersectionToRight {X : Type*} [TopologicalSpace X] (U V : Set X) :
+    C((U ∩ V : Set X), V) where
+  toFun x := ⟨x, x.2.2⟩
+  continuous_toFun := continuous_subtype_val.subtype_mk _
+
+/-- The existence part of the based Seifert--van Kampen universal property for an open
+two-set cover: compatible homomorphisms from the two local fundamental groups extend to the
+ambient fundamental group. -/
+public axiom fundamentalGroupOpenUnion_lift
+    {X : Type*} [TopologicalSpace X]
+    (U V : Set X) (base : X)
+    (hUOpen : IsOpen U) (hVOpen : IsOpen V)
+    (hcover : U ∪ V = Set.univ)
+    (hbaseU : base ∈ U) (hbaseV : base ∈ V)
+    (hUPath : IsPathConnected U) (hVPath : IsPathConnected V)
+    (hInterPath : IsPathConnected (U ∩ V))
+    {G : Type*} [Group G]
+    (fU : FundamentalGroup U (⟨base, hbaseU⟩ : U) →* G)
+    (fV : FundamentalGroup V (⟨base, hbaseV⟩ : V) →* G)
+    (hagree :
+      fU.comp (FundamentalGroup.map (intersectionToLeft U V)
+        (⟨base, hbaseU, hbaseV⟩ : (U ∩ V : Set X))) =
+      fV.comp (FundamentalGroup.map (intersectionToRight U V)
+        (⟨base, hbaseU, hbaseV⟩ : (U ∩ V : Set X)))) :
+    ∃ f : FundamentalGroup X base →* G,
+      f.comp (FundamentalGroup.map
+        (PaperVanKampenFourPieceCover.subsetInclusion U)
+        (⟨base, hbaseU⟩ : U)) = fU ∧
+      f.comp (FundamentalGroup.map
+        (PaperVanKampenFourPieceCover.subsetInclusion V)
+        (⟨base, hbaseV⟩ : V)) = fV
+
 /-- The based Seifert--van Kampen free-product consequence for two open sets with contractible
 overlap, specialized only to the case where both vertex groups have a selected integral
 coordinate.  Mathlib currently provides the fundamental-groupoid colimit theorem but not this
 based-group extraction. -/
-public axiom freeTwoGeneratorLift_injective_of_open_union
+public theorem freeTwoGeneratorLift_injective_of_open_union
     {X : Type*} [TopologicalSpace X]
     (U V : Set X) (base : X)
     (hUOpen : IsOpen U) (hVOpen : IsOpen V)
@@ -42,7 +81,84 @@ public axiom freeTwoGeneratorLift_injective_of_open_union
         else
           FundamentalGroup.map
             (PaperVanKampenFourPieceCover.subsetInclusion V)
-            (⟨base, hbaseV⟩ : V) v)
+            (⟨base, hbaseV⟩ : V) v) := by
+  unfold PaperVanKampenFourPieceCover.subsetInclusion
+  let _ : ContractibleSpace ↑(U ∩ V : Set X) := hInter
+  let _ : SimplyConnectedSpace ↑(U ∩ V : Set X) :=
+    SimplyConnectedSpace.ofContractible _
+  have hInterPath : IsPathConnected (U ∩ V) :=
+    isPathConnected_iff_pathConnectedSpace.mpr inferInstance
+  have hUZPow : Function.Bijective
+      (zpowersHom (FundamentalGroup U (⟨base, hbaseU⟩ : U)) u) := by
+    constructor
+    · intro m n hmn
+      exact hUCoordinate.1 hmn
+    · intro x
+      obtain ⟨n, rfl⟩ := hUCoordinate.2 x
+      exact ⟨Multiplicative.ofAdd n, rfl⟩
+  have hVZPow : Function.Bijective
+      (zpowersHom (FundamentalGroup V (⟨base, hbaseV⟩ : V)) v) := by
+    constructor
+    · intro m n hmn
+      exact hVCoordinate.1 hmn
+    · intro x
+      obtain ⟨n, rfl⟩ := hVCoordinate.2 x
+      exact ⟨Multiplicative.ofAdd n, rfl⟩
+  let uEquiv : Multiplicative ℤ ≃* FundamentalGroup U (⟨base, hbaseU⟩ : U) :=
+    MulEquiv.ofBijective (zpowersHom _ u) hUZPow
+  let vEquiv : Multiplicative ℤ ≃* FundamentalGroup V (⟨base, hbaseV⟩ : V) :=
+    MulEquiv.ofBijective (zpowersHom _ v) hVZPow
+  let fU : FundamentalGroup U (⟨base, hbaseU⟩ : U) →* FreeGroup (Fin 2) :=
+    (zpowersHom _ (FreeGroup.of 0)).comp uEquiv.symm.toMonoidHom
+  let fV : FundamentalGroup V (⟨base, hbaseV⟩ : V) →* FreeGroup (Fin 2) :=
+    (zpowersHom _ (FreeGroup.of 1)).comp vEquiv.symm.toMonoidHom
+  have hagree :
+      fU.comp (FundamentalGroup.map (intersectionToLeft U V)
+        (⟨base, hbaseU, hbaseV⟩ : (U ∩ V : Set X))) =
+      fV.comp (FundamentalGroup.map (intersectionToRight U V)
+        (⟨base, hbaseU, hbaseV⟩ : (U ∩ V : Set X))) := by
+    unfold intersectionToLeft intersectionToRight
+    apply MonoidHom.ext
+    intro x
+    rw [show x = 1 from Subsingleton.elim _ _]
+    exact (map_one _).trans (map_one _).symm
+  obtain ⟨r, hrU, hrV⟩ :=
+    fundamentalGroupOpenUnion_lift U V base hUOpen hVOpen hcover hbaseU hbaseV
+      hUPath hVPath hInterPath fU fV hagree
+  unfold PaperVanKampenFourPieceCover.subsetInclusion at hrU hrV
+  let mapU : FundamentalGroup U (⟨base, hbaseU⟩ : U) →* FundamentalGroup X base :=
+    FundamentalGroup.map
+      (⟨Subtype.val, continuous_subtype_val⟩ : C(U, X)) (⟨base, hbaseU⟩ : U)
+  let mapV : FundamentalGroup V (⟨base, hbaseV⟩ : V) →* FundamentalGroup X base :=
+    FundamentalGroup.map
+      (⟨Subtype.val, continuous_subtype_val⟩ : C(V, X)) (⟨base, hbaseV⟩ : V)
+  change r.comp mapU = fU at hrU
+  change r.comp mapV = fV at hrV
+  let L : FreeGroup (Fin 2) →* FundamentalGroup X base :=
+    FreeGroup.lift fun i : Fin 2 ↦ if i = 0 then mapU u else mapV v
+  have huEquiv : uEquiv.symm u = Multiplicative.ofAdd 1 := by
+    rw [MulEquiv.symm_apply_eq]
+    simp [uEquiv]
+  have hvEquiv : vEquiv.symm v = Multiplicative.ofAdd 1 := by
+    rw [MulEquiv.symm_apply_eq]
+    simp [vEquiv]
+  have hleft : Function.LeftInverse r L := by
+    intro x
+    change (r.comp L) x = x
+    simpa only [FreeGroup.lift_of_apply] using
+      (FreeGroup.lift_unique (f := FreeGroup.of) (r.comp L) (fun i ↦ by
+        by_cases hi : i = 0
+        · subst i
+          simp only [MonoidHom.comp_apply, L, FreeGroup.lift_apply_of, ↓reduceIte]
+          rw [show r (mapU u) = fU u by exact DFunLike.congr_fun hrU u]
+          simp [fU, huEquiv]
+        · have hi1 : i = 1 := Fin.eq_one_of_ne_zero i hi
+          subst i
+          simp only [MonoidHom.comp_apply, L, FreeGroup.lift_apply_of, one_ne_zero,
+            ↓reduceIte]
+          rw [show r (mapV v) = fV v by exact DFunLike.congr_fun hrV v]
+          simp [fV, hvEquiv]) (x := x))
+  simpa [L, mapU, mapV] using hleft.injective
 
 /-- The canonical map from the free group on two generators to the fundamental group, sending the
 first generator to the clockwise meridian about zero and the second to the clockwise meridian
