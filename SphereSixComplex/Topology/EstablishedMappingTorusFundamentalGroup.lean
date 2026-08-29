@@ -325,65 +325,98 @@ public theorem mappingTorusHNNToFundamentalGroup_bijective_of_up
   · intro y
     exact ⟨inv y, DFunLike.congr_fun hright y⟩
 
-/-- The remaining strictification input: two global based functors that agree on the fibre and
-meridian admit gauges, trivial at the base point, whose restrictions agree on both members of the
-mapping-torus van Kampen cover. -/
-public axiom establishedMappingTorusCompatibleLocalGauges
+public theorem mappingTorusHNN_vanKampen_relation
     {F : Type} [TopologicalSpace F] [PathConnectedSpace F]
     (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x)
-    {H : Type} [Group H]
-    (f g : FundamentalGroup (CircleMappingTorus phi)
-      (circleMappingTorusBase phi x) →* H)
-    (hf : ∀ a, f (circleMappingTorusFiberHom phi x a) =
-      g (circleMappingTorusFiberHom phi x a))
-    (ht : f (circleMappingTorusMeridian phi x delta) =
-      g (circleMappingTorusMeridian phi x delta)) :
-    let _ : PathConnectedSpace (CircleMappingTorus phi) :=
-      pathConnectedSpace_circleMappingTorus_comparison phi
-    ∃ cf cg : FundamentalGroupoid (CircleMappingTorus phi) → H,
-      cf (FundamentalGroupoid.mk (circleMappingTorusBase phi x)) = 1 ∧
-      cg (FundamentalGroupoid.mk (circleMappingTorusBase phi x)) = 1 ∧
-      FundamentalGroupoid.map (vertexPieceInclusion phi) ⋙
-          singleObjGaugeFunctor
-            (normalizedFundamentalGroupoidBasedFunctor
-              (circleMappingTorusBase phi x) f) cf =
-        FundamentalGroupoid.map (vertexPieceInclusion phi) ⋙
-          singleObjGaugeFunctor
-            (normalizedFundamentalGroupoidBasedFunctor
-              (circleMappingTorusBase phi x) g) cg ∧
-      FundamentalGroupoid.map (edgePieceInclusion phi) ⋙
-          singleObjGaugeFunctor
-            (normalizedFundamentalGroupoidBasedFunctor
-              (circleMappingTorusBase phi x) f) cf =
-        FundamentalGroupoid.map (edgePieceInclusion phi) ⋙
-          singleObjGaugeFunctor
-            (normalizedFundamentalGroupoidBasedFunctor
-              (circleMappingTorusBase phi x) g) cg
+    (a : FundamentalGroup F x) :
+    (HNNExtension.t : MappingTorusHNN phi x delta) *
+          HNNExtension.of a * HNNExtension.t⁻¹ =
+        HNNExtension.of (mappingTorusMonodromyHom phi x delta a) := by
+  symm
+  exact HNNExtension.equiv_eq_conj
+    (φ := topMulEquiv (mappingTorusMonodromyEquiv phi x delta))
+    (⟨a, Subgroup.mem_top a⟩ : (⊤ : Subgroup (FundamentalGroup F x)))
 
-public noncomputable def establishedMappingTorusFundamentalGroupUP_vanKampen
+public noncomputable def mappingTorusFundamentalGroupToHNN
     {F : Type} [TopologicalSpace F] [PathConnectedSpace F]
     (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x) :
-    MappingTorusFundamentalGroupUP phi x delta := by
-  letI := pathConnectedSpace_circleMappingTorus_comparison phi
-  exact
-    { conjugate := circleMappingTorus_conjugate phi x delta
-      lift := circleMappingTorusVanKampenLift phi x delta
-      lift_fiber := circleMappingTorusVanKampenLift_fiber phi x delta
-      lift_meridian := circleMappingTorusVanKampenLift_meridian phi x delta
-      hom_ext := by
-        intro H _ f g hf ht
-        obtain ⟨cf, cg, hcf, hcg, hvertex, hedge⟩ :=
-          establishedMappingTorusCompatibleLocalGauges phi x delta f g hf ht
-        exact circleMappingTorusFundamentalGroup_hom_ext_of_compatible_gauges
-          phi x f g cf cg hcf hcg hvertex hedge }
+    FundamentalGroup (CircleMappingTorus phi) (circleMappingTorusBase phi x) →*
+      MappingTorusHNN phi x delta :=
+  circleMappingTorusVanKampenLift phi x delta HNNExtension.of HNNExtension.t
+    (mappingTorusHNN_vanKampen_relation phi x delta)
 
-/-- The canonical HNN comparison is bijective, reduced to the compatible local gauge input. -/
+public theorem mappingTorusFundamentalGroupToHNN_comp_comparison
+    {F : Type} [TopologicalSpace F] [PathConnectedSpace F]
+    (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x) :
+    (mappingTorusFundamentalGroupToHNN phi x delta).comp
+        (mappingTorusHNNToFundamentalGroup phi x delta) =
+      MonoidHom.id (MappingTorusHNN phi x delta) := by
+  apply HNNExtension.hom_ext
+  · ext a
+    change mappingTorusFundamentalGroupToHNN phi x delta
+        (circleMappingTorusFiberHom phi x a) = HNNExtension.of a
+    exact circleMappingTorusVanKampenLift_fiber phi x delta HNNExtension.of
+      HNNExtension.t (mappingTorusHNN_vanKampen_relation phi x delta) a
+  · simp only [MonoidHom.comp_apply, MonoidHom.id_apply]
+    rw [show mappingTorusHNNToFundamentalGroup phi x delta HNNExtension.t =
+        circleMappingTorusMeridian phi x delta by
+      simp [mappingTorusHNNToFundamentalGroup]]
+    exact circleMappingTorusVanKampenLift_meridian phi x delta HNNExtension.of
+      HNNExtension.t (mappingTorusHNN_vanKampen_relation phi x delta)
+
+public theorem mappingTorusHNNToFundamentalGroup_injective
+    {F : Type} [TopologicalSpace F] [PathConnectedSpace F]
+    (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x) :
+    Function.Injective (mappingTorusHNNToFundamentalGroup phi x delta) := by
+  apply Function.LeftInverse.injective
+    (g := mappingTorusFundamentalGroupToHNN phi x delta)
+  intro a
+  simpa only [MonoidHom.comp_apply, MonoidHom.id_apply] using
+    DFunLike.congr_fun
+      (mappingTorusFundamentalGroupToHNN_comp_comparison phi x delta) a
+
+public theorem mappingTorusHNNToFundamentalGroup_surjective_iff_rightInverse
+    {F : Type} [TopologicalSpace F] [PathConnectedSpace F]
+    (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x) :
+    Function.Surjective (mappingTorusHNNToFundamentalGroup phi x delta) ↔
+      (mappingTorusHNNToFundamentalGroup phi x delta).comp
+          (mappingTorusFundamentalGroupToHNN phi x delta) =
+        MonoidHom.id
+          (FundamentalGroup (CircleMappingTorus phi) (circleMappingTorusBase phi x)) := by
+  constructor
+  · intro hsurj
+    apply MonoidHom.ext
+    intro y
+    obtain ⟨w, rfl⟩ := hsurj y
+    have hleft := DFunLike.congr_fun
+      (mappingTorusFundamentalGroupToHNN_comp_comparison phi x delta) w
+    simp only [MonoidHom.comp_apply, MonoidHom.id_apply] at hleft ⊢
+    rw [hleft]
+  · intro hright y
+    refine ⟨mappingTorusFundamentalGroupToHNN phi x delta y, ?_⟩
+    simpa only [MonoidHom.comp_apply, MonoidHom.id_apply] using
+      DFunLike.congr_fun hright y
+
+/-- The remaining mapping-torus input: the canonical HNN comparison is surjective. -/
+public axiom establishedMappingTorusHNNToFundamentalGroup_surjective
+    {F : Type} [TopologicalSpace F] [PathConnectedSpace F]
+    (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x) :
+    Function.Surjective (mappingTorusHNNToFundamentalGroup phi x delta)
+
+/-- The canonical HNN comparison is bijective. -/
 public theorem establishedMappingTorusHNNToFundamentalGroup_bijective
     {F : Type} [TopologicalSpace F] [PathConnectedSpace F]
     (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x) :
     Function.Bijective (mappingTorusHNNToFundamentalGroup phi x delta) :=
-  mappingTorusHNNToFundamentalGroup_bijective_of_up phi x delta
-    (establishedMappingTorusFundamentalGroupUP_vanKampen phi x delta)
+  ⟨mappingTorusHNNToFundamentalGroup_injective phi x delta,
+    establishedMappingTorusHNNToFundamentalGroup_surjective phi x delta⟩
+
+public noncomputable def establishedMappingTorusFundamentalGroupUP_vanKampen
+    {F : Type} [TopologicalSpace F] [PathConnectedSpace F]
+    (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x) :
+    MappingTorusFundamentalGroupUP phi x delta :=
+  mappingTorusFundamentalGroupUP_of_bijective phi x delta
+    (establishedMappingTorusHNNToFundamentalGroup_bijective phi x delta)
 
 /-- The standard HNN-extension presentation of the fundamental group of a mapping torus. -/
 public noncomputable def establishedMappingTorusFundamentalGroupUP

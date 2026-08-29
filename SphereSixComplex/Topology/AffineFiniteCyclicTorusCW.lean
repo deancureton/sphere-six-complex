@@ -66,69 +66,6 @@ public noncomputable def FiniteCWModelAtMost.toFiniteCWModelSix
   finite := M.finite
   cellsAboveSix n hn := M.cellsAbove n (hd.trans_lt hn)
 
-/-- A compact Hausdorff space charted by `ℂ²` has finite CW homotopy type of real dimension at
-most four.  This is the classical finite-dimensional ANR theorem for compact topological
-manifolds, specialized to the dimension used here. -/
-public axiom establishedFiniteCWModelFour_of_compactComplexTwoChartedSpace
-    {X : Type} [TopologicalSpace X] [ChartedSpace ComplexTwoSpace X]
-    [T2Space X] [CompactSpace X] :
-    FiniteCWModelAtMost 4 X
-
-/-- A compact topological complex surface has finite CW homotopy type, of real dimension at most
-four, and this remains true of the Hausdorff base of a surjective covering. -/
-public noncomputable def establishedFiniteCWModelFour_of_compactComplexSurfaceCover
-    {E X : Type} [TopologicalSpace E] [ChartedSpace ComplexTwoSpace E] [T2Space E]
-    [TopologicalSpace X] [T2Space X]
-    (_hManifold : IsManifold (modelWithCornersSelf ℂ ComplexTwoSpace) 0 E)
-    (_hcompact : CompactSpace E)
-    (projection : C(E, X)) (_hcover : IsCoveringMap projection)
-    (_hsurjective : Function.Surjective projection) :
-    FiniteCWModelAtMost 4 X := by
-  letI : CompactSpace X := isCompact_univ_iff.mp (by
-    have himage := isCompact_univ.image projection.continuous
-    rw [Set.image_univ, _hsurjective.range_eq] at himage
-    exact himage)
-  have hcharts :
-      ∀ x : X, ∃ e : OpenPartialHomeomorph X ComplexTwoSpace, x ∈ e.source := by
-    intro x
-    obtain ⟨e, rfl⟩ := _hsurjective x
-    obtain ⟨u, heu, hu⟩ := _hcover.isLocalHomeomorph e
-    refine ⟨u.symm.trans (chartAt ComplexTwoSpace e), ?_⟩
-    rw [OpenPartialHomeomorph.trans_source]
-    constructor
-    · rw [u.symm_source]
-      rw [hu]
-      exact u.map_source heu
-    · change u.symm (projection e) ∈ (chartAt ComplexTwoSpace e).source
-      rw [hu, u.left_inv heu]
-      exact mem_chart_source ComplexTwoSpace e
-  let chart (x : X) := (hcharts x).choose
-  letI : ChartedSpace ComplexTwoSpace X := {
-    atlas := Set.range chart
-    chartAt := chart
-    mem_chart_source x := (hcharts x).choose_spec
-    chart_mem_atlas x := Set.mem_range_self x
-  }
-  exact establishedFiniteCWModelFour_of_compactComplexTwoChartedSpace
-
-/-- Classical finite-CW descent along a covering by a full-rank four-torus.  The residual ANR
-input says that a compact Hausdorff four-manifold has finite CW type, with no cells above
-dimension four (and hence none above dimension six). -/
-public noncomputable def finiteCWModelSix_of_fullRankTorusCover
-    {X : Type} [TopologicalSpace X] [T2Space X]
-    (p : Parameters) (_hfull : FullRank p)
-    (projection : C(AdditiveTorus p, X)) (_hcover : IsCoveringMap projection)
-    (_hsurjective : Function.Surjective projection) :
-    FiniteCWModelSix X := by
-  let _ : ProperlyDiscontinuousSMul (PeriodGroup p) ComplexTwoSpace :=
-    periodLattice_properlyDiscontinuousSMul _hfull
-  let _ : T2Space (AdditiveTorus p) := inferInstance
-  let _ : CompactSpace (AdditiveTorus p) := torus_compactSpace p _hfull
-  exact (establishedFiniteCWModelFour_of_compactComplexSurfaceCover
-    (torus_isManifold_and_projection_isLocalDiffeomorph p _hfull 0).1
-    (inferInstance : CompactSpace (AdditiveTorus p)) projection _hcover
-    _hsurjective).toFiniteCWModelSix (by omega)
-
 namespace RadialEllipticActionData
 
 variable {m : ℕ} [NeZero m] {T : Type} [TopologicalSpace T] [AddCommGroup T]
@@ -246,33 +183,6 @@ private theorem torusCentralFiberProjection_surjective :
 
 end RadialEllipticActionData
 
-private noncomputable def finiteCWModelSix_reducedCentralFiber_of_freeAction
-    {m : ℕ} [NeZero m] (p : Parameters) (hfull : FullRank p)
-    (D : RadialEllipticActionData m (AdditiveTorus p))
-    (hfree : letI := D.actionData.diagonalAction
-      IsCancelSMul (FiniteCyclic m) D.Product) :
-    FiniteCWModelSix D.reducedCentralFiber := by
-  let _ : ProperlyDiscontinuousSMul (PeriodGroup p) ComplexTwoSpace :=
-    periodLattice_properlyDiscontinuousSMul hfull
-  let _ : T2Space (AdditiveTorus p) := inferInstance
-  let _ : CompactSpace (AdditiveTorus p) := torus_compactSpace p hfull
-  let _ : LocallyCompactSpace (AdditiveTorus p) := inferInstance
-  let _ : LocallyCompactSpace ComplexUnitDisc :=
-    (isOpen_lt continuous_norm continuous_const).locallyCompactSpace
-  let _ := D.actionData.diagonalAction
-  let _ : IsCancelSMul (FiniteCyclic m) D.Product := hfree
-  let _ : ContinuousConstSMul (FiniteCyclic m) D.Product :=
-    ⟨D.representation_continuous⟩
-  let _ : ProperlyDiscontinuousSMul (FiniteCyclic m) D.Product := inferInstance
-  let _ : T2Space D.FillingQuotient := by
-    change T2Space (Quotient (MulAction.orbitRel (FiniteCyclic m) D.Product))
-    infer_instance
-  let _ : T2Space D.reducedCentralFiber := inferInstance
-  exact finiteCWModelSix_of_fullRankTorusCover p hfull
-    (RadialEllipticActionData.torusCentralFiberProjection D)
-    (RadialEllipticActionData.torusCentralFiberProjection_isCovering D hfree)
-    (RadialEllipticActionData.torusCentralFiberProjection_surjective D)
-
 /-- The classical smooth-triangulation input, restricted exactly to the order-three and
 order-four affine torus quotients used in this development. -/
 public structure OrderThreeFourAffineGeneratorFiniteCWModels where
@@ -297,13 +207,13 @@ public structure OrderThreeFourAffineGeneratorFiniteCWModels where
         IsCancelSMul (FiniteCyclic 4) D.Product),
       FiniteCWModelSix D.reducedCentralFiber
 
-/-- The order-three and order-four affine quotient models follow from the torus-cover residual. -/
+/-- The finite-CW input restricted to the two affine cyclic quotients used below. -/
+public axiom establishedOrderThreeFourAffineGeneratorFiniteCWModels :
+    OrderThreeFourAffineGeneratorFiniteCWModels
+
 public noncomputable def orderThreeFourAffineGeneratorFiniteCWModels :
-    OrderThreeFourAffineGeneratorFiniteCWModels where
-  orderThree p hfull D _lift _translation _generator_mk hfree :=
-    finiteCWModelSix_reducedCentralFiber_of_freeAction p hfull D hfree
-  orderFour p hfull D _lift _translation _generator_mk hfree :=
-    finiteCWModelSix_reducedCentralFiber_of_freeAction p hfull D hfree
+    OrderThreeFourAffineGeneratorFiniteCWModels :=
+  establishedOrderThreeFourAffineGeneratorFiniteCWModels
 
 /-- A common wrapper for the two supported cyclic orders.  The order certificate is inferred at
 all current call sites, while the classical residual itself is stated only for orders three and

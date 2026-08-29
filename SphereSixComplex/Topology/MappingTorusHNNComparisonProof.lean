@@ -961,4 +961,32 @@ theorem circleMappingTorusFundamentalGroup_hom_ext_of_compatible_gauges
     normalizedFundamentalGroupoidBasedFunctor_map_base, hcf, hcg] at ha
   simpa using ha
 
+theorem circleMappingTorusCompatibleLocalGauges_of_eq
+    {F H : Type} [TopologicalSpace F] [PathConnectedSpace F] [Group H]
+    (phi : F ≃ₜ F) [PathConnectedSpace (CircleMappingTorus phi)] (x : F)
+    (f g : FundamentalGroup (CircleMappingTorus phi)
+      (circleMappingTorusBase phi x) →* H)
+    (hfg : f = g) :
+    ∃ cf cg : FundamentalGroupoid (CircleMappingTorus phi) → H,
+      cf (FundamentalGroupoid.mk (circleMappingTorusBase phi x)) = 1 ∧
+      cg (FundamentalGroupoid.mk (circleMappingTorusBase phi x)) = 1 ∧
+      FundamentalGroupoid.map (vertexPieceInclusion phi) ⋙
+          singleObjGaugeFunctor
+            (normalizedFundamentalGroupoidBasedFunctor
+              (circleMappingTorusBase phi x) f) cf =
+        FundamentalGroupoid.map (vertexPieceInclusion phi) ⋙
+          singleObjGaugeFunctor
+            (normalizedFundamentalGroupoidBasedFunctor
+              (circleMappingTorusBase phi x) g) cg ∧
+      FundamentalGroupoid.map (edgePieceInclusion phi) ⋙
+          singleObjGaugeFunctor
+            (normalizedFundamentalGroupoidBasedFunctor
+              (circleMappingTorusBase phi x) f) cf =
+        FundamentalGroupoid.map (edgePieceInclusion phi) ⋙
+          singleObjGaugeFunctor
+            (normalizedFundamentalGroupoidBasedFunctor
+              (circleMappingTorusBase phi x) g) cg := by
+  subst g
+  exact ⟨fun _ ↦ 1, fun _ ↦ 1, rfl, rfl, rfl, rfl⟩
+
 end SphereSixComplex

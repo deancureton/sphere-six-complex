@@ -83,11 +83,7 @@ axiom SphereSixComplex.Periods.establishedOrbifoldAffineLineTorsorCuspBoundedCou
 axiom SphereSixComplex.Topology.FiniteCoverPerfectPairing.establishedEllipticDegreeTwoHomologyBasisFiniteData : ∀
   {U : SphereSixComplex.Periods.TriangleUniformization} (F : SphereSixComplex.Periods.PeriodFunctions U),
   Nonempty (SphereSixComplex.Topology.FiniteCoverPerfectPairing.EllipticDegreeTwoHomologyBasisFiniteData F)
-axiom SphereSixComplex.Topology.AffineFiniteCyclicTorusCW.establishedFiniteCWModelFour_of_compactComplexTwoChartedSpace : {X :
-    Type} →
-  [inst : TopologicalSpace X] →
-    [ChartedSpace SphereSixComplex.Geometry.ComplexTorus.ComplexTwoSpace X] →
-      [T2Space X] → [CompactSpace X] → SphereSixComplex.Topology.AffineFiniteCyclicTorusCW.FiniteCWModelAtMost 4 X
+axiom SphereSixComplex.Topology.AffineFiniteCyclicTorusCW.establishedOrderThreeFourAffineGeneratorFiniteCWModels : SphereSixComplex.Topology.AffineFiniteCyclicTorusCW.OrderThreeFourAffineGeneratorFiniteCWModels
 axiom SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.EstablishedAffineCyclicQuotientHomology.establishedAffineCyclicDeckHurewiczComparison : {m :
     ℕ} →
   [inst : NeZero m] →
@@ -135,9 +131,9 @@ axiom SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTop
       (SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenAffineRadialCompletionInput.homologyAlignment R)),
   SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTopology.ActualCuspFiberEllipticMarkedCoordinateCalculation
     R W
-axiom SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenEllipticTwoDiscCoverData.EstablishedActualCuspWangOpenCoverChainRealization.fullFibreSliceExplicitFiniteResidual : ∀
+axiom SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenEllipticTwoDiscCoverData.EstablishedActualCuspWangOpenCoverChainRealization.fullFibreSliceInvariantResidual : ∀
   {A : SphereSixComplex.Geometry.PaperAnalyticData} (R : A.SectionSevenAffineRadialCompletionInput),
-  SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenEllipticTwoDiscCoverData.ActualCuspWangFullFibreSliceExplicitFiniteResidual
+  SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenEllipticTwoDiscCoverData.ActualCuspWangFullFibreSliceInvariantResidual
     R
 axiom SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established.normalizedPolarHoneycombPhaseGeometry : ∀
   {E : SphereSixComplex.Periods.EstablishedFuchsianModularParameter}

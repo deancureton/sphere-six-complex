@@ -469,9 +469,7 @@ public structure NormalizedPolarHoneycombConstructionData
   modulus_t : ∀ p, M.t (modulus p) = (‖M.t p‖ : ℝ)
   polar_surjective : ∀ p : LocalCarrier M r, ∃ phi : CompactTorus,
     M.torusAction (compactTorusEmbedding phi) (modulus p) = p
-  central : Set positivePart
-  central_eq : central = {q : positivePart | M.t (q : LocalCarrier M r) = 0}
-  honeycomb : (Fin 2 → ℝ) ≃ₜ central
+  honeycomb : (Fin 2 → ℝ) ≃ₜ {q : positivePart | M.t (q : LocalCarrier M r) = 0}
   positiveDeck_mem : ∀ lambda (q : positivePart),
     normalizedPositiveDeckLocalMap N M r lambda (q : LocalCarrier M r) ∈ positivePart
   quotientCovering :
@@ -484,10 +482,18 @@ public structure NormalizedPolarHoneycombConstructionData
     letI := normalizedPositiveDeckAction N M positivePart positiveDeck_mem
     Topology.RelCWComplex
       (Set.univ : Set (PolarHoneycombData.OrbitQuotient positivePart))
-      (PolarHoneycombData.orbitCore central)
+      (PolarHoneycombData.orbitCore
+        {q : positivePart | M.t (q : LocalCarrier M r) = 0})
   quotient_t2 :
     letI := normalizedPositiveDeckAction N M positivePart positiveDeck_mem
     T2Space (PolarHoneycombData.OrbitQuotient positivePart)
+
+/-- The central honeycomb is canonically the zero locus of the height coordinate. -/
+public def NormalizedPolarHoneycombConstructionData.central
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
+    (Q : NormalizedPolarHoneycombConstructionData N M r) : Set Q.positivePart :=
+  {q : Q.positivePart | M.t (q : LocalCarrier M r) = 0}
 
 /-- Build the previous construction interface from the normalized geometric residue. -/
 public noncomputable def
@@ -502,7 +508,7 @@ public noncomputable def
   modulus_t := Q.modulus_t
   polar_surjective := Q.polar_surjective
   central := Q.central
-  central_eq := Q.central_eq
+  central_eq := rfl
   honeycomb := Q.honeycomb
   positiveTwist := normalizedCuspPositiveTwist N
   positiveTwist_zero := normalizedCuspPositiveTwist_zero N
