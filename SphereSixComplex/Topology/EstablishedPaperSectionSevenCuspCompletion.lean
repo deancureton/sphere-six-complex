@@ -4,7 +4,7 @@ public import SphereSixComplex.Topology.PaperSectionSevenAffineCuspFiberPeriodMa
 public import SphereSixComplex.Topology.PaperSectionSevenCuspEllipticMappingTorusComparison
 public import SphereSixComplex.Topology.PaperSectionSevenCuspInvariantSuspensionPrismNaturality
 public import SphereSixComplex.Topology.PaperSectionSevenCuspMeridianProjectionNaturality
-public import SphereSixComplex.Topology.PaperSectionSevenCuspWangOpenCoverChainRealizationEstablished
+public import SphereSixComplex.Topology.PaperSectionSevenCanonicalCuspWangBoundaryNaturalityProof
 public import SphereSixComplex.Topology.PaperSectionSevenCuspPrismGeometricDataProof
 public import SphereSixComplex.Topology.PaperSectionSevenCuspIndexFourPrismCoefficientProof
 public import SphereSixComplex.Topology.PaperSectionSevenCuspEllipticCoordinateFiniteReduction
@@ -33,14 +33,19 @@ variable {A : PaperAnalyticData}
 
 namespace EstablishedSectionSevenCuspTopology
 
+/-- The two transported invariant-basis comparisons remaining in the canonical cusp Wang
+boundary square. -/
+public axiom canonicalCuspWangBoundaryInvariantResidual
+    (R : A.SectionSevenAffineRadialCompletionInput) :
+    CanonicalCuspWangBoundaryInvariantResidual R
+
 /-- Naturality of the connecting morphism for the canonical map from the radial cusp cover to
 the affine two-disc cover. -/
 public theorem canonicalWangBoundaryNaturality
     (R : A.SectionSevenAffineRadialCompletionInput) :
     R.twoDiscCover.CanonicalCuspWangBoundaryNaturality :=
-  ActualCuspWangOpenCoverChainRealization.canonicalWangBoundaryNaturality
-    R.twoDiscCover
-    (EstablishedActualCuspWangOpenCoverChainRealization.realization R)
+  canonicalCuspWangBoundaryNaturality_of_invariantResidual R
+    (canonicalCuspWangBoundaryInvariantResidual R)
 
 /-- The two remaining cusp coordinate identities: the meridian is the elliptic degree-one
 generator, and the cusp fibre degree-two classes have the marked normalized elliptic fibre

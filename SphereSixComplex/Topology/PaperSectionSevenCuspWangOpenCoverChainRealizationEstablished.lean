@@ -345,33 +345,6 @@ public theorem wangBoundary_eq_chainConnecting
 
 end ActualCuspWangFullFibreSliceComparison
 
-namespace EstablishedActualCuspWangOpenCoverChainRealization
-
-/-- The two invariant-generator cover-boundary comparisons remaining after Wang exactness has
-proved the four zero-boundary basis cases. -/
-public axiom fullFibreSliceInvariantResidual
-    (R : A.SectionSevenAffineRadialCompletionInput) :
-    ActualCuspWangFullFibreSliceInvariantResidual R
-
-/-- The six oriented chain comparisons for the explicitly constructed full-fibre slice. -/
-public theorem fullFibreSliceComparison (R : A.SectionSevenAffineRadialCompletionInput) :
-    ActualCuspWangFullFibreSliceComparison R where
-  wangBoundary_eq_chainConnecting_basis :=
-    (wangBoundaryBasisComparison_iff_explicitFiniteResidual R).mpr
-      ((explicitFiniteResidual_iff_invariantResidual R).mpr
-        (fullFibreSliceInvariantResidual R))
-
-/-- The standard chain-level Wang theorem for the actual radial mapping-torus cut cover.  Its
-content is the oriented realization of the established Wang connecting map by the explicit
-short exact singular-chain sequence, before transport to the elliptic cover. -/
-public noncomputable def realization (R : A.SectionSevenAffineRadialCompletionInput) :
-    R.twoDiscCover.ActualCuspWangOpenCoverChainRealization :=
-  actualCuspWangOpenCoverChainRealization_of_fullFibreSlice (A := A) R
-    (fullFibreSliceComparison R).fiberToBand_homology
-    (fullFibreSliceComparison R).wangBoundary_eq_chainConnecting
-
-end EstablishedActualCuspWangOpenCoverChainRealization
-
 end SectionSevenEllipticTwoDiscCoverData
 
 end SphereSixComplex.Geometry.PaperAnalyticData

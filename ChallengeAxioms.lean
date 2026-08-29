@@ -131,9 +131,9 @@ axiom SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTop
       (SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenAffineRadialCompletionInput.homologyAlignment R)),
   SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTopology.ActualCuspFiberEllipticMarkedCoordinateCalculation
     R W
-axiom SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenEllipticTwoDiscCoverData.EstablishedActualCuspWangOpenCoverChainRealization.fullFibreSliceInvariantResidual : ∀
+axiom SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTopology.canonicalCuspWangBoundaryInvariantResidual : ∀
   {A : SphereSixComplex.Geometry.PaperAnalyticData} (R : A.SectionSevenAffineRadialCompletionInput),
-  SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenEllipticTwoDiscCoverData.ActualCuspWangFullFibreSliceInvariantResidual
+  SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenEllipticTwoDiscCoverData.CanonicalCuspWangBoundaryInvariantResidual
     R
 axiom SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established.normalizedPolarHoneycombPhaseGeometry : ∀
   {E : SphereSixComplex.Periods.EstablishedFuchsianModularParameter}
