@@ -79,9 +79,9 @@ axiom SphereSixComplex.establishedFiniteCoverCellularLift : ∀ {E X : Type} [in
 axiom SphereSixComplex.Periods.establishedOrbifoldAffineLineTorsorCuspBoundedCousinCorrection : ∀
   (P : SphereSixComplex.Periods.OrbifoldAffineLineTorsorDescentProblem),
   P.HasAcyclicProjectiveLineFrame → Nonempty P.CuspBoundedEllipticOneCorrection
-axiom SphereSixComplex.Topology.FiniteCoverPerfectPairing.establishedEllipticDegreeTwoDualPullbackFiniteData : ∀
+axiom SphereSixComplex.Topology.FiniteCoverPerfectPairing.establishedEllipticDegreeTwoHomologyBasisFiniteData : ∀
   {U : SphereSixComplex.Periods.TriangleUniformization} (F : SphereSixComplex.Periods.PeriodFunctions U),
-  Nonempty (SphereSixComplex.Topology.FiniteCoverPerfectPairing.EllipticDegreeTwoDualPullbackFiniteData F)
+  Nonempty (SphereSixComplex.Topology.FiniteCoverPerfectPairing.EllipticDegreeTwoHomologyBasisFiniteData F)
 axiom SphereSixComplex.Topology.AffineFiniteCyclicTorusCW.establishedFiniteCWModelFour_of_compactComplexSurfaceCover : {E
     X : Type} →
   [inst : TopologicalSpace E] →

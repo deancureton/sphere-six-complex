@@ -778,11 +778,117 @@ private theorem orderFourInvariantAddHom_generator
       orderFourPullbackInvariantOne, gammaEpsilonTwo, qClass] at hZero hThree ⊢ <;>
     omega
 
+/-- The projected standard generators used to specify the order-three quotient homology basis. -/
+public noncomputable def orderThreeProjectedDegreeTwoGenerator (j : Fin 6) :
+    IntegralSingularHomology 2 (OrderThreeReducedCentralFiber F) :=
+  integralSingularHomologyMap 2
+    (RadialEllipticActionData.centralFiberCoverProjection (orderThreeRadialActionData F))
+    ((orderThreeCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm (Pi.single j 1))
+
+/-- The projected standard generators used to specify the order-four quotient homology basis. -/
+public noncomputable def orderFourProjectedDegreeTwoGenerator (j : Fin 6) :
+    IntegralSingularHomology 2 (OrderFourReducedCentralFiber F) :=
+  integralSingularHomologyMap 2
+    (RadialEllipticActionData.centralFiberCoverProjection (orderFourRadialActionData F))
+    ((orderFourCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm (Pi.single j 1))
+
+/-- The primal finite transfer calculation.  At order three the two displayed projected
+generators already generate quotient homology.  At order four their span has index two, recorded
+by the single doubling relation for the missing primitive generator. -/
+public structure EllipticDegreeTwoHomologyBasisFiniteData where
+  orderThreeBasis : Module.Basis (Fin 2) ℤ
+    (IntegralSingularHomology 2 (OrderThreeReducedCentralFiber F))
+  orderThreeBasis_zero :
+    orderThreeBasis 0 =
+      orderThreeProjectedDegreeTwoGenerator F 1 +
+        2 • orderThreeProjectedDegreeTwoGenerator F 3
+  orderThreeBasis_one :
+    orderThreeBasis 1 = orderThreeProjectedDegreeTwoGenerator F 3
+  orderFourBasis : Module.Basis (Fin 2) ℤ
+    (IntegralSingularHomology 2 (OrderFourReducedCentralFiber F))
+  orderFourBasis_zero_double :
+    2 • orderFourBasis 0 =
+      orderFourProjectedDegreeTwoGenerator F 0 +
+        3 • orderFourProjectedDegreeTwoGenerator F 3
+  orderFourBasis_one :
+    orderFourBasis 1 = orderFourProjectedDegreeTwoGenerator F 3
+
+/-- The remaining primal finite calculation for the two elliptic cyclic quotients. -/
+public axiom establishedEllipticDegreeTwoHomologyBasisFiniteData :
+    Nonempty (EllipticDegreeTwoHomologyBasisFiniteData F)
+
 /-- The exact finite residual transfer statement: the two computed pullback families are dual
 bases, their values are specified by eight scalar entries, and the quotient degree-two
 homology groups contain no torsion. -/
-public axiom establishedEllipticDegreeTwoDualPullbackFiniteData :
-    Nonempty (EllipticDegreeTwoDualPullbackFiniteData F)
+public theorem establishedEllipticDegreeTwoDualPullbackFiniteData :
+    Nonempty (EllipticDegreeTwoDualPullbackFiniteData F) := by
+  obtain ⟨D⟩ := establishedEllipticDegreeTwoHomologyBasisFiniteData F
+  refine ⟨{
+    orderThreeDualBasis := D.orderThreeBasis.dualBasis
+    orderThreeTorsionFree := ?_
+    orderThreePullback_coordinateOne := ?_
+    orderThreePullback_coordinateThree := ?_
+    orderFourDualBasis := D.orderFourBasis.dualBasis
+    orderFourTorsionFree := ?_
+    orderFourPullback_coordinateZero := ?_
+    orderFourPullback_coordinateThree := ?_
+  }⟩
+  · let _ : Module.Free ℤ
+        (IntegralSingularHomology 2 (OrderThreeReducedCentralFiber F)) :=
+      Module.Free.of_basis D.orderThreeBasis
+    infer_instance
+  · intro i
+    have h :
+        orderThreeProjectedDegreeTwoGenerator F 1 =
+          D.orderThreeBasis 0 - 2 • D.orderThreeBasis 1 := by
+      rw [D.orderThreeBasis_one, D.orderThreeBasis_zero]
+      abel
+    change D.orderThreeBasis.dualBasis i
+      (orderThreeProjectedDegreeTwoGenerator F 1) =
+        degreeTwoEvaluation (orderThreePullbackBasis i) (Pi.single 1 1)
+    rw [h, map_sub, map_nsmul, Module.Basis.dualBasis_apply_self,
+      Module.Basis.dualBasis_apply_self]
+    fin_cases i <;>
+      simp [degreeTwoEvaluation, orderThreePullbackBasis, orderThreePullbackClasses,
+        orderThreePullbackInvariantZero, orderThreePullbackInvariantOne,
+        gammaEpsilonOne, qClass]
+  · intro i
+    change D.orderThreeBasis.dualBasis i
+      (orderThreeProjectedDegreeTwoGenerator F 3) =
+        degreeTwoEvaluation (orderThreePullbackBasis i) (Pi.single 3 1)
+    rw [← D.orderThreeBasis_one, Module.Basis.dualBasis_apply_self]
+    fin_cases i <;>
+      simp [degreeTwoEvaluation, orderThreePullbackBasis, orderThreePullbackClasses,
+        orderThreePullbackInvariantZero, orderThreePullbackInvariantOne,
+        gammaEpsilonOne, qClass]
+  · let _ : Module.Free ℤ
+        (IntegralSingularHomology 2 (OrderFourReducedCentralFiber F)) :=
+      Module.Free.of_basis D.orderFourBasis
+    infer_instance
+  · intro i
+    have h :
+        orderFourProjectedDegreeTwoGenerator F 0 =
+          2 • D.orderFourBasis 0 - 3 • D.orderFourBasis 1 := by
+      rw [D.orderFourBasis_one, D.orderFourBasis_zero_double]
+      abel
+    change D.orderFourBasis.dualBasis i
+      (orderFourProjectedDegreeTwoGenerator F 0) =
+        degreeTwoEvaluation (orderFourPullbackBasis i) (Pi.single 0 1)
+    rw [h, map_sub, map_nsmul, map_nsmul, Module.Basis.dualBasis_apply_self,
+      Module.Basis.dualBasis_apply_self]
+    fin_cases i <;>
+      simp [degreeTwoEvaluation, orderFourPullbackBasis, orderFourPullbackClasses,
+        orderFourPullbackInvariantZero, orderFourPullbackInvariantOne,
+        gammaEpsilonTwo, qClass]
+  · intro i
+    change D.orderFourBasis.dualBasis i
+      (orderFourProjectedDegreeTwoGenerator F 3) =
+        degreeTwoEvaluation (orderFourPullbackBasis i) (Pi.single 3 1)
+    rw [← D.orderFourBasis_one, Module.Basis.dualBasis_apply_self]
+    fin_cases i <;>
+      simp [degreeTwoEvaluation, orderFourPullbackBasis, orderFourPullbackClasses,
+        orderFourPullbackInvariantZero, orderFourPullbackInvariantOne,
+        gammaEpsilonTwo, qClass]
 
 /-- The exact residual transfer statement: the two computed pullback families are dual bases,
 and the quotient degree-two homology groups contain no torsion. -/
