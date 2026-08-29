@@ -13,6 +13,7 @@ therefore supplies a finite CW model, with no cells above dimension four (and he
 -/
 
 open SphereSixComplex.Geometry SphereSixComplex.Periods
+open scoped ContinuousMap
 
 namespace SphereSixComplex.Topology.AffineFiniteCyclicTorusCW
 
@@ -40,15 +41,59 @@ public class SupportedAffineFiniteCyclicOrder (m : ℕ) where
 public instance : SupportedAffineFiniteCyclicOrder 3 := ⟨.orderThree⟩
 public instance : SupportedAffineFiniteCyclicOrder 4 := ⟨.orderFour⟩
 
+/-- A homotopy model by a finite CW complex of dimension at most `d`. -/
+public structure FiniteCWModelAtMost (d : ℕ) (X : Type) [TopologicalSpace X] where
+  Carrier : Type
+  topology : TopologicalSpace Carrier
+  t2 : let _ := topology; T2Space Carrier
+  homotopyEquiv : let _ := topology; X ≃ₕ Carrier
+  cwComplex : let _ := topology; Topology.CWComplex (Set.univ : Set Carrier)
+  finite : let _ := topology; let _ := cwComplex
+    Topology.CWComplex.Finite (Set.univ : Set Carrier)
+  cellsAbove : let _ := topology; let _ := cwComplex
+    ∀ n, d < n → IsEmpty (Topology.CWComplex.cell (Set.univ : Set Carrier) n)
+
+/-- Forget a sharper dimension bound when constructing a model supported through degree six. -/
+public noncomputable def FiniteCWModelAtMost.toFiniteCWModelSix
+    {d : ℕ} {X : Type} [TopologicalSpace X] (M : FiniteCWModelAtMost d X) (hd : d ≤ 6) :
+    FiniteCWModelSix X where
+  Carrier := M.Carrier
+  topology := M.topology
+  t2 := M.t2
+  homotopyEquiv := M.homotopyEquiv
+  cwComplex := M.cwComplex
+  finite := M.finite
+  cellsAboveSix n hn := M.cellsAbove n (hd.trans_lt hn)
+
+/-- A compact topological complex surface has finite CW homotopy type, of real dimension at most
+four, and this remains true of the Hausdorff base of a surjective covering.  This is the classical
+finite-dimensional ANR theorem for compact manifolds, specialized to the dimension used here. -/
+public axiom establishedFiniteCWModelFour_of_compactComplexSurfaceCover
+    {E X : Type} [TopologicalSpace E] [ChartedSpace ComplexTwoSpace E] [T2Space E]
+    [TopologicalSpace X] [T2Space X]
+    (_hManifold : IsManifold (modelWithCornersSelf ℂ ComplexTwoSpace) 0 E)
+    (_hcompact : CompactSpace E)
+    (projection : C(E, X)) (_hcover : IsCoveringMap projection)
+    (_hsurjective : Function.Surjective projection) :
+    FiniteCWModelAtMost 4 X
+
 /-- Classical finite-CW descent along a covering by a full-rank four-torus.  This is the residual
 triangulation input: a Hausdorff space covered by a compact smooth four-torus has finite CW type,
 with no cells above dimension four (and hence none above dimension six). -/
-public axiom finiteCWModelSix_of_fullRankTorusCover
+public noncomputable def finiteCWModelSix_of_fullRankTorusCover
     {X : Type} [TopologicalSpace X] [T2Space X]
     (p : Parameters) (_hfull : FullRank p)
     (projection : C(AdditiveTorus p, X)) (_hcover : IsCoveringMap projection)
     (_hsurjective : Function.Surjective projection) :
-    FiniteCWModelSix X
+    FiniteCWModelSix X := by
+  let _ : ProperlyDiscontinuousSMul (PeriodGroup p) ComplexTwoSpace :=
+    periodLattice_properlyDiscontinuousSMul _hfull
+  let _ : T2Space (AdditiveTorus p) := inferInstance
+  let _ : CompactSpace (AdditiveTorus p) := torus_compactSpace p _hfull
+  exact (establishedFiniteCWModelFour_of_compactComplexSurfaceCover
+    (torus_isManifold_and_projection_isLocalDiffeomorph p _hfull 0).1
+    (inferInstance : CompactSpace (AdditiveTorus p)) projection _hcover
+    _hsurjective).toFiniteCWModelSix (by omega)
 
 namespace RadialEllipticActionData
 

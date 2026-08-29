@@ -70,26 +70,31 @@ axiom SphereSixComplex.EstablishedGeneralTopology.isHomotopyEquivalenceInclusion
                 (have this := rfl;
                 this))) →
           ∀ (hCW : Topology.RelCWComplex Set.univ D), SphereSixComplex.IsHomotopyEquivalenceInclusion D
-axiom SphereSixComplex.establishedFiniteCoverCellularLiftSix : ∀ {E X : Type} [inst : TopologicalSpace E]
+axiom SphereSixComplex.establishedFiniteCoverCellularLift : ∀ {E X : Type} [inst : TopologicalSpace E]
   [inst_1 : TopologicalSpace X] (projection : C(E, X)),
   IsCoveringMap ⇑projection →
     ∀ (degree : ℕ),
       (∀ (x : X), Nat.card { y // projection y = x } = degree) →
-        ∀ (base : SphereSixComplex.FiniteCWModelSix X),
-          ∃ cover, ∀ (n : ℕ), cover.cellCount n = degree * base.cellCount n
+        ∀ (base : SphereSixComplex.FiniteCWModel X), ∃ cover, ∀ (n : ℕ), cover.cellCount n = degree * base.cellCount n
 axiom SphereSixComplex.Periods.establishedOrbifoldAffineLineTorsorCuspBoundedCousinCorrection : ∀
   (P : SphereSixComplex.Periods.OrbifoldAffineLineTorsorDescentProblem),
   P.HasAcyclicProjectiveLineFrame → Nonempty P.CuspBoundedEllipticOneCorrection
 axiom SphereSixComplex.Topology.FiniteCoverPerfectPairing.establishedEllipticDegreeTwoDualPullbackFiniteData : ∀
   {U : SphereSixComplex.Periods.TriangleUniformization} (F : SphereSixComplex.Periods.PeriodFunctions U),
   Nonempty (SphereSixComplex.Topology.FiniteCoverPerfectPairing.EllipticDegreeTwoDualPullbackFiniteData F)
-axiom SphereSixComplex.Topology.AffineFiniteCyclicTorusCW.finiteCWModelSix_of_fullRankTorusCover : {X : Type} →
-  [inst : TopologicalSpace X] →
-    [T2Space X] →
-      (p : SphereSixComplex.Periods.Parameters) →
-        SphereSixComplex.Geometry.ComplexTorus.FullRank p →
-          (projection : C(SphereSixComplex.Geometry.EllipticFamilySpecialization.AdditiveTorus p, X)) →
-            IsCoveringMap ⇑projection → Function.Surjective ⇑projection → SphereSixComplex.FiniteCWModelSix X
+axiom SphereSixComplex.Topology.AffineFiniteCyclicTorusCW.establishedFiniteCWModelFour_of_compactComplexSurfaceCover : {E
+    X : Type} →
+  [inst : TopologicalSpace E] →
+    [inst_1 : ChartedSpace SphereSixComplex.Geometry.ComplexTorus.ComplexTwoSpace E] →
+      [T2Space E] →
+        [inst_3 : TopologicalSpace X] →
+          [T2Space X] →
+            IsManifold (modelWithCornersSelf ℂ SphereSixComplex.Geometry.ComplexTorus.ComplexTwoSpace) 0 E →
+              CompactSpace E →
+                (projection : C(E, X)) →
+                  IsCoveringMap ⇑projection →
+                    Function.Surjective ⇑projection →
+                      SphereSixComplex.Topology.AffineFiniteCyclicTorusCW.FiniteCWModelAtMost 4 X
 axiom SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.EstablishedAffineCyclicQuotientHomology.establishedAffineCyclicUniversalCoverHOneIdentification : {m :
     ℕ} →
   [inst : NeZero m] →

@@ -120,6 +120,47 @@ public theorem homotopyEquiv {X Y : Type} [TopologicalSpace X] [TopologicalSpace
 
 end IntegralHomologyFiniteSix
 
+/-- A homotopy model by a finite CW complex, with no dimension bound. -/
+public structure FiniteCWModel (X : Type) [TopologicalSpace X] where
+  Carrier : Type
+  topology : TopologicalSpace Carrier
+  t2 : let _ := topology; T2Space Carrier
+  homotopyEquiv : let _ := topology; X ≃ₕ Carrier
+  cwComplex : let _ := topology; Topology.CWComplex (Set.univ : Set Carrier)
+  finite : let _ := topology; let _ := cwComplex
+    Topology.CWComplex.Finite (Set.univ : Set Carrier)
+
+namespace FiniteCWModel
+
+variable {X : Type} [TopologicalSpace X]
+
+/-- Number of cells in one degree of the chosen finite CW model. -/
+public noncomputable def cellCount (M : FiniteCWModel X) (n : ℕ) : ℕ := by
+  let _ := M.topology
+  let _ := M.cwComplex
+  let _ := M.finite
+  exact Nat.card (Topology.CWComplex.cell (Set.univ : Set M.Carrier) n)
+
+end FiniteCWModel
+
+namespace FiniteCWModelSix
+
+/-- Forget the dimension bound on a finite CW model. -/
+public noncomputable def toFiniteCWModel {X : Type} [TopologicalSpace X]
+    (M : FiniteCWModelSix X) : FiniteCWModel X where
+  Carrier := M.Carrier
+  topology := M.topology
+  t2 := M.t2
+  homotopyEquiv := M.homotopyEquiv
+  cwComplex := M.cwComplex
+  finite := M.finite
+
+@[simp]
+public theorem toFiniteCWModel_cellCount {X : Type} [TopologicalSpace X]
+    (M : FiniteCWModelSix X) (n : ℕ) : M.toFiniteCWModel.cellCount n = M.cellCount n := rfl
+
+end FiniteCWModelSix
+
 /-- A constant-degree finite covering between finite CW-type spaces. -/
 public structure FiniteCoverModelSix (X : Type) [TopologicalSpace X] where
   Cover : Type
@@ -133,15 +174,58 @@ public structure FiniteCoverModelSix (X : Type) [TopologicalSpace X] where
   coverHomologyFiniteSix : @IntegralHomologyFiniteSix Cover coverTopology
   quotientFiniteCW : FiniteCWModelSix X
 
+/-- A finite-sheeted covering of a space of finite CW type has finite CW type.  The CW structure
+can be chosen by lifting the cells, so in every degree each base cell has one lift for each point
+of a fibre. -/
+public axiom establishedFiniteCoverCellularLift
+    {E X : Type} [TopologicalSpace E] [TopologicalSpace X]
+    (projection : C(E, X)) (_isCovering : IsCoveringMap projection)
+    (degree : ℕ) (_fiberCardinality : ∀ x, Nat.card {y : E // projection y = x} = degree)
+    (base : FiniteCWModel X) :
+    ∃ cover : FiniteCWModel E, ∀ n, cover.cellCount n = degree * base.cellCount n
+
 /-- Pulling a constant finite-sheeted cover back along a finite CW homotopy model of its base and
 lifting the cells gives a finite CW homotopy model of the cover.  In every degree, each base cell
 has one lift for each point of a fibre. -/
-public axiom establishedFiniteCoverCellularLiftSix
+public theorem establishedFiniteCoverCellularLiftSix
     {E X : Type} [TopologicalSpace E] [TopologicalSpace X]
     (projection : C(E, X)) (_isCovering : IsCoveringMap projection)
     (degree : ℕ) (_fiberCardinality : ∀ x, Nat.card {y : E // projection y = x} = degree)
     (base : FiniteCWModelSix X) :
-    ∃ cover : FiniteCWModelSix E, ∀ n, cover.cellCount n = degree * base.cellCount n
+    ∃ cover : FiniteCWModelSix E, ∀ n, cover.cellCount n = degree * base.cellCount n := by
+  obtain ⟨cover, hcells⟩ := establishedFiniteCoverCellularLift projection _isCovering degree
+    _fiberCardinality base.toFiniteCWModel
+  let coverSix : FiniteCWModelSix E := {
+    Carrier := cover.Carrier
+    topology := cover.topology
+    t2 := cover.t2
+    homotopyEquiv := cover.homotopyEquiv
+    cwComplex := cover.cwComplex
+    finite := cover.finite
+    cellsAboveSix := by
+      dsimp only
+      intro n hn
+      let _ := cover.topology
+      let _ := cover.cwComplex
+      let _ := cover.finite
+      have hfinite : Finite (Topology.CWComplex.cell
+          (Set.univ : Set cover.Carrier) n) :=
+        Topology.CWComplex.FiniteType.finite_cell
+          (C := (Set.univ : Set cover.Carrier)) n
+      let _ := hfinite
+      apply Finite.card_eq_zero_iff.mp
+      change cover.cellCount n = 0
+      rw [hcells n]
+      rw [mul_eq_zero]
+      right
+      rw [FiniteCWModelSix.toFiniteCWModel_cellCount]
+      unfold FiniteCWModelSix.cellCount
+      let _ := base.topology
+      let _ := base.cwComplex
+      let _ := base.cellsAboveSix n hn
+      exact Nat.card_of_isEmpty }
+  refine ⟨coverSix, fun n ↦ ?_⟩
+  exact hcells n
 
 namespace FiniteCoverModelSix
 
