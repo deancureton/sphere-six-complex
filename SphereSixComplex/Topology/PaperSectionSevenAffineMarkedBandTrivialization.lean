@@ -148,6 +148,25 @@ public theorem stripInclusion_isOpenMap : IsOpenMap stripInclusion := by
   exact (sectionSevenAffineVerticalStrip_isOpen.isOpenMap_subtype_val W hW).preimage
     continuous_subtype_val
 
+/-- A point of the affine strip and a chosen point above it determine a unique continuous lift of
+the entire strip. -/
+public theorem existsUnique_sectionSevenAffineStripContinuousLift
+    (a₀ : sectionSevenAffineVerticalStrip)
+    (e₀ : RegularBase (U := A.modular.modularParameter.toTriangleUniformization))
+    (he₀ : A.regularCoordinate e₀ = stripInclusion a₀) :
+    ∃! L : C(sectionSevenAffineVerticalStrip,
+      RegularBase (U := A.modular.modularParameter.toTriangleUniformization)),
+      L a₀ = e₀ ∧ A.regularCoordinate ∘ L = stripInclusion := by
+  let _ : LocallyPathConnectedSpace sectionSevenAffineVerticalStrip :=
+    sectionSevenAffineVerticalStrip_isOpen.locallyPathConnectedSpace
+  let _ : ContractibleSpace sectionSevenAffineVerticalStrip :=
+    sectionSevenAffineVerticalStripContractible
+  let _ : SimplyConnectedSpace sectionSevenAffineVerticalStrip :=
+    SimplyConnectedSpace.ofContractible _
+  let f : C(sectionSevenAffineVerticalStrip, RegularCoordinateBase) :=
+    ⟨stripInclusion, stripInclusion_continuous⟩
+  exact A.regularCoordinate_isCoveringMap'.existsUnique_continuousMap_lifts f a₀ e₀ he₀
+
 namespace SectionSevenAffineStripLift
 
 variable {A}

@@ -2,6 +2,7 @@ module
 
 public import SphereSixComplex.Geometry.Quotient
 public import Mathlib.AlgebraicTopology.FundamentalGroupoid.FundamentalGroup
+public import Mathlib.Topology.Homotopy.Lifting
 
 /-!
 # Fundamental-group classes from deck paths
@@ -318,5 +319,207 @@ public def orbitDeckClass [PathConnectedSpace M] (x : M) (g : G) :
     FundamentalGroup (OrbitQuotient (M := M) (G := G))
       (orbitQuotientMap (G := G) x) :=
   Path.Homotopic.Quotient.mk (orbitDeckLoop x g)
+
+/-! ## Surjectivity through quotient coverings -/
+
+/-- The full preimage of a subset is invariant under the deck action. -/
+@[instance_reducible]
+public def quotientCoveringPreimageMulAction {X : Type*} [TopologicalSpace X]
+    {f : M → X} (hf : IsQuotientCoveringMap f G) (S : Set X) :
+    MulAction G (f ⁻¹' S) :=
+  SubMulAction.mulAction
+    ⟨f ⁻¹' S, fun g _ h ↦ by simpa only [Set.mem_preimage, hf.map_smul g] using h⟩
+
+/-- A quotient covering restricts over the full preimage of any subset. -/
+public theorem IsQuotientCoveringMap.restrictPreimage {X : Type*} [TopologicalSpace X]
+    {f : M → X} (hf : IsQuotientCoveringMap f G) (S : Set X) :
+    letI := quotientCoveringPreimageMulAction hf S
+    IsQuotientCoveringMap (S.restrictPreimage f) G := by
+  let _ := quotientCoveringPreimageMulAction hf S
+  let _ := hf.toContinuousConstSMul
+  have hcoe_smul (g : G) (a : f ⁻¹' S) : ((g • a : f ⁻¹' S) : M) = g • (a : M) := rfl
+  have hcont : Continuous (S.restrictPreimage f) :=
+    (hf.continuous.comp continuous_subtype_val).subtype_mk _
+  have hsurj : Function.Surjective (S.restrictPreimage f) := by
+    intro b
+    obtain ⟨e, he⟩ := hf.surjective (b : X)
+    exact ⟨⟨e, by rw [Set.mem_preimage, he]; exact b.2⟩, Subtype.ext he⟩
+  have hopen : IsOpenMap (S.restrictPreimage f) := by
+    intro U hU
+    rw [isOpen_induced_iff] at hU
+    obtain ⟨V, hV, rfl⟩ := hU
+    rw [isOpen_induced_iff]
+    refine ⟨f '' V, hf.isCoveringMap.isLocalHomeomorph.isOpenMap V hV, ?_⟩
+    ext b
+    constructor
+    · rintro ⟨v, hv, hpv⟩
+      exact ⟨⟨v, by rw [Set.mem_preimage, hpv]; exact b.2⟩, hv, Subtype.ext hpv⟩
+    · rintro ⟨a, ha, rfl⟩
+      exact ⟨(a : M), ha, rfl⟩
+  refine
+    { toIsQuotientMap := hopen.isQuotientMap hcont hsurj
+      continuous_const_smul := fun g ↦
+        (((continuous_const_smul g).comp continuous_subtype_val).subtype_mk _)
+      apply_eq_iff_mem_orbit := ?_
+      disjoint := ?_ }
+  · intro a₁ a₂
+    constructor
+    · intro h
+      obtain ⟨g, hg⟩ := hf.apply_eq_iff_mem_orbit.mp (congrArg Subtype.val h)
+      exact ⟨g, Subtype.ext hg⟩
+    · rintro ⟨g, rfl⟩
+      apply Subtype.ext
+      exact hf.map_smul g
+  · intro a
+    obtain ⟨U, hU, hU'⟩ := hf.disjoint (a : M)
+    refine ⟨Subtype.val ⁻¹' U, continuous_subtype_val.continuousAt.preimage_mem_nhds hU, ?_⟩
+    rintro g ⟨b, ⟨c, hc, rfl⟩, hb⟩
+    exact hU' g ⟨((g • c : f ⁻¹' S) : M), ⟨(c : M), hc, (hcoe_smul g c).symm⟩, hb⟩
+
+/-- Project a chosen path to a deck translate through an arbitrary quotient covering. -/
+public def projectedQuotientDeckPath {X : Type*} [TopologicalSpace X] {f : M → X}
+    (hf : IsQuotientCoveringMap f G) (x : M) (g : G) (P : Path x (g • x)) :
+    Path (f x) (f x) :=
+  (P.map hf.continuous).cast rfl (hf.map_smul g).symm
+
+/-- A projected deck path has the prescribed monodromy label. -/
+public theorem fundamentalGroupToMulOpposite_projectedQuotientDeckPath
+    {X : Type*} [TopologicalSpace X] {f : M → X}
+    (hf : IsQuotientCoveringMap f G) (x : M) (g : G) (P : Path x (g • x)) :
+    hf.fundamentalGroupToMulOpposite (⟨x, rfl⟩ : f ⁻¹' {f x})
+        (pathLoopClass (projectedQuotientDeckPath hf x g P)) = MulOpposite.op g := by
+  rw [hf.fundamentalGroupToMulOpposite_apply_eq_Iff]
+  let e : f ⁻¹' {f x} := ⟨x, rfl⟩
+  let e' : f ⁻¹' {f x} := ⟨g • x, hf.map_smul g⟩
+  have hm : hf.isCoveringMap.monodromy
+        (pathLoopClass (projectedQuotientDeckPath hf x g P)) e = e' :=
+    hf.isCoveringMap.monodromy_eq_of_map_eq (Path.Homotopic.Quotient.mk P) (by rfl)
+  exact congrArg Subtype.val hm.symm
+
+/-- Replacing the target base point by a propositionally equal point preserves surjectivity. -/
+public theorem fundamentalGroup_map_surjective_of_mapOfEq_surjective
+    {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
+    (f : C(X, Y)) (x : X) (y : Y) (h : f x = y)
+    (hsurj : Function.Surjective (FundamentalGroup.mapOfEq f h)) :
+    Function.Surjective (FundamentalGroup.map f x) := by
+  intro q
+  let q' : FundamentalGroup Y y := Path.Homotopic.Quotient.cast q h.symm h.symm
+  obtain ⟨a, ha⟩ := hsurj q'
+  refine ⟨a, ?_⟩
+  have ha' := congrArg
+    (fun z : FundamentalGroup Y y ↦ Path.Homotopic.Quotient.cast z h h) ha
+  rw [FundamentalGroup.mapOfEq_apply] at ha'
+  simpa [q', Path.Homotopic.Quotient.cast_cast] using ha'
+
+/-- An equivariant map between path-connected quotient coverings inherits surjectivity on
+fundamental groups from the map between their covering spaces. -/
+public theorem quotientCovering_equivariant_map_fundamentalGroup_surjective
+    {MW MV XW XV : Type*} {G : Type*}
+    [TopologicalSpace MW] [TopologicalSpace MV] [TopologicalSpace XW] [TopologicalSpace XV]
+    [Group G] [MulAction G MW] [MulAction G MV]
+    [PathConnectedSpace MW] [PathConnectedSpace MV]
+    {fW : MW → XW} {fV : MV → XV}
+    (hfW : IsQuotientCoveringMap fW G) (hfV : IsQuotientCoveringMap fV G)
+    (sourceMap : C(MW, MV)) (targetMap : C(XW, XV))
+    (hcomm : ∀ y, targetMap (fW y) = fV (sourceMap y))
+    (hequiv : ∀ (g : G) y, sourceMap (g • y) = g • sourceMap y)
+    (x : MW) (hsource : Function.Surjective (FundamentalGroup.map sourceMap x)) :
+    Function.Surjective (FundamentalGroup.mapOfEq targetMap (hcomm x)) := by
+  let xV : MV := sourceMap x
+  let bW : XW := fW x
+  let bV : XV := fV xV
+  let sourceHom := FundamentalGroup.map sourceMap x
+  let targetHom := FundamentalGroup.mapOfEq targetMap (hcomm x)
+  let coverHomW := FundamentalGroup.mapOfEq
+    (⟨fW, hfW.continuous⟩ : C(MW, XW)) (x := x) (y := bW) rfl
+  let coverHomV := FundamentalGroup.mapOfEq
+    (⟨fV, hfV.continuous⟩ : C(MV, XV)) (x := xV) (y := bV) rfl
+  let deckPathW (g : G) : Path x (g • x) := PathConnectedSpace.somePath x (g • x)
+  let deckPathV (g : G) : Path xV (g • xV) :=
+    ((deckPathW g).map sourceMap.continuous).cast rfl (hequiv g x).symm
+  let deckClassW (g : G) : FundamentalGroup XW bW :=
+    pathLoopClass (projectedQuotientDeckPath hfW x g (deckPathW g))
+  let deckClassV (g : G) : FundamentalGroup XV bV :=
+    pathLoopClass (projectedQuotientDeckPath hfV xV g (deckPathV g))
+  have hdeckMap (g : G) : targetHom (deckClassW g) = deckClassV g := by
+    dsimp only [targetHom, deckClassW, deckClassV]
+    rw [FundamentalGroup.mapOfEq_apply]
+    apply congrArg Path.Homotopic.Quotient.mk
+    apply Path.ext
+    funext t
+    exact hcomm (deckPathW g t)
+  have hcoverComm (a : FundamentalGroup MW x) :
+      targetHom (coverHomW a) = coverHomV (sourceHom a) := by
+    induction a using Quotient.ind with
+    | _ P =>
+        change targetHom (coverHomW (Path.Homotopic.Quotient.mk P)) =
+          coverHomV (sourceHom (Path.Homotopic.Quotient.mk P))
+        dsimp only [targetHom, coverHomW, coverHomV, sourceHom]
+        rw [FundamentalGroup.mapOfEq_apply, FundamentalGroup.mapOfEq_apply,
+          FundamentalGroup.mapOfEq_apply]
+        apply congrArg Path.Homotopic.Quotient.mk
+        apply Path.ext
+        funext t
+        exact hcomm (P t)
+  intro q
+  let eV : fV ⁻¹' {bV} := ⟨xV, rfl⟩
+  let monV := hfV.fundamentalGroupToMulOpposite eV
+  let g : G := (monV q).unop
+  have hmon : monV (deckClassV g) = monV q := by
+    have h := fundamentalGroupToMulOpposite_projectedQuotientDeckPath
+      hfV xV g (deckPathV g)
+    simpa only [monV, deckClassV, g, MulOpposite.op_unop] using h
+  have hk : q * (deckClassV g)⁻¹ ∈ monV.ker := by
+    change monV (q * (deckClassV g)⁻¹) = 1
+    rw [map_mul, map_inv, hmon, mul_inv_cancel]
+  have hker : monV.ker = coverHomV.range := by
+    dsimp only [monV, coverHomV, eV]
+    rw [hfV.ker_fundamentalGroupToMulOpposite ⟨xV, rfl⟩,
+      hfV.ker_monodromyPerm ⟨xV, rfl⟩]
+  have hrange : q * (deckClassV g)⁻¹ ∈ coverHomV.range := by
+    rw [← hker]
+    exact hk
+  obtain ⟨aV, haV⟩ := hrange
+  obtain ⟨aW, haW⟩ := hsource aV
+  refine ⟨coverHomW aW * deckClassW g, ?_⟩
+  rw [map_mul, hcoverComm, haW, haV, hdeckMap]
+  change q * (deckClassV g)⁻¹ * deckClassV g = q
+  rw [mul_assoc, inv_mul_cancel, mul_one]
+
+/-- Surjectivity on fundamental groups passes from an inclusion of covering spaces to the
+corresponding inclusion of quotient-covering targets. -/
+public theorem quotientCovering_restrict_inclusion_fundamentalGroup_surjective
+    {X : Type*} [TopologicalSpace X] {f : M → X}
+    (hf : IsQuotientCoveringMap f G) {W V : Set X} (hWV : W ⊆ V)
+    (x : M) (hxW : f x ∈ W) [PathConnectedSpace (f ⁻¹' W)]
+    [PathConnectedSpace (f ⁻¹' V)]
+    (hsource : Function.Surjective
+      (FundamentalGroup.map
+        (⟨fun z : f ⁻¹' W ↦ ⟨z.1, hWV z.2⟩,
+          Continuous.subtype_mk continuous_subtype_val _⟩ : C(f ⁻¹' W, f ⁻¹' V))
+        (⟨x, hxW⟩ : f ⁻¹' W))) :
+    Function.Surjective
+      (FundamentalGroup.map
+        (⟨fun z : W ↦ ⟨z.1, hWV z.2⟩,
+          Continuous.subtype_mk continuous_subtype_val _⟩ : C(W, V))
+        (⟨f x, hxW⟩ : W)) := by
+  let _ := quotientCoveringPreimageMulAction hf W
+  let _ := quotientCoveringPreimageMulAction hf V
+  let fW : f ⁻¹' W → W := W.restrictPreimage f
+  let fV : f ⁻¹' V → V := V.restrictPreimage f
+  let sourceMap : C(f ⁻¹' W, f ⁻¹' V) :=
+    ⟨fun z ↦ ⟨z.1, hWV z.2⟩, Continuous.subtype_mk continuous_subtype_val _⟩
+  let targetMap : C(W, V) :=
+    ⟨fun z ↦ ⟨z.1, hWV z.2⟩, Continuous.subtype_mk continuous_subtype_val _⟩
+  let xW : f ⁻¹' W := ⟨x, hxW⟩
+  have hcomm (z : f ⁻¹' W) : targetMap (fW z) = fV (sourceMap z) := rfl
+  have hequiv (g : G) (z : f ⁻¹' W) : sourceMap (g • z) = g • sourceMap z := rfl
+  have hmapOfEq := quotientCovering_equivariant_map_fundamentalGroup_surjective
+    (SphereSixComplex.Geometry.IsQuotientCoveringMap.restrictPreimage hf W)
+    (SphereSixComplex.Geometry.IsQuotientCoveringMap.restrictPreimage hf V)
+    sourceMap targetMap hcomm hequiv xW
+    (by simpa only [sourceMap, xW] using hsource)
+  exact fundamentalGroup_map_surjective_of_mapOfEq_surjective
+    targetMap (fW xW) (fV (sourceMap xW)) (hcomm xW) hmapOfEq
 
 end SphereSixComplex.Geometry

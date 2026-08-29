@@ -6,9 +6,10 @@ public import SphereSixComplex.Topology.PaperSectionSevenAffineBandTrivializatio
 /-!
 # Marking the affine central-band fibre coordinate
 
-`sectionSevenAffineCentralBandProductHomeomorph` is the named marked trivialization attached to
-`sectionSevenAffineNamedStripLift`.  Its base coordinate is the affine band projection and its
-fibre coordinate is therefore fixed by the marking.
+`sectionSevenAffineCentralBandProductHomeomorph` is the marked trivialization attached to the
+unique strip lift through the selected actual cusp crossing and its explicit regular-base point,
+namely `sectionSevenAffineNamedStripLift`.  Its base coordinate is the affine band projection and
+its fibre coordinate is therefore fixed by the marking.
 
 This module also records why the marking is necessary: forgetting it leaves the fibre coordinate
 undetermined, since composing with any self-homeomorphism of the band torus gives another witness

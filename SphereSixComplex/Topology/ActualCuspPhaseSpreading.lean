@@ -59,7 +59,7 @@ public noncomputable def frozenEquivariantStrongDeformationRetraction :
   let S : ToricPhaseSpreadingData (K := CompactTorus) (X := LocalCarrier M r) R
       {p : LocalCarrier M r | M.t p = 0} := {
     orbit := orbit
-    orbit_isOpenQuotientMap := F.phaseOrbit_isOpenQuotientMap
+    orbit_prod_isQuotientMap := F.phaseOrbit_prod_isQuotientMap
     deckPhase := F.deckPhase
     deck_orbit := F.deck_orbit
     homotopy_fiberwise := F.homotopy_fiberwise

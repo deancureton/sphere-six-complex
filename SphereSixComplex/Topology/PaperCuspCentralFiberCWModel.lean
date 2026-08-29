@@ -287,6 +287,44 @@ public structure StandardA2ToricCentralFiberIncidenceResidual
           (Pi.single j 1 : Fin 1 → ℤ) i =
         standardA2ToricCellularBoundary 3 (Pi.single j 1 : Fin 1 → ℤ) i
 
+/-- Twenty-four independent scalar incidence entries.  The four omitted degree-two attaching
+coefficients follow from `d ∘ d = 0` and the degree-one incidence matrix. -/
+public structure StandardA2ToricCentralFiberIndependentIncidenceResidual
+    {X : Type} [TopologicalSpace X] [T2Space X]
+    (atlas : StandardA2ToricCentralFiberCellAtlas X) where
+  boundaryZero :
+    let D := atlas.toCWDecomposition
+    let _ := D.topology
+    let _ := D.cwComplex
+    ∀ (j : Fin 3) (i : Fin 2),
+      standardA2ToricCellularCoordinateBoundary D 0
+          (Pi.single j 1 : Fin 3 → ℤ) i =
+        standardA2ToricCellularBoundary 0 (Pi.single j 1 : Fin 3 → ℤ) i
+  boundaryOneIndependent :
+    let D := atlas.toCWDecomposition
+    let _ := D.topology
+    let _ := D.cwComplex
+    ∀ (j : Fin 4) (i : Fin 2),
+      standardA2ToricCellularCoordinateBoundary D 1
+          (Pi.single j 1 : Fin 4 → ℤ) i.castSucc =
+        standardA2ToricCellularBoundary 1 (Pi.single j 1 : Fin 4 → ℤ) i.castSucc
+  boundaryTwo :
+    let D := atlas.toCWDecomposition
+    let _ := D.topology
+    let _ := D.cwComplex
+    ∀ (j : Fin 2) (i : Fin 4),
+      standardA2ToricCellularCoordinateBoundary D 2
+          (Pi.single j 1 : Fin 2 → ℤ) i =
+        standardA2ToricCellularBoundary 2 (Pi.single j 1 : Fin 2 → ℤ) i
+  boundaryThree :
+    let D := atlas.toCWDecomposition
+    let _ := D.topology
+    let _ := D.cwComplex
+    ∀ (j : Fin 1) (i : Fin 2),
+      standardA2ToricCellularCoordinateBoundary D 3
+          (Pi.single j 1 : Fin 1 → ℤ) i =
+        standardA2ToricCellularBoundary 3 (Pi.single j 1 : Fin 1 → ℤ) i
+
 /-- A labelled standard `A₂` CW decomposition together with the complete finite incidence
 matrix.  There are exactly twenty-eight scalar entries: `3 × 2`, `4 × 3`, `2 × 4`, and
 `1 × 2` in boundary degrees zero through three.  Higher source cell sets are empty. -/
@@ -345,6 +383,85 @@ private theorem addMonoidHom_ext_pi_single_one
         simp
       · simp [hji]
     rw [hz, map_zsmul, map_zsmul, h i]
+
+private theorem standardA2ToricCellularCoordinateBoundary_comp
+    {X : Type} [TopologicalSpace X]
+    (D : StandardA2ToricCentralFiberCWDecomposition X) (n : ℕ)
+    (x : cuspWCellIndex (n + 2) → ℤ) :
+    standardA2ToricCellularCoordinateBoundary D n
+        (standardA2ToricCellularCoordinateBoundary D (n + 1) x) = 0 := by
+  let _ := D.topology
+  let _ := D.cwComplex
+  change (D.labelledCellBasis n).symm
+    (ConcreteCategory.hom (D.integralCellularChainModel.chainComplex.d (n + 1) n)
+      (D.labelledCellBasis (n + 1)
+        ((D.labelledCellBasis (n + 1)).symm
+          (ConcreteCategory.hom
+            (D.integralCellularChainModel.chainComplex.d (n + 2) (n + 1))
+            (D.labelledCellBasis (n + 2) x))))) = 0
+  rw [AddEquiv.apply_symm_apply]
+  have h := ConcreteCategory.congr_hom
+    (D.integralCellularChainModel.chainComplex.d_comp_d (n + 2) (n + 1) n)
+    (D.labelledCellBasis (n + 2) x)
+  rw [AddCommGrpCat.comp_apply] at h
+  rw [h]
+  simp
+
+namespace StandardA2ToricCentralFiberIncidenceResidual
+
+variable {X : Type} [TopologicalSpace X] [T2Space X]
+
+/-- Complete the four dependent degree-two attaching coefficients using the chain-complex
+identity and the already known degree-one incidence matrix. -/
+public theorem ofIndependent
+    {A : StandardA2ToricCentralFiberCellAtlas X}
+    (T : StandardA2ToricCentralFiberIndependentIncidenceResidual A) :
+    StandardA2ToricCentralFiberIncidenceResidual A where
+  boundaryZero := T.boundaryZero
+  boundaryOne := by
+    dsimp only
+    intro j i
+    let _ := (A.toCWDecomposition).topology
+    let _ := (A.toCWDecomposition).cwComplex
+    have hi : i = 0 ∨ i = 1 ∨ i = 2 := by omega
+    rcases hi with rfl | rfl | rfl
+    · exact T.boundaryOneIndependent j 0
+    · exact T.boundaryOneIndependent j 1
+    · have hzero := standardA2ToricCellularCoordinateBoundary_comp A.toCWDecomposition 0
+          (Pi.single j 1 : Fin 4 → ℤ)
+      have hzero0 := congr_fun hzero (show cuspWCellIndex 0 from (0 : Fin 2))
+      have hboundaryZero :
+          standardA2ToricCellularCoordinateBoundary A.toCWDecomposition 0 =
+            standardA2ToricCellularBoundary 0 := by
+        apply addMonoidHom_ext_pi_single_one
+        intro k
+        funext i
+        exact T.boundaryZero k i
+      rw [hboundaryZero] at hzero0
+      have h0 := T.boundaryOneIndependent j 0
+      change standardA2ToricCellularCoordinateBoundary A.toCWDecomposition 1
+          (Pi.single j 1 : Fin 4 → ℤ)
+            (show cuspWCellIndex 1 from (0 : Fin 3)) = 0 at h0
+      have h1 := T.boundaryOneIndependent j 1
+      change standardA2ToricCellularCoordinateBoundary A.toCWDecomposition 1
+          (Pi.single j 1 : Fin 4 → ℤ)
+            (show cuspWCellIndex 1 from (1 : Fin 3)) = 0 at h1
+      change -(standardA2ToricCellularCoordinateBoundary A.toCWDecomposition 1
+          (Pi.single j 1 : Fin 4 → ℤ) (show cuspWCellIndex 1 from (0 : Fin 3)) +
+        standardA2ToricCellularCoordinateBoundary A.toCWDecomposition 1
+          (Pi.single j 1 : Fin 4 → ℤ) (show cuspWCellIndex 1 from (1 : Fin 3)) +
+        standardA2ToricCellularCoordinateBoundary A.toCWDecomposition 1
+          (Pi.single j 1 : Fin 4 → ℤ) (show cuspWCellIndex 1 from (2 : Fin 3))) = 0
+        at hzero0
+      rw [h0, h1] at hzero0
+      simp at hzero0
+      change standardA2ToricCellularCoordinateBoundary A.toCWDecomposition 1
+        (Pi.single j 1 : Fin 4 → ℤ) (show cuspWCellIndex 1 from (2 : Fin 3)) = 0
+      exact hzero0
+  boundaryTwo := T.boundaryTwo
+  boundaryThree := T.boundaryThree
+
+end StandardA2ToricCentralFiberIncidenceResidual
 
 namespace StandardA2ToricCentralFiberFiniteCellularRealization
 
@@ -435,9 +552,22 @@ public axiom establishedStandardA2ToricCentralFiberCellAtlas
     let _ : T2Space (R.quotientCentralFiber W) := inferInstance
     StandardA2ToricCentralFiberCellAtlas (R.quotientCentralFiber W)
 
+/-- The independent combinatorial input: twenty-four scalar cellular-incidence entries in the
+atlas coordinates. -/
+public axiom establishedStandardA2ToricCentralFiberIndependentIncidenceResidual
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M)
+    (R : ActualLocalCuspCentralFiberRetractionData W) :
+    let _ : T2Space (actualLocalCuspFilling W) :=
+      SphereSixComplex.Geometry.PaperAnalyticData.actualLocalCuspFilling_t2 W
+    let _ : T2Space (R.quotientCentralFiber W) := inferInstance
+    StandardA2ToricCentralFiberIndependentIncidenceResidual
+      (establishedStandardA2ToricCentralFiberCellAtlas W R)
+
 /-- The remaining combinatorial input: the twenty-eight scalar cellular-incidence entries in
 the atlas coordinates. -/
-public axiom establishedStandardA2ToricCentralFiberIncidenceResidual
+public theorem establishedStandardA2ToricCentralFiberIncidenceResidual
     {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
@@ -446,7 +576,12 @@ public axiom establishedStandardA2ToricCentralFiberIncidenceResidual
       SphereSixComplex.Geometry.PaperAnalyticData.actualLocalCuspFilling_t2 W
     let _ : T2Space (R.quotientCentralFiber W) := inferInstance
     StandardA2ToricCentralFiberIncidenceResidual
-      (establishedStandardA2ToricCentralFiberCellAtlas W R)
+      (establishedStandardA2ToricCentralFiberCellAtlas W R) := by
+  let _ : T2Space (actualLocalCuspFilling W) :=
+    SphereSixComplex.Geometry.PaperAnalyticData.actualLocalCuspFilling_t2 W
+  let _ : T2Space (R.quotientCentralFiber W) := inferInstance
+  exact StandardA2ToricCentralFiberIncidenceResidual.ofIndependent
+    (establishedStandardA2ToricCentralFiberIndependentIncidenceResidual W R)
 
 /-- The actual quotient carrier, equipped with the CW structure constructed from the residual
 characteristic maps and with the verified finite incidence table. -/

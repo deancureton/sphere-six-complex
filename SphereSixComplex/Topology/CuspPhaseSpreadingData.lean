@@ -59,8 +59,10 @@ public structure FrozenLocalCuspPhaseSpreadingData
     {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) (r : ℝ)
     (P : PolarHoneycombData M r) where
-  phaseOrbit_isOpenQuotientMap :
-    IsOpenQuotientMap (compactPhaseOrbit M r P.positivePart)
+  phaseOrbit_prod_isQuotientMap :
+    Topology.IsQuotientMap
+      (Prod.map (id : unitInterval → unitInterval)
+        (compactPhaseOrbit M r P.positivePart))
   deckPhase : Multiplicative ParameterLattice → CompactTorus → CompactTorus
   deck_orbit :
     letI := P.positiveDeckAction

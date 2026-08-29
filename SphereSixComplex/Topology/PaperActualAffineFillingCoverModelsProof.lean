@@ -3,6 +3,7 @@ module
 public import SphereSixComplex.Topology.PaperActualAffineFillingCoverModelsDefs
 public import SphereSixComplex.Topology.PaperCuspAffineFillingBridge
 public import SphereSixComplex.Topology.AffineRealMappingTorusUniversalCover
+public import SphereSixComplex.Topology.PaperEllipticFundamentalGroupSurjectivity
 
 /-!
 # Reduction of the actual affine filling-cover squares to the two elliptic inputs
@@ -1293,6 +1294,111 @@ public noncomputable def toActualEllipticCentralBasisNaturality
 
 end ActualEllipticMarkedFillingExtensionNaturality
 
+private theorem fundamentalGroup_map_surjective_of_homeomorph_square
+    {X X' Y Y' : Type*}
+    [TopologicalSpace X] [TopologicalSpace X']
+    [TopologicalSpace Y] [TopologicalSpace Y']
+    (eX : X ≃ₜ X') (eY : Y ≃ₜ Y')
+    (f : C(X, Y)) (g : C(X', Y'))
+    (hcomm : g.comp (⟨eX, eX.continuous⟩ : C(X, X')) =
+      (⟨eY, eY.continuous⟩ : C(Y, Y')).comp f)
+    (x' : X')
+    (hsurj : Function.Surjective (FundamentalGroup.map f (eX.symm x'))) :
+    Function.Surjective (FundamentalGroup.map g x') := by
+  let x := eX.symm x'
+  have hx : eX x = x' := eX.apply_symm_apply x'
+  have hy : eY (f x) = g x' := by
+    exact (DFunLike.congr_fun hcomm x).symm.trans (congrArg g hx)
+  let sourceEquiv := TauCeti.FundamentalGroup.homeomorphMulEquivOfEq eX hx
+  let targetEquiv := TauCeti.FundamentalGroup.homeomorphMulEquivOfEq eY hy
+  have hnatural (a : FundamentalGroup X x) :
+      FundamentalGroup.map g x' (sourceEquiv a) =
+        targetEquiv (FundamentalGroup.map f x a) := by
+    change FundamentalGroup.map g x'
+        (FundamentalGroup.mapOfEq ⟨eX, eX.continuous⟩ hx a) =
+      FundamentalGroup.mapOfEq ⟨eY, eY.continuous⟩ hy
+        (FundamentalGroup.map f x a)
+    rw [← TauCeti.FundamentalGroup.mapOfEq_rfl g,
+      TauCeti.FundamentalGroup.mapOfEq_comp]
+    rw [← TauCeti.FundamentalGroup.mapOfEq_rfl f,
+      TauCeti.FundamentalGroup.mapOfEq_comp]
+    exact TauCeti.FundamentalGroup.mapOfEq_congr hcomm _ _ a
+  intro z
+  obtain ⟨y, rfl⟩ := targetEquiv.surjective z
+  obtain ⟨a, ha⟩ := hsurj y
+  refine ⟨sourceEquiv a, ?_⟩
+  rw [hnatural, ha]
+
+/-- The actual order-three overlap inclusion is onto on fundamental groups, independently of
+the marked filling-extension naturality package. -/
+public theorem actualOrderThreeOverlapFundamentalGroupMap_surjective :
+    Function.Surjective
+      A.actualVanKampenFourPieceCover.ellipticThreeOverlapFundamentalGroupMap := by
+  let D := A.actualVanKampenFourPieceCover
+  let eX := A.orderThreeCollarToActualOverlapHomeomorph
+  let eY := A.orderThreeFillingToActualPieceHomeomorph
+  let f : C(A.starCollarSourceType 1, A.starFillingType 1) :=
+    ⟨A.starToFilling 1, (A.starToFilling_isOpenEmbedding 1).continuous⟩
+  let g := D.ellipticThreeOverlapToPiece
+  let x' : (D.core ∩ D.ellipticThree : Set A.VanKampenSpace) :=
+    ⟨D.ellipticThreePoint, D.ellipticThreePoint_mem⟩
+  have hcomm : g.comp (⟨eX, eX.continuous⟩ : C(_, _)) =
+      (⟨eY, eY.continuous⟩ : C(_, _)).comp f := by
+    ext q
+    change A.openEmbeddingStarData.toFourPieceStarGluingData.glueData.toGlueData.ι none
+        (A.openEmbeddingStarData.toCentral 1 q) =
+      A.openEmbeddingStarData.toFourPieceStarGluingData.glueData.toGlueData.ι (some 1)
+        (A.openEmbeddingStarData.toFilling 1 q)
+    symm
+    apply (A.openEmbeddingStarData.toFourPieceStarGluingData.glueData.ι_eq_iff_rel
+      (some 1) none (A.openEmbeddingStarData.toFilling 1 q)
+        (A.openEmbeddingStarData.toCentral 1 q)).mpr
+    refine ⟨A.openEmbeddingStarData.fillingCollarPoint 1 q, rfl, ?_⟩
+    exact congrArg Subtype.val
+      (A.openEmbeddingStarData.collarEquiv_symm_toFilling 1 q)
+  have hsurj : Function.Surjective (FundamentalGroup.map f (eX.symm x')) := by
+    exact A.orderThreePuncturedCollarToFilling_fundamentalGroup_surjective_at
+      A.starSeparation.orderThree.radius_pos
+      A.starSeparation.orderThree.radius_lt_one (eX.symm x')
+  change Function.Surjective (FundamentalGroup.map g x')
+  exact fundamentalGroup_map_surjective_of_homeomorph_square
+    eX eY f g hcomm x' hsurj
+
+/-- The actual order-four overlap inclusion is onto on fundamental groups, independently of
+the marked filling-extension naturality package. -/
+public theorem actualOrderFourOverlapFundamentalGroupMap_surjective :
+    Function.Surjective
+      A.actualVanKampenFourPieceCover.ellipticFourOverlapFundamentalGroupMap := by
+  let D := A.actualVanKampenFourPieceCover
+  let eX := A.orderFourCollarToActualOverlapHomeomorph
+  let eY := A.orderFourFillingToActualPieceHomeomorph
+  let f : C(A.starCollarSourceType 2, A.starFillingType 2) :=
+    ⟨A.starToFilling 2, (A.starToFilling_isOpenEmbedding 2).continuous⟩
+  let g := D.ellipticFourOverlapToPiece
+  let x' : (D.core ∩ D.ellipticFour : Set A.VanKampenSpace) :=
+    ⟨D.ellipticFourPoint, D.ellipticFourPoint_mem⟩
+  have hcomm : g.comp (⟨eX, eX.continuous⟩ : C(_, _)) =
+      (⟨eY, eY.continuous⟩ : C(_, _)).comp f := by
+    ext q
+    change A.openEmbeddingStarData.toFourPieceStarGluingData.glueData.toGlueData.ι none
+        (A.openEmbeddingStarData.toCentral 2 q) =
+      A.openEmbeddingStarData.toFourPieceStarGluingData.glueData.toGlueData.ι (some 2)
+        (A.openEmbeddingStarData.toFilling 2 q)
+    symm
+    apply (A.openEmbeddingStarData.toFourPieceStarGluingData.glueData.ι_eq_iff_rel
+      (some 2) none (A.openEmbeddingStarData.toFilling 2 q)
+        (A.openEmbeddingStarData.toCentral 2 q)).mpr
+    refine ⟨A.openEmbeddingStarData.fillingCollarPoint 2 q, rfl, ?_⟩
+    exact congrArg Subtype.val
+      (A.openEmbeddingStarData.collarEquiv_symm_toFilling 2 q)
+  have hsurj : Function.Surjective (FundamentalGroup.map f (eX.symm x')) := by
+    exact A.orderFourPuncturedCollarToFilling_fundamentalGroup_surjective_at
+      A.starSeparation.orderFour.radius_pos
+      A.starSeparation.orderFour.radius_lt_one (eX.symm x')
+  change Function.Surjective (FundamentalGroup.map g x')
+  exact fundamentalGroup_map_surjective_of_homeomorph_square
+    eX eY f g hcomm x' hsurj
+
 namespace ActualEllipticCentralNaturality
 
 variable {A} {N : A.ActualCuspCentralNaturality}
@@ -1348,8 +1454,8 @@ public noncomputable def bridge (E : ActualEllipticCentralNaturality A N) :
     AffineTorusStarFillingBridge A.actualVanKampenFourPieceCover
       (A.coreDataOf N) 3 4 epsilon (-epsilon') 0 paperToricSubgroup where
   cuspSurjective := A.actualCuspOverlapFundamentalGroupMap_surjective
-  oneSurjective := E.orderThreeOverlapFundamentalGroupMap_surjective
-  twoSurjective := E.orderFourOverlapFundamentalGroupMap_surjective
+  oneSurjective := A.actualOrderThreeOverlapFundamentalGroupMap_surjective
+  twoSurjective := A.actualOrderFourOverlapFundamentalGroupMap_surjective
   cuspToCore := A.actualCuspOverlapToCore
   oneToCore := A.actualEllipticThreeOverlapToCore
   twoToCore := A.actualEllipticFourOverlapToCore

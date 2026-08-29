@@ -119,7 +119,7 @@ axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2T
             SphereSixComplex.StandardA2ToricCentralFiberCellAtlas
               ↑(SphereSixComplex.Geometry.CuspPuncturedCollarBridge.ActualLocalCuspCentralFiberRetractionData.quotientCentralFiber
                   W R)
-axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberIncidenceResidual : ∀
+axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberIndependentIncidenceResidual : ∀
   {E : SphereSixComplex.Periods.EstablishedFuchsianModularParameter}
   {D : SphereSixComplex.Periods.FuchsianPeriodLocalData E}
   {N : SphereSixComplex.Geometry.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate E D}
@@ -128,7 +128,7 @@ axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2T
   (R : SphereSixComplex.Geometry.CuspPuncturedCollarBridge.ActualLocalCuspCentralFiberRetractionData W),
   let x := SphereSixComplex.Geometry.PaperAnalyticData.actualLocalCuspFilling_t2 W;
   let x := inferInstance;
-  SphereSixComplex.StandardA2ToricCentralFiberIncidenceResidual
+  SphereSixComplex.StandardA2ToricCentralFiberIndependentIncidenceResidual
     (SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberCellAtlas W R)
 axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization.establishedFiniteFiberGeneratorSpecializationMatrix : ∀
   (A : SphereSixComplex.Geometry.PaperAnalyticData),
@@ -186,9 +186,9 @@ axiom SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established.normali
   0 < r →
     Nonempty
       { P //
-        (∀ (j : Fin 2),
-            P.positiveTwist (Pi.single j 1) =
-              SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established.normalizedCuspPositiveTwist N
-                (Pi.single j 1)) ∧
+        (∀ (j i : Fin 2),
+            ‖↑(P.positiveTwist (Pi.single j 1) i.castSucc)‖ =
+              ‖↑(SphereSixComplex.Geometry.CuspToricPhaseAction.phaseEmbedding (N.phaseCoefficient (Pi.single j 1) 0)
+                    i.castSucc)‖) ∧
           SphereSixComplex.Geometry.CuspStraighteningRetraction.PolarPhaseGeometricCore M r P }
 END GENERATED AXIOM CATALOG -/

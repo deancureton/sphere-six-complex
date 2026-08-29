@@ -19,8 +19,10 @@ namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
 
 open SphereSixComplex.Periods
 open SphereSixComplex.Geometry.CuspFilling
+open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspStraighteningRetraction
+open SphereSixComplex.Geometry.CuspStraighteningExtension
 open SphereSixComplex.Geometry.CuspToricPhaseAction
 
 /-- The positive real complex unit with the same norm as a given complex unit. -/
@@ -97,6 +99,77 @@ public theorem norm_normalizedCuspPositiveTwist
       ‖((phaseEmbedding (N.phaseCoefficient lambda 0) i : ℂˣ) : ℂ)‖ :=
   norm_positiveRadialPart _
 
+/-- The compact phase-orbit map is proper.  The positive part is closed because its modulus map
+is a retraction, and the orbit map factors through the compact-torus action homeomorphism
+followed by projection away from the compact torus. -/
+public theorem compactPhaseOrbit_isProper
+    (M : Model) (r : ℝ) (P : PolarHoneycombData M r) :
+    IsProperMap (compactPhaseOrbit M r P.positivePart) := by
+  let J := establishedContinuousTorusAction M
+  let localAction : CompactTorus × LocalCarrier M r → LocalCarrier M r :=
+    fun z ↦ ⟨M.torusAction (compactTorusEmbedding z.1) z.2, by
+      change M.t (M.torusAction (compactTorusEmbedding z.1) z.2) ∈ Metric.ball 0 r
+      rw [Metric.mem_ball, dist_zero_right, M.t_torusAction, norm_mul]
+      change ‖(z.1 2 : ℂ)‖ * ‖M.t z.2‖ < r
+      rw [Circle.norm_coe, one_mul]
+      simpa only [dist_zero_right] using Metric.mem_ball.mp z.2.property⟩
+  have hlocalAction : Continuous localAction := by
+    rw [continuous_induced_rng]
+    exact J.variable_action
+      (continuous_compactTorusEmbedding.comp continuous_fst)
+      (continuous_subtype_val.comp continuous_snd)
+  let localActionInv : CompactTorus × LocalCarrier M r → LocalCarrier M r :=
+    fun z ↦ ⟨M.torusAction (compactTorusEmbedding z.1)⁻¹ z.2, by
+      change M.t (M.torusAction (compactTorusEmbedding z.1)⁻¹ z.2) ∈ Metric.ball 0 r
+      rw [Metric.mem_ball, dist_zero_right, M.t_torusAction, norm_mul]
+      rw [show ‖((((compactTorusEmbedding z.1)⁻¹ 2 : ℂˣ) : ℂ))‖ = 1 by
+        rw [Pi.inv_apply, Units.val_inv_eq_inv_val, norm_inv]
+        change ‖(z.1 2 : ℂ)‖⁻¹ = 1
+        rw [Circle.norm_coe, inv_one], one_mul]
+      simpa only [dist_zero_right] using Metric.mem_ball.mp z.2.property⟩
+  have hlocalActionInv : Continuous localActionInv := by
+    rw [continuous_induced_rng]
+    exact J.variable_action
+      (continuous_inv.comp
+        (continuous_compactTorusEmbedding.comp continuous_fst))
+      (continuous_subtype_val.comp continuous_snd)
+  let actionHomeomorph : CompactTorus × LocalCarrier M r ≃ₜ
+      CompactTorus × LocalCarrier M r := {
+    toFun := fun z ↦ (z.1, localAction z)
+    invFun := fun z ↦ (z.1, localActionInv z)
+    left_inv := by
+      intro z
+      ext <;> simp [localAction, localActionInv]
+    right_inv := by
+      intro z
+      ext <;> simp [localAction, localActionInv]
+    continuous_toFun := continuous_fst.prodMk hlocalAction
+    continuous_invFun := continuous_fst.prodMk hlocalActionInv }
+  have hclosed : IsClosed P.positivePart := by
+    have hrange : P.positivePart =
+        Set.range (fun q : P.positivePart ↦ (q : LocalCarrier M r)) := by
+      ext x
+      simp
+    rw [hrange]
+    exact (show Function.LeftInverse P.modulus
+      (fun q : P.positivePart ↦ (q : LocalCarrier M r)) from P.modulus_fixed).isClosed_range
+        P.modulus.continuous continuous_subtype_val
+  have hinclusion : Topology.IsClosedEmbedding
+      (fun z : CompactTorus × P.positivePart ↦
+        (z.1, (z.2 : LocalCarrier M r))) := by
+    exact Topology.IsClosedEmbedding.id.prodMap
+      hclosed.isClosedEmbedding_subtypeVal
+  have hj : IsProperMap (fun z : CompactTorus × P.positivePart ↦
+      actionHomeomorph (z.1, (z.2 : LocalCarrier M r))) :=
+    actionHomeomorph.isProperMap.comp hinclusion.isProperMap
+  have hproper : IsProperMap (fun z : CompactTorus × P.positivePart ↦
+      (actionHomeomorph (z.1, (z.2 : LocalCarrier M r))).2) :=
+    isProperMap_snd_of_compactSpace.comp hj
+  convert hproper using 1
+  funext z
+  apply Subtype.ext
+  rfl
+
 /-- The polar decomposition already proves surjectivity of the compact phase orbit map. -/
 public theorem compactPhaseOrbit_surjective
     (M : Model) (r : ℝ) (P : PolarHoneycombData M r) :
@@ -107,13 +180,62 @@ public theorem compactPhaseOrbit_surjective
   apply Subtype.ext
   exact hphi
 
+/-- Properness and polar surjectivity give the exact product quotient map used to descend the
+phase-spread homotopy. -/
+public theorem compactPhaseOrbit_prod_isQuotientMap
+    (M : Model) (r : ℝ) (P : PolarHoneycombData M r) :
+    Topology.IsQuotientMap
+      (Prod.map (id : unitInterval → unitInterval)
+        (compactPhaseOrbit M r P.positivePart)) := by
+  have hproper : IsProperMap
+      (Prod.map (id : unitInterval → unitInterval)
+        (compactPhaseOrbit M r P.positivePart)) :=
+    isProperMap_id.prodMap (compactPhaseOrbit_isProper M r P)
+  exact hproper.isClosedMap.isQuotientMap hproper.continuous
+    (Function.Surjective.prodMap Function.surjective_id
+      (compactPhaseOrbit_surjective M r P))
+
+private theorem positive_units_eq_of_norm_eq
+    (z w : ℂˣ)
+    (hz : 0 < ((z : ℂˣ) : ℂ).re ∧ ((z : ℂˣ) : ℂ).im = 0)
+    (hw : 0 < ((w : ℂˣ) : ℂ).re ∧ ((w : ℂˣ) : ℂ).im = 0)
+    (h : ‖((z : ℂˣ) : ℂ)‖ = ‖((w : ℂˣ) : ℂ)‖) :
+    z = w := by
+  have hzval : ((z : ℂˣ) : ℂ) = (((z : ℂˣ) : ℂ).re : ℂ) :=
+    Complex.ext rfl hz.2
+  have hwval : ((w : ℂˣ) : ℂ) = (((w : ℂˣ) : ℂ).re : ℂ) :=
+    Complex.ext rfl hw.2
+  apply Units.ext
+  rw [hzval, hwval, Complex.ofReal_inj]
+  rw [hzval, hwval, Complex.norm_real, Complex.norm_real,
+    Real.norm_eq_abs, Real.norm_eq_abs, abs_of_pos hz.1, abs_of_pos hw.1] at h
+  exact h
+
 private theorem positiveTwist_eq_normalized_of_basis_aux
     {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) {M : Model} {r : ℝ}
     (P : PolarHoneycombData M r)
-    (hP : ∀ j : Fin 2, P.positiveTwist (Pi.single j 1) =
-      normalizedCuspPositiveTwist N (Pi.single j 1)) :
+    (hP : ∀ j i : Fin 2,
+      ‖((P.positiveTwist (Pi.single j 1) i.castSucc : ℂˣ) : ℂ)‖ =
+        ‖((phaseEmbedding (N.phaseCoefficient (Pi.single j 1) 0)
+          i.castSucc : ℂˣ) : ℂ)‖) :
     P.positiveTwist = normalizedCuspPositiveTwist N := by
+  have hP' : ∀ j : Fin 2, P.positiveTwist (Pi.single j 1) =
+      normalizedCuspPositiveTwist N (Pi.single j 1) := by
+    intro j
+    funext i
+    fin_cases i
+    · exact positive_units_eq_of_norm_eq _ _
+        (P.positiveTwist_real (Pi.single j 1) 0)
+        (normalizedCuspPositiveTwist_real N (Pi.single j 1) 0)
+        ((hP j 0).trans (norm_normalizedCuspPositiveTwist N (Pi.single j 1) 0).symm)
+    · exact positive_units_eq_of_norm_eq _ _
+        (P.positiveTwist_real (Pi.single j 1) 1)
+        (normalizedCuspPositiveTwist_real N (Pi.single j 1) 1)
+        ((hP j 1).trans (norm_normalizedCuspPositiveTwist N (Pi.single j 1) 1).symm)
+    · change P.positiveTwist (Pi.single j 1) 2 =
+        normalizedCuspPositiveTwist N (Pi.single j 1) 2
+      rw [P.positiveTwist_last, normalizedCuspPositiveTwist_last]
   let pTwist : ParameterLattice →+ Additive DenseTorus := {
     toFun := fun lambda ↦ Additive.ofMul (P.positiveTwist lambda)
     map_zero' := congrArg Additive.ofMul P.positiveTwist_zero
@@ -127,7 +249,7 @@ private theorem positiveTwist_eq_normalized_of_basis_aux
     apply AddMonoidHom.functions_ext'
     intro j
     apply AddMonoidHom.ext_int
-    exact congrArg Additive.ofMul (hP j)
+    exact congrArg Additive.ofMul (hP' j)
   funext lambda
   exact congrArg Additive.toMul (DFunLike.congr_fun hHom lambda)
 
@@ -138,8 +260,10 @@ public axiom normalizedPolarHoneycombPhaseGeometry
     {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) (r : ℝ) (hr : 0 < r) :
     Nonempty { P : PolarHoneycombData M r //
-      (∀ j : Fin 2, P.positiveTwist (Pi.single j 1) =
-        normalizedCuspPositiveTwist N (Pi.single j 1)) ∧ PolarPhaseGeometricCore M r P }
+      (∀ j i : Fin 2,
+        ‖((P.positiveTwist (Pi.single j 1) i.castSucc : ℂˣ) : ℂ)‖ =
+          ‖((phaseEmbedding (N.phaseCoefficient (Pi.single j 1) 0)
+            i.castSucc : ℂˣ) : ℂ)‖) ∧ PolarPhaseGeometricCore M r P }
 
 /-- Exact choice of the canonical radial multiplier supplies the radial compatibility required
 by the algebraic deck correction. -/
@@ -163,7 +287,8 @@ public theorem polarHoneycombPhaseSpreadingPackage
     Nonempty (Σ P : PolarHoneycombData M r,
       FrozenLocalCuspPhaseSpreadingData N M r P) := by
   obtain ⟨⟨P, H, G⟩⟩ := polarHoneycombPhaseSpreadingGeometry N M r hr
-  exact ⟨⟨P, FrozenLocalCuspPhaseSpreadingData.ofPolarPhaseData H.toDeckLift G⟩⟩
+  exact ⟨⟨P, FrozenLocalCuspPhaseSpreadingData.ofPolarPhaseData
+    (compactPhaseOrbit_prod_isQuotientMap M r P) H.toDeckLift G⟩⟩
 
 /-- Forgetting the phase-spreading compatibility gives the underlying polar-honeycomb model. -/
 public theorem polarHoneycombData (M : Model) (r : ℝ) (hr : 0 < r) :

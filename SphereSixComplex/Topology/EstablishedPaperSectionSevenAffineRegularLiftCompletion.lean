@@ -24,7 +24,8 @@ namespace SphereSixComplex.Geometry.PaperAnalyticData
 namespace EstablishedSectionSevenAffineRegularLiftTopology
 
 /-- The exact remaining paper geometry: the two band maps induced by the proved affine overlap
-equivalences are homotopic to the named finite-cover projections. -/
+equivalences are homotopic to the finite-cover projections marked by the unique affine-strip lift
+through the selected actual cusp crossing. -/
 public axiom markedBandHomotopies (A : PaperAnalyticData) :
     A.SectionSevenAffineOverlapBandCompatibility
 
@@ -56,15 +57,19 @@ public theorem markedRetractionInput_nonempty (A : PaperAnalyticData) :
 /-- The exact residual affine input from the paper: the two marked band square homotopies.
 
 **Do not weaken the trivialization used here.**  This statement was *false* in an earlier form of
-the development, and is sound only because the band trivialization is taken at a *named* lift.
+the development, and is sound only because the band trivialization is taken at the unique lift
+through the selected actual cusp-coordinate crossing and its explicit regular-base point.
 Historically `sectionSevenAffineCentralBandProductHomeomorph` was
 `(establishedActualCentralBandProductTrivialization A S).choose`.  Since
 `IsHomeomorphicTrivialFiberBundle` pins only the *base* coordinate, that left the fibre coordinate
 entirely free: post-composing the chosen trivialization with a fibrewise self-homeomorphism lying
 outside the order-three subgroup of `GL₄(ℤ)` falsifies the band square, so no proof of the
 un-marked statement could exist.  The current
-`sectionSevenAffineCentralBandMarkedProductHomeomorph` is built from the named
-`sectionSevenAffineNamedStripLift`, which pins the fibre coordinate and makes
+`sectionSevenAffineCentralBandMarkedProductHomeomorph` is built from
+`sectionSevenAffineNamedStripLift`, whose value at the crossing is
+`actualCuspAngularRegularBasePoint sectionSevenAffineActualCuspCrossingTime`.  This geometric
+basepoint condition, not merely assigning a name to an arbitrary lift, pins the fibre coordinate
+and makes
 `SectionSevenAffineOverlapBandCompatibility` a true statement.  Anyone tempted to "simplify" the
 marked product homeomorphism back to an `Exists.choose` would be reintroducing a false axiom. -/
 public theorem overlapBandCompatibility (A : PaperAnalyticData) :

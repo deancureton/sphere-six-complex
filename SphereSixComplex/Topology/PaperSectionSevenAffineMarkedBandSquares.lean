@@ -28,9 +28,10 @@ variable {A : PaperAnalyticData}
 
 /-- The named product homeomorphism of the actual central torus bundle over the affine strip.
 
-This is the *marked* trivialization at `sectionSevenAffineNamedStripLift`, not an `Exists.choose`
-of the unmarked triviality statement: the unmarked statement pins the base coordinate only, so its
-chosen witness leaves the fibre coordinate free (see
+This is the *marked* trivialization at `sectionSevenAffineNamedStripLift`, the unique strip lift
+through the selected actual cusp crossing and its explicit regular-base representative, not an
+`Exists.choose` of the unmarked triviality statement: the unmarked statement pins the base
+coordinate only, so its chosen witness leaves the fibre coordinate free (see
 `exists_productTrivialization_fiberCoordinate_comp`) and every downstream square built on it would
 be false as stated. -/
 public noncomputable def sectionSevenAffineCentralBandProductHomeomorph

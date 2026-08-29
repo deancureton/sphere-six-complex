@@ -29,7 +29,8 @@ all phase orbits. -/
 public structure ToricPhaseSpreadingData
     (D : EquivariantStrongDeformationRetraction G P A) (B : Set X) where
   orbit : C(K × P, X)
-  orbit_isOpenQuotientMap : IsOpenQuotientMap orbit
+  orbit_prod_isQuotientMap : Topology.IsQuotientMap
+    (Prod.map (id : unitInterval → unitInterval) orbit)
   deckPhase : G → K → K
   deck_orbit : ∀ g k p, orbit (deckPhase g k, g • p) = g • orbit (k, p)
   homotopy_fiberwise : ∀ s k p l q, orbit (k, p) = orbit (l, q) →
@@ -41,8 +42,10 @@ namespace ToricPhaseSpreadingData
 variable (D : EquivariantStrongDeformationRetraction G P A)
   (S : ToricPhaseSpreadingData (K := K) (X := X) D B)
 
-public theorem orbit_surjective : Function.Surjective S.orbit :=
-  S.orbit_isOpenQuotientMap.surjective
+public theorem orbit_surjective : Function.Surjective S.orbit := by
+  intro x
+  obtain ⟨z, hz⟩ := S.orbit_prod_isQuotientMap.surjective (0, x)
+  exact ⟨z.2, congrArg Prod.snd hz⟩
 
 public noncomputable def representative (x : X) : K × P :=
   Classical.choose (S.orbit_surjective D x)
@@ -63,10 +66,7 @@ public theorem spreadHomotopyToFun_orbit
 
 public theorem continuous_spreadHomotopyToFun :
     Continuous (spreadHomotopyToFun D S) := by
-  have hq : IsOpenQuotientMap
-      (Prod.map (id : unitInterval → unitInterval) S.orbit) :=
-    IsOpenQuotientMap.id.prodMap S.orbit_isOpenQuotientMap
-  apply hq.isQuotientMap.continuous_iff.mpr
+  apply S.orbit_prod_isQuotientMap.continuous_iff.mpr
   have hinput : Continuous (fun z : unitInterval × (K × P) ↦
       (z.2.1, D.homotopy (z.1, z.2.2))) :=
     (continuous_fst.comp continuous_snd).prodMk

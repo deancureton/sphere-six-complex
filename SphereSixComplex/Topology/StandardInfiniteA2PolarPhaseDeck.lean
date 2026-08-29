@@ -5,7 +5,7 @@ public import SphereSixComplex.Topology.CuspPhaseSpreadingData
 /-!
 # The algebraic deck correction for polar phase spreading
 
-The phase correction is separated here from the geometric openness and stabilizer statements.
+The phase correction is separated here from the quotient-topology and stabilizer statements.
 Once the compact phase multiplier lifting the frozen deck multiplier is specified, compatibility
 of the two deck actions follows from the toric action laws and density of the open torus.
 -/
@@ -171,12 +171,10 @@ public theorem PolarPhaseDeckLift.deck_orbit
     _ = _ := by
       rw [← fanShear_torusAction]
 
-/-- The genuinely geometric residue after the deck multiplier calculation: openness of polar
-coordinates and stabilizer preservation by the lifted cellular homotopy. -/
+/-- The genuinely geometric residue after the deck multiplier calculation: stabilizer
+preservation by the lifted cellular homotopy. -/
 public structure PolarPhaseGeometricCore
     (M : Model) (r : ℝ) (P : PolarHoneycombData M r) where
-  phaseOrbit_isOpenQuotientMap :
-    IsOpenQuotientMap (compactPhaseOrbit M r P.positivePart)
   homotopy_fiberwise :
     letI := P.positiveDeckAction
     let R := P.positiveEquivariantStrongDeformationRetraction
@@ -191,10 +189,14 @@ lift.  In particular, the deck-orbit field is a theorem rather than an assumed c
 public def FrozenLocalCuspPhaseSpreadingData.ofPolarPhaseData
     {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
-    {P : PolarHoneycombData M r} (L : PolarPhaseDeckLift N M r P)
+    {P : PolarHoneycombData M r}
+    (hquot : Topology.IsQuotientMap
+      (Prod.map (id : unitInterval → unitInterval)
+        (compactPhaseOrbit M r P.positivePart)))
+    (L : PolarPhaseDeckLift N M r P)
     (G : PolarPhaseGeometricCore M r P) :
     FrozenLocalCuspPhaseSpreadingData N M r P where
-  phaseOrbit_isOpenQuotientMap := G.phaseOrbit_isOpenQuotientMap
+  phaseOrbit_prod_isQuotientMap := hquot
   deckPhase := L.deckPhase
   deck_orbit := L.deck_orbit
   homotopy_fiberwise := G.homotopy_fiberwise
