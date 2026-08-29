@@ -195,8 +195,97 @@ public structure FiniteBasisNaturality (A : PaperAnalyticData) : Prop where
           A.starCuspWitness
       degreeTwoFiberProjection.comp G.geometricHomologyTwoEquiv.toAddMonoidHom
 
+/-- The exact remaining geometric calculation, reduced to the integer matrix entries on the
+standard Wang generators.  Unlike `FiniteBasisNaturality`, this asks only for thirty scalar
+equalities: `3 × 2` in degree one and `6 × 4` in degree two. -/
+public structure FiniteGeneratorSpecializationMatrix (A : PaperAnalyticData) : Prop where
+  degreeOne (j : Fin 3) (i : Fin 2) :
+    actualLocalCuspFillingHomologyOneEquiv A.starCuspWitness
+        A.cuspCentralFiberRetractionData
+        (integralSingularHomologyMap 1
+          ⟨puncturedLocalCuspToFilling A.starCuspWitness,
+            puncturedLocalCuspToFilling_continuous A.starCuspWitness⟩
+          ((SphereSixComplex.Geometry.CuspRadialClutchingConstruction.actualCuspRadialClutchingData
+              A.starCuspWitness).geometricHomologyOneEquiv.symm (Pi.single j 1))) i =
+      (Pi.single j 1 : Fin 3 → ℤ) (Fin.castAdd 1 i)
+  degreeTwo (j : Fin 6) (i : Fin 4) :
+    actualLocalCuspFillingHomologyTwoEquiv A.starCuspWitness
+        A.cuspCentralFiberRetractionData
+        (integralSingularHomologyMap 2
+          ⟨puncturedLocalCuspToFilling A.starCuspWitness,
+            puncturedLocalCuspToFilling_continuous A.starCuspWitness⟩
+          ((SphereSixComplex.Geometry.CuspRadialClutchingConstruction.actualCuspRadialClutchingData
+              A.starCuspWitness).geometricHomologyTwoEquiv.symm (Pi.single j 1))) i =
+      (Pi.single j 1 : Fin 6 → ℤ) (Fin.castAdd 2 i)
+
+/-- The finite cellular calculation that remains after the radial clutching and Wang
+constructions.  It records the specialization matrix entry-by-entry, with no assertion about an
+arbitrary homology class. -/
+public axiom establishedFiniteGeneratorSpecializationMatrix
+    (A : PaperAnalyticData) : FiniteGeneratorSpecializationMatrix A
+
+private theorem addMonoidHom_ext_of_equiv_pi_single_one
+    {G H : Type*} [AddCommGroup G] [AddCommGroup H] {n : ℕ}
+    (e : G ≃+ (Fin n → ℤ)) (f g : G →+ H)
+    (h : ∀ i, f (e.symm (Pi.single i 1)) = g (e.symm (Pi.single i 1))) :
+    f = g := by
+  apply AddMonoidHom.ext
+  intro x
+  let y := e x
+  have hx : x = e.symm y := by simp [y]
+  rw [hx]
+  apply Pi.single_induction (M := fun _ : Fin n ↦ ℤ)
+    (p := fun z ↦ f (e.symm z) = g (e.symm z)) y
+  · simp
+  · intro a b ha hb
+    simpa using congrArg₂ (· + ·) ha hb
+  · intro i z
+    have hz : (Pi.single i z : Fin n → ℤ) =
+        z • (Pi.single i 1 : Fin n → ℤ) := by
+      ext j
+      classical
+      by_cases hji : j = i
+      · subst j
+        simp
+      · simp [hji]
+    calc
+      f (e.symm (Pi.single i z)) =
+          f (e.symm (z • (Pi.single i 1 : Fin n → ℤ))) := by rw [hz]
+      _ = z • f (e.symm (Pi.single i 1)) := by rw [map_zsmul, map_zsmul]
+      _ = z • g (e.symm (Pi.single i 1)) := congrArg (z • ·) (h i)
+      _ = g (e.symm (z • (Pi.single i 1 : Fin n → ℤ))) := by rw [map_zsmul, map_zsmul]
+      _ = g (e.symm (Pi.single i z)) := by rw [hz]
+
 /-- Cellular-to-singular naturality for the explicit periodic `A₂` cellular basis. -/
-public axiom finiteBasisNaturality (A : PaperAnalyticData) : FiniteBasisNaturality A
+public theorem finiteBasisNaturality (A : PaperAnalyticData) : FiniteBasisNaturality A := by
+  let G :=
+    SphereSixComplex.Geometry.CuspRadialClutchingConstruction.actualCuspRadialClutchingData
+      A.starCuspWitness
+  let f₁ :=
+    (actualLocalCuspFillingHomologyOneEquiv A.starCuspWitness
+      A.cuspCentralFiberRetractionData).toAddMonoidHom.comp
+        (integralSingularHomologyMap 1
+          ⟨puncturedLocalCuspToFilling A.starCuspWitness,
+            puncturedLocalCuspToFilling_continuous A.starCuspWitness⟩)
+  let f₂ :=
+    (actualLocalCuspFillingHomologyTwoEquiv A.starCuspWitness
+      A.cuspCentralFiberRetractionData).toAddMonoidHom.comp
+        (integralSingularHomologyMap 2
+          ⟨puncturedLocalCuspToFilling A.starCuspWitness,
+            puncturedLocalCuspToFilling_continuous A.starCuspWitness⟩)
+  refine ⟨?_, ?_⟩
+  · apply addMonoidHom_ext_of_equiv_pi_single_one G.geometricHomologyOneEquiv f₁
+      (degreeOneFiberProjection.comp G.geometricHomologyOneEquiv.toAddMonoidHom)
+    intro j
+    funext i
+    simpa [G, f₁, degreeOneFiberProjection] using
+      (establishedFiniteGeneratorSpecializationMatrix A).degreeOne j i
+  · apply addMonoidHom_ext_of_equiv_pi_single_one G.geometricHomologyTwoEquiv f₂
+      (degreeTwoFiberProjection.comp G.geometricHomologyTwoEquiv.toAddMonoidHom)
+    intro j
+    funext i
+    simpa [G, f₂, degreeTwoFiberProjection] using
+      (establishedFiniteGeneratorSpecializationMatrix A).degreeTwo j i
 
 /-- Cellular-to-singular naturality for the paper's selected periodic `A₂` cusp marking in
 degree one: specialization preserves its two fibre coinvariants and kills the base circle.

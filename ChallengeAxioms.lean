@@ -67,9 +67,9 @@ axiom SphereSixComplex.EstablishedGeneralTopology.isHomotopyEquivalenceInclusion
               (have this := rfl;
               this)) →
         ∀ (hCW : Topology.RelCWComplex Set.univ D), SphereSixComplex.IsHomotopyEquivalenceInclusion D
-axiom SphereSixComplex.EstablishedTorusBundleTopology.centralCollarBundleGeometricRealization : ∀
+axiom SphereSixComplex.EstablishedTorusBundleTopology.centralCollarAdditiveBundleRealization : ∀
   (A : SphereSixComplex.Geometry.PaperAnalyticData),
-  Nonempty (SphereSixComplex.EstablishedTorusBundleTopology.CentralCollarBundleGeometricRealization A)
+  Nonempty (SphereSixComplex.EstablishedTorusBundleTopology.CentralCollarAdditiveBundleRealization A)
 axiom SphereSixComplex.EstablishedTorusHomology.additiveTorusHomologyBasis_linearPart_naturality : ∀
   (p : SphereSixComplex.Periods.Parameters) (hfull : SphereSixComplex.Geometry.ComplexTorus.FullRank p)
   (D : SphereSixComplex.DescendedAffineTorusAutomorphism p),
@@ -95,9 +95,9 @@ axiom SphereSixComplex.FiniteCWBundleModelSix.establishedEulerMultiplicativity :
 axiom SphereSixComplex.Periods.establishedOrbifoldAffineLineTorsorCuspBoundedCousinCorrection : ∀
   (P : SphereSixComplex.Periods.OrbifoldAffineLineTorsorDescentProblem),
   P.HasAcyclicProjectiveLineFrame → Nonempty P.CuspBoundedEllipticOneCorrection
-axiom SphereSixComplex.Topology.FiniteCoverPerfectPairing.establishedEllipticDegreeTwoPullbackBases : ∀
+axiom SphereSixComplex.Topology.FiniteCoverPerfectPairing.establishedEllipticDegreeTwoDualPullbackData : ∀
   {U : SphereSixComplex.Periods.TriangleUniformization} (F : SphereSixComplex.Periods.PeriodFunctions U),
-  Nonempty (SphereSixComplex.Topology.FiniteCoverPerfectPairing.EllipticDegreeTwoPullbackBases F)
+  Nonempty (SphereSixComplex.Topology.FiniteCoverPerfectPairing.EllipticDegreeTwoDualPullbackData F)
 axiom SphereSixComplex.Topology.AffineFiniteCyclicTorusCW.finiteCWModelSix_reducedCentralFiber_of_affineGenerator : {m :
     ℕ} →
   [inst : NeZero m] →
@@ -136,9 +136,10 @@ axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2T
             SphereSixComplex.StandardA2ToricCentralFiberCellularRealization
               ↑(SphereSixComplex.Geometry.CuspPuncturedCollarBridge.ActualLocalCuspCentralFiberRetractionData.quotientCentralFiber
                   W R)
-axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization.finiteBasisNaturality : ∀
+axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization.establishedFiniteGeneratorSpecializationMatrix : ∀
   (A : SphereSixComplex.Geometry.PaperAnalyticData),
-  SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization.FiniteBasisNaturality A
+  SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization.FiniteGeneratorSpecializationMatrix
+    A
 axiom SphereSixComplex.Geometry.PaperAnalyticData.establishedActualEllipticCentralBasisNaturality : ∀
   (A : SphereSixComplex.Geometry.PaperAnalyticData),
   Nonempty (A.ActualEllipticCentralBasisNaturality A.actualCuspCentralNaturality)

@@ -26,7 +26,7 @@ open PaperEllipticReducedCentralFiberCoverModels PaperLemmaSevenThirteenAlgebra
 open PaperMultipleFiberHOneTopology
 open PaperFiniteCyclicQuotientDegreeTwoComparison
 open PaperAffineCyclicQuotientHomologyCoordinates
-open PaperPropositionSevenFourteenDegreeTwoAlgebra TwistObstruction
+open PaperPropositionSevenFourteenDegreeTwoAlgebra TriangleGroup TwistObstruction
 
 /-- An actual basis of quotient degree-two cohomology whose pullback is a displayed family of
 covectors on the covering space.  `reflexive` is the exact torsion-freeness/perfect-pairing input
@@ -340,11 +340,107 @@ public def orderFourRealization (P : EllipticDegreeTwoPullbackBases F) :
 
 end EllipticDegreeTwoPullbackBases
 
+private noncomputable def orderThreeReducedCentralFiberFiniteCWModel
+    {U : Periods.TriangleUniformization} (F : Periods.PeriodFunctions U) :
+    FiniteCWModelSix (OrderThreeReducedCentralFiber F) := by
+  let p := parameterMap F U.zOne
+  let P := orderThreeCentralFiberPresentationData F
+  apply AffineFiniteCyclicTorusCW.finiteCWModelSix_reducedCentralFiber_of_affineGenerator
+    p.1 P.fullRank (orderThreeRadialActionData F)
+    (periodTransport g₁ p) ((3 : ℂ)⁻¹ • periodVector p.1 epsilon)
+  · intro z
+    change affineEquiv (orderThreeFiberAutomorphism F)
+        (orderThreeTranslation p.1) (Quotient.mk _ z) = _
+    rw [affineEquiv_apply, orderThreeFiberAutomorphism_mk]
+    change Quotient.mk _ (periodTransport g₁ p z) +
+        additiveTorusProjection p.1 ((3 : ℂ)⁻¹ • periodVector p.1 epsilon) = _
+    exact (additiveTorusProjection_add p.1 _ _).symm
+  · exact P.free
+
+private noncomputable def orderFourReducedCentralFiberFiniteCWModel
+    {U : Periods.TriangleUniformization} (F : Periods.PeriodFunctions U) :
+    FiniteCWModelSix (OrderFourReducedCentralFiber F) := by
+  let p := parameterMap F U.zTwo
+  let P := orderFourCentralFiberPresentationData F
+  apply AffineFiniteCyclicTorusCW.finiteCWModelSix_reducedCentralFiber_of_affineGenerator
+    p.1 P.fullRank (orderFourRadialActionData F)
+    (periodTransport g₂ p) ((4 : ℂ)⁻¹ • periodVector p.1 (-epsilon'))
+  · intro z
+    change affineEquiv (orderFourFiberAutomorphism F)
+        (orderFourTranslation p.1) (Quotient.mk _ z) = _
+    rw [affineEquiv_apply, orderFourFiberAutomorphism_mk]
+    change Quotient.mk _ (periodTransport g₂ p z) +
+        additiveTorusProjection p.1 ((4 : ℂ)⁻¹ • periodVector p.1 (-epsilon')) = _
+    exact (additiveTorusProjection_add p.1 _ _).symm
+  · exact P.free
+
+private theorem dualEval_bijective_of_finite_torsionFree
+    {X : Type} [TopologicalSpace X]
+    (hFinite : Module.Finite ℤ (IntegralSingularHomology 2 X))
+    (hTorsionFree : Module.IsTorsionFree ℤ (IntegralSingularHomology 2 X)) :
+    Function.Bijective (Module.Dual.eval ℤ (IntegralSingularHomology 2 X)) := by
+  let _ : Module.Finite ℤ (IntegralSingularHomology 2 X) := hFinite
+  let _ : Module.IsTorsionFree ℤ (IntegralSingularHomology 2 X) := hTorsionFree
+  let hFree : Module.Free ℤ (IntegralSingularHomology 2 X) :=
+    Module.free_of_finite_type_torsion_free'
+  let _ := hFree
+  let b := Module.Free.chooseBasis ℤ (IntegralSingularHomology 2 X)
+  exact ⟨b.eval_injective, LinearMap.range_eq_top.mp b.eval_range⟩
+
+/-- The remaining transfer input after finite generation has been obtained from the explicit
+affine finite-CW models.  It records only the two pulled-back dual bases and the torsion-freeness
+needed to turn finite generation into integral reflexivity. -/
+public structure EllipticDegreeTwoDualPullbackData where
+  orderThreeDualBasis : Module.Basis (Fin 2) ℤ
+    (Module.Dual ℤ (IntegralSingularHomology 2 (OrderThreeReducedCentralFiber F)))
+  orderThreeTorsionFree :
+    Module.IsTorsionFree ℤ
+      (IntegralSingularHomology 2 (OrderThreeReducedCentralFiber F))
+  orderThreePullback_apply : ∀ (i : Fin 2) (x : DegreeTwoLattice),
+    orderThreeDualBasis i
+        (integralSingularHomologyMap 2
+          (RadialEllipticActionData.centralFiberCoverProjection
+            (orderThreeRadialActionData F))
+          ((orderThreeCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm x)) =
+      degreeTwoEvaluation (orderThreePullbackBasis i) x
+  orderFourDualBasis : Module.Basis (Fin 2) ℤ
+    (Module.Dual ℤ (IntegralSingularHomology 2 (OrderFourReducedCentralFiber F)))
+  orderFourTorsionFree :
+    Module.IsTorsionFree ℤ
+      (IntegralSingularHomology 2 (OrderFourReducedCentralFiber F))
+  orderFourPullback_apply : ∀ (i : Fin 2) (x : DegreeTwoLattice),
+    orderFourDualBasis i
+        (integralSingularHomologyMap 2
+          (RadialEllipticActionData.centralFiberCoverProjection
+            (orderFourRadialActionData F))
+          ((orderFourCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm x)) =
+      degreeTwoEvaluation (orderFourPullbackBasis i) x
+
+/-- The exact residual transfer statement: the two computed pullback families are dual bases,
+and the quotient degree-two homology groups contain no torsion. -/
+public axiom establishedEllipticDegreeTwoDualPullbackData :
+    Nonempty (EllipticDegreeTwoDualPullbackData F)
+
 /-- The exact remaining cohomological input from Proposition 7.14: the displayed pullback
 classes are bases of the integral dual lattices of the two elliptic central fibres, and their
 integral evaluation pairings are perfect. -/
-public axiom establishedEllipticDegreeTwoPullbackBases :
-    Nonempty (EllipticDegreeTwoPullbackBases F)
+public theorem establishedEllipticDegreeTwoPullbackBases :
+    Nonempty (EllipticDegreeTwoPullbackBases F) := by
+  obtain ⟨D⟩ := establishedEllipticDegreeTwoDualPullbackData F
+  refine ⟨{ orderThree := ?_, orderFour := ?_ }⟩
+  · exact
+      { quotientDualBasis := D.orderThreeDualBasis
+        reflexive := dualEval_bijective_of_finite_torsionFree
+          ((orderThreeReducedCentralFiberFiniteCWModel F).integralHomologyFiniteSix.finiteHomology
+            2)
+          D.orderThreeTorsionFree
+        pullback_apply := D.orderThreePullback_apply }
+  · exact
+      { quotientDualBasis := D.orderFourDualBasis
+        reflexive := dualEval_bijective_of_finite_torsionFree
+          ((orderFourReducedCentralFiberFiniteCWModel F).integralHomologyFiniteSix.finiteHomology 2)
+          D.orderFourTorsionFree
+        pullback_apply := D.orderFourPullback_apply }
 
 /-- Proposition 7.14 for the two actual elliptic central fibres: their integral degree-two
 homology has the displayed bases, and the two covering maps have the computed pullback
