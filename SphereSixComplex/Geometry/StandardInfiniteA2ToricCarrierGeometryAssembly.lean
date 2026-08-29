@@ -6,6 +6,7 @@ Authors: Dean Cureton
 module
 
 public import SphereSixComplex.Geometry.StandardInfiniteA2ToricCentralComponents
+public import SphereSixComplex.Geometry.StandardInfiniteA2ToricFanShears
 public import SphereSixComplex.Geometry.StandardInfiniteA2ToricResidualAnalytic
 public import SphereSixComplex.Geometry.StandardInfiniteA2ToricSublevelSimplyConnected
 
@@ -35,26 +36,6 @@ public structure RemainingGeometry where
     ∀ c : ℝ, c < 1 → IsClosed (⋃ a : ChartIndex,
       {p | p ∈ (toricChart a).source ∧ ∀ i, ‖toricChart a p i‖ ≤ 1} ∩
         {p | ‖carrierHeight p‖ ≤ c})
-  fanShear : ParameterLattice →+ Additive (Equiv.Perm Carrier)
-  fanShear_holomorphic :
-    letI := chartedSpace
-    ∀ lambda, ContMDiff (modelWithCornersSelf ℂ ComplexModel)
-      (modelWithCornersSelf ℂ ComplexModel) ∞
-      (fun p ↦ Additive.toMul (fanShear lambda) p)
-  fanShear_preserves_t :
-    ∀ lambda p, carrierHeight (Additive.toMul (fanShear lambda) p) = carrierHeight p
-  fanShear_torus :
-    ∀ lambda x, Additive.toMul (fanShear lambda) (carrierTorusEmbedding x) =
-      carrierTorusEmbedding (denseTorusShear lambda x)
-  fanShear_chart :
-    letI := chartedSpace
-    ∀ lambda a p, p ∈ (toricChart a).source ↔
-      Additive.toMul (fanShear lambda) p ∈
-        (toricChart (a.1, a.2 + shearVector lambda)).source
-  fanShear_component :
-    ∀ lambda v,
-      (fun p ↦ Additive.toMul (fanShear lambda) p) '' carrierCentralComponent v =
-        carrierCentralComponent (v + shearVector lambda)
 
 /-- Assemble the exact public toric-model interface from the constructed carrier and the residual
 geometric package. -/
@@ -95,11 +76,11 @@ public noncomputable def RemainingGeometry.toModel (R : RemainingGeometry) : Mod
   otherCentralComponent_disjoint_chart := fun upper v ↦
     otherCarrierCentralComponent_disjoint_chart (upper, v)
   torusAction_centralComponent := carrierTorusAction_centralComponent
-  fanShear := R.fanShear
-  fanShear_holomorphic := R.fanShear_holomorphic
-  fanShear_preserves_t := R.fanShear_preserves_t
-  fanShear_torus := R.fanShear_torus
-  fanShear_chart := fun lambda upper v ↦ R.fanShear_chart lambda (upper, v)
-  fanShear_component := R.fanShear_component
+  fanShear := carrierFanShear
+  fanShear_holomorphic := carrierFanShear_holomorphic
+  fanShear_preserves_t := carrierFanShear_preserves_t
+  fanShear_torus := carrierFanShear_on_torus
+  fanShear_chart := fun lambda upper v ↦ carrierFanShear_chart lambda (upper, v)
+  fanShear_component := carrierFanShear_component_exact
 
 end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
