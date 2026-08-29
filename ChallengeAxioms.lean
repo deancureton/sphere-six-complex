@@ -136,12 +136,12 @@ axiom SphereSixComplex.Topology.TwicePuncturedComplex.freeTwoGeneratorLift_injec
                                 v)
 axiom SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenAffineRegularLiftTopology.markedBandHomotopies : ∀
   (A : SphereSixComplex.Geometry.PaperAnalyticData), A.SectionSevenAffineOverlapBandCompatibility
-axiom SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTopology.actualCuspFiberEllipticFiniteCoordinateIdentities : ∀
+axiom SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTopology.establishedActualCuspFiberEllipticMarkedCoordinateCalculation : ∀
   {A : SphereSixComplex.Geometry.PaperAnalyticData} (R : A.SectionSevenAffineRadialCompletionInput)
   (W :
     SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenEllipticTwoDiscCoverData.SectionSevenCuspWangBandCompatibility
       (SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenAffineRadialCompletionInput.homologyAlignment R)),
-  SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTopology.ActualCuspFiberEllipticFiniteCoordinateIdentities
+  SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTopology.ActualCuspFiberEllipticMarkedCoordinateCalculation
     R W
 axiom SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenEllipticTwoDiscCoverData.EstablishedActualCuspWangOpenCoverChainRealization.fullFibreSliceComparison : ∀
   {A : SphereSixComplex.Geometry.PaperAnalyticData} (R : A.SectionSevenAffineRadialCompletionInput),
