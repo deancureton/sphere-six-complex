@@ -180,7 +180,8 @@ of a fibre. -/
 public axiom establishedFiniteCoverCellularLift
     {E X : Type} [TopologicalSpace E] [TopologicalSpace X]
     (projection : C(E, X)) (_isCovering : IsCoveringMap projection)
-    (degree : ℕ) (_fiberCardinality : ∀ x, Nat.card {y : E // projection y = x} = degree)
+    (degree : ℕ) (_degree_pos : 0 < degree)
+    (_fiberCardinality : ∀ x, Nat.card {y : E // projection y = x} = degree)
     (base : FiniteCWModel X) :
     ∃ cover : FiniteCWModel E, ∀ n, cover.cellCount n = degree * base.cellCount n
 
@@ -190,11 +191,12 @@ has one lift for each point of a fibre. -/
 public theorem establishedFiniteCoverCellularLiftSix
     {E X : Type} [TopologicalSpace E] [TopologicalSpace X]
     (projection : C(E, X)) (_isCovering : IsCoveringMap projection)
-    (degree : ℕ) (_fiberCardinality : ∀ x, Nat.card {y : E // projection y = x} = degree)
+    (degree : ℕ) (_degree_pos : 0 < degree)
+    (_fiberCardinality : ∀ x, Nat.card {y : E // projection y = x} = degree)
     (base : FiniteCWModelSix X) :
     ∃ cover : FiniteCWModelSix E, ∀ n, cover.cellCount n = degree * base.cellCount n := by
   obtain ⟨cover, hcells⟩ := establishedFiniteCoverCellularLift projection _isCovering degree
-    _fiberCardinality base.toFiniteCWModel
+    _degree_pos _fiberCardinality base.toFiniteCWModel
   let coverSix : FiniteCWModelSix E := {
     Carrier := cover.Carrier
     topology := cover.topology
@@ -240,7 +242,7 @@ public theorem establishedEulerMultiplicativity (M : FiniteCoverModelSix X) :
   let _ := M.coverTopology
   dsimp only
   obtain ⟨cover, hcells⟩ := establishedFiniteCoverCellularLiftSix M.projection M.isCovering
-    M.degree M.fiberCardinality M.quotientFiniteCW
+    M.degree M.degree_pos M.fiberCardinality M.quotientFiniteCW
   rw [cover.establishedIntegralCellularEulerPoincareSix,
     M.quotientFiniteCW.establishedIntegralCellularEulerPoincareSix]
   rw [hcells 0, hcells 1, hcells 2, hcells 3, hcells 4, hcells 5, hcells 6]

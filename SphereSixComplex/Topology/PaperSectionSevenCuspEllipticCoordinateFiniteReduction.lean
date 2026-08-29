@@ -163,23 +163,41 @@ public theorem of_coordinateIdentities
 
 end ActualCuspFiberEllipticFiniteCoordinateIdentities
 
+/-- The eight marked evaluations are exactly equivalent to the complete coordinate comparison. -/
+public theorem markedCoordinateCalculation_iff_finiteCoordinateIdentities
+    {R : A.SectionSevenAffineRadialCompletionInput}
+    {W : R.twoDiscCover.SectionSevenCuspWangBandCompatibility R.homologyAlignment} :
+    ActualCuspFiberEllipticMarkedCoordinateCalculation R W ↔
+      ActualCuspFiberEllipticFiniteCoordinateIdentities R W := by
+  constructor
+  · intro C
+    apply ActualCuspFiberEllipticFiniteCoordinateIdentities.of_coordinateIdentities
+    · let G := A.actualCuspRadialClutchingData
+      let _ := G.fiberTopology
+      apply addMonoidHom_ext_of_equiv_pi_single_one
+        G.geometricWangSections.circleMappingTorusHOneAddEquiv
+      intro i
+      rw [AddMonoidHom.comp_apply, coordinateAfterAddEquiv_apply,
+        AddEquiv.apply_symm_apply]
+      exact C.degreeOne i
+    · exact C.degreeTwoFiberCoinvariant
+    · exact C.degreeTwoIndexFour
+  · intro C
+    exact {
+      degreeOne := C.degreeOne
+      degreeTwoFiberCoinvariant := by
+        intro i hi4 hi5
+        simpa [hi4] using C.degreeTwo i hi5
+      degreeTwoIndexFour := by
+        simpa using C.degreeTwo 4 (by decide) }
+
 /-- The finite marked calculation implies the complete coordinate-homomorphism identities. -/
 public theorem actualCuspFiberEllipticFiniteCoordinateIdentities
     (R : A.SectionSevenAffineRadialCompletionInput)
     (W : R.twoDiscCover.SectionSevenCuspWangBandCompatibility R.homologyAlignment) :
-    ActualCuspFiberEllipticFiniteCoordinateIdentities R W := by
-  let C := establishedActualCuspFiberEllipticMarkedCoordinateCalculation R W
-  apply ActualCuspFiberEllipticFiniteCoordinateIdentities.of_coordinateIdentities
-  · let G := A.actualCuspRadialClutchingData
-    let _ := G.fiberTopology
-    apply addMonoidHom_ext_of_equiv_pi_single_one
-      G.geometricWangSections.circleMappingTorusHOneAddEquiv
-    intro i
-    rw [AddMonoidHom.comp_apply, coordinateAfterAddEquiv_apply,
-      AddEquiv.apply_symm_apply]
-    exact C.degreeOne i
-  · exact C.degreeTwoFiberCoinvariant
-  · exact C.degreeTwoIndexFour
+    ActualCuspFiberEllipticFiniteCoordinateIdentities R W :=
+  markedCoordinateCalculation_iff_finiteCoordinateIdentities.mp
+    (establishedActualCuspFiberEllipticMarkedCoordinateCalculation R W)
 
 namespace ActualCuspFiberEllipticFiniteCoordinateIdentities
 

@@ -8,8 +8,9 @@ public import SphereSixComplex.Topology.SectionSevenLocalEulerModels
 
 This file isolates the classical triangulation input for the reduced elliptic fibres.  A free
 finite cyclic action on a full-rank four-torus whose generator lifts to an affine automorphism of
-the covering vector space has a compact smooth four-manifold quotient.  Smooth triangulation
-therefore supplies a finite CW model, with no cells above dimension four (and hence above six).
+the covering vector space has a compact four-manifold quotient.  The finite-dimensional ANR
+theorem therefore supplies a finite CW model, with no cells above dimension four (and hence above
+six).
 -/
 
 open SphereSixComplex.Geometry SphereSixComplex.Periods
@@ -65,21 +66,54 @@ public noncomputable def FiniteCWModelAtMost.toFiniteCWModelSix
   finite := M.finite
   cellsAboveSix n hn := M.cellsAbove n (hd.trans_lt hn)
 
+/-- A compact Hausdorff space charted by `ℂ²` has finite CW homotopy type of real dimension at
+most four.  This is the classical finite-dimensional ANR theorem for compact topological
+manifolds, specialized to the dimension used here. -/
+public axiom establishedFiniteCWModelFour_of_compactComplexTwoChartedSpace
+    {X : Type} [TopologicalSpace X] [ChartedSpace ComplexTwoSpace X]
+    [T2Space X] [CompactSpace X] :
+    FiniteCWModelAtMost 4 X
+
 /-- A compact topological complex surface has finite CW homotopy type, of real dimension at most
-four, and this remains true of the Hausdorff base of a surjective covering.  This is the classical
-finite-dimensional ANR theorem for compact manifolds, specialized to the dimension used here. -/
-public axiom establishedFiniteCWModelFour_of_compactComplexSurfaceCover
+four, and this remains true of the Hausdorff base of a surjective covering. -/
+public noncomputable def establishedFiniteCWModelFour_of_compactComplexSurfaceCover
     {E X : Type} [TopologicalSpace E] [ChartedSpace ComplexTwoSpace E] [T2Space E]
     [TopologicalSpace X] [T2Space X]
     (_hManifold : IsManifold (modelWithCornersSelf ℂ ComplexTwoSpace) 0 E)
     (_hcompact : CompactSpace E)
     (projection : C(E, X)) (_hcover : IsCoveringMap projection)
     (_hsurjective : Function.Surjective projection) :
-    FiniteCWModelAtMost 4 X
+    FiniteCWModelAtMost 4 X := by
+  letI : CompactSpace X := isCompact_univ_iff.mp (by
+    have himage := isCompact_univ.image projection.continuous
+    rw [Set.image_univ, _hsurjective.range_eq] at himage
+    exact himage)
+  have hcharts :
+      ∀ x : X, ∃ e : OpenPartialHomeomorph X ComplexTwoSpace, x ∈ e.source := by
+    intro x
+    obtain ⟨e, rfl⟩ := _hsurjective x
+    obtain ⟨u, heu, hu⟩ := _hcover.isLocalHomeomorph e
+    refine ⟨u.symm.trans (chartAt ComplexTwoSpace e), ?_⟩
+    rw [OpenPartialHomeomorph.trans_source]
+    constructor
+    · rw [u.symm_source]
+      rw [hu]
+      exact u.map_source heu
+    · change u.symm (projection e) ∈ (chartAt ComplexTwoSpace e).source
+      rw [hu, u.left_inv heu]
+      exact mem_chart_source ComplexTwoSpace e
+  let chart (x : X) := (hcharts x).choose
+  letI : ChartedSpace ComplexTwoSpace X := {
+    atlas := Set.range chart
+    chartAt := chart
+    mem_chart_source x := (hcharts x).choose_spec
+    chart_mem_atlas x := Set.mem_range_self x
+  }
+  exact establishedFiniteCWModelFour_of_compactComplexTwoChartedSpace
 
-/-- Classical finite-CW descent along a covering by a full-rank four-torus.  This is the residual
-triangulation input: a Hausdorff space covered by a compact smooth four-torus has finite CW type,
-with no cells above dimension four (and hence none above dimension six). -/
+/-- Classical finite-CW descent along a covering by a full-rank four-torus.  The residual ANR
+input says that a compact Hausdorff four-manifold has finite CW type, with no cells above
+dimension four (and hence none above dimension six). -/
 public noncomputable def finiteCWModelSix_of_fullRankTorusCover
     {X : Type} [TopologicalSpace X] [T2Space X]
     (p : Parameters) (_hfull : FullRank p)

@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Topology.PaperSectionSevenCuspWangFullFibreSlice
+public import SphereSixComplex.Topology.PaperSectionSevenCuspWangFullFibreSliceComparisonProof
 import SphereSixComplex.Topology.PaperSectionSevenAffineMarkedBandSquares
 
 /-!
@@ -347,9 +347,18 @@ end ActualCuspWangFullFibreSliceComparison
 
 namespace EstablishedActualCuspWangOpenCoverChainRealization
 
+/-- The explicit four-zero and two-generator cover-boundary comparisons remaining after the
+Wang boundary has been evaluated on the raw cusp basis. -/
+public axiom fullFibreSliceExplicitFiniteResidual
+    (R : A.SectionSevenAffineRadialCompletionInput) :
+    ActualCuspWangFullFibreSliceExplicitFiniteResidual R
+
 /-- The six oriented chain comparisons for the explicitly constructed full-fibre slice. -/
-public axiom fullFibreSliceComparison (R : A.SectionSevenAffineRadialCompletionInput) :
-    ActualCuspWangFullFibreSliceComparison R
+public theorem fullFibreSliceComparison (R : A.SectionSevenAffineRadialCompletionInput) :
+    ActualCuspWangFullFibreSliceComparison R where
+  wangBoundary_eq_chainConnecting_basis :=
+    (wangBoundaryBasisComparison_iff_explicitFiniteResidual R).mpr
+      (fullFibreSliceExplicitFiniteResidual R)
 
 /-- The standard chain-level Wang theorem for the actual radial mapping-torus cut cover.  Its
 content is the oriented realization of the established Wang connecting map by the explicit

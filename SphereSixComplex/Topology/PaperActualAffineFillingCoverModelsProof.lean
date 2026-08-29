@@ -4,6 +4,7 @@ public import SphereSixComplex.Topology.PaperActualAffineFillingCoverModelsDefs
 public import SphereSixComplex.Topology.PaperCuspAffineFillingBridge
 public import SphereSixComplex.Topology.AffineRealMappingTorusUniversalCover
 public import SphereSixComplex.Topology.PaperEllipticFundamentalGroupSurjectivity
+public import SphereSixComplex.Topology.QuotientCoverEquivarianceExtension
 
 /-!
 # Reduction of the actual affine filling-cover squares to the two elliptic inputs
@@ -506,6 +507,106 @@ public structure OrderFourActualEllipticFillingExtension where
     lift (@SMul.smul _ _ A.orderFourActualEllipticBoundaryAction.toSMul g z) =
       @SMul.smul _ _ fillingAction.toSMul
         (A.orderFourActualEllipticBoundaryDeckData.fillingDeckMap g) (lift z)
+
+/-- Order-three filling geometry with lift equivariance specified only at the marked lift. -/
+public structure OrderThreeActualEllipticFillingExtensionAtBase where
+  fillingAction : MulAction A.orderThreeActualEllipticBoundaryDeckData.FillingDeck
+    (ComplexDiscBall A.starSeparation.orderThree.radius × ComplexTwoSpace)
+  fillingQuotient : @IsQuotientCoveringMap
+    (ComplexDiscBall A.starSeparation.orderThree.radius × ComplexTwoSpace)
+    A.actualVanKampenFourPieceCover.ellipticThree _ _
+    A.orderThreeActualEllipticFillingProjection
+    A.orderThreeActualEllipticBoundaryDeckData.FillingDeck _ fillingAction
+  lift : C(OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace),
+    ComplexDiscBall A.starSeparation.orderThree.radius × ComplexTwoSpace)
+  commutes : ∀ z,
+    A.actualVanKampenFourPieceCover.ellipticThreeOverlapToPiece
+        (A.orderThreeActualEllipticBoundaryProjection z) =
+      A.orderThreeActualEllipticFillingProjection (lift z)
+  equivariant_at_boundaryBase : ∀ g,
+    lift (@SMul.smul _ _ A.orderThreeActualEllipticBoundaryAction.toSMul g
+      A.orderThreeActualEllipticBoundaryBase) =
+      @SMul.smul _ _ fillingAction.toSMul
+        (A.orderThreeActualEllipticBoundaryDeckData.fillingDeckMap g)
+        (lift A.orderThreeActualEllipticBoundaryBase)
+
+/-- Order-four filling geometry with lift equivariance specified only at the marked lift. -/
+public structure OrderFourActualEllipticFillingExtensionAtBase where
+  fillingAction : MulAction A.orderFourActualEllipticBoundaryDeckData.FillingDeck
+    (ComplexDiscBall A.starSeparation.orderFour.radius × ComplexTwoSpace)
+  fillingQuotient : @IsQuotientCoveringMap
+    (ComplexDiscBall A.starSeparation.orderFour.radius × ComplexTwoSpace)
+    A.actualVanKampenFourPieceCover.ellipticFour _ _
+    A.orderFourActualEllipticFillingProjection
+    A.orderFourActualEllipticBoundaryDeckData.FillingDeck _ fillingAction
+  lift : C(OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace),
+    ComplexDiscBall A.starSeparation.orderFour.radius × ComplexTwoSpace)
+  commutes : ∀ z,
+    A.actualVanKampenFourPieceCover.ellipticFourOverlapToPiece
+        (A.orderFourActualEllipticBoundaryProjection z) =
+      A.orderFourActualEllipticFillingProjection (lift z)
+  equivariant_at_boundaryBase : ∀ g,
+    lift (@SMul.smul _ _ A.orderFourActualEllipticBoundaryAction.toSMul g
+      A.orderFourActualEllipticBoundaryBase) =
+      @SMul.smul _ _ fillingAction.toSMul
+        (A.orderFourActualEllipticBoundaryDeckData.fillingDeckMap g)
+        (lift A.orderFourActualEllipticBoundaryBase)
+
+namespace OrderThreeActualEllipticFillingExtensionAtBase
+
+/-- Extend marked-point equivariance over the connected order-three collar cover. -/
+public noncomputable def toFillingExtension
+    (E : A.OrderThreeActualEllipticFillingExtensionAtBase) :
+    A.OrderThreeActualEllipticFillingExtension := by
+  letI := A.orderThreeActualEllipticBoundaryAction
+  letI := E.fillingAction
+  letI := A.orderThreeActualEllipticBoundaryCover_simplyConnected
+  exact
+    { fillingAction := E.fillingAction
+      fillingQuotient := E.fillingQuotient
+      lift := E.lift
+      commutes := E.commutes
+      equivariant := SphereSixComplex.Topology.quotientCover_equivariant_of_eq_at
+        A.orderThreeActualEllipticBoundaryProjection
+        A.orderThreeActualEllipticFillingProjection
+        A.orderThreeActualEllipticBoundaryProjection_isQuotientCoveringMap
+        E.fillingQuotient
+        A.orderThreeActualEllipticBoundaryDeckData.fillingDeckMap
+        E.lift
+        A.actualVanKampenFourPieceCover.ellipticThreeOverlapToPiece
+        E.commutes
+        A.orderThreeActualEllipticBoundaryBase
+        E.equivariant_at_boundaryBase }
+
+end OrderThreeActualEllipticFillingExtensionAtBase
+
+namespace OrderFourActualEllipticFillingExtensionAtBase
+
+/-- Extend marked-point equivariance over the connected order-four collar cover. -/
+public noncomputable def toFillingExtension
+    (E : A.OrderFourActualEllipticFillingExtensionAtBase) :
+    A.OrderFourActualEllipticFillingExtension := by
+  letI := A.orderFourActualEllipticBoundaryAction
+  letI := E.fillingAction
+  letI := A.orderFourActualEllipticBoundaryCover_simplyConnected
+  exact
+    { fillingAction := E.fillingAction
+      fillingQuotient := E.fillingQuotient
+      lift := E.lift
+      commutes := E.commutes
+      equivariant := SphereSixComplex.Topology.quotientCover_equivariant_of_eq_at
+        A.orderFourActualEllipticBoundaryProjection
+        A.orderFourActualEllipticFillingProjection
+        A.orderFourActualEllipticBoundaryProjection_isQuotientCoveringMap
+        E.fillingQuotient
+        A.orderFourActualEllipticBoundaryDeckData.fillingDeckMap
+        E.lift
+        A.actualVanKampenFourPieceCover.ellipticFourOverlapToPiece
+        E.commutes
+        A.orderFourActualEllipticBoundaryBase
+        E.equivariant_at_boundaryBase }
+
+end OrderFourActualEllipticFillingExtensionAtBase
 
 namespace OrderThreeActualEllipticFillingExtension
 
@@ -1294,6 +1395,79 @@ public noncomputable def toActualEllipticCentralBasisNaturality
 
 end ActualEllipticMarkedFillingExtensionNaturality
 
+/-- The elliptic filling and marking data with each lift's equivariance reduced to one point. -/
+public structure ActualEllipticMarkedFillingExtensionAtBaseNaturality
+    (N : A.ActualCuspCentralNaturality) where
+  orderThreeExtension : A.OrderThreeActualEllipticFillingExtensionAtBase
+  orderThreeTranslation_zero :
+    A.actualEllipticThreeTranslationToCore
+        orderThreeExtension.toFillingExtension.toChosenCover
+        orderThreeExtension.toFillingExtension.toChosenCover_boundaryBase_eq
+        (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 0) =
+      A.actualCentralTranslationToCore N
+        (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 0)
+  orderThreeTranslation_one :
+    A.actualEllipticThreeTranslationToCore
+        orderThreeExtension.toFillingExtension.toChosenCover
+        orderThreeExtension.toFillingExtension.toChosenCover_boundaryBase_eq
+        (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 1) =
+      A.actualCentralTranslationToCore N
+        (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 1)
+  orderThreeTranslation_three :
+    A.actualEllipticThreeTranslationToCore
+        orderThreeExtension.toFillingExtension.toChosenCover
+        orderThreeExtension.toFillingExtension.toChosenCover_boundaryBase_eq
+        (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 3) =
+      A.actualCentralTranslationToCore N
+        (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 3)
+  orderThreeMeridian_naturality :
+    A.actualEllipticThreeOverlapToCore
+        (fundamentalGroupElementOfBaseEq
+          orderThreeExtension.toFillingExtension.toChosenCover_boundaryBase_eq
+          orderThreeExtension.toFillingExtension.toChosenCover.meridian) =
+      N.centralToCore A.centralAffineCorePiOneData.rhoOne
+  orderFourExtension : A.OrderFourActualEllipticFillingExtensionAtBase
+  orderFourTranslation_zero :
+    A.actualEllipticFourTranslationToCore
+        orderFourExtension.toFillingExtension.toChosenCover
+        orderFourExtension.toFillingExtension.toChosenCover_boundaryBase_eq
+        (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 0) =
+      A.actualCentralTranslationToCore N
+        (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 0)
+  orderFourTranslation_one :
+    A.actualEllipticFourTranslationToCore
+        orderFourExtension.toFillingExtension.toChosenCover
+        orderFourExtension.toFillingExtension.toChosenCover_boundaryBase_eq
+        (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 1) =
+      A.actualCentralTranslationToCore N
+        (SphereSixComplex.Geometry.GlobalTorusFamily.integralBasisVector 1)
+  orderFourMeridian_naturality :
+    A.actualEllipticFourOverlapToCore
+        (fundamentalGroupElementOfBaseEq
+          orderFourExtension.toFillingExtension.toChosenCover_boundaryBase_eq
+          orderFourExtension.toFillingExtension.toChosenCover.meridian) =
+      N.centralToCore A.centralAffineCorePiOneData.rhoTwo
+
+namespace ActualEllipticMarkedFillingExtensionAtBaseNaturality
+
+variable {A} {N : A.ActualCuspCentralNaturality}
+
+/-- Recover the former marked filling-extension package by uniqueness of lifts. -/
+public noncomputable def toFillingExtensionNaturality
+    (E : ActualEllipticMarkedFillingExtensionAtBaseNaturality A N) :
+    ActualEllipticMarkedFillingExtensionNaturality A N where
+  orderThreeExtension := E.orderThreeExtension.toFillingExtension
+  orderThreeTranslation_zero := E.orderThreeTranslation_zero
+  orderThreeTranslation_one := E.orderThreeTranslation_one
+  orderThreeTranslation_three := E.orderThreeTranslation_three
+  orderThreeMeridian_naturality := E.orderThreeMeridian_naturality
+  orderFourExtension := E.orderFourExtension.toFillingExtension
+  orderFourTranslation_zero := E.orderFourTranslation_zero
+  orderFourTranslation_one := E.orderFourTranslation_one
+  orderFourMeridian_naturality := E.orderFourMeridian_naturality
+
+end ActualEllipticMarkedFillingExtensionAtBaseNaturality
+
 private theorem fundamentalGroup_map_surjective_of_homeomorph_square
     {X X' Y Y' : Type*}
     [TopologicalSpace X] [TopologicalSpace X']
@@ -1532,15 +1706,21 @@ public structure ActualStarPeripheralNaturality where
   cusp : A.ActualCuspCentralNaturality
   elliptic : ActualEllipticCentralNaturality A cusp
 
-/-- The exact remaining elliptic filling-extension and finite-marking input.
+/-- The remaining elliptic filling-extension and finite-marking input.
 
-The collar universal covers, their semidirect deck actions, the quotient-cover proofs, twists,
-inverse monodromies, marked base points, and induced overlap maps are constructed above.  What
-remains is the action and quotient cover on each filling, an equivariant lift of its collar cover,
-five lattice-coordinate comparisons, and the two meridian comparisons with the central family. -/
-public axiom establishedActualEllipticMarkedFillingExtensionNaturality :
+For each filling, equivariance of the lift is required only over the marked boundary base point;
+covering-map uniqueness propagates it over the entire connected collar cover. -/
+public axiom establishedActualEllipticMarkedFillingExtensionAtBaseNaturality :
     Nonempty
-      (ActualEllipticMarkedFillingExtensionNaturality A A.actualCuspCentralNaturality)
+      (ActualEllipticMarkedFillingExtensionAtBaseNaturality
+        A A.actualCuspCentralNaturality)
+
+/-- The former global-equivariance input, reconstructed from marked-point equivariance. -/
+public theorem establishedActualEllipticMarkedFillingExtensionNaturality :
+    Nonempty
+      (ActualEllipticMarkedFillingExtensionNaturality A A.actualCuspCentralNaturality) :=
+  A.establishedActualEllipticMarkedFillingExtensionAtBaseNaturality.map
+    ActualEllipticMarkedFillingExtensionAtBaseNaturality.toFillingExtensionNaturality
 
 /-- The former basis-naturality boundary, reconstructed from the explicit collar covers and the
 remaining filling extensions and finite marking. -/

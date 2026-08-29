@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Topology.EstablishedAffineVanKampen
-public import SphereSixComplex.Topology.CircleMappingTorusOpenCoverHomotopyEquivalences
+public import SphereSixComplex.Topology.MappingTorusHNNComparisonProof
 public import Mathlib.AlgebraicTopology.FundamentalGroupoid.InducedMaps
 public import Mathlib.GroupTheory.HNNExtension
 
@@ -325,12 +325,65 @@ public theorem mappingTorusHNNToFundamentalGroup_bijective_of_up
   · intro y
     exact ⟨inv y, DFunLike.congr_fun hright y⟩
 
-/-- The canonical HNN comparison is bijective.  This is the precise disconnected-overlap
-computation required beyond Mathlib's fundamental-groupoid van Kampen theorem. -/
-public axiom establishedMappingTorusHNNToFundamentalGroup_bijective
+/-- The remaining strictification input: two global based functors that agree on the fibre and
+meridian admit gauges, trivial at the base point, whose restrictions agree on both members of the
+mapping-torus van Kampen cover. -/
+public axiom establishedMappingTorusCompatibleLocalGauges
+    {F : Type} [TopologicalSpace F] [PathConnectedSpace F]
+    (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x)
+    {H : Type} [Group H]
+    (f g : FundamentalGroup (CircleMappingTorus phi)
+      (circleMappingTorusBase phi x) →* H)
+    (hf : ∀ a, f (circleMappingTorusFiberHom phi x a) =
+      g (circleMappingTorusFiberHom phi x a))
+    (ht : f (circleMappingTorusMeridian phi x delta) =
+      g (circleMappingTorusMeridian phi x delta)) :
+    let _ : PathConnectedSpace (CircleMappingTorus phi) :=
+      pathConnectedSpace_circleMappingTorus_comparison phi
+    ∃ cf cg : FundamentalGroupoid (CircleMappingTorus phi) → H,
+      cf (FundamentalGroupoid.mk (circleMappingTorusBase phi x)) = 1 ∧
+      cg (FundamentalGroupoid.mk (circleMappingTorusBase phi x)) = 1 ∧
+      FundamentalGroupoid.map (vertexPieceInclusion phi) ⋙
+          singleObjGaugeFunctor
+            (normalizedFundamentalGroupoidBasedFunctor
+              (circleMappingTorusBase phi x) f) cf =
+        FundamentalGroupoid.map (vertexPieceInclusion phi) ⋙
+          singleObjGaugeFunctor
+            (normalizedFundamentalGroupoidBasedFunctor
+              (circleMappingTorusBase phi x) g) cg ∧
+      FundamentalGroupoid.map (edgePieceInclusion phi) ⋙
+          singleObjGaugeFunctor
+            (normalizedFundamentalGroupoidBasedFunctor
+              (circleMappingTorusBase phi x) f) cf =
+        FundamentalGroupoid.map (edgePieceInclusion phi) ⋙
+          singleObjGaugeFunctor
+            (normalizedFundamentalGroupoidBasedFunctor
+              (circleMappingTorusBase phi x) g) cg
+
+public noncomputable def establishedMappingTorusFundamentalGroupUP_vanKampen
     {F : Type} [TopologicalSpace F] [PathConnectedSpace F]
     (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x) :
-    Function.Bijective (mappingTorusHNNToFundamentalGroup phi x delta)
+    MappingTorusFundamentalGroupUP phi x delta := by
+  letI := pathConnectedSpace_circleMappingTorus_comparison phi
+  exact
+    { conjugate := circleMappingTorus_conjugate phi x delta
+      lift := circleMappingTorusVanKampenLift phi x delta
+      lift_fiber := circleMappingTorusVanKampenLift_fiber phi x delta
+      lift_meridian := circleMappingTorusVanKampenLift_meridian phi x delta
+      hom_ext := by
+        intro H _ f g hf ht
+        obtain ⟨cf, cg, hcf, hcg, hvertex, hedge⟩ :=
+          establishedMappingTorusCompatibleLocalGauges phi x delta f g hf ht
+        exact circleMappingTorusFundamentalGroup_hom_ext_of_compatible_gauges
+          phi x f g cf cg hcf hcg hvertex hedge }
+
+/-- The canonical HNN comparison is bijective, reduced to the compatible local gauge input. -/
+public theorem establishedMappingTorusHNNToFundamentalGroup_bijective
+    {F : Type} [TopologicalSpace F] [PathConnectedSpace F]
+    (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x) :
+    Function.Bijective (mappingTorusHNNToFundamentalGroup phi x delta) :=
+  mappingTorusHNNToFundamentalGroup_bijective_of_up phi x delta
+    (establishedMappingTorusFundamentalGroupUP_vanKampen phi x delta)
 
 /-- The standard HNN-extension presentation of the fundamental group of a mapping torus. -/
 public noncomputable def establishedMappingTorusFundamentalGroupUP

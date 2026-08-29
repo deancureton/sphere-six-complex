@@ -247,6 +247,68 @@ public noncomputable def toCWDecomposition [T2Space X]
   finite := A.finite
   cellEquiv := fun _ ↦ Equiv.refl _
 
+/-- Transport a labelled characteristic-map atlas across a homeomorphism. -/
+public noncomputable def transport {Y : Type} [TopologicalSpace Y]
+    (A : StandardA2ToricCentralFiberCellAtlas X) (e : X ≃ₜ Y) :
+    StandardA2ToricCentralFiberCellAtlas Y where
+  cellMap n i := (A.cellMap n i).trans e.toEquiv.toPartialEquiv
+  source_eq := by
+    intro n i
+    simp [PartialEquiv.trans_source, A.source_eq]
+  continuousOn := by
+    intro n i
+    rw [PartialEquiv.coe_trans, Equiv.toPartialEquiv_apply]
+    exact e.continuous.continuousOn.comp (A.continuousOn n i) (fun _ _ ↦ Set.mem_univ _)
+  continuousOn_symm := by
+    intro n i
+    rw [PartialEquiv.coe_trans_symm]
+    apply (A.continuousOn_symm n i).comp e.symm.continuous.continuousOn
+    intro y hy
+    simpa [PartialEquiv.trans_target] using hy.2
+  pairwiseDisjoint := by
+    intro a _ b _ hab
+    change Disjoint _ _
+    simp only [PartialEquiv.coe_trans, Equiv.toPartialEquiv_apply]
+    rw [Set.disjoint_left]
+    intro y ⟨za, hza, hya⟩ ⟨zb, hzb, hyb⟩
+    have hzab :
+        (A.cellMap a.1 a.2) za = (A.cellMap b.1 b.2) zb :=
+      e.injective (hya.trans hyb.symm)
+    apply Set.disjoint_left.mp
+      (A.pairwiseDisjoint (Set.mem_univ a) (Set.mem_univ b) hab)
+      (show (A.cellMap a.1 a.2) za ∈
+        (A.cellMap a.1 a.2) '' Metric.ball 0 1 from ⟨za, hza, rfl⟩)
+    exact ⟨zb, hzb, hzab.symm⟩
+  mapsTo := by
+    intro n i x hx
+    rw [PartialEquiv.coe_trans, Equiv.toPartialEquiv_apply]
+    obtain ⟨m, hm⟩ := Set.mem_iUnion.mp ((A.mapsTo n i) hx)
+    obtain ⟨hmn, hm⟩ := Set.mem_iUnion.mp hm
+    obtain ⟨j, hj⟩ := Set.mem_iUnion.mp hm
+    refine Set.mem_iUnion.mpr ⟨m, Set.mem_iUnion.mpr ⟨hmn, Set.mem_iUnion.mpr ⟨j, ?_⟩⟩⟩
+    rw [PartialEquiv.coe_trans, Equiv.toPartialEquiv_apply]
+    obtain ⟨z, hz, hzEq⟩ := hj
+    exact ⟨z, hz, congrArg e hzEq⟩
+  union_eq := by
+    rw [← e.surjective.range_eq]
+    ext y
+    constructor
+    · intro hy
+      obtain ⟨n, hn⟩ := Set.mem_iUnion.mp hy
+      obtain ⟨j, hj⟩ := Set.mem_iUnion.mp hn
+      rw [PartialEquiv.coe_trans, Equiv.toPartialEquiv_apply] at hj
+      obtain ⟨x, hx, rfl⟩ := hj
+      exact Set.mem_range_self _
+    · rintro ⟨x, rfl⟩
+      have hx : x ∈ (Set.univ : Set X) := Set.mem_univ x
+      rw [← A.union_eq] at hx
+      obtain ⟨n, hn⟩ := Set.mem_iUnion.mp hx
+      obtain ⟨j, hj⟩ := Set.mem_iUnion.mp hn
+      refine Set.mem_iUnion.mpr ⟨n, Set.mem_iUnion.mpr ⟨j, ?_⟩⟩
+      rw [PartialEquiv.coe_trans, Equiv.toPartialEquiv_apply]
+      obtain ⟨z, hz, hzEq⟩ := hj
+      exact ⟨z, hz, congrArg e hzEq⟩
+
 end StandardA2ToricCentralFiberCellAtlas
 
 /-- The unresolved incidence calculation after constructing the CW structure through Mathlib:
@@ -540,9 +602,18 @@ open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
 
-/-- The remaining geometric input: characteristic maps on the actual compact periodic `A₂`
-quotient.  Mathlib constructs the CW structure and its finiteness from these maps. -/
-public axiom establishedStandardA2ToricCentralFiberCellAtlas
+/-- The remaining geometric input: characteristic maps on the compact orbit quotient of the
+actual prequotient central fibre.  This statement is independent of the choice of radial
+retraction. -/
+public axiom establishedStandardA2ToricCentralOrbitCellAtlas
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) :
+    StandardA2ToricCentralFiberCellAtlas (ActualLocalCuspCentralOrbitQuotient W)
+
+/-- Transport the orbit-quotient atlas to the radial retraction's concrete central-fibre
+subspace. -/
+public noncomputable def establishedStandardA2ToricCentralFiberCellAtlas
     {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
@@ -550,7 +621,12 @@ public axiom establishedStandardA2ToricCentralFiberCellAtlas
     let _ : T2Space (actualLocalCuspFilling W) :=
       SphereSixComplex.Geometry.PaperAnalyticData.actualLocalCuspFilling_t2 W
     let _ : T2Space (R.quotientCentralFiber W) := inferInstance
-    StandardA2ToricCentralFiberCellAtlas (R.quotientCentralFiber W)
+    StandardA2ToricCentralFiberCellAtlas (R.quotientCentralFiber W) := by
+  let _ : T2Space (actualLocalCuspFilling W) :=
+    SphereSixComplex.Geometry.PaperAnalyticData.actualLocalCuspFilling_t2 W
+  let _ : T2Space (R.quotientCentralFiber W) := inferInstance
+  exact (establishedStandardA2ToricCentralOrbitCellAtlas W).transport
+    (actualLocalCuspCentralOrbitCoreHomeomorph W R)
 
 /-- The independent combinatorial input: twenty-four scalar cellular-incidence entries in the
 atlas coordinates. -/

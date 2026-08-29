@@ -74,27 +74,20 @@ axiom SphereSixComplex.establishedFiniteCoverCellularLift : ∀ {E X : Type} [in
   [inst_1 : TopologicalSpace X] (projection : C(E, X)),
   IsCoveringMap ⇑projection →
     ∀ (degree : ℕ),
-      (∀ (x : X), Nat.card { y // projection y = x } = degree) →
-        ∀ (base : SphereSixComplex.FiniteCWModel X), ∃ cover, ∀ (n : ℕ), cover.cellCount n = degree * base.cellCount n
+      0 < degree →
+        (∀ (x : X), Nat.card { y // projection y = x } = degree) →
+          ∀ (base : SphereSixComplex.FiniteCWModel X), ∃ cover, ∀ (n : ℕ), cover.cellCount n = degree * base.cellCount n
 axiom SphereSixComplex.Periods.establishedOrbifoldAffineLineTorsorCuspBoundedCousinCorrection : ∀
   (P : SphereSixComplex.Periods.OrbifoldAffineLineTorsorDescentProblem),
   P.HasAcyclicProjectiveLineFrame → Nonempty P.CuspBoundedEllipticOneCorrection
 axiom SphereSixComplex.Topology.FiniteCoverPerfectPairing.establishedEllipticDegreeTwoHomologyBasisFiniteData : ∀
   {U : SphereSixComplex.Periods.TriangleUniformization} (F : SphereSixComplex.Periods.PeriodFunctions U),
   Nonempty (SphereSixComplex.Topology.FiniteCoverPerfectPairing.EllipticDegreeTwoHomologyBasisFiniteData F)
-axiom SphereSixComplex.Topology.AffineFiniteCyclicTorusCW.establishedFiniteCWModelFour_of_compactComplexSurfaceCover : {E
-    X : Type} →
-  [inst : TopologicalSpace E] →
-    [inst_1 : ChartedSpace SphereSixComplex.Geometry.ComplexTorus.ComplexTwoSpace E] →
-      [T2Space E] →
-        [inst_3 : TopologicalSpace X] →
-          [T2Space X] →
-            IsManifold (modelWithCornersSelf ℂ SphereSixComplex.Geometry.ComplexTorus.ComplexTwoSpace) 0 E →
-              CompactSpace E →
-                (projection : C(E, X)) →
-                  IsCoveringMap ⇑projection →
-                    Function.Surjective ⇑projection →
-                      SphereSixComplex.Topology.AffineFiniteCyclicTorusCW.FiniteCWModelAtMost 4 X
+axiom SphereSixComplex.Topology.AffineFiniteCyclicTorusCW.establishedFiniteCWModelFour_of_compactComplexTwoChartedSpace : {X :
+    Type} →
+  [inst : TopologicalSpace X] →
+    [ChartedSpace SphereSixComplex.Geometry.ComplexTorus.ComplexTwoSpace X] →
+      [T2Space X] → [CompactSpace X] → SphereSixComplex.Topology.AffineFiniteCyclicTorusCW.FiniteCWModelAtMost 4 X
 axiom SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.EstablishedAffineCyclicQuotientHomology.establishedAffineCyclicDeckHurewiczComparison : {m :
     ℕ} →
   [inst : NeZero m] →
@@ -107,18 +100,14 @@ axiom SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.EstablishedAffine
             P
 
 # Established analytic and toric models from the paper.
-axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberCellAtlas : {E :
+axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralOrbitCellAtlas : {E :
     SphereSixComplex.Periods.EstablishedFuchsianModularParameter} →
   {D : SphereSixComplex.Periods.FuchsianPeriodLocalData E} →
     {N : SphereSixComplex.Geometry.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate E D} →
       {M : SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Model} →
         (W : SphereSixComplex.Geometry.CuspPuncturedCollarBridge.ActualPuncturedCuspCollarWitness N M) →
-          (R : SphereSixComplex.Geometry.CuspPuncturedCollarBridge.ActualLocalCuspCentralFiberRetractionData W) →
-            let x := SphereSixComplex.Geometry.PaperAnalyticData.actualLocalCuspFilling_t2 W;
-            let x := inferInstance;
-            SphereSixComplex.StandardA2ToricCentralFiberCellAtlas
-              ↑(SphereSixComplex.Geometry.CuspPuncturedCollarBridge.ActualLocalCuspCentralFiberRetractionData.quotientCentralFiber
-                  W R)
+          SphereSixComplex.StandardA2ToricCentralFiberCellAtlas
+            (SphereSixComplex.Geometry.CuspPuncturedCollarBridge.ActualLocalCuspCentralOrbitQuotient W)
 axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberIndependentIncidenceResidual : ∀
   {E : SphereSixComplex.Periods.EstablishedFuchsianModularParameter}
   {D : SphereSixComplex.Periods.FuchsianPeriodLocalData E}
@@ -134,9 +123,9 @@ axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2C
   (A : SphereSixComplex.Geometry.PaperAnalyticData),
   SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization.FiniteFiberGeneratorSpecializationMatrix
     A
-axiom SphereSixComplex.Geometry.PaperAnalyticData.establishedActualEllipticMarkedFillingExtensionNaturality : ∀
+axiom SphereSixComplex.Geometry.PaperAnalyticData.establishedActualEllipticMarkedFillingExtensionAtBaseNaturality : ∀
   (A : SphereSixComplex.Geometry.PaperAnalyticData),
-  Nonempty (A.ActualEllipticMarkedFillingExtensionNaturality A.actualCuspCentralNaturality)
+  Nonempty (A.ActualEllipticMarkedFillingExtensionAtBaseNaturality A.actualCuspCentralNaturality)
 axiom SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenAffineRegularLiftTopology.markedBandHomotopies : ∀
   (A : SphereSixComplex.Geometry.PaperAnalyticData), A.SectionSevenAffineOverlapBandCompatibility
 axiom SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTopology.establishedActualCuspFiberEllipticMarkedCoordinateCalculation : ∀
@@ -146,9 +135,9 @@ axiom SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTop
       (SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenAffineRadialCompletionInput.homologyAlignment R)),
   SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTopology.ActualCuspFiberEllipticMarkedCoordinateCalculation
     R W
-axiom SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenEllipticTwoDiscCoverData.EstablishedActualCuspWangOpenCoverChainRealization.fullFibreSliceComparison : ∀
+axiom SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenEllipticTwoDiscCoverData.EstablishedActualCuspWangOpenCoverChainRealization.fullFibreSliceExplicitFiniteResidual : ∀
   {A : SphereSixComplex.Geometry.PaperAnalyticData} (R : A.SectionSevenAffineRadialCompletionInput),
-  SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenEllipticTwoDiscCoverData.ActualCuspWangFullFibreSliceComparison
+  SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenEllipticTwoDiscCoverData.ActualCuspWangFullFibreSliceExplicitFiniteResidual
     R
 axiom SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established.normalizedPolarHoneycombPhaseGeometry : ∀
   {E : SphereSixComplex.Periods.EstablishedFuchsianModularParameter}
@@ -157,11 +146,5 @@ axiom SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established.normali
   (M : SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Model) (r : ℝ),
   0 < r →
     Nonempty
-      { Q //
-        let P := Q.toPolarHoneycombData;
-        (∀ (j i : Fin 2),
-            ‖↑(P.positiveTwist (Pi.single j 1) i.castSucc)‖ =
-              ‖↑(SphereSixComplex.Geometry.CuspToricPhaseAction.phaseEmbedding (N.phaseCoefficient (Pi.single j 1) 0)
-                    i.castSucc)‖) ∧
-          SphereSixComplex.Geometry.CuspStraighteningRetraction.PolarPhaseGeometricCore M r P }
+      { Q // SphereSixComplex.Geometry.CuspStraighteningRetraction.PolarPhaseGeometricCore M r Q.toPolarHoneycombData }
 END GENERATED AXIOM CATALOG -/
