@@ -3,6 +3,8 @@ module
 public import SphereSixComplex.Topology.EstablishedPaperSectionSevenAffineRegularLiftCompletion
 public import SphereSixComplex.Topology.EstablishedPaperSectionSevenCuspCompletion
 public import SphereSixComplex.Topology.EstablishedRecognition
+public import SphereSixComplex.Topology.EstablishedEquivariantUniversalCover
+public import SphereSixComplex.Topology.PaperActualAffineFillingCoverModelsProof
 
 /-!
 # Comparator trusted-axiom imports
@@ -27,7 +29,7 @@ Do not edit it by hand; run ./scripts/update-axiom-catalog.sh --write.
 # establishedHomologyToHomotopySixSphere, establishedSmoothPoincareSixStandardModel,
 # establishedCompactSmoothOrientedManifoldHomologyTheory, integralCWCellularChainModel,
 # isHomotopyEquivalenceInclusion_of_isAspherical_of_bijective_fundamentalGroup,
-# FiniteCWBundleModelSix.establishedEulerMultiplicativity, and
+# FiniteCoverModelSix.establishedEulerMultiplicativity, and
 # establishedOrbifoldAffineLineTorsorCuspBoundedSection.
 # Every other project constant below is a temporary proof obligation to eliminate.
 
@@ -67,18 +69,13 @@ axiom SphereSixComplex.EstablishedGeneralTopology.isHomotopyEquivalenceInclusion
               (have this := rfl;
               this)) →
         ∀ (hCW : Topology.RelCWComplex Set.univ D), SphereSixComplex.IsHomotopyEquivalenceInclusion D
-axiom SphereSixComplex.EstablishedTorusBundleTopology.centralCollarAdditiveBundleRealization : ∀
-  (A : SphereSixComplex.Geometry.PaperAnalyticData),
-  Nonempty (SphereSixComplex.EstablishedTorusBundleTopology.CentralCollarAdditiveBundleRealization A)
 axiom SphereSixComplex.StandardTorusHomology.standardFourTorusNaturalRecalibration_nonempty : Nonempty
   SphereSixComplex.StandardTorusHomology.StandardFourTorusNaturalRecalibration
-axiom SphereSixComplex.FiniteCWBundleModelSix.establishedEulerMultiplicativity : ∀ {X : Type}
-  [inst : TopologicalSpace X] (M : SphereSixComplex.FiniteCWBundleModelSix X),
-  let x := M.baseTopology;
-  let x_1 := M.fiberTopology;
-  SphereSixComplex.integralHomologyEulerCharacteristicSix X =
-    SphereSixComplex.integralHomologyEulerCharacteristicSix M.Base *
-      SphereSixComplex.integralHomologyEulerCharacteristicSix M.Fiber
+axiom SphereSixComplex.FiniteCoverModelSix.establishedEulerMultiplicativity : ∀ {X : Type} [inst : TopologicalSpace X]
+  (M : SphereSixComplex.FiniteCoverModelSix X),
+  let x := M.coverTopology;
+  SphereSixComplex.integralHomologyEulerCharacteristicSix M.Cover =
+    ↑M.degree * SphereSixComplex.integralHomologyEulerCharacteristicSix X
 axiom SphereSixComplex.Periods.establishedOrbifoldAffineLineTorsorCuspBoundedCousinCorrection : ∀
   (P : SphereSixComplex.Periods.OrbifoldAffineLineTorsorDescentProblem),
   P.HasAcyclicProjectiveLineFrame → Nonempty P.CuspBoundedEllipticOneCorrection

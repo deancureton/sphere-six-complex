@@ -281,24 +281,24 @@ open Topology.PaperEllipticReducedCentralFiberCoverModels
 
 variable (A : PaperAnalyticData)
 
-/-- Supply only the cusp and bundle models; the two elliptic radial charts and finite-cover
-models are the explicit constructions above. -/
-@[expose] public noncomputable def ofCuspAndBundleModels
+/-- Supply direct central homology and Euler data together with the actual collars' explicit
+circle mapping-torus models. -/
+@[expose] public noncomputable def ofCuspCentralModelAndCollarMappingTorusModels
     (cuspRetraction : ActualLocalCuspCentralFiberRetractionData A.starCuspWitness)
-    (centralBundle : FourTorusBundleModel A.openEmbeddingStarData.central)
+    (centralModel : CentralHomologyEulerModel A.openEmbeddingStarData.central)
     (cuspCells : CuspToricCellModel
       (cuspRetraction.quotientCentralFiber A.starCuspWitness))
-    (collarBundle : ∀ i : Fin 3, FourTorusBundleModel
+    (collarMappingTorus : ∀ i : Fin 3, FourTorusCircleMappingTorusModel
       (A.openEmbeddingStarData.collarSource i)) :
     A.SectionSevenLocalEulerModels where
   cuspRetraction := cuspRetraction
   orderThreeRadialChart := orderThreeSelectedAffineRadialCompatibility A
   orderFourRadialChart := orderFourSelectedAffineRadialCompatibility A
-  centralBundle := centralBundle
+  centralModel := centralModel
   cuspCells := cuspCells
   orderThreeCover := orderThreeReducedCentralFiberCoverModel A
   orderFourCover := orderFourReducedCentralFiberCoverModel A
-  collarBundle := collarBundle
+  collarModel := collarMappingTorus
 
 end Geometry.PaperAnalyticData.SectionSevenLocalEulerModels
 

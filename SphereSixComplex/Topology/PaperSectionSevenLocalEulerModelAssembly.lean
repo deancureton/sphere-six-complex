@@ -1,6 +1,7 @@
 module
 
-public import SphereSixComplex.Topology.PaperCentralCollarTorusBundleModels
+public import SphereSixComplex.Topology.PaperActualCollarMappingTorusEuler
+public import SphereSixComplex.Topology.PaperCentralFamilyMayerVietorisEuler
 public import SphereSixComplex.Topology.PaperCuspCentralFiberCWModel
 public import SphereSixComplex.Topology.PaperCuspPhaseSpreading
 
@@ -26,10 +27,10 @@ variable (A : PaperAnalyticData)
 public noncomputable def sectionSevenLocalEulerModelsOfCuspRetraction
     (R : ActualLocalCuspCentralFiberRetractionData A.starCuspWitness) :
     A.SectionSevenLocalEulerModels :=
-  SectionSevenLocalEulerModels.ofCuspAndBundleModels A
-    R A.centralFourTorusBundleModel
+  SectionSevenLocalEulerModels.ofCuspCentralModelAndCollarMappingTorusModels A
+    R A.centralHomologyEulerModel
       (actualCuspCentralFiberCellModel A.starCuspWitness R)
-      A.collarFourTorusBundleModel
+      A.actualCollarCircleMappingTorusModel
 
 /-- The assembled local models give finite integral homology for all seven local spaces. -/
 public theorem sectionSevenLocalIntegralHomologyFiniteSixOfCuspRetraction

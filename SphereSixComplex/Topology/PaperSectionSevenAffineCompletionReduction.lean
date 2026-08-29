@@ -1,6 +1,5 @@
 module
 
-public import SphereSixComplex.Geometry.PaperGluingDataReduction
 public import SphereSixComplex.Topology.PaperSectionSevenAffineBandTrivialization
 public import SphereSixComplex.Topology.PaperSectionSevenEllipticBandHomologyAlignment
 public import SphereSixComplex.Topology.PaperSectionSevenPositiveDegreeCuspReduction
@@ -135,14 +134,6 @@ public noncomputable def positiveDegreeHomologyAssembly
     { boundary := boundary
       inclusion := C.inclusionNaturality }
   exact marked.positiveDegreeHomologyAssembly
-
-/-- The four geometric facts and three marked-coordinate comparisons discharge the only
-remaining construction obligation in `Final.lean`. -/
-public theorem exists_paperGluingData
-    {R : Geometry.establishedPaperAnalyticData.SectionSevenAffineRadialCompletionInput}
-    (C : Geometry.establishedPaperAnalyticData.SectionSevenAffineMarkedCompletionInput R) :
-    Nonempty PaperGluingData :=
-  Geometry.exists_paperGluingData_of_positiveDegreeAssembly C.positiveDegreeHomologyAssembly
 
 end SectionSevenAffineMarkedCompletionInput
 

@@ -2,6 +2,7 @@ module
 
 public import SphereSixComplex.Topology.WangHomologyPresentationProof
 public import SphereSixComplex.Topology.ConnectedMayerVietorisDegreeZero
+public import SphereSixComplex.Topology.StandardCircleHomologyLiftDegree
 public import SphereSixComplex.Geometry.EllipticFamilySpecialization
 public import Mathlib.Topology.Instances.AddCircle.Real
 
@@ -167,9 +168,6 @@ end MappingTorus
 /-! ## The standard real torus as an iterated mapping torus -/
 
 section StandardTorus
-
-/-- The standard `n`-dimensional real torus. -/
-public abbrev StdTorus (n : ℕ) : Type := Fin n → UnitAddCircle
 
 public theorem unitAddCircle_eq_iff (t t' : ℝ) :
     ((t : UnitAddCircle)) = (t' : UnitAddCircle) ↔ ∃ k : ℤ, t - t' = k := by
@@ -422,20 +420,940 @@ public structure StandardFourTorusEquivariantLift
     f (standardFourTorusProjection r) = standardFourTorusProjection (lift r)
   map_integer (n : IntegerPeriods) : lift (integerToReal n) = integerToReal (e n)
 
-/-- Recalibration of the choice-based Wang coordinates to the canonical coordinate-loop and
-coordinate-two-torus bases. -/
-public structure StandardFourTorusNaturalRecalibration where
-  degreeOne : (Fin 4 → ℤ) ≃+ (Fin 4 → ℤ)
-  degreeTwo : (Fin 6 → ℤ) ≃+ (Fin 6 → ℤ)
-  naturality (f : C(StdTorus 4, StdTorus 4))
-    (e : IntegerPeriods ≃ₗ[ℤ] IntegerPeriods) (_ : StandardFourTorusEquivariantLift f e) :
-    (∀ x, degreeOne (stdTorusHomologyOne 4 (integralSingularHomologyMap 1 f x)) =
-      e (degreeOne (stdTorusHomologyOne 4 x))) ∧
-    (∀ x, degreeTwo (stdTorusHomologyTwo 4 (integralSingularHomologyMap 2 f x)) =
-      standardExteriorSquareMap e (degreeTwo (stdTorusHomologyTwo 4 x)))
+/-! ## Canonical degree-one classes -/
 
-/-- The classical coordinate-loop identification of the standard four-torus.  The Wang sequence
-already proves the ranks; this input records only the natural recalibration. -/
+/-- Include the `i`-th coordinate circle into the standard four-torus. -/
+public def standardFourTorusCoordinateCircle (i : Fin 4) : C(StdTorus 1, StdTorus 4) where
+  toFun z j := if j = i then z 0 else 0
+  continuous_toFun := by
+    apply continuous_pi
+    intro j
+    by_cases h : j = i
+    · simp only [h, ↓reduceIte]
+      fun_prop
+    · simp only [h, ↓reduceIte]
+      fun_prop
+
+/-- Project the standard four-torus onto its `i`-th coordinate circle. -/
+public def standardFourTorusCoordinateProjection (i : Fin 4) : C(StdTorus 4, StdTorus 1) where
+  toFun z _ := z i
+  continuous_toFun := by
+    fun_prop
+
+private def standardCircleToPoint : C(StdTorus 1, StdTorus 0) where
+  toFun _ i := Fin.elim0 i
+  continuous_toFun := by
+    fun_prop
+
+private def pointToStandardCircle : C(StdTorus 0, StdTorus 1) where
+  toFun _ _ := 0
+  continuous_toFun := by
+    fun_prop
+
+private theorem coordinateProjection_comp_coordinateCircle_self (i : Fin 4) :
+    (standardFourTorusCoordinateProjection i).comp (standardFourTorusCoordinateCircle i) =
+      ContinuousMap.id _ := by
+  ext z k
+  fin_cases k
+  simp [standardFourTorusCoordinateProjection, standardFourTorusCoordinateCircle]
+
+private theorem coordinateProjection_comp_coordinateCircle_of_ne
+    {i j : Fin 4} (h : i ≠ j) :
+    (standardFourTorusCoordinateProjection i).comp (standardFourTorusCoordinateCircle j) =
+      pointToStandardCircle.comp standardCircleToPoint := by
+  ext z k
+  fin_cases k
+  simp [standardFourTorusCoordinateProjection, standardFourTorusCoordinateCircle,
+    pointToStandardCircle, standardCircleToPoint, h]
+
+private theorem homologyMap_standardCircle_pointFactor_zero
+    (x : IntegralSingularHomology 1 (StdTorus 1)) :
+    integralSingularHomologyMap 1 (pointToStandardCircle.comp standardCircleToPoint) x = 0 := by
+  rw [← integralSingularHomologyMap_comp_wang]
+  let _ := subsingleton_homology_stdTorusZero 1 one_ne_zero
+  have hzero : integralSingularHomologyMap 1 standardCircleToPoint x = 0 :=
+    Subsingleton.elim _ _
+  rw [hzero, map_zero]
+
+/-- The generator selected by the computed integral homology of the standard circle. -/
+public def standardCircleHomologyGenerator :
+    IntegralSingularHomology 1 (StdTorus 1) :=
+  (stdTorusHomologyOne 1).symm (Pi.single 0 1)
+
+private def finOneFunctionAddEquiv : (Fin 1 → ℤ) ≃+ ℤ where
+  toFun f := f 0
+  invFun z := fun _ ↦ z
+  left_inv f := by
+    funext i
+    fin_cases i
+    rfl
+  right_inv _ := rfl
+  map_add' _ _ := rfl
+
+private def unitCircleHomologyEquivInt :
+    IntegralSingularHomology 1 UnitAddCircle ≃+ ℤ :=
+  (integralSingularHomologyEquiv 1
+      StandardCircleHomologyLiftDegree.stdTorusOneHomeomorph.symm).trans
+    ((stdTorusHomologyOne 1).trans finOneFunctionAddEquiv)
+
+private theorem unitCircleHomologyWinding_injective :
+    Function.Injective StandardCircleHomologyLiftDegree.unitCircleHomologyWinding := by
+  open StandardCircleHomologyLiftDegree in
+  let φ : ℤ →+ ℤ := unitCircleHomologyWinding.comp
+    unitCircleHomologyEquivInt.symm.toAddMonoidHom
+  have hφsurj : Function.Surjective φ := by
+    intro n
+    obtain ⟨x, hx⟩ := unitCircleHomologyWinding_surjective n
+    exact ⟨unitCircleHomologyEquivInt x, by simpa [φ] using hx⟩
+  have hφone : φ 1 ≠ 0 := by
+    intro h
+    obtain ⟨m, hm⟩ := hφsurj 1
+    rw [φ.apply_int, h, smul_zero] at hm
+    exact one_ne_zero hm.symm
+  have hφinj : Function.Injective φ := by
+    intro m n hmn
+    have hz : φ (m - n) = 0 := by rw [map_sub, hmn, sub_self]
+    rw [φ.apply_int] at hz
+    have hmul : (m - n) * φ 1 = 0 := by simpa [smul_eq_mul] using hz
+    exact sub_eq_zero.mp ((Int.mul_eq_zero.mp hmul).resolve_right hφone)
+  intro x y hxy
+  apply unitCircleHomologyEquivInt.injective
+  apply hφinj
+  simpa [φ] using hxy
+
+private theorem unitCirclePowerMap_homology (n : ℤ)
+    (x : IntegralSingularHomology 1 UnitAddCircle) :
+    integralSingularHomologyMap 1
+        (StandardCircleHomologyLiftDegree.unitCirclePowerMap n) x = n • x := by
+  open StandardCircleHomologyLiftDegree in
+  have hx : x = unitCircleHomologyWinding x • unitCirclePositiveHomologyClass := by
+    apply unitCircleHomologyWinding_injective
+    simp [unitCircleHomologyWinding_positive]
+  rw [hx, map_zsmul, unitCirclePowerMap_positiveHomologyClass]
+  apply unitCircleHomologyWinding_injective
+  simp [map_zsmul, unitCircleHomologyWinding_integerLoop,
+    unitCircleHomologyWinding_positive, mul_comm]
+
+private theorem stdTorusOnePowerMap_homology (n : ℤ)
+    (x : IntegralSingularHomology 1 (StdTorus 1)) :
+    integralSingularHomologyMap 1
+        (StandardCircleHomologyLiftDegree.stdTorusOnePowerMap n) x = n • x := by
+  open StandardCircleHomologyLiftDegree in
+  apply (integralSingularHomologyEquiv 1 stdTorusOneHomeomorph).injective
+  change integralSingularHomologyMap 1
+      (stdTorusOneHomeomorph : C(StdTorus 1, UnitAddCircle))
+        (integralSingularHomologyMap 1 (stdTorusOnePowerMap n) x) =
+    integralSingularHomologyMap 1
+      (stdTorusOneHomeomorph : C(StdTorus 1, UnitAddCircle)) (n • x)
+  rw [integralSingularHomologyMap_comp_wang, stdTorusOneHomeomorph_comp_power,
+    ← integralSingularHomologyMap_comp_wang, unitCirclePowerMap_homology, map_zsmul]
+
+/-- A continuous circle map with an additive real lift of integer degree `n` sends the selected
+circle generator to `n` times itself. -/
+public theorem standardCircleHomologyGenerator_map_of_additiveLift
+    (f : C(StdTorus 1, StdTorus 1)) (L : ℝ →+ ℝ) (n : ℤ)
+    (map_projection : ∀ r : ℝ,
+      f (StandardCircleHomologyLiftDegree.stdTorusOneProjection r) =
+        StandardCircleHomologyLiftDegree.stdTorusOneProjection (L r))
+    (map_one : L 1 = (n : ℝ)) :
+    integralSingularHomologyMap 1 f standardCircleHomologyGenerator =
+      n • standardCircleHomologyGenerator := by
+  rw [StandardCircleHomologyLiftDegree.stdTorusOneMap_eq_power_of_additiveLift
+    f L n map_projection map_one]
+  exact stdTorusOnePowerMap_homology n _
+
+/-- The homology class of the `i`-th coordinate circle. -/
+public def standardFourTorusCoordinateHomologyClass (i : Fin 4) :
+    IntegralSingularHomology 1 (StdTorus 4) :=
+  integralSingularHomologyMap 1 (standardFourTorusCoordinateCircle i)
+    standardCircleHomologyGenerator
+
+/-- Detect a degree-one class by projecting it onto the four coordinate circles. -/
+public noncomputable def standardFourTorusCoordinateHom :
+    IntegralSingularHomology 1 (StdTorus 4) →+ (Fin 4 → ℤ) where
+  toFun x i :=
+    stdTorusHomologyOne 1
+      (integralSingularHomologyMap 1 (standardFourTorusCoordinateProjection i) x) 0
+  map_zero' := by
+    funext i
+    simp
+  map_add' x y := by
+    funext i
+    simp
+
+/-- Coordinate projections evaluate on coordinate-circle classes as the standard basis. -/
+public theorem standardFourTorusCoordinateHom_coordinateHomologyClass (j : Fin 4) :
+    standardFourTorusCoordinateHom (standardFourTorusCoordinateHomologyClass j) =
+      Pi.single j 1 := by
+  funext i
+  change stdTorusHomologyOne 1
+      (integralSingularHomologyMap 1 (standardFourTorusCoordinateProjection i)
+        (integralSingularHomologyMap 1 (standardFourTorusCoordinateCircle j)
+          standardCircleHomologyGenerator)) 0 =
+    (Pi.single j 1 : Fin 4 → ℤ) i
+  rw [integralSingularHomologyMap_comp_wang]
+  by_cases h : i = j
+  · subst i
+    rw [coordinateProjection_comp_coordinateCircle_self,
+      integralSingularHomologyMap_id_wang]
+    simp [standardCircleHomologyGenerator]
+  · rw [coordinateProjection_comp_coordinateCircle_of_ne h,
+      homologyMap_standardCircle_pointFactor_zero]
+    simp [h]
+
+public theorem standardFourTorusCoordinateHom_surjective :
+    Function.Surjective standardFourTorusCoordinateHom := by
+  intro v
+  refine ⟨∑ i, v i • standardFourTorusCoordinateHomologyClass i, ?_⟩
+  rw [map_sum]
+  simp only [map_zsmul, standardFourTorusCoordinateHom_coordinateHomologyClass]
+  funext j
+  rw [Finset.sum_apply, Finset.sum_eq_single j]
+  · simp
+  · intro i _ hi
+    simp [hi]
+  · simp
+
+public theorem standardFourTorusCoordinateHom_injective :
+    Function.Injective standardFourTorusCoordinateHom := by
+  let F : (Fin 4 → ℤ) →+ (Fin 4 → ℤ) :=
+    standardFourTorusCoordinateHom.comp (stdTorusHomologyOne 4).symm.toAddMonoidHom
+  have hsurj : Function.Surjective F :=
+    standardFourTorusCoordinateHom_surjective.comp (stdTorusHomologyOne 4).symm.surjective
+  have hinj : Function.Injective F :=
+    Module.End.injective_of_surjective ℤ (Fin 4 → ℤ) (f := F.toIntLinearMap) hsurj
+  intro x y hxy
+  apply (stdTorusHomologyOne 4).injective
+  apply hinj
+  change standardFourTorusCoordinateHom
+      ((stdTorusHomologyOne 4).symm (stdTorusHomologyOne 4 x)) =
+    standardFourTorusCoordinateHom
+      ((stdTorusHomologyOne 4).symm (stdTorusHomologyOne 4 y))
+  simpa using hxy
+
+/-- The four coordinate-circle classes are an integral basis of degree-one homology. -/
+public noncomputable def standardFourTorusCanonicalHomologyOne :
+    IntegralSingularHomology 1 (StdTorus 4) ≃+ (Fin 4 → ℤ) :=
+  AddEquiv.ofBijective standardFourTorusCoordinateHom
+    ⟨standardFourTorusCoordinateHom_injective, standardFourTorusCoordinateHom_surjective⟩
+
+/-- Recalibrate the choice-based Wang basis to the coordinate-circle basis. -/
+public noncomputable def standardFourTorusCanonicalDegreeOneRecalibration :
+    (Fin 4 → ℤ) ≃+ (Fin 4 → ℤ) :=
+  (stdTorusHomologyOne 4).symm.trans standardFourTorusCanonicalHomologyOne
+
+public theorem standardFourTorusCanonicalDegreeOneRecalibration_apply
+    (x : IntegralSingularHomology 1 (StdTorus 4)) :
+    standardFourTorusCanonicalDegreeOneRecalibration (stdTorusHomologyOne 4 x) =
+      standardFourTorusCanonicalHomologyOne x := by
+  simp [standardFourTorusCanonicalDegreeOneRecalibration]
+
+private def standardRealCoordinateLine (j : Fin 4) : ℝ →+ RealPeriods where
+  toFun r := Pi.single j r
+  map_zero' := by
+    funext k
+    simp [Pi.single_apply]
+  map_add' r s := by
+    funext k
+    by_cases h : j = k <;> simp [h]
+
+private def standardFourTorusCoordinateLift
+    {f : C(StdTorus 4, StdTorus 4)} {e : IntegerPeriods ≃ₗ[ℤ] IntegerPeriods}
+    (L : StandardFourTorusEquivariantLift f e) (i j : Fin 4) : ℝ →+ ℝ where
+  toFun r := L.lift (standardRealCoordinateLine j r) i
+  map_zero' := by simp
+  map_add' r s := by simp
+
+private def standardFourTorusCoordinateCircleMap
+    (f : C(StdTorus 4, StdTorus 4)) (i j : Fin 4) : C(StdTorus 1, StdTorus 1) :=
+  ((standardFourTorusCoordinateProjection i).comp f).comp
+    (standardFourTorusCoordinateCircle j)
+
+private theorem standardFourTorusProjection_coordinateLine (j : Fin 4) (r : ℝ) :
+    standardFourTorusProjection (standardRealCoordinateLine j r) =
+      standardFourTorusCoordinateCircle j
+        (StandardCircleHomologyLiftDegree.stdTorusOneProjection r) := by
+  funext k
+  by_cases h : k = j
+  · subst k
+    simp [standardFourTorusProjection, standardRealCoordinateLine,
+      standardFourTorusCoordinateCircle,
+      StandardCircleHomologyLiftDegree.stdTorusOneProjection]
+  · simp [standardFourTorusProjection, standardRealCoordinateLine,
+      standardFourTorusCoordinateCircle, h]
+
+private theorem standardFourTorusCoordinateCircleMap_projection
+    {f : C(StdTorus 4, StdTorus 4)} {e : IntegerPeriods ≃ₗ[ℤ] IntegerPeriods}
+    (L : StandardFourTorusEquivariantLift f e) (i j : Fin 4) (r : ℝ) :
+    standardFourTorusCoordinateCircleMap f i j
+        (StandardCircleHomologyLiftDegree.stdTorusOneProjection r) =
+      StandardCircleHomologyLiftDegree.stdTorusOneProjection
+        (standardFourTorusCoordinateLift L i j r) := by
+  funext k
+  fin_cases k
+  change f (standardFourTorusCoordinateCircle j
+      (StandardCircleHomologyLiftDegree.stdTorusOneProjection r)) i =
+    ((L.lift (standardRealCoordinateLine j r) i : ℝ) : UnitAddCircle)
+  rw [← standardFourTorusProjection_coordinateLine]
+  exact congrFun (L.map_projection (standardRealCoordinateLine j r)) i
+
+private theorem standardFourTorusCoordinateLift_one
+    {f : C(StdTorus 4, StdTorus 4)} {e : IntegerPeriods ≃ₗ[ℤ] IntegerPeriods}
+    (L : StandardFourTorusEquivariantLift f e) (i j : Fin 4) :
+    standardFourTorusCoordinateLift L i j 1 =
+      ((e (Pi.single j 1)) i : ℝ) := by
+  change L.lift (standardRealCoordinateLine j 1) i = _
+  have hline : standardRealCoordinateLine j 1 = integerToReal (Pi.single j 1) := by
+    funext k
+    simp [standardRealCoordinateLine, integerToReal, Pi.single_apply]
+  rw [hline]
+  exact congrFun (L.map_integer (Pi.single j 1)) i
+
+private theorem standardFourTorusCanonicalHomologyOne_coordinate_naturality
+    (f : C(StdTorus 4, StdTorus 4)) (e : IntegerPeriods ≃ₗ[ℤ] IntegerPeriods)
+    (L : StandardFourTorusEquivariantLift f e) (j : Fin 4) :
+    standardFourTorusCanonicalHomologyOne
+        (integralSingularHomologyMap 1 f (standardFourTorusCoordinateHomologyClass j)) =
+      e (Pi.single j 1) := by
+  funext i
+  change stdTorusHomologyOne 1
+      (integralSingularHomologyMap 1 (standardFourTorusCoordinateProjection i)
+        (integralSingularHomologyMap 1 f
+          (integralSingularHomologyMap 1 (standardFourTorusCoordinateCircle j)
+            standardCircleHomologyGenerator))) 0 = _
+  rw [integralSingularHomologyMap_comp_wang, integralSingularHomologyMap_comp_wang]
+  change stdTorusHomologyOne 1
+      (integralSingularHomologyMap 1 (standardFourTorusCoordinateCircleMap f i j)
+        standardCircleHomologyGenerator) 0 = _
+  rw [standardCircleHomologyGenerator_map_of_additiveLift
+      (standardFourTorusCoordinateCircleMap f i j)
+      (standardFourTorusCoordinateLift L i j) ((e (Pi.single j 1)) i)
+      (standardFourTorusCoordinateCircleMap_projection L i j)
+      (standardFourTorusCoordinateLift_one L i j)]
+  simp [standardCircleHomologyGenerator]
+
+private theorem sum_zsmul_pi_single (v : Fin 4 → ℤ) :
+    ∑ j, v j • (Pi.single j 1 : Fin 4 → ℤ) = v := by
+  funext i
+  rw [Finset.sum_apply, Finset.sum_eq_single i]
+  · simp
+  · intro j _ hji
+    simp [hji]
+  · simp
+
+private theorem standardFourTorusCanonicalHomologyOne_coordinateHomologyClass (j : Fin 4) :
+    standardFourTorusCanonicalHomologyOne (standardFourTorusCoordinateHomologyClass j) =
+      Pi.single j 1 := by
+  change standardFourTorusCoordinateHom (standardFourTorusCoordinateHomologyClass j) = _
+  exact standardFourTorusCoordinateHom_coordinateHomologyClass j
+
+/-- The canonical degree-one coordinate basis is natural for every equivariant real lift. -/
+public theorem standardFourTorusCanonicalHomologyOne_naturality
+    (f : C(StdTorus 4, StdTorus 4)) (e : IntegerPeriods ≃ₗ[ℤ] IntegerPeriods)
+    (L : StandardFourTorusEquivariantLift f e)
+    (x : IntegralSingularHomology 1 (StdTorus 4)) :
+    standardFourTorusCanonicalHomologyOne (integralSingularHomologyMap 1 f x) =
+      e (standardFourTorusCanonicalHomologyOne x) := by
+  let v := standardFourTorusCanonicalHomologyOne x
+  have hx : x = ∑ j, v j • standardFourTorusCoordinateHomologyClass j := by
+    apply standardFourTorusCanonicalHomologyOne.injective
+    rw [map_sum]
+    simp only [map_zsmul]
+    rw [show ∑ j, v j • standardFourTorusCanonicalHomologyOne
+        (standardFourTorusCoordinateHomologyClass j) =
+      ∑ j, v j • (Pi.single j 1 : Fin 4 → ℤ) by
+        apply Finset.sum_congr rfl
+        intro j _
+        rw [standardFourTorusCanonicalHomologyOne_coordinateHomologyClass]]
+    exact (sum_zsmul_pi_single v).symm
+  calc
+    standardFourTorusCanonicalHomologyOne (integralSingularHomologyMap 1 f x) =
+        ∑ j, v j • standardFourTorusCanonicalHomologyOne
+          (integralSingularHomologyMap 1 f
+            (standardFourTorusCoordinateHomologyClass j)) := by
+      rw [hx, map_sum, map_sum]
+      simp only [map_zsmul]
+    _ = ∑ j, v j • e (Pi.single j 1) := by
+      apply Finset.sum_congr rfl
+      intro j _
+      rw [standardFourTorusCanonicalHomologyOne_coordinate_naturality f e L j]
+    _ = e (∑ j, v j • (Pi.single j 1 : Fin 4 → ℤ)) := by
+      rw [map_sum]
+      simp only [map_zsmul]
+    _ = e v := by rw [sum_zsmul_pi_single]
+    _ = e (standardFourTorusCanonicalHomologyOne x) := rfl
+
+/-! ## Canonical degree-two classes -/
+
+/-- Include the coordinate two-torus indexed by one of the pairs
+`(01, 02, 03, 12, 13, 23)`. -/
+public def standardFourTorusCoordinateTwoTorus (p : Fin 6) : C(StdTorus 2, StdTorus 4) where
+  toFun z k :=
+    if k = standardPeriodPairFirst p then z 0
+    else if k = standardPeriodPairSecond p then z 1
+    else 0
+  continuous_toFun := by
+    apply continuous_pi
+    intro k
+    by_cases h0 : k = standardPeriodPairFirst p
+    · simp only [h0, ↓reduceIte]
+      fun_prop
+    · simp only [h0, ↓reduceIte]
+      by_cases h1 : k = standardPeriodPairSecond p
+      · simp only [h1, ↓reduceIte]
+        fun_prop
+      · simp only [h1, ↓reduceIte]
+        fun_prop
+
+/-- Project the standard four-torus onto one of its six coordinate two-tori. -/
+public def standardFourTorusCoordinateTwoTorusProjection (p : Fin 6) :
+    C(StdTorus 4, StdTorus 2) where
+  toFun z := ![z (standardPeriodPairFirst p), z (standardPeriodPairSecond p)]
+  continuous_toFun := by
+    fun_prop
+
+private def standardTwoTorusCoordinateProjection (i : Fin 2) :
+    C(StdTorus 2, StdTorus 1) where
+  toFun z _ := z i
+  continuous_toFun := by
+    fun_prop
+
+private def standardTwoTorusZeroProjection : C(StdTorus 2, StdTorus 1) where
+  toFun _ _ := 0
+  continuous_toFun := by
+    fun_prop
+
+private def standardTwoTorusCoordinateCircle (i : Fin 2) : C(StdTorus 1, StdTorus 2) where
+  toFun z k := if k = i then z 0 else 0
+  continuous_toFun := by
+    apply continuous_pi
+    intro k
+    by_cases h : k = i
+    · simp only [h, ↓reduceIte]
+      fun_prop
+    · simp only [h, ↓reduceIte]
+      fun_prop
+
+private def standardTwoTorusPairOverlapSource (i j : Fin 6) :
+    C(StdTorus 2, StdTorus 1) :=
+  if standardPeriodPairFirst i = standardPeriodPairFirst j then
+    standardTwoTorusCoordinateProjection 0
+  else if standardPeriodPairFirst i = standardPeriodPairSecond j then
+    standardTwoTorusCoordinateProjection 1
+  else if standardPeriodPairSecond i = standardPeriodPairFirst j then
+    standardTwoTorusCoordinateProjection 0
+  else if standardPeriodPairSecond i = standardPeriodPairSecond j then
+    standardTwoTorusCoordinateProjection 1
+  else standardTwoTorusZeroProjection
+
+private def standardTwoTorusPairOverlapTarget (i j : Fin 6) :
+    C(StdTorus 1, StdTorus 2) :=
+  if standardPeriodPairFirst i = standardPeriodPairFirst j then
+    standardTwoTorusCoordinateCircle 0
+  else if standardPeriodPairFirst i = standardPeriodPairSecond j then
+    standardTwoTorusCoordinateCircle 0
+  else if standardPeriodPairSecond i = standardPeriodPairFirst j then
+    standardTwoTorusCoordinateCircle 1
+  else if standardPeriodPairSecond i = standardPeriodPairSecond j then
+    standardTwoTorusCoordinateCircle 1
+  else standardTwoTorusCoordinateCircle 0
+
+private theorem coordinateTwoTorusProjection_comp_coordinateTwoTorus_self (i : Fin 6) :
+    (standardFourTorusCoordinateTwoTorusProjection i).comp
+        (standardFourTorusCoordinateTwoTorus i) = ContinuousMap.id _ := by
+  ext z k
+  fin_cases i <;> fin_cases k <;>
+    simp [standardFourTorusCoordinateTwoTorusProjection,
+      standardFourTorusCoordinateTwoTorus, standardPeriodPairFirst, standardPeriodPairSecond]
+
+private theorem coordinateTwoTorusProjection_comp_coordinateTwoTorus_of_ne
+    {i j : Fin 6} (h : i ≠ j) :
+    (standardFourTorusCoordinateTwoTorusProjection i).comp
+        (standardFourTorusCoordinateTwoTorus j) =
+      (standardTwoTorusPairOverlapTarget i j).comp
+        (standardTwoTorusPairOverlapSource i j) := by
+  ext z k
+  fin_cases i <;> fin_cases j <;> fin_cases k <;>
+    simp_all [standardFourTorusCoordinateTwoTorusProjection,
+      standardFourTorusCoordinateTwoTorus, standardTwoTorusPairOverlapTarget,
+      standardTwoTorusPairOverlapSource, standardTwoTorusCoordinateCircle,
+      standardTwoTorusCoordinateProjection, standardTwoTorusZeroProjection,
+      standardPeriodPairFirst, standardPeriodPairSecond]
+
+private theorem subsingleton_homologyTwo_standardCircle :
+    Subsingleton (IntegralSingularHomology 2 (StdTorus 1)) := by
+  constructor
+  intro x y
+  apply (stdTorusHomologyTwo 1).injective
+  funext i
+  exact Fin.elim0 i
+
+private theorem homologyMap_standardCircleFactor_degreeTwo_zero
+    (f : C(StdTorus 2, StdTorus 1)) (g : C(StdTorus 1, StdTorus 2))
+    (x : IntegralSingularHomology 2 (StdTorus 2)) :
+    integralSingularHomologyMap 2 (g.comp f) x = 0 := by
+  rw [← integralSingularHomologyMap_comp_wang]
+  let _ := subsingleton_homologyTwo_standardCircle
+  have hzero : integralSingularHomologyMap 2 f x = 0 := Subsingleton.elim _ _
+  rw [hzero, map_zero]
+
+public def standardTwoTorusDegreeTwoIndex : Fin (stdTorusTwoRank 2) :=
+  ⟨0, by simp [stdTorusTwoRank]⟩
+
+/-- The generator selected by the computed integral second homology of the standard two-torus. -/
+public def standardTwoTorusHomologyGenerator :
+    IntegralSingularHomology 2 (StdTorus 2) :=
+  (stdTorusHomologyTwo 2).symm (Pi.single standardTwoTorusDegreeTwoIndex 1)
+
+public abbrev StandardTwoRealPeriods := Fin 2 → ℝ
+
+public abbrev StandardTwoIntegerPeriods := Fin 2 → ℤ
+
+public def standardTwoIntegerToReal (n : StandardTwoIntegerPeriods) :
+    StandardTwoRealPeriods := fun i ↦ n i
+
+public def standardTwoTorusProjection (r : StandardTwoRealPeriods) : StdTorus 2 :=
+  fun i ↦ ((r i : ℝ) : UnitAddCircle)
+
+/-- A lifted map of the standard two-torus with its integral two-by-two lattice matrix. -/
+public structure StandardTwoTorusEquivariantLift
+    (g : C(StdTorus 2, StdTorus 2)) (M : Matrix (Fin 2) (Fin 2) ℤ) where
+  lift : StandardTwoRealPeriods →+ StandardTwoRealPeriods
+  map_projection (r : StandardTwoRealPeriods) :
+    g (standardTwoTorusProjection r) = standardTwoTorusProjection (lift r)
+  map_integer (n : StandardTwoIntegerPeriods) :
+    lift (standardTwoIntegerToReal n) = standardTwoIntegerToReal (Matrix.mulVec M n)
+
+public def standardTwoRealMatrixLift (M : Matrix (Fin 2) (Fin 2) ℤ) :
+    StandardTwoRealPeriods →+ StandardTwoRealPeriods where
+  toFun r a := ∑ b, (M a b : ℝ) * r b
+  map_zero' := by
+    funext a
+    simp
+  map_add' r s := by
+    funext a
+    simp [mul_add, Finset.sum_add_distrib]
+
+public def standardTwoTorusMatrixMap (M : Matrix (Fin 2) (Fin 2) ℤ) :
+    C(StdTorus 2, StdTorus 2) where
+  toFun z a := ∑ b, M a b • z b
+  continuous_toFun := by
+    fun_prop
+
+public theorem standardTwoTorusMatrixMap_projection
+    (M : Matrix (Fin 2) (Fin 2) ℤ) (r : StandardTwoRealPeriods) :
+    standardTwoTorusMatrixMap M (standardTwoTorusProjection r) =
+      standardTwoTorusProjection (standardTwoRealMatrixLift M r) := by
+  funext a
+  unfold standardTwoTorusMatrixMap standardTwoTorusProjection standardTwoRealMatrixLift
+  simp only [Fin.sum_univ_two]
+  change M a 0 • ((r 0 : ℝ) : UnitAddCircle) +
+      M a 1 • ((r 1 : ℝ) : UnitAddCircle) =
+    (((M a 0 : ℝ) * r 0 + (M a 1 : ℝ) * r 1 : ℝ) : UnitAddCircle)
+  rw [← AddCircle.coe_zsmul, ← AddCircle.coe_zsmul, ← AddCircle.coe_add]
+  congr 1
+  simp [zsmul_eq_mul]
+
+public def standardTwoTorusMatrixEquivariantLift (M : Matrix (Fin 2) (Fin 2) ℤ) :
+    StandardTwoTorusEquivariantLift (standardTwoTorusMatrixMap M) M where
+  lift := standardTwoRealMatrixLift M
+  map_projection := standardTwoTorusMatrixMap_projection M
+  map_integer n := by
+    funext a
+    simp [standardTwoRealMatrixLift, standardTwoIntegerToReal, Matrix.mulVec]
+
+private def standardTwoRatToReal (q : Fin 2 → ℚ) : StandardTwoRealPeriods :=
+  fun i ↦ q i
+
+private theorem standardTwoRatToReal_denseRange : DenseRange standardTwoRatToReal := by
+  exact DenseRange.piMap fun _ ↦ Rat.denseRange_cast
+
+public theorem continuous_standardTwoTorusProjection : Continuous standardTwoTorusProjection := by
+  apply continuous_pi
+  intro i
+  exact (AddCircle.continuous_mk' 1).comp (continuous_apply i)
+
+private theorem standardTwoEquivariantLift_rat
+    {g : C(StdTorus 2, StdTorus 2)} {M : Matrix (Fin 2) (Fin 2) ℤ}
+    (L : StandardTwoTorusEquivariantLift g M) (q : Fin 2 → ℚ) :
+    L.lift (standardTwoRatToReal q) =
+      standardTwoRealMatrixLift M (standardTwoRatToReal q) := by
+  let e0 : StandardTwoRealPeriods := standardTwoIntegerToReal (Pi.single 0 1)
+  let e1 : StandardTwoRealPeriods := standardTwoIntegerToReal (Pi.single 1 1)
+  have hb0 : L.lift e0 = standardTwoRealMatrixLift M e0 := by
+    change L.lift (standardTwoIntegerToReal (Pi.single 0 1)) = _
+    rw [L.map_integer]
+    exact ((standardTwoTorusMatrixEquivariantLift M).map_integer (Pi.single 0 1)).symm
+  have hb1 : L.lift e1 = standardTwoRealMatrixLift M e1 := by
+    change L.lift (standardTwoIntegerToReal (Pi.single 1 1)) = _
+    rw [L.map_integer]
+    exact ((standardTwoTorusMatrixEquivariantLift M).map_integer (Pi.single 1 1)).symm
+  have hdecomp : standardTwoRatToReal q = q 0 • e0 + q 1 • e1 := by
+    funext i
+    fin_cases i <;>
+      simp [standardTwoRatToReal, e0, e1, standardTwoIntegerToReal, Rat.smul_def]
+  rw [hdecomp, map_add, map_add, map_rat_smul, map_rat_smul, map_rat_smul, map_rat_smul,
+    hb0, hb1]
+
+public theorem standardTwoTorusEquivariantLift_eq_matrixMap
+    {g : C(StdTorus 2, StdTorus 2)} {M : Matrix (Fin 2) (Fin 2) ℤ}
+    (L : StandardTwoTorusEquivariantLift g M) :
+    g = standardTwoTorusMatrixMap M := by
+  apply ContinuousMap.ext
+  have heq : (fun r : StandardTwoRealPeriods ↦ g (standardTwoTorusProjection r)) =
+      fun r : StandardTwoRealPeriods ↦
+        standardTwoTorusMatrixMap M (standardTwoTorusProjection r) := by
+    apply standardTwoRatToReal_denseRange.equalizer
+    · exact g.continuous.comp continuous_standardTwoTorusProjection
+    · exact (standardTwoTorusMatrixMap M).continuous.comp
+        continuous_standardTwoTorusProjection
+    · funext q
+      dsimp only [Function.comp_apply]
+      rw [L.map_projection, standardTwoTorusMatrixMap_projection,
+        standardTwoEquivariantLift_rat L q]
+  intro z
+  have hstep : ∀ i : Fin 2, ∃ r : ℝ, ((r : ℝ) : UnitAddCircle) = z i := fun i ↦
+    QuotientAddGroup.mk_surjective (z i)
+  choose r hr using hstep
+  have hz : z = standardTwoTorusProjection r := by
+    funext i
+    exact (hr i).symm
+  subst z
+  exact congrFun heq r
+
+/-- The remaining determinant calculation restricted to the explicit integer-matrix maps. -/
+public def StandardTwoTorusMatrixDeterminantDegree : Prop :=
+  ∀ M : Matrix (Fin 2) (Fin 2) ℤ,
+    integralSingularHomologyMap 2 (standardTwoTorusMatrixMap M)
+        standardTwoTorusHomologyGenerator =
+      Matrix.det M • standardTwoTorusHomologyGenerator
+
+/-- The precise two-dimensional degree statement needed for exterior-square naturality. -/
+public def StandardTwoTorusDeterminantDegree : Prop :=
+  ∀ (g : C(StdTorus 2, StdTorus 2)) (M : Matrix (Fin 2) (Fin 2) ℤ),
+    StandardTwoTorusEquivariantLift g M →
+      integralSingularHomologyMap 2 g standardTwoTorusHomologyGenerator =
+        Matrix.det M • standardTwoTorusHomologyGenerator
+
+public theorem standardTwoTorusDeterminantDegree_of_matrix
+    (h : StandardTwoTorusMatrixDeterminantDegree) : StandardTwoTorusDeterminantDegree := by
+  intro g M L
+  rw [standardTwoTorusEquivariantLift_eq_matrixMap L]
+  exact h M
+
+private def standardPeriodPair (p : Fin 6) : Fin 2 → Fin 4 :=
+  ![standardPeriodPairFirst p, standardPeriodPairSecond p]
+
+private def standardTwoRealPlane (q : Fin 6) : StandardTwoRealPeriods →+ RealPeriods where
+  toFun r k :=
+    if k = standardPeriodPairFirst q then r 0
+    else if k = standardPeriodPairSecond q then r 1
+    else 0
+  map_zero' := by
+    funext k
+    simp
+  map_add' r s := by
+    fin_cases q <;> funext k <;> fin_cases k <;>
+      simp [standardPeriodPairFirst, standardPeriodPairSecond]
+
+private def standardTwoIntegerPlane (q : Fin 6) :
+    StandardTwoIntegerPeriods →+ IntegerPeriods where
+  toFun n k :=
+    if k = standardPeriodPairFirst q then n 0
+    else if k = standardPeriodPairSecond q then n 1
+    else 0
+  map_zero' := by
+    funext k
+    simp
+  map_add' r s := by
+    fin_cases q <;> funext k <;> fin_cases k <;>
+      simp [standardPeriodPairFirst, standardPeriodPairSecond]
+
+private theorem standardTwoRealPlane_integer (q : Fin 6) (n : StandardTwoIntegerPeriods) :
+    standardTwoRealPlane q (standardTwoIntegerToReal n) =
+      integerToReal (standardTwoIntegerPlane q n) := by
+  funext k
+  simp [standardTwoRealPlane, standardTwoIntegerToReal, integerToReal,
+    standardTwoIntegerPlane]
+
+private theorem standardTwoIntegerPlane_decomposition
+    (q : Fin 6) (n : StandardTwoIntegerPeriods) :
+    standardTwoIntegerPlane q n =
+      n 0 • (Pi.single (standardPeriodPairFirst q) 1 : IntegerPeriods) +
+        n 1 • (Pi.single (standardPeriodPairSecond q) 1 : IntegerPeriods) := by
+  fin_cases q <;> funext k <;> fin_cases k <;>
+    simp [standardTwoIntegerPlane, standardPeriodPairFirst, standardPeriodPairSecond]
+
+private theorem standardFourTorusProjection_twoRealPlane
+    (q : Fin 6) (r : StandardTwoRealPeriods) :
+    standardFourTorusProjection (standardTwoRealPlane q r) =
+      standardFourTorusCoordinateTwoTorus q (standardTwoTorusProjection r) := by
+  fin_cases q <;> funext k <;> fin_cases k <;>
+    simp [standardFourTorusProjection, standardTwoRealPlane,
+      standardFourTorusCoordinateTwoTorus, standardTwoTorusProjection,
+      standardPeriodPairFirst, standardPeriodPairSecond]
+
+private def standardFourTorusCoordinateTwoTorusMap
+    (f : C(StdTorus 4, StdTorus 4)) (p q : Fin 6) : C(StdTorus 2, StdTorus 2) :=
+  ((standardFourTorusCoordinateTwoTorusProjection p).comp f).comp
+    (standardFourTorusCoordinateTwoTorus q)
+
+private def standardFourTorusCoordinateTwoMatrix
+    (e : IntegerPeriods ≃ₗ[ℤ] IntegerPeriods) (p q : Fin 6) :
+    Matrix (Fin 2) (Fin 2) ℤ :=
+  fun a b ↦ LinearMap.toMatrix' e.toLinearMap (standardPeriodPair p a)
+    (standardPeriodPair q b)
+
+private def standardFourTorusCoordinateTwoLift
+    {f : C(StdTorus 4, StdTorus 4)} {e : IntegerPeriods ≃ₗ[ℤ] IntegerPeriods}
+    (L : StandardFourTorusEquivariantLift f e) (p q : Fin 6) :
+    StandardTwoRealPeriods →+ StandardTwoRealPeriods where
+  toFun r a := L.lift (standardTwoRealPlane q r) (standardPeriodPair p a)
+  map_zero' := by
+    funext a
+    simp
+  map_add' r s := by
+    funext a
+    simp
+
+private theorem standardFourTorusCoordinateTwoLift_integer
+    {f : C(StdTorus 4, StdTorus 4)} {e : IntegerPeriods ≃ₗ[ℤ] IntegerPeriods}
+    (L : StandardFourTorusEquivariantLift f e) (p q : Fin 6)
+    (n : StandardTwoIntegerPeriods) :
+    standardFourTorusCoordinateTwoLift L p q (standardTwoIntegerToReal n) =
+      standardTwoIntegerToReal
+        (Matrix.mulVec (standardFourTorusCoordinateTwoMatrix e p q) n) := by
+  funext a
+  change L.lift (standardTwoRealPlane q (standardTwoIntegerToReal n))
+      (standardPeriodPair p a) = _
+  rw [standardTwoRealPlane_integer, L.map_integer]
+  change ((e (standardTwoIntegerPlane q n) (standardPeriodPair p a) : ℤ) : ℝ) =
+    (((standardFourTorusCoordinateTwoMatrix e p q).mulVec n a : ℤ) : ℝ)
+  norm_cast
+  rw [standardTwoIntegerPlane_decomposition, map_add, map_zsmul, map_zsmul]
+  simp [standardFourTorusCoordinateTwoMatrix, Matrix.mulVec,
+    LinearMap.toMatrix'_apply, standardPeriodPair]
+  ring
+
+private theorem standardFourTorusCoordinateTwoMap_projection
+    {f : C(StdTorus 4, StdTorus 4)} {e : IntegerPeriods ≃ₗ[ℤ] IntegerPeriods}
+    (L : StandardFourTorusEquivariantLift f e) (p q : Fin 6)
+    (r : StandardTwoRealPeriods) :
+    standardFourTorusCoordinateTwoTorusMap f p q (standardTwoTorusProjection r) =
+    standardTwoTorusProjection (standardFourTorusCoordinateTwoLift L p q r) := by
+  dsimp [standardFourTorusCoordinateTwoTorusMap,
+    standardFourTorusCoordinateTwoTorusProjection, standardFourTorusCoordinateTwoLift,
+    standardTwoTorusProjection]
+  funext a
+  fin_cases a
+  · change f (standardFourTorusCoordinateTwoTorus q (standardTwoTorusProjection r))
+        (standardPeriodPairFirst p) =
+      ((L.lift (standardTwoRealPlane q r) (standardPeriodPairFirst p) : ℝ) : UnitAddCircle)
+    rw [← standardFourTorusProjection_twoRealPlane]
+    exact congrFun (L.map_projection (standardTwoRealPlane q r)) (standardPeriodPairFirst p)
+  · change f (standardFourTorusCoordinateTwoTorus q (standardTwoTorusProjection r))
+        (standardPeriodPairSecond p) =
+      ((L.lift (standardTwoRealPlane q r) (standardPeriodPairSecond p) : ℝ) : UnitAddCircle)
+    rw [← standardFourTorusProjection_twoRealPlane]
+    exact congrFun (L.map_projection (standardTwoRealPlane q r)) (standardPeriodPairSecond p)
+
+private def standardFourTorusCoordinateTwoEquivariantLift
+    {f : C(StdTorus 4, StdTorus 4)} {e : IntegerPeriods ≃ₗ[ℤ] IntegerPeriods}
+    (L : StandardFourTorusEquivariantLift f e) (p q : Fin 6) :
+    StandardTwoTorusEquivariantLift (standardFourTorusCoordinateTwoTorusMap f p q)
+      (standardFourTorusCoordinateTwoMatrix e p q) where
+  lift := standardFourTorusCoordinateTwoLift L p q
+  map_projection := standardFourTorusCoordinateTwoMap_projection L p q
+  map_integer := standardFourTorusCoordinateTwoLift_integer L p q
+
+private theorem standardFourTorusCoordinateTwoMatrix_det
+    (e : IntegerPeriods ≃ₗ[ℤ] IntegerPeriods) (p q : Fin 6) :
+    Matrix.det (standardFourTorusCoordinateTwoMatrix e p q) =
+      standardSecondCompoundMatrix (LinearMap.toMatrix' e.toLinearMap) p q := by
+  simp [Matrix.det_fin_two, standardFourTorusCoordinateTwoMatrix, standardPeriodPair,
+    standardSecondCompoundMatrix]
+
+/-- The homology class of one of the six coordinate two-tori. -/
+public def standardFourTorusCoordinateTwoTorusHomologyClass (i : Fin 6) :
+    IntegralSingularHomology 2 (StdTorus 4) :=
+  integralSingularHomologyMap 2 (standardFourTorusCoordinateTwoTorus i)
+    standardTwoTorusHomologyGenerator
+
+/-- Detect a degree-two class by projecting it onto the six coordinate two-tori. -/
+public noncomputable def standardFourTorusCoordinateTwoTorusHom :
+    IntegralSingularHomology 2 (StdTorus 4) →+ (Fin 6 → ℤ) where
+  toFun x i :=
+    stdTorusHomologyTwo 2
+      (integralSingularHomologyMap 2
+        (standardFourTorusCoordinateTwoTorusProjection i) x)
+      standardTwoTorusDegreeTwoIndex
+  map_zero' := by
+    funext i
+    simp
+  map_add' x y := by
+    funext i
+    simp
+
+/-- Coordinate two-torus projections pair with coordinate two-torus classes by the identity
+matrix in the ordering `(01, 02, 03, 12, 13, 23)`. -/
+public theorem standardFourTorusCoordinateTwoTorusHom_coordinateHomologyClass (j : Fin 6) :
+    standardFourTorusCoordinateTwoTorusHom
+        (standardFourTorusCoordinateTwoTorusHomologyClass j) =
+      Pi.single j 1 := by
+  funext i
+  change stdTorusHomologyTwo 2
+      (integralSingularHomologyMap 2 (standardFourTorusCoordinateTwoTorusProjection i)
+        (integralSingularHomologyMap 2 (standardFourTorusCoordinateTwoTorus j)
+          standardTwoTorusHomologyGenerator)) standardTwoTorusDegreeTwoIndex =
+    (Pi.single j 1 : Fin 6 → ℤ) i
+  rw [integralSingularHomologyMap_comp_wang]
+  by_cases h : i = j
+  · subst i
+    rw [coordinateTwoTorusProjection_comp_coordinateTwoTorus_self,
+      integralSingularHomologyMap_id_wang]
+    simp [standardTwoTorusHomologyGenerator]
+  · rw [coordinateTwoTorusProjection_comp_coordinateTwoTorus_of_ne h,
+      homologyMap_standardCircleFactor_degreeTwo_zero]
+    simp [h]
+
+public theorem standardFourTorusCoordinateTwoTorusHom_surjective :
+    Function.Surjective standardFourTorusCoordinateTwoTorusHom := by
+  intro v
+  refine ⟨∑ i, v i • standardFourTorusCoordinateTwoTorusHomologyClass i, ?_⟩
+  rw [map_sum]
+  simp only [map_zsmul, standardFourTorusCoordinateTwoTorusHom_coordinateHomologyClass]
+  funext j
+  rw [Finset.sum_apply, Finset.sum_eq_single j]
+  · simp
+  · intro i _ hi
+    simp [hi]
+  · simp
+
+public theorem standardFourTorusCoordinateTwoTorusHom_injective :
+    Function.Injective standardFourTorusCoordinateTwoTorusHom := by
+  let F : (Fin 6 → ℤ) →+ (Fin 6 → ℤ) :=
+    standardFourTorusCoordinateTwoTorusHom.comp
+      (stdTorusHomologyTwo 4).symm.toAddMonoidHom
+  have hsurj : Function.Surjective F :=
+    standardFourTorusCoordinateTwoTorusHom_surjective.comp
+      (stdTorusHomologyTwo 4).symm.surjective
+  have hinj : Function.Injective F :=
+    Module.End.injective_of_surjective ℤ (Fin 6 → ℤ) (f := F.toIntLinearMap) hsurj
+  intro x y hxy
+  apply (stdTorusHomologyTwo 4).injective
+  apply hinj
+  change standardFourTorusCoordinateTwoTorusHom
+      ((stdTorusHomologyTwo 4).symm (stdTorusHomologyTwo 4 x)) =
+    standardFourTorusCoordinateTwoTorusHom
+      ((stdTorusHomologyTwo 4).symm (stdTorusHomologyTwo 4 y))
+  simpa using hxy
+
+/-- The six coordinate two-torus classes are an integral basis of degree-two homology. -/
+public noncomputable def standardFourTorusCanonicalHomologyTwo :
+    IntegralSingularHomology 2 (StdTorus 4) ≃+ (Fin 6 → ℤ) :=
+  AddEquiv.ofBijective standardFourTorusCoordinateTwoTorusHom
+    ⟨standardFourTorusCoordinateTwoTorusHom_injective,
+      standardFourTorusCoordinateTwoTorusHom_surjective⟩
+
+/-- Recalibrate the choice-based Wang basis to the coordinate two-torus basis. -/
+public noncomputable def standardFourTorusCanonicalDegreeTwoRecalibration :
+    (Fin 6 → ℤ) ≃+ (Fin 6 → ℤ) :=
+  (stdTorusHomologyTwo 4).symm.trans standardFourTorusCanonicalHomologyTwo
+
+public theorem standardFourTorusCanonicalDegreeTwoRecalibration_apply
+    (x : IntegralSingularHomology 2 (StdTorus 4)) :
+    standardFourTorusCanonicalDegreeTwoRecalibration (stdTorusHomologyTwo 4 x) =
+      standardFourTorusCanonicalHomologyTwo x := by
+  change standardFourTorusCanonicalHomologyTwo
+      ((stdTorusHomologyTwo 4).symm (stdTorusHomologyTwo 4 x)) = _
+  rw [AddEquiv.symm_apply_apply]
+
+private theorem standardFourTorusCanonicalHomologyTwo_coordinate_naturality_of_degree
+    (hdegree : StandardTwoTorusDeterminantDegree)
+    (f : C(StdTorus 4, StdTorus 4)) (e : IntegerPeriods ≃ₗ[ℤ] IntegerPeriods)
+    (L : StandardFourTorusEquivariantLift f e) (q : Fin 6) :
+    standardFourTorusCanonicalHomologyTwo
+        (integralSingularHomologyMap 2 f
+          (standardFourTorusCoordinateTwoTorusHomologyClass q)) =
+      standardExteriorSquareMap e (Pi.single q 1) := by
+  funext p
+  change stdTorusHomologyTwo 2
+      (integralSingularHomologyMap 2 (standardFourTorusCoordinateTwoTorusProjection p)
+        (integralSingularHomologyMap 2 f
+          (integralSingularHomologyMap 2 (standardFourTorusCoordinateTwoTorus q)
+            standardTwoTorusHomologyGenerator))) standardTwoTorusDegreeTwoIndex = _
+  rw [integralSingularHomologyMap_comp_wang, integralSingularHomologyMap_comp_wang]
+  change stdTorusHomologyTwo 2
+      (integralSingularHomologyMap 2 (standardFourTorusCoordinateTwoTorusMap f p q)
+        standardTwoTorusHomologyGenerator) standardTwoTorusDegreeTwoIndex = _
+  rw [hdegree (standardFourTorusCoordinateTwoTorusMap f p q)
+      (standardFourTorusCoordinateTwoMatrix e p q)
+      (standardFourTorusCoordinateTwoEquivariantLift L p q), map_zsmul,
+    standardFourTorusCoordinateTwoMatrix_det]
+  simp [standardTwoTorusHomologyGenerator, standardExteriorSquareMap]
+
+private theorem sum_zsmul_pi_single_six (v : Fin 6 → ℤ) :
+    ∑ j, v j • (Pi.single j 1 : Fin 6 → ℤ) = v := by
+  funext i
+  rw [Finset.sum_apply, Finset.sum_eq_single i]
+  · simp
+  · intro j _ hji
+    simp [hji]
+  · simp
+
+private theorem standardFourTorusCanonicalHomologyTwo_coordinateHomologyClass (j : Fin 6) :
+    standardFourTorusCanonicalHomologyTwo
+        (standardFourTorusCoordinateTwoTorusHomologyClass j) = Pi.single j 1 := by
+  change standardFourTorusCoordinateTwoTorusHom
+      (standardFourTorusCoordinateTwoTorusHomologyClass j) = _
+  exact standardFourTorusCoordinateTwoTorusHom_coordinateHomologyClass j
+
+/-- Exterior-square naturality in degree two follows from the determinant-degree theorem for
+lifted maps of the standard two-torus. -/
+public theorem standardFourTorusCanonicalHomologyTwo_naturality_of_determinantDegree
+    (hdegree : StandardTwoTorusDeterminantDegree)
+    (f : C(StdTorus 4, StdTorus 4)) (e : IntegerPeriods ≃ₗ[ℤ] IntegerPeriods)
+    (L : StandardFourTorusEquivariantLift f e)
+    (x : IntegralSingularHomology 2 (StdTorus 4)) :
+    standardFourTorusCanonicalHomologyTwo (integralSingularHomologyMap 2 f x) =
+      standardExteriorSquareMap e (standardFourTorusCanonicalHomologyTwo x) := by
+  let v := standardFourTorusCanonicalHomologyTwo x
+  have hx : x = ∑ j, v j • standardFourTorusCoordinateTwoTorusHomologyClass j := by
+    apply standardFourTorusCanonicalHomologyTwo.injective
+    rw [map_sum]
+    simp only [map_zsmul]
+    rw [show ∑ j, v j • standardFourTorusCanonicalHomologyTwo
+        (standardFourTorusCoordinateTwoTorusHomologyClass j) =
+      ∑ j, v j • (Pi.single j 1 : Fin 6 → ℤ) by
+        apply Finset.sum_congr rfl
+        intro j _
+        rw [standardFourTorusCanonicalHomologyTwo_coordinateHomologyClass]]
+    exact (sum_zsmul_pi_single_six v).symm
+  calc
+    standardFourTorusCanonicalHomologyTwo (integralSingularHomologyMap 2 f x) =
+        ∑ j, v j • standardFourTorusCanonicalHomologyTwo
+          (integralSingularHomologyMap 2 f
+            (standardFourTorusCoordinateTwoTorusHomologyClass j)) := by
+      rw [hx, map_sum, map_sum]
+      simp only [map_zsmul]
+    _ = ∑ j, v j • standardExteriorSquareMap e (Pi.single j 1) := by
+      apply Finset.sum_congr rfl
+      intro j _
+      rw [standardFourTorusCanonicalHomologyTwo_coordinate_naturality_of_degree
+        hdegree f e L j]
+    _ = standardExteriorSquareMap e
+        (∑ j, v j • (Pi.single j 1 : Fin 6 → ℤ)) := by
+      rw [map_sum]
+      simp only [map_zsmul]
+    _ = standardExteriorSquareMap e v := by rw [sum_zsmul_pi_single_six]
+    _ = standardExteriorSquareMap e (standardFourTorusCanonicalHomologyTwo x) := rfl
+
+/-- The determinant-degree theorem for lifted maps of the standard two-torus. -/
+public structure StandardFourTorusNaturalRecalibration : Prop where
+  matrixDeterminantDegree : StandardTwoTorusMatrixDeterminantDegree
+
+/-- The classical determinant-degree theorem for the standard two-torus.  The coordinate
+reductions above derive the four-torus exterior-square formula from precisely this input. -/
 public axiom standardFourTorusNaturalRecalibration_nonempty :
     Nonempty StandardFourTorusNaturalRecalibration
 
@@ -446,12 +1364,12 @@ public def standardFourTorusNaturalRecalibration :
 /-- Natural degree-one coordinates on the standard four-torus. -/
 public def naturalStdTorusFourHomologyOne :
     IntegralSingularHomology 1 (StdTorus 4) ≃+ (Fin 4 → ℤ) :=
-  (stdTorusHomologyOne 4).trans standardFourTorusNaturalRecalibration.degreeOne
+  standardFourTorusCanonicalHomologyOne
 
 /-- Natural degree-two coordinates on the standard four-torus. -/
 public def naturalStdTorusFourHomologyTwo :
     IntegralSingularHomology 2 (StdTorus 4) ≃+ (Fin 6 → ℤ) :=
-  (stdTorusHomologyTwo 4).trans standardFourTorusNaturalRecalibration.degreeTwo
+  standardFourTorusCanonicalHomologyTwo
 
 public theorem naturalStdTorusFourHomology_naturality
     (f : C(StdTorus 4, StdTorus 4)) (e : IntegerPeriods ≃ₗ[ℤ] IntegerPeriods)
@@ -459,8 +1377,12 @@ public theorem naturalStdTorusFourHomology_naturality
     (∀ x, naturalStdTorusFourHomologyOne (integralSingularHomologyMap 1 f x) =
       e (naturalStdTorusFourHomologyOne x)) ∧
     (∀ x, naturalStdTorusFourHomologyTwo (integralSingularHomologyMap 2 f x) =
-      standardExteriorSquareMap e (naturalStdTorusFourHomologyTwo x)) :=
-  standardFourTorusNaturalRecalibration.naturality f e L
+      standardExteriorSquareMap e (naturalStdTorusFourHomologyTwo x)) := by
+  constructor
+  · exact standardFourTorusCanonicalHomologyOne_naturality f e L
+  · exact standardFourTorusCanonicalHomologyTwo_naturality_of_determinantDegree
+      (standardTwoTorusDeterminantDegree_of_matrix
+        standardFourTorusNaturalRecalibration.matrixDeterminantDegree) f e L
 
 /-! ## The period torus in standard coordinates -/
 

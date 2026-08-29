@@ -1,5 +1,6 @@
 module
 
+public import SphereSixComplex.Geometry.PaperGluingDataReduction
 public import SphereSixComplex.Topology.EstablishedPaperSectionSevenAffineCompletion
 public import SphereSixComplex.Topology.EstablishedPaperSectionSevenCuspCompletion
 
@@ -20,7 +21,7 @@ namespace SphereSixComplex
 public theorem exists_paperGluingData_from_sectionSeven : Nonempty PaperGluingData := by
   let A := Geometry.establishedPaperAnalyticData
   let R := A.sectionSevenAffineRadialCompletionInput
-  exact Geometry.PaperAnalyticData.SectionSevenAffineMarkedCompletionInput.exists_paperGluingData
-    R.sectionSevenAffineMarkedCompletionInput
+  exact Geometry.exists_paperGluingData_of_positiveDegreeAssembly
+    R.sectionSevenAffineMarkedCompletionInput.positiveDegreeHomologyAssembly
 
 end SphereSixComplex

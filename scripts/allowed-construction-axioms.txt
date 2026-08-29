@@ -1,7 +1,7 @@
 # Allowlist for the implemented construction cone, excluding only the final smooth-recognition
 # step. Each project axiom is an isolated established theorem documented at its declaration.
 # Intended retained project trust kernel here: compact-manifold homology, cellular homology,
-# relative Whitehead for aspherical CW pairs, general finite-CW bundle Euler multiplicativity,
+# relative Whitehead for aspherical CW pairs, finite-cover Euler multiplicativity,
 # and the orbifold cusp-bounded section theorem. Every other project constant is temporary.
 
 Classical.choice
@@ -10,9 +10,8 @@ propext
 SphereSixComplex.establishedCompactSmoothOrientedManifoldHomologyTheory
 SphereSixComplex.EstablishedCellularHomology.integralCWCellularChainModel
 SphereSixComplex.EstablishedGeneralTopology.isHomotopyEquivalenceInclusion_of_isAspherical_of_bijective_fundamentalGroup
-SphereSixComplex.EstablishedTorusBundleTopology.centralCollarAdditiveBundleRealization
 SphereSixComplex.StandardTorusHomology.standardFourTorusNaturalRecalibration_nonempty
-SphereSixComplex.FiniteCWBundleModelSix.establishedEulerMultiplicativity
+SphereSixComplex.FiniteCoverModelSix.establishedEulerMultiplicativity
 SphereSixComplex.Periods.establishedOrbifoldAffineLineTorsorCuspBoundedCousinCorrection
 SphereSixComplex.Topology.FiniteCoverPerfectPairing.establishedEllipticDegreeTwoDualPullbackFiniteData
 SphereSixComplex.Topology.AffineFiniteCyclicTorusCW.orderThreeFourAffineGeneratorFiniteCWModels
