@@ -29,8 +29,8 @@ through which the rest of the library consumes them.
 * `EstablishedGeneralTopology.isHomotopyEquivalenceInclusion_of_contractible_regularCover`: if a
   regular covering and the full inverse image of a subspace are contractible then, for a relative
   CW pair, the subspace inclusion is a homotopy equivalence.  The covering-space content is proved
-  in `ContractibleRegularCoverInclusionProof`; only the uniqueness of `K(G, 1)` spaces
-  (`isHomotopyEquivalenceInclusion_of_isAspherical_of_bijective_fundamentalGroup`) is assumed.
+  in `ContractibleRegularCoverInclusionProof`; only the general relative Whitehead theorem
+  (`isHomotopyEquivalenceInclusion_of_relativeCWComplex_of_bijective_homotopyGroups`) is assumed.
 * `EstablishedGeneralTopology.equivariantStrongDeformationRetraction_lift`: a strong deformation
   retraction of the base lifts through the orbit map of a covering space action to a
   deck-equivariant strong deformation retraction of the total space onto the full preimage
@@ -41,10 +41,11 @@ through which the rest of the library consumes them.
 space, as Hatcher's proof of Cor. 0.20 applies the homotopy-extension property with the targets
 `A` and `X` themselves.
 
-The one remaining `axiom` of `EstablishedGeneralTopology` is the uniqueness of `K(G, 1)` spaces
-(`isHomotopyEquivalenceInclusion_of_isAspherical_of_bijective_fundamentalGroup`), tracked as a
-separate follow-up.  It is purely CW-theoretic: all covering-space and homotopy-group content of
-the former `K(G, 1)` axiom is proved in `ContractibleRegularCoverInclusionProof`, and
+The one remaining `axiom` of `EstablishedGeneralTopology` is the relative Whitehead theorem
+(`isHomotopyEquivalenceInclusion_of_relativeCWComplex_of_bijective_homotopyGroups`), tracked as a
+separate follow-up.  It is purely CW-theoretic: the `K(G, 1)` specialization below is a theorem,
+all covering-space and homotopy-group content is proved in
+`ContractibleRegularCoverInclusionProof`, and
 `isHomotopyEquivalenceInclusion_of_contractible_regularCover` is a theorem deduced from it.  The
 homotopy-extension property of a relative CW pair, formerly an axiom here, is proved in
 `RelativeCWHomotopyExtensionProof` as
@@ -275,28 +276,56 @@ public theorem liftTrack_smul {G E B : Type*} [Group G] [TopologicalSpace E] [To
 
 namespace EstablishedGeneralTopology
 
+/-- **Relative Whitehead theorem.**  A path-connected relative CW inclusion which induces a
+bijection on the fundamental group and on every higher homotopy group is a homotopy equivalence.
+
+This is the standard CW compression step (Hatcher, *Algebraic Topology*, Prop. 4.72 / Cor. 4.5).
+Mathlib's abstract model-category Whitehead theorem is not instantiated for topological spaces,
+and neither Mathlib nor Tau Ceti currently connects `Topology.RelCWComplex` to weak homotopy
+equivalences, so this general theorem is the remaining standard topology input. -/
+public axiom isHomotopyEquivalenceInclusion_of_relativeCWComplex_of_bijective_homotopyGroups
+    {B : Type*} [TopologicalSpace B] (D : Set B) (b : B) (hb : b ∈ D)
+    (hB : PathConnectedSpace B)
+    (hD : PathConnectedSpace D)
+    (hπ₁ : Function.Bijective (FundamentalGroup.mapOfEq (topologicalSubsetInclusionMap D)
+      (show (topologicalSubsetInclusionMap D) (⟨b, hb⟩ : D) = b from rfl)))
+    (hπhigher : ∀ n : ℕ, Function.Bijective
+      (HomotopyGroup.map (N := Fin (n + 2)) (topologicalSubsetInclusionMap D)
+        (show (topologicalSubsetInclusionMap D) (⟨b, hb⟩ : D) = b from rfl)))
+    (hCW : RelCWComplex (Set.univ : Set B) D) :
+    IsHomotopyEquivalenceInclusion D
+
 /-- **Uniqueness of `K(G, 1)` spaces for a relative CW pair.**  If both spaces of a relative CW
 pair are aspherical and the subspace inclusion is an isomorphism on fundamental groups, then the
 inclusion is a homotopy equivalence.
 
-This is the Whitehead/compression step: the inclusion is a weak homotopy equivalence by the two
-asphericity hypotheses together with the `π₁`-isomorphism, and a weak homotopy equivalence which
-is the inclusion of the base of a relative CW complex is a deformation retract (Hatcher,
-*Algebraic Topology*, Prop. 0.19 and Prop. 4.72 / Cor. 4.5).  Neither Mathlib nor Tau Ceti has
-any homotopy theory of CW complexes, so this remains an axiom.
+This is a specialization of the relative Whitehead theorem: asphericity supplies path
+connectedness and makes every induced map on homotopy groups in dimensions at least two a
+bijection between subsingletons.
 
 The `π₁` hypothesis is **not** removable, and no combination of the asphericity hypotheses
 replaces it: let `B` be the solid torus `S¹ × D²` and `D` the embedded circle
 `θ ↦ (e^{2iθ}, ½ e^{iθ})`.  Then `(B, D)` is a relative CW pair of two `K(ℤ, 1)` spaces, but the
 inclusion is multiplication by `2` on `π₁` and is not a homotopy equivalence. -/
-public axiom isHomotopyEquivalenceInclusion_of_isAspherical_of_bijective_fundamentalGroup
+public theorem isHomotopyEquivalenceInclusion_of_isAspherical_of_bijective_fundamentalGroup
     {B : Type*} [TopologicalSpace B] (D : Set B) (b : B) (hb : b ∈ D)
     (hB : TauCeti.IsAspherical B b)
     (hD : TauCeti.IsAspherical D ⟨b, hb⟩)
     (hπ : Function.Bijective (FundamentalGroup.mapOfEq (topologicalSubsetInclusionMap D)
       (show (topologicalSubsetInclusionMap D) (⟨b, hb⟩ : D) = b from rfl)))
     (hCW : RelCWComplex (Set.univ : Set B) D) :
-    IsHomotopyEquivalenceInclusion D
+    IsHomotopyEquivalenceInclusion D := by
+  apply isHomotopyEquivalenceInclusion_of_relativeCWComplex_of_bijective_homotopyGroups
+    D b hb hB.pathConnectedSpace hD.pathConnectedSpace hπ
+  · intro n
+    let _ : Subsingleton (π_ (n + 2) D ⟨b, hb⟩) := hD.subsingleton_homotopyGroup n
+    let _ : Subsingleton (π_ (n + 2) B b) := hB.subsingleton_homotopyGroup n
+    constructor
+    · intro x y _
+      exact Subsingleton.elim x y
+    · intro y
+      exact ⟨1, Subsingleton.elim _ y⟩
+  · exact hCW
 
 /-- If a regular covering and the full inverse image of a subspace are contractible, their
 quotients are `K(G,1)` spaces. For a relative CW pair, the subspace inclusion is therefore a
@@ -307,8 +336,8 @@ higher homotopy groups of a contractible space vanish, a quotient covering map r
 quotient covering map over the full preimage of a subspace with the same deck group, so `B` and
 `D` are `K(G, 1)` spaces for one and the same `G`, and the two identifications of the fundamental
 groups with the deck group are compatible with the inclusion, so the inclusion is a `π₁`
-isomorphism.  Only the Whitehead step
-`isHomotopyEquivalenceInclusion_of_isAspherical_of_bijective_fundamentalGroup` is assumed. -/
+isomorphism.  The `K(G, 1)` specialization is proved above; only its general relative Whitehead
+input is assumed. -/
 public theorem isHomotopyEquivalenceInclusion_of_contractible_regularCover
     {G E B : Type*} [Group G] [TopologicalSpace E] [TopologicalSpace B]
     [MulAction G E] (p : C(E, B)) (A : Set E) (D : Set B)

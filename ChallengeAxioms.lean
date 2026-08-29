@@ -60,20 +60,27 @@ axiom SphereSixComplex.establishedCompactSmoothOrientedManifoldHomologyTheory : 
 axiom SphereSixComplex.EstablishedCellularHomology.integralCWCellularChainModel : (Y : Type) →
   [inst : TopologicalSpace Y] →
     [T2Space Y] → [inst_2 : Topology.CWComplex Set.univ] → SphereSixComplex.IntegralCWCellularChainModel Y
-axiom SphereSixComplex.EstablishedGeneralTopology.isHomotopyEquivalenceInclusion_of_isAspherical_of_bijective_fundamentalGroup.{u_1} : ∀
+axiom SphereSixComplex.EstablishedGeneralTopology.isHomotopyEquivalenceInclusion_of_relativeCWComplex_of_bijective_homotopyGroups.{u_1} : ∀
   {B : Type u_1} [inst : TopologicalSpace B] (D : Set B) (b : B) (hb : b ∈ D),
-  TauCeti.IsAspherical B b →
-    TauCeti.IsAspherical ↑D ⟨b, hb⟩ →
+  PathConnectedSpace B →
+    PathConnectedSpace ↑D →
       Function.Bijective
           ⇑(FundamentalGroup.mapOfEq (SphereSixComplex.topologicalSubsetInclusionMap D)
               (have this := rfl;
               this)) →
-        ∀ (hCW : Topology.RelCWComplex Set.univ D), SphereSixComplex.IsHomotopyEquivalenceInclusion D
-axiom SphereSixComplex.FiniteCoverModelSix.establishedEulerMultiplicativity : ∀ {X : Type} [inst : TopologicalSpace X]
-  (M : SphereSixComplex.FiniteCoverModelSix X),
-  let x := M.coverTopology;
-  SphereSixComplex.integralHomologyEulerCharacteristicSix M.Cover =
-    ↑M.degree * SphereSixComplex.integralHomologyEulerCharacteristicSix X
+        (∀ (n : ℕ),
+            Function.Bijective
+              (HomotopyGroup.map (SphereSixComplex.topologicalSubsetInclusionMap D)
+                (have this := rfl;
+                this))) →
+          ∀ (hCW : Topology.RelCWComplex Set.univ D), SphereSixComplex.IsHomotopyEquivalenceInclusion D
+axiom SphereSixComplex.establishedFiniteCoverCellularLiftSix : ∀ {E X : Type} [inst : TopologicalSpace E]
+  [inst_1 : TopologicalSpace X] (projection : C(E, X)),
+  IsCoveringMap ⇑projection →
+    ∀ (degree : ℕ),
+      (∀ (x : X), Nat.card { y // projection y = x } = degree) →
+        ∀ (base : SphereSixComplex.FiniteCWModelSix X),
+          ∃ cover, ∀ (n : ℕ), cover.cellCount n = degree * base.cellCount n
 axiom SphereSixComplex.Periods.establishedOrbifoldAffineLineTorsorCuspBoundedCousinCorrection : ∀
   (P : SphereSixComplex.Periods.OrbifoldAffineLineTorsorDescentProblem),
   P.HasAcyclicProjectiveLineFrame → Nonempty P.CuspBoundedEllipticOneCorrection
