@@ -18,8 +18,10 @@ namespace SphereSixComplex.Topology.AffineFiniteCyclicTorusCW
 
 open Geometry.ComplexTorus
 open Geometry.AnalyticTorusFamily
+open Geometry.EllipticLocalCoordinates
 open Geometry.EllipticFamilySpecialization
 open Geometry.EllipticFixedPointCriterion
+open Geometry.EquivariantQuotientHomeomorph
 open Geometry.GlobalTorusFamily LatticeData TriangleGroup
 open PaperEllipticFillingRadialRetraction
 
@@ -37,6 +39,160 @@ public class SupportedAffineFiniteCyclicOrder (m : ℕ) where
 
 public instance : SupportedAffineFiniteCyclicOrder 3 := ⟨.orderThree⟩
 public instance : SupportedAffineFiniteCyclicOrder 4 := ⟨.orderFour⟩
+
+/-- Classical finite-CW descent along a covering by a full-rank four-torus.  This is the residual
+triangulation input: a Hausdorff space covered by a compact smooth four-torus has finite CW type,
+with no cells above dimension four (and hence none above dimension six). -/
+public axiom finiteCWModelSix_of_fullRankTorusCover
+    {X : Type} [TopologicalSpace X] [T2Space X]
+    (p : Parameters) (_hfull : FullRank p)
+    (projection : C(AdditiveTorus p, X)) (_hcover : IsCoveringMap projection)
+    (_hsurjective : Function.Surjective projection) :
+    FiniteCWModelSix X
+
+namespace RadialEllipticActionData
+
+variable {m : ℕ} [NeZero m] {T : Type} [TopologicalSpace T] [AddCommGroup T]
+    (D : RadialEllipticActionData m T)
+
+private abbrev centralFiberCoverSource :=
+  {p : D.Product // Quotient.mk (orbitRelOf D.actionData.diagonalAction) p ∈
+    D.reducedCentralFiber}
+
+private def centralFiberCoverProjection :
+    C(centralFiberCoverSource D, D.reducedCentralFiber) where
+  toFun p := ⟨Quotient.mk _ p.1, p.2⟩
+  continuous_toFun := Continuous.subtype_mk
+    (continuous_quot_mk.comp continuous_subtype_val) _
+
+private theorem mem_centralSlice_iff_quotient_mem_reducedCentralFiber (p : D.Product) :
+    Quotient.mk (orbitRelOf D.actionData.diagonalAction) p ∈ D.reducedCentralFiber ↔
+      p ∈ D.centralSlice := by
+  constructor
+  · intro hp
+    rw [PaperEllipticFillingRadialRetraction.RadialEllipticActionData.reducedCentralFiber] at hp
+    obtain ⟨q, hq, heq⟩ := hp
+    have horbit := Quotient.exact heq.symm
+    change ∃ g : FiniteCyclic m,
+      actionMap D.actionData.diagonalAction g q = p at horbit
+    obtain ⟨g, rfl⟩ := horbit
+    have h := congrArg Prod.fst (D.retract_equivariant g q)
+    rw [D.retract_fixed q hq] at h
+    change discCenter = (actionMap D.actionData.diagonalAction g q).1 at h
+    change (actionMap D.actionData.diagonalAction g q).1 = discCenter
+    exact h.symm
+  · intro hp
+    rw [PaperEllipticFillingRadialRetraction.RadialEllipticActionData.reducedCentralFiber]
+    exact ⟨p, hp, rfl⟩
+
+private def centralFiberCoverSourceOfTorus (x : T) : centralFiberCoverSource D :=
+  ⟨(D.actionData.center, x), by
+    apply (mem_centralSlice_iff_quotient_mem_reducedCentralFiber D
+      (D.actionData.center, x)).2
+    exact D.center_eq⟩
+
+private def centralFiberCoverSourceHomeomorph : centralFiberCoverSource D ≃ₜ T where
+  toFun p := p.1.2
+  invFun := centralFiberCoverSourceOfTorus D
+  left_inv p := by
+    apply Subtype.ext
+    apply Prod.ext
+    · have hp := (mem_centralSlice_iff_quotient_mem_reducedCentralFiber D p.1).1 p.2
+      exact D.center_eq.trans hp.symm
+    · rfl
+  right_inv _ := rfl
+  continuous_toFun := continuous_snd.comp continuous_subtype_val
+  continuous_invFun := Continuous.subtype_mk (continuous_const.prodMk continuous_id) _
+
+variable [T2Space D.Product] [LocallyCompactSpace D.Product]
+
+private theorem centralFiberCoverProjection_isCovering
+    (hfree : letI := D.actionData.diagonalAction
+      IsCancelSMul (FiniteCyclic m) D.Product) :
+    IsCoveringMap (centralFiberCoverProjection D) := by
+  let action := D.actionData.diagonalAction
+  let _ := action
+  let _ : IsCancelSMul (FiniteCyclic m) D.Product := hfree
+  let _ : ContinuousConstSMul (FiniteCyclic m) D.Product :=
+    ⟨D.representation_continuous⟩
+  let _ : ProperlyDiscontinuousSMul (FiniteCyclic m) D.Product := inferInstance
+  let hq : IsQuotientCoveringMap
+      (Quotient.mk (MulAction.orbitRel (FiniteCyclic m) D.Product)) (FiniteCyclic m) :=
+    isQuotientCoveringMap_quotientMk_of_properlyDiscontinuousSMul
+  have hq' : IsQuotientCoveringMap
+      (Quotient.mk (orbitRelOf D.actionData.diagonalAction) : D.Product → D.FillingQuotient)
+      (FiniteCyclic m) := by
+    change IsQuotientCoveringMap
+      (Quotient.mk (MulAction.orbitRel (FiniteCyclic m) D.Product)) (FiniteCyclic m)
+    exact hq
+  have h := hq'.isCoveringMap.restrictPreimage D.reducedCentralFiber
+  let e : centralFiberCoverSource D ≃ₜ
+      {p : D.Product | Quotient.mk (orbitRelOf D.actionData.diagonalAction) p ∈
+        D.reducedCentralFiber} := Homeomorph.refl _
+  have he := h.comp_homeomorph e
+  convert he using 1
+  ext
+  rfl
+
+private def torusCentralFiberProjection : C(T, D.reducedCentralFiber) :=
+  (centralFiberCoverProjection D).comp
+    { toFun := (centralFiberCoverSourceHomeomorph D).symm
+      continuous_toFun := (centralFiberCoverSourceHomeomorph D).symm.continuous }
+
+private theorem torusCentralFiberProjection_isCovering
+    (hfree : letI := D.actionData.diagonalAction
+      IsCancelSMul (FiniteCyclic m) D.Product) :
+    IsCoveringMap (torusCentralFiberProjection D) := by
+  have h := (centralFiberCoverProjection_isCovering D hfree).comp_homeomorph
+    (centralFiberCoverSourceHomeomorph D).symm
+  convert h using 1
+  ext x
+  rfl
+
+omit [T2Space D.Product] [LocallyCompactSpace D.Product] in
+private theorem torusCentralFiberProjection_surjective :
+    Function.Surjective (torusCentralFiberProjection D) := by
+  rintro ⟨q, hq⟩
+  obtain ⟨p, hp, rfl⟩ := hq
+  refine ⟨p.2, ?_⟩
+  apply Subtype.ext
+  apply Quotient.sound
+  change ∃ g : FiniteCyclic m,
+    actionMap D.actionData.diagonalAction g p = (D.actionData.center, p.2)
+  refine ⟨1, ?_⟩
+  simp only [actionMap, one_smul]
+  apply Prod.ext
+  · exact hp.trans D.center_eq.symm
+  · rfl
+
+end RadialEllipticActionData
+
+private noncomputable def finiteCWModelSix_reducedCentralFiber_of_freeAction
+    {m : ℕ} [NeZero m] (p : Parameters) (hfull : FullRank p)
+    (D : RadialEllipticActionData m (AdditiveTorus p))
+    (hfree : letI := D.actionData.diagonalAction
+      IsCancelSMul (FiniteCyclic m) D.Product) :
+    FiniteCWModelSix D.reducedCentralFiber := by
+  let _ : ProperlyDiscontinuousSMul (PeriodGroup p) ComplexTwoSpace :=
+    periodLattice_properlyDiscontinuousSMul hfull
+  let _ : T2Space (AdditiveTorus p) := inferInstance
+  let _ : CompactSpace (AdditiveTorus p) := torus_compactSpace p hfull
+  let _ : LocallyCompactSpace (AdditiveTorus p) := inferInstance
+  let _ : LocallyCompactSpace ComplexUnitDisc :=
+    (isOpen_lt continuous_norm continuous_const).locallyCompactSpace
+  let _ := D.actionData.diagonalAction
+  let _ : IsCancelSMul (FiniteCyclic m) D.Product := hfree
+  let _ : ContinuousConstSMul (FiniteCyclic m) D.Product :=
+    ⟨D.representation_continuous⟩
+  let _ : ProperlyDiscontinuousSMul (FiniteCyclic m) D.Product := inferInstance
+  let _ : T2Space D.FillingQuotient := by
+    change T2Space (Quotient (MulAction.orbitRel (FiniteCyclic m) D.Product))
+    infer_instance
+  let _ : T2Space D.reducedCentralFiber := inferInstance
+  exact finiteCWModelSix_of_fullRankTorusCover p hfull
+    (RadialEllipticActionData.torusCentralFiberProjection D)
+    (RadialEllipticActionData.torusCentralFiberProjection_isCovering D hfree)
+    (RadialEllipticActionData.torusCentralFiberProjection_surjective D)
 
 /-- The classical smooth-triangulation input, restricted exactly to the order-three and
 order-four affine torus quotients used in this development. -/
@@ -62,10 +218,13 @@ public structure OrderThreeFourAffineGeneratorFiniteCWModels where
         IsCancelSMul (FiniteCyclic 4) D.Product),
       FiniteCWModelSix D.reducedCentralFiber
 
-/-- Smooth triangulation for the two actual finite cyclic orders.  This is the sole residual
-input in the module. -/
-public axiom orderThreeFourAffineGeneratorFiniteCWModels :
-    OrderThreeFourAffineGeneratorFiniteCWModels
+/-- The order-three and order-four affine quotient models follow from the torus-cover residual. -/
+public noncomputable def orderThreeFourAffineGeneratorFiniteCWModels :
+    OrderThreeFourAffineGeneratorFiniteCWModels where
+  orderThree p hfull D _lift _translation _generator_mk hfree :=
+    finiteCWModelSix_reducedCentralFiber_of_freeAction p hfull D hfree
+  orderFour p hfull D _lift _translation _generator_mk hfree :=
+    finiteCWModelSix_reducedCentralFiber_of_freeAction p hfull D hfree
 
 /-- A common wrapper for the two supported cyclic orders.  The order certificate is inferred at
 all current call sites, while the classical residual itself is stated only for orders three and

@@ -80,7 +80,13 @@ axiom SphereSixComplex.Periods.establishedOrbifoldAffineLineTorsorCuspBoundedCou
 axiom SphereSixComplex.Topology.FiniteCoverPerfectPairing.establishedEllipticDegreeTwoDualPullbackFiniteData : ∀
   {U : SphereSixComplex.Periods.TriangleUniformization} (F : SphereSixComplex.Periods.PeriodFunctions U),
   Nonempty (SphereSixComplex.Topology.FiniteCoverPerfectPairing.EllipticDegreeTwoDualPullbackFiniteData F)
-axiom SphereSixComplex.Topology.AffineFiniteCyclicTorusCW.orderThreeFourAffineGeneratorFiniteCWModels : SphereSixComplex.Topology.AffineFiniteCyclicTorusCW.OrderThreeFourAffineGeneratorFiniteCWModels
+axiom SphereSixComplex.Topology.AffineFiniteCyclicTorusCW.finiteCWModelSix_of_fullRankTorusCover : {X : Type} →
+  [inst : TopologicalSpace X] →
+    [T2Space X] →
+      (p : SphereSixComplex.Periods.Parameters) →
+        SphereSixComplex.Geometry.ComplexTorus.FullRank p →
+          (projection : C(SphereSixComplex.Geometry.EllipticFamilySpecialization.AdditiveTorus p, X)) →
+            IsCoveringMap ⇑projection → Function.Surjective ⇑projection → SphereSixComplex.FiniteCWModelSix X
 axiom SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.EstablishedAffineCyclicQuotientHomology.establishedAffineCyclicUniversalCoverHOneIdentification : {m :
     ℕ} →
   [inst : NeZero m] →

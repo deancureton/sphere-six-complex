@@ -18,7 +18,7 @@
     "SphereSixComplex.FiniteCoverModelSix.establishedEulerMultiplicativity",
     "SphereSixComplex.Periods.establishedOrbifoldAffineLineTorsorCuspBoundedCousinCorrection",
     "SphereSixComplex.Topology.FiniteCoverPerfectPairing.establishedEllipticDegreeTwoDualPullbackFiniteData",
-    "SphereSixComplex.Topology.AffineFiniteCyclicTorusCW.orderThreeFourAffineGeneratorFiniteCWModels",
+    "SphereSixComplex.Topology.AffineFiniteCyclicTorusCW.finiteCWModelSix_of_fullRankTorusCover",
     "SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.EstablishedAffineCyclicQuotientHomology.establishedAffineCyclicUniversalCoverHOneIdentification",
     "SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberFiniteCellularRealization",
     "SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization.establishedFiniteGeneratorSpecializationMatrix",
