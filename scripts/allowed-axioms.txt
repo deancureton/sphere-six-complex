@@ -4,10 +4,9 @@
 # precise geometric, analytic, or classical-topological statements; their source docstrings
 # record the corresponding trust boundary.
 #
-# Intended retained project trust kernel: four exact classical smooth-recognition inputs, compact
-# smooth oriented manifold homology, integral cellular chains, relative Whitehead, finite-cover
-# cellular lifting, and orbifold affine-torsor analytic descent.
-# Every other project constant below is a temporary proof obligation to eliminate.
+# Intended retained project trust kernel: exactly the four classical smooth-recognition inputs
+# listed below. Every other project constant in this transitional allowlist is a proof obligation
+# to eliminate from the final theorem using those four inputs and Mathlib.
 
 # Lean's standard logical axioms.
 propext
