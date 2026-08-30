@@ -21,7 +21,6 @@
     "SphereSixComplex.Periods.establishedOrbifoldAffineLineTorsorCuspBoundedCousinCorrection",
     "SphereSixComplex.Topology.FiniteCoverPerfectPairing.establishedActualEllipticDegreeTwoHomologyBasisFiniteData",
     "SphereSixComplex.Topology.EstablishedCompactManifoldFiniteCW.establishedFiniteCWModelFour_of_compactComplexSurfaceCover",
-    "SphereSixComplex.Topology.EstablishedFirstHurewicz.establishedFirstHurewiczData",
     "SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralOrbitCellAtlas",
     "SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberIndependentIncidenceResidual",
     "SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization.establishedFiniteFiberGeneratorSpecializationMatrix",

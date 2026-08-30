@@ -25,10 +25,9 @@ Do not edit it by hand; run ./scripts/update-axiom-catalog.sh --write.
 # precise geometric, analytic, or classical-topological statements; their source docstrings
 # record the corresponding trust boundary.
 #
-# Intended retained project trust kernel: four exact classical smooth-recognition inputs, compact
-# smooth oriented manifold homology, integral cellular chains, relative Whitehead, finite-cover
-# cellular lifting, and orbifold affine-torsor analytic descent.
-# Every other project constant below is a temporary proof obligation to eliminate.
+# Intended retained project trust kernel: exactly the four classical smooth-recognition inputs
+# listed below. Every other project constant in this transitional allowlist is a proof obligation
+# to eliminate from the final theorem using those four inputs and Mathlib.
 
 # Lean's standard logical axioms.
 axiom propext : ∀ {a b : Prop}, (a ↔ b) → a = b
@@ -108,9 +107,6 @@ axiom SphereSixComplex.Topology.EstablishedCompactManifoldFiniteCW.establishedFi
                   IsCoveringMap ⇑projection →
                     Function.Surjective ⇑projection →
                       SphereSixComplex.Topology.EstablishedCompactManifoldFiniteCW.FiniteCWModelAtMost 4 X
-axiom SphereSixComplex.Topology.EstablishedFirstHurewicz.establishedFirstHurewiczData : (X : Type) →
-  [inst : TopologicalSpace X] →
-    (b : X) → [PathConnectedSpace X] → SphereSixComplex.Topology.EstablishedFirstHurewicz.FirstHurewiczData X b
 
 # Established analytic and toric models from the paper.
 axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralOrbitCellAtlas : {E :

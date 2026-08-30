@@ -1,16 +1,12 @@
 module
 
-public import SphereSixComplex.Topology.StandardCircleHomologyLiftDegree
-public import Mathlib.AlgebraicTopology.FundamentalGroupoid.FundamentalGroup
-public import Mathlib.GroupTheory.Abelianization.Defs
+public import SphereSixComplex.Topology.FirstHurewiczProof
 
 /-!
 # The first Hurewicz theorem
 
-This module isolates the classical first Hurewicz theorem in its standard natural form.  The
-singular loop class itself and its functoriality are constructed at the chain level elsewhere;
-the only trust boundary here is the equivalence from the abelianized fundamental group to first
-integral singular homology, together with its value on a represented loop.
+This module exposes the chain-level proof of the classical first Hurewicz theorem in its standard
+natural form and develops the quotient-cover consequences used downstream.
 -/
 
 @[expose] public section
@@ -21,26 +17,6 @@ open AlgebraicTopology
 open scoped ContinuousMap
 
 namespace SphereSixComplex.Topology.EstablishedFirstHurewicz
-
-/-- The additive abelianization of the fundamental group of `X` at `b`. -/
-public abbrev AbelianPi1 (X : Type) [TopologicalSpace X] (b : X) :=
-  Additive (Abelianization (FundamentalGroup X b))
-
-/-- The class in the abelianized fundamental group represented by a based loop. -/
-public def loopClass {X : Type} [TopologicalSpace X] {b : X}
-    (p : Path b b) : AbelianPi1 X b :=
-  Additive.ofMul (Abelianization.of (Path.Homotopic.Quotient.mk p))
-
-/-- Every class in the abelianized fundamental group is represented by a based loop. -/
-public theorem loopClass_surjective {X : Type} [TopologicalSpace X] {b : X} :
-    Function.Surjective (loopClass (b := b)) := by
-  intro a
-  obtain ⟨g, hg⟩ := Quotient.exists_rep a.toMul
-  change Abelianization.of g = a.toMul at hg
-  obtain ⟨p, hp⟩ := Path.Homotopic.Quotient.mk_surjective g
-  refine ⟨p, ?_⟩
-  rw [loopClass, hp, hg]
-  rfl
 
 /-- The map on abelianized fundamental groups induced by a continuous map. -/
 public def abelianPi1Map {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
@@ -107,17 +83,11 @@ public theorem additiveAbelianizationMulOppositeEquiv_of_op
   by
     rfl
 
-/-- The first Hurewicz equivalence, packaged with its canonical value on represented loops. -/
-public structure FirstHurewiczData (X : Type) [TopologicalSpace X] (b : X) where
-  equiv : AbelianPi1 X b ≃ₗ[ℤ] IntegralSingularHomology 1 X
-  equiv_loopClass : ∀ p : Path b b,
-    equiv (loopClass p) =
-      StandardCircleHomologyLiftDegree.loopHomologyClass p
-
 /-- The classical first Hurewicz theorem in degree one. -/
-public axiom establishedFirstHurewiczData
+public def establishedFirstHurewiczData
     (X : Type) [TopologicalSpace X] (b : X) [PathConnectedSpace X] :
-    FirstHurewiczData X b
+    FirstHurewiczData X b :=
+  FirstHurewiczProof.establishedFirstHurewiczData_proof X b
 
 /-- The abelianized deck-to-fundamental-group equivalence obtained from quotient-cover monodromy.
 Mathlib's monodromy convention produces the opposite deck group; the opposite convention is

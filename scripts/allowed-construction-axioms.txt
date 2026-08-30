@@ -1,8 +1,7 @@
 # Allowlist for the implemented construction cone, excluding only the final smooth-recognition
 # step. Each project axiom is an isolated established theorem documented at its declaration.
-# Intended retained project trust kernel here: compact-manifold homology, cellular homology,
-# relative Whitehead for aspherical CW pairs, finite-cover Euler multiplicativity,
-# and the orbifold cusp-bounded section theorem. Every other project constant is temporary.
+# The final construction cone should use no project axioms. Every project constant in this
+# transitional allowlist is a proof obligation to eliminate using Mathlib.
 
 Classical.choice
 Quot.sound
@@ -14,7 +13,6 @@ SphereSixComplex.establishedFiniteCoverEulerCharacteristicSix
 SphereSixComplex.Periods.establishedOrbifoldAffineLineTorsorCuspBoundedCousinCorrection
 SphereSixComplex.Topology.FiniteCoverPerfectPairing.establishedActualEllipticDegreeTwoHomologyBasisFiniteData
 SphereSixComplex.Topology.EstablishedCompactManifoldFiniteCW.establishedFiniteCWModelFour_of_compactComplexSurfaceCover
-SphereSixComplex.Topology.EstablishedFirstHurewicz.establishedFirstHurewiczData
 SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralOrbitCellAtlas
 SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberIndependentIncidenceResidual
 SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization.establishedFiniteFiberGeneratorSpecializationMatrix

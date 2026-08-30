@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Topology.EstablishedFirstHurewicz
+public import SphereSixComplex.Topology.FirstHurewiczDefs
 
 /-!
 # A chain-level proof of the first Hurewicz theorem
@@ -685,5 +685,240 @@ theorem edgeLoopCochain_comp_boundaryTwo {X : Type} [TopologicalSpace X]
   apply chainHomTo_ext X 2 (AbelianPi1 X b)
   intro s
   exact edgeLoopCochain_boundaryTwo_simplex r s
+
+def edgeLoopChainMap {X : Type} [TopologicalSpace X] {b : X}
+    (r : ∀ a : X, Path b a) :
+    IntegralChains X ⟶
+      (HomologicalComplex.single AddCommGrpCat (ComplexShape.down ℕ) 1).obj
+        (AddCommGrpCat.of (AbelianPi1 X b)) :=
+  HomologicalComplex.mkHomToSingle (AddCommGrpCat.ofHom (edgeLoopCochain r)) (by
+    intro i hi
+    have hi' : i = 2 := by simpa using hi.symm
+    subst i
+    apply AddCommGrpCat.hom_ext
+    exact edgeLoopCochain_comp_boundaryTwo r)
+
+def inverseHurewiczMap {X : Type} [TopologicalSpace X] {b : X}
+    (r : ∀ a : X, Path b a) :
+    IntegralSingularHomology 1 X →ₗ[ℤ] AbelianPi1 X b :=
+  AddMonoidHom.toIntLinearMap
+    (HomologicalComplex.homologyMap (edgeLoopChainMap r) 1 ≫
+      (HomologicalComplex.singleObjHomologySelfIso
+        (ComplexShape.down ℕ) 1 (AddCommGrpCat.of (AbelianPi1 X b))).hom).hom
+
+theorem loopHomologyMap_edgeLoop {X : Type} [TopologicalSpace X] {b : X}
+    (r : ∀ a : X, Path b a) (p : Path b b) :
+    loopHomologyMap p ≫ HomologicalComplex.homologyMap (edgeLoopChainMap r) 1 ≫
+        (HomologicalComplex.singleObjHomologySelfIso
+          (ComplexShape.down ℕ) 1 (AddCommGrpCat.of (AbelianPi1 X b))).hom =
+      AddCommGrpCat.asHom (loopClass p) := by
+  unfold loopHomologyMap
+  rw [Category.assoc, HomologicalComplex.homologyπ_naturality_assoc]
+  rw [← Category.assoc]
+  rw [HomologicalComplex.liftCycles_comp_cyclesMap]
+  rw [HomologicalComplex.homologyπ_singleObjHomologySelfIso_hom]
+  rw [HomologicalComplex.singleObjCyclesSelfIso_hom]
+  rw [HomologicalComplex.liftCycles_i_assoc]
+  apply AddCommGrpCat.int_hom_ext
+  simp [edgeLoopChainMap, loopCycle]
+  rw [AddCommGrpCat.asHom_hom_apply, one_zsmul]
+
+@[simp]
+theorem inverseHurewiczMap_loopHomologyClass {X : Type} [TopologicalSpace X]
+    {b : X} (r : ∀ a : X, Path b a) (p : Path b b) :
+    inverseHurewiczMap r (loopHomologyClass p) = loopClass p := by
+  have h := ConcreteCategory.congr_hom (loopHomologyMap_edgeLoop r p) (1 : ℤ)
+  change ConcreteCategory.hom
+      (HomologicalComplex.homologyMap (edgeLoopChainMap r) 1 ≫
+        (HomologicalComplex.singleObjHomologySelfIso
+          (ComplexShape.down ℕ) 1 (AddCommGrpCat.of (AbelianPi1 X b))).hom)
+      (ConcreteCategory.hom (loopHomologyMap p) 1) = loopClass p
+  exact h.trans (by rw [AddCommGrpCat.asHom_hom_apply, one_zsmul])
+
+theorem inverseHurewiczMap_hurewiczMap {X : Type} [TopologicalSpace X]
+    {b : X} (r : ∀ a : X, Path b a) (a : AbelianPi1 X b) :
+    inverseHurewiczMap r (hurewiczMap b a) = a := by
+  obtain ⟨p, rfl⟩ := loopClass_surjective a
+  rw [hurewiczMap_loopClass, inverseHurewiczMap_loopHomologyClass]
+
+def opchainClass (X : Type) [TopologicalSpace X] :
+    Chains X 1 →+ (IntegralChains X).opcycles 1 :=
+  ((IntegralChains X).pOpcycles 1).hom
+
+def pathOpchainClass {X : Type} [TopologicalSpace X] {x y : X}
+    (p : Path x y) : (IntegralChains X).opcycles 1 :=
+  opchainClass X (pathChain p)
+
+theorem opchainClass_boundaryTwo {X : Type} [TopologicalSpace X]
+    (c : Chains X 2) : opchainClass X (boundaryTwo X c) = 0 := by
+  have h := ConcreteCategory.congr_hom
+    ((IntegralChains X).d_pOpcycles 2 1) c
+  exact h
+
+theorem homologyι_loopHomologyClass {X : Type} [TopologicalSpace X] {x : X}
+    (p : Path x x) :
+    (IntegralChains X).homologyι 1 (loopHomologyClass p) = pathOpchainClass p := by
+  change (loopHomologyMap p ≫ (IntegralChains X).homologyι 1) 1 = _
+  rw [loopHomologyMap, Category.assoc, HomologicalComplex.homology_π_ι]
+  rw [← Category.assoc, HomologicalComplex.liftCycles_i]
+  simp [loopCycle, pathOpchainClass, opchainClass]
+
+theorem pathOpchainClass_homotopic {X : Type} [TopologicalSpace X] {x y : X}
+    {p q : Path x y} (h : p.Homotopic q) :
+    pathOpchainClass p = pathOpchainClass q := by
+  obtain ⟨H⟩ := h
+  have hb := congrArg (opchainClass X) (boundaryTwo_correctedHomotopyChain H)
+  rw [map_sub, opchainClass_boundaryTwo] at hb
+  exact sub_eq_zero.mp hb.symm
+
+@[simp]
+theorem pathOpchainClass_refl {X : Type} [TopologicalSpace X] (x : X) :
+    pathOpchainClass (Path.refl x) = 0 := by
+  change opchainClass X (pathChain (Path.refl x)) = 0
+  rw [pathChain_refl, ← boundaryTwo_constantTriangleChain,
+    opchainClass_boundaryTwo]
+
+theorem pathOpchainClass_trans {X : Type} [TopologicalSpace X] {x y z : X}
+    (p : Path x y) (q : Path y z) :
+    pathOpchainClass (p.trans q) = pathOpchainClass p + pathOpchainClass q := by
+  have h := congrArg (opchainClass X) (boundaryTwo_concatChain p q)
+  rw [opchainClass_boundaryTwo, map_add, map_sub] at h
+  change 0 = pathOpchainClass q - pathOpchainClass (p.trans q) +
+    pathOpchainClass p at h
+  apply sub_eq_zero.mp
+  calc
+    pathOpchainClass (p.trans q) - (pathOpchainClass p + pathOpchainClass q) =
+        -(pathOpchainClass q - pathOpchainClass (p.trans q) +
+          pathOpchainClass p) := by abel
+    _ = 0 := by rw [← h, neg_zero]
+
+@[simp]
+theorem pathOpchainClass_symm {X : Type} [TopologicalSpace X] {x y : X}
+    (p : Path x y) : pathOpchainClass p.symm = -pathOpchainClass p := by
+  have h := pathOpchainClass_homotopic (Path.Homotopic.trans_symm p)
+  rw [pathOpchainClass_trans, pathOpchainClass_refl] at h
+  exact eq_neg_of_add_eq_zero_right h
+
+def basePathChain {X : Type} [TopologicalSpace X] {b : X}
+    (r : ∀ a : X, Path b a) : Chains X 0 →+ Chains X 1 :=
+  chainLiftTo X 0 (Chains X 1)
+    (fun s ↦ pathChain (r (s (stdSimplex.vertex (S := ℝ) (0 : Fin 1)))))
+
+@[simp]
+theorem basePathChain_pointChain {X : Type} [TopologicalSpace X] {b : X}
+    (r : ∀ a : X, Path b a) (x : X) :
+    basePathChain r (pointChain x) = pathChain (r x) :=
+  chainLiftTo_simplex X 0 (Chains X 1) _ (ContinuousMap.const (Simplex 0) x)
+
+theorem edgeClosure_pathChain {X : Type} [TopologicalSpace X] {b x y : X}
+    (r : ∀ a : X, Path b a) (p : Path x y) :
+    (IntegralChains X).homologyι 1
+        (hurewiczMap b (edgeLoopCochain r (pathChain p))) =
+      opchainClass X (pathChain p) -
+        opchainClass X (basePathChain r (boundaryOne X (pathChain p))) := by
+  rw [edgeLoopCochain_pathChain]
+  change (IntegralChains X).homologyι 1
+    (hurewiczMap b (loopClass (basedLoop r p))) = _
+  rw [hurewiczMap_loopClass, homologyι_loopHomologyClass]
+  change pathOpchainClass ((r x).trans (p.trans (r y).symm)) = _
+  rw [pathOpchainClass_trans, pathOpchainClass_trans, pathOpchainClass_symm,
+    boundaryOne_pathChain, map_sub, basePathChain_pointChain,
+    basePathChain_pointChain, map_sub]
+  change pathOpchainClass (r x) + (pathOpchainClass p + -pathOpchainClass (r y)) =
+    pathOpchainClass p - (pathOpchainClass (r y) - pathOpchainClass (r x))
+  abel
+
+theorem edgeClosure_chain_identity {X : Type} [TopologicalSpace X] {b : X}
+    (r : ∀ a : X, Path b a) :
+    ((IntegralChains X).homologyι 1).hom.comp
+        ((hurewiczMap b).toAddMonoidHom.comp (edgeLoopCochain r)) =
+      opchainClass X -
+        (opchainClass X).comp ((basePathChain r).comp (boundaryOne X)) := by
+  apply chainHomTo_ext X 1 ((IntegralChains X).opcycles 1)
+  intro s
+  change (IntegralChains X).homologyι 1
+      (hurewiczMap b (edgeLoopCochain r (simplexChain X 1 s))) =
+    opchainClass X (simplexChain X 1 s) -
+      opchainClass X (basePathChain r (boundaryOne X (simplexChain X 1 s)))
+  have h := edgeClosure_pathChain r (simplexPath s)
+  simpa only [pathChain, pathSimplex_simplexPath] using h
+
+theorem edgeClosure_cycle {X : Type} [TopologicalSpace X] {b : X}
+    (r : ∀ a : X, Path b a) (z : (IntegralChains X).cycles 1) :
+    (IntegralChains X).homologyι 1
+        (hurewiczMap b
+          (edgeLoopCochain r ((IntegralChains X).iCycles 1 z))) =
+      (IntegralChains X).homologyι 1 ((IntegralChains X).homologyπ 1 z) := by
+  let c : Chains X 1 := (IntegralChains X).iCycles 1 z
+  have hz : boundaryOne X c = 0 := by
+    have h := ConcreteCategory.congr_hom
+      ((IntegralChains X).iCycles_d 1 0) z
+    exact h
+  have h := DFunLike.congr_fun (edgeClosure_chain_identity r) c
+  change (IntegralChains X).homologyι 1
+      (hurewiczMap b (edgeLoopCochain r c)) =
+    opchainClass X c -
+      opchainClass X (basePathChain r (boundaryOne X c)) at h
+  rw [hz, map_zero, map_zero, sub_zero] at h
+  rw [h]
+  have hπ := ConcreteCategory.congr_hom
+    ((IntegralChains X).homology_π_ι 1) z
+  change (IntegralChains X).homologyι 1 ((IntegralChains X).homologyπ 1 z) =
+    opchainClass X c at hπ
+  exact hπ.symm
+
+theorem inverseHurewiczMap_cycleClass {X : Type} [TopologicalSpace X] {b : X}
+    (r : ∀ a : X, Path b a) (z : (IntegralChains X).cycles 1) :
+    inverseHurewiczMap r ((IntegralChains X).homologyπ 1 z) =
+      edgeLoopCochain r ((IntegralChains X).iCycles 1 z) := by
+  change (HomologicalComplex.homologyMap (edgeLoopChainMap r) 1 ≫
+      (HomologicalComplex.singleObjHomologySelfIso
+        (ComplexShape.down ℕ) 1 (AddCommGrpCat.of (AbelianPi1 X b))).hom)
+      ((IntegralChains X).homologyπ 1 z) = _
+  change (((IntegralChains X).homologyπ 1 ≫
+      HomologicalComplex.homologyMap (edgeLoopChainMap r) 1 ≫
+      (HomologicalComplex.singleObjHomologySelfIso
+        (ComplexShape.down ℕ) 1 (AddCommGrpCat.of (AbelianPi1 X b))).hom) z) = _
+  rw [HomologicalComplex.homologyπ_naturality_assoc]
+  rw [HomologicalComplex.homologyπ_singleObjHomologySelfIso_hom]
+  rw [HomologicalComplex.singleObjCyclesSelfIso_hom]
+  rw [HomologicalComplex.cyclesMap_i_assoc]
+  simp [edgeLoopChainMap]
+
+theorem hurewiczMap_inverseHurewiczMap {X : Type} [TopologicalSpace X]
+    {b : X} (r : ∀ a : X, Path b a) (a : IntegralSingularHomology 1 X) :
+    hurewiczMap b (inverseHurewiczMap r a) = a := by
+  obtain ⟨z, hz⟩ :=
+    (AddCommGrpCat.epi_iff_surjective ((IntegralChains X).homologyπ 1)).mp
+      inferInstance a
+  apply (AddCommGrpCat.mono_iff_injective ((IntegralChains X).homologyι 1)).mp
+    inferInstance
+  rw [← hz, inverseHurewiczMap_cycleClass]
+  exact edgeClosure_cycle r z
+
+def firstHurewiczEquivOfPaths {X : Type} [TopologicalSpace X] {b : X}
+    (r : ∀ a : X, Path b a) :
+    AbelianPi1 X b ≃ₗ[ℤ] IntegralSingularHomology 1 X where
+  toLinearMap := hurewiczMap b
+  invFun := inverseHurewiczMap r
+  left_inv := inverseHurewiczMap_hurewiczMap r
+  right_inv := hurewiczMap_inverseHurewiczMap r
+
+def firstHurewiczEquiv {X : Type} [TopologicalSpace X] (b : X)
+    [PathConnectedSpace X] :
+    AbelianPi1 X b ≃ₗ[ℤ] IntegralSingularHomology 1 X :=
+  firstHurewiczEquivOfPaths (PathConnectedSpace.somePath b)
+
+@[simp]
+theorem firstHurewiczEquiv_loopClass {X : Type} [TopologicalSpace X]
+    (b : X) [PathConnectedSpace X] (p : Path b b) :
+    firstHurewiczEquiv b (loopClass p) = loopHomologyClass p :=
+  hurewiczMap_loopClass b p
+
+public def establishedFirstHurewiczData_proof
+    (X : Type) [TopologicalSpace X] (b : X) [PathConnectedSpace X] :
+    FirstHurewiczData X b where
+  equiv := firstHurewiczEquiv b
+  equiv_loopClass := firstHurewiczEquiv_loopClass b
 
 end SphereSixComplex.Topology.FirstHurewiczProof
