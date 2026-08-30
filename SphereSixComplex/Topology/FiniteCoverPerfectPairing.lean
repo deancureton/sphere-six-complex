@@ -779,12 +779,6 @@ public structure EllipticDegreeTwoHomologyBasisFiniteData where
   orderFourBasis_one :
     orderFourBasis 1 = orderFourProjectedDegreeTwoGenerator F 3
 
-/-- The remaining primal finite calculation for the two elliptic cyclic quotients attached to
-the actual paper data. -/
-public axiom establishedActualEllipticDegreeTwoHomologyBasisFiniteData
-    (A : PaperAnalyticData) :
-    Nonempty (EllipticDegreeTwoHomologyBasisFiniteData A.periods)
-
 /-- The exact finite residual transfer statement: the two computed pullback families are dual
 bases, their values are specified by eight scalar entries, and the quotient degree-two
 homology groups contain no torsion. -/

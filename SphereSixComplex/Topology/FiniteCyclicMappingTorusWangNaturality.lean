@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Topology.NormalizedAffineMappingTorusCover
-public import SphereSixComplex.Topology.WangHomologyPresentationProof
+public import SphereSixComplex.Topology.CircleProductIdentityMappingTorus
 
 /-!
 # Naturality of the Wang sequence for finite cyclic mapping-torus covers
@@ -21,12 +21,12 @@ open scoped ContinuousMap
 namespace SphereSixComplex.Topology.FiniteCyclicMappingTorusWangNaturality
 
 open NormalizedAffineMappingTorusCover
+open CircleProductIdentityMappingTorus
 
 /-- Inclusion of the fibre in the product model, over the additive-circle origin. -/
 public def circleProductFiberInclusion {X : Type} [TopologicalSpace X] :
-    C(X, UnitAddCircle × X) where
-  toFun x := (0, x)
-  continuous_toFun := continuous_const.prodMk continuous_id
+    C(X, UnitAddCircle × X) :=
+  productFiberInclusion
 
 /-- The oriented Wang short exact sequence of the trivial mapping torus `S¹ × X` in total
 degree `k + 1`. -/
@@ -40,6 +40,15 @@ public structure CircleProductWangPresentation
     (integralSingularHomologyMap (k + 1) (circleProductFiberInclusion (X := X))) boundary
   boundary_surjective : Function.Surjective boundary
 
+/-- The product presentation transported from the constructed Mayer--Vietoris Wang sequence of
+the identity mapping torus. -/
+public noncomputable def canonicalCircleProductWangPresentation
+    (X : Type) [TopologicalSpace X] (k : ℕ) : CircleProductWangPresentation X k where
+  boundary := canonicalProductWangBoundary k
+  inclusion_injective := canonicalProductFiberInclusion_injective k
+  exact_inclusion_boundary := canonicalProductWang_exact k
+  boundary_surjective := canonicalProductWangBoundary_surjective k
+
 /-- The natural commutative Wang diagram for the normalized `m`-fold cyclic cover.
 
 The first square identifies the map on the upper coinvariant edge with the fibre identity.  The
@@ -47,7 +56,6 @@ second identifies the lower invariant edge with the standard cyclic norm. -/
 public structure FiniteCyclicCoverWangNaturality
     {X : Type} [TopologicalSpace X] (k m : ℕ) [NeZero m]
     (phi : X ≃ₜ X) (hpow : phi ^ m = 1) where
-  source : CircleProductWangPresentation X k
   fibre_square : ∀ x : IntegralSingularHomology (k + 1) X,
     integralSingularHomologyMap (k + 1)
         (normalizedAffineCoverToCircleMappingTorus phi hpow)
@@ -60,17 +68,7 @@ public structure FiniteCyclicCoverWangNaturality
           (normalizedAffineCoverToCircleMappingTorus phi hpow) z) =
       ∑ i ∈ Finset.range m,
         integralSingularHomologyMap k ((phi ^ i : X ≃ₜ X) : C(X, X))
-          (source.boundary z)
-
-/-- Classical naturality of the Wang long exact sequence for the normalized finite cyclic cover.
-
-This is source-independent and holds for every space, every degree, and every finite-order
-clutching homeomorphism.  It is the mapping-cone/Serre-sequence naturality theorem: identity on
-the fibre term and the group-homology norm on the swept term. -/
-public axiom finiteCyclicCover_wangNaturality
-    {X : Type} [TopologicalSpace X] (k m : ℕ) [NeZero m]
-    (phi : X ≃ₜ X) (hpow : phi ^ m = 1) :
-    Nonempty (FiniteCyclicCoverWangNaturality k m phi hpow)
+          (canonicalProductWangBoundary k z)
 
 end SphereSixComplex.Topology.FiniteCyclicMappingTorusWangNaturality
 

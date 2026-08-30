@@ -1,6 +1,7 @@
 module
 
 public import SphereSixComplex.Topology.ConnectedMayerVietorisDegreeZero
+public import SphereSixComplex.Topology.EstablishedActualEllipticDegreeTwoHomologyBasisFiniteDataProof
 public import SphereSixComplex.Topology.PaperAffineCyclicQuotientHomologyCoordinates
 public import SphereSixComplex.Topology.PaperEllipticFiniteCoverHomologyRealization
 public import SphereSixComplex.Topology.PaperEllipticInteriorMayerVietorisBases
