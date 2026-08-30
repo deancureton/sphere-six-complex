@@ -23,6 +23,11 @@ namespace SphereSixComplex.Periods
 public def HolomorphicOnPuncturedPlane (f : ℂ → ℂ) : Prop :=
   ∀ z, z ≠ 0 → MDiffAt f z
 
+/-- An entire function is holomorphic on the punctured plane. -/
+public theorem holomorphicOnPuncturedPlane_of_mdiff (f : ℂ → ℂ) (hf : MDiff f) :
+    HolomorphicOnPuncturedPlane f :=
+  fun z _ ↦ hf z
+
 /-! ## Bridge to the manifold spelling used in the project -/
 
 private theorem mdiffAt_complex_iff_differentiableAt {f : ℂ → ℂ} {z : ℂ} :

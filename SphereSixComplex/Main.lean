@@ -115,6 +115,7 @@ public import SphereSixComplex.Periods.EstablishedProjectiveLineCohomology
 public import SphereSixComplex.Periods.ExactFuchsianCuspBounds
 public import SphereSixComplex.Periods.ExactFuchsianCuspFrameGerm
 public import SphereSixComplex.Periods.ExactFuchsianEisensteinSixRoot
+public import SphereSixComplex.Periods.ExactFuchsianInvariantCechSplitting
 public import SphereSixComplex.Periods.ExactFuchsianModularFrameConstruction
 public import SphereSixComplex.Periods.ExactFuchsianModularFrameData
 public import SphereSixComplex.Periods.ExactFuchsianRamification
@@ -125,6 +126,7 @@ public import SphereSixComplex.Periods.FuchsianModularParameterExistence
 public import SphereSixComplex.Periods.FuchsianMuTorsor
 public import SphereSixComplex.Periods.FuchsianPeriodAssembly
 public import SphereSixComplex.Periods.FuchsianUniformizationBridge
+public import SphereSixComplex.Periods.FiniteAffineEquivFixedPoint
 public import SphereSixComplex.Periods.FiniteGroupCocycleAveraging
 public import SphereSixComplex.Periods.Invariant
 public import SphereSixComplex.Periods.LocalOrbifoldCompatibility
