@@ -598,18 +598,17 @@ integral homology sphere to a homotopy sphere, followed by the dimension-six smo
 classification.  Their composition gives the exact diffeomorphism required by the construction.
 :::
 
-:::theorem "established-smooth-recognition" (parent := "smooth-recognition") (lean := "SphereSixComplex.establishedHomologyToHomotopySixSphere, SphereSixComplex.establishedGeneralizedTopologicalPoincareSix, SphereSixComplex.establishedMarkedSmoothSixSphereClassesTrivial, SphereSixComplex.establishedSmoothPoincareSix, SphereSixComplex.establishedSmoothSixSphereRecognition")
-There are exactly three external recognition inputs: the Whitehead--Hurewicz implication for a
-simply connected smooth integral homology six-sphere, generalized topological Poincaré in dimension
-six, and triviality of marked smooth six-sphere classes. The latter two prove the smooth Poincaré
-step; none assumes any part of the complex-geometric construction.
+:::theorem "established-smooth-recognition" (parent := "smooth-recognition") (lean := "SphereSixComplex.establishedHigherHurewiczSixGenerator, SphereSixComplex.establishedCompactSmoothSixManifoldClassicalCWType, SphereSixComplex.establishedSimplyConnectedClassicalCWIntegralHomologyWhitehead, SphereSixComplex.establishedSmoothPoincareSixStandardModel, SphereSixComplex.establishedHomologyToHomotopySixSphere, SphereSixComplex.establishedSmoothIntegralHomologySixSphereRecognition")
+There are exactly four external recognition inputs: the degree-six consequence of Hurewicz, CW type
+for compact smooth six-manifolds, homological Whitehead for simply connected spaces of CW type, and
+smooth Poincaré in dimension six. The first three produce a homotopy sphere; the fourth gives a
+diffeomorphism for its specified smooth atlas. None assumes any complex-geometric construction.
 :::
 
-:::theorem "hurewicz-whitehead-reduction" (parent := "smooth-recognition") (lean := "SphereSixComplex.HasIntegralHomologyComparisonToSixSphere, SphereSixComplex.homotopyEquivSixSphere_of_comparison_of_whitehead, SphereSixComplex.homologyToHomotopySixSphere_of_comparison_of_whitehead")
-The homology-to-homotopy step is reduced to constructing one coherent integral-homology comparison
-map $`X \to S^6` and applying the integral-homology Whitehead property to that map. Homotopy
-equivalences are proved to induce integral singular-homology equivalences using Mathlib's homotopy
-invariance theorem.
+:::theorem "hurewicz-whitehead-reduction" (parent := "smooth-recognition") (lean := "SphereSixComplex.HasTopDimensionalSphericalGenerator, SphereSixComplex.homotopyEquivSixSphere_of_sphericalGenerator_of_classicalCWWhitehead, SphereSixComplex.establishedHomologyToHomotopySixSphere")
+Hurewicz supplies a comparison map $`S^6 \to X` inducing an isomorphism on sixth homology. The
+proved degree-zero calculation and vanishing in the other degrees make it an integral-homology
+equivalence; simply connected homological Whitehead then makes that same map a homotopy equivalence.
 :::
 
 :::theorem "smooth-recognition-foundations" (parent := "smooth-recognition") (lean := "SphereSixComplex.SmoothSimplyConnectedIntegralHomologySixSphere.homotopyGroup_zero_subsingleton, SphereSixComplex.SmoothSimplyConnectedIntegralHomologySixSphere.homotopyGroup_one_subsingleton, SphereSixComplex.homotopyToDiffeomorphismSixSphere_iff_topologicalPoincare_and_noExotic, SphereSixComplex.smoothSixSphereRecognition_of_comparison_whitehead_and_classification")
