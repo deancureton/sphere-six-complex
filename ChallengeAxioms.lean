@@ -115,7 +115,7 @@ axiom SphereSixComplex.Geometry.PaperAnalyticData.establishedActualEllipticMarke
   (A : SphereSixComplex.Geometry.PaperAnalyticData),
   Nonempty (A.ActualEllipticMarkedFillingExtensionAtBaseResidual A.actualCuspCentralNaturality)
 axiom SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenAffineRegularLiftTopology.markedBandHomotopies : ∀
-  (A : SphereSixComplex.Geometry.PaperAnalyticData), A.SectionSevenAffineMarkedStarRealPeriodCompatibility
+  (A : SphereSixComplex.Geometry.PaperAnalyticData), A.SectionSevenAffineOverlapBandCompatibility
 axiom SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTopology.establishedActualCuspFiberEllipticMarkedCoordinateCalculation : ∀
   {A : SphereSixComplex.Geometry.PaperAnalyticData} (R : A.SectionSevenAffineRadialCompletionInput),
   SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTopology.ActualCuspFiberEllipticMarkedCoordinateCalculation
