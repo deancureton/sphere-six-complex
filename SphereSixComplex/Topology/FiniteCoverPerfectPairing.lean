@@ -341,16 +341,6 @@ public def orderFourRealization (P : EllipticDegreeTwoPullbackBases F) :
 
 end EllipticDegreeTwoPullbackBases
 
-private noncomputable def orderThreeReducedCentralFiberFiniteCWModel
-    {U : Periods.TriangleUniformization} (F : Periods.PeriodFunctions U) :
-    FiniteCWModelSix (OrderThreeReducedCentralFiber F) :=
-  AffineFiniteCyclicTorusCW.orderThreeReducedCentralFiberFiniteCWModelSixOfPeriodFunctions F
-
-private noncomputable def orderFourReducedCentralFiberFiniteCWModel
-    {U : Periods.TriangleUniformization} (F : Periods.PeriodFunctions U) :
-    FiniteCWModelSix (OrderFourReducedCentralFiber F) :=
-  AffineFiniteCyclicTorusCW.orderFourReducedCentralFiberFiniteCWModelSixOfPeriodFunctions F
-
 private theorem dualEval_bijective_of_finite_torsionFree
     {X : Type} [TopologicalSpace X]
     (hFinite : Module.Finite ℤ (IntegralSingularHomology 2 X))
@@ -948,19 +938,19 @@ integral evaluation pairings are perfect. -/
 public theorem establishedEllipticDegreeTwoPullbackBases
     (hBasis : Nonempty (EllipticDegreeTwoHomologyBasisFiniteData F)) :
     Nonempty (EllipticDegreeTwoPullbackBases F) := by
-  obtain ⟨D⟩ := establishedEllipticDegreeTwoDualPullbackData F hBasis
+  obtain ⟨B⟩ := hBasis
+  obtain ⟨D⟩ := establishedEllipticDegreeTwoDualPullbackData F ⟨B⟩
   refine ⟨{ orderThree := ?_, orderFour := ?_ }⟩
   · exact
       { quotientDualBasis := D.orderThreeDualBasis
         reflexive := dualEval_bijective_of_finite_torsionFree
-          ((orderThreeReducedCentralFiberFiniteCWModel F).integralHomologyFiniteSix.finiteHomology
-            2)
+          (Module.Finite.of_basis B.orderThreeBasis)
           D.orderThreeTorsionFree
         pullback_apply := D.orderThreePullback_apply }
   · exact
       { quotientDualBasis := D.orderFourDualBasis
         reflexive := dualEval_bijective_of_finite_torsionFree
-          ((orderFourReducedCentralFiberFiniteCWModel F).integralHomologyFiniteSix.finiteHomology 2)
+          (Module.Finite.of_basis B.orderFourBasis)
           D.orderFourTorsionFree
         pullback_apply := D.orderFourPullback_apply }
 
