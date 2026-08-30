@@ -179,11 +179,10 @@ public theorem canonicalProductWangBoundary_positiveCircleCross
       rw [orbitNorm_value]
       simp [loopAction]
 
-/-- The canonical product Wang boundary of the selected degree-two generator has raw recursive
-coordinate `+1`.  Identifying that choice-based coordinate with the geometric positive circle
-class is the remaining orientation calibration. -/
-public theorem canonicalProductWangBoundary_positiveGenerator_rawCoordinate :
-    stdTorusHomologyOne 1
+/-- The canonical product Wang boundary of the selected degree-two generator has winding
+coordinate `+1`. -/
+public theorem canonicalProductWangBoundary_positiveGenerator_coordinate :
+    standardCircleCanonicalHomologyOne
         (canonicalProductWangBoundary 1 positiveCircleProductGenerator) =
       Pi.single (0 : Fin 1) 1 := by
   let P := circleMappingTorusWangPresentationOfCover
@@ -222,13 +221,13 @@ public theorem canonicalProductWangBoundary_positiveGenerator_rawCoordinate :
     exact (integralSingularHomologyEquiv 2
       circleProdStandardCircleHomeomorph).apply_symm_apply _
   have hcoordinate :
-      stdTorusHomologyOne 1 (P.boundary y) = Pi.single (0 : Fin 1) 1 := by
+      standardCircleCanonicalHomologyOne (P.boundary y) = Pi.single (0 : Fin 1) 1 := by
     funext j
     fin_cases j
-    change stdTorusHomologyOne 1 (P.boundary y) 0 = 1
+    change standardCircleCanonicalHomologyOne (P.boundary y) 0 = 1
     dsimp [P]
     rw [← reflMappingTorusHomologySplit_right 1 0 1
-      (stdTorusHomologyTwo 1) (stdTorusHomologyOne 1) y 0]
+      (stdTorusHomologyTwo 1) standardCircleCanonicalHomologyOne y 0]
     rw [← eT.symm_apply_apply y]
     change stdTorusHomologyTwo 2 (eT y)
       (finSumFinEquiv (Sum.inr (0 : Fin 1))) = 1
@@ -241,7 +240,7 @@ public theorem canonicalProductWangBoundary_positiveGenerator_rawCoordinate :
       apply Fin.ext
       rfl]
     exact Pi.single_eq_same _ _
-  change stdTorusHomologyOne 1
+  change standardCircleCanonicalHomologyOne
       (P.boundary
         (integralSingularHomologyMap 2
           (circleProductIdentityMappingTorusHomeomorph (X := StdTorus 1) :
@@ -253,15 +252,9 @@ public theorem canonicalProductWangBoundary_positiveGenerator_rawCoordinate :
 public theorem canonicalProductWangBoundary_positiveGenerator :
     canonicalProductWangBoundary 1 positiveCircleProductGenerator =
       standardCircleHomologyGenerator := by
-  have hcross : positiveCircleCross (ContinuousMap.id (StdTorus 1)) =
-      positiveCircleProductGenerator := by
-    unfold positiveCircleCross
-    rw [show circleProductMap (ContinuousMap.id (StdTorus 1)) =
-      ContinuousMap.id (UnitAddCircle × StdTorus 1) by
-        ext x <;> rfl]
-    rw [integralSingularHomologyMap_id_wang]
-  rw [← hcross, canonicalProductWangBoundary_positiveCircleCross]
-  rw [integralSingularHomologyMap_id_wang]
+  apply standardCircleCanonicalHomologyOne.injective
+  rw [canonicalProductWangBoundary_positiveGenerator_coordinate,
+    standardCircleCanonicalHomologyOne_generator]
 
 public def degreeTwoCoordinateToInt : (Fin (stdTorusTwoRank 2) → ℤ) ≃+ ℤ where
   toFun f := f standardTwoTorusDegreeTwoIndex

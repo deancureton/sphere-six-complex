@@ -363,6 +363,7 @@ public def stdTorusTwoRank : ℕ → ℕ
   | 0 => 0
   | n + 1 => stdTorusTwoRank n + n
 
+/-- Raw recursive first-homology coordinates, prior to geometric orientation calibration. -/
 public def stdTorusHomologyOne : ∀ n : ℕ,
     IntegralSingularHomology 1 (StdTorus n) ≃+ (Fin n → ℤ)
   | 0 => by
@@ -371,17 +372,6 @@ public def stdTorusHomologyOne : ∀ n : ℕ,
   | n + 1 =>
       (integralSingularHomologyEquiv 1 (stdTorusMappingTorusHomeomorph n)).symm.trans
         (reflMappingTorusHomologySplit 0 n 1 (stdTorusHomologyOne n) (stdTorusHomologyZero n))
-
-public def stdTorusHomologyTwo : ∀ n : ℕ,
-    IntegralSingularHomology 2 (StdTorus n) ≃+ (Fin (stdTorusTwoRank n) → ℤ)
-  | 0 => by
-      haveI := subsingleton_homology_stdTorusZero 2 two_ne_zero
-      show IntegralSingularHomology 2 (StdTorus 0) ≃+ (Fin 0 → ℤ)
-      exact addEquivOfSubsingleton
-  | n + 1 =>
-      (integralSingularHomologyEquiv 2 (stdTorusMappingTorusHomeomorph n)).symm.trans
-        (reflMappingTorusHomologySplit 1 (stdTorusTwoRank n) n (stdTorusHomologyTwo n)
-          (stdTorusHomologyOne n))
 
 /-! ## Natural recalibration of the four-torus coordinates -/
 
@@ -514,7 +504,7 @@ private def unitCircleHomologyEquivInt :
       StandardCircleHomologyLiftDegree.stdTorusOneHomeomorph.symm).trans
     ((stdTorusHomologyOne 1).trans finOneFunctionAddEquiv)
 
-private theorem unitCircleHomologyWinding_injective :
+public theorem unitCircleHomologyWinding_injective :
     Function.Injective StandardCircleHomologyLiftDegree.unitCircleHomologyWinding := by
   open StandardCircleHomologyLiftDegree in
   let φ : ℤ →+ ℤ := unitCircleHomologyWinding.comp
@@ -538,6 +528,47 @@ private theorem unitCircleHomologyWinding_injective :
   apply unitCircleHomologyEquivInt.injective
   apply hφinj
   simpa [φ] using hxy
+
+/-- The first homology coordinate on the standard circle calibrated by geometric winding. -/
+public def standardCircleCanonicalHomologyOne :
+    IntegralSingularHomology 1 (StdTorus 1) ≃+ (Fin 1 → ℤ) :=
+  (integralSingularHomologyEquiv 1
+      StandardCircleHomologyLiftDegree.stdTorusOneHomeomorph).trans
+    ((AddEquiv.ofBijective StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
+      ⟨unitCircleHomologyWinding_injective,
+        StandardCircleHomologyLiftDegree.unitCircleHomologyWinding_surjective⟩).trans
+      intEquivFinOne)
+
+/-- The winding-calibrated circle coordinate sends the positive geometric generator to `+1`. -/
+public theorem standardCircleCanonicalHomologyOne_generator :
+    standardCircleCanonicalHomologyOne standardCircleHomologyGenerator =
+      Pi.single (0 : Fin 1) 1 := by
+  funext i
+  fin_cases i
+  change StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
+      (integralSingularHomologyMap 1
+        (StandardCircleHomologyLiftDegree.stdTorusOneHomeomorph :
+          C(StdTorus 1, UnitAddCircle))
+        standardCircleHomologyGenerator) = 1
+  exact standardCircleHomologyGenerator_winding
+
+/-- The recursive first-homology coordinates, with the one-torus coordinate replaced by its
+geometric winding calibration. -/
+public def stdTorusHomologyOneForDegreeTwo (n : ℕ) :
+    IntegralSingularHomology 1 (StdTorus n) ≃+ (Fin n → ℤ) :=
+  if h : n = 1 then h ▸ standardCircleCanonicalHomologyOne else stdTorusHomologyOne n
+
+/-- Recursive second-homology coordinates whose one-torus Wang input is calibrated by winding. -/
+public def stdTorusHomologyTwo : ∀ n : ℕ,
+    IntegralSingularHomology 2 (StdTorus n) ≃+ (Fin (stdTorusTwoRank n) → ℤ)
+  | 0 => by
+      haveI := subsingleton_homology_stdTorusZero 2 two_ne_zero
+      show IntegralSingularHomology 2 (StdTorus 0) ≃+ (Fin 0 → ℤ)
+      exact addEquivOfSubsingleton
+  | n + 1 =>
+      (integralSingularHomologyEquiv 2 (stdTorusMappingTorusHomeomorph n)).symm.trans
+        (reflMappingTorusHomologySplit 1 (stdTorusTwoRank n) n (stdTorusHomologyTwo n)
+          (stdTorusHomologyOneForDegreeTwo n))
 
 private theorem unitCirclePowerMap_homology (n : ℤ)
     (x : IntegralSingularHomology 1 UnitAddCircle) :
