@@ -1,22 +1,22 @@
 module
 
 public import SphereSixComplex.Topology.PaperEllipticFillingRealPeriodRadial
-public import SphereSixComplex.Topology.SectionSevenLocalEulerModels
+public import SphereSixComplex.Topology.EstablishedCompactManifoldFiniteCW
 
 /-!
 # Finite CW type of affine finite-cyclic torus quotients
 
-This file isolates the classical triangulation input for the reduced elliptic fibres.  A free
-finite cyclic action on a full-rank four-torus whose generator lifts to an affine automorphism of
-the covering vector space has a compact four-manifold quotient.  The finite-dimensional ANR
-theorem therefore supplies a finite CW model, with no cells above dimension four (and hence above
-six).
+This file derives finite CW models for the reduced elliptic fibres.  Their explicit free cyclic
+actions give surjective coverings from compact four-tori.  The compact-manifold finite-CW theorem
+then supplies models with no cells above dimension four, and hence none above dimension six.
 -/
 
 open SphereSixComplex.Geometry SphereSixComplex.Periods
 open scoped ContinuousMap
 
 namespace SphereSixComplex.Topology.AffineFiniteCyclicTorusCW
+
+open EstablishedCompactManifoldFiniteCW
 
 open Geometry.ComplexTorus
 open Geometry.AnalyticTorusFamily
@@ -42,29 +42,21 @@ public class SupportedAffineFiniteCyclicOrder (m : ℕ) where
 public instance : SupportedAffineFiniteCyclicOrder 3 := ⟨.orderThree⟩
 public instance : SupportedAffineFiniteCyclicOrder 4 := ⟨.orderFour⟩
 
-/-- A homotopy model by a finite CW complex of dimension at most `d`. -/
-public structure FiniteCWModelAtMost (d : ℕ) (X : Type) [TopologicalSpace X] where
-  Carrier : Type
-  topology : TopologicalSpace Carrier
-  t2 : let _ := topology; T2Space Carrier
-  homotopyEquiv : let _ := topology; X ≃ₕ Carrier
-  cwComplex : let _ := topology; Topology.CWComplex (Set.univ : Set Carrier)
-  finite : let _ := topology; let _ := cwComplex
-    Topology.CWComplex.Finite (Set.univ : Set Carrier)
-  cellsAbove : let _ := topology; let _ := cwComplex
-    ∀ n, d < n → IsEmpty (Topology.CWComplex.cell (Set.univ : Set Carrier) n)
-
-/-- Forget a sharper dimension bound when constructing a model supported through degree six. -/
-public noncomputable def FiniteCWModelAtMost.toFiniteCWModelSix
-    {d : ℕ} {X : Type} [TopologicalSpace X] (M : FiniteCWModelAtMost d X) (hd : d ≤ 6) :
-    FiniteCWModelSix X where
-  Carrier := M.Carrier
-  topology := M.topology
-  t2 := M.t2
-  homotopyEquiv := M.homotopyEquiv
-  cwComplex := M.cwComplex
-  finite := M.finite
-  cellsAboveSix n hn := M.cellsAbove n (hd.trans_lt hn)
+/-- Finite-CW descent along a covering by a full-rank four-torus. -/
+public noncomputable def finiteCWModelSix_of_fullRankTorusCover
+    {X : Type} [TopologicalSpace X] [T2Space X]
+    (p : Parameters) (hfull : FullRank p)
+    (projection : C(AdditiveTorus p, X)) (hcover : IsCoveringMap projection)
+    (hsurjective : Function.Surjective projection) :
+    FiniteCWModelSix X := by
+  let _ : ProperlyDiscontinuousSMul (PeriodGroup p) ComplexTwoSpace :=
+    periodLattice_properlyDiscontinuousSMul hfull
+  let _ : T2Space (AdditiveTorus p) := inferInstance
+  let _ : CompactSpace (AdditiveTorus p) := torus_compactSpace p hfull
+  exact (establishedFiniteCWModelFour_of_compactComplexSurfaceCover
+    (torus_isManifold_and_projection_isLocalDiffeomorph p hfull 0).1
+    (inferInstance : CompactSpace (AdditiveTorus p)) projection hcover
+    hsurjective).toFiniteCWModelSix (by omega)
 
 namespace RadialEllipticActionData
 
@@ -183,24 +175,59 @@ private theorem torusCentralFiberProjection_surjective :
 
 end RadialEllipticActionData
 
-/-- The classical finite-CW input for the two reduced elliptic fibres that occur in the paper. -/
-public axiom establishedEllipticReducedCentralFiberFiniteCWModels
-    {U : TriangleUniformization} (F : PeriodFunctions U) :
-    Nonempty
-      (FiniteCWModelSix (OrderThreeReducedCentralFiber F) ×
-        FiniteCWModelSix (OrderFourReducedCentralFiber F))
+private noncomputable def finiteCWModelSix_reducedCentralFiber_of_freeAction
+    {m : ℕ} [NeZero m] (p : Parameters) (hfull : FullRank p)
+    (D : RadialEllipticActionData m (AdditiveTorus p))
+    (hfree : letI := D.actionData.diagonalAction
+      IsCancelSMul (FiniteCyclic m) D.Product) :
+    FiniteCWModelSix D.reducedCentralFiber := by
+  let _ : ProperlyDiscontinuousSMul (PeriodGroup p) ComplexTwoSpace :=
+    periodLattice_properlyDiscontinuousSMul hfull
+  let _ : T2Space (AdditiveTorus p) := inferInstance
+  let _ : CompactSpace (AdditiveTorus p) := torus_compactSpace p hfull
+  let _ : LocallyCompactSpace (AdditiveTorus p) := inferInstance
+  let _ : LocallyCompactSpace ComplexUnitDisc :=
+    (isOpen_lt continuous_norm continuous_const).locallyCompactSpace
+  let _ := D.actionData.diagonalAction
+  let _ : IsCancelSMul (FiniteCyclic m) D.Product := hfree
+  let _ : ContinuousConstSMul (FiniteCyclic m) D.Product :=
+    ⟨D.representation_continuous⟩
+  let _ : ProperlyDiscontinuousSMul (FiniteCyclic m) D.Product := inferInstance
+  let _ : T2Space D.FillingQuotient := by
+    change T2Space (Quotient (MulAction.orbitRel (FiniteCyclic m) D.Product))
+    infer_instance
+  let _ : T2Space D.reducedCentralFiber := inferInstance
+  exact finiteCWModelSix_of_fullRankTorusCover p hfull
+    (RadialEllipticActionData.torusCentralFiberProjection D)
+    (RadialEllipticActionData.torusCentralFiberProjection_isCovering D hfree)
+    (RadialEllipticActionData.torusCentralFiberProjection_surjective D)
 
 /-- A finite CW model for the actual order-three reduced elliptic fibre. -/
 public noncomputable def orderThreeReducedCentralFiberFiniteCWModelSixOfPeriodFunctions
     {U : TriangleUniformization} (F : PeriodFunctions U) :
-    FiniteCWModelSix (OrderThreeReducedCentralFiber F) :=
-  Classical.choice (establishedEllipticReducedCentralFiberFiniteCWModels F) |>.1
+    FiniteCWModelSix (OrderThreeReducedCentralFiber F) := by
+  let p := parameterMap F U.zOne
+  exact finiteCWModelSix_reducedCentralFiber_of_freeAction p.1
+    (FullRank.ofSetupInequalities p.1 p.2) (orderThreeRadialActionData F)
+    (EllipticFixedPointCriterion.orderThreeAction_free F)
 
 /-- A finite CW model for the actual order-four reduced elliptic fibre. -/
 public noncomputable def orderFourReducedCentralFiberFiniteCWModelSixOfPeriodFunctions
     {U : TriangleUniformization} (F : PeriodFunctions U) :
-    FiniteCWModelSix (OrderFourReducedCentralFiber F) :=
-  Classical.choice (establishedEllipticReducedCentralFiberFiniteCWModels F) |>.2
+    FiniteCWModelSix (OrderFourReducedCentralFiber F) := by
+  let p := parameterMap F U.zTwo
+  exact finiteCWModelSix_reducedCentralFiber_of_freeAction p.1
+    (FullRank.ofSetupInequalities p.1 p.2) (orderFourRadialActionData F)
+    (EllipticFixedPointCriterion.orderFourAction_free F)
+
+/-- The paper's two reduced-fibre models follow from their explicit torus coverings. -/
+public theorem establishedEllipticReducedCentralFiberFiniteCWModels
+    {U : TriangleUniformization} (F : PeriodFunctions U) :
+    Nonempty
+      (FiniteCWModelSix (OrderThreeReducedCentralFiber F) ×
+        FiniteCWModelSix (OrderFourReducedCentralFiber F)) :=
+  ⟨orderThreeReducedCentralFiberFiniteCWModelSixOfPeriodFunctions F,
+    orderFourReducedCentralFiberFiniteCWModelSixOfPeriodFunctions F⟩
 
 variable (A : PaperAnalyticData)
 

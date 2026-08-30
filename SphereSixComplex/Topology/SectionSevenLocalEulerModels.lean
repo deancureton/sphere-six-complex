@@ -161,6 +161,18 @@ public theorem toFiniteCWModel_cellCount {X : Type} [TopologicalSpace X]
 
 end FiniteCWModelSix
 
+/-- Euler characteristic is multiplicative under a constant finite-sheeted covering of a space
+having the homotopy type of a finite CW complex of dimension at most six. -/
+public axiom establishedFiniteCoverEulerCharacteristicSix
+    {E X : Type} [TopologicalSpace E] [TopologicalSpace X]
+    (projection : C(E, X)) (_isCovering : IsCoveringMap projection)
+    (degree : ℕ)
+    (_fiberFinite : ∀ x, Finite {y : E // projection y = x})
+    (_fiberCardinality : ∀ x, Nat.card {y : E // projection y = x} = degree)
+    (_baseFiniteCW : FiniteCWModelSix X) :
+    integralHomologyEulerCharacteristicSix E =
+      (degree : ℤ) * integralHomologyEulerCharacteristicSix X
+
 /-- A constant-degree finite covering between finite CW-type spaces. -/
 public structure FiniteCoverModelSix (X : Type) [TopologicalSpace X] where
   Cover : Type
@@ -178,12 +190,19 @@ namespace FiniteCoverModelSix
 
 variable {X : Type} [TopologicalSpace X]
 
-/-- Euler characteristic multiplies by the constant sheet number of a finite covering between
-spaces of finite integral homology type. -/
-public axiom establishedEulerMultiplicativity (M : FiniteCoverModelSix X) :
+/-- The general finite-cover Euler theorem applied to this packaged cover model. -/
+public theorem establishedEulerMultiplicativity (M : FiniteCoverModelSix X) :
     let _ := M.coverTopology
     integralHomologyEulerCharacteristicSix M.Cover =
-      (M.degree : ℤ) * integralHomologyEulerCharacteristicSix X
+      (M.degree : ℤ) * integralHomologyEulerCharacteristicSix X := by
+  let _ := M.coverTopology
+  apply establishedFiniteCoverEulerCharacteristicSix M.projection M.isCovering M.degree
+  · intro x
+    apply Nat.finite_of_card_ne_zero
+    rw [M.fiberCardinality x]
+    exact Nat.ne_of_gt M.degree_pos
+  · exact M.fiberCardinality
+  · exact M.quotientFiniteCW
 
 end FiniteCoverModelSix
 

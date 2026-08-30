@@ -70,24 +70,34 @@ axiom SphereSixComplex.EstablishedGeneralTopology.isHomotopyEquivalenceInclusion
                 (have this := rfl;
                 this))) →
           ∀ (hCW : Topology.RelCWComplex Set.univ D), SphereSixComplex.IsHomotopyEquivalenceInclusion D
-axiom SphereSixComplex.FiniteCoverModelSix.establishedEulerMultiplicativity : ∀ {X : Type} [inst : TopologicalSpace X]
-  (M : SphereSixComplex.FiniteCoverModelSix X),
-  let x := M.coverTopology;
-  SphereSixComplex.integralHomologyEulerCharacteristicSix M.Cover =
-    ↑M.degree * SphereSixComplex.integralHomologyEulerCharacteristicSix X
+axiom SphereSixComplex.establishedFiniteCoverEulerCharacteristicSix : ∀ {E X : Type} [inst : TopologicalSpace E]
+  [inst_1 : TopologicalSpace X] (projection : C(E, X)),
+  IsCoveringMap ⇑projection →
+    ∀ (degree : ℕ),
+      (∀ (x : X), Finite { y // projection y = x }) →
+        (∀ (x : X), Nat.card { y // projection y = x } = degree) →
+          ∀ (_baseFiniteCW : SphereSixComplex.FiniteCWModelSix X),
+            SphereSixComplex.integralHomologyEulerCharacteristicSix E =
+              ↑degree * SphereSixComplex.integralHomologyEulerCharacteristicSix X
 axiom SphereSixComplex.Periods.establishedOrbifoldAffineLineTorsorCuspBoundedCousinCorrection : ∀
   (P : SphereSixComplex.Periods.OrbifoldAffineLineTorsorDescentProblem),
   P.HasAcyclicProjectiveLineFrame → Nonempty P.CuspBoundedEllipticOneCorrection
 axiom SphereSixComplex.Topology.FiniteCoverPerfectPairing.establishedActualEllipticDegreeTwoHomologyBasisFiniteData : ∀
   (A : SphereSixComplex.Geometry.PaperAnalyticData),
   Nonempty (SphereSixComplex.Topology.FiniteCoverPerfectPairing.EllipticDegreeTwoHomologyBasisFiniteData A.periods)
-axiom SphereSixComplex.Topology.AffineFiniteCyclicTorusCW.establishedEllipticReducedCentralFiberFiniteCWModels : ∀
-  {U : SphereSixComplex.Periods.TriangleUniformization} (F : SphereSixComplex.Periods.PeriodFunctions U),
-  Nonempty
-    (SphereSixComplex.FiniteCWModelSix
-        ↑(SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction.OrderThreeReducedCentralFiber F) ×
-      SphereSixComplex.FiniteCWModelSix
-        ↑(SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction.OrderFourReducedCentralFiber F))
+axiom SphereSixComplex.Topology.EstablishedCompactManifoldFiniteCW.establishedFiniteCWModelFour_of_compactComplexSurfaceCover : {E
+    X : Type} →
+  [inst : TopologicalSpace E] →
+    [inst_1 : ChartedSpace SphereSixComplex.Geometry.ComplexTorus.ComplexTwoSpace E] →
+      [T2Space E] →
+        [inst_3 : TopologicalSpace X] →
+          [T2Space X] →
+            IsManifold (modelWithCornersSelf ℂ SphereSixComplex.Geometry.ComplexTorus.ComplexTwoSpace) 0 E →
+              CompactSpace E →
+                (projection : C(E, X)) →
+                  IsCoveringMap ⇑projection →
+                    Function.Surjective ⇑projection →
+                      SphereSixComplex.Topology.EstablishedCompactManifoldFiniteCW.FiniteCWModelAtMost 4 X
 axiom SphereSixComplex.Topology.EstablishedFirstHurewicz.establishedFirstHurewiczData : (X : Type) →
   [inst : TopologicalSpace X] →
     (b : X) → [PathConnectedSpace X] → SphereSixComplex.Topology.EstablishedFirstHurewicz.FirstHurewiczData X b
