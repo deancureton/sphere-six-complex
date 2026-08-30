@@ -1,39 +1,21 @@
 module
 
-public import SphereSixComplex.Topology.SmoothRecognition
-public import SphereSixComplex.Topology.SmoothSixSphereClassification
+public import SphereSixComplex.Topology.EstablishedClassicalRecognitionFoundations
+public import SphereSixComplex.Topology.HomologyToHomotopySixSphereProof
 public import SphereSixComplex.Topology.SphereLoopContraction
 
 /-!
 # Established six-sphere recognition inputs
 
-This module isolates the classical external theorem used to recognize a smooth integral homology
-six-sphere. It is an explicit axiom because its proof is not yet available in Mathlib. The two
-formerly separate Hurewicz--Whitehead and smooth Poincare interfaces are derived from the single
-standard recognition theorem; no paper-specific construction claim is assumed here.
+This module derives recognition of a smooth integral homology six-sphere from the four exact
+classical inputs isolated in `EstablishedClassicalRecognitionFoundations`: higher Hurewicz,
+compact-manifold CW type, simply connected homological Whitehead, and smooth Poincare in dimension
+six. No paper-specific construction claim is assumed here.
 -/
 
 open scoped ContDiff Manifold
 
 namespace SphereSixComplex
-
-private theorem recognition_pathConnectedSpace_of_homotopyEquiv
-    {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
-    [PathConnectedSpace Y] (e : ContinuousMap.HomotopyEquiv X Y) : PathConnectedSpace X where
-  nonempty := ⟨e.symm (Classical.choice (inferInstance : Nonempty Y))⟩
-  joined x y := ⟨(e.left_inv.some.evalAt x).symm.trans
-    ((PathConnectedSpace.somePath (e x) (e y)).map e.invFun.continuous) |>.trans
-      (e.left_inv.some.evalAt y)⟩
-
-/-- **Smooth recognition of integral homology six-spheres.** Every smooth, closed, connected,
-simply connected integral homology six-sphere is diffeomorphic to the standard six-sphere.
-
-This combines the finite-CW/Hurewicz/Whitehead argument, Smale's generalized Poincare theorem,
-smooth h-cobordism, and the Kervaire--Milnor computation `Theta_6 = 0`. -/
-public axiom establishedSmoothIntegralHomologySixSphereRecognition
-    {X : Type} [TopologicalSpace X] [T2Space X] [SecondCountableTopology X]
-    [ChartedSpace RealModel X] :
-    SmoothSixSphereRecognitionObligation X
 
 /-- A simply connected smooth integral homology six-sphere is a homotopy sphere. -/
 public theorem establishedHomologyToHomotopySixSphere
@@ -41,26 +23,33 @@ public theorem establishedHomologyToHomotopySixSphere
     [ChartedSpace RealModel X] :
     HomologyToHomotopySixSphereObligation X := by
   intro hX
-  obtain ⟨d⟩ := establishedSmoothIntegralHomologySixSphereRecognition hX
-  exact ⟨d.toHomeomorph.toHomotopyEquiv⟩
+  let _ : SimplyConnectedSpace X := hX.simplyConnected
+  have hGenerator : HasTopDimensionalSphericalGenerator X := by
+    exact establishedHigherHurewiczSixGenerator X
+      (fun n hn₀ hn₆ ↦ hX.integralHomologyVanishing n
+        (Nat.ne_of_gt hn₀) (Nat.ne_of_lt hn₆))
+      hX.integralHomologyDegreeSix
+  let _ : IsManifold 𝓘(ℝ, RealModel) ∞ X := hX.isManifold
+  let _ : CompactSpace X := hX.compact
+  have hCWX : HasClassicalCWType X :=
+    establishedCompactSmoothSixManifoldClassicalCWType X
+  have hWhitehead : ClassicalCWIntegralHomologyWhiteheadProperty SixSphere X := by
+    let _ : SimplyConnectedSpace SixSphere := sixSphere_simplyConnected
+    exact establishedSimplyConnectedClassicalCWIntegralHomologyWhitehead SixSphere X
+  exact homotopyEquivSixSphere_of_sphericalGenerator_of_classicalCWWhitehead
+    establishedSixSpherePositiveHomologyInputs hX.integralHomology hGenerator hCWX hWhitehead
 
-/-- The standard-model smooth Poincare theorem in dimension six. -/
-public theorem establishedSmoothPoincareSixStandardModel :
-    SmoothPoincareSixStandardModel := by
-  intro M _ _ _ _ _ _ hHomotopy
-  obtain ⟨e⟩ := hHomotopy
-  let _ : PathConnectedSpace SixSphere := sixSphere_pathConnectedSpace
-  let _ : PathConnectedSpace M := recognition_pathConnectedSpace_of_homotopyEquiv e
-  let hM : SmoothHomotopySixSphere M :=
-    { isManifold := inferInstance
-      compact := inferInstance
-      connected := inferInstance
-      homotopyEquiv := ⟨e⟩ }
-  let _ : SimplyConnectedSpace SixSphere := sixSphere_simplyConnected
-  let _ : SimplyConnectedSpace M := hM.simplyConnected
-  exact establishedSmoothIntegralHomologySixSphereRecognition
-    { toSmoothIntegralHomologySixSphere := hM.toSmoothIntegralHomologySixSphere
-      simplyConnected := inferInstance }
+/-- **Smooth recognition of integral homology six-spheres.** Every smooth, closed, connected,
+simply connected integral homology six-sphere is diffeomorphic to the standard six-sphere. -/
+public theorem establishedSmoothIntegralHomologySixSphereRecognition
+    {X : Type} [TopologicalSpace X] [T2Space X] [SecondCountableTopology X]
+    [ChartedSpace RealModel X] :
+    SmoothSixSphereRecognitionObligation X := by
+  intro hX
+  let _ : IsManifold 𝓘(ℝ, RealModel) ∞ X := hX.isManifold
+  let _ : CompactSpace X := hX.compact
+  exact establishedSmoothPoincareSixStandardModel X
+    (establishedHomologyToHomotopySixSphere hX)
 
 /-- Smale's generalized topological Poincare theorem in dimension six. -/
 public theorem establishedGeneralizedTopologicalPoincareSix :

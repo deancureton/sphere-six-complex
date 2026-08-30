@@ -250,6 +250,7 @@ public import SphereSixComplex.Topology.EstablishedA2PhaseSpreading
 public import SphereSixComplex.Topology.EstablishedLerayCoverComparison
 public import SphereSixComplex.Topology.FiniteCoverCechRows
 public import SphereSixComplex.Topology.EstablishedMayerVietoris
+public import SphereSixComplex.Topology.EstablishedClassicalRecognitionFoundations
 public import SphereSixComplex.Topology.EstablishedRecognition
 public import SphereSixComplex.Topology.HomologyToHomotopySixSphereProof
 public import SphereSixComplex.Topology.EstablishedSphereHomology

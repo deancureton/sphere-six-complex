@@ -2,7 +2,7 @@ module
 
 public import SphereSixComplex.Topology.EstablishedPaperSectionSevenAffineRegularLiftCompletion
 public import SphereSixComplex.Topology.EstablishedPaperSectionSevenCuspCompletion
-public import SphereSixComplex.Topology.EstablishedRecognition
+public import SphereSixComplex.Topology.EstablishedClassicalRecognitionFoundations
 public import SphereSixComplex.Topology.EstablishedEquivariantUniversalCover
 public import SphereSixComplex.Topology.PaperActualAffineFillingCoverModelsProof
 
@@ -25,9 +25,9 @@ Do not edit it by hand; run ./scripts/update-axiom-catalog.sh --write.
 # precise geometric, analytic, or classical-topological statements; their source docstrings
 # record the corresponding trust boundary.
 #
-# Intended retained project trust kernel (6 constants): smooth integral-homology-sphere
-# recognition, compact smooth oriented manifold homology, integral cellular chains, relative
-# Whitehead, finite-cover cellular lifting, and orbifold affine-torsor analytic descent.
+# Intended retained project trust kernel: four exact classical smooth-recognition inputs, compact
+# smooth oriented manifold homology, integral cellular chains, relative Whitehead, finite-cover
+# cellular lifting, and orbifold affine-torsor analytic descent.
 # Every other project constant below is a temporary proof obligation to eliminate.
 
 # Lean's standard logical axioms.
@@ -36,9 +36,19 @@ axiom Quot.sound.{u} : ∀ {α : Sort u} {r : α → α → Prop} {a b : α}, r 
 axiom Classical.choice.{u} : {α : Sort u} → Nonempty α → α
 
 # Classical recognition of the standard smooth six-sphere.
-axiom SphereSixComplex.establishedSmoothIntegralHomologySixSphereRecognition : ∀ {X : Type} [inst : TopologicalSpace X]
-  [T2Space X] [SecondCountableTopology X] [inst_3 : ChartedSpace SphereSixComplex.RealModel X],
-  SphereSixComplex.SmoothSixSphereRecognitionObligation X
+axiom SphereSixComplex.establishedHigherHurewiczSixGenerator : ∀ (X : Type) [inst : TopologicalSpace X]
+  [SimplyConnectedSpace X],
+  (∀ (n : ℕ), 0 < n → n < 6 → Subsingleton (SphereSixComplex.IntegralSingularHomology n X)) →
+    Nonempty (SphereSixComplex.IntegralSingularHomology 6 X ≃+ ℤ) →
+      SphereSixComplex.HasTopDimensionalSphericalGenerator X
+axiom SphereSixComplex.establishedCompactSmoothSixManifoldClassicalCWType : ∀ (X : Type) [inst : TopologicalSpace X]
+  [T2Space X] [SecondCountableTopology X] [inst_3 : ChartedSpace SphereSixComplex.RealModel X]
+  [IsManifold (modelWithCornersSelf ℝ SphereSixComplex.RealModel) (↑⊤) X] [CompactSpace X],
+  SphereSixComplex.HasClassicalCWType X
+axiom SphereSixComplex.establishedSimplyConnectedClassicalCWIntegralHomologyWhitehead : ∀ (X Y : Type)
+  [inst : TopologicalSpace X] [inst_1 : TopologicalSpace Y] [SimplyConnectedSpace X] [SimplyConnectedSpace Y],
+  SphereSixComplex.ClassicalCWIntegralHomologyWhiteheadProperty X Y
+axiom SphereSixComplex.establishedSmoothPoincareSixStandardModel : SphereSixComplex.SmoothPoincareSixStandardModel
 
 # Established general topology and homology.
 axiom SphereSixComplex.establishedCompactSmoothOrientedManifoldHomologyTheory : (d : ℕ) →

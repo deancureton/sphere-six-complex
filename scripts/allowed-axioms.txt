@@ -4,9 +4,9 @@
 # precise geometric, analytic, or classical-topological statements; their source docstrings
 # record the corresponding trust boundary.
 #
-# Intended retained project trust kernel (6 constants): smooth integral-homology-sphere
-# recognition, compact smooth oriented manifold homology, integral cellular chains, relative
-# Whitehead, finite-cover cellular lifting, and orbifold affine-torsor analytic descent.
+# Intended retained project trust kernel: four exact classical smooth-recognition inputs, compact
+# smooth oriented manifold homology, integral cellular chains, relative Whitehead, finite-cover
+# cellular lifting, and orbifold affine-torsor analytic descent.
 # Every other project constant below is a temporary proof obligation to eliminate.
 
 # Lean's standard logical axioms.
@@ -15,7 +15,10 @@ Quot.sound
 Classical.choice
 
 # Classical recognition of the standard smooth six-sphere.
-SphereSixComplex.establishedSmoothIntegralHomologySixSphereRecognition
+SphereSixComplex.establishedHigherHurewiczSixGenerator
+SphereSixComplex.establishedCompactSmoothSixManifoldClassicalCWType
+SphereSixComplex.establishedSimplyConnectedClassicalCWIntegralHomologyWhitehead
+SphereSixComplex.establishedSmoothPoincareSixStandardModel
 
 # Established general topology and homology.
 SphereSixComplex.establishedCompactSmoothOrientedManifoldHomologyTheory
