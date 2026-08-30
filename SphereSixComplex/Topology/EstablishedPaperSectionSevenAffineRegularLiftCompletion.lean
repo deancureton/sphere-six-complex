@@ -2,14 +2,13 @@ module
 
 public import SphereSixComplex.Topology.PaperSectionSevenAffineMarkedRetractionGeometry
 public import SphereSixComplex.Topology.PaperSectionSevenAffineOverlapInterleaving
-public import SphereSixComplex.Topology.PaperSectionSevenAffineMarkedBandHomotopiesProof
 
 /-!
 # Established overlap input for the affine completion
 
-The paper's remaining affine topology is reduced to a representative-level real-period
-calculation at the two explicit radial endpoints.  Both overlap inclusions and all formal
-homotopy-cancellation steps are proved in the preceding modules.
+The paper's remaining affine topology is recorded at the homotopy level actually used by the
+radial completion.  Both overlap inclusions are proved homotopy equivalences in the preceding
+modules; the remaining input is the pair of marked band homotopies.
 -/
 
 @[expose] public section
@@ -20,10 +19,11 @@ namespace SphereSixComplex.Geometry.PaperAnalyticData
 
 namespace EstablishedSectionSevenAffineRegularLiftTopology
 
-/-- The exact remaining paper geometry: representatives of the two explicit star-collar
-endpoints have the finite-cover classes prescribed by the unique marked affine-strip lift. -/
+/-- The exact remaining paper geometry: the two band maps induced by the proved affine overlap
+equivalences are homotopic to the finite-cover projections marked by the unique affine-strip
+lift through the selected actual cusp crossing. -/
 public axiom markedBandHomotopies (A : PaperAnalyticData) :
-    A.SectionSevenAffineMarkedStarRealPeriodCompatibility
+    A.SectionSevenAffineOverlapBandCompatibility
 
 /-- The marked band homotopies and the proved overlap equivalences supply marked retractions.
 The retractions themselves are the canonical homotopy inverses of the two proved inclusion
@@ -41,16 +41,14 @@ public theorem markedRetractionInput_nonempty (A : PaperAnalyticData) :
         markedSquare := by
           rw [← sectionSevenAffineOrderThreeBandToReducedFiber_eq_bandMapOfRetraction]
           rw [sectionSevenAffineBandOrderThreeMarkedProjection_eq_coverMap]
-          exact (markedBandHomotopies_of_starRealPeriodCompatibility A
-            (markedBandHomotopies A)).orderThree }
+          exact (markedBandHomotopies A).orderThree }
   · exact
       { retraction := hFour.toHomotopyEquiv
         invFun_eq := hFour.toHomotopyEquiv_invFun
         markedSquare := by
           rw [← sectionSevenAffineOrderFourBandToReducedFiber_eq_bandMapOfRetraction]
           rw [sectionSevenAffineBandOrderFourMarkedProjection_eq_coverMap]
-          exact (markedBandHomotopies_of_starRealPeriodCompatibility A
-            (markedBandHomotopies A)).orderFour }
+          exact (markedBandHomotopies A).orderFour }
 
 /-- The exact residual affine input from the paper: the two marked band square homotopies.
 
