@@ -76,6 +76,7 @@ namespace SphereSixComplex.Geometry.PaperAnalyticData
 open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
 open SphereSixComplex.Topology.PaperEllipticFillingRealPeriodRadial
 open SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
+open SphereSixComplex.Geometry.GlobalTorusFamily
 
 variable {A : PaperAnalyticData}
 
@@ -209,7 +210,9 @@ public theorem orderThreeAffineDiscCentral_inverse_deformation
 /-- A named explicit order-four affine radial equivalence. -/
 public noncomputable def orderFourAffineRadialEquivChoice
     (A : PaperAnalyticData) {r : ℝ} (hr0 : 0 < r) (hr : r ≤ 1 - 1 / 3) :=
-  (A.exists_orderFourAffineRadialEquiv hr0 hr).choose
+  familyEquivOfBaseEquiv (A.orderFourAffineDiscLiftCarrier_subset_halfPlane hr)
+    (fun _ ↦ Iff.rfl) (fun _ ↦ Iff.rfl)
+    (A.orderFourBaseRadialEquiv (half_pos hr0) (half_lt_self hr0) hr) (fun _ ↦ rfl)
 
 public theorem orderFourAffineRadialEquivChoice_toFun
     (A : PaperAnalyticData) {r : ℝ} (hr0 : 0 < r) (hr : r ≤ 1 - 1 / 3) :
@@ -217,7 +220,20 @@ public theorem orderFourAffineRadialEquivChoice_toFun
       (A.orderFourAffineDiscLiftCarrier r).carrier →
         A.orderFourAffineHalfPlaneLiftCarrier.carrier) =
       A.orderFourAffineDiscLiftInclusion hr :=
-  (A.exists_orderFourAffineRadialEquiv hr0 hr).choose_spec
+  rfl
+
+/-- The selected order-four radial inverse is the flat transport used in the explicit
+`familyEquivOfBaseEquiv` construction. -/
+public theorem orderFourAffineRadialEquivChoice_invFun
+    (A : PaperAnalyticData) {r : ℝ} (hr0 : 0 < r) (hr : r ≤ 1 - 1 / 3)
+    (y : A.orderFourAffineHalfPlaneLiftCarrier.carrier) :
+    ((A.orderFourAffineRadialEquivChoice hr0 hr).invFun y).1 =
+      A.regularFlatTransport
+        (((A.orderFourBaseRadialEquiv (half_pos hr0) (half_lt_self hr0) hr).invFun
+            (⟨regularTotalSpaceBase A.periods y.1, y.2⟩ :
+              A.orderFourAffineHalfPlaneBaseLift)).1,
+          y.1) :=
+  rfl
 
 /-- The explicit order-four affine radial equivalence between a disc region and the whole
 order-four central half-plane region. -/
