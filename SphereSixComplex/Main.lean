@@ -103,6 +103,7 @@ public import SphereSixComplex.Geometry.A2ConeUnimodularity
 public import SphereSixComplex.Geometry.TorusFamily
 public import SphereSixComplex.LatticeData
 public import SphereSixComplex.Periods.AnalyticSquareRoot
+public import SphereSixComplex.Periods.BoundedRemovableSingularity
 public import SphereSixComplex.Periods.Domain
 public import SphereSixComplex.Periods.CanonicalObstruction
 public import SphereSixComplex.Periods.Functions
@@ -124,6 +125,7 @@ public import SphereSixComplex.Periods.FuchsianModularParameterExistence
 public import SphereSixComplex.Periods.FuchsianMuTorsor
 public import SphereSixComplex.Periods.FuchsianPeriodAssembly
 public import SphereSixComplex.Periods.FuchsianUniformizationBridge
+public import SphereSixComplex.Periods.FiniteGroupCocycleAveraging
 public import SphereSixComplex.Periods.Invariant
 public import SphereSixComplex.Periods.LocalOrbifoldCompatibility
 public import SphereSixComplex.Periods.Matrix
