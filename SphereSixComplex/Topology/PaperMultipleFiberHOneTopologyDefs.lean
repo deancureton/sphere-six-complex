@@ -31,6 +31,8 @@ public structure AffineCyclicCentralFiberPresentationData
     (D : RadialEllipticActionData m (AdditiveTorus p)) where
   fullRank : FullRank p
   affine : DescendedAffineTorusAutomorphism p
+  lift_continuous : Continuous affine.lift
+  lift_symm_continuous : Continuous affine.lift.symm
   latticeDifference : Lattice →ₗ[ℤ] Lattice
   latticeDifference_eq :
     latticeDifference = affine.latticeMap.toLinearMap - LinearMap.id

@@ -88,16 +88,9 @@ axiom SphereSixComplex.Topology.AffineFiniteCyclicTorusCW.establishedEllipticRed
         ↑(SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction.OrderThreeReducedCentralFiber F) ×
       SphereSixComplex.FiniteCWModelSix
         ↑(SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction.OrderFourReducedCentralFiber F))
-axiom SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.EstablishedAffineCyclicQuotientHomology.establishedAffineCyclicDeckHurewiczComparison : {m :
-    ℕ} →
-  [inst : NeZero m] →
-    {p : SphereSixComplex.Periods.Parameters} →
-      {D :
-          SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction.RadialEllipticActionData m
-            (SphereSixComplex.Geometry.EllipticFamilySpecialization.AdditiveTorus p)} →
-        (P : SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.AffineCyclicCentralFiberPresentationData m p D) →
-          SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.EstablishedAffineCyclicQuotientHomology.AffineCyclicDeckHurewiczComparison
-            P
+axiom SphereSixComplex.Topology.EstablishedFirstHurewicz.establishedFirstHurewiczData : (X : Type) →
+  [inst : TopologicalSpace X] →
+    (b : X) → [PathConnectedSpace X] → SphereSixComplex.Topology.EstablishedFirstHurewicz.FirstHurewiczData X b
 
 # Established analytic and toric models from the paper.
 axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralOrbitCellAtlas : {E :

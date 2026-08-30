@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+public import SphereSixComplex.Topology.PaperMultipleFiberHOneTopologyCore
 
 /-!
 # Marked period loops in an affine cyclic reduced central fibre
