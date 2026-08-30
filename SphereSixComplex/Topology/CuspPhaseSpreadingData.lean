@@ -59,6 +59,10 @@ public structure FrozenLocalCuspPhaseSpreadingData
     {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) (r : ℝ)
     (P : PolarHoneycombData M r) where
+  positiveRetraction :
+    letI := P.positiveDeckAction
+    EquivariantStrongDeformationRetraction
+      (Multiplicative ParameterLattice) P.positivePart P.central
   phaseOrbit_prod_isQuotientMap :
     Topology.IsQuotientMap
       (Prod.map (id : unitInterval → unitInterval)
@@ -71,7 +75,7 @@ public structure FrozenLocalCuspPhaseSpreadingData
       g • compactPhaseOrbit M r P.positivePart (k, p)
   homotopy_fiberwise :
     letI := P.positiveDeckAction
-    let R := P.positiveEquivariantStrongDeformationRetraction
+    let R := positiveRetraction
     ∀ s k p l q,
       compactPhaseOrbit M r P.positivePart (k, p) =
         compactPhaseOrbit M r P.positivePart (l, q) →

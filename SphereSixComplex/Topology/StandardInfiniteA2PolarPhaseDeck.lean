@@ -174,15 +174,42 @@ public theorem PolarPhaseDeckLift.deck_orbit
 /-- The genuinely geometric residue after the deck multiplier calculation: stabilizer
 preservation by the lifted cellular homotopy. -/
 public structure PolarPhaseGeometricCore
-    (M : Model) (r : ℝ) (P : PolarHoneycombData M r) where
-  homotopy_fiberwise :
+    (M : Model) (r : ℝ) (P : PolarHoneycombData M r) : Prop where
+  exists_positiveRetraction :
     letI := P.positiveDeckAction
-    let R := P.positiveEquivariantStrongDeformationRetraction
+    ∃ R : EquivariantStrongDeformationRetraction
+        (Multiplicative ParameterLattice) P.positivePart P.central,
+      ∀ s k p l q,
+        compactPhaseOrbit M r P.positivePart (k, p) =
+            compactPhaseOrbit M r P.positivePart (l, q) →
+          compactPhaseOrbit M r P.positivePart (k, R.homotopy (s, p)) =
+            compactPhaseOrbit M r P.positivePart (l, R.homotopy (s, q))
+
+namespace PolarPhaseGeometricCore
+
+public noncomputable def positiveRetraction
+    {M : Model} {r : ℝ} {P : PolarHoneycombData M r}
+    (G : PolarPhaseGeometricCore M r P) :
+    letI := P.positiveDeckAction
+    EquivariantStrongDeformationRetraction
+      (Multiplicative ParameterLattice) P.positivePart P.central := by
+  letI := P.positiveDeckAction
+  exact Classical.choose G.exists_positiveRetraction
+
+public theorem homotopy_fiberwise
+    {M : Model} {r : ℝ} {P : PolarHoneycombData M r}
+    (G : PolarPhaseGeometricCore M r P) :
+    letI := P.positiveDeckAction
+    let R := G.positiveRetraction
     ∀ s k p l q,
       compactPhaseOrbit M r P.positivePart (k, p) =
           compactPhaseOrbit M r P.positivePart (l, q) →
         compactPhaseOrbit M r P.positivePart (k, R.homotopy (s, p)) =
-          compactPhaseOrbit M r P.positivePart (l, R.homotopy (s, q))
+          compactPhaseOrbit M r P.positivePart (l, R.homotopy (s, q)) := by
+  letI := P.positiveDeckAction
+  exact Classical.choose_spec G.exists_positiveRetraction
+
+end PolarPhaseGeometricCore
 
 /-- Assemble the phase-spreading interface from its geometric core and the explicit multiplier
 lift.  In particular, the deck-orbit field is a theorem rather than an assumed compatibility. -/
@@ -196,6 +223,7 @@ public def FrozenLocalCuspPhaseSpreadingData.ofPolarPhaseData
     (L : PolarPhaseDeckLift N M r P)
     (G : PolarPhaseGeometricCore M r P) :
     FrozenLocalCuspPhaseSpreadingData N M r P where
+  positiveRetraction := G.positiveRetraction
   phaseOrbit_prod_isQuotientMap := hquot
   deckPhase := L.deckPhase
   deck_orbit := L.deck_orbit

@@ -42,7 +42,7 @@ public noncomputable def frozenEquivariantStrongDeformationRetraction :
     EquivariantStrongDeformationRetraction
       (Multiplicative ParameterLattice) (LocalCarrier M r) {p | M.t p = 0} := by
   letI := P.positiveDeckAction
-  let R := P.positiveEquivariantStrongDeformationRetraction
+  let R := F.positiveRetraction
   letI := frozenLocalCuspAction N M r
   let orbit : C(CompactTorus × P.positivePart, LocalCarrier M r) :=
     ⟨compactPhaseOrbit M r P.positivePart, continuous_compactPhaseOrbit M r P.positivePart⟩
