@@ -92,13 +92,13 @@ public structure ActualAffineFillingCoverSquares where
     cuspCover.fundamentalGroupMap =
     A.actualVanKampenFourPieceCover.cuspOverlapFundamentalGroupMap
   bridge : AffineTorusStarFillingBridge A.actualVanKampenFourPieceCover coreData
-    3 4 epsilon (-epsilon') 0 paperToricSubgroup
-  orderThreeTwist_eq : orderThreeCover.twist = epsilon
+    3 4 (-epsilon) epsilon' 0 paperToricSubgroup
+  orderThreeTwist_eq : orderThreeCover.twist = -epsilon
   orderThreeTranslation_eq : fundamentalGroupAddHomOfBaseEq
     orderThreeBoundaryBase_eq orderThreeCover.translation = bridge.oneTranslation
   orderThreeMeridian_eq : fundamentalGroupElementOfBaseEq
     orderThreeBoundaryBase_eq orderThreeCover.meridian = bridge.oneMeridian
-  orderFourTwist_eq : orderFourCover.twist = -epsilon'
+  orderFourTwist_eq : orderFourCover.twist = epsilon'
   orderFourTranslation_eq : fundamentalGroupAddHomOfBaseEq
     orderFourBoundaryBase_eq orderFourCover.translation = bridge.twoTranslation
   orderFourMeridian_eq : fundamentalGroupElementOfBaseEq

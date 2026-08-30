@@ -165,6 +165,7 @@ public import SphereSixComplex.Topology.PaperCuspCentralNaturality
 public import SphereSixComplex.Topology.PaperCuspAffineFillingBridge
 public import SphereSixComplex.Topology.PaperCentralAffineDeckCover
 public import SphereSixComplex.Topology.PaperVanKampenAlgebraAdapter
+public import SphereSixComplex.Topology.PaperActualEllipticFillingDeckTransport
 public import SphereSixComplex.Topology.FiniteExactSequenceEuler
 public import SphereSixComplex.Topology.IntegralHomologyEuler
 public import SphereSixComplex.Topology.BinaryOpenCoverChains

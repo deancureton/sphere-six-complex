@@ -87,7 +87,7 @@ public theorem relationsAndCoreSurjective
       AffineTorusStarFillingRelations
         (S.coreData.mapSurjective
           A.actualVanKampenFourPieceCover.coreFundamentalGroupMap hcore)
-        3 4 epsilon (-epsilon') 0 paperToricSubgroup := by
+        3 4 (-epsilon) epsilon' 0 paperToricSubgroup := by
   let _ := A.vanKampenCharts
   have _ : StronglyLocallyContractibleSpace A.VanKampenSpace := A.vanKampen_locallyNice
   have _ : PathConnectedSpace A.VanKampenSpace := A.vanKampen_pathConnected
@@ -100,7 +100,7 @@ public theorem hasVanKampenData
     (S : A.ActualAffineFillingCoverSquares) :
     HasVanKampenData A.VanKampenSpace 0 1 (-1) := by
   obtain ⟨hcore, relations⟩ := S.relationsAndCoreSurjective
-  exact hasVanKampenData_of_affineData _
+  exact hasVanKampenData_of_correctedAffineData _
     (S.coreData.mapSurjective
       A.actualVanKampenFourPieceCover.coreFundamentalGroupMap hcore)
     relations

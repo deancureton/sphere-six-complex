@@ -79,12 +79,13 @@ axiom SphereSixComplex.EstablishedGeneralTopology.isHomotopyEquivalenceInclusion
                 (have this := rfl;
                 this))) →
           ∀ (hCW : Topology.RelCWComplex Set.univ D), SphereSixComplex.IsHomotopyEquivalenceInclusion D
+axiom SphereSixComplex.Topology.NormalizedFiniteOrderAdditiveCircleSweep.normalizedFiniteOrderAdditiveCircleSweep : ∀
+  {G : Type} [inst : TopologicalSpace G] [inst_1 : AddCommGroup G] [inst_2 : IsTopologicalAddGroup G] (m : ℕ)
+  [inst_3 : NeZero m] (phi : G ≃ₜ+ G) (hpow : phi.toHomeomorph ^ m = 1),
+  Nonempty (SphereSixComplex.Topology.NormalizedFiniteOrderAdditiveCircleSweep.SweepData m phi hpow)
 axiom SphereSixComplex.Periods.establishedOrbifoldAffineLineTorsorCuspBoundedCousinCorrection : ∀
   (P : SphereSixComplex.Periods.OrbifoldAffineLineTorsorDescentProblem),
   P.HasAcyclicProjectiveLineFrame → Nonempty P.CuspBoundedEllipticOneCorrection
-axiom SphereSixComplex.Topology.FiniteCoverPerfectPairing.establishedActualEllipticDegreeTwoHomologyBasisFiniteData : ∀
-  (A : SphereSixComplex.Geometry.PaperAnalyticData),
-  Nonempty (SphereSixComplex.Topology.FiniteCoverPerfectPairing.EllipticDegreeTwoHomologyBasisFiniteData A.periods)
 
 # Established analytic and toric models from the paper.
 axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralOrbitCellAtlas : {E :
@@ -114,7 +115,7 @@ axiom SphereSixComplex.Geometry.PaperAnalyticData.establishedActualEllipticMarke
   (A : SphereSixComplex.Geometry.PaperAnalyticData),
   Nonempty (A.ActualEllipticMarkedFillingExtensionAtBaseResidual A.actualCuspCentralNaturality)
 axiom SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenAffineRegularLiftTopology.markedBandHomotopies : ∀
-  (A : SphereSixComplex.Geometry.PaperAnalyticData), A.SectionSevenAffineOverlapBandCompatibility
+  (A : SphereSixComplex.Geometry.PaperAnalyticData), A.SectionSevenAffineMarkedStarRealPeriodCompatibility
 axiom SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTopology.establishedActualCuspFiberEllipticMarkedCoordinateCalculation : ∀
   {A : SphereSixComplex.Geometry.PaperAnalyticData} (R : A.SectionSevenAffineRadialCompletionInput),
   SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTopology.ActualCuspFiberEllipticMarkedCoordinateCalculation

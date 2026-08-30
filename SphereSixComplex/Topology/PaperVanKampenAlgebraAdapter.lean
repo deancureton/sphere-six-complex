@@ -49,6 +49,77 @@ public def paperToricSubgroup : AddSubgroup Lattice where
     change (-a) 0 = 0 ∧ (-a) 1 = 0
     simp [ha.1, ha.2]
 
+/-- Reindex an affine-core translation homomorphism by the lattice involution `a ↦ -a`. -/
+public def negateTranslationBasis
+    {G : Type*} [Group G]
+    (C : AffineTorusCorePiOneData G Lattice paperMonodromyOne paperMonodromyTwo) :
+    Lattice →+ Additive G where
+  toFun a := C.translation (-a)
+  map_zero' := by simp
+  map_add' a b := by simp [add_comm]
+
+@[simp]
+public theorem negateTranslationBasis_apply
+    {G : Type*} [Group G]
+    (C : AffineTorusCorePiOneData G Lattice paperMonodromyOne paperMonodromyTwo)
+    (a : Lattice) :
+    negateTranslationBasis C a = C.translation (-a) := rfl
+
+/-- Reindex every affine-core translation by the lattice involution `a ↦ -a`. -/
+public def negateTranslationBasisCoreData
+    {G : Type*} [Group G]
+    (C : AffineTorusCorePiOneData G Lattice paperMonodromyOne paperMonodromyTwo) :
+    AffineTorusCorePiOneData G Lattice paperMonodromyOne paperMonodromyTwo where
+  translation := negateTranslationBasis C
+  rhoOne := C.rhoOne
+  rhoTwo := C.rhoTwo
+  conjugate_one := by
+    intro a
+    simpa only [negateTranslationBasis_apply, map_neg] using C.conjugate_one (-a)
+  conjugate_two := by
+    intro a
+    simpa only [negateTranslationBasis_apply, map_neg] using C.conjugate_two (-a)
+  generators_generate := by
+    rw [show Set.range (fun a ↦ Additive.toMul (negateTranslationBasis C a)) =
+        Set.range (fun a ↦ Additive.toMul (C.translation a)) by
+      ext g
+      constructor
+      · rintro ⟨a, rfl⟩
+        exact ⟨-a, by simp⟩
+      · rintro ⟨a, rfl⟩
+        exact ⟨-a, by simp⟩]
+    exact C.generators_generate
+
+@[simp]
+public theorem negateTranslationBasisCoreData_translation
+    {G : Type*} [Group G]
+    (C : AffineTorusCorePiOneData G Lattice paperMonodromyOne paperMonodromyTwo)
+    (a : Lattice) :
+    (negateTranslationBasisCoreData C).translation a = C.translation (-a) := rfl
+
+/-- Simultaneously negating both elliptic twists is exactly a change of lattice translation
+basis. The toric vanishing condition is preserved because the toric lattice is a subgroup. -/
+public theorem negateTranslationBasisRelations
+    {G : Type*} [Group G]
+    (C : AffineTorusCorePiOneData G Lattice paperMonodromyOne paperMonodromyTwo)
+    (F : AffineTorusStarFillingRelations C 3 4 (-epsilon) epsilon' 0
+      paperToricSubgroup) :
+    AffineTorusStarFillingRelations (negateTranslationBasisCoreData C)
+      3 4 epsilon (-epsilon') 0 paperToricSubgroup where
+  elliptic_one := by
+    change C.rhoOne ^ 3 = Additive.toMul (C.translation (-epsilon))
+    exact F.elliptic_one
+  elliptic_two := by
+    simpa only [negateTranslationBasisCoreData, negateTranslationBasis_apply,
+      neg_neg] using F.elliptic_two
+  cusp := by
+    change C.rhoOne * C.rhoTwo = Additive.toMul (C.translation 0)
+    exact F.cusp
+  toric_vanishes := by
+    intro a ha
+    simpa only [negateTranslationBasisCoreData_translation] using
+      F.toric_vanishes (-a) (paperToricSubgroup.neg_mem ha)
+
 /-- Generic affine-core and filling data specialize to the paper's full van Kampen relations. -/
 public def fullVanKampenRelationsOfAffineData
     {G : Type*} [Group G]
@@ -160,6 +231,18 @@ public theorem hasVanKampenData_of_affineData
     HasVanKampenData X 0 1 (-1) :=
   hasVanKampenData_of_fullRelations base (fullVanKampenRelationsOfAffineData C F)
     (paperGeneratorsGenerate_of_affineData C F)
+
+/-- The physically oriented elliptic twists give the same paper presentation after the explicit
+simultaneous negation of the lattice translation basis. -/
+public theorem hasVanKampenData_of_correctedAffineData
+    {X : Type*} [TopologicalSpace X] (base : X)
+    (C : AffineTorusCorePiOneData (FundamentalGroup X base) Lattice
+      paperMonodromyOne paperMonodromyTwo)
+    (F : AffineTorusStarFillingRelations C 3 4 (-epsilon) epsilon' 0
+      paperToricSubgroup) :
+    HasVanKampenData X 0 1 (-1) :=
+  hasVanKampenData_of_affineData base (negateTranslationBasisCoreData C)
+    (negateTranslationBasisRelations C F)
 
 end SphereSixComplex.Topology
 

@@ -404,7 +404,7 @@ public abbrev AffineTorusMappingTorusDeck
     affineDeckIntegerMonodromy D.latticeMap.toAddEquiv] Multiplicative ℤ
 
 /-- The lattice-translation embedding in the affine mapping-torus deck group. -/
-public def affineTorusMappingTorusDeckTranslation
+@[expose] public def affineTorusMappingTorusDeckTranslation
     {p : Parameters} (D : DescendedAffineTorusAutomorphism p) :
     IntegerPeriods →+ Additive (AffineTorusMappingTorusDeck D) where
   toFun n := Additive.ofMul
@@ -422,7 +422,7 @@ public def affineTorusMappingTorusDeckTranslation
       (Multiplicative.ofAdd n) (Multiplicative.ofAdd m)
 
 /-- The positive angular meridian in the affine mapping-torus deck group. -/
-public def affineTorusMappingTorusDeckMeridian
+@[expose] public def affineTorusMappingTorusDeckMeridian
     {p : Parameters} (D : DescendedAffineTorusAutomorphism p) :
     AffineTorusMappingTorusDeck D :=
   SemidirectProduct.inr (Multiplicative.ofAdd 1)

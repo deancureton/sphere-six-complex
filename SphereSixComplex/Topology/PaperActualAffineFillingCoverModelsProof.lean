@@ -645,7 +645,7 @@ public theorem orderFourActualEllipticBoundaryCover_simplyConnected :
   infer_instance
 
 /-- Canonical inverse-meridian boundary deck data for the actual order-three collar. -/
-public noncomputable def orderThreeActualEllipticBoundaryDeckData :
+@[expose] public noncomputable def orderThreeActualEllipticBoundaryDeckData :
     UnwrappedCyclicAffineBoundaryDeckData 3 Lattice
       (OrderThreeAffineMappingTorusDeck A.periods) where
   translation := affineTorusMappingTorusDeckTranslation
@@ -658,7 +658,7 @@ public noncomputable def orderThreeActualEllipticBoundaryDeckData :
   conjugate := affineTorusMappingTorusDeck_inverseMeridian_conjugate _
   generators_generate :=
     affineTorusMappingTorusDeck_inverseMeridian_generators_generate _
-  twist := epsilon
+  twist := -epsilon
   monodromy_pow := by
     change (Multiplicative.ofAdd (rhoLambda g₁).symm.toAddEquiv) ^ 3 = 1
     apply Multiplicative.toAdd.injective
@@ -675,12 +675,12 @@ public noncomputable def orderThreeActualEllipticBoundaryDeckData :
     have h := congrArg (fun f : DualLattice ≃ₗ[ℤ] DualLattice ↦ f x) a₁_pow_three
     simpa [pow_succ] using h.symm
   twist_fixed := by
-    change (rhoLambda g₁).symm epsilon = epsilon
+    change (rhoLambda g₁).symm (-epsilon) = -epsilon
     apply (rhoLambda g₁).injective
-    rw [(rhoLambda g₁).apply_symm_apply, rhoLambda_g₁_apply, A₁_epsilon]
+    rw [(rhoLambda g₁).apply_symm_apply, map_neg, rhoLambda_g₁_apply, A₁_epsilon]
 
 /-- Canonical inverse-meridian boundary deck data for the actual order-four collar. -/
-public noncomputable def orderFourActualEllipticBoundaryDeckData :
+@[expose] public noncomputable def orderFourActualEllipticBoundaryDeckData :
     UnwrappedCyclicAffineBoundaryDeckData 4 Lattice
       (OrderFourAffineMappingTorusDeck A.periods) where
   translation := affineTorusMappingTorusDeckTranslation
@@ -693,7 +693,7 @@ public noncomputable def orderFourActualEllipticBoundaryDeckData :
   conjugate := affineTorusMappingTorusDeck_inverseMeridian_conjugate _
   generators_generate :=
     affineTorusMappingTorusDeck_inverseMeridian_generators_generate _
-  twist := -epsilon'
+  twist := epsilon'
   monodromy_pow := by
     change (Multiplicative.ofAdd (rhoLambda g₂).symm.toAddEquiv) ^ 4 = 1
     apply Multiplicative.toAdd.injective
@@ -712,10 +712,9 @@ public noncomputable def orderFourActualEllipticBoundaryDeckData :
     have h := congrArg (fun f : DualLattice ≃ₗ[ℤ] DualLattice ↦ f x) a₂_pow_four
     simpa [pow_succ] using h.symm
   twist_fixed := by
-    change (rhoLambda g₂).symm (-epsilon') = -epsilon'
+    change (rhoLambda g₂).symm epsilon' = epsilon'
     apply (rhoLambda g₂).injective
-    rw [(rhoLambda g₂).apply_symm_apply, map_neg, rhoLambda_g₂_apply,
-      A₂_epsilon']
+    rw [(rhoLambda g₂).apply_symm_apply, rhoLambda_g₂_apply, A₂_epsilon']
 
 /-- The remaining order-three filling geometry after fixing the explicit collar cover and deck
 presentation. -/
@@ -1191,7 +1190,7 @@ public structure ActualEllipticCentralNaturality (N : A.ActualCuspCentralNatural
     orderThreeBoundaryBase_eq orderThreeFillingBase_eq
     orderThreeCover.fundamentalGroupMap =
     A.actualVanKampenFourPieceCover.ellipticThreeOverlapFundamentalGroupMap
-  orderThreeTwist_eq : orderThreeCover.twist = epsilon
+  orderThreeTwist_eq : orderThreeCover.twist = -epsilon
   orderThreeTranslation_naturality : ∀ a : Lattice,
     A.actualEllipticThreeOverlapToCore
         (Additive.toMul
@@ -1217,7 +1216,7 @@ public structure ActualEllipticCentralNaturality (N : A.ActualCuspCentralNatural
     orderFourBoundaryBase_eq orderFourFillingBase_eq
     orderFourCover.fundamentalGroupMap =
     A.actualVanKampenFourPieceCover.ellipticFourOverlapFundamentalGroupMap
-  orderFourTwist_eq : orderFourCover.twist = -epsilon'
+  orderFourTwist_eq : orderFourCover.twist = epsilon'
   orderFourTranslation_naturality : ∀ a : Lattice,
     A.actualEllipticFourOverlapToCore
         (Additive.toMul
@@ -1495,7 +1494,7 @@ public structure ActualEllipticCentralBasisNaturality (N : A.ActualCuspCentralNa
     orderThreeBoundaryBase_eq orderThreeFillingBase_eq
     orderThreeCover.fundamentalGroupMap =
     A.actualVanKampenFourPieceCover.ellipticThreeOverlapFundamentalGroupMap
-  orderThreeTwist_eq : orderThreeCover.twist = epsilon
+  orderThreeTwist_eq : orderThreeCover.twist = -epsilon
   orderThreeMonodromy_inverse : ∀ a,
     orderThreeCover.monodromy.toAdd (paperMonodromyOne a) = a
   orderThreeTranslation_zero :
@@ -1532,7 +1531,7 @@ public structure ActualEllipticCentralBasisNaturality (N : A.ActualCuspCentralNa
     orderFourBoundaryBase_eq orderFourFillingBase_eq
     orderFourCover.fundamentalGroupMap =
     A.actualVanKampenFourPieceCover.ellipticFourOverlapFundamentalGroupMap
-  orderFourTwist_eq : orderFourCover.twist = -epsilon'
+  orderFourTwist_eq : orderFourCover.twist = epsilon'
   orderFourMonodromy_inverse : ∀ a,
     orderFourCover.monodromy.toAdd (paperMonodromyTwo a) = a
   orderFourTranslation_zero :
@@ -1923,26 +1922,26 @@ public theorem orderFourOverlapFundamentalGroupMap_surjective
     E.orderFourCover.fundamentalGroupMap
     E.orderFourCover.fundamentalGroupMap_surjective
 
-/-- The order-three filling kills the marked cyclic affine relation at twist `epsilon`. -/
+/-- The order-three filling kills the marked cyclic affine relation at twist `-epsilon`. -/
 public theorem orderThreeRelation_killed (E : ActualEllipticCentralNaturality A N) :
     A.actualVanKampenFourPieceCover.ellipticThreeOverlapFundamentalGroupMap
         ((fundamentalGroupElementOfBaseEq E.orderThreeBoundaryBase_eq
             E.orderThreeCover.meridian) ^ 3 *
           (Additive.toMul
             (fundamentalGroupAddHomOfBaseEq E.orderThreeBoundaryBase_eq
-              E.orderThreeCover.translation epsilon))⁻¹) = 1 := by
+              E.orderThreeCover.translation (-epsilon)))⁻¹) = 1 := by
   rw [← E.orderThreeMap_eq]
   exact chosenCyclicRelation_killed E.orderThreeCover E.orderThreeBoundaryBase_eq
     E.orderThreeFillingBase_eq E.orderThreeTwist_eq
 
-/-- The order-four filling kills the marked cyclic affine relation at twist `-epsilon'`. -/
+/-- The order-four filling kills the marked cyclic affine relation at twist `epsilon'`. -/
 public theorem orderFourRelation_killed (E : ActualEllipticCentralNaturality A N) :
     A.actualVanKampenFourPieceCover.ellipticFourOverlapFundamentalGroupMap
         ((fundamentalGroupElementOfBaseEq E.orderFourBoundaryBase_eq
             E.orderFourCover.meridian) ^ 4 *
           (Additive.toMul
             (fundamentalGroupAddHomOfBaseEq E.orderFourBoundaryBase_eq
-              E.orderFourCover.translation (-epsilon')))⁻¹) = 1 := by
+              E.orderFourCover.translation epsilon'))⁻¹) = 1 := by
   rw [← E.orderFourMap_eq]
   exact chosenCyclicRelation_killed E.orderFourCover E.orderFourBoundaryBase_eq
     E.orderFourFillingBase_eq E.orderFourTwist_eq
@@ -1950,7 +1949,7 @@ public theorem orderFourRelation_killed (E : ActualEllipticCentralNaturality A N
 /-- The complete based affine star filling bridge for the actual four-piece cover. -/
 public noncomputable def bridge (E : ActualEllipticCentralNaturality A N) :
     AffineTorusStarFillingBridge A.actualVanKampenFourPieceCover
-      (A.coreDataOf N) 3 4 epsilon (-epsilon') 0 paperToricSubgroup where
+      (A.coreDataOf N) 3 4 (-epsilon) epsilon' 0 paperToricSubgroup where
   cuspSurjective := A.actualCuspOverlapFundamentalGroupMap_surjective
   oneSurjective := A.actualOrderThreeOverlapFundamentalGroupMap_surjective
   twoSurjective := A.actualOrderFourOverlapFundamentalGroupMap_surjective
