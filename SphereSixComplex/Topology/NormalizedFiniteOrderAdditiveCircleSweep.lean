@@ -116,6 +116,7 @@ naturality squares together with the chain-level orbit sweep.  The normalized co
 positive base-circle cross a fibre loop to the sweep of its cyclic orbit norm, and the final
 boundary clause fixes the Mayer--Vietoris sign on every pointwise-fixed loop. -/
 public axiom normalizedFiniteOrderAdditiveCircleSweep
+    [PathConnectedSpace G]
     (m : ℕ) [NeZero m] (phi : G ≃ₜ+ G)
     (hpow : phi.toHomeomorph ^ m = 1) :
     Nonempty (SweepData m phi hpow)

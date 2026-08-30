@@ -80,8 +80,8 @@ axiom SphereSixComplex.EstablishedGeneralTopology.isHomotopyEquivalenceInclusion
                 this))) →
           ∀ (hCW : Topology.RelCWComplex Set.univ D), SphereSixComplex.IsHomotopyEquivalenceInclusion D
 axiom SphereSixComplex.Topology.NormalizedFiniteOrderAdditiveCircleSweep.normalizedFiniteOrderAdditiveCircleSweep : ∀
-  {G : Type} [inst : TopologicalSpace G] [inst_1 : AddCommGroup G] [inst_2 : IsTopologicalAddGroup G] (m : ℕ)
-  [inst_3 : NeZero m] (phi : G ≃ₜ+ G) (hpow : phi.toHomeomorph ^ m = 1),
+  {G : Type} [inst : TopologicalSpace G] [inst_1 : AddCommGroup G] [inst_2 : IsTopologicalAddGroup G]
+  [PathConnectedSpace G] (m : ℕ) [inst_4 : NeZero m] (phi : G ≃ₜ+ G) (hpow : phi.toHomeomorph ^ m = 1),
   Nonempty (SphereSixComplex.Topology.NormalizedFiniteOrderAdditiveCircleSweep.SweepData m phi hpow)
 axiom SphereSixComplex.Periods.establishedOrbifoldAffineLineTorsorCuspBoundedCousinCorrection : ∀
   (P : SphereSixComplex.Periods.OrbifoldAffineLineTorsorDescentProblem),

@@ -36,6 +36,7 @@ open StandardTorusHomology
 positive circle cross-product. -/
 public theorem canonicalProductWangBoundary_positiveCircleCross
     {G : Type} [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
+    [PathConnectedSpace G]
     (c : C(StdTorus 1, G)) :
     canonicalProductWangBoundary 1 (positiveCircleCross c) =
       integralSingularHomologyMap 1 c standardCircleHomologyGenerator := by
