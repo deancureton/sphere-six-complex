@@ -11,7 +11,7 @@ already zero.  This is the dimension argument the Section 7 collar obligations r
 built from cells of dimension at most five has no sixth homology, whatever its cells look like.
 
 The cellular-to-singular comparison itself is the established
-`EstablishedCellularHomology.integralCWCellularChainModel`; everything below is bookkeeping on top
+`EstablishedCellularHomology.integralCWCellularHomologyModel`; everything below is bookkeeping on top
 of it.
 -/
 

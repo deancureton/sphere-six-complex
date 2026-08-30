@@ -3,7 +3,7 @@ module
 public import SphereSixComplex.Geometry.EllipticFilling
 public import SphereSixComplex.Geometry.EllipticLocalCoordinates
 public import SphereSixComplex.Geometry.EquivariantQuotientHomeomorph
-public import SphereSixComplex.Topology.PaperCollarMappingTorusAdapters
+public import SphereSixComplex.Topology.IntervalClutchingQuotientCore
 public import Mathlib.Analysis.SpecialFunctions.Complex.Circle
 
 /-!

@@ -12,7 +12,7 @@ public import Mathlib.LinearAlgebra.Dimension.RankNullity
 
 The alternating sum of the cell counts of a finite CW model equals the alternating sum of the
 integral Betti numbers.  The proof is the usual rank bookkeeping on the cellular chain complex
-supplied by `EstablishedCellularHomology.integralCWCellularChainModel`: in each degree the chain
+supplied by `EstablishedCellularHomology.integralCWCellularHomologyModel`: in each degree the chain
 group splits by rank into the cycles and the boundaries, the cycles split by rank into the
 boundaries and the homology, and the boundary ranks telescope out of the alternating sum.
 -/
@@ -182,7 +182,7 @@ public theorem integralHomologyEulerCharacteristicSix_eq_cellSum
         + Nat.card (Topology.CWComplex.cell (Set.univ : Set Y) 6) := by
   have hfinCell : ∀ n, Finite (Topology.CWComplex.cell (Set.univ : Set Y) n) :=
     fun n ↦ Topology.CWComplex.FiniteType.finite_cell (C := (Set.univ : Set Y)) n
-  obtain CM := EstablishedCellularHomology.integralCWCellularChainModel Y
+  obtain CM := EstablishedCellularHomology.integralCWCellularHomologyModel Y
   have hXfin : ∀ n, Module.Finite ℤ (CM.chainComplex.X n) := by
     intro n
     have _ := hfinCell n
@@ -202,9 +202,8 @@ public theorem integralHomologyEulerCharacteristicSix_eq_cellSum
   have hHrank : ∀ n, Module.finrank ℤ (CM.chainComplex.homology n) =
       Module.finrank ℤ (IntegralSingularHomology n X) := by
     intro n
-    have _ := CM.comparison_homology_isIso n
     have hcar : CM.chainComplex.homology n ≃+ IntegralSingularHomology n Y :=
-      (asIso (CM.chainComplex.homologyMap CM.comparison n)).addCommGroupIsoToAddEquiv
+      CM.homologyEquiv n
     have hX : IntegralSingularHomology n X ≃+ IntegralSingularHomology n Y :=
       integralSingularHomologyEquivOfHomotopyEquiv n e
     exact hcar.toIntLinearEquiv.finrank_eq.trans hX.toIntLinearEquiv.finrank_eq.symm

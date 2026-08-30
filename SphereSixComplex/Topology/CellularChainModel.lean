@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Topology.MayerVietoris
+public import SphereSixComplex.Topology.CellularHomologyClassicalBoundary
 public import Mathlib.Topology.CWComplex.Classical.Finite
 public import Mathlib.Algebra.Category.Grp.EpiMono
 public import Mathlib.Algebra.Category.Grp.Zero
@@ -32,28 +32,11 @@ public structure IntegralCWCellularChainModel
   comparison : chainComplex ⟶ IntegralSingularChainComplex Y
   comparison_homology_isIso : ∀ n, IsIso (chainComplex.homologyMap comparison n)
 
-namespace EstablishedCellularHomology
-
-/-- Cellular chains of a CW complex are naturally quasi-isomorphic to singular chains.  Mathlib
-does not currently construct the cellular boundary or this comparison map.
-
-The Hausdorff hypothesis is essential and may not be dropped: `Topology.CWComplex` carries no
-separation axiom, and `SphereSixComplex.isEmpty_forall_integralCWCellularChainModel` refutes the
-`T2Space`-free form of this statement using the two-point indiscrete space, which is a finite
-`Topology.CWComplex` with two zero-cells but has the singular homology of a point.
-
-Reference: [Hat02, Theorem 2.35] (cellular homology agrees with singular homology). -/
-public axiom integralCWCellularChainModel
-    (Y : Type) [TopologicalSpace Y] [T2Space Y] [Topology.CWComplex (Set.univ : Set Y)] :
-    IntegralCWCellularChainModel Y
-
-end EstablishedCellularHomology
-
 variable (Y : Type) [TopologicalSpace Y] [Topology.CWComplex (Set.univ : Set Y)]
 
 /-- The cellular chain group of a degree carrying no cells is a zero object. -/
 public theorem isZero_cellularChain_of_isEmpty_cell
-    (M : IntegralCWCellularChainModel Y) (n : ℕ)
+    (M : IntegralCWCellularHomologyModel Y) (n : ℕ)
     [IsEmpty (Topology.CWComplex.cell (Set.univ : Set Y) n)] :
     IsZero (M.chainComplex.X n) := by
   have : Subsingleton (M.chainComplex.X n) := (M.cellBasis n).symm.injective.subsingleton
@@ -63,13 +46,12 @@ public theorem isZero_cellularChain_of_isEmpty_cell
 public theorem subsingleton_integralSingularHomology_of_isEmpty_cell (n : ℕ) [T2Space Y]
     [IsEmpty (Topology.CWComplex.cell (Set.univ : Set Y) n)] :
     Subsingleton (IntegralSingularHomology n Y) := by
-  obtain M := EstablishedCellularHomology.integralCWCellularChainModel Y
+  obtain M := EstablishedCellularHomology.integralCWCellularHomologyModel Y
   have hcell : IsZero (M.chainComplex.homology n) :=
     (HomologicalComplex.ExactAt.of_isZero
       (isZero_cellularChain_of_isEmpty_cell Y M n)).isZero_homology
-  have hiso : IsIso (M.chainComplex.homologyMap M.comparison n) := M.comparison_homology_isIso n
-  have : IsZero ((IntegralSingularChainComplex Y).homology n) :=
-    hcell.of_iso (asIso (M.chainComplex.homologyMap M.comparison n)).symm
+  have : IsZero (AddCommGrpCat.of (IntegralSingularHomology n Y)) :=
+    hcell.of_iso (M.homologyEquiv n).toAddCommGrpIso.symm
   exact AddCommGrpCat.subsingleton_of_isZero this
 
 /-- Homology of a chain complex of finitely generated abelian groups is finitely generated: the

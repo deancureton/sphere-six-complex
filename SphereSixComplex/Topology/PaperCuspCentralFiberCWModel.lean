@@ -99,11 +99,11 @@ public noncomputable def integralCellularChainModel
     (D : StandardA2ToricCentralFiberCWDecomposition X) :
     let _ := D.topology
     let _ := D.cwComplex
-    IntegralCWCellularChainModel D.Carrier := by
+    IntegralCWCellularHomologyModel D.Carrier := by
   letI := D.topology
   letI := D.t2
   letI := D.cwComplex
-  exact EstablishedCellularHomology.integralCWCellularChainModel D.Carrier
+  exact EstablishedCellularHomology.integralCWCellularHomologyModel D.Carrier
 
 /-- Reindex integer coordinates along the labelled orbit-cell equivalence. -/
 public def standardIntegerFunctionReindexAddEquiv {I J : Type} (e : I ≃ J) :

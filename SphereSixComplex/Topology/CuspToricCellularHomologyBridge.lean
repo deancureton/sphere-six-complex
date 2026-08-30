@@ -139,7 +139,7 @@ public def integerFunctionReindexAddEquiv {I J : Type} (e : I ≃ J) :
 public noncomputable def labelledA2CellBasis
     {Y : Type} [TopologicalSpace Y] [Topology.CWComplex (Set.univ : Set Y)]
     (e : ∀ n, Topology.CWComplex.cell (Set.univ : Set Y) n ≃ cuspWCellIndex n)
-    (M : IntegralCWCellularChainModel Y) (n : ℕ) :
+    (M : IntegralCWCellularHomologyModel Y) (n : ℕ) :
     (cuspWCellIndex n → ℤ) ≃+ M.chainComplex.X n := by
   letI : Finite (cuspWCellIndex n) := cuspWCellIndexFinite n
   letI : Finite (Topology.CWComplex.cell (Set.univ : Set Y) n) :=
@@ -154,7 +154,7 @@ any homology calculation. -/
 public structure StandardA2ToricCellularIncidenceData
     {Y : Type} [TopologicalSpace Y] [Topology.CWComplex (Set.univ : Set Y)]
     (e : ∀ n, Topology.CWComplex.cell (Set.univ : Set Y) n ≃ cuspWCellIndex n)
-    (M : IntegralCWCellularChainModel Y) : Prop where
+    (M : IntegralCWCellularHomologyModel Y) : Prop where
   boundary_eq : ∀ (n : ℕ) (x : cuspWCellIndex n.succ → ℤ),
     M.chainComplex.d n.succ n (labelledA2CellBasis e M n.succ x) =
       labelledA2CellBasis e M n (cuspToricCellularBoundary n x)
@@ -163,7 +163,7 @@ namespace StandardA2ToricCellularIncidenceData
 
 variable {Y : Type} [TopologicalSpace Y] [Topology.CWComplex (Set.univ : Set Y)]
 variable {e : ∀ n, Topology.CWComplex.cell (Set.univ : Set Y) n ≃ cuspWCellIndex n}
-variable {M : IntegralCWCellularChainModel Y}
+variable {M : IntegralCWCellularHomologyModel Y}
 
 /-- Exact incidence formulas identify the explicit cusp complex with the genuine cellular
 complex. -/
@@ -183,51 +183,44 @@ public noncomputable def chainIso (I : StandardA2ToricCellularIncidenceData e M)
         AddCommGrpCat.hom_ofHom]
       exact I.boundary_eq j x)
 
-/-- The cellular comparison, after replacing cellular chains by the explicit incidence model. -/
-public noncomputable def singularComparison
-    (I : StandardA2ToricCellularIncidenceData e M) :
-    cuspToricCellularChainComplex ⟶ IntegralSingularChainComplex Y :=
-  I.chainIso.hom ≫ M.comparison
-
-public noncomputable instance singularComparison_homology_isIso
+/-- The incidence isomorphism and classical cellular homology identify singular homology with the
+homology of the explicit incidence complex. -/
+public noncomputable def integralSingularHomologyEquiv
     (I : StandardA2ToricCellularIncidenceData e M) (n : ℕ) :
-    IsIso (cuspToricCellularChainComplex.homologyMap I.singularComparison n) := by
-  dsimp [singularComparison]
-  rw [HomologicalComplex.homologyMap_comp]
-  let _ := M.comparison_homology_isIso n
-  infer_instance
+    IntegralSingularHomology n Y ≃+ cuspToricCellularChainComplex.homology n := by
+  let _ : IsIso (cuspToricCellularChainComplex.homologyMap I.chainIso.hom n) := by
+    infer_instance
+  exact (M.homologyEquiv n).symm.trans
+    ((asIso (cuspToricCellularChainComplex.homologyMap I.chainIso.hom n)).symm
+      |>.addCommGroupIsoToAddEquiv)
 
 /-- The labelled incidence formulas compute the carrier's first singular homology as `ℤ²`. -/
 public noncomputable def integralSingularHomologyOneEquiv
     (I : StandardA2ToricCellularIncidenceData e M) :
     IntegralSingularHomology 1 Y ≃+ (Fin 2 → ℤ) :=
-  (asIso (cuspToricCellularChainComplex.homologyMap I.singularComparison 1)).symm
-    |>.addCommGroupIsoToAddEquiv.trans
-      cuspToricCellularChainComplex_homologyOneEquiv
+  (I.integralSingularHomologyEquiv 1).trans
+    cuspToricCellularChainComplex_homologyOneEquiv
 
 /-- The labelled incidence formulas compute the carrier's second singular homology as `ℤ⁴`. -/
 public noncomputable def integralSingularHomologyTwoEquiv
     (I : StandardA2ToricCellularIncidenceData e M) :
     IntegralSingularHomology 2 Y ≃+ (Fin 4 → ℤ) :=
-  (asIso (cuspToricCellularChainComplex.homologyMap I.singularComparison 2)).symm
-    |>.addCommGroupIsoToAddEquiv.trans
-      cuspToricCellularChainComplex_homologyTwoEquiv
+  (I.integralSingularHomologyEquiv 2).trans
+    cuspToricCellularChainComplex_homologyTwoEquiv
 
 /-- The labelled incidence formulas compute the carrier's third singular homology as `ℤ²`. -/
 public noncomputable def integralSingularHomologyThreeEquiv
     (I : StandardA2ToricCellularIncidenceData e M) :
     IntegralSingularHomology 3 Y ≃+ (Fin 2 → ℤ) :=
-  (asIso (cuspToricCellularChainComplex.homologyMap I.singularComparison 3)).symm
-    |>.addCommGroupIsoToAddEquiv.trans
-      cuspToricCellularChainComplex_homologyThreeEquiv
+  (I.integralSingularHomologyEquiv 3).trans
+    cuspToricCellularChainComplex_homologyThreeEquiv
 
 /-- The labelled incidence formulas compute the carrier's fourth singular homology as `ℤ`. -/
 public noncomputable def integralSingularHomologyFourEquiv
     (I : StandardA2ToricCellularIncidenceData e M) :
     IntegralSingularHomology 4 Y ≃+ ℤ :=
-  (asIso (cuspToricCellularChainComplex.homologyMap I.singularComparison 4)).symm
-    |>.addCommGroupIsoToAddEquiv.trans
-      cuspToricCellularChainComplex_homologyFourEquiv
+  (I.integralSingularHomologyEquiv 4).trans
+    cuspToricCellularChainComplex_homologyFourEquiv
 
 end StandardA2ToricCellularIncidenceData
 
@@ -241,11 +234,11 @@ public noncomputable def establishedIntegralCellularChainModel
     (D : StandardA2ToricCentralFiberCWDecomposition X) :
     let _ := D.topology
     let _ := D.cwComplex
-    IntegralCWCellularChainModel D.Carrier := by
+    IntegralCWCellularHomologyModel D.Carrier := by
   letI := D.topology
   letI := D.t2
   letI := D.cwComplex
-  exact EstablishedCellularHomology.integralCWCellularChainModel D.Carrier
+  exact EstablishedCellularHomology.integralCWCellularHomologyModel D.Carrier
 
 /-- The exact boundary-formula input still required for the concrete standard toric CW
 decomposition. -/

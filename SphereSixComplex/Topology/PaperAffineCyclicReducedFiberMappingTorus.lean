@@ -1,9 +1,8 @@
 module
 
-public import SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
+public import SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverCore
 public import SphereSixComplex.Topology.PaperEllipticCollarFundamentalDomainProof
 public import SphereSixComplex.Topology.PaperEllipticTorusHomologyBasisProof
-public import SphereSixComplex.Topology.PaperEllipticTorusHomologyBasis
 public import SphereSixComplex.Geometry.EllipticFixedPointCriterion
 public import Mathlib.Topology.Constructions
 
@@ -336,6 +335,18 @@ public theorem orderFourThreeTorusClutching_pow :
   ext v i
   fin_cases i <;> (simp [orderFourThreeTorusClutching, pow_succ] <;> abel)
 
+private theorem integralMatrix_rhoLambda_gOne_forGammaNormalForm :
+    LinearMap.toMatrix' (rhoLambda g₁).toLinearMap = A₁ := by
+  ext i j
+  rw [LinearMap.toMatrix'_apply]
+  convert congrFun (rhoLambda_g₁_apply (Pi.single j 1)) i using 1 <;> simp
+
+private theorem integralMatrix_rhoLambda_gTwo_forGammaNormalForm :
+    LinearMap.toMatrix' (rhoLambda g₂).toLinearMap = A₂ := by
+  ext i j
+  rw [LinearMap.toMatrix'_apply]
+  convert congrFun (rhoLambda_g₂_apply (Pi.single j 1)) i using 1 <;> simp
+
 public theorem rhoLambdaReal_gOne_explicit (u : RealPeriods) :
     rhoLambdaReal g₁ u =
       ![u 0, 6 • u 0 + u 2, -(6 • u 0) - u 1 - u 2,
@@ -344,7 +355,7 @@ public theorem rhoLambdaReal_gOne_explicit (u : RealPeriods) :
   rw [realExtension_apply]
   change Matrix.mulVec ((LinearMap.toMatrix' (rhoLambda g₁).toLinearMap).map
     (Int.castRingHom ℝ)) u = _
-  rw [integralMatrix_rhoLambda_gOne]
+  rw [integralMatrix_rhoLambda_gOne_forGammaNormalForm]
   ext i
   fin_cases i <;>
     norm_num [A₁, Matrix.mulVec, dotProduct, Fin.sum_univ_succ] <;> ring
@@ -356,7 +367,7 @@ public theorem rhoLambdaReal_gTwo_explicit (u : RealPeriods) :
   rw [realExtension_apply]
   change Matrix.mulVec ((LinearMap.toMatrix' (rhoLambda g₂).toLinearMap).map
     (Int.castRingHom ℝ)) u = _
-  rw [integralMatrix_rhoLambda_gTwo]
+  rw [integralMatrix_rhoLambda_gTwo_forGammaNormalForm]
   ext i
   fin_cases i <;>
     (norm_num [A₂, Matrix.mulVec, dotProduct, Fin.sum_univ_succ] <;> ring)

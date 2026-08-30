@@ -4,9 +4,9 @@
 # precise geometric, analytic, or classical-topological statements; their source docstrings
 # record the corresponding trust boundary.
 #
-# Intended retained project trust kernel: exactly the four classical smooth-recognition inputs
-# listed below. Every other project constant in this transitional allowlist is a proof obligation
-# to eliminate from the final theorem using those four inputs and Mathlib.
+# Intended retained project trust kernel: the four smooth-recognition inputs below plus a small
+# set of exact, unspecialized classical theorems. Every paper-specific project constant in this
+# transitional allowlist remains a proof obligation.
 
 # Lean's standard logical axioms.
 propext
@@ -21,12 +21,10 @@ SphereSixComplex.establishedSmoothPoincareSixStandardModel
 
 # Established general topology and homology.
 SphereSixComplex.establishedCompactSmoothOrientedManifoldHomologyTheory
-SphereSixComplex.EstablishedCellularHomology.integralCWCellularChainModel
+SphereSixComplex.EstablishedCellularHomology.integralCWCellularHomologyModel
 SphereSixComplex.EstablishedGeneralTopology.isHomotopyEquivalenceInclusion_of_relativeCWComplex_of_bijective_homotopyGroups
-SphereSixComplex.establishedFiniteCoverEulerCharacteristicSix
 SphereSixComplex.Periods.establishedOrbifoldAffineLineTorsorCuspBoundedCousinCorrection
 SphereSixComplex.Topology.FiniteCoverPerfectPairing.establishedActualEllipticDegreeTwoHomologyBasisFiniteData
-SphereSixComplex.Topology.EstablishedCompactManifoldFiniteCW.establishedFiniteCWModelFour_of_compactComplexSurfaceCover
 
 # Established analytic and toric models from the paper.
 SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralOrbitCellAtlas

@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Topology.MappingTorusWangGenericAlgebra
-public import SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
+public import SphereSixComplex.Topology.PaperAffineCyclicReducedFiberMappingTorus
 
 /-!
 # Homology of the reduced elliptic fibres from three-torus mapping-torus models
@@ -67,6 +67,44 @@ public theorem orderFourEuler_eq_zero (M : ReducedFiberMappingTorusModels F) :
     M.orderFourHomeomorph
 
 end ReducedFiberMappingTorusModels
+
+open PaperAffineCyclicReducedFiberMappingTorus
+
+/-- The explicit affine cyclic normal forms supply the mapping-torus models for both elliptic
+reduced central fibres. -/
+public noncomputable def paperReducedFiberMappingTorusModels
+    {U : TriangleUniformization} (F : PeriodFunctions U) :
+    ReducedFiberMappingTorusModels F where
+  orderThreeClutching := orderThreeThreeTorusClutching
+  orderThreeHomeomorph := orderThreeReducedCentralFiberCircleMappingTorusHomeomorph F
+  orderFourClutching := orderFourThreeTorusClutching
+  orderFourHomeomorph := orderFourReducedCentralFiberCircleMappingTorusHomeomorph F
+
+/-- Direct homological finiteness for the order-three reduced central fibre. -/
+public theorem orderThreeIntegralHomologyFiniteSix
+    {U : TriangleUniformization} (F : PeriodFunctions U) :
+    IntegralHomologyFiniteSix (OrderThreeReducedCentralFiber F) :=
+  (paperReducedFiberMappingTorusModels F).orderThreeIntegralHomologyFiniteSix
+
+/-- Direct homological finiteness for the order-four reduced central fibre. -/
+public theorem orderFourIntegralHomologyFiniteSix
+    {U : TriangleUniformization} (F : PeriodFunctions U) :
+    IntegralHomologyFiniteSix (OrderFourReducedCentralFiber F) :=
+  (paperReducedFiberMappingTorusModels F).orderFourIntegralHomologyFiniteSix
+
+/-- The order-three reduced central fibre has Euler characteristic zero directly from its
+mapping-torus model. -/
+public theorem orderThreeEuler_eq_zero
+    {U : TriangleUniformization} (F : PeriodFunctions U) :
+    integralHomologyEulerCharacteristicSix (OrderThreeReducedCentralFiber F) = 0 :=
+  (paperReducedFiberMappingTorusModels F).orderThreeEuler_eq_zero
+
+/-- The order-four reduced central fibre has Euler characteristic zero directly from its
+mapping-torus model. -/
+public theorem orderFourEuler_eq_zero
+    {U : TriangleUniformization} (F : PeriodFunctions U) :
+    integralHomologyEulerCharacteristicSix (OrderFourReducedCentralFiber F) = 0 :=
+  (paperReducedFiberMappingTorusModels F).orderFourEuler_eq_zero
 
 end SphereSixComplex.Topology.EllipticReducedFiberMappingTorusHomology
 

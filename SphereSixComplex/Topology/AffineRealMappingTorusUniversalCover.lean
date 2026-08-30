@@ -2,6 +2,7 @@ module
 
 public import SphereSixComplex.Geometry.QuotientTopology
 public import SphereSixComplex.Topology.PaperEllipticCollarFundamentalDomainProof
+public import SphereSixComplex.Topology.PaperCollarMappingTorusAdapters
 public import Mathlib.GroupTheory.SemidirectProduct
 
 /-!

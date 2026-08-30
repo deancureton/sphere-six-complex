@@ -6,7 +6,7 @@ public import SphereSixComplex.Topology.SingularHomologyDegreeZero
 /-!
 # Why the cellular chain model needs a Hausdorff hypothesis
 
-`EstablishedCellularHomology.integralCWCellularChainModel` says that a Hausdorff `Y : Type`
+`EstablishedCellularHomology.integralCWCellularHomologyModel` says that a Hausdorff `Y : Type`
 carrying `Topology.CWComplex (Set.univ : Set Y)` admits an integral cellular chain model: a chain
 complex whose degree-`n` term is free on the `n`-cells, together with a quasi-isomorphism to
 singular chains.  This file is the regression test pinning down why the `[T2Space Y]` hypothesis
@@ -122,7 +122,7 @@ public theorem not_isClosed_singleton (b : Bool) :
     exact Bool.not_ne_self b hb
 
 /-- `IndiscretePair` is not Hausdorff.  This is precisely the hypothesis that
-`EstablishedCellularHomology.integralCWCellularChainModel` adds to exclude it. -/
+`EstablishedCellularHomology.integralCWCellularHomologyModel` adds to exclude it. -/
 public theorem not_t2Space : ¬ T2Space IndiscretePair := by
   intro _h
   exact not_isClosed_singleton true isClosed_singleton
@@ -219,29 +219,27 @@ end IndiscretePair
 two zero-cells and no other cells, so any such model would force `ℤ² ≃+ ℤ`, whereas the space is
 path-connected and hence has `H₀ ≅ ℤ`. -/
 public theorem isEmpty_integralCWCellularChainModel_indiscretePair :
-    IsEmpty (IntegralCWCellularChainModel IndiscretePair) := by
+    IsEmpty (IntegralCWCellularHomologyModel IndiscretePair) := by
   constructor
   intro M
   have hz : IsZero (M.chainComplex.X 1) :=
     isZero_cellularChain_of_isEmpty_cell IndiscretePair M 1
   have hd1 : M.chainComplex.d 1 0 = 0 := hz.eq_of_src _ _
-  have _hiso : IsIso (M.chainComplex.homologyMap M.comparison 0) := M.comparison_homology_isIso 0
   let eX : M.chainComplex.X 0 ≅ M.chainComplex.homology 0 :=
     M.chainComplex.pOpcyclesIso 1 0 (by simp) hd1 ≪≫ M.chainComplex.isoHomologyι₀.symm
-  let eH : M.chainComplex.homology 0 ≅ (IntegralSingularChainComplex IndiscretePair).homology 0 :=
-    asIso (M.chainComplex.homologyMap M.comparison 0)
   have _hSing : IsIso ((TopCat.of IndiscretePair).singularHomology₀ε (AddCommGrpCat.of ℤ)) :=
     inferInstance
   let eS := asIso ((TopCat.of IndiscretePair).singularHomology₀ε (AddCommGrpCat.of ℤ))
   have f : (Bool →₀ ℤ) ≃+ ℤ :=
-    (M.cellBasis 0).trans (eX.trans (eH.trans eS)).addCommGroupIsoToAddEquiv
+    (M.cellBasis 0).trans eX.addCommGroupIsoToAddEquiv |>.trans
+      (M.homologyEquiv 0) |>.trans eS.addCommGroupIsoToAddEquiv
   have hrank : Module.finrank ℤ (Bool →₀ ℤ) = Module.finrank ℤ ℤ :=
     (f.toIntLinearEquiv).finrank_eq
   rw [Module.finrank_self, (Finsupp.linearEquivFunOnFinite ℤ ℤ Bool).finrank_eq,
     Module.finrank_fintype_fun_eq_card] at hrank
   simp at hrank
 
-/-- Dropping `[T2Space Y]` from `EstablishedCellularHomology.integralCWCellularChainModel` makes it
+/-- Dropping `[T2Space Y]` from `EstablishedCellularHomology.integralCWCellularHomologyModel` makes it
 false: `Topology.CWComplex` carries no separation hypothesis, so the two-point indiscrete space is
 a finite CW complex with two zero-cells while having the integral singular homology of a point.
 
@@ -249,7 +247,7 @@ This is a permanent regression test.  If the `[T2Space Y]` binder is ever remove
 its type becomes the one shown here and `IsEmpty` says it has no inhabitant at all. -/
 public theorem isEmpty_forall_integralCWCellularChainModel :
     IsEmpty (∀ (Y : Type) [TopologicalSpace Y] [Topology.CWComplex (Set.univ : Set Y)],
-      IntegralCWCellularChainModel Y) :=
+      IntegralCWCellularHomologyModel Y) :=
   ⟨fun h => isEmpty_integralCWCellularChainModel_indiscretePair.elim (h IndiscretePair)⟩
 
 end SphereSixComplex

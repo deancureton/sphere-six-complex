@@ -1,6 +1,7 @@
 module
 
 public import SphereSixComplex.Topology.CellularChainModel
+public import SphereSixComplex.Topology.EllipticReducedFiberMappingTorusHomology
 public import SphereSixComplex.Topology.FiniteBouquetMappingTorusEuler
 public import SphereSixComplex.Topology.SectionSevenLocalEulerCalculation
 public import SphereSixComplex.Topology.SectionSevenLocalEulerModelsProof
@@ -78,17 +79,15 @@ public theorem integralHomologyFiniteSix (M : FiniteCWModelSix X) :
     let _ := M.t2
     let _ := M.cwComplex
     let _ := M.finite
-    let CM := EstablishedCellularHomology.integralCWCellularChainModel M.Carrier
+    let CM := EstablishedCellularHomology.integralCWCellularHomologyModel M.Carrier
     have hfin : Finite (Topology.CWComplex.cell (Set.univ : Set M.Carrier) k) :=
       Topology.CWComplex.FiniteType.finite_cell (C := (Set.univ : Set M.Carrier)) k
     have hX : Module.Finite ℤ (CM.chainComplex.X k) :=
       Module.Finite.equiv (CM.cellBasis k).toIntLinearEquiv
     have hhom : Module.Finite ℤ (CM.chainComplex.homology k) :=
       module_finite_homology _ k hX
-    have hiso := CM.comparison_homology_isIso k
     have hcar : Module.Finite ℤ (IntegralSingularHomology k M.Carrier) :=
-      Module.Finite.equiv (asIso (CM.chainComplex.homologyMap CM.comparison k)
-        |>.addCommGroupIsoToAddEquiv).toIntLinearEquiv
+      Module.Finite.equiv (CM.homologyEquiv k).toIntLinearEquiv
     exact Module.Finite.equiv
       (integralSingularHomologyEquivOfHomotopyEquiv k M.homotopyEquiv).symm.toIntLinearEquiv
   homologyAboveDimension k hk := by
@@ -161,78 +160,6 @@ public theorem toFiniteCWModel_cellCount {X : Type} [TopologicalSpace X]
 
 end FiniteCWModelSix
 
-/-- Euler characteristic is multiplicative under a constant finite-sheeted covering of a space
-having the homotopy type of a finite CW complex of dimension at most six. -/
-public axiom establishedFiniteCoverEulerCharacteristicSix
-    {E X : Type} [TopologicalSpace E] [TopologicalSpace X]
-    (projection : C(E, X)) (_isCovering : IsCoveringMap projection)
-    (degree : ℕ)
-    (_fiberFinite : ∀ x, Finite {y : E // projection y = x})
-    (_fiberCardinality : ∀ x, Nat.card {y : E // projection y = x} = degree)
-    (_baseFiniteCW : FiniteCWModelSix X) :
-    integralHomologyEulerCharacteristicSix E =
-      (degree : ℤ) * integralHomologyEulerCharacteristicSix X
-
-/-- A constant-degree finite covering between finite CW-type spaces. -/
-public structure FiniteCoverModelSix (X : Type) [TopologicalSpace X] where
-  Cover : Type
-  coverTopology : TopologicalSpace Cover
-  projection : let _ := coverTopology; C(Cover, X)
-  isCovering : let _ := coverTopology; IsCoveringMap projection
-  degree : ℕ
-  degree_pos : 0 < degree
-  fiberCardinality : let _ := coverTopology
-    ∀ x, Nat.card {y : Cover // projection y = x} = degree
-  coverHomologyFiniteSix : @IntegralHomologyFiniteSix Cover coverTopology
-  quotientFiniteCW : FiniteCWModelSix X
-
-namespace FiniteCoverModelSix
-
-variable {X : Type} [TopologicalSpace X]
-
-/-- The general finite-cover Euler theorem applied to this packaged cover model. -/
-public theorem establishedEulerMultiplicativity (M : FiniteCoverModelSix X) :
-    let _ := M.coverTopology
-    integralHomologyEulerCharacteristicSix M.Cover =
-      (M.degree : ℤ) * integralHomologyEulerCharacteristicSix X := by
-  let _ := M.coverTopology
-  apply establishedFiniteCoverEulerCharacteristicSix M.projection M.isCovering M.degree
-  · intro x
-    apply Nat.finite_of_card_ne_zero
-    rw [M.fiberCardinality x]
-    exact Nat.ne_of_gt M.degree_pos
-  · exact M.fiberCardinality
-  · exact M.quotientFiniteCW
-
-end FiniteCoverModelSix
-
-/-- A finite quotient of a four-torus, expressed by its actual finite covering projection. -/
-public structure FiniteFourTorusCoverModel (X : Type) [TopologicalSpace X] where
-  toFiniteCoverModelSix : FiniteCoverModelSix X
-  coverHomology : @FourTorusHomologicalModel toFiniteCoverModelSix.Cover
-    toFiniteCoverModelSix.coverTopology
-
-namespace FiniteFourTorusCoverModel
-
-variable {X : Type} [TopologicalSpace X]
-
-public theorem integralHomologyFiniteSix (M : FiniteFourTorusCoverModel X) :
-    IntegralHomologyFiniteSix X :=
-  M.toFiniteCoverModelSix.quotientFiniteCW.integralHomologyFiniteSix
-
-/-- A finite free quotient of a four-torus has Euler characteristic zero. -/
-public theorem euler_eq_zero (M : FiniteFourTorusCoverModel X) :
-    integralHomologyEulerCharacteristicSix X = 0 := by
-  let _ := M.toFiniteCoverModelSix.coverTopology
-  have h := M.toFiniteCoverModelSix.establishedEulerMultiplicativity
-  dsimp only at h
-  rw [M.coverHomology.euler_eq_zero] at h
-  have hdegree : (M.toFiniteCoverModelSix.degree : ℤ) ≠ 0 := by
-    exact_mod_cast (ne_of_gt M.toFiniteCoverModelSix.degree_pos)
-  exact (mul_eq_zero.mp h.symm).resolve_left hdegree
-
-end FiniteFourTorusCoverModel
-
 /-- The source CW decomposition of the cusp fibre: the three rational curves in the double locus
 share two vertices and contribute three edges and three faces; the complement contributes one
 relative 2-cell, two relative 3-cells, and one relative 4-cell. -/
@@ -279,7 +206,7 @@ public structure CentralHomologyEulerModel
 
 /-- Exact geometric models still required for the seven local Section 7 spaces.  The fields are
 CW decompositions, direct central homology and Euler data, explicit collar mapping-torus models,
-finite covering projections, and the already stated deformation retractions. -/
+and the already stated deformation retractions. -/
 public structure SectionSevenLocalEulerModels where
   cuspRetraction : ActualLocalCuspCentralFiberRetractionData A.starCuspWitness
   orderThreeRadialChart : OrderThreeAffineRadialWholeFillingCompatibility A
@@ -289,10 +216,6 @@ public structure SectionSevenLocalEulerModels where
   centralModel : CentralHomologyEulerModel A.openEmbeddingStarData.central
   cuspCells : CuspToricCellModel
     (cuspRetraction.quotientCentralFiber A.starCuspWitness)
-  orderThreeCover : FiniteFourTorusCoverModel
-    (OrderThreeReducedCentralFiber A.periods)
-  orderFourCover : FiniteFourTorusCoverModel
-    (OrderFourReducedCentralFiber A.periods)
   collarModel : ∀ i : Fin 3, FourTorusCircleMappingTorusModel
     (A.openEmbeddingStarData.collarSource i)
 
@@ -312,12 +235,14 @@ public theorem localIntegralHomologyFiniteSix (M : SectionSevenLocalEulerModels 
       (M.cuspRetraction.quotientCentralFiberHomotopyEquiv A.starCuspWitness).symm
   · change IntegralHomologyFiniteSix
       (A.OrderThreeVaryingFilling A.starSeparation.orderThree.radius)
-    exact M.orderThreeCover.integralHomologyFiniteSix.homotopyEquiv
+    exact Topology.EllipticReducedFiberMappingTorusHomology.orderThreeIntegralHomologyFiniteSix
+      A.periods |>.homotopyEquiv
       (orderThreeVaryingFillingHomotopyEquivCentralFiber_of_affineRadialChart A
         A.starSeparation.orderThree.radius M.orderThreeRadialChart).symm
   · change IntegralHomologyFiniteSix
       (A.OrderFourVaryingFilling A.starSeparation.orderFour.radius)
-    exact M.orderFourCover.integralHomologyFiniteSix.homotopyEquiv
+    exact Topology.EllipticReducedFiberMappingTorusHomology.orderFourIntegralHomologyFiniteSix
+      A.periods |>.homotopyEquiv
       (orderFourVaryingFillingHomotopyEquivCentralFiber_of_affineRadialChart A
         A.starSeparation.orderFour.radius M.orderFourRadialChart).symm
 
@@ -327,7 +252,8 @@ public theorem sectionSevenLocalEulerExpression_eq_two (M : SectionSevenLocalEul
   A.sectionSevenLocalEulerExpression_eq_two_of_modelCalculations
     M.cuspRetraction M.orderThreeRadialChart M.orderFourRadialChart
     M.centralModel.euler_eq_zero M.cuspCells.euler_eq_two
-    M.orderThreeCover.euler_eq_zero M.orderFourCover.euler_eq_zero
+    (Topology.EllipticReducedFiberMappingTorusHomology.orderThreeEuler_eq_zero A.periods)
+    (Topology.EllipticReducedFiberMappingTorusHomology.orderFourEuler_eq_zero A.periods)
     (fun i ↦ (M.collarModel i).euler_eq_zero)
 
 end SectionSevenLocalEulerModels
