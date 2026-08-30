@@ -6,10 +6,9 @@ public import SphereSixComplex.Topology.PaperCuspGeometricSpecialization
 # The explicit cellular specialization of the standard `A₂` cusp fibre
 
 The cusp CW calculation and the radial Wang calculation currently meet only at their homology
-ranks.  This file isolates the stronger geometric interface between them: a chain map from the
-punctured collar to the labelled toric cellular complex whose cellular-to-singular comparison is
-the actual radial specialization.  Once its values on the Wang generators are computed, the two
-specialization formulas follow formally.
+ranks.  This file isolates the stronger geometric interface between them: the actual radial
+specialization, transported into the labelled toric cellular homology.  Once its values on the
+Wang generators are computed, the two specialization formulas follow formally.
 -/
 
 @[expose] public section
@@ -45,52 +44,6 @@ public noncomputable def actualSpecializationToCWCarrierChainMap
         ⟨puncturedLocalCuspToFilling W, puncturedLocalCuspToFilling_continuous W⟩ ≫
       R.specializationChainMap W ≫ integralSingularChainMap C.homotopyEquiv.toFun
 
-/-- A genuine chain-level cellular realization of the radial specialization.  The commuting
-square is stronger than either of the two desired homology-coordinate equalities. -/
-public structure StandardA2ToricCentralFiberExplicitCWChainRealization
-    (W : ActualPuncturedCuspCollarWitness N M)
-    (R : ActualLocalCuspCentralFiberRetractionData W) where
-  cellularMap :
-    IntegralSingularChainComplex (puncturedLocalCuspQuotient W) ⟶
-      cuspToricCellularChainComplex
-  comparison_commutes :
-    let C := establishedStandardA2ToricCentralFiberCWDecomposition W R
-    let _ := C.topology
-    let _ := C.cwComplex
-    let I := establishedStandardA2ToricCentralFiberCellularIncidence W R
-    cellularMap ≫ I.singularComparison = actualSpecializationToCWCarrierChainMap W R
-
-namespace StandardA2ToricCentralFiberExplicitCWChainRealization
-
-variable {W : ActualPuncturedCuspCollarWitness N M}
-  {R : ActualLocalCuspCentralFiberRetractionData W}
-
-/-- The homology map of a chain-level realization is forced by its commuting comparison square.
-This is the cancellation step that turns a geometric chain construction into the canonical
-cellular specialization. -/
-public theorem homologyMap_eq
-    (T : StandardA2ToricCentralFiberExplicitCWChainRealization W R) (k : ℕ) :
-    (IntegralSingularChainComplex (puncturedLocalCuspQuotient W)).homologyMap
-        T.cellularMap k =
-      let C := establishedStandardA2ToricCentralFiberCWDecomposition W R
-      let _ := C.topology
-      let _ := C.cwComplex
-      let I := establishedStandardA2ToricCentralFiberCellularIncidence W R
-      (IntegralSingularChainComplex (puncturedLocalCuspQuotient W)).homologyMap
-          (actualSpecializationToCWCarrierChainMap W R) k ≫
-        (asIso (cuspToricCellularChainComplex.homologyMap I.singularComparison k)).inv := by
-  let C := establishedStandardA2ToricCentralFiberCWDecomposition W R
-  let _ := C.topology
-  let _ := C.cwComplex
-  let I := establishedStandardA2ToricCentralFiberCellularIncidence W R
-  let q := cuspToricCellularChainComplex.homologyMap I.singularComparison k
-  apply (cancel_mono q).1
-  change _ ≫ q = _ ≫ (asIso q).inv ≫ (asIso q).hom
-  rw [← HomologicalComplex.homologyMap_comp, T.comparison_commutes]
-  simp
-
-end StandardA2ToricCentralFiberExplicitCWChainRealization
-
 /-- The canonical cellular homology class of a collar class under radial specialization. -/
 public noncomputable def standardA2CellularSpecializationHomologyMap
     (W : ActualPuncturedCuspCollarWitness N M)
@@ -102,8 +55,7 @@ public noncomputable def standardA2CellularSpecializationHomologyMap
   letI := C.cwComplex
   let I := establishedStandardA2ToricCentralFiberCellularIncidence W R
   exact
-    (asIso (cuspToricCellularChainComplex.homologyMap I.singularComparison k)).symm
-      |>.addCommGroupIsoToAddEquiv.toAddMonoidHom.comp
+    (I.integralSingularHomologyEquiv k).toAddMonoidHom.comp
         ((integralSingularHomologyEquivOfHomotopyEquiv k C.homotopyEquiv).toAddMonoidHom.comp
           ((R.specializationHomologyMap W k).comp
             (integralSingularHomologyMap k
@@ -146,14 +98,13 @@ public theorem actualLocalCuspFillingHomologyTwoEquiv_specialization_eq_cellular
     ActualLocalCuspCentralFiberRetractionData.specializationHomologyMap_eq_equiv]
   rfl
 
-/-- A chain-level realization together with the calculation of the canonical cellular
-specialization on the Wang coordinates.  These fields concern the explicit cellular complex,
-rather than the homology coordinates of the actual cusp filling. -/
+/-- The calculation of the canonical cellular specialization on the Wang coordinates.  These
+fields concern the explicit cellular complex, rather than the homology coordinates of the actual
+cusp filling. -/
 public structure StandardA2ToricCentralFiberExplicitCWRealization
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W)
-    (G : ActualCuspRadialClutchingData W)
-    extends StandardA2ToricCentralFiberExplicitCWChainRealization W R where
+    (G : ActualCuspRadialClutchingData W) : Prop where
   degreeOne_wangCoordinates : ∀ x : IntegralSingularHomology 1
       (puncturedLocalCuspQuotient W),
     cuspToricCellularChainComplex_homologyOneEquiv
