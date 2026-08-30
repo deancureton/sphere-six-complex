@@ -246,7 +246,7 @@ private theorem affineCyclicTranslation_right
     (P : AffineCyclicCentralFiberPresentationData m p D) (x : Lattice) :
     (Additive.toMul ((affineCyclicBoundaryDeckData P).translation x)).right = 1 := rfl
 
-private def affineCyclicBoundaryDegree
+@[expose] public def affineCyclicBoundaryDegree
     (P : AffineCyclicCentralFiberPresentationData m p D) :
     (affineCyclicBoundaryDeckData P).FillingDeck →* Multiplicative (ZMod m) :=
   QuotientGroup.lift (affineCyclicBoundaryDeckData P).fillingKernel
