@@ -83,6 +83,60 @@ end WangHomologyPresentation
 
 variable {F : Type} [TopologicalSpace F]
 
+/-- A circle mapping torus has finitely generated integral homology through all degrees and
+vanishing homology above degree six whenever the fibre has finitely generated integral homology
+and vanishing homology above degree five. -/
+public theorem circleMappingTorus_integralHomologyFiniteSix_of_finiteHomology
+    [PathConnectedSpace F] (φ : F ≃ₜ F)
+    (finiteHomology : ∀ k, Module.Finite ℤ (IntegralSingularHomology k F))
+    (homologyAboveFive : ∀ k, 5 < k →
+      Subsingleton (IntegralSingularHomology k F)) :
+    IntegralHomologyFiniteSix (CircleMappingTorus φ) := by
+  let _ : PathConnectedSpace (CircleMappingTorus φ) :=
+    pathConnectedSpace_circleMappingTorus φ
+  constructor
+  · intro k
+    cases k with
+    | zero =>
+        let _ : Module.Finite ℤ ℤ := inferInstance
+        exact Module.Finite.equiv
+          (pathConnectedIntegralHomologyZeroEquivInteger
+            (CircleMappingTorus φ)).symm.toIntLinearEquiv
+    | succ k =>
+        let _ : Module.Finite ℤ (IntegralSingularHomology (k + 1) F) :=
+          finiteHomology (k + 1)
+        let _ : Module.Finite ℤ (IntegralSingularHomology k F) := finiteHomology k
+        exact finite_homology_succ_finiteBouquetMappingTorus (fun _ : Unit ↦ φ) k
+  · intro k hk
+    obtain ⟨j, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (by omega : k ≠ 0)
+    exact subsingleton_homology_succ_finiteBouquetMappingTorus_of_wang
+      (fun _ : Unit ↦ φ) j
+      (homologyAboveFive (j + 1) (by omega))
+      (homologyAboveFive j (by omega))
+
+/-- Homological finiteness transported from a circle mapping-torus model with finite, bounded
+fibre homology. -/
+public theorem circleMappingTorus_integralHomologyFiniteSix_of_homeomorph
+    {X : Type} [TopologicalSpace X] [PathConnectedSpace F]
+    (φ : F ≃ₜ F)
+    (finiteHomology : ∀ k, Module.Finite ℤ (IntegralSingularHomology k F))
+    (homologyAboveFive : ∀ k, 5 < k →
+      Subsingleton (IntegralSingularHomology k F))
+    (e : X ≃ₜ CircleMappingTorus φ) :
+    IntegralHomologyFiniteSix X := by
+  let hT := circleMappingTorus_integralHomologyFiniteSix_of_finiteHomology φ
+    finiteHomology homologyAboveFive
+  constructor
+  · intro k
+    let _ : Module.Finite ℤ
+        (IntegralSingularHomology k (CircleMappingTorus φ)) := hT.finiteHomology k
+    exact Module.Finite.equiv
+      (integralSingularHomologyEquiv k e).symm.toIntLinearEquiv
+  · intro k hk
+    let h := hT.homologyAboveDimension k hk
+    let eH := integralSingularHomologyEquiv k e
+    exact ⟨fun x y ↦ eH.injective (@Subsingleton.elim _ h _ _)⟩
+
 /-- A circle mapping torus has Euler characteristic zero whenever the fibre has finitely
 generated integral homology and vanishing homology above degree five. -/
 public theorem circleMappingTorus_euler_eq_zero_of_finiteHomology
@@ -192,5 +246,26 @@ public theorem circleMappingTorus_euler_eq_zero_of_finiteHomology
   rw [hFiberZero] at h₀
   rw [hFiberSix] at h₅
   omega
+
+/-- Euler characteristic zero transported from a circle mapping-torus model with finite, bounded
+fibre homology. -/
+public theorem circleMappingTorus_euler_eq_zero_of_homeomorph
+    {X : Type} [TopologicalSpace X] [PathConnectedSpace F]
+    (φ : F ≃ₜ F)
+    (finiteHomology : ∀ k, Module.Finite ℤ (IntegralSingularHomology k F))
+    (homologyAboveFive : ∀ k, 5 < k →
+      Subsingleton (IntegralSingularHomology k F))
+    (e : X ≃ₜ CircleMappingTorus φ) :
+    integralHomologyEulerCharacteristicSix X = 0 := by
+  unfold integralHomologyEulerCharacteristicSix
+  rw [(integralSingularHomologyEquiv 0 e).toIntLinearEquiv.finrank_eq,
+    (integralSingularHomologyEquiv 1 e).toIntLinearEquiv.finrank_eq,
+    (integralSingularHomologyEquiv 2 e).toIntLinearEquiv.finrank_eq,
+    (integralSingularHomologyEquiv 3 e).toIntLinearEquiv.finrank_eq,
+    (integralSingularHomologyEquiv 4 e).toIntLinearEquiv.finrank_eq,
+    (integralSingularHomologyEquiv 5 e).toIntLinearEquiv.finrank_eq,
+    (integralSingularHomologyEquiv 6 e).toIntLinearEquiv.finrank_eq]
+  exact circleMappingTorus_euler_eq_zero_of_finiteHomology φ finiteHomology
+    homologyAboveFive
 
 end SphereSixComplex
