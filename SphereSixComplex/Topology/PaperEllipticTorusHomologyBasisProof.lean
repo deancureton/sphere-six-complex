@@ -475,10 +475,28 @@ private theorem homologyMap_standardCircle_pointFactor_zero
     Subsingleton.elim _ _
   rw [hzero, map_zero]
 
-/-- The generator selected by the computed integral homology of the standard circle. -/
+/-- The positive geometric loop in the standard one-torus. -/
+public def standardCirclePositiveLoop : Path (0 : StdTorus 1) 0 :=
+  ((StandardCircleHomologyLiftDegree.unitCircleIntegerLoop 1).map
+    StandardCircleHomologyLiftDegree.stdTorusOneHomeomorph.symm.continuous).cast rfl rfl
+
+/-- The positively oriented geometric generator of the standard circle. -/
 public def standardCircleHomologyGenerator :
     IntegralSingularHomology 1 (StdTorus 1) :=
-  (stdTorusHomologyOne 1).symm (Pi.single 0 1)
+  StandardCircleHomologyLiftDegree.loopHomologyClass standardCirclePositiveLoop
+
+public theorem standardCircleHomologyGenerator_winding :
+    StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
+        (integralSingularHomologyMap 1
+          (StandardCircleHomologyLiftDegree.stdTorusOneHomeomorph :
+            C(StdTorus 1, UnitAddCircle))
+          standardCircleHomologyGenerator) = 1 := by
+  rw [standardCircleHomologyGenerator,
+    StandardCircleHomologyLiftDegree.integralSingularHomologyMap_loopHomologyClass]
+  change StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
+      (StandardCircleHomologyLiftDegree.loopHomologyClass
+        (StandardCircleHomologyLiftDegree.unitCircleIntegerLoop 1)) = 1
+  exact StandardCircleHomologyLiftDegree.unitCircleHomologyWinding_positive
 
 private def finOneFunctionAddEquiv : (Fin 1 → ℤ) ≃+ ℤ where
   toFun f := f 0
@@ -572,8 +590,11 @@ public def standardFourTorusCoordinateHomologyClass (i : Fin 4) :
 public noncomputable def standardFourTorusCoordinateHom :
     IntegralSingularHomology 1 (StdTorus 4) →+ (Fin 4 → ℤ) where
   toFun x i :=
-    stdTorusHomologyOne 1
-      (integralSingularHomologyMap 1 (standardFourTorusCoordinateProjection i) x) 0
+    StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
+      (integralSingularHomologyMap 1
+        (StandardCircleHomologyLiftDegree.stdTorusOneHomeomorph :
+          C(StdTorus 1, UnitAddCircle))
+        (integralSingularHomologyMap 1 (standardFourTorusCoordinateProjection i) x))
   map_zero' := by
     funext i
     simp
@@ -586,17 +607,28 @@ public theorem standardFourTorusCoordinateHom_coordinateHomologyClass (j : Fin 4
     standardFourTorusCoordinateHom (standardFourTorusCoordinateHomologyClass j) =
       Pi.single j 1 := by
   funext i
-  change stdTorusHomologyOne 1
-      (integralSingularHomologyMap 1 (standardFourTorusCoordinateProjection i)
-        (integralSingularHomologyMap 1 (standardFourTorusCoordinateCircle j)
-          standardCircleHomologyGenerator)) 0 =
-    (Pi.single j 1 : Fin 4 → ℤ) i
-  rw [integralSingularHomologyMap_comp_wang]
+  change StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
+      (integralSingularHomologyMap 1
+        (StandardCircleHomologyLiftDegree.stdTorusOneHomeomorph :
+          C(StdTorus 1, UnitAddCircle))
+        (integralSingularHomologyMap 1 (standardFourTorusCoordinateProjection i)
+          (integralSingularHomologyMap 1 (standardFourTorusCoordinateCircle j)
+            standardCircleHomologyGenerator))) = (Pi.single j 1 : Fin 4 → ℤ) i
+  have hinner :
+      integralSingularHomologyMap 1 (standardFourTorusCoordinateProjection i)
+          (integralSingularHomologyMap 1 (standardFourTorusCoordinateCircle j)
+            standardCircleHomologyGenerator) =
+        integralSingularHomologyMap 1
+          ((standardFourTorusCoordinateProjection i).comp
+            (standardFourTorusCoordinateCircle j)) standardCircleHomologyGenerator :=
+    integralSingularHomologyMap_comp_wang _ _ _ _
+  rw [hinner]
   by_cases h : i = j
   · subst i
     rw [coordinateProjection_comp_coordinateCircle_self,
       integralSingularHomologyMap_id_wang]
-    simp [standardCircleHomologyGenerator]
+    rw [standardCircleHomologyGenerator_winding]
+    simp
   · rw [coordinateProjection_comp_coordinateCircle_of_ne h,
       homologyMap_standardCircle_pointFactor_zero]
     simp [h]
@@ -716,21 +748,37 @@ private theorem standardFourTorusCanonicalHomologyOne_coordinate_naturality
         (integralSingularHomologyMap 1 f (standardFourTorusCoordinateHomologyClass j)) =
       e (Pi.single j 1) := by
   funext i
-  change stdTorusHomologyOne 1
-      (integralSingularHomologyMap 1 (standardFourTorusCoordinateProjection i)
-        (integralSingularHomologyMap 1 f
-          (integralSingularHomologyMap 1 (standardFourTorusCoordinateCircle j)
-            standardCircleHomologyGenerator))) 0 = _
-  rw [integralSingularHomologyMap_comp_wang, integralSingularHomologyMap_comp_wang]
-  change stdTorusHomologyOne 1
-      (integralSingularHomologyMap 1 (standardFourTorusCoordinateCircleMap f i j)
-        standardCircleHomologyGenerator) 0 = _
+  change StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
+      (integralSingularHomologyMap 1
+        (StandardCircleHomologyLiftDegree.stdTorusOneHomeomorph :
+          C(StdTorus 1, UnitAddCircle))
+        (integralSingularHomologyMap 1 (standardFourTorusCoordinateProjection i)
+          (integralSingularHomologyMap 1 f
+            (integralSingularHomologyMap 1 (standardFourTorusCoordinateCircle j)
+              standardCircleHomologyGenerator)))) = _
+  have hinner :
+      integralSingularHomologyMap 1 (standardFourTorusCoordinateProjection i)
+          (integralSingularHomologyMap 1 f
+            (integralSingularHomologyMap 1 (standardFourTorusCoordinateCircle j)
+              standardCircleHomologyGenerator)) =
+        integralSingularHomologyMap 1 (standardFourTorusCoordinateCircleMap f i j)
+          standardCircleHomologyGenerator := by
+    rw [integralSingularHomologyMap_comp_wang, integralSingularHomologyMap_comp_wang]
+    rfl
+  rw [hinner]
+  change StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
+      (integralSingularHomologyMap 1
+        (StandardCircleHomologyLiftDegree.stdTorusOneHomeomorph :
+          C(StdTorus 1, UnitAddCircle))
+        (integralSingularHomologyMap 1 (standardFourTorusCoordinateCircleMap f i j)
+          standardCircleHomologyGenerator)) = _
   rw [standardCircleHomologyGenerator_map_of_additiveLift
       (standardFourTorusCoordinateCircleMap f i j)
       (standardFourTorusCoordinateLift L i j) ((e (Pi.single j 1)) i)
       (standardFourTorusCoordinateCircleMap_projection L i j)
       (standardFourTorusCoordinateLift_one L i j)]
-  simp [standardCircleHomologyGenerator]
+  rw [map_zsmul, map_zsmul, standardCircleHomologyGenerator_winding]
+  simp
 
 private theorem sum_zsmul_pi_single (v : Fin 4 → ℤ) :
     ∑ j, v j • (Pi.single j 1 : Fin 4 → ℤ) = v := by

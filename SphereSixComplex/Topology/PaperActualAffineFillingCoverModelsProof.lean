@@ -158,8 +158,11 @@ open SphereSixComplex.LatticeData SphereSixComplex.Topology
 open SphereSixComplex.Topology.PaperVanKampenFourPieceCover
 open SphereSixComplex.CyclicAngularFundamentalDomain
 open SphereSixComplex.Geometry.ComplexTorus
+open SphereSixComplex.Geometry.EllipticCayleyHomeomorph
 open SphereSixComplex.TriangleGroup
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
+open SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
+open SphereSixComplex.Topology.PaperEllipticFillingRealPeriodRadial
 
 variable (A : PaperAnalyticData)
 
@@ -253,6 +256,30 @@ public noncomputable def orderFourFillingToActualPieceHomeomorph :
   exact
     A.openEmbeddingStarData.fillingToSectionSevenEulerPieceHomeomorph 2
 
+/-- Inclusion of the actual order-three overlap into its filling piece is the original star
+collar-to-filling map in the canonical source and target coordinates. -/
+public theorem orderThreeCollarToActualOverlap_toPiece
+    (x : A.openEmbeddingStarData.collarSource 1) :
+    A.actualVanKampenFourPieceCover.ellipticThreeOverlapToPiece
+        (A.orderThreeCollarToActualOverlapHomeomorph x) =
+      A.orderThreeFillingToActualPieceHomeomorph (A.starToFilling 1 x) := by
+  apply Subtype.ext
+  change
+    A.openEmbeddingStarData.toFourPieceStarGluingData.glueData.toGlueData.ι
+      none (A.openEmbeddingStarData.toCentral 1 x) =
+    A.openEmbeddingStarData.toFourPieceStarGluingData.glueData.toGlueData.ι
+      (some 1) (A.openEmbeddingStarData.toFilling 1 x)
+  symm
+  apply (A.openEmbeddingStarData.toFourPieceStarGluingData.glueData.ι_eq_iff_rel
+    (some 1) none (A.openEmbeddingStarData.toFilling 1 x)
+      (A.openEmbeddingStarData.toCentral 1 x)).mpr
+  exact ⟨A.openEmbeddingStarData.fillingCollarPoint 1 x, rfl, by
+    change ((A.openEmbeddingStarData.collarEquiv 1).symm
+      (A.openEmbeddingStarData.fillingCollarPoint 1 x)).1 =
+        A.openEmbeddingStarData.toCentral 1 x
+    rw [A.openEmbeddingStarData.collarEquiv_symm_toFilling]
+    rfl⟩
+
 /-- The explicit candidate universal-cover projection of the actual order-three filling. -/
 public noncomputable def orderThreeActualEllipticFillingProjection :
     C(ComplexDiscBall A.starSeparation.orderThree.radius × ComplexTwoSpace,
@@ -284,6 +311,230 @@ public theorem orderFourActualEllipticFillingProjection_surjective :
   A.orderFourFillingToActualPieceHomeomorph.surjective.comp
     (A.orderFourActualFillingCoverProjection_surjective
       A.starSeparation.orderFour.radius)
+
+/-- The explicit order-three lift from radial universal-cover coordinates to the vector-bundle
+cover of the filling.  The fixed-to-moving real-period gauge converts the constant fibre
+coordinate used by the mapping torus into the varying period coordinate used by the filling. -/
+public noncomputable def orderThreeActualEllipticRadialFillingLift :
+    C(OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace),
+      ComplexDiscBall A.starSeparation.orderThree.radius × ComplexTwoSpace) where
+  toFun q :=
+    let u := angularCover (T := ComplexTwoSpace) 3
+      A.starSeparation.orderThree.radius_lt_one.le q
+    (⟨u.1.1, u.2.2⟩,
+      (fixedToMovingCover A.periods
+        A.modular.modularParameter.toTriangleUniformization.zOne
+        (orderThreeCayleyHomeomorph.symm u.1.1, u.1.2)).2)
+  continuous_toFun := by
+    let hangular := continuous_angularCover (T := ComplexTwoSpace) 3
+      A.starSeparation.orderThree.radius_lt_one.le
+    let d : OpenRadialInterval A.starSeparation.orderThree.radius ×
+        (ℝ × ComplexTwoSpace) →
+        ComplexDiscBall A.starSeparation.orderThree.radius := fun q =>
+      let u := angularCover (T := ComplexTwoSpace) 3
+        A.starSeparation.orderThree.radius_lt_one.le q
+      ⟨u.1.1, u.2.2⟩
+    have hd : Continuous d :=
+      Continuous.subtype_mk
+        ((continuous_subtype_val.comp hangular).fst) _
+    let v : OpenRadialInterval A.starSeparation.orderThree.radius ×
+        (ℝ × ComplexTwoSpace) → UpperHalfPlane × ComplexTwoSpace := fun q =>
+      let u := angularCover (T := ComplexTwoSpace) 3
+        A.starSeparation.orderThree.radius_lt_one.le q
+      (orderThreeCayleyHomeomorph.symm u.1.1, u.1.2)
+    have hv : Continuous v :=
+      (orderThreeCayleyHomeomorph.symm.continuous.comp
+        ((continuous_subtype_val.comp hangular).fst)).prodMk
+          ((continuous_subtype_val.comp hangular).snd)
+    have hmoving : Continuous (fun q =>
+        (fixedToMovingCover A.periods
+          A.modular.modularParameter.toTriangleUniformization.zOne (v q)).2) :=
+      continuous_snd.comp
+        ((fixedToMovingCover_continuous A.periods
+          A.modular.modularParameter.toTriangleUniformization.zOne).comp hv)
+    exact hd.prodMk hmoving
+
+@[simp]
+public theorem orderThreeActualEllipticRadialFillingLift_fst
+    (q : OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :
+    (A.orderThreeActualEllipticRadialFillingLift q).1.1 =
+      (angularCover (T := ComplexTwoSpace) 3
+        A.starSeparation.orderThree.radius_lt_one.le q).1.1 :=
+  rfl
+
+@[simp]
+public theorem orderThreeActualEllipticRadialFillingLift_snd
+    (q : OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :
+    (A.orderThreeActualEllipticRadialFillingLift q).2 =
+      (fixedToMovingCover A.periods
+        A.modular.modularParameter.toTriangleUniformization.zOne
+        (orderThreeCayleyHomeomorph.symm
+          (angularCover (T := ComplexTwoSpace) 3
+            A.starSeparation.orderThree.radius_lt_one.le q).1.1,
+          (angularCover (T := ComplexTwoSpace) 3
+            A.starSeparation.orderThree.radius_lt_one.le q).1.2)).2 :=
+  rfl
+
+/-- In the fixed real-period product chart, the explicit lift is exactly the angular cover and
+the original vector-cover coordinate. -/
+public theorem orderThreeFillingProductMap_actualEllipticRadialFillingLift
+    (q : OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :
+    orderThreeFillingProductMap A A.starSeparation.orderThree.radius
+        (A.orderThreeFillingCoverMap A.starSeparation.orderThree.radius
+          (A.orderThreeActualEllipticRadialFillingLift q)) =
+      ((angularCover (T := ComplexTwoSpace) 3
+          A.starSeparation.orderThree.radius_lt_one.le q).1.1,
+        Quotient.mk _ q.2.2) := by
+  rw [orderThreeFillingProductMap]
+  rw [orderThreeFillingCoverMap.eq_def]
+  rw [orderThreeRealPeriodProductHomeomorph_mk]
+  rw [A.orderThreeActualEllipticRadialFillingLift_fst,
+    A.orderThreeActualEllipticRadialFillingLift_snd]
+  rw [orderThreeCayleyHomeomorph.apply_symm_apply]
+  let u := angularCover (T := ComplexTwoSpace) 3
+    A.starSeparation.orderThree.radius_lt_one.le q
+  let p : UpperHalfPlane × ComplexTwoSpace :=
+    (orderThreeCayleyHomeomorph.symm u.1.1, u.1.2)
+  have hp : (orderThreeCayleyHomeomorph.symm u.1.1,
+      (fixedToMovingCover A.periods
+        A.modular.modularParameter.toTriangleUniformization.zOne p).2) =
+      fixedToMovingCover A.periods
+        A.modular.modularParameter.toTriangleUniformization.zOne p := by
+    apply Prod.ext <;> rfl
+  change (u.1.1, Quotient.mk _ (movingToFixedCover A.periods
+    A.modular.modularParameter.toTriangleUniformization.zOne
+      (orderThreeCayleyHomeomorph.symm u.1.1,
+        (fixedToMovingCover A.periods
+          A.modular.modularParameter.toTriangleUniformization.zOne p).2)).2) =
+    (u.1.1, Quotient.mk _ q.2.2)
+  rw [hp, movingToFixedCover_fixedToMovingCover]
+  rfl
+
+/-- The angular quotient homeomorphism sends the explicit angular lift to the affine
+mapping-torus projection of the same real/vector coordinate. -/
+public theorem orderThreeAngularQuotientHomeomorph_apply
+    (q : OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :
+    let D := orderThreeCyclicPuncturedProductData A.periods
+      A.starSeparation.orderThree.radius A.starSeparation.orderThree.radius_pos
+      A.starSeparation.orderThree.radius_lt_one
+    let w : OpenRadialInterval A.starSeparation.orderThree.radius ×
+        (ℝ × A.orderThreeTorus) := (q.1, q.2.1, Quotient.mk _ q.2.2)
+  EstablishedCyclicAngularFundamentalDomain.quotientHomeomorphRadialMappingTorus D
+        CyclicAngularFundamentalDomain.orderThreeMultiplier_eq_standardMultiplier
+        (angularQuotientMap D.action D.radius_lt_one.le D.carrier rfl w) =
+      (q.1, orderThreeAffineMappingTorusLiftProjection A.periods q.2) := by
+  dsimp only
+  let D := orderThreeCyclicPuncturedProductData A.periods
+    A.starSeparation.orderThree.radius A.starSeparation.orderThree.radius_pos
+    A.starSeparation.orderThree.radius_lt_one
+  let w : OpenRadialInterval A.starSeparation.orderThree.radius ×
+      (ℝ × A.orderThreeTorus) := (q.1, q.2.1, Quotient.mk _ q.2.2)
+  let hgen := CyclicAngularFundamentalDomain.isStandardGenerator_of_multiplier_eq
+    D.action D.clutching D.multiplier D.multiplier_norm
+      CyclicAngularFundamentalDomain.orderThreeMultiplier_eq_standardMultiplier
+      D.generator_formula
+  let hf := isQuotientMap_angularQuotientMap D.action D.radius_lt_one.le D.carrier rfl
+    D.action_continuous
+  let hg := isQuotientMap_radialTorusMap
+    (r := A.starSeparation.orderThree.radius) D.clutching
+  let heq := angularQuotientMap_eq_iff D.action D.clutching D.radius_lt_one.le D.carrier
+    rfl hgen
+  change ((Homeomorph.refl (OpenRadialInterval A.starSeparation.orderThree.radius)).prodCongr
+      (realMappingTorusHomeomorph _))
+    (CyclicAngularFundamentalDomain.homeomorphOfQuotientMaps
+      hf hg heq
+      (angularQuotientMap D.action D.radius_lt_one.le D.carrier rfl w)) = _
+  have happly : CyclicAngularFundamentalDomain.homeomorphOfQuotientMaps hf hg heq
+      (angularQuotientMap D.action D.radius_lt_one.le D.carrier rfl w) =
+      radialTorusMap D.clutching w :=
+    (heq _ _).mp
+      (Function.surjInv_eq hf.surjective
+        (angularQuotientMap D.action D.radius_lt_one.le D.carrier rfl w))
+  rw [happly]
+  rfl
+
+/-- The explicit order-three radial lift commutes with the collar inclusion into the actual
+filling piece. -/
+public theorem orderThreeActualEllipticRadialFillingLift_commutes
+    (q : OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :
+    A.actualVanKampenFourPieceCover.ellipticThreeOverlapToPiece
+        (A.orderThreeActualEllipticBoundaryProjection q) =
+      A.orderThreeActualEllipticFillingProjection
+        (A.orderThreeActualEllipticRadialFillingLift q) := by
+  rw [orderThreeActualEllipticBoundaryProjection]
+  rw [orderThreeActualEllipticFillingProjection]
+  let x : A.openEmbeddingStarData.collarSource 1 :=
+    A.orderThreeCollarRadialMappingTorusHomeomorph.symm
+      (q.1, orderThreeAffineMappingTorusLiftProjection A.periods q.2)
+  change A.actualVanKampenFourPieceCover.ellipticThreeOverlapToPiece
+      (A.orderThreeCollarToActualOverlapHomeomorph x) =
+    A.orderThreeFillingToActualPieceHomeomorph
+      (A.orderThreeActualFillingCoverProjection A.starSeparation.orderThree.radius
+        (A.orderThreeActualEllipticRadialFillingLift q))
+  rw [A.orderThreeCollarToActualOverlap_toPiece x]
+  apply congrArg A.orderThreeFillingToActualPieceHomeomorph
+  let xq : A.starCollarSourceType 1 :=
+    A.orderThreeCollarRadialMappingTorusHomeomorph.symm
+      (q.1, orderThreeAffineMappingTorusLiftProjection A.periods q.2)
+  change A.starToFilling 1 xq =
+    A.orderThreeActualFillingCoverProjection A.starSeparation.orderThree.radius
+      (A.orderThreeActualEllipticRadialFillingLift q)
+  let D := orderThreeCyclicPuncturedProductData A.periods
+    A.starSeparation.orderThree.radius A.starSeparation.orderThree.radius_pos
+    A.starSeparation.orderThree.radius_lt_one
+  let e := orderThreePuncturedProductEquivariantHomeomorph A.periods
+    A.modular.modularParameter.toTriangleUniformization_sourceAction
+    A.starSeparation.orderThree.radius A.starSeparation.orderThree.radius_pos
+    A.starSeparation.orderThree.radius_lt_one
+  let hprod := EquivariantQuotientHomeomorph.restrictedOrbitQuotientHomeomorph e
+  let hang := EstablishedCyclicAngularFundamentalDomain.quotientHomeomorphRadialMappingTorus D
+    CyclicAngularFundamentalDomain.orderThreeMultiplier_eq_standardMultiplier
+  let w : OpenRadialInterval A.starSeparation.orderThree.radius ×
+      (ℝ × A.orderThreeTorus) := (q.1, q.2.1, Quotient.mk _ q.2.2)
+  have hxprod : hprod xq =
+      angularQuotientMap D.action D.radius_lt_one.le D.carrier rfl w := by
+    apply hang.injective
+    change A.orderThreeCollarRadialMappingTorusHomeomorph xq =
+      hang (angularQuotientMap D.action D.radius_lt_one.le D.carrier rfl w)
+    rw [show A.orderThreeCollarRadialMappingTorusHomeomorph xq =
+        (q.1, orderThreeAffineMappingTorusLiftProjection A.periods q.2) from
+      A.orderThreeCollarRadialMappingTorusHomeomorph.apply_symm_apply _,
+      A.orderThreeAngularQuotientHomeomorph_apply q]
+  have hxx : xq = hprod.symm
+      (angularQuotientMap D.action D.radius_lt_one.le D.carrier rfl w) := by
+    rw [← hxprod]
+    exact (hprod.symm_apply_apply xq).symm
+  rw [hxx]
+  let y : D.carrier.carrier :=
+    (Homeomorph.setCongr (show D.carrier.carrier =
+      puncturedProduct A.orderThreeTorus A.starSeparation.orderThree.radius from rfl)).symm
+      (angularCover (T := A.orderThreeTorus) 3 D.radius_lt_one.le w)
+  let s := e.toHomeomorph.symm y
+  have hinv : hprod.symm
+      (angularQuotientMap D.action D.radius_lt_one.le D.carrier rfl w) =
+      Quotient.mk _ s := by
+    apply hprod.injective
+    rw [hprod.apply_symm_apply]
+    change Quotient.mk _ y = hprod (Quotient.mk _ s)
+    rw [EquivariantQuotientHomeomorph.restrictedOrbitQuotientHomeomorph_mk]
+    rw [show e.toHomeomorph s = y from e.toHomeomorph.apply_symm_apply y]
+  rw [hinv]
+  change A.orderThreePuncturedCollarToFilling A.starSeparation.orderThree.radius
+      (Quotient.mk _ s) =
+    A.orderThreeActualFillingCoverProjection A.starSeparation.orderThree.radius
+      (A.orderThreeActualEllipticRadialFillingLift q)
+  rw [A.orderThreePuncturedCollarToFilling_mk]
+  rw [orderThreeActualFillingCoverProjection]
+  apply congrArg (Quotient.mk _)
+  apply Subtype.ext
+  apply (orderThreeRealPeriodProductHomeomorph A.periods).injective
+  change (e.toHomeomorph s).1 =
+    orderThreeFillingProductMap A A.starSeparation.orderThree.radius
+      (A.orderThreeFillingCoverMap A.starSeparation.orderThree.radius
+        (A.orderThreeActualEllipticRadialFillingLift q))
+  rw [show e.toHomeomorph s = y from e.toHomeomorph.apply_symm_apply y]
+  rw [A.orderThreeFillingProductMap_actualEllipticRadialFillingLift q]
+  rfl
 
 /-- The semidirect deck action on the explicit radial cover of the actual order-three overlap. -/
 @[instance_reducible] public noncomputable def orderThreeActualEllipticBoundaryAction :
