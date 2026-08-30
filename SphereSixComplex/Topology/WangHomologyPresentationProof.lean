@@ -2455,6 +2455,34 @@ public theorem differenceMap_overlapEquiv (φ : ι → F ≃ₜ F) (k : ℕ)
   rw [differenceMap_overlapLegSum, piecesEquiv_apply, coverDifference_apply]
 
 omit [Fintype ι] [Inhabited ι] [DiscreteTopology ι] in
+/-- The vertex member of the mapping-torus cover as an open subset. -/
+public def coverVertexOpen (φ : ι → F ≃ₜ F) :
+    TopologicalSpace.Opens (TopCat.of (FiniteBouquetMappingTorus φ)) where
+  carrier := vertexPiece φ
+  is_open' := isOpen_vertexPiece φ
+
+omit [Fintype ι] [Inhabited ι] [DiscreteTopology ι] in
+/-- The edge member of the mapping-torus cover as an open subset. -/
+public def coverEdgeOpen (φ : ι → F ≃ₜ F) :
+    TopologicalSpace.Opens (TopCat.of (FiniteBouquetMappingTorus φ)) where
+  carrier := edgePiece φ
+  is_open' := isOpen_edgePiece φ
+
+omit [Fintype ι] [Inhabited ι] [DiscreteTopology ι] in
+/-- The vertex and edge opens cover the mapping torus. -/
+public theorem coverOpen (φ : ι → F ≃ₜ F) :
+    coverVertexOpen φ ⊔ coverEdgeOpen φ = ⊤ := by
+  ext x
+  change x ∈ vertexPiece φ ∪ edgePiece φ ↔ x ∈ Set.univ
+  rw [vertexPiece_union_edgePiece]
+
+omit [Fintype ι] [Inhabited ι] [DiscreteTopology ι] in
+/-- The canonical generated-chain comparison for the vertex/edge cover. -/
+public noncomputable def coverHomologyComparison (φ : ι → F ≃ₜ F) :
+    BinaryOpenCover.OpenCoverHomologyComparison (coverVertexOpen φ) (coverEdgeOpen φ) :=
+  BinaryOpenCover.openCoverHomologyComparisonOfCover (coverOpen φ)
+
+omit [Fintype ι] [Inhabited ι] [DiscreteTopology ι] in
 /-- The Mayer--Vietoris sequence of the vertex/edge open cover of the mapping torus. -/
 public theorem coverMayerVietoris (φ : ι → F ≃ₜ F) :
     IntegralMayerVietoris.ExactSequence (vertexPiece φ) (edgePiece φ) :=
@@ -2462,10 +2490,10 @@ public theorem coverMayerVietoris (φ : ι → F ≃ₜ F) :
     (isOpen_vertexPiece φ) (isOpen_edgePiece φ)
 
 /-- The Mayer--Vietoris boundary of the vertex/edge open cover. -/
-public noncomputable def coverBoundary (φ : ι → F ≃ₜ F) (k : ℕ) :
+@[irreducible] public noncomputable def coverBoundary (φ : ι → F ≃ₜ F) (k : ℕ) :
     IntegralSingularHomology (k + 1) ↥(vertexPiece φ ∪ edgePiece φ) →+
       IntegralSingularHomology k ↥(vertexPiece φ ∩ edgePiece φ) :=
-  (coverMayerVietoris φ).choose k
+  ((coverHomologyComparison φ).toIntegralMayerVietorisData (coverOpen φ)).legacyBoundary k
 
 omit [Fintype ι] [Inhabited ι] [DiscreteTopology ι] in
 public theorem coverBoundary_spec (φ : ι → F ≃ₜ F) (k : ℕ) :
@@ -2473,7 +2501,10 @@ public theorem coverBoundary_spec (φ : ι → F ≃ₜ F) (k : ℕ) :
       Function.Exact (coverBoundary φ k) (differenceMap (vertexPiece φ) (edgePiece φ) k) ∧
       Function.Exact (differenceMap (vertexPiece φ) (edgePiece φ) k)
         (sumMap (vertexPiece φ) (edgePiece φ) k) :=
-  (coverMayerVietoris φ).choose_spec k
+  by
+    unfold coverBoundary
+    exact ((coverHomologyComparison φ).toIntegralMayerVietorisData
+      (coverOpen φ)).legacyBoundary_exact k
 
 /-- The two-legged Wang boundary carried by the Mayer--Vietoris boundary of the cover. -/
 public noncomputable def coverWangBoundary (φ : ι → F ≃ₜ F) (k : ℕ) :
