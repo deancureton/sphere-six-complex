@@ -22,6 +22,9 @@ namespace SphereSixComplex.Geometry.PaperAnalyticData
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
 open SphereSixComplex.Geometry.EllipticFixedPointCriterion
+open SphereSixComplex.Geometry.EllipticCayleyHomeomorph
+open SphereSixComplex.Geometry.EllipticHolomorphicLogCover
+open SphereSixComplex.Geometry.EllipticLocalCoordinates
 open SphereSixComplex.Geometry.EllipticLinearCollarGlobalDescent
 open SphereSixComplex.Geometry.EllipticPuncturedCollarGaugeHomeomorph
 open SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
@@ -32,6 +35,7 @@ open SphereSixComplex.Geometry.AnalyticTorusFamily
 open SphereSixComplex.Geometry.EquivariantQuotientHomeomorph
 open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
 open SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
+open SphereSixComplex.TriangleGroup
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 
 /-- The named marked-band point lifted to the order-four affine half-plane carrier. -/
@@ -143,6 +147,31 @@ public theorem regularTotalSpaceBase_namedDiscLiftPoint
   rw [A.regularTotalSpaceBase_regularFlatTransport]
   rfl
 
+/-- The explicit radial base lies in the chosen affine coordinate disc. -/
+public theorem regularCoordinate_namedOrderFourRadialBaseLift_norm_lt_markedRadius
+    (A : PaperAnalyticData) (x : A.SectionSevenAffineMarkedBand) :
+    ‖(A.regularCoordinate
+        (A.sectionSevenAffineOrderFourRadialBaseLift
+          (A.sectionSevenAffineBandStripCoordinate x))).1 - 1‖ <
+      A.sectionSevenAffineOrderFourMarkedDiscRadius := by
+  have h := (A.sectionSevenAffineOrderFourNamedDiscLiftPoint x).2
+  change ‖(A.regularCoordinate
+      (regularTotalSpaceBase A.periods
+        (A.sectionSevenAffineOrderFourNamedDiscLiftPoint x).1)).1 - 1‖ <
+    A.sectionSevenAffineOrderFourMarkedDiscRadius at h
+  rw [A.regularTotalSpaceBase_namedDiscLiftPoint x] at h
+  exact h
+
+/-- In particular, the quotient coordinate of the named radial base lies in the standard
+order-four affine disc of radius `1/3`. -/
+public theorem regularCoordinate_namedOrderFourRadialBaseLift_norm_lt_one_third
+    (A : PaperAnalyticData) (x : A.SectionSevenAffineMarkedBand) :
+    ‖(A.regularCoordinate
+        (A.sectionSevenAffineOrderFourRadialBaseLift
+          (A.sectionSevenAffineBandStripCoordinate x))).1 - 1‖ < 1 / 3 :=
+  (A.regularCoordinate_namedOrderFourRadialBaseLift_norm_lt_markedRadius x).trans_le
+    A.sectionSevenAffineOrderFourMarkedDiscRadius_spec.2.1
+
 /-- Affine radial transport preserves the named order-four real-period coordinate. -/
 public theorem orderFourRealPeriod_namedDiscLiftPoint
     {A : PaperAnalyticData}
@@ -246,6 +275,77 @@ public structure SectionSevenAffineOrderFourNamedRadialCollarCompatibility
   collar_mem : ∀ x : A.SectionSevenAffineMarkedBand,
     A.sectionSevenAffineOrderFourNamedCollarTotalPoint x ∈
       orderFourPuncturedFamilyCollar A.periods A.starSeparation.orderFour.radius
+
+/-- The collar radius of the inverse-gauged named representative is the Cayley radius of its
+explicit radial base lift. -/
+public theorem orderFourFamilyRadius_namedCollarTotalPoint
+    (A : PaperAnalyticData) (x : A.SectionSevenAffineMarkedBand) :
+    orderFourFamilyRadius A.periods
+        (A.sectionSevenAffineOrderFourNamedCollarTotalPoint x) =
+      ‖(orderFourCayleyHomeomorph
+        (A.sectionSevenAffineOrderFourRadialBaseLift
+          (A.sectionSevenAffineBandStripCoordinate x)).1 : ℂ)‖ := by
+  rw [sectionSevenAffineOrderFourNamedCollarTotalPoint,
+    orderFourFamilyRadius_principalGauge_symm,
+    orderFourFamilyRadius.eq_def,
+    familyTotalSpaceBase_regularFamilyInclusion,
+    regularTotalSpaceBase_namedDiscLiftPoint]
+
+/-- The named radial representative cannot hit the puncture, because its base belongs to the
+regular source and the order-four Cayley centre lies over the excluded coordinate `1`. -/
+public theorem orderFourFamilyRadius_namedCollarTotalPoint_pos
+    (A : PaperAnalyticData) (x : A.SectionSevenAffineMarkedBand) :
+    0 < orderFourFamilyRadius A.periods
+      (A.sectionSevenAffineOrderFourNamedCollarTotalPoint x) := by
+  rw [A.orderFourFamilyRadius_namedCollarTotalPoint x]
+  apply norm_pos_iff.mpr
+  apply coe_ne_zero_of_ne_center
+  intro hzero
+  have hfixed :
+      (A.sectionSevenAffineOrderFourRadialBaseLift
+        (A.sectionSevenAffineBandStripCoordinate x)).1 =
+        fuchsianTwoFixedPoint := by
+    apply orderFourCayleyHomeomorph.injective
+    simpa [orderFourCayleyHomeomorph, cayleyHomeomorph, cayleyDiscCoordinate,
+      discCenter, orderFourCayley_fixedPoint] using hzero
+  have hregular :=
+    (A.sectionSevenAffineOrderFourRadialBaseLift
+      (A.sectionSevenAffineBandStripCoordinate x)).2
+  have hmem := (A.isRegularBasePoint_iff_coordinate_mem _).mp hregular
+  simp only [Set.mem_compl_iff, Set.mem_insert_iff, Set.mem_singleton_iff, not_or] at hmem
+  exact hmem.2 (hfixed ▸ A.modular.sourceCoordinate.coordinate_at_two)
+
+/-- Thus collar compatibility is equivalent to the sole remaining analytic inequality: the
+chosen radial lift, rather than merely some regular-deck translate of it, lies inside the selected
+order-four Cayley radius. -/
+public theorem sectionSevenAffineOrderFourNamedRadialCollarCompatibility_iff
+    (A : PaperAnalyticData) :
+    A.SectionSevenAffineOrderFourNamedRadialCollarCompatibility ↔
+      ∀ x : A.SectionSevenAffineMarkedBand,
+        ‖(orderFourCayleyHomeomorph
+          (A.sectionSevenAffineOrderFourRadialBaseLift
+            (A.sectionSevenAffineBandStripCoordinate x)).1 : ℂ)‖ <
+          A.starSeparation.orderFour.radius := by
+  constructor
+  · intro C x
+    have hx := C.collar_mem x
+    change 0 < orderFourFamilyRadius A.periods
+        (A.sectionSevenAffineOrderFourNamedCollarTotalPoint x) ∧
+      orderFourFamilyRadius A.periods
+        (A.sectionSevenAffineOrderFourNamedCollarTotalPoint x) <
+          A.starSeparation.orderFour.radius at hx
+    rw [A.orderFourFamilyRadius_namedCollarTotalPoint x] at hx
+    exact hx.2
+  · intro h
+    refine ⟨fun x ↦ ?_⟩
+    change 0 < orderFourFamilyRadius A.periods
+        (A.sectionSevenAffineOrderFourNamedCollarTotalPoint x) ∧
+      orderFourFamilyRadius A.periods
+        (A.sectionSevenAffineOrderFourNamedCollarTotalPoint x) <
+          A.starSeparation.orderFour.radius
+    exact ⟨A.orderFourFamilyRadius_namedCollarTotalPoint_pos x, by
+      rw [A.orderFourFamilyRadius_namedCollarTotalPoint x]
+      exact h x⟩
 
 /-- The named collar representative as a point of the affine collar carrier. -/
 public noncomputable def sectionSevenAffineOrderFourNamedCollarLiftPoint
