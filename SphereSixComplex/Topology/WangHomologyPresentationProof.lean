@@ -2510,6 +2510,16 @@ public theorem exact_coverWangBoundary_coverDifference (φ : ι → F ≃ₜ F) 
     (piecesEquiv φ k) (fun _ ↦ (overlapEquiv φ k).apply_symm_apply _)
     (fun y ↦ (differenceMap_overlapEquiv φ k y).symm)
 
+/-- The second overlap leg of the cover boundary is the negative of the first. -/
+public theorem coverWangBoundary_snd_eq_neg_fst
+    (φ : ι → F ≃ₜ F) (k : ℕ)
+    (z : IntegralSingularHomology (k + 1) (FiniteBouquetMappingTorus φ)) :
+    (coverWangBoundary φ k z).2 = -(coverWangBoundary φ k z).1 := by
+  let p := coverWangBoundary φ k z
+  have hp : coverDifference (fun i ↦ integralSingularHomologyMap k (φ i)) p = 0 :=
+    (exact_coverWangBoundary_coverDifference φ k p).mpr ⟨z, rfl⟩
+  exact snd_eq_neg_fst_of_coverDifference_snd_eq_zero (congrArg Prod.snd hp)
+
 /-- The Wang exact sequence of the explicit finite-bouquet mapping torus, proved outright from
 the Mayer--Vietoris sequence of its vertex/edge open cover. -/
 public noncomputable def finiteBouquetMappingTorusWangSequenceOfCover (φ : ι → F ≃ₜ F) (k : ℕ) :
