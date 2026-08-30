@@ -2104,54 +2104,6 @@ public noncomputable def toNaturality
 
 end ActualEllipticMarkedFillingExtensionAtBaseResidual
 
-/-- The reduced order-three deck marking, the order-four extension, and the remaining finite
-marking calculations. -/
-public axiom establishedActualEllipticMarkedFillingExtensionAtBaseResidual :
-    Nonempty
-      (ActualEllipticMarkedFillingExtensionAtBaseResidual
-        A A.actualCuspCentralNaturality)
-
-/-- The former marked filling-extension package follows from the reduced residual. -/
-public theorem establishedActualEllipticMarkedFillingExtensionAtBaseNaturality :
-    Nonempty
-      (ActualEllipticMarkedFillingExtensionAtBaseNaturality
-        A A.actualCuspCentralNaturality) :=
-  A.establishedActualEllipticMarkedFillingExtensionAtBaseResidual.map
-    ActualEllipticMarkedFillingExtensionAtBaseResidual.toNaturality
-
-/-- The former global-equivariance input, reconstructed from marked-point equivariance. -/
-public theorem establishedActualEllipticMarkedFillingExtensionNaturality :
-    Nonempty
-      (ActualEllipticMarkedFillingExtensionNaturality A A.actualCuspCentralNaturality) :=
-  A.establishedActualEllipticMarkedFillingExtensionAtBaseNaturality.map
-    ActualEllipticMarkedFillingExtensionAtBaseNaturality.toFillingExtensionNaturality
-
-/-- The former basis-naturality boundary, reconstructed from the explicit collar covers and the
-remaining filling extensions and finite marking. -/
-public theorem establishedActualEllipticCentralBasisNaturality :
-    Nonempty (ActualEllipticCentralBasisNaturality A A.actualCuspCentralNaturality) :=
-  A.establishedActualEllipticMarkedFillingExtensionNaturality.map
-    ActualEllipticMarkedFillingExtensionNaturality.toActualEllipticCentralBasisNaturality
-
-/-- The full elliptic naturality package, extended from finite monodromy-orbit anchors. -/
-public theorem establishedActualEllipticCentralNaturality :
-    Nonempty (ActualEllipticCentralNaturality A A.actualCuspCentralNaturality) :=
-  A.establishedActualEllipticCentralBasisNaturality.map
-    ActualEllipticCentralBasisNaturality.toActualEllipticCentralNaturality
-
-/-- Marked peripheral naturality for all three actual collars.  The cusp half is now proved
-(`actualCuspCentralNaturality`), so only the elliptic half remains assumed. -/
-public theorem establishedActualStarPeripheralNaturality :
-    Nonempty A.ActualStarPeripheralNaturality :=
-  A.establishedActualEllipticCentralNaturality.elim fun E ↦
-    ⟨{ cusp := A.actualCuspCentralNaturality, elliptic := E }⟩
-
-/-- The three actual regular cover squares exist, given the star's peripheral naturality. -/
-public theorem nonempty_actualAffineFillingCoverSquares :
-    Nonempty A.ActualAffineFillingCoverSquares :=
-  A.establishedActualStarPeripheralNaturality.elim fun P ↦
-    nonempty_actualAffineFillingCoverSquares_of_ellipticNaturality A P.cusp P.elliptic
-
 end SphereSixComplex.Geometry.PaperAnalyticData
 
 end

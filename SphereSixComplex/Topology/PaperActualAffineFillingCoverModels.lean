@@ -5,6 +5,7 @@ public import SphereSixComplex.Topology.EstablishedChosenAffineFillings
 public import SphereSixComplex.Topology.PaperActualAffineCoreData
 public import SphereSixComplex.Topology.PaperActualAffineFillingCoverModelsDefs
 public import SphereSixComplex.Topology.PaperActualAffineFillingCoverModelsProof
+public import SphereSixComplex.Topology.PaperActualEllipticRelatorNormalClosure
 public import SphereSixComplex.Topology.PaperActualVanKampenCover
 public import SphereSixComplex.Topology.PaperActualVanKampenNiceness
 public import SphereSixComplex.Topology.PaperVanKampenAlgebraAdapter
@@ -16,9 +17,8 @@ The three regular cover squares are based on the actual overlaps and filling pie
 four-piece star. Their deck kernels feed the source-independent based van Kampen bridge; the
 paper's final affine relations and generation are then proved consequences.
 
-The bundled structure itself now lives in `PaperActualAffineFillingCoverModelsDefs` and its
-inhabitant is constructed in `PaperActualAffineFillingCoverModelsProof`, so that this module can
-import that construction. Every declaration keeps its original name, namespace and signature.
+The bundled cover-square API remains available for intermediate geometric work.  The production
+van Kampen theorem uses the smaller connector-invariant normal-closure bridge directly.
 -/
 
 @[expose] public section
@@ -33,27 +33,6 @@ open SphereSixComplex.LatticeData SphereSixComplex.Topology
 open SphereSixComplex.Topology.PaperVanKampenFourPieceCover
 
 variable (A : PaperAnalyticData)
-
-/-- Universal-cover classification for the actual affine torus collars and their cyclic and toric
-fillings.
-
-This chooses the three regular cover squares, identifies their induced maps with the actual
-overlap inclusions, and records based naturality and the exact local vanishing statements. The
-final filling relations and `HasVanKampenData` are derived from this package.
-
-It is no longer a boundary. The cusp square, the whole cusp half of the affine bridge, the two
-elliptic based gluing squares and the two transported cyclic filling relations are proved; the
-remaining geometry is isolated in `establishedActualStarPeripheralNaturality`, which bundles the
-marked peripheral naturality of all three collars with the two elliptic regular-cover models.
--/
-public theorem establishedActualAffineFillingCoverSquares :
-    Nonempty A.ActualAffineFillingCoverSquares :=
-  A.nonempty_actualAffineFillingCoverSquares
-
-/-- A coherent production choice of all three actual filling-cover squares. -/
-public noncomputable def actualAffineFillingCoverSquares :
-    A.ActualAffineFillingCoverSquares :=
-  Classical.choice A.establishedActualAffineFillingCoverSquares
 
 namespace ActualAffineFillingCoverSquares
 
@@ -110,7 +89,8 @@ end ActualAffineFillingCoverSquares
 /-- The established analytic choices give a complete van Kampen witness for their actual star. -/
 public theorem actualStarHasVanKampenData :
     Topology.HasVanKampenData A.VanKampenSpace 0 1 (-1) :=
-  A.actualAffineFillingCoverSquares.hasVanKampenData
+  A.establishedActualEllipticRelatorNormalClosureResidual.elim fun R ↦
+    R.hasVanKampenData
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

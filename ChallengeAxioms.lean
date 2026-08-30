@@ -4,7 +4,7 @@ public import SphereSixComplex.Topology.EstablishedPaperSectionSevenAffineRegula
 public import SphereSixComplex.Topology.EstablishedPaperSectionSevenCuspCompletion
 public import SphereSixComplex.Topology.EstablishedClassicalRecognitionFoundations
 public import SphereSixComplex.Topology.EstablishedEquivariantUniversalCover
-public import SphereSixComplex.Topology.PaperActualAffineFillingCoverModelsProof
+public import SphereSixComplex.Topology.PaperActualEllipticRelatorNormalClosure
 
 /-!
 # Comparator trusted-axiom imports
@@ -111,9 +111,6 @@ axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2C
   (A : SphereSixComplex.Geometry.PaperAnalyticData),
   SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization.FiniteFiberGeneratorSpecializationMatrix
     A
-axiom SphereSixComplex.Geometry.PaperAnalyticData.establishedActualEllipticMarkedFillingExtensionAtBaseResidual : ∀
-  (A : SphereSixComplex.Geometry.PaperAnalyticData),
-  Nonempty (A.ActualEllipticMarkedFillingExtensionAtBaseResidual A.actualCuspCentralNaturality)
 axiom SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenAffineRegularLiftTopology.markedBandHomotopies : ∀
   (A : SphereSixComplex.Geometry.PaperAnalyticData), A.SectionSevenAffineOverlapBandCompatibility
 axiom SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTopology.establishedActualCuspFiberEllipticMarkedCoordinateCalculation : ∀
@@ -132,4 +129,9 @@ axiom SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established.normali
   0 < r →
     Nonempty
       { Q // SphereSixComplex.Geometry.CuspStraighteningRetraction.PolarPhaseGeometricCore M r Q.toPolarHoneycombData }
+
+# Remaining connector-invariant elliptic comparison.
+axiom SphereSixComplex.Geometry.PaperAnalyticData.establishedActualEllipticRelatorNormalClosureResidual : ∀
+  (A : SphereSixComplex.Geometry.PaperAnalyticData),
+  Nonempty (A.ActualEllipticRelatorNormalClosureResidual A.actualCuspCentralNaturality)
 END GENERATED AXIOM CATALOG -/
