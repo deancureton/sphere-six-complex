@@ -515,6 +515,8 @@ public import SphereSixComplex.Topology.PaperSectionSevenCuspMeridianSectionGene
 public import SphereSixComplex.Topology.PaperSectionSevenCuspSelectedMeridianSpecializationProof
 public import SphereSixComplex.Topology.MappingTorusBaseCircleWangNaturality
 public import SphereSixComplex.Topology.MappingTorusBaseCircleWangBoundaryNaturality
+public import SphereSixComplex.Topology.IdentityUnitMappingTorusPositiveBoundary
+public import SphereSixComplex.Topology.IdentityPointMappingTorusWindingBoundary
 
 /-!
 # A Complex Structure on the Six-Sphere

@@ -218,7 +218,7 @@ public noncomputable instance biprodForwardChain_isIso {X : TopCat}
   infer_instance
 
 /-- Alternating inclusions between the actual open-set chain complexes. -/
-noncomputable def openMVToBiprodChain {X : TopCat} (U V : Opens X) :
+@[expose] public noncomputable def openMVToBiprodChain {X : TopCat} (U V : Opens X) :
     openSingularChains (U ⊓ V) ⟶ openSingularChains U ⊞ openSingularChains V :=
   biprod.lift
     (integralSimplicialChains.map
@@ -227,7 +227,7 @@ noncomputable def openMVToBiprodChain {X : TopCat} (U V : Opens X) :
       (TopCat.toSSet.map ((Opens.toTopCat X).map (Opens.infLERight U V)))))
 
 /-- The sum of the two actual open-set inclusions at chain level. -/
-noncomputable def openMVFromBiprodChain {X : TopCat} (U V : Opens X) :
+@[expose] public noncomputable def openMVFromBiprodChain {X : TopCat} (U V : Opens X) :
     openSingularChains U ⊞ openSingularChains V ⟶
       integralSimplicialChains.obj (TopCat.toSSet.obj X) :=
   biprod.desc
@@ -281,7 +281,7 @@ private theorem intersectionForwardChain_comp_right {X : TopCat}
   congr 1
 
 /-- The alternating chain comparison square commutes. -/
-theorem openMVToBiprodChain_naturality {X : TopCat} (U V : Opens X) :
+public theorem openMVToBiprodChain_naturality {X : TopCat} (U V : Opens X) :
     openMVToBiprodChain U V ≫ biprodForwardChain U V =
       intersectionForwardChain U V ≫ (coverChainShortComplex U V).f := by
   change openMVToBiprodChain U V ≫
@@ -324,7 +324,7 @@ private theorem rightCorestriction_comp_union {X : TopCat} (U V : Opens X) :
   congr 1
 
 /-- The sum-to-union chain comparison square commutes. -/
-theorem openMVFromBiprodChain_naturality {X : TopCat}
+public theorem openMVFromBiprodChain_naturality {X : TopCat}
     (U V : Opens X) :
     biprodForwardChain U V ≫ (coverChainShortComplex U V).g ≫
         coverChainInclusion U V =
