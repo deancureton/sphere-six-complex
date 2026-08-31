@@ -9,6 +9,7 @@ public import SphereSixComplex.Topology.PaperSectionSevenCuspMarkedConnectingNat
 public import SphereSixComplex.Topology.PaperSectionSevenCuspPrismGeometricDataProof
 public import SphereSixComplex.Topology.PaperSectionSevenCuspIndexFourPrismCoefficientProof
 public import SphereSixComplex.Topology.PaperSectionSevenCuspEllipticCoordinateFiniteReduction
+public import SphereSixComplex.Topology.PaperSectionSevenCuspDegreeOneIndexTwoProof
 
 /-!
 # Established cusp comparison for Section 7
@@ -64,11 +65,85 @@ public theorem pulledBackBoundaryBasisBridge
   SectionSevenCuspMarkedBoundaryComparison.pulledBackBoundaryBasisBridge
     R.homologyAlignment (markedBoundaryComparison R)
 
-/-- The remaining paper-specific input, reduced to the eight marked coordinate evaluations for
-the canonical boundary basis bridge. -/
-public axiom establishedActualCuspFiberEllipticMarkedCoordinateCalculation
+/-- The two geometric statements not supplied by the canonical cusp--band compatibility: the
+finite-meridian full-iterate relation and the orientation of the first invariant-suspension
+class. -/
+public structure ActualCuspFiberEllipticMarkedCoordinateResidual
+    (R : A.SectionSevenAffineRadialCompletionInput) : Prop where
+  degreeOneFullIterateRelation : ActualCuspDegreeOneIndexTwoFullIterateRelation R
+  degreeTwoIndexFour :
+    R.twoDiscCover.ellipticInteriorDegreeTwoFiberCoordinateHom R.homologyAlignment
+        (pulledBackBoundaryBasisBridge R)
+        (integralSingularHomologyMap 2 R.twoDiscCover.cuspToEllipticInteriorMap.hom
+          (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) = 1
+
+/-- The remaining paper-specific input after the six fibre-coordinate evaluations supplied by
+the canonical cusp--band compatibility. -/
+public axiom establishedActualCuspFiberEllipticMarkedCoordinateResidual
     (R : A.SectionSevenAffineRadialCompletionInput) :
-    ActualCuspFiberEllipticMarkedCoordinateCalculation R (pulledBackBoundaryBasisBridge R)
+    ActualCuspFiberEllipticMarkedCoordinateResidual R
+
+/-- The two residual geometric statements and the proved canonical cusp--band compatibility give
+the complete marked-coordinate calculation for the canonical boundary basis bridge. -/
+public theorem actualCuspFiberEllipticMarkedCoordinateCalculation_of_residual
+    (R : A.SectionSevenAffineRadialCompletionInput)
+    (C : ActualCuspFiberEllipticMarkedCoordinateResidual R) :
+    ActualCuspFiberEllipticMarkedCoordinateCalculation R (pulledBackBoundaryBasisBridge R) := by
+  let hTop := canonicalCuspFiberBandTopologicalCompatibility R
+  let S := R.twoDiscCover.cuspNormalizedDegreeTwoSplitting R.homologyAlignment
+    (pulledBackBoundaryBasisBridge R)
+  refine ⟨?_, ?_, C.degreeTwoIndexFour⟩
+  · intro i
+    fin_cases i
+    · simpa [SectionSevenEllipticTwoDiscCoverData.ellipticInteriorDegreeOneCoordinateHom,
+        coordinateAfterAddEquiv_apply, actualCuspEllipticDegreeOneRawCoordinate] using congrFun
+        (affineActualCuspDegreeOneFiberBasis_scalarValues R hTop) 0
+    · simpa [SectionSevenEllipticTwoDiscCoverData.ellipticInteriorDegreeOneCoordinateHom,
+        coordinateAfterAddEquiv_apply, actualCuspEllipticDegreeOneRawCoordinate] using congrFun
+        (affineActualCuspDegreeOneFiberBasis_scalarValues R hTop) 1
+    · have h := (actualCuspDegreeOneIndexTwo_iff_fullIterateRelation R).mpr
+          C.degreeOneFullIterateRelation
+      simpa [actualCuspEllipticDegreeOneRawCoordinate] using h
+  · intro i hi4 hi5
+    fin_cases i
+    · rw [← cuspMappingTorusToEllipticInteriorMap_basis]
+      simpa [SectionSevenEllipticTwoDiscCoverData.ellipticInteriorDegreeTwoFiberCoordinateHom,
+        coordinateAfterAddEquiv_apply, actualCuspEllipticDegreeTwoFiberRawCoordinate] using
+        congrFun (affineActualCuspDegreeTwoFiberBasis_scalarValues R S hTop) 0
+    · rw [← cuspMappingTorusToEllipticInteriorMap_basis]
+      simpa [SectionSevenEllipticTwoDiscCoverData.ellipticInteriorDegreeTwoFiberCoordinateHom,
+        coordinateAfterAddEquiv_apply, actualCuspEllipticDegreeTwoFiberRawCoordinate] using
+        congrFun (affineActualCuspDegreeTwoFiberBasis_scalarValues R S hTop) 1
+    · rw [← cuspMappingTorusToEllipticInteriorMap_basis]
+      simpa [SectionSevenEllipticTwoDiscCoverData.ellipticInteriorDegreeTwoFiberCoordinateHom,
+        coordinateAfterAddEquiv_apply, actualCuspEllipticDegreeTwoFiberRawCoordinate] using
+        congrFun (affineActualCuspDegreeTwoFiberBasis_scalarValues R S hTop) 2
+    · rw [← cuspMappingTorusToEllipticInteriorMap_basis]
+      simpa [SectionSevenEllipticTwoDiscCoverData.ellipticInteriorDegreeTwoFiberCoordinateHom,
+        coordinateAfterAddEquiv_apply, actualCuspEllipticDegreeTwoFiberRawCoordinate] using
+        congrFun (affineActualCuspDegreeTwoFiberBasis_scalarValues R S hTop) 3
+    · exact (hi4 rfl).elim
+    · exact (hi5 rfl).elim
+
+/-- The two-statement residual is exactly equivalent to the former eight-value package because
+the other six evaluations are now theorems. -/
+public theorem actualCuspFiberEllipticMarkedCoordinateCalculation_iff_residual
+    (R : A.SectionSevenAffineRadialCompletionInput) :
+    ActualCuspFiberEllipticMarkedCoordinateCalculation R (pulledBackBoundaryBasisBridge R) ↔
+      ActualCuspFiberEllipticMarkedCoordinateResidual R := by
+  constructor
+  · intro C
+    refine ⟨?_, C.degreeTwoIndexFour⟩
+    apply (actualCuspDegreeOneIndexTwo_iff_fullIterateRelation R).mp
+    simpa [actualCuspEllipticDegreeOneRawCoordinate] using C.degreeOne 2
+  · exact actualCuspFiberEllipticMarkedCoordinateCalculation_of_residual R
+
+/-- The established two-value residue supplies the complete marked-coordinate calculation. -/
+public theorem establishedActualCuspFiberEllipticMarkedCoordinateCalculation
+    (R : A.SectionSevenAffineRadialCompletionInput) :
+    ActualCuspFiberEllipticMarkedCoordinateCalculation R (pulledBackBoundaryBasisBridge R) :=
+  actualCuspFiberEllipticMarkedCoordinateCalculation_of_residual R
+    (establishedActualCuspFiberEllipticMarkedCoordinateResidual R)
 
 /-- The finite marked calculation implies the complete coordinate-homomorphism identities. -/
 public theorem actualCuspFiberEllipticFiniteCoordinateIdentities

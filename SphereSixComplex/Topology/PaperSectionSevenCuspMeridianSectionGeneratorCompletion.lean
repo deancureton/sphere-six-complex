@@ -4,6 +4,7 @@ public import SphereSixComplex.Topology.PaperSectionSevenCuspMeridianSourceHomol
 public import SphereSixComplex.Topology.PaperSectionSevenCuspEllipticMarkedCoordinateFromExistingGeometry
 public import SphereSixComplex.Topology.PaperCuspFiniteFiberDegreeOneKilledSection
 public import SphereSixComplex.Topology.PaperCuspMarkedFiberAngularVanishingProof
+public import SphereSixComplex.Topology.IdentityPointMappingTorusWindingBoundary
 
 /-!
 # The selected positive cusp meridian section
@@ -105,6 +106,43 @@ public theorem actualCuspPositiveDegreeOneInvariantGenerator_coordinate
   let _ := G.fiberTopology
   exact (degreeOneWangInvariantEquivInteger G).apply_symm_apply 1
 
+/-- The selected positive section has base-circle winding one by its Wang normalization. -/
+public theorem actualCuspSelectedPositiveMeridianClass_baseCircle_winding_one
+    (A : PaperAnalyticData) :
+    let G := A.actualCuspRadialClutchingData
+    let _ := G.fiberTopology
+    StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
+        (integralSingularHomologyMap 1
+          (circleMappingTorusBaseCircleProjection G.clutching)
+          (actualCuspSelectedPositiveMeridianClass A)) = 1 := by
+  let G := A.actualCuspRadialClutchingData
+  let _ := G.fiberTopology
+  let _ : PathConnectedSpace (AdditiveTorus G.fiberParameter) :=
+    additiveTorus_pathConnected G.fiberParameter
+  let _ : PathConnectedSpace G.Fiber :=
+    G.fiberHomeomorph.symm.surjective.pathConnectedSpace
+      G.fiberHomeomorph.symm.continuous
+  change StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
+      (integralSingularHomologyMap 1
+        (circleMappingTorusBaseCircleProjection G.clutching)
+        (actualCuspSelectedPositiveMeridianClass A)) = 1
+  rw [SphereSixComplex.Topology.IdentityPointMappingTorusWindingBoundary.circleMappingTorusBaseCircle_winding_eq_wangBoundary]
+  change degreeOneWangInvariantEquivInteger G
+      ((circleMappingTorusHOnePresentation G.clutching).totalToInvariants
+        (actualCuspSelectedPositiveMeridianClass A)) = 1
+  change degreeOneWangInvariantEquivInteger G
+      ((circleMappingTorusHOnePresentation G.clutching).totalToInvariants
+        (G.geometricWangSections.degreeOne.lift
+          (actualCuspPositiveDegreeOneInvariantGenerator A))) = 1
+  have hright := DFunLike.congr_fun
+    G.geometricWangSections.degreeOne.rightInverse
+    (actualCuspPositiveDegreeOneInvariantGenerator A)
+  change (circleMappingTorusHOnePresentation G.clutching).totalToInvariants
+      (G.geometricWangSections.degreeOne.lift
+        (actualCuspPositiveDegreeOneInvariantGenerator A)) =
+    actualCuspPositiveDegreeOneInvariantGenerator A at hright
+  rw [hright, actualCuspPositiveDegreeOneInvariantGenerator_coordinate]
+
 /-- The selected positive section class is exactly the third raw degree-one basis class. -/
 public theorem actualCuspSelectedPositiveMeridianClass_rawCoordinate
     (A : PaperAnalyticData) :
@@ -153,6 +191,26 @@ public theorem actualCuspRawDegreeOneThirdBasis_eq_selectedPositiveMeridianClass
   apply G.geometricWangSections.circleMappingTorusHOneAddEquiv.injective
   rw [G.geometricWangSections.circleMappingTorusHOneAddEquiv.apply_symm_apply]
   exact (actualCuspSelectedPositiveMeridianClass_rawCoordinate A).symm
+
+/-- The third raw degree-one basis class has canonical base-circle winding one. -/
+public theorem actualCuspRawDegreeOneThirdBasis_baseCircle_winding_one
+    (A : PaperAnalyticData) :
+    let G := A.actualCuspRadialClutchingData
+    let _ := G.fiberTopology
+    StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
+        (integralSingularHomologyMap 1
+          (circleMappingTorusBaseCircleProjection G.clutching)
+          (G.geometricWangSections.circleMappingTorusHOneAddEquiv.symm
+            (Pi.single (2 : Fin 3) 1))) = 1 := by
+  let G := A.actualCuspRadialClutchingData
+  let _ := G.fiberTopology
+  change StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
+      (integralSingularHomologyMap 1
+        (circleMappingTorusBaseCircleProjection G.clutching)
+        (G.geometricWangSections.circleMappingTorusHOneAddEquiv.symm
+          (Pi.single (2 : Fin 3) 1))) = 1
+  rw [actualCuspRawDegreeOneThirdBasis_eq_selectedPositiveMeridianClass]
+  exact actualCuspSelectedPositiveMeridianClass_baseCircle_winding_one A
 
 /-- The actual filling map is an isomorphism on the degree-one Wang coinvariants, without using
 the coordinate specialization matrix. -/
