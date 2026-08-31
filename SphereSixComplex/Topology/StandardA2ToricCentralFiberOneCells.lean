@@ -2,6 +2,7 @@ module
 
 public import SphereSixComplex.Topology.StandardA2ToricCentralFiberZeroCells
 public import SphereSixComplex.Geometry.CuspPhaseEstimates
+public import SphereSixComplex.Geometry.PaperStarPieceHausdorff
 
 /-!
 # A one-cell of the standard `A₂` central-fibre quotient
@@ -538,6 +539,45 @@ private theorem centralOrbitRel_componentSupport_ncard_eq
     obtain ⟨v, hv, rfl⟩ := hw
     exact ⟨v, hv, rfl⟩
 
+private theorem centralOrbitRel_componentSupport_eq_translate
+    (W : ActualPuncturedCuspCollarWitness N constructedModel)
+    (p q : actualLocalCuspCentralSubMulAction W)
+    (hrel : MulAction.orbitRel (Multiplicative ParameterLattice)
+      (actualLocalCuspCentralSubMulAction W) p q) :
+    ∃ lambda : ParameterLattice,
+      componentSupport constructedModel
+          ((p : LocalCarrier constructedModel W.localWitness.radius) :
+            constructedModel.Carrier) =
+        (fun v ↦ v + shearVector lambda) ''
+          componentSupport constructedModel
+            ((q : LocalCarrier constructedModel W.localWitness.radius) :
+              constructedModel.Carrier) := by
+  let _ := actualLocalCuspQuotientAction W
+  let S := actualLocalCuspCentralSubMulAction W
+  let _ : MulAction (Multiplicative ParameterLattice) S := inferInstance
+  rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff] at hrel
+  obtain ⟨g, hg⟩ := hrel
+  have hcarrier := congrArg
+    (fun z : S ↦ ((z : LocalCarrier constructedModel W.localWitness.radius) :
+      constructedModel.Carrier)) hg
+  let C :=
+    CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
+      N constructedModel W.localWitness.radius W.localWitness.radius_pos
+        W.localWitness.radius_le
+  let lambda := Multiplicative.toAdd g
+  change (((C.toCuspActionData W.localWitness.fixedPoint).psiMap lambda
+    (q : LocalCarrier constructedModel W.localWitness.radius) :
+      LocalCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) =
+        ((p : LocalCarrier constructedModel W.localWitness.radius) :
+          constructedModel.Carrier) at hcarrier
+  rw [← C.psiMap_eq_generic, C.psiMap_coe] at hcarrier
+  refine ⟨lambda, ?_⟩
+  have hsupport := componentSupport_phase_fanShear lambda
+    (C.phase lambda (constructedModel.t
+      (q : LocalCarrier constructedModel W.localWitness.radius)))
+    ((q : LocalCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier)
+  rwa [hcarrier] at hsupport
+
 /-- No nontrivial lattice translate identifies two interior points of the chosen edge. -/
 public theorem constructedCentralEdgeZeroOrbit_injOn
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
@@ -811,6 +851,186 @@ private theorem centralEdgeOrbitOf_injOn
     (centralEdgePointOf W F hF x) (centralEdgePointOf W F hF y)
     (hsupport x hx) (hsupport y hy) hrel
   exact hinj hx hy hcoe
+
+private theorem centralEdgePointOf_componentSupport_ncard_of_eq_origin
+    (W : ActualPuncturedCuspCollarWitness N constructedModel)
+    (F : (Fin 1 → ℝ) → Carrier) (hF : ∀ x, carrierHeight (F x) = 0)
+    (x : Fin 1 → ℝ) (a : ChartIndex) (hx : F x = inclusion a 0) :
+    (componentSupport constructedModel
+      (((centralEdgePointOf W F hF x : actualLocalCuspCentralSubMulAction W) :
+        LocalCarrier constructedModel W.localWitness.radius) :
+          constructedModel.Carrier)).ncard = 3 := by
+  change (componentSupport constructedModel (F x)).ncard = 3
+  rw [hx]
+  exact carrierOrigin_componentSupport_ncard a
+
+private theorem centralEdgeOrbitOf_endpoints_ne
+    (W : ActualPuncturedCuspCollarWitness N constructedModel)
+    (F : (Fin 1 → ℝ) → Carrier) (hF : ∀ x, carrierHeight (F x) = 0)
+    (upperV : ToricLattice)
+    (hneg : F (fun _ ↦ -1) = inclusion (false, 0) 0)
+    (hpos : F (fun _ ↦ 1) = inclusion (true, upperV) 0) :
+    centralEdgeOrbitOf W F hF (fun _ ↦ -1) ≠
+      centralEdgeOrbitOf W F hF (fun _ ↦ 1) := by
+  intro h
+  let _ := actualLocalCuspQuotientAction W
+  let S := actualLocalCuspCentralSubMulAction W
+  let _ : MulAction (Multiplicative ParameterLattice) S := inferInstance
+  have hrel : MulAction.orbitRel (Multiplicative ParameterLattice) S
+      (centralEdgePointOf W F hF (fun _ ↦ -1))
+      (centralEdgePointOf W F hF (fun _ ↦ 1)) :=
+    @Quotient.exact S (MulAction.orbitRel (Multiplicative ParameterLattice) S)
+      (centralEdgePointOf W F hF (fun _ ↦ -1))
+      (centralEdgePointOf W F hF (fun _ ↦ 1)) h
+  rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff] at hrel
+  obtain ⟨g, hg⟩ := hrel
+  have hcarrier := congrArg
+    (fun z : S ↦ ((z : LocalCarrier constructedModel W.localWitness.radius) :
+      constructedModel.Carrier)) hg
+  have hlocalNeg : centralEdgeLocalOf W F hF (fun _ ↦ -1) =
+      constructedCentralChartOrigin W (false, 0) := by
+    apply Subtype.ext
+    exact hneg
+  have hlocalPos : centralEdgeLocalOf W F hF (fun _ ↦ 1) =
+      constructedCentralChartOrigin W (true, upperV) := by
+    apply Subtype.ext
+    exact hpos
+  change ((g • centralEdgeLocalOf W F hF (fun _ ↦ 1) :
+    LocalCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) =
+      (centralEdgeLocalOf W F hF (fun _ ↦ -1) :
+        LocalCarrier constructedModel W.localWitness.radius) at hcarrier
+  rw [hlocalPos, hlocalNeg, constructedCentralChartOrigin_smul_coe] at hcarrier
+  change inclusion (true, upperV + shearVector (Multiplicative.toAdd g)) 0 =
+    inclusion (false, 0) 0 at hcarrier
+  exact lowerOrigin_ne_upperOrigin 0 _ hcarrier.symm
+
+private theorem centralEdgeOrbitOf_componentSupport_ncard_eq_of_eq
+    (W : ActualPuncturedCuspCollarWitness N constructedModel)
+    (F : (Fin 1 → ℝ) → Carrier) (hF : ∀ x, carrierHeight (F x) = 0)
+    {x y : Fin 1 → ℝ}
+    (hxy : centralEdgeOrbitOf W F hF x = centralEdgeOrbitOf W F hF y) :
+    (componentSupport constructedModel (F x)).ncard =
+      (componentSupport constructedModel (F y)).ncard := by
+  let _ := actualLocalCuspQuotientAction W
+  let S := actualLocalCuspCentralSubMulAction W
+  let _ : MulAction (Multiplicative ParameterLattice) S := inferInstance
+  have hrel : MulAction.orbitRel (Multiplicative ParameterLattice) S
+      (centralEdgePointOf W F hF x) (centralEdgePointOf W F hF y) :=
+    @Quotient.exact S (MulAction.orbitRel (Multiplicative ParameterLattice) S)
+      (centralEdgePointOf W F hF x) (centralEdgePointOf W F hF y) hxy
+  simpa only [centralEdgePointOf, centralEdgeLocalOf] using
+    centralOrbitRel_componentSupport_ncard_eq W
+      (centralEdgePointOf W F hF x) (centralEdgePointOf W F hF y) hrel
+
+private theorem centralEdgeOrbitOf_injOn_closedBall
+    (W : ActualPuncturedCuspCollarWitness N constructedModel)
+    (F : (Fin 1 → ℝ) → Carrier) (hF : ∀ x, carrierHeight (F x) = 0)
+    (T : Set ToricLattice) (hTcard : T.ncard = 2)
+    (hsupport : ∀ x ∈ Metric.ball (0 : Fin 1 → ℝ) 1,
+      componentSupport constructedModel (F x) = T)
+    (hinjOpen : Set.InjOn (centralEdgeOrbitOf W F hF) (Metric.ball 0 1))
+    (upperV : ToricLattice)
+    (hneg : F (fun _ ↦ -1) = inclusion (false, 0) 0)
+    (hpos : F (fun _ ↦ 1) = inclusion (true, upperV) 0) :
+    Set.InjOn (centralEdgeOrbitOf W F hF) (Metric.closedBall 0 1) := by
+  intro x hx y hy hxy
+  rcases finOne_mem_closedBall_cases x hx with hxOpen | hxPos | hxNeg
+  · rcases finOne_mem_closedBall_cases y hy with hyOpen | hyPos | hyNeg
+    · exact hinjOpen hxOpen hyOpen hxy
+    · subst y
+      have hn := centralEdgeOrbitOf_componentSupport_ncard_eq_of_eq W F hF hxy
+      rw [hsupport x hxOpen, hTcard] at hn
+      have hthree := centralEdgePointOf_componentSupport_ncard_of_eq_origin W F hF
+        (fun _ ↦ 1) (true, upperV) hpos
+      change (componentSupport constructedModel (F (fun _ ↦ 1))).ncard = 3 at hthree
+      omega
+    · subst y
+      have hn := centralEdgeOrbitOf_componentSupport_ncard_eq_of_eq W F hF hxy
+      rw [hsupport x hxOpen, hTcard] at hn
+      have hthree := centralEdgePointOf_componentSupport_ncard_of_eq_origin W F hF
+        (fun _ ↦ -1) (false, 0) hneg
+      change (componentSupport constructedModel (F (fun _ ↦ -1))).ncard = 3 at hthree
+      omega
+  · subst x
+    rcases finOne_mem_closedBall_cases y hy with hyOpen | hyPos | hyNeg
+    · have hn := centralEdgeOrbitOf_componentSupport_ncard_eq_of_eq W F hF hxy
+      rw [hsupport y hyOpen, hTcard] at hn
+      have hthree := centralEdgePointOf_componentSupport_ncard_of_eq_origin W F hF
+        (fun _ ↦ 1) (true, upperV) hpos
+      change (componentSupport constructedModel (F (fun _ ↦ 1))).ncard = 3 at hthree
+      omega
+    · exact hyPos.symm
+    · subst y
+      exfalso
+      exact centralEdgeOrbitOf_endpoints_ne W F hF upperV hneg hpos hxy.symm
+  · subst x
+    rcases finOne_mem_closedBall_cases y hy with hyOpen | hyPos | hyNeg
+    · have hn := centralEdgeOrbitOf_componentSupport_ncard_eq_of_eq W F hF hxy
+      rw [hsupport y hyOpen, hTcard] at hn
+      have hthree := centralEdgePointOf_componentSupport_ncard_of_eq_origin W F hF
+        (fun _ ↦ -1) (false, 0) hneg
+      change (componentSupport constructedModel (F (fun _ ↦ -1))).ncard = 3 at hthree
+      omega
+    · subst y
+      exfalso
+      exact centralEdgeOrbitOf_endpoints_ne W F hF upperV hneg hpos hxy
+    · exact hyNeg.symm
+
+private def centralEdgeClosedBallMapOf
+    (W : ActualPuncturedCuspCollarWitness N constructedModel)
+    (F : (Fin 1 → ℝ) → Carrier) (hF : ∀ x, carrierHeight (F x) = 0) :
+    {x : Fin 1 → ℝ // x ∈ Metric.closedBall 0 1} →
+      ActualLocalCuspCentralOrbitQuotient W :=
+  fun x ↦ centralEdgeOrbitOf W F hF x
+
+private theorem centralEdgeClosedBallMapOf_isClosedEmbedding
+    (W : ActualPuncturedCuspCollarWitness N constructedModel)
+    (F : (Fin 1 → ℝ) → Carrier) (hF : ∀ x, carrierHeight (F x) = 0)
+    (hcontinuous : Continuous (centralEdgeOrbitOf W F hF))
+    (hinj : Set.InjOn (centralEdgeOrbitOf W F hF) (Metric.closedBall 0 1)) :
+    Topology.IsClosedEmbedding (centralEdgeClosedBallMapOf W F hF) := by
+  let _ : T2Space (actualLocalCuspFilling W) :=
+    SphereSixComplex.Geometry.PaperAnalyticData.actualLocalCuspFilling_t2 W
+  let _ : T2Space (ActualLocalCuspCentralOrbitQuotient W) :=
+    (actualLocalCuspCentralOrbitMap_isEmbedding W).t2Space
+  apply (hcontinuous.comp continuous_subtype_val).isClosedEmbedding
+  intro x y hxy
+  apply Subtype.ext
+  exact hinj x.property y.property hxy
+
+private theorem centralOrbitPartialEquiv_continuousOn_symm
+    (W : ActualPuncturedCuspCollarWitness N constructedModel)
+    (f : (Fin 1 → ℝ) → ActualLocalCuspCentralOrbitQuotient W)
+    (hcontinuous : Continuous f)
+    (hinjOpen : Set.InjOn f (Metric.ball 0 1))
+    (hinjClosed : Set.InjOn f (Metric.closedBall 0 1)) :
+    let e := Set.InjOn.toPartialEquiv f (Metric.ball 0 1) hinjOpen
+    ContinuousOn e.symm e.target := by
+  let _ : T2Space (actualLocalCuspFilling W) :=
+    SphereSixComplex.Geometry.PaperAnalyticData.actualLocalCuspFilling_t2 W
+  let _ : T2Space (ActualLocalCuspCentralOrbitQuotient W) :=
+    (actualLocalCuspCentralOrbitMap_isEmbedding W).t2Space
+  let e := Set.InjOn.toPartialEquiv f (Metric.ball 0 1) hinjOpen
+  let closedMap : {x : Fin 1 → ℝ // x ∈ Metric.closedBall 0 1} →
+      ActualLocalCuspCentralOrbitQuotient W := fun x ↦ f x
+  have hclosedMap : Topology.IsClosedEmbedding closedMap := by
+    apply (hcontinuous.comp continuous_subtype_val).isClosedEmbedding
+    intro x y hxy
+    apply Subtype.ext
+    exact hinjClosed x.property y.property hxy
+  let lift : e.target → {x : Fin 1 → ℝ // x ∈ Metric.closedBall 0 1} :=
+    fun q ↦ ⟨e.symm q, Metric.ball_subset_closedBall (e.map_target q.property)⟩
+  have hlift : Continuous lift := by
+    apply hclosedMap.isEmbedding.continuous_iff.mpr
+    have heq : closedMap ∘ lift =
+        (Subtype.val : e.target → ActualLocalCuspCentralOrbitQuotient W) := by
+      funext q
+      exact e.right_inv q.property
+    rw [heq]
+    exact continuous_subtype_val
+  rw [continuousOn_iff_continuous_domRestrict]
+  change Continuous (fun q : e.target ↦ (lift q : Fin 1 → ℝ))
+  exact continuous_subtype_val.comp hlift
 
 private theorem transitionMatrix_lower_to_upper_left (v : ToricLattice) :
     transitionMatrix (false, v) (true, v - e₁) =
@@ -1174,6 +1394,568 @@ public theorem constructedCentralOneCellTwo_continuousOn
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     ContinuousOn (constructedCentralOneCellTwo W) (Metric.closedBall 0 1) :=
   (constructedCentralEdgeTwoOrbit_continuous W).continuousOn
+
+private theorem constructedCentralEdgeZeroCarrier_negOne :
+    constructedCentralEdgeZeroCarrier (fun _ ↦ -1) = inclusion (false, 0) 0 := by
+  simp [constructedCentralEdgeZeroCarrier, constructedCentralEdgeZeroLowerBranch, lowerAxisZero]
+  congr 1
+  funext i
+  fin_cases i <;> rfl
+
+private theorem constructedCentralEdgeZeroCarrier_one :
+    constructedCentralEdgeZeroCarrier (fun _ ↦ 1) = inclusion (true, 0) 0 := by
+  norm_num [constructedCentralEdgeZeroCarrier, constructedCentralEdgeZeroUpperBranch, upperAxisTwo]
+  congr 1
+  funext i
+  fin_cases i <;> rfl
+
+private theorem constructedCentralEdgeOneCarrier_negOne :
+    constructedCentralEdgeOneCarrier (fun _ ↦ -1) = inclusion (false, 0) 0 := by
+  simp [constructedCentralEdgeOneCarrier]
+  congr 1
+  funext i
+  simp [singleAxis]
+
+private theorem constructedCentralEdgeOneCarrier_one :
+    constructedCentralEdgeOneCarrier (fun _ ↦ 1) = inclusion (true, -e₁) 0 := by
+  norm_num [constructedCentralEdgeOneCarrier]
+  congr 1
+  funext i
+  simp [singleAxis]
+
+private theorem constructedCentralEdgeTwoCarrier_negOne :
+    constructedCentralEdgeTwoCarrier (fun _ ↦ -1) = inclusion (false, 0) 0 := by
+  simp [constructedCentralEdgeTwoCarrier]
+  congr 1
+  funext i
+  simp [singleAxis]
+
+private theorem constructedCentralEdgeTwoCarrier_one :
+    constructedCentralEdgeTwoCarrier (fun _ ↦ 1) = inclusion (true, -e₂) 0 := by
+  norm_num [constructedCentralEdgeTwoCarrier]
+  congr 1
+  funext i
+  simp [singleAxis]
+
+public theorem constructedCentralEdgeZeroOrbit_injOn_closedBall
+    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
+    Set.InjOn (constructedCentralEdgeZeroOrbit W) (Metric.closedBall 0 1) := by
+  have hcard : ({e₁, e₂} : Set ToricLattice).ncard = 2 := by
+    rw [Set.ncard_insert_of_notMem]
+    · simp
+    · simp [e₁, e₂]
+  exact centralEdgeOrbitOf_injOn_closedBall W constructedCentralEdgeZeroCarrier
+    constructedCentralEdgeZeroCarrier_height ({e₁, e₂} : Set ToricLattice) hcard
+    constructedCentralEdgeZeroCarrier_componentSupport (constructedCentralEdgeZeroOrbit_injOn W)
+    (upperV := 0) constructedCentralEdgeZeroCarrier_negOne
+      constructedCentralEdgeZeroCarrier_one
+
+public theorem constructedCentralEdgeOneOrbit_injOn_closedBall
+    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
+    Set.InjOn (constructedCentralEdgeOneOrbit W) (Metric.closedBall 0 1) := by
+  have hcard : ({0, e₂} : Set ToricLattice).ncard = 2 := by
+    rw [Set.ncard_insert_of_notMem]
+    · simp
+    · intro h
+      simpa [e₂] using congrFun h 1
+  exact centralEdgeOrbitOf_injOn_closedBall W constructedCentralEdgeOneCarrier
+    constructedCentralEdgeOneCarrier_height ({0, e₂} : Set ToricLattice) hcard
+    constructedCentralEdgeOneCarrier_componentSupport (constructedCentralEdgeOneOrbit_injOn W)
+    (upperV := -e₁) constructedCentralEdgeOneCarrier_negOne
+      constructedCentralEdgeOneCarrier_one
+
+public theorem constructedCentralEdgeTwoOrbit_injOn_closedBall
+    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
+    Set.InjOn (constructedCentralEdgeTwoOrbit W) (Metric.closedBall 0 1) := by
+  have hcard : ({0, e₁} : Set ToricLattice).ncard = 2 := by
+    rw [Set.ncard_insert_of_notMem]
+    · simp
+    · intro h
+      simpa [e₁] using congrFun h 0
+  exact centralEdgeOrbitOf_injOn_closedBall W constructedCentralEdgeTwoCarrier
+    constructedCentralEdgeTwoCarrier_height ({0, e₁} : Set ToricLattice) hcard
+    constructedCentralEdgeTwoCarrier_componentSupport (constructedCentralEdgeTwoOrbit_injOn W)
+    (upperV := -e₂) constructedCentralEdgeTwoCarrier_negOne
+      constructedCentralEdgeTwoCarrier_one
+
+public theorem constructedCentralOneCellZero_continuousOn_symm
+    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
+    ContinuousOn (constructedCentralOneCellZero W).symm
+      (constructedCentralOneCellZero W).target := by
+  simpa [constructedCentralOneCellZero] using
+    centralOrbitPartialEquiv_continuousOn_symm W (constructedCentralEdgeZeroOrbit W)
+      (constructedCentralEdgeZeroOrbit_continuous W)
+      (constructedCentralEdgeZeroOrbit_injOn W)
+      (constructedCentralEdgeZeroOrbit_injOn_closedBall W)
+
+public theorem constructedCentralOneCellOne_continuousOn_symm
+    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
+    ContinuousOn (constructedCentralOneCellOne W).symm
+      (constructedCentralOneCellOne W).target := by
+  simpa [constructedCentralOneCellOne] using
+    centralOrbitPartialEquiv_continuousOn_symm W (constructedCentralEdgeOneOrbit W)
+      (constructedCentralEdgeOneOrbit_continuous W)
+      (constructedCentralEdgeOneOrbit_injOn W)
+      (constructedCentralEdgeOneOrbit_injOn_closedBall W)
+
+public theorem constructedCentralOneCellTwo_continuousOn_symm
+    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
+    ContinuousOn (constructedCentralOneCellTwo W).symm
+      (constructedCentralOneCellTwo W).target := by
+  simpa [constructedCentralOneCellTwo] using
+    centralOrbitPartialEquiv_continuousOn_symm W (constructedCentralEdgeTwoOrbit W)
+      (constructedCentralEdgeTwoOrbit_continuous W)
+      (constructedCentralEdgeTwoOrbit_injOn W)
+      (constructedCentralEdgeTwoOrbit_injOn_closedBall W)
+
+private theorem centralEdgeOrbitOf_eq_origin
+    (W : ActualPuncturedCuspCollarWitness N constructedModel)
+    (F : (Fin 1 → ℝ) → Carrier) (hF : ∀ x, carrierHeight (F x) = 0)
+    (x : Fin 1 → ℝ) (upper : Bool) (v : ToricLattice)
+    (hx : F x = inclusion (upper, v) 0) :
+    centralEdgeOrbitOf W F hF x = constructedCentralOriginOrbit W upper := by
+  let _ := actualLocalCuspQuotientAction W
+  let S := actualLocalCuspCentralSubMulAction W
+  let _ : MulAction (Multiplicative ParameterLattice) S := inferInstance
+  apply @Quotient.sound S (MulAction.orbitRel (Multiplicative ParameterLattice) S)
+  change MulAction.orbitRel (Multiplicative ParameterLattice) S
+    (centralEdgePointOf W F hF x) (constructedCentralOriginPoint W upper)
+  rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff]
+  obtain ⟨lambda, hlambda⟩ := shearVector_surjective v
+  refine ⟨Additive.toMul lambda, ?_⟩
+  apply Subtype.ext
+  apply Subtype.ext
+  change (((Additive.toMul lambda : Multiplicative ParameterLattice) •
+    constructedCentralOrigin W upper :
+    LocalCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) = F x
+  rw [constructedCentralOrigin_smul_coe]
+  change inclusion (upper, 0 + shearVector lambda) 0 = F x
+  rw [hlambda, zero_add, hx]
+
+public theorem constructedCentralEdgeOneOrbit_negOne
+    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
+    constructedCentralEdgeOneOrbit W (fun _ ↦ -1) =
+      constructedCentralOriginOrbit W false := by
+  exact centralEdgeOrbitOf_eq_origin W constructedCentralEdgeOneCarrier
+    constructedCentralEdgeOneCarrier_height (fun _ ↦ -1) false 0
+      constructedCentralEdgeOneCarrier_negOne
+
+public theorem constructedCentralEdgeOneOrbit_one
+    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
+    constructedCentralEdgeOneOrbit W (fun _ ↦ 1) =
+      constructedCentralOriginOrbit W true := by
+  exact centralEdgeOrbitOf_eq_origin W constructedCentralEdgeOneCarrier
+    constructedCentralEdgeOneCarrier_height (fun _ ↦ 1) true (-e₁)
+      constructedCentralEdgeOneCarrier_one
+
+public theorem constructedCentralEdgeTwoOrbit_negOne
+    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
+    constructedCentralEdgeTwoOrbit W (fun _ ↦ -1) =
+      constructedCentralOriginOrbit W false := by
+  exact centralEdgeOrbitOf_eq_origin W constructedCentralEdgeTwoCarrier
+    constructedCentralEdgeTwoCarrier_height (fun _ ↦ -1) false 0
+      constructedCentralEdgeTwoCarrier_negOne
+
+public theorem constructedCentralEdgeTwoOrbit_one
+    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
+    constructedCentralEdgeTwoOrbit W (fun _ ↦ 1) =
+      constructedCentralOriginOrbit W true := by
+  exact centralEdgeOrbitOf_eq_origin W constructedCentralEdgeTwoCarrier
+    constructedCentralEdgeTwoCarrier_height (fun _ ↦ 1) true (-e₂)
+      constructedCentralEdgeTwoCarrier_one
+
+public theorem constructedCentralOneCellOne_mapsTo_zeroCells
+    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
+    MapsTo (constructedCentralOneCellOne W) (Metric.sphere 0 1)
+      (⋃ j : Fin 2, constructedCentralZeroCell W j '' Metric.closedBall 0 1) := by
+  intro x hx
+  rcases finOne_mem_sphere_eq_endpoints x hx with rfl | rfl
+  · change constructedCentralEdgeOneOrbit W (fun _ ↦ 1) ∈ _
+    rw [constructedCentralEdgeOneOrbit_one]
+    refine Set.mem_iUnion.mpr ⟨1, ?_⟩
+    refine ⟨0, by simp, ?_⟩
+    simp [constructedCentralZeroCell]
+  · change constructedCentralEdgeOneOrbit W (fun _ ↦ -1) ∈ _
+    rw [constructedCentralEdgeOneOrbit_negOne]
+    refine Set.mem_iUnion.mpr ⟨0, ?_⟩
+    refine ⟨0, by simp, ?_⟩
+    simp [constructedCentralZeroCell]
+
+public theorem constructedCentralOneCellTwo_mapsTo_zeroCells
+    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
+    MapsTo (constructedCentralOneCellTwo W) (Metric.sphere 0 1)
+      (⋃ j : Fin 2, constructedCentralZeroCell W j '' Metric.closedBall 0 1) := by
+  intro x hx
+  rcases finOne_mem_sphere_eq_endpoints x hx with rfl | rfl
+  · change constructedCentralEdgeTwoOrbit W (fun _ ↦ 1) ∈ _
+    rw [constructedCentralEdgeTwoOrbit_one]
+    refine Set.mem_iUnion.mpr ⟨1, ?_⟩
+    refine ⟨0, by simp, ?_⟩
+    simp [constructedCentralZeroCell]
+  · change constructedCentralEdgeTwoOrbit W (fun _ ↦ -1) ∈ _
+    rw [constructedCentralEdgeTwoOrbit_negOne]
+    refine Set.mem_iUnion.mpr ⟨0, ?_⟩
+    refine ⟨0, by simp, ?_⟩
+    simp [constructedCentralZeroCell]
+
+private theorem toricPair_eq_translate_imp
+    {a b c d k : ToricLattice} (hab : a ≠ b)
+    (h : ({a, b} : Set ToricLattice) = (fun v ↦ v + k) '' ({c, d} : Set ToricLattice)) :
+    (a = c + k ∧ b = d + k) ∨ (a = d + k ∧ b = c + k) := by
+  have ha : a ∈ (fun v ↦ v + k) '' ({c, d} : Set ToricLattice) := by
+    rw [← h]
+    simp
+  have hb : b ∈ (fun v ↦ v + k) '' ({c, d} : Set ToricLattice) := by
+    rw [← h]
+    simp
+  obtain ⟨u, hu, hua⟩ := ha
+  obtain ⟨v, hv, hvb⟩ := hb
+  simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hu hv
+  rcases hu with rfl | rfl <;> rcases hv with rfl | rfl
+  · exact (hab (hua.symm.trans hvb)).elim
+  · exact Or.inl ⟨hua.symm, hvb.symm⟩
+  · exact Or.inr ⟨hua.symm, hvb.symm⟩
+  · exact (hab (hua.symm.trans hvb)).elim
+
+private theorem edgeSupportZero_ne_translate_one (k : ToricLattice) :
+    ({e₁, e₂} : Set ToricLattice) ≠
+      (fun v ↦ v + k) '' ({0, e₂} : Set ToricLattice) := by
+  intro h
+  rcases toricPair_eq_translate_imp (a := e₁) (b := e₂) (c := 0) (d := e₂)
+      (by simp [e₁, e₂]) h with hcase | hcase
+  · have h00 := congrFun hcase.1 0
+    have h10 := congrFun hcase.2 0
+    simp [e₁, e₂] at h00 h10
+    omega
+  · have h00 := congrFun hcase.1 0
+    have h01 := congrFun hcase.1 1
+    have h10 := congrFun hcase.2 0
+    simp [e₁, e₂] at h00 h01 h10
+    omega
+
+private theorem edgeSupportZero_ne_translate_two (k : ToricLattice) :
+    ({e₁, e₂} : Set ToricLattice) ≠
+      (fun v ↦ v + k) '' ({0, e₁} : Set ToricLattice) := by
+  intro h
+  rcases toricPair_eq_translate_imp (a := e₁) (b := e₂) (c := 0) (d := e₁)
+      (by simp [e₁, e₂]) h with hcase | hcase
+  · have h01 := congrFun hcase.1 1
+    have h11 := congrFun hcase.2 1
+    simp [e₁, e₂] at h01 h11
+    omega
+  · have h00 := congrFun hcase.1 0
+    have h01 := congrFun hcase.1 1
+    have h11 := congrFun hcase.2 1
+    simp [e₁, e₂] at h00 h01 h11
+    omega
+
+private theorem edgeSupportOne_ne_translate_two (k : ToricLattice) :
+    ({0, e₂} : Set ToricLattice) ≠
+      (fun v ↦ v + k) '' ({0, e₁} : Set ToricLattice) := by
+  intro h
+  rcases toricPair_eq_translate_imp (a := 0) (b := e₂) (c := 0) (d := e₁)
+      (by
+        intro heq
+        have hcoord := congrFun heq 1
+        simp [e₂] at hcoord) h with hcase | hcase
+  · have h00 := congrFun hcase.1 0
+    have h01 := congrFun hcase.1 1
+    have h11 := congrFun hcase.2 1
+    simp [e₁, e₂] at h00 h01 h11
+    omega
+  · have h00 := congrFun hcase.1 0
+    have h01 := congrFun hcase.1 1
+    have h10 := congrFun hcase.2 0
+    simp [e₁, e₂] at h00 h01 h10
+    omega
+
+private theorem centralEdgeOrbitOf_ne_of_support_not_translate
+    (W : ActualPuncturedCuspCollarWitness N constructedModel)
+    (F G : (Fin 1 → ℝ) → Carrier)
+    (hF : ∀ x, carrierHeight (F x) = 0) (hG : ∀ x, carrierHeight (G x) = 0)
+    (T U : Set ToricLattice)
+    (hsupportF : ∀ x ∈ Metric.ball (0 : Fin 1 → ℝ) 1,
+      componentSupport constructedModel (F x) = T)
+    (hsupportG : ∀ x ∈ Metric.ball (0 : Fin 1 → ℝ) 1,
+      componentSupport constructedModel (G x) = U)
+    (hnot : ∀ k : ToricLattice, T ≠ (fun v ↦ v + k) '' U)
+    (x : Fin 1 → ℝ) (hx : x ∈ Metric.ball 0 1)
+    (y : Fin 1 → ℝ) (hy : y ∈ Metric.ball 0 1) :
+    centralEdgeOrbitOf W F hF x ≠ centralEdgeOrbitOf W G hG y := by
+  intro hxy
+  let _ := actualLocalCuspQuotientAction W
+  let S := actualLocalCuspCentralSubMulAction W
+  let _ : MulAction (Multiplicative ParameterLattice) S := inferInstance
+  have hrel : MulAction.orbitRel (Multiplicative ParameterLattice) S
+      (centralEdgePointOf W F hF x) (centralEdgePointOf W G hG y) :=
+    @Quotient.exact S (MulAction.orbitRel (Multiplicative ParameterLattice) S)
+      (centralEdgePointOf W F hF x) (centralEdgePointOf W G hG y) hxy
+  obtain ⟨lambda, hsupport⟩ :=
+    centralOrbitRel_componentSupport_eq_translate W
+      (centralEdgePointOf W F hF x) (centralEdgePointOf W G hG y) hrel
+  change componentSupport constructedModel (F x) =
+    (fun v ↦ v + shearVector lambda) '' componentSupport constructedModel (G y) at hsupport
+  rw [hsupportF x hx, hsupportG y hy] at hsupport
+  exact hnot (shearVector lambda) hsupport
+
+private theorem constructedCentralEdgeZeroOrbit_eq_centralEdgeOrbitOf
+    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
+    constructedCentralEdgeZeroOrbit W =
+      centralEdgeOrbitOf W constructedCentralEdgeZeroCarrier
+        constructedCentralEdgeZeroCarrier_height := by
+  funext x
+  rfl
+
+public theorem constructedCentralEdgeZeroOrbit_ne_oneOrbit
+    (W : ActualPuncturedCuspCollarWitness N constructedModel)
+    (x : Fin 1 → ℝ) (hx : x ∈ Metric.ball 0 1)
+    (y : Fin 1 → ℝ) (hy : y ∈ Metric.ball 0 1) :
+    constructedCentralEdgeZeroOrbit W x ≠ constructedCentralEdgeOneOrbit W y := by
+  rw [constructedCentralEdgeZeroOrbit_eq_centralEdgeOrbitOf W]
+  exact centralEdgeOrbitOf_ne_of_support_not_translate W
+    constructedCentralEdgeZeroCarrier constructedCentralEdgeOneCarrier
+    constructedCentralEdgeZeroCarrier_height constructedCentralEdgeOneCarrier_height
+    ({e₁, e₂} : Set ToricLattice) ({0, e₂} : Set ToricLattice)
+    constructedCentralEdgeZeroCarrier_componentSupport
+    constructedCentralEdgeOneCarrier_componentSupport edgeSupportZero_ne_translate_one
+    x hx y hy
+
+public theorem constructedCentralEdgeZeroOrbit_ne_twoOrbit
+    (W : ActualPuncturedCuspCollarWitness N constructedModel)
+    (x : Fin 1 → ℝ) (hx : x ∈ Metric.ball 0 1)
+    (y : Fin 1 → ℝ) (hy : y ∈ Metric.ball 0 1) :
+    constructedCentralEdgeZeroOrbit W x ≠ constructedCentralEdgeTwoOrbit W y := by
+  rw [constructedCentralEdgeZeroOrbit_eq_centralEdgeOrbitOf W]
+  exact centralEdgeOrbitOf_ne_of_support_not_translate W
+    constructedCentralEdgeZeroCarrier constructedCentralEdgeTwoCarrier
+    constructedCentralEdgeZeroCarrier_height constructedCentralEdgeTwoCarrier_height
+    ({e₁, e₂} : Set ToricLattice) ({0, e₁} : Set ToricLattice)
+    constructedCentralEdgeZeroCarrier_componentSupport
+    constructedCentralEdgeTwoCarrier_componentSupport edgeSupportZero_ne_translate_two
+    x hx y hy
+
+public theorem constructedCentralEdgeOneOrbit_ne_twoOrbit
+    (W : ActualPuncturedCuspCollarWitness N constructedModel)
+    (x : Fin 1 → ℝ) (hx : x ∈ Metric.ball 0 1)
+    (y : Fin 1 → ℝ) (hy : y ∈ Metric.ball 0 1) :
+    constructedCentralEdgeOneOrbit W x ≠ constructedCentralEdgeTwoOrbit W y := by
+  exact centralEdgeOrbitOf_ne_of_support_not_translate W
+    constructedCentralEdgeOneCarrier constructedCentralEdgeTwoCarrier
+    constructedCentralEdgeOneCarrier_height constructedCentralEdgeTwoCarrier_height
+    ({0, e₂} : Set ToricLattice) ({0, e₁} : Set ToricLattice)
+    constructedCentralEdgeOneCarrier_componentSupport
+    constructedCentralEdgeTwoCarrier_componentSupport edgeSupportOne_ne_translate_two
+    x hx y hy
+
+public def constructedCentralOneCell
+    (W : ActualPuncturedCuspCollarWitness N constructedModel) (i : Fin 3) :
+    PartialEquiv (Fin 1 → ℝ) (ActualLocalCuspCentralOrbitQuotient W) :=
+  ![constructedCentralOneCellZero W, constructedCentralOneCellOne W,
+    constructedCentralOneCellTwo W] i
+
+public theorem constructedCentralOneCell_source_eq
+    (W : ActualPuncturedCuspCollarWitness N constructedModel) (i : Fin 3) :
+    (constructedCentralOneCell W i).source = Metric.ball 0 1 := by
+  fin_cases i
+  · exact constructedCentralOneCellZero_source_eq W
+  · exact constructedCentralOneCellOne_source_eq W
+  · exact constructedCentralOneCellTwo_source_eq W
+
+public theorem constructedCentralOneCell_continuousOn
+    (W : ActualPuncturedCuspCollarWitness N constructedModel) (i : Fin 3) :
+    ContinuousOn (constructedCentralOneCell W i) (Metric.closedBall 0 1) := by
+  fin_cases i
+  · exact constructedCentralOneCellZero_continuousOn W
+  · exact constructedCentralOneCellOne_continuousOn W
+  · exact constructedCentralOneCellTwo_continuousOn W
+
+public theorem constructedCentralOneCell_continuousOn_symm
+    (W : ActualPuncturedCuspCollarWitness N constructedModel) (i : Fin 3) :
+    ContinuousOn (constructedCentralOneCell W i).symm
+      (constructedCentralOneCell W i).target := by
+  fin_cases i
+  · exact constructedCentralOneCellZero_continuousOn_symm W
+  · exact constructedCentralOneCellOne_continuousOn_symm W
+  · exact constructedCentralOneCellTwo_continuousOn_symm W
+
+public theorem constructedCentralOneCell_mapsTo_zeroCells
+    (W : ActualPuncturedCuspCollarWitness N constructedModel) (i : Fin 3) :
+    MapsTo (constructedCentralOneCell W i) (Metric.sphere 0 1)
+      (⋃ j : Fin 2, constructedCentralZeroCell W j '' Metric.closedBall 0 1) := by
+  fin_cases i
+  · exact constructedCentralOneCellZero_mapsTo_zeroCells W
+  · exact constructedCentralOneCellOne_mapsTo_zeroCells W
+  · exact constructedCentralOneCellTwo_mapsTo_zeroCells W
+
+public theorem constructedCentralOneCell_pairwiseDisjoint
+    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
+    (Set.univ : Set (Fin 3)).PairwiseDisjoint
+      (fun i ↦ constructedCentralOneCell W i '' Metric.ball 0 1) := by
+  have hzeroOne : Disjoint
+      (constructedCentralOneCellZero W '' Metric.ball 0 1)
+      (constructedCentralOneCellOne W '' Metric.ball 0 1) := by
+    rw [Set.disjoint_left]
+    intro z
+    rintro ⟨x, hx, hxz⟩ ⟨y, hy, hyz⟩
+    exact constructedCentralEdgeZeroOrbit_ne_oneOrbit W x hx y hy (hxz.trans hyz.symm)
+  have hzeroTwo : Disjoint
+      (constructedCentralOneCellZero W '' Metric.ball 0 1)
+      (constructedCentralOneCellTwo W '' Metric.ball 0 1) := by
+    rw [Set.disjoint_left]
+    intro z
+    rintro ⟨x, hx, hxz⟩ ⟨y, hy, hyz⟩
+    exact constructedCentralEdgeZeroOrbit_ne_twoOrbit W x hx y hy (hxz.trans hyz.symm)
+  have honeTwo : Disjoint
+      (constructedCentralOneCellOne W '' Metric.ball 0 1)
+      (constructedCentralOneCellTwo W '' Metric.ball 0 1) := by
+    rw [Set.disjoint_left]
+    intro z
+    rintro ⟨x, hx, hxz⟩ ⟨y, hy, hyz⟩
+    exact constructedCentralEdgeOneOrbit_ne_twoOrbit W x hx y hy (hxz.trans hyz.symm)
+  intro i hi j hj hij
+  fin_cases i <;> fin_cases j
+  · exact (hij rfl).elim
+  · exact hzeroOne
+  · exact hzeroTwo
+  · exact hzeroOne.symm
+  · exact (hij rfl).elim
+  · exact honeTwo
+  · exact hzeroTwo.symm
+  · exact honeTwo.symm
+  · exact (hij rfl).elim
+
+private theorem constructedCentralOriginOrbit_ne_centralEdgeOrbitOf
+    (W : ActualPuncturedCuspCollarWitness N constructedModel)
+    (F : (Fin 1 → ℝ) → Carrier) (hF : ∀ x, carrierHeight (F x) = 0)
+    (T : Set ToricLattice) (hTcard : T.ncard = 2)
+    (hsupport : ∀ x ∈ Metric.ball (0 : Fin 1 → ℝ) 1,
+      componentSupport constructedModel (F x) = T)
+    (upper : Bool) (x : Fin 1 → ℝ) (hx : x ∈ Metric.ball 0 1) :
+    constructedCentralOriginOrbit W upper ≠ centralEdgeOrbitOf W F hF x := by
+  intro hxy
+  let _ := actualLocalCuspQuotientAction W
+  let S := actualLocalCuspCentralSubMulAction W
+  let _ : MulAction (Multiplicative ParameterLattice) S := inferInstance
+  have hrel : MulAction.orbitRel (Multiplicative ParameterLattice) S
+      (constructedCentralOriginPoint W upper) (centralEdgePointOf W F hF x) :=
+    @Quotient.exact S (MulAction.orbitRel (Multiplicative ParameterLattice) S)
+      (constructedCentralOriginPoint W upper) (centralEdgePointOf W F hF x) hxy
+  have hn := centralOrbitRel_componentSupport_ncard_eq W
+    (constructedCentralOriginPoint W upper) (centralEdgePointOf W F hF x) hrel
+  change (componentSupport constructedModel (inclusion (upper, 0) 0)).ncard =
+    (componentSupport constructedModel (F x)).ncard at hn
+  rw [carrierOrigin_componentSupport_ncard (upper, 0), hsupport x hx, hTcard] at hn
+  omega
+
+private theorem constructedCentralOriginOrbit_ne_edgeZero
+    (W : ActualPuncturedCuspCollarWitness N constructedModel) (upper : Bool)
+    (x : Fin 1 → ℝ) (hx : x ∈ Metric.ball 0 1) :
+    constructedCentralOriginOrbit W upper ≠ constructedCentralEdgeZeroOrbit W x := by
+  rw [constructedCentralEdgeZeroOrbit_eq_centralEdgeOrbitOf W]
+  exact constructedCentralOriginOrbit_ne_centralEdgeOrbitOf W
+    constructedCentralEdgeZeroCarrier constructedCentralEdgeZeroCarrier_height
+    ({e₁, e₂} : Set ToricLattice) (by
+      rw [Set.ncard_insert_of_notMem]
+      · simp
+      · simp [e₁, e₂])
+    constructedCentralEdgeZeroCarrier_componentSupport upper x hx
+
+private theorem constructedCentralOriginOrbit_ne_edgeOne
+    (W : ActualPuncturedCuspCollarWitness N constructedModel) (upper : Bool)
+    (x : Fin 1 → ℝ) (hx : x ∈ Metric.ball 0 1) :
+    constructedCentralOriginOrbit W upper ≠ constructedCentralEdgeOneOrbit W x := by
+  exact constructedCentralOriginOrbit_ne_centralEdgeOrbitOf W
+    constructedCentralEdgeOneCarrier constructedCentralEdgeOneCarrier_height
+    ({0, e₂} : Set ToricLattice) (by
+      rw [Set.ncard_insert_of_notMem]
+      · simp
+      · intro h
+        simpa [e₂] using congrFun h 1)
+    constructedCentralEdgeOneCarrier_componentSupport upper x hx
+
+private theorem constructedCentralOriginOrbit_ne_edgeTwo
+    (W : ActualPuncturedCuspCollarWitness N constructedModel) (upper : Bool)
+    (x : Fin 1 → ℝ) (hx : x ∈ Metric.ball 0 1) :
+    constructedCentralOriginOrbit W upper ≠ constructedCentralEdgeTwoOrbit W x := by
+  exact constructedCentralOriginOrbit_ne_centralEdgeOrbitOf W
+    constructedCentralEdgeTwoCarrier constructedCentralEdgeTwoCarrier_height
+    ({0, e₁} : Set ToricLattice) (by
+      rw [Set.ncard_insert_of_notMem]
+      · simp
+      · intro h
+        simpa [e₁] using congrFun h 0)
+    constructedCentralEdgeTwoCarrier_componentSupport upper x hx
+
+public theorem constructedCentralZeroCell_oneCell_disjoint
+    (W : ActualPuncturedCuspCollarWitness N constructedModel) (i : Fin 2) (j : Fin 3) :
+    Disjoint (constructedCentralZeroCell W i '' Metric.ball 0 1)
+      (constructedCentralOneCell W j '' Metric.ball 0 1) := by
+  rw [Set.disjoint_left]
+  intro z
+  rintro ⟨a, ha, haz⟩ ⟨x, hx, hxz⟩
+  fin_cases i <;> fin_cases j
+  · exact constructedCentralOriginOrbit_ne_edgeZero W false x hx (haz.trans hxz.symm)
+  · exact constructedCentralOriginOrbit_ne_edgeOne W false x hx (haz.trans hxz.symm)
+  · exact constructedCentralOriginOrbit_ne_edgeTwo W false x hx (haz.trans hxz.symm)
+  · exact constructedCentralOriginOrbit_ne_edgeZero W true x hx (haz.trans hxz.symm)
+  · exact constructedCentralOriginOrbit_ne_edgeOne W true x hx (haz.trans hxz.symm)
+  · exact constructedCentralOriginOrbit_ne_edgeTwo W true x hx (haz.trans hxz.symm)
+
+public theorem constructedCentralZeroCells_subset_oneCell_closed
+    (W : ActualPuncturedCuspCollarWitness N constructedModel) (j : Fin 3) :
+    (⋃ i : Fin 2, constructedCentralZeroCell W i '' Metric.closedBall 0 1) ⊆
+      constructedCentralOneCell W j '' Metric.closedBall 0 1 := by
+  intro z hz
+  obtain ⟨i, hi⟩ := Set.mem_iUnion.mp hz
+  obtain ⟨a, ha, haz⟩ := hi
+  fin_cases i <;> fin_cases j
+  · refine ⟨fun _ ↦ -1, by simp, ?_⟩
+    change constructedCentralEdgeZeroOrbit W (fun _ ↦ -1) = z
+    rw [constructedCentralEdgeZeroOrbit_negOne]
+    simpa [constructedCentralZeroCell] using haz
+  · refine ⟨fun _ ↦ -1, by simp, ?_⟩
+    change constructedCentralEdgeOneOrbit W (fun _ ↦ -1) = z
+    rw [constructedCentralEdgeOneOrbit_negOne]
+    simpa [constructedCentralZeroCell] using haz
+  · refine ⟨fun _ ↦ -1, by simp, ?_⟩
+    change constructedCentralEdgeTwoOrbit W (fun _ ↦ -1) = z
+    rw [constructedCentralEdgeTwoOrbit_negOne]
+    simpa [constructedCentralZeroCell] using haz
+  · refine ⟨fun _ ↦ 1, by simp, ?_⟩
+    change constructedCentralEdgeZeroOrbit W (fun _ ↦ 1) = z
+    rw [constructedCentralEdgeZeroOrbit_one]
+    simpa [constructedCentralZeroCell] using haz
+  · refine ⟨fun _ ↦ 1, by simp, ?_⟩
+    change constructedCentralEdgeOneOrbit W (fun _ ↦ 1) = z
+    rw [constructedCentralEdgeOneOrbit_one]
+    simpa [constructedCentralZeroCell] using haz
+  · refine ⟨fun _ ↦ 1, by simp, ?_⟩
+    change constructedCentralEdgeTwoOrbit W (fun _ ↦ 1) = z
+    rw [constructedCentralEdgeTwoOrbit_one]
+    simpa [constructedCentralZeroCell] using haz
+
+public theorem constructedCentralOneCell_closedBall_image_eq
+    (W : ActualPuncturedCuspCollarWitness N constructedModel) (j : Fin 3) :
+    constructedCentralOneCell W j '' Metric.closedBall 0 1 =
+      (constructedCentralOneCell W j '' Metric.ball 0 1) ∪
+        (⋃ i : Fin 2, constructedCentralZeroCell W i '' Metric.closedBall 0 1) := by
+  ext z
+  constructor
+  · rintro ⟨x, hx, rfl⟩
+    rcases finOne_mem_closedBall_cases x hx with hxOpen | hxPos | hxNeg
+    · exact Or.inl ⟨x, hxOpen, rfl⟩
+    · right
+      apply constructedCentralOneCell_mapsTo_zeroCells W j
+      rw [hxPos]
+      simp
+    · right
+      apply constructedCentralOneCell_mapsTo_zeroCells W j
+      rw [hxNeg]
+      simp
+  · rintro (hz | hz)
+    · obtain ⟨x, hx, rfl⟩ := hz
+      exact ⟨x, Metric.ball_subset_closedBall hx, rfl⟩
+    · exact constructedCentralZeroCells_subset_oneCell_closed W j hz
 end SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 
 end

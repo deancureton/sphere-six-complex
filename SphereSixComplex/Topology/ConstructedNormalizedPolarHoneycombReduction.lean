@@ -213,6 +213,327 @@ public theorem carrierCentralComponents_locallyFinite :
   exact Set.disjoint_left.mp
     (otherCarrierCentralComponent_disjoint_chart a v hvrange) hcomponent hqsource
 
+/-- The explicit positive central fibre used as the honeycomb target. -/
+public abbrev constructedPositiveCentralFiber (r : ℝ) :=
+  {q : constructedLocalPositivePart r |
+    constructedModel.t (q : LocalCarrier constructedModel r) = 0}
+
+/-- The radius-independent global positive central fibre. -/
+public abbrev constructedGlobalPositiveCentralFiber :=
+  {x : carrierPositivePart | carrierHeight x = 0}
+
+/-- For positive radius, the local positive central fibre is exactly the global positive central
+fibre; the local height bound is automatic at height zero. -/
+public def constructedPositiveCentralFiberHomeomorph (r : ℝ) (hr : 0 < r) :
+    constructedPositiveCentralFiber r ≃ₜ constructedGlobalPositiveCentralFiber where
+  toFun q :=
+    ⟨⟨q.1.1.1, (mem_constructedLocalPositivePart_iff r q.1).mp q.1.property⟩,
+      q.property⟩
+  invFun x := by
+    let p : LocalCarrier constructedModel r :=
+      ⟨(show constructedModel.Carrier from x.1.1), by
+      change carrierHeight x.1.1 ∈ Metric.ball 0 r
+      rw [x.property]
+      exact Metric.mem_ball_self hr⟩
+    exact ⟨⟨p, (mem_constructedLocalPositivePart_iff r p).mpr x.1.property⟩,
+      x.property⟩
+  left_inv _ := rfl
+  right_inv _ := rfl
+  continuous_toFun := by fun_prop
+  continuous_invFun := by
+    apply Continuous.subtype_mk
+    apply Continuous.subtype_mk
+    apply Continuous.subtype_mk
+    fun_prop
+
+/-- The positive cell cut out by one ray component of the central toric fibre. -/
+public def constructedPositiveCentralCell (r : ℝ) (v : ToricLattice) :
+    Set (constructedPositiveCentralFiber r) :=
+  {q | (q.1.1.1 : Carrier) ∈ carrierCentralComponent v}
+
+/-- Every positive central cell is closed. -/
+public theorem constructedPositiveCentralCell_isClosed (r : ℝ) (v : ToricLattice) :
+    IsClosed (constructedPositiveCentralCell r v) := by
+  have hcentral : Continuous
+      (fun q : constructedPositiveCentralFiber r ↦ q.1) :=
+    continuous_subtype_val
+  have hpositive : Continuous
+      (fun q : constructedPositiveCentralFiber r ↦ q.1.1) :=
+    continuous_subtype_val.comp hcentral
+  have hlocal : Continuous
+      (fun q : constructedPositiveCentralFiber r ↦ (q.1.1.1 : Carrier)) :=
+    continuous_subtype_val.comp hpositive
+  exact (carrierCentralComponent_isClosed v).preimage hlocal
+
+/-- The positive central cells inherit local finiteness from the carrier components. -/
+public theorem constructedPositiveCentralCells_locallyFinite (r : ℝ) :
+    LocallyFinite (constructedPositiveCentralCell r) := by
+  have hcentral : Continuous
+      (fun q : constructedPositiveCentralFiber r ↦ q.1) :=
+    continuous_subtype_val
+  have hpositive : Continuous
+      (fun q : constructedPositiveCentralFiber r ↦ q.1.1) :=
+    continuous_subtype_val.comp hcentral
+  have hf : Continuous
+      (fun q : constructedPositiveCentralFiber r ↦ (q.1.1.1 : Carrier)) :=
+    continuous_subtype_val.comp hpositive
+  let f : constructedPositiveCentralFiber r → Carrier := fun q ↦ q.1.1.1
+  intro q
+  obtain ⟨U, hU, hfinite⟩ := carrierCentralComponents_locallyFinite (f q)
+  refine ⟨f ⁻¹' U, hf.continuousAt hU, hfinite.subset ?_⟩
+  intro v hv
+  obtain ⟨x, hxcell, hxU⟩ := hv
+  exact ⟨f x, hxcell, hxU⟩
+
+/-- The ray cells cover the whole positive central fibre. -/
+public theorem iUnion_constructedPositiveCentralCell (r : ℝ) :
+    ⋃ v, constructedPositiveCentralCell r v = Set.univ := by
+  apply Set.eq_univ_of_forall
+  intro q
+  have hzero : carrierHeight (q.1.1.1 : Carrier) = 0 := by
+    exact q.property
+  have hmem : (q.1.1.1 : Carrier) ∈ carrierHeight ⁻¹' {0} := hzero
+  rw [carrierCentralFiber_eq_iUnion] at hmem
+  obtain ⟨v, hv⟩ := Set.mem_iUnion.mp hmem
+  exact Set.mem_iUnion.mpr ⟨v, hv⟩
+
+/-- The six maximal cones in the star of a height-one ray. -/
+public def chartAtCentralRay (v : ToricLattice) : Bool × Fin 3 → ChartIndex
+  | (false, 0) => (false, v)
+  | (false, 1) => (false, v - e₁)
+  | (false, 2) => (false, v - e₂)
+  | (true, 0) => (true, v - e₁)
+  | (true, 1) => (true, v - e₂)
+  | (true, 2) => (true, v - e₁ - e₂)
+
+public theorem chart_eq_chartAtCentralRay_of_vertex
+    (v : ToricLattice) (a : ChartIndex) (i : Fin 3)
+    (h : a2Triangle a.1 a.2 i = v) :
+    a = chartAtCentralRay v (a.1, i) := by
+  rcases a with ⟨upper, w⟩
+  cases upper <;> fin_cases i <;>
+    simp [chartAtCentralRay, a2Triangle] at h ⊢
+  all_goals rw [← h]
+  all_goals simp [sub_eq_add_neg]
+  all_goals abel
+
+/-- Only six affine charts contain a prescribed central ray. -/
+public theorem chartsContainingCentralRay_finite (v : ToricLattice) :
+    {a : ChartIndex | v ∈ Set.range (a2Triangle a.1 a.2)}.Finite := by
+  apply (Set.finite_range (chartAtCentralRay v)).subset
+  intro a ha
+  obtain ⟨i, hi⟩ := ha
+  exact ⟨(a.1, i), (chart_eq_chartAtCentralRay_of_vertex v a i hi).symm⟩
+
+/-- A closed unit affine toric polydisc is compact. -/
+public theorem unitPolydisc_isCompact (a : ChartIndex) :
+    IsCompact (unitPolydisc a) := by
+  let _ := chartedSpace
+  let K : Set RawCoordinates := {z | ∀ i, ‖z i‖ ≤ 1}
+  have hK : IsCompact K := by
+    have hprod : IsCompact
+        {z : RawCoordinates | ∀ i, z i ∈ Metric.closedBall (0 : ℂ) 1} :=
+      isCompact_pi_infinite fun _ ↦ isCompact_closedBall (0 : ℂ) 1
+    simpa only [K, Metric.mem_closedBall, dist_zero_right] using hprod
+  have heq : unitPolydisc a = inclusion a '' K := by
+    ext p
+    constructor
+    · rintro ⟨hp, hbound⟩
+      rw [toricChart_source] at hp
+      obtain ⟨z, rfl⟩ := hp
+      refine ⟨z, ?_, rfl⟩
+      intro i
+      rw [toricChart_inclusion] at hbound
+      exact hbound i
+    · rintro ⟨z, hz, rfl⟩
+      refine ⟨?_, ?_⟩
+      · rw [toricChart_source]
+        exact Set.mem_range_self z
+      · intro i
+        rw [toricChart_inclusion]
+        exact hz i
+  rw [heq]
+  exact hK.image (inclusion_isOpenEmbedding a).continuous
+
+/-- Each ray component is compact, being covered by the six compact affine polydiscs in its
+star. -/
+public theorem carrierCentralComponent_isCompact (v : ToricLattice) :
+    IsCompact (carrierCentralComponent v) := by
+  let _ := chartedSpace
+  let S : Set ChartIndex := {a | v ∈ Set.range (a2Triangle a.1 a.2)}
+  have hS : S.Finite := chartsContainingCentralRay_finite v
+  have hcompact : IsCompact (⋃ a ∈ S, unitPolydisc a) :=
+    hS.isCompact_biUnion fun a _ ↦ unitPolydisc_isCompact a
+  apply hcompact.of_isClosed_subset (carrierCentralComponent_isClosed v)
+  intro p hp
+  have ht : carrierHeight p = 0 := by
+    change p ∈ carrierHeight ⁻¹' {0}
+    rw [carrierCentralFiber_eq_iUnion]
+    exact Set.mem_iUnion.mpr ⟨v, hp⟩
+  obtain ⟨a, ha⟩ := carrierCentralFiber_unitPolydisc_cover p ht
+  have hchart : p ∈ (toricChart a).source := ha.1
+  have hav : a ∈ S := by
+    by_contra hnot
+    exact Set.disjoint_left.mp
+      (otherCarrierCentralComponent_disjoint_chart a v hnot) hp hchart
+  exact Set.mem_iUnion₂.mpr ⟨a, hav, ha⟩
+
+namespace LocallyFiniteClosedCover
+
+/-- Projection from the disjoint union of a family of subsets. -/
+public def projection {ι X : Type*} (A : ι → Set X) (p : Σ i, A i) : X :=
+  p.2.1
+
+public theorem projection_continuous {ι X : Type*} [TopologicalSpace X]
+    (A : ι → Set X) : Continuous (projection A) :=
+  continuous_sigma_iff.mpr fun _ ↦ continuous_subtype_val
+
+public theorem projection_surjective {ι X : Type*} {A : ι → Set X}
+    (hcover : ⋃ i, A i = Set.univ) : Function.Surjective (projection A) := by
+  intro x
+  have hx : x ∈ ⋃ i, A i := by rw [hcover]; trivial
+  obtain ⟨i, hi⟩ := Set.mem_iUnion.mp hx
+  exact ⟨⟨i, x, hi⟩, rfl⟩
+
+/-- Projection from a locally finite closed cover is a closed map. -/
+public theorem projection_isClosedMap {ι X : Type*} [TopologicalSpace X]
+    {A : ι → Set X} (hclosed : ∀ i, IsClosed (A i)) (hloc : LocallyFinite A) :
+    IsClosedMap (projection A) := by
+  intro S hS
+  let F : ι → Set X := fun i ↦
+    (Subtype.val : A i → X) '' ((fun x : A i ↦ Sigma.mk i x) ⁻¹' S)
+  have hFclosed (i : ι) : IsClosed (F i) :=
+    (hclosed i).isClosedMap_subtype_val _ (hS.preimage continuous_sigmaMk)
+  have hFsub (i : ι) : F i ⊆ A i := by
+    rintro x ⟨a, _, rfl⟩
+    exact a.2
+  have heq : projection A '' S = ⋃ i, F i := by
+    ext x
+    constructor
+    · rintro ⟨⟨i, a⟩, ha, rfl⟩
+      exact Set.mem_iUnion.mpr ⟨i, a, ha, rfl⟩
+    · intro hx
+      obtain ⟨i, a, ha, rfl⟩ := Set.mem_iUnion.mp hx
+      exact ⟨⟨i, a⟩, ha, rfl⟩
+  rw [heq]
+  exact (hloc.subset hFsub).isClosed_iUnion hFclosed
+
+public theorem projection_isQuotientMap {ι X : Type*} [TopologicalSpace X]
+    {A : ι → Set X} (hcover : ⋃ i, A i = Set.univ)
+    (hclosed : ∀ i, IsClosed (A i)) (hloc : LocallyFinite A) :
+    Topology.IsQuotientMap (projection A) :=
+  (projection_isClosedMap hclosed hloc).isQuotientMap (projection_continuous A)
+    (projection_surjective hcover)
+
+/-- Homeomorphisms on the members of an indexed cover assemble over the disjoint union. -/
+public def sigmaHomeomorph {ι X Y : Type*} [TopologicalSpace X]
+    [TopologicalSpace Y] (A : ι → Set X) (B : ι → Set Y)
+    (e : ∀ i, A i ≃ₜ B i) : (Σ i, A i) ≃ₜ (Σ i, B i) where
+  toFun p := ⟨p.1, e p.1 p.2⟩
+  invFun p := ⟨p.1, (e p.1).symm p.2⟩
+  left_inv := by rintro ⟨i, a⟩; simp
+  right_inv := by rintro ⟨i, b⟩; simp
+  continuous_toFun :=
+    continuous_sigma_iff.mpr fun i ↦ continuous_sigmaMk.comp (e i).continuous
+  continuous_invFun :=
+    continuous_sigma_iff.mpr fun i ↦ continuous_sigmaMk.comp (e i).symm.continuous
+
+public noncomputable def descend {A X Y : Type*} (f : A → X) (g : A → Y)
+    (hf : Function.Surjective f) (x : X) : Y :=
+  g (hf x).choose
+
+public theorem descend_apply {A X Y : Type*} (f : A → X) (g : A → Y)
+    (hf : Function.Surjective f) (hfg : ∀ a b, f a = f b → g a = g b) (a : A) :
+    descend f g hf (f a) = g a :=
+  hfg _ a (hf (f a)).choose_spec
+
+public theorem descend_surjective {A X Y : Type*} (f : A → X) (g : A → Y)
+    (hf : Function.Surjective f) (hfg : ∀ a b, f a = f b → g a = g b)
+    (hg : Function.Surjective g) : Function.Surjective (descend f g hf) := by
+  intro y
+  obtain ⟨a, rfl⟩ := hg y
+  exact ⟨f a, descend_apply f g hf hfg a⟩
+
+public theorem descend_injective {A X Y : Type*} (f : A → X) (g : A → Y)
+    (hf : Function.Surjective f) (hgf : ∀ a b, g a = g b → f a = f b) :
+    Function.Injective (descend f g hf) := by
+  intro x y h
+  have he := hgf (hf x).choose (hf y).choose h
+  exact (hf x).choose_spec.symm.trans (he.trans (hf y).choose_spec)
+
+public theorem descend_continuous {A X Y : Type*} (f : A → X) (g : A → Y)
+    (hf : Function.Surjective f) [TopologicalSpace A] [TopologicalSpace X]
+    [TopologicalSpace Y] (hq : Topology.IsQuotientMap f) (hg : Continuous g)
+    (hfg : ∀ a b, f a = f b → g a = g b) : Continuous (descend f g hf) := by
+  apply hq.continuous_iff.mpr
+  have he : descend f g hf ∘ f = g := funext (descend_apply f g hf hfg)
+  rwa [he]
+
+/-- Compatible cellwise homeomorphisms on two locally finite closed covers glue to a global
+homeomorphism. -/
+public noncomputable def homeomorph {ι X Y : Type*} [TopologicalSpace X]
+    [TopologicalSpace Y] (A : ι → Set X) (B : ι → Set Y)
+    (e : ∀ i, A i ≃ₜ B i) (hAcov : ⋃ i, A i = Set.univ)
+    (hAcl : ∀ i, IsClosed (A i)) (hAloc : LocallyFinite A)
+    (hBcov : ⋃ i, B i = Set.univ) (hBcl : ∀ i, IsClosed (B i))
+    (hBloc : LocallyFinite B)
+    (hglue : ∀ i j (x : A i) (y : A j),
+      (x : X) = (y : X) ↔ (e i x : Y) = (e j y : Y)) : X ≃ₜ Y := by
+  let f := projection A
+  let g := projection B ∘ sigmaHomeomorph A B e
+  have hf : Topology.IsQuotientMap f := projection_isQuotientMap hAcov hAcl hAloc
+  have hg : Topology.IsQuotientMap g :=
+    (projection_isQuotientMap hBcov hBcl hBloc).comp
+      (sigmaHomeomorph A B e).isQuotientMap
+  have hfg : ∀ a b, f a = f b ↔ g a = g b := fun a b ↦
+    hglue a.1 b.1 a.2 b.2
+  let E : X ≃ Y :=
+    Equiv.ofBijective (descend f g hf.surjective)
+      ⟨descend_injective f g hf.surjective (fun a b ↦ (hfg a b).mpr),
+        descend_surjective f g hf.surjective (fun a b ↦ (hfg a b).mp) hg.surjective⟩
+  refine
+    { toEquiv := E
+      continuous_toFun :=
+        descend_continuous f g hf.surjective hf hg.continuous
+          (fun a b ↦ (hfg a b).mp)
+      continuous_invFun := ?_ }
+  apply hg.continuous_iff.mpr
+  change Continuous (E.symm ∘ g)
+  have hcomp : E.symm ∘ g = f := by
+    funext a
+    apply E.injective
+    change E (E.symm (g a)) = E (f a)
+    rw [E.apply_symm_apply]
+    exact (descend_apply f g hf.surjective (fun a b ↦ (hfg a b).mp) a).symm
+  rw [hcomp]
+  exact hf.continuous
+
+end LocallyFiniteClosedCover
+
+/-- Exact cellwise input still needed for the honeycomb homeomorphism.  All target-side
+closed-cover facts are already supplied by the constructed carrier. -/
+public structure ConstructedHoneycombCellData (r : ℝ) where
+  planeCell : ToricLattice → Set (Fin 2 → ℝ)
+  planeCell_cover : ⋃ v, planeCell v = Set.univ
+  planeCell_closed : ∀ v, IsClosed (planeCell v)
+  planeCell_locallyFinite : LocallyFinite planeCell
+  cellHomeomorph : ∀ v, planeCell v ≃ₜ constructedPositiveCentralCell r v
+  cellHomeomorph_compatible : ∀ v w (x : planeCell v) (y : planeCell w),
+    (x : Fin 2 → ℝ) = (y : Fin 2 → ℝ) ↔
+      (cellHomeomorph v x : constructedPositiveCentralFiber r) = cellHomeomorph w y
+
+namespace ConstructedHoneycombCellData
+
+/-- Compatible homeomorphisms on the planar and toric cells give the required honeycomb. -/
+public noncomputable def honeycomb {r : ℝ} (H : ConstructedHoneycombCellData r) :
+    (Fin 2 → ℝ) ≃ₜ constructedPositiveCentralFiber r :=
+  LocallyFiniteClosedCover.homeomorph H.planeCell (constructedPositiveCentralCell r)
+    H.cellHomeomorph H.planeCell_cover H.planeCell_closed H.planeCell_locallyFinite
+    (iUnion_constructedPositiveCentralCell r) (constructedPositiveCentralCell_isClosed r)
+    (constructedPositiveCentralCells_locallyFinite r) H.cellHomeomorph_compatible
+
+end ConstructedHoneycombCellData
+
 /-- The logarithmic norm of the positive frozen multiplier is the frozen correction matrix. -/
 public theorem log_norm_normalizedCuspPositiveTwist
     {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
