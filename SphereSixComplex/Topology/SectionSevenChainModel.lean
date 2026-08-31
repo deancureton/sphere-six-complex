@@ -34,15 +34,15 @@ namespace SphereSixComplex
 
 /-- The two punctured-space relations and the final attachment class, as boundary columns. -/
 public def sectionSevenFirstBoundaryMatrix : Matrix (Fin 3) (Fin 3) ℤ :=
-  !![-1, 1, 0;
+  !![-37, 1, 12;
       3, 0, -1;
       0, 4, -1]
 
 /-- An integral inverse to `sectionSevenFirstBoundaryMatrix`. -/
 public def sectionSevenFirstBoundaryInverse : Matrix (Fin 3) (Fin 3) ℤ :=
-  !![-4, -1, 1;
-     -3, -1, 1;
-     -12, -4, 3]
+  !![-4, -49, 1;
+     -3, -37, 1;
+     -12, -148, 3]
 
 @[simp]
 public theorem sectionSevenFirstBoundaryMatrix_det :
@@ -78,7 +78,7 @@ public theorem sectionSevenFirstBoundary_on_relations (y : Fin 2 → ℤ) :
 /-- The last basis vector has boundary equal to the paper's final attachment class. -/
 @[simp]
 public theorem sectionSevenFirstBoundary_on_attachment :
-    sectionSevenFirstBoundaryMatrix.mulVec ![0, 0, 1] = ![0, -1, -1] := by
+    sectionSevenFirstBoundaryMatrix.mulVec ![0, 0, 1] = ![12, -1, -1] := by
   funext i
   fin_cases i <;>
     norm_num [sectionSevenFirstBoundaryMatrix, Matrix.mulVec, dotProduct, Fin.sum_univ_succ]

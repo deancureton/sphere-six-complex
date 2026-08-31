@@ -24,6 +24,14 @@ open SectionSevenEllipticTwoDiscHomologyCoordinates
 
 variable {A : PaperAnalyticData} {D : A.SectionSevenEllipticTwoDiscCoverData}
 
+/-- The elliptic-interior degree-one coordinate in the raw cusp Wang basis. -/
+public def actualCuspEllipticDegreeOneRawCoordinate (x : Fin 3 → ℤ) : ℤ :=
+  12 * x 0 + x 2
+
+/-- The elliptic-interior degree-two fibre coordinate in the raw cusp Wang basis. -/
+public def actualCuspEllipticDegreeTwoFiberRawCoordinate (x : Fin 6 → ℤ) : ℤ :=
+  12 * x 1 + 2 * x 2 + x 4
+
 /-- Local bases using the actual geometric cusp clutching and the normalized elliptic splitting. -/
 public noncomputable def sectionSevenActualNormalizedLocalBases
     (B : A.SectionSevenEllipticTwoDiscHomologyCoordinates D)
@@ -59,25 +67,28 @@ public structure SectionSevenEllipticInteriorCycleDecomposition
             (sectionSevenMayerVietorisFinalTwoHom
               (A.actualCuspSectionSevenHomologyTwoEquiv x) 1))
 
-/-- The first final degree-one coordinate is the raw cusp meridian coordinate. -/
+/-- The first final degree-one coordinate is the corrected elliptic cusp functional. -/
 public theorem sectionSevenFirstBoundaryHom_actualCusp_zero
     (x : IntegralSingularHomology 1 (A.openEmbeddingStarData.collarSource 0)) :
     sectionSevenFirstBoundaryHom (A.actualCuspSectionSevenHomologyOneEquiv x) 0 =
-      A.actualCuspRawHomologyOneEquiv x 2 := by
+      actualCuspEllipticDegreeOneRawCoordinate (A.actualCuspRawHomologyOneEquiv x) := by
   simp [actualCuspSectionSevenHomologyOneEquiv, cuspSectionSevenOneCoordinateChange,
+    actualCuspEllipticDegreeOneRawCoordinate,
     sectionSevenFirstBoundaryHom, sectionSevenFirstBoundaryMatrix, Matrix.mulVec,
     dotProduct, Fin.sum_univ_succ]
   ring
 
-/-- The first final degree-two coordinate is the first raw cusp suspension coordinate. -/
+/-- The first final degree-two coordinate is the corrected elliptic cusp fibre functional. -/
 public theorem sectionSevenMayerVietorisFinalTwoHom_actualCusp_zero
     (x : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0)) :
     sectionSevenMayerVietorisFinalTwoHom
         (A.actualCuspSectionSevenHomologyTwoEquiv x) 0 =
-      A.actualCuspRawHomologyTwoEquiv x 4 := by
+      actualCuspEllipticDegreeTwoFiberRawCoordinate (A.actualCuspRawHomologyTwoEquiv x) := by
   simp [actualCuspSectionSevenHomologyTwoEquiv, cuspSectionSevenTwoCoordinateChange,
+    actualCuspEllipticDegreeTwoFiberRawCoordinate,
     sectionSevenMayerVietorisFinalTwoHom, sectionSevenMayerVietorisFinalTwoMatrix,
     Matrix.mulVec, dotProduct, Fin.sum_univ_succ]
+  ring
 
 /-- The second final degree-two coordinate is the second raw cusp suspension coordinate. -/
 public theorem sectionSevenMayerVietorisFinalTwoHom_actualCusp_one
@@ -100,11 +111,11 @@ public theorem ofRawScalarCoordinates
     (hOne : ∀ x : IntegralSingularHomology 1
         (A.openEmbeddingStarData.collarSource 0),
       B.normalizedUnionHomologyOneEquiv (cuspToEllipticUnionHomology D 1 x) 0 =
-        A.actualCuspRawHomologyOneEquiv x 2)
-    (hTwoZero : ∀ x : IntegralSingularHomology 2
+        actualCuspEllipticDegreeOneRawCoordinate (A.actualCuspRawHomologyOneEquiv x))
+    (hTwoFiber : ∀ x : IntegralSingularHomology 2
         (A.openEmbeddingStarData.collarSource 0),
       B.normalizedUnionHomologyTwoEquiv S (cuspToEllipticUnionHomology D 2 x) 0 =
-        A.actualCuspRawHomologyTwoEquiv x 4)
+        actualCuspEllipticDegreeTwoFiberRawCoordinate (A.actualCuspRawHomologyTwoEquiv x))
     (hTwoOne : ∀ x : IntegralSingularHomology 2
         (A.openEmbeddingStarData.collarSource 0),
       B.normalizedUnionHomologyTwoEquiv S (cuspToEllipticUnionHomology D 2 x) 1 =
@@ -123,7 +134,7 @@ public theorem ofRawScalarCoordinates
       LinearEquiv.apply_symm_apply]
     funext i
     fin_cases i
-    · simpa [sectionSevenMayerVietorisFinalTwoHom_actualCusp_zero] using hTwoZero x
+    · simpa [sectionSevenMayerVietorisFinalTwoHom_actualCusp_zero] using hTwoFiber x
     · simpa [sectionSevenMayerVietorisFinalTwoHom_actualCusp_one] using hTwoOne x
 
 variable (C : A.SectionSevenEllipticInteriorCycleDecomposition B S)

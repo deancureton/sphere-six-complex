@@ -104,30 +104,31 @@ public noncomputable def ofCuspBoundaryBasisCoordinatesExceptE5Fiber
       N.actualHomologyCoordinates.normalizedUnionHomologyOneEquiv
           (cuspToEllipticUnionHomology D 1
             (A.actualCuspRawHomologyOneEquiv.symm (Pi.single i 1))) 0 =
-        (Pi.single i 1 : Fin 3 → ℤ) 2)
+        actualCuspEllipticDegreeOneRawCoordinate (Pi.single i 1))
     (hBoundaryBasis : ∀ i : Fin 6,
       N.actualHomologyCoordinates.degreeTwoInvariantEquiv
           ((presentationTwo (D := D)).totalToInvariants
             (cuspToEllipticUnionHomology D 2
               (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1)))) =
         (Pi.single i 1 : Fin 6 → ℤ) 5)
-    (hTwoZeroBasis : ∀ i : Fin 6, i ≠ 5 →
+    (hTwoFiberBasis : ∀ i : Fin 6, i ≠ 5 →
       N.actualHomologyCoordinates.normalizedUnionHomologyTwoEquiv
           (N.actualHomologyCoordinates.degreeTwoCuspE5SplittingOfCoordinates
             (degreeTwoCuspBoundaryCoordinates_of_basis N hBoundaryBasis))
           (cuspToEllipticUnionHomology D 2
             (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1))) 0 =
-        (Pi.single i 1 : Fin 6 → ℤ) 4) :
+        actualCuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1)) :
     A.SectionSevenEllipticInteriorMarkedCycleData D := by
   apply SectionSevenEllipticInteriorMarkedCycleData.ofCuspBoundaryBasisCoordinates
     N hOneBasis hBoundaryBasis
   intro i
   by_cases hi : i = 5
   · subst i
-    simpa [degreeTwoCuspE5Generator] using
+    simpa [degreeTwoCuspE5Generator,
+      actualCuspEllipticDegreeTwoFiberRawCoordinate] using
       degreeTwoCuspE5_fiberCoordinate_zero N
         (degreeTwoCuspBoundaryCoordinates_of_basis N hBoundaryBasis)
-  · exact hTwoZeroBasis i hi
+  · exact hTwoFiberBasis i hi
 
 /-- Build the marked-cycle package from a geometric Mayer--Vietoris basis bridge.  This replaces
 six scalar boundary checks by five side-factorizations and the orientation of the final
@@ -139,18 +140,18 @@ public noncomputable def ofCuspMayerVietorisBasisBridge
       N.actualHomologyCoordinates.normalizedUnionHomologyOneEquiv
           (cuspToEllipticUnionHomology D 1
             (A.actualCuspRawHomologyOneEquiv.symm (Pi.single i 1))) 0 =
-        (Pi.single i 1 : Fin 3 → ℤ) 2)
-    (hTwoZeroBasis : ∀ i : Fin 6, i ≠ 5 →
+        actualCuspEllipticDegreeOneRawCoordinate (Pi.single i 1))
+    (hTwoFiberBasis : ∀ i : Fin 6, i ≠ 5 →
       N.actualHomologyCoordinates.normalizedUnionHomologyTwoEquiv
           (N.actualHomologyCoordinates.degreeTwoCuspE5SplittingOfCoordinates
             (degreeTwoCuspBoundaryCoordinates_of_basis N
               (fun i ↦ G.boundaryCoordinates N i)))
           (cuspToEllipticUnionHomology D 2
             (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1))) 0 =
-        (Pi.single i 1 : Fin 6 → ℤ) 4) :
+        actualCuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1)) :
     A.SectionSevenEllipticInteriorMarkedCycleData D :=
   ofCuspBoundaryBasisCoordinatesExceptE5Fiber N hOneBasis
-    (fun i ↦ G.boundaryCoordinates N i) hTwoZeroBasis
+    (fun i ↦ G.boundaryCoordinates N i) hTwoFiberBasis
 
 end SectionSevenEllipticInteriorMarkedCycleData
 

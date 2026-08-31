@@ -88,14 +88,15 @@ public structure ActualCuspFiberEllipticCoordinateIdentities
         R.twoDiscCover.cuspMappingTorusToEllipticInteriorMap) =
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
-    coordinateAfterAddEquiv G.geometricWangSections.circleMappingTorusHOneAddEquiv 2
+    actualCuspEllipticDegreeOneCoordinateAfterAddEquiv
+      G.geometricWangSections.circleMappingTorusHOneAddEquiv
   /-- The cusp fibre degree-two basis classes have marked elliptic fibre coordinates. -/
   degreeTwo : ∀ i : Fin 6, i ≠ 5 →
     R.twoDiscCover.ellipticInteriorDegreeTwoFiberCoordinateHom R.homologyAlignment
         (pulledBackBoundaryBasisBridge R)
         (integralSingularHomologyMap 2 R.twoDiscCover.cuspToEllipticInteriorMap.hom
           (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1)))
-      = if i = 4 then 1 else 0
+      = actualCuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1)
 
 /-- The finite marked-basis calculation supplies the complete Section 7 cusp comparison. -/
 public theorem actualCuspFiberEllipticCoordinateIdentities
@@ -112,10 +113,7 @@ public noncomputable def cuspEllipticMappingTorusPrismGeometricData
   cuspEllipticMappingTorusPrismGeometricData_proved_of_coordinateIdentities R
     (pulledBackBoundaryBasisBridge R)
     (actualCuspFiberEllipticCoordinateIdentities R).degreeOne
-    (fun i hi4 hi5 => by
-      have h := (actualCuspFiberEllipticCoordinateIdentities R).degreeTwo i hi5
-      simp only [hi4, ↓reduceIte] at h
-      exact h)
+    (fun i _hi4 hi5 ↦ (actualCuspFiberEllipticCoordinateIdentities R).degreeTwo i hi5)
 
 /-- The orientation calculation at index four, derived from the same coordinate identities. -/
 public theorem normalizedIndexFourPrismCoefficientCalculation
@@ -124,7 +122,9 @@ public theorem normalizedIndexFourPrismCoefficientCalculation
       (cuspEllipticMappingTorusPrismGeometricData R) :=
   normalizedIndexFourPrismCoefficientCalculation_of_actualCuspFiberCoordinate R
     (pulledBackBoundaryBasisBridge R) _
-    (by simpa using (actualCuspFiberEllipticCoordinateIdentities R).degreeTwo 4 (by decide))
+    (by
+      simpa [actualCuspEllipticDegreeTwoFiberRawCoordinate] using
+        (actualCuspFiberEllipticCoordinateIdentities R).degreeTwo 4 (by decide))
 
 end EstablishedSectionSevenCuspTopology
 

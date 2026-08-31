@@ -57,7 +57,7 @@ public noncomputable def sectionSevenMayerVietorisOpenCover (A : OpenEmbeddingSt
 /-- The normalized final degree-two map: identity on the four central coordinates, then the
 unit maps from the two generators of `K₂`. -/
 public def sectionSevenMayerVietorisFinalTwoMatrix : Matrix (Fin 6) (Fin 6) ℤ :=
-  !![1, 0, 0, 0, 0,  0;
+  !![1, 0, 0, -12, -2, 0;
      0, 1, 0, 0, 0,  0;
      0, 0, 1, 0, 0,  0;
      0, 0, 0, 1, 0,  0;
@@ -68,23 +68,40 @@ public def sectionSevenMayerVietorisFinalTwoMatrix : Matrix (Fin 6) (Fin 6) ℤ 
 public def sectionSevenMayerVietorisFinalTwoHom : (Fin 6 → ℤ) →+ (Fin 6 → ℤ) :=
   (Matrix.mulVecLin sectionSevenMayerVietorisFinalTwoMatrix).toAddHom
 
-public theorem sectionSevenMayerVietorisFinalTwoHom_involutive (x : Fin 6 → ℤ) :
-    sectionSevenMayerVietorisFinalTwoHom
-      (sectionSevenMayerVietorisFinalTwoHom x) = x := by
-  funext i
-  fin_cases i <;>
-    simp [sectionSevenMayerVietorisFinalTwoHom, sectionSevenMayerVietorisFinalTwoMatrix,
-      Matrix.mulVec, dotProduct, Fin.sum_univ_succ]
+/-- An integral inverse to the corrected final degree-two matrix. -/
+public def sectionSevenMayerVietorisFinalTwoInverse : Matrix (Fin 6) (Fin 6) ℤ :=
+  !![1, 0, 0, 12, 2, 0;
+     0, 1, 0, 0, 0, 0;
+     0, 0, 1, 0, 0, 0;
+     0, 0, 0, 1, 0, 0;
+     0, 0, 0, 0, 1, 0;
+     0, 0, 0, 0, 0, -1]
+
+public theorem sectionSevenMayerVietorisFinalTwo_left_inverse :
+    sectionSevenMayerVietorisFinalTwoInverse * sectionSevenMayerVietorisFinalTwoMatrix = 1 := by
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    norm_num [sectionSevenMayerVietorisFinalTwoInverse, sectionSevenMayerVietorisFinalTwoMatrix,
+      Matrix.mul_apply, Fin.sum_univ_succ]
+
+public theorem sectionSevenMayerVietorisFinalTwo_right_inverse :
+    sectionSevenMayerVietorisFinalTwoMatrix * sectionSevenMayerVietorisFinalTwoInverse = 1 := by
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    norm_num [sectionSevenMayerVietorisFinalTwoInverse, sectionSevenMayerVietorisFinalTwoMatrix,
+      Matrix.mul_apply, Fin.sum_univ_succ]
 
 public theorem sectionSevenMayerVietorisFinalTwoHom_bijective :
     Function.Bijective sectionSevenMayerVietorisFinalTwoHom := by
   constructor
   · intro x y h
-    have h' := congrArg sectionSevenMayerVietorisFinalTwoHom h
-    simpa only [sectionSevenMayerVietorisFinalTwoHom_involutive] using h'
+    have h' := congrArg sectionSevenMayerVietorisFinalTwoInverse.mulVec h
+    simpa [sectionSevenMayerVietorisFinalTwoHom, Matrix.mulVec_mulVec,
+      sectionSevenMayerVietorisFinalTwo_left_inverse] using h'
   · intro y
-    exact ⟨sectionSevenMayerVietorisFinalTwoHom y,
-      sectionSevenMayerVietorisFinalTwoHom_involutive y⟩
+    refine ⟨sectionSevenMayerVietorisFinalTwoInverse.mulVec y, ?_⟩
+    simp [sectionSevenMayerVietorisFinalTwoHom, Matrix.mulVec_mulVec,
+      sectionSevenMayerVietorisFinalTwo_right_inverse]
 
 /-- The connected degree-zero difference map. -/
 public def sectionSevenMayerVietorisFinalZeroHom : (Fin 1 → ℤ) →+ (Fin 2 → ℤ) where

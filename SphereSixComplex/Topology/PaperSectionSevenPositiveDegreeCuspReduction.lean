@@ -59,7 +59,7 @@ public structure SectionSevenPositiveDegreeCuspBasisInput
     N.actualHomologyCoordinates.normalizedUnionHomologyOneEquiv
         (cuspToEllipticUnionHomology D 1
           (A.actualCuspRawHomologyOneEquiv.symm (Pi.single i 1))) 0 =
-      (Pi.single i 1 : Fin 3 → ℤ) 2
+      actualCuspEllipticDegreeOneRawCoordinate (Pi.single i 1)
   degreeTwoFiber : ∀ i : Fin 6, i ≠ 5 →
     N.actualHomologyCoordinates.normalizedUnionHomologyTwoEquiv
         (N.actualHomologyCoordinates.degreeTwoCuspE5SplittingOfCoordinates
@@ -69,7 +69,7 @@ public structure SectionSevenPositiveDegreeCuspBasisInput
                 N j)))
         (cuspToEllipticUnionHomology D 2
           (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1))) 0 =
-      (Pi.single i 1 : Fin 6 → ℤ) 4
+      actualCuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1)
 
 /-- The residual cusp comparison expressed without choosing basis vectors: the included
 degree-one meridian coordinate and the degree-two fibre coordinate are the corresponding raw
@@ -79,14 +79,15 @@ public structure SectionSevenPositiveDegreeCuspCoordinateComparison
     (G : D.SectionSevenCuspPulledBackBoundaryBasisBridge N) : Prop where
   degreeOneCoordinateHom :
     cuspDegreeOneCoordinateHom N =
-      coordinateAfterAddEquiv A.actualCuspRawHomologyOneEquiv 2
+      actualCuspEllipticDegreeOneCoordinateAfterAddEquiv A.actualCuspRawHomologyOneEquiv
   degreeTwoFiberCoordinateHom :
     cuspDegreeTwoFiberCoordinateHom N
         (degreeTwoCuspBoundaryCoordinates_of_basis N
           (fun i ↦
             (SectionSevenCuspPulledBackBoundaryBasisBridge.mayerVietorisBridge N G).boundaryCoordinates
               N i)) =
-      coordinateAfterAddEquiv A.actualCuspRawHomologyTwoEquiv 4
+      actualCuspEllipticDegreeTwoFiberCoordinateAfterAddEquiv
+        A.actualCuspRawHomologyTwoEquiv
 
 namespace SectionSevenPositiveDegreeCuspCoordinateComparison
 
@@ -100,11 +101,15 @@ public theorem toCuspBasisInput
   degreeOne i := by
     have h := DFunLike.congr_fun C.degreeOneCoordinateHom
       (A.actualCuspRawHomologyOneEquiv.symm (Pi.single i 1))
-    simpa [cuspDegreeOneCoordinateHom_apply, coordinateAfterAddEquiv_apply] using h
+    change _ = actualCuspEllipticDegreeOneRawCoordinate (Pi.single i 1)
+    simpa [cuspDegreeOneCoordinateHom_apply,
+      actualCuspEllipticDegreeOneCoordinateAfterAddEquiv] using h
   degreeTwoFiber i hi := by
     have h := DFunLike.congr_fun C.degreeTwoFiberCoordinateHom
       (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1))
-    simpa [cuspDegreeTwoFiberCoordinateHom_apply, coordinateAfterAddEquiv_apply] using h
+    change _ = actualCuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1)
+    simpa [cuspDegreeTwoFiberCoordinateHom_apply,
+      actualCuspEllipticDegreeTwoFiberCoordinateAfterAddEquiv] using h
 
 end SectionSevenPositiveDegreeCuspCoordinateComparison
 
@@ -121,17 +126,24 @@ public theorem coordinateComparison
   degreeOneCoordinateHom := by
     apply addMonoidHom_ext_of_equiv_pi_single_one A.actualCuspRawHomologyOneEquiv
     intro i
-    rw [cuspDegreeOneCoordinateHom_apply, coordinateAfterAddEquiv_apply,
-      AddEquiv.apply_symm_apply]
+    rw [cuspDegreeOneCoordinateHom_apply]
+    change _ = actualCuspEllipticDegreeOneRawCoordinate
+      (A.actualCuspRawHomologyOneEquiv
+        (A.actualCuspRawHomologyOneEquiv.symm (Pi.single i 1)))
+    rw [AddEquiv.apply_symm_apply]
     exact C.degreeOne i
   degreeTwoFiberCoordinateHom := by
     apply addMonoidHom_ext_of_equiv_pi_single_one A.actualCuspRawHomologyTwoEquiv
     intro i
-    rw [cuspDegreeTwoFiberCoordinateHom_apply, coordinateAfterAddEquiv_apply,
-      AddEquiv.apply_symm_apply]
+    rw [cuspDegreeTwoFiberCoordinateHom_apply]
+    change _ = actualCuspEllipticDegreeTwoFiberRawCoordinate
+      (A.actualCuspRawHomologyTwoEquiv
+        (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1)))
+    rw [AddEquiv.apply_symm_apply]
     by_cases hi : i = 5
     · subst i
-      simpa [degreeTwoCuspE5Generator] using
+      simpa [degreeTwoCuspE5Generator,
+        actualCuspEllipticDegreeTwoFiberRawCoordinate] using
         degreeTwoCuspE5_fiberCoordinate_zero N
           (degreeTwoCuspBoundaryCoordinates_of_basis N
             (fun i ↦

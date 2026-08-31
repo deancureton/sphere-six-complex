@@ -84,12 +84,12 @@ public def ofRawScalarCoordinates
         (A.openEmbeddingStarData.collarSource 0),
       N.actualHomologyCoordinates.normalizedUnionHomologyOneEquiv
           (cuspToEllipticUnionHomology D 1 x) 0 =
-        A.actualCuspRawHomologyOneEquiv x 2)
-    (hTwoZero : ∀ x : IntegralSingularHomology 2
+        actualCuspEllipticDegreeOneRawCoordinate (A.actualCuspRawHomologyOneEquiv x))
+    (hTwoFiber : ∀ x : IntegralSingularHomology 2
         (A.openEmbeddingStarData.collarSource 0),
       N.actualHomologyCoordinates.normalizedUnionHomologyTwoEquiv S
           (cuspToEllipticUnionHomology D 2 x) 0 =
-        A.actualCuspRawHomologyTwoEquiv x 4)
+        actualCuspEllipticDegreeTwoFiberRawCoordinate (A.actualCuspRawHomologyTwoEquiv x))
     (hTwoOne : ∀ x : IntegralSingularHomology 2
         (A.openEmbeddingStarData.collarSource 0),
       N.actualHomologyCoordinates.normalizedUnionHomologyTwoEquiv S
@@ -100,7 +100,7 @@ public def ofRawScalarCoordinates
   splitting := S
   cycleDecomposition :=
     SectionSevenEllipticInteriorCycleDecomposition.ofRawScalarCoordinates
-      hOne hTwoZero hTwoOne
+      hOne hTwoFiber hTwoOne
 
 /-- Build the marked-cycle package from a cusp boundary formula and the remaining fibre
 coordinate formula.  The included positive cusp `e₅` class determines the swept-cycle section,
@@ -111,23 +111,23 @@ public noncomputable def ofCuspBoundaryCoordinates
         (A.openEmbeddingStarData.collarSource 0),
       N.actualHomologyCoordinates.normalizedUnionHomologyOneEquiv
           (cuspToEllipticUnionHomology D 1 x) 0 =
-        A.actualCuspRawHomologyOneEquiv x 2)
+        actualCuspEllipticDegreeOneRawCoordinate (A.actualCuspRawHomologyOneEquiv x))
     (hBoundary : ∀ x : IntegralSingularHomology 2
         (A.openEmbeddingStarData.collarSource 0),
       N.actualHomologyCoordinates.degreeTwoInvariantEquiv
           ((presentationTwo (D := D)).totalToInvariants
             (cuspToEllipticUnionHomology D 2 x)) =
         A.actualCuspRawHomologyTwoEquiv x 5)
-    (hTwoZero : ∀ x : IntegralSingularHomology 2
+    (hTwoFiber : ∀ x : IntegralSingularHomology 2
         (A.openEmbeddingStarData.collarSource 0),
       N.actualHomologyCoordinates.normalizedUnionHomologyTwoEquiv
           (N.actualHomologyCoordinates.degreeTwoCuspE5SplittingOfCoordinates hBoundary)
           (cuspToEllipticUnionHomology D 2 x) 0 =
-        A.actualCuspRawHomologyTwoEquiv x 4) :
+        actualCuspEllipticDegreeTwoFiberRawCoordinate (A.actualCuspRawHomologyTwoEquiv x)) :
     A.SectionSevenEllipticInteriorMarkedCycleData D := by
   let B := N.actualHomologyCoordinates
   let S := B.degreeTwoCuspE5SplittingOfCoordinates hBoundary
-  apply ofRawScalarCoordinates N S hOne hTwoZero
+  apply ofRawScalarCoordinates N S hOne hTwoFiber
   intro x
   rw [B.normalizedUnionHomologyTwoEquiv_one]
   exact hBoundary x
@@ -138,6 +138,20 @@ public def coordinateAfterAddEquiv {G : Type*} [AddCommGroup G] {n : ℕ}
   toFun x := e x i
   map_zero' := by simp
   map_add' x y := by simp
+
+/-- Evaluate the corrected elliptic degree-one functional after an additive equivalence. -/
+public def actualCuspEllipticDegreeOneCoordinateAfterAddEquiv
+    {G : Type*} [AddCommGroup G] (e : G ≃+ (Fin 3 → ℤ)) : G →+ ℤ where
+  toFun x := actualCuspEllipticDegreeOneRawCoordinate (e x)
+  map_zero' := by simp [actualCuspEllipticDegreeOneRawCoordinate]
+  map_add' x y := by simp [actualCuspEllipticDegreeOneRawCoordinate]; ring
+
+/-- Evaluate the corrected elliptic degree-two fibre functional after an additive equivalence. -/
+public def actualCuspEllipticDegreeTwoFiberCoordinateAfterAddEquiv
+    {G : Type*} [AddCommGroup G] (e : G ≃+ (Fin 6 → ℤ)) : G →+ ℤ where
+  toFun x := actualCuspEllipticDegreeTwoFiberRawCoordinate (e x)
+  map_zero' := by simp [actualCuspEllipticDegreeTwoFiberRawCoordinate]
+  map_add' x y := by simp [actualCuspEllipticDegreeTwoFiberRawCoordinate]; ring
 
 /-- The first normalized elliptic-interior coordinate of an included cusp degree-one class. -/
 public noncomputable def cuspDegreeOneCoordinateHom
@@ -246,33 +260,37 @@ public noncomputable def ofCuspBoundaryBasisCoordinates
       N.actualHomologyCoordinates.normalizedUnionHomologyOneEquiv
           (cuspToEllipticUnionHomology D 1
             (A.actualCuspRawHomologyOneEquiv.symm (Pi.single i 1))) 0 =
-        (Pi.single i 1 : Fin 3 → ℤ) 2)
+        actualCuspEllipticDegreeOneRawCoordinate (Pi.single i 1))
     (hBoundaryBasis : ∀ i : Fin 6,
       N.actualHomologyCoordinates.degreeTwoInvariantEquiv
           ((presentationTwo (D := D)).totalToInvariants
             (cuspToEllipticUnionHomology D 2
               (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1)))) =
         (Pi.single i 1 : Fin 6 → ℤ) 5)
-    (hTwoZeroBasis : ∀ i : Fin 6,
+    (hTwoFiberBasis : ∀ i : Fin 6,
       N.actualHomologyCoordinates.normalizedUnionHomologyTwoEquiv
           (N.actualHomologyCoordinates.degreeTwoCuspE5SplittingOfCoordinates
             (degreeTwoCuspBoundaryCoordinates_of_basis N hBoundaryBasis))
           (cuspToEllipticUnionHomology D 2
             (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1))) 0 =
-        (Pi.single i 1 : Fin 6 → ℤ) 4) :
+        actualCuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1)) :
     A.SectionSevenEllipticInteriorMarkedCycleData D := by
   have hOneMap := addMonoidHom_ext_of_equiv_pi_single_one
     A.actualCuspRawHomologyOneEquiv (cuspDegreeOneCoordinateHom N)
-      (coordinateAfterAddEquiv A.actualCuspRawHomologyOneEquiv 2)
+      (actualCuspEllipticDegreeOneCoordinateAfterAddEquiv A.actualCuspRawHomologyOneEquiv)
       (fun i => by
-        rw [cuspDegreeOneCoordinateHom_apply, coordinateAfterAddEquiv_apply,
-          AddEquiv.apply_symm_apply]
+        rw [cuspDegreeOneCoordinateHom_apply]
+        change _ = actualCuspEllipticDegreeOneRawCoordinate
+          (A.actualCuspRawHomologyOneEquiv
+            (A.actualCuspRawHomologyOneEquiv.symm (Pi.single i 1)))
+        rw [AddEquiv.apply_symm_apply]
         exact hOneBasis i)
   have hOne : ∀ x : IntegralSingularHomology 1
       (A.openEmbeddingStarData.collarSource 0),
     N.actualHomologyCoordinates.normalizedUnionHomologyOneEquiv
         (cuspToEllipticUnionHomology D 1 x) 0 =
-      A.actualCuspRawHomologyOneEquiv x 2 := DFunLike.congr_fun hOneMap
+      actualCuspEllipticDegreeOneRawCoordinate
+        (A.actualCuspRawHomologyOneEquiv x) := DFunLike.congr_fun hOneMap
   have hBoundary : ∀ x : IntegralSingularHomology 2
       (A.openEmbeddingStarData.collarSource 0),
     N.actualHomologyCoordinates.degreeTwoInvariantEquiv
@@ -280,14 +298,18 @@ public noncomputable def ofCuspBoundaryBasisCoordinates
           (cuspToEllipticUnionHomology D 2 x)) =
       A.actualCuspRawHomologyTwoEquiv x 5 :=
     degreeTwoCuspBoundaryCoordinates_of_basis N hBoundaryBasis
-  have hTwoZeroMap := addMonoidHom_ext_of_equiv_pi_single_one
+  have hTwoFiberMap := addMonoidHom_ext_of_equiv_pi_single_one
     A.actualCuspRawHomologyTwoEquiv (cuspDegreeTwoFiberCoordinateHom N hBoundary)
-      (coordinateAfterAddEquiv A.actualCuspRawHomologyTwoEquiv 4)
+      (actualCuspEllipticDegreeTwoFiberCoordinateAfterAddEquiv
+        A.actualCuspRawHomologyTwoEquiv)
       (fun i => by
-        rw [cuspDegreeTwoFiberCoordinateHom_apply, coordinateAfterAddEquiv_apply,
-          AddEquiv.apply_symm_apply]
-        exact hTwoZeroBasis i)
-  exact ofCuspBoundaryCoordinates N hOne hBoundary (DFunLike.congr_fun hTwoZeroMap)
+        rw [cuspDegreeTwoFiberCoordinateHom_apply]
+        change _ = actualCuspEllipticDegreeTwoFiberRawCoordinate
+          (A.actualCuspRawHomologyTwoEquiv
+            (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1)))
+        rw [AddEquiv.apply_symm_apply]
+        exact hTwoFiberBasis i)
+  exact ofCuspBoundaryCoordinates N hOne hBoundary (DFunLike.congr_fun hTwoFiberMap)
 
 /-- The marked-cycle data supplies the production positive-degree homology assembly. -/
 public def positiveDegreeHomologyAssembly :

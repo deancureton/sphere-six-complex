@@ -101,7 +101,8 @@ public theorem inclusionNaturality
       (integralSingularHomologyMap 1 D.cuspToEllipticInteriorMap.hom x) = _
     rw [D.ellipticInteriorDegreeOneCoordinateHom_cuspToEllipticInteriorMap]
     have h := C.cycleDecomposition.normalizedDegreeOne_onCuspCollar x
-    simpa [cuspDegreeOneCoordinateHom_apply, coordinateAfterAddEquiv_apply,
+    simpa [cuspDegreeOneCoordinateHom_apply,
+      actualCuspEllipticDegreeOneCoordinateAfterAddEquiv,
       sectionSevenFirstBoundaryHom_actualCusp_zero] using congrFun h 0
   degreeTwoFiber := by
     ext x
@@ -110,7 +111,8 @@ public theorem inclusionNaturality
         (integralSingularHomologyMap 2 D.cuspToEllipticInteriorMap.hom x) = _
     rw [D.ellipticInteriorDegreeTwoFiberCoordinateHom_cuspToEllipticInteriorMap]
     have h := C.cycleDecomposition.normalizedDegreeTwo_onCuspCollar x
-    simpa [cuspDegreeTwoFiberCoordinateHom_apply, coordinateAfterAddEquiv_apply,
+    simpa [cuspDegreeTwoFiberCoordinateHom_apply,
+      actualCuspEllipticDegreeTwoFiberCoordinateAfterAddEquiv,
       cuspNormalizedDegreeTwoSplitting,
       sectionSevenMayerVietorisFinalTwoHom_actualCusp_zero] using congrFun h 0
 

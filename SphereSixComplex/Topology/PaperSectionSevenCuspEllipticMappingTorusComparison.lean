@@ -125,13 +125,15 @@ public structure CuspEllipticMappingTorusCoordinateComparison
         (integralSingularHomologyMap 1 D.cuspMappingTorusToEllipticInteriorMap) =
       let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
-      coordinateAfterAddEquiv G.geometricWangSections.circleMappingTorusHOneAddEquiv 2
+      actualCuspEllipticDegreeOneCoordinateAfterAddEquiv
+        G.geometricWangSections.circleMappingTorusHOneAddEquiv
   degreeTwoFiber :
     (D.ellipticInteriorDegreeTwoFiberCoordinateHom N G₀).comp
         (integralSingularHomologyMap 2 D.cuspMappingTorusToEllipticInteriorMap) =
       let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
-      coordinateAfterAddEquiv G.geometricWangSections.circleMappingTorusHTwoAddEquiv 4
+      actualCuspEllipticDegreeTwoFiberCoordinateAfterAddEquiv
+        G.geometricWangSections.circleMappingTorusHTwoAddEquiv
 
 /-- A geometric route to the two mapping-torus coordinate calculations.  A reference map has
 explicit marked coordinates, and the actual mapping-torus model is homotopic to it. -/
@@ -151,13 +153,15 @@ public structure CuspEllipticMappingTorusGeometricComparison
         (integralSingularHomologyMap 1 referenceMap) =
       let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
-      coordinateAfterAddEquiv G.geometricWangSections.circleMappingTorusHOneAddEquiv 2
+      actualCuspEllipticDegreeOneCoordinateAfterAddEquiv
+        G.geometricWangSections.circleMappingTorusHOneAddEquiv
   referenceDegreeTwoFiber :
     (D.ellipticInteriorDegreeTwoFiberCoordinateHom N G₀).comp
         (integralSingularHomologyMap 2 referenceMap) =
       let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
-      coordinateAfterAddEquiv G.geometricWangSections.circleMappingTorusHTwoAddEquiv 4
+      actualCuspEllipticDegreeTwoFiberCoordinateAfterAddEquiv
+        G.geometricWangSections.circleMappingTorusHTwoAddEquiv
 
 namespace CuspEllipticMappingTorusGeometricComparison
 
@@ -198,8 +202,10 @@ public theorem inclusionNaturality
     have hx := DFunLike.congr_fun C.degreeOne
       (integralSingularHomologyMap 1
         A.actualCuspRadialClutchingData.totalHomotopyEquiv.toFun x)
-    rw [coordinateAfterAddEquiv_apply,
-      actualCuspRawHomologyOneEquiv_apply_mappingTorus]
+    change _ = actualCuspEllipticDegreeOneRawCoordinate
+      (A.actualCuspRawHomologyOneEquiv x)
+    rw [actualCuspRawHomologyOneEquiv_apply_mappingTorus]
+    change _ = actualCuspEllipticDegreeOneRawCoordinate _ at hx
     exact hx
   degreeTwoFiber := by
     apply AddMonoidHom.ext
@@ -210,8 +216,10 @@ public theorem inclusionNaturality
     have hx := DFunLike.congr_fun C.degreeTwoFiber
       (integralSingularHomologyMap 2
         A.actualCuspRadialClutchingData.totalHomotopyEquiv.toFun x)
-    rw [coordinateAfterAddEquiv_apply,
-      actualCuspRawHomologyTwoEquiv_apply_mappingTorus]
+    change _ = actualCuspEllipticDegreeTwoFiberRawCoordinate
+      (A.actualCuspRawHomologyTwoEquiv x)
+    rw [actualCuspRawHomologyTwoEquiv_apply_mappingTorus]
+    change _ = actualCuspEllipticDegreeTwoFiberRawCoordinate _ at hx
     exact hx
 
 end CuspEllipticMappingTorusCoordinateComparison

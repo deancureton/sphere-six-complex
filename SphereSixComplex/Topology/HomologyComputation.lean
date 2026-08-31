@@ -66,13 +66,13 @@ public theorem twistRelationMatrix_bijective :
 
 /-- The redundant `H₁` presentation in generators `(c, g₁, g₂)`. -/
 public def firstHomologyRelationMatrix : Matrix (Fin 3) (Fin 2) ℤ :=
-  !![-1, 1;
+  !![-37, 1;
       3, 0;
       0, 4]
 
-/-- The primitive functional `Φ₁=(12,4,-3)` used to identify the quotient with `ℤ`. -/
+/-- The primitive functional `Φ₁=(12,148,-3)` in the corrected target basis. -/
 public def firstHomologyFunctional (x : Fin 3 → ℤ) : ℤ :=
-  12 * x 0 + 4 * x 1 - 3 * x 2
+  12 * x 0 + 148 * x 1 - 3 * x 2
 
 public theorem firstHomologyFunctional_relation (y : Fin 2 → ℤ) :
     firstHomologyFunctional (firstHomologyRelationMatrix.mulVec y) = 0 := by
@@ -112,15 +112,15 @@ public theorem firstHomologyPresentation_exact :
 public theorem firstHomologyFunctional_surjective :
     Function.Surjective firstHomologyFunctional := by
   intro z
-  refine ⟨![0, z, z], ?_⟩
+  refine ⟨![-12 * z, z, z], ?_⟩
   simp [firstHomologyFunctional]
   ring
 
 /-- The attaching class used in the paper maps to the obstruction `p=-1`. -/
 @[simp]
 public theorem firstHomologyFunctional_attachment :
-    firstHomologyFunctional ![0, -1, -1] = -1 := by
-  change 12 * 0 + 4 * (-1) - 3 * (-1) = -1
+    firstHomologyFunctional ![12, -1, -1] = -1 := by
+  change 12 * 12 + 148 * (-1) - 3 * (-1) = -1
   norm_num
 
 /-- The map `α₁` in the bases `(γ,u,w,δ)` used in Lemma 7.19. -/

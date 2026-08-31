@@ -139,7 +139,7 @@ public structure CuspEllipticInvariantSuspensionPrismComparison
   targetCoordinate : ∀ i : Fin 6,
     D.ellipticInteriorDegreeTwoFiberCoordinateHom N G₀
         (targetImageCycle i).homologyClass =
-      (Pi.single i 1 : Fin 6 → ℤ) 4
+      actualCuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1)
 
 namespace CuspEllipticInvariantSuspensionPrismComparison
 
@@ -185,7 +185,7 @@ public theorem firstInvariantSuspensionPrism_coordinate
         (G.geometricWangSections.circleMappingTorusHTwoAddEquiv.symm
           (Pi.single (4 : Fin 6) 1))) = 1
   rw [P.referenceMap_on_basis 4, P.targetCoordinate 4]
-  simp
+  simp [actualCuspEllipticDegreeTwoFiberRawCoordinate]
 
 /-- The explicit prism-chain comparison computes the remaining degree-two coordinate map. -/
 public theorem degreeTwoFiber
@@ -194,14 +194,18 @@ public theorem degreeTwoFiber
         (integralSingularHomologyMap 2 referenceMap) =
       let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
-      coordinateAfterAddEquiv G.geometricWangSections.circleMappingTorusHTwoAddEquiv 4 := by
+      actualCuspEllipticDegreeTwoFiberCoordinateAfterAddEquiv
+        G.geometricWangSections.circleMappingTorusHTwoAddEquiv := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   apply addMonoidHom_ext_of_equiv_pi_single_one
     G.geometricWangSections.circleMappingTorusHTwoAddEquiv
   intro i
-  rw [AddMonoidHom.comp_apply, coordinateAfterAddEquiv_apply,
-    AddEquiv.apply_symm_apply, P.referenceMap_on_basis i]
+  rw [AddMonoidHom.comp_apply, P.referenceMap_on_basis i]
+  change _ = actualCuspEllipticDegreeTwoFiberRawCoordinate
+    (G.geometricWangSections.circleMappingTorusHTwoAddEquiv
+      (G.geometricWangSections.circleMappingTorusHTwoAddEquiv.symm (Pi.single i 1)))
+  rw [AddEquiv.apply_symm_apply]
   exact P.targetCoordinate i
 
 end CuspEllipticInvariantSuspensionPrismComparison
@@ -239,9 +243,12 @@ public structure CuspEllipticMappingTorusPrismGeometricData
   targetComplementCoefficient : Fin 6 → ℤ
   targetComplementSweptClass : ∀ i : Fin 6, i ≠ 4 →
     (targetImageCycle i).homologyClass =
-      targetComplementCoefficient i •
-        (N.actualHomologyCoordinates.normalizedEllipticInteriorHomologyTwoEquiv
-          (D.cuspNormalizedDegreeTwoSplitting N G₀)).symm (Pi.single (1 : Fin 2) 1)
+      actualCuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1) •
+          (N.actualHomologyCoordinates.normalizedEllipticInteriorHomologyTwoEquiv
+            (D.cuspNormalizedDegreeTwoSplitting N G₀)).symm (Pi.single (0 : Fin 2) 1) +
+        targetComplementCoefficient i •
+          (N.actualHomologyCoordinates.normalizedEllipticInteriorHomologyTwoEquiv
+            (D.cuspNormalizedDegreeTwoSplitting N G₀)).symm (Pi.single (1 : Fin 2) 1)
 
 /-- The sole normalized prism calculation: the image of the fourth mapping-torus basis cycle is
 the first normalized elliptic-interior basis class. -/
@@ -359,13 +366,13 @@ public noncomputable def suspensionPrismComparison
     let E := N.actualHomologyCoordinates.normalizedEllipticInteriorHomologyTwoEquiv
       (D.cuspNormalizedDegreeTwoSplitting N G₀)
     change E (C.targetImageCycle i).homologyClass 0 =
-      (Pi.single i 1 : Fin 6 → ℤ) 4
+      actualCuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1)
     by_cases hi : i = 4
     · subst i
       rw [I.indexFourClass, E.apply_symm_apply]
-      simp
-    · rw [C.targetComplementSweptClass i hi, map_zsmul, E.apply_symm_apply]
-      rw [Pi.single_eq_of_ne (Ne.symm hi)]
+      simp [actualCuspEllipticDegreeTwoFiberRawCoordinate]
+    · rw [C.targetComplementSweptClass i hi, map_add, map_zsmul, map_zsmul,
+        E.apply_symm_apply, E.apply_symm_apply]
       simp
 
 /-- The structural data reduces the complete coordinate comparison to the normalized index-four

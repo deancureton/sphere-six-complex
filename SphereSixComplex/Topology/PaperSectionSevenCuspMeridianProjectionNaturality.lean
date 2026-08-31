@@ -86,7 +86,8 @@ public structure CuspEllipticMappingTorusMeridianProjectionComparison
     let _ := G.fiberTopology
     let _ := baseTopology
     HomologyOneCoordinateProjection (CircleMappingTorus G.clutching) Base
-      (coordinateAfterAddEquiv G.geometricWangSections.circleMappingTorusHOneAddEquiv 2)
+      (actualCuspEllipticDegreeOneCoordinateAfterAddEquiv
+        G.geometricWangSections.circleMappingTorusHOneAddEquiv)
       baseCoordinate
   targetProjection :
     let _ := baseTopology
@@ -111,7 +112,8 @@ public theorem degreeOne
         (integralSingularHomologyMap 1 D.cuspMappingTorusToEllipticInteriorMap) =
       let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
-      coordinateAfterAddEquiv G.geometricWangSections.circleMappingTorusHOneAddEquiv 2 := by
+      actualCuspEllipticDegreeOneCoordinateAfterAddEquiv
+        G.geometricWangSections.circleMappingTorusHOneAddEquiv := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   let _ := C.baseTopology
@@ -140,7 +142,8 @@ public structure CuspEllipticMappingTorusMeridianGeometricComparison
         (integralSingularHomologyMap 2 referenceMap) =
       let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
-      coordinateAfterAddEquiv G.geometricWangSections.circleMappingTorusHTwoAddEquiv 4
+      actualCuspEllipticDegreeTwoFiberCoordinateAfterAddEquiv
+        G.geometricWangSections.circleMappingTorusHTwoAddEquiv
 
 namespace CuspEllipticMappingTorusMeridianGeometricComparison
 

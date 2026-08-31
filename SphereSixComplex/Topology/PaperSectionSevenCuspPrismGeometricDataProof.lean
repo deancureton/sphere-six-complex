@@ -190,7 +190,8 @@ public noncomputable def cuspEllipticMappingTorusMeridianProjectionComparison_of
         (integralSingularHomologyMap 1 D.cuspMappingTorusToEllipticInteriorMap) =
       let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
-      coordinateAfterAddEquiv G.geometricWangSections.circleMappingTorusHOneAddEquiv 2) :
+      actualCuspEllipticDegreeOneCoordinateAfterAddEquiv
+        G.geometricWangSections.circleMappingTorusHOneAddEquiv) :
     D.CuspEllipticMappingTorusMeridianProjectionComparison N where
   Base := A.SectionSevenEllipticInterior
   baseTopology := inferInstance
@@ -212,13 +213,14 @@ classes.  All the remaining fields are supplied unconditionally: the reference m
 mapping-torus model itself, the source basis is an explicit family of singular cycles, the target
 cycles are their chain images, and the second suspension class is exactly the swept normalized
 basis class. -/
-public noncomputable def cuspEllipticMappingTorusPrismGeometricData_of_fiberCoinvariantVanishing
+public noncomputable def cuspEllipticMappingTorusPrismGeometricData_of_fiberCoinvariantValues
     (M : D.CuspEllipticMappingTorusMeridianProjectionComparison N)
-    (hvanish : ∀ i : Fin 6, i ≠ 4 → i ≠ 5 →
+    (hFiber : ∀ i : Fin 6, i ≠ 4 → i ≠ 5 →
       (N.actualHomologyCoordinates.normalizedEllipticInteriorHomologyTwoEquiv
         (D.cuspNormalizedDegreeTwoSplitting N G₀))
           (integralSingularHomologyMap 2 D.cuspToEllipticInteriorMap.hom
-            (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1))) 0 = 0) :
+            (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1))) 0 =
+        actualCuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1)) :
     D.CuspEllipticMappingTorusPrismGeometricData N G₀ := by
   classical
   let G := A.actualCuspRadialClutchingData
@@ -238,19 +240,16 @@ public noncomputable def cuspEllipticMappingTorusPrismGeometricData_of_fiberCoin
   by_cases h5 : i = 5
   · subst h5
     rw [cuspMappingTorusBasisCycle_map_homologyClass_five (N := N) (G₀ := G₀)]
-    simp
+    simp [actualCuspEllipticDegreeTwoFiberRawCoordinate]
   rw [cuspMappingTorusBasisCycle_map_homologyClass]
-  rw [Pi.single_eq_of_ne (Ne.symm h5), zero_smul]
   apply (N.actualHomologyCoordinates.normalizedEllipticInteriorHomologyTwoEquiv
     (D.cuspNormalizedDegreeTwoSplitting N G₀)).injective
-  rw [map_zero]
+  rw [map_add, map_zsmul, map_zsmul, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply]
   funext j
   fin_cases j
-  · simpa using hvanish i hi h5
+  · simpa using hFiber i hi h5
   · have h1 := D.normalizedEllipticInteriorHomologyTwoEquiv_cuspToEllipticInteriorMap_one N G₀
       (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1))
-    have hz : (Pi.single i 1 : Fin 6 → ℤ) 5 = 0 := Pi.single_eq_of_ne (Ne.symm h5) 1
-    rw [AddEquiv.apply_symm_apply, hz] at h1
     simpa using h1
 
 /-- The structural Section 7 cusp prism package assembled from the two residual geometric
@@ -262,14 +261,16 @@ public noncomputable def cuspEllipticMappingTorusPrismGeometricData_of_coordinat
         (integralSingularHomologyMap 1 D.cuspMappingTorusToEllipticInteriorMap) =
       let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
-      coordinateAfterAddEquiv G.geometricWangSections.circleMappingTorusHOneAddEquiv 2)
+      actualCuspEllipticDegreeOneCoordinateAfterAddEquiv
+        G.geometricWangSections.circleMappingTorusHOneAddEquiv)
     (hTwo : ∀ i : Fin 6, i ≠ 4 → i ≠ 5 →
       (N.actualHomologyCoordinates.normalizedEllipticInteriorHomologyTwoEquiv
         (D.cuspNormalizedDegreeTwoSplitting N G₀))
           (integralSingularHomologyMap 2 D.cuspToEllipticInteriorMap.hom
-            (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1))) 0 = 0) :
+            (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1))) 0 =
+        actualCuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1)) :
     D.CuspEllipticMappingTorusPrismGeometricData N G₀ :=
-  cuspEllipticMappingTorusPrismGeometricData_of_fiberCoinvariantVanishing
+  cuspEllipticMappingTorusPrismGeometricData_of_fiberCoinvariantValues
     (cuspEllipticMappingTorusMeridianProjectionComparison_of_degreeOne hOne) hTwo
 
 /-- The Section 7 cusp package in the exact shape used by the affine radial completion, given the
@@ -283,13 +284,15 @@ public noncomputable def cuspEllipticMappingTorusPrismGeometricData_proved_of_co
           R.twoDiscCover.cuspMappingTorusToEllipticInteriorMap) =
       let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
-      coordinateAfterAddEquiv G.geometricWangSections.circleMappingTorusHOneAddEquiv 2)
+      actualCuspEllipticDegreeOneCoordinateAfterAddEquiv
+        G.geometricWangSections.circleMappingTorusHOneAddEquiv)
     (hTwo : ∀ i : Fin 6, i ≠ 4 → i ≠ 5 →
       (R.homologyAlignment.actualHomologyCoordinates.normalizedEllipticInteriorHomologyTwoEquiv
         (R.twoDiscCover.cuspNormalizedDegreeTwoSplitting R.homologyAlignment
           G₀))
           (integralSingularHomologyMap 2 R.twoDiscCover.cuspToEllipticInteriorMap.hom
-            (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1))) 0 = 0) :
+            (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1))) 0 =
+        actualCuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1)) :
     R.twoDiscCover.CuspEllipticMappingTorusPrismGeometricData R.homologyAlignment
       G₀ :=
   cuspEllipticMappingTorusPrismGeometricData_of_coordinateIdentities hOne hTwo

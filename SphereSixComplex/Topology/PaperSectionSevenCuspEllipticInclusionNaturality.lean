@@ -105,11 +105,12 @@ public structure SectionSevenCuspEllipticInclusionNaturality
   degreeOne :
     (D.ellipticInteriorDegreeOneCoordinateHom N).comp
         (integralSingularHomologyMap 1 D.cuspToEllipticInteriorMap.hom) =
-      coordinateAfterAddEquiv A.actualCuspRawHomologyOneEquiv 2
+      actualCuspEllipticDegreeOneCoordinateAfterAddEquiv A.actualCuspRawHomologyOneEquiv
   degreeTwoFiber :
     (D.ellipticInteriorDegreeTwoFiberCoordinateHom N G).comp
         (integralSingularHomologyMap 2 D.cuspToEllipticInteriorMap.hom) =
-      coordinateAfterAddEquiv A.actualCuspRawHomologyTwoEquiv 4
+      actualCuspEllipticDegreeTwoFiberCoordinateAfterAddEquiv
+        A.actualCuspRawHomologyTwoEquiv
 
 namespace SectionSevenCuspEllipticInclusionNaturality
 
@@ -129,7 +130,8 @@ public theorem toCoordinateComparison
             (integralSingularHomologyMap 1 D.cuspToEllipticInteriorMap.hom) := by
         ext x
         exact (D.ellipticInteriorDegreeOneCoordinateHom_cuspToEllipticInteriorMap N x).symm
-      _ = coordinateAfterAddEquiv A.actualCuspRawHomologyOneEquiv 2 := C.degreeOne
+      _ = actualCuspEllipticDegreeOneCoordinateAfterAddEquiv
+          A.actualCuspRawHomologyOneEquiv := C.degreeOne
   degreeTwoFiberCoordinateHom := by
     calc
       cuspDegreeTwoFiberCoordinateHom N (D.cuspBoundaryCoordinateFormula N G) =
@@ -138,7 +140,8 @@ public theorem toCoordinateComparison
         ext x
         exact
           (D.ellipticInteriorDegreeTwoFiberCoordinateHom_cuspToEllipticInteriorMap N G x).symm
-      _ = coordinateAfterAddEquiv A.actualCuspRawHomologyTwoEquiv 4 := C.degreeTwoFiber
+      _ = actualCuspEllipticDegreeTwoFiberCoordinateAfterAddEquiv
+          A.actualCuspRawHomologyTwoEquiv := C.degreeTwoFiber
 
 end SectionSevenCuspEllipticInclusionNaturality
 
@@ -159,7 +162,8 @@ public theorem toCuspEllipticInclusionNaturality
         cuspDegreeOneCoordinateHom N := by
           ext x
           exact D.ellipticInteriorDegreeOneCoordinateHom_cuspToEllipticInteriorMap N x
-      _ = coordinateAfterAddEquiv A.actualCuspRawHomologyOneEquiv 2 :=
+      _ = actualCuspEllipticDegreeOneCoordinateAfterAddEquiv
+          A.actualCuspRawHomologyOneEquiv :=
         C.degreeOneCoordinateHom
   degreeTwoFiber := by
     calc
@@ -168,7 +172,8 @@ public theorem toCuspEllipticInclusionNaturality
         cuspDegreeTwoFiberCoordinateHom N (D.cuspBoundaryCoordinateFormula N G) := by
           ext x
           exact D.ellipticInteriorDegreeTwoFiberCoordinateHom_cuspToEllipticInteriorMap N G x
-      _ = coordinateAfterAddEquiv A.actualCuspRawHomologyTwoEquiv 4 :=
+      _ = actualCuspEllipticDegreeTwoFiberCoordinateAfterAddEquiv
+          A.actualCuspRawHomologyTwoEquiv :=
         C.degreeTwoFiberCoordinateHom
 
 end SectionSevenPositiveDegreeCuspCoordinateComparison

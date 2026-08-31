@@ -23,6 +23,8 @@ ALLOWED = {
 
 TOKEN_RE = re.compile(r"(?<![\w.])(sorry|admit|native_decide)(?![\w'])")
 LINE_COMMENT_RE = re.compile(r"--.*$")
+HOPF_IMPORT_RE = re.compile(r"^\s*(?:public\s+)?import\s+HopfProblem(?:\.|\s|$)", re.MULTILINE)
+HOPF_REFERENCE_RE = re.compile(r"\bHopfProblemExport\b")
 
 
 def strip_comments(source: str) -> str:
@@ -44,7 +46,7 @@ def strip_comments(source: str) -> str:
 
 
 def sources() -> list[str]:
-    found = ["Challenge.lean", "Solution.lean"]
+    found = ["ChallengeDefs.lean", "ChallengeAxioms.lean", "Challenge.lean", "Solution.lean"]
     for dirpath, _, filenames in os.walk(os.path.join(ROOT, "SphereSixComplex")):
         for name in sorted(filenames):
             if name.endswith(".lean"):
@@ -71,6 +73,13 @@ def main() -> int:
                 f"  {path}: expected {budget} declared placeholder(s), found {len(hits)}"
                 " — update ALLOWED in scripts/check-sorries.py"
             )
+        if HOPF_IMPORT_RE.search(text) or HOPF_REFERENCE_RE.search(text):
+            failures.append(f"  {path}: external HopfProblem proof dependency is forbidden")
+
+    with open(os.path.join(ROOT, "lakefile.toml"), encoding="utf-8") as handle:
+        lakefile = handle.read()
+    if re.search(r'^\s*name\s*=\s*"HopfProblem"\s*$', lakefile, re.MULTILINE):
+        failures.append("  lakefile.toml: external HopfProblem dependency is forbidden")
 
     if failures:
         print("Placeholder check FAILED:")

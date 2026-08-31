@@ -33,16 +33,16 @@ public theorem SectionSevenEllipticInteriorCycleDecomposition.ofFiberScalarCoord
         (A.openEmbeddingStarData.collarSource 0),
       N.actualHomologyCoordinates.normalizedUnionHomologyOneEquiv
           (cuspToEllipticUnionHomology D 1 x) 0 =
-        A.actualCuspRawHomologyOneEquiv x 2)
-    (hTwoZero : ∀ x : IntegralSingularHomology 2
+        actualCuspEllipticDegreeOneRawCoordinate (A.actualCuspRawHomologyOneEquiv x))
+    (hTwoFiber : ∀ x : IntegralSingularHomology 2
         (A.openEmbeddingStarData.collarSource 0),
       N.actualHomologyCoordinates.normalizedUnionHomologyTwoEquiv
           (D.cuspNormalizedDegreeTwoSplitting N G)
           (cuspToEllipticUnionHomology D 2 x) 0 =
-        A.actualCuspRawHomologyTwoEquiv x 4) :
+        actualCuspEllipticDegreeTwoFiberRawCoordinate (A.actualCuspRawHomologyTwoEquiv x)) :
     A.SectionSevenEllipticInteriorCycleDecomposition N.actualHomologyCoordinates
       (D.cuspNormalizedDegreeTwoSplitting N G) := by
-  apply SectionSevenEllipticInteriorCycleDecomposition.ofRawScalarCoordinates hOne hTwoZero
+  apply SectionSevenEllipticInteriorCycleDecomposition.ofRawScalarCoordinates hOne hTwoFiber
   intro x
   rw [N.actualHomologyCoordinates.normalizedUnionHomologyTwoEquiv_one]
   exact D.cuspBoundaryCoordinateFormula N G x
@@ -58,13 +58,15 @@ public theorem SectionSevenCuspEllipticInclusionNaturality.cycleDecomposition
     change D.ellipticInteriorDegreeOneCoordinateHom N
         (integralSingularHomologyMap 1 D.cuspToEllipticInteriorMap.hom x) = _ at hx
     rw [D.ellipticInteriorDegreeOneCoordinateHom_cuspToEllipticInteriorMap] at hx
-    simpa [cuspDegreeOneCoordinateHom_apply, coordinateAfterAddEquiv_apply] using hx
+    simpa [cuspDegreeOneCoordinateHom_apply,
+      actualCuspEllipticDegreeOneCoordinateAfterAddEquiv] using hx
   · intro x
     have hx := DFunLike.congr_fun C.degreeTwoFiber x
     change D.ellipticInteriorDegreeTwoFiberCoordinateHom N G
         (integralSingularHomologyMap 2 D.cuspToEllipticInteriorMap.hom x) = _ at hx
     rw [D.ellipticInteriorDegreeTwoFiberCoordinateHom_cuspToEllipticInteriorMap] at hx
-    simpa [cuspDegreeTwoFiberCoordinateHom_apply, coordinateAfterAddEquiv_apply,
+    simpa [cuspDegreeTwoFiberCoordinateHom_apply,
+      actualCuspEllipticDegreeTwoFiberCoordinateAfterAddEquiv,
       SectionSevenEllipticTwoDiscCoverData.cuspNormalizedDegreeTwoSplitting] using hx
 
 /-- For the cusp-normalized splitting, the cycle-level statement is exactly equivalent to the
@@ -81,7 +83,8 @@ public theorem sectionSevenEllipticInteriorCycleDecomposition_iff_inclusionNatur
             (integralSingularHomologyMap 1 D.cuspToEllipticInteriorMap.hom x) = _
           rw [D.ellipticInteriorDegreeOneCoordinateHom_cuspToEllipticInteriorMap]
           have h := C.normalizedDegreeOne_onCuspCollar x
-          simpa [cuspDegreeOneCoordinateHom_apply, coordinateAfterAddEquiv_apply,
+          simpa [cuspDegreeOneCoordinateHom_apply,
+            actualCuspEllipticDegreeOneCoordinateAfterAddEquiv,
             sectionSevenFirstBoundaryHom_actualCusp_zero] using congrFun h 0
         degreeTwoFiber := by
           ext x
@@ -89,7 +92,8 @@ public theorem sectionSevenEllipticInteriorCycleDecomposition_iff_inclusionNatur
             (integralSingularHomologyMap 2 D.cuspToEllipticInteriorMap.hom x) = _
           rw [D.ellipticInteriorDegreeTwoFiberCoordinateHom_cuspToEllipticInteriorMap]
           have h := C.normalizedDegreeTwo_onCuspCollar x
-          simpa [cuspDegreeTwoFiberCoordinateHom_apply, coordinateAfterAddEquiv_apply,
+          simpa [cuspDegreeTwoFiberCoordinateHom_apply,
+            actualCuspEllipticDegreeTwoFiberCoordinateAfterAddEquiv,
             SectionSevenEllipticTwoDiscCoverData.cuspNormalizedDegreeTwoSplitting,
             sectionSevenMayerVietorisFinalTwoHom_actualCusp_zero] using congrFun h 0 },
     SectionSevenCuspEllipticInclusionNaturality.cycleDecomposition⟩
