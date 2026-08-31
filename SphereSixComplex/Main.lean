@@ -513,6 +513,7 @@ public import SphereSixComplex.Topology.PaperSectionSevenCuspMeridianSourceCircl
 public import SphereSixComplex.Topology.PaperSectionSevenCuspMeridianSourceHomologyCompletion
 public import SphereSixComplex.Topology.PaperSectionSevenCuspMeridianSectionGeneratorCompletion
 public import SphereSixComplex.Topology.PaperSectionSevenCuspSelectedMeridianSpecializationProof
+public import SphereSixComplex.Topology.MappingTorusBaseCircleWangNaturality
 
 /-!
 # A Complex Structure on the Six-Sphere
