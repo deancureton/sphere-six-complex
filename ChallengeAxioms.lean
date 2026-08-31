@@ -65,10 +65,6 @@ axiom SphereSixComplex.establishedCompactSmoothOrientedManifoldHomologyTheory : 
 axiom SphereSixComplex.EstablishedCellularHomology.integralCWCellularHomologyModel : (Y : Type) →
   [inst : TopologicalSpace Y] →
     [T2Space Y] → [inst_2 : Topology.CWComplex Set.univ] → SphereSixComplex.IntegralCWCellularHomologyModel Y
-axiom SphereSixComplex.Topology.NormalizedFiniteOrderAdditiveCircleSweep.normalizedFiniteOrderAdditiveCircleSweep : ∀
-  {G : Type} [inst : TopologicalSpace G] [inst_1 : AddCommGroup G] [inst_2 : IsTopologicalAddGroup G]
-  [PathConnectedSpace G] (m : ℕ) [inst_4 : NeZero m] (phi : G ≃ₜ+ G) (hpow : phi.toHomeomorph ^ m = 1),
-  Nonempty (SphereSixComplex.Topology.NormalizedFiniteOrderAdditiveCircleSweep.SweepData m phi hpow)
 axiom SphereSixComplex.Periods.establishedOrbifoldAffineLineTorsorCuspBoundedCousinCorrection : ∀
   (P : SphereSixComplex.Periods.OrbifoldAffineLineTorsorDescentProblem),
   P.HasAcyclicProjectiveLineFrame → Nonempty P.CuspBoundedEllipticOneCorrection

@@ -2,6 +2,7 @@ module
 
 public import SphereSixComplex.Topology.EllipticCentralCoverSourceGammaCoordinates
 public import SphereSixComplex.Topology.EllipticCentralProjectionMappingTorusSquare
+public import SphereSixComplex.Topology.EllipticSpecializedNormalizedCoverSweep
 public import SphereSixComplex.Topology.EllipticThreeTorusAdditiveOrbitSweep
 public import SphereSixComplex.Topology.EllipticThreeTorusRankOneMappingTorusCoordinates
 public import SphereSixComplex.Topology.FiniteCoverPerfectPairing
@@ -23,17 +24,21 @@ open CanonicalProductWangBoundarySlant
 open EllipticCentralCoverSourceGammaCoordinates
 open EllipticCentralProjectionMappingTorusSquare
 open EllipticGammaShearDegreeTwoCoordinates
+open EllipticSpecializedNormalizedCoverSweep
 open EllipticThreeTorusAdditiveOrbitSweep
 open EllipticThreeTorusClutchingDegreeTwo
+open EllipticThreeTorusExplicitOrbitSweepHomology
 open EllipticThreeTorusRankOneMappingTorusCoordinates
 open EllipticThreeTorusWangEndpointCoordinates
 open EllipticThreeTorusWangLattice
 open FiniteCoverPerfectPairing
 open FiniteCyclicMappingTorusWangNaturality
 open FiniteCyclicThreeTorusWangNaturality
+open FixedLoopSweepWangBoundary
 open Geometry Geometry.EllipticFamilySpecialization
 open NormalizedAffineMappingTorusCover
 open NormalizedFiniteOrderAdditiveCircleSweep
+open NormalizedFiniteOrderAdditiveCircleSweepProof
 open PaperAffineCyclicReducedFiberMappingTorus
 open PaperEllipticFillingRadialRetraction
 open PaperEllipticReducedCentralFiberCoverModels
@@ -163,23 +168,13 @@ private theorem orderFour_projection_in_mappingTorus (x : DegreeTwoLattice) :
   ext y
   exact congrArg (fun k => k y) (orderFour_coverProjection_square F)
 
-private noncomputable def orderThreeSweepData :
-    SweepData 3 orderThreeClutchingAddEquiv orderThreeClutchingAddEquiv_pow :=
-  Classical.choice (normalizedFiniteOrderAdditiveCircleSweep
-    3 orderThreeClutchingAddEquiv orderThreeClutchingAddEquiv_pow)
-
-private noncomputable def orderFourSweepData :
-    SweepData 4 orderFourClutchingAddEquiv orderFourClutchingAddEquiv_pow :=
-  Classical.choice (normalizedFiniteOrderAdditiveCircleSweep
-    4 orderFourClutchingAddEquiv orderFourClutchingAddEquiv_pow)
-
 private def orderThreeSweepGenerator : IntegralSingularHomology 2
     (CircleMappingTorus orderThreeThreeTorusClutching) :=
-  -(orderThreeSweepData.fixedSweep orderThreeFixedCoordinateTwo)
+  -orderThreeFixedLoopSweep
 
 private def orderFourSweepGenerator : IntegralSingularHomology 2
     (CircleMappingTorus orderFourThreeTorusClutching) :=
-  orderFourSweepData.fixedSweep orderFourFixedCoordinateTwo
+  orderFourFixedLoopSweep
 
 private def orderThreeFibreGenerator : IntegralSingularHomology 2
     (CircleMappingTorus orderThreeThreeTorusClutching) :=
@@ -199,13 +194,8 @@ private theorem orderThree_cover_basisCombination :
           ((orderThreeCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm
             orderThreeBasisCombination)) = orderThreeSweepGenerator := by
   rw [orderThreeGamma_basisCombination, map_neg]
-  change -(integralSingularHomologyMap 2
-    (normalizedAffineCoverToCircleMappingTorus
-      orderThreeClutchingAddEquiv.toHomeomorph orderThreeClutchingAddEquiv_pow)
-    (positiveCircleCross (standardThreeTorusCoordinateCircle 1))) = _
-  rw [
-    orderThreeSweepData.normalizedCover_cross,
-    orderThreeOrbitNorm_eq_fixedCoordinateTwo]
+  change -orderThreeNormalizedCross 1 = _
+  rw [orderThreeNormalizedCross_one_eq_fixedLoopSweep]
   rfl
 
 private theorem orderFour_cover_basisCombination :
@@ -216,13 +206,8 @@ private theorem orderFour_cover_basisCombination :
           ((orderFourCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm
             orderFourBasisCombination)) = 2 • orderFourSweepGenerator := by
   rw [orderFourGamma_basisCombination]
-  change integralSingularHomologyMap 2
-    (normalizedAffineCoverToCircleMappingTorus
-      orderFourClutchingAddEquiv.toHomeomorph orderFourClutchingAddEquiv_pow)
-    (positiveCircleCross (standardThreeTorusCoordinateCircle 0)) = _
-  rw [
-    orderFourSweepData.normalizedCover_cross,
-    orderFourOrbitNorm_eq_two_fixedCoordinateTwo, map_nsmul]
+  change orderFourNormalizedCross 0 = _
+  rw [orderFourNormalizedCross_zero_eq_two_fixedLoopSweep]
   rfl
 
 private theorem orderThree_cover_coordinateThree :
@@ -233,7 +218,8 @@ private theorem orderThree_cover_coordinateThree :
           ((orderThreeCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm
             (Pi.single 3 1))) = orderThreeFibreGenerator := by
   rw [orderThreeGamma_coordinateThree]
-  exact orderThreeSweepData.fibre_square _
+  convert normalizedFiniteOrderAdditiveCircleSweep_fibreSquare
+    orderThreeClutchingAddEquiv orderThreeClutchingAddEquiv_pow _ using 1 <;> rfl
 
 private theorem orderFour_cover_coordinateThree :
     integralSingularHomologyMap 2
@@ -243,12 +229,13 @@ private theorem orderFour_cover_coordinateThree :
           ((orderFourCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm
             (Pi.single 3 1))) = orderFourFibreGenerator := by
   rw [orderFourGamma_coordinateThree]
-  exact orderFourSweepData.fibre_square _
+  convert normalizedFiniteOrderAdditiveCircleSweep_fibreSquare
+    orderFourClutchingAddEquiv orderFourClutchingAddEquiv_pow _ using 1 <;> rfl
 
 private theorem orderThreeFixedSweep_positiveInvariant :
     orderThreeInvariantsEquivInt
         (OrderThreePresentation.totalToInvariants
-          (orderThreeSweepData.fixedSweep orderThreeFixedCoordinateTwo)) = 1 := by
+          orderThreeFixedLoopSweep) = 1 := by
   change orderThreeInvariantEquivInt
     ((invariantsEquivOfConjugacy
       standardThreeTorusHomologyOne.toIntLinearEquiv
@@ -259,18 +246,19 @@ private theorem orderThreeFixedSweep_positiveInvariant :
         orderThreeClutchingDegreeOneMatrix.mulVecLin
         orderThreeThreeTorusClutching_homologyOne))
       (OrderThreePresentation.totalToInvariants
-        (orderThreeSweepData.fixedSweep orderThreeFixedCoordinateTwo))) = 1
+        orderThreeFixedLoopSweep)) = 1
   change standardThreeTorusHomologyOne
     (OrderThreePresentation.boundary
-      (orderThreeSweepData.fixedSweep orderThreeFixedCoordinateTwo)) 2 = 1
+      orderThreeFixedLoopSweep) 2 = 1
   have hboundary : OrderThreePresentation.boundary
-      (orderThreeSweepData.fixedSweep orderThreeFixedCoordinateTwo) =
+      orderThreeFixedLoopSweep =
         standardThreeTorusCoordinateHomologyClass 2 := by
     change (circleMappingTorusWangPresentationOfCover
       orderThreeThreeTorusClutching 1).boundary
-        (orderThreeSweepData.fixedSweep orderThreeFixedCoordinateTwo) = _
-    convert orderThreeSweepData.boundary_fixedSweep orderThreeFixedCoordinateTwo using 1 <;>
-      rfl
+        (fixedLoopSweepClass orderThreeClutchingAddEquiv
+          orderThreeFixedCoordinateTwo) = _
+    convert fixedLoopSweepClass_boundary orderThreeClutchingAddEquiv
+      orderThreeFixedCoordinateTwo using 1 <;> rfl
   rw [hboundary]
   change standardThreeTorusDegreeOneCoordinateHom
     (standardThreeTorusCoordinateHomologyClass 2) 2 = 1
@@ -280,7 +268,7 @@ private theorem orderThreeFixedSweep_positiveInvariant :
 private theorem orderFourFixedSweep_positiveInvariant :
     orderFourInvariantsEquivInt
         (OrderFourPresentation.totalToInvariants
-          (orderFourSweepData.fixedSweep orderFourFixedCoordinateTwo)) = 1 := by
+          orderFourFixedLoopSweep) = 1 := by
   change orderFourInvariantEquivInt
     ((invariantsEquivOfConjugacy
       standardThreeTorusHomologyOne.toIntLinearEquiv
@@ -291,18 +279,19 @@ private theorem orderFourFixedSweep_positiveInvariant :
         orderFourClutchingDegreeOneMatrix.mulVecLin
         orderFourThreeTorusClutching_homologyOne))
       (OrderFourPresentation.totalToInvariants
-        (orderFourSweepData.fixedSweep orderFourFixedCoordinateTwo))) = 1
+        orderFourFixedLoopSweep)) = 1
   change standardThreeTorusHomologyOne
     (OrderFourPresentation.boundary
-      (orderFourSweepData.fixedSweep orderFourFixedCoordinateTwo)) 2 = 1
+      orderFourFixedLoopSweep) 2 = 1
   have hboundary : OrderFourPresentation.boundary
-      (orderFourSweepData.fixedSweep orderFourFixedCoordinateTwo) =
+      orderFourFixedLoopSweep =
         standardThreeTorusCoordinateHomologyClass 2 := by
     change (circleMappingTorusWangPresentationOfCover
       orderFourThreeTorusClutching 1).boundary
-        (orderFourSweepData.fixedSweep orderFourFixedCoordinateTwo) = _
-    convert orderFourSweepData.boundary_fixedSweep orderFourFixedCoordinateTwo using 1 <;>
-      rfl
+        (fixedLoopSweepClass orderFourClutchingAddEquiv
+          orderFourFixedCoordinateTwo) = _
+    convert fixedLoopSweepClass_boundary orderFourClutchingAddEquiv
+      orderFourFixedCoordinateTwo using 1 <;> rfl
   rw [hboundary]
   change standardThreeTorusDegreeOneCoordinateHom
     (standardThreeTorusCoordinateHomologyClass 2) 2 = 1
@@ -315,11 +304,10 @@ private theorem orderThreeSweepGenerator_positiveInvariant :
   rw [orderThreeNegatedInvariantsEquivInt_apply]
   have hneg : OrderThreePresentation.totalToInvariants orderThreeSweepGenerator =
       -(OrderThreePresentation.totalToInvariants
-        (orderThreeSweepData.fixedSweep orderThreeFixedCoordinateTwo)) := by
+        orderThreeFixedLoopSweep) := by
     change OrderThreePresentation.totalToInvariants
-      (-(orderThreeSweepData.fixedSweep orderThreeFixedCoordinateTwo)) = _
-    convert map_neg OrderThreePresentation.totalToInvariants
-      (orderThreeSweepData.fixedSweep orderThreeFixedCoordinateTwo) using 1 <;> rfl
+      (-orderThreeFixedLoopSweep) = _
+    exact map_neg OrderThreePresentation.totalToInvariants orderThreeFixedLoopSweep
   rw [hneg, map_neg, orderThreeFixedSweep_positiveInvariant]
   norm_num
 

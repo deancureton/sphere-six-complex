@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Topology.BinaryOpenCoverOrientedRefinementNaturality
-public import SphereSixComplex.Topology.CanonicalProductWangBoundarySlant
+public import SphereSixComplex.Topology.CanonicalProductWangBoundaryPositiveGenerator
 public import SphereSixComplex.Topology.NormalizedFiniteOrderAdditiveCircleSweepProof
 
 /-!
@@ -361,7 +361,7 @@ public theorem identityMappingTorusBoundary_positiveCircleProductGenerator :
               CircleMappingTorus (Homeomorph.refl (StdTorus 1))))
           positiveCircleProductGenerator) =
       standardCircleHomologyGenerator := by
-  exact canonicalProductWangBoundary_positiveGenerator
+  exact canonicalProductWangBoundary_positiveGenerator_core
 
 public theorem identityMappingTorusCoverBoundary_positiveCircleProductGenerator :
     (overlapEquiv
