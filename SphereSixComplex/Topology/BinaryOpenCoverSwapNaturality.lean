@@ -72,6 +72,15 @@ public noncomputable def coverIntersectionSwapChainMap {X : TopCat} (U V : Opens
       integralSimplicialChains.obj (coverIntersection V U) :=
   integralSimplicialChains.map (coverIntersectionSwapMap U V)
 
+/-- The generated-intersection swap, typed as a map between the first terms of the two cover
+short complexes. -/
+public noncomputable def coverIntersectionSwapShortComplexChainMap {X : TopCat}
+    (U V : Opens X) :
+    (coverChainShortComplex U V).X₁ ⟶ (coverChainShortComplex V U).X₁ := by
+  change integralSimplicialChains.obj (coverIntersection U V) ⟶
+    integralSimplicialChains.obj (coverIntersection V U)
+  exact coverIntersectionSwapChainMap U V
+
 /-- Integral chains induced by swapping the generated union. -/
 public noncomputable def coverUnionSwapChainMap {X : TopCat} (U V : Opens X) :
     integralSimplicialChains.obj (coverUnion U V) ⟶
@@ -96,6 +105,15 @@ private theorem intersectionSwapChainNaturality {X : TopCat} (U V : Opens X) :
   simpa only [singularOpenCorestrictionChainMap, openIntersectionChainComparison,
     coverIntersectionSwapChainMap, Functor.map_comp, Category.assoc] using
     congrArg integralSimplicialChains.map (intersectionSwapSSetNaturality U V)
+
+private theorem intersectionSwapShortComplexChainNaturality {X : TopCat}
+    (U V : Opens X) :
+    intersectionForwardChain U V ≫ coverIntersectionSwapShortComplexChainMap U V =
+      integralSimplicialChains.map
+          (TopCat.toSSet.map (openIntersectionSwapMap U V)) ≫
+        intersectionForwardChain V U := by
+  rw [intersectionForwardChain_eq, intersectionForwardChain_eq]
+  exact intersectionSwapChainNaturality U V
 
 private theorem unionSwapChainNaturality {X : TopCat} (U V : Opens X) :
     coverUnionSwapChainMap U V ≫ coverChainInclusion V U =
@@ -153,13 +171,48 @@ public noncomputable def coverChainShortComplexSwap {X : TopCat} (U V : Opens X)
 public noncomputable abbrev generatedIntersectionSwapHomologyMap {X : TopCat}
     (U V : Opens X) (n : ℕ) :
     generatedIntersectionHomology U V n ⟶ generatedIntersectionHomology V U n :=
-  HomologicalComplex.homologyMap (coverIntersectionSwapChainMap U V) n
+  HomologicalComplex.homologyMap (coverIntersectionSwapShortComplexChainMap U V) n
 
 /-- The homology map induced by swapping the generated union. -/
 public noncomputable abbrev generatedUnionSwapHomologyMap {X : TopCat}
     (U V : Opens X) (n : ℕ) :
     generatedUnionHomology U V n ⟶ generatedUnionHomology V U n :=
   HomologicalComplex.homologyMap (coverUnionSwapChainMap U V) n
+
+/-- The canonical generated-to-ordinary intersection comparison commutes with swapping the
+two opens. -/
+public theorem intersectionHomologyIso_swap {X : TopCat}
+    (U V : Opens X) (n : ℕ) :
+    generatedIntersectionSwapHomologyMap U V n ≫
+        (intersectionHomologyIso V U n).hom =
+      (intersectionHomologyIso U V n).hom ≫
+        openIntersectionSwapHomologyMap U V n := by
+  exact intersectionHomologyIso_naturality
+    (openIntersectionSwapMap U V)
+    (coverIntersectionSwapShortComplexChainMap U V)
+    (intersectionSwapShortComplexChainNaturality U V) n
+
+/-- The canonical generated-union comparison is unchanged when the two opens are swapped. -/
+public theorem unionHomologyIsoOfCover_swap {X : TopCat}
+    {U V : Opens X} (hcover : U ⊔ V = ⊤) (hswap : V ⊔ U = ⊤) (n : ℕ) :
+    generatedUnionSwapHomologyMap U V n ≫
+        (unionHomologyIsoOfCover hswap n).hom =
+      (unionHomologyIsoOfCover hcover n).hom := by
+  change
+    HomologicalComplex.homologyMap (coverUnionSwapChainMap U V) n ≫
+        HomologicalComplex.homologyMap (coverChainInclusion V U) n =
+      HomologicalComplex.homologyMap (coverChainInclusion U V) n
+  rw [← HomologicalComplex.homologyMap_comp, unionSwapChainNaturality]
+
+/-- Inverse form of `unionHomologyIsoOfCover_swap`. -/
+public theorem unionHomologyIsoOfCover_inv_swap {X : TopCat}
+    {U V : Opens X} (hcover : U ⊔ V = ⊤) (hswap : V ⊔ U = ⊤) (n : ℕ) :
+    (unionHomologyIsoOfCover hcover n).inv ≫
+        generatedUnionSwapHomologyMap U V n =
+      (unionHomologyIsoOfCover hswap n).inv := by
+  apply (cancel_mono (unionHomologyIsoOfCover hswap n).hom).mp
+  rw [Category.assoc, unionHomologyIsoOfCover_swap hcover hswap]
+  simp
 
 /-- On generated-cover homology, swapping the opens negates the connecting morphism. -/
 public theorem generatedBoundary_swap {X : TopCat} (U V : Opens X) (n : ℕ) :
@@ -180,6 +233,40 @@ public theorem generatedBoundary_swap {X : TopCat} (U V : Opens X) (n : ℕ) :
     rfl
   rw [h₁, h₃, Preadditive.comp_neg] at h
   exact neg_eq_iff_eq_neg.mp h
+
+/-- For the canonical comparison with ordinary singular homology, swapping the two members of
+an open cover negates the Mayer--Vietoris connecting morphism. -/
+public theorem openCoverHomologyComparisonOfCover_boundary_swap {X : TopCat}
+    {U V : Opens X} (hcover : U ⊔ V = ⊤) (hswap : V ⊔ U = ⊤) (n : ℕ) :
+    (openCoverHomologyComparisonOfCover hcover).boundary n ≫
+        openIntersectionSwapHomologyMap U V n =
+      -(openCoverHomologyComparisonOfCover hswap).boundary n := by
+  change
+    (unionHomologyIsoOfCover hcover (n + 1)).inv ≫
+          generatedBoundary U V n ≫
+            (intersectionHomologyIso U V n).hom ≫
+              openIntersectionSwapHomologyMap U V n =
+      -((unionHomologyIsoOfCover hswap (n + 1)).inv ≫
+          generatedBoundary V U n ≫
+            (intersectionHomologyIso V U n).hom)
+  rw [← intersectionHomologyIso_swap U V n]
+  have hboundary := congrArg
+    (fun q ↦ (unionHomologyIsoOfCover hcover (n + 1)).inv ≫ q ≫
+      (intersectionHomologyIso V U n).hom)
+    (generatedBoundary_swap U V n)
+  calc
+    _ = (unionHomologyIsoOfCover hcover (n + 1)).inv ≫
+          (-(generatedUnionSwapHomologyMap U V (n + 1) ≫
+            generatedBoundary V U n)) ≫
+          (intersectionHomologyIso V U n).hom := by
+      simpa only [Category.assoc] using hboundary
+    _ = -(((unionHomologyIsoOfCover hcover (n + 1)).inv ≫
+          generatedUnionSwapHomologyMap U V (n + 1)) ≫
+        generatedBoundary V U n ≫
+          (intersectionHomologyIso V U n).hom) := by
+      simp only [Preadditive.comp_neg, Preadditive.neg_comp, Category.assoc]
+    _ = _ := by
+      rw [unionHomologyIsoOfCover_inv_swap hcover hswap (n + 1)]
 
 end SphereSixComplex.BinaryOpenCover
 

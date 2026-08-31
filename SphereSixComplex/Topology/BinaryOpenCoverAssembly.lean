@@ -94,13 +94,13 @@ public theorem coverChainInclusion_isIso_homologyMap_of_sup_eq_top {X : TopCat}
 /-! ## Chains of an open subset and their image subcomplex -/
 
 /-- Integral singular chains of an open subset. -/
-noncomputable abbrev openSingularChains {X : TopCat} (U : Opens X) :
+public noncomputable abbrev openSingularChains {X : TopCat} (U : Opens X) :
     ChainComplex AddCommGrpCat ℕ :=
   integralSimplicialChains.obj
     (TopCat.toSSet.obj ((Opens.toTopCat X).obj U))
 
 /-- Integral chains on the image subcomplex associated to an open subset. -/
-noncomputable abbrev openRangeChains {X : TopCat} (U : Opens X) :
+public noncomputable abbrev openRangeChains {X : TopCat} (U : Opens X) :
     ChainComplex AddCommGrpCat ℕ :=
   integralSimplicialChains.obj (singularOpenSubcomplex U)
 
@@ -133,12 +133,18 @@ theorem singularOpenCorestrictionChainMap_naturality
 /-! ## The three chain comparisons -/
 
 /-- The forward chain comparison from the actual open intersection to the generated one. -/
-noncomputable def intersectionForwardChain {X : TopCat} (U V : Opens X) :
+@[expose] public noncomputable def intersectionForwardChain {X : TopCat} (U V : Opens X) :
     openSingularChains (U ⊓ V) ⟶ (coverChainShortComplex U V).X₁ := by
   change openSingularChains (U ⊓ V) ⟶
     integralSimplicialChains.obj (coverIntersection U V)
   exact singularOpenCorestrictionChainMap (U ⊓ V) ≫
     openIntersectionChainComparison U V
+
+/-- Explicit form of the forward intersection comparison. -/
+public theorem intersectionForwardChain_eq {X : TopCat} (U V : Opens X) :
+    intersectionForwardChain U V =
+      singularOpenCorestrictionChainMap (U ⊓ V) ≫
+        openIntersectionChainComparison U V := rfl
 
 private noncomputable def openIntersectionPullbackChainMap {X Y : TopCat}
     (f : X ⟶ Y) (U V : Opens Y) :
@@ -188,7 +194,7 @@ private theorem coverChainInclusion_pullback_naturality {X Y : TopCat}
       (coverUnionPullbackMap_comp_inclusion f U V)
 
 /-- The forward comparison from the actual open sets to the generated biproduct. -/
-noncomputable def biprodForwardChain {X : TopCat} (U V : Opens X) :
+@[expose] public noncomputable def biprodForwardChain {X : TopCat} (U V : Opens X) :
     openSingularChains U ⊞ openSingularChains V ⟶
       (coverChainShortComplex U V).X₂ := by
   change openSingularChains U ⊞ openSingularChains V ⟶
@@ -196,13 +202,13 @@ noncomputable def biprodForwardChain {X : TopCat} (U V : Opens X) :
   exact biprod.map (singularOpenCorestrictionChainMap U)
     (singularOpenCorestrictionChainMap V)
 
-noncomputable instance intersectionForwardChain_isIso {X : TopCat}
+public noncomputable instance intersectionForwardChain_isIso {X : TopCat}
     (U V : Opens X) : IsIso (intersectionForwardChain U V) := by
   change IsIso (singularOpenCorestrictionChainMap (U ⊓ V) ≫
     openIntersectionChainComparison U V)
   infer_instance
 
-noncomputable instance biprodForwardChain_isIso {X : TopCat}
+public noncomputable instance biprodForwardChain_isIso {X : TopCat}
     (U V : Opens X) : IsIso (biprodForwardChain U V) := by
   change IsIso (biprod.map (singularOpenCorestrictionChainMap U)
     (singularOpenCorestrictionChainMap V))
@@ -364,28 +370,64 @@ private theorem coverUnion_ι_app_zero_surjective {X : TopCat}
 
 /-! ## Homology isomorphisms and the two naturality squares -/
 
-noncomputable abbrev homologyFunctor (n : ℕ) :
+public noncomputable abbrev homologyFunctor (n : ℕ) :
     ChainComplex AddCommGrpCat ℕ ⥤ AddCommGrpCat :=
   HomologicalComplex.homologyFunctor AddCommGrpCat (ComplexShape.down ℕ) n
 
-local instance homologyFunctor_additive (n : ℕ) :
+public instance homologyFunctor_additive (n : ℕ) :
     (homologyFunctor n).Additive := by
   dsimp only [homologyFunctor]
   infer_instance
 
-local instance homologyFunctor_preservesBinaryBiproducts (n : ℕ) :
+public instance homologyFunctor_preservesBinaryBiproducts (n : ℕ) :
     PreservesBinaryBiproducts (homologyFunctor n) :=
   preservesBinaryBiproducts_of_preservesBiproducts _
 
 /-- The generated intersection has the homology of the actual open intersection. -/
-noncomputable def intersectionHomologyIso {X : TopCat}
+@[expose] public noncomputable def intersectionHomologyIso {X : TopCat}
     (U V : Opens X) (n : ℕ) :
     generatedIntersectionHomology U V n ≅
       (integralHomologyFunctor n).obj ((Opens.toTopCat X).obj (U ⊓ V)) :=
   (homologyFunctor n).mapIso (asIso (intersectionForwardChain U V)).symm
 
+/-- The inverse of the intersection comparison is induced by its forward chain map. -/
+public theorem intersectionHomologyIso_inv {X : TopCat}
+    (U V : Opens X) (n : ℕ) :
+    (intersectionHomologyIso U V n).inv =
+      HomologicalComplex.homologyMap (intersectionForwardChain U V) n := rfl
+
+/-- Naturality of the generated-to-ordinary intersection comparison with respect to a
+commuting chain-level square. -/
+public theorem intersectionHomologyIso_naturality {X : TopCat}
+    {U V U' V' : Opens X}
+    (f : (Opens.toTopCat X).obj (U ⊓ V) ⟶
+      (Opens.toTopCat X).obj (U' ⊓ V'))
+    (b : (coverChainShortComplex U V).X₁ ⟶ (coverChainShortComplex U' V').X₁)
+    (h : intersectionForwardChain U V ≫ b =
+      integralSimplicialChains.map (TopCat.toSSet.map f) ≫
+        intersectionForwardChain U' V') (n : ℕ) :
+    HomologicalComplex.homologyMap b n ≫ (intersectionHomologyIso U' V' n).hom =
+      (intersectionHomologyIso U V n).hom ≫
+        (integralHomologyFunctor n).map f := by
+  have hn :
+      (intersectionHomologyIso U V n).inv ≫
+          HomologicalComplex.homologyMap b n =
+        (integralHomologyFunctor n).map f ≫
+          (intersectionHomologyIso U' V' n).inv := by
+    change
+      HomologicalComplex.homologyMap (intersectionForwardChain U V) n ≫
+          HomologicalComplex.homologyMap b n =
+        HomologicalComplex.homologyMap
+            (integralSimplicialChains.map (TopCat.toSSet.map f)) n ≫
+          HomologicalComplex.homologyMap (intersectionForwardChain U' V') n
+    rw [← HomologicalComplex.homologyMap_comp,
+      ← HomologicalComplex.homologyMap_comp, h]
+  apply (cancel_epi (intersectionHomologyIso U V n).inv).mp
+  rw [← Category.assoc, hn]
+  simp
+
 /-- The generated middle term has the biproduct of the actual open-set homologies. -/
-noncomputable def biprodHomologyIso {X : TopCat}
+@[expose] public noncomputable def biprodHomologyIso {X : TopCat}
     (U V : Opens X) (n : ℕ) :
     generatedBiprodHomology U V n ≅
       (integralHomologyFunctor n).obj ((Opens.toTopCat X).obj U) ⊞
@@ -395,7 +437,7 @@ noncomputable def biprodHomologyIso {X : TopCat}
 
 /-- A quasi-isomorphism from cover-generated chains supplies the generated-union homology
 isomorphism. -/
-public noncomputable def unionHomologyIsoOfQuasiIso {X : TopCat} {U V : Opens X}
+@[expose] public noncomputable def unionHomologyIsoOfQuasiIso {X : TopCat} {U V : Opens X}
     (h : QuasiIso (coverChainInclusion U V)) (n : ℕ) :
     generatedUnionHomology U V n ≅ (integralHomologyFunctor n).obj X := by
   change (homologyFunctor n).obj
@@ -414,7 +456,7 @@ noncomputable def unionHomologyIso {X : TopCat} {U V : Opens X}
 
 /-- An actual open cover supplies the generated-union homology isomorphism without a separate
 subdivision certificate. -/
-public noncomputable def unionHomologyIsoOfCover {X : TopCat} {U V : Opens X}
+@[expose] public noncomputable def unionHomologyIsoOfCover {X : TopCat} {U V : Opens X}
     (hcover : U ⊔ V = ⊤) (n : ℕ) :
     generatedUnionHomology U V n ≅ (integralHomologyFunctor n).obj X :=
   unionHomologyIsoOfQuasiIso
@@ -603,7 +645,7 @@ private theorem homology_openMVFromBiprodChain_raw_naturality
 
 /-- The three canonical comparison isomorphisms supplied by a quasi-isomorphism from
 cover-generated chains. -/
-public noncomputable def openCoverHomologyComparisonOfQuasiIso
+@[expose] public noncomputable def openCoverHomologyComparisonOfQuasiIso
     {X : TopCat} {U V : Opens X} (h : QuasiIso (coverChainInclusion U V)) :
     OpenCoverHomologyComparison U V where
   intersectionIso := intersectionHomologyIso U V
@@ -643,7 +685,7 @@ noncomputable def openCoverHomologyComparisonOfSubdivision
   openCoverHomologyComparisonOfQuasiIso D.coverChainInclusion_quasiIso
 
 /-- The canonical homology comparison for two open subsets which cover their ambient space. -/
-public noncomputable def openCoverHomologyComparisonOfCover
+@[expose] public noncomputable def openCoverHomologyComparisonOfCover
     {X : TopCat} {U V : Opens X} (hcover : U ⊔ V = ⊤) :
     OpenCoverHomologyComparison U V :=
   openCoverHomologyComparisonOfQuasiIso

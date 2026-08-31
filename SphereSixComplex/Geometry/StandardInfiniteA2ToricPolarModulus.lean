@@ -302,6 +302,10 @@ public def constructedLocalPositivePart (r : ℝ) :
     Set (LocalCarrier constructedModel r) :=
   {p | constructedLocalModulus r p = p}
 
+public theorem constructedLocalPositivePart_isClosed (r : ℝ) :
+    IsClosed (constructedLocalPositivePart r) := by
+  exact isClosed_eq (constructedLocalModulus_continuous r) continuous_id
+
 public theorem mem_constructedLocalPositivePart_iff (r : ℝ)
     (p : LocalCarrier constructedModel r) :
     p ∈ constructedLocalPositivePart r ↔
@@ -335,5 +339,72 @@ public theorem constructedLocalModulusRetraction_polar_surjective (r : ℝ)
       constructedModel.torusAction (compactTorusEmbedding phi)
         (constructedLocalModulusRetraction r p) = p := by
   exact exists_compactTorusAction_modulus (show Carrier from p.1)
+
+/-! ## Positive affine charts -/
+
+/-- The closed nonnegative orthant underlying one positive affine chart. -/
+public abbrev PositiveOrthant := {u : Fin 3 → ℝ // ∀ i, 0 ≤ u i}
+
+/-- Coordinatewise real inclusion identifies the orthant with the nonnegative complex locus. -/
+public def positiveOrthantHomeomorph : PositiveOrthant ≃ₜ nonnegativeCoordinates where
+  toFun u := ⟨fun i ↦ (u.1 i : ℂ), ⟨u.1, u.2, rfl⟩⟩
+  invFun z := ⟨fun i ↦ (z.1 i).re, by
+    obtain ⟨u, hu, hzu⟩ := z.2
+    intro i
+    change 0 ≤ (z.1 i).re
+    rw [show z.1 i = (u i : ℂ) from congrFun hzu i]
+    exact hu i⟩
+  left_inv u := by
+    apply Subtype.ext
+    funext i
+    simp
+  right_inv z := by
+    apply Subtype.ext
+    obtain ⟨u, _hu, hzu⟩ := z.2
+    funext i
+    change ((z.1 i).re : ℂ) = z.1 i
+    rw [show z.1 i = (u i : ℂ) from congrFun hzu i]
+    simp
+  continuous_toFun := by
+    rw [continuous_induced_rng]
+    exact continuous_pi fun i ↦ Complex.continuous_ofReal.comp
+      ((continuous_apply i).comp continuous_subtype_val)
+  continuous_invFun := by
+    rw [continuous_induced_rng]
+    exact continuous_pi fun i ↦ Complex.continuous_re.comp
+      ((continuous_apply i).comp continuous_subtype_val)
+
+/-- The orthant is the exact preimage of the global positive part in every affine chart. -/
+public def positiveChartDomainHomeomorph (a : ChartIndex) :
+    PositiveOrthant ≃ₜ (inclusion a ⁻¹' carrierPositivePart) :=
+  positiveOrthantHomeomorph.trans (Homeomorph.setCongr (Set.ext fun z ↦
+    (inclusion_mem_carrierPositivePart_iff a z).symm))
+
+/-- A positive affine chart, obtained by restricting the ambient toric chart. -/
+public def carrierPositiveChart (a : ChartIndex) : PositiveOrthant → carrierPositivePart :=
+  carrierPositivePart.restrictPreimage (inclusion a) ∘ positiveChartDomainHomeomorph a
+
+public theorem carrierPositiveChart_isOpenEmbedding (a : ChartIndex) :
+    IsOpenEmbedding (carrierPositiveChart a) := by
+  exact ((inclusion_isOpenEmbedding a).restrictPreimage carrierPositivePart).comp
+    (positiveChartDomainHomeomorph a).isOpenEmbedding
+
+/-- The positive affine charts jointly cover the global positive part. -/
+public theorem carrierPositiveChart_jointly_surjective (x : carrierPositivePart) :
+    ∃ (a : ChartIndex) (u : PositiveOrthant), carrierPositiveChart a u = x := by
+  obtain ⟨a, z, hz⟩ := inclusion_jointly_surjective (x : Carrier)
+  have hzpos : z ∈ nonnegativeCoordinates := by
+    rw [← inclusion_mem_carrierPositivePart_iff a]
+    simpa only [hz] using x.property
+  let u := positiveOrthantHomeomorph.symm ⟨z, hzpos⟩
+  refine ⟨a, u, ?_⟩
+  apply Subtype.ext
+  change inclusion a ((positiveChartDomainHomeomorph a u :
+    inclusion a ⁻¹' carrierPositivePart) : RawCoordinates) = (x : Carrier)
+  rw [show ((positiveChartDomainHomeomorph a u :
+    inclusion a ⁻¹' carrierPositivePart) : RawCoordinates) = z by
+      change ((positiveOrthantHomeomorph u : nonnegativeCoordinates) : RawCoordinates) = z
+      simp [u]]
+  exact hz
 
 end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction

@@ -2,6 +2,7 @@ module
 
 public import SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 public import SphereSixComplex.Geometry.PaperAnalyticFillingPieces
+public import SphereSixComplex.Periods.Uniformization.ExactNormalizedModularJCuspUnitBounds
 import all SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 import all SphereSixComplex.Geometry.GlobalTorusFamily
 
@@ -101,7 +102,7 @@ public theorem orderFourCollarToRegular_base
 /-- The fixed exact modular uniformization used to control the paper cusp collar. -/
 @[expose] public noncomputable def actualNormalizedModularJUniformization
     (_A : PaperAnalyticData) : ExactNormalizedModularJUniformization :=
-  Classical.choice establishedExactNormalizedModularJUniformization
+  SphereSixComplex.Periods.ExactNormalizedModularJTau.exactNormalizedModularJUniformization
 
 /-- Analytic facts retained by the quantitative choice of the actual cusp collar. -/
 public structure ActualCuspCoordinateControl
@@ -113,6 +114,12 @@ public structure ActualCuspCoordinateControl
     W.localWitness.radius ≤ A.actualNormalizedModularJUniformization.cusp.cuspRadius
   cuspUnit_ne : ∀ q : ℂ, ‖q‖ < W.localWitness.radius →
     A.actualNormalizedModularJUniformization.cusp.cuspUnit q ≠ 0
+  cuspUnit_right_sector : ∀ q : ℂ, ‖q‖ < W.localWitness.radius →
+    |(A.actualNormalizedModularJUniformization.cusp.cuspUnit q).im| <
+      (A.actualNormalizedModularJUniformization.cusp.cuspUnit q).re
+  cuspUnit_narrow_right_sector : ∀ q : ℂ, ‖q‖ < W.localWitness.radius →
+    100 * |(A.actualNormalizedModularJUniformization.cusp.cuspUnit q).im| <
+      (A.actualNormalizedModularJUniformization.cusp.cuspUnit q).re
   cuspProduct_norm_lt_half : ∀ q : ℂ, ‖q‖ < W.localWitness.radius →
     ‖q * A.actualNormalizedModularJUniformization.cusp.cuspUnit q‖ < (1 / 2 : ℝ)
   reciprocal_factorization : ∀ s : ℂ,
@@ -147,8 +154,16 @@ public theorem exists_actualPuncturedCuspWitness_coordinate_exterior :
       (gt_mem_nhds (by dsimp [M]; linarith))
   have hunitNeEventually : ∀ᶠ q in nhds (0 : ℂ), J.cusp.cuspUnit q ≠ 0 :=
     hunitContinuous.eventually_ne J.cusp.cuspUnit_zero_ne
+  have hunitSectorEventually : ∀ᶠ q in nhds (0 : ℂ),
+      100 * |(J.cusp.cuspUnit q).im| < (J.cusp.cuspUnit q).re := by
+    rcases
+        SphereSixComplex.Periods.ExactNormalizedModularJTau.exists_normalizedModularJCuspUnit_narrow_right_sector
+      with ⟨ε, hε, hsector⟩
+    filter_upwards [Metric.ball_mem_nhds (0 : ℂ) hε] with q hq
+    exact hsector q hq
   obtain ⟨δ, hδ, hδunit⟩ :=
-    Metric.mem_nhds_iff.mp (hunitEventually.and hunitNeEventually)
+    Metric.mem_nhds_iff.mp
+      (hunitEventually.and (hunitNeEventually.and hunitSectorEventually))
   let r : ℝ := min A.actualLocalCuspWitness.radius
     (min δ (min J.cusp.cuspRadius (min (cuspRadius H) (1 / (2 * M)))))
   have hr : 0 < r := by
@@ -172,7 +187,7 @@ public theorem exists_actualPuncturedCuspWitness_coordinate_exterior :
     hWr.trans ((min_le_right _ _).trans ((min_le_right _ _).trans (min_le_left _ _)))
   have hWunit : ∀ q : ℂ, ‖q‖ < W.localWitness.radius → J.cusp.cuspUnit q ≠ 0 := by
     intro q hq
-    apply (hδunit ?_).2
+    apply (hδunit ?_).2.1
     rw [Metric.mem_ball, dist_zero_right]
     exact hq.trans_le (hWr.trans ((min_le_right _ _).trans (min_le_left _ _)))
   have hWproduct : ∀ q : ℂ, ‖q‖ < W.localWitness.radius →
@@ -194,7 +209,19 @@ public theorem exists_actualPuncturedCuspWitness_coordinate_exterior :
         mul_lt_mul_of_pos_left hunit (norm_pos_iff.mpr hq0)
       _ < (1 / (2 * M)) * M := mul_lt_mul_of_pos_right hqsmall hM
       _ = 1 / 2 := by field_simp
-  refine ⟨?_, hWJ, hWunit, hWproduct, ?_⟩
+  have hWsector : ∀ q : ℂ, ‖q‖ < W.localWitness.radius →
+      100 * |(J.cusp.cuspUnit q).im| < (J.cusp.cuspUnit q).re := by
+    intro q hq
+    apply (hδunit ?_).2.2
+    rw [Metric.mem_ball, dist_zero_right]
+    exact hq.trans_le (hWr.trans ((min_le_right _ _).trans (min_le_left _ _)))
+  have hWwideSector : ∀ q : ℂ, ‖q‖ < W.localWitness.radius →
+      |(J.cusp.cuspUnit q).im| < (J.cusp.cuspUnit q).re := by
+    intro q hq
+    have h := hWsector q hq
+    have him := abs_nonneg (J.cusp.cuspUnit q).im
+    nlinarith
+  refine ⟨?_, hWJ, hWunit, hWwideSector, hWsector, hWproduct, ?_⟩
   · intro s hs hq
     have hqr : ‖cuspQ s‖ < r := hq.trans_le hWr
     have hqδ : cuspQ s ∈ Metric.ball (0 : ℂ) δ := by
@@ -306,6 +333,20 @@ public theorem actualPuncturedCuspWitness_cuspUnit_ne
     (q : ℂ) (hq : ‖q‖ < A.actualPuncturedCuspWitness.localWitness.radius) :
     A.actualNormalizedModularJUniformization.cusp.cuspUnit q ≠ 0 :=
   (Classical.choose_spec A.exists_actualPuncturedCuspWitness_coordinate_exterior).cuspUnit_ne q hq
+
+public theorem actualPuncturedCuspWitness_cuspUnit_right_sector
+    (q : ℂ) (hq : ‖q‖ < A.actualPuncturedCuspWitness.localWitness.radius) :
+    |(A.actualNormalizedModularJUniformization.cusp.cuspUnit q).im| <
+      (A.actualNormalizedModularJUniformization.cusp.cuspUnit q).re :=
+  (Classical.choose_spec
+    A.exists_actualPuncturedCuspWitness_coordinate_exterior).cuspUnit_right_sector q hq
+
+public theorem actualPuncturedCuspWitness_cuspUnit_narrow_right_sector
+    (q : ℂ) (hq : ‖q‖ < A.actualPuncturedCuspWitness.localWitness.radius) :
+    100 * |(A.actualNormalizedModularJUniformization.cusp.cuspUnit q).im| <
+      (A.actualNormalizedModularJUniformization.cusp.cuspUnit q).re :=
+  (Classical.choose_spec
+    A.exists_actualPuncturedCuspWitness_coordinate_exterior).cuspUnit_narrow_right_sector q hq
 
 public theorem actualPuncturedCuspWitness_cuspProduct_norm_lt_half
     (q : ℂ) (hq : ‖q‖ < A.actualPuncturedCuspWitness.localWitness.radius) :
