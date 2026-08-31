@@ -164,4 +164,16 @@ public theorem restrictedOrbitQuotientHomeomorph_mk
       Quotient.mk _ (e.toHomeomorph x) :=
   rfl
 
+omit [MulAction G X] [MulAction G Y] in
+@[simp]
+public theorem restrictedOrbitQuotientHomeomorph_symm_mk
+    {AX : MulAction G X} {AY : MulAction G Y}
+    {S : InvariantOpenCarrier AX} {T : InvariantOpenCarrier AY}
+    (e : EquivariantOpenHomeomorphOfActions AX AY S T) (y : T.carrier) :
+    (restrictedOrbitQuotientHomeomorph e).symm (Quotient.mk _ y) =
+      Quotient.mk _ (e.toHomeomorph.symm y) := by
+  apply (restrictedOrbitQuotientHomeomorph e).injective
+  rw [Homeomorph.apply_symm_apply, restrictedOrbitQuotientHomeomorph_mk,
+    e.toHomeomorph.apply_symm_apply]
+
 end SphereSixComplex.Geometry.EquivariantQuotientHomeomorph

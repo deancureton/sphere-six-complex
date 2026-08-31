@@ -1956,6 +1956,912 @@ public theorem constructedCentralOneCell_closedBall_image_eq
     · obtain ⟨x, hx, rfl⟩ := hz
       exact ⟨x, Metric.ball_subset_closedBall hx, rfl⟩
     · exact constructedCentralZeroCells_subset_oneCell_closed W j hz
+
+/-- The coordinate linear isomorphism from the real characteristic-map plane to `ℂ`. -/
+public def centralPhaseLinearComplex (x : Fin 2 → ℝ) : ℂ :=
+  (x 0 : ℂ) + (x 1 : ℂ) * Complex.I
+
+/-- Radial transport from the supremum norm used on `Fin 2 → ℝ` to the Euclidean norm on
+`ℂ`.  It preserves the norm, so the square-shaped Lean unit ball is sent to the round complex
+unit disk. -/
+public def centralPhaseDiskComplex (x : Fin 2 → ℝ) : ℂ :=
+  if x = 0 then 0
+  else ((‖x‖ / ‖centralPhaseLinearComplex x‖ : ℝ) : ℂ) * centralPhaseLinearComplex x
+
+private theorem centralPhaseLinearComplex_injective :
+    Function.Injective centralPhaseLinearComplex := by
+  intro x y hxy
+  funext i
+  fin_cases i
+  · have hre := congrArg Complex.re hxy
+    simpa [centralPhaseLinearComplex] using hre
+  · have him := congrArg Complex.im hxy
+    simpa [centralPhaseLinearComplex] using him
+
+private theorem centralPhaseLinearComplex_ne_zero {x : Fin 2 → ℝ} (hx : x ≠ 0) :
+    centralPhaseLinearComplex x ≠ 0 := by
+  intro h
+  apply hx
+  apply centralPhaseLinearComplex_injective
+  simpa [centralPhaseLinearComplex] using h
+
+public theorem norm_centralPhaseDiskComplex (x : Fin 2 → ℝ) :
+    ‖centralPhaseDiskComplex x‖ = ‖x‖ := by
+  by_cases hx : x = 0
+  · simp [centralPhaseDiskComplex, hx]
+  · simp only [centralPhaseDiskComplex, hx, ↓reduceIte, norm_mul, Complex.norm_real,
+      Real.norm_eq_abs, abs_of_nonneg (div_nonneg (norm_nonneg _) (norm_nonneg _))]
+    exact div_mul_cancel₀ _ (norm_ne_zero_iff.mpr (centralPhaseLinearComplex_ne_zero hx))
+
+private theorem centralPhaseDiskComplex_re (x : Fin 2 → ℝ) :
+    (centralPhaseDiskComplex x).re =
+      if x = 0 then 0 else (‖x‖ / ‖centralPhaseLinearComplex x‖) * x 0 := by
+  by_cases hx : x = 0
+  · simp [centralPhaseDiskComplex, hx]
+  · simp [centralPhaseDiskComplex, centralPhaseLinearComplex, hx, Complex.mul_re]
+
+/-- The slit-sphere coordinate in the lower affine chart. -/
+public def centralPhaseDiskLowerCoordinate (x : Fin 2 → ℝ) : ℂ :=
+  -((1 + centralPhaseDiskComplex x) / (1 - centralPhaseDiskComplex x)) ^ 2
+
+/-- Its reciprocal coordinate in the upper affine chart. -/
+public def centralPhaseDiskUpperCoordinate (x : Fin 2 → ℝ) : ℂ :=
+  -((1 - centralPhaseDiskComplex x) / (1 + centralPhaseDiskComplex x)) ^ 2
+
+private theorem centralPhaseDisk_one_add_ne_zero_of_nonneg
+    (x : Fin 2 → ℝ) (hx : 0 ≤ x 0) :
+    (1 : ℂ) + centralPhaseDiskComplex x ≠ 0 := by
+  by_cases hx0 : x = 0
+  · simp [centralPhaseDiskComplex, hx0]
+  · intro h
+    have hre := congrArg Complex.re h
+    norm_num at hre
+    rw [centralPhaseDiskComplex_re, ite_eq_right hx0] at hre
+    have hscale : 0 ≤ ‖x‖ / ‖centralPhaseLinearComplex x‖ :=
+      div_nonneg (norm_nonneg _) (norm_nonneg _)
+    nlinarith
+
+private theorem centralPhaseDisk_one_sub_ne_zero_of_nonpos
+    (x : Fin 2 → ℝ) (hx : x 0 ≤ 0) :
+    (1 : ℂ) - centralPhaseDiskComplex x ≠ 0 := by
+  by_cases hx0 : x = 0
+  · simp [centralPhaseDiskComplex, hx0]
+  · intro h
+    have hre := congrArg Complex.re h
+    norm_num at hre
+    rw [centralPhaseDiskComplex_re, ite_eq_right hx0] at hre
+    have hscale : 0 ≤ ‖x‖ / ‖centralPhaseLinearComplex x‖ :=
+      div_nonneg (norm_nonneg _) (norm_nonneg _)
+    nlinarith
+
+private theorem centralPhaseDisk_coordinates_reciprocal
+    (x : Fin 2 → ℝ)
+    (hplus : (1 : ℂ) + centralPhaseDiskComplex x ≠ 0)
+    (hminus : (1 : ℂ) - centralPhaseDiskComplex x ≠ 0) :
+    centralPhaseDiskLowerCoordinate x ≠ 0 ∧
+      centralPhaseDiskUpperCoordinate x = (centralPhaseDiskLowerCoordinate x)⁻¹ := by
+  have hratio : (1 + centralPhaseDiskComplex x) /
+      (1 - centralPhaseDiskComplex x) ≠ 0 := div_ne_zero hplus hminus
+  refine ⟨neg_ne_zero.mpr (pow_ne_zero 2 hratio), ?_⟩
+  apply eq_inv_of_mul_eq_one_left
+  simp only [centralPhaseDiskLowerCoordinate, centralPhaseDiskUpperCoordinate]
+  field_simp [hplus, hminus]
+
+/-- The first phase two-cell before passage to the deck-orbit quotient.  Its interior is the
+complex coordinate axis cut along the positive real one-cell. -/
+public def constructedCentralPhaseFaceZeroCarrier (x : Fin 2 → ℝ) : Carrier :=
+  if x 0 ≤ 0 then
+    inclusion (false, 0) (lowerAxisZero (centralPhaseDiskLowerCoordinate x))
+  else
+    inclusion (true, 0) (upperAxisTwo (centralPhaseDiskUpperCoordinate x))
+
+public theorem constructedCentralPhaseFaceZeroCarrier_height (x : Fin 2 → ℝ) :
+    carrierHeight (constructedCentralPhaseFaceZeroCarrier x) = 0 := by
+  by_cases hx : x 0 ≤ 0 <;>
+    simp [constructedCentralPhaseFaceZeroCarrier, hx, carrierHeight_inclusion, rawHeight,
+      lowerAxisZero, upperAxisTwo]
+
+private theorem constructedCentralPhaseFaceZeroCarrier_eq_on_seam
+    (x : Fin 2 → ℝ) (hx : x 0 = 0) :
+    inclusion (false, 0) (lowerAxisZero (centralPhaseDiskLowerCoordinate x)) =
+      inclusion (true, 0) (upperAxisTwo (centralPhaseDiskUpperCoordinate x)) := by
+  apply (inclusion_lowerAxisZero_eq_upperAxisTwo_iff 0 _ _).mpr
+  apply centralPhaseDisk_coordinates_reciprocal
+  · exact centralPhaseDisk_one_add_ne_zero_of_nonneg x (by rw [hx])
+  · exact centralPhaseDisk_one_sub_ne_zero_of_nonpos x (by rw [hx])
+
+private theorem centralPhaseLinearComplex_continuous : Continuous centralPhaseLinearComplex := by
+  unfold centralPhaseLinearComplex
+  fun_prop
+
+public theorem centralPhaseDiskComplex_continuous : Continuous centralPhaseDiskComplex := by
+  rw [continuous_iff_continuousAt]
+  intro x
+  by_cases hx : x = 0
+  · subst x
+    rw [Metric.continuousAt_iff]
+    intro ε hε
+    refine ⟨ε, hε, ?_⟩
+    intro y hy
+    rw [show centralPhaseDiskComplex 0 = 0 by simp [centralPhaseDiskComplex],
+      dist_zero_right, norm_centralPhaseDiskComplex]
+    simpa [dist_zero_right] using hy
+  · let g : (Fin 2 → ℝ) → ℂ := fun y ↦
+      ((‖y‖ / ‖centralPhaseLinearComplex y‖ : ℝ) : ℂ) * centralPhaseLinearComplex y
+    have hlinear : ContinuousAt centralPhaseLinearComplex x :=
+      centralPhaseLinearComplex_continuous.continuousAt
+    have hratio : ContinuousAt (fun y : Fin 2 → ℝ ↦
+        ‖y‖ / ‖centralPhaseLinearComplex y‖) x :=
+      continuous_norm.continuousAt.div hlinear.norm
+        (norm_ne_zero_iff.mpr (centralPhaseLinearComplex_ne_zero hx))
+    have hcoe : ContinuousAt (fun y : Fin 2 → ℝ ↦
+        ((‖y‖ / ‖centralPhaseLinearComplex y‖ : ℝ) : ℂ)) x := by
+      simpa [Function.comp_def] using Complex.continuous_ofReal.continuousAt.comp hratio
+    have hg : ContinuousAt g x := hcoe.mul hlinear
+    apply hg.congr_of_eventuallyEq
+    filter_upwards [eventually_ne_nhds hx] with y hy
+    simp [g, centralPhaseDiskComplex, hy]
+
+public theorem centralPhaseDiskComplex_injective :
+    Function.Injective centralPhaseDiskComplex := by
+  intro x y hxy
+  have hnorm : ‖x‖ = ‖y‖ := by
+    rw [← norm_centralPhaseDiskComplex x, ← norm_centralPhaseDiskComplex y, hxy]
+  by_cases hx0 : x = 0
+  · subst x
+    have hy0 : y = 0 := norm_eq_zero.mp (by simpa using hnorm.symm)
+    exact hy0.symm
+  have hy0 : y ≠ 0 := by
+    intro hy
+    subst y
+    exact hx0 (norm_eq_zero.mp (by simpa using hnorm))
+  let ax : ℝ := ‖x‖ / ‖centralPhaseLinearComplex x‖
+  let ay : ℝ := ‖y‖ / ‖centralPhaseLinearComplex y‖
+  have hax : 0 < ax := div_pos (norm_pos_iff.mpr hx0)
+    (norm_pos_iff.mpr (centralPhaseLinearComplex_ne_zero hx0))
+  have hay : 0 < ay := div_pos (norm_pos_iff.mpr hy0)
+    (norm_pos_iff.mpr (centralPhaseLinearComplex_ne_zero hy0))
+  have hcomplex : (ax : ℂ) * centralPhaseLinearComplex x =
+      (ay : ℂ) * centralPhaseLinearComplex y := by
+    simpa [centralPhaseDiskComplex, hx0, hy0, ax, ay] using hxy
+  have hvec : ax • x = ay • y := by
+    funext i
+    fin_cases i
+    · have hre := congrArg Complex.re hcomplex
+      simpa [centralPhaseLinearComplex, Complex.mul_re] using hre
+    · have him := congrArg Complex.im hcomplex
+      simpa [centralPhaseLinearComplex, Complex.mul_im] using him
+  have hscaledNorm := congrArg norm hvec
+  rw [norm_smul, norm_smul, Real.norm_eq_abs, Real.norm_eq_abs,
+    abs_of_pos hax, abs_of_pos hay, hnorm] at hscaledNorm
+  have haxy : ax = ay := by
+    exact (mul_right_cancel₀ (norm_ne_zero_iff.mpr hy0) hscaledNorm)
+  funext i
+  have hi := congrFun hvec i
+  rw [haxy] at hi
+  exact (mul_left_cancel₀ (ne_of_gt hay) hi)
+
+private theorem centralPhaseDiskComplex_norm_lt_one
+    {x : Fin 2 → ℝ} (hx : x ∈ Metric.ball 0 1) :
+    ‖centralPhaseDiskComplex x‖ < 1 := by
+  rw [norm_centralPhaseDiskComplex]
+  simpa [Metric.mem_ball, dist_zero_right] using hx
+
+private theorem centralPhaseDiskCayley_re_pos
+    {x : Fin 2 → ℝ} (hx : x ∈ Metric.ball 0 1) :
+    0 < ((1 + centralPhaseDiskComplex x) / (1 - centralPhaseDiskComplex x)).re := by
+  let z := centralPhaseDiskComplex x
+  have hnorm : ‖z‖ < 1 := centralPhaseDiskComplex_norm_lt_one hx
+  have hminus : (1 : ℂ) - z ≠ 0 := by
+    intro h
+    have hz : z = 1 := (sub_eq_zero.mp h).symm
+    rw [hz] at hnorm
+    norm_num at hnorm
+  have hnormSq : Complex.normSq z < 1 := by
+    rw [← Complex.sq_norm]
+    nlinarith [norm_nonneg z]
+  have hden : 0 < Complex.normSq (1 - z) := Complex.normSq_pos.mpr hminus
+  have hre : ((1 + z) / (1 - z)).re =
+      (1 - Complex.normSq z) / Complex.normSq (1 - z) := by
+    rw [Complex.div_re]
+    field_simp [ne_of_gt hden]
+    rw [Complex.normSq_apply]
+    simp only [Complex.add_re, Complex.one_re, Complex.add_im, Complex.one_im,
+      Complex.sub_re, Complex.sub_im]
+    ring
+  rw [hre]
+  exact div_pos (sub_pos.mpr hnormSq) hden
+
+private theorem norm_eq_one_of_mem_closedBall_not_ball
+    {x : Fin 2 → ℝ} (hx : x ∈ Metric.closedBall 0 1)
+    (hxb : x ∉ Metric.ball 0 1) : ‖x‖ = 1 := by
+  rw [Metric.mem_closedBall, dist_zero_right] at hx
+  rw [Metric.mem_ball, dist_zero_right] at hxb
+  exact le_antisymm hx (le_of_not_gt hxb)
+
+private theorem centralPhaseDiskCayley_re_eq_zero_of_norm_eq_one
+    (x : Fin 2 → ℝ) (hxnorm : ‖x‖ = 1)
+    (hminus : (1 : ℂ) - centralPhaseDiskComplex x ≠ 0) :
+    ((1 + centralPhaseDiskComplex x) /
+      (1 - centralPhaseDiskComplex x)).re = 0 := by
+  let z := centralPhaseDiskComplex x
+  change ((1 + z) / (1 - z)).re = 0
+  have hznorm : ‖z‖ = 1 := by
+    rw [norm_centralPhaseDiskComplex]
+    exact hxnorm
+  have hnormSq : Complex.normSq z = 1 := by
+    rw [← Complex.sq_norm, hznorm]
+    norm_num
+  have hden : 0 < Complex.normSq (1 - z) := Complex.normSq_pos.mpr hminus
+  rw [Complex.div_re]
+  field_simp [ne_of_gt hden]
+  rw [Complex.normSq_apply] at hnormSq
+  simp only [Complex.add_re, Complex.one_re, Complex.add_im, Complex.one_im,
+    Complex.sub_re, Complex.sub_im]
+  nlinarith
+
+private theorem centralPhaseDiskUpperCayley_re_pos
+    {x : Fin 2 → ℝ} (hx : x ∈ Metric.ball 0 1) :
+    0 < ((1 - centralPhaseDiskComplex x) /
+      (1 + centralPhaseDiskComplex x)).re := by
+  let z := centralPhaseDiskComplex x
+  have hnorm : ‖z‖ < 1 := centralPhaseDiskComplex_norm_lt_one hx
+  have hplus : (1 : ℂ) + z ≠ 0 := by
+    intro h
+    have hz : z = -1 := eq_neg_of_add_eq_zero_right h
+    rw [hz] at hnorm
+    norm_num at hnorm
+  have hnormSq : Complex.normSq z < 1 := by
+    rw [← Complex.sq_norm]
+    nlinarith [norm_nonneg z]
+  have hden : 0 < Complex.normSq (1 + z) := Complex.normSq_pos.mpr hplus
+  have hre : ((1 - z) / (1 + z)).re =
+      (1 - Complex.normSq z) / Complex.normSq (1 + z) := by
+    rw [Complex.div_re]
+    field_simp [ne_of_gt hden]
+    rw [Complex.normSq_apply]
+    simp only [Complex.add_re, Complex.one_re, Complex.add_im, Complex.one_im,
+      Complex.sub_re, Complex.sub_im]
+    ring
+  rw [hre]
+  exact div_pos (sub_pos.mpr hnormSq) hden
+
+private theorem centralPhaseDiskUpperCayley_re_eq_zero_of_norm_eq_one
+    (x : Fin 2 → ℝ) (hxnorm : ‖x‖ = 1)
+    (hplus : (1 : ℂ) + centralPhaseDiskComplex x ≠ 0) :
+    ((1 - centralPhaseDiskComplex x) /
+      (1 + centralPhaseDiskComplex x)).re = 0 := by
+  let z := centralPhaseDiskComplex x
+  change ((1 - z) / (1 + z)).re = 0
+  have hznorm : ‖z‖ = 1 := by
+    rw [norm_centralPhaseDiskComplex]
+    exact hxnorm
+  have hnormSq : Complex.normSq z = 1 := by
+    rw [← Complex.sq_norm, hznorm]
+    norm_num
+  have hden : 0 < Complex.normSq (1 + z) := Complex.normSq_pos.mpr hplus
+  rw [Complex.div_re]
+  field_simp [ne_of_gt hden]
+  rw [Complex.normSq_apply] at hnormSq
+  simp only [Complex.add_re, Complex.one_re, Complex.add_im, Complex.one_im,
+    Complex.sub_re, Complex.sub_im]
+  nlinarith
+
+private theorem centralPhaseDiskLowerCoordinate_ne_of_norm_eq_one_of_mem_ball
+    (x y : Fin 2 → ℝ) (hxnorm : ‖x‖ = 1)
+    (hxminus : (1 : ℂ) - centralPhaseDiskComplex x ≠ 0)
+    (hy : y ∈ Metric.ball 0 1) :
+    centralPhaseDiskLowerCoordinate x ≠ centralPhaseDiskLowerCoordinate y := by
+  intro hxy
+  let cx := (1 + centralPhaseDiskComplex x) / (1 - centralPhaseDiskComplex x)
+  let cy := (1 + centralPhaseDiskComplex y) / (1 - centralPhaseDiskComplex y)
+  have hsq : cx ^ 2 = cy ^ 2 := by
+    simpa [centralPhaseDiskLowerCoordinate, cx, cy] using neg_inj.mp hxy
+  have hfac : (cx - cy) * (cx + cy) = 0 := by
+    calc
+      (cx - cy) * (cx + cy) = cx ^ 2 - cy ^ 2 := by ring
+      _ = 0 := sub_eq_zero.mpr hsq
+  have hcx : cx.re = 0 :=
+    centralPhaseDiskCayley_re_eq_zero_of_norm_eq_one x hxnorm hxminus
+  have hcy : 0 < cy.re := centralPhaseDiskCayley_re_pos hy
+  rcases mul_eq_zero.mp hfac with hsame | hopp
+  · have hre := congrArg Complex.re (sub_eq_zero.mp hsame)
+    linarith
+  · have hre := congrArg Complex.re (eq_neg_of_add_eq_zero_left hopp)
+    have hre' : cx.re = -cy.re := by simpa using hre
+    linarith
+
+private theorem centralPhaseDiskUpperCoordinate_ne_of_norm_eq_one_of_mem_ball
+    (x y : Fin 2 → ℝ) (hxnorm : ‖x‖ = 1)
+    (hxplus : (1 : ℂ) + centralPhaseDiskComplex x ≠ 0)
+    (hy : y ∈ Metric.ball 0 1) :
+    centralPhaseDiskUpperCoordinate x ≠ centralPhaseDiskUpperCoordinate y := by
+  intro hxy
+  let cx := (1 - centralPhaseDiskComplex x) / (1 + centralPhaseDiskComplex x)
+  let cy := (1 - centralPhaseDiskComplex y) / (1 + centralPhaseDiskComplex y)
+  have hsq : cx ^ 2 = cy ^ 2 := by
+    simpa [centralPhaseDiskUpperCoordinate, cx, cy] using neg_inj.mp hxy
+  have hfac : (cx - cy) * (cx + cy) = 0 := by
+    calc
+      (cx - cy) * (cx + cy) = cx ^ 2 - cy ^ 2 := by ring
+      _ = 0 := sub_eq_zero.mpr hsq
+  have hcx : cx.re = 0 :=
+    centralPhaseDiskUpperCayley_re_eq_zero_of_norm_eq_one x hxnorm hxplus
+  have hcy : 0 < cy.re := centralPhaseDiskUpperCayley_re_pos hy
+  rcases mul_eq_zero.mp hfac with hsame | hopp
+  · have hre := congrArg Complex.re (sub_eq_zero.mp hsame)
+    linarith
+  · have hre := congrArg Complex.re (eq_neg_of_add_eq_zero_left hopp)
+    have hre' : cx.re = -cy.re := by simpa using hre
+    linarith
+
+private theorem centralPhaseDiskCayley_injectiveOn :
+    Set.InjOn
+      (fun x : Fin 2 → ℝ ↦
+        (1 + centralPhaseDiskComplex x) / (1 - centralPhaseDiskComplex x))
+      (Metric.ball 0 1) := by
+  intro x hx y hy hxy
+  have hxminus : (1 : ℂ) - centralPhaseDiskComplex x ≠ 0 := by
+    intro h
+    have hz : centralPhaseDiskComplex x = 1 := (sub_eq_zero.mp h).symm
+    have := centralPhaseDiskComplex_norm_lt_one hx
+    rw [hz] at this
+    norm_num at this
+  have hyminus : (1 : ℂ) - centralPhaseDiskComplex y ≠ 0 := by
+    intro h
+    have hz : centralPhaseDiskComplex y = 1 := (sub_eq_zero.mp h).symm
+    have := centralPhaseDiskComplex_norm_lt_one hy
+    rw [hz] at this
+    norm_num at this
+  have hzeta : centralPhaseDiskComplex x = centralPhaseDiskComplex y := by
+    field_simp [hxminus, hyminus] at hxy
+    linear_combination hxy / 2
+  exact centralPhaseDiskComplex_injective hzeta
+
+private theorem centralPhaseDiskLowerCoordinate_injOn :
+    Set.InjOn centralPhaseDiskLowerCoordinate (Metric.ball 0 1) := by
+  intro x hx y hy hxy
+  let cx := (1 + centralPhaseDiskComplex x) / (1 - centralPhaseDiskComplex x)
+  let cy := (1 + centralPhaseDiskComplex y) / (1 - centralPhaseDiskComplex y)
+  have hsq : cx ^ 2 = cy ^ 2 := by
+    simpa [centralPhaseDiskLowerCoordinate, cx, cy] using neg_inj.mp hxy
+  have hfac : (cx - cy) * (cx + cy) = 0 := by
+    calc
+      (cx - cy) * (cx + cy) = cx ^ 2 - cy ^ 2 := by ring
+      _ = 0 := sub_eq_zero.mpr hsq
+  rcases mul_eq_zero.mp hfac with hsame | hopp
+  · apply centralPhaseDiskCayley_injectiveOn hx hy
+    exact sub_eq_zero.mp hsame
+  · have hre := congrArg Complex.re (eq_neg_of_add_eq_zero_left hopp)
+    have hcx := centralPhaseDiskCayley_re_pos hx
+    have hcy := centralPhaseDiskCayley_re_pos hy
+    simp [cx, cy] at hre
+    linarith
+
+private theorem centralPhaseDisk_one_add_ne_zero_of_ball
+    {x : Fin 2 → ℝ} (hx : x ∈ Metric.ball 0 1) :
+    (1 : ℂ) + centralPhaseDiskComplex x ≠ 0 := by
+  intro h
+  have hz : centralPhaseDiskComplex x = -1 := eq_neg_of_add_eq_zero_right h
+  have hnorm := centralPhaseDiskComplex_norm_lt_one hx
+  rw [hz] at hnorm
+  norm_num at hnorm
+
+private theorem centralPhaseDisk_one_sub_ne_zero_of_ball
+    {x : Fin 2 → ℝ} (hx : x ∈ Metric.ball 0 1) :
+    (1 : ℂ) - centralPhaseDiskComplex x ≠ 0 := by
+  intro h
+  have hz : centralPhaseDiskComplex x = 1 := (sub_eq_zero.mp h).symm
+  have hnorm := centralPhaseDiskComplex_norm_lt_one hx
+  rw [hz] at hnorm
+  norm_num at hnorm
+
+public theorem constructedCentralPhaseFaceZeroCarrier_injOn :
+    Set.InjOn constructedCentralPhaseFaceZeroCarrier (Metric.ball 0 1) := by
+  intro x hx y hy hxy
+  by_cases hx0 : x 0 ≤ 0
+  · by_cases hy0 : y 0 ≤ 0
+    · simp only [constructedCentralPhaseFaceZeroCarrier, hx0, hy0] at hxy
+      have hraw := (inclusion_isOpenEmbedding (false, 0)).injective hxy
+      have hcoord := congrFun hraw 0
+      simp only [lowerAxisZero, Matrix.cons_val_zero] at hcoord
+      exact centralPhaseDiskLowerCoordinate_injOn hx hy hcoord
+    · simp only [constructedCentralPhaseFaceZeroCarrier, hx0, hy0] at hxy
+      have hcross := (inclusion_lowerAxisZero_eq_upperAxisTwo_iff 0 _ _).mp hxy
+      have hyrec := centralPhaseDisk_coordinates_reciprocal y
+        (centralPhaseDisk_one_add_ne_zero_of_ball hy)
+        (centralPhaseDisk_one_sub_ne_zero_of_ball hy)
+      have hinv : (centralPhaseDiskLowerCoordinate x)⁻¹ =
+          (centralPhaseDiskLowerCoordinate y)⁻¹ := hcross.2.symm.trans hyrec.2
+      exact centralPhaseDiskLowerCoordinate_injOn hx hy (inv_injective hinv)
+  · by_cases hy0 : y 0 ≤ 0
+    · simp only [constructedCentralPhaseFaceZeroCarrier, hx0, hy0] at hxy
+      have hcross := (inclusion_lowerAxisZero_eq_upperAxisTwo_iff 0 _ _).mp hxy.symm
+      have hxrec := centralPhaseDisk_coordinates_reciprocal x
+        (centralPhaseDisk_one_add_ne_zero_of_ball hx)
+        (centralPhaseDisk_one_sub_ne_zero_of_ball hx)
+      have hinv : (centralPhaseDiskLowerCoordinate y)⁻¹ =
+          (centralPhaseDiskLowerCoordinate x)⁻¹ := hcross.2.symm.trans hxrec.2
+      exact centralPhaseDiskLowerCoordinate_injOn hx hy (inv_injective hinv).symm
+    · simp only [constructedCentralPhaseFaceZeroCarrier, hx0, hy0] at hxy
+      have hraw := (inclusion_isOpenEmbedding (true, 0)).injective hxy
+      have hcoord := congrFun hraw 2
+      simp only [upperAxisTwo, Matrix.cons_val_two] at hcoord
+      have hxrec := centralPhaseDisk_coordinates_reciprocal x
+        (centralPhaseDisk_one_add_ne_zero_of_ball hx)
+        (centralPhaseDisk_one_sub_ne_zero_of_ball hx)
+      have hyrec := centralPhaseDisk_coordinates_reciprocal y
+        (centralPhaseDisk_one_add_ne_zero_of_ball hy)
+        (centralPhaseDisk_one_sub_ne_zero_of_ball hy)
+      apply centralPhaseDiskLowerCoordinate_injOn hx hy
+      apply inv_injective
+      rwa [← hxrec.2, ← hyrec.2]
+
+private theorem constructedCentralPhaseFaceZeroCarrier_ne_of_mem_boundary
+    (x y : Fin 2 → ℝ) (hx : x ∈ Metric.closedBall 0 1)
+    (hxb : x ∉ Metric.ball 0 1) (hy : y ∈ Metric.ball 0 1) :
+    constructedCentralPhaseFaceZeroCarrier x ≠
+      constructedCentralPhaseFaceZeroCarrier y := by
+  have hxnorm := norm_eq_one_of_mem_closedBall_not_ball hx hxb
+  by_cases hx0 : x 0 ≤ 0
+  · have hxminus := centralPhaseDisk_one_sub_ne_zero_of_nonpos x hx0
+    have hLowerNe :=
+      centralPhaseDiskLowerCoordinate_ne_of_norm_eq_one_of_mem_ball
+        x y hxnorm hxminus hy
+    by_cases hy0 : y 0 ≤ 0
+    · intro hxy
+      simp only [constructedCentralPhaseFaceZeroCarrier, hx0, hy0] at hxy
+      apply hLowerNe
+      have hraw := (inclusion_isOpenEmbedding (false, 0)).injective hxy
+      have hcoord := congrFun hraw 0
+      simpa [lowerAxisZero] using hcoord
+    · intro hxy
+      simp only [constructedCentralPhaseFaceZeroCarrier, hx0, hy0] at hxy
+      have he := (inclusion_lowerAxisZero_eq_upperAxisTwo_iff 0 _ _).mp hxy
+      have hxplus : (1 : ℂ) + centralPhaseDiskComplex x ≠ 0 := by
+        intro hplus
+        apply he.1
+        simp [centralPhaseDiskLowerCoordinate, hplus]
+      have hxrec := centralPhaseDisk_coordinates_reciprocal x hxplus hxminus
+      exact centralPhaseDiskUpperCoordinate_ne_of_norm_eq_one_of_mem_ball
+        x y hxnorm hxplus hy (hxrec.2.trans he.2.symm)
+  · have hxplus := centralPhaseDisk_one_add_ne_zero_of_nonneg x
+      (le_of_lt (lt_of_not_ge hx0))
+    have hUpperNe :=
+      centralPhaseDiskUpperCoordinate_ne_of_norm_eq_one_of_mem_ball
+        x y hxnorm hxplus hy
+    by_cases hy0 : y 0 ≤ 0
+    · intro hxy
+      simp only [constructedCentralPhaseFaceZeroCarrier, hx0, hy0] at hxy
+      have he := (inclusion_lowerAxisZero_eq_upperAxisTwo_iff 0 _ _).mp hxy.symm
+      have hyrec := centralPhaseDisk_coordinates_reciprocal y
+        (centralPhaseDisk_one_add_ne_zero_of_ball hy)
+        (centralPhaseDisk_one_sub_ne_zero_of_ball hy)
+      exact hUpperNe (he.2.trans hyrec.2.symm)
+    · intro hxy
+      simp only [constructedCentralPhaseFaceZeroCarrier, hx0, hy0] at hxy
+      apply hUpperNe
+      have hraw := (inclusion_isOpenEmbedding (true, 0)).injective hxy
+      have hcoord := congrFun hraw 2
+      simpa [upperAxisTwo] using hcoord
+
+public theorem constructedCentralPhaseFaceZeroCarrier_componentSupport
+    (x : Fin 2 → ℝ) (hx : x ∈ Metric.ball 0 1) :
+    componentSupport constructedModel (constructedCentralPhaseFaceZeroCarrier x) =
+      ({e₁, e₂} : Set ToricLattice) := by
+  by_cases hx0 : x 0 ≤ 0
+  · have hn : centralPhaseDiskLowerCoordinate x ≠ 0 :=
+      (centralPhaseDisk_coordinates_reciprocal x
+        (centralPhaseDisk_one_add_ne_zero_of_ball hx)
+        (centralPhaseDisk_one_sub_ne_zero_of_ball hx)).1
+    simp only [constructedCentralPhaseFaceZeroCarrier, hx0]
+    ext v
+    change inclusion (false, 0) (lowerAxisZero (centralPhaseDiskLowerCoordinate x)) ∈
+      carrierCentralComponent v ↔ v ∈ {e₁, e₂}
+    rw [lowerAxisZero_component_iff _ hn]
+    simp
+  · have hn : centralPhaseDiskUpperCoordinate x ≠ 0 := by
+      rw [(centralPhaseDisk_coordinates_reciprocal x
+        (centralPhaseDisk_one_add_ne_zero_of_ball hx)
+        (centralPhaseDisk_one_sub_ne_zero_of_ball hx)).2]
+      exact inv_ne_zero
+        (centralPhaseDisk_coordinates_reciprocal x
+          (centralPhaseDisk_one_add_ne_zero_of_ball hx)
+          (centralPhaseDisk_one_sub_ne_zero_of_ball hx)).1
+    simp only [constructedCentralPhaseFaceZeroCarrier, hx0]
+    ext v
+    change inclusion (true, 0) (upperAxisTwo (centralPhaseDiskUpperCoordinate x)) ∈
+      carrierCentralComponent v ↔ v ∈ {e₁, e₂}
+    rw [upperAxisTwo_component_iff _ hn]
+    simp
+
+private theorem centralPhaseDiskLowerCoordinate_continuousOn_nonpos :
+    ContinuousOn centralPhaseDiskLowerCoordinate {x : Fin 2 → ℝ | x 0 ≤ 0} := by
+  intro x hx
+  apply ContinuousAt.continuousWithinAt
+  have hzeta : ContinuousAt centralPhaseDiskComplex x :=
+    centralPhaseDiskComplex_continuous.continuousAt
+  have hone : ContinuousAt (fun _ : Fin 2 → ℝ ↦ (1 : ℂ)) x := continuousAt_const
+  have hquot := (hone.add hzeta).div (hone.sub hzeta)
+    (centralPhaseDisk_one_sub_ne_zero_of_nonpos x hx)
+  change ContinuousAt
+    (fun y ↦ -(((1 : ℂ) + centralPhaseDiskComplex y) /
+      (1 - centralPhaseDiskComplex y)) ^ 2) x
+  exact (hquot.pow 2).neg
+
+private theorem centralPhaseDiskUpperCoordinate_continuousOn_nonneg :
+    ContinuousOn centralPhaseDiskUpperCoordinate {x : Fin 2 → ℝ | 0 ≤ x 0} := by
+  intro x hx
+  apply ContinuousAt.continuousWithinAt
+  have hzeta : ContinuousAt centralPhaseDiskComplex x :=
+    centralPhaseDiskComplex_continuous.continuousAt
+  have hone : ContinuousAt (fun _ : Fin 2 → ℝ ↦ (1 : ℂ)) x := continuousAt_const
+  have hquot := (hone.sub hzeta).div (hone.add hzeta)
+    (centralPhaseDisk_one_add_ne_zero_of_nonneg x hx)
+  change ContinuousAt
+    (fun y ↦ -(((1 : ℂ) - centralPhaseDiskComplex y) /
+      (1 + centralPhaseDiskComplex y)) ^ 2) x
+  exact (hquot.pow 2).neg
+
+private def constructedCentralPhaseFaceZeroLowerBranch (x : Fin 2 → ℝ) : Carrier :=
+  inclusion (false, 0) (lowerAxisZero (centralPhaseDiskLowerCoordinate x))
+
+private def constructedCentralPhaseFaceZeroUpperBranch (x : Fin 2 → ℝ) : Carrier :=
+  inclusion (true, 0) (upperAxisTwo (centralPhaseDiskUpperCoordinate x))
+
+private theorem constructedCentralPhaseFaceZeroLowerBranch_continuousOn_nonpos :
+    ContinuousOn constructedCentralPhaseFaceZeroLowerBranch
+      {x : Fin 2 → ℝ | x 0 ≤ 0} := by
+  intro x hx
+  have hcoord := centralPhaseDiskLowerCoordinate_continuousOn_nonpos x hx
+  have hraw : ContinuousWithinAt
+      (fun y ↦ lowerAxisZero (centralPhaseDiskLowerCoordinate y))
+      {y : Fin 2 → ℝ | y 0 ≤ 0} x := by
+    rw [continuousWithinAt_pi]
+    intro i
+    fin_cases i
+    · simpa [lowerAxisZero] using hcoord
+    · exact continuousWithinAt_const
+    · exact continuousWithinAt_const
+  change ContinuousWithinAt
+    (fun y ↦ inclusion (false, 0) (lowerAxisZero (centralPhaseDiskLowerCoordinate y)))
+      {y : Fin 2 → ℝ | y 0 ≤ 0} x
+  exact (inclusion_isOpenEmbedding (false, 0)).continuous.continuousAt
+    |>.comp_continuousWithinAt hraw
+
+private theorem constructedCentralPhaseFaceZeroUpperBranch_continuousOn_nonneg :
+    ContinuousOn constructedCentralPhaseFaceZeroUpperBranch
+      {x : Fin 2 → ℝ | 0 ≤ x 0} := by
+  intro x hx
+  have hcoord := centralPhaseDiskUpperCoordinate_continuousOn_nonneg x hx
+  have hraw : ContinuousWithinAt
+      (fun y ↦ upperAxisTwo (centralPhaseDiskUpperCoordinate y))
+      {y : Fin 2 → ℝ | 0 ≤ y 0} x := by
+    rw [continuousWithinAt_pi]
+    intro i
+    fin_cases i
+    · exact continuousWithinAt_const
+    · exact continuousWithinAt_const
+    · simpa [upperAxisTwo] using hcoord
+  change ContinuousWithinAt
+    (fun y ↦ inclusion (true, 0) (upperAxisTwo (centralPhaseDiskUpperCoordinate y)))
+      {y : Fin 2 → ℝ | 0 ≤ y 0} x
+  exact (inclusion_isOpenEmbedding (true, 0)).continuous.continuousAt
+    |>.comp_continuousWithinAt hraw
+
+public theorem constructedCentralPhaseFaceZeroCarrier_continuousOn_closedBall :
+    ContinuousOn constructedCentralPhaseFaceZeroCarrier (Metric.closedBall 0 1) := by
+  change ContinuousOn ({x : Fin 2 → ℝ | x 0 ≤ 0}.piecewise
+    constructedCentralPhaseFaceZeroLowerBranch constructedCentralPhaseFaceZeroUpperBranch)
+      (Metric.closedBall 0 1)
+  apply ContinuousOn.piecewise
+  · intro x hx
+    exact constructedCentralPhaseFaceZeroCarrier_eq_on_seam x
+      (frontier_le_subset_eq (continuous_apply 0) continuous_const hx.2)
+  · apply constructedCentralPhaseFaceZeroLowerBranch_continuousOn_nonpos.mono
+    intro x hx
+    have hclosed : IsClosed {y : Fin 2 → ℝ | y 0 ≤ 0} :=
+      isClosed_le (continuous_apply 0) continuous_const
+    rw [hclosed.closure_eq] at hx
+    exact hx.2
+  · apply constructedCentralPhaseFaceZeroUpperBranch_continuousOn_nonneg.mono
+    intro x hx
+    apply closure_minimal _ (isClosed_le continuous_const (continuous_apply 0)) hx.2
+    intro y hy
+    change 0 ≤ y 0
+    apply le_of_not_ge
+    simpa only [Set.mem_compl_iff, Set.mem_ofPred_eq] using hy
+
+public def constructedCentralPhaseFaceZeroLocal
+    (W : ActualPuncturedCuspCollarWitness N constructedModel) (x : Fin 2 → ℝ) :
+    LocalCarrier constructedModel W.localWitness.radius :=
+  ⟨constructedCentralPhaseFaceZeroCarrier x, by
+    change carrierHeight (constructedCentralPhaseFaceZeroCarrier x) ∈
+      Metric.ball 0 W.localWitness.radius
+    rw [constructedCentralPhaseFaceZeroCarrier_height, Metric.mem_ball, dist_self]
+    exact W.localWitness.radius_pos⟩
+
+public theorem constructedCentralPhaseFaceZeroLocal_continuousOn_closedBall
+    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
+    ContinuousOn (constructedCentralPhaseFaceZeroLocal W) (Metric.closedBall 0 1) := by
+  rw [continuousOn_iff_continuous_domRestrict, continuous_induced_rng]
+  change Continuous ((Metric.closedBall (0 : Fin 2 → ℝ) 1).domRestrict
+    constructedCentralPhaseFaceZeroCarrier)
+  rw [← continuousOn_iff_continuous_domRestrict]
+  exact constructedCentralPhaseFaceZeroCarrier_continuousOn_closedBall
+
+public def constructedCentralPhaseFaceZeroPoint
+    (W : ActualPuncturedCuspCollarWitness N constructedModel) (x : Fin 2 → ℝ) :
+    actualLocalCuspCentralSubMulAction W :=
+  ⟨constructedCentralPhaseFaceZeroLocal W x,
+    constructedCentralPhaseFaceZeroCarrier_height x⟩
+
+public theorem constructedCentralPhaseFaceZeroPoint_continuousOn_closedBall
+    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
+    ContinuousOn (constructedCentralPhaseFaceZeroPoint W) (Metric.closedBall 0 1) := by
+  rw [continuousOn_iff_continuous_domRestrict, continuous_induced_rng]
+  change Continuous ((Metric.closedBall (0 : Fin 2 → ℝ) 1).domRestrict
+    (constructedCentralPhaseFaceZeroLocal W))
+  rw [← continuousOn_iff_continuous_domRestrict]
+  exact constructedCentralPhaseFaceZeroLocal_continuousOn_closedBall W
+
+/-- The first phase two-cell as an actual point of the central deck-orbit quotient. -/
+public def constructedCentralPhaseFaceZeroOrbit
+    (W : ActualPuncturedCuspCollarWitness N constructedModel) (x : Fin 2 → ℝ) :
+    ActualLocalCuspCentralOrbitQuotient W := by
+  let _ := actualLocalCuspQuotientAction W
+  let S := actualLocalCuspCentralSubMulAction W
+  let _ : MulAction (Multiplicative ParameterLattice) S := inferInstance
+  exact Quotient.mk _ (constructedCentralPhaseFaceZeroPoint W x)
+
+public theorem constructedCentralPhaseFaceZeroOrbit_continuousOn_closedBall
+    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
+    ContinuousOn (constructedCentralPhaseFaceZeroOrbit W) (Metric.closedBall 0 1) := by
+  let _ := actualLocalCuspQuotientAction W
+  let S := actualLocalCuspCentralSubMulAction W
+  let _ : MulAction (Multiplicative ParameterLattice) S := inferInstance
+  exact continuous_quotient_mk'.continuousOn.comp
+    (constructedCentralPhaseFaceZeroPoint_continuousOn_closedBall W)
+      (fun _ _ ↦ Set.mem_univ _)
+
+public theorem constructedCentralPhaseFaceZeroOrbit_injOn
+    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
+    Set.InjOn (constructedCentralPhaseFaceZeroOrbit W) (Metric.ball 0 1) := by
+  intro x hx y hy hxy
+  let _ := actualLocalCuspQuotientAction W
+  let S := actualLocalCuspCentralSubMulAction W
+  let _ : MulAction (Multiplicative ParameterLattice) S := inferInstance
+  have hrel : MulAction.orbitRel (Multiplicative ParameterLattice) S
+      (constructedCentralPhaseFaceZeroPoint W x)
+      (constructedCentralPhaseFaceZeroPoint W y) :=
+    @Quotient.exact S (MulAction.orbitRel (Multiplicative ParameterLattice) S)
+      (constructedCentralPhaseFaceZeroPoint W x)
+      (constructedCentralPhaseFaceZeroPoint W y) hxy
+  have hcoe := centralOrbitRel_coe_eq_of_same_componentSupport W
+    ({e₁, e₂} : Set ToricLattice) ((Set.finite_singleton e₂).insert e₁)
+      ⟨e₁, by simp⟩
+      (constructedCentralPhaseFaceZeroPoint W x)
+      (constructedCentralPhaseFaceZeroPoint W y)
+      (constructedCentralPhaseFaceZeroCarrier_componentSupport x hx)
+      (constructedCentralPhaseFaceZeroCarrier_componentSupport y hy) hrel
+  exact constructedCentralPhaseFaceZeroCarrier_injOn hx hy hcoe
+
+private theorem constructedCentralPhaseFaceZeroOrbit_ne_of_mem_boundary
+    (W : ActualPuncturedCuspCollarWitness N constructedModel)
+    (x : Fin 2 → ℝ) (hx : x ∈ Metric.closedBall 0 1)
+    (hxb : x ∉ Metric.ball 0 1) (y : Fin 2 → ℝ)
+    (hy : y ∈ Metric.ball 0 1) :
+    constructedCentralPhaseFaceZeroOrbit W x ≠
+      constructedCentralPhaseFaceZeroOrbit W y := by
+  intro hxy
+  let _ := actualLocalCuspQuotientAction W
+  let S := actualLocalCuspCentralSubMulAction W
+  let _ : MulAction (Multiplicative ParameterLattice) S := inferInstance
+  have hrel : MulAction.orbitRel (Multiplicative ParameterLattice) S
+      (constructedCentralPhaseFaceZeroPoint W x)
+      (constructedCentralPhaseFaceZeroPoint W y) :=
+    @Quotient.exact S (MulAction.orbitRel (Multiplicative ParameterLattice) S)
+      (constructedCentralPhaseFaceZeroPoint W x)
+      (constructedCentralPhaseFaceZeroPoint W y) hxy
+  have hySupport := constructedCentralPhaseFaceZeroCarrier_componentSupport y hy
+  have hcard : ({e₁, e₂} : Set ToricLattice).ncard = 2 := by
+    rw [Set.ncard_insert_of_notMem]
+    · simp
+    · simp [e₁, e₂]
+  by_cases hx0 : x 0 ≤ 0
+  · by_cases hxcoord : centralPhaseDiskLowerCoordinate x = 0
+    · have hn := centralOrbitRel_componentSupport_ncard_eq W
+          (constructedCentralPhaseFaceZeroPoint W x)
+          (constructedCentralPhaseFaceZeroPoint W y) hrel
+      change (componentSupport constructedModel
+          (constructedCentralPhaseFaceZeroCarrier x)).ncard =
+        (componentSupport constructedModel
+          (constructedCentralPhaseFaceZeroCarrier y)).ncard at hn
+      have hxcarrier : constructedCentralPhaseFaceZeroCarrier x =
+          inclusion (false, 0) 0 := by
+        simp only [constructedCentralPhaseFaceZeroCarrier, hx0, ↓reduceIte, hxcoord]
+        congr 1
+        funext i
+        fin_cases i <;> simp [lowerAxisZero]
+      rw [hxcarrier, carrierOrigin_componentSupport_ncard, hySupport, hcard] at hn
+      omega
+    · have hxSupport :
+          componentSupport constructedModel
+              (constructedCentralPhaseFaceZeroCarrier x) =
+            ({e₁, e₂} : Set ToricLattice) := by
+        simp only [constructedCentralPhaseFaceZeroCarrier, hx0]
+        ext v
+        change inclusion (false, 0)
+            (lowerAxisZero (centralPhaseDiskLowerCoordinate x)) ∈
+              carrierCentralComponent v ↔ v ∈ {e₁, e₂}
+        rw [lowerAxisZero_component_iff _ hxcoord]
+        simp
+      have hcoe := centralOrbitRel_coe_eq_of_same_componentSupport W
+        ({e₁, e₂} : Set ToricLattice) ((Set.finite_singleton e₂).insert e₁)
+        ⟨e₁, by simp⟩
+        (constructedCentralPhaseFaceZeroPoint W x)
+        (constructedCentralPhaseFaceZeroPoint W y) hxSupport hySupport hrel
+      exact constructedCentralPhaseFaceZeroCarrier_ne_of_mem_boundary
+        x y hx hxb hy hcoe
+  · by_cases hxcoord : centralPhaseDiskUpperCoordinate x = 0
+    · have hn := centralOrbitRel_componentSupport_ncard_eq W
+          (constructedCentralPhaseFaceZeroPoint W x)
+          (constructedCentralPhaseFaceZeroPoint W y) hrel
+      change (componentSupport constructedModel
+          (constructedCentralPhaseFaceZeroCarrier x)).ncard =
+        (componentSupport constructedModel
+          (constructedCentralPhaseFaceZeroCarrier y)).ncard at hn
+      have hxcarrier : constructedCentralPhaseFaceZeroCarrier x =
+          inclusion (true, 0) 0 := by
+        simp only [constructedCentralPhaseFaceZeroCarrier, hx0, ↓reduceIte, hxcoord]
+        congr 1
+        funext i
+        fin_cases i <;> simp [upperAxisTwo]
+      rw [hxcarrier, carrierOrigin_componentSupport_ncard, hySupport, hcard] at hn
+      omega
+    · have hxSupport :
+          componentSupport constructedModel
+              (constructedCentralPhaseFaceZeroCarrier x) =
+            ({e₁, e₂} : Set ToricLattice) := by
+        simp only [constructedCentralPhaseFaceZeroCarrier, hx0]
+        ext v
+        change inclusion (true, 0)
+            (upperAxisTwo (centralPhaseDiskUpperCoordinate x)) ∈
+              carrierCentralComponent v ↔ v ∈ {e₁, e₂}
+        rw [upperAxisTwo_component_iff _ hxcoord]
+        simp
+      have hcoe := centralOrbitRel_coe_eq_of_same_componentSupport W
+        ({e₁, e₂} : Set ToricLattice) ((Set.finite_singleton e₂).insert e₁)
+        ⟨e₁, by simp⟩
+        (constructedCentralPhaseFaceZeroPoint W x)
+        (constructedCentralPhaseFaceZeroPoint W y) hxSupport hySupport hrel
+      exact constructedCentralPhaseFaceZeroCarrier_ne_of_mem_boundary
+        x y hx hxb hy hcoe
+
+private theorem isEmbedding_restrict_of_compact_boundary_separation
+    {X Y : Type*} [TopologicalSpace X] [T2Space X]
+    [TopologicalSpace Y] [T2Space Y]
+    (f : X → Y) (s K : Set X) (hK : IsCompact K) (hsK : s ⊆ K)
+    (hf : ContinuousOn f K) (hinj : Set.InjOn f s)
+    (hboundary : Disjoint (f '' (K \ s)) (f '' s)) :
+    Topology.IsEmbedding (s.domRestrict f) := by
+  let t : Set Y := f '' s
+  let g : s → t := Set.codRestrict (s.domRestrict f) t (fun x ↦ ⟨x, x.2, rfl⟩)
+  have hfs : Continuous (s.domRestrict f) :=
+    continuousOn_iff_continuous_domRestrict.mp (hf.mono hsK)
+  have hgcont : Continuous g := hfs.codRestrict _
+  have hginj : Function.Injective g := by
+    intro x y hxy
+    apply Subtype.ext
+    apply hinj x.2 y.2
+    exact congrArg Subtype.val hxy
+  have hgclosed : IsClosedMap g := by
+    intro A hA
+    let L : Set X := closure (Subtype.val '' A)
+    have hKclosed : IsClosed K := hK.isClosed
+    have hvalAK : Subtype.val '' A ⊆ K := by
+      rintro x ⟨a, ha, rfl⟩
+      exact hsK a.2
+    have hLK : L ⊆ K := closure_minimal hvalAK hKclosed
+    have hLcompact : IsCompact L :=
+      hK.of_isClosed_subset isClosed_closure hLK
+    have hfL : ContinuousOn f L := hf.mono hLK
+    have hfLclosed : IsClosed (f '' L) :=
+      (hLcompact.image_of_continuousOn hfL).isClosed
+    apply isClosed_induced_iff.mpr
+    refine ⟨f '' L, hfLclosed, ?_⟩
+    ext z
+    constructor
+    · rintro ⟨x, hxL, hfx⟩
+      have hxs : x ∈ s := by
+        by_contra hxs
+        have hxBoundary : f x ∈ f '' (K \ s) := ⟨x, ⟨hLK hxL, hxs⟩, rfl⟩
+        have hzInterior : f x ∈ f '' s := by
+          rw [hfx]
+          exact z.2
+        exact Set.disjoint_left.mp hboundary hxBoundary hzInterior
+      have hxClosure : (⟨x, hxs⟩ : s) ∈ closure A :=
+        closure_subtype.mpr hxL
+      rw [hA.closure_eq] at hxClosure
+      refine ⟨⟨x, hxs⟩, hxClosure, ?_⟩
+      apply Subtype.ext
+      exact hfx
+    · rintro ⟨x, hxA, rfl⟩
+      refine ⟨x, subset_closure ⟨x, hxA, rfl⟩, rfl⟩
+  have hg : Topology.IsEmbedding g :=
+    (Topology.IsClosedEmbedding.of_continuous_injective_isClosedMap
+      hgcont hginj hgclosed).isEmbedding
+  have hcomp := Topology.IsEmbedding.subtypeVal.comp hg
+  change Topology.IsEmbedding (fun x : s ↦ f x)
+  convert hcomp using 1
+  funext x
+  rfl
+
+private theorem constructedCentralPhaseFaceZeroOrbit_boundary_disjoint
+    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
+    Disjoint
+      (constructedCentralPhaseFaceZeroOrbit W ''
+        (Metric.closedBall 0 1 \ Metric.ball 0 1))
+      (constructedCentralPhaseFaceZeroOrbit W '' Metric.ball 0 1) := by
+  rw [Set.disjoint_left]
+  intro z
+  rintro ⟨x, ⟨hx, hxb⟩, rfl⟩ ⟨y, hy, hxy⟩
+  exact constructedCentralPhaseFaceZeroOrbit_ne_of_mem_boundary
+    W x hx hxb y hy hxy.symm
+
+public theorem constructedCentralPhaseFaceZeroOrbit_isEmbedding
+    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
+    Topology.IsEmbedding
+      ((Metric.ball (0 : Fin 2 → ℝ) 1).domRestrict
+        (constructedCentralPhaseFaceZeroOrbit W)) := by
+  let _ : T2Space (actualLocalCuspFilling W) :=
+    SphereSixComplex.Geometry.PaperAnalyticData.actualLocalCuspFilling_t2 W
+  let _ : T2Space (ActualLocalCuspCentralOrbitQuotient W) :=
+    (actualLocalCuspCentralOrbitMap_isEmbedding W).t2Space
+  exact isEmbedding_restrict_of_compact_boundary_separation
+    (constructedCentralPhaseFaceZeroOrbit W)
+    (Metric.ball 0 1) (Metric.closedBall 0 1) (isCompact_closedBall 0 1)
+    Metric.ball_subset_closedBall
+    (constructedCentralPhaseFaceZeroOrbit_continuousOn_closedBall W)
+    (constructedCentralPhaseFaceZeroOrbit_injOn W)
+    (constructedCentralPhaseFaceZeroOrbit_boundary_disjoint W)
+
+/-- The first genuine two-dimensional phase characteristic map. -/
+public def constructedCentralPhaseTwoCellZero
+    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
+    PartialEquiv (Fin 2 → ℝ) (ActualLocalCuspCentralOrbitQuotient W) :=
+  Set.InjOn.toPartialEquiv (constructedCentralPhaseFaceZeroOrbit W) (Metric.ball 0 1)
+    (constructedCentralPhaseFaceZeroOrbit_injOn W)
+
+public theorem constructedCentralPhaseTwoCellZero_source_eq
+    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
+    (constructedCentralPhaseTwoCellZero W).source = Metric.ball 0 1 := rfl
+
+public theorem constructedCentralPhaseTwoCellZero_continuousOn
+    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
+    ContinuousOn (constructedCentralPhaseTwoCellZero W) (Metric.closedBall 0 1) :=
+  constructedCentralPhaseFaceZeroOrbit_continuousOn_closedBall W
+
+public theorem constructedCentralPhaseTwoCellZero_continuousOn_symm
+    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
+    ContinuousOn (constructedCentralPhaseTwoCellZero W).symm
+      (constructedCentralPhaseTwoCellZero W).target := by
+  let e := constructedCentralPhaseTwoCellZero W
+  let lift : e.target → Metric.ball (0 : Fin 2 → ℝ) 1 :=
+    fun q ↦ ⟨e.symm q, e.map_target q.2⟩
+  have hlift : Continuous lift := by
+    apply (constructedCentralPhaseFaceZeroOrbit_isEmbedding W).continuous_iff.mpr
+    have heq :
+        (Metric.ball (0 : Fin 2 → ℝ) 1).domRestrict
+            (constructedCentralPhaseFaceZeroOrbit W) ∘ lift =
+          (Subtype.val : e.target → ActualLocalCuspCentralOrbitQuotient W) := by
+      funext q
+      exact e.right_inv q.2
+    rw [heq]
+    exact continuous_subtype_val
+  rw [continuousOn_iff_continuous_domRestrict]
+  change Continuous (fun q : e.target ↦ (lift q : Fin 2 → ℝ))
+  exact continuous_subtype_val.comp hlift
 end SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 
 end

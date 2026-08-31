@@ -200,6 +200,58 @@ variable {A : PaperAnalyticData}
 
 namespace SectionSevenEllipticTwoDiscCoverData
 
+/-- The normalized cusp product has its expected nondegenerate linear term at the cusp. -/
+public theorem actualCuspProduct_hasStrictDerivAt_zero (A : PaperAnalyticData) :
+    HasStrictDerivAt
+      (fun q : ℂ ↦ q * A.actualNormalizedModularJUniformization.cusp.cuspUnit q)
+      1728 0 := by
+  let u := A.actualNormalizedModularJUniformization.cusp.cuspUnit
+  let x : ℂ → ℂ := fun q ↦ q * u q
+  have hu_analytic : AnalyticAt ℂ u 0 := by
+    apply DifferentiableOn.analyticAt
+      (s := Metric.ball (0 : ℂ)
+        A.actualNormalizedModularJUniformization.cusp.cuspRadius)
+    · intro q hq
+      exact (mdifferentiableAt_iff_differentiableAt.mp
+        (A.actualNormalizedModularJUniformization.cusp.cuspUnit_holomorphic q hq)).differentiableWithinAt
+    · exact Metric.ball_mem_nhds 0
+        A.actualNormalizedModularJUniformization.cusp.cuspRadius_pos
+  have hx_analytic : AnalyticAt ℂ x 0 := analyticAt_id.mul hu_analytic
+  have hx_deriv : deriv x 0 = u 0 := by
+    have h := (hasDerivAt_id' (0 : ℂ)).mul hu_analytic.differentiableAt.hasDerivAt
+    have hfun : ((fun q : ℂ ↦ q) * u) = x := by rfl
+    rw [← hfun]
+    simpa only [one_mul, zero_mul, add_zero] using h.deriv
+  have hu_zero : u 0 = 1728 := by
+    change SphereSixComplex.Periods.ExactNormalizedModularJTau.normalizedModularJCuspUnit 0 = 1728
+    exact SphereSixComplex.Periods.ExactNormalizedModularJTau.normalizedModularJCuspUnit_zero
+  change HasStrictDerivAt x 1728 0
+  rw [← hu_zero, ← hx_deriv]
+  exact hx_analytic.hasStrictDerivAt
+
+/-- The normalized cusp product is injective on some disc about the cusp.  This is the strongest
+local no-self-crossing statement supplied by the holomorphic inverse-function theorem without
+an additional quantitative derivative estimate. -/
+public theorem exists_actualCuspProduct_injOn (A : PaperAnalyticData) :
+    ∃ r : ℝ, 0 < r ∧ Set.InjOn
+      (fun q : ℂ ↦ q * A.actualNormalizedModularJUniformization.cusp.cuspUnit q)
+      (Metric.ball 0 r) := by
+  let x : ℂ → ℂ := fun q ↦
+    q * A.actualNormalizedModularJUniformization.cusp.cuspUnit q
+  let hx_strict : HasStrictDerivAt x 1728 0 :=
+    actualCuspProduct_hasStrictDerivAt_zero A
+  have hderiv_ne : (1728 : ℂ) ≠ 0 := by norm_num
+  let chi : ℂ → ℂ := hx_strict.localInverse x 1728 0 hderiv_ne
+  have hleft : ∀ᶠ q in nhds (0 : ℂ), chi (x q) = q :=
+    hx_strict.eventually_left_inverse hderiv_ne
+  rcases Metric.mem_nhds_iff.mp hleft with ⟨r, hr, hball⟩
+  refine ⟨r, hr, ?_⟩
+  intro q hq q' hq' heq
+  calc
+    q = chi (x q) := (hball hq).symm
+    _ = chi (x q') := congrArg chi heq
+    _ = q' := hball hq'
+
 /-- The pulled-back affine cusp cover in the corrected order: order four first, order three
 second. -/
 public theorem actualCuspMappingTorusPulledBackSwappedOpenCover
