@@ -475,6 +475,212 @@ private theorem generatedOverlapClass_intersectionIso :
   rw [← ConcreteCategory.comp_apply, I.inv_hom_id]
   rfl
 
+private def ambientVertexPath :
+    Path (pointCylinder uThreeQuarters) (pointCylinder uQuarter) where
+  toFun s := (vertexPath s).1
+  continuous_toFun := continuous_subtype_val.comp vertexPath.continuous
+  source' := by simp [vertexPath, highVertexPath]
+  target' := by simp [vertexPath, highVertexPath, lowVertexPath]
+
+private def ambientEdgePath :
+    Path (pointCylinder uQuarter) (pointCylinder uThreeQuarters) where
+  toFun s := (edgePath s).1
+  continuous_toFun := continuous_subtype_val.comp edgePath.continuous
+  source' := by simp [edgePath]
+  target' := by simp [edgePath]
+
+private theorem vertexChain_ambient :
+    (singularChainMap (Opens.inclusion' pointVertexOpen).hom).f 1 vertexChain =
+      pathChain ambientVertexPath := by
+  change (singularChainMap (Opens.inclusion' pointVertexOpen).hom).f 1
+      (simplexChain
+        (↑((Opens.toTopCat (TopCat.of PointMappingTorus)).obj pointVertexOpen)) 1
+        (pathSimplex vertexPath)) = pathChain ambientVertexPath
+  rw [singularChainMap_simplex, pathChain]
+  congr 1
+
+private theorem edgeChain_ambient :
+    (singularChainMap (Opens.inclusion' pointEdgeOpen).hom).f 1 edgeChain =
+      pathChain ambientEdgePath := by
+  change (singularChainMap (Opens.inclusion' pointEdgeOpen).hom).f 1
+      (simplexChain
+        (↑((Opens.toTopCat (TopCat.of PointMappingTorus)).obj pointEdgeOpen)) 1
+        (pathSimplex edgePath)) = pathChain ambientEdgePath
+  rw [singularChainMap_simplex, pathChain]
+  congr 1
+
+private theorem openMVFrom_pieceChain :
+    (openMVFromBiprodChain pointVertexOpen pointEdgeOpen).f 1 pieceChain =
+      pathChain ambientVertexPath + pathChain ambientEdgePath := by
+  rw [openMVFromBiprodChain, biprod.desc_eq]
+  change
+    ((singularChainMap (Opens.inclusion' pointVertexOpen).hom).f 1
+        (((biprod.fst : openSingularChains pointVertexOpen ⊞
+          openSingularChains pointEdgeOpen ⟶ openSingularChains pointVertexOpen).f 1)
+            pieceChain)) +
+      ((singularChainMap (Opens.inclusion' pointEdgeOpen).hom).f 1
+        (((biprod.snd : openSingularChains pointVertexOpen ⊞
+          openSingularChains pointEdgeOpen ⟶ openSingularChains pointEdgeOpen).f 1)
+            pieceChain)) = _
+  have hpieces := piecesEquiv_apply 1 pieceChain
+  rw [show piecesEquiv 1 pieceChain = (vertexChain, edgeChain) by simp [pieceChain]] at hpieces
+  have hvertex := congrArg Prod.fst hpieces
+  have hedge := congrArg Prod.snd hpieces
+  simp only at hvertex hedge
+  rw [← hvertex, ← hedge]
+  rw [vertexChain_ambient, edgeChain_ambient]
+
+private def cylinderLowPath : Path (pointCylinder 0) (pointCylinder uQuarter) :=
+  positiveCylinderLoop.subpath 0 uQuarter
+
+private def cylinderEdgePath : Path (pointCylinder uQuarter) (pointCylinder uThreeQuarters) :=
+  positiveCylinderLoop.subpath uQuarter uThreeQuarters
+
+private def cylinderHighPath : Path (pointCylinder uThreeQuarters) (pointCylinder 1) :=
+  positiveCylinderLoop.subpath uThreeQuarters 1
+
+private def cylinderWrappedLowPath :
+    Path (pointCylinder 1) (pointCylinder uQuarter) :=
+  cylinderLowPath.cast pointCylinder_zero_eq_one.symm rfl
+
+private theorem ambientEdgePath_eq_cylinderEdgePath :
+    ambientEdgePath = cylinderEdgePath := by
+  apply Path.ext
+  funext s
+  simp [ambientEdgePath, edgePath, cylinderEdgePath, positiveCylinderLoop,
+    Path.subpath]
+
+private theorem ambientVertexPath_eq_high_trans_low :
+    ambientVertexPath = cylinderHighPath.trans cylinderWrappedLowPath := by
+  apply Path.ext
+  funext s
+  simp only [ambientVertexPath, vertexPath, cylinderHighPath, cylinderWrappedLowPath,
+    cylinderLowPath, positiveCylinderLoop, Path.coe_mk_mk, Path.trans_apply]
+  split_ifs <;> rfl
+
+private theorem pathChain_cast {X : Type} [TopologicalSpace X] {x y x' y' : X}
+    (p : Path x y) (hx : x' = x) (hy : y' = y) :
+    pathChain (p.cast hx hy) = pathChain p := by
+  rw [pathChain, pathChain]
+  congr 1
+
+private def cylinderFullCutPath :=
+  (cylinderLowPath.trans cylinderEdgePath).trans cylinderHighPath
+
+private def cylinderWholeSubpath : Path (pointCylinder 0) (pointCylinder 1) :=
+  positiveCylinderLoop.subpath 0 1
+
+private def cylinderSubdivisionHomotopy :
+    cylinderFullCutPath.Homotopy cylinderWholeSubpath :=
+  ((Path.Homotopy.subpathTransSubpath positiveCylinderLoop
+      0 uQuarter uThreeQuarters).hcomp
+    (Path.Homotopy.refl cylinderHighPath)).trans
+      (Path.Homotopy.subpathTransSubpath positiveCylinderLoop 0 uThreeQuarters 1)
+
+private def positiveCylinderSubdivisionChain : Chains PointMappingTorus 2 :=
+  -(concatChain cylinderHighPath cylinderWrappedLowPath) +
+    concatChain cylinderLowPath cylinderEdgePath +
+    concatChain (cylinderLowPath.trans cylinderEdgePath) cylinderHighPath +
+    correctedHomotopyChain cylinderSubdivisionHomotopy
+
+private theorem boundary_positiveCylinderSubdivisionChain :
+    boundaryTwo PointMappingTorus positiveCylinderSubdivisionChain =
+      (pathChain ambientVertexPath + pathChain ambientEdgePath) -
+        pathChain positiveCylinderLoop := by
+  rw [positiveCylinderSubdivisionChain, map_add, map_add, map_add, map_neg,
+    boundaryTwo_concatChain, boundaryTwo_concatChain, boundaryTwo_concatChain,
+    boundaryTwo_correctedHomotopyChain, ambientVertexPath_eq_high_trans_low,
+    ambientEdgePath_eq_cylinderEdgePath,
+    cylinderWrappedLowPath, pathChain_cast, cylinderFullCutPath]
+  have hsubpath : pathChain cylinderWholeSubpath =
+      pathChain positiveCylinderLoop := by
+    change pathChain (positiveCylinderLoop.subpath 0 1) = _
+    rw [Path.subpath_zero_one, pathChain_cast]
+  rw [hsubpath]
+  abel
+
+private theorem ambientPieceClass_eq_positive :
+    chainHomologyClass
+        (pathChain ambientVertexPath + pathChain ambientEdgePath)
+        (by rw [map_add, boundaryOne_pathChain, boundaryOne_pathChain]; abel) =
+      positiveCylinderClass := by
+  have hzero := chainHomologyClass_eq_zero_of_boundary
+    ((pathChain ambientVertexPath + pathChain ambientEdgePath) -
+      pathChain positiveCylinderLoop)
+    (by
+      rw [map_sub, map_add, boundaryOne_pathChain, boundaryOne_pathChain,
+        boundaryOne_loop]
+      abel)
+    positiveCylinderSubdivisionChain boundary_positiveCylinderSubdivisionChain
+  rw [chainHomologyClass_sub
+      (pathChain ambientVertexPath + pathChain ambientEdgePath)
+      (pathChain positiveCylinderLoop)
+      (by rw [map_add, boundaryOne_pathChain, boundaryOne_pathChain]; abel)
+      (boundaryOne_loop positiveCylinderLoop)] at hzero
+  rw [positiveCylinderClass, loopHomologyClass_eq_chainHomologyClass]
+  exact sub_eq_zero.mp hzero
+
+private abbrev coverUnionChains :=
+  integralSimplicialChains.obj (coverUnion pointVertexOpen pointEdgeOpen)
+
+private def coverUnionGeneratedChain : coverUnionChains.X 1 := generatedUnionChain
+
+private theorem generatedUnionChain_ambient :
+    (coverChainInclusion pointVertexOpen pointEdgeOpen).f 1 coverUnionGeneratedChain =
+      pathChain ambientVertexPath + pathChain ambientEdgePath := by
+  have h := HomologicalComplex.congr_hom
+    (openMVFromBiprodChain_naturality pointVertexOpen pointEdgeOpen) 1
+  have hpiece := ConcreteCategory.congr_hom h pieceChain
+  change (coverChainInclusion pointVertexOpen pointEdgeOpen).f 1
+      coverUnionGeneratedChain =
+    (openMVFromBiprodChain pointVertexOpen pointEdgeOpen).f 1 pieceChain at hpiece
+  exact hpiece.trans openMVFrom_pieceChain
+
+private theorem coverUnionGeneratedChain_isCycle :
+    coverUnionChains.d 1 0 coverUnionGeneratedChain = 0 := generatedUnionChain_isCycle
+
+private theorem coverUnionGeneratedCycle_morphism :
+    AddCommGrpCat.asHom coverUnionGeneratedChain ≫ coverUnionChains.d 1 0 = 0 := by
+  apply AddCommGrpCat.int_hom_ext
+  simpa using coverUnionGeneratedChain_isCycle
+
+private def coverUnionPositiveClass : coverUnionChains.homology 1 :=
+  ((coverUnionChains.liftCycles (AddCommGrpCat.asHom coverUnionGeneratedChain) 0 (by simp)
+      coverUnionGeneratedCycle_morphism) ≫ coverUnionChains.homologyπ 1) 1
+
+private theorem generatedPositiveClass_eq_coverUnion :
+    generatedPositiveClass = coverUnionPositiveClass := rfl
+
+private theorem generatedPositiveClass_union :
+    ConcreteCategory.hom
+        ((mappingTorusOpenCoverHomologyComparison
+          (Homeomorph.refl PointFiber)).unionIso 1).hom
+        generatedPositiveClass = positiveCylinderClass := by
+  change ConcreteCategory.hom
+      (HomologicalComplex.homologyMap
+        (coverChainInclusion pointVertexOpen pointEdgeOpen) 1)
+      generatedPositiveClass = positiveCylinderClass
+  rw [generatedPositiveClass_eq_coverUnion]
+  dsimp only [coverUnionPositiveClass]
+  rw [← ConcreteCategory.comp_apply, Category.assoc,
+    HomologicalComplex.homologyπ_naturality]
+  rw [← Category.assoc, HomologicalComplex.liftCycles_comp_cyclesMap]
+  have hchain : AddCommGrpCat.asHom coverUnionGeneratedChain ≫
+      (coverChainInclusion pointVertexOpen pointEdgeOpen).f 1 =
+        AddCommGrpCat.asHom
+          (pathChain ambientVertexPath + pathChain ambientEdgePath) := by
+    apply AddCommGrpCat.int_hom_ext
+    simpa using generatedUnionChain_ambient
+  simp only [hchain]
+  have hcycle : boundaryOne PointMappingTorus
+      (pathChain ambientVertexPath + pathChain ambientEdgePath) = 0 := by
+    rw [map_add, boundaryOne_pathChain, boundaryOne_pathChain]
+    abel
+  change chainHomologyClass
+      (pathChain ambientVertexPath + pathChain ambientEdgePath) hcycle =
+        positiveCylinderClass
+  exact ambientPieceClass_eq_positive
+
 /-- The homology class represented by a degree-zero chain. -/
 public noncomputable def zeroChainHomologyClass
     (K : ChainComplex AddCommGrpCat ℕ) (c : K.X 0) : K.homology 0 :=
@@ -490,6 +696,11 @@ public structure PositiveBoundaryCalibration where
     (Opens.toTopCat (TopCat.of PointMappingTorus)).obj
       (pointVertexOpen ⊓ pointEdgeOpen)
   source : (coverChainShortComplex pointVertexOpen pointEdgeOpen).X₃.homology 1
+  union_class :
+    ConcreteCategory.hom
+        ((mappingTorusOpenCoverHomologyComparison
+          (Homeomorph.refl PointFiber)).unionIso 1).hom source =
+      positiveCylinderClass
   low_coe : low.1 = pointCylinder uQuarter
   high_coe : high.1 = pointCylinder uThreeQuarters
   generated_boundary :
@@ -515,6 +726,7 @@ public opaque positiveBoundaryCalibration : PositiveBoundaryCalibration := by
     { low := lowOverlapPoint
       high := highOverlapPoint
       source := generatedPositiveClass
+      union_class := generatedPositiveClass_union
       low_coe := rfl
       high_coe := rfl
       generated_boundary := ?_
@@ -534,6 +746,15 @@ public theorem positiveBoundaryCalibration_generated :
           (pointChain positiveBoundaryCalibration.low -
             pointChain positiveBoundaryCalibration.high)) :=
   positiveBoundaryCalibration.generated_boundary
+
+/-- The calibrated generated source is the actual positive cylinder loop class after the
+canonical union comparison. -/
+public theorem positiveBoundaryCalibration_union :
+    ConcreteCategory.hom
+        ((mappingTorusOpenCoverHomologyComparison
+          (Homeomorph.refl PointFiber)).unionIso 1).hom
+        positiveBoundaryCalibration.source = positiveCylinderClass :=
+  positiveBoundaryCalibration.union_class
 
 /-- After the canonical comparison, the calibrated boundary is literally the ordinary
 degree-zero chain class `low - high`. -/

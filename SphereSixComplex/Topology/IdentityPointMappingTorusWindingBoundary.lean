@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Topology.MappingTorusBaseCircleWangBoundaryNaturality
+public import SphereSixComplex.Topology.IdentityUnitMappingTorusLowOverlapCoordinate
 
 /-!
 # The identity point-mapping-torus Wang boundary
@@ -21,6 +21,12 @@ namespace SphereSixComplex.Topology.IdentityPointMappingTorusWindingBoundary
 
 open SphereSixComplex.MappingTorusBaseCircleWangBoundaryNaturality
 open SphereSixComplex.MappingTorusBaseCircleWangNaturality
+open SphereSixComplex.BinaryOpenCover
+open SphereSixComplex.MappingTorusDegreeOneCoverComparison
+open SphereSixComplex.StandardCircleHomologyLiftDegree
+open SphereSixComplex.Topology.CanonicalProductWangBoundaryNaturality
+open SphereSixComplex.Topology.IdentityUnitMappingTorusPositiveBoundary
+open SphereSixComplex.Topology.IdentityUnitMappingTorusLowOverlapCoordinate
 
 /-- The integer-valued degree-zero Wang boundary for the identity mapping torus of a point. -/
 public def identityPointMappingTorusWangBoundaryInt :
@@ -128,6 +134,79 @@ public theorem circleMappingTorusBaseCircle_winding_eq_wangBoundary_of_positive
     identityPointMappingTorus_winding_eq_wangBoundary_of_positive hpositive,
     pointMappingTorusProjection_wangBoundary_naturality,
     pathConnectedIntegralHomologyZeroEquivInteger_naturality]
+
+/-- The positive cylinder has canonical Wang boundary coordinate `+1`. -/
+public theorem positiveCylinderClass_wangBoundary :
+    identityPointMappingTorusWangBoundaryEquiv positiveCylinderClass = 1 := by
+  change identityPointMappingTorusWangBoundaryInt positiveCylinderClass = 1
+  change pathConnectedIntegralHomologyZeroEquivInteger PointFiber
+      ((circleMappingTorusWangPresentationOfCover
+        (Homeomorph.refl PointFiber) 0).boundary positiveCylinderClass) = 1
+  have hwang := DFunLike.congr_fun
+    (lowOverlapRead_comp_boundary (Homeomorph.refl PointFiber) 0)
+    positiveCylinderClass
+  change lowOverlapRead (Homeomorph.refl PointFiber) 0
+      ((mappingTorusOpenCoverHomologyComparison
+        (Homeomorph.refl PointFiber)).boundaryHom 0 positiveCylinderClass) =
+    (circleMappingTorusWangPresentationOfCover
+      (Homeomorph.refl PointFiber) 0).boundary positiveCylinderClass at hwang
+  rw [← hwang, ← positiveBoundaryCalibration_union]
+  change pathConnectedIntegralHomologyZeroEquivInteger PointFiber
+      (lowOverlapRead (Homeomorph.refl PointFiber) 0
+        (ConcreteCategory.hom
+          ((mappingTorusOpenCoverHomologyComparison
+            (Homeomorph.refl PointFiber)).boundary 0)
+          (ConcreteCategory.hom
+            ((mappingTorusOpenCoverHomologyComparison
+              (Homeomorph.refl PointFiber)).unionIso 1).hom
+            positiveBoundaryCalibration.source))) = 1
+  rw [← ConcreteCategory.comp_apply,
+    OpenCoverHomologyComparison.unionIso_hom_comp_boundary]
+  simp only [ConcreteCategory.comp_apply]
+  rw [positiveBoundaryCalibration_ordinary]
+  exact positiveBoundaryCalibration_lowOverlapRead_integer
+
+/-- The geometric positive cylinder is the boundary-positive generator. -/
+public theorem positiveCylinderClass_eq_positiveGenerator :
+    positiveCylinderClass = identityPointMappingTorusPositiveGenerator := by
+  apply identityPointMappingTorusWangBoundaryEquiv.injective
+  rw [positiveCylinderClass_wangBoundary,
+    identityPointMappingTorusPositiveGenerator_wangBoundary]
+
+/-- The boundary-positive generator has positive base-circle winding. -/
+public theorem identityPointMappingTorusPositiveGenerator_baseCircle_winding :
+    unitCircleHomologyWinding
+        (integralSingularHomologyMap 1
+          (circleMappingTorusBaseCircleProjection (Homeomorph.refl Unit))
+          identityPointMappingTorusPositiveGenerator) = 1 := by
+  rw [← positiveCylinderClass_eq_positiveGenerator]
+  exact positiveCylinderClass_baseCircle_winding
+
+/-- Winding equals the canonical Wang coordinate on the point mapping torus. -/
+public theorem identityPointMappingTorus_winding_eq_wangBoundary
+    (z : IntegralSingularHomology 1
+      (CircleMappingTorus (Homeomorph.refl Unit))) :
+    unitCircleHomologyWinding
+        (integralSingularHomologyMap 1
+          (circleMappingTorusBaseCircleProjection (Homeomorph.refl Unit)) z) =
+      pathConnectedIntegralHomologyZeroEquivInteger Unit
+        ((circleMappingTorusWangPresentationOfCover
+          (Homeomorph.refl Unit) 0).boundary z) :=
+  identityPointMappingTorus_winding_eq_wangBoundary_of_positive
+    identityPointMappingTorusPositiveGenerator_baseCircle_winding z
+
+/-- Base-circle winding equals the canonical Wang coordinate for every path-connected fibre. -/
+public theorem circleMappingTorusBaseCircle_winding_eq_wangBoundary
+    {F : Type} [TopologicalSpace F] [PathConnectedSpace F]
+    (phi : F ≃ₜ F)
+    (z : IntegralSingularHomology 1 (CircleMappingTorus phi)) :
+    unitCircleHomologyWinding
+        (integralSingularHomologyMap 1
+          (circleMappingTorusBaseCircleProjection phi) z) =
+      pathConnectedIntegralHomologyZeroEquivInteger F
+        ((circleMappingTorusWangPresentationOfCover phi 0).boundary z) :=
+  circleMappingTorusBaseCircle_winding_eq_wangBoundary_of_positive
+    identityPointMappingTorusPositiveGenerator_baseCircle_winding phi z
 
 end SphereSixComplex.Topology.IdentityPointMappingTorusWindingBoundary
 
