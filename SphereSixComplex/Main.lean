@@ -137,6 +137,7 @@ public import SphereSixComplex.Periods.TorsorAlgebra
 public import SphereSixComplex.Periods.ProjectiveLineTorsors
 public import SphereSixComplex.Periods.OrbifoldAffineTorsorAnalyticDescentCechReduction
 public import SphereSixComplex.Periods.OrbifoldAffineTorsorLocalCechReduction
+public import SphereSixComplex.Periods.OrbifoldAffineTorsorLocalCechExistenceReduction
 public import SphereSixComplex.Periods.SchurCompactness
 public import SphereSixComplex.Topology.FundamentalGroup
 public import SphereSixComplex.Topology.FundamentalGroupComputation
