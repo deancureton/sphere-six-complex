@@ -213,6 +213,140 @@ public theorem
   ⟨A.actualEllipticRelatorNormalClosureResidual_of_centralProductPathClassIdentities
     hThree hFour⟩
 
+/-- A path-class comparison along any explicit order-three connector gives the
+connector-invariant whole-relator identity. -/
+public theorem orderThreeWholeFillingRelatorChartIdentity_of_pathClassIdentity_at
+    (beta : Path A.actualCuspCentralBase A.orderThreeActualEllipticCentralBase)
+    (h :
+      letI := A.orderThreeActualEllipticBoundaryAction
+      Path.Homotopic.Quotient.mk
+          ((A.orderThreeFillingRelationRegularLoop.map
+            A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
+              A.orderThreeCollarRegularRepresentative_base_projects.symm
+              A.orderThreeCollarRegularRepresentative_base_projects.symm) =
+        FundamentalGroup.fundamentalGroupMulEquivOfPath beta
+          (paperPuncturedGlobalFamilyAffinePresentation A
+            orderThreeFillingRelationClassifiedCentralProductDeck)) :
+    A.OrderThreeWholeFillingRelatorChartIdentity := by
+  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ : SimplyConnectedSpace
+      (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
+    A.orderThreeActualEllipticBoundaryCover_simplyConnected
+  let alpha := beta.cast A.centralAffineBase_eq_actualCuspCentralBase rfl
+  have hcast :
+      alpha.cast A.centralAffineBase_eq_actualCuspCentralBase.symm rfl = beta := by
+    apply Path.ext
+    funext t
+    rfl
+  have htransport :
+      FundamentalGroup.fundamentalGroupMulEquivOfPath
+          alpha A.orderThreeCentralExpectedRelator =
+        FundamentalGroup.fundamentalGroupMulEquivOfPath beta
+          (paperPuncturedGlobalFamilyAffinePresentation A
+            orderThreeFillingRelationClassifiedCentralProductDeck) := by
+    rw [A.orderThreeCentralExpectedRelator_eq_classifiedPresentation]
+    rw [show A.actualCuspToCentralAffineBaseEquiv
+          (paperPuncturedGlobalFamilyAffinePresentation A
+            orderThreeFillingRelationClassifiedCentralProductDeck) =
+        fundamentalGroupElementOfBaseEq
+          A.centralAffineBase_eq_actualCuspCentralBase.symm
+          (paperPuncturedGlobalFamilyAffinePresentation A
+            orderThreeFillingRelationClassifiedCentralProductDeck) by
+      simp [actualCuspToCentralAffineBaseEquiv,
+        fundamentalGroupMulEquivOfEq_eq_elementOfBaseEq]]
+    rw [fundamentalGroupMulEquivOfPath_elementOfBaseEq_eq_cast_left, hcast]
+  let hover := A.orderThreeActualEllipticCentralBase_eq_overlapCentralBase
+  refine ⟨alpha.cast rfl hover.symm, ?_⟩
+  rw [A.orderThreeActualCanonicalRelatorInCentral_eq_regularLoopProjection]
+  change fundamentalGroupElementOfBaseEq hover (Path.Homotopic.Quotient.mk _) =
+    FundamentalGroup.fundamentalGroupMulEquivOfPath
+      (alpha.cast rfl hover.symm) A.orderThreeCentralExpectedRelator
+  rw [h, ← htransport]
+  exact (fundamentalGroupMulEquivOfPath_cast_right
+    alpha hover.symm A.orderThreeCentralExpectedRelator).symm
+
+/-- The order-four analogue for an arbitrary explicit connector. -/
+public theorem orderFourWholeFillingRelatorChartIdentity_of_pathClassIdentity_at
+    (beta : Path A.actualCuspCentralBase A.orderFourActualEllipticCentralBase)
+    (h :
+      letI := A.orderFourActualEllipticBoundaryAction
+      Path.Homotopic.Quotient.mk
+          ((A.orderFourFillingRelationRegularLoop.map
+            A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
+              A.orderFourCollarRegularRepresentative_base_projects.symm
+              A.orderFourCollarRegularRepresentative_base_projects.symm) =
+        FundamentalGroup.fundamentalGroupMulEquivOfPath beta
+          (paperPuncturedGlobalFamilyAffinePresentation A
+            orderFourFillingRelationClassifiedCentralProductDeck)) :
+    A.OrderFourWholeFillingRelatorChartIdentity := by
+  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ : SimplyConnectedSpace
+      (OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :=
+    A.orderFourActualEllipticBoundaryCover_simplyConnected
+  let alpha := beta.cast A.centralAffineBase_eq_actualCuspCentralBase rfl
+  have hcast :
+      alpha.cast A.centralAffineBase_eq_actualCuspCentralBase.symm rfl = beta := by
+    apply Path.ext
+    funext t
+    rfl
+  have htransport :
+      FundamentalGroup.fundamentalGroupMulEquivOfPath
+          alpha A.orderFourCentralExpectedRelator =
+        FundamentalGroup.fundamentalGroupMulEquivOfPath beta
+          (paperPuncturedGlobalFamilyAffinePresentation A
+            orderFourFillingRelationClassifiedCentralProductDeck) := by
+    rw [A.orderFourCentralExpectedRelator_eq_classifiedPresentation]
+    rw [show A.actualCuspToCentralAffineBaseEquiv
+          (paperPuncturedGlobalFamilyAffinePresentation A
+            orderFourFillingRelationClassifiedCentralProductDeck) =
+        fundamentalGroupElementOfBaseEq
+          A.centralAffineBase_eq_actualCuspCentralBase.symm
+          (paperPuncturedGlobalFamilyAffinePresentation A
+            orderFourFillingRelationClassifiedCentralProductDeck) by
+      simp [actualCuspToCentralAffineBaseEquiv,
+        fundamentalGroupMulEquivOfEq_eq_elementOfBaseEq]]
+    rw [fundamentalGroupMulEquivOfPath_elementOfBaseEq_eq_cast_left, hcast]
+  let hover := A.orderFourActualEllipticCentralBase_eq_overlapCentralBase
+  refine ⟨alpha.cast rfl hover.symm, ?_⟩
+  rw [A.orderFourActualCanonicalRelatorInCentral_eq_regularLoopProjection]
+  change fundamentalGroupElementOfBaseEq hover (Path.Homotopic.Quotient.mk _) =
+    FundamentalGroup.fundamentalGroupMulEquivOfPath
+      (alpha.cast rfl hover.symm) A.orderFourCentralExpectedRelator
+  rw [h, ← htransport]
+  exact (fundamentalGroupMulEquivOfPath_cast_right
+    alpha hover.symm A.orderFourCentralExpectedRelator).symm
+
+/-- Explicit connectors with the two correct path classes suffice for the invariant residual;
+they need not be the arbitrary connectors stored in the van Kampen cover. -/
+public theorem actualEllipticRelatorNormalClosureResidual_nonempty_of_pathClassIdentities_at
+    (betaThree : Path A.actualCuspCentralBase A.orderThreeActualEllipticCentralBase)
+    (betaFour : Path A.actualCuspCentralBase A.orderFourActualEllipticCentralBase)
+    (hThree :
+      letI := A.orderThreeActualEllipticBoundaryAction
+      Path.Homotopic.Quotient.mk
+          ((A.orderThreeFillingRelationRegularLoop.map
+            A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
+              A.orderThreeCollarRegularRepresentative_base_projects.symm
+              A.orderThreeCollarRegularRepresentative_base_projects.symm) =
+        FundamentalGroup.fundamentalGroupMulEquivOfPath betaThree
+          (paperPuncturedGlobalFamilyAffinePresentation A
+            orderThreeFillingRelationClassifiedCentralProductDeck))
+    (hFour :
+      letI := A.orderFourActualEllipticBoundaryAction
+      Path.Homotopic.Quotient.mk
+          ((A.orderFourFillingRelationRegularLoop.map
+            A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
+              A.orderFourCollarRegularRepresentative_base_projects.symm
+              A.orderFourCollarRegularRepresentative_base_projects.symm) =
+        FundamentalGroup.fundamentalGroupMulEquivOfPath betaFour
+          (paperPuncturedGlobalFamilyAffinePresentation A
+            orderFourFillingRelationClassifiedCentralProductDeck)) :
+    Nonempty (ActualEllipticRelatorNormalClosureResidual
+      A A.actualCuspCentralNaturality) :=
+  ⟨A.actualEllipticRelatorNormalClosureResidual_of_wholeFillingRelatorChartIdentities
+    (A.orderThreeWholeFillingRelatorChartIdentity_of_pathClassIdentity_at betaThree hThree)
+    (A.orderFourWholeFillingRelatorChartIdentity_of_pathClassIdentity_at betaFour hFour)⟩
+
 end SphereSixComplex.Geometry.PaperAnalyticData
 
 end

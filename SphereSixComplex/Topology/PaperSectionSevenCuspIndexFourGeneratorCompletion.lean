@@ -107,6 +107,69 @@ public theorem indexFourSideLift_quotient_eq_generator_iff_total_orientation
           (N.actualHomologyCoordinates.degreeTwoCoinvariantEquiv.symm 1) :=
   D.indexFourSideLift_quotient_eq_iff_coinvariantsToTotal N G _
 
+/-- A primitive side-coordinate representative of the positive generator of the degree-two
+coinvariants. -/
+public def positiveIndexFourSideCoordinate : Fin 4 → ℤ :=
+  ![0, -1, 1, 0]
+
+@[simp]
+public theorem alphaTwoFunctional_positiveIndexFourSideCoordinate :
+    alphaTwoFunctional positiveIndexFourSideCoordinate = 1 := by
+  have h0 : positiveIndexFourSideCoordinate 0 = 0 := rfl
+  have h1 : positiveIndexFourSideCoordinate 1 = -1 := rfl
+  have h2 : positiveIndexFourSideCoordinate 2 = 1 := rfl
+  have h3 : positiveIndexFourSideCoordinate 3 = 0 := rfl
+  rw [alphaTwoFunctional, h0, h1, h2, h3]
+  norm_num
+
+/-- The total-homology orientation is equivalent to an explicit finite-cover certificate: the
+fourth raw cusp class has a side lift with the primitive positive cokernel representative
+`(0, -1, 1, 0)`.  This removes all existential choices from the remaining geometric input. -/
+public theorem total_orientation_iff_exists_positive_side_lift
+    (N : A.EllipticBandHomologyAlignment D) :
+    cuspToEllipticUnionHomology D 2
+          (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) =
+        (presentationTwo (D := D)).coinvariantsToTotal
+          (N.actualHomologyCoordinates.degreeTwoCoinvariantEquiv.symm 1) ↔
+      ∃ y : IntegralSingularHomology 2 D.orderThreeSide ×
+          IntegralSingularHomology 2 D.orderFourSide,
+        (presentationTwo (D := D)).inclusion y =
+            cuspToEllipticUnionHomology D 2
+              (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) ∧
+          N.actualHomologyCoordinates.sidesTwo y = positiveIndexFourSideCoordinate := by
+  constructor
+  · intro h
+    let y := N.actualHomologyCoordinates.sidesTwo.symm positiveIndexFourSideCoordinate
+    have hyq : (Submodule.Quotient.mk y : (presentationTwo (D := D)).Coinvariants) =
+        N.actualHomologyCoordinates.degreeTwoCoinvariantEquiv.symm 1 := by
+      apply N.actualHomologyCoordinates.degreeTwoCoinvariantEquiv.injective
+      rw [LinearEquiv.apply_symm_apply]
+      change alphaTwoFunctional (N.actualHomologyCoordinates.sidesTwo y) = 1
+      rw [show N.actualHomologyCoordinates.sidesTwo y = positiveIndexFourSideCoordinate by
+        exact N.actualHomologyCoordinates.sidesTwo.apply_symm_apply _]
+      exact alphaTwoFunctional_positiveIndexFourSideCoordinate
+    refine ⟨y, ?_, N.actualHomologyCoordinates.sidesTwo.apply_symm_apply _⟩
+    calc
+      (presentationTwo (D := D)).inclusion y =
+          (presentationTwo (D := D)).coinvariantsToTotal
+            (Submodule.Quotient.mk y) := rfl
+      _ = (presentationTwo (D := D)).coinvariantsToTotal
+          (N.actualHomologyCoordinates.degreeTwoCoinvariantEquiv.symm 1) := congrArg _ hyq
+      _ = cuspToEllipticUnionHomology D 2
+          (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) := h.symm
+  · rintro ⟨y, hy, hcoord⟩
+    rw [← hy]
+    change (presentationTwo (D := D)).coinvariantsToTotal
+        (Submodule.Quotient.mk y) =
+      (presentationTwo (D := D)).coinvariantsToTotal
+        (N.actualHomologyCoordinates.degreeTwoCoinvariantEquiv.symm 1)
+    congr 1
+    apply N.actualHomologyCoordinates.degreeTwoCoinvariantEquiv.injective
+    rw [LinearEquiv.apply_symm_apply]
+    change alphaTwoFunctional (N.actualHomologyCoordinates.sidesTwo y) = 1
+    rw [hcoord]
+    exact alphaTwoFunctional_positiveIndexFourSideCoordinate
+
 /-- For any prism geometry, the normalized index-four coefficient is equivalent to the same
 single total-homology orientation identity. -/
 public theorem normalizedIndexFourPrismCoefficientCalculation_iff_total_orientation
@@ -142,6 +205,28 @@ public theorem normalizedIndexFourPrismCoefficientCalculation_existingGeometry_i
           (R.homologyAlignment.actualHomologyCoordinates.degreeTwoCoinvariantEquiv.symm 1) :=
   R.twoDiscCover.normalizedIndexFourPrismCoefficientCalculation_iff_total_orientation
     R.homologyAlignment G _
+
+/-- For the existing prism geometry, the remaining coefficient calculation is exactly the
+existence of a side lift with the explicit primitive positive finite-cover coordinates. -/
+public theorem
+    normalizedIndexFourPrismCoefficientCalculation_existingGeometry_iff_positive_side_lift
+    (R : A.SectionSevenAffineRadialCompletionInput)
+    (G : R.twoDiscCover.SectionSevenCuspPulledBackBoundaryBasisBridge R.homologyAlignment)
+    (hTop : R.twoDiscCover.CanonicalCuspFiberBandTopologicalCompatibility)
+    (M : R.twoDiscCover.CuspEllipticMappingTorusMeridianProjectionComparison
+      R.homologyAlignment) :
+    R.twoDiscCover.NormalizedIndexFourPrismCoefficientCalculation
+          (cuspPrismGeometryOfExistingFiberValues R G hTop M) ↔
+      ∃ y : IntegralSingularHomology 2 R.twoDiscCover.orderThreeSide ×
+          IntegralSingularHomology 2 R.twoDiscCover.orderFourSide,
+        (presentationTwo (D := R.twoDiscCover)).inclusion y =
+            cuspToEllipticUnionHomology R.twoDiscCover 2
+              (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) ∧
+          R.homologyAlignment.actualHomologyCoordinates.sidesTwo y =
+            positiveIndexFourSideCoordinate :=
+  (normalizedIndexFourPrismCoefficientCalculation_existingGeometry_iff_orientation
+      R G hTop M).trans
+    (R.twoDiscCover.total_orientation_iff_exists_positive_side_lift R.homologyAlignment)
 
 end EstablishedSectionSevenCuspTopology
 

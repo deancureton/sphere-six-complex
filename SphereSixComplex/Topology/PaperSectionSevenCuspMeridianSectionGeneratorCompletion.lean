@@ -3,6 +3,7 @@ module
 public import SphereSixComplex.Topology.PaperSectionSevenCuspMeridianSourceHomologyCompletion
 public import SphereSixComplex.Topology.PaperSectionSevenCuspEllipticMarkedCoordinateFromExistingGeometry
 public import SphereSixComplex.Topology.PaperCuspFiniteFiberDegreeOneKilledSection
+public import SphereSixComplex.Topology.PaperCuspMarkedFiberAngularVanishingProof
 
 /-!
 # The selected positive cusp meridian section
@@ -152,6 +153,98 @@ public theorem actualCuspRawDegreeOneThirdBasis_eq_selectedPositiveMeridianClass
   apply G.geometricWangSections.circleMappingTorusHOneAddEquiv.injective
   rw [G.geometricWangSections.circleMappingTorusHOneAddEquiv.apply_symm_apply]
   exact (actualCuspSelectedPositiveMeridianClass_rawCoordinate A).symm
+
+/-- The actual filling map is an isomorphism on the degree-one Wang coinvariants, without using
+the coordinate specialization matrix. -/
+public theorem actualCuspRawDegreeOneFiberSpecialization_bijective
+    (A : PaperAnalyticData) (b : puncturedLocalCuspQuotient A.starCuspWitness) :
+    let G := A.actualCuspRadialClutchingData
+    let _ := G.fiberTopology
+    Function.Bijective (rawDegreeOneFiberSpecialization G) := by
+  let G := A.actualCuspRadialClutchingData
+  let _ := G.fiberTopology
+  let P := circleMappingTorusHOnePresentation G.clutching
+  obtain ⟨S, hS⟩ := actualCuspDegreeOne_section G b
+  exact WangHomologyPresentation.coinvariantsRestriction_bijective_of_surjective_of_section_eq_zero
+    P S (rawDegreeOneTotalSpecialization G)
+    (rawDegreeOneTotalSpecialization_surjective G b) hS G.degreeOneCoinvariantsEquiv
+    (actualLocalCuspFillingHomologyOneEquiv A.starCuspWitness
+      (UnnormalizedCuspRadialClutchingData.radialCentralFiberRetractionData
+        A.starCuspWitness)).toIntLinearEquiv
+
+/-- Once the explicit angular meridian has the negative Wang orientation and the selected section
+is killed by specialization, uniqueness in the specialization kernel identifies the selected
+positive class with the negative angular meridian. -/
+public theorem actualCuspSelectedPositiveMeridianClass_eq_neg_explicit_of_normalizations
+    (A : PaperAnalyticData) (b : puncturedLocalCuspQuotient A.starCuspWitness)
+    (hselected :
+      let G := A.actualCuspRadialClutchingData
+      let _ := G.fiberTopology
+      rawDegreeOneTotalSpecialization G (actualCuspSelectedPositiveMeridianClass A) = 0)
+    (hexplicit :
+      let G := A.actualCuspRadialClutchingData
+      let _ := G.fiberTopology
+      degreeOneWangInvariantEquivInteger G
+          ((circleMappingTorusHOnePresentation G.clutching).totalToInvariants
+            (-(cuspMappingTorusMeridianHomologyClass G b))) = 1) :
+    let G := A.actualCuspRadialClutchingData
+    let _ := G.fiberTopology
+    actualCuspSelectedPositiveMeridianClass A =
+      -(cuspMappingTorusMeridianHomologyClass G b) := by
+  let G := A.actualCuspRadialClutchingData
+  let _ := G.fiberTopology
+  let P := circleMappingTorusHOnePresentation G.clutching
+  apply P.eq_of_totalToInvariants_eq_of_map_eq_zero
+    (rawDegreeOneTotalSpecialization G)
+    (actualCuspRawDegreeOneFiberSpecialization_bijective A b).1
+  · apply (degreeOneWangInvariantEquivInteger G).injective
+    rw [hexplicit]
+    change degreeOneWangInvariantEquivInteger G
+        (P.totalToInvariants
+          (G.geometricWangSections.degreeOne.lift
+            (actualCuspPositiveDegreeOneInvariantGenerator A))) = 1
+    have hright := DFunLike.congr_fun G.geometricWangSections.degreeOne.rightInverse
+      (actualCuspPositiveDegreeOneInvariantGenerator A)
+    change P.totalToInvariants
+        (G.geometricWangSections.degreeOne.lift
+          (actualCuspPositiveDegreeOneInvariantGenerator A)) =
+      actualCuspPositiveDegreeOneInvariantGenerator A at hright
+    rw [hright, actualCuspPositiveDegreeOneInvariantGenerator_coordinate]
+  · exact hselected
+  · rw [map_neg,
+      rawDegreeOneTotalSpecialization_cuspMappingTorusMeridianHomologyClass, neg_zero]
+
+/-- The marked source winding follows from three independent geometric normalizations: the
+selected section lies in the filling kernel, the explicit angular meridian has negative Wang
+orientation, and its negative has positive source winding. -/
+public theorem actualCuspSelectedPositiveMeridianClass_winding_one_of_explicit_normalizations
+    (A : PaperAnalyticData) (b : puncturedLocalCuspQuotient A.starCuspWitness)
+    (hselected :
+      let G := A.actualCuspRadialClutchingData
+      let _ := G.fiberTopology
+      rawDegreeOneTotalSpecialization G (actualCuspSelectedPositiveMeridianClass A) = 0)
+    (hexplicit :
+      let G := A.actualCuspRadialClutchingData
+      let _ := G.fiberTopology
+      degreeOneWangInvariantEquivInteger G
+          ((circleMappingTorusHOnePresentation G.clutching).totalToInvariants
+            (-(cuspMappingTorusMeridianHomologyClass G b))) = 1)
+    (hwinding :
+      let G := A.actualCuspRadialClutchingData
+      let _ := G.fiberTopology
+      StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
+          (integralSingularHomologyMap 1 (A.actualCuspMeridianSourceCircleMap)
+            (-(cuspMappingTorusMeridianHomologyClass G b))) = 1) :
+    let G := A.actualCuspRadialClutchingData
+    let _ := G.fiberTopology
+    StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
+        (integralSingularHomologyMap 1 (A.actualCuspMeridianSourceCircleMap)
+          (actualCuspSelectedPositiveMeridianClass A)) = 1 := by
+  let G := A.actualCuspRadialClutchingData
+  let _ := G.fiberTopology
+  rw [actualCuspSelectedPositiveMeridianClass_eq_neg_explicit_of_normalizations
+    A b hselected hexplicit]
+  exact hwinding
 
 /-- A winding-one evaluation on the selected positive section is the sole missing scalar for the
 full source character: the resulting three raw basis values are `[12, 0, 1]`. -/
