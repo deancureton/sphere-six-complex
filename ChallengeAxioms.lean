@@ -65,20 +65,6 @@ axiom SphereSixComplex.establishedCompactSmoothOrientedManifoldHomologyTheory : 
 axiom SphereSixComplex.EstablishedCellularHomology.integralCWCellularHomologyModel : (Y : Type) →
   [inst : TopologicalSpace Y] →
     [T2Space Y] → [inst_2 : Topology.CWComplex Set.univ] → SphereSixComplex.IntegralCWCellularHomologyModel Y
-axiom SphereSixComplex.EstablishedGeneralTopology.isHomotopyEquivalenceInclusion_of_relativeCWComplex_of_bijective_homotopyGroups.{u_1} : ∀
-  {B : Type u_1} [inst : TopologicalSpace B] (D : Set B) (b : B) (hb : b ∈ D),
-  PathConnectedSpace B →
-    PathConnectedSpace ↑D →
-      Function.Bijective
-          ⇑(FundamentalGroup.mapOfEq (SphereSixComplex.topologicalSubsetInclusionMap D)
-              (have this := rfl;
-              this)) →
-        (∀ (n : ℕ),
-            Function.Bijective
-              (HomotopyGroup.map (SphereSixComplex.topologicalSubsetInclusionMap D)
-                (have this := rfl;
-                this))) →
-          ∀ (hCW : Topology.RelCWComplex Set.univ D), SphereSixComplex.IsHomotopyEquivalenceInclusion D
 axiom SphereSixComplex.Topology.NormalizedFiniteOrderAdditiveCircleSweep.normalizedFiniteOrderAdditiveCircleSweep : ∀
   {G : Type} [inst : TopologicalSpace G] [inst_1 : AddCommGroup G] [inst_2 : IsTopologicalAddGroup G]
   [PathConnectedSpace G] (m : ℕ) [inst_4 : NeZero m] (phi : G ≃ₜ+ G) (hpow : phi.toHomeomorph ^ m = 1),
