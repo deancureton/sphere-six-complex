@@ -96,6 +96,7 @@ public import SphereSixComplex.Geometry.StandardInfiniteA2ToricComponentPreserva
 public import SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
 public import SphereSixComplex.Geometry.StandardInfiniteA2ToricCarrier
 public import SphereSixComplex.Geometry.StandardInfiniteA2ToricCarrierGeometryAssembly
+public import SphereSixComplex.Geometry.StandardInfiniteA2ToricPolarModulus
 public import SphereSixComplex.Geometry.StandardInfiniteA2ToricCentralComponents
 public import SphereSixComplex.Geometry.StandardInfiniteA2ToricQuantitativeRegions
 public import SphereSixComplex.Geometry.StarCompactCover
@@ -195,6 +196,7 @@ public import SphereSixComplex.Topology.BinaryOpenCoverExcision
 public import SphereSixComplex.Topology.BinaryOpenCoverMayerVietoris
 public import SphereSixComplex.Topology.BinaryOpenCoverNaturality
 public import SphereSixComplex.Topology.BinaryOpenCoverMapNaturality
+public import SphereSixComplex.Topology.BinaryOpenCoverSwapNaturality
 public import SphereSixComplex.Topology.BinaryOpenCoverSubdivision
 public import SphereSixComplex.Topology.BinaryOpenCoverAssembly
 public import SphereSixComplex.Topology.HomologyComputation
@@ -237,6 +239,7 @@ public import SphereSixComplex.Topology.ActualCuspStraighteningRetraction
 public import SphereSixComplex.Topology.ToricPhaseSpreading
 public import SphereSixComplex.Topology.ActualCuspPhaseSpreading
 public import SphereSixComplex.Topology.PaperCuspCentralFiberCWModel
+public import SphereSixComplex.Topology.StandardA2ToricCentralFiberZeroCells
 public import SphereSixComplex.Topology.CuspToricCellularAlgebra
 public import SphereSixComplex.Topology.CuspToricCellularHomologyBridge
 public import SphereSixComplex.Topology.CellularDimensionVanishing

@@ -29,7 +29,12 @@ public structure PaperAnalyticData where
   modular : EstablishedFuchsianModularParameter
   localPeriods : FuchsianPeriodLocalData modular
   cuspCoordinate : CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate modular localPeriods
-  toricModel : StandardInfiniteA2ToricModel.Model
+
+/-- Every analytic package in this development uses the explicitly constructed standard
+infinite `A₂` toric model. -/
+public abbrev PaperAnalyticData.toricModel (_A : PaperAnalyticData) :
+    StandardInfiniteA2ToricModel.Model :=
+  StandardInfiniteA2ToricModel.Construction.constructedModel
 
 /-- The established modular, explicit affine-descent, cusp-normalization, and toric inputs supply
 one coherent analytic package. -/
@@ -41,8 +46,7 @@ public theorem exists_paperAnalyticData
     Nonempty PaperAnalyticData := by
   obtain ⟨D⟩ := exists_fuchsianPeriodLocalData E F Amu Abeta
   obtain ⟨N⟩ := FuchsianCuspNormalization.exists_normalizedFuchsianCuspCoordinate E D
-  obtain ⟨M⟩ := StandardInfiniteA2ToricModel.Established.model
-  exact ⟨⟨E, D, N, M⟩⟩
+  exact ⟨⟨E, D, N⟩⟩
 
 /-- The standard analytic descent theorem supplies the dependent `mu` and `beta` certificates
 needed for the coherent paper package. -/
@@ -67,18 +71,31 @@ public theorem exists_establishedPaperAnalyticData : Nonempty PaperAnalyticData 
     (F : ExactLiftedModularNegOneFrame E)
     (Amu : (fuchsianMuDescentProblem E F).AnalyticDescentData)
     (Abeta : FuchsianBetaAnalyticDescentData E F Amu) :
-    PaperAnalyticData :=
-  Classical.choice (exists_paperAnalyticData E F Amu Abeta)
+    PaperAnalyticData := by
+  let D := Classical.choice (exists_fuchsianPeriodLocalData E F Amu Abeta)
+  let N := Classical.choice
+    (FuchsianCuspNormalization.exists_normalizedFuchsianCuspCoordinate E D)
+  exact ⟨E, D, N⟩
 
 /-- A coherent production choice requiring only the exact modular parameter and modular frame. -/
 @[expose] public noncomputable def paperAnalyticDataOfEstablishedAnalyticDescent
     (E : EstablishedFuchsianModularParameter)
     (F : ExactLiftedModularNegOneFrame E) : PaperAnalyticData :=
-  Classical.choice (exists_paperAnalyticData_of_establishedAnalyticDescent E F)
+  paperAnalyticData E F
+    (establishedFuchsianMuAnalyticDescentData E F)
+    (establishedFuchsianBetaAnalyticDescentData E F)
 
 /-- A coherent production choice of all analytic inputs. -/
 @[expose] public noncomputable def establishedPaperAnalyticData : PaperAnalyticData :=
-  Classical.choice exists_establishedPaperAnalyticData
+  let E := Classical.choice exists_establishedFuchsianModularParameter
+  let F := Classical.choice (establishedExactLiftedModularNegOneFrame E)
+  paperAnalyticDataOfEstablishedAnalyticDescent E F
+
+@[simp]
+public theorem PaperAnalyticData.toricModel_eq_constructed (A : PaperAnalyticData) :
+    A.toricModel =
+      StandardInfiniteA2ToricModel.Construction.constructedModel := by
+  rfl
 
 namespace PaperAnalyticData
 
