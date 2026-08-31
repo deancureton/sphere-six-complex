@@ -148,7 +148,7 @@ through `5/6`. -/
 public noncomputable def upperEndpointCorrection (b : unitInterval)
     (hb : 5 / 6 < (b : ℝ)) : C(unitInterval, unitInterval) where
   toFun x := ⟨1 - lowerEndpointCorrection
-      ⟨1 - (b : ℝ), by constructor <;> linarith [b.2.1, b.2.2]⟩ (by linarith) 
+      ⟨1 - (b : ℝ), by constructor <;> linarith [b.2.1, b.2.2]⟩ (by linarith)
       ⟨1 - (x : ℝ), by constructor <;> linarith [x.2.1, x.2.2]⟩, by
     have h0 := (lowerEndpointCorrection
       ⟨1 - (b : ℝ), by constructor <;> linarith [b.2.1, b.2.2]⟩ (by linarith)
