@@ -555,6 +555,63 @@ public theorem fixedLoopCylinderOverlapMap_lowPt_homology
       rw [fixedLoopCylinderOverlapMap_lowPt]
     _ = _ := hright
 
+public theorem fixedLoopCylinderOverlapMap_highPt
+    {G : Type} [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
+    (phi : G ≃ₜ+ G) (c : FixedLoop phi) :
+    (fixedLoopCylinderOverlapMap phi c).comp
+        (overlapPt
+          (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1))
+          uThreeQuarters_mem_overlapBand ()) =
+      (overlapPt (fun _ : Unit ↦ phi.toHomeomorph)
+        uThreeQuarters_mem_overlapBand ()).comp c.1 := by
+  apply ContinuousMap.ext
+  intro x
+  rfl
+
+public theorem fixedLoopCylinderOverlapMap_highPt_homology
+    {G : Type} [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
+    (phi : G ≃ₜ+ G) (c : FixedLoop phi) (n : ℕ)
+    (x : IntegralSingularHomology n (StdTorus 1)) :
+    integralSingularHomologyMap n (fixedLoopCylinderOverlapMap phi c)
+        (integralSingularHomologyMap n
+          (overlapPt
+            (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1))
+            uThreeQuarters_mem_overlapBand ()) x) =
+      integralSingularHomologyMap n
+        (overlapPt (fun _ : Unit ↦ phi.toHomeomorph)
+          uThreeQuarters_mem_overlapBand ())
+        (integralSingularHomologyMap n c.1 x) := by
+  have hleft : integralSingularHomologyMap n
+      ((fixedLoopCylinderOverlapMap phi c).comp
+        (overlapPt
+          (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1))
+          uThreeQuarters_mem_overlapBand ())) x =
+      integralSingularHomologyMap n (fixedLoopCylinderOverlapMap phi c)
+        (integralSingularHomologyMap n
+          (overlapPt
+            (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1))
+            uThreeQuarters_mem_overlapBand ()) x) := by
+    rw [integralSingularHomologyMap_comp_wang]
+  have hright : integralSingularHomologyMap n
+      ((overlapPt (fun _ : Unit ↦ phi.toHomeomorph)
+        uThreeQuarters_mem_overlapBand ()).comp c.1) x =
+      integralSingularHomologyMap n
+        (overlapPt (fun _ : Unit ↦ phi.toHomeomorph)
+          uThreeQuarters_mem_overlapBand ())
+        (integralSingularHomologyMap n c.1 x) := by
+    rw [integralSingularHomologyMap_comp_wang]
+  calc
+    _ = integralSingularHomologyMap n
+        ((fixedLoopCylinderOverlapMap phi c).comp
+          (overlapPt
+            (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1))
+            uThreeQuarters_mem_overlapBand ())) x := hleft.symm
+    _ = integralSingularHomologyMap n
+        ((overlapPt (fun _ : Unit ↦ phi.toHomeomorph)
+          uThreeQuarters_mem_overlapBand ()).comp c.1) x := by
+      rw [fixedLoopCylinderOverlapMap_highPt]
+    _ = _ := hright
+
 public theorem fixedLoopCylinderPullbackOverlap_membership_fun
     {G : Type} [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
     (phi : G ≃ₜ+ G) (c : FixedLoop phi) :
@@ -743,6 +800,39 @@ public noncomputable def fixedLoopCylinderLegacyUnionMap
         (coverEdgeOpen (fun _ : Unit ↦ phi.toHomeomorph))
         (coverOpen (fun _ : Unit ↦ phi.toHomeomorph)) n).inv)
 
+public theorem fixedLoopCylinderLegacyUnionMap_unionEquiv_symm
+    {G : Type} [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
+    (phi : G ≃ₜ+ G) (c : FixedLoop phi) (n : ℕ)
+    (z : IntegralSingularHomology n
+      (CircleMappingTorus (Homeomorph.refl (StdTorus 1)))) :
+    fixedLoopCylinderLegacyUnionMap phi c n
+        ((unionEquiv
+          (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1)) n).symm z) =
+      (unionEquiv (fun _ : Unit ↦ phi.toHomeomorph) n).symm
+        (integralSingularHomologyMap n
+          (fixedLoopCylinderMappingTorusMap phi c) z) := by
+  unfold fixedLoopCylinderLegacyUnionMap
+  change ConcreteCategory.hom
+      (BinaryOpenCover.opensUnionHomologyIso
+        (coverVertexOpen (fun _ : Unit ↦ phi.toHomeomorph))
+        (coverEdgeOpen (fun _ : Unit ↦ phi.toHomeomorph))
+        (coverOpen (fun _ : Unit ↦ phi.toHomeomorph)) n).inv
+      (ConcreteCategory.hom
+        ((BinaryOpenCover.integralHomologyFunctor n).map
+          (fixedLoopCylinderTopCatMap phi c))
+        (ConcreteCategory.hom
+          (BinaryOpenCover.opensUnionHomologyIso
+            (coverVertexOpen
+              (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1)))
+            (coverEdgeOpen
+              (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1)))
+            (coverOpen
+              (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1))) n).hom
+          ((unionEquiv
+            (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1)) n).symm z))) = _
+  rw [opensUnionHomologyIso_hom_apply, AddEquiv.apply_symm_apply]
+  exact opensUnionHomologyIso_inv_apply _ _ _
+
 public theorem fixedLoopCylinderLegacyIntersectionMap_apply
     {G : Type} [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
     (phi : G ≃ₜ+ G) (c : FixedLoop phi) (n : ℕ)
@@ -787,6 +877,47 @@ public theorem fixedLoopCylinderLegacyIntersectionMap_apply
         (coverEdgeOpen (fun _ : Unit ↦ phi.toHomeomorph)) n).inv
       (integralSingularHomologyMap n (fixedLoopCylinderOverlapMap phi c) x) at happ
   exact happ.trans (opensIntersectionHomologyIso_inv_apply _ _ _ _)
+
+public theorem fixedLoopCylinderLegacyIntersectionMap_overlapEquiv
+    {G : Type} [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
+    (phi : G ≃ₜ+ G) (c : FixedLoop phi) (n : ℕ)
+    (x y : IntegralSingularHomology n (StdTorus 1)) :
+    fixedLoopCylinderLegacyIntersectionMap phi c n
+        (overlapEquiv
+          (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1)) n
+          ((fun _ : Unit ↦ x), fun _ : Unit ↦ y)) =
+      overlapEquiv (fun _ : Unit ↦ phi.toHomeomorph) n
+        ((fun _ : Unit ↦ integralSingularHomologyMap n c.1 x),
+          fun _ : Unit ↦ integralSingularHomologyMap n c.1 y) := by
+  rw [fixedLoopCylinderLegacyIntersectionMap_apply]
+  change integralSingularHomologyMap n (fixedLoopCylinderOverlapMap phi c)
+      (overlapLegSum
+        (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1)) n
+        ((fun _ : Unit ↦ x), fun _ : Unit ↦ y)) =
+    overlapLegSum (fun _ : Unit ↦ phi.toHomeomorph) n
+      ((fun _ : Unit ↦ integralSingularHomologyMap n c.1 x),
+        fun _ : Unit ↦ integralSingularHomologyMap n c.1 y)
+  rw [overlapLegSum_apply, overlapLegSum_apply]
+  simp only [Fintype.sum_unique]
+  change integralSingularHomologyMap n (fixedLoopCylinderOverlapMap phi c)
+      (integralSingularHomologyMap n
+          (overlapPt
+            (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1))
+            uQuarter_mem_overlapBand ()) x +
+        integralSingularHomologyMap n
+          (overlapPt
+            (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1))
+            uThreeQuarters_mem_overlapBand ()) y) =
+    integralSingularHomologyMap n
+        (overlapPt (fun _ : Unit ↦ phi.toHomeomorph)
+          uQuarter_mem_overlapBand ())
+        (integralSingularHomologyMap n c.1 x) +
+      integralSingularHomologyMap n
+        (overlapPt (fun _ : Unit ↦ phi.toHomeomorph)
+          uThreeQuarters_mem_overlapBand ())
+        (integralSingularHomologyMap n c.1 y)
+  rw [map_add, fixedLoopCylinderOverlapMap_lowPt_homology,
+    fixedLoopCylinderOverlapMap_highPt_homology]
 
 /-- Naturality of the vertex/edge Mayer--Vietoris boundary for a pointwise-fixed loop,
 transported to the set-subtype interface used by the mapping-torus Wang presentation. -/
@@ -911,6 +1042,57 @@ public theorem fixedLoopCylinderPullbackIntersection_lowPt_homology
           uQuarter_mem_overlapBand ()) x) at happ
   rw [fixedLoopCylinderOverlapMap_lowPt_homology] at happ
   exact happ
+
+/-- The Wang boundary of the torus swept out by a pointwise-fixed loop is the homology class of
+that loop, with the sign fixed by the positive base-circle convention. -/
+public theorem fixedLoopSweepClass_boundary
+    {G : Type} [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
+    (phi : G ≃ₜ+ G) (c : FixedLoop phi) :
+    (circleMappingTorusWangPresentationOfCover phi.toHomeomorph 1).boundary
+        (fixedLoopSweepClass phi c) =
+      integralSingularHomologyMap 1 c.1 standardCircleHomologyGenerator := by
+  let z := integralSingularHomologyMap 2
+    (circleProductIdentityMappingTorusHomeomorph (X := StdTorus 1) :
+      C(UnitAddCircle × StdTorus 1,
+        CircleMappingTorus (Homeomorph.refl (StdTorus 1))))
+    positiveCircleProductGenerator
+  have hsourcePair := identityMappingTorusCoverBoundary_positiveCircleProductGenerator
+  have hsource :
+      coverBoundary
+          (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1)) 1
+          ((unionEquiv
+            (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1)) 2).symm z) =
+        overlapEquiv
+          (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1)) 1
+          ((fun _ : Unit ↦ standardCircleHomologyGenerator),
+            fun _ : Unit ↦ -standardCircleHomologyGenerator) := by
+    apply (overlapEquiv
+      (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1)) 1).symm.injective
+    rw [AddEquiv.symm_apply_apply]
+    exact hsourcePair
+  have hnat := fixedLoopCylinderLegacyBoundary_naturality phi c 1
+  have happ := DFunLike.congr_fun hnat
+    ((unionEquiv
+      (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1)) 2).symm z)
+  change fixedLoopCylinderLegacyIntersectionMap phi c 1
+      (coverBoundary
+        (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1)) 1
+        ((unionEquiv
+          (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1)) 2).symm z)) =
+    coverBoundary (fun _ : Unit ↦ phi.toHomeomorph) 1
+      (fixedLoopCylinderLegacyUnionMap phi c 2
+        ((unionEquiv
+          (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1)) 2).symm z)) at happ
+  rw [hsource, fixedLoopCylinderLegacyIntersectionMap_overlapEquiv,
+    fixedLoopCylinderLegacyUnionMap_unionEquiv_symm] at happ
+  rw [fixedLoopSweepClass_eq_cylinderMap]
+  rw [circleMappingTorusWangPresentationOfCover_boundary_apply]
+  change ((overlapEquiv (fun _ : Unit ↦ phi.toHomeomorph) 1).symm
+      (coverBoundary (fun _ : Unit ↦ phi.toHomeomorph) 1
+        ((unionEquiv (fun _ : Unit ↦ phi.toHomeomorph) 2).symm
+          (integralSingularHomologyMap 2
+            (fixedLoopCylinderMappingTorusMap phi c) z)))).1 () = _
+  rw [← happ, AddEquiv.symm_apply_apply]
 
 end SphereSixComplex.Topology.FixedLoopSweepWangBoundary
 
