@@ -19,32 +19,6 @@ open AlgebraicTopology CategoryTheory TopologicalSpace
 
 namespace SphereSixComplex.BinaryOpenCover
 
-/-- The map between the intersections of two oriented binary covers induced by refinement. -/
-public def openIntersectionRefinementMap {X : TopCat}
-    {U V U' V' : Opens X} (hU : U ≤ U') (hV : V ≤ V') :
-    (Opens.toTopCat X).obj (U ⊓ V) ⟶ (Opens.toTopCat X).obj (U' ⊓ V') :=
-  (Opens.toTopCat X).map (homOfLE (inf_le_inf hU hV))
-
-/-- The homology map between the intersections of two oriented binary covers induced by
-refinement. -/
-public noncomputable def openIntersectionRefinementHomologyMap {X : TopCat}
-    {U V U' V' : Opens X} (hU : U ≤ U') (hV : V ≤ V') (n : ℕ) :
-    (integralHomologyFunctor n).obj ((Opens.toTopCat X).obj (U ⊓ V)) ⟶
-      (integralHomologyFunctor n).obj ((Opens.toTopCat X).obj (U' ⊓ V')) :=
-  (integralHomologyFunctor n).map (openIntersectionRefinementMap hU hV)
-
-/-- The induced map between the generated intersection homology groups. -/
-public noncomputable def generatedIntersectionRefinementHomologyMap {X : TopCat}
-    {U V U' V' : Opens X} (hU : U ≤ U') (hV : V ≤ V') (n : ℕ) :
-    generatedIntersectionHomology U V n ⟶ generatedIntersectionHomology U' V' n :=
-  HomologicalComplex.homologyMap (coverIntersectionRefinementMap hU hV) n
-
-/-- The induced map between the generated union homology groups. -/
-public noncomputable def generatedUnionRefinementHomologyMap {X : TopCat}
-    {U V U' V' : Opens X} (hU : U ≤ U') (hV : V ≤ V') (n : ℕ) :
-    generatedUnionHomology U V n ⟶ generatedUnionHomology U' V' n :=
-  HomologicalComplex.homologyMap (coverUnionRefinementMap hU hV) n
-
 /-- The generated boundary naturality square, expressed through the typed refinement maps. -/
 @[reassoc]
 public theorem generatedBoundary_refinement_naturality' {X : TopCat}
@@ -72,6 +46,19 @@ public structure OpenCoverHomologyComparison.RefinementNaturality {X : TopCat}
     generatedUnionRefinementHomologyMap hU hV n ≫
         (target.unionIso n).hom =
       (source.unionIso n).hom
+
+/-- Canonical ordinary-homology comparisons commute with every oriented refinement. -/
+public theorem openCoverHomologyComparisonOfCover_refinementNaturality {X : TopCat}
+    {U V U' V' : Opens X} (hU : U ≤ U') (hV : V ≤ V')
+    (hcover : U ⊔ V = ⊤) (hcover' : U' ⊔ V' = ⊤) :
+    (openCoverHomologyComparisonOfCover hcover).RefinementNaturality hU hV
+      (openCoverHomologyComparisonOfCover hcover') where
+  intersection n :=
+    openCoverHomologyComparisonOfCover_intersection_refinement_naturality
+      hU hV hcover hcover' n
+  union n :=
+    openCoverHomologyComparisonOfCover_union_refinement_naturality
+      hU hV hcover hcover' n
 
 /-- The ordinary singular Mayer--Vietoris boundary is natural under an oriented refinement of
 the two members of a binary cover. -/

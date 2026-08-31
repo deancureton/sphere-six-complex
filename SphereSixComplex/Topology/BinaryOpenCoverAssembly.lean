@@ -649,6 +649,108 @@ public noncomputable def openCoverHomologyComparisonOfCover
   openCoverHomologyComparisonOfQuasiIso
     (coverChainInclusion_quasiIso_of_sup_eq_top U V hcover)
 
+/-! ## Canonical comparison under oriented refinement -/
+
+/-- The map between intersections induced by an oriented refinement of two binary covers. -/
+@[expose] public def openIntersectionRefinementMap {X : TopCat}
+    {U V U' V' : Opens X} (hU : U ≤ U') (hV : V ≤ V') :
+    (Opens.toTopCat X).obj (U ⊓ V) ⟶ (Opens.toTopCat X).obj (U' ⊓ V') :=
+  (Opens.toTopCat X).map (homOfLE (inf_le_inf hU hV))
+
+/-- The homology map between intersections induced by an oriented refinement. -/
+@[expose] public noncomputable def openIntersectionRefinementHomologyMap {X : TopCat}
+    {U V U' V' : Opens X} (hU : U ≤ U') (hV : V ≤ V') (n : ℕ) :
+    (integralHomologyFunctor n).obj ((Opens.toTopCat X).obj (U ⊓ V)) ⟶
+      (integralHomologyFunctor n).obj ((Opens.toTopCat X).obj (U' ⊓ V')) :=
+  (integralHomologyFunctor n).map (openIntersectionRefinementMap hU hV)
+
+/-- The induced map between generated intersection homology groups. -/
+@[expose] public noncomputable def generatedIntersectionRefinementHomologyMap {X : TopCat}
+    {U V U' V' : Opens X} (hU : U ≤ U') (hV : V ≤ V') (n : ℕ) :
+    generatedIntersectionHomology U V n ⟶ generatedIntersectionHomology U' V' n :=
+  HomologicalComplex.homologyMap (coverIntersectionRefinementMap hU hV) n
+
+/-- The induced map between generated union homology groups. -/
+@[expose] public noncomputable def generatedUnionRefinementHomologyMap {X : TopCat}
+    {U V U' V' : Opens X} (hU : U ≤ U') (hV : V ≤ V') (n : ℕ) :
+    generatedUnionHomology U V n ⟶ generatedUnionHomology U' V' n :=
+  HomologicalComplex.homologyMap (coverUnionRefinementMap hU hV) n
+
+private theorem intersectionRefinementSSetNaturality {X : TopCat}
+    {U V U' V' : Opens X} (hU : U ≤ U') (hV : V ≤ V') :
+    singularOpenCorestriction (U ⊓ V) ≫ openIntersectionComparison U V ≫
+        SSet.Subcomplex.homOfLE (inf_le_inf
+          (singularOpenSubcomplex_mono hU) (singularOpenSubcomplex_mono hV)) =
+      TopCat.toSSet.map (openIntersectionRefinementMap hU hV) ≫
+        singularOpenCorestriction (U' ⊓ V') ≫
+          openIntersectionComparison U' V' := by
+  rw [← cancel_mono (coverIntersection U' V').ι]
+  simp [← Functor.map_comp, openIntersectionRefinementMap]
+  congr 1
+
+private theorem intersectionRefinementChainNaturality {X : TopCat}
+    {U V U' V' : Opens X} (hU : U ≤ U') (hV : V ≤ V') :
+    (singularOpenCorestrictionChainMap (U ⊓ V) ≫ openIntersectionChainComparison U V) ≫
+        coverIntersectionRefinementMap hU hV =
+      integralSimplicialChains.map
+          (TopCat.toSSet.map (openIntersectionRefinementMap hU hV)) ≫
+        (singularOpenCorestrictionChainMap (U' ⊓ V') ≫
+          openIntersectionChainComparison U' V') := by
+  simpa only [singularOpenCorestrictionChainMap, openIntersectionChainComparison,
+    coverIntersectionRefinementMap, Functor.map_comp, Category.assoc] using
+    congrArg integralSimplicialChains.map
+      (intersectionRefinementSSetNaturality hU hV)
+
+private theorem unionRefinementChainNaturality {X : TopCat}
+    {U V U' V' : Opens X} (hU : U ≤ U') (hV : V ≤ V') :
+    coverUnionRefinementMap hU hV ≫ coverChainInclusion U' V' =
+      coverChainInclusion U V := by
+  dsimp [coverUnionRefinementMap, coverChainInclusion]
+  rw [← Functor.map_comp]
+  rfl
+
+/-- The intersection comparison square for canonical ordinary-homology comparisons. -/
+public theorem openCoverHomologyComparisonOfCover_intersection_refinement_naturality
+    {X : TopCat} {U V U' V' : Opens X} (hU : U ≤ U') (hV : V ≤ V')
+    (hcover : U ⊔ V = ⊤) (hcover' : U' ⊔ V' = ⊤) (n : ℕ) :
+    generatedIntersectionRefinementHomologyMap hU hV n ≫
+        ((openCoverHomologyComparisonOfCover hcover').intersectionIso n).hom =
+      ((openCoverHomologyComparisonOfCover hcover).intersectionIso n).hom ≫
+        openIntersectionRefinementHomologyMap hU hV n := by
+  apply (cancel_epi
+    ((openCoverHomologyComparisonOfCover hcover).intersectionIso n).inv).mp
+  apply (cancel_mono
+    ((openCoverHomologyComparisonOfCover hcover').intersectionIso n).inv).mp
+  simp only [Category.assoc, Iso.inv_hom_id_assoc, Iso.hom_inv_id,
+    Category.comp_id]
+  change
+    HomologicalComplex.homologyMap
+        (singularOpenCorestrictionChainMap (U ⊓ V) ≫
+          openIntersectionChainComparison U V) n ≫
+      HomologicalComplex.homologyMap (coverIntersectionRefinementMap hU hV) n =
+    HomologicalComplex.homologyMap
+        (integralSimplicialChains.map
+          (TopCat.toSSet.map (openIntersectionRefinementMap hU hV))) n ≫
+      HomologicalComplex.homologyMap
+        (singularOpenCorestrictionChainMap (U' ⊓ V') ≫
+          openIntersectionChainComparison U' V') n
+  rw [← HomologicalComplex.homologyMap_comp,
+    ← HomologicalComplex.homologyMap_comp,
+    intersectionRefinementChainNaturality hU hV]
+
+/-- The union comparison square for canonical ordinary-homology comparisons. -/
+public theorem openCoverHomologyComparisonOfCover_union_refinement_naturality
+    {X : TopCat} {U V U' V' : Opens X} (hU : U ≤ U') (hV : V ≤ V')
+    (hcover : U ⊔ V = ⊤) (hcover' : U' ⊔ V' = ⊤) (n : ℕ) :
+    generatedUnionRefinementHomologyMap hU hV n ≫
+        ((openCoverHomologyComparisonOfCover hcover').unionIso n).hom =
+      ((openCoverHomologyComparisonOfCover hcover).unionIso n).hom := by
+  change HomologicalComplex.homologyMap (coverUnionRefinementMap hU hV) n ≫
+      HomologicalComplex.homologyMap (coverChainInclusion U' V') n =
+    HomologicalComplex.homologyMap (coverChainInclusion U V) n
+  rw [← HomologicalComplex.homologyMap_comp,
+    unionRefinementChainNaturality hU hV]
+
 /-- The canonical ordinary homology comparisons commute with pullback along a continuous map. -/
 public theorem openCoverHomologyComparisonOfCover_pullbackNaturality
     {X Y : TopCat} (f : X ⟶ Y) (U V : Opens Y)
