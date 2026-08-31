@@ -109,18 +109,6 @@ public structure SweepData (m : ℕ) [NeZero m] (phi : G ≃ₜ+ G)
         (positiveCircleCross c) =
       fixedSweep (orbitNorm m phi hpow c)
 
-/-- The standard chain-level mapping-cone orbit-sweep theorem.
-
-For a finite-order additive self-homeomorphism, this packages the standard mapping-cone
-naturality squares together with the chain-level orbit sweep.  The normalized cover sends the
-positive base-circle cross a fibre loop to the sweep of its cyclic orbit norm, and the final
-boundary clause fixes the Mayer--Vietoris sign on every pointwise-fixed loop. -/
-public axiom normalizedFiniteOrderAdditiveCircleSweep
-    [PathConnectedSpace G]
-    (m : ℕ) [NeZero m] (phi : G ≃ₜ+ G)
-    (hpow : phi.toHomeomorph ^ m = 1) :
-    Nonempty (SweepData m phi hpow)
-
 end SphereSixComplex.Topology.NormalizedFiniteOrderAdditiveCircleSweep
 
 end
