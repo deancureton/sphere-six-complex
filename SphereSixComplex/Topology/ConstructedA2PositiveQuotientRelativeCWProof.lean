@@ -1,16 +1,19 @@
 module
 
 public import SphereSixComplex.Topology.ConstructedA2PolarHoneycombCoordinateProof
+public import SphereSixComplex.Topology.EstablishedSecondCountableCOneManifoldWithCornersRelativeCW
 public import Mathlib.Topology.CWComplex.Classical.Finite
+import SphereSixComplex.Geometry.Quotient
+import SphereSixComplex.Geometry.QuotientTopology
 
 /-!
 # Relative CW attachments for the constructed positive quotient
 
 The free and properly discontinuous positive deck action makes the orbit projection a covering
-and its quotient Hausdorff, but these facts alone do not construct characteristic maps for a CW
-structure.  This file proves that the central orbit core is closed and packages the remaining
-geometric input as locally finite relative-cell attachments.  Local finiteness supplies the weak
-topology axiom, so the attachment data assemble directly into the required relative CW complex.
+and its quotient Hausdorff, but these facts alone do not construct a relative CW structure.  This
+file gives two exact routes: relative-cell attachments, and a `C¹` manifold-with-corners structure
+whose boundary is the central orbit core.  The latter route invokes the classical compatible
+triangulation theorem.
 -/
 
 @[expose] public section
@@ -132,6 +135,91 @@ public theorem constructedPositiveDeck_orbitCore_isClosed
           (q : LocalCarrier constructedModel W.localWitness.radius) = 0})
   rw [constructedPositiveDeck_central_preimage W]
   exact constructedPositiveCentralFiber_isClosed W.localWitness.radius
+
+/-- The exact differential-topological structure needed to invoke relative triangulation on the
+positive quotient.  Its three fields are intrinsic to the explicit positive toric atlas: the
+quadrant manifold structure, identification of its boundary with the zero-height fibre, and
+smoothness of the normalized deck transformations. -/
+public structure ConstructedA2PositiveCOneManifoldBoundaryData
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D}
+    (W : ActualPuncturedCuspCollarWitness N constructedModel) where
+  charts : ChartedSpace (EuclideanQuadrant 3)
+    (constructedLocalPositivePart W.localWitness.radius)
+  isManifold :
+    let _ := charts
+    IsManifold (modelWithCornersEuclideanQuadrant 3) 1
+      (constructedLocalPositivePart W.localWitness.radius)
+  boundary_eq :
+    let _ := charts
+    (modelWithCornersEuclideanQuadrant 3).boundary
+        (constructedLocalPositivePart W.localWitness.radius) =
+      {q : constructedLocalPositivePart W.localWitness.radius |
+        constructedModel.t
+          (q : LocalCarrier constructedModel W.localWitness.radius) = 0}
+  deck_contMDiff :
+    let _ := normalizedPositiveDeckAction N constructedModel
+      (constructedLocalPositivePart W.localWitness.radius)
+      (constructedPositiveDeck_mem N W.localWitness.radius)
+    let _ := charts
+    ∀ g : Multiplicative ParameterLattice,
+      ContMDiff (modelWithCornersEuclideanQuadrant 3)
+        (modelWithCornersEuclideanQuadrant 3) 1
+        (fun q : constructedLocalPositivePart W.localWitness.radius ↦ g • q)
+
+/-- A compatible `C¹` quadrant atlas on the positive carrier descends to the orbit quotient.
+Relative triangulation and preservation of manifold boundary by the quotient local
+diffeomorphism then give the required relative CW structure. -/
+public theorem constructedA2PositiveQuotientRelativeCW_of_cOneManifoldBoundary
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D}
+    {W : ActualPuncturedCuspCollarWitness N constructedModel}
+    (A : ConstructedA2PositiveCOneManifoldBoundaryData W) :
+    Nonempty (ConstructedA2PositiveQuotientRelativeCW W) := by
+  let _ := normalizedPositiveDeckAction N constructedModel
+    (constructedLocalPositivePart W.localWitness.radius)
+    (constructedPositiveDeck_mem N W.localWitness.radius)
+  let _ : ContinuousConstSMul (Multiplicative ParameterLattice)
+      (constructedLocalPositivePart W.localWitness.radius) :=
+    constructedPositiveDeck_continuous N W.localWitness.radius
+  let _ : T2Space (constructedLocalPositivePart W.localWitness.radius) :=
+    constructedLocalPositivePart_t2Space W.localWitness.radius
+  let _ : LocallyCompactSpace (constructedLocalPositivePart W.localWitness.radius) :=
+    constructedLocalPositivePart_locallyCompactSpace W.localWitness.radius
+  let _ : IsCancelSMul (Multiplicative ParameterLattice)
+      (constructedLocalPositivePart W.localWitness.radius) :=
+    constructedPositiveDeck_isCancelSMul W
+  let _ : ProperlyDiscontinuousSMul (Multiplicative ParameterLattice)
+      (constructedLocalPositivePart W.localWitness.radius) :=
+    constructedPositiveDeck_properlyDiscontinuous W
+  let _ : ChartedSpace (EuclideanQuadrant 3)
+      (constructedLocalPositivePart W.localWitness.radius) := A.charts
+  let _ : IsManifold (modelWithCornersEuclideanQuadrant 3) 1
+      (constructedLocalPositivePart W.localWitness.radius) := A.isManifold
+  have hquotientManifold : IsManifold (modelWithCornersEuclideanQuadrant 3) 1
+      (ConstructedA2PositiveQuotient W) :=
+    SphereSixComplex.Geometry.isManifold_orbitQuotient_of_contMDiff_smul
+      (modelWithCornersEuclideanQuadrant 3) 1 A.deck_contMDiff
+  let _ : IsManifold (modelWithCornersEuclideanQuadrant 3) 1
+      (ConstructedA2PositiveQuotient W) := hquotientManifold
+  let _ : T2Space (ConstructedA2PositiveQuotient W) :=
+    constructedPositiveDeck_quotient_t2 W
+  let _ : SecondCountableTopology (ConstructedA2PositiveQuotient W) :=
+    SphereSixComplex.Geometry.orbitQuotient_secondCountableTopology
+  have hboundaryPreimage :=
+    (SphereSixComplex.Geometry.quotientProjection_isLocalDiffeomorph
+      (modelWithCornersEuclideanQuadrant 3) 1 A.deck_contMDiff).preimage_boundary
+        one_ne_zero
+  have hboundary :
+      (modelWithCornersEuclideanQuadrant 3).boundary
+          (ConstructedA2PositiveQuotient W) =
+        ConstructedA2PositiveQuotientCore W := by
+    apply SphereSixComplex.Geometry.quotientProjection_surjective.preimage_injective
+    rw [hboundaryPreimage, A.boundary_eq]
+    exact (constructedPositiveDeck_central_preimage W).symm
+  let hCW := establishedSecondCountableCOneManifoldWithCornersRelativeCW
+    3 (ConstructedA2PositiveQuotient W)
+  exact ⟨by simpa only [hboundary] using hCW⟩
 
 /-- The exact locally finite attachment data still needed for the positive quotient.  The core
 closedness and the weak-topology condition are consequences rather than fields. -/
