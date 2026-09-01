@@ -3,6 +3,7 @@ module
 public import SphereSixComplex.Topology.HurewiczWhiteheadStages
 public import SphereSixComplex.Topology.SmoothSixSphereClassification
 public import SphereSixComplex.Topology.EstablishedSphereHomology
+public import SphereSixComplex.Topology.FiniteClassicalCWModel
 
 /-!
 # Classical foundations for smooth six-sphere recognition
@@ -36,15 +37,32 @@ public axiom generalHigherHurewiczClassSurjectivity
         ∃ s : IntegralSingularHomology n (TopCat.sphere n : Type),
           integralSingularHomologyMap n f s = c
 
-/-- Every second-countable Hausdorff finite-dimensional boundaryless real smooth manifold has the
-homotopy type of a classical CW complex. -/
-public axiom finiteDimensionalSmoothManifoldHasClassicalCWType
+/-- The standard CW approximation theorem for finite-dimensional smooth manifolds, including the
+finite-model conclusion in the compact case. -/
+public structure SmoothManifoldClassicalCWData
+    (M : Type) [TopologicalSpace M] where
+  hasClassicalCWType : HasClassicalCWType M
+  finiteModel : [CompactSpace M] → FiniteCWModel M
+
+/-- Every second-countable Hausdorff finite-dimensional boundaryless real smooth manifold has CW
+type, and every compact such manifold has the homotopy type of a finite CW complex. -/
+public axiom finiteDimensionalSmoothManifoldClassicalCWModel
     {E H M : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] [TopologicalSpace H]
     (I : ModelWithCorners ℝ E H) [I.Boundaryless]
     [TopologicalSpace M] [T2Space M] [SecondCountableTopology M]
     [ChartedSpace H M] [IsManifold I ∞ M] :
-    HasClassicalCWType M
+    SmoothManifoldClassicalCWData M
+
+/-- The ordinary CW-type accessor used by the recognition pipeline. -/
+public theorem finiteDimensionalSmoothManifoldHasClassicalCWType
+    {E H M : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [FiniteDimensional ℝ E] [TopologicalSpace H]
+    (I : ModelWithCorners ℝ E H) [I.Boundaryless]
+    [TopologicalSpace M] [T2Space M] [SecondCountableTopology M]
+    [ChartedSpace H M] [IsManifold I ∞ M] :
+    HasClassicalCWType M :=
+  (finiteDimensionalSmoothManifoldClassicalCWModel I).hasClassicalCWType
 
 /-- The homological Whitehead theorem for simply connected spaces of classical CW type. The
 simple-connectivity hypotheses are essential: the corresponding unrestricted integral-homology

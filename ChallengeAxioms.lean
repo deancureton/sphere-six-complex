@@ -23,10 +23,10 @@ Do not edit it by hand; run ./scripts/update-axiom-catalog.sh --write.
 #
 # In addition to Lean's three standard logical axioms, the current closure contains six retained
 # source-independent classical blackboxes and nine transitional construction-specific axioms.
-# The final target replaces the cellular entry by its natural strengthened form and the analytic
-# correction by general Cartan B, for seven retained classical blackboxes total. Every declaration
-# in a transitional section remains a proof obligation; renaming or moving one does not eliminate
-# it.
+# The cellular entry is now the natural strengthened theorem; the final target replaces the
+# analytic correction by general Cartan B, for seven retained classical blackboxes total. Every
+# declaration in a transitional section remains a proof obligation; renaming or moving one does
+# not eliminate it.
 
 # Lean's standard logical axioms.
 axiom propext : ∀ {a b : Prop}, (a ↔ b) → a = b
@@ -40,10 +40,18 @@ axiom SphereSixComplex.generalHigherHurewiczClassSurjectivity : ∀ (n : ℕ),
       (∀ (k : ℕ), 0 < k → k < n → Subsingleton (SphereSixComplex.IntegralSingularHomology k X)) →
         ∀ (c : SphereSixComplex.IntegralSingularHomology n X),
           ∃ f s, (SphereSixComplex.integralSingularHomologyMap n f) s = c
-axiom SphereSixComplex.finiteDimensionalSmoothManifoldHasClassicalCWType : ∀ {E H M : Type}
-  [inst : NormedAddCommGroup E] [inst_1 : NormedSpace ℝ E] [FiniteDimensional ℝ E] [inst_3 : TopologicalSpace H]
-  (I : ModelWithCorners ℝ E H) [I.Boundaryless] [inst_5 : TopologicalSpace M] [T2Space M] [SecondCountableTopology M]
-  [inst_8 : ChartedSpace H M] [IsManifold I (↑⊤) M], SphereSixComplex.HasClassicalCWType M
+axiom SphereSixComplex.finiteDimensionalSmoothManifoldClassicalCWModel : {E H M : Type} →
+  [inst : NormedAddCommGroup E] →
+    [inst_1 : NormedSpace ℝ E] →
+      [FiniteDimensional ℝ E] →
+        [inst_3 : TopologicalSpace H] →
+          (I : ModelWithCorners ℝ E H) →
+            [I.Boundaryless] →
+              [inst_5 : TopologicalSpace M] →
+                [T2Space M] →
+                  [SecondCountableTopology M] →
+                    [inst_8 : ChartedSpace H M] →
+                      [IsManifold I (↑⊤) M] → SphereSixComplex.SmoothManifoldClassicalCWData M
 axiom SphereSixComplex.simplyConnectedHomologicalWhitehead : ∀ (X Y : Type) [inst : TopologicalSpace X]
   [inst_1 : TopologicalSpace Y] [SimplyConnectedSpace X] [SimplyConnectedSpace Y],
   SphereSixComplex.HasClassicalCWType X →
@@ -64,9 +72,7 @@ axiom SphereSixComplex.establishedCompactSmoothOrientedManifoldHomologyTheory : 
                   IsManifold (modelWithCornersSelf ℝ E) 1 X →
                     SphereSixComplex.SmoothAtlasOrientation d E X →
                       CompactSpace X → SphereSixComplex.IntegralPoincareUCTData d X
-axiom SphereSixComplex.EstablishedCellularHomology.integralCWCellularHomologyModel : (Y : Type) →
-  [inst : TopologicalSpace Y] →
-    [T2Space Y] → [inst_2 : Topology.CWComplex Set.univ] → SphereSixComplex.IntegralCWCellularHomologyModel Y
+axiom SphereSixComplex.integralCWCellularHomologyFoundation : SphereSixComplex.IntegralCWCellularHomologyFoundation
 
 # Transitional analytic descent (one of nine).
 axiom SphereSixComplex.Periods.establishedOrbifoldAffineLineTorsorCuspBoundedCousinCorrection : ∀

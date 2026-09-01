@@ -2,10 +2,10 @@
 #
 # In addition to Lean's three standard logical axioms, the current closure contains six retained
 # source-independent classical blackboxes and nine transitional construction-specific axioms.
-# The final target replaces the cellular entry by its natural strengthened form and the analytic
-# correction by general Cartan B, for seven retained classical blackboxes total. Every declaration
-# in a transitional section remains a proof obligation; renaming or moving one does not eliminate
-# it.
+# The cellular entry is now the natural strengthened theorem; the final target replaces the
+# analytic correction by general Cartan B, for seven retained classical blackboxes total. Every
+# declaration in a transitional section remains a proof obligation; renaming or moving one does
+# not eliminate it.
 
 # Lean's standard logical axioms.
 propext
@@ -14,13 +14,13 @@ Classical.choice
 
 # Retained classical recognition blackboxes (four of the current six).
 SphereSixComplex.generalHigherHurewiczClassSurjectivity
-SphereSixComplex.finiteDimensionalSmoothManifoldHasClassicalCWType
+SphereSixComplex.finiteDimensionalSmoothManifoldClassicalCWModel
 SphereSixComplex.simplyConnectedHomologicalWhitehead
 SphereSixComplex.establishedSmoothPoincareSixStandardModel
 
 # Retained cellular-homology and Poincare-duality foundations (two of the current six).
 SphereSixComplex.establishedCompactSmoothOrientedManifoldHomologyTheory
-SphereSixComplex.EstablishedCellularHomology.integralCWCellularHomologyModel
+SphereSixComplex.integralCWCellularHomologyFoundation
 
 # Transitional analytic descent (one of nine).
 SphereSixComplex.Periods.establishedOrbifoldAffineLineTorsorCuspBoundedCousinCorrection

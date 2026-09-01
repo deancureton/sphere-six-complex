@@ -3,6 +3,7 @@ module
 public import SphereSixComplex.Topology.CellularChainModel
 public import SphereSixComplex.Topology.EllipticReducedFiberMappingTorusHomology
 public import SphereSixComplex.Topology.FiniteBouquetMappingTorusEuler
+public import SphereSixComplex.Topology.FiniteClassicalCWModel
 public import SphereSixComplex.Topology.SectionSevenLocalEulerCalculation
 public import SphereSixComplex.Topology.SectionSevenLocalEulerModelsProof
 public import SphereSixComplex.Topology.StandardFourTorusHomologicalModel
@@ -118,29 +119,6 @@ public theorem homotopyEquiv {X Y : Type} [TopologicalSpace X] [TopologicalSpace
     exact ⟨fun x y ↦ eH.symm.injective (@Subsingleton.elim _ h _ _)⟩
 
 end IntegralHomologyFiniteSix
-
-/-- A homotopy model by a finite CW complex, with no dimension bound. -/
-public structure FiniteCWModel (X : Type) [TopologicalSpace X] where
-  Carrier : Type
-  topology : TopologicalSpace Carrier
-  t2 : let _ := topology; T2Space Carrier
-  homotopyEquiv : let _ := topology; X ≃ₕ Carrier
-  cwComplex : let _ := topology; Topology.CWComplex (Set.univ : Set Carrier)
-  finite : let _ := topology; let _ := cwComplex
-    Topology.CWComplex.Finite (Set.univ : Set Carrier)
-
-namespace FiniteCWModel
-
-variable {X : Type} [TopologicalSpace X]
-
-/-- Number of cells in one degree of the chosen finite CW model. -/
-public noncomputable def cellCount (M : FiniteCWModel X) (n : ℕ) : ℕ := by
-  let _ := M.topology
-  let _ := M.cwComplex
-  let _ := M.finite
-  exact Nat.card (Topology.CWComplex.cell (Set.univ : Set M.Carrier) n)
-
-end FiniteCWModel
 
 namespace FiniteCWModelSix
 

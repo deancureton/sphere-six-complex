@@ -2,42 +2,74 @@
 
 ## Objective
 
-The final Comparator report must contain exactly Lean's three standard logical axioms and seven
-general classical blackboxes:
+The current target for the final Comparator report is Lean's three standard logical axioms and a
+small set of general classical blackboxes:
 
 \[
 \{\mathsf{propext},\ \mathsf{Quot.sound},\ \mathsf{Classical.choice}\}
 \cup \{\mathrm{Hurewicz},\ \mathrm{CWType},\ \mathrm{HomologicalWhitehead},
-\mathrm{SmoothPoincare}_6,\ \mathrm{CellularHomology},\ \mathrm{PoincareDualityUCT},
+\mathrm{SmoothPoincare}_6,\ \mathrm{CellularHomology},\ \mathrm{PoincareDuality},
+\mathrm{CohomologicalUCT},
 \mathrm{CartanB}\}.
 \]
 
-The present final theorem uses fifteen project axioms: six accepted classical inputs and nine
+The displayed size is not a quota. This boundary may shrink, or one entry may be replaced by a more natural
+literature theorem, as the formalization develops.  It may grow only when the additional entry is
+a standard theorem in its usual generality, is independently auditable without understanding this
+paper, and replaces a genuinely infeasible foundational development.  A specialized corollary,
+even when mathematically true, is never an admissible blackbox.
+
+The present final theorem uses fifteen project axioms: six provisionally classical inputs and nine
 transitional dependencies. The task is to replace the nine transitional declarations by theorems.
-The cellular input will be strengthened in place, and the analytic correction may introduce the
+The cellular input has been strengthened in place, and the analytic correction may introduce the
 seventh accepted input only as Cartan Theorem B in its natural generality. Adding files,
 structures, or reductions does not count as progress unless it closes a named milestone below or
 rules out a proposed route and updates this plan.
+
+The current `generalHigherHurewiczClassSurjectivity` is not an acceptable final blackbox under this
+criterion: it states exactly the representability corollary used by recognition rather than the
+canonical higher Hurewicz isomorphism. It remains provisionally allowlisted only while the
+axiom-free Hurewicz homomorphism and sphere-representative comparison are constructed. The
+manifold-CW boundary has now been repaired: the retained theorem includes both ordinary CW type
+and compact-implies-finite-CW, while the former weaker accessor is a proved corollary. The
+Hurewicz mismatch may not survive the final Comparator report. The current combined
+`establishedCompactSmoothOrientedManifoldHomologyTheory` is also provisional: although
+dimension-generic, it packages only the consequences used here. It must be derived from general
+integral Poincare duality and the cohomological universal coefficient theorem, with finite-CW
+finiteness and dimension vanishing derived from blackboxes 2 and 5.
+
+The deletion test is intentionally mechanical. A project axiom is gone exactly when its name is
+absent from `comparator.json`, Comparator accepts the challenge, and the printed axiom closure of
+the headline theorem contains only `propext`, `Quot.sound`, `Classical.choice`, and the explicitly
+listed literature-level blackboxes in this section. A theorem-shaped wrapper elsewhere in the
+repository does not count as removal if its proof still reaches an unlisted axiom.
 
 The paper-specific statements do not follow from Hurewicz or smooth Poincare. They must be proved
 from the explicit construction and Mathlib. The four recognition blackboxes enter only at the
 final recognition stage. Cellular homology and Poincare duality/UCT enter while proving that the
 constructed complex threefold has the integral homology of \(S^6\).
 
-## The seven permitted blackboxes
+## Candidate final blackboxes
 
-The first four declarations are useful interfaces, but three should be replaced by corollaries of
-more general statements. The trusted statements must not mention this paper, the constructed
-threefold, or the number six except where dimension six is intrinsic.
+The current boundary has six entries, two of which (Hurewicz class-surjectivity and the combined
+Poincare/UCT consequence package) are temporary.
+Cartan B may become a seventh only if the analytic track genuinely needs it. The trusted statements
+must not mention this paper, the constructed threefold, or the number six except where dimension
+six is intrinsic.
 
-1. **Higher Hurewicz theorem.** Define the general Hurewicz homomorphism
-   \(\pi_n(X,x)\to H_n(X;\mathbb Z)\), and assume the standard theorem that it is an isomorphism
-   for an \((n-1)\)-connected space, for arbitrary \(n\ge 2\). Derive
-   `establishedHigherHurewiczSixGenerator` at \(n=6\).
+1. **Higher Hurewicz theorem.** Define the canonical general Hurewicz homomorphism
+   \(\pi_n(X,x)\to H_n(X;\mathbb Z)\) without axioms, including the comparison between Mathlib's
+   cubical `HomotopyGroup.Pi` representatives and maps from `TopCat.sphere n`. Retain only the
+   standard theorem that this specific homomorphism is an isomorphism for an
+   \((n-1)\)-connected space, for arbitrary \(n\ge 2\). Derive lower homotopy vanishing by strong
+   induction from the present lower-homology hypotheses, and then derive
+   `establishedHigherHurewiczSixGenerator` at \(n=6\). The current class-surjectivity axiom is a
+   noncompliant temporary interface and must be removed.
 
 2. **Smooth manifolds have CW type.** Assume, in dimension-independent form, that a Hausdorff,
    second-countable finite-dimensional smooth manifold has the homotopy type of a CW complex, and
-   that the model may be finite for a compact manifold. Derive
+   that the model may be finite for a compact manifold. The retained
+   `finiteDimensionalSmoothManifoldClassicalCWModel` includes both clauses. Derive
    `establishedCompactSmoothSixManifoldClassicalCWType` by forgetting the dimension and finiteness
    data.
 
@@ -51,21 +83,25 @@ threefold, or the number six except where dimension six is intrinsic.
    is the necessarily dimension-specific input combining generalized Poincare, smooth
    \(h\)-cobordism, and \(\Theta_6=0\).
 
-5. **Integral cellular homology.** Retain one source-independent cellular-homology theorem in its
+5. **Integral cellular homology.** Retain the source-independent cellular-homology theorem
+   `integralCWCellularHomologyFoundation` in its
    natural skeletal-relative form: \(C_n^{\mathrm{cell}}(X)=H_n(X^n,X^{n-1};\mathbb Z)\), with
    differential induced by the relative connecting map and projection. Characteristic maps fix
    the oriented cell basis, boundary coefficients are the corresponding attaching-map degrees,
    cellular maps induce a functorial chain map, and the resulting homology is naturally isomorphic
    to integral singular homology. This does not require a noncanonical strict chain map from
    cellular chains to singular chains. Derive the present objectwise
-   `integralCWCellularHomologyModel` from this theorem. The strengthened theorem must contain no
-   application-specific incidence values or specialization matrices and replaces blackbox 5
-   rather than adding another retained blackbox.
+   `integralCWCellularHomologyModel` from this theorem. Its attaching-degree formula uses the
+   actual characteristic attaching-sphere map and contains no application-specific incidence
+   values or specialization matrices.
 
-6. **Integral Poincare duality and UCT.** Retain the dimension-generic compact smooth oriented
-   manifold theorem `establishedCompactSmoothOrientedManifoldHomologyTheory`. Its conclusion is
-   only the standard complementary-degree dualities, finite generation, and vanishing above the
-   manifold dimension.
+6. **Integral Poincare duality and UCT.** Define integral singular cohomology and the cap-product
+   map without axioms. Retain ordinary Poincare duality for arbitrary closed oriented manifolds
+   and the ordinary cohomological UCT for arbitrary spaces (or free singular chain complexes), as
+   separate theorems in their standard generality. Derive
+   `establishedCompactSmoothOrientedManifoldHomologyTheory`; do not retain that reduced consequence
+   package as an axiom. Finite generation and dimension vanishing come from finite CW type and
+   cellular homology rather than being repeated in the duality blackbox.
 
 7. **Cartan Theorem B.** Retain the standard theorem that the positive-degree sheaf cohomology of
    every coherent analytic sheaf on a Stein complex space vanishes. The blackbox must be stated for
@@ -74,9 +110,9 @@ threefold, or the number six except where dimension six is intrinsic.
    affine-torsor corollary and every descent, extension, and boundedness statement needed here must
    be derived in the repository.
 
-The first three exact Lean signatures are now `generalHigherHurewiczClassSurjectivity`,
-`finiteDimensionalSmoothManifoldHasClassicalCWType`, and
-`simplyConnectedHomologicalWhitehead`. The old six-dimensional interfaces are proved corollaries.
+The final first three Lean signatures are intended to be `generalHigherHurewiczIsomorphism` for a
+concretely defined canonical map, `finiteDimensionalSmoothManifoldClassicalCWModel`, and
+`simplyConnectedHomologicalWhitehead`. The old application interfaces must be proved corollaries.
 A candidate is rejected if it is merely a custom conclusion needed by this project rather than the
 usual literature-level theorem.
 
@@ -126,21 +162,21 @@ and Comparator passes.
 
 | # | Current declaration | Disposition | Derivation plan |
 |---|---|---|---|
-| 1 | `establishedHigherHurewiczSixGenerator` | proved from blackbox 1 | Apply the class-surjectivity form of homological higher Hurewicz to a generator of \(H_6(X)\). The proved \(H_6(S^6)\cong\mathbb Z\) calculation shows the resulting sphere map is an isomorphism on top homology. |
-| 2 | `establishedCompactSmoothSixManifoldClassicalCWType` | proved from blackbox 2 | Apply `finiteDimensionalSmoothManifoldHasClassicalCWType` to `RealModel`; compactness is not required by the general theorem. |
+| 1 | `establishedHigherHurewiczSixGenerator` | temporary corollary axiom; replace by blackbox 1 | Define the canonical Hurewicz homomorphism and sphere-representative comparison without axioms. Use simply connectedness at degree one and strong induction with the general Hurewicz isomorphism to turn lower integral-homology vanishing into lower homotopy vanishing. Surjectivity at degree six then supplies a sphere representative of the chosen generator, and the proved \(H_6(S^6)\cong\mathbb Z\) calculation makes its homology map an isomorphism. Remove `generalHigherHurewiczClassSurjectivity` from the final allowlist. |
+| 2 | `establishedCompactSmoothSixManifoldClassicalCWType` | proved from blackbox 2 | `finiteDimensionalSmoothManifoldClassicalCWModel` is now dimension-independent and includes compact-implies-finite-CW-model. The existing `HasClassicalCWType` consumer is a theorem obtained by forgetting the finite model; the weakened declaration is no longer allowlisted. |
 | 3 | `establishedSimplyConnectedClassicalCWIntegralHomologyWhitehead` | proved from blackbox 3 | Package `simplyConnectedHomologicalWhitehead`, stated elementwise for arbitrary simply-connected spaces of classical CW type, into the existing property interface. |
-| 4 | `establishedSmoothPoincareSixStandardModel` | retain as blackbox 4 | Keep its current application-level wrapper, but make it a direct corollary of the single audited smooth-Poincare declaration if the trusted signature is renamed. |
-| 5 | `establishedCompactSmoothOrientedManifoldHomologyTheory` | retain as blackbox 6 | General compact-oriented-manifold Poincare duality/UCT, with no paper-specific conclusion. |
-| 6 | `EstablishedCellularHomology.integralCWCellularHomologyModel` | replace by blackbox 5 corollary | The current objectwise model leaves `cellBasis` and `homologyEquiv` unconstrained. Replace its axiom by a theorem derived from the general characteristic-map-compatible, natural cellular comparison in blackbox 5. |
+| 4 | `establishedSmoothPoincareSixStandardModel` | retain as blackbox 4 | Its current quantified statement is already the general dimension-six smooth-Poincare theorem: every compact smooth six-manifold homotopy equivalent to the standard sphere is diffeomorphic to it. It does not mention the constructed threefold. |
+| 5 | `establishedCompactSmoothOrientedManifoldHomologyTheory` | temporary consequence package; replace by blackbox 6 | Define singular cohomology/cap product, state general Poincare duality and general cohomological UCT separately, and derive the present complementary-homology equivalences. Derive finite generation and dimension vanishing from the finite CW model plus cellular homology. Remove the combined reduced package from the allowlist. |
+| 6 | `EstablishedCellularHomology.integralCWCellularHomologyModel` | proved from blackbox 5 | The old objectwise accessor is now a definition derived from `integralCWCellularHomologyFoundation`, whose basis is carried by the characteristic maps and whose singular-homology comparison is natural for cellular maps. |
 | 7 | `Periods.establishedOrbifoldAffineLineTorsorCuspBoundedCousinCorrection` | eliminate (A) | Derive finite-orbifold affine-torsor triviality from general Cartan B using exactness of finite-group invariants over \(\mathbb C\). Construct the two compactified quotient orbifold charts, descend the affine actions to genuine torsors, prove extension across elliptic points and the cusp, descend the overlap coefficient, and establish the cusp bound. The existing projective-line Cech splitting then produces the correction. None of those project-specific bridges belongs in blackbox 7. |
-| 8 | `establishedStandardA2ToricCentralOrbitCellAtlas` | eliminate (T) | Two cyclic phase-face maps are now genuine quotient-level injective `PartialEquiv` characteristic maps with unit-ball source and closed-ball continuity. Construct the remaining labelled 2-cells and the other dimensions, then prove inverse continuity on open cells, disjoint interiors, attaching containment and coverage. Incorporate the phase-correction matrix into the maps or remove it by a proved equivariant gauge. |
-| 9 | `establishedStandardA2ToricCentralFiberIndependentIncidenceResidual` | eliminate (T+CF) | Foundation gate: the current arbitrary `cellBasis` does not determine signed incidence coefficients; changing basis signs changes the requested table without changing the objectwise homology model. First derive that model from the characteristic-map-compatible cellular theorem in blackbox 5. Then compute the 24 independent attaching degrees from the explicit toric maps and derive the remaining four entries from \(d^2=0\). |
-| 10 | `establishedFiniteFiberGeneratorSpecializationMatrix` | eliminate (S+T+CF) | Foundation gate: pointwise identification of the four coordinate tori does not determine their labelled cellular coordinates while `homologyEquiv` may be postcomposed with an arbitrary automorphism. After blackbox 5 supplies a natural cellular-to-singular comparison, prove the relevant inclusions are cellular and compute their images in the characteristic-cell basis. This simultaneously fixes the degree-one normalized coordinates and the four degree-two entries. |
-| 11 | `EstablishedSectionSevenAffineRegularLiftTopology.markedBandHomotopies` | eliminate (S) | The former attempt to deduce the pinned Cayley bounds from `starSeparation` is false: valid separation radii can be shrunk below both positive pinned norms. Variable overlap radii can approach the elliptic branch values in quotient coordinates, but this does not determine the covering sheet. Prove that the pinned lifts converge to the standard fixed points, or conjugate the collar markings by the existing common cusp-conjugator exponent, then reuse the assembled endpoint homotopies. |
-| 12 | `EstablishedSectionSevenCuspTopology.establishedCuspPulledBackMarkedInvariantBasisData` | eliminate (S) | The adaptive cover, Wang comparison, cover-swap sign, and boundary naturality are proved. The remaining `ActualCuspAdaptiveBoundaryCarrierCompatibility` is exactly the oriented Wang-boundary/cover-connecting square. Prove its chain relation inside the cusp intersection; inclusion into the elliptic interior is not injective and loses the relevant band class, so the existing radial homotopy cannot be cancelled. |
-| 13 | `EstablishedSectionSevenCuspTopology.establishedActualCuspFiberEllipticMarkedCoordinateResidual` | eliminate (S) | The literal angular collar loop is identified with `actualCuspAngularCentralLoop`; the abstract deck/Hurewicz meridian is also identified with the literal punctured-cusp angular loop and its mapping-torus image. Finish degree one by computing the transported loop's base-circle winding as \(-1\), which fixes the Wang-section sign. In degree two, prove that the positive index-four side lift includes as raw cusp basis index 4. |
+| 8 | `establishedStandardA2ToricCentralOrbitCellAtlas` | eliminate (T) | Two cyclic phase-face maps are genuine quotient-level injective `PartialEquiv` characteristic maps. The old planar-tile parametrization is disproved by an explicit counterexample. For the corrected embedding `C(v)=((2/3)v₀+(4/3)v₁, -(2/3)v₀+(2/3)v₁)`, same-cell, all positive and negative neighbor cases, the global Laurent iff, and the finite same-fibres equivalence are now proved. The corrected square-to-hexagon homeomorphism and positive central-fibre 2-cell satisfy the ball, sphere, continuity, inverse-continuity, closed-cell-image, and actual-open-orbit-injectivity requirements. The naive phase-zero quotient characteristic is not an atlas cell: the three translated boundary sides acquire the surviving compact phase `frozenCompactPhase N λ` and therefore need not land in the positive one-skeleton. Additivity and all six lattice-shear cancellation formulas are proved, as is a continuous flat cocycle extension across the hexagon, but that flat extension still varies in the surviving side character and is not the final cell. Construct sidewise phases modulo each edge stabilizer, glue them at the vanishing-coordinate vertices, extend the resulting boundary correction across the hexagon, and prove that corrected quotient boundary lands in the existing three one-cells. |
+| 9 | `establishedStandardA2ToricCentralFiberIndependentIncidenceResidual` | eliminate (T+CF) | The strengthened foundation now reduces each coefficient to the homological degree of the actual characteristic attaching map. Row 8 must first identify the atlas `cellMap` fields with the explicit toric maps. Then compute the 24 independent degrees (beginning with the oriented interval boundary for edge 0) and derive the remaining four entries from \(d^2=0\). |
+| 10 | `establishedFiniteFiberGeneratorSpecializationMatrix` | eliminate (S+T+CF) | The natural cellular-to-singular comparison is now available. Prove the relevant inclusions are cellular and compute their images in the characteristic-cell basis; this simultaneously fixes the degree-one normalized coordinates and the four degree-two entries. |
+| 11 | `EstablishedSectionSevenAffineRegularLiftTopology.markedBandHomotopies` | eliminate (S) | The former attempt to deduce the identity-sheet Cayley bounds from `starSeparation` is false: valid separation radii can be shrunk below both positive pinned norms. Use the entering sheets already supplied at the pinned crossing and identify their two deck cosets with the common peripheral conjugator from `geometricCentralCuspConjugatorExponent`, modulo the respective elliptic stabilizers. Conjugate the two finite-cover markings by that common deck action; the existing clopen-sheet and endpoint-gauge theorems then give the band homotopies. No identity-sheet bound is a valid target. |
+| 12 | `EstablishedSectionSevenCuspTopology.establishedCuspPulledBackMarkedInvariantBasisData` | eliminate (S) | The final Mayer--Vietoris endpoint now uses only degree-two surjectivity. On the suspension span its matrix is triangular `[[a,0],[c,d]]`, and only `IsUnit d` is needed; the current exact values `c=0,d=1` are stronger than necessary. `ActualCuspAdaptiveBoundaryCarrierCompatibility` is now proved equivalent to the two remaining full-fibre invariant-generator comparisons, so it is not a separate bridge, but it is still stronger than this endpoint needs. Prove the second suspension coefficient is a unit directly from the two-leg cusp geometry. |
+| 13 | `EstablishedSectionSevenCuspTopology.establishedActualCuspFiberEllipticMarkedCoordinateResidual` | eliminate (S) | Degree one needs only a unit meridian coefficient and degree two only `IsUnit a`. The full raw `[12,0,1]` source coordinate is proved. The global base phase `-4·phase(z)+3·phase(z-1)` corrects `12γ`; the radial homotopy is deck-invariant and has been descended through the additive cusp quotient, giving the corrected central mapping-torus character the same `[12,0,1]` coordinate. Extend that character over both elliptic filling pieces and identify the induced global winding, then prove the index-four side lift is primitive up to sign. |
 | 14 | `StandardInfiniteA2ToricModel.Established.normalizedPolarHoneycombPhaseGeometry` | eliminate (T) | Replace the impossible pinned logarithmic coordinate with the nonnegative toric/PL model below. The explicit modulus now proves that contractibility of the full local carrier implies contractibility of the positive locus; construct that global contraction, the honeycomb homeomorphism, and a relative CW structure on the positive-deck quotient. Existing invariant-modulus and stabilizer theorems then supply the complete phase-geometric core. |
-| 15 | `PaperAnalyticData.establishedActualEllipticRelatorNormalClosureResidual` | eliminate (S) | Connector-invariance is now proved: free homotopies from the two projected regular filling loops to representatives of the expected affine relators directly imply both normal-closure memberships, using the moving-basepoint traces as connectors. Construct those two explicit global free homotopies; no identity involving the arbitrary van Kampen connectors remains. |
+| 15 | `PaperAnalyticData.establishedActualEllipticRelatorNormalClosureResidual` | eliminate (S) | Connector-invariance reduces this to trace-compatible free homotopies from the projected regular filling loops to the expected affine relators. Axiom-clean local-degree arguments identify the order-three and order-four raw base loops with the inverse marked meridians cubed and fourth-powered. On both sides, the zero-section class, straight principal-gauge period, and literal cusp-based geometric relator representative are proved. Both actual regular loops are now identified pointwise in punctured real-period product coordinates and split endpoint-relatively into fibre-then-base paths. The order-three base factor now has one explicit traced free homotopy all the way to the affine-based zero-section triple. On the order-four side the fixed-torus base factor is explicitly contracted to zero, the zero-fibre realization is pointwise equal to the global zero-section base loop, and a traced change-of-basepoint composition reaches the affine-based zero-section quadruple. Thus the remaining geometric work is the order-three and order-four fibre-period comparisons, with traces matched to the completed base homotopies; horizontal composition then gives both complete relator homotopies. |
 
 ## Correct toric route
 
@@ -167,9 +203,11 @@ The replacement is the standard nonnegative toric model.
 4. Prove the normalized deck transformations are \(C^1\) in these local charts. Descend the atlas
    through the already-proved properly discontinuous action and apply relative triangulation, or
    give explicit locally finite relative cells.
-5. Finish `ConstructedA2HoneycombFiniteQuotientResidual.sameFibres` by a finite classification of
-   the six square charts and their lattice translates. The same-chart and six cyclic-adjacent
-   Laurent identities are already proved; all remaining chart-pair orbits must be enumerated.
+5. Replace the current planar-tile convention before attempting the finite quotient.  The theorem
+   `not_constructedA2HoneycombLaurentFiniteIdentity` gives an explicit neighboring-cell
+   counterexample, so that proposition must not be assumed or targeted.  Reparametrize each square
+   sector by the affine chart convention used by `constructedA2CellChart`; then prove the corrected
+   same-fibres statement by a finite classification of chart-pair and lattice-neighbor orbits.
 6. Assemble `ConstructedPolarHoneycombResidualData`; use the existing invariant-modulus theorem to
    obtain the phase-geometric core.
 
@@ -178,14 +216,12 @@ that rows 8, 9, 10, and 14 share one oriented coordinate system.
 
 ## Classical infrastructure boundary
 
-Rows 5 and 6 occupy the two retained cellular/Poincare foundation slots. Row 5 already has the
-required natural generality. Row 6's current objectwise signature is insufficient for rows 9 and
-10 because it leaves both `cellBasis` and `homologyEquiv` unconstrained. Blackbox 5 must therefore
-be strengthened or replaced by the standard characteristic-map-compatible, natural cellular
-comparison theorem, with the current objectwise model derived as a corollary. This keeps the
-cellular foundation to one blackbox. It supplies only the general basis, boundary, and naturality
-principles; every numerical incidence and specialization value remains a consequence of the
-explicit toric construction.
+Rows 5 and 6 use cellular homology together with general Poincare duality and UCT. Row 5's current
+combined consequence package is temporary and must be derived from those literature-level
+theorems. Row 6 is derived from the characteristic-map-compatible, natural cellular comparison
+theorem, so the cellular foundation remains one blackbox. It supplies only
+the general basis, attaching-degree boundary, and naturality principles; every numerical
+incidence and specialization value remains a consequence of the explicit toric construction.
 
 Blackbox 7 is ordinary Cartan Theorem B, not its affine-torsor specialization. Proving the
 finite-orbifold torsor corollary and connecting it to the paper's explicit charts is part of row 7.
@@ -194,14 +230,17 @@ finite-orbifold torsor corollary and connecting it to the paper's explicit chart
 
 Work may proceed in parallel, but the preferred merge order is:
 
-1. **CF0:** replace the objectwise cellular-homology foundation with the general
-   characteristic-map-compatible natural theorem and derive the existing model;
+1. **CF0 (complete):** the objectwise cellular-homology accessor is derived from the general
+   characteristic-map-compatible natural theorem;
 2. **S1:** row 10, the finite specialization matrix;
 3. **S2:** row 11, the two marked-band Cayley/gauge calculations;
-4. **S3:** row 12, the pulled-back invariant basis naturality square;
-5. **S4:** row 13, the two remaining cusp geometric identities;
+4. **S3:** refactor the final Mayer--Vietoris endpoint to degree-one bijectivity and degree-two
+   surjectivity, then prove row 12's second suspension coefficient is a unit;
+5. **S4:** prove row 13's meridian and index-four coefficients are units; the literal meridian's
+   Wang sign is already computed;
 6. **S5:** row 15, the two connector endpoint evaluations;
-7. **T1:** finish the honeycomb finite quotient and direct nonnegative toric atlas;
+7. **T1:** correct the honeycomb tile/chart convention, then prove the corrected finite quotient
+   and direct nonnegative toric atlas;
 8. **T2:** row 14, positive contractibility and quotient relative CW;
 9. **T3:** row 8, the complete central-orbit CW atlas;
 10. **T4:** row 9, the oriented cellular incidence table;

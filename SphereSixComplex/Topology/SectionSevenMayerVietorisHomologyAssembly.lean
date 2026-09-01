@@ -324,19 +324,49 @@ public noncomputable def finalUnionHomeomorph :
         Set (SectionSevenMayerVietorisSpace A)) ≃ₜ SectionSevenMayerVietorisSpace A :=
   topologicalSubsetHomeomorphOfEqUniv _ _ final_union_eq_univ
 
+/-- Low-degree homology vanishing only needs the exactness properties of the three actual final
+difference maps; no coordinate matrix is part of this endpoint. -/
+public theorem homologyOne_subsingleton_of_finalDifferences
+    (hZero : Function.Injective (IntegralMayerVietoris.differenceMap
+      ((SectionSevenMayerVietorisCover A).stage (2 : Fin 4))
+        ((SectionSevenMayerVietorisCover A).piece 3) 0))
+    (hOne : Function.Surjective (IntegralMayerVietoris.differenceMap
+      ((SectionSevenMayerVietorisCover A).stage (2 : Fin 4))
+        ((SectionSevenMayerVietorisCover A).piece 3) 1)) :
+    Subsingleton (IntegralSingularHomology 1 (SectionSevenMayerVietorisSpace A)) := by
+  have hUnion := unionHomology_subsingleton_of_exact _ _
+    (establishedFourPieceMayerVietorisExactness (SectionSevenMayerVietorisCover A) 2) 0
+    hOne hZero
+  let e := integralSingularHomologyEquiv 1 (finalUnionHomeomorph (A := A))
+  exact ⟨fun x y ↦ e.symm.injective (hUnion.elim _ _)⟩
+
+/-- In degree two, surjectivity of the degree-two difference map and injectivity of the
+degree-one difference map are sufficient. -/
+public theorem homologyTwo_subsingleton_of_finalDifferences
+    (hOne : Function.Injective (IntegralMayerVietoris.differenceMap
+      ((SectionSevenMayerVietorisCover A).stage (2 : Fin 4))
+        ((SectionSevenMayerVietorisCover A).piece 3) 1))
+    (hTwo : Function.Surjective (IntegralMayerVietoris.differenceMap
+      ((SectionSevenMayerVietorisCover A).stage (2 : Fin 4))
+        ((SectionSevenMayerVietorisCover A).piece 3) 2)) :
+    Subsingleton (IntegralSingularHomology 2 (SectionSevenMayerVietorisSpace A)) := by
+  have hUnion := unionHomology_subsingleton_of_exact _ _
+    (establishedFourPieceMayerVietorisExactness (SectionSevenMayerVietorisCover A) 2) 1
+    hTwo hOne
+  let e := integralSingularHomologyEquiv 2 (finalUnionHomeomorph (A := A))
+  exact ⟨fun x y ↦ e.symm.injective (hUnion.elim _ _)⟩
+
 public theorem homologyOne_subsingleton
     (H : A.SectionSevenMayerVietorisHomologyAssembly) :
-    Subsingleton (IntegralSingularHomology 1 (SectionSevenMayerVietorisSpace A)) := by
-  let _ := H.finalUnionHomologyOne_subsingleton
-  let e := integralSingularHomologyEquiv 1 (finalUnionHomeomorph (A := A))
-  exact ⟨fun x y ↦ e.symm.injective (Subsingleton.elim _ _)⟩
+    Subsingleton (IntegralSingularHomology 1 (SectionSevenMayerVietorisSpace A)) :=
+  homologyOne_subsingleton_of_finalDifferences
+    H.finalDifferenceZero_injective H.finalDifferenceOne_bijective.surjective
 
 public theorem homologyTwo_subsingleton
     (H : A.SectionSevenMayerVietorisHomologyAssembly) :
-    Subsingleton (IntegralSingularHomology 2 (SectionSevenMayerVietorisSpace A)) := by
-  let _ := H.finalUnionHomologyTwo_subsingleton
-  let e := integralSingularHomologyEquiv 2 (finalUnionHomeomorph (A := A))
-  exact ⟨fun x y ↦ e.symm.injective (Subsingleton.elim _ _)⟩
+    Subsingleton (IntegralSingularHomology 2 (SectionSevenMayerVietorisSpace A)) :=
+  homologyTwo_subsingleton_of_finalDifferences
+    H.finalDifferenceOne_bijective.injective H.finalDifferenceTwo_bijective.surjective
 
 end SectionSevenMayerVietorisHomologyAssembly
 
