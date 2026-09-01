@@ -1,13 +1,14 @@
 # Allowlist for the implemented construction cone, excluding the final smooth-recognition step.
-# Its current retained foundation contains only the cellular-homology and Poincare-duality inputs;
-# all other entries are transitional. The cellular theorem has been strengthened in place; the
-# final target replaces the analytic correction by general Cartan B. Every construction-specific
-# entry remains a proof obligation.
+# Its retained foundations are cellular homology, Poincare duality, integral UCT, and smooth
+# triangulation; all other entries are transitional. The final target replaces the analytic
+# correction by general Cartan B. Every construction-specific entry remains a proof obligation.
 
 Classical.choice
 Quot.sound
 propext
-SphereSixComplex.establishedCompactSmoothOrientedManifoldHomologyTheory
+SphereSixComplex.classicalIntegralPoincareDuality
+SphereSixComplex.classicalIntegralSingularCohomologyUCT
+SphereSixComplex.compactCOneManifoldFiniteCWModelAtDimension
 SphereSixComplex.integralCWCellularHomologyFoundation
 
 # Transitional analytic descent (one of nine).

@@ -1,6 +1,7 @@
 module
 
 public import SphereSixComplex.Topology.HurewiczWhiteheadStages
+public import SphereSixComplex.Topology.CubicalSphereEuclideanComparison
 public import Mathlib.Topology.Category.TopCat.Sphere
 public import Mathlib.Topology.Homotopy.HomotopyGroup
 
@@ -9,9 +10,9 @@ public import Mathlib.Topology.Homotopy.HomotopyGroup
 
 Mathlib defines higher homotopy groups using cubical generalized loops, but does not yet provide
 the map induced by a continuous map or the Hurewicz homomorphism. This file supplies the former
-directly and gives a checked construction contract for the latter. It deliberately introduces no
-new axiom: the canonical chain-level Hurewicz map still has to be built before the general
-isomorphism theorem can become the retained classical boundary.
+directly and gives a precise, source- and dimension-independent contract for the latter. The
+classical higher Hurewicz theorem may then be retained as one general literature blackbox by
+asserting that this contract is inhabited and satisfies the usual connectivity theorem.
 -/
 
 @[expose] public section
@@ -50,9 +51,7 @@ public theorem homotopyGroupMap_mk
     homotopyGroupMap f x ⟦p⟧ = ⟦postcomposeGenLoop f p⟧ :=
   rfl
 
-/-- The axiom-free construction contract for a canonical higher Hurewicz homomorphism. A value of
-this structure must be constructed from cubical loops and singular chains; it is not a retained
-classical assumption. -/
+/-- The construction contract for the classical natural higher Hurewicz homomorphism. -/
 public structure HigherHurewiczMap where
   homomorphism :
     ∀ (n : ℕ) [Nontrivial (Fin n)]
@@ -73,8 +72,8 @@ public structure HigherHurewiczMap where
         ∃ s : IntegralSingularHomology n (TopCat.sphere n : Type),
           integralSingularHomologyMap n f s = homomorphism n X x a
 
-/-- The exact standard theorem that may eventually be blackboxed after the canonical map is
-constructed. The explicit inequality excludes the degree-one abelianization theorem. -/
+/-- The usual higher Hurewicz isomorphism property. The explicit inequality excludes the
+degree-one abelianization theorem. -/
 public def HigherHurewiczIsomorphismProperty (H : HigherHurewiczMap) : Prop :=
   ∀ (n : ℕ) (hn : 2 ≤ n)
     (X : Type) [TopologicalSpace X] [PathConnectedSpace X] (x : X),

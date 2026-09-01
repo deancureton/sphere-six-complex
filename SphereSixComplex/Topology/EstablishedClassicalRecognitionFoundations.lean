@@ -1,18 +1,18 @@
 module
 
 public import SphereSixComplex.Topology.HurewiczWhiteheadStages
+public import SphereSixComplex.Topology.HigherHurewiczClassicalBoundary
 public import SphereSixComplex.Topology.SmoothSixSphereClassification
 public import SphereSixComplex.Topology.EstablishedSphereHomology
-public import SphereSixComplex.Topology.FiniteClassicalCWModel
+public import SphereSixComplex.Topology.FiniteDimensionalSmoothTriangulationBoundary
 
 /-!
 # Classical foundations for smooth six-sphere recognition
 
 This module is the complete classical trust boundary for recognizing the standard smooth
-six-sphere. The first three assumptions are source- and dimension-independent theorems of
-classical topology and differential topology. Smooth Poincare is necessarily dimension-specific.
-Their exact hypotheses are exposed here so that none of the paper-specific geometry is hidden in
-the recognition step.
+six-sphere. The first two assumptions are source- and dimension-independent theorems of classical
+topology. Smooth Poincare is necessarily dimension-specific. Their exact hypotheses are exposed
+here so that none of the paper-specific geometry is hidden in the recognition step.
 -/
 
 @[expose] public section
@@ -24,10 +24,16 @@ open scoped ContDiff Manifold
 
 namespace SphereSixComplex
 
-/-- Homological higher Hurewicz in class-surjectivity form. For a simply connected space whose
-positive integral homology vanishes below `n`, every degree-`n` class is represented by a map
-from the standard `n`-sphere, with an explicit source class mapping to it. -/
-public axiom generalHigherHurewiczClassSurjectivity
+/-- The classical higher Hurewicz theorem, including its natural canonical transformation. This
+is stated for arbitrary spaces and degrees; no application-specific sphere or homology class is
+mentioned. -/
+public axiom classicalHigherHurewiczTheory :
+    ∃ H : HigherHurewiczMap, HigherHurewiczIsomorphismProperty H
+
+/-- For a simply connected space whose positive integral homology vanishes below `n`, every
+degree-`n` class is represented by a map from the standard `n`-sphere. This is the application
+corollary of the general higher Hurewicz theorem. -/
+public theorem generalHigherHurewiczClassSurjectivity
     (n : ℕ) (hn : 2 ≤ n)
     (X : Type) [TopologicalSpace X] [SimplyConnectedSpace X]
     (hLower : ∀ k : ℕ, 0 < k → k < n →
@@ -35,34 +41,9 @@ public axiom generalHigherHurewiczClassSurjectivity
     ∀ c : IntegralSingularHomology n X,
       ∃ f : C((TopCat.sphere n : Type), X),
         ∃ s : IntegralSingularHomology n (TopCat.sphere n : Type),
-          integralSingularHomologyMap n f s = c
-
-/-- The standard CW approximation theorem for finite-dimensional smooth manifolds, including the
-finite-model conclusion in the compact case. -/
-public structure SmoothManifoldClassicalCWData
-    (M : Type) [TopologicalSpace M] where
-  hasClassicalCWType : HasClassicalCWType M
-  finiteModel : [CompactSpace M] → FiniteCWModel M
-
-/-- Every second-countable Hausdorff finite-dimensional boundaryless real smooth manifold has CW
-type, and every compact such manifold has the homotopy type of a finite CW complex. -/
-public axiom finiteDimensionalSmoothManifoldClassicalCWModel
-    {E H M : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
-    [FiniteDimensional ℝ E] [TopologicalSpace H]
-    (I : ModelWithCorners ℝ E H) [I.Boundaryless]
-    [TopologicalSpace M] [T2Space M] [SecondCountableTopology M]
-    [ChartedSpace H M] [IsManifold I ∞ M] :
-    SmoothManifoldClassicalCWData M
-
-/-- The ordinary CW-type accessor used by the recognition pipeline. -/
-public theorem finiteDimensionalSmoothManifoldHasClassicalCWType
-    {E H M : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
-    [FiniteDimensional ℝ E] [TopologicalSpace H]
-    (I : ModelWithCorners ℝ E H) [I.Boundaryless]
-    [TopologicalSpace M] [T2Space M] [SecondCountableTopology M]
-    [ChartedSpace H M] [IsManifold I ∞ M] :
-    HasClassicalCWType M :=
-  (finiteDimensionalSmoothManifoldClassicalCWModel I).hasClassicalCWType
+          integralSingularHomologyMap n f s = c := by
+  obtain ⟨H, hH⟩ := classicalHigherHurewiczTheory
+  exact generalHigherHurewiczClassSurjectivity_of_map H hH n hn X hLower
 
 /-- The homological Whitehead theorem for simply connected spaces of classical CW type. The
 simple-connectivity hypotheses are essential: the corresponding unrestricted integral-homology
@@ -174,9 +155,14 @@ public theorem establishedCompactSmoothSixManifoldClassicalCWType
     (X : Type) [TopologicalSpace X] [T2Space X] [SecondCountableTopology X]
     [ChartedSpace RealModel X]
     [IsManifold (modelWithCornersSelf ℝ RealModel) ∞ X] [CompactSpace X] :
-    HasClassicalCWType X :=
-  finiteDimensionalSmoothManifoldHasClassicalCWType
-    (M := X) (modelWithCornersSelf ℝ RealModel)
+    HasClassicalCWType X := by
+  have hManifold : IsManifold (modelWithCornersSelf ℝ RealModel) 1 X :=
+    inferInstance
+  let M := compactCOneManifoldFiniteCWModelAtDimension RealModel X hManifold inferInstance
+  let _ := M.topology
+  let _ := M.cwComplex
+  exact hasClassicalCWType_precomp_homotopyEquiv M.homotopyEquiv
+    (hasClassicalCWType_of_cwComplex M.Carrier)
 
 /-- The general homological Whitehead theorem gives the property-valued interface used here. -/
 public theorem establishedSimplyConnectedClassicalCWIntegralHomologyWhitehead

@@ -21,10 +21,10 @@ Do not edit it by hand; run ./scripts/update-axiom-catalog.sh --write.
 
 # Constants in the current final-theorem trust closure.
 #
-# In addition to Lean's three standard logical axioms, the current closure contains six retained
+# In addition to Lean's three standard logical axioms, the current closure contains seven retained
 # source-independent classical blackboxes and nine transitional construction-specific axioms.
-# The cellular entry is now the natural strengthened theorem; the final target replaces the
-# analytic correction by general Cartan B, for seven retained classical blackboxes total. Every
+# The cellular, Poincare-duality, UCT, and smooth-triangulation entries are now general theorems;
+# the final target replaces the analytic correction by general Cartan B. Every
 # declaration in a transitional section remains a proof obligation; renaming or moving one does
 # not eliminate it.
 
@@ -33,25 +33,8 @@ axiom propext : ∀ {a b : Prop}, (a ↔ b) → a = b
 axiom Quot.sound.{u} : ∀ {α : Sort u} {r : α → α → Prop} {a b : α}, r a b → Quot.mk r a = Quot.mk r b
 axiom Classical.choice.{u} : {α : Sort u} → Nonempty α → α
 
-# Retained classical recognition blackboxes (four of the current six).
-axiom SphereSixComplex.generalHigherHurewiczClassSurjectivity : ∀ (n : ℕ),
-  2 ≤ n →
-    ∀ (X : Type) [inst : TopologicalSpace X] [SimplyConnectedSpace X],
-      (∀ (k : ℕ), 0 < k → k < n → Subsingleton (SphereSixComplex.IntegralSingularHomology k X)) →
-        ∀ (c : SphereSixComplex.IntegralSingularHomology n X),
-          ∃ f s, (SphereSixComplex.integralSingularHomologyMap n f) s = c
-axiom SphereSixComplex.finiteDimensionalSmoothManifoldClassicalCWModel : {E H M : Type} →
-  [inst : NormedAddCommGroup E] →
-    [inst_1 : NormedSpace ℝ E] →
-      [FiniteDimensional ℝ E] →
-        [inst_3 : TopologicalSpace H] →
-          (I : ModelWithCorners ℝ E H) →
-            [I.Boundaryless] →
-              [inst_5 : TopologicalSpace M] →
-                [T2Space M] →
-                  [SecondCountableTopology M] →
-                    [inst_8 : ChartedSpace H M] →
-                      [IsManifold I (↑⊤) M] → SphereSixComplex.SmoothManifoldClassicalCWData M
+# Retained classical recognition blackboxes (three of the current seven).
+axiom SphereSixComplex.classicalHigherHurewiczTheory : ∃ H, SphereSixComplex.HigherHurewiczIsomorphismProperty H
 axiom SphereSixComplex.simplyConnectedHomologicalWhitehead : ∀ (X Y : Type) [inst : TopologicalSpace X]
   [inst_1 : TopologicalSpace Y] [SimplyConnectedSpace X] [SimplyConnectedSpace Y],
   SphereSixComplex.HasClassicalCWType X →
@@ -59,19 +42,27 @@ axiom SphereSixComplex.simplyConnectedHomologicalWhitehead : ∀ (X Y : Type) [i
       ∀ (f : C(X, Y)), SphereSixComplex.IsIntegralHomologyEquivalence f → ∃ e, e.toFun = f
 axiom SphereSixComplex.establishedSmoothPoincareSixStandardModel : SphereSixComplex.SmoothPoincareSixStandardModel
 
-# Retained cellular-homology and Poincare-duality foundations (two of the current six).
-axiom SphereSixComplex.establishedCompactSmoothOrientedManifoldHomologyTheory : (d : ℕ) →
-  (E X : Type) →
-    [inst : NormedAddCommGroup E] →
-      [inst_1 : NormedSpace ℝ E] →
-        [FiniteDimensional ℝ E] →
-          [inst_3 : TopologicalSpace X] →
-            [inst_4 : ChartedSpace E X] →
-              [T2Space X] →
-                [SecondCountableTopology X] →
-                  IsManifold (modelWithCornersSelf ℝ E) 1 X →
-                    SphereSixComplex.SmoothAtlasOrientation d E X →
-                      CompactSpace X → SphereSixComplex.IntegralPoincareUCTData d X
+# Retained homological foundations (four of the current seven).
+axiom SphereSixComplex.classicalIntegralPoincareDuality : ∀ (d : ℕ) (E X : Type) [inst : NormedAddCommGroup E]
+  [inst_1 : NormedSpace ℝ E] [FiniteDimensional ℝ E] [inst_3 : TopologicalSpace X] [inst_4 : ChartedSpace E X]
+  [T2Space X] [SecondCountableTopology X],
+  IsManifold (modelWithCornersSelf ℝ E) 1 X →
+    ∀ (hOrientation : SphereSixComplex.SmoothAtlasOrientation d E X),
+      CompactSpace X →
+        ∀ (k : Fin (d + 1)),
+          Nonempty
+            (SphereSixComplex.IntegralSingularCohomology (↑k) X ≃+ SphereSixComplex.IntegralSingularHomology (d - ↑k) X)
+axiom SphereSixComplex.classicalIntegralSingularCohomologyUCT : SphereSixComplex.IntegralSingularCohomologyUCT
+axiom SphereSixComplex.compactCOneManifoldFiniteCWModelAtDimension : (E X : Type) →
+  [inst : NormedAddCommGroup E] →
+    [inst_1 : NormedSpace ℝ E] →
+      [FiniteDimensional ℝ E] →
+        [inst_3 : TopologicalSpace X] →
+          [inst_4 : ChartedSpace E X] →
+            [T2Space X] →
+              [SecondCountableTopology X] →
+                IsManifold (modelWithCornersSelf ℝ E) 1 X →
+                  CompactSpace X → SphereSixComplex.FiniteCWModelOfDimension (Module.finrank ℝ E) X
 axiom SphereSixComplex.integralCWCellularHomologyFoundation : SphereSixComplex.IntegralCWCellularHomologyFoundation
 
 # Transitional analytic descent (one of nine).
