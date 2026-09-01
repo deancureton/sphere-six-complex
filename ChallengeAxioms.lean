@@ -19,37 +19,39 @@ This block is generated from scripts/allowed-axioms.txt by Lean's pretty-printer
 It is the single human-review surface for every permitted constant and its exact type.
 Do not edit it by hand; run ./scripts/update-axiom-catalog.sh --write.
 
-# Constants the final theorem is allowed to depend on.
+# Constants in the current final-theorem trust closure.
 #
-# Checked by ./scripts/check-axioms.sh. Project axioms are isolated established results with
-# precise geometric, analytic, or classical-topological statements; their source docstrings
-# record the corresponding trust boundary.
-#
-# Intended retained project trust kernel: the four smooth-recognition inputs below plus a small
-# set of exact, unspecialized classical theorems. Every paper-specific project constant in this
-# transitional allowlist remains a proof obligation.
+# In addition to Lean's three standard logical axioms, the current closure contains six retained
+# source-independent classical blackboxes and nine transitional construction-specific axioms.
+# The final target replaces the cellular entry by its natural strengthened form and the analytic
+# correction by general Cartan B, for seven retained classical blackboxes total. Every declaration
+# in a transitional section remains a proof obligation; renaming or moving one does not eliminate
+# it.
 
 # Lean's standard logical axioms.
 axiom propext : ∀ {a b : Prop}, (a ↔ b) → a = b
 axiom Quot.sound.{u} : ∀ {α : Sort u} {r : α → α → Prop} {a b : α}, r a b → Quot.mk r a = Quot.mk r b
 axiom Classical.choice.{u} : {α : Sort u} → Nonempty α → α
 
-# Classical recognition of the standard smooth six-sphere.
-axiom SphereSixComplex.establishedHigherHurewiczSixGenerator : ∀ (X : Type) [inst : TopologicalSpace X]
-  [SimplyConnectedSpace X],
-  (∀ (n : ℕ), 0 < n → n < 6 → Subsingleton (SphereSixComplex.IntegralSingularHomology n X)) →
-    Nonempty (SphereSixComplex.IntegralSingularHomology 6 X ≃+ ℤ) →
-      SphereSixComplex.HasTopDimensionalSphericalGenerator X
-axiom SphereSixComplex.establishedCompactSmoothSixManifoldClassicalCWType : ∀ (X : Type) [inst : TopologicalSpace X]
-  [T2Space X] [SecondCountableTopology X] [inst_3 : ChartedSpace SphereSixComplex.RealModel X]
-  [IsManifold (modelWithCornersSelf ℝ SphereSixComplex.RealModel) (↑⊤) X] [CompactSpace X],
-  SphereSixComplex.HasClassicalCWType X
-axiom SphereSixComplex.establishedSimplyConnectedClassicalCWIntegralHomologyWhitehead : ∀ (X Y : Type)
-  [inst : TopologicalSpace X] [inst_1 : TopologicalSpace Y] [SimplyConnectedSpace X] [SimplyConnectedSpace Y],
-  SphereSixComplex.ClassicalCWIntegralHomologyWhiteheadProperty X Y
+# Retained classical recognition blackboxes (four of the current six).
+axiom SphereSixComplex.generalHigherHurewiczClassSurjectivity : ∀ (n : ℕ),
+  2 ≤ n →
+    ∀ (X : Type) [inst : TopologicalSpace X] [SimplyConnectedSpace X],
+      (∀ (k : ℕ), 0 < k → k < n → Subsingleton (SphereSixComplex.IntegralSingularHomology k X)) →
+        ∀ (c : SphereSixComplex.IntegralSingularHomology n X),
+          ∃ f s, (SphereSixComplex.integralSingularHomologyMap n f) s = c
+axiom SphereSixComplex.finiteDimensionalSmoothManifoldHasClassicalCWType : ∀ {E H M : Type}
+  [inst : NormedAddCommGroup E] [inst_1 : NormedSpace ℝ E] [FiniteDimensional ℝ E] [inst_3 : TopologicalSpace H]
+  (I : ModelWithCorners ℝ E H) [I.Boundaryless] [inst_5 : TopologicalSpace M] [T2Space M] [SecondCountableTopology M]
+  [inst_8 : ChartedSpace H M] [IsManifold I (↑⊤) M], SphereSixComplex.HasClassicalCWType M
+axiom SphereSixComplex.simplyConnectedHomologicalWhitehead : ∀ (X Y : Type) [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] [SimplyConnectedSpace X] [SimplyConnectedSpace Y],
+  SphereSixComplex.HasClassicalCWType X →
+    SphereSixComplex.HasClassicalCWType Y →
+      ∀ (f : C(X, Y)), SphereSixComplex.IsIntegralHomologyEquivalence f → ∃ e, e.toFun = f
 axiom SphereSixComplex.establishedSmoothPoincareSixStandardModel : SphereSixComplex.SmoothPoincareSixStandardModel
 
-# Established general topology and homology.
+# Retained cellular-homology and Poincare-duality foundations (two of the current six).
 axiom SphereSixComplex.establishedCompactSmoothOrientedManifoldHomologyTheory : (d : ℕ) →
   (E X : Type) →
     [inst : NormedAddCommGroup E] →
@@ -65,11 +67,13 @@ axiom SphereSixComplex.establishedCompactSmoothOrientedManifoldHomologyTheory : 
 axiom SphereSixComplex.EstablishedCellularHomology.integralCWCellularHomologyModel : (Y : Type) →
   [inst : TopologicalSpace Y] →
     [T2Space Y] → [inst_2 : Topology.CWComplex Set.univ] → SphereSixComplex.IntegralCWCellularHomologyModel Y
+
+# Transitional analytic descent (one of nine).
 axiom SphereSixComplex.Periods.establishedOrbifoldAffineLineTorsorCuspBoundedCousinCorrection : ∀
   (P : SphereSixComplex.Periods.OrbifoldAffineLineTorsorDescentProblem),
   P.HasAcyclicProjectiveLineFrame → Nonempty P.CuspBoundedEllipticOneCorrection
 
-# Established analytic and toric models from the paper.
+# Transitional paper-specific geometry and topology (seven of nine).
 axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralOrbitCellAtlas : {E :
     SphereSixComplex.Periods.EstablishedFuchsianModularParameter} →
   {D : SphereSixComplex.Periods.FuchsianPeriodLocalData E} →
@@ -112,7 +116,7 @@ axiom SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established.normali
     Nonempty
       { Q // SphereSixComplex.Geometry.CuspStraighteningRetraction.PolarPhaseGeometricCore M r Q.toPolarHoneycombData }
 
-# Remaining connector-invariant elliptic comparison.
+# Transitional connector-invariant elliptic comparison (one of nine).
 axiom SphereSixComplex.Geometry.PaperAnalyticData.establishedActualEllipticRelatorNormalClosureResidual : ∀
   (A : SphereSixComplex.Geometry.PaperAnalyticData),
   Nonempty (A.ActualEllipticRelatorNormalClosureResidual A.actualCuspCentralNaturality)

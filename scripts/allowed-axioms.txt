@@ -1,30 +1,31 @@
-# Constants the final theorem is allowed to depend on.
+# Constants in the current final-theorem trust closure.
 #
-# Checked by ./scripts/check-axioms.sh. Project axioms are isolated established results with
-# precise geometric, analytic, or classical-topological statements; their source docstrings
-# record the corresponding trust boundary.
-#
-# Intended retained project trust kernel: the four smooth-recognition inputs below plus a small
-# set of exact, unspecialized classical theorems. Every paper-specific project constant in this
-# transitional allowlist remains a proof obligation.
+# In addition to Lean's three standard logical axioms, the current closure contains six retained
+# source-independent classical blackboxes and nine transitional construction-specific axioms.
+# The final target replaces the cellular entry by its natural strengthened form and the analytic
+# correction by general Cartan B, for seven retained classical blackboxes total. Every declaration
+# in a transitional section remains a proof obligation; renaming or moving one does not eliminate
+# it.
 
 # Lean's standard logical axioms.
 propext
 Quot.sound
 Classical.choice
 
-# Classical recognition of the standard smooth six-sphere.
-SphereSixComplex.establishedHigherHurewiczSixGenerator
-SphereSixComplex.establishedCompactSmoothSixManifoldClassicalCWType
-SphereSixComplex.establishedSimplyConnectedClassicalCWIntegralHomologyWhitehead
+# Retained classical recognition blackboxes (four of the current six).
+SphereSixComplex.generalHigherHurewiczClassSurjectivity
+SphereSixComplex.finiteDimensionalSmoothManifoldHasClassicalCWType
+SphereSixComplex.simplyConnectedHomologicalWhitehead
 SphereSixComplex.establishedSmoothPoincareSixStandardModel
 
-# Established general topology and homology.
+# Retained cellular-homology and Poincare-duality foundations (two of the current six).
 SphereSixComplex.establishedCompactSmoothOrientedManifoldHomologyTheory
 SphereSixComplex.EstablishedCellularHomology.integralCWCellularHomologyModel
+
+# Transitional analytic descent (one of nine).
 SphereSixComplex.Periods.establishedOrbifoldAffineLineTorsorCuspBoundedCousinCorrection
 
-# Established analytic and toric models from the paper.
+# Transitional paper-specific geometry and topology (seven of nine).
 SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralOrbitCellAtlas
 SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberIndependentIncidenceResidual
 SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization.establishedFiniteFiberGeneratorSpecializationMatrix
@@ -33,5 +34,5 @@ SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTopology.
 SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTopology.establishedCuspPulledBackMarkedInvariantBasisData
 SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established.normalizedPolarHoneycombPhaseGeometry
 
-# Remaining connector-invariant elliptic comparison.
+# Transitional connector-invariant elliptic comparison (one of nine).
 SphereSixComplex.Geometry.PaperAnalyticData.establishedActualEllipticRelatorNormalClosureResidual
