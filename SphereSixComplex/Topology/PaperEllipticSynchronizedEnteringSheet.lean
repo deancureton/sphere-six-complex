@@ -76,4 +76,69 @@ public theorem orderFourBaseComparisonTrace_enteringSheet
   rw [hi'] at hi
   simpa only [MulOpposite.unop_op, inv_inv, mul_assoc] using hi.symm
 
+public theorem orderThreeBaseComparisonTrace_enteringSheet
+    (H : ContinuousMap.Homotopy A.orderThreeLocalOffsetBaseCentralPath.toContinuousMap
+      A.orderThreeCentralAffineZeroSectionTriplePath.toContinuousMap)
+    (hH : ∀ s : unitInterval, H (s, 0) = H (s, 1)) :
+    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := regularFamilyDeckAction A.periods
+    let hp := regularFamilyQuotientMap_isQuotientCoveringMap A.periods
+      A.modular.modularParameter.toTriangleUniformization_sourceAction
+      (sourceActionProperlyDiscontinuous_of_eq
+        A.modular.modularParameter.toTriangleUniformization_sourceAction)
+    let ex : (regularFamilyQuotientMap A.periods) ⁻¹' {A.orderThreeActualEllipticCentralBase} :=
+      ⟨A.orderThreeCollarRegularRepresentativeMap A.orderThreeActualEllipticBoundaryBase,
+        A.orderThreeCollarRegularBase_projects⟩
+    let ey : (regularFamilyQuotientMap A.periods) ⁻¹' {A.centralAffineBase} :=
+      ⟨A.actualCuspRegularRepresentative,
+        A.actualCuspRegularRepresentative_projects.trans A.centralAffineBase_eq_actualCuspCentralBase.symm⟩
+    ∃ g : Delta,
+      hp.isCoveringMap.monodromy
+        (Path.Homotopic.Quotient.mk (A.orderThreeCentralBaseComparisonTracePath H)) ex =
+          hp.toPermFiber A.centralAffineBase g ey ∧
+      g⁻¹ * g₁ * g = A.geometricCentralClockwiseOneDeck := by
+  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := regularFamilyDeckAction A.periods
+  let _ := A.orderThreeActualEllipticBoundaryCover_simplyConnected
+  let hp := regularFamilyQuotientMap_isQuotientCoveringMap A.periods
+    A.modular.modularParameter.toTriangleUniformization_sourceAction
+    (sourceActionProperlyDiscontinuous_of_eq
+      A.modular.modularParameter.toTriangleUniformization_sourceAction)
+  let ex : (regularFamilyQuotientMap A.periods) ⁻¹' {A.orderThreeActualEllipticCentralBase} :=
+    ⟨A.orderThreeCollarRegularRepresentativeMap A.orderThreeActualEllipticBoundaryBase,
+      A.orderThreeCollarRegularBase_projects⟩
+  let ey : (regularFamilyQuotientMap A.periods) ⁻¹' {A.centralAffineBase} :=
+    ⟨A.actualCuspRegularRepresentative,
+      A.actualCuspRegularRepresentative_projects.trans A.centralAffineBase_eq_actualCuspCentralBase.symm⟩
+  let W := A.orderThreeCentralBaseComparisonTracePath H
+  let gamma := Path.Homotopic.Quotient.mk
+    (A.orderThreeActualEllipticBoundaryDeckStraightCentralLoop
+      A.orderThreeActualEllipticBoundaryDeckData.meridian)
+  obtain ⟨g, hg⟩ := hp.exists_toPermFiber_eq ey
+    (hp.isCoveringMap.monodromy (Path.Homotopic.Quotient.mk W) ex)
+  refine ⟨g, hg.symm, ?_⟩
+  have ht := fundamentalGroupToMulOpposite_transport_of_endpoint_sheet
+    hp W ex ey g hg.symm gamma
+  have heq := A.regularFamilyOuterDeck_eq_of_coordinate_class_eq_at ey _ _
+    (A.orderThreeCentralBaseComparisonTrace_first_power H hH)
+  have hlocal := A.orderThreeBoundaryMeridian_outerLabel
+  change hp.fundamentalGroupToMulOpposite ex gamma = MulOpposite.op g₁⁻¹ at hlocal
+  rw [heq, hlocal] at ht
+  have hglobal : hp.fundamentalGroupToMulOpposite ey
+      (A.actualCuspToCentralAffineBaseEquiv A.geometricCentralRhoOne) =
+        A.actualCuspOuterDeckHom A.geometricCentralRhoOne := by
+    exact fundamentalGroupToMulOpposite_fiberBaseEq hp
+      ⟨A.actualCuspRegularRepresentative, A.actualCuspRegularRepresentative_projects⟩
+      A.centralAffineBase_eq_actualCuspCentralBase.symm A.geometricCentralRhoOne
+
+  rw [hglobal] at ht
+  have hi := congrArg Inv.inv ht
+  simp only [mul_inv_rev, inv_inv] at hi
+  have hi' : (A.actualCuspOuterDeckHom A.geometricCentralRhoOne).unop⁻¹ =
+      A.geometricCentralClockwiseOneDeck := by
+    unfold geometricCentralClockwiseOneDeck
+    rw [map_inv, MulOpposite.unop_inv]
+  rw [hi'] at hi
+  simpa only [MulOpposite.unop_op, inv_inv, mul_assoc] using hi.symm
+
 end SphereSixComplex.Geometry.PaperAnalyticData

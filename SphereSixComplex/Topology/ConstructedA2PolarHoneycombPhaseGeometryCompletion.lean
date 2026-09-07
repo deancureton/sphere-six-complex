@@ -6,14 +6,15 @@ Authors: Dean Cureton
 module
 
 public import SphereSixComplex.Topology.ConstructedA2PositivePartContractibilityProof
+public import SphereSixComplex.Topology.ConstructedA2HoneycombCorrectedCover
 
 /-!
 # Specialized phase geometry for the constructed infinite A₂ carrier
 
 At the actual cusp radius, the positive-part contractibility field follows from the global
-moment-coordinate homeomorphism.  The central honeycomb follows from compatible cell charts.
-Thus the broad abstract-model phase assumption reduces, for the model used by the paper, to
-these two explicit coordinate constructions and the cellular quotient theorem.
+moment-coordinate homeomorphism. The central honeycomb is now constructed from the corrected
+locally finite hexagonal cover. The remaining inputs are the global moment coordinates and
+the cellular quotient theorem.
 -/
 
 @[expose] public section
@@ -45,7 +46,6 @@ public structure ConstructedPolarHoneycombCoordinateData
   momentHomeomorph :
     constructedLocalPositivePart W.localWitness.radius ≃ₜ
       constructedPositiveMomentRegion W.localWitness.radius
-  honeycombCells : ConstructedHoneycombCellData W.localWitness.radius
   quotientRelativeCW :
     letI := normalizedPositiveDeckAction N constructedModel
       (constructedLocalPositivePart W.localWitness.radius)
@@ -67,7 +67,7 @@ public noncomputable def toResidualData
     {W : ActualPuncturedCuspCollarWitness N constructedModel}
     (C : ConstructedPolarHoneycombCoordinateData W) :
     ConstructedPolarHoneycombResidualData W where
-  honeycomb := C.honeycombCells.honeycomb
+  honeycomb := constructedA2CorrectedHoneycombHomeomorph W.localWitness.radius_pos
   positive_contractible :=
     constructedLocalPositivePart_contractible_of_momentHomeomorph
       W.localWitness.radius_pos C.momentHomeomorph
@@ -88,7 +88,7 @@ public noncomputable def toPhaseGeometry
 end ConstructedPolarHoneycombCoordinateData
 
 /-- Specialized replacement for the abstract-model phase assumption: it is enough to construct
-the moment coordinates, compatible honeycomb cells, and the quotient relative CW structure for
+the moment coordinates and the quotient relative CW structure for
 the actual constructed carrier. -/
 public theorem constructedNormalizedPolarHoneycombPhaseGeometry
     {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}

@@ -22,8 +22,7 @@
     "SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenAffineRegularLiftTopology.markedBandHomotopies",
     "SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTopology.establishedActualCuspFiberEllipticMarkedCoordinateResidual",
     "SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTopology.establishedCuspPulledBackMarkedInvariantBasisData",
-    "SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established.normalizedPolarHoneycombPhaseGeometry",
-    "SphereSixComplex.Geometry.PaperAnalyticData.establishedActualEllipticRelatorNormalClosureResidual"
+    "SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established.normalizedPolarHoneycombPhaseGeometry"
   ],
   "enable_nanoda": false
 }

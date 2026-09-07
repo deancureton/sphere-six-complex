@@ -1,0 +1,21 @@
+module
+
+public import SphereSixComplex.Topology.CellularNormalizedFoundation
+
+@[expose] public section
+noncomputable section
+namespace SphereSixComplex
+
+namespace EstablishedCellularHomology
+
+/-- The cellular model with canonical point and interval orientations. -/
+public noncomputable def integralCWCellularHomologyModel
+    (Y : Type) [TopologicalSpace Y] [T2Space Y]
+    [Topology.CWComplex (Set.univ : Set Y)] :
+    IntegralCWCellularHomologyModel Y :=
+  IntegralCWCellularHomologyFoundation.objectwiseModel
+    integralCWCellularHomologyFoundation.normalized Y
+
+end EstablishedCellularHomology
+
+end SphereSixComplex

@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Topology.CellularHomologyClassicalBoundary
+public import SphereSixComplex.Topology.CellularHomologyNormalizedModel
 public import Mathlib.Topology.CWComplex.Classical.Finite
 public import Mathlib.Algebra.Category.Grp.EpiMono
 public import Mathlib.Algebra.Category.Grp.Zero

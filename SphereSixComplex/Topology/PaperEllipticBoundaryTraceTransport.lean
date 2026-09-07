@@ -103,4 +103,23 @@ public theorem fundamentalGroupToMulOpposite_fiberBaseEq
   simp only [Topology.fundamentalGroupMulEquivOfEq_apply,
     Path.Homotopic.Quotient.cast_rfl_rfl]
 
+public theorem IsCoveringMap.exists_path_lift_of_monodromy_eq
+    {E X : Type*} [TopologicalSpace E] [TopologicalSpace X] {p : C(E, X)}
+    (hp : IsCoveringMap p) {x y : X} (W : Path x y)
+    (ex : p ⁻¹' {x}) (ey : p ⁻¹' {y})
+    (h : hp.monodromy (Path.Homotopic.Quotient.mk W) ex = ey) :
+    ∃ Q : Path ex.val ey.val,
+      (Q.map p.continuous).cast ex.property.symm ey.property.symm = W := by
+  let L := hp.liftPath W ex.val (W.source.trans ex.property.symm)
+  have hend : L 1 = ey.val := congrArg Subtype.val h
+  let Q : Path ex.val ey.val := {
+    toFun := L
+    continuous_toFun := L.continuous
+    source' := hp.liftPath_zero W ex.val (W.source.trans ex.property.symm)
+    target' := hend }
+  refine ⟨Q, ?_⟩
+  apply Path.ext
+  funext t
+  exact congrFun (hp.liftPath_lifts W ex.val (W.source.trans ex.property.symm)) t
+
 end SphereSixComplex

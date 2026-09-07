@@ -574,17 +574,6 @@ public theorem attachingDegree_eq_homologicalAttachingMapDegree
 
 end IntegralCWCellularHomologyFoundation
 
-namespace EstablishedCellularHomology
-
-/-- The old accessor, now derived from the single functorial skeletal-relative foundation. -/
-public noncomputable def integralCWCellularHomologyModel
-    (Y : Type) [TopologicalSpace Y] [T2Space Y]
-    [Topology.CWComplex (Set.univ : Set Y)] :
-    IntegralCWCellularHomologyModel Y :=
-  IntegralCWCellularHomologyFoundation.objectwiseModel
-    integralCWCellularHomologyFoundation Y
-
-end EstablishedCellularHomology
 
 end SphereSixComplex
 

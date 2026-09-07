@@ -65,7 +65,7 @@ axiom SphereSixComplex.compactCOneManifoldFiniteCWModelAtDimension : (E X : Type
                   CompactSpace X → SphereSixComplex.FiniteCWModelOfDimension (Module.finrank ℝ E) X
 axiom SphereSixComplex.integralCWCellularHomologyFoundation : SphereSixComplex.IntegralCWCellularHomologyFoundation
 
-# Transitional paper-specific geometry and topology (six of seven).
+# Transitional paper-specific geometry and topology.
 axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberIndependentIncidenceResidual : ∀
   {E : SphereSixComplex.Periods.EstablishedFuchsianModularParameter}
   {D : SphereSixComplex.Periods.FuchsianPeriodLocalData E}
@@ -99,9 +99,4 @@ axiom SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established.normali
   0 < r →
     Nonempty
       { Q // SphereSixComplex.Geometry.CuspStraighteningRetraction.PolarPhaseGeometricCore M r Q.toPolarHoneycombData }
-
-# Transitional connector-invariant elliptic comparison (one of eight).
-axiom SphereSixComplex.Geometry.PaperAnalyticData.establishedActualEllipticRelatorNormalClosureResidual : ∀
-  (A : SphereSixComplex.Geometry.PaperAnalyticData),
-  Nonempty (A.ActualEllipticRelatorNormalClosureResidual A.actualCuspCentralNaturality)
 END GENERATED AXIOM CATALOG -/

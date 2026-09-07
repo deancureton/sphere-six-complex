@@ -18,8 +18,8 @@ a standard theorem in its usual generality, is independently auditable without u
 paper, and replaces a genuinely infeasible foundational development.  A specialized corollary,
 even when mathematically true, is never an admissible blackbox.
 
-The present final theorem uses fourteen project axioms: seven retained classical inputs and seven
-transitional dependencies. The task is to replace the seven transitional declarations by theorems.
+The present final theorem uses thirteen project axioms: seven retained classical inputs and six
+transitional dependencies. The task is to replace the six transitional declarations by theorems.
 The analytic correction is proved, the cellular input has been strengthened in place, the former combined manifold-homology package
 is now derived from general Poincare duality, UCT, and smooth triangulation, and the analytic
 correction is derived from the proved Cauchy–Green/Cousin theorem. Adding files,
@@ -137,7 +137,7 @@ constant types; reviewers must also inspect the definitions those types mention.
 | Poincare duality | [Hatcher, Chapter 3, Theorem 3.30](https://pi.math.cornell.edu/~hatcher/AT/ATch3.pdf). Closed oriented manifolds, integral coefficients, and complementary degrees. `SmoothAtlasOrientation` includes the dimension equality and orientation-preserving transition derivatives. Only additive equivalences are asserted. |
 | Cohomological UCT | [Hatcher, Chapter 3, Section 3.1](https://pi.math.cornell.edu/~hatcher/AT/ATch3.pdf). The cohomology is that of the integral singular cochain complex and the obstruction is actual derived `Ext¹` over the integers. The positive-degree splitting is noncanonical. |
 
-This audit does not approve the seven transitional axioms. The former analytic declaration is
+This audit does not approve the six transitional axioms. The former analytic declaration is
 now proved using only Lean's standard logical axioms and has been removed from both allowlists.
 
 No additional blackbox may be added silently. A candidate is permitted only when it is a standard,
@@ -176,7 +176,7 @@ There are five largely independent implementation tracks:
 - **A: analytic descent** - the affine-line torsor correction at the orbifold cusp.
 
 The recognition and analytic tracks are complete and should remain stable while T and S remove
-the seven transitional axioms.
+the six transitional axioms.
 
 ## Dependency work items
 
@@ -194,13 +194,14 @@ and Comparator passes.
 | 6 | `EstablishedCellularHomology.integralCWCellularHomologyModel` | proved from blackbox 5 | The old objectwise accessor is now a definition derived from `integralCWCellularHomologyFoundation`, whose basis is carried by the characteristic maps and whose singular-homology comparison is natural for cellular maps. |
 | 7 | `Periods.establishedOrbifoldAffineLineTorsorCuspBoundedCousinCorrection` | proved, no analytic blackbox | Whole-group affine transport, regular and elliptic local sections, the precisely invariant cusp section, and an explicit `Option ℂ` quotient cover are constructed. Distinct overlaps avoid the branch values, so their normalized differences descend to analytic scalar cocycles. The proved arbitrary-cover Cousin theorem supplies an `O(-1)`-normalized splitting; corrected local sections glue to a global equivariant holomorphic section. The resulting infinity germ and parabolic invariance give the bound on the whole closed cusp. The assembled theorem and original accessor use only the three standard Lean axioms. |
 | 8 | `establishedStandardA2ToricCentralOrbitCellAtlas` | **proved (T)** | Explicit characteristic maps in dimensions zero through four satisfy continuity, inverse continuity, disjointness, boundary attachments, and full coverage. The resulting atlas is transported from `constructedModel` to every allowed toric model by the canonical central-orbit homeomorphism. Its axiom audit contains only Lean’s standard three axioms. |
-| 9 | `establishedStandardA2ToricCentralFiberIndependentIncidenceResidual` | eliminate (T+CF) | The strengthened foundation now reduces each coefficient to the homological degree of the actual characteristic attaching map. Row 8 must first identify the atlas `cellMap` fields with the explicit toric maps. Then compute the 24 independent degrees (beginning with the oriented interval boundary for edge 0) and derive the remaining four entries from \(d^2=0\). |
+| 9 | `establishedStandardA2ToricCentralFiberIndependentIncidenceResidual` | eliminate (T+CF) | The strengthened foundation now reduces each coefficient to the homological degree of the actual characteristic attaching map. The atlas is explicit. Canonical orientations are derived from singular chains, and all six edge coefficients and all nine phase-two-cell coefficients are proved. The coordinate-table bridge is proved. It remains to compute the positive two-cell and the three/four-cell attaching degrees. |
 | 10 | `establishedFiniteFiberGeneratorSpecializationMatrix` | eliminate (S+T+CF) | The natural cellular-to-singular comparison is now available. Prove the relevant inclusions are cellular and compute their images in the characteristic-cell basis; this simultaneously fixes the degree-one normalized coordinates and the four degree-two entries. |
 | 11 | `EstablishedSectionSevenAffineRegularLiftTopology.markedBandHomotopies` | eliminate (S) | The former attempt to deduce the identity-sheet Cayley bounds from `starSeparation` is false: valid separation radii can be shrunk below both positive pinned norms. The entering-sheet group calculation is now proved: each order-three or order-four entering sheet is an elliptic-stabilizer multiple of the inverse common peripheral conjugator. The remaining point-set work is to identify the extracted local Cayley meridian with the corresponding geometric central meridian and to prove that translation by this common conjugator transports both finite-cover markings. The existing clopen-sheet and endpoint-gauge theorems then give the band homotopies. No identity-sheet bound is a valid target. |
 | 12 | `EstablishedSectionSevenCuspTopology.establishedCuspPulledBackMarkedInvariantBasisData` | **rejected; correct and eliminate (S)** | `CuspFourthSweepCentralImage` proves the actual raw-five pulled-back boundary is zero and formally negates this package. The negation uses standard Lean axioms, cellular homology, and two remaining toric inputs; the explicit sweep's boundary vanishing itself uses only standard axioms. The paper's Theorem 7.22 says raw four (third period) has primitive boundary, raw five (fourth period) has zero boundary. The current package reverses these roles. Prove the raw-four signed boundary, correct the marked Wang coordinate and the first two Section 7 coordinates, and remove the rejected axiom. |
 | 13 | `EstablishedSectionSevenCuspTopology.establishedActualCuspFiberEllipticMarkedCoordinateResidual` | **correct and eliminate (S)** | Its degree-two index-four fibre-unit requirement follows the same reversed marking as row 12. The paper instead uses the fourth-period/raw-five sweep as a primitive fibre-coordinate class when the twist parameter is a unit. Prove this via the invariant circle sweep and the meridian's degree-one coordinate, including compatibility with the toric specialization-kernel normalization. The corrected coordinate change is `[x5,x4,-x0,-x1,-x2,x3]`. Do not introduce a replacement axiom merely to hide the mismatch. |
-| 14 | `StandardInfiniteA2ToricModel.Established.normalizedPolarHoneycombPhaseGeometry` | eliminate (T) | Replace the impossible pinned logarithmic coordinate with the nonnegative toric/PL model below. The explicit modulus now proves that contractibility of the full local carrier implies contractibility of the positive locus; construct that global contraction, the honeycomb homeomorphism, and a relative CW structure on the positive-deck quotient. Existing invariant-modulus and stabilizer theorems then supply the complete phase-geometric core. |
-| 15 | `PaperAnalyticData.establishedActualEllipticRelatorNormalClosureResidual` | eliminate (S) | Connector-invariance reduces this to trace-compatible free homotopies from the projected regular filling loops to the expected affine relators. Axiom-clean local-degree arguments identify the order-three and order-four raw base loops with the inverse marked meridians cubed and fourth-powered. Both actual regular loops are identified pointwise in punctured real-period product coordinates and split endpoint-relatively into fibre-then-base paths. The order-three fibre factor is now explicitly swept from its local principal-gauge period to the corrected global cusp period, and the order-three base factor already reaches the zero-section triple. Their individual free-loop traces are not yet the same: the fibre sweep currently uses a path-connectedness witness while the base sweep uses the cubic zero-section trace and marked cusp whisker. Rebuild them over one common trace, or construct the whole-relator homotopy directly; unrelated conjugators are insufficient. For order four the remaining synchronization is still the single class-level transported-period identity. |
+| 14 | `StandardInfiniteA2ToricModel.Established.normalizedPolarHoneycombPhaseGeometry` | eliminate (T) | The corrected global honeycomb homeomorphism is proved from compatible finite quotient charts and a locally finite closed hexagonal cover. Its construction uses only standard Lean axioms and replaces the `honeycombCells` input. Remaining: contractibility of the full positive locus (for example via global moment coordinates) and a relative CW structure on the positive-deck quotient. Existing invariant-modulus and stabilizer theorems supply the remaining phase-geometric core. |
+| 15 | `PaperAnalyticData.establishedActualEllipticRelatorNormalClosureResidual` | **proved (S)** | Both orders use the entering sheet of the existing comparison homotopy's own lifted trace. Literal straight-fibre loops are identified with their labelled regular-family periods; transport along that same trace proves the corrected period identities and both normal-closure statements. The resulting theorem uses only standard Lean axioms. |
+
 
 ### Confirmed cusp marking mismatch
 
@@ -374,7 +375,7 @@ Each work session should select one row and record:
 - the next unconditional theorem to prove;
 - whether that theorem directly closes the row or which listed milestone remains;
 - any counterexample discovered to the proposed route;
-- the resulting change, if any, in the seven-item transitional count.
+- the resulting change, if any, in the six-item transitional count.
 
 If a route is false, first prove or document the counterexample, update this plan, and remove the
 dead route from active work. The global dependency table—not file count—is the source of truth.
@@ -419,3 +420,19 @@ The orbit cell atlas is now proved, reducing the transitional count from eight t
 The cusp refutation remains unresolved; the refreshed Comparator allowlist records dependencies,
 not acceptance of the rejected cusp package. The actual elliptic comparison trace now determines
 its own entering sheet and conjugation equation in `PaperEllipticSynchronizedEnteringSheet`.
+
+## Synchronized relator and honeycomb checkpoint
+
+The actual elliptic relator axiom is replaced by a theorem, reducing the transitional count from
+seven to six. The rejected cusp marking still prevents acceptance of the remaining trust boundary.
+The global honeycomb is now constructed, removing that field from the coordinate residue.
+
+The cellular foundation's arbitrary disk orientations cannot imply a fixed nonzero signed
+incidence coefficient: `CellularOrientationAudit` proves this by reversing one dimension.
+Canonical degree-zero and degree-one orientations are now derived from point augmentation and
+the explicit interval relative singular chain. The public cellular model uses this normalized
+foundation; no new classical axiom or field was introduced. Characteristic-map naturality
+transports coefficients across atlas homeomorphisms, and all nine phase-two-cell boundary
+coefficients vanish because their attaching maps factor through embedded intervals. All six edge
+coefficients are proved from the canonical interval boundary; the coordinate-table
+conversion is also proved in `ToricCellularCoordinateIncidence`.

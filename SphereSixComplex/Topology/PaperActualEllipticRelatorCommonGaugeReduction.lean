@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Topology.PaperActualEllipticRelatorNormalClosure
+public import SphereSixComplex.Topology.PaperActualEllipticRelatorNormalClosureTypes
 public import SphereSixComplex.Topology.PaperActualEllipticOrderFourRelatorComparison
 
 /-!
