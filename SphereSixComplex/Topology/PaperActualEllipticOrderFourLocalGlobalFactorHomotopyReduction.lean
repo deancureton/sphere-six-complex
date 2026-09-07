@@ -403,6 +403,18 @@ public theorem OrderFourLocalGlobalFactorPointSetComparison.relator_mem_normalCl
   exact (h.toRegularLoopChartIdentity A).toWholeFillingRelatorChartIdentity A
     |>.relator_mem_normalClosure A
 
+/-- The corrected-period transport identity is the only input needed for the actual
+order-four normal-closure statement. -/
+public theorem OrderFourCorrectedPeriodTransportIdentity.relator_mem_normalClosure
+    (h : A.OrderFourCorrectedPeriodTransportIdentity) :
+    (A.coreDataOf A.actualCuspCentralNaturality).rhoTwo ^ 4 *
+        (Additive.toMul
+          ((A.coreDataOf A.actualCuspCentralNaturality).translation epsilon'))⁻¹ ∈
+      Subgroup.normalClosure
+        {A.actualEllipticFourOverlapToCore
+          A.orderFourActualEllipticCanonicalRelator} := by
+  exact (h.toLocalGlobalFactorPointSetComparison A).relator_mem_normalClosure A
+
 end SphereSixComplex.Geometry.PaperAnalyticData
 
 end

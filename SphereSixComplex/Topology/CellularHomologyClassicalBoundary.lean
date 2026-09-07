@@ -3,6 +3,7 @@ module
 public import SphereSixComplex.Topology.MayerVietoris
 public import Mathlib.Topology.CWComplex.Classical.Finite
 public import Mathlib.Algebra.Homology.HomologySequence
+public import Mathlib.Algebra.Homology.HomologySequenceLemmas
 public import Mathlib.Algebra.Homology.HomologicalComplexAbelian
 public import Mathlib.CategoryTheory.Abelian.Exact
 
@@ -188,6 +189,96 @@ public noncomputable def relativeChainMap
 
 end IntegralCWCharacteristicPairMap
 
+public def integralCWCharacteristicPairMap
+    (X : Type) [TopologicalSpace X] [T2Space X]
+    [Topology.CWComplex (Set.univ : Set X)] (n : ℕ)
+    (e : Topology.CWComplex.cell (Set.univ : Set X) n) :
+    IntegralCWCharacteristicPairMap X n e where
+  boundaryMap := TopCat.ofHom
+    ⟨fun x : CWCharacteristicBoundarySphere n ↦ ⟨Topology.CWComplex.map n e x.1,
+      Topology.RelCWComplex.cellFrontier_subset_skeletonLT n e ⟨x.1, x.2, rfl⟩⟩,
+      by
+        apply Continuous.subtype_mk
+        exact ((Topology.CWComplex.continuousOn n e).mono
+          Metric.sphere_subset_closedBall).domRestrict⟩
+  diskMap := TopCat.ofHom
+    ⟨fun x : CWCharacteristicClosedBall n ↦ ⟨Topology.CWComplex.map n e x.1,
+      by
+        have h := Topology.CWComplex.closedCell_subset_skeletonLT
+          (C := (Set.univ : Set X)) n e ⟨x.1, x.2, rfl⟩
+        rw [show ((n + 1 : ℕ) : ℕ∞) = (n : ℕ∞) + 1 by simp]
+        exact h⟩,
+      by
+        apply Continuous.subtype_mk
+        exact (Topology.CWComplex.continuousOn n e).domRestrict⟩
+  comm := by rfl
+  disk_apply := fun _ ↦ rfl
+  boundary_apply := fun _ ↦ rfl
+
+public theorem integralCWRelativeBoundary_comp_self
+    (X : Type) [TopologicalSpace X] [T2Space X]
+    [Topology.CWComplex (Set.univ : Set X)] (n : ℕ) :
+    integralCWRelativeBoundary X (n + 1) ≫ integralCWRelativeBoundary X n = 0 := by
+  have h : HomologicalComplex.homologyMap
+      (cwRelativeIntegralSingularChainProjection
+        (integralCWSkeletonInclusion X (n + 1))) (n + 1) ≫
+      cwRelativeIntegralSingularBoundary (integralCWSkeletonInclusion X (n + 1)) n = 0 :=
+    ShortComplex.ShortExact.comp_δ
+      (cwRelativeIntegralSingularShortComplex_shortExact
+        (integralCWSkeletonInclusion X (n + 1))) (n + 1) n
+      (ComplexShape.down_mk (n + 1) n (by omega))
+  unfold integralCWRelativeBoundary
+  rw [Category.assoc, ← Category.assoc (HomologicalComplex.homologyMap _ _) _ _,
+    h, zero_comp, comp_zero]
+
+public def cwRelativeIntegralSingularShortComplexMap
+    {A X B Y : TopCat} {i : A ⟶ X} {j : B ⟶ Y}
+    (f : CWTopologicalPairMap i j) :
+    cwRelativeIntegralSingularShortComplex i ⟶ cwRelativeIntegralSingularShortComplex j where
+  τ₁ := cwIntegralSingularChainMapObj f.left
+  τ₂ := cwIntegralSingularChainMapObj f.right
+  τ₃ := cwRelativeIntegralSingularChainMapOfPair f
+  comm₁₂ := by
+    symm
+    change cwIntegralSingularChainMapObj i ≫ cwIntegralSingularChainMapObj f.right =
+      cwIntegralSingularChainMapObj f.left ≫ cwIntegralSingularChainMapObj j
+    dsimp only [cwIntegralSingularChainMapObj]
+    rw [← Functor.map_comp, f.comm, Functor.map_comp]
+  comm₂₃ := by
+    symm
+    change cwRelativeIntegralSingularChainProjection i ≫
+      cwRelativeIntegralSingularChainMapOfPair f =
+      cwIntegralSingularChainMapObj f.right ≫ cwRelativeIntegralSingularChainProjection j
+    exact cokernel.π_desc _ _ _
+
+public theorem cwRelativeIntegralSingularBoundary_natural
+    {A X B Y : TopCat} {i : A ⟶ X} {j : B ⟶ Y} [Mono i] [Mono j]
+    (f : CWTopologicalPairMap i j) (n : ℕ) :
+    cwRelativeIntegralSingularBoundary i n ≫
+        HomologicalComplex.homologyMap (cwIntegralSingularChainMapObj f.left) n =
+      HomologicalComplex.homologyMap (cwRelativeIntegralSingularChainMapOfPair f) (n + 1) ≫
+        cwRelativeIntegralSingularBoundary j n :=
+  HomologicalComplex.HomologySequence.δ_naturality
+    (cwRelativeIntegralSingularShortComplexMap f)
+    (cwRelativeIntegralSingularShortComplex_shortExact i)
+    (cwRelativeIntegralSingularShortComplex_shortExact j)
+    (n + 1) n (ComplexShape.down_mk (n + 1) n (by omega))
+
+public theorem integralCWCharacteristicBoundary_natural
+    (X : Type) [TopologicalSpace X] [T2Space X]
+    [Topology.CWComplex (Set.univ : Set X)] (n : ℕ)
+    (e : Topology.CWComplex.cell (Set.univ : Set X) (n + 1)) :
+    cwRelativeIntegralSingularBoundary (cwCharacteristicBoundaryInclusion (n + 1)) n ≫
+        HomologicalComplex.homologyMap
+          (cwIntegralSingularChainMapObj (integralCWCharacteristicPairMap X (n + 1) e).boundaryMap) n =
+      HomologicalComplex.homologyMap
+          (integralCWCharacteristicPairMap X (n + 1) e).relativeChainMap (n + 1) ≫
+        cwRelativeIntegralSingularBoundary (integralCWSkeletonInclusion X (n + 1)) n :=
+  cwRelativeIntegralSingularBoundary_natural
+    { left := (integralCWCharacteristicPairMap X (n + 1) e).boundaryMap
+      right := (integralCWCharacteristicPairMap X (n + 1) e).diskMap
+      comm := (integralCWCharacteristicPairMap X (n + 1) e).comm } n
+
 /-- A cellular map preserves every stage of the skeletal filtration. -/
 public def IsIntegralCWCellularMap
     {X Y : Type} [TopologicalSpace X] [T2Space X]
@@ -256,13 +347,6 @@ public structure IntegralCWCellularHomologyFoundation where
   diskOrientation : ∀ n,
     (CWRelativeIntegralSingularChainComplex
       (cwCharacteristicBoundaryInclusion n)).homology n ≃+ ℤ
-  characteristicPair : ∀ (X : Type) [TopologicalSpace X] [T2Space X]
-    [Topology.CWComplex (Set.univ : Set X)] (n : ℕ)
-    (e : Topology.CWComplex.cell (Set.univ : Set X) n),
-      IntegralCWCharacteristicPairMap X n e
-  boundary_comp_zero : ∀ (X : Type) [TopologicalSpace X] [T2Space X]
-    [Topology.CWComplex (Set.univ : Set X)] (n : ℕ),
-      integralCWRelativeBoundary X (n + 1) ≫ integralCWRelativeBoundary X n = 0
   cellBasis : ∀ (X : Type) [TopologicalSpace X] [T2Space X]
     [Topology.CWComplex (Set.univ : Set X)] (n : ℕ),
       (Topology.CWComplex.cell (Set.univ : Set X) n →₀ ℤ) ≃+
@@ -274,39 +358,19 @@ public structure IntegralCWCellularHomologyFoundation where
         ConcreteCategory.hom
           ((CWRelativeIntegralSingularChainComplex
             (cwCharacteristicBoundaryInclusion n)).homologyMap
-              (characteristicPair X n e).relativeChainMap n)
+              (integralCWCharacteristicPairMap X n e).relativeChainMap n)
           ((diskOrientation n).symm 1)
-  boundary_coefficient_eq_attaching_degree :
-    ∀ (X : Type) [TopologicalSpace X] [T2Space X]
-    [Topology.CWComplex (Set.univ : Set X)] (n : ℕ)
-    (e : Topology.CWComplex.cell (Set.univ : Set X) (n + 1))
-    (e' : Topology.CWComplex.cell (Set.univ : Set X) n),
-      ((cellBasis X n).symm
-        (ConcreteCategory.hom (integralCWRelativeBoundary X n)
-          (cellBasis X (n + 1) (Finsupp.single e 1)))) e' =
-      ((cellBasis X n).symm
-        (ConcreteCategory.hom
-          (HomologicalComplex.homologyMap
-              (cwIntegralSingularChainMapObj
-                (characteristicPair X (n + 1) e).boundaryMap) n ≫
-            HomologicalComplex.homologyMap
-              (cwRelativeIntegralSingularChainProjection
-                (integralCWSkeletonInclusion X n)) n)
-          (ConcreteCategory.hom
-            (cwRelativeIntegralSingularBoundary
-              (cwCharacteristicBoundaryInclusion (n + 1)) n)
-            ((diskOrientation (n + 1)).symm 1)))) e'
   homologyEquiv : ∀ (X : Type) [TopologicalSpace X] [T2Space X]
     [Topology.CWComplex (Set.univ : Set X)] (n : ℕ),
-      (integralCWSkeletalChainComplex X (boundary_comp_zero X)).homology n ≃+
+      (integralCWSkeletalChainComplex X (integralCWRelativeBoundary_comp_self X)).homology n ≃+
         IntegralSingularHomology n X
   cellularChainMap : ∀ {X Y : Type} [TopologicalSpace X] [T2Space X]
     [Topology.CWComplex (Set.univ : Set X)]
     [TopologicalSpace Y] [T2Space Y]
     [Topology.CWComplex (Set.univ : Set Y)]
     (f : C(X, Y)) (_hf : IsIntegralCWCellularMap f),
-      integralCWSkeletalChainComplex X (boundary_comp_zero X) ⟶
-        integralCWSkeletalChainComplex Y (boundary_comp_zero Y)
+      integralCWSkeletalChainComplex X (integralCWRelativeBoundary_comp_self X) ⟶
+        integralCWSkeletalChainComplex Y (integralCWRelativeBoundary_comp_self Y)
   cellularChainMap_f : ∀ {X Y : Type} [TopologicalSpace X] [T2Space X]
     [Topology.CWComplex (Set.univ : Set X)]
     [TopologicalSpace Y] [T2Space Y]
@@ -318,7 +382,7 @@ public structure IntegralCWCellularHomologyFoundation where
     [TopologicalSpace Y] [T2Space Y]
     [Topology.CWComplex (Set.univ : Set Y)]
     (f : C(X, Y)) (hf : IsIntegralCWCellularMap f) (n : ℕ),
-      (integralCWSkeletalChainComplex X (boundary_comp_zero X)).homologyMap
+      (integralCWSkeletalChainComplex X (integralCWRelativeBoundary_comp_self X)).homologyMap
           (cellularChainMap f hf) n ≫ (homologyEquiv Y n).toAddCommGrpIso.hom =
         (homologyEquiv X n).toAddCommGrpIso.hom ≫
           ((singularHomologyFunctor AddCommGrpCat n).obj
@@ -326,7 +390,7 @@ public structure IntegralCWCellularHomologyFoundation where
   cellularChainMap_id : ∀ (X : Type) [TopologicalSpace X] [T2Space X]
     [Topology.CWComplex (Set.univ : Set X)],
       cellularChainMap (ContinuousMap.id X) (isIntegralCWCellularMap_id X) =
-        𝟙 (integralCWSkeletalChainComplex X (boundary_comp_zero X))
+        𝟙 (integralCWSkeletalChainComplex X (integralCWRelativeBoundary_comp_self X))
   cellularChainMap_comp : ∀ {X Y Z : Type} [TopologicalSpace X] [T2Space X]
     [Topology.CWComplex (Set.univ : Set X)]
     [TopologicalSpace Y] [T2Space Y]
@@ -337,6 +401,23 @@ public structure IntegralCWCellularHomologyFoundation where
     (hf : IsIntegralCWCellularMap f) (hg : IsIntegralCWCellularMap g),
       cellularChainMap (g.comp f) (hg.comp hf) =
         cellularChainMap f hf ≫ cellularChainMap g hg
+
+namespace IntegralCWCellularHomologyFoundation
+
+public def characteristicPair (_T : IntegralCWCellularHomologyFoundation)
+    (X : Type) [TopologicalSpace X] [T2Space X]
+    [Topology.CWComplex (Set.univ : Set X)] (n : ℕ)
+    (e : Topology.CWComplex.cell (Set.univ : Set X) n) :
+    IntegralCWCharacteristicPairMap X n e :=
+  integralCWCharacteristicPairMap X n e
+
+public theorem boundary_comp_zero (_T : IntegralCWCellularHomologyFoundation)
+    (X : Type) [TopologicalSpace X] [T2Space X]
+    [Topology.CWComplex (Set.univ : Set X)] (n : ℕ) :
+    integralCWRelativeBoundary X (n + 1) ≫ integralCWRelativeBoundary X n = 0 :=
+  integralCWRelativeBoundary_comp_self X n
+
+end IntegralCWCellularHomologyFoundation
 
 /-- The exact accepted classical theorem. It is independent of dimension, finite type, and the
 application to the toric cusp or six-sphere. -/
@@ -405,9 +486,21 @@ public theorem attachingDegree_eq_homologicalAttachingMapDegree
     [Topology.CWComplex (Set.univ : Set Y)] (n : ℕ)
     (e : Topology.CWComplex.cell (Set.univ : Set Y) (n + 1))
     (e' : Topology.CWComplex.cell (Set.univ : Set Y) n) :
-    T.attachingDegree Y n e e' = T.homologicalAttachingMapDegree Y n e e' :=
-  IntegralCWCellularHomologyFoundation.boundary_coefficient_eq_attaching_degree
-    T Y n e e'
+    T.attachingDegree Y n e e' = T.homologicalAttachingMapDegree Y n e e' := by
+  unfold IntegralCWCellularHomologyFoundation.attachingDegree
+    IntegralCWCellularHomologyFoundation.homologicalAttachingMapDegree
+  apply congrArg (fun y ↦ (T.cellBasis Y n).symm y e')
+  rw [T.cellBasis_single]
+  change ConcreteCategory.hom
+      (HomologicalComplex.homologyMap
+          (integralCWCharacteristicPairMap Y (n + 1) e).relativeChainMap (n + 1) ≫
+        (cwRelativeIntegralSingularBoundary (integralCWSkeletonInclusion Y (n + 1)) n ≫
+          HomologicalComplex.homologyMap
+            (cwRelativeIntegralSingularChainProjection (integralCWSkeletonInclusion Y n)) n))
+      ((T.diskOrientation (n + 1)).symm 1) = _
+  rw [← Category.assoc, ← integralCWCharacteristicBoundary_natural, Category.assoc]
+  rfl
+
 
 end IntegralCWCellularHomologyFoundation
 

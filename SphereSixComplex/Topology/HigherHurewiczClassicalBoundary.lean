@@ -64,13 +64,51 @@ public structure HigherHurewiczMap where
       homomorphism n Y (f x)
           (Additive.ofMul (homotopyGroupMap f x (Additive.toMul a))) =
         integralSingularHomologyMap n f (homomorphism n X x a)
-  sphere_realization :
-    ∀ (n : ℕ) [Nontrivial (Fin n)]
-      (X : Type) [TopologicalSpace X] (x : X)
-      (a : Additive (HomotopyGroup.Pi n X x)),
-      ∃ f : C((TopCat.sphere n : Type), X),
-        ∃ s : IntegralSingularHomology n (TopCat.sphere n : Type),
-          integralSingularHomologyMap n f s = homomorphism n X x a
+public theorem HigherHurewiczMap.eq_of_genLoop_coe_eq
+    (H : HigherHurewiczMap) (n : ℕ) [Nontrivial (Fin n)]
+    (X : Type) [TopologicalSpace X] {x y : X}
+    (p : Ω^ (Fin n) X x) (q : Ω^ (Fin n) X y) (h : p.1 = q.1) :
+    H.homomorphism n X x (Additive.ofMul ⟦p⟧) =
+      H.homomorphism n X y (Additive.ofMul ⟦q⟧) := by
+  have hxy : x = y := by
+    have hb : (fun _ : Fin n ↦ (0 : I)) ∈ Cube.boundary (Fin n) :=
+      ⟨Classical.arbitrary (Fin n), Or.inl rfl⟩
+    exact (p.property _ hb).symm.trans
+      ((DFunLike.congr_fun h _).trans (q.property _ hb))
+  subst y
+  have hp : p = q := Subtype.ext h
+  subst q
+  rfl
+
+public theorem HigherHurewiczMap.sphere_realization
+    (H : HigherHurewiczMap) (n : ℕ) [Nontrivial (Fin n)]
+    (X : Type) [TopologicalSpace X] (x : X)
+    (a : Additive (HomotopyGroup.Pi n X x)) :
+    ∃ f : C((TopCat.sphere n : Type), X),
+      ∃ s : IntegralSingularHomology n (TopCat.sphere n : Type),
+        integralSingularHomologyMap n f s = H.homomorphism n X x a := by
+  obtain ⟨p, hp⟩ := Quotient.exists_rep (Additive.toMul a)
+  have ha : a = Additive.ofMul ⟦p⟧ := congrArg Additive.ofMul hp.symm
+  rw [ha]
+  let : NeZero n := ⟨by
+    have := Fin.nontrivial_iff_two_le.mp (inferInstance : Nontrivial (Fin n))
+    omega⟩
+  let e := cubicalSphereHomeomorphTopCatSphere n
+  let b := e (cubicalSphereBasepoint (Fin n))
+  let q : Ω^ (Fin n) (TopCat.sphere n : Type) b :=
+    ⟨(⟨e, e.continuous⟩ : C(_, _)).comp (cubicalSphereMk (Fin n)), fun z hz ↦ by
+      change e (cubicalSphereMk (Fin n) z) = e (cubicalSphereBasepoint (Fin n))
+      rw [cubicalSphereMk_eq_basepoint_of_mem_boundary hz]⟩
+  let f : C((TopCat.sphere n : Type), X) :=
+    (genLoopToCubicalSphereMap p).comp ⟨e.symm, e.symm.continuous⟩
+  refine ⟨f, H.homomorphism n _ b (Additive.ofMul ⟦q⟧), ?_⟩
+  rw [← H.naturality]
+  apply H.eq_of_genLoop_coe_eq
+  ext z
+  change genLoopToCubicalSphereMap p (e.symm (e (cubicalSphereMk (Fin n) z))) = p z
+  rw [e.symm_apply_apply]
+  rfl
+
 
 /-- The usual higher Hurewicz isomorphism property. The explicit inequality excludes the
 degree-one abelianization theorem. -/

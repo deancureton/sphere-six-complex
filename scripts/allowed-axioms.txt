@@ -2,7 +2,7 @@
 #
 # In addition to Lean's three standard logical axioms, the current closure contains seven retained
 # source-independent classical blackboxes and nine transitional construction-specific axioms.
-# The cellular, Poincare-duality, UCT, and smooth-triangulation entries are now general theorems;
+# The cellular, Poincare-duality, UCT, and smooth-triangulation assumptions have general statements;
 # the final target replaces the analytic correction by general Cartan B. Every
 # declaration in a transitional section remains a proof obligation; renaming or moving one does
 # not eliminate it.
