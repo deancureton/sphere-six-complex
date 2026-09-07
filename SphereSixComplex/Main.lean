@@ -650,6 +650,13 @@ public import SphereSixComplex.Topology.RegularPeriodCircleSideSupport
 public import SphereSixComplex.Topology.ToricCellAtlasIncidenceTransport
 public import SphereSixComplex.Topology.ToricCellularCoordinateIncidence
 
+public import SphereSixComplex.Topology.OrthantHalfSpace
+public import SphereSixComplex.Topology.CircleSweepWhiskerHomotopy
+public import SphereSixComplex.Topology.ClosedCollarPush
+public import SphereSixComplex.Topology.ConstructedA2PositiveRelativeCWCompletion
+public import SphereSixComplex.Topology.PaperSectionSevenAffineGlobalEnteringSheets
+public import SphereSixComplex.Topology.CuspThirdSweep
+
 /-!
 # A Complex Structure on the Six-Sphere
 

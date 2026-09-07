@@ -1,5 +1,6 @@
 module
 public import SphereSixComplex.Topology.CuspFourthCircle
+public import SphereSixComplex.Topology.CuspFixedCircleSweep
 public import SphereSixComplex.Topology.CentralInvariantCircleBoundary
 public import SphereSixComplex.Topology.CuspWangKernel
 /-! The actual fourth-period cusp sweep factors through the global invariant circle action and has zero elliptic Mayer–Vietoris boundary. Raw index five has the same Wang class. This refutes the current marked invariant-basis residual, whose index-five coefficient is asserted to be one; the paper assigns the nonzero boundary to the third-period sweep instead. -/
@@ -79,18 +80,9 @@ open SphereSixComplex.Topology.FixedTopologicalCircleWangBoundary
 open SphereSixComplex.Topology.CircleProductIdentityMappingTorus
 open SphereSixComplex.CyclicAngularFundamentalDomain
 public def actualCuspFourthSweep (A : PaperAnalyticData) :
-    C(UnitAddCircle × StdTorus 1, A.openEmbeddingStarData.collarSource 0) := by
-  let G := CuspRadialClutchingConstruction.actualCuspRadialClutchingData A.starCuspWitness
-  letI := G.fiberTopology
-  let rho : OpenRadialInterval A.starCuspWitness.localWitness.radius :=
-    ⟨A.starCuspWitness.localWitness.radius / 2, by
-      have := A.starCuspWitness.localWitness.radius_pos
-      constructor <;> linarith⟩
-  exact (⟨G.totalHomeomorph.symm, G.totalHomeomorph.symm.continuous⟩ : C(_, _)).comp
-    ((ContinuousMap.const _ rho).prodMk
-      (fixedLoopMappingTorusMap (cuspFiberClutching _)
-        (cuspFourthFixedCircle (cuspBasePoint A.cuspCoordinate
-          (markedCuspParameter A.starCuspWitness)))))
+    C(UnitAddCircle × StdTorus 1, A.openEmbeddingStarData.collarSource 0) :=
+  actualCuspFixedCircleSweep A (cuspFourthFixedCircle (cuspBasePoint A.cuspCoordinate
+    (markedCuspParameter A.starCuspWitness)))
 
 public theorem actualCuspFourthSweep_real (A : PaperAnalyticData) (r : ℝ)
     (z : StdTorus 1) :
@@ -101,26 +93,8 @@ public theorem actualCuspFourthSweep_real (A : PaperAnalyticData) (r : ℝ)
               have := A.starCuspWitness.localWitness.radius_pos; linarith)]
             have := A.starCuspWitness.localWitness.radius_pos; linarith)
         (cuspFourthCircle (cuspBasePoint A.cuspCoordinate
-          (markedCuspParameter A.starCuspWitness)) z) := by
-  have h := circleProductRealMappingTorusHomeomorph_real (X := StdTorus 1) (r, z)
-  change circleProductRealMappingTorusHomeomorph ((r : UnitAddCircle), z) = _ at h
-  apply (puncturedLocalCuspQuotientHomeomorph A.starCuspWitness
-    (markedCuspParameter A.starCuspWitness)).injective
-  change (puncturedLocalCuspQuotientHomeomorph A.starCuspWitness _)
-      ((puncturedLocalCuspQuotientHomeomorph A.starCuspWitness _).symm _) =
-    (puncturedLocalCuspQuotientHomeomorph A.starCuspWitness _)
-      ((puncturedLocalCuspQuotientHomeomorph A.starCuspWitness _).symm _)
-  erw [Homeomorph.apply_symm_apply, Homeomorph.apply_symm_apply]
-  apply Prod.ext
-  · apply Subtype.ext
-    exact (norm_cuspQ_cuspParameterOfPolar (A.starCuspWitness.localWitness.radius / 2) r (by
-      have := A.starCuspWitness.localWitness.radius_pos; linarith)).symm
-  · change realMappingTorusHomeomorph _
-      (fixedLoopRealMappingTorusMap _ _
-        (circleProductRealMappingTorusHomeomorph ((r : UnitAddCircle), z))) = _
-    rw [h, fixedLoopRealMappingTorusMap_mk]
-    rfl
-
+          (markedCuspParameter A.starCuspWitness)) z) :=
+  actualCuspFixedCircleSweep_real A _ r z
 
 public theorem actualCuspFourthSweep_central (A : PaperAnalyticData)
     (u : UnitAddCircle) (z : StdTorus 1) :
@@ -257,14 +231,8 @@ public theorem actualCuspFourthSweep_to_mappingTorus (A : PaperAnalyticData) :
     A.actualCuspRadialClutchingData.totalHomotopyEquiv.toFun.comp (actualCuspFourthSweep A) =
       fixedLoopMappingTorusMap (cuspFiberClutching _)
         (cuspFourthFixedCircle (cuspBasePoint A.cuspCoordinate
-          (markedCuspParameter A.starCuspWitness))) := by
-  ext1 p
-  change ((puncturedLocalCuspQuotientHomeomorph A.starCuspWitness
-    (markedCuspParameter A.starCuspWitness))
-    ((puncturedLocalCuspQuotientHomeomorph A.starCuspWitness
-      (markedCuspParameter A.starCuspWitness)).symm _)).2 = _
-  erw [Homeomorph.apply_symm_apply]
-  rfl
+          (markedCuspParameter A.starCuspWitness))) :=
+  actualCuspFixedCircleSweep_to_mappingTorus A _
 
 public theorem actualCuspFourthSweep_wang (A : PaperAnalyticData) :
     let G := A.actualCuspRadialClutchingData

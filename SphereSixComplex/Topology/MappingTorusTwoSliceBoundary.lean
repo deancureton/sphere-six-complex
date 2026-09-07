@@ -372,11 +372,17 @@ public def twoSideLoop_homotopy {X : Type} [TopologicalSpace X] {a b : X}
     twoSideLoopReparam_zero twoSideLoopReparam_one).symm
 
 
-public def identityMappingTorusMapOfLoop_homotopy
+public def identityMappingTorusMapOfLoop_freeHomotopy
     {F X : Type} [TopologicalSpace F] [LocallyCompactSpace F] [TopologicalSpace X]
-    {c : C(F, X)} {p q : Path c c} (H : p.Homotopy q) :
+    {c d : C(F, X)} {p : Path c c} {q : Path d d}
+    (H : p.toContinuousMap.Homotopy q.toContinuousMap)
+    (hclosed : ∀ t, H (t, 0) = H (t, 1)) :
     (identityMappingTorusMapOfLoop p).Homotopy (identityMappingTorusMapOfLoop q) where
-  toFun z := identityMappingTorusMapOfLoop (H.eval z.1) z.2
+  toFun z := identityMappingTorusMapOfLoop
+    { toFun t := H (z.1, t)
+      continuous_toFun := H.continuous.comp (continuous_const.prodMk continuous_id)
+      source' := rfl
+      target' := (hclosed z.1).symm } z.2
   continuous_toFun := by
     apply isQuotientMap_quotient_mk'.continuous_lift_prod_right
     exact continuous_eval.comp
@@ -393,6 +399,13 @@ public def identityMappingTorusMapOfLoop_homotopy
     | _ z =>
       change H (1, z.2.1) z.2.2 = q z.2.1 z.2.2
       exact DFunLike.congr_fun (H.map_one_left z.2.1) z.2.2
+
+public def identityMappingTorusMapOfLoop_homotopy
+    {F X : Type} [TopologicalSpace F] [LocallyCompactSpace F] [TopologicalSpace X]
+    {c : C(F, X)} {p q : Path c c} (H : p.Homotopy q) :
+    (identityMappingTorusMapOfLoop p).Homotopy (identityMappingTorusMapOfLoop q) :=
+  identityMappingTorusMapOfLoop_freeHomotopy H.toHomotopy
+    (fun t ↦ (H.source t).trans (H.target t).symm)
 
 
 public theorem twoSideCircleLoop_boundary

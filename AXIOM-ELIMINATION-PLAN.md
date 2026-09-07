@@ -199,7 +199,7 @@ and Comparator passes.
 | 11 | `EstablishedSectionSevenAffineRegularLiftTopology.markedBandHomotopies` | eliminate (S) | The former attempt to deduce the identity-sheet Cayley bounds from `starSeparation` is false: valid separation radii can be shrunk below both positive pinned norms. The entering-sheet group calculation is now proved: each order-three or order-four entering sheet is an elliptic-stabilizer multiple of the inverse common peripheral conjugator. The remaining point-set work is to identify the extracted local Cayley meridian with the corresponding geometric central meridian and to prove that translation by this common conjugator transports both finite-cover markings. The existing clopen-sheet and endpoint-gauge theorems then give the band homotopies. No identity-sheet bound is a valid target. |
 | 12 | `EstablishedSectionSevenCuspTopology.establishedCuspPulledBackMarkedInvariantBasisData` | **rejected; correct and eliminate (S)** | `CuspFourthSweepCentralImage` proves the actual raw-five pulled-back boundary is zero and formally negates this package. The negation uses standard Lean axioms, cellular homology, and two remaining toric inputs; the explicit sweep's boundary vanishing itself uses only standard axioms. The paper's Theorem 7.22 says raw four (third period) has primitive boundary, raw five (fourth period) has zero boundary. The current package reverses these roles. Prove the raw-four signed boundary, correct the marked Wang coordinate and the first two Section 7 coordinates, and remove the rejected axiom. |
 | 13 | `EstablishedSectionSevenCuspTopology.establishedActualCuspFiberEllipticMarkedCoordinateResidual` | **correct and eliminate (S)** | Its degree-two index-four fibre-unit requirement follows the same reversed marking as row 12. The paper instead uses the fourth-period/raw-five sweep as a primitive fibre-coordinate class when the twist parameter is a unit. Prove this via the invariant circle sweep and the meridian's degree-one coordinate, including compatibility with the toric specialization-kernel normalization. The corrected coordinate change is `[x5,x4,-x0,-x1,-x2,x3]`. Do not introduce a replacement axiom merely to hide the mismatch. |
-| 14 | `StandardInfiniteA2ToricModel.Established.normalizedPolarHoneycombPhaseGeometry` | eliminate (T) | The corrected global honeycomb homeomorphism is proved from compatible finite quotient charts and a locally finite closed hexagonal cover. Its construction uses only standard Lean axioms and replaces the `honeycombCells` input. Remaining: contractibility of the full positive locus (for example via global moment coordinates) and a relative CW structure on the positive-deck quotient. Existing invariant-modulus and stabilizer theorems supply the remaining phase-geometric core. |
+| 14 | `StandardInfiniteA2ToricModel.Established.normalizedPolarHoneycombPhaseGeometry` | eliminate (T) | The corrected global honeycomb homeomorphism is proved from compatible finite quotient charts and a locally finite closed hexagonal cover. Its construction uses only standard Lean axioms and replaces the `honeycombCells` input. The positive-deck quotient relative CW structure is now proved from the general C¹ manifold-with-corners relative triangulation theorem, using an explicit C¹ quadrant atlas, zero-height boundary identification, and smooth deck action. Remaining: contractibility of the full positive locus. Existing invariant-modulus and stabilizer theorems supply the remaining phase-geometric core. |
 | 15 | `PaperAnalyticData.establishedActualEllipticRelatorNormalClosureResidual` | **proved (S)** | Both orders use the entering sheet of the existing comparison homotopy's own lifted trace. Literal straight-fibre loops are identified with their labelled regular-family periods; transport along that same trace proves the corrected period identities and both normal-closure statements. The resulting theorem uses only standard Lean axioms. |
 
 
@@ -306,7 +306,7 @@ Work may proceed in parallel, but the preferred merge order is:
 6. **S5:** row 15, the two connector endpoint evaluations;
 7. **T1:** correct the honeycomb tile/chart convention, then prove the corrected finite quotient
    and direct nonnegative toric atlas;
-8. **T2:** row 14, positive contractibility and quotient relative CW;
+8. **T2:** row 14, positive contractibility (quotient relative CW is proved);
 9. **T3:** row 8, the complete central-orbit CW atlas;
 10. **T4:** row 9, the oriented cellular incidence table;
 11. **A1 (complete):** the finite-orbifold torsor section, normalized Cousin splitting, and cusp
@@ -436,3 +436,27 @@ transports coefficients across atlas homeomorphisms, and all nine phase-two-cell
 coefficients vanish because their attaching maps factor through embedded intervals. All six edge
 coefficients are proved from the canonical interval boundary; the coordinate-table
 conversion is also proved in `ToricCellularCoordinateIncidence`.
+
+## Positive quadrant and collar checkpoint
+
+The constructed positive locus now has a proved C¹ quadrant atlas. Its manifold boundary is
+exactly the zero-height locus, and the positive deck action is C¹. The existing general
+`establishedSecondCountableCOneManifoldWithCornersRelativeCW` theorem therefore supplies the
+quotient relative CW structure. `constructedPolarHoneycombResidualData_of_contractible`
+assembles the polar-honeycomb residual from contractibility alone. This does not yet replace
+row 14 in the headline dependency closure.
+
+`OrthantHalfSpace` identifies the three-dimensional orthant and its coordinate boundary with
+a half-space and its boundary. `ClosedCollarPush` proves that an explicit closed topological
+collar gives a homotopy equivalence with the boundary complement, and hence transfers
+contractibility from that complement. Both use only the three standard Lean axioms. No
+collar existence axiom has been added; supplying a collar and proving the actual interior
+contractible remain necessary for this route.
+
+The third-period cusp sweep now realizes raw class 4 and its actual Mayer–Vietoris boundary.
+The fourth-period circle and sweep reuse the same general construction. Generic circle
+whiskering and free two-side homotopies support the remaining two-meridian calculation.
+For each elliptic strip, one entering deck is proved to work over the entire strip, and the
+full real-period frame changes by its actual lattice action. Comparing the two strips in one
+shared marking remains open. The six transitional headline assumptions, including the
+formally rejected raw cusp boundary marking, remain unresolved at this checkpoint.
