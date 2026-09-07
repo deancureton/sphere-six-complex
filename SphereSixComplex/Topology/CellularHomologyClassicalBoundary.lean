@@ -251,6 +251,48 @@ public def cwRelativeIntegralSingularShortComplexMap
       cwIntegralSingularChainMapObj f.right ≫ cwRelativeIntegralSingularChainProjection j
     exact cokernel.π_desc _ _ _
 
+public theorem cwIntegralSingularChainMapObj_id (X : TopCat) :
+    cwIntegralSingularChainMapObj (𝟙 X) = 𝟙 _ :=
+  CategoryTheory.Functor.map_id _ _
+
+public theorem cwIntegralSingularChainMapObj_comp {X Y Z : TopCat} (f : X ⟶ Y) (g : Y ⟶ Z) :
+    cwIntegralSingularChainMapObj (f ≫ g) =
+      cwIntegralSingularChainMapObj f ≫ cwIntegralSingularChainMapObj g :=
+  Functor.map_comp _ _ _
+
+public theorem cwRelativeIntegralSingularChainProjection_natural
+    {A X B Y : TopCat} {i : A ⟶ X} {j : B ⟶ Y} (f : CWTopologicalPairMap i j) :
+    cwRelativeIntegralSingularChainProjection i ≫ cwRelativeIntegralSingularChainMapOfPair f =
+      cwIntegralSingularChainMapObj f.right ≫ cwRelativeIntegralSingularChainProjection j :=
+  (cwRelativeIntegralSingularShortComplexMap f).comm₂₃.symm
+
+public theorem cwRelativeIntegralSingularChainMapOfPair_id
+    {A X : TopCat} (i : A ⟶ X) :
+    cwRelativeIntegralSingularChainMapOfPair
+      (show CWTopologicalPairMap i i from ⟨𝟙 A, 𝟙 X, by simp⟩) = 𝟙 _ := by
+  apply Cofork.IsColimit.hom_ext (cokernelIsCokernel (cwIntegralSingularChainMapObj i))
+  change cwRelativeIntegralSingularChainProjection i ≫ _ =
+    cwRelativeIntegralSingularChainProjection i ≫ _
+  rw [cwRelativeIntegralSingularChainProjection_natural]
+  change cwIntegralSingularChainMapObj (𝟙 X) ≫ _ = _
+  rw [cwIntegralSingularChainMapObj_id, Category.id_comp, Category.comp_id]
+
+public theorem cwRelativeIntegralSingularChainMapOfPair_comp
+    {A X B Y C Z : TopCat} {i : A ⟶ X} {j : B ⟶ Y} {k : C ⟶ Z}
+    (f : CWTopologicalPairMap i j) (g : CWTopologicalPairMap j k) :
+    cwRelativeIntegralSingularChainMapOfPair
+      (show CWTopologicalPairMap i k from ⟨f.left ≫ g.left, f.right ≫ g.right, by
+        rw [← Category.assoc, f.comm, Category.assoc, g.comm, Category.assoc]⟩) =
+      cwRelativeIntegralSingularChainMapOfPair f ≫ cwRelativeIntegralSingularChainMapOfPair g := by
+  apply Cofork.IsColimit.hom_ext (cokernelIsCokernel (cwIntegralSingularChainMapObj i))
+  change cwRelativeIntegralSingularChainProjection i ≫ _ =
+    cwRelativeIntegralSingularChainProjection i ≫ _
+  rw [cwRelativeIntegralSingularChainProjection_natural, ← Category.assoc,
+    cwRelativeIntegralSingularChainProjection_natural f, Category.assoc,
+    cwRelativeIntegralSingularChainProjection_natural g]
+  change cwIntegralSingularChainMapObj (f.right ≫ g.right) ≫ _ = _
+  rw [cwIntegralSingularChainMapObj_comp, Category.assoc]
+
 public theorem cwRelativeIntegralSingularBoundary_natural
     {A X B Y : TopCat} {i : A ⟶ X} {j : B ⟶ Y} [Mono i] [Mono j]
     (f : CWTopologicalPairMap i j) (n : ℕ) :
@@ -387,22 +429,51 @@ public structure IntegralCWCellularHomologyFoundation where
         (homologyEquiv X n).toAddCommGrpIso.hom ≫
           ((singularHomologyFunctor AddCommGrpCat n).obj
             (AddCommGrpCat.of ℤ)).map (TopCat.ofHom f)
-  cellularChainMap_id : ∀ (X : Type) [TopologicalSpace X] [T2Space X]
-    [Topology.CWComplex (Set.univ : Set X)],
-      cellularChainMap (ContinuousMap.id X) (isIntegralCWCellularMap_id X) =
-        𝟙 (integralCWSkeletalChainComplex X (integralCWRelativeBoundary_comp_self X))
-  cellularChainMap_comp : ∀ {X Y Z : Type} [TopologicalSpace X] [T2Space X]
+
+namespace IntegralCWCellularHomologyFoundation
+
+public theorem cellularChainMap_id (T : IntegralCWCellularHomologyFoundation)
+    (X : Type) [TopologicalSpace X] [T2Space X]
+    [Topology.CWComplex (Set.univ : Set X)] :
+      T.cellularChainMap (ContinuousMap.id X) (isIntegralCWCellularMap_id X) =
+        𝟙 (integralCWSkeletalChainComplex X (integralCWRelativeBoundary_comp_self X)) := by
+  apply HomologicalComplex.Hom.ext
+  funext n
+  rw [T.cellularChainMap_f]
+  change integralCWRelativeCellMap _ _ n = 𝟙 _
+  unfold integralCWRelativeCellMap
+  change HomologicalComplex.homologyMap
+    (cwRelativeIntegralSingularChainMapOfPair
+      (show CWTopologicalPairMap (integralCWSkeletonInclusion X n)
+        (integralCWSkeletonInclusion X n) from ⟨𝟙 _, 𝟙 _, by simp⟩)) n = _
+  rw [cwRelativeIntegralSingularChainMapOfPair_id, HomologicalComplex.homologyMap_id]
+
+public theorem cellularChainMap_comp (T : IntegralCWCellularHomologyFoundation)
+    {X Y Z : Type} [TopologicalSpace X] [T2Space X]
     [Topology.CWComplex (Set.univ : Set X)]
     [TopologicalSpace Y] [T2Space Y]
     [Topology.CWComplex (Set.univ : Set Y)]
     [TopologicalSpace Z] [T2Space Z]
     [Topology.CWComplex (Set.univ : Set Z)]
     (f : C(X, Y)) (g : C(Y, Z))
-    (hf : IsIntegralCWCellularMap f) (hg : IsIntegralCWCellularMap g),
-      cellularChainMap (g.comp f) (hg.comp hf) =
-        cellularChainMap f hf ≫ cellularChainMap g hg
-
-namespace IntegralCWCellularHomologyFoundation
+    (hf : IsIntegralCWCellularMap f) (hg : IsIntegralCWCellularMap g) :
+      T.cellularChainMap (g.comp f) (hg.comp hf) =
+        T.cellularChainMap f hf ≫ T.cellularChainMap g hg := by
+  apply HomologicalComplex.Hom.ext
+  funext n
+  simp only [HomologicalComplex.comp_f, T.cellularChainMap_f]
+  change integralCWRelativeCellMap (g.comp f) (hg.comp hf) n =
+    integralCWRelativeCellMap f hf n ≫ integralCWRelativeCellMap g hg n
+  unfold integralCWRelativeCellMap
+  rw [← HomologicalComplex.homologyMap_comp]
+  congr 1
+  exact cwRelativeIntegralSingularChainMapOfPair_comp
+    (show CWTopologicalPairMap (integralCWSkeletonInclusion X n)
+      (integralCWSkeletonInclusion Y n) from
+      ⟨integralCWSkeletonMap f hf n, integralCWSkeletonMap f hf (n + 1), by ext x; rfl⟩)
+    (show CWTopologicalPairMap (integralCWSkeletonInclusion Y n)
+      (integralCWSkeletonInclusion Z n) from
+      ⟨integralCWSkeletonMap g hg n, integralCWSkeletonMap g hg (n + 1), by ext x; rfl⟩)
 
 public def characteristicPair (_T : IntegralCWCellularHomologyFoundation)
     (X : Type) [TopologicalSpace X] [T2Space X]
@@ -500,7 +571,6 @@ public theorem attachingDegree_eq_homologicalAttachingMapDegree
       ((T.diskOrientation (n + 1)).symm 1) = _
   rw [← Category.assoc, ← integralCWCharacteristicBoundary_natural, Category.assoc]
   rfl
-
 
 end IntegralCWCellularHomologyFoundation
 

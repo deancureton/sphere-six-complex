@@ -358,24 +358,36 @@ Each work session should select one row and record:
 If a route is false, first prove or document the counterexample, update this plan, and remove the
 dead route from active work. The global dependency table—not file count—is the source of truth.
 
-### Resume after the analytic-removal checkpoint
+### Geometric attachment and marking checkpoint
 
-- **Toric:** `ConstructedA2PhaseBallBoundary` proves all effective phases on the closed base-ball
-  boundary land in the existing two-skeleton. `ConstructedA2HexagonBoundaryPhaseGauge` constructs
-  the continuous six-edge character gauge. The next step is its actual carrier compatibility
-  with the existing real edges, then the remaining characteristic maps. Local draft
-  `/private/tmp/s6-boundary-gauge.lean` has checked square-edge character constraints; its final
-  phase-cancellation and axis-fixing additions are unverified.
-- **Cusp:** the generic circle-cross and Wang naturality machinery is integrated. Local draft
-  `/private/tmp/GlobalInvariantPeriodCircle.lean` constructs the invariant fourth-circle orbit
-  through both quotients; its final base-coordinate lemmas are unverified. Match the actual cusp
-  index-five representative modulo fibre classes and sweep the peripheral homotopy before making
-  any claim that the scalar residual is false.
-- **Elliptic:** recover first-power markings in the twice-punctured base's free fundamental group,
-  where powers are injective, before projecting to the triangle group. The remaining geometric
-  lemma identifies the local full filling base loop with the third/fourth power of its physical
-  meridian with the same entering-sheet basepoint. Existing synchronized powered homotopies are
-  in `PaperActualEllipticOrderThreeBaseFactorHomotopyProof` and
-  `PaperActualEllipticOrderFourBaseFreeHomotopyProof`. This route is an audit finding, not a proof.
+The transitional count remains eight. The following unconditional milestones use only the three
+standard Lean axioms; they do not yet eliminate their corresponding residuals.
 
-The temporary paths are local continuation notes, not trusted or imported project content.
+- **Toric:** `ConstructedA2BoundaryPhaseCancellation` and `ConstructedA2BoundaryDeckAttachment`
+  prove the phase-corrected positive two-ball's entire boundary lands in the existing real
+  one-skeleton in the actual orbit quotient. `ConstructedA2CorrectedPositiveTwoCell` proves
+  closed-ball continuity and a genuine embedding of its open interior. Complete the partial
+  equivalence and inverse continuity, then construct the three- and four-dimensional cells.
+- **Model independence:** `StandardA2ModelEquivalence` constructs a canonical homeomorphism between
+  arbitrary models, preserving charts, height, central components, torus action, and fan shear.
+  `ActualCuspCentralModelEquivalence.centralOrbitModelHomeomorph` descends it to the actual central
+  cusp quotients, including witnesses with different radii. Transport the eventual canonical
+  cell atlas along this homeomorphism to prove the general atlas interface.
+- **Cusp:** `GlobalInvariantPeriodCircle` constructs the global fourth-period circle action over
+  the twice-punctured base. `CentralInvariantCircleBoundary` proves its normalized circle-cross
+  classes have zero actual elliptic Mayer--Vietoris boundary, and extends this to product classes
+  with zero fibre projection. The raw `Fin 6` index-five class (the sixth basis vector) has Wang
+  coordinate fourth period; index four has third period. Match the actual index-five cusp
+  representative modulo fibre classes before asserting any contradiction with the scalar residual.
+  The file-checked local draft `/private/tmp/CuspFourthCircle.lean` constructs the fixed actual
+  fourth-period circle and proves its sweep has the required Wang coordinate; it is not imported.
+- **Elliptic:** `PaperEllipticBoundaryBaseMarking` proves both physical meridians' first-power
+  markings unconditionally. The local translation projects to a constant base loop; the filling
+  relation identifies the powered meridian, and unique roots in the free fundamental group
+  recover the first power. Next lift the same base path to identify its endpoint deck and
+  period transport simultaneously, then compare the whole relator.
+- **Classical boundary:** cellular-chain-map identity and composition are now derived theorems,
+  removed as fields from `IntegralCWCellularHomologyFoundation`. Their proofs use functoriality
+  of relative singular chains and homology; no additional classical assumption is introduced.
+
+Temporary paths are local continuation notes, not trusted or imported project content.

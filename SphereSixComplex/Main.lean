@@ -1,6 +1,15 @@
 module
 
 public import SphereSixComplex.ComplexStructure
+public import SphereSixComplex.Geometry.StandardA2ModelEquivalence
+public import SphereSixComplex.Topology.ActualCuspCentralModelEquivalence
+public import SphereSixComplex.Topology.CentralInvariantCircleBoundary
+public import SphereSixComplex.Topology.ConstructedA2BoundaryDeckAttachment
+public import SphereSixComplex.Topology.ConstructedA2BoundaryPhaseCancellation
+public import SphereSixComplex.Topology.ConstructedA2CorrectedPositiveTwoCell
+public import SphereSixComplex.Topology.GlobalInvariantPeriodCircle
+public import SphereSixComplex.Topology.PaperEllipticBoundaryBaseMarking
+public import SphereSixComplex.Topology.TwicePuncturedHomologyOneGenerators
 public import SphereSixComplex.Construction
 public import SphereSixComplex.Geometry.AdditiveTorusTopology
 public import SphereSixComplex.Geometry.AtlasTransport
