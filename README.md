@@ -15,6 +15,15 @@ The headline theorem is source-sorry-free. Paper-specific and classical results 
 in Mathlib are explicit axioms, documented and checked by the allowlists in `scripts/`. The two
 `sorry`s in `Challenge.lean` are the trusted Comparator challenge boundary.
 
+The current transitional assumptions contain a confirmed coordinate mismatch. The actual
+fourth-period cusp sweep has zero elliptic Mayer--Vietoris boundary, whereas
+`establishedCuspPulledBackMarkedInvariantBasisData` requires its marked coefficient to be one.
+`CuspFourthSweepCentralImage.not_cuspPulledBackMarkedInvariantBasisData` (in the
+`Geometry.PaperAnalyticData` namespace) refutes that package using other currently declared
+inputs. The paper's Theorem 7.22 assigns the nonzero boundary to the third-period sweep instead.
+The correction is in progress; Comparator passing with the current allowlist does not establish
+a consistent mathematical trust boundary. See `AXIOM-ELIMINATION-PLAN.md`.
+
 ## Build
 
 ```sh

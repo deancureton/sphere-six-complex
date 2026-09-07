@@ -17,7 +17,6 @@
     "SphereSixComplex.classicalIntegralSingularCohomologyUCT",
     "SphereSixComplex.compactCOneManifoldFiniteCWModelAtDimension",
     "SphereSixComplex.integralCWCellularHomologyFoundation",
-    "SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralOrbitCellAtlas",
     "SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberIndependentIncidenceResidual",
     "SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization.establishedFiniteFiberGeneratorSpecializationMatrix",
     "SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenAffineRegularLiftTopology.markedBandHomotopies",

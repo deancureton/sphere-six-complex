@@ -65,15 +65,7 @@ axiom SphereSixComplex.compactCOneManifoldFiniteCWModelAtDimension : (E X : Type
                   CompactSpace X → SphereSixComplex.FiniteCWModelOfDimension (Module.finrank ℝ E) X
 axiom SphereSixComplex.integralCWCellularHomologyFoundation : SphereSixComplex.IntegralCWCellularHomologyFoundation
 
-# Transitional paper-specific geometry and topology (seven of eight).
-axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralOrbitCellAtlas : {E :
-    SphereSixComplex.Periods.EstablishedFuchsianModularParameter} →
-  {D : SphereSixComplex.Periods.FuchsianPeriodLocalData E} →
-    {N : SphereSixComplex.Geometry.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate E D} →
-      {M : SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Model} →
-        (W : SphereSixComplex.Geometry.CuspPuncturedCollarBridge.ActualPuncturedCuspCollarWitness N M) →
-          SphereSixComplex.StandardA2ToricCentralFiberCellAtlas
-            (SphereSixComplex.Geometry.CuspPuncturedCollarBridge.ActualLocalCuspCentralOrbitQuotient W)
+# Transitional paper-specific geometry and topology (six of seven).
 axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberIndependentIncidenceResidual : ∀
   {E : SphereSixComplex.Periods.EstablishedFuchsianModularParameter}
   {D : SphereSixComplex.Periods.FuchsianPeriodLocalData E}

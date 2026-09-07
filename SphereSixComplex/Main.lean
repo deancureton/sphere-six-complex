@@ -611,6 +611,23 @@ public import SphereSixComplex.Topology.PaperSectionSevenCuspFullFibreNaturality
 public import SphereSixComplex.Topology.ConstructedA2HexagonBoundaryPhaseGauge
 public import SphereSixComplex.Topology.ConstructedA2PhaseBallBoundary
 
+public import SphereSixComplex.Topology.ConstructedA2CellAtlas
+public import SphereSixComplex.Topology.ConstructedA2HigherCellPartition
+public import SphereSixComplex.Topology.ConstructedA2HigherCells
+public import SphereSixComplex.Topology.ConstructedCircleCell
+public import SphereSixComplex.Topology.CuspFourthCircle
+public import SphereSixComplex.Topology.CuspFourthSweepCentralImage
+public import SphereSixComplex.Topology.CuspWangKernel
+public import SphereSixComplex.Topology.PaperCuspCentralFiberCWTypes
+public import SphereSixComplex.Topology.PaperEllipticBoundaryMeridianEndpoint
+public import SphereSixComplex.Topology.PaperEllipticBoundaryTraceTransport
+public import SphereSixComplex.Topology.PaperEllipticOuterDeckCoordinateNaturality
+public import SphereSixComplex.Topology.PaperEllipticSynchronizedBaseMarking
+public import SphereSixComplex.Topology.PaperEllipticSynchronizedEnteringSheet
+public import SphereSixComplex.Topology.RegularPeriodCircleTransport
+public import SphereSixComplex.Topology.StandardA2PhaseCellDisjointness
+public import SphereSixComplex.Topology.StandardA2PhaseCellRegularity
+
 /-!
 # A Complex Structure on the Six-Sphere
 
