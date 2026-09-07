@@ -14,11 +14,16 @@ The trusted statement in this module is the standard skeletal-relative construct
 degree-`n` cellular group is `H_n(X^n, X^{n-1}; ℤ)`, its differential is the connecting map of
 successive skeleta, and its basis vectors are the relative fundamental classes carried by the
 chosen characteristic maps. Cellular maps act on the relative groups, and cellular homology is
-naturally isomorphic to integral singular homology.
+naturally isomorphic to integral singular homology. The comparison agrees with the inclusion
+of each skeleton on its absolute homology, through the relative cycle map.
 
 This fixes both choices left open by a merely objectwise chain complex: the differential is the
 attaching-degree differential in the characteristic-cell basis, and the comparison with singular
-homology is natural. The final accessor retains the old objectwise API for downstream code.
+homology is normalized on skeletal cycles, as in Hatcher, Theorem 2.35 and its proof (p. 140).
+Naturality alone would allow negating every comparison isomorphism. The final accessor retains
+the old objectwise API for downstream code.
+
+Source: https://pi.math.cornell.edu/~hatcher/AT/ATch2.pdf
 -/
 
 @[expose] public section
@@ -383,6 +388,52 @@ public noncomputable def integralCWSkeletalChainComplex
       intro n
       exact h n)
 
+section SkeletalComparison
+
+variable (X : Type) [TopologicalSpace X] [T2Space X]
+  [Topology.CWComplex (Set.univ : Set X)]
+
+public def integralCWSkeletonToSpace (n : ℕ) :
+    TopCat.of (IntegralCWSkeletonLT X n) ⟶ TopCat.of X :=
+  TopCat.ofHom ⟨Subtype.val, continuous_subtype_val⟩
+
+public theorem integralCWSkeletalProjection_cycle (n : ℕ) :
+    HomologicalComplex.homologyMap
+        (cwRelativeIntegralSingularChainProjection (integralCWSkeletonInclusion X n)) n ≫
+      (integralCWSkeletalChainComplex X (integralCWRelativeBoundary_comp_self X)).d n
+        ((ComplexShape.down ℕ).next n) = 0 := by
+  cases n with
+  | zero =>
+    simp [integralCWSkeletalChainComplex]
+    rfl
+  | succ n =>
+    rw [(ComplexShape.down ℕ).next_eq' (ComplexShape.down_mk (n + 1) n rfl)]
+    simp only [integralCWSkeletalChainComplex, ChainComplex.of_d]
+    change HomologicalComplex.homologyMap
+        (cwRelativeIntegralSingularChainProjection (integralCWSkeletonInclusion X (n + 1)))
+        (n + 1) ≫ integralCWRelativeBoundary X n = 0
+    have h : HomologicalComplex.homologyMap
+        (cwRelativeIntegralSingularChainProjection (integralCWSkeletonInclusion X (n + 1)))
+        (n + 1) ≫
+        cwRelativeIntegralSingularBoundary (integralCWSkeletonInclusion X (n + 1)) n = 0 :=
+      (cwRelativeIntegralSingularShortComplex_shortExact
+        (integralCWSkeletonInclusion X (n + 1))).comp_δ _ _ _
+    exact (Category.assoc _ _ _).symm.trans
+      ((congrArg (fun f ↦ f ≫ HomologicalComplex.homologyMap
+        (cwRelativeIntegralSingularChainProjection (integralCWSkeletonInclusion X n)) n) h).trans
+        (zero_comp))
+
+public def integralCWSkeletalHomologyToCellular (n : ℕ) :
+    (CWIntegralSingularChainComplexObj (TopCat.of (IntegralCWSkeletonLT X (n + 1)))).homology n ⟶
+      (integralCWSkeletalChainComplex X (integralCWRelativeBoundary_comp_self X)).homology n :=
+  (integralCWSkeletalChainComplex X (integralCWRelativeBoundary_comp_self X)).liftCycles
+      (HomologicalComplex.homologyMap
+        (cwRelativeIntegralSingularChainProjection (integralCWSkeletonInclusion X n)) n)
+      _ rfl (integralCWSkeletalProjection_cycle X n) ≫
+    (integralCWSkeletalChainComplex X (integralCWRelativeBoundary_comp_self X)).homologyπ n
+
+end SkeletalComparison
+
 /-- A dimension-independent, characteristic-map-normalized, functorial form of the classical
 integral cellular-homology theorem for Hausdorff CW complexes. -/
 public structure IntegralCWCellularHomologyFoundation where
@@ -406,6 +457,11 @@ public structure IntegralCWCellularHomologyFoundation where
     [Topology.CWComplex (Set.univ : Set X)] (n : ℕ),
       (integralCWSkeletalChainComplex X (integralCWRelativeBoundary_comp_self X)).homology n ≃+
         IntegralSingularHomology n X
+  homologyEquiv_skeletal : ∀ (X : Type) [TopologicalSpace X] [T2Space X]
+    [Topology.CWComplex (Set.univ : Set X)] (n : ℕ),
+      integralCWSkeletalHomologyToCellular X n ≫ (homologyEquiv X n).toAddCommGrpIso.hom =
+        HomologicalComplex.homologyMap
+          (cwIntegralSingularChainMapObj (integralCWSkeletonToSpace X (n + 1))) n
   cellularChainMap : ∀ {X Y : Type} [TopologicalSpace X] [T2Space X]
     [Topology.CWComplex (Set.univ : Set X)]
     [TopologicalSpace Y] [T2Space Y]

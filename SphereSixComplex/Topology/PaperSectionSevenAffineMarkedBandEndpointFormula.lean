@@ -1,5 +1,6 @@
 module
 
+public import SphereSixComplex.Topology.PaperSectionSevenSmallMarkedDiscWitness
 public import SphereSixComplex.Topology.PaperSectionSevenAffineMarkedBandHomotopyReduction
 
 /-!
@@ -431,7 +432,7 @@ public def sectionSevenAffineBandToOrderFourCentralRegion (A : PaperAnalyticData
 
 /-- A fixed small affine disc contained in the actual order-three star overlap. -/
 public noncomputable def sectionSevenAffineOrderThreeMarkedDiscRadius (A : PaperAnalyticData) : ℝ :=
-  A.exists_discRegion_subset_orderThreeOverlap.choose
+  A.exists_small_discRegion_subset_orderThreeOverlap.choose
 
 public theorem sectionSevenAffineOrderThreeMarkedDiscRadius_spec (A : PaperAnalyticData) :
     0 < A.sectionSevenAffineOrderThreeMarkedDiscRadius ∧
@@ -440,11 +441,13 @@ public theorem sectionSevenAffineOrderThreeMarkedDiscRadius_spec (A : PaperAnaly
           A.sectionSevenAffineOrderThreeMarkedDiscRadius ⊆
         A.sectionSevenOrderThreeFillingImage ∩
           A.sectionSevenAffineOrderThreeCentralRegion :=
-  A.exists_discRegion_subset_orderThreeOverlap.choose_spec
+  by
+    have h := A.exists_small_discRegion_subset_orderThreeOverlap.choose_spec
+    exact ⟨h.1, h.2.1, h.2.2.1⟩
 
 /-- A fixed small affine disc contained in the actual order-four star overlap. -/
 public noncomputable def sectionSevenAffineOrderFourMarkedDiscRadius (A : PaperAnalyticData) : ℝ :=
-  A.exists_discRegion_subset_orderFourOverlap.choose
+  A.exists_small_discRegion_subset_orderFourOverlap.choose
 
 public theorem sectionSevenAffineOrderFourMarkedDiscRadius_spec (A : PaperAnalyticData) :
     0 < A.sectionSevenAffineOrderFourMarkedDiscRadius ∧
@@ -453,7 +456,27 @@ public theorem sectionSevenAffineOrderFourMarkedDiscRadius_spec (A : PaperAnalyt
           A.sectionSevenAffineOrderFourMarkedDiscRadius ⊆
         A.sectionSevenOrderFourFillingImage ∩
           A.sectionSevenAffineOrderFourCentralRegion :=
-  A.exists_discRegion_subset_orderFourOverlap.choose_spec
+  by
+    have h := A.exists_small_discRegion_subset_orderFourOverlap.choose_spec
+    exact ⟨h.1, h.2.1, h.2.2.1⟩
+
+public theorem sectionSevenAffineOrderThreeMarkedDiscRadius_cayley (A : PaperAnalyticData)
+    (z : UpperHalfPlane)
+    (hz : ‖A.modular.sourceCoordinate.coordinate z‖ < A.sectionSevenAffineOrderThreeMarkedDiscRadius) :
+    ∃ k : SphereSixComplex.TriangleGroup.Delta,
+      ‖(SphereSixComplex.Geometry.EllipticCayleyHomeomorph.orderThreeCayleyHomeomorph
+        (SphereSixComplex.TriangleGroup.fuchsianSourceAction k • z) : ℂ)‖ <
+        A.starSeparation.orderThree.radius / 2 :=
+  A.exists_small_discRegion_subset_orderThreeOverlap.choose_spec.2.2.2 z hz
+
+public theorem sectionSevenAffineOrderFourMarkedDiscRadius_cayley (A : PaperAnalyticData)
+    (z : UpperHalfPlane)
+    (hz : ‖A.modular.sourceCoordinate.coordinate z - 1‖ < A.sectionSevenAffineOrderFourMarkedDiscRadius) :
+    ∃ k : SphereSixComplex.TriangleGroup.Delta,
+      ‖(SphereSixComplex.Geometry.EllipticCayleyHomeomorph.orderFourCayleyHomeomorph
+        (SphereSixComplex.TriangleGroup.fuchsianSourceAction k • z) : ℂ)‖ <
+        A.starSeparation.orderFour.radius / 2 :=
+  A.exists_small_discRegion_subset_orderFourOverlap.choose_spec.2.2.2 z hz
 
 /-- The explicit order-three affine radial inverse, restricted to the common band and then read
 as a point of the actual filling image through the proved small-disc inclusion. -/

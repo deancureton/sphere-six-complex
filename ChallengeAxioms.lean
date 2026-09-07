@@ -42,7 +42,7 @@ axiom SphereSixComplex.simplyConnectedHomologicalWhitehead : ∀ (X Y : Type) [i
       ∀ (f : C(X, Y)), SphereSixComplex.IsIntegralHomologyEquivalence f → ∃ e, e.toFun = f
 axiom SphereSixComplex.establishedSmoothPoincareSixStandardModel : SphereSixComplex.SmoothPoincareSixStandardModel
 
-# Retained homological foundations.
+# Cellular comparison is normalized on skeletal cycles; disk orientations through degree two are proved.
 axiom SphereSixComplex.classicalIntegralPoincareDuality : ∀ (d : ℕ) (E X : Type) [inst : NormedAddCommGroup E]
   [inst_1 : NormedSpace ℝ E] [FiniteDimensional ℝ E] [inst_3 : TopologicalSpace X] [inst_4 : ChartedSpace E X]
   [T2Space X] [SecondCountableTopology X],

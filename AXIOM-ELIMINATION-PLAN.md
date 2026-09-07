@@ -97,11 +97,15 @@ six is intrinsic.
    differential induced by the relative connecting map and projection. Characteristic maps fix
    the oriented cell basis, boundary coefficients are the corresponding attaching-map degrees,
    cellular maps induce a functorial chain map, and the resulting homology is naturally isomorphic
-   to integral singular homology. This does not require a noncanonical strict chain map from
+   to integral singular homology. The comparison agrees with skeleton inclusion on absolute
+   skeletal homology, via the proved relative cycle map, exactly as in the proof of Hatcher's
+   Theorem 2.35. Naturality alone would permit negating every comparison. This normalization
+   does not require a noncanonical strict chain map from
    cellular chains to singular chains. Derive the present objectwise
    `integralCWCellularHomologyModel` from this theorem. Its attaching-degree formula uses the
    actual characteristic attaching-sphere map and contains no application-specific incidence
-   values or specialization matrices.
+   values or specialization matrices. Disk orientations in dimensions zero, one, and two are
+   normalized by proved point, interval, and counterclockwise square-boundary calculations.
 
 6. **Smooth triangulation with dimension.** Retain the classical theorem that every compact,
    second-countable Hausdorff finite-dimensional boundaryless real `C¹` manifold has the homotopy
@@ -155,7 +159,7 @@ constant types; reviewers must also inspect the definitions those types mention.
 | Higher Hurewicz | [Hatcher, Chapter 4, Theorem 4.32 and the Hurewicz homomorphism](https://pi.math.cornell.edu/~hatcher/AT/ATch4.pdf). Arbitrary spaces, degree at least two, path connectedness, and all lower positive homotopy groups trivial. Cubical loops and Euclidean spheres are linked by proved maps. |
 | Homological Whitehead | [Hatcher, Chapter 4, Corollary 4.33](https://pi.math.cornell.edu/~hatcher/AT/ATch4.pdf). Both spaces must be simply connected and have CW type. The actual given homology-equivalence map must be a homotopy equivalence. |
 | Smooth Poincare in dimension six | [Kervaire--Milnor, Groups of homotopy spheres I](https://webhomes.maths.ed.ac.uk/~v1ranick/papers/kervmiln.pdf), together with smooth h-cobordism. The input is a compact smooth homotopy six-sphere, and the conclusion concerns its given smooth atlas. This is a combination of classical results, not smooth Poincare in arbitrary dimension. |
-| Cellular homology | [Hatcher, Chapter 2, Theorem 2.35 and its skeletal construction](https://pi.math.cornell.edu/~hatcher/AT/ATch2.pdf). The groups and maps are actual relative singular homology of consecutive skeleta, with characteristic-map cell bases and natural comparison. The characteristic pair maps, `d² = 0`, and attaching-degree identity are now proved directly from Mathlib and removed from the trusted structure. |
+| Cellular homology | [Hatcher, Chapter 2, Theorem 2.35 and its skeletal construction](https://pi.math.cornell.edu/~hatcher/AT/ATch2.pdf). The groups and maps are actual relative singular homology of consecutive skeleta, with characteristic-map cell bases and comparison normalized on absolute skeletal cycles. The characteristic pair maps, `d² = 0`, and attaching-degree identity are now proved directly from Mathlib and removed from the trusted structure. |
 | Smooth triangulation | [Whitehead, On C1-complexes](https://www.sciencedirect.com/science/chapter/edited-volume/pii/B978008009870850021X). The Lean statement keeps compactness, Hausdorffness, second countability, finite dimension, and absence of boundary. It requests only a finite CW homotopy model with the dimension bound. |
 | Poincare duality | [Hatcher, Chapter 3, Theorem 3.30](https://pi.math.cornell.edu/~hatcher/AT/ATch3.pdf). Closed oriented manifolds, integral coefficients, and complementary degrees. `SmoothAtlasOrientation` includes the dimension equality and orientation-preserving transition derivatives. Only additive equivalences are asserted. |
 | Cohomological UCT | [Hatcher, Chapter 3, Section 3.1](https://pi.math.cornell.edu/~hatcher/AT/ATch3.pdf). The cohomology is that of the integral singular cochain complex and the obstruction is actual derived `Ext¹` over the integers. The positive-degree splitting is noncanonical. |
@@ -505,3 +509,50 @@ comparison remain to be completed; no cusp-marking axiom is removed by this part
 
 The normalized zero/one midpoint labels and the third-sweep homology realization each have
 direct kernel axiom audits containing only the three standard Lean axioms.
+
+
+## Cellular comparison and marked-path normalization
+
+The former cellular comparison interface fixed naturality but not its absolute sign: simultaneous
+negation of every comparison preserves naturality. `homologyEquiv_skeletal` now states the
+canonical compatibility from Hatcher, Theorem 2.35, p. 140. Its input map
+`integralCWSkeletalHomologyToCellular` is proved from relative projection and exactness; no
+application-specific equation is added to the classical theorem.
+
+`CellularPathComparison` identifies an oriented characteristic edge with its relative singular
+path class. Two such paths with the same endpoints give precisely the coefficient vector
+`e - f`. `CellularSkeletalComparison` carries computed skeletal cycles to actual singular
+homology with the corrected comparison.
+
+The formerly arbitrary dimension-two disk orientation is now normalized in Lean by the relative
+boundary isomorphism of a contractible disk and the winding coordinate on its square boundary.
+`CellularSquareBoundary` gives the explicit radial homeomorphism to the complex unit circle.
+The resulting positive boundary loop generates all first homology, and its image vanishing in
+the one-skeleton implies every corresponding two-cell attaching coefficient is zero. Higher
+disk orientations remain arbitrary; the remaining degree-three/four incidence targets are zero
+and do not depend on their signs.
+
+
+The positive cell's twelve half-sides now have their exact three edge labels. Its six-side
+boundary loop is proved zero in first homology of the actual one-skeleton. The source-side
+identification with a generating boundary loop is still required before declaring its attaching
+coefficients proved; vanishing only in ambient homology would not have sufficed.
+
+The normalized meridians now have exact `g₁`/`g₂` labels in the regular-base cover and use the
+same corrected cusp whisker. Chosen internal marking radii satisfy stronger Cayley bounds while
+preserving every previous radius specification. The connected-sheet trapping theorem is proved;
+its application to the normalized radial paths and the production band replacement remain.
+The third sweep is moved by a proved homotopy to the exact chosen cusp base, with a closed period
+loop and exact torus realization. The common-endpoint cusp/meridian path comparison still needs
+a homotopy before the primitive Mayer–Vietoris boundary calculation can be completed.
+
+Direct kernel probes verify that the square orientation, its generating loop, the attaching-degree
+zero criterion, and the characteristic edge-difference calculation use only Lean's standard
+three axioms (the general cellular foundation is an explicit parameter in the latter criteria).
+No transitional axiom is removed by this checkpoint.
+
+Checkpoint gates passed: full build (10,077 jobs), import reachability (1,048 modules),
+placeholder scan (only the two intentional challenge placeholders), exact axiom catalog and
+closure audits, and Comparator with Lean's default kernel. The headline closure remains
+18 constants and the construction closure 15. On macOS, Comparator's fake-landrun wrapper
+checks functionality, not Linux sandbox isolation.

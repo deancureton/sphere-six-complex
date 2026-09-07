@@ -1,6 +1,7 @@
 module
 
 public import SphereSixComplex.Topology.CellularPointOrientation
+public import SphereSixComplex.Topology.CellularSquareOrientation
 
 @[expose] public section
 noncomputable section
@@ -36,7 +37,8 @@ public def normalizedDiskOrientations (T : IntegralCWCellularHomologyFoundation)
       (cwCharacteristicBoundaryInclusion n)).homology n ≃+ ℤ
   | 0 => normalizedPointDiskOrientation
   | 1 => normalizedIntervalDiskOrientation T
-  | n + 2 => T.diskOrientation (n + 2)
+  | 2 => normalizedSquareDiskOrientation
+  | n + 3 => T.diskOrientation (n + 3)
 
 public def normalized (T : IntegralCWCellularHomologyFoundation) :
     IntegralCWCellularHomologyFoundation :=
@@ -48,7 +50,10 @@ public theorem normalized_diskOrientation_zero (T : IntegralCWCellularHomologyFo
 public theorem normalized_diskOrientation_one (T : IntegralCWCellularHomologyFoundation) :
     T.normalized.diskOrientation 1 = normalizedIntervalDiskOrientation T := rfl
 
-public theorem normalized_diskOrientation_add_two (T : IntegralCWCellularHomologyFoundation)
-    (n : ℕ) : T.normalized.diskOrientation (n + 2) = T.diskOrientation (n + 2) := rfl
+public theorem normalized_diskOrientation_two (T : IntegralCWCellularHomologyFoundation) :
+    T.normalized.diskOrientation 2 = normalizedSquareDiskOrientation := rfl
+
+public theorem normalized_diskOrientation_add_three (T : IntegralCWCellularHomologyFoundation)
+    (n : ℕ) : T.normalized.diskOrientation (n + 3) = T.diskOrientation (n + 3) := rfl
 
 end SphereSixComplex.IntegralCWCellularHomologyFoundation

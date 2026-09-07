@@ -17,7 +17,7 @@ SphereSixComplex.classicalHigherHurewiczTheory
 SphereSixComplex.simplyConnectedHomologicalWhitehead
 SphereSixComplex.establishedSmoothPoincareSixStandardModel
 
-# Retained homological foundations.
+# Cellular comparison is normalized on skeletal cycles; disk orientations through degree two are proved.
 SphereSixComplex.classicalIntegralPoincareDuality
 SphereSixComplex.classicalIntegralSingularCohomologyUCT
 SphereSixComplex.compactCOneManifoldFiniteCWModelAtDimension

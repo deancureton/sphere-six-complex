@@ -1,5 +1,6 @@
 module
 
+public import SphereSixComplex.Topology.PaperSectionSevenAffineStripMidpoint
 public import SphereSixComplex.Topology.PaperSectionSevenAffineGlobalEnteringSheets
 public import SphereSixComplex.Topology.PaperEllipticOuterDeckCoordinateNaturality
 
@@ -10,11 +11,6 @@ namespace SphereSixComplex.Geometry.PaperAnalyticData
 
 open SphereSixComplex SphereSixComplex.Topology SphereSixComplex.TriangleGroup
 open SphereSixComplex.Geometry.GlobalTorusFamily
-
-public def sectionSevenAffineStripMidpoint : sectionSevenAffineVerticalStrip :=
-  ⟨(2 : ℂ)⁻¹, by
-    change (1 / 3 : ℝ) < ((2 : ℂ)⁻¹).re ∧ ((2 : ℂ)⁻¹).re < 2 / 3
-    norm_num⟩
 
 public noncomputable def sectionSevenAffineMarkedMidpoint (A : PaperAnalyticData) :
     RegularBase (U := A.modular.modularParameter.toTriangleUniformization) :=
