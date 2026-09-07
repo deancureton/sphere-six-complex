@@ -21,15 +21,12 @@ namespace SphereSixComplex.Periods
 
 open SphereSixComplex.TriangleGroup
 
-private theorem ExactFuchsianOrbifoldCoordinate.differentiableAt_descendInvariantContinuous_regular
-    (C : ExactFuchsianOrbifoldCoordinate) (f : UpperHalfPlane → ℂ)
-    (hf : MDiff f)
-    (hinvariant : ∀ g z, f (fuchsianSourceAction g • z) = f z)
-    (q : ℂ) (hq : q ∈ ({0, 1} : Set ℂ)ᶜ) :
-    DifferentiableAt ℂ (C.descendInvariantContinuous f hf.continuous hinvariant) q := by
-  obtain ⟨z, hzq⟩ := C.coordinate_isQuotientMap.surjective q
-  have hzregular : C.coordinate z ∈ ({0, 1} : Set ℂ)ᶜ := by
-    rwa [hzq]
+public theorem ExactFuchsianOrbifoldCoordinate.differentiableAt_of_mdifferentiableAt_comp_regular
+    (C : ExactFuchsianOrbifoldCoordinate) (F : ℂ → ℂ) (z : UpperHalfPlane)
+    (hf : MDiffAt (F ∘ C.coordinate) z)
+    (hzregular : C.coordinate z ∈ ({0, 1} : Set ℂ)ᶜ) :
+    DifferentiableAt ℂ F (C.coordinate z) := by
+  let f := F ∘ C.coordinate
   obtain ⟨e, hze, he⟩ := C.regular_covering.isLocalHomeomorphOn z hzregular
   let φ : ℂ → ℂ := C.coordinate ∘ UpperHalfPlane.ofComplex
   have hφdiff : DifferentiableOn ℂ φ UpperHalfPlane.upperHalfPlaneSet := by
@@ -75,37 +72,69 @@ private theorem ExactFuchsianOrbifoldCoordinate.differentiableAt_descendInvarian
     simpa only [ψ] using hφanalytic.analyticAt_localInverse hφderiv
   have hψvalue : ψ (φ (z : ℂ)) = (z : ℂ) := by
     simp [ψ]
-  have hψupper : ∀ᶠ w in nhds (φ (z : ℂ)),
-      w ∈ ψ ⁻¹' UpperHalfPlane.upperHalfPlaneSet := by
-    apply hψanalytic.continuousAt
-    rw [hψvalue]
-    exact UpperHalfPlane.isOpen_upperHalfPlaneSet.mem_nhds z.im_pos
   have hright : ∀ᶠ w in nhds (φ (z : ℂ)), φ (ψ w) = w := by
     simpa only [ψ] using hφanalytic.hasStrictDerivAt.eventually_right_inverse hφderiv
   have hfof : DifferentiableAt ℂ (f ∘ UpperHalfPlane.ofComplex) (z : ℂ) :=
-    UpperHalfPlane.mdifferentiableAt_iff.mp hf.mdifferentiableAt
+    UpperHalfPlane.mdifferentiableAt_iff.mp hf
   have hlocal : DifferentiableAt ℂ ((f ∘ UpperHalfPlane.ofComplex) ∘ ψ)
       (φ (z : ℂ)) := by
     have hfof' : DifferentiableAt ℂ (f ∘ UpperHalfPlane.ofComplex) (ψ (φ (z : ℂ))) := by
       rwa [hψvalue]
     exact hfof'.comp (φ (z : ℂ)) hψanalytic.differentiableAt
-  have heventual :
-      C.descendInvariantContinuous f hf.continuous hinvariant =ᶠ[nhds (φ (z : ℂ))]
-        (f ∘ UpperHalfPlane.ofComplex) ∘ ψ := by
-    filter_upwards [hright, hψupper] with w hwright hwupper
-    calc
-      C.descendInvariantContinuous f hf.continuous hinvariant w =
-          C.descendInvariantContinuous f hf.continuous hinvariant (φ (ψ w)) :=
-        congrArg (C.descendInvariantContinuous f hf.continuous hinvariant) hwright.symm
-      _ = ((f ∘ UpperHalfPlane.ofComplex) ∘ ψ) w := by
-        simpa only [φ, Function.comp_apply] using
-          C.descendInvariantContinuous_comp f hf.continuous hinvariant
-            (UpperHalfPlane.ofComplex (ψ w))
+  have heventual : F =ᶠ[nhds (φ (z : ℂ))] (f ∘ UpperHalfPlane.ofComplex) ∘ ψ := by
+    filter_upwards [hright] with w hwright
+    exact congrArg F hwright.symm
   have hφz : φ (z : ℂ) = C.coordinate z := by
     simp [φ]
   rw [hφz] at hlocal heventual
-  rw [← hzq]
   exact hlocal.congr_of_eventuallyEq heventual
+
+public theorem ExactFuchsianOrbifoldCoordinate.exists_regular_holomorphic_descent
+    (C : ExactFuchsianOrbifoldCoordinate) {W : Set ℂ} (hW : IsOpen W)
+    (hregular : W ⊆ ({0, 1} : Set ℂ)ᶜ) (f : UpperHalfPlane → ℂ)
+    (hf : ∀ z, C.coordinate z ∈ W → MDiffAt f z)
+    (hinvariant : ∀ g z, C.coordinate z ∈ W → f (fuchsianSourceAction g • z) = f z) :
+    ∃ F : ℂ → ℂ, DifferentiableOn ℂ F W ∧
+      ∀ z, C.coordinate z ∈ W → F (C.coordinate z) = f z := by
+  classical
+  let lift (q : ℂ) := (C.coordinate_isQuotientMap.surjective q).choose
+  have hlift (q : ℂ) : C.coordinate (lift q) = q :=
+    (C.coordinate_isQuotientMap.surjective q).choose_spec
+  let F := f ∘ lift
+  have hcomp (z : UpperHalfPlane) (hz : C.coordinate z ∈ W) :
+      F (C.coordinate z) = f z := by
+    obtain ⟨g, hg⟩ := (C.coordinate_eq_iff_orbit z (lift (C.coordinate z))).mp
+      (hlift _).symm
+    change f (lift (C.coordinate z)) = f z
+    rw [← hg]
+    exact hinvariant g z hz
+  refine ⟨F, ?_, hcomp⟩
+  intro q hq
+  let z := lift q
+  have hzq : C.coordinate z = q := hlift q
+  have hz : C.coordinate z ∈ W := hzq ▸ hq
+  have hlocal : MDiffAt (F ∘ C.coordinate) z := by
+    apply (hf z hz).congr_of_eventuallyEq
+    have hn := C.coordinate_holomorphic.continuous.continuousAt (hW.mem_nhds hz)
+    filter_upwards [hn] with w hw
+    exact hcomp w hw
+  have hd := C.differentiableAt_of_mdifferentiableAt_comp_regular F z hlocal
+    (hregular hz)
+  rw [hzq] at hd
+  exact hd.differentiableWithinAt
+
+private theorem ExactFuchsianOrbifoldCoordinate.differentiableAt_descendInvariantContinuous_regular
+    (C : ExactFuchsianOrbifoldCoordinate) (f : UpperHalfPlane → ℂ)
+    (hf : MDiff f)
+    (hinvariant : ∀ g z, f (fuchsianSourceAction g • z) = f z)
+    (q : ℂ) (hq : q ∈ ({0, 1} : Set ℂ)ᶜ) :
+    DifferentiableAt ℂ (C.descendInvariantContinuous f hf.continuous hinvariant) q := by
+  obtain ⟨z, rfl⟩ := C.coordinate_isQuotientMap.surjective q
+  apply C.differentiableAt_of_mdifferentiableAt_comp_regular _ z _ hq
+  have he : (C.descendInvariantContinuous f hf.continuous hinvariant) ∘ C.coordinate = f :=
+    funext (C.descendInvariantContinuous_comp f hf.continuous hinvariant)
+  rw [he]
+  exact hf.mdifferentiableAt
 
 /-- An invariant holomorphic function on the source descends holomorphically through the exact
 Fuchsian quotient, including across both finite branch values. -/

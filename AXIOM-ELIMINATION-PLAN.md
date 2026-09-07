@@ -9,8 +9,7 @@ small set of general classical blackboxes:
 \{\mathsf{propext},\ \mathsf{Quot.sound},\ \mathsf{Classical.choice}\}
 \cup \{\mathrm{Hurewicz},\ \mathrm{HomologicalWhitehead},
 \mathrm{SmoothPoincare}_6,\ \mathrm{CellularHomology},\ \mathrm{PoincareDuality},
-\mathrm{CohomologicalUCT},\ \mathrm{SmoothTriangulation},
-\mathrm{CartanB}\}.
+\mathrm{CohomologicalUCT},\ \mathrm{SmoothTriangulation}\}.
 \]
 
 The displayed size is not a quota. This boundary may shrink, or one entry may be replaced by a more natural
@@ -23,7 +22,7 @@ The present final theorem uses sixteen project axioms: seven retained classical 
 transitional dependencies. The task is to replace the nine transitional declarations by theorems.
 The cellular input has been strengthened in place, the former combined manifold-homology package
 is now derived from general Poincare duality, UCT, and smooth triangulation, and the analytic
-correction may introduce Cartan Theorem B only in its natural generality. Adding files,
+correction is now being constructed from a proved Cauchy–Green/Cousin theorem. Adding files,
 structures, or reductions does not count as progress unless it closes a named milestone below or
 rules out a proposed route and updates this plan.
 
@@ -58,8 +57,8 @@ constructed complex threefold has the integral homology of \(S^6\).
 
 ## Candidate final blackboxes
 
-The current boundary has seven entries. Cartan B may become an eighth only if the analytic track
-genuinely needs it. The trusted statements
+The current boundary has seven entries. The analytic track now has an axiom-free arbitrary-cover
+Cousin theorem, so Cartan B is no longer a proposed boundary entry. The trusted statements
 must not mention this paper, the constructed threefold, or the number six except where dimension
 six is intrinsic.
 
@@ -114,13 +113,6 @@ six is intrinsic.
    unconstrained map is the cap product. The noncanonical UCT splitting is wrapped in `Nonempty`.
    The old `establishedCompactSmoothOrientedManifoldHomologyTheory` package is derived and is not
    permitted by Comparator.
-
-8. **Cartan Theorem B.** Retain the standard theorem that the positive-degree sheaf cohomology of
-   every coherent analytic sheaf on a Stein complex space vanishes. The blackbox must be stated for
-   arbitrary Stein complex spaces and coherent analytic sheaves; it must not mention affine
-   torsors, orbifold triangle groups, cusp corrections, or this paper. The finite-orbifold
-   affine-torsor corollary and every descent, extension, and boundedness statement needed here must
-   be derived in the repository.
 
 The current recognition signatures are `classicalHigherHurewiczTheory`,
 `simplyConnectedHomologicalWhitehead`, and `establishedSmoothPoincareSixStandardModel`.
@@ -201,8 +193,8 @@ and Comparator passes.
 | 4 | `establishedSmoothPoincareSixStandardModel` | retain as blackbox 4 | Its current quantified statement is already the general dimension-six smooth-Poincare theorem: every compact smooth six-manifold homotopy equivalent to the standard sphere is diffeomorphic to it. It does not mention the constructed threefold. |
 | 5 | `establishedCompactSmoothOrientedManifoldHomologyTheory` | proved from blackboxes 5--7 | Integral singular cohomology and its cochain complex are defined in Lean. General group-level Poincare duality and general cohomological UCT give the complementary-homology equivalences; the dimension-controlled smooth triangulation theorem plus cellular homology give finite generation and vanishing above the manifold dimension. The combined reduced package is now a definition and is not permitted by Comparator. |
 | 6 | `EstablishedCellularHomology.integralCWCellularHomologyModel` | proved from blackbox 5 | The old objectwise accessor is now a definition derived from `integralCWCellularHomologyFoundation`, whose basis is carried by the characteristic maps and whose singular-homology comparison is natural for cellular maps. |
-| 7 | `Periods.establishedOrbifoldAffineLineTorsorCuspBoundedCousinCorrection` | eliminate (A) | Derive finite-orbifold affine-torsor triviality from general Cartan B using exactness of finite-group invariants over \(\mathbb C\). Construct the two compactified quotient orbifold charts, descend the affine actions to genuine torsors, prove extension across elliptic points and the cusp, descend the overlap coefficient, and establish the cusp bound. The existing projective-line Cech splitting then produces the correction. None of those project-specific bridges belongs in blackbox 7. |
-| 8 | `establishedStandardA2ToricCentralOrbitCellAtlas` | eliminate (T) | Two cyclic phase-face maps are genuine quotient-level injective `PartialEquiv` characteristic maps. The old planar-tile parametrization is disproved by an explicit counterexample. For the corrected embedding `C(v)=((2/3)v₀+(4/3)v₁, -(2/3)v₀+(2/3)v₁)`, same-cell, all positive and negative neighbor cases, the global Laurent iff, and the finite same-fibres equivalence are now proved. The corrected square-to-hexagon homeomorphism and four explicit 2-cells account for all dimensions through two. The two 3-cells and one 4-cell require a genuine effective-phase trivialization of the singleton-support stratum, schematically `ball(0,1) × (Fin 2 → Circle) ≃ₜ singletonSupportStratum W`, with forward map given by the corrected positive representative acted on by a two-dimensional phase section. The phase API now has explicit chart homeomorphisms, exact stabilizer/fibre classification across all six zero-ray charts, a global effective-phase section `(k₀,k₁,1)`, and joint injectivity of positive representative and effective phase in the actual orbit quotient. A proper-map argument now proves continuity of the inverse, and deck normalization proves surjectivity onto the full geometric singleton-support stratum. Thus the actual stratum product homeomorphism is established. The positive singleton factor still needs identification with the open 2-ball, followed by the 3/4-dimensional characteristic maps and their boundary checks. Separately, the public atlas theorem is generic in an arbitrary toric `Model`, while the explicit cells are specialized to `constructedModel`; either transport the atlas along a proved model equivalence or specialize the theorem honestly. |
+| 7 | `Periods.establishedOrbifoldAffineLineTorsorCuspBoundedCousinCorrection` | eliminate (A) | Cauchy–Green inversion, an analytic germ vanishing at infinity, and arbitrary-open-cover normalized Cousin splitting for both `O` and `O(-1)` are now proved from mathlib. The affine generator substitutions extend to a whole-group action preserving holomorphic sections. A local zero section on a regular quotient sheet extends holomorphically and equivariantly to its saturation; local holomorphic scalar descent on regular overlaps is also proved. Both supplied elliptic primitives now extend equivariantly over open quotient patches and agree with the original primitives near their centers. Remaining: extend the cusp primitive over a precisely invariant patch, choose a cover whose distinct overlaps avoid the elliptic centers, apply the proved Cousin splitting, and establish the cusp bound using the prescribed acyclic frame. |
+| 8 | `establishedStandardA2ToricCentralOrbitCellAtlas` | eliminate (T) | Two cyclic phase-face maps are genuine quotient-level injective `PartialEquiv` characteristic maps. The old planar-tile parametrization is disproved by an explicit counterexample. For the corrected embedding `C(v)=((2/3)v₀+(4/3)v₁, -(2/3)v₀+(2/3)v₁)`, same-cell, all positive and negative neighbor cases, the global Laurent iff, and the finite same-fibres equivalence are now proved. The corrected square-to-hexagon homeomorphism and four explicit 2-cells account for all dimensions through two. The two 3-cells and one 4-cell require a genuine effective-phase trivialization of the singleton-support stratum, schematically `ball(0,1) × (Fin 2 → Circle) ≃ₜ singletonSupportStratum W`, with forward map given by the corrected positive representative acted on by a two-dimensional phase section. The phase API now has explicit chart homeomorphisms, exact stabilizer/fibre classification across all six zero-ray charts, a global effective-phase section `(k₀,k₁,1)`, and joint injectivity of positive representative and effective phase in the actual orbit quotient. A proper-map argument now proves continuity of the inverse, and deck normalization proves surjectivity onto the full geometric singleton-support stratum. Thus the actual stratum product homeomorphism is established. The positive singleton factor is now identified with the open 2-ball, giving the actual ball-times-phase homeomorphism. Every actual representative with support cardinality at least two now lies in the existing one-skeleton or one of the three open phase two-cells. The 3/4-dimensional characteristic maps and their remaining boundary checks remain. Separately, the public atlas theorem is generic in an arbitrary toric `Model`, while the explicit cells are specialized to `constructedModel`; either transport the atlas along a proved model equivalence or specialize the theorem honestly. |
 | 9 | `establishedStandardA2ToricCentralFiberIndependentIncidenceResidual` | eliminate (T+CF) | The strengthened foundation now reduces each coefficient to the homological degree of the actual characteristic attaching map. Row 8 must first identify the atlas `cellMap` fields with the explicit toric maps. Then compute the 24 independent degrees (beginning with the oriented interval boundary for edge 0) and derive the remaining four entries from \(d^2=0\). |
 | 10 | `establishedFiniteFiberGeneratorSpecializationMatrix` | eliminate (S+T+CF) | The natural cellular-to-singular comparison is now available. Prove the relevant inclusions are cellular and compute their images in the characteristic-cell basis; this simultaneously fixes the degree-one normalized coordinates and the four degree-two entries. |
 | 11 | `EstablishedSectionSevenAffineRegularLiftTopology.markedBandHomotopies` | eliminate (S) | The former attempt to deduce the identity-sheet Cayley bounds from `starSeparation` is false: valid separation radii can be shrunk below both positive pinned norms. The entering-sheet group calculation is now proved: each order-three or order-four entering sheet is an elliptic-stabilizer multiple of the inverse common peripheral conjugator. The remaining point-set work is to identify the extracted local Cayley meridian with the corresponding geometric central meridian and to prove that translation by this common conjugator transports both finite-cover markings. The existing clopen-sheet and endpoint-gauge theorems then give the band homotopies. No identity-sheet bound is a valid target. |
@@ -210,6 +202,23 @@ and Comparator passes.
 | 13 | `EstablishedSectionSevenCuspTopology.establishedActualCuspFiberEllipticMarkedCoordinateResidual` | eliminate (S) | Degree one needs only a unit meridian coefficient and degree two only `IsUnit a`. The full raw `[12,0,1]` source coordinate is proved. The global base phase `-4·phase(z)+3·phase(z-1)` corrects `12γ`; the radial homotopy is deck-invariant and has been descended through the additive cusp quotient, giving the corrected central mapping-torus character the same `[12,0,1]` coordinate. Extend that character over both elliptic filling pieces and identify the induced global winding, then prove the index-four side lift is primitive up to sign. |
 | 14 | `StandardInfiniteA2ToricModel.Established.normalizedPolarHoneycombPhaseGeometry` | eliminate (T) | Replace the impossible pinned logarithmic coordinate with the nonnegative toric/PL model below. The explicit modulus now proves that contractibility of the full local carrier implies contractibility of the positive locus; construct that global contraction, the honeycomb homeomorphism, and a relative CW structure on the positive-deck quotient. Existing invariant-modulus and stabilizer theorems then supply the complete phase-geometric core. |
 | 15 | `PaperAnalyticData.establishedActualEllipticRelatorNormalClosureResidual` | eliminate (S) | Connector-invariance reduces this to trace-compatible free homotopies from the projected regular filling loops to the expected affine relators. Axiom-clean local-degree arguments identify the order-three and order-four raw base loops with the inverse marked meridians cubed and fourth-powered. Both actual regular loops are identified pointwise in punctured real-period product coordinates and split endpoint-relatively into fibre-then-base paths. The order-three fibre factor is now explicitly swept from its local principal-gauge period to the corrected global cusp period, and the order-three base factor already reaches the zero-section triple. Their individual free-loop traces are not yet the same: the fibre sweep currently uses a path-connectedness witness while the base sweep uses the cubic zero-section trace and marked cusp whisker. Rebuild them over one common trace, or construct the whole-relator homotopy directly; unrelated conjugators are insufficient. For order four the remaining synchronization is still the single class-level transported-period identity. |
+
+### Cusp route audit
+
+`PaperSectionSevenCuspFullFibreNaturalityObstruction` refutes the previously proposed stronger
+full-fibre naturality comparison by exactness and the two-side matrix. This does not refute the
+scalar row-12 assumption. `PaperCuspFourthPeriodInvariance` proves that every monodromy element
+fixes the fourth basis vector, while the inverse order-three difference of the third basis vector
+is the required kernel generator. This suggests checking a possible index-four/index-five mismatch
+geometrically before pursuing a unit coefficient for the latter.
+
+`NormalizedCircleProductCross` now constructs a canonical additive circle cross product in every
+degree using Wang exactness and fibre projection. Homological circle sweeps respect loop
+concatenation and homotopy, and geometric positive circle crosses are additive for additive targets.
+These results use only standard Lean axioms. The next check is general geometric sweep identification
+for arbitrary base spaces via Wang naturality, followed by the globally invariant fourth-circle
+sweep of the already proved peripheral pair-of-pants homotopy. The scalar residual has not yet been
+refuted or eliminated.
 
 ## Correct toric route
 
@@ -256,8 +265,9 @@ theorem, so the cellular foundation remains one blackbox. It supplies only
 the general basis, attaching-degree boundary, and naturality principles; every numerical
 incidence and specialization value remains a consequence of the explicit toric construction.
 
-Blackbox 7 is ordinary Cartan Theorem B, not its affine-torsor specialization. Proving the
-finite-orbifold torsor corollary and connecting it to the paper's explicit charts is part of row 7.
+Row 7 is being proved using Cauchy–Green inversion and normalized arbitrary-cover Cousin
+splitting. Both are now Lean theorems using only the standard logical axioms; no Cartan B
+blackbox is needed for this route.
 
 ## Execution order
 
@@ -277,8 +287,8 @@ Work may proceed in parallel, but the preferred merge order is:
 8. **T2:** row 14, positive contractibility and quotient relative CW;
 9. **T3:** row 8, the complete central-orbit CW atlas;
 10. **T4:** row 9, the oriented cellular incidence table;
-11. **A1:** derive the finite-orbifold torsor theorem from Cartan B and prove row 7's explicit
-    descent and cusp bridges;
+11. **A1:** construct the finite-orbifold torsor section using the proved arbitrary-cover Cousin
+    splitting and prove row 7's explicit descent and cusp bridges;
 12. replace rows 1--3 by corollaries of the three general recognition blackboxes and run final
     recognition.
 
@@ -323,10 +333,10 @@ is used for ideas and small targeted comparisons, not as a replacement library. 
   from quarter slices. This repository already has the corresponding signed Wang algebra; the
   geometric homotopy and markings remain the work to do.
 - Its affine-torsor construction uses a cover by many small patches, with elliptic centers kept
-  out of distinct overlaps, then a compactly supported Cauchy--Green correction. This may avoid
-  the existing plan's premature requirement for two globally trivialized affine charts. The
-  classical boundary should be chosen after checking that route; no new analytic axiom is
-  introduced by this observation.
+  out of distinct overlaps, then a compactly supported Cauchy--Green correction. Focused ports of scalar Cauchy--Green
+  inversion and normalized arbitrary-cover Cousin splitting now prove that analytic step from
+  mathlib. Each port records the exact source and Apache-2.0 provenance; no parallel topology
+  development has been imported.
 - The toric continuous-inverse argument uses compactness and fibre saturation. Here the full
   geometric singleton-stratum product is now proved using the actual quotient and phase action.
 

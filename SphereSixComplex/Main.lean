@@ -591,6 +591,14 @@ public import SphereSixComplex.Topology.MappingTorusBaseCircleWangBoundaryNatura
 public import SphereSixComplex.Topology.IdentityUnitMappingTorusPositiveBoundary
 public import SphereSixComplex.Topology.IdentityPointMappingTorusWindingBoundary
 
+public import SphereSixComplex.Analysis.HolomorphicCocycle
+public import SphereSixComplex.Periods.OrbifoldAffineTorsorSingularSections
+public import SphereSixComplex.Topology.StandardA2ToricBoundaryFaceCoverage
+public import SphereSixComplex.Topology.ConstructedA2PositiveSingletonBall
+public import SphereSixComplex.Topology.NormalizedCircleProductCross
+public import SphereSixComplex.Topology.PaperCuspFourthPeriodInvariance
+public import SphereSixComplex.Topology.PaperSectionSevenCuspFullFibreNaturalityObstruction
+
 /-!
 # A Complex Structure on the Six-Sphere
 
