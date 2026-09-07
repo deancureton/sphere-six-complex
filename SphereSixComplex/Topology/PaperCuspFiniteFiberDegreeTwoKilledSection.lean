@@ -28,7 +28,7 @@ open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 
 variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
-  {W : ActualPuncturedCuspCollarWitness N M}
+  {W : ActualPuncturedCuspCollarWitness N M} [HasCuspPhaseSpreading W]
 
 namespace CuspFiberSpecializationNormalization
 

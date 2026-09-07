@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Topology.ToricPhaseSpreading
-public import SphereSixComplex.Topology.EstablishedA2PhaseSpreading
+public import SphereSixComplex.Topology.HasCuspPhaseSpreading
 public import SphereSixComplex.Topology.ActualCuspStraighteningRetraction
 public import SphereSixComplex.Geometry.PaperOpenEmbeddingStar
 
@@ -181,15 +181,14 @@ public noncomputable def actualLocalCuspCentralFiberRetractionData
 public noncomputable def selectedPolarHoneycombData
     {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
-    (W : ActualPuncturedCuspCollarWitness N M) :
+    (W : ActualPuncturedCuspCollarWitness N M) [HasCuspPhaseSpreading W] :
     PolarHoneycombData M W.localWitness.radius :=
-  Classical.choice (StandardInfiniteA2ToricModel.Established.polarHoneycombData
-    M W.localWitness.radius W.localWitness.radius_pos)
+  (cuspPhaseSpreadingData W).1
 
 /-- Once the explicit orbit-stratum compatibility is supplied, the selected paper cusp has the
 required central-fibre retraction datum. -/
 public noncomputable def paperCuspCentralFiberRetractionData
-    (A : PaperAnalyticData)
+    (A : PaperAnalyticData) [HasCuspPhaseSpreading A.starCuspWitness]
     (F : FrozenLocalCuspPhaseSpreadingData A.cuspCoordinate A.toricModel
       A.starCuspWitness.localWitness.radius
       (selectedPolarHoneycombData A.starCuspWitness)) :

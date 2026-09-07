@@ -537,47 +537,5 @@ public noncomputable def NormalizedPolarHoneycombConstructionData.toPolarHoneyco
     PolarHoneycombData M r :=
   Q.toPolarHoneycombConstructionData.toPolarHoneycombData
 
-/-- The remaining geometric construction chooses polar coordinates whose positive deck
-multiplier is the canonical radial part of the frozen multiplier and whose lifted cellular
-homotopy preserves compact-phase fibers. -/
-public axiom normalizedPolarHoneycombPhaseGeometry
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) (r : ℝ) (hr : 0 < r) :
-    Nonempty { Q : NormalizedPolarHoneycombConstructionData N M r //
-      PolarPhaseGeometricCore M r Q.toPolarHoneycombData }
-
-/-- Exact choice of the canonical radial multiplier supplies the radial compatibility required
-by the algebraic deck correction. -/
-public theorem polarHoneycombPhaseSpreadingGeometry
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) (r : ℝ) (hr : 0 < r) :
-    Nonempty { P : PolarHoneycombData M r //
-      PolarPhaseRadialCompatibility N M r P ∧ PolarPhaseGeometricCore M r P } := by
-  obtain ⟨⟨Q, G⟩⟩ := normalizedPolarHoneycombPhaseGeometry N M r hr
-  let P := Q.toPolarHoneycombData
-  refine ⟨⟨P, ⟨?_, G⟩⟩⟩
-  refine ⟨fun lambda i ↦ ?_⟩
-  exact norm_normalizedCuspPositiveTwist N lambda i
-
-/-- The standard polar-honeycomb model can be chosen compatibly with compact phase orbits, the
-frozen deck action, and the stabilizers of the positive-part cellular homotopy. -/
-public theorem polarHoneycombPhaseSpreadingPackage
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) (r : ℝ) (hr : 0 < r) :
-    Nonempty (Σ P : PolarHoneycombData M r,
-      FrozenLocalCuspPhaseSpreadingData N M r P) := by
-  obtain ⟨⟨P, H, G⟩⟩ := polarHoneycombPhaseSpreadingGeometry N M r hr
-  exact ⟨⟨P, FrozenLocalCuspPhaseSpreadingData.ofPolarPhaseData
-    (compactPhaseOrbit_prod_isQuotientMap M r P) H.toDeckLift G⟩⟩
-
-/-- Forgetting the phase-spreading compatibility gives the underlying polar-honeycomb model. -/
-public theorem polarHoneycombData (M : Model) (r : ℝ) (hr : 0 < r) :
-    Nonempty (PolarHoneycombData M r) := by
-  obtain ⟨E⟩ := exists_establishedFuchsianModularParameter
-  obtain ⟨F⟩ := establishedExactLiftedModularNegOneFrame E
-  let D := establishedFuchsianPeriodLocalData E F
-  obtain ⟨N⟩ := FuchsianCuspNormalization.exists_normalizedFuchsianCuspCoordinate E D
-  exact Nonempty.map (fun package ↦ package.1)
-    (polarHoneycombPhaseSpreadingPackage N M r hr)
 
 end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established

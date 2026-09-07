@@ -102,7 +102,7 @@ public theorem actualLocalCuspFillingHomologyTwoEquiv_specialization_eq_cellular
 fields concern the explicit cellular complex, rather than the homology coordinates of the actual
 cusp filling. -/
 public structure StandardA2ToricCentralFiberExplicitCWRealization
-    (W : ActualPuncturedCuspCollarWitness N M)
+    (W : ActualPuncturedCuspCollarWitness N M) [HasCuspPhaseSpreading W]
     (R : ActualLocalCuspCentralFiberRetractionData W)
     (G : ActualCuspRadialClutchingData W) : Prop where
   degreeOne_wangCoordinates : ∀ x : IntegralSingularHomology 1
@@ -118,7 +118,7 @@ public structure StandardA2ToricCentralFiberExplicitCWRealization
 
 namespace StandardA2ToricCentralFiberExplicitCWRealization
 
-variable {W : ActualPuncturedCuspCollarWitness N M}
+variable {W : ActualPuncturedCuspCollarWitness N M} [HasCuspPhaseSpreading W]
   {R : ActualLocalCuspCentralFiberRetractionData W}
   {G : ActualCuspRadialClutchingData W}
 

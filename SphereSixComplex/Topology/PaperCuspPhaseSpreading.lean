@@ -1,6 +1,7 @@
 module
 
 public import SphereSixComplex.Topology.ActualCuspPhaseSpreading
+public import SphereSixComplex.Topology.ConstructedA2PhaseSpreadingCompletion
 
 /-!
 # The phase-spread retraction for the paper cusp
@@ -26,9 +27,7 @@ public noncomputable def cuspPhaseSpreadingPackage :
     Σ P : PolarHoneycombData A.toricModel A.starCuspWitness.localWitness.radius,
       FrozenLocalCuspPhaseSpreadingData A.cuspCoordinate A.toricModel
         A.starCuspWitness.localWitness.radius P :=
-  Classical.choice (Established.polarHoneycombPhaseSpreadingPackage
-    A.cuspCoordinate A.toricModel A.starCuspWitness.localWitness.radius
-      A.starCuspWitness.localWitness.radius_pos)
+  cuspPhaseSpreadingData A.starCuspWitness
 
 /-- The unconditional actual central-fibre retraction datum for the cusp selected by `A`. -/
 public noncomputable def cuspCentralFiberRetractionData :

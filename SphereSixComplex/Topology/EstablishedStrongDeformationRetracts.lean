@@ -279,7 +279,7 @@ namespace EstablishedGeneralTopology
 /-- **Relative Whitehead theorem.**  A path-connected relative CW inclusion which induces a
 bijection on the fundamental group and on every higher homotopy group is a homotopy equivalence.
 
-This is the standard CW compression step (Hatcher, *Algebraic Topology*, Prop. 4.72 / Cor. 4.5).
+This is the standard CW compression step (Hatcher, *Algebraic Topology*, Theorem 4.5 and the cellwise compression argument of Lemma 4.6).
 Mathlib's abstract model-category Whitehead theorem is not instantiated for topological spaces,
 and neither Mathlib nor Tau Ceti currently connects `Topology.RelCWComplex` to weak homotopy
 equivalences, so this general theorem is the remaining standard topology input. -/

@@ -21,8 +21,8 @@ Do not edit it by hand; run ./scripts/update-axiom-catalog.sh --write.
 
 # Constants in the current final-theorem trust closure.
 #
-# In addition to Lean's three standard logical axioms, the current closure contains seven retained
-# source-independent classical blackboxes and eight transitional construction-specific axioms.
+# In addition to Lean's three standard logical axioms, the closure contains retained
+# source-independent classical blackboxes and transitional construction-specific axioms.
 # The cellular, Poincare-duality, UCT, and smooth-triangulation assumptions have general statements;
 # analytic descent is now proved from mathlib. Every
 # declaration in a transitional section remains a proof obligation; renaming or moving one does
@@ -33,7 +33,7 @@ axiom propext : ∀ {a b : Prop}, (a ↔ b) → a = b
 axiom Quot.sound.{u} : ∀ {α : Sort u} {r : α → α → Prop} {a b : α}, r a b → Quot.mk r a = Quot.mk r b
 axiom Classical.choice.{u} : {α : Sort u} → Nonempty α → α
 
-# Retained classical recognition blackboxes (three of the current seven).
+# Retained classical recognition blackboxes.
 axiom SphereSixComplex.classicalHigherHurewiczTheory : ∃ H, SphereSixComplex.HigherHurewiczIsomorphismProperty H
 axiom SphereSixComplex.simplyConnectedHomologicalWhitehead : ∀ (X Y : Type) [inst : TopologicalSpace X]
   [inst_1 : TopologicalSpace Y] [SimplyConnectedSpace X] [SimplyConnectedSpace Y],
@@ -42,7 +42,7 @@ axiom SphereSixComplex.simplyConnectedHomologicalWhitehead : ∀ (X Y : Type) [i
       ∀ (f : C(X, Y)), SphereSixComplex.IsIntegralHomologyEquivalence f → ∃ e, e.toFun = f
 axiom SphereSixComplex.establishedSmoothPoincareSixStandardModel : SphereSixComplex.SmoothPoincareSixStandardModel
 
-# Retained homological foundations (four of the current seven).
+# Retained homological foundations.
 axiom SphereSixComplex.classicalIntegralPoincareDuality : ∀ (d : ℕ) (E X : Type) [inst : NormedAddCommGroup E]
   [inst_1 : NormedSpace ℝ E] [FiniteDimensional ℝ E] [inst_3 : TopologicalSpace X] [inst_4 : ChartedSpace E X]
   [T2Space X] [SecondCountableTopology X],
@@ -64,6 +64,33 @@ axiom SphereSixComplex.compactCOneManifoldFiniteCWModelAtDimension : (E X : Type
                 IsManifold (modelWithCornersSelf ℝ E) 1 X →
                   CompactSpace X → SphereSixComplex.FiniteCWModelOfDimension (Module.finrank ℝ E) X
 axiom SphereSixComplex.integralCWCellularHomologyFoundation : SphereSixComplex.IntegralCWCellularHomologyFoundation
+
+# Retained general geometric topology; source statements are reviewed in AXIOM-ELIMINATION-PLAN.md.
+axiom SphereSixComplex.EstablishedGeneralTopology.isHomotopyEquivalenceInclusion_of_relativeCWComplex_of_bijective_homotopyGroups.{u_1} : ∀
+  {B : Type u_1} [inst : TopologicalSpace B] (D : Set B) (b : B) (hb : b ∈ D),
+  PathConnectedSpace B →
+    PathConnectedSpace ↑D →
+      Function.Bijective
+          ⇑(FundamentalGroup.mapOfEq (SphereSixComplex.topologicalSubsetInclusionMap D)
+              (have this := rfl;
+              this)) →
+        (∀ (n : ℕ),
+            Function.Bijective
+              (HomotopyGroup.map (SphereSixComplex.topologicalSubsetInclusionMap D)
+                (have this := rfl;
+                this))) →
+          ∀ (hCW : Topology.RelCWComplex Set.univ D), SphereSixComplex.IsHomotopyEquivalenceInclusion D
+axiom SphereSixComplex.classicalBrownCollaring.{u_1} : ∀ {X : Type u_1} [inst : TopologicalSpace X]
+  [TopologicalSpace.MetrizableSpace X] (B : Set X),
+  SphereSixComplex.LocallyCollared B → Nonempty (SphereSixComplex.OpenTopologicalCollar X B)
+axiom SphereSixComplex.establishedSecondCountableCOneManifoldWithCornersRelativeCW.{u} : (n : ℕ) →
+  (X : Type u) →
+    [inst : TopologicalSpace X] →
+      [T2Space X] →
+        [SecondCountableTopology X] →
+          [inst_3 : ChartedSpace (EuclideanQuadrant n) X] →
+            [IsManifold (modelWithCornersEuclideanQuadrant n) 1 X] →
+              Topology.RelCWComplex Set.univ (ModelWithCorners.boundary X)
 
 # Transitional paper-specific geometry and topology.
 axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberIndependentIncidenceResidual : ∀
@@ -91,12 +118,4 @@ axiom SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTop
   {A : SphereSixComplex.Geometry.PaperAnalyticData} (R : A.SectionSevenAffineRadialCompletionInput),
   SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenEllipticTwoDiscCoverData.CuspPulledBackMarkedInvariantBasisData
     R
-axiom SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established.normalizedPolarHoneycombPhaseGeometry : ∀
-  {E : SphereSixComplex.Periods.EstablishedFuchsianModularParameter}
-  {D : SphereSixComplex.Periods.FuchsianPeriodLocalData E}
-  (N : SphereSixComplex.Geometry.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate E D)
-  (M : SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Model) (r : ℝ),
-  0 < r →
-    Nonempty
-      { Q // SphereSixComplex.Geometry.CuspStraighteningRetraction.PolarPhaseGeometricCore M r Q.toPolarHoneycombData }
 END GENERATED AXIOM CATALOG -/

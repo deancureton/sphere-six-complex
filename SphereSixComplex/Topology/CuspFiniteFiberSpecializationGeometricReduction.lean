@@ -33,7 +33,7 @@ open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 
 variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
-  {W : ActualPuncturedCuspCollarWitness N M}
+  {W : ActualPuncturedCuspCollarWitness N M} [HasCuspPhaseSpreading W]
 
 namespace ActualCuspRadialClutchingData
 
@@ -60,6 +60,7 @@ public def markedFiberToCuspFilling (G : ActualCuspRadialClutchingData W) :
     ⟨puncturedLocalCuspToFilling W, puncturedLocalCuspToFilling_continuous W⟩
   exact i.comp G.markedFiberToPuncturedCusp
 
+omit [HasCuspPhaseSpreading W] in
 /-- The marked fibre inclusion is literally the normalized additive-period point of the collar.
 This is the point-set compatibility that rules out changing the source basis by a hidden torus
 automorphism. -/
@@ -74,6 +75,7 @@ public theorem markedFiberToPuncturedCusp_eq_actualCuspCollarPeriodPoint
   let _ := G.fiberTopology
   exact (G.fiberNormalization y zeta).2 hy
 
+omit [HasCuspPhaseSpreading W] in
 /-- After adjoining the central fibre, the literal marked-fibre inclusion is still the quotient
 of the same normalized additive-period point. -/
 public theorem markedFiberToCuspFilling_eq_actualCuspCollarPeriodPoint
@@ -95,6 +97,7 @@ private theorem openRadialIntervalProdHomotopyEquiv_apply
     openRadialIntervalProdHomotopyEquiv hr p = p.2 := by
   rfl
 
+omit [HasCuspPhaseSpreading W] in
 /-- Removing the radial coordinate sends the marked fibre inclusion to the standard mapping-torus
 fibre inclusion. -/
 public theorem totalHomotopyEquiv_comp_markedFiberToPuncturedCusp
@@ -219,6 +222,7 @@ public noncomputable def degreeTwoFiberGenerator
   exact G.monodromyCoordinates.degreeTwo.symm
     (degreeTwoCoinvariantRepresentative (Pi.single j 1))
 
+omit [HasCuspPhaseSpreading W] in
 public theorem degreeOneCoinvariantsEquiv_symm_single
     (G : ActualCuspRadialClutchingData W) (j : Fin 2) :
     let _ := G.fiberTopology
@@ -242,6 +246,7 @@ public theorem degreeOneCoinvariantsEquiv_symm_single
       funext i
       fin_cases i <;> fin_cases j <;> rfl
 
+omit [HasCuspPhaseSpreading W] in
 public theorem degreeTwoCoinvariantsEquiv_symm_single
     (G : ActualCuspRadialClutchingData W) (j : Fin 4) :
     let _ := G.fiberTopology

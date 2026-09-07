@@ -55,7 +55,7 @@ namespace ActualCuspRadialClutchingData
 
 /-- A marked degree-one fibre generator occupies its corresponding pure Wang coinvariant. -/
 public theorem geometricHomologyOneEquiv_markedFiberGenerator
-    {W : ActualPuncturedCuspCollarWitness N M}
+    {W : ActualPuncturedCuspCollarWitness N M} [HasCuspPhaseSpreading W]
     (G : ActualCuspRadialClutchingData W) (j : Fin 2) :
     let _ := G.fiberTopology
     G.geometricHomologyOneEquiv
@@ -109,7 +109,7 @@ public theorem geometricHomologyOneEquiv_markedFiberGenerator
 
 /-- A marked degree-two fibre generator occupies its corresponding pure Wang coinvariant. -/
 public theorem geometricHomologyTwoEquiv_markedFiberGenerator
-    {W : ActualPuncturedCuspCollarWitness N M}
+    {W : ActualPuncturedCuspCollarWitness N M} [HasCuspPhaseSpreading W]
     (G : ActualCuspRadialClutchingData W) (j : Fin 4) :
     let _ := G.fiberTopology
     G.geometricHomologyTwoEquiv

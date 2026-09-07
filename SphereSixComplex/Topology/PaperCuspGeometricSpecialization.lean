@@ -1,6 +1,7 @@
 module
 
 public import SphereSixComplex.Topology.PaperCuspGeometricSpecializationDefs
+public import SphereSixComplex.Topology.ConstructedA2PhaseSpreadingCompletion
 public import SphereSixComplex.Topology.PaperCuspRadialClutchingConstruction
 
 /-!
@@ -55,21 +56,19 @@ open LatticeData LatticeWangAlgebra Topology.PaperCuspSpecializationAlgebra
 
 variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
-  {W : ActualPuncturedCuspCollarWitness N M} (G : UnnormalizedCuspRadialClutchingData W)
+  {W : ActualPuncturedCuspCollarWitness N M} [HasCuspPhaseSpreading W] (G : UnnormalizedCuspRadialClutchingData W)
 
 /-- The established polar honeycomb and phase-spreading data selected for the radial collar. -/
 public noncomputable def radialPhaseSpreadingPackage
-    (W : ActualPuncturedCuspCollarWitness N M) :
+    (W : ActualPuncturedCuspCollarWitness N M) [HasCuspPhaseSpreading W] :
     Σ P : PolarHoneycombData M W.localWitness.radius,
       Geometry.CuspStraighteningRetraction.FrozenLocalCuspPhaseSpreadingData N M
         W.localWitness.radius P :=
-  Classical.choice
-    (StandardInfiniteA2ToricModel.Established.polarHoneycombPhaseSpreadingPackage N M
-      W.localWitness.radius W.localWitness.radius_pos)
+  cuspPhaseSpreadingData W
 
 /-- The resulting radial deformation retraction onto the standard central fibre. -/
 public noncomputable def radialCentralFiberRetractionData
-    (W : ActualPuncturedCuspCollarWitness N M) :
+    (W : ActualPuncturedCuspCollarWitness N M) [HasCuspPhaseSpreading W] :
     ActualLocalCuspCentralFiberRetractionData W :=
   Geometry.CuspStraighteningRetraction.actualLocalCuspCentralFiberRetractionData W
     (radialPhaseSpreadingPackage W).1 (radialPhaseSpreadingPackage W).2
@@ -221,7 +220,7 @@ namespace ActualCuspRadialClutchingData
 
 variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
-  {W : ActualPuncturedCuspCollarWitness N M} (G : ActualCuspRadialClutchingData W)
+  {W : ActualPuncturedCuspCollarWitness N M} [HasCuspPhaseSpreading W] (G : ActualCuspRadialClutchingData W)
 
 /-- Wang sections normalized so that their suspension summands lie in the kernel of the radial
 specialization map. -/

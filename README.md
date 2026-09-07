@@ -24,6 +24,10 @@ inputs. The paper's Theorem 7.22 assigns the nonzero boundary to the third-perio
 The correction is in progress; Comparator passing with the current allowlist does not establish
 a consistent mathematical trust boundary. See `AXIOM-ELIMINATION-PLAN.md`.
 
+The constructed polar phase geometry is now proved from explicit positive charts, Brown
+collaring, relative C¹ triangulation, and relative Whitehead. Five transitional assumptions
+remain; the classical signatures and their sources are reviewed in `AXIOM-ELIMINATION-PLAN.md`.
+
 ## Build
 
 ```sh

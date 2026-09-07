@@ -9,7 +9,8 @@ small set of general classical blackboxes:
 \{\mathsf{propext},\ \mathsf{Quot.sound},\ \mathsf{Classical.choice}\}
 \cup \{\mathrm{Hurewicz},\ \mathrm{HomologicalWhitehead},
 \mathrm{SmoothPoincare}_6,\ \mathrm{CellularHomology},\ \mathrm{PoincareDuality},
-\mathrm{CohomologicalUCT},\ \mathrm{SmoothTriangulation}\}.
+\mathrm{CohomologicalUCT},\ \mathrm{SmoothTriangulation},\ \mathrm{BrownCollaring},
+\mathrm{RelativeTriangulation},\ \mathrm{RelativeWhitehead}\}.
 \]
 
 The displayed size is not a quota. This boundary may shrink, or one entry may be replaced by a more natural
@@ -18,8 +19,11 @@ a standard theorem in its usual generality, is independently auditable without u
 paper, and replaces a genuinely infeasible foundational development.  A specialized corollary,
 even when mathematically true, is never an admissible blackbox.
 
-The present final theorem uses thirteen project axioms: seven retained classical inputs and six
-transitional dependencies. The task is to replace the six transitional declarations by theorems.
+The phase-geometry axiom has been replaced in source by a proved constructed-model package.
+Its classical dependencies add Brown collaring and activate the existing relative triangulation
+and relative Whitehead theorems. The computed final closure is ten classical inputs and five
+transitional dependencies. The five transitional declarations
+remain proof obligations.
 The analytic correction is proved, the cellular input has been strengthened in place, the former combined manifold-homology package
 is now derived from general Poincare duality, UCT, and smooth triangulation, and the analytic
 correction is derived from the proved Cauchy–Green/Cousin theorem. Adding files,
@@ -57,7 +61,7 @@ constructed complex threefold has the integral homology of \(S^6\).
 
 ## Candidate final blackboxes
 
-The current boundary has seven entries. The analytic track now has an axiom-free arbitrary-cover
+The classical boundary now has ten entries. The analytic track now has an axiom-free arbitrary-cover
 Cousin theorem, so Cartan B is no longer a proposed boundary entry. The trusted statements
 must not mention this paper, the constructed threefold, or the number six except where dimension
 six is intrinsic.
@@ -121,6 +125,25 @@ properties; it does not uniquely characterize a canonical choice or its sign. Sm
 already derived from dimension-controlled triangulation. A candidate is rejected if it is merely
 a custom conclusion needed by this project rather than a literature-level theorem.
 
+8. **Brown collaring.** Retain Brown’s general theorem that a locally collared subset of a
+   metrizable space has an open collar. The statement has no dimension or manifold hypothesis.
+   The actual local collars are proved from the positive quadrant charts and an explicit
+   orthant-to-half-space homeomorphism. The homotopy equivalence with the boundary complement
+   is proved in Lean using a Urysohn cutoff; it is not part of this blackbox.
+
+9. **Relative C¹ triangulation with corners.** Retain the general relative CW consequence of
+   Cairns–Whitehead triangulation for arbitrary second-countable Hausdorff C¹ manifolds with
+   corners in any finite dimension. The base is the full manifold boundary. The actual
+   quadrant atlas, smooth deck action, descended quotient atlas, and boundary identification
+   are all proved before applying this theorem. This activates a previously dormant classical
+   boundary, rather than adding a toric-specific assumption.
+
+10. **Relative Whitehead theorem.** Retain the general theorem that a path-connected relative
+    CW inclusion inducing bijections on the fundamental group and all higher homotopy groups
+    is a homotopy equivalence. This previously dormant theorem supplies the quotient inclusion
+    step after the regular cover and its full core preimage have both been proved contractible.
+    The covering comparison, homotopy extension, and equivariant strong retraction are proved.
+
 ### Human review of the classical boundary
 
 The source theorem and the Lean hypotheses must be checked together. A familiar name alone does
@@ -136,8 +159,12 @@ constant types; reviewers must also inspect the definitions those types mention.
 | Smooth triangulation | [Whitehead, On C1-complexes](https://www.sciencedirect.com/science/chapter/edited-volume/pii/B978008009870850021X). The Lean statement keeps compactness, Hausdorffness, second countability, finite dimension, and absence of boundary. It requests only a finite CW homotopy model with the dimension bound. |
 | Poincare duality | [Hatcher, Chapter 3, Theorem 3.30](https://pi.math.cornell.edu/~hatcher/AT/ATch3.pdf). Closed oriented manifolds, integral coefficients, and complementary degrees. `SmoothAtlasOrientation` includes the dimension equality and orientation-preserving transition derivatives. Only additive equivalences are asserted. |
 | Cohomological UCT | [Hatcher, Chapter 3, Section 3.1](https://pi.math.cornell.edu/~hatcher/AT/ATch3.pdf). The cohomology is that of the integral singular cochain complex and the obstruction is actual derived `Ext¹` over the integers. The positive-degree splitting is noncanonical. |
+| Brown collaring | [Brown, Locally Flat Imbeddings of Topological Manifolds, Theorem 1, p. 337](https://www.maths.gla.ac.uk/~mpowell/Brown%20collars.pdf). Section II defines precisely an open collar by `B × [0,1)` fixing zero. `LocallyCollared` requires a relative open cover by subsets with these collars. Only metrizability is assumed. |
+| Relative Whitehead | [Hatcher, Chapter 4, Theorem 4.5 and the relative CW compression argument](https://pi.math.cornell.edu/~hatcher/AT/ATch4.pdf). The statement requires a relative CW inclusion, path connectedness on both sides, and actual induced bijections on π₁ and every higher homotopy group. It contains no toric or covering-space conclusion. |
+| Relative C¹ triangulation with corners | [Murayama–Shiota, Nagoya Math. J. 212 (2013), pp. 159–160](https://doi.org/10.1215/00277630-2366201) explicitly states the classical Cairns–Whitehead theorem for `C^k` manifolds with corners, including `k = 1`, and cites Munkres. A PL triangulation has its full boundary as a subcomplex; the Lean axiom retains only the resulting relative CW structure. |
 
-This audit does not approve the six transitional axioms. The former analytic declaration is
+
+This audit does not approve the five remaining transitional axioms. The former analytic declaration is
 now proved using only Lean's standard logical axioms and has been removed from both allowlists.
 
 No additional blackbox may be added silently. A candidate is permitted only when it is a standard,
@@ -176,7 +203,7 @@ There are five largely independent implementation tracks:
 - **A: analytic descent** - the affine-line torsor correction at the orbifold cusp.
 
 The recognition and analytic tracks are complete and should remain stable while T and S remove
-the six transitional axioms.
+the five remaining transitional axioms.
 
 ## Dependency work items
 
@@ -199,7 +226,7 @@ and Comparator passes.
 | 11 | `EstablishedSectionSevenAffineRegularLiftTopology.markedBandHomotopies` | eliminate (S) | The former attempt to deduce the identity-sheet Cayley bounds from `starSeparation` is false: valid separation radii can be shrunk below both positive pinned norms. The entering-sheet group calculation is now proved: each order-three or order-four entering sheet is an elliptic-stabilizer multiple of the inverse common peripheral conjugator. The remaining point-set work is to identify the extracted local Cayley meridian with the corresponding geometric central meridian and to prove that translation by this common conjugator transports both finite-cover markings. The existing clopen-sheet and endpoint-gauge theorems then give the band homotopies. No identity-sheet bound is a valid target. |
 | 12 | `EstablishedSectionSevenCuspTopology.establishedCuspPulledBackMarkedInvariantBasisData` | **rejected; correct and eliminate (S)** | `CuspFourthSweepCentralImage` proves the actual raw-five pulled-back boundary is zero and formally negates this package. The negation uses standard Lean axioms, cellular homology, and two remaining toric inputs; the explicit sweep's boundary vanishing itself uses only standard axioms. The paper's Theorem 7.22 says raw four (third period) has primitive boundary, raw five (fourth period) has zero boundary. The current package reverses these roles. Prove the raw-four signed boundary, correct the marked Wang coordinate and the first two Section 7 coordinates, and remove the rejected axiom. |
 | 13 | `EstablishedSectionSevenCuspTopology.establishedActualCuspFiberEllipticMarkedCoordinateResidual` | **correct and eliminate (S)** | Its degree-two index-four fibre-unit requirement follows the same reversed marking as row 12. The paper instead uses the fourth-period/raw-five sweep as a primitive fibre-coordinate class when the twist parameter is a unit. Prove this via the invariant circle sweep and the meridian's degree-one coordinate, including compatibility with the toric specialization-kernel normalization. The corrected coordinate change is `[x5,x4,-x0,-x1,-x2,x3]`. Do not introduce a replacement axiom merely to hide the mismatch. |
-| 14 | `StandardInfiniteA2ToricModel.Established.normalizedPolarHoneycombPhaseGeometry` | eliminate (T) | The corrected global honeycomb homeomorphism is proved from compatible finite quotient charts and a locally finite closed hexagonal cover. Its construction uses only standard Lean axioms and replaces the `honeycombCells` input. The positive-deck quotient relative CW structure is now proved from the general C¹ manifold-with-corners relative triangulation theorem, using an explicit C¹ quadrant atlas, zero-height boundary identification, and smooth deck action. Remaining: contractibility of the full positive locus. Existing invariant-modulus and stabilizer theorems supply the remaining phase-geometric core. |
+| 14 | `StandardInfiniteA2ToricModel.Established.normalizedPolarHoneycombPhaseGeometry` | proved | The corrected global honeycomb homeomorphism is proved from compatible finite quotient charts and a locally finite closed hexagonal cover. Its construction uses only standard Lean axioms and replaces the `honeycombCells` input. The positive-deck quotient relative CW structure is now proved from the general C¹ manifold-with-corners relative triangulation theorem, using an explicit C¹ quadrant atlas, zero-height boundary identification, and smooth deck action. The full positive locus is contractible by the explicit interior homeomorphism and Brown collaring applied to proved local collars. The open-collar homotopy equivalence is proved using a Urysohn cutoff. Relative Whitehead and proved covering/HEP machinery supply the equivariant retraction; invariant modulus and stabilizer theorems complete phase spreading. Generic consumers now state a `HasCuspPhaseSpreading W` hypothesis; the constructed model has a proved instance, and the universal phase axiom and its wrappers are deleted. |
 | 15 | `PaperAnalyticData.establishedActualEllipticRelatorNormalClosureResidual` | **proved (S)** | Both orders use the entering sheet of the existing comparison homotopy's own lifted trace. Literal straight-fibre loops are identified with their labelled regular-family periods; transport along that same trace proves the corrected period identities and both normal-closure statements. The resulting theorem uses only standard Lean axioms. |
 
 
@@ -306,7 +333,7 @@ Work may proceed in parallel, but the preferred merge order is:
 6. **S5:** row 15, the two connector endpoint evaluations;
 7. **T1:** correct the honeycomb tile/chart convention, then prove the corrected finite quotient
    and direct nonnegative toric atlas;
-8. **T2:** row 14, positive contractibility (quotient relative CW is proved);
+8. **T2:** row 14 is proved; the constructed instance passes the full build and dependency audit;
 9. **T3:** row 8, the complete central-orbit CW atlas;
 10. **T4:** row 9, the oriented cellular incidence table;
 11. **A1 (complete):** the finite-orbifold torsor section, normalized Cousin splitting, and cusp
@@ -338,7 +365,7 @@ It may be reported as a milestone, but an axiom is green only after all of the f
 5. the relevant narrow theorem and the headline theorem pass axiom inspection;
 6. a full build succeeds against the pinned dependencies (fetch their cache only when artifacts are missing);
 7. import reachability, placeholder, axiom-catalog, and Comparator checks pass;
-8. Comparator reports only the three logical axioms and the seven approved general blackboxes.
+8. Comparator reports only the three logical axioms and the approved general classical boundary.
 
 The allowlist is changed only when a dependency is actually removed from the final theorem. It is
 never changed to rename a paper-specific assumption or to replace it with an equivalent residual.
@@ -375,7 +402,7 @@ Each work session should select one row and record:
 - the next unconditional theorem to prove;
 - whether that theorem directly closes the row or which listed milestone remains;
 - any counterexample discovered to the proposed route;
-- the resulting change, if any, in the six-item transitional count.
+- the resulting change, if any, in the transitional count.
 
 If a route is false, first prove or document the counterexample, update this plan, and remove the
 dead route from active work. The global dependency table—not file count—is the source of truth.
@@ -460,3 +487,21 @@ For each elliptic strip, one entering deck is proved to work over the entire str
 full real-period frame changes by its actual lattice action. Comparing the two strips in one
 shared marking remains open. The six transitional headline assumptions, including the
 formally rejected raw cusp boundary marking, remain unresolved at this checkpoint.
+
+## Constructed phase-spreading completion
+
+`constructedLocalPositivePart_contractible` uses only Brown collaring and the standard Lean
+axioms. `constructedHasCuspPhaseSpreading` additionally uses the two general classical results
+for relative triangulation with corners and relative Whitehead. A direct `#print axioms` probe
+confirms exactly these three project inputs. No specialized phase-geometry assumption survives
+in this constructed instance. The full build, import and placeholder checks, axiom catalog,
+closure audit, and Comparator default-kernel gate all pass. The headline closure contains
+the standard three Lean axioms, ten classical inputs, and five transitional assumptions.
+
+The normalized strip midpoint is now constructed using the actual marked cusp whisker and
+its same cusp conjugator correction. Both total-cover meridian labels are proved to be the
+named generators. Their transfer to the regular-base cover and the full-fibre band marking
+comparison remain to be completed; no cusp-marking axiom is removed by this partial work.
+
+The normalized zero/one midpoint labels and the third-sweep homology realization each have
+direct kernel axiom audits containing only the three standard Lean axioms.

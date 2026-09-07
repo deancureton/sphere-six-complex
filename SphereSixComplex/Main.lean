@@ -657,6 +657,12 @@ public import SphereSixComplex.Topology.ConstructedA2PositiveRelativeCWCompletio
 public import SphereSixComplex.Topology.PaperSectionSevenAffineGlobalEnteringSheets
 public import SphereSixComplex.Topology.CuspThirdSweep
 
+public import SphereSixComplex.Topology.ConstructedA2PhaseSpreadingCompletion
+public import SphereSixComplex.Topology.CuspThirdSweepLoopRealization
+public import SphereSixComplex.Topology.MarkedMeridianCircleCylinders
+public import SphereSixComplex.Topology.PaperSectionSevenAffineMarkedMeridianLifts
+public import SphereSixComplex.Topology.PaperSectionSevenAffineNormalizedStripLift
+
 /-!
 # A Complex Structure on the Six-Sphere
 

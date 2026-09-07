@@ -1,7 +1,7 @@
 # Constants in the current final-theorem trust closure.
 #
-# In addition to Lean's three standard logical axioms, the current closure contains seven retained
-# source-independent classical blackboxes and eight transitional construction-specific axioms.
+# In addition to Lean's three standard logical axioms, the closure contains retained
+# source-independent classical blackboxes and transitional construction-specific axioms.
 # The cellular, Poincare-duality, UCT, and smooth-triangulation assumptions have general statements;
 # analytic descent is now proved from mathlib. Every
 # declaration in a transitional section remains a proof obligation; renaming or moving one does
@@ -12,16 +12,21 @@ propext
 Quot.sound
 Classical.choice
 
-# Retained classical recognition blackboxes (three of the current seven).
+# Retained classical recognition blackboxes.
 SphereSixComplex.classicalHigherHurewiczTheory
 SphereSixComplex.simplyConnectedHomologicalWhitehead
 SphereSixComplex.establishedSmoothPoincareSixStandardModel
 
-# Retained homological foundations (four of the current seven).
+# Retained homological foundations.
 SphereSixComplex.classicalIntegralPoincareDuality
 SphereSixComplex.classicalIntegralSingularCohomologyUCT
 SphereSixComplex.compactCOneManifoldFiniteCWModelAtDimension
 SphereSixComplex.integralCWCellularHomologyFoundation
+
+# Retained general geometric topology; source statements are reviewed in AXIOM-ELIMINATION-PLAN.md.
+SphereSixComplex.EstablishedGeneralTopology.isHomotopyEquivalenceInclusion_of_relativeCWComplex_of_bijective_homotopyGroups
+SphereSixComplex.classicalBrownCollaring
+SphereSixComplex.establishedSecondCountableCOneManifoldWithCornersRelativeCW
 
 # Transitional paper-specific geometry and topology.
 SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberIndependentIncidenceResidual
@@ -29,4 +34,3 @@ SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpe
 SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenAffineRegularLiftTopology.markedBandHomotopies
 SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTopology.establishedActualCuspFiberEllipticMarkedCoordinateResidual
 SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTopology.establishedCuspPulledBackMarkedInvariantBasisData
-SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established.normalizedPolarHoneycombPhaseGeometry
