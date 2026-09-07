@@ -1,7 +1,7 @@
 # Allowlist for the implemented construction cone, excluding the final smooth-recognition step.
 # Its retained foundations are cellular homology, Poincare duality, integral UCT, and smooth
-# triangulation; all other entries are transitional. The final target replaces the analytic
-# correction by general Cartan B. Every construction-specific entry remains a proof obligation.
+# triangulation; all other entries are transitional. Analytic descent is now proved from mathlib.
+# Every construction-specific entry remains a proof obligation.
 
 Classical.choice
 Quot.sound
@@ -11,10 +11,7 @@ SphereSixComplex.classicalIntegralSingularCohomologyUCT
 SphereSixComplex.compactCOneManifoldFiniteCWModelAtDimension
 SphereSixComplex.integralCWCellularHomologyFoundation
 
-# Transitional analytic descent (one of nine).
-SphereSixComplex.Periods.establishedOrbifoldAffineLineTorsorCuspBoundedCousinCorrection
-
-# Transitional paper-specific geometry and topology (seven of nine).
+# Transitional paper-specific geometry and topology (seven of eight).
 SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralOrbitCellAtlas
 SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberIndependentIncidenceResidual
 SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization.establishedFiniteFiberGeneratorSpecializationMatrix
@@ -23,5 +20,5 @@ SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTopology.
 SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTopology.establishedCuspPulledBackMarkedInvariantBasisData
 SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established.normalizedPolarHoneycombPhaseGeometry
 
-# Transitional connector-invariant elliptic comparison (one of nine).
+# Transitional connector-invariant elliptic comparison (one of eight).
 SphereSixComplex.Geometry.PaperAnalyticData.establishedActualEllipticRelatorNormalClosureResidual

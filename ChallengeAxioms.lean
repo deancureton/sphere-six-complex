@@ -22,9 +22,9 @@ Do not edit it by hand; run ./scripts/update-axiom-catalog.sh --write.
 # Constants in the current final-theorem trust closure.
 #
 # In addition to Lean's three standard logical axioms, the current closure contains seven retained
-# source-independent classical blackboxes and nine transitional construction-specific axioms.
+# source-independent classical blackboxes and eight transitional construction-specific axioms.
 # The cellular, Poincare-duality, UCT, and smooth-triangulation assumptions have general statements;
-# the final target replaces the analytic correction by general Cartan B. Every
+# analytic descent is now proved from mathlib. Every
 # declaration in a transitional section remains a proof obligation; renaming or moving one does
 # not eliminate it.
 
@@ -65,12 +65,7 @@ axiom SphereSixComplex.compactCOneManifoldFiniteCWModelAtDimension : (E X : Type
                   CompactSpace X → SphereSixComplex.FiniteCWModelOfDimension (Module.finrank ℝ E) X
 axiom SphereSixComplex.integralCWCellularHomologyFoundation : SphereSixComplex.IntegralCWCellularHomologyFoundation
 
-# Transitional analytic descent (one of nine).
-axiom SphereSixComplex.Periods.establishedOrbifoldAffineLineTorsorCuspBoundedCousinCorrection : ∀
-  (P : SphereSixComplex.Periods.OrbifoldAffineLineTorsorDescentProblem),
-  P.HasAcyclicProjectiveLineFrame → Nonempty P.CuspBoundedEllipticOneCorrection
-
-# Transitional paper-specific geometry and topology (seven of nine).
+# Transitional paper-specific geometry and topology (seven of eight).
 axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralOrbitCellAtlas : {E :
     SphereSixComplex.Periods.EstablishedFuchsianModularParameter} →
   {D : SphereSixComplex.Periods.FuchsianPeriodLocalData E} →
@@ -113,7 +108,7 @@ axiom SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established.normali
     Nonempty
       { Q // SphereSixComplex.Geometry.CuspStraighteningRetraction.PolarPhaseGeometricCore M r Q.toPolarHoneycombData }
 
-# Transitional connector-invariant elliptic comparison (one of nine).
+# Transitional connector-invariant elliptic comparison (one of eight).
 axiom SphereSixComplex.Geometry.PaperAnalyticData.establishedActualEllipticRelatorNormalClosureResidual : ∀
   (A : SphereSixComplex.Geometry.PaperAnalyticData),
   Nonempty (A.ActualEllipticRelatorNormalClosureResidual A.actualCuspCentralNaturality)

@@ -104,12 +104,12 @@ public theorem positiveCircleCross_projection
     map_zero]
 
 public theorem positiveCircleCross_eq_normalized
-    {G : Type} [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
+    {G : Type} [TopologicalSpace G]
     (c : C(StdTorus 1, G)) :
     positiveCircleCross c = normalizedCircleCross 1
       (integralSingularHomologyMap 1 c standardCircleHomologyGenerator) := by
   apply circleProductClass_ext 1
-  · rw [NormalizedCoverCrossLowOverlapCalculationProof.canonicalProductWangBoundary_positiveCircleCross,
+  · rw [FixedTopologicalCircleWangBoundary.canonicalProductWangBoundary_positiveCircleCross,
       normalizedCircleCross_boundary]
   · rw [positiveCircleCross_projection, normalizedCircleCross_projection]
 
@@ -144,5 +144,68 @@ public theorem circleSweepClass_homotopic
 
 end SphereSixComplex.Topology.CircleProductIdentityMappingTorus
 
+end
+end
+
+
+@[expose] public section
+noncomputable section
+open AlgebraicTopology
+open scoped ContinuousMap
+namespace SphereSixComplex.Topology.CircleProductIdentityMappingTorus
+open StandardTorusHomology PositiveCircleCross StandardCircleHomologyLiftDegree
+variable {X : Type} [TopologicalSpace X]
+
+public noncomputable def pathCircleMap {x : X} (p : Path x x) : C(StdTorus 1, X) where
+  toFun z := AddCircle.liftIco (1 : ℝ) 0 p.extend (z 0)
+  continuous_toFun := (AddCircle.liftIco_zero_continuous
+    (by simp : p.extend 0 = p.extend 1) p.continuous_extend.continuousOn).comp
+      (continuous_apply 0)
+
+public theorem pathCircleMap_loop {x : X} (p : Path x x) (t : unitInterval) :
+    pathCircleMap p (standardCirclePositiveLoop t) = p t := by
+  change AddCircle.liftIco (1 : ℝ) 0 p.extend (((t : ℝ) * ((1 : ℤ) : ℝ) : ℝ) : UnitAddCircle) = p t
+  simp only [Int.cast_one, mul_one]
+  by_cases ht : (t : ℝ) = 1
+  · have ht' : t = 1 := Subtype.ext ht
+    subst t
+    change AddCircle.liftIco (1 : ℝ) 0 p.extend ((1 : ℝ) : UnitAddCircle) = p 1
+    rw [show ((1 : ℝ) : UnitAddCircle) = 0 by exact AddCircle.coe_period 1]
+    rw [← show ((0 : ℝ) : UnitAddCircle) = 0 from rfl,
+      AddCircle.liftIco_zero_coe_apply ⟨le_refl 0, zero_lt_one⟩]
+    simp
+  · rw [AddCircle.liftIco_zero_coe_apply ⟨t.2.1, lt_of_le_of_ne t.2.2 ht⟩,
+      p.extend_apply t.2]
+
+public theorem pathCircleMap_homology {x : X} (p : Path x x) :
+    integralSingularHomologyMap 1 (pathCircleMap p) standardCircleHomologyGenerator =
+      loopHomologyClass p := by
+  rw [standardCircleHomologyGenerator, integralSingularHomologyMap_loopHomologyClass]
+  have hx : pathCircleMap p 0 = x := by
+    simpa using pathCircleMap_loop p 0
+  have hp : (standardCirclePositiveLoop.map (pathCircleMap p).continuous).cast hx.symm hx.symm = p := by
+    ext t
+    exact pathCircleMap_loop p t
+  rw [← loopHomologyClass_cast _ hx.symm, hp]
+
+public theorem normalizedCircleCross_naturality
+    {Y : Type} [TopologicalSpace Y] [PathConnectedSpace X]
+    (f : C(X, Y)) (x : IntegralSingularHomology 1 X) :
+    integralSingularHomologyMap 2 (circleProductMap f) (normalizedCircleCross 1 x) =
+      normalizedCircleCross 1 (integralSingularHomologyMap 1 f x) := by
+  let b : X := Classical.choice inferInstance
+  let H := FirstHurewiczProof.establishedFirstHurewiczData_proof X b
+  obtain ⟨p, hp⟩ := EstablishedFirstHurewicz.loopClass_surjective (H.equiv.symm x)
+  have hx : loopHomologyClass p = x := by
+    rw [← H.equiv_loopClass, hp, H.equiv.apply_symm_apply]
+  rw [← hx, ← pathCircleMap_homology p, ← positiveCircleCross_eq_normalized]
+  rw [positiveCircleCross, integralSingularHomologyMap_comp_wang]
+  have hcomp : (circleProductMap f).comp (circleProductMap (pathCircleMap p)) =
+      circleProductMap (f.comp (pathCircleMap p)) := rfl
+  rw [hcomp]
+  change positiveCircleCross (f.comp (pathCircleMap p)) = _
+  rw [positiveCircleCross_eq_normalized, integralSingularHomologyMap_comp_wang]
+
+end SphereSixComplex.Topology.CircleProductIdentityMappingTorus
 end
 end

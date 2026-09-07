@@ -99,7 +99,7 @@ private theorem centeredCuspTruncationForFrame_isCompact (H : ℝ) :
     let w : UpperHalfPlane := ⟨z, hzimPos⟩
     exact ⟨w, ⟨hzreLower, hzreUpper, hzimLower, hzimUpper⟩, rfl⟩
 
-private theorem boundedOn_cusp_of_eventually_bounded
+public theorem boundedOn_cusp_of_eventually_bounded
     (h : UpperHalfPlane → ℂ)
     (hcontinuous : ContinuousOn h fuchsianCuspRegion)
     (hinvariant : ∀ (n : ℤ) z, z ∈ fuchsianCuspRegion →

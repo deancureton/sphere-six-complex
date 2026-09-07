@@ -1,9 +1,9 @@
 # Constants in the current final-theorem trust closure.
 #
 # In addition to Lean's three standard logical axioms, the current closure contains seven retained
-# source-independent classical blackboxes and nine transitional construction-specific axioms.
+# source-independent classical blackboxes and eight transitional construction-specific axioms.
 # The cellular, Poincare-duality, UCT, and smooth-triangulation assumptions have general statements;
-# the final target replaces the analytic correction by general Cartan B. Every
+# analytic descent is now proved from mathlib. Every
 # declaration in a transitional section remains a proof obligation; renaming or moving one does
 # not eliminate it.
 
@@ -23,10 +23,7 @@ SphereSixComplex.classicalIntegralSingularCohomologyUCT
 SphereSixComplex.compactCOneManifoldFiniteCWModelAtDimension
 SphereSixComplex.integralCWCellularHomologyFoundation
 
-# Transitional analytic descent (one of nine).
-SphereSixComplex.Periods.establishedOrbifoldAffineLineTorsorCuspBoundedCousinCorrection
-
-# Transitional paper-specific geometry and topology (seven of nine).
+# Transitional paper-specific geometry and topology (seven of eight).
 SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralOrbitCellAtlas
 SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberIndependentIncidenceResidual
 SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization.establishedFiniteFiberGeneratorSpecializationMatrix
@@ -35,5 +32,5 @@ SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTopology.
 SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTopology.establishedCuspPulledBackMarkedInvariantBasisData
 SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established.normalizedPolarHoneycombPhaseGeometry
 
-# Transitional connector-invariant elliptic comparison (one of nine).
+# Transitional connector-invariant elliptic comparison (one of eight).
 SphereSixComplex.Geometry.PaperAnalyticData.establishedActualEllipticRelatorNormalClosureResidual

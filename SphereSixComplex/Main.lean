@@ -599,6 +599,9 @@ public import SphereSixComplex.Topology.NormalizedCircleProductCross
 public import SphereSixComplex.Topology.PaperCuspFourthPeriodInvariance
 public import SphereSixComplex.Topology.PaperSectionSevenCuspFullFibreNaturalityObstruction
 
+public import SphereSixComplex.Topology.ConstructedA2HexagonBoundaryPhaseGauge
+public import SphereSixComplex.Topology.ConstructedA2PhaseBallBoundary
+
 /-!
 # A Complex Structure on the Six-Sphere
 
