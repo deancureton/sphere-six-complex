@@ -3,12 +3,13 @@ module
 public import SphereSixComplex.Topology.CuspCorrectedEllipticSplitting
 public import SphereSixComplex.Topology.CuspCorrectedHomologyAssembly
 public import SphereSixComplex.Topology.CuspCorrectedDegreeOneCoordinates
+public import SphereSixComplex.Topology.CuspTranslationHomologyComparison
 
 /-!
 # Cusp completion with the corrected invariant marking
 
-The boundary map and raw-four normalized splitting are proved. Only the meridian relation and
-raw-five fibre coefficient remain as transitional geometric inputs.
+The boundary map, raw-four normalized splitting, and meridian relation are proved. Only the
+raw-five fibre coefficient remains as a transitional geometric input.
 -/
 
 @[expose] public section
@@ -19,7 +20,6 @@ namespace EstablishedSectionSevenCuspTopology
 
 public structure ActualCuspFiberEllipticMarkedCoordinateResidual
     {A : PaperAnalyticData} (R : A.SectionSevenAffineRadialCompletionInput) : Prop where
-  degreeOneFullIterateRelation : ActualCuspDegreeOneIndexTwoFullIterateRelation R
   degreeTwoIndexFive :
     A.cuspEllipticFiberCoordinate R (correctedCuspDegreeTwoSplitting R)
       (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) = 1
@@ -34,7 +34,7 @@ public def correctedPositiveDegreeAssembly_of_residual
     A.SectionSevenPositiveDegreeHomologyAssembly :=
   correctedPositiveDegreeHomologyAssembly R.homologyAlignment.actualHomologyCoordinates
     (correctedCuspDegreeTwoSplitting R)
-    (cuspDegreeOneUnionCoordinates_of_fullIterate R C.degreeOneFullIterateRelation)
+    (cuspDegreeOneUnionCoordinates_of_fullIterate R (A.actualCuspDegreeOneFullIterateRelation_proved R))
     (fun x ↦ congrFun (correctedCuspHomologyTwoCoordinates_of_rawFive R C.degreeTwoIndexFive x) 0)
     (correctedCuspDegreeTwoSplitting_boundary R)
 

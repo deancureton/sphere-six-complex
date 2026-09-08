@@ -229,7 +229,7 @@ and Comparator passes.
 | 10 | `establishedFiniteFiberGeneratorSpecializationMatrix` | eliminate (S+T+CF) | The natural cellular-to-singular comparison is now available. Prove the relevant inclusions are cellular and compute their images in the characteristic-cell basis; this simultaneously fixes the degree-one normalized coordinates and the four degree-two entries. |
 | 11 | `EstablishedSectionSevenAffineRegularLiftTopology.markedBandHomotopies` | **proved** | The named strip is normalized by the common peripheral marking. The normalized meridians have exact `g₁`/`g₂` deck labels; strengthened chosen marking radii and connected-sheet trapping prove identity-collar Cayley bounds throughout both strips. These bounds and midpoint-pinned real-period gauges prove both band homotopies. The former arbitrary-radius identity-sheet claim is not used. |
 | 12 | `EstablishedSectionSevenCuspTopology.establishedCuspPulledBackMarkedInvariantBasisData` | **deleted; corrected boundary proved** | The actual boundary homomorphism equals raw coordinate four. The raw-four normalized elliptic splitting and corrected signed cusp basis now feed the production homology assembly directly. The rejected raw-five-boundary package and its unconditional wrappers are removed from production; conditional diagnostics remain. |
-| 13 | `EstablishedSectionSevenCuspTopology.establishedActualCuspFiberEllipticMarkedCoordinateResidual` | **eliminate (S)** | The signature now explicitly requires the meridian full-iterate relation and raw-five fibre coefficient one in the proved raw-four normalized splitting. This remains a transitional assumption, not an admissible classical theorem. The explicit fourth-period sweep specializes to zero and is proved equal to normalized raw five, closing the former correction ambiguity. Its exact elliptic fibre coefficient and the meridian relation still require proof. |
+| 13 | `EstablishedSectionSevenCuspTopology.establishedActualCuspFiberEllipticMarkedCoordinateResidual` | **eliminate (S)** | The meridian full-iterate relation is proved and removed from the signature. The sole remaining field is raw-five fibre coefficient one in the proved raw-four normalized splitting. This remains a transitional assumption, not an admissible classical theorem. The explicit fourth-period sweep specializes to zero and is proved equal to normalized raw five. The global elliptic fourth-circle translation is now constructed; its induced homology map still needs to identify this sweep with the marked fibre generator. |
 | 14 | `StandardInfiniteA2ToricModel.Established.normalizedPolarHoneycombPhaseGeometry` | proved | The corrected global honeycomb homeomorphism is proved from compatible finite quotient charts and a locally finite closed hexagonal cover. Its construction uses only standard Lean axioms and replaces the `honeycombCells` input. The positive-deck quotient relative CW structure is now proved from the general C¹ manifold-with-corners relative triangulation theorem, using an explicit C¹ quadrant atlas, zero-height boundary identification, and smooth deck action. The full positive locus is contractible by the explicit interior homeomorphism and Brown collaring applied to proved local collars. The open-collar homotopy equivalence is proved using a Urysohn cutoff. Relative Whitehead and proved covering/HEP machinery supply the equivariant retraction; invariant modulus and stabilizer theorems complete phase spreading. Generic consumers now state a `HasCuspPhaseSpreading W` hypothesis; the constructed model has a proved instance, and the universal phase axiom and its wrappers are deleted. |
 | 15 | `PaperAnalyticData.establishedActualEllipticRelatorNormalClosureResidual` | **proved (S)** | Both orders use the entering sheet of the existing comparison homotopy's own lifted trace. Literal straight-fibre loops are identified with their labelled regular-family periods; transport along that same trace proves the corrected period identities and both normal-closure statements. The resulting theorem uses only standard Lean axioms. |
 
@@ -692,3 +692,30 @@ to both actual varying elliptic fillings, with checked representative formulas. 
 compatibility squares and gluing across the three open images remain necessary before using
 this translation to compute the fibre-unit coefficient. This checkpoint removes no additional
 axiom; the ten classical and three transitional project inputs remain unchanged.
+
+
+## Full-iterate relation and relative cylinder contraction
+
+The actual cusp meridian and first translation are now identified with the chosen Wang classes
+through the radial maps. Applying the normalized elliptic coordinate to their proved homology
+relation and cancelling twelve proves the production full-iterate relation. That field has been
+removed from `ActualCuspFiberEllipticMarkedCoordinateResidual`; only the raw-five fibre coefficient
+remains. Three transitional axiom declarations remain, but this cusp axiom has strictly less content.
+The new full-iterate proof still depends on the toric higher-incidence and specialization inputs;
+it does not depend on the cusp residual it replaces.
+
+The fourth-period translations now satisfy both actual collar compatibility squares and glue to
+a continuous map on the elliptic interior, with exact central and filling restriction formulas.
+Computing the induced sweep map on homology is still required to discharge the last cusp coefficient.
+
+Prism naturality is proved from Mathlib's alternating simplicial homotopy construction through
+the singular functor. Compatible pair homotopies now descend to the actual relative chain maps.
+The cylinder's bottom contraction therefore gives a contraction of its relative chains, with an
+explicit projection identity and surjective prism classes. The upper cylinder and its top face
+are homotopy equivalent on relative chains through the actual inclusion and projection maps.
+
+Relative excision now follows from an open-refinement small-chain comparison and the actual
+simplicial-subcomplex pushout, with singular subset intersections identified. This gives a
+quasi-isomorphism for the upper-cylinder inclusion. Identifying that constructed map with the
+canonical pair-induced map, and transporting the intersection subtype to compose the top-face
+equivalence, remain necessary before applying the prism to the higher cellular coefficients.

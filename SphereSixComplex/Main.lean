@@ -686,6 +686,11 @@ public import SphereSixComplex.Topology.ActualEllipticVaryingFourthTranslation
 public import SphereSixComplex.Topology.CuspEllipticHomologyFullIterate
 public import SphereSixComplex.Topology.CylinderRelativeTriple
 public import SphereSixComplex.Topology.QuotientChainHomotopy
+public import SphereSixComplex.Topology.ActualEllipticFourthInteriorTranslation
+public import SphereSixComplex.Topology.CylinderRelativeContraction
+public import SphereSixComplex.Topology.CylinderTopRelativeEquivalence
+public import SphereSixComplex.Topology.CylinderRelativeSmallChains
+public import SphereSixComplex.Topology.SingularSubsetRelativeExcision
 
 /-!
 # A Complex Structure on the Six-Sphere
