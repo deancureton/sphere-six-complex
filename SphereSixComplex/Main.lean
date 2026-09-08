@@ -1,5 +1,10 @@
 module
 
+public import SphereSixComplex.Topology.ConstructedA2SkeletalSweep
+public import SphereSixComplex.Topology.CuspCellularEdgeDeckLabels
+public import SphereSixComplex.Topology.CuspFiniteFiberCoordinateTori
+public import SphereSixComplex.Topology.CylinderTopPrismGenerators
+
 public import SphereSixComplex.Topology.CuspEllipticInteriorRelators
 
 public import SphereSixComplex.Topology.ActualEllipticFourthGaugeCompatibility

@@ -741,3 +741,20 @@ relative connecting-map formula on cycle representatives. The actual compact pha
 preserves the boundary two-skeleton, sends the one-skeleton into it, and fixes zero cells.
 Applying these results to the actual higher characteristic maps remains the next incidence step;
 no higher coefficient vanishing follows merely from having these general interfaces.
+
+## Higher-cell prism generators and literal specialization markings
+
+Every higher-ball relative homology class is now represented by a lower-ball cycle followed
+by the actual top-face contraction prism and characteristic cylinder homeomorphism. This is a
+surjectivity statement, so it does not require choosing an orientation sign. The actual phase
+sweeps restrict from the one-skeleton to the two-skeleton and from the two-skeleton to the
+three-skeleton. Sweeping the hexagon gives zero in absolute homology. Comparing the higher
+characteristic maps with these relative prism representatives remains necessary to remove row 9.
+
+The three literal cellular edge paths now have continuous lifts to the local carrier, with
+checked deck endpoints `0`, `(0,-1)`, and `(1,0)` and exact quotient projection formulas.
+Their endpoint differences suggest a basis mismatch with the identity asserted in row 10;
+the Hurewicz comparison is still required before changing production coordinates. The four
+source degree-two generators are proved to be the marked coordinate tori `(01,03,12,02)`,
+including their actual filling-point formulas. Their target cellular coordinates remain open.
+These results do not verify the assumed specialization matrix. Two transitional axioms remain.
