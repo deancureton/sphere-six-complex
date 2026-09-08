@@ -15,18 +15,17 @@ The headline theorem is source-sorry-free. Paper-specific and classical results 
 in Mathlib are explicit axioms, documented and checked by the allowlists in `scripts/`. The two
 `sorry`s in `Challenge.lean` are the trusted Comparator challenge boundary.
 
-The current transitional assumptions contain a confirmed coordinate mismatch. The actual
-fourth-period cusp sweep has zero elliptic Mayer--Vietoris boundary, whereas
-`establishedCuspPulledBackMarkedInvariantBasisData` requires its marked coefficient to be one.
-`CuspFourthSweepCentralImage.not_cuspPulledBackMarkedInvariantBasisData` (in the
-`Geometry.PaperAnalyticData` namespace) refutes that package using other currently declared
-inputs. The paper's Theorem 7.22 assigns the nonzero boundary to the third-period sweep instead.
-The correction is in progress; Comparator passing with the current allowlist does not establish
-a consistent mathematical trust boundary. See `AXIOM-ELIMINATION-PLAN.md`.
+The former cusp boundary assumption had the two invariant coordinates reversed. It has been
+deleted: the actual boundary is proved to be raw coordinate four, the elliptic splitting is
+normalized by that class, and the final assembly uses the corrected signed cusp basis. The
+explicit fourth-period sweep is also proved equal to normalized raw five. The old conditional
+comparison and its refutation remain as diagnostics.
 
-The constructed polar phase geometry is now proved from explicit positive charts, Brown
-collaring, relative C¹ triangulation, and relative Whitehead. The normalized marked-band homotopies are also proved,
-leaving four transitional assumptions; the classical signatures and their sources are reviewed in `AXIOM-ELIMINATION-PLAN.md`.
+Three transitional assumptions remain: higher toric incidence, finite-fibre specialization,
+and the meridian relation together with the corrected raw-five elliptic fibre coefficient.
+They are proof obligations, not part of the proposed final trust boundary. Comparator checks
+the declared assumptions; its acceptance alone does not verify those assumptions mathematically.
+The ten classical signatures and their sources are reviewed in `AXIOM-ELIMINATION-PLAN.md`.
 
 ## Build
 

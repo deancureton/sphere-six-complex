@@ -1,5 +1,9 @@
 module
 
+public import SphereSixComplex.Topology.ConstructedA2CentralCompactAction
+public import SphereSixComplex.Topology.ConstructedA2HigherCellFaces
+public import SphereSixComplex.Topology.CuspFourthSweepNormalization
+
 public import SphereSixComplex.Topology.CuspNormalizedBandMarking
 public import SphereSixComplex.Topology.CuspFourthSweepFiberParity
 

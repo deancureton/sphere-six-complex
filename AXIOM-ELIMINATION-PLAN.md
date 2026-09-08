@@ -21,8 +21,8 @@ even when mathematically true, is never an admissible blackbox.
 
 The phase-geometry axiom has been replaced in source by a proved constructed-model package.
 Its classical dependencies add Brown collaring and activate the existing relative triangulation
-and relative Whitehead theorems. The computed final closure is ten classical inputs and four
-transitional dependencies. The four transitional declarations
+and relative Whitehead theorems. The computed final closure is ten classical inputs and three
+transitional dependencies. The three transitional declarations
 remain proof obligations.
 The analytic correction is proved, the cellular input has been strengthened in place, the former combined manifold-homology package
 is now derived from general Poincare duality, UCT, and smooth triangulation, and the analytic
@@ -228,8 +228,8 @@ and Comparator passes.
 | 9 | `establishedStandardA2ToricCentralFiberIndependentIncidenceResidual` | eliminate (T+CF) | The strengthened foundation now reduces each coefficient to the homological degree of the actual characteristic attaching map. The atlas is explicit. Canonical orientations are derived from singular chains, and all six edge coefficients and all twelve two-cell coefficients are proved. The coordinate-table bridge is proved. It remains to compute the three/four-cell attaching degrees. |
 | 10 | `establishedFiniteFiberGeneratorSpecializationMatrix` | eliminate (S+T+CF) | The natural cellular-to-singular comparison is now available. Prove the relevant inclusions are cellular and compute their images in the characteristic-cell basis; this simultaneously fixes the degree-one normalized coordinates and the four degree-two entries. |
 | 11 | `EstablishedSectionSevenAffineRegularLiftTopology.markedBandHomotopies` | **proved** | The named strip is normalized by the common peripheral marking. The normalized meridians have exact `g₁`/`g₂` deck labels; strengthened chosen marking radii and connected-sheet trapping prove identity-collar Cayley bounds throughout both strips. These bounds and midpoint-pinned real-period gauges prove both band homotopies. The former arbitrary-radius identity-sheet claim is not used. |
-| 12 | `EstablishedSectionSevenCuspTopology.establishedCuspPulledBackMarkedInvariantBasisData` | **rejected; correct and eliminate (S)** | `CuspFourthSweepCentralImage` proves the actual raw-five pulled-back boundary is zero and formally negates this package. The negation uses standard Lean axioms, cellular homology, and two remaining toric inputs; the explicit sweep's boundary vanishing itself uses only standard axioms. The paper's Theorem 7.22 says raw four (third period) has primitive boundary, raw five (fourth period) has zero boundary. The current package reverses these roles. Prove the raw-four signed boundary, correct the marked Wang coordinate and the first two Section 7 coordinates, and remove the rejected axiom. |
-| 13 | `EstablishedSectionSevenCuspTopology.establishedActualCuspFiberEllipticMarkedCoordinateResidual` | **correct and eliminate (S)** | Its degree-two index-four fibre-unit requirement follows the same reversed marking as row 12. The paper instead uses the fourth-period/raw-five sweep as a primitive fibre-coordinate class when the twist parameter is a unit. Prove this via the invariant circle sweep and the meridian's degree-one coordinate, including compatibility with the toric specialization-kernel normalization. The corrected coordinate change is `[x5,x4,-x0,-x1,-x2,x3]`. Do not introduce a replacement axiom merely to hide the mismatch. |
+| 12 | `EstablishedSectionSevenCuspTopology.establishedCuspPulledBackMarkedInvariantBasisData` | **deleted; corrected boundary proved** | The actual boundary homomorphism equals raw coordinate four. The raw-four normalized elliptic splitting and corrected signed cusp basis now feed the production homology assembly directly. The rejected raw-five-boundary package and its unconditional wrappers are removed from production; conditional diagnostics remain. |
+| 13 | `EstablishedSectionSevenCuspTopology.establishedActualCuspFiberEllipticMarkedCoordinateResidual` | **eliminate (S)** | The signature now explicitly requires the meridian full-iterate relation and raw-five fibre coefficient one in the proved raw-four normalized splitting. This remains a transitional assumption, not an admissible classical theorem. The explicit fourth-period sweep specializes to zero and is proved equal to normalized raw five, closing the former correction ambiguity. Its exact elliptic fibre coefficient and the meridian relation still require proof. |
 | 14 | `StandardInfiniteA2ToricModel.Established.normalizedPolarHoneycombPhaseGeometry` | proved | The corrected global honeycomb homeomorphism is proved from compatible finite quotient charts and a locally finite closed hexagonal cover. Its construction uses only standard Lean axioms and replaces the `honeycombCells` input. The positive-deck quotient relative CW structure is now proved from the general C¹ manifold-with-corners relative triangulation theorem, using an explicit C¹ quadrant atlas, zero-height boundary identification, and smooth deck action. The full positive locus is contractible by the explicit interior homeomorphism and Brown collaring applied to proved local collars. The open-collar homotopy equivalence is proved using a Urysohn cutoff. Relative Whitehead and proved covering/HEP machinery supply the equivariant retraction; invariant modulus and stabilizer theorems complete phase spreading. Generic consumers now state a `HasCuspPhaseSpreading W` hypothesis; the constructed model has a proved instance, and the universal phase axiom and its wrappers are deleted. |
 | 15 | `PaperAnalyticData.establishedActualEllipticRelatorNormalClosureResidual` | **proved (S)** | Both orders use the entering sheet of the existing comparison homotopy's own lifted trace. Literal straight-fibre loops are identified with their labelled regular-family periods; transport along that same trace proves the corrected period identities and both normal-closure statements. The resulting theorem uses only standard Lean axioms. |
 
@@ -621,3 +621,25 @@ For the fourth-period sweep, the fiber correction is exactly `12 * raw[1] + 2 * 
 Parity alone cannot prove surjectivity of the full gluing map: adjusting the elliptic coordinate
 can alter the cusp-filling component. Exact control of specialization and the normalized fiber
 coefficient is still required. No transitional axiom is removed at this checkpoint; four remain.
+
+## Corrected production assembly and fourth sweep normalization
+
+The complete pulled-back cusp boundary map is now proved to be raw coordinate four. It supplies
+an explicit normalized splitting with raw-four coordinates `[0,1]`. The corrected signed basis
+`[x5,x4,-x0,-x1,-x2,x3]` preserves the cusp-filling coordinates and gives the required final
+Mayer–Vietoris matrices. The production endpoint uses this assembly, and the rejected boundary
+axiom and its unconditional completion wrappers are deleted.
+
+The surviving cusp residual was corrected explicitly: it requires the meridian full-iterate
+relation and raw-five fibre coefficient one in this proved splitting. It is still an unresolved
+paper-specific input. It no longer silently selects a splitting through the false boundary axiom.
+All other elliptic coordinates follow from proved fibre values and the corrected boundary map.
+
+The actual fourth-period sweep factors through a circle action on the simply connected local
+toric carrier. Its degree-two specialization vanishes. Together with Wang coordinates and the
+specialization projection, this proves equality with normalized raw five. No parity argument or
+ex-falso step is used. The elliptic unit coefficient remains to be computed.
+
+Actual higher-cell opposite phase faces are identified, and the compact phase action descends to
+the central quotient. The relative-homology cancellation bridge needed for higher attaching
+coefficients is still missing; no higher incidence vanishing is claimed from face identities alone.

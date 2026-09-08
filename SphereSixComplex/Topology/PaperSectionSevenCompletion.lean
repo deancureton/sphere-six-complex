@@ -22,6 +22,6 @@ public theorem exists_paperGluingData_from_sectionSeven : Nonempty PaperGluingDa
   let A := Geometry.establishedPaperAnalyticData
   let R := A.sectionSevenAffineRadialCompletionInput
   exact Geometry.exists_paperGluingData_of_positiveDegreeAssembly
-    R.sectionSevenAffineMarkedCompletionInput.positiveDegreeHomologyAssembly
+    (Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTopology.correctedPositiveDegreeAssembly R)
 
 end SphereSixComplex
