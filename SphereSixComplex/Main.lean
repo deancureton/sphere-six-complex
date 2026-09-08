@@ -682,6 +682,10 @@ public import SphereSixComplex.Topology.CuspThirdSweepLoopRealization
 public import SphereSixComplex.Topology.MarkedMeridianCircleCylinders
 public import SphereSixComplex.Topology.PaperSectionSevenAffineMarkedMeridianLifts
 public import SphereSixComplex.Topology.PaperSectionSevenAffineNormalizedStripLift
+public import SphereSixComplex.Topology.ActualEllipticVaryingFourthTranslation
+public import SphereSixComplex.Topology.CuspEllipticHomologyFullIterate
+public import SphereSixComplex.Topology.CylinderRelativeTriple
+public import SphereSixComplex.Topology.QuotientChainHomotopy
 
 /-!
 # A Complex Structure on the Six-Sphere

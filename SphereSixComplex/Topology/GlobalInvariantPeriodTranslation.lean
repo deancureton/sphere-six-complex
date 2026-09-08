@@ -73,4 +73,91 @@ public theorem regularPeriodTranslation_equivariant (n : IntegerPeriods)
       rfl
 
 
+public def invariantPeriodRealTranslation (n : IntegerPeriods)
+    (hn : ∀ g : Delta, rhoLambda g n = n) :
+    C(ℝ × PuncturedGlobalFamily F, PuncturedGlobalFamily F) where
+  toFun p := Quotient.lift
+    (fun q ↦ quotientProjection (M := RegularTotalSpace F) (G := Delta)
+      (regularPeriodTranslation F n (p.1,q))) (by
+        intro a b hab
+        change MulAction.orbitRel Delta (RegularTotalSpace F) a b at hab
+        apply Quotient.sound
+        change MulAction.orbitRel Delta (RegularTotalSpace F) _ _
+        rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff] at hab ⊢
+        obtain ⟨g,rfl⟩ := hab
+        exact ⟨g, regularPeriodTranslation_equivariant F n hn g p.1 b⟩) p.2
+  continuous_toFun := by
+    apply isQuotientMap_quotient_mk'.continuous_lift_prod_right
+    exact continuous_quot_mk.comp (regularPeriodTranslation F n).continuous
+
+public theorem invariantPeriodRealTranslation_mk (n : IntegerPeriods)
+    (hn : ∀ g : Delta, rhoLambda g n = n) (t : ℝ) (q : RegularTotalSpace F) :
+    invariantPeriodRealTranslation F n hn (t,Quotient.mk _ q) =
+      quotientProjection (M := RegularTotalSpace F) (G := Delta)
+        (regularPeriodTranslation F n (t,q)) := rfl
+
+public theorem regularPeriodTranslation_add_int (n : IntegerPeriods)
+    (t : ℝ) (k : ℤ) (q : RegularTotalSpace F) :
+    regularPeriodTranslation F n (t+k,q) = regularPeriodTranslation F n (t,q) := by
+  induction q using Quotient.inductionOn with
+  | _ p =>
+    rw [regularPeriodTranslation_mk, regularPeriodTranslation_mk]
+    apply Quotient.sound
+    change MulAction.orbitRel (FamilyPeriodGroup (regularParameterMap F)) _ _ _
+    rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff]
+    refine ⟨(Multiplicative.ofAdd (k • n) : FamilyPeriodGroup (regularParameterMap F)), ?_⟩
+    apply Prod.ext
+    · rfl
+    · change periodHom (regularParameterMap F p.1).1 (k • n) +
+        (t • periodVector (regularParameterMap F p.1).1 n + p.2) = _
+      rw [map_zsmul, add_smul]
+      change k • periodVector (regularParameterMap F p.1).1 n + (t • periodVector _ n + p.2) = _
+      rw [Int.cast_smul_eq_zsmul]
+      abel
+
+public theorem invariantPeriodRealTranslation_add_int (n : IntegerPeriods)
+    (hn : ∀ g : Delta, rhoLambda g n = n) (t : ℝ) (k : ℤ) (q : PuncturedGlobalFamily F) :
+    invariantPeriodRealTranslation F n hn (t+k,q) = invariantPeriodRealTranslation F n hn (t,q) := by
+  induction q using Quotient.inductionOn with
+  | _ q =>
+    rw [invariantPeriodRealTranslation_mk, invariantPeriodRealTranslation_mk,
+      regularPeriodTranslation_add_int]
+
+public def invariantPeriodTranslationProjection :
+    C(ℝ × PuncturedGlobalFamily F, UnitAddCircle × PuncturedGlobalFamily F) where
+  toFun p := ((p.1 : UnitAddCircle),p.2)
+  continuous_toFun := (AddCircle.continuous_mk' 1).prodMap continuous_id
+
+public theorem invariantPeriodTranslationProjection_isQuotientMap :
+    IsQuotientMap (invariantPeriodTranslationProjection F) :=
+  (QuotientAddGroup.isOpenQuotientMap_mk.prodMap IsOpenQuotientMap.id).isQuotientMap
+
+public theorem invariantPeriodRealTranslation_factors (n : IntegerPeriods)
+    (hn : ∀ g : Delta, rhoLambda g n = n) :
+    Function.FactorsThrough (invariantPeriodRealTranslation F n hn)
+      (invariantPeriodTranslationProjection F) := by
+  rintro ⟨t,b⟩ ⟨u,c⟩ h
+  have hb : b = c := congrArg Prod.snd h
+  subst c
+  have ht : (t : UnitAddCircle) = (u : UnitAddCircle) := congrArg Prod.fst h
+  have hz : ((t-u : ℝ) : UnitAddCircle) = 0 := by rw [AddCircle.coe_sub,ht,sub_self]
+  obtain ⟨k,hk⟩ := (AddCircle.coe_eq_zero_iff (1 : ℝ)).mp hz
+  have htu : t = u+k := by
+    simp only [zsmul_eq_mul,mul_one] at hk
+    linarith
+  rw [htu,invariantPeriodRealTranslation_add_int]
+
+public def invariantPeriodCircleTranslation (n : IntegerPeriods)
+    (hn : ∀ g : Delta, rhoLambda g n = n) :
+    C(UnitAddCircle × PuncturedGlobalFamily F, PuncturedGlobalFamily F) :=
+  (invariantPeriodTranslationProjection_isQuotientMap F).lift
+    (invariantPeriodRealTranslation F n hn) (invariantPeriodRealTranslation_factors F n hn)
+
+public theorem invariantPeriodCircleTranslation_real (n : IntegerPeriods)
+    (hn : ∀ g : Delta, rhoLambda g n = n) (t : ℝ) (q : PuncturedGlobalFamily F) :
+    invariantPeriodCircleTranslation F n hn ((t : UnitAddCircle),q) =
+      invariantPeriodRealTranslation F n hn (t,q) :=
+  DFunLike.congr_fun ((invariantPeriodTranslationProjection_isQuotientMap F).lift_comp
+    (invariantPeriodRealTranslation F n hn) (invariantPeriodRealTranslation_factors F n hn)) (t,q)
+
 end SphereSixComplex.Geometry.GlobalTorusFamily

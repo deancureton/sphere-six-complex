@@ -671,3 +671,24 @@ fibre translation. Gamma-coinvariant algebra proves this for every abelian targe
 these actual bridge loops with the mapping-torus homology generators via first-Hurewicz
 naturality remains necessary to discharge the full-iterate field; the meridian sign and Wang
 normalization themselves are already proved.
+
+## Relative chains and concrete elliptic homology
+
+Chain homotopies now descend through arbitrary short exact sequences when their components
+preserve the subcomplex. The canonical relative-chain sequence for a triple is proved, including
+its concrete cylinder instance and top-face chain map. Applying descent to the actual cylinder
+prism still requires its compatibility with the subspace inclusion. Top-face excision remains
+open; a concrete route uses the cylinder-boundary open cover `t > 0`, `t < 1`, followed by the
+upper-cylinder retraction. These algebraic results alone do not establish higher incidence zero.
+
+First-Hurewicz naturality and invariance under basepoint transport now turn the elliptic-interior
+relator calculation into a relation in actual singular homology: twelve times the negative
+cusp-bridge meridian equals the first bridge translation after inclusion. Comparing those two
+classes with the chosen mapping-torus raw-two and raw-zero generators remains necessary to
+remove the production full-iterate assumption.
+
+Fourth-period circle translation now descends to the central-family quotient and is transported
+to both actual varying elliptic fillings, with checked representative formulas. The collar
+compatibility squares and gluing across the three open images remain necessary before using
+this translation to compute the fibre-unit coefficient. This checkpoint removes no additional
+axiom; the ten classical and three transitional project inputs remain unchanged.
