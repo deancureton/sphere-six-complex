@@ -824,3 +824,39 @@ The refreshed exact closures contain fourteen final-theorem and eleven construct
 with only the degree-two specialization residual transitional. Comparator accepted the solution
 using Lean's default kernel. The standalone degree-one theorem uses only Lean's three axioms
 and the retained Brown collaring, relative triangulation, and relative Whitehead inputs.
+
+
+## Phase-sweep charts and the positive projection
+
+The three mixed source coordinate tori are now proved to be signed compact-phase sweeps of
+the actual first two period circles. Combining this with the established cellular loop markings
+gives their exact expressions in phase sweeps of the two graph loops.
+
+A continuous map from the actual filling to the positive deck quotient is constructed by
+straightening the actual action and descending the modulus map. It is invariant under compact
+phase on the central fibre. Consequently all three actual mixed source torus classes map to
+zero in its second homology. No homology conclusion here is inferred merely from endpoint
+labels or from first homology.
+
+The phase-sweep charts replace the three old phase-cell charts with exactly the same open and
+closed images and compatible boundary maps. The actual cylinder suspension is an integral
+homology isomorphism, and its value on the oriented interval generator is proved to equal
+the square generator or its negative. This sign is derived from an automorphism of the
+integers, not assumed. The degree-one singular prism is also expanded into its two simplices.
+
+The positive deck quotient is proved homotopy equivalent to its interior, with inverse the
+actual inclusion. Local half-space charts descend through its covering, and Brown collaring
+is applied on the quotient; no equivariance is assumed for a collar upstairs.
+
+The remaining tasks include identifying the universal circle prism with the explicit torus
+fundamental cycle, using the replacement charts to prove the mixed columns form an integral
+basis of the kernel, and computing the positive column using logarithmic interior coordinates.
+The degree-two specialization axiom is unchanged and remains outside the proposed final
+trust boundary.
+
+Checkpoint gates passed: full build (10,187 jobs), all 1,158 library modules reachable, only
+the two declared challenge placeholders, unchanged exact final/construction axiom closures
+(14/11), and Comparator acceptance with Lean's default kernel. New atlas, mixed-sweep,
+and suspension-orientation results use only Lean's three standard axioms. The positive
+projection vanishing uses the retained Brown and relative triangulation inputs; the quotient
+interior homotopy equivalence uses Brown collaring.

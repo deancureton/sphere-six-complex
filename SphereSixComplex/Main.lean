@@ -1,5 +1,11 @@
 module
 
+public import SphereSixComplex.Topology.CuspPhaseSweepAtlas
+public import SphereSixComplex.Topology.CharacteristicCylinderSuspensionOrientation
+public import SphereSixComplex.Topology.SingularPrismSimplex
+public import SphereSixComplex.Topology.CuspMixedTorusPositiveProjection
+public import SphereSixComplex.Topology.ConstructedPositiveQuotientInterior
+
 public import SphereSixComplex.Topology.CircleCutChart
 public import SphereSixComplex.Topology.ToricCellAtlasRechart
 public import SphereSixComplex.Topology.CuspPhaseSweepCell
