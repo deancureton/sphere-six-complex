@@ -225,7 +225,7 @@ and Comparator passes.
 | 6 | `EstablishedCellularHomology.integralCWCellularHomologyModel` | proved from blackbox 5 | The old objectwise accessor is now a definition derived from `integralCWCellularHomologyFoundation`, whose basis is carried by the characteristic maps and whose singular-homology comparison is natural for cellular maps. |
 | 7 | `Periods.establishedOrbifoldAffineLineTorsorCuspBoundedCousinCorrection` | proved, no analytic blackbox | Whole-group affine transport, regular and elliptic local sections, the precisely invariant cusp section, and an explicit `Option ℂ` quotient cover are constructed. Distinct overlaps avoid the branch values, so their normalized differences descend to analytic scalar cocycles. The proved arbitrary-cover Cousin theorem supplies an `O(-1)`-normalized splitting; corrected local sections glue to a global equivariant holomorphic section. The resulting infinity germ and parabolic invariance give the bound on the whole closed cusp. The assembled theorem and original accessor use only the three standard Lean axioms. |
 | 8 | `establishedStandardA2ToricCentralOrbitCellAtlas` | **proved (T)** | Explicit characteristic maps in dimensions zero through four satisfy continuity, inverse continuity, disjointness, boundary attachments, and full coverage. The resulting atlas is transported from `constructedModel` to every allowed toric model by the canonical central-orbit homeomorphism. Its axiom audit contains only Lean’s standard three axioms. |
-| 9 | `establishedStandardA2ToricCentralFiberIndependentIncidenceResidual` | eliminate (T+CF) | The strengthened foundation now reduces each coefficient to the homological degree of the actual characteristic attaching map. The atlas is explicit. Canonical orientations are derived from singular chains, and all six edge coefficients and all nine phase-two-cell coefficients are proved. The coordinate-table bridge is proved. It remains to compute the positive two-cell and the three/four-cell attaching degrees. |
+| 9 | `establishedStandardA2ToricCentralFiberIndependentIncidenceResidual` | eliminate (T+CF) | The strengthened foundation now reduces each coefficient to the homological degree of the actual characteristic attaching map. The atlas is explicit. Canonical orientations are derived from singular chains, and all six edge coefficients and all twelve two-cell coefficients are proved. The coordinate-table bridge is proved. It remains to compute the three/four-cell attaching degrees. |
 | 10 | `establishedFiniteFiberGeneratorSpecializationMatrix` | eliminate (S+T+CF) | The natural cellular-to-singular comparison is now available. Prove the relevant inclusions are cellular and compute their images in the characteristic-cell basis; this simultaneously fixes the degree-one normalized coordinates and the four degree-two entries. |
 | 11 | `EstablishedSectionSevenAffineRegularLiftTopology.markedBandHomotopies` | **proved** | The named strip is normalized by the common peripheral marking. The normalized meridians have exact `g₁`/`g₂` deck labels; strengthened chosen marking radii and connected-sheet trapping prove identity-collar Cayley bounds throughout both strips. These bounds and midpoint-pinned real-period gauges prove both band homotopies. The former arbitrary-radius identity-sheet claim is not used. |
 | 12 | `EstablishedSectionSevenCuspTopology.establishedCuspPulledBackMarkedInvariantBasisData` | **rejected; correct and eliminate (S)** | `CuspFourthSweepCentralImage` proves the actual raw-five pulled-back boundary is zero and formally negates this package. The negation uses standard Lean axioms, cellular homology, and two remaining toric inputs; the explicit sweep's boundary vanishing itself uses only standard axioms. The paper's Theorem 7.22 says raw four (third period) has primitive boundary, raw five (fourth period) has zero boundary. The current package reverses these roles. Prove the raw-four signed boundary, correct the marked Wang coordinate and the first two Section 7 coordinates, and remove the rejected axiom. |
@@ -599,3 +599,25 @@ Checkpoint gates passed: full build (10,090 jobs), import reachability (1,061 mo
 placeholder scan (only the two intentional challenge placeholders), exact axiom catalog and
 closure audits, and Comparator with Lean's default kernel on the reduced 17-constant allowlist.
 Comparator uses the macOS functional wrapper here, not Linux Landrun isolation.
+
+
+## Positive two-cell and corrected cusp boundary checkpoint
+
+The actual six-side hexagon traversal is now identified with the canonical positive square-boundary
+homology generator. Its attaching image is null-homologous in the actual one-skeleton. Thus all
+three positive two-cell coefficients vanish, completing all twelve entries of the degree-two
+cellular differential. These new incidence proofs use only Lean's three standard axioms.
+
+Canonical skeletal comparison now computes the chosen singular H1 and H2 coordinates of cellular
+cycles. In particular, the actual edge loops have their signed standard coordinates. Identifying
+the marked period loops and tori with these cycles remains necessary for specialization.
+
+The normalized third-period sweep now has primitive Mayer–Vietoris boundary. Its normalized raw4
+class has marked scalar one; raw5 has boundary zero. This proves the corrected boundary values
+without using the rejected boundary or elliptic-coordinate assumptions. The production boundary
+interface still needs a coordinated correction before its axiom can be deleted.
+
+For the fourth-period sweep, the fiber correction is exactly `12 * raw[1] + 2 * raw[2]`.
+Parity alone cannot prove surjectivity of the full gluing map: adjusting the elliptic coordinate
+can alter the cusp-filling component. Exact control of specialization and the normalized fiber
+coefficient is still required. No transitional axiom is removed at this checkpoint; four remain.
