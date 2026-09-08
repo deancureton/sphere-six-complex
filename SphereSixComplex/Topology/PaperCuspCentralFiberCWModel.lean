@@ -3,6 +3,7 @@ module
 public import SphereSixComplex.Topology.PaperCuspCentralFiberCWTypes
 public import SphereSixComplex.Topology.ConstructedA2CellAtlas
 public import SphereSixComplex.Topology.ActualCuspCentralModelEquivalence
+public import SphereSixComplex.Topology.ConstructedA2HigherIncidenceProof
 public import SphereSixComplex.Topology.ConstructedA2DegreeTwoIncidence
 public import SphereSixComplex.Topology.ConstructedA2EdgeIncidence
 public import SphereSixComplex.Topology.ToricCellAtlasIncidenceTransport
@@ -50,7 +51,7 @@ public noncomputable def establishedStandardA2ToricCentralFiberCellAtlas
     (actualLocalCuspCentralOrbitCoreHomeomorph W R)
 
 /-- The ten remaining higher-dimensional cellular-incidence entries. -/
-public axiom establishedStandardA2ToricCentralFiberHigherIncidenceResidual
+public theorem establishedStandardA2ToricCentralFiberHigherIncidenceResidual
     {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
@@ -59,7 +60,43 @@ public axiom establishedStandardA2ToricCentralFiberHigherIncidenceResidual
       SphereSixComplex.Geometry.PaperAnalyticData.actualLocalCuspFilling_t2 W
     let _ : T2Space (R.quotientCentralFiber W) := inferInstance
     StandardA2ToricCentralFiberHigherIncidenceResidual
-      (establishedStandardA2ToricCentralFiberCellAtlas W R)
+      (establishedStandardA2ToricCentralFiberCellAtlas W R) := by
+  let _ : T2Space (actualLocalCuspFilling W) :=
+    SphereSixComplex.Geometry.PaperAnalyticData.actualLocalCuspFilling_t2 W
+  let _ : T2Space (R.quotientCentralFiber W) := inferInstance
+  let W₀ := Classical.choice
+    (SphereSixComplex.Geometry.StandardInfiniteA2ToricQuantitativeRegions.BoundedPolydiscRegions.exists_actualLocalCuspQuotientWitness
+      N Construction.constructedModel Construction.constructedModel.toTorusActionPreservesComponents)
+  let W₁ := Classical.choice (exists_actualPuncturedCuspCollarWitness W₀)
+  let _ : T2Space (ActualLocalCuspCentralOrbitQuotient W) :=
+    (actualLocalCuspCentralOrbitMap_isEmbedding W).t2Space
+  let _ : T2Space (actualLocalCuspFilling W₁) :=
+    SphereSixComplex.Geometry.PaperAnalyticData.actualLocalCuspFilling_t2 W₁
+  let _ : T2Space (ActualLocalCuspCentralOrbitQuotient W₁) :=
+    (actualLocalCuspCentralOrbitMap_isEmbedding W₁).t2Space
+  let C := constructedCentralCellAtlas W₁
+  let e₁ := centralOrbitModelHomeomorph W₁ W
+  let e₂ := actualLocalCuspCentralOrbitCoreHomeomorph W R
+  constructor
+  · dsimp only
+    intro j i
+    let : DecidableEq (cuspWCellIndex 3) := inferInstanceAs (DecidableEq (Fin 2))
+    change standardA2ToricCellularCoordinateBoundary ((C.transport e₁).transport e₂).toCWDecomposition
+      2 (Pi.single j 1 : Fin 2 → ℤ) i = 0
+    refine ((C.transport e₁).transport_coordinateBoundary_single e₂ 2 j i).symm.trans ?_
+    refine (C.transport_coordinateBoundary_single e₁ 2 j i).symm.trans ?_
+    exact (C.coordinateBoundary_single_eq_attachingDegree 2 j i).trans
+      (Established.constructedA2ThreeCell_attachingDegree_zero W₁ _ j i)
+  · dsimp only
+    intro j i
+    fin_cases j
+    let : DecidableEq (cuspWCellIndex 4) := inferInstanceAs (DecidableEq (Fin 1))
+    change standardA2ToricCellularCoordinateBoundary ((C.transport e₁).transport e₂).toCWDecomposition
+      3 (Pi.single (0 : Fin 1) 1 : Fin 1 → ℤ) i = 0
+    refine ((C.transport e₁).transport_coordinateBoundary_single e₂ 3 (0 : Fin 1) i).symm.trans ?_
+    refine (C.transport_coordinateBoundary_single e₁ 3 (0 : Fin 1) i).symm.trans ?_
+    exact (C.coordinateBoundary_single_eq_attachingDegree 3 (0 : Fin 1) i).trans
+      (Established.constructedA2FourCell_attachingDegree_zero W₁ _ i)
 
 public theorem establishedStandardA2ToricCentralFiberIndependentIncidenceResidual
     {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}

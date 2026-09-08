@@ -21,9 +21,9 @@ even when mathematically true, is never an admissible blackbox.
 
 The phase-geometry axiom has been replaced in source by a proved constructed-model package.
 Its classical dependencies add Brown collaring and activate the existing relative triangulation
-and relative Whitehead theorems. The computed final closure is ten classical inputs and two
-transitional dependencies. The two transitional declarations
-remain proof obligations.
+and relative Whitehead theorems. The computed final closure is ten classical inputs and one
+transitional dependency. The finite-fibre specialization declaration remains a proof obligation;
+its current marking must be corrected to agree with the proved deck coordinates.
 The analytic correction is proved, the cellular input has been strengthened in place, the former combined manifold-homology package
 is now derived from general Poincare duality, UCT, and smooth triangulation, and the analytic
 correction is derived from the proved Cauchy–Green/Cousin theorem. Adding files,
@@ -225,7 +225,7 @@ and Comparator passes.
 | 6 | `EstablishedCellularHomology.integralCWCellularHomologyModel` | proved from blackbox 5 | The old objectwise accessor is now a definition derived from `integralCWCellularHomologyFoundation`, whose basis is carried by the characteristic maps and whose singular-homology comparison is natural for cellular maps. |
 | 7 | `Periods.establishedOrbifoldAffineLineTorsorCuspBoundedCousinCorrection` | proved, no analytic blackbox | Whole-group affine transport, regular and elliptic local sections, the precisely invariant cusp section, and an explicit `Option ℂ` quotient cover are constructed. Distinct overlaps avoid the branch values, so their normalized differences descend to analytic scalar cocycles. The proved arbitrary-cover Cousin theorem supplies an `O(-1)`-normalized splitting; corrected local sections glue to a global equivariant holomorphic section. The resulting infinity germ and parabolic invariance give the bound on the whole closed cusp. The assembled theorem and original accessor use only the three standard Lean axioms. |
 | 8 | `establishedStandardA2ToricCentralOrbitCellAtlas` | **proved (T)** | Explicit characteristic maps in dimensions zero through four satisfy continuity, inverse continuity, disjointness, boundary attachments, and full coverage. The resulting atlas is transported from `constructedModel` to every allowed toric model by the canonical central-orbit homeomorphism. Its axiom audit contains only Lean’s standard three axioms. |
-| 9 | `establishedStandardA2ToricCentralFiberHigherIncidenceResidual` | eliminate (T+CF) | The production assumption now contains only the ten three/four-cell coefficients. The former twenty-four-entry independent-incidence accessor is a theorem: all six edge and twelve two-cell coefficients are proved and transported through both actual atlas homeomorphisms. The general characteristic-map naturality theorem supplies this transport. |
+| 9 | `establishedStandardA2ToricCentralFiberHigherIncidenceResidual` | **proved** | All eight three-cell and both four-cell entries follow from actual phase sweeps, relative prism generators, and absolute attaching-map vanishing. All cellular entries are transported through both actual atlas homeomorphisms. No incidence axiom remains. |
 | 10 | `establishedFiniteFiberGeneratorSpecializationMatrix` | eliminate (S+T+CF) | The natural cellular-to-singular comparison is now available. Prove the relevant inclusions are cellular and compute their images in the characteristic-cell basis; this simultaneously fixes the degree-one normalized coordinates and the four degree-two entries. |
 | 11 | `EstablishedSectionSevenAffineRegularLiftTopology.markedBandHomotopies` | **proved** | The named strip is normalized by the common peripheral marking. The normalized meridians have exact `g₁`/`g₂` deck labels; strengthened chosen marking radii and connected-sheet trapping prove identity-collar Cayley bounds throughout both strips. These bounds and midpoint-pinned real-period gauges prove both band homotopies. The former arbitrary-radius identity-sheet claim is not used. |
 | 12 | `EstablishedSectionSevenCuspTopology.establishedCuspPulledBackMarkedInvariantBasisData` | **deleted; corrected boundary proved** | The actual boundary homomorphism equals raw coordinate four. The raw-four normalized elliptic splitting and corrected signed cusp basis now feed the production homology assembly directly. The rejected raw-five-boundary package and its unconditional wrappers are removed from production; conditional diagnostics remain. |
@@ -758,3 +758,39 @@ the Hurewicz comparison is still required before changing production coordinates
 source degree-two generators are proved to be the marked coordinate tori `(01,03,12,02)`,
 including their actual filling-point formulas. Their target cellular coordinates remain open.
 These results do not verify the assumed specialization matrix. Two transitional axioms remain.
+
+
+## Higher incidence eliminated; specialization marking correction required
+
+The actual three-cell and four-cell characteristic maps are identified with closed phase sweeps
+through the characteristic cylinder homeomorphisms. Relative prism naturality and surjective
+prism representatives convert the positive attaching-circle homology vanishing into vanishing
+of both three-cell attaching maps, then the four-cell attaching map. Their canonical cellular
+coefficients are zero. The production higher-incidence residual is now a theorem, transported
+through the existing model and central-fibre homeomorphisms. The final closure has fourteen
+constants: Lean's three standard axioms, ten classical inputs, and one transitional axiom.
+
+The specialization audit proves that the actual first two period classes in the constructed
+filling are `-graph₀` and `graph₀ - graph₁`, where `graphⱼ` is edge `j` followed by reversed edge 2.
+Thus the identity asserted in the current cellular marking is not correct. A canonical deck
+homology equivalence and literal source period-circle comparison now supply the appropriate
+period coordinates without that assumption. Switching the production coordinate interface and
+updating its cellular comparisons remain necessary. No contradiction from the old assumption
+is used to prove a geometric statement or the headline theorem.
+
+The degree-two source coordinate tori and actual filling phase actions are also compared: the
+fourth-period sweep of the first-period circle is the negative mixed torus class. The central
+chart weights are proved explicitly. The remaining geometric step is primitivity of the swept
+phase-edge classes and the positive torus class, followed by a coherent degree-two basis choice.
+Comparator acceptance at this checkpoint still permits the transitional specialization axiom;
+it does not establish the requested final trust boundary.
+
+The next degree-one integration should preserve the old filling cellular equivalence under an
+explicit name and use `actualCuspDeckHomologyOneEquiv` for production period coordinates.
+The cellular comparisons in `StandardA2ToricCentralFiberExplicitCW`,
+`CuspFiniteFiberSpecializationMatrixProof`, and `CuspFiniteFiberSpecializationExactResidual`
+should use the explicit coordinate change induced by the two equivalences. This does not
+require asserting a numerical transport matrix for arbitrary selected models. To consume
+`cuspFiniteFiberGenerator_deckCoordinates` in the residual owner, extract the pre-axiom
+specialization definitions from `PaperCuspGeometricSpecialization` into a lower module and
+retarget `CuspFiniteFiberSpecializationGeometricReduction` to it, breaking the import cycle.
