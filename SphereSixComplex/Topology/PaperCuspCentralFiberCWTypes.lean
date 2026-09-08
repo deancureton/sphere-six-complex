@@ -349,6 +349,26 @@ public structure StandardA2ToricCentralFiberIncidenceResidual
           (Pi.single j 1 : Fin 1 → ℤ) i =
         standardA2ToricCellularBoundary 3 (Pi.single j 1 : Fin 1 → ℤ) i
 
+/-- The ten attaching coefficients in dimensions three and four. -/
+public structure StandardA2ToricCentralFiberHigherIncidenceResidual
+    {X : Type} [TopologicalSpace X] [T2Space X]
+    (atlas : StandardA2ToricCentralFiberCellAtlas X) where
+  boundaryTwo :
+    let D := atlas.toCWDecomposition
+    let _ := D.topology
+    let _ := D.cwComplex
+    ∀ (j : Fin 2) (i : Fin 4),
+      standardA2ToricCellularCoordinateBoundary D 2
+          (Pi.single j 1 : Fin 2 → ℤ) i =
+        standardA2ToricCellularBoundary 2 (Pi.single j 1 : Fin 2 → ℤ) i
+  boundaryThree :
+    let D := atlas.toCWDecomposition
+    let _ := D.topology
+    let _ := D.cwComplex
+    ∀ (j : Fin 1) (i : Fin 2),
+      standardA2ToricCellularCoordinateBoundary D 3
+          (Pi.single j 1 : Fin 1 → ℤ) i =
+        standardA2ToricCellularBoundary 3 (Pi.single j 1 : Fin 1 → ℤ) i
 /-- Twenty-four independent scalar incidence entries.  The four omitted degree-two attaching
 coefficients follow from `d ∘ d = 0` and the degree-one incidence matrix. -/
 public structure StandardA2ToricCentralFiberIndependentIncidenceResidual

@@ -93,7 +93,7 @@ axiom SphereSixComplex.establishedSecondCountableCOneManifoldWithCornersRelative
               Topology.RelCWComplex Set.univ (ModelWithCorners.boundary X)
 
 # Transitional paper-specific geometry and topology.
-axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberIndependentIncidenceResidual : ∀
+axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberHigherIncidenceResidual : ∀
   {E : SphereSixComplex.Periods.EstablishedFuchsianModularParameter}
   {D : SphereSixComplex.Periods.FuchsianPeriodLocalData E}
   {N : SphereSixComplex.Geometry.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate E D}
@@ -102,7 +102,7 @@ axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2T
   (R : SphereSixComplex.Geometry.CuspPuncturedCollarBridge.ActualLocalCuspCentralFiberRetractionData W),
   let x := SphereSixComplex.Geometry.PaperAnalyticData.actualLocalCuspFilling_t2 W;
   let x := inferInstance;
-  SphereSixComplex.StandardA2ToricCentralFiberIndependentIncidenceResidual
+  SphereSixComplex.StandardA2ToricCentralFiberHigherIncidenceResidual
     (SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberCellAtlas W R)
 axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization.establishedFiniteFiberGeneratorSpecializationMatrix : ∀
   (A : SphereSixComplex.Geometry.PaperAnalyticData),

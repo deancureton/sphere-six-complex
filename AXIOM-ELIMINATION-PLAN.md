@@ -225,7 +225,7 @@ and Comparator passes.
 | 6 | `EstablishedCellularHomology.integralCWCellularHomologyModel` | proved from blackbox 5 | The old objectwise accessor is now a definition derived from `integralCWCellularHomologyFoundation`, whose basis is carried by the characteristic maps and whose singular-homology comparison is natural for cellular maps. |
 | 7 | `Periods.establishedOrbifoldAffineLineTorsorCuspBoundedCousinCorrection` | proved, no analytic blackbox | Whole-group affine transport, regular and elliptic local sections, the precisely invariant cusp section, and an explicit `Option ℂ` quotient cover are constructed. Distinct overlaps avoid the branch values, so their normalized differences descend to analytic scalar cocycles. The proved arbitrary-cover Cousin theorem supplies an `O(-1)`-normalized splitting; corrected local sections glue to a global equivariant holomorphic section. The resulting infinity germ and parabolic invariance give the bound on the whole closed cusp. The assembled theorem and original accessor use only the three standard Lean axioms. |
 | 8 | `establishedStandardA2ToricCentralOrbitCellAtlas` | **proved (T)** | Explicit characteristic maps in dimensions zero through four satisfy continuity, inverse continuity, disjointness, boundary attachments, and full coverage. The resulting atlas is transported from `constructedModel` to every allowed toric model by the canonical central-orbit homeomorphism. Its axiom audit contains only Lean’s standard three axioms. |
-| 9 | `establishedStandardA2ToricCentralFiberIndependentIncidenceResidual` | eliminate (T+CF) | The strengthened foundation now reduces each coefficient to the homological degree of the actual characteristic attaching map. The atlas is explicit. Canonical orientations are derived from singular chains, and all six edge coefficients and all twelve two-cell coefficients are proved. The coordinate-table bridge is proved. It remains to compute the three/four-cell attaching degrees. |
+| 9 | `establishedStandardA2ToricCentralFiberHigherIncidenceResidual` | eliminate (T+CF) | The production assumption now contains only the ten three/four-cell coefficients. The former twenty-four-entry independent-incidence accessor is a theorem: all six edge and twelve two-cell coefficients are proved and transported through both actual atlas homeomorphisms. The general characteristic-map naturality theorem supplies this transport. |
 | 10 | `establishedFiniteFiberGeneratorSpecializationMatrix` | eliminate (S+T+CF) | The natural cellular-to-singular comparison is now available. Prove the relevant inclusions are cellular and compute their images in the characteristic-cell basis; this simultaneously fixes the degree-one normalized coordinates and the four degree-two entries. |
 | 11 | `EstablishedSectionSevenAffineRegularLiftTopology.markedBandHomotopies` | **proved** | The named strip is normalized by the common peripheral marking. The normalized meridians have exact `g₁`/`g₂` deck labels; strengthened chosen marking radii and connected-sheet trapping prove identity-collar Cayley bounds throughout both strips. These bounds and midpoint-pinned real-period gauges prove both band homotopies. The former arbitrary-radius identity-sheet claim is not used. |
 | 12 | `EstablishedSectionSevenCuspTopology.establishedCuspPulledBackMarkedInvariantBasisData` | **deleted; corrected boundary proved** | The actual boundary homomorphism equals raw coordinate four. The raw-four normalized elliptic splitting and corrected signed cusp basis now feed the production homology assembly directly. The rejected raw-five-boundary package and its unconditional wrappers are removed from production; conditional diagnostics remain. |
@@ -643,3 +643,31 @@ ex-falso step is used. The elliptic unit coefficient remains to be computed.
 Actual higher-cell opposite phase faces are identified, and the compact phase action descends to
 the central quotient. The relative-homology cancellation bridge needed for higher attaching
 coefficients is still missing; no higher incidence vanishing is claimed from face identities alone.
+
+## Higher-incidence reduction and cylinder prisms
+
+The former twenty-four-entry independent-incidence assumption is now a theorem derived from the
+proved edge/two-cell calculations and a ten-entry higher-incidence residual. Characteristic-map
+naturality transports the low-dimensional coefficients through both actual atlas homeomorphisms.
+This removes fourteen previously assumed independent scalar entries; the number of transitional
+axiom declarations remains three.
+
+A closed singular homotopy now gives an explicit prism taking boundaries to boundaries, and the
+actual compact circle action identifies its characteristic cylinders with the three/four-cell
+maps. A general short-exact-chain theorem proves that contracting prisms surject onto homology.
+The cylinder contracts continuously to its bottom while preserving bottom plus sides, with exact
+compatibility on that subspace. Descending these homotopies to relative chains and the top-face
+excision comparison remain necessary before claiming higher attaching coefficients vanish.
+
+Fourth-period translations are now jointly continuous on both actual elliptic filling quotients
+and reduced fibres. The principal gauges and their inverses commute with these translations,
+and the real-period product charts identify them with literal fourth-coordinate translation.
+The regular-family translation is equivariant under the full deck group. Global quotient descent
+and compatibility across elliptic collars still precede a proof of the fibre-unit coefficient.
+
+The actual finite elliptic relators are now killed inside the elliptic interior. Their abelian
+images imply the twelfth-power relation between the inverse cusp-bridge meridian and the first
+fibre translation. Gamma-coinvariant algebra proves this for every abelian target. Identifying
+these actual bridge loops with the mapping-torus homology generators via first-Hurewicz
+naturality remains necessary to discharge the full-iterate field; the meridian sign and Wang
+normalization themselves are already proved.

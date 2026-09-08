@@ -1,5 +1,13 @@
 module
 
+public import SphereSixComplex.Topology.CuspEllipticInteriorRelators
+
+public import SphereSixComplex.Topology.ActualEllipticFourthGaugeCompatibility
+public import SphereSixComplex.Topology.GlobalInvariantPeriodTranslation
+
+public import SphereSixComplex.Topology.ConstructedA2CircleSweepPrism
+public import SphereSixComplex.Topology.CylinderLowerSideContraction
+
 public import SphereSixComplex.Topology.ConstructedA2CentralCompactAction
 public import SphereSixComplex.Topology.ConstructedA2HigherCellFaces
 public import SphereSixComplex.Topology.CuspFourthSweepNormalization

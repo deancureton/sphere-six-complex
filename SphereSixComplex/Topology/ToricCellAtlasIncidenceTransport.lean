@@ -2,6 +2,7 @@ module
 
 public import SphereSixComplex.Topology.PaperCuspCentralFiberCWTypes
 public import SphereSixComplex.Topology.CellularCharacteristicNaturality
+public import SphereSixComplex.Topology.ToricCellularCoordinateIncidence
 
 @[expose] public section
 noncomputable section
@@ -28,5 +29,18 @@ public theorem transport_attachingDegree
   exact T.attachingDegree_natural ⟨e, e.continuous⟩
     (isIntegralCWCellularMap_of_characteristic ⟨e, e.continuous⟩ (fun _ ↦ id) h)
     (fun _ ↦ id) h n Function.injective_id i j
+
+public theorem transport_coordinateBoundary_single
+    {X Y : Type} [TopologicalSpace X] [T2Space X]
+    [TopologicalSpace Y] [T2Space Y]
+    (A : StandardA2ToricCentralFiberCellAtlas X) (e : X ≃ₜ Y) (n : ℕ)
+    [DecidableEq (cuspWCellIndex (n + 1))]
+    (i : cuspWCellIndex (n + 1)) (j : cuspWCellIndex n) :
+    standardA2ToricCellularCoordinateBoundary A.toCWDecomposition n (Pi.single i 1) j =
+      standardA2ToricCellularCoordinateBoundary (A.transport e).toCWDecomposition n
+        (Pi.single i 1) j := by
+  rw [A.coordinateBoundary_single_eq_attachingDegree,
+    (A.transport e).coordinateBoundary_single_eq_attachingDegree]
+  exact A.transport_attachingDegree e integralCWCellularHomologyFoundation.normalized n i j
 
 end SphereSixComplex.StandardA2ToricCentralFiberCellAtlas
