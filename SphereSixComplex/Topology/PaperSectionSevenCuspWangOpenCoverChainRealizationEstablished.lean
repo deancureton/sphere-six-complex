@@ -9,7 +9,8 @@ import SphereSixComplex.Topology.PaperSectionSevenAffineMarkedBandSquares
 The full-fibre slice constructs the map from the actual cusp fibre into the intersection of the
 pulled-back binary cover.  The remaining input is therefore reduced to two equalities for that
 specific map: its period-marked identification with the elliptic band and the oriented
-connecting-morphism comparison.
+connecting-morphism comparison. The band identification here requires explicit crossing-marking
+agreement; it is not inferred from the normalized strip marking.
 -/
 
 @[expose] public section
@@ -106,6 +107,9 @@ public theorem actualCuspWangFibreToBandHomologyOne_eq_map
   exact (integralSingularHomologyMap_comp 1 _ _).symm
 
 private theorem actualCuspWangFibreToBand_centralFamily
+    (hmark : A.sectionSevenAffineNamedStripLift.lift
+      A.sectionSevenAffineActualCuspCrossingPoint =
+        A.actualCuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
     (R : A.SectionSevenAffineRadialCompletionInput)
     (y : let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
@@ -205,7 +209,7 @@ private theorem actualCuspWangFibreToBand_centralFamily
         (A.sectionSevenAffineNamedStripLift.lift
           A.sectionSevenAffineActualCuspCrossingPoint) zeta)
     apply congrArg (Quotient.mk _)
-    rw [A.sectionSevenAffineNamedStripLift_apply_actualCuspCrossing]
+    rw [hmark]
     change A.duplicatedSectionSevenBandFullRank.realEquiv
         (G.fiberFullRank.realEquiv.symm w) =
       (movingToFixedCover A.periods
@@ -229,7 +233,7 @@ private theorem actualCuspWangFibreToBand_centralFamily
         rfl
   rw [hcoordinate]
   rw [A.stripLiftPoint_regularMovingToFixed]
-  rw [A.sectionSevenAffineNamedStripLift_apply_actualCuspCrossing]
+  rw [hmark]
   change puncturedLocalCuspQuotientMap A.starCuspWitness
       (additiveCuspBoundaryProjection A.starCuspWitness q) =
     A.centralQuotientProjection
@@ -241,6 +245,9 @@ private theorem actualCuspWangFibreToBand_centralFamily
   rfl
 
 private theorem actualCuspWangFibreToBandMap_coordinate
+    (hmark : A.sectionSevenAffineNamedStripLift.lift
+      A.sectionSevenAffineActualCuspCrossingPoint =
+        A.actualCuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
     (R : A.SectionSevenAffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
@@ -282,9 +289,12 @@ private theorem actualCuspWangFibreToBandMap_coordinate
   rw [Homeomorph.symm_apply_apply]
   apply A.sectionSevenAffineCentralBandToCentralFamily_injective
   rw [A.sectionSevenAffineCentralBandMarkedProductHomeomorph_symm_toCentralFamily]
-  exact actualCuspWangFibreToBand_centralFamily R y
+  exact actualCuspWangFibreToBand_centralFamily hmark R y
 
 private theorem actualCuspWangFibreToBand_homology
+    (hmark : A.sectionSevenAffineNamedStripLift.lift
+      A.sectionSevenAffineActualCuspCrossingPoint =
+        A.actualCuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
     (R : A.SectionSevenAffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
@@ -303,7 +313,7 @@ private theorem actualCuspWangFibreToBand_homology
       (integralSingularHomologyMap 1
         (actualCuspWangFibreToBandMap (A := A) R))) x
   rw [← integralSingularHomologyMap_comp]
-  rw [actualCuspWangFibreToBandMap_coordinate R]
+  rw [actualCuspWangFibreToBandMap_coordinate hmark R]
 
 /-- The exact finite residual comparison for the constructed full-fibre slice.  These six
 equalities use the geometric basis of the cusp collar and fix the sign of the connecting
@@ -324,10 +334,13 @@ namespace ActualCuspWangFullFibreSliceComparison
 
 /-- The four marked fibre-basis checks reconstruct the full band-map equality. -/
 public theorem fiberToBand_homology
+    (hmark : A.sectionSevenAffineNamedStripLift.lift
+      A.sectionSevenAffineActualCuspCrossingPoint =
+        A.actualCuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
     (_C : ActualCuspWangFullFibreSliceComparison R) :
     R.twoDiscCover.canonicalCuspFiberToBandHomologyOne =
       actualCuspWangFibreToBandHomologyOne (A := A) R := by
-  exact actualCuspWangFibreToBand_homology R
+  exact actualCuspWangFibreToBand_homology hmark R
 
 /-- The six geometric collar-basis checks reconstruct the oriented connecting-map equality. -/
 public theorem wangBoundary_eq_chainConnecting

@@ -2,13 +2,14 @@ module
 
 public import SphereSixComplex.Topology.PaperSectionSevenAffineMarkedRetractionGeometry
 public import SphereSixComplex.Topology.PaperSectionSevenAffineOverlapInterleaving
+public import SphereSixComplex.Topology.PaperSectionSevenAffineNormalizedBandCompatibility
 
 /-!
-# Established overlap input for the affine completion
+# Proved affine overlap completion
 
-The paper's remaining affine topology is recorded at the homotopy level actually used by the
+The affine topology is proved at the homotopy level actually used by the
 radial completion.  Both overlap inclusions are proved homotopy equivalences in the preceding
-modules; the remaining input is the pair of marked band homotopies.
+modules; the marked band homotopies follow from normalized radial collar bounds.
 -/
 
 @[expose] public section
@@ -19,11 +20,12 @@ namespace SphereSixComplex.Geometry.PaperAnalyticData
 
 namespace EstablishedSectionSevenAffineRegularLiftTopology
 
-/-- The exact remaining paper geometry: the two band maps induced by the proved affine overlap
+/-- The two band maps induced by the proved affine overlap
 equivalences are homotopic to the finite-cover projections marked by the unique affine-strip
-lift through the selected actual cusp crossing. -/
-public axiom markedBandHomotopies (A : PaperAnalyticData) :
-    A.SectionSevenAffineOverlapBandCompatibility
+lift normalized by the common peripheral marking. -/
+public theorem markedBandHomotopies (A : PaperAnalyticData) :
+    A.SectionSevenAffineOverlapBandCompatibility :=
+  A.actualMarkedBandHomotopies
 
 /-- The marked band homotopies and the proved overlap equivalences supply marked retractions.
 The retractions themselves are the canonical homotopy inverses of the two proved inclusion
@@ -50,24 +52,7 @@ public theorem markedRetractionInput_nonempty (A : PaperAnalyticData) :
           rw [sectionSevenAffineBandOrderFourMarkedProjection_eq_coverMap]
           exact (markedBandHomotopies A).orderFour }
 
-/-- The exact residual affine input from the paper: the two marked band square homotopies.
-
-**Do not weaken the trivialization used here.**  This statement was *false* in an earlier form of
-the development, and is sound only because the band trivialization is taken at the unique lift
-through the selected actual cusp-coordinate crossing and its explicit regular-base point.
-Historically `sectionSevenAffineCentralBandProductHomeomorph` was
-`(establishedActualCentralBandProductTrivialization A S).choose`.  Since
-`IsHomeomorphicTrivialFiberBundle` pins only the *base* coordinate, that left the fibre coordinate
-entirely free: post-composing the chosen trivialization with a fibrewise self-homeomorphism lying
-outside the order-three subgroup of `GL₄(ℤ)` falsifies the band square, so no proof of the
-un-marked statement could exist.  The current
-`sectionSevenAffineCentralBandMarkedProductHomeomorph` is built from
-`sectionSevenAffineNamedStripLift`, whose value at the crossing is
-`actualCuspAngularRegularBasePoint sectionSevenAffineActualCuspCrossingTime`.  This geometric
-basepoint condition, not merely assigning a name to an arbitrary lift, pins the fibre coordinate
-and makes
-`SectionSevenAffineOverlapBandCompatibility` a true statement.  Anyone tempted to "simplify" the
-marked product homeomorphism back to an `Exists.choose` would be reintroducing a false axiom. -/
+/-- The normalized marked band squares supply the affine overlap compatibility. -/
 public theorem overlapBandCompatibility (A : PaperAnalyticData) :
     A.SectionSevenAffineOverlapBandCompatibility := by
   let G := (markedRetractionInput_nonempty A).some
@@ -91,9 +76,8 @@ public theorem overlapBandCompatibility (A : PaperAnalyticData) :
     exact (sectionSevenAffineOrderFourBandMapOfRetraction_homotopic hRetraction).trans
       G.orderFour.markedSquare
 
-/-- The full residual affine input: radial contraction of each actual overlap and the two marked
-band homotopies.  The two overlap homotopy equivalences are supplied by the proved collar shrinks,
-so only the band squares are assumed. -/
+/-- Collar shrinks give the overlap equivalences, and normalized radial bounds give the
+marked band homotopies. Together they supply the full affine completion. -/
 public theorem overlapCompletionInput (A : PaperAnalyticData) :
     A.SectionSevenAffineOverlapCompletionInput :=
   (overlapBandCompatibility A).toOverlapCompletionInput

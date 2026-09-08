@@ -6,7 +6,7 @@ public import SphereSixComplex.Topology.PaperSectionSevenAffineMarkedStarRealPer
 # Uniqueness of the marked affine-strip lift
 
 The regular-coordinate map is a covering map.  Consequently, a lift of the affine vertical
-strip is determined by its value at the selected actual cusp crossing.  This is the covering
+strip is determined by its value at the normalized midpoint.  This is the covering
 space comparison needed to identify the base lift produced by the principal gauge with the
 named lift used by the marked band trivialization.
 -/
@@ -43,22 +43,17 @@ public theorem regularCoordinate_lifts_eq_of_apply_eq
   · exact ⟨rfl, h₁⟩
   · exact ⟨h₀.symm, h₂⟩
 
-/-- Any affine-strip lift through the selected actual cusp representative is the named marked
-lift. -/
-public theorem SectionSevenAffineStripLift.eq_named_of_apply_actualCuspCrossing
+/-- Midpoint normalization determines the marked strip lift. -/
+public theorem SectionSevenAffineStripLift.eq_named_of_apply_midpoint
     {A : PaperAnalyticData} (L : A.SectionSevenAffineStripLift)
-    (hL : L.lift A.sectionSevenAffineActualCuspCrossingPoint =
-      A.actualCuspAngularRegularBasePoint
-        A.sectionSevenAffineActualCuspCrossingTime) :
+    (hL : L.lift sectionSevenAffineStripMidpoint = A.sectionSevenAffineNormalizedMidpoint) :
     L.lift = A.sectionSevenAffineNamedStripLift.lift := by
   let U := A.existsUnique_sectionSevenAffineStripContinuousLift
-    A.sectionSevenAffineActualCuspCrossingPoint
-    (A.actualCuspAngularRegularBasePoint
-      A.sectionSevenAffineActualCuspCrossingTime)
-    A.regularCoordinate_actualCuspAngularRegularBasePoint_crossing
+    sectionSevenAffineStripMidpoint A.sectionSevenAffineNormalizedMidpoint
+    A.sectionSevenAffineNormalizedMidpoint_projects
   apply U.unique
   · exact ⟨hL, L.lift_comp_coordinate⟩
-  · exact ⟨A.sectionSevenAffineNamedStripLift_apply_actualCuspCrossing,
+  · exact ⟨A.sectionSevenAffineNamedStripLift_apply_midpoint,
       A.sectionSevenAffineNamedStripLift.lift_comp_coordinate⟩
 
 end SphereSixComplex.Geometry.PaperAnalyticData

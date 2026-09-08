@@ -405,4 +405,10 @@ public theorem sectionSevenAffineNormalizedStripContinuousLift_coordinate (A : P
     sectionSevenAffineStripMidpoint A.sectionSevenAffineNormalizedMidpoint
     A.sectionSevenAffineNormalizedMidpoint_projects).choose_spec.1.2
 
+public noncomputable def sectionSevenAffineNormalizedStripLift (A : PaperAnalyticData) :
+    A.SectionSevenAffineStripLift where
+  lift := A.sectionSevenAffineNormalizedStripContinuousLift
+  lift_coordinate z := congrArg Subtype.val
+    (congrFun A.sectionSevenAffineNormalizedStripContinuousLift_coordinate z)
+
 end SphereSixComplex.Geometry.PaperAnalyticData

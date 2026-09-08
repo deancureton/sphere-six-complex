@@ -80,22 +80,28 @@ public theorem actualCuspWangFullFibreSliceComparison_of_orientedBoundaryNatural
 /-- Oriented naturality for the selected full-fibre slice gives the canonical unmarked Wang
 boundary square. -/
 public theorem canonicalCuspWangBoundaryNaturality_of_fullFibreOrientedBoundaryNaturality
+    (hmark : A.sectionSevenAffineNamedStripLift.lift
+      A.sectionSevenAffineActualCuspCrossingPoint =
+        A.actualCuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
     (R : A.SectionSevenAffineRadialCompletionInput)
     (h : ActualCuspWangFullFibreOrientedBoundaryNaturality R) :
     R.twoDiscCover.CanonicalCuspWangBoundaryNaturality := by
   let C := actualCuspWangFullFibreSliceComparison_of_orientedBoundaryNaturality R h
   let Z := actualCuspWangOpenCoverChainRealization_of_fullFibreSlice R
-    C.fiberToBand_homology C.wangBoundary_eq_chainConnecting
+    (C.fiberToBand_homology hmark) C.wangBoundary_eq_chainConnecting
   exact Z.canonicalWangBoundaryNaturality
 
 /-- The one oriented full-fibre naturality square implies both remaining marked evaluations on
 the invariant raw degree-two generators. -/
 public theorem cuspPulledBackMarkedInvariantBasisData_of_fullFibreOrientedBoundaryNaturality
+    (hmark : A.sectionSevenAffineNamedStripLift.lift
+      A.sectionSevenAffineActualCuspCrossingPoint =
+        A.actualCuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
     (R : A.SectionSevenAffineRadialCompletionInput)
     (h : ActualCuspWangFullFibreOrientedBoundaryNaturality R) :
     CuspPulledBackMarkedInvariantBasisData R := by
   have hBoundary : R.twoDiscCover.CanonicalCuspWangBoundaryNaturality :=
-    canonicalCuspWangBoundaryNaturality_of_fullFibreOrientedBoundaryNaturality R h
+    canonicalCuspWangBoundaryNaturality_of_fullFibreOrientedBoundaryNaturality hmark R h
   have hMarking : R.twoDiscCover.CanonicalCuspFiberBandPeriodMarking R.homologyAlignment :=
     R.twoDiscCover.canonicalCuspFiberBandPeriodMarking_of_orderThree R.homologyAlignment
       (R.canonicalCuspFiberOrderThreePeriodMarking
@@ -115,10 +121,13 @@ public theorem cuspPulledBackMarkedInvariantBasisData_of_fullFibreOrientedBounda
 /-- Equivalently, the two unmarked invariant-generator comparisons for the selected full-fibre
 slice imply both marked scalar evaluations. -/
 public theorem cuspPulledBackMarkedInvariantBasisData_of_fullFibreInvariantResidual
+    (hmark : A.sectionSevenAffineNamedStripLift.lift
+      A.sectionSevenAffineActualCuspCrossingPoint =
+        A.actualCuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
     (R : A.SectionSevenAffineRadialCompletionInput)
     (h : ActualCuspWangFullFibreSliceInvariantResidual R) :
     CuspPulledBackMarkedInvariantBasisData R :=
-  cuspPulledBackMarkedInvariantBasisData_of_fullFibreOrientedBoundaryNaturality R
+  cuspPulledBackMarkedInvariantBasisData_of_fullFibreOrientedBoundaryNaturality hmark R
     ((fullFibreOrientedBoundaryNaturality_iff_invariantResidual R).mpr h)
 
 end SectionSevenEllipticTwoDiscCoverData

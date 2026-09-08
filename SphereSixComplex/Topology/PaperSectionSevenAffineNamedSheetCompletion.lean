@@ -7,9 +7,10 @@ public import SphereSixComplex.Topology.PaperSectionSevenAffineOrderFourNamedShe
 # Named-sheet completion of the affine marked-band homotopies
 
 The quotient overlap construction puts a regular-deck translate of each named radial lift in
-the selected collar.  The exact additional information needed is that one such extracted deck
+the selected collar.  A sufficient condition is that one such extracted deck
 element belongs to the corresponding elliptic stabilizer.  This file proves that this condition
-is equivalent to the two named Cayley bounds and derives the complete marked-band homotopies.
+is equivalent to the two named Cayley bounds and derives the complete marked-band homotopies. The normalized marking satisfies the bounds
+in `PaperSectionSevenAffineNormalizedCayleyBounds`.
 -/
 
 @[expose] public section
@@ -196,7 +197,7 @@ public theorem markedBandHomotopies_of_affineNamedSheetStabilizingDecks
     (A.sectionSevenAffineOrderFourNamedRadialCollarCompatibility_iff).mpr hbounds.2
   apply markedBandHomotopies_of_pinnedLiftEndpointGaugeFormulas
     A A.sectionSevenAffineNamedStripLift
-      A.sectionSevenAffineNamedStripLift_apply_actualCuspCrossing
+      A.sectionSevenAffineNamedStripLift_apply_midpoint
       A.sectionSevenAffineOrderThreeEndpointGauge
       A.sectionSevenAffineOrderFourEndpointGauge
   constructor

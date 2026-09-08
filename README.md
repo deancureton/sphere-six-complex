@@ -25,8 +25,8 @@ The correction is in progress; Comparator passing with the current allowlist doe
 a consistent mathematical trust boundary. See `AXIOM-ELIMINATION-PLAN.md`.
 
 The constructed polar phase geometry is now proved from explicit positive charts, Brown
-collaring, relative C¹ triangulation, and relative Whitehead. Five transitional assumptions
-remain; the classical signatures and their sources are reviewed in `AXIOM-ELIMINATION-PLAN.md`.
+collaring, relative C¹ triangulation, and relative Whitehead. The normalized marked-band homotopies are also proved,
+leaving four transitional assumptions; the classical signatures and their sources are reviewed in `AXIOM-ELIMINATION-PLAN.md`.
 
 ## Build
 

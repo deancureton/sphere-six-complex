@@ -6,8 +6,8 @@ public import SphereSixComplex.Topology.PaperSectionSevenAffinePrincipalGaugeStr
 # Completion interface for the marked affine-band homotopies
 
 The fibre coordinate of a central-band trivialization is meaningful here only after its strip
-lift is pinned at the selected actual cusp crossing.  This file proves that such a pinned lift is
-the named lift, and reduces the remaining endpoint calculation to the explicit statement that
+lift is pinned at the normalized midpoint.  This file proves that such a pinned lift is
+the named lift, and reduces the endpoint calculation to the explicit statement that
 the real-period endpoint differs from that pinned coordinate by a gauge depending on the strip.
 -/
 
@@ -40,15 +40,14 @@ public noncomputable def sectionSevenAffineBandFiberCoordinateOfLift
         A.sectionSevenAffineCentralSeparation L).symm.continuous.comp
           A.sectionSevenActualAffineSplit.sidesIntersectionHomeomorph.continuous)⟩
 
-/-- Pinning a strip lift at the actual cusp crossing identifies the whole lift with the named
+/-- Pinning a strip lift at the normalized midpoint identifies the whole lift with the named
 one, not merely its base coordinate. -/
 public theorem SectionSevenAffineStripLift.eq_named
     {A : PaperAnalyticData} (L : A.SectionSevenAffineStripLift)
-    (hL : L.lift A.sectionSevenAffineActualCuspCrossingPoint =
-      A.actualCuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime) :
+    (hL : L.lift sectionSevenAffineStripMidpoint = A.sectionSevenAffineNormalizedMidpoint) :
     L = A.sectionSevenAffineNamedStripLift := by
   have h : L.lift = A.sectionSevenAffineNamedStripLift.lift :=
-    L.eq_named_of_apply_actualCuspCrossing hL
+    L.eq_named_of_apply_midpoint hL
   cases L with
   | mk lift lift_coordinate =>
       dsimp at h
@@ -59,12 +58,11 @@ public theorem SectionSevenAffineStripLift.eq_named
       cases hcoordinate
       rfl
 
-/-- Consequently the fibre coordinate obtained from a cusp-pinned lift is exactly the marked
+/-- Consequently the fibre coordinate obtained from a midpoint-pinned lift is exactly the marked
 band coordinate used by the finite-cover projections. -/
 public theorem sectionSevenAffineBandFiberCoordinateOfLift_eq_marked
     {A : PaperAnalyticData} (L : A.SectionSevenAffineStripLift)
-    (hL : L.lift A.sectionSevenAffineActualCuspCrossingPoint =
-      A.actualCuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime) :
+    (hL : L.lift sectionSevenAffineStripMidpoint = A.sectionSevenAffineNormalizedMidpoint) :
     A.sectionSevenAffineBandFiberCoordinateOfLift L =
       sectionSevenAffineBandFiberCoordinate A := by
   rw [L.eq_named hL]
@@ -135,16 +133,15 @@ public noncomputable def sectionSevenAffineOrderFourGaugeProjectionOfLift
           ((g.continuous.comp A.sectionSevenAffineBandStripCoordinate.continuous).prodMk
             (A.sectionSevenAffineBandFiberCoordinateOfLift L).continuous)⟩
 
-/-- The exact remaining logarithmic-gauge input.  The lift used to read the endpoint is not
-arbitrary: its value is pinned at the selected actual cusp crossing.  The two formula fields are
-the residual point-set equalities saying that the explicit star endpoints preserve the fibre
+/-- The logarithmic-gauge endpoint interface.  The lift used to read the endpoint is not
+arbitrary: its value is pinned at the normalized midpoint.  The two formula fields are
+the point-set equalities saying that the explicit star endpoints preserve the fibre
 coordinate up to a translation depending only on the affine-strip coordinate. -/
 public structure SectionSevenAffinePinnedLiftEndpointGaugeCompatibility
     (A : PaperAnalyticData) where
   stripLift : A.SectionSevenAffineStripLift
-  stripLift_apply_actualCuspCrossing :
-    stripLift.lift A.sectionSevenAffineActualCuspCrossingPoint =
-      A.actualCuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime
+  stripLift_apply_midpoint :
+    stripLift.lift sectionSevenAffineStripMidpoint = A.sectionSevenAffineNormalizedMidpoint
   orderThreeGauge :
     C(sectionSevenAffineVerticalStrip,
       AdditiveTorus A.duplicatedSectionSevenBandParameter)
@@ -197,7 +194,7 @@ public noncomputable def
       (fun f : C(A.SectionSevenAffineMarkedBand,
         AdditiveTorus A.duplicatedSectionSevenBandParameter) ↦ f x)
       (A.sectionSevenAffineBandFiberCoordinateOfLift_eq_marked H.stripLift
-        H.stripLift_apply_actualCuspCrossing)
+        H.stripLift_apply_midpoint)
     change RadialEllipticActionData.centralFiberCoverProjection
         (orderThreeRadialActionData A.periods)
           (A.duplicatedSectionSevenBandToOrderThreeCoverSource
@@ -218,7 +215,7 @@ public noncomputable def
       (fun f : C(A.SectionSevenAffineMarkedBand,
         AdditiveTorus A.duplicatedSectionSevenBandParameter) ↦ f x)
       (A.sectionSevenAffineBandFiberCoordinateOfLift_eq_marked H.stripLift
-        H.stripLift_apply_actualCuspCrossing)
+        H.stripLift_apply_midpoint)
     change RadialEllipticActionData.centralFiberCoverProjection
         (orderFourRadialActionData A.periods)
           (A.duplicatedSectionSevenBandToOrderFourCoverSource
@@ -231,20 +228,18 @@ public noncomputable def
               sectionSevenAffineBandFiberCoordinate A x))
     rw [hcoordinate]
 
-/-- Thus the only unproved input is the pair of explicit gauge formulas; the cusp pinning and
-all homotopy assembly are discharged here. -/
+/-- Midpoint pinning and the two gauge formulas supply the marked band homotopies. -/
 public theorem markedBandHomotopies_of_pinnedLiftEndpointGaugeCompatibility
     (A : PaperAnalyticData)
     (H : A.SectionSevenAffinePinnedLiftEndpointGaugeCompatibility) :
     A.SectionSevenAffineOverlapBandCompatibility :=
   H.toGaugeTranslation.toBandCompatibility
 
-/-- A cusp-pinned strip lift and precisely the two explicit endpoint gauge formulas imply the
+/-- A midpoint-pinned strip lift and precisely the two explicit endpoint gauge formulas imply the
 marked-band compatibility target. -/
 public theorem markedBandHomotopies_of_pinnedLiftEndpointGaugeFormulas
     (A : PaperAnalyticData) (L : A.SectionSevenAffineStripLift)
-    (hL : L.lift A.sectionSevenAffineActualCuspCrossingPoint =
-      A.actualCuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
+    (hL : L.lift sectionSevenAffineStripMidpoint = A.sectionSevenAffineNormalizedMidpoint)
     (orderThreeGauge orderFourGauge :
       C(sectionSevenAffineVerticalStrip,
         AdditiveTorus A.duplicatedSectionSevenBandParameter))
@@ -253,7 +248,7 @@ public theorem markedBandHomotopies_of_pinnedLiftEndpointGaugeFormulas
     A.SectionSevenAffineOverlapBandCompatibility :=
   markedBandHomotopies_of_pinnedLiftEndpointGaugeCompatibility A
     { stripLift := L
-      stripLift_apply_actualCuspCrossing := hL
+      stripLift_apply_midpoint := hL
       orderThreeGauge := orderThreeGauge
       orderThreeFormula := H.orderThree
       orderFourGauge := orderFourGauge

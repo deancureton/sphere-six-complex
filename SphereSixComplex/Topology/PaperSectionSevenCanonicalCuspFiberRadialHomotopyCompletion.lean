@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Topology.PaperSectionSevenCanonicalCuspFiberBandCompatibilityCompletion
+public import SphereSixComplex.Topology.PaperCuspFiberTransportCompatibility
 
 /-!
 # Radial homotopy for the canonical cusp fibre
@@ -213,7 +213,7 @@ public theorem canonicalCuspFiberBandTopologicalCompatibility
   let _ := G.fiberTopology
   exact
     (actualCuspMappingTorusFiberToEllipticInteriorMap_homotopic_wangSlice R).trans
-      (actualCuspWangFibreToEllipticInteriorMap_homotopic_canonical R)
+      (actualCuspWangFibreToEllipticInteriorMap_homotopic_fixed_canonical R)
 
 end SectionSevenEllipticTwoDiscCoverData
 

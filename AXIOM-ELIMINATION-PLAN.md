@@ -21,8 +21,8 @@ even when mathematically true, is never an admissible blackbox.
 
 The phase-geometry axiom has been replaced in source by a proved constructed-model package.
 Its classical dependencies add Brown collaring and activate the existing relative triangulation
-and relative Whitehead theorems. The computed final closure is ten classical inputs and five
-transitional dependencies. The five transitional declarations
+and relative Whitehead theorems. The computed final closure is ten classical inputs and four
+transitional dependencies. The four transitional declarations
 remain proof obligations.
 The analytic correction is proved, the cellular input has been strengthened in place, the former combined manifold-homology package
 is now derived from general Poincare duality, UCT, and smooth triangulation, and the analytic
@@ -168,7 +168,7 @@ constant types; reviewers must also inspect the definitions those types mention.
 | Relative C¹ triangulation with corners | [Murayama–Shiota, Nagoya Math. J. 212 (2013), pp. 159–160](https://doi.org/10.1215/00277630-2366201) explicitly states the classical Cairns–Whitehead theorem for `C^k` manifolds with corners, including `k = 1`, and cites Munkres. A PL triangulation has its full boundary as a subcomplex; the Lean axiom retains only the resulting relative CW structure. |
 
 
-This audit does not approve the five remaining transitional axioms. The former analytic declaration is
+This audit does not approve the four remaining transitional axioms. The former analytic declaration is
 now proved using only Lean's standard logical axioms and has been removed from both allowlists.
 
 No additional blackbox may be added silently. A candidate is permitted only when it is a standard,
@@ -207,7 +207,7 @@ There are five largely independent implementation tracks:
 - **A: analytic descent** - the affine-line torsor correction at the orbifold cusp.
 
 The recognition and analytic tracks are complete and should remain stable while T and S remove
-the five remaining transitional axioms.
+the four remaining transitional axioms.
 
 ## Dependency work items
 
@@ -227,7 +227,7 @@ and Comparator passes.
 | 8 | `establishedStandardA2ToricCentralOrbitCellAtlas` | **proved (T)** | Explicit characteristic maps in dimensions zero through four satisfy continuity, inverse continuity, disjointness, boundary attachments, and full coverage. The resulting atlas is transported from `constructedModel` to every allowed toric model by the canonical central-orbit homeomorphism. Its axiom audit contains only Lean’s standard three axioms. |
 | 9 | `establishedStandardA2ToricCentralFiberIndependentIncidenceResidual` | eliminate (T+CF) | The strengthened foundation now reduces each coefficient to the homological degree of the actual characteristic attaching map. The atlas is explicit. Canonical orientations are derived from singular chains, and all six edge coefficients and all nine phase-two-cell coefficients are proved. The coordinate-table bridge is proved. It remains to compute the positive two-cell and the three/four-cell attaching degrees. |
 | 10 | `establishedFiniteFiberGeneratorSpecializationMatrix` | eliminate (S+T+CF) | The natural cellular-to-singular comparison is now available. Prove the relevant inclusions are cellular and compute their images in the characteristic-cell basis; this simultaneously fixes the degree-one normalized coordinates and the four degree-two entries. |
-| 11 | `EstablishedSectionSevenAffineRegularLiftTopology.markedBandHomotopies` | eliminate (S) | The former attempt to deduce the identity-sheet Cayley bounds from `starSeparation` is false: valid separation radii can be shrunk below both positive pinned norms. The entering-sheet group calculation is now proved: each order-three or order-four entering sheet is an elliptic-stabilizer multiple of the inverse common peripheral conjugator. The remaining point-set work is to identify the extracted local Cayley meridian with the corresponding geometric central meridian and to prove that translation by this common conjugator transports both finite-cover markings. The existing clopen-sheet and endpoint-gauge theorems then give the band homotopies. No identity-sheet bound is a valid target. |
+| 11 | `EstablishedSectionSevenAffineRegularLiftTopology.markedBandHomotopies` | **proved** | The named strip is normalized by the common peripheral marking. The normalized meridians have exact `g₁`/`g₂` deck labels; strengthened chosen marking radii and connected-sheet trapping prove identity-collar Cayley bounds throughout both strips. These bounds and midpoint-pinned real-period gauges prove both band homotopies. The former arbitrary-radius identity-sheet claim is not used. |
 | 12 | `EstablishedSectionSevenCuspTopology.establishedCuspPulledBackMarkedInvariantBasisData` | **rejected; correct and eliminate (S)** | `CuspFourthSweepCentralImage` proves the actual raw-five pulled-back boundary is zero and formally negates this package. The negation uses standard Lean axioms, cellular homology, and two remaining toric inputs; the explicit sweep's boundary vanishing itself uses only standard axioms. The paper's Theorem 7.22 says raw four (third period) has primitive boundary, raw five (fourth period) has zero boundary. The current package reverses these roles. Prove the raw-four signed boundary, correct the marked Wang coordinate and the first two Section 7 coordinates, and remove the rejected axiom. |
 | 13 | `EstablishedSectionSevenCuspTopology.establishedActualCuspFiberEllipticMarkedCoordinateResidual` | **correct and eliminate (S)** | Its degree-two index-four fibre-unit requirement follows the same reversed marking as row 12. The paper instead uses the fourth-period/raw-five sweep as a primitive fibre-coordinate class when the twist parameter is a unit. Prove this via the invariant circle sweep and the meridian's degree-one coordinate, including compatibility with the toric specialization-kernel normalization. The corrected coordinate change is `[x5,x4,-x0,-x1,-x2,x3]`. Do not introduce a replacement axiom merely to hide the mismatch. |
 | 14 | `StandardInfiniteA2ToricModel.Established.normalizedPolarHoneycombPhaseGeometry` | proved | The corrected global honeycomb homeomorphism is proved from compatible finite quotient charts and a locally finite closed hexagonal cover. Its construction uses only standard Lean axioms and replaces the `honeycombCells` input. The positive-deck quotient relative CW structure is now proved from the general C¹ manifold-with-corners relative triangulation theorem, using an explicit C¹ quadrant atlas, zero-height boundary identification, and smooth deck action. The full positive locus is contractible by the explicit interior homeomorphism and Brown collaring applied to proved local collars. The open-collar homotopy equivalence is proved using a Urysohn cutoff. Relative Whitehead and proved covering/HEP machinery supply the equivariant retraction; invariant modulus and stabilizer theorems complete phase spreading. Generic consumers now state a `HasCuspPhaseSpreading W` hypothesis; the constructed model has a proved instance, and the universal phase axiom and its wrappers are deleted. |
@@ -329,7 +329,7 @@ Work may proceed in parallel, but the preferred merge order is:
 1. **CF0 (complete):** the objectwise cellular-homology accessor is derived from the general
    characteristic-map-compatible natural theorem;
 2. **S1:** row 10, the finite specialization matrix;
-3. **S2:** row 11, the two marked-band Cayley/gauge calculations;
+3. **S2 (complete):** row 11, the two marked-band Cayley/gauge calculations;
 4. **S3:** refactor the final Mayer--Vietoris endpoint to degree-one bijectivity and degree-two
    surjectivity, then prove the corrected raw-four suspension boundary is a unit;
 5. **S4:** prove row 13's meridian and index-four coefficients are units; the literal meridian's
@@ -556,3 +556,46 @@ placeholder scan (only the two intentional challenge placeholders), exact axiom 
 closure audits, and Comparator with Lean's default kernel. The headline closure remains
 18 constants and the construction closure 15. On macOS, Comparator's fake-landrun wrapper
 checks functionality, not Linux sandbox isolation.
+
+
+## Normalized band homotopies and cusp fibre transport
+
+`markedBandHomotopies` is now a theorem. The named strip lift uses the common peripheral
+normalization, with exact meridian labels and stronger chosen-radius specifications. Connected-sheet
+trapping establishes the actual normalized radial Cayley bounds throughout each strip; the
+midpoint-pinned real-period endpoint formulas supply the two finite-cover band homotopies.
+
+The old named-strip crossing equality was not preserved: it does not follow for the corrected
+marking. Optional full-fibre band-coordinate diagrams now state crossing agreement as an explicit
+hypothesis. Production does not use that hypothesis. `PaperRegularFiberTransport` constructs the
+continuous fixed-period torus family over the regular base and proves that any two fibre slices
+are homotopic. `PaperCuspFiberTransportCompatibility` identifies both actual cusp and canonical
+band slices in this family. Their homotopy after inclusion into the elliptic interior restores
+`canonicalCuspFiberBandTopologicalCompatibility` unconditionally.
+
+The actual cusp and normalized meridian paths are now homotopic upstairs, not merely equal in
+endpoint or in fundamental-group class downstairs. The chosen third-period sweep is homotopic
+to the two normalized meridian cylinders, whose actual Mayer--Vietoris boundary is the difference
+of their overlap period circles. The marked overlap coordinate and Wang-generator orientation
+remain to be identified before removing the rejected raw-four/raw-five cusp package.
+
+`CellularLoopComparison` and `ConstructedA2CellularEdgeLoops` identify each actual characteristic
+edge-return loop with the exact relative cellular vector `e - f`. The cellular specialization
+matrix still requires comparison with the marked period loops and tori.
+
+For the positive two-cell, the source hexagon boundary now has a radial homeomorphism from
+the characteristic square boundary. The six sides are grouped into four paths, each with the
+same endpoints as a circle quarter-arc and contained in the same convex open half-plane.
+The generic convex homotopy is proved; assembling the four comparisons and matching the full
+positive generator is still required before concluding that the attaching coefficients vanish.
+
+The closure refresh removes exactly `markedBandHomotopies`, with no additions: 17 headline
+constants (three Lean, ten classical, four transitional) and 14 construction constants.
+Direct compiled audits of the marked band theorem, regular fibre transport, unconditional cusp
+fibre compatibility, normalized cylinder boundary, actual sweep homotopy, and edge-loop cellular
+comparison all report only the three standard Lean axioms.
+
+Checkpoint gates passed: full build (10,090 jobs), import reachability (1,061 modules),
+placeholder scan (only the two intentional challenge placeholders), exact axiom catalog and
+closure audits, and Comparator with Lean's default kernel on the reduced 17-constant allowlist.
+Comparator uses the macOS functional wrapper here, not Linux Landrun isolation.

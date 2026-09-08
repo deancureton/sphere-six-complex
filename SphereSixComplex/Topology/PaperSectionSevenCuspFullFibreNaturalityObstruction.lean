@@ -62,17 +62,23 @@ public theorem not_canonicalCuspWangBoundaryNaturality
   exact cuspPulledBackBoundary_coordinate_ne_fourthBasis R.twoDiscCover B x hc
 
 public theorem not_actualCuspWangFullFibreOrientedBoundaryNaturality
+    (hmark : A.sectionSevenAffineNamedStripLift.lift
+      A.sectionSevenAffineActualCuspCrossingPoint =
+        A.actualCuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
     (R : A.SectionSevenAffineRadialCompletionInput) :
     ¬ ActualCuspWangFullFibreOrientedBoundaryNaturality R := by
   intro h
   exact not_canonicalCuspWangBoundaryNaturality R
-    (canonicalCuspWangBoundaryNaturality_of_fullFibreOrientedBoundaryNaturality R h)
+    (canonicalCuspWangBoundaryNaturality_of_fullFibreOrientedBoundaryNaturality hmark R h)
 
 public theorem not_actualCuspWangFullFibreSliceInvariantResidual
+    (hmark : A.sectionSevenAffineNamedStripLift.lift
+      A.sectionSevenAffineActualCuspCrossingPoint =
+        A.actualCuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
     (R : A.SectionSevenAffineRadialCompletionInput) :
     ¬ ActualCuspWangFullFibreSliceInvariantResidual R := by
   intro h
-  exact not_actualCuspWangFullFibreOrientedBoundaryNaturality R
+  exact not_actualCuspWangFullFibreOrientedBoundaryNaturality hmark R
     ((fullFibreOrientedBoundaryNaturality_iff_invariantResidual R).mpr h)
 
 end SectionSevenEllipticTwoDiscCoverData

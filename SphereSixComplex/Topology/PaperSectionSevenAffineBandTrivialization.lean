@@ -2,6 +2,7 @@ module
 
 public import SphereSixComplex.Topology.PaperSectionSevenAffineBandTrivializationDefs
 public import SphereSixComplex.Topology.PaperSectionSevenAffineActualCuspStripLift
+public import SphereSixComplex.Topology.PaperSectionSevenAffineNormalizedStripLift
 
 /-!
 # The affine central band as a trivial torus bundle
@@ -46,18 +47,14 @@ open EstablishedSectionSevenAffineBandTopology
 
 variable (A : PaperAnalyticData)
 
-/-- The single named lift of the convex affine strip through the regular-coordinate covering.  It
-is the unique lift through the explicit regular-base representative of the selected actual cusp
-crossing.  Every central-band fibre coordinate in the development is marked by *this* lift. -/
+/-- The affine strip lift normalized by the common peripheral marking. -/
 public noncomputable def sectionSevenAffineNamedStripLift : A.SectionSevenAffineStripLift :=
-  A.sectionSevenAffineActualCuspStripLift
+  A.sectionSevenAffineNormalizedStripLift
 
-/-- The named strip lift takes the selected cusp-coordinate crossing to its explicit regular-base
-representative. -/
-public theorem sectionSevenAffineNamedStripLift_apply_actualCuspCrossing :
-    A.sectionSevenAffineNamedStripLift.lift A.sectionSevenAffineActualCuspCrossingPoint =
-      A.actualCuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime :=
-  A.sectionSevenAffineActualCuspStripLift_apply_crossing
+public theorem sectionSevenAffineNamedStripLift_apply_midpoint :
+    A.sectionSevenAffineNamedStripLift.lift sectionSevenAffineStripMidpoint =
+      A.sectionSevenAffineNormalizedMidpoint :=
+  A.sectionSevenAffineNormalizedStripContinuousLift_midpoint
 
 /-- The named marked product trivialization of the affine central band: the marked trivialization
 of `PaperSectionSevenAffineMarkedBandTrivialization` taken at `sectionSevenAffineNamedStripLift`.

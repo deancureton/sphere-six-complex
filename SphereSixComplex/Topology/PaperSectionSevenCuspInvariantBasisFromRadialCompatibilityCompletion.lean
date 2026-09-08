@@ -1,5 +1,7 @@
 module
 
+public import SphereSixComplex.Topology.PaperSectionSevenCanonicalCuspFiberBandCompatibilityCompletion
+
 public import
   SphereSixComplex.Topology.PaperSectionSevenCanonicalCuspFiberRadialHomotopyCompletion
 public import
@@ -30,6 +32,9 @@ namespace SectionSevenEllipticTwoDiscCoverData
 
 /-- The explicit full-fibre slice induces the canonical fibre-to-band map on first homology. -/
 public theorem canonicalCuspFiberToBandHomologyOne_eq_actualCuspWang
+    (hmark : A.sectionSevenAffineNamedStripLift.lift
+      A.sectionSevenAffineActualCuspCrossingPoint =
+        A.actualCuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
     (R : A.SectionSevenAffineRadialCompletionInput) :
     R.twoDiscCover.canonicalCuspFiberToBandHomologyOne =
       actualCuspWangFibreToBandHomologyOne (A := A) R := by
@@ -40,7 +45,7 @@ public theorem canonicalCuspFiberToBandHomologyOne_eq_actualCuspWang
   change integralSingularHomologyMap 1 R.twoDiscCover.canonicalCuspFiberToBandMap x =
     integralSingularHomologyMap 1 (actualCuspWangFibreToBandMap (A := A) R) x
   have hmap := integralSingularHomologyMap_eq_of_homotopic
-    (actualCuspWangFibreToBandMap_homotopic_canonical R).symm 1
+    (actualCuspWangFibreToBandMap_homotopic_canonical hmark R).symm 1
   exact DFunLike.congr_fun (congrArg ConcreteCategory.hom hmap) x
 
 /-- The radial homotopy identifies the low-overlap fibre and the selected full-fibre slice
@@ -182,10 +187,13 @@ public theorem fullFibreOrientedBoundaryNaturality_of_adaptiveCarrierCompatibili
 
 /-- The one remaining carrier comparison implies the two marked invariant-basis evaluations. -/
 public theorem cuspPulledBackMarkedInvariantBasisData_of_adaptiveCarrierCompatibility
+    (hmark : A.sectionSevenAffineNamedStripLift.lift
+      A.sectionSevenAffineActualCuspCrossingPoint =
+        A.actualCuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
     (R : A.SectionSevenAffineRadialCompletionInput)
     (h : ActualCuspAdaptiveBoundaryCarrierCompatibility R) :
     CuspPulledBackMarkedInvariantBasisData R :=
-  cuspPulledBackMarkedInvariantBasisData_of_fullFibreOrientedBoundaryNaturality R
+  cuspPulledBackMarkedInvariantBasisData_of_fullFibreOrientedBoundaryNaturality hmark R
     (fullFibreOrientedBoundaryNaturality_of_adaptiveCarrierCompatibility R h)
 
 end SectionSevenEllipticTwoDiscCoverData
