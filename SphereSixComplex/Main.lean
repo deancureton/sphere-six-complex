@@ -691,6 +691,10 @@ public import SphereSixComplex.Topology.CylinderRelativeContraction
 public import SphereSixComplex.Topology.CylinderTopRelativeEquivalence
 public import SphereSixComplex.Topology.CylinderRelativeSmallChains
 public import SphereSixComplex.Topology.SingularSubsetRelativeExcision
+public import SphereSixComplex.Topology.ClosedPrismRelativeBoundary
+public import SphereSixComplex.Topology.CharacteristicCylinderHomeomorph
+public import SphereSixComplex.Topology.CylinderTopFaceExcision
+public import SphereSixComplex.Topology.ConstructedA2CompactActionFiltration
 
 /-!
 # A Complex Structure on the Six-Sphere

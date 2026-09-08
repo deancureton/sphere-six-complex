@@ -21,8 +21,7 @@
     "SphereSixComplex.classicalBrownCollaring",
     "SphereSixComplex.establishedSecondCountableCOneManifoldWithCornersRelativeCW",
     "SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberHigherIncidenceResidual",
-    "SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization.establishedFiniteFiberGeneratorSpecializationMatrix",
-    "SphereSixComplex.Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTopology.establishedActualCuspFiberEllipticMarkedCoordinateResidual"
+    "SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization.establishedFiniteFiberGeneratorSpecializationMatrix"
   ],
   "enable_nanoda": false
 }

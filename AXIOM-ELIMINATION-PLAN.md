@@ -21,8 +21,8 @@ even when mathematically true, is never an admissible blackbox.
 
 The phase-geometry axiom has been replaced in source by a proved constructed-model package.
 Its classical dependencies add Brown collaring and activate the existing relative triangulation
-and relative Whitehead theorems. The computed final closure is ten classical inputs and three
-transitional dependencies. The three transitional declarations
+and relative Whitehead theorems. The computed final closure is ten classical inputs and two
+transitional dependencies. The two transitional declarations
 remain proof obligations.
 The analytic correction is proved, the cellular input has been strengthened in place, the former combined manifold-homology package
 is now derived from general Poincare duality, UCT, and smooth triangulation, and the analytic
@@ -229,7 +229,7 @@ and Comparator passes.
 | 10 | `establishedFiniteFiberGeneratorSpecializationMatrix` | eliminate (S+T+CF) | The natural cellular-to-singular comparison is now available. Prove the relevant inclusions are cellular and compute their images in the characteristic-cell basis; this simultaneously fixes the degree-one normalized coordinates and the four degree-two entries. |
 | 11 | `EstablishedSectionSevenAffineRegularLiftTopology.markedBandHomotopies` | **proved** | The named strip is normalized by the common peripheral marking. The normalized meridians have exact `g₁`/`g₂` deck labels; strengthened chosen marking radii and connected-sheet trapping prove identity-collar Cayley bounds throughout both strips. These bounds and midpoint-pinned real-period gauges prove both band homotopies. The former arbitrary-radius identity-sheet claim is not used. |
 | 12 | `EstablishedSectionSevenCuspTopology.establishedCuspPulledBackMarkedInvariantBasisData` | **deleted; corrected boundary proved** | The actual boundary homomorphism equals raw coordinate four. The raw-four normalized elliptic splitting and corrected signed cusp basis now feed the production homology assembly directly. The rejected raw-five-boundary package and its unconditional wrappers are removed from production; conditional diagnostics remain. |
-| 13 | `EstablishedSectionSevenCuspTopology.establishedActualCuspFiberEllipticMarkedCoordinateResidual` | **eliminate (S)** | The meridian full-iterate relation is proved and removed from the signature. The sole remaining field is raw-five fibre coefficient one in the proved raw-four normalized splitting. This remains a transitional assumption, not an admissible classical theorem. The explicit fourth-period sweep specializes to zero and is proved equal to normalized raw five. The global elliptic fourth-circle translation is now constructed; its induced homology map still needs to identify this sweep with the marked fibre generator. |
+| 13 | `EstablishedSectionSevenCuspTopology.establishedActualCuspFiberEllipticMarkedCoordinateResidual` | **proved** | Both fields are now proved. The full-iterate relation uses the actual cusp Wang generator comparison. The raw-five fibre coefficient follows by applying the global fourth-circle sweep to that relation, identifying both oriented endpoint tori, and cancelling twelve. The remaining dependencies are the separate toric incidence and specialization inputs. |
 | 14 | `StandardInfiniteA2ToricModel.Established.normalizedPolarHoneycombPhaseGeometry` | proved | The corrected global honeycomb homeomorphism is proved from compatible finite quotient charts and a locally finite closed hexagonal cover. Its construction uses only standard Lean axioms and replaces the `honeycombCells` input. The positive-deck quotient relative CW structure is now proved from the general C¹ manifold-with-corners relative triangulation theorem, using an explicit C¹ quadrant atlas, zero-height boundary identification, and smooth deck action. The full positive locus is contractible by the explicit interior homeomorphism and Brown collaring applied to proved local collars. The open-collar homotopy equivalence is proved using a Urysohn cutoff. Relative Whitehead and proved covering/HEP machinery supply the equivariant retraction; invariant modulus and stabilizer theorems complete phase spreading. Generic consumers now state a `HasCuspPhaseSpreading W` hypothesis; the constructed model has a proved instance, and the universal phase axiom and its wrappers are deleted. |
 | 15 | `PaperAnalyticData.establishedActualEllipticRelatorNormalClosureResidual` | **proved (S)** | Both orders use the entering sheet of the existing comparison homotopy's own lifted trace. Literal straight-fibre loops are identified with their labelled regular-family periods; transport along that same trace proves the corrected period identities and both normal-closure statements. The resulting theorem uses only standard Lean axioms. |
 
@@ -719,3 +719,25 @@ simplicial-subcomplex pushout, with singular subset intersections identified. Th
 quasi-isomorphism for the upper-cylinder inclusion. Identifying that constructed map with the
 canonical pair-induced map, and transporting the intersection subtype to compose the top-face
 equivalence, remain necessary before applying the prism to the higher cellular coefficients.
+
+
+## Cusp residual eliminated and top-face excision
+
+The global fourth-circle sweep sends the positive cusp meridian to negative included raw five,
+and sends the first fibre translation to fibre coordinate minus twelve. The factor-swap sign is
+proved through the determinant of the standard two-torus transposition. Applying the sweep to
+the actual full-iterate relation and cancelling twelve proves the raw-five coefficient is one,
+for every normalized splitting. The former cusp residual axiom is now a theorem. Its proof uses
+the remaining toric incidence and specialization assumptions, but no cusp residual.
+
+The actual top-face relative chain map is now proved to induce homology isomorphisms in every
+degree. The proof identifies the constructed excision map with the canonical inclusion and
+composes the explicit upper-cylinder retraction and subtype isomorphisms. The characteristic
+cylinder is homeomorphic to the next coordinate ball by the literal appended-coordinate map;
+its entire boundary maps exactly to the coordinate sphere.
+
+The closed prism now induces a natural degree-raising homology map and satisfies the signed
+relative connecting-map formula on cycle representatives. The actual compact phase action
+preserves the boundary two-skeleton, sends the one-skeleton into it, and fixes zero cells.
+Applying these results to the actual higher characteristic maps remains the next incidence step;
+no higher coefficient vanishing follows merely from having these general interfaces.

@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Topology.CuspCorrectedEllipticSplitting
+public import SphereSixComplex.Topology.CuspFourthFiberUnit
 public import SphereSixComplex.Topology.CuspCorrectedHomologyAssembly
 public import SphereSixComplex.Topology.CuspCorrectedDegreeOneCoordinates
 public import SphereSixComplex.Topology.CuspTranslationHomologyComparison
@@ -8,8 +8,8 @@ public import SphereSixComplex.Topology.CuspTranslationHomologyComparison
 /-!
 # Cusp completion with the corrected invariant marking
 
-The boundary map, raw-four normalized splitting, and meridian relation are proved. Only the
-raw-five fibre coefficient remains as a transitional geometric input.
+The boundary map, raw-four normalized splitting, meridian relation, and raw-five fibre
+coefficient are proved from the actual marked geometry.
 -/
 
 @[expose] public section
@@ -24,9 +24,10 @@ public structure ActualCuspFiberEllipticMarkedCoordinateResidual
     A.cuspEllipticFiberCoordinate R (correctedCuspDegreeTwoSplitting R)
       (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) = 1
 
-public axiom establishedActualCuspFiberEllipticMarkedCoordinateResidual
+public theorem establishedActualCuspFiberEllipticMarkedCoordinateResidual
     {A : PaperAnalyticData} (R : A.SectionSevenAffineRadialCompletionInput) :
-    ActualCuspFiberEllipticMarkedCoordinateResidual R
+    ActualCuspFiberEllipticMarkedCoordinateResidual R :=
+  ⟨A.cuspEllipticFiberCoordinate_rawFive R (correctedCuspDegreeTwoSplitting R)⟩
 
 public def correctedPositiveDegreeAssembly_of_residual
     {A : PaperAnalyticData} (R : A.SectionSevenAffineRadialCompletionInput)

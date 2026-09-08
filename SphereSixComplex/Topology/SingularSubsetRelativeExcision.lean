@@ -111,4 +111,26 @@ public theorem singularSubsetRelativeExcisionMap_quasiIso (X : TopCat) (U V : Se
     (singularSubsetSmallRelativeExcisionIso X U V).hom
     (coverSmallRelativeComparison X (binarySubsetCover X U V) true)
 
+public theorem singularSubsetRelativeExcisionMap_projection (X : TopCat) (U V : Set X) :
+    relativeIntegralSingularChainProjection (subsetIntersectionInclusion X U V) ≫
+      singularSubsetRelativeExcisionMap X U V =
+    integralSingularChainMapObj (topologicalSubsetInclusion X U) ≫
+      relativeIntegralSingularChainProjection (topologicalSubsetInclusion X V) := by
+  dsimp +instances only [relativeIntegralSingularChainProjection, singularSubsetRelativeExcisionMap,
+    singularSubsetSmallRelativeExcisionIso, singularIntersectionRelativeIso,
+    singularUnionSmallRelativeIso, simplicialSubcomplexRelativeExcisionIso,
+    simplicialSubcomplexRelativeExcisionMap, coverSmallRelativeComparison,
+    Iso.trans, Iso.symm, cokernel.mapIso, asIso, Functor.mapIso,
+    RelativeIntegralSingularChainComplex, coverSmallRelativeShortComplex, binarySubsetCover]
+  dsimp +instances only [cokernel.map]
+  simp +instances only [Category.assoc, cokernel.π_desc_assoc]
+  erw [Category.assoc, cokernel.π_desc_assoc, Category.assoc,
+    cokernel.π_desc_assoc, Category.assoc, cokernel.π_desc]
+  let F := BinaryOpenCover.integralSimplicialChains
+  change F.map (singularSubsetCorestriction X U) ≫ F.map _ ≫ F.map _ ≫
+    F.map (coverSmallSingularSubcomplex X (binarySubsetCover X U V)).ι ≫ _ =
+      F.map (TopCat.toSSet.map (topologicalSubsetInclusion X U)) ≫ _
+  erw [← Functor.map_comp_assoc, ← Functor.map_comp_assoc, ← Functor.map_comp_assoc]
+  congr 2
+
 end SphereSixComplex
