@@ -174,7 +174,7 @@ public structure MarkedFiberCellularSpecializationMatrix (A : PaperAnalyticData)
       SphereSixComplex.Geometry.CuspRadialClutchingConstruction.actualCuspRadialClutchingData
         A.starCuspWitness
     let _ := G.fiberTopology
-    cuspToricCellularChainComplex_homologyOneEquiv
+    (actualCuspDeckCellularHomologyOneEquiv A.starCuspWitness A.cuspCentralFiberRetractionData)
         (standardA2CellularSpecializationHomologyMap A.starCuspWitness
           A.cuspCentralFiberRetractionData 1
           (integralSingularHomologyMap 1 G.markedFiberToPuncturedCusp
@@ -210,7 +210,7 @@ public theorem markedFiberCellularSpecializationMatrix_of_explicitCWRealization
   let _ := G.fiberTopology
   constructor
   · intro j
-    change cuspToricCellularChainComplex_homologyOneEquiv
+    change (actualCuspDeckCellularHomologyOneEquiv A.starCuspWitness A.cuspCentralFiberRetractionData)
         (standardA2CellularSpecializationHomologyMap A.starCuspWitness
           A.cuspCentralFiberRetractionData 1
           (integralSingularHomologyMap 1 G.markedFiberToPuncturedCusp
@@ -260,7 +260,7 @@ public theorem markedFiberGeneratorSpecializationMatrix_of_cellular
                 C(_, _)).comp G.markedFiberToPuncturedCusp)
               (G.degreeOneFiberGenerator j) = _
           rw [integralSingularHomologyMap_comp_wang]
-      _ = cuspToricCellularChainComplex_homologyOneEquiv
+      _ = (actualCuspDeckCellularHomologyOneEquiv A.starCuspWitness A.cuspCentralFiberRetractionData)
           (standardA2CellularSpecializationHomologyMap A.starCuspWitness
             A.cuspCentralFiberRetractionData 1
             (integralSingularHomologyMap 1 G.markedFiberToPuncturedCusp

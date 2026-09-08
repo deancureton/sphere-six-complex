@@ -5,11 +5,10 @@ public import SphereSixComplex.Topology.CuspMarkedFiberCellularCoinvariantNatura
 /-!
 # Exact residual for the finite cusp-fibre specialization matrix
 
-The toric atlas and incidence table determine the labelled cellular chain complex, but not the
-naturality of its objectwise cellular-to-singular homology equivalence.  This file proves that
-the finite specialization matrix is exactly the pair of labelled naturality squares on the Wang
-coinvariants.  Thus no generator coefficient remains after supplying that comparison, and the
-incidence axioms alone do not contain it.
+The finite specialization matrix is equivalent to the two marked naturality squares on Wang
+coinvariants. Degree one uses the explicit deck marking of cellular homology; degree two uses
+the original cellular coordinates. The incidence calculation alone does not supply this
+geometric comparison.
 -/
 
 @[expose] public section
@@ -67,8 +66,8 @@ public theorem markedFiberGeneratorSpecializationMatrix_of_finiteFiber
     rw [G.specializationHomologyTwoMap_fiberInclusion] at hij
     simpa [G, Geometry.PaperAnalyticData.cuspCentralFiberRetractionData_eq_radial] using hij
 
-/-- The literal marked-fibre matrix determines its expression in the fixed labelled cellular
-coordinates; no target coordinate equivalence is changed. -/
+/-- The marked-fibre matrix transports to deck-marked cellular coordinates in degree one
+and the original cellular coordinates in degree two. -/
 public theorem markedFiberCellularSpecializationMatrix_of_markedFiber
     (A : PaperAnalyticData) (h : MarkedFiberGeneratorSpecializationMatrix A) :
     MarkedFiberCellularSpecializationMatrix A := by
@@ -79,7 +78,7 @@ public theorem markedFiberCellularSpecializationMatrix_of_markedFiber
   constructor
   · intro j
     rw [← h.degreeOne j]
-    change cuspToricCellularChainComplex_homologyOneEquiv
+    change (actualCuspDeckCellularHomologyOneEquiv A.starCuspWitness A.cuspCentralFiberRetractionData)
         (standardA2CellularSpecializationHomologyMap A.starCuspWitness
           A.cuspCentralFiberRetractionData 1
           (integralSingularHomologyMap 1 G.markedFiberToPuncturedCusp

@@ -1,6 +1,7 @@
 module
 
 public import SphereSixComplex.Topology.CuspToricCellularHomologyBridge
+public import SphereSixComplex.Topology.CuspDeckHomologyOne
 
 /-!
 # Integral homology of the cusp filling
@@ -118,13 +119,31 @@ public noncomputable def actualCuspCentralFiberHomologyFourEquiv
       (establishedStandardA2ToricCentralFiberCellularIncidence W R))
 
 /-- The actual local cusp filling has first integral homology `ℤ²`. -/
-public noncomputable def actualLocalCuspFillingHomologyOneEquiv
+public noncomputable def actualLocalCuspFillingCellularHomologyOneEquiv
     {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W) :
     IntegralSingularHomology 1 (actualLocalCuspFilling W) ≃+ (Fin 2 → ℤ) :=
   (R.specializationHomologyEquiv W 1).trans (actualCuspCentralFiberHomologyOneEquiv W R)
+
+public noncomputable def actualLocalCuspFillingHomologyOneEquiv
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M)
+    (_R : ActualLocalCuspCentralFiberRetractionData W) :
+    IntegralSingularHomology 1 (actualLocalCuspFilling W) ≃+ (Fin 2 → ℤ) :=
+  actualCuspDeckHomologyOneEquiv W
+
+public noncomputable def actualCuspDeckCellularHomologyOneEquiv
+    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M)
+    (R : ActualLocalCuspCentralFiberRetractionData W) :
+    cuspToricCellularChainComplex.homology 1 ≃+ (Fin 2 → ℤ) :=
+  cuspToricCellularChainComplex_homologyOneEquiv.trans
+    ((actualLocalCuspFillingCellularHomologyOneEquiv W R).symm.trans
+      (actualCuspDeckHomologyOneEquiv W))
 
 /-- The actual local cusp filling has second integral homology `ℤ⁴`. -/
 public noncomputable def actualLocalCuspFillingHomologyTwoEquiv

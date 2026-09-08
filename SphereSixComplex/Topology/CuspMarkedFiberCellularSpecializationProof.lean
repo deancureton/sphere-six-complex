@@ -131,7 +131,7 @@ public structure MarkedFiberCellularCoinvariantNaturality (A : PaperAnalyticData
       SphereSixComplex.Geometry.CuspRadialClutchingConstruction.actualCuspRadialClutchingData
         A.starCuspWitness
     let _ := G.fiberTopology
-    cuspToricCellularChainComplex_homologyOneEquiv.toAddMonoidHom.comp
+    (actualCuspDeckCellularHomologyOneEquiv A.starCuspWitness A.cuspCentralFiberRetractionData).toAddMonoidHom.comp
         (markedFiberCellularCoinvariantHomologyOneMap A) =
       G.degreeOneCoinvariantsEquiv.toAddMonoidHom
   degreeTwo :
@@ -184,21 +184,29 @@ public theorem markedFiberCellularSpecializationMatrix_of_coinvariantNaturality
       A.starCuspWitness
   let _ := G.fiberTopology
   constructor
-  · intro j
-    have hj := DFunLike.congr_fun h.degreeOne
-      (G.degreeOneCoinvariantsEquiv.symm (Pi.single j 1))
-    change cuspToricCellularChainComplex_homologyOneEquiv
+  · have h₁ := h.degreeOne
+    dsimp only [markedFiberCellularCoinvariantHomologyOneMap] at h₁
+    generalize hG : CuspRadialClutchingConstruction.actualCuspRadialClutchingData
+      A.starCuspWitness = G' at h₁ ⊢
+    let _ := G'.fiberTopology
+    intro j
+    have hj := DFunLike.congr_fun h₁ (G'.degreeOneCoinvariantsEquiv.symm (Pi.single j 1))
+    dsimp only [AddMonoidHom.comp_apply, AddEquiv.coe_toAddMonoidHom,
+      LinearMap.toAddMonoidHom_coe, LinearEquiv.coe_coe] at hj
+    have he :
+        (integralSingularHomologyEquivOfHomotopyEquiv 1 G'.totalHomotopyEquiv).symm
+          ((circleMappingTorusHOnePresentation G'.clutching).coinvariantsToTotal
+            (G'.degreeOneCoinvariantsEquiv.symm (Pi.single j 1))) =
+          integralSingularHomologyMap 1 G'.markedFiberToPuncturedCusp
+            (G'.degreeOneFiberGenerator j) := by
+      rw [G'.degreeOneCoinvariantsEquiv_symm_single,
+        G'.markedFiberToPuncturedCusp_homologyOne_eq_coinvariants]
+    have hk := congrArg (fun z : IntegralSingularHomology 1
+        (puncturedLocalCuspQuotient A.starCuspWitness) ↦
+      actualCuspDeckCellularHomologyOneEquiv A.starCuspWitness A.cuspCentralFiberRetractionData
         (standardA2CellularSpecializationHomologyMap A.starCuspWitness
-          A.cuspCentralFiberRetractionData 1
-          ((integralSingularHomologyEquivOfHomotopyEquiv 1 G.totalHomotopyEquiv).symm
-            ((circleMappingTorusHOnePresentation G.clutching).coinvariantsToTotal
-              (G.degreeOneCoinvariantsEquiv.symm (Pi.single j 1))))) =
-        G.degreeOneCoinvariantsEquiv
-          (G.degreeOneCoinvariantsEquiv.symm (Pi.single j 1)) at hj
-    rw [G.degreeOneCoinvariantsEquiv.apply_symm_apply] at hj
-    rw [G.degreeOneCoinvariantsEquiv_symm_single] at hj
-    rw [G.markedFiberToPuncturedCusp_homologyOne_eq_coinvariants] at hj
-    exact hj
+          A.cuspCentralFiberRetractionData 1 z)) he
+    exact hk.symm.trans (hj.trans (G'.degreeOneCoinvariantsEquiv.apply_symm_apply _))
   · intro j
     have hj := DFunLike.congr_fun h.degreeTwo
       (G.degreeTwoCoinvariantsEquiv.symm (Pi.single j 1))
@@ -224,20 +232,30 @@ public theorem coinvariantNaturality_of_markedFiberCellularSpecializationMatrix
       A.starCuspWitness
   let _ := G.fiberTopology
   constructor
-  · apply addMonoidHom_ext_of_equiv_pi_single_one G.degreeOneCoinvariantsEquiv.toAddEquiv
+  · have h₁ := h.degreeOne
+    dsimp only [markedFiberCellularCoinvariantHomologyOneMap]
+    generalize hG : CuspRadialClutchingConstruction.actualCuspRadialClutchingData
+      A.starCuspWitness = G' at h₁ ⊢
+    let _ := G'.fiberTopology
+    generalize hK : actualCuspDeckCellularHomologyOneEquiv A.starCuspWitness
+      A.cuspCentralFiberRetractionData = K at h₁ ⊢
+    apply addMonoidHom_ext_of_equiv_pi_single_one G'.degreeOneCoinvariantsEquiv.toAddEquiv
     intro j
-    change cuspToricCellularChainComplex_homologyOneEquiv
-        (standardA2CellularSpecializationHomologyMap A.starCuspWitness
-          A.cuspCentralFiberRetractionData 1
-          ((integralSingularHomologyEquivOfHomotopyEquiv 1 G.totalHomotopyEquiv).symm
-            ((circleMappingTorusHOnePresentation G.clutching).coinvariantsToTotal
-              (G.degreeOneCoinvariantsEquiv.symm (Pi.single j 1))))) =
-        G.degreeOneCoinvariantsEquiv
-          (G.degreeOneCoinvariantsEquiv.symm (Pi.single j 1))
-    rw [G.degreeOneCoinvariantsEquiv.apply_symm_apply]
-    rw [G.degreeOneCoinvariantsEquiv_symm_single]
-    rw [G.markedFiberToPuncturedCusp_homologyOne_eq_coinvariants]
-    exact h.degreeOne j
+    dsimp only [AddMonoidHom.comp_apply, AddEquiv.coe_toAddMonoidHom,
+      LinearMap.toAddMonoidHom_coe, LinearEquiv.coe_coe]
+    have he :
+        (integralSingularHomologyEquivOfHomotopyEquiv 1 G'.totalHomotopyEquiv).symm
+          ((circleMappingTorusHOnePresentation G'.clutching).coinvariantsToTotal
+            (G'.degreeOneCoinvariantsEquiv.symm (Pi.single j 1))) =
+          integralSingularHomologyMap 1 G'.markedFiberToPuncturedCusp
+            (G'.degreeOneFiberGenerator j) := by
+      rw [G'.degreeOneCoinvariantsEquiv_symm_single,
+        G'.markedFiberToPuncturedCusp_homologyOne_eq_coinvariants]
+    have hk := congrArg (fun z : IntegralSingularHomology 1
+        (puncturedLocalCuspQuotient A.starCuspWitness) ↦
+      K (standardA2CellularSpecializationHomologyMap A.starCuspWitness
+          A.cuspCentralFiberRetractionData 1 z)) he
+    exact hk.trans ((h₁ j).trans (G'.degreeOneCoinvariantsEquiv.apply_symm_apply _).symm)
   · apply addMonoidHom_ext_of_equiv_pi_single_one G.degreeTwoCoinvariantsEquiv.toAddEquiv
     intro j
     change cuspToricCellularChainComplex_homologyTwoEquiv

@@ -254,7 +254,7 @@ public noncomputable def normalizedCoinvariantHomologyOneMap (A : PaperAnalyticD
     SphereSixComplex.Geometry.CuspRadialClutchingConstruction.actualCuspRadialClutchingData
       A.starCuspWitness
   let _ := G.fiberTopology
-  exact cuspToricCellularChainComplex_homologyOneEquiv.symm.toAddMonoidHom.comp
+  exact (actualCuspDeckCellularHomologyOneEquiv A.starCuspWitness A.cuspCentralFiberRetractionData).symm.toAddMonoidHom.comp
     G.degreeOneCoinvariantsEquiv.toAddMonoidHom
 
 /-- The unique degree-two cellular map normalized by the labelled Wang coordinates. -/
@@ -278,7 +278,7 @@ public theorem normalizedCoinvariantHomologyOneMap_naturality (A : PaperAnalytic
       SphereSixComplex.Geometry.CuspRadialClutchingConstruction.actualCuspRadialClutchingData
         A.starCuspWitness
     let _ := G.fiberTopology
-    cuspToricCellularChainComplex_homologyOneEquiv.toAddMonoidHom.comp
+    (actualCuspDeckCellularHomologyOneEquiv A.starCuspWitness A.cuspCentralFiberRetractionData).toAddMonoidHom.comp
         (normalizedCoinvariantHomologyOneMap A) =
       G.degreeOneCoinvariantsEquiv.toAddMonoidHom := by
   ext x
@@ -310,11 +310,11 @@ public theorem eq_normalizedCoinvariantHomologyOneMap_of_naturality (A : PaperAn
         SphereSixComplex.Geometry.CuspRadialClutchingConstruction.actualCuspRadialClutchingData
           A.starCuspWitness
       let _ := G.fiberTopology
-      cuspToricCellularChainComplex_homologyOneEquiv.toAddMonoidHom.comp f =
+      (actualCuspDeckCellularHomologyOneEquiv A.starCuspWitness A.cuspCentralFiberRetractionData).toAddMonoidHom.comp f =
         G.degreeOneCoinvariantsEquiv.toAddMonoidHom) :
     f = normalizedCoinvariantHomologyOneMap A := by
   ext x
-  apply cuspToricCellularChainComplex_homologyOneEquiv.injective
+  apply (actualCuspDeckCellularHomologyOneEquiv A.starCuspWitness A.cuspCentralFiberRetractionData).injective
   simpa [normalizedCoinvariantHomologyOneMap] using DFunLike.congr_fun h x
 
 /-- The labelled coordinates uniquely determine the normalized degree-two map. -/

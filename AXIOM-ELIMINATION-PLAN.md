@@ -226,7 +226,7 @@ and Comparator passes.
 | 7 | `Periods.establishedOrbifoldAffineLineTorsorCuspBoundedCousinCorrection` | proved, no analytic blackbox | Whole-group affine transport, regular and elliptic local sections, the precisely invariant cusp section, and an explicit `Option ℂ` quotient cover are constructed. Distinct overlaps avoid the branch values, so their normalized differences descend to analytic scalar cocycles. The proved arbitrary-cover Cousin theorem supplies an `O(-1)`-normalized splitting; corrected local sections glue to a global equivariant holomorphic section. The resulting infinity germ and parabolic invariance give the bound on the whole closed cusp. The assembled theorem and original accessor use only the three standard Lean axioms. |
 | 8 | `establishedStandardA2ToricCentralOrbitCellAtlas` | **proved (T)** | Explicit characteristic maps in dimensions zero through four satisfy continuity, inverse continuity, disjointness, boundary attachments, and full coverage. The resulting atlas is transported from `constructedModel` to every allowed toric model by the canonical central-orbit homeomorphism. Its axiom audit contains only Lean’s standard three axioms. |
 | 9 | `establishedStandardA2ToricCentralFiberHigherIncidenceResidual` | **proved** | All eight three-cell and both four-cell entries follow from actual phase sweeps, relative prism generators, and absolute attaching-map vanishing. All cellular entries are transported through both actual atlas homeomorphisms. No incidence axiom remains. |
-| 10 | `establishedFiniteFiberGeneratorSpecializationMatrix` | eliminate (S+T+CF) | The natural cellular-to-singular comparison is now available. Prove the relevant inclusions are cellular and compute their images in the characteristic-cell basis; this simultaneously fixes the degree-one normalized coordinates and the four degree-two entries. |
+| 10 | `establishedFiniteFiberDegreeTwoSpecializationMatrix` | eliminate (T+CF) | Degree one is proved in canonical deck coordinates. Degree two remains assumed: prove the actual coordinate tori give an integral homology basis, using phase-cell charts and the natural cellular-to-singular comparison, then choose coherent target coordinates. The old two-degree residual is now a theorem. |
 | 11 | `EstablishedSectionSevenAffineRegularLiftTopology.markedBandHomotopies` | **proved** | The named strip is normalized by the common peripheral marking. The normalized meridians have exact `g₁`/`g₂` deck labels; strengthened chosen marking radii and connected-sheet trapping prove identity-collar Cayley bounds throughout both strips. These bounds and midpoint-pinned real-period gauges prove both band homotopies. The former arbitrary-radius identity-sheet claim is not used. |
 | 12 | `EstablishedSectionSevenCuspTopology.establishedCuspPulledBackMarkedInvariantBasisData` | **deleted; corrected boundary proved** | The actual boundary homomorphism equals raw coordinate four. The raw-four normalized elliptic splitting and corrected signed cusp basis now feed the production homology assembly directly. The rejected raw-five-boundary package and its unconditional wrappers are removed from production; conditional diagnostics remain. |
 | 13 | `EstablishedSectionSevenCuspTopology.establishedActualCuspFiberEllipticMarkedCoordinateResidual` | **proved** | Both fields are now proved. The full-iterate relation uses the actual cusp Wang generator comparison. The raw-five fibre coefficient follows by applying the global fourth-circle sweep to that relation, identifying both oriented endpoint tori, and cancelling twelve. The remaining dependencies are the separate toric incidence and specialization inputs. |
@@ -794,3 +794,33 @@ require asserting a numerical transport matrix for arbitrary selected models. To
 `cuspFiniteFiberGenerator_deckCoordinates` in the residual owner, extract the pre-axiom
 specialization definitions from `PaperCuspGeometricSpecialization` into a lower module and
 retarget `CuspFiniteFiberSpecializationGeometricReduction` to it, breaking the import cycle.
+
+
+## Degree-one specialization proved in deck coordinates
+
+Production degree-one coordinates now use `actualCuspDeckHomologyOneEquiv`. The old
+cellular equivalence is retained as `actualLocalCuspFillingCellularHomologyOneEquiv`, and
+`actualCuspDeckCellularHomologyOneEquiv` records the explicit change of coordinates.
+The cellular naturality comparisons use this readout. No numerical transport matrix is
+asserted for arbitrary selected cusp models.
+
+The pre-axiom specialization types are extracted into `PaperCuspGeometricSpecializationTypes`,
+allowing the owner to use the proved literal period loops without an import cycle.
+`establishedFiniteFiberGeneratorSpecializationMatrix` is now a theorem: its degree-one
+component follows from `cuspFiniteFiberGenerator_deckCoordinates`, and only its degree-two
+component uses the new residual `establishedFiniteFiberDegreeTwoSpecializationMatrix`.
+This narrows the remaining assumption; it does not eliminate the last transitional axiom.
+
+Further degree-two infrastructure proves an angular cut chart for the circle, relative-chain
+comparison for cellular recharts with unchanged cell images, and an integral retraction of
+each characteristic generator. The actual fourth-phase sweep of edge zero is injective on
+the circle times the open edge and, after deleting the identity phase, has exactly the image
+of the original phase-zero open cell. Completing the replacement charts and identifying
+the swept homology classes as an integral basis remain open.
+
+Checkpoint verification: full `lake build` passed (10,174 jobs), all 1,145 library modules are
+reachable, and the placeholder gate found only the two declared challenge placeholders.
+The refreshed exact closures contain fourteen final-theorem and eleven construction axioms,
+with only the degree-two specialization residual transitional. Comparator accepted the solution
+using Lean's default kernel. The standalone degree-one theorem uses only Lean's three axioms
+and the retained Brown collaring, relative triangulation, and relative Whitehead inputs.

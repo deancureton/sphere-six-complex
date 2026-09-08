@@ -1,14 +1,14 @@
 module
 
-public import SphereSixComplex.Topology.PaperCuspGeometricSpecialization
+public import SphereSixComplex.Topology.PaperCuspGeometricSpecializationTypes
 
 /-!
 # Geometric reduction of the cusp fibre specialization matrix
 
 The finite matrix in `PaperCuspGeometricSpecialization` is reduced here to the images of
 explicit homology classes on the marked period torus under its literal inclusion into the cusp
-filling.  This keeps the existing labelled cellular coordinates fixed: no target basis is
-renormalized.
+filling. Degree one uses the canonical abelian deck coordinates; degree two uses the
+labelled cellular coordinates.
 -/
 
 @[expose] public section
@@ -302,7 +302,7 @@ public structure MarkedFiberGeneratorSpecializationMatrix (A : PaperAnalyticData
       (Pi.single j 1 : Fin 4 → ℤ)
 
 /-- The literal marked-fibre calculation implies the original finite Wang-generator matrix
-without changing any source or target coordinates. -/
+in the chosen source and target coordinates. -/
 public theorem finiteFiberGeneratorSpecializationMatrix_of_markedFiber
     (A : PaperAnalyticData) (h : MarkedFiberGeneratorSpecializationMatrix A) :
     FiniteFiberGeneratorSpecializationMatrix A := by

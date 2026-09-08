@@ -20,7 +20,7 @@
     "SphereSixComplex.EstablishedGeneralTopology.isHomotopyEquivalenceInclusion_of_relativeCWComplex_of_bijective_homotopyGroups",
     "SphereSixComplex.classicalBrownCollaring",
     "SphereSixComplex.establishedSecondCountableCOneManifoldWithCornersRelativeCW",
-    "SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization.establishedFiniteFiberGeneratorSpecializationMatrix"
+    "SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization.establishedFiniteFiberDegreeTwoSpecializationMatrix"
   ],
   "enable_nanoda": false
 }

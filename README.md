@@ -21,9 +21,9 @@ normalized by that class, and the final assembly uses the corrected signed cusp 
 explicit fourth-period sweep is also proved equal to normalized raw five. The old conditional
 comparison and its refutation remain as diagnostics.
 
-One transitional assumption remains: finite-fibre specialization. Its degree-one marking
-disagrees with the proved deck coordinates and requires a basis correction; degree two still
-requires the geometric generator comparison. This is not part of the proposed final trust
+One transitional assumption remains: degree-two finite-fibre specialization. Degree one is
+proved in canonical deck coordinates, with an explicit change from the old cellular coordinates.
+Degree two still requires the geometric generator comparison. This is not part of the proposed final trust
 boundary. Higher toric incidence and the cusp elliptic coordinate relations are proved. Comparator checks
 the declared assumptions; its acceptance alone does not verify those assumptions mathematically.
 The ten classical signatures and their sources are reviewed in `AXIOM-ELIMINATION-PLAN.md`.

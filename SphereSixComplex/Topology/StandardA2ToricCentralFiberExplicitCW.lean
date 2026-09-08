@@ -5,10 +5,9 @@ public import SphereSixComplex.Topology.PaperCuspGeometricSpecialization
 /-!
 # The explicit cellular specialization of the standard `A₂` cusp fibre
 
-The cusp CW calculation and the radial Wang calculation currently meet only at their homology
-ranks.  This file isolates the stronger geometric interface between them: the actual radial
-specialization, transported into the labelled toric cellular homology.  Once its values on the
-Wang generators are computed, the two specialization formulas follow formally.
+The actual radial specialization is transported into toric cellular homology. Degree one is
+read in canonical deck coordinates through an explicit change from the cellular basis; degree
+two retains the cellular coordinates. The Wang comparison follows from these marked values.
 -/
 
 @[expose] public section
@@ -63,6 +62,23 @@ public noncomputable def standardA2CellularSpecializationHomologyMap
 
 /-- The existing degree-one coordinates of the cusp filling are exactly the explicit cellular
 coordinates of the radial specialization. -/
+public theorem actualLocalCuspFillingCellularHomologyOneEquiv_specialization_eq_cellular
+    (W : ActualPuncturedCuspCollarWitness N M)
+    (R : ActualLocalCuspCentralFiberRetractionData W)
+    (x : IntegralSingularHomology 1 (puncturedLocalCuspQuotient W)) :
+    actualLocalCuspFillingCellularHomologyOneEquiv W R
+        (integralSingularHomologyMap 1
+          ⟨puncturedLocalCuspToFilling W, puncturedLocalCuspToFilling_continuous W⟩ x) =
+      cuspToricCellularChainComplex_homologyOneEquiv
+        (standardA2CellularSpecializationHomologyMap W R 1 x) := by
+  simp only [actualLocalCuspFillingCellularHomologyOneEquiv,
+    actualCuspCentralFiberHomologyOneEquiv,
+    StandardA2ToricCentralFiberCWDecomposition.carrierIntegralSingularHomologyOneEquiv,
+    StandardA2ToricCellularIncidenceData.integralSingularHomologyOneEquiv,
+    standardA2CellularSpecializationHomologyMap, AddEquiv.trans_apply,
+    ActualLocalCuspCentralFiberRetractionData.specializationHomologyMap_eq_equiv]
+  rfl
+
 public theorem actualLocalCuspFillingHomologyOneEquiv_specialization_eq_cellular
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W)
@@ -70,14 +86,12 @@ public theorem actualLocalCuspFillingHomologyOneEquiv_specialization_eq_cellular
     actualLocalCuspFillingHomologyOneEquiv W R
         (integralSingularHomologyMap 1
           ⟨puncturedLocalCuspToFilling W, puncturedLocalCuspToFilling_continuous W⟩ x) =
-      cuspToricCellularChainComplex_homologyOneEquiv
+      actualCuspDeckCellularHomologyOneEquiv W R
         (standardA2CellularSpecializationHomologyMap W R 1 x) := by
-  simp only [actualLocalCuspFillingHomologyOneEquiv,
-    actualCuspCentralFiberHomologyOneEquiv,
-    StandardA2ToricCentralFiberCWDecomposition.carrierIntegralSingularHomologyOneEquiv,
-    StandardA2ToricCellularIncidenceData.integralSingularHomologyOneEquiv,
-    standardA2CellularSpecializationHomologyMap, AddEquiv.trans_apply,
-    ActualLocalCuspCentralFiberRetractionData.specializationHomologyMap_eq_equiv]
+  unfold actualCuspDeckCellularHomologyOneEquiv
+  simp only [AddEquiv.trans_apply]
+  rw [← actualLocalCuspFillingCellularHomologyOneEquiv_specialization_eq_cellular,
+    AddEquiv.symm_apply_apply]
   rfl
 
 /-- The analogous exact reduction in degree two. -/
@@ -107,7 +121,7 @@ public structure StandardA2ToricCentralFiberExplicitCWRealization
     (G : ActualCuspRadialClutchingData W) : Prop where
   degreeOne_wangCoordinates : ∀ x : IntegralSingularHomology 1
       (puncturedLocalCuspQuotient W),
-    cuspToricCellularChainComplex_homologyOneEquiv
+    actualCuspDeckCellularHomologyOneEquiv W R
         (standardA2CellularSpecializationHomologyMap W R 1 x) =
       fun i ↦ G.geometricHomologyOneEquiv x (Fin.castAdd 1 i)
   degreeTwo_wangCoordinates : ∀ x : IntegralSingularHomology 2

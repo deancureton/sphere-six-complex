@@ -1,5 +1,9 @@
 module
 
+public import SphereSixComplex.Topology.CircleCutChart
+public import SphereSixComplex.Topology.ToricCellAtlasRechart
+public import SphereSixComplex.Topology.CuspPhaseSweepCell
+
 public import SphereSixComplex.Topology.CuspPeriodCellularHomology
 public import SphereSixComplex.Topology.CuspFiniteFiberCoordinateCircles
 public import SphereSixComplex.Topology.CuspMixedPhaseTorus

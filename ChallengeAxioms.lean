@@ -92,9 +92,9 @@ axiom SphereSixComplex.establishedSecondCountableCOneManifoldWithCornersRelative
             [IsManifold (modelWithCornersEuclideanQuadrant n) 1 X] →
               Topology.RelCWComplex Set.univ (ModelWithCorners.boundary X)
 
-# Transitional paper-specific geometry and topology.
-axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization.establishedFiniteFiberGeneratorSpecializationMatrix : ∀
+# Transitional paper-specific degree-two specialization; still a proof obligation.
+axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization.establishedFiniteFiberDegreeTwoSpecializationMatrix : ∀
   (A : SphereSixComplex.Geometry.PaperAnalyticData),
-  SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization.FiniteFiberGeneratorSpecializationMatrix
+  SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization.FiniteFiberDegreeTwoSpecializationMatrix
     A
 END GENERATED AXIOM CATALOG -/
