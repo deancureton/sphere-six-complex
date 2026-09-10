@@ -135,7 +135,7 @@ public theorem cuspToEllipticInteriorMap_additivePoint_mem_sideIntersection
 
 /-- The fibre over a fixed normalized cusp parameter, written in the marked real-period
 coordinates of the radial mapping-torus presentation. -/
-public noncomputable def actualCuspFullFibreSlice (s : ℂ)
+public noncomputable def actualCuspFullFiberSlice (s : ℂ)
     (hs : ‖cuspQ s‖ < A.starCuspWitness.localWitness.radius) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
@@ -165,10 +165,10 @@ public noncomputable def actualCuspFullFibreSlice (s : ℂ)
 
 /-- On a represented period point, the full-fibre slice is the literal additive cusp
 projection at the chosen normalized base parameter. -/
-public theorem actualCuspFullFibreSlice_additiveTorusProjection
+public theorem actualCuspFullFiberSlice_additiveTorusProjection
     (s : ℂ) (hs : ‖cuspQ s‖ < A.starCuspWitness.localWitness.radius)
     (zeta : ComplexTwoSpace) :
-    actualCuspFullFibreSlice (A := A) s hs
+    actualCuspFullFiberSlice (A := A) s hs
         (additiveTorusProjection
           (cuspBasePoint A.cuspCoordinate
             (markedCuspParameter A.starCuspWitness)).1
@@ -179,12 +179,12 @@ public theorem actualCuspFullFibreSlice_additiveTorusProjection
     (markedCuspParameter A.starCuspWitness)).injective
   change puncturedLocalCuspQuotientHomeomorph A.starCuspWitness
       (markedCuspParameter A.starCuspWitness)
-        (actualCuspFullFibreSlice (A := A) s hs _) =
+        (actualCuspFullFiberSlice (A := A) s hs _) =
     puncturedLocalCuspQuotientHomeomorph A.starCuspWitness
       (markedCuspParameter A.starCuspWitness)
         (collarPeriodPointMap A.starCuspWitness ⟨(zeta, s), hs⟩)
   rw [puncturedLocalCuspQuotientHomeomorph_apply]
-  unfold actualCuspFullFibreSlice
+  unfold actualCuspFullFiberSlice
   change (puncturedLocalCuspQuotientHomeomorph A.starCuspWitness
       (markedCuspParameter A.starCuspWitness))
       ((puncturedLocalCuspQuotientHomeomorph A.starCuspWitness
@@ -194,7 +194,7 @@ public theorem actualCuspFullFibreSlice_additiveTorusProjection
 
 /-- At a middle-height crossing, every point of the four-torus slice lies in the pulled-back
 intersection, not merely the single marked additive point used by the pointwise argument. -/
-public theorem actualCuspFullFibreSlice_mem_pulledBackIntersection
+public theorem actualCuspFullFiberSlice_mem_pulledBackIntersection
     (R : A.AffineRadialCompletionInput) (t : unitInterval)
     (ht : ((A.cuspAngularCoordinateLoop t).1).re = 1 / 2)
     (y : let G := A.actualCuspRadialClutchingData
@@ -203,7 +203,7 @@ public theorem actualCuspFullFibreSlice_mem_pulledBackIntersection
     let p := A.cuspAngularLiftPoint t
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
-    actualCuspFullFibreSlice (A := A) p.1.2 p.2 y ∈
+    actualCuspFullFiberSlice (A := A) p.1.2 p.2 y ∈
       R.twoDiscCover.cuspOrderThreeOpen ⊓ R.twoDiscCover.cuspOrderFourOpen := by
   let p := A.cuspAngularLiftPoint t
   let G := A.actualCuspRadialClutchingData
@@ -215,7 +215,7 @@ public theorem actualCuspFullFibreSlice_mem_pulledBackIntersection
     exact p.2
   let q : additiveCuspRadiusCover A.starCuspWitness.localWitness.radius :=
     ⟨(zeta, p.1.2), hs⟩
-  have hslice := actualCuspFullFibreSlice_additiveTorusProjection
+  have hslice := actualCuspFullFiberSlice_additiveTorusProjection
     (A := A) p.1.2 hs zeta
   have hzeta : collarFiberEquiv A.cuspCoordinate
       (markedCuspParameter A.starCuspWitness) p.1.2 zeta = w :=
@@ -225,7 +225,7 @@ public theorem actualCuspFullFibreSlice_mem_pulledBackIntersection
       (cuspBasePoint A.cuspCoordinate
         (markedCuspParameter A.starCuspWitness)).1 w = y := hw
   rw [hzeta, hw'] at hslice
-  change actualCuspFullFibreSlice (A := A) p.1.2 hs y =
+  change actualCuspFullFiberSlice (A := A) p.1.2 hs y =
     additiveCuspBoundaryProjection A.starCuspWitness q at hslice
   dsimp only at ⊢
   rw [hslice]
@@ -239,7 +239,7 @@ public theorem actualCuspFullFibreSlice_mem_pulledBackIntersection
   exact ht
 
 /-- The continuous full four-torus slice, corestricted to the pulled-back cover intersection. -/
-public noncomputable def actualCuspFullFibreIntersectionSlice
+public noncomputable def actualCuspFullFiberIntersectionSlice
     (R : A.AffineRadialCompletionInput) (t : unitInterval)
     (ht : ((A.cuspAngularCoordinateLoop t).1).re = 1 / 2) :
     let G := A.actualCuspRadialClutchingData
@@ -250,13 +250,13 @@ public noncomputable def actualCuspFullFibreIntersectionSlice
   let p := A.cuspAngularLiftPoint t
   let G := A.actualCuspRadialClutchingData
   letI := G.fiberTopology
-  exact ⟨fun y ↦ ⟨actualCuspFullFibreSlice (A := A) p.1.2 p.2 y,
-      actualCuspFullFibreSlice_mem_pulledBackIntersection (A := A) R t ht y⟩,
-    (actualCuspFullFibreSlice (A := A) p.1.2 p.2).continuous.subtype_mk _⟩
+  exact ⟨fun y ↦ ⟨actualCuspFullFiberSlice (A := A) p.1.2 p.2 y,
+      actualCuspFullFiberSlice_mem_pulledBackIntersection (A := A) R t ht y⟩,
+    (actualCuspFullFiberSlice (A := A) p.1.2 p.2).continuous.subtype_mk _⟩
 
 /-- The crossing slice induces a map on first integral homology of the pulled-back
 intersection. -/
-public noncomputable def actualCuspFullFibreIntersectionHomologyOne
+public noncomputable def actualCuspFullFiberIntersectionHomologyOne
     (R : A.AffineRadialCompletionInput) (t : unitInterval)
     (ht : ((A.cuspAngularCoordinateLoop t).1).re = 1 / 2) :
     let G := A.actualCuspRadialClutchingData
@@ -268,11 +268,11 @@ public noncomputable def actualCuspFullFibreIntersectionHomologyOne
   let G := A.actualCuspRadialClutchingData
   letI := G.fiberTopology
   exact integralSingularHomologyMap 1
-    (actualCuspFullFibreIntersectionSlice (A := A) R t ht)
+    (actualCuspFullFiberIntersectionSlice (A := A) R t ht)
 
 /-- Transport the induced full-fibre map from the pulled-back intersection to the actual
 elliptic band. -/
-public noncomputable def actualCuspFullFibreToBandHomologyOne
+public noncomputable def actualCuspFullFiberToBandHomologyOne
     (R : A.AffineRadialCompletionInput) (t : unitInterval)
     (ht : ((A.cuspAngularCoordinateLoop t).1).re = 1 / 2) :
     let G := A.actualCuspRadialClutchingData
@@ -284,34 +284,34 @@ public noncomputable def actualCuspFullFibreToBandHomologyOne
   let G := A.actualCuspRadialClutchingData
   letI := G.fiberTopology
   exact R.twoDiscCover.cuspCoverIntersectionToEllipticBandHomologyOne.comp
-    (actualCuspFullFibreIntersectionHomologyOne (A := A) R t ht)
+    (actualCuspFullFiberIntersectionHomologyOne (A := A) R t ht)
 
 /-- A selected middle-height crossing of the actual angular cusp loop. -/
-public noncomputable def actualCuspFullFibreCrossingTime (A : PaperAnalyticData) :
+public noncomputable def actualCuspFullFiberCrossingTime (A : PaperAnalyticData) :
     unitInterval :=
   Classical.choose A.exists_cuspAngularCoordinateLoop_re_eq_half
 
 /-- The selected full-fibre crossing lies at affine height `1/2`. -/
-public theorem actualCuspFullFibreCrossingTime_spec (A : PaperAnalyticData) :
+public theorem actualCuspFullFiberCrossingTime_spec (A : PaperAnalyticData) :
     ((A.cuspAngularCoordinateLoop
-      (actualCuspFullFibreCrossingTime A)).1).re = 1 / 2 :=
+      (actualCuspFullFiberCrossingTime A)).1).re = 1 / 2 :=
   Classical.choose_spec A.exists_cuspAngularCoordinateLoop_re_eq_half
 
 /-- The canonical candidate for the fibre-to-intersection map in the chain-realization
 interface, obtained by taking the entire fibre at the selected middle-height crossing. -/
-public noncomputable def actualCuspWangFibreToCuspCoverIntersectionMap
+public noncomputable def actualCuspWangFiberToCuspCoverIntersectionMap
     (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     C(G.Fiber,
       (Opens.toTopCat (TopCat.of (A.openEmbeddingStarData.collarSource 0))).obj
         (R.twoDiscCover.cuspOrderThreeOpen ⊓ R.twoDiscCover.cuspOrderFourOpen)) :=
-  actualCuspFullFibreIntersectionSlice (A := A) R
-    (actualCuspFullFibreCrossingTime A)
-    (actualCuspFullFibreCrossingTime_spec A)
+  actualCuspFullFiberIntersectionSlice (A := A) R
+    (actualCuspFullFiberCrossingTime A)
+    (actualCuspFullFiberCrossingTime_spec A)
 
 /-- The first-homology map induced by the selected full-fibre intersection slice. -/
-public noncomputable def actualCuspWangFibreToCuspCoverIntersectionHomologyOne
+public noncomputable def actualCuspWangFiberToCuspCoverIntersectionHomologyOne
     (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
@@ -322,10 +322,10 @@ public noncomputable def actualCuspWangFibreToCuspCoverIntersectionHomologyOne
   let G := A.actualCuspRadialClutchingData
   letI := G.fiberTopology
   exact integralSingularHomologyMap 1
-    (actualCuspWangFibreToCuspCoverIntersectionMap (A := A) R)
+    (actualCuspWangFiberToCuspCoverIntersectionMap (A := A) R)
 
 /-- The induced full-fibre map after transport to the actual elliptic band. -/
-public noncomputable def actualCuspWangFibreToBandHomologyOne
+public noncomputable def actualCuspWangFiberToBandHomologyOne
     (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
@@ -336,30 +336,30 @@ public noncomputable def actualCuspWangFibreToBandHomologyOne
   let G := A.actualCuspRadialClutchingData
   letI := G.fiberTopology
   exact R.twoDiscCover.cuspCoverIntersectionToEllipticBandHomologyOne.comp
-    (actualCuspWangFibreToCuspCoverIntersectionHomologyOne (A := A) R)
+    (actualCuspWangFiberToCuspCoverIntersectionHomologyOne (A := A) R)
 
 /-- The full-fibre slice supplies the map field of the chain realization.  Consequently, the
 remaining inputs are exactly the period-marked band identification and the oriented Wang
 boundary comparison. -/
-public noncomputable def actualCuspWangOpenCoverChainRealization_of_fullFibreSlice
+public noncomputable def actualCuspWangOpenCoverChainRealization_of_fullFiberSlice
     (R : A.AffineRadialCompletionInput)
     (hBand : R.twoDiscCover.canonicalCuspFiberToBandHomologyOne =
-      actualCuspWangFibreToBandHomologyOne (A := A) R)
+      actualCuspWangFiberToBandHomologyOne (A := A) R)
     (hBoundary :
       let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
-      (actualCuspWangFibreToCuspCoverIntersectionHomologyOne (A := A) R).comp
+      (actualCuspWangFiberToCuspCoverIntersectionHomologyOne (A := A) R).comp
           (actualCuspWangBoundaryHom A) =
         R.twoDiscCover.cuspOpenCoverConnectingHom) :
     R.twoDiscCover.ActualCuspWangOpenCoverChainRealization where
   fiberToCuspCoverIntersectionMap :=
-    actualCuspWangFibreToCuspCoverIntersectionMap (A := A) R
+    actualCuspWangFiberToCuspCoverIntersectionMap (A := A) R
   fiberToBand_homology := hBand
   wangBoundary_eq_chainConnecting := hBoundary
 
 /-- The full-fibre slice induces a map on first integral singular homology of the actual cusp
 collar before any attempted corestriction to the pulled-back intersection. -/
-public noncomputable def actualCuspFullFibreSliceHomologyOne
+public noncomputable def actualCuspFullFiberSliceHomologyOne
     (s : ℂ) (hs : ‖cuspQ s‖ < A.starCuspWitness.localWitness.radius) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
@@ -368,7 +368,7 @@ public noncomputable def actualCuspFullFibreSliceHomologyOne
   let G := A.actualCuspRadialClutchingData
   letI := G.fiberTopology
   exact integralSingularHomologyMap 1
-    (actualCuspFullFibreSlice (A := A) s hs)
+    (actualCuspFullFiberSlice (A := A) s hs)
 
 end EllipticTwoDiscCoverData
 

@@ -592,7 +592,7 @@ theorem orbitAssembledScalar_eq_iff_orbit
     have hrep : sourceScalarRightDoubleMap S (sourceFundamentalRepresentative z : ℂ) =
         sourceScalarRightDoubleMap S (sourceFundamentalRepresentative w : ℂ) := by
       simpa only [orbitAssembledScalar_apply_coe] using hzw
-    obtain ⟨k, hk⟩ := sourceScalarRightDoubleMap_fundamental_fibres S
+    obtain ⟨k, hk⟩ := sourceScalarRightDoubleMap_fundamental_fibers S
       (sourceFundamentalRepresentative_mem z) (sourceFundamentalRepresentative_mem w) hrep
     refine ⟨(sourceFundamentalTransport w)⁻¹ * k * sourceFundamentalTransport z, ?_⟩
     simp only [map_mul, mul_smul, sourceFundamentalRepresentative] at hk ⊢

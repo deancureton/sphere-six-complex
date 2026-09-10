@@ -1,7 +1,7 @@
 module
 public import SphereSixComplex.Paper.Topology.PaperEllipticActualStraightPeriod
 public import SphereSixComplex.Paper.Topology.PaperOrderFourCentralBoundaryDeckEvaluation
-public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderThreeFibreComparisonProof
+public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderThreeFiberComparisonProof
 
 @[expose] public section
 noncomputable section

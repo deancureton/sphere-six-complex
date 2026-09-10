@@ -71,7 +71,7 @@ public theorem cuspFixedCircleSweepAnchors_real (A : PaperAnalyticData)
     (b : OpenRadialInterval A.starCuspWitness.localWitness.radius × ℝ)
     (r : ℝ) (z : StdTorus 1) :
     A.cuspFixedCircleSweepAnchors c b ((r : UnitAddCircle), z) =
-      actualCuspFullFibreSlice (A := A) (cuspParameterOfPolar b.1.1 (r + b.2))
+      actualCuspFullFiberSlice (A := A) (cuspParameterOfPolar b.1.1 (r + b.2))
         (by rw [norm_cuspQ_cuspParameterOfPolar _ _ b.1.2.1]; exact b.1.2.2) (c.1 z) := by
   have h := circleProductRealMappingTorusHomeomorph_real (X := StdTorus 1) (r + b.2, z)
   change circleProductRealMappingTorusHomeomorph (((r + b.2 : ℝ) : UnitAddCircle), z) = _ at h

@@ -84,7 +84,7 @@ No splitting of the full invariant homology is asserted.  The sweep is defined o
 pointwise-fixed parametrized loops. -/
 public structure SweepData (m : ℕ) [NeZero m] (phi : G ≃ₜ+ G)
     (hpow : phi.toHomeomorph ^ m = 1) where
-  fibre_square : ∀ x : IntegralSingularHomology 2 G,
+  fiber_square : ∀ x : IntegralSingularHomology 2 G,
     integralSingularHomologyMap 2
         (normalizedAffineCoverToCircleMappingTorus phi.toHomeomorph hpow)
         (integralSingularHomologyMap 2 (circleProductFiberInclusion (X := G)) x) =

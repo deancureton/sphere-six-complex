@@ -2,7 +2,7 @@ module
 
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineCuspFiberPeriodMarking
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenCanonicalCuspWangBoundaryNaturalityProof
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspWangFullFibreSliceComparisonProof
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspWangFullFiberSliceComparisonProof
 
 /-!
 # Finite reduction of the marked cusp connecting square

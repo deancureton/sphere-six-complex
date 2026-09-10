@@ -36,13 +36,13 @@ public theorem baseCrossDegreeOne_joinCoordinates (a b : ThreeLattice) :
   fin_cases i <;> rfl
 
 @[simp]
-public theorem fibreDegreeTwo_joinCoordinates (a b : ThreeLattice) :
-    fibreDegreeTwo (joinCoordinates a b) = b := by
+public theorem fiberDegreeTwo_joinCoordinates (a b : ThreeLattice) :
+    fiberDegreeTwo (joinCoordinates a b) = b := by
   funext i
   fin_cases i <;> rfl
 
-public theorem joinCoordinates_baseCross_fibre (x : SixLattice) :
-    joinCoordinates (baseCrossDegreeOne x) (fibreDegreeTwo x) = x := by
+public theorem joinCoordinates_baseCross_fiber (x : SixLattice) :
+    joinCoordinates (baseCrossDegreeOne x) (fiberDegreeTwo x) = x := by
   funext i
   fin_cases i <;> rfl
 
@@ -97,7 +97,7 @@ public theorem circleProductFiberInclusion_homologyTwo_injective :
   apply standardThreeTorusHomologyTwo.injective
   have h := congrArg productHomologyTwo hxy
   rw [productHomologyTwo_fiberInclusion, productHomologyTwo_fiberInclusion] at h
-  simpa using congrArg fibreDegreeTwo h
+  simpa using congrArg fiberDegreeTwo h
 
 public theorem exact_fiberInclusion_orientedProductBoundary :
     Function.Exact
@@ -110,7 +110,7 @@ public theorem exact_fiberInclusion_orientedProductBoundary :
     have hbase : baseCrossDegreeOne (productHomologyTwo z) = 0 := by
       rw [← standardThreeTorusHomologyOne_orientedProductBoundary, hz, map_zero]
     let x := standardThreeTorusHomologyTwo.symm
-      (fibreDegreeTwo (productHomologyTwo z))
+      (fiberDegreeTwo (productHomologyTwo z))
     refine ⟨x, ?_⟩
     apply productHomologyTwo.injective
     calc
@@ -119,13 +119,13 @@ public theorem exact_fiberInclusion_orientedProductBoundary :
             (circleProductFiberInclusion (X := StdTorus 3)) x) =
           joinCoordinates 0 (standardThreeTorusHomologyTwo x) :=
         productHomologyTwo_fiberInclusion x
-      _ = joinCoordinates 0 (fibreDegreeTwo (productHomologyTwo z)) := by
+      _ = joinCoordinates 0 (fiberDegreeTwo (productHomologyTwo z)) := by
         rw [show standardThreeTorusHomologyTwo x =
-          fibreDegreeTwo (productHomologyTwo z) from
+          fiberDegreeTwo (productHomologyTwo z) from
             standardThreeTorusHomologyTwo.apply_symm_apply _]
       _ = joinCoordinates (baseCrossDegreeOne (productHomologyTwo z))
-          (fibreDegreeTwo (productHomologyTwo z)) := by rw [hbase]
-      _ = productHomologyTwo z := joinCoordinates_baseCross_fibre _
+          (fiberDegreeTwo (productHomologyTwo z)) := by rw [hbase]
+      _ = productHomologyTwo z := joinCoordinates_baseCross_fiber _
   · rintro ⟨x, rfl⟩
     apply standardThreeTorusHomologyOne.injective
     rw [standardThreeTorusHomologyOne_orientedProductBoundary,

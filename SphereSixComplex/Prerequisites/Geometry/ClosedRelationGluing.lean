@@ -119,32 +119,32 @@ public theorem compactSpace_gluedSpace_of_compact_cover [Finite D.J]
 
 /-- Exact topological completion data for a finite gluing: closed pairwise identifications and a
 finite compact cover selected inside its possibly noncompact open pieces. -/
-public structure GluingCompletionData where
+public structure CompactHausdorffGluingData where
   relComponent_closed : ∀ i j, IsClosed (glueRelComponent D i j)
   compactSubset : ∀ i, Set (D.U i)
   compactSubset_isCompact : ∀ i, IsCompact (compactSubset i)
   compactSubset_covers : (Set.univ : Set (GluedSpace D)) =
     ⋃ i, D.toGlueData.ι i '' compactSubset i
 
-namespace GluingCompletionData
+namespace CompactHausdorffGluingData
 
-variable (C : GluingCompletionData D)
+variable (C : CompactHausdorffGluingData D)
 
 include C
 
 /-- Closed pairwise identifications give the completed gluing a Hausdorff topology. -/
 public theorem t2Space [Finite D.J] : T2Space (GluedSpace D) :=
   t2Space_gluedSpace_of_closed_components D
-    (GluingCompletionData.relComponent_closed C)
+    (CompactHausdorffGluingData.relComponent_closed C)
 
 /-- The selected compact subpieces cover the completed gluing. -/
 public theorem compactSpace [Finite D.J] : CompactSpace (GluedSpace D) :=
   compactSpace_gluedSpace_of_compact_cover D
-    (GluingCompletionData.compactSubset C)
-    (GluingCompletionData.compactSubset_isCompact C)
-    (GluingCompletionData.compactSubset_covers C)
+    (CompactHausdorffGluingData.compactSubset C)
+    (CompactHausdorffGluingData.compactSubset_isCompact C)
+    (CompactHausdorffGluingData.compactSubset_covers C)
 
-end GluingCompletionData
+end CompactHausdorffGluingData
 
 end
 

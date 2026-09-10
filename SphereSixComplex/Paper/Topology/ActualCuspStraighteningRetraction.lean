@@ -205,7 +205,7 @@ public noncomputable def quotientStraighteningHomeomorph
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     ActualLocalCuspFilling W ≃ₜ FrozenLocalCuspFilling N M W.localWitness.radius :=
-  let J := InfiniteA2Toric.establishedContinuousTorusAction M
+  let J := InfiniteA2Toric.continuousTorusAction M
   Homeomorph.Quotient.congr (pointStraighteningHomeomorph J W) fun x y ↦ by
     let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
       W.localWitness.radius_pos W.localWitness.radius_le

@@ -341,7 +341,7 @@ public theorem cuspMeridianSourceCircleMap_rawBasisValues_of_selectedPositive_wi
     rw [hClass]
     dsimp [G, actualCuspFiberCoinvariantHomologyOneBasis,
       Geometry.PaperAnalyticData.actualCuspRadialClutchingData,
-      EstablishedActualCuspRadialClutching.data,
+      _root_.SphereSixComplex.Geometry.CuspPuncturedCollarBridge.ActualPuncturedCuspCollarWitness.radialClutchingData,
       CuspRadialClutchingConstruction.actualCuspRadialClutchingData] at x ⊢
     change StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
         (integralSingularHomologyMap 1
@@ -372,7 +372,7 @@ public theorem cuspMeridianSourceCircleMap_rawBasisValues_of_selectedPositive_wi
     rw [hClass]
     dsimp [G, actualCuspFiberCoinvariantHomologyOneBasis,
       Geometry.PaperAnalyticData.actualCuspRadialClutchingData,
-      EstablishedActualCuspRadialClutching.data,
+      _root_.SphereSixComplex.Geometry.CuspPuncturedCollarBridge.ActualPuncturedCuspCollarWitness.radialClutchingData,
       CuspRadialClutchingConstruction.actualCuspRadialClutchingData] at x ⊢
     change StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
         (integralSingularHomologyMap 1

@@ -91,9 +91,9 @@ public theorem compactSpace : CompactSpace (GluedSpace A.glueData) :=
 
 /-- Add closedness of every pairwise relation component to obtain the exact completion data for the
 star gluing. -/
-public def toGluingCompletionData
+public def toCompactHausdorffGluingData
     (hclosed : ∀ i j, IsClosed (glueRelComponent A.glueData i j)) :
-    GluingCompletionData A.glueData where
+    CompactHausdorffGluingData A.glueData where
   relComponent_closed := hclosed
   compactSubset := compactSubset C
   compactSubset_isCompact := compactSubset_isCompact C
@@ -162,11 +162,11 @@ public theorem compactSpace :
 
 /-- Common-source compact coverage and closed pairwise relation components give the exact gluing
 completion data. -/
-public def toGluingCompletionData
+public def toCompactHausdorffGluingData
     (hclosed : ∀ i j, IsClosed
       (glueRelComponent A.toFourPieceStarGluingData.glueData i j)) :
-    GluingCompletionData A.toFourPieceStarGluingData.glueData :=
-  FourPieceStarGluingData.CompactCoverData.toGluingCompletionData
+    CompactHausdorffGluingData A.toFourPieceStarGluingData.glueData :=
+  FourPieceStarGluingData.CompactCoverData.toCompactHausdorffGluingData
     (toFourPieceCompactCoverData C) hclosed
 
 end CompactCoverData

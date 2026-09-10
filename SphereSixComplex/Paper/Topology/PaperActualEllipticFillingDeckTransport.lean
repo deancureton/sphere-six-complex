@@ -21,7 +21,7 @@ open SphereSixComplex.Periods
 open SphereSixComplex.Topology
 open SphereSixComplex.CyclicAngularFundamentalDomain
 open SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
-open SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.EstablishedAffineCyclicQuotientHomology
+open _root_.SphereSixComplex.AffineCyclicQuotientHomology
 open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
 
 variable (A : PaperAnalyticData)

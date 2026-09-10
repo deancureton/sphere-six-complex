@@ -24,7 +24,7 @@ namespace EstablishedSectionSevenAffineTopology
 compatibility with the canonical maps on their common band. -/
 public theorem radialCompletionInput (A : PaperAnalyticData) :
     Nonempty A.AffineRadialCompletionInput :=
-  EstablishedSectionSevenAffineRegularLiftTopology.radialCompletionInput_nonempty A
+  _root_.SphereSixComplex.Geometry.PaperAnalyticData.affineRadialCompletionInput_nonempty A
 
 end EstablishedSectionSevenAffineTopology
 

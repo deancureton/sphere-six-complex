@@ -416,7 +416,7 @@ public theorem additiveCuspRadius_compact_central_lowerTrap
       ∃ a : ℝ, 0 < a ∧ ∀ p : additiveCuspRadiusCover W.localWitness.radius,
         additiveCuspCoverToGlobal W p ∈ K → a ≤ ‖cuspQ p.1.2‖ := by
   intro K hK
-  let J := Classical.choice establishedExactNormalizedModularJUniformization
+  let J := Classical.choice ExactNormalizedModularJUniformization.nonempty
   let Cusp := J.cusp
   have hcoordCompact : IsCompact
       ((fun y ↦ ‖centralCuspCoordinate (E := E) (D := D) y‖) '' K) :=

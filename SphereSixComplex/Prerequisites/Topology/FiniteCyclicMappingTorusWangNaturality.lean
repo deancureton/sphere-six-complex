@@ -56,7 +56,7 @@ second identifies the lower invariant edge with the standard cyclic norm. -/
 public structure FiniteCyclicCoverWangNaturality
     {X : Type} [TopologicalSpace X] (k m : ℕ) [NeZero m]
     (phi : X ≃ₜ X) (hpow : phi ^ m = 1) where
-  fibre_square : ∀ x : IntegralSingularHomology (k + 1) X,
+  fiber_square : ∀ x : IntegralSingularHomology (k + 1) X,
     integralSingularHomologyMap (k + 1)
         (normalizedAffineCoverToCircleMappingTorus phi hpow)
         (integralSingularHomologyMap (k + 1)

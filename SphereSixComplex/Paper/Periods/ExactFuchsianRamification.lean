@@ -395,12 +395,12 @@ noncomputable def hasExactHolomorphicBranchAt_of_analyticOrderAt
     simpa only [F, UpperHalfPlane.ofComplex_apply, smul_eq_mul] using hz
 
 /-- Ambient complex representative of the established modular lift. -/
-def ambientEstablishedTau (E : NormalizedFuchsianModularParameter) (w : ℂ) : ℂ :=
+def ambientNormalizedTau (E : NormalizedFuchsianModularParameter) (w : ℂ) : ℂ :=
   (E.modularParameter.tau (UpperHalfPlane.ofComplex w) : ℂ)
 
 /-- Derivative of the ambient representative of the established modular lift. -/
-def ambientEstablishedTauDeriv (E : NormalizedFuchsianModularParameter) (w : ℂ) : ℂ :=
-  deriv (ambientEstablishedTau E) w
+def ambientNormalizedTauDeriv (E : NormalizedFuchsianModularParameter) (w : ℂ) : ℂ :=
+  deriv (ambientNormalizedTau E) w
 
 /-- Ambient representative of an upper-half-plane self-map. -/
 def ambientUpperHalfPlaneMap (p : UpperHalfPlane → UpperHalfPlane) (w : ℂ) : ℂ :=
@@ -571,9 +571,9 @@ lemma normalizedModularJCoordinate_sub_one_analyticOrderAt_of_eq_one
     simpa only [Nat.cast_ofNat] using
       J.branch_two.analyticOrderAt normalizedModularJCoordinate_holomorphic
 
-lemma ambientEstablishedTau_analyticAt (E : NormalizedFuchsianModularParameter)
+lemma ambientNormalizedTau_analyticAt (E : NormalizedFuchsianModularParameter)
     (z : UpperHalfPlane) :
-    AnalyticAt ℂ (ambientEstablishedTau E) z := by
+    AnalyticAt ℂ (ambientNormalizedTau E) z := by
   have htau : MDiff (fun x : UpperHalfPlane ↦ (E.modularParameter.tau x : ℂ)) :=
     UpperHalfPlane.mdifferentiable_coe.comp E.modularParameter.tau_holomorphic
   change AnalyticAt ℂ
@@ -583,11 +583,11 @@ lemma ambientEstablishedTau_analyticAt (E : NormalizedFuchsianModularParameter)
 
 /-- At a regular source-orbifold point, equality of modular-lift values implies equality of
 nearby source points, because the exact source coordinate is locally injective there. -/
-lemma ambientEstablishedTau_exists_open_injOn_of_regular
+lemma ambientNormalizedTau_exists_open_injOn_of_regular
     (E : NormalizedFuchsianModularParameter) (z : UpperHalfPlane)
     (hz0 : E.sourceCoordinate.coordinate z ≠ 0)
     (hz1 : E.sourceCoordinate.coordinate z ≠ 1) :
-    ∃ U : Set ℂ, IsOpen U ∧ (z : ℂ) ∈ U ∧ U.InjOn (ambientEstablishedTau E) := by
+    ∃ U : Set ℂ, IsOpen U ∧ (z : ℂ) ∈ U ∧ U.InjOn (ambientNormalizedTau E) := by
   have hzreg : E.sourceCoordinate.coordinate z ∈ ({0, 1} : Set ℂ)ᶜ := by
     simp [hz0, hz1]
   have hloc := E.sourceCoordinate.regular_covering.isLocalHomeomorphOn
@@ -600,7 +600,7 @@ lemma ambientEstablishedTau_exists_open_injOn_of_regular
   rintro a ⟨x, hx, rfl⟩ b ⟨y, hy, rfl⟩ htau
   have htauH : E.modularParameter.tau x = E.modularParameter.tau y := by
     apply UpperHalfPlane.coe_injective
-    simpa only [ambientEstablishedTau, UpperHalfPlane.ofComplex_apply] using htau
+    simpa only [ambientNormalizedTau, UpperHalfPlane.ofComplex_apply] using htau
   have hcoord : E.sourceCoordinate.coordinate x = E.sourceCoordinate.coordinate y := by
     rw [← E.induced_coordinate x, ← E.induced_coordinate y]
     simp only [FuchsianModularParameter.coordinate, htauH]
@@ -610,33 +610,33 @@ lemma ambientEstablishedTau_exists_open_injOn_of_regular
   exact congrArg ((↑) : UpperHalfPlane → ℂ) (e.injOn hx hy hexy)
 
 /-- The established modular lift is unramified at every regular source-orbifold point. -/
-lemma ambientEstablishedTauDeriv_ne_zero_of_regular
+lemma ambientNormalizedTauDeriv_ne_zero_of_regular
     (E : NormalizedFuchsianModularParameter) (z : UpperHalfPlane)
     (hz0 : E.sourceCoordinate.coordinate z ≠ 0)
     (hz1 : E.sourceCoordinate.coordinate z ≠ 1) :
-    ambientEstablishedTauDeriv E z ≠ 0 := by
+    ambientNormalizedTauDeriv E z ≠ 0 := by
   exact AnalyticLocalHomeo.AnalyticAt.deriv_ne_zero_of_exists_open_injOn
-    (ambientEstablishedTau_analyticAt E z)
-    (ambientEstablishedTau_exists_open_injOn_of_regular E z hz0 hz1)
+    (ambientNormalizedTau_analyticAt E z)
+    (ambientNormalizedTau_exists_open_injOn_of_regular E z hz0 hz1)
 
 /-- The modular lift is unramified at the order-three source point: both the source and target
 quotient coordinates have exact order three there. -/
-lemma ambientEstablishedTau_sub_analyticOrderAt_one
+lemma ambientNormalizedTau_sub_analyticOrderAt_one
     (E : NormalizedFuchsianModularParameter) :
     analyticOrderAt
-      (fun w : ℂ ↦ ambientEstablishedTau E w -
-        ambientEstablishedTau E fuchsianOneFixedPoint)
+      (fun w : ℂ ↦ ambientNormalizedTau E w -
+        ambientNormalizedTau E fuchsianOneFixedPoint)
       fuchsianOneFixedPoint = (1 : ℕ∞) := by
-  obtain ⟨J⟩ := establishedExactNormalizedModularJUniformization
+  obtain ⟨J⟩ := ExactNormalizedModularJUniformization.nonempty
   let Cdiff : ℂ → ℂ := fun w ↦
     E.sourceCoordinate.coordinate (UpperHalfPlane.ofComplex w)
   let Jdiff : ℂ → ℂ := fun w ↦
     normalizedModularJCoordinate (UpperHalfPlane.ofComplex w)
-  let t : ℂ → ℂ := ambientEstablishedTau E
+  let t : ℂ → ℂ := ambientNormalizedTau E
   have ht : AnalyticAt ℂ t fuchsianOneFixedPoint := by
-    simpa only [t] using ambientEstablishedTau_analyticAt E fuchsianOneFixedPoint
+    simpa only [t] using ambientNormalizedTau_analyticAt E fuchsianOneFixedPoint
   have ht_one : t fuchsianOneFixedPoint = (ellipticThreeParameter : ℂ) := by
-    simp only [t, ambientEstablishedTau, UpperHalfPlane.ofComplex_apply]
+    simp only [t, ambientNormalizedTau, UpperHalfPlane.ofComplex_apply]
     exact congrArg ((↑) : UpperHalfPlane → ℂ) E.tau_at_one
   have hCorder : analyticOrderAt Cdiff fuchsianOneFixedPoint = (3 : ℕ∞) := by
     simpa only [Cdiff, sub_zero, Nat.cast_ofNat] using
@@ -650,7 +650,7 @@ lemma ambientEstablishedTau_sub_analyticOrderAt_one
       normalizedModularJCoordinate_holomorphic ellipticThreeParameter
   have heq : Cdiff = Jdiff ∘ t := by
     funext w
-    dsimp only [Cdiff, Jdiff, t, ambientEstablishedTau, Function.comp_apply]
+    dsimp only [Cdiff, Jdiff, t, ambientNormalizedTau, Function.comp_apply]
     rw [UpperHalfPlane.ofComplex_apply]
     change E.sourceCoordinate.coordinate (UpperHalfPlane.ofComplex w) =
       normalizedJ (E.modularParameter.tau (UpperHalfPlane.ofComplex w)) / 1728
@@ -681,36 +681,36 @@ lemma ambientEstablishedTau_sub_analyticOrderAt_one
   simpa only [t] using horder
 
 /-- In particular the derivative of the modular lift is nonzero at the order-three point. -/
-lemma ambientEstablishedTauDeriv_ne_zero_at_one
+lemma ambientNormalizedTauDeriv_ne_zero_at_one
     (E : NormalizedFuchsianModularParameter) :
-    ambientEstablishedTauDeriv E fuchsianOneFixedPoint ≠ 0 := by
-  let g : ℂ → ℂ := fun w ↦ ambientEstablishedTau E w -
-    ambientEstablishedTau E fuchsianOneFixedPoint
+    ambientNormalizedTauDeriv E fuchsianOneFixedPoint ≠ 0 := by
+  let g : ℂ → ℂ := fun w ↦ ambientNormalizedTau E w -
+    ambientNormalizedTau E fuchsianOneFixedPoint
   have hg : AnalyticAt ℂ g fuchsianOneFixedPoint :=
-    (ambientEstablishedTau_analyticAt E fuchsianOneFixedPoint).sub (by fun_prop)
+    (ambientNormalizedTau_analyticAt E fuchsianOneFixedPoint).sub (by fun_prop)
   have horder : analyticOrderAt g fuchsianOneFixedPoint = (1 : ℕ∞) := by
-    simpa only [g] using ambientEstablishedTau_sub_analyticOrderAt_one E
+    simpa only [g] using ambientNormalizedTau_sub_analyticOrderAt_one E
   have hdata := (analyticOrderAt_eq_nat_iff_iteratedDeriv_eq_zero hg).mp horder
-  simpa only [ambientEstablishedTauDeriv, g, iteratedDeriv_one, deriv_sub_const] using hdata.2
+  simpa only [ambientNormalizedTauDeriv, g, iteratedDeriv_one, deriv_sub_const] using hdata.2
 
 /-- The modular lift has local degree two at the order-four source point: the source quotient has
 order four there, while the normalized modular quotient has order two at `I`. -/
-lemma ambientEstablishedTau_sub_analyticOrderAt_two
+lemma ambientNormalizedTau_sub_analyticOrderAt_two
     (E : NormalizedFuchsianModularParameter) :
     analyticOrderAt
-      (fun w : ℂ ↦ ambientEstablishedTau E w -
-        ambientEstablishedTau E fuchsianTwoFixedPoint)
+      (fun w : ℂ ↦ ambientNormalizedTau E w -
+        ambientNormalizedTau E fuchsianTwoFixedPoint)
       fuchsianTwoFixedPoint = (2 : ℕ∞) := by
-  obtain ⟨J⟩ := establishedExactNormalizedModularJUniformization
+  obtain ⟨J⟩ := ExactNormalizedModularJUniformization.nonempty
   let Cdiff : ℂ → ℂ := fun w ↦
     E.sourceCoordinate.coordinate (UpperHalfPlane.ofComplex w) - 1
   let Jdiff : ℂ → ℂ := fun w ↦
     normalizedModularJCoordinate (UpperHalfPlane.ofComplex w) - 1
-  let t : ℂ → ℂ := ambientEstablishedTau E
+  let t : ℂ → ℂ := ambientNormalizedTau E
   have ht : AnalyticAt ℂ t fuchsianTwoFixedPoint := by
-    simpa only [t] using ambientEstablishedTau_analyticAt E fuchsianTwoFixedPoint
+    simpa only [t] using ambientNormalizedTau_analyticAt E fuchsianTwoFixedPoint
   have ht_two : t fuchsianTwoFixedPoint = (UpperHalfPlane.I : ℂ) := by
-    simp only [t, ambientEstablishedTau, UpperHalfPlane.ofComplex_apply]
+    simp only [t, ambientNormalizedTau, UpperHalfPlane.ofComplex_apply]
     exact congrArg ((↑) : UpperHalfPlane → ℂ) E.tau_at_two
   have hCorder : analyticOrderAt Cdiff fuchsianTwoFixedPoint = (4 : ℕ∞) := by
     simpa only [Cdiff, Nat.cast_ofNat] using
@@ -724,7 +724,7 @@ lemma ambientEstablishedTau_sub_analyticOrderAt_two
       normalizedModularJCoordinate_holomorphic UpperHalfPlane.I).sub (by fun_prop)
   have heq : Cdiff = Jdiff ∘ t := by
     funext w
-    dsimp only [Cdiff, Jdiff, t, ambientEstablishedTau, Function.comp_apply]
+    dsimp only [Cdiff, Jdiff, t, ambientNormalizedTau, Function.comp_apply]
     rw [UpperHalfPlane.ofComplex_apply]
     change E.sourceCoordinate.coordinate (UpperHalfPlane.ofComplex w) - 1 =
       normalizedJ (E.modularParameter.tau (UpperHalfPlane.ofComplex w)) / 1728 - 1
@@ -755,40 +755,40 @@ lemma ambientEstablishedTau_sub_analyticOrderAt_two
   simpa only [t] using horder
 
 /-- Consequently the derivative of the modular lift has a simple zero at the order-four point. -/
-lemma ambientEstablishedTauDeriv_analyticOrderAt_two
+lemma ambientNormalizedTauDeriv_analyticOrderAt_two
     (E : NormalizedFuchsianModularParameter) :
-    analyticOrderAt (ambientEstablishedTauDeriv E) fuchsianTwoFixedPoint =
+    analyticOrderAt (ambientNormalizedTauDeriv E) fuchsianTwoFixedPoint =
       (1 : ℕ∞) := by
-  have ht := ambientEstablishedTau_analyticAt E fuchsianTwoFixedPoint
+  have ht := ambientNormalizedTau_analyticAt E fuchsianTwoFixedPoint
   have hsum := ht.analyticOrderAt_deriv_add_one
-  have hsub := ambientEstablishedTau_sub_analyticOrderAt_two E
-  change analyticOrderAt (deriv (ambientEstablishedTau E)) fuchsianTwoFixedPoint =
+  have hsub := ambientNormalizedTau_sub_analyticOrderAt_two E
+  change analyticOrderAt (deriv (ambientNormalizedTau E)) fuchsianTwoFixedPoint =
     (1 : ℕ∞)
   rw [hsub] at hsum
   exact (ENat.add_left_injective_of_ne_top (n := (1 : ℕ∞)) (by simp)) <| by
     calc
-      analyticOrderAt (deriv (ambientEstablishedTau E)) fuchsianTwoFixedPoint + 1 =
+      analyticOrderAt (deriv (ambientNormalizedTau E)) fuchsianTwoFixedPoint + 1 =
           (2 : ℕ∞) := hsum
       _ = (1 : ℕ∞) + 1 := by norm_num
 
 /-- Over the source value zero, the modular lift has local degree one at every point of the
 elliptic orbit. -/
-lemma ambientEstablishedTau_sub_analyticOrderAt_of_coordinate_eq_zero
+lemma ambientNormalizedTau_sub_analyticOrderAt_of_coordinate_eq_zero
     (E : NormalizedFuchsianModularParameter) (z : UpperHalfPlane)
     (hz : E.sourceCoordinate.coordinate z = 0) :
     analyticOrderAt
-      (fun w : ℂ ↦ ambientEstablishedTau E w - ambientEstablishedTau E z) z =
+      (fun w : ℂ ↦ ambientNormalizedTau E w - ambientNormalizedTau E z) z =
       (1 : ℕ∞) := by
-  obtain ⟨J⟩ := establishedExactNormalizedModularJUniformization
+  obtain ⟨J⟩ := ExactNormalizedModularJUniformization.nonempty
   let Cdiff : ℂ → ℂ := fun w ↦
     E.sourceCoordinate.coordinate (UpperHalfPlane.ofComplex w)
   let Jdiff : ℂ → ℂ := fun w ↦
     normalizedModularJCoordinate (UpperHalfPlane.ofComplex w)
-  let t : ℂ → ℂ := ambientEstablishedTau E
+  let t : ℂ → ℂ := ambientNormalizedTau E
   have ht : AnalyticAt ℂ t z := by
-    simpa only [t] using ambientEstablishedTau_analyticAt E z
+    simpa only [t] using ambientNormalizedTau_analyticAt E z
   have htz : t z = (E.modularParameter.tau z : ℂ) := by
-    simp only [t, ambientEstablishedTau, UpperHalfPlane.ofComplex_apply]
+    simp only [t, ambientNormalizedTau, UpperHalfPlane.ofComplex_apply]
   have htarget : normalizedModularJCoordinate (E.modularParameter.tau z) = 0 := by
     change E.modularParameter.coordinate z = 0
     rw [E.induced_coordinate z]
@@ -803,7 +803,7 @@ lemma ambientEstablishedTau_sub_analyticOrderAt_of_coordinate_eq_zero
       normalizedModularJCoordinate_holomorphic (E.modularParameter.tau z)
   have heq : Cdiff = Jdiff ∘ t := by
     funext w
-    dsimp only [Cdiff, Jdiff, t, ambientEstablishedTau, Function.comp_apply]
+    dsimp only [Cdiff, Jdiff, t, ambientNormalizedTau, Function.comp_apply]
     rw [UpperHalfPlane.ofComplex_apply]
     change E.sourceCoordinate.coordinate (UpperHalfPlane.ofComplex w) =
       normalizedJ (E.modularParameter.tau (UpperHalfPlane.ofComplex w)) / 1728
@@ -831,22 +831,22 @@ lemma ambientEstablishedTau_sub_analyticOrderAt_of_coordinate_eq_zero
 
 /-- Over the source value one, the modular lift has local degree two at every point of the
 order-four elliptic orbit. -/
-lemma ambientEstablishedTau_sub_analyticOrderAt_of_coordinate_eq_one
+lemma ambientNormalizedTau_sub_analyticOrderAt_of_coordinate_eq_one
     (E : NormalizedFuchsianModularParameter) (z : UpperHalfPlane)
     (hz : E.sourceCoordinate.coordinate z = 1) :
     analyticOrderAt
-      (fun w : ℂ ↦ ambientEstablishedTau E w - ambientEstablishedTau E z) z =
+      (fun w : ℂ ↦ ambientNormalizedTau E w - ambientNormalizedTau E z) z =
       (2 : ℕ∞) := by
-  obtain ⟨J⟩ := establishedExactNormalizedModularJUniformization
+  obtain ⟨J⟩ := ExactNormalizedModularJUniformization.nonempty
   let Cdiff : ℂ → ℂ := fun w ↦
     E.sourceCoordinate.coordinate (UpperHalfPlane.ofComplex w) - 1
   let Jdiff : ℂ → ℂ := fun w ↦
     normalizedModularJCoordinate (UpperHalfPlane.ofComplex w) - 1
-  let t : ℂ → ℂ := ambientEstablishedTau E
+  let t : ℂ → ℂ := ambientNormalizedTau E
   have ht : AnalyticAt ℂ t z := by
-    simpa only [t] using ambientEstablishedTau_analyticAt E z
+    simpa only [t] using ambientNormalizedTau_analyticAt E z
   have htz : t z = (E.modularParameter.tau z : ℂ) := by
-    simp only [t, ambientEstablishedTau, UpperHalfPlane.ofComplex_apply]
+    simp only [t, ambientNormalizedTau, UpperHalfPlane.ofComplex_apply]
   have htarget : normalizedModularJCoordinate (E.modularParameter.tau z) = 1 := by
     change E.modularParameter.coordinate z = 1
     rw [E.induced_coordinate z]
@@ -861,7 +861,7 @@ lemma ambientEstablishedTau_sub_analyticOrderAt_of_coordinate_eq_one
       normalizedModularJCoordinate_holomorphic (E.modularParameter.tau z)).sub (by fun_prop)
   have heq : Cdiff = Jdiff ∘ t := by
     funext w
-    dsimp only [Cdiff, Jdiff, t, ambientEstablishedTau, Function.comp_apply]
+    dsimp only [Cdiff, Jdiff, t, ambientNormalizedTau, Function.comp_apply]
     rw [UpperHalfPlane.ofComplex_apply]
     change E.sourceCoordinate.coordinate (UpperHalfPlane.ofComplex w) - 1 =
       normalizedJ (E.modularParameter.tau (UpperHalfPlane.ofComplex w)) / 1728 - 1
@@ -887,72 +887,72 @@ lemma ambientEstablishedTau_sub_analyticOrderAt_of_coordinate_eq_one
       _ = (2 : ℕ∞) * (2 : ℕ∞) := by norm_num
   simpa only [t] using horder
 
-lemma ambientEstablishedTauDeriv_analyticAt
+lemma ambientNormalizedTauDeriv_analyticAt
     (E : NormalizedFuchsianModularParameter) (z : UpperHalfPlane) :
-    AnalyticAt ℂ (ambientEstablishedTauDeriv E) z := by
-  exact (ambientEstablishedTau_analyticAt E z).deriv
+    AnalyticAt ℂ (ambientNormalizedTauDeriv E) z := by
+  exact (ambientNormalizedTau_analyticAt E z).deriv
 
 /-- The derivative stays nonzero over the entire order-three elliptic orbit. -/
-lemma ambientEstablishedTauDeriv_ne_zero_of_coordinate_eq_zero
+lemma ambientNormalizedTauDeriv_ne_zero_of_coordinate_eq_zero
     (E : NormalizedFuchsianModularParameter) (z : UpperHalfPlane)
     (hz : E.sourceCoordinate.coordinate z = 0) :
-    ambientEstablishedTauDeriv E z ≠ 0 := by
-  let g : ℂ → ℂ := fun w ↦ ambientEstablishedTau E w - ambientEstablishedTau E z
+    ambientNormalizedTauDeriv E z ≠ 0 := by
+  let g : ℂ → ℂ := fun w ↦ ambientNormalizedTau E w - ambientNormalizedTau E z
   have hg : AnalyticAt ℂ g z :=
-    (ambientEstablishedTau_analyticAt E z).sub (by fun_prop)
+    (ambientNormalizedTau_analyticAt E z).sub (by fun_prop)
   have horder : analyticOrderAt g z = (1 : ℕ∞) := by
     simpa only [g] using
-      ambientEstablishedTau_sub_analyticOrderAt_of_coordinate_eq_zero E z hz
+      ambientNormalizedTau_sub_analyticOrderAt_of_coordinate_eq_zero E z hz
   have hdata := (analyticOrderAt_eq_nat_iff_iteratedDeriv_eq_zero hg).mp horder
-  simpa only [ambientEstablishedTauDeriv, g, iteratedDeriv_one, deriv_sub_const] using hdata.2
+  simpa only [ambientNormalizedTauDeriv, g, iteratedDeriv_one, deriv_sub_const] using hdata.2
 
 /-- The derivative has a simple zero at every point over the source value one. -/
-lemma ambientEstablishedTauDeriv_analyticOrderAt_of_coordinate_eq_one
+lemma ambientNormalizedTauDeriv_analyticOrderAt_of_coordinate_eq_one
     (E : NormalizedFuchsianModularParameter) (z : UpperHalfPlane)
     (hz : E.sourceCoordinate.coordinate z = 1) :
-    analyticOrderAt (ambientEstablishedTauDeriv E) z = (1 : ℕ∞) := by
-  have ht := ambientEstablishedTau_analyticAt E z
+    analyticOrderAt (ambientNormalizedTauDeriv E) z = (1 : ℕ∞) := by
+  have ht := ambientNormalizedTau_analyticAt E z
   have hsum := ht.analyticOrderAt_deriv_add_one
-  have hsub := ambientEstablishedTau_sub_analyticOrderAt_of_coordinate_eq_one E z hz
-  change analyticOrderAt (deriv (ambientEstablishedTau E)) z = (1 : ℕ∞)
+  have hsub := ambientNormalizedTau_sub_analyticOrderAt_of_coordinate_eq_one E z hz
+  change analyticOrderAt (deriv (ambientNormalizedTau E)) z = (1 : ℕ∞)
   rw [hsub] at hsum
   exact (ENat.add_left_injective_of_ne_top (n := (1 : ℕ∞)) (by simp)) <| by
     calc
-      analyticOrderAt (deriv (ambientEstablishedTau E)) z + 1 = (2 : ℕ∞) := hsum
+      analyticOrderAt (deriv (ambientNormalizedTau E)) z + 1 = (2 : ℕ∞) := hsum
       _ = (1 : ℕ∞) + 1 := by norm_num
 
 /-- Away from the value-one orbit the derivative of the modular lift is nowhere zero. -/
-lemma ambientEstablishedTauDeriv_ne_zero_of_coordinate_ne_one
+lemma ambientNormalizedTauDeriv_ne_zero_of_coordinate_ne_one
     (E : NormalizedFuchsianModularParameter) (z : UpperHalfPlane)
     (hz1 : E.sourceCoordinate.coordinate z ≠ 1) :
-    ambientEstablishedTauDeriv E z ≠ 0 := by
+    ambientNormalizedTauDeriv E z ≠ 0 := by
   by_cases hz0 : E.sourceCoordinate.coordinate z = 0
-  · exact ambientEstablishedTauDeriv_ne_zero_of_coordinate_eq_zero E z hz0
-  · exact ambientEstablishedTauDeriv_ne_zero_of_regular E z hz0 hz1
+  · exact ambientNormalizedTauDeriv_ne_zero_of_coordinate_eq_zero E z hz0
+  · exact ambientNormalizedTauDeriv_ne_zero_of_regular E z hz0 hz1
 
 /-- Exact zero locus of the derivative: precisely the order-four source elliptic orbit. -/
-lemma ambientEstablishedTauDeriv_eq_zero_iff
+lemma ambientNormalizedTauDeriv_eq_zero_iff
     (E : NormalizedFuchsianModularParameter) (z : UpperHalfPlane) :
-    ambientEstablishedTauDeriv E z = 0 ↔ E.sourceCoordinate.coordinate z = 1 := by
+    ambientNormalizedTauDeriv E z = 0 ↔ E.sourceCoordinate.coordinate z = 1 := by
   constructor
   · intro hd
     by_contra hz1
-    exact ambientEstablishedTauDeriv_ne_zero_of_coordinate_ne_one E z hz1 hd
+    exact ambientNormalizedTauDeriv_ne_zero_of_coordinate_ne_one E z hz1 hd
   · intro hz1
     apply apply_eq_zero_of_analyticOrderAt_ne_zero
-    rw [ambientEstablishedTauDeriv_analyticOrderAt_of_coordinate_eq_one E z hz1]
+    rw [ambientNormalizedTauDeriv_analyticOrderAt_of_coordinate_eq_one E z hz1]
     norm_num
 
 /-- Complete pointwise analytic-order classification of the derivative. -/
-lemma ambientEstablishedTauDeriv_analyticOrderAt
+lemma ambientNormalizedTauDeriv_analyticOrderAt
     (E : NormalizedFuchsianModularParameter) (z : UpperHalfPlane) :
-    analyticOrderAt (ambientEstablishedTauDeriv E) z =
+    analyticOrderAt (ambientNormalizedTauDeriv E) z =
       if E.sourceCoordinate.coordinate z = 1 then (1 : ℕ∞) else 0 := by
   by_cases hz1 : E.sourceCoordinate.coordinate z = 1
   · simp only [hz1, if_pos]
-    exact ambientEstablishedTauDeriv_analyticOrderAt_of_coordinate_eq_one E z hz1
+    exact ambientNormalizedTauDeriv_analyticOrderAt_of_coordinate_eq_one E z hz1
   · simp only [hz1]
-    exact (ambientEstablishedTauDeriv_analyticAt E z).analyticOrderAt_eq_zero.mpr
-      (ambientEstablishedTauDeriv_ne_zero_of_coordinate_ne_one E z hz1)
+    exact (ambientNormalizedTauDeriv_analyticAt E z).analyticOrderAt_eq_zero.mpr
+      (ambientNormalizedTauDeriv_ne_zero_of_coordinate_ne_one E z hz1)
 
 end SphereSixComplex.Periods

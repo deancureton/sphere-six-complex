@@ -46,7 +46,7 @@ public theorem phaseSweepZeroPoint_continuous
   unfold phaseSweepZeroPoint constructedA2CentralCompactMap
   apply Continuous.subtype_mk
   apply Continuous.subtype_mk
-  apply (establishedContinuousTorusAction constructedModel).variable_action
+  apply (continuousTorusAction constructedModel).variable_action
   · apply continuous_compactTorusEmbedding.comp
     apply constructedA2EffectivePhaseSection_continuous.comp
     apply continuous_pi

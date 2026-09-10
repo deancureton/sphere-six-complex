@@ -219,14 +219,14 @@ public structure TotalSpecializationExactness
     let _ := G.fiberTopology
     LinearMap.ker (rawDegreeOneTotalSpecialization G) =
       LinearMap.range
-        (EstablishedCircleMappingTorusGeometricSections.sections
+        (_root_.SphereSixComplex.CircleMappingTorusHomologyBases.CuspMonodromyCoordinates.wangSections
           G.monodromyCoordinates).degreeOne.lift
   degreeTwo_surjective : Function.Surjective (rawDegreeTwoTotalSpecialization G)
   degreeTwo_kernel :
     let _ := G.fiberTopology
     LinearMap.ker (rawDegreeTwoTotalSpecialization G) =
       LinearMap.range
-      (EstablishedCircleMappingTorusGeometricSections.sections
+      (_root_.SphereSixComplex.CircleMappingTorusHomologyBases.CuspMonodromyCoordinates.wangSections
           G.monodromyCoordinates).degreeTwo.lift
 
 /-- A weaker and more geometric criterion: total specialization is onto and specified geometric
@@ -254,12 +254,12 @@ public theorem fiberCoinvariantSpecializationIsomorphisms_of_totalExactness
   exact {
     degreeOne := WangHomologyPresentation.coinvariantsRestriction_bijective_of_kernel_eq_section
       (circleMappingTorusHOnePresentation G.clutching)
-      (EstablishedCircleMappingTorusGeometricSections.sections
+      (_root_.SphereSixComplex.CircleMappingTorusHomologyBases.CuspMonodromyCoordinates.wangSections
         G.monodromyCoordinates).degreeOne
       (rawDegreeOneTotalSpecialization G) h.degreeOne_surjective h.degreeOne_kernel
     degreeTwo := WangHomologyPresentation.coinvariantsRestriction_bijective_of_kernel_eq_section
       (circleMappingTorusHTwoPresentation G.clutching)
-      (EstablishedCircleMappingTorusGeometricSections.sections
+      (_root_.SphereSixComplex.CircleMappingTorusHomologyBases.CuspMonodromyCoordinates.wangSections
         G.monodromyCoordinates).degreeTwo
       (rawDegreeTwoTotalSpecialization G) h.degreeTwo_surjective h.degreeTwo_kernel
   }
@@ -397,7 +397,7 @@ public noncomputable def normalizedGeometricWangSections
     let _ := G.fiberTopology
     CuspGeometricWangSections G.monodromyCoordinates := by
   let _ := G.fiberTopology
-  let S := EstablishedCircleMappingTorusGeometricSections.sections G.monodromyCoordinates
+  let S := _root_.SphereSixComplex.CircleMappingTorusHomologyBases.CuspMonodromyCoordinates.wangSections G.monodromyCoordinates
   exact {
     degreeOne := WangHomologyPresentation.correctedSection
       (circleMappingTorusHOnePresentation G.clutching) S.degreeOne
@@ -418,7 +418,7 @@ public theorem normalizedDegreeOneTotalSpecialization_eq_projection
           (normalizedGeometricWangSections G h).circleMappingTorusHOneAddEquiv.toAddMonoidHom := by
   let _ := G.fiberTopology
   let P := circleMappingTorusHOnePresentation G.clutching
-  let S := EstablishedCircleMappingTorusGeometricSections.sections G.monodromyCoordinates
+  let S := _root_.SphereSixComplex.CircleMappingTorusHomologyBases.CuspMonodromyCoordinates.wangSections G.monodromyCoordinates
   let c := G.degreeOneCoinvariantsEquiv
   let f := normalizedDegreeOneTotalSpecialization G h
   apply AddMonoidHom.ext
@@ -445,7 +445,7 @@ public theorem normalizedDegreeTwoTotalSpecialization_eq_projection
           (normalizedGeometricWangSections G h).circleMappingTorusHTwoAddEquiv.toAddMonoidHom := by
   let _ := G.fiberTopology
   let P := circleMappingTorusHTwoPresentation G.clutching
-  let S := EstablishedCircleMappingTorusGeometricSections.sections G.monodromyCoordinates
+  let S := _root_.SphereSixComplex.CircleMappingTorusHomologyBases.CuspMonodromyCoordinates.wangSections G.monodromyCoordinates
   let c := G.degreeTwoCoinvariantsEquiv
   let f := normalizedDegreeTwoTotalSpecialization G h
   apply AddMonoidHom.ext

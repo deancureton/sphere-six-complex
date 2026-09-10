@@ -48,7 +48,7 @@ public theorem constructedA2ClosedPhaseCellMap_continuous
   apply continuous_quotient_mk'.comp
   apply Continuous.subtype_mk
   apply Continuous.subtype_mk
-  let J := establishedContinuousTorusAction constructedModel
+  let J := continuousTorusAction constructedModel
   apply J.variable_action
   · exact continuous_compactTorusEmbedding.comp
       (constructedA2EffectivePhaseSection_continuous.comp continuous_snd)

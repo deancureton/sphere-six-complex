@@ -790,7 +790,6 @@ public theorem quotient_isManifold
 
 end ActualLocalCuspQuotientWitness
 
-namespace Established
 
 /-- The established standard infinite `A₂` model therefore carries the complete local cusp
 quotient witness at one shrunk radius. -/
@@ -801,7 +800,6 @@ public theorem exists_model_with_actualLocalCuspQuotientWitness
     InfiniteA2Toric.exists_model_and_torusActionPreservesComponents
   exact ⟨M, exists_actualLocalCuspQuotientWitness N M Q⟩
 
-end Established
 
 end BoundedPolydiscRegions
 

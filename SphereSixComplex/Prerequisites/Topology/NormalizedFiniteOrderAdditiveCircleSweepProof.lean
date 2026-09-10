@@ -133,7 +133,7 @@ public theorem normalizedCover_positiveCircleCross_loopAction_pow
       rw [ih, normalizedCover_positiveCircleCross_loopAction phi hpow c]
 
 /-- The fibre square required by `SweepData` follows from the literal point-set fibre square. -/
-public theorem normalizedFiniteOrderAdditiveCircleSweep_fibreSquare
+public theorem normalizedFiniteOrderAdditiveCircleSweep_fiberSquare
     {G : Type} [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
     (phi : G ≃ₜ+ G) (hpow : phi.toHomeomorph ^ m = 1)
     (x : IntegralSingularHomology 2 G) :
@@ -144,7 +144,7 @@ public theorem normalizedFiniteOrderAdditiveCircleSweep_fibreSquare
   exact normalizedAffineCover_fiber_square phi.toHomeomorph hpow 1 x
 
 /-- The finite-cover boundary formula holds on every class supported in the product fibre. -/
-public theorem normalizedFiniteOrderAdditiveCircleSweep_boundarySquare_fibre
+public theorem normalizedFiniteOrderAdditiveCircleSweep_boundarySquare_fiber
     {G : Type} [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
     (phi : G ≃ₜ+ G) (hpow : phi.toHomeomorph ^ m = 1)
     (x : IntegralSingularHomology 2 G) :
@@ -158,7 +158,7 @@ public theorem normalizedFiniteOrderAdditiveCircleSweep_boundarySquare_fibre
           (canonicalProductWangBoundary 1
             (integralSingularHomologyMap 2
               (circleProductFiberInclusion (X := G)) x)) := by
-  rw [normalizedFiniteOrderAdditiveCircleSweep_fibreSquare phi hpow x]
+  rw [normalizedFiniteOrderAdditiveCircleSweep_fiberSquare phi hpow x]
   rw [(circleMappingTorusWangPresentationOfCover
     phi.toHomeomorph 1).boundary_inclusion]
   have hsource : canonicalProductWangBoundary 1

@@ -2,8 +2,8 @@ module
 
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.ScalarCircleReflection
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.ScalarCircleReflection
-public import SphereSixComplex.Prerequisites.Periods.Uniformization.ScalarFundamentalFibres
-import all SphereSixComplex.Prerequisites.Periods.Uniformization.ScalarFundamentalFibres
+public import SphereSixComplex.Prerequisites.Periods.Uniformization.ScalarFundamentalFibers
+import all SphereSixComplex.Prerequisites.Periods.Uniformization.ScalarFundamentalFibers
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.ScalarSeedInjective
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.ScalarSeedInjective
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.ScalarRightReflectionInjective
@@ -450,7 +450,7 @@ theorem global_surjective_of_eqOn_orientedFundamentalRegion
 
 /-- Agreement on the doubled fundamental region also transports its exact fibre separation to the
 continued global branch. -/
-theorem global_fundamental_fibres_of_eqOn_orientedFundamentalRegion
+theorem global_fundamental_fibers_of_eqOn_orientedFundamentalRegion
     (S : ChamberCaratheodorySeed sourceBoundedChamber)
     (hfund : ∀ z : UpperHalfPlane, z ∈ orientedFundamentalRegion →
       A.global (z : ℂ) = sourceScalarRightDoubleMap S (z : ℂ))
@@ -458,7 +458,7 @@ theorem global_fundamental_fibres_of_eqOn_orientedFundamentalRegion
     (hw : w ∈ orientedFundamentalRegion)
     (hzw : A.global (z : ℂ) = A.global (w : ℂ)) :
     ∃ g : Delta, fuchsianSourceAction g • z = w := by
-  apply sourceScalarRightDoubleMap_fundamental_fibres S hz hw
+  apply sourceScalarRightDoubleMap_fundamental_fibers S hz hw
   rw [← hfund z hz, ← hfund w hw]
   exact hzw
 

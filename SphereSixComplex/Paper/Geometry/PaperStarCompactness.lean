@@ -56,29 +56,29 @@ public theorem starGluedCompact :
 
 /-- The two end-control obligations and the proved closed collar pairs provide the exact
 topological completion data consumed downstream by the paper assembly. -/
-public noncomputable def gluingCompletionData_of_endControl
+public noncomputable def compactHausdorffGluingData_of_endControl
     (hcusp : ActualA2TwoChartRadialSublevelRepresentatives P.starCuspWitness)
     (hcentral : P.ThresholdedCentralEndCoverData) :
-    GluingCompletionData P.openEmbeddingStarData.toFourPieceStarGluingData.glueData := by
+    CompactHausdorffGluingData P.openEmbeddingStarData.toFourPieceStarGluingData.glueData := by
   let _ : T2Space P.openEmbeddingStarData.central := by
     change T2Space P.CentralFamily
     exact P.centralFamily_t2
   let _ (i : Fin 3) : T2Space (P.openEmbeddingStarData.filling i) := by
     change T2Space (P.StarFilling i)
     exact P.starFilling_t2 i
-  exact (P.compactCoverData_of_endControl hcusp hcentral).toGluingCompletionData
+  exact (P.compactCoverData_of_endControl hcusp hcentral).toCompactHausdorffGluingData
     P.closedCollarPairData.relComponent_isClosed
 
 /-- Exact Hausdorff and compact completion data for the actual paper star. -/
-@[expose] public noncomputable def gluingCompletionData :
-    GluingCompletionData P.openEmbeddingStarData.toFourPieceStarGluingData.glueData := by
+@[expose] public noncomputable def compactHausdorffGluingData :
+    CompactHausdorffGluingData P.openEmbeddingStarData.toFourPieceStarGluingData.glueData := by
   let _ : T2Space P.openEmbeddingStarData.central := by
     change T2Space P.CentralFamily
     exact P.centralFamily_t2
   let _ (i : Fin 3) : T2Space (P.openEmbeddingStarData.filling i) := by
     change T2Space (P.StarFilling i)
     exact P.starFilling_t2 i
-  exact P.compactCoverData.toGluingCompletionData
+  exact P.compactCoverData.toCompactHausdorffGluingData
     P.closedCollarPairData.relComponent_isClosed
 
 end PaperAnalyticData

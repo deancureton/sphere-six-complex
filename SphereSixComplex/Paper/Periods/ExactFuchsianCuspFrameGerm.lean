@@ -148,7 +148,7 @@ public theorem exists_sqrtEisensteinSixCuspGerm
     exists_parabolicCuspSimpleGerm sourceCuspWidth 1
       sourceCuspWidth_pos zero_lt_one E.modularParameter.tau
       E.modularParameter.tau_holomorphic
-      (establishedModularParameter_tau_translate E)
+      (normalizedModularParameter_tau_translate E)
   let e6q : ℂ → ℂ := UpperHalfPlane.cuspFunction 1
     (ModularForm.E₆ : UpperHalfPlane → ℂ)
   have he6q_analytic : AnalyticAt ℂ e6q 0 := eisensteinSix_cusp_analytic
@@ -237,7 +237,7 @@ public theorem exists_exactFuchsianCuspFrameGerm
     exists_parabolicCuspSimpleGerm sourceCuspWidth 1
       sourceCuspWidth_pos zero_lt_one E.modularParameter.tau
       E.modularParameter.tau_holomorphic
-      (establishedModularParameter_tau_translate E)
+      (normalizedModularParameter_tau_translate E)
   let e4q : ℂ → ℂ := UpperHalfPlane.cuspFunction 1
     (ModularForm.E₄ : UpperHalfPlane → ℂ)
   have he4q_analytic : AnalyticAt ℂ e4q 0 := eisensteinFour_cusp_analytic

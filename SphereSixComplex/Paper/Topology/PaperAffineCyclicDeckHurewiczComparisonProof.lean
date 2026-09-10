@@ -6,8 +6,13 @@ public import SphereSixComplex.Paper.Topology.PaperAffineCyclicQuotientCovering
 open AlgebraicTopology MulOpposite Topology
 
 namespace SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
-namespace EstablishedAffineCyclicQuotientHomology
+end SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
 
+namespace SphereSixComplex.AffineCyclicQuotientHomology
+open SphereSixComplex SphereSixComplex.Topology
+open SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+
+open _root_.SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
 open SphereSixComplex.Geometry
 open SphereSixComplex.Geometry.AnalyticTorusFamily
 open SphereSixComplex.Geometry.ComplexTorus
@@ -48,5 +53,8 @@ public noncomputable def establishedAffineCyclicDeckHurewiczComparison
 
 end
 
-end EstablishedAffineCyclicQuotientHomology
+end SphereSixComplex.AffineCyclicQuotientHomology
+
+namespace SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+
 end SphereSixComplex.Topology.PaperMultipleFiberHOneTopology

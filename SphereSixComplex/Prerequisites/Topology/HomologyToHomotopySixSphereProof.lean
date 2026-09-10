@@ -11,7 +11,7 @@ This file works towards discharging `establishedHomologyToHomotopySixSphere`, th
 simply connected smooth integral homology six-sphere is homotopy equivalent to `S⁶`.
 
 The classical proof has exactly three ingredients beyond the sphere homology calculation, which is
-already available here as `establishedSixSpherePositiveHomologyInputs`:
+already available here as `sixSpherePositiveHomologyInputs`:
 
 * the Hurewicz theorem, which turns the vanishing of `Hₙ X` for `1 ≤ n ≤ 5` into a map
   `S⁶ → X` inducing an isomorphism on `H₆`;
@@ -63,7 +63,7 @@ public theorem SmoothIntegralHomologySixSphere.integralHomologyDegreeSix
     (h : SmoothIntegralHomologySixSphere X) :
     Nonempty (IntegralSingularHomology 6 X ≃+ ℤ) := by
   obtain ⟨e⟩ := h.integralHomology 6
-  obtain ⟨g⟩ := establishedSixSpherePositiveHomologyInputs.degreeSix
+  obtain ⟨g⟩ := sixSpherePositiveHomologyInputs.degreeSix
   exact ⟨e.trans g⟩
 
 /-- The integral homology of a smooth integral homology six-sphere vanishes outside degrees zero
@@ -75,7 +75,7 @@ public theorem SmoothIntegralHomologySixSphere.integralHomologyVanishing
     Subsingleton (IntegralSingularHomology n X) := by
   obtain ⟨e⟩ := h.integralHomology n
   have : Subsingleton (IntegralSingularHomology n SixSphere) :=
-    establishedSixSpherePositiveHomologyInputs.otherDegrees n hn₀ hn₆
+    sixSpherePositiveHomologyInputs.otherDegrees n hn₀ hn₆
   exact ⟨fun x y ↦ e.injective (Subsingleton.elim _ _)⟩
 
 /-! ## The two classical inputs that remain unproved -/
@@ -108,7 +108,7 @@ for spaces of classical CW type together give the recognition obligation
 `establishedHomologyToHomotopySixSphere`.
 
 The sphere homology calculation that the intermediate detection step needs is supplied by the
-proved `establishedSixSpherePositiveHomologyInputs`, and path connectedness by
+proved `sixSpherePositiveHomologyInputs`, and path connectedness by
 `SmoothSimplyConnectedIntegralHomologySixSphere.pathConnectedSpace`, so no further input is
 hidden in the statement. -/
 public theorem homologyToHomotopySixSphere_of_hurewicz_of_cwType_of_whitehead
@@ -120,7 +120,7 @@ public theorem homologyToHomotopySixSphere_of_hurewicz_of_cwType_of_whitehead
   intro hX
   let _ : PathConnectedSpace X := hX.pathConnectedSpace
   exact homotopyEquivSixSphere_of_sphericalGenerator_of_classicalCWWhitehead
-    establishedSixSpherePositiveHomologyInputs hX.integralHomology (hHurewicz hX) (hCWType hX)
+    sixSpherePositiveHomologyInputs hX.integralHomology (hHurewicz hX) (hCWType hX)
     hWhitehead
 
 /-! ## The Hurewicz and CW inputs are necessary -/

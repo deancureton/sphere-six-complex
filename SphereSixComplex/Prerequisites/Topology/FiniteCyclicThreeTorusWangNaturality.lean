@@ -38,7 +38,7 @@ public def baseCrossDegreeOne : SixLattice →ₗ[ℤ] ThreeLattice where
   map_smul' n x := by funext i; fin_cases i <;> simp
 
 /-- The three fibre degree-two coordinates `(12,13,23)`. -/
-public def fibreDegreeTwo : SixLattice →ₗ[ℤ] ThreeLattice where
+public def fiberDegreeTwo : SixLattice →ₗ[ℤ] ThreeLattice where
   toFun x := ![x 3, x 4, x 5]
   map_add' x y := by funext i; fin_cases i <;> simp
   map_smul' n x := by funext i; fin_cases i <;> simp

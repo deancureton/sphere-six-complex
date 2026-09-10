@@ -2,7 +2,7 @@ module
 
 public import SphereSixComplex.Paper.Geometry.PaperSectionSevenHomology
 public import SphereSixComplex.Paper.Topology.PaperActualAffineFillingCoverModels
-public import SphereSixComplex.Paper.Topology.PaperCuspCollarFourTorusFibre
+public import SphereSixComplex.Paper.Topology.PaperCuspCollarFourTorusFiber
 
 /-!
 # What the paper's gluing data still needs
@@ -21,11 +21,11 @@ namespace SphereSixComplex.Geometry
 
 /-- The production gluing data, given the one Section 7 obligation that is still open. -/
 public theorem exists_paperGluingData_of_positiveDegreeAssembly
-    (H : establishedPaperAnalyticData.PositiveDegreeHomologyAssembly) :
+    (H : chosenPaperAnalyticData.PositiveDegreeHomologyAssembly) :
     Nonempty PaperGluingData :=
-  ⟨establishedPaperAnalyticData.toPaperGluingData_of_positiveDegree
+  ⟨chosenPaperAnalyticData.toPaperGluingData_of_positiveDegree
       establishedPaperStarHasVanKampenData H
-      establishedPaperAnalyticData.stageTopDegreeVanishing⟩
+      chosenPaperAnalyticData.stageTopDegreeVanishing⟩
 
 end SphereSixComplex.Geometry
 

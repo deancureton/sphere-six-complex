@@ -126,7 +126,7 @@ public noncomputable def affineCyclicHOnePresentationEquiv
     (P : AffineCyclicCentralFiberPresentationData m p D) :
     IntegralSingularHomology 1 D.reducedCentralFiber ≃ₗ[ℤ]
       CyclicCoinvariants.Presentation P.latticeDifference P.twist (m : ℤ) :=
-  EstablishedAffineCyclicQuotientHomology.reducedCentralFiberHOneEquivPresentation P
+  _root_.SphereSixComplex.AffineCyclicQuotientHomology.reducedCentralFiberHOneEquivPresentation P
 
 /-- Naturality of the standard abelianized covering-group presentation.
 
@@ -145,9 +145,9 @@ public theorem establishedAffineCyclicHOnePresentation_projection
   simpa only [affineCyclicHOnePresentationEquiv,
     affineCyclicCentralFiberCoverSourceHomologyBasis,
     latticeToMultipleFiberHOnePresentation,
-    EstablishedAffineCyclicQuotientHomology.centralFiberCoverSourceDegreeOneBasis,
-    EstablishedAffineCyclicQuotientHomology.latticeProjection] using
-    EstablishedAffineCyclicQuotientHomology.reducedCentralFiberHOneEquivPresentation_projection P x
+    _root_.SphereSixComplex.AffineCyclicQuotientHomology.centralFiberCoverSourceDegreeOneBasis,
+    _root_.SphereSixComplex.AffineCyclicQuotientHomology.latticeProjection] using
+    _root_.SphereSixComplex.AffineCyclicQuotientHomology.reducedCentralFiberHOneEquivPresentation_projection P x
 
 /-- Exposed order-three presentation coordinates. -/
 public noncomputable def orderOnePresentationEquivIntSquared :

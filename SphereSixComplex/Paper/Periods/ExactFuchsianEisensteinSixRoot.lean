@@ -29,7 +29,7 @@ private def ambientLiftedEisensteinSix
 
 private def rawEisensteinSixDerivativeQuotient
     (E : NormalizedFuchsianModularParameter) (w : ℂ) : ℂ :=
-  ambientLiftedEisensteinSix E w / ambientEstablishedTauDeriv E w ^ 2
+  ambientLiftedEisensteinSix E w / ambientNormalizedTauDeriv E w ^ 2
 
 private lemma ambientLiftedEisensteinSix_analyticAt
     (E : NormalizedFuchsianModularParameter) (z : UpperHalfPlane) :
@@ -147,8 +147,8 @@ private lemma rawEisensteinSixDerivativeQuotient_meromorphicOn
   let z : UpperHalfPlane := ⟨w, hw⟩
   have hF : AnalyticAt ℂ (ambientLiftedEisensteinSix E) w := by
     simpa only [z] using ambientLiftedEisensteinSix_analyticAt E z
-  have hD : AnalyticAt ℂ (ambientEstablishedTauDeriv E) w := by
-    simpa only [z] using ambientEstablishedTauDeriv_analyticAt E z
+  have hD : AnalyticAt ℂ (ambientNormalizedTauDeriv E) w := by
+    simpa only [z] using ambientNormalizedTauDeriv_analyticAt E z
   exact hF.meromorphicAt.div (hD.pow 2).meromorphicAt
 
 private lemma rawEisensteinSixDerivativeQuotient_order_zero
@@ -158,19 +158,19 @@ private lemma rawEisensteinSixDerivativeQuotient_order_zero
   let z : UpperHalfPlane := ⟨w, hw⟩
   have hF : AnalyticAt ℂ (ambientLiftedEisensteinSix E) w := by
     simpa only [z] using ambientLiftedEisensteinSix_analyticAt E z
-  have hD : AnalyticAt ℂ (ambientEstablishedTauDeriv E) w := by
-    simpa only [z] using ambientEstablishedTauDeriv_analyticAt E z
+  have hD : AnalyticAt ℂ (ambientNormalizedTauDeriv E) w := by
+    simpa only [z] using ambientNormalizedTauDeriv_analyticAt E z
   rw [show rawEisensteinSixDerivativeQuotient E =
-      ambientLiftedEisensteinSix E / (ambientEstablishedTauDeriv E) ^ 2 by rfl,
+      ambientLiftedEisensteinSix E / (ambientNormalizedTauDeriv E) ^ 2 by rfl,
     meromorphicOrderAt_div hF.meromorphicAt (hD.pow 2).meromorphicAt,
     hF.meromorphicOrderAt_eq, (hD.pow 2).meromorphicOrderAt_eq,
     analyticOrderAt_pow hD]
   rw [show analyticOrderAt (ambientLiftedEisensteinSix E) w =
       if E.sourceCoordinate.coordinate z = 1 then (2 : ℕ∞) else 0 by
         simpa only [z] using ambientLiftedEisensteinSix_analyticOrderAt E z]
-  rw [show analyticOrderAt (ambientEstablishedTauDeriv E) w =
+  rw [show analyticOrderAt (ambientNormalizedTauDeriv E) w =
       if E.sourceCoordinate.coordinate z = 1 then (1 : ℕ∞) else 0 by
-        simpa only [z] using ambientEstablishedTauDeriv_analyticOrderAt E z]
+        simpa only [z] using ambientNormalizedTauDeriv_analyticOrderAt E z]
   by_cases hz : E.sourceCoordinate.coordinate z = 1 <;> simp [hz]
 
 /-- A global holomorphic square root of the weight-six Eisenstein series pulled back by the
@@ -203,10 +203,10 @@ public theorem exists_exactFuchsianEisensteinSixRoot
   obtain ⟨r, hr_analytic, hr_sq⟩ := exists_analyticOnNhd_sq_eq
     upperHalfPlaneSet_isSimplyConnected UpperHalfPlane.isOpen_upperHalfPlaneSet
     hQanalytic hQne
-  let s : UpperHalfPlane → ℂ := fun z ↦ ambientEstablishedTauDeriv E z * r z
-  have hD_mdiff : MDiff (fun z : UpperHalfPlane ↦ ambientEstablishedTauDeriv E z) := by
+  let s : UpperHalfPlane → ℂ := fun z ↦ ambientNormalizedTauDeriv E z * r z
+  have hD_mdiff : MDiff (fun z : UpperHalfPlane ↦ ambientNormalizedTauDeriv E z) := by
     intro z
-    exact (ambientEstablishedTauDeriv_analyticAt E z).differentiableAt.mdifferentiableAt.comp z
+    exact (ambientNormalizedTauDeriv_analyticAt E z).differentiableAt.mdifferentiableAt.comp z
       UpperHalfPlane.mdifferentiable_coe.mdifferentiableAt
   have hr_mdiff : MDiff (fun z : UpperHalfPlane ↦ r z) := by
     intro z
@@ -216,31 +216,31 @@ public theorem exists_exactFuchsianEisensteinSixRoot
   intro z
   have hF : AnalyticAt ℂ (ambientLiftedEisensteinSix E) z :=
     ambientLiftedEisensteinSix_analyticAt E z
-  have hD : AnalyticAt ℂ (ambientEstablishedTauDeriv E) z :=
-    ambientEstablishedTauDeriv_analyticAt E z
+  have hD : AnalyticAt ℂ (ambientNormalizedTauDeriv E) z :=
+    ambientNormalizedTauDeriv_analyticAt E z
   have hQ : AnalyticAt ℂ Q z := hQanalytic z z.im_pos
-  have hDorder : analyticOrderAt (ambientEstablishedTauDeriv E) z ≠ ⊤ := by
-    rw [ambientEstablishedTauDeriv_analyticOrderAt E z]
+  have hDorder : analyticOrderAt (ambientNormalizedTauDeriv E) z ≠ ⊤ := by
+    rw [ambientNormalizedTauDeriv_analyticOrderAt E z]
     split <;> simp
-  have hDne : ∀ᶠ w in 𝓝[≠] (z : ℂ), ambientEstablishedTauDeriv E w ≠ 0 :=
+  have hDne : ∀ᶠ w in 𝓝[≠] (z : ℂ), ambientNormalizedTauDeriv E w ≠ 0 :=
     (meromorphicOrderAt_ne_top_iff_eventually_ne_zero hD.meromorphicAt).mp <| by
       rw [hD.meromorphicOrderAt_eq]
       intro htop
       exact hDorder (ENat.map_eq_top_iff.mp htop)
   have hQrawz : Q =ᶠ[𝓝[≠] (z : ℂ)] raw := hQraw z z.im_pos
   have hproductNE :
-      (fun w ↦ ambientEstablishedTauDeriv E w ^ 2 * Q w) =ᶠ[𝓝[≠] (z : ℂ)]
+      (fun w ↦ ambientNormalizedTauDeriv E w ^ 2 * Q w) =ᶠ[𝓝[≠] (z : ℂ)]
         ambientLiftedEisensteinSix E := by
     filter_upwards [hQrawz, hDne] with w hqw hdw
     rw [hqw]
     simp only [raw, rawEisensteinSixDerivativeQuotient]
     field_simp [hdw]
   have hproduct :
-      (fun w ↦ ambientEstablishedTauDeriv E w ^ 2 * Q w) =ᶠ[nhds (z : ℂ)]
+      (fun w ↦ ambientNormalizedTauDeriv E w ^ 2 * Q w) =ᶠ[nhds (z : ℂ)]
         ambientLiftedEisensteinSix E :=
     ((hD.pow 2).mul hQ).continuousAt.eventuallyEq_nhds_iff_eventuallyEq_nhdsNE
       hF.continuousAt |>.mp hproductNE
-  change (ambientEstablishedTauDeriv E z * r z) ^ 2 = liftedEisensteinSix E z
+  change (ambientNormalizedTauDeriv E z * r z) ^ 2 = liftedEisensteinSix E z
   rw [mul_pow, hr_sq]
   have hzprod := hproduct.eq_of_nhds
   simpa only [Q, U, UpperHalfPlane.ofComplex_apply,

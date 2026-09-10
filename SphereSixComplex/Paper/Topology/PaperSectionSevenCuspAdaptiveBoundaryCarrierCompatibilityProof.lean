@@ -25,9 +25,9 @@ namespace EllipticTwoDiscCoverData
 
 /-- Oriented naturality for the selected full-fibre slice reconstructs the adaptive carrier
 equality on the complete Mayer--Vietoris boundary image. -/
-public theorem adaptiveBoundaryCarrierCompatibility_of_fullFibreOrientedBoundaryNaturality
+public theorem adaptiveBoundaryCarrierCompatibility_of_fullFiberOrientedBoundaryNaturality
     (R : A.AffineRadialCompletionInput)
-    (h : ActualCuspWangFullFibreOrientedBoundaryNaturality R) :
+    (h : ActualCuspWangFullFiberOrientedBoundaryNaturality R) :
     ActualCuspAdaptiveBoundaryCarrierCompatibility R := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
@@ -53,35 +53,35 @@ public theorem adaptiveBoundaryCarrierCompatibility_of_fullFibreOrientedBoundary
     exact hreadRaw
   change pullback (boundary y) =
     R.twoDiscCover.cuspOpenCoverConnectingHom (e.symm y) at hnatApply
-  change actualCuspWangFibreToCuspCoverIntersectionHomologyOne (A := A) R
+  change actualCuspWangFiberToCuspCoverIntersectionHomologyOne (A := A) R
       (actualCuspWangBoundaryHom A (e.symm y)) =
     R.twoDiscCover.cuspOpenCoverConnectingHom (e.symm y) at hboundary
   simp only [AddMonoidHom.comp_apply]
   calc
-    actualCuspWangFibreToCuspCoverIntersectionHomologyOne (A := A) R
+    actualCuspWangFiberToCuspCoverIntersectionHomologyOne (A := A) R
         (actualCuspAdaptiveNaturalSourceRead R (boundary y)) =
-      actualCuspWangFibreToCuspCoverIntersectionHomologyOne (A := A) R
+      actualCuspWangFiberToCuspCoverIntersectionHomologyOne (A := A) R
         (actualCuspWangBoundaryHom A (e.symm y)) := congrArg _ hread
     _ = R.twoDiscCover.cuspOpenCoverConnectingHom (e.symm y) := hboundary
     _ = pullback (boundary y) := hnatApply.symm
 
 /-- The adaptive boundary carrier statement is exactly the oriented full-fibre naturality
 square; the adaptive reparameterization introduces no additional residual. -/
-public theorem adaptiveBoundaryCarrierCompatibility_iff_fullFibreOrientedBoundaryNaturality
+public theorem adaptiveBoundaryCarrierCompatibility_iff_fullFiberOrientedBoundaryNaturality
     (R : A.AffineRadialCompletionInput) :
     ActualCuspAdaptiveBoundaryCarrierCompatibility R ↔
-      ActualCuspWangFullFibreOrientedBoundaryNaturality R :=
-  ⟨fullFibreOrientedBoundaryNaturality_of_adaptiveCarrierCompatibility R,
-    adaptiveBoundaryCarrierCompatibility_of_fullFibreOrientedBoundaryNaturality R⟩
+      ActualCuspWangFullFiberOrientedBoundaryNaturality R :=
+  ⟨fullFiberOrientedBoundaryNaturality_of_adaptiveCarrierCompatibility R,
+    adaptiveBoundaryCarrierCompatibility_of_fullFiberOrientedBoundaryNaturality R⟩
 
 /-- Equivalently, adaptive carrier compatibility consists of precisely the two remaining
 invariant-generator comparisons for the explicit full-fibre slice. -/
-public theorem adaptiveBoundaryCarrierCompatibility_iff_fullFibreInvariantResidual
+public theorem adaptiveBoundaryCarrierCompatibility_iff_fullFiberInvariantResidual
     (R : A.AffineRadialCompletionInput) :
     ActualCuspAdaptiveBoundaryCarrierCompatibility R ↔
-      ActualCuspWangFullFibreSliceInvariantResidual R := by
-  rw [adaptiveBoundaryCarrierCompatibility_iff_fullFibreOrientedBoundaryNaturality,
-    fullFibreOrientedBoundaryNaturality_iff_invariantResidual]
+      ActualCuspWangFullFiberSliceInvariantResidual R := by
+  rw [adaptiveBoundaryCarrierCompatibility_iff_fullFiberOrientedBoundaryNaturality,
+    fullFiberOrientedBoundaryNaturality_iff_invariantResidual]
 
 end EllipticTwoDiscCoverData
 

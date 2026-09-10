@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspWangFullFibreSlice
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspWangFullFiberSlice
 public import SphereSixComplex.Paper.Topology.PaperCuspGeometricSpecializationProof
 
 @[expose] public section
@@ -104,11 +104,11 @@ public theorem actualCuspWangBoundaryRawBasisCoordinates_five :
 
 /-- The explicit value occurring for the first four raw basis vectors maps to zero in the
 cover intersection. -/
-public theorem actualCuspWangFibreToCuspCoverIntersectionHomologyOne_rawZero
+public theorem actualCuspWangFiberToCuspCoverIntersectionHomologyOne_rawZero
     {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
-    actualCuspWangFibreToCuspCoverIntersectionHomologyOne (A := A) R
+    actualCuspWangFiberToCuspCoverIntersectionHomologyOne (A := A) R
         (G.monodromyCoordinates.degreeOne.symm 0) = 0 := by
   dsimp
   let _ := A.actualCuspRadialClutchingData.fiberTopology
@@ -120,7 +120,7 @@ private theorem openRadialIntervalProdHomotopyEquiv_apply_snd
     openRadialIntervalProdHomotopyEquiv hr p = p.2 := by
   rfl
 
-private theorem totalHomeomorph_actualCuspFullFibreSlice_snd
+private theorem totalHomeomorph_actualCuspFullFiberSlice_snd
     {A : PaperAnalyticData} (s : ℂ)
     (hs : ‖SphereSixComplex.Geometry.CuspPeriodExpansion.cuspQ s‖ <
       A.starCuspWitness.localWitness.radius)
@@ -129,7 +129,7 @@ private theorem totalHomeomorph_actualCuspFullFibreSlice_snd
       G.Fiber) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
-    (G.totalHomeomorph (actualCuspFullFibreSlice (A := A) s hs y)).2 =
+    (G.totalHomeomorph (actualCuspFullFiberSlice (A := A) s hs y)).2 =
       SphereSixComplex.CyclicAngularFundamentalDomain.realMappingTorusHomeomorph G.clutching
         (Quotient.mk
           (SphereSixComplex.CyclicAngularFundamentalDomain.realMappingTorusSetoid G.clutching)
@@ -148,7 +148,7 @@ private theorem totalHomeomorph_actualCuspFullFibreSlice_snd
             (s.re, y))))).2 = _
   rw [A.actualCuspRadialClutchingData.totalHomeomorph.apply_symm_apply]
 
-private def circleMappingTorusRealFibreSlice
+private def circleMappingTorusRealFiberSlice
     {F : Type} [TopologicalSpace F] (phi : F ≃ₜ F) (a : ℝ) :
     C(F, CircleMappingTorus phi) :=
   ⟨fun y ↦ SphereSixComplex.CyclicAngularFundamentalDomain.realMappingTorusHomeomorph phi
@@ -157,9 +157,9 @@ private def circleMappingTorusRealFibreSlice
     (SphereSixComplex.CyclicAngularFundamentalDomain.realMappingTorusHomeomorph phi).continuous.comp
       (continuous_quot_mk.comp (continuous_const.prodMk continuous_id))⟩
 
-private def circleMappingTorusRealFibreSliceHomotopy
+private def circleMappingTorusRealFiberSliceHomotopy
     {F : Type} [TopologicalSpace F] (phi : F ≃ₜ F) (a : ℝ) :
-    ContinuousMap.Homotopy (circleMappingTorusRealFibreSlice phi a)
+    ContinuousMap.Homotopy (circleMappingTorusRealFiberSlice phi a)
       (finiteBouquetMappingTorusFiberInclusion (fun _ : Unit ↦ phi)) where
   toFun q :=
     SphereSixComplex.CyclicAngularFundamentalDomain.realMappingTorusHomeomorph phi
@@ -172,7 +172,7 @@ private def circleMappingTorusRealFibreSliceHomotopy
         (((continuous_const.sub (continuous_subtype_val.comp continuous_fst)).mul
           continuous_const).prodMk continuous_snd))
   map_zero_left x := by
-    simp [circleMappingTorusRealFibreSlice]
+    simp [circleMappingTorusRealFiberSlice]
   map_one_left x := by
     simpa using
       SphereSixComplex.Geometry.CuspRadialClutchingConstruction.realMappingTorusHomeomorph_mk_zero
@@ -216,29 +216,29 @@ private theorem cuspOpenCoverConnectingHom_eq_zero_of_intersection_image
   rw [SphereSixComplex.integralSingularHomologyMap_comp_wang]
   exact hw
 
-private theorem actualCuspWangFibreSlice_to_mappingTorus
+private theorem actualCuspWangFiberSlice_to_mappingTorus
     {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     G.totalHomotopyEquiv.toFun.comp
         ((TopologicalSpace.Opens.inclusion' (R.twoDiscCover.cuspOrderThreeOpen ⊓
           R.twoDiscCover.cuspOrderFourOpen)).hom.comp
-          (actualCuspWangFibreToCuspCoverIntersectionMap (A := A) R)) =
-      circleMappingTorusRealFibreSlice G.clutching
-        (A.cuspAngularLiftPoint (actualCuspFullFibreCrossingTime A)).1.2.re := by
+          (actualCuspWangFiberToCuspCoverIntersectionMap (A := A) R)) =
+      circleMappingTorusRealFiberSlice G.clutching
+        (A.cuspAngularLiftPoint (actualCuspFullFiberCrossingTime A)).1.2.re := by
   dsimp
   let _ := A.actualCuspRadialClutchingData.fiberTopology
   ext y
   change openRadialIntervalProdHomotopyEquiv _
     (A.actualCuspRadialClutchingData.totalHomeomorph
       (((TopologicalSpace.Opens.inclusion' _).hom.comp
-        (actualCuspWangFibreToCuspCoverIntersectionMap (A := A) R)) y)) = _
+        (actualCuspWangFiberToCuspCoverIntersectionMap (A := A) R)) y)) = _
   rw [openRadialIntervalProdHomotopyEquiv_apply_snd]
   change (A.actualCuspRadialClutchingData.totalHomeomorph
-    (actualCuspFullFibreSlice (A := A)
-      (A.cuspAngularLiftPoint (actualCuspFullFibreCrossingTime A)).1.2
-      (A.cuspAngularLiftPoint (actualCuspFullFibreCrossingTime A)).2 y)).2 = _
-  exact totalHomeomorph_actualCuspFullFibreSlice_snd _ _ y
+    (actualCuspFullFiberSlice (A := A)
+      (A.cuspAngularLiftPoint (actualCuspFullFiberCrossingTime A)).1.2
+      (A.cuspAngularLiftPoint (actualCuspFullFiberCrossingTime A)).2 y)).2 = _
+  exact totalHomeomorph_actualCuspFullFiberSlice_snd _ _ y
 
 private theorem actualCuspRawCastAdd_mem_cuspCoverIntersectionImage
     {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput)
@@ -269,7 +269,7 @@ private theorem actualCuspRawCastAdd_mem_cuspCoverIntersectionImage
     exact (P.exact_inclusion_boundary y).mp hb
   obtain ⟨z, hz⟩ := hy
   let w := integralSingularHomologyMap 2
-    (actualCuspWangFibreToCuspCoverIntersectionMap (A := A) R) z
+    (actualCuspWangFiberToCuspCoverIntersectionMap (A := A) R) z
   refine ⟨w, ?_⟩
   apply e.injective
   change integralSingularHomologyMap 2 G.totalHomotopyEquiv.toFun
@@ -278,35 +278,35 @@ private theorem actualCuspRawCastAdd_mem_cuspCoverIntersectionImage
           (R.twoDiscCover.cuspOrderThreeOpen ⊓
             R.twoDiscCover.cuspOrderFourOpen)).hom
         (integralSingularHomologyMap 2
-          (actualCuspWangFibreToCuspCoverIntersectionMap (A := A) R) z)) = y
+          (actualCuspWangFiberToCuspCoverIntersectionMap (A := A) R) z)) = y
   have hsquare := congrArg (fun f ↦ f z)
     (congrArg (integralSingularHomologyMap 2)
-      (actualCuspWangFibreSlice_to_mappingTorus R))
+      (actualCuspWangFiberSlice_to_mappingTorus R))
   calc
     _ = integralSingularHomologyMap 2 G.totalHomotopyEquiv.toFun
         (integralSingularHomologyMap 2
           ((TopologicalSpace.Opens.inclusion'
             (R.twoDiscCover.cuspOrderThreeOpen ⊓
               R.twoDiscCover.cuspOrderFourOpen)).hom.comp
-            (actualCuspWangFibreToCuspCoverIntersectionMap (A := A) R)) z) := by
+            (actualCuspWangFiberToCuspCoverIntersectionMap (A := A) R)) z) := by
       rw [← SphereSixComplex.integralSingularHomologyMap_comp_wang]
     _ = integralSingularHomologyMap 2
         (G.totalHomotopyEquiv.toFun.comp
           ((TopologicalSpace.Opens.inclusion'
             (R.twoDiscCover.cuspOrderThreeOpen ⊓
               R.twoDiscCover.cuspOrderFourOpen)).hom.comp
-            (actualCuspWangFibreToCuspCoverIntersectionMap (A := A) R))) z :=
+            (actualCuspWangFiberToCuspCoverIntersectionMap (A := A) R))) z :=
       SphereSixComplex.integralSingularHomologyMap_comp_wang _ _ _ _
     _ = integralSingularHomologyMap 2
-        (circleMappingTorusRealFibreSlice G.clutching
+        (circleMappingTorusRealFiberSlice G.clutching
           (A.cuspAngularLiftPoint
-            (actualCuspFullFibreCrossingTime A)).1.2.re) z := hsquare
+            (actualCuspFullFiberCrossingTime A)).1.2.re) z := hsquare
     _ = integralSingularHomologyMap 2
         (finiteBouquetMappingTorusFiberInclusion (fun _ : Unit ↦ G.clutching)) z := by
       rw [integralSingularHomologyMap_eq_of_homotopy 2
-        (circleMappingTorusRealFibreSliceHomotopy G.clutching
+        (circleMappingTorusRealFiberSliceHomotopy G.clutching
           (A.cuspAngularLiftPoint
-            (actualCuspFullFibreCrossingTime A)).1.2.re)]
+            (actualCuspFullFiberCrossingTime A)).1.2.re)]
     _ = y := hz
 
 /-- The four raw degree-two basis vectors with zero Wang boundary are represented by the
@@ -322,19 +322,19 @@ public theorem cuspOpenCoverConnectingHom_rawBasis_castAdd_eq_zero
 
 /-- The remaining comparison after evaluating the Wang boundary on all six raw basis vectors.
 It involves only the explicit full-fibre images of two invariant generators and four zeros. -/
-public def ActualCuspWangFullFibreSliceExplicitFiniteResidual
+public def ActualCuspWangFullFiberSliceExplicitFiniteResidual
     {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput) : Prop :=
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   (∀ i : Fin 4,
     R.twoDiscCover.cuspOpenCoverConnectingHom
         (A.cuspRawHomologyTwoEquiv.symm (Pi.single (Fin.castAdd 2 i) 1)) = 0) ∧
-    actualCuspWangFibreToCuspCoverIntersectionHomologyOne (A := A) R
+    actualCuspWangFiberToCuspCoverIntersectionHomologyOne (A := A) R
         (G.monodromyCoordinates.degreeOne.symm
           ![0, 0, 1, 0]) =
       R.twoDiscCover.cuspOpenCoverConnectingHom
         (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) ∧
-    actualCuspWangFibreToCuspCoverIntersectionHomologyOne (A := A) R
+    actualCuspWangFiberToCuspCoverIntersectionHomologyOne (A := A) R
         (G.monodromyCoordinates.degreeOne.symm
           ![0, 0, 0, 1]) =
       R.twoDiscCover.cuspOpenCoverConnectingHom
@@ -342,15 +342,15 @@ public def ActualCuspWangFullFibreSliceExplicitFiniteResidual
 
 /-- After exactness kills the four zero-boundary basis vectors, only the two invariant
 degree-two generators remain to be compared with the cover boundary. -/
-public def ActualCuspWangFullFibreSliceInvariantResidual
+public def ActualCuspWangFullFiberSliceInvariantResidual
     {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput) : Prop :=
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
-  actualCuspWangFibreToCuspCoverIntersectionHomologyOne (A := A) R
+  actualCuspWangFiberToCuspCoverIntersectionHomologyOne (A := A) R
       (G.monodromyCoordinates.degreeOne.symm ![0, 0, 1, 0]) =
     R.twoDiscCover.cuspOpenCoverConnectingHom
       (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) ∧
-  actualCuspWangFibreToCuspCoverIntersectionHomologyOne (A := A) R
+  actualCuspWangFiberToCuspCoverIntersectionHomologyOne (A := A) R
       (G.monodromyCoordinates.degreeOne.symm ![0, 0, 0, 1]) =
     R.twoDiscCover.cuspOpenCoverConnectingHom
       (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))
@@ -359,10 +359,10 @@ public def ActualCuspWangFullFibreSliceInvariantResidual
 generator comparisons. -/
 public theorem explicitFiniteResidual_iff_invariantResidual
     {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput) :
-    ActualCuspWangFullFibreSliceExplicitFiniteResidual R ↔
-      ActualCuspWangFullFibreSliceInvariantResidual R := by
-  dsimp [ActualCuspWangFullFibreSliceExplicitFiniteResidual,
-    ActualCuspWangFullFibreSliceInvariantResidual]
+    ActualCuspWangFullFiberSliceExplicitFiniteResidual R ↔
+      ActualCuspWangFullFiberSliceInvariantResidual R := by
+  dsimp [ActualCuspWangFullFiberSliceExplicitFiniteResidual,
+    ActualCuspWangFullFiberSliceInvariantResidual]
   constructor
   · rintro ⟨_, hfour, hfive⟩
     exact ⟨hfour, hfive⟩
@@ -376,13 +376,13 @@ public theorem wangBoundaryBasisComparison_iff_explicitFiniteResidual
     (let G := A.actualCuspRadialClutchingData
      let _ := G.fiberTopology
      ∀ i : Fin 6,
-       ((actualCuspWangFibreToCuspCoverIntersectionHomologyOne (A := A) R).comp
+       ((actualCuspWangFiberToCuspCoverIntersectionHomologyOne (A := A) R).comp
            (actualCuspWangBoundaryHom A))
              (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1)) =
          R.twoDiscCover.cuspOpenCoverConnectingHom
            (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1))) ↔
-      ActualCuspWangFullFibreSliceExplicitFiniteResidual R := by
-  dsimp [ActualCuspWangFullFibreSliceExplicitFiniteResidual]
+      ActualCuspWangFullFiberSliceExplicitFiniteResidual R := by
+  dsimp [ActualCuspWangFullFiberSliceExplicitFiniteResidual]
   let _ := A.actualCuspRadialClutchingData.fiberTopology
   simp only [actualCuspWangBoundaryHom_rawBasis]
   constructor
@@ -392,7 +392,7 @@ public theorem wangBoundaryBasisComparison_iff_explicitFiniteResidual
       have hi := (h (Fin.castAdd 2 i)).symm
       rw [actualCuspWangBoundaryRawBasisCoordinates_castAdd] at hi
       exact hi.trans
-        (actualCuspWangFibreToCuspCoverIntersectionHomologyOne_rawZero R)
+        (actualCuspWangFiberToCuspCoverIntersectionHomologyOne_rawZero R)
     · simpa only [actualCuspWangBoundaryRawBasisCoordinates_four] using h 4
     · simpa only [actualCuspWangBoundaryRawBasisCoordinates_five] using h 5
   · rintro ⟨hzero, hfour, hfive⟩ i
@@ -400,7 +400,7 @@ public theorem wangBoundaryBasisComparison_iff_explicitFiniteResidual
     · let j : Fin 4 := ⟨i.val, hi⟩
       have hij : Fin.castAdd 2 j = i := Fin.ext rfl
       rw [← hij, actualCuspWangBoundaryRawBasisCoordinates_castAdd,
-        actualCuspWangFibreToCuspCoverIntersectionHomologyOne_rawZero, hzero j]
+        actualCuspWangFiberToCuspCoverIntersectionHomologyOne_rawZero, hzero j]
     · have hi45 : i = 4 ∨ i = 5 := by omega
       rcases hi45 with rfl | rfl
       · exact hfour

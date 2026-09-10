@@ -97,7 +97,7 @@ public theorem orderFourCentralFiberThenBaseLoop_eq_factors :
   rfl
 
 /-- The same Cayley base factor with the fixed torus coordinate contracted to zero. -/
-public noncomputable def orderFourCentralZeroFibreBasePath :
+public noncomputable def orderFourCentralZeroFiberBasePath :
     letI := A.ellipticFourBoundaryAction
     Path
       (A.orderFourPuncturedProductCentralRealizationMap
@@ -110,10 +110,10 @@ public noncomputable def orderFourCentralZeroFibreBasePath :
 
 /-- Contract the fixed torus coordinate of the base factor through an explicit vector-cover
 representative. -/
-public def orderFourCentralBaseFactor_zeroFibreHomotopy :
+public def orderFourCentralBaseFactor_zeroFiberHomotopy :
     letI := A.ellipticFourBoundaryAction
     ContinuousMap.Homotopy A.orderFourCentralBaseFactor.toContinuousMap
-      A.orderFourCentralZeroFibreBasePath.toContinuousMap := by
+      A.orderFourCentralZeroFiberBasePath.toContinuousMap := by
   let _ := A.ellipticFourBoundaryAction
   let p := (parameterMap A.periods
     A.modular.modularParameter.toTriangleUniformization.zTwo).1
@@ -144,20 +144,20 @@ public def orderFourCentralBaseFactor_zeroFibreHomotopy :
         change f
             (A.orderFourFillingRelationCayleyPuncturedLoop t,
               (Quotient.mk _ (((1 - (1 : ℝ) : ℝ) : ℂ) • v) : AdditiveTorus p)) =
-          A.orderFourCentralZeroFibreBasePath t
+          A.orderFourCentralZeroFiberBasePath t
         have hscalar : ((1 - (1 : ℝ) : ℝ) : ℂ) = 0 := by norm_num
         rw [hscalar, zero_smul]
         rw [additiveTorus_mk_zero]
         rfl }
 
 /-- The base-factor contraction has the same moving-basepoint trace at both loop endpoints. -/
-public theorem orderFourCentralBaseFactor_zeroFibreHomotopy_trace :
+public theorem orderFourCentralBaseFactor_zeroFiberHomotopy_trace :
     letI := A.ellipticFourBoundaryAction
-    let H := A.orderFourCentralBaseFactor_zeroFibreHomotopy
+    let H := A.orderFourCentralBaseFactor_zeroFiberHomotopy
     (H.evalAt 0).cast A.orderFourCentralBaseFactor.source.symm
-        A.orderFourCentralZeroFibreBasePath.source.symm =
+        A.orderFourCentralZeroFiberBasePath.source.symm =
       (H.evalAt 1).cast A.orderFourCentralBaseFactor.target.symm
-        A.orderFourCentralZeroFibreBasePath.target.symm := by
+        A.orderFourCentralZeroFiberBasePath.target.symm := by
   let _ := A.ellipticFourBoundaryAction
   apply Path.ext
   funext t

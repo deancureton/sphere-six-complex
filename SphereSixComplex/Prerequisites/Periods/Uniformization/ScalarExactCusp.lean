@@ -1,7 +1,7 @@
 module
 
-public import SphereSixComplex.Prerequisites.Periods.Uniformization.ScalarFundamentalFibres
-import all SphereSixComplex.Prerequisites.Periods.Uniformization.ScalarFundamentalFibres
+public import SphereSixComplex.Prerequisites.Periods.Uniformization.ScalarFundamentalFibers
+import all SphereSixComplex.Prerequisites.Periods.Uniformization.ScalarFundamentalFibers
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.ExactSourceAssembly
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.ExactSourceAssembly
 public import Mathlib.NumberTheory.ModularForms.QExpansion
@@ -420,7 +420,7 @@ theorem fuchsianCoordinate_eventually_ne_zero_of_reciprocal_zero_of_locallyInjec
 /-- High-fibre separation modulo the cusp period upgrades to local injectivity of the completed
 cusp function.  This is the form naturally supplied by an exact-fibres theorem together with a
 classification of sufficiently high cusp stabilizers. -/
-theorem scalarReciprocalCuspFunction_locallyInjective_of_high_fibres
+theorem scalarReciprocalCuspFunction_locallyInjective_of_high_fibers
     {r : ℂ → ℂ}
     (hr_zero : ZeroAtFilter Iinfinity r)
     (hr_eventually_ne : ∀ᶠ z in Iinfinity, r z ≠ 0)
@@ -597,7 +597,7 @@ theorem nonempty_hasExactFuchsianCusp_of_canonical_reciprocal
 
 /-- Exact-cusp criterion phrased only in terms of decay, nonvanishing, and fibre separation of
 the canonical reciprocal. -/
-theorem nonempty_hasExactFuchsianCusp_of_reciprocal_zero_of_high_fibres
+theorem nonempty_hasExactFuchsianCusp_of_reciprocal_zero_of_high_fibers
     (C : FuchsianOrbifoldCoordinate)
     (hr_zero : ZeroAtFilter Iinfinity (fuchsianCoordinateReciprocal C))
     (hr_eventually_ne : ∀ᶠ z in Iinfinity, fuchsianCoordinateReciprocal C z ≠ 0)
@@ -608,7 +608,7 @@ theorem nonempty_hasExactFuchsianCusp_of_reciprocal_zero_of_high_fibres
           Function.Periodic.qParam sourceCuspWidth w) :
     Nonempty (HasExactFuchsianCusp C) := by
   apply nonempty_hasExactFuchsianCusp_of_canonical_reciprocal C hr_zero
-  exact scalarReciprocalCuspFunction_locallyInjective_of_high_fibres
+  exact scalarReciprocalCuspFunction_locallyInjective_of_high_fibers
     hr_zero hr_eventually_ne hr_high_fibres
 
 /-! ## The high full-width Schwarz strip -/
@@ -1228,7 +1228,7 @@ theorem fuchsianCoordinateReciprocal_zeroAtFilter_of_seed
     S C F hcoordinate hF hseed
 
 /-- Complete exact-cusp constructor from global scalar seed agreement and high-fibre separation. -/
-theorem nonempty_hasExactFuchsianCusp_of_seed_of_high_fibres
+theorem nonempty_hasExactFuchsianCusp_of_seed_of_high_fibers
     (S : ChamberCaratheodorySeed sourceBoundedChamber)
     (C : FuchsianOrbifoldCoordinate) (F : ℂ → ℂ)
     (hcoordinate : ∀ z : UpperHalfPlane, C.coordinate z = F (z : ℂ))
@@ -1240,7 +1240,7 @@ theorem nonempty_hasExactFuchsianCusp_of_seed_of_high_fibres
         Function.Periodic.qParam sourceCuspWidth z =
           Function.Periodic.qParam sourceCuspWidth w) :
     Nonempty (HasExactFuchsianCusp C) := by
-  apply nonempty_hasExactFuchsianCusp_of_reciprocal_zero_of_high_fibres C
+  apply nonempty_hasExactFuchsianCusp_of_reciprocal_zero_of_high_fibers C
     (fuchsianCoordinateReciprocal_zeroAtFilter_of_seed
       S C F hcoordinate hF hseed)
     (fuchsianCoordinateReciprocal_eventually_ne_zero_of_seed
@@ -1325,7 +1325,7 @@ theorem nonempty_exactFuchsianOrbifoldCoordinate
 
 /-- High reciprocal-fibre separation is a convenient replacement for explicitly constructing
 the locally injective cusp-disc germ. -/
-theorem nonempty_exactFuchsianOrbifoldCoordinate_of_high_fibres
+theorem nonempty_exactFuchsianOrbifoldCoordinate_of_high_fibers
     (hr_zero : ZeroAtFilter Iinfinity
       (fuchsianCoordinateReciprocal K.toFuchsianOrbifoldCoordinate))
     (hr_eventually_ne : ∀ᶠ z in Iinfinity,
@@ -1338,12 +1338,12 @@ theorem nonempty_exactFuchsianOrbifoldCoordinate_of_high_fibres
           Function.Periodic.qParam sourceCuspWidth w) :
     Nonempty ExactFuchsianOrbifoldCoordinate := by
   apply K.nonempty_exactFuchsianOrbifoldCoordinate hr_zero
-  exact scalarReciprocalCuspFunction_locallyInjective_of_high_fibres
+  exact scalarReciprocalCuspFunction_locallyInjective_of_high_fibers
     hr_zero hr_eventually_ne hr_high_fibres
 
 /-- Full exact-source assembly from a global scalar branch, apart from the high-cusp fibre
 classification.  Reciprocal decay, boundedness, and the exact simple cusp are automatic. -/
-theorem nonempty_exactFuchsianOrbifoldCoordinate_of_seed_of_high_fibres
+theorem nonempty_exactFuchsianOrbifoldCoordinate_of_seed_of_high_fibers
     (S : ChamberCaratheodorySeed sourceBoundedChamber) (F : ℂ → ℂ)
     (hcoordinate : ∀ z : UpperHalfPlane, K.coordinate z = F (z : ℂ))
     (hF : DifferentiableOn ℂ F {z : ℂ | 0 < z.im})
@@ -1358,7 +1358,7 @@ theorem nonempty_exactFuchsianOrbifoldCoordinate_of_seed_of_high_fibres
   have hcoordinate' : ∀ z : UpperHalfPlane,
       K.toFuchsianOrbifoldCoordinate.coordinate z = F (z : ℂ) := by
     simpa only [toFuchsianOrbifoldCoordinate] using hcoordinate
-  apply K.nonempty_exactFuchsianOrbifoldCoordinate_of_high_fibres
+  apply K.nonempty_exactFuchsianOrbifoldCoordinate_of_high_fibers
     (fuchsianCoordinateReciprocal_zeroAtFilter_of_seed S
       K.toFuchsianOrbifoldCoordinate F hcoordinate' hF hseed)
     (fuchsianCoordinateReciprocal_eventually_ne_zero_of_seed S

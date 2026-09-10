@@ -1167,7 +1167,7 @@ public theorem nonempty_periodLocalData_of_localTrivializations
     (hdescent : ∀ F : ExactLiftedModularNegOneFrame E,
       HasLocalTrivializations E F) :
     Nonempty (FuchsianPeriodLocalData E) := by
-  obtain ⟨F⟩ := establishedExactLiftedModularNegOneFrame E
+  obtain ⟨F⟩ := nonempty_exactLiftedModularNegOneFrame E
   obtain ⟨Smu, ⟨Sbeta⟩⟩ := hdescent F
   exact ⟨periodLocalDataOfSections E F Smu Sbeta⟩
 

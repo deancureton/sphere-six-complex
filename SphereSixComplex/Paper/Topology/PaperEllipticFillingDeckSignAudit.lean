@@ -28,7 +28,7 @@ open SphereSixComplex.LatticeData
 open SphereSixComplex.Topology
 open SphereSixComplex.CyclicAngularFundamentalDomain
 open SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
-open SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.EstablishedAffineCyclicQuotientHomology
+open _root_.SphereSixComplex.AffineCyclicQuotientHomology
 
 variable (A : PaperAnalyticData)
 

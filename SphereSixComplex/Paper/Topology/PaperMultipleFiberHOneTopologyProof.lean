@@ -5,7 +5,7 @@ public import SphereSixComplex.Paper.Topology.PaperMultipleFiberHOneTopologyDefs
 /-!
 # Reducing the multiple-fibre presentation to a single generation statement
 
-`EstablishedAffineCyclicQuotientHomology.reducedCentralFiberHOnePresentation` asks for two
+`_root_.SphereSixComplex.AffineCyclicQuotientHomology.reducedCentralFiberHOnePresentation` asks for two
 things at once: an isomorphism between the first homology of a free affine cyclic torus
 quotient and the abelian multiple-fibre presentation, *and* the value of that isomorphism on
 the image of the covering torus.
@@ -25,6 +25,8 @@ available to importing modules because that definition is not exposed.
 
 open AlgebraicTopology CategoryTheory
 
+noncomputable section
+
 namespace SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
 
 open Geometry Geometry.AnalyticTorusFamily Geometry.ComplexTorus
@@ -35,10 +37,20 @@ open PaperEllipticFillingRadialRetraction
 open PaperEllipticReducedCentralFiberCoverModels
 open PaperLemmaSevenThirteenAlgebra
 
-noncomputable section
 
-namespace EstablishedAffineCyclicQuotientHomology
+end SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
 
+namespace SphereSixComplex.AffineCyclicQuotientHomology
+open SphereSixComplex SphereSixComplex.Topology
+open SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+open Geometry Geometry.AnalyticTorusFamily Geometry.ComplexTorus
+open Geometry.EllipticFamilySpecialization Geometry.EllipticLocalCoordinates
+open Geometry.EquivariantQuotientHomeomorph
+open LatticeData Periods
+open PaperEllipticFillingRadialRetraction
+open PaperEllipticReducedCentralFiberCoverModels
+open PaperLemmaSevenThirteenAlgebra
+open _root_.SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
 variable {m : ℕ} [NeZero m] {p : SphereSixComplex.Periods.Parameters}
   {D : RadialEllipticActionData m (AdditiveTorus p)}
 
@@ -232,7 +244,7 @@ public theorem presentationLift_latticeProjection
 
 /-- **Reduction of the multiple-fibre presentation axiom.**  Once the canonical map out of the
 presentation is bijective, the full conclusion of
-`EstablishedAffineCyclicQuotientHomology.reducedCentralFiberHOnePresentation` follows: its
+`_root_.SphereSixComplex.AffineCyclicQuotientHomology.reducedCentralFiberHOnePresentation` follows: its
 naturality clause on the covering torus holds automatically. -/
 public def reducedCentralFiberHOnePresentation_of_bijective
     (hcoord : IsCentralFiberCoverSourceCoordinate D)
@@ -280,8 +292,16 @@ public theorem presentationLift_surjective_iff
     exact ⟨Submodule.Quotient.mk (Submodule.Quotient.mk x, k), by
       rw [presentationLift_mk hcoord P b hb x k, hxk]⟩
 
-end EstablishedAffineCyclicQuotientHomology
+end SphereSixComplex.AffineCyclicQuotientHomology
+
+namespace SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+open Geometry Geometry.AnalyticTorusFamily Geometry.ComplexTorus
+open Geometry.EllipticFamilySpecialization Geometry.EllipticLocalCoordinates
+open Geometry.EquivariantQuotientHomeomorph
+open LatticeData Periods
+open PaperEllipticFillingRadialRetraction
+open PaperEllipticReducedCentralFiberCoverModels
+open PaperLemmaSevenThirteenAlgebra
+end SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
 
 end
-
-end SphereSixComplex.Topology.PaperMultipleFiberHOneTopology

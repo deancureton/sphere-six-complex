@@ -165,7 +165,7 @@ private theorem specializationHomologyOneMap_eq_projection (A : PaperAnalyticDat
   let _ := G.fiberTopology
   let P := circleMappingTorusHOnePresentation G.clutching
   let S :=
-    _root_.SphereSixComplex.CircleMappingTorusHomologyBases.EstablishedCircleMappingTorusGeometricSections.sections
+    _root_.SphereSixComplex.CircleMappingTorusHomologyBases.CuspMonodromyCoordinates.wangSections
       G.monodromyCoordinates
   let c := G.degreeOneCoinvariantsEquiv
   let f := G.specializationHomologyOneMap

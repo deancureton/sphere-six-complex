@@ -282,7 +282,7 @@ theorem deriv_comp_chart_ne_zero_of_regular
 
 /-- A local fibre parametrized by a finite type bounds the analytic local degree.  This is the
 cardinality step used at both source elliptic points. -/
-theorem analyticOrderNatAt_le_card_of_local_fibre_parametrization
+theorem analyticOrderNatAt_le_card_of_local_fiber_parametrization
     {f : ℂ → ℂ} {c : ℂ} {α : Type*} [Fintype α]
     (hf : AnalyticAt ℂ f c)
     (hisol : ∀ᶠ z in nhdsWithin c {c}ᶜ, f z ≠ f c)
@@ -519,7 +519,7 @@ theorem ellipticChartFunction_order_le_stabilizer_card
   have hfinite : analyticOrderAt (fun w ↦ G w - value) 0 ≠ ⊤ :=
     TauCeti.analyticOrderAt_ne_top_of_forall_ne_zero hε fun w hw hwzero ↦
       sub_ne_zero.mpr (hnot_center w (hball (by simpa only [mem_ball] using hw)) hwzero)
-  have hbound := analyticOrderNatAt_le_card_of_local_fibre_parametrization
+  have hbound := analyticOrderNatAt_le_card_of_local_fiber_parametrization
     (f := G) (c := (0 : ℂ))
     (ellipticChartFunction_analyticAt_zero hcoordinate center)
     hisol hderiv T hparam

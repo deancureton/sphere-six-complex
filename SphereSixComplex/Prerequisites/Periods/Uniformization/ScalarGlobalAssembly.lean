@@ -246,7 +246,7 @@ structure ReflectedScalarFundamentalCore where
   reflection_left : ∀ z, scalar (sourceLeft z) = (starRingEnd ℂ) (scalar z)
   fundamental_surjective : ∀ q : ℂ, ∃ z : UpperHalfPlane,
     z ∈ orientedFundamentalRegion ∧ scalar (z : ℂ) = q
-  fundamental_fibres : ∀ z w : UpperHalfPlane,
+  fundamental_fibers : ∀ z w : UpperHalfPlane,
     z ∈ orientedFundamentalRegion → w ∈ orientedFundamentalRegion →
     scalar (z : ℂ) = scalar (w : ℂ) →
       ∃ g : Delta, fuchsianSourceAction g • z = w
@@ -286,7 +286,7 @@ def toReflectedScalarCoordinateCore : ReflectedScalarCoordinateCore where
     apply scalar_eq_iff_orbit_of_fundamental K.scalar
       (scalarInvariant_all_of_reflections K.scalar K.reflection_right K.reflection_circle
         K.reflection_left)
-    exact K.fundamental_fibres
+    exact K.fundamental_fibers
   scalar_at_one := K.scalar_at_one
   scalar_at_two := K.scalar_at_two
   regular_localHomeomorph := K.regular_localHomeomorph

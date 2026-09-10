@@ -12,6 +12,8 @@ the order-three and order-four reduced central fibres.
 
 open AlgebraicTopology
 
+noncomputable section
+
 namespace SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
 
 open Geometry Geometry.AnalyticTorusFamily Geometry.ComplexTorus Geometry.GlobalTorusFamily
@@ -21,7 +23,6 @@ open PaperEllipticFillingRadialRetraction
 open PaperEllipticReducedCentralFiberCoverModels
 open PaperLemmaSevenThirteenAlgebra TwistObstruction
 
-noncomputable section
 
 /-- Exact input for the standard fundamental-group presentation of a free affine cyclic torus
 quotient.  The last equation says that the chosen lift of the cyclic generator has full iterate
@@ -47,8 +48,18 @@ public structure AffineCyclicCentralFiberPresentationData
   free : letI := D.actionData.diagonalAction
     IsCancelSMul (FiniteCyclic m) D.Product
 
-namespace EstablishedAffineCyclicQuotientHomology
+end SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
 
+namespace SphereSixComplex.AffineCyclicQuotientHomology
+open SphereSixComplex SphereSixComplex.Topology
+open SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+open Geometry Geometry.AnalyticTorusFamily Geometry.ComplexTorus Geometry.GlobalTorusFamily
+open Geometry.EllipticFamilySpecialization Geometry.EllipticFixedPointCriterion
+open LatticeData Periods TriangleGroup
+open PaperEllipticFillingRadialRetraction
+open PaperEllipticReducedCentralFiberCoverModels
+open PaperLemmaSevenThirteenAlgebra TwistObstruction
+open _root_.SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
 variable {m : ℕ} [NeZero m] {p : SphereSixComplex.Periods.Parameters}
   {D : RadialEllipticActionData m (AdditiveTorus p)}
 
@@ -83,8 +94,15 @@ public structure ReducedCentralFiberHOnePresentation
           ((centralFiberCoverSourceDegreeOneBasis P).symm x)) =
       latticeProjection P x
 
-end EstablishedAffineCyclicQuotientHomology
+end SphereSixComplex.AffineCyclicQuotientHomology
+
+namespace SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+open Geometry Geometry.AnalyticTorusFamily Geometry.ComplexTorus Geometry.GlobalTorusFamily
+open Geometry.EllipticFamilySpecialization Geometry.EllipticFixedPointCriterion
+open LatticeData Periods TriangleGroup
+open PaperEllipticFillingRadialRetraction
+open PaperEllipticReducedCentralFiberCoverModels
+open PaperLemmaSevenThirteenAlgebra TwistObstruction
+end SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
 
 end
-
-end SphereSixComplex.Topology.PaperMultipleFiberHOneTopology

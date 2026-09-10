@@ -95,7 +95,7 @@ variable {E : NormalizedFuchsianModularParameter}
 
 /-- Translation of a fibre coordinate by the normalized cusp period and an additional integral
 period. -/
-public def translatedFibreCoordinate
+public def translatedFiberCoordinate
     (N : NormalizedFuchsianCuspCoordinate E D) (s : ℂ)
     (lambda k : ParameterLattice) (zeta : Fin 2 → ℂ) : Fin 2 → ℂ :=
   fun i ↦ zeta i +
@@ -108,25 +108,25 @@ phase-corrected monomial shear on the dense torus. -/
 public theorem cuspExponentialDenseTorus_translated
     (N : NormalizedFuchsianCuspCoordinate E D) (s : ℂ)
     (lambda k : ParameterLattice) (zeta : Fin 2 → ℂ) :
-    cuspExponentialDenseTorus s (translatedFibreCoordinate N s lambda k zeta) =
+    cuspExponentialDenseTorus s (translatedFiberCoordinate N s lambda k zeta) =
       phaseEmbedding (N.phaseCoefficient lambda (cuspQ s)) *
         denseTorusShear lambda (cuspExponentialDenseTorus s zeta) := by
   funext i
   fin_cases i
   · apply Units.ext
-    simp [cuspExponentialDenseTorus, translatedFibreCoordinate,
+    simp [cuspExponentialDenseTorus, translatedFiberCoordinate,
       phaseEmbedding, denseTorusShear, phaseCoefficient, exponentialUnit]
     rw [exp_cuspTwoPiI_add_period_add_int]
     simp only [cuspTwoPiI]
     ring_nf
   · apply Units.ext
-    simp [cuspExponentialDenseTorus, translatedFibreCoordinate,
+    simp [cuspExponentialDenseTorus, translatedFiberCoordinate,
       phaseEmbedding, denseTorusShear, phaseCoefficient, exponentialUnit]
     rw [exp_cuspTwoPiI_add_period_add_int]
     simp only [cuspTwoPiI]
     ring_nf
   · apply Units.ext
-    simp [cuspExponentialDenseTorus, translatedFibreCoordinate,
+    simp [cuspExponentialDenseTorus, translatedFiberCoordinate,
       phaseEmbedding, denseTorusShear, exponentialUnit]
 
 /-- On the standard toric model, the same identity says that the exponential overlap map
@@ -135,7 +135,7 @@ public theorem torusEmbedding_cuspExponentialDenseTorus_translated
     (M : Model) (N : NormalizedFuchsianCuspCoordinate E D) (s : ℂ)
     (lambda k : ParameterLattice) (zeta : Fin 2 → ℂ) :
     M.torusEmbedding
-        (cuspExponentialDenseTorus s (translatedFibreCoordinate N s lambda k zeta)) =
+        (cuspExponentialDenseTorus s (translatedFiberCoordinate N s lambda k zeta)) =
       CuspToricPhaseAction.ToricModel.phaseAction M
         (N.phaseCoefficient lambda (cuspQ s))
         (Additive.toMul (M.fanShear lambda)

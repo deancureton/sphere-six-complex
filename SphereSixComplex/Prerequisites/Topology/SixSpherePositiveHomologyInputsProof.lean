@@ -64,7 +64,7 @@ public theorem sixSphere_integralSingularHomology_isZero_of_boundarySeven
 
 /-- The proved boundary comparison gives the complete positive-degree integral homology of the
 standard six-sphere. -/
-public theorem establishedSixSpherePositiveHomologyInputs_proof :
+public theorem sixSpherePositiveHomologyInputs_via_boundarySeven :
     SixSpherePositiveHomologyInputs where
   degreeSix := ⟨boundarySevenExplicitSphereHomologyAddEquivInt
     BoundarySeven.quasiIso_integral_comparison

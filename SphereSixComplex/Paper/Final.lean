@@ -34,7 +34,7 @@ public theorem completedPaperThreefold_smoothRecognition (C : CompletedPaperThre
     underlyingRealChartedSpace C.X.charts
   let _ : T2Space C.X.Carrier := C.X.t2
   let _ : SecondCountableTopology C.X.Carrier := C.X.secondCountable
-  exact establishedSmoothSixSphereRecognition
+  exact smoothSixSphereRecognition
 
 /-- The minimal construction-and-recognition theorem extracted from the source's two-page summary. -/
 public theorem exists_complex_threefold_diffeomorphic_sixSphere :

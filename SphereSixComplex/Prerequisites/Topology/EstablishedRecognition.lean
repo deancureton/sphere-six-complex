@@ -37,7 +37,7 @@ public theorem SmoothSimplyConnectedIntegralHomologySixSphere.nonempty_homotopyE
     let _ : SimplyConnectedSpace SixSphere := sixSphere_simplyConnected
     exact CWType.homological_whitehead_property SixSphere X
   exact homotopyEquivSixSphere_of_sphericalGenerator_of_classicalCWWhitehead
-    establishedSixSpherePositiveHomologyInputs hX.integralHomology hGenerator hCWX hWhitehead
+    sixSpherePositiveHomologyInputs hX.integralHomology hGenerator hCWX hWhitehead
 
 /-- **Smooth recognition of integral homology six-spheres.** Every smooth, closed, connected,
 simply connected integral homology six-sphere is diffeomorphic to the standard six-sphere. -/
@@ -76,9 +76,8 @@ public theorem SmoothHomotopySixSphere.isDiffeomorphic
     SmoothSixSphere.topological_poincare
     MarkedSmoothSixSphere.subsingleton_diffeomorphismClass X hX.homotopyEquiv
 
-/-- The combined established theorem gives the exact smooth-recognition obligation used by the
-construction through the two legacy interfaces. -/
-public theorem establishedSmoothSixSphereRecognition
+/-- Smooth recognition from the homology-sphere and homotopy-sphere interfaces. -/
+public theorem smoothSixSphereRecognition
     {X : Type} [TopologicalSpace X] [T2Space X] [SecondCountableTopology X]
     [ChartedSpace RealModel X] :
     SmoothSixSphereRecognitionObligation X := by

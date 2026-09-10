@@ -825,7 +825,7 @@ theorem exists_exactLiftedModularNegOneFrame_of_bareRoot
     liftedModularDiscriminant] using C.cusp_factorization_eventually
 
 /-- The established uniformization carries a fully genuine exact lifted modular frame. -/
-public theorem establishedExactLiftedModularNegOneFrame
+public theorem nonempty_exactLiftedModularNegOneFrame
     (E : NormalizedFuchsianModularParameter) :
     Nonempty (ExactLiftedModularNegOneFrame E) := by
   obtain ⟨R⟩ := exists_exactFuchsianEisensteinSixRoot E

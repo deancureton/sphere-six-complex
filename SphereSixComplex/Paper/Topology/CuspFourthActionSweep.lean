@@ -41,10 +41,10 @@ public theorem cuspChosenFourthSweep_central_real (A : PaperAnalyticData)
         simp only [cuspParameterOfPolar_eq, Complex.ofReal_add]
         ring
       _ = _ := by rw [cuspParameterOfPolar_norm_cuspQ]
-  change A.starToCentral 0 (actualCuspFullFibreSlice
+  change A.starToCentral 0 (actualCuspFullFiberSlice
     (cuspParameterOfPolar ‖cuspQ A.cuspBoundaryCoverBase.1.2‖
       (r + A.cuspBoundaryCoverBase.1.2.re)) _ _) = _
-  erw [cuspFullFibreSlice_coordinateCircle_central A 3]
+  erw [cuspFullFiberSlice_coordinateCircle_central A 3]
   apply congrArg (fun b ↦ regularPeriodCircleInGlobal A.periods (Pi.single 3 1) (t, b))
   apply Subtype.ext
   exact congrArg A.cuspCoordinate.lift hs

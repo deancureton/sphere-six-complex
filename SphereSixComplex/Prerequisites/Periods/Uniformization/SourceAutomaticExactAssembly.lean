@@ -4,8 +4,8 @@ public import SphereSixComplex.Prerequisites.Periods.Uniformization.SourceAutoma
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.SourceAutomaticBranch
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.ScalarExactCusp
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.ScalarExactCusp
-public import SphereSixComplex.Prerequisites.Periods.Uniformization.ScalarCuspSeedFibres
-import all SphereSixComplex.Prerequisites.Periods.Uniformization.ScalarCuspSeedFibres
+public import SphereSixComplex.Prerequisites.Periods.Uniformization.ScalarCuspSeedFibers
+import all SphereSixComplex.Prerequisites.Periods.Uniformization.ScalarCuspSeedFibers
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.ScalarGlobalAssembly
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.ScalarGlobalAssembly
 
@@ -87,7 +87,7 @@ noncomputable def toSourceCoordinateCoreExceptCusp : SourceCoordinateCoreExceptC
 /-- Seed agreement plus the purely high-cusp fibre classification complete the exact source
 orbifold.  All openness, ordinary covering, elliptic order, boundedness, and reciprocal decay
 fields are supplied by the preceding automatic theorems. -/
-theorem nonempty_exactFuchsianOrbifoldCoordinate_of_seed_of_high_fibres
+theorem nonempty_exactFuchsianOrbifoldCoordinate_of_seed_of_high_fibers
     (S : ChamberCaratheodorySeed sourceBoundedChamber)
     (hseed : EqOn K.scalar (sourceScalarTriangleMap S) sourceOpenChamber)
     (hr_high_fibres : ∃ A : ℝ, ∀ z w : ℂ,
@@ -100,7 +100,7 @@ theorem nonempty_exactFuchsianOrbifoldCoordinate_of_seed_of_high_fibres
           Function.Periodic.qParam sourceCuspWidth w) :
     Nonempty ExactFuchsianOrbifoldCoordinate := by
   apply K.toSourceCoordinateCoreExceptCusp
-    |>.nonempty_exactFuchsianOrbifoldCoordinate_of_seed_of_high_fibres
+    |>.nonempty_exactFuchsianOrbifoldCoordinate_of_seed_of_high_fibers
       S K.scalar (fun _ ↦ rfl) K.scalar_holomorphic hseed
   exact hr_high_fibres
 
@@ -110,8 +110,8 @@ theorem nonempty_exactFuchsianOrbifoldCoordinate_of_seed
     (S : ChamberCaratheodorySeed sourceBoundedChamber)
     (hseed : EqOn K.scalar (sourceScalarTriangleMap S) sourceOpenChamber) :
     Nonempty ExactFuchsianOrbifoldCoordinate := by
-  apply K.nonempty_exactFuchsianOrbifoldCoordinate_of_seed_of_high_fibres S hseed
-  exact fuchsianCoordinateReciprocal_high_fibres_of_seed
+  apply K.nonempty_exactFuchsianOrbifoldCoordinate_of_seed_of_high_fibers S hseed
+  exact fuchsianCoordinateReciprocal_high_fibers_of_seed
     S K.toSourceCoordinateCoreExceptCusp.toFuchsianOrbifoldCoordinate K.scalar
     (fun _ ↦ rfl) K.scalar_holomorphic hseed
 

@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspSignedCoverRefinement
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspWangFullFibreSlice
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspWangFullFiberSlice
 
 /-!
 # Geometry required by the signed cusp-cover refinement

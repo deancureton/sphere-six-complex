@@ -104,7 +104,7 @@ public theorem constructedFrozenAction_properlyDiscontinuous
   let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
     N constructedModel W.localWitness.radius W.localWitness.radius_pos
       W.localWitness.radius_le
-  let J := establishedContinuousTorusAction constructedModel
+  let J := continuousTorusAction constructedModel
   let e := pointStraighteningHomeomorph J W
   constructor
   intro K L hK hL

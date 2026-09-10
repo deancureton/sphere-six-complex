@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderThreeCorrectedFibreRepresentativeProof
+public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderThreeCorrectedFiberRepresentativeProof
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffinePrincipalGaugeRadialBaseSquare
 
 @[expose] public section

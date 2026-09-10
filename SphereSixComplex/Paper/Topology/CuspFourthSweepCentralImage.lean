@@ -42,9 +42,9 @@ public theorem centralFourthPeriodCircle_cusp (A : PaperAnalyticData)
     rfl
 
 open EllipticTwoDiscCoverData
-public theorem cuspFullFibreSlice_fourthCircle_real (A : PaperAnalyticData)
+public theorem cuspFullFiberSlice_fourthCircle_real (A : PaperAnalyticData)
     (s : ℂ) (hs : ‖cuspQ s‖ < A.starCuspWitness.localWitness.radius) (t : ℝ) :
-    actualCuspFullFibreSlice (A := A) s hs
+    actualCuspFullFiberSlice (A := A) s hs
       (cuspFourthCircle (cuspBasePoint A.cuspCoordinate
         (markedCuspParameter A.starCuspWitness)) (fun _ ↦ (t : UnitAddCircle))) =
     additiveCuspBoundaryProjection A.starCuspWitness
@@ -61,18 +61,18 @@ public theorem cuspFullFibreSlice_fourthCircle_real (A : PaperAnalyticData)
     rw [map_smul, realEquiv_symm_periodVector, map_smul,
       (fullRankDomain _).map_integer]
   rw [← h]
-  exact actualCuspFullFibreSlice_additiveTorusProjection s hs _
+  exact actualCuspFullFiberSlice_additiveTorusProjection s hs _
 
-public theorem cuspFullFibreSlice_fourthCircle_central (A : PaperAnalyticData)
+public theorem cuspFullFiberSlice_fourthCircle_central (A : PaperAnalyticData)
     (s : ℂ) (hs : ‖cuspQ s‖ < A.starCuspWitness.localWitness.radius) (t : ℝ) :
     A.starToCentral 0
-      (actualCuspFullFibreSlice (A := A) s hs
+      (actualCuspFullFiberSlice (A := A) s hs
         (cuspFourthCircle (cuspBasePoint A.cuspCoordinate
           (markedCuspParameter A.starCuspWitness)) (fun _ ↦ (t : UnitAddCircle)))) =
     A.centralFourthPeriodCircle ((t : UnitAddCircle),
       A.centralFamilyCoordinate
         (additiveCuspCoverToGlobal A.starCuspWitness ⟨(0, s), hs⟩)) := by
-  rw [cuspFullFibreSlice_fourthCircle_real, centralFourthPeriodCircle_cusp]
+  rw [cuspFullFiberSlice_fourthCircle_real, centralFourthPeriodCircle_cusp]
   exact puncturedLocalCuspQuotientMap_additiveCuspBoundaryProjection A.starCuspWitness _
 
 
@@ -87,7 +87,7 @@ public def cuspFourthSweep (A : PaperAnalyticData) :
 public theorem cuspFourthSweep_real (A : PaperAnalyticData) (r : ℝ)
     (z : StdTorus 1) :
     cuspFourthSweep A ((r : UnitAddCircle), z) =
-      actualCuspFullFibreSlice (A := A)
+      actualCuspFullFiberSlice (A := A)
         (cuspParameterOfPolar (A.starCuspWitness.localWitness.radius / 2) r)
         (by rw [norm_cuspQ_cuspParameterOfPolar _ _ (by
               have := A.starCuspWitness.localWitness.radius_pos; linarith)]
@@ -108,13 +108,13 @@ public theorem cuspFourthSweep_central (A : PaperAnalyticData)
     fin_cases i
     exact ht.symm
   rw [hz, cuspFourthSweep_real, cuspFourthSweep_real]
-  rw [cuspFullFibreSlice_fourthCircle_central]
-  have hzero := cuspFullFibreSlice_fourthCircle_central A
+  rw [cuspFullFiberSlice_fourthCircle_central]
+  have hzero := cuspFullFiberSlice_fourthCircle_central A
     (cuspParameterOfPolar (A.starCuspWitness.localWitness.radius / 2) r)
     (by rw [norm_cuspQ_cuspParameterOfPolar _ _ (by
           have := A.starCuspWitness.localWitness.radius_pos; linarith)]
         have := A.starCuspWitness.localWitness.radius_pos; linarith) 0
-  change A.starToCentral 0 (actualCuspFullFibreSlice _ _
+  change A.starToCentral 0 (actualCuspFullFiberSlice _ _
     (cuspFourthCircle _ 0)) = _ at hzero
   rw [hzero, centralFourthPeriodCircle_coordinate]
 

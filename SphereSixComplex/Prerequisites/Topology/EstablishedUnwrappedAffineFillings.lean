@@ -285,7 +285,7 @@ public def toCyclicAffineFillingCoverModel
 public noncomputable def fundamentalGroupData
     (U : UnwrappedCyclicAffineFillingCover m Λ G E E' B N D) :
     CyclicAffineFillingPiOneData U.toCyclicAffineFillingCoverModel :=
-  establishedCyclicAffineFillingPiOne U.toCyclicAffineFillingCoverModel
+  cyclicAffineFillingPiOneData U.toCyclicAffineFillingCoverModel
 
 end UnwrappedCyclicAffineFillingCover
 
@@ -510,7 +510,7 @@ public def toToricFillingCoverModel
 public noncomputable def fundamentalGroupData
     (U : UnwrappedToricFillingCover Λ K G E E' B N D) :
     ToricFillingPiOneData U.toToricFillingCoverModel :=
-  establishedToricFillingPiOne U.toToricFillingCoverModel
+  toricFillingPiOneData U.toToricFillingCoverModel
 
 end UnwrappedToricFillingCover
 

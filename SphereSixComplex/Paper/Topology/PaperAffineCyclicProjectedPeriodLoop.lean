@@ -23,8 +23,16 @@ open LatticeData Periods
 open PaperEllipticFillingRadialRetraction
 open PaperEllipticReducedCentralFiberCoverModels
 
-namespace EstablishedAffineCyclicQuotientHomology
+end SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
 
+namespace SphereSixComplex.AffineCyclicQuotientHomology
+open SphereSixComplex SphereSixComplex.Topology
+open SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+open Geometry Geometry.ComplexTorus Geometry.EllipticFamilySpecialization
+open LatticeData Periods
+open PaperEllipticFillingRadialRetraction
+open PaperEllipticReducedCentralFiberCoverModels
+open _root_.SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
 variable {m : ℕ} [NeZero m] {p : SphereSixComplex.Periods.Parameters}
   {D : RadialEllipticActionData m (AdditiveTorus p)}
 
@@ -199,6 +207,11 @@ public theorem projectedStraightPeriodLoop_homologyClass_eq_coverProjectionLatti
     (RadialEllipticActionData.centralFiberCoverProjection D)
     ((EstablishedTorusHomology.additiveTorusHomologyBasis p P.fullRank).degreeOne.symm x)).symm
 
-end EstablishedAffineCyclicQuotientHomology
+end SphereSixComplex.AffineCyclicQuotientHomology
 
+namespace SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+open Geometry Geometry.ComplexTorus Geometry.EllipticFamilySpecialization
+open LatticeData Periods
+open PaperEllipticFillingRadialRetraction
+open PaperEllipticReducedCentralFiberCoverModels
 end SphereSixComplex.Topology.PaperMultipleFiberHOneTopology

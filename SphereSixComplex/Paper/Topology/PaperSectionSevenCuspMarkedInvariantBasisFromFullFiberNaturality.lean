@@ -33,27 +33,27 @@ namespace EllipticTwoDiscCoverData
 
 /-- The oriented naturality square for the selected full-fibre slice.  Unlike exactness alone,
 this equality fixes the sign of the connecting morphism. -/
-public def ActualCuspWangFullFibreOrientedBoundaryNaturality
+public def ActualCuspWangFullFiberOrientedBoundaryNaturality
     (R : A.AffineRadialCompletionInput) : Prop :=
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
-  (actualCuspWangFibreToCuspCoverIntersectionHomologyOne (A := A) R).comp
+  (actualCuspWangFiberToCuspCoverIntersectionHomologyOne (A := A) R).comp
       (actualCuspWangBoundaryHom A) =
     R.twoDiscCover.cuspOpenCoverConnectingHom
 
 /-- The homomorphism-level naturality square is equivalent to the two invariant-generator
 comparisons left after the four zero-boundary cases. -/
-public theorem fullFibreOrientedBoundaryNaturality_iff_invariantResidual
+public theorem fullFiberOrientedBoundaryNaturality_iff_invariantResidual
     (R : A.AffineRadialCompletionInput) :
-    ActualCuspWangFullFibreOrientedBoundaryNaturality R ↔
-      ActualCuspWangFullFibreSliceInvariantResidual R := by
+    ActualCuspWangFullFiberOrientedBoundaryNaturality R ↔
+      ActualCuspWangFullFiberSliceInvariantResidual R := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
-  rw [ActualCuspWangFullFibreOrientedBoundaryNaturality]
+  rw [ActualCuspWangFullFiberOrientedBoundaryNaturality]
   constructor
   · intro h
     have hBasis : ∀ i : Fin 6,
-        ((actualCuspWangFibreToCuspCoverIntersectionHomologyOne (A := A) R).comp
+        ((actualCuspWangFiberToCuspCoverIntersectionHomologyOne (A := A) R).comp
             (actualCuspWangBoundaryHom A))
               (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1)) =
           R.twoDiscCover.cuspOpenCoverConnectingHom
@@ -70,38 +70,38 @@ public theorem fullFibreOrientedBoundaryNaturality_iff_invariantResidual
       ((explicitFiniteResidual_iff_invariantResidual R).mpr h)
 
 /-- The oriented homomorphism square supplies the finite full-fibre comparison package. -/
-public theorem actualCuspWangFullFibreSliceComparison_of_orientedBoundaryNaturality
+public theorem actualCuspWangFullFiberSliceComparison_of_orientedBoundaryNaturality
     (R : A.AffineRadialCompletionInput)
-    (h : ActualCuspWangFullFibreOrientedBoundaryNaturality R) :
-    ActualCuspWangFullFibreSliceComparison R where
+    (h : ActualCuspWangFullFiberOrientedBoundaryNaturality R) :
+    ActualCuspWangFullFiberSliceComparison R where
   wangBoundary_eq_chainConnecting_basis i := DFunLike.congr_fun h
     (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1))
 
 /-- Oriented naturality for the selected full-fibre slice gives the canonical unmarked Wang
 boundary square. -/
-public theorem canonicalCuspWangBoundaryNaturality_of_fullFibreOrientedBoundaryNaturality
+public theorem canonicalCuspWangBoundaryNaturality_of_fullFiberOrientedBoundaryNaturality
     (hmark : A.affineNamedStripLift.lift
       A.affineActualCuspCrossingPoint =
         A.cuspAngularRegularBasePoint A.affineActualCuspCrossingTime)
     (R : A.AffineRadialCompletionInput)
-    (h : ActualCuspWangFullFibreOrientedBoundaryNaturality R) :
+    (h : ActualCuspWangFullFiberOrientedBoundaryNaturality R) :
     R.twoDiscCover.CanonicalCuspWangBoundaryNaturality := by
-  let C := actualCuspWangFullFibreSliceComparison_of_orientedBoundaryNaturality R h
-  let Z := actualCuspWangOpenCoverChainRealization_of_fullFibreSlice R
+  let C := actualCuspWangFullFiberSliceComparison_of_orientedBoundaryNaturality R h
+  let Z := actualCuspWangOpenCoverChainRealization_of_fullFiberSlice R
     (C.fiberToBand_homology hmark) C.wangBoundary_eq_chainConnecting
   exact Z.canonicalWangBoundaryNaturality
 
 /-- The one oriented full-fibre naturality square implies both remaining marked evaluations on
 the invariant raw degree-two generators. -/
-public theorem cuspPulledBackMarkedInvariantBasisData_of_fullFibreOrientedBoundaryNaturality
+public theorem cuspPulledBackMarkedInvariantBasisData_of_fullFiberOrientedBoundaryNaturality
     (hmark : A.affineNamedStripLift.lift
       A.affineActualCuspCrossingPoint =
         A.cuspAngularRegularBasePoint A.affineActualCuspCrossingTime)
     (R : A.AffineRadialCompletionInput)
-    (h : ActualCuspWangFullFibreOrientedBoundaryNaturality R) :
+    (h : ActualCuspWangFullFiberOrientedBoundaryNaturality R) :
     CuspPulledBackMarkedInvariantBasisData R := by
   have hBoundary : R.twoDiscCover.CanonicalCuspWangBoundaryNaturality :=
-    canonicalCuspWangBoundaryNaturality_of_fullFibreOrientedBoundaryNaturality hmark R h
+    canonicalCuspWangBoundaryNaturality_of_fullFiberOrientedBoundaryNaturality hmark R h
   have hMarking : R.twoDiscCover.CanonicalCuspFiberBandPeriodMarking R.homologyAlignment :=
     R.twoDiscCover.canonicalCuspFiberBandPeriodMarking_of_orderThree R.homologyAlignment
       (R.canonicalCuspFiberOrderThreePeriodMarking
@@ -120,15 +120,15 @@ public theorem cuspPulledBackMarkedInvariantBasisData_of_fullFibreOrientedBounda
 
 /-- Equivalently, the two unmarked invariant-generator comparisons for the selected full-fibre
 slice imply both marked scalar evaluations. -/
-public theorem cuspPulledBackMarkedInvariantBasisData_of_fullFibreInvariantResidual
+public theorem cuspPulledBackMarkedInvariantBasisData_of_fullFiberInvariantResidual
     (hmark : A.affineNamedStripLift.lift
       A.affineActualCuspCrossingPoint =
         A.cuspAngularRegularBasePoint A.affineActualCuspCrossingTime)
     (R : A.AffineRadialCompletionInput)
-    (h : ActualCuspWangFullFibreSliceInvariantResidual R) :
+    (h : ActualCuspWangFullFiberSliceInvariantResidual R) :
     CuspPulledBackMarkedInvariantBasisData R :=
-  cuspPulledBackMarkedInvariantBasisData_of_fullFibreOrientedBoundaryNaturality hmark R
-    ((fullFibreOrientedBoundaryNaturality_iff_invariantResidual R).mpr h)
+  cuspPulledBackMarkedInvariantBasisData_of_fullFiberOrientedBoundaryNaturality hmark R
+    ((fullFiberOrientedBoundaryNaturality_iff_invariantResidual R).mpr h)
 
 end EllipticTwoDiscCoverData
 

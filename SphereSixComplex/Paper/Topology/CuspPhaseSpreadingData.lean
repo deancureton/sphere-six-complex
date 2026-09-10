@@ -44,7 +44,7 @@ public theorem continuous_compactTorusEmbedding : Continuous compactTorusEmbeddi
 public theorem continuous_compactPhaseOrbit (M : Model) (r : ℝ)
     (positivePart : Set (localCarrier M r)) :
     Continuous (compactPhaseOrbit M r positivePart) := by
-  let J := InfiniteA2Toric.establishedContinuousTorusAction M
+  let J := InfiniteA2Toric.continuousTorusAction M
   have hg : Continuous (fun z : CompactTorus × positivePart ↦ compactTorusEmbedding z.1) :=
     continuous_compactTorusEmbedding.comp continuous_fst
   have hp : Continuous (fun z : CompactTorus × positivePart ↦ (z.2 : M.Carrier)) :=

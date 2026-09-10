@@ -34,5 +34,7 @@ Wang sections and splitting, general disc/Cayley coordinates, first Hurewicz and
 relative CW tools, cusp angular methods, affine torsor descent, the toric construction,
 affine and elliptic filling methods, and the classical homology interfaces. Methods stay in
 the namespace of their receiver so that dot notation remains available.
+Affine cyclic quotient homology has its own namespace, and project declarations and
+modules consistently use `fiber` spelling.
 Historical names elsewhere remain candidates for subsequent API migrations; this
 document does not certify that every declaration already follows these conventions.

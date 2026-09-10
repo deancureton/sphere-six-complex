@@ -98,8 +98,8 @@ namespace SphereSixComplex.Geometry
 
 /-- The production analytic package has the required actual-star van Kampen presentation. -/
 public theorem establishedPaperStarHasVanKampenData :
-    Topology.HasVanKampenData establishedPaperAnalyticData.VanKampenSpace 0 1 (-1) :=
-  establishedPaperAnalyticData.actualStarHasVanKampenData
+    Topology.HasVanKampenData chosenPaperAnalyticData.VanKampenSpace 0 1 (-1) :=
+  chosenPaperAnalyticData.actualStarHasVanKampenData
 
 end SphereSixComplex.Geometry
 

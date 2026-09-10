@@ -157,10 +157,10 @@ public structure OrderThreeWholeFiberCompatibility
   gluing : CompatiblePartialDiffeomorphs Index globalDeckTotalModel
     (TotalSpace (parameterMap F)) (OrderThreeFixedProduct F) ω
   /-- The glued source contains the entire order-three fibre. -/
-  contains_source_fibre : ∀ v : ComplexTwoSpace,
+  contains_source_fiber : ∀ v : ComplexTwoSpace,
     projection (parameterMap F) (U.zOne, v) ∈ gluing.source
   /-- The glued target contains the entire central fixed torus. -/
-  contains_target_fibre : ∀ x : AdditiveTorus (parameterMap F U.zOne).1,
+  contains_target_fiber : ∀ x : AdditiveTorus (parameterMap F U.zOne).1,
     (ComplexUnitDisc.center, x) ∈ gluing.target
   /-- Each local chart agrees near its centre with the constructed pointwise candidate. -/
   pointwise_agreement : ∀ v : ComplexTwoSpace,
@@ -193,10 +193,10 @@ public structure OrderFourWholeFiberCompatibility
   gluing : CompatiblePartialDiffeomorphs Index globalDeckTotalModel
     (TotalSpace (parameterMap F)) (OrderFourFixedProduct F) ω
   /-- The glued source contains the entire order-four fibre. -/
-  contains_source_fibre : ∀ v : ComplexTwoSpace,
+  contains_source_fiber : ∀ v : ComplexTwoSpace,
     projection (parameterMap F) (U.zTwo, v) ∈ gluing.source
   /-- The glued target contains the entire central fixed torus. -/
-  contains_target_fibre : ∀ x : AdditiveTorus (parameterMap F U.zTwo).1,
+  contains_target_fiber : ∀ x : AdditiveTorus (parameterMap F U.zTwo).1,
     (ComplexUnitDisc.center, x) ∈ gluing.target
   /-- Each local chart agrees near its centre with the constructed pointwise candidate. -/
   pointwise_agreement : ∀ v : ComplexTwoSpace,
@@ -249,7 +249,7 @@ public theorem trivialization_equivariant (g : FiniteCyclic 3) : Set.EqOn
   D.toEquivariantCompatibility.toPartialDiffeomorph_equivariant g
 
 omit [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (OrderFourFixedProduct F)] in
-public theorem maps_central_fibre
+public theorem maps_central_fiber
     (hzOne : U.zOne = fuchsianOneFixedPoint) (v : ComplexTwoSpace) :
     D.trivialization (projection (parameterMap F) (U.zOne, v)) =
       (ComplexUnitDisc.center, Quotient.mk _ v) := by
@@ -297,7 +297,7 @@ public theorem trivialization_equivariant (g : FiniteCyclic 4) : Set.EqOn
   D.toEquivariantCompatibility.toPartialDiffeomorph_equivariant g
 
 omit [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (OrderThreeFixedProduct F)] in
-public theorem maps_central_fibre
+public theorem maps_central_fiber
     (hzTwo : U.zTwo = fuchsianTwoFixedPoint) (v : ComplexTwoSpace) :
     D.trivialization (projection (parameterMap F) (U.zTwo, v)) =
       (ComplexUnitDisc.center, Quotient.mk _ v) := by

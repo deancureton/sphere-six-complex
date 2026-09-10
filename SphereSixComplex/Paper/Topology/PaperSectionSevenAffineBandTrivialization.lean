@@ -28,22 +28,18 @@ open scoped ContinuousMap
 
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 
-namespace EstablishedSectionSevenAffineBandTopology
-
 /-- Standard quotient-bundle triviality over the convex affine strip.  The unconditional
 real-period product coordinates trivialize the varying lattice upstairs, while the unique lift of
 the simply connected strip through the regular-coordinate covering trivializes the descended
 quotient bundle.  Both ingredients are assembled into the marked trivialization, of which this is
 the forgetful consequence. -/
-public theorem establishedActualCentralBandProductTrivialization
+public theorem affineCentralBandProductTrivialization
     (A : PaperAnalyticData) (S : A.AffineCentralSeparation) :
     A.AffineCentralBandProductTrivialization S :=
   AffineCentralBandMarkedTrivialization.toProductTrivialization
     (affineCentralBandMarkedTrivialization A S)
 
-end EstablishedSectionSevenAffineBandTopology
-
-open EstablishedSectionSevenAffineBandTopology
+open _root_.SphereSixComplex.Geometry.PaperAnalyticData
 
 variable (A : PaperAnalyticData)
 

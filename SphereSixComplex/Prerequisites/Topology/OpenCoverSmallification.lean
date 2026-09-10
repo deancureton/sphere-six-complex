@@ -8,10 +8,9 @@ noncomputable section
 open AlgebraicTopology CategoryTheory CategoryTheory.Limits Set
 namespace SphereSixComplex
 
-/-- Open-cover smallification data in the interface used by the Section 7 reduction.  Formerly an
-axiom, this is now a thin wrapper around `coverSmallChainRetractionData_of_openCover`; the
-established name is retained so existing consumers remain unchanged. -/
-public noncomputable def establishedOpenCoverSmallChainRetractionData
+/-- Open-cover small-chain retraction data, obtained by applying the singular-chain construction
+to the associated topological space. -/
+public noncomputable def coverSmallChainRetractionData
     {ι X : Type} [TopologicalSpace X] (U : ι → Set X)
     (hOpen : ∀ i, IsOpen (U i)) (hCover : ⋃ i, U i = Set.univ) :
     CoverSmallChainRetractionData (TopCat.of X) U :=

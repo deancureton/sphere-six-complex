@@ -105,7 +105,7 @@ public noncomputable def actualLocalCuspCentralFiberRetractionData
       frozenLocalPsiMap N M W.localWitness.radius
         (Multiplicative.toAdd g) (rfHomotopy (s, x)) :=
     Rf.homotopy_equivariant g s x
-  let J := InfiniteA2Toric.establishedContinuousTorusAction M
+  let J := InfiniteA2Toric.continuousTorusAction M
   let H := pointStraighteningHomeomorph J W
   let retract : C(localCarrier M W.localWitness.radius,
       localCarrier M W.localWitness.radius) := {

@@ -593,7 +593,7 @@ public theorem upperHalfPlaneRealTranslate_sourceCuspWidth (z : UpperHalfPlane) 
 
 /-- The established modular parameter intertwines the explicit source translation with the
 unit target translation. -/
-public theorem establishedModularParameter_tau_translate
+public theorem normalizedModularParameter_tau_translate
     (E : NormalizedFuchsianModularParameter) (z : UpperHalfPlane) :
     E.modularParameter.tau (upperHalfPlaneRealTranslate sourceCuspWidth z) =
       upperHalfPlaneRealTranslate 1 (E.modularParameter.tau z) := by
@@ -605,12 +605,12 @@ public theorem establishedModularParameter_tau_translate
 
 /-- The general parabolic theorem supplies a cusp inverse for the modular parameter retained by
 `EstablishedFuchsianModularParameter`. No additional source or target cusp axiom is required. -/
-public theorem exists_establishedModularParameter_cuspLocalInverse
+public theorem nonempty_normalizedModularParameter_cuspLocalInverse
     (E : NormalizedFuchsianModularParameter) :
     Nonempty (ParabolicCuspLocalInverse sourceCuspWidth 1 1 E.modularParameter.tau) :=
   nonempty_parabolicCuspLocalInverse sourceCuspWidth 1 1 sourceCuspWidth_pos zero_lt_one
     E.modularParameter.tau E.modularParameter.tau_holomorphic
-      (establishedModularParameter_tau_translate E)
+      (normalizedModularParameter_tau_translate E)
 
 /-- The selected assembled period family has the same exact parabolic translation law, regardless
 of how its final nondegeneracy shift was selected. -/

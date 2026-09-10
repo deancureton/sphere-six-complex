@@ -35,7 +35,7 @@ public theorem cuspFixedCircleSweep_real (A : PaperAnalyticData)
       (markedCuspParameter A.starCuspWitness)))) (r : ℝ)
     (z : StdTorus 1) :
     cuspFixedCircleSweep A c ((r : UnitAddCircle), z) =
-      actualCuspFullFibreSlice (A := A)
+      actualCuspFullFiberSlice (A := A)
         (cuspParameterOfPolar (A.starCuspWitness.localWitness.radius / 2) r)
         (by rw [norm_cuspQ_cuspParameterOfPolar _ _ (by
               have := A.starCuspWitness.localWitness.radius_pos; linarith)]

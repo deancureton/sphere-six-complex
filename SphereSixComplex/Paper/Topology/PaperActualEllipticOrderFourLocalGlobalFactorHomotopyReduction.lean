@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderFourFibreComparisonProof
+public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderFourFiberComparisonProof
 public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderThreeLocalGlobalFactorHomotopyReduction
 public import SphereSixComplex.Paper.Topology.PaperActualEllipticRelatorFreeHomotopyReduction
 

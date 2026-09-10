@@ -38,7 +38,7 @@ public abbrev PaperAnalyticData.toricModel (_A : PaperAnalyticData) :
 
 /-- The established modular, explicit affine-descent, cusp-normalization, and toric inputs supply
 one coherent analytic package. -/
-public theorem exists_paperAnalyticData
+public theorem nonempty_paperAnalyticData_of_descentData
     (E : NormalizedFuchsianModularParameter)
     (F : ExactLiftedModularNegOneFrame E)
     (Amu : (FuchsianAffineDescent.muDescentData E F).AnalyticDescentData)
@@ -50,20 +50,20 @@ public theorem exists_paperAnalyticData
 
 /-- The standard analytic descent theorem supplies the dependent `mu` and `beta` certificates
 needed for the coherent paper package. -/
-public theorem exists_paperAnalyticData_of_establishedAnalyticDescent
+public theorem nonempty_paperAnalyticData_of_frame
     (E : NormalizedFuchsianModularParameter)
     (F : ExactLiftedModularNegOneFrame E) :
     Nonempty PaperAnalyticData :=
-  exists_paperAnalyticData E F
+  nonempty_paperAnalyticData_of_descentData E F
     (FuchsianAffineDescent.muAnalyticDescentData E F)
     (FuchsianAffineDescent.betaAnalyticDescentData E F)
 
 /-- The established modular parameter, modular frame, general analytic descent, cusp
 normalization, and toric model produce the coherent analytic package unconditionally. -/
-public theorem exists_establishedPaperAnalyticData : Nonempty PaperAnalyticData := by
+public theorem nonempty_paperAnalyticData : Nonempty PaperAnalyticData := by
   obtain ⟨E⟩ := nonempty_normalizedFuchsianModularParameter
-  obtain ⟨F⟩ := establishedExactLiftedModularNegOneFrame E
-  exact exists_paperAnalyticData_of_establishedAnalyticDescent E F
+  obtain ⟨F⟩ := nonempty_exactLiftedModularNegOneFrame E
+  exact nonempty_paperAnalyticData_of_frame E F
 
 /-- A coherent choice of the analytic data supplied by concrete affine-descent certificates. -/
 @[expose] public noncomputable def paperAnalyticData
@@ -78,7 +78,7 @@ public theorem exists_establishedPaperAnalyticData : Nonempty PaperAnalyticData 
   exact ⟨E, D, N⟩
 
 /-- A coherent production choice requiring only the exact modular parameter and modular frame. -/
-@[expose] public noncomputable def paperAnalyticDataOfEstablishedAnalyticDescent
+@[expose] public noncomputable def paperAnalyticDataOfFrame
     (E : NormalizedFuchsianModularParameter)
     (F : ExactLiftedModularNegOneFrame E) : PaperAnalyticData :=
   paperAnalyticData E F
@@ -86,10 +86,10 @@ public theorem exists_establishedPaperAnalyticData : Nonempty PaperAnalyticData 
     (FuchsianAffineDescent.betaAnalyticDescentData E F)
 
 /-- A coherent production choice of all analytic inputs. -/
-@[expose] public noncomputable def establishedPaperAnalyticData : PaperAnalyticData :=
+@[expose] public noncomputable def chosenPaperAnalyticData : PaperAnalyticData :=
   let E := Classical.choice nonempty_normalizedFuchsianModularParameter
-  let F := Classical.choice (establishedExactLiftedModularNegOneFrame E)
-  paperAnalyticDataOfEstablishedAnalyticDescent E F
+  let F := Classical.choice (nonempty_exactLiftedModularNegOneFrame E)
+  paperAnalyticDataOfFrame E F
 
 @[simp]
 public theorem PaperAnalyticData.toricModel_eq_constructed (A : PaperAnalyticData) :

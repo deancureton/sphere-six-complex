@@ -82,10 +82,10 @@ public noncomputable def circleMappingTorusHTwoAddEquiv
 
 end CuspGeometricWangSections
 
-namespace EstablishedCircleMappingTorusGeometricSections
+namespace CuspMonodromyCoordinates
 
 /-- Projectivity of the two invariant lattices supplies sections of the Wang boundary maps. -/
-public noncomputable def sections
+public noncomputable def wangSections
     {F : Type} [TopologicalSpace F] {phi : F ≃ₜ F}
     (B : CuspMonodromyCoordinates phi) : CuspGeometricWangSections B := by
   let degreeOnePresentation := circleMappingTorusHOnePresentation phi
@@ -106,8 +106,7 @@ public noncomputable def sections
     { degreeOne := WangHomologyPresentation.Section.ofProjective degreeOnePresentation
       degreeTwo := WangHomologyPresentation.Section.ofProjective degreeTwoPresentation }
 
-end EstablishedCircleMappingTorusGeometricSections
-
+end CuspMonodromyCoordinates
 end CircleMappingTorusHomologyBases
 
 end SphereSixComplex

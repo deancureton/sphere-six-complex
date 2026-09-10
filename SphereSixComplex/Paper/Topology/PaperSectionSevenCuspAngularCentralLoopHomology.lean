@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspWangFullFibreSlice
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspWangFullFiberSlice
 public import SphereSixComplex.Paper.Topology.PaperActualCuspCentralLoopRelation
 public import SphereSixComplex.Prerequisites.Topology.StandardCircleHomologyLiftDegree
 

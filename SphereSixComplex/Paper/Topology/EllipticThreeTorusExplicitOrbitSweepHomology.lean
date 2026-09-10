@@ -418,7 +418,7 @@ public theorem orderFourNormalizedCross_two_eq_two_zero :
   simpa only [two_nsmul] using neg_add_eq_iff_eq_add.mp h
 
 /-- Fibre naturality for the normalized order-three cover, without any sweep input. -/
-public theorem orderThreeNormalizedCover_fibreSquare
+public theorem orderThreeNormalizedCover_fiberSquare
     (x : IntegralSingularHomology 2 (StdTorus 3)) :
     integralSingularHomologyMap 2
         (normalizedAffineCoverToCircleMappingTorus orderThreeThreeTorusClutching
@@ -430,7 +430,7 @@ public theorem orderThreeNormalizedCover_fibreSquare
     orderThreeThreeTorusClutching_pow 1 x
 
 /-- Fibre naturality for the normalized order-four cover, without any sweep input. -/
-public theorem orderFourNormalizedCover_fibreSquare
+public theorem orderFourNormalizedCover_fiberSquare
     (x : IntegralSingularHomology 2 (StdTorus 3)) :
     integralSingularHomologyMap 2
         (normalizedAffineCoverToCircleMappingTorus orderFourThreeTorusClutching
@@ -442,7 +442,7 @@ public theorem orderFourNormalizedCover_fibreSquare
     orderFourThreeTorusClutching_pow 1 x
 
 /-- The selected order-three fibre generator is preserved by the normalized cover. -/
-public theorem orderThreeNormalizedCover_fibreGenerator :
+public theorem orderThreeNormalizedCover_fiberGenerator :
     integralSingularHomologyMap 2
         (normalizedAffineCoverToCircleMappingTorus orderThreeThreeTorusClutching
           orderThreeThreeTorusClutching_pow)
@@ -451,10 +451,10 @@ public theorem orderThreeNormalizedCover_fibreGenerator :
           (standardThreeTorusHomologyTwo.symm (Pi.single 0 1))) =
       orderThreePresentation.inclusion
         (standardThreeTorusHomologyTwo.symm (Pi.single 0 1)) :=
-  orderThreeNormalizedCover_fibreSquare _
+  orderThreeNormalizedCover_fiberSquare _
 
 /-- The selected order-four fibre generator is preserved by the normalized cover. -/
-public theorem orderFourNormalizedCover_fibreGenerator :
+public theorem orderFourNormalizedCover_fiberGenerator :
     integralSingularHomologyMap 2
         (normalizedAffineCoverToCircleMappingTorus orderFourThreeTorusClutching
           orderFourThreeTorusClutching_pow)
@@ -463,7 +463,7 @@ public theorem orderFourNormalizedCover_fibreGenerator :
           (standardThreeTorusHomologyTwo.symm (Pi.single 0 1))) =
       orderFourPresentation.inclusion
         (standardThreeTorusHomologyTwo.symm (Pi.single 0 1)) :=
-  orderFourNormalizedCover_fibreSquare _
+  orderFourNormalizedCover_fiberSquare _
 
 end SphereSixComplex.Topology.EllipticThreeTorusExplicitOrbitSweepHomology
 

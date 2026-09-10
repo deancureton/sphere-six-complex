@@ -21,7 +21,7 @@ open SphereSixComplex.TriangleGroup
 open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
 open SphereSixComplex.Topology.PaperEllipticFillingRealPeriodRadial
 open SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
-open SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.EstablishedAffineCyclicQuotientHomology
+open _root_.SphereSixComplex.AffineCyclicQuotientHomology
 
 variable (A : PaperAnalyticData)
 

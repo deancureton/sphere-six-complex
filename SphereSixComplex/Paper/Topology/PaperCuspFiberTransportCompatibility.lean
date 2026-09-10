@@ -51,14 +51,14 @@ public def affineContractibleStripCenter : affineVerticalStrip :=
 
 namespace EllipticTwoDiscCoverData
 
-public theorem actualCuspWangFibreToBand_centralFamily_fixed
+public theorem actualCuspWangFiberToBand_centralFamily_fixed
     (R : A.AffineRadialCompletionInput)
     (y : let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
       G.Fiber) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
-    let b := actualCuspWangFibreToBandMap (A := A) R y
+    let b := actualCuspWangFiberToBandMap (A := A) R y
     let c := A.actualAffineHeightSplit.sidesIntersectionHomeomorph b
     A.affineCentralBandToCentralFamily
         A.affineCentralSeparation c =
@@ -74,7 +74,7 @@ public theorem actualCuspWangFibreToBand_centralFamily_fixed
       (A.actualAffineHeightSplit.allocation.orderThreeSide ∩
         A.actualAffineHeightSplit.allocation.orderFourSide :
         Set A.ellipticInterior) :=
-    actualCuspWangFibreToBandMap (A := A) R y
+    actualCuspWangFiberToBandMap (A := A) R y
   let c : centralHeightBand
       (A.affineCentralHeightSplit
         A.affineCentralSeparation).height
@@ -88,7 +88,7 @@ public theorem actualCuspWangFibreToBand_centralFamily_fixed
       A.affineCentralBandToCentralFamily
           A.affineCentralSeparation c =
         A.starToCentral 0
-          ((actualCuspWangFibreToCuspCoverIntersectionMap (A := A) R y).1) := by
+          ((actualCuspWangFiberToCuspCoverIntersectionMap (A := A) R y).1) := by
     apply A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph.injective
     apply Subtype.ext
     change
@@ -100,11 +100,11 @@ public theorem actualCuspWangFibreToBand_centralFamily_fixed
     calc
       _ = b.1.1 := rfl
       _ = A.openEmbeddingStarData.collarSourceToGlued 0
-          ((actualCuspWangFibreToCuspCoverIntersectionMap (A := A) R y).1) := rfl
+          ((actualCuspWangFiberToCuspCoverIntersectionMap (A := A) R y).1) := rfl
       _ = _ := (A.centralToSectionSevenEulerPiece_starToCentral 0 _).symm
   rw [hcentral]
   obtain ⟨w, hw⟩ := Quotient.exists_rep y
-  let t := actualCuspFullFibreCrossingTime A
+  let t := actualCuspFullFiberCrossingTime A
   let p := A.cuspAngularLiftPoint t
   have hs : ‖cuspQ p.1.2‖ < A.starCuspWitness.localWitness.radius := p.2
   let zeta := (collarFiberEquiv A.cuspCoordinate
@@ -118,13 +118,13 @@ public theorem actualCuspWangFibreToBand_centralFamily_fixed
   have hw' : additiveTorusProjection
       (cuspBasePoint A.cuspCoordinate
         (markedCuspParameter A.starCuspWitness)).1 w = y := hw
-  have hslice := actualCuspFullFibreSlice_additiveTorusProjection
+  have hslice := actualCuspFullFiberSlice_additiveTorusProjection
     (A := A) p.1.2 hs zeta
   rw [hzeta, hw'] at hslice
-  change actualCuspFullFibreSlice (A := A) p.1.2 hs y =
+  change actualCuspFullFiberSlice (A := A) p.1.2 hs y =
     additiveCuspBoundaryProjection A.starCuspWitness q at hslice
   have hintersection :
-      ((actualCuspWangFibreToCuspCoverIntersectionMap (A := A) R y).1) =
+      ((actualCuspWangFiberToCuspCoverIntersectionMap (A := A) R y).1) =
         additiveCuspBoundaryProjection A.starCuspWitness q := hslice
   rw [hintersection]
   have hcoordinate :
@@ -178,14 +178,14 @@ public theorem actualCuspWangFibreToBand_centralFamily_fixed
   rfl
 
 
-public theorem actualCuspWangFibreToEllipticInteriorMap_eq_fixed
+public theorem actualCuspWangFiberToEllipticInteriorMap_eq_fixed
     (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     ((⟨Subtype.val, continuous_subtype_val⟩ :
       C((R.twoDiscCover.orderThreeSide ∩ R.twoDiscCover.orderFourSide :
         Set A.ellipticInterior), A.ellipticInterior)).comp
-      (actualCuspWangFibreToBandMap (A := A) R)) =
+      (actualCuspWangFiberToBandMap (A := A) R)) =
     A.centralFamilyToEllipticInteriorMap.comp
       ((A.regularFixedFiberMap
         (A.cuspAngularRegularBasePoint A.affineActualCuspCrossingTime)).comp
@@ -196,7 +196,7 @@ public theorem actualCuspWangFibreToEllipticInteriorMap_eq_fixed
   apply ContinuousMap.ext
   intro y
   have h := congrArg A.centralFamilyToEllipticInteriorMap
-    (actualCuspWangFibreToBand_centralFamily_fixed R y)
+    (actualCuspWangFiberToBand_centralFamily_fixed R y)
   exact (A.centralFamilyToEllipticInteriorMap_band _).symm.trans h
 
 public theorem canonicalCuspFiberToEllipticInteriorMap_eq_fixed
@@ -220,7 +220,7 @@ public theorem canonicalCuspFiberToEllipticInteriorMap_eq_fixed
         R.twoDiscCover.canonicalCuspFiberToBandTorusHomeomorph y))
   exact (A.centralFamilyToEllipticInteriorMap_band _).symm.trans h
 
-public theorem actualCuspWangFibreToEllipticInteriorMap_homotopic_fixed_canonical
+public theorem actualCuspWangFiberToEllipticInteriorMap_homotopic_fixed_canonical
     (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
@@ -228,11 +228,11 @@ public theorem actualCuspWangFibreToEllipticInteriorMap_homotopic_fixed_canonica
       ((⟨Subtype.val, continuous_subtype_val⟩ :
         C((R.twoDiscCover.orderThreeSide ∩ R.twoDiscCover.orderFourSide :
           Set A.ellipticInterior), A.ellipticInterior)).comp
-        (actualCuspWangFibreToBandMap (A := A) R))
+        (actualCuspWangFiberToBandMap (A := A) R))
       R.twoDiscCover.canonicalCuspFiberToEllipticInteriorMap := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
-  rw [actualCuspWangFibreToEllipticInteriorMap_eq_fixed,
+  rw [actualCuspWangFiberToEllipticInteriorMap_eq_fixed,
     canonicalCuspFiberToEllipticInteriorMap_eq_fixed]
   exact ContinuousMap.Homotopic.comp (.refl A.centralFamilyToEllipticInteriorMap)
     (ContinuousMap.Homotopic.comp (A.regularFixedFiberMap_homotopic _ _) (.refl _))

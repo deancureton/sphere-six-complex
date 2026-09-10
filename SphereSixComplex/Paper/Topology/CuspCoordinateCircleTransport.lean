@@ -13,9 +13,9 @@ open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open ComplexTorus TorusFamily CuspPeriodExpansion
 open EllipticTwoDiscCoverData
 
-public theorem cuspFullFibreSlice_coordinateCircle_real (A : PaperAnalyticData)
+public theorem cuspFullFiberSlice_coordinateCircle_real (A : PaperAnalyticData)
     (i : Fin 4) (s : ℂ) (hs : ‖cuspQ s‖ < A.starCuspWitness.localWitness.radius) (t : ℝ) :
-    actualCuspFullFibreSlice (A := A) s hs
+    actualCuspFullFiberSlice (A := A) s hs
       (cuspCoordinateCircle (cuspBasePoint A.cuspCoordinate
         (markedCuspParameter A.starCuspWitness)) i (fun _ ↦ (t : UnitAddCircle))) =
     additiveCuspBoundaryProjection A.starCuspWitness
@@ -32,19 +32,19 @@ public theorem cuspFullFibreSlice_coordinateCircle_real (A : PaperAnalyticData)
     rw [map_smul, realEquiv_symm_periodVector, map_smul,
       (fullRankDomain _).map_integer]
   rw [← h]
-  exact actualCuspFullFibreSlice_additiveTorusProjection s hs _
+  exact actualCuspFullFiberSlice_additiveTorusProjection s hs _
 
-public theorem cuspFullFibreSlice_coordinateCircle_central (A : PaperAnalyticData)
+public theorem cuspFullFiberSlice_coordinateCircle_central (A : PaperAnalyticData)
     (i : Fin 4) (s : ℂ) (hs : ‖cuspQ s‖ < A.starCuspWitness.localWitness.radius)
     (t : UnitAddCircle) :
     A.starToCentral 0
-      (actualCuspFullFibreSlice (A := A) s hs
+      (actualCuspFullFiberSlice (A := A) s hs
         (cuspCoordinateCircle (cuspBasePoint A.cuspCoordinate
           (markedCuspParameter A.starCuspWitness)) i (fun _ ↦ t))) =
     regularPeriodCircleInGlobal A.periods (Pi.single i 1)
       (t, (additiveCuspBundleHomeomorph A.starCuspWitness ⟨(0, s), hs⟩).1.1) := by
   obtain ⟨r, rfl⟩ := QuotientAddGroup.mk_surjective t
-  rw [cuspFullFibreSlice_coordinateCircle_real]
+  rw [cuspFullFiberSlice_coordinateCircle_real]
   trans additiveCuspCoverToGlobal A.starCuspWitness
     ⟨(r • periodVector (cuspBasePoint A.cuspCoordinate s).1 (Pi.single i 1), s), hs⟩
   · exact puncturedLocalCuspQuotientMap_additiveCuspBoundaryProjection A.starCuspWitness _
@@ -80,7 +80,7 @@ public theorem cuspThirdSweep_central_real (A : PaperAnalyticData)
         (t, A.cuspPolarRegularBase r) := by
   change A.starToCentral 0 (cuspFixedCircleSweep A _ _) = _
   rw [cuspFixedCircleSweep_real]
-  exact cuspFullFibreSlice_coordinateCircle_central A 2 _ _ t
+  exact cuspFullFiberSlice_coordinateCircle_central A 2 _ _ t
 
 public def cuspThirdPeriodFamily (A : PaperAnalyticData) :
     C(ℝ, C(StdTorus 1, A.CentralFamily)) :=

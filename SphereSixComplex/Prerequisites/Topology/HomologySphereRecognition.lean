@@ -121,7 +121,7 @@ public theorem SixSphere.has_spherical_generator_of_homology
       IntegralSingularHomology 6 (TopCat.sphere 6 : Type) ≃+ ℤ :=
     (integralSingularHomologyEquiv 6
       sixSphereHomeomorphTopCatSphereSix).symm.trans
-        (Classical.choice establishedSixSpherePositiveHomologyInputs.degreeSix)
+        (Classical.choice sixSpherePositiveHomologyInputs.degreeSix)
   let targetOrientation : IntegralSingularHomology 6 X ≃+ ℤ :=
     Classical.choice hTop
   obtain ⟨f, s, hs⟩ :=

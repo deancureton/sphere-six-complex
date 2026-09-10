@@ -154,7 +154,7 @@ followed by projection away from the compact torus. -/
 public theorem compactPhaseOrbit_isProper
     (M : Model) (r : ℝ) (P : PolarHoneycombData M r) :
     IsProperMap (compactPhaseOrbit M r P.positivePart) := by
-  let J := establishedContinuousTorusAction M
+  let J := continuousTorusAction M
   let localAction : CompactTorus × localCarrier M r → localCarrier M r :=
     fun z ↦ ⟨M.torusAction (compactTorusEmbedding z.1) z.2, by
       change M.t (M.torusAction (compactTorusEmbedding z.1) z.2) ∈ Metric.ball 0 r

@@ -61,10 +61,10 @@ public theorem cuspChosenThirdSweep_central_real (A : PaperAnalyticData)
   change A.starToCentral 0 (A.cuspFixedCircleSweepAnchors _ _ _) = _
   rw [cuspFixedCircleSweepAnchors_real]
   have hs := cuspParameterOfPolar_norm_cuspQ_add A.cuspBoundaryCoverBase.1.2 r
-  change A.starToCentral 0 (actualCuspFullFibreSlice
+  change A.starToCentral 0 (actualCuspFullFiberSlice
     (cuspParameterOfPolar ‖cuspQ A.cuspBoundaryCoverBase.1.2‖
       (r + A.cuspBoundaryCoverBase.1.2.re)) _ _) = _
-  erw [cuspFullFibreSlice_coordinateCircle_central A 2]
+  erw [cuspFullFiberSlice_coordinateCircle_central A 2]
   apply congrArg (fun b ↦ regularPeriodCircleInGlobal A.periods (Pi.single 2 1) (t, b))
   apply Subtype.ext
   exact congrArg A.cuspCoordinate.lift hs

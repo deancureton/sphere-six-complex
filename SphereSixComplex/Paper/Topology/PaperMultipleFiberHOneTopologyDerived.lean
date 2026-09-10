@@ -4,6 +4,8 @@ public import SphereSixComplex.Paper.Topology.PaperAffineCyclicDeckHurewiczCompa
 
 open AlgebraicTopology
 
+noncomputable section
+
 namespace SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
 
 open Geometry Geometry.AnalyticTorusFamily Geometry.ComplexTorus Geometry.GlobalTorusFamily
@@ -13,10 +15,19 @@ open PaperEllipticFillingRadialRetraction
 open PaperEllipticReducedCentralFiberCoverModels
 open PaperLemmaSevenThirteenAlgebra TwistObstruction
 
-noncomputable section
 
-namespace EstablishedAffineCyclicQuotientHomology
+end SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
 
+namespace SphereSixComplex.AffineCyclicQuotientHomology
+open SphereSixComplex SphereSixComplex.Topology
+open SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+open Geometry Geometry.AnalyticTorusFamily Geometry.ComplexTorus Geometry.GlobalTorusFamily
+open Geometry.EllipticFamilySpecialization Geometry.EllipticFixedPointCriterion
+open LatticeData Periods TriangleGroup
+open PaperEllipticFillingRadialRetraction
+open PaperEllipticReducedCentralFiberCoverModels
+open PaperLemmaSevenThirteenAlgebra TwistObstruction
+open _root_.SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
 variable {m : ℕ} [NeZero m] {p : SphereSixComplex.Periods.Parameters}
   {D : RadialEllipticActionData m (AdditiveTorus p)}
 
@@ -229,8 +240,15 @@ public theorem reducedCentralFiberHOneEquivPresentation_projection
       latticeProjection P x :=
   (reducedCentralFiberHOnePresentation P).projection x
 
-end EstablishedAffineCyclicQuotientHomology
+end SphereSixComplex.AffineCyclicQuotientHomology
 
+namespace SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+open Geometry Geometry.AnalyticTorusFamily Geometry.ComplexTorus Geometry.GlobalTorusFamily
+open Geometry.EllipticFamilySpecialization Geometry.EllipticFixedPointCriterion
+open LatticeData Periods TriangleGroup
+open PaperEllipticFillingRadialRetraction
+open PaperEllipticReducedCentralFiberCoverModels
+open PaperLemmaSevenThirteenAlgebra TwistObstruction
 variable {U : TriangleUniformization} (F : PeriodFunctions U)
 
 /-- First integral homology of the actual order-three reduced elliptic fibre, with the exact
@@ -238,7 +256,7 @@ multiple-fibre presentation from Lemma 7.13. -/
 public noncomputable def orderThreeReducedCentralFiberHOneEquivPresentation :
     IntegralSingularHomology 1 (orderThreeReducedCentralFiber F) ≃ₗ[ℤ]
       OrderOneSelectedPresentation := by
-  exact EstablishedAffineCyclicQuotientHomology.reducedCentralFiberHOneEquivPresentation
+  exact _root_.SphereSixComplex.AffineCyclicQuotientHomology.reducedCentralFiberHOneEquivPresentation
     (orderThreeCentralFiberPresentationData F)
 
 /-- First integral homology of the actual order-four reduced elliptic fibre, with the exact
@@ -246,7 +264,7 @@ multiple-fibre presentation from Lemma 7.13. -/
 public noncomputable def orderFourReducedCentralFiberHOneEquivPresentation :
     IntegralSingularHomology 1 (orderFourReducedCentralFiber F) ≃ₗ[ℤ]
       OrderTwoSelectedPresentation := by
-  exact EstablishedAffineCyclicQuotientHomology.reducedCentralFiberHOneEquivPresentation
+  exact _root_.SphereSixComplex.AffineCyclicQuotientHomology.reducedCentralFiberHOneEquivPresentation
     (orderFourCentralFiberPresentationData F)
 
 /-- In particular, first integral homology of the actual order-three reduced fibre is free of
@@ -274,14 +292,14 @@ public theorem orderThreeReducedCentralFiberHOneEquivIntSquared_projection_raw (
       orderOneSelectedPresentationEquivIntSquared
         (Submodule.Quotient.mk (Submodule.Quotient.mk x, 0)) := by
   have h :=
-    EstablishedAffineCyclicQuotientHomology.reducedCentralFiberHOneEquivPresentation_projection
+    _root_.SphereSixComplex.AffineCyclicQuotientHomology.reducedCentralFiberHOneEquivPresentation_projection
       (orderThreeCentralFiberPresentationData F) x
   change orderThreeReducedCentralFiberHOneEquivPresentation F
       (integralSingularHomologyMap 1
         (RadialEllipticActionData.centralFiberCoverProjection
           (orderThreeRadialActionData F))
         ((orderThreeCentralFiberCoverSourceHomologyBasis F).degreeOne.symm x)) =
-      EstablishedAffineCyclicQuotientHomology.latticeProjection
+      _root_.SphereSixComplex.AffineCyclicQuotientHomology.latticeProjection
         (orderThreeCentralFiberPresentationData F) x at h
   have hc := congrArg orderOneSelectedPresentationEquivIntSquared h
   change orderOneSelectedPresentationEquivIntSquared
@@ -303,14 +321,14 @@ public theorem orderFourReducedCentralFiberHOneEquivIntSquared_projection_raw (x
       orderTwoSelectedPresentationEquivIntSquared
         (Submodule.Quotient.mk (Submodule.Quotient.mk x, 0)) := by
   have h :=
-    EstablishedAffineCyclicQuotientHomology.reducedCentralFiberHOneEquivPresentation_projection
+    _root_.SphereSixComplex.AffineCyclicQuotientHomology.reducedCentralFiberHOneEquivPresentation_projection
       (orderFourCentralFiberPresentationData F) x
   change orderFourReducedCentralFiberHOneEquivPresentation F
       (integralSingularHomologyMap 1
         (RadialEllipticActionData.centralFiberCoverProjection
           (orderFourRadialActionData F))
         ((orderFourCentralFiberCoverSourceHomologyBasis F).degreeOne.symm x)) =
-      EstablishedAffineCyclicQuotientHomology.latticeProjection
+      _root_.SphereSixComplex.AffineCyclicQuotientHomology.latticeProjection
         (orderFourCentralFiberPresentationData F) x at h
   have hc := congrArg orderTwoSelectedPresentationEquivIntSquared h
   change orderTwoSelectedPresentationEquivIntSquared
@@ -321,6 +339,6 @@ public theorem orderFourReducedCentralFiberHOneEquivIntSquared_projection_raw (x
           ((orderFourCentralFiberCoverSourceHomologyBasis F).degreeOne.symm x))) = _
   exact hc
 
-end
-
 end SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+
+end

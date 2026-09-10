@@ -33,8 +33,8 @@ open SphereSixComplex.Geometry.EllipticFamilySpecialization
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 
 
-namespace EstablishedActualCuspRadialClutching
-
+namespace ActualPuncturedCuspCollarWitness
+open _root_.SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 /-- Polar coordinates and a fundamental strip for the normalized cusp parameter give the radial
 mapping-torus quotient.  Period transport across the strip is the matrix `M₀`.
 
@@ -44,14 +44,13 @@ inside the horodisc, and its recorded coordinate is the actual additive period c
 Producing the marking is the same real-period-coordinate construction used for the central band in
 `PaperSectionSevenAffineMarkedBandTrivialization`: lift the contractible base through the
 covering, then read the period coordinate on the lifted sheet. -/
-public noncomputable def data
+public noncomputable def radialClutchingData
     {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) : ActualCuspRadialClutchingData W :=
   SphereSixComplex.Geometry.CuspRadialClutchingConstruction.actualCuspRadialClutchingData W
 
-end EstablishedActualCuspRadialClutching
-
+end ActualPuncturedCuspCollarWitness
 namespace UnnormalizedCuspRadialClutchingData
 
 open LatticeData LatticeWangAlgebra Topology.PaperCuspSpecializationAlgebra
@@ -124,7 +123,7 @@ public noncomputable def geometricWangSections :
     let _ := G.fiberTopology
     CuspGeometricWangSections G.monodromyCoordinates := by
   let _ := G.fiberTopology
-  exact CircleMappingTorusHomologyBases.EstablishedCircleMappingTorusGeometricSections.sections
+  exact _root_.SphereSixComplex.CircleMappingTorusHomologyBases.CuspMonodromyCoordinates.wangSections
     G.monodromyCoordinates
 
 /-- Remove the contractible radial coordinate from the actual punctured cusp quotient. -/
@@ -166,7 +165,7 @@ to the fiber whenever that restriction is bijective. -/
     CuspGeometricWangSections G.monodromyCoordinates := by
   let _ := G.fiberTopology
   let U := G.toUnnormalizedCuspRadialClutchingData
-  let S := CircleMappingTorusHomologyBases.EstablishedCircleMappingTorusGeometricSections.sections
+  let S := _root_.SphereSixComplex.CircleMappingTorusHomologyBases.CuspMonodromyCoordinates.wangSections
     G.monodromyCoordinates
   exact
     { degreeOne := WangHomologyPresentation.correctedSection
@@ -186,7 +185,7 @@ public theorem geometricWangSections_degreeTwo_of_bijective
     G.geometricWangSections.degreeTwo =
       WangHomologyPresentation.correctedSection
         (circleMappingTorusHTwoPresentation G.clutching)
-        (EstablishedCircleMappingTorusGeometricSections.sections G.monodromyCoordinates).degreeTwo
+        (_root_.SphereSixComplex.CircleMappingTorusHomologyBases.CuspMonodromyCoordinates.wangSections G.monodromyCoordinates).degreeTwo
         (LinearEquiv.ofBijective (G.specializationHomologyTwoMap.comp
           (circleMappingTorusHTwoPresentation G.clutching).coinvariantsToTotal) h)
         G.specializationHomologyTwoMap := by
@@ -209,7 +208,7 @@ public theorem geometricWangSections_degreeTwo_first
             (G.specializationHomologyTwoMap x)) i := by
   let _ := G.fiberTopology
   let P := circleMappingTorusHTwoPresentation G.clutching
-  let S := EstablishedCircleMappingTorusGeometricSections.sections G.monodromyCoordinates
+  let S := _root_.SphereSixComplex.CircleMappingTorusHomologyBases.CuspMonodromyCoordinates.wangSections G.monodromyCoordinates
   let e := LinearEquiv.ofBijective (G.specializationHomologyTwoMap.comp P.coinvariantsToTotal) h
   have he := WangHomologyPresentation.map_eq_correctedSection_coinvariant
     P S.degreeTwo e G.specializationHomologyTwoMap rfl x
@@ -296,7 +295,7 @@ variable (A : PaperAnalyticData)
 cusp witness. -/
 public noncomputable def actualCuspRadialClutchingData :
     ActualCuspRadialClutchingData A.starCuspWitness :=
-  EstablishedActualCuspRadialClutching.data A.starCuspWitness
+  _root_.SphereSixComplex.Geometry.CuspPuncturedCollarBridge.ActualPuncturedCuspCollarWitness.radialClutchingData A.starCuspWitness
 
 /-- The paper's selected radial clutching datum is the explicit additive-period construction. -/
 public theorem actualCuspRadialClutchingData_eq :

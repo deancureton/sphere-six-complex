@@ -65,7 +65,7 @@ public theorem constructedA2CentralCompactMap_continuous
       constructedA2CentralCompactMap W p.1 p.2) := by
   apply Continuous.subtype_mk
   apply Continuous.subtype_mk
-  apply (establishedContinuousTorusAction constructedModel).variable_action
+  apply (continuousTorusAction constructedModel).variable_action
   · exact continuous_compactTorusEmbedding.comp
       (constructedA2EffectivePhaseSection_continuous.comp continuous_fst)
   · fun_prop

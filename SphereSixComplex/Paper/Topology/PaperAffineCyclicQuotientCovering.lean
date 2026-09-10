@@ -8,8 +8,13 @@ public import SphereSixComplex.Prerequisites.Topology.QuotientCoveringMarkedLoop
 open Set Topology
 
 namespace SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
-namespace EstablishedAffineCyclicQuotientHomology
+end SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
 
+namespace SphereSixComplex.AffineCyclicQuotientHomology
+open SphereSixComplex SphereSixComplex.Topology
+open SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+
+open _root_.SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
 open SphereSixComplex.Geometry
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
@@ -193,5 +198,8 @@ public theorem orderFourProjectedStraightPeriodLoop_fundamentalGroupEquiv
     (orderFourCentralFiberPresentationData F)
     (orderFourAffineCyclicFilling_isQuotientCoveringMap F) x
 
-end EstablishedAffineCyclicQuotientHomology
+end SphereSixComplex.AffineCyclicQuotientHomology
+
+namespace SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+
 end SphereSixComplex.Topology.PaperMultipleFiberHOneTopology

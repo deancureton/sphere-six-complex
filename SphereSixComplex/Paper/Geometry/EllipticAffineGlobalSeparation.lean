@@ -126,12 +126,12 @@ public theorem affineGlobalFamilyAction_properlyDiscontinuous
       ∃ a : CyclicFour, g = Monoid.Coprod.inr a
 
 /-- The established elliptic stabilizer theorem supplies the exact order-three source input. -/
-public theorem establishedOrderThreeSourceStabilizerExact :
+public theorem orderThreeSourceStabilizerExact :
     OrderThreeSourceStabilizerExact :=
   fuchsianOneFixed_iff_mem_range_inl
 
 /-- The established elliptic stabilizer theorem supplies the exact order-four source input. -/
-public theorem establishedOrderFourSourceStabilizerExact :
+public theorem orderFourSourceStabilizerExact :
     OrderFourSourceStabilizerExact :=
   fuchsianTwoFixed_iff_mem_range_inr
 
@@ -293,7 +293,7 @@ public theorem orderThreeSmallAffineCollarOrbitSeparation
     (hproper : SourceActionProperlyDiscontinuous (U := U)) :
     OrderThreeSmallAffineCollarOrbitSeparation F :=
   orderThreeSmallAffineCollarOrbitSeparation_of_sourceStabilizer F hsource hproper
-    establishedOrderThreeSourceStabilizerExact
+    orderThreeSourceStabilizerExact
 
 /-- The classical order-four stabilizer calculation closes the affine collar separation. -/
 public theorem orderFourSmallAffineCollarOrbitSeparation
@@ -301,7 +301,7 @@ public theorem orderFourSmallAffineCollarOrbitSeparation
     (hproper : SourceActionProperlyDiscontinuous (U := U)) :
     OrderFourSmallAffineCollarOrbitSeparation F :=
   orderFourSmallAffineCollarOrbitSeparation_of_sourceStabilizer F hsource hproper
-    establishedOrderFourSourceStabilizerExact
+    orderFourSourceStabilizerExact
 
 end
 

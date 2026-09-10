@@ -18,19 +18,17 @@ noncomputable section
 
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 
-namespace EstablishedSectionSevenAffineRegularLiftTopology
-
 /-- The two band maps induced by the proved affine overlap
 equivalences are homotopic to the finite-cover projections marked by the unique affine-strip
 lift normalized by the common peripheral marking. -/
-public theorem markedBandHomotopies (A : PaperAnalyticData) :
+public theorem affineRegularLiftMarkedBandHomotopies (A : PaperAnalyticData) :
     A.AffineOverlapBandCompatibility :=
   A.actualMarkedBandHomotopies
 
 /-- The marked band homotopies and the proved overlap equivalences supply marked retractions.
 The retractions themselves are the canonical homotopy inverses of the two proved inclusion
 equivalences, whose inverse maps are the literal subspace inclusions. -/
-public theorem markedRetractionInput_nonempty (A : PaperAnalyticData) :
+public theorem affineMarkedRetractionInput_nonempty (A : PaperAnalyticData) :
     Nonempty A.AffineMarkedRetractionInput := by
   let hThree := orderThreeOverlapIsHomotopyEquivalence_inclusion
     A.orderThreeOverlapIsHomotopyEquivalence
@@ -43,19 +41,19 @@ public theorem markedRetractionInput_nonempty (A : PaperAnalyticData) :
         markedSquare := by
           rw [← affineOrderThreeBandToReducedFiber_eq_bandMapOfRetraction]
           rw [affineBandOrderThreeMarkedProjection_eq_coverMap]
-          exact (markedBandHomotopies A).orderThree }
+          exact (affineRegularLiftMarkedBandHomotopies A).orderThree }
   · exact
       { retraction := hFour.toHomotopyEquiv
         invFun_eq := hFour.toHomotopyEquiv_invFun
         markedSquare := by
           rw [← affineOrderFourBandToReducedFiber_eq_bandMapOfRetraction]
           rw [affineBandOrderFourMarkedProjection_eq_coverMap]
-          exact (markedBandHomotopies A).orderFour }
+          exact (affineRegularLiftMarkedBandHomotopies A).orderFour }
 
 /-- The normalized marked band squares supply the affine overlap compatibility. -/
-public theorem overlapBandCompatibility (A : PaperAnalyticData) :
+public theorem affineOverlapBandCompatibility (A : PaperAnalyticData) :
     A.AffineOverlapBandCompatibility := by
-  let G := (markedRetractionInput_nonempty A).some
+  let G := (affineMarkedRetractionInput_nonempty A).some
   refine { orderThree := ?_, orderFour := ?_ }
   · let h := orderThreeOverlapIsHomotopyEquivalence_inclusion
       A.orderThreeOverlapIsHomotopyEquivalence
@@ -78,23 +76,21 @@ public theorem overlapBandCompatibility (A : PaperAnalyticData) :
 
 /-- Collar shrinks give the overlap equivalences, and normalized radial bounds give the
 marked band homotopies. Together they supply the full affine completion. -/
-public theorem overlapCompletionInput (A : PaperAnalyticData) :
+public theorem affineOverlapCompletionInput (A : PaperAnalyticData) :
     A.AffineOverlapCompletionInput :=
-  (overlapBandCompatibility A).toOverlapCompletionInput
+  (affineOverlapBandCompatibility A).toOverlapCompletionInput
 
 /-- Exact drop-in replacement for the former broad radial-completion existence assumption. -/
-public theorem radialCompletionInput_nonempty
+public theorem affineRadialCompletionInput_nonempty
     (A : PaperAnalyticData) :
     Nonempty A.AffineRadialCompletionInput :=
-  ⟨(overlapCompletionInput A).toRadialCompletion⟩
-
-end EstablishedSectionSevenAffineRegularLiftTopology
+  ⟨(affineOverlapCompletionInput A).toRadialCompletion⟩
 
 /-- The affine radial package selected from the explicit regular-cover construction. -/
 public theorem affineRadialCompletion
     (A : PaperAnalyticData) :
     A.AffineRadialCompletionInput :=
-  (EstablishedSectionSevenAffineRegularLiftTopology.overlapCompletionInput A).toRadialCompletion
+  (_root_.SphereSixComplex.Geometry.PaperAnalyticData.affineOverlapCompletionInput A).toRadialCompletion
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

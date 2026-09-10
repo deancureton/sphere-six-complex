@@ -19,7 +19,7 @@ namespace SphereSixComplex
 
 /-- The paper's affine radial and cusp comparison theorems produce the complete gluing datum. -/
 public theorem exists_paperGluingData_from_sectionSeven : Nonempty PaperGluingData := by
-  let A := Geometry.establishedPaperAnalyticData
+  let A := Geometry.chosenPaperAnalyticData
   let R := A.affineRadialCompletionInput
   exact Geometry.exists_paperGluingData_of_positiveDegreeAssembly
     (Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTopology.correctedPositiveDegreeAssembly R)

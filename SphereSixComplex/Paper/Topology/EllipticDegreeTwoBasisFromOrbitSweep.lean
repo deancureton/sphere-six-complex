@@ -176,12 +176,12 @@ private def orderFourSweepGenerator : IntegralSingularHomology 2
     (CircleMappingTorus orderFourThreeTorusClutching) :=
   orderFourFixedLoopSweep
 
-private def orderThreeFibreGenerator : IntegralSingularHomology 2
+private def orderThreeFiberGenerator : IntegralSingularHomology 2
     (CircleMappingTorus orderThreeThreeTorusClutching) :=
   (circleMappingTorusWangPresentationOfCover orderThreeThreeTorusClutching 1).inclusion
     (standardThreeTorusHomologyTwo.symm (Pi.single 0 1))
 
-private def orderFourFibreGenerator : IntegralSingularHomology 2
+private def orderFourFiberGenerator : IntegralSingularHomology 2
     (CircleMappingTorus orderFourThreeTorusClutching) :=
   (circleMappingTorusWangPresentationOfCover orderFourThreeTorusClutching 1).inclusion
     (standardThreeTorusHomologyTwo.symm (Pi.single 0 1))
@@ -216,9 +216,9 @@ private theorem orderThree_cover_coordinateThree :
           orderThreeThreeTorusClutching_pow)
         (integralSingularHomologyMap 2 (orderThreeSourceToGammaProduct F : C(_, _))
           ((orderThreeCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm
-            (Pi.single 3 1))) = orderThreeFibreGenerator := by
+            (Pi.single 3 1))) = orderThreeFiberGenerator := by
   rw [orderThreeGamma_coordinateThree]
-  convert normalizedFiniteOrderAdditiveCircleSweep_fibreSquare
+  convert normalizedFiniteOrderAdditiveCircleSweep_fiberSquare
     orderThreeClutchingAddEquiv orderThreeClutchingAddEquiv_pow _ using 1 <;> rfl
 
 private theorem orderFour_cover_coordinateThree :
@@ -227,9 +227,9 @@ private theorem orderFour_cover_coordinateThree :
           orderFourThreeTorusClutching_pow)
         (integralSingularHomologyMap 2 (orderFourSourceToGammaProduct F : C(_, _))
           ((orderFourCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm
-            (Pi.single 3 1))) = orderFourFibreGenerator := by
+            (Pi.single 3 1))) = orderFourFiberGenerator := by
   rw [orderFourGamma_coordinateThree]
-  convert normalizedFiniteOrderAdditiveCircleSweep_fibreSquare
+  convert normalizedFiniteOrderAdditiveCircleSweep_fiberSquare
     orderFourClutchingAddEquiv orderFourClutchingAddEquiv_pow _ using 1 <;> rfl
 
 private theorem orderThreeFixedSweep_positiveInvariant :
@@ -378,7 +378,7 @@ private theorem orderThreeTargetCoordinates_coordinateThree :
   rw [orderThree_cover_coordinateThree] at hprojection
   rw [orderThreeTargetCoordinates_apply, orderThreeProjectedDegreeTwoGenerator,
     hprojection]
-  exact orderThreeNegatedTotalAddEquiv_fibreCoordinateZero _ _
+  exact orderThreeNegatedTotalAddEquiv_fiberCoordinateZero _ _
 
 private theorem orderFourTargetCoordinates_basisCombination :
     orderFourTargetCoordinates F
@@ -411,7 +411,7 @@ private theorem orderFourTargetCoordinates_coordinateThree :
   rw [orderFour_cover_coordinateThree] at hprojection
   rw [orderFourTargetCoordinates_apply, orderFourProjectedDegreeTwoGenerator,
     hprojection]
-  exact orderFourTotalAddEquiv_fibreCoordinateZero _ _
+  exact orderFourTotalAddEquiv_fiberCoordinateZero _ _
 
 /-- The actual elliptic degree-two basis package, derived from the single normalized orbit-sweep
 theorem and the explicit three-torus clutching calculations. -/

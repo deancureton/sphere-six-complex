@@ -15,6 +15,8 @@ extension class rather than only the linear monodromy.
 
 open AlgebraicTopology
 
+noncomputable section
+
 namespace SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
 
 open Geometry Geometry.AnalyticTorusFamily Geometry.ComplexTorus Geometry.GlobalTorusFamily
@@ -24,10 +26,19 @@ open PaperEllipticFillingRadialRetraction
 open PaperEllipticReducedCentralFiberCoverModels
 open PaperLemmaSevenThirteenAlgebra TwistObstruction
 
-noncomputable section
 
-namespace EstablishedAffineCyclicQuotientHomology
+end SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
 
+namespace SphereSixComplex.AffineCyclicQuotientHomology
+open SphereSixComplex SphereSixComplex.Topology
+open SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+open Geometry Geometry.AnalyticTorusFamily Geometry.ComplexTorus Geometry.GlobalTorusFamily
+open Geometry.EllipticFamilySpecialization Geometry.EllipticFixedPointCriterion
+open LatticeData Periods TriangleGroup
+open PaperEllipticFillingRadialRetraction
+open PaperEllipticReducedCentralFiberCoverModels
+open PaperLemmaSevenThirteenAlgebra TwistObstruction
+open _root_.SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
 variable {m : ℕ} [NeZero m] {p : SphereSixComplex.Periods.Parameters}
   {D : RadialEllipticActionData m (AdditiveTorus p)}
 
@@ -478,8 +489,15 @@ public structure AffineCyclicDeckHurewiczComparison
     hOneEquiv (Additive.ofMul (Abelianization.of (affineCyclicKernelIncl P x))) =
       coverProjectionLatticeMap P x
 
-end EstablishedAffineCyclicQuotientHomology
+end SphereSixComplex.AffineCyclicQuotientHomology
 
+namespace SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+open Geometry Geometry.AnalyticTorusFamily Geometry.ComplexTorus Geometry.GlobalTorusFamily
+open Geometry.EllipticFamilySpecialization Geometry.EllipticFixedPointCriterion
+open LatticeData Periods TriangleGroup
+open PaperEllipticFillingRadialRetraction
+open PaperEllipticReducedCentralFiberCoverModels
+open PaperLemmaSevenThirteenAlgebra TwistObstruction
 variable {U : TriangleUniformization} (F : PeriodFunctions U)
 
 private theorem orderThreeLiftTranslation_fixed :
@@ -581,6 +599,6 @@ quotient calculation. -/
     simp
   free := orderFourAction_free F
 
-end
-
 end SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+
+end

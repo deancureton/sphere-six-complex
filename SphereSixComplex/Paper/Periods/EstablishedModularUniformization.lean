@@ -25,19 +25,19 @@ open SphereSixComplex.TriangleGroup
 
 /-- Classical uniformization of the explicit `(3, 4, ∞)` source orbifold, including its exact
 orbit fibres, elliptic ramification, and completed cusp. -/
-public theorem establishedExactFuchsianOrbifoldCoordinate :
+public theorem ExactFuchsianOrbifoldCoordinate.nonempty :
     Nonempty ExactFuchsianOrbifoldCoordinate :=
   nonempty_exactFuchsianOrbifoldCoordinate
 
 /-- Classical level-one modular uniformization by the normalized modular invariant, including its
 exact orbit fibres, elliptic ramification, special values, and completed cusp. -/
-public theorem establishedExactNormalizedModularJUniformization :
+public theorem ExactNormalizedModularJUniformization.nonempty :
     Nonempty ExactNormalizedModularJUniformization :=
   nonempty_exactNormalizedModularJUniformization
 
 /-- Classical normalized branched-lifting theorem from an exact `(3, 4, ∞)` quotient coordinate
 through the exact level-one modular quotient. -/
-public theorem establishedNormalizedFuchsianModularJLifting :
+public theorem normalizedFuchsianModularJLiftingExistence :
     NormalizedFuchsianModularJLiftingExistence :=
   NormalizedModularJLiftingExistence.normalizedFuchsianModularJLiftingExistence
 
@@ -61,11 +61,11 @@ public structure NormalizedFuchsianModularParameter where
 and its exact source quotient coordinate. -/
 public theorem nonempty_normalizedFuchsianModularParameter :
     Nonempty NormalizedFuchsianModularParameter := by
-  obtain ⟨C⟩ := establishedExactFuchsianOrbifoldCoordinate
-  obtain ⟨J⟩ := establishedExactNormalizedModularJUniformization
+  obtain ⟨C⟩ := ExactFuchsianOrbifoldCoordinate.nonempty
+  obtain ⟨J⟩ := ExactNormalizedModularJUniformization.nonempty
   obtain ⟨P, hOne, hTwo, hCoordinate⟩ :=
     exists_fuchsianModularParameter_of_normalizedLiftingExistence
-      establishedNormalizedFuchsianModularJLifting J C
+      normalizedFuchsianModularJLiftingExistence J C
   exact ⟨⟨C, P, hOne, hTwo, hCoordinate⟩⟩
 
 end SphereSixComplex.Periods

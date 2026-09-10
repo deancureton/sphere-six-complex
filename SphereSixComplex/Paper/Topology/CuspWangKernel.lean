@@ -1,6 +1,6 @@
 module
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspWangFullFibreSliceComparisonProof
-import all SphereSixComplex.Paper.Topology.PaperSectionSevenCuspWangFullFibreSliceComparisonProof
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspWangFullFiberSliceComparisonProof
+import all SphereSixComplex.Paper.Topology.PaperSectionSevenCuspWangFullFiberSliceComparisonProof
 /-! A cusp class with zero Wang boundary is represented in the cover intersection. Thus equal Wang classes have equal pulled-back elliptic boundaries. -/
 
 @[expose] public section
@@ -25,7 +25,7 @@ public theorem cuspWangKernel_mem_intersectionImage
     exact (P.exact_inclusion_boundary y).mp hb
   obtain ⟨z, hz⟩ := hy
   let w := integralSingularHomologyMap 2
-    (actualCuspWangFibreToCuspCoverIntersectionMap (A := A) R) z
+    (actualCuspWangFiberToCuspCoverIntersectionMap (A := A) R) z
   refine ⟨w, ?_⟩
   apply e.injective
   change integralSingularHomologyMap 2 G.totalHomotopyEquiv.toFun
@@ -34,35 +34,35 @@ public theorem cuspWangKernel_mem_intersectionImage
           (R.twoDiscCover.cuspOrderThreeOpen ⊓
             R.twoDiscCover.cuspOrderFourOpen)).hom
         (integralSingularHomologyMap 2
-          (actualCuspWangFibreToCuspCoverIntersectionMap (A := A) R) z)) = y
+          (actualCuspWangFiberToCuspCoverIntersectionMap (A := A) R) z)) = y
   have hsquare := congrArg (fun f ↦ f z)
     (congrArg (integralSingularHomologyMap 2)
-      (actualCuspWangFibreSlice_to_mappingTorus R))
+      (actualCuspWangFiberSlice_to_mappingTorus R))
   calc
     _ = integralSingularHomologyMap 2 G.totalHomotopyEquiv.toFun
         (integralSingularHomologyMap 2
           ((TopologicalSpace.Opens.inclusion'
             (R.twoDiscCover.cuspOrderThreeOpen ⊓
               R.twoDiscCover.cuspOrderFourOpen)).hom.comp
-            (actualCuspWangFibreToCuspCoverIntersectionMap (A := A) R)) z) := by
+            (actualCuspWangFiberToCuspCoverIntersectionMap (A := A) R)) z) := by
       rw [← SphereSixComplex.integralSingularHomologyMap_comp_wang]
     _ = integralSingularHomologyMap 2
         (G.totalHomotopyEquiv.toFun.comp
           ((TopologicalSpace.Opens.inclusion'
             (R.twoDiscCover.cuspOrderThreeOpen ⊓
               R.twoDiscCover.cuspOrderFourOpen)).hom.comp
-            (actualCuspWangFibreToCuspCoverIntersectionMap (A := A) R))) z :=
+            (actualCuspWangFiberToCuspCoverIntersectionMap (A := A) R))) z :=
       SphereSixComplex.integralSingularHomologyMap_comp_wang _ _ _ _
     _ = integralSingularHomologyMap 2
-        (circleMappingTorusRealFibreSlice G.clutching
+        (circleMappingTorusRealFiberSlice G.clutching
           (A.cuspAngularLiftPoint
-            (actualCuspFullFibreCrossingTime A)).1.2.re) z := hsquare
+            (actualCuspFullFiberCrossingTime A)).1.2.re) z := hsquare
     _ = integralSingularHomologyMap 2
         (finiteBouquetMappingTorusFiberInclusion (fun _ : Unit ↦ G.clutching)) z := by
       rw [integralSingularHomologyMap_eq_of_homotopy 2
-        (circleMappingTorusRealFibreSliceHomotopy G.clutching
+        (circleMappingTorusRealFiberSliceHomotopy G.clutching
           (A.cuspAngularLiftPoint
-            (actualCuspFullFibreCrossingTime A)).1.2.re)]
+            (actualCuspFullFiberCrossingTime A)).1.2.re)]
     _ = y := hz
 
 public theorem cuspPulledBackBoundary_eq_zero_of_wang_zero

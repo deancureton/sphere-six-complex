@@ -5,8 +5,8 @@ public import SphereSixComplex.Prerequisites.Topology.SixSpherePositiveHomologyI
 namespace SphereSixComplex
 
 /-- The proved positive-degree integral homology calculation for the standard six-sphere. -/
-public theorem establishedSixSpherePositiveHomologyInputs :
+public theorem sixSpherePositiveHomologyInputs :
     SixSpherePositiveHomologyInputs :=
-  establishedSixSpherePositiveHomologyInputs_proof
+  sixSpherePositiveHomologyInputs_via_boundarySeven
 
 end SphereSixComplex

@@ -53,7 +53,7 @@ public theorem centralFiberCoverSourceDegreeTwoBasis_generator
     (z : IntegralSingularHomology 2 (RadialEllipticActionData.CentralFiberCoverSource D)) :
     (affineCyclicCentralFiberCoverSourceHomologyBasis P).degreeTwo
         (integralSingularHomologyMap 2
-          (EstablishedAffineCyclicQuotientHomology.centralFiberCoverGenerator P) z) =
+          (_root_.SphereSixComplex.AffineCyclicQuotientHomology.centralFiberCoverGenerator P) z) =
       exteriorSquareMap P.affine.latticeMap
         ((affineCyclicCentralFiberCoverSourceHomologyBasis P).degreeTwo z) := by
   have hnat := (EstablishedTorusHomology.additiveTorusHomologyBasis_naturality p P.fullRank
@@ -62,8 +62,8 @@ public theorem centralFiberCoverSourceDegreeTwoBasis_generator
       (integralSingularHomologyEquiv 2
         (RadialEllipticActionData.centralFiberCoverSourceHomeomorph D)
         (integralSingularHomologyMap 2
-          (EstablishedAffineCyclicQuotientHomology.centralFiberCoverGenerator P) z)) = _
-  rw [EstablishedAffineCyclicQuotientHomology.centralFiberCoverGenerator,
+          (_root_.SphereSixComplex.AffineCyclicQuotientHomology.centralFiberCoverGenerator P) z)) = _
+  rw [_root_.SphereSixComplex.AffineCyclicQuotientHomology.centralFiberCoverGenerator,
     homologyMap_comp, homologyMap_comp, homologyEquiv_map_symm, hnat]
   rfl
 
@@ -85,13 +85,13 @@ public theorem coverProjection_degreeTwo_invariant
       (affineCyclicCentralFiberCoverSourceHomologyBasis P).degreeTwo.symm
           (exteriorSquareMap P.affine.latticeMap x) =
         integralSingularHomologyMap 2
-          (EstablishedAffineCyclicQuotientHomology.centralFiberCoverGenerator P)
+          (_root_.SphereSixComplex.AffineCyclicQuotientHomology.centralFiberCoverGenerator P)
           ((affineCyclicCentralFiberCoverSourceHomologyBasis P).degreeTwo.symm x) := by
     rw [← hbasis,
       (affineCyclicCentralFiberCoverSourceHomologyBasis P).degreeTwo.symm_apply_apply]
   rw [hsymm, ← homologyMap_comp,
-    EstablishedAffineCyclicQuotientHomology.centralFiberCoverProjection_comp_generator
-      EstablishedAffineCyclicQuotientHomology.isCentralFiberCoverSourceCoordinate P]
+    _root_.SphereSixComplex.AffineCyclicQuotientHomology.centralFiberCoverProjection_comp_generator
+      _root_.SphereSixComplex.AffineCyclicQuotientHomology.isCentralFiberCoverSourceCoordinate P]
 
 end SphereSixComplex.Topology.AffineCyclicCoverDegreeTwoInvariance
 

@@ -41,7 +41,7 @@ public theorem subsingleton_homology_six_of_radialMappingTorus
     (subsingleton_homology_prod_of_contractible _ _ 6 hMT)
 
 /-- The four-torus case: its homological model supplies both vanishing hypotheses. -/
-public theorem subsingleton_homology_six_of_radialMappingTorus_fourTorusFibre
+public theorem subsingleton_homology_six_of_radialMappingTorus_fourTorusFiber
     {T : Type} [TopologicalSpace T] (M : FourTorusHomologicalModel T) (φ : T ≃ₜ T)
     {r : ℝ} (hr : 0 < r)
     {Z : Type} [TopologicalSpace Z]
@@ -57,7 +57,7 @@ variable (A : PaperAnalyticData)
 /-- The order-three elliptic collar has no sixth integral singular homology. -/
 public theorem subsingleton_homology_six_orderThreeCollar :
     Subsingleton (IntegralSingularHomology 6 (A.StarCollarSource 1)) :=
-  subsingleton_homology_six_of_radialMappingTorus_fourTorusFibre
+  subsingleton_homology_six_of_radialMappingTorus_fourTorusFiber
     (EstablishedFiniteCWTopology.additiveTorusFourTorusHomologicalModel _
       (ComplexTorus.FullRank.ofSetupInequalities _
         (AnalyticTorusFamily.parameterMap A.periods _).2))
@@ -67,7 +67,7 @@ public theorem subsingleton_homology_six_orderThreeCollar :
 /-- The order-four elliptic collar has no sixth integral singular homology. -/
 public theorem subsingleton_homology_six_orderFourCollar :
     Subsingleton (IntegralSingularHomology 6 (A.StarCollarSource 2)) :=
-  subsingleton_homology_six_of_radialMappingTorus_fourTorusFibre
+  subsingleton_homology_six_of_radialMappingTorus_fourTorusFiber
     (EstablishedFiniteCWTopology.additiveTorusFourTorusHomologicalModel _
       (ComplexTorus.FullRank.ofSetupInequalities _
         (AnalyticTorusFamily.parameterMap A.periods _).2))

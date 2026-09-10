@@ -126,7 +126,7 @@ public noncomputable def toCoherentRealization
     (h : SectionSevenFourPieceSmallChainComparison X C) :
     SectionSevenLerayCoherentRealization X :=
   h.toCoherentRealizationOfRetraction
-    (establishedOpenCoverSmallChainRetractionData C.piece C.isOpen_piece C.covers)
+    (coverSmallChainRetractionData C.piece C.isOpen_piece C.covers)
 
 /-- The reduced comparison yields the degreewise Section 7 homology calculation. -/
 public theorem sectionSevenHomologyRealization

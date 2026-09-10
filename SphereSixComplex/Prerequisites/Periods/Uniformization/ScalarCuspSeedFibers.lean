@@ -171,7 +171,7 @@ theorem sourceQParam_periodic :
   rw [heq]
   exact Complex.exp_periodic _
 
-theorem fuchsianCoordinateReciprocal_high_fibres_of_seed
+theorem fuchsianCoordinateReciprocal_high_fibers_of_seed
     (S : ChamberCaratheodorySeed sourceBoundedChamber)
     (C : FuchsianOrbifoldCoordinate) (F : ℂ → ℂ)
     (hcoordinate : ∀ z : UpperHalfPlane, C.coordinate z = F (z : ℂ))

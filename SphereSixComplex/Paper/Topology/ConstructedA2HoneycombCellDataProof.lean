@@ -734,7 +734,7 @@ public theorem constructedA2HomeomorphOfQuotientMaps_apply
 /-- The remaining finite calculation: the explicit planar and toric square maps have the same
 fibres across all cells. -/
 public structure ConstructedA2HoneycombFiniteQuotientResidual (r : ℝ) (hr : 0 < r) where
-  sameFibres : ∀ v w a b,
+  sameFibers : ∀ v w a b,
     (constructedA2PlaneSquareProjection v a : Fin 2 → ℝ) =
         constructedA2PlaneSquareProjection w b ↔
       ((constructedA2CellSquareProjection hr v a :
@@ -755,7 +755,7 @@ public noncomputable def constructedA2FiniteQuotientCellHomeomorph
   constructedA2HomeomorphOfQuotientMaps
     (constructedA2PlaneSquareProjection_isQuotientMap v)
     (constructedA2CellSquareProjection_isQuotientMap hr v)
-    (fun a b ↦ by simpa only [Subtype.ext_iff] using H.sameFibres v v a b)
+    (fun a b ↦ by simpa only [Subtype.ext_iff] using H.sameFibers v v a b)
 
 public theorem constructedA2FiniteQuotientCellHomeomorph_apply
     {r : ℝ} (hr : 0 < r) (H : ConstructedA2HoneycombFiniteQuotientResidual r hr)
@@ -766,7 +766,7 @@ public theorem constructedA2FiniteQuotientCellHomeomorph_apply
   constructedA2HomeomorphOfQuotientMaps_apply
     (constructedA2PlaneSquareProjection_isQuotientMap v)
     (constructedA2CellSquareProjection_isQuotientMap hr v)
-    (fun x y ↦ by simpa only [Subtype.ext_iff] using H.sameFibres v v x y) a
+    (fun x y ↦ by simpa only [Subtype.ext_iff] using H.sameFibers v v x y) a
 
 /-- The exact residual after constructing the periodic planar cover: cell charts into the
 explicit toric components, with the equality relation preserved on every overlap. -/
@@ -788,7 +788,7 @@ public noncomputable def constructedA2HoneycombCellChartResidualOfFiniteQuotient
     obtain ⟨b, rfl⟩ := constructedA2PlaneSquareProjection_surjective w y
     rw [constructedA2FiniteQuotientCellHomeomorph_apply hr H,
       constructedA2FiniteQuotientCellHomeomorph_apply hr H]
-    exact H.sameFibres v w a b
+    exact H.sameFibers v w a b
 
 /-- The explicit periodic A₂ planar cover and compatible toric cell charts assemble the
 `ConstructedHoneycombCellData` required by the polar-honeycomb construction. -/

@@ -684,7 +684,7 @@ public noncomputable def toPiOneData : ToricFillingPiOneData D := by
 end ToricFillingCoverModel
 
 /-- The standard toric-filling computation obtained from an equivariant regular-cover square. -/
-public noncomputable def establishedToricFillingPiOne
+public noncomputable def toricFillingPiOneData
     {Λ K G H E E' B N : Type*}
     [AddCommGroup Λ] [AddCommGroup K] [Group G] [Group H]
     [TopologicalSpace E] [TopologicalSpace E'] [TopologicalSpace B] [TopologicalSpace N]
@@ -833,7 +833,7 @@ public theorem meridian_inv_conjugates_translation (a : Λ) :
 end CyclicAffineFillingCoverModel
 
 /-- The standard cyclic-affine-filling computation from an equivariant regular-cover square. -/
-public noncomputable def establishedCyclicAffineFillingPiOne
+public noncomputable def cyclicAffineFillingPiOneData
     {m : ℕ} {Λ G H E E' B N : Type*}
     [NeZero m] [AddCommGroup Λ] [Group G] [Group H]
     [TopologicalSpace E] [TopologicalSpace E'] [TopologicalSpace B] [TopologicalSpace N]

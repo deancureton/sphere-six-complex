@@ -72,7 +72,7 @@ public def ConstructedA2HoneycombLaurentFiniteIdentity : Prop :=
 public theorem constructedA2HoneycombFiniteQuotientResidual_of_laurentFiniteIdentity
     {r : ℝ} (hr : 0 < r) (H : ConstructedA2HoneycombLaurentFiniteIdentity) :
     ConstructedA2HoneycombFiniteQuotientResidual r hr where
-  sameFibres := by
+  sameFibers := by
     intro v w a b
     rcases a with ⟨i, p⟩
     rcases b with ⟨j, q⟩
@@ -88,7 +88,7 @@ public theorem nonempty_constructedA2HoneycombFiniteQuotientResidual_iff
       ConstructedA2HoneycombLaurentFiniteIdentity := by
   constructor
   · rintro ⟨H⟩ v w i j p q
-    have h := H.sameFibres v w (i, p) (j, q)
+    have h := H.sameFibers v w (i, p) (j, q)
     change constructedA2PlaneTile v i p = constructedA2PlaneTile w j q ↔ _ at h
     exact h.trans (constructedA2CellSquareProjection_eq_iff_monomial hr v w i j p q)
   · exact fun H ↦ ⟨constructedA2HoneycombFiniteQuotientResidual_of_laurentFiniteIdentity hr H⟩

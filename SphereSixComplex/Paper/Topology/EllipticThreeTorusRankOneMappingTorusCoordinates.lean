@@ -195,7 +195,7 @@ public theorem orderThreeNegatedTotalAddEquiv_section
     orderThreeNegatedInvariantsEquivInt s hs
 
 @[simp]
-public theorem orderThreeTotalAddEquiv_fibreCoordinateZero
+public theorem orderThreeTotalAddEquiv_fiberCoordinateZero
     (s : IntegralSingularHomology 2 (CircleMappingTorus orderThreeThreeTorusClutching))
     (hs : orderThreeInvariantsEquivInt (orderThreePresentation.totalToInvariants s) = 1) :
     orderThreeTotalAddEquiv s hs
@@ -227,7 +227,7 @@ public theorem orderThreeTotalAddEquiv_fibreCoordinateZero
     rfl
 
 @[simp]
-public theorem orderThreeNegatedTotalAddEquiv_fibreCoordinateZero
+public theorem orderThreeNegatedTotalAddEquiv_fiberCoordinateZero
     (s : IntegralSingularHomology 2 (CircleMappingTorus orderThreeThreeTorusClutching))
     (hs : orderThreeNegatedInvariantsEquivInt
       (orderThreePresentation.totalToInvariants s) = 1) :
@@ -260,7 +260,7 @@ public theorem orderThreeNegatedTotalAddEquiv_fibreCoordinateZero
     rfl
 
 @[simp]
-public theorem orderFourTotalAddEquiv_fibreCoordinateZero
+public theorem orderFourTotalAddEquiv_fiberCoordinateZero
     (s : IntegralSingularHomology 2 (CircleMappingTorus orderFourThreeTorusClutching))
     (hs : orderFourInvariantsEquivInt (orderFourPresentation.totalToInvariants s) = 1) :
     orderFourTotalAddEquiv s hs

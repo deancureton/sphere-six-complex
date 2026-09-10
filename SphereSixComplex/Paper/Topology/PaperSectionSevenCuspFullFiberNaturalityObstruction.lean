@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspMarkedInvariantBasisFromFullFibreNaturality
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspMarkedInvariantBasisFromFullFiberNaturality
 
 /-!
 The first obstruction uses only the three standard Lean axioms. The naturality negations
@@ -61,25 +61,25 @@ public theorem not_canonicalCuspWangBoundaryNaturality
     simpa [x] using actualCuspWangBoundaryHom_rawCoordinates A x
   exact cuspPulledBackBoundary_coordinate_ne_fourthBasis R.twoDiscCover B x hc
 
-public theorem not_actualCuspWangFullFibreOrientedBoundaryNaturality
+public theorem not_actualCuspWangFullFiberOrientedBoundaryNaturality
     (hmark : A.affineNamedStripLift.lift
       A.affineActualCuspCrossingPoint =
         A.cuspAngularRegularBasePoint A.affineActualCuspCrossingTime)
     (R : A.AffineRadialCompletionInput) :
-    ¬ ActualCuspWangFullFibreOrientedBoundaryNaturality R := by
+    ¬ ActualCuspWangFullFiberOrientedBoundaryNaturality R := by
   intro h
   exact not_canonicalCuspWangBoundaryNaturality R
-    (canonicalCuspWangBoundaryNaturality_of_fullFibreOrientedBoundaryNaturality hmark R h)
+    (canonicalCuspWangBoundaryNaturality_of_fullFiberOrientedBoundaryNaturality hmark R h)
 
-public theorem not_actualCuspWangFullFibreSliceInvariantResidual
+public theorem not_actualCuspWangFullFiberSliceInvariantResidual
     (hmark : A.affineNamedStripLift.lift
       A.affineActualCuspCrossingPoint =
         A.cuspAngularRegularBasePoint A.affineActualCuspCrossingTime)
     (R : A.AffineRadialCompletionInput) :
-    ¬ ActualCuspWangFullFibreSliceInvariantResidual R := by
+    ¬ ActualCuspWangFullFiberSliceInvariantResidual R := by
   intro h
-  exact not_actualCuspWangFullFibreOrientedBoundaryNaturality hmark R
-    ((fullFibreOrientedBoundaryNaturality_iff_invariantResidual R).mpr h)
+  exact not_actualCuspWangFullFiberOrientedBoundaryNaturality hmark R
+    ((fullFiberOrientedBoundaryNaturality_iff_invariantResidual R).mpr h)
 
 end EllipticTwoDiscCoverData
 end SphereSixComplex.Geometry.PaperAnalyticData

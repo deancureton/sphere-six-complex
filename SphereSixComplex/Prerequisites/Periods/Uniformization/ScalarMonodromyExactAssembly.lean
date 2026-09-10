@@ -303,7 +303,7 @@ theorem eq_iff_orbit (z w : UpperHalfPlane) :
       ∃ g : Delta, fuchsianSourceAction g • z = w := by
   apply scalar_eq_iff_orbit_of_fundamental B.scalar B.invariant
   intro u v hu hv huv
-  apply sourceScalarRightDoubleMap_fundamental_fibres S hu hv
+  apply sourceScalarRightDoubleMap_fundamental_fibers S hu hv
   rw [← B.eq_rightDouble_on_orientedFundamentalRegion hu,
     ← B.eq_rightDouble_on_orientedFundamentalRegion hv]
   exact huv

@@ -326,32 +326,32 @@ private def crossPart
   ∑ i, (baseCrossDegreeOne (productHomologyTwo z)) i •
     positiveCircleCross (standardThreeTorusCoordinateCircle i)
 
-private def fibrePart
+private def fiberPart
     (z : IntegralSingularHomology 2 (UnitAddCircle × StdTorus 3)) :=
   integralSingularHomologyMap 2 (circleProductFiberInclusion (X := StdTorus 3))
-    (standardThreeTorusHomologyTwo.symm (fibreDegreeTwo (productHomologyTwo z)))
+    (standardThreeTorusHomologyTwo.symm (fiberDegreeTwo (productHomologyTwo z)))
 
-private theorem crossPart_add_fibrePart
+private theorem crossPart_add_fiberPart
     (z : IntegralSingularHomology 2 (UnitAddCircle × StdTorus 3)) :
-    crossPart z + fibrePart z = z := by
+    crossPart z + fiberPart z = z := by
   apply productHomologyTwo.injective
   rw [map_add, crossPart, map_sum]
   simp only [map_zsmul, productHomologyTwo_positiveCircleCross_coordinateCircle]
-  rw [fibrePart, productHomologyTwo_fiberInclusion,
+  rw [fiberPart, productHomologyTwo_fiberInclusion,
     standardThreeTorusHomologyTwo.apply_symm_apply]
   funext j
-  fin_cases j <;> simp [joinCoordinates, baseCrossDegreeOne, fibreDegreeTwo,
+  fin_cases j <;> simp [joinCoordinates, baseCrossDegreeOne, fiberDegreeTwo,
     Fin.sum_univ_succ]
 
 private theorem canonicalBoundary_eq_orientedProductBoundary
     (z : IntegralSingularHomology 2 (UnitAddCircle × StdTorus 3)) :
     canonicalProductWangBoundary 1 z = orientedProductBoundary z := by
-  rw [← crossPart_add_fibrePart z, map_add, map_add, crossPart, map_sum, map_sum]
+  rw [← crossPart_add_fiberPart z, map_add, map_add, crossPart, map_sum, map_sum]
   simp only [map_zsmul, canonicalBoundary_cross_coordinateCircle,
     orientedBoundary_cross_coordinateCircle]
-  have hcanonical : canonicalProductWangBoundary 1 (fibrePart z) = 0 := by
+  have hcanonical : canonicalProductWangBoundary 1 (fiberPart z) = 0 := by
     apply canonicalProductWang_exact 1 |>.apply_apply_eq_zero
-  have horiented : orientedProductBoundary (fibrePart z) = 0 := by
+  have horiented : orientedProductBoundary (fiberPart z) = 0 := by
     apply exact_fiberInclusion_orientedProductBoundary.apply_apply_eq_zero
   rw [hcanonical, horiented]
 

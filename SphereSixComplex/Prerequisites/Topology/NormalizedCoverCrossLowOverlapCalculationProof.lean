@@ -236,7 +236,7 @@ public theorem canonicalProductWangBoundary_positiveCircleCross
     ← fixedLoopMappingTorusMap_refl c]
   exact fixedLoopSweepClass_boundary phi d
 
-private theorem positiveCircleCross_add_defect_mem_fibre
+private theorem positiveCircleCross_add_defect_mem_fiber
     (c d : C(StdTorus 1, G)) :
     positiveCircleCross (c + d) - positiveCircleCross c - positiveCircleCross d ∈
       Set.range (integralSingularHomologyMap 2 (productFiberInclusion (X := G))) := by
@@ -262,7 +262,7 @@ private theorem normalizedAffineCover_positiveCircleCross_boundary_add
           (integralSingularHomologyMap 2
             (normalizedAffineCoverToCircleMappingTorus phi.toHomeomorph hpow)
             (positiveCircleCross d)) := by
-  obtain ⟨x, hx⟩ := positiveCircleCross_add_defect_mem_fibre c d
+  obtain ⟨x, hx⟩ := positiveCircleCross_add_defect_mem_fiber c d
   have hzero :
       (fixedLoopPresentation phi).boundary
           (integralSingularHomologyMap 2

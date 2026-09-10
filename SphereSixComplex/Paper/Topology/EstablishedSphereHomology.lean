@@ -17,7 +17,7 @@ namespace SphereSixComplex
 every other degree. -/
 public theorem establishedSixSphereSectionSevenHomology :
     SectionSevenHomologyRealization SixSphere :=
-  establishedSixSpherePositiveHomologyInputs.sectionSevenHomologyRealization
+  sixSpherePositiveHomologyInputs.sectionSevenHomologyRealization
 
 /-- A coherent realization of the paper's finite Section 7 model for `X`, compared with the
 established homology of the standard sphere, gives the exact homology-sphere contract. -/

@@ -197,7 +197,7 @@ public noncomputable def fundamentalGroupData
   letI := D.fillingCoverTopology
   letI := D.boundaryAction
   letI := D.fillingAction
-  exact establishedCyclicAffineFillingPiOne D.model
+  exact cyclicAffineFillingPiOneData D.model
 
 /-- The lattice generators in the chosen cyclic boundary fundamental group. -/
 public noncomputable def translation
@@ -385,7 +385,7 @@ public noncomputable def fundamentalGroupData
   letI := D.fillingCoverTopology
   letI := D.boundaryAction
   letI := D.fillingAction
-  exact establishedToricFillingPiOne D.model
+  exact toricFillingPiOneData D.model
 
 /-- The lattice generators in the chosen toric boundary fundamental group. -/
 public noncomputable def translation

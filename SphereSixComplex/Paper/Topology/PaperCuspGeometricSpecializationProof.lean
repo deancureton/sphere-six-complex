@@ -182,8 +182,8 @@ public theorem htwoInv_negDegreeTwo (B : CuspMonodromyCoordinates phi) :
     htwoInv B.negDegreeTwo = htwoInv B := rfl
 
 public theorem sections_negDegreeTwo_degreeTwo (B : CuspMonodromyCoordinates phi) :
-    (EstablishedCircleMappingTorusGeometricSections.sections B.negDegreeTwo).degreeTwo =
-      (EstablishedCircleMappingTorusGeometricSections.sections B).degreeTwo := rfl
+    (_root_.SphereSixComplex.CircleMappingTorusHomologyBases.CuspMonodromyCoordinates.wangSections B.negDegreeTwo).degreeTwo =
+      (_root_.SphereSixComplex.CircleMappingTorusHomologyBases.CuspMonodromyCoordinates.wangSections B).degreeTwo := rfl
 
 public theorem htwoCoinv_negDegreeTwo (B : CuspMonodromyCoordinates phi)
     (w : (circleMappingTorusHTwoPresentation phi).Coinvariants) :
@@ -201,9 +201,9 @@ degree-two coinvariant coordinates, leaving the two invariant suspension coordin
 public theorem circleMappingTorusHTwoAddEquiv_negDegreeTwo_castAdd
     (B : CuspMonodromyCoordinates phi)
     (y : IntegralSingularHomology 2 (CircleMappingTorus phi)) (i : Fin 4) :
-    (EstablishedCircleMappingTorusGeometricSections.sections
+    (_root_.SphereSixComplex.CircleMappingTorusHomologyBases.CuspMonodromyCoordinates.wangSections
           B.negDegreeTwo).circleMappingTorusHTwoAddEquiv y (Fin.castAdd 2 i) =
-      -(EstablishedCircleMappingTorusGeometricSections.sections
+      -(_root_.SphereSixComplex.CircleMappingTorusHomologyBases.CuspMonodromyCoordinates.wangSections
           B).circleMappingTorusHTwoAddEquiv y (Fin.castAdd 2 i) := by
   rw [circleMappingTorusHTwoAddEquiv_apply, circleMappingTorusHTwoAddEquiv_apply,
     sections_negDegreeTwo_degreeTwo, htwoInv_negDegreeTwo, htwoCoinv_negDegreeTwo]
@@ -254,8 +254,8 @@ public theorem honeInv_negDegreeOne (B : CuspMonodromyCoordinates phi) :
     honeInv B.negDegreeOne = honeInv B := rfl
 
 public theorem sections_negDegreeOne_degreeOne (B : CuspMonodromyCoordinates phi) :
-    (EstablishedCircleMappingTorusGeometricSections.sections B.negDegreeOne).degreeOne =
-      (EstablishedCircleMappingTorusGeometricSections.sections B).degreeOne := rfl
+    (_root_.SphereSixComplex.CircleMappingTorusHomologyBases.CuspMonodromyCoordinates.wangSections B.negDegreeOne).degreeOne =
+      (_root_.SphereSixComplex.CircleMappingTorusHomologyBases.CuspMonodromyCoordinates.wangSections B).degreeOne := rfl
 
 public theorem honeCoinv_negDegreeOne (B : CuspMonodromyCoordinates phi)
     (w : (circleMappingTorusHOnePresentation phi).Coinvariants) :
@@ -271,9 +271,9 @@ coinvariant coordinates, leaving the base-circle coordinate alone. -/
 public theorem circleMappingTorusHOneAddEquiv_negDegreeOne_castAdd
     (B : CuspMonodromyCoordinates phi)
     (y : IntegralSingularHomology 1 (CircleMappingTorus phi)) (i : Fin 2) :
-    (EstablishedCircleMappingTorusGeometricSections.sections
+    (_root_.SphereSixComplex.CircleMappingTorusHomologyBases.CuspMonodromyCoordinates.wangSections
           B.negDegreeOne).circleMappingTorusHOneAddEquiv y (Fin.castAdd 1 i) =
-      -(EstablishedCircleMappingTorusGeometricSections.sections
+      -(_root_.SphereSixComplex.CircleMappingTorusHomologyBases.CuspMonodromyCoordinates.wangSections
           B).circleMappingTorusHOneAddEquiv y (Fin.castAdd 1 i) := by
   rw [circleMappingTorusHOneAddEquiv_apply, circleMappingTorusHOneAddEquiv_apply,
     sections_negDegreeOne_degreeOne, honeInv_negDegreeOne, honeCoinv_negDegreeOne]

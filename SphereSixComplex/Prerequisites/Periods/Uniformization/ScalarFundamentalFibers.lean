@@ -221,7 +221,7 @@ private theorem exists_orbit_sourceRightUHP_of_mem_fundamental_not_open
     lt_of_le_of_ne hz.2.1 hright, z.im_pos,
     lt_of_le_of_ne hz.2.2 (Ne.symm hcircle)⟩
 
-private theorem cross_fundamental_fibre
+private theorem cross_fundamental_fiber
     (S : ChamberCaratheodorySeed sourceBoundedChamber)
     {z w : UpperHalfPlane} (hz : z ∈ fundamentalTriangle)
     (hw : w ∈ fundamentalTriangle)
@@ -276,7 +276,7 @@ private theorem cross_fundamental_fibre
 
 /-- Equal scalar values on the doubled closed fundamental region imply equality up to the source
 Fuchsian action. -/
-theorem sourceScalarRightDoubleMap_fundamental_fibres
+theorem sourceScalarRightDoubleMap_fundamental_fibers
     (S : ChamberCaratheodorySeed sourceBoundedChamber)
     {z w : UpperHalfPlane} (hz : z ∈ orientedFundamentalRegion)
     (hw : w ∈ orientedFundamentalRegion)
@@ -297,7 +297,7 @@ theorem sourceScalarRightDoubleMap_fundamental_fibres
     have hcross : sourceScalarRightDoubleMap S (z : ℂ) =
         sourceScalarRightDoubleMap S (sourceRight (w₀ : ℂ)) := by
       simpa [w₀, sourceRight_involutive] using hzw
-    obtain ⟨g, hg⟩ := cross_fundamental_fibre S hz hw₀ hcross
+    obtain ⟨g, hg⟩ := cross_fundamental_fiber S hz hw₀ hcross
     exact ⟨g, hg.trans (sourceRightUHP_involutive_public w)⟩
   · let z₀ : UpperHalfPlane := sourceRightUHP z
     have hz₀ : z₀ ∈ fundamentalTriangle :=
@@ -305,7 +305,7 @@ theorem sourceScalarRightDoubleMap_fundamental_fibres
     have hcross : sourceScalarRightDoubleMap S (w : ℂ) =
         sourceScalarRightDoubleMap S (sourceRight (z₀ : ℂ)) := by
       simpa [z₀, sourceRight_involutive] using hzw.symm
-    obtain ⟨g, hg⟩ := cross_fundamental_fibre S hw hz₀ hcross
+    obtain ⟨g, hg⟩ := cross_fundamental_fiber S hw hz₀ hcross
     have hg' : fuchsianSourceAction g • w = z :=
       hg.trans (sourceRightUHP_involutive_public z)
     refine ⟨g⁻¹, ?_⟩

@@ -84,7 +84,7 @@ public theorem actualCuspAdditiveLift_norm_eq_fixedRadius
   rw [G.totalHomeomorph.apply_symm_apply]
   rfl
 
-public theorem actualCuspCylinderHeightLoop_independent_fibre
+public theorem actualCuspCylinderHeightLoop_independent_fiber
     (R : A.AffineRadialCompletionInput)
     (y y' : let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
@@ -112,8 +112,8 @@ public theorem actualCuspCylinderHeightLoop_uniform_middle_crossings
     actualCuspCylinderHeightLoop_crosses_level_on_both_sides R y₀ (1 / 2)
       (by norm_num) (by norm_num)
   refine ⟨t₀, ht₀, t₁, ht₁, fun y ↦ ?_⟩
-  exact ⟨(actualCuspCylinderHeightLoop_independent_fibre R y y₀ t₀).trans hv₀,
-    (actualCuspCylinderHeightLoop_independent_fibre R y y₀ t₁).trans hv₁⟩
+  exact ⟨(actualCuspCylinderHeightLoop_independent_fiber R y y₀ t₀).trans hv₀,
+    (actualCuspCylinderHeightLoop_independent_fiber R y y₀ t₁).trans hv₁⟩
 
 public noncomputable def actualCuspCylinderMiddleIntersectionSlice
     (R : A.AffineRadialCompletionInput)

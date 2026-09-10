@@ -153,7 +153,7 @@ public theorem degreeTwo_section_of_fiberSpecialization_bijective
       (rawDegreeTwoTotalSpecialization G).comp S.lift = 0 := by
   let _ := G.fiberTopology
   let P := circleMappingTorusHTwoPresentation G.clutching
-  let S := EstablishedCircleMappingTorusGeometricSections.sections G.monodromyCoordinates
+  let S := _root_.SphereSixComplex.CircleMappingTorusHomologyBases.CuspMonodromyCoordinates.wangSections G.monodromyCoordinates
   let c : P.Coinvariants ≃ₗ[ℤ]
       IntegralSingularHomology 2 (ActualLocalCuspFilling W) :=
     LinearEquiv.ofBijective (rawDegreeTwoFiberSpecialization G) h

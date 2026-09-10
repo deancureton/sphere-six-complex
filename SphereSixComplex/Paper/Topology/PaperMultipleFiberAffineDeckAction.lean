@@ -7,8 +7,13 @@ open Set Topology
 open scoped ContinuousMap
 
 namespace SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
-namespace EstablishedAffineCyclicQuotientHomology
+end SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
 
+namespace SphereSixComplex.AffineCyclicQuotientHomology
+open SphereSixComplex SphereSixComplex.Topology
+open SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+
+open _root_.SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
 open SphereSixComplex.Geometry
 open SphereSixComplex.Geometry.AnalyticTorusFamily
 open SphereSixComplex.Geometry.ComplexTorus
@@ -839,5 +844,8 @@ public theorem orderFourAffineCyclicFillingDeckAction_continuous :
     (orderFourCentralFiberPresentationData_lift_continuous F)
     (orderFourCentralFiberPresentationData_lift_symm_continuous F)
 
-end EstablishedAffineCyclicQuotientHomology
+end SphereSixComplex.AffineCyclicQuotientHomology
+
+namespace SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+
 end SphereSixComplex.Topology.PaperMultipleFiberHOneTopology

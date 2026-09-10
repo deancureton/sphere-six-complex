@@ -37,15 +37,15 @@ public theorem canonicalCuspFiberToBandHomologyOne_eq_actualCuspWang
         A.cuspAngularRegularBasePoint A.affineActualCuspCrossingTime)
     (R : A.AffineRadialCompletionInput) :
     R.twoDiscCover.canonicalCuspFiberToBandHomologyOne =
-      actualCuspWangFibreToBandHomologyOne (A := A) R := by
+      actualCuspWangFiberToBandHomologyOne (A := A) R := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
-  rw [actualCuspWangFibreToBandHomologyOne_eq_map]
+  rw [actualCuspWangFiberToBandHomologyOne_eq_map]
   ext x
   change integralSingularHomologyMap 1 R.twoDiscCover.canonicalCuspFiberToBandMap x =
-    integralSingularHomologyMap 1 (actualCuspWangFibreToBandMap (A := A) R) x
+    integralSingularHomologyMap 1 (actualCuspWangFiberToBandMap (A := A) R) x
   have hmap := integralSingularHomologyMap_eq_of_homotopic
-    (actualCuspWangFibreToBandMap_homotopic_canonical hmark R).symm 1
+    (actualCuspWangFiberToBandMap_homotopic_canonical hmark R).symm 1
   exact DFunLike.congr_fun (congrArg ConcreteCategory.hom hmap) x
 
 /-- The radial homotopy identifies the low-overlap fibre and the selected full-fibre slice
@@ -61,7 +61,7 @@ public theorem actualCuspRadialLowOverlapCarrier_homology
             C((R.twoDiscCover.orderThreeSide ∩ R.twoDiscCover.orderFourSide :
                 Set A.ellipticInterior),
               A.ellipticInterior)).comp
-          (actualCuspWangFibreToBandMap (A := A) R)) := by
+          (actualCuspWangFiberToBandMap (A := A) R)) := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   ext x
@@ -128,17 +128,17 @@ public def ActualCuspAdaptiveBoundaryCarrierCompatibility
   let _ := G.fiberTopology
   let boundary :=
     (actualCuspMappingTorusPulledBackHomologyComparison R).boundaryHom 1
-  ((actualCuspWangFibreToCuspCoverIntersectionHomologyOne (A := A) R).comp
+  ((actualCuspWangFiberToCuspCoverIntersectionHomologyOne (A := A) R).comp
       (actualCuspAdaptiveNaturalSourceRead R)).comp boundary =
     (SphereSixComplex.BinaryOpenCover.openIntersectionPullbackHomologyHom
       (actualCuspMappingTorusToCollarTopCatMap A)
       R.twoDiscCover.cuspOrderThreeOpen R.twoDiscCover.cuspOrderFourOpen 1).comp boundary
 
 /-- Full-fibre carrier compatibility gives the oriented full-fibre boundary square. -/
-public theorem fullFibreOrientedBoundaryNaturality_of_adaptiveCarrierCompatibility
+public theorem fullFiberOrientedBoundaryNaturality_of_adaptiveCarrierCompatibility
     (R : A.AffineRadialCompletionInput)
     (h : ActualCuspAdaptiveBoundaryCarrierCompatibility R) :
-    ActualCuspWangFullFibreOrientedBoundaryNaturality R := by
+    ActualCuspWangFullFiberOrientedBoundaryNaturality R := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   apply AddMonoidHom.ext
@@ -162,12 +162,12 @@ public theorem fullFibreOrientedBoundaryNaturality_of_adaptiveCarrierCompatibili
     change e.symm (e x) = x
     exact e.symm_apply_apply x
   change
-    actualCuspWangFibreToCuspCoverIntersectionHomologyOne (A := A) R
+    actualCuspWangFiberToCuspCoverIntersectionHomologyOne (A := A) R
         (actualCuspWangBoundaryHom A x) =
       R.twoDiscCover.cuspOpenCoverConnectingHom x
   change actualCuspAdaptiveNaturalSourceRead R (boundary (e x)) =
     actualCuspWangBoundaryHom A x at hread
-  change actualCuspWangFibreToCuspCoverIntersectionHomologyOne (A := A) R
+  change actualCuspWangFiberToCuspCoverIntersectionHomologyOne (A := A) R
       (actualCuspAdaptiveNaturalSourceRead R (boundary (e x))) =
     pullback (boundary (e x)) at hcarrier
   change pullback (boundary (e x)) =
@@ -175,9 +175,9 @@ public theorem fullFibreOrientedBoundaryNaturality_of_adaptiveCarrierCompatibili
       (SphereSixComplex.BinaryOpenCover.integralHomologyMapHom
         (actualCuspMappingTorusToCollarTopCatMap A) 2 (e x)) at hnatApply
   calc
-    _ = actualCuspWangFibreToCuspCoverIntersectionHomologyOne (A := A) R
+    _ = actualCuspWangFiberToCuspCoverIntersectionHomologyOne (A := A) R
         (actualCuspAdaptiveNaturalSourceRead R (boundary (e x))) :=
-      congrArg (actualCuspWangFibreToCuspCoverIntersectionHomologyOne (A := A) R)
+      congrArg (actualCuspWangFiberToCuspCoverIntersectionHomologyOne (A := A) R)
         hread.symm
     _ = pullback (boundary (e x)) := hcarrier
     _ = R.twoDiscCover.cuspOpenCoverConnectingHom
@@ -193,8 +193,8 @@ public theorem cuspPulledBackMarkedInvariantBasisData_of_adaptiveCarrierCompatib
     (R : A.AffineRadialCompletionInput)
     (h : ActualCuspAdaptiveBoundaryCarrierCompatibility R) :
     CuspPulledBackMarkedInvariantBasisData R :=
-  cuspPulledBackMarkedInvariantBasisData_of_fullFibreOrientedBoundaryNaturality hmark R
-    (fullFibreOrientedBoundaryNaturality_of_adaptiveCarrierCompatibility R h)
+  cuspPulledBackMarkedInvariantBasisData_of_fullFiberOrientedBoundaryNaturality hmark R
+    (fullFiberOrientedBoundaryNaturality_of_adaptiveCarrierCompatibility R h)
 
 end EllipticTwoDiscCoverData
 

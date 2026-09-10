@@ -1150,7 +1150,7 @@ public theorem actualPuncturedGlobalCuspPoint_add_int
         simpa only [hn] using hshift
       exact hstep.trans (ih hsCurrent hqCurrent)
 
-public theorem actualPuncturedGlobalCuspPoint_add_fibre_int
+public theorem actualPuncturedGlobalCuspPoint_add_fiber_int
     {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) (s : ℂ)
@@ -1334,7 +1334,7 @@ public theorem additiveCuspCoverToGlobal_respects
         actualPuncturedGlobalCuspPoint W p.1.2
           (additiveCuspRadiusCover_halfPlane W.localWitness.radius_le p) p.2 q.1.1 := by
       rw [additiveCuspCoverToGlobal, hzeta]
-      exact actualPuncturedGlobalCuspPoint_add_fibre_int W _ _ _ _ n
+      exact actualPuncturedGlobalCuspPoint_add_fiber_int W _ _ _ _ n
     _ = actualPuncturedGlobalCuspPoint W (q.1.2 + n₂) hsAdd hqAdd q.1.1 :=
       actualPuncturedGlobalCuspPoint_congr W _ _ _ _ _ hn₂
     _ = actualPuncturedGlobalCuspPoint W q.1.2 hsQ hqQ q.1.1 :=

@@ -30,7 +30,7 @@ public theorem mappingTorusHNNToFundamentalGroup_bijective
   ⟨mappingTorusHNNToFundamentalGroup_injective phi x delta,
     mappingTorusHNNToFundamentalGroup_surjective phi x delta⟩
 
-public noncomputable def establishedMappingTorusFundamentalGroupUP_vanKampen
+public noncomputable def mappingTorusFundamentalGroupUPFromVanKampen
     {F : Type} [TopologicalSpace F] [PathConnectedSpace F]
     (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x) :
     MappingTorusFundamentalGroupUP phi x delta :=

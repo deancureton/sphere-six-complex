@@ -243,9 +243,9 @@ public theorem orderFourPuncturedProductToRegularMap_zero_eq_zeroSection
 
 /-- The zero-fibre local realization is the global zero-section lift of the same order-four
 Cayley base loop. -/
-public theorem orderFourCentralZeroFibreBasePath_eq_zeroSectionBasePath :
+public theorem orderFourCentralZeroFiberBasePath_eq_zeroSectionBasePath :
     letI := A.ellipticFourBoundaryAction
-    A.orderFourCentralZeroFibreBasePath.toContinuousMap =
+    A.orderFourCentralZeroFiberBasePath.toContinuousMap =
       A.orderFourZeroSectionBaseMap := by
   let _ := A.ellipticFourBoundaryAction
   ext t
@@ -255,13 +255,13 @@ public theorem orderFourCentralZeroFibreBasePath_eq_zeroSectionBasePath :
   let b := regularTotalSpaceBase A.periods x
   have hxzero : x = regularFamilyZeroSection A.periods b := by
     exact A.orderFourPuncturedProductToRegularMap_zero_eq_zeroSection z
-  have hlocal : A.orderFourCentralZeroFibreBasePath t =
+  have hlocal : A.orderFourCentralZeroFiberBasePath t =
       A.centralZeroSection (regularBaseQuotientMap b) := by
     change A.centralQuotientProjection x =
       puncturedGlobalZeroSection A.periods (regularBaseQuotientMap b)
     rw [hxzero, puncturedGlobalZeroSection_mk]
     rfl
-  change A.orderFourCentralZeroFibreBasePath t = A.orderFourZeroSectionBaseMap t
+  change A.orderFourCentralZeroFiberBasePath t = A.orderFourZeroSectionBaseMap t
   rw [hlocal]
   change A.centralZeroSection (regularBaseQuotientMap b) =
     A.centralZeroSection
@@ -322,10 +322,10 @@ public theorem orderFourZeroSectionBase_quadrupleHomotopy_with_trace :
   exact congrArg A.markedBaseToCentralZeroSection (htrace s)
 
 /-- Pointwise form of the equal endpoint trace for the local fibre contraction. -/
-public theorem orderFourCentralBaseFactor_zeroFibreHomotopy_point_trace
+public theorem orderFourCentralBaseFactor_zeroFiberHomotopy_point_trace
     (s : unitInterval) :
     letI := A.ellipticFourBoundaryAction
-    let H := A.orderFourCentralBaseFactor_zeroFibreHomotopy
+    let H := A.orderFourCentralBaseFactor_zeroFiberHomotopy
     H (s, 0) = H (s, 1) := by
   let _ := A.ellipticFourBoundaryAction
   change A.orderFourPuncturedProductCentralRealizationMap
@@ -343,9 +343,9 @@ public theorem orderFourCentralBaseFactor_homotopy_zeroSectionQuadruple :
       A.orderFourCentralBaseFactor.toContinuousMap
       A.orderFourZeroSectionQuadruplePath.toContinuousMap) := by
   let _ := A.ellipticFourBoundaryAction
-  let Hzero := A.orderFourCentralBaseFactor_zeroFibreHomotopy
+  let Hzero := A.orderFourCentralBaseFactor_zeroFiberHomotopy
   let Hzero' := Hzero.cast rfl
-    A.orderFourCentralZeroFibreBasePath_eq_zeroSectionBasePath
+    A.orderFourCentralZeroFiberBasePath_eq_zeroSectionBasePath
   rcases A.orderFourZeroSectionBase_quadrupleHomotopy with ⟨Hfour⟩
   exact ⟨Hzero'.trans Hfour⟩
 
@@ -358,16 +358,16 @@ public theorem orderFourCentralBaseFactor_homotopy_zeroSectionQuadruple_with_tra
         A.orderFourZeroSectionQuadruplePath.toContinuousMap,
       ∀ s : unitInterval, H (s, 0) = H (s, 1) := by
   let _ := A.ellipticFourBoundaryAction
-  let Hzero := A.orderFourCentralBaseFactor_zeroFibreHomotopy
+  let Hzero := A.orderFourCentralBaseFactor_zeroFiberHomotopy
   let Hzero' := Hzero.cast rfl
-    A.orderFourCentralZeroFibreBasePath_eq_zeroSectionBasePath
+    A.orderFourCentralZeroFiberBasePath_eq_zeroSectionBasePath
   rcases A.orderFourZeroSectionBase_quadrupleHomotopy_with_trace with
     ⟨Hfour, hfourTrace⟩
   let H := Hzero'.trans Hfour
   refine ⟨H, fun s ↦ ?_⟩
   apply freeLoopHomotopyTrans_trace
   · intro r
-    exact A.orderFourCentralBaseFactor_zeroFibreHomotopy_point_trace r
+    exact A.orderFourCentralBaseFactor_zeroFiberHomotopy_point_trace r
   · exact hfourTrace
 
 /-- The rebased zero-section quadruple displayed at the final affine basepoint. -/

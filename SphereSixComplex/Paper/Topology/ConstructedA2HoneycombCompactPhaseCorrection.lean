@@ -323,7 +323,7 @@ public theorem constructedA2PhaseCorrectedHexagonPoint_continuousOn
       (Metric.closedBall 0 1) := by
   rw [continuousOn_iff_continuous_domRestrict, continuous_induced_rng,
     continuous_induced_rng]
-  let J := establishedContinuousTorusAction constructedModel
+  let J := continuousTorusAction constructedModel
   apply J.variable_action
   · exact continuous_compactTorusEmbedding.comp
       ((constructedA2HoneycombCompactPhaseCorrection_continuous (N := N)).comp
