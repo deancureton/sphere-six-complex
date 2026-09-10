@@ -19,7 +19,7 @@ variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData 
 public theorem constructedCentralCellularEdgeLoop_homology_coordinates
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
-    (T : IntegralCWCellularHomologyFoundation)
+    (T : CellularHomology.IntegralComparison)
     (I : let _ := (constructedCentralCellAtlas W).cwComplex
       StandardA2ToricCellularIncidenceData (fun _ ↦ Equiv.refl _)
         (T.normalized.objectwiseModel (ActualLocalCuspCentralOrbitQuotient W)))
@@ -48,7 +48,7 @@ public theorem constructedCentralCellularEdgeLoop_homology_coordinates
 public theorem constructedCentralCellularEdgeLoop_basis_coordinates
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
-    (T : IntegralCWCellularHomologyFoundation)
+    (T : CellularHomology.IntegralComparison)
     (I : let _ := (constructedCentralCellAtlas W).cwComplex
       StandardA2ToricCellularIncidenceData (fun _ ↦ Equiv.refl _)
         (T.normalized.objectwiseModel (ActualLocalCuspCentralOrbitQuotient W)))

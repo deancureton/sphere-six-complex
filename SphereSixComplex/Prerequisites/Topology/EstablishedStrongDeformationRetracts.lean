@@ -30,7 +30,7 @@ through which the rest of the library consumes them.
   regular covering and the full inverse image of a subspace are contractible then, for a relative
   CW pair, the subspace inclusion is a homotopy equivalence.  The covering-space content is proved
   in `ContractibleRegularCoverInclusionProof`; only the general relative Whitehead theorem
-  (`isHomotopyEquivalenceInclusion_of_relativeCWComplex_of_bijective_homotopyGroups`) is assumed.
+  (`CWPair.whitehead`) is assumed.
 * `EstablishedGeneralTopology.equivariantStrongDeformationRetraction_lift`: a strong deformation
   retraction of the base lifts through the orbit map of a covering space action to a
   deck-equivariant strong deformation retraction of the total space onto the full preimage
@@ -42,7 +42,7 @@ space, as Hatcher's proof of Cor. 0.20 applies the homotopy-extension property w
 `A` and `X` themselves.
 
 The one remaining `axiom` of `EstablishedGeneralTopology` is the relative Whitehead theorem
-(`isHomotopyEquivalenceInclusion_of_relativeCWComplex_of_bijective_homotopyGroups`), tracked as a
+(`CWPair.whitehead`), tracked as a
 separate follow-up.  It is purely CW-theoretic: the `K(G, 1)` specialization below is a theorem,
 all covering-space and homotopy-group content is proved in
 `ContractibleRegularCoverInclusionProof`, and
@@ -283,7 +283,7 @@ This is the standard CW compression step (Hatcher, *Algebraic Topology*, Theorem
 Mathlib's abstract model-category Whitehead theorem is not instantiated for topological spaces,
 and neither Mathlib nor Tau Ceti currently connects `Topology.RelCWComplex` to weak homotopy
 equivalences, so this general theorem is the remaining standard topology input. -/
-public axiom isHomotopyEquivalenceInclusion_of_relativeCWComplex_of_bijective_homotopyGroups
+public axiom _root_.SphereSixComplex.CWPair.whitehead
     {B : Type*} [TopologicalSpace B] (D : Set B) (b : B) (hb : b ∈ D)
     (hB : PathConnectedSpace B)
     (hD : PathConnectedSpace D)
@@ -315,7 +315,7 @@ public theorem isHomotopyEquivalenceInclusion_of_isAspherical_of_bijective_funda
       (show (topologicalSubsetInclusionMap D) (⟨b, hb⟩ : D) = b from rfl)))
     (hCW : RelCWComplex (Set.univ : Set B) D) :
     IsHomotopyEquivalenceInclusion D := by
-  apply isHomotopyEquivalenceInclusion_of_relativeCWComplex_of_bijective_homotopyGroups
+  apply CWPair.whitehead
     D b hb hB.pathConnectedSpace hD.pathConnectedSpace hπ
   · intro n
     let _ : Subsingleton (π_ (n + 2) D ⟨b, hb⟩) := hD.subsingleton_homotopyGroup n

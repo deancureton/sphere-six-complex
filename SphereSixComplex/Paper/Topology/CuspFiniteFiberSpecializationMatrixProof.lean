@@ -23,15 +23,15 @@ namespace SphereSixComplex
 namespace WangHomologyPresentation
 
 /-- A Wang splitting sends a class from the fibre coinvariants to the pure coinvariant summand. -/
-public theorem totalLinearEquivCoinvariantsProdInvariantsOfSection_coinvariantsToTotal
+public theorem linearEquivOfSection_coinvariantsToTotal
     {HighRelations High Total LowRelations Low : Type*}
     [AddCommGroup HighRelations] [AddCommGroup High] [AddCommGroup Total]
     [AddCommGroup LowRelations] [AddCommGroup Low]
     (P : WangHomologyPresentation HighRelations High Total LowRelations Low)
-    (S : P.GeometricSection) (x : P.Coinvariants) :
-    P.totalLinearEquivCoinvariantsProdInvariantsOfSection S (P.coinvariantsToTotal x) =
+    (S : P.Section) (x : P.Coinvariants) :
+    P.linearEquivOfSection S (P.coinvariantsToTotal x) =
       (x, 0) := by
-  apply (P.totalLinearEquivCoinvariantsProdInvariantsOfSection S).symm.injective
+  apply (P.linearEquivOfSection S).symm.injective
   rw [LinearEquiv.symm_apply_apply]
   change P.coinvariantsToTotal x = P.coinvariantsToTotal x + S.lift 0
   rw [map_zero, add_zero]
@@ -98,7 +98,7 @@ public theorem geometricHomologyOneEquiv_markedFiberGenerator
       (e (integralSingularHomologyMap 1 G.markedFiberToPuncturedCusp
         (G.degreeOneFiberGenerator j))) = _
   rw [he, hincl, circleMappingTorusHOneAddEquiv_apply, honeSplit,
-    totalLinearEquivCoinvariantsProdInvariantsOfSection_coinvariantsToTotal]
+    linearEquivOfSection_coinvariantsToTotal]
   simp only [map_zero]
   change finTwoProdIntLinearEquiv
       (G.degreeOneCoinvariantsEquiv
@@ -152,7 +152,7 @@ public theorem geometricHomologyTwoEquiv_markedFiberGenerator
       (e (integralSingularHomologyMap 2 G.markedFiberToPuncturedCusp
         (G.degreeTwoFiberGenerator j))) = _
   rw [he, hincl, circleMappingTorusHTwoAddEquiv_apply, htwoSplit,
-    totalLinearEquivCoinvariantsProdInvariantsOfSection_coinvariantsToTotal]
+    linearEquivOfSection_coinvariantsToTotal]
   simp only [map_zero]
   change finFourProdFinTwoLinearEquiv
       (G.degreeTwoCoinvariantsEquiv

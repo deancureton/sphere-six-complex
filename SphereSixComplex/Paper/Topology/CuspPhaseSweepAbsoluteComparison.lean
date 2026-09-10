@@ -63,7 +63,7 @@ public theorem phaseSweepSkeletalPrism_relative
 public theorem phaseSweepCentralPrism_relativeCoordinates
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
-    (T : IntegralCWCellularHomologyFoundation) (i : Fin 2) :
+    (T : CellularHomology.IntegralComparison) (i : Fin 2) :
     let _ := (phaseSweepCellAtlas W).cwComplex
     ∀ x : IntegralSingularHomology 1
         (IntegralCWSkeletonLT (ActualLocalCuspCentralOrbitQuotient W) 2),

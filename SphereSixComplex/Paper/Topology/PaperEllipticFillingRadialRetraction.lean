@@ -34,7 +34,7 @@ noncomputable section
 public structure RadialEllipticActionData
     (m : ℕ) [NeZero m] (T : Type) [TopologicalSpace T] [AddCommGroup T] where
   actionData : EllipticActionData m ComplexUnitDisc T
-  center_eq : actionData.center = discCenter
+  center_eq : actionData.center = ComplexUnitDisc.center
   representation_continuous : ∀ g : FiniteCyclic m,
     Continuous (actionData.representation g)
   radial_equivariant : ∀ (g : FiniteCyclic m) (s : unitInterval)
@@ -51,8 +51,8 @@ finite-cyclic action. -/
     {m : ℕ} [NeZero m] {T : Type} [TopologicalSpace T] [AddCommGroup T]
     (D : EllipticActionData m ComplexUnitDisc T) (lambda : ℂ)
     (hlambda : ‖lambda‖ = 1)
-    (hrotation : D.rotation = discScalarEquiv lambda hlambda)
-    (hcenter : D.center = discCenter)
+    (hrotation : D.rotation = ComplexUnitDisc.rotation lambda hlambda)
+    (hcenter : D.center = ComplexUnitDisc.center)
     (hcontinuous : ∀ g : FiniteCyclic m, Continuous (D.representation g)) :
     RadialEllipticActionData m T where
   actionData := D
@@ -91,11 +91,11 @@ public abbrev FillingQuotient :=
   Quotient (orbitRelOf D.actionData.diagonalAction)
 
 /-- The central slice before taking the cyclic quotient. -/
-@[expose] public def centralSlice : Set D.Product := {p | p.1 = discCenter}
+@[expose] public def centralSlice : Set D.Product := {p | p.1 = ComplexUnitDisc.center}
 
 /-- Retraction of the fixed product to the central slice. -/
 @[expose] public def retract : C(D.Product, D.Product) where
-  toFun p := (discCenter, p.2)
+  toFun p := (ComplexUnitDisc.center, p.2)
   continuous_toFun := continuous_const.prodMk continuous_snd
 
 /-- The radial strong deformation homotopy on the fixed product. -/
@@ -109,22 +109,22 @@ public abbrev FillingQuotient :=
   map_one_left p := by simp [retract]
 
 public theorem retract_mem (p : D.Product) : D.retract p ∈ D.centralSlice := by
-  change discCenter = discCenter
+  change ComplexUnitDisc.center = ComplexUnitDisc.center
   rfl
 
 public theorem retract_fixed (p : D.Product) (hp : p ∈ D.centralSlice) :
     D.retract p = p := by
   rcases p with ⟨w, x⟩
-  change w = discCenter at hp
+  change w = ComplexUnitDisc.center at hp
   subst w
   rfl
 
 public theorem homotopy_fixed (s : unitInterval) (p : D.Product)
     (hp : p ∈ D.centralSlice) : D.homotopy (s, p) = p := by
   rcases p with ⟨w, x⟩
-  change w = discCenter at hp
+  change w = ComplexUnitDisc.center at hp
   subst w
-  change (discRadialHomotopy (s, discCenter), x) = (discCenter, x)
+  change (discRadialHomotopy (s, ComplexUnitDisc.center), x) = (ComplexUnitDisc.center, x)
   rw [discRadialHomotopy_center]
 
 public theorem retract_equivariant (g : FiniteCyclic m) (p : D.Product) :

@@ -259,7 +259,7 @@ public theorem PaperAnalyticData.orderThreeCentralOrbitRadius_lowerBound
         intro (g : Delta) z hzB
         obtain ⟨x, hxL, rfl⟩ := hzB
         have hne : orderThreeCayleyHomeomorph
-            (g • (regularTotalSpaceBase P.periods x).1) ≠ discCenter := by
+            (g • (regularTotalSpaceBase P.periods x).1) ≠ ComplexUnitDisc.center := by
           intro heq
           have hfixed : g • (regularTotalSpaceBase P.periods x).1 =
               fuchsianOneFixedPoint := by
@@ -350,7 +350,7 @@ public theorem PaperAnalyticData.orderFourCentralOrbitRadius_lowerBound
         intro (g : Delta) z hzB
         obtain ⟨x, hxL, rfl⟩ := hzB
         have hne : orderFourCayleyHomeomorph
-            (g • (regularTotalSpaceBase P.periods x).1) ≠ discCenter := by
+            (g • (regularTotalSpaceBase P.periods x).1) ≠ ComplexUnitDisc.center := by
           intro heq
           have hfixed : g • (regularTotalSpaceBase P.periods x).1 =
               fuchsianTwoFixedPoint := by

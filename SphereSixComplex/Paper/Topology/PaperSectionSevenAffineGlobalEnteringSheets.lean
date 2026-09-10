@@ -95,8 +95,8 @@ public theorem exists_orderThree_globalCollarRepresentative (A : PaperAnalyticDa
     intro hc
     have hfixed : (regularTotalSpaceBase A.periods y).1 = fuchsianOneFixedPoint := by
       apply orderThreeCayleyHomeomorph.injective
-      simpa [orderThreeCayleyHomeomorph, cayleyHomeomorph, cayleyDiscCoordinate,
-        discCenter, orderThreeCayley_fixedPoint] using hc
+      simpa [orderThreeCayleyHomeomorph, UpperHalfPlane.cayleyHomeomorph, UpperHalfPlane.cayleyToDisc,
+        ComplexUnitDisc.center, orderThreeCayley_fixedPoint] using hc
     have hregular := (regularTotalSpaceBase A.periods y).2
     have hmem := (A.isRegularBasePoint_iff_coordinate_mem _).mp hregular
     simp only [Set.mem_compl_iff, Set.mem_insert_iff, Set.mem_singleton_iff, not_or] at hmem
@@ -163,8 +163,8 @@ public theorem exists_orderFour_globalCollarRepresentative (A : PaperAnalyticDat
     intro hc
     have hfixed : (regularTotalSpaceBase A.periods y).1 = fuchsianTwoFixedPoint := by
       apply orderFourCayleyHomeomorph.injective
-      simpa [orderFourCayleyHomeomorph, cayleyHomeomorph, cayleyDiscCoordinate,
-        discCenter, orderFourCayley_fixedPoint] using hc
+      simpa [orderFourCayleyHomeomorph, UpperHalfPlane.cayleyHomeomorph, UpperHalfPlane.cayleyToDisc,
+        ComplexUnitDisc.center, orderFourCayley_fixedPoint] using hc
     have hregular := (regularTotalSpaceBase A.periods y).2
     have hmem := (A.isRegularBasePoint_iff_coordinate_mem _).mp hregular
     simp only [Set.mem_compl_iff, Set.mem_insert_iff, Set.mem_singleton_iff, not_or] at hmem

@@ -39,10 +39,10 @@ private theorem geometricWangSplitting_coinvariantsToTotal
     [AddCommGroup HighRelations] [AddCommGroup High] [AddCommGroup Total]
     [AddCommGroup LowRelations] [AddCommGroup Low]
     (P : WangHomologyPresentation HighRelations High Total LowRelations Low)
-    (S : P.GeometricSection) (x : P.Coinvariants) :
-    P.totalLinearEquivCoinvariantsProdInvariantsOfSection S (P.coinvariantsToTotal x) =
+    (S : P.Section) (x : P.Coinvariants) :
+    P.linearEquivOfSection S (P.coinvariantsToTotal x) =
       (x, 0) := by
-  apply (P.totalLinearEquivCoinvariantsProdInvariantsOfSection S).symm.injective
+  apply (P.linearEquivOfSection S).symm.injective
   rw [LinearEquiv.symm_apply_apply]
   change P.coinvariantsToTotal x = P.coinvariantsToTotal x + S.lift 0
   rw [map_zero, add_zero]
@@ -323,7 +323,7 @@ public theorem actualCuspFiberCoinvariantHomologyOneBasis_inclusion
     rfl
   rw [hFiber]
   rw [show honeSplit G.geometricWangSections.degreeOne =
-      P.totalLinearEquivCoinvariantsProdInvariantsOfSection
+      P.linearEquivOfSection
         G.geometricWangSections.degreeOne by rfl]
   rw [geometricWangSplitting_coinvariantsToTotal]
   rw [hCoinvariant]
@@ -394,7 +394,7 @@ public theorem actualCuspFiberCoinvariantHomologyTwoBasis_inclusion
     rfl
   rw [hFiber]
   rw [show htwoSplit G.geometricWangSections.degreeTwo =
-      P.totalLinearEquivCoinvariantsProdInvariantsOfSection
+      P.linearEquivOfSection
         G.geometricWangSections.degreeTwo by rfl]
   rw [geometricWangSplitting_coinvariantsToTotal]
   rw [hCoinvariant]

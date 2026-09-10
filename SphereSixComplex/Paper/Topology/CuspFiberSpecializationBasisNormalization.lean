@@ -48,7 +48,7 @@ public theorem normalizedTargetCoordinates_comp
 section, then its restriction to coinvariants is bijective. -/
 public theorem coinvariantsRestriction_bijective_of_kernel_eq_section
     (P : WangHomologyPresentation HighRelations High Total LowRelations Low)
-    (S : P.GeometricSection) (f : Total →ₗ[ℤ] L) (hf : Function.Surjective f)
+    (S : P.Section) (f : Total →ₗ[ℤ] L) (hf : Function.Surjective f)
     (hker : LinearMap.ker f = LinearMap.range S.lift) :
     Function.Bijective (f.comp P.coinvariantsToTotal) := by
   constructor
@@ -63,7 +63,7 @@ public theorem coinvariantsRestriction_bijective_of_kernel_eq_section
     have hz0 : z = 0 := by
       have hp := congrArg P.totalToInvariants hz
       rw [P.exact_coinvariantsToTotal_totalToInvariants.apply_apply_eq_zero] at hp
-      have hs := DFunLike.congr_fun S.rightInverse z
+      have hs := DFunLike.congr_fun S.right_inv z
       simp only [LinearMap.coe_comp, Function.comp_apply, LinearMap.id_coe, id_eq] at hs
       rw [hs] at hp
       exact hp
@@ -79,7 +79,7 @@ public theorem coinvariantsRestriction_bijective_of_kernel_eq_section
     have ht₀ : P.totalToInvariants t₀ = 0 := by
       change P.totalToInvariants (t - S.lift (P.totalToInvariants t)) = 0
       rw [map_sub]
-      have hs := DFunLike.congr_fun S.rightInverse (P.totalToInvariants t)
+      have hs := DFunLike.congr_fun S.right_inv (P.totalToInvariants t)
       simp only [LinearMap.coe_comp, Function.comp_apply, LinearMap.id_coe, id_eq] at hs
       rw [hs, sub_self]
     obtain ⟨x, hx⟩ := (P.exact_coinvariantsToTotal_totalToInvariants t₀).mp ht₀
@@ -97,7 +97,7 @@ public theorem coinvariantsRestriction_bijective_of_kernel_eq_section
 have the same finite free coordinates, then restriction to coinvariants is bijective. -/
 public theorem coinvariantsRestriction_bijective_of_surjective_of_section_eq_zero
     (P : WangHomologyPresentation HighRelations High Total LowRelations Low)
-    (S : P.GeometricSection) (f : Total →ₗ[ℤ] L) (hf : Function.Surjective f)
+    (S : P.Section) (f : Total →ₗ[ℤ] L) (hf : Function.Surjective f)
     (hsection : f.comp S.lift = 0) [Module.Free ℤ C] [Module.Finite ℤ C]
     (cP : P.Coinvariants ≃ₗ[ℤ] C) (cL : L ≃ₗ[ℤ] C) :
     Function.Bijective (f.comp P.coinvariantsToTotal) := by
@@ -110,7 +110,7 @@ public theorem coinvariantsRestriction_bijective_of_surjective_of_section_eq_zer
     have ht₀ : P.totalToInvariants t₀ = 0 := by
       change P.totalToInvariants (t - S.lift (P.totalToInvariants t)) = 0
       rw [map_sub]
-      have hs := DFunLike.congr_fun S.rightInverse (P.totalToInvariants t)
+      have hs := DFunLike.congr_fun S.right_inv (P.totalToInvariants t)
       simp only [LinearMap.coe_comp, Function.comp_apply, LinearMap.id_coe, id_eq] at hs
       rw [hs, sub_self]
     obtain ⟨x, hx⟩ := (P.exact_coinvariantsToTotal_totalToInvariants t₀).mp ht₀
@@ -237,12 +237,12 @@ public structure TotalSpecializationSurjectivityAndSectionVanishing
   degreeOne_surjective : Function.Surjective (rawDegreeOneTotalSpecialization G)
   degreeOne_section :
     let _ := G.fiberTopology
-    ∃ S : (circleMappingTorusHOnePresentation G.clutching).GeometricSection,
+    ∃ S : (circleMappingTorusHOnePresentation G.clutching).Section,
       (rawDegreeOneTotalSpecialization G).comp S.lift = 0
   degreeTwo_surjective : Function.Surjective (rawDegreeTwoTotalSpecialization G)
   degreeTwo_section :
     let _ := G.fiberTopology
-    ∃ S : (circleMappingTorusHTwoPresentation G.clutching).GeometricSection,
+    ∃ S : (circleMappingTorusHTwoPresentation G.clutching).Section,
       (rawDegreeTwoTotalSpecialization G).comp S.lift = 0
 
 /-- Exactness of total specialization implies the two basis-free fibre specialization
@@ -399,10 +399,10 @@ public noncomputable def normalizedGeometricWangSections
   let _ := G.fiberTopology
   let S := EstablishedCircleMappingTorusGeometricSections.sections G.monodromyCoordinates
   exact {
-    degreeOne := UnnormalizedCuspRadialClutchingData.geometricSectionInMapKernel
+    degreeOne := WangHomologyPresentation.correctedSection
       (circleMappingTorusHOnePresentation G.clutching) S.degreeOne
       G.degreeOneCoinvariantsEquiv (normalizedDegreeOneTotalSpecialization G h)
-    degreeTwo := UnnormalizedCuspRadialClutchingData.geometricSectionInMapKernel
+    degreeTwo := WangHomologyPresentation.correctedSection
       (circleMappingTorusHTwoPresentation G.clutching) S.degreeTwo
       G.degreeTwoCoinvariantsEquiv (normalizedDegreeTwoTotalSpecialization G h)
   }
@@ -423,7 +423,7 @@ public theorem normalizedDegreeOneTotalSpecialization_eq_projection
   let f := normalizedDegreeOneTotalSpecialization G h
   apply AddMonoidHom.ext
   intro x
-  have hx := UnnormalizedCuspRadialClutchingData.geometricSectionInMapKernel_map_eq_coinvariant
+  have hx := WangHomologyPresentation.map_eq_correctedSection_coinvariant
     P S.degreeOne c f
       (normalizedDegreeOneTotalSpecialization_comp_coinvariantsToTotal G h) x
   change f x = _
@@ -450,7 +450,7 @@ public theorem normalizedDegreeTwoTotalSpecialization_eq_projection
   let f := normalizedDegreeTwoTotalSpecialization G h
   apply AddMonoidHom.ext
   intro x
-  have hx := UnnormalizedCuspRadialClutchingData.geometricSectionInMapKernel_map_eq_coinvariant
+  have hx := WangHomologyPresentation.map_eq_correctedSection_coinvariant
     P S.degreeTwo c f
       (normalizedDegreeTwoTotalSpecialization_comp_coinvariantsToTotal G h) x
   change f x = _

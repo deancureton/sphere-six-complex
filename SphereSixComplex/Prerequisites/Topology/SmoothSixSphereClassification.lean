@@ -37,15 +37,15 @@ public def GeneralizedTopologicalPoincareSix : Prop :=
     Nonempty (M ≃ₕ SixSphere) → Nonempty (M ≃ₜ SixSphere)
 
 /-- The standard-model smooth Poincare theorem in dimension six. -/
-public def SmoothPoincareSixStandardModel : Prop :=
+public def SmoothSixSphere.Poincare : Prop :=
   ∀ (M : Type) [TopologicalSpace M] [ChartedSpace RealModel M]
     [IsManifold 𝓘(ℝ, RealModel) ∞ M] [T2Space M] [SecondCountableTopology M]
     [CompactSpace M],
-    Nonempty (M ≃ₕ SixSphere) → SmoothDiffeomorphicToSixSphere M
+    Nonempty (M ≃ₕ SixSphere) → SmoothSixSphere.IsDiffeomorphic M
 
 /-- Smooth Poincare in dimension six implies generalized topological Poincare in dimension six. -/
 public theorem generalizedTopologicalPoincareSix_of_smoothPoincareSixStandardModel
-    (hSmooth : SmoothPoincareSixStandardModel) : GeneralizedTopologicalPoincareSix := by
+    (hSmooth : SmoothSixSphere.Poincare) : GeneralizedTopologicalPoincareSix := by
   intro M _ _ _ _ _ _ hHomotopy
   obtain ⟨d⟩ := hSmooth M hHomotopy
   exact ⟨d.toHomeomorph⟩
@@ -123,7 +123,7 @@ end MarkedSmoothSixSphere
 /-- Smooth Poincare in dimension six makes the smooth-structure quotient of the topological
 six-sphere trivial. -/
 public theorem markedSmoothSixSphereClassesTrivial_of_smoothPoincareSixStandardModel
-    (hSmooth : SmoothPoincareSixStandardModel) :
+    (hSmooth : SmoothSixSphere.Poincare) :
     MarkedSmoothSixSphere.DiffeomorphismClassesTrivial := by
   constructor
   intro a b
@@ -193,7 +193,7 @@ public theorem homeomorphismToDiffeomorphismSixSphere_of_classes_trivial
 public theorem smoothPoincareSixStandardModel_of_classicalStages
     (hSmale : GeneralizedTopologicalPoincareSix)
     (hClasses : MarkedSmoothSixSphere.DiffeomorphismClassesTrivial) :
-    SmoothPoincareSixStandardModel := by
+    SmoothSixSphere.Poincare := by
   intro M _ _ _ _ _ _ hHomotopy
   exact homeomorphismToDiffeomorphismSixSphere_of_classes_trivial hClasses
     inferInstance (hSmale M hHomotopy)

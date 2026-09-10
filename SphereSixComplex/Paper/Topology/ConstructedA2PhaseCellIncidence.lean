@@ -42,7 +42,7 @@ public theorem constructedCentralPhaseTwoCell_boundary_mem_edge
 public theorem constructedCentralPhaseTwoCell_attachingDegree_zero
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
-    (T : IntegralCWCellularHomologyFoundation) (i j : Fin 3) :
+    (T : CellularHomology.IntegralComparison) (i j : Fin 3) :
     let _ := (constructedCentralCellAtlas W).cwComplex
     T.attachingDegree (ActualLocalCuspCentralOrbitQuotient W) 1 i.succ j = 0 := by
   let _ := (constructedCentralCellAtlas W).cwComplex

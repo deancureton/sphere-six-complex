@@ -92,7 +92,7 @@ public theorem StandardA2ToricCellularIncidenceData.homologyOne_cycle
   exact congrFun h' i.castSucc
 
 public theorem StandardA2ToricCellularIncidenceData.homologyOne_skeletal
-    (T : IntegralCWCellularHomologyFoundation)
+    (T : CellularHomology.IntegralComparison)
     (Y : Type) [TopologicalSpace Y] [T2Space Y] [Topology.CWComplex (Set.univ : Set Y)]
     (e : ∀ n, Topology.CWComplex.cell (Set.univ : Set Y) n ≃ cuspWCellIndex n)
     (I : StandardA2ToricCellularIncidenceData e (T.objectwiseModel Y))
@@ -160,7 +160,7 @@ public theorem StandardA2ToricCellularIncidenceData.homologyTwo_cycle
   exact ConcreteCategory.congr_hom (HomologicalComplex.cyclesMap_i I.chainIso.inv 2) z
 
 public theorem StandardA2ToricCellularIncidenceData.homologyTwo_skeletal
-    (T : IntegralCWCellularHomologyFoundation)
+    (T : CellularHomology.IntegralComparison)
     (Y : Type) [TopologicalSpace Y] [T2Space Y] [Topology.CWComplex (Set.univ : Set Y)]
     (e : ∀ n, Topology.CWComplex.cell (Set.univ : Set Y) n ≃ cuspWCellIndex n)
     (I : StandardA2ToricCellularIncidenceData e (T.objectwiseModel Y))

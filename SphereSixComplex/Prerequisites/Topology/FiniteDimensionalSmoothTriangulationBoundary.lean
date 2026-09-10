@@ -22,7 +22,7 @@ open scoped ContDiff Manifold ContinuousMap
 namespace SphereSixComplex
 
 /-- A homotopy model by a finite Hausdorff CW complex of dimension at most `d`. -/
-public structure FiniteCWModelOfDimension
+public structure CWType.FiniteModelOfDimension
     (d : ℕ) (X : Type) [TopologicalSpace X] where
   Carrier : Type
   topology : TopologicalSpace Carrier
@@ -37,22 +37,22 @@ public structure FiniteCWModelOfDimension
 /-- Every compact second-countable Hausdorff finite-dimensional boundaryless real `C¹` manifold
 has the homotopy type of a finite CW complex of dimension at most the dimension of its model
 space.  This is the classical smooth triangulation theorem. -/
-public axiom compactCOneManifoldFiniteCWModelAtDimension
+public axiom SmoothManifold.finiteCWModel
     (E X : Type)
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [TopologicalSpace X] [ChartedSpace E X]
     [T2Space X] [SecondCountableTopology X]
     (hManifold : IsManifold (modelWithCornersSelf ℝ E) 1 X)
     (hCompact : CompactSpace X) :
-    FiniteCWModelOfDimension (Module.finrank ℝ E) X
+    CWType.FiniteModelOfDimension (Module.finrank ℝ E) X
 
-namespace FiniteCWModelOfDimension
+namespace CWType.FiniteModelOfDimension
 
 variable {d : ℕ} {X : Type} [TopologicalSpace X]
 
 /-- Forget the dimension bound on a finite CW model. -/
-public noncomputable def toFiniteCWModel (M : FiniteCWModelOfDimension d X) :
-    FiniteCWModel X where
+public noncomputable def toFiniteCWModel (M : CWType.FiniteModelOfDimension d X) :
+    CWType.FiniteModel X where
   Carrier := M.Carrier
   topology := M.topology
   t2 := M.t2
@@ -61,7 +61,7 @@ public noncomputable def toFiniteCWModel (M : FiniteCWModelOfDimension d X) :
   finite := M.finite
 
 /-- Integral homology of a space with a finite CW model is finitely generated in every degree. -/
-public theorem finiteHomology (M : FiniteCWModelOfDimension d X) (k : ℕ) :
+public theorem finiteHomology (M : CWType.FiniteModelOfDimension d X) (k : ℕ) :
     Module.Finite ℤ (IntegralSingularHomology k X) := by
   let _ := M.topology
   let _ := M.t2
@@ -80,7 +80,7 @@ public theorem finiteHomology (M : FiniteCWModelOfDimension d X) (k : ℕ) :
     (integralSingularHomologyEquivOfHomotopyEquiv k M.homotopyEquiv).symm.toIntLinearEquiv
 
 /-- Integral homology vanishes above the dimension of a dimension-controlled finite CW model. -/
-public theorem homologyAboveDimension (M : FiniteCWModelOfDimension d X) (k : ℕ) (hk : d < k) :
+public theorem homologyAboveDimension (M : CWType.FiniteModelOfDimension d X) (k : ℕ) (hk : d < k) :
     Subsingleton (IntegralSingularHomology k X) := by
   let _ := M.topology
   let _ := M.t2
@@ -92,7 +92,7 @@ public theorem homologyAboveDimension (M : FiniteCWModelOfDimension d X) (k : �
     (integralSingularHomologyEquivOfHomotopyEquiv k M.homotopyEquiv).injective
       (@Subsingleton.elim _ hCarrier _ _)⟩
 
-end FiniteCWModelOfDimension
+end CWType.FiniteModelOfDimension
 
 end SphereSixComplex
 

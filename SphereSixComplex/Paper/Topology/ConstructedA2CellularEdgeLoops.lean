@@ -62,7 +62,7 @@ public def constructedCentralCellularEdgePath
 public theorem constructedCentralCellularEdgeLoop_relative_class
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
-    (T : IntegralCWCellularHomologyFoundation) (j k : Fin 3) :
+    (T : CellularHomology.IntegralComparison) (j k : Fin 3) :
     let _ := (constructedCentralCellAtlas W).cwComplex
     (T.normalized.cellBasis (ActualLocalCuspCentralOrbitQuotient W) 1).symm
       ((HomologicalComplex.homologyMap (cwRelativeIntegralSingularChainProjection

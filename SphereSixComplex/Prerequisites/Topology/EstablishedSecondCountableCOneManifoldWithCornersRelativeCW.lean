@@ -32,7 +32,7 @@ universe u
 
 /-- Every second-countable Hausdorff `C¹` manifold modelled on a finite-dimensional real
 quadrant admits a CW decomposition relative to its full boundary. -/
-public axiom establishedSecondCountableCOneManifoldWithCornersRelativeCW
+public axiom ManifoldWithCorners.relativeCWComplex
     (n : ℕ) (X : Type u) [TopologicalSpace X] [T2Space X]
     [SecondCountableTopology X] [ChartedSpace (EuclideanQuadrant n) X]
     [IsManifold (modelWithCornersEuclideanQuadrant n) 1 X] :

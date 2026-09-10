@@ -7,10 +7,10 @@ public import SphereSixComplex.Prerequisites.Topology.StandardSpherePositiveHomo
 noncomputable section
 open CategoryTheory CategoryTheory.Limits
 
-namespace SphereSixComplex.IntegralCWCellularHomologyFoundation
+namespace SphereSixComplex.CellularHomology.IntegralComparison
 
 public theorem attachingDegree_zero_of_contractible_boundary_factor
-    (T : IntegralCWCellularHomologyFoundation)
+    (T : CellularHomology.IntegralComparison)
     (X : Type) [TopologicalSpace X] [T2Space X]
     [Topology.CWComplex (Set.univ : Set X)]
     {Z : Type} [TopologicalSpace Z] [ContractibleSpace Z]
@@ -33,7 +33,7 @@ public theorem attachingDegree_zero_of_contractible_boundary_factor
   simp
 
 public theorem attachingDegree_zero_of_boundary_mem_embedded_contractible
-    (T : IntegralCWCellularHomologyFoundation)
+    (T : CellularHomology.IntegralComparison)
     (X : Type) [TopologicalSpace X] [T2Space X]
     [Topology.CWComplex (Set.univ : Set X)]
     {Z : Type} [TopologicalSpace Z] [ContractibleSpace Z]
@@ -56,4 +56,4 @@ public theorem attachingDegree_zero_of_boundary_mem_embedded_contractible
   exact T.attachingDegree_zero_of_contractible_boundary_factor X n hn e e'
     (TopCat.ofHom ⟨u, hucont⟩) v (by ext x; exact congrArg Subtype.val (hu x).symm)
 
-end SphereSixComplex.IntegralCWCellularHomologyFoundation
+end SphereSixComplex.CellularHomology.IntegralComparison

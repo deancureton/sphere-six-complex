@@ -83,8 +83,8 @@ public theorem cwSquareBoundaryHomologyMap_eq_zero_of_positiveLoop
     StandardCircleHomologyLiftDegree.integralSingularHomologyMap_loopHomologyClass, h, smul_zero]
   rfl
 
-public theorem IntegralCWCellularHomologyFoundation.attachingDegree_zero_of_positiveLoop
-    (T : IntegralCWCellularHomologyFoundation)
+public theorem CellularHomology.IntegralComparison.attachingDegree_zero_of_positiveLoop
+    (T : CellularHomology.IntegralComparison)
     (X : Type) [TopologicalSpace X] [T2Space X]
     [Topology.CWComplex (Set.univ : Set X)]
     (e : Topology.CWComplex.cell (Set.univ : Set X) 2)
@@ -98,7 +98,7 @@ public theorem IntegralCWCellularHomologyFoundation.attachingDegree_zero_of_posi
     exact cwSquareBoundaryHomologyMap_eq_zero_of_positiveLoop
       (T.characteristicPair X 2 e).boundaryMap.hom h
   rw [T.attachingDegree_eq_homologicalAttachingMapDegree]
-  unfold IntegralCWCellularHomologyFoundation.homologicalAttachingMapDegree
+  unfold CellularHomology.IntegralComparison.homologicalAttachingMapDegree
   rw [hz, zero_comp]
   simp
 

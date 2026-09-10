@@ -17,24 +17,24 @@ variable {HighRelations High Total LowRelations Low L : Type*}
 
 def specializationSplitEquiv
     (P : WangHomologyPresentation HighRelations High Total LowRelations Low)
-    (S : P.GeometricSection) (f : Total →ₗ[ℤ] L)
+    (S : P.Section) (f : Total →ₗ[ℤ] L)
     (h : Function.Bijective (f.comp P.coinvariantsToTotal)) :
     Total ≃ₗ[ℤ] L × P.Invariants :=
   let c := LinearEquiv.ofBijective (f.comp P.coinvariantsToTotal) h
-  (P.totalLinearEquivCoinvariantsProdInvariantsOfSection
-    (geometricSectionInMapKernel P S c f)).trans (c.prodCongr (LinearEquiv.refl ℤ _))
+  (P.linearEquivOfSection
+    (WangHomologyPresentation.correctedSection P S c f)).trans (c.prodCongr (LinearEquiv.refl ℤ _))
 
 theorem specializationSplitEquiv_fst
     (P : WangHomologyPresentation HighRelations High Total LowRelations Low)
-    (S : P.GeometricSection) (f : Total →ₗ[ℤ] L)
+    (S : P.Section) (f : Total →ₗ[ℤ] L)
     (h : Function.Bijective (f.comp P.coinvariantsToTotal)) (x : Total) :
     (specializationSplitEquiv P S f h x).1 = f x := by
-  exact (geometricSectionInMapKernel_map_eq_coinvariant P S
+  exact (WangHomologyPresentation.map_eq_correctedSection_coinvariant P S
     (LinearEquiv.ofBijective (f.comp P.coinvariantsToTotal) h) f rfl x).symm
 
 theorem specializationSplitEquiv_snd
     (P : WangHomologyPresentation HighRelations High Total LowRelations Low)
-    (S : P.GeometricSection) (f : Total →ₗ[ℤ] L)
+    (S : P.Section) (f : Total →ₗ[ℤ] L)
     (h : Function.Bijective (f.comp P.coinvariantsToTotal)) (x : Total) :
     (specializationSplitEquiv P S f h x).2 = P.totalToInvariants x := rfl
 

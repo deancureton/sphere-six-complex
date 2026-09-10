@@ -307,10 +307,10 @@ private theorem primitiveWangLift_of_coordinate
     (f : Total →ₗ[ℤ] ℤ) (s : Total)
     (hcoin : f.comp P.coinvariantsToTotal = 0) (hs : f s = 1) :
     e (P.totalToInvariants s) = 1 ∨ e (P.totalToInvariants s) = -1 := by
-  let S := WangHomologyPresentation.GeometricSection.ofProjective P
+  let S := WangHomologyPresentation.Section.ofProjective P
   let q : P.Invariants →ₗ[ℤ] ℤ := f.comp S.lift
   have hsection (z : P.Invariants) : P.totalToInvariants (S.lift z) = z := by
-    have hz := DFunLike.congr_fun S.rightInverse z
+    have hz := DFunLike.congr_fun S.right_inv z
     simpa only [LinearMap.coe_comp, Function.comp_apply, LinearMap.id_coe, id_eq] using hz
   have hresidual : f (s - S.lift (P.totalToInvariants s)) = 0 := by
     have hp : P.totalToInvariants (s - S.lift (P.totalToInvariants s)) = 0 := by
@@ -374,9 +374,9 @@ private def geometricSectionOfPositiveWangLift
     [AddCommGroup LowRelations] [AddCommGroup Low]
     (P : WangHomologyPresentation HighRelations High Total LowRelations Low)
     (e : P.Invariants ≃ₗ[ℤ] ℤ) (s : Total)
-    (hs : e (P.totalToInvariants s) = 1) : P.GeometricSection where
+    (hs : e (P.totalToInvariants s) = 1) : P.Section where
   lift := e.toLinearMap.smulRight s
-  rightInverse := by
+  right_inv := by
     apply LinearMap.ext
     intro x
     apply e.injective
@@ -403,7 +403,7 @@ public theorem degreeOne_section_of_cuspMeridianIsPrimitiveWangLift
     (G : ActualCuspRadialClutchingData W) (b : puncturedLocalCuspQuotient W)
     (h : CuspMeridianIsPrimitiveWangLift G b) :
     let _ := G.fiberTopology
-    ∃ S : (circleMappingTorusHOnePresentation G.clutching).GeometricSection,
+    ∃ S : (circleMappingTorusHOnePresentation G.clutching).Section,
       (rawDegreeOneTotalSpecialization G).comp S.lift = 0 := by
   let _ := G.fiberTopology
   let P := circleMappingTorusHOnePresentation G.clutching
@@ -430,7 +430,7 @@ public theorem degreeOne_section_of_angularCoordinateVanishesOnMarkedFiber
     (G : ActualCuspRadialClutchingData W) (b : puncturedLocalCuspQuotient W)
     (h : CuspAngularCoordinateVanishesOnMarkedFiber G b) :
     let _ := G.fiberTopology
-    ∃ S : (circleMappingTorusHOnePresentation G.clutching).GeometricSection,
+    ∃ S : (circleMappingTorusHOnePresentation G.clutching).Section,
       (rawDegreeOneTotalSpecialization G).comp S.lift = 0 :=
   degreeOne_section_of_cuspMeridianIsPrimitiveWangLift G b
     (cuspMeridianIsPrimitiveWangLift_of_angularCoordinateVanishesOnMarkedFiber G b h)

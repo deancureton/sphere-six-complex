@@ -78,21 +78,21 @@ public theorem cwOrientedIntervalClass_evaluation :
   rw [cwOrientedIntervalClass, cwIntervalOrientationEvaluation, cwRelativePathClass_boundary_weight]
   simp [cwBoundaryOneLeft_ne_right]
 
-public def normalizedIntervalDiskOrientation (T : IntegralCWCellularHomologyFoundation) :
+public def normalizedIntervalDiskOrientation (T : CellularHomology.IntegralComparison) :
     (CWRelativeIntegralSingularChainComplex (cwCharacteristicBoundaryInclusion 1)).homology 1 ≃+ ℤ :=
   cyclicEvaluationEquiv (T.diskOrientation 1) cwIntervalOrientationEvaluation.hom
     (cwOrientedIntervalClass.hom 1) (by
       exact ConcreteCategory.congr_hom cwOrientedIntervalClass_evaluation 1)
 
 public theorem normalizedIntervalDiskOrientation_symm_one
-    (T : IntegralCWCellularHomologyFoundation) :
+    (T : CellularHomology.IntegralComparison) :
     (normalizedIntervalDiskOrientation T).symm 1 = cwOrientedIntervalClass.hom 1 := by
   apply (normalizedIntervalDiskOrientation T).injective
   rw [AddEquiv.apply_symm_apply]
   exact (ConcreteCategory.congr_hom cwOrientedIntervalClass_evaluation 1).symm
 
 public theorem normalizedIntervalDiskOrientation_boundary
-    (T : IntegralCWCellularHomologyFoundation) :
+    (T : CellularHomology.IntegralComparison) :
     (cwRelativeIntegralSingularBoundary (cwCharacteristicBoundaryInclusion 1) 0).hom
       ((normalizedIntervalDiskOrientation T).symm 1) =
         (cwIntegralPointClass (TopCat.of (CWCharacteristicBoundarySphere 1))

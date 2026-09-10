@@ -94,7 +94,7 @@ the local holomorphic formula. -/
 public theorem orderThreePrincipalGauge_eq_branch
     (B : HolomorphicLogBranch) (q : TotalSpace (parameterMap F))
     (hq : (orderThreeCayleyHomeomorph (familyTotalSpaceBase F q) : ℂ) ∈ B.carrier)
-    (hne : orderThreeCayleyHomeomorph (familyTotalSpaceBase F q) ≠ discCenter) :
+    (hne : orderThreeCayleyHomeomorph (familyTotalSpaceBase F q) ≠ ComplexUnitDisc.center) :
     orderThreePrincipalGaugeEquiv F q =
       orderThreeLogarithmicGaugeMap F (fun w => B.log w) q := by
   induction q using Quotient.inductionOn with
@@ -124,7 +124,7 @@ the local holomorphic formula. -/
 public theorem orderFourPrincipalGauge_eq_branch
     (B : HolomorphicLogBranch) (q : TotalSpace (parameterMap F))
     (hq : (orderFourCayleyHomeomorph (familyTotalSpaceBase F q) : ℂ) ∈ B.carrier)
-    (hne : orderFourCayleyHomeomorph (familyTotalSpaceBase F q) ≠ discCenter) :
+    (hne : orderFourCayleyHomeomorph (familyTotalSpaceBase F q) ≠ ComplexUnitDisc.center) :
     orderFourPrincipalGaugeEquiv F q =
       orderFourLogarithmicGaugeMap F (fun w => B.log w) q := by
   induction q using Quotient.inductionOn with
@@ -161,7 +161,7 @@ public theorem neg_logarithmicGaugeSection
 public theorem orderThreePrincipalGauge_symm_eq_branch
     (B : HolomorphicLogBranch) (q : TotalSpace (parameterMap F))
     (hq : (orderThreeCayleyHomeomorph (familyTotalSpaceBase F q) : ℂ) ∈ B.carrier)
-    (hne : orderThreeCayleyHomeomorph (familyTotalSpaceBase F q) ≠ discCenter) :
+    (hne : orderThreeCayleyHomeomorph (familyTotalSpaceBase F q) ≠ ComplexUnitDisc.center) :
     (orderThreePrincipalGaugeEquiv F).symm q =
       familyTranslationMap F
         (-logarithmicGaugeSection F orderThreeCayleyHomeomorph epsilon
@@ -191,7 +191,7 @@ public theorem orderThreePrincipalGauge_symm_eq_branch
 public theorem orderFourPrincipalGauge_symm_eq_branch
     (B : HolomorphicLogBranch) (q : TotalSpace (parameterMap F))
     (hq : (orderFourCayleyHomeomorph (familyTotalSpaceBase F q) : ℂ) ∈ B.carrier)
-    (hne : orderFourCayleyHomeomorph (familyTotalSpaceBase F q) ≠ discCenter) :
+    (hne : orderFourCayleyHomeomorph (familyTotalSpaceBase F q) ≠ ComplexUnitDisc.center) :
     (orderFourPrincipalGaugeEquiv F).symm q =
       familyTranslationMap F
         (-logarithmicGaugeSection F orderFourCayleyHomeomorph (-epsilon')
@@ -293,12 +293,12 @@ public theorem orderThreePrincipalGauge_continuousOn
   induction q using Quotient.inductionOn with
   | _ p =>
     let w := orderThreeCayleyHomeomorph p.1
-    have hw : w ≠ discCenter := by
+    have hw : w ≠ ComplexUnitDisc.center := by
       intro h
       have hpos := hq.1
       change 0 < ‖(w : ℂ)‖ at hpos
       rw [h] at hpos
-      norm_num [discCenter] at hpos
+      norm_num [ComplexUnitDisc.center] at hpos
     let B := (orderThreeBranchesAt w hw).source
     have hwB : (w : ℂ) ∈ B.carrier := mem_orderThreeBranchesAt w hw
     have hbranch : ContinuousAt
@@ -333,7 +333,7 @@ public theorem orderThreePrincipalGauge_continuousOn
       change 0 < ‖(orderThreeCayleyHomeomorph
         (familyTotalSpaceBase F x) : ℂ)‖ at hpos
       rw [hcenter] at hpos
-      norm_num [discCenter] at hpos
+      norm_num [ComplexUnitDisc.center] at hpos
     exact hbranch.continuousWithinAt.congr_of_eventuallyEq_of_mem heq hq
 
 public theorem orderFourPrincipalGauge_continuousOn
@@ -346,12 +346,12 @@ public theorem orderFourPrincipalGauge_continuousOn
   induction q using Quotient.inductionOn with
   | _ p =>
     let w := orderFourCayleyHomeomorph p.1
-    have hw : w ≠ discCenter := by
+    have hw : w ≠ ComplexUnitDisc.center := by
       intro h
       have hpos := hq.1
       change 0 < ‖(w : ℂ)‖ at hpos
       rw [h] at hpos
-      norm_num [discCenter] at hpos
+      norm_num [ComplexUnitDisc.center] at hpos
     let B := (orderFourBranchesAt w hw).source
     have hwB : (w : ℂ) ∈ B.carrier := mem_orderFourBranchesAt w hw
     have hbranch : ContinuousAt
@@ -386,7 +386,7 @@ public theorem orderFourPrincipalGauge_continuousOn
       change 0 < ‖(orderFourCayleyHomeomorph
         (familyTotalSpaceBase F x) : ℂ)‖ at hpos
       rw [hcenter] at hpos
-      norm_num [discCenter] at hpos
+      norm_num [ComplexUnitDisc.center] at hpos
     exact hbranch.continuousWithinAt.congr_of_eventuallyEq_of_mem heq hq
 
 public theorem orderThreePrincipalGauge_symm_continuousOn
@@ -399,12 +399,12 @@ public theorem orderThreePrincipalGauge_symm_continuousOn
   induction q using Quotient.inductionOn with
   | _ p =>
     let w := orderThreeCayleyHomeomorph p.1
-    have hw : w ≠ discCenter := by
+    have hw : w ≠ ComplexUnitDisc.center := by
       intro h
       have hpos := hq.1
       change 0 < ‖(w : ℂ)‖ at hpos
       rw [h] at hpos
-      norm_num [discCenter] at hpos
+      norm_num [ComplexUnitDisc.center] at hpos
     let B := (orderThreeBranchesAt w hw).source
     have hwB : (w : ℂ) ∈ B.carrier := mem_orderThreeBranchesAt w hw
     let localMap := familyTranslationMap F
@@ -438,7 +438,7 @@ public theorem orderThreePrincipalGauge_symm_continuousOn
       change 0 < ‖(orderThreeCayleyHomeomorph
         (familyTotalSpaceBase F x) : ℂ)‖ at hpos
       rw [hcenter] at hpos
-      norm_num [discCenter] at hpos
+      norm_num [ComplexUnitDisc.center] at hpos
     exact hbranch.continuousWithinAt.congr_of_eventuallyEq_of_mem heq hq
 
 public theorem orderFourPrincipalGauge_symm_continuousOn
@@ -451,12 +451,12 @@ public theorem orderFourPrincipalGauge_symm_continuousOn
   induction q using Quotient.inductionOn with
   | _ p =>
     let w := orderFourCayleyHomeomorph p.1
-    have hw : w ≠ discCenter := by
+    have hw : w ≠ ComplexUnitDisc.center := by
       intro h
       have hpos := hq.1
       change 0 < ‖(w : ℂ)‖ at hpos
       rw [h] at hpos
-      norm_num [discCenter] at hpos
+      norm_num [ComplexUnitDisc.center] at hpos
     let B := (orderFourBranchesAt w hw).source
     have hwB : (w : ℂ) ∈ B.carrier := mem_orderFourBranchesAt w hw
     let localMap := familyTranslationMap F
@@ -490,7 +490,7 @@ public theorem orderFourPrincipalGauge_symm_continuousOn
       change 0 < ‖(orderFourCayleyHomeomorph
         (familyTotalSpaceBase F x) : ℂ)‖ at hpos
       rw [hcenter] at hpos
-      norm_num [discCenter] at hpos
+      norm_num [ComplexUnitDisc.center] at hpos
     exact hbranch.continuousWithinAt.congr_of_eventuallyEq_of_mem heq hq
 
 public theorem orderThreeFamilyRadius_principalGauge
@@ -696,12 +696,12 @@ public theorem orderThreePrincipalGauge_generator
     orderThreePrincipalGaugeEquiv F (orderThreeAffineFamilyGenerator F q) =
       familyDeckMap F g₁ (orderThreePrincipalGaugeEquiv F q) := by
   let w := orderThreeCayleyHomeomorph (familyTotalSpaceBase F q)
-  have hw : w ≠ discCenter := by
+  have hw : w ≠ ComplexUnitDisc.center := by
     intro h
     have hpos := hq.1
     change 0 < ‖(w : ℂ)‖ at hpos
     rw [h] at hpos
-    norm_num [discCenter] at hpos
+    norm_num [ComplexUnitDisc.center] at hpos
   let B := orderThreeBranchesAt w hw
   have hwB : (w : ℂ) ∈ B.source.carrier := mem_orderThreeBranchesAt w hw
   have hqB : q ∈ orderThreeLogarithmicGaugeCarrier F r B := ⟨hq, hwB⟩
@@ -721,13 +721,13 @@ public theorem orderThreePrincipalGauge_generator
     simpa only [orderThreePuncturedFamilyCollar.eq_def, Set.mem_ofPred_eq,
       orderThreeFamilyRadius_generator F hsource] using hq
   have htargetne : orderThreeCayleyHomeomorph
-      (familyTotalSpaceBase F (orderThreeAffineFamilyGenerator F q)) ≠ discCenter := by
+      (familyTotalSpaceBase F (orderThreeAffineFamilyGenerator F q)) ≠ ComplexUnitDisc.center := by
     intro h
     have hpos := hqgen.1
     change 0 < ‖(orderThreeCayleyHomeomorph
       (familyTotalSpaceBase F (orderThreeAffineFamilyGenerator F q)) : ℂ)‖ at hpos
     rw [h] at hpos
-    norm_num [discCenter] at hpos
+    norm_num [ComplexUnitDisc.center] at hpos
   calc
     orderThreePrincipalGaugeEquiv F (orderThreeAffineFamilyGenerator F q) =
         orderThreeLogarithmicGaugeMap F (fun u => B.target.log u)
@@ -746,12 +746,12 @@ public theorem orderFourPrincipalGauge_generator
     orderFourPrincipalGaugeEquiv F (orderFourAffineFamilyGenerator F q) =
       familyDeckMap F g₂ (orderFourPrincipalGaugeEquiv F q) := by
   let w := orderFourCayleyHomeomorph (familyTotalSpaceBase F q)
-  have hw : w ≠ discCenter := by
+  have hw : w ≠ ComplexUnitDisc.center := by
     intro h
     have hpos := hq.1
     change 0 < ‖(w : ℂ)‖ at hpos
     rw [h] at hpos
-    norm_num [discCenter] at hpos
+    norm_num [ComplexUnitDisc.center] at hpos
   let B := orderFourBranchesAt w hw
   have hwB : (w : ℂ) ∈ B.source.carrier := mem_orderFourBranchesAt w hw
   have hqB : q ∈ orderFourLogarithmicGaugeCarrier F r B := ⟨hq, hwB⟩
@@ -771,13 +771,13 @@ public theorem orderFourPrincipalGauge_generator
     simpa only [orderFourPuncturedFamilyCollar.eq_def, Set.mem_ofPred_eq,
       orderFourFamilyRadius_generator F hsource] using hq
   have htargetne : orderFourCayleyHomeomorph
-      (familyTotalSpaceBase F (orderFourAffineFamilyGenerator F q)) ≠ discCenter := by
+      (familyTotalSpaceBase F (orderFourAffineFamilyGenerator F q)) ≠ ComplexUnitDisc.center := by
     intro h
     have hpos := hqgen.1
     change 0 < ‖(orderFourCayleyHomeomorph
       (familyTotalSpaceBase F (orderFourAffineFamilyGenerator F q)) : ℂ)‖ at hpos
     rw [h] at hpos
-    norm_num [discCenter] at hpos
+    norm_num [ComplexUnitDisc.center] at hpos
   calc
     orderFourPrincipalGaugeEquiv F (orderFourAffineFamilyGenerator F q) =
         orderFourLogarithmicGaugeMap F (fun u => B.target.log u)

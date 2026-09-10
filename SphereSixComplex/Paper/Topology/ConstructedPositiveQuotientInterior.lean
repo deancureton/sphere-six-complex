@@ -84,7 +84,7 @@ public def constructedPositiveQuotientInteriorHomotopyEquiv
     ContinuousMap.HomotopyEquiv (ConstructedA2PositiveQuotient W)
       ↥((ConstructedA2PositiveQuotientCore W)ᶜ) := by
   let _ := constructedPositiveQuotient_metrizable W
-  let c := Classical.choice (classicalBrownCollaring (ConstructedA2PositiveQuotientCore W)
+  let c := Classical.choice (LocallyCollared.nonempty_collar (ConstructedA2PositiveQuotientCore W)
     (constructedPositiveQuotientCore_locallyCollared W))
   let w := Classical.choice (c.nonempty_pushWeight (constructedPositiveDeck_orbitCore_isClosed W))
   exact c.interiorHomotopyEquiv w

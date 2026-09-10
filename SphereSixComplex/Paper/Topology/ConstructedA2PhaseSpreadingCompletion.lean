@@ -29,7 +29,7 @@ public theorem constructedLocalPositivePart_contractible {r : ℝ}
     (constructedModel.t_holomorphic.continuous.comp
       (continuous_subtype_val.comp continuous_subtype_val)) continuous_const
   let _ : ContractibleSpace ↥(Bᶜ) := constructedA2PositiveOffCentral_contractible hr hr1
-  obtain ⟨c⟩ := classicalBrownCollaring B (constructedPositiveCentralFiber_locallyCollared r)
+  obtain ⟨c⟩ := LocallyCollared.nonempty_collar B (constructedPositiveCentralFiber_locallyCollared r)
   exact c.contractibleSpace hB
 
 public def constructedPolarHoneycombResidualData

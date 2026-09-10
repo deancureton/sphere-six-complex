@@ -231,12 +231,12 @@ public theorem orderThreePrincipalGauge_contMDiffAt
   induction q using Quotient.inductionOn with
   | _ p =>
     let w := orderThreeCayleyHomeomorph p.1
-    have hw : w ≠ discCenter := by
+    have hw : w ≠ ComplexUnitDisc.center := by
       intro h
       have hpos := hq.1
       change 0 < ‖(w : ℂ)‖ at hpos
       rw [h] at hpos
-      norm_num [discCenter] at hpos
+      norm_num [ComplexUnitDisc.center] at hpos
     let B := (orderThreeBranchesAt w hw).source
     have hwB : (w : ℂ) ∈ B.carrier := mem_orderThreeBranchesAt w hw
     have hbranch : ContMDiffAt GlobalDeckTotalModel GlobalDeckTotalModel ω
@@ -266,7 +266,7 @@ public theorem orderThreePrincipalGauge_contMDiffAt
       change 0 < ‖(orderThreeCayleyHomeomorph
         (familyTotalSpaceBase F x) : ℂ)‖ at hpos
       rw [hcenter] at hpos
-      norm_num [discCenter] at hpos
+      norm_num [ComplexUnitDisc.center] at hpos
     exact hbranch.congr_of_eventuallyEq heq
 
 public theorem orderFourPrincipalGauge_contMDiffAt
@@ -280,12 +280,12 @@ public theorem orderFourPrincipalGauge_contMDiffAt
   induction q using Quotient.inductionOn with
   | _ p =>
     let w := orderFourCayleyHomeomorph p.1
-    have hw : w ≠ discCenter := by
+    have hw : w ≠ ComplexUnitDisc.center := by
       intro h
       have hpos := hq.1
       change 0 < ‖(w : ℂ)‖ at hpos
       rw [h] at hpos
-      norm_num [discCenter] at hpos
+      norm_num [ComplexUnitDisc.center] at hpos
     let B := (orderFourBranchesAt w hw).source
     have hwB : (w : ℂ) ∈ B.carrier := mem_orderFourBranchesAt w hw
     have hbranch : ContMDiffAt GlobalDeckTotalModel GlobalDeckTotalModel ω
@@ -315,7 +315,7 @@ public theorem orderFourPrincipalGauge_contMDiffAt
       change 0 < ‖(orderFourCayleyHomeomorph
         (familyTotalSpaceBase F x) : ℂ)‖ at hpos
       rw [hcenter] at hpos
-      norm_num [discCenter] at hpos
+      norm_num [ComplexUnitDisc.center] at hpos
     exact hbranch.congr_of_eventuallyEq heq
 
 public theorem orderThreePrincipalGauge_symm_contMDiffAt
@@ -329,12 +329,12 @@ public theorem orderThreePrincipalGauge_symm_contMDiffAt
   induction q using Quotient.inductionOn with
   | _ p =>
     let w := orderThreeCayleyHomeomorph p.1
-    have hw : w ≠ discCenter := by
+    have hw : w ≠ ComplexUnitDisc.center := by
       intro h
       have hpos := hq.1
       change 0 < ‖(w : ℂ)‖ at hpos
       rw [h] at hpos
-      norm_num [discCenter] at hpos
+      norm_num [ComplexUnitDisc.center] at hpos
     let B := (orderThreeBranchesAt w hw).source
     have hwB : (w : ℂ) ∈ B.carrier := mem_orderThreeBranchesAt w hw
     let localMap := familyTranslationMap F
@@ -367,7 +367,7 @@ public theorem orderThreePrincipalGauge_symm_contMDiffAt
       change 0 < ‖(orderThreeCayleyHomeomorph
         (familyTotalSpaceBase F x) : ℂ)‖ at hpos
       rw [hcenter] at hpos
-      norm_num [discCenter] at hpos
+      norm_num [ComplexUnitDisc.center] at hpos
     exact hbranch.congr_of_eventuallyEq heq
 
 public theorem orderFourPrincipalGauge_symm_contMDiffAt
@@ -381,12 +381,12 @@ public theorem orderFourPrincipalGauge_symm_contMDiffAt
   induction q using Quotient.inductionOn with
   | _ p =>
     let w := orderFourCayleyHomeomorph p.1
-    have hw : w ≠ discCenter := by
+    have hw : w ≠ ComplexUnitDisc.center := by
       intro h
       have hpos := hq.1
       change 0 < ‖(w : ℂ)‖ at hpos
       rw [h] at hpos
-      norm_num [discCenter] at hpos
+      norm_num [ComplexUnitDisc.center] at hpos
     let B := (orderFourBranchesAt w hw).source
     have hwB : (w : ℂ) ∈ B.carrier := mem_orderFourBranchesAt w hw
     let localMap := familyTranslationMap F
@@ -419,7 +419,7 @@ public theorem orderFourPrincipalGauge_symm_contMDiffAt
       change 0 < ‖(orderFourCayleyHomeomorph
         (familyTotalSpaceBase F x) : ℂ)‖ at hpos
       rw [hcenter] at hpos
-      norm_num [discCenter] at hpos
+      norm_num [ComplexUnitDisc.center] at hpos
     exact hbranch.congr_of_eventuallyEq heq
 
 public noncomputable instance orderThreePuncturedCollarCharts

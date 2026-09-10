@@ -20,7 +20,7 @@ variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData 
 def phaseSweepRelativeEdgeVector
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
-    (T : IntegralCWCellularHomologyFoundation) (j : Fin 2) (k : Fin 3) : Fin 4 → ℤ := by
+    (T : CellularHomology.IntegralComparison) (j : Fin 2) (k : Fin 3) : Fin 4 → ℤ := by
   let _ := (phaseSweepCellAtlas W).cwComplex
   exact fun l : Fin 4 ↦ (T.cellBasis (ActualLocalCuspCentralOrbitQuotient W) 2).symm
     (closedPrismHomology (phaseSweepSkeletalRelativeHomotopy W j) 0
@@ -29,7 +29,7 @@ def phaseSweepRelativeEdgeVector
 theorem phaseSweepRelativeEdgeVector_active
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
-    (T : IntegralCWCellularHomologyFoundation) (k : Fin 3) :
+    (T : CellularHomology.IntegralComparison) (k : Fin 3) :
     ∃ u : ℤ, (u = 1 ∨ u = -1) ∧
       phaseSweepRelativeEdgeVector W T (phaseSweepPeriod k) k =
         Pi.single (phaseSweepCellIndex k) u := by
@@ -51,7 +51,7 @@ theorem phaseSweepRelativeEdgeVector_active
 theorem phaseSweepRelativeEdgeVector_fixed
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
-    (T : IntegralCWCellularHomologyFoundation) (j : Fin 2) :
+    (T : CellularHomology.IntegralComparison) (j : Fin 2) :
     phaseSweepRelativeEdgeVector W T j (if j = 0 then 2 else 1) = 0 := by
   let _ := (phaseSweepCellAtlas W).cwComplex
   ext k
@@ -65,7 +65,7 @@ theorem phaseSweepRelativeEdgeVector_fixed
 theorem phaseSweepRelativeEdgeVector_edgeZero
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
-    (T : IntegralCWCellularHomologyFoundation) :
+    (T : CellularHomology.IntegralComparison) :
     phaseSweepRelativeEdgeVector W T 1 0 = phaseSweepRelativeEdgeVector W T 0 0 := by
   let _ := (phaseSweepCellAtlas W).cwComplex
   ext l
@@ -76,7 +76,7 @@ theorem phaseSweepRelativeEdgeVector_edgeZero
 theorem phaseSweepRelativeEdgeVector_table
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
-    (T : IntegralCWCellularHomologyFoundation) :
+    (T : CellularHomology.IntegralComparison) :
     ∃ a b c : ℤ, (a = 1 ∨ a = -1) ∧ (b = 1 ∨ b = -1) ∧ (c = 1 ∨ c = -1) ∧
       phaseSweepRelativeEdgeVector W T 0 0 = ![0,a,0,0] ∧
       phaseSweepRelativeEdgeVector W T 1 0 = ![0,a,0,0] ∧
@@ -106,7 +106,7 @@ theorem phaseSweepFillingGraph_coordinates
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
     (R : ActualLocalCuspCentralFiberRetractionData W)
-    (T : IntegralCWCellularHomologyFoundation) (n : ℤ) (hn : n = 1 ∨ n = -1)
+    (T : CellularHomology.IntegralComparison) (n : ℤ) (hn : n = 1 ∨ n = -1)
     (hgen : universalCirclePrismClass = n • StandardTorusHomology.standardTwoTorusHomologyGenerator)
     (i : Fin 2) (j k : Fin 3) :
     phaseSweepFillingHomologyTwoEquiv W R T
@@ -159,13 +159,13 @@ local instance (A : PaperAnalyticData) :
   exact (actualLocalCuspCentralOrbitMap_isEmbedding A.starCuspWitness).t2Space
 
 def cuspMixedSourceColumn (A : PaperAnalyticData)
-    (T : IntegralCWCellularHomologyFoundation) (j : Fin 4) : Fin 4 → ℤ :=
+    (T : CellularHomology.IntegralComparison) (j : Fin 4) : Fin 4 → ℤ :=
   phaseSweepFillingHomologyTwoEquiv A.starCuspWitness A.cuspCentralFiberRetractionData T
     (integralSingularHomologyMap 2 (A.cuspFiniteFiberTorusToFilling j)
       standardTwoTorusHomologyGenerator)
 
 theorem cuspMixedSourceColumns_of_graphReadout (A : PaperAnalyticData)
-    (T : IntegralCWCellularHomologyFoundation) (n : ℤ) (hn : n = 1 ∨ n = -1)
+    (T : CellularHomology.IntegralComparison) (n : ℤ) (hn : n = 1 ∨ n = -1)
     (hread : ∀ (i : Fin 2) (j k : Fin 3),
       phaseSweepFillingHomologyTwoEquiv A.starCuspWitness A.cuspCentralFiberRetractionData T
         (A.cuspFillingPhaseSweep i
@@ -196,7 +196,7 @@ theorem cuspMixedSourceColumns_of_graphReadout (A : PaperAnalyticData)
     fin_cases l <;> simp
 
 theorem cuspMixedSourceColumns (A : PaperAnalyticData)
-    (T : IntegralCWCellularHomologyFoundation) :
+    (T : CellularHomology.IntegralComparison) :
     ∃ a b c : ℤ, (a = 1 ∨ a = -1) ∧ (b = 1 ∨ b = -1) ∧ (c = 1 ∨ c = -1) ∧
       A.cuspMixedSourceColumn T 1 = ![0,a,0,-c] ∧
       A.cuspMixedSourceColumn T 2 = ![0,-a,b,0] ∧

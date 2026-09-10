@@ -18,7 +18,7 @@ variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData 
 public theorem constructedCellAtlas_d_two
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
-    (T : IntegralCWCellularHomologyFoundation) :
+    (T : CellularHomology.IntegralComparison) :
     (constructedCentralCellAtlas W).skeletalComplex.d 2 1 = 0 := by
   let _ := (constructedCentralCellAtlas W).cwComplex
   change integralCWRelativeBoundary (ActualLocalCuspCentralOrbitQuotient W) 1 = 0
@@ -28,7 +28,7 @@ public theorem constructedCellAtlas_d_two
 public theorem constructedCellAtlas_d_three
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
-    (T : IntegralCWCellularHomologyFoundation) :
+    (T : CellularHomology.IntegralComparison) :
     (constructedCentralCellAtlas W).skeletalComplex.d 3 2 = 0 := by
   let _ := (constructedCentralCellAtlas W).cwComplex
   change integralCWRelativeBoundary (ActualLocalCuspCentralOrbitQuotient W) 2 = 0
@@ -44,7 +44,7 @@ public theorem phaseSweepCellAtlas_closedImage
 public theorem phaseSweepCellAtlas_d_two
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
-    (T : IntegralCWCellularHomologyFoundation) :
+    (T : CellularHomology.IntegralComparison) :
     (phaseSweepCellAtlas W).skeletalComplex.d 2 1 = 0 :=
   rechartSkeletal_d_zero T _ _ (phaseSweepCellAtlas_closedImage W) 2 1
     (constructedCellAtlas_d_two W T)
@@ -52,7 +52,7 @@ public theorem phaseSweepCellAtlas_d_two
 public theorem phaseSweepCellAtlas_d_three
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
-    (T : IntegralCWCellularHomologyFoundation) :
+    (T : CellularHomology.IntegralComparison) :
     (phaseSweepCellAtlas W).skeletalComplex.d 3 2 = 0 :=
   rechartSkeletal_d_zero T _ _ (phaseSweepCellAtlas_closedImage W) 3 2
     (constructedCellAtlas_d_three W T)
@@ -60,7 +60,7 @@ public theorem phaseSweepCellAtlas_d_three
 public def phaseSweepHomologyTwoToRelativeEquiv
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
-    (T : IntegralCWCellularHomologyFoundation) :
+    (T : CellularHomology.IntegralComparison) :
     let _ := (phaseSweepCellAtlas W).cwComplex
     IntegralSingularHomology 2 (ActualLocalCuspCentralOrbitQuotient W) ≃+
       IntegralCWRelativeCellObject (ActualLocalCuspCentralOrbitQuotient W) 2 := by
@@ -73,7 +73,7 @@ public def phaseSweepHomologyTwoToRelativeEquiv
 public def phaseSweepHomologyTwoCellEquiv
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
-    (T : IntegralCWCellularHomologyFoundation) :
+    (T : CellularHomology.IntegralComparison) :
     IntegralSingularHomology 2 (ActualLocalCuspCentralOrbitQuotient W) ≃+ (Fin 4 → ℤ) := by
   let _ := (phaseSweepCellAtlas W).cwComplex
   let _ : Finite (Topology.CWComplex.cell
@@ -87,7 +87,7 @@ public def phaseSweepHomologyTwoCellEquiv
 public theorem phaseSweepHomologyTwoToRelativeEquiv_skeletal
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
-    (T : IntegralCWCellularHomologyFoundation) :
+    (T : CellularHomology.IntegralComparison) :
     let _ := (phaseSweepCellAtlas W).cwComplex
     ∀ x : (CWIntegralSingularChainComplexObj
       (TopCat.of (IntegralCWSkeletonLT (ActualLocalCuspCentralOrbitQuotient W) 3))).homology 2,
@@ -121,7 +121,7 @@ public theorem phaseSweepHomologyTwoToRelativeEquiv_skeletal
 public theorem phaseSweepHomologyTwoCellEquiv_of_skeletalClass
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
-    (T : IntegralCWCellularHomologyFoundation) :
+    (T : CellularHomology.IntegralComparison) :
     let _ := (phaseSweepCellAtlas W).cwComplex
     ∀ (x : (CWIntegralSingularChainComplexObj
       (TopCat.of (IntegralCWSkeletonLT (ActualLocalCuspCentralOrbitQuotient W) 3))).homology 2)

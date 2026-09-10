@@ -16,7 +16,7 @@ public def phaseSweepFillingHomologyTwoEquiv
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
     (R : ActualLocalCuspCentralFiberRetractionData W)
-    (T : IntegralCWCellularHomologyFoundation) :
+    (T : CellularHomology.IntegralComparison) :
     IntegralSingularHomology 2 (actualLocalCuspFilling W) ≃+ (Fin 4 → ℤ) :=
   (actualCuspCentralOrbitFillingHomologyEquiv W R 2).symm.trans
     (phaseSweepHomologyTwoCellEquiv W T)
@@ -25,7 +25,7 @@ public theorem phaseSweepFillingHomologyTwoEquiv_central
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
     (R : ActualLocalCuspCentralFiberRetractionData W)
-    (T : IntegralCWCellularHomologyFoundation)
+    (T : CellularHomology.IntegralComparison)
     (x : IntegralSingularHomology 2 (ActualLocalCuspCentralOrbitQuotient W)) :
     phaseSweepFillingHomologyTwoEquiv W R T
       (integralSingularHomologyMap 2

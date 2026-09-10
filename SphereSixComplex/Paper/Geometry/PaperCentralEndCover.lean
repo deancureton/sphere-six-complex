@@ -197,8 +197,8 @@ public theorem exists_orderThree_coordinate_radius
   have hzero : (0 : ℂ) ∈ S := by
     refine ⟨fuchsianOneFixedPoint, ?_,
       P.modular.sourceCoordinate.coordinate_at_one⟩
-    simpa [orderThreeCayleyHomeomorph, cayleyHomeomorph,
-      cayleyDiscCoordinate, orderThreeCayley_fixedPoint] using hb
+    simpa [orderThreeCayleyHomeomorph, UpperHalfPlane.cayleyHomeomorph,
+      UpperHalfPlane.cayleyToDisc, orderThreeCayley_fixedPoint] using hb
   obtain ⟨δ, hδ, hball⟩ := Metric.isOpen_iff.mp hSopen 0 hzero
   refine ⟨δ, hδ, ?_⟩
   intro z hz
@@ -228,8 +228,8 @@ public theorem exists_orderFour_coordinate_radius
   have hone : (1 : ℂ) ∈ S := by
     refine ⟨fuchsianTwoFixedPoint, ?_,
       P.modular.sourceCoordinate.coordinate_at_two⟩
-    simpa [orderFourCayleyHomeomorph, cayleyHomeomorph,
-      cayleyDiscCoordinate, orderFourCayley_fixedPoint] using hb
+    simpa [orderFourCayleyHomeomorph, UpperHalfPlane.cayleyHomeomorph,
+      UpperHalfPlane.cayleyToDisc, orderFourCayley_fixedPoint] using hb
   obtain ⟨δ, hδ, hball⟩ := Metric.isOpen_iff.mp hSopen 1 hone
   refine ⟨δ, hδ, ?_⟩
   intro z hz
@@ -490,8 +490,8 @@ public theorem exists_orderThree_starCollar_of_baseRadius
     have hfixed : fuchsianSourceAction g •
         (regularTotalSpaceBase P.periods q).1 = fuchsianOneFixedPoint := by
       apply orderThreeCayleyHomeomorph.injective
-      simpa [orderThreeCayleyHomeomorph, cayleyHomeomorph, cayleyDiscCoordinate,
-        discCenter, orderThreeCayley_fixedPoint] using heq
+      simpa [orderThreeCayleyHomeomorph, UpperHalfPlane.cayleyHomeomorph, UpperHalfPlane.cayleyToDisc,
+        ComplexUnitDisc.center, orderThreeCayley_fixedPoint] using heq
     have hregular := isRegularBasePoint_smul
       (U := P.modular.modularParameter.toTriangleUniformization) g
       (regularTotalSpaceBase P.periods q).property
@@ -555,8 +555,8 @@ public theorem exists_orderFour_starCollar_of_baseRadius
     have hfixed : fuchsianSourceAction g •
         (regularTotalSpaceBase P.periods q).1 = fuchsianTwoFixedPoint := by
       apply orderFourCayleyHomeomorph.injective
-      simpa [orderFourCayleyHomeomorph, cayleyHomeomorph, cayleyDiscCoordinate,
-        discCenter, orderFourCayley_fixedPoint] using heq
+      simpa [orderFourCayleyHomeomorph, UpperHalfPlane.cayleyHomeomorph, UpperHalfPlane.cayleyToDisc,
+        ComplexUnitDisc.center, orderFourCayley_fixedPoint] using heq
     have hregular := isRegularBasePoint_smul
       (U := P.modular.modularParameter.toTriangleUniformization) g
       (regularTotalSpaceBase P.periods q).property

@@ -48,7 +48,7 @@ variable {Torus : Type*} [AddCommGroup Torus]
     (D : EllipticFiberData 3 Torus) :
     EllipticActionData 3 ComplexUnitDisc Torus where
   rotation := orderThreeDiscRotation
-  center := discCenter
+  center := ComplexUnitDisc.center
   offCenter := discOffCenter
   offCenter_ne := discOffCenter_ne
   rotation_pow := orderThreeDiscRotation_pow
@@ -66,7 +66,7 @@ variable {Torus : Type*} [AddCommGroup Torus]
     (D : EllipticFiberData 4 Torus) :
     EllipticActionData 4 ComplexUnitDisc Torus where
   rotation := orderFourDiscRotation
-  center := discCenter
+  center := ComplexUnitDisc.center
   offCenter := discOffCenter
   offCenter_ne := discOffCenter_ne
   rotation_pow := orderFourDiscRotation_pow

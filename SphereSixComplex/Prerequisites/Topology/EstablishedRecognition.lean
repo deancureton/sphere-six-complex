@@ -31,7 +31,7 @@ public theorem establishedHomologyToHomotopySixSphere
       hX.integralHomologyDegreeSix
   let _ : IsManifold 𝓘(ℝ, RealModel) ∞ X := hX.isManifold
   let _ : CompactSpace X := hX.compact
-  have hCWX : HasClassicalCWType X :=
+  have hCWX : HasCWType X :=
     establishedCompactSmoothSixManifoldClassicalCWType X
   have hWhitehead : ClassicalCWIntegralHomologyWhiteheadProperty SixSphere X := by
     let _ : SimplyConnectedSpace SixSphere := sixSphere_simplyConnected
@@ -48,27 +48,27 @@ public theorem establishedSmoothIntegralHomologySixSphereRecognition
   intro hX
   let _ : IsManifold 𝓘(ℝ, RealModel) ∞ X := hX.isManifold
   let _ : CompactSpace X := hX.compact
-  exact establishedSmoothPoincareSixStandardModel X
+  exact SmoothSixSphere.poincare X
     (establishedHomologyToHomotopySixSphere hX)
 
 /-- Smale's generalized topological Poincare theorem in dimension six. -/
 public theorem establishedGeneralizedTopologicalPoincareSix :
     GeneralizedTopologicalPoincareSix :=
   generalizedTopologicalPoincareSix_of_smoothPoincareSixStandardModel
-    establishedSmoothPoincareSixStandardModel
+    SmoothSixSphere.poincare
 
 /-- The h-cobordism theorem and the Kervaire--Milnor computation `Theta_6 = 0`, stated as their
 exact consequence for unoriented smooth structures on a topological six-sphere. -/
 public theorem establishedMarkedSmoothSixSphereClassesTrivial :
     MarkedSmoothSixSphere.DiffeomorphismClassesTrivial :=
   markedSmoothSixSphereClassesTrivial_of_smoothPoincareSixStandardModel
-    establishedSmoothPoincareSixStandardModel
+    SmoothSixSphere.poincare
 
 /-- The standard-model consequence recovers smooth Poincare in dimension six. -/
 public theorem establishedSmoothPoincareSix
     {X : Type} [TopologicalSpace X] [T2Space X] [SecondCountableTopology X]
     [ChartedSpace RealModel X] :
-    SmoothHomotopySixSphere X → SmoothDiffeomorphicToSixSphere X := by
+    SmoothHomotopySixSphere X → SmoothSixSphere.IsDiffeomorphic X := by
   intro hX
   let _ : CompactSpace X := hX.compact
   let _ : IsManifold 𝓘(ℝ, RealModel) ∞ X := hX.isManifold

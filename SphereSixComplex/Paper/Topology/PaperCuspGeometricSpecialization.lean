@@ -22,7 +22,7 @@ public theorem actualFiberSpecializationTwo_bijective (A : PaperAnalyticData) :
     let _ := G.fiberTopology
     Function.Bijective (G.specializationHomologyTwoMap.comp
       (circleMappingTorusHTwoPresentation G.clutching).coinvariantsToTotal) := by
-  have h := A.cuspFiberSpecializationTwoBijective integralCWCellularHomologyFoundation
+  have h := A.cuspFiberSpecializationTwoBijective CellularHomology.integralComparison
   unfold CuspFiberSpecializationTwoBijective at h
   rwa [A.actualCuspRadialClutchingData_eq] at h
 
@@ -172,7 +172,7 @@ private theorem specializationHomologyOneMap_eq_projection (A : PaperAnalyticDat
   apply AddMonoidHom.ext
   intro x
   have hx :=
-    UnnormalizedCuspRadialClutchingData.geometricSectionInMapKernel_map_eq_coinvariant P
+    WangHomologyPresentation.map_eq_correctedSection_coinvariant P
       S.degreeOne c f
     hc x
   change f x = _

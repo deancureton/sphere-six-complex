@@ -15,7 +15,7 @@ public def orientedIntervalCylinderPrism :
     (homologyMap (cwNestedBoundaryRelativeIso 1).hom 1 (cwOrientedIntervalClass.hom 1))
 
 public theorem orientedIntervalCylinderPrism_eq_orientation_or_neg_orientation
-    (T : IntegralCWCellularHomologyFoundation) :
+    (T : CellularHomology.IntegralComparison) :
     orientedIntervalCylinderPrism =
         homologyMap (cwCharacteristicCylinderRelativeIso 1).inv 2 ((T.diskOrientation 2).symm 1) ∨
       orientedIntervalCylinderPrism =

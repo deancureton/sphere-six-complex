@@ -42,7 +42,7 @@ public theorem orderFourCayleyChartFunction_sub_one_ne_zero_neg_one
     UpperHalfPlane.ofComplex (cayleyRawInverse fuchsianTwoFixedPoint w)
   have hcay :
       ((orderFourCayleyHomeomorph z :
-        SphereSixComplex.Geometry.EllipticLocalCoordinates.ComplexUnitDisc) : ℂ) = w := by
+        ComplexUnitDisc) : ℂ) = w := by
     exact cayleyCoordinate_rawInverse hw1
   have hzreg : IsRegularBasePoint
       (U := A.modular.modularParameter.toTriangleUniformization) z := by

@@ -165,11 +165,11 @@ public def htwoInv (B : CuspMonodromyCoordinates phi) :
     B.degreeOneDifference_conjugacy).trans mZeroInvariantsEquivIntSquared
 
 /-- The chosen geometric splitting of the degree-two Wang sequence. -/
-public def htwoSplit (S : (circleMappingTorusHTwoPresentation phi).GeometricSection) :
+public def htwoSplit (S : (circleMappingTorusHTwoPresentation phi).Section) :
     IntegralSingularHomology 2 (CircleMappingTorus phi) ≃ₗ[ℤ]
       (circleMappingTorusHTwoPresentation phi).Coinvariants ×
         (circleMappingTorusHTwoPresentation phi).Invariants :=
-  WangHomologyPresentation.totalLinearEquivCoinvariantsProdInvariantsOfSection _ S
+  WangHomologyPresentation.linearEquivOfSection _ S
 
 public theorem circleMappingTorusHTwoAddEquiv_apply {B : CuspMonodromyCoordinates phi}
     (S : CuspGeometricWangSections B)
@@ -237,11 +237,11 @@ public def honeInv (B : CuspMonodromyCoordinates phi) :
     B.degreeZeroDifference_conjugacy).trans zeroKernelEquivInt
 
 /-- The chosen geometric splitting of the degree-one Wang sequence. -/
-public def honeSplit (S : (circleMappingTorusHOnePresentation phi).GeometricSection) :
+public def honeSplit (S : (circleMappingTorusHOnePresentation phi).Section) :
     IntegralSingularHomology 1 (CircleMappingTorus phi) ≃ₗ[ℤ]
       (circleMappingTorusHOnePresentation phi).Coinvariants ×
         (circleMappingTorusHOnePresentation phi).Invariants :=
-  WangHomologyPresentation.totalLinearEquivCoinvariantsProdInvariantsOfSection _ S
+  WangHomologyPresentation.linearEquivOfSection _ S
 
 public theorem circleMappingTorusHOneAddEquiv_apply {B : CuspMonodromyCoordinates phi}
     (S : CuspGeometricWangSections B)

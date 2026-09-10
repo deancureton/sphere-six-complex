@@ -111,7 +111,7 @@ public theorem HasTopDimensionalSphericalGenerator.postcompHomotopyEquiv
   infer_instance
 
 /-- A concrete classical CW complex having the homotopy type of a space. -/
-public structure ClassicalCWModel (X : Type) [TopologicalSpace X] where
+public structure CWType.HomotopyModel (X : Type) [TopologicalSpace X] where
   /-- The carrier of the CW model. -/
   Carrier : Type
   /-- The topology on the model. -/
@@ -122,19 +122,19 @@ public structure ClassicalCWModel (X : Type) [TopologicalSpace X] where
   homotopyEquiv : Nonempty (@ContinuousMap.HomotopyEquiv X Carrier inferInstance topology)
 
 /-- A space has classical CW type if it admits a concrete classical CW model. -/
-public def HasClassicalCWType (X : Type) [TopologicalSpace X] : Prop :=
-  Nonempty (ClassicalCWModel X)
+public def HasCWType (X : Type) [TopologicalSpace X] : Prop :=
+  Nonempty (CWType.HomotopyModel X)
 
 /-- A space carrying a classical CW structure is its own CW model. -/
 public theorem hasClassicalCWType_of_cwComplex
     (X : Type) [TopologicalSpace X] [CWComplex (Set.univ : Set X)] :
-    HasClassicalCWType X :=
+    HasCWType X :=
   ⟨⟨X, inferInstance, inferInstance, ⟨ContinuousMap.HomotopyEquiv.refl X⟩⟩⟩
 
 /-- Precomposing a CW model with a homotopy equivalence transports classical CW type. -/
 public theorem hasClassicalCWType_precomp_homotopyEquiv
     {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
-    (e : X ≃ₕ Y) (hY : HasClassicalCWType Y) : HasClassicalCWType X := by
+    (e : X ≃ₕ Y) (hY : HasCWType Y) : HasCWType X := by
   obtain ⟨M⟩ := hY
   obtain ⟨hM⟩ := M.homotopyEquiv
   let _ : TopologicalSpace M.Carrier := M.topology
@@ -148,12 +148,12 @@ public theorem hasClassicalCWType_precomp_homotopyEquiv
 /-- Classical CW type is invariant under homotopy equivalence. -/
 public theorem hasClassicalCWType_iff_of_homotopyEquiv
     {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (e : X ≃ₕ Y) :
-    HasClassicalCWType X ↔ HasClassicalCWType Y :=
+    HasCWType X ↔ HasCWType Y :=
   ⟨hasClassicalCWType_precomp_homotopyEquiv e.symm,
     hasClassicalCWType_precomp_homotopyEquiv e⟩
 
 /-- The explicit finite two-cell model gives the standard six-sphere classical CW type. -/
-public theorem sixSphere_hasClassicalCWType : HasClassicalCWType SixSphere := by
+public theorem sixSphere_hasClassicalCWType : HasCWType SixSphere := by
   exact ⟨{
     Carrier := SixSphereFiniteCWCarrier
     topology := inferInstance
@@ -164,7 +164,7 @@ public theorem sixSphere_hasClassicalCWType : HasClassicalCWType SixSphere := by
 /-- The unresolved homological Whitehead theorem, restricted to spaces of classical CW type. -/
 public def ClassicalCWIntegralHomologyWhiteheadProperty
     (X Y : Type) [TopologicalSpace X] [TopologicalSpace Y] : Prop :=
-  HasClassicalCWType X → HasClassicalCWType Y →
+  HasCWType X → HasCWType Y →
     IntegralHomologyWhiteheadProperty X Y
 
 /-- Whitehead applied to a comparison `S⁶ → X` gives the recognition equivalence in the
@@ -186,7 +186,7 @@ public theorem homotopyEquivSixSphere_of_sphericalGenerator_of_classicalCWWhiteh
     (hSphere : SixSpherePositiveHomologyInputs)
     (hX : HasIntegralHomologyOfSixSphere X)
     (hGenerator : HasTopDimensionalSphericalGenerator X)
-    (hCWX : HasClassicalCWType X)
+    (hCWX : HasCWType X)
     (hWhitehead : ClassicalCWIntegralHomologyWhiteheadProperty SixSphere X) :
     Nonempty (X ≃ₕ SixSphere) :=
   homotopyEquivSixSphere_of_reverseComparison_of_whitehead

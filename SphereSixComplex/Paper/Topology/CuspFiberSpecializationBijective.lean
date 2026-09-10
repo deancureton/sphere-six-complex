@@ -47,7 +47,7 @@ theorem cuspFiberSpecializationTwoBijective_of_columns (A : PaperAnalyticData)
   exact hr j
 
 theorem cuspFiberSpecializationTwoBijective (A : PaperAnalyticData)
-    (T : IntegralCWCellularHomologyFoundation) : A.CuspFiberSpecializationTwoBijective := by
+    (T : CellularHomology.IntegralComparison) : A.CuspFiberSpecializationTwoBijective := by
   let _ := actualLocalCuspFilling_t2 A.starCuspWitness
   let _ : T2Space (ActualLocalCuspCentralOrbitQuotient A.starCuspWitness) :=
     (actualLocalCuspCentralOrbitMap_isEmbedding A.starCuspWitness).t2Space

@@ -21,7 +21,7 @@ variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData 
 public theorem constructedA2TwoCell_attachingDegree_zero
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
-    (T : IntegralCWCellularHomologyFoundation) (i : Fin 4) (j : Fin 3) :
+    (T : CellularHomology.IntegralComparison) (i : Fin 4) (j : Fin 3) :
     let _ := (constructedCentralCellAtlas W).cwComplex
     T.attachingDegree (ActualLocalCuspCentralOrbitQuotient W) 1 i j = 0 := by
   fin_cases i

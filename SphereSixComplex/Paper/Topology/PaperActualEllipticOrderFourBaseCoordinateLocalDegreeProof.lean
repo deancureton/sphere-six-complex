@@ -41,7 +41,7 @@ public theorem orderFourCayleyRegularCoordinate_chartFunction
     ellipticChartFunction A.modular.sourceCoordinate.coordinate
         fuchsianTwoFixedPoint
         ((orderFourCayleyHomeomorph z :
-          SphereSixComplex.Geometry.EllipticLocalCoordinates.ComplexUnitDisc) : ℂ) =
+          ComplexUnitDisc) : ℂ) =
       A.modular.sourceCoordinate.coordinate z := by
   unfold ellipticChartFunction
   let w := orderFourCayleyHomeomorph z
@@ -49,9 +49,9 @@ public theorem orderFourCayleyRegularCoordinate_chartFunction
     cayleyRawInverse_im_pos w.property
   rw [UpperHalfPlane.ofComplex_apply_of_im_pos him]
   change A.modular.sourceCoordinate.coordinate
-      (cayleyInverseUpper fuchsianTwoFixedPoint w) =
+      (UpperHalfPlane.cayleyFromDisc fuchsianTwoFixedPoint w) =
     A.modular.sourceCoordinate.coordinate z
-  rw [show cayleyInverseUpper fuchsianTwoFixedPoint w = z by
+  rw [show UpperHalfPlane.cayleyFromDisc fuchsianTwoFixedPoint w = z by
     exact orderFourCayleyHomeomorph.symm_apply_apply z]
 
 /-- The normalized affine coordinate minus one has exact order four in the order-four Cayley
@@ -168,7 +168,7 @@ public theorem orderFourFillingRelation_baseCoordinate_eq_chartFunction
         ((orderFourCayleyHomeomorph
           (familyTotalSpaceBase A.periods
             (A.orderFourCollarInverseRepresentative lift).1) :
-              SphereSixComplex.Geometry.EllipticLocalCoordinates.ComplexUnitDisc) : ℂ) :=
+              ComplexUnitDisc) : ℂ) :=
       (A.orderFourCayleyRegularCoordinate_chartFunction _).symm
     _ = _ := congrArg
       (ellipticChartFunction A.modular.sourceCoordinate.coordinate

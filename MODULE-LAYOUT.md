@@ -39,12 +39,13 @@ For a smaller import, select an individual module, for example
 `SphereSixComplex.Prerequisites.Topology.StandardTorusHomology` or
 `SphereSixComplex.Paper.Final`.
 
-Declaration namespaces and theorem names are preserved. Some prerequisite declarations retain
+The initial folder separation preserved declaration names. Naming cleanup follows
+[NAMING.md](NAMING.md). Some prerequisite declarations still retain
 historical namespaces containing `Paper` or `SectionSeven`; these names do not express an import
 dependency. Module imports use the new paths. No compatibility copies of the old modules are
 kept.
 
 `scripts/check-imports.py` enforces that every module is built, every project import exists, and
 prerequisites import no paper module or aggregate. Thus the prerequisite library can be used
-independently. The axiom audit and Comparator continue to check the same declaration names and
+independently. The axiom audit and Comparator track the current declaration names and unchanged
 trust boundary; see [TRUST-BOUNDARY.md](TRUST-BOUNDARY.md).

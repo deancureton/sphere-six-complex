@@ -85,7 +85,7 @@ is the dimension-six Kervaire--Milnor input. -/
 public def HomeomorphismToDiffeomorphismSixSphereObligation
     (X : Type) [TopologicalSpace X] [ChartedSpace RealModel X] : Prop :=
   IsManifold 𝓘(ℝ, RealModel) ∞ X →
-    Nonempty (X ≃ₜ SixSphere) → SmoothDiffeomorphicToSixSphere X
+    Nonempty (X ≃ₜ SixSphere) → SmoothSixSphere.IsDiffeomorphic X
 
 /-- For a fixed carrier and atlas, the smooth Poincare theorem is exactly the conjunction of
 topological Poincare and uniqueness of the smooth structure on the topological sphere. -/

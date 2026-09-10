@@ -228,7 +228,7 @@ public theorem constructedA2FourCharacteristicPair_toCW
 public theorem constructedA2ThreeCell_attachingDegree_zero_of_boundary
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
-    (T : IntegralCWCellularHomologyFoundation) (i : Fin 2)
+    (T : CellularHomology.IntegralComparison) (i : Fin 2)
     (h : HomologicalComplex.homologyMap
       (cwIntegralSingularChainMapObj (constructedA2ThreeCharacteristicPair W i).left) 2 = 0)
     (j : Fin 4) :
@@ -245,7 +245,7 @@ public theorem constructedA2ThreeCell_attachingDegree_zero_of_boundary
       cwIntegralSingularChainMapObj_comp, HomologicalComplex.homologyMap_comp, h, zero_comp]
   dsimp only
   erw [T.attachingDegree_eq_homologicalAttachingMapDegree]
-  unfold IntegralCWCellularHomologyFoundation.homologicalAttachingMapDegree
+  unfold CellularHomology.IntegralComparison.homologicalAttachingMapDegree
   rw [hz, zero_comp]
   simp
   rfl
@@ -253,7 +253,7 @@ public theorem constructedA2ThreeCell_attachingDegree_zero_of_boundary
 public theorem constructedA2FourCell_attachingDegree_zero_of_boundary
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
-    (T : IntegralCWCellularHomologyFoundation)
+    (T : CellularHomology.IntegralComparison)
     (h : HomologicalComplex.homologyMap
       (cwIntegralSingularChainMapObj (constructedA2FourCharacteristicPair W).left) 3 = 0)
     (j : Fin 2) :
@@ -271,7 +271,7 @@ public theorem constructedA2FourCell_attachingDegree_zero_of_boundary
       cwIntegralSingularChainMapObj_comp, HomologicalComplex.homologyMap_comp, h, zero_comp]
   dsimp only
   erw [T.attachingDegree_eq_homologicalAttachingMapDegree]
-  unfold IntegralCWCellularHomologyFoundation.homologicalAttachingMapDegree
+  unfold CellularHomology.IntegralComparison.homologicalAttachingMapDegree
   rw [hz, zero_comp]
   simp
   rfl

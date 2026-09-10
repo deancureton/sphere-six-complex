@@ -84,7 +84,7 @@ theorem phaseSweepForwardCylinderPair_reverse
     rfl
 
 theorem phaseSweepRelativePrism_edge
-    (T : IntegralCWCellularHomologyFoundation)
+    (T : CellularHomology.IntegralComparison)
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)] (i : Fin 3) :
     let _ := (phaseSweepCellAtlas W).cwComplex
@@ -119,7 +119,7 @@ theorem phaseSweepRelativePrism_edge
   exact hh
 
 theorem phaseSweepRelativePrism_edge_unit
-    (T : IntegralCWCellularHomologyFoundation)
+    (T : CellularHomology.IntegralComparison)
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)] (i : Fin 3) :
     let _ := (phaseSweepCellAtlas W).cwComplex
@@ -160,7 +160,7 @@ theorem phaseSweepRelativePrism_edge_unit
     exact h W i
 
 theorem phaseSweepRelativePrism_edge_of_cylinder
-    (T : IntegralCWCellularHomologyFoundation)
+    (T : CellularHomology.IntegralComparison)
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)] (i : Fin 3) (j : Fin 2) :
     let _ := (phaseSweepCellAtlas W).cwComplex
@@ -236,7 +236,7 @@ theorem phaseSweepFixedCylinderPair_chainMap
   erw [hz, comp_zero]
 
 theorem phaseSweepRelativePrism_fixed_edge
-    (T : IntegralCWCellularHomologyFoundation)
+    (T : CellularHomology.IntegralComparison)
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)] (j : Fin 2) :
     let _ := (phaseSweepCellAtlas W).cwComplex
@@ -265,7 +265,7 @@ theorem phaseSweepRelativePrism_fixed_edge
   rfl
 
 theorem phaseSweepRelativePrism_edgeZero_equal
-    (T : IntegralCWCellularHomologyFoundation)
+    (T : CellularHomology.IntegralComparison)
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)] :
     let _ := (phaseSweepCellAtlas W).cwComplex

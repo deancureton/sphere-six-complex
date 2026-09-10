@@ -24,7 +24,7 @@ public theorem cellularIdentity_of_closedCell_eq
   exact fun _ hx ↦ hx
 
 public def rechartSkeletalChainMap
-    (T : IntegralCWCellularHomologyFoundation)
+    (T : CellularHomology.IntegralComparison)
     (A B : StandardA2ToricCentralFiberCellAtlas X)
     (h : ∀ n i, A.cellMap n i '' Metric.closedBall 0 1 =
       B.cellMap n i '' Metric.closedBall 0 1) :
@@ -33,7 +33,7 @@ public def rechartSkeletalChainMap
     (ContinuousMap.id X) (cellularIdentity_of_closedCell_eq A B h)
 
 public theorem rechartSkeletalChainMap_comp
-    (T : IntegralCWCellularHomologyFoundation)
+    (T : CellularHomology.IntegralComparison)
     (A B C : StandardA2ToricCentralFiberCellAtlas X)
     (hAB : ∀ n i, A.cellMap n i '' Metric.closedBall 0 1 =
       B.cellMap n i '' Metric.closedBall 0 1)
@@ -47,7 +47,7 @@ public theorem rechartSkeletalChainMap_comp
     (cellularIdentity_of_closedCell_eq B C hBC)).symm
 
 public theorem rechartSkeletalChainMap_self
-    (T : IntegralCWCellularHomologyFoundation)
+    (T : CellularHomology.IntegralComparison)
     (A : StandardA2ToricCentralFiberCellAtlas X)
     (h : ∀ n i, A.cellMap n i '' Metric.closedBall 0 1 =
       A.cellMap n i '' Metric.closedBall 0 1) :
@@ -55,7 +55,7 @@ public theorem rechartSkeletalChainMap_self
   @T.cellularChainMap_id X _ _ A.cwComplex
 
 public def rechartSkeletalChainIso
-    (T : IntegralCWCellularHomologyFoundation)
+    (T : CellularHomology.IntegralComparison)
     (A B : StandardA2ToricCentralFiberCellAtlas X)
     (h : ∀ n i, A.cellMap n i '' Metric.closedBall 0 1 =
       B.cellMap n i '' Metric.closedBall 0 1) :
@@ -66,7 +66,7 @@ public def rechartSkeletalChainIso
   inv_hom_id := by rw [rechartSkeletalChainMap_comp, rechartSkeletalChainMap_self]
 
 public theorem rechartSkeletal_d_zero
-    (T : IntegralCWCellularHomologyFoundation)
+    (T : CellularHomology.IntegralComparison)
     (A B : StandardA2ToricCentralFiberCellAtlas X)
     (h : ∀ n i, A.cellMap n i '' Metric.closedBall 0 1 =
       B.cellMap n i '' Metric.closedBall 0 1) (n m : ℕ)
@@ -77,10 +77,10 @@ public theorem rechartSkeletal_d_zero
 
 end SphereSixComplex.StandardA2ToricCentralFiberCellAtlas
 
-namespace SphereSixComplex.IntegralCWCellularHomologyFoundation
+namespace SphereSixComplex.CellularHomology.IntegralComparison
 
 public theorem relativeBoundary_eq_zero_of_attachingDegree_eq_zero
-    (T : IntegralCWCellularHomologyFoundation)
+    (T : CellularHomology.IntegralComparison)
     (X : Type) [TopologicalSpace X] [T2Space X]
     [Topology.CWComplex (Set.univ : Set X)] (n : ℕ)
     (h : ∀ e e', T.attachingDegree X n e e' = 0) :
@@ -104,7 +104,7 @@ public theorem relativeBoundary_eq_zero_of_attachingDegree_eq_zero
     have hs : Finsupp.single e z = z • (Finsupp.single e 1 : _ →₀ ℤ) := by simp
     rw [hs, map_zsmul, map_zsmul, hsingle, zsmul_zero]
 
-end SphereSixComplex.IntegralCWCellularHomologyFoundation
+end SphereSixComplex.CellularHomology.IntegralComparison
 
 namespace SphereSixComplex
 

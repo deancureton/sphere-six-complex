@@ -43,7 +43,7 @@ public theorem cwIntegralPathDifferenceClass_eq_loop {X : Type} [TopologicalSpac
   exact ((opchainClass X).map_sub _ _).trans (sub_eq_add_neg _ _)
 
 public theorem normalized_cellBasis_loop_edges
-    (T : IntegralCWCellularHomologyFoundation) (X : Type) [TopologicalSpace X] [T2Space X]
+    (T : CellularHomology.IntegralComparison) (X : Type) [TopologicalSpace X] [T2Space X]
     [Topology.CWComplex (Set.univ : Set X)]
     (e f : Topology.CWComplex.cell (Set.univ : Set X) 1)
     (h₀ : (integralCWCharacteristicPairMap X 1 e).boundaryMap cwBoundaryOneLeft =

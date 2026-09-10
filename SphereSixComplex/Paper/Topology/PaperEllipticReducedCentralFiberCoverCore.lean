@@ -55,8 +55,8 @@ public theorem mem_centralSlice_iff_quotient_mem_reducedCentralFiber (p : D.Prod
     obtain ⟨g, rfl⟩ := horbit
     have h := congrArg Prod.fst (D.retract_equivariant g q)
     rw [D.retract_fixed q hq] at h
-    change discCenter = (actionMap D.actionData.diagonalAction g q).1 at h
-    change (actionMap D.actionData.diagonalAction g q).1 = discCenter
+    change ComplexUnitDisc.center = (actionMap D.actionData.diagonalAction g q).1 at h
+    change (actionMap D.actionData.diagonalAction g q).1 = ComplexUnitDisc.center
     exact h.symm
   · intro hp
     rw [PaperEllipticFillingRadialRetraction.RadialEllipticActionData.reducedCentralFiber]

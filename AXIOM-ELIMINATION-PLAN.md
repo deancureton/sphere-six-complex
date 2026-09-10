@@ -33,7 +33,7 @@ correction is derived from the proved Cauchy–Green/Cousin theorem. Adding file
 structures, or reductions does not count as progress unless it closes a named milestone below or
 rules out a proposed route and updates this plan.
 
-The retained `classicalHigherHurewiczTheory` is the general classical theorem: it asserts the
+The retained `Hurewicz.exists_map` is the general classical theorem: it asserts the
 existence of a natural higher Hurewicz homomorphism for arbitrary spaces and degrees and its
 usual isomorphism property under the standard connectivity hypothesis. Sphere realization is now
 a theorem derived solely from naturality and the cube-boundary quotient comparison, rather than
@@ -95,7 +95,7 @@ six is intrinsic.
    \(h\)-cobordism, and \(\Theta_6=0\).
 
 5. **Integral cellular homology.** Retain the source-independent cellular-homology theorem
-   `integralCWCellularHomologyFoundation` in its
+   `CellularHomology.integralComparison` in its
    natural skeletal-relative form: \(C_n^{\mathrm{cell}}(X)=H_n(X^n,X^{n-1};\mathbb Z)\), with
    differential induced by the relative connecting map and projection. Characteristic maps fix
    the oriented cell basis, boundary coefficients are the corresponding attaching-map degrees,
@@ -125,8 +125,8 @@ six is intrinsic.
    The old `establishedCompactSmoothOrientedManifoldHomologyTheory` package is derived and is not
    permitted by Comparator.
 
-The current recognition signatures are `classicalHigherHurewiczTheory`,
-`simplyConnectedHomologicalWhitehead`, and `establishedSmoothPoincareSixStandardModel`.
+The current recognition signatures are `Hurewicz.exists_map`,
+`CWType.homological_whitehead`, and `SmoothSixSphere.poincare`.
 The Hurewicz interface asserts existence of a natural homomorphism satisfying the classical
 properties; it does not uniquely characterize a canonical choice or its sign. Smooth CW type is
 already derived from dimension-controlled triangulation. A candidate is rejected if it is merely
@@ -221,11 +221,11 @@ and Comparator passes.
 | # | Current declaration | Disposition | Derivation plan |
 |---|---|---|---|
 | 1 | `establishedHigherHurewiczSixGenerator` | proved from blackbox 1 | Instantiate the general natural higher Hurewicz theorem. Use simply connectedness at degree one and strong induction with its isomorphism property to turn lower integral-homology vanishing into lower homotopy vanishing. Sphere realization supplies a representative of the chosen degree-six generator, and the proved \(H_6(S^6)\cong\mathbb Z\) calculation makes its homology map an isomorphism. The application-shaped `generalHigherHurewiczClassSurjectivity` is proved in Lean and is not permitted by Comparator. |
-| 2 | `establishedCompactSmoothSixManifoldClassicalCWType` | proved from smooth triangulation | The exact public accessor is derived by forgetting the finiteness and dimension data in `compactCOneManifoldFiniteCWModelAtDimension`. The redundant `finiteDimensionalSmoothManifoldClassicalCWModel` declaration has been deleted and is not permitted by Comparator. |
-| 3 | `establishedSimplyConnectedClassicalCWIntegralHomologyWhitehead` | proved from blackbox 3 | Package `simplyConnectedHomologicalWhitehead`, stated elementwise for arbitrary simply-connected spaces of classical CW type, into the existing property interface. |
-| 4 | `establishedSmoothPoincareSixStandardModel` | retain as blackbox 4 | Its current quantified statement is already the general dimension-six smooth-Poincare theorem: every compact smooth six-manifold homotopy equivalent to the standard sphere is diffeomorphic to it. It does not mention the constructed threefold. |
+| 2 | `establishedCompactSmoothSixManifoldClassicalCWType` | proved from smooth triangulation | The exact public accessor is derived by forgetting the finiteness and dimension data in `SmoothManifold.finiteCWModel`. The redundant `finiteDimensionalSmoothManifoldClassicalCWModel` declaration has been deleted and is not permitted by Comparator. |
+| 3 | `establishedSimplyConnectedClassicalCWIntegralHomologyWhitehead` | proved from blackbox 3 | Package `CWType.homological_whitehead`, stated elementwise for arbitrary simply-connected spaces of classical CW type, into the existing property interface. |
+| 4 | `SmoothSixSphere.poincare` | retain as blackbox 4 | Its current quantified statement is already the general dimension-six smooth-Poincare theorem: every compact smooth six-manifold homotopy equivalent to the standard sphere is diffeomorphic to it. It does not mention the constructed threefold. |
 | 5 | `establishedCompactSmoothOrientedManifoldHomologyTheory` | proved from blackboxes 5--7 | Integral singular cohomology and its cochain complex are defined in Lean. General group-level Poincare duality and general cohomological UCT give the complementary-homology equivalences; the dimension-controlled smooth triangulation theorem plus cellular homology give finite generation and vanishing above the manifold dimension. The combined reduced package is now a definition and is not permitted by Comparator. |
-| 6 | `EstablishedCellularHomology.integralCWCellularHomologyModel` | proved from blackbox 5 | The old objectwise accessor is now a definition derived from `integralCWCellularHomologyFoundation`, whose basis is carried by the characteristic maps and whose singular-homology comparison is natural for cellular maps. |
+| 6 | `EstablishedCellularHomology.integralCWCellularHomologyModel` | proved from blackbox 5 | The old objectwise accessor is now a definition derived from `CellularHomology.integralComparison`, whose basis is carried by the characteristic maps and whose singular-homology comparison is natural for cellular maps. |
 | 7 | `Periods.establishedOrbifoldAffineLineTorsorCuspBoundedCousinCorrection` | proved, no analytic blackbox | Whole-group affine transport, regular and elliptic local sections, the precisely invariant cusp section, and an explicit `Option ℂ` quotient cover are constructed. Distinct overlaps avoid the branch values, so their normalized differences descend to analytic scalar cocycles. The proved arbitrary-cover Cousin theorem supplies an `O(-1)`-normalized splitting; corrected local sections glue to a global equivariant holomorphic section. The resulting infinity germ and parabolic invariance give the bound on the whole closed cusp. The assembled theorem and original accessor use only the three standard Lean axioms. |
 | 8 | `establishedStandardA2ToricCentralOrbitCellAtlas` | **proved (T)** | Explicit characteristic maps in dimensions zero through four satisfy continuity, inverse continuity, disjointness, boundary attachments, and full coverage. The resulting atlas is transported from `constructedModel` to every allowed toric model by the canonical central-orbit homeomorphism. Its axiom audit contains only Lean’s standard three axioms. |
 | 9 | `establishedStandardA2ToricCentralFiberHigherIncidenceResidual` | **proved** | All eight three-cell and both four-cell entries follow from actual phase sweeps, relative prism generators, and absolute attaching-map vanishing. All cellular entries are transported through both actual atlas homeomorphisms. No incidence axiom remains. |
@@ -243,7 +243,7 @@ and Comparator passes.
 fourth-period sweep vanishing with only `propext`, `Classical.choice`, and `Quot.sound`.
 `actualCuspRawFive_pulledBack_boundary_zero` transports this to the raw basis using the Wang
 sequence, and `not_cuspPulledBackMarkedInvariantBasisData` rejects row 12. Those raw-basis
-statements additionally use `integralCWCellularHomologyFoundation` and the remaining toric
+statements additionally use `CellularHomology.integralComparison` and the remaining toric
 incidence and polar-honeycomb inputs. Existence of the radial completion input additionally
 uses `markedBandHomotopies`. No contradiction was used to prove the headline or remove an axiom.
 
@@ -443,7 +443,7 @@ standard Lean axioms; they do not yet eliminate their corresponding residuals.
   recover the first power. Next lift the same base path to identify its endpoint deck and
   period transport simultaneously, then compare the whole relator.
 - **Classical boundary:** cellular-chain-map identity and composition are now derived theorems,
-  removed as fields from `IntegralCWCellularHomologyFoundation`. Their proofs use functoriality
+  removed as fields from `CellularHomology.IntegralComparison`. Their proofs use functoriality
   of relative singular chains and homology; no additional classical assumption is introduced.
 
 Temporary paths are local continuation notes, not trusted or imported project content.
@@ -475,7 +475,7 @@ conversion is also proved in `ToricCellularCoordinateIncidence`.
 
 The constructed positive locus now has a proved C¹ quadrant atlas. Its manifold boundary is
 exactly the zero-height locus, and the positive deck action is C¹. The existing general
-`establishedSecondCountableCOneManifoldWithCornersRelativeCW` theorem therefore supplies the
+`ManifoldWithCorners.relativeCWComplex` theorem therefore supplies the
 quotient relative CW structure. `constructedPolarHoneycombResidualData_of_contractible`
 assembles the polar-honeycomb residual from contractibility alone. This does not yet replace
 row 14 in the headline dependency closure.

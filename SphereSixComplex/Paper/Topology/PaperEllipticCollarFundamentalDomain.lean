@@ -40,9 +40,9 @@ public structure CyclicPuncturedProductData
   multiplier_norm : ‖multiplier‖ = 1
   generator_formula : ∀ p : ComplexUnitDisc × T,
     actionMap action (cyclicGenerator m) p =
-      (discScalarEquiv multiplier multiplier_norm p.1, clutching p.2)
+      (ComplexUnitDisc.rotation multiplier multiplier_norm p.1, clutching p.2)
   rotation_fixed_iff : ∀ k : ℕ, 0 < k → k < m → ∀ w : ComplexUnitDisc,
-    (discScalarEquiv multiplier multiplier_norm ^ k) w = w ↔ w = discCenter
+    (ComplexUnitDisc.rotation multiplier multiplier_norm ^ k) w = w ↔ w = ComplexUnitDisc.center
   action_continuous : ∀ g : FiniteCyclic m, Continuous (actionMap action g)
   radius_invariant : ∀ (g : FiniteCyclic m) (p : ComplexUnitDisc × T),
     ‖((actionMap action g p).1 : ℂ)‖ = ‖(p.1 : ℂ)‖
@@ -149,7 +149,7 @@ public noncomputable def orderThreeCyclicPuncturedProductData
     change ‖(((orderThreeDiscRotation ^ (Multiplicative.toAdd g).val) p.1 :
       ComplexUnitDisc) : ℂ)‖ = ‖(p.1 : ℂ)‖
     rw [orderThreeDiscRotation.eq_def,
-      discScalarEquiv_pow_apply_val, norm_mul, norm_pow, norm_orderThreeMultiplier,
+      ComplexUnitDisc.coe_rotation_pow_apply, norm_mul, norm_pow, norm_orderThreeMultiplier,
       one_pow, one_mul]
 
 /-- The actual order-four diagonal product action, with all hypotheses of the general angular
@@ -182,7 +182,7 @@ public noncomputable def orderFourCyclicPuncturedProductData
     change ‖(((orderFourDiscRotation ^ (Multiplicative.toAdd g).val) p.1 :
       ComplexUnitDisc) : ℂ)‖ = ‖(p.1 : ℂ)‖
     rw [orderFourDiscRotation.eq_def,
-      discScalarEquiv_pow_apply_val, norm_mul, norm_pow, norm_orderFourMultiplier,
+      ComplexUnitDisc.coe_rotation_pow_apply, norm_mul, norm_pow, norm_orderFourMultiplier,
       one_pow, one_mul]
 
 /-- Product coordinates restricted to the punctured order-three collar. -/

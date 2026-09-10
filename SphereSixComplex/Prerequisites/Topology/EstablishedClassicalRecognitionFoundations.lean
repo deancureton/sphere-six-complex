@@ -27,8 +27,8 @@ namespace SphereSixComplex
 /-- The classical higher Hurewicz theorem, including its natural canonical transformation. This
 is stated for arbitrary spaces and degrees; no application-specific sphere or homology class is
 mentioned. -/
-public axiom classicalHigherHurewiczTheory :
-    ∃ H : HigherHurewiczMap, HigherHurewiczIsomorphismProperty H
+public axiom Hurewicz.exists_map :
+    ∃ H : Hurewicz.Map, Hurewicz.IsIsoInRange H
 
 /-- For a simply connected space whose positive integral homology vanishes below `n`, every
 degree-`n` class is represented by a map from the standard `n`-sphere. This is the application
@@ -42,24 +42,24 @@ public theorem generalHigherHurewiczClassSurjectivity
       ∃ f : C((TopCat.sphere n : Type), X),
         ∃ s : IntegralSingularHomology n (TopCat.sphere n : Type),
           integralSingularHomologyMap n f s = c := by
-  obtain ⟨H, hH⟩ := classicalHigherHurewiczTheory
+  obtain ⟨H, hH⟩ := Hurewicz.exists_map
   exact generalHigherHurewiczClassSurjectivity_of_map H hH n hn X hLower
 
 /-- The homological Whitehead theorem for simply connected spaces of classical CW type. The
 simple-connectivity hypotheses are essential: the corresponding unrestricted integral-homology
 statement is false. -/
-public axiom simplyConnectedHomologicalWhitehead
+public axiom CWType.homological_whitehead
     (X Y : Type) [TopologicalSpace X] [TopologicalSpace Y]
     [SimplyConnectedSpace X] [SimplyConnectedSpace Y]
-    (hX : HasClassicalCWType X) (hY : HasClassicalCWType Y)
+    (hX : HasCWType X) (hY : HasCWType Y)
     (f : C(X, Y)) (hf : IsIntegralHomologyEquivalence f) :
     ∃ e : X ≃ₕ Y, e.toFun = f
 
 /-- Smooth Poincare in dimension six for the specified smooth atlas. Equivalently, this is the
 dimension-six generalized Poincare and h-cobordism argument together with the Kervaire--Milnor
 calculation that the group of smooth homotopy six-spheres is trivial. -/
-public axiom establishedSmoothPoincareSixStandardModel :
-    SmoothPoincareSixStandardModel
+public axiom SmoothSixSphere.poincare :
+    SmoothSixSphere.Poincare
 
 private theorem intAddMonoidHom_bijective_of_one_mem_range
     (g : ℤ →+ ℤ) (h : ∃ z, g z = 1) :
@@ -155,10 +155,10 @@ public theorem establishedCompactSmoothSixManifoldClassicalCWType
     (X : Type) [TopologicalSpace X] [T2Space X] [SecondCountableTopology X]
     [ChartedSpace RealModel X]
     [IsManifold (modelWithCornersSelf ℝ RealModel) ∞ X] [CompactSpace X] :
-    HasClassicalCWType X := by
+    HasCWType X := by
   have hManifold : IsManifold (modelWithCornersSelf ℝ RealModel) 1 X :=
     inferInstance
-  let M := compactCOneManifoldFiniteCWModelAtDimension RealModel X hManifold inferInstance
+  let M := SmoothManifold.finiteCWModel RealModel X hManifold inferInstance
   let _ := M.topology
   let _ := M.cwComplex
   exact hasClassicalCWType_precomp_homotopyEquiv M.homotopyEquiv
@@ -170,6 +170,6 @@ public theorem establishedSimplyConnectedClassicalCWIntegralHomologyWhitehead
     [SimplyConnectedSpace X] [SimplyConnectedSpace Y] :
     ClassicalCWIntegralHomologyWhiteheadProperty X Y := by
   intro hX hY f hf
-  exact simplyConnectedHomologicalWhitehead X Y hX hY f hf
+  exact CWType.homological_whitehead X Y hX hY f hf
 
 end SphereSixComplex

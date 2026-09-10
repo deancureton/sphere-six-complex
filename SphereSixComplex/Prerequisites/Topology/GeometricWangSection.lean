@@ -13,29 +13,29 @@ variable {HighRelations High Total LowRelations Low : Type*}
   [AddCommGroup LowRelations] [AddCommGroup Low]
 
 /-- A specified geometric lift of the invariant classes in a Wang presentation. -/
-public structure GeometricSection
+public structure Section
     (P : WangHomologyPresentation HighRelations High Total LowRelations Low) where
   lift : P.Invariants →ₗ[ℤ] Total
-  rightInverse : P.totalToInvariants.comp lift = LinearMap.id
+  right_inv : P.totalToInvariants.comp lift = LinearMap.id
 
-namespace GeometricSection
+namespace Section
 
 /-- Choose a section of the Wang boundary when its invariant term is projective. -/
 public noncomputable def ofProjective
     (P : WangHomologyPresentation HighRelations High Total LowRelations Low)
-    [Module.Projective ℤ P.Invariants] : P.GeometricSection := by
+    [Module.Projective ℤ P.Invariants] : P.Section := by
   let lifting := Module.projective_lifting_property P.totalToInvariants LinearMap.id
     P.totalToInvariants_surjective
   exact
     { lift := Classical.choose lifting
-      rightInverse := Classical.choose_spec lifting }
+      right_inv := Classical.choose_spec lifting }
 
-end GeometricSection
+end Section
 
 /-- Split a Wang presentation using a specified geometric section. -/
-public noncomputable def totalLinearEquivCoinvariantsProdInvariantsOfSection
+public noncomputable def linearEquivOfSection
     (P : WangHomologyPresentation HighRelations High Total LowRelations Low)
-    (S : P.GeometricSection) :
+    (S : P.Section) :
     Total ≃ₗ[ℤ] P.Coinvariants × P.Invariants := by
   let i := P.coinvariantsToTotal
   let p := P.totalToInvariants
@@ -43,7 +43,7 @@ public noncomputable def totalLinearEquivCoinvariantsProdInvariantsOfSection
   let residual : Total →ₗ[ℤ] Total := LinearMap.id - s.comp p
   have hresidual (x : Total) : residual x ∈ LinearMap.range i := by
     apply (P.exact_coinvariantsToTotal_totalToInvariants (residual x)).mp
-    have hsx := DFunLike.congr_fun S.rightInverse (p x)
+    have hsx := DFunLike.congr_fun S.right_inv (p x)
     simp only [LinearMap.coe_comp, Function.comp_apply, LinearMap.id_coe, id_eq] at hsx
     change p (x - s (p x)) = 0
     rw [map_sub, hsx, sub_self]
@@ -60,7 +60,7 @@ public noncomputable def totalLinearEquivCoinvariantsProdInvariantsOfSection
     have hpi (y : P.Coinvariants) : p (i y) = 0 :=
       P.exact_coinvariantsToTotal_totalToInvariants.apply_apply_eq_zero y
     have hps (y : P.Invariants) : p (s y) = y := by
-      have hsy := DFunLike.congr_fun S.rightInverse y
+      have hsy := DFunLike.congr_fun S.right_inv y
       simpa only [LinearMap.coe_comp, Function.comp_apply, LinearMap.id_coe, id_eq] using hsy
     have hr : r (i y + s z) = y := by
       apply iEquivRange.injective

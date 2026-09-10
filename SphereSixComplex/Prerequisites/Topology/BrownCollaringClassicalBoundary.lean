@@ -23,7 +23,7 @@ public def LocallyCollared {X : Type*} [TopologicalSpace X] (B : Set X) : Prop :
   ∀ x ∈ B, ∃ V : Set X, V ⊆ B ∧ x ∈ V ∧ IsOpen {b : B | b.1 ∈ V} ∧
     Nonempty (OpenTopologicalCollar X V)
 
-public axiom classicalBrownCollaring {X : Type*} [TopologicalSpace X] [TopologicalSpace.MetrizableSpace X]
+public axiom LocallyCollared.nonempty_collar {X : Type*} [TopologicalSpace X] [TopologicalSpace.MetrizableSpace X]
     (B : Set X) (hB : LocallyCollared B) : Nonempty (OpenTopologicalCollar X B)
 
 end SphereSixComplex

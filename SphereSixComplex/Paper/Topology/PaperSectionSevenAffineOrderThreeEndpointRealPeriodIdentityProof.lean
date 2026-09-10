@@ -297,8 +297,8 @@ public theorem orderThreeFamilyRadius_namedCollarTotalPoint_pos
         (A.sectionSevenAffineBandStripCoordinate x)).1 =
         fuchsianOneFixedPoint := by
     apply orderThreeCayleyHomeomorph.injective
-    simpa [orderThreeCayleyHomeomorph, cayleyHomeomorph, cayleyDiscCoordinate,
-      discCenter, orderThreeCayley_fixedPoint] using hzero
+    simpa [orderThreeCayleyHomeomorph, UpperHalfPlane.cayleyHomeomorph, UpperHalfPlane.cayleyToDisc,
+      ComplexUnitDisc.center, orderThreeCayley_fixedPoint] using hzero
   have hregular :=
     (A.sectionSevenAffineOrderThreeRadialBaseLift
       (A.sectionSevenAffineBandStripCoordinate x)).2

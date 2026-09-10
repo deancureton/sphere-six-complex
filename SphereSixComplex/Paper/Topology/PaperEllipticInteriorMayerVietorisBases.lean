@@ -393,7 +393,7 @@ public noncomputable def ellipticInteriorHomologyOneEquiv :
       ellipticActualHOneCokernelEquivInt
   let invariants := kernelEquivFinZeroOfInjective P.lowDifference.toIntLinearMap
     B.differenceZero_injective
-  let eUnion := (P.totalLinearEquivOfEndCoordinates coinvariants invariants).trans
+  let eUnion := (P.linearEquivOfCoordinates coinvariants invariants).trans
     intProdFinZeroEquivFinOne
   let eTop := integralSingularHomologyEquiv 1
     (topologicalSubsetHomeomorphOfEqUniv (TopCat.of A.SectionSevenEllipticInterior)
@@ -413,7 +413,7 @@ public noncomputable def ellipticInteriorHomologyTwoEquiv :
       P.lowDifference.toIntLinearMap ellipticActualHOneLinear
         B.differenceOne_linear_comm).trans
       ellipticActualHOneKernelEquivInt
-  let eUnion := (P.totalLinearEquivOfEndCoordinates coinvariants invariants).trans
+  let eUnion := (P.linearEquivOfCoordinates coinvariants invariants).trans
     intProdEquivFinTwo
   let eTop := integralSingularHomologyEquiv 2
     (topologicalSubsetHomeomorphOfEqUniv (TopCat.of A.SectionSevenEllipticInterior)

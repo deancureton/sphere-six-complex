@@ -23,7 +23,7 @@ public def cwSkeletalPointClass (X : Type) [TopologicalSpace X] [T2Space X]
       (integralCWSkeletonInclusion X 0)) 0
 
 public theorem normalized_cellBasis_single_zero
-    (T : IntegralCWCellularHomologyFoundation) (X : Type) [TopologicalSpace X] [T2Space X]
+    (T : CellularHomology.IntegralComparison) (X : Type) [TopologicalSpace X] [T2Space X]
     [Topology.CWComplex (Set.univ : Set X)]
     (e : Topology.CWComplex.cell (Set.univ : Set X) 0) :
     T.normalized.cellBasis X 0 (Finsupp.single e 1) =
@@ -45,7 +45,7 @@ public theorem normalized_cellBasis_single_zero
   exact ConcreteCategory.congr_hom he 1
 
 public theorem normalized_cellBasis_single_one_boundary
-    (T : IntegralCWCellularHomologyFoundation) (X : Type) [TopologicalSpace X] [T2Space X]
+    (T : CellularHomology.IntegralComparison) (X : Type) [TopologicalSpace X] [T2Space X]
     [Topology.CWComplex (Set.univ : Set X)]
     (e : Topology.CWComplex.cell (Set.univ : Set X) 1) :
     (integralCWRelativeBoundary X 0).hom (T.normalized.cellBasis X 1 (Finsupp.single e 1)) =
@@ -71,7 +71,7 @@ public theorem normalized_cellBasis_single_one_boundary
   exact ConcreteCategory.congr_hom h 1
 
 public theorem normalized_cellular_edge_boundary
-    (T : IntegralCWCellularHomologyFoundation) (X : Type) [TopologicalSpace X] [T2Space X]
+    (T : CellularHomology.IntegralComparison) (X : Type) [TopologicalSpace X] [T2Space X]
     [Topology.CWComplex (Set.univ : Set X)]
     (e : Topology.CWComplex.cell (Set.univ : Set X) 1)
     (a b : Topology.CWComplex.cell (Set.univ : Set X) 0)

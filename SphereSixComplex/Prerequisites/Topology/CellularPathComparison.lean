@@ -77,7 +77,7 @@ public theorem cwIntegralPathDifferenceClass_relative {A X : TopCat} (i : A ⟶ 
   simp only [Preadditive.sub_comp, HomologicalComplex.liftCycles_i, cwRelativePathChain]
 
 public theorem normalized_cellBasis_single_one
-    (T : IntegralCWCellularHomologyFoundation) (X : Type) [TopologicalSpace X] [T2Space X]
+    (T : CellularHomology.IntegralComparison) (X : Type) [TopologicalSpace X] [T2Space X]
     [Topology.CWComplex (Set.univ : Set X)]
     (e : Topology.CWComplex.cell (Set.univ : Set X) 1) :
     T.normalized.cellBasis X 1 (Finsupp.single e 1) =
@@ -128,7 +128,7 @@ public theorem cwCellularEdgePath_right (X : Type) [TopologicalSpace X] [T2Space
   exact ConcreteCategory.congr_hom (integralCWCharacteristicPairMap X 1 e).comm _
 
 public theorem normalized_cellBasis_edgeDifference
-    (T : IntegralCWCellularHomologyFoundation) (X : Type) [TopologicalSpace X] [T2Space X]
+    (T : CellularHomology.IntegralComparison) (X : Type) [TopologicalSpace X] [T2Space X]
     [Topology.CWComplex (Set.univ : Set X)]
     (e f : Topology.CWComplex.cell (Set.univ : Set X) 1)
     (h₀ : (integralCWCharacteristicPairMap X 1 e).boundaryMap cwBoundaryOneLeft =

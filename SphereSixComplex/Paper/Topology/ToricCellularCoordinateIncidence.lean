@@ -15,18 +15,18 @@ public theorem coordinateBoundary_single_eq_attachingDegree
     (i : cuspWCellIndex (n + 1)) (j : cuspWCellIndex n) :
     let _ := A.cwComplex
     standardA2ToricCellularCoordinateBoundary A.toCWDecomposition n (Pi.single i 1) j =
-      integralCWCellularHomologyFoundation.normalized.attachingDegree X n i j := by
+      CellularHomology.integralComparison.normalized.attachingDegree X n i j := by
   classical
   let _ := A.cwComplex
   let _ := cuspWCellIndex_finite (n + 1)
   simp only [standardA2ToricCellularCoordinateBoundary,
     StandardA2ToricCentralFiberCWDecomposition.integralCellularChainModel,
     EstablishedCellularHomology.integralCWCellularHomologyModel,
-    IntegralCWCellularHomologyFoundation.objectwiseModel, integralCWSkeletalChainComplex,
+    CellularHomology.IntegralComparison.objectwiseModel, integralCWSkeletalChainComplex,
     Nat.succ_eq_add_one, ChainComplex.of_d]
-  change ((integralCWCellularHomologyFoundation.normalized.cellBasis X n).symm
+  change ((CellularHomology.integralComparison.normalized.cellBasis X n).symm
     (ConcreteCategory.hom (integralCWRelativeBoundary X n)
-      (integralCWCellularHomologyFoundation.normalized.cellBasis X (n + 1)
+      (CellularHomology.integralComparison.normalized.cellBasis X (n + 1)
         (Finsupp.addEquivFunOnFinite.symm (Pi.single i 1))))) j = _
   have h : (Finsupp.addEquivFunOnFinite.symm (Pi.single i (1 : ℤ))) = Finsupp.single i 1 := by
     ext k

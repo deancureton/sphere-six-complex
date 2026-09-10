@@ -137,7 +137,7 @@ public theorem exp_negative_orderFour_increment :
   exact Complex.exp_neg_pi_div_two_mul_I
 
 /-- A point of the unit disc away from its center has nonzero complex coordinate. -/
-public theorem coe_ne_zero_of_ne_center {w : ComplexUnitDisc} (hw : w ≠ discCenter) :
+public theorem coe_ne_zero_of_ne_center {w : ComplexUnitDisc} (hw : w ≠ ComplexUnitDisc.center) :
     (w : ℂ) ≠ 0 := by
   intro h
   apply hw
@@ -147,33 +147,33 @@ public theorem coe_ne_zero_of_ne_center {w : ComplexUnitDisc} (hw : w ≠ discCe
 
 /-- Compatible order-three logarithm branches centered at a prescribed punctured-disc point. -/
 public noncomputable def orderThreeBranchesAt
-    (w : ComplexUnitDisc) (hw : w ≠ discCenter) :
+    (w : ComplexUnitDisc) (hw : w ≠ ComplexUnitDisc.center) :
     RotatedLogBranches 3 orderThreeDiscRotation :=
   rotatedLogBranchesOfScalar 3 orderThreeDiscRotation
     (((2 : ℂ) * Real.pi * Complex.I) / 3) orderThreeMultiplier rfl
     exp_negative_orderThree_increment
-    (fun u => discScalarEquiv_apply_val orderThreeMultiplier norm_orderThreeMultiplier u)
+    (fun u => ComplexUnitDisc.coe_rotation_apply orderThreeMultiplier norm_orderThreeMultiplier u)
     (centeredLogBranch w (coe_ne_zero_of_ne_center hw))
 
 /-- Compatible order-four logarithm branches centered at a prescribed punctured-disc point. -/
 public noncomputable def orderFourBranchesAt
-    (w : ComplexUnitDisc) (hw : w ≠ discCenter) :
+    (w : ComplexUnitDisc) (hw : w ≠ ComplexUnitDisc.center) :
     RotatedLogBranches 4 orderFourDiscRotation :=
   rotatedLogBranchesOfScalar 4 orderFourDiscRotation
     (((2 : ℂ) * Real.pi * Complex.I) / 4) orderFourMultiplier rfl
     exp_negative_orderFour_increment
-    (fun u => discScalarEquiv_apply_val orderFourMultiplier norm_orderFourMultiplier u)
+    (fun u => ComplexUnitDisc.coe_rotation_apply orderFourMultiplier norm_orderFourMultiplier u)
     (centeredLogBranch w (coe_ne_zero_of_ne_center hw))
 
 /-- The centered order-three source branch contains its prescribed point. -/
 public theorem mem_orderThreeBranchesAt
-    (w : ComplexUnitDisc) (hw : w ≠ discCenter) :
+    (w : ComplexUnitDisc) (hw : w ≠ ComplexUnitDisc.center) :
     (w : ℂ) ∈ (orderThreeBranchesAt w hw).source.carrier :=
   mem_centeredLogBranch w (coe_ne_zero_of_ne_center hw)
 
 /-- The centered order-four source branch contains its prescribed point. -/
 public theorem mem_orderFourBranchesAt
-    (w : ComplexUnitDisc) (hw : w ≠ discCenter) :
+    (w : ComplexUnitDisc) (hw : w ≠ ComplexUnitDisc.center) :
     (w : ℂ) ∈ (orderFourBranchesAt w hw).source.carrier :=
   mem_centeredLogBranch w (coe_ne_zero_of_ne_center hw)
 
@@ -186,12 +186,12 @@ public theorem exists_orderThreeBranches_covering
     ∃ B : RotatedLogBranches 3 orderThreeDiscRotation,
       q ∈ orderThreeLogarithmicGaugeCarrier F r B := by
   let w := orderThreeCayleyHomeomorph (familyTotalSpaceBase F q)
-  have hw : w ≠ discCenter := by
+  have hw : w ≠ ComplexUnitDisc.center := by
     intro h
     have hpos := hq.1
     change 0 < ‖(w : ℂ)‖ at hpos
     rw [h] at hpos
-    norm_num [discCenter] at hpos
+    norm_num [ComplexUnitDisc.center] at hpos
   refine ⟨orderThreeBranchesAt w hw, hq, ?_⟩
   change (w : ℂ) ∈ (orderThreeBranchesAt w hw).source.carrier
   exact mem_orderThreeBranchesAt w hw
@@ -203,12 +203,12 @@ public theorem exists_orderFourBranches_covering
     ∃ B : RotatedLogBranches 4 orderFourDiscRotation,
       q ∈ orderFourLogarithmicGaugeCarrier F r B := by
   let w := orderFourCayleyHomeomorph (familyTotalSpaceBase F q)
-  have hw : w ≠ discCenter := by
+  have hw : w ≠ ComplexUnitDisc.center := by
     intro h
     have hpos := hq.1
     change 0 < ‖(w : ℂ)‖ at hpos
     rw [h] at hpos
-    norm_num [discCenter] at hpos
+    norm_num [ComplexUnitDisc.center] at hpos
   refine ⟨orderFourBranchesAt w hw, hq, ?_⟩
   change (w : ℂ) ∈ (orderFourBranchesAt w hw).source.carrier
   exact mem_orderFourBranchesAt w hw

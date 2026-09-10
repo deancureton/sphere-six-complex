@@ -31,16 +31,16 @@ public noncomputable def establishedCompactSmoothOrientedManifoldHomologyTheory
     (hOrientation : SmoothAtlasOrientation d E X)
     (hCompact : CompactSpace X) :
     IntegralPoincareUCTData d X := by
-  let P := classicalIntegralPoincareDuality d E X hManifold hOrientation hCompact
-  let M0 := compactCOneManifoldFiniteCWModelAtDimension E X hManifold hCompact
-  let M : FiniteCWModelOfDimension d X := hOrientation.dimension_eq ▸ M0
+  let P := PoincareDuality.nonempty_addEquiv d E X hManifold hOrientation hCompact
+  let M0 := SmoothManifold.finiteCWModel E X hManifold hCompact
+  let M : CWType.FiniteModelOfDimension d X := hOrientation.dimension_eq ▸ M0
   refine {
     topHomologyEquivDualZero := ?_
     complementaryHomologyEquivDualOfPreviousFree := ?_
     finiteHomology := M.finiteHomology
     homologyAboveDimension := M.homologyAboveDimension }
   · exact (Classical.choice (P 0)).symm.trans
-      (classicalIntegralSingularCohomologyUCT.degreeZero X)
+      (IntegralCohomology.universalCoefficients.degreeZero X)
   · intro k hk hFree
     exact (Classical.choice (P k)).symm.trans
       (integralSingularCohomologyEquivDualOfPreviousFree X k.1 hk hFree)

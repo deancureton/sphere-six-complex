@@ -78,7 +78,7 @@ public structure SmoothHomotopySixSphere (X : Type) [TopologicalSpace X]
   homotopyEquiv : Nonempty (X ≃ₕ SixSphere)
 
 /-- Smooth diffeomorphism to the standard six-sphere, using the fixed real six-dimensional model. -/
-public abbrev SmoothDiffeomorphicToSixSphere (X : Type) [TopologicalSpace X]
+public abbrev SmoothSixSphere.IsDiffeomorphic (X : Type) [TopologicalSpace X]
     [ChartedSpace RealModel X] : Prop :=
   Nonempty (Diffeomorph 𝓘(ℝ, RealModel) 𝓘(ℝ, RealModel) X SixSphere ∞)
 
@@ -91,13 +91,13 @@ public def HomologyToHomotopySixSphereObligation (X : Type) [TopologicalSpace X]
 public def HomotopyToDiffeomorphismSixSphereObligation (X : Type) [TopologicalSpace X]
     [ChartedSpace RealModel X] : Prop :=
   IsManifold 𝓘(ℝ, RealModel) ∞ X →
-    Nonempty (X ≃ₕ SixSphere) → SmoothDiffeomorphicToSixSphere X
+    Nonempty (X ≃ₕ SixSphere) → SmoothSixSphere.IsDiffeomorphic X
 
 /-- The exact combined smooth-recognition obligation for a simply connected integral homology
 six-sphere. -/
 public def SmoothSixSphereRecognitionObligation (X : Type) [TopologicalSpace X]
     [ChartedSpace RealModel X] : Prop :=
-  SmoothSimplyConnectedIntegralHomologySixSphere X → SmoothDiffeomorphicToSixSphere X
+  SmoothSimplyConnectedIntegralHomologySixSphere X → SmoothSixSphere.IsDiffeomorphic X
 
 /-- The simply connected homology-sphere contract supplies the previously defined topological
 recognition data. -/

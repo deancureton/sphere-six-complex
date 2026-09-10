@@ -92,7 +92,7 @@ public theorem isCentralFiberCoverSourceCoordinate :
 /-- Points of the covering source sit over the centre of the disc. -/
 public theorem centralFiberCoverSource_fst
     (t : RadialEllipticActionData.centralFiberCoverSource D) :
-    t.1.1 = discCenter := by
+    t.1.1 = ComplexUnitDisc.center := by
   have h :=
     (RadialEllipticActionData.mem_centralSlice_iff_quotient_mem_reducedCentralFiber D t.1).1 t.2
   exact h
@@ -101,7 +101,7 @@ public theorem centralFiberCoverSource_fst
 public theorem centralFiberCoverSource_val
     (hcoord : IsCentralFiberCoverSourceCoordinate D)
     (t : RadialEllipticActionData.centralFiberCoverSource D) :
-    t.1 = (discCenter, RadialEllipticActionData.centralFiberCoverSourceHomeomorph D t) := by
+    t.1 = (ComplexUnitDisc.center, RadialEllipticActionData.centralFiberCoverSourceHomeomorph D t) := by
   rw [hcoord t]
   exact Prod.ext (centralFiberCoverSource_fst t) rfl
 
@@ -110,7 +110,7 @@ public theorem centralFiberCoverSource_smul
     (hcoord : IsCentralFiberCoverSourceCoordinate D)
     (t : RadialEllipticActionData.centralFiberCoverSource D) :
     actionMap D.actionData.diagonalAction (cyclicGenerator m) t.1 =
-      (discCenter, D.actionData.fiberGenerator
+      (ComplexUnitDisc.center, D.actionData.fiberGenerator
         (RadialEllipticActionData.centralFiberCoverSourceHomeomorph D t)) := by
   have hpair : actionMap D.actionData.diagonalAction (cyclicGenerator m) t.1 =
       (D.actionData.rotation t.1.1, D.actionData.fiberGenerator t.1.2) := by
@@ -122,7 +122,7 @@ public theorem centralFiberCoverSource_smul
   have hequiv := D.retract_equivariant (cyclicGenerator m) t.1
   rw [hfix] at hequiv
   rw [hpair] at hequiv
-  have hrot : discCenter = D.actionData.rotation t.1.1 := congrArg Prod.fst hequiv
+  have hrot : ComplexUnitDisc.center = D.actionData.rotation t.1.1 := congrArg Prod.fst hequiv
   rw [hpair, hcoord t, ← hrot]
 
 /-- The covering projection is invariant under the transported cyclic generator. -/
@@ -137,7 +137,7 @@ public theorem centralFiberCoverProjection_comp_generator
   show actionMap D.actionData.diagonalAction (cyclicGenerator m) s.1 = _
   have hgen := centralFiberCoverSource_smul hcoord s
   have htarget : (centralFiberCoverGenerator P s).1 =
-      (discCenter, P.affine.map
+      (ComplexUnitDisc.center, P.affine.map
         (RadialEllipticActionData.centralFiberCoverSourceHomeomorph D s)) := by
     have h := centralFiberCoverSource_val hcoord
       ((RadialEllipticActionData.centralFiberCoverSourceHomeomorph D).symm

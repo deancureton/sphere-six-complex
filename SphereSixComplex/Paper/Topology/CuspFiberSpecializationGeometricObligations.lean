@@ -35,12 +35,12 @@ public structure RemainingFiberSpecializationGeometry
     (G : ActualCuspRadialClutchingData W) : Prop where
   degreeOne_section :
     let _ := G.fiberTopology
-    ∃ S : (circleMappingTorusHOnePresentation G.clutching).GeometricSection,
+    ∃ S : (circleMappingTorusHOnePresentation G.clutching).Section,
       (rawDegreeOneTotalSpecialization G).comp S.lift = 0
   degreeTwo_surjective : Function.Surjective (rawDegreeTwoTotalSpecialization G)
   degreeTwo_section :
     let _ := G.fiberTopology
-    ∃ S : (circleMappingTorusHTwoPresentation G.clutching).GeometricSection,
+    ∃ S : (circleMappingTorusHTwoPresentation G.clutching).Section,
       (rawDegreeTwoTotalSpecialization G).comp S.lift = 0
 
 /-- The remaining three geometric facts imply the two basis-free specialization

@@ -32,16 +32,15 @@ axiom Quot.sound.{u} : ∀ {α : Sort u} {r : α → α → Prop} {a b : α}, r 
 axiom Classical.choice.{u} : {α : Sort u} → Nonempty α → α
 
 # Retained classical recognition blackboxes.
-axiom SphereSixComplex.classicalHigherHurewiczTheory : ∃ H, SphereSixComplex.HigherHurewiczIsomorphismProperty H
-axiom SphereSixComplex.simplyConnectedHomologicalWhitehead : ∀ (X Y : Type) [inst : TopologicalSpace X]
+axiom SphereSixComplex.Hurewicz.exists_map : ∃ H, SphereSixComplex.Hurewicz.IsIsoInRange H
+axiom SphereSixComplex.CWType.homological_whitehead : ∀ (X Y : Type) [inst : TopologicalSpace X]
   [inst_1 : TopologicalSpace Y] [SimplyConnectedSpace X] [SimplyConnectedSpace Y],
-  SphereSixComplex.HasClassicalCWType X →
-    SphereSixComplex.HasClassicalCWType Y →
-      ∀ (f : C(X, Y)), SphereSixComplex.IsIntegralHomologyEquivalence f → ∃ e, e.toFun = f
-axiom SphereSixComplex.establishedSmoothPoincareSixStandardModel : SphereSixComplex.SmoothPoincareSixStandardModel
+  SphereSixComplex.HasCWType X →
+    SphereSixComplex.HasCWType Y → ∀ (f : C(X, Y)), SphereSixComplex.IsIntegralHomologyEquivalence f → ∃ e, e.toFun = f
+axiom SphereSixComplex.SmoothSixSphere.poincare : SphereSixComplex.SmoothSixSphere.Poincare
 
 # Cellular comparison is normalized on skeletal cycles; disk orientations through degree two are proved.
-axiom SphereSixComplex.classicalIntegralPoincareDuality : ∀ (d : ℕ) (E X : Type) [inst : NormedAddCommGroup E]
+axiom SphereSixComplex.PoincareDuality.nonempty_addEquiv : ∀ (d : ℕ) (E X : Type) [inst : NormedAddCommGroup E]
   [inst_1 : NormedSpace ℝ E] [FiniteDimensional ℝ E] [inst_3 : TopologicalSpace X] [inst_4 : ChartedSpace E X]
   [T2Space X] [SecondCountableTopology X],
   IsManifold (modelWithCornersSelf ℝ E) 1 X →
@@ -50,8 +49,8 @@ axiom SphereSixComplex.classicalIntegralPoincareDuality : ∀ (d : ℕ) (E X : T
         ∀ (k : Fin (d + 1)),
           Nonempty
             (SphereSixComplex.IntegralSingularCohomology (↑k) X ≃+ SphereSixComplex.IntegralSingularHomology (d - ↑k) X)
-axiom SphereSixComplex.classicalIntegralSingularCohomologyUCT : SphereSixComplex.IntegralSingularCohomologyUCT
-axiom SphereSixComplex.compactCOneManifoldFiniteCWModelAtDimension : (E X : Type) →
+axiom SphereSixComplex.IntegralCohomology.universalCoefficients : SphereSixComplex.IntegralCohomology.UniversalCoefficients
+axiom SphereSixComplex.SmoothManifold.finiteCWModel : (E X : Type) →
   [inst : NormedAddCommGroup E] →
     [inst_1 : NormedSpace ℝ E] →
       [FiniteDimensional ℝ E] →
@@ -60,12 +59,12 @@ axiom SphereSixComplex.compactCOneManifoldFiniteCWModelAtDimension : (E X : Type
             [T2Space X] →
               [SecondCountableTopology X] →
                 IsManifold (modelWithCornersSelf ℝ E) 1 X →
-                  CompactSpace X → SphereSixComplex.FiniteCWModelOfDimension (Module.finrank ℝ E) X
-axiom SphereSixComplex.integralCWCellularHomologyFoundation : SphereSixComplex.IntegralCWCellularHomologyFoundation
+                  CompactSpace X → SphereSixComplex.CWType.FiniteModelOfDimension (Module.finrank ℝ E) X
+axiom SphereSixComplex.CellularHomology.integralComparison : SphereSixComplex.CellularHomology.IntegralComparison
 
 # Retained general geometric topology; source statements are reviewed in TRUST-BOUNDARY.md.
-axiom SphereSixComplex.EstablishedGeneralTopology.isHomotopyEquivalenceInclusion_of_relativeCWComplex_of_bijective_homotopyGroups.{u_1} : ∀
-  {B : Type u_1} [inst : TopologicalSpace B] (D : Set B) (b : B) (hb : b ∈ D),
+axiom SphereSixComplex.CWPair.whitehead.{u_1} : ∀ {B : Type u_1} [inst : TopologicalSpace B] (D : Set B) (b : B)
+  (hb : b ∈ D),
   PathConnectedSpace B →
     PathConnectedSpace ↑D →
       Function.Bijective
@@ -78,10 +77,10 @@ axiom SphereSixComplex.EstablishedGeneralTopology.isHomotopyEquivalenceInclusion
                 (have this := rfl;
                 this))) →
           ∀ (hCW : Topology.RelCWComplex Set.univ D), SphereSixComplex.IsHomotopyEquivalenceInclusion D
-axiom SphereSixComplex.classicalBrownCollaring.{u_1} : ∀ {X : Type u_1} [inst : TopologicalSpace X]
+axiom SphereSixComplex.LocallyCollared.nonempty_collar.{u_1} : ∀ {X : Type u_1} [inst : TopologicalSpace X]
   [TopologicalSpace.MetrizableSpace X] (B : Set X),
   SphereSixComplex.LocallyCollared B → Nonempty (SphereSixComplex.OpenTopologicalCollar X B)
-axiom SphereSixComplex.establishedSecondCountableCOneManifoldWithCornersRelativeCW.{u} : (n : ℕ) →
+axiom SphereSixComplex.ManifoldWithCorners.relativeCWComplex.{u} : (n : ℕ) →
   (X : Type u) →
     [inst : TopologicalSpace X] →
       [T2Space X] →

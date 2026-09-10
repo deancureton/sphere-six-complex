@@ -10,16 +10,16 @@
     "propext",
     "Quot.sound",
     "Classical.choice",
-    "SphereSixComplex.classicalHigherHurewiczTheory",
-    "SphereSixComplex.simplyConnectedHomologicalWhitehead",
-    "SphereSixComplex.establishedSmoothPoincareSixStandardModel",
-    "SphereSixComplex.classicalIntegralPoincareDuality",
-    "SphereSixComplex.classicalIntegralSingularCohomologyUCT",
-    "SphereSixComplex.compactCOneManifoldFiniteCWModelAtDimension",
-    "SphereSixComplex.integralCWCellularHomologyFoundation",
-    "SphereSixComplex.EstablishedGeneralTopology.isHomotopyEquivalenceInclusion_of_relativeCWComplex_of_bijective_homotopyGroups",
-    "SphereSixComplex.classicalBrownCollaring",
-    "SphereSixComplex.establishedSecondCountableCOneManifoldWithCornersRelativeCW"
+    "SphereSixComplex.Hurewicz.exists_map",
+    "SphereSixComplex.CWType.homological_whitehead",
+    "SphereSixComplex.SmoothSixSphere.poincare",
+    "SphereSixComplex.PoincareDuality.nonempty_addEquiv",
+    "SphereSixComplex.IntegralCohomology.universalCoefficients",
+    "SphereSixComplex.SmoothManifold.finiteCWModel",
+    "SphereSixComplex.CellularHomology.integralComparison",
+    "SphereSixComplex.CWPair.whitehead",
+    "SphereSixComplex.LocallyCollared.nonempty_collar",
+    "SphereSixComplex.ManifoldWithCorners.relativeCWComplex"
   ],
   "enable_nanoda": false
 }

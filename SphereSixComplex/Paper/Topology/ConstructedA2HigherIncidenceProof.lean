@@ -212,7 +212,7 @@ public theorem constructedA2ThreeCharacteristicPair_boundary_zero
 public theorem constructedA2ThreeCell_attachingDegree_zero
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
-    (T : IntegralCWCellularHomologyFoundation) (i : Fin 2) (j : Fin 4) :
+    (T : CellularHomology.IntegralComparison) (i : Fin 2) (j : Fin 4) :
     let _ := (constructedCentralCellAtlas W).cwComplex
     T.attachingDegree (ActualLocalCuspCentralOrbitQuotient W) 2 i j = 0 :=
   constructedA2ThreeCell_attachingDegree_zero_of_boundary W T i
@@ -410,7 +410,7 @@ public theorem constructedA2FourCharacteristicPair_boundary_zero
 public theorem constructedA2FourCell_attachingDegree_zero
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
-    (T : IntegralCWCellularHomologyFoundation) (j : Fin 2) :
+    (T : CellularHomology.IntegralComparison) (j : Fin 2) :
     let _ := (constructedCentralCellAtlas W).cwComplex
     T.attachingDegree (ActualLocalCuspCentralOrbitQuotient W) 3 (0 : Fin 1) j = 0 :=
   constructedA2FourCell_attachingDegree_zero_of_boundary W T

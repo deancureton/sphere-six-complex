@@ -24,7 +24,7 @@ LIB = "SphereSixComplex"
 
 IMPORT_RE = re.compile(r"^\s*(?:public\s+)?import\s+(?:all\s+)?([\w.]+)")
 AXIOM_RE = re.compile(
-    r"^\s*(?:public\s+|private\s+|protected\s+|noncomputable\s+)*axiom\s+([\w'₀-₉]+)"
+    r"^\s*(?:public\s+|private\s+|protected\s+|noncomputable\s+)*axiom\s+([\w.'₀-₉]+)"
 )
 
 
@@ -79,7 +79,11 @@ def axioms_of(path: str) -> list[tuple[int, str]]:
             if match:
                 prefix = ".".join(scope for scope in scopes if scope is not None)
                 name = match.group(1)
-                found.append((number, f"{prefix}.{name}" if prefix else name))
+                if name.startswith("_root_."):
+                    name = name.removeprefix("_root_.")
+                elif prefix:
+                    name = f"{prefix}.{name}"
+                found.append((number, name))
     return found
 
 

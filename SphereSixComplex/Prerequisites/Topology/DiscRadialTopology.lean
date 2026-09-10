@@ -6,7 +6,6 @@ public import Mathlib.Topology.UnitInterval
 open Set
 open scoped ContinuousMap
 namespace SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
-open SphereSixComplex.Geometry.EllipticLocalCoordinates
 noncomputable section
 
 /-- Linear contraction of the complex unit disc to its centre. -/
@@ -37,26 +36,26 @@ public theorem discRadialHomotopy_zero (w : ComplexUnitDisc) :
 
 @[simp]
 public theorem discRadialHomotopy_one (w : ComplexUnitDisc) :
-    discRadialHomotopy (1, w) = discCenter := by
+    discRadialHomotopy (1, w) = ComplexUnitDisc.center := by
   apply Subtype.ext
-  simp [discRadialHomotopy, discCenter]
+  simp [discRadialHomotopy, ComplexUnitDisc.center]
 
 @[simp]
 public theorem discRadialHomotopy_center (s : unitInterval) :
-    discRadialHomotopy (s, discCenter) = discCenter := by
+    discRadialHomotopy (s, ComplexUnitDisc.center) = ComplexUnitDisc.center := by
   apply Subtype.ext
-  simp [discRadialHomotopy, discCenter]
+  simp [discRadialHomotopy, ComplexUnitDisc.center]
 
 public theorem discRadialHomotopy_discScalarEquiv_pow
     (lambda : ℂ) (hlambda : ‖lambda‖ = 1) (k : ℕ)
     (s : unitInterval) (w : ComplexUnitDisc) :
-    discRadialHomotopy (s, (discScalarEquiv lambda hlambda ^ k) w) =
-      (discScalarEquiv lambda hlambda ^ k) (discRadialHomotopy (s, w)) := by
+    discRadialHomotopy (s, (ComplexUnitDisc.rotation lambda hlambda ^ k) w) =
+      (ComplexUnitDisc.rotation lambda hlambda ^ k) (discRadialHomotopy (s, w)) := by
   apply Subtype.ext
   change (((1 - (s : ℝ) : ℝ) : ℂ) *
-      ((discScalarEquiv lambda hlambda ^ k) w).1) =
-    ((discScalarEquiv lambda hlambda ^ k) (discRadialHomotopy (s, w))).1
-  rw [discScalarEquiv_pow_apply_val, discScalarEquiv_pow_apply_val]
+      ((ComplexUnitDisc.rotation lambda hlambda ^ k) w).1) =
+    ((ComplexUnitDisc.rotation lambda hlambda ^ k) (discRadialHomotopy (s, w))).1
+  rw [ComplexUnitDisc.coe_rotation_pow_apply, ComplexUnitDisc.coe_rotation_pow_apply]
   change (((1 - (s : ℝ) : ℝ) : ℂ) * (lambda ^ k * w.1)) =
     lambda ^ k * (((1 - (s : ℝ) : ℝ) : ℂ) * w.1)
   ring

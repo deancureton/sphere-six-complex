@@ -28,8 +28,8 @@ open LatticeData LatticeWangAlgebra Topology.PaperCuspSpecializationAlgebra
 public structure CuspGeometricWangSections
     {F : Type} [TopologicalSpace F] {phi : F ≃ₜ F}
     (B : CuspMonodromyCoordinates phi) where
-  degreeOne : (circleMappingTorusHOnePresentation phi).GeometricSection
-  degreeTwo : (circleMappingTorusHTwoPresentation phi).GeometricSection
+  degreeOne : (circleMappingTorusHOnePresentation phi).Section
+  degreeTwo : (circleMappingTorusHTwoPresentation phi).Section
 
 namespace CuspGeometricWangSections
 
@@ -50,7 +50,7 @@ public noncomputable def circleMappingTorusHOneLinearEquiv
     (invariantsEquivOfConjugacy B.degreeZero.toIntLinearEquiv
       (circleMonodromyDifference phi 0).toIntLinearMap 0
       B.degreeZeroDifference_conjugacy).trans zeroKernelEquivInt
-  exact (P.totalLinearEquivCoinvariantsProdInvariantsOfSection S.degreeOne).trans
+  exact (P.linearEquivOfSection S.degreeOne).trans
     ((coinvariants.prodCongr invariants).trans finTwoProdIntLinearEquiv)
 
 /-- Second-homology coordinates whose last two coordinates are the specified invariant
@@ -67,7 +67,7 @@ public noncomputable def circleMappingTorusHTwoLinearEquiv
     (invariantsEquivOfConjugacy B.degreeOne.toIntLinearEquiv
       (circleMonodromyDifference phi 1).toIntLinearMap mZeroDifference
       B.degreeOneDifference_conjugacy).trans mZeroInvariantsEquivIntSquared
-  exact (P.totalLinearEquivCoinvariantsProdInvariantsOfSection S.degreeTwo).trans
+  exact (P.linearEquivOfSection S.degreeTwo).trans
     ((coinvariants.prodCongr invariants).trans finFourProdFinTwoLinearEquiv)
 
 public noncomputable def circleMappingTorusHOneAddEquiv
@@ -103,8 +103,8 @@ public noncomputable def sections
   letI : Module.Projective ℤ degreeTwoPresentation.Invariants :=
     Module.Projective.of_equiv' degreeTwoInvariants.symm
   exact
-    { degreeOne := WangHomologyPresentation.GeometricSection.ofProjective degreeOnePresentation
-      degreeTwo := WangHomologyPresentation.GeometricSection.ofProjective degreeTwoPresentation }
+    { degreeOne := WangHomologyPresentation.Section.ofProjective degreeOnePresentation
+      degreeTwo := WangHomologyPresentation.Section.ofProjective degreeTwoPresentation }
 
 end EstablishedCircleMappingTorusGeometricSections
 

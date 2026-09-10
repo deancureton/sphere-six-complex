@@ -217,7 +217,7 @@ public theorem constructedA2PositiveQuotientRelativeCW_of_cOneManifoldBoundary
     apply SphereSixComplex.Geometry.quotientProjection_surjective.preimage_injective
     rw [hboundaryPreimage, A.boundary_eq]
     exact (constructedPositiveDeck_central_preimage W).symm
-  let hCW := establishedSecondCountableCOneManifoldWithCornersRelativeCW
+  let hCW := ManifoldWithCorners.relativeCWComplex
     3 (ConstructedA2PositiveQuotient W)
   exact ⟨by simpa only [hboundary] using hCW⟩
 

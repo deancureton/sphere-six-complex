@@ -47,7 +47,7 @@ public theorem orderFourCayleyHomeomorph_norm_invariant_iff_fix_fuchsianTwo (g :
     have hzero : (orderFourCayleyHomeomorph
         (fuchsianSourceAction g • fuchsianTwoFixedPoint) : ℂ) = 0 := by
       apply norm_eq_zero.mp
-      simpa [discCenter] using hz
+      simpa [ComplexUnitDisc.center] using hz
     apply orderFourCayleyHomeomorph.injective
     rw [orderFourCayleyHomeomorph_fixedPoint]
     exact Subtype.ext hzero
@@ -88,7 +88,7 @@ public theorem orderFourCayleyHomeomorph_norm_not_invariant_under_gOne :
       exact Subtype.ext hzero
     exact hmove heq
   rw [orderFourCayleyHomeomorph_fixedPoint]
-  simpa [discCenter] using norm_ne_zero_iff.mpr hleft
+  simpa [ComplexUnitDisc.center] using norm_ne_zero_iff.mpr hleft
 
 namespace PaperAnalyticData
 

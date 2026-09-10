@@ -36,11 +36,11 @@ variable {HighRelations High Total LowRelations Low : Type*}
 
 /-- A geometric section lift has zero residual coordinate and its prescribed invariant
 coordinate. -/
-public theorem totalLinearEquivCoinvariantsProdInvariantsOfSection_lift
+public theorem linearEquivOfSection_lift
     (P : WangHomologyPresentation HighRelations High Total LowRelations Low)
-    (S : P.GeometricSection) (x : P.Invariants) :
-    P.totalLinearEquivCoinvariantsProdInvariantsOfSection S (S.lift x) = (0, x) := by
-  let e := P.totalLinearEquivCoinvariantsProdInvariantsOfSection S
+    (S : P.Section) (x : P.Invariants) :
+    P.linearEquivOfSection S (S.lift x) = (0, x) := by
+  let e := P.linearEquivOfSection S
   apply e.symm.injective
   rw [e.symm_apply_apply]
   change S.lift x = P.coinvariantsToTotal 0 + S.lift x
@@ -135,7 +135,7 @@ public theorem actualCuspSelectedPositiveMeridianClass_baseCircle_winding_one
         (G.geometricWangSections.degreeOne.lift
           (actualCuspPositiveDegreeOneInvariantGenerator A))) = 1
   have hright := DFunLike.congr_fun
-    G.geometricWangSections.degreeOne.rightInverse
+    G.geometricWangSections.degreeOne.right_inv
     (actualCuspPositiveDegreeOneInvariantGenerator A)
   change (circleMappingTorusHOnePresentation G.clutching).totalToInvariants
       (G.geometricWangSections.degreeOne.lift
@@ -160,11 +160,11 @@ public theorem actualCuspSelectedPositiveMeridianClass_rawCoordinate
   change finTwoProdIntLinearEquiv
       ((honeCoinv G.monodromyCoordinates).prodCongr
         (honeInv G.monodromyCoordinates)
-        (P.totalLinearEquivCoinvariantsProdInvariantsOfSection
+        (P.linearEquivOfSection
           G.geometricWangSections.degreeOne
           (G.geometricWangSections.degreeOne.lift
             (actualCuspPositiveDegreeOneInvariantGenerator A)))) = _
-  rw [P.totalLinearEquivCoinvariantsProdInvariantsOfSection_lift]
+  rw [P.linearEquivOfSection_lift]
   change finTwoProdIntLinearEquiv
       (honeCoinv G.monodromyCoordinates 0,
         honeInv G.monodromyCoordinates
@@ -261,7 +261,7 @@ public theorem actualCuspSelectedPositiveMeridianClass_eq_neg_explicit_of_normal
         (P.totalToInvariants
           (G.geometricWangSections.degreeOne.lift
             (actualCuspPositiveDegreeOneInvariantGenerator A))) = 1
-    have hright := DFunLike.congr_fun G.geometricWangSections.degreeOne.rightInverse
+    have hright := DFunLike.congr_fun G.geometricWangSections.degreeOne.right_inv
       (actualCuspPositiveDegreeOneInvariantGenerator A)
     change P.totalToInvariants
         (G.geometricWangSections.degreeOne.lift

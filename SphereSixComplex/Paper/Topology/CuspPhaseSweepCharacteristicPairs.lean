@@ -98,13 +98,13 @@ public theorem phaseSweepCylinderPair_relativeChainMap
   cwRelativeIntegralSingularChainMapOfPair_comp (cwCharacteristicCylinderPair 1)
     (phaseSweepCharacteristicPair W i)
 
-public def phaseSweepCylinderGenerator (T : IntegralCWCellularHomologyFoundation) :
+public def phaseSweepCylinderGenerator (T : CellularHomology.IntegralComparison) :
     (CWRelativeIntegralSingularChainComplex
       (cylinderBoundaryInclusion (cwBallBoundarySet 1))).homology 2 :=
   homologyMap (cwCharacteristicCylinderRelativeIso 1).inv 2 ((T.diskOrientation 2).symm 1)
 
 public theorem phaseSweepCylinderGenerator_image
-    (T : IntegralCWCellularHomologyFoundation)
+    (T : CellularHomology.IntegralComparison)
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)] (i : Fin 3) :
     let _ := (phaseSweepCellAtlas W).cwComplex
@@ -142,7 +142,7 @@ public theorem phaseSweepCylinderPair_endpoints
   rw [phaseSweepOrbit_time_zero, phaseSweepOrbit_time_one]
 
 public theorem phaseSweepOrientedPrism_images
-    (T : IntegralCWCellularHomologyFoundation) :
+    (T : CellularHomology.IntegralComparison) :
     ∃ u : ℤ, (u = 1 ∨ u = -1) ∧
       ∀ (W : ActualPuncturedCuspCollarWitness N constructedModel)
         [T2Space (ActualLocalCuspCentralOrbitQuotient W)] (i : Fin 3),

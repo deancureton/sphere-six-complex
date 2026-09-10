@@ -461,7 +461,7 @@ public theorem cuspAngularCoordinateVanishesOnMarkedFiber
 public theorem actualCuspDegreeOne_section
     (G : ActualCuspRadialClutchingData W) (b : puncturedLocalCuspQuotient W) :
     let _ := G.fiberTopology
-    ∃ S : (circleMappingTorusHOnePresentation G.clutching).GeometricSection,
+    ∃ S : (circleMappingTorusHOnePresentation G.clutching).Section,
       (rawDegreeOneTotalSpecialization G).comp S.lift = 0 :=
   degreeOne_section_of_angularCoordinateVanishesOnMarkedFiber G b
     (cuspAngularCoordinateVanishesOnMarkedFiber G b)

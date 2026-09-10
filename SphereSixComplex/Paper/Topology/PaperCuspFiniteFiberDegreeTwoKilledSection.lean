@@ -149,7 +149,7 @@ public theorem degreeTwo_section_of_fiberSpecialization_bijective
     (G : ActualCuspRadialClutchingData W)
     (h : Function.Bijective (rawDegreeTwoFiberSpecialization G)) :
     let _ := G.fiberTopology
-    ∃ S : (circleMappingTorusHTwoPresentation G.clutching).GeometricSection,
+    ∃ S : (circleMappingTorusHTwoPresentation G.clutching).Section,
       (rawDegreeTwoTotalSpecialization G).comp S.lift = 0 := by
   let _ := G.fiberTopology
   let P := circleMappingTorusHTwoPresentation G.clutching
@@ -157,9 +157,9 @@ public theorem degreeTwo_section_of_fiberSpecialization_bijective
   let c : P.Coinvariants ≃ₗ[ℤ]
       IntegralSingularHomology 2 (actualLocalCuspFilling W) :=
     LinearEquiv.ofBijective (rawDegreeTwoFiberSpecialization G) h
-  refine ⟨UnnormalizedCuspRadialClutchingData.geometricSectionInMapKernel P S.degreeTwo c
+  refine ⟨WangHomologyPresentation.correctedSection P S.degreeTwo c
     (rawDegreeTwoTotalSpecialization G), ?_⟩
-  apply UnnormalizedCuspRadialClutchingData.geometricSectionInMapKernel_lift
+  apply WangHomologyPresentation.map_correctedSection_lift
   rfl
 
 /-- The four marked-fibre images supply both remaining degree-two fields. -/
@@ -168,7 +168,7 @@ public theorem degreeTwo_fields_of_markedFiberBasisImages
     (h : DegreeTwoMarkedFiberBasisImages G) :
     Function.Surjective (rawDegreeTwoTotalSpecialization G) ∧
       (let _ := G.fiberTopology
-      ∃ S : (circleMappingTorusHTwoPresentation G.clutching).GeometricSection,
+      ∃ S : (circleMappingTorusHTwoPresentation G.clutching).Section,
         (rawDegreeTwoTotalSpecialization G).comp S.lift = 0) := by
   let _ := G.fiberTopology
   have hb := rawDegreeTwoFiberSpecialization_bijective_of_markedFiberBasisImages G h

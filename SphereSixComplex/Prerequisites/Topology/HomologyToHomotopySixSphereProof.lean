@@ -98,7 +98,7 @@ attachment, or from smooth triangulability. Neither is available here: `TauCeti`
 (`TauCeti.Analysis.Calculus.Morse`) stops at nondegenerate critical points and gradient flow. -/
 public def SmoothSixManifoldClassicalCWTypeInput (X : Type) [TopologicalSpace X]
     [ChartedSpace RealModel X] : Prop :=
-  SmoothSimplyConnectedIntegralHomologySixSphere X → HasClassicalCWType X
+  SmoothSimplyConnectedIntegralHomologySixSphere X → HasCWType X
 
 /-! ## The reduction -/
 
@@ -134,7 +134,7 @@ public theorem hasTopDimensionalSphericalGenerator_of_homotopyEquivSixSphere
 /-- A space homotopy equivalent to `S⁶` has classical CW type, via the explicit finite two-cell
 model of the standard sphere. -/
 public theorem hasClassicalCWType_of_homotopyEquivSixSphere
-    {X : Type} [TopologicalSpace X] (e : X ≃ₕ SixSphere) : HasClassicalCWType X :=
+    {X : Type} [TopologicalSpace X] (e : X ≃ₕ SixSphere) : HasCWType X :=
   hasClassicalCWType_precomp_homotopyEquiv e sixSphere_hasClassicalCWType
 
 /-- The Hurewicz input is implied by the recognition obligation, hence is genuinely necessary: no

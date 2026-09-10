@@ -146,8 +146,8 @@ public theorem orderThreeActualDiscRepresentation_norm
     (Multiplicative.toAdd (A.orderThreeActualFillingDegree g)).val) u :
       ComplexUnitDisc) : ℂ)‖ = _
   rw [show orderThreeDiscRotation =
-      discScalarEquiv orderThreeMultiplier norm_orderThreeMultiplier from rfl,
-    discScalarEquiv_pow_apply_val, norm_mul, norm_pow,
+      ComplexUnitDisc.rotation orderThreeMultiplier norm_orderThreeMultiplier from rfl,
+    ComplexUnitDisc.coe_rotation_pow_apply, norm_mul, norm_pow,
     norm_orderThreeMultiplier, one_pow, one_mul]
 
 public theorem orderFourActualDiscRepresentation_norm
@@ -161,8 +161,8 @@ public theorem orderFourActualDiscRepresentation_norm
     (Multiplicative.toAdd (A.orderFourActualFillingDegree g)).val) u :
       ComplexUnitDisc) : ℂ)‖ = _
   rw [show orderFourDiscRotation =
-      discScalarEquiv orderFourMultiplier norm_orderFourMultiplier from rfl,
-    discScalarEquiv_pow_apply_val, norm_mul, norm_pow,
+      ComplexUnitDisc.rotation orderFourMultiplier norm_orderFourMultiplier from rfl,
+    ComplexUnitDisc.coe_rotation_pow_apply, norm_mul, norm_pow,
     norm_orderFourMultiplier, one_pow, one_mul]
 
 @[instance_reducible]

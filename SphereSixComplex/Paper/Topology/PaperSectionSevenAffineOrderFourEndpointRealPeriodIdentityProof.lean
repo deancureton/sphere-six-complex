@@ -306,8 +306,8 @@ public theorem orderFourFamilyRadius_namedCollarTotalPoint_pos
         (A.sectionSevenAffineBandStripCoordinate x)).1 =
         fuchsianTwoFixedPoint := by
     apply orderFourCayleyHomeomorph.injective
-    simpa [orderFourCayleyHomeomorph, cayleyHomeomorph, cayleyDiscCoordinate,
-      discCenter, orderFourCayley_fixedPoint] using hzero
+    simpa [orderFourCayleyHomeomorph, UpperHalfPlane.cayleyHomeomorph, UpperHalfPlane.cayleyToDisc,
+      ComplexUnitDisc.center, orderFourCayley_fixedPoint] using hzero
   have hregular :=
     (A.sectionSevenAffineOrderFourRadialBaseLift
       (A.sectionSevenAffineBandStripCoordinate x)).2

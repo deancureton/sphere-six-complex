@@ -43,7 +43,7 @@ public def cylinderTimeReflectionRelativeIso {X : Type} [TopologicalSpace X] (A 
   inv_hom_id := cylinderTimeReflectionPair_chainMap_involutive A
 
 public theorem cylinderTimeReflection_orientation_or_neg_orientation
-    (T : IntegralCWCellularHomologyFoundation) :
+    (T : CellularHomology.IntegralComparison) :
     let g := homologyMap (cwCharacteristicCylinderRelativeIso 1).inv 2
       ((T.diskOrientation 2).symm 1)
     homologyMap (cwRelativeIntegralSingularChainMapOfPair
@@ -66,7 +66,7 @@ public theorem cylinderTimeReflection_orientation_or_neg_orientation
     simpa using h
 
 public theorem cylinderTimeReflection_orientedIntervalPrism
-    (T : IntegralCWCellularHomologyFoundation) :
+    (T : CellularHomology.IntegralComparison) :
     homologyMap (cwRelativeIntegralSingularChainMapOfPair
       (cylinderTimeReflectionPair (cwBallBoundarySet 1))) 2 orientedIntervalCylinderPrism =
         orientedIntervalCylinderPrism ∨

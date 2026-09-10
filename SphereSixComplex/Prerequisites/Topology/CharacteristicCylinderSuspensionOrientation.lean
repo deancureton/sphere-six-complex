@@ -100,7 +100,7 @@ public theorem intAddEquiv_apply_one_eq_one_or_neg_one (e : ℤ ≃+ ℤ) :
   exact Int.eq_one_or_neg_one_of_mul_eq_one h
 
 public theorem cwIntervalSuspension_eq_square_or_neg_square
-    (T : IntegralCWCellularHomologyFoundation) :
+    (T : CellularHomology.IntegralComparison) :
     (cwCharacteristicSuspensionIso 0).hom (cwOrientedIntervalClass.hom 1) =
         normalizedSquareDiskOrientation.symm 1 ∨
       (cwCharacteristicSuspensionIso 0).hom (cwOrientedIntervalClass.hom 1) =

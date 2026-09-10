@@ -50,7 +50,7 @@ local instance : Countable Delta :=
 /-- A Cayley coordinate followed by radial rescaling identifies the upper half-plane with `ℂ`. -/
 @[expose] public noncomputable def upperHalfPlaneHomeomorphComplex
     (a : UpperHalfPlane) : UpperHalfPlane ≃ₜ ℂ :=
-  (cayleyHomeomorph a).trans complexUnitDiscHomeomorphComplex
+  (UpperHalfPlane.cayleyHomeomorph a).trans complexUnitDiscHomeomorphComplex
 
 /-- The two deleted elliptic orbits, transported to the complex plane. -/
 @[expose] public noncomputable def regularBadSet (U : TriangleUniformization) : Set ℂ :=

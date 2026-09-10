@@ -120,7 +120,7 @@ public theorem orderThreePointwiseProductMap_center
     (v : ComplexTwoSpace) :
     orderThreePointwiseProductMap F hprojection v
         (projection (parameterMap F) (U.zOne, v)) =
-      (discCenter, Quotient.mk _ v) := by
+      (ComplexUnitDisc.center, Quotient.mk _ v) := by
   rw [orderThreePointwiseProductMap,
     orderThreeCayleyLocalChart_center F hprojection hzOne]
   rfl
@@ -132,7 +132,7 @@ public theorem orderFourPointwiseProductMap_center
     (v : ComplexTwoSpace) :
     orderFourPointwiseProductMap F hprojection v
         (projection (parameterMap F) (U.zTwo, v)) =
-      (discCenter, Quotient.mk _ v) := by
+      (ComplexUnitDisc.center, Quotient.mk _ v) := by
   rw [orderFourPointwiseProductMap,
     orderFourCayleyLocalChart_center F hprojection hzTwo]
   rfl
@@ -161,7 +161,7 @@ public structure OrderThreeWholeFiberCompatibility
     projection (parameterMap F) (U.zOne, v) ∈ gluing.source
   /-- The glued target contains the entire central fixed torus. -/
   contains_target_fibre : ∀ x : AdditiveTorus (parameterMap F U.zOne).1,
-    (discCenter, x) ∈ gluing.target
+    (ComplexUnitDisc.center, x) ∈ gluing.target
   /-- Each local chart agrees near its centre with the constructed pointwise candidate. -/
   pointwise_agreement : ∀ v : ComplexTwoSpace,
     gluing.toFun =ᶠ[nhdsWithin
@@ -197,7 +197,7 @@ public structure OrderFourWholeFiberCompatibility
     projection (parameterMap F) (U.zTwo, v) ∈ gluing.source
   /-- The glued target contains the entire central fixed torus. -/
   contains_target_fibre : ∀ x : AdditiveTorus (parameterMap F U.zTwo).1,
-    (discCenter, x) ∈ gluing.target
+    (ComplexUnitDisc.center, x) ∈ gluing.target
   /-- Each local chart agrees near its centre with the constructed pointwise candidate. -/
   pointwise_agreement : ∀ v : ComplexTwoSpace,
     gluing.toFun =ᶠ[nhdsWithin
@@ -252,7 +252,7 @@ omit [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (OrderFourFixedProduct F)] in
 public theorem maps_central_fibre
     (hzOne : U.zOne = fuchsianOneFixedPoint) (v : ComplexTwoSpace) :
     D.trivialization (projection (parameterMap F) (U.zOne, v)) =
-      (discCenter, Quotient.mk _ v) := by
+      (ComplexUnitDisc.center, Quotient.mk _ v) := by
   change D.gluing.toFun (projection (parameterMap F) (U.zOne, v)) = _
   rw [D.pointwise_value,
     orderThreePointwiseProductMap_center F hprojection hzOne]
@@ -300,7 +300,7 @@ omit [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (OrderThreeFixedProduct F)] i
 public theorem maps_central_fibre
     (hzTwo : U.zTwo = fuchsianTwoFixedPoint) (v : ComplexTwoSpace) :
     D.trivialization (projection (parameterMap F) (U.zTwo, v)) =
-      (discCenter, Quotient.mk _ v) := by
+      (ComplexUnitDisc.center, Quotient.mk _ v) := by
   change D.gluing.toFun (projection (parameterMap F) (U.zTwo, v)) = _
   rw [D.pointwise_value,
     orderFourPointwiseProductMap_center F hprojection hzTwo]

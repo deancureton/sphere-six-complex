@@ -22,7 +22,7 @@ open CategoryTheory
 namespace SphereSixComplex
 
 /-- The first derived `Ext` group over the integers. -/
-public abbrev IntegralExtOne (G : Type) [AddCommGroup G] : Type :=
+public abbrev IntegralCohomology.ExtOne (G : Type) [AddCommGroup G] : Type :=
   CategoryTheory.Abelian.Ext (ModuleCat.of ℤ G) (ModuleCat.of ℤ ℤ) 1
 
 /-- A full degreewise statement of the integral universal coefficient theorem for singular
@@ -31,17 +31,17 @@ standard (noncanonically) split short exact sequence
 `0 → Ext¹(Hₙ₋₁(X), ℤ) → Hⁿ(X; ℤ) → Hom(Hₙ(X), ℤ) → 0`.
 
 The `Nonempty` wrapper records that the splitting is not natural. -/
-public structure IntegralSingularCohomologyUCT where
+public structure IntegralCohomology.UniversalCoefficients where
   degreeZero : ∀ (X : Type) [TopologicalSpace X],
     IntegralSingularCohomology 0 X ≃+ (IntegralSingularHomology 0 X →+ ℤ)
   positiveDegree : ∀ (X : Type) [TopologicalSpace X] (n : ℕ), 0 < n →
     Nonempty (IntegralSingularCohomology n X ≃+
-      (IntegralExtOne (IntegralSingularHomology (n - 1) X) ×
+      (IntegralCohomology.ExtOne (IntegralSingularHomology (n - 1) X) ×
         (IntegralSingularHomology n X →+ ℤ)))
 
 /-- The classical integral universal coefficient theorem for singular cohomology, in every
 degree and for every topological space. -/
-public axiom classicalIntegralSingularCohomologyUCT : IntegralSingularCohomologyUCT
+public axiom IntegralCohomology.universalCoefficients : IntegralCohomology.UniversalCoefficients
 
 public def addEquivProdOfSubsingleton {A B : Type} [AddCommGroup A] [AddCommGroup B]
     (hA : Subsingleton A) : (A × B) ≃+ B where
@@ -64,11 +64,11 @@ public noncomputable def integralSingularCohomologyEquivDualOfPreviousFree
   letI : Projective (ModuleCat.of ℤ (IntegralSingularHomology (n - 1) X)) :=
     ModuleCat.projective_of_free
       (Module.Free.chooseBasis ℤ (IntegralSingularHomology (n - 1) X))
-  let hExt : Subsingleton (IntegralExtOne (IntegralSingularHomology (n - 1) X)) := by
+  let hExt : Subsingleton (IntegralCohomology.ExtOne (IntegralSingularHomology (n - 1) X)) := by
     have h := CategoryTheory.projective_iff_subsingleton_ext_one.mp
       (show Projective (ModuleCat.of ℤ (IntegralSingularHomology (n - 1) X)) from inferInstance)
     exact h (Y := ModuleCat.of ℤ ℤ)
-  exact Classical.choice (classicalIntegralSingularCohomologyUCT.positiveDegree X n hn) |>.trans
+  exact Classical.choice (IntegralCohomology.universalCoefficients.positiveDegree X n hn) |>.trans
     (addEquivProdOfSubsingleton hExt)
 
 end SphereSixComplex

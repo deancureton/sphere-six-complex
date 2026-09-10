@@ -52,7 +52,7 @@ public theorem homotopyGroupMap_mk
   rfl
 
 /-- The construction contract for the classical natural higher Hurewicz homomorphism. -/
-public structure HigherHurewiczMap where
+public structure Hurewicz.Map where
   homomorphism :
     ∀ (n : ℕ) [Nontrivial (Fin n)]
       (X : Type) [TopologicalSpace X] (x : X),
@@ -64,8 +64,8 @@ public structure HigherHurewiczMap where
       homomorphism n Y (f x)
           (Additive.ofMul (homotopyGroupMap f x (Additive.toMul a))) =
         integralSingularHomologyMap n f (homomorphism n X x a)
-public theorem HigherHurewiczMap.eq_of_genLoop_coe_eq
-    (H : HigherHurewiczMap) (n : ℕ) [Nontrivial (Fin n)]
+public theorem Hurewicz.Map.eq_of_genLoop_coe_eq
+    (H : Hurewicz.Map) (n : ℕ) [Nontrivial (Fin n)]
     (X : Type) [TopologicalSpace X] {x y : X}
     (p : Ω^ (Fin n) X x) (q : Ω^ (Fin n) X y) (h : p.1 = q.1) :
     H.homomorphism n X x (Additive.ofMul ⟦p⟧) =
@@ -80,8 +80,8 @@ public theorem HigherHurewiczMap.eq_of_genLoop_coe_eq
   subst q
   rfl
 
-public theorem HigherHurewiczMap.sphere_realization
-    (H : HigherHurewiczMap) (n : ℕ) [Nontrivial (Fin n)]
+public theorem Hurewicz.Map.sphere_realization
+    (H : Hurewicz.Map) (n : ℕ) [Nontrivial (Fin n)]
     (X : Type) [TopologicalSpace X] (x : X)
     (a : Additive (HomotopyGroup.Pi n X x)) :
     ∃ f : C((TopCat.sphere n : Type), X),
@@ -112,7 +112,7 @@ public theorem HigherHurewiczMap.sphere_realization
 
 /-- The usual higher Hurewicz isomorphism property. The explicit inequality excludes the
 degree-one abelianization theorem. -/
-public def HigherHurewiczIsomorphismProperty (H : HigherHurewiczMap) : Prop :=
+public def Hurewicz.IsIsoInRange (H : Hurewicz.Map) : Prop :=
   ∀ (n : ℕ) (hn : 2 ≤ n)
     (X : Type) [TopologicalSpace X] [PathConnectedSpace X] (x : X),
     letI : Nontrivial (Fin n) := Fin.nontrivial_iff_two_le.mpr hn
@@ -130,7 +130,7 @@ private theorem homotopyGroupPiOne_subsingleton
 /-- A constructed natural Hurewicz map and the general isomorphism theorem imply the former
 class-surjectivity boundary. This reduction is axiom-free. -/
 public theorem generalHigherHurewiczClassSurjectivity_of_map
-    (H : HigherHurewiczMap) (hHurewicz : HigherHurewiczIsomorphismProperty H)
+    (H : Hurewicz.Map) (hHurewicz : Hurewicz.IsIsoInRange H)
     (n : ℕ) (hn : 2 ≤ n)
     (X : Type) [TopologicalSpace X] [SimplyConnectedSpace X]
     (hLower : ∀ k : ℕ, 0 < k → k < n →

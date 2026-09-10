@@ -15,7 +15,7 @@ variable {HighRelations High Total LowRelations Low : Type*}
 
 /-- A Wang presentation splits as its coinvariants times its invariants whenever the latter are
 projective. -/
-public noncomputable def totalLinearEquivCoinvariantsProdInvariants
+public noncomputable def linearEquiv
     (P : WangHomologyPresentation HighRelations High Total LowRelations Low)
     [Module.Projective ℤ P.Invariants] :
     Total ≃ₗ[ℤ] P.Coinvariants × P.Invariants := by
@@ -75,7 +75,7 @@ public noncomputable def totalLinearEquivCoinvariantsProdInvariants
     abel
 
 /-- Split a Wang presentation and then apply chosen coordinates on its two ends. -/
-public noncomputable def totalLinearEquivOfEndCoordinates
+public noncomputable def linearEquivOfCoordinates
     (P : WangHomologyPresentation HighRelations High Total LowRelations Low)
     {CoinvariantCoordinates InvariantCoordinates : Type*}
     [AddCommGroup CoinvariantCoordinates] [AddCommGroup InvariantCoordinates]
@@ -85,7 +85,7 @@ public noncomputable def totalLinearEquivOfEndCoordinates
     Total ≃ₗ[ℤ] CoinvariantCoordinates × InvariantCoordinates := by
   letI : Module.Projective ℤ P.Invariants :=
     Module.Projective.of_equiv' invariants.symm
-  exact P.totalLinearEquivCoinvariantsProdInvariants.trans
+  exact P.linearEquiv.trans
     (coinvariants.prodCongr invariants)
 
 end WangHomologyPresentation

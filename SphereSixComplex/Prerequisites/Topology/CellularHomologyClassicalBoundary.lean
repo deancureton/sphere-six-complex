@@ -436,7 +436,7 @@ end SkeletalComparison
 
 /-- A dimension-independent, characteristic-map-normalized, functorial form of the classical
 integral cellular-homology theorem for Hausdorff CW complexes. -/
-public structure IntegralCWCellularHomologyFoundation where
+public structure CellularHomology.IntegralComparison where
   diskOrientation : ∀ n,
     (CWRelativeIntegralSingularChainComplex
       (cwCharacteristicBoundaryInclusion n)).homology n ≃+ ℤ
@@ -486,9 +486,9 @@ public structure IntegralCWCellularHomologyFoundation where
           ((singularHomologyFunctor AddCommGrpCat n).obj
             (AddCommGrpCat.of ℤ)).map (TopCat.ofHom f)
 
-namespace IntegralCWCellularHomologyFoundation
+namespace CellularHomology.IntegralComparison
 
-public theorem cellularChainMap_id (T : IntegralCWCellularHomologyFoundation)
+public theorem cellularChainMap_id (T : CellularHomology.IntegralComparison)
     (X : Type) [TopologicalSpace X] [T2Space X]
     [Topology.CWComplex (Set.univ : Set X)] :
       T.cellularChainMap (ContinuousMap.id X) (isIntegralCWCellularMap_id X) =
@@ -504,7 +504,7 @@ public theorem cellularChainMap_id (T : IntegralCWCellularHomologyFoundation)
         (integralCWSkeletonInclusion X n) from ⟨𝟙 _, 𝟙 _, by simp⟩)) n = _
   rw [cwRelativeIntegralSingularChainMapOfPair_id, HomologicalComplex.homologyMap_id]
 
-public theorem cellularChainMap_comp (T : IntegralCWCellularHomologyFoundation)
+public theorem cellularChainMap_comp (T : CellularHomology.IntegralComparison)
     {X Y Z : Type} [TopologicalSpace X] [T2Space X]
     [Topology.CWComplex (Set.univ : Set X)]
     [TopologicalSpace Y] [T2Space Y]
@@ -531,25 +531,25 @@ public theorem cellularChainMap_comp (T : IntegralCWCellularHomologyFoundation)
       (integralCWSkeletonInclusion Z n) from
       ⟨integralCWSkeletonMap g hg n, integralCWSkeletonMap g hg (n + 1), by ext x; rfl⟩)
 
-public def characteristicPair (_T : IntegralCWCellularHomologyFoundation)
+public def characteristicPair (_T : CellularHomology.IntegralComparison)
     (X : Type) [TopologicalSpace X] [T2Space X]
     [Topology.CWComplex (Set.univ : Set X)] (n : ℕ)
     (e : Topology.CWComplex.cell (Set.univ : Set X) n) :
     IntegralCWCharacteristicPairMap X n e :=
   integralCWCharacteristicPairMap X n e
 
-public theorem boundary_comp_zero (_T : IntegralCWCellularHomologyFoundation)
+public theorem boundary_comp_zero (_T : CellularHomology.IntegralComparison)
     (X : Type) [TopologicalSpace X] [T2Space X]
     [Topology.CWComplex (Set.univ : Set X)] (n : ℕ) :
     integralCWRelativeBoundary X (n + 1) ≫ integralCWRelativeBoundary X n = 0 :=
   integralCWRelativeBoundary_comp_self X n
 
-end IntegralCWCellularHomologyFoundation
+end CellularHomology.IntegralComparison
 
 /-- The exact accepted classical theorem. It is independent of dimension, finite type, and the
 application to the toric cusp or six-sphere. -/
-public axiom integralCWCellularHomologyFoundation :
-  IntegralCWCellularHomologyFoundation
+public axiom CellularHomology.integralComparison :
+  CellularHomology.IntegralComparison
 
 /-- The objectwise content retained for existing consumers. -/
 public structure IntegralCWCellularHomologyModel
@@ -560,44 +560,44 @@ public structure IntegralCWCellularHomologyModel
   homologyEquiv : ∀ n,
     chainComplex.homology n ≃+ IntegralSingularHomology n Y
 
-namespace IntegralCWCellularHomologyFoundation
+namespace CellularHomology.IntegralComparison
 
 public noncomputable def objectwiseModel
-    (T : IntegralCWCellularHomologyFoundation)
+    (T : CellularHomology.IntegralComparison)
     (Y : Type) [TopologicalSpace Y] [T2Space Y]
     [Topology.CWComplex (Set.univ : Set Y)] :
     IntegralCWCellularHomologyModel Y where
   chainComplex := integralCWSkeletalChainComplex Y
-    (IntegralCWCellularHomologyFoundation.boundary_comp_zero T Y)
-  cellBasis := IntegralCWCellularHomologyFoundation.cellBasis T Y
-  homologyEquiv := IntegralCWCellularHomologyFoundation.homologyEquiv T Y
+    (CellularHomology.IntegralComparison.boundary_comp_zero T Y)
+  cellBasis := CellularHomology.IntegralComparison.cellBasis T Y
+  homologyEquiv := CellularHomology.IntegralComparison.homologyEquiv T Y
 
 /-- The coefficient of one cell in the boundary of the positively oriented characteristic class
 of a cell one dimension higher. -/
 public noncomputable def attachingDegree
-    (T : IntegralCWCellularHomologyFoundation)
+    (T : CellularHomology.IntegralComparison)
     (Y : Type) [TopologicalSpace Y] [T2Space Y]
     [Topology.CWComplex (Set.univ : Set Y)] (n : ℕ)
     (e : Topology.CWComplex.cell (Set.univ : Set Y) (n + 1))
     (e' : Topology.CWComplex.cell (Set.univ : Set Y) n) : ℤ :=
-  (IntegralCWCellularHomologyFoundation.cellBasis T Y n).symm
+  (CellularHomology.IntegralComparison.cellBasis T Y n).symm
     (ConcreteCategory.hom (integralCWRelativeBoundary Y n)
-      (IntegralCWCellularHomologyFoundation.cellBasis T Y (n + 1)
+      (CellularHomology.IntegralComparison.cellBasis T Y (n + 1)
         (Finsupp.single e 1))) e'
 
 /-- The homological degree of the actual attaching-sphere map, read in the oriented coordinate
 of a target cell. -/
 public noncomputable def homologicalAttachingMapDegree
-    (T : IntegralCWCellularHomologyFoundation)
+    (T : CellularHomology.IntegralComparison)
     (Y : Type) [TopologicalSpace Y] [T2Space Y]
     [Topology.CWComplex (Set.univ : Set Y)] (n : ℕ)
     (e : Topology.CWComplex.cell (Set.univ : Set Y) (n + 1))
     (e' : Topology.CWComplex.cell (Set.univ : Set Y) n) : ℤ :=
-  (IntegralCWCellularHomologyFoundation.cellBasis T Y n).symm
+  (CellularHomology.IntegralComparison.cellBasis T Y n).symm
     (ConcreteCategory.hom
       (HomologicalComplex.homologyMap
           (cwIntegralSingularChainMapObj
-            (IntegralCWCellularHomologyFoundation.characteristicPair
+            (CellularHomology.IntegralComparison.characteristicPair
               T Y (n + 1) e).boundaryMap) n ≫
         HomologicalComplex.homologyMap
           (cwRelativeIntegralSingularChainProjection
@@ -605,17 +605,17 @@ public noncomputable def homologicalAttachingMapDegree
       (ConcreteCategory.hom
         (cwRelativeIntegralSingularBoundary
           (cwCharacteristicBoundaryInclusion (n + 1)) n)
-        ((IntegralCWCellularHomologyFoundation.diskOrientation T (n + 1)).symm 1))) e'
+        ((CellularHomology.IntegralComparison.diskOrientation T (n + 1)).symm 1))) e'
 
 public theorem attachingDegree_eq_homologicalAttachingMapDegree
-    (T : IntegralCWCellularHomologyFoundation)
+    (T : CellularHomology.IntegralComparison)
     (Y : Type) [TopologicalSpace Y] [T2Space Y]
     [Topology.CWComplex (Set.univ : Set Y)] (n : ℕ)
     (e : Topology.CWComplex.cell (Set.univ : Set Y) (n + 1))
     (e' : Topology.CWComplex.cell (Set.univ : Set Y) n) :
     T.attachingDegree Y n e e' = T.homologicalAttachingMapDegree Y n e e' := by
-  unfold IntegralCWCellularHomologyFoundation.attachingDegree
-    IntegralCWCellularHomologyFoundation.homologicalAttachingMapDegree
+  unfold CellularHomology.IntegralComparison.attachingDegree
+    CellularHomology.IntegralComparison.homologicalAttachingMapDegree
   apply congrArg (fun y ↦ (T.cellBasis Y n).symm y e')
   rw [T.cellBasis_single]
   change ConcreteCategory.hom
@@ -628,7 +628,7 @@ public theorem attachingDegree_eq_homologicalAttachingMapDegree
   rw [← Category.assoc, ← integralCWCharacteristicBoundary_natural, Category.assoc]
   rfl
 
-end IntegralCWCellularHomologyFoundation
+end CellularHomology.IntegralComparison
 
 
 end SphereSixComplex

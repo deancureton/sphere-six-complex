@@ -351,7 +351,7 @@ specified in the Setup.  When the local affine actions are analytic, both coveri
 complex-manifold atlases.
 :::
 
-:::theorem "elliptic-local-coordinates" (parent := "elliptic-fillings") (lean := "SphereSixComplex.Geometry.EllipticLocalCoordinates.norm_cayleyCoordinate_lt_one, SphereSixComplex.Geometry.EllipticLocalCoordinates.orderThreeCayley_generator, SphereSixComplex.Geometry.EllipticLocalCoordinates.orderFourCayley_generator, SphereSixComplex.Geometry.EllipticCayleyHomeomorph.cayleyHomeomorph, SphereSixComplex.Geometry.EllipticCayleyHomeomorph.orderThreeCayleyHomeomorph_generator, SphereSixComplex.Geometry.EllipticCayleyHomeomorph.orderFourCayleyHomeomorph_generator, SphereSixComplex.Geometry.EllipticLocalCoordinates.EllipticFiberData.orderThreeActionData_quotient_isManifold, SphereSixComplex.Geometry.EllipticLocalCoordinates.EllipticFiberData.orderFourActionData_quotient_isManifold")
+:::theorem "elliptic-local-coordinates" (parent := "elliptic-fillings") (lean := "SphereSixComplex.UpperHalfPlane.norm_cayley_lt_one, SphereSixComplex.Geometry.EllipticLocalCoordinates.orderThreeCayley_generator, SphereSixComplex.Geometry.EllipticLocalCoordinates.orderFourCayley_generator, SphereSixComplex.UpperHalfPlane.cayleyHomeomorph, SphereSixComplex.Geometry.EllipticCayleyHomeomorph.orderThreeCayleyHomeomorph_generator, SphereSixComplex.Geometry.EllipticCayleyHomeomorph.orderFourCayleyHomeomorph_generator, SphereSixComplex.Geometry.EllipticLocalCoordinates.EllipticFiberData.orderThreeActionData_quotient_isManifold, SphereSixComplex.Geometry.EllipticLocalCoordinates.EllipticFiberData.orderFourActionData_quotient_isManifold")
 The explicit Cayley formulas give homeomorphisms from the upper half-plane to the unit disc and
 conjugate the source generators to rotations of orders three and four. The remaining affine fibre
 data then gives the free logarithmic-transform quotient manifolds.
@@ -598,7 +598,7 @@ integral homology sphere to a homotopy sphere, followed by the dimension-six smo
 classification.  Their composition gives the exact diffeomorphism required by the construction.
 :::
 
-:::theorem "established-smooth-recognition" (parent := "smooth-recognition") (lean := "SphereSixComplex.establishedHigherHurewiczSixGenerator, SphereSixComplex.establishedCompactSmoothSixManifoldClassicalCWType, SphereSixComplex.establishedSimplyConnectedClassicalCWIntegralHomologyWhitehead, SphereSixComplex.establishedSmoothPoincareSixStandardModel, SphereSixComplex.establishedHomologyToHomotopySixSphere, SphereSixComplex.establishedSmoothIntegralHomologySixSphereRecognition")
+:::theorem "established-smooth-recognition" (parent := "smooth-recognition") (lean := "SphereSixComplex.establishedHigherHurewiczSixGenerator, SphereSixComplex.establishedCompactSmoothSixManifoldClassicalCWType, SphereSixComplex.establishedSimplyConnectedClassicalCWIntegralHomologyWhitehead, SphereSixComplex.SmoothSixSphere.poincare, SphereSixComplex.establishedHomologyToHomotopySixSphere, SphereSixComplex.establishedSmoothIntegralHomologySixSphereRecognition")
 There are exactly four external recognition inputs: the degree-six consequence of Hurewicz, CW type
 for compact smooth six-manifolds, homological Whitehead for simply connected spaces of CW type, and
 smooth Poincaré in dimension six. The first three produce a homotopy sphere; the fourth gives a

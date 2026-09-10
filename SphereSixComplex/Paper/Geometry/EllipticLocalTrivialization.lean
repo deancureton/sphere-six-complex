@@ -30,7 +30,7 @@ public theorem discValIsOpenEmbedding :
     Topology.IsOpenEmbedding ((↑) : ComplexUnitDisc → ℂ) :=
   (isOpen_lt continuous_norm continuous_const).isOpenEmbedding_subtypeVal
 
-public instance complexUnitDiscNonempty : Nonempty ComplexUnitDisc := ⟨discCenter⟩
+public instance complexUnitDiscNonempty : Nonempty ComplexUnitDisc := ⟨ComplexUnitDisc.center⟩
 
 /-- The complex chart on the open unit disc induced by its inclusion into `ℂ`. -/
 public noncomputable instance complexUnitDiscChartedSpace : ChartedSpace ℂ ComplexUnitDisc :=
@@ -43,22 +43,22 @@ public instance complexUnitDiscIsManifold :
 
 public theorem cayleyDiscCoordinate_contMDiff (a : UpperHalfPlane) (n : WithTop ℕ∞) :
     ContMDiff (modelWithCornersSelf ℂ ℂ) (modelWithCornersSelf ℂ ℂ) n
-      (cayleyDiscCoordinate a) := by
+      (UpperHalfPlane.cayleyToDisc a) := by
   have hcomp : ContMDiff (modelWithCornersSelf ℂ ℂ) (modelWithCornersSelf ℂ ℂ) n
-      (((↑) : ComplexUnitDisc → ℂ) ∘ cayleyDiscCoordinate a) := by
+      (((↑) : ComplexUnitDisc → ℂ) ∘ UpperHalfPlane.cayleyToDisc a) := by
     change ContMDiff (modelWithCornersSelf ℂ ℂ) (modelWithCornersSelf ℂ ℂ) n
-      (cayleyCoordinate a)
-    exact contMDiff_of_mdifferentiable (cayleyCoordinate_mdifferentiable a) n
+      (UpperHalfPlane.cayley a)
+    exact contMDiff_of_mdifferentiable (UpperHalfPlane.mdifferentiable_cayley a) n
   exact hcomp.of_comp_isOpenEmbedding discValIsOpenEmbedding
 
 public theorem cayleyInverseUpper_contMDiff (a : UpperHalfPlane) (n : WithTop ℕ∞) :
     ContMDiff (modelWithCornersSelf ℂ ℂ) (modelWithCornersSelf ℂ ℂ) n
-      (cayleyInverseUpper a) := by
+      (UpperHalfPlane.cayleyFromDisc a) := by
   have hval : ContMDiff (modelWithCornersSelf ℂ ℂ) (modelWithCornersSelf ℂ ℂ) n
       ((↑) : ComplexUnitDisc → ℂ) :=
     contMDiff_isOpenEmbedding discValIsOpenEmbedding
   have hcomp : ContMDiff (modelWithCornersSelf ℂ ℂ) (modelWithCornersSelf ℂ ℂ) n
-      (((↑) : UpperHalfPlane → ℂ) ∘ cayleyInverseUpper a) := by
+      (((↑) : UpperHalfPlane → ℂ) ∘ UpperHalfPlane.cayleyFromDisc a) := by
     change ContMDiff (modelWithCornersSelf ℂ ℂ) (modelWithCornersSelf ℂ ℂ) n
       (fun w : ComplexUnitDisc ↦ ((a : ℂ) - w.1 * conj (a : ℂ)) / (1 - w.1))
     exact (contMDiff_const.sub (hval.mul contMDiff_const)).div₀
@@ -74,7 +74,7 @@ public theorem cayleyInverseUpper_contMDiff (a : UpperHalfPlane) (n : WithTop �
 @[expose] public noncomputable def cayleyDiffeomorph (a : UpperHalfPlane) (n : WithTop ℕ∞) :
     UpperHalfPlane ≃ₘ^n⟮(modelWithCornersSelf ℂ ℂ), (modelWithCornersSelf ℂ ℂ)⟯
       ComplexUnitDisc where
-  toEquiv := (cayleyHomeomorph a).toEquiv
+  toEquiv := (UpperHalfPlane.cayleyHomeomorph a).toEquiv
   contMDiff_toFun := cayleyDiscCoordinate_contMDiff a n
   contMDiff_invFun := cayleyInverseUpper_contMDiff a n
 
@@ -116,25 +116,25 @@ public theorem cayleyInverseUpper_contMDiff (a : UpperHalfPlane) (n : WithTop �
 
 @[simp]
 public theorem orderThreeCayleyHomeomorph_fixedPoint :
-    orderThreeCayleyHomeomorph fuchsianOneFixedPoint = discCenter := by
+    orderThreeCayleyHomeomorph fuchsianOneFixedPoint = ComplexUnitDisc.center := by
   apply Subtype.ext
   exact orderThreeCayley_fixedPoint
 
 @[simp]
 public theorem orderFourCayleyHomeomorph_fixedPoint :
-    orderFourCayleyHomeomorph fuchsianTwoFixedPoint = discCenter := by
+    orderFourCayleyHomeomorph fuchsianTwoFixedPoint = ComplexUnitDisc.center := by
   apply Subtype.ext
   exact orderFourCayley_fixedPoint
 
 @[simp]
 public theorem orderThreeCayleyHomeomorph_symm_center :
-    orderThreeCayleyHomeomorph.symm discCenter = fuchsianOneFixedPoint := by
+    orderThreeCayleyHomeomorph.symm ComplexUnitDisc.center = fuchsianOneFixedPoint := by
   rw [← orderThreeCayleyHomeomorph_fixedPoint,
     orderThreeCayleyHomeomorph.symm_apply_apply]
 
 @[simp]
 public theorem orderFourCayleyHomeomorph_symm_center :
-    orderFourCayleyHomeomorph.symm discCenter = fuchsianTwoFixedPoint := by
+    orderFourCayleyHomeomorph.symm ComplexUnitDisc.center = fuchsianTwoFixedPoint := by
   rw [← orderFourCayleyHomeomorph_fixedPoint,
     orderFourCayleyHomeomorph.symm_apply_apply]
 
@@ -210,38 +210,38 @@ public theorem orderFourChartRepresentation_generator :
 @[simp]
 public theorem orderThreeChartDeckMap_center
     (hzOne : U.zOne = fuchsianOneFixedPoint) (z : ComplexTwoSpace) :
-    orderThreeChartDeckMap F (discCenter, z) =
-      (discCenter, periodTransport g₁ (parameterMap F U.zOne) z) := by
+    orderThreeChartDeckMap F (ComplexUnitDisc.center, z) =
+      (ComplexUnitDisc.center, periodTransport g₁ (parameterMap F U.zOne) z) := by
   apply Prod.ext
   · apply Subtype.ext
-    simp [orderThreeChartDeckMap, orderThreeDiscRotation, discScalarEquiv_apply_val,
-      discCenter]
+    simp [orderThreeChartDeckMap, orderThreeDiscRotation, ComplexUnitDisc.coe_rotation_apply,
+      ComplexUnitDisc.center]
   · simp [orderThreeChartDeckMap, ← hzOne]
 
 /-- At the centre, the Cayley-chart deck map is the actual order-four fibre transport. -/
 @[simp]
 public theorem orderFourChartDeckMap_center
     (hzTwo : U.zTwo = fuchsianTwoFixedPoint) (z : ComplexTwoSpace) :
-    orderFourChartDeckMap F (discCenter, z) =
-      (discCenter, periodTransport g₂ (parameterMap F U.zTwo) z) := by
+    orderFourChartDeckMap F (ComplexUnitDisc.center, z) =
+      (ComplexUnitDisc.center, periodTransport g₂ (parameterMap F U.zTwo) z) := by
   apply Prod.ext
   · apply Subtype.ext
-    simp [orderFourChartDeckMap, orderFourDiscRotation, discScalarEquiv_apply_val,
-      discCenter]
+    simp [orderFourChartDeckMap, orderFourDiscRotation, ComplexUnitDisc.coe_rotation_apply,
+      ComplexUnitDisc.center]
   · simp [orderFourChartDeckMap, ← hzTwo]
 
 /-- The order-three chart action on the central vector cover descends to the already constructed
 affine automorphism of the special torus fibre. -/
 public theorem orderThreeChartDeckMap_center_mk
     (hzOne : U.zOne = fuchsianOneFixedPoint) (z : ComplexTwoSpace) :
-    Quotient.mk _ (orderThreeChartDeckMap F (discCenter, z)).2 =
+    Quotient.mk _ (orderThreeChartDeckMap F (ComplexUnitDisc.center, z)).2 =
       orderThreeFiberAutomorphism F (Quotient.mk _ z) := by
   rw [orderThreeChartDeckMap_center F hzOne, orderThreeFiberAutomorphism_mk]
 
 /-- The analogous descent to the order-four special-fibre automorphism. -/
 public theorem orderFourChartDeckMap_center_mk
     (hzTwo : U.zTwo = fuchsianTwoFixedPoint) (z : ComplexTwoSpace) :
-    Quotient.mk _ (orderFourChartDeckMap F (discCenter, z)).2 =
+    Quotient.mk _ (orderFourChartDeckMap F (ComplexUnitDisc.center, z)).2 =
       orderFourFiberAutomorphism F (Quotient.mk _ z) := by
   rw [orderFourChartDeckMap_center F hzTwo, orderFourFiberAutomorphism_mk]
 
@@ -495,7 +495,7 @@ public theorem orderThreeCayleyLocalChart_center
     (v : ComplexTwoSpace) :
     orderThreeCoverDiffeomorph ω
         (orderThreeLocalLift F hprojection v
-          (projection (parameterMap F) (U.zOne, v))) = (discCenter, v) := by
+          (projection (parameterMap F) (U.zOne, v))) = (ComplexUnitDisc.center, v) := by
   rw [orderThreeLocalLift_center]
   rw [hzOne]
   apply Prod.ext
@@ -509,7 +509,7 @@ public theorem orderFourCayleyLocalChart_center
     (v : ComplexTwoSpace) :
     orderFourCoverDiffeomorph ω
         (orderFourLocalLift F hprojection v
-          (projection (parameterMap F) (U.zTwo, v))) = (discCenter, v) := by
+          (projection (parameterMap F) (U.zTwo, v))) = (ComplexUnitDisc.center, v) := by
   rw [orderFourLocalLift_center]
   rw [hzTwo]
   apply Prod.ext
@@ -537,7 +537,7 @@ public theorem orderThreeLocalBaseCoordinate_contMDiffAt
       (orderThreeLocalBaseCoordinate F hprojection v)
       (projection (parameterMap F) (U.zOne, v)) := by
   exact (contMDiff_of_mdifferentiable
-      (cayleyCoordinate_mdifferentiable fuchsianOneFixedPoint) ω).contMDiffAt.comp _
+      (UpperHalfPlane.mdifferentiable_cayley fuchsianOneFixedPoint) ω).contMDiffAt.comp _
     (contMDiff_fst.contMDiffAt.comp _ (orderThreeLocalLift_contMDiffAt F hprojection v))
 
 public theorem orderFourLocalBaseCoordinate_contMDiffAt
@@ -547,7 +547,7 @@ public theorem orderFourLocalBaseCoordinate_contMDiffAt
       (orderFourLocalBaseCoordinate F hprojection v)
       (projection (parameterMap F) (U.zTwo, v)) := by
   exact (contMDiff_of_mdifferentiable
-      (cayleyCoordinate_mdifferentiable fuchsianTwoFixedPoint) ω).contMDiffAt.comp _
+      (UpperHalfPlane.mdifferentiable_cayley fuchsianTwoFixedPoint) ω).contMDiffAt.comp _
     (contMDiff_fst.contMDiffAt.comp _ (orderFourLocalLift_contMDiffAt F hprojection v))
 
 @[simp]

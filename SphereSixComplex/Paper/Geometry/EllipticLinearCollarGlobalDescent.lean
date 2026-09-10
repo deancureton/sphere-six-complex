@@ -331,12 +331,12 @@ public theorem exists_orderThreeLinearCollarSourceData
         rw [← hzEq]
         exact hfix
       rw [hzcenter, orderThreeCayleyHomeomorph.eq_def] at hzpos
-      have hc : cayleyHomeomorph fuchsianOneFixedPoint fuchsianOneFixedPoint =
-          discCenter := by
+      have hc : UpperHalfPlane.cayleyHomeomorph fuchsianOneFixedPoint fuchsianOneFixedPoint =
+          ComplexUnitDisc.center := by
         apply Subtype.ext
-        simp [cayleyHomeomorph, cayleyDiscCoordinate, cayleyCoordinate, discCenter]
+        simp [UpperHalfPlane.cayleyHomeomorph, UpperHalfPlane.cayleyToDisc, UpperHalfPlane.cayley, ComplexUnitDisc.center]
       rw [hc] at hzpos
-      norm_num [discCenter] at hzpos
+      norm_num [ComplexUnitDisc.center] at hzpos
     · intro hgtwo
       have hzOrbit : z ∈ sourceOrbitSet (U := U) U.zTwo := by
         simp only [sourceOrbitSet.eq_def, mem_iUnion, mem_singleton_iff]
@@ -415,12 +415,12 @@ public theorem exists_orderFourLinearCollarSourceData
         rw [← hzEq]
         exact hfix
       rw [hzcenter, orderFourCayleyHomeomorph.eq_def] at hzpos
-      have hc : cayleyHomeomorph fuchsianTwoFixedPoint fuchsianTwoFixedPoint =
-          discCenter := by
+      have hc : UpperHalfPlane.cayleyHomeomorph fuchsianTwoFixedPoint fuchsianTwoFixedPoint =
+          ComplexUnitDisc.center := by
         apply Subtype.ext
-        simp [cayleyHomeomorph, cayleyDiscCoordinate, cayleyCoordinate, discCenter]
+        simp [UpperHalfPlane.cayleyHomeomorph, UpperHalfPlane.cayleyToDisc, UpperHalfPlane.cayley, ComplexUnitDisc.center]
       rw [hc] at hzpos
-      norm_num [discCenter] at hzpos
+      norm_num [ComplexUnitDisc.center] at hzpos
   · intro z x hzr hxr g hg
     have hzS : z ∈ S := (hrT z hzr).1
     have hxS : x ∈ S := (hrT x hxr).1

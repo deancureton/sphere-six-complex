@@ -13,7 +13,7 @@ public theorem transport_attachingDegree
     {X Y : Type} [TopologicalSpace X] [T2Space X]
     [TopologicalSpace Y] [T2Space Y]
     (A : StandardA2ToricCentralFiberCellAtlas X) (e : X ≃ₜ Y)
-    (T : IntegralCWCellularHomologyFoundation) (n : ℕ)
+    (T : CellularHomology.IntegralComparison) (n : ℕ)
     (i : cuspWCellIndex (n + 1)) (j : cuspWCellIndex n) :
     let _ := A.cwComplex
     let _ := (A.transport e).cwComplex
@@ -41,6 +41,6 @@ public theorem transport_coordinateBoundary_single
         (Pi.single i 1) j := by
   rw [A.coordinateBoundary_single_eq_attachingDegree,
     (A.transport e).coordinateBoundary_single_eq_attachingDegree]
-  exact A.transport_attachingDegree e integralCWCellularHomologyFoundation.normalized n i j
+  exact A.transport_attachingDegree e CellularHomology.integralComparison.normalized n i j
 
 end SphereSixComplex.StandardA2ToricCentralFiberCellAtlas

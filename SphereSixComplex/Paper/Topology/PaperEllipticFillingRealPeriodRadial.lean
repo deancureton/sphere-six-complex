@@ -112,23 +112,23 @@ public theorem orderFourFillingProductMap_range :
 
 public theorem orderThreeFillingOpen_nonempty (hr : 0 < r) :
     Nonempty (A.orderThreeFillingOpen r) := by
-  let p : ComplexUnitDisc × A.orderThreeTorus := (discCenter, 0)
+  let p : ComplexUnitDisc × A.orderThreeTorus := (ComplexUnitDisc.center, 0)
   let q := (orderThreeRealPeriodProductHomeomorph A.periods).symm p
   refine ⟨⟨q, ?_⟩⟩
   change orderThreeFamilyRadius A.periods q < r
   rw [orderThreeFamilyRadius_eq_productNorm]
   rw [(orderThreeRealPeriodProductHomeomorph A.periods).apply_symm_apply]
-  simpa [p, discCenter] using hr
+  simpa [p, ComplexUnitDisc.center] using hr
 
 public theorem orderFourFillingOpen_nonempty (hr : 0 < r) :
     Nonempty (A.orderFourFillingOpen r) := by
-  let p : ComplexUnitDisc × A.orderFourTorus := (discCenter, 0)
+  let p : ComplexUnitDisc × A.orderFourTorus := (ComplexUnitDisc.center, 0)
   let q := (orderFourRealPeriodProductHomeomorph A.periods).symm p
   refine ⟨⟨q, ?_⟩⟩
   change orderFourFamilyRadius A.periods q < r
   rw [orderFourFamilyRadius_eq_productNorm]
   rw [(orderFourRealPeriodProductHomeomorph A.periods).apply_symm_apply]
-  simpa [p, discCenter] using hr
+  simpa [p, ComplexUnitDisc.center] using hr
 
 /-- Exact whole-filling chart for the actual order-three varying family. -/
 @[expose] public def orderThreeRadialWholeFillingChart
@@ -212,8 +212,8 @@ public theorem orderFourRadialWholeFillingChart_apply_snd
         ((orderThreeDiscRotation ^ (Multiplicative.toAdd g).val)
           ((orderThreeRadialWholeFillingChart A r hr hr1).toProductHomeomorph x).1).1
       rw [show orderThreeDiscRotation =
-          discScalarEquiv orderThreeMultiplier norm_orderThreeMultiplier from rfl,
-        discScalarEquiv_pow_apply_val, discScalarEquiv_pow_apply_val,
+          ComplexUnitDisc.rotation orderThreeMultiplier norm_orderThreeMultiplier from rfl,
+        ComplexUnitDisc.coe_rotation_pow_apply, ComplexUnitDisc.coe_rotation_pow_apply,
         orderThreeRadialWholeFillingChart_apply_fst_val]
       ring
     · simp only [orderThreeRadialWholeFillingChart_apply_snd]
@@ -251,8 +251,8 @@ public theorem orderFourRadialWholeFillingChart_apply_snd
         ((orderFourDiscRotation ^ (Multiplicative.toAdd g).val)
           ((orderFourRadialWholeFillingChart A r hr hr1).toProductHomeomorph x).1).1
       rw [show orderFourDiscRotation =
-          discScalarEquiv orderFourMultiplier norm_orderFourMultiplier from rfl,
-        discScalarEquiv_pow_apply_val, discScalarEquiv_pow_apply_val,
+          ComplexUnitDisc.rotation orderFourMultiplier norm_orderFourMultiplier from rfl,
+        ComplexUnitDisc.coe_rotation_pow_apply, ComplexUnitDisc.coe_rotation_pow_apply,
         orderFourRadialWholeFillingChart_apply_fst_val]
       ring
     · simp only [orderFourRadialWholeFillingChart_apply_snd]

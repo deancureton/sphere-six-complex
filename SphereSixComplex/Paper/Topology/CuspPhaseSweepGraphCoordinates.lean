@@ -61,7 +61,7 @@ public def phaseSweepCellularEdgePath
 public theorem phaseSweepCellularEdgeLoop_relative_class
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
-    (T : IntegralCWCellularHomologyFoundation) (j k : Fin 3) :
+    (T : CellularHomology.IntegralComparison) (j k : Fin 3) :
     let _ := (phaseSweepCellAtlas W).cwComplex
     (T.normalized.cellBasis (ActualLocalCuspCentralOrbitQuotient W) 1).symm
       ((homologyMap (cwRelativeIntegralSingularChainProjection
@@ -131,7 +131,7 @@ public theorem phaseSweepCellularEdgeLoop_homologyToCentral
 public theorem phaseSweepGraphPrism_relativeCoordinates
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
-    (T : IntegralCWCellularHomologyFoundation) (i : Fin 2) (j k : Fin 3) :
+    (T : CellularHomology.IntegralComparison) (i : Fin 2) (j k : Fin 3) :
     let _ := (phaseSweepCellAtlas W).cwComplex
     phaseSweepHomologyTwoToRelativeEquiv W T
       (topologicalClosedPrismHomology (constructedA2CircleSweepHomotopy W i) 0
@@ -155,7 +155,7 @@ public theorem phaseSweepGraphPrism_relativeCoordinates
 public theorem phaseSweepGraphPrism_cellCoordinates
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
-    (T : IntegralCWCellularHomologyFoundation) (i : Fin 2) (j k : Fin 3) :
+    (T : CellularHomology.IntegralComparison) (i : Fin 2) (j k : Fin 3) :
     let _ := (phaseSweepCellAtlas W).cwComplex
     phaseSweepHomologyTwoCellEquiv W T
       (topologicalClosedPrismHomology (constructedA2CircleSweepHomotopy W i) 0

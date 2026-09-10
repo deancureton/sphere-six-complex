@@ -40,7 +40,7 @@ public theorem constructedCentralCellAtlas_edge_right
 public theorem constructedCentralCellAtlas_edge_boundary
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
-    (T : IntegralCWCellularHomologyFoundation) (j : Fin 3) :
+    (T : CellularHomology.IntegralComparison) (j : Fin 3) :
     let _ := (constructedCentralCellAtlas W).cwComplex
     (T.normalized.cellBasis (ActualLocalCuspCentralOrbitQuotient W) 0).symm
       ((integralCWRelativeBoundary (ActualLocalCuspCentralOrbitQuotient W) 0).hom
@@ -55,7 +55,7 @@ public theorem constructedCentralCellAtlas_edge_boundary
 public theorem constructedCentralCellAtlas_edge_attachingDegree
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
-    (T : IntegralCWCellularHomologyFoundation) (j : Fin 3) (i : Fin 2) :
+    (T : CellularHomology.IntegralComparison) (j : Fin 3) (i : Fin 2) :
     let _ := (constructedCentralCellAtlas W).cwComplex
     T.normalized.attachingDegree (ActualLocalCuspCentralOrbitQuotient W) 0 j i =
       if i = 0 then -1 else 1 := by

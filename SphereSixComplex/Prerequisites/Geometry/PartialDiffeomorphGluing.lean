@@ -6,7 +6,6 @@ public import SphereSixComplex.Prerequisites.Geometry.ComplexUnitDisc
 namespace SphereSixComplex.Geometry.EllipticWholeFiberTrivialization
 
 open Filter Set
-open SphereSixComplex.Geometry.EllipticLocalCoordinates
 
 noncomputable section
 
@@ -89,11 +88,11 @@ end CompatiblePartialDiffeomorphs
 
 /-- The punctured product is the collar side of an elliptic filling. -/
 @[expose] public def puncturedDiscProduct (T : Type*) : Set (ComplexUnitDisc × T) :=
-  {p | p.1 ≠ discCenter}
+  {p | p.1 ≠ ComplexUnitDisc.center}
 
 public theorem puncturedDiscProduct_isOpen (T : Type*) [TopologicalSpace T] :
     IsOpen (puncturedDiscProduct T) := by
-  change IsOpen (Prod.fst ⁻¹' ({discCenter} : Set ComplexUnitDisc)ᶜ)
+  change IsOpen (Prod.fst ⁻¹' ({ComplexUnitDisc.center} : Set ComplexUnitDisc)ᶜ)
   exact (isClosed_singleton.preimage continuous_fst).isOpen_compl
 
 section Collar

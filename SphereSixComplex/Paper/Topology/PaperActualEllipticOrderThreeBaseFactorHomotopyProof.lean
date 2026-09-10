@@ -221,9 +221,9 @@ public theorem orderThreeLocalZeroBaseCentralMap_eq_zeroSectionBaseMap :
     familyTotalSpaceBase_regularFamilyInclusion] at hbase
   calc
     ((orderThreeCayleyHomeomorph b.1 :
-        SphereSixComplex.Geometry.EllipticLocalCoordinates.ComplexUnitDisc) : ℂ) =
-        ((z.1 : SphereSixComplex.Geometry.EllipticLocalCoordinates.ComplexUnitDisc) : ℂ) :=
-      congrArg (fun w : SphereSixComplex.Geometry.EllipticLocalCoordinates.ComplexUnitDisc ↦
+        ComplexUnitDisc) : ℂ) =
+        ((z.1 : ComplexUnitDisc) : ℂ) :=
+      congrArg (fun w : ComplexUnitDisc ↦
         (w : ℂ)) hbase
     _ = localDegreeCirclePoint A.orderThreeFillingRelationCayleyBaseValue t := by
       simp [z, orderThreeFillingRelationCayleyPuncturedLoop,

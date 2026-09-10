@@ -79,7 +79,7 @@ public def relativeChainsIsoOfClosedCellEq [T2Space X]
 end StandardA2ToricCentralFiberCellAtlas
 
 public theorem characteristicClass_has_integral_retraction
-    (T : IntegralCWCellularHomologyFoundation)
+    (T : CellularHomology.IntegralComparison)
     (X : Type) [TopologicalSpace X] [T2Space X]
     [Topology.CWComplex (Set.univ : Set X)] (n : ℕ)
     (c : Topology.CWComplex.cell (Set.univ : Set X) n)

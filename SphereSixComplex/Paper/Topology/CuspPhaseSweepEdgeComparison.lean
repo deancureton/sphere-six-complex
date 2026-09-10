@@ -60,7 +60,7 @@ public theorem phaseSweepEdgeBasePair_relativeChainMap
   rfl
 
 public theorem phaseSweepEdgeBasePair_orientedClass
-    (T : IntegralCWCellularHomologyFoundation)
+    (T : CellularHomology.IntegralComparison)
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)] (i : Fin 3) :
     let _ := (phaseSweepCellAtlas W).cwComplex

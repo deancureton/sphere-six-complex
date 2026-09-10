@@ -57,8 +57,8 @@ public theorem integralCWCharacteristicPairMap_natural
   · ext x
     exact he x.1 x.2
 
-public theorem IntegralCWCellularHomologyFoundation.cellBasis_single_natural
-    (T : IntegralCWCellularHomologyFoundation)
+public theorem CellularHomology.IntegralComparison.cellBasis_single_natural
+    (T : CellularHomology.IntegralComparison)
     (f : C(X, Y)) (hf : IsIntegralCWCellularMap f) (n : ℕ)
     (e : Topology.CWComplex.cell (Set.univ : Set X) n)
     (e' : Topology.CWComplex.cell (Set.univ : Set Y) n)
@@ -73,8 +73,8 @@ public theorem IntegralCWCellularHomologyFoundation.cellBasis_single_natural
   unfold integralCWRelativeCellMap
   rw [← HomologicalComplex.homologyMap_comp, integralCWCharacteristicPairMap_natural f hf n e e' he]
 
-public theorem IntegralCWCellularHomologyFoundation.cellBasis_natural
-    (T : IntegralCWCellularHomologyFoundation)
+public theorem CellularHomology.IntegralComparison.cellBasis_natural
+    (T : CellularHomology.IntegralComparison)
     (f : C(X, Y)) (hf : IsIntegralCWCellularMap f) (n : ℕ)
     (c : Topology.CWComplex.cell (Set.univ : Set X) n →
       Topology.CWComplex.cell (Set.univ : Set Y) n)
@@ -92,8 +92,8 @@ public theorem IntegralCWCellularHomologyFoundation.cellBasis_natural
     simpa using T.cellBasis_single_natural f hf n e (c e) (hc e)
   exact DFunLike.congr_fun h v
 
-public theorem IntegralCWCellularHomologyFoundation.coordinateBoundary_natural
-    (T : IntegralCWCellularHomologyFoundation)
+public theorem CellularHomology.IntegralComparison.coordinateBoundary_natural
+    (T : CellularHomology.IntegralComparison)
     (f : C(X, Y)) (hf : IsIntegralCWCellularMap f)
     (c : ∀ n, Topology.CWComplex.cell (Set.univ : Set X) n →
       Topology.CWComplex.cell (Set.univ : Set Y) n)
@@ -111,8 +111,8 @@ public theorem IntegralCWCellularHomologyFoundation.coordinateBoundary_natural
   simp only [T.cellularChainMap_f, integralCWSkeletalChainComplex, ChainComplex.of_d] at h
   exact (ConcreteCategory.congr_hom h (T.cellBasis X (n + 1) v)).symm
 
-public theorem IntegralCWCellularHomologyFoundation.attachingDegree_natural
-    (T : IntegralCWCellularHomologyFoundation)
+public theorem CellularHomology.IntegralComparison.attachingDegree_natural
+    (T : CellularHomology.IntegralComparison)
     (f : C(X, Y)) (hf : IsIntegralCWCellularMap f)
     (c : ∀ n, Topology.CWComplex.cell (Set.univ : Set X) n →
       Topology.CWComplex.cell (Set.univ : Set Y) n)

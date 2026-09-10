@@ -169,11 +169,11 @@ to the fiber whenever that restriction is bijective. -/
   let S := CircleMappingTorusHomologyBases.EstablishedCircleMappingTorusGeometricSections.sections
     G.monodromyCoordinates
   exact
-    { degreeOne := UnnormalizedCuspRadialClutchingData.geometricSectionInMapKernel
+    { degreeOne := WangHomologyPresentation.correctedSection
         (circleMappingTorusHOnePresentation G.clutching) S.degreeOne
         (UnnormalizedCuspRadialClutchingData.degreeOneCoinvariantsEquiv U)
         (UnnormalizedCuspRadialClutchingData.specializationHomologyOneMap U)
-      degreeTwo := UnnormalizedCuspRadialClutchingData.geometricSectionInMapKernelIfBijective
+      degreeTwo := WangHomologyPresentation.correctedSectionIfBijective
         (circleMappingTorusHTwoPresentation G.clutching) S.degreeTwo
         (UnnormalizedCuspRadialClutchingData.degreeTwoCoinvariantsEquiv U)
         (UnnormalizedCuspRadialClutchingData.specializationHomologyTwoMap U) }
@@ -184,7 +184,7 @@ public theorem geometricWangSections_degreeTwo_of_bijective
         (circleMappingTorusHTwoPresentation G.clutching).coinvariantsToTotal)) :
     let _ := G.fiberTopology
     G.geometricWangSections.degreeTwo =
-      UnnormalizedCuspRadialClutchingData.geometricSectionInMapKernel
+      WangHomologyPresentation.correctedSection
         (circleMappingTorusHTwoPresentation G.clutching)
         (EstablishedCircleMappingTorusGeometricSections.sections G.monodromyCoordinates).degreeTwo
         (LinearEquiv.ofBijective (G.specializationHomologyTwoMap.comp
@@ -192,7 +192,7 @@ public theorem geometricWangSections_degreeTwo_of_bijective
         G.specializationHomologyTwoMap := by
   let _ := G.fiberTopology
   unfold geometricWangSections
-  exact UnnormalizedCuspRadialClutchingData.geometricSectionInMapKernelIfBijective_of_bijective
+  exact WangHomologyPresentation.correctedSectionIfBijective_of_bijective
     _ _ _ _ h
 
 public theorem geometricWangSections_degreeTwo_first
@@ -211,11 +211,11 @@ public theorem geometricWangSections_degreeTwo_first
   let P := circleMappingTorusHTwoPresentation G.clutching
   let S := EstablishedCircleMappingTorusGeometricSections.sections G.monodromyCoordinates
   let e := LinearEquiv.ofBijective (G.specializationHomologyTwoMap.comp P.coinvariantsToTotal) h
-  have he := UnnormalizedCuspRadialClutchingData.geometricSectionInMapKernel_map_eq_coinvariant
+  have he := WangHomologyPresentation.map_eq_correctedSection_coinvariant
     P S.degreeTwo e G.specializationHomologyTwoMap rfl x
   rw [← G.geometricWangSections_degreeTwo_of_bijective h] at he
   have hc : G.degreeTwoCoinvariantsEquiv
-      ((P.totalLinearEquivCoinvariantsProdInvariantsOfSection
+      ((P.linearEquivOfSection
         G.geometricWangSections.degreeTwo x).1) =
       G.degreeTwoCoinvariantsEquiv (e.symm (G.specializationHomologyTwoMap x)) := by
     rw [he, e.symm_apply_apply]

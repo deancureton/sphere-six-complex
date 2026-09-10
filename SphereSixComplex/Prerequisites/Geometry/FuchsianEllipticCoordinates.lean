@@ -14,28 +14,28 @@ open scoped ComplexConjugate Manifold
 noncomputable section
 
 @[expose] public noncomputable def orderThreeCayley (z : UpperHalfPlane) : ℂ :=
-  cayleyCoordinate fuchsianOneFixedPoint z
+  UpperHalfPlane.cayley fuchsianOneFixedPoint z
 
 @[expose] public noncomputable def orderFourCayley (z : UpperHalfPlane) : ℂ :=
-  cayleyCoordinate fuchsianTwoFixedPoint z
+  UpperHalfPlane.cayley fuchsianTwoFixedPoint z
 
 public theorem norm_orderThreeCayley_lt_one (z : UpperHalfPlane) :
     ‖orderThreeCayley z‖ < 1 :=
-  norm_cayleyCoordinate_lt_one fuchsianOneFixedPoint z
+  UpperHalfPlane.norm_cayley_lt_one fuchsianOneFixedPoint z
 
 public theorem norm_orderFourCayley_lt_one (z : UpperHalfPlane) :
     ‖orderFourCayley z‖ < 1 :=
-  norm_cayleyCoordinate_lt_one fuchsianTwoFixedPoint z
+  UpperHalfPlane.norm_cayley_lt_one fuchsianTwoFixedPoint z
 
 @[simp]
 public theorem orderThreeCayley_fixedPoint :
     orderThreeCayley fuchsianOneFixedPoint = 0 :=
-  cayleyCoordinate_center fuchsianOneFixedPoint
+  UpperHalfPlane.cayley_self fuchsianOneFixedPoint
 
 @[simp]
 public theorem orderFourCayley_fixedPoint :
     orderFourCayley fuchsianTwoFixedPoint = 0 :=
-  cayleyCoordinate_center fuchsianTwoFixedPoint
+  UpperHalfPlane.cayley_self fuchsianTwoFixedPoint
 
 /-- Rotation multiplier of the order-three source generator in Cayley coordinates. -/
 @[expose] public noncomputable def orderThreeMultiplier : ℂ :=
@@ -62,7 +62,7 @@ public theorem norm_orderFourMultiplier : ‖orderFourMultiplier‖ = 1 := by
 public theorem orderFourCayley_generator (z : UpperHalfPlane) :
     orderFourCayley (fuchsianSourceAction g₂ • z) =
       orderFourMultiplier * orderFourCayley z := by
-  unfold orderFourCayley cayleyCoordinate orderFourMultiplier
+  unfold orderFourCayley UpperHalfPlane.cayley orderFourMultiplier
   change (((((fuchsianSourceAction g₂) z : UpperHalfPlane) : ℂ) -
       (fuchsianTwoFixedPoint : ℂ)) /
     ((((fuchsianSourceAction g₂) z : UpperHalfPlane) : ℂ) -
@@ -73,8 +73,8 @@ public theorem orderFourCayley_generator (z : UpperHalfPlane) :
     have him := congrArg Complex.im h
     norm_num at him
     exact z.im_pos.ne' him
-  have hd := cayley_denominator_ne_zero fuchsianTwoFixedPoint z
-  have hd' := cayley_denominator_ne_zero fuchsianTwoFixedPoint
+  have hd := UpperHalfPlane.cayley_denominator_ne_zero fuchsianTwoFixedPoint z
+  have hd' := UpperHalfPlane.cayley_denominator_ne_zero fuchsianTwoFixedPoint
     (fuchsianSourceAction g₂ • z)
   change (((fuchsianSourceAction g₂) z : UpperHalfPlane) : ℂ) -
     conj (fuchsianTwoFixedPoint : ℂ) ≠ 0 at hd'
@@ -104,15 +104,15 @@ public theorem orderFourCayley_generator (z : UpperHalfPlane) :
 public theorem orderThreeCayley_generator (z : UpperHalfPlane) :
     orderThreeCayley (fuchsianSourceAction g₁ • z) =
       orderThreeMultiplier * orderThreeCayley z := by
-  unfold orderThreeCayley cayleyCoordinate orderThreeMultiplier
+  unfold orderThreeCayley UpperHalfPlane.cayley orderThreeMultiplier
   change (((((fuchsianSourceAction g₁) z : UpperHalfPlane) : ℂ) -
       (fuchsianOneFixedPoint : ℂ)) /
     ((((fuchsianSourceAction g₁) z : UpperHalfPlane) : ℂ) -
       conj (fuchsianOneFixedPoint : ℂ))) = _
   rw [fuchsianSourceAction_g₁_apply]
   have hz : (z : ℂ) ≠ 0 := z.ne_zero
-  have hd := cayley_denominator_ne_zero fuchsianOneFixedPoint z
-  have hd' := cayley_denominator_ne_zero fuchsianOneFixedPoint
+  have hd := UpperHalfPlane.cayley_denominator_ne_zero fuchsianOneFixedPoint z
+  have hd' := UpperHalfPlane.cayley_denominator_ne_zero fuchsianOneFixedPoint
     (fuchsianSourceAction g₁ • z)
   change (((fuchsianSourceAction g₁) z : UpperHalfPlane) : ℂ) -
     conj (fuchsianOneFixedPoint : ℂ) ≠ 0 at hd'
@@ -177,47 +177,47 @@ private theorem orderFourMultiplier_cube_ne_one : orderFourMultiplier ^ 3 ≠ 1 
 
 /-- The order-three rotation on the explicit Cayley disc. -/
 @[expose] public noncomputable def orderThreeDiscRotation : Equiv.Perm ComplexUnitDisc :=
-  discScalarEquiv orderThreeMultiplier norm_orderThreeMultiplier
+  ComplexUnitDisc.rotation orderThreeMultiplier norm_orderThreeMultiplier
 
 /-- The order-four rotation on the explicit Cayley disc. -/
 @[expose] public noncomputable def orderFourDiscRotation : Equiv.Perm ComplexUnitDisc :=
-  discScalarEquiv orderFourMultiplier norm_orderFourMultiplier
+  ComplexUnitDisc.rotation orderFourMultiplier norm_orderFourMultiplier
 
 public theorem orderThreeDiscRotation_pow : orderThreeDiscRotation ^ 3 = 1 :=
-  discScalarEquiv_pow_eq_one orderThreeMultiplier norm_orderThreeMultiplier 3
+  ComplexUnitDisc.rotation_pow_eq_one orderThreeMultiplier norm_orderThreeMultiplier 3
     orderThreeMultiplier_pow_three
 
 public theorem orderFourDiscRotation_pow : orderFourDiscRotation ^ 4 = 1 :=
-  discScalarEquiv_pow_eq_one orderFourMultiplier norm_orderFourMultiplier 4
+  ComplexUnitDisc.rotation_pow_eq_one orderFourMultiplier norm_orderFourMultiplier 4
     orderFourMultiplier_pow_four
 
 @[expose] public def discOffCenter : ComplexUnitDisc := ⟨1 / 2, by norm_num⟩
 
-public theorem discOffCenter_ne : discOffCenter ≠ discCenter := by
+public theorem discOffCenter_ne : discOffCenter ≠ ComplexUnitDisc.center := by
   intro h
   have hv := congrArg Subtype.val h
-  norm_num [discOffCenter, discCenter] at hv
+  norm_num [discOffCenter, ComplexUnitDisc.center] at hv
 
 public theorem orderThreeDiscRotation_fixed_iff
     (k : ℕ) (hk : 0 < k) (hkm : k < 3) (w : ComplexUnitDisc) :
-    (orderThreeDiscRotation ^ k) w = w ↔ w = discCenter := by
+    (orderThreeDiscRotation ^ k) w = w ↔ w = ComplexUnitDisc.center := by
   have hkCases : k = 1 ∨ k = 2 := by omega
   rcases hkCases with rfl | rfl
-  · exact discScalarEquiv_pow_fixed_iff orderThreeMultiplier norm_orderThreeMultiplier 1
+  · exact ComplexUnitDisc.rotation_pow_eq_self_iff orderThreeMultiplier norm_orderThreeMultiplier 1
       (by simpa using orderThreeMultiplier_ne_one) w
-  · exact discScalarEquiv_pow_fixed_iff orderThreeMultiplier norm_orderThreeMultiplier 2
+  · exact ComplexUnitDisc.rotation_pow_eq_self_iff orderThreeMultiplier norm_orderThreeMultiplier 2
       orderThreeMultiplier_sq_ne_one w
 
 public theorem orderFourDiscRotation_fixed_iff
     (k : ℕ) (hk : 0 < k) (hkm : k < 4) (w : ComplexUnitDisc) :
-    (orderFourDiscRotation ^ k) w = w ↔ w = discCenter := by
+    (orderFourDiscRotation ^ k) w = w ↔ w = ComplexUnitDisc.center := by
   have hkCases : k = 1 ∨ k = 2 ∨ k = 3 := by omega
   rcases hkCases with rfl | rfl | rfl
-  · exact discScalarEquiv_pow_fixed_iff orderFourMultiplier norm_orderFourMultiplier 1
+  · exact ComplexUnitDisc.rotation_pow_eq_self_iff orderFourMultiplier norm_orderFourMultiplier 1
       (by simpa using orderFourMultiplier_ne_one) w
-  · exact discScalarEquiv_pow_fixed_iff orderFourMultiplier norm_orderFourMultiplier 2
+  · exact ComplexUnitDisc.rotation_pow_eq_self_iff orderFourMultiplier norm_orderFourMultiplier 2
       orderFourMultiplier_sq_ne_one w
-  · exact discScalarEquiv_pow_fixed_iff orderFourMultiplier norm_orderFourMultiplier 3
+  · exact ComplexUnitDisc.rotation_pow_eq_self_iff orderFourMultiplier norm_orderFourMultiplier 3
       orderFourMultiplier_cube_ne_one w
 
 /-- Order-three Cayley coordinate with codomain the open unit disc. -/

@@ -109,7 +109,7 @@ namespace FiniteCWModelSix
 
 /-- Forget the dimension bound on a finite CW model. -/
 public noncomputable def toFiniteCWModel {X : Type} [TopologicalSpace X]
-    (M : FiniteCWModelSix X) : FiniteCWModel X where
+    (M : FiniteCWModelSix X) : CWType.FiniteModel X where
   Carrier := M.Carrier
   topology := M.topology
   t2 := M.t2

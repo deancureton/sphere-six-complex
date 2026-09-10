@@ -120,7 +120,7 @@ public noncomputable def circleMappingTorusHOneLinearEquiv
     (invariantsEquivOfConjugacy B.degreeZero.toIntLinearEquiv
       (circleMonodromyDifference phi 0).toIntLinearMap 0
       B.degreeZeroDifference_conjugacy).trans zeroKernelEquivInt
-  exact (P.totalLinearEquivOfEndCoordinates coinvariants invariants).trans
+  exact (P.linearEquivOfCoordinates coinvariants invariants).trans
     finTwoProdIntLinearEquiv
 
 /-- The second homology of the cusp circle mapping torus is free of rank six. -/
@@ -136,7 +136,7 @@ public noncomputable def circleMappingTorusHTwoLinearEquiv
     (invariantsEquivOfConjugacy B.degreeOne.toIntLinearEquiv
       (circleMonodromyDifference phi 1).toIntLinearMap mZeroDifference
       B.degreeOneDifference_conjugacy).trans mZeroInvariantsEquivIntSquared
-  exact (P.totalLinearEquivOfEndCoordinates coinvariants invariants).trans
+  exact (P.linearEquivOfCoordinates coinvariants invariants).trans
     finFourProdFinTwoLinearEquiv
 
 /-- Additive coordinates on first homology, for direct use with singular homology APIs. -/

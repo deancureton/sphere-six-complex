@@ -66,19 +66,19 @@ theorem cayleyRawInverse_analyticAt {a : UpperHalfPlane} {w : ℂ} (hw : w ≠ 1
 theorem cayleyRawInverse_im_pos {a : UpperHalfPlane} {w : ℂ} (hw : ‖w‖ < 1) :
     0 < (cayleyRawInverse a w).im := by
   let wd : ComplexUnitDisc := ⟨w, hw⟩
-  simpa only [cayleyRawInverse, cayleyInverse, wd] using cayleyInverse_im_pos a wd
+  simpa only [cayleyRawInverse, UpperHalfPlane.cayleyInv, wd] using UpperHalfPlane.cayleyInv_im_pos a wd
 
 theorem cayleyCoordinate_rawInverse {a : UpperHalfPlane} {w : ℂ} (hw : ‖w‖ < 1) :
-    cayleyCoordinate a
+    UpperHalfPlane.cayley a
       (UpperHalfPlane.ofComplex (cayleyRawInverse a w)) = w := by
   let wd : ComplexUnitDisc := ⟨w, hw⟩
   have him : 0 < (cayleyRawInverse a w).im := cayleyRawInverse_im_pos hw
   have hof : UpperHalfPlane.ofComplex (cayleyRawInverse a w) =
-      cayleyInverseUpper a wd := by
+      UpperHalfPlane.cayleyFromDisc a wd := by
     rw [UpperHalfPlane.ofComplex_apply_of_im_pos him]
     rfl
   rw [hof]
-  have h := congrArg Subtype.val (cayley_cayleyInverse a wd)
+  have h := congrArg Subtype.val (UpperHalfPlane.cayleyToDisc_cayleyFromDisc a wd)
   exact h
 
 /-- The analytic source coordinate written in a raw Cayley chart. -/
@@ -130,13 +130,13 @@ theorem cayleyRawChart_continuousAt {a : UpperHalfPlane} {w : ℂ} (hw : ‖w‖
 theorem cayleyRawChart_injOn_ball (a : UpperHalfPlane) :
     InjOn (fun z ↦ UpperHalfPlane.ofComplex (cayleyRawInverse a z)) (ball 0 1) := by
   intro z hz w hw hzw
-  have hzc : cayleyCoordinate a
+  have hzc : UpperHalfPlane.cayley a
       (UpperHalfPlane.ofComplex (cayleyRawInverse a z)) = z :=
     cayleyCoordinate_rawInverse (by simpa only [mem_ball, dist_zero_right] using hz)
-  have hwc : cayleyCoordinate a
+  have hwc : UpperHalfPlane.cayley a
       (UpperHalfPlane.ofComplex (cayleyRawInverse a w)) = w :=
     cayleyCoordinate_rawInverse (by simpa only [mem_ball, dist_zero_right] using hw)
-  have hc := congrArg (cayleyCoordinate a) hzw
+  have hc := congrArg (UpperHalfPlane.cayley a) hzw
   exact hzc.symm.trans (hc.trans hwc)
 
 theorem cayleyRawInverse_deriv_zero_ne (a : UpperHalfPlane) :
@@ -156,23 +156,23 @@ theorem cayleyRawChart_orderThree_rotate {w : ℂ} (hw : ‖w‖ < 1) :
   have hrotNorm : ‖orderThreeMultiplier * w‖ < 1 := by
     rw [norm_mul, norm_orderThreeMultiplier, one_mul]
     exact hw
-  apply (cayleyHomeomorph fuchsianOneFixedPoint).injective
+  apply (UpperHalfPlane.cayleyHomeomorph fuchsianOneFixedPoint).injective
   apply Subtype.ext
-  change cayleyCoordinate fuchsianOneFixedPoint
+  change UpperHalfPlane.cayley fuchsianOneFixedPoint
       (UpperHalfPlane.ofComplex
         (cayleyRawInverse fuchsianOneFixedPoint (orderThreeMultiplier * w))) =
-    cayleyCoordinate fuchsianOneFixedPoint
+    UpperHalfPlane.cayley fuchsianOneFixedPoint
       (fuchsianSourceAction g₁ •
         UpperHalfPlane.ofComplex (cayleyRawInverse fuchsianOneFixedPoint w))
   calc
-    cayleyCoordinate fuchsianOneFixedPoint
+    UpperHalfPlane.cayley fuchsianOneFixedPoint
         (UpperHalfPlane.ofComplex
           (cayleyRawInverse fuchsianOneFixedPoint (orderThreeMultiplier * w))) =
         orderThreeMultiplier * w := cayleyCoordinate_rawInverse hrotNorm
-    _ = orderThreeMultiplier * cayleyCoordinate fuchsianOneFixedPoint
+    _ = orderThreeMultiplier * UpperHalfPlane.cayley fuchsianOneFixedPoint
         (UpperHalfPlane.ofComplex (cayleyRawInverse fuchsianOneFixedPoint w)) := by
       rw [cayleyCoordinate_rawInverse hw]
-    _ = cayleyCoordinate fuchsianOneFixedPoint
+    _ = UpperHalfPlane.cayley fuchsianOneFixedPoint
         (fuchsianSourceAction g₁ •
           UpperHalfPlane.ofComplex (cayleyRawInverse fuchsianOneFixedPoint w)) := by
       simpa only [orderThreeCayley] using
@@ -188,23 +188,23 @@ theorem cayleyRawChart_orderFour_rotate {w : ℂ} (hw : ‖w‖ < 1) :
   have hrotNorm : ‖orderFourMultiplier * w‖ < 1 := by
     rw [norm_mul, norm_orderFourMultiplier, one_mul]
     exact hw
-  apply (cayleyHomeomorph fuchsianTwoFixedPoint).injective
+  apply (UpperHalfPlane.cayleyHomeomorph fuchsianTwoFixedPoint).injective
   apply Subtype.ext
-  change cayleyCoordinate fuchsianTwoFixedPoint
+  change UpperHalfPlane.cayley fuchsianTwoFixedPoint
       (UpperHalfPlane.ofComplex
         (cayleyRawInverse fuchsianTwoFixedPoint (orderFourMultiplier * w))) =
-    cayleyCoordinate fuchsianTwoFixedPoint
+    UpperHalfPlane.cayley fuchsianTwoFixedPoint
       (fuchsianSourceAction g₂ •
         UpperHalfPlane.ofComplex (cayleyRawInverse fuchsianTwoFixedPoint w))
   calc
-    cayleyCoordinate fuchsianTwoFixedPoint
+    UpperHalfPlane.cayley fuchsianTwoFixedPoint
         (UpperHalfPlane.ofComplex
           (cayleyRawInverse fuchsianTwoFixedPoint (orderFourMultiplier * w))) =
         orderFourMultiplier * w := cayleyCoordinate_rawInverse hrotNorm
-    _ = orderFourMultiplier * cayleyCoordinate fuchsianTwoFixedPoint
+    _ = orderFourMultiplier * UpperHalfPlane.cayley fuchsianTwoFixedPoint
         (UpperHalfPlane.ofComplex (cayleyRawInverse fuchsianTwoFixedPoint w)) := by
       rw [cayleyCoordinate_rawInverse hw]
-    _ = cayleyCoordinate fuchsianTwoFixedPoint
+    _ = UpperHalfPlane.cayley fuchsianTwoFixedPoint
         (fuchsianSourceAction g₂ •
           UpperHalfPlane.ofComplex (cayleyRawInverse fuchsianTwoFixedPoint w)) := by
       simpa only [orderFourCayley] using
@@ -456,11 +456,11 @@ theorem ellipticChartFunction_order_le_stabilizer_card
         _ = center := by rw [map_inv, inv_smul_smul]
     apply hwzero
     calc
-      w = cayleyCoordinate center (chart w) := by
+      w = UpperHalfPlane.cayley center (chart w) := by
         symm
         exact cayleyCoordinate_rawInverse hwdisc
-      _ = cayleyCoordinate center center := congrArg _ hchart_eq
-      _ = 0 := cayleyCoordinate_center center
+      _ = UpperHalfPlane.cayley center center := congrArg _ hchart_eq
+      _ = 0 := UpperHalfPlane.cayley_self center
   have hisol : ∀ᶠ w in nhdsWithin (0 : ℂ) {0}ᶜ, G w ≠ G 0 := by
     have hVwithin : V ∈ nhdsWithin (0 : ℂ) {0}ᶜ := nhdsWithin_le_nhds hV
     filter_upwards [hVwithin, self_mem_nhdsWithin]
@@ -495,7 +495,7 @@ theorem ellipticChartFunction_order_le_stabilizer_card
       (UpperHalfPlane.ofComplex (cayleyRawInverse center x))) w ≠ 0
     simpa only [chart, Function.comp_def] using hne
   let T : α → ℂ → ℂ := fun a w ↦
-    cayleyCoordinate center (fuchsianSourceAction (embed a) • chart w)
+    UpperHalfPlane.cayley center (fuchsianSourceAction (embed a) • chart w)
   have hparam : ∃ W ∈ nhds (0 : ℂ), ∀ z ∈ W, ∀ w ∈ W,
       G z = G w → ∃ a : α, T a z = w := by
     refine ⟨V, hV, ?_⟩
@@ -511,9 +511,9 @@ theorem ellipticChartFunction_order_le_stabilizer_card
     have hwnorm : ‖w‖ < 1 := by
       simpa only [V, Set.mem_inter_iff, mem_ball, dist_zero_right] using hw.1.2
     calc
-      T a z = cayleyCoordinate center
+      T a z = UpperHalfPlane.cayley center
           (fuchsianSourceAction (embed a) • chart z) := rfl
-      _ = cayleyCoordinate center (chart w) := by rw [← ha, hg]
+      _ = UpperHalfPlane.cayley center (chart w) := by rw [← ha, hg]
       _ = w := cayleyCoordinate_rawInverse hwnorm
   obtain ⟨ε, hε, hball⟩ := Metric.eventually_nhds_iff.mp hV
   have hfinite : analyticOrderAt (fun w ↦ G w - value) 0 ≠ ⊤ :=

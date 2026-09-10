@@ -443,7 +443,7 @@ private theorem orderFourCayley_re_formula (z : UpperHalfPlane) :
     (orderFourCayley z).re =
       (normSq (z : ℂ) + Real.sqrt 2 * z.re) /
         normSq ((z : ℂ) - starRingEnd ℂ (fuchsianTwoFixedPoint : ℂ)) := by
-  unfold orderFourCayley cayleyCoordinate
+  unfold orderFourCayley UpperHalfPlane.cayley
   rw [Complex.div_re]
   simp only [fuchsianTwoFixedPoint, Complex.sub_re, Complex.sub_im,
     Complex.conj_re, Complex.conj_im, Complex.normSq_apply]
@@ -455,7 +455,7 @@ private theorem orderFourCayley_im_formula (z : UpperHalfPlane) :
     (orderFourCayley z).im =
       (-Real.sqrt 2 * z.re - 1) /
         normSq ((z : ℂ) - starRingEnd ℂ (fuchsianTwoFixedPoint : ℂ)) := by
-  unfold orderFourCayley cayleyCoordinate
+  unfold orderFourCayley UpperHalfPlane.cayley
   rw [Complex.div_im]
   simp only [fuchsianTwoFixedPoint, Complex.sub_re, Complex.sub_im,
     Complex.conj_re, Complex.conj_im, Complex.normSq_apply]

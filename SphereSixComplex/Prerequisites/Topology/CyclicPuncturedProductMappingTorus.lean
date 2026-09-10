@@ -357,7 +357,7 @@ end IntervalPresentation
 
 section Polar
 
-open Geometry Geometry.EllipticLocalCoordinates
+open Geometry
 
 variable {T : Type} [TopologicalSpace T] {r : ℝ}
 
@@ -512,7 +512,7 @@ end AngleMap
 
 section Cover
 
-open Geometry Geometry.EllipticLocalCoordinates
+open Geometry
 
 variable {T : Type} [TopologicalSpace T] {r : ℝ}
 
@@ -554,7 +554,7 @@ end Cover
 
 section Main
 
-open Geometry Geometry.EllipticLocalCoordinates Geometry.EquivariantQuotientHomeomorph
+open Geometry Geometry.EquivariantQuotientHomeomorph
 
 variable {m : ℕ} [NeZero m] {T : Type} [TopologicalSpace T] {r : ℝ}
 
@@ -572,7 +572,7 @@ variable (A : MulAction (FiniteCyclic m) (ComplexUnitDisc × T)) (φ : T ≃ₜ 
 public abbrev IsStandardGenerator : Prop :=
   ∀ p : ComplexUnitDisc × T,
     actionMap A (cyclicGenerator m) p =
-      (discScalarEquiv (standardMultiplier m) (norm_standardMultiplier m) p.1, φ p.2)
+      (ComplexUnitDisc.rotation (standardMultiplier m) (norm_standardMultiplier m) p.1, φ p.2)
 
 omit [NeZero m] in
 public theorem actionMap_pow_fst (hgen : IsStandardGenerator A φ) (k : ℕ)
@@ -582,7 +582,7 @@ public theorem actionMap_pow_fst (hgen : IsStandardGenerator A φ) (k : ℕ)
   induction k with
   | zero => simp [actionMap]
   | succ k ih =>
-      rw [pow_succ', actionMap_mul, hgen, discScalarEquiv_apply_val, ih, pow_succ']
+      rw [pow_succ', actionMap_mul, hgen, ComplexUnitDisc.coe_rotation_apply, ih, pow_succ']
       ring
 
 omit [NeZero m] in
@@ -597,7 +597,7 @@ public theorem actionMap_pow_snd (hgen : IsStandardGenerator A φ) (k : ℕ)
 
 public theorem clutching_pow_self (hgen : IsStandardGenerator A φ) : φ ^ m = 1 := by
   ext x
-  have h := actionMap_pow_snd A φ hgen m (discCenter, x)
+  have h := actionMap_pow_snd A φ hgen m (ComplexUnitDisc.center, x)
   rw [cyclicGenerator_pow_self] at h
   simpa [actionMap] using h.symm
 
@@ -754,13 +754,13 @@ standard one. -/
 public theorem isStandardGenerator_of_multiplier_eq (lambda : ℂ) (hlambda : ‖lambda‖ = 1)
     (hmul : lambda = standardMultiplier m)
     (hgen : ∀ p : ComplexUnitDisc × T,
-      actionMap A (cyclicGenerator m) p = (discScalarEquiv lambda hlambda p.1, φ p.2)) :
+      actionMap A (cyclicGenerator m) p = (ComplexUnitDisc.rotation lambda hlambda p.1, φ p.2)) :
     IsStandardGenerator A φ := by
   intro p
   rw [hgen p]
   congr 1
   apply Subtype.ext
-  rw [discScalarEquiv_apply_val, discScalarEquiv_apply_val, hmul]
+  rw [ComplexUnitDisc.coe_rotation_apply, ComplexUnitDisc.coe_rotation_apply, hmul]
 
 /-- **The angular fundamental-domain theorem.**  A cyclic action on a punctured disc--fibre
 product whose generator rotates the disc clockwise by one `m`-th of a full turn and acts on the

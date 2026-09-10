@@ -41,7 +41,7 @@ public theorem orderThreeCayleyRegularCoordinate_chartFunction
     ellipticChartFunction A.modular.sourceCoordinate.coordinate
         fuchsianOneFixedPoint
         ((orderThreeCayleyHomeomorph z :
-          SphereSixComplex.Geometry.EllipticLocalCoordinates.ComplexUnitDisc) : ℂ) =
+          ComplexUnitDisc) : ℂ) =
       A.modular.sourceCoordinate.coordinate z := by
   unfold ellipticChartFunction
   let w := orderThreeCayleyHomeomorph z
@@ -49,9 +49,9 @@ public theorem orderThreeCayleyRegularCoordinate_chartFunction
     cayleyRawInverse_im_pos w.property
   rw [UpperHalfPlane.ofComplex_apply_of_im_pos him]
   change A.modular.sourceCoordinate.coordinate
-      (cayleyInverseUpper fuchsianOneFixedPoint w) =
+      (UpperHalfPlane.cayleyFromDisc fuchsianOneFixedPoint w) =
     A.modular.sourceCoordinate.coordinate z
-  rw [show cayleyInverseUpper fuchsianOneFixedPoint w = z by
+  rw [show UpperHalfPlane.cayleyFromDisc fuchsianOneFixedPoint w = z by
     exact orderThreeCayleyHomeomorph.symm_apply_apply z]
 
 /-- The normalized affine coordinate has exact order three in the order-three Cayley chart. -/
@@ -165,7 +165,7 @@ public theorem orderThreeFillingRelation_baseCoordinate_eq_chartFunction
         ((orderThreeCayleyHomeomorph
           (familyTotalSpaceBase A.periods
             (A.orderThreeCollarInverseRepresentative lift).1) :
-              SphereSixComplex.Geometry.EllipticLocalCoordinates.ComplexUnitDisc) : ℂ) :=
+              ComplexUnitDisc) : ℂ) :=
       (A.orderThreeCayleyRegularCoordinate_chartFunction _).symm
     _ = _ := congrArg
       (ellipticChartFunction A.modular.sourceCoordinate.coordinate

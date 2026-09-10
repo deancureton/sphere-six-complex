@@ -25,7 +25,7 @@ For every `0 ≤ k ≤ d`, the theorem supplies the additive equivalence
 `H^k(X; ℤ) ≃ H_{d-k}(X; ℤ)`.  The `Nonempty` wrapper deliberately does not claim that the
 chosen equivalence is canonical: cap products and fundamental classes are not yet constructed in
 the project. -/
-public axiom classicalIntegralPoincareDuality
+public axiom PoincareDuality.nonempty_addEquiv
     (d : ℕ) (E X : Type)
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [TopologicalSpace X] [ChartedSpace E X]

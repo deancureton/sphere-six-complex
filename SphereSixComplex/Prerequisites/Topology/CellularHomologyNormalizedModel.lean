@@ -13,8 +13,8 @@ public noncomputable def integralCWCellularHomologyModel
     (Y : Type) [TopologicalSpace Y] [T2Space Y]
     [Topology.CWComplex (Set.univ : Set Y)] :
     IntegralCWCellularHomologyModel Y :=
-  IntegralCWCellularHomologyFoundation.objectwiseModel
-    integralCWCellularHomologyFoundation.normalized Y
+  CellularHomology.IntegralComparison.objectwiseModel
+    CellularHomology.integralComparison.normalized Y
 
 end EstablishedCellularHomology
 

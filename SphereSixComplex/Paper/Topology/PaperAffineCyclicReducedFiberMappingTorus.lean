@@ -120,7 +120,7 @@ public theorem centralFiberOrbitProjection_surjective
   rw [centralFiberOrbitProjection_apply]
   change Quotient.mk _ (D.actionData.center, p.2) = q.1
   rw [D.center_eq]
-  have hpair : (discCenter, p.2) = p := by
+  have hpair : (ComplexUnitDisc.center, p.2) = p := by
     apply Prod.ext
     · exact hp.symm
     · rfl

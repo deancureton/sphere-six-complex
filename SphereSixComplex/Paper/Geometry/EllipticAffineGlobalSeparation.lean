@@ -194,15 +194,15 @@ public theorem exists_cayleyRadius_subset
     (a : UpperHalfPlane) {S : Set UpperHalfPlane}
     (hS : IsOpen S) (ha : a ∈ S) :
     ∃ r : ℝ, 0 < r ∧ r < 1 ∧
-      ∀ z : UpperHalfPlane, ‖(cayleyHomeomorph a z).1‖ < r → z ∈ S := by
-  have hcenter : cayleyHomeomorph a a = discCenter := by
+      ∀ z : UpperHalfPlane, ‖(UpperHalfPlane.cayleyHomeomorph a z).1‖ < r → z ∈ S := by
+  have hcenter : UpperHalfPlane.cayleyHomeomorph a a = ComplexUnitDisc.center := by
     apply Subtype.ext
-    simp [cayleyHomeomorph, cayleyDiscCoordinate, cayleyCoordinate, discCenter]
-  have hopen : IsOpen (cayleyHomeomorph a '' S) :=
-    (cayleyHomeomorph a).isOpenMap S hS
-  have hmem : discCenter ∈ cayleyHomeomorph a '' S :=
+    simp [UpperHalfPlane.cayleyHomeomorph, UpperHalfPlane.cayleyToDisc, UpperHalfPlane.cayley, ComplexUnitDisc.center]
+  have hopen : IsOpen (UpperHalfPlane.cayleyHomeomorph a '' S) :=
+    (UpperHalfPlane.cayleyHomeomorph a).isOpenMap S hS
+  have hmem : ComplexUnitDisc.center ∈ UpperHalfPlane.cayleyHomeomorph a '' S :=
     ⟨a, ha, hcenter⟩
-  obtain ⟨ε, hε, hball⟩ := (Metric.isOpen_iff.mp hopen) discCenter hmem
+  obtain ⟨ε, hε, hball⟩ := (Metric.isOpen_iff.mp hopen) ComplexUnitDisc.center hmem
   let r := min ε (1 / 2 : ℝ)
   have hr : 0 < r := by
     dsimp [r]
@@ -212,13 +212,13 @@ public theorem exists_cayleyRadius_subset
     exact lt_of_le_of_lt (min_le_right ε (1 / 2 : ℝ)) (by norm_num)
   refine ⟨r, hr, hr1, ?_⟩
   intro z hz
-  have hzball : cayleyHomeomorph a z ∈ Metric.ball discCenter ε := by
-    change dist (cayleyHomeomorph a z).1 (discCenter : ℂ) < ε
-    change dist (cayleyHomeomorph a z).1 0 < ε
+  have hzball : UpperHalfPlane.cayleyHomeomorph a z ∈ Metric.ball ComplexUnitDisc.center ε := by
+    change dist (UpperHalfPlane.cayleyHomeomorph a z).1 (ComplexUnitDisc.center : ℂ) < ε
+    change dist (UpperHalfPlane.cayleyHomeomorph a z).1 0 < ε
     rw [dist_zero_right]
     exact hz.trans_le (min_le_left _ _)
   obtain ⟨w, hw, hwz⟩ := hball hzball
-  have hwz' : w = z := (cayleyHomeomorph a).injective hwz
+  have hwz' : w = z := (UpperHalfPlane.cayleyHomeomorph a).injective hwz
   rwa [← hwz']
 
 /-- Proper discontinuity plus the exact order-three source stabilizer gives a positive affine

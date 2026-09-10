@@ -8,9 +8,9 @@ open CategoryTheory CategoryTheory.Limits
 
 namespace SphereSixComplex
 
-namespace IntegralCWCellularHomologyFoundation
+namespace CellularHomology.IntegralComparison
 
-variable (T : IntegralCWCellularHomologyFoundation)
+variable (T : CellularHomology.IntegralComparison)
   (X : Type) [TopologicalSpace X] [T2Space X]
   [Topology.CWComplex (Set.univ : Set X)]
 
@@ -47,6 +47,6 @@ public theorem homologyEquiv_of_skeletalCycle (n : ℕ) {A : AddCommGrpCat}
   rw [ha, Category.assoc]
   exact congrArg (b ≫ ·) (T.homologyEquiv_skeletal X n)
 
-end IntegralCWCellularHomologyFoundation
+end CellularHomology.IntegralComparison
 
 end SphereSixComplex

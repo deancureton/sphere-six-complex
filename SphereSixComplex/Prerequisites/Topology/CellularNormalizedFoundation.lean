@@ -6,12 +6,12 @@ public import SphereSixComplex.Prerequisites.Topology.CellularSquareOrientation
 @[expose] public section
 noncomputable section
 open CategoryTheory AlgebraicTopology
-namespace SphereSixComplex.IntegralCWCellularHomologyFoundation
+namespace SphereSixComplex.CellularHomology.IntegralComparison
 
-public def withDiskOrientations (T : IntegralCWCellularHomologyFoundation)
+public def withDiskOrientations (T : CellularHomology.IntegralComparison)
     (O : ∀ n, (CWRelativeIntegralSingularChainComplex
       (cwCharacteristicBoundaryInclusion n)).homology n ≃+ ℤ) :
-    IntegralCWCellularHomologyFoundation :=
+    CellularHomology.IntegralComparison :=
   { T with
     diskOrientation := O
     cellBasis := fun X _ _ _ n ↦
@@ -32,7 +32,7 @@ public def withDiskOrientations (T : IntegralCWCellularHomologyFoundation)
       rw [ho]
       exact (map_zsmul _ _ _).symm }
 
-public def normalizedDiskOrientations (T : IntegralCWCellularHomologyFoundation) :
+public def normalizedDiskOrientations (T : CellularHomology.IntegralComparison) :
     ∀ n, (CWRelativeIntegralSingularChainComplex
       (cwCharacteristicBoundaryInclusion n)).homology n ≃+ ℤ
   | 0 => normalizedPointDiskOrientation
@@ -40,20 +40,20 @@ public def normalizedDiskOrientations (T : IntegralCWCellularHomologyFoundation)
   | 2 => normalizedSquareDiskOrientation
   | n + 3 => T.diskOrientation (n + 3)
 
-public def normalized (T : IntegralCWCellularHomologyFoundation) :
-    IntegralCWCellularHomologyFoundation :=
+public def normalized (T : CellularHomology.IntegralComparison) :
+    CellularHomology.IntegralComparison :=
   T.withDiskOrientations T.normalizedDiskOrientations
 
-public theorem normalized_diskOrientation_zero (T : IntegralCWCellularHomologyFoundation) :
+public theorem normalized_diskOrientation_zero (T : CellularHomology.IntegralComparison) :
     T.normalized.diskOrientation 0 = normalizedPointDiskOrientation := rfl
 
-public theorem normalized_diskOrientation_one (T : IntegralCWCellularHomologyFoundation) :
+public theorem normalized_diskOrientation_one (T : CellularHomology.IntegralComparison) :
     T.normalized.diskOrientation 1 = normalizedIntervalDiskOrientation T := rfl
 
-public theorem normalized_diskOrientation_two (T : IntegralCWCellularHomologyFoundation) :
+public theorem normalized_diskOrientation_two (T : CellularHomology.IntegralComparison) :
     T.normalized.diskOrientation 2 = normalizedSquareDiskOrientation := rfl
 
-public theorem normalized_diskOrientation_add_three (T : IntegralCWCellularHomologyFoundation)
+public theorem normalized_diskOrientation_add_three (T : CellularHomology.IntegralComparison)
     (n : ℕ) : T.normalized.diskOrientation (n + 3) = T.diskOrientation (n + 3) := rfl
 
-end SphereSixComplex.IntegralCWCellularHomologyFoundation
+end SphereSixComplex.CellularHomology.IntegralComparison

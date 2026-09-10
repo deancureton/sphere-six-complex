@@ -274,13 +274,13 @@ public theorem orderThreeActualEllipticRadialFillingLift_equivariant
               A.starSeparation.orderThree.radius_lt_one.le q).2.2⟩ :
           ComplexUnitDisc) : ℂ)
     have hrotation : orderThreeDiscRotation =
-        discScalarEquiv (standardMultiplier 3) (norm_standardMultiplier 3) := by
+        ComplexUnitDisc.rotation (standardMultiplier 3) (norm_standardMultiplier 3) := by
       apply Equiv.ext
       intro u
       apply Subtype.ext
       change orderThreeMultiplier * (u : ℂ) = standardMultiplier 3 * (u : ℂ)
       rw [orderThreeMultiplier_eq_standardMultiplier]
-    rw [hrotation, discScalarEquiv_pow_apply_val]
+    rw [hrotation, ComplexUnitDisc.coe_rotation_pow_apply]
     change (((q.1 : ℝ) : ℂ) *
           ((angleMap 3 (q.2.1 - g.right.toAdd) : Circle) : ℂ)) /
           (A.starSeparation.orderThree.radius : ℂ) =
@@ -356,13 +356,13 @@ public theorem orderFourActualEllipticRadialFillingLift_equivariant
               A.starSeparation.orderFour.radius_lt_one.le q).2.2⟩ :
           ComplexUnitDisc) : ℂ)
     have hrotation : orderFourDiscRotation =
-        discScalarEquiv (standardMultiplier 4) (norm_standardMultiplier 4) := by
+        ComplexUnitDisc.rotation (standardMultiplier 4) (norm_standardMultiplier 4) := by
       apply Equiv.ext
       intro u
       apply Subtype.ext
       change orderFourMultiplier * (u : ℂ) = standardMultiplier 4 * (u : ℂ)
       rw [orderFourMultiplier_eq_standardMultiplier]
-    rw [hrotation, discScalarEquiv_pow_apply_val]
+    rw [hrotation, ComplexUnitDisc.coe_rotation_pow_apply]
     change (((q.1 : ℝ) : ℂ) *
           ((angleMap 4 (q.2.1 - g.right.toAdd) : Circle) : ℂ)) /
           (A.starSeparation.orderFour.radius : ℂ) =
