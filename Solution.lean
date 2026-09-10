@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Final
+public import SphereSixComplex.Paper.Final
 public import ChallengeAxioms
 
 open scoped ContDiff Manifold

@@ -1,0 +1,467 @@
+module
+
+public import SphereSixComplex.Paper.Geometry.EllipticActualActionTopology
+public import SphereSixComplex.Paper.Topology.PaperEllipticReducedCentralFiberCoverModels
+public import SphereSixComplex.Paper.Topology.PaperEllipticTorusHomologyBasisProof
+
+/-!
+# Integral homology bases for the elliptic period tori
+
+This file gives the standard integral degree-one and degree-two models of a full-rank period
+torus.  The degree-two action is defined by the actual second compound matrix.  The bases
+themselves are constructed in `PaperEllipticTorusHomologyBasisProof`; the only missing topology
+input is their naturality under descended affine automorphisms.
+-/
+
+open AlgebraicTopology Matrix Set
+open scoped ContinuousMap
+
+namespace SphereSixComplex
+
+open LatticeData Periods TriangleGroup
+open Geometry Geometry.AnalyticTorusFamily Geometry.ComplexTorus
+open Geometry.EllipticActualActionTopology Geometry.EllipticFamilySpecialization
+open Geometry.GlobalTorusFamily
+
+noncomputable section
+
+/-- First coordinate in the ordered list `(01, 02, 03, 12, 13, 23)`. -/
+@[expose] public def periodPairFirst : Fin 6 → Fin 4 := ![0, 0, 0, 1, 1, 2]
+
+/-- Second coordinate in the ordered list `(01, 02, 03, 12, 13, 23)`. -/
+@[expose] public def periodPairSecond : Fin 6 → Fin 4 := ![1, 2, 3, 2, 3, 3]
+
+public theorem periodPairFirst_lt_second (i : Fin 6) :
+    periodPairFirst i < periodPairSecond i := by
+  fin_cases i <;> decide
+
+/-- The second compound of a four-by-four matrix in coordinates `(01, 02, 03, 12, 13, 23)`. -/
+@[expose] public def secondCompoundMatrix
+    (M : Matrix (Fin 4) (Fin 4) ℤ) : Matrix (Fin 6) (Fin 6) ℤ :=
+  fun ij ab ↦
+    M (periodPairFirst ij) (periodPairFirst ab) *
+        M (periodPairSecond ij) (periodPairSecond ab) -
+      M (periodPairFirst ij) (periodPairSecond ab) *
+        M (periodPairSecond ij) (periodPairFirst ab)
+
+/-- Matrix of the induced action on exterior degree two, in the six increasing-pair
+coordinates. -/
+@[expose] public def exteriorSquareMatrix
+    (e : IntegerPeriods ≃ₗ[ℤ] IntegerPeriods) : Matrix (Fin 6) (Fin 6) ℤ :=
+  secondCompoundMatrix (LinearMap.toMatrix' e.toLinearMap)
+
+/-- The degree-two map associated to an integral automorphism of the period lattice. -/
+@[expose] public def exteriorSquareMap
+    (e : IntegerPeriods ≃ₗ[ℤ] IntegerPeriods) : (Fin 6 → ℤ) →+ (Fin 6 → ℤ) :=
+  (Matrix.toLin' (exteriorSquareMatrix e)).toAddHom
+
+public theorem integralMatrix_rhoLambda_gOne :
+    LinearMap.toMatrix' (rhoLambda g₁).toLinearMap = A₁ := by
+  ext i j
+  rw [LinearMap.toMatrix'_apply]
+  convert congrFun (rhoLambda_g₁_apply (Pi.single j 1)) i using 1 <;> simp
+
+public theorem integralMatrix_rhoLambda_gTwo :
+    LinearMap.toMatrix' (rhoLambda g₂).toLinearMap = A₂ := by
+  ext i j
+  rw [LinearMap.toMatrix'_apply]
+  convert congrFun (rhoLambda_g₂_apply (Pi.single j 1)) i using 1 <;> simp
+
+/-- The degree-two order-three action is the second compound of the source matrix `A₁`. -/
+public theorem exteriorSquareMatrix_rhoLambda_gOne :
+    exteriorSquareMatrix (rhoLambda g₁) =
+      secondCompoundMatrix A₁ := by
+  rw [exteriorSquareMatrix, integralMatrix_rhoLambda_gOne]
+
+/-- The degree-two order-four action is the second compound of the source matrix `A₂`. -/
+public theorem exteriorSquareMatrix_rhoLambda_gTwo :
+    exteriorSquareMatrix (rhoLambda g₂) =
+      secondCompoundMatrix A₂ := by
+  rw [exteriorSquareMatrix, integralMatrix_rhoLambda_gTwo]
+
+/-- An affine automorphism of a period torus together with its actual lift and integral lattice
+automorphism. -/
+public structure DescendedAffineTorusAutomorphism (p : SphereSixComplex.Periods.Parameters) where
+  latticeMap : IntegerPeriods ≃ₗ[ℤ] IntegerPeriods
+  lift : ComplexTwoSpace ≃+ ComplexTwoSpace
+  lift_period : ∀ n, lift (periodVector p n) = periodVector p (latticeMap n)
+  translation : AdditiveTorus p
+  map : C(AdditiveTorus p, AdditiveTorus p)
+  map_mk : ∀ z, map (Quotient.mk _ z) = Quotient.mk _ (lift z) + translation
+
+namespace DescendedAffineTorusAutomorphism
+
+variable {p : SphereSixComplex.Periods.Parameters}
+
+/-- The descended linear part of an affine period-torus automorphism. -/
+@[expose] public def linearPartMap (D : DescendedAffineTorusAutomorphism p) :
+    C(AdditiveTorus p, AdditiveTorus p) :=
+  ⟨fun q ↦ D.map q - D.translation, D.map.continuous.sub continuous_const⟩
+
+public theorem linearPartMap_mk (D : DescendedAffineTorusAutomorphism p)
+    (z : ComplexTwoSpace) :
+    D.linearPartMap (Quotient.mk _ z) = Quotient.mk _ (D.lift z) := by
+  change D.map (Quotient.mk _ z) - D.translation = _
+  rw [D.map_mk]
+  exact add_sub_cancel_right _ _
+
+/-- A path from zero to any point of a period torus, obtained by projecting a straight path
+from a chosen lift. -/
+@[expose] public noncomputable def translationPath (a : AdditiveTorus p) : Path 0 a :=
+  ((Path.segment (0 : ComplexTwoSpace) a.out).map
+    (continuous_quot_mk : Continuous (additiveTorusProjection p))).cast
+      (additiveTorus_mk_zero p).symm (Quotient.out_eq a).symm
+
+/-- Adding the translation part of a descended affine automorphism is homotopic to doing
+nothing after its linear part. -/
+@[expose] public noncomputable def linearPartMapHomotopy
+    (D : DescendedAffineTorusAutomorphism p) : D.linearPartMap.Homotopy D.map where
+  toFun tq := D.linearPartMap tq.2 + translationPath D.translation tq.1
+  continuous_toFun :=
+    (D.linearPartMap.continuous.comp continuous_snd).add
+      ((translationPath D.translation).continuous.comp continuous_fst)
+  map_zero_left q := by
+    rw [show translationPath D.translation 0 = 0 from (translationPath D.translation).source]
+    simp
+  map_one_left q := by
+    rw [show translationPath D.translation 1 = D.translation from
+      (translationPath D.translation).target]
+    change D.map q - D.translation + D.translation = D.map q
+    exact sub_add_cancel _ _
+
+end DescendedAffineTorusAutomorphism
+
+/-- Integral degree-one and degree-two bases with the ranks of a four-torus. -/
+public structure FourTorusHomologyBasis (X : Type) [TopologicalSpace X] where
+  degreeOne : IntegralSingularHomology 1 X ≃+ (Fin 4 → ℤ)
+  degreeTwo : IntegralSingularHomology 2 X ≃+ (Fin 6 → ℤ)
+
+/-- The standard integral bases of the first two homology groups of a full-rank complex
+two-torus. -/
+public abbrev AdditiveTorusHomologyBasis
+    (p : SphereSixComplex.Periods.Parameters) := FourTorusHomologyBasis (AdditiveTorus p)
+
+namespace FourTorusHomologyBasis
+
+variable {p : SphereSixComplex.Periods.Parameters} {X : Type} [TopologicalSpace X]
+
+/-- Transport the standard torus bases to a homeomorphic presentation. -/
+@[expose] public def homeomorph (B : AdditiveTorusHomologyBasis p)
+    (e : X ≃ₜ AdditiveTorus p) :
+    FourTorusHomologyBasis X where
+  degreeOne := (integralSingularHomologyEquiv 1 e).trans B.degreeOne
+  degreeTwo := (integralSingularHomologyEquiv 2 e).trans B.degreeTwo
+
+end FourTorusHomologyBasis
+
+namespace EstablishedTorusHomology
+
+/-- The linear part of a descended affine automorphism in standard real torus coordinates. -/
+@[expose] public def standardCoordinateMap
+    (p : SphereSixComplex.Periods.Parameters) (hfull : FullRank p)
+    (D : DescendedAffineTorusAutomorphism p) :
+    C(StandardTorusHomology.StdTorus 4, StandardTorusHomology.StdTorus 4) :=
+  (StandardTorusHomology.additiveTorusStdHomeomorph p hfull :
+      C(AdditiveTorus p, StandardTorusHomology.StdTorus 4)).comp
+    (D.linearPartMap.comp
+      (StandardTorusHomology.additiveTorusStdHomeomorph p hfull).symm)
+
+/-- The additive lift of `standardCoordinateMap` obtained by conjugating the given lift with
+real period coordinates. -/
+@[expose] public def standardCoordinateLift
+    (p : SphereSixComplex.Periods.Parameters) (hfull : FullRank p)
+    (D : DescendedAffineTorusAutomorphism p) : RealPeriods ≃+ RealPeriods :=
+  hfull.realEquiv.toLinearEquiv.toAddEquiv |>.trans D.lift |>.trans
+    hfull.realEquiv.toLinearEquiv.toAddEquiv.symm
+
+public theorem standardCoordinateLift_map_integer
+    (p : SphereSixComplex.Periods.Parameters) (hfull : FullRank p)
+    (D : DescendedAffineTorusAutomorphism p) (n : IntegerPeriods) :
+    standardCoordinateLift p hfull D (integerToReal n) = integerToReal (D.latticeMap n) := by
+  apply hfull.realEquiv.injective
+  simp only [standardCoordinateLift, AddEquiv.trans_apply]
+  change hfull.realEquiv
+      (hfull.realEquiv.symm (D.lift (hfull.realEquiv (integerToReal n)))) =
+    hfull.realEquiv (integerToReal (D.latticeMap n))
+  rw [hfull.realEquiv.apply_symm_apply]
+  rw [hfull.map_integer, hfull.map_integer, D.lift_period]
+
+public theorem standardCoordinateMap_projection
+    (p : SphereSixComplex.Periods.Parameters) (hfull : FullRank p)
+    (D : DescendedAffineTorusAutomorphism p) (r : RealPeriods) :
+    standardCoordinateMap p hfull D (StandardTorusHomology.standardFourTorusProjection r) =
+      StandardTorusHomology.standardFourTorusProjection
+        (standardCoordinateLift p hfull D r) := by
+  let e := StandardTorusHomology.additiveTorusStdHomeomorph p hfull
+  have hmk : e.symm (StandardTorusHomology.standardFourTorusProjection r) =
+      Quotient.mk _ (hfull.realEquiv r) := by
+    apply e.injective
+    rw [e.apply_symm_apply]
+    funext i
+    change ((r i : ℝ) : UnitAddCircle) =
+      ((hfull.realEquiv.symm (hfull.realEquiv r) i : ℝ) : UnitAddCircle)
+    rw [hfull.realEquiv.symm_apply_apply]
+  change e (D.linearPartMap
+    (e.symm (StandardTorusHomology.standardFourTorusProjection r))) = _
+  rw [hmk, D.linearPartMap_mk]
+  funext i
+  change ((hfull.realEquiv.symm (D.lift (hfull.realEquiv r)) i : ℝ) : UnitAddCircle) =
+    (((standardCoordinateLift p hfull D r) i : ℝ) : UnitAddCircle)
+  rfl
+
+/-- The coordinate conjugate carries the additive lift and lattice action required by the
+standard four-torus naturality theorem. -/
+@[expose] public def standardCoordinateEquivariantLift
+    (p : SphereSixComplex.Periods.Parameters) (hfull : FullRank p)
+    (D : DescendedAffineTorusAutomorphism p) :
+    StandardTorusHomology.StandardFourTorusEquivariantLift
+      (standardCoordinateMap p hfull D) D.latticeMap where
+  lift := standardCoordinateLift p hfull D
+  map_projection := standardCoordinateMap_projection p hfull D
+  map_integer := standardCoordinateLift_map_integer p hfull D
+
+/-- The integral singular homology of a full-rank complex two-torus, in the period basis. -/
+@[expose] public def additiveTorusHomologyBasis
+    (p : SphereSixComplex.Periods.Parameters) (hfull : FullRank p) :
+    AdditiveTorusHomologyBasis p where
+  degreeOne := StandardTorusHomology.additiveTorusHomologyDegreeOne p hfull
+  degreeTwo := StandardTorusHomology.additiveTorusHomologyDegreeTwo p hfull
+
+/-- The two components of the basis.  `additiveTorusHomologyDegreeOne` and
+`additiveTorusHomologyDegreeTwo` are deliberately not exposed, so downstream modules see the
+basis exactly as opaquely as they saw the axiom this definition replaced. -/
+public theorem additiveTorusHomologyBasis_degreeOne
+    (p : SphereSixComplex.Periods.Parameters) (hfull : FullRank p) :
+    (additiveTorusHomologyBasis p hfull).degreeOne =
+      StandardTorusHomology.additiveTorusHomologyDegreeOne p hfull := rfl
+
+public theorem additiveTorusHomologyBasis_degreeTwo
+    (p : SphereSixComplex.Periods.Parameters) (hfull : FullRank p) :
+    (additiveTorusHomologyBasis p hfull).degreeTwo =
+      StandardTorusHomology.additiveTorusHomologyDegreeTwo p hfull := rfl
+
+/-- Naturality of the standard torus bases under the linear part of a descended affine
+automorphism, transported from the fixed standard four-torus. -/
+public theorem additiveTorusHomologyBasis_linearPart_naturality
+    (p : SphereSixComplex.Periods.Parameters) (hfull : FullRank p)
+    (D : DescendedAffineTorusAutomorphism p) :
+    let B := additiveTorusHomologyBasis p hfull
+    (∀ x, B.degreeOne (integralSingularHomologyMap 1 D.linearPartMap x) =
+      D.latticeMap (B.degreeOne x)) ∧
+    (∀ x, B.degreeTwo (integralSingularHomologyMap 2 D.linearPartMap x) =
+      exteriorSquareMap D.latticeMap (B.degreeTwo x)) := by
+  let e := StandardTorusHomology.additiveTorusStdHomeomorph p hfull
+  have hnat := StandardTorusHomology.naturalStdTorusFourHomology_naturality
+    (standardCoordinateMap p hfull D) D.latticeMap
+    (standardCoordinateEquivariantLift p hfull D)
+  have hmaps :
+      (standardCoordinateMap p hfull D).comp (e : C(AdditiveTorus p, _)) =
+        (e : C(AdditiveTorus p, _)).comp D.linearPartMap := by
+    apply ContinuousMap.ext
+    intro q
+    change e (D.linearPartMap (e.symm (e q))) = e (D.linearPartMap q)
+    rw [e.symm_apply_apply]
+  have hhomology (k : ℕ) (x : IntegralSingularHomology k (AdditiveTorus p)) :
+      integralSingularHomologyMap k (standardCoordinateMap p hfull D)
+          (integralSingularHomologyMap k (e : C(AdditiveTorus p, _)) x) =
+        integralSingularHomologyMap k (e : C(AdditiveTorus p, _))
+          (integralSingularHomologyMap k D.linearPartMap x) := by
+    rw [integralSingularHomologyMap_comp_wang, integralSingularHomologyMap_comp_wang, hmaps]
+  constructor
+  · intro x
+    have hx := hnat.1 (integralSingularHomologyMap 1 (e : C(_, _)) x)
+    rw [hhomology] at hx
+    exact hx
+  · intro x
+    have hx := hnat.2 (integralSingularHomologyMap 2 (e : C(_, _)) x)
+    rw [hhomology] at hx
+    exact hx
+
+/-- Naturality of the standard torus bases under a descended affine automorphism.  Translation
+acts trivially, the degree-one map is the integral lattice map, and degree two is its exterior
+square. -/
+public theorem additiveTorusHomologyBasis_naturality
+    (p : SphereSixComplex.Periods.Parameters) (hfull : FullRank p)
+    (D : DescendedAffineTorusAutomorphism p) :
+    let B := additiveTorusHomologyBasis p hfull
+    (∀ x, B.degreeOne (integralSingularHomologyMap 1 D.map x) =
+      D.latticeMap (B.degreeOne x)) ∧
+    (∀ x, B.degreeTwo (integralSingularHomologyMap 2 D.map x) =
+      exteriorSquareMap D.latticeMap (B.degreeTwo x)) := by
+  let B := additiveTorusHomologyBasis p hfull
+  have hmaps (k : ℕ) :
+      integralSingularHomologyMap k D.map =
+        integralSingularHomologyMap k D.linearPartMap :=
+    (integralSingularHomologyMap_eq_of_homotopy k D.linearPartMapHomotopy).symm
+  simpa only [hmaps] using additiveTorusHomologyBasis_linearPart_naturality p hfull D
+
+end EstablishedTorusHomology
+
+namespace Geometry.EllipticFamilySpecialization
+
+variable {U : TriangleUniformization} (F : PeriodFunctions U)
+
+/-- The order-three affine fibre generator, with its exact integral period-lattice action. -/
+@[expose] public def orderThreeDescendedAffineTorusAutomorphism :
+    DescendedAffineTorusAutomorphism (parameterMap F U.zOne).1 where
+  latticeMap := rhoLambda g₁
+  lift := (periodTransport g₁ (parameterMap F U.zOne)).toAddEquiv
+  lift_period n := by
+    change periodTransport g₁ (parameterMap F U.zOne)
+      (periodVector (parameterMap F U.zOne).1 n) = _
+    simpa only [parameterMap_zOne_fixed F] using
+      periodTransport_periodVector g₁ (parameterMap F U.zOne) n
+  translation := orderThreeTranslation (parameterMap F U.zOne).1
+  map :=
+    ⟨fun q ↦ orderThreeFiberAutomorphism F q +
+        orderThreeTranslation (parameterMap F U.zOne).1,
+      (orderThreeFiberAutomorphism_continuous F).add continuous_const⟩
+  map_mk z := by
+    change orderThreeFiberAutomorphism F (Quotient.mk _ z) + _ = _
+    rw [orderThreeFiberAutomorphism_mk]
+    rfl
+
+/-- The order-four affine fibre generator, with its exact integral period-lattice action. -/
+@[expose] public def orderFourDescendedAffineTorusAutomorphism :
+    DescendedAffineTorusAutomorphism (parameterMap F U.zTwo).1 where
+  latticeMap := rhoLambda g₂
+  lift := (periodTransport g₂ (parameterMap F U.zTwo)).toAddEquiv
+  lift_period n := by
+    change periodTransport g₂ (parameterMap F U.zTwo)
+      (periodVector (parameterMap F U.zTwo).1 n) = _
+    simpa only [parameterMap_zTwo_fixed F] using
+      periodTransport_periodVector g₂ (parameterMap F U.zTwo) n
+  translation := orderFourTranslation (parameterMap F U.zTwo).1
+  map :=
+    ⟨fun q ↦ orderFourFiberAutomorphism F q +
+        orderFourTranslation (parameterMap F U.zTwo).1,
+      (orderFourFiberAutomorphism_continuous F).add continuous_const⟩
+  map_mk z := by
+    change orderFourFiberAutomorphism F (Quotient.mk _ z) + _ = _
+    rw [orderFourFiberAutomorphism_mk]
+    rfl
+
+/-- Standard homology bases of the actual order-three central four-torus. -/
+@[expose] public def orderThreeTorusHomologyBasis :
+    AdditiveTorusHomologyBasis (parameterMap F U.zOne).1 :=
+  EstablishedTorusHomology.additiveTorusHomologyBasis _
+    (fullRankDomain (parameterMap F U.zOne))
+
+/-- Standard homology bases of the actual order-four central four-torus. -/
+@[expose] public def orderFourTorusHomologyBasis :
+    AdditiveTorusHomologyBasis (parameterMap F U.zTwo).1 :=
+  EstablishedTorusHomology.additiveTorusHomologyBasis _
+    (fullRankDomain (parameterMap F U.zTwo))
+
+/-- In the standard degree-one basis, the order-three affine generator acts by the actual
+integral monodromy `rhoLambda g₁`. -/
+public theorem orderThreeFiberGenerator_homology_degreeOne (x) :
+    (orderThreeTorusHomologyBasis F).degreeOne
+        (integralSingularHomologyMap 1
+          (orderThreeDescendedAffineTorusAutomorphism F).map x) =
+      rhoLambda g₁ ((orderThreeTorusHomologyBasis F).degreeOne x) :=
+  (EstablishedTorusHomology.additiveTorusHomologyBasis_naturality _
+    (fullRankDomain (parameterMap F U.zOne))
+    (orderThreeDescendedAffineTorusAutomorphism F)).1 x
+
+/-- In degree two, the order-three affine generator acts by the second compound matrix of its
+actual integral monodromy. -/
+public theorem orderThreeFiberGenerator_homology_degreeTwo (x) :
+    (orderThreeTorusHomologyBasis F).degreeTwo
+        (integralSingularHomologyMap 2
+          (orderThreeDescendedAffineTorusAutomorphism F).map x) =
+      exteriorSquareMap (rhoLambda g₁) ((orderThreeTorusHomologyBasis F).degreeTwo x) :=
+  (EstablishedTorusHomology.additiveTorusHomologyBasis_naturality _
+    (fullRankDomain (parameterMap F U.zOne))
+    (orderThreeDescendedAffineTorusAutomorphism F)).2 x
+
+/-- In the standard degree-one basis, the order-four affine generator acts by the actual
+integral monodromy `rhoLambda g₂`. -/
+public theorem orderFourFiberGenerator_homology_degreeOne (x) :
+    (orderFourTorusHomologyBasis F).degreeOne
+        (integralSingularHomologyMap 1
+          (orderFourDescendedAffineTorusAutomorphism F).map x) =
+      rhoLambda g₂ ((orderFourTorusHomologyBasis F).degreeOne x) :=
+  (EstablishedTorusHomology.additiveTorusHomologyBasis_naturality _
+    (fullRankDomain (parameterMap F U.zTwo))
+    (orderFourDescendedAffineTorusAutomorphism F)).1 x
+
+/-- In degree two, the order-four affine generator acts by the second compound matrix of its
+actual integral monodromy. -/
+public theorem orderFourFiberGenerator_homology_degreeTwo (x) :
+    (orderFourTorusHomologyBasis F).degreeTwo
+        (integralSingularHomologyMap 2
+          (orderFourDescendedAffineTorusAutomorphism F).map x) =
+      exteriorSquareMap (rhoLambda g₂) ((orderFourTorusHomologyBasis F).degreeTwo x) :=
+  (EstablishedTorusHomology.additiveTorusHomologyBasis_naturality _
+    (fullRankDomain (parameterMap F U.zTwo))
+    (orderFourDescendedAffineTorusAutomorphism F)).2 x
+
+end Geometry.EllipticFamilySpecialization
+
+namespace Topology.PaperEllipticReducedCentralFiberCoverModels
+
+open Geometry.EllipticFamilySpecialization
+open Topology.PaperEllipticFillingRadialRetraction
+
+variable {U : TriangleUniformization} (F : PeriodFunctions U)
+
+/-- The source of the order-three reduced-fibre covering has the standard four-torus homology
+bases. -/
+@[expose] public def orderThreeCentralFiberCoverSourceHomologyBasis :
+    FourTorusHomologyBasis
+      (RadialEllipticActionData.centralFiberCoverSource (orderThreeRadialActionData F)) :=
+  (orderThreeTorusHomologyBasis F).homeomorph
+    (RadialEllipticActionData.centralFiberCoverSourceHomeomorph
+      (orderThreeRadialActionData F))
+
+/-- The source of the order-four reduced-fibre covering has the standard four-torus homology
+bases. -/
+@[expose] public def orderFourCentralFiberCoverSourceHomologyBasis :
+    FourTorusHomologyBasis
+      (RadialEllipticActionData.centralFiberCoverSource (orderFourRadialActionData F)) :=
+  (orderFourTorusHomologyBasis F).homeomorph
+    (RadialEllipticActionData.centralFiberCoverSourceHomeomorph
+      (orderFourRadialActionData F))
+
+/-- The actual order-three covering map on first homology, with its source written in the
+standard period basis. -/
+@[expose] public def orderThreeReducedCentralFiberCoverHomologyDegreeOne :
+    (Fin 4 → ℤ) →+ IntegralSingularHomology 1 (OrderThreeReducedCentralFiber F) :=
+  (integralSingularHomologyMap 1
+    (RadialEllipticActionData.centralFiberCoverProjection
+      (orderThreeRadialActionData F))).comp
+    (orderThreeCentralFiberCoverSourceHomologyBasis F).degreeOne.symm.toAddHom
+
+/-- The actual order-three covering map on second homology, with its source written in exterior
+degree-two period coordinates. -/
+@[expose] public def orderThreeReducedCentralFiberCoverHomologyDegreeTwo :
+    (Fin 6 → ℤ) →+ IntegralSingularHomology 2 (OrderThreeReducedCentralFiber F) :=
+  (integralSingularHomologyMap 2
+    (RadialEllipticActionData.centralFiberCoverProjection
+      (orderThreeRadialActionData F))).comp
+    (orderThreeCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm.toAddHom
+
+/-- The actual order-four covering map on first homology, with its source written in the
+standard period basis. -/
+@[expose] public def orderFourReducedCentralFiberCoverHomologyDegreeOne :
+    (Fin 4 → ℤ) →+ IntegralSingularHomology 1 (OrderFourReducedCentralFiber F) :=
+  (integralSingularHomologyMap 1
+    (RadialEllipticActionData.centralFiberCoverProjection
+      (orderFourRadialActionData F))).comp
+    (orderFourCentralFiberCoverSourceHomologyBasis F).degreeOne.symm.toAddHom
+
+/-- The actual order-four covering map on second homology, with its source written in exterior
+degree-two period coordinates. -/
+@[expose] public def orderFourReducedCentralFiberCoverHomologyDegreeTwo :
+    (Fin 6 → ℤ) →+ IntegralSingularHomology 2 (OrderFourReducedCentralFiber F) :=
+  (integralSingularHomologyMap 2
+    (RadialEllipticActionData.centralFiberCoverProjection
+      (orderFourRadialActionData F))).comp
+    (orderFourCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm.toAddHom
+
+end Topology.PaperEllipticReducedCentralFiberCoverModels
+
+end
+
+end SphereSixComplex

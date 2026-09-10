@@ -1,17 +1,18 @@
 module
 
-public import SphereSixComplex.Topology.EstablishedPaperSectionSevenAffineRegularLiftCompletion
-public import SphereSixComplex.Topology.EstablishedPaperSectionSevenCuspCompletion
-public import SphereSixComplex.Topology.EstablishedClassicalRecognitionFoundations
-public import SphereSixComplex.Topology.EstablishedEquivariantUniversalCover
-public import SphereSixComplex.Topology.PaperActualEllipticRelatorNormalClosure
+public import SphereSixComplex.Paper.Topology.EstablishedPaperSectionSevenAffineRegularLiftCompletion
+public import SphereSixComplex.Paper.Topology.EstablishedPaperSectionSevenCuspCompletion
+public import SphereSixComplex.Prerequisites.Topology.EstablishedClassicalRecognitionFoundations
+public import SphereSixComplex.Paper.Topology.EstablishedEquivariantUniversalCover
+public import SphereSixComplex.Paper.Topology.PaperActualEllipticRelatorNormalClosure
 
 /-!
 # Comparator trusted-axiom imports
 
 This module is the shared import boundary for the established declarations permitted by
 Comparator. Its generated catalog below gives their exact signatures in one place for human
-review. It contains no theorem statement or proof and does not import `Challenge` or `Solution`.
+review. The shared imports also preserve the instances used to elaborate the challenge statements.
+It contains no theorem statement or proof and does not import `Challenge` or `Solution`.
 -/
 
 /- BEGIN GENERATED AXIOM CATALOG

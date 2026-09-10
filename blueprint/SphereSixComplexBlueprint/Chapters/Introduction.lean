@@ -1,7 +1,7 @@
 import Verso
 import VersoBlueprint
 import VersoManual
-import SphereSixComplex.Final
+import SphereSixComplex.Paper.Final
 
 open Informal
 open Verso.Genre

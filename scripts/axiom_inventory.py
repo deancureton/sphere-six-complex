@@ -3,7 +3,7 @@
 
 Emits a Markdown table on stdout.  Statuses:
 
-* `final`  - reachable from `SphereSixComplex.Final`, so the headline theorem may depend on it;
+* `final`  - reachable from `SphereSixComplex.Paper.Final`, so the headline theorem may depend on it;
 * `main`   - reachable from `SphereSixComplex.Main` only;
 * `unused` - in neither cone (dead code, or a module not yet wired into `Main`).
 
@@ -98,7 +98,7 @@ def cone(graph: dict[str, set[str]], start: str) -> set[str]:
 def main() -> int:
     all_modules = modules()
     graph = {module: imports_of(path) for module, path in all_modules}
-    final_cone = cone(graph, f"{LIB}.Final")
+    final_cone = cone(graph, f"{LIB}.Paper.Final")
     main_cone = cone(graph, f"{LIB}.Main")
 
     rows = []

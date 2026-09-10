@@ -1,0 +1,4 @@
+module
+
+public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderThreeGeometricRelatorRepresentativeProof
+public import SphereSixComplex.Prerequisites.Topology.FreeLoopProductHomotopy

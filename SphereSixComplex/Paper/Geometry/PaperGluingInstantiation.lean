@@ -1,0 +1,49 @@
+module
+
+public import SphereSixComplex.Paper.Geometry.PaperBiholomorphicStar
+public import SphereSixComplex.Paper.Geometry.PaperGluingData
+public import SphereSixComplex.Paper.Geometry.PaperLocalCuspFillingConnected
+public import SphereSixComplex.Paper.Geometry.PaperOpenEmbeddingStarNonempty
+public import SphereSixComplex.Paper.Geometry.PaperStarCompactness
+public import SphereSixComplex.Paper.Geometry.PaperStarHausdorff
+public import SphereSixComplex.Paper.Geometry.PaperStarPieceTopology
+
+/-!
+# Instantiating the paper gluing package
+
+All geometric and point-set-topological fields of `PaperGluingData` are supplied by the actual
+analytic four-piece star. The constructor below leaves only the two global topology calculations
+as explicit inputs.
+-/
+
+namespace SphereSixComplex.Geometry
+
+noncomputable section
+
+namespace PaperAnalyticData
+
+variable (P : PaperAnalyticData)
+
+/-- Assemble the actual paper gluing once its van Kampen and Section 7 comparison calculations
+have been supplied. -/
+@[expose] public noncomputable def toPaperGluingData
+    (vanKampen : Topology.HasVanKampenData
+      (GluedSpace P.openEmbeddingStarData.toFourPieceStarGluingData.glueData) 0 1 (-1))
+    (integralHomology : HasIntegralHomologyOfSixSphere
+      (GluedSpace P.openEmbeddingStarData.toFourPieceStarGluingData.glueData)) :
+    SphereSixComplex.PaperGluingData where
+  star := P.openEmbeddingStarData.toFourPieceStarGluingData
+  connectedPiece := P.starPiece_connected
+  nonemptyCentralCollar := P.fourPieceStarGluingData_nonemptyCentralCollar
+  biholomorphicStar := P.biholomorphicFourPieceStarData
+  pieceSecondCountable := P.starPiece_secondCountable
+  gluedT2 := P.starGluedT2
+  gluedCompact := P.starGluedCompact
+  vanKampen := vanKampen
+  integralHomology := integralHomology
+
+end PaperAnalyticData
+
+end
+
+end SphereSixComplex.Geometry
