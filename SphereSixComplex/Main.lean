@@ -716,6 +716,24 @@ public import SphereSixComplex.Topology.CharacteristicCylinderHomeomorph
 public import SphereSixComplex.Topology.CylinderTopFaceExcision
 public import SphereSixComplex.Topology.ConstructedA2CompactActionFiltration
 
+public import SphereSixComplex.Topology.ClosedCylinderRelativePrism
+public import SphereSixComplex.Topology.ConstructedPositiveInteriorProjection
+public import SphereSixComplex.Topology.ConstructedPositiveInteriorTorus
+public import SphereSixComplex.Topology.ConstructedPositiveLogCoordinates
+public import SphereSixComplex.Topology.ConstructedPositivePeriodCoordinates
+public import SphereSixComplex.Topology.CuspCentralFillingHomologyComparison
+public import SphereSixComplex.Topology.CuspPhaseSweepCharacteristicPairs
+public import SphereSixComplex.Topology.CuspPhaseSweepEdgeComparison
+public import SphereSixComplex.Topology.CuspPhaseSweepParameterComparison
+public import SphereSixComplex.Topology.CuspPhaseSweepRelativeAction
+public import SphereSixComplex.Topology.CylinderRelativePrismNaturality
+public import SphereSixComplex.Topology.CylinderTimeReflection
+public import SphereSixComplex.Topology.OrientedIntervalCylinderPrism
+public import SphereSixComplex.Topology.PhaseSweepSkeletalHomology
+public import SphereSixComplex.Topology.RechartSkeletalComparison
+public import SphereSixComplex.Topology.RelativeClosedPrismProjection
+public import SphereSixComplex.Topology.UniversalCirclePrism
+
 /-!
 # A Complex Structure on the Six-Sphere
 

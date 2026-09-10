@@ -860,3 +860,33 @@ the two declared challenge placeholders, unchanged exact final/construction axio
 and suspension-orientation results use only Lean's three standard axioms. The positive
 projection vanishing uses the retained Brown and relative triangulation inputs; the quotient
 interior homotopy equivalence uses Brown collaring.
+
+
+## Integral prism comparisons and positive torus coordinates
+
+The universal circle prism is identified with the explicit two-triangle torus fundamental
+cycle up to one uniform integral sign. The full-boundary cylinder prism, its time reflection,
+and its map into a relative homotopy now have proved naturality and orientation comparisons.
+These are chain-level comparisons of the actual maps.
+
+The replacement phase atlas has zero differentials into and out of degree two. An identity
+cellular chain isomorphism transports this fact from the original atlas. Its singular second
+homology is therefore identified with the four relative cell generators, compatibly with
+inclusion of the two-skeleton and projection to relative homology. The compact phase action
+preserves the required pair of skeleta, and the edge characteristic generators have their
+normalized relative basis readouts. The central orbit inclusion into the filling is also
+identified with a homology equivalence in every degree.
+
+Logarithmic coordinates give an explicit homeomorphism from the positive quotient interior
+to the standard two-torus times an open interval. Under this homeomorphism, the actual first
+source torus projects to the identity torus at a fixed height. This is a pointwise formula for
+the actual map; it does not infer a second-homology degree from first-homology information.
+
+Still required: finish the relative swept-edge evaluations, combine them into the three mixed
+columns, and use the positive torus degree to choose a coherent integral basis for the filling.
+The production degree-two specialization assumption remains unchanged. None of these new
+comparisons makes it part of the proposed final trust boundary.
+
+Checkpoint gates passed: full build (10,204 jobs), all 1,175 library modules reachable,
+only the two declared challenge placeholders, unchanged exact final/construction axiom
+closures (14/11), and Comparator acceptance with Lean's default kernel.
