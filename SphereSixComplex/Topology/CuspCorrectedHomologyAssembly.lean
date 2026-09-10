@@ -48,6 +48,7 @@ public def correctedCuspLocalBases {A : PaperAnalyticData}
   cuspCollarOne := A.actualCuspSectionSevenHomologyOneEquiv
   ellipticInteriorOne := B.ellipticInteriorOne
   cuspCollarTwo := A.actualCuspCorrectedHomologyTwoEquiv
+  cuspFillingTwo := (A.withActualGeometricCuspBases B).cuspFillingTwo
   ellipticInteriorTwo := B.ellipticInteriorTwo
 
 public theorem correctedCuspFillingInclusionCoordinates (A : PaperAnalyticData)

@@ -83,6 +83,11 @@ public structure SectionSevenCollarInteriorHomologyBases where
         ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4)) ≃+
       (Fin 2 → ℤ)
 
+  cuspFillingTwo :
+    (R : CuspPuncturedCollarBridge.ActualLocalCuspCentralFiberRetractionData A.starCuspWitness) →
+      IntegralSingularHomology 2 (CuspPuncturedCollarBridge.actualLocalCuspFilling A.starCuspWitness) ≃+
+        (Fin 4 → ℤ) := A.cuspFillingHomologyTwoEquiv
+
 /-- The six separate source/side bases used by the final positive-degree calculation. -/
 public structure SectionSevenFinalSixHomologyBases where
   overlapOne :
@@ -160,7 +165,7 @@ public noncomputable def sectionSevenFinalSixHomologyBases
   cuspPieceTwo :=
     (integralSingularHomologyEquiv 2
       (A.openEmbeddingStarData.fillingToSectionSevenEulerPieceHomeomorph 0)).symm.trans
-        (A.cuspFillingHomologyTwoEquiv R)
+        (B.cuspFillingTwo R)
 
 /-- Use the established phase-spreading retraction to discharge the cusp-filling input. -/
 public noncomputable def sectionSevenFinalSixHomologyBasesOfLocalBases

@@ -890,3 +890,31 @@ comparisons makes it part of the proposed final trust boundary.
 Checkpoint gates passed: full build (10,204 jobs), all 1,175 library modules reachable,
 only the two declared challenge placeholders, unchanged exact final/construction axiom
 closures (14/11), and Comparator acceptance with Lean's default kernel.
+
+
+## Integral fibre specialization isomorphism
+
+The actual degree-two map from fibre coinvariants to the cusp filling is now proved bijective
+in `cuspFiberSpecializationTwoBijective`, without the transitional specialization axiom.
+The three mixed torus columns are evaluated in the phase-sweep cellular coordinates. Their
+signed integral matrix is unimodular on the three graph coordinates. The positive projection
+kills these columns and takes the first torus generator to one, so that generator completes
+them to an integral basis. The proof compares the actual torus maps and homology classes.
+
+This proves an isomorphism, not the old assertion that the map is the identity in the previously
+chosen cellular coordinates. Production integration must change the target filling basis and
+normalize the degree-two Wang section using the proved fibre inverse. The canonical source
+fibre coordinates must be preserved: the elliptic attachment calculation uses those markings.
+The local basis package now accepts a filling basis explicitly, retaining its old default.
+
+The circle exponential is separated from the fourth-sweep module so the isomorphism proof can
+be imported by the specialization owner without an import cycle. A general fourth-sweep
+normalization theorem is also proved from a filling projection equation, ready for the corrected
+coordinates. The last transitional axiom is still present in the production theorem and is not
+part of the proposed final trust boundary.
+
+Checkpoint gates passed: full build (10,219 jobs), all 1,190 library modules reachable,
+only the two declared challenge placeholders, unchanged exact final/construction axiom
+closures (14/11), and Comparator acceptance with Lean's default kernel. The isomorphism itself
+uses only Lean's three axioms, cellular homology, Brown collaring, triangulation with corners,
+and relative Whitehead.

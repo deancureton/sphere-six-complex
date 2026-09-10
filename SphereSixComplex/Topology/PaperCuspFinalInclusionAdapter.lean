@@ -120,7 +120,7 @@ public structure ActualCuspFillingInclusionCoordinates
         (integralSingularHomologyMap 1 (A.openEmbeddingStarData.toFilling 0).hom x) =
       fun i ↦ -sectionSevenFirstBoundaryHom (B.cuspCollarOne x) (Fin.natAdd 1 i)
   degreeTwo : ∀ x,
-    (A.cuspFillingHomologyTwoEquiv A.cuspCentralFiberRetractionData)
+    (B.cuspFillingTwo A.cuspCentralFiberRetractionData)
         (integralSingularHomologyMap 2 (A.openEmbeddingStarData.toFilling 0).hom x) =
       fun i ↦
         -sectionSevenMayerVietorisFinalTwoHom (B.cuspCollarTwo x) (Fin.natAdd 2 i)
@@ -169,18 +169,18 @@ public theorem finalCuspTwo (C : A.ActualCuspFillingInclusionCoordinates B) (x) 
   rw [show (A.sectionSevenFinalSixHomologyBasesOfLocalBases B).cuspPieceTwo =
       (integralSingularHomologyEquiv 2
         (A.openEmbeddingStarData.fillingToSectionSevenEulerPieceHomeomorph 0)).symm.trans
-          (A.cuspFillingHomologyTwoEquiv A.cuspCentralFiberRetractionData) from rfl]
-  change (A.cuspFillingHomologyTwoEquiv A.cuspCentralFiberRetractionData)
+          (B.cuspFillingTwo A.cuspCentralFiberRetractionData) from rfl]
+  change (B.cuspFillingTwo A.cuspCentralFiberRetractionData)
       ((integralSingularHomologyEquiv 2
         (A.openEmbeddingStarData.fillingToSectionSevenEulerPieceHomeomorph 0)).symm
           (integralSingularHomologyMap 2 _ x)) = _
   have hconj := A.cuspFinalRightHomologyMap_conjugacy 2 x
   calc
-    _ = (A.cuspFillingHomologyTwoEquiv A.cuspCentralFiberRetractionData)
+    _ = (B.cuspFillingTwo A.cuspCentralFiberRetractionData)
         (integralSingularHomologyMap 2 (A.openEmbeddingStarData.toFilling 0).hom
           ((integralSingularHomologyEquiv 2
             A.cuspCollarToSectionSevenFinalOverlapHomeomorph).symm x)) :=
-      congrArg (A.cuspFillingHomologyTwoEquiv A.cuspCentralFiberRetractionData) hconj
+      congrArg (B.cuspFillingTwo A.cuspCentralFiberRetractionData) hconj
     _ = _ := by rw [C.degreeTwo]; rfl
 
 /-- Combine the two proved cusp transports with the independently computed elliptic-interior

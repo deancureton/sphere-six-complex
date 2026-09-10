@@ -734,6 +734,22 @@ public import SphereSixComplex.Topology.RechartSkeletalComparison
 public import SphereSixComplex.Topology.RelativeClosedPrismProjection
 public import SphereSixComplex.Topology.UniversalCirclePrism
 
+public import SphereSixComplex.Topology.ConstructedPositiveColumnHomology
+public import SphereSixComplex.Topology.CuspCentralNormalizedSweepComparison
+public import SphereSixComplex.Topology.CuspFiberSpecializationBijective
+public import SphereSixComplex.Topology.CuspFiberSpecializationColumns
+public import SphereSixComplex.Topology.CuspFourthSweepNormalizationOfProjection
+public import SphereSixComplex.Topology.CuspMixedTorusIntegralColumns
+public import SphereSixComplex.Topology.CuspPhaseSweepAbsoluteComparison
+public import SphereSixComplex.Topology.CuspPhaseSweepEdgeEvaluation
+public import SphereSixComplex.Topology.CuspPhaseSweepFillingCoordinates
+public import SphereSixComplex.Topology.CuspPhaseSweepGraphCoordinates
+public import SphereSixComplex.Topology.CuspSpecializationBijectiveCoordinates
+public import SphereSixComplex.Topology.IntegralPrimitiveComplement
+public import SphereSixComplex.Topology.MixedThreeColumnBasis
+public import SphereSixComplex.Topology.PrimitiveFourColumnBasis
+public import SphereSixComplex.Topology.UnitCircleExponential
+
 /-!
 # A Complex Structure on the Six-Sphere
 

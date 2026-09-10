@@ -1,7 +1,7 @@
 module
 public import SphereSixComplex.Topology.LocalToricCircleSweep
 public import SphereSixComplex.Topology.CuspFourthSweepCentralImage
-public import Mathlib.Analysis.SpecialFunctions.Complex.Circle
+public import SphereSixComplex.Topology.UnitCircleExponential
 
 @[expose] public section
 noncomputable section
@@ -11,24 +11,6 @@ namespace SphereSixComplex.Geometry.PaperAnalyticData
 open SphereSixComplex.Topology SphereSixComplex.StandardTorusHomology
 open CuspPuncturedCollarBridge CuspRadialClutchingConstruction
 open CuspLocalPhaseAction StandardInfiniteA2ToricModel
-
-public def unitCircleExponential : C(UnitAddCircle, ℂˣ) where
-  toFun z := Circle.toUnits (AddCircle.toCircle z)
-  continuous_toFun := by
-    apply Units.continuous_iff.mpr
-    constructor
-    · exact continuous_subtype_val.comp AddCircle.continuous_toCircle
-    · change Continuous (fun z : UnitAddCircle ↦ ((AddCircle.toCircle z)⁻¹ : Circle).val)
-      exact continuous_subtype_val.comp (AddCircle.continuous_toCircle.inv)
-
-public theorem unitCircleExponential_real (t : ℝ) :
-    (unitCircleExponential (t : UnitAddCircle) : ℂ) =
-      Complex.exp (2 * Real.pi * Complex.I * (t : ℂ)) := by
-  change ((AddCircle.toCircle (t : UnitAddCircle) : Circle) : ℂ) = _
-  rw [AddCircle.toCircle_apply_mk, Circle.coe_exp]
-  congr 1
-  push_cast
-  ring
 
 public def fourthToricCircle : C(UnitAddCircle, DenseTorus) where
   toFun z := ![1, unitCircleExponential z, 1]
