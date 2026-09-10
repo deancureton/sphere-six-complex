@@ -497,7 +497,7 @@ private theorem twoOpenCover_left_leg
     (U V : Set X) (hUOpen : IsOpen U) (hVOpen : IsOpen V)
     (hcover : U ∪ V = Set.univ) :
     FundamentalGroupoid.map
-        (PaperVanKampenFourPieceCover.subsetInclusion U) ⋙
+        (CoveringSpace.subsetInclusion U) ⋙
       FundamentalGroupoid.map
         (toTwoOpenCover U V hUOpen hVOpen hcover) =
       ((πₒ (TopCat.of X)).mapCocone
@@ -511,7 +511,7 @@ private theorem twoOpenCover_right_leg
     (U V : Set X) (hUOpen : IsOpen U) (hVOpen : IsOpen V)
     (hcover : U ∪ V = Set.univ) :
     FundamentalGroupoid.map
-        (PaperVanKampenFourPieceCover.subsetInclusion V) ⋙
+        (CoveringSpace.subsetInclusion V) ⋙
       FundamentalGroupoid.map
         (toTwoOpenCover U V hUOpen hVOpen hcover) =
       ((πₒ (TopCat.of X)).mapCocone
@@ -538,10 +538,10 @@ private theorem fundamentalGroupOpenUnion_lift_sameUniverse
         (⟨base, hbaseU, hbaseV⟩ : (U ∩ V : Set X)))) :
     ∃ f : FundamentalGroup X base →* G,
       f.comp (FundamentalGroup.map
-        (PaperVanKampenFourPieceCover.subsetInclusion U)
+        (CoveringSpace.subsetInclusion U)
         (⟨base, hbaseU⟩ : U)) = fU ∧
       f.comp (FundamentalGroup.map
-        (PaperVanKampenFourPieceCover.subsetInclusion V)
+        (CoveringSpace.subsetInclusion V)
         (⟨base, hbaseV⟩ : V)) = fV := by
   let baseInter : (U ∩ V : Set X) := ⟨base, hbaseU, hbaseV⟩
   let FU : FundamentalGroupoid U ⥤ ConnectorTarget G :=
@@ -572,20 +572,20 @@ private theorem fundamentalGroupOpenUnion_lift_sameUniverse
     FundamentalGroupoid.map toCover ⋙ glued
   have hleftFunctor :
       FundamentalGroupoid.map
-          (PaperVanKampenFourPieceCover.subsetInclusion U) ⋙ ambientFunctor = FU := by
+          (CoveringSpace.subsetInclusion U) ⋙ ambientFunctor = FU := by
     have hleg := twoOpenCover_left_leg U V hUOpen hVOpen hcover
     have hleg' := congrArg (fun K ↦ K ⋙ glued) hleg
     change (FundamentalGroupoid.map
-        (PaperVanKampenFourPieceCover.subsetInclusion U) ⋙
+        (CoveringSpace.subsetInclusion U) ⋙
       FundamentalGroupoid.map toCover) ⋙ glued = FU
     exact hleg'.trans (hc.fac targetCocone (.single false))
   have hrightFunctor :
       FundamentalGroupoid.map
-          (PaperVanKampenFourPieceCover.subsetInclusion V) ⋙ ambientFunctor = FV := by
+          (CoveringSpace.subsetInclusion V) ⋙ ambientFunctor = FV := by
     have hleg := twoOpenCover_right_leg U V hUOpen hVOpen hcover
     have hleg' := congrArg (fun K ↦ K ⋙ glued) hleg
     change (FundamentalGroupoid.map
-        (PaperVanKampenFourPieceCover.subsetInclusion V) ⋙
+        (CoveringSpace.subsetInclusion V) ⋙
       FundamentalGroupoid.map toCover) ⋙ glued = FV
     exact hleg'.trans (hc.fac targetCocone (.single true))
   let f : FundamentalGroup X base →* G :=
@@ -598,7 +598,7 @@ private theorem fundamentalGroupOpenUnion_lift_sameUniverse
             (FundamentalGroupoid.mk baseInter)))
       hleftFunctor
     change f.comp (FundamentalGroup.map
-        (PaperVanKampenFourPieceCover.subsetInclusion U)
+        (CoveringSpace.subsetInclusion U)
         (⟨base, hbaseU⟩ : U)) =
       connectorMapEnd FU
         ((FundamentalGroupoid.map (intersectionToLeft U V)).obj
@@ -617,7 +617,7 @@ private theorem fundamentalGroupOpenUnion_lift_sameUniverse
             (FundamentalGroupoid.mk baseInter)))
       hrightFunctor
     change f.comp (FundamentalGroup.map
-        (PaperVanKampenFourPieceCover.subsetInclusion V)
+        (CoveringSpace.subsetInclusion V)
         (⟨base, hbaseV⟩ : V)) =
       connectorMapEnd FV
         ((FundamentalGroupoid.map (intersectionToRight U V)).obj
@@ -651,10 +651,10 @@ public theorem fundamentalGroupOpenUnion_lift
         (⟨base, hbaseU, hbaseV⟩ : (U ∩ V : Set X)))) :
     ∃ f : FundamentalGroup X base →* G,
       f.comp (FundamentalGroup.map
-        (PaperVanKampenFourPieceCover.subsetInclusion U)
+        (CoveringSpace.subsetInclusion U)
         (⟨base, hbaseU⟩ : U)) = fU ∧
       f.comp (FundamentalGroup.map
-        (PaperVanKampenFourPieceCover.subsetInclusion V)
+        (CoveringSpace.subsetInclusion V)
         (⟨base, hbaseV⟩ : V)) = fV := by
   let baseInter : (U ∩ V : Set X) := ⟨base, hbaseU, hbaseV⟩
   let leftMap : FundamentalGroup (U ∩ V : Set X) baseInter →*
@@ -694,7 +694,7 @@ public theorem fundamentalGroupOpenUnion_lift
   let descend : P ⧸ N →* G := QuotientGroup.lift N evaluate hN
   refine ⟨descend.comp fP, ?_, ?_⟩
   · let mapU : FundamentalGroup U (⟨base, hbaseU⟩ : U) →* FundamentalGroup X base :=
-      FundamentalGroup.map (PaperVanKampenFourPieceCover.subsetInclusion U)
+      FundamentalGroup.map (CoveringSpace.subsetInclusion U)
         (⟨base, hbaseU⟩ : U)
     change (descend.comp fP).comp mapU = fU
     have hfPU' : fP.comp mapU = iU := hfPU
@@ -709,7 +709,7 @@ public theorem fundamentalGroupOpenUnion_lift
         rw [QuotientGroup.lift_comp_mk']
         exact Monoid.Coprod.lift_comp_inl fU fV
   · let mapV : FundamentalGroup V (⟨base, hbaseV⟩ : V) →* FundamentalGroup X base :=
-      FundamentalGroup.map (PaperVanKampenFourPieceCover.subsetInclusion V)
+      FundamentalGroup.map (CoveringSpace.subsetInclusion V)
         (⟨base, hbaseV⟩ : V)
     change (descend.comp fP).comp mapV = fV
     have hfPV' : fP.comp mapV = iV := hfPV
@@ -744,13 +744,13 @@ public theorem freeTwoGeneratorLift_injective_of_open_union
       (FreeGroup.lift fun i : Fin 2 ↦
         if i = 0 then
           FundamentalGroup.map
-            (PaperVanKampenFourPieceCover.subsetInclusion U)
+            (CoveringSpace.subsetInclusion U)
             (⟨base, hbaseU⟩ : U) u
         else
           FundamentalGroup.map
-            (PaperVanKampenFourPieceCover.subsetInclusion V)
+            (CoveringSpace.subsetInclusion V)
             (⟨base, hbaseV⟩ : V) v) := by
-  unfold PaperVanKampenFourPieceCover.subsetInclusion
+  unfold CoveringSpace.subsetInclusion
   let _ : ContractibleSpace ↑(U ∩ V : Set X) := hInter
   let _ : SimplyConnectedSpace ↑(U ∩ V : Set X) :=
     SimplyConnectedSpace.ofContractible _
@@ -793,7 +793,7 @@ public theorem freeTwoGeneratorLift_injective_of_open_union
   obtain ⟨r, hrU, hrV⟩ :=
     fundamentalGroupOpenUnion_lift U V base hUOpen hVOpen hcover hbaseU hbaseV
       hUPath hVPath hInterPath fU fV hagree
-  unfold PaperVanKampenFourPieceCover.subsetInclusion at hrU hrV
+  unfold CoveringSpace.subsetInclusion at hrU hrV
   let mapU : FundamentalGroup U (⟨base, hbaseU⟩ : U) →* FundamentalGroup X base :=
     FundamentalGroup.map
       (⟨Subtype.val, continuous_subtype_val⟩ : C(U, X)) (⟨base, hbaseU⟩ : U)

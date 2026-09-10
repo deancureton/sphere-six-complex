@@ -26,13 +26,13 @@ public theorem localPhaseActionEquiv_psiMap
   rw [← Equiv.Perm.mul_apply, ← map_mul, mul_comm, map_mul, Equiv.Perm.mul_apply]
 
 public def cuspPeriodPhaseCircle (i : Fin 2) : C(UnitAddCircle,Phase) where
-  toFun z := fun j ↦ if j = i then PaperAnalyticData.unitCircleExponential z else 1
+  toFun z := fun j ↦ if j = i then CircleExponential.toUnits z else 1
   continuous_toFun := by
     apply continuous_pi
     intro j
     by_cases h : j = i
     · simp only [h, ↓reduceIte]
-      exact PaperAnalyticData.unitCircleExponential.continuous
+      exact CircleExponential.toUnits.continuous
     · simp only [h, ↓reduceIte]
       exact continuous_const
 
@@ -93,7 +93,7 @@ public theorem cuspPeriodPhaseCircle_dense (i : Fin 2) (t : ℝ)
   fin_cases i <;> fin_cases j <;>
     simp [phaseEmbedding, cuspPeriodPhaseCircle, denseCuspExponential]
   all_goals
-    rw [PaperAnalyticData.unitCircleExponential_real]
+    rw [CircleExponential.toUnits_real]
     change Complex.exp _ * Complex.exp _ = Complex.exp _
     rw [← Complex.exp_add]
     congr 1

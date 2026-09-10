@@ -25,22 +25,22 @@ namespace SphereSixComplex.Periods
 open Set
 open SphereSixComplex.TriangleGroup
 
-namespace OrbifoldAffineLineTorsorDescentProblem
+namespace OrbifoldAffineDescentData
 
 open HolomorphicAffineTorsorHOne
 
 /-- The source preimage of the punctured infinity chart. -/
 @[expose] public def canonicalInfinityRegion
-    (P : OrbifoldAffineLineTorsorDescentProblem) : Set UpperHalfPlane :=
+    (P : OrbifoldAffineDescentData) : Set UpperHalfPlane :=
   {z | P.quotient.coordinate z ≠ 0}
 
 public theorem canonicalInfinityRegion_open
-    (P : OrbifoldAffineLineTorsorDescentProblem) :
+    (P : OrbifoldAffineDescentData) :
     IsOpen P.canonicalInfinityRegion := by
   exact isOpen_compl_singleton.preimage P.quotient.coordinate_holomorphic.continuous
 
 public theorem canonicalInfinityRegion_invariant
-    (P : OrbifoldAffineLineTorsorDescentProblem) (g : Delta) (z : UpperHalfPlane) :
+    (P : OrbifoldAffineDescentData) (g : Delta) (z : UpperHalfPlane) :
     fuchsianSourceAction g • z ∈ P.canonicalInfinityRegion ↔
       z ∈ P.canonicalInfinityRegion := by
   simp only [canonicalInfinityRegion, Set.mem_ofPred_eq]
@@ -48,13 +48,13 @@ public theorem canonicalInfinityRegion_invariant
 
 /-- A global equivariant cusp-regular section restricts to a canonical local Cech
 presentation.  Its overlap cocycle is zero because the same section is used on both charts. -/
-@[expose] public def localCechPresentationOfEquivariantSection
-    (P : OrbifoldAffineLineTorsorDescentProblem)
+@[expose] public def cechPresentationOfEquivariantSection
+    (P : OrbifoldAffineDescentData)
     (s : UpperHalfPlane → ℂ) (hs : MDiff s)
     (hone : ∀ z, s (fuchsianSourceAction g₁ • z) = P.affineOne z (s z))
     (htwo : ∀ z, s (fuchsianSourceAction g₂ • z) = P.affineTwo z (s z))
     (hcusp : BoundedOn (fun z ↦ s z - P.cuspSection z) fuchsianCuspRegion) :
-    P.LocalCechPresentation where
+    P.CechPresentation where
   zeroRegion := Set.univ
   infinityRegion := P.canonicalInfinityRegion
   zeroRegion_open := isOpen_univ
@@ -81,26 +81,26 @@ presentation.  Its overlap cocycle is zero because the same section is used on b
   sectionInfinity_sub_cusp_bounded := hcusp
 
 /-- A global equivariant cusp-regular section yields local Cech data. -/
-public theorem nonempty_localCechPresentation_of_hasCuspBoundedEquivariantSection
-    (P : OrbifoldAffineLineTorsorDescentProblem)
-    (hP : P.HasCuspBoundedEquivariantSection) :
-    Nonempty P.LocalCechPresentation := by
+public theorem nonempty_cechPresentation_of_hasCuspBoundedSection
+    (P : OrbifoldAffineDescentData)
+    (hP : P.HasCuspBoundedSection) :
+    Nonempty P.CechPresentation := by
   obtain ⟨s, hs, hone, htwo, hcusp⟩ := hP
-  exact ⟨P.localCechPresentationOfEquivariantSection s hs hone htwo hcusp⟩
+  exact ⟨P.cechPresentationOfEquivariantSection s hs hone htwo hcusp⟩
 
 /-- For either acyclic projective-line frame, local Cech existence is equivalent to the global
 Cartan--B conclusion. -/
-public theorem nonempty_localCechPresentation_iff_hasCuspBoundedEquivariantSection
-    (P : OrbifoldAffineLineTorsorDescentProblem)
+public theorem nonempty_cechPresentation_iff_hasCuspBoundedSection
+    (P : OrbifoldAffineDescentData)
     (frame : AcyclicProjectiveLineFrame)
     (hframe : P.frameTransition = frame.transition) :
-    Nonempty P.LocalCechPresentation ↔ P.HasCuspBoundedEquivariantSection := by
+    Nonempty P.CechPresentation ↔ P.HasCuspBoundedSection := by
   constructor
   · rintro ⟨D⟩
     obtain ⟨S⟩ :=
       (D.projectiveLineTorsor frame).nonempty_splitting_of_hOne_vanishes frame.hOne_vanishes
-    exact D.hasCuspBoundedEquivariantSection frame hframe S
-  · exact P.nonempty_localCechPresentation_of_hasCuspBoundedEquivariantSection
+    exact D.hasCuspBoundedSection frame hframe S
+  · exact P.nonempty_cechPresentation_of_hasCuspBoundedSection
 
 /-- The exact general classical theorem still needed: every holomorphic affine torsor on the
 exact `(3, 4, ∞)` orbifold is trivial on the two affine quotient charts, with the supplied
@@ -108,27 +108,27 @@ completed-cusp primitive as its bounded normalization.
 
 This is the local Cartan--B/finite-orbifold-descent/removable-singularity statement.  All Cech
 splitting and gluing after this statement are already theorems. -/
-@[expose] public def OrbifoldAffineTorsorChartTriviality : Prop :=
-  ∀ P : OrbifoldAffineLineTorsorDescentProblem, Nonempty P.LocalCechPresentation
+@[expose] public def HasChartTrivializations : Prop :=
+  ∀ P : OrbifoldAffineDescentData, Nonempty P.CechPresentation
 
 /-- The general local-triviality theorem specializes to any one descent problem. -/
-public theorem nonempty_localCechPresentation_of_chartTriviality
-    (hlocal : OrbifoldAffineTorsorChartTriviality)
-    (P : OrbifoldAffineLineTorsorDescentProblem) :
-    Nonempty P.LocalCechPresentation :=
+public theorem nonempty_cechPresentation_of_chartTriviality
+    (hlocal : HasChartTrivializations)
+    (P : OrbifoldAffineDescentData) :
+    Nonempty P.CechPresentation :=
   hlocal P
 
 /-- The general local-triviality theorem and the proved projective-line `H¹` vanishing produce
 the exact cusp-bounded Cousin correction used by the construction. -/
-public theorem nonempty_cuspBoundedEllipticOneCorrection_of_chartTriviality
-    (hlocal : OrbifoldAffineTorsorChartTriviality)
-    (P : OrbifoldAffineLineTorsorDescentProblem)
+public theorem nonempty_cuspBoundedCorrection_of_chartTriviality
+    (hlocal : HasChartTrivializations)
+    (P : OrbifoldAffineDescentData)
     (frame : AcyclicProjectiveLineFrame)
     (hframe : P.frameTransition = frame.transition) :
-    Nonempty P.CuspBoundedEllipticOneCorrection := by
+    Nonempty P.CuspBoundedCorrection := by
   obtain ⟨D⟩ := hlocal P
-  exact P.nonempty_cuspBoundedEllipticOneCorrection_of_localCechPresentation D frame hframe
+  exact P.nonempty_cuspBoundedCorrection_of_cechPresentation D frame hframe
 
-end OrbifoldAffineLineTorsorDescentProblem
+end OrbifoldAffineDescentData
 
 end SphereSixComplex.Periods

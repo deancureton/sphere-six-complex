@@ -196,16 +196,16 @@ public theorem actualCuspFullFibreSlice_additiveTorusProjection
 intersection, not merely the single marked additive point used by the pointwise argument. -/
 public theorem actualCuspFullFibreSlice_mem_pulledBackIntersection
     (R : A.SectionSevenAffineRadialCompletionInput) (t : unitInterval)
-    (ht : ((A.actualCuspAngularCoordinateLoop t).1).re = 1 / 2)
+    (ht : ((A.cuspAngularCoordinateLoop t).1).re = 1 / 2)
     (y : let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
       G.Fiber) :
-    let p := A.actualCuspAngularLiftPoint t
+    let p := A.cuspAngularLiftPoint t
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     actualCuspFullFibreSlice (A := A) p.1.2 p.2 y ∈
       R.twoDiscCover.cuspOrderThreeOpen ⊓ R.twoDiscCover.cuspOrderFourOpen := by
-  let p := A.actualCuspAngularLiftPoint t
+  let p := A.cuspAngularLiftPoint t
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   obtain ⟨w, hw⟩ := Quotient.exists_rep y
@@ -235,19 +235,19 @@ public theorem actualCuspFullFibreSlice_mem_pulledBackIntersection
   apply cuspToEllipticInteriorMap_additivePoint_mem_sideIntersection R q
   change (A.modular.sourceCoordinate.coordinate
     (A.cuspCoordinate.lift p.1.2)).re = 1 / 2
-  rw [A.actualCuspAngularCoordinateLoop_apply t] at ht
+  rw [A.cuspAngularCoordinateLoop_apply t] at ht
   exact ht
 
 /-- The continuous full four-torus slice, corestricted to the pulled-back cover intersection. -/
 public noncomputable def actualCuspFullFibreIntersectionSlice
     (R : A.SectionSevenAffineRadialCompletionInput) (t : unitInterval)
-    (ht : ((A.actualCuspAngularCoordinateLoop t).1).re = 1 / 2) :
+    (ht : ((A.cuspAngularCoordinateLoop t).1).re = 1 / 2) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     C(G.Fiber,
       (Opens.toTopCat (TopCat.of (A.openEmbeddingStarData.collarSource 0))).obj
         (R.twoDiscCover.cuspOrderThreeOpen ⊓ R.twoDiscCover.cuspOrderFourOpen)) := by
-  let p := A.actualCuspAngularLiftPoint t
+  let p := A.cuspAngularLiftPoint t
   let G := A.actualCuspRadialClutchingData
   letI := G.fiberTopology
   exact ⟨fun y ↦ ⟨actualCuspFullFibreSlice (A := A) p.1.2 p.2 y,
@@ -258,7 +258,7 @@ public noncomputable def actualCuspFullFibreIntersectionSlice
 intersection. -/
 public noncomputable def actualCuspFullFibreIntersectionHomologyOne
     (R : A.SectionSevenAffineRadialCompletionInput) (t : unitInterval)
-    (ht : ((A.actualCuspAngularCoordinateLoop t).1).re = 1 / 2) :
+    (ht : ((A.cuspAngularCoordinateLoop t).1).re = 1 / 2) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     IntegralSingularHomology 1 G.Fiber →+
@@ -274,7 +274,7 @@ public noncomputable def actualCuspFullFibreIntersectionHomologyOne
 elliptic band. -/
 public noncomputable def actualCuspFullFibreToBandHomologyOne
     (R : A.SectionSevenAffineRadialCompletionInput) (t : unitInterval)
-    (ht : ((A.actualCuspAngularCoordinateLoop t).1).re = 1 / 2) :
+    (ht : ((A.cuspAngularCoordinateLoop t).1).re = 1 / 2) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     IntegralSingularHomology 1 G.Fiber →+
@@ -293,7 +293,7 @@ public noncomputable def actualCuspFullFibreCrossingTime (A : PaperAnalyticData)
 
 /-- The selected full-fibre crossing lies at affine height `1/2`. -/
 public theorem actualCuspFullFibreCrossingTime_spec (A : PaperAnalyticData) :
-    ((A.actualCuspAngularCoordinateLoop
+    ((A.cuspAngularCoordinateLoop
       (actualCuspFullFibreCrossingTime A)).1).re = 1 / 2 :=
   Classical.choose_spec A.exists_actualCuspAngularCoordinateLoop_re_eq_half
 

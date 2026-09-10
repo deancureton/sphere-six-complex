@@ -85,11 +85,11 @@ public theorem right_isPathConnected : IsPathConnected twicePuncturedComplexRigh
 
 /-- The left-piece inclusion into the twice-punctured plane. -/
 public def leftInclusion : C(twicePuncturedComplexLeft, TwicePuncturedComplex) :=
-  PaperVanKampenFourPieceCover.subsetInclusion twicePuncturedComplexLeft
+  CoveringSpace.subsetInclusion twicePuncturedComplexLeft
 
 /-- The right-piece inclusion into the twice-punctured plane. -/
 public def rightInclusion : C(twicePuncturedComplexRight, TwicePuncturedComplex) :=
-  PaperVanKampenFourPieceCover.subsetInclusion twicePuncturedComplexRight
+  CoveringSpace.subsetInclusion twicePuncturedComplexRight
 
 /-- The map on based fundamental groups induced by the left inclusion. -/
 public def leftFundamentalGroupMap :
@@ -265,12 +265,12 @@ public theorem localFundamentalGroupImages_generate
   have hrange : (FundamentalGroup.mapOfEq q he₀).range = H :=
     range_mapOfEq_subgroupQuotientProj twicePuncturedComplexBasepoint H
   obtain ⟨sLeft, hsLeftBase, hsLeft⟩ :=
-    PaperVanKampenFourPieceCover.exists_lift H twicePuncturedComplexLeft_isOpen
+    CoveringSpace.exists_lift H twicePuncturedComplexLeft_isOpen
       left_isPathConnected twicePuncturedComplexBasepoint_mem_left e₀ he₀ (by
         rw [hrange]
         exact hLeft)
   obtain ⟨sRight, hsRightBase, hsRight⟩ :=
-    PaperVanKampenFourPieceCover.exists_lift H twicePuncturedComplexRight_isOpen
+    CoveringSpace.exists_lift H twicePuncturedComplexRight_isOpen
       right_isPathConnected twicePuncturedComplexBasepoint_mem_right e₀ he₀ (by
         rw [hrange]
         exact hRight)

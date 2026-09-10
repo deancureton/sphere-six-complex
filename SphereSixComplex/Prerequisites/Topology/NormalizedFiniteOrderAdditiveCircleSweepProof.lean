@@ -28,7 +28,7 @@ open CyclicAngularFundamentalDomain
 open FiniteCyclicMappingTorusWangNaturality
 open NormalizedAffineMappingTorusCover
 open NormalizedFiniteOrderAdditiveCircleSweep
-open PaperAffineCyclicReducedFiberMappingTorus
+open CyclicMappingTorus
 open PositiveCircleCross
 open StandardTorusHomology
 
@@ -58,19 +58,19 @@ private theorem normalizedCover_loopAction_square
       (normalizedAffineCoverToCircleMappingTorus phi.toHomeomorph hpow).comp
         ((normalizedBaseStep (m := m) G).comp (circleProductMap c)) := by
   ext p
-  change (normalizedAffineCyclicQuotientCircleMappingTorusHomeomorph
+  change (CyclicMappingTorus.normalizedAffineCyclicQuotientCircleMappingTorusHomeomorph
       phi.toHomeomorph hpow)
-        (Quotient.mk (normalizedAffineCyclicSetoid (m := m) phi.toHomeomorph)
+        (Quotient.mk (CyclicMappingTorus.normalizedAffineCyclicSetoid (m := m) phi.toHomeomorph)
           (p.1, phi (c p.2))) =
-    (normalizedAffineCyclicQuotientCircleMappingTorusHomeomorph
+    (CyclicMappingTorus.normalizedAffineCyclicQuotientCircleMappingTorusHomeomorph
       phi.toHomeomorph hpow)
-        (Quotient.mk (normalizedAffineCyclicSetoid (m := m) phi.toHomeomorph)
+        (Quotient.mk (CyclicMappingTorus.normalizedAffineCyclicSetoid (m := m) phi.toHomeomorph)
           (p.1 + ((((1 : ℝ) / (m : ℝ) : ℝ)) : UnitAddCircle), c p.2))
-  rw [(normalizedAffineCyclicQuotientCircleMappingTorusHomeomorph
+  rw [(CyclicMappingTorus.normalizedAffineCyclicQuotientCircleMappingTorusHomeomorph
     phi.toHomeomorph hpow).injective.eq_iff]
-  change Quotient.mk (normalizedAffineCyclicSetoid (m := m) phi.toHomeomorph)
+  change Quotient.mk (CyclicMappingTorus.normalizedAffineCyclicSetoid (m := m) phi.toHomeomorph)
       (p.1, phi (c p.2)) =
-    Quotient.mk (normalizedAffineCyclicSetoid (m := m) phi.toHomeomorph)
+    Quotient.mk (CyclicMappingTorus.normalizedAffineCyclicSetoid (m := m) phi.toHomeomorph)
       (p.1 + ((((1 : ℝ) / (m : ℝ) : ℝ)) : UnitAddCircle), c p.2)
   symm
   apply Quotient.sound
@@ -214,8 +214,8 @@ private theorem loopHomologyClass_add
     StandardCircleHomologyLiftDegree.loopHomologyClass (p.add q) =
       StandardCircleHomologyLiftDegree.loopHomologyClass (pathAddRight p b) +
         StandardCircleHomologyLiftDegree.loopHomologyClass (pathAddLeft a q) := by
-  rw [← FirstHurewiczProof.loopHomologyClass_trans]
-  exact FirstHurewiczProof.loopHomologyClass_homotopic
+  rw [← Hurewicz.Chains.loopHomologyClass_trans]
+  exact Hurewicz.Chains.loopHomologyClass_homotopic
     (pointwiseAddToConcatenationHomotopy p q).symm
 
 private def addRightMap
@@ -323,7 +323,7 @@ public theorem standardCircleHomologyClass_map_zero
     ext t
     rfl
   rw [hpath]
-  exact FirstHurewiczProof.loopHomologyClass_refl 0
+  exact Hurewicz.Chains.loopHomologyClass_refl 0
 
 /-- The degree-one class represented by a parametrized circle is an additive function of the
 parametrization. -/

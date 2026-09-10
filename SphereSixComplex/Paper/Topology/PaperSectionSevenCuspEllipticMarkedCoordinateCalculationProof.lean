@@ -54,7 +54,7 @@ public theorem actualCuspFiberEllipticMarkedCoordinateCalculation_of_inclusionNa
     apply addMonoidHom_ext_of_equiv_pi_single_one
       G.geometricWangSections.circleMappingTorusHOneAddEquiv
     intro i
-    let x := A.actualCuspRawHomologyOneEquiv.symm (Pi.single i 1)
+    let x := A.cuspRawHomologyOneEquiv.symm (Pi.single i 1)
     have hx : integralSingularHomologyMap 1 G.totalHomotopyEquiv.toFun x =
         G.geometricWangSections.circleMappingTorusHOneAddEquiv.symm (Pi.single i 1) := by
       apply G.geometricWangSections.circleMappingTorusHOneAddEquiv.injective
@@ -63,8 +63,8 @@ public theorem actualCuspFiberEllipticMarkedCoordinateCalculation_of_inclusionNa
     have hI := DFunLike.congr_fun I.degreeOne x
     change R.twoDiscCover.ellipticInteriorDegreeOneCoordinateHom R.homologyAlignment
         (integralSingularHomologyMap 1 R.twoDiscCover.cuspToEllipticInteriorMap.hom x) =
-      actualCuspEllipticDegreeOneRawCoordinate (A.actualCuspRawHomologyOneEquiv x) at hI
-    rw [show A.actualCuspRawHomologyOneEquiv x = Pi.single i 1 by simp [x]] at hI
+      actualCuspEllipticDegreeOneRawCoordinate (A.cuspRawHomologyOneEquiv x) at hI
+    rw [show A.cuspRawHomologyOneEquiv x = Pi.single i 1 by simp [x]] at hI
     rw [AddMonoidHom.comp_apply]
     change R.twoDiscCover.ellipticInteriorDegreeOneCoordinateHom R.homologyAlignment
         (integralSingularHomologyMap 1 R.twoDiscCover.cuspMappingTorusToEllipticInteriorMap
@@ -80,7 +80,7 @@ public theorem actualCuspFiberEllipticMarkedCoordinateCalculation_of_inclusionNa
     apply addMonoidHom_ext_of_equiv_pi_single_one
       G.geometricWangSections.circleMappingTorusHTwoAddEquiv
     intro i
-    let x := A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1)
+    let x := A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1)
     have hx : integralSingularHomologyMap 2 G.totalHomotopyEquiv.toFun x =
         G.geometricWangSections.circleMappingTorusHTwoAddEquiv.symm (Pi.single i 1) := by
       apply G.geometricWangSections.circleMappingTorusHTwoAddEquiv.injective
@@ -89,8 +89,8 @@ public theorem actualCuspFiberEllipticMarkedCoordinateCalculation_of_inclusionNa
     have hI := DFunLike.congr_fun I.degreeTwoFiber x
     change R.twoDiscCover.ellipticInteriorDegreeTwoFiberCoordinateHom R.homologyAlignment G₀
         (integralSingularHomologyMap 2 R.twoDiscCover.cuspToEllipticInteriorMap.hom x) =
-      actualCuspEllipticDegreeTwoFiberRawCoordinate (A.actualCuspRawHomologyTwoEquiv x) at hI
-    rw [show A.actualCuspRawHomologyTwoEquiv x = Pi.single i 1 by simp [x]] at hI
+      actualCuspEllipticDegreeTwoFiberRawCoordinate (A.cuspRawHomologyTwoEquiv x) at hI
+    rw [show A.cuspRawHomologyTwoEquiv x = Pi.single i 1 by simp [x]] at hI
     rw [AddMonoidHom.comp_apply]
     change R.twoDiscCover.ellipticInteriorDegreeTwoFiberCoordinateHom R.homologyAlignment G₀
         (integralSingularHomologyMap 2 R.twoDiscCover.cuspMappingTorusToEllipticInteriorMap

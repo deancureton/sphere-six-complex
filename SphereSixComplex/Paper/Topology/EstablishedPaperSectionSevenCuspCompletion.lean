@@ -22,7 +22,7 @@ public structure ActualCuspFiberEllipticMarkedCoordinateResidual
     {A : PaperAnalyticData} (R : A.SectionSevenAffineRadialCompletionInput) : Prop where
   degreeTwoIndexFive :
     A.cuspEllipticFiberCoordinate R (correctedCuspDegreeTwoSplitting R)
-      (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) = 1
+      (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) = 1
 
 public theorem establishedActualCuspFiberEllipticMarkedCoordinateResidual
     {A : PaperAnalyticData} (R : A.SectionSevenAffineRadialCompletionInput) :

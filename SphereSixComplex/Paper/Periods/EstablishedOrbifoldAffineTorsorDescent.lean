@@ -38,7 +38,7 @@ public structure HasHolomorphicFrameOrderAt (f : UpperHalfPlane → ℂ)
 
 /-- Explicit analytic input for descent of a holomorphic affine-line torsor through the standard
 two-chart compactification of an exact `(3, 4, ∞)` orbifold quotient. -/
-public structure OrbifoldAffineLineTorsorDescentProblem where
+public structure OrbifoldAffineDescentData where
   /-- The exact orbifold quotient coordinate on the source upper half-plane. -/
   quotient : ExactFuchsianOrbifoldCoordinate
   /-- The two affine generator substitutions on a fibre. -/
@@ -155,9 +155,9 @@ public structure OrbifoldAffineLineTorsorDescentProblem where
   cuspSection_normalized_bounded :
     BoundedOn (fun z ↦ cuspNormalize z (cuspSection z)) fuchsianCuspRegion
 
-namespace OrbifoldAffineLineTorsorDescentProblem
+namespace OrbifoldAffineDescentData
 
-variable (P : OrbifoldAffineLineTorsorDescentProblem)
+variable (P : OrbifoldAffineDescentData)
 
 /-- Exact two-chart local sections produced by affine-torsor descent. -/
 public structure TwoChartSections where
@@ -187,7 +187,7 @@ public structure TwoChartSections where
 Unlike `TwoChartSections`, cusp control is intrinsic: the infinity section is required to differ
 boundedly from the supplied regular cusp primitive.  The repaired normalization laws turn this
 into the normalized bound in the final output. -/
-public structure ChartwiseAffineTrivialization where
+public structure ChartTrivialization where
   sectionZero : UpperHalfPlane → ℂ
   sectionInfinity : UpperHalfPlane → ℂ
   sectionZero_holomorphic : MDiff sectionZero
@@ -209,7 +209,7 @@ public structure ChartwiseAffineTrivialization where
     BoundedOn (fun z ↦ sectionInfinity z - P.cuspSection z) fuchsianCuspRegion
 
 /-- A homogeneous holomorphic section over the punctured finite-coordinate chart. -/
-public structure HomogeneousPuncturedSourceSection where
+public structure HomogeneousPuncturedSection where
   value : UpperHalfPlane → ℂ
   holomorphic : ∀ z, P.quotient.coordinate z ≠ 0 → MDiffAt value z
   transform_one : ∀ z, P.quotient.coordinate z ≠ 0 →
@@ -219,16 +219,16 @@ public structure HomogeneousPuncturedSourceSection where
 
 /-- A homogeneous source section descended through the quotient in the finite-chart frame. -/
 public structure DescendedFrameCoefficient
-    (H : P.HomogeneousPuncturedSourceSection) where
+    (H : P.HomogeneousPuncturedSection) where
   coefficient : ℂ → ℂ
   coefficient_holomorphic : HolomorphicOnPuncturedPlane coefficient
   factorization : ∀ z, P.quotient.coordinate z ≠ 0 →
     H.value z = coefficient (P.quotient.coordinate z) * P.frameZero z
 
 /-- The difference of two affine chart sections transforms homogeneously. -/
-@[expose] public def ChartwiseAffineTrivialization.mismatch
-    (S : P.ChartwiseAffineTrivialization) :
-    P.HomogeneousPuncturedSourceSection where
+@[expose] public def ChartTrivialization.mismatch
+    (S : P.ChartTrivialization) :
+    P.HomogeneousPuncturedSection where
   value := fun z ↦ S.sectionZero z - S.sectionInfinity z
   holomorphic := by
     intro z hz
@@ -245,7 +245,7 @@ public structure DescendedFrameCoefficient
 theorem premises rather than consequences silently inferred from topological covering data.
 Only the quotient descent of the chart mismatch actually used by the construction is required. -/
 public structure AnalyticDescentData where
-  charts : P.ChartwiseAffineTrivialization
+  charts : P.ChartTrivialization
   mismatch_descent : P.DescendedFrameCoefficient charts.mismatch
 
 private theorem boundedOn_add
@@ -259,8 +259,8 @@ private theorem boundedOn_add
   exact (norm_add_le (f z) (g z)).trans (add_le_add (hf z hz) (hg z hz))
 
 /-- Intrinsic bounded difference from the regular cusp primitive implies the normalized bound. -/
-public theorem ChartwiseAffineTrivialization.normalized_cusp_bounded
-    (S : P.ChartwiseAffineTrivialization) :
+public theorem ChartTrivialization.normalized_cusp_bounded
+    (S : P.ChartTrivialization) :
     BoundedOn (fun z ↦ P.cuspNormalize z (S.sectionInfinity z))
       fuchsianCuspRegion := by
   have hsum :
@@ -296,7 +296,7 @@ public theorem ChartwiseAffineTrivialization.normalized_cusp_bounded
   section_mismatch := A.mismatch_descent.factorization
   sectionInfinity_normalized_cusp_bounded := A.charts.normalized_cusp_bounded
 
-end OrbifoldAffineLineTorsorDescentProblem
+end OrbifoldAffineDescentData
 
 /-- Assemble two-chart sections from the explicit analytic local-triviality and quotient-descent
 certificates.
@@ -304,8 +304,8 @@ certificates.
 The original unrestricted assertion was false because `cuspNormalize` was unconstrained.  The
 repaired problem records its affine, holomorphic, and parabolic compatibility laws, while the two
 Cartan--B/Cousin obligations are exposed honestly as `AnalyticDescentData`. -/
-public theorem establishedOrbifoldAffineLineTorsorTwoChartDescent
-    (P : OrbifoldAffineLineTorsorDescentProblem) (A : P.AnalyticDescentData) :
+public theorem OrbifoldAffineDescentData.nonempty_twoChartSections
+    (P : OrbifoldAffineDescentData) (A : P.AnalyticDescentData) :
     Nonempty P.TwoChartSections :=
   ⟨A.toTwoChartSections⟩
 

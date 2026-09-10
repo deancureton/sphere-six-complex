@@ -40,7 +40,7 @@ public theorem inclusion_indexFourSideLift
     (G : D.SectionSevenCuspPulledBackBoundaryBasisBridge N) :
     (presentationTwo (D := D)).inclusion (D.indexFourSideLift N G) =
       cuspToEllipticUnionHomology D 2
-        (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) :=
+        (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) :=
   ((SectionSevenCuspPulledBackBoundaryBasisBridge.toMayerVietorisBasisBridge D N G
       |>.lowerBasis_factors (4 : Fin 5))).choose_spec
 
@@ -68,7 +68,7 @@ public theorem indexFourFiberCoordinate_eq_sideLiftCoinvariantCoordinate
     N.actualHomologyCoordinates.normalizedUnionHomologyTwoEquiv
         (D.cuspNormalizedDegreeTwoSplitting N G)
         (cuspToEllipticUnionHomology D 2
-          (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) 0 =
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) 0 =
       N.actualHomologyCoordinates.degreeTwoCoinvariantEquiv
         (Submodule.Quotient.mk (D.indexFourSideLift N G)) := by
   rw [← D.inclusion_indexFourSideLift N G]
@@ -83,7 +83,7 @@ public theorem ellipticInteriorDegreeTwoFiberCoordinateHom_indexFour_eq_sideLift
     (G : D.SectionSevenCuspPulledBackBoundaryBasisBridge N) :
     D.ellipticInteriorDegreeTwoFiberCoordinateHom N G
         (integralSingularHomologyMap 2 D.cuspToEllipticInteriorMap.hom
-          (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) =
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) =
       N.actualHomologyCoordinates.degreeTwoCoinvariantEquiv
         (Submodule.Quotient.mk (D.indexFourSideLift N G)) := by
   rw [D.ellipticInteriorDegreeTwoFiberCoordinateHom_cuspToEllipticInteriorMap]
@@ -96,7 +96,7 @@ public theorem ellipticInteriorDegreeTwoFiberCoordinateHom_indexFour_eq_one_iff
     (G : D.SectionSevenCuspPulledBackBoundaryBasisBridge N) :
     D.ellipticInteriorDegreeTwoFiberCoordinateHom N G
           (integralSingularHomologyMap 2 D.cuspToEllipticInteriorMap.hom
-            (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) = 1 ↔
+            (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) = 1 ↔
       Submodule.Quotient.mk (D.indexFourSideLift N G) =
         N.actualHomologyCoordinates.degreeTwoCoinvariantEquiv.symm 1 := by
   rw [D.ellipticInteriorDegreeTwoFiberCoordinateHom_indexFour_eq_sideLift N G]
@@ -129,7 +129,7 @@ public theorem normalizedIndexFourPrismCoefficientCalculation_iff_sideLiftGenera
       _ = N.actualHomologyCoordinates.normalizedUnionHomologyTwoEquiv
           (D.cuspNormalizedDegreeTwoSplitting N G)
           (cuspToEllipticUnionHomology D 2
-            (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) 0 := hPrism
+            (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) 0 := hPrism
       _ = N.actualHomologyCoordinates.degreeTwoCoinvariantEquiv
           (Submodule.Quotient.mk (D.indexFourSideLift N G)) := hCoordinate
       _ = N.actualHomologyCoordinates.degreeTwoCoinvariantEquiv

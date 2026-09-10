@@ -27,7 +27,7 @@ open FixedLoopSweepWangBoundary
 open NormalizedAffineMappingTorusCover
 open NormalizedFiniteOrderAdditiveCircleSweep
 open NormalizedFiniteOrderAdditiveCircleSweepProof
-open PaperAffineCyclicReducedFiberMappingTorus
+open CyclicMappingTorus
 open PositiveCircleCross
 open StandardTorusHomology
 
@@ -100,26 +100,26 @@ private theorem normalizedAffineCover_real
         (((t : ℝ) : UnitAddCircle), x) =
       realMappingTorusHomeomorph phi.toHomeomorph
         (Quotient.mk (realMappingTorusSetoid phi.toHomeomorph) ((m : ℝ) * t, x)) := by
-  change normalizedAffineCyclicQuotientCircleMappingTorusHomeomorph
+  change CyclicMappingTorus.normalizedAffineCyclicQuotientCircleMappingTorusHomeomorph
       phi.toHomeomorph hpow
-      (Quotient.mk (normalizedAffineCyclicSetoid (m := m) phi.toHomeomorph)
+      (Quotient.mk (CyclicMappingTorus.normalizedAffineCyclicSetoid (m := m) phi.toHomeomorph)
         (((t : ℝ) : UnitAddCircle), x)) = _
-  unfold normalizedAffineCyclicQuotientCircleMappingTorusHomeomorph
+  unfold CyclicMappingTorus.normalizedAffineCyclicQuotientCircleMappingTorusHomeomorph
   rw [Homeomorph.trans_apply]
   congr 1
-  unfold normalizedAffineCyclicQuotientRealMappingTorusHomeomorph
+  unfold CyclicMappingTorus.normalizedAffineCyclicQuotientRealMappingTorusHomeomorph
     CyclicAngularFundamentalDomain.homeomorphOfQuotientMaps
   dsimp only
-  apply (normalizedAffineQuotientMap_eq_iff phi.toHomeomorph hpow _ _).mp
+  apply (CyclicMappingTorus.normalizedAffineQuotientMap_eq_iff phi.toHomeomorph hpow _ _).mp
   calc
-    normalizedAffineQuotientMap (m := m) phi.toHomeomorph
-        (Function.surjInv (normalizedAffineQuotientMap_surjective phi.toHomeomorph)
-          (Quotient.mk (normalizedAffineCyclicSetoid (m := m) phi.toHomeomorph)
+    CyclicMappingTorus.normalizedAffineQuotientMap (m := m) phi.toHomeomorph
+        (Function.surjInv (CyclicMappingTorus.normalizedAffineQuotientMap_surjective phi.toHomeomorph)
+          (Quotient.mk (CyclicMappingTorus.normalizedAffineCyclicSetoid (m := m) phi.toHomeomorph)
             (((t : ℝ) : UnitAddCircle), x))) =
-      Quotient.mk (normalizedAffineCyclicSetoid (m := m) phi.toHomeomorph)
+      Quotient.mk (CyclicMappingTorus.normalizedAffineCyclicSetoid (m := m) phi.toHomeomorph)
         (((t : ℝ) : UnitAddCircle), x) :=
-      Function.surjInv_eq (normalizedAffineQuotientMap_surjective phi.toHomeomorph) _
-    _ = normalizedAffineQuotientMap (m := m) phi.toHomeomorph ((m : ℝ) * t, x) := by
+      Function.surjInv_eq (CyclicMappingTorus.normalizedAffineQuotientMap_surjective phi.toHomeomorph) _
+    _ = CyclicMappingTorus.normalizedAffineQuotientMap (m := m) phi.toHomeomorph ((m : ℝ) * t, x) := by
       change Quotient.mk _ (((t : ℝ) : UnitAddCircle), x) =
         Quotient.mk _ (((((m : ℝ) * t) / (m : ℝ) : ℝ) : UnitAddCircle), x)
       congr 2

@@ -34,11 +34,11 @@ public theorem cuspEllipticFiberCoordinate_raw_fiber (A : PaperAnalyticData)
     (S : WangHomologyPresentation.NormalizedSplitting (presentationTwo (D := R.twoDiscCover)))
     (i : Fin 4) :
     A.cuspEllipticFiberCoordinate R S
-      (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (Fin.castAdd 2 i) 1)) =
+      (A.cuspRawHomologyTwoEquiv.symm (Pi.single (Fin.castAdd 2 i) 1)) =
       ![0, 12, 2, 0] i := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
-  let x := A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (Fin.castAdd 2 i) 1)
+  let x := A.cuspRawHomologyTwoEquiv.symm (Pi.single (Fin.castAdd 2 i) 1)
   have hx : integralSingularHomologyMap 2 G.totalHomotopyEquiv.toFun x =
       G.geometricWangSections.circleMappingTorusHTwoAddEquiv.symm
         (Pi.single (Fin.castAdd 2 i) 1) := by
@@ -57,10 +57,10 @@ public theorem cuspEllipticFiberCoordinate_wang_kernel (A : PaperAnalyticData)
     (x : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0))
     (hx : actualCuspWangBoundaryHom A x = 0) :
     A.cuspEllipticFiberCoordinate R S x =
-      12 * (A.actualCuspRawHomologyTwoEquiv x) 1 +
-        2 * (A.actualCuspRawHomologyTwoEquiv x) 2 := by
+      12 * (A.cuspRawHomologyTwoEquiv x) 1 +
+        2 * (A.cuspRawHomologyTwoEquiv x) 2 := by
   let _ := A.actualCuspRadialClutchingData.fiberTopology
-  let E := A.actualCuspRawHomologyTwoEquiv
+  let E := A.cuspRawHomologyTwoEquiv
   let u := E x
   have hw := actualCuspWangBoundaryHom_rawCoordinates A x
   dsimp only at hw
@@ -90,78 +90,78 @@ public theorem cuspEllipticFiberCoordinate_wang_kernel (A : PaperAnalyticData)
   change _ = 12 * u 1 + 2 * u 2
   ring
 
-public def actualCuspFourthSweepClass (A : PaperAnalyticData) :
+public def cuspFourthSweepClass (A : PaperAnalyticData) :
     IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0) :=
-  integralSingularHomologyMap 2 (actualCuspFourthSweep A)
+  integralSingularHomologyMap 2 (cuspFourthSweep A)
     PositiveCircleCross.positiveCircleProductGenerator
 
-public theorem actualCuspRawFive_sub_fourthSweep_wang_zero (A : PaperAnalyticData) :
+public theorem cuspRawFive_sub_fourthSweep_wang_zero (A : PaperAnalyticData) :
     actualCuspWangBoundaryHom A
-      (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1) -
-        A.actualCuspFourthSweepClass) = 0 := by
+      (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1) -
+        A.cuspFourthSweepClass) = 0 := by
   let _ := A.actualCuspRadialClutchingData.fiberTopology
   rw [map_sub]
   apply sub_eq_zero.mpr
   apply A.actualCuspRadialClutchingData.monodromyCoordinates.degreeOne.injective
   rw [actualCuspWangBoundaryHom_rawBasis, AddEquiv.apply_symm_apply]
-  have h := actualCuspFourthSweep_wang A
+  have h := cuspFourthSweep_wang A
   change A.actualCuspRadialClutchingData.monodromyCoordinates.degreeOne
-    (actualCuspWangBoundaryHom A A.actualCuspFourthSweepClass) = Pi.single 3 1 at h
+    (actualCuspWangBoundaryHom A A.cuspFourthSweepClass) = Pi.single 3 1 at h
   rw [h]
   ext i
   fin_cases i <;> rfl
 
-public theorem actualCuspRawFive_sub_fourthSweep_fiberCoordinate (A : PaperAnalyticData)
+public theorem cuspRawFive_sub_fourthSweep_fiber_coordinate (A : PaperAnalyticData)
     (R : A.SectionSevenAffineRadialCompletionInput)
     (S : WangHomologyPresentation.NormalizedSplitting (presentationTwo (D := R.twoDiscCover))) :
     A.cuspEllipticFiberCoordinate R S
-        (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) -
-      A.cuspEllipticFiberCoordinate R S A.actualCuspFourthSweepClass =
-        12 * (A.actualCuspRawHomologyTwoEquiv
-          (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1) -
-            A.actualCuspFourthSweepClass)) 1 +
-        2 * (A.actualCuspRawHomologyTwoEquiv
-          (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1) -
-            A.actualCuspFourthSweepClass)) 2 := by
+        (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) -
+      A.cuspEllipticFiberCoordinate R S A.cuspFourthSweepClass =
+        12 * (A.cuspRawHomologyTwoEquiv
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1) -
+            A.cuspFourthSweepClass)) 1 +
+        2 * (A.cuspRawHomologyTwoEquiv
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1) -
+            A.cuspFourthSweepClass)) 2 := by
   rw [← map_sub]
   exact A.cuspEllipticFiberCoordinate_wang_kernel R S _
-    A.actualCuspRawFive_sub_fourthSweep_wang_zero
+    A.cuspRawFive_sub_fourthSweep_wang_zero
 
-public theorem actualCuspRawFive_sub_fourthSweep_fiberCoordinate_even (A : PaperAnalyticData)
+public theorem cuspRawFive_sub_fourthSweep_fiber_coordinate_even (A : PaperAnalyticData)
     (R : A.SectionSevenAffineRadialCompletionInput)
     (S : WangHomologyPresentation.NormalizedSplitting (presentationTwo (D := R.twoDiscCover))) :
     Even (A.cuspEllipticFiberCoordinate R S
-        (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) -
-      A.cuspEllipticFiberCoordinate R S A.actualCuspFourthSweepClass) := by
-  rw [A.actualCuspRawFive_sub_fourthSweep_fiberCoordinate R S]
-  refine ⟨6 * (A.actualCuspRawHomologyTwoEquiv
-    (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1) -
-      A.actualCuspFourthSweepClass)) 1 +
-    (A.actualCuspRawHomologyTwoEquiv
-      (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1) -
-        A.actualCuspFourthSweepClass)) 2, ?_⟩
+        (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) -
+      A.cuspEllipticFiberCoordinate R S A.cuspFourthSweepClass) := by
+  rw [A.cuspRawFive_sub_fourthSweep_fiber_coordinate R S]
+  refine ⟨6 * (A.cuspRawHomologyTwoEquiv
+    (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1) -
+      A.cuspFourthSweepClass)) 1 +
+    (A.cuspRawHomologyTwoEquiv
+      (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1) -
+        A.cuspFourthSweepClass)) 2, ?_⟩
   ring
 
-public theorem actualCuspRawFive_fiberCoordinate_odd_of_fourthSweep (A : PaperAnalyticData)
+public theorem cuspRawFive_fiber_coordinate_odd_of_fourthSweep (A : PaperAnalyticData)
     (R : A.SectionSevenAffineRadialCompletionInput)
     (S : WangHomologyPresentation.NormalizedSplitting (presentationTwo (D := R.twoDiscCover)))
-    (hs : Odd (A.cuspEllipticFiberCoordinate R S A.actualCuspFourthSweepClass)) :
+    (hs : Odd (A.cuspEllipticFiberCoordinate R S A.cuspFourthSweepClass)) :
     Odd (A.cuspEllipticFiberCoordinate R S
-      (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) := by
+      (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) := by
   obtain ⟨k, hk⟩ := hs
-  obtain ⟨m, hm⟩ := A.actualCuspRawFive_sub_fourthSweep_fiberCoordinate_even R S
+  obtain ⟨m, hm⟩ := A.cuspRawFive_sub_fourthSweep_fiber_coordinate_even R S
   exact ⟨k + m, by omega⟩
 
 public theorem exists_cuspBoundaryKernel_fiberCoordinate_one_of_fourthSweep_odd
     (A : PaperAnalyticData) (R : A.SectionSevenAffineRadialCompletionInput)
     (S : WangHomologyPresentation.NormalizedSplitting (presentationTwo (D := R.twoDiscCover)))
-    (hs : Odd (A.cuspEllipticFiberCoordinate R S A.actualCuspFourthSweepClass)) :
+    (hs : Odd (A.cuspEllipticFiberCoordinate R S A.cuspFourthSweepClass)) :
     ∃ x, R.twoDiscCover.cuspPulledBackBoundaryHom x = 0 ∧
       A.cuspEllipticFiberCoordinate R S x = 1 := by
   let _ := A.actualCuspRadialClutchingData.fiberTopology
-  obtain ⟨k, hk⟩ := A.actualCuspRawFive_fiberCoordinate_odd_of_fourthSweep R S hs
-  let b₂ := A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (2 : Fin 6) 1)
-  let b₅ := A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)
+  obtain ⟨k, hk⟩ := A.cuspRawFive_fiber_coordinate_odd_of_fourthSweep R S hs
+  let b₂ := A.cuspRawHomologyTwoEquiv.symm (Pi.single (2 : Fin 6) 1)
+  let b₅ := A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)
   have h₂ : A.cuspEllipticFiberCoordinate R S b₂ = 2 :=
     A.cuspEllipticFiberCoordinate_raw_fiber R S 2
   have hb₂ : R.twoDiscCover.cuspPulledBackBoundaryHom b₂ = 0 := by
@@ -172,21 +172,21 @@ public theorem exists_cuspBoundaryKernel_fiberCoordinate_one_of_fourthSweep_odd
       fin_cases i <;> rfl, map_zero]
   refine ⟨b₅ - k • b₂, ?_, ?_⟩
   · rw [map_sub, map_zsmul, hb₂, smul_zero, sub_zero]
-    exact actualCuspRawFive_pulledBack_boundary_zero R
+    exact cuspRawFive_pulled_back_boundary_zero R
   · rw [map_sub, map_zsmul, h₂]
     change A.cuspEllipticFiberCoordinate R S b₅ - k * 2 = 1
     change A.cuspEllipticFiberCoordinate R S b₅ = 2 * k + 1 at hk
     omega
 
-public theorem actualCuspRawFive_fiberCoordinate_normalization (A : PaperAnalyticData)
+public theorem cuspRawFive_fiber_coordinate_normalization (A : PaperAnalyticData)
     (R : A.SectionSevenAffineRadialCompletionInput)
     (S : WangHomologyPresentation.NormalizedSplitting (presentationTwo (D := R.twoDiscCover))) :
     A.cuspEllipticFiberCoordinate R S
-        (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) =
-      A.cuspEllipticFiberCoordinate R S A.actualCuspFourthSweepClass -
-        12 * (A.actualCuspRawHomologyTwoEquiv A.actualCuspFourthSweepClass) 1 -
-        2 * (A.actualCuspRawHomologyTwoEquiv A.actualCuspFourthSweepClass) 2 := by
-  have h := A.actualCuspRawFive_sub_fourthSweep_fiberCoordinate R S
+        (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) =
+      A.cuspEllipticFiberCoordinate R S A.cuspFourthSweepClass -
+        12 * (A.cuspRawHomologyTwoEquiv A.cuspFourthSweepClass) 1 -
+        2 * (A.cuspRawHomologyTwoEquiv A.cuspFourthSweepClass) 2 := by
+  have h := A.cuspRawFive_sub_fourthSweep_fiber_coordinate R S
   simp only [map_sub, AddEquiv.apply_symm_apply, Pi.sub_apply] at h
   norm_num [Pi.single_apply] at h
   omega

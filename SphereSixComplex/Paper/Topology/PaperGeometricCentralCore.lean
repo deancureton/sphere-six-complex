@@ -43,7 +43,7 @@ public noncomputable def actualCuspBoundaryTranslationLiftPoint
     additiveCuspRadiusCover A.starCuspWitness.localWitness.radius :=
   ⟨((t : ℝ) • periodVector
         (regularParameterMap A.periods
-          (A.actualCuspAngularRegularBasePoint 0)).1 a +
+          (A.cuspAngularRegularBasePoint 0)).1 a +
       A.actualCuspBoundaryCoverBase.1.1,
     A.actualCuspBoundaryCoverBase.1.2), A.actualCuspBoundaryCoverBase.2⟩
 
@@ -64,8 +64,8 @@ public theorem actualCuspBoundaryTranslationLiftPoint_one (a : Lattice) :
   apply Subtype.ext
   apply Prod.ext
   · simp [actualCuspBoundaryTranslationLiftPoint,
-      cuspBoundaryLatticeTranslate, actualCuspAngularRegularBasePoint,
-      actualCuspAngularLiftPoint]
+      cuspBoundaryLatticeTranslate, cuspAngularRegularBasePoint,
+      cuspAngularLiftPoint]
     rfl
   · rfl
 
@@ -218,8 +218,8 @@ public theorem actualCuspBoundaryTranslationCentralLoop_eq_periodLoop (a : Latti
   apply Prod.ext
   · apply Subtype.ext
     change A.cuspCoordinate.lift A.actualCuspBoundaryCoverBase.1.2 =
-      A.cuspCoordinate.lift (A.actualCuspAngularLiftPoint 0).1.2
-    rw [A.actualCuspAngularLiftPoint_zero]
+      A.cuspCoordinate.lift (A.cuspAngularLiftPoint 0).1.2
+    rw [A.cuspAngularLiftPoint_zero]
   · rfl
 
 /-- The translation selected by the affine filling is represented, after transport to the
@@ -685,7 +685,7 @@ public theorem actualCuspCentralMeridian_conjugates_translation (a : Lattice) :
       Additive.toMul
         (A.actualCuspCentralTranslation (rhoLambda g₀ a)) := by
   rw [A.actualCuspCentralMeridian_eq_angularLoop,
-    A.actualCuspAngularCentralLoop_eq_actualRegularDeckLoop,
+    A.cuspAngularCentralLoop_eq_actualRegularDeckLoop,
     A.actualCuspCentralTranslation_eq_periodLoop,
     A.actualCuspCentralTranslation_eq_periodLoop]
   have h := regularFamilyDeckPathLoop_conjugates_period A.periods

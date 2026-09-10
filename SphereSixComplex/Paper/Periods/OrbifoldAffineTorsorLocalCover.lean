@@ -6,10 +6,10 @@ public import SphereSixComplex.Paper.Periods.OrbifoldAffineTorsorCuspSections
 noncomputable section
 open SphereSixComplex.TriangleGroup
 open scoped Manifold
-namespace SphereSixComplex.Periods.OrbifoldAffineLineTorsorDescentProblem
+namespace SphereSixComplex.Periods.OrbifoldAffineDescentData
 
 public theorem exists_local_equivariant_cover
-    (P : OrbifoldAffineLineTorsorDescentProblem) :
+    (P : OrbifoldAffineDescentData) :
     ∃ (U : Option ℂ → Set ℂ) (s : Option ℂ → UpperHalfPlane → ℂ),
       (∀ i, IsOpen (U i)) ∧ (∀ q, q ∈ U (some q)) ∧
       (∀ i z, P.quotient.coordinate z ∈ U i → MDiffAt (s i) z) ∧
@@ -109,4 +109,4 @@ public theorem distinct_overlap_regular {U : Option ℂ → Set ℂ}
     subst q
     exact hij ((hone i hi).trans (hone j hj).symm)
 
-end SphereSixComplex.Periods.OrbifoldAffineLineTorsorDescentProblem
+end SphereSixComplex.Periods.OrbifoldAffineDescentData

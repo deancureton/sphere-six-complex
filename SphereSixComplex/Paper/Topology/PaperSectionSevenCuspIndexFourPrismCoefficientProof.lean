@@ -38,12 +38,12 @@ public theorem indexFourPrismCoefficient_eq_cuspFiberCoordinate
       N.actualHomologyCoordinates.normalizedUnionHomologyTwoEquiv
         (D.cuspNormalizedDegreeTwoSplitting N G₀)
         (cuspToEllipticUnionHomology D 2
-          (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) 0 := by
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) 0 := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   let E := N.actualHomologyCoordinates.normalizedEllipticInteriorHomologyTwoEquiv
     (D.cuspNormalizedDegreeTwoSplitting N G₀)
-  let x := A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)
+  let x := A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)
   have hx :
       integralSingularHomologyMap 2 G.totalHomotopyEquiv.toFun x =
         G.geometricWangSections.circleMappingTorusHTwoAddEquiv.symm
@@ -77,7 +77,7 @@ public theorem normalizedIndexFourPrismCoefficientCalculation_of_cuspFiberCoordi
     (h : N.actualHomologyCoordinates.normalizedUnionHomologyTwoEquiv
         (D.cuspNormalizedDegreeTwoSplitting N G₀)
         (cuspToEllipticUnionHomology D 2
-          (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) 0 = 1) :
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) 0 = 1) :
     D.NormalizedIndexFourPrismCoefficientCalculation C :=
   ⟨(indexFourPrismCoefficient_eq_cuspFiberCoordinate C).trans h⟩
 
@@ -88,12 +88,12 @@ public theorem cuspFiberCoordinate_eq_ellipticInteriorDegreeTwoFiberCoordinateHo
     N.actualHomologyCoordinates.normalizedUnionHomologyTwoEquiv
         (D.cuspNormalizedDegreeTwoSplitting N G₀)
         (cuspToEllipticUnionHomology D 2
-          (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) 0 =
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) 0 =
       D.ellipticInteriorDegreeTwoFiberCoordinateHom N G₀
         (integralSingularHomologyMap 2 D.cuspToEllipticInteriorMap.hom
-          (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) :=
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) :=
   (D.ellipticInteriorDegreeTwoFiberCoordinateHom_cuspToEllipticInteriorMap N G₀
-    (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))).symm
+    (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))).symm
 
 /-- Wiring for the established Section 7 cusp completion: the single scalar identity for the
 actual affine radial input discharges the index-four prism coefficient calculation for every
@@ -107,7 +107,7 @@ public theorem normalizedIndexFourPrismCoefficientCalculation_of_actualCuspFiber
     (h : R.twoDiscCover.ellipticInteriorDegreeTwoFiberCoordinateHom R.homologyAlignment
         G₀
         (integralSingularHomologyMap 2 R.twoDiscCover.cuspToEllipticInteriorMap.hom
-          (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) = 1) :
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) = 1) :
     R.twoDiscCover.NormalizedIndexFourPrismCoefficientCalculation C :=
   normalizedIndexFourPrismCoefficientCalculation_of_cuspFiberCoordinate C
     ((cuspFiberCoordinate_eq_ellipticInteriorDegreeTwoFiberCoordinateHom).trans h)

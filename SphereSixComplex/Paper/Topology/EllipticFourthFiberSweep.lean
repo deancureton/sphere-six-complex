@@ -224,7 +224,7 @@ public theorem ellipticFourthSweep_translation_fiberCoordinate (A : PaperAnalyti
     R.homologyAlignment.actualHomologyCoordinates.normalizedEllipticInteriorHomologyTwoEquiv S
       (A.ellipticFourthHomologySweep
         (integralSingularHomologyMap 1 A.actualCuspOverlapToEllipticInterior
-          (FirstHurewiczProof.hurewiczFunction A.actualCuspOverlapBase
+          (Hurewicz.Chains.hurewiczFunction A.actualCuspOverlapBase
             (Additive.toMul (A.actualCuspAffineBridgeTranslation (Pi.single 0 1)))))) 0 = -12 := by
   erw [A.actualCuspTranslation_homology_eq_band R (Pi.single 0 1)]
   rw [A.ellipticFourthSweep_markedCircle R]

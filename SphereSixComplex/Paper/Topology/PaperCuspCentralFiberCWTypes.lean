@@ -103,7 +103,7 @@ public noncomputable def integralCellularChainModel
   letI := D.topology
   letI := D.t2
   letI := D.cwComplex
-  exact EstablishedCellularHomology.integralCWCellularHomologyModel D.Carrier
+  exact CellularHomology.normalizedModel D.Carrier
 
 /-- Reindex integer coordinates along the labelled orbit-cell equivalence. -/
 public def standardIntegerFunctionReindexAddEquiv {I J : Type} (e : I ≃ J) :

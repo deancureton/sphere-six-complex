@@ -118,7 +118,7 @@ public noncomputable def cuspMeridianSourceCircleMap
 @[simp]
 public theorem cuspMeridianSourceCircleMap_cylinderProjection
     (x : PeriodDomain) (p : unitInterval × AdditiveTorus x.1) :
-    cuspMeridianSourceCircleMap x
+    _root_.SphereSixComplex.cuspMeridianSourceCircleMap x
         (circleMappingTorusCylinderProjection (cuspFiberClutching x) p) =
       ((p.1 : ℝ) : UnitAddCircle) + cuspFiberTwelveFirstCoordinate x p.2 :=
   rfl
@@ -126,7 +126,7 @@ public theorem cuspMeridianSourceCircleMap_cylinderProjection
 @[simp]
 public theorem cuspMeridianSourceCircleMap_fiberInclusion
     (x : PeriodDomain) (y : AdditiveTorus x.1) :
-    cuspMeridianSourceCircleMap x
+    _root_.SphereSixComplex.cuspMeridianSourceCircleMap x
         (finiteBouquetMappingTorusFiberInclusion
           (fun _ : Unit ↦ cuspFiberClutching x) y) =
       cuspFiberTwelveFirstCoordinate x y := by
@@ -136,11 +136,11 @@ public theorem cuspMeridianSourceCircleMap_fiberInclusion
 namespace Geometry.PaperAnalyticData
 
 /-- The source circle map specialized to the actual cusp fibre and clutching datum. -/
-public noncomputable def actualCuspMeridianSourceCircleMap (A : PaperAnalyticData) :
+public noncomputable def cuspMeridianSourceCircleMap (A : PaperAnalyticData) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     C(CircleMappingTorus G.clutching, UnitAddCircle) :=
-  cuspMeridianSourceCircleMap
+  _root_.SphereSixComplex.cuspMeridianSourceCircleMap
     (cuspBasePoint A.cuspCoordinate (markedCuspParameter A.starCuspWitness))
 
 end Geometry.PaperAnalyticData

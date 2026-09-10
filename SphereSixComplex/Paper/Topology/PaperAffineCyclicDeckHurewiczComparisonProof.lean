@@ -15,7 +15,7 @@ open SphereSixComplex.Geometry.GlobalTorusFamily
 open SphereSixComplex.LatticeData
 open SphereSixComplex.Periods
 open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
-open SphereSixComplex.Topology.EstablishedFirstHurewicz
+open Hurewicz
 
 noncomputable section
 

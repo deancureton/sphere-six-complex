@@ -163,7 +163,7 @@ public noncomputable def degreeTwoCuspE5Generator :
     IntegralSingularHomology 2
       (D.orderThreeSide ∪ D.orderFourSide : Set A.SectionSevenEllipticInterior) :=
   cuspToEllipticUnionHomology D 2
-    (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))
+    (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))
 
 /-- A boundary-coordinate formula for every cusp class orients the included `e₅` generator. -/
 public theorem degreeTwoCuspE5Boundary_of_coordinates
@@ -172,7 +172,7 @@ public theorem degreeTwoCuspE5Boundary_of_coordinates
       degreeTwoInvariantEquiv B
           ((presentationTwo (D := D)).totalToInvariants
             (cuspToEllipticUnionHomology D 2 x)) =
-        A.actualCuspRawHomologyTwoEquiv x 5) :
+        A.cuspRawHomologyTwoEquiv x 5) :
     (presentationTwo (D := D)).totalToInvariants
         (degreeTwoCuspE5Generator (A := A) (D := D)) =
       (degreeTwoInvariantEquiv B).symm 1 := by
@@ -180,7 +180,7 @@ public theorem degreeTwoCuspE5Boundary_of_coordinates
   rw [LinearEquiv.apply_symm_apply]
   simpa [degreeTwoCuspE5Generator] using
     hboundaryCoordinates
-      (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))
+      (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))
 
 /-- The cusp `e₅` class supplies the degree-two splitting once its geometric boundary is
 identified with the positive invariant generator. -/
@@ -199,7 +199,7 @@ public noncomputable def degreeTwoCuspE5SplittingOfCoordinates
       degreeTwoInvariantEquiv B
           ((presentationTwo (D := D)).totalToInvariants
             (cuspToEllipticUnionHomology D 2 x)) =
-        A.actualCuspRawHomologyTwoEquiv x 5) :
+        A.cuspRawHomologyTwoEquiv x 5) :
     WangHomologyPresentation.NormalizedSplitting (presentationTwo (D := D)) :=
   degreeTwoSplittingOfCuspE5 B
     (degreeTwoCuspE5Boundary_of_coordinates B hboundaryCoordinates)

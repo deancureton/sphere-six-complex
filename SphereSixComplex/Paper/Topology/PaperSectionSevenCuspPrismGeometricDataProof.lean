@@ -98,17 +98,17 @@ public theorem normalizedEllipticInteriorHomologyTwoEquiv_symm_single_one :
     (N.actualHomologyCoordinates.normalizedEllipticInteriorHomologyTwoEquiv
       (D.cuspNormalizedDegreeTwoSplitting N G₀)).symm (Pi.single (1 : Fin 2) 1) =
       integralSingularHomologyMap 2 D.cuspToEllipticInteriorMap.hom
-        (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) := by
+        (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) := by
   have h0 : (N.actualHomologyCoordinates.normalizedEllipticInteriorHomologyTwoEquiv
       (D.cuspNormalizedDegreeTwoSplitting N G₀))
         (integralSingularHomologyMap 2 D.cuspToEllipticInteriorMap.hom
-          (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) 0 = 0 := by
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) 0 = 0 := by
     rw [normalizedEllipticInteriorHomologyTwoEquiv_cuspToEllipticInteriorMap_zero]
     exact degreeTwoCuspE5_fiberCoordinate_zero N (D.cuspBoundaryCoordinateFormula N G₀)
   have h1 : (N.actualHomologyCoordinates.normalizedEllipticInteriorHomologyTwoEquiv
       (D.cuspNormalizedDegreeTwoSplitting N G₀))
         (integralSingularHomologyMap 2 D.cuspToEllipticInteriorMap.hom
-          (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) 1 = 1 := by
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) 1 = 1 := by
     rw [D.normalizedEllipticInteriorHomologyTwoEquiv_cuspToEllipticInteriorMap_one N G₀,
       AddEquiv.apply_symm_apply]
     simp
@@ -126,10 +126,10 @@ public theorem cuspMappingTorusToEllipticInteriorMap_basis (i : Fin 6) :
     integralSingularHomologyMap 2 D.cuspMappingTorusToEllipticInteriorMap
         (G.geometricWangSections.circleMappingTorusHTwoAddEquiv.symm (Pi.single i 1)) =
       integralSingularHomologyMap 2 D.cuspToEllipticInteriorMap.hom
-        (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1)) := by
+        (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1)) := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
-  let x := A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1)
+  let x := A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1)
   have hx :
       integralSingularHomologyMap 2 G.totalHomotopyEquiv.toFun x =
         G.geometricWangSections.circleMappingTorusHTwoAddEquiv.symm (Pi.single i 1) := by
@@ -168,7 +168,7 @@ cusp basis class. -/
 public theorem cuspMappingTorusBasisCycle_map_homologyClass (i : Fin 6) :
     ((A.cuspMappingTorusBasisCycle i).map D.cuspMappingTorusToEllipticInteriorMap).homologyClass =
       integralSingularHomologyMap 2 D.cuspToEllipticInteriorMap.hom
-        (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1)) := by
+        (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1)) := by
   rw [← DegreeTwoSingularCycle.homologyClass_map (A.cuspMappingTorusBasisCycle i)
     D.cuspMappingTorusToEllipticInteriorMap, cuspMappingTorusBasisCycle_homologyClass A i]
   exact cuspMappingTorusToEllipticInteriorMap_basis i
@@ -219,7 +219,7 @@ public noncomputable def cuspEllipticMappingTorusPrismGeometricData_of_fiberCoin
       (N.actualHomologyCoordinates.normalizedEllipticInteriorHomologyTwoEquiv
         (D.cuspNormalizedDegreeTwoSplitting N G₀))
           (integralSingularHomologyMap 2 D.cuspToEllipticInteriorMap.hom
-            (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1))) 0 =
+            (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1))) 0 =
         actualCuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1)) :
     D.CuspEllipticMappingTorusPrismGeometricData N G₀ := by
   classical
@@ -249,7 +249,7 @@ public noncomputable def cuspEllipticMappingTorusPrismGeometricData_of_fiberCoin
   fin_cases j
   · simpa using hFiber i hi h5
   · have h1 := D.normalizedEllipticInteriorHomologyTwoEquiv_cuspToEllipticInteriorMap_one N G₀
-      (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1))
+      (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1))
     simpa using h1
 
 /-- The structural Section 7 cusp prism package assembled from the two residual geometric
@@ -267,7 +267,7 @@ public noncomputable def cuspEllipticMappingTorusPrismGeometricData_of_coordinat
       (N.actualHomologyCoordinates.normalizedEllipticInteriorHomologyTwoEquiv
         (D.cuspNormalizedDegreeTwoSplitting N G₀))
           (integralSingularHomologyMap 2 D.cuspToEllipticInteriorMap.hom
-            (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1))) 0 =
+            (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1))) 0 =
         actualCuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1)) :
     D.CuspEllipticMappingTorusPrismGeometricData N G₀ :=
   cuspEllipticMappingTorusPrismGeometricData_of_fiberCoinvariantValues
@@ -291,7 +291,7 @@ public noncomputable def cuspEllipticMappingTorusPrismGeometricData_proved_of_co
         (R.twoDiscCover.cuspNormalizedDegreeTwoSplitting R.homologyAlignment
           G₀))
           (integralSingularHomologyMap 2 R.twoDiscCover.cuspToEllipticInteriorMap.hom
-            (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1))) 0 =
+            (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1))) 0 =
         actualCuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1)) :
     R.twoDiscCover.CuspEllipticMappingTorusPrismGeometricData R.homologyAlignment
       G₀ :=

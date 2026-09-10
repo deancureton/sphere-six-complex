@@ -27,7 +27,7 @@ public theorem sectionSevenAffineActualCuspCrossingPoint_re
 public theorem sectionSevenAffineActualCuspCrossingPoint_norm_gt_two
     (A : PaperAnalyticData) :
     2 < ‖(A.sectionSevenAffineActualCuspCrossingPoint.1 : ℂ)‖ :=
-  A.actualCuspAngularCoordinateLoop_norm_gt_two
+  A.cuspAngularCoordinateLoop_norm_gt_two
     A.sectionSevenAffineActualCuspCrossingTime
 
 /-- The actual cusp crossing does not lie on the real axis. -/

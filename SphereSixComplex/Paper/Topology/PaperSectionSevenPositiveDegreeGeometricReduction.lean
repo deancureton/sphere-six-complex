@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenPositiveDegreeRealization
-public import SphereSixComplex.Prerequisites.Topology.EstablishedStrongDeformationRetracts
+public import SphereSixComplex.Prerequisites.Topology.StrongDeformationRetraction
 
 /-!
 # Geometric reduction of the Section 7 positive-degree input

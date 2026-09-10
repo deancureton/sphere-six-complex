@@ -24,11 +24,11 @@ open SphereSixComplex.TriangleGroup
 open SphereSixComplex.TriangleGroup.FuchsianFundamentalDomain
 open SphereSixComplex.TriangleGroup.FuchsianTessellation
 
-namespace OrbifoldAffineLineTorsorDescentProblem
+namespace OrbifoldAffineDescentData
 
 /-- The infinity frame is invariant under the positive cusp translation on the cusp region. -/
 public theorem frameInfinity_product_invariant_on_cusp
-    (P : OrbifoldAffineLineTorsorDescentProblem) (z : UpperHalfPlane)
+    (P : OrbifoldAffineDescentData) (z : UpperHalfPlane)
     (hz : z ∈ fuchsianCuspRegion) :
     P.frameInfinity (fuchsianSourceAction (g₁ * g₂) • z) = P.frameInfinity z := by
   have hzq : P.quotient.coordinate z ≠ 0 := P.cusp_coordinate_ne_zero z hz
@@ -42,7 +42,7 @@ public theorem frameInfinity_product_invariant_on_cusp
 
 /-- The infinity frame is invariant under every integral cusp translation on the cusp region. -/
 public theorem frameInfinity_zpow_invariant_on_cusp
-    (P : OrbifoldAffineLineTorsorDescentProblem) (n : ℤ) (z : UpperHalfPlane)
+    (P : OrbifoldAffineDescentData) (n : ℤ) (z : UpperHalfPlane)
     (hz : z ∈ fuchsianCuspRegion) :
     P.frameInfinity (fuchsianSourceAction ((g₁ * g₂) ^ n) • z) = P.frameInfinity z := by
   have hnat (m : ℕ) (w : UpperHalfPlane) (hw : w ∈ fuchsianCuspRegion) :
@@ -135,7 +135,7 @@ public theorem boundedOn_cusp_of_eventually_bounded
 /-- The completed-cusp factorization makes the infinity frame bounded on the distinguished cusp
 component. -/
 public theorem frameInfinity_cusp_bounded
-    (P : OrbifoldAffineLineTorsorDescentProblem) :
+    (P : OrbifoldAffineDescentData) :
     BoundedOn P.frameInfinity fuchsianCuspRegion := by
   let K : Set ℂ := Metric.closedBall 0 (P.cuspFrameRadius / 2)
   have hK : IsCompact K := isCompact_closedBall 0 (P.cuspFrameRadius / 2)
@@ -165,7 +165,7 @@ public theorem frameInfinity_cusp_bounded
 /-- An entire function of the reciprocal quotient coordinate is bounded on the distinguished
 cusp component. -/
 public theorem entire_inverseCoordinate_cusp_bounded
-    (P : OrbifoldAffineLineTorsorDescentProblem) (f : ℂ → ℂ) (hf : MDiff f) :
+    (P : OrbifoldAffineDescentData) (f : ℂ → ℂ) (hf : MDiff f) :
     BoundedOn (fun z ↦ f ((P.quotient.coordinate z)⁻¹)) fuchsianCuspRegion := by
   obtain ⟨B, hB, hqB⟩ := P.quotient.inverse_coordinate_bounded_on_cusp
   let K : Set ℂ := Metric.closedBall 0 B
@@ -193,7 +193,7 @@ private theorem boundedOn_mul
 
 /-- Every entire infinity-chart coefficient times the infinity frame is bounded at the cusp. -/
 public theorem infinityCorrection_cusp_bounded
-    (P : OrbifoldAffineLineTorsorDescentProblem) (f : ℂ → ℂ) (hf : MDiff f) :
+    (P : OrbifoldAffineDescentData) (f : ℂ → ℂ) (hf : MDiff f) :
     BoundedOn
       (fun z ↦ f ((P.quotient.coordinate z)⁻¹) * P.frameInfinity z)
       fuchsianCuspRegion :=
@@ -203,7 +203,7 @@ public theorem infinityCorrection_cusp_bounded
 /-- Once local analytic descent and the standard frame identification are supplied, all Cech
 gluing and cusp estimates are formal consequences. -/
 @[expose] public noncomputable def CechGluingData.ofAnalyticDescent
-    (P : OrbifoldAffineLineTorsorDescentProblem) (A : P.AnalyticDescentData)
+    (P : OrbifoldAffineDescentData) (A : P.AnalyticDescentData)
     (frame : HolomorphicAffineTorsorHOne.AcyclicProjectiveLineFrame)
     (hframe : P.frameTransition = frame.transition) :
     P.CechGluingData where
@@ -214,20 +214,20 @@ gluing and cusp estimates are formal consequences. -/
 
 /-- Analytic descent together with either standard acyclic transition function gives the
 original cusp-bounded correction. -/
-public theorem nonempty_cuspBoundedEllipticOneCorrection_of_analyticDescent
-    (P : OrbifoldAffineLineTorsorDescentProblem) (A : P.AnalyticDescentData)
+public theorem nonempty_cuspBoundedCorrection_of_analyticDescent
+    (P : OrbifoldAffineDescentData) (A : P.AnalyticDescentData)
     (hframe :
       P.frameTransition = HolomorphicAffineTorsorHOne.negOneTransition ∨
       P.frameTransition = HolomorphicAffineTorsorHOne.zeroTransition) :
-    Nonempty P.CuspBoundedEllipticOneCorrection := by
+    Nonempty P.CuspBoundedCorrection := by
   rcases hframe with hnegOne | hzero
-  · exact P.nonempty_cuspBoundedEllipticOneCorrection_of_cechGluingData
+  · exact P.nonempty_cuspBoundedCorrection_of_cechGluingData
       (CechGluingData.ofAnalyticDescent P A
         HolomorphicAffineTorsorHOne.AcyclicProjectiveLineFrame.negOne hnegOne)
-  · exact P.nonempty_cuspBoundedEllipticOneCorrection_of_cechGluingData
+  · exact P.nonempty_cuspBoundedCorrection_of_cechGluingData
       (CechGluingData.ofAnalyticDescent P A
         HolomorphicAffineTorsorHOne.AcyclicProjectiveLineFrame.zero hzero)
 
-end OrbifoldAffineLineTorsorDescentProblem
+end OrbifoldAffineDescentData
 
 end SphereSixComplex.Periods

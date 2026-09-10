@@ -5,7 +5,7 @@ public import SphereSixComplex.Prerequisites.Topology.FiniteCWModelSix
 public import SphereSixComplex.Prerequisites.Topology.CellularChainModel
 public import SphereSixComplex.Paper.Topology.EllipticReducedFiberMappingTorusHomology
 public import SphereSixComplex.Prerequisites.Topology.FiniteBouquetMappingTorusEuler
-public import SphereSixComplex.Prerequisites.Topology.FiniteClassicalCWModel
+public import SphereSixComplex.Prerequisites.Topology.FiniteCWModel
 public import SphereSixComplex.Paper.Topology.SectionSevenLocalEulerCalculation
 public import SphereSixComplex.Prerequisites.Topology.SectionSevenLocalEulerModelsProof
 public import SphereSixComplex.Paper.Topology.StandardFourTorusHomologicalModel

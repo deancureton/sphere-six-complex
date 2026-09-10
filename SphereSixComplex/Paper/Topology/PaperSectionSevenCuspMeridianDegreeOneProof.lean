@@ -175,7 +175,7 @@ private theorem winding_of_real_lift
   rw [← StandardCircleHomologyLiftDegree.loopHomologyClass_cast
     (q.map shift.continuous) hsource]
   rw [show (q.map shift.continuous).cast hsource hsource = q0 by rfl, hq0]
-  rw [SphereSixComplex.Topology.FirstHurewiczProof.loopHomologyClass_homotopic H]
+  rw [Hurewicz.Chains.loopHomologyClass_homotopic H]
   exact StandardCircleHomologyLiftDegree.unitCircleHomologyWinding_integerLoop n
 
 /-- The interval-clutching homeomorphism preserves the real height modulo integers. -/
@@ -226,7 +226,7 @@ public theorem cuspFiberTwelveFirstCoordinate_zpow
 the twelvefold first fibre coordinate. -/
 public theorem cuspMeridianSourceCircleMap_realMappingTorus_mk
     (x : Periods.PeriodDomain) (s : ℝ) (y : AdditiveTorus x.1) :
-    cuspMeridianSourceCircleMap x
+    _root_.SphereSixComplex.cuspMeridianSourceCircleMap x
         (CyclicAngularFundamentalDomain.realMappingTorusHomeomorph
           (cuspFiberClutching x)
           (Quotient.mk
@@ -324,17 +324,17 @@ private theorem actualTransportedBaseCircleMap_additivePoint
   exact actualCuspRadialBaseCircleProjection_additivePoint A p
 
 private theorem actualCuspAngularPuncturedLoop_apply (t : unitInterval) :
-    A.actualCuspAngularPuncturedLoop t =
+    A.cuspAngularPuncturedLoop t =
       additiveCuspBoundaryProjection A.starCuspWitness
-        (A.actualCuspAngularLiftPoint t) := by
+        (A.cuspAngularLiftPoint t) := by
   rfl
 
 private theorem actualCuspAngularPuncturedLoop_base_winding_neg_one :
     StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
         (integralSingularHomologyMap 1 (actualTransportedBaseCircleMap A)
           (StandardCircleHomologyLiftDegree.loopHomologyClass
-            A.actualCuspAngularPuncturedLoop)) = -1 := by
-  apply winding_neg_one_of_loop A.actualCuspAngularPuncturedLoop
+            A.cuspAngularPuncturedLoop)) = -1 := by
+  apply winding_neg_one_of_loop A.cuspAngularPuncturedLoop
     (actualTransportedBaseCircleMap A)
   intro t
   rw [actualCuspAngularPuncturedLoop_apply A t,
@@ -371,12 +371,12 @@ public theorem actualCuspMappingTorusMeridian_base_winding_neg_one :
         (circleMappingTorusBaseCircleProjection G.clutching)
         (integralSingularHomologyMap 1 G.totalHomotopyEquiv.toFun
           (StandardCircleHomologyLiftDegree.loopHomologyClass
-            A.actualCuspAngularPuncturedLoop))) = -1
+            A.cuspAngularPuncturedLoop))) = -1
   rw [integralSingularHomologyMap_comp_wang]
   change StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
       (integralSingularHomologyMap 1 (actualTransportedBaseCircleMap A)
         (StandardCircleHomologyLiftDegree.loopHomologyClass
-          A.actualCuspAngularPuncturedLoop)) = -1
+          A.cuspAngularPuncturedLoop)) = -1
   exact actualCuspAngularPuncturedLoop_base_winding_neg_one A
 
 /-- Equivalently, the literal meridian has Wang invariant coordinate `-1`. -/
@@ -403,15 +403,15 @@ public theorem actualCuspMappingTorusMeridian_wangInvariant_neg_one :
 
 /-- The specialization-normalized positive Wang section is the negative of the literal angular
 meridian. -/
-public theorem actualCuspSelectedPositiveMeridianClass_eq_neg_explicit :
+public theorem cuspSelectedPositiveMeridianClass_eq_neg_explicit :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
-    actualCuspSelectedPositiveMeridianClass A =
+    cuspSelectedPositiveMeridianClass A =
       -(cuspMappingTorusMeridianHomologyClass G
         A.actualCuspLocalBoundaryBase) := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
-  apply actualCuspSelectedPositiveMeridianClass_eq_neg_explicit_of_normalizations
+  apply cuspSelectedPositiveMeridianClass_eq_neg_explicit_of_normalizations
     A A.actualCuspLocalBoundaryBase
   · exact rawDegreeOneTotalSpecialization_selectedPositiveMeridianClass A
   · change degreeOneWangInvariantEquivInteger G
@@ -426,7 +426,7 @@ private noncomputable def actualTransportedSourceCircleMap :
     C(puncturedLocalCuspQuotient A.starCuspWitness, UnitAddCircle) := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
-  exact A.actualCuspMeridianSourceCircleMap.comp G.totalHomotopyEquiv.toFun
+  exact A.cuspMeridianSourceCircleMap.comp G.totalHomotopyEquiv.toFun
 
 private theorem actualTransportedSourceCircleMap_additivePoint
     (p : additiveCuspRadiusCover A.starCuspWitness.localWitness.radius) :
@@ -441,7 +441,7 @@ private theorem actualTransportedSourceCircleMap_additivePoint
               (markedCuspParameter A.starCuspWitness)).1
             (collarFiberEquiv A.cuspCoordinate
               (markedCuspParameter A.starCuspWitness) p.1.2 p.1.1)) := by
-  change cuspMeridianSourceCircleMap
+  change _root_.SphereSixComplex.cuspMeridianSourceCircleMap
       (cuspBasePoint A.cuspCoordinate
         (markedCuspParameter A.starCuspWitness))
       ((CuspRadialClutchingConstruction.actualCuspRadialClutchingData
@@ -449,14 +449,14 @@ private theorem actualTransportedSourceCircleMap_additivePoint
         (additiveCuspBoundaryProjection A.starCuspWitness p)) = _
   rw [show additiveCuspBoundaryProjection A.starCuspWitness p =
       collarPeriodPointMap A.starCuspWitness p by rfl]
-  change cuspMeridianSourceCircleMap
+  change _root_.SphereSixComplex.cuspMeridianSourceCircleMap
       (cuspBasePoint A.cuspCoordinate
         (markedCuspParameter A.starCuspWitness))
       ((puncturedLocalCuspQuotientHomeomorph A.starCuspWitness
         (markedCuspParameter A.starCuspWitness)
         (collarPeriodPointMap A.starCuspWitness p)).2) = _
   rw [puncturedLocalCuspQuotientHomeomorph_apply]
-  change cuspMeridianSourceCircleMap
+  change _root_.SphereSixComplex.cuspMeridianSourceCircleMap
       (cuspBasePoint A.cuspCoordinate
         (markedCuspParameter A.starCuspWitness))
       (CyclicAngularFundamentalDomain.realMappingTorusHomeomorph
@@ -572,12 +572,12 @@ private theorem actualCuspAngularPuncturedLoop_source_winding_neg_one :
     StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
         (integralSingularHomologyMap 1 (actualTransportedSourceCircleMap A)
           (StandardCircleHomologyLiftDegree.loopHomologyClass
-            A.actualCuspAngularPuncturedLoop)) = -1 := by
-  apply winding_of_real_lift A.actualCuspAngularPuncturedLoop
+            A.cuspAngularPuncturedLoop)) = -1 := by
+  apply winding_of_real_lift A.cuspAngularPuncturedLoop
     (actualTransportedSourceCircleMap A) (actualCuspSourceRealLift A) (-1)
   · intro t
     have hvalue (u : unitInterval) :
-        actualTransportedSourceCircleMap A (A.actualCuspAngularPuncturedLoop u) =
+        actualTransportedSourceCircleMap A (A.cuspAngularPuncturedLoop u) =
           ((actualCuspSourceRealLift A u : ℝ) : UnitAddCircle) := by
       rw [actualCuspAngularPuncturedLoop_apply A u,
         actualTransportedSourceCircleMap_additivePoint A,
@@ -610,53 +610,53 @@ public theorem actualCuspMappingTorusMeridian_source_winding_neg_one :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
-        (integralSingularHomologyMap 1 A.actualCuspMeridianSourceCircleMap
+        (integralSingularHomologyMap 1 A.cuspMeridianSourceCircleMap
           (cuspMappingTorusMeridianHomologyClass G
             A.actualCuspLocalBoundaryBase)) = -1 := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   change StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
-      (integralSingularHomologyMap 1 A.actualCuspMeridianSourceCircleMap
+      (integralSingularHomologyMap 1 A.cuspMeridianSourceCircleMap
         (cuspMappingTorusMeridianHomologyClass G
           A.actualCuspLocalBoundaryBase)) = -1
   rw [A.cuspMappingTorusMeridianHomologyClass_eq_actualCuspAngularPuncturedLoop_image]
   change StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
-      (integralSingularHomologyMap 1 A.actualCuspMeridianSourceCircleMap
+      (integralSingularHomologyMap 1 A.cuspMeridianSourceCircleMap
         (integralSingularHomologyMap 1 G.totalHomotopyEquiv.toFun
           (StandardCircleHomologyLiftDegree.loopHomologyClass
-            A.actualCuspAngularPuncturedLoop))) = -1
+            A.cuspAngularPuncturedLoop))) = -1
   rw [integralSingularHomologyMap_comp_wang]
   change StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
       (integralSingularHomologyMap 1 (actualTransportedSourceCircleMap A)
         (StandardCircleHomologyLiftDegree.loopHomologyClass
-          A.actualCuspAngularPuncturedLoop)) = -1
+          A.cuspAngularPuncturedLoop)) = -1
   exact actualCuspAngularPuncturedLoop_source_winding_neg_one A
 
 /-- The specialization-selected positive section evaluates to the positive unit under the full
 cusp source character. -/
-public theorem actualCuspSelectedPositiveMeridianClass_source_winding_one :
+public theorem cuspSelectedPositiveMeridianClass_source_winding_one :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
-        (integralSingularHomologyMap 1 A.actualCuspMeridianSourceCircleMap
-          (actualCuspSelectedPositiveMeridianClass A)) = 1 := by
+        (integralSingularHomologyMap 1 A.cuspMeridianSourceCircleMap
+          (cuspSelectedPositiveMeridianClass A)) = 1 := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
-  rw [actualCuspSelectedPositiveMeridianClass_eq_neg_explicit]
+  rw [cuspSelectedPositiveMeridianClass_eq_neg_explicit]
   rw [map_neg, map_neg, actualCuspMappingTorusMeridian_source_winding_neg_one]
   norm_num
 
 /-- The actual source circle map realizes the complete corrected degree-one coordinate
 `[12, 0, 1]` on the geometric Wang basis. -/
-public theorem actualCuspMeridianSourceCircleMap_homologyCoordinate :
+public theorem cuspMeridianSourceCircleMap_homology_coordinate :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     SectionSevenEllipticInteriorMarkedCycleData.actualCuspEllipticDegreeOneCoordinateAfterAddEquiv
         G.geometricWangSections.circleMappingTorusHOneAddEquiv =
       StandardCircleHomologyLiftDegree.unitCircleHomologyWinding.comp
-        (integralSingularHomologyMap 1 A.actualCuspMeridianSourceCircleMap) := by
-  exact actualCuspMeridianSourceCircleMap_homologyCoordinate_of_selectedPositive_winding_one A
-    (actualCuspSelectedPositiveMeridianClass_source_winding_one A)
+        (integralSingularHomologyMap 1 A.cuspMeridianSourceCircleMap) := by
+  exact cuspMeridianSourceCircleMap_homology_coordinate_of_selectedPositive_winding_one A
+    (cuspSelectedPositiveMeridianClass_source_winding_one A)
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

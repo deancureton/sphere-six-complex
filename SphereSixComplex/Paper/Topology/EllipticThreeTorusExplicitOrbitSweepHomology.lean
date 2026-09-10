@@ -125,8 +125,8 @@ private def orderFourProductExtensionLift :
 
 private theorem orderThreeProductExtension_square :
     (orderThreeProductExtension : C(StdTorus 4, StdTorus 4)).comp
-        (standardFourTorusGammaSplit.symm : C(UnitAddCircle × StdTorus 3, StdTorus 4)) =
-      (standardFourTorusGammaSplit.symm : C(UnitAddCircle × StdTorus 3, StdTorus 4)).comp
+        (StandardTorusHomology.fourTorusSplit.symm : C(UnitAddCircle × StdTorus 3, StdTorus 4)) =
+      (StandardTorusHomology.fourTorusSplit.symm : C(UnitAddCircle × StdTorus 3, StdTorus 4)).comp
         (circleProductMap
           (orderThreeThreeTorusClutching : C(StdTorus 3, StdTorus 3))) := by
   ext p i
@@ -134,8 +134,8 @@ private theorem orderThreeProductExtension_square :
 
 private theorem orderFourProductExtension_square :
     (orderFourProductExtension : C(StdTorus 4, StdTorus 4)).comp
-        (standardFourTorusGammaSplit.symm : C(UnitAddCircle × StdTorus 3, StdTorus 4)) =
-      (standardFourTorusGammaSplit.symm : C(UnitAddCircle × StdTorus 3, StdTorus 4)).comp
+        (StandardTorusHomology.fourTorusSplit.symm : C(UnitAddCircle × StdTorus 3, StdTorus 4)) =
+      (StandardTorusHomology.fourTorusSplit.symm : C(UnitAddCircle × StdTorus 3, StdTorus 4)).comp
         (circleProductMap
           (orderFourThreeTorusClutching : C(StdTorus 3, StdTorus 3))) := by
   ext p i
@@ -153,7 +153,7 @@ private theorem orderThreeProductClutching_homologyTwo
     (orderThreeProductExtension : C(StdTorus 4, StdTorus 4))
     orderThreeProductIntegerExtension orderThreeProductExtensionLift).2
   change naturalStdTorusFourHomologyTwo
-      (integralSingularHomologyMap 2 standardFourTorusGammaSplit.symm
+      (integralSingularHomologyMap 2 StandardTorusHomology.fourTorusSplit.symm
         (integralSingularHomologyMap 2
           (circleProductMap
             (orderThreeThreeTorusClutching : C(StdTorus 3, StdTorus 3))) z)) = _
@@ -173,7 +173,7 @@ private theorem orderFourProductClutching_homologyTwo
     (orderFourProductExtension : C(StdTorus 4, StdTorus 4))
     orderFourProductIntegerExtension orderFourProductExtensionLift).2
   change naturalStdTorusFourHomologyTwo
-      (integralSingularHomologyMap 2 standardFourTorusGammaSplit.symm
+      (integralSingularHomologyMap 2 StandardTorusHomology.fourTorusSplit.symm
         (integralSingularHomologyMap 2
           (circleProductMap
             (orderFourThreeTorusClutching : C(StdTorus 3, StdTorus 3))) z)) = _
@@ -297,19 +297,19 @@ private theorem normalizedCover_loopAction_square
       (normalizedAffineCoverToCircleMappingTorus phi.toHomeomorph hpow).comp
         ((normalizedBaseStep (m := m) G).comp (circleProductMap c)) := by
   ext p
-  change (normalizedAffineCyclicQuotientCircleMappingTorusHomeomorph
+  change (CyclicMappingTorus.normalizedAffineCyclicQuotientCircleMappingTorusHomeomorph
       phi.toHomeomorph hpow)
-        (Quotient.mk (normalizedAffineCyclicSetoid (m := m) phi.toHomeomorph)
+        (Quotient.mk (CyclicMappingTorus.normalizedAffineCyclicSetoid (m := m) phi.toHomeomorph)
           (p.1, phi (c p.2))) =
-    (normalizedAffineCyclicQuotientCircleMappingTorusHomeomorph
+    (CyclicMappingTorus.normalizedAffineCyclicQuotientCircleMappingTorusHomeomorph
       phi.toHomeomorph hpow)
-        (Quotient.mk (normalizedAffineCyclicSetoid (m := m) phi.toHomeomorph)
+        (Quotient.mk (CyclicMappingTorus.normalizedAffineCyclicSetoid (m := m) phi.toHomeomorph)
           (p.1 + ((((1 : ℝ) / (m : ℝ) : ℝ)) : UnitAddCircle), c p.2))
-  rw [(normalizedAffineCyclicQuotientCircleMappingTorusHomeomorph
+  rw [(CyclicMappingTorus.normalizedAffineCyclicQuotientCircleMappingTorusHomeomorph
     phi.toHomeomorph hpow).injective.eq_iff]
-  change Quotient.mk (normalizedAffineCyclicSetoid (m := m) phi.toHomeomorph)
+  change Quotient.mk (CyclicMappingTorus.normalizedAffineCyclicSetoid (m := m) phi.toHomeomorph)
       (p.1, phi (c p.2)) =
-    Quotient.mk (normalizedAffineCyclicSetoid (m := m) phi.toHomeomorph)
+    Quotient.mk (CyclicMappingTorus.normalizedAffineCyclicSetoid (m := m) phi.toHomeomorph)
       (p.1 + ((((1 : ℝ) / (m : ℝ) : ℝ)) : UnitAddCircle), c p.2)
   symm
   apply Quotient.sound

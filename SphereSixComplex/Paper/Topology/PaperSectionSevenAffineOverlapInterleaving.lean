@@ -786,7 +786,7 @@ to the collar quotient.  The radial mapping-torus axiom is not used. -/
 public noncomputable def orderThreeFamilyShrink (s : unitInterval)
     (q : TotalSpace (parameterMap A.periods)) : TotalSpace (parameterMap A.periods) :=
   (orderThreeRealPeriodProductHomeomorph A.periods).symm
-    (discRadialHomotopy (s, (orderThreeRealPeriodProductHomeomorph A.periods q).1),
+    (ComplexDisc.radialHomotopy (s, (orderThreeRealPeriodProductHomeomorph A.periods q).1),
       (orderThreeRealPeriodProductHomeomorph A.periods q).2)
 
 public theorem orderThreeFamilyShrink_continuous :
@@ -794,7 +794,7 @@ public theorem orderThreeFamilyShrink_continuous :
       A.orderThreeFamilyShrink z.1 z.2 := by
   apply (orderThreeRealPeriodProductHomeomorph A.periods).symm.continuous.comp
   refine Continuous.prodMk ?_ ?_
-  · exact discRadialHomotopy_continuous.comp (continuous_fst.prodMk
+  · exact ComplexDisc.continuous_radialHomotopy.comp (continuous_fst.prodMk
       ((continuous_fst.comp
         ((orderThreeRealPeriodProductHomeomorph A.periods).continuous.comp continuous_snd))))
   · exact continuous_snd.comp
@@ -803,7 +803,7 @@ public theorem orderThreeFamilyShrink_continuous :
 @[simp]
 public theorem orderThreeFamilyShrink_zero (q : TotalSpace (parameterMap A.periods)) :
     A.orderThreeFamilyShrink 0 q = q := by
-  rw [orderThreeFamilyShrink, discRadialHomotopy_zero]
+  rw [orderThreeFamilyShrink, ComplexDisc.radialHomotopy_zero]
   exact (orderThreeRealPeriodProductHomeomorph A.periods).symm_apply_apply q
 
 /-- The shrink scales the Cayley radius by the expected real factor. -/
@@ -813,7 +813,7 @@ public theorem orderThreeFamilyRadius_familyShrink (s : unitInterval)
       (1 - (s : ℝ)) * orderThreeFamilyRadius A.periods q := by
   rw [orderThreeFamilyRadius_eq_productNorm, orderThreeFamilyRadius_eq_productNorm,
     orderThreeFamilyShrink, Homeomorph.apply_symm_apply]
-  have hval : ((discRadialHomotopy
+  have hval : ((ComplexDisc.radialHomotopy
       (s, (orderThreeRealPeriodProductHomeomorph A.periods q).1) : ComplexUnitDisc) : ℂ) =
       ((1 - (s : ℝ) : ℝ) : ℂ) *
         ((orderThreeRealPeriodProductHomeomorph A.periods q).1 : ℂ) := rfl
@@ -1221,7 +1221,7 @@ public theorem orderFourStarCollar_centralCoordinate_norm_lt_of_radius
 public noncomputable def orderFourFamilyShrink (s : unitInterval)
     (q : TotalSpace (parameterMap A.periods)) : TotalSpace (parameterMap A.periods) :=
   (orderFourRealPeriodProductHomeomorph A.periods).symm
-    (discRadialHomotopy (s, (orderFourRealPeriodProductHomeomorph A.periods q).1),
+    (ComplexDisc.radialHomotopy (s, (orderFourRealPeriodProductHomeomorph A.periods q).1),
       (orderFourRealPeriodProductHomeomorph A.periods q).2)
 
 public theorem orderFourFamilyShrink_continuous :
@@ -1229,7 +1229,7 @@ public theorem orderFourFamilyShrink_continuous :
       A.orderFourFamilyShrink z.1 z.2 := by
   apply (orderFourRealPeriodProductHomeomorph A.periods).symm.continuous.comp
   refine Continuous.prodMk ?_ ?_
-  · exact discRadialHomotopy_continuous.comp (continuous_fst.prodMk
+  · exact ComplexDisc.continuous_radialHomotopy.comp (continuous_fst.prodMk
       ((continuous_fst.comp
         ((orderFourRealPeriodProductHomeomorph A.periods).continuous.comp continuous_snd))))
   · exact continuous_snd.comp
@@ -1238,7 +1238,7 @@ public theorem orderFourFamilyShrink_continuous :
 @[simp]
 public theorem orderFourFamilyShrink_zero (q : TotalSpace (parameterMap A.periods)) :
     A.orderFourFamilyShrink 0 q = q := by
-  rw [orderFourFamilyShrink, discRadialHomotopy_zero]
+  rw [orderFourFamilyShrink, ComplexDisc.radialHomotopy_zero]
   exact (orderFourRealPeriodProductHomeomorph A.periods).symm_apply_apply q
 
 public theorem orderFourFamilyRadius_familyShrink (s : unitInterval)
@@ -1247,7 +1247,7 @@ public theorem orderFourFamilyRadius_familyShrink (s : unitInterval)
       (1 - (s : ℝ)) * orderFourFamilyRadius A.periods q := by
   rw [orderFourFamilyRadius_eq_productNorm, orderFourFamilyRadius_eq_productNorm,
     orderFourFamilyShrink, Homeomorph.apply_symm_apply]
-  have hval : ((discRadialHomotopy
+  have hval : ((ComplexDisc.radialHomotopy
       (s, (orderFourRealPeriodProductHomeomorph A.periods q).1) : ComplexUnitDisc) : ℂ) =
       ((1 - (s : ℝ) : ℝ) : ℂ) *
         ((orderFourRealPeriodProductHomeomorph A.periods q).1 : ℂ) := rfl

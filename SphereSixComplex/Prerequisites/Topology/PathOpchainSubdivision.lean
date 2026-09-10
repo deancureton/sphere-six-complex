@@ -6,7 +6,7 @@ public import SphereSixComplex.Prerequisites.Topology.ConvexRadialPathHomotopy
 noncomputable section
 open Set Topology
 namespace SphereSixComplex
-open Topology.FirstHurewiczProof
+open Hurewicz.Chains
 
 public theorem pathOpchainClass_map_trans {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (f : ContinuousMap X Y) {x y z : X} (p : Path x y) (q : Path y z) :

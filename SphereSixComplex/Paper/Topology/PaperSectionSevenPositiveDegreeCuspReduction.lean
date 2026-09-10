@@ -58,7 +58,7 @@ public structure SectionSevenPositiveDegreeCuspBasisInput
   degreeOne : ∀ i : Fin 3,
     N.actualHomologyCoordinates.normalizedUnionHomologyOneEquiv
         (cuspToEllipticUnionHomology D 1
-          (A.actualCuspRawHomologyOneEquiv.symm (Pi.single i 1))) 0 =
+          (A.cuspRawHomologyOneEquiv.symm (Pi.single i 1))) 0 =
       actualCuspEllipticDegreeOneRawCoordinate (Pi.single i 1)
   degreeTwoFiber : ∀ i : Fin 6, i ≠ 5 →
     N.actualHomologyCoordinates.normalizedUnionHomologyTwoEquiv
@@ -68,7 +68,7 @@ public structure SectionSevenPositiveDegreeCuspBasisInput
               (SectionSevenCuspPulledBackBoundaryBasisBridge.mayerVietorisBridge N G).boundaryCoordinates
                 N j)))
         (cuspToEllipticUnionHomology D 2
-          (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1))) 0 =
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1))) 0 =
       actualCuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1)
 
 /-- The residual cusp comparison expressed without choosing basis vectors: the included
@@ -79,7 +79,7 @@ public structure SectionSevenPositiveDegreeCuspCoordinateComparison
     (G : D.SectionSevenCuspPulledBackBoundaryBasisBridge N) : Prop where
   degreeOneCoordinateHom :
     cuspDegreeOneCoordinateHom N =
-      actualCuspEllipticDegreeOneCoordinateAfterAddEquiv A.actualCuspRawHomologyOneEquiv
+      actualCuspEllipticDegreeOneCoordinateAfterAddEquiv A.cuspRawHomologyOneEquiv
   degreeTwoFiberCoordinateHom :
     cuspDegreeTwoFiberCoordinateHom N
         (degreeTwoCuspBoundaryCoordinates_of_basis N
@@ -87,7 +87,7 @@ public structure SectionSevenPositiveDegreeCuspCoordinateComparison
             (SectionSevenCuspPulledBackBoundaryBasisBridge.mayerVietorisBridge N G).boundaryCoordinates
               N i)) =
       actualCuspEllipticDegreeTwoFiberCoordinateAfterAddEquiv
-        A.actualCuspRawHomologyTwoEquiv
+        A.cuspRawHomologyTwoEquiv
 
 namespace SectionSevenPositiveDegreeCuspCoordinateComparison
 
@@ -100,13 +100,13 @@ public theorem toCuspBasisInput
     A.SectionSevenPositiveDegreeCuspBasisInput N G where
   degreeOne i := by
     have h := DFunLike.congr_fun C.degreeOneCoordinateHom
-      (A.actualCuspRawHomologyOneEquiv.symm (Pi.single i 1))
+      (A.cuspRawHomologyOneEquiv.symm (Pi.single i 1))
     change _ = actualCuspEllipticDegreeOneRawCoordinate (Pi.single i 1)
     simpa [cuspDegreeOneCoordinateHom_apply,
       actualCuspEllipticDegreeOneCoordinateAfterAddEquiv] using h
   degreeTwoFiber i hi := by
     have h := DFunLike.congr_fun C.degreeTwoFiberCoordinateHom
-      (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1))
+      (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1))
     change _ = actualCuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1)
     simpa [cuspDegreeTwoFiberCoordinateHom_apply,
       actualCuspEllipticDegreeTwoFiberCoordinateAfterAddEquiv] using h
@@ -124,21 +124,21 @@ public theorem coordinateComparison
     (C : A.SectionSevenPositiveDegreeCuspBasisInput N G) :
     A.SectionSevenPositiveDegreeCuspCoordinateComparison N G where
   degreeOneCoordinateHom := by
-    apply addMonoidHom_ext_of_equiv_pi_single_one A.actualCuspRawHomologyOneEquiv
+    apply addMonoidHom_ext_of_equiv_pi_single_one A.cuspRawHomologyOneEquiv
     intro i
     rw [cuspDegreeOneCoordinateHom_apply]
     change _ = actualCuspEllipticDegreeOneRawCoordinate
-      (A.actualCuspRawHomologyOneEquiv
-        (A.actualCuspRawHomologyOneEquiv.symm (Pi.single i 1)))
+      (A.cuspRawHomologyOneEquiv
+        (A.cuspRawHomologyOneEquiv.symm (Pi.single i 1)))
     rw [AddEquiv.apply_symm_apply]
     exact C.degreeOne i
   degreeTwoFiberCoordinateHom := by
-    apply addMonoidHom_ext_of_equiv_pi_single_one A.actualCuspRawHomologyTwoEquiv
+    apply addMonoidHom_ext_of_equiv_pi_single_one A.cuspRawHomologyTwoEquiv
     intro i
     rw [cuspDegreeTwoFiberCoordinateHom_apply]
     change _ = actualCuspEllipticDegreeTwoFiberRawCoordinate
-      (A.actualCuspRawHomologyTwoEquiv
-        (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1)))
+      (A.cuspRawHomologyTwoEquiv
+        (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1)))
     rw [AddEquiv.apply_symm_apply]
     by_cases hi : i = 5
     · subst i

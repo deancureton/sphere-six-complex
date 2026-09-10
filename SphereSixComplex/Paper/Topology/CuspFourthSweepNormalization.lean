@@ -7,16 +7,16 @@ open AlgebraicTopology
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 open SphereSixComplex.Topology CuspPuncturedCollarBridge
 
-public theorem actualCuspFourthSweepClass_raw_fiber_zero (A : PaperAnalyticData) (i : Fin 4) :
-    A.actualCuspRawHomologyTwoEquiv (actualCuspFourthSweepClass A) (Fin.castAdd 2 i) = 0 :=
-  actualCuspFourthSweepClass_raw_fiber_zero_of_projection A
+public theorem cuspFourthSweepClass_raw_fiber_zero (A : PaperAnalyticData) (i : Fin 4) :
+    A.cuspRawHomologyTwoEquiv (cuspFourthSweepClass A) (Fin.castAdd 2 i) = 0 :=
+  cuspFourthSweepClass_raw_fiber_zero_of_projection A
     A.actualCuspFillingHomologyTwoEquiv.toAddMonoidHom
     (EstablishedStandardA2CuspSpecialization.degreeTwo A) i
 
-public theorem actualCuspFourthSweepClass_eq_rawFive (A : PaperAnalyticData) :
-    actualCuspFourthSweepClass A =
-      A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1) :=
-  actualCuspFourthSweepClass_eq_rawFive_of_projection A
+public theorem cuspFourthSweepClass_eq_rawFive (A : PaperAnalyticData) :
+    cuspFourthSweepClass A =
+      A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1) :=
+  cuspFourthSweepClass_eq_rawFive_of_projection A
     A.actualCuspFillingHomologyTwoEquiv.toAddMonoidHom
     (EstablishedStandardA2CuspSpecialization.degreeTwo A)
 

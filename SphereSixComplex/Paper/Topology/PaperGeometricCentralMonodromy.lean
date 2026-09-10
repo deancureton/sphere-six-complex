@@ -32,7 +32,7 @@ variable (A : PaperAnalyticData)
 /-- The chosen actual cusp point before either of the two central-family quotients. -/
 public def actualCuspRegularCoverPoint :
     RegularBase (U := A.paperTriangleUniformization) × ComplexTwoSpace :=
-  (A.actualCuspAngularRegularBasePoint 0, A.actualCuspBoundaryCoverBase.1.1)
+  (A.cuspAngularRegularBasePoint 0, A.actualCuspBoundaryCoverBase.1.1)
 
 /-- The same point after the varying period-lattice quotient. -/
 public noncomputable def actualCuspRegularRepresentative : RegularTotalSpace A.periods :=
@@ -47,12 +47,12 @@ public theorem actualCuspRegularRepresentative_projects :
         A.actualCuspBoundaryCoverBase).1 :
           RegularBase (U := A.paperTriangleUniformization) × ComplexTwoSpace) =
         A.actualCuspRegularCoverPoint := by
-    unfold actualCuspRegularCoverPoint actualCuspAngularRegularBasePoint
+    unfold actualCuspRegularCoverPoint cuspAngularRegularBasePoint
     apply Prod.ext
     · apply Subtype.ext
       change A.cuspCoordinate.lift A.actualCuspBoundaryCoverBase.1.2 =
-        A.cuspCoordinate.lift (A.actualCuspAngularLiftPoint 0).1.2
-      rw [A.actualCuspAngularLiftPoint_zero]
+        A.cuspCoordinate.lift (A.cuspAngularLiftPoint 0).1.2
+      rw [A.cuspAngularLiftPoint_zero]
     · rfl
   calc
     _ = additiveCuspCoverToGlobal A.starCuspWitness
@@ -78,19 +78,19 @@ public theorem actualCuspRegularRepresentative_projects :
 public noncomputable def actualCuspRegularDeckPathPoint (t : unitInterval) :
     RegularTotalSpace A.periods :=
   regularFamilyCoverProjection A.periods
-    (A.actualCuspAngularRegularBasePoint t, A.actualCuspBoundaryCoverBase.1.1)
+    (A.cuspAngularRegularBasePoint t, A.actualCuspBoundaryCoverBase.1.1)
 
 public theorem continuous_actualCuspRegularDeckPathPoint :
     Continuous A.actualCuspRegularDeckPathPoint := by
   apply (regularFamilyCoverProjection A.periods).continuous.comp
   apply Continuous.prodMk
-  · unfold actualCuspAngularRegularBasePoint actualCuspAngularLiftPoint
+  · unfold cuspAngularRegularBasePoint cuspAngularLiftPoint
     apply Continuous.subtype_mk
     apply A.cuspCoordinate.lift_holomorphic.continuousOn.comp_continuous
     · fun_prop
     · intro t
       exact additiveCuspRadiusCover_halfPlane
-        A.starCuspWitness.localWitness.radius_le (A.actualCuspAngularLiftPoint t)
+        A.starCuspWitness.localWitness.radius_le (A.cuspAngularLiftPoint t)
   · exact continuous_const
 
 @[simp]
@@ -107,7 +107,7 @@ public theorem actualCuspRegularDeckPathPoint_one :
     additiveCuspRadiusCover_halfPlane
       A.starCuspWitness.localWitness.radius_le A.actualCuspBoundaryCoverBase
   unfold actualCuspRegularDeckPathPoint actualCuspRegularRepresentative
-    actualCuspRegularCoverPoint actualCuspAngularRegularBasePoint
+    actualCuspRegularCoverPoint cuspAngularRegularBasePoint
   rw [← regularFamilyCoverProjection_regularDeckMap]
   apply Quotient.sound
   change MulAction.orbitRel
@@ -117,9 +117,9 @@ public theorem actualCuspRegularDeckPathPoint_one :
   refine ⟨1, ?_⟩
   apply Prod.ext
   · apply Subtype.ext
-    simpa [actualCuspAngularLiftPoint, regularDeckMap, s] using
+    simpa [cuspAngularLiftPoint, regularDeckMap, s] using
       (A.cuspCoordinate.lift_shift s hs).symm
-  · simp [actualCuspAngularLiftPoint, regularDeckMap, periodTransport_gZero]
+  · simp [cuspAngularLiftPoint, regularDeckMap, periodTransport_gZero]
 
 /-- The actual angular cusp path, retained as a path to a labelled regular-family deck
 translate. -/
@@ -144,18 +144,18 @@ public noncomputable def actualCuspRegularDeckLoop :
 
 /-- Projecting the literal regular-family lift gives the actual angular central loop, after the
 forced equality of the displayed basepoints. -/
-public theorem actualCuspAngularCentralLoop_eq_actualRegularDeckLoop :
-    A.actualCuspAngularCentralLoop =
+public theorem cuspAngularCentralLoop_eq_actualRegularDeckLoop :
+    A.cuspAngularCentralLoop =
       A.actualCuspRegularDeckLoop.cast
           A.actualCuspRegularRepresentative_projects.symm
       A.actualCuspRegularRepresentative_projects.symm := by
   apply Path.ext
   funext t
   change A.actualCuspOverlapToCentral
-      (A.actualCuspAngularProjectedLoop t) =
+      (A.cuspAngularProjectedLoop t) =
     regularFamilyQuotientMap A.periods (A.actualCuspRegularDeckPathPoint t)
   change A.actualCuspOverlapToCentral
-      (A.actualCuspBoundaryProjection (A.actualCuspAngularLiftPoint t)) = _
+      (A.actualCuspBoundaryProjection (A.cuspAngularLiftPoint t)) = _
   rw [A.actualCuspOverlapToCentral_boundaryProjection]
   rfl
 
@@ -194,7 +194,7 @@ public theorem actualCuspCentralMeridian_outerDeck :
   change hp.fundamentalGroupToMulOpposite e
       A.actualCuspCentralMeridian = MulOpposite.op g₀
   rw [A.actualCuspCentralMeridian_eq_angularLoop,
-    A.actualCuspAngularCentralLoop_eq_actualRegularDeckLoop]
+    A.cuspAngularCentralLoop_eq_actualRegularDeckLoop]
   apply (hp.fundamentalGroupToMulOpposite_apply_eq_Iff).mpr
   change regularFamilyDeckMap A.periods g₀ A.actualCuspRegularRepresentative = _
   let e' : (regularFamilyQuotientMap A.periods) ⁻¹' {A.actualCuspCentralBase} :=

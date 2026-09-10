@@ -8,7 +8,7 @@ public import TauCeti.AlgebraicTopology.UniversalCover.Classification.Pointed
 noncomputable section
 open Set Topology CategoryTheory TauCeti TauCeti.UniversalCover
 open scoped ContinuousMap
-namespace SphereSixComplex.Topology.PaperVanKampenFourPieceCover
+namespace SphereSixComplex.CoveringSpace
 variable {Y : Type*} [TopologicalSpace Y] {base : Y}
 
 /-- Inclusion of a subspace into its ambient space. -/
@@ -118,6 +118,6 @@ public theorem mem_range_mapOfEq_of_path {Q : Type*} [TopologicalSpace Q] (q : C
   exact (((FundamentalGroup.fundamentalGroupMulEquivOfPath τ).symm_apply_eq).mpr
     (transport_symm_transport τ γ).symm).symm
 
-end SphereSixComplex.Topology.PaperVanKampenFourPieceCover
+end SphereSixComplex.CoveringSpace
 end
 end

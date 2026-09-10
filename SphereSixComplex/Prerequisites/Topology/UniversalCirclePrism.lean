@@ -268,8 +268,8 @@ public theorem circleSweepPrism_eq_on_homology_of_universal_sign
       (AddCommGrpCat.of ℤ)) 0 x =
     n • integralSingularHomologyMap 2 sweep (normalizedCircleCross 1 x) := by
   let b : X := Classical.choice inferInstance
-  let H := Topology.FirstHurewiczProof.establishedFirstHurewiczData_proof X b
-  obtain ⟨p, hp⟩ := Topology.EstablishedFirstHurewicz.loopClass_surjective (H.equiv.symm x)
+  let H := Hurewicz.Chains.abelianizationComparison X b
+  obtain ⟨p, hp⟩ := Hurewicz.loopClass_surjective (H.equiv.symm x)
   have hx : loopHomologyClass p = x := by
     rw [← H.equiv_loopClass, hp, H.equiv.apply_symm_apply]
   rw [← hx, ← pathCircleMap_homology p]

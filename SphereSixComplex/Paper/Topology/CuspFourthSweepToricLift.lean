@@ -13,7 +13,7 @@ open CuspPuncturedCollarBridge CuspRadialClutchingConstruction
 open CuspLocalPhaseAction StandardInfiniteA2ToricModel
 
 public def fourthToricCircle : C(UnitAddCircle, DenseTorus) where
-  toFun z := ![1, unitCircleExponential z, 1]
+  toFun z := ![1, CircleExponential.toUnits z, 1]
   continuous_toFun := by
     apply continuous_pi
     intro i
@@ -26,7 +26,7 @@ open CuspPeriodExpansion
 public def cuspAngularDenseLoop (A : PaperAnalyticData) : C(UnitAddCircle, DenseTorus) where
   toFun z := ![1, 1, (denseCuspExponential 0
     (cuspParameterOfPolar (A.starCuspWitness.localWitness.radius / 2) 0) 2) *
-      unitCircleExponential z]
+      CircleExponential.toUnits z]
   continuous_toFun := by
     apply continuous_pi
     intro i
@@ -42,8 +42,8 @@ public theorem cuspAngularDenseLoop_real (A : PaperAnalyticData) (t : ℝ) :
       NormalizedFuchsianCuspCoordinate.exponentialUnit]
   · simp [cuspAngularDenseLoop, denseCuspExponential,
       NormalizedFuchsianCuspCoordinate.exponentialUnit]
-  · change _ * (unitCircleExponential (t : UnitAddCircle) : ℂ) = _
-    rw [unitCircleExponential_real]
+  · change _ * (CircleExponential.toUnits (t : UnitAddCircle) : ℂ) = _
+    rw [CircleExponential.toUnits_real]
     change Complex.exp _ * Complex.exp _ = Complex.exp _
     rw [← Complex.exp_add]
     congr 1
@@ -110,14 +110,14 @@ public theorem fourthSweepToricLift_real (A : PaperAnalyticData) (r t : ℝ) :
   ext i
   fin_cases i <;>
     simp [fourthToricCircle, denseCuspExponential,
-      NormalizedFuchsianCuspCoordinate.exponentialUnit, unitCircleExponential_real,
+      NormalizedFuchsianCuspCoordinate.exponentialUnit, CircleExponential.toUnits_real,
       periodVector, periodMatrix, Matrix.vecHead, Matrix.vecTail]
 
-public theorem actualCuspFourthSweep_filling_factor (A : PaperAnalyticData) :
+public theorem cuspFourthSweep_filling_factor (A : PaperAnalyticData) :
     (⟨puncturedLocalCuspToFilling A.starCuspWitness,
       puncturedLocalCuspToFilling_continuous A.starCuspWitness⟩ :
       C(A.openEmbeddingStarData.collarSource 0, actualLocalCuspFilling A.starCuspWitness)).comp
-        (actualCuspFourthSweep A) =
+        (cuspFourthSweep A) =
       (actualCuspFillingProjection A.starCuspWitness).comp (fourthSweepToricLift A) := by
   ext1 z
   obtain ⟨r, hr⟩ := QuotientAddGroup.mk_surjective z.1
@@ -128,20 +128,20 @@ public theorem actualCuspFourthSweep_filling_factor (A : PaperAnalyticData) :
     fin_cases i
     exact ht.symm
   rw [hz]
-  change puncturedLocalCuspToFilling A.starCuspWitness (actualCuspFourthSweep A _) = _
-  rw [actualCuspFourthSweep_real, actualCuspFullFibreSlice_fourthCircle_real,
+  change puncturedLocalCuspToFilling A.starCuspWitness (cuspFourthSweep A _) = _
+  rw [cuspFourthSweep_real, actualCuspFullFibreSlice_fourthCircle_real,
     additiveCuspCoverSquare_commutes]
   change _ = actualCuspFillingProjection A.starCuspWitness (fourthSweepToricLift A _)
   rw [fourthSweepToricLift_real]
 
-public theorem actualCuspFourthSweep_filling_homology_zero (A : PaperAnalyticData)
+public theorem cuspFourthSweep_filling_homology_zero (A : PaperAnalyticData)
     (x : IntegralSingularHomology 2 (UnitAddCircle × StdTorus 1)) :
     integralSingularHomologyMap 2
       (⟨puncturedLocalCuspToFilling A.starCuspWitness,
         puncturedLocalCuspToFilling_continuous A.starCuspWitness⟩ :
         C(A.openEmbeddingStarData.collarSource 0, actualLocalCuspFilling A.starCuspWitness))
-      (integralSingularHomologyMap 2 (actualCuspFourthSweep A) x) = 0 := by
-  rw [integralSingularHomologyMap_comp_wang, actualCuspFourthSweep_filling_factor,
+      (integralSingularHomologyMap 2 (cuspFourthSweep A) x) = 0 := by
+  rw [integralSingularHomologyMap_comp_wang, cuspFourthSweep_filling_factor,
     ← integralSingularHomologyMap_comp_wang, fourthSweepToricLift_homology_zero, map_zero]
 
 end SphereSixComplex.Geometry.PaperAnalyticData

@@ -77,20 +77,20 @@ public theorem actualCuspAffineBridge_cuspSquare :
       A.actualVanKampenFourPieceCover.cuspConnector
       A.actualVanKampenFourPieceCover.cuspConnector_mem
       A.actualVanKampenFourPieceCover.cuspPoint_mem.1
-  have hnat := map_fundamentalGroupMulEquivOfPath
-    (subsetInclusion A.actualVanKampenFourPieceCover.core) connCore.symm
+  have hnat := CoveringSpace.map_fundamentalGroupMulEquivOfPath
+    (CoveringSpace.subsetInclusion A.actualVanKampenFourPieceCover.core) connCore.symm
     (FundamentalGroup.map
       (A.actualVanKampenFourPieceCover.overlapToCore
         A.actualVanKampenFourPieceCover.cusp)
       A.actualCuspOverlapBase γ)
   have hpath :
       connCore.symm.map
-          (subsetInclusion A.actualVanKampenFourPieceCover.core).continuous =
+          (CoveringSpace.subsetInclusion A.actualVanKampenFourPieceCover.core).continuous =
         A.actualVanKampenFourPieceCover.cuspConnector.symm := by
     ext t
     rfl
   change FundamentalGroup.map
-      (subsetInclusion A.actualVanKampenFourPieceCover.core) _
+      (CoveringSpace.subsetInclusion A.actualVanKampenFourPieceCover.core) _
       ((FundamentalGroup.fundamentalGroupMulEquivOfPath connCore.symm) _) =
     (FundamentalGroup.fundamentalGroupMulEquivOfPath
       A.actualVanKampenFourPieceCover.cuspConnector.symm) _
@@ -99,7 +99,7 @@ public theorem actualCuspAffineBridge_cuspSquare :
   congr 1
   have h1 :
       FundamentalGroup.map
-          (subsetInclusion A.actualVanKampenFourPieceCover.core)
+          (CoveringSpace.subsetInclusion A.actualVanKampenFourPieceCover.core)
           ⟨A.actualVanKampenFourPieceCover.cuspPoint,
             A.actualVanKampenFourPieceCover.cuspPoint_mem.1⟩
           (FundamentalGroup.map
@@ -107,24 +107,24 @@ public theorem actualCuspAffineBridge_cuspSquare :
               A.actualVanKampenFourPieceCover.cusp)
             A.actualCuspOverlapBase γ) =
         FundamentalGroup.map
-          ((subsetInclusion A.actualVanKampenFourPieceCover.core).comp
+          ((CoveringSpace.subsetInclusion A.actualVanKampenFourPieceCover.core).comp
             (A.actualVanKampenFourPieceCover.overlapToCore
               A.actualVanKampenFourPieceCover.cusp))
           A.actualCuspOverlapBase γ :=
-    map_map _ _ _ _
+    CoveringSpace.map_map _ _ _ _
   have h2 :
       FundamentalGroup.map
-          (subsetInclusion A.actualVanKampenFourPieceCover.cusp)
+          (CoveringSpace.subsetInclusion A.actualVanKampenFourPieceCover.cusp)
           ⟨A.actualVanKampenFourPieceCover.cuspPoint,
             A.actualVanKampenFourPieceCover.cuspPoint_mem.2⟩
           (FundamentalGroup.map
             A.actualVanKampenFourPieceCover.cuspOverlapToPiece
             A.actualCuspOverlapBase γ) =
         FundamentalGroup.map
-          ((subsetInclusion A.actualVanKampenFourPieceCover.cusp).comp
+          ((CoveringSpace.subsetInclusion A.actualVanKampenFourPieceCover.cusp).comp
             A.actualVanKampenFourPieceCover.cuspOverlapToPiece)
           A.actualCuspOverlapBase γ :=
-    map_map _ _ _ _
+    CoveringSpace.map_map _ _ _ _
   apply Eq.trans h1
   apply Eq.trans ?_ h2.symm
   rfl

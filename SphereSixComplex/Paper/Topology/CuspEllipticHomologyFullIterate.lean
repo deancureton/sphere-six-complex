@@ -6,7 +6,7 @@ public import SphereSixComplex.Prerequisites.Topology.HurewiczBasepointTransport
 noncomputable section
 open AlgebraicTopology
 namespace SphereSixComplex.Geometry.PaperAnalyticData
-open SphereSixComplex.Topology SphereSixComplex.Topology.FirstHurewiczProof
+open SphereSixComplex.Topology Hurewicz.Chains
 variable (A : PaperAnalyticData)
 
 public def actualCuspOverlapToEllipticInterior :

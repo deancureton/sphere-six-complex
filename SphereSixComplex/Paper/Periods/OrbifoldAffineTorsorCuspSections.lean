@@ -14,9 +14,9 @@ open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 open SphereSixComplex.TriangleGroup.FuchsianTriangleCover
 open scoped Manifold
 
-namespace SphereSixComplex.Periods.OrbifoldAffineLineTorsorDescentProblem
+namespace SphereSixComplex.Periods.OrbifoldAffineDescentData
 
-public theorem affineTransport_cusp (P : OrbifoldAffineLineTorsorDescentProblem)
+public theorem affineTransport_cusp (P : OrbifoldAffineDescentData)
     (z : UpperHalfPlane) (u : ℂ) :
     P.affineTransport g₀ (z, u) = (fuchsianSourceAction g₀ • z, P.affineCusp z u) := by
   apply (P.affineTransport (g₁ * g₂)).injective
@@ -32,14 +32,14 @@ public theorem affineTransport_cusp (P : OrbifoldAffineLineTorsorDescentProblem)
   rw [hprod, ← Equiv.Perm.mul_apply, ← map_mul, g₁_mul_g₂_mul_g₀, map_one]
   rfl
 
-public theorem transportSection_inv_fixed (P : OrbifoldAffineLineTorsorDescentProblem)
+public theorem transportSection_inv_fixed (P : OrbifoldAffineDescentData)
     {g : Delta} {t : UpperHalfPlane → ℂ} (ht : P.transportSection g t = t) :
     P.transportSection g⁻¹ t = t := by
   have h := congrArg (P.transportSection g⁻¹) ht
   rw [← P.transportSection_mul, inv_mul_cancel, P.transportSection_one] at h
   exact h.symm
 
-public theorem transportSection_zpow_fixed (P : OrbifoldAffineLineTorsorDescentProblem)
+public theorem transportSection_zpow_fixed (P : OrbifoldAffineDescentData)
     {g : Delta} {t : UpperHalfPlane → ℂ} (ht : P.transportSection g t = t) (n : ℤ) :
     P.transportSection (g ^ n) t = t := by
   cases n with
@@ -48,7 +48,7 @@ public theorem transportSection_zpow_fixed (P : OrbifoldAffineLineTorsorDescentP
       simpa only [zpow_negSucc] using
         P.transportSection_inv_fixed (P.transportSection_pow_fixed ht (n + 1))
 
-public theorem transportSection_cusp_fixed (P : OrbifoldAffineLineTorsorDescentProblem)
+public theorem transportSection_cusp_fixed (P : OrbifoldAffineDescentData)
     (n : ℤ) : P.transportSection (g₀ ^ n) P.cuspSection = P.cuspSection := by
   apply P.transportSection_zpow_fixed
   funext z
@@ -67,7 +67,7 @@ public theorem deep_cusp_translate_power {g : Delta} {z : UpperHalfPlane}
     exact False.elim ((not_lt_of_ge (hle.trans hlt.le)) hgz)
 
 public theorem exists_cusp_local_equivariant_section
-    (P : OrbifoldAffineLineTorsorDescentProblem) :
+    (P : OrbifoldAffineDescentData) :
     ∃ W : Set ℂ, IsOpen W ∧
       (∃ R : ℝ, 0 < R ∧ (Metric.ball (0 : ℂ) R)ᶜ ⊆ W) ∧
       ∃ s : UpperHalfPlane → ℂ,
@@ -104,4 +104,4 @@ public theorem exists_cusp_local_equivariant_section
     s, fun z hz ↦ hdiff z ((P.coordinate_image_mem_iff_saturation S z).mp hz),
     heq, fun h z hz ↦ hequiv h z ((P.coordinate_image_mem_iff_saturation S z).mp hz)⟩
 
-end SphereSixComplex.Periods.OrbifoldAffineLineTorsorDescentProblem
+end SphereSixComplex.Periods.OrbifoldAffineDescentData

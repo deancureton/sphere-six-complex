@@ -52,13 +52,13 @@ public structure ActualCuspFiberEllipticMarkedCoordinateCalculation
     R.twoDiscCover.ellipticInteriorDegreeTwoFiberCoordinateHom R.homologyAlignment
         G₀
         (integralSingularHomologyMap 2 R.twoDiscCover.cuspToEllipticInteriorMap.hom
-          (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1))) =
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1))) =
       actualCuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1)
   degreeTwoIndexFour :
     R.twoDiscCover.ellipticInteriorDegreeTwoFiberCoordinateHom R.homologyAlignment
         G₀
         (integralSingularHomologyMap 2 R.twoDiscCover.cuspToEllipticInteriorMap.hom
-          (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) = 1
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) = 1
 
 namespace ActualCuspFiberEllipticFiniteCoordinateIdentities
 
@@ -96,7 +96,7 @@ public theorem degreeTwo
     R.twoDiscCover.ellipticInteriorDegreeTwoFiberCoordinateHom R.homologyAlignment
         G₀
         (integralSingularHomologyMap 2 R.twoDiscCover.cuspToEllipticInteriorMap.hom
-          (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1))) =
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1))) =
       actualCuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1) := by
   let _ := A.actualCuspRadialClutchingData.fiberTopology
   rw [← cuspMappingTorusToEllipticInteriorMap_basis (D := R.twoDiscCover) i]
@@ -129,13 +129,13 @@ public theorem of_coordinateIdentities
       R.twoDiscCover.ellipticInteriorDegreeTwoFiberCoordinateHom R.homologyAlignment
           G₀
           (integralSingularHomologyMap 2 R.twoDiscCover.cuspToEllipticInteriorMap.hom
-            (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1))) =
+            (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1))) =
         actualCuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1))
     (hFour :
       R.twoDiscCover.ellipticInteriorDegreeTwoFiberCoordinateHom R.homologyAlignment
           G₀
           (integralSingularHomologyMap 2 R.twoDiscCover.cuspToEllipticInteriorMap.hom
-            (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) = 1) :
+            (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) = 1) :
     ActualCuspFiberEllipticFiniteCoordinateIdentities R G₀ where
   coordinateComparison :=
     { degreeOne := hOne
@@ -164,7 +164,7 @@ public theorem of_coordinateIdentities
             change
               E (integralSingularHomologyMap 2
                 R.twoDiscCover.cuspToEllipticInteriorMap.hom
-                (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) 0 = 0
+                (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) 0 = 0
             rw [← normalizedEllipticInteriorHomologyTwoEquiv_symm_single_one
               (D := R.twoDiscCover) (N := R.homologyAlignment)
               (G₀ := G₀), AddEquiv.apply_symm_apply]
@@ -235,7 +235,7 @@ public theorem degreeTwoFiberCoinvariantValues
       R.twoDiscCover.ellipticInteriorDegreeTwoFiberCoordinateHom R.homologyAlignment
           G₀
           (integralSingularHomologyMap 2 R.twoDiscCover.cuspToEllipticInteriorMap.hom
-            (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1))) =
+            (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1))) =
         actualCuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1) := by
   intro i hi4 hi5
   exact C.degreeTwo i hi5
@@ -250,7 +250,7 @@ public theorem degreeTwoIndexFour
     R.twoDiscCover.ellipticInteriorDegreeTwoFiberCoordinateHom R.homologyAlignment
         G₀
         (integralSingularHomologyMap 2 R.twoDiscCover.cuspToEllipticInteriorMap.hom
-          (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) = 1 := by
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) = 1 := by
   simpa [actualCuspEllipticDegreeTwoFiberRawCoordinate] using
     C.degreeTwo 4 (by decide)
 

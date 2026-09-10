@@ -7,7 +7,7 @@ noncomputable section
 open AlgebraicTopology
 open scoped ContinuousMap
 namespace SphereSixComplex.Topology
-open EstablishedFirstHurewicz FirstHurewiczProof StandardCircleHomologyLiftDegree
+open Hurewicz Hurewicz.Chains StandardCircleHomologyLiftDegree
 
 public def abelianCoverHomologyEquiv
     {E X G : Type} [TopologicalSpace E] [TopologicalSpace X]

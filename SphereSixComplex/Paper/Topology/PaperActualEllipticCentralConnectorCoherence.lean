@@ -63,8 +63,8 @@ public theorem fundamentalGroupMappedPair_simultaneouslyConjugate_of_sourcePath
     (FundamentalGroup.map f x a) (FundamentalGroup.map f x b)
   rw [← fundamentalGroupMulEquivOfPath_trans,
     ← fundamentalGroupMulEquivOfPath_trans] at h
-  rw [← map_fundamentalGroupMulEquivOfPath,
-    ← map_fundamentalGroupMulEquivOfPath] at h
+  rw [← CoveringSpace.map_fundamentalGroupMulEquivOfPath,
+    ← CoveringSpace.map_fundamentalGroupMulEquivOfPath] at h
   exact h
 
 /-- An equality-adjusted map followed by a connector is the same as the ordinary map followed

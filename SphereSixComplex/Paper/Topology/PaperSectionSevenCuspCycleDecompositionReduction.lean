@@ -33,13 +33,13 @@ public theorem SectionSevenEllipticInteriorCycleDecomposition.ofFiberScalarCoord
         (A.openEmbeddingStarData.collarSource 0),
       N.actualHomologyCoordinates.normalizedUnionHomologyOneEquiv
           (cuspToEllipticUnionHomology D 1 x) 0 =
-        actualCuspEllipticDegreeOneRawCoordinate (A.actualCuspRawHomologyOneEquiv x))
+        actualCuspEllipticDegreeOneRawCoordinate (A.cuspRawHomologyOneEquiv x))
     (hTwoFiber : ∀ x : IntegralSingularHomology 2
         (A.openEmbeddingStarData.collarSource 0),
       N.actualHomologyCoordinates.normalizedUnionHomologyTwoEquiv
           (D.cuspNormalizedDegreeTwoSplitting N G)
           (cuspToEllipticUnionHomology D 2 x) 0 =
-        actualCuspEllipticDegreeTwoFiberRawCoordinate (A.actualCuspRawHomologyTwoEquiv x)) :
+        actualCuspEllipticDegreeTwoFiberRawCoordinate (A.cuspRawHomologyTwoEquiv x)) :
     A.SectionSevenEllipticInteriorCycleDecomposition N.actualHomologyCoordinates
       (D.cuspNormalizedDegreeTwoSplitting N G) := by
   apply SectionSevenEllipticInteriorCycleDecomposition.ofRawScalarCoordinates hOne hTwoFiber

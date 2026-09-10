@@ -28,7 +28,7 @@ public theorem rawDegreeOneTotalSpecialization_selectedPositiveMeridianClass
     (A : PaperAnalyticData) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
-    rawDegreeOneTotalSpecialization G (actualCuspSelectedPositiveMeridianClass A) = 0 := by
+    rawDegreeOneTotalSpecialization G (cuspSelectedPositiveMeridianClass A) = 0 := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   let e := integralSingularHomologyEquivOfHomotopyEquiv 1
@@ -37,25 +37,25 @@ public theorem rawDegreeOneTotalSpecialization_selectedPositiveMeridianClass
     A.cuspCentralFiberRetractionData
   apply c.injective
   have h := DFunLike.congr_fun (finiteBasisNaturality A).degreeOne
-    (e.symm (actualCuspSelectedPositiveMeridianClass A))
+    (e.symm (cuspSelectedPositiveMeridianClass A))
   have hspec :
       c (rawDegreeOneTotalSpecialization G
-        (actualCuspSelectedPositiveMeridianClass A)) =
+        (cuspSelectedPositiveMeridianClass A)) =
         degreeOneFiberProjection
           (G.geometricWangSections.circleMappingTorusHOneAddEquiv
-            (actualCuspSelectedPositiveMeridianClass A)) := by
+            (cuspSelectedPositiveMeridianClass A)) := by
     change c (integralSingularHomologyMap 1
         ⟨puncturedLocalCuspToFilling A.starCuspWitness,
           puncturedLocalCuspToFilling_continuous A.starCuspWitness⟩
-        (e.symm (actualCuspSelectedPositiveMeridianClass A))) = _
+        (e.symm (cuspSelectedPositiveMeridianClass A))) = _
     change _ = degreeOneFiberProjection
       (G.geometricWangSections.circleMappingTorusHOneAddEquiv
-        (e (e.symm (actualCuspSelectedPositiveMeridianClass A)))) at h
+        (e (e.symm (cuspSelectedPositiveMeridianClass A)))) at h
     rw [e.apply_symm_apply] at h
     simpa [G, actualCuspRadialClutchingData_eq] using h
   change c (rawDegreeOneTotalSpecialization G
-    (actualCuspSelectedPositiveMeridianClass A)) = c 0
-  rw [map_zero, hspec, actualCuspSelectedPositiveMeridianClass_rawCoordinate]
+    (cuspSelectedPositiveMeridianClass A)) = c 0
+  rw [map_zero, hspec, cuspSelectedPositiveMeridianClass_raw_coordinate]
   ext i
   fin_cases i <;> rfl
 

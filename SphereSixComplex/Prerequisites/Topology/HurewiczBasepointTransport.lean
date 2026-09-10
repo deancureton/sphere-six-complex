@@ -5,7 +5,7 @@ public import SphereSixComplex.Prerequisites.Topology.EstablishedChosenAffineFil
 @[expose] public section
 noncomputable section
 open CategoryTheory AlgebraicTopology
-namespace SphereSixComplex.Topology.FirstHurewiczProof
+namespace SphereSixComplex.Hurewicz.Chains
 open SphereSixComplex.StandardCircleHomologyLiftDegree
 
 public theorem loopHomologyClass_whisker {X : Type} [TopologicalSpace X]
@@ -38,13 +38,13 @@ public theorem hurewiczFunction_baseEq {X : Type} [TopologicalSpace X]
   subst y
   rfl
 
-public theorem hurewiczFunction_eq_established {X : Type} [TopologicalSpace X]
+public theorem hurewiczFunction_eq_abelianizationComparison {X : Type} [TopologicalSpace X]
     [PathConnectedSpace X] (x : X) (g : FundamentalGroup X x) :
     hurewiczFunction x g =
-      (EstablishedFirstHurewicz.establishedFirstHurewiczData X x).equiv
+      (Hurewicz.abelianizationComparison X x).equiv
         (Additive.ofMul (Abelianization.of g)) := by
   obtain ⟨p, rfl⟩ := Path.Homotopic.Quotient.mk_surjective g
-  exact ((EstablishedFirstHurewicz.establishedFirstHurewiczData X x).equiv_loopClass p).symm
+  exact ((Hurewicz.abelianizationComparison X x).equiv_loopClass p).symm
 
-end SphereSixComplex.Topology.FirstHurewiczProof
+end SphereSixComplex.Hurewicz.Chains
 end

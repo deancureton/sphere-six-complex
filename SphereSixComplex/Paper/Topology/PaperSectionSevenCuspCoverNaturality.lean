@@ -158,10 +158,10 @@ public structure SectionSevenCuspPulledBackBoundaryBasisBridge
     (N : A.EllipticBandHomologyAlignment D) : Prop where
   lowerBoundary_zero : ∀ i : Fin 5,
     D.cuspPulledBackBoundary
-        (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i.castSucc 1)) = 0
+        (A.cuspRawHomologyTwoEquiv.symm (Pi.single i.castSucc 1)) = 0
   e5_boundary :
     D.cuspPulledBackBoundary
-        (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) =
+        (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) =
       (N.actualHomologyCoordinates.degreeTwoInvariantEquiv.symm 1).1
 
 /-- Pullback-cover boundary calculations supply the geometric Mayer--Vietoris basis bridge.
@@ -175,22 +175,22 @@ public theorem SectionSevenCuspPulledBackBoundaryBasisBridge.toMayerVietorisBasi
     apply ((presentationTwo (D := D)).exact_inclusion_boundary _).mp
     rw [presentationTwo_boundary]
     have h := (D.canonicalBoundary_cuspToEllipticUnionHomology
-      (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i.castSucc 1))).trans
+      (A.cuspRawHomologyTwoEquiv.symm (Pi.single i.castSucc 1))).trans
         (G.lowerBoundary_zero i)
     change canonicalBoundary D 1
       (cuspToEllipticUnionHomology D 2
-        (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i.castSucc 1))) = 0 at h
+        (A.cuspRawHomologyTwoEquiv.symm (Pi.single i.castSucc 1))) = 0 at h
     exact h
   e5_boundary := by
     apply Subtype.ext
     change canonicalBoundary D 1 (degreeTwoCuspE5Generator (A := A) (D := D)) = _
     rw [degreeTwoCuspE5Generator]
     have h := (D.canonicalBoundary_cuspToEllipticUnionHomology
-      (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))).trans
+      (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))).trans
         G.e5_boundary
     change canonicalBoundary D 1
       (cuspToEllipticUnionHomology D 2
-        (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) = _ at h
+        (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) = _ at h
     exact h
 
 end SectionSevenEllipticTwoDiscCoverData

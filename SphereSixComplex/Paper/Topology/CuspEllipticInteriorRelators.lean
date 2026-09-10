@@ -49,13 +49,13 @@ public theorem actualThreeRelator_ellipticInterior_killed :
     ((FundamentalGroup.fundamentalGroupMulEquivOfPath c.symm)
       (FundamentalGroup.map (D.overlapToCore D.ellipticThree) _
         A.orderThreeActualEllipticCanonicalRelator)) = 1
-  erw [map_fundamentalGroupMulEquivOfPath]
+  erw [CoveringSpace.map_fundamentalGroupMulEquivOfPath]
   apply (FundamentalGroup.fundamentalGroupMulEquivOfPath _).map_eq_one_iff.mpr
-  erw [map_map]
+  erw [CoveringSpace.map_map]
   change FundamentalGroup.map
     (A.actualThreeToEllipticInterior.comp D.ellipticThreeOverlapToPiece) _
       A.orderThreeActualEllipticCanonicalRelator = 1
-  erw [← map_map]
+  erw [← CoveringSpace.map_map]
   change FundamentalGroup.map A.actualThreeToEllipticInterior _
     (D.ellipticThreeOverlapFundamentalGroupMap
       A.orderThreeActualEllipticCanonicalRelator) = 1
@@ -72,13 +72,13 @@ public theorem actualFourRelator_ellipticInterior_killed :
     ((FundamentalGroup.fundamentalGroupMulEquivOfPath c.symm)
       (FundamentalGroup.map (D.overlapToCore D.ellipticFour) _
         A.orderFourActualEllipticCanonicalRelator)) = 1
-  erw [map_fundamentalGroupMulEquivOfPath]
+  erw [CoveringSpace.map_fundamentalGroupMulEquivOfPath]
   apply (FundamentalGroup.fundamentalGroupMulEquivOfPath _).map_eq_one_iff.mpr
-  erw [map_map]
+  erw [CoveringSpace.map_map]
   change FundamentalGroup.map
     (A.actualFourToEllipticInterior.comp D.ellipticFourOverlapToPiece) _
       A.orderFourActualEllipticCanonicalRelator = 1
-  erw [← map_map]
+  erw [← CoveringSpace.map_map]
   change FundamentalGroup.map A.actualFourToEllipticInterior _
     (D.ellipticFourOverlapFundamentalGroupMap
       A.orderFourActualEllipticCanonicalRelator) = 1

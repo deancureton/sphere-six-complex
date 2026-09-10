@@ -34,7 +34,7 @@ namespace SectionSevenEllipticTwoDiscCoverData
 public theorem canonicalCuspFiberToBandHomologyOne_eq_actualCuspWang
     (hmark : A.sectionSevenAffineNamedStripLift.lift
       A.sectionSevenAffineActualCuspCrossingPoint =
-        A.actualCuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
+        A.cuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
     (R : A.SectionSevenAffineRadialCompletionInput) :
     R.twoDiscCover.canonicalCuspFiberToBandHomologyOne =
       actualCuspWangFibreToBandHomologyOne (A := A) R := by
@@ -189,7 +189,7 @@ public theorem fullFibreOrientedBoundaryNaturality_of_adaptiveCarrierCompatibili
 public theorem cuspPulledBackMarkedInvariantBasisData_of_adaptiveCarrierCompatibility
     (hmark : A.sectionSevenAffineNamedStripLift.lift
       A.sectionSevenAffineActualCuspCrossingPoint =
-        A.actualCuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
+        A.cuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
     (R : A.SectionSevenAffineRadialCompletionInput)
     (h : ActualCuspAdaptiveBoundaryCarrierCompatibility R) :
     CuspPulledBackMarkedInvariantBasisData R :=

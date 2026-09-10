@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.ContractingPrismSuspension
-public import SphereSixComplex.Prerequisites.Topology.CellularHomologyClassicalBoundary
+public import SphereSixComplex.Prerequisites.Topology.CellularHomology
 public import Mathlib.CategoryTheory.Abelian.DiagramLemmas.KernelCokernelComp
 
 @[expose] public section

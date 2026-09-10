@@ -1,6 +1,6 @@
 module
 public import SphereSixComplex.Prerequisites.Topology.LocalHalfSpaceCollars
-public import SphereSixComplex.Prerequisites.Topology.BrownCollaringClassicalBoundary
+public import SphereSixComplex.Prerequisites.Topology.Collaring
 public import Mathlib.Topology.IsLocalHomeomorph
 
 @[expose] public section

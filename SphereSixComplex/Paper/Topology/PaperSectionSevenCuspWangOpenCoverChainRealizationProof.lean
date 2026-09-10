@@ -278,7 +278,7 @@ public theorem false_of_chainRealizationFor_neg
     False := by
   have hzero := D.cuspPulledBackBoundaryHom_eq_zero_of_chainRealizationFor_neg R R'
   have h0 : D.cuspPulledBackBoundary
-      (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) = 0 := by
+      (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) = 0 := by
     rw [← D.cuspPulledBackBoundaryHom_apply, hzero]
     rfl
   have hval : (N.actualHomologyCoordinates.degreeTwoInvariantEquiv.symm 1).1 = 0 :=

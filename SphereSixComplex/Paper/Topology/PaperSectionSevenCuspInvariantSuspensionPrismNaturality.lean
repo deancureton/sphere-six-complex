@@ -98,7 +98,7 @@ public theorem normalizedEllipticInteriorHomologyTwoEquiv_cuspToEllipticInterior
     (N.actualHomologyCoordinates.normalizedEllipticInteriorHomologyTwoEquiv
       (D.cuspNormalizedDegreeTwoSplitting N G))
         (integralSingularHomologyMap 2 D.cuspToEllipticInteriorMap.hom x) 1 =
-      A.actualCuspRawHomologyTwoEquiv x 5 := by
+      A.cuspRawHomologyTwoEquiv x 5 := by
   rw [D.cuspToEllipticInteriorMap_homology]
   let e := integralSingularHomologyEquiv 2
     (topologicalSubsetHomeomorphOfEqUniv (TopCat.of A.SectionSevenEllipticInterior)
@@ -305,7 +305,7 @@ public theorem targetIndexFour_sweptCoordinate_zero
   let _ := G.fiberTopology
   let E := N.actualHomologyCoordinates.normalizedEllipticInteriorHomologyTwoEquiv
     (D.cuspNormalizedDegreeTwoSplitting N G₀)
-  let x := A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)
+  let x := A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)
   have hx :
       integralSingularHomologyMap 2 G.totalHomotopyEquiv.toFun x =
         G.geometricWangSections.circleMappingTorusHTwoAddEquiv.symm

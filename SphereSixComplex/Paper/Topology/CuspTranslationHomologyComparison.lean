@@ -7,7 +7,7 @@ public import SphereSixComplex.Paper.Topology.PaperRegularFiberTransport
 noncomputable section
 open AlgebraicTopology
 namespace SphereSixComplex.Geometry.PaperAnalyticData
-open SphereSixComplex.Topology SphereSixComplex.Topology.FirstHurewiczProof
+open SphereSixComplex.Topology Hurewicz.Chains
 open SphereSixComplex.StandardCircleHomologyLiftDegree SphereSixComplex.StandardTorusHomology
 open SphereSixComplex.Periods ComplexTorus EllipticFamilySpecialization GlobalTorusFamily
 open AnalyticTorusFamily TorusFamily
@@ -184,7 +184,7 @@ public theorem actualCuspDegreeOneFullIterateRelation_proved
   have hy : f y = 12 := by
     exact (A.actualCuspTranslation_ellipticCoordinate R (Pi.single (0 : Fin 4) 1)).trans
       (by norm_num)
-  have hm := A.actualCuspRawTwo_homology_image R.twoDiscCover
+  have hm := A.cuspRawTwo_homology_image R.twoDiscCover
   have hr := (congrArg (fun x ↦ (12 : ℤ) • x) hm).trans
     A.actualCuspOverlap_homology_fullIterate
   have h := congrArg f hr

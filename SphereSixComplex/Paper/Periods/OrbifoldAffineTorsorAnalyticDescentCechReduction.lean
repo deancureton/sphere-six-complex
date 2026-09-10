@@ -22,33 +22,33 @@ noncomputable section
 
 namespace SphereSixComplex.Periods
 
-namespace OrbifoldAffineLineTorsorDescentProblem
+namespace OrbifoldAffineDescentData
 
 /-- A projective-line Cech realization produces the global cusp-regular equivariant section used
 by analytic descent. -/
-public theorem hasCuspBoundedEquivariantSection_of_cechReduction
-    (P : OrbifoldAffineLineTorsorDescentProblem)
-    (R : P.CuspCorrectionCechReduction) :
-    P.HasCuspBoundedEquivariantSection := by
-  obtain ⟨C⟩ := P.nonempty_cuspBoundedEllipticOneCorrection_of_cechReduction R
-  exact P.hasCuspBoundedEquivariantSection_of_correction C
+public theorem hasCuspBoundedSection_of_cechReduction
+    (P : OrbifoldAffineDescentData)
+    (R : P.CousinCechReduction) :
+    P.HasCuspBoundedSection := by
+  obtain ⟨C⟩ := P.nonempty_cuspBoundedCorrection_of_cechReduction R
+  exact P.hasCuspBoundedSection_of_correction C
 
 /-- Finite-orbifold Cech comparison, the proved `O(-1)`/`O` first-cohomology vanishing, and cusp
 extension together imply the complete analytic descent certificate. -/
 public theorem nonempty_analyticDescentData_of_cechReduction
-    (P : OrbifoldAffineLineTorsorDescentProblem)
-    (R : P.CuspCorrectionCechReduction) :
+    (P : OrbifoldAffineDescentData)
+    (R : P.CousinCechReduction) :
     Nonempty P.AnalyticDescentData :=
-  nonempty_analyticDescentData_of_hasCuspBoundedEquivariantSection P
-    (P.hasCuspBoundedEquivariantSection_of_cechReduction R)
+  OrbifoldAffineDescentData.nonempty_analyticDescentData_of_hasCuspBoundedSection P
+    (P.hasCuspBoundedSection_of_cechReduction R)
 
 /-- The more concrete gluing package used by the cusp-bound modules also suffices for the full
 analytic descent certificate. -/
 public theorem nonempty_analyticDescentData_of_cechGluingData
-    (P : OrbifoldAffineLineTorsorDescentProblem) (D : P.CechGluingData) :
+    (P : OrbifoldAffineDescentData) (D : P.CechGluingData) :
     Nonempty P.AnalyticDescentData :=
-  P.nonempty_analyticDescentData_of_cechReduction D.toCuspCorrectionCechReduction
+  P.nonempty_analyticDescentData_of_cechReduction D.toCousinCechReduction
 
-end OrbifoldAffineLineTorsorDescentProblem
+end OrbifoldAffineDescentData
 
 end SphereSixComplex.Periods

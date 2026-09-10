@@ -9,12 +9,12 @@ public import SphereSixComplex.Prerequisites.Analysis.HolomorphicCocycle
 noncomputable section
 open Filter Set SphereSixComplex.TriangleGroup
 open scoped Manifold
-namespace SphereSixComplex.Periods.OrbifoldAffineLineTorsorDescentProblem
+namespace SphereSixComplex.Periods.OrbifoldAffineDescentData
 
-public theorem hasCuspBoundedEquivariantSection_of_standard_transition
-    (P : OrbifoldAffineLineTorsorDescentProblem)
+public theorem hasCuspBoundedSection_of_standard_transition
+    (P : OrbifoldAffineDescentData)
     (hframe : P.frameTransition = (fun q ↦ q⁻¹) ∨ P.frameTransition = (fun _ ↦ 1)) :
-    P.HasCuspBoundedEquivariantSection := by
+    P.HasCuspBoundedSection := by
   obtain ⟨U, s, hU, hcover, hs, heqs, hzero, hone, ⟨R, hR, hRU⟩, hscusp⟩ :=
     P.exists_local_equivariant_cover
   have hcov : ∀ q, ∃ i, q ∈ U i := fun q ↦ ⟨some q, hcover q⟩
@@ -69,4 +69,4 @@ public theorem hasCuspBoundedEquivariantSection_of_standard_transition
       rw [hz, hfr]
       ring
 
-end SphereSixComplex.Periods.OrbifoldAffineLineTorsorDescentProblem
+end SphereSixComplex.Periods.OrbifoldAffineDescentData

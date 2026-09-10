@@ -32,8 +32,8 @@ presentation.  It sends a lattice class to the coinvariant factor and gives it m
 coordinate zero. -/
 public def latticeToMultipleFiberHOnePresentation
     (D : Lattice →ₗ[ℤ] Lattice) (v : Lattice) (m : ℤ) :
-    Lattice →ₗ[ℤ] MultipleFiberHOnePresentation D v m :=
-  (LinearMap.range (multipleFiberRelationMap D v m)).mkQ.comp
+    Lattice →ₗ[ℤ] CyclicCoinvariants.Presentation D v m :=
+  (LinearMap.range (CyclicCoinvariants.relationMap D v m)).mkQ.comp
     ((LinearMap.range D).mkQ.prod (0 : Lattice →ₗ[ℤ] ℤ))
 
 /-- Coordinates of the canonical order-three lattice-to-presentation map. -/

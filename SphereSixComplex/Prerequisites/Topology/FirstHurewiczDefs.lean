@@ -16,7 +16,7 @@ noncomputable section
 
 open AlgebraicTopology
 
-namespace SphereSixComplex.Topology.EstablishedFirstHurewicz
+namespace SphereSixComplex.Hurewicz
 
 /-- The additive abelianization of the fundamental group of `X` at `b`. -/
 public abbrev AbelianPi1 (X : Type) [TopologicalSpace X] (b : X) :=
@@ -39,10 +39,10 @@ public theorem loopClass_surjective {X : Type} [TopologicalSpace X] {b : X} :
   rfl
 
 /-- The first Hurewicz equivalence, packaged with its canonical value on represented loops. -/
-public structure FirstHurewiczData (X : Type) [TopologicalSpace X] (b : X) where
+public structure AbelianizationComparison (X : Type) [TopologicalSpace X] (b : X) where
   equiv : AbelianPi1 X b ≃ₗ[ℤ] IntegralSingularHomology 1 X
   equiv_loopClass : ∀ p : Path b b,
     equiv (loopClass p) =
       StandardCircleHomologyLiftDegree.loopHomologyClass p
 
-end SphereSixComplex.Topology.EstablishedFirstHurewicz
+end SphereSixComplex.Hurewicz

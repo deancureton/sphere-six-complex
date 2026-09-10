@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Paper.Topology.ConstructedA2PolarHoneycombCoordinateProof
-public import SphereSixComplex.Prerequisites.Topology.EstablishedSecondCountableCOneManifoldWithCornersRelativeCW
+public import SphereSixComplex.Prerequisites.Topology.ManifoldWithCornersCWComplex
 public import Mathlib.Topology.CWComplex.Classical.Finite
 import SphereSixComplex.Prerequisites.Geometry.Quotient
 import SphereSixComplex.Prerequisites.Geometry.QuotientTopology

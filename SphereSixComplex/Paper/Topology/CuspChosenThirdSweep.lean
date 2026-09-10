@@ -21,12 +21,12 @@ public def actualCuspChosenAnchor (A : PaperAnalyticData) :
 
 public def actualCuspChosenThirdSweep (A : PaperAnalyticData) :
     C(UnitAddCircle × StdTorus 1, A.openEmbeddingStarData.collarSource 0) :=
-  A.actualCuspFixedCircleSweepAnchors (cuspThirdFixedCircle (cuspBasePoint A.cuspCoordinate
+  A.cuspFixedCircleSweepAnchors (cuspThirdFixedCircle (cuspBasePoint A.cuspCoordinate
     (markedCuspParameter A.starCuspWitness))) A.actualCuspChosenAnchor
 
-public theorem actualCuspThirdSweep_homotopic_chosen (A : PaperAnalyticData) :
-    (actualCuspThirdSweep A).Homotopic A.actualCuspChosenThirdSweep :=
-  A.actualCuspFixedCircleSweep_homotopic_anchor _ _
+public theorem cuspThirdSweep_homotopic_chosen (A : PaperAnalyticData) :
+    (cuspThirdSweep A).Homotopic A.actualCuspChosenThirdSweep :=
+  A.cuspFixedCircleSweep_homotopic_anchor _ _
 
 private theorem cuspParameterOfPolar_norm_cuspQ_add (s : ℂ) (r : ℝ) :
     cuspParameterOfPolar ‖cuspQ s‖ (r + s.re) = s + r := by
@@ -58,8 +58,8 @@ public theorem actualCuspChosenThirdSweep_central_real (A : PaperAnalyticData)
     A.starToCentral 0 (A.actualCuspChosenThirdSweep ((r : UnitAddCircle), fun _ ↦ t)) =
       regularPeriodCircleInGlobal A.periods (Pi.single 2 1)
         (t, A.actualCuspChosenPositiveRegularBase r) := by
-  change A.starToCentral 0 (A.actualCuspFixedCircleSweepAnchors _ _ _) = _
-  rw [actualCuspFixedCircleSweepAnchors_real]
+  change A.starToCentral 0 (A.cuspFixedCircleSweepAnchors _ _ _) = _
+  rw [cuspFixedCircleSweepAnchors_real]
   have hs := cuspParameterOfPolar_norm_cuspQ_add A.actualCuspBoundaryCoverBase.1.2 r
   change A.starToCentral 0 (actualCuspFullFibreSlice
     (cuspParameterOfPolar ‖cuspQ A.actualCuspBoundaryCoverBase.1.2‖
@@ -80,9 +80,9 @@ public theorem actualCuspChosenPositiveRegularBase_zero (A : PaperAnalyticData) 
 public theorem actualCuspChosenPositiveRegularBase_projects (A : PaperAnalyticData)
     (t : unitInterval) :
     A.regularCoordinate (A.actualCuspChosenPositiveRegularBase t) =
-      A.actualCuspAngularCoordinateLoop.symm t := by
+      A.cuspAngularCoordinateLoop.symm t := by
   apply Subtype.ext
-  rw [Path.symm_apply, Function.comp_apply, A.actualCuspAngularCoordinateLoop_apply]
+  rw [Path.symm_apply, Function.comp_apply, A.cuspAngularCoordinateLoop_apply]
   change A.modular.sourceCoordinate.coordinate
     (A.cuspCoordinate.lift (A.actualCuspBoundaryCoverBase.1.2 + (t : ℝ))) = _
   have he : A.actualCuspBoundaryCoverBase.1.2 - ((unitInterval.symm t : unitInterval) : ℝ) =

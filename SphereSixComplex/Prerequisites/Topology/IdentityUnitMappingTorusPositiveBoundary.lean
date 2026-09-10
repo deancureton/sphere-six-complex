@@ -25,7 +25,7 @@ namespace SphereSixComplex.Topology.IdentityUnitMappingTorusPositiveBoundary
 
 open SphereSixComplex.BinaryOpenCover
 open CanonicalProductWangBoundaryNaturality
-open FirstHurewiczProof
+open Hurewicz.Chains
 open SphereSixComplex.StandardCircleHomologyLiftDegree
 
 public abbrev PointFiber := Unit

@@ -37,7 +37,7 @@ namespace SectionSevenEllipticTwoDiscCoverData
 private theorem actualCuspWangFibreToBand_centralFamily_completion
     (hmark : A.sectionSevenAffineNamedStripLift.lift
       A.sectionSevenAffineActualCuspCrossingPoint =
-        A.actualCuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
+        A.cuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
     (R : A.SectionSevenAffineRadialCompletionInput)
     (y : let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
@@ -91,7 +91,7 @@ private theorem actualCuspWangFibreToBand_centralFamily_completion
   rw [hcentral]
   obtain ⟨w, hw⟩ := Quotient.exists_rep y
   let t := actualCuspFullFibreCrossingTime A
-  let p := A.actualCuspAngularLiftPoint t
+  let p := A.cuspAngularLiftPoint t
   have hs : ‖cuspQ p.1.2‖ < A.starCuspWitness.localWitness.radius := p.2
   let zeta := (collarFiberEquiv A.cuspCoordinate
     (markedCuspParameter A.starCuspWitness) p.1.2).symm w
@@ -137,7 +137,7 @@ private theorem actualCuspWangFibreToBand_centralFamily_completion
         (G.fiberFullRank.realEquiv.symm w) =
       (movingToFixedCover A.periods
         A.modular.modularParameter.toTriangleUniformization.zOne
-        (A.actualCuspAngularRegularBasePoint
+        (A.cuspAngularRegularBasePoint
           A.sectionSevenAffineActualCuspCrossingTime, zeta)).2
     calc
       _ = A.duplicatedSectionSevenBandFullRank.realEquiv
@@ -160,7 +160,7 @@ private theorem actualCuspWangFibreToBand_centralFamily_completion
       (additiveCuspBoundaryProjection A.starCuspWitness q) =
     A.centralQuotientProjection
       (projection (regularParameterMap A.periods)
-        (A.actualCuspAngularRegularBasePoint
+        (A.cuspAngularRegularBasePoint
           A.sectionSevenAffineActualCuspCrossingTime, zeta))
   rw [puncturedLocalCuspQuotientMap_additiveCuspBoundaryProjection]
   rw [additiveCuspCoverToGlobal_eq_quotientProjections]
@@ -170,7 +170,7 @@ private theorem actualCuspWangFibreToBand_centralFamily_completion
 public theorem actualCuspWangFibreToBandMap_coordinate
     (hmark : A.sectionSevenAffineNamedStripLift.lift
       A.sectionSevenAffineActualCuspCrossingPoint =
-        A.actualCuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
+        A.cuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
     (R : A.SectionSevenAffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
@@ -218,7 +218,7 @@ public theorem actualCuspWangFibreToBandMap_coordinate
 public theorem actualCuspWangFibreToBandMap_homotopic_canonical
     (hmark : A.sectionSevenAffineNamedStripLift.lift
       A.sectionSevenAffineActualCuspCrossingPoint =
-        A.actualCuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
+        A.cuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
     (R : A.SectionSevenAffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
@@ -245,7 +245,7 @@ homotopic to the canonical cusp fibre map. -/
 public theorem actualCuspWangFibreToEllipticInteriorMap_homotopic_canonical
     (hmark : A.sectionSevenAffineNamedStripLift.lift
       A.sectionSevenAffineActualCuspCrossingPoint =
-        A.actualCuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
+        A.cuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
     (R : A.SectionSevenAffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology

@@ -14,8 +14,8 @@ public theorem firstHomology_subsingleton_of_simplyConnected
     (X : Type) [TopologicalSpace X] [SimplyConnectedSpace X] :
     Subsingleton (IntegralSingularHomology 1 X) := by
   let b : X := Classical.choice inferInstance
-  let e := FirstHurewiczProof.firstHurewiczEquiv b
-  let : Subsingleton (EstablishedFirstHurewicz.AbelianPi1 X b) := by
+  let e := Hurewicz.Chains.firstHurewiczEquiv b
+  let : Subsingleton (Hurewicz.AbelianPi1 X b) := by
     change Subsingleton (Additive (FundamentalGroup X b ⧸ commutator (FundamentalGroup X b)))
     constructor
     intro x y

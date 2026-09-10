@@ -367,10 +367,10 @@ public noncomputable def orderTwoAnnihilatorEquivIntSquared :
         psiTwo]
 
 public abbrev OrderOneSelectedPresentation :=
-  MultipleFiberHOnePresentation orderOneDifference v₁ 3
+  CyclicCoinvariants.Presentation orderOneDifference v₁ 3
 
 public abbrev OrderTwoSelectedPresentation :=
-  MultipleFiberHOnePresentation orderTwoDifference v₂ 4
+  CyclicCoinvariants.Presentation orderTwoDifference v₂ 4
 
 @[simp]
 public theorem orderOne_selected_twist_coordinates :
@@ -427,7 +427,7 @@ public theorem orderTwoPresentationCoordinates_surjective :
   fin_cases i <;> simp [orderTwoPresentationCoordinates]
 
 public theorem range_orderOneRelationMap_eq_ker :
-    LinearMap.range (multipleFiberRelationMap orderOneDifference v₁ 3) =
+    LinearMap.range (CyclicCoinvariants.relationMap orderOneDifference v₁ 3) =
       LinearMap.ker orderOnePresentationCoordinates := by
   have hv : orderOneCoordinates v₁ = ![1, 0] := by
     simpa only [orderOneCoinvariantsEquivIntSquared_mk] using
@@ -437,7 +437,7 @@ public theorem range_orderOneRelationMap_eq_ker :
   · rintro ⟨k, rfl⟩
     apply LinearMap.mem_ker.mpr
     funext i
-    fin_cases i <;> simp [multipleFiberRelationMap, orderOnePresentationCoordinates, hv]
+    fin_cases i <;> simp [CyclicCoinvariants.relationMap, orderOnePresentationCoordinates, hv]
     ring
   · intro hx
     have h := LinearMap.mem_ker.mp hx
@@ -449,13 +449,13 @@ public theorem range_orderOneRelationMap_eq_ker :
     · apply orderOneCoinvariantsEquivIntSquared.injective
       funext i
       fin_cases i
-      · simp [multipleFiberRelationMap, a, hv]
-      · simpa [multipleFiberRelationMap, orderOnePresentationCoordinates, hv] using h1.symm
-    · simp [multipleFiberRelationMap, orderOnePresentationCoordinates, a] at h0 ⊢
+      · simp [CyclicCoinvariants.relationMap, a, hv]
+      · simpa [CyclicCoinvariants.relationMap, orderOnePresentationCoordinates, hv] using h1.symm
+    · simp [CyclicCoinvariants.relationMap, orderOnePresentationCoordinates, a] at h0 ⊢
       omega
 
 public theorem range_orderTwoRelationMap_eq_ker :
-    LinearMap.range (multipleFiberRelationMap orderTwoDifference v₂ 4) =
+    LinearMap.range (CyclicCoinvariants.relationMap orderTwoDifference v₂ 4) =
       LinearMap.ker orderTwoPresentationCoordinates := by
   have hv : orderTwoCoordinates v₂ = ![-1, 0] := by
     simpa only [orderTwoCoinvariantsEquivIntSquared_mk] using
@@ -465,7 +465,7 @@ public theorem range_orderTwoRelationMap_eq_ker :
   · rintro ⟨k, rfl⟩
     apply LinearMap.mem_ker.mpr
     funext i
-    fin_cases i <;> simp [multipleFiberRelationMap, orderTwoPresentationCoordinates, hv]
+    fin_cases i <;> simp [CyclicCoinvariants.relationMap, orderTwoPresentationCoordinates, hv]
     ring
   · intro hx
     have h := LinearMap.mem_ker.mp hx
@@ -477,9 +477,9 @@ public theorem range_orderTwoRelationMap_eq_ker :
     · apply orderTwoCoinvariantsEquivIntSquared.injective
       funext i
       fin_cases i
-      · simp [multipleFiberRelationMap, a, hv]
-      · simpa [multipleFiberRelationMap, orderTwoPresentationCoordinates, hv] using h1.symm
-    · simp [multipleFiberRelationMap, orderTwoPresentationCoordinates, a] at h0 ⊢
+      · simp [CyclicCoinvariants.relationMap, a, hv]
+      · simpa [CyclicCoinvariants.relationMap, orderTwoPresentationCoordinates, hv] using h1.symm
+    · simp [CyclicCoinvariants.relationMap, orderTwoPresentationCoordinates, a] at h0 ⊢
       omega
 
 /-- For the selected twist `v₁ = epsilon`, the order-three presentation is free of rank two. -/

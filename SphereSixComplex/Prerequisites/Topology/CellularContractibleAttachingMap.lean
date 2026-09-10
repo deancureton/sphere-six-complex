@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.CellularHomologyClassicalBoundary
+public import SphereSixComplex.Prerequisites.Topology.CellularHomology
 public import SphereSixComplex.Prerequisites.Topology.StandardSpherePositiveHomology
 
 @[expose] public section

@@ -27,7 +27,7 @@ open NormalizedFiniteOrderAdditiveCircleSweepProof
 open FixedLoopSweepWangBoundary
 open CanonicalProductWangBoundaryNaturality
 open NormalizedAffineMappingTorusCover
-open PaperAffineCyclicReducedFiberMappingTorus
+open CyclicMappingTorus
 open PositiveCircleCross
 open StandardTorusHomology
 

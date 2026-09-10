@@ -182,7 +182,7 @@ public theorem integralHomologyEulerCharacteristicSix_eq_cellSum
         + Nat.card (Topology.CWComplex.cell (Set.univ : Set Y) 6) := by
   have hfinCell : ∀ n, Finite (Topology.CWComplex.cell (Set.univ : Set Y) n) :=
     fun n ↦ Topology.CWComplex.FiniteType.finite_cell (C := (Set.univ : Set Y)) n
-  obtain CM := EstablishedCellularHomology.integralCWCellularHomologyModel Y
+  obtain CM := CellularHomology.normalizedModel Y
   have hXfin : ∀ n, Module.Finite ℤ (CM.chainComplex.X n) := by
     intro n
     have _ := hfinCell n

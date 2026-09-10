@@ -121,18 +121,18 @@ variable (A : PaperAnalyticData)
 
 /-- The actual marked cusp meridian reaches the middle height of the affine strip. -/
 public theorem exists_actualCuspAngularCoordinateLoop_re_eq_half :
-    ∃ t : unitInterval, ((A.actualCuspAngularCoordinateLoop t).1).re = 1 / 2 := by
+    ∃ t : unitInterval, ((A.cuspAngularCoordinateLoop t).1).re = 1 / 2 := by
   let γ : C(unitInterval, ℂ) :=
-    ⟨A.actualCuspAngularZeroRawLog, A.continuous_actualCuspAngularZeroRawLog⟩
+    ⟨A.cuspAngularZeroRawLog, A.continuous_actualCuspAngularZeroRawLog⟩
   obtain ⟨tzero, hzero⟩ :=
-    exists_exp_re_eq_zero_of_log_turn γ A.actualCuspAngularZeroRawLog_one
+    exists_exp_re_eq_zero_of_log_turn γ A.cuspAngularZeroRawLog_one
   obtain ⟨tpositive, hpositive⟩ :=
-    exists_exp_re_eq_norm_of_log_turn γ A.actualCuspAngularZeroRawLog_one
+    exists_exp_re_eq_norm_of_log_turn γ A.cuspAngularZeroRawLog_one
   have hgt : 2 < (Complex.exp (γ tpositive)).re := by
     rw [hpositive]
-    change 2 < ‖Complex.exp (A.actualCuspAngularZeroRawLog tpositive)‖
-    rw [A.actualCuspAngularZeroRawLog_exp]
-    exact A.actualCuspAngularCoordinateLoop_norm_gt_two tpositive
+    change 2 < ‖Complex.exp (A.cuspAngularZeroRawLog tpositive)‖
+    rw [A.cuspAngularZeroRawLog_exp]
+    exact A.cuspAngularCoordinateLoop_norm_gt_two tpositive
   have hcont : Continuous (fun t : unitInterval ↦ (Complex.exp (γ t)).re) :=
     Complex.continuous_re.comp (Complex.continuous_exp.comp γ.continuous)
   have hmem : (1 / 2 : ℝ) ∈ Set.Icc
@@ -141,7 +141,7 @@ public theorem exists_actualCuspAngularCoordinateLoop_re_eq_half :
     constructor <;> linarith
   obtain ⟨t, ht⟩ := intermediate_value_univ tzero tpositive hcont hmem
   refine ⟨t, ?_⟩
-  rw [← A.actualCuspAngularZeroRawLog_exp]
+  rw [← A.cuspAngularZeroRawLog_exp]
   exact ht
 
 /-- The selected middle-strip crossing of the actual cusp meridian. -/
@@ -149,30 +149,30 @@ public noncomputable def sectionSevenAffineActualCuspCrossingTime : unitInterval
   Classical.choose A.exists_actualCuspAngularCoordinateLoop_re_eq_half
 
 public theorem sectionSevenAffineActualCuspCrossingTime_re_eq_half :
-    ((A.actualCuspAngularCoordinateLoop A.sectionSevenAffineActualCuspCrossingTime).1).re =
+    ((A.cuspAngularCoordinateLoop A.sectionSevenAffineActualCuspCrossingTime).1).re =
       1 / 2 :=
   Classical.choose_spec A.exists_actualCuspAngularCoordinateLoop_re_eq_half
 
 /-- The selected actual cusp-coordinate crossing, regarded as a point of the affine strip. -/
 public noncomputable def sectionSevenAffineActualCuspCrossingPoint :
     sectionSevenAffineVerticalStrip :=
-  ⟨(A.actualCuspAngularCoordinateLoop A.sectionSevenAffineActualCuspCrossingTime).1, by
+  ⟨(A.cuspAngularCoordinateLoop A.sectionSevenAffineActualCuspCrossingTime).1, by
     rw [sectionSevenAffineVerticalStrip]
     change (1 / 3 : ℝ) <
-        ((A.actualCuspAngularCoordinateLoop A.sectionSevenAffineActualCuspCrossingTime).1).re ∧
-      ((A.actualCuspAngularCoordinateLoop A.sectionSevenAffineActualCuspCrossingTime).1).re < 2 / 3
+        ((A.cuspAngularCoordinateLoop A.sectionSevenAffineActualCuspCrossingTime).1).re ∧
+      ((A.cuspAngularCoordinateLoop A.sectionSevenAffineActualCuspCrossingTime).1).re < 2 / 3
     rw [A.sectionSevenAffineActualCuspCrossingTime_re_eq_half]
     norm_num⟩
 
 /-- The explicit regular cusp point lies above the selected affine-strip crossing. -/
 public theorem regularCoordinate_actualCuspAngularRegularBasePoint_crossing :
     A.regularCoordinate
-        (A.actualCuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime) =
+        (A.cuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime) =
       stripInclusion A.sectionSevenAffineActualCuspCrossingPoint := by
   apply Subtype.ext
-  simp only [regularCoordinate, actualCuspAngularRegularBasePoint, stripInclusion,
-    sectionSevenAffineActualCuspCrossingPoint, actualCuspAngularLiftPoint]
-  exact (A.actualCuspAngularCoordinateLoop_apply _).symm
+  simp only [regularCoordinate, cuspAngularRegularBasePoint, stripInclusion,
+    sectionSevenAffineActualCuspCrossingPoint, cuspAngularLiftPoint]
+  exact (A.cuspAngularCoordinateLoop_apply _).symm
 
 /-- The unique continuous affine-strip lift through the selected actual cusp point. -/
 public noncomputable def sectionSevenAffineActualCuspContinuousLift :
@@ -180,22 +180,22 @@ public noncomputable def sectionSevenAffineActualCuspContinuousLift :
       RegularBase (U := A.modular.modularParameter.toTriangleUniformization)) :=
   Classical.choose (A.existsUnique_sectionSevenAffineStripContinuousLift
     A.sectionSevenAffineActualCuspCrossingPoint
-    (A.actualCuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
+    (A.cuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
     A.regularCoordinate_actualCuspAngularRegularBasePoint_crossing)
 
 public theorem sectionSevenAffineActualCuspContinuousLift_apply_crossing :
     A.sectionSevenAffineActualCuspContinuousLift A.sectionSevenAffineActualCuspCrossingPoint =
-      A.actualCuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime :=
+      A.cuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime :=
   (Classical.choose_spec (A.existsUnique_sectionSevenAffineStripContinuousLift
     A.sectionSevenAffineActualCuspCrossingPoint
-    (A.actualCuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
+    (A.cuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
     A.regularCoordinate_actualCuspAngularRegularBasePoint_crossing)).1.1
 
 public theorem sectionSevenAffineActualCuspContinuousLift_coordinate :
     A.regularCoordinate ∘ A.sectionSevenAffineActualCuspContinuousLift = stripInclusion :=
   (Classical.choose_spec (A.existsUnique_sectionSevenAffineStripContinuousLift
     A.sectionSevenAffineActualCuspCrossingPoint
-    (A.actualCuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
+    (A.cuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
     A.regularCoordinate_actualCuspAngularRegularBasePoint_crossing)).1.2
 
 /-- The affine-strip lift uniquely pinned by the selected actual cusp crossing. -/
@@ -206,7 +206,7 @@ public noncomputable def sectionSevenAffineActualCuspStripLift : A.SectionSevenA
 
 public theorem sectionSevenAffineActualCuspStripLift_apply_crossing :
     A.sectionSevenAffineActualCuspStripLift.lift A.sectionSevenAffineActualCuspCrossingPoint =
-      A.actualCuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime :=
+      A.cuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime :=
   A.sectionSevenAffineActualCuspContinuousLift_apply_crossing
 
 end SphereSixComplex.Geometry.PaperAnalyticData

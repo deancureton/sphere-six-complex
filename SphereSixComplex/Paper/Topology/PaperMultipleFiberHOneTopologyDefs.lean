@@ -64,9 +64,9 @@ variable {m : ℕ} [NeZero m] {p : SphereSixComplex.Periods.Parameters}
 @[expose] public def latticeProjection
     (P : AffineCyclicCentralFiberPresentationData m p D) :
     Lattice →ₗ[ℤ]
-      MultipleFiberHOnePresentation P.latticeDifference P.twist (m : ℤ) :=
+      CyclicCoinvariants.Presentation P.latticeDifference P.twist (m : ℤ) :=
   (LinearMap.range
-      (multipleFiberRelationMap P.latticeDifference P.twist (m : ℤ))).mkQ.comp
+      (CyclicCoinvariants.relationMap P.latticeDifference P.twist (m : ℤ))).mkQ.comp
     ((LinearMap.range P.latticeDifference).mkQ.prod
       (0 : Lattice →ₗ[ℤ] ℤ))
 
@@ -75,7 +75,7 @@ covering projection. -/
 public structure ReducedCentralFiberHOnePresentation
     (P : AffineCyclicCentralFiberPresentationData m p D) where
   equiv : IntegralSingularHomology 1 D.reducedCentralFiber ≃ₗ[ℤ]
-    MultipleFiberHOnePresentation P.latticeDifference P.twist (m : ℤ)
+    CyclicCoinvariants.Presentation P.latticeDifference P.twist (m : ℤ)
   projection : ∀ x : Lattice,
     equiv
         (integralSingularHomologyMap 1

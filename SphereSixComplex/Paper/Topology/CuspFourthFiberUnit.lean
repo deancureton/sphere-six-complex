@@ -14,7 +14,7 @@ public theorem cuspEllipticFiberCoordinate_rawFive (A : PaperAnalyticData)
     (R : A.SectionSevenAffineRadialCompletionInput)
     (S : WangHomologyPresentation.NormalizedSplitting (presentationTwo (D := R.twoDiscCover))) :
     A.cuspEllipticFiberCoordinate R S
-      (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) = 1 := by
+      (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) = 1 := by
   let f := coordinateAfterAddEquiv
     (R.homologyAlignment.actualHomologyCoordinates.normalizedEllipticInteriorHomologyTwoEquiv S) 0
   have h := congrArg f A.ellipticFourthHomologySweep_fullIterate
@@ -23,9 +23,9 @@ public theorem cuspEllipticFiberCoordinate_rawFive (A : PaperAnalyticData)
   change f (A.ellipticFourthHomologySweep _) = -12 at hf
   rw [hf] at h
   change (12 : ℤ) • (-A.cuspEllipticFiberCoordinate R S
-    (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) = -12 at h
+    (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) = -12 at h
   change (12 : ℤ) * (-A.cuspEllipticFiberCoordinate R S
-    (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) = -12 at h
+    (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) = -12 at h
   omega
 
 end SphereSixComplex.Geometry.PaperAnalyticData

@@ -133,14 +133,14 @@ public theorem circleSweepClass_trans
     {Y : Type} [TopologicalSpace Y]
     (sweep : C(UnitAddCircle × X, Y)) {x : X} (p q : Path x x) :
     circleSweepClass sweep (p.trans q) = circleSweepClass sweep p + circleSweepClass sweep q := by
-  simp only [circleSweepClass, FirstHurewiczProof.loopHomologyClass_trans, map_add]
+  simp only [circleSweepClass, Hurewicz.Chains.loopHomologyClass_trans, map_add]
 
 public theorem circleSweepClass_homotopic
     {Y : Type} [TopologicalSpace Y]
     (sweep : C(UnitAddCircle × X, Y)) {x : X} {p q : Path x x}
     (h : p.Homotopic q) : circleSweepClass sweep p = circleSweepClass sweep q := by
   obtain ⟨H⟩ := h
-  rw [circleSweepClass, circleSweepClass, FirstHurewiczProof.loopHomologyClass_homotopic H]
+  rw [circleSweepClass, circleSweepClass, Hurewicz.Chains.loopHomologyClass_homotopic H]
 
 end SphereSixComplex.Topology.CircleProductIdentityMappingTorus
 
@@ -194,8 +194,8 @@ public theorem normalizedCircleCross_naturality
     integralSingularHomologyMap 2 (circleProductMap f) (normalizedCircleCross 1 x) =
       normalizedCircleCross 1 (integralSingularHomologyMap 1 f x) := by
   let b : X := Classical.choice inferInstance
-  let H := FirstHurewiczProof.establishedFirstHurewiczData_proof X b
-  obtain ⟨p, hp⟩ := EstablishedFirstHurewicz.loopClass_surjective (H.equiv.symm x)
+  let H := Hurewicz.Chains.abelianizationComparison X b
+  obtain ⟨p, hp⟩ := Hurewicz.loopClass_surjective (H.equiv.symm x)
   have hx : loopHomologyClass p = x := by
     rw [← H.equiv_loopClass, hp, H.equiv.apply_symm_apply]
   rw [← hx, ← pathCircleMap_homology p, ← positiveCircleCross_eq_normalized]

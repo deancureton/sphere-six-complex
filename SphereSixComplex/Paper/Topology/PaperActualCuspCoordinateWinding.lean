@@ -98,13 +98,13 @@ public theorem actualCuspFactorizationUnitLog_exp
 
 /-! ## The completed-cusp parameter along the actual angular loop -/
 
-public def actualCuspAngularQPoint (t : unitInterval) : ℂ :=
+public def cuspAngularQPoint (t : unitInterval) : ℂ :=
   cuspQ (A.actualCuspBoundaryCoverBase.1.2 - (t : ℝ))
 
-public theorem actualCuspAngularQPoint_mem_parameterBall (t : unitInterval) :
-    A.actualCuspAngularQPoint t ∈ A.actualCuspParameterBall := by
+public theorem cuspAngularQPoint_mem_parameterBall (t : unitInterval) :
+    A.cuspAngularQPoint t ∈ A.actualCuspParameterBall := by
   rw [actualCuspParameterBall, Metric.mem_ball, dist_zero_right]
-  unfold actualCuspAngularQPoint
+  unfold cuspAngularQPoint
   have hbase : ‖cuspQ A.actualCuspBoundaryCoverBase.1.2‖ <
       A.starCuspWitness.localWitness.radius :=
     A.actualCuspBoundaryCoverBase.2
@@ -112,11 +112,11 @@ public theorem actualCuspAngularQPoint_mem_parameterBall (t : unitInterval) :
   simpa using hbase
 
 /-- Along `s - t`, the completed cusp parameter makes one negative exponential turn. -/
-public theorem actualCuspAngularQPoint_apply (t : unitInterval) :
-    A.actualCuspAngularQPoint t =
-      A.actualCuspAngularQPoint 0 *
+public theorem cuspAngularQPoint_apply (t : unitInterval) :
+    A.cuspAngularQPoint t =
+      A.cuspAngularQPoint 0 *
         Complex.exp (-(((2 * Real.pi * (t : ℝ) : ℝ) : ℂ) * Complex.I)) := by
-  unfold actualCuspAngularQPoint cuspQ
+  unfold cuspAngularQPoint cuspQ
   rw [show
     2 * (Real.pi : ℂ) * Complex.I *
           (A.actualCuspBoundaryCoverBase.1.2 - ((t : ℝ) : ℂ)) =
@@ -127,16 +127,16 @@ public theorem actualCuspAngularQPoint_apply (t : unitInterval) :
       ring]
   exact Complex.exp_add _ _
 
-public theorem actualCuspAngularQPoint_one :
-    A.actualCuspAngularQPoint 1 = A.actualCuspAngularQPoint 0 := by
-  rw [A.actualCuspAngularQPoint_apply]
+public theorem cuspAngularQPoint_one :
+    A.cuspAngularQPoint 1 = A.cuspAngularQPoint 0 := by
+  rw [A.cuspAngularQPoint_apply]
   norm_num [Complex.exp_neg, Complex.exp_two_pi_mul_I]
 
-public theorem actualCuspAngularCoordinateLoop_inv_apply (t : unitInterval) :
-    ((A.actualCuspAngularCoordinateLoop t).1)⁻¹ =
-      A.actualCuspAngularQPoint t *
-        A.actualCuspFactorizationUnit (A.actualCuspAngularQPoint t) := by
-  rw [A.actualCuspAngularCoordinateLoop_apply]
+public theorem cuspAngularCoordinateLoop_inv_apply (t : unitInterval) :
+    ((A.cuspAngularCoordinateLoop t).1)⁻¹ =
+      A.cuspAngularQPoint t *
+        A.actualCuspFactorizationUnit (A.cuspAngularQPoint t) := by
+  rw [A.cuspAngularCoordinateLoop_apply]
   apply A.actualPuncturedCuspWitness_reciprocal_factorization
   · apply mem_cuspHalfPlane_of_norm_cuspQ_lt
       A.starCuspWitness.localWitness.radius_le
@@ -152,158 +152,158 @@ public theorem actualCuspAngularCoordinateLoop_inv_apply (t : unitInterval) :
     simpa using hbase
 
 /-- An unnormalized logarithm of the actual central coordinate. -/
-public noncomputable def actualCuspAngularZeroRawLog (t : unitInterval) : ℂ :=
-  -(Complex.log (A.actualCuspAngularQPoint 0) -
+public noncomputable def cuspAngularZeroRawLog (t : unitInterval) : ℂ :=
+  -(Complex.log (A.cuspAngularQPoint 0) -
       (((2 * Real.pi * (t : ℝ) : ℝ) : ℂ) * Complex.I) +
-      A.actualCuspFactorizationUnitLog (A.actualCuspAngularQPoint t))
+      A.actualCuspFactorizationUnitLog (A.cuspAngularQPoint t))
 
-public theorem actualCuspAngularQPoint_zero_ne :
-    A.actualCuspAngularQPoint 0 ≠ 0 := by
-  unfold actualCuspAngularQPoint cuspQ
+public theorem cuspAngularQPoint_zero_ne :
+    A.cuspAngularQPoint 0 ≠ 0 := by
+  unfold cuspAngularQPoint cuspQ
   exact Complex.exp_ne_zero _
 
 public theorem continuous_actualCuspAngularZeroRawLog :
-    Continuous A.actualCuspAngularZeroRawLog := by
-  have hq : Continuous A.actualCuspAngularQPoint := by
-    unfold actualCuspAngularQPoint cuspQ
+    Continuous A.cuspAngularZeroRawLog := by
+  have hq : Continuous A.cuspAngularQPoint := by
+    unfold cuspAngularQPoint cuspQ
     fun_prop
   have hunitLog : Continuous
-      (A.actualCuspFactorizationUnitLog ∘ A.actualCuspAngularQPoint) :=
+      (A.actualCuspFactorizationUnitLog ∘ A.cuspAngularQPoint) :=
     A.actualCuspFactorizationUnitLog_continuousOn.comp_continuous hq
-      A.actualCuspAngularQPoint_mem_parameterBall
-  unfold actualCuspAngularZeroRawLog
+      A.cuspAngularQPoint_mem_parameterBall
+  unfold cuspAngularZeroRawLog
   fun_prop
 
-public theorem actualCuspAngularZeroRawLog_exp (t : unitInterval) :
-    Complex.exp (A.actualCuspAngularZeroRawLog t) =
-      (A.actualCuspAngularCoordinateLoop t).1 := by
-  unfold actualCuspAngularZeroRawLog
+public theorem cuspAngularZeroRawLog_exp (t : unitInterval) :
+    Complex.exp (A.cuspAngularZeroRawLog t) =
+      (A.cuspAngularCoordinateLoop t).1 := by
+  unfold cuspAngularZeroRawLog
   rw [Complex.exp_neg, Complex.exp_add, Complex.exp_sub,
-    Complex.exp_log A.actualCuspAngularQPoint_zero_ne,
+    Complex.exp_log A.cuspAngularQPoint_zero_ne,
     A.actualCuspFactorizationUnitLog_exp
-      (A.actualCuspAngularQPoint_mem_parameterBall t)]
-  have hq : A.actualCuspAngularQPoint 0 /
+      (A.cuspAngularQPoint_mem_parameterBall t)]
+  have hq : A.cuspAngularQPoint 0 /
         Complex.exp ((((2 * Real.pi * (t : ℝ) : ℝ) : ℂ) * Complex.I)) =
-      A.actualCuspAngularQPoint t := by
+      A.cuspAngularQPoint t := by
     calc
-      _ = A.actualCuspAngularQPoint 0 *
+      _ = A.cuspAngularQPoint 0 *
           Complex.exp (-((((2 * Real.pi * (t : ℝ) : ℝ) : ℂ) * Complex.I))) := by
         rw [div_eq_mul_inv, ← Complex.exp_neg]
-      _ = A.actualCuspAngularQPoint t :=
-        (A.actualCuspAngularQPoint_apply t).symm
+      _ = A.cuspAngularQPoint t :=
+        (A.cuspAngularQPoint_apply t).symm
   rw [hq]
-  rw [← A.actualCuspAngularCoordinateLoop_inv_apply]
+  rw [← A.cuspAngularCoordinateLoop_inv_apply]
   simp
 
 /-- The raw logarithm gains exactly `2πi` around the selected cusp meridian. -/
-public theorem actualCuspAngularZeroRawLog_one :
-    A.actualCuspAngularZeroRawLog 1 =
-      A.actualCuspAngularZeroRawLog 0 + 2 * Real.pi * Complex.I := by
-  unfold actualCuspAngularZeroRawLog
-  rw [A.actualCuspAngularQPoint_one]
+public theorem cuspAngularZeroRawLog_one :
+    A.cuspAngularZeroRawLog 1 =
+      A.cuspAngularZeroRawLog 0 + 2 * Real.pi * Complex.I := by
+  unfold cuspAngularZeroRawLog
+  rw [A.cuspAngularQPoint_one]
   norm_num
   ring
 
 /-! ## Normalize the lift at Mathlib's logarithmic basepoint -/
 
-public def actualCuspAngularZeroPuncturedLoop :
+public def cuspAngularZeroPuncturedLoop :
     Path (twicePuncturedComplexForgetZero
       (A.centralFamilyCoordinate A.actualCuspCentralBase))
       (twicePuncturedComplexForgetZero
         (A.centralFamilyCoordinate A.actualCuspCentralBase)) :=
-  A.actualCuspAngularCoordinateLoop.map twicePuncturedComplexForgetZero.continuous
+  A.cuspAngularCoordinateLoop.map twicePuncturedComplexForgetZero.continuous
 
-public abbrev actualCuspAngularZeroPuncturedBasepoint : PuncturedComplex :=
+public abbrev cuspAngularZeroPuncturedBasepoint : PuncturedComplex :=
   twicePuncturedComplexForgetZero
     (A.centralFamilyCoordinate A.actualCuspCentralBase)
 
-public noncomputable def actualCuspAngularZeroLogLiftPoint
+public noncomputable def cuspAngularZeroLogLiftPoint
     (t : unitInterval) : ℂ :=
-  Complex.log A.actualCuspAngularZeroPuncturedBasepoint.1 +
-    (A.actualCuspAngularZeroRawLog t - A.actualCuspAngularZeroRawLog 0)
+  Complex.log A.cuspAngularZeroPuncturedBasepoint.1 +
+    (A.cuspAngularZeroRawLog t - A.cuspAngularZeroRawLog 0)
 
-public theorem actualCuspAngularZeroLogLiftPoint_zero :
-    A.actualCuspAngularZeroLogLiftPoint 0 =
-      Complex.log A.actualCuspAngularZeroPuncturedBasepoint.1 := by
-  simp [actualCuspAngularZeroLogLiftPoint]
+public theorem cuspAngularZeroLogLiftPoint_zero :
+    A.cuspAngularZeroLogLiftPoint 0 =
+      Complex.log A.cuspAngularZeroPuncturedBasepoint.1 := by
+  simp [cuspAngularZeroLogLiftPoint]
 
-public theorem actualCuspAngularZeroLogLiftPoint_one :
-    A.actualCuspAngularZeroLogLiftPoint 1 =
-      Complex.log A.actualCuspAngularZeroPuncturedBasepoint.1 +
+public theorem cuspAngularZeroLogLiftPoint_one :
+    A.cuspAngularZeroLogLiftPoint 1 =
+      Complex.log A.cuspAngularZeroPuncturedBasepoint.1 +
         (1 : ℤ) • (2 * Real.pi * Complex.I) := by
-  rw [actualCuspAngularZeroLogLiftPoint, A.actualCuspAngularZeroRawLog_one]
+  rw [cuspAngularZeroLogLiftPoint, A.cuspAngularZeroRawLog_one]
   simp
 
 public theorem continuous_actualCuspAngularZeroLogLiftPoint :
-    Continuous A.actualCuspAngularZeroLogLiftPoint := by
-  unfold actualCuspAngularZeroLogLiftPoint
+    Continuous A.cuspAngularZeroLogLiftPoint := by
+  unfold cuspAngularZeroLogLiftPoint
   exact continuous_const.add
     (A.continuous_actualCuspAngularZeroRawLog.sub continuous_const)
 
-public theorem actualCuspAngularZeroLogLiftPoint_exp (t : unitInterval) :
-    Complex.exp (A.actualCuspAngularZeroLogLiftPoint t) =
-      (A.actualCuspAngularZeroPuncturedLoop t).1 := by
-  rw [actualCuspAngularZeroLogLiftPoint,
+public theorem cuspAngularZeroLogLiftPoint_exp (t : unitInterval) :
+    Complex.exp (A.cuspAngularZeroLogLiftPoint t) =
+      (A.cuspAngularZeroPuncturedLoop t).1 := by
+  rw [cuspAngularZeroLogLiftPoint,
     Complex.exp_add, Complex.exp_sub,
-    Complex.exp_log A.actualCuspAngularZeroPuncturedBasepoint.2,
-    A.actualCuspAngularZeroRawLog_exp,
-    A.actualCuspAngularZeroRawLog_exp]
-  have hbase : A.actualCuspAngularZeroPuncturedBasepoint.1 =
-      (A.actualCuspAngularCoordinateLoop 0).1 := by
+    Complex.exp_log A.cuspAngularZeroPuncturedBasepoint.2,
+    A.cuspAngularZeroRawLog_exp,
+    A.cuspAngularZeroRawLog_exp]
+  have hbase : A.cuspAngularZeroPuncturedBasepoint.1 =
+      (A.cuspAngularCoordinateLoop 0).1 := by
     change (A.centralFamilyCoordinate A.actualCuspCentralBase).1 =
-      (A.actualCuspAngularCoordinateLoop 0).1
+      (A.cuspAngularCoordinateLoop 0).1
     exact (congrArg (fun z ↦ z.1)
-      A.actualCuspAngularCoordinateLoop.source).symm
+      A.cuspAngularCoordinateLoop.source).symm
   rw [hbase]
-  have hzero : (A.actualCuspAngularCoordinateLoop 0).1 ≠ 0 := by
-    have h := (A.actualCuspAngularCoordinateLoop 0).2
+  have hzero : (A.cuspAngularCoordinateLoop 0).1 ≠ 0 := by
+    have h := (A.cuspAngularCoordinateLoop 0).2
     simp only [Set.mem_compl_iff, Set.mem_insert_iff,
       Set.mem_singleton_iff, not_or] at h
     exact h.1
-  change (A.actualCuspAngularCoordinateLoop 0).1 *
-      ((A.actualCuspAngularCoordinateLoop t).1 /
-        (A.actualCuspAngularCoordinateLoop 0).1) =
-      (A.actualCuspAngularCoordinateLoop t).1
+  change (A.cuspAngularCoordinateLoop 0).1 *
+      ((A.cuspAngularCoordinateLoop t).1 /
+        (A.cuspAngularCoordinateLoop 0).1) =
+      (A.cuspAngularCoordinateLoop t).1
   field_simp
 
-public noncomputable def actualCuspAngularZeroLogLift :
-    Path (Complex.log A.actualCuspAngularZeroPuncturedBasepoint.1)
-      (Complex.log A.actualCuspAngularZeroPuncturedBasepoint.1 +
+public noncomputable def cuspAngularZeroLogLift :
+    Path (Complex.log A.cuspAngularZeroPuncturedBasepoint.1)
+      (Complex.log A.cuspAngularZeroPuncturedBasepoint.1 +
         (1 : ℤ) • (2 * Real.pi * Complex.I)) where
-  toFun := A.actualCuspAngularZeroLogLiftPoint
+  toFun := A.cuspAngularZeroLogLiftPoint
   continuous_toFun := A.continuous_actualCuspAngularZeroLogLiftPoint
-  source' := A.actualCuspAngularZeroLogLiftPoint_zero
-  target' := A.actualCuspAngularZeroLogLiftPoint_one
+  source' := A.cuspAngularZeroLogLiftPoint_zero
+  target' := A.cuspAngularZeroLogLiftPoint_one
 
-public theorem actualCuspAngularZeroLogLift_map_exp :
-    ((A.actualCuspAngularZeroLogLift.map
+public theorem cuspAngularZeroLogLift_map_exp :
+    ((A.cuspAngularZeroLogLift.map
         complexExpCoverContinuousMap.continuous).cast
       (complexExpCoverContinuousMap_log
-        A.actualCuspAngularZeroPuncturedBasepoint.1
-        A.actualCuspAngularZeroPuncturedBasepoint.2).symm
+        A.cuspAngularZeroPuncturedBasepoint.1
+        A.cuspAngularZeroPuncturedBasepoint.2).symm
       (complexExpCoverContinuousMap_log_add_deck
-        A.actualCuspAngularZeroPuncturedBasepoint.1
-        A.actualCuspAngularZeroPuncturedBasepoint.2 1).symm) =
-      A.actualCuspAngularZeroPuncturedLoop := by
+        A.cuspAngularZeroPuncturedBasepoint.1
+        A.cuspAngularZeroPuncturedBasepoint.2 1).symm) =
+      A.cuspAngularZeroPuncturedLoop := by
   apply Path.ext
   funext t
   apply Subtype.ext
-  exact A.actualCuspAngularZeroLogLiftPoint_exp t
+  exact A.cuspAngularZeroLogLiftPoint_exp t
 
 /-- Relative to the finite plane, the actual selected cusp meridian is exactly the `+1`
 integer-circle class. -/
-public theorem actualCuspAngularZero_loopClass_eq_integerCircle :
-    Path.Homotopic.Quotient.mk A.actualCuspAngularZeroPuncturedLoop =
+public theorem cuspAngularZero_loopClass_eq_integerCircle :
+    Path.Homotopic.Quotient.mk A.cuspAngularZeroPuncturedLoop =
       Path.Homotopic.Quotient.mk
         (puncturedComplexIntegerCircle
-          A.actualCuspAngularZeroPuncturedBasepoint.1
-          A.actualCuspAngularZeroPuncturedBasepoint.2 1) := by
+          A.cuspAngularZeroPuncturedBasepoint.1
+          A.cuspAngularZeroPuncturedBasepoint.2 1) := by
   exact puncturedComplex_loopClass_eq_integerCircle_of_lift
-    A.actualCuspAngularZeroPuncturedBasepoint.1
-    A.actualCuspAngularZeroPuncturedBasepoint.2 1
-    A.actualCuspAngularZeroPuncturedLoop
-    A.actualCuspAngularZeroLogLift
-    A.actualCuspAngularZeroLogLift_map_exp
+    A.cuspAngularZeroPuncturedBasepoint.1
+    A.cuspAngularZeroPuncturedBasepoint.2 1
+    A.cuspAngularZeroPuncturedLoop
+    A.cuspAngularZeroLogLift
+    A.cuspAngularZeroLogLift_map_exp
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

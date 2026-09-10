@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.EstablishedStrongDeformationRetracts
+public import SphereSixComplex.Prerequisites.Topology.StrongDeformationRetraction
 public import Mathlib.Topology.CWComplex.Classical.Subcomplex
 
 /-!
@@ -95,7 +95,7 @@ open Metric Set Topology unitInterval
 
 namespace SphereSixComplex
 
-namespace EstablishedGeneralTopology
+namespace CWPair.HomotopyExtension
 
 universe u
 
@@ -389,7 +389,7 @@ section WeakTopology
 variable {X : Type u} [TopologicalSpace X]
 
 /-- The disjoint union of all closed cells of a relative CW complex with its base. -/
-public abbrev cellModel (C A : Set X) [RelCWComplex C A] : Type u :=
+public abbrev CellModel (C A : Set X) [RelCWComplex C A] : Type u :=
   (Σ i : (Σ n, RelCWComplex.cell C n), ↥(closedBall (0 : Fin i.1 → ℝ) 1)) ⊕ ↥A
 
 /-- A point of a closed cell, viewed as a point of the complex. -/
@@ -423,7 +423,7 @@ public theorem continuous_basePoint (C A : Set X) [RelCWComplex C A] :
 
 /-- The tautological map onto the complex from the disjoint union of its closed cells with its
 base: the characteristic map on each cell, the inclusion on the base. -/
-public def cellModelProj (C A : Set X) [RelCWComplex C A] : cellModel C A → ↥C :=
+public def cellModelProj (C A : Set X) [RelCWComplex C A] : CellModel C A → ↥C :=
   Sum.elim (fun z ↦ cellPoint C A z.1.2 z.2) (basePoint C A)
 
 public theorem continuous_cellModelProj (C A : Set X) [RelCWComplex C A] :
@@ -464,7 +464,7 @@ public theorem isQuotientMap_cellModelProj [T2Space X] (C A : Set X) [RelCWCompl
           isCompact_iff_compactSpace.mp (isCompact_closedBall _ _)
         have hK : IsClosed {y : ↥(closedBall (0 : Fin n → ℝ) 1) | cellPoint C A j y ∈ S} :=
           hS.preimage (f := fun y : ↥(closedBall (0 : Fin n → ℝ) 1) ↦
-              (Sum.inl ⟨⟨n, j⟩, y⟩ : cellModel C A))
+              (Sum.inl ⟨⟨n, j⟩, y⟩ : CellModel C A))
             (continuous_inl.comp continuous_sigmaMk)
         have heq : (fun y : ↥(closedBall (0 : Fin n → ℝ) 1) ↦ (cellPoint C A j y : X)) ''
             {y | cellPoint C A j y ∈ S} =
@@ -483,7 +483,7 @@ public theorem isQuotientMap_cellModelProj [T2Space X] (C A : Set X) [RelCWCompl
           (continuous_subtype_val.comp (continuous_cellPoint C A j))).isClosed
       · have hA : IsClosed A := RelCWComplex.isClosedBase C
         have hK : IsClosed {a : ↥A | basePoint C A a ∈ S} :=
-          hS.preimage (f := fun a : ↥A ↦ (Sum.inr a : cellModel C A)) continuous_inr
+          hS.preimage (f := fun a : ↥A ↦ (Sum.inr a : CellModel C A)) continuous_inr
         have heq : Subtype.val '' {a : ↥A | basePoint C A a ∈ S} = Subtype.val '' S ∩ A := by
           ext x
           constructor
@@ -610,7 +610,7 @@ public theorem cellCylinderRetract_zero (C A : Set X) [RelCWComplex C A] {n : �
 closed cells with the base: `cellCylinderRetract` on the cells of the attaching dimension `m`, the
 identity on every other cell and on the base. -/
 public def attachModelMap (C A : Set X) [RelCWComplex C A] (m : ℕ)
-    (q : I × cellModel C A) : I × ↥C :=
+    (q : I × CellModel C A) : I × ↥C :=
   Sum.elim
     (fun z : (Σ i : (Σ l, RelCWComplex.cell C l), ↥(closedBall (0 : Fin i.1 → ℝ) 1)) ↦
       if z.1.1 = m then cellCylinderRetract C A z.1.2 (q.1, z.2)
@@ -669,7 +669,7 @@ public theorem exists_cellAttachmentRetraction (C A B : Set X) [RelCWComplex C A
       (∀ q, q.1 = 0 ∨ ((q.2 : X)) ∈ B → ρ q = q) := by
   classical
   -- On the part of the model that lands in `B`, the formula is the identity.
-  have hGB : ∀ (t : I) (p : cellModel C A), ((cellModelProj C A p : X)) ∈ B →
+  have hGB : ∀ (t : I) (p : CellModel C A), ((cellModelProj C A p : X)) ∈ B →
       attachModelMap C A m (t, p) = (t, cellModelProj C A p) := by
     rintro t (⟨⟨l, j⟩, y⟩ | a) hp
     · by_cases hl : l = m
@@ -685,7 +685,7 @@ public theorem exists_cellAttachmentRetraction (C A B : Set X) [RelCWComplex C A
         rfl
     · rfl
   -- Off `B`, the point necessarily comes from an `m`-cell.
-  have hGnotB : ∀ (t : I) (p : cellModel C A), ((cellModelProj C A p : X)) ∉ B →
+  have hGnotB : ∀ (t : I) (p : CellModel C A), ((cellModelProj C A p : X)) ∉ B →
       ∃ (j : RelCWComplex.cell C m) (y : ↥(closedBall (0 : Fin m → ℝ) 1)),
         cellPoint C A j y = cellModelProj C A p ∧
           attachModelMap C A m (t, p) = cellCylinderRetract C A j (t, y) := by
@@ -696,7 +696,7 @@ public theorem exists_cellAttachmentRetraction (C A B : Set X) [RelCWComplex C A
       · exact absurd (hlow l j hl ⟨(y : Fin l → ℝ), y.2, rfl⟩) hp
     · exact absurd (hAB a.2) hp
   -- The formula is constant on the fibres of `cellModelProj`.
-  have hcompat : ∀ (t : I) (p q : cellModel C A), cellModelProj C A p = cellModelProj C A q →
+  have hcompat : ∀ (t : I) (p q : CellModel C A), cellModelProj C A p = cellModelProj C A q →
       attachModelMap C A m (t, p) = attachModelMap C A m (t, q) := by
     intro t p q hpq
     by_cases hB : ((cellModelProj C A p : X)) ∈ B
@@ -732,7 +732,7 @@ public theorem exists_cellAttachmentRetraction (C A B : Set X) [RelCWComplex C A
       rw [hGp, hGq, Subtype.ext hyy]
   -- Descend along the quotient map using any set-theoretic section.
   obtain ⟨s, hs⟩ := (surjective_cellModelProj C A).hasRightInverse
-  have hdesc : ∀ (t : I) (p : cellModel C A),
+  have hdesc : ∀ (t : I) (p : CellModel C A),
       attachModelMap C A m (t, s (cellModelProj C A p)) = attachModelMap C A m (t, p) :=
     fun t p ↦ hcompat t _ p (hs _)
   refine ⟨⟨fun q ↦ attachModelMap C A m (q.1, s q.2), ?_⟩, ?_, ?_⟩
@@ -1077,7 +1077,7 @@ has the homotopy-extension property.  Source: Hatcher, *Algebraic Topology*, Pro
 The Hausdorff hypothesis is genuine: Mathlib's `RelCWComplex` does not require it, and without it
 the closed cells need not be closed, which is what the cell-by-cell recognition of continuity
 (`continuous_prod_of_continuous_cellPoint`) rests on. -/
-public theorem hasHomotopyExtensionProperty_of_relativeCWComplex_proved
+public theorem _root_.SphereSixComplex.CWPair.hasHomotopyExtensionProperty
     {X : Type*} [TopologicalSpace X] [T2Space X] (A : Set X)
     (hCW : RelCWComplex (Set.univ : Set X) A) :
     HasHomotopyExtensionProperty A := by
@@ -1152,7 +1152,7 @@ public theorem hasHomotopyExtensionProperty_of_relativeCWComplex_proved
       (((R (mIdx q.2)).toMap (q.1, ⟨q.2, hmIdx q.2⟩)).2 : X)) = q
     rw [h]
 
-end EstablishedGeneralTopology
+end CWPair.HomotopyExtension
 
 end SphereSixComplex
 

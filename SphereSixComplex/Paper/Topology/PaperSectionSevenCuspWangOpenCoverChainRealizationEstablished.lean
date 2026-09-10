@@ -109,7 +109,7 @@ public theorem actualCuspWangFibreToBandHomologyOne_eq_map
 private theorem actualCuspWangFibreToBand_centralFamily
     (hmark : A.sectionSevenAffineNamedStripLift.lift
       A.sectionSevenAffineActualCuspCrossingPoint =
-        A.actualCuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
+        A.cuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
     (R : A.SectionSevenAffineRadialCompletionInput)
     (y : let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
@@ -168,7 +168,7 @@ private theorem actualCuspWangFibreToBand_centralFamily
   rw [hcentral]
   obtain ⟨w, hw⟩ := Quotient.exists_rep y
   let t := actualCuspFullFibreCrossingTime A
-  let p := A.actualCuspAngularLiftPoint t
+  let p := A.cuspAngularLiftPoint t
   have hs : ‖cuspQ p.1.2‖ < A.starCuspWitness.localWitness.radius := p.2
   let zeta := (collarFiberEquiv A.cuspCoordinate
     (markedCuspParameter A.starCuspWitness) p.1.2).symm w
@@ -214,7 +214,7 @@ private theorem actualCuspWangFibreToBand_centralFamily
         (G.fiberFullRank.realEquiv.symm w) =
       (movingToFixedCover A.periods
         A.modular.modularParameter.toTriangleUniformization.zOne
-        (A.actualCuspAngularRegularBasePoint
+        (A.cuspAngularRegularBasePoint
           A.sectionSevenAffineActualCuspCrossingTime, zeta)).2
     calc
       _ = A.duplicatedSectionSevenBandFullRank.realEquiv
@@ -238,7 +238,7 @@ private theorem actualCuspWangFibreToBand_centralFamily
       (additiveCuspBoundaryProjection A.starCuspWitness q) =
     A.centralQuotientProjection
       (projection (regularParameterMap A.periods)
-        (A.actualCuspAngularRegularBasePoint
+        (A.cuspAngularRegularBasePoint
           A.sectionSevenAffineActualCuspCrossingTime, zeta))
   rw [puncturedLocalCuspQuotientMap_additiveCuspBoundaryProjection]
   rw [additiveCuspCoverToGlobal_eq_quotientProjections]
@@ -247,7 +247,7 @@ private theorem actualCuspWangFibreToBand_centralFamily
 private theorem actualCuspWangFibreToBandMap_coordinate
     (hmark : A.sectionSevenAffineNamedStripLift.lift
       A.sectionSevenAffineActualCuspCrossingPoint =
-        A.actualCuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
+        A.cuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
     (R : A.SectionSevenAffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
@@ -294,7 +294,7 @@ private theorem actualCuspWangFibreToBandMap_coordinate
 private theorem actualCuspWangFibreToBand_homology
     (hmark : A.sectionSevenAffineNamedStripLift.lift
       A.sectionSevenAffineActualCuspCrossingPoint =
-        A.actualCuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
+        A.cuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
     (R : A.SectionSevenAffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
@@ -326,9 +326,9 @@ public structure ActualCuspWangFullFibreSliceComparison
     ∀ i : Fin 6,
       ((actualCuspWangFibreToCuspCoverIntersectionHomologyOne (A := A) R).comp
           (actualCuspWangBoundaryHom A))
-            (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1)) =
+            (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1)) =
         R.twoDiscCover.cuspOpenCoverConnectingHom
-          (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1))
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1))
 
 namespace ActualCuspWangFullFibreSliceComparison
 
@@ -336,7 +336,7 @@ namespace ActualCuspWangFullFibreSliceComparison
 public theorem fiberToBand_homology
     (hmark : A.sectionSevenAffineNamedStripLift.lift
       A.sectionSevenAffineActualCuspCrossingPoint =
-        A.actualCuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
+        A.cuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
     (_C : ActualCuspWangFullFibreSliceComparison R) :
     R.twoDiscCover.canonicalCuspFiberToBandHomologyOne =
       actualCuspWangFibreToBandHomologyOne (A := A) R := by
@@ -353,7 +353,7 @@ public theorem wangBoundary_eq_chainConnecting
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   apply SphereSixComplex.addMonoidHom_ext_of_equiv_pi_single_one
-    A.actualCuspRawHomologyTwoEquiv
+    A.cuspRawHomologyTwoEquiv
   exact C.wangBoundary_eq_chainConnecting_basis
 
 end ActualCuspWangFullFibreSliceComparison

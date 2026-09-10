@@ -274,8 +274,6 @@ public theorem liftTrack_smul {G E B : Type*} [Group G] [TopologicalSpace E] [To
     rw [apply_smul_eq hp, liftTrack_lifts, apply_smul_eq hp]
   · rw [liftTrack_zero]
 
-namespace EstablishedGeneralTopology
-
 /-- **Relative Whitehead theorem.**  A path-connected relative CW inclusion which induces a
 bijection on the fundamental group and on every higher homotopy group is a homotopy equivalence.
 
@@ -307,7 +305,7 @@ The `π₁` hypothesis is **not** removable, and no combination of the aspherici
 replaces it: let `B` be the solid torus `S¹ × D²` and `D` the embedded circle
 `θ ↦ (e^{2iθ}, ½ e^{iθ})`.  Then `(B, D)` is a relative CW pair of two `K(ℤ, 1)` spaces, but the
 inclusion is multiplication by `2` on `π₁` and is not a homotopy equivalence. -/
-public theorem isHomotopyEquivalenceInclusion_of_isAspherical_of_bijective_fundamentalGroup
+public theorem CWPair.whitehead_of_aspherical
     {B : Type*} [TopologicalSpace B] (D : Set B) (b : B) (hb : b ∈ D)
     (hB : TauCeti.IsAspherical B b)
     (hD : TauCeti.IsAspherical D ⟨b, hb⟩)
@@ -338,7 +336,7 @@ quotient covering map over the full preimage of a subspace with the same deck gr
 groups with the deck group are compatible with the inclusion, so the inclusion is a `π₁`
 isomorphism.  The `K(G, 1)` specialization is proved above; only its general relative Whitehead
 input is assumed. -/
-public theorem isHomotopyEquivalenceInclusion_of_contractible_regularCover
+public theorem CWPair.homotopyEquivalence_of_contractible_cover
     {G E B : Type*} [Group G] [TopologicalSpace E] [TopologicalSpace B]
     [MulAction G E] (p : C(E, B)) (A : Set E) (D : Set B)
     (hp : IsQuotientCoveringMap p G) (hpreimage : p ⁻¹' D = A)
@@ -347,7 +345,7 @@ public theorem isHomotopyEquivalenceInclusion_of_contractible_regularCover
     IsHomotopyEquivalenceInclusion D :=
   isHomotopyEquivalenceInclusion_of_contractible_regularCover_of_whitehead p A D hp hpreimage
     hE hA hCW fun b hb hB hD hπ hCW' =>
-      isHomotopyEquivalenceInclusion_of_isAspherical_of_bijective_fundamentalGroup
+      CWPair.whitehead_of_aspherical
         D b hb hB hD hπ hCW'
 
 /-- A cofibrant inclusion which is a homotopy equivalence is the inclusion of a strong
@@ -355,7 +353,7 @@ deformation retract. This is the standard homotopy-extension-property theorem (H
 *Algebraic Topology*, Cor. 0.20), obtained from
 `HomotopyExtensionProperty.nonempty_strongDeformationRetraction` through the interface
 translations `hasHomotopyExtensionProperty_iff` and `isHomotopyEquivalenceInclusion_iff`. -/
-public theorem strongDeformationRetraction_of_cofibration_homotopyEquivalence
+public theorem HasHomotopyExtensionProperty.nonempty_strongDeformationRetraction
     {X : Type*} [TopologicalSpace X] (A : Set X)
     (hHEP : HasHomotopyExtensionProperty A)
     (hEquiv : IsHomotopyEquivalenceInclusion A) :
@@ -365,12 +363,13 @@ public theorem strongDeformationRetraction_of_cofibration_homotopyEquivalence
 
 /-- Package the standard cofibration upgrade directly as a homotopy equivalence to the
 subspace, retaining the literal inclusion as inverse. -/
-public noncomputable def homotopyEquivOfCofibrationHomotopyEquivalence
+public noncomputable def HasHomotopyExtensionProperty.homotopyEquiv
     {X : Type*} [TopologicalSpace X] (A : Set X)
     (hHEP : HasHomotopyExtensionProperty A)
     (hEquiv : IsHomotopyEquivalenceInclusion A) : X ≃ₕ A :=
   (Classical.choice
-    (strongDeformationRetraction_of_cofibration_homotopyEquivalence A hHEP hEquiv)).toHomotopyEquiv
+    (HasHomotopyExtensionProperty.nonempty_strongDeformationRetraction
+      A hHEP hEquiv)).toHomotopyEquiv
 
 /-- A strong deformation retraction lifts uniquely through a regular quotient covering. The
 lift is equivariant under the deck group and retracts onto the full inverse image of the base
@@ -380,7 +379,7 @@ Proved from Mathlib's covering-space lifting API: each track is lifted by
 `IsCoveringMap.liftPath`, joint continuity comes from `IsLocalHomeomorph.continuous_lift`, and both
 the fixing on the preimage and the equivariance are uniqueness-of-lift arguments
 (`IsCoveringMap.eq_liftPath_iff`). -/
-public theorem equivariantStrongDeformationRetraction_lift
+public theorem EquivariantStrongDeformationRetraction.nonempty_lift
     {G E B : Type*} [Group G] [TopologicalSpace E] [TopologicalSpace B]
     [MulAction G E] (p : C(E, B)) (A : Set E) (D : Set B)
     (hp : IsQuotientCoveringMap p G) (hpreimage : p ⁻¹' D = A)
@@ -406,7 +405,5 @@ public theorem equivariantStrongDeformationRetraction_lift
     homotopy_fixed := fun s x hx => liftTrack_fixed hp.isCoveringMap R (hmemA hx) s
     retract_equivariant := fun g x => liftTrack_smul hp R g x 1
     homotopy_equivariant := fun g s x => liftTrack_smul hp R g x s }⟩
-
-end EstablishedGeneralTopology
 
 end SphereSixComplex

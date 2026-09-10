@@ -286,25 +286,25 @@ public theorem actualCuspChosenThirdSweep_pulledBack_primitive {A : PaperAnalyti
   rw [hc]
   exact actualCuspChosenThirdSweep_primitive_boundary R
 
-public theorem actualCuspRawFour_pulledBack_primitive {A : PaperAnalyticData}
+public theorem cuspRawFour_pulled_back_primitive {A : PaperAnalyticData}
     (R : A.SectionSevenAffineRadialCompletionInput) :
     EllipticBandHomologyAlignment.bandOne (D := R.twoDiscCover)
       (R.twoDiscCover.cuspPulledBackBoundaryHom
-        (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) =
+        (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) =
       alphaOneKernelGenerator := by
-  rw [actualCuspRawFour_pulledBack_boundary_eq_sweep,
-    integralSingularHomologyMap_eq_of_homotopy 2 A.actualCuspThirdSweep_homotopic_chosen.some]
+  rw [cuspRawFour_pulled_back_boundary_eq_sweep,
+    integralSingularHomologyMap_eq_of_homotopy 2 A.cuspThirdSweep_homotopic_chosen.some]
   exact actualCuspChosenThirdSweep_pulledBack_primitive R
 
-public theorem actualCuspRawFour_pulledBack_scalar_one {A : PaperAnalyticData}
+public theorem cuspRawFour_pulled_back_scalar_one {A : PaperAnalyticData}
     (R : A.SectionSevenAffineRadialCompletionInput) :
     R.twoDiscCover.cuspPulledBackBoundaryCoordinateHom R.homologyAlignment
-      (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) = 1 := by
+      (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) = 1 := by
   rw [SectionSevenEllipticTwoDiscCoverData.cuspPulledBackBoundaryCoordinateHom_apply_eq_bandCoordinate]
   change (EllipticBandHomologyAlignment.bandOne (D := R.twoDiscCover)
     (R.twoDiscCover.cuspPulledBackBoundaryHom
-      (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)))) 3 = 1
-  rw [actualCuspRawFour_pulledBack_primitive]
+      (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)))) 3 = 1
+  rw [cuspRawFour_pulled_back_primitive]
   rfl
 
 end SphereSixComplex.Geometry.PaperAnalyticData

@@ -1,10 +1,10 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.HurewiczWhiteheadStages
-public import SphereSixComplex.Prerequisites.Topology.HigherHurewiczClassicalBoundary
+public import SphereSixComplex.Prerequisites.Topology.HigherHurewicz
 public import SphereSixComplex.Prerequisites.Topology.SmoothSixSphereClassification
 public import SphereSixComplex.Prerequisites.Topology.SixSphereHomology
-public import SphereSixComplex.Prerequisites.Topology.FiniteDimensionalSmoothTriangulationBoundary
+public import SphereSixComplex.Prerequisites.Topology.SmoothTriangulation
 
 /-!
 # Classical foundations for smooth six-sphere recognition

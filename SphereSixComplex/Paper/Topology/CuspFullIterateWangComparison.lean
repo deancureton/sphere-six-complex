@@ -19,13 +19,13 @@ public theorem loopHomologyClass_eq_of_pointwise {X : Type} [TopologicalSpace X]
   exact h t
 
 namespace Geometry.PaperAnalyticData
-open SphereSixComplex.Topology SphereSixComplex.Topology.FirstHurewiczProof
+open SphereSixComplex.Topology Hurewicz.Chains
 open CuspPuncturedCollarBridge CuspPuncturedCollarBridge.CuspFiberSpecializationNormalization
 variable (A : PaperAnalyticData)
 
 public theorem actualCuspBridgeMeridian_hurewicz :
     hurewiczFunction A.actualCuspOverlapBase A.actualCuspAffineBridgeMeridian =
-      loopHomologyClass A.actualCuspAngularProjectedLoop := by
+      loopHomologyClass A.cuspAngularProjectedLoop := by
   erw [actualCuspAffineBridgeMeridian,
     A.actualCuspAffineBridgeMeridian_eq_angularProjectedLoop, hurewiczFunction_baseEq]
   rfl
@@ -45,7 +45,7 @@ public theorem actualCuspBridgeMeridian_homology_image
     integralSingularHomologyMap 1 A.actualCuspOverlapToEllipticInterior
       (hurewiczFunction A.actualCuspOverlapBase A.actualCuspAffineBridgeMeridian) =
     integralSingularHomologyMap 1 D.cuspToEllipticInteriorMap.hom
-      (loopHomologyClass A.actualCuspAngularPuncturedLoop) := by
+      (loopHomologyClass A.cuspAngularPuncturedLoop) := by
   erw [A.actualCuspBridgeMeridian_hurewicz]
   erw [← A.actualCuspOverlapToInterior_comp_collar D]
   erw [integralSingularHomologyMap_loopHomologyClass,
@@ -55,7 +55,7 @@ public theorem actualCuspBridgeMeridian_homology_image
   apply Subtype.ext
   rfl
 
-public theorem actualCuspRawTwo_homology_image
+public theorem cuspRawTwo_homology_image
     (D : A.SectionSevenEllipticTwoDiscCoverData) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
@@ -69,8 +69,8 @@ public theorem actualCuspRawTwo_homology_image
   change integralSingularHomologyMap 1 D.cuspMappingTorusToEllipticInteriorMap
     (G.geometricWangSections.circleMappingTorusHOneAddEquiv.symm
       (Pi.single (2 : Fin 3) 1)) = _
-  erw [A.actualCuspRawDegreeOneThirdBasis_eq_selectedPositiveMeridianClass,
-    A.actualCuspSelectedPositiveMeridianClass_eq_neg_explicit, map_neg,
+  erw [A.cuspRawDegreeOneThirdBasis_eq_selectedPositiveMeridianClass,
+    A.cuspSelectedPositiveMeridianClass_eq_neg_explicit, map_neg,
     A.cuspMappingTorusMeridianHomologyClass_eq_actualCuspAngularPuncturedLoop_image,
     ← D.cuspToEllipticInteriorMap_homology_mappingTorusModel]
   erw [A.actualCuspBridgeMeridian_homology_image D]

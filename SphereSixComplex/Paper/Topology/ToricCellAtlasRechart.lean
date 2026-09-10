@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperCuspCentralFiberCWTypes
-public import SphereSixComplex.Prerequisites.Topology.CellularHomologyClassicalBoundary
+public import SphereSixComplex.Prerequisites.Topology.CellularHomology
 
 @[expose] public section
 noncomputable section

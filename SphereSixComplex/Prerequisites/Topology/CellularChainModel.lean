@@ -46,7 +46,7 @@ public theorem isZero_cellularChain_of_isEmpty_cell
 public theorem subsingleton_integralSingularHomology_of_isEmpty_cell (n : ℕ) [T2Space Y]
     [IsEmpty (Topology.CWComplex.cell (Set.univ : Set Y) n)] :
     Subsingleton (IntegralSingularHomology n Y) := by
-  obtain M := EstablishedCellularHomology.integralCWCellularHomologyModel Y
+  obtain M := CellularHomology.normalizedModel Y
   have hcell : IsZero (M.chainComplex.homology n) :=
     (HomologicalComplex.ExactAt.of_isZero
       (isZero_cellularChain_of_isEmpty_cell Y M n)).isZero_homology

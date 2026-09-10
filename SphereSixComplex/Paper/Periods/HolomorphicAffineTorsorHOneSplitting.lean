@@ -26,29 +26,29 @@ namespace SphereSixComplex.Periods
 
 
 
-namespace OrbifoldAffineLineTorsorDescentProblem
+namespace OrbifoldAffineDescentData
 
 open HolomorphicAffineTorsorHOne
 
 /-- The exact project-specific comparison still needed after the classical projective-line
 `H^1` calculation.  It identifies the Cousin datum of an orbifold affine-torsor problem and
 turns any holomorphic Cech splitting into the required equivariant, cusp-bounded correction. -/
-public structure CuspCorrectionCechReduction
-    (P : OrbifoldAffineLineTorsorDescentProblem) where
+public structure CousinCechReduction
+    (P : OrbifoldAffineDescentData) where
   frame : AcyclicProjectiveLineFrame
   torsor : ProjectiveLineAffineTorsor frame.transition
-  correctionOfSplitting : torsor.Splitting → P.CuspBoundedEllipticOneCorrection
+  correctionOfSplitting : torsor.Splitting → P.CuspBoundedCorrection
 
 /-- Once the project-specific comparison with a projective-line Cech torsor is available, the
 proved `H^1` vanishing supplies the desired cusp-bounded correction. -/
-public theorem nonempty_cuspBoundedEllipticOneCorrection_of_cechReduction
-    (P : OrbifoldAffineLineTorsorDescentProblem)
-    (R : P.CuspCorrectionCechReduction) :
-    Nonempty P.CuspBoundedEllipticOneCorrection := by
+public theorem nonempty_cuspBoundedCorrection_of_cechReduction
+    (P : OrbifoldAffineDescentData)
+    (R : P.CousinCechReduction) :
+    Nonempty P.CuspBoundedCorrection := by
   obtain ⟨splitting⟩ :=
     R.torsor.nonempty_splitting_of_hOne_vanishes R.frame.hOne_vanishes
   exact ⟨R.correctionOfSplitting splitting⟩
 
-end OrbifoldAffineLineTorsorDescentProblem
+end OrbifoldAffineDescentData
 
 end SphereSixComplex.Periods

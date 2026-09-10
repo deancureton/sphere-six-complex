@@ -35,13 +35,13 @@ public theorem delta_generator_induction {motive : Delta → Prop}
 
 end SphereSixComplex.TriangleGroup
 
-namespace SphereSixComplex.Periods.OrbifoldAffineLineTorsorDescentProblem
+namespace SphereSixComplex.Periods.OrbifoldAffineDescentData
 
-public def affineOneSkew (P : OrbifoldAffineLineTorsorDescentProblem)
+public def affineOneSkew (P : OrbifoldAffineDescentData)
     (p : UpperHalfPlane × ℂ) : UpperHalfPlane × ℂ :=
   (fuchsianSourceAction g₁ • p.1, P.affineOne p.1 p.2)
 
-public theorem affineOneSkew_cube (P : OrbifoldAffineLineTorsorDescentProblem)
+public theorem affineOneSkew_cube (P : OrbifoldAffineDescentData)
     (p : UpperHalfPlane × ℂ) :
     P.affineOneSkew (P.affineOneSkew (P.affineOneSkew p)) = p := by
   apply Prod.ext
@@ -54,24 +54,24 @@ public theorem affineOneSkew_cube (P : OrbifoldAffineLineTorsorDescentProblem)
     rw [← mul_smul, ← map_mul, ← pow_two]
     exact P.affineOne_cycle p.1 p.2
 
-public def affineOnePerm (P : OrbifoldAffineLineTorsorDescentProblem) :
+public def affineOnePerm (P : OrbifoldAffineDescentData) :
     Equiv.Perm (UpperHalfPlane × ℂ) where
   toFun := P.affineOneSkew
   invFun := fun p ↦ P.affineOneSkew (P.affineOneSkew p)
   left_inv := P.affineOneSkew_cube
   right_inv := P.affineOneSkew_cube
 
-public theorem affineOnePerm_pow_three (P : OrbifoldAffineLineTorsorDescentProblem) :
+public theorem affineOnePerm_pow_three (P : OrbifoldAffineDescentData) :
     P.affineOnePerm ^ 3 = 1 := by
   apply Equiv.ext
   intro p
   exact P.affineOneSkew_cube p
 
-public def affineTwoSkew (P : OrbifoldAffineLineTorsorDescentProblem)
+public def affineTwoSkew (P : OrbifoldAffineDescentData)
     (p : UpperHalfPlane × ℂ) : UpperHalfPlane × ℂ :=
   (fuchsianSourceAction g₂ • p.1, P.affineTwo p.1 p.2)
 
-public theorem affineTwoSkew_fourth (P : OrbifoldAffineLineTorsorDescentProblem)
+public theorem affineTwoSkew_fourth (P : OrbifoldAffineDescentData)
     (p : UpperHalfPlane × ℂ) :
     P.affineTwoSkew (P.affineTwoSkew (P.affineTwoSkew (P.affineTwoSkew p))) = p := by
   have h₂ : ∀ z : UpperHalfPlane, fuchsianSourceAction g₂ • (fuchsianSourceAction g₂ • z) =
@@ -94,34 +94,34 @@ public theorem affineTwoSkew_fourth (P : OrbifoldAffineLineTorsorDescentProblem)
     rw [h₃, h₂]
     exact P.affineTwo_cycle p.1 p.2
 
-public def affineTwoPerm (P : OrbifoldAffineLineTorsorDescentProblem) :
+public def affineTwoPerm (P : OrbifoldAffineDescentData) :
     Equiv.Perm (UpperHalfPlane × ℂ) where
   toFun := P.affineTwoSkew
   invFun := fun p ↦ P.affineTwoSkew (P.affineTwoSkew (P.affineTwoSkew p))
   left_inv := P.affineTwoSkew_fourth
   right_inv := P.affineTwoSkew_fourth
 
-public theorem affineTwoPerm_pow_four (P : OrbifoldAffineLineTorsorDescentProblem) :
+public theorem affineTwoPerm_pow_four (P : OrbifoldAffineDescentData) :
     P.affineTwoPerm ^ 4 = 1 := by
   apply Equiv.ext
   intro p
   exact P.affineTwoSkew_fourth p
 
-public def affineTransport (P : OrbifoldAffineLineTorsorDescentProblem) :
+public def affineTransport (P : OrbifoldAffineDescentData) :
     Delta →* Equiv.Perm (UpperHalfPlane × ℂ) :=
   Monoid.Coprod.lift
     (cyclicRepresentation 3 P.affineOnePerm P.affineOnePerm_pow_three)
     (cyclicRepresentation 4 P.affineTwoPerm P.affineTwoPerm_pow_four)
 
-@[simp] public theorem affineTransport_one (P : OrbifoldAffineLineTorsorDescentProblem) :
+@[simp] public theorem affineTransport_one (P : OrbifoldAffineDescentData) :
     P.affineTransport g₁ = P.affineOnePerm := by
   simp [affineTransport, g₁, cyclicRepresentation_generator]
 
-@[simp] public theorem affineTransport_two (P : OrbifoldAffineLineTorsorDescentProblem) :
+@[simp] public theorem affineTransport_two (P : OrbifoldAffineDescentData) :
     P.affineTransport g₂ = P.affineTwoPerm := by
   simp [affineTransport, g₂, cyclicRepresentation_generator]
 
-public theorem affineTransport_fst (P : OrbifoldAffineLineTorsorDescentProblem)
+public theorem affineTransport_fst (P : OrbifoldAffineDescentData)
     (g : Delta) (p : UpperHalfPlane × ℂ) :
     (P.affineTransport g p).1 = fuchsianSourceAction g • p.1 := by
   induction g using delta_generator_induction generalizing p with
@@ -131,17 +131,17 @@ public theorem affineTransport_fst (P : OrbifoldAffineLineTorsorDescentProblem)
   | mul g h hg hh =>
       rw [map_mul, Equiv.Perm.mul_apply, hg, hh, map_mul, mul_smul]
 
-public def transportSection (P : OrbifoldAffineLineTorsorDescentProblem)
+public def transportSection (P : OrbifoldAffineDescentData)
     (g : Delta) (s : UpperHalfPlane → ℂ) (z : UpperHalfPlane) : ℂ :=
   (P.affineTransport g (fuchsianSourceAction g⁻¹ • z,
     s (fuchsianSourceAction g⁻¹ • z))).2
 
-@[simp] public theorem transportSection_one (P : OrbifoldAffineLineTorsorDescentProblem)
+@[simp] public theorem transportSection_one (P : OrbifoldAffineDescentData)
     (s : UpperHalfPlane → ℂ) : P.transportSection 1 s = s := by
   funext z
   simp [transportSection]
 
-public theorem transportSection_mul (P : OrbifoldAffineLineTorsorDescentProblem)
+public theorem transportSection_mul (P : OrbifoldAffineDescentData)
     (g h : Delta) (s : UpperHalfPlane → ℂ) :
     P.transportSection (g * h) s = P.transportSection g (P.transportSection h s) := by
   funext z
@@ -152,7 +152,7 @@ public theorem transportSection_mul (P : OrbifoldAffineLineTorsorDescentProblem)
     simp
   · rfl
 
-public theorem transportSection_holomorphic (P : OrbifoldAffineLineTorsorDescentProblem)
+public theorem transportSection_holomorphic (P : OrbifoldAffineDescentData)
     (g : Delta) (s : UpperHalfPlane → ℂ) (hs : MDiff s) :
     MDiff (P.transportSection g s) := by
   induction g using delta_generator_induction generalizing s with
@@ -167,7 +167,7 @@ public theorem transportSection_holomorphic (P : OrbifoldAffineLineTorsorDescent
       rw [P.transportSection_mul]
       exact hg _ (hh s hs)
 
-public theorem regular_fixed_eq_one (P : OrbifoldAffineLineTorsorDescentProblem)
+public theorem regular_fixed_eq_one (P : OrbifoldAffineDescentData)
     {z : UpperHalfPlane} (hz : P.quotient.coordinate z ∉ ({0, 1} : Set ℂ))
     {g : Delta} (hg : fuchsianSourceAction g • z = z) : g = 1 := by
   apply FuchsianProperFreeness.fuchsian_fixed_regular_eq_one
@@ -185,7 +185,7 @@ public theorem regular_fixed_eq_one (P : OrbifoldAffineLineTorsorDescentProblem)
     rw [he, P.quotient.coordinate_at_two] at hv
     simp [← hv]
 
-public theorem regular_action_injective (P : OrbifoldAffineLineTorsorDescentProblem)
+public theorem regular_action_injective (P : OrbifoldAffineDescentData)
     {z : UpperHalfPlane} (hz : P.quotient.coordinate z ∉ ({0, 1} : Set ℂ)) :
     Function.Injective (fun g : Delta ↦ fuchsianSourceAction g • z) := by
   intro g h he
@@ -194,7 +194,7 @@ public theorem regular_action_injective (P : OrbifoldAffineLineTorsorDescentProb
     rw [map_mul, mul_smul, he, map_inv, inv_smul_smul]
   exact (inv_mul_eq_one.mp (P.regular_fixed_eq_one hz hf)).symm
 
-public theorem sheet_translate_unique (P : OrbifoldAffineLineTorsorDescentProblem)
+public theorem sheet_translate_unique (P : OrbifoldAffineDescentData)
     {S : Set UpperHalfPlane} (hS : S.InjOn P.quotient.coordinate)
     (hreg : ∀ z ∈ S, P.quotient.coordinate z ∉ ({0, 1} : Set ℂ))
     {g h : Delta} {z : UpperHalfPlane}
@@ -208,7 +208,7 @@ public theorem sheet_translate_unique (P : OrbifoldAffineLineTorsorDescentProble
   exact inv_injective (P.regular_action_injective hz he)
 
 public theorem exists_equivariant_section_on_sheet_saturation
-    (P : OrbifoldAffineLineTorsorDescentProblem) {S : Set UpperHalfPlane}
+    (P : OrbifoldAffineDescentData) {S : Set UpperHalfPlane}
     (hopen : IsOpen S) (hinj : S.InjOn P.quotient.coordinate)
     (hreg : ∀ z ∈ S, P.quotient.coordinate z ∉ ({0, 1} : Set ℂ)) :
     ∃ s : UpperHalfPlane → ℂ,
@@ -254,7 +254,7 @@ public theorem exists_equivariant_section_on_sheet_saturation
     · rfl
 
 public theorem exists_regular_local_equivariant_section
-    (P : OrbifoldAffineLineTorsorDescentProblem) {z₀ : UpperHalfPlane}
+    (P : OrbifoldAffineDescentData) {z₀ : UpperHalfPlane}
     (hz₀ : P.quotient.coordinate z₀ ∉ ({0, 1} : Set ℂ)) :
     ∃ W : Set ℂ, IsOpen W ∧ P.quotient.coordinate z₀ ∈ W ∧
       W ⊆ ({0, 1} : Set ℂ)ᶜ ∧ ∃ s : UpperHalfPlane → ℂ,
@@ -289,4 +289,4 @@ public theorem exists_regular_local_equivariant_section
   · rintro q ⟨z, hz, rfl⟩
     exact hz.2
 
-end SphereSixComplex.Periods.OrbifoldAffineLineTorsorDescentProblem
+end SphereSixComplex.Periods.OrbifoldAffineDescentData

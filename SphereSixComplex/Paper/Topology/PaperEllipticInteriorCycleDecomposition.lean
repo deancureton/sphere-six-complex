@@ -71,7 +71,7 @@ public structure SectionSevenEllipticInteriorCycleDecomposition
 public theorem sectionSevenFirstBoundaryHom_actualCusp_zero
     (x : IntegralSingularHomology 1 (A.openEmbeddingStarData.collarSource 0)) :
     sectionSevenFirstBoundaryHom (A.actualCuspSectionSevenHomologyOneEquiv x) 0 =
-      actualCuspEllipticDegreeOneRawCoordinate (A.actualCuspRawHomologyOneEquiv x) := by
+      actualCuspEllipticDegreeOneRawCoordinate (A.cuspRawHomologyOneEquiv x) := by
   simp [actualCuspSectionSevenHomologyOneEquiv, cuspSectionSevenOneCoordinateChange,
     actualCuspEllipticDegreeOneRawCoordinate,
     sectionSevenFirstBoundaryHom, sectionSevenFirstBoundaryMatrix, Matrix.mulVec,
@@ -83,7 +83,7 @@ public theorem sectionSevenMayerVietorisFinalTwoHom_actualCusp_zero
     (x : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0)) :
     sectionSevenMayerVietorisFinalTwoHom
         (A.actualCuspSectionSevenHomologyTwoEquiv x) 0 =
-      actualCuspEllipticDegreeTwoFiberRawCoordinate (A.actualCuspRawHomologyTwoEquiv x) := by
+      actualCuspEllipticDegreeTwoFiberRawCoordinate (A.cuspRawHomologyTwoEquiv x) := by
   simp [actualCuspSectionSevenHomologyTwoEquiv, cuspSectionSevenTwoCoordinateChange,
     actualCuspEllipticDegreeTwoFiberRawCoordinate,
     sectionSevenMayerVietorisFinalTwoHom, sectionSevenMayerVietorisFinalTwoMatrix,
@@ -95,7 +95,7 @@ public theorem sectionSevenMayerVietorisFinalTwoHom_actualCusp_one
     (x : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0)) :
     sectionSevenMayerVietorisFinalTwoHom
         (A.actualCuspSectionSevenHomologyTwoEquiv x) 1 =
-      A.actualCuspRawHomologyTwoEquiv x 5 := by
+      A.cuspRawHomologyTwoEquiv x 5 := by
   simp [actualCuspSectionSevenHomologyTwoEquiv, cuspSectionSevenTwoCoordinateChange,
     sectionSevenMayerVietorisFinalTwoHom, sectionSevenMayerVietorisFinalTwoMatrix,
     Matrix.mulVec, dotProduct, Fin.sum_univ_succ]
@@ -111,15 +111,15 @@ public theorem ofRawScalarCoordinates
     (hOne : ∀ x : IntegralSingularHomology 1
         (A.openEmbeddingStarData.collarSource 0),
       B.normalizedUnionHomologyOneEquiv (cuspToEllipticUnionHomology D 1 x) 0 =
-        actualCuspEllipticDegreeOneRawCoordinate (A.actualCuspRawHomologyOneEquiv x))
+        actualCuspEllipticDegreeOneRawCoordinate (A.cuspRawHomologyOneEquiv x))
     (hTwoFiber : ∀ x : IntegralSingularHomology 2
         (A.openEmbeddingStarData.collarSource 0),
       B.normalizedUnionHomologyTwoEquiv S (cuspToEllipticUnionHomology D 2 x) 0 =
-        actualCuspEllipticDegreeTwoFiberRawCoordinate (A.actualCuspRawHomologyTwoEquiv x))
+        actualCuspEllipticDegreeTwoFiberRawCoordinate (A.cuspRawHomologyTwoEquiv x))
     (hTwoOne : ∀ x : IntegralSingularHomology 2
         (A.openEmbeddingStarData.collarSource 0),
       B.normalizedUnionHomologyTwoEquiv S (cuspToEllipticUnionHomology D 2 x) 1 =
-        A.actualCuspRawHomologyTwoEquiv x 5) :
+        A.cuspRawHomologyTwoEquiv x 5) :
     A.SectionSevenEllipticInteriorCycleDecomposition B S where
   degreeOne x := by
     apply B.normalizedUnionHomologyOneEquiv.injective

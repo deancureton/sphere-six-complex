@@ -7,7 +7,7 @@ public import SphereSixComplex.Prerequisites.Topology.PathOpchainSubdivision
 noncomputable section
 open Set Topology CategoryTheory
 namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
-open SphereSixComplex SphereSixComplex.Topology.FirstHurewiczProof
+open SphereSixComplex Hurewicz.Chains
 open SphereSixComplex.StandardCircleHomologyLiftDegree
 
 public theorem constructedA2HexagonBoundaryLoop_opchain_eq_circle :

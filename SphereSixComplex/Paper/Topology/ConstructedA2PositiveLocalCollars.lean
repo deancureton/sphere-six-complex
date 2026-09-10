@@ -3,7 +3,7 @@ module
 public import SphereSixComplex.Prerequisites.Topology.LocalHalfSpaceCollars
 public import SphereSixComplex.Prerequisites.Topology.OrthantHalfSpace
 public import SphereSixComplex.Paper.Topology.ConstructedA2PositiveQuadrantManifold
-public import SphereSixComplex.Prerequisites.Topology.BrownCollaringClassicalBoundary
+public import SphereSixComplex.Prerequisites.Topology.Collaring
 public import Mathlib.Topology.Metrizable.Urysohn
 
 @[expose] public section

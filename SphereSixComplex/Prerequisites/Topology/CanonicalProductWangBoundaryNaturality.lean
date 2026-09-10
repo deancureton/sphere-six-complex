@@ -21,7 +21,7 @@ namespace SphereSixComplex.Topology.CanonicalProductWangBoundaryNaturality
 
 open NormalizedAffineMappingTorusCover
 open CircleProductIdentityMappingTorus
-open PaperAffineCyclicReducedFiberMappingTorus
+open CyclicMappingTorus
 
 variable {m : ℕ} [NeZero m] {F : Type} [TopologicalSpace F]
 
@@ -37,25 +37,25 @@ public theorem normalizedAffineCover_fiber
     normalizedAffineCoverToCircleMappingTorus phi hpow (0, x) =
       finiteBouquetMappingTorusFiberInclusion (fun _ : Unit ↦ phi) x := by
   change CyclicAngularFundamentalDomain.realMappingTorusHomeomorph phi
-      (normalizedAffineCyclicQuotientRealMappingTorusHomeomorph phi hpow
-        (Quotient.mk (normalizedAffineCyclicSetoid (m := m) phi) (0, x))) = _
+      (CyclicMappingTorus.normalizedAffineCyclicQuotientRealMappingTorusHomeomorph phi hpow
+        (Quotient.mk (CyclicMappingTorus.normalizedAffineCyclicSetoid (m := m) phi) (0, x))) = _
   have hreal :
-      normalizedAffineCyclicQuotientRealMappingTorusHomeomorph phi hpow
-          (Quotient.mk (normalizedAffineCyclicSetoid (m := m) phi) (0, x)) =
+      CyclicMappingTorus.normalizedAffineCyclicQuotientRealMappingTorusHomeomorph phi hpow
+          (Quotient.mk (CyclicMappingTorus.normalizedAffineCyclicSetoid (m := m) phi) (0, x)) =
         Quotient.mk (CyclicAngularFundamentalDomain.realMappingTorusSetoid phi)
           ((0 : ℝ), x) := by
-    unfold normalizedAffineCyclicQuotientRealMappingTorusHomeomorph
+    unfold CyclicMappingTorus.normalizedAffineCyclicQuotientRealMappingTorusHomeomorph
     unfold CyclicAngularFundamentalDomain.homeomorphOfQuotientMaps
     dsimp only
-    apply (normalizedAffineQuotientMap_eq_iff phi hpow _ _).mp
+    apply (CyclicMappingTorus.normalizedAffineQuotientMap_eq_iff phi hpow _ _).mp
     calc
-      normalizedAffineQuotientMap (m := m) phi
-          (Function.surjInv (normalizedAffineQuotientMap_surjective (m := m) phi)
-            (Quotient.mk (normalizedAffineCyclicSetoid (m := m) phi) (0, x))) =
-        Quotient.mk (normalizedAffineCyclicSetoid (m := m) phi) (0, x) :=
-          Function.surjInv_eq (normalizedAffineQuotientMap_surjective (m := m) phi) _
-      _ = normalizedAffineQuotientMap (m := m) phi ((0 : ℝ), x) := by
-        simp [normalizedAffineQuotientMap, normalizedAffineBaseCover]
+      CyclicMappingTorus.normalizedAffineQuotientMap (m := m) phi
+          (Function.surjInv (CyclicMappingTorus.normalizedAffineQuotientMap_surjective (m := m) phi)
+            (Quotient.mk (CyclicMappingTorus.normalizedAffineCyclicSetoid (m := m) phi) (0, x))) =
+        Quotient.mk (CyclicMappingTorus.normalizedAffineCyclicSetoid (m := m) phi) (0, x) :=
+          Function.surjInv_eq (CyclicMappingTorus.normalizedAffineQuotientMap_surjective (m := m) phi) _
+      _ = CyclicMappingTorus.normalizedAffineQuotientMap (m := m) phi ((0 : ℝ), x) := by
+        simp [CyclicMappingTorus.normalizedAffineQuotientMap, CyclicMappingTorus.normalizedAffineBaseCover]
   rw [hreal]
   rw [← show
     (CyclicAngularFundamentalDomain.realMappingTorusHomeomorph phi).symm

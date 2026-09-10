@@ -31,7 +31,7 @@ public structure SectionSevenCuspDegreeTwoMayerVietorisBasisBridge
         IntegralSingularHomology 2 D.orderFourSide,
     (presentationTwo (D := D)).inclusion y =
       cuspToEllipticUnionHomology D 2
-        (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i.castSucc 1))
+        (A.cuspRawHomologyTwoEquiv.symm (Pi.single i.castSucc 1))
   e5_boundary :
     (presentationTwo (D := D)).totalToInvariants
         (degreeTwoCuspE5Generator (A := A) (D := D)) =
@@ -45,7 +45,7 @@ public theorem SectionSevenCuspDegreeTwoMayerVietorisBasisBridge.boundaryCoordin
     N.actualHomologyCoordinates.degreeTwoInvariantEquiv
         ((presentationTwo (D := D)).totalToInvariants
           (cuspToEllipticUnionHomology D 2
-            (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1)))) =
+            (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1)))) =
       (Pi.single i 1 : Fin 6 → ℤ) 5 := by
   by_cases hi : i = 5
   · subst i
@@ -74,7 +74,7 @@ public theorem degreeTwoCuspE5_fiberCoordinate_zero
       N.actualHomologyCoordinates.degreeTwoInvariantEquiv
           ((presentationTwo (D := D)).totalToInvariants
             (cuspToEllipticUnionHomology D 2 x)) =
-        A.actualCuspRawHomologyTwoEquiv x 5) :
+        A.cuspRawHomologyTwoEquiv x 5) :
     N.actualHomologyCoordinates.normalizedUnionHomologyTwoEquiv
         (N.actualHomologyCoordinates.degreeTwoCuspE5SplittingOfCoordinates hBoundary)
         (degreeTwoCuspE5Generator (A := A) (D := D)) 0 = 0 := by
@@ -103,20 +103,20 @@ public noncomputable def ofCuspBoundaryBasisCoordinatesExceptE5Fiber
     (hOneBasis : ∀ i : Fin 3,
       N.actualHomologyCoordinates.normalizedUnionHomologyOneEquiv
           (cuspToEllipticUnionHomology D 1
-            (A.actualCuspRawHomologyOneEquiv.symm (Pi.single i 1))) 0 =
+            (A.cuspRawHomologyOneEquiv.symm (Pi.single i 1))) 0 =
         actualCuspEllipticDegreeOneRawCoordinate (Pi.single i 1))
     (hBoundaryBasis : ∀ i : Fin 6,
       N.actualHomologyCoordinates.degreeTwoInvariantEquiv
           ((presentationTwo (D := D)).totalToInvariants
             (cuspToEllipticUnionHomology D 2
-              (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1)))) =
+              (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1)))) =
         (Pi.single i 1 : Fin 6 → ℤ) 5)
     (hTwoFiberBasis : ∀ i : Fin 6, i ≠ 5 →
       N.actualHomologyCoordinates.normalizedUnionHomologyTwoEquiv
           (N.actualHomologyCoordinates.degreeTwoCuspE5SplittingOfCoordinates
             (degreeTwoCuspBoundaryCoordinates_of_basis N hBoundaryBasis))
           (cuspToEllipticUnionHomology D 2
-            (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1))) 0 =
+            (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1))) 0 =
         actualCuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1)) :
     A.SectionSevenEllipticInteriorMarkedCycleData D := by
   apply SectionSevenEllipticInteriorMarkedCycleData.ofCuspBoundaryBasisCoordinates
@@ -139,7 +139,7 @@ public noncomputable def ofCuspMayerVietorisBasisBridge
     (hOneBasis : ∀ i : Fin 3,
       N.actualHomologyCoordinates.normalizedUnionHomologyOneEquiv
           (cuspToEllipticUnionHomology D 1
-            (A.actualCuspRawHomologyOneEquiv.symm (Pi.single i 1))) 0 =
+            (A.cuspRawHomologyOneEquiv.symm (Pi.single i 1))) 0 =
         actualCuspEllipticDegreeOneRawCoordinate (Pi.single i 1))
     (hTwoFiberBasis : ∀ i : Fin 6, i ≠ 5 →
       N.actualHomologyCoordinates.normalizedUnionHomologyTwoEquiv
@@ -147,7 +147,7 @@ public noncomputable def ofCuspMayerVietorisBasisBridge
             (degreeTwoCuspBoundaryCoordinates_of_basis N
               (fun i ↦ G.boundaryCoordinates N i)))
           (cuspToEllipticUnionHomology D 2
-            (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1))) 0 =
+            (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1))) 0 =
         actualCuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1)) :
     A.SectionSevenEllipticInteriorMarkedCycleData D :=
   ofCuspBoundaryBasisCoordinatesExceptE5Fiber N hOneBasis

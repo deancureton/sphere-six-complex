@@ -55,17 +55,17 @@ public theorem fullFibreOrientedBoundaryNaturality_iff_invariantResidual
     have hBasis : ∀ i : Fin 6,
         ((actualCuspWangFibreToCuspCoverIntersectionHomologyOne (A := A) R).comp
             (actualCuspWangBoundaryHom A))
-              (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1)) =
+              (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1)) =
           R.twoDiscCover.cuspOpenCoverConnectingHom
-            (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1)) := fun i ↦
+            (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1)) := fun i ↦
       DFunLike.congr_fun h
-        (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1))
+        (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1))
     apply (explicitFiniteResidual_iff_invariantResidual R).mp
     apply (wangBoundaryBasisComparison_iff_explicitFiniteResidual R).mp
     exact hBasis
   · intro h
     apply SphereSixComplex.addMonoidHom_ext_of_equiv_pi_single_one
-      A.actualCuspRawHomologyTwoEquiv
+      A.cuspRawHomologyTwoEquiv
     exact (wangBoundaryBasisComparison_iff_explicitFiniteResidual R).mpr
       ((explicitFiniteResidual_iff_invariantResidual R).mpr h)
 
@@ -75,14 +75,14 @@ public theorem actualCuspWangFullFibreSliceComparison_of_orientedBoundaryNatural
     (h : ActualCuspWangFullFibreOrientedBoundaryNaturality R) :
     ActualCuspWangFullFibreSliceComparison R where
   wangBoundary_eq_chainConnecting_basis i := DFunLike.congr_fun h
-    (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1))
+    (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1))
 
 /-- Oriented naturality for the selected full-fibre slice gives the canonical unmarked Wang
 boundary square. -/
 public theorem canonicalCuspWangBoundaryNaturality_of_fullFibreOrientedBoundaryNaturality
     (hmark : A.sectionSevenAffineNamedStripLift.lift
       A.sectionSevenAffineActualCuspCrossingPoint =
-        A.actualCuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
+        A.cuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
     (R : A.SectionSevenAffineRadialCompletionInput)
     (h : ActualCuspWangFullFibreOrientedBoundaryNaturality R) :
     R.twoDiscCover.CanonicalCuspWangBoundaryNaturality := by
@@ -96,7 +96,7 @@ the invariant raw degree-two generators. -/
 public theorem cuspPulledBackMarkedInvariantBasisData_of_fullFibreOrientedBoundaryNaturality
     (hmark : A.sectionSevenAffineNamedStripLift.lift
       A.sectionSevenAffineActualCuspCrossingPoint =
-        A.actualCuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
+        A.cuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
     (R : A.SectionSevenAffineRadialCompletionInput)
     (h : ActualCuspWangFullFibreOrientedBoundaryNaturality R) :
     CuspPulledBackMarkedInvariantBasisData R := by
@@ -112,10 +112,10 @@ public theorem cuspPulledBackMarkedInvariantBasisData_of_fullFibreOrientedBounda
   rw [actualCuspMarkedWangComposite_eq_rawCoordinateFive] at hSquare
   constructor
   · have hFour := DFunLike.congr_fun hSquare
-      (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))
+      (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))
     simpa [coordinateAfterAddEquiv_apply] using hFour
   · have hFive := DFunLike.congr_fun hSquare
-      (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))
+      (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))
     simpa [coordinateAfterAddEquiv_apply] using hFive
 
 /-- Equivalently, the two unmarked invariant-generator comparisons for the selected full-fibre
@@ -123,7 +123,7 @@ slice imply both marked scalar evaluations. -/
 public theorem cuspPulledBackMarkedInvariantBasisData_of_fullFibreInvariantResidual
     (hmark : A.sectionSevenAffineNamedStripLift.lift
       A.sectionSevenAffineActualCuspCrossingPoint =
-        A.actualCuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
+        A.cuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
     (R : A.SectionSevenAffineRadialCompletionInput)
     (h : ActualCuspWangFullFibreSliceInvariantResidual R) :
     CuspPulledBackMarkedInvariantBasisData R :=

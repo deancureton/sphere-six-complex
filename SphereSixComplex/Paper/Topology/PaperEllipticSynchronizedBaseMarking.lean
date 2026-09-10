@@ -130,8 +130,8 @@ public theorem orderFourCentralBaseComparisonTrace_first_power
   rw [← map_pow, ← map_pow, ← map_pow,
     ← A.orderFourCentralAffineZeroSectionQuadruplePath_class, ← hE]
   dsimp only [E]
-  rw [PaperVanKampenFourPieceCover.map_fundamentalGroupMulEquivOfPath,
-    PaperVanKampenFourPieceCover.map_fundamentalGroupMulEquivOfPath]
+  rw [CoveringSpace.map_fundamentalGroupMulEquivOfPath,
+    CoveringSpace.map_fundamentalGroupMulEquivOfPath]
   apply (FundamentalGroup.fundamentalGroupMulEquivOfPath (W.map f.continuous)).injective.eq_iff.mpr
   simp only [map_pow, FundamentalGroup.map_apply, ← Path.Homotopic.Quotient.mk_map]
   rw [A.orderFourCentralBaseFactor_basePath_eq_filling]
@@ -246,8 +246,8 @@ public theorem orderThreeCentralBaseComparisonTrace_first_power
   rw [← map_pow, ← map_pow, ← map_pow,
     ← A.orderThreeCentralAffineZeroSectionTriplePath_class, ← hE]
   dsimp only [E]
-  rw [PaperVanKampenFourPieceCover.map_fundamentalGroupMulEquivOfPath,
-    PaperVanKampenFourPieceCover.map_fundamentalGroupMulEquivOfPath]
+  rw [CoveringSpace.map_fundamentalGroupMulEquivOfPath,
+    CoveringSpace.map_fundamentalGroupMulEquivOfPath]
   apply (FundamentalGroup.fundamentalGroupMulEquivOfPath (W.map f.continuous)).injective.eq_iff.mpr
   simp only [map_pow, FundamentalGroup.map_apply, ← Path.Homotopic.Quotient.mk_map]
   rw [A.orderThreeLocalOffsetBaseCentralPath_basePath_eq_filling]

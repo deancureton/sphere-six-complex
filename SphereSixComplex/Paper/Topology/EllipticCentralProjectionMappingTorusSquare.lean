@@ -40,8 +40,8 @@ public theorem finiteCyclicOrbitQuotientCircleMappingTorusHomeomorph_projection
     (A : MulAction (FiniteCyclic m) X) (e : X ≃ₜ UnitAddCircle × F)
     (phi : F ≃ₜ F) (hpow : phi ^ m = 1)
     (hgen : ∀ x, e (actionMap A (cyclicGenerator m) x) =
-      normalizedAffineShift (m := m) phi 1 (e x)) (x : X) :
-    finiteCyclicOrbitQuotientCircleMappingTorusHomeomorph A e phi hpow hgen
+      CyclicMappingTorus.normalizedAffineShift (m := m) phi 1 (e x)) (x : X) :
+    CyclicMappingTorus.finiteCyclicOrbitQuotientCircleMappingTorusHomeomorph A e phi hpow hgen
         (Quotient.mk (MulAction.orbitRel (FiniteCyclic m) X) x) =
       normalizedAffineCoverToCircleMappingTorus phi hpow (e x) :=
   rfl
@@ -57,13 +57,13 @@ public theorem reducedCentralFiberCircleMappingTorusHomeomorph_projection
       IsCancelSMul (FiniteCyclic m) D.Product)
     (e : T ≃ₜ UnitAddCircle × F) (phi : F ≃ₜ F) (hpow : phi ^ m = 1)
     (hgen : ∀ x, e (D.actionData.fiberGenerator x) =
-      normalizedAffineShift (m := m) phi 1 (e x)) (x : T) :
+      CyclicMappingTorus.normalizedAffineShift (m := m) phi 1 (e x)) (x : T) :
     reducedCentralFiberCircleMappingTorusHomeomorphOfGammaNormalForm
         D hfree e phi hpow hgen (centralFiberOrbitProjection D x) =
       normalizedAffineCoverToCircleMappingTorus phi hpow (e x) := by
   let A := centralFiberAction D
   have hgenA : ∀ y, e (actionMap A (cyclicGenerator m) y) =
-      normalizedAffineShift (m := m) phi 1 (e y) := by
+      CyclicMappingTorus.normalizedAffineShift (m := m) phi 1 (e y) := by
     intro y
     rw [show actionMap A (cyclicGenerator m) y = D.actionData.fiberGenerator y by
       exact congrArg (fun g : Equiv.Perm T ↦ g y)
@@ -76,7 +76,7 @@ public theorem reducedCentralFiberCircleMappingTorusHomeomorph_projection
     apply (centralFiberOrbitQuotientHomeomorph D hfree).injective
     rw [(centralFiberOrbitQuotientHomeomorph D hfree).apply_symm_apply]
     rfl
-  change finiteCyclicOrbitQuotientCircleMappingTorusHomeomorph A e phi hpow hgenA
+  change CyclicMappingTorus.finiteCyclicOrbitQuotientCircleMappingTorusHomeomorph A e phi hpow hgenA
       ((centralFiberOrbitQuotientHomeomorph D hfree).symm
         (centralFiberOrbitProjection D x)) = _
   rw [hquotient]
@@ -109,7 +109,7 @@ public theorem reducedCentralFiberCircleMappingTorusHomeomorph_coverProjection
       IsCancelSMul (FiniteCyclic m) D.Product)
     (e : T ≃ₜ UnitAddCircle × F) (phi : F ≃ₜ F) (hpow : phi ^ m = 1)
     (hgen : ∀ x, e (D.actionData.fiberGenerator x) =
-      normalizedAffineShift (m := m) phi 1 (e x)) :
+      CyclicMappingTorus.normalizedAffineShift (m := m) phi 1 (e x)) :
     (⟨reducedCentralFiberCircleMappingTorusHomeomorphOfGammaNormalForm
         D hfree e phi hpow hgen,
       (reducedCentralFiberCircleMappingTorusHomeomorphOfGammaNormalForm
@@ -152,7 +152,7 @@ public theorem orderThree_coverProjection_square :
   intro x
   change orderThreeGammaNormalFormHomeomorph PF
       ((orderThreeActionData PF).fiberGenerator x) = _
-  simpa [normalizedAffineShift_apply] using orderThreeGammaNormalForm_generator PF x
+  simpa [CyclicMappingTorus.normalizedAffineShift_apply] using orderThreeGammaNormalForm_generator PF x
 
 /-- Point-set form of the order-four projection naturality square. -/
 public theorem orderFour_coverProjection_square :
@@ -178,7 +178,7 @@ public theorem orderFour_coverProjection_square :
   intro x
   change orderFourGammaNormalFormHomeomorph PF
       ((orderFourActionData PF).fiberGenerator x) = _
-  simpa [normalizedAffineShift_apply] using orderFourGammaNormalForm_generator PF x
+  simpa [CyclicMappingTorus.normalizedAffineShift_apply] using orderFourGammaNormalForm_generator PF x
 
 end SphereSixComplex.Topology.EllipticCentralProjectionMappingTorusSquare
 

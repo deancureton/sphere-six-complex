@@ -36,7 +36,7 @@ public theorem quotient_mk_eq_indexFourSideLift_of_inclusion
       IntegralSingularHomology 2 D.orderFourSide)
     (hy : (presentationTwo (D := D)).inclusion y =
       cuspToEllipticUnionHomology D 2
-        (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) :
+        (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) :
     (Submodule.Quotient.mk y : (presentationTwo (D := D)).Coinvariants) =
       (Submodule.Quotient.mk (D.indexFourSideLift N G) :
         (presentationTwo (D := D)).Coinvariants) := by
@@ -45,7 +45,7 @@ public theorem quotient_mk_eq_indexFourSideLift_of_inclusion
     (presentationTwo (D := D)).coinvariantsToTotal (Submodule.Quotient.mk y) =
         (presentationTwo (D := D)).inclusion y := rfl
     _ = cuspToEllipticUnionHomology D 2
-        (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) := hy
+        (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) := hy
     _ = (presentationTwo (D := D)).inclusion (D.indexFourSideLift N G) :=
       (D.inclusion_indexFourSideLift N G).symm
     _ = (presentationTwo (D := D)).coinvariantsToTotal
@@ -71,13 +71,13 @@ public theorem indexFourSideLift_quotient_eq_iff_coinvariantsToTotal
     (c : (presentationTwo (D := D)).Coinvariants) :
     Submodule.Quotient.mk (D.indexFourSideLift N G) = c ↔
       cuspToEllipticUnionHomology D 2
-          (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) =
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) =
         (presentationTwo (D := D)).coinvariantsToTotal c := by
   constructor
   · intro h
     calc
       cuspToEllipticUnionHomology D 2
-          (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) =
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) =
           (presentationTwo (D := D)).inclusion (D.indexFourSideLift N G) :=
         (D.inclusion_indexFourSideLift N G).symm
       _ = (presentationTwo (D := D)).coinvariantsToTotal
@@ -90,7 +90,7 @@ public theorem indexFourSideLift_quotient_eq_iff_coinvariantsToTotal
           (Submodule.Quotient.mk (D.indexFourSideLift N G)) =
           (presentationTwo (D := D)).inclusion (D.indexFourSideLift N G) := rfl
       _ = cuspToEllipticUnionHomology D 2
-          (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) :=
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) :=
         D.inclusion_indexFourSideLift N G
       _ = (presentationTwo (D := D)).coinvariantsToTotal c := h
 
@@ -102,7 +102,7 @@ public theorem indexFourSideLift_quotient_eq_generator_iff_total_orientation
     Submodule.Quotient.mk (D.indexFourSideLift N G) =
         N.actualHomologyCoordinates.degreeTwoCoinvariantEquiv.symm 1 ↔
       cuspToEllipticUnionHomology D 2
-          (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) =
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) =
         (presentationTwo (D := D)).coinvariantsToTotal
           (N.actualHomologyCoordinates.degreeTwoCoinvariantEquiv.symm 1) :=
   D.indexFourSideLift_quotient_eq_iff_coinvariantsToTotal N G _
@@ -128,14 +128,14 @@ fourth raw cusp class has a side lift with the primitive positive cokernel repre
 public theorem total_orientation_iff_exists_positive_side_lift
     (N : A.EllipticBandHomologyAlignment D) :
     cuspToEllipticUnionHomology D 2
-          (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) =
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) =
         (presentationTwo (D := D)).coinvariantsToTotal
           (N.actualHomologyCoordinates.degreeTwoCoinvariantEquiv.symm 1) ↔
       ∃ y : IntegralSingularHomology 2 D.orderThreeSide ×
           IntegralSingularHomology 2 D.orderFourSide,
         (presentationTwo (D := D)).inclusion y =
             cuspToEllipticUnionHomology D 2
-              (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) ∧
+              (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) ∧
           N.actualHomologyCoordinates.sidesTwo y = positiveIndexFourSideCoordinate := by
   constructor
   · intro h
@@ -156,7 +156,7 @@ public theorem total_orientation_iff_exists_positive_side_lift
       _ = (presentationTwo (D := D)).coinvariantsToTotal
           (N.actualHomologyCoordinates.degreeTwoCoinvariantEquiv.symm 1) := congrArg _ hyq
       _ = cuspToEllipticUnionHomology D 2
-          (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) := h.symm
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) := h.symm
   · rintro ⟨y, hy, hcoord⟩
     rw [← hy]
     change (presentationTwo (D := D)).coinvariantsToTotal
@@ -178,7 +178,7 @@ public theorem normalizedIndexFourPrismCoefficientCalculation_iff_total_orientat
     (C : D.CuspEllipticMappingTorusPrismGeometricData N G) :
     D.NormalizedIndexFourPrismCoefficientCalculation C ↔
       cuspToEllipticUnionHomology D 2
-          (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) =
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) =
         (presentationTwo (D := D)).coinvariantsToTotal
           (N.actualHomologyCoordinates.degreeTwoCoinvariantEquiv.symm 1) := by
   rw [D.normalizedIndexFourPrismCoefficientCalculation_iff_sideLiftGenerator N G C]
@@ -200,7 +200,7 @@ public theorem normalizedIndexFourPrismCoefficientCalculation_existingGeometry_i
     R.twoDiscCover.NormalizedIndexFourPrismCoefficientCalculation
           (cuspPrismGeometryOfExistingFiberValues R G hTop M) ↔
       cuspToEllipticUnionHomology R.twoDiscCover 2
-          (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) =
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) =
         (presentationTwo (D := R.twoDiscCover)).coinvariantsToTotal
           (R.homologyAlignment.actualHomologyCoordinates.degreeTwoCoinvariantEquiv.symm 1) :=
   R.twoDiscCover.normalizedIndexFourPrismCoefficientCalculation_iff_total_orientation
@@ -221,7 +221,7 @@ public theorem
           IntegralSingularHomology 2 R.twoDiscCover.orderFourSide,
         (presentationTwo (D := R.twoDiscCover)).inclusion y =
             cuspToEllipticUnionHomology R.twoDiscCover 2
-              (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) ∧
+              (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) ∧
           R.homologyAlignment.actualHomologyCoordinates.sidesTwo y =
             positiveIndexFourSideCoordinate :=
   (normalizedIndexFourPrismCoefficientCalculation_existingGeometry_iff_orientation

@@ -36,7 +36,7 @@ noncomputable section
 
 namespace SphereSixComplex.Topology.CyclicExtension
 
-open SphereSixComplex.Topology.PaperLemmaSevenThirteenAlgebra
+open CyclicCoinvariants
 
 variable {m : ℕ} {Λ G : Type*} [AddCommGroup Λ] [Group G]
 
@@ -227,16 +227,16 @@ public theorem kernelToAbelianization_difference (x : Λ) :
 
 /-- The comparison map from the multiple-fibre presentation to the abelianization of `G`. -/
 public def toAbelianization :
-    MultipleFiberHOnePresentation E.difference E.twist (m : ℤ) →ₗ[ℤ]
+    CyclicCoinvariants.Presentation E.difference E.twist (m : ℤ) →ₗ[ℤ]
       Additive (Abelianization G) :=
-  multipleFiberLift E.difference E.twist (m : ℤ) E.kernelToAbelianization
+  CyclicCoinvariants.lift E.difference E.twist (m : ℤ) E.kernelToAbelianization
     E.kernelToAbelianization_difference (Additive.ofMul (Abelianization.of E.gen)) (by
       rw [kernelToAbelianization_apply, ← ofMul_zpow, ← map_zpow, zpow_natCast, E.gen_pow])
 
 @[simp] public theorem toAbelianization_mk (l : Λ) (k : ℤ) :
     E.toAbelianization (Submodule.Quotient.mk (Submodule.Quotient.mk l, k)) =
       Additive.ofMul (Abelianization.of (E.incl l) * Abelianization.of E.gen ^ k) := by
-  rw [toAbelianization, multipleFiberLift_mk, kernelToAbelianization_apply, ← ofMul_zpow,
+  rw [toAbelianization, CyclicCoinvariants.lift_mk, kernelToAbelianization_apply, ← ofMul_zpow,
     ← ofMul_mul]
 
 public theorem toAbelianization_surjective : Function.Surjective E.toAbelianization := by
@@ -289,7 +289,7 @@ public theorem toAbelianization_injective : Function.Injective E.toAbelianizatio
       rw [heq] at this
       rw [Submodule.Quotient.mk_add, Submodule.Quotient.mk_smul] at this
       linear_combination (norm := abel) this
-    rw [multipleFiberRelationMap]
+    rw [CyclicCoinvariants.relationMap]
     simp only [LinearMap.coe_mk, AddHom.coe_mk, Prod.smul_mk, smul_neg, Prod.mk.injEq]
     exact ⟨by rw [hmk], by rw [smul_eq_mul, mul_comm]⟩
   intro a b hab
@@ -300,7 +300,7 @@ public theorem toAbelianization_injective : Function.Injective E.toAbelianizatio
 `gen` lifting the standard generator, `act` conjugation by `gen` and `twist = gen ^ m`, then the
 abelianization of `G` is the multiple-fibre presentation of `act - 1` at `twist` and `m`. -/
 public noncomputable def abelianizationEquiv :
-    MultipleFiberHOnePresentation E.difference E.twist (m : ℤ) ≃ₗ[ℤ]
+    CyclicCoinvariants.Presentation E.difference E.twist (m : ℤ) ≃ₗ[ℤ]
       Additive (Abelianization G) :=
   LinearEquiv.ofBijective E.toAbelianization
     ⟨E.toAbelianization_injective, E.toAbelianization_surjective⟩

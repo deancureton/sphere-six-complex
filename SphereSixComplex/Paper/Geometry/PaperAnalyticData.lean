@@ -41,10 +41,10 @@ one coherent analytic package. -/
 public theorem exists_paperAnalyticData
     (E : EstablishedFuchsianModularParameter)
     (F : ExactLiftedModularNegOneFrame E)
-    (Amu : (fuchsianMuDescentProblem E F).AnalyticDescentData)
-    (Abeta : FuchsianBetaAnalyticDescentData E F Amu) :
+    (Amu : (FuchsianAffineDescent.muDescentData E F).AnalyticDescentData)
+    (Abeta : FuchsianAffineDescent.BetaDescentData E F Amu) :
     Nonempty PaperAnalyticData := by
-  obtain ⟨D⟩ := exists_fuchsianPeriodLocalData E F Amu Abeta
+  obtain ⟨D⟩ := FuchsianAffineDescent.exists_fuchsianPeriodLocalData E F Amu Abeta
   obtain ⟨N⟩ := FuchsianCuspNormalization.exists_normalizedFuchsianCuspCoordinate E D
   exact ⟨⟨E, D, N⟩⟩
 
@@ -55,8 +55,8 @@ public theorem exists_paperAnalyticData_of_establishedAnalyticDescent
     (F : ExactLiftedModularNegOneFrame E) :
     Nonempty PaperAnalyticData :=
   exists_paperAnalyticData E F
-    (establishedFuchsianMuAnalyticDescentData E F)
-    (establishedFuchsianBetaAnalyticDescentData E F)
+    (FuchsianAffineDescent.muAnalyticDescentData E F)
+    (FuchsianAffineDescent.betaAnalyticDescentData E F)
 
 /-- The established modular parameter, modular frame, general analytic descent, cusp
 normalization, and toric model produce the coherent analytic package unconditionally. -/
@@ -69,10 +69,10 @@ public theorem exists_establishedPaperAnalyticData : Nonempty PaperAnalyticData 
 @[expose] public noncomputable def paperAnalyticData
     (E : EstablishedFuchsianModularParameter)
     (F : ExactLiftedModularNegOneFrame E)
-    (Amu : (fuchsianMuDescentProblem E F).AnalyticDescentData)
-    (Abeta : FuchsianBetaAnalyticDescentData E F Amu) :
+    (Amu : (FuchsianAffineDescent.muDescentData E F).AnalyticDescentData)
+    (Abeta : FuchsianAffineDescent.BetaDescentData E F Amu) :
     PaperAnalyticData := by
-  let D := Classical.choice (exists_fuchsianPeriodLocalData E F Amu Abeta)
+  let D := Classical.choice (FuchsianAffineDescent.exists_fuchsianPeriodLocalData E F Amu Abeta)
   let N := Classical.choice
     (FuchsianCuspNormalization.exists_normalizedFuchsianCuspCoordinate E D)
   exact ⟨E, D, N⟩
@@ -82,8 +82,8 @@ public theorem exists_establishedPaperAnalyticData : Nonempty PaperAnalyticData 
     (E : EstablishedFuchsianModularParameter)
     (F : ExactLiftedModularNegOneFrame E) : PaperAnalyticData :=
   paperAnalyticData E F
-    (establishedFuchsianMuAnalyticDescentData E F)
-    (establishedFuchsianBetaAnalyticDescentData E F)
+    (FuchsianAffineDescent.muAnalyticDescentData E F)
+    (FuchsianAffineDescent.betaAnalyticDescentData E F)
 
 /-- A coherent production choice of all analytic inputs. -/
 @[expose] public noncomputable def establishedPaperAnalyticData : PaperAnalyticData :=

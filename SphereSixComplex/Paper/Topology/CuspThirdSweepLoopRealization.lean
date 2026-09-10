@@ -33,14 +33,14 @@ namespace SphereSixComplex.Geometry.PaperAnalyticData
 open SphereSixComplex.Topology SphereSixComplex.StandardTorusHomology
 open CircleProductIdentityMappingTorus
 
-public def actualCuspThirdSweepCentral (A : PaperAnalyticData) :
+public def cuspThirdSweepCentral (A : PaperAnalyticData) :
     C(UnitAddCircle × StdTorus 1, A.CentralFamily) :=
-  ⟨fun p ↦ A.starToCentral 0 (actualCuspThirdSweep A p),
-    (A.starToCentral_isOpenEmbedding 0).continuous.comp (actualCuspThirdSweep A).continuous⟩
+  ⟨fun p ↦ A.starToCentral 0 (cuspThirdSweep A p),
+    (A.starToCentral_isOpenEmbedding 0).continuous.comp (cuspThirdSweep A).continuous⟩
 
-public theorem actualCuspThirdSweepCentral_loop_realization (A : PaperAnalyticData) :
-    identityMappingTorusMapOfLoop A.actualCuspThirdPeriodLoop =
-      A.actualCuspThirdSweepCentral.comp
+public theorem cuspThirdSweepCentral_loop_realization (A : PaperAnalyticData) :
+    identityMappingTorusMapOfLoop A.cuspThirdPeriodLoop =
+      A.cuspThirdSweepCentral.comp
         ((circleProductIdentityMappingTorusHomeomorph (X := StdTorus 1)).symm :
           C(CircleMappingTorus (Homeomorph.refl (StdTorus 1)), UnitAddCircle × StdTorus 1)) := by
   ext z
@@ -48,29 +48,29 @@ public theorem actualCuspThirdSweepCentral_loop_realization (A : PaperAnalyticDa
   | _ z =>
     obtain ⟨u, t, x⟩ := z
     cases u
-    change A.actualCuspThirdPeriodLoop t x =
-      A.actualCuspThirdSweepCentral (circleProductIdentityMappingTorusHomeomorph.symm
+    change A.cuspThirdPeriodLoop t x =
+      A.cuspThirdSweepCentral (circleProductIdentityMappingTorusHomeomorph.symm
         (torusPt (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1)) () t x))
     rw [circleProductIdentityMappingTorusHomeomorph_symm_interval]
-    exact A.actualCuspThirdPeriodFamily_eq_sweep t x
+    exact A.cuspThirdPeriodFamily_eq_sweep t x
 
-public theorem actualCuspThirdSweepCentral_homology_realization (A : PaperAnalyticData)
+public theorem cuspThirdSweepCentral_homology_realization (A : PaperAnalyticData)
     (x : IntegralSingularHomology 2 (UnitAddCircle × StdTorus 1)) :
-    integralSingularHomologyMap 2 A.actualCuspThirdSweepCentral x =
+    integralSingularHomologyMap 2 A.cuspThirdSweepCentral x =
       integralSingularHomologyMap 2
-        (identityMappingTorusMapOfLoop A.actualCuspThirdPeriodLoop)
+        (identityMappingTorusMapOfLoop A.cuspThirdPeriodLoop)
         (integralSingularHomologyMap 2
           (circleProductIdentityMappingTorusHomeomorph (X := StdTorus 1) :
           C(UnitAddCircle × StdTorus 1, CircleMappingTorus (Homeomorph.refl (StdTorus 1)))) x) := by
-  rw [integralSingularHomologyMap_comp_wang, actualCuspThirdSweepCentral_loop_realization]
-  have h : (A.actualCuspThirdSweepCentral.comp
+  rw [integralSingularHomologyMap_comp_wang, cuspThirdSweepCentral_loop_realization]
+  have h : (A.cuspThirdSweepCentral.comp
       ((circleProductIdentityMappingTorusHomeomorph (X := StdTorus 1)).symm :
           C(CircleMappingTorus (Homeomorph.refl (StdTorus 1)), UnitAddCircle × StdTorus 1))).comp
         (circleProductIdentityMappingTorusHomeomorph (X := StdTorus 1) :
           C(UnitAddCircle × StdTorus 1, CircleMappingTorus (Homeomorph.refl (StdTorus 1)))) =
-      A.actualCuspThirdSweepCentral := by
+      A.cuspThirdSweepCentral := by
     ext z
-    exact congrArg A.actualCuspThirdSweepCentral
+    exact congrArg A.cuspThirdSweepCentral
       (circleProductIdentityMappingTorusHomeomorph.symm_apply_apply z)
   rw [h]
 

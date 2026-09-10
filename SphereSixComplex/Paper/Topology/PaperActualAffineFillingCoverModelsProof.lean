@@ -51,26 +51,26 @@ public theorem coreSquare_apply
             (D.connectorInCore conn hconn hpt.1).symm)
           (FundamentalGroup.map (D.overlapToCore P) ⟨pt, hpt⟩ γ)) =
       (FundamentalGroup.fundamentalGroupMulEquivOfPath conn.symm)
-        (FundamentalGroup.map (subsetInclusion P) ⟨pt, hpt.2⟩
+        (FundamentalGroup.map (CoveringSpace.subsetInclusion P) ⟨pt, hpt.2⟩
           (FundamentalGroup.map
             (⟨fun z : (D.core ∩ P : Set Y) ↦ (⟨z.1, z.2.2⟩ : P), by fun_prop⟩ :
               C((D.core ∩ P : Set Y), P)) ⟨pt, hpt⟩ γ)) := by
   set connCore := D.connectorInCore conn hconn hpt.1
-  have hnat := map_fundamentalGroupMulEquivOfPath (subsetInclusion D.core) connCore.symm
+  have hnat := CoveringSpace.map_fundamentalGroupMulEquivOfPath (CoveringSpace.subsetInclusion D.core) connCore.symm
     (FundamentalGroup.map (D.overlapToCore P) ⟨pt, hpt⟩ γ)
-  have hpath : connCore.symm.map (subsetInclusion D.core).continuous = conn.symm := by
+  have hpath : connCore.symm.map (CoveringSpace.subsetInclusion D.core).continuous = conn.symm := by
     ext t
     rfl
-  change FundamentalGroup.map (subsetInclusion D.core) _
+  change FundamentalGroup.map (CoveringSpace.subsetInclusion D.core) _
       ((FundamentalGroup.fundamentalGroupMulEquivOfPath connCore.symm) _) =
     (FundamentalGroup.fundamentalGroupMulEquivOfPath conn.symm) _
   apply Eq.trans hnat
   rw [hpath]
   congr 1
-  have h1 := map_map (D.overlapToCore P) (subsetInclusion D.core) ⟨pt, hpt⟩ γ
-  have h2 := map_map
+  have h1 := CoveringSpace.map_map (D.overlapToCore P) (CoveringSpace.subsetInclusion D.core) ⟨pt, hpt⟩ γ
+  have h2 := CoveringSpace.map_map
     (⟨fun z : (D.core ∩ P : Set Y) ↦ (⟨z.1, z.2.2⟩ : P), by fun_prop⟩ :
-      C((D.core ∩ P : Set Y), P)) (subsetInclusion P) ⟨pt, hpt⟩ γ
+      C((D.core ∩ P : Set Y), P)) (CoveringSpace.subsetInclusion P) ⟨pt, hpt⟩ γ
   apply Eq.trans h1
   apply Eq.trans ?_ h2.symm
   rfl

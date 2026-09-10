@@ -19,13 +19,13 @@ namespace SphereSixComplex.Periods
 
 open SphereSixComplex.TriangleGroup
 
-namespace OrbifoldAffineLineTorsorDescentProblem
+namespace OrbifoldAffineDescentData
 
 open HolomorphicAffineTorsorHOne
 
 /-- Exact comparison data between an orbifold affine-torsor descent problem and the standard
 two-chart Cech presentation of `O(-1)` or `O` on the projective line. -/
-public structure CechGluingData (P : OrbifoldAffineLineTorsorDescentProblem) where
+public structure CechGluingData (P : OrbifoldAffineDescentData) where
   descent : P.AnalyticDescentData
   frame : AcyclicProjectiveLineFrame
   frameTransition_eq : P.frameTransition = frame.transition
@@ -36,28 +36,28 @@ public structure CechGluingData (P : OrbifoldAffineLineTorsorDescentProblem) whe
 
 /-- The projective-line affine torsor represented by the descended chart mismatch. -/
 @[expose] public def CechGluingData.projectiveLineTorsor
-    {P : OrbifoldAffineLineTorsorDescentProblem} (D : P.CechGluingData) :
+    {P : OrbifoldAffineDescentData} (D : P.CechGluingData) :
     ProjectiveLineAffineTorsor D.frame.transition where
   cocycle := D.descent.mismatch_descent.coefficient
   cocycle_holomorphic := D.descent.mismatch_descent.coefficient_holomorphic
 
 /-- Correct the finite-chart section by the zero-chart part of a Cech splitting. -/
 @[expose] public def CechGluingData.adjustedZero
-    {P : OrbifoldAffineLineTorsorDescentProblem} (D : P.CechGluingData)
+    {P : OrbifoldAffineDescentData} (D : P.CechGluingData)
     (S : D.projectiveLineTorsor.Splitting) (z : UpperHalfPlane) : ℂ :=
   D.descent.charts.sectionZero z -
     S.sectionZero (P.quotient.coordinate z) * P.frameZero z
 
 /-- Correct the cusp-chart section by the infinity-chart part of a Cech splitting. -/
 @[expose] public def CechGluingData.adjustedInfinity
-    {P : OrbifoldAffineLineTorsorDescentProblem} (D : P.CechGluingData)
+    {P : OrbifoldAffineDescentData} (D : P.CechGluingData)
     (S : D.projectiveLineTorsor.Splitting) (z : UpperHalfPlane) : ℂ :=
   D.descent.charts.sectionInfinity z -
     S.sectionInfinity ((P.quotient.coordinate z)⁻¹) * P.frameInfinity z
 
 /-- The two corrected affine sections agree wherever the infinity chart is defined. -/
 public theorem CechGluingData.adjustedZero_eq_adjustedInfinity
-    {P : OrbifoldAffineLineTorsorDescentProblem} (D : P.CechGluingData)
+    {P : OrbifoldAffineDescentData} (D : P.CechGluingData)
     (S : D.projectiveLineTorsor.Splitting) (z : UpperHalfPlane)
     (hz : P.quotient.coordinate z ≠ 0) :
     D.adjustedZero S z = D.adjustedInfinity S z := by
@@ -77,7 +77,7 @@ public theorem CechGluingData.adjustedZero_eq_adjustedInfinity
 
 /-- The corrected finite-chart section is holomorphic on the whole upper half-plane. -/
 public theorem CechGluingData.adjustedZero_holomorphic
-    {P : OrbifoldAffineLineTorsorDescentProblem} (D : P.CechGluingData)
+    {P : OrbifoldAffineDescentData} (D : P.CechGluingData)
     (S : D.projectiveLineTorsor.Splitting) :
     MDiff (D.adjustedZero S) := by
   exact D.descent.charts.sectionZero_holomorphic.sub
@@ -86,7 +86,7 @@ public theorem CechGluingData.adjustedZero_holomorphic
 
 /-- The corrected finite-chart section obeys the first affine generator law. -/
 public theorem CechGluingData.adjustedZero_one
-    {P : OrbifoldAffineLineTorsorDescentProblem} (D : P.CechGluingData)
+    {P : OrbifoldAffineDescentData} (D : P.CechGluingData)
     (S : D.projectiveLineTorsor.Splitting) (z : UpperHalfPlane) :
     D.adjustedZero S (fuchsianSourceAction g₁ • z) =
       P.affineOne z (D.adjustedZero S z) := by
@@ -100,7 +100,7 @@ public theorem CechGluingData.adjustedZero_one
 
 /-- The corrected finite-chart section obeys the second affine generator law. -/
 public theorem CechGluingData.adjustedZero_two
-    {P : OrbifoldAffineLineTorsorDescentProblem} (D : P.CechGluingData)
+    {P : OrbifoldAffineDescentData} (D : P.CechGluingData)
     (S : D.projectiveLineTorsor.Splitting) (z : UpperHalfPlane) :
     D.adjustedZero S (fuchsianSourceAction g₂ • z) =
       P.affineTwo z (D.adjustedZero S z) := by
@@ -125,7 +125,7 @@ private theorem boundedOn_sub
 
 /-- The corrected global section differs boundedly from the supplied regular cusp primitive. -/
 public theorem CechGluingData.adjustedZero_sub_cusp_bounded
-    {P : OrbifoldAffineLineTorsorDescentProblem} (D : P.CechGluingData)
+    {P : OrbifoldAffineDescentData} (D : P.CechGluingData)
     (S : D.projectiveLineTorsor.Splitting) :
     BoundedOn (fun z ↦ D.adjustedZero S z - P.cuspSection z)
       fuchsianCuspRegion := by
@@ -147,31 +147,31 @@ public theorem CechGluingData.adjustedZero_sub_cusp_bounded
   exact hbound z hz
 
 /-- A Cech splitting produces the single global, equivariant, cusp-bounded section. -/
-public theorem CechGluingData.hasCuspBoundedEquivariantSection
-    {P : OrbifoldAffineLineTorsorDescentProblem} (D : P.CechGluingData)
+public theorem CechGluingData.hasCuspBoundedSection
+    {P : OrbifoldAffineDescentData} (D : P.CechGluingData)
     (S : D.projectiveLineTorsor.Splitting) :
-    P.HasCuspBoundedEquivariantSection :=
+    P.HasCuspBoundedSection :=
   ⟨D.adjustedZero S, D.adjustedZero_holomorphic S, D.adjustedZero_one S,
     D.adjustedZero_two S, D.adjustedZero_sub_cusp_bounded S⟩
 
 /-- The comparison data give the abstract Cech reduction isolated in
 `HolomorphicAffineTorsorHOneSplitting`. -/
-@[expose] public noncomputable def CechGluingData.toCuspCorrectionCechReduction
-    {P : OrbifoldAffineLineTorsorDescentProblem} (D : P.CechGluingData) :
-    P.CuspCorrectionCechReduction where
+@[expose] public noncomputable def CechGluingData.toCousinCechReduction
+    {P : OrbifoldAffineDescentData} (D : P.CechGluingData) :
+    P.CousinCechReduction where
   frame := D.frame
   torsor := D.projectiveLineTorsor
   correctionOfSplitting := fun S ↦ Classical.choice
-    (P.nonempty_correction_of_hasCuspBoundedEquivariantSection
-      (D.hasCuspBoundedEquivariantSection S))
+    (P.nonempty_correction_of_hasCuspBoundedSection
+      (D.hasCuspBoundedSection S))
 
 /-- Exact Cech comparison data suffice for the original cusp-bounded Cousin correction. -/
-public theorem nonempty_cuspBoundedEllipticOneCorrection_of_cechGluingData
-    (P : OrbifoldAffineLineTorsorDescentProblem) (D : P.CechGluingData) :
-    Nonempty P.CuspBoundedEllipticOneCorrection :=
-  P.nonempty_cuspBoundedEllipticOneCorrection_of_cechReduction
-    D.toCuspCorrectionCechReduction
+public theorem nonempty_cuspBoundedCorrection_of_cechGluingData
+    (P : OrbifoldAffineDescentData) (D : P.CechGluingData) :
+    Nonempty P.CuspBoundedCorrection :=
+  P.nonempty_cuspBoundedCorrection_of_cechReduction
+    D.toCousinCechReduction
 
-end OrbifoldAffineLineTorsorDescentProblem
+end OrbifoldAffineDescentData
 
 end SphereSixComplex.Periods

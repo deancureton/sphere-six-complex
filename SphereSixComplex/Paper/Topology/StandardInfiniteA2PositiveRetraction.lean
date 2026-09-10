@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.EstablishedStrongDeformationRetracts
+public import SphereSixComplex.Prerequisites.Topology.StrongDeformationRetraction
 public import SphereSixComplex.Prerequisites.Topology.RelativeCWHomotopyExtensionProof
 public import SphereSixComplex.Paper.Geometry.CuspLocalPhaseAction
 public import Mathlib.Analysis.Complex.Circle
@@ -133,14 +133,14 @@ public noncomputable def quotientStrongDeformationRetraction :
   letI := P.positiveDeckAction
   letI := P.quotient_t2
   let hHEP :=
-    SphereSixComplex.EstablishedGeneralTopology.hasHomotopyExtensionProperty_of_relativeCWComplex_proved
+    CWPair.hasHomotopyExtensionProperty
       (orbitCore P.central) P.quotient_relativeCW
   let hEquiv :=
-    SphereSixComplex.EstablishedGeneralTopology.isHomotopyEquivalenceInclusion_of_contractible_regularCover
+    CWPair.homotopyEquivalence_of_contractible_cover
         (orbitProjection P.positivePart) P.central (orbitCore P.central) P.quotientCovering
           P.central_preimage P.positive_contractible P.central_contractible P.quotient_relativeCW
   exact Classical.choice
-    (SphereSixComplex.EstablishedGeneralTopology.strongDeformationRetraction_of_cofibration_homotopyEquivalence
+    (HasHomotopyExtensionProperty.nonempty_strongDeformationRetraction
         (orbitCore P.central) hHEP hEquiv)
 
 /-- The positive-part strong deformation retraction, lifted equivariantly through the regular
@@ -151,7 +151,7 @@ public noncomputable def positiveEquivariantStrongDeformationRetraction :
       (Multiplicative ParameterLattice) P.positivePart P.central := by
   letI := P.positiveDeckAction
   exact Classical.choice
-    (SphereSixComplex.EstablishedGeneralTopology.equivariantStrongDeformationRetraction_lift
+    (EquivariantStrongDeformationRetraction.nonempty_lift
         (orbitProjection P.positivePart) P.central (orbitCore P.central) P.quotientCovering
           P.central_preimage P.quotientStrongDeformationRetraction)
 

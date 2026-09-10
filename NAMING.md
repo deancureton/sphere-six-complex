@@ -25,7 +25,9 @@ Concrete precedents in the pinned Mathlib include `Homeomorph.toHomotopyEquiv` a
 `Complex.UnitDisc` in `Analysis/Complex/UnitDisc/Basic.lean`, and
 `zmodMulEquivOfGenerator` in `GroupTheory/SpecificGroups/Cyclic.lean`.
 
-The first migration covers the ten classical assumptions and their principal
-interfaces, Wang sections and splitting, and general disc/Cayley coordinates.
+The migrations cover the ten classical assumptions and their principal interfaces,
+Wang sections and splitting, general disc/Cayley coordinates, first Hurewicz and
+relative CW tools, cusp angular methods, and affine torsor descent. Methods stay in
+the namespace of their receiver so that dot notation remains available.
 Historical names elsewhere remain candidates for subsequent API migrations; this
 document does not certify that every declaration already follows these conventions.

@@ -77,7 +77,7 @@ public theorem cuspToEllipticInteriorMap_homology_mappingTorusModel (k : ℕ)
 normalization. -/
 public theorem actualCuspRawHomologyOneEquiv_apply_mappingTorus (A : PaperAnalyticData)
     (x : IntegralSingularHomology 1 (A.openEmbeddingStarData.collarSource 0)) :
-    A.actualCuspRawHomologyOneEquiv x =
+    A.cuspRawHomologyOneEquiv x =
       let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
       G.geometricWangSections.circleMappingTorusHOneAddEquiv
@@ -88,7 +88,7 @@ public theorem actualCuspRawHomologyOneEquiv_apply_mappingTorus (A : PaperAnalyt
 normalization. -/
 public theorem actualCuspRawHomologyTwoEquiv_apply_mappingTorus (A : PaperAnalyticData)
     (x : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0)) :
-    A.actualCuspRawHomologyTwoEquiv x =
+    A.cuspRawHomologyTwoEquiv x =
       let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
       G.geometricWangSections.circleMappingTorusHTwoAddEquiv
@@ -203,7 +203,7 @@ public theorem inclusionNaturality
       (integralSingularHomologyMap 1
         A.actualCuspRadialClutchingData.totalHomotopyEquiv.toFun x)
     change _ = actualCuspEllipticDegreeOneRawCoordinate
-      (A.actualCuspRawHomologyOneEquiv x)
+      (A.cuspRawHomologyOneEquiv x)
     rw [actualCuspRawHomologyOneEquiv_apply_mappingTorus]
     change _ = actualCuspEllipticDegreeOneRawCoordinate _ at hx
     exact hx
@@ -217,7 +217,7 @@ public theorem inclusionNaturality
       (integralSingularHomologyMap 2
         A.actualCuspRadialClutchingData.totalHomotopyEquiv.toFun x)
     change _ = actualCuspEllipticDegreeTwoFiberRawCoordinate
-      (A.actualCuspRawHomologyTwoEquiv x)
+      (A.cuspRawHomologyTwoEquiv x)
     rw [actualCuspRawHomologyTwoEquiv_apply_mappingTorus]
     change _ = actualCuspEllipticDegreeTwoFiberRawCoordinate _ at hx
     exact hx

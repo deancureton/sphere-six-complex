@@ -19,7 +19,7 @@ open scoped ContinuousMap
 namespace SphereSixComplex.Topology.CanonicalProductWangBoundarySlant
 
 open CircleProductIdentityMappingTorus
-open PaperAffineCyclicReducedFiberMappingTorus
+open CyclicMappingTorus
 open PositiveCircleCross
 open StandardTorusHomology
 open CyclicAngularFundamentalDomain

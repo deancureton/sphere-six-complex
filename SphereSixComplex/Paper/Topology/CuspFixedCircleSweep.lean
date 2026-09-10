@@ -15,7 +15,7 @@ open SectionSevenEllipticTwoDiscCoverData
 open SphereSixComplex.Topology.FixedTopologicalCircleWangBoundary
 open SphereSixComplex.Topology.CircleProductIdentityMappingTorus
 open SphereSixComplex.CyclicAngularFundamentalDomain
-public def actualCuspFixedCircleSweep (A : PaperAnalyticData)
+public def cuspFixedCircleSweep (A : PaperAnalyticData)
     (c : FixedTopologicalCircle (cuspFiberClutching (cuspBasePoint A.cuspCoordinate
       (markedCuspParameter A.starCuspWitness)))) :
     C(UnitAddCircle × StdTorus 1, A.openEmbeddingStarData.collarSource 0) := by
@@ -30,11 +30,11 @@ public def actualCuspFixedCircleSweep (A : PaperAnalyticData)
       (fixedLoopMappingTorusMap (cuspFiberClutching _)
         c))
 
-public theorem actualCuspFixedCircleSweep_real (A : PaperAnalyticData)
+public theorem cuspFixedCircleSweep_real (A : PaperAnalyticData)
     (c : FixedTopologicalCircle (cuspFiberClutching (cuspBasePoint A.cuspCoordinate
       (markedCuspParameter A.starCuspWitness)))) (r : ℝ)
     (z : StdTorus 1) :
-    actualCuspFixedCircleSweep A c ((r : UnitAddCircle), z) =
+    cuspFixedCircleSweep A c ((r : UnitAddCircle), z) =
       actualCuspFullFibreSlice (A := A)
         (cuspParameterOfPolar (A.starCuspWitness.localWitness.radius / 2) r)
         (by rw [norm_cuspQ_cuspParameterOfPolar _ _ (by
@@ -61,10 +61,10 @@ public theorem actualCuspFixedCircleSweep_real (A : PaperAnalyticData)
     rfl
 
 
-public theorem actualCuspFixedCircleSweep_to_mappingTorus (A : PaperAnalyticData)
+public theorem cuspFixedCircleSweep_to_mapping_torus (A : PaperAnalyticData)
     (c : FixedTopologicalCircle (cuspFiberClutching (cuspBasePoint A.cuspCoordinate
       (markedCuspParameter A.starCuspWitness)))) :
-    A.actualCuspRadialClutchingData.totalHomotopyEquiv.toFun.comp (actualCuspFixedCircleSweep A c) =
+    A.actualCuspRadialClutchingData.totalHomotopyEquiv.toFun.comp (cuspFixedCircleSweep A c) =
       fixedLoopMappingTorusMap (cuspFiberClutching _)
         c := by
   ext1 p
@@ -76,19 +76,19 @@ public theorem actualCuspFixedCircleSweep_to_mappingTorus (A : PaperAnalyticData
   rfl
 
 
-public theorem actualCuspFixedCircleSweep_wang (A : PaperAnalyticData)
+public theorem cuspFixedCircleSweep_wang (A : PaperAnalyticData)
     (c : FixedTopologicalCircle (cuspFiberClutching (cuspBasePoint A.cuspCoordinate
       (markedCuspParameter A.starCuspWitness)))) :
     let _ := A.actualCuspRadialClutchingData.fiberTopology
     actualCuspWangBoundaryHom A
-      (integralSingularHomologyMap 2 (actualCuspFixedCircleSweep A c)
+      (integralSingularHomologyMap 2 (cuspFixedCircleSweep A c)
         PositiveCircleCross.positiveCircleProductGenerator) =
       integralSingularHomologyMap 1 c.1 standardCircleHomologyGenerator := by
   let _ := A.actualCuspRadialClutchingData.fiberTopology
   change (circleMappingTorusWangPresentationOfCover _ 1).boundary
     (integralSingularHomologyMap 2 A.actualCuspRadialClutchingData.totalHomotopyEquiv.toFun
-      (integralSingularHomologyMap 2 (actualCuspFixedCircleSweep A c) _)) = _
-  erw [integralSingularHomologyMap_comp_wang, actualCuspFixedCircleSweep_to_mappingTorus]
+      (integralSingularHomologyMap 2 (cuspFixedCircleSweep A c) _)) = _
+  erw [integralSingularHomologyMap_comp_wang, cuspFixedCircleSweep_to_mapping_torus]
   exact fixedLoopSweepClass_boundary _ c
 
 end SphereSixComplex.Geometry.PaperAnalyticData

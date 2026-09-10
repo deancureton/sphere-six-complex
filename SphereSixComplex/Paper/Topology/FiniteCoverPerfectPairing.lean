@@ -125,7 +125,7 @@ variable {m : ℕ} [NeZero m] {p : SphereSixComplex.Periods.Parameters}
 public noncomputable def affineCyclicHOnePresentationEquiv
     (P : AffineCyclicCentralFiberPresentationData m p D) :
     IntegralSingularHomology 1 D.reducedCentralFiber ≃ₗ[ℤ]
-      MultipleFiberHOnePresentation P.latticeDifference P.twist (m : ℤ) :=
+      CyclicCoinvariants.Presentation P.latticeDifference P.twist (m : ℤ) :=
   EstablishedAffineCyclicQuotientHomology.reducedCentralFiberHOneEquivPresentation P
 
 /-- Naturality of the standard abelianized covering-group presentation.
@@ -188,12 +188,12 @@ variable {U : Periods.TriangleUniformization} (F : Periods.PeriodFunctions U)
 /-- The selected order-three presentation equivalence, with the actual presentation data left
 in its functorial form. -/
 public noncomputable def orderThreePresentationCoordinateEquiv :
-    MultipleFiberHOnePresentation
+    CyclicCoinvariants.Presentation
         (orderThreeCentralFiberPresentationData F).latticeDifference
         (orderThreeCentralFiberPresentationData F).twist 3 ≃ₗ[ℤ] IntSquared := by
-  change MultipleFiberHOnePresentation orderOneDifference epsilon 3 ≃ₗ[ℤ] IntSquared
+  change CyclicCoinvariants.Presentation orderOneDifference epsilon 3 ≃ₗ[ℤ] IntSquared
   have hRange :
-      LinearMap.range (multipleFiberRelationMap orderOneDifference epsilon 3) =
+      LinearMap.range (CyclicCoinvariants.relationMap orderOneDifference epsilon 3) =
         LinearMap.ker orderOnePresentationCoordinates := by
     simpa [TwistObstruction.v₁] using range_orderOneRelationMap_eq_ker
   exact (Submodule.quotEquivOfEq _ _ hRange).trans
@@ -203,12 +203,12 @@ public noncomputable def orderThreePresentationCoordinateEquiv :
 /-- The selected order-four presentation equivalence, with the actual presentation data left in
 its functorial form. -/
 public noncomputable def orderFourPresentationCoordinateEquiv :
-    MultipleFiberHOnePresentation
+    CyclicCoinvariants.Presentation
         (orderFourCentralFiberPresentationData F).latticeDifference
         (orderFourCentralFiberPresentationData F).twist 4 ≃ₗ[ℤ] IntSquared := by
-  change MultipleFiberHOnePresentation orderTwoDifference (-epsilon') 4 ≃ₗ[ℤ] IntSquared
+  change CyclicCoinvariants.Presentation orderTwoDifference (-epsilon') 4 ≃ₗ[ℤ] IntSquared
   have hRange :
-      LinearMap.range (multipleFiberRelationMap orderTwoDifference (-epsilon') 4) =
+      LinearMap.range (CyclicCoinvariants.relationMap orderTwoDifference (-epsilon') 4) =
         LinearMap.ker orderTwoPresentationCoordinates := by
     simpa [TwistObstruction.v₂] using range_orderTwoRelationMap_eq_ker
   exact (Submodule.quotEquivOfEq _ _ hRange).trans

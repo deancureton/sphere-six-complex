@@ -968,11 +968,11 @@ public theorem centralFamilyTwelveGamma_puncturedLocalCusp_additivePoint
 
 /-- The source meridian character differs from the pullback of the central twelvefold character
 by precisely the angular additive-cover coordinate. -/
-public theorem actualCuspMeridianSourceCircleMap_additivePoint_eq_angular_add_central
+public theorem cuspMeridianSourceCircleMap_additivePoint_eq_angular_add_central
     (p : additiveCuspRadiusCover A.starCuspWitness.localWitness.radius) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
-    A.actualCuspMeridianSourceCircleMap
+    A.cuspMeridianSourceCircleMap
         (G.totalHomotopyEquiv.toFun
           (additiveCuspBoundaryProjection A.starCuspWitness p)) =
       ((p.1.2.re : ℝ) : UnitAddCircle) +
@@ -981,21 +981,21 @@ public theorem actualCuspMeridianSourceCircleMap_additivePoint_eq_angular_add_ce
             (additiveCuspBoundaryProjection A.starCuspWitness p)) := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
-  change cuspMeridianSourceCircleMap
+  change _root_.SphereSixComplex.cuspMeridianSourceCircleMap
       (cuspBasePoint A.cuspCoordinate
         (markedCuspParameter A.starCuspWitness))
       (G.totalHomotopyEquiv.toFun
         (additiveCuspBoundaryProjection A.starCuspWitness p)) = _
   rw [show additiveCuspBoundaryProjection A.starCuspWitness p =
       collarPeriodPointMap A.starCuspWitness p by rfl]
-  change cuspMeridianSourceCircleMap
+  change _root_.SphereSixComplex.cuspMeridianSourceCircleMap
       (cuspBasePoint A.cuspCoordinate
         (markedCuspParameter A.starCuspWitness))
       ((puncturedLocalCuspQuotientHomeomorph A.starCuspWitness
         (markedCuspParameter A.starCuspWitness)
         (collarPeriodPointMap A.starCuspWitness p)).2) = _
   rw [puncturedLocalCuspQuotientHomeomorph_apply]
-  change cuspMeridianSourceCircleMap
+  change _root_.SphereSixComplex.cuspMeridianSourceCircleMap
       (cuspBasePoint A.cuspCoordinate
         (markedCuspParameter A.starCuspWitness))
       (CyclicAngularFundamentalDomain.realMappingTorusHomeomorph
@@ -1027,11 +1027,11 @@ public theorem actualCuspMeridianSourceCircleMap_additivePoint_eq_angular_add_ce
 
 /-- Replacing the central character by its globally corrected version isolates the entire cusp
 contribution in the angular term minus the pulled-back orbifold base phase. -/
-public theorem actualCuspMeridianSourceCircleMap_additivePoint_eq_correctedCentral
+public theorem cuspMeridianSourceCircleMap_additivePoint_eq_correctedCentral
     (p : additiveCuspRadiusCover A.starCuspWitness.localWitness.radius) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
-    A.actualCuspMeridianSourceCircleMap
+    A.cuspMeridianSourceCircleMap
         (G.totalHomotopyEquiv.toFun
           (additiveCuspBoundaryProjection A.starCuspWitness p)) =
       ((p.1.2.re : ℝ) : UnitAddCircle) +
@@ -1044,7 +1044,7 @@ public theorem actualCuspMeridianSourceCircleMap_additivePoint_eq_correctedCentr
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   dsimp only
-  rw [A.actualCuspMeridianSourceCircleMap_additivePoint_eq_angular_add_central]
+  rw [A.cuspMeridianSourceCircleMap_additivePoint_eq_angular_add_central]
   rw [A.centralFamilyCorrectedTwelveGamma_apply]
   change _ = _ + (_ + A.centralFamilyOrbifoldBasePhase _) -
     A.centralFamilyOrbifoldBasePhase _
@@ -1052,11 +1052,11 @@ public theorem actualCuspMeridianSourceCircleMap_additivePoint_eq_correctedCentr
 
 /-- The cusp angular term cancels pointwise against the `+1` exterior summand of the global
 orbifold correction.  What remains consists only of the two explicit nonvanishing-unit phases. -/
-public theorem actualCuspMeridianSourceCircleMap_additivePoint_eq_correctedCentral_sub_units
+public theorem cuspMeridianSourceCircleMap_additivePoint_eq_correctedCentral_sub_units
     (p : additiveCuspRadiusCover A.starCuspWitness.localWitness.radius) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
-    A.actualCuspMeridianSourceCircleMap
+    A.cuspMeridianSourceCircleMap
         (G.totalHomotopyEquiv.toFun
           (additiveCuspBoundaryProjection A.starCuspWitness p)) =
       A.centralFamilyCorrectedTwelveGamma
@@ -1071,7 +1071,7 @@ public theorem actualCuspMeridianSourceCircleMap_additivePoint_eq_correctedCentr
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   dsimp only
-  rw [A.actualCuspMeridianSourceCircleMap_additivePoint_eq_correctedCentral]
+  rw [A.cuspMeridianSourceCircleMap_additivePoint_eq_correctedCentral]
   rw [A.centralFamilyOrbifoldBasePhase_additiveCusp_angular_normalForm]
   module
 
@@ -1081,7 +1081,7 @@ public noncomputable def additiveCuspTransportedSourceCircleMap :
       UnitAddCircle) := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
-  exact A.actualCuspMeridianSourceCircleMap.comp
+  exact A.cuspMeridianSourceCircleMap.comp
     (G.totalHomotopyEquiv.toFun.comp
       (additiveCuspBoundaryProjection A.starCuspWitness))
 
@@ -1122,10 +1122,10 @@ public noncomputable def additiveCuspSourceToCorrectedMinusCenterUnitHomotopy :
     change A.additiveCuspCorrectedCentralCircleMap p -
         A.additiveCuspFactorizationUnitPhaseRadialHomotopy (0, p) -
           (3 : ℤ) • A.additiveCuspExteriorUnitPhaseRadialHomotopy (0, p) =
-      A.actualCuspMeridianSourceCircleMap
+      A.cuspMeridianSourceCircleMap
         (A.actualCuspRadialClutchingData.totalHomotopyEquiv.toFun
           (additiveCuspBoundaryProjection A.starCuspWitness p))
-    rw [A.actualCuspMeridianSourceCircleMap_additivePoint_eq_correctedCentral_sub_units]
+    rw [A.cuspMeridianSourceCircleMap_additivePoint_eq_correctedCentral_sub_units]
     rw [← A.additiveCuspExteriorUnitPhaseMap_eq_infinityUnit]
     rw [show A.additiveCuspFactorizationUnitPhaseRadialHomotopy (0, p) =
         A.additiveCuspFactorizationUnitPhaseMap p from
@@ -1192,7 +1192,7 @@ public noncomputable def puncturedCuspTransportedSourceCircleMap :
     C(puncturedLocalCuspQuotient A.starCuspWitness, UnitAddCircle) := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
-  exact A.actualCuspMeridianSourceCircleMap.comp G.totalHomotopyEquiv.toFun
+  exact A.cuspMeridianSourceCircleMap.comp G.totalHomotopyEquiv.toFun
 
 /-- The global corrected central character restricted to the actual punctured cusp quotient. -/
 public noncomputable def puncturedCuspCorrectedCentralCircleMap :
@@ -1388,10 +1388,10 @@ public noncomputable def cuspMappingTorusCorrectedCentralCircleMap :
 
 /-- Inclusion through the actual punctured cusp quotient identifies the source circle character
 with the corrected central character on the mapping-torus model up to homotopy. -/
-public theorem actualCuspMeridianSourceCircleMap_homotopic_correctedCentral :
+public theorem cuspMeridianSourceCircleMap_homotopic_correctedCentral :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
-    A.actualCuspMeridianSourceCircleMap.Homotopic
+    A.cuspMeridianSourceCircleMap.Homotopic
       A.cuspMappingTorusCorrectedCentralCircleMap := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
@@ -1404,21 +1404,21 @@ public theorem actualCuspMeridianSourceCircleMap_homotopic_correctedCentral :
       ⟨A.puncturedCuspTransportedSourceHomotopyCorrectedCentral⟩
       (.refl G.totalHomotopyEquiv.invFun)
   have hreturn :
-      (A.actualCuspMeridianSourceCircleMap.comp
+      (A.cuspMeridianSourceCircleMap.comp
           (G.totalHomotopyEquiv.toFun.comp
             G.totalHomotopyEquiv.invFun)).Homotopic
-        A.actualCuspMeridianSourceCircleMap := by
+        A.cuspMeridianSourceCircleMap := by
     simpa using ContinuousMap.Homotopic.comp
-      (.refl A.actualCuspMeridianSourceCircleMap)
+      (.refl A.cuspMeridianSourceCircleMap)
       G.totalHomotopyEquiv.right_inv
   exact hreturn.symm.trans hradial
 
 /-- The induced first-homology maps of the source character and the inclusion-pulled corrected
 central character agree. -/
-public theorem actualCuspMeridianSourceCircleMap_homology_eq_correctedCentral :
+public theorem cuspMeridianSourceCircleMap_homology_eq_correctedCentral :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
-    integralSingularHomologyMap 1 A.actualCuspMeridianSourceCircleMap =
+    integralSingularHomologyMap 1 A.cuspMeridianSourceCircleMap =
       integralSingularHomologyMap 1 A.cuspMappingTorusCorrectedCentralCircleMap := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
@@ -1426,9 +1426,9 @@ public theorem actualCuspMeridianSourceCircleMap_homology_eq_correctedCentral :
   intro x
   change ConcreteCategory.hom
       (((singularHomologyFunctor AddCommGrpCat 1).obj (AddCommGrpCat.of ℤ)).map
-        (TopCat.ofHom A.actualCuspMeridianSourceCircleMap)) x = _
+        (TopCat.ofHom A.cuspMeridianSourceCircleMap)) x = _
   rw [integralSingularHomologyMap_eq_of_homotopic
-    A.actualCuspMeridianSourceCircleMap_homotopic_correctedCentral 1]
+    A.cuspMeridianSourceCircleMap_homotopic_correctedCentral 1]
   rfl
 
 /-- The inclusion-pulled corrected central circle character realizes the complete cusp
@@ -1442,8 +1442,8 @@ public theorem cuspMappingTorusCorrectedCentralCircleMap_homologyCoordinate :
         (integralSingularHomologyMap 1 A.cuspMappingTorusCorrectedCentralCircleMap) := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
-  rw [← A.actualCuspMeridianSourceCircleMap_homology_eq_correctedCentral]
-  exact A.actualCuspMeridianSourceCircleMap_homologyCoordinate
+  rw [← A.cuspMeridianSourceCircleMap_homology_eq_correctedCentral]
+  exact A.cuspMeridianSourceCircleMap_homology_coordinate
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

@@ -13,35 +13,7 @@ open scoped ContinuousMap
 
 namespace SphereSixComplex
 
-namespace Topology.EstablishedFirstHurewicz
 
-/-- A surjective group homomorphism remains surjective after abelianization. -/
-public theorem abelianizationMap_surjective {G H : Type*} [Group G] [Group H]
-    (f : G →* H) (hf : Function.Surjective f) :
-    Function.Surjective (Abelianization.map f) := by
-  intro y
-  induction y using Quotient.inductionOn with
-  | _ y =>
-      obtain ⟨x, rfl⟩ := hf y
-      exact ⟨Abelianization.of x, rfl⟩
-
-/-- A map surjective on fundamental groups is surjective on first integral homology. -/
-public theorem integralSingularHomologyMap_one_surjective_of_fundamentalGroupMap_surjective
-    {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
-    [PathConnectedSpace X] [PathConnectedSpace Y]
-    (f : C(X, Y)) (b : X)
-    (hf : Function.Surjective (FundamentalGroup.map f b)) :
-    Function.Surjective (integralSingularHomologyMap 1 f) := by
-  let HX := establishedFirstHurewiczData X b
-  let HY := establishedFirstHurewiczData Y (f b)
-  intro y
-  obtain ⟨a, rfl⟩ := HY.equiv.surjective y
-  have hab : Function.Surjective (abelianPi1Map f b) :=
-    abelianizationMap_surjective (FundamentalGroup.map f b) hf
-  obtain ⟨x, rfl⟩ := hab a
-  exact ⟨HX.equiv x, (establishedFirstHurewiczData_naturality f b x).symm⟩
-
-end Topology.EstablishedFirstHurewicz
 
 namespace Geometry.CuspPuncturedCollarBridge
 
@@ -69,7 +41,7 @@ public theorem puncturedLocalCuspToFilling_homologyOne_surjective
     U.boundaryQuotient.surjective.pathConnectedSpace U.boundaryProjection.continuous
   let _ : PathConnectedSpace (actualLocalCuspFilling W) :=
     U.fillingQuotient.surjective.pathConnectedSpace U.fillingProjection.continuous
-  exact SphereSixComplex.Topology.EstablishedFirstHurewicz.integralSingularHomologyMap_one_surjective_of_fundamentalGroupMap_surjective
+  exact Hurewicz.integralSingularHomologyMap_one_surjective_of_fundamentalGroupMap_surjective
     U.baseMap (U.boundaryProjection U.base) U.fundamentalGroupData.map_surjective
 
 namespace CuspFiberSpecializationNormalization

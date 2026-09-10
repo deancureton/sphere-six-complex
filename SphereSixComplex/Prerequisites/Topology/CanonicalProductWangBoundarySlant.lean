@@ -25,7 +25,7 @@ namespace SphereSixComplex.Topology.CanonicalProductWangBoundarySlant
 open CircleProductIdentityMappingTorus
 open FiniteCyclicMappingTorusWangNaturality
 open FiniteCyclicThreeTorusWangNaturality
-open PaperAffineCyclicReducedFiberMappingTorus
+open CyclicMappingTorus
 open PositiveCircleCross
 open StandardThreeTorusProductWangBoundary
 open StandardTorusHomology
@@ -276,7 +276,7 @@ public theorem canonicalProductWangBoundary_circle_coordinates
       rw [canonicalProductWangBoundary_positiveGenerator]
 
 private theorem gammaSplit_cross_coordinateCircle (i : Fin 3) :
-    ((standardFourTorusGammaSplit.symm :
+    ((StandardTorusHomology.fourTorusSplit.symm :
         C(UnitAddCircle × StdTorus 3, StdTorus 4)).comp
       (circleProductMap (standardThreeTorusCoordinateCircle i))).comp
         (circleProdStandardCircleHomeomorph.symm :
@@ -290,7 +290,7 @@ public theorem productHomologyTwo_positiveCircleCross_coordinateCircle (i : Fin 
     productHomologyTwo (positiveCircleCross (standardThreeTorusCoordinateCircle i)) =
       Pi.single ⟨i.val, by omega⟩ 1 := by
   change naturalStdTorusFourHomologyTwo
-      (integralSingularHomologyMap 2 standardFourTorusGammaSplit.symm
+      (integralSingularHomologyMap 2 StandardTorusHomology.fourTorusSplit.symm
         (integralSingularHomologyMap 2
           (circleProductMap (standardThreeTorusCoordinateCircle i))
           (integralSingularHomologyMap 2 circleProdStandardCircleHomeomorph.symm

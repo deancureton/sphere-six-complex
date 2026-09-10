@@ -75,7 +75,7 @@ homology functional. -/
 public theorem cuspMeridianSourceCircleMap_fiber_homology
     (x : PeriodDomain) (z : IntegralSingularHomology 1 (AdditiveTorus x.1)) :
     StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
-        (integralSingularHomologyMap 1 (cuspMeridianSourceCircleMap x)
+        (integralSingularHomologyMap 1 (_root_.SphereSixComplex.cuspMeridianSourceCircleMap x)
           (integralSingularHomologyMap 1
             (finiteBouquetMappingTorusFiberInclusion
               (fun _ : Unit ↦ cuspFiberClutching x)) z)) =
@@ -83,7 +83,7 @@ public theorem cuspMeridianSourceCircleMap_fiber_homology
         (fullRankDomain x)).degreeOne z 0 := by
   rw [integralSingularHomologyMap_comp_wang]
   have hmaps :
-      (cuspMeridianSourceCircleMap x).comp
+      (_root_.SphereSixComplex.cuspMeridianSourceCircleMap x).comp
           (finiteBouquetMappingTorusFiberInclusion
             (fun _ : Unit ↦ cuspFiberClutching x)) =
         cuspFiberTwelveFirstCoordinate x := by
@@ -96,7 +96,7 @@ public theorem cuspMeridianSourceCircleMap_fiber_homology
 public theorem cuspMeridianSourceCircleMap_fiberBasisValues (x : PeriodDomain) :
     (fun i : Fin 4 ↦
       StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
-        (integralSingularHomologyMap 1 (cuspMeridianSourceCircleMap x)
+        (integralSingularHomologyMap 1 (_root_.SphereSixComplex.cuspMeridianSourceCircleMap x)
           (integralSingularHomologyMap 1
             (finiteBouquetMappingTorusFiberInclusion
               (fun _ : Unit ↦ cuspFiberClutching x))

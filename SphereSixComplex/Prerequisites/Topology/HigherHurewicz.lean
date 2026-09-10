@@ -53,7 +53,7 @@ public theorem homotopyGroupMap_mk
 
 /-- The construction contract for the classical natural higher Hurewicz homomorphism. -/
 public structure Hurewicz.Map where
-  homomorphism :
+  hom :
     ∀ (n : ℕ) [Nontrivial (Fin n)]
       (X : Type) [TopologicalSpace X] (x : X),
       Additive (HomotopyGroup.Pi n X x) →+ IntegralSingularHomology n X
@@ -61,15 +61,15 @@ public structure Hurewicz.Map where
     ∀ (n : ℕ) [Nontrivial (Fin n)]
       {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
       (f : C(X, Y)) (x : X) (a : Additive (HomotopyGroup.Pi n X x)),
-      homomorphism n Y (f x)
+      hom n Y (f x)
           (Additive.ofMul (homotopyGroupMap f x (Additive.toMul a))) =
-        integralSingularHomologyMap n f (homomorphism n X x a)
+        integralSingularHomologyMap n f (hom n X x a)
 public theorem Hurewicz.Map.eq_of_genLoop_coe_eq
     (H : Hurewicz.Map) (n : ℕ) [Nontrivial (Fin n)]
     (X : Type) [TopologicalSpace X] {x y : X}
     (p : Ω^ (Fin n) X x) (q : Ω^ (Fin n) X y) (h : p.1 = q.1) :
-    H.homomorphism n X x (Additive.ofMul ⟦p⟧) =
-      H.homomorphism n X y (Additive.ofMul ⟦q⟧) := by
+    H.hom n X x (Additive.ofMul ⟦p⟧) =
+      H.hom n X y (Additive.ofMul ⟦q⟧) := by
   have hxy : x = y := by
     have hb : (fun _ : Fin n ↦ (0 : I)) ∈ Cube.boundary (Fin n) :=
       ⟨Classical.arbitrary (Fin n), Or.inl rfl⟩
@@ -86,7 +86,7 @@ public theorem Hurewicz.Map.sphere_realization
     (a : Additive (HomotopyGroup.Pi n X x)) :
     ∃ f : C((TopCat.sphere n : Type), X),
       ∃ s : IntegralSingularHomology n (TopCat.sphere n : Type),
-        integralSingularHomologyMap n f s = H.homomorphism n X x a := by
+        integralSingularHomologyMap n f s = H.hom n X x a := by
   obtain ⟨p, hp⟩ := Quotient.exists_rep (Additive.toMul a)
   have ha : a = Additive.ofMul ⟦p⟧ := congrArg Additive.ofMul hp.symm
   rw [ha]
@@ -101,7 +101,7 @@ public theorem Hurewicz.Map.sphere_realization
       rw [cubicalSphereMk_eq_basepoint_of_mem_boundary hz]⟩
   let f : C((TopCat.sphere n : Type), X) :=
     (genLoopToCubicalSphereMap p).comp ⟨e.symm, e.symm.continuous⟩
-  refine ⟨f, H.homomorphism n _ b (Additive.ofMul ⟦q⟧), ?_⟩
+  refine ⟨f, H.hom n _ b (Additive.ofMul ⟦q⟧), ?_⟩
   rw [← H.naturality]
   apply H.eq_of_genLoop_coe_eq
   ext z
@@ -117,7 +117,7 @@ public def Hurewicz.IsIsoInRange (H : Hurewicz.Map) : Prop :=
     (X : Type) [TopologicalSpace X] [PathConnectedSpace X] (x : X),
     letI : Nontrivial (Fin n) := Fin.nontrivial_iff_two_le.mpr hn
     (∀ k : ℕ, 0 < k → k < n → Subsingleton (HomotopyGroup.Pi k X x)) →
-      Function.Bijective (H.homomorphism n X x)
+      Function.Bijective (H.hom n X x)
 
 private theorem homotopyGroupPiOne_subsingleton
     (X : Type) [TopologicalSpace X] [SimplyConnectedSpace X] (x : X) :

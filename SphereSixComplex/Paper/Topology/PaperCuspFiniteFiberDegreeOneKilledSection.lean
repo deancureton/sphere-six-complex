@@ -27,7 +27,7 @@ open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open SphereSixComplex.Topology
-open SphereSixComplex.Topology.EstablishedFirstHurewicz
+open Hurewicz
 
 variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
@@ -47,7 +47,7 @@ public noncomputable def cuspBoundaryMeridianHomologyClass
     U.boundarySimplyConnected
   let _ : PathConnectedSpace (puncturedLocalCuspQuotient W) :=
     U.boundaryQuotient.surjective.pathConnectedSpace U.boundaryProjection.continuous
-  exact (establishedFirstHurewiczData _ (T.boundaryProjection T.base)).equiv
+  exact (abelianizationComparison _ (T.boundaryProjection T.base)).equiv
     (Additive.ofMul (Abelianization.of U.fundamentalGroupData.meridian))
 
 /-- The actual toric cusp filling kills the angular meridian in first homology. -/
@@ -82,7 +82,7 @@ public theorem puncturedLocalCuspToFilling_cuspBoundaryMeridianHomologyClass
         U.fundamentalGroupData.meridian)) = 0
     rw [hpi]
     rfl
-  have hnat := establishedFirstHurewiczData_naturality T.coverMap.baseMap
+  have hnat := abelianizationComparison_naturality T.coverMap.baseMap
     (T.boundaryProjection T.base)
     (Additive.ofMul (Abelianization.of U.fundamentalGroupData.meridian))
   rw [hab, map_zero] at hnat
@@ -153,7 +153,7 @@ public theorem cuspBoundaryAngularHomologyCoordinate_meridian
     rw [he, abelianizationMulOppositeEquiv_of_op]
   change cuspDeckAngularAbelianizationCoordinate
       (hOne.symm
-        ((establishedFirstHurewiczData _ (T.boundaryProjection T.base)).equiv
+        ((abelianizationComparison _ (T.boundaryProjection T.base)).equiv
           (Additive.ofMul (Abelianization.of U.fundamentalGroupData.meridian)))) = 1
   rw [← hdeck]
   change cuspDeckAngularAbelianizationCoordinate

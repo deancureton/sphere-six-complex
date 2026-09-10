@@ -29,7 +29,7 @@ open SphereSixComplex.Geometry.EllipticFamilySpecialization
 open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open SphereSixComplex.Topology
-open SphereSixComplex.Topology.EstablishedFirstHurewicz
+open Hurewicz
 
 variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
@@ -110,16 +110,16 @@ private theorem integralSingularHomologyMap_const_eq_zero
     (y : Y) (x : IntegralSingularHomology 1 X) :
     integralSingularHomologyMap 1 (ContinuousMap.const X y) x = 0 := by
   let b := Classical.choice (PathConnectedSpace.nonempty : Nonempty X)
-  let H := Topology.EstablishedFirstHurewicz.establishedFirstHurewiczData X b
+  let H := abelianizationComparison X b
   obtain ⟨a, rfl⟩ := H.equiv.surjective x
-  obtain ⟨p, rfl⟩ := Topology.EstablishedFirstHurewicz.loopClass_surjective a
+  obtain ⟨p, rfl⟩ := loopClass_surjective a
   rw [H.equiv_loopClass]
   rw [StandardCircleHomologyLiftDegree.integralSingularHomologyMap_loopHomologyClass]
   have hp : p.map (ContinuousMap.const X y).continuous = Path.refl y := by
     ext t
     rfl
   rw [hp]
-  exact Topology.FirstHurewiczProof.loopHomologyClass_refl
+  exact Chains.loopHomologyClass_refl
     ((ContinuousMap.const X y) b)
 
 /-- The circle-valued angular coordinate kills degree-one homology carried by the marked
@@ -246,16 +246,16 @@ private noncomputable def cuspBoundaryAngularCoverMapData
 private theorem unitCircleWinding_firstHurewicz
     (a : FundamentalGroup UnitAddCircle 0) :
     StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
-        ((Topology.EstablishedFirstHurewicz.establishedFirstHurewiczData
+        ((abelianizationComparison
           UnitAddCircle 0).equiv
           (Additive.ofMul (Abelianization.of a))) =
       (StandardCircleHomologyLiftDegree.unitCircleFundamentalGroupEquiv a).toAdd := by
   obtain ⟨p, rfl⟩ := Path.Homotopic.Quotient.mk_surjective a
   change StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
-      ((Topology.EstablishedFirstHurewicz.establishedFirstHurewiczData
+      ((abelianizationComparison
         UnitAddCircle 0).equiv
-        (Topology.EstablishedFirstHurewicz.loopClass p)) = _
-  rw [(Topology.EstablishedFirstHurewicz.establishedFirstHurewiczData
+        (loopClass p)) = _
+  rw [(abelianizationComparison
     UnitAddCircle 0).equiv_loopClass]
   rw [StandardCircleHomologyLiftDegree.unitCircleHomologyWinding_loop]
   rw [StandardCircleHomologyLiftDegree.basedLoopWinding_loop]
@@ -321,16 +321,16 @@ private theorem unitCircleWinding_map_firstHurewicz
     (a : FundamentalGroup X b) :
     StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
         (integralSingularHomologyMap 1 f
-          ((Topology.EstablishedFirstHurewicz.establishedFirstHurewiczData X b).equiv
+          ((abelianizationComparison X b).equiv
             (Additive.ofMul (Abelianization.of a)))) =
       (StandardCircleHomologyLiftDegree.unitCircleFundamentalGroupEquiv
         (FundamentalGroup.mapOfEq f h a)).toAdd := by
   obtain ⟨p, rfl⟩ := Path.Homotopic.Quotient.mk_surjective a
   change StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
       (integralSingularHomologyMap 1 f
-        ((Topology.EstablishedFirstHurewicz.establishedFirstHurewiczData X b).equiv
-          (Topology.EstablishedFirstHurewicz.loopClass p))) = _
-  rw [(Topology.EstablishedFirstHurewicz.establishedFirstHurewiczData X b).equiv_loopClass]
+        ((abelianizationComparison X b).equiv
+          (loopClass p))) = _
+  rw [(abelianizationComparison X b).equiv_loopClass]
   rw [StandardCircleHomologyLiftDegree.integralSingularHomologyMap_loopHomologyClass]
   rw [← StandardCircleHomologyLiftDegree.loopHomologyClass_cast
     (p.map f.continuous) h.symm]
@@ -386,10 +386,10 @@ private theorem cuspBoundaryAngularHomologyCoordinate_eq_neg_winding
         (cuspBoundaryBasedAngularCircleMap W U.base)
           (hOne (Additive.ofMul (Abelianization.of g))))
     rw [show hOne (Additive.ofMul (Abelianization.of g)) =
-        (Topology.EstablishedFirstHurewicz.establishedFirstHurewiczData _
+        (abelianizationComparison _
           (T.boundaryProjection T.base)).equiv
           (Additive.ofMul (Abelianization.of γ)) by
-      change (Topology.EstablishedFirstHurewicz.establishedFirstHurewiczData _
+      change (abelianizationComparison _
           (T.boundaryProjection T.base)).equiv
             (deckAbelianPi1EquivOfFundamentalGroupEquivOpposite
               (T.boundaryProjection T.base) e

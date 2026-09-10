@@ -39,11 +39,11 @@ public structure RadialEllipticActionData
     Continuous (actionData.representation g)
   radial_equivariant : ∀ (g : FiniteCyclic m) (s : unitInterval)
     (p : ComplexUnitDisc × T),
-    (discRadialHomotopy
+    (ComplexDisc.radialHomotopy
         (s, (actionMap actionData.diagonalAction g p).1),
       (actionMap actionData.diagonalAction g p).2) =
       actionMap actionData.diagonalAction g
-        (discRadialHomotopy (s, p.1), p.2)
+        (ComplexDisc.radialHomotopy (s, p.1), p.2)
 
 /-- Scalar disc rotation is exactly the condition needed for radial equivariance of the diagonal
 finite-cyclic action. -/
@@ -60,24 +60,24 @@ finite-cyclic action. -/
   representation_continuous := hcontinuous
   radial_equivariant := by
     intro g s p
-    change (discRadialHomotopy (s, (D.representation g p).1),
+    change (ComplexDisc.radialHomotopy (s, (D.representation g p).1),
         (D.representation g p).2) =
-      D.representation g (discRadialHomotopy (s, p.1), p.2)
+      D.representation g (ComplexDisc.radialHomotopy (s, p.1), p.2)
     rw [cyclic_eq_generator_pow g, map_pow,
       D.representation_generator]
-    change (discRadialHomotopy
+    change (ComplexDisc.radialHomotopy
         (s, ((D.diagonalGenerator ^ (Multiplicative.toAdd g).val) p).1),
       ((D.diagonalGenerator ^ (Multiplicative.toAdd g).val) p).2) =
       (D.diagonalGenerator ^ (Multiplicative.toAdd g).val)
-        (discRadialHomotopy (s, p.1), p.2)
+        (ComplexDisc.radialHomotopy (s, p.1), p.2)
     rw [D.diagonalGenerator_pow_apply, D.diagonalGenerator_pow_apply]
     apply Prod.ext
-    · change discRadialHomotopy
+    · change ComplexDisc.radialHomotopy
           (s, (D.rotation ^ (Multiplicative.toAdd g).val) p.1) =
         (D.rotation ^ (Multiplicative.toAdd g).val)
-          (discRadialHomotopy (s, p.1))
+          (ComplexDisc.radialHomotopy (s, p.1))
       rw [hrotation]
-      exact discRadialHomotopy_discScalarEquiv_pow lambda hlambda _ s p.1
+      exact ComplexDisc.radialHomotopy_rotation_pow lambda hlambda _ s p.1
     · rfl
 
 namespace RadialEllipticActionData
@@ -101,8 +101,8 @@ public abbrev FillingQuotient :=
 /-- The radial strong deformation homotopy on the fixed product. -/
 @[expose] public def homotopy :
     ContinuousMap.Homotopy (ContinuousMap.id D.Product) D.retract where
-  toFun p := (discRadialHomotopy (p.1, p.2.1), p.2.2)
-  continuous_toFun := discRadialHomotopy_continuous.comp
+  toFun p := (ComplexDisc.radialHomotopy (p.1, p.2.1), p.2.2)
+  continuous_toFun := ComplexDisc.continuous_radialHomotopy.comp
       (continuous_fst.prodMk (continuous_fst.comp continuous_snd)) |>.prodMk
     (continuous_snd.comp continuous_snd)
   map_zero_left p := by simp
@@ -124,8 +124,8 @@ public theorem homotopy_fixed (s : unitInterval) (p : D.Product)
   rcases p with ⟨w, x⟩
   change w = ComplexUnitDisc.center at hp
   subst w
-  change (discRadialHomotopy (s, ComplexUnitDisc.center), x) = (ComplexUnitDisc.center, x)
-  rw [discRadialHomotopy_center]
+  change (ComplexDisc.radialHomotopy (s, ComplexUnitDisc.center), x) = (ComplexUnitDisc.center, x)
+  rw [ComplexDisc.radialHomotopy_center]
 
 public theorem retract_equivariant (g : FiniteCyclic m) (p : D.Product) :
     D.retract (actionMap D.actionData.diagonalAction g p) =
@@ -444,7 +444,7 @@ fixed product. -/
     (Homeomorph.setCongr C.source_eq_univ.symm) |>.trans
     C.gluing.toHomeomorphSourceTarget |>.trans
     (Homeomorph.setCongr C.target_eq_ball) |>.trans
-    (radialProductBallHomeomorph C.radius_pos C.radius_lt_one)
+    (ComplexDisc.productBallHomeomorph C.radius_pos C.radius_lt_one)
 
 end RadialWholeFillingChart
 

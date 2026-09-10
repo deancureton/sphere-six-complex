@@ -43,7 +43,7 @@ public theorem cuspDegreeOneUnionCoordinates_of_fullIterate
     (x : IntegralSingularHomology 1 (A.openEmbeddingStarData.collarSource 0)) :
     R.homologyAlignment.actualHomologyCoordinates.normalizedUnionHomologyOneEquiv
       (cuspToEllipticUnionHomology R.twoDiscCover 1 x) 0 =
-      actualCuspEllipticDegreeOneRawCoordinate (A.actualCuspRawHomologyOneEquiv x) := by
+      actualCuspEllipticDegreeOneRawCoordinate (A.cuspRawHomologyOneEquiv x) := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   have hx := DFunLike.congr_fun (cuspDegreeOneMappingTorusCoordinates_of_fullIterate R h)

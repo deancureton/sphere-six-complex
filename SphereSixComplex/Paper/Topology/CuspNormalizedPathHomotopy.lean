@@ -10,7 +10,7 @@ open SphereSixComplex SphereSixComplex.Topology GlobalTorusFamily TriangleGroup
 public theorem actualCuspPositiveWhisker_class (A : PaperAnalyticData) :
     Path.Homotopic.Quotient.mk
       (A.actualCuspMarkedCentralWhisker.trans
-        (A.actualCuspAngularCentralLoop.symm.trans
+        (A.cuspAngularCentralLoop.symm.trans
           A.actualCuspMarkedCentralWhisker.symm)) =
       A.markedOneCentralMeridianClass * A.markedZeroCentralMeridianClass := by
   have h := congrArg (fun x : FundamentalGroup A.CentralFamily
@@ -63,7 +63,7 @@ public theorem centralFamilyCoordinate_markedOne (A : PaperAnalyticData) :
 
 public theorem actualCuspPositiveWhisker_coordinate_homotopy (A : PaperAnalyticData) :
     (((A.actualCuspMarkedCentralWhisker.trans
-      (A.actualCuspAngularCentralLoop.symm.trans A.actualCuspMarkedCentralWhisker.symm)).map
+      (A.cuspAngularCentralLoop.symm.trans A.actualCuspMarkedCentralWhisker.symm)).map
         A.centralFamilyCoordinate_continuous).cast
           A.sectionSevenAffineMarkedCentralCoordinate_base.symm
           A.sectionSevenAffineMarkedCentralCoordinate_base.symm).Homotopic
@@ -88,14 +88,14 @@ public theorem normalizedWhiskeredCuspRegularPath_projects (A : PaperAnalyticDat
     A.regularCoordinate (A.normalizedWhiskeredCuspRegularPath t) =
       A.centralFamilyCoordinate
         ((A.actualCuspMarkedCentralWhisker.trans
-          (A.actualCuspAngularCentralLoop.symm.trans
+          (A.cuspAngularCentralLoop.symm.trans
             A.actualCuspMarkedCentralWhisker.symm)) t) := by
   simp only [normalizedWhiskeredCuspRegularPath, Path.trans_apply, Path.map_coe,
     Path.symm_apply, Function.comp_apply]
   split_ifs <;>
     simp only [A.sectionSevenAffineNormalizedCuspPath_projects,
       A.normalizedCuspPositiveRegularPath_projects, A.regularCoordinate_sourceEquiv,
-      actualCuspAngularCoordinateLoop, Path.symm_apply, Path.map_coe, Function.comp_apply]
+      cuspAngularCoordinateLoop, Path.symm_apply, Path.map_coe, Function.comp_apply]
 
 public theorem normalizedMeridianPairRegularPath_projects (A : PaperAnalyticData)
     (t : unitInterval) :
@@ -118,7 +118,7 @@ public theorem normalizedWhiskeredCuspRegularPath_homotopic_meridianPair
   have h := A.actualCuspPositiveWhisker_coordinate_homotopy
   change ContinuousMap.HomotopicRel
     ((A.actualCuspMarkedCentralWhisker.trans
-      (A.actualCuspAngularCentralLoop.symm.trans A.actualCuspMarkedCentralWhisker.symm)).map
+      (A.cuspAngularCentralLoop.symm.trans A.actualCuspMarkedCentralWhisker.symm)).map
         A.centralFamilyCoordinate_continuous).toContinuousMap
     (twicePuncturedClockwiseZeroMeridian.trans twicePuncturedClockwiseOneMeridian).toContinuousMap
     {0, 1} at h

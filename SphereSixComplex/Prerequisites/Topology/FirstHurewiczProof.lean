@@ -16,10 +16,10 @@ noncomputable section
 open AlgebraicTopology CategoryTheory CategoryTheory.Limits Topology
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Topology.FirstHurewiczProof
+namespace SphereSixComplex.Hurewicz.Chains
 
 open SphereSixComplex.StandardCircleHomologyLiftDegree
-open SphereSixComplex.Topology.EstablishedFirstHurewicz
+open Hurewicz
 
 def simplexCoordinate (n : ℕ) (i : Fin (n + 1)) : C(Simplex n, unitInterval) where
   toFun s := ⟨s i, stdSimplex.zero_le s i, stdSimplex.le_one s i⟩
@@ -915,10 +915,10 @@ theorem firstHurewiczEquiv_loopClass {X : Type} [TopologicalSpace X]
     firstHurewiczEquiv b (loopClass p) = loopHomologyClass p :=
   hurewiczMap_loopClass b p
 
-public def establishedFirstHurewiczData_proof
+public def abelianizationComparison
     (X : Type) [TopologicalSpace X] (b : X) [PathConnectedSpace X] :
-    FirstHurewiczData X b where
+    AbelianizationComparison X b where
   equiv := firstHurewiczEquiv b
   equiv_loopClass := firstHurewiczEquiv_loopClass b
 
-end SphereSixComplex.Topology.FirstHurewiczProof
+end SphereSixComplex.Hurewicz.Chains

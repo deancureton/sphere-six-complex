@@ -172,7 +172,7 @@ private theorem specializationHomologyOneMap_eq_projection (A : PaperAnalyticDat
   apply AddMonoidHom.ext
   intro x
   have hx :=
-    WangHomologyPresentation.map_eq_correctedSection_coinvariant P
+    P.map_eq_correctedSection_coinvariant
       S.degreeOne c f
     hc x
   change f x = _
@@ -318,22 +318,22 @@ public noncomputable def actualCuspCollarRadialMappingTorusRealization :
   monodromyCoordinates := A.actualCuspRadialClutchingData.monodromyCoordinates
 
 /-- Raw geometrically split coordinates on the actual cusp collar. -/
-public noncomputable def actualCuspRawHomologyOneEquiv :
+public noncomputable def cuspRawHomologyOneEquiv :
     IntegralSingularHomology 1 (A.openEmbeddingStarData.collarSource 0) ≃+ (Fin 3 → ℤ) := by
   exact A.actualCuspRadialClutchingData.geometricHomologyOneEquiv
 
-public noncomputable def actualCuspRawHomologyTwoEquiv :
+public noncomputable def cuspRawHomologyTwoEquiv :
     IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0) ≃+ (Fin 6 → ℤ) := by
   exact A.actualCuspRadialClutchingData.geometricHomologyTwoEquiv
 
 /-- The actual cusp collar bases normalized for the final Section 7 attachment. -/
 public noncomputable def actualCuspSectionSevenHomologyOneEquiv :
     IntegralSingularHomology 1 (A.openEmbeddingStarData.collarSource 0) ≃+ (Fin 3 → ℤ) :=
-  A.actualCuspRawHomologyOneEquiv.trans cuspSectionSevenOneCoordinateChange
+  A.cuspRawHomologyOneEquiv.trans cuspSectionSevenOneCoordinateChange
 
 public noncomputable def actualCuspSectionSevenHomologyTwoEquiv :
     IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0) ≃+ (Fin 6 → ℤ) :=
-  A.actualCuspRawHomologyTwoEquiv.trans cuspSectionSevenTwoCoordinateChange
+  A.cuspRawHomologyTwoEquiv.trans cuspSectionSevenTwoCoordinateChange
 
 /-- Replace only the cusp fields of any local basis package by the controlled geometric bases. -/
 public noncomputable def withActualGeometricCuspBases
@@ -390,7 +390,7 @@ public theorem actualCuspFillingInclusionCoordinates
               puncturedLocalCuspToFilling_continuous A.starCuspWitness⟩ x) = _
     rw [EstablishedStandardA2CuspSpecialization.degreeOne A x]
     exact cuspSectionSevenOneCoordinateChange_specialization
-      (A.actualCuspRawHomologyOneEquiv x)
+      (A.cuspRawHomologyOneEquiv x)
   degreeTwo x := by
     change A.actualCuspFillingHomologyTwoEquiv
           (integralSingularHomologyMap 2
@@ -398,7 +398,7 @@ public theorem actualCuspFillingInclusionCoordinates
               puncturedLocalCuspToFilling_continuous A.starCuspWitness⟩ x) = _
     exact (EstablishedStandardA2CuspSpecialization.degreeTwo A x).trans
       (cuspSectionSevenTwoCoordinateChange_specialization
-        (A.actualCuspRawHomologyTwoEquiv x))
+        (A.cuspRawHomologyTwoEquiv x))
 
 end Geometry.PaperAnalyticData
 

@@ -29,14 +29,14 @@ public def CanonicalCuspWangBoundaryInvariantResidual
     (R : A.SectionSevenAffineRadialCompletionInput) : Prop :=
   R.twoDiscCover.canonicalCuspFiberToBandHomologyOne
       (actualCuspWangBoundaryHom A
-        (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) =
+        (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) =
     R.twoDiscCover.cuspPulledBackBoundaryHom
-      (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) ∧
+      (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) ∧
   R.twoDiscCover.canonicalCuspFiberToBandHomologyOne
       (actualCuspWangBoundaryHom A
-        (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) =
+        (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) =
     R.twoDiscCover.cuspPulledBackBoundaryHom
-      (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))
+      (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))
 
 /-- The two invariant-basis comparisons imply the complete canonical Wang boundary square. -/
 public theorem canonicalCuspWangBoundaryNaturality_of_invariantResidual
@@ -45,13 +45,13 @@ public theorem canonicalCuspWangBoundaryNaturality_of_invariantResidual
     R.twoDiscCover.CanonicalCuspWangBoundaryNaturality := by
   rw [CanonicalCuspWangBoundaryNaturality]
   apply SphereSixComplex.addMonoidHom_ext_of_equiv_pi_single_one
-    A.actualCuspRawHomologyTwoEquiv
+    A.cuspRawHomologyTwoEquiv
   intro i
   change R.twoDiscCover.canonicalCuspFiberToBandHomologyOne
       (actualCuspWangBoundaryHom A
-        (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1))) =
+        (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1))) =
     R.twoDiscCover.cuspPulledBackBoundaryHom
-      (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i 1))
+      (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1))
   by_cases hi : i.val < 4
   · let j : Fin 4 := ⟨i.val, hi⟩
     have hij : Fin.castAdd 2 j = i := Fin.ext rfl
@@ -60,7 +60,7 @@ public theorem canonicalCuspWangBoundaryNaturality_of_invariantResidual
       R.twoDiscCover.cuspPulledBackBoundaryHom_eq_comp]
     change _ = R.twoDiscCover.cuspCoverIntersectionToEllipticBandHomologyOne
       (R.twoDiscCover.cuspOpenCoverConnectingHom
-        (A.actualCuspRawHomologyTwoEquiv.symm
+        (A.cuspRawHomologyTwoEquiv.symm
           (Pi.single (Fin.castAdd 2 j) 1)))
     rw [cuspOpenCoverConnectingHom_rawBasis_castAdd_eq_zero]
     simp

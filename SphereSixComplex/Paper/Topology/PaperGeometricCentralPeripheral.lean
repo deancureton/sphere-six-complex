@@ -57,7 +57,7 @@ public theorem actualCuspAffineBridgeMeridian_eq_angularProjectedLoop :
         A.actualCuspChosenAffineFillingCover.meridian =
       fundamentalGroupElementOfBaseEq
         A.actualCuspChosenAffineFillingCover_boundaryBase_eq
-        (Path.Homotopic.Quotient.mk A.actualCuspAngularProjectedLoop) := by
+        (Path.Homotopic.Quotient.mk A.cuspAngularProjectedLoop) := by
   let W := A.starCuspWitness
   let _ := paperCuspBoundaryDeckAction W
   let _ : SimplyConnectedSpace
@@ -71,13 +71,13 @@ public theorem actualCuspAffineBridgeMeridian_eq_angularProjectedLoop :
   apply congrArg
     (fundamentalGroupElementOfBaseEq
       A.actualCuspChosenAffineFillingCover_boundaryBase_eq)
-  exact A.actualCuspAngularProjectedLoop_class_eq_ofDeck.symm
+  exact A.cuspAngularProjectedLoop_class_eq_ofDeck.symm
 
 /-- The filling's chosen cusp meridian is represented by the literal angular path after applying
 the actual central collar chart. -/
 public theorem actualCuspCentralMeridian_eq_angularLoop :
     A.actualCuspCentralMeridian =
-      Path.Homotopic.Quotient.mk A.actualCuspAngularCentralLoop := by
+      Path.Homotopic.Quotient.mk A.cuspAngularCentralLoop := by
   rw [actualCuspCentralMeridian,
     A.actualCuspAffineBridgeMeridian_eq_angularProjectedLoop]
   unfold actualCuspOverlapToCentralPiOne
@@ -90,11 +90,11 @@ public theorem actualCuspCentralMeridian_eq_angularLoop :
     rfl
   calc
     _ = FundamentalGroup.mapOfEq A.actualCuspOverlapToCentral hsource
-          (Path.Homotopic.Quotient.mk A.actualCuspAngularProjectedLoop) :=
+          (Path.Homotopic.Quotient.mk A.cuspAngularProjectedLoop) :=
       mapOfEq_fundamentalGroupElementOfBaseEq
         A.actualCuspChosenAffineFillingCover_boundaryBase_eq
         A.actualCuspOverlapToCentral hsource rfl _
-    _ = Path.Homotopic.Quotient.mk A.actualCuspAngularCentralLoop := by
+    _ = Path.Homotopic.Quotient.mk A.cuspAngularCentralLoop := by
       rw [FundamentalGroup.mapOfEq_apply]
       apply congrArg Path.Homotopic.Quotient.mk
       apply Path.ext
@@ -133,11 +133,11 @@ public theorem actualCuspCentralMeridian_eq_geometricRhoProduct :
     A.geometricCentralRhoOne * A.geometricCentralRhoTwo at h
   have hwhisker :
       A.markedCentralToActualCuspEquiv.symm
-          (Path.Homotopic.Quotient.mk A.actualCuspAngularCentralLoop) =
+          (Path.Homotopic.Quotient.mk A.cuspAngularCentralLoop) =
         Path.Homotopic.Quotient.mk A.actualCuspMarkedCentralLoop := by
     rfl
   calc
-    Path.Homotopic.Quotient.mk A.actualCuspAngularCentralLoop =
+    Path.Homotopic.Quotient.mk A.cuspAngularCentralLoop =
         A.markedCentralToActualCuspEquiv
           (Path.Homotopic.Quotient.mk A.actualCuspMarkedCentralLoop) := by
       rw [← hwhisker,

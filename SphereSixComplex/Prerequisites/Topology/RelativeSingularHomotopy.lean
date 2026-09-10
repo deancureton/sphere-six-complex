@@ -2,7 +2,7 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.SingularPrismNaturality
 public import SphereSixComplex.Prerequisites.Topology.QuotientChainHomotopy
-public import SphereSixComplex.Prerequisites.Topology.CellularHomologyClassicalBoundary
+public import SphereSixComplex.Prerequisites.Topology.CellularHomology
 
 @[expose] public section
 noncomputable section

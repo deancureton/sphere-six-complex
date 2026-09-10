@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.EstablishedStrongDeformationRetracts
+public import SphereSixComplex.Prerequisites.Topology.StrongDeformationRetraction
 public import Mathlib.Analysis.Complex.Basic
 
 /-!

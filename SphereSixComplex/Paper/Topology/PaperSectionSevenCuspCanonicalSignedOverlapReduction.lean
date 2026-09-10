@@ -35,7 +35,7 @@ public noncomputable def actualCuspInvariantCoverBoundary
     (R : A.SectionSevenAffineRadialCompletionInput) (j : Fin 2) :
     CuspCoverIntersectionHomologyOne R :=
   R.twoDiscCover.cuspOpenCoverConnectingHom
-    (A.actualCuspRawHomologyTwoEquiv.symm
+    (A.cuspRawHomologyTwoEquiv.symm
       (Pi.single (Fin.natAdd 4 j) 1))
 
 /-- The canonical signed-overlap carrier.  Its last two coordinates are the two invariant
@@ -88,7 +88,7 @@ public theorem actualCuspCanonicalSignedOverlap_boundary
     (actualCuspCanonicalSignedOverlap R).comp (actualCuspWangBoundaryHom A) =
       R.twoDiscCover.cuspOpenCoverConnectingHom := by
   apply SphereSixComplex.addMonoidHom_ext_of_equiv_pi_single_one
-    A.actualCuspRawHomologyTwoEquiv
+    A.cuspRawHomologyTwoEquiv
   intro i
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology

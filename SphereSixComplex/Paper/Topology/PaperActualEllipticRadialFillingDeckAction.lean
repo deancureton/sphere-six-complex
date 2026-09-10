@@ -28,7 +28,7 @@ variable (A : PaperAnalyticData)
 /-- Reassociation of a disc-ball product as a radial product ball. -/
 public def complexDiscBallProductRadialHomeomorph
     {r : ℝ} {T : Type} [TopologicalSpace T] :
-    ComplexDiscBall r × T ≃ₜ RadialProductBall r T where
+    ComplexDiscBall r × T ≃ₜ ComplexDisc.ProductBall r T where
   toFun p := ⟨(p.1.1, p.2), p.1.2⟩
   invFun p := (⟨p.1.1, p.2⟩, p.1.2)
   left_inv _ := rfl
@@ -274,7 +274,7 @@ public noncomputable def orderThreeActualCoverToCanonicalRadialHomeomorph :
       A.starSeparation.orderThree.radius).trans
     ((complexDiscBallProductRadialHomeomorph
       (r := A.starSeparation.orderThree.radius) (T := ComplexTwoSpace)).trans
-      (radialProductBallHomeomorph A.starSeparation.orderThree.radius_pos
+      (ComplexDisc.productBallHomeomorph A.starSeparation.orderThree.radius_pos
         A.starSeparation.orderThree.radius_lt_one))
 
 public noncomputable def orderFourActualCoverToCanonicalRadialHomeomorph :
@@ -284,7 +284,7 @@ public noncomputable def orderFourActualCoverToCanonicalRadialHomeomorph :
       A.starSeparation.orderFour.radius).trans
     ((complexDiscBallProductRadialHomeomorph
       (r := A.starSeparation.orderFour.radius) (T := ComplexTwoSpace)).trans
-      (radialProductBallHomeomorph A.starSeparation.orderFour.radius_pos
+      (ComplexDisc.productBallHomeomorph A.starSeparation.orderFour.radius_pos
         A.starSeparation.orderFour.radius_lt_one))
 
 @[instance_reducible]

@@ -2,7 +2,7 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.CellularChainModel
 public import SphereSixComplex.Prerequisites.Topology.IntegralHomologyEuler
-public import SphereSixComplex.Prerequisites.Topology.FiniteClassicalCWModel
+public import SphereSixComplex.Prerequisites.Topology.FiniteCWModel
 public import SphereSixComplex.Prerequisites.Topology.SectionSevenLocalEulerModelsProof
 
 @[expose] public section
@@ -65,7 +65,7 @@ public theorem integralHomologyFiniteSix (M : FiniteCWModelSix X) :
     let _ := M.t2
     let _ := M.cwComplex
     let _ := M.finite
-    let CM := EstablishedCellularHomology.integralCWCellularHomologyModel M.Carrier
+    let CM := CellularHomology.normalizedModel M.Carrier
     have hfin : Finite (Topology.CWComplex.cell (Set.univ : Set M.Carrier) k) :=
       Topology.CWComplex.FiniteType.finite_cell (C := (Set.univ : Set M.Carrier)) k
     have hX : Module.Finite ℤ (CM.chainComplex.X k) :=
@@ -108,7 +108,7 @@ end IntegralHomologyFiniteSix
 namespace FiniteCWModelSix
 
 /-- Forget the dimension bound on a finite CW model. -/
-public noncomputable def toFiniteCWModel {X : Type} [TopologicalSpace X]
+public noncomputable def toFiniteModel {X : Type} [TopologicalSpace X]
     (M : FiniteCWModelSix X) : CWType.FiniteModel X where
   Carrier := M.Carrier
   topology := M.topology
@@ -118,8 +118,8 @@ public noncomputable def toFiniteCWModel {X : Type} [TopologicalSpace X]
   finite := M.finite
 
 @[simp]
-public theorem toFiniteCWModel_cellCount {X : Type} [TopologicalSpace X]
-    (M : FiniteCWModelSix X) (n : ℕ) : M.toFiniteCWModel.cellCount n = M.cellCount n := rfl
+public theorem toFiniteModel_cellCount {X : Type} [TopologicalSpace X]
+    (M : FiniteCWModelSix X) (n : ℕ) : M.toFiniteModel.cellCount n = M.cellCount n := rfl
 
 end FiniteCWModelSix
 

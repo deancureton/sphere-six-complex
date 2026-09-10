@@ -32,9 +32,9 @@ standard (noncanonically) split short exact sequence
 
 The `Nonempty` wrapper records that the splitting is not natural. -/
 public structure IntegralCohomology.UniversalCoefficients where
-  degreeZero : ∀ (X : Type) [TopologicalSpace X],
+  zeroEquiv : ∀ (X : Type) [TopologicalSpace X],
     IntegralSingularCohomology 0 X ≃+ (IntegralSingularHomology 0 X →+ ℤ)
-  positiveDegree : ∀ (X : Type) [TopologicalSpace X] (n : ℕ), 0 < n →
+  nonempty_pos : ∀ (X : Type) [TopologicalSpace X] (n : ℕ), 0 < n →
     Nonempty (IntegralSingularCohomology n X ≃+
       (IntegralCohomology.ExtOne (IntegralSingularHomology (n - 1) X) ×
         (IntegralSingularHomology n X →+ ℤ)))
@@ -68,7 +68,7 @@ public noncomputable def integralSingularCohomologyEquivDualOfPreviousFree
     have h := CategoryTheory.projective_iff_subsingleton_ext_one.mp
       (show Projective (ModuleCat.of ℤ (IntegralSingularHomology (n - 1) X)) from inferInstance)
     exact h (Y := ModuleCat.of ℤ ℤ)
-  exact Classical.choice (IntegralCohomology.universalCoefficients.positiveDegree X n hn) |>.trans
+  exact Classical.choice (IntegralCohomology.universalCoefficients.nonempty_pos X n hn) |>.trans
     (addEquivProdOfSubsingleton hExt)
 
 end SphereSixComplex

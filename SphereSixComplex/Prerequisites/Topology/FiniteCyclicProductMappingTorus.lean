@@ -8,21 +8,21 @@ public import Mathlib.Topology.Constructions
 noncomputable section
 open Set Topology
 open scoped ContinuousMap
-namespace SphereSixComplex.Topology.PaperAffineCyclicReducedFiberMappingTorus
+namespace SphereSixComplex.CyclicMappingTorus
 open Geometry Geometry.EquivariantQuotientHomeomorph
 open SphereSixComplex.CyclicAngularFundamentalDomain
 open SphereSixComplex.StandardTorusHomology
 
 /-- The standard four-torus split into its `gamma` circle and the remaining three-torus. -/
-public def standardFourTorusGammaSplit :
+public def _root_.SphereSixComplex.StandardTorusHomology.fourTorusSplit :
     StdTorus 4 ≃ₜ UnitAddCircle × StdTorus 3 where
   toEquiv := (Fin.consEquiv (fun _ : Fin 4 ↦ UnitAddCircle)).symm
   continuous_toFun := by fun_prop
   continuous_invFun := by fun_prop
 
 @[simp]
-public theorem standardFourTorusGammaSplit_apply (u : StdTorus 4) :
-    standardFourTorusGammaSplit u = (u 0, Fin.tail u) :=
+public theorem _root_.SphereSixComplex.StandardTorusHomology.fourTorusSplit_apply (u : StdTorus 4) :
+    fourTorusSplit u = (u 0, Fin.tail u) :=
   rfl
 
 /-! ## A normal affine cyclic quotient -/
@@ -315,4 +315,4 @@ public noncomputable def finiteCyclicOrbitQuotientCircleMappingTorusHomeomorph
       (normalizedAffineCyclicQuotientCircleMappingTorusHomeomorph phi hpow)
 
 end NonzeroOrder
-end SphereSixComplex.Topology.PaperAffineCyclicReducedFiberMappingTorus
+end SphereSixComplex.CyclicMappingTorus

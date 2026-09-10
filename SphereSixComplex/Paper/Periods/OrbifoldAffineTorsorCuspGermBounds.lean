@@ -10,9 +10,9 @@ noncomputable section
 open Filter Set SphereSixComplex.TriangleGroup
 open scoped Manifold
 
-namespace SphereSixComplex.Periods.OrbifoldAffineLineTorsorDescentProblem
+namespace SphereSixComplex.Periods.OrbifoldAffineDescentData
 
-public theorem cusp_difference_zpow_invariant (P : OrbifoldAffineLineTorsorDescentProblem)
+public theorem cusp_difference_zpow_invariant (P : OrbifoldAffineDescentData)
     (s : UpperHalfPlane → ℂ)
     (hs : ∀ z, s (fuchsianSourceAction g₀ • z) = P.affineCusp z (s z))
     (n : ℤ) (z : UpperHalfPlane) :
@@ -44,7 +44,7 @@ public theorem cusp_difference_zpow_invariant (P : OrbifoldAffineLineTorsorDesce
     exact h.symm
 
 public theorem cusp_difference_bounded_of_infinity_germ
-    (P : OrbifoldAffineLineTorsorDescentProblem) (s : UpperHalfPlane → ℂ)
+    (P : OrbifoldAffineDescentData) (s : UpperHalfPlane → ℂ)
     (hs : MDiff s)
     (hseq : ∀ z, s (fuchsianSourceAction g₀ • z) = P.affineCusp z (s z))
     (f : ℂ → ℂ) (hf : ContinuousAt f 0)
@@ -66,4 +66,4 @@ public theorem cusp_difference_bounded_of_infinity_germ
   rw [hz, norm_mul]
   exact mul_le_mul (hframe z hzc) hzg.le (norm_nonneg _) hB
 
-end SphereSixComplex.Periods.OrbifoldAffineLineTorsorDescentProblem
+end SphereSixComplex.Periods.OrbifoldAffineDescentData

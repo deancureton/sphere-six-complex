@@ -30,7 +30,7 @@ public noncomputable def gammaProductHomologyTwo :
 public theorem gammaProductHomologyTwo_apply (x) :
     gammaProductHomologyTwo x =
       naturalStdTorusFourHomologyTwo
-        (integralSingularHomologyMap 2 standardFourTorusGammaSplit.symm x) :=
+        (integralSingularHomologyMap 2 StandardTorusHomology.fourTorusSplit.symm x) :=
   standardCircleProdThreeTorusHomologyTwo_apply x
 
 private def orderThreeShearAsFourTorus : StdTorus 4 ≃ₜ StdTorus 4 where
@@ -88,7 +88,7 @@ private def orderThreeShearLift :
     funext i
     fin_cases i <;>
       simp [orderThreeShearAsFourTorus, orderThreeStandardGammaShear,
-        standardFourTorusGammaSplit, orderThreeShearReal, standardFourTorusProjection]
+        StandardTorusHomology.fourTorusSplit, orderThreeShearReal, standardFourTorusProjection]
     all_goals rw [← QuotientAddGroup.mk_nsmul]; congr 1 <;> norm_num
   map_integer n := by
     funext i
@@ -104,7 +104,7 @@ private def orderFourShearLift :
     funext i
     fin_cases i <;>
       simp [orderFourShearAsFourTorus, orderFourStandardGammaShear,
-        standardFourTorusGammaSplit, orderFourShearReal, standardFourTorusProjection]
+        StandardTorusHomology.fourTorusSplit, orderFourShearReal, standardFourTorusProjection]
     all_goals rw [← QuotientAddGroup.mk_nsmul]; congr 1 <;> norm_num
   map_integer n := by
     funext i
@@ -120,13 +120,13 @@ private theorem orderThreeShear_homologyTwo (x) :
     (orderThreeShearAsFourTorus : C(StdTorus 4, StdTorus 4))
     orderThreeShearInteger orderThreeShearLift).2 x
   have hmaps :
-      (standardFourTorusGammaSplit.symm : C(UnitAddCircle × StdTorus 3, StdTorus 4)).comp
+      (StandardTorusHomology.fourTorusSplit.symm : C(UnitAddCircle × StdTorus 3, StdTorus 4)).comp
           (orderThreeStandardGammaShear : C(StdTorus 4, UnitAddCircle × StdTorus 3)) =
         (orderThreeShearAsFourTorus : C(StdTorus 4, StdTorus 4)) := by
           ext u i
           fin_cases i <;> rfl
   have hcomp :
-      integralSingularHomologyMap 2 standardFourTorusGammaSplit.symm
+      integralSingularHomologyMap 2 StandardTorusHomology.fourTorusSplit.symm
           (integralSingularHomologyMap 2
             (orderThreeStandardGammaShear : C(StdTorus 4, UnitAddCircle × StdTorus 3)) x) =
         integralSingularHomologyMap 2
@@ -146,13 +146,13 @@ private theorem orderFourShear_homologyTwo (x) :
     (orderFourShearAsFourTorus : C(StdTorus 4, StdTorus 4))
     orderFourShearInteger orderFourShearLift).2 x
   have hmaps :
-      (standardFourTorusGammaSplit.symm : C(UnitAddCircle × StdTorus 3, StdTorus 4)).comp
+      (StandardTorusHomology.fourTorusSplit.symm : C(UnitAddCircle × StdTorus 3, StdTorus 4)).comp
           (orderFourStandardGammaShear : C(StdTorus 4, UnitAddCircle × StdTorus 3)) =
         (orderFourShearAsFourTorus : C(StdTorus 4, StdTorus 4)) := by
           ext u i
           fin_cases i <;> rfl
   have hcomp :
-      integralSingularHomologyMap 2 standardFourTorusGammaSplit.symm
+      integralSingularHomologyMap 2 StandardTorusHomology.fourTorusSplit.symm
           (integralSingularHomologyMap 2
             (orderFourStandardGammaShear : C(StdTorus 4, UnitAddCircle × StdTorus 3)) x) =
         integralSingularHomologyMap 2

@@ -20,7 +20,7 @@ open scoped Manifold
 
 noncomputable section
 
-namespace SphereSixComplex.Periods
+namespace SphereSixComplex.Periods.FuchsianAffineDescent
 
 open SphereSixComplex.TriangleGroup
 open SphereSixComplex.TriangleGroup.FuchsianTessellation
@@ -33,7 +33,7 @@ variable (F : ExactLiftedModularNegOneFrame E)
 
 /-- Every entire coefficient evaluated in the completed infinity coordinate is bounded on the
 fixed distinguished cusp component. -/
-public theorem ExactLiftedModularNegOneFrame.infinity_coordinate_cusp_bounded
+public theorem _root_.SphereSixComplex.Periods.ExactLiftedModularNegOneFrame.infinity_coordinate_cusp_bounded
     (_F : ExactLiftedModularNegOneFrame E) (f : ℂ → ℂ) (hf : MDiff f) :
     BoundedOn (fun z ↦ f ((E.sourceCoordinate.coordinate z)⁻¹))
       fuchsianCuspRegion := by
@@ -170,7 +170,7 @@ private theorem boundedOn_cusp_of_eventually_bounded
 
 /-- The eventual completed-cusp factorization and parabolic invariance imply boundedness on the
 whole distinguished cusp component. -/
-public theorem ExactLiftedModularNegOneFrame.infinity_frame_cusp_bounded :
+public theorem _root_.SphereSixComplex.Periods.ExactLiftedModularNegOneFrame.infinity_frame_cusp_bounded :
     BoundedOn (liftedNegOneInfinityFrame E F) fuchsianCuspRegion := by
   let K : Set ℂ := Metric.closedBall 0 (F.cuspRadius / 2)
   have hK : IsCompact K := isCompact_closedBall 0 (F.cuspRadius / 2)
@@ -220,7 +220,7 @@ private theorem bounded_comp_mul_of_bounded
 
 /-- The local cusp-unit theorem implies boundedness of every entire Cech correction on the fixed
 distinguished cusp component. -/
-public theorem ExactLiftedModularNegOneFrame.cusp_correction_bounded
+public theorem _root_.SphereSixComplex.Periods.ExactLiftedModularNegOneFrame.cusp_correction_bounded
     (f : ℂ → ℂ) (hf : MDiff f) :
     BoundedOn
       (fun z ↦ f ((E.sourceCoordinate.coordinate z)⁻¹) *
@@ -277,7 +277,7 @@ public theorem cuspLocalBeta_properties :
 
 /-- All finite cyclic algebraic consistency checks needed before applying affine-torsor descent.
 These are the computations in Propositions 3.11 and 3.13, independent of sheaf cohomology. -/
-public structure FuchsianAffineCycleCertificate where
+public structure CycleRelations where
   mu_one_closes : ∀ z mu,
     muAffineOne
         (tauOneStep (tauOneStep (E.modularParameter.tau z)))
@@ -300,8 +300,8 @@ public structure FuchsianAffineCycleCertificate where
       betaCocycleTwo (transformTwo (transformTwo (transformTwo x))) = 0
 
 /-- The explicit substitutions supply the complete finite-cycle certificate. -/
-public theorem establishedFuchsianAffineCycleCertificate :
-    FuchsianAffineCycleCertificate E where
+public theorem cycleRelations :
+    CycleRelations E where
   mu_one_closes := muAffineOne_closes E
   mu_two_closes := muAffineTwo_closes E
   beta_one_cycle := by
@@ -311,16 +311,16 @@ public theorem establishedFuchsianAffineCycleCertificate :
     intro z mu
     exact betaCocycleTwo_cycle _ (E.modularParameter.tau z).ne_zero
 
-@[expose] public def fuchsianMuAffineOne (z : UpperHalfPlane) (mu : ℂ) : ℂ :=
+@[expose] public def muAffineMapOne (z : UpperHalfPlane) (mu : ℂ) : ℂ :=
   (1 - mu) / E.modularParameter.tau z
 
-@[expose] public def fuchsianMuAffineTwo (z : UpperHalfPlane) (mu : ℂ) : ℂ :=
+@[expose] public def muAffineMapTwo (z : UpperHalfPlane) (mu : ℂ) : ℂ :=
   1 + mu / E.modularParameter.tau z
 
-@[expose] public def fuchsianMuLinearOne (z : UpperHalfPlane) : ℂ :=
+@[expose] public def muLinearOne (z : UpperHalfPlane) : ℂ :=
   -1 / E.modularParameter.tau z
 
-@[expose] public def fuchsianMuLinearTwo (z : UpperHalfPlane) : ℂ :=
+@[expose] public def muLinearTwo (z : UpperHalfPlane) : ℂ :=
   1 / E.modularParameter.tau z
 
 private theorem tau_coe_mdifferentiable :
@@ -358,20 +358,20 @@ private theorem tau_two_cube_coe (z : UpperHalfPlane) :
     tau_two_sq_coe E, tau_two_coe E]
 
 private theorem fuchsianMuAffine_product (z : UpperHalfPlane) (mu : ℂ) :
-    fuchsianMuAffineOne E (fuchsianSourceAction g₂ • z)
-        (fuchsianMuAffineTwo E z mu) = mu := by
-  rw [fuchsianMuAffineOne, fuchsianMuAffineTwo, tau_two_coe E]
+    muAffineMapOne E (fuchsianSourceAction g₂ • z)
+        (muAffineMapTwo E z mu) = mu := by
+  rw [muAffineMapOne, muAffineMapTwo, tau_two_coe E]
   simp only [tauTwoStep]
   field_simp [(E.modularParameter.tau z).ne_zero]
   ring
 
 /-- The explicit affine `mu` substitutions and local primitives satisfy every hypothesis of the
 general orbifold affine-torsor descent theorem. -/
-@[expose] public noncomputable def fuchsianMuDescentProblem :
-    OrbifoldAffineLineTorsorDescentProblem where
+@[expose] public noncomputable def muDescentData :
+    OrbifoldAffineDescentData where
   quotient := E.sourceCoordinate
-  affineOne := fuchsianMuAffineOne E
-  affineTwo := fuchsianMuAffineTwo E
+  affineOne := muAffineMapOne E
+  affineTwo := muAffineMapTwo E
   affineCusp := fun _ mu ↦ mu
   affineOne_holomorphic := by
     intro s hs
@@ -382,28 +382,28 @@ general orbifold affine-torsor descent theorem. -/
     exact mdifferentiable_const.add
       (hs.div (tau_coe_mdifferentiable E) (fun z ↦ (E.modularParameter.tau z).ne_zero))
   affineCusp_holomorphic := fun s hs ↦ hs
-  linearOne := fuchsianMuLinearOne E
-  linearTwo := fuchsianMuLinearTwo E
+  linearOne := muLinearOne E
+  linearTwo := muLinearTwo E
   affineOne_sub := by
     intro z u v
-    simp only [fuchsianMuAffineOne, fuchsianMuLinearOne]
+    simp only [muAffineMapOne, muLinearOne]
     field_simp [(E.modularParameter.tau z).ne_zero]
     ring
   affineTwo_sub := by
     intro z u v
-    simp only [fuchsianMuAffineTwo, fuchsianMuLinearTwo]
+    simp only [muAffineMapTwo, muLinearTwo]
     field_simp [(E.modularParameter.tau z).ne_zero]
     ring
   affineOne_cycle := by
     intro z mu
-    rw [fuchsianMuAffineOne, fuchsianMuAffineOne, fuchsianMuAffineOne,
+    rw [muAffineMapOne, muAffineMapOne, muAffineMapOne,
       tau_one_coe E, tau_one_sq_coe E]
-    exact (establishedFuchsianAffineCycleCertificate E).mu_one_closes z mu
+    exact (cycleRelations E).mu_one_closes z mu
   affineTwo_cycle := by
     intro z mu
-    rw [fuchsianMuAffineTwo, fuchsianMuAffineTwo, fuchsianMuAffineTwo,
-      fuchsianMuAffineTwo, tau_two_coe E, tau_two_sq_coe E, tau_two_cube_coe E]
-    exact (establishedFuchsianAffineCycleCertificate E).mu_two_closes z mu
+    rw [muAffineMapTwo, muAffineMapTwo, muAffineMapTwo,
+      muAffineMapTwo, tau_two_coe E, tau_two_sq_coe E, tau_two_cube_coe E]
+    exact (cycleRelations E).mu_two_closes z mu
   product_cusp := by
     intro z mu
     exact fuchsianMuAffine_product E z mu
@@ -418,22 +418,22 @@ general orbifold affine-torsor descent theorem. -/
   frameZero_one := by
     intro z
     rw [F.frame_one]
-    simp only [fuchsianMuLinearOne]
+    simp only [muLinearOne]
     ring
   frameZero_two := by
     intro z
     rw [F.frame_two]
-    simp only [fuchsianMuLinearTwo]
+    simp only [muLinearTwo]
     ring
   frameInfinity_one := by
     intro z _
     rw [liftedNegOneInfinityFrame_one E F]
-    simp only [fuchsianMuLinearOne]
+    simp only [muLinearOne]
     ring
   frameInfinity_two := by
     intro z _
     rw [liftedNegOneInfinityFrame_two E F]
-    simp only [fuchsianMuLinearTwo]
+    simp only [muLinearTwo]
     ring
   frameOrderOne := 2
   frameOrderTwo := 1
@@ -500,7 +500,7 @@ general orbifold affine-torsor descent theorem. -/
 
 /-- The exact modular frame supplies the full `O(-1)` frame portion of the paper's Cech
 presentation.  The only data still absent are affine local sections of the torsor. -/
-public structure MuAffineCechSections where
+public structure MuCechSections where
   sectionZero : UpperHalfPlane → ℂ
   sectionInfinity : UpperHalfPlane → ℂ
   sectionZero_holomorphic : MDiff sectionZero
@@ -529,8 +529,8 @@ public structure MuAffineCechSections where
 /-- Convert one concrete analytic descent certificate into the exact `mu` Cech sections consumed
 by the Fuchsian construction. -/
 @[expose] public def muAffineCechSectionsOfAnalyticDescentData
-    (A : (fuchsianMuDescentProblem E F).AnalyticDescentData) :
-    MuAffineCechSections E F := by
+    (A : (muDescentData E F).AnalyticDescentData) :
+    MuCechSections E F := by
   let S := A.toTwoChartSections
   refine {
     sectionZero := S.sectionZero
@@ -557,14 +557,14 @@ by the Fuchsian construction. -/
 /-- Analytic orbifold affine-torsor descent supplies the two exact `mu` chart sections from the
 explicit modular frame, finite-cycle certificate, elliptic primitives, and cusp primitive. -/
 public theorem exists_muAffineCechSections
-    (A : (fuchsianMuDescentProblem E F).AnalyticDescentData) :
-    Nonempty (MuAffineCechSections E F) :=
+    (A : (muDescentData E F).AnalyticDescentData) :
+    Nonempty (MuCechSections E F) :=
   ⟨muAffineCechSectionsOfAnalyticDescentData E F A⟩
 
 /-- Combining the independent modular-frame theorem with affine local triviality gives exactly the
 `mu` local data consumed by the Cech splitting theorem. -/
-@[expose] public noncomputable def MuAffineCechSections.toLocalData
-    (S : MuAffineCechSections E F) : MuTorsorCechLocalData E where
+@[expose] public noncomputable def MuCechSections.toLocalData
+    (S : MuCechSections E F) : MuTorsorCechLocalData E where
   zeroRegion := Set.univ
   infinityRegion := liftedInfinityRegion E
   zeroRegion_open := isOpen_univ
@@ -603,67 +603,67 @@ public theorem exists_muAffineCechSections
 /-- Exact affine local sections for the structure-sheaf `beta` torsor.  Unlike the modular frame
 above, this is not assumed as established input: it names the remaining application of general
 holomorphic affine-torsor local triviality. -/
-public structure BetaAffineCechSections (mu : UpperHalfPlane → ℂ) where
+public structure BetaCechSections (mu : UpperHalfPlane → ℂ) where
   data : BetaTorsorCechLocalData E mu
 
-@[expose] public def fuchsianBetaParameter
+@[expose] public def betaParameter
     (mu : UpperHalfPlane → ℂ) (z : UpperHalfPlane) : Parameters :=
   ⟨E.modularParameter.tau z, mu z, 0⟩
 
-@[expose] public def fuchsianBetaAffineOne
+@[expose] public def betaAffineMapOne
     (mu : UpperHalfPlane → ℂ) (z : UpperHalfPlane) (beta : ℂ) : ℂ :=
-  beta + betaCocycleOne (fuchsianBetaParameter E mu z)
+  beta + betaCocycleOne (betaParameter E mu z)
 
-@[expose] public def fuchsianBetaAffineTwo
+@[expose] public def betaAffineMapTwo
     (mu : UpperHalfPlane → ℂ) (z : UpperHalfPlane) (beta : ℂ) : ℂ :=
-  beta + betaCocycleTwo (fuchsianBetaParameter E mu z)
+  beta + betaCocycleTwo (betaParameter E mu z)
 
 @[expose] public def ellipticBetaOne
     (mu : UpperHalfPlane → ℂ) (z : UpperHalfPlane) : ℂ :=
-  localBetaOne (fuchsianBetaParameter E mu z)
+  localBetaOne (betaParameter E mu z)
 
 @[expose] public def ellipticBetaTwo
     (mu : UpperHalfPlane → ℂ) (z : UpperHalfPlane) : ℂ :=
-  localBetaTwo (fuchsianBetaParameter E mu z)
+  localBetaTwo (betaParameter E mu z)
 
 private theorem fuchsianBetaParameter_one_tau
     {mu : UpperHalfPlane → ℂ} (z : UpperHalfPlane) :
-    (fuchsianBetaParameter E mu (fuchsianSourceAction g₁ • z)).tau =
-      (transformOne (fuchsianBetaParameter E mu z)).tau := by
-  rw [fuchsianBetaParameter, fuchsianBetaParameter, transformOne_tau]
+    (betaParameter E mu (fuchsianSourceAction g₁ • z)).tau =
+      (transformOne (betaParameter E mu z)).tau := by
+  rw [betaParameter, betaParameter, transformOne_tau]
   exact tau_one_coe E z
 
 private theorem fuchsianBetaParameter_two_tau
     {mu : UpperHalfPlane → ℂ} (z : UpperHalfPlane) :
-    (fuchsianBetaParameter E mu (fuchsianSourceAction g₂ • z)).tau =
-      (transformTwo (fuchsianBetaParameter E mu z)).tau := by
-  rw [fuchsianBetaParameter, fuchsianBetaParameter, transformTwo_tau]
+    (betaParameter E mu (fuchsianSourceAction g₂ • z)).tau =
+      (transformTwo (betaParameter E mu z)).tau := by
+  rw [betaParameter, betaParameter, transformTwo_tau]
   exact tau_two_coe E z
 
 private theorem fuchsianBetaParameter_one_mu
     {mu : UpperHalfPlane → ℂ}
     (hmuOne : ∀ z, mu (fuchsianSourceAction g₁ • z) =
       (1 - mu z) / E.modularParameter.tau z) (z : UpperHalfPlane) :
-    (fuchsianBetaParameter E mu (fuchsianSourceAction g₁ • z)).mu =
-      (transformOne (fuchsianBetaParameter E mu z)).mu := by
-  rw [fuchsianBetaParameter, fuchsianBetaParameter, transformOne_mu]
+    (betaParameter E mu (fuchsianSourceAction g₁ • z)).mu =
+      (transformOne (betaParameter E mu z)).mu := by
+  rw [betaParameter, betaParameter, transformOne_mu]
   exact hmuOne z
 
 private theorem fuchsianBetaParameter_two_mu
     {mu : UpperHalfPlane → ℂ}
     (hmuTwo : ∀ z, mu (fuchsianSourceAction g₂ • z) =
       1 + mu z / E.modularParameter.tau z) (z : UpperHalfPlane) :
-    (fuchsianBetaParameter E mu (fuchsianSourceAction g₂ • z)).mu =
-      (transformTwo (fuchsianBetaParameter E mu z)).mu := by
-  rw [fuchsianBetaParameter, fuchsianBetaParameter, transformTwo_mu]
+    (betaParameter E mu (fuchsianSourceAction g₂ • z)).mu =
+      (transformTwo (betaParameter E mu z)).mu := by
+  rw [betaParameter, betaParameter, transformTwo_mu]
   exact hmuTwo z
 
 private theorem betaCocycleOne_fuchsian_step
     {mu : UpperHalfPlane → ℂ}
     (hmuOne : ∀ z, mu (fuchsianSourceAction g₁ • z) =
       (1 - mu z) / E.modularParameter.tau z) (z : UpperHalfPlane) :
-    betaCocycleOne (fuchsianBetaParameter E mu (fuchsianSourceAction g₁ • z)) =
-      betaCocycleOne (transformOne (fuchsianBetaParameter E mu z)) := by
+    betaCocycleOne (betaParameter E mu (fuchsianSourceAction g₁ • z)) =
+      betaCocycleOne (transformOne (betaParameter E mu z)) := by
   rw [betaCocycleOne, fuchsianBetaParameter_one_mu E hmuOne z,
     fuchsianBetaParameter_one_tau E z]
   rfl
@@ -672,8 +672,8 @@ private theorem betaCocycleTwo_fuchsian_step
     {mu : UpperHalfPlane → ℂ}
     (hmuTwo : ∀ z, mu (fuchsianSourceAction g₂ • z) =
       1 + mu z / E.modularParameter.tau z) (z : UpperHalfPlane) :
-    betaCocycleTwo (fuchsianBetaParameter E mu (fuchsianSourceAction g₂ • z)) =
-      betaCocycleTwo (transformTwo (fuchsianBetaParameter E mu z)) := by
+    betaCocycleTwo (betaParameter E mu (fuchsianSourceAction g₂ • z)) =
+      betaCocycleTwo (transformTwo (betaParameter E mu z)) := by
   rw [betaCocycleTwo, fuchsianBetaParameter_two_mu E hmuTwo z,
     fuchsianBetaParameter_two_tau E z]
   rfl
@@ -730,8 +730,8 @@ private theorem betaCocycleOne_fuchsian_sq
     {mu : UpperHalfPlane → ℂ}
     (hmuOne : ∀ z, mu (fuchsianSourceAction g₁ • z) =
       (1 - mu z) / E.modularParameter.tau z) (z : UpperHalfPlane) :
-    betaCocycleOne (fuchsianBetaParameter E mu (fuchsianSourceAction (g₁ ^ 2) • z)) =
-      betaCocycleOne (transformOne (transformOne (fuchsianBetaParameter E mu z))) := by
+    betaCocycleOne (betaParameter E mu (fuchsianSourceAction (g₁ ^ 2) • z)) =
+      betaCocycleOne (transformOne (transformOne (betaParameter E mu z))) := by
   rw [map_pow, pow_two, mul_smul, betaCocycleOne_fuchsian_step E hmuOne]
   exact betaCocycleOne_transform_congr_tau_mu _ _
     (fuchsianBetaParameter_one_tau E z) (fuchsianBetaParameter_one_mu E hmuOne z)
@@ -740,16 +740,16 @@ private theorem betaCocycleTwo_fuchsian_sq
     {mu : UpperHalfPlane → ℂ}
     (hmuTwo : ∀ z, mu (fuchsianSourceAction g₂ • z) =
       1 + mu z / E.modularParameter.tau z) (z : UpperHalfPlane) :
-    betaCocycleTwo (fuchsianBetaParameter E mu (fuchsianSourceAction (g₂ ^ 2) • z)) =
-      betaCocycleTwo (transformTwo (transformTwo (fuchsianBetaParameter E mu z))) := by
+    betaCocycleTwo (betaParameter E mu (fuchsianSourceAction (g₂ ^ 2) • z)) =
+      betaCocycleTwo (transformTwo (transformTwo (betaParameter E mu z))) := by
   rw [map_pow, pow_two, mul_smul, betaCocycleTwo_fuchsian_step E hmuTwo]
   exact betaCocycleTwo_transform_congr_tau_mu _ _
     (fuchsianBetaParameter_two_tau E z) (fuchsianBetaParameter_two_mu E hmuTwo z)
 
 private theorem fuchsianBetaParameter_two_sq_tau
     {mu : UpperHalfPlane → ℂ} (z : UpperHalfPlane) :
-    (fuchsianBetaParameter E mu (fuchsianSourceAction (g₂ ^ 2) • z)).tau =
-      (transformTwo (transformTwo (fuchsianBetaParameter E mu z))).tau := by
+    (betaParameter E mu (fuchsianSourceAction (g₂ ^ 2) • z)).tau =
+      (transformTwo (transformTwo (betaParameter E mu z))).tau := by
   rw [map_pow, pow_two, mul_smul, fuchsianBetaParameter_two_tau E,
     transformTwo_tau, fuchsianBetaParameter_two_tau E, transformTwo_tau]
   rw [transformTwo_tau, transformTwo_tau]
@@ -758,8 +758,8 @@ private theorem fuchsianBetaParameter_two_sq_mu
     {mu : UpperHalfPlane → ℂ}
     (hmuTwo : ∀ z, mu (fuchsianSourceAction g₂ • z) =
       1 + mu z / E.modularParameter.tau z) (z : UpperHalfPlane) :
-    (fuchsianBetaParameter E mu (fuchsianSourceAction (g₂ ^ 2) • z)).mu =
-      (transformTwo (transformTwo (fuchsianBetaParameter E mu z))).mu := by
+    (betaParameter E mu (fuchsianSourceAction (g₂ ^ 2) • z)).mu =
+      (transformTwo (transformTwo (betaParameter E mu z))).mu := by
   rw [map_pow, pow_two, mul_smul, fuchsianBetaParameter_two_mu E hmuTwo,
     transformTwo_mu, fuchsianBetaParameter_two_tau E,
     fuchsianBetaParameter_two_mu E hmuTwo, transformTwo_mu]
@@ -769,9 +769,9 @@ private theorem betaCocycleTwo_fuchsian_cube
     {mu : UpperHalfPlane → ℂ}
     (hmuTwo : ∀ z, mu (fuchsianSourceAction g₂ • z) =
       1 + mu z / E.modularParameter.tau z) (z : UpperHalfPlane) :
-    betaCocycleTwo (fuchsianBetaParameter E mu (fuchsianSourceAction (g₂ ^ 3) • z)) =
+    betaCocycleTwo (betaParameter E mu (fuchsianSourceAction (g₂ ^ 3) • z)) =
       betaCocycleTwo
-        (transformTwo (transformTwo (transformTwo (fuchsianBetaParameter E mu z)))) := by
+        (transformTwo (transformTwo (transformTwo (betaParameter E mu z)))) := by
   rw [show g₂ ^ 3 = g₂ * (g₂ ^ 2) by rw [pow_succ'], map_mul, mul_smul,
     betaCocycleTwo_fuchsian_step E hmuTwo]
   exact betaCocycleTwo_transform_congr_tau_mu _ _
@@ -783,13 +783,13 @@ public theorem ellipticBetaOne_equivariant
     (hmuOne : ∀ z, mu (fuchsianSourceAction g₁ • z) =
       (1 - mu z) / E.modularParameter.tau z) (z : UpperHalfPlane) :
     ellipticBetaOne E mu (fuchsianSourceAction g₁ • z) =
-      fuchsianBetaAffineOne E mu z (ellipticBetaOne E mu z) := by
+      betaAffineMapOne E mu z (ellipticBetaOne E mu z) := by
   have hcongr :
-      localBetaOne (fuchsianBetaParameter E mu (fuchsianSourceAction g₁ • z)) =
-        localBetaOne (transformOne (fuchsianBetaParameter E mu z)) :=
+      localBetaOne (betaParameter E mu (fuchsianSourceAction g₁ • z)) =
+        localBetaOne (transformOne (betaParameter E mu z)) :=
     localBetaOne_congr_tau_mu _ _ (fuchsianBetaParameter_one_tau E z)
       (fuchsianBetaParameter_one_mu E hmuOne z)
-  rw [ellipticBetaOne, ellipticBetaOne, hcongr, fuchsianBetaAffineOne]
+  rw [ellipticBetaOne, ellipticBetaOne, hcongr, betaAffineMapOne]
   exact localBetaOne_transform _ (E.modularParameter.tau z).ne_zero (tau_coe_ne_one E z)
 
 public theorem ellipticBetaTwo_equivariant
@@ -797,13 +797,13 @@ public theorem ellipticBetaTwo_equivariant
     (hmuTwo : ∀ z, mu (fuchsianSourceAction g₂ • z) =
       1 + mu z / E.modularParameter.tau z) (z : UpperHalfPlane) :
     ellipticBetaTwo E mu (fuchsianSourceAction g₂ • z) =
-      fuchsianBetaAffineTwo E mu z (ellipticBetaTwo E mu z) := by
+      betaAffineMapTwo E mu z (ellipticBetaTwo E mu z) := by
   have hcongr :
-      localBetaTwo (fuchsianBetaParameter E mu (fuchsianSourceAction g₂ • z)) =
-        localBetaTwo (transformTwo (fuchsianBetaParameter E mu z)) :=
+      localBetaTwo (betaParameter E mu (fuchsianSourceAction g₂ • z)) =
+        localBetaTwo (transformTwo (betaParameter E mu z)) :=
     localBetaTwo_congr_tau_mu _ _ (fuchsianBetaParameter_two_tau E z)
       (fuchsianBetaParameter_two_mu E hmuTwo z)
-  rw [ellipticBetaTwo, ellipticBetaTwo, hcongr, fuchsianBetaAffineTwo]
+  rw [ellipticBetaTwo, ellipticBetaTwo, hcongr, betaAffineMapTwo]
   exact localBetaTwo_transform _ (E.modularParameter.tau z).ne_zero
 
 private def ellipticBetaOneFormula
@@ -821,7 +821,7 @@ private theorem ellipticBetaOne_eq_formula
     (mu : UpperHalfPlane → ℂ) (z : UpperHalfPlane) :
     ellipticBetaOne E mu z = ellipticBetaOneFormula E mu z := by
   unfold ellipticBetaOne ellipticBetaOneFormula localBetaOne betaCocycleOne
-    fuchsianBetaParameter
+    betaParameter
   dsimp only [transformOne]
   have hsub : (E.modularParameter.tau z : ℂ) - 1 ≠ 0 :=
     sub_ne_zero.mpr (tau_coe_ne_one E z)
@@ -832,7 +832,7 @@ private theorem ellipticBetaTwo_eq_formula
     (mu : UpperHalfPlane → ℂ) (z : UpperHalfPlane) :
     ellipticBetaTwo E mu z = ellipticBetaTwoFormula E mu z := by
   unfold ellipticBetaTwo ellipticBetaTwoFormula localBetaTwo betaCocycleTwo
-    fuchsianBetaParameter
+    betaParameter
   dsimp only [transformTwo]
   field_simp [(E.modularParameter.tau z).ne_zero]
   ring
@@ -886,51 +886,51 @@ public theorem fuchsianBetaAffineOne_cycle
     {mu : UpperHalfPlane → ℂ}
     (hmuOne : ∀ z, mu (fuchsianSourceAction g₁ • z) =
       (1 - mu z) / E.modularParameter.tau z) (z : UpperHalfPlane) (beta : ℂ) :
-    fuchsianBetaAffineOne E mu (fuchsianSourceAction (g₁ ^ 2) • z)
-        (fuchsianBetaAffineOne E mu (fuchsianSourceAction g₁ • z)
-          (fuchsianBetaAffineOne E mu z beta)) = beta := by
-  simp only [fuchsianBetaAffineOne]
+    betaAffineMapOne E mu (fuchsianSourceAction (g₁ ^ 2) • z)
+        (betaAffineMapOne E mu (fuchsianSourceAction g₁ • z)
+          (betaAffineMapOne E mu z beta)) = beta := by
+  simp only [betaAffineMapOne]
   rw [betaCocycleOne_fuchsian_step E hmuOne z,
     betaCocycleOne_fuchsian_sq E hmuOne z]
-  have hcycle := (establishedFuchsianAffineCycleCertificate E).beta_one_cycle z (mu z)
+  have hcycle := (cycleRelations E).beta_one_cycle z (mu z)
   dsimp only at hcycle
   have hcycle' :
-      betaCocycleOne (fuchsianBetaParameter E mu z) +
-          betaCocycleOne (transformOne (fuchsianBetaParameter E mu z)) +
-        betaCocycleOne (transformOne (transformOne (fuchsianBetaParameter E mu z))) = 0 := by
-    simpa only [fuchsianBetaParameter] using hcycle
+      betaCocycleOne (betaParameter E mu z) +
+          betaCocycleOne (transformOne (betaParameter E mu z)) +
+        betaCocycleOne (transformOne (transformOne (betaParameter E mu z))) = 0 := by
+    simpa only [betaParameter] using hcycle
   linear_combination hcycle'
 
 public theorem fuchsianBetaAffineTwo_cycle
     {mu : UpperHalfPlane → ℂ}
     (hmuTwo : ∀ z, mu (fuchsianSourceAction g₂ • z) =
       1 + mu z / E.modularParameter.tau z) (z : UpperHalfPlane) (beta : ℂ) :
-    fuchsianBetaAffineTwo E mu (fuchsianSourceAction (g₂ ^ 3) • z)
-        (fuchsianBetaAffineTwo E mu (fuchsianSourceAction (g₂ ^ 2) • z)
-          (fuchsianBetaAffineTwo E mu (fuchsianSourceAction g₂ • z)
-            (fuchsianBetaAffineTwo E mu z beta))) = beta := by
-  simp only [fuchsianBetaAffineTwo]
+    betaAffineMapTwo E mu (fuchsianSourceAction (g₂ ^ 3) • z)
+        (betaAffineMapTwo E mu (fuchsianSourceAction (g₂ ^ 2) • z)
+          (betaAffineMapTwo E mu (fuchsianSourceAction g₂ • z)
+            (betaAffineMapTwo E mu z beta))) = beta := by
+  simp only [betaAffineMapTwo]
   rw [betaCocycleTwo_fuchsian_step E hmuTwo z,
     betaCocycleTwo_fuchsian_sq E hmuTwo z,
     betaCocycleTwo_fuchsian_cube E hmuTwo z]
-  have hcycle := (establishedFuchsianAffineCycleCertificate E).beta_two_cycle z (mu z)
+  have hcycle := (cycleRelations E).beta_two_cycle z (mu z)
   dsimp only at hcycle
   have hcycle' :
-      betaCocycleTwo (fuchsianBetaParameter E mu z) +
-            betaCocycleTwo (transformTwo (fuchsianBetaParameter E mu z)) +
-          betaCocycleTwo (transformTwo (transformTwo (fuchsianBetaParameter E mu z))) +
+      betaCocycleTwo (betaParameter E mu z) +
+            betaCocycleTwo (transformTwo (betaParameter E mu z)) +
+          betaCocycleTwo (transformTwo (transformTwo (betaParameter E mu z))) +
         betaCocycleTwo
-          (transformTwo (transformTwo (transformTwo (fuchsianBetaParameter E mu z)))) = 0 := by
-    simpa only [fuchsianBetaParameter] using hcycle
+          (transformTwo (transformTwo (transformTwo (betaParameter E mu z)))) = 0 := by
+    simpa only [betaParameter] using hcycle
   linear_combination hcycle'
 
 public theorem fuchsianBetaAffine_product
     {mu : UpperHalfPlane → ℂ}
     (hmuTwo : ∀ z, mu (fuchsianSourceAction g₂ • z) =
       1 + mu z / E.modularParameter.tau z) (z : UpperHalfPlane) (beta : ℂ) :
-    fuchsianBetaAffineOne E mu (fuchsianSourceAction g₂ • z)
-        (fuchsianBetaAffineTwo E mu z beta) = beta - 1 := by
-  unfold fuchsianBetaAffineOne fuchsianBetaAffineTwo fuchsianBetaParameter
+    betaAffineMapOne E mu (fuchsianSourceAction g₂ • z)
+        (betaAffineMapTwo E mu z beta) = beta - 1 := by
+  unfold betaAffineMapOne betaAffineMapTwo betaParameter
     betaCocycleOne betaCocycleTwo
   rw [tau_two_coe E, hmuTwo]
   simp only [tauTwoStep]
@@ -940,15 +940,15 @@ public theorem fuchsianBetaAffine_product
 /-- The selected descended `mu` supplies an exact structure-sheaf affine torsor for `beta`; all
 paper-specific algebra and local primitives are discharged before the general descent theorem is
 invoked. -/
-@[expose] public noncomputable def fuchsianBetaDescentProblem
+@[expose] public noncomputable def betaDescentData
     (F : ExactLiftedModularNegOneFrame E) (Dmu : MuTorsorCechLocalData E) :
-    OrbifoldAffineLineTorsorDescentProblem := by
+    OrbifoldAffineDescentData := by
   let mu := descendedFuchsianMu E Dmu
   have hmu := descendedFuchsianMu_spec E Dmu
   exact {
     quotient := E.sourceCoordinate
-    affineOne := fuchsianBetaAffineOne E mu
-    affineTwo := fuchsianBetaAffineTwo E mu
+    affineOne := betaAffineMapOne E mu
+    affineTwo := betaAffineMapTwo E mu
     affineCusp := fun _ beta ↦ beta + 1
     affineOne_holomorphic := by
       intro s hs
@@ -969,11 +969,11 @@ invoked. -/
     linearTwo := fun _ ↦ 1
     affineOne_sub := by
       intro z u v
-      simp only [fuchsianBetaAffineOne]
+      simp only [betaAffineMapOne]
       ring
     affineTwo_sub := by
       intro z u v
-      simp only [fuchsianBetaAffineTwo]
+      simp only [betaAffineMapTwo]
       ring
     affineOne_cycle := fuchsianBetaAffineOne_cycle E hmu.2.1
     affineTwo_cycle := fuchsianBetaAffineTwo_cycle E hmu.2.2.1
@@ -1058,10 +1058,10 @@ invoked. -/
 `beta` once the descended `mu` has been selected. -/
 public theorem exists_betaAffineCechSections
     (F : ExactLiftedModularNegOneFrame E) (Dmu : MuTorsorCechLocalData E)
-    (A : (fuchsianBetaDescentProblem E F Dmu).AnalyticDescentData) :
-    Nonempty (BetaAffineCechSections E (descendedFuchsianMu E Dmu)) := by
-  obtain ⟨S⟩ := establishedOrbifoldAffineLineTorsorTwoChartDescent
-    (fuchsianBetaDescentProblem E F Dmu) A
+    (A : (betaDescentData E F Dmu).AnalyticDescentData) :
+    Nonempty (BetaCechSections E (descendedFuchsianMu E Dmu)) := by
+  obtain ⟨S⟩ := OrbifoldAffineDescentData.nonempty_twoChartSections
+    (betaDescentData E F Dmu) A
   refine ⟨⟨{
     zeroRegion := Set.univ
     infinityRegion := liftedInfinityRegion E
@@ -1087,32 +1087,32 @@ public theorem exists_betaAffineCechSections
     infinity_coordinate_cusp_bounded := F.infinity_coordinate_cusp_bounded E }⟩⟩
   · intro z _
     convert S.sectionZero_one z using 1
-    simp [fuchsianBetaDescentProblem, fuchsianBetaAffineOne, fuchsianBetaParameter,
+    simp [betaDescentData, betaAffineMapOne, betaParameter,
       betaCocycleOne]
     ring
   · intro z _
     convert S.sectionZero_two z using 1
-    simp [fuchsianBetaDescentProblem, fuchsianBetaAffineTwo, fuchsianBetaParameter,
+    simp [betaDescentData, betaAffineMapTwo, betaParameter,
       betaCocycleTwo]
     ring
   · intro z hz
     convert S.sectionInfinity_one z hz using 1
-    simp [fuchsianBetaDescentProblem, fuchsianBetaAffineOne, fuchsianBetaParameter,
+    simp [betaDescentData, betaAffineMapOne, betaParameter,
       betaCocycleOne]
     ring
   · intro z hz
     convert S.sectionInfinity_two z hz using 1
-    simp [fuchsianBetaDescentProblem, fuchsianBetaAffineTwo, fuchsianBetaParameter,
+    simp [betaDescentData, betaAffineMapTwo, betaParameter,
       betaCocycleTwo]
     ring
   · intro z hz
-    simpa [fuchsianBetaDescentProblem] using S.section_mismatch z hz.2
+    simpa [betaDescentData] using S.section_mismatch z hz.2
 
 /-- Conditional construction of the sole period-specific local-data package from the independent
 modular frame and the two affine local-triviality inputs. -/
-@[expose] public noncomputable def exactFuchsianPeriodLocalData
-    (Smu : MuAffineCechSections E F)
-    (Sbeta : BetaAffineCechSections E
+@[expose] public noncomputable def periodLocalDataOfSections
+    (Smu : MuCechSections E F)
+    (Sbeta : BetaCechSections E
       (descendedFuchsianMu E (Smu.toLocalData E F))) :
     FuchsianPeriodLocalData E where
   muLocal := Smu.toLocalData E F
@@ -1120,42 +1120,42 @@ modular frame and the two affine local-triviality inputs. -/
 
 /-- The exact affine local-triviality statement after the modular `O(-1)` frame and every finite
 cyclic consistency check have been supplied. -/
-@[expose] public def FuchsianAffineTorsorLocalTriviality : Prop :=
-  ∃ Smu : MuAffineCechSections E F,
-    Nonempty (BetaAffineCechSections E
+@[expose] public def HasLocalTrivializations : Prop :=
+  ∃ Smu : MuCechSections E F,
+    Nonempty (BetaCechSections E
       (descendedFuchsianMu E (Smu.toLocalData E F)))
 
 /-- The single beta descent certificate needed after applying a chosen mu descent certificate. -/
-public abbrev FuchsianBetaAnalyticDescentData
-    (Amu : (fuchsianMuDescentProblem E F).AnalyticDescentData) :=
-  (fuchsianBetaDescentProblem E F
+public abbrev BetaDescentData
+    (Amu : (muDescentData E F).AnalyticDescentData) :=
+  (betaDescentData E F
     ((muAffineCechSectionsOfAnalyticDescentData E F Amu).toLocalData E F)).AnalyticDescentData
 
 /-- The production `mu` analytic-descent certificate selected from the general
 Cartan--B/Cousin theorem. -/
-@[expose] public noncomputable def establishedFuchsianMuAnalyticDescentData :
-    (fuchsianMuDescentProblem E F).AnalyticDescentData :=
+@[expose] public noncomputable def muAnalyticDescentData :
+    (muDescentData E F).AnalyticDescentData :=
   Classical.choice
-    (establishedOrbifoldAffineLineTorsorAnalyticDescent (fuchsianMuDescentProblem E F)
+    (OrbifoldAffineDescentData.nonempty_analyticDescentData (muDescentData E F)
       (Or.inl ⟨rfl, rfl, rfl⟩))
 
 /-- The production `beta` analytic-descent certificate.  Its type depends on the actual `mu`
 certificate selected above, so both certificates determine one coherent period package. -/
-@[expose] public noncomputable def establishedFuchsianBetaAnalyticDescentData :
-    FuchsianBetaAnalyticDescentData E F
-      (establishedFuchsianMuAnalyticDescentData E F) :=
+@[expose] public noncomputable def betaAnalyticDescentData :
+    BetaDescentData E F
+      (muAnalyticDescentData E F) :=
   Classical.choice
-    (establishedOrbifoldAffineLineTorsorAnalyticDescent
-      (fuchsianBetaDescentProblem E F
+    (OrbifoldAffineDescentData.nonempty_analyticDescentData
+      (betaDescentData E F
         ((muAffineCechSectionsOfAnalyticDescentData E F
-          (establishedFuchsianMuAnalyticDescentData E F)).toLocalData E F))
+          (muAnalyticDescentData E F)).toLocalData E F))
       (Or.inr ⟨rfl, rfl, rfl⟩))
 
 /-- Explicit analytic descent certificates discharge both concrete local-triviality problems. -/
-public theorem establishedFuchsianAffineTorsorLocalTriviality
-    (Amu : (fuchsianMuDescentProblem E F).AnalyticDescentData)
-    (Abeta : FuchsianBetaAnalyticDescentData E F Amu) :
-    FuchsianAffineTorsorLocalTriviality E F := by
+public theorem hasLocalTrivializations
+    (Amu : (muDescentData E F).AnalyticDescentData)
+    (Abeta : BetaDescentData E F Amu) :
+    HasLocalTrivializations E F := by
   let Smu := muAffineCechSectionsOfAnalyticDescentData E F Amu
   obtain ⟨Sbeta⟩ := exists_betaAffineCechSections E F (Smu.toLocalData E F)
     Abeta
@@ -1163,53 +1163,53 @@ public theorem establishedFuchsianAffineTorsorLocalTriviality
 
 /-- A general affine-torsor local-triviality theorem, once supplied, completes the exact local
 period package. -/
-public theorem exists_fuchsianPeriodLocalData_of_affineTorsorLocalTriviality
+public theorem nonempty_periodLocalData_of_localTrivializations
     (hdescent : ∀ F : ExactLiftedModularNegOneFrame E,
-      FuchsianAffineTorsorLocalTriviality E F) :
+      HasLocalTrivializations E F) :
     Nonempty (FuchsianPeriodLocalData E) := by
   obtain ⟨F⟩ := establishedExactLiftedModularNegOneFrame E
   obtain ⟨Smu, ⟨Sbeta⟩⟩ := hdescent F
-  exact ⟨exactFuchsianPeriodLocalData E F Smu Sbeta⟩
+  exact ⟨periodLocalDataOfSections E F Smu Sbeta⟩
 
 /-- One concrete modular frame and its two explicit analytic descent certificates construct the
 complete local period package used by the paper. -/
 public theorem exists_fuchsianPeriodLocalData
     (F : ExactLiftedModularNegOneFrame E)
-    (Amu : (fuchsianMuDescentProblem E F).AnalyticDescentData)
-    (Abeta : FuchsianBetaAnalyticDescentData E F Amu) :
+    (Amu : (muDescentData E F).AnalyticDescentData)
+    (Abeta : BetaDescentData E F Amu) :
     Nonempty (FuchsianPeriodLocalData E) := by
   obtain ⟨Smu, ⟨Sbeta⟩⟩ :=
-    establishedFuchsianAffineTorsorLocalTriviality E F Amu Abeta
-  exact ⟨exactFuchsianPeriodLocalData E F Smu Sbeta⟩
+    hasLocalTrivializations E F Amu Abeta
+  exact ⟨periodLocalDataOfSections E F Smu Sbeta⟩
 
 /-- One concrete modular frame and its explicit analytic descent certificates therefore produce
 the paper's actual nondegenerate Fuchsian period functions. -/
-public theorem exists_establishedFuchsianPeriodFunctions
+public theorem exists_periodFunctions
     (F : ExactLiftedModularNegOneFrame E)
-    (Amu : (fuchsianMuDescentProblem E F).AnalyticDescentData)
-    (Abeta : FuchsianBetaAnalyticDescentData E F Amu) :
+    (Amu : (muDescentData E F).AnalyticDescentData)
+    (Abeta : BetaDescentData E F Amu) :
     Nonempty (PeriodFunctions E.modularParameter.toTriangleUniformization) := by
   obtain ⟨D⟩ := exists_fuchsianPeriodLocalData E F Amu Abeta
   exact exists_assembledFuchsianPeriodFunctions E D
 
 /-- The two production analytic-descent certificates construct the complete local period data. -/
-public theorem exists_fuchsianPeriodLocalData_of_establishedAnalyticDescent
+public theorem nonempty_periodLocalData_of_analyticDescent
     (F : ExactLiftedModularNegOneFrame E) :
     Nonempty (FuchsianPeriodLocalData E) :=
   exists_fuchsianPeriodLocalData E F
-    (establishedFuchsianMuAnalyticDescentData E F)
-    (establishedFuchsianBetaAnalyticDescentData E F)
+    (muAnalyticDescentData E F)
+    (betaAnalyticDescentData E F)
 
 /-- A coherent production choice of the local period package. -/
-@[expose] public noncomputable def establishedFuchsianPeriodLocalData
+@[expose] public noncomputable def periodLocalData
     (F : ExactLiftedModularNegOneFrame E) : FuchsianPeriodLocalData E :=
-  Classical.choice (exists_fuchsianPeriodLocalData_of_establishedAnalyticDescent E F)
+  Classical.choice (nonempty_periodLocalData_of_analyticDescent E F)
 
 /-- The general analytic descent theorem and exact Fuchsian inputs produce nondegenerate period
 functions without any paper-specific existence assumption. -/
-public theorem exists_establishedFuchsianPeriodFunctions_of_generalDescent
+public theorem exists_periodFunctions_of_generalDescent
     (F : ExactLiftedModularNegOneFrame E) :
     Nonempty (PeriodFunctions E.modularParameter.toTriangleUniformization) :=
-  exists_assembledFuchsianPeriodFunctions E (establishedFuchsianPeriodLocalData E F)
+  exists_assembledFuchsianPeriodFunctions E (periodLocalData E F)
 
-end SphereSixComplex.Periods
+end SphereSixComplex.Periods.FuchsianAffineDescent

@@ -28,9 +28,9 @@ namespace SphereSixComplex.Periods
 
 open SphereSixComplex.TriangleGroup
 
-namespace OrbifoldAffineLineTorsorDescentProblem
+namespace OrbifoldAffineDescentData
 
-variable (P : OrbifoldAffineLineTorsorDescentProblem)
+variable (P : OrbifoldAffineDescentData)
 
 /-! ## The multiplier system attached to a descent problem
 
@@ -133,7 +133,7 @@ distinguished cusp region.
 
 This is exactly the statement that the torsor, viewed on the compactified quotient orbifold, has
 a global section.  It mentions no chart, no cover and no Cech datum. -/
-@[expose] public def HasCuspBoundedEquivariantSection : Prop :=
+@[expose] public def HasCuspBoundedSection : Prop :=
   ∃ s : UpperHalfPlane → ℂ, MDiff s ∧
     (∀ z, s (fuchsianSourceAction g₁ • z) = P.affineOne z (s z)) ∧
     (∀ z, s (fuchsianSourceAction g₂ • z) = P.affineTwo z (s z)) ∧
@@ -145,7 +145,7 @@ a global section.  It mentions no chart, no cover and no Cech datum. -/
     (hone : ∀ z, s (fuchsianSourceAction g₁ • z) = P.affineOne z (s z))
     (htwo : ∀ z, s (fuchsianSourceAction g₂ • z) = P.affineTwo z (s z))
     (hcusp : BoundedOn (fun z ↦ s z - P.cuspSection z) fuchsianCuspRegion) :
-    P.ChartwiseAffineTrivialization where
+    P.ChartTrivialization where
   sectionZero := s
   sectionInfinity := s
   sectionZero_holomorphic := hs
@@ -184,13 +184,13 @@ descends through the quotient coordinate with the zero coefficient. -/
   charts := P.chartwiseOfEquivariantSection s hs hone htwo hcusp
   mismatch_descent := P.descendedFrameCoefficientOfEquivariantSection s hs hone htwo hcusp
 
-end OrbifoldAffineLineTorsorDescentProblem
+end OrbifoldAffineDescentData
 
 /-- The two-chart analytic descent package follows from the single classical existence statement
 `HasCuspBoundedEquivariantSection`. -/
-public theorem nonempty_analyticDescentData_of_hasCuspBoundedEquivariantSection
-    (P : OrbifoldAffineLineTorsorDescentProblem)
-    (hP : P.HasCuspBoundedEquivariantSection) :
+public theorem OrbifoldAffineDescentData.nonempty_analyticDescentData_of_hasCuspBoundedSection
+    (P : OrbifoldAffineDescentData)
+    (hP : P.HasCuspBoundedSection) :
     Nonempty P.AnalyticDescentData := by
   obtain ⟨s, hs, hone, htwo, hcusp⟩ := hP
   exact ⟨P.analyticDescentDataOfEquivariantSection s hs hone htwo hcusp⟩

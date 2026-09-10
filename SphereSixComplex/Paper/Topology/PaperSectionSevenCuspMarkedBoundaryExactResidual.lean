@@ -38,10 +38,10 @@ public theorem cuspPulledBackMarkedInvariantBasisData_of_markedConnectingNatural
   rw [actualCuspMarkedWangComposite_eq_rawCoordinateFive] at hSquare
   constructor
   · have hFour := DFunLike.congr_fun hSquare
-      (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))
+      (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))
     simpa [coordinateAfterAddEquiv_apply] using hFour
   · have hFive := DFunLike.congr_fun hSquare
-      (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))
+      (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))
     simpa [coordinateAfterAddEquiv_apply] using hFive
 
 /-- The two invariant-basis evaluations are exactly the marked connecting-morphism square.

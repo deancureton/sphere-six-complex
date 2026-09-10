@@ -21,7 +21,7 @@ public theorem coordinateBoundary_single_eq_attachingDegree
   let _ := cuspWCellIndex_finite (n + 1)
   simp only [standardA2ToricCellularCoordinateBoundary,
     StandardA2ToricCentralFiberCWDecomposition.integralCellularChainModel,
-    EstablishedCellularHomology.integralCWCellularHomologyModel,
+    CellularHomology.normalizedModel,
     CellularHomology.IntegralComparison.objectwiseModel, integralCWSkeletalChainComplex,
     Nat.succ_eq_add_one, ChainComplex.of_d]
   change ((CellularHomology.integralComparison.normalized.cellBasis X n).symm

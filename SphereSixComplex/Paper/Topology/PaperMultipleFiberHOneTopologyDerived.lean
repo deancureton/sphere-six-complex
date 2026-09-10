@@ -63,9 +63,9 @@ public theorem fullIterate :
 /-- The canonical map from the multiple-fibre presentation to the abelianized affine deck
 group. -/
 @[expose] public noncomputable def toAbelianization :
-    MultipleFiberHOnePresentation P.latticeDifference P.twist (m : ℤ) →ₗ[ℤ]
+    CyclicCoinvariants.Presentation P.latticeDifference P.twist (m : ℤ) →ₗ[ℤ]
       Additive (Abelianization (affineCyclicBoundaryDeckData P).FillingDeck) :=
-  multipleFiberLift P.latticeDifference P.twist (m : ℤ)
+  CyclicCoinvariants.lift P.latticeDifference P.twist (m : ℤ)
     I.extension.kernelToAbelianization (by
       intro x
       rw [← I.difference_eq P]
@@ -78,7 +78,7 @@ group. -/
     I.toAbelianization P (Submodule.Quotient.mk (Submodule.Quotient.mk x, k)) =
       Additive.ofMul
         (Abelianization.of (I.extension.incl x) * Abelianization.of I.extension.gen ^ k) := by
-  rw [toAbelianization, multipleFiberLift_mk,
+  rw [toAbelianization, CyclicCoinvariants.lift_mk,
     SphereSixComplex.Topology.CyclicExtension.Data.kernelToAbelianization_apply,
     ← ofMul_zpow, ← ofMul_mul]
 
@@ -141,7 +141,7 @@ public theorem toAbelianization_injective : Function.Injective (I.toAbelianizati
       rw [heqP] at hz
       rw [Submodule.Quotient.mk_add, Submodule.Quotient.mk_smul] at hz
       linear_combination (norm := abel) hz
-    rw [multipleFiberRelationMap]
+    rw [CyclicCoinvariants.relationMap]
     simp only [LinearMap.coe_mk, AddHom.coe_mk, Prod.smul_mk, smul_neg, Prod.mk.injEq]
     exact ⟨by rw [hmk], by rw [smul_eq_mul, mul_comm]⟩
   intro a b hab
@@ -214,7 +214,7 @@ quotient. -/
 public noncomputable def reducedCentralFiberHOneEquivPresentation
     (P : AffineCyclicCentralFiberPresentationData m p D) :
     IntegralSingularHomology 1 D.reducedCentralFiber ≃ₗ[ℤ]
-      MultipleFiberHOnePresentation
+      CyclicCoinvariants.Presentation
         P.latticeDifference P.twist (m : ℤ) :=
   (reducedCentralFiberHOnePresentation P).equiv
 

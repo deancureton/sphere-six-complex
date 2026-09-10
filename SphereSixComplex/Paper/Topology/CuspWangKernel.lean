@@ -55,13 +55,13 @@ public theorem cuspWangKernel_mem_intersectionImage
       SphereSixComplex.integralSingularHomologyMap_comp_wang _ _ _ _
     _ = integralSingularHomologyMap 2
         (circleMappingTorusRealFibreSlice G.clutching
-          (A.actualCuspAngularLiftPoint
+          (A.cuspAngularLiftPoint
             (actualCuspFullFibreCrossingTime A)).1.2.re) z := hsquare
     _ = integralSingularHomologyMap 2
         (finiteBouquetMappingTorusFiberInclusion (fun _ : Unit ↦ G.clutching)) z := by
       rw [integralSingularHomologyMap_eq_of_homotopy 2
         (circleMappingTorusRealFibreSliceHomotopy G.clutching
-          (A.actualCuspAngularLiftPoint
+          (A.cuspAngularLiftPoint
             (actualCuspFullFibreCrossingTime A)).1.2.re)]
     _ = y := hz
 

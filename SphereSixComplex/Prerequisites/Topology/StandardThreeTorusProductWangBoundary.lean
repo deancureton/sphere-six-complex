@@ -22,7 +22,7 @@ namespace SphereSixComplex.Topology.StandardThreeTorusProductWangBoundary
 
 open FiniteCyclicMappingTorusWangNaturality
 open FiniteCyclicThreeTorusWangNaturality
-open PaperAffineCyclicReducedFiberMappingTorus
+open CyclicMappingTorus
 open StandardTorusHomology
 
 /-- Assemble the base-cross and fibre coordinates in the standard pair ordering. -/
@@ -47,7 +47,7 @@ public theorem joinCoordinates_baseCross_fibre (x : SixLattice) :
   fin_cases i <;> rfl
 
 private theorem gammaSplit_symm_comp_fiberInclusion :
-    (standardFourTorusGammaSplit.symm : C(UnitAddCircle × StdTorus 3, StdTorus 4)).comp
+    (StandardTorusHomology.fourTorusSplit.symm : C(UnitAddCircle × StdTorus 3, StdTorus 4)).comp
         (circleProductFiberInclusion (X := StdTorus 3)) =
       standardThreeTorusTailInclusion := by
   ext x i

@@ -9,7 +9,7 @@ open Function Set Topology CategoryTheory
 
 namespace SphereSixComplex
 
-open Topology.FirstHurewiczProof StandardCircleHomologyLiftDegree
+open Hurewicz.Chains StandardCircleHomologyLiftDegree
 
 public theorem paths_homotopic_of_range_in_embedded_contractible
     {X Z : Type} [TopologicalSpace X] [TopologicalSpace Z] [ContractibleSpace Z]

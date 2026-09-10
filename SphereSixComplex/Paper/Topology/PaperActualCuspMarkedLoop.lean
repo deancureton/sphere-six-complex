@@ -28,7 +28,7 @@ open CuspPeriodExpansion CuspPuncturedCollarBridge
 variable (A : PaperAnalyticData)
 
 /-- The straight angular path `s \mapsto s - t` in the actual additive cusp cover. -/
-public def actualCuspAngularLiftPoint (t : unitInterval) :
+public def cuspAngularLiftPoint (t : unitInterval) :
     additiveCuspRadiusCover A.starCuspWitness.localWitness.radius :=
   ⟨(A.actualCuspBoundaryCoverBase.1.1,
       A.actualCuspBoundaryCoverBase.1.2 - (t : ℝ)), by
@@ -41,20 +41,20 @@ public def actualCuspAngularLiftPoint (t : unitInterval) :
     simpa using hbase⟩
 
 @[simp]
-public theorem actualCuspAngularLiftPoint_zero :
-    A.actualCuspAngularLiftPoint 0 = A.actualCuspBoundaryCoverBase := by
+public theorem cuspAngularLiftPoint_zero :
+    A.cuspAngularLiftPoint 0 = A.actualCuspBoundaryCoverBase := by
   apply Subtype.ext
   apply Prod.ext
   · rfl
-  · simp [actualCuspAngularLiftPoint]
+  · simp [cuspAngularLiftPoint]
 
 @[simp]
-public theorem actualCuspAngularLiftPoint_one :
+public theorem cuspAngularLiftPoint_one :
     letI := paperCuspBoundaryDeckAction A.starCuspWitness
-    A.actualCuspAngularLiftPoint 1 =
+    A.cuspAngularLiftPoint 1 =
       paperCuspBoundaryMeridian • A.actualCuspBoundaryCoverBase := by
   let _ := paperCuspBoundaryDeckAction A.starCuspWitness
-  change A.actualCuspAngularLiftPoint 1 =
+  change A.cuspAngularLiftPoint 1 =
     cuspBoundaryLatticeTranslate A.starCuspWitness 0
       (cuspBoundaryAngularTranslate A.starCuspWitness 1
         A.actualCuspBoundaryCoverBase)
@@ -62,24 +62,24 @@ public theorem actualCuspAngularLiftPoint_one :
   apply Subtype.ext
   apply Prod.ext
   · rfl
-  · simp [actualCuspAngularLiftPoint, cuspBoundaryAngularTranslate]
+  · simp [cuspAngularLiftPoint, cuspBoundaryAngularTranslate]
 
 /-- The actual lifted angular path, retaining its deck-labelled endpoint. -/
-public def actualCuspAngularLiftPath :
+public def cuspAngularLiftPath :
     letI := paperCuspBoundaryDeckAction A.starCuspWitness
     Path A.actualCuspBoundaryCoverBase
       (paperCuspBoundaryMeridian • A.actualCuspBoundaryCoverBase) where
-  toFun := A.actualCuspAngularLiftPoint
+  toFun := A.cuspAngularLiftPoint
   continuous_toFun := by
-    unfold actualCuspAngularLiftPoint
+    unfold cuspAngularLiftPoint
     apply Continuous.subtype_mk
     fun_prop
-  source' := A.actualCuspAngularLiftPoint_zero
-  target' := A.actualCuspAngularLiftPoint_one
+  source' := A.cuspAngularLiftPoint_zero
+  target' := A.cuspAngularLiftPoint_one
 
 /-- Projection of the explicit angular lift, based literally at the projection of its selected
 cover point. -/
-public def actualCuspAngularProjectedLoop :
+public def cuspAngularProjectedLoop :
     Path (A.actualCuspBoundaryProjection A.actualCuspBoundaryCoverBase)
       (A.actualCuspBoundaryProjection A.actualCuspBoundaryCoverBase) := by
   let _ := paperCuspBoundaryDeckAction A.starCuspWitness
@@ -88,15 +88,15 @@ public def actualCuspAngularProjectedLoop :
     (additiveCuspBoundaryProjection_isQuotientCoveringMap
       A.starCuspWitness).homeomorph_comp
         A.cuspCollarToStarOverlapHomeomorph
-  exact (A.actualCuspAngularLiftPath.map
+  exact (A.cuspAngularLiftPath.map
     A.actualCuspBoundaryProjection.continuous).cast
       rfl (hp.map_smul paperCuspBoundaryMeridian
         (e := A.actualCuspBoundaryCoverBase)).symm
 
 /-- The same literal cusp loop after applying the actual collar chart into the central family. -/
-public def actualCuspAngularCentralLoop :
+public def cuspAngularCentralLoop :
     Path A.actualCuspCentralBase A.actualCuspCentralBase :=
-  ((A.actualCuspAngularProjectedLoop.map
+  ((A.cuspAngularProjectedLoop.map
       A.actualCuspOverlapToCentral.continuous).cast
     (by
       rw [actualCuspCentralBase, A.actualCuspBoundaryCoverBase_projects])
@@ -104,28 +104,28 @@ public def actualCuspAngularCentralLoop :
       rw [actualCuspCentralBase, A.actualCuspBoundaryCoverBase_projects]))
 
 /-- The actual normalized cusp loop in the marked twice-punctured base coordinate. -/
-public def actualCuspAngularCoordinateLoop :
+public def cuspAngularCoordinateLoop :
     Path (A.centralFamilyCoordinate A.actualCuspCentralBase)
       (A.centralFamilyCoordinate A.actualCuspCentralBase) :=
-  A.actualCuspAngularCentralLoop.map A.centralFamilyCoordinate_continuous
+  A.cuspAngularCentralLoop.map A.centralFamilyCoordinate_continuous
 
 /-- Pointwise, the coordinate loop is the normalized modular coordinate evaluated on the
 literal angular path `s - t`. -/
-public theorem actualCuspAngularCoordinateLoop_apply (t : unitInterval) :
-    (A.actualCuspAngularCoordinateLoop t).1 =
+public theorem cuspAngularCoordinateLoop_apply (t : unitInterval) :
+    (A.cuspAngularCoordinateLoop t).1 =
       A.modular.sourceCoordinate.coordinate
         (A.cuspCoordinate.lift
           (A.actualCuspBoundaryCoverBase.1.2 - (t : ℝ))) := by
   change (A.centralFamilyCoordinate
       (A.actualCuspOverlapToCentral
-        (A.actualCuspBoundaryProjection (A.actualCuspAngularLiftPoint t)))).1 = _
+        (A.actualCuspBoundaryProjection (A.cuspAngularLiftPoint t)))).1 = _
   rw [A.actualCuspOverlapToCentral_boundaryProjection]
   rfl
 
 /-- The actual marked cusp loop remains outside the closed radius-two disc. -/
-public theorem actualCuspAngularCoordinateLoop_norm_gt_two (t : unitInterval) :
-    2 < ‖(A.actualCuspAngularCoordinateLoop t).1‖ := by
-  rw [A.actualCuspAngularCoordinateLoop_apply]
+public theorem cuspAngularCoordinateLoop_norm_gt_two (t : unitInterval) :
+    2 < ‖(A.cuspAngularCoordinateLoop t).1‖ := by
+  rw [A.cuspAngularCoordinateLoop_apply]
   apply A.actualPuncturedCuspWitness_coordinate_exterior
   · apply mem_cuspHalfPlane_of_norm_cuspQ_lt
       A.starCuspWitness.localWitness.radius_le
@@ -142,7 +142,7 @@ public theorem actualCuspAngularCoordinateLoop_norm_gt_two (t : unitInterval) :
 
 /-- The explicit projected angular loop is exactly the `ofDeck` meridian class used by the
 chosen affine cusp filling. -/
-theorem actualCuspAngularProjectedLoop_class_eq_ofDeck :
+theorem cuspAngularProjectedLoop_class_eq_ofDeck :
     let W := A.starCuspWitness
     letI := paperCuspBoundaryDeckAction W
     letI : SimplyConnectedSpace
@@ -152,7 +152,7 @@ theorem actualCuspAngularProjectedLoop_class_eq_ofDeck :
         paperCuspBoundaryDeck :=
       (additiveCuspBoundaryProjection_isQuotientCoveringMap W).homeomorph_comp
         A.cuspCollarToStarOverlapHomeomorph
-    Path.Homotopic.Quotient.mk A.actualCuspAngularProjectedLoop =
+    Path.Homotopic.Quotient.mk A.cuspAngularProjectedLoop =
       ofDeck hp A.actualCuspBoundaryCoverBase paperCuspBoundaryMeridian := by
   let W := A.starCuspWitness
   let _ := paperCuspBoundaryDeckAction W
@@ -172,12 +172,12 @@ theorem actualCuspAngularProjectedLoop_class_eq_ofDeck :
       ⟨A.actualCuspBoundaryCoverBase, by
         change A.actualCuspBoundaryProjection A.actualCuspBoundaryCoverBase = _
         rfl⟩
-      (Path.Homotopic.Quotient.mk A.actualCuspAngularProjectedLoop) =
+      (Path.Homotopic.Quotient.mk A.cuspAngularProjectedLoop) =
     MulOpposite.op paperCuspBoundaryMeridian
   rw [IsQuotientCoveringMap.fundamentalGroupToMulOpposite_apply_eq_Iff]
   let Γ : Path.Homotopic.Quotient A.actualCuspBoundaryCoverBase
       (paperCuspBoundaryMeridian • A.actualCuspBoundaryCoverBase) :=
-    Path.Homotopic.Quotient.mk A.actualCuspAngularLiftPath
+    Path.Homotopic.Quotient.mk A.cuspAngularLiftPath
   have hmono := hp.isCoveringMap.monodromy_eq_of_map_eq
     (ex := ⟨A.actualCuspBoundaryCoverBase, by
       change A.actualCuspBoundaryProjection A.actualCuspBoundaryCoverBase = _
@@ -189,11 +189,11 @@ theorem actualCuspAngularProjectedLoop_class_eq_ofDeck :
       exact hp.map_smul paperCuspBoundaryMeridian
         (e := A.actualCuspBoundaryCoverBase)⟩)
     Γ (by
-      change (Path.Homotopic.Quotient.mk A.actualCuspAngularLiftPath).map
+      change (Path.Homotopic.Quotient.mk A.cuspAngularLiftPath).map
           A.actualCuspBoundaryProjection =
-        (Path.Homotopic.Quotient.mk A.actualCuspAngularProjectedLoop).cast _ _
+        (Path.Homotopic.Quotient.mk A.cuspAngularProjectedLoop).cast _ _
       rw [← Path.Homotopic.Quotient.mk_map]
-      unfold actualCuspAngularProjectedLoop
+      unfold cuspAngularProjectedLoop
       rw [Path.Homotopic.Quotient.mk_cast]
       apply eq_of_heq
       symm

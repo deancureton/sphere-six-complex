@@ -44,7 +44,7 @@ public theorem not_canonicalCuspWangBoundaryNaturality
   intro h
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
-  let x := A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)
+  let x := A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)
   let B := R.homologyAlignment.actualHomologyCoordinates
   have hm : R.twoDiscCover.CanonicalCuspFiberBandPeriodMarking R.homologyAlignment :=
     R.twoDiscCover.canonicalCuspFiberBandPeriodMarking_of_orderThree R.homologyAlignment
@@ -64,7 +64,7 @@ public theorem not_canonicalCuspWangBoundaryNaturality
 public theorem not_actualCuspWangFullFibreOrientedBoundaryNaturality
     (hmark : A.sectionSevenAffineNamedStripLift.lift
       A.sectionSevenAffineActualCuspCrossingPoint =
-        A.actualCuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
+        A.cuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
     (R : A.SectionSevenAffineRadialCompletionInput) :
     ¬ ActualCuspWangFullFibreOrientedBoundaryNaturality R := by
   intro h
@@ -74,7 +74,7 @@ public theorem not_actualCuspWangFullFibreOrientedBoundaryNaturality
 public theorem not_actualCuspWangFullFibreSliceInvariantResidual
     (hmark : A.sectionSevenAffineNamedStripLift.lift
       A.sectionSevenAffineActualCuspCrossingPoint =
-        A.actualCuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
+        A.cuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
     (R : A.SectionSevenAffineRadialCompletionInput) :
     ¬ ActualCuspWangFullFibreSliceInvariantResidual R := by
   intro h

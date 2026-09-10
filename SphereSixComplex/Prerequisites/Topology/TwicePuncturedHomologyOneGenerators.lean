@@ -6,7 +6,7 @@ public import SphereSixComplex.Prerequisites.Topology.FirstHurewiczProof
 noncomputable section
 open AlgebraicTopology
 namespace SphereSixComplex.Topology
-open StandardCircleHomologyLiftDegree EstablishedFirstHurewicz
+open StandardCircleHomologyLiftDegree Hurewicz
 
 public theorem twicePuncturedHomologyOneHom_eq_zero
     {B : Type*} [AddCommGroup B]
@@ -14,7 +14,7 @@ public theorem twicePuncturedHomologyOneHom_eq_zero
     (hzero : f (loopHomologyClass twicePuncturedClockwiseZeroMeridian) = 0)
     (hone : f (loopHomologyClass twicePuncturedClockwiseOneMeridian) = 0) : f = 0 := by
   let _ : PathConnectedSpace TwicePuncturedComplex := TwicePuncturedComplex.ambient_pathConnected
-  let E := FirstHurewiczProof.establishedFirstHurewiczData_proof
+  let E := Chains.abelianizationComparison
     TwicePuncturedComplex twicePuncturedComplexBasepoint
   let g : FundamentalGroup TwicePuncturedComplex twicePuncturedComplexBasepoint →*
       Multiplicative B :=

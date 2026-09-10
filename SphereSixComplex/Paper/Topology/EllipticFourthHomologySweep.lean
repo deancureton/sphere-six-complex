@@ -7,7 +7,7 @@ public import SphereSixComplex.Paper.Topology.CuspEllipticHomologyFullIterate
 noncomputable section
 open AlgebraicTopology
 namespace SphereSixComplex.Geometry.PaperAnalyticData
-open SphereSixComplex.Topology CircleProductIdentityMappingTorus FirstHurewiczProof
+open SphereSixComplex.Topology CircleProductIdentityMappingTorus Hurewicz.Chains
 
 public def ellipticFourthHomologySweep (A : PaperAnalyticData) :
     IntegralSingularHomology 1 A.SectionSevenEllipticInterior →+

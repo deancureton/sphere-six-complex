@@ -9,9 +9,9 @@ public import SphereSixComplex.Paper.Periods.ExactFuchsianInvariantHolomorphicDe
 noncomputable section
 open SphereSixComplex.TriangleGroup
 open scoped Manifold
-namespace SphereSixComplex.Periods.OrbifoldAffineLineTorsorDescentProblem
+namespace SphereSixComplex.Periods.OrbifoldAffineDescentData
 
-public theorem frameZero_ne_zero_regular (P : OrbifoldAffineLineTorsorDescentProblem)
+public theorem frameZero_ne_zero_regular (P : OrbifoldAffineDescentData)
     {z : UpperHalfPlane} (hz : P.quotient.coordinate z ∉ ({0, 1} : Set ℂ)) :
     P.frameZero z ≠ 0 := by
   intro he
@@ -23,7 +23,7 @@ public theorem frameZero_ne_zero_regular (P : OrbifoldAffineLineTorsorDescentPro
     rw [P.quotient.coordinate_invariant, P.quotient.coordinate_at_two]
     simp
 
-public theorem affineTransport_frameZero_sub (P : OrbifoldAffineLineTorsorDescentProblem)
+public theorem affineTransport_frameZero_sub (P : OrbifoldAffineDescentData)
     (g : Delta) (z : UpperHalfPlane) (u c : ℂ) :
     (P.affineTransport g (z, u + P.frameZero z * c)).2 =
       (P.affineTransport g (z, u)).2 + P.frameZero (fuchsianSourceAction g • z) * c := by
@@ -53,7 +53,7 @@ public theorem affineTransport_frameZero_sub (P : OrbifoldAffineLineTorsorDescen
       rw [hp, hh, hg]
       rw [hp u, map_mul, mul_smul]
 
-public theorem affineTransport_regular_ratio (P : OrbifoldAffineLineTorsorDescentProblem)
+public theorem affineTransport_regular_ratio (P : OrbifoldAffineDescentData)
     (g : Delta) {z : UpperHalfPlane} (hz : P.quotient.coordinate z ∉ ({0, 1} : Set ℂ))
     (u v : ℂ) :
     ((P.affineTransport g (z, u)).2 - (P.affineTransport g (z, v)).2) /
@@ -66,7 +66,7 @@ public theorem affineTransport_regular_ratio (P : OrbifoldAffineLineTorsorDescen
   rw [he] at h
   rw [h, add_sub_cancel_left, mul_div_cancel_left₀ _ hn']
 
-public theorem exists_regular_overlap_cocycle (P : OrbifoldAffineLineTorsorDescentProblem)
+public theorem exists_regular_overlap_cocycle (P : OrbifoldAffineDescentData)
     {W : Set ℂ} (hW : IsOpen W) (hreg : W ⊆ ({0, 1} : Set ℂ)ᶜ)
     (s t : UpperHalfPlane → ℂ)
     (hs : ∀ z, P.quotient.coordinate z ∈ W → MDiffAt s z)
@@ -88,7 +88,7 @@ public theorem exists_regular_overlap_cocycle (P : OrbifoldAffineLineTorsorDesce
   intro z hz
   rw [he z hz, div_mul_cancel₀ _ (P.frameZero_ne_zero_regular (hreg hz))]
 
-public theorem exists_local_section_cocycle (P : OrbifoldAffineLineTorsorDescentProblem)
+public theorem exists_local_section_cocycle (P : OrbifoldAffineDescentData)
     {ι : Type*} (U : ι → Set ℂ) (hU : ∀ i, IsOpen (U i))
     (hreg : ∀ i j, i ≠ j → U i ∩ U j ⊆ ({0, 1} : Set ℂ)ᶜ)
     (s : ι → UpperHalfPlane → ℂ)
@@ -139,7 +139,7 @@ public theorem exists_local_section_cocycle (P : OrbifoldAffineLineTorsorDescent
       have h3 := htrans i k z hi hk
       linear_combination -h1 - h2 + h3
 
-public theorem glue_local_sections (P : OrbifoldAffineLineTorsorDescentProblem)
+public theorem glue_local_sections (P : OrbifoldAffineDescentData)
     {ι : Type*} (U : ι → Set ℂ) (hU : ∀ i, IsOpen (U i))
     (hcover : ∀ q, ∃ i, q ∈ U i) (s : ι → UpperHalfPlane → ℂ)
     (hs : ∀ i z, P.quotient.coordinate z ∈ U i → MDiffAt (s i) z)
@@ -189,4 +189,4 @@ public theorem glue_local_sections (P : OrbifoldAffineLineTorsorDescentProblem)
     rw [h]
     ring
 
-end SphereSixComplex.Periods.OrbifoldAffineLineTorsorDescentProblem
+end SphereSixComplex.Periods.OrbifoldAffineDescentData

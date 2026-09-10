@@ -21,7 +21,7 @@ open AlgebraicTopology
 namespace SphereSixComplex.Topology.FiniteCyclicThreeTorusWangNaturality
 
 open StandardTorusHomology
-open PaperAffineCyclicReducedFiberMappingTorus
+open CyclicMappingTorus
 
 public abbrev ThreeLattice := Fin 3 → ℤ
 public abbrev SixLattice := Fin 6 → ℤ

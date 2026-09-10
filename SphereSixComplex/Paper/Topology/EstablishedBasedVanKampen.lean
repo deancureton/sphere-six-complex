@@ -29,13 +29,13 @@ variable {Y : Type*} [TopologicalSpace Y] {base : Y}
 /-- The central-piece fundamental group mapped to the ambient base point. -/
 public def coreFundamentalGroupMap (D : PaperVanKampenFourPieceCover base) :
     FundamentalGroup D.core ⟨base, D.base_mem_core⟩ →* FundamentalGroup Y base :=
-  FundamentalGroup.map (subsetInclusion D.core) ⟨base, D.base_mem_core⟩
+  FundamentalGroup.map (CoveringSpace.subsetInclusion D.core) ⟨base, D.base_mem_core⟩
 
 /-- The cusp-piece fundamental group, transported to the ambient base along its connector. -/
 public def cuspFundamentalGroupMap (D : PaperVanKampenFourPieceCover base) :
     FundamentalGroup D.cusp ⟨D.cuspPoint, D.cuspPoint_mem.2⟩ →* FundamentalGroup Y base :=
   (FundamentalGroup.fundamentalGroupMulEquivOfPath D.cuspConnector.symm).toMonoidHom.comp
-    (FundamentalGroup.map (subsetInclusion D.cusp) ⟨D.cuspPoint, D.cuspPoint_mem.2⟩)
+    (FundamentalGroup.map (CoveringSpace.subsetInclusion D.cusp) ⟨D.cuspPoint, D.cuspPoint_mem.2⟩)
 
 /-- The order-three filling fundamental group, transported to the ambient base. -/
 public def ellipticThreeFundamentalGroupMap (D : PaperVanKampenFourPieceCover base) :
@@ -44,7 +44,7 @@ public def ellipticThreeFundamentalGroupMap (D : PaperVanKampenFourPieceCover ba
       FundamentalGroup Y base :=
   (FundamentalGroup.fundamentalGroupMulEquivOfPath
       D.ellipticThreeConnector.symm).toMonoidHom.comp
-    (FundamentalGroup.map (subsetInclusion D.ellipticThree)
+    (FundamentalGroup.map (CoveringSpace.subsetInclusion D.ellipticThree)
       ⟨D.ellipticThreePoint, D.ellipticThreePoint_mem.2⟩)
 
 /-- The order-four filling fundamental group, transported to the ambient base. -/
@@ -54,7 +54,7 @@ public def ellipticFourFundamentalGroupMap (D : PaperVanKampenFourPieceCover bas
       FundamentalGroup Y base :=
   (FundamentalGroup.fundamentalGroupMulEquivOfPath
       D.ellipticFourConnector.symm).toMonoidHom.comp
-    (FundamentalGroup.map (subsetInclusion D.ellipticFour)
+    (FundamentalGroup.map (CoveringSpace.subsetInclusion D.ellipticFour)
       ⟨D.ellipticFourPoint, D.ellipticFourPoint_mem.2⟩)
 
 /-- Inclusion of the cusp overlap into the cusp piece. -/
@@ -122,7 +122,7 @@ public theorem transport_mem_range_core (D : PaperVanKampenFourPieceCover base) 
     (hpt : pt ∈ D.core ∩ P) (conn : Path base pt) (hconn : ∀ t, conn t ∈ D.core)
     (y : FundamentalGroup (D.core ∩ P : Set Y) ⟨pt, hpt⟩) :
     (FundamentalGroup.fundamentalGroupMulEquivOfPath conn.symm)
-        (FundamentalGroup.map (subsetInclusion P) ⟨pt, hpt.2⟩
+        (FundamentalGroup.map (CoveringSpace.subsetInclusion P) ⟨pt, hpt.2⟩
           (FundamentalGroup.map
             (⟨fun z : (D.core ∩ P : Set Y) ↦ (⟨z, z.2.2⟩ : P), by fun_prop⟩ :
               C((D.core ∩ P : Set Y), P)) ⟨pt, hpt⟩ y)) ∈
@@ -132,26 +132,26 @@ public theorem transport_mem_range_core (D : PaperVanKampenFourPieceCover base) 
     D.connectorInCore conn hconn hpt.1 with hconnCore
   refine ⟨(FundamentalGroup.fundamentalGroupMulEquivOfPath connCore.symm)
     (FundamentalGroup.map (D.overlapToCore P) ⟨pt, hpt⟩ y), ?_⟩
-  have hnat := map_fundamentalGroupMulEquivOfPath (subsetInclusion D.core) connCore.symm
+  have hnat := CoveringSpace.map_fundamentalGroupMulEquivOfPath (CoveringSpace.subsetInclusion D.core) connCore.symm
     (FundamentalGroup.map (D.overlapToCore P) ⟨pt, hpt⟩ y)
-  have hpath : (connCore.symm.map (subsetInclusion D.core).continuous) = conn.symm := by
+  have hpath : (connCore.symm.map (CoveringSpace.subsetInclusion D.core).continuous) = conn.symm := by
     ext t
     rfl
-  show FundamentalGroup.map (subsetInclusion D.core) _
+  show FundamentalGroup.map (CoveringSpace.subsetInclusion D.core) _
       ((FundamentalGroup.fundamentalGroupMulEquivOfPath connCore.symm) _) = _
   rw [hnat, hpath]
   congr 1
-  have h1 : FundamentalGroup.map (subsetInclusion D.core) ⟨pt, hpt.1⟩
+  have h1 : FundamentalGroup.map (CoveringSpace.subsetInclusion D.core) ⟨pt, hpt.1⟩
       (FundamentalGroup.map (D.overlapToCore P) ⟨pt, hpt⟩ y)
-      = FundamentalGroup.map ((subsetInclusion D.core).comp (D.overlapToCore P)) ⟨pt, hpt⟩ y :=
-    map_map _ _ _ _
-  have h2 : FundamentalGroup.map (subsetInclusion P) ⟨pt, hpt.2⟩
+      = FundamentalGroup.map ((CoveringSpace.subsetInclusion D.core).comp (D.overlapToCore P)) ⟨pt, hpt⟩ y :=
+    CoveringSpace.map_map _ _ _ _
+  have h2 : FundamentalGroup.map (CoveringSpace.subsetInclusion P) ⟨pt, hpt.2⟩
       (FundamentalGroup.map
         (⟨fun z : (D.core ∩ P : Set Y) ↦ (⟨z, z.2.2⟩ : P), by fun_prop⟩ :
           C((D.core ∩ P : Set Y), P)) ⟨pt, hpt⟩ y)
-      = FundamentalGroup.map ((subsetInclusion P).comp
+      = FundamentalGroup.map ((CoveringSpace.subsetInclusion P).comp
           ⟨fun z : (D.core ∩ P : Set Y) ↦ (⟨z, z.2.2⟩ : P), by fun_prop⟩) ⟨pt, hpt⟩ y :=
-    map_map _ _ _ _
+    CoveringSpace.map_map _ _ _ _
   rw [h1, h2]
   congr 1
 
@@ -236,12 +236,12 @@ public theorem exists_filling_lift (H : Subgroup (FundamentalGroup Y base))
     {P : Set Y} (hPopen : IsOpen P) (hP : IsPathConnected P) {pt : Y} (hpt : pt ∈ D.core ∩ P)
     (conn : Path base pt) (hconn : ∀ t, conn t ∈ D.core)
     (hle : ((FundamentalGroup.fundamentalGroupMulEquivOfPath conn.symm).toMonoidHom.comp
-        (FundamentalGroup.map (subsetInclusion P) (⟨pt, hpt.2⟩ : P))).range ≤ H) :
+        (FundamentalGroup.map (CoveringSpace.subsetInclusion P) (⟨pt, hpt.2⟩ : P))).range ≤ H) :
     ∃ g : C(P, SubgroupQuotient base H), g ⟨pt, hpt.2⟩ = sCore ⟨pt, hpt.1⟩ ∧
       ∀ z : P, subgroupQuotientProj base H (g z) = z := by
-  refine exists_lift H hPopen hP hpt.2 (sCore ⟨pt, hpt.1⟩) (hsCore ⟨pt, hpt.1⟩) ?_
+  refine CoveringSpace.exists_lift H hPopen hP hpt.2 (sCore ⟨pt, hpt.1⟩) (hsCore ⟨pt, hpt.1⟩) ?_
   rintro γ ⟨x, rfl⟩
-  refine mem_range_mapOfEq_of_path
+  refine CoveringSpace.mem_range_mapOfEq_of_path
     (⟨subgroupQuotientProj base H, continuous_subgroupQuotientProj base H⟩ :
       C(SubgroupQuotient base H, Y))
     (((D.connectorInCore conn hconn hpt.1).map sCore.continuous).cast hsCoreBase.symm rfl)
@@ -270,7 +270,7 @@ public theorem localFundamentalGroupImages_generate'
     range_mapOfEq_subgroupQuotientProj base H
   -- the lift over the core
   obtain ⟨sCore, hsCoreBase, hsCore⟩ :=
-    exists_lift H D.core_isOpen D.core_pathConnected D.base_mem_core
+    CoveringSpace.exists_lift H D.core_isOpen D.core_pathConnected D.base_mem_core
       (SubgroupQuotient.basepoint base H) hbase (by rw [hrange]; exact hcore)
   obtain ⟨sCusp, hsCuspPt, hsCusp⟩ :=
     exists_filling_lift D H sCore hsCoreBase hsCore hrange D.cusp_isOpen D.cusp_pathConnected

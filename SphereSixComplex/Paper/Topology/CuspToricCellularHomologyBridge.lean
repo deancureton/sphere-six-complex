@@ -238,7 +238,7 @@ public noncomputable def establishedIntegralCellularChainModel
   letI := D.topology
   letI := D.t2
   letI := D.cwComplex
-  exact EstablishedCellularHomology.integralCWCellularHomologyModel D.Carrier
+  exact CellularHomology.normalizedModel D.Carrier
 
 /-- The exact boundary-formula input still required for the concrete standard toric CW
 decomposition. -/

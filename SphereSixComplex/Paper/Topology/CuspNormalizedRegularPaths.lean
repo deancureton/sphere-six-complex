@@ -63,7 +63,7 @@ public def normalizedMeridianPairRegularPath (A : PaperAnalyticData) :
 public theorem normalizedCuspPositiveRegularPath_projects (A : PaperAnalyticData)
     (t : unitInterval) :
     A.regularCoordinate (A.normalizedCuspPositiveRegularPath t) =
-      A.actualCuspAngularCoordinateLoop.symm t := by
+      A.cuspAngularCoordinateLoop.symm t := by
   change A.regularCoordinate
     (SphereSixComplex.Geometry.EquivariantQuotientHomeomorph.actionMap A.regularBaseDeckAction _
       (A.actualCuspChosenPositiveRegularBase t)) = _

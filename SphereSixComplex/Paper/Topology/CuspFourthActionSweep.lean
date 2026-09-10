@@ -15,24 +15,24 @@ open GlobalTorusFamily CuspPuncturedCollarBridge CuspRadialClutchingConstruction
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open ComplexTorus TorusFamily CuspPeriodExpansion
 open SectionSevenEllipticTwoDiscCoverData CircleProductIdentityMappingTorus
-open StandardCircleHomologyLiftDegree FirstHurewiczProof
+open StandardCircleHomologyLiftDegree Hurewicz.Chains
 
 public def actualCuspChosenFourthSweep (A : PaperAnalyticData) :
     C(UnitAddCircle × StdTorus 1, A.openEmbeddingStarData.collarSource 0) :=
-  A.actualCuspFixedCircleSweepAnchors (cuspFourthFixedCircle (cuspBasePoint A.cuspCoordinate
+  A.cuspFixedCircleSweepAnchors (cuspFourthFixedCircle (cuspBasePoint A.cuspCoordinate
     (markedCuspParameter A.starCuspWitness))) A.actualCuspChosenAnchor
 
-public theorem actualCuspFourthSweep_homotopic_chosen (A : PaperAnalyticData) :
-    (actualCuspFourthSweep A).Homotopic A.actualCuspChosenFourthSweep :=
-  A.actualCuspFixedCircleSweep_homotopic_anchor _ _
+public theorem cuspFourthSweep_homotopic_chosen (A : PaperAnalyticData) :
+    (cuspFourthSweep A).Homotopic A.actualCuspChosenFourthSweep :=
+  A.cuspFixedCircleSweep_homotopic_anchor _ _
 
 public theorem actualCuspChosenFourthSweep_central_real (A : PaperAnalyticData)
     (r : ℝ) (t : UnitAddCircle) :
     A.starToCentral 0 (A.actualCuspChosenFourthSweep ((r : UnitAddCircle), fun _ ↦ t)) =
       regularPeriodCircleInGlobal A.periods (Pi.single 3 1)
         (t, A.actualCuspChosenPositiveRegularBase r) := by
-  change A.starToCentral 0 (A.actualCuspFixedCircleSweepAnchors _ _ _) = _
-  rw [actualCuspFixedCircleSweepAnchors_real]
+  change A.starToCentral 0 (A.cuspFixedCircleSweepAnchors _ _ _) = _
+  rw [cuspFixedCircleSweepAnchors_real]
   have hs : cuspParameterOfPolar ‖cuspQ A.actualCuspBoundaryCoverBase.1.2‖
       (r + A.actualCuspBoundaryCoverBase.1.2.re) = A.actualCuspBoundaryCoverBase.1.2 + r := by
     calc
@@ -86,11 +86,11 @@ public theorem actualCuspChosenFourthSweep_action (A : PaperAnalyticData)
 
 public theorem actualCuspChosenZeroCircle_negative (A : PaperAnalyticData) (t : unitInterval) :
     A.actualCuspChosenZeroCircle (fun _ ↦ ((-(t : ℝ) : ℝ) : UnitAddCircle)) =
-      A.actualCuspAngularZeroSectionLoop t := by
+      A.cuspAngularZeroSectionLoop t := by
   change A.starToCentral 0 (A.actualCuspChosenFourthSweep
     (((-(t : ℝ) : ℝ) : UnitAddCircle),fun _ ↦ 0)) = _
   rw [actualCuspChosenFourthSweep_central_real,
-    actualCuspAngularZeroSectionLoop_apply]
+    cuspAngularZeroSectionLoop_apply]
   change Quotient.mk _ (regularPeriodCircle _ _ ((0 : ℝ),_)) = _
   rw [regularPeriodCircle_real]
   change A.centralQuotientProjection (projection _ (_, (0 : ℝ) • periodVector _ _)) = _
@@ -110,10 +110,10 @@ public theorem loopHomologyClass_symm_eq_neg {X : Type} [TopologicalSpace X]
 
 public theorem actualCuspChosenZeroCircle_homology (A : PaperAnalyticData) :
     integralSingularHomologyMap 1 A.actualCuspChosenZeroCircle standardCircleHomologyGenerator =
-      -loopHomologyClass A.actualCuspAngularZeroSectionLoop := by
+      -loopHomologyClass A.cuspAngularZeroSectionLoop := by
   have h : loopHomologyClass
       (standardCirclePositiveLoop.symm.map A.actualCuspChosenZeroCircle.continuous) =
-      loopHomologyClass A.actualCuspAngularZeroSectionLoop := by
+      loopHomologyClass A.cuspAngularZeroSectionLoop := by
     apply loopHomologyClass_eq_of_pointwise
     intro t
     change A.actualCuspChosenZeroCircle (fun _ ↦
@@ -128,12 +128,12 @@ public theorem actualCuspChosenZeroCircle_homology (A : PaperAnalyticData) :
     (loopHomologyClass standardCirclePositiveLoop) = _
   exact neg_eq_iff_eq_neg.mp h
 
-public theorem actualCuspAngularCentralLoop_homology_zero (A : PaperAnalyticData) :
-    loopHomologyClass A.actualCuspAngularCentralLoop =
-      loopHomologyClass A.actualCuspAngularZeroSectionLoop := by
-  have h := A.actualCuspAngularCentralLoop_class_eq_zeroSectionWhisker
+public theorem cuspAngularCentralLoop_homology_zero (A : PaperAnalyticData) :
+    loopHomologyClass A.cuspAngularCentralLoop =
+      loopHomologyClass A.cuspAngularZeroSectionLoop := by
+  have h := A.cuspAngularCentralLoop_class_eq_zeroSectionWhisker
   have he := congrArg (fun p ↦ hurewiczPi1 A.actualCuspCentralBase (Additive.ofMul p)) h
-  change loopHomologyClass A.actualCuspAngularCentralLoop = _ at he
+  change loopHomologyClass A.cuspAngularCentralLoop = _ at he
   exact he.trans (loopHomologyClass_whisker _ _)
 
 public def actualCuspChosenZeroCircleInterior (A : PaperAnalyticData) :
@@ -149,7 +149,7 @@ public theorem actualCuspChosenZeroCircleInterior_homology (A : PaperAnalyticDat
   rw [actualCuspChosenZeroCircleInterior, ← integralSingularHomologyMap_comp_wang,
     actualCuspChosenZeroCircle_homology, map_neg,
     A.actualCuspBridgeMeridian_homology_image D,
-    ← A.actualCuspAngularCentralLoop_homology_zero]
+    ← A.cuspAngularCentralLoop_homology_zero]
   congr 1
   erw [integralSingularHomologyMap_loopHomologyClass,
     integralSingularHomologyMap_loopHomologyClass]
@@ -157,7 +157,7 @@ public theorem actualCuspChosenZeroCircleInterior_homology (A : PaperAnalyticDat
   intro t
   apply Subtype.ext
   change (A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
-    (A.actualCuspOverlapToCentral (A.actualCuspAngularProjectedLoop t))).val = _
+    (A.actualCuspOverlapToCentral (A.cuspAngularProjectedLoop t))).val = _
   erw [A.centralToSectionSevenEulerPieceHomeomorph_actualCuspOverlapToCentral]
   rfl
 
@@ -176,12 +176,12 @@ public theorem actualCuspChosenFourthSweep_action_interior (A : PaperAnalyticDat
 public theorem actualCuspChosenFourthSweep_homology (A : PaperAnalyticData) :
     integralSingularHomologyMap 2 A.actualCuspChosenFourthSweep
       PositiveCircleCross.positiveCircleProductGenerator =
-      A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1) := by
-  rw [← A.actualCuspFourthSweepClass_eq_rawFive]
+      A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1) := by
+  rw [← A.cuspFourthSweepClass_eq_rawFive]
   change integralSingularHomologyMap 2 A.actualCuspChosenFourthSweep _ =
-    integralSingularHomologyMap 2 (actualCuspFourthSweep A) _
+    integralSingularHomologyMap 2 (cuspFourthSweep A) _
   have h := SphereSixComplex.integralSingularHomologyMap_eq_of_homotopic
-    A.actualCuspFourthSweep_homotopic_chosen 2
+    A.cuspFourthSweep_homotopic_chosen 2
   exact (congrArg (fun f ↦ f.hom PositiveCircleCross.positiveCircleProductGenerator) h).symm
 
 public theorem ellipticFourthHomologySweep_cusp (A : PaperAnalyticData)
@@ -190,7 +190,7 @@ public theorem ellipticFourthHomologySweep_cusp (A : PaperAnalyticData)
       (-integralSingularHomologyMap 1 A.actualCuspOverlapToEllipticInterior
         (hurewiczFunction A.actualCuspOverlapBase A.actualCuspAffineBridgeMeridian)) =
       -integralSingularHomologyMap 2 D.cuspToEllipticInteriorMap.hom
-        (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) := by
+        (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) := by
   rw [← A.actualCuspChosenZeroCircleInterior_homology D]
   change integralSingularHomologyMap 2 A.ellipticFourthTranslation
     (normalizedCircleCross 1 (integralSingularHomologyMap 1

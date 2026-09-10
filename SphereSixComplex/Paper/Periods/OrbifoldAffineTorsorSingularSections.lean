@@ -12,16 +12,16 @@ noncomputable section
 open SphereSixComplex.TriangleGroup SphereSixComplex.Geometry
 open scoped Manifold
 
-namespace SphereSixComplex.Periods.OrbifoldAffineLineTorsorDescentProblem
+namespace SphereSixComplex.Periods.OrbifoldAffineDescentData
 
-public theorem transportSection_pow_fixed (P : OrbifoldAffineLineTorsorDescentProblem)
+public theorem transportSection_pow_fixed (P : OrbifoldAffineDescentData)
     {g : Delta} {t : UpperHalfPlane → ℂ} (ht : P.transportSection g t = t) (n : ℕ) :
     P.transportSection (g ^ n) t = t := by
   induction n with
   | zero => simp
   | succ n hn => rw [pow_succ, P.transportSection_mul, ht, hn]
 
-public theorem transportSection_ellipticOne_fixed (P : OrbifoldAffineLineTorsorDescentProblem)
+public theorem transportSection_ellipticOne_fixed (P : OrbifoldAffineDescentData)
     (a : CyclicThree) : P.transportSection (Monoid.Coprod.inl a) P.ellipticOne = P.ellipticOne := by
   have ht : P.transportSection g₁ P.ellipticOne = P.ellipticOne := by
     funext z
@@ -33,7 +33,7 @@ public theorem transportSection_ellipticOne_fixed (P : OrbifoldAffineLineTorsorD
   rw [ha, map_pow]
   exact P.transportSection_pow_fixed ht _
 
-public theorem transportSection_ellipticTwo_fixed (P : OrbifoldAffineLineTorsorDescentProblem)
+public theorem transportSection_ellipticTwo_fixed (P : OrbifoldAffineDescentData)
     (a : CyclicFour) : P.transportSection (Monoid.Coprod.inr a) P.ellipticTwo = P.ellipticTwo := by
   have ht : P.transportSection g₂ P.ellipticTwo = P.ellipticTwo := by
     funext z
@@ -46,7 +46,7 @@ public theorem transportSection_ellipticTwo_fixed (P : OrbifoldAffineLineTorsorD
   exact P.transportSection_pow_fixed ht _
 
 public theorem exists_equivariant_section_on_precise_saturation
-    (P : OrbifoldAffineLineTorsorDescentProblem) {S : Set UpperHalfPlane}
+    (P : OrbifoldAffineDescentData) {S : Set UpperHalfPlane}
     (hopen : IsOpen S) (t : UpperHalfPlane → ℂ) (ht : MDiff t)
     (hprecise : ∀ g x, x ∈ S → fuchsianSourceAction g • x ∈ S →
       P.transportSection g t = t) :
@@ -95,7 +95,7 @@ public theorem exists_equivariant_section_on_precise_saturation
     · rfl
 
 public theorem coordinate_image_mem_iff_saturation
-    (P : OrbifoldAffineLineTorsorDescentProblem) (S : Set UpperHalfPlane) (z : UpperHalfPlane) :
+    (P : OrbifoldAffineDescentData) (S : Set UpperHalfPlane) (z : UpperHalfPlane) :
     P.quotient.coordinate z ∈ P.quotient.coordinate '' S ↔
       ∃ g : Delta, fuchsianSourceAction g⁻¹ • z ∈ S := by
   constructor
@@ -107,7 +107,7 @@ public theorem coordinate_image_mem_iff_saturation
   · rintro ⟨g, hg⟩
     exact ⟨_, hg, P.quotient.coordinate_invariant _ z⟩
 
-public theorem coordinate_isOpenMap (P : OrbifoldAffineLineTorsorDescentProblem) :
+public theorem coordinate_isOpenMap (P : OrbifoldAffineDescentData) :
     IsOpenMap P.quotient.coordinate := by
   intro S hS
   apply P.quotient.coordinate_isQuotientMap.isCoinducing.isOpen_preimage.mp
@@ -120,7 +120,7 @@ public theorem coordinate_isOpenMap (P : OrbifoldAffineLineTorsorDescentProblem)
     (fuchsianSourceAction_contMDiff g⁻¹ 0).continuous)
 
 public theorem exists_local_equivariant_section_of_stabilizer_fixed
-    (P : OrbifoldAffineLineTorsorDescentProblem) (z₀ : UpperHalfPlane)
+    (P : OrbifoldAffineDescentData) (z₀ : UpperHalfPlane)
     (t : UpperHalfPlane → ℂ) (ht : MDiff t)
     (hfixed : ∀ g : Delta, fuchsianSourceAction g • z₀ = z₀ → P.transportSection g t = t) :
     ∃ W : Set ℂ, IsOpen W ∧ P.quotient.coordinate z₀ ∈ W ∧
@@ -149,7 +149,7 @@ public theorem exists_local_equivariant_section_of_stabilizer_fixed
   exact heq z hz
 
 public theorem exists_ellipticOne_local_equivariant_section
-    (P : OrbifoldAffineLineTorsorDescentProblem) :
+    (P : OrbifoldAffineDescentData) :
     ∃ W : Set ℂ, IsOpen W ∧ 0 ∈ W ∧ ∃ s : UpperHalfPlane → ℂ,
       (∀ z, P.quotient.coordinate z ∈ W → MDiffAt s z) ∧
       (∀ᶠ z in nhds fuchsianOneFixedPoint, s z = P.ellipticOne z) ∧
@@ -163,7 +163,7 @@ public theorem exists_ellipticOne_local_equivariant_section
         exact P.transportSection_ellipticOne_fixed a)
 
 public theorem exists_ellipticTwo_local_equivariant_section
-    (P : OrbifoldAffineLineTorsorDescentProblem) :
+    (P : OrbifoldAffineDescentData) :
     ∃ W : Set ℂ, IsOpen W ∧ 1 ∈ W ∧ ∃ s : UpperHalfPlane → ℂ,
       (∀ z, P.quotient.coordinate z ∈ W → MDiffAt s z) ∧
       (∀ᶠ z in nhds fuchsianTwoFixedPoint, s z = P.ellipticTwo z) ∧
@@ -176,4 +176,4 @@ public theorem exists_ellipticTwo_local_equivariant_section
         obtain ⟨a, rfl⟩ := (establishedFuchsianTwoStabilizerExact g).mp hg
         exact P.transportSection_ellipticTwo_fixed a)
 
-end SphereSixComplex.Periods.OrbifoldAffineLineTorsorDescentProblem
+end SphereSixComplex.Periods.OrbifoldAffineDescentData

@@ -123,7 +123,7 @@ public noncomputable def actualCuspSecondWangBoundaryCoordinateHom (A : PaperAna
 geometric Wang boundary. -/
 public theorem actualCuspSecondWangBoundaryCoordinateHom_eq_rawCoordinate (A : PaperAnalyticData) :
     actualCuspSecondWangBoundaryCoordinateHom A =
-      coordinateAfterAddEquiv A.actualCuspRawHomologyTwoEquiv 5 := by
+      coordinateAfterAddEquiv A.cuspRawHomologyTwoEquiv 5 := by
   apply AddMonoidHom.ext
   intro x
   rfl
@@ -216,11 +216,11 @@ public theorem SectionSevenCuspPulledBackWangBoundaryComparison.toPulledBackBoun
     D.SectionSevenCuspPulledBackBoundaryBasisBridge N where
   lowerBoundary_zero i := by
     have hInvariant : D.cuspPulledBackBoundaryInvariantHom
-        (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i.castSucc 1)) = 0 := by
+        (A.cuspRawHomologyTwoEquiv.symm (Pi.single i.castSucc 1)) = 0 := by
       apply N.actualHomologyCoordinates.degreeTwoInvariantEquiv.injective
       rw [map_zero]
       change D.cuspPulledBackBoundaryCoordinateHom N
-          (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single i.castSucc 1)) = 0
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single i.castSucc 1)) = 0
       rw [G.boundaryCoordinateHom,
         actualCuspSecondWangBoundaryCoordinateHom_eq_rawCoordinate,
         coordinateAfterAddEquiv_apply,
@@ -230,11 +230,11 @@ public theorem SectionSevenCuspPulledBackWangBoundaryComparison.toPulledBackBoun
     exact congrArg Subtype.val hInvariant
   e5_boundary := by
     have hInvariant : D.cuspPulledBackBoundaryInvariantHom
-        (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) =
+        (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) =
           N.actualHomologyCoordinates.degreeTwoInvariantEquiv.symm 1 := by
       apply N.actualHomologyCoordinates.degreeTwoInvariantEquiv.injective
       change D.cuspPulledBackBoundaryCoordinateHom N
-          (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) =
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) =
         N.actualHomologyCoordinates.degreeTwoInvariantEquiv
           (N.actualHomologyCoordinates.degreeTwoInvariantEquiv.symm 1)
       rw [G.boundaryCoordinateHom,

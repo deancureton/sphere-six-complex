@@ -5,11 +5,11 @@ public import Mathlib.Topology.UnitInterval
 
 open Set
 open scoped ContinuousMap
-namespace SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
+namespace SphereSixComplex.ComplexDisc
 noncomputable section
 
 /-- Linear contraction of the complex unit disc to its centre. -/
-@[expose] public def discRadialHomotopy
+@[expose] public def radialHomotopy
     (p : unitInterval × ComplexUnitDisc) : ComplexUnitDisc :=
   ⟨((1 - (p.1 : ℝ) : ℝ) : ℂ) * p.2.1, by
     have hs0 : 0 ≤ 1 - (p.1 : ℝ) := sub_nonneg.mpr p.1.2.2
@@ -22,53 +22,53 @@ noncomputable section
       _ ≤ 1 * ‖p.2.1‖ := mul_le_mul_of_nonneg_right hs1 (norm_nonneg _)
       _ < 1 := by simpa using p.2.2⟩
 
-public theorem discRadialHomotopy_continuous : Continuous discRadialHomotopy := by
+public theorem continuous_radialHomotopy : Continuous radialHomotopy := by
   apply Continuous.subtype_mk
   exact ((Complex.continuous_ofReal.comp (continuous_const.sub
     (continuous_subtype_val.comp continuous_fst))).mul
       (continuous_subtype_val.comp continuous_snd))
 
 @[simp]
-public theorem discRadialHomotopy_zero (w : ComplexUnitDisc) :
-    discRadialHomotopy (0, w) = w := by
+public theorem radialHomotopy_zero (w : ComplexUnitDisc) :
+    radialHomotopy (0, w) = w := by
   apply Subtype.ext
-  simp [discRadialHomotopy]
+  simp [radialHomotopy]
 
 @[simp]
-public theorem discRadialHomotopy_one (w : ComplexUnitDisc) :
-    discRadialHomotopy (1, w) = ComplexUnitDisc.center := by
+public theorem radialHomotopy_one (w : ComplexUnitDisc) :
+    radialHomotopy (1, w) = ComplexUnitDisc.center := by
   apply Subtype.ext
-  simp [discRadialHomotopy, ComplexUnitDisc.center]
+  simp [radialHomotopy, ComplexUnitDisc.center]
 
 @[simp]
-public theorem discRadialHomotopy_center (s : unitInterval) :
-    discRadialHomotopy (s, ComplexUnitDisc.center) = ComplexUnitDisc.center := by
+public theorem radialHomotopy_center (s : unitInterval) :
+    radialHomotopy (s, ComplexUnitDisc.center) = ComplexUnitDisc.center := by
   apply Subtype.ext
-  simp [discRadialHomotopy, ComplexUnitDisc.center]
+  simp [radialHomotopy, ComplexUnitDisc.center]
 
-public theorem discRadialHomotopy_discScalarEquiv_pow
+public theorem radialHomotopy_rotation_pow
     (lambda : ℂ) (hlambda : ‖lambda‖ = 1) (k : ℕ)
     (s : unitInterval) (w : ComplexUnitDisc) :
-    discRadialHomotopy (s, (ComplexUnitDisc.rotation lambda hlambda ^ k) w) =
-      (ComplexUnitDisc.rotation lambda hlambda ^ k) (discRadialHomotopy (s, w)) := by
+    radialHomotopy (s, (ComplexUnitDisc.rotation lambda hlambda ^ k) w) =
+      (ComplexUnitDisc.rotation lambda hlambda ^ k) (radialHomotopy (s, w)) := by
   apply Subtype.ext
   change (((1 - (s : ℝ) : ℝ) : ℂ) *
       ((ComplexUnitDisc.rotation lambda hlambda ^ k) w).1) =
-    ((ComplexUnitDisc.rotation lambda hlambda ^ k) (discRadialHomotopy (s, w))).1
+    ((ComplexUnitDisc.rotation lambda hlambda ^ k) (radialHomotopy (s, w))).1
   rw [ComplexUnitDisc.coe_rotation_pow_apply, ComplexUnitDisc.coe_rotation_pow_apply]
   change (((1 - (s : ℝ) : ℝ) : ℂ) * (lambda ^ k * w.1)) =
     lambda ^ k * (((1 - (s : ℝ) : ℝ) : ℂ) * w.1)
   ring
 
 /-- Radius-`r` ball in a fixed disc--torus product. -/
-public abbrev RadialProductBall (r : ℝ) (T : Type) [TopologicalSpace T] :=
+public abbrev ProductBall (r : ℝ) (T : Type) [TopologicalSpace T] :=
   {p : ComplexUnitDisc × T // ‖(p.1 : ℂ)‖ < r}
 
 /-- Positive radial rescaling identifies a radius-`r` product ball with the full unit-disc
 product. -/
-@[expose] public def radialProductBallHomeomorph
+@[expose] public def productBallHomeomorph
     {T : Type} [TopologicalSpace T] {r : ℝ} (hr : 0 < r) (hr1 : r < 1) :
-    RadialProductBall r T ≃ₜ ComplexUnitDisc × T where
+    ProductBall r T ≃ₜ ComplexUnitDisc × T where
   toFun p :=
     (⟨p.1.1.1 / (r : ℂ), by
       rw [norm_div, Complex.norm_real, Real.norm_of_nonneg hr.le]
@@ -104,4 +104,4 @@ product. -/
         continuous_snd) _
 
 end
-end SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
+end SphereSixComplex.ComplexDisc

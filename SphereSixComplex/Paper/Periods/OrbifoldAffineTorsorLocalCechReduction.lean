@@ -21,14 +21,14 @@ namespace SphereSixComplex.Periods
 open Set
 open SphereSixComplex.TriangleGroup
 
-namespace OrbifoldAffineLineTorsorDescentProblem
+namespace OrbifoldAffineDescentData
 
 open HolomorphicAffineTorsorHOne
 
 /-- Local analytic trivializations of an orbifold affine torsor on the finite and cusp charts.
 The overlap mismatch has already been descended to the punctured quotient plane. -/
-public structure LocalCechPresentation
-    (P : OrbifoldAffineLineTorsorDescentProblem) where
+public structure CechPresentation
+    (P : OrbifoldAffineDescentData) where
   zeroRegion : Set UpperHalfPlane
   infinityRegion : Set UpperHalfPlane
   zeroRegion_open : IsOpen zeroRegion
@@ -62,28 +62,28 @@ public structure LocalCechPresentation
     BoundedOn (fun z ↦ sectionInfinity z - P.cuspSection z) fuchsianCuspRegion
 
 /-- The projective-line affine torsor represented by the local overlap mismatch. -/
-@[expose] public def LocalCechPresentation.projectiveLineTorsor
-    {P : OrbifoldAffineLineTorsorDescentProblem} (D : P.LocalCechPresentation)
+@[expose] public def CechPresentation.projectiveLineTorsor
+    {P : OrbifoldAffineDescentData} (D : P.CechPresentation)
     (frame : AcyclicProjectiveLineFrame) :
     ProjectiveLineAffineTorsor frame.transition where
   cocycle := D.overlapCocycle
   cocycle_holomorphic := D.overlapCocycle_holomorphic
 
 /-- Correct the local finite-chart section by a Cech zero-cochain. -/
-@[expose] public def LocalCechPresentation.adjustedZero
-    {P : OrbifoldAffineLineTorsorDescentProblem} (D : P.LocalCechPresentation)
+@[expose] public def CechPresentation.adjustedZero
+    {P : OrbifoldAffineDescentData} (D : P.CechPresentation)
     (fZero : ℂ → ℂ) (z : UpperHalfPlane) : ℂ :=
   D.sectionZero z - fZero (P.quotient.coordinate z) * P.frameZero z
 
 /-- Correct the local cusp-chart section by a Cech zero-cochain. -/
-@[expose] public def LocalCechPresentation.adjustedInfinity
-    {P : OrbifoldAffineLineTorsorDescentProblem} (D : P.LocalCechPresentation)
+@[expose] public def CechPresentation.adjustedInfinity
+    {P : OrbifoldAffineDescentData} (D : P.CechPresentation)
     (fInfinity : ℂ → ℂ) (z : UpperHalfPlane) : ℂ :=
   D.sectionInfinity z -
     fInfinity ((P.quotient.coordinate z)⁻¹) * P.frameInfinity z
 
-public theorem LocalCechPresentation.adjustedZero_eq_adjustedInfinity
-    {P : OrbifoldAffineLineTorsorDescentProblem} (D : P.LocalCechPresentation)
+public theorem CechPresentation.adjustedZero_eq_adjustedInfinity
+    {P : OrbifoldAffineDescentData} (D : P.CechPresentation)
     (frame : AcyclicProjectiveLineFrame)
     (hframe : P.frameTransition = frame.transition)
     (S : (D.projectiveLineTorsor frame).Splitting) (z : UpperHalfPlane)
@@ -102,16 +102,16 @@ public theorem LocalCechPresentation.adjustedZero_eq_adjustedInfinity
   rw [hframe']
   linear_combination hmismatch + P.frameZero z * hsplit
 
-public theorem LocalCechPresentation.adjustedZero_holomorphicAt
-    {P : OrbifoldAffineLineTorsorDescentProblem} (D : P.LocalCechPresentation)
+public theorem CechPresentation.adjustedZero_holomorphicAt
+    {P : OrbifoldAffineDescentData} (D : P.CechPresentation)
     {fZero : ℂ → ℂ} (hfZero : MDiff fZero) {z : UpperHalfPlane}
     (hz : z ∈ D.zeroRegion) : MDiffAt (D.adjustedZero fZero) z := by
   exact (D.sectionZero_holomorphic z hz).sub
     (((hfZero _).comp z (P.quotient.coordinate_holomorphic z)).mul
       P.frameZero_holomorphic.mdifferentiableAt)
 
-public theorem LocalCechPresentation.adjustedInfinity_holomorphicAt
-    {P : OrbifoldAffineLineTorsorDescentProblem} (D : P.LocalCechPresentation)
+public theorem CechPresentation.adjustedInfinity_holomorphicAt
+    {P : OrbifoldAffineDescentData} (D : P.CechPresentation)
     {fInfinity : ℂ → ℂ} (hfInfinity : MDiff fInfinity) {z : UpperHalfPlane}
     (hz : z ∈ D.infinityRegion) : MDiffAt (D.adjustedInfinity fInfinity) z := by
   have hq := D.infinity_coordinate_ne_zero z hz
@@ -120,8 +120,8 @@ public theorem LocalCechPresentation.adjustedInfinity_holomorphicAt
   exact (D.sectionInfinity_holomorphic z hz).sub
     (((hfInfinity _).comp z hinv).mul (P.frameInfinity_holomorphic z hq))
 
-public theorem LocalCechPresentation.adjustedZero_one
-    {P : OrbifoldAffineLineTorsorDescentProblem} (D : P.LocalCechPresentation)
+public theorem CechPresentation.adjustedZero_one
+    {P : OrbifoldAffineDescentData} (D : P.CechPresentation)
     (fZero : ℂ → ℂ) (z : UpperHalfPlane) (hz : z ∈ D.zeroRegion) :
     D.adjustedZero fZero (fuchsianSourceAction g₁ • z) =
       P.affineOne z (D.adjustedZero fZero z) := by
@@ -131,8 +131,8 @@ public theorem LocalCechPresentation.adjustedZero_one
     (D.sectionZero z - fZero (P.quotient.coordinate z) * P.frameZero z)
   linear_combination h
 
-public theorem LocalCechPresentation.adjustedZero_two
-    {P : OrbifoldAffineLineTorsorDescentProblem} (D : P.LocalCechPresentation)
+public theorem CechPresentation.adjustedZero_two
+    {P : OrbifoldAffineDescentData} (D : P.CechPresentation)
     (fZero : ℂ → ℂ) (z : UpperHalfPlane) (hz : z ∈ D.zeroRegion) :
     D.adjustedZero fZero (fuchsianSourceAction g₂ • z) =
       P.affineTwo z (D.adjustedZero fZero z) := by
@@ -142,8 +142,8 @@ public theorem LocalCechPresentation.adjustedZero_two
     (D.sectionZero z - fZero (P.quotient.coordinate z) * P.frameZero z)
   linear_combination h
 
-public theorem LocalCechPresentation.adjustedInfinity_one
-    {P : OrbifoldAffineLineTorsorDescentProblem} (D : P.LocalCechPresentation)
+public theorem CechPresentation.adjustedInfinity_one
+    {P : OrbifoldAffineDescentData} (D : P.CechPresentation)
     (fInfinity : ℂ → ℂ) (z : UpperHalfPlane) (hz : z ∈ D.infinityRegion) :
     D.adjustedInfinity fInfinity (fuchsianSourceAction g₁ • z) =
       P.affineOne z (D.adjustedInfinity fInfinity z) := by
@@ -156,8 +156,8 @@ public theorem LocalCechPresentation.adjustedInfinity_one
       fInfinity ((P.quotient.coordinate z)⁻¹) * P.frameInfinity z)
   linear_combination h
 
-public theorem LocalCechPresentation.adjustedInfinity_two
-    {P : OrbifoldAffineLineTorsorDescentProblem} (D : P.LocalCechPresentation)
+public theorem CechPresentation.adjustedInfinity_two
+    {P : OrbifoldAffineDescentData} (D : P.CechPresentation)
     (fInfinity : ℂ → ℂ) (z : UpperHalfPlane) (hz : z ∈ D.infinityRegion) :
     D.adjustedInfinity fInfinity (fuchsianSourceAction g₂ • z) =
       P.affineTwo z (D.adjustedInfinity fInfinity z) := by
@@ -170,8 +170,8 @@ public theorem LocalCechPresentation.adjustedInfinity_two
       fInfinity ((P.quotient.coordinate z)⁻¹) * P.frameInfinity z)
   linear_combination h
 
-private theorem LocalCechPresentation.mem_infinityRegion_of_not_mem_zeroRegion
-    {P : OrbifoldAffineLineTorsorDescentProblem} (D : P.LocalCechPresentation)
+private theorem CechPresentation.mem_infinityRegion_of_not_mem_zeroRegion
+    {P : OrbifoldAffineDescentData} (D : P.CechPresentation)
     {z : UpperHalfPlane} (hz : z ∉ D.zeroRegion) : z ∈ D.infinityRegion := by
   have hcover : z ∈ D.zeroRegion ∪ D.infinityRegion := by
     rw [D.regions_cover]
@@ -179,15 +179,15 @@ private theorem LocalCechPresentation.mem_infinityRegion_of_not_mem_zeroRegion
   exact hcover.resolve_left hz
 
 /-- The global section obtained by gluing compatible corrected local sections. -/
-@[expose] public def LocalCechPresentation.gluedSection
-    {P : OrbifoldAffineLineTorsorDescentProblem} (D : P.LocalCechPresentation)
+@[expose] public def CechPresentation.gluedSection
+    {P : OrbifoldAffineDescentData} (D : P.CechPresentation)
     (fZero fInfinity : ℂ → ℂ) (z : UpperHalfPlane) : ℂ := by
   classical
   exact if z ∈ D.zeroRegion then D.adjustedZero fZero z
     else D.adjustedInfinity fInfinity z
 
-public theorem LocalCechPresentation.gluedSection_holomorphic
-    {P : OrbifoldAffineLineTorsorDescentProblem} (D : P.LocalCechPresentation)
+public theorem CechPresentation.gluedSection_holomorphic
+    {P : OrbifoldAffineDescentData} (D : P.CechPresentation)
     {fZero fInfinity : ℂ → ℂ} (hfZero : MDiff fZero) (hfInfinity : MDiff fInfinity)
     (hcompat : ∀ z, z ∈ D.zeroRegion ∩ D.infinityRegion →
       D.adjustedZero fZero z = D.adjustedInfinity fInfinity z) :
@@ -208,8 +208,8 @@ public theorem LocalCechPresentation.gluedSection_holomorphic
     exact heq.mdifferentiableAt_iff.mpr
       (D.adjustedInfinity_holomorphicAt hfInfinity hzInfinity)
 
-public theorem LocalCechPresentation.gluedSection_one
-    {P : OrbifoldAffineLineTorsorDescentProblem} (D : P.LocalCechPresentation)
+public theorem CechPresentation.gluedSection_one
+    {P : OrbifoldAffineDescentData} (D : P.CechPresentation)
     (fZero fInfinity : ℂ → ℂ) (z : UpperHalfPlane) :
     D.gluedSection fZero fInfinity (fuchsianSourceAction g₁ • z) =
       P.affineOne z (D.gluedSection fZero fInfinity z) := by
@@ -223,8 +223,8 @@ public theorem LocalCechPresentation.gluedSection_one
     simpa only [gluedSection, hgz, hz, ite_false] using
       D.adjustedInfinity_one fInfinity z hzInfinity
 
-public theorem LocalCechPresentation.gluedSection_two
-    {P : OrbifoldAffineLineTorsorDescentProblem} (D : P.LocalCechPresentation)
+public theorem CechPresentation.gluedSection_two
+    {P : OrbifoldAffineDescentData} (D : P.CechPresentation)
     (fZero fInfinity : ℂ → ℂ) (z : UpperHalfPlane) :
     D.gluedSection fZero fInfinity (fuchsianSourceAction g₂ • z) =
       P.affineTwo z (D.gluedSection fZero fInfinity z) := by
@@ -249,8 +249,8 @@ private theorem boundedOn_sub
   intro z hz
   exact (norm_sub_le (f z) (g z)).trans (add_le_add (hf z hz) (hg z hz))
 
-public theorem LocalCechPresentation.adjustedInfinity_sub_cusp_bounded
-    {P : OrbifoldAffineLineTorsorDescentProblem} (D : P.LocalCechPresentation)
+public theorem CechPresentation.adjustedInfinity_sub_cusp_bounded
+    {P : OrbifoldAffineDescentData} (D : P.CechPresentation)
     {fInfinity : ℂ → ℂ} (hfInfinity : MDiff fInfinity) :
     BoundedOn (fun z ↦ D.adjustedInfinity fInfinity z - P.cuspSection z)
       fuchsianCuspRegion := by
@@ -261,8 +261,8 @@ public theorem LocalCechPresentation.adjustedInfinity_sub_cusp_bounded
   unfold adjustedInfinity
   ring
 
-public theorem LocalCechPresentation.gluedSection_eq_infinity_on_cusp
-    {P : OrbifoldAffineLineTorsorDescentProblem} (D : P.LocalCechPresentation)
+public theorem CechPresentation.gluedSection_eq_infinity_on_cusp
+    {P : OrbifoldAffineDescentData} (D : P.CechPresentation)
     {fZero fInfinity : ℂ → ℂ}
     (hcompat : ∀ z, z ∈ D.zeroRegion ∩ D.infinityRegion →
       D.adjustedZero fZero z = D.adjustedInfinity fInfinity z)
@@ -274,8 +274,8 @@ public theorem LocalCechPresentation.gluedSection_eq_infinity_on_cusp
   · simpa [gluedSection, hzZero] using hcompat z ⟨hzZero, hzInfinity⟩
   · simp [gluedSection, hzZero]
 
-public theorem LocalCechPresentation.gluedSection_sub_cusp_bounded
-    {P : OrbifoldAffineLineTorsorDescentProblem} (D : P.LocalCechPresentation)
+public theorem CechPresentation.gluedSection_sub_cusp_bounded
+    {P : OrbifoldAffineDescentData} (D : P.CechPresentation)
     {fZero fInfinity : ℂ → ℂ} (hfInfinity : MDiff fInfinity)
     (hcompat : ∀ z, z ∈ D.zeroRegion ∩ D.infinityRegion →
       D.adjustedZero fZero z = D.adjustedInfinity fInfinity z) :
@@ -289,12 +289,12 @@ public theorem LocalCechPresentation.gluedSection_sub_cusp_bounded
   exact hbound z hz
 
 /-- A Cech splitting of the local presentation produces the required global affine section. -/
-public theorem LocalCechPresentation.hasCuspBoundedEquivariantSection
-    {P : OrbifoldAffineLineTorsorDescentProblem} (D : P.LocalCechPresentation)
+public theorem CechPresentation.hasCuspBoundedSection
+    {P : OrbifoldAffineDescentData} (D : P.CechPresentation)
     (frame : AcyclicProjectiveLineFrame)
     (hframe : P.frameTransition = frame.transition)
     (S : (D.projectiveLineTorsor frame).Splitting) :
-    P.HasCuspBoundedEquivariantSection := by
+    P.HasCuspBoundedSection := by
   have hcompat := D.adjustedZero_eq_adjustedInfinity frame hframe S
   exact ⟨D.gluedSection S.sectionZero S.sectionInfinity,
     D.gluedSection_holomorphic S.sectionZero_holomorphic
@@ -305,25 +305,25 @@ public theorem LocalCechPresentation.hasCuspBoundedEquivariantSection
 
 /-- Local quotient-chart trivializations are the only remaining input after the proved
 projective-line Cech vanishing. -/
-@[expose] public noncomputable def LocalCechPresentation.toCuspCorrectionCechReduction
-    {P : OrbifoldAffineLineTorsorDescentProblem} (D : P.LocalCechPresentation)
+@[expose] public noncomputable def CechPresentation.toCousinCechReduction
+    {P : OrbifoldAffineDescentData} (D : P.CechPresentation)
     (frame : AcyclicProjectiveLineFrame)
-    (hframe : P.frameTransition = frame.transition) : P.CuspCorrectionCechReduction where
+    (hframe : P.frameTransition = frame.transition) : P.CousinCechReduction where
   frame := frame
   torsor := D.projectiveLineTorsor frame
   correctionOfSplitting := fun S ↦ Classical.choice
-    (P.nonempty_correction_of_hasCuspBoundedEquivariantSection
-      (D.hasCuspBoundedEquivariantSection frame hframe S))
+    (P.nonempty_correction_of_hasCuspBoundedSection
+      (D.hasCuspBoundedSection frame hframe S))
 
 /-- The full cusp-bounded Cousin correction follows from genuinely local Cech data. -/
-public theorem nonempty_cuspBoundedEllipticOneCorrection_of_localCechPresentation
-    (P : OrbifoldAffineLineTorsorDescentProblem)
-    (D : P.LocalCechPresentation) (frame : AcyclicProjectiveLineFrame)
+public theorem nonempty_cuspBoundedCorrection_of_cechPresentation
+    (P : OrbifoldAffineDescentData)
+    (D : P.CechPresentation) (frame : AcyclicProjectiveLineFrame)
     (hframe : P.frameTransition = frame.transition) :
-    Nonempty P.CuspBoundedEllipticOneCorrection :=
-  P.nonempty_cuspBoundedEllipticOneCorrection_of_cechReduction
-    (D.toCuspCorrectionCechReduction frame hframe)
+    Nonempty P.CuspBoundedCorrection :=
+  P.nonempty_cuspBoundedCorrection_of_cechReduction
+    (D.toCousinCechReduction frame hframe)
 
-end OrbifoldAffineLineTorsorDescentProblem
+end OrbifoldAffineDescentData
 
 end SphereSixComplex.Periods

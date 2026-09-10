@@ -34,7 +34,7 @@ public theorem cuspFillingPeriodCircle_centralOrbit
     fin_cases i <;> fin_cases j <;>
       simp [CuspToricPhaseAction.phaseEmbedding, cuspPeriodPhaseCircle,
         cuspPeriodCompactCircle, constructedA2EffectivePhaseSection,
-        compactTorusEmbedding, PaperAnalyticData.unitCircleExponential]
+        compactTorusEmbedding, CircleExponential.toUnits]
 
 public theorem lowerChart_phase_weights (c : CuspToricPhaseAction.Phase) :
     torusChartCoordinates (false,0) (CuspToricPhaseAction.phaseEmbedding c) =

@@ -234,7 +234,7 @@ public theorem gammaLatticeSplit_apply (u : Lattice) :
 /-- Gamma coordinates on a full-rank period torus. -/
 public noncomputable def additiveTorusGammaSplit (p : Parameters) (h : FullRank p) :
     AdditiveTorus p ≃ₜ UnitAddCircle × StdTorus 3 :=
-  (additiveTorusStdHomeomorph p h).trans standardFourTorusGammaSplit
+  (additiveTorusStdHomeomorph p h).trans fourTorusSplit
 
 @[simp]
 public theorem additiveTorusGammaSplit_apply_projection
@@ -604,11 +604,11 @@ public noncomputable def reducedCentralFiberCircleMappingTorusHomeomorphOfGammaN
       IsCancelSMul (FiniteCyclic m) D.Product)
     (e : T ≃ₜ UnitAddCircle × F) (phi : F ≃ₜ F) (hpow : phi ^ m = 1)
     (hgen : ∀ x, e (D.actionData.fiberGenerator x) =
-      normalizedAffineShift (m := m) phi 1 (e x)) :
+      CyclicMappingTorus.normalizedAffineShift (m := m) phi 1 (e x)) :
     D.reducedCentralFiber ≃ₜ CircleMappingTorus phi := by
   let A := centralFiberAction D
   exact (centralFiberOrbitQuotientHomeomorph D hfree).symm.trans
-    (finiteCyclicOrbitQuotientCircleMappingTorusHomeomorph A e phi hpow (by
+    (CyclicMappingTorus.finiteCyclicOrbitQuotientCircleMappingTorusHomeomorph A e phi hpow (by
       intro x
       rw [show actionMap A (cyclicGenerator m) x = D.actionData.fiberGenerator x by
         exact congrArg (fun g : Equiv.Perm T ↦ g x)
@@ -640,7 +640,7 @@ public noncomputable def orderThreeReducedCentralFiberCircleMappingTorusHomeomor
       intro x
       change orderThreeGammaNormalFormHomeomorph PF
           ((orderThreeActionData PF).fiberGenerator x) = _
-      simpa [normalizedAffineShift_apply] using
+      simpa [CyclicMappingTorus.normalizedAffineShift_apply] using
         orderThreeGammaNormalForm_generator PF x)
 
 /-- The actual order-four reduced central fibre is the mapping torus of its transverse
@@ -668,7 +668,7 @@ public noncomputable def orderFourReducedCentralFiberCircleMappingTorusHomeomorp
       intro x
       change orderFourGammaNormalFormHomeomorph PF
           ((orderFourActionData PF).fiberGenerator x) = _
-      simpa [normalizedAffineShift_apply] using
+      simpa [CyclicMappingTorus.normalizedAffineShift_apply] using
         orderFourGammaNormalForm_generator PF x)
 
 end NonzeroOrder

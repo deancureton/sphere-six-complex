@@ -1,8 +1,8 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.ClassicalIntegralPoincareDualityBoundary
-public import SphereSixComplex.Prerequisites.Topology.ClassicalIntegralUCTBoundary
-public import SphereSixComplex.Prerequisites.Topology.FiniteDimensionalSmoothTriangulationBoundary
+public import SphereSixComplex.Prerequisites.Topology.IntegralPoincareDuality
+public import SphereSixComplex.Prerequisites.Topology.IntegralUniversalCoefficients
+public import SphereSixComplex.Prerequisites.Topology.SmoothTriangulation
 public import SphereSixComplex.Prerequisites.Topology.IntegralPoincareUCT
 
 /-!
@@ -37,10 +37,10 @@ public noncomputable def establishedCompactSmoothOrientedManifoldHomologyTheory
   refine {
     topHomologyEquivDualZero := ?_
     complementaryHomologyEquivDualOfPreviousFree := ?_
-    finiteHomology := M.finiteHomology
-    homologyAboveDimension := M.homologyAboveDimension }
+    finiteHomology := M.finite_homology
+    homologyAboveDimension := M.subsingleton_homology_of_lt }
   · exact (Classical.choice (P 0)).symm.trans
-      (IntegralCohomology.universalCoefficients.degreeZero X)
+      (IntegralCohomology.universalCoefficients.zeroEquiv X)
   · intro k hk hFree
     exact (Classical.choice (P k)).symm.trans
       (integralSingularCohomologyEquivDualOfPreviousFree X k.1 hk hFree)

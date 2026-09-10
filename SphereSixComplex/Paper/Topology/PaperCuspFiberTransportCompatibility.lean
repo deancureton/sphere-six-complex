@@ -63,7 +63,7 @@ public theorem actualCuspWangFibreToBand_centralFamily_fixed
     A.sectionSevenAffineCentralBandToCentralFamily
         A.sectionSevenAffineCentralSeparation c =
       A.regularFixedFiberPoint
-        (A.actualCuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
+        (A.cuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
         (fullRankAdditiveTorusHomeomorph
           G.fiberParameter A.duplicatedSectionSevenBandParameter
           G.fiberFullRank A.duplicatedSectionSevenBandFullRank
@@ -105,7 +105,7 @@ public theorem actualCuspWangFibreToBand_centralFamily_fixed
   rw [hcentral]
   obtain ⟨w, hw⟩ := Quotient.exists_rep y
   let t := actualCuspFullFibreCrossingTime A
-  let p := A.actualCuspAngularLiftPoint t
+  let p := A.cuspAngularLiftPoint t
   have hs : ‖cuspQ p.1.2‖ < A.starCuspWitness.localWitness.radius := p.2
   let zeta := (collarFiberEquiv A.cuspCoordinate
     (markedCuspParameter A.starCuspWitness) p.1.2).symm w
@@ -133,7 +133,7 @@ public theorem actualCuspWangFibreToBand_centralFamily_fixed
           G.fiberFullRank A.duplicatedSectionSevenBandFullRank
           (G.fiberHomeomorph y) =
         Quotient.mk _ (A.regularMovingToFixed
-          (A.actualCuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime) zeta) := by
+          (A.cuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime) zeta) := by
     change fullRankAdditiveTorusHomeomorph
         G.fiberParameter A.duplicatedSectionSevenBandParameter
         G.fiberFullRank A.duplicatedSectionSevenBandFullRank y = _
@@ -142,13 +142,13 @@ public theorem actualCuspWangFibreToBand_centralFamily_fixed
         (A.duplicatedSectionSevenBandFullRank.realEquiv
           (G.fiberFullRank.realEquiv.symm w)) =
       Quotient.mk _ (A.regularMovingToFixed
-        (A.actualCuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime) zeta)
+        (A.cuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime) zeta)
     apply congrArg (Quotient.mk _)
     change A.duplicatedSectionSevenBandFullRank.realEquiv
         (G.fiberFullRank.realEquiv.symm w) =
       (movingToFixedCover A.periods
         A.modular.modularParameter.toTriangleUniformization.zOne
-        (A.actualCuspAngularRegularBasePoint
+        (A.cuspAngularRegularBasePoint
           A.sectionSevenAffineActualCuspCrossingTime, zeta)).2
     calc
       _ = A.duplicatedSectionSevenBandFullRank.realEquiv
@@ -171,7 +171,7 @@ public theorem actualCuspWangFibreToBand_centralFamily_fixed
       (additiveCuspBoundaryProjection A.starCuspWitness q) =
     A.centralQuotientProjection
       (projection (regularParameterMap A.periods)
-        (A.actualCuspAngularRegularBasePoint
+        (A.cuspAngularRegularBasePoint
           A.sectionSevenAffineActualCuspCrossingTime, zeta))
   rw [puncturedLocalCuspQuotientMap_additiveCuspBoundaryProjection]
   rw [additiveCuspCoverToGlobal_eq_quotientProjections]
@@ -188,7 +188,7 @@ public theorem actualCuspWangFibreToEllipticInteriorMap_eq_fixed
       (actualCuspWangFibreToBandMap (A := A) R)) =
     A.centralFamilyToEllipticInteriorMap.comp
       ((A.regularFixedFiberMap
-        (A.actualCuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)).comp
+        (A.cuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)).comp
         ⟨R.twoDiscCover.canonicalCuspFiberToBandTorusHomeomorph,
           R.twoDiscCover.canonicalCuspFiberToBandTorusHomeomorph.continuous⟩) := by
   let G := A.actualCuspRadialClutchingData

@@ -11,37 +11,37 @@ open SphereSixComplex.Topology SphereSixComplex.StandardTorusHomology
 open CuspRadialClutchingConstruction CuspPuncturedCollarBridge
 open SectionSevenEllipticTwoDiscCoverData
 
-public def actualCuspThirdSweep (A : PaperAnalyticData) :
+public def cuspThirdSweep (A : PaperAnalyticData) :
     C(UnitAddCircle × StdTorus 1, A.openEmbeddingStarData.collarSource 0) :=
-  actualCuspFixedCircleSweep A (cuspThirdFixedCircle (cuspBasePoint A.cuspCoordinate
+  cuspFixedCircleSweep A (cuspThirdFixedCircle (cuspBasePoint A.cuspCoordinate
     (markedCuspParameter A.starCuspWitness)))
 
-public theorem actualCuspThirdSweep_wang (A : PaperAnalyticData) :
+public theorem cuspThirdSweep_wang (A : PaperAnalyticData) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     G.monodromyCoordinates.degreeOne
       (actualCuspWangBoundaryHom A
-        (integralSingularHomologyMap 2 (actualCuspThirdSweep A)
+        (integralSingularHomologyMap 2 (cuspThirdSweep A)
           PositiveCircleCross.positiveCircleProductGenerator)) = Pi.single 2 1 := by
   let _ := A.actualCuspRadialClutchingData.fiberTopology
   change (cuspMonodromyCoordinates _).degreeOne
     (actualCuspWangBoundaryHom A
-      (integralSingularHomologyMap 2 (actualCuspFixedCircleSweep A _) _)) = _
-  rw [actualCuspFixedCircleSweep_wang]
+      (integralSingularHomologyMap 2 (cuspFixedCircleSweep A _) _)) = _
+  rw [cuspFixedCircleSweep_wang]
   exact cuspCoordinateCircle_homology _ 2
 
-public theorem actualCuspRawFour_pulledBack_boundary_eq_sweep {A : PaperAnalyticData}
+public theorem cuspRawFour_pulled_back_boundary_eq_sweep {A : PaperAnalyticData}
     (R : A.SectionSevenAffineRadialCompletionInput) :
     R.twoDiscCover.cuspPulledBackBoundaryHom
-      (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) =
+      (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) =
     R.twoDiscCover.cuspPulledBackBoundaryHom
-      (integralSingularHomologyMap 2 (actualCuspThirdSweep A)
+      (integralSingularHomologyMap 2 (cuspThirdSweep A)
         PositiveCircleCross.positiveCircleProductGenerator) := by
   let _ := A.actualCuspRadialClutchingData.fiberTopology
   apply cuspPulledBackBoundary_eq_of_wang_eq R
   apply A.actualCuspRadialClutchingData.monodromyCoordinates.degreeOne.injective
   rw [actualCuspWangBoundaryHom_rawBasis, AddEquiv.apply_symm_apply,
-    actualCuspThirdSweep_wang]
+    cuspThirdSweep_wang]
   ext i
   fin_cases i <;> rfl
 

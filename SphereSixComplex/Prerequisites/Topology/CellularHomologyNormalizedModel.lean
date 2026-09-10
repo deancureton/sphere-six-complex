@@ -6,16 +6,16 @@ public import SphereSixComplex.Prerequisites.Topology.CellularNormalizedFoundati
 noncomputable section
 namespace SphereSixComplex
 
-namespace EstablishedCellularHomology
+namespace CellularHomology
 
 /-- The cellular model with canonical point and interval orientations. -/
-public noncomputable def integralCWCellularHomologyModel
+public noncomputable def normalizedModel
     (Y : Type) [TopologicalSpace Y] [T2Space Y]
     [Topology.CWComplex (Set.univ : Set Y)] :
     IntegralCWCellularHomologyModel Y :=
   CellularHomology.IntegralComparison.objectwiseModel
     CellularHomology.integralComparison.normalized Y
 
-end EstablishedCellularHomology
+end CellularHomology
 
 end SphereSixComplex

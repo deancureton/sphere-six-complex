@@ -153,7 +153,7 @@ public noncomputable def actualCuspAdaptiveIndexFiveBoundary
   let _ := G.fiberTopology
   let e := integralSingularHomologyEquivOfHomotopyEquiv 2 G.totalHomotopyEquiv
   exact (actualCuspMappingTorusPulledBackHomologyComparison R).boundaryHom 1
-    (e (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)))
+    (e (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)))
 
 /-- The same adaptive boundary after radial pullback and inclusion in the elliptic band. -/
 public noncomputable def actualCuspAdaptiveIndexFiveBandCarrier
@@ -175,7 +175,7 @@ public noncomputable def actualCuspIndexFiveBoundaryCoefficient
     (R : A.SectionSevenAffineRadialCompletionInput) : ℤ :=
   R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment
     (R.twoDiscCover.cuspPulledBackBoundaryHom
-      (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)))
+      (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)))
 
 /-- The adaptive source read evaluates the index-five boundary as the positive primitive fibre
 coordinate. -/
@@ -189,7 +189,7 @@ public theorem actualCuspAdaptiveIndexFiveBoundary_read_eq_one
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   let e := integralSingularHomologyEquivOfHomotopyEquiv 2 G.totalHomotopyEquiv
-  let x := A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)
+  let x := A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)
   have hread := DFunLike.congr_fun
     (congrArg (fun q ↦ q.comp e.toAddMonoidHom)
       (actualCuspAdaptiveNaturalSourceRead_boundary_eq_wang R)) x
@@ -212,11 +212,11 @@ public theorem actualCuspAdaptiveIndexFiveBandCarrier_eq_pulledBackBoundary
     (R : A.SectionSevenAffineRadialCompletionInput) :
     actualCuspAdaptiveIndexFiveBandCarrier R =
       R.twoDiscCover.cuspPulledBackBoundaryHom
-        (A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) := by
+        (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   let e := integralSingularHomologyEquivOfHomotopyEquiv 2 G.totalHomotopyEquiv
-  let x := A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)
+  let x := A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)
   let boundary := (actualCuspMappingTorusPulledBackHomologyComparison R).boundaryHom 1
   let pullback :=
     SphereSixComplex.BinaryOpenCover.openIntersectionPullbackHomologyHom
@@ -258,7 +258,7 @@ public theorem actualCuspIndexFiveBoundaryCoefficient_sq_eq_one_of_split_carrier
     actualCuspIndexFiveBoundaryCoefficient R *
         actualCuspIndexFiveBoundaryCoefficient R = 1 := by
   let E := R.homologyAlignment.actualHomologyCoordinates.degreeTwoInvariantEquiv
-  let x := A.actualCuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)
+  let x := A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)
   let b := actualCuspIndexFiveBoundaryCoefficient R
   let g := (E.symm 1).1
   have hcoordinate : E (R.twoDiscCover.cuspPulledBackBoundaryInvariantHom x) = b := by

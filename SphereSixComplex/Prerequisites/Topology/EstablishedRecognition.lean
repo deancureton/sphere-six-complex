@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.EstablishedClassicalRecognitionFoundations
+public import SphereSixComplex.Prerequisites.Topology.HomologySphereRecognition
 public import SphereSixComplex.Prerequisites.Topology.HomologyToHomotopySixSphereProof
 public import SphereSixComplex.Prerequisites.Topology.SphereLoopContraction
 

@@ -96,7 +96,7 @@ public theorem phaseSweepCarrier_one_period (r t : ℝ) :
   apply congrArg (fun c : Phase ↦ constructedModel.torusAction (phaseEmbedding c)
     (constructedCentralEdgeOneCarrier (fun _ ↦ r)))
   ext i
-  fin_cases i <;> simp [cuspPeriodPhaseCircle, PaperAnalyticData.unitCircleExponential,
+  fin_cases i <;> simp [cuspPeriodPhaseCircle, CircleExponential.toUnits,
     AddCircle.toCircle_neg]
 
 public theorem phaseSweepCarrier_two_period (r t : ℝ) :
@@ -108,7 +108,7 @@ public theorem phaseSweepCarrier_two_period (r t : ℝ) :
   apply congrArg (fun c : Phase ↦ constructedModel.torusAction (phaseEmbedding c)
     (constructedCentralEdgeTwoCarrier (fun _ ↦ r)))
   ext i
-  fin_cases i <;> simp [cuspPeriodPhaseCircle, PaperAnalyticData.unitCircleExponential,
+  fin_cases i <;> simp [cuspPeriodPhaseCircle, CircleExponential.toUnits,
     AddCircle.toCircle_neg]
 
 public theorem compactCircle_embedding (i : Fin 2) (z : UnitAddCircle) :
@@ -117,7 +117,7 @@ public theorem compactCircle_embedding (i : Fin 2) (z : UnitAddCircle) :
   ext j
   fin_cases i <;> fin_cases j <;>
     simp [compactTorusEmbedding, constructedA2EffectivePhaseSection, cuspPeriodCompactCircle,
-      phaseEmbedding, cuspPeriodPhaseCircle, PaperAnalyticData.unitCircleExponential]
+      phaseEmbedding, cuspPeriodPhaseCircle, CircleExponential.toUnits]
 
 variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}

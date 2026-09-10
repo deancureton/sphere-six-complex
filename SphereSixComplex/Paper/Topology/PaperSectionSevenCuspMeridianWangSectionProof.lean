@@ -14,18 +14,18 @@ namespace SphereSixComplex.Geometry.PaperAnalyticData
 
 open SphereSixComplex
 open SphereSixComplex.Topology
-open SphereSixComplex.Topology.EstablishedFirstHurewicz
+open Hurewicz
 open SphereSixComplex.StandardCircleHomologyLiftDegree
 open CuspPuncturedCollarBridge
 open CuspPuncturedCollarBridge.CuspFiberSpecializationNormalization
 
 variable (A : PaperAnalyticData)
 
-public noncomputable def actualCuspAngularPuncturedLoop :
+public noncomputable def cuspAngularPuncturedLoop :
     Path A.actualCuspLocalBoundaryBase A.actualCuspLocalBoundaryBase := by
   let W := A.starCuspWitness
   let _ := paperCuspBoundaryDeckAction W
-  exact (A.actualCuspAngularLiftPath.map
+  exact (A.cuspAngularLiftPath.map
     (additiveCuspBoundaryProjection W).continuous).cast
       (by
         exact (additiveCuspBoundaryProjection_basePreimage W
@@ -38,7 +38,7 @@ public noncomputable def actualCuspAngularPuncturedLoop :
 
 public theorem cuspBoundaryMeridianHomologyClass_eq_actualCuspAngularPuncturedLoop :
     cuspBoundaryMeridianHomologyClass A.starCuspWitness A.actualCuspLocalBoundaryBase =
-      loopHomologyClass A.actualCuspAngularPuncturedLoop := by
+      loopHomologyClass A.cuspAngularPuncturedLoop := by
   let W := A.starCuspWitness
   let _ := paperCuspBoundaryDeckAction W
   let _ := paperCuspFillingDeckAction W
@@ -48,7 +48,7 @@ public theorem cuspBoundaryMeridianHomologyClass_eq_actualCuspAngularPuncturedLo
     U.boundarySimplyConnected
   let _ : PathConnectedSpace (puncturedLocalCuspQuotient W) :=
     U.boundaryQuotient.surjective.pathConnectedSpace U.boundaryProjection.continuous
-  let p := A.actualCuspAngularPuncturedLoop
+  let p := A.cuspAngularPuncturedLoop
   have hb : T.boundaryProjection T.base = A.actualCuspLocalBoundaryBase :=
     additiveCuspBoundaryProjection_basePreimage W A.actualCuspLocalBoundaryBase
   let pT : Path (T.boundaryProjection T.base) (T.boundaryProjection T.base) :=
@@ -63,16 +63,16 @@ public theorem cuspBoundaryMeridianHomologyClass_eq_actualCuspAngularPuncturedLo
     rw [IsQuotientCoveringMap.fundamentalGroupToMulOpposite_apply_eq_Iff]
     let Gamma : Path.Homotopic.Quotient U.base
         (paperCuspBoundaryMeridian • U.base) :=
-      Path.Homotopic.Quotient.mk A.actualCuspAngularLiftPath
+      Path.Homotopic.Quotient.mk A.cuspAngularLiftPath
     have hmono := U.boundaryQuotient.isCoveringMap.monodromy_eq_of_map_eq
       (ex := ex)
       (ey := ⟨paperCuspBoundaryMeridian • U.base,
         U.boundaryQuotient.map_smul paperCuspBoundaryMeridian (e := U.base)⟩)
       Gamma (by
-        change (Path.Homotopic.Quotient.mk A.actualCuspAngularLiftPath).map
+        change (Path.Homotopic.Quotient.mk A.cuspAngularLiftPath).map
             U.boundaryProjection =
           (Path.Homotopic.Quotient.mk pT).cast _ _
-        unfold pT p actualCuspAngularPuncturedLoop
+        unfold pT p cuspAngularPuncturedLoop
         simp only [Path.Homotopic.Quotient.mk_cast, ← Path.Homotopic.Quotient.mk_map]
         apply eq_of_heq
         symm
@@ -99,7 +99,7 @@ public theorem cuspBoundaryMeridianHomologyClass_eq_actualCuspAngularPuncturedLo
         MulOpposite.op paperCuspBoundaryMeridian :=
       U.fundamentalGroupData.meridian_deck
     rw [he, abelianizationMulOppositeEquiv_of_op]
-  change (establishedFirstHurewiczData _ (T.boundaryProjection T.base)).equiv
+  change (abelianizationComparison _ (T.boundaryProjection T.base)).equiv
       (Additive.ofMul (Abelianization.of U.fundamentalGroupData.meridian)) = _
   rw [← hdeck]
   exact deckHOneEquivOfFundamentalGroupEquivOpposite_markedLoop
@@ -113,7 +113,7 @@ public theorem cuspMappingTorusMeridianHomologyClass_eq_actualCuspAngularPunctur
     let _ := G.fiberTopology
     cuspMappingTorusMeridianHomologyClass G A.actualCuspLocalBoundaryBase =
       integralSingularHomologyMap 1 G.totalHomotopyEquiv.toFun
-        (loopHomologyClass A.actualCuspAngularPuncturedLoop) := by
+        (loopHomologyClass A.cuspAngularPuncturedLoop) := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   unfold cuspMappingTorusMeridianHomologyClass

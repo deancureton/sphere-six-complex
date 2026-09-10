@@ -8,7 +8,7 @@ noncomputable section
 open CategoryTheory AlgebraicTopology
 
 namespace SphereSixComplex
-open StandardCircleHomologyLiftDegree Topology.FirstHurewiczProof
+open StandardCircleHomologyLiftDegree Hurewicz.Chains
 
 public abbrev cwPathMorphism {X : Type} [TopologicalSpace X] {x y : X}
     (p : Path x y) : TopCat.I ⟶ TopCat.of X :=

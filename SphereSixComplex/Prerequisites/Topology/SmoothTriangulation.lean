@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.CellularChainModel
-public import SphereSixComplex.Prerequisites.Topology.FiniteClassicalCWModel
+public import SphereSixComplex.Prerequisites.Topology.FiniteCWModel
 public import SphereSixComplex.Prerequisites.Topology.SmoothAtlasOrientation
 public import SphereSixComplex.Prerequisites.Topology.SmoothRecognition
 
@@ -31,7 +31,7 @@ public structure CWType.FiniteModelOfDimension
   cwComplex : let _ := topology; Topology.CWComplex (Set.univ : Set Carrier)
   finite : let _ := topology; let _ := cwComplex
     Topology.CWComplex.Finite (Set.univ : Set Carrier)
-  cellsAboveDimension : let _ := topology; let _ := cwComplex
+  isEmpty_cell : let _ := topology; let _ := cwComplex
     ∀ n, d < n → IsEmpty (Topology.CWComplex.cell (Set.univ : Set Carrier) n)
 
 /-- Every compact second-countable Hausdorff finite-dimensional boundaryless real `C¹` manifold
@@ -51,7 +51,7 @@ namespace CWType.FiniteModelOfDimension
 variable {d : ℕ} {X : Type} [TopologicalSpace X]
 
 /-- Forget the dimension bound on a finite CW model. -/
-public noncomputable def toFiniteCWModel (M : CWType.FiniteModelOfDimension d X) :
+public noncomputable def toFiniteModel (M : CWType.FiniteModelOfDimension d X) :
     CWType.FiniteModel X where
   Carrier := M.Carrier
   topology := M.topology
@@ -61,13 +61,13 @@ public noncomputable def toFiniteCWModel (M : CWType.FiniteModelOfDimension d X)
   finite := M.finite
 
 /-- Integral homology of a space with a finite CW model is finitely generated in every degree. -/
-public theorem finiteHomology (M : CWType.FiniteModelOfDimension d X) (k : ℕ) :
+public theorem finite_homology (M : CWType.FiniteModelOfDimension d X) (k : ℕ) :
     Module.Finite ℤ (IntegralSingularHomology k X) := by
   let _ := M.topology
   let _ := M.t2
   let _ := M.cwComplex
   let _ := M.finite
-  let CM := EstablishedCellularHomology.integralCWCellularHomologyModel M.Carrier
+  let CM := CellularHomology.normalizedModel M.Carrier
   have hfin : Finite (Topology.CWComplex.cell (Set.univ : Set M.Carrier) k) :=
     Topology.CWComplex.FiniteType.finite_cell (C := (Set.univ : Set M.Carrier)) k
   have hChains : Module.Finite ℤ (CM.chainComplex.X k) :=
@@ -80,13 +80,14 @@ public theorem finiteHomology (M : CWType.FiniteModelOfDimension d X) (k : ℕ) 
     (integralSingularHomologyEquivOfHomotopyEquiv k M.homotopyEquiv).symm.toIntLinearEquiv
 
 /-- Integral homology vanishes above the dimension of a dimension-controlled finite CW model. -/
-public theorem homologyAboveDimension (M : CWType.FiniteModelOfDimension d X) (k : ℕ) (hk : d < k) :
+public theorem subsingleton_homology_of_lt (M : CWType.FiniteModelOfDimension d X)
+    (k : ℕ) (hk : d < k) :
     Subsingleton (IntegralSingularHomology k X) := by
   let _ := M.topology
   let _ := M.t2
   let _ := M.cwComplex
   have _ : IsEmpty (Topology.CWComplex.cell (Set.univ : Set M.Carrier) k) :=
-    M.cellsAboveDimension k hk
+    M.isEmpty_cell k hk
   have hCarrier := subsingleton_integralSingularHomology_of_isEmpty_cell M.Carrier k
   exact ⟨fun x y ↦
     (integralSingularHomologyEquivOfHomotopyEquiv k M.homotopyEquiv).injective
