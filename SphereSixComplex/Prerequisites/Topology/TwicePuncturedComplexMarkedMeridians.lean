@@ -238,7 +238,7 @@ public theorem twicePuncturedClockwiseOneMeridianInRight_map :
 coordinate. -/
 public noncomputable def twicePuncturedComplexLeftFundamentalGroupEquiv :
     FundamentalGroup twicePuncturedComplexLeft twicePuncturedComplexLeftBasepoint ≃*
-      (Multiplicative ComplexExpDeckGroup)ᵐᵒᵖ :=
+      (Multiplicative complexExpDeckGroup)ᵐᵒᵖ :=
   (fundamentalGroupMulEquivOfHomotopyEquiv
       twicePuncturedComplexLeftHomotopyEquivPuncturedComplex
       twicePuncturedComplexLeftBasepoint).trans
@@ -250,7 +250,7 @@ public noncomputable def twicePuncturedComplexLeftFundamentalGroupEquiv :
 coordinate. -/
 public noncomputable def twicePuncturedComplexRightFundamentalGroupEquiv :
     FundamentalGroup twicePuncturedComplexRight twicePuncturedComplexRightBasepoint ≃*
-      (Multiplicative ComplexExpDeckGroup)ᵐᵒᵖ :=
+      (Multiplicative complexExpDeckGroup)ᵐᵒᵖ :=
   (fundamentalGroupMulEquivOfHomotopyEquiv
       twicePuncturedComplexRightHomotopyEquivPuncturedComplex
       twicePuncturedComplexRightBasepoint).trans

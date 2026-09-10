@@ -252,7 +252,7 @@ public theorem orderFourBoundaryMeridian_base_first_power :
     rw [hp, twicePuncturedCounterclockwiseOneQuadruple_class, map_pow]
   refine ⟨w, ?_⟩
   let F := (TwicePuncturedComplex.markedMeridianMulEquiv
-    TwicePuncturedComplex.establishedMarkedMeridianHom_injective).symm
+    TwicePuncturedComplex.markedMeridianHom_injective).symm
   apply E.symm.injective
   apply F.injective
   apply pow_left_injective (by decide : (4 : ℕ) ≠ 0)
@@ -464,7 +464,7 @@ public theorem orderThreeBoundaryMeridian_base_first_power :
     rw [hp, twicePuncturedCounterclockwiseZeroTriple_class, map_pow]
   refine ⟨w, ?_⟩
   let F := (TwicePuncturedComplex.markedMeridianMulEquiv
-    TwicePuncturedComplex.establishedMarkedMeridianHom_injective).symm
+    TwicePuncturedComplex.markedMeridianHom_injective).symm
   apply E.symm.injective
   apply F.injective
   apply pow_left_injective (by decide : (3 : ℕ) ≠ 0)

@@ -66,7 +66,7 @@ public theorem projectiveLineCechHOneVanishes_negOne :
     ProjectiveLineCechHOneVanishes negOneTransition := by
   intro c hc
   obtain ⟨fZero, fInfinity, hfZero, hfInfinity, hsplit⟩ :=
-    establishedProjectiveLineCechNegOne c hc
+    exists_cech_coboundary_neg_one c hc
   exact ⟨fZero, fInfinity, hfZero, hfInfinity, by
     intro z hz
     simpa [projectiveLineCechDifferential, negOneTransition] using hsplit z hz⟩
@@ -77,7 +77,7 @@ public theorem projectiveLineCechHOneVanishes_zero :
     ProjectiveLineCechHOneVanishes zeroTransition := by
   intro c hc
   obtain ⟨fZero, fInfinity, hfZero, hfInfinity, hsplit⟩ :=
-    establishedProjectiveLineCechZero c hc
+    exists_cech_coboundary_zero c hc
   exact ⟨fZero, fInfinity, hfZero, hfInfinity, by
     intro z hz
     simpa [projectiveLineCechDifferential, zeroTransition] using hsplit z hz⟩

@@ -11,8 +11,8 @@ open SphereSixComplex.StandardCircleHomologyLiftDegree
 public theorem loopHomologyClass_whisker {X : Type} [TopologicalSpace X]
     {x y : X} (w : Path x y) (p : Path y y) :
     loopHomologyClass (w.trans (p.trans w.symm)) = loopHomologyClass p := by
-  apply (AddCommGrpCat.mono_iff_injective ((IntegralChains X).homologyι 1)).mp
-    (inferInstance : Mono ((IntegralChains X).homologyι 1))
+  apply (AddCommGrpCat.mono_iff_injective ((integralChains X).homologyι 1)).mp
+    (inferInstance : Mono ((integralChains X).homologyι 1))
   rw [homologyι_loopHomologyClass, homologyι_loopHomologyClass,
     pathOpchainClass_trans, pathOpchainClass_trans, pathOpchainClass_symm]
   abel

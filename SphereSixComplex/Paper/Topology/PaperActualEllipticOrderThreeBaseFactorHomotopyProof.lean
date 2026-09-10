@@ -37,7 +37,7 @@ public noncomputable def orderThreeLocalOffsetBaseVector : ComplexTwoSpace :=
 public theorem orderThreePrincipalGaugeWithOffsetPath_zero_eq_mk :
     letI := A.ellipticThreeBoundaryAction
     A.orderThreePrincipalGaugeWithOffsetPath 0 =
-      (Quotient.mk _ A.orderThreeLocalOffsetBaseVector : A.orderThreeTorus) := by
+      (Quotient.mk _ A.orderThreeLocalOffsetBaseVector : A.OrderThreeTorus) := by
   let _ := A.ellipticThreeBoundaryAction
   unfold orderThreePrincipalGaugeWithOffsetPath
     orderThreePrincipalGaugeWithOffsetMap orderThreeLocalOffsetBaseVector
@@ -121,7 +121,7 @@ public theorem orderThreeLocalBaseFiberContractionHomotopy_trace
 
 /-- The restricted inverse chart has exactly the product coordinate with which it was fed. -/
 public theorem orderThreePuncturedProductToRegularMap_productCoordinate
-    (zq : A.OrderThreeCayleyPuncturedDisc × A.orderThreeTorus) :
+    (zq : A.OrderThreeCayleyPuncturedDisc × A.OrderThreeTorus) :
     letI := A.ellipticThreeBoundaryAction
     orderThreeRealPeriodProductHomeomorph A.periods
         (regularFamilyInclusion A.periods

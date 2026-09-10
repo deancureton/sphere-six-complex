@@ -46,20 +46,20 @@ public noncomputable def orderThreeCollarInverseRepresentativeMap :
       A.starSeparation.orderThree.radius A.starSeparation.orderThree.radius_pos
       A.starSeparation.orderThree.radius_lt_one
     let hset := Homeomorph.setCongr (show D.carrier.carrier =
-      puncturedProduct A.orderThreeTorus A.starSeparation.orderThree.radius from rfl)
+      puncturedProduct A.OrderThreeTorus A.starSeparation.orderThree.radius from rfl)
     let w : (OpenRadialInterval A.starSeparation.orderThree.radius ×
         (ℝ × ComplexTwoSpace)) →
         OpenRadialInterval A.starSeparation.orderThree.radius ×
-          (ℝ × A.orderThreeTorus) :=
+          (ℝ × A.OrderThreeTorus) :=
       fun q => (q.1, q.2.1, Quotient.mk _ q.2.2)
     have hw : Continuous w := continuous_fst.prodMk
       ((continuous_fst.comp continuous_snd).prodMk
         (continuous_quot_mk.comp (continuous_snd.comp continuous_snd)))
     change Continuous (fun q => e.toHomeomorph.symm
-      (hset.symm (angularCover (T := A.orderThreeTorus) 3 D.radius_lt_one.le (w q))))
+      (hset.symm (angularCover (T := A.OrderThreeTorus) 3 D.radius_lt_one.le (w q))))
     exact e.toHomeomorph.symm.continuous.comp
       (hset.symm.continuous.comp
-        ((continuous_angularCover (T := A.orderThreeTorus) 3 D.radius_lt_one.le).comp hw))
+        ((continuous_angularCover (T := A.OrderThreeTorus) 3 D.radius_lt_one.le).comp hw))
 
 public noncomputable def orderFourCollarInverseRepresentativeMap :
     C(OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace),
@@ -76,20 +76,20 @@ public noncomputable def orderFourCollarInverseRepresentativeMap :
       A.starSeparation.orderFour.radius A.starSeparation.orderFour.radius_pos
       A.starSeparation.orderFour.radius_lt_one
     let hset := Homeomorph.setCongr (show D.carrier.carrier =
-      puncturedProduct A.orderFourTorus A.starSeparation.orderFour.radius from rfl)
+      puncturedProduct A.OrderFourTorus A.starSeparation.orderFour.radius from rfl)
     let w : (OpenRadialInterval A.starSeparation.orderFour.radius ×
         (ℝ × ComplexTwoSpace)) →
         OpenRadialInterval A.starSeparation.orderFour.radius ×
-          (ℝ × A.orderFourTorus) :=
+          (ℝ × A.OrderFourTorus) :=
       fun q => (q.1, q.2.1, Quotient.mk _ q.2.2)
     have hw : Continuous w := continuous_fst.prodMk
       ((continuous_fst.comp continuous_snd).prodMk
         (continuous_quot_mk.comp (continuous_snd.comp continuous_snd)))
     change Continuous (fun q => e.toHomeomorph.symm
-      (hset.symm (angularCover (T := A.orderFourTorus) 4 D.radius_lt_one.le (w q))))
+      (hset.symm (angularCover (T := A.OrderFourTorus) 4 D.radius_lt_one.le (w q))))
     exact e.toHomeomorph.symm.continuous.comp
       (hset.symm.continuous.comp
-        ((continuous_angularCover (T := A.orderFourTorus) 4 D.radius_lt_one.le).comp hw))
+        ((continuous_angularCover (T := A.OrderFourTorus) 4 D.radius_lt_one.le).comp hw))
 
 public noncomputable def orderThreeCollarRegularRepresentativeMap :
     C(OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace),

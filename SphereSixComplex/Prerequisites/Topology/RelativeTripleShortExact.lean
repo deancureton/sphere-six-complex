@@ -39,7 +39,7 @@ public theorem cwRelativeTripleRawShortComplex_shortExact
   exact cokernelTripleShortComplex_shortExact _ _
 
 public def cwRelativeTripleMiddleIso {A B Y : TopCat} (i : A ⟶ B) (j : B ⟶ Y) :
-    (cwRelativeTripleRawShortComplex i j).X₂ ≅ CWRelativeIntegralSingularChainComplex (i ≫ j) :=
+    (cwRelativeTripleRawShortComplex i j).X₂ ≅ cwRelativeIntegralSingularChainComplex (i ≫ j) :=
   cokernelIsoOfEq (cwIntegralSingularChainMapObj_comp i j).symm
 
 public def cwRelativeTripleShortComplex {A B Y : TopCat} (i : A ⟶ B) (j : B ⟶ Y) :
@@ -65,7 +65,7 @@ public theorem cwRelativeTripleShortComplex_f
     (cwRelativeTripleShortComplex i j).f = cwRelativeIntegralSingularChainMapOfPair
       (show CWTopologicalPairMap i (i ≫ j) from ⟨𝟙 _, j, by simp⟩) := by
   dsimp only [cwRelativeTripleShortComplex, cwRelativeTripleRawShortComplex,
-    cokernelTripleShortComplex, cwRelativeTripleMiddleIso, CWRelativeIntegralSingularChainComplex]
+    cokernelTripleShortComplex, cwRelativeTripleMiddleIso, cwRelativeIntegralSingularChainComplex]
   apply Cofork.IsColimit.hom_ext (cokernelIsCokernel (cwIntegralSingularChainMapObj i))
   erw [← Category.assoc, cokernel.π_desc, Category.assoc, π_comp_cokernelIsoOfEq_hom]
   exact (cwRelativeIntegralSingularChainProjection_natural
@@ -76,7 +76,7 @@ public theorem cwRelativeTripleShortComplex_g
     (cwRelativeTripleShortComplex i j).g = cwRelativeIntegralSingularChainMapOfPair
       (show CWTopologicalPairMap (i ≫ j) j from ⟨i, 𝟙 _, by simp⟩) := by
   dsimp only [cwRelativeTripleShortComplex, cwRelativeTripleRawShortComplex,
-    cokernelTripleShortComplex, cwRelativeTripleMiddleIso, CWRelativeIntegralSingularChainComplex]
+    cokernelTripleShortComplex, cwRelativeTripleMiddleIso, cwRelativeIntegralSingularChainComplex]
   apply Cofork.IsColimit.hom_ext (cokernelIsCokernel (cwIntegralSingularChainMapObj (i ≫ j)))
   erw [← Category.assoc, π_comp_cokernelIsoOfEq_inv, cokernel.π_desc, Category.id_comp]
   have h := cwRelativeIntegralSingularChainProjection_natural

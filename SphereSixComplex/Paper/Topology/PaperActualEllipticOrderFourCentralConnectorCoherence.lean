@@ -55,15 +55,15 @@ public theorem cuspCentralToCorePair_simultaneouslyConjugate_orderFour
   have hcusp : H A.centralAffineBase =
       A.actualVanKampenFourPieceCover.overlapToCore
         A.actualVanKampenFourPieceCover.cusp A.cuspOverlapBase := by
-    rw [A.centralAffineBase_eq_actualCuspCentralBase]
-    exact A.centralToSectionSevenEulerPieceHomeomorph_actualCuspOverlapToCentral
+    rw [A.centralAffineBase_eq_cuspCentralBase]
+    exact A.centralToSectionSevenEulerPieceHomeomorph_cuspOverlapToCentral
       A.cuspOverlapBase
   have hfour : H A.ellipticFourOverlapCentralBase =
       A.actualVanKampenFourPieceCover.overlapToCore
         A.actualVanKampenFourPieceCover.ellipticFour
         ⟨A.actualVanKampenFourPieceCover.ellipticFourPoint,
           A.actualVanKampenFourPieceCover.ellipticFourPoint_mem⟩ :=
-    A.centralToSectionSevenEulerPiece_orderFourActualOverlapToCentral _
+    A.centralToSectionSevenEulerPiece_ellipticFourOverlapToCentral _
   let p := cuspConnector.cast hcusp rfl
   let q := fourConnector.cast hfour rfl
   have h := fundamentalGroupMappedPair_simultaneouslyConjugate_of_sourcePath

@@ -59,7 +59,7 @@ public noncomputable def centralAffineBase : A.CentralFamily := by
   exact D.data.projection A.centralAffineUniversalCoverPoint
 
 @[simp]
-public theorem centralAffineBase_eq_actualCuspCentralBase :
+public theorem centralAffineBase_eq_cuspCentralBase :
     A.centralAffineBase = A.cuspCentralBase := by
   exact A.centralAffineUniversalCoverPoint_projects
 
@@ -68,7 +68,7 @@ public noncomputable def cuspToCentralAffineBaseEquiv :
     FundamentalGroup A.CentralFamily A.cuspCentralBase ≃*
       FundamentalGroup A.CentralFamily A.centralAffineBase :=
   SphereSixComplex.Topology.fundamentalGroupMulEquivOfEq
-    A.centralAffineBase_eq_actualCuspCentralBase.symm
+    A.centralAffineBase_eq_cuspCentralBase.symm
 
 /-- The actual geometric affine-core presentation, transported across the definitional affine
 basepoint equality.  Its marking is therefore fixed by literal cusp loops rather than by an

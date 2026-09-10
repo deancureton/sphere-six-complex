@@ -13,7 +13,7 @@ open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public def constructedA2BoundaryFirstSquare (t : unitInterval) (ht : (t : ℝ) ≤ 1 / 2) :
@@ -131,7 +131,7 @@ public theorem constructedCentralOriginOrbit_eq_of_carrier
   apply Subtype.ext
   apply Subtype.ext
   change ((Multiplicative.ofAdd lambda • constructedCentralOrigin W a.1 :
-    LocalCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) = p.1.1
+    localCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) = p.1.1
   rw [constructedCentralOrigin_smul_coe, hp]
   simp [translateChartIndex, hlambda]
   rfl

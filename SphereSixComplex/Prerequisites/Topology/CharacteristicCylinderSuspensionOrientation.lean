@@ -25,9 +25,9 @@ public theorem contractingPrismHomologyIso_projection
 
 public def cylinderTopPrismHomologyIso {X : Type} [TopologicalSpace X]
     (A : Set X) (n : ℕ) :
-    (CWRelativeIntegralSingularChainComplex (cylinderBaseInclusion A)).homology (n + 1) ≅
+    (cwRelativeIntegralSingularChainComplex (cylinderBaseInclusion A)).homology (n + 1) ≅
       (cylinderRelativeTriple A).X₃.homology (n + 2) := by
-  let f : CWRelativeIntegralSingularChainComplex (cylinderBaseInclusion A) ⟶
+  let f : cwRelativeIntegralSingularChainComplex (cylinderBaseInclusion A) ⟶
       (cylinderRelativeTriple A).X₁ := cylinderTopFaceRelativeChains A
   let : QuasiIso f := cylinderTopFaceRelativeChains_quasiIso A
   exact (asIso (homologyMap f (n + 1))) ≪≫
@@ -36,7 +36,7 @@ public def cylinderTopPrismHomologyIso {X : Type} [TopologicalSpace X]
 
 public theorem cylinderTopPrismHomologyIso_projection {X : Type} [TopologicalSpace X]
     (A : Set X) (n : ℕ) :
-    (CWRelativeIntegralSingularChainComplex (cylinderBaseInclusion A)).homologyπ (n + 1) ≫
+    (cwRelativeIntegralSingularChainComplex (cylinderBaseInclusion A)).homologyπ (n + 1) ≫
       (cylinderTopPrismHomologyIso A n).hom = cylinderTopPrismClass A n := by
   dsimp only [cylinderTopPrismHomologyIso, Iso.trans_hom, asIso_hom, cylinderTopPrismClass]
   erw [← Category.assoc, homologyπ_naturality, Category.assoc,
@@ -53,8 +53,8 @@ public def cwBoundaryNestedHomeomorph (n : ℕ) :
   continuous_invFun := (continuous_subtype_val.comp continuous_subtype_val).subtype_mk _
 
 public def cwNestedBoundaryRelativeIso (n : ℕ) :
-    CWRelativeIntegralSingularChainComplex (cwCharacteristicBoundaryInclusion n) ≅
-      CWRelativeIntegralSingularChainComplex (cylinderBaseInclusion (cwBallBoundarySet n)) := by
+    cwRelativeIntegralSingularChainComplex (cwCharacteristicBoundaryInclusion n) ≅
+      cwRelativeIntegralSingularChainComplex (cylinderBaseInclusion (cwBallBoundarySet n)) := by
   let F := (AlgebraicTopology.singularChainComplexFunctor AddCommGrpCat).obj (AddCommGrpCat.of ℤ)
   exact cokernel.mapIso _ _ (F.mapIso (TopCat.isoOfHomeo (cwBoundaryNestedHomeomorph n)))
     (Iso.refl _) (by
@@ -64,8 +64,10 @@ public def cwNestedBoundaryRelativeIso (n : ℕ) :
       rfl)
 
 public def cwCharacteristicSuspensionIso (n : ℕ) :
-    (CWRelativeIntegralSingularChainComplex (cwCharacteristicBoundaryInclusion (n + 1))).homology (n + 1) ≅
-      (CWRelativeIntegralSingularChainComplex (cwCharacteristicBoundaryInclusion (n + 2))).homology (n + 2) :=
+    (cwRelativeIntegralSingularChainComplex
+      (cwCharacteristicBoundaryInclusion (n + 1))).homology (n + 1) ≅
+      (cwRelativeIntegralSingularChainComplex
+        (cwCharacteristicBoundaryInclusion (n + 2))).homology (n + 2) :=
   (homologyFunctor AddCommGrpCat (ComplexShape.down ℕ) (n + 1)).mapIso
     (cwNestedBoundaryRelativeIso (n + 1)) ≪≫
       cylinderTopPrismHomologyIso (cwBallBoundarySet (n + 1)) n ≪≫
@@ -73,7 +75,7 @@ public def cwCharacteristicSuspensionIso (n : ℕ) :
           (cwCharacteristicCylinderRelativeIso (n + 1))
 
 public theorem cwCharacteristicSuspensionIso_projection (n : ℕ) :
-    (CWRelativeIntegralSingularChainComplex (cwCharacteristicBoundaryInclusion (n + 1))).homologyπ
+    (cwRelativeIntegralSingularChainComplex (cwCharacteristicBoundaryInclusion (n + 1))).homologyπ
         (n + 1) ≫ (cwCharacteristicSuspensionIso n).hom =
       cyclesMap (cwNestedBoundaryRelativeIso (n + 1)).hom (n + 1) ≫
         cwCharacteristicBallPrismClass n := by

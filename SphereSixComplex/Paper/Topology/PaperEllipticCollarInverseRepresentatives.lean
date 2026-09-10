@@ -39,11 +39,11 @@ public noncomputable def orderThreeCollarInverseRepresentative
     A.starSeparation.orderThree.radius A.starSeparation.orderThree.radius_pos
     A.starSeparation.orderThree.radius_lt_one
   let w : OpenRadialInterval A.starSeparation.orderThree.radius ×
-      (ℝ × A.orderThreeTorus) := (q.1, q.2.1, Quotient.mk _ q.2.2)
+      (ℝ × A.OrderThreeTorus) := (q.1, q.2.1, Quotient.mk _ q.2.2)
   let y : D.carrier.carrier :=
     (Homeomorph.setCongr (show D.carrier.carrier =
-      puncturedProduct A.orderThreeTorus A.starSeparation.orderThree.radius from rfl)).symm
-      (angularCover (T := A.orderThreeTorus) 3 D.radius_lt_one.le w)
+      puncturedProduct A.OrderThreeTorus A.starSeparation.orderThree.radius from rfl)).symm
+      (angularCover (T := A.OrderThreeTorus) 3 D.radius_lt_one.le w)
   exact e.toHomeomorph.symm y
 
 public noncomputable def orderFourCollarInverseRepresentative
@@ -60,11 +60,11 @@ public noncomputable def orderFourCollarInverseRepresentative
     A.starSeparation.orderFour.radius A.starSeparation.orderFour.radius_pos
     A.starSeparation.orderFour.radius_lt_one
   let w : OpenRadialInterval A.starSeparation.orderFour.radius ×
-      (ℝ × A.orderFourTorus) := (q.1, q.2.1, Quotient.mk _ q.2.2)
+      (ℝ × A.OrderFourTorus) := (q.1, q.2.1, Quotient.mk _ q.2.2)
   let y : D.carrier.carrier :=
     (Homeomorph.setCongr (show D.carrier.carrier =
-      puncturedProduct A.orderFourTorus A.starSeparation.orderFour.radius from rfl)).symm
-      (angularCover (T := A.orderFourTorus) 4 D.radius_lt_one.le w)
+      puncturedProduct A.OrderFourTorus A.starSeparation.orderFour.radius from rfl)).symm
+      (angularCover (T := A.OrderFourTorus) 4 D.radius_lt_one.le w)
   exact e.toHomeomorph.symm y
 
 public theorem orderThreePuncturedProductHomeomorph_inverseRepresentative
@@ -78,11 +78,11 @@ public theorem orderThreePuncturedProductHomeomorph_inverseRepresentative
       A.starSeparation.orderThree.radius A.starSeparation.orderThree.radius_pos
       A.starSeparation.orderThree.radius_lt_one
     let w : OpenRadialInterval A.starSeparation.orderThree.radius ×
-        (ℝ × A.orderThreeTorus) := (q.1, q.2.1, Quotient.mk _ q.2.2)
+        (ℝ × A.OrderThreeTorus) := (q.1, q.2.1, Quotient.mk _ q.2.2)
     e.toHomeomorph (A.orderThreeCollarInverseRepresentative q) =
       (Homeomorph.setCongr (show D.carrier.carrier =
-        puncturedProduct A.orderThreeTorus A.starSeparation.orderThree.radius from rfl)).symm
-        (angularCover (T := A.orderThreeTorus) 3 D.radius_lt_one.le w) := by
+        puncturedProduct A.OrderThreeTorus A.starSeparation.orderThree.radius from rfl)).symm
+        (angularCover (T := A.OrderThreeTorus) 3 D.radius_lt_one.le w) := by
   dsimp only
   unfold orderThreeCollarInverseRepresentative
   exact (orderThreePuncturedProductEquivariantHomeomorph A.periods
@@ -101,11 +101,11 @@ public theorem orderFourPuncturedProductHomeomorph_inverseRepresentative
       A.starSeparation.orderFour.radius A.starSeparation.orderFour.radius_pos
       A.starSeparation.orderFour.radius_lt_one
     let w : OpenRadialInterval A.starSeparation.orderFour.radius ×
-        (ℝ × A.orderFourTorus) := (q.1, q.2.1, Quotient.mk _ q.2.2)
+        (ℝ × A.OrderFourTorus) := (q.1, q.2.1, Quotient.mk _ q.2.2)
     e.toHomeomorph (A.orderFourCollarInverseRepresentative q) =
       (Homeomorph.setCongr (show D.carrier.carrier =
-        puncturedProduct A.orderFourTorus A.starSeparation.orderFour.radius from rfl)).symm
-        (angularCover (T := A.orderFourTorus) 4 D.radius_lt_one.le w) := by
+        puncturedProduct A.OrderFourTorus A.starSeparation.orderFour.radius from rfl)).symm
+        (angularCover (T := A.OrderFourTorus) 4 D.radius_lt_one.le w) := by
   dsimp only
   unfold orderFourCollarInverseRepresentative
   exact (orderFourPuncturedProductEquivariantHomeomorph A.periods
@@ -192,11 +192,11 @@ public theorem orderThreeCollarRadialMappingTorusHomeomorph_symm_apply_liftProje
   let hang := EstablishedCyclicAngularFundamentalDomain.quotientHomeomorphRadialMappingTorus D
     orderThreeMultiplier_eq_standardMultiplier
   let w : OpenRadialInterval A.starSeparation.orderThree.radius ×
-      (ℝ × A.orderThreeTorus) := (q.1, q.2.1, Quotient.mk _ q.2.2)
+      (ℝ × A.OrderThreeTorus) := (q.1, q.2.1, Quotient.mk _ q.2.2)
   let y : D.carrier.carrier :=
     (Homeomorph.setCongr (show D.carrier.carrier =
-      puncturedProduct A.orderThreeTorus A.starSeparation.orderThree.radius from rfl)).symm
-      (angularCover (T := A.orderThreeTorus) 3 D.radius_lt_one.le w)
+      puncturedProduct A.OrderThreeTorus A.starSeparation.orderThree.radius from rfl)).symm
+      (angularCover (T := A.OrderThreeTorus) 3 D.radius_lt_one.le w)
   change (hprod.trans hang).symm
       (q.1, orderThreeAffineMappingTorusLiftProjection A.periods q.2) = _
   rw [Homeomorph.symm_apply_eq]
@@ -227,11 +227,11 @@ public theorem orderFourCollarRadialMappingTorusHomeomorph_symm_apply_liftProjec
   let hang := EstablishedCyclicAngularFundamentalDomain.quotientHomeomorphRadialMappingTorus D
     orderFourMultiplier_eq_standardMultiplier
   let w : OpenRadialInterval A.starSeparation.orderFour.radius ×
-      (ℝ × A.orderFourTorus) := (q.1, q.2.1, Quotient.mk _ q.2.2)
+      (ℝ × A.OrderFourTorus) := (q.1, q.2.1, Quotient.mk _ q.2.2)
   let y : D.carrier.carrier :=
     (Homeomorph.setCongr (show D.carrier.carrier =
-      puncturedProduct A.orderFourTorus A.starSeparation.orderFour.radius from rfl)).symm
-      (angularCover (T := A.orderFourTorus) 4 D.radius_lt_one.le w)
+      puncturedProduct A.OrderFourTorus A.starSeparation.orderFour.radius from rfl)).symm
+      (angularCover (T := A.OrderFourTorus) 4 D.radius_lt_one.le w)
   change (hprod.trans hang).symm
       (q.1, orderFourAffineMappingTorusLiftProjection A.periods q.2) = _
   rw [Homeomorph.symm_apply_eq]

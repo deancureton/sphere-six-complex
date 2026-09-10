@@ -18,7 +18,7 @@ namespace SphereSixComplex.Periods
 
 open SphereSixComplex.TriangleGroup
 
-variable (E : EstablishedFuchsianModularParameter)
+variable (E : NormalizedFuchsianModularParameter)
 
 /-!
 # Construction of the exact lifted modular frame
@@ -826,7 +826,7 @@ theorem exists_exactLiftedModularNegOneFrame_of_bareRoot
 
 /-- The established uniformization carries a fully genuine exact lifted modular frame. -/
 public theorem establishedExactLiftedModularNegOneFrame
-    (E : EstablishedFuchsianModularParameter) :
+    (E : NormalizedFuchsianModularParameter) :
     Nonempty (ExactLiftedModularNegOneFrame E) := by
   obtain ⟨R⟩ := exists_exactFuchsianEisensteinSixRoot E
   exact exists_exactLiftedModularNegOneFrame_of_bareRoot E R.toBare

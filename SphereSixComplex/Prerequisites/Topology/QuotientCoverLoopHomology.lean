@@ -15,7 +15,7 @@ public def abelianCoverHomologyEquiv
     {p : C(E, X)} (hp : IsQuotientCoveringMap p G) (e : E) :
     Additive G ≃+ IntegralSingularHomology 1 X :=
   (Abelianization.equivOfComm.toAdditive).trans
-    (deckHOneEquivOfFundamentalGroupEquivOpposite (p e)
+    (homologyOneEquivOfPi1Opposite (p e)
       (hp.fundamentalGroupEquiv ⟨e, rfl⟩)).toAddEquiv
 
 public theorem abelianCoverHomologyEquiv_hurewicz
@@ -27,7 +27,7 @@ public theorem abelianCoverHomologyEquiv_hurewicz
       (Additive.ofMul (hp.fundamentalGroupToMulOpposite ⟨e, rfl⟩ γ).unop) =
       hurewiczFunction (p e) γ := by
   obtain ⟨q, rfl⟩ := Path.Homotopic.Quotient.mk_surjective γ
-  exact deckHOneEquivOfFundamentalGroupEquivOpposite_markedLoop (p e)
+  exact homologyOneEquivOfPi1Opposite_apply_loop (p e)
     (hp.fundamentalGroupEquiv ⟨e, rfl⟩)
     (fun _ : Unit ↦ (hp.fundamentalGroupToMulOpposite ⟨e, rfl⟩
       (Path.Homotopic.Quotient.mk q)).unop) (fun _ ↦ q) (fun _ ↦ rfl) ()

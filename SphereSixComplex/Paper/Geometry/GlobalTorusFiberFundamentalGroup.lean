@@ -42,21 +42,21 @@ public theorem regularFamilyQuotientMap_isQuotientCoveringMap
   let _ := regularBaseChartedSpace hproper
   let _ : LocallyCompactSpace (RegularBase (U := U)) :=
     (isOpen_isRegularBasePoint hproper).locallyCompactSpace
-  let _ : IsManifold GlobalDeckBaseModel RegularSmoothnessOrder
+  let _ : IsManifold globalDeckBaseModel regularSmoothnessOrder
       (RegularBase (U := U)) := regularBase_isManifold hproper
   let _ := familyIsCancelSMul (regularParameterMap F)
   let _ := familyContinuousConstSMul (regularParameterMap F)
     (fun a ↦ (regularPeriodSection_contMDiff F hproper a
-      RegularSmoothnessOrder).continuous)
+      regularSmoothnessOrder).continuous)
   let _ := familyProperlyDiscontinuousSMul (regularParameterMap F)
     (compactlyUniformPeriods_of_compactUniformLowerBound (regularParameterMap F)
       (regularParameterMap_compactUniformLowerBound F))
   have htotal := regularTotalSpace_isManifold_and_projection_isLocalDiffeomorph
-    F hproper RegularSmoothnessOrder
-  let _ : IsManifold GlobalDeckTotalModel RegularSmoothnessOrder
+    F hproper regularSmoothnessOrder
+  let _ : IsManifold globalDeckTotalModel regularSmoothnessOrder
       (RegularTotalSpace F) := htotal.1
   let _ : LocallyCompactSpace (RegularTotalSpace F) :=
-    Manifold.locallyCompact_of_finiteDimensional GlobalDeckTotalModel
+    Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
   let _ := regularFamilyDeckAction F
   let _ : IsCancelSMul Delta (RegularTotalSpace F) :=
     regularFamilyDeckAction_isCancelSMul_of_fuchsian F hsource hproper

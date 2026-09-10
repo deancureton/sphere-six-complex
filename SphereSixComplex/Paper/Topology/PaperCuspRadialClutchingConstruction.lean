@@ -293,7 +293,7 @@ section Collar
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   (N : NormalizedFuchsianCuspCoordinate E D)
 
 /-- The point of the period domain lying over the normalized cusp parameter `s`. -/
@@ -439,7 +439,7 @@ open SphereSixComplex.Geometry.CuspPhaseEstimates
 open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
   {M : Model}
   (W : ActualPuncturedCuspCollarWitness N M) (s₀ : ℂ)
@@ -547,16 +547,16 @@ public theorem puncturedPsiMap_psiTranslate
   let e := additiveToPuncturedLocalHomeomorph M W.localWitness.radius
   apply Subtype.ext
   change
-    (CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
+    (NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
         N M W.localWitness.radius W.localWitness.radius_pos
           W.localWitness.radius_le).psiMap lambda (e (Quotient.mk _ a)).1 =
       (e (Quotient.mk _ (psiTranslate W a lambda))).1
-  rw [show ((e (Quotient.mk _ a)).1 : LocalCarrier M W.localWitness.radius) =
+  rw [show ((e (Quotient.mk _ a)).1 : localCarrier M W.localWitness.radius) =
       localCuspExponentialPoint M W.localWitness.radius a.1.1 a.1.2
         (mem_ball_zero_iff.mpr a.2) from
     additiveToPuncturedLocalHomeomorph_mk M W.localWitness.radius a,
     show ((e (Quotient.mk _ (psiTranslate W a lambda))).1 :
-        LocalCarrier M W.localWitness.radius) =
+        localCarrier M W.localWitness.radius) =
       localCuspExponentialPoint M W.localWitness.radius (psiTranslate W a lambda).1.1
         (psiTranslate W a lambda).1.2
         (mem_ball_zero_iff.mpr (psiTranslate W a lambda).2) from
@@ -568,7 +568,7 @@ public theorem puncturedPsiMap_psiTranslate
 
 /-- The additive cusp cover projected onto the punctured local cusp quotient. -/
 public noncomputable def collarPeriodPointMap :
-    additiveCuspRadiusCover W.localWitness.radius → puncturedLocalCuspQuotient W :=
+    additiveCuspRadiusCover W.localWitness.radius → PuncturedLocalCuspQuotient W :=
   fun a ↦ Quotient.mk _
     (additiveToPuncturedLocalHomeomorph M W.localWitness.radius (Quotient.mk _ a))
 
@@ -582,7 +582,7 @@ public theorem collarPeriodPointMap_isQuotientMap :
       (Quotient.mk (Setoid.ker (denseCuspExponentialRadius W.localWitness.radius)) a)) :=
     isQuotientMap_quotient_mk'
   have h2 := (additiveToPuncturedLocalHomeomorph M W.localWitness.radius).isQuotientMap
-  have h3 : IsQuotientMap (fun p : {p : LocalCarrier M W.localWitness.radius // M.t p ≠ 0} ↦
+  have h3 : IsQuotientMap (fun p : {p : localCarrier M W.localWitness.radius // M.t p ≠ 0} ↦
       (Quotient.mk (puncturedPsiOrbitRel W) p)) := isQuotientMap_quotient_mk'
   exact (h3.comp h2).comp h1
 
@@ -637,7 +637,7 @@ public theorem collarPeriodPointMap_eq_iff
         Quotient.mk _ a := Quotient.sound (Subtype.ext hdense)
     have hpsi : puncturedPsiMap W lambda (e (Quotient.mk _ b)) = e (Quotient.mk _ a) := by
       rw [puncturedPsiMap_psiTranslate, hquot]
-    change (Quotient.mk _ (e (Quotient.mk _ a)) : puncturedLocalCuspQuotient W) =
+    change (Quotient.mk _ (e (Quotient.mk _ a)) : PuncturedLocalCuspQuotient W) =
       Quotient.mk _ (e (Quotient.mk _ b))
     refine Quotient.sound ?_
     change MulAction.orbitRel (Multiplicative ParameterLattice) _
@@ -799,7 +799,7 @@ public theorem collarFiberEquiv_self (s₀ : ℂ) (zeta : ComplexTwoSpace) :
 punctured local cusp quotient with the open radial interval times the mapping torus of the
 descended parabolic monodromy. -/
 public noncomputable def puncturedLocalCuspQuotientHomeomorph :
-    puncturedLocalCuspQuotient W ≃ₜ
+    PuncturedLocalCuspQuotient W ≃ₜ
       OpenRadialInterval W.localWitness.radius ×
         CircleMappingTorus (cuspFiberClutching (cuspBasePoint N s₀)) :=
   (CyclicAngularFundamentalDomain.homeomorphOfQuotientMaps

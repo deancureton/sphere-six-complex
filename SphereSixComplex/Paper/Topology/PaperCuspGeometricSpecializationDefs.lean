@@ -44,7 +44,7 @@ normalization field of `ActualCuspRadialClutchingData` pins the fibre marking to
 /-- The actual period parameter of the punctured cusp collar over the normalized cusp
 parameter `s`: the value of the assembled Fuchsian period functions at `N.lift s`. -/
 public noncomputable def actualCuspCollarPeriodParameter
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (s : ℂ) :
     SphereSixComplex.Periods.Parameters :=
   SphereSixComplex.Periods.periodValues (assembledFuchsianPeriodFunctions E D).tau
@@ -55,11 +55,11 @@ public noncomputable def actualCuspCollarPeriodParameter
 normalized cusp parameter `s`.  This is the honest period coordinate of the collar, read off its
 additive cover, and it depends on nothing but `W`. -/
 public noncomputable def actualCuspCollarPeriodPoint
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) {s : ℂ}
     (hs : ‖cuspQ s‖ < W.localWitness.radius) (zeta : ComplexTwoSpace) :
-    puncturedLocalCuspQuotient W :=
+    PuncturedLocalCuspQuotient W :=
   Quotient.mk _
     (additiveToPuncturedLocalHomeomorph M W.localWitness.radius
       (Quotient.mk _ ⟨(zeta, s), hs⟩))
@@ -74,11 +74,11 @@ This is the cusp analogue of the marking carried by
 full-rank torus it admits no `±1` ambiguity: see
 `IsActualCuspFiberPeriodCoordinate.fiberCoordinate_unique`. -/
 public def IsActualCuspFiberPeriodCoordinate
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     {W : ActualPuncturedCuspCollarWitness N M}
     {F : Type} [TopologicalSpace F] {phi : F ≃ₜ F}
-    (total : puncturedLocalCuspQuotient W ≃ₜ
+    (total : PuncturedLocalCuspQuotient W ≃ₜ
       OpenRadialInterval W.localWitness.radius × CircleMappingTorus phi)
     (t : OpenRadialInterval W.localWitness.radius) {s : ℂ}
     (hs : ‖cuspQ s‖ < W.localWitness.radius)
@@ -92,11 +92,11 @@ public def IsActualCuspFiberPeriodCoordinate
 normalized fibre coordinate with the hyperelliptic involution `-1` of the torus fibre destroys
 the normalization, which is exactly what the un-normalized structure failed to prevent. -/
 public theorem IsActualCuspFiberPeriodCoordinate.fiberCoordinate_unique
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     {W : ActualPuncturedCuspCollarWitness N M}
     {F : Type} [TopologicalSpace F] {phi : F ≃ₜ F}
-    {total : puncturedLocalCuspQuotient W ≃ₜ
+    {total : PuncturedLocalCuspQuotient W ≃ₜ
       OpenRadialInterval W.localWitness.radius × CircleMappingTorus phi}
     {t : OpenRadialInterval W.localWitness.radius} {s : ℂ}
     {hs : ‖cuspQ s‖ < W.localWitness.radius}
@@ -120,14 +120,14 @@ records is invisible to the hyperelliptic `±1` involution of the torus fibre, s
 equations are *false* when quantified over data of this type.  Use
 `ActualCuspRadialClutchingData` instead. -/
 public structure UnnormalizedCuspRadialClutchingData
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) where
   Fiber : Type
   fiberTopology : TopologicalSpace Fiber
   clutching : let _ := fiberTopology; Fiber ≃ₜ Fiber
   totalHomeomorph : let _ := fiberTopology
-    puncturedLocalCuspQuotient W ≃ₜ
+    PuncturedLocalCuspQuotient W ≃ₜ
       OpenRadialInterval W.localWitness.radius × CircleMappingTorus clutching
   monodromyCoordinates : let _ := fiberTopology
     CuspMonodromyCoordinates clutching
@@ -158,7 +158,7 @@ datum and the Section 7 specialization equations are refutable: see
 `not_standardA2CuspSpecializationDegreeOneStatement`
 and its degree-two counterpart. -/
 public structure ActualCuspRadialClutchingData
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     extends UnnormalizedCuspRadialClutchingData W where

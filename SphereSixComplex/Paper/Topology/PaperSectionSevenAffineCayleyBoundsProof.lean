@@ -56,20 +56,20 @@ public theorem affineOrderFourNormalizedBaseCoordinate_sub_one_norm
     mul_assoc, inv_mul_cancel₀ (norm_pos_iff.mpr hw).ne', mul_one]
 
 /-- The lifted order-three radial endpoint has the same exact quotient-coordinate radius. -/
-public theorem regularCoordinate_sectionSevenAffineOrderThreeRadialBaseLift_norm
+public theorem regularCoordinate_affineOrderThreeRadialBaseLift_norm
     (A : PaperAnalyticData) (z : affineVerticalStrip) :
     ‖(A.regularCoordinate (A.affineOrderThreeRadialBaseLift z)).1‖ =
       A.affineOrderThreeMarkedDiscRadius / 2 := by
-  rw [A.regularCoordinate_sectionSevenAffineOrderThreeRadialBaseLift]
+  rw [A.regularCoordinate_affineOrderThreeRadialBaseLift]
   exact A.affineOrderThreeNormalizedBaseCoordinate_norm z
 
 /-- The lifted order-four radial endpoint has the same exact quotient-coordinate radius about
 the order-four branch value. -/
-public theorem regularCoordinate_sectionSevenAffineOrderFourRadialBaseLift_sub_one_norm
+public theorem regularCoordinate_affineOrderFourRadialBaseLift_sub_one_norm
     (A : PaperAnalyticData) (z : affineVerticalStrip) :
     ‖(A.regularCoordinate (A.affineOrderFourRadialBaseLift z)).1 - 1‖ =
       A.affineOrderFourMarkedDiscRadius / 2 := by
-  rw [A.regularCoordinate_sectionSevenAffineOrderFourRadialBaseLift]
+  rw [A.regularCoordinate_affineOrderFourRadialBaseLift]
   exact A.affineOrderFourNormalizedBaseCoordinate_sub_one_norm z
 
 end SphereSixComplex.Geometry.PaperAnalyticData

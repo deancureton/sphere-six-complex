@@ -19,7 +19,7 @@ def specializationSplitEquiv
     (P : WangHomologyPresentation HighRelations High Total LowRelations Low)
     (S : P.Section) (f : Total →ₗ[ℤ] L)
     (h : Function.Bijective (f.comp P.coinvariantsToTotal)) :
-    Total ≃ₗ[ℤ] L × P.Invariants :=
+    Total ≃ₗ[ℤ] L × P.invariants :=
   let c := LinearEquiv.ofBijective (f.comp P.coinvariantsToTotal) h
   (P.linearEquivOfSection
     (WangHomologyPresentation.correctedSection P S c f)).trans (c.prodCongr (LinearEquiv.refl ℤ _))
@@ -85,7 +85,7 @@ def CuspFiberSpecializationTwoBijective (A : PaperAnalyticData) : Prop :=
 
 def bijectiveCuspRawHomologyTwoEquiv (A : PaperAnalyticData)
     (h : A.CuspFiberSpecializationTwoBijective) :
-    IntegralSingularHomology 2 (puncturedLocalCuspQuotient A.starCuspWitness) ≃+ (Fin 6 → ℤ) := by
+    IntegralSingularHomology 2 (PuncturedLocalCuspQuotient A.starCuspWitness) ≃+ (Fin 6 → ℤ) := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   exact (integralSingularHomologyEquivOfHomotopyEquiv 2 G.totalHomotopyEquiv).trans
@@ -94,7 +94,7 @@ def bijectiveCuspRawHomologyTwoEquiv (A : PaperAnalyticData)
 
 theorem bijectiveCuspRawHomologyTwoEquiv_last (A : PaperAnalyticData)
     (h : A.CuspFiberSpecializationTwoBijective)
-    (x : IntegralSingularHomology 2 (puncturedLocalCuspQuotient A.starCuspWitness)) (i : Fin 2) :
+    (x : IntegralSingularHomology 2 (PuncturedLocalCuspQuotient A.starCuspWitness)) (i : Fin 2) :
     A.bijectiveCuspRawHomologyTwoEquiv h x (Fin.natAdd 4 i) =
       A.actualCuspRadialClutchingData.geometricHomologyTwoEquiv x (Fin.natAdd 4 i) := by
   let G := A.actualCuspRadialClutchingData
@@ -104,7 +104,7 @@ theorem bijectiveCuspRawHomologyTwoEquiv_last (A : PaperAnalyticData)
 
 theorem bijectiveCuspRawHomologyTwoEquiv_first (A : PaperAnalyticData)
     (h : A.CuspFiberSpecializationTwoBijective)
-    (x : IntegralSingularHomology 2 (puncturedLocalCuspQuotient A.starCuspWitness)) (i : Fin 4) :
+    (x : IntegralSingularHomology 2 (PuncturedLocalCuspQuotient A.starCuspWitness)) (i : Fin 4) :
     A.bijectiveCuspRawHomologyTwoEquiv h x (Fin.castAdd 2 i) =
       actualLocalCuspFillingHomologyTwoEquiv A.starCuspWitness A.cuspCentralFiberRetractionData
         (integralSingularHomologyMap 2

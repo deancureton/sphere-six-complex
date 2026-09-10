@@ -21,25 +21,25 @@ namespace SphereSixComplex
 
 /-- The proper-face nerve is nonsingular because it is the nerve of a partial order. -/
 public theorem boundarySevenProperFaceNerve_nonsingular :
-    BoundarySevenProperFaceNerve.Nonsingular := by
+    boundarySevenProperFaceNerve.Nonsingular := by
   change (CategoryTheory.nerve BoundarySevenProperFace).Nonsingular
   infer_instance
 
 /-- The proper-face nerve has only finitely many nondegenerate flags. -/
 public theorem boundarySevenProperFaceNerve_finite :
-    BoundarySevenProperFaceNerve.Finite := by
+    boundarySevenProperFaceNerve.Finite := by
   change (CategoryTheory.nerve BoundarySevenProperFace).Finite
   exact finitePartialOrderNerve_finite BoundarySevenProperFace
 
 /-- The realization of the finite proper-face nerve is compact. -/
 public theorem boundarySevenProperFaceRealization_isCompact :
     IsCompact (Set.univ : Set
-      (SSet.toTop.obj BoundarySevenProperFaceNerve : Type)) := by
-  let : BoundarySevenProperFaceNerve.Finite :=
+      (SSet.toTop.obj boundarySevenProperFaceNerve : Type)) := by
+  let : boundarySevenProperFaceNerve.Finite :=
     boundarySevenProperFaceNerve_finite
-  let : BoundarySevenProperFaceNerve.Nonsingular :=
+  let : boundarySevenProperFaceNerve.Nonsingular :=
     boundarySevenProperFaceNerve_nonsingular
-  exact finiteNonsingularSSet_realization_isCompact BoundarySevenProperFaceNerve
+  exact finiteNonsingularSSet_realization_isCompact boundarySevenProperFaceNerve
 
 /-- After compactness is discharged, bijectivity of the explicit affine map is the sole
 remaining point-set input for the proper-face realization homeomorphism. -/

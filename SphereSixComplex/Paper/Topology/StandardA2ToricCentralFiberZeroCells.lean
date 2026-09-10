@@ -29,13 +29,13 @@ open SphereSixComplex.Geometry.CuspToricPhaseAction
 open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 /-- The affine origin of a lower or upper chart, regarded as a point of the local carrier. -/
 public def constructedCentralOrigin
     (W : ActualPuncturedCuspCollarWitness N constructedModel) (upper : Bool) :
-    LocalCarrier constructedModel W.localWitness.radius :=
+    localCarrier constructedModel W.localWitness.radius :=
   ⟨inclusion (upper, 0) 0, by
     change carrierHeight (inclusion (upper, 0) 0) ∈ Metric.ball 0 W.localWitness.radius
     rw [Metric.mem_ball, dist_zero_right, carrierHeight_inclusion]
@@ -79,16 +79,16 @@ public theorem constructedCentralOrigin_smul_coe
     (g : Multiplicative ParameterLattice) (upper : Bool) :
     letI := actualLocalCuspQuotientAction W
     ((g • constructedCentralOrigin W upper :
-      LocalCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) =
+      localCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) =
       inclusion (translateChartIndex (Multiplicative.toAdd g) (upper, 0)) 0 := by
   let C :=
-    CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
+    NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
       N constructedModel W.localWitness.radius W.localWitness.radius_pos
         W.localWitness.radius_le
   let _ := actualLocalCuspQuotientAction W
   change (((C.toCuspActionData W.localWitness.fixedPoint).psiMap
     (Multiplicative.toAdd g) (constructedCentralOrigin W upper) :
-      LocalCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) = _
+      localCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) = _
   rw [← C.psiMap_eq_generic, C.psiMap_coe]
   change carrierTorusActionFun _
     (carrierFanShearFun (Multiplicative.toAdd g) (inclusion (upper, 0) 0)) = _
@@ -126,10 +126,10 @@ public theorem constructedCentralOriginOrbit_ne
   rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff] at hrel
   obtain ⟨g, hg⟩ := hrel
   have hcarrier := congrArg
-    (fun p : S ↦ ((p : LocalCarrier constructedModel W.localWitness.radius) :
+    (fun p : S ↦ ((p : localCarrier constructedModel W.localWitness.radius) :
       constructedModel.Carrier)) hg
   change ((g • constructedCentralOrigin W true :
-    LocalCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) =
+    localCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) =
       inclusion (false, 0) 0 at hcarrier
   rw [constructedCentralOrigin_smul_coe] at hcarrier
   exact lowerOrigin_ne_upperOrigin 0

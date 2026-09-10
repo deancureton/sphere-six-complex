@@ -25,13 +25,13 @@ open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open
-  SphereSixComplex.Geometry.CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
+  SphereSixComplex.Geometry.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
 open SphereSixComplex.Geometry.CuspStraighteningRetraction
 open SphereSixComplex.Geometry.CuspToricPhaseAction
 open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public def a2CyclicComplexLinear (u : Fin 2 → ℂ) : Fin 2 → ℂ :=
@@ -115,7 +115,7 @@ public theorem a2CyclicCarrier_frozenCentralDeck
 
 public theorem a2CyclicLocalCarrier_frozenLocalPsiMap
     (hN : CyclicCorrectionCovariant N) (r : ℝ) (lambda : ParameterLattice)
-    (p : LocalCarrier constructedModel r) :
+    (p : localCarrier constructedModel r) :
     a2CyclicLocalCarrierHomeomorph r
         (frozenLocalPsiMap N constructedModel r lambda p) =
       frozenLocalPsiMap N constructedModel r (a2CyclicParameter lambda)
@@ -134,7 +134,7 @@ map by the same parameter automorphism. -/
 public theorem a2CyclicLocalCarrier_actualCentralPsiMap
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     (hN : CyclicCorrectionCovariant N) (lambda : ParameterLattice)
-    (p : LocalCarrier constructedModel W.localWitness.radius)
+    (p : localCarrier constructedModel W.localWitness.radius)
     (hp : constructedModel.t p = 0) :
     let C := restrictedActualLocalPhaseCoefficients N constructedModel
       W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le

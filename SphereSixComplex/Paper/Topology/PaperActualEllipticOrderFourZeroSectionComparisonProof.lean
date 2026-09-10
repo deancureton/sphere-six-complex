@@ -184,7 +184,7 @@ private theorem orderFourActualCayleyBaseCoordinate_quadrupleHomotopy_with_trace
 
 /-- The restricted order-four inverse chart has the product coordinate with which it was fed. -/
 public theorem orderFourPuncturedProductToRegularMap_productCoordinate
-    (zq : A.OrderFourCayleyPuncturedDisc × A.orderFourTorus) :
+    (zq : A.OrderFourCayleyPuncturedDisc × A.OrderFourTorus) :
     letI := A.ellipticFourBoundaryAction
     orderFourRealPeriodProductHomeomorph A.periods
         (regularFamilyInclusion A.periods
@@ -374,8 +374,8 @@ public theorem orderFourCentralBaseFactor_homotopy_zeroSectionQuadruple_with_tra
 public noncomputable def orderFourCentralAffineZeroSectionQuadruplePath :
     Path A.centralAffineBase A.centralAffineBase :=
   A.ellipticFourCuspZeroSectionQuadruplePath.cast
-    A.centralAffineBase_eq_actualCuspCentralBase
-    A.centralAffineBase_eq_actualCuspCentralBase
+    A.centralAffineBase_eq_cuspCentralBase
+    A.centralAffineBase_eq_cuspCentralBase
 
 /-- The local order-four base factor reaches the globally based zero-section quadruple through
 one genuine free homotopy. -/

@@ -39,7 +39,7 @@ variable (A : PaperAnalyticData)
 
 /-- The actual cusp-complement: the central family with both elliptic fillings attached. -/
 public abbrev ellipticInterior :=
-  (A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4)
+  (A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4)
 
 /-- Geometric data for the two-disc cover used in Lemma 7.19.  The compatibility fields say
 that, after trivializing the band fibre and retracting either side to its reduced central fibre,
@@ -56,16 +56,16 @@ public structure EllipticTwoDiscCoverData where
     (orderThreeSide ∩ orderFourSide : Set A.ellipticInterior) ≃ₕ
       AdditiveTorus bandParameter
   orderThreeSideHomotopyEquiv :
-    orderThreeSide ≃ₕ OrderThreeReducedCentralFiber A.periods
+    orderThreeSide ≃ₕ orderThreeReducedCentralFiber A.periods
   orderFourSideHomotopyEquiv :
-    orderFourSide ≃ₕ OrderFourReducedCentralFiber A.periods
+    orderFourSide ≃ₕ orderFourReducedCentralFiber A.periods
   bandToOrderThreeCoverSource :
     AdditiveTorus bandParameter ≃ₜ
-      RadialEllipticActionData.centralFiberCoverSource
+      RadialEllipticActionData.CentralFiberCoverSource
         (orderThreeRadialActionData A.periods)
   bandToOrderFourCoverSource :
     AdditiveTorus bandParameter ≃ₜ
-      RadialEllipticActionData.centralFiberCoverSource
+      RadialEllipticActionData.CentralFiberCoverSource
         (orderFourRadialActionData A.periods)
   orderThree_inclusion_compatibility :
     (orderThreeSideHomotopyEquiv.toFun.comp
@@ -97,8 +97,8 @@ public noncomputable def bandHomologyEquiv (k : ℕ) :
 public noncomputable def sideHomologyEquiv (k : ℕ) :
     (IntegralSingularHomology k D.orderThreeSide ×
       IntegralSingularHomology k D.orderFourSide) ≃+
-    (IntegralSingularHomology k (OrderThreeReducedCentralFiber A.periods) ×
-      IntegralSingularHomology k (OrderFourReducedCentralFiber A.periods)) :=
+    (IntegralSingularHomology k (orderThreeReducedCentralFiber A.periods) ×
+      IntegralSingularHomology k (orderFourReducedCentralFiber A.periods)) :=
   (integralSingularHomologyEquivOfHomotopyEquiv k
       D.orderThreeSideHomotopyEquiv).prodCongr
     (integralSingularHomologyEquivOfHomotopyEquiv k
@@ -106,14 +106,14 @@ public noncomputable def sideHomologyEquiv (k : ℕ) :
 
 /-- The order-three band fibre followed by the actual central-fibre covering projection. -/
 public noncomputable def orderThreeBandProjection :
-    C(AdditiveTorus D.bandParameter, OrderThreeReducedCentralFiber A.periods) :=
+    C(AdditiveTorus D.bandParameter, orderThreeReducedCentralFiber A.periods) :=
   (RadialEllipticActionData.centralFiberCoverProjection
       (orderThreeRadialActionData A.periods)).comp
     ⟨D.bandToOrderThreeCoverSource, D.bandToOrderThreeCoverSource.continuous⟩
 
 /-- The order-four band fibre followed by the actual central-fibre covering projection. -/
 public noncomputable def orderFourBandProjection :
-    C(AdditiveTorus D.bandParameter, OrderFourReducedCentralFiber A.periods) :=
+    C(AdditiveTorus D.bandParameter, orderFourReducedCentralFiber A.periods) :=
   (RadialEllipticActionData.centralFiberCoverProjection
       (orderFourRadialActionData A.periods)).comp
     ⟨D.bandToOrderFourCoverSource, D.bandToOrderFourCoverSource.continuous⟩

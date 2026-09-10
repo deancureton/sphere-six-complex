@@ -37,7 +37,7 @@ variable {m : ℕ} [NeZero m] {p : SphereSixComplex.Periods.Parameters}
   (RadialEllipticActionData.centralFiberCoverProjection D).comp
     ((⟨(RadialEllipticActionData.centralFiberCoverSourceHomeomorph D).symm,
       (RadialEllipticActionData.centralFiberCoverSourceHomeomorph D).symm.continuous⟩ :
-        C(AdditiveTorus p, RadialEllipticActionData.centralFiberCoverSource D)).comp
+        C(AdditiveTorus p, RadialEllipticActionData.CentralFiberCoverSource D)).comp
       ⟨torusProjection p, continuous_quot_mk⟩)
 
 private theorem affineEquiv_pow_sub {T : Type*} [AddCommGroup T]

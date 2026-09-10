@@ -127,21 +127,21 @@ private theorem universalCirclePrismClass_eq :
       (AddCommGrpCat.of ℤ)).hom 1 2 ((AddCommGrpCat.asHom (pathChain (unitCircleIntegerLoop 1))) 1) =
         -((AddCommGrpCat.asHom standardTwoTorusFundamentalCycle) 1)
     simpa only [AddCommGrpCat.asHom_hom_apply, one_zsmul, pathChain] using universalCirclePrism_fundamentalCycle
-  have hl : (IntegralChains (StdTorus 2)).liftCycles
+  have hl : (integralChains (StdTorus 2)).liftCycles
       (loopCycle (unitCircleIntegerLoop 1) ≫
         (universalCirclePrismHomotopy.singularChainComplexFunctorObjMap (AddCommGrpCat.of ℤ)).hom 1 2)
       1 (by simp) (closedPrism_cycle _ 0 _ (loopCycle_isCycle _)) =
-      -(IntegralChains (StdTorus 2)).liftCycles
+      -(integralChains (StdTorus 2)).liftCycles
         (degreeTwoCycleMap standardTwoTorusFundamentalCycle) 1 (by simp)
         (degreeTwoCycleMap_isCycle _ standardTwoTorusFundamentalCycle_isCycle) := by
-    apply (cancel_mono ((IntegralChains (StdTorus 2)).iCycles 2)).mp
+    apply (cancel_mono ((integralChains (StdTorus 2)).iCycles 2)).mp
     simp only [HomologicalComplex.liftCycles_i, Preadditive.neg_comp]
     erw [HomologicalComplex.liftCycles_i]
     exact hc
   have hh := ConcreteCategory.congr_hom h (1 : ℤ)
   change universalCirclePrismClass = _ at hh
   exact hh.trans (by
-    change ((IntegralChains (StdTorus 2)).liftCycles (A := AddCommGrpCat.of ℤ) _ _ _ _ ≫ _) 1 = _
+    change ((integralChains (StdTorus 2)).liftCycles (A := AddCommGrpCat.of ℤ) _ _ _ _ ≫ _) 1 = _
     erw [hl, Preadditive.neg_comp]
     rfl)
 

@@ -206,8 +206,8 @@ public theorem fiberTransfer_continuous :
   exact continuous_quot_mk.comp (fiberTransferCover_continuous A)
 
 /-- The fibre transfer lands over the prescribed base region. -/
-public theorem regularCoordinate_fiberTransfer_mem {S : Set RegularCoordinateBase}
-    (w : coveringRegionPreimage A.regularCoordinate S) (q : RegularTotalSpace A.periods) :
+public theorem regularCoordinate_fiberTransfer_mem {S : Set regularCoordinateBase}
+    (w : CoveringRegionPreimage A.regularCoordinate S) (q : RegularTotalSpace A.periods) :
     A.regularCoordinate (regularTotalSpaceBase A.periods (A.fiberTransfer w.1 q)) ∈ S := by
   rw [A.regularTotalSpaceBase_fiberTransfer]
   exact w.2
@@ -218,7 +218,7 @@ variable {r : ℝ}
 
 /-- The base point of a point of the order-three affine disc lift carrier. -/
 public def orderThreeDiscLiftBase (q : (A.orderThreeAffineDiscLiftCarrier r).carrier) :
-    coveringRegionPreimage A.regularCoordinate (orderThreeAffineDiscCoordinateRegion r) :=
+    CoveringRegionPreimage A.regularCoordinate (orderThreeAffineDiscCoordinateRegion r) :=
   ⟨regularTotalSpaceBase A.periods q.1, q.2⟩
 
 public theorem orderThreeDiscLiftBase_continuous :
@@ -227,7 +227,7 @@ public theorem orderThreeDiscLiftBase_continuous :
 
 /-- The base point of a point of the order-three affine half-plane lift carrier. -/
 public def orderThreeHalfPlaneLiftBase (q : A.orderThreeAffineHalfPlaneLiftCarrier.carrier) :
-    coveringRegionPreimage A.regularCoordinate orderThreeAffineHalfPlaneCoordinateRegion :=
+    CoveringRegionPreimage A.regularCoordinate orderThreeAffineHalfPlaneCoordinateRegion :=
   ⟨regularTotalSpaceBase A.periods q.1, q.2⟩
 
 public theorem orderThreeHalfPlaneLiftBase_continuous :

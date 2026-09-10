@@ -18,7 +18,7 @@ open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 open SphereSixComplex.Geometry.CuspPhaseEstimates
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public theorem constructedA2ActualCentral_support_smul
@@ -26,12 +26,12 @@ public theorem constructedA2ActualCentral_support_smul
     (g : Multiplicative ParameterLattice) (p : actualLocalCuspCentralSubMulAction W) :
     componentSupport constructedModel
         (((g • p : actualLocalCuspCentralSubMulAction W) :
-          LocalCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) =
+          localCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) =
       (fun v ↦ v + shearVector g.toAdd) '' componentSupport constructedModel
-        ((p : LocalCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) := by
+        ((p : localCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) := by
   let _ := actualLocalCuspQuotientAction W
   let C :=
-    CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
+    NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
       N constructedModel W.localWitness.radius W.localWitness.radius_pos
         W.localWitness.radius_le
   change componentSupport constructedModel

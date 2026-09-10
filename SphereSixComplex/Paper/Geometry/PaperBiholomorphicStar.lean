@@ -31,7 +31,7 @@ variable (A : PaperAnalyticData)
     letI (i : Fin 3) := A.starFillingCharts i
     ∀ i, PartialDiffeomorph (modelWithCornersSelf ℂ ComplexModel)
       (modelWithCornersSelf ℂ ComplexModel) A.CentralFamily
-      (A.starFillingType i) ∞ := by
+      (A.StarFilling i) ∞ := by
   let _ := A.starCentralCharts
   let _ (i : Fin 3) := A.starFillingCharts i
   refine Fin.cases
@@ -80,7 +80,7 @@ public theorem starCollarPartialDiffeomorph_target (i : Fin 3) :
       A.starSeparation.orderFour
 
 public theorem starCollarPartialDiffeomorph_apply (i : Fin 3)
-    (x : A.starCollarSourceType i) :
+    (x : A.StarCollarSource i) :
     letI := A.starCentralCharts
     letI (i : Fin 3) := A.starFillingCharts i
     A.starCollarPartialDiffeomorph i (A.starToCentral i x) =

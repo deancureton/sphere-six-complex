@@ -106,7 +106,7 @@ public theorem affineOrderThreeCrossingRadialScalar_pos
       linarith [A.affineActualCuspCrossingPoint_norm_gt_two])
 
 /-- The displacement of the crossing from the order-four branch value is nonzero. -/
-public theorem one_sub_sectionSevenAffineActualCuspCrossingPoint_ne_zero
+public theorem one_sub_affineActualCuspCrossingPoint_ne_zero
     (A : PaperAnalyticData) :
     (1 - (A.affineActualCuspCrossingPoint.1 : ℂ)) ≠ 0 := by
   intro h
@@ -123,7 +123,7 @@ public theorem affineOrderFourCrossingRadialScalar_pos
   apply mul_pos
   · exact div_pos A.affineOrderFourMarkedDiscRadius_spec.1 (by norm_num)
   · exact inv_pos.mpr
-      (norm_pos_iff.mpr A.one_sub_sectionSevenAffineActualCuspCrossingPoint_ne_zero)
+      (norm_pos_iff.mpr A.one_sub_affineActualCuspCrossingPoint_ne_zero)
 
 /-- The imaginary part of the order-three endpoint is scaled by a positive real number. -/
 public theorem affineOrderThreeNormalizedBaseCoordinate_crossing_im

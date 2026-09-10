@@ -109,7 +109,7 @@ public theorem toCentralFamily_orderThreeAffineHalfPlaneLiftQuotientHomeomorphRa
     (A.orderThreeAffineHalfPlaneLiftQuotientHomeomorphRange.apply_symm_apply c)
 
 /-- The disc-region quotient model is compatible with the central-family coordinates. -/
-public theorem toCentralFamily_sectionSevenAffineOrderThreeDiscRegionQuotientHomeomorph
+public theorem toCentralFamily_affineOrderThreeDiscRegionQuotientHomeomorph
     (r : ℝ) (x : ↥(A.affineOrderThreeDiscRegion r)) :
     A.orderThreeAffineDiscLiftQuotientToCentralFamily r
         (A.affineOrderThreeDiscRegionQuotientHomeomorph r x) =
@@ -122,7 +122,7 @@ public theorem toCentralFamily_sectionSevenAffineOrderThreeDiscRegionQuotientHom
       A.ellipticCentralRadius r x))
 
 /-- The central-region quotient model is compatible with the central-family coordinates. -/
-public theorem toCentralFamily_sectionSevenAffineOrderThreeCentralRegionQuotientHomeomorph
+public theorem toCentralFamily_affineOrderThreeCentralRegionQuotientHomeomorph
     (x : ↥A.affineOrderThreeCentralRegion) :
     A.orderThreeAffineHalfPlaneLiftQuotientToCentralFamily
         (A.affineOrderThreeCentralRegionQuotientHomeomorph x) =
@@ -164,8 +164,8 @@ public theorem orderThreeOverlapQuotientIdentification_nonempty_of_overlap_eq
   apply (A.orderThreeAffineHalfPlaneLiftQuotientToCentralFamily_isOpenEmbedding).injective
   rw [Function.comp_apply, Function.comp_apply,
     A.toCentralFamily_orderThreeAffineDiscLiftQuotientInclusion hr,
-    A.toCentralFamily_sectionSevenAffineOrderThreeCentralRegionQuotientHomeomorph]
-  exact (A.toCentralFamily_sectionSevenAffineOrderThreeDiscRegionQuotientHomeomorph r
+    A.toCentralFamily_affineOrderThreeCentralRegionQuotientHomeomorph]
+  exact (A.toCentralFamily_affineOrderThreeDiscRegionQuotientHomeomorph r
     (Homeomorph.setCongr hoverlap x)).symm
 
 /-- Any overlap quotient identification computes the central-family point of an overlap point. -/
@@ -181,12 +181,12 @@ public theorem toCentralFamily_overlapModel
   simp only [Function.comp_apply] at h
   rw [← A.toCentralFamily_orderThreeAffineDiscLiftQuotientInclusion
     Q.affineDiscRadius_le_halfPlane, ← h]
-  exact A.toCentralFamily_sectionSevenAffineOrderThreeCentralRegionQuotientHomeomorph _
+  exact A.toCentralFamily_affineOrderThreeCentralRegionQuotientHomeomorph _
 
 /-- Conversely, an overlap quotient identification forces the actual order-three star overlap to
 be the affine disc region of its own radius.  The identification is therefore exactly equivalent
 to that set equality. -/
-public theorem overlap_eq_sectionSevenAffineOrderThreeDiscRegion
+public theorem overlap_eq_affineOrderThreeDiscRegion
     (Q : A.AffineOrderThreeOverlapQuotientIdentification) :
     A.orderThreeFillingImage ∩ A.affineOrderThreeCentralRegion =
       A.affineOrderThreeDiscRegion Q.affineDiscRadius := by

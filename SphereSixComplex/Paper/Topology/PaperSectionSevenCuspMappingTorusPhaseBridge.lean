@@ -24,7 +24,7 @@ open SphereSixComplex.Geometry.CuspPeriodExpansion
 
 namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 
-variable {E : Periods.EstablishedFuchsianModularParameter}
+variable {E : Periods.NormalizedFuchsianModularParameter}
   {D : Periods.FuchsianPeriodLocalData E}
   {N : CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate E D}
   {M : InfiniteA2Toric.Model}

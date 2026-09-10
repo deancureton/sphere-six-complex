@@ -26,37 +26,37 @@ variable (A : PaperAnalyticData)
 public structure PositiveDegreeHomologyAssembly where
   finalOneSource :
     IntegralSingularHomology 1
-        ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4) ∩
-          (A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3 :
+        ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4) ∩
+          (A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 3 :
             Set A.openEmbeddingStarData.SectionSevenMayerVietorisSpace) ≃+
       (Fin 3 → ℤ)
   finalOneTarget :
     (IntegralSingularHomology 1
-          ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4)) ×
+          ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4)) ×
         IntegralSingularHomology 1
-          ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3)) ≃+
+          ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 3)) ≃+
       (Fin 3 → ℤ)
   finalOne_comm : ∀ x,
     finalOneTarget (IntegralMayerVietoris.differenceMap
-      ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4))
-        ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3) 1 x) =
+      ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4))
+        ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 3) 1 x) =
       sectionSevenFirstBoundaryHom (finalOneSource x)
   finalTwoSource :
     IntegralSingularHomology 2
-        ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4) ∩
-          (A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3 :
+        ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4) ∩
+          (A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 3 :
             Set A.openEmbeddingStarData.SectionSevenMayerVietorisSpace) ≃+
       (Fin 6 → ℤ)
   finalTwoTarget :
     (IntegralSingularHomology 2
-          ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4)) ×
+          ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4)) ×
         IntegralSingularHomology 2
-          ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3)) ≃+
+          ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 3)) ≃+
       (Fin 6 → ℤ)
   finalTwo_comm : ∀ x,
     finalTwoTarget (IntegralMayerVietoris.differenceMap
-      ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4))
-        ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3) 2 x) =
+      ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4))
+        ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 3) 2 x) =
       sectionSevenMayerVietorisFinalTwoHom (finalTwoSource x)
 
 namespace PositiveDegreeHomologyAssembly
@@ -67,14 +67,14 @@ public noncomputable def toSectionSevenMayerVietorisHomologyAssembly
     A.openEmbeddingStarData.SectionSevenMayerVietorisHomologyAssembly where
   pieceModel i k := AddCommGrpCat.of
     (IntegralSingularHomology k
-      ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece i))
+      ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece i))
   pieceEquiv _ _ := AddEquiv.refl _
   collarModel i k := AddCommGrpCat.of
     (IntegralSingularHomology k (A.openEmbeddingStarData.collarSource i))
   collarEquiv _ _ := AddEquiv.refl _
   stageModel r k := AddCommGrpCat.of
     (IntegralSingularHomology k
-      ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage r.castSucc))
+      ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage r.castSucc))
   stageEquiv _ _ := AddEquiv.refl _
   finalZeroSource := A.cuspAttachmentOverlapHomologyZeroEquiv
   finalZeroTarget := A.cuspAttachmentSidesHomologyZeroEquiv

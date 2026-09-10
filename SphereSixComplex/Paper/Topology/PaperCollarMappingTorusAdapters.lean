@@ -211,14 +211,14 @@ namespace PaperAnalyticData
 variable (A : PaperAnalyticData)
 
 /-- The restricted linear cyclic quotient already reached by the proved order-three gauge. -/
-public noncomputable abbrev orderThreeLinearCollarType :=
+public noncomputable abbrev OrderThreeLinearCollar :=
   Quotient (restrictedOrbitRel (orderThreeLinearFamilyAction A.periods)
     (orderThreeLinearPuncturedCarrier A.periods
       A.modular.modularParameter.toTriangleUniformization_sourceAction
       A.starSeparation.orderThree.radius))
 
 /-- The restricted linear cyclic quotient already reached by the proved order-four gauge. -/
-public noncomputable abbrev orderFourLinearCollarType :=
+public noncomputable abbrev OrderFourLinearCollar :=
   Quotient (restrictedOrbitRel (orderFourLinearFamilyAction A.periods)
     (orderFourLinearPuncturedCarrier A.periods
       A.modular.modularParameter.toTriangleUniformization_sourceAction
@@ -226,7 +226,7 @@ public noncomputable abbrev orderFourLinearCollarType :=
 
 /-- The existing analytic gauge reduces the actual order-three collar to its linear quotient. -/
 public noncomputable def orderThreeCollarGaugeHomeomorph :
-    A.starCollarSourceType 1 ≃ₜ A.orderThreeLinearCollarType := by
+    A.StarCollarSource 1 ≃ₜ A.OrderThreeLinearCollar := by
   let _ := A.totalSpaceCharts
   change Quotient (restrictedOrbitRel (orderThreeAffineFamilyAction A.periods)
       (orderThreeAffinePuncturedCarrier A.periods
@@ -239,7 +239,7 @@ public noncomputable def orderThreeCollarGaugeHomeomorph :
 
 /-- The existing analytic gauge reduces the actual order-four collar to its linear quotient. -/
 public noncomputable def orderFourCollarGaugeHomeomorph :
-    A.starCollarSourceType 2 ≃ₜ A.orderFourLinearCollarType := by
+    A.StarCollarSource 2 ≃ₜ A.OrderFourLinearCollar := by
   let _ := A.totalSpaceCharts
   change Quotient (restrictedOrbitRel (orderFourAffineFamilyAction A.periods)
       (orderFourAffinePuncturedCarrier A.periods

@@ -138,7 +138,7 @@ variable [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap
 
 /-- Finitely many order-three pointwise quotient charts cover the entire central torus fibre. -/
 public theorem exists_finite_orderThree_local_chart_cover :
-    ∀ hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    ∀ hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
         (projection (parameterMap F)),
       ∃ s : Finset ComplexTwoSpace, familyFiber F U.zOne ⊆
         ⋃ v ∈ s, (orderThreeFamilyLocalDiffeomorph F hprojection v).source := by
@@ -152,7 +152,7 @@ public theorem exists_finite_orderThree_local_chart_cover :
 
 /-- Finitely many order-four pointwise quotient charts cover the entire central torus fibre. -/
 public theorem exists_finite_orderFour_local_chart_cover :
-    ∀ hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    ∀ hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
         (projection (parameterMap F)),
       ∃ s : Finset ComplexTwoSpace, familyFiber F U.zTwo ⊆
         ⋃ v ∈ s, (orderFourFamilyLocalDiffeomorph F hprojection v).source := by
@@ -197,7 +197,7 @@ variable [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap
 /-- Two local inverses of the family quotient that are both defined at a point differ near that
 point by one constant family-period translation. -/
 public theorem familyLocalInverses_differ_by_period
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (z₀ : UpperHalfPlane)
     (v w : ComplexTwoSpace) (q : TotalSpace (parameterMap F))
     (hqv : q ∈ (hprojection (z₀, v)).localInverse.source)
@@ -253,7 +253,7 @@ public theorem familyLocalInverses_differ_by_period
 /-- A local inverse of the family quotient has the base coordinate descended from its source
 point. -/
 public theorem familyLocalInverse_fst
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (p : UpperHalfPlane × ComplexTwoSpace)
     (q : TotalSpace (parameterMap F))
     (hq : q ∈ (hprojection p).localInverse.source) :
@@ -283,7 +283,7 @@ public theorem fixedTorus_projection_family_smul_eq_iff
 /-- Equality of two order-three pointwise product maps is exactly the fixed-lattice condition for
 the deck coefficient relating their local lifts. -/
 public theorem orderThree_pointwise_transition_eq_iff
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (v w : ComplexTwoSpace)
     (q : TotalSpace (parameterMap F))
     (g : FamilyPeriodGroup (parameterMap F))
@@ -318,7 +318,7 @@ public theorem orderThree_pointwise_transition_eq_iff
 
 /-- The analogous coefficient-level transition criterion at the order-four fibre. -/
 public theorem orderFour_pointwise_transition_eq_iff
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (v w : ComplexTwoSpace)
     (q : TotalSpace (parameterMap F))
     (g : FamilyPeriodGroup (parameterMap F))
@@ -354,7 +354,7 @@ public theorem orderFour_pointwise_transition_eq_iff
 /-- The pointwise order-three charts already agree at every point of the central fibre where both
 are defined; the residual issue is agreement on an open neighbourhood. -/
 public theorem orderThree_pointwise_maps_agree_on_central_fiber
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (v w : ComplexTwoSpace)
     (q : TotalSpace (parameterMap F)) (hq : q ∈ familyFiber F U.zOne)
     (hqv : q ∈ (orderThreeFamilyLocalDiffeomorph F hprojection v).source)
@@ -374,7 +374,7 @@ public theorem orderThree_pointwise_maps_agree_on_central_fiber
 
 /-- The analogous central-fibre agreement for the order-four pointwise charts. -/
 public theorem orderFour_pointwise_maps_agree_on_central_fiber
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (v w : ComplexTwoSpace)
     (q : TotalSpace (parameterMap F)) (hq : q ∈ familyFiber F U.zTwo)
     (hqv : q ∈ (orderFourFamilyLocalDiffeomorph F hprojection v).source)
@@ -395,7 +395,7 @@ public theorem orderFour_pointwise_maps_agree_on_central_fiber
 /-- Under a constant local sheet transition, overlap agreement of the order-three pointwise maps
 is equivalent to local membership of its varying period vector in the fixed central lattice. -/
 public theorem orderThree_pointwise_eventuallyEq_iff_lattice
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (v w : ComplexTwoSpace)
     (q : TotalSpace (parameterMap F))
     (g : FamilyPeriodGroup (parameterMap F))
@@ -417,7 +417,7 @@ public theorem orderThree_pointwise_eventuallyEq_iff_lattice
 
 /-- The order-four overlap has the same exact fixed-lattice criterion. -/
 public theorem orderFour_pointwise_eventuallyEq_iff_lattice
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (v w : ComplexTwoSpace)
     (q : TotalSpace (parameterMap F))
     (g : FamilyPeriodGroup (parameterMap F))
@@ -440,7 +440,7 @@ public theorem orderFour_pointwise_eventuallyEq_iff_lattice
 /-- At every overlap of order-three local inverse charts, a constant transition coefficient exists,
 and fixed-torus chart agreement is precisely its local lattice-preservation condition. -/
 public theorem orderThree_overlap_agreement_exact_obstruction
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (v w : ComplexTwoSpace)
     (q : TotalSpace (parameterMap F))
     (hqv : q ∈ (orderThreeFamilyLocalDiffeomorph F hprojection v).source)
@@ -458,7 +458,7 @@ public theorem orderThree_overlap_agreement_exact_obstruction
 
 /-- The exact analogous obstruction on order-four chart overlaps. -/
 public theorem orderFour_overlap_agreement_exact_obstruction
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (v w : ComplexTwoSpace)
     (q : TotalSpace (parameterMap F))
     (hqv : q ∈ (orderFourFamilyLocalDiffeomorph F hprojection v).source)

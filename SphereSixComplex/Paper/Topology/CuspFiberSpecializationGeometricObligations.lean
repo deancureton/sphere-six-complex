@@ -24,7 +24,7 @@ open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
   {W : ActualPuncturedCuspCollarWitness N M}
 
@@ -46,10 +46,10 @@ public structure RemainingFiberSpecializationGeometry
 /-- The remaining three geometric facts imply the two basis-free specialization
 isomorphisms. -/
 public theorem fiberCoinvariantSpecializationIsomorphisms_of_remainingGeometry
-    (G : ActualCuspRadialClutchingData W) (b : puncturedLocalCuspQuotient W)
+    (G : ActualCuspRadialClutchingData W) (b : PuncturedLocalCuspQuotient W)
     (h : RemainingFiberSpecializationGeometry G)
-    (cOne : IntegralSingularHomology 1 (actualLocalCuspFilling W) ≃ₗ[ℤ] (Fin 2 → ℤ))
-    (cTwo : IntegralSingularHomology 2 (actualLocalCuspFilling W) ≃ₗ[ℤ] (Fin 4 → ℤ)) :
+    (cOne : IntegralSingularHomology 1 (ActualLocalCuspFilling W) ≃ₗ[ℤ] (Fin 2 → ℤ))
+    (cTwo : IntegralSingularHomology 2 (ActualLocalCuspFilling W) ≃ₗ[ℤ] (Fin 4 → ℤ)) :
     FiberCoinvariantSpecializationIsomorphisms G :=
   fiberCoinvariantSpecializationIsomorphisms_of_surjective_of_section_eq_zero G
     { degreeOne_surjective := rawDegreeOneTotalSpecialization_surjective G b

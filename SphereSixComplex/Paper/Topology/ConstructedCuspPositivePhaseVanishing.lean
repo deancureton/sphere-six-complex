@@ -11,7 +11,7 @@ open SphereSixComplex.Periods SphereSixComplex.Topology
 open CuspFilling CuspLocalPhaseAction CuspPuncturedCollarBridge CuspPeriodExpansion
 open InfiniteA2Toric InfiniteA2Toric
 open InfiniteA2Toric.Construction CircleProductIdentityMappingTorus
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public theorem constructedCuspPositiveProjection_central_action
@@ -30,7 +30,7 @@ public def constructedCentralPhaseSweepMap
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
     (k : C(UnitAddCircle, Fin 2 → Circle)) :
-    C(UnitAddCircle × ActualLocalCuspCentralOrbitQuotient W, actualLocalCuspFilling W) := by
+    C(UnitAddCircle × ActualLocalCuspCentralOrbitQuotient W, ActualLocalCuspFilling W) := by
   let F : C((Fin 2 → Circle) × ActualLocalCuspCentralOrbitQuotient W,
       ActualLocalCuspCentralOrbitQuotient W) :=
     ⟨fun p ↦ constructedA2CentralCompactOrbitMap W p.1 p.2,

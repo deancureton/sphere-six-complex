@@ -24,16 +24,16 @@ open InfiniteA2Toric
 
 /-- The action of compact phases on the positive part of a local toric carrier. -/
 public def compactPhaseOrbit (M : Model) (r : ℝ)
-    (positivePart : Set (LocalCarrier M r)) :
-    CompactTorus × positivePart → LocalCarrier M r :=
+    (positivePart : Set (localCarrier M r)) :
+    CompactTorus × positivePart → localCarrier M r :=
   fun z ↦ ⟨M.torusAction (compactTorusEmbedding z.1) (z.2 : M.Carrier), by
     change M.t (M.torusAction (compactTorusEmbedding z.1) (z.2 : M.Carrier)) ∈
       Metric.ball 0 r
     rw [Metric.mem_ball, dist_zero_right, M.t_torusAction, norm_mul]
-    change ‖(z.1 2 : ℂ)‖ * ‖M.t (z.2 : LocalCarrier M r)‖ < r
+    change ‖(z.1 2 : ℂ)‖ * ‖M.t (z.2 : localCarrier M r)‖ < r
     rw [Circle.norm_coe, one_mul]
     simpa only [dist_zero_right] using Metric.mem_ball.mp
-      (z.2 : LocalCarrier M r).property⟩
+      (z.2 : localCarrier M r).property⟩
 
 public theorem continuous_compactTorusEmbedding : Continuous compactTorusEmbedding := by
   apply continuous_pi
@@ -42,7 +42,7 @@ public theorem continuous_compactTorusEmbedding : Continuous compactTorusEmbeddi
   exact continuous_subtype_val.comp (continuous_apply i)
 
 public theorem continuous_compactPhaseOrbit (M : Model) (r : ℝ)
-    (positivePart : Set (LocalCarrier M r)) :
+    (positivePart : Set (localCarrier M r)) :
     Continuous (compactPhaseOrbit M r positivePart) := by
   let J := InfiniteA2Toric.establishedContinuousTorusAction M
   have hg : Continuous (fun z : CompactTorus × positivePart ↦ compactTorusEmbedding z.1) :=
@@ -56,7 +56,7 @@ public theorem continuous_compactPhaseOrbit (M : Model) (r : ℝ)
 /-- The exact orbit-stratum and deck-action compatibility still required from the standard
 toric cellular contraction. -/
 public structure FrozenLocalCuspPhaseSpreadingData
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) (r : ℝ)
     (P : PolarHoneycombData M r) where
   positiveRetraction :

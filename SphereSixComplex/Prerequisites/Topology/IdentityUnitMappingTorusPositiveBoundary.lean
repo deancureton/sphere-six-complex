@@ -578,7 +578,7 @@ private def cylinderSubdivisionHomotopy :
     (Path.Homotopy.refl cylinderHighPath)).trans
       (Path.Homotopy.subpathTransSubpath positiveCylinderLoop 0 uThreeQuarters 1)
 
-private def positiveCylinderSubdivisionChain : Chains PointMappingTorus 2 :=
+private def positiveCylinderSubdivisionChain : chains PointMappingTorus 2 :=
   -(concatChain cylinderHighPath cylinderWrappedLowPath) +
     concatChain cylinderLowPath cylinderEdgePath +
     concatChain (cylinderLowPath.trans cylinderEdgePath) cylinderHighPath +

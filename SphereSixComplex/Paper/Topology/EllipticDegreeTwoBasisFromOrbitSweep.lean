@@ -234,7 +234,7 @@ private theorem orderFour_cover_coordinateThree :
 
 private theorem orderThreeFixedSweep_positiveInvariant :
     orderThreeInvariantsEquivInt
-        (OrderThreePresentation.totalToInvariants
+        (orderThreePresentation.totalToInvariants
           orderThreeFixedLoopSweep) = 1 := by
   change orderThreeInvariantEquivInt
     ((invariantsEquivOfConjugacy
@@ -245,12 +245,12 @@ private theorem orderThreeFixedSweep_positiveInvariant :
         standardThreeTorusHomologyOne.toIntLinearEquiv
         orderThreeClutchingDegreeOneMatrix.mulVecLin
         orderThreeThreeTorusClutching_homologyOne))
-      (OrderThreePresentation.totalToInvariants
+      (orderThreePresentation.totalToInvariants
         orderThreeFixedLoopSweep)) = 1
   change standardThreeTorusHomologyOne
-    (OrderThreePresentation.boundary
+    (orderThreePresentation.boundary
       orderThreeFixedLoopSweep) 2 = 1
-  have hboundary : OrderThreePresentation.boundary
+  have hboundary : orderThreePresentation.boundary
       orderThreeFixedLoopSweep =
         standardThreeTorusCoordinateHomologyClass 2 := by
     change (circleMappingTorusWangPresentationOfCover
@@ -267,7 +267,7 @@ private theorem orderThreeFixedSweep_positiveInvariant :
 
 private theorem orderFourFixedSweep_positiveInvariant :
     orderFourInvariantsEquivInt
-        (OrderFourPresentation.totalToInvariants
+        (orderFourPresentation.totalToInvariants
           orderFourFixedLoopSweep) = 1 := by
   change orderFourInvariantEquivInt
     ((invariantsEquivOfConjugacy
@@ -278,12 +278,12 @@ private theorem orderFourFixedSweep_positiveInvariant :
         standardThreeTorusHomologyOne.toIntLinearEquiv
         orderFourClutchingDegreeOneMatrix.mulVecLin
         orderFourThreeTorusClutching_homologyOne))
-      (OrderFourPresentation.totalToInvariants
+      (orderFourPresentation.totalToInvariants
         orderFourFixedLoopSweep)) = 1
   change standardThreeTorusHomologyOne
-    (OrderFourPresentation.boundary
+    (orderFourPresentation.boundary
       orderFourFixedLoopSweep) 2 = 1
-  have hboundary : OrderFourPresentation.boundary
+  have hboundary : orderFourPresentation.boundary
       orderFourFixedLoopSweep =
         standardThreeTorusCoordinateHomologyClass 2 := by
     change (circleMappingTorusWangPresentationOfCover
@@ -300,20 +300,20 @@ private theorem orderFourFixedSweep_positiveInvariant :
 
 private theorem orderThreeSweepGenerator_positiveInvariant :
     orderThreeNegatedInvariantsEquivInt
-        (OrderThreePresentation.totalToInvariants orderThreeSweepGenerator) = 1 := by
+        (orderThreePresentation.totalToInvariants orderThreeSweepGenerator) = 1 := by
   rw [orderThreeNegatedInvariantsEquivInt_apply]
-  have hneg : OrderThreePresentation.totalToInvariants orderThreeSweepGenerator =
-      -(OrderThreePresentation.totalToInvariants
+  have hneg : orderThreePresentation.totalToInvariants orderThreeSweepGenerator =
+      -(orderThreePresentation.totalToInvariants
         orderThreeFixedLoopSweep) := by
-    change OrderThreePresentation.totalToInvariants
+    change orderThreePresentation.totalToInvariants
       (-orderThreeFixedLoopSweep) = _
-    exact map_neg OrderThreePresentation.totalToInvariants orderThreeFixedLoopSweep
+    exact map_neg orderThreePresentation.totalToInvariants orderThreeFixedLoopSweep
   rw [hneg, map_neg, orderThreeFixedSweep_positiveInvariant]
   norm_num
 
 private theorem orderFourSweepGenerator_positiveInvariant :
     orderFourInvariantsEquivInt
-        (OrderFourPresentation.totalToInvariants orderFourSweepGenerator) = 1 :=
+        (orderFourPresentation.totalToInvariants orderFourSweepGenerator) = 1 :=
   orderFourFixedSweep_positiveInvariant
 
 private noncomputable def orderThreeMappingTorusCoordinates :
@@ -328,13 +328,13 @@ private noncomputable def orderFourMappingTorusCoordinates :
   orderFourTotalAddEquiv orderFourSweepGenerator orderFourSweepGenerator_positiveInvariant
 
 private noncomputable def orderThreeTargetCoordinates :
-    IntegralSingularHomology 2 (OrderThreeReducedCentralFiber F) ≃+ (Fin 2 → ℤ) :=
+    IntegralSingularHomology 2 (orderThreeReducedCentralFiber F) ≃+ (Fin 2 → ℤ) :=
   (integralSingularHomologyEquiv 2
     (orderThreeReducedCentralFiberCircleMappingTorusHomeomorph F)).trans
       orderThreeMappingTorusCoordinates
 
 private noncomputable def orderFourTargetCoordinates :
-    IntegralSingularHomology 2 (OrderFourReducedCentralFiber F) ≃+ (Fin 2 → ℤ) :=
+    IntegralSingularHomology 2 (orderFourReducedCentralFiber F) ≃+ (Fin 2 → ℤ) :=
   (integralSingularHomologyEquiv 2
     (orderFourReducedCentralFiberCircleMappingTorusHomeomorph F)).trans
       orderFourMappingTorusCoordinates
@@ -417,9 +417,9 @@ private theorem orderFourTargetCoordinates_coordinateThree :
 theorem and the explicit three-torus clutching calculations. -/
 public theorem actualEllipticDegreeTwoHomologyBasisFiniteData :
     Nonempty (EllipticDegreeTwoHomologyBasisFiniteData F) := by
-  let e₃ : IntegralSingularHomology 2 (OrderThreeReducedCentralFiber F) ≃ₗ[ℤ]
+  let e₃ : IntegralSingularHomology 2 (orderThreeReducedCentralFiber F) ≃ₗ[ℤ]
       (Fin 2 → ℤ) := (orderThreeTargetCoordinates F).toIntLinearEquiv
-  let e₄ : IntegralSingularHomology 2 (OrderFourReducedCentralFiber F) ≃ₗ[ℤ]
+  let e₄ : IntegralSingularHomology 2 (orderFourReducedCentralFiber F) ≃ₗ[ℤ]
       (Fin 2 → ℤ) := (orderFourTargetCoordinates F).toIntLinearEquiv
   have he₃ : (e₃ : _ → _) = orderThreeTargetCoordinates F := by
     funext x
@@ -428,10 +428,10 @@ public theorem actualEllipticDegreeTwoHomologyBasisFiniteData :
     funext x
     rfl
   let b₃ : Module.Basis (Fin 2) ℤ
-      (IntegralSingularHomology 2 (OrderThreeReducedCentralFiber F)) :=
+      (IntegralSingularHomology 2 (orderThreeReducedCentralFiber F)) :=
     Module.Basis.ofEquivFun e₃
   let b₄ : Module.Basis (Fin 2) ℤ
-      (IntegralSingularHomology 2 (OrderFourReducedCentralFiber F)) :=
+      (IntegralSingularHomology 2 (orderFourReducedCentralFiber F)) :=
     Module.Basis.ofEquivFun e₄
   refine ⟨{
     orderThreeBasis := b₃

@@ -13,7 +13,7 @@ open InfiniteA2Toric
 open CircleMappingTorusHomologyBases
 
 theorem cuspFiberSpecializationTwoBijective_of_columns (A : PaperAnalyticData)
-    (e : IntegralSingularHomology 2 (actualLocalCuspFilling A.starCuspWitness) ≃+ (Fin 4 → ℤ))
+    (e : IntegralSingularHomology 2 (ActualLocalCuspFilling A.starCuspWitness) ≃+ (Fin 4 → ℤ))
     (a b c : ℤˣ)
     (hc : ∀ j : Fin 3, e (A.cuspFiberSpecializationColumn j.succ) =
       signedMixedThreeColumnEquiv a b c (Pi.single j.succ 1)) :

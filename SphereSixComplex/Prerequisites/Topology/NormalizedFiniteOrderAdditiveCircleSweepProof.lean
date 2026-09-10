@@ -379,7 +379,7 @@ public theorem standardCircleHomologyClass_orbitNorm
 
 private theorem fixedLoop_apply
     {G : Type} [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
-    (phi : G ≃ₜ+ G) (c : FixedLoop phi) (x : StdTorus 1) :
+    (phi : G ≃ₜ+ G) (c : fixedLoops phi) (x : StdTorus 1) :
     phi (c.1 x) = c.1 x := by
   have h := LinearMap.mem_ker.mp c.2
   have hx := DFunLike.congr_fun h x
@@ -388,7 +388,7 @@ private theorem fixedLoop_apply
 
 private theorem fixedLoop_zpow_apply
     {G : Type} [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
-    (phi : G ≃ₜ+ G) (c : FixedLoop phi) (k : ℤ) (x : StdTorus 1) :
+    (phi : G ≃ₜ+ G) (c : fixedLoops phi) (k : ℤ) (x : StdTorus 1) :
     (phi.toHomeomorph ^ k) (c.1 x) = c.1 x := by
   refine Int.induction_on (motive := fun n ↦
     (phi.toHomeomorph ^ n) (c.1 x) = c.1 x) k ?_ ?_ ?_
@@ -407,7 +407,7 @@ private theorem fixedLoop_zpow_apply
 
 public def fixedLoopRealPreMap
     {G : Type} [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
-    (phi : G ≃ₜ+ G) (c : FixedLoop phi) : C(ℝ × StdTorus 1, ℝ × G) where
+    (phi : G ≃ₜ+ G) (c : fixedLoops phi) : C(ℝ × StdTorus 1, ℝ × G) where
   toFun p := (p.1, c.1 p.2)
   continuous_toFun := continuous_fst.prodMk (c.1.continuous.comp continuous_snd)
 
@@ -415,7 +415,7 @@ public def fixedLoopRealPreMap
 mapping torus of the clutching map. -/
 public noncomputable def fixedLoopRealMappingTorusMap
     {G : Type} [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
-    (phi : G ≃ₜ+ G) (c : FixedLoop phi) :
+    (phi : G ≃ₜ+ G) (c : fixedLoops phi) :
     C(RealMappingTorus (Homeomorph.refl (StdTorus 1)),
       RealMappingTorus phi.toHomeomorph) where
   toFun := Quotient.map (fixedLoopRealPreMap phi c) fun p q hpq ↦ by
@@ -437,7 +437,7 @@ public noncomputable def fixedLoopRealMappingTorusMap
 @[simp]
 public theorem fixedLoopRealMappingTorusMap_mk
     {G : Type} [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
-    (phi : G ≃ₜ+ G) (c : FixedLoop phi) (t : ℝ) (x : StdTorus 1) :
+    (phi : G ≃ₜ+ G) (c : fixedLoops phi) (t : ℝ) (x : StdTorus 1) :
     fixedLoopRealMappingTorusMap phi c
         (Quotient.mk (realMappingTorusSetoid (Homeomorph.refl (StdTorus 1))) (t, x)) =
       Quotient.mk (realMappingTorusSetoid phi.toHomeomorph) (t, c.1 x) := by
@@ -446,7 +446,7 @@ public theorem fixedLoopRealMappingTorusMap_mk
 /-- The torus carried by a pointwise fixed parametrized loop in the mapping torus. -/
 public noncomputable def fixedLoopMappingTorusMap
     {G : Type} [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
-    (phi : G ≃ₜ+ G) (c : FixedLoop phi) :
+    (phi : G ≃ₜ+ G) (c : fixedLoops phi) :
     C(UnitAddCircle × StdTorus 1, CircleMappingTorus phi.toHomeomorph) :=
   (realMappingTorusHomeomorph phi.toHomeomorph :
       C(RealMappingTorus phi.toHomeomorph, CircleMappingTorus phi.toHomeomorph)).comp
@@ -458,7 +458,7 @@ public noncomputable def fixedLoopMappingTorusMap
 /-- The geometric degree-two class swept out by a pointwise fixed parametrized loop. -/
 public noncomputable def fixedLoopSweepClass
     {G : Type} [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
-    (phi : G ≃ₜ+ G) (c : FixedLoop phi) :
+    (phi : G ≃ₜ+ G) (c : fixedLoops phi) :
     IntegralSingularHomology 2 (CircleMappingTorus phi.toHomeomorph) :=
   integralSingularHomologyMap 2 (fixedLoopMappingTorusMap phi c)
     positiveCircleProductGenerator

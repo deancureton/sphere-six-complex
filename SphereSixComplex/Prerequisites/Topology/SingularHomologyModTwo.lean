@@ -130,7 +130,7 @@ public instance (X : TopCat) :
   infer_instance
 
 /-- Singular chains with mod-two coefficients. -/
-public noncomputable abbrev ModTwoSingularChainComplexObj (X : TopCat) :
+public noncomputable abbrev modTwoSingularChainComplexObj (X : TopCat) :
     ChainComplex AddCommGrpCat ℕ :=
   (singularChainComplexCoefficientFunctor X).obj (AddCommGrpCat.of (ZMod 2))
 
@@ -160,9 +160,9 @@ then forces vanishing with mod-two coefficients in degree three. -/
 public theorem modTwoSingularHomologyThree_isZero_of_chainShortExact
     (X : TopCat)
     (hS : (integralModTwoSingularChainShortComplex X).ShortExact)
-    (h₃ : IsZero ((IntegralSingularChainComplexObj X).homology 3))
-    (h₂ : IsZero ((IntegralSingularChainComplexObj X).homology 2)) :
-    IsZero ((ModTwoSingularChainComplexObj X).homology 3) := by
+    (h₃ : IsZero ((integralSingularChainComplexObj X).homology 3))
+    (h₂ : IsZero ((integralSingularChainComplexObj X).homology 2)) :
+    IsZero ((modTwoSingularChainComplexObj X).homology 3) := by
   have hexact := hS.homology_exact₃ 3 2
     (ComplexShape.down_mk 3 2 (by omega))
   have h₃' : IsZero ((integralModTwoSingularChainShortComplex X).X₂.homology 3) := by
@@ -179,9 +179,9 @@ public theorem modTwoSingularHomologyThree_isZero_of_chainShortExact
 vanish in degree three. -/
 public theorem modTwoSingularHomologyThree_isZero
     (X : TopCat)
-    (h₃ : IsZero ((IntegralSingularChainComplexObj X).homology 3))
-    (h₂ : IsZero ((IntegralSingularChainComplexObj X).homology 2)) :
-    IsZero ((ModTwoSingularChainComplexObj X).homology 3) :=
+    (h₃ : IsZero ((integralSingularChainComplexObj X).homology 3))
+    (h₂ : IsZero ((integralSingularChainComplexObj X).homology 2)) :
+    IsZero ((modTwoSingularChainComplexObj X).homology 3) :=
   modTwoSingularHomologyThree_isZero_of_chainShortExact X
     (integralModTwoSingularChainShortComplex_shortExact X) h₃ h₂
 

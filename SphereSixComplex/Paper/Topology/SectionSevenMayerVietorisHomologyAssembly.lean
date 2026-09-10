@@ -193,7 +193,7 @@ variable (A : OpenEmbeddingStarData)
 public abbrev SectionSevenMayerVietorisSpace :=
   GluedSpace A.toFourPieceStarGluingData.glueData
 
-public abbrev SectionSevenMayerVietorisCover :=
+public abbrev sectionSevenMayerVietorisCover :=
   sectionSevenMayerVietorisOpenCover A
 
 /-- Homology-level identifications for the final cusp attachment in the source-stated
@@ -205,7 +205,7 @@ public structure SectionSevenMayerVietorisHomologyAssembly where
   pieceModel : Fin 4 → ℕ → AddCommGrpCat
   /-- The chosen homology basis for every actual open piece. -/
   pieceEquiv : ∀ i k,
-    IntegralSingularHomology k ((SectionSevenMayerVietorisCover A).piece i) ≃+
+    IntegralSingularHomology k ((sectionSevenMayerVietorisCover A).piece i) ≃+
       pieceModel i k
   /-- Degreewise models for the three actual collar sources. -/
   collarModel : Fin 3 → ℕ → AddCommGrpCat
@@ -216,60 +216,60 @@ public structure SectionSevenMayerVietorisHomologyAssembly where
   /-- The chosen homology basis for every proper prefix stage. -/
   stageEquiv : ∀ r k,
     IntegralSingularHomology k
-      ((SectionSevenMayerVietorisCover A).stage r.castSucc) ≃+ stageModel r k
+      ((sectionSevenMayerVietorisCover A).stage r.castSucc) ≃+ stageModel r k
   /-- The degree-zero basis on the final overlap. -/
   finalZeroSource :
     IntegralSingularHomology 0
-      ((SectionSevenMayerVietorisCover A).stage (2 : Fin 4) ∩
-        (SectionSevenMayerVietorisCover A).piece 3 :
+      ((sectionSevenMayerVietorisCover A).stage (2 : Fin 4) ∩
+        (sectionSevenMayerVietorisCover A).piece 3 :
           Set (SectionSevenMayerVietorisSpace A)) ≃+ (Fin 1 → ℤ)
   /-- The degree-zero basis on the two final sides. -/
   finalZeroTarget :
     (IntegralSingularHomology 0
-        ((SectionSevenMayerVietorisCover A).stage (2 : Fin 4)) ×
+        ((sectionSevenMayerVietorisCover A).stage (2 : Fin 4)) ×
       IntegralSingularHomology 0
-        ((SectionSevenMayerVietorisCover A).piece 3)) ≃+ (Fin 2 → ℤ)
+        ((sectionSevenMayerVietorisCover A).piece 3)) ≃+ (Fin 2 → ℤ)
   /-- The actual final degree-zero map is the connected difference map. -/
   finalZero_comm : ∀ x,
     finalZeroTarget (IntegralMayerVietoris.differenceMap
-      ((SectionSevenMayerVietorisCover A).stage (2 : Fin 4))
-        ((SectionSevenMayerVietorisCover A).piece 3) 0 x) =
+      ((sectionSevenMayerVietorisCover A).stage (2 : Fin 4))
+        ((sectionSevenMayerVietorisCover A).piece 3) 0 x) =
       sectionSevenMayerVietorisFinalZeroHom (finalZeroSource x)
   /-- The degree-one basis on the final overlap. -/
   finalOneSource :
     IntegralSingularHomology 1
-      ((SectionSevenMayerVietorisCover A).stage (2 : Fin 4) ∩
-        (SectionSevenMayerVietorisCover A).piece 3 :
+      ((sectionSevenMayerVietorisCover A).stage (2 : Fin 4) ∩
+        (sectionSevenMayerVietorisCover A).piece 3 :
           Set (SectionSevenMayerVietorisSpace A)) ≃+ (Fin 3 → ℤ)
   /-- The degree-one basis on the two final sides. -/
   finalOneTarget :
     (IntegralSingularHomology 1
-        ((SectionSevenMayerVietorisCover A).stage (2 : Fin 4)) ×
+        ((sectionSevenMayerVietorisCover A).stage (2 : Fin 4)) ×
       IntegralSingularHomology 1
-        ((SectionSevenMayerVietorisCover A).piece 3)) ≃+ (Fin 3 → ℤ)
+        ((sectionSevenMayerVietorisCover A).piece 3)) ≃+ (Fin 3 → ℤ)
   /-- The actual final degree-one map is the verified unit presentation. -/
   finalOne_comm : ∀ x,
     finalOneTarget (IntegralMayerVietoris.differenceMap
-      ((SectionSevenMayerVietorisCover A).stage (2 : Fin 4))
-        ((SectionSevenMayerVietorisCover A).piece 3) 1 x) =
+      ((sectionSevenMayerVietorisCover A).stage (2 : Fin 4))
+        ((sectionSevenMayerVietorisCover A).piece 3) 1 x) =
       sectionSevenFirstBoundaryHom (finalOneSource x)
   /-- The degree-two basis on the final overlap. -/
   finalTwoSource :
     IntegralSingularHomology 2
-      ((SectionSevenMayerVietorisCover A).stage (2 : Fin 4) ∩
-        (SectionSevenMayerVietorisCover A).piece 3 :
+      ((sectionSevenMayerVietorisCover A).stage (2 : Fin 4) ∩
+        (sectionSevenMayerVietorisCover A).piece 3 :
           Set (SectionSevenMayerVietorisSpace A)) ≃+ (Fin 6 → ℤ)
   /-- The degree-two basis on the two final sides. -/
   finalTwoTarget :
     (IntegralSingularHomology 2
-        ((SectionSevenMayerVietorisCover A).stage (2 : Fin 4)) ×
+        ((sectionSevenMayerVietorisCover A).stage (2 : Fin 4)) ×
       IntegralSingularHomology 2
-        ((SectionSevenMayerVietorisCover A).piece 3)) ≃+ (Fin 6 → ℤ)
+        ((sectionSevenMayerVietorisCover A).piece 3)) ≃+ (Fin 6 → ℤ)
   /-- The actual final degree-two map is the normalized source-stated attachment map. -/
   finalTwo_comm : ∀ x,
     finalTwoTarget (IntegralMayerVietoris.differenceMap
-      ((SectionSevenMayerVietorisCover A).stage (2 : Fin 4))
-        ((SectionSevenMayerVietorisCover A).piece 3) 2 x) =
+      ((sectionSevenMayerVietorisCover A).stage (2 : Fin 4))
+        ((sectionSevenMayerVietorisCover A).piece 3) 2 x) =
       sectionSevenMayerVietorisFinalTwoHom (finalTwoSource x)
 
 namespace SectionSevenMayerVietorisHomologyAssembly
@@ -302,16 +302,16 @@ private theorem surjective_of_equiv_comm
 public theorem finalDifferenceZero_injective
     (H : A.SectionSevenMayerVietorisHomologyAssembly) :
     Function.Injective (IntegralMayerVietoris.differenceMap
-      ((SectionSevenMayerVietorisCover A).stage (2 : Fin 4))
-        ((SectionSevenMayerVietorisCover A).piece 3) 0) :=
+      ((sectionSevenMayerVietorisCover A).stage (2 : Fin 4))
+        ((sectionSevenMayerVietorisCover A).piece 3) 0) :=
   injective_of_equiv_comm H.finalZeroSource H.finalZeroTarget _ _ H.finalZero_comm
     sectionSevenMayerVietorisFinalZeroHom_injective
 
 public theorem finalDifferenceOne_bijective
     (H : A.SectionSevenMayerVietorisHomologyAssembly) :
     Function.Bijective (IntegralMayerVietoris.differenceMap
-      ((SectionSevenMayerVietorisCover A).stage (2 : Fin 4))
-        ((SectionSevenMayerVietorisCover A).piece 3) 1) :=
+      ((sectionSevenMayerVietorisCover A).stage (2 : Fin 4))
+        ((sectionSevenMayerVietorisCover A).piece 3) 1) :=
   ⟨injective_of_equiv_comm H.finalOneSource H.finalOneTarget _ _ H.finalOne_comm
       sectionSevenFirstBoundary_bijective.injective,
     surjective_of_equiv_comm H.finalOneSource H.finalOneTarget _ _ H.finalOne_comm
@@ -320,8 +320,8 @@ public theorem finalDifferenceOne_bijective
 public theorem finalDifferenceTwo_bijective
     (H : A.SectionSevenMayerVietorisHomologyAssembly) :
     Function.Bijective (IntegralMayerVietoris.differenceMap
-      ((SectionSevenMayerVietorisCover A).stage (2 : Fin 4))
-        ((SectionSevenMayerVietorisCover A).piece 3) 2) :=
+      ((sectionSevenMayerVietorisCover A).stage (2 : Fin 4))
+        ((sectionSevenMayerVietorisCover A).piece 3) 2) :=
   ⟨injective_of_equiv_comm H.finalTwoSource H.finalTwoTarget _ _ H.finalTwo_comm
       sectionSevenMayerVietorisFinalTwoHom_bijective.injective,
     surjective_of_equiv_comm H.finalTwoSource H.finalTwoTarget _ _ H.finalTwo_comm
@@ -357,35 +357,35 @@ private theorem unionHomology_subsingleton_of_exact
 public theorem finalUnionHomologyOne_subsingleton
     (H : A.SectionSevenMayerVietorisHomologyAssembly) :
     Subsingleton (IntegralSingularHomology 1
-      ((SectionSevenMayerVietorisCover A).stage (2 : Fin 4) ∪
-        (SectionSevenMayerVietorisCover A).piece 3 :
+      ((sectionSevenMayerVietorisCover A).stage (2 : Fin 4) ∪
+        (sectionSevenMayerVietorisCover A).piece 3 :
           Set (SectionSevenMayerVietorisSpace A))) :=
   unionHomology_subsingleton_of_exact _ _
-    (establishedFourPieceMayerVietorisExactness (SectionSevenMayerVietorisCover A) 2) 0
+    (establishedFourPieceMayerVietorisExactness (sectionSevenMayerVietorisCover A) 2) 0
     H.finalDifferenceOne_bijective.surjective H.finalDifferenceZero_injective
 
 public theorem finalUnionHomologyTwo_subsingleton
     (H : A.SectionSevenMayerVietorisHomologyAssembly) :
     Subsingleton (IntegralSingularHomology 2
-      ((SectionSevenMayerVietorisCover A).stage (2 : Fin 4) ∪
-        (SectionSevenMayerVietorisCover A).piece 3 :
+      ((sectionSevenMayerVietorisCover A).stage (2 : Fin 4) ∪
+        (sectionSevenMayerVietorisCover A).piece 3 :
           Set (SectionSevenMayerVietorisSpace A))) :=
   unionHomology_subsingleton_of_exact _ _
-    (establishedFourPieceMayerVietorisExactness (SectionSevenMayerVietorisCover A) 2) 1
+    (establishedFourPieceMayerVietorisExactness (sectionSevenMayerVietorisCover A) 2) 1
     H.finalDifferenceTwo_bijective.surjective H.finalDifferenceOne_bijective.injective
 
 public theorem final_union_eq_univ :
-    (SectionSevenMayerVietorisCover A).stage (2 : Fin 4) ∪
-      (SectionSevenMayerVietorisCover A).piece 3 = Set.univ := by
+    (sectionSevenMayerVietorisCover A).stage (2 : Fin 4) ∪
+      (sectionSevenMayerVietorisCover A).piece 3 = Set.univ := by
   calc
-    _ = (SectionSevenMayerVietorisCover A).stage (2 : Fin 3).succ := by
+    _ = (sectionSevenMayerVietorisCover A).stage (2 : Fin 3).succ := by
       simpa using
-        (SectionSevenMayerVietorisCover A).stage_union_next (2 : Fin 3)
-    _ = Set.univ := (SectionSevenMayerVietorisCover A).stage_last
+        (sectionSevenMayerVietorisCover A).stage_union_next (2 : Fin 3)
+    _ = Set.univ := (sectionSevenMayerVietorisCover A).stage_last
 
 public noncomputable def finalUnionHomeomorph :
-    ((SectionSevenMayerVietorisCover A).stage (2 : Fin 4) ∪
-      (SectionSevenMayerVietorisCover A).piece 3 :
+    ((sectionSevenMayerVietorisCover A).stage (2 : Fin 4) ∪
+      (sectionSevenMayerVietorisCover A).piece 3 :
         Set (SectionSevenMayerVietorisSpace A)) ≃ₜ SectionSevenMayerVietorisSpace A :=
   topologicalSubsetHomeomorphOfEqUniv _ _ final_union_eq_univ
 
@@ -393,14 +393,14 @@ public noncomputable def finalUnionHomeomorph :
 difference maps; no coordinate matrix is part of this endpoint. -/
 public theorem homologyOne_subsingleton_of_finalDifferences
     (hZero : Function.Injective (IntegralMayerVietoris.differenceMap
-      ((SectionSevenMayerVietorisCover A).stage (2 : Fin 4))
-        ((SectionSevenMayerVietorisCover A).piece 3) 0))
+      ((sectionSevenMayerVietorisCover A).stage (2 : Fin 4))
+        ((sectionSevenMayerVietorisCover A).piece 3) 0))
     (hOne : Function.Surjective (IntegralMayerVietoris.differenceMap
-      ((SectionSevenMayerVietorisCover A).stage (2 : Fin 4))
-        ((SectionSevenMayerVietorisCover A).piece 3) 1)) :
+      ((sectionSevenMayerVietorisCover A).stage (2 : Fin 4))
+        ((sectionSevenMayerVietorisCover A).piece 3) 1)) :
     Subsingleton (IntegralSingularHomology 1 (SectionSevenMayerVietorisSpace A)) := by
   have hUnion := unionHomology_subsingleton_of_exact _ _
-    (establishedFourPieceMayerVietorisExactness (SectionSevenMayerVietorisCover A) 2) 0
+    (establishedFourPieceMayerVietorisExactness (sectionSevenMayerVietorisCover A) 2) 0
     hOne hZero
   let e := integralSingularHomologyEquiv 1 (finalUnionHomeomorph (A := A))
   exact ⟨fun x y ↦ e.symm.injective (hUnion.elim _ _)⟩
@@ -409,14 +409,14 @@ public theorem homologyOne_subsingleton_of_finalDifferences
 degree-one difference map are sufficient. -/
 public theorem homologyTwo_subsingleton_of_finalDifferences
     (hOne : Function.Injective (IntegralMayerVietoris.differenceMap
-      ((SectionSevenMayerVietorisCover A).stage (2 : Fin 4))
-        ((SectionSevenMayerVietorisCover A).piece 3) 1))
+      ((sectionSevenMayerVietorisCover A).stage (2 : Fin 4))
+        ((sectionSevenMayerVietorisCover A).piece 3) 1))
     (hTwo : Function.Surjective (IntegralMayerVietoris.differenceMap
-      ((SectionSevenMayerVietorisCover A).stage (2 : Fin 4))
-        ((SectionSevenMayerVietorisCover A).piece 3) 2)) :
+      ((sectionSevenMayerVietorisCover A).stage (2 : Fin 4))
+        ((sectionSevenMayerVietorisCover A).piece 3) 2)) :
     Subsingleton (IntegralSingularHomology 2 (SectionSevenMayerVietorisSpace A)) := by
   have hUnion := unionHomology_subsingleton_of_exact _ _
-    (establishedFourPieceMayerVietorisExactness (SectionSevenMayerVietorisCover A) 2) 1
+    (establishedFourPieceMayerVietorisExactness (sectionSevenMayerVietorisCover A) 2) 1
     hTwo hOne
   let e := integralSingularHomologyEquiv 2 (finalUnionHomeomorph (A := A))
   exact ⟨fun x y ↦ e.symm.injective (hUnion.elim _ _)⟩

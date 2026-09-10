@@ -156,7 +156,7 @@ public theorem orderFourAngularQuotientHomeomorph_apply
       A.starSeparation.orderFour.radius A.starSeparation.orderFour.radius_pos
       A.starSeparation.orderFour.radius_lt_one
     let w : OpenRadialInterval A.starSeparation.orderFour.radius ×
-        (ℝ × A.orderFourTorus) := (q.1, q.2.1, Quotient.mk _ q.2.2)
+        (ℝ × A.OrderFourTorus) := (q.1, q.2.1, Quotient.mk _ q.2.2)
     EstablishedCyclicAngularFundamentalDomain.quotientHomeomorphRadialMappingTorus D
         CyclicAngularFundamentalDomain.orderFourMultiplier_eq_standardMultiplier
         (angularQuotientMap D.action D.radius_lt_one.le D.carrier rfl w) =
@@ -166,7 +166,7 @@ public theorem orderFourAngularQuotientHomeomorph_apply
     A.starSeparation.orderFour.radius A.starSeparation.orderFour.radius_pos
     A.starSeparation.orderFour.radius_lt_one
   let w : OpenRadialInterval A.starSeparation.orderFour.radius ×
-      (ℝ × A.orderFourTorus) := (q.1, q.2.1, Quotient.mk _ q.2.2)
+      (ℝ × A.OrderFourTorus) := (q.1, q.2.1, Quotient.mk _ q.2.2)
   let hgen := CyclicAngularFundamentalDomain.isStandardGenerator_of_multiplier_eq
     D.action D.clutching D.multiplier D.multiplier_norm
       CyclicAngularFundamentalDomain.orderFourMultiplier_eq_standardMultiplier
@@ -211,7 +211,7 @@ public theorem ellipticFourRadialFillingLift_commutes
         (A.ellipticFourRadialFillingLift q))
   rw [A.orderFourCollarToActualOverlap_toPiece x]
   apply congrArg A.orderFourFillingToActualPieceHomeomorph
-  let xq : A.starCollarSourceType 2 :=
+  let xq : A.StarCollarSource 2 :=
     A.orderFourCollarRadialMappingTorusHomeomorph.symm
       (q.1, orderFourAffineMappingTorusLiftProjection A.periods q.2)
   change A.starToFilling 2 xq =
@@ -228,7 +228,7 @@ public theorem ellipticFourRadialFillingLift_commutes
   let hang := EstablishedCyclicAngularFundamentalDomain.quotientHomeomorphRadialMappingTorus D
     CyclicAngularFundamentalDomain.orderFourMultiplier_eq_standardMultiplier
   let w : OpenRadialInterval A.starSeparation.orderFour.radius ×
-      (ℝ × A.orderFourTorus) := (q.1, q.2.1, Quotient.mk _ q.2.2)
+      (ℝ × A.OrderFourTorus) := (q.1, q.2.1, Quotient.mk _ q.2.2)
   have hxprod : hprod xq =
       angularQuotientMap D.action D.radius_lt_one.le D.carrier rfl w := by
     apply hang.injective
@@ -245,8 +245,8 @@ public theorem ellipticFourRadialFillingLift_commutes
   rw [hxx]
   let y : D.carrier.carrier :=
     (Homeomorph.setCongr (show D.carrier.carrier =
-      puncturedProduct A.orderFourTorus A.starSeparation.orderFour.radius from rfl)).symm
-      (angularCover (T := A.orderFourTorus) 4 D.radius_lt_one.le w)
+      puncturedProduct A.OrderFourTorus A.starSeparation.orderFour.radius from rfl)).symm
+      (angularCover (T := A.OrderFourTorus) 4 D.radius_lt_one.le w)
   let s := e.toHomeomorph.symm y
   have hinv : hprod.symm
       (angularQuotientMap D.action D.radius_lt_one.le D.carrier rfl w) =

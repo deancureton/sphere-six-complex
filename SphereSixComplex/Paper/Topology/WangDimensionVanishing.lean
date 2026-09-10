@@ -49,7 +49,7 @@ labelling stops at degree four, so the fibre contributes nothing in degrees five
 public theorem subsingleton_homology_six_finiteBouquetMappingTorus_of_labelledA2Cells
     [DiscreteTopology ι] [T2Space F]
     [Topology.CWComplex (Set.univ : Set F)]
-    (e : ∀ n, Topology.CWComplex.cell (Set.univ : Set F) n ≃ cuspWCellIndex n)
+    (e : ∀ n, Topology.CWComplex.cell (Set.univ : Set F) n ≃ CuspWCellIndex n)
     (φ : ι → F ≃ₜ F) :
     Subsingleton (IntegralSingularHomology 6 (FiniteBouquetMappingTorus φ)) :=
   subsingleton_homology_succ_finiteBouquetMappingTorus φ 5

@@ -30,14 +30,14 @@ end SphereSixComplex.StandardTorusHomology
 
 namespace SphereSixComplex.StandardCircleHomologyLiftDegree
 
-abbrev Simplex (n : ℕ) := stdSimplex ℝ (Fin (n + 1))
+abbrev simplex (n : ℕ) := stdSimplex ℝ (Fin (n + 1))
 
-def simplexFace (n : ℕ) (i : Fin (n + 2)) : C(Simplex n, Simplex (n + 1)) :=
+def simplexFace (n : ℕ) (i : Fin (n + 2)) : C(simplex n, simplex (n + 1)) :=
   ⟨stdSimplex.map (SimplexCategory.δ i).toOrderHom,
     stdSimplex.continuous_map (SimplexCategory.δ i).toOrderHom⟩
 
 @[simp]
-theorem simplexFace_apply_self (n : ℕ) (i : Fin (n + 2)) (s : Simplex n) :
+theorem simplexFace_apply_self (n : ℕ) (i : Fin (n + 2)) (s : simplex n) :
     simplexFace n i s i = 0 := by
   change FunOnFinite.linearMap ℝ ℝ i.succAbove (s : Fin (n + 1) → ℝ) i = 0
   rw [FunOnFinite.linearMap_apply_apply]
@@ -46,7 +46,7 @@ theorem simplexFace_apply_self (n : ℕ) (i : Fin (n + 2)) (s : Simplex n) :
   exact False.elim (Fin.succAbove_ne i k (Finset.mem_filter.mp hk).2)
 
 @[simp]
-theorem simplexFace_apply_succAbove (n : ℕ) (i : Fin (n + 2)) (s : Simplex n)
+theorem simplexFace_apply_succAbove (n : ℕ) (i : Fin (n + 2)) (s : simplex n)
     (k : Fin (n + 1)) : simplexFace n i s (i.succAbove k) = s k := by
   change FunOnFinite.linearMap ℝ ℝ i.succAbove (s : Fin (n + 1) → ℝ)
       (i.succAbove k) = s k
@@ -59,7 +59,7 @@ theorem simplexFace_vertex (n : ℕ) (i : Fin (n + 2)) (k : Fin (n + 1)) :
   change stdSimplex.map i.succAbove (stdSimplex.vertex (S := ℝ) k) = _
   rw [stdSimplex.map_vertex]
 
-theorem simplexZero_eq_vertex (s : Simplex 0) :
+theorem simplexZero_eq_vertex (s : simplex 0) :
     s = stdSimplex.vertex (S := ℝ) (0 : Fin 1) := by
   let _ : Unique (Fin (0 + 1)) := inferInstanceAs (Unique (Fin 1))
   apply Subtype.ext
@@ -68,18 +68,18 @@ theorem simplexZero_eq_vertex (s : Simplex 0) :
   exact stdSimplex.eq_one_of_unique s 0
 
 @[simp]
-theorem simplexFace_zero_zero (s : Simplex 0) :
+theorem simplexFace_zero_zero (s : simplex 0) :
     simplexFace 0 0 s = stdSimplex.vertex (S := ℝ) (1 : Fin 2) := by
   rw [simplexZero_eq_vertex s, simplexFace_vertex]
   rfl
 
 @[simp]
-theorem simplexFace_zero_one (s : Simplex 0) :
+theorem simplexFace_zero_one (s : simplex 0) :
     simplexFace 0 1 s = stdSimplex.vertex (S := ℝ) (0 : Fin 2) := by
   rw [simplexZero_eq_vertex s, simplexFace_vertex]
   rfl
 
-def simplexPath {X : Type*} [TopologicalSpace X] (σ : C(Simplex 1, X)) :
+def simplexPath {X : Type*} [TopologicalSpace X] (σ : C(simplex 1, X)) :
     Path (σ (stdSimplex.vertex (S := ℝ) (0 : Fin 2)))
       (σ (stdSimplex.vertex (S := ℝ) (1 : Fin 2))) where
   toFun t := σ (stdSimplexHomeomorphUnitInterval.symm t)
@@ -92,7 +92,7 @@ def simplexPath {X : Type*} [TopologicalSpace X] (σ : C(Simplex 1, X)) :
       stdSimplexHomeomorphUnitInterval_one.symm)
 
 def pathSimplex {X : Type*} [TopologicalSpace X] {x y : X} (p : Path x y) :
-    C(Simplex 1, X) :=
+    C(simplex 1, X) :=
   p.toContinuousMap.comp
     ⟨stdSimplexHomeomorphUnitInterval, stdSimplexHomeomorphUnitInterval.continuous⟩
 
@@ -111,7 +111,7 @@ theorem pathSimplex_vertex_one {X : Type*} [TopologicalSpace X] {x y : X}
 @[simp]
 theorem pathSimplex_face_zero {X : Type*} [TopologicalSpace X] {x y : X}
     (p : Path x y) :
-    (pathSimplex p).comp (simplexFace 0 0) = ContinuousMap.const (Simplex 0) y := by
+    (pathSimplex p).comp (simplexFace 0 0) = ContinuousMap.const (simplex 0) y := by
   apply ContinuousMap.ext
   intro s
   simp
@@ -119,14 +119,14 @@ theorem pathSimplex_face_zero {X : Type*} [TopologicalSpace X] {x y : X}
 @[simp]
 theorem pathSimplex_face_one {X : Type*} [TopologicalSpace X] {x y : X}
     (p : Path x y) :
-    (pathSimplex p).comp (simplexFace 0 1) = ContinuousMap.const (Simplex 0) x := by
+    (pathSimplex p).comp (simplexFace 0 1) = ContinuousMap.const (simplex 0) x := by
   apply ContinuousMap.ext
   intro s
   simp
 
 @[simp]
 theorem pathSimplex_simplexPath {X : Type*} [TopologicalSpace X]
-    (σ : C(Simplex 1, X)) : pathSimplex (simplexPath σ) = σ := by
+    (σ : C(simplex 1, X)) : pathSimplex (simplexPath σ) = σ := by
   apply ContinuousMap.ext
   intro s
   change σ (stdSimplexHomeomorphUnitInterval.symm
@@ -142,27 +142,27 @@ theorem simplexPath_pathSimplex {X : Type*} [TopologicalSpace X] {x y : X}
     (stdSimplexHomeomorphUnitInterval.symm t)) = p t
   rw [Homeomorph.apply_symm_apply]
 
-abbrev IntegralChains (X : Type) [TopologicalSpace X] : ChainComplex AddCommGrpCat ℕ :=
+abbrev integralChains (X : Type) [TopologicalSpace X] : ChainComplex AddCommGrpCat ℕ :=
   (TopCat.toSSet.obj (TopCat.of X)).chainComplex (AddCommGrpCat.of ℤ)
 
-abbrev Chains (X : Type) [TopologicalSpace X] (n : ℕ) := (IntegralChains X).X n
+abbrev chains (X : Type) [TopologicalSpace X] (n : ℕ) := (integralChains X).X n
 
-abbrev SingularSimplex (X : Type) [TopologicalSpace X] (n : ℕ) := C(Simplex n, X)
+abbrev SingularSimplex (X : Type) [TopologicalSpace X] (n : ℕ) := C(simplex n, X)
 
 def simplexIndex (X : Type) [TopologicalSpace X] (n : ℕ) (σ : SingularSimplex X n) :
     (TopCat.toSSet.obj (TopCat.of X)).obj (Opposite.op (SimplexCategory.mk n)) :=
   ((TopCat.of X).toSSetObjEquiv (.op (SimplexCategory.mk n))).symm σ
 
 def simplexChain (X : Type) [TopologicalSpace X] (n : ℕ) (σ : SingularSimplex X n) :
-    Chains X n :=
+    chains X n :=
   ((TopCat.toSSet.obj (TopCat.of X)).ιChainComplex
     (R := AddCommGrpCat.of ℤ) (simplexIndex X n σ)) 1
 
-abbrev boundaryOne (X : Type) [TopologicalSpace X] : Chains X 1 →+ Chains X 0 :=
-  (IntegralChains X).d 1 0 |>.hom
+abbrev boundaryOne (X : Type) [TopologicalSpace X] : chains X 1 →+ chains X 0 :=
+  (integralChains X).d 1 0 |>.hom
 
-abbrev boundaryTwo (X : Type) [TopologicalSpace X] : Chains X 2 →+ Chains X 1 :=
-  (IntegralChains X).d 2 1 |>.hom
+abbrev boundaryTwo (X : Type) [TopologicalSpace X] : chains X 2 →+ chains X 1 :=
+  (integralChains X).d 2 1 |>.hom
 
 theorem simplexIndex_face (X : Type) [TopologicalSpace X] (n : ℕ)
     (σ : SingularSimplex X (n + 1)) (i : Fin (n + 2)) :
@@ -172,11 +172,11 @@ theorem simplexIndex_face (X : Type) [TopologicalSpace X] (n : ℕ)
 
 theorem boundary_simplex (X : Type) [TopologicalSpace X] (n : ℕ)
     (σ : SingularSimplex X (n + 1)) :
-    (IntegralChains X).d (n + 1) n (simplexChain X (n + 1) σ) =
+    (integralChains X).d (n + 1) n (simplexChain X (n + 1) σ) =
       ∑ i : Fin (n + 2), (-1 : ℤ) ^ i.val • simplexChain X n (σ.comp (simplexFace n i)) := by
   have h := (TopCat.toSSet.obj (TopCat.of X)).ιChainComplex_d
     (R := AddCommGrpCat.of ℤ) (simplexIndex X (n + 1) σ)
-  let ev : (AddCommGrpCat.of ℤ ⟶ Chains X n) →+ Chains X n :=
+  let ev : (AddCommGrpCat.of ℤ ⟶ chains X n) →+ chains X n :=
     { toFun := fun f ↦ f.hom 1
       map_zero' := rfl
       map_add' := fun _ _ ↦ rfl }
@@ -200,10 +200,10 @@ theorem boundaryOne_simplex (X : Type) [TopologicalSpace X]
         simplexChain X 0 (σ.comp (simplexFace 0 1)) := by
   simpa [Fin.sum_univ_succ, sub_eq_add_neg] using boundary_simplex X 0 σ
 
-def pointChain {X : Type} [TopologicalSpace X] (x : X) : Chains X 0 :=
-  simplexChain X 0 (ContinuousMap.const (Simplex 0) x)
+def pointChain {X : Type} [TopologicalSpace X] (x : X) : chains X 0 :=
+  simplexChain X 0 (ContinuousMap.const (simplex 0) x)
 
-def pathChain {X : Type} [TopologicalSpace X] {x y : X} (p : Path x y) : Chains X 1 :=
+def pathChain {X : Type} [TopologicalSpace X] {x y : X} (p : Path x y) : chains X 1 :=
   simplexChain X 1 (pathSimplex p)
 
 theorem boundaryOne_pathChain {X : Type} [TopologicalSpace X] {x y : X}
@@ -216,14 +216,14 @@ theorem boundaryOne_loop {X : Type} [TopologicalSpace X] {x : X} (p : Path x x) 
   rw [boundaryOne_pathChain, sub_self]
 
 def chainLift (X : Type) [TopologicalSpace X] (n : ℕ)
-    (f : SingularSimplex X n → ℤ) : Chains X n →+ ℤ :=
+    (f : SingularSimplex X n → ℤ) : chains X n →+ ℤ :=
   (Sigma.desc
     (fun s : (TopCat.toSSet.obj (TopCat.of X)).obj
         (Opposite.op (SimplexCategory.mk n)) ↦
       AddCommGrpCat.ofHom
         (zmultiplesHom ℤ
           (f ((TopCat.of X).toSSetObjEquiv (.op (SimplexCategory.mk n)) s)))) :
-    Chains X n ⟶ AddCommGrpCat.of ℤ).hom
+    chains X n ⟶ AddCommGrpCat.of ℤ).hom
 
 @[simp]
 theorem chainLift_simplex (X : Type) [TopologicalSpace X] (n : ℕ)
@@ -244,10 +244,10 @@ theorem chainLift_simplex (X : Type) [TopologicalSpace X] (n : ℕ)
   simpa [simplexIndex] using he
 
 theorem chainHom_ext (X : Type) [TopologicalSpace X] (n : ℕ)
-    {f g : Chains X n →+ ℤ}
+    {f g : chains X n →+ ℤ}
     (h : ∀ σ : SingularSimplex X n, f (simplexChain X n σ) =
       g (simplexChain X n σ)) : f = g := by
-  have hcat : (AddCommGrpCat.ofHom f : Chains X n ⟶ AddCommGrpCat.of ℤ) =
+  have hcat : (AddCommGrpCat.ofHom f : chains X n ⟶ AddCommGrpCat.of ℤ) =
       AddCommGrpCat.ofHom g := by
     apply SSet.chainComplex_hom_ext
     intro s
@@ -260,16 +260,16 @@ theorem chainHom_ext (X : Type) [TopologicalSpace X] (n : ℕ)
       h ((TopCat.of X).toSSetObjEquiv (.op (SimplexCategory.mk n)) s)
   exact congrArg AddCommGrpCat.Hom.hom hcat
 
-theorem simplex_contractible (n : ℕ) : ContractibleSpace (Simplex n) :=
+theorem simplex_contractible (n : ℕ) : ContractibleSpace (simplex n) :=
   (convex_stdSimplex ℝ (Fin (n + 1))).contractibleSpace
     ⟨(stdSimplex.vertex (S := ℝ) (0 : Fin (n + 1))).val,
       (stdSimplex.vertex (S := ℝ) (0 : Fin (n + 1))).property⟩
 
-theorem simplex_simplyConnected (n : ℕ) : SimplyConnectedSpace (Simplex n) := by
+theorem simplex_simplyConnected (n : ℕ) : SimplyConnectedSpace (simplex n) := by
   let _ := simplex_contractible n
   infer_instance
 
-def triangleFacePath {X : Type*} [TopologicalSpace X] (σ : C(Simplex 2, X))
+def triangleFacePath {X : Type*} [TopologicalSpace X] (σ : C(simplex 2, X))
     (i : Fin 3) :
     Path (σ (stdSimplex.vertex (S := ℝ) (i.succAbove (0 : Fin 2))))
       (σ (stdSimplex.vertex (S := ℝ) (i.succAbove (1 : Fin 2)))) :=
@@ -277,29 +277,29 @@ def triangleFacePath {X : Type*} [TopologicalSpace X] (σ : C(Simplex 2, X))
     (congrArg σ (simplexFace_vertex 1 i 0)).symm
     (congrArg σ (simplexFace_vertex 1 i 1)).symm
 
-abbrev triangleEdge01 {X : Type*} [TopologicalSpace X] (σ : C(Simplex 2, X)) :
+abbrev triangleEdge01 {X : Type*} [TopologicalSpace X] (σ : C(simplex 2, X)) :
     Path (σ (stdSimplex.vertex (S := ℝ) (0 : Fin 3)))
       (σ (stdSimplex.vertex (S := ℝ) (1 : Fin 3))) :=
   triangleFacePath σ 2
 
-abbrev triangleEdge12 {X : Type*} [TopologicalSpace X] (σ : C(Simplex 2, X)) :
+abbrev triangleEdge12 {X : Type*} [TopologicalSpace X] (σ : C(simplex 2, X)) :
     Path (σ (stdSimplex.vertex (S := ℝ) (1 : Fin 3)))
       (σ (stdSimplex.vertex (S := ℝ) (2 : Fin 3))) :=
   triangleFacePath σ 0
 
-abbrev triangleEdge02 {X : Type*} [TopologicalSpace X] (σ : C(Simplex 2, X)) :
+abbrev triangleEdge02 {X : Type*} [TopologicalSpace X] (σ : C(simplex 2, X)) :
     Path (σ (stdSimplex.vertex (S := ℝ) (0 : Fin 3)))
       (σ (stdSimplex.vertex (S := ℝ) (2 : Fin 3))) :=
   triangleFacePath σ 1
 
 theorem triangleEdges_homotopic {X : Type*} [TopologicalSpace X]
-    (σ : C(Simplex 2, X)) :
+    (σ : C(simplex 2, X)) :
     ((triangleEdge01 σ).trans (triangleEdge12 σ)).Homotopic (triangleEdge02 σ) := by
   let _ := simplex_simplyConnected 2
   have h := SimplyConnectedSpace.paths_homotopic
-    ((triangleEdge01 (ContinuousMap.id (Simplex 2))).trans
-      (triangleEdge12 (ContinuousMap.id (Simplex 2))))
-    (triangleEdge02 (ContinuousMap.id (Simplex 2)))
+    ((triangleEdge01 (ContinuousMap.id (simplex 2))).trans
+      (triangleEdge12 (ContinuousMap.id (simplex 2))))
+    (triangleEdge02 (ContinuousMap.id (simplex 2)))
   have hmap := h.map σ
   rw [Path.map_trans] at hmap
   exact hmap
@@ -378,7 +378,7 @@ theorem basedLoopWinding_cast {x y x' y' : UnitAddCircle}
 
 def unitCirclePaths : ∀ z : UnitAddCircle, Path 0 z := PathConnectedSpace.somePath 0
 
-def edgeWinding : Chains UnitAddCircle 1 →+ ℤ :=
+def edgeWinding : chains UnitAddCircle 1 →+ ℤ :=
   chainLift UnitAddCircle 1 (fun σ ↦ basedLoopWinding unitCirclePaths (simplexPath σ))
 
 @[simp]
@@ -410,12 +410,12 @@ theorem edgeWinding_comp_boundaryTwo :
   intro σ
   exact edgeWinding_boundaryTwo_simplex σ
 
-theorem edgeWinding_boundaryTwo (c : Chains UnitAddCircle 2) :
+theorem edgeWinding_boundaryTwo (c : chains UnitAddCircle 2) :
     edgeWinding (boundaryTwo UnitAddCircle c) = 0 :=
   DFunLike.congr_fun edgeWinding_comp_boundaryTwo c
 
 def windingChainMap :
-    IntegralChains UnitAddCircle ⟶
+    integralChains UnitAddCircle ⟶
       (HomologicalComplex.single AddCommGrpCat (ComplexShape.down ℕ) 1).obj
         (AddCommGrpCat.of ℤ) :=
   HomologicalComplex.mkHomToSingle (AddCommGrpCat.ofHom edgeWinding) (by
@@ -432,20 +432,20 @@ def unitCircleHomologyWinding :
       (ComplexShape.down ℕ) 1 (AddCommGrpCat.of ℤ)).hom).hom
 
 def loopCycle {X : Type} [TopologicalSpace X] {x : X} (p : Path x x) :
-    AddCommGrpCat.of ℤ ⟶ (IntegralChains X).X 1 :=
+    AddCommGrpCat.of ℤ ⟶ (integralChains X).X 1 :=
   AddCommGrpCat.asHom (pathChain p)
 
 theorem loopCycle_isCycle {X : Type} [TopologicalSpace X] {x : X} (p : Path x x) :
-    loopCycle p ≫ (IntegralChains X).d 1 0 = 0 := by
+    loopCycle p ≫ (integralChains X).d 1 0 = 0 := by
   apply AddCommGrpCat.int_hom_ext
-  change (IntegralChains X).d 1 0 ((AddCommGrpCat.asHom (pathChain p)) 1) = 0
+  change (integralChains X).d 1 0 ((AddCommGrpCat.asHom (pathChain p)) 1) = 0
   rw [AddCommGrpCat.asHom_hom_apply, one_zsmul]
   exact boundaryOne_loop p
 
 def loopHomologyMap {X : Type} [TopologicalSpace X] {x : X} (p : Path x x) :
-    AddCommGrpCat.of ℤ ⟶ (IntegralChains X).homology 1 :=
-  (IntegralChains X).liftCycles (loopCycle p) 0 (by simp) (loopCycle_isCycle p) ≫
-    (IntegralChains X).homologyπ 1
+    AddCommGrpCat.of ℤ ⟶ (integralChains X).homology 1 :=
+  (integralChains X).liftCycles (loopCycle p) 0 (by simp) (loopCycle_isCycle p) ≫
+    (integralChains X).homologyπ 1
 
 def loopHomologyClass {X : Type} [TopologicalSpace X] {x : X} (p : Path x x) :
     IntegralSingularHomology 1 X :=
@@ -581,7 +581,7 @@ theorem unitCircleHomologyWinding_surjective :
     unitCircleHomologyWinding_integerLoop n⟩
 
 abbrev singularChainMap {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
-    (f : C(X, Y)) : IntegralChains X ⟶ IntegralChains Y :=
+    (f : C(X, Y)) : integralChains X ⟶ integralChains Y :=
   SSet.chainComplexMap (TopCat.toSSet.map (TopCat.ofHom f)) (AddCommGrpCat.of ℤ)
 
 theorem singularChainMap_simplex {X Y : Type} [TopologicalSpace X]
@@ -591,7 +591,7 @@ theorem singularChainMap_simplex {X Y : Type} [TopologicalSpace X]
   have h := SSet.ι_chainComplexMap_f
     (TopCat.toSSet.obj (TopCat.of X)) (TopCat.toSSet.obj (TopCat.of Y))
     (TopCat.toSSet.map (TopCat.ofHom f)) (AddCommGrpCat.of ℤ) (simplexIndex X n σ)
-  have he := congrArg (fun g : AddCommGrpCat.of ℤ ⟶ Chains Y n ↦ g.hom 1) h
+  have he := congrArg (fun g : AddCommGrpCat.of ℤ ⟶ chains Y n ↦ g.hom 1) h
   change (singularChainMap f).f n (simplexChain X n σ) =
     simplexChain Y n (f.comp σ) at he
   exact he

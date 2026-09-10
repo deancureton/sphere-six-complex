@@ -12,7 +12,7 @@ namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 open SphereSixComplex.Periods StandardA2ToricCentralFiberCellAtlas
 open InfiniteA2Toric InfiniteA2Toric.Construction
 open InfiniteA2Toric CuspPeriodExpansion
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public theorem constructedCellAtlas_d_two
@@ -36,7 +36,7 @@ public theorem constructedCellAtlas_d_three
     (constructedA2ThreeCell_attachingDegree_zero W T)
 
 public theorem phaseSweepCellAtlas_closedImage
-    (W : ActualPuncturedCuspCollarWitness N constructedModel) (n : ℕ) (i : cuspWCellIndex n) :
+    (W : ActualPuncturedCuspCollarWitness N constructedModel) (n : ℕ) (i : CuspWCellIndex n) :
     (constructedCentralCellAtlas W).cellMap n i '' Metric.closedBall 0 1 =
       (phaseSweepCellAtlas W).cellMap n i '' Metric.closedBall 0 1 :=
   (phaseSweepCellMap_closedImage W n i).symm
@@ -63,7 +63,7 @@ public def phaseSweepHomologyTwoToRelativeEquiv
     (T : CellularHomology.IntegralComparison) :
     let _ := (phaseSweepCellAtlas W).cwComplex
     IntegralSingularHomology 2 (ActualLocalCuspCentralOrbitQuotient W) ≃+
-      IntegralCWRelativeCellObject (ActualLocalCuspCentralOrbitQuotient W) 2 := by
+      integralCWRelativeCellObject (ActualLocalCuspCentralOrbitQuotient W) 2 := by
   let _ := (phaseSweepCellAtlas W).cwComplex
   let K := (phaseSweepCellAtlas W).skeletalComplex
   exact (T.homologyEquiv (ActualLocalCuspCentralOrbitQuotient W) 2).symm.trans
@@ -89,7 +89,7 @@ public theorem phaseSweepHomologyTwoToRelativeEquiv_skeletal
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
     (T : CellularHomology.IntegralComparison) :
     let _ := (phaseSweepCellAtlas W).cwComplex
-    ∀ x : (CWIntegralSingularChainComplexObj
+    ∀ x : (cwIntegralSingularChainComplexObj
       (TopCat.of (IntegralCWSkeletonLT (ActualLocalCuspCentralOrbitQuotient W) 3))).homology 2,
     phaseSweepHomologyTwoToRelativeEquiv W T
       ((HomologicalComplex.homologyMap
@@ -123,7 +123,7 @@ public theorem phaseSweepHomologyTwoCellEquiv_of_skeletalClass
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
     (T : CellularHomology.IntegralComparison) :
     let _ := (phaseSweepCellAtlas W).cwComplex
-    ∀ (x : (CWIntegralSingularChainComplexObj
+    ∀ (x : (cwIntegralSingularChainComplexObj
       (TopCat.of (IntegralCWSkeletonLT (ActualLocalCuspCentralOrbitQuotient W) 3))).homology 2)
       (i : Fin 4),
     (HomologicalComplex.homologyMap

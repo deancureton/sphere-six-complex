@@ -93,7 +93,7 @@ public def sum (c : SmoothCollar I M W) (d : SmoothCollar I N V) :
   chart :=
     { target := (c.chart.sum d.chart).target
       toDiffeomorph :=
-        (Diffeomorph.sumProdDistrib I (𝓡∂ 1) M N HalfCollarParameter ∞).trans
+        (Diffeomorph.sumProdDistrib I (𝓡∂ 1) M N halfCollarParameter ∞).trans
           (c.chart.sum d.chart).toDiffeomorph }
   inclusion_isSmoothEmbedding := by
     have h := SmoothEmbeddingSum.isSmoothEmbedding_sumMap
@@ -102,7 +102,7 @@ public def sum (c : SmoothCollar I M W) (d : SmoothCollar I N V) :
         (fun x ↦
           ({ target := (c.chart.sum d.chart).target
              toDiffeomorph :=
-               (Diffeomorph.sumProdDistrib I (𝓡∂ 1) M N HalfCollarParameter ∞).trans
+               (Diffeomorph.sumProdDistrib I (𝓡∂ 1) M N halfCollarParameter ∞).trans
                  (c.chart.sum d.chart).toDiffeomorph } :
             SmoothOpenEmbedding (I.prod (𝓡∂ 1)) (CollarSource (M ⊕ N)) (W ⊕ V))
               (collarSourceZeroSection (M ⊕ N) x)) =
@@ -237,18 +237,18 @@ variable {M : Type*} [TopologicalSpace M] [T2Space M] [SecondCountableTopology M
 
 /-- The standard half-open neighborhood at the initial end of a cylinder. -/
 public def cylinderIncomingOpenEmbedding :
-    SmoothOpenEmbedding (I.prod (𝓡∂ 1)) (CollarSource M) (M × CollarParameter) where
-  target := CollarDomain M
+    SmoothOpenEmbedding (I.prod (𝓡∂ 1)) (CollarSource M) (M × collarParameter) where
+  target := collarDomain M
   toDiffeomorph := collarSourceToDomain
 
 /-- The reflected half-open neighborhood at the final end of a cylinder. -/
 public def cylinderOutgoingOpenEmbedding :
-    SmoothOpenEmbedding (I.prod (𝓡∂ 1)) (CollarSource M) (M × CollarParameter) where
-  target := ReflectedCollarDomain M
+    SmoothOpenEmbedding (I.prod (𝓡∂ 1)) (CollarSource M) (M × collarParameter) where
+  target := reflectedCollarDomain M
   toDiffeomorph := collarSourceToReflectedDomain
 
 /-- Initial collar of the cylinder. -/
-public def cylinderIncomingCollar : SmoothCollar I M (M × CollarParameter) where
+public def cylinderIncomingCollar : SmoothCollar I M (M × collarParameter) where
   chart := cylinderIncomingOpenEmbedding
   inclusion_isSmoothEmbedding := by
     change Manifold.IsSmoothEmbedding I (I.prod (𝓡∂ 1)) ∞
@@ -256,7 +256,7 @@ public def cylinderIncomingCollar : SmoothCollar I M (M × CollarParameter) wher
     exact isSmoothEmbedding_collarStartSection
 
 /-- Final collar of the cylinder. -/
-public def cylinderOutgoingCollar : SmoothCollar I M (M × CollarParameter) where
+public def cylinderOutgoingCollar : SmoothCollar I M (M × collarParameter) where
   chart := cylinderOutgoingOpenEmbedding
   inclusion_isSmoothEmbedding := by
     have hfun :
@@ -265,7 +265,7 @@ public def cylinderOutgoingCollar : SmoothCollar I M (M × CollarParameter) wher
           (fun x : M ↦ (x, collarFinish)) := by
       funext x
       change (collarSourceToReflectedDomain (I₀ := I)
-        (collarSourceZeroSection M x) : M × CollarParameter) = (x, collarFinish)
+        (collarSourceZeroSection M x) : M × collarParameter) = (x, collarFinish)
       simp [collarSourceZeroSection, halfCollarStart]
     rw [hfun]
     exact isSmoothEmbedding_collarFinishSection
@@ -283,12 +283,12 @@ omit [FiniteDimensional ℝ E] [T2Space M] [SecondCountableTopology M]
     (cylinderOutgoingCollar (I := I) : SmoothCollar I M _).inclusion x =
       (x, collarFinish) := by
   change (collarSourceToReflectedDomain (I₀ := I)
-    (collarSourceZeroSection M x) : M × CollarParameter) = (x, collarFinish)
+    (collarSourceZeroSection M x) : M × collarParameter) = (x, collarFinish)
   simp [collarSourceZeroSection, halfCollarStart]
 
 /-- The cylinder is an actual compact smooth collared bordism. -/
 public def cylinder : SmoothCollaredBordism I M M where
-  W := M × CollarParameter
+  W := M × collarParameter
   incoming := cylinderIncomingCollar
   outgoing := cylinderOutgoingCollar
   ends_disjoint := by
@@ -296,7 +296,7 @@ public def cylinder : SmoothCollaredBordism I M M where
     rintro p ⟨x, hx⟩ ⟨y, hy⟩
     rw [cylinderIncomingCollar_inclusion] at hx
     rw [cylinderOutgoingCollar_inclusion] at hy
-    have h := congrArg (fun q : M × CollarParameter ↦ (q.2 : ℝ))
+    have h := congrArg (fun q : M × collarParameter ↦ (q.2 : ℝ))
       (hy.trans hx.symm)
     norm_num [collarStart, collarFinish] at h
   boundary_eq := by
@@ -305,12 +305,12 @@ public def cylinder : SmoothCollaredBordism I M M where
     rcases p with ⟨x, t⟩
     simp only [Set.mem_union, Set.mem_range, cylinderIncomingCollar_inclusion,
       cylinderOutgoingCollar_inclusion]
-    change (x ∈ (Set.univ : Set M) ∧ t ∈ ({⊥, ⊤} : Set CollarParameter)) ↔
+    change (x ∈ (Set.univ : Set M) ∧ t ∈ ({⊥, ⊤} : Set collarParameter)) ↔
       ((∃ y : M, (y, collarStart) = (x, t)) ∨
         ∃ y : M, (y, collarFinish) = (x, t))
     simp [collarStart, collarFinish, eq_comm]
-    have hzero : (⊥ : CollarParameter) = 0 := Subtype.ext (by norm_num)
-    have hone : (⊤ : CollarParameter) = 1 := Subtype.ext (by norm_num)
+    have hzero : (⊥ : collarParameter) = 0 := Subtype.ext (by norm_num)
+    have hone : (⊤ : collarParameter) = 1 := Subtype.ext (by norm_num)
     rw [hzero, hone]
 
 end Cylinder

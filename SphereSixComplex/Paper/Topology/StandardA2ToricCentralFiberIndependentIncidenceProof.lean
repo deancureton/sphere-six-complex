@@ -158,7 +158,7 @@ open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.InfiniteA2Toric
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
 
 /-- The exact replacement interface for the established incidence residual: it is enough to
@@ -167,17 +167,17 @@ public theorem establishedStandardA2ToricCentralFiberIndependentIncidenceResidua
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W)
     (V :
-      let _ : T2Space (actualLocalCuspFilling W) :=
+      let _ : T2Space (ActualLocalCuspFilling W) :=
         SphereSixComplex.Geometry.PaperAnalyticData.actualLocalCuspFilling_t2 W
       let _ : T2Space (R.quotientCentralFiber W) := inferInstance
       StandardA2ToricCentralFiberIndependentIncidenceValues
         (establishedStandardA2ToricCentralFiberCellAtlas W R)) :
-    let _ : T2Space (actualLocalCuspFilling W) :=
+    let _ : T2Space (ActualLocalCuspFilling W) :=
       SphereSixComplex.Geometry.PaperAnalyticData.actualLocalCuspFilling_t2 W
     let _ : T2Space (R.quotientCentralFiber W) := inferInstance
     StandardA2ToricCentralFiberIndependentIncidenceResidual
       (establishedStandardA2ToricCentralFiberCellAtlas W R) := by
-  let _ : T2Space (actualLocalCuspFilling W) :=
+  let _ : T2Space (ActualLocalCuspFilling W) :=
     SphereSixComplex.Geometry.PaperAnalyticData.actualLocalCuspFilling_t2 W
   let _ : T2Space (R.quotientCentralFiber W) := inferInstance
   exact V.toResidual

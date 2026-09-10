@@ -22,7 +22,7 @@ namespace SphereSixComplex.Periods
 
 open SphereSixComplex.TriangleGroup
 
-variable (E : EstablishedFuchsianModularParameter)
+variable (E : NormalizedFuchsianModularParameter)
 
 /-- The explicit local affine-torsor section at the order-three point. -/
 @[expose] public def ellipticMuOne (z : UpperHalfPlane) : ℂ :=
@@ -34,7 +34,7 @@ variable (E : EstablishedFuchsianModularParameter)
 
 /-- The distinguished local section at the cusp. -/
 @[expose] public def cuspLocalMu
-    (_E : EstablishedFuchsianModularParameter) (_z : UpperHalfPlane) : ℂ := 0
+    (_E : NormalizedFuchsianModularParameter) (_z : UpperHalfPlane) : ℂ := 0
 
 public theorem tau_coe_ne_one (z : UpperHalfPlane) :
     (E.modularParameter.tau z : ℂ) ≠ 1 := by
@@ -295,7 +295,7 @@ public theorem exists_compatibleAdjustedMuSections (D : MuTorsorCechLocalData E)
       ∀ z, z ∈ D.zeroRegion ∩ D.infinityRegion →
         adjustedMuZero E D fZero z = adjustedMuInfinity E D fInfinity z := by
   obtain ⟨fZero, fInfinity, hfZero, hfInfinity, hsplit⟩ :=
-    establishedProjectiveLineCechNegOne D.overlapCocycle
+    exists_cech_coboundary_neg_one D.overlapCocycle
       D.overlapCocycle_holomorphic
   refine ⟨fZero, fInfinity, hfZero, hfInfinity, ?_⟩
   intro z hz

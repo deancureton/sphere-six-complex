@@ -65,7 +65,7 @@ theorem exists_preconnected_frequently_subset_of_mem_nhdsNE
 solution germs over the center admit the comparison neighbourhood required by the global
 criterion. -/
 theorem hasPuncturedRegularComparison_of_eventually_regular
-    {C : ℂ → ℂ} {U : Set ℂ} {p q : ModularSolutionEtale C U}
+    {C : ℂ → ℂ} {U : Set ℂ} {p q : modularSolutionEtaleSet C U}
     (hbase : upperHalfPlaneSolutionEtaleBase normalizedModularJCoordinate C U p =
       upperHalfPlaneSolutionEtaleBase normalizedModularJCoordinate C U q)
     (hregular : ∀ᶠ w in 𝓝[≠] p.1.base, C w ∈ modularRegularValueSet) :
@@ -201,7 +201,7 @@ theorem sourceCoordinate_eventually_regular
 comparison required for deck transitivity. -/
 theorem exactSource_hasPuncturedRegularComparison
     (C : ExactFuchsianOrbifoldCoordinate)
-    (p q : ModularSolutionEtale
+    (p q : modularSolutionEtaleSet
       (C.coordinate ∘ UpperHalfPlane.ofComplex) UpperHalfPlane.upperHalfPlaneSet)
     (hbase : upperHalfPlaneSolutionEtaleBase normalizedModularJCoordinate
       (C.coordinate ∘ UpperHalfPlane.ofComplex) UpperHalfPlane.upperHalfPlaneSet p =

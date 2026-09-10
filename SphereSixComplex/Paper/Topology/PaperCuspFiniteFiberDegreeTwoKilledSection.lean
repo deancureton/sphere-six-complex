@@ -26,7 +26,7 @@ open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
   {W : ActualPuncturedCuspCollarWitness N M} [HasCuspPhaseSpreading W]
 
@@ -35,7 +35,7 @@ namespace CuspFiberSpecializationNormalization
 /-- The selected cellular coordinates on the second homology of the actual cusp filling. -/
 public noncomputable def degreeTwoCuspFillingCoordinates
     (_G : ActualCuspRadialClutchingData W) :
-    IntegralSingularHomology 2 (actualLocalCuspFilling W) ≃ₗ[ℤ] (Fin 4 → ℤ) :=
+    IntegralSingularHomology 2 (ActualLocalCuspFilling W) ≃ₗ[ℤ] (Fin 4 → ℤ) :=
   (actualLocalCuspFillingHomologyTwoEquiv W
     (UnnormalizedCuspRadialClutchingData.radialCentralFiberRetractionData W)).toIntLinearEquiv
 
@@ -155,7 +155,7 @@ public theorem degreeTwo_section_of_fiberSpecialization_bijective
   let P := circleMappingTorusHTwoPresentation G.clutching
   let S := EstablishedCircleMappingTorusGeometricSections.sections G.monodromyCoordinates
   let c : P.Coinvariants ≃ₗ[ℤ]
-      IntegralSingularHomology 2 (actualLocalCuspFilling W) :=
+      IntegralSingularHomology 2 (ActualLocalCuspFilling W) :=
     LinearEquiv.ofBijective (rawDegreeTwoFiberSpecialization G) h
   refine ⟨WangHomologyPresentation.correctedSection P S.degreeTwo c
     (rawDegreeTwoTotalSpecialization G), ?_⟩
@@ -178,7 +178,7 @@ public theorem degreeTwo_fields_of_markedFiberBasisImages
 /-- After the degree-one angular calculation, the four marked degree-two fibre images are the
 only remaining input for all three fields of `RemainingFiberSpecializationGeometry`. -/
 public theorem remainingFiberSpecializationGeometry_of_degreeTwoMarkedFiberBasisImages
-    (G : ActualCuspRadialClutchingData W) (b : puncturedLocalCuspQuotient W)
+    (G : ActualCuspRadialClutchingData W) (b : PuncturedLocalCuspQuotient W)
     (h : DegreeTwoMarkedFiberBasisImages G) :
     RemainingFiberSpecializationGeometry G := by
   obtain ⟨hsurj, hsection⟩ := degreeTwo_fields_of_markedFiberBasisImages G h

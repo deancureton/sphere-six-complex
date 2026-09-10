@@ -217,13 +217,13 @@ public noncomputable def orderFourPresentationCoordinateEquiv :
 
 /-- H₁ basis obtained functorially from the general affine cyclic quotient theorem. -/
 public noncomputable def orderThreeHOneBasis :
-    IntegralSingularHomology 1 (OrderThreeReducedCentralFiber F) ≃+ IntSquared :=
+    IntegralSingularHomology 1 (orderThreeReducedCentralFiber F) ≃+ IntSquared :=
   ((affineCyclicHOnePresentationEquiv
     (orderThreeCentralFiberPresentationData F)).trans
       (orderThreePresentationCoordinateEquiv F)).toAddEquiv
 
 public noncomputable def orderFourHOneBasis :
-    IntegralSingularHomology 1 (OrderFourReducedCentralFiber F) ≃+ IntSquared :=
+    IntegralSingularHomology 1 (orderFourReducedCentralFiber F) ≃+ IntSquared :=
   ((affineCyclicHOnePresentationEquiv
     (orderFourCentralFiberPresentationData F)).trans
       (orderFourPresentationCoordinateEquiv F)).toAddEquiv
@@ -359,10 +359,10 @@ affine finite-CW models.  It records only the two pulled-back dual bases and the
 needed to turn finite generation into integral reflexivity. -/
 public structure EllipticDegreeTwoDualPullbackData where
   orderThreeDualBasis : Module.Basis (Fin 2) ℤ
-    (Module.Dual ℤ (IntegralSingularHomology 2 (OrderThreeReducedCentralFiber F)))
+    (Module.Dual ℤ (IntegralSingularHomology 2 (orderThreeReducedCentralFiber F)))
   orderThreeTorsionFree :
     Module.IsTorsionFree ℤ
-      (IntegralSingularHomology 2 (OrderThreeReducedCentralFiber F))
+      (IntegralSingularHomology 2 (orderThreeReducedCentralFiber F))
   orderThreePullback_apply : ∀ (i : Fin 2) (x : DegreeTwoLattice),
     orderThreeDualBasis i
         (integralSingularHomologyMap 2
@@ -371,10 +371,10 @@ public structure EllipticDegreeTwoDualPullbackData where
           ((orderThreeCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm x)) =
       degreeTwoEvaluation (orderThreePullbackBasis i) x
   orderFourDualBasis : Module.Basis (Fin 2) ℤ
-    (Module.Dual ℤ (IntegralSingularHomology 2 (OrderFourReducedCentralFiber F)))
+    (Module.Dual ℤ (IntegralSingularHomology 2 (orderFourReducedCentralFiber F)))
   orderFourTorsionFree :
     Module.IsTorsionFree ℤ
-      (IntegralSingularHomology 2 (OrderFourReducedCentralFiber F))
+      (IntegralSingularHomology 2 (orderFourReducedCentralFiber F))
   orderFourPullback_apply : ∀ (i : Fin 2) (x : DegreeTwoLattice),
     orderFourDualBasis i
         (integralSingularHomologyMap 2
@@ -388,10 +388,10 @@ pullback functional from its values in coordinates one and three, and the order-
 functional from its values in coordinates zero and three. -/
 public structure EllipticDegreeTwoDualPullbackFiniteData where
   orderThreeDualBasis : Module.Basis (Fin 2) ℤ
-    (Module.Dual ℤ (IntegralSingularHomology 2 (OrderThreeReducedCentralFiber F)))
+    (Module.Dual ℤ (IntegralSingularHomology 2 (orderThreeReducedCentralFiber F)))
   orderThreeTorsionFree :
     Module.IsTorsionFree ℤ
-      (IntegralSingularHomology 2 (OrderThreeReducedCentralFiber F))
+      (IntegralSingularHomology 2 (orderThreeReducedCentralFiber F))
   orderThreePullback_coordinateOne (i : Fin 2) :
     orderThreeDualBasis i
         (integralSingularHomologyMap 2
@@ -409,10 +409,10 @@ public structure EllipticDegreeTwoDualPullbackFiniteData where
             (Pi.single 3 1))) =
       degreeTwoEvaluation (orderThreePullbackBasis i) (Pi.single 3 1)
   orderFourDualBasis : Module.Basis (Fin 2) ℤ
-    (Module.Dual ℤ (IntegralSingularHomology 2 (OrderFourReducedCentralFiber F)))
+    (Module.Dual ℤ (IntegralSingularHomology 2 (orderFourReducedCentralFiber F)))
   orderFourTorsionFree :
     Module.IsTorsionFree ℤ
-      (IntegralSingularHomology 2 (OrderFourReducedCentralFiber F))
+      (IntegralSingularHomology 2 (orderFourReducedCentralFiber F))
   orderFourPullback_coordinateZero (i : Fin 2) :
     orderFourDualBasis i
         (integralSingularHomologyMap 2
@@ -746,14 +746,14 @@ private theorem orderFourInvariantAddHom_generator
 
 /-- The projected standard generators used to specify the order-three quotient homology basis. -/
 public noncomputable def orderThreeProjectedDegreeTwoGenerator (j : Fin 6) :
-    IntegralSingularHomology 2 (OrderThreeReducedCentralFiber F) :=
+    IntegralSingularHomology 2 (orderThreeReducedCentralFiber F) :=
   integralSingularHomologyMap 2
     (RadialEllipticActionData.centralFiberCoverProjection (orderThreeRadialActionData F))
     ((orderThreeCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm (Pi.single j 1))
 
 /-- The projected standard generators used to specify the order-four quotient homology basis. -/
 public noncomputable def orderFourProjectedDegreeTwoGenerator (j : Fin 6) :
-    IntegralSingularHomology 2 (OrderFourReducedCentralFiber F) :=
+    IntegralSingularHomology 2 (orderFourReducedCentralFiber F) :=
   integralSingularHomologyMap 2
     (RadialEllipticActionData.centralFiberCoverProjection (orderFourRadialActionData F))
     ((orderFourCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm (Pi.single j 1))
@@ -763,7 +763,7 @@ generators already generate quotient homology.  At order four their span has ind
 by the single doubling relation for the missing primitive generator. -/
 public structure EllipticDegreeTwoHomologyBasisFiniteData where
   orderThreeBasis : Module.Basis (Fin 2) ℤ
-    (IntegralSingularHomology 2 (OrderThreeReducedCentralFiber F))
+    (IntegralSingularHomology 2 (orderThreeReducedCentralFiber F))
   orderThreeBasis_zero :
     orderThreeBasis 0 =
       orderThreeProjectedDegreeTwoGenerator F 1 +
@@ -771,7 +771,7 @@ public structure EllipticDegreeTwoHomologyBasisFiniteData where
   orderThreeBasis_one :
     orderThreeBasis 1 = orderThreeProjectedDegreeTwoGenerator F 3
   orderFourBasis : Module.Basis (Fin 2) ℤ
-    (IntegralSingularHomology 2 (OrderFourReducedCentralFiber F))
+    (IntegralSingularHomology 2 (orderFourReducedCentralFiber F))
   orderFourBasis_zero_double :
     2 • orderFourBasis 0 =
       orderFourProjectedDegreeTwoGenerator F 0 +
@@ -797,7 +797,7 @@ public theorem establishedEllipticDegreeTwoDualPullbackFiniteData
     orderFourPullback_coordinateThree := ?_
   }⟩
   · let _ : Module.Free ℤ
-        (IntegralSingularHomology 2 (OrderThreeReducedCentralFiber F)) :=
+        (IntegralSingularHomology 2 (orderThreeReducedCentralFiber F)) :=
       Module.Free.of_basis D.orderThreeBasis
     infer_instance
   · intro i
@@ -825,7 +825,7 @@ public theorem establishedEllipticDegreeTwoDualPullbackFiniteData
         orderThreePullbackInvariantZero, orderThreePullbackInvariantOne,
         gammaEpsilonOne, qClass]
   · let _ : Module.Free ℤ
-        (IntegralSingularHomology 2 (OrderFourReducedCentralFiber F)) :=
+        (IntegralSingularHomology 2 (orderFourReducedCentralFiber F)) :=
       Module.Free.of_basis D.orderFourBasis
     infer_instance
   · intro i

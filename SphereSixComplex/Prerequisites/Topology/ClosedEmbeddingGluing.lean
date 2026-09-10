@@ -199,23 +199,23 @@ section SumGlueAlgebra
 variable {X : Type u} {Y : Type v} {Z : Type w} (f : Z → X) (g : Z → Y)
 
 /-- The direct relation on a sum that identifies exactly `f z` with `g z`. -/
-public def sumGlueRel : X ⊕ Y → X ⊕ Y → Prop
+public def SumGlueRel : X ⊕ Y → X ⊕ Y → Prop
   | .inl x, .inl x' => x = x'
   | .inr y, .inr y' => y = y'
   | .inl x, .inr y => ∃ z, f z = x ∧ g z = y
   | .inr y, .inl x => ∃ z, f z = x ∧ g z = y
 
-public theorem sumGlueRel_refl (x : X ⊕ Y) : sumGlueRel f g x x := by
+public theorem sumGlueRel_refl (x : X ⊕ Y) : SumGlueRel f g x x := by
   cases x <;> rfl
 
 public theorem sumGlueRel_symm {x y : X ⊕ Y} :
-    sumGlueRel f g x y → sumGlueRel f g y x := by
-  cases x <;> cases y <;> simp only [sumGlueRel, eq_comm] <;> exact id
+    SumGlueRel f g x y → SumGlueRel f g y x := by
+  cases x <;> cases y <;> simp only [SumGlueRel, eq_comm] <;> exact id
 
 public theorem sumGlueRel_trans (hf : Injective f) (hg : Injective g)
-    {a b c : X ⊕ Y} : sumGlueRel f g a b → sumGlueRel f g b c → sumGlueRel f g a c := by
+    {a b c : X ⊕ Y} : SumGlueRel f g a b → SumGlueRel f g b c → SumGlueRel f g a c := by
   rcases a with x | y <;> rcases b with x' | y' <;> rcases c with x'' | y'' <;>
-    simp only [sumGlueRel]
+    simp only [SumGlueRel]
   · exact Eq.trans
   · rintro rfl h
     exact h
@@ -237,7 +237,7 @@ public theorem sumGlueRel_trans (hf : Injective f) (hg : Injective g)
 
 /-- The setoid that glues `f z` to `g z` and makes no other identifications. -/
 public def sumGlueSetoid (hf : Injective f) (hg : Injective g) : Setoid (X ⊕ Y) where
-  r := sumGlueRel f g
+  r := SumGlueRel f g
   iseqv := ⟨sumGlueRel_refl f g, sumGlueRel_symm f g, sumGlueRel_trans f g hf hg⟩
 
 /-- The quotient carrier obtained by gluing two spaces along injective maps from a common source. -/
@@ -336,7 +336,7 @@ continuous. -/
 public theorem isClosed_sumGlueRel
     [CompactSpace X] [T2Space X] [CompactSpace Y] [T2Space Y] [CompactSpace Z]
     (hf : Continuous f) (hg : Continuous g) :
-    IsClosed {p : (X ⊕ Y) × (X ⊕ Y) | sumGlueRel f g p.1 p.2} := by
+    IsClosed {p : (X ⊕ Y) × (X ⊕ Y) | SumGlueRel f g p.1 p.2} := by
   let dX : X → (X ⊕ Y) × (X ⊕ Y) := fun x => (.inl x, .inl x)
   let dY : Y → (X ⊕ Y) × (X ⊕ Y) := fun y => (.inr y, .inr y)
   let cLR : Z → (X ⊕ Y) × (X ⊕ Y) := fun z => (.inl (f z), .inr (g z))
@@ -351,11 +351,11 @@ public theorem isClosed_sumGlueRel
     (isCompact_range ((continuous_inl.comp hf).prodMk (continuous_inr.comp hg))).isClosed
   have hcRL : IsClosed (Set.range cRL) :=
     (isCompact_range ((continuous_inr.comp hg).prodMk (continuous_inl.comp hf))).isClosed
-  have heq : {p : (X ⊕ Y) × (X ⊕ Y) | sumGlueRel f g p.1 p.2} =
+  have heq : {p : (X ⊕ Y) × (X ⊕ Y) | SumGlueRel f g p.1 p.2} =
       Set.range dX ∪ Set.range dY ∪ Set.range cLR ∪ Set.range cRL := by
     ext ⟨a, b⟩
     rcases a with x | y <;> rcases b with x' | y' <;>
-      simp [sumGlueRel, dX, dY, cLR, cRL, eq_comm, and_comm]
+      simp [SumGlueRel, dX, dY, cLR, cRL, eq_comm, and_comm]
   rw [heq]
   exact ((hdX.union hdY).union hcLR).union hcRL
 

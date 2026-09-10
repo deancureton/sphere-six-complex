@@ -80,7 +80,7 @@ public theorem boundarySevenProperFaceRealizationMap_bijective :
 
 /-- The compactness-and-bijectivity input for the affine realization homeomorphism is proved
 without additional assumptions. -/
-public theorem boundarySevenProperFaceAffineRealizationHomeomorphismInput_proof :
+public theorem BoundarySeven.properFace_realization_compact_bijective :
     BoundarySevenProperFaceAffineRealizationHomeomorphismInput :=
   ⟨boundarySevenProperFaceRealization_isCompact,
     boundarySevenProperFaceRealizationMap_bijective⟩
@@ -88,14 +88,14 @@ public theorem boundarySevenProperFaceAffineRealizationHomeomorphismInput_proof 
 /-- The unconditional affine barycentric homeomorphism from the proper-face realization to the
 ordinary boundary of the seven-simplex. -/
 public noncomputable def boundarySevenProperFaceRealizationHomeomorph :
-    (SSet.toTop.obj BoundarySevenProperFaceNerve : Type) ≃ₜ
+    (SSet.toTop.obj boundarySevenProperFaceNerve : Type) ≃ₜ
       StandardSimplexBoundary 7 :=
   boundarySevenProperFaceRealizationHomeomorph_of_input
-    boundarySevenProperFaceAffineRealizationHomeomorphismInput_proof
+    BoundarySeven.properFace_realization_compact_bijective
 
 @[simp]
 public theorem boundarySevenProperFaceRealizationHomeomorph_apply
-    (x : (SSet.toTop.obj BoundarySevenProperFaceNerve : Type)) :
+    (x : (SSet.toTop.obj boundarySevenProperFaceNerve : Type)) :
     boundarySevenProperFaceRealizationHomeomorph x =
       boundarySevenProperFaceRealizationMap x :=
   rfl
@@ -104,12 +104,12 @@ public theorem boundarySevenProperFaceRealizationHomeomorph_apply
 the eight vertices. -/
 public theorem boundarySevenProperFaceRealizationHomeomorph_equivariant
     (sigma : Equiv.Perm (Fin 8))
-    (x : (SSet.toTop.obj BoundarySevenProperFaceNerve : Type)) :
+    (x : (SSet.toTop.obj boundarySevenProperFaceNerve : Type)) :
     boundarySevenProperFaceRealizationHomeomorph
         (SSet.toTop.map (boundarySevenProperFaceNervePermIso sigma).hom x) =
       standardSimplexBoundaryPermHomeomorph sigma
         (boundarySevenProperFaceRealizationHomeomorph x) :=
   boundarySevenProperFaceRealizationHomeomorph_of_input_equivariant
-    boundarySevenProperFaceAffineRealizationHomeomorphismInput_proof sigma x
+    BoundarySeven.properFace_realization_compact_bijective sigma x
 
 end SphereSixComplex

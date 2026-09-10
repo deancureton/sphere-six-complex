@@ -43,16 +43,16 @@ public theorem contractibleSpace_of_continuousRetract
 /-- The explicit modulus reduces positive-part contractibility to contractibility of the whole
 constructed local carrier. -/
 public theorem constructedLocalPositivePart_contractible_of_localCarrier
-    (r : ℝ) [ContractibleSpace (LocalCarrier constructedModel r)] :
+    (r : ℝ) [ContractibleSpace (localCarrier constructedModel r)] :
     ContractibleSpace (constructedLocalPositivePart r) := by
-  let i : C(constructedLocalPositivePart r, LocalCarrier constructedModel r) :=
+  let i : C(constructedLocalPositivePart r, localCarrier constructedModel r) :=
     ⟨fun q ↦ q, continuous_subtype_val⟩
   let R := constructedLocalModulusRetraction r
   apply contractibleSpace_of_continuousRetract i R
   apply ContinuousMap.ext
   intro q
   change constructedLocalModulusRetraction r
-    (q : LocalCarrier constructedModel r) = q
+    (q : localCarrier constructedModel r) = q
   exact constructedLocalModulusRetraction_fixed r q
 
 /-- The currently specified logarithmic moment-coordinate certificate cannot supply the missing

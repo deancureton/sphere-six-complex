@@ -62,12 +62,12 @@ public theorem cwOrientedIntervalPath_right : cwOrientedIntervalPath 1 =
   norm_num
 
 public def cwOrientedIntervalClass : AddCommGrpCat.of ℤ ⟶
-    (CWRelativeIntegralSingularChainComplex (cwCharacteristicBoundaryInclusion 1)).homology 1 :=
+    (cwRelativeIntegralSingularChainComplex (cwCharacteristicBoundaryInclusion 1)).homology 1 :=
   cwRelativePathClass (cwCharacteristicBoundaryInclusion 1) cwOrientedIntervalPath
     cwBoundaryOneLeft cwBoundaryOneRight cwOrientedIntervalPath_left cwOrientedIntervalPath_right
 
 public def cwIntervalOrientationEvaluation :
-    (CWRelativeIntegralSingularChainComplex (cwCharacteristicBoundaryInclusion 1)).homology 1 ⟶
+    (cwRelativeIntegralSingularChainComplex (cwCharacteristicBoundaryInclusion 1)).homology 1 ⟶
       AddCommGrpCat.of ℤ :=
   cwRelativeIntegralSingularBoundary (cwCharacteristicBoundaryInclusion 1) 0 ≫
     cwDiscreteHomologyZeroWeight (TopCat.of (CWCharacteristicBoundarySphere 1))
@@ -79,7 +79,8 @@ public theorem cwOrientedIntervalClass_evaluation :
   simp [cwBoundaryOneLeft_ne_right]
 
 public def normalizedIntervalDiskOrientation (T : CellularHomology.IntegralComparison) :
-    (CWRelativeIntegralSingularChainComplex (cwCharacteristicBoundaryInclusion 1)).homology 1 ≃+ ℤ :=
+    (cwRelativeIntegralSingularChainComplex (cwCharacteristicBoundaryInclusion 1)).homology 1
+      ≃+ ℤ :=
   cyclicEvaluationEquiv (T.diskOrientation 1) cwIntervalOrientationEvaluation.hom
     (cwOrientedIntervalClass.hom 1) (by
       exact ConcreteCategory.congr_hom cwOrientedIntervalClass_evaluation 1)

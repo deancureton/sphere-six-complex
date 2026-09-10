@@ -21,34 +21,34 @@ namespace SphereSixComplex
 
 /-- The open collar interval has no manifold boundary. -/
 public theorem boundary_openCollarParameter :
-    (𝓡∂ 1).boundary OpenCollarParameter = ∅ := by
+    (𝓡∂ 1).boundary openCollarParameter = ∅ := by
   rw [ModelWithCorners.boundary_open, boundary_Icc]
   ext t
   constructor
   · intro ht
     rcases ht with ht | ht
-    · have hzero : (⊥ : CollarParameter) = collarStart := by
+    · have hzero : (⊥ : collarParameter) = collarStart := by
         apply Subtype.ext
         norm_num [collarStart]
       have hv := congrArg Subtype.val (ht.trans hzero)
       have hpos := t.2.1
       change (0 : ℝ) < (t.1 : ℝ) at hpos
-      change ((t.1 : CollarParameter) : ℝ) = 0 at hv
+      change ((t.1 : collarParameter) : ℝ) = 0 at hv
       linarith
-    · have hone : (⊤ : CollarParameter) = collarFinish := by
+    · have hone : (⊤ : collarParameter) = collarFinish := by
         apply Subtype.ext
         norm_num [collarFinish]
       have hv := congrArg Subtype.val (ht.trans hone)
       have hlt := t.2.2
       change (t.1 : ℝ) < 1 at hlt
-      change ((t.1 : CollarParameter) : ℝ) = 1 at hv
+      change ((t.1 : collarParameter) : ℝ) = 1 at hv
       linarith
   · intro ht
     exact ht.elim
 
 /-- The canonical boundaryless structure on the open collar interval. -/
 public instance instBoundarylessManifoldOpenCollarParameter :
-    BoundarylessManifold (𝓡∂ 1) OpenCollarParameter :=
+    BoundarylessManifold (𝓡∂ 1) openCollarParameter :=
   ModelWithCorners.Boundaryless.of_boundary_eq_empty boundary_openCollarParameter
 
 namespace SmoothCollaredBordism
@@ -117,7 +117,7 @@ public theorem boundary_rightAwaySource :
 
 /-- The signed seam cylinder is boundaryless. -/
 public theorem boundary_seamPiece :
-    (I.prod (𝓡∂ 1)).boundary (M₁ × OpenCollarParameter) = ∅ :=
+    (I.prod (𝓡∂ 1)).boundary (M₁ × openCollarParameter) = ∅ :=
   ModelWithCorners.Boundaryless.boundary_eq_empty
 
 end QuotientGluing

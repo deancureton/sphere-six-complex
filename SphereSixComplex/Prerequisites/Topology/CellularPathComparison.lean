@@ -42,24 +42,24 @@ public theorem cwRelativePathClass_natural {A X B Y : TopCat}
   rw [Category.assoc, HomologicalComplex.homologyπ_naturality,
     ← Category.assoc, HomologicalComplex.liftCycles_comp_cyclesMap]
   congr 1
-  rw [← cancel_mono ((CWRelativeIntegralSingularChainComplex j).iCycles 1),
+  rw [← cancel_mono ((cwRelativeIntegralSingularChainComplex j).iCycles 1),
     HomologicalComplex.liftCycles_i, HomologicalComplex.liftCycles_i]
   exact cwRelativePathChain_natural f p
 
 public theorem cwIntegralPathDifference_cycle {X : TopCat} (p q : TopCat.I ⟶ X)
     (h₀ : p 0 = q 0) (h₁ : p 1 = q 1) :
     (cwIntegralPathChain p - cwIntegralPathChain q) ≫
-      (CWIntegralSingularChainComplexObj X).d 1 0 = 0 := by
+      (cwIntegralSingularChainComplexObj X).d 1 0 = 0 := by
   rw [Preadditive.sub_comp, cwIntegralPathChain_boundary, cwIntegralPathChain_boundary,
     h₀, h₁, sub_self]
 
 public def cwIntegralPathDifferenceClass {X : TopCat} (p q : TopCat.I ⟶ X)
     (h₀ : p 0 = q 0) (h₁ : p 1 = q 1) :
-    AddCommGrpCat.of ℤ ⟶ (CWIntegralSingularChainComplexObj X).homology 1 :=
-  (CWIntegralSingularChainComplexObj X).liftCycles
+    AddCommGrpCat.of ℤ ⟶ (cwIntegralSingularChainComplexObj X).homology 1 :=
+  (cwIntegralSingularChainComplexObj X).liftCycles
       (cwIntegralPathChain p - cwIntegralPathChain q) 0 (by simp)
       (cwIntegralPathDifference_cycle p q h₀ h₁) ≫
-    (CWIntegralSingularChainComplexObj X).homologyπ 1
+    (cwIntegralSingularChainComplexObj X).homologyπ 1
 
 public theorem cwIntegralPathDifferenceClass_relative {A X : TopCat} (i : A ⟶ X)
     (p q : TopCat.I ⟶ X) (a b : A)
@@ -73,7 +73,7 @@ public theorem cwIntegralPathDifferenceClass_relative {A X : TopCat} (i : A ⟶ 
     ← Category.assoc, HomologicalComplex.liftCycles_comp_cyclesMap,
     ← Preadditive.sub_comp]
   congr 1
-  rw [← cancel_mono ((CWRelativeIntegralSingularChainComplex i).iCycles 1)]
+  rw [← cancel_mono ((cwRelativeIntegralSingularChainComplex i).iCycles 1)]
   simp only [Preadditive.sub_comp, HomologicalComplex.liftCycles_i, cwRelativePathChain]
 
 public theorem normalized_cellBasis_single_one

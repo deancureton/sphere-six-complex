@@ -26,41 +26,41 @@ public theorem boundarySevenFlagRealization_eq_of_commonRestriction
     (G : ComposableArrows BoundarySevenProperFace l)
     (f : SimplexCategory.mk r ⟶ SimplexCategory.mk k)
     (g : SimplexCategory.mk r ⟶ SimplexCategory.mk l)
-    (hfg : BoundarySevenProperFaceNerve.map f.op F =
-      BoundarySevenProperFaceNerve.map g.op G)
+    (hfg : boundarySevenProperFaceNerve.map f.op F =
+      boundarySevenProperFaceNerve.map g.op G)
     (u : stdSimplex ℝ (Fin (r + 1))) :
     SSet.toTop.map ((SSet.yonedaEquiv
-      (X := BoundarySevenProperFaceNerve)).symm F)
+      (X := boundarySevenProperFaceNerve)).symm F)
         ((SimplexCategory.toTopHomeo (SimplexCategory.mk k)).symm
           (stdSimplex.map f u)) =
       SSet.toTop.map ((SSet.yonedaEquiv
-        (X := BoundarySevenProperFaceNerve)).symm G)
+        (X := boundarySevenProperFaceNerve)).symm G)
         ((SimplexCategory.toTopHomeo (SimplexCategory.mk l)).symm
           (stdSimplex.map g u)) := by
   have hmaps :
       SSet.stdSimplex.map f ≫ (SSet.yonedaEquiv
-        (X := BoundarySevenProperFaceNerve)).symm F =
+        (X := boundarySevenProperFaceNerve)).symm F =
         SSet.stdSimplex.map g ≫ (SSet.yonedaEquiv
-          (X := BoundarySevenProperFaceNerve)).symm G := by
+          (X := boundarySevenProperFaceNerve)).symm G := by
     apply (SSet.yonedaEquiv
-      (X := BoundarySevenProperFaceNerve)).injective
+      (X := boundarySevenProperFaceNerve)).injective
     rw [← SSet.yonedaEquiv_naturality,
       ← SSet.yonedaEquiv_naturality]
     have hF : (SSet.yonedaEquiv
-        (X := BoundarySevenProperFaceNerve))
+        (X := boundarySevenProperFaceNerve))
           ((SSet.yonedaEquiv
-            (X := BoundarySevenProperFaceNerve)).symm F) = F :=
+            (X := boundarySevenProperFaceNerve)).symm F) = F :=
       (SSet.yonedaEquiv
-        (X := BoundarySevenProperFaceNerve)).apply_symm_apply F
+        (X := boundarySevenProperFaceNerve)).apply_symm_apply F
     have hG : (SSet.yonedaEquiv
-        (X := BoundarySevenProperFaceNerve))
+        (X := boundarySevenProperFaceNerve))
           ((SSet.yonedaEquiv
-            (X := BoundarySevenProperFaceNerve)).symm G) = G :=
+            (X := boundarySevenProperFaceNerve)).symm G) = G :=
       (SSet.yonedaEquiv
-        (X := BoundarySevenProperFaceNerve)).apply_symm_apply G
-    exact (congrArg (fun z ↦ BoundarySevenProperFaceNerve.map f.op z) hF).trans
+        (X := boundarySevenProperFaceNerve)).apply_symm_apply G
+    exact (congrArg (fun z ↦ boundarySevenProperFaceNerve.map f.op z) hF).trans
       (hfg.trans
-        (congrArg (fun z ↦ BoundarySevenProperFaceNerve.map g.op z) hG).symm)
+        (congrArg (fun z ↦ boundarySevenProperFaceNerve.map g.op z) hG).symm)
   rw [SimplexCategory.toTopHomeo_symm_naturality_apply,
     SimplexCategory.toTopHomeo_symm_naturality_apply]
   rw [← ConcreteCategory.comp_apply, ← ConcreteCategory.comp_apply,

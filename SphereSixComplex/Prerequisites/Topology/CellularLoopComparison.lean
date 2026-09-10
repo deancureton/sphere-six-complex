@@ -30,10 +30,10 @@ public theorem cwIntegralPathDifferenceClass_eq_loop {X : Type} [TopologicalSpac
     (cwIntegralPathDifferenceClass (cwPathMorphism p)
       (cwPathMorphism q) ((cwPathMorphism_source p).trans (cwPathMorphism_source q).symm)
       ((cwPathMorphism_target p).trans (cwPathMorphism_target q).symm)).hom 1 = loopHomologyClass (p.trans q.symm) := by
-  apply (AddCommGrpCat.mono_iff_injective ((IntegralChains X).homologyι 1)).mp
-    (inferInstance : Mono ((IntegralChains X).homologyι 1))
+  apply (AddCommGrpCat.mono_iff_injective ((integralChains X).homologyι 1)).mp
+    (inferInstance : Mono ((integralChains X).homologyι 1))
   rw [homologyι_loopHomologyClass, pathOpchainClass_trans, pathOpchainClass_symm]
-  change (cwIntegralPathDifferenceClass _ _ _ _ ≫ (IntegralChains X).homologyι 1).hom 1 = _
+  change (cwIntegralPathDifferenceClass _ _ _ _ ≫ (integralChains X).homologyι 1).hom 1 = _
   unfold cwIntegralPathDifferenceClass
   erw [Category.assoc, HomologicalComplex.homology_π_ι,
     ← Category.assoc, HomologicalComplex.liftCycles_i]

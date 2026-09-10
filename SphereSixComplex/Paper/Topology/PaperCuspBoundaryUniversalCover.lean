@@ -32,21 +32,21 @@ public noncomputable def paperCuspMonodromy : AddAut Lattice :=
   m₀.toAddEquiv
 
 /-- The actual cusp boundary deck group: lattice translations semidirect the angular meridian. -/
-public abbrev paperCuspBoundaryDeck :=
+public abbrev PaperCuspBoundaryDeck :=
   CanonicalCyclicAffineBoundaryDeck paperCuspMonodromy
 
 /-- The rank-four translation subgroup of the actual cusp boundary deck group. -/
 public noncomputable def paperCuspBoundaryTranslation :
-    Lattice →+ Additive paperCuspBoundaryDeck :=
+    Lattice →+ Additive PaperCuspBoundaryDeck :=
   canonicalCyclicAffineTranslation paperCuspMonodromy
 
 /-- The positive angular meridian of the actual cusp boundary deck group. -/
-public noncomputable def paperCuspBoundaryMeridian : paperCuspBoundaryDeck :=
+public noncomputable def paperCuspBoundaryMeridian : PaperCuspBoundaryDeck :=
   canonicalCyclicAffineMeridian paperCuspMonodromy
 
 /-- The algebraic deck data for the actual toric cusp boundary. -/
 public noncomputable def paperCuspBoundaryDeckData :
-    UnwrappedToricBoundaryDeckData Lattice paperToricSubgroup paperCuspBoundaryDeck where
+    UnwrappedToricBoundaryDeckData Lattice paperToricSubgroup PaperCuspBoundaryDeck where
   translation := paperCuspBoundaryTranslation
   translation_injective := canonicalCyclicAffineTranslation_injective paperCuspMonodromy
   meridian := paperCuspBoundaryMeridian
@@ -76,10 +76,10 @@ open SphereSixComplex.LatticeData
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
-open SphereSixComplex.Geometry.CuspPhaseEstimates.CuspPeriodExpansion
+open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.FamilyEquivariance
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
 variable {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
 
 /-- Translation of normalized additive coordinates by a rank-four period vector. -/

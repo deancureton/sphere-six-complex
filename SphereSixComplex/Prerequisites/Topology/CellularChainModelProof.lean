@@ -72,11 +72,11 @@ public theorem sphere_fin_zero : sphere (0 : Fin 0 → ℝ) 1 = (∅ : Set (Fin 
   exact zero_ne_one
 
 /-- The indexing types of the cells: two zero-cells and nothing else. -/
-public def cellIdx : ℕ → Type
+public def CellIndex : ℕ → Type
   | 0 => Bool
   | _ + 1 => Empty
 
-public instance instIsEmptyCellIdxSucc (n : ℕ) : IsEmpty (cellIdx (n + 1)) :=
+public instance instIsEmptyCellIndexSucc (n : ℕ) : IsEmpty (CellIndex (n + 1)) :=
   inferInstanceAs (IsEmpty Empty)
 
 /-- The characteristic map of a zero-cell. -/
@@ -91,7 +91,7 @@ public def pointPartialEquiv (b : Bool) : PartialEquiv (Fin 0 → ℝ) Indiscret
   right_inv' _ hy := hy.symm
 
 /-- The characteristic maps of the cell structure. -/
-public def cwMap : (n : ℕ) → cellIdx n → PartialEquiv (Fin n → ℝ) IndiscretePair
+public def cwMap : (n : ℕ) → CellIndex n → PartialEquiv (Fin n → ℝ) IndiscretePair
   | 0, b => pointPartialEquiv b
   | _ + 1, i => i.elim
 
@@ -130,7 +130,7 @@ public theorem not_t2Space : ¬ T2Space IndiscretePair := by
 /-- The two-point indiscrete space is a CW complex in the sense of `Topology.CWComplex`, with
 two zero-cells and no cells of positive dimension. -/
 public instance instCWComplex : Topology.CWComplex (univ : Set IndiscretePair) where
-  cell := cellIdx
+  cell := CellIndex
   map := cwMap
   source_eq n i := by
     match n, i with

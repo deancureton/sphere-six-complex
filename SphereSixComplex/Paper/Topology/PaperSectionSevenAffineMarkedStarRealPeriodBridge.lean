@@ -364,7 +364,7 @@ public noncomputable def affineOrderThreeGaugeTranslatedProjection
     (A : PaperAnalyticData)
     (g : C(affineVerticalStrip,
       AdditiveTorus A.duplicatedSectionSevenBandParameter)) :
-    C(A.affineMarkedBand, OrderThreeReducedCentralFiber A.periods) :=
+    C(A.affineMarkedBand, orderThreeReducedCentralFiber A.periods) :=
   ((RadialEllipticActionData.centralFiberCoverProjection
       (orderThreeRadialActionData A.periods)).comp
     ⟨A.duplicatedSectionSevenBandToOrderThreeCoverSource,
@@ -381,7 +381,7 @@ public noncomputable def affineOrderFourGaugeTranslatedProjection
     (A : PaperAnalyticData)
     (g : C(affineVerticalStrip,
       AdditiveTorus A.duplicatedSectionSevenBandParameter)) :
-    C(A.affineMarkedBand, OrderFourReducedCentralFiber A.periods) :=
+    C(A.affineMarkedBand, orderFourReducedCentralFiber A.periods) :=
   ((RadialEllipticActionData.centralFiberCoverProjection
       (orderFourRadialActionData A.periods)).comp
     ⟨A.duplicatedSectionSevenBandToOrderFourCoverSource,

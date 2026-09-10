@@ -33,7 +33,7 @@ public theorem orderThreeCayleyHomeomorph_norm_eq_of_fix_fuchsianOne
     (hfix : fuchsianSourceAction g • fuchsianOneFixedPoint = fuchsianOneFixedPoint) :
     ‖(orderThreeCayleyHomeomorph (fuchsianSourceAction g • z) : ℂ)‖ =
       ‖(orderThreeCayleyHomeomorph z : ℂ)‖ := by
-  obtain ⟨a, rfl⟩ := (establishedFuchsianOneStabilizerExact g).mp hfix
+  obtain ⟨a, rfl⟩ := (fuchsianOneFixed_iff_mem_range_inl g).mp hfix
   exact orderThreeCayleyHomeomorph_norm_inl a z
 
 namespace PaperAnalyticData
@@ -54,7 +54,7 @@ public theorem fixes_fuchsianOne_of_named_and_deck_cayley_lt
         (A.affineBandStripCoordinate x)).1 : ℂ)‖ <
         A.starSeparation.orderThree.radius) :
     fuchsianSourceAction g • fuchsianOneFixedPoint = fuchsianOneFixedPoint := by
-  apply (establishedFuchsianOneStabilizerExact g).mpr
+  apply (fuchsianOneFixed_iff_mem_range_inl g).mpr
   let U := A.modular.modularParameter.toTriangleUniformization
   have hsource : U.sourceAction = fuchsianSourceAction :=
     A.modular.modularParameter.toTriangleUniformization_sourceAction

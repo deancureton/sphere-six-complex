@@ -23,19 +23,19 @@ open SphereSixComplex.Periods
 open CuspFilling CuspFillingRadialCompactness CuspLocalPhaseAction
 open CuspPeriodExpansion CuspPuncturedCollarBridge
 open InfiniteA2Toric InfiniteA2Toric.QuantitativeRegions
-open CuspPhaseEstimates.CuspPeriodExpansion
-open CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
+open CuspPeriodExpansion
+open CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
 
 /-- The displacement with the correction matrix frozen at the central parameter. -/
 public noncomputable def frozenEffectiveFanDisplacement
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (q : ℂ) (d : Fin 2 → ℝ) : Fin 2 → ℝ :=
   d + fun i ↦
-    (phaseLogMatrix N 0).mulVec (realFanShearInverse d) i / Real.log ‖q‖
+    (NormalizedFuchsianCuspCoordinate.phaseLogMatrix N 0).mulVec (realFanShearInverse d) i / Real.log ‖q‖
 
 /-- The frozen displacement is real-linear. -/
 public noncomputable def frozenEffectiveFanDisplacementLinearMap
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (q : ℂ) :
     (Fin 2 → ℝ) →ₗ[ℝ] (Fin 2 → ℝ) where
   toFun := frozenEffectiveFanDisplacement N q
@@ -53,10 +53,10 @@ public noncomputable def frozenEffectiveFanDisplacementLinearMap
 /-- The actual displacement equivalence, exposed here so its underlying linear map can be used in
 the straightening algebra. -/
 public noncomputable def actualDisplacementEquiv
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
-    (p : LocalCarrier M W.localWitness.radius) (hp : M.t p ≠ 0) :
+    (p : localCarrier M W.localWitness.radius) (hp : M.t p ≠ 0) :
     (Fin 2 → ℝ) ≃ₗ[ℝ] (Fin 2 → ℝ) :=
   LinearEquiv.ofInjectiveEndo (effectiveFanDisplacementLinearMap N (M.t p)) (by
     intro x y hxy
@@ -77,38 +77,38 @@ public noncomputable def actualDisplacementEquiv
 
 @[simp]
 public theorem actualDisplacementEquiv_apply
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
-    (p : LocalCarrier M W.localWitness.radius) (hp : M.t p ≠ 0) (d : Fin 2 → ℝ) :
+    (p : localCarrier M W.localWitness.radius) (hp : M.t p ≠ 0) (d : Fin 2 → ℝ) :
     actualDisplacementEquiv W p hp d = effectiveFanDisplacement N (M.t p) d :=
   rfl
 
 /-- Rescaled position after the unique fibrewise linear change carrying the actual displacement
 matrix to its value with the correction frozen at zero. -/
 public noncomputable def straightenedRescaledPosition
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
-    (p : LocalCarrier M W.localWitness.radius) (hp : M.t p ≠ 0) : Fin 2 → ℝ :=
+    (p : localCarrier M W.localWitness.radius) (hp : M.t p ≠ 0) : Fin 2 → ℝ :=
   frozenEffectiveFanDisplacementLinearMap N (M.t p)
     ((actualDisplacementEquiv W p hp).symm (rescaledPosition M p))
 
 /-- The straightened rescaled position conjugates the actual deck displacement to the frozen
 one. This is the algebraic assertion in Lemma 7.5(b), before reconstructing a toric point. -/
 public theorem straightenedRescaledPosition_psiMap
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) (lambda : ParameterLattice)
-    (p : LocalCarrier M W.localWitness.radius) (hp : M.t p ≠ 0) :
-    let C := restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
+    (p : localCarrier M W.localWitness.radius) (hp : M.t p ≠ 0) :
+    let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
       W.localWitness.radius_pos W.localWitness.radius_le
     straightenedRescaledPosition W (C.psiMap lambda p)
         (C.psiMap_preserves_t lambda p ▸ hp) =
       straightenedRescaledPosition W p hp +
         frozenEffectiveFanDisplacement N (M.t p)
           (fun i ↦ (shearVector lambda i : ℝ)) := by
-  let C := restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
+  let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
     W.localWitness.radius_pos W.localWitness.radius_le
   let d : Fin 2 → ℝ := fun i ↦ (shearVector lambda i : ℝ)
   have hp' : M.t (C.psiMap lambda p) ≠ 0 := by
@@ -147,14 +147,14 @@ public theorem straightenedRescaledPosition_psiMap
 
 /-- The punctured part of the actual local cusp carrier. -/
 public abbrev PuncturedLocalCarrier
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :=
-  {p : LocalCarrier M W.localWitness.radius // M.t p ≠ 0}
+  {p : localCarrier M W.localWitness.radius // M.t p ≠ 0}
 
 /-- Dense-torus coordinates are continuous on the punctured local carrier. -/
 public noncomputable def puncturedTorusCoordinates
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     C(PuncturedLocalCarrier W, DenseTorus) where
@@ -175,7 +175,7 @@ public noncomputable def puncturedTorusCoordinates
 
 @[simp]
 public theorem puncturedTorusCoordinates_apply
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) (p : PuncturedLocalCarrier W) :
     puncturedTorusCoordinates W p = torusCoordinates M p.1 :=
@@ -183,7 +183,7 @@ public theorem puncturedTorusCoordinates_apply
 
 /-- Rescaled logarithmic position is continuous away from the central fibre. -/
 public theorem continuous_puncturedRescaledPosition
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     Continuous (fun p : PuncturedLocalCarrier W ↦ rescaledPosition M p.1) := by
@@ -214,16 +214,16 @@ public theorem continuous_puncturedRescaledPosition
 
 /-- Matrix of the actual rescaled-position displacement in the standard coordinate basis. -/
 public noncomputable def actualDisplacementMatrix
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (q : ℂ) : Matrix (Fin 2) (Fin 2) ℝ :=
-  !![1 + phaseLogMatrix N q 0 1 / Real.log ‖q‖,
-      -phaseLogMatrix N q 0 0 / Real.log ‖q‖;
-    phaseLogMatrix N q 1 1 / Real.log ‖q‖,
-      1 - phaseLogMatrix N q 1 0 / Real.log ‖q‖]
+  !![1 + NormalizedFuchsianCuspCoordinate.phaseLogMatrix N q 0 1 / Real.log ‖q‖,
+      -NormalizedFuchsianCuspCoordinate.phaseLogMatrix N q 0 0 / Real.log ‖q‖;
+    NormalizedFuchsianCuspCoordinate.phaseLogMatrix N q 1 1 / Real.log ‖q‖,
+      1 - NormalizedFuchsianCuspCoordinate.phaseLogMatrix N q 1 0 / Real.log ‖q‖]
 
 @[simp]
 public theorem actualDisplacementMatrix_mulVec
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (q : ℂ) (d : Fin 2 → ℝ) :
     actualDisplacementMatrix N q *ᵥ d = effectiveFanDisplacement N q d := by
   ext i
@@ -233,7 +233,7 @@ public theorem actualDisplacementMatrix_mulVec
 
 /-- On the punctured collar, the actual displacement matrix is nonsingular. -/
 public theorem actualDisplacementMatrix_det_ne_zero
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) (p : PuncturedLocalCarrier W) :
     (actualDisplacementMatrix N (M.t p.1)).det ≠ 0 := by
@@ -249,10 +249,10 @@ public theorem actualDisplacementMatrix_det_ne_zero
 /-- The correction matrix, hence the phase-log matrix, varies continuously on the local cusp
 carrier. -/
 public theorem continuous_puncturedPhaseLogMatrix_entry
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) (i j : Fin 2) :
-    Continuous (fun p : PuncturedLocalCarrier W ↦ phaseLogMatrix N (M.t p.1) i j) := by
+    Continuous (fun p : PuncturedLocalCarrier W ↦ NormalizedFuchsianCuspCoordinate.phaseLogMatrix N (M.t p.1) i j) := by
   have ht : Continuous (fun p : PuncturedLocalCarrier W ↦ M.t p.1) :=
     M.t_holomorphic.continuous.comp (continuous_subtype_val.comp continuous_subtype_val)
   have hcorrection : Continuous
@@ -266,7 +266,7 @@ public theorem continuous_puncturedPhaseLogMatrix_entry
 
 /-- The actual displacement matrices form a continuous family on the punctured collar. -/
 public theorem continuous_actualDisplacementMatrix
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     Continuous (fun p : PuncturedLocalCarrier W ↦ actualDisplacementMatrix N (M.t p.1)) := by
@@ -282,23 +282,23 @@ public theorem continuous_actualDisplacementMatrix
   intro i j
   fin_cases i <;> fin_cases j
   · change Continuous (fun p : PuncturedLocalCarrier W ↦
-      1 + phaseLogMatrix N (M.t p.1) 0 1 / Real.log ‖M.t p.1‖)
+      1 + NormalizedFuchsianCuspCoordinate.phaseLogMatrix N (M.t p.1) 0 1 / Real.log ‖M.t p.1‖)
     exact continuous_const.add
       ((continuous_puncturedPhaseLogMatrix_entry W 0 1).div hlog hlog_ne)
   · change Continuous (fun p : PuncturedLocalCarrier W ↦
-      -phaseLogMatrix N (M.t p.1) 0 0 / Real.log ‖M.t p.1‖)
+      -NormalizedFuchsianCuspCoordinate.phaseLogMatrix N (M.t p.1) 0 0 / Real.log ‖M.t p.1‖)
     exact (continuous_puncturedPhaseLogMatrix_entry W 0 0).neg.div hlog hlog_ne
   · change Continuous (fun p : PuncturedLocalCarrier W ↦
-      phaseLogMatrix N (M.t p.1) 1 1 / Real.log ‖M.t p.1‖)
+      NormalizedFuchsianCuspCoordinate.phaseLogMatrix N (M.t p.1) 1 1 / Real.log ‖M.t p.1‖)
     exact (continuous_puncturedPhaseLogMatrix_entry W 1 1).div hlog hlog_ne
   · change Continuous (fun p : PuncturedLocalCarrier W ↦
-      1 - phaseLogMatrix N (M.t p.1) 1 0 / Real.log ‖M.t p.1‖)
+      1 - NormalizedFuchsianCuspCoordinate.phaseLogMatrix N (M.t p.1) 1 0 / Real.log ‖M.t p.1‖)
     exact continuous_const.sub
       ((continuous_puncturedPhaseLogMatrix_entry W 1 0).div hlog hlog_ne)
 
 /-- Matrix inversion is continuous along the nonsingular actual displacement family. -/
 public theorem continuous_actualDisplacementMatrix_inv
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     Continuous (fun p : PuncturedLocalCarrier W ↦
@@ -320,7 +320,7 @@ public theorem continuous_actualDisplacementMatrix_inv
 
 /-- The explicit inverse actual displacement, expressed by nonsingular matrix inversion. -/
 public noncomputable def puncturedActualInverseDisplacement
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (p : PuncturedLocalCarrier W) (x : Fin 2 → ℝ) : Fin 2 → ℝ :=
@@ -328,7 +328,7 @@ public noncomputable def puncturedActualInverseDisplacement
 
 /-- The explicit inverse displacement depends continuously on the punctured point and vector. -/
 public theorem continuous_puncturedActualInverseDisplacement
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     Continuous (fun z : PuncturedLocalCarrier W × (Fin 2 → ℝ) ↦
@@ -338,7 +338,7 @@ public theorem continuous_puncturedActualInverseDisplacement
 
 /-- The explicit matrix inverse is a right inverse to the actual displacement. -/
 public theorem effectiveFanDisplacement_puncturedActualInverseDisplacement
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (p : PuncturedLocalCarrier W) (x : Fin 2 → ℝ) :
@@ -353,7 +353,7 @@ public theorem effectiveFanDisplacement_puncturedActualInverseDisplacement
 
 /-- The abstract inverse used in the conjugation theorem is the explicit matrix inverse. -/
 public theorem actualDisplacementEquiv_symm_apply
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (p : PuncturedLocalCarrier W) (x : Fin 2 → ℝ) :
@@ -365,16 +365,16 @@ public theorem actualDisplacementEquiv_symm_apply
 
 /-- Matrix of the displacement with the phase correction frozen at the central parameter. -/
 public noncomputable def frozenDisplacementMatrix
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (q : ℂ) : Matrix (Fin 2) (Fin 2) ℝ :=
-  !![1 + phaseLogMatrix N 0 0 1 / Real.log ‖q‖,
-      -phaseLogMatrix N 0 0 0 / Real.log ‖q‖;
-    phaseLogMatrix N 0 1 1 / Real.log ‖q‖,
-      1 - phaseLogMatrix N 0 1 0 / Real.log ‖q‖]
+  !![1 + NormalizedFuchsianCuspCoordinate.phaseLogMatrix N 0 0 1 / Real.log ‖q‖,
+      -NormalizedFuchsianCuspCoordinate.phaseLogMatrix N 0 0 0 / Real.log ‖q‖;
+    NormalizedFuchsianCuspCoordinate.phaseLogMatrix N 0 1 1 / Real.log ‖q‖,
+      1 - NormalizedFuchsianCuspCoordinate.phaseLogMatrix N 0 1 0 / Real.log ‖q‖]
 
 @[simp]
 public theorem frozenDisplacementMatrix_mulVec
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (q : ℂ) (d : Fin 2 → ℝ) :
     frozenDisplacementMatrix N q *ᵥ d = frozenEffectiveFanDisplacement N q d := by
   ext i
@@ -384,7 +384,7 @@ public theorem frozenDisplacementMatrix_mulVec
 
 /-- The frozen displacement matrices are continuous on the punctured collar. -/
 public theorem continuous_frozenDisplacementMatrix
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     Continuous (fun p : PuncturedLocalCarrier W ↦ frozenDisplacementMatrix N (M.t p.1)) := by
@@ -400,21 +400,21 @@ public theorem continuous_frozenDisplacementMatrix
   intro i j
   fin_cases i <;> fin_cases j
   · change Continuous (fun p : PuncturedLocalCarrier W ↦
-      1 + phaseLogMatrix N 0 0 1 / Real.log ‖M.t p.1‖)
+      1 + NormalizedFuchsianCuspCoordinate.phaseLogMatrix N 0 0 1 / Real.log ‖M.t p.1‖)
     exact continuous_const.add (continuous_const.div hlog hlog_ne)
   · change Continuous (fun p : PuncturedLocalCarrier W ↦
-      -phaseLogMatrix N 0 0 0 / Real.log ‖M.t p.1‖)
+      -NormalizedFuchsianCuspCoordinate.phaseLogMatrix N 0 0 0 / Real.log ‖M.t p.1‖)
     exact continuous_const.div hlog hlog_ne
   · change Continuous (fun p : PuncturedLocalCarrier W ↦
-      phaseLogMatrix N 0 1 1 / Real.log ‖M.t p.1‖)
+      NormalizedFuchsianCuspCoordinate.phaseLogMatrix N 0 1 1 / Real.log ‖M.t p.1‖)
     exact continuous_const.div hlog hlog_ne
   · change Continuous (fun p : PuncturedLocalCarrier W ↦
-      1 - phaseLogMatrix N 0 1 0 / Real.log ‖M.t p.1‖)
+      1 - NormalizedFuchsianCuspCoordinate.phaseLogMatrix N 0 1 0 / Real.log ‖M.t p.1‖)
     exact continuous_const.sub (continuous_const.div hlog hlog_ne)
 
 /-- The fully explicit punctured-fibre straightened rescaled position. -/
 public noncomputable def explicitPuncturedStraightenedPosition
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) (p : PuncturedLocalCarrier W) : Fin 2 → ℝ :=
   frozenDisplacementMatrix N (M.t p.1) *ᵥ
@@ -422,7 +422,7 @@ public noncomputable def explicitPuncturedStraightenedPosition
 
 /-- The explicit straightened position is continuous throughout the punctured local carrier. -/
 public theorem continuous_explicitPuncturedStraightenedPosition
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     Continuous (explicitPuncturedStraightenedPosition W) := by
@@ -434,7 +434,7 @@ public theorem continuous_explicitPuncturedStraightenedPosition
 
 /-- The abstract and explicit punctured straightening formulas agree. -/
 public theorem straightenedRescaledPosition_eq_explicit
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) (p : PuncturedLocalCarrier W) :
     straightenedRescaledPosition W p.1 p.2 = explicitPuncturedStraightenedPosition W p := by
@@ -446,7 +446,7 @@ public theorem straightenedRescaledPosition_eq_explicit
 /-- The straightening formula used in the deck-conjugation theorem is continuous away from the
 central fibre. -/
 public theorem continuous_straightenedRescaledPosition
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     Continuous (fun p : PuncturedLocalCarrier W ↦

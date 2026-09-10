@@ -158,17 +158,17 @@ public theorem fuchsianPuncturedGlobalFamily_secondCountable
     letI := regularBaseChartedSpace hproper
     letI : LocallyCompactSpace (RegularBase (U := P.toTriangleUniformization)) :=
       (isOpen_isRegularBasePoint hproper).locallyCompactSpace
-    letI : IsManifold GlobalDeckBaseModel RegularSmoothnessOrder
+    letI : IsManifold globalDeckBaseModel regularSmoothnessOrder
         (RegularBase (U := P.toTriangleUniformization)) :=
       regularBase_isManifold hproper
     letI := familyIsCancelSMul (regularParameterMap F)
     letI := familyContinuousConstSMul (regularParameterMap F)
-      fun a => (regularPeriodSection_contMDiff F hproper a RegularSmoothnessOrder).continuous
+      fun a => (regularPeriodSection_contMDiff F hproper a regularSmoothnessOrder).continuous
     letI := familyProperlyDiscontinuousSMul (regularParameterMap F)
       (compactlyUniformPeriods_of_compactUniformLowerBound (regularParameterMap F)
         (regularParameterMap_compactUniformLowerBound F))
     letI : LocallyCompactSpace (RegularTotalSpace F) :=
-      Manifold.locallyCompact_of_finiteDimensional GlobalDeckTotalModel
+      Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
     letI := regularFamilyDeckAction F
     SecondCountableTopology (PuncturedGlobalFamily F) := by
   let hproper : SourceActionProperlyDiscontinuous :=
@@ -176,21 +176,21 @@ public theorem fuchsianPuncturedGlobalFamily_secondCountable
   let _ := regularBaseChartedSpace hproper
   let _ : LocallyCompactSpace (RegularBase (U := P.toTriangleUniformization)) :=
     (isOpen_isRegularBasePoint hproper).locallyCompactSpace
-  let _ : IsManifold GlobalDeckBaseModel RegularSmoothnessOrder
+  let _ : IsManifold globalDeckBaseModel regularSmoothnessOrder
       (RegularBase (U := P.toTriangleUniformization)) :=
     regularBase_isManifold hproper
   let _ := familyIsCancelSMul (regularParameterMap F)
   let _ := familyContinuousConstSMul (regularParameterMap F)
-    fun a => (regularPeriodSection_contMDiff F hproper a RegularSmoothnessOrder).continuous
+    fun a => (regularPeriodSection_contMDiff F hproper a regularSmoothnessOrder).continuous
   let _ := familyProperlyDiscontinuousSMul (regularParameterMap F)
     (compactlyUniformPeriods_of_compactUniformLowerBound (regularParameterMap F)
       (regularParameterMap_compactUniformLowerBound F))
   have htotal := regularTotalSpace_isManifold_and_projection_isLocalDiffeomorph F hproper
-    RegularSmoothnessOrder
-  let _ : IsManifold GlobalDeckTotalModel RegularSmoothnessOrder (RegularTotalSpace F) :=
+    regularSmoothnessOrder
+  let _ : IsManifold globalDeckTotalModel regularSmoothnessOrder (RegularTotalSpace F) :=
     htotal.1
   let _ : LocallyCompactSpace (RegularTotalSpace F) :=
-    Manifold.locallyCompact_of_finiteDimensional GlobalDeckTotalModel
+    Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
   let _ := regularFamilyDeckAction F
   let _ : ContinuousConstSMul Delta (RegularTotalSpace F) :=
     regularFamilyDeckAction_continuousConstSMul F hproper
@@ -226,21 +226,21 @@ variable (A : PaperAnalyticData)
   let _ : LocallyCompactSpace
       (RegularBase (U := A.modular.modularParameter.toTriangleUniformization)) :=
     (isOpen_isRegularBasePoint hproper).locallyCompactSpace
-  let _ : IsManifold GlobalDeckBaseModel RegularSmoothnessOrder
+  let _ : IsManifold globalDeckBaseModel regularSmoothnessOrder
       (RegularBase (U := A.modular.modularParameter.toTriangleUniformization)) :=
     regularBase_isManifold hproper
   let _ := familyIsCancelSMul (regularParameterMap A.periods)
   let _ := familyContinuousConstSMul (regularParameterMap A.periods)
-    fun a => (regularPeriodSection_contMDiff A.periods hproper a RegularSmoothnessOrder).continuous
+    fun a => (regularPeriodSection_contMDiff A.periods hproper a regularSmoothnessOrder).continuous
   let _ := familyProperlyDiscontinuousSMul (regularParameterMap A.periods)
     (compactlyUniformPeriods_of_compactUniformLowerBound (regularParameterMap A.periods)
       (regularParameterMap_compactUniformLowerBound A.periods))
   let htotal := regularTotalSpace_isManifold_and_projection_isLocalDiffeomorph
-    A.periods hproper RegularSmoothnessOrder
-  let _ : IsManifold GlobalDeckTotalModel RegularSmoothnessOrder
+    A.periods hproper regularSmoothnessOrder
+  let _ : IsManifold globalDeckTotalModel regularSmoothnessOrder
       (RegularTotalSpace A.periods) := htotal.1
   let _ : LocallyCompactSpace (RegularTotalSpace A.periods) :=
-    Manifold.locallyCompact_of_finiteDimensional GlobalDeckTotalModel
+    Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
   let _ := regularFamilyDeckAction A.periods
   let _ : IsCancelSMul Delta (RegularTotalSpace A.periods) :=
     regularFamilyDeckAction_isCancelSMul_of_fuchsian A.periods
@@ -260,7 +260,7 @@ variable (A : PaperAnalyticData)
 /-- The selected central family is a complex three-manifold. -/
 public theorem centralFamily_isManifold :
     @IsManifold ℂ inferInstance ComplexModel inferInstance inferInstance ComplexModel
-      inferInstance (modelWithCornersSelf ℂ ComplexModel) RegularSmoothnessOrder
+      inferInstance (modelWithCornersSelf ℂ ComplexModel) regularSmoothnessOrder
       A.CentralFamily inferInstance A.centralFamilyComplexCharts := by
   let hproper : SourceActionProperlyDiscontinuous :=
     sourceActionProperlyDiscontinuous_of_eq
@@ -269,7 +269,7 @@ public theorem centralFamily_isManifold :
   have hmanifold :=
     (fuchsianPuncturedGlobalFamily_isManifold_and_projection_isLocalDiffeomorph
       A.modular.modularParameter A.periods).1
-  let _ : IsManifold GlobalDeckTotalModel RegularSmoothnessOrder A.CentralFamily := hmanifold
+  let _ : IsManifold globalDeckTotalModel regularSmoothnessOrder A.CentralFamily := hmanifold
   exact globalDeckComplexManifold
 
 /-- The selected central family is connected. -/
@@ -286,17 +286,17 @@ public theorem centralFamily_secondCountable : SecondCountableTopology A.Central
   let _ : LocallyCompactSpace
       (RegularBase (U := A.modular.modularParameter.toTriangleUniformization)) :=
     (isOpen_isRegularBasePoint hproper).locallyCompactSpace
-  let _ : IsManifold GlobalDeckBaseModel RegularSmoothnessOrder
+  let _ : IsManifold globalDeckBaseModel regularSmoothnessOrder
       (RegularBase (U := A.modular.modularParameter.toTriangleUniformization)) :=
     regularBase_isManifold hproper
   let _ := familyIsCancelSMul (regularParameterMap A.periods)
   let _ := familyContinuousConstSMul (regularParameterMap A.periods)
-    fun a => (regularPeriodSection_contMDiff A.periods hproper a RegularSmoothnessOrder).continuous
+    fun a => (regularPeriodSection_contMDiff A.periods hproper a regularSmoothnessOrder).continuous
   let _ := familyProperlyDiscontinuousSMul (regularParameterMap A.periods)
     (compactlyUniformPeriods_of_compactUniformLowerBound (regularParameterMap A.periods)
       (regularParameterMap_compactUniformLowerBound A.periods))
   let _ : LocallyCompactSpace (RegularTotalSpace A.periods) :=
-    Manifold.locallyCompact_of_finiteDimensional GlobalDeckTotalModel
+    Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
   let _ := regularFamilyDeckAction A.periods
   exact fuchsianPuncturedGlobalFamily_secondCountable
     A.modular.modularParameter A.periods

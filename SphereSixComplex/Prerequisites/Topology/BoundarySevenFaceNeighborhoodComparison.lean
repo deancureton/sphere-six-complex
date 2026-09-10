@@ -371,7 +371,7 @@ public noncomputable def boundarySevenFaceNeighborhoodIntegralEvaluationPointIso
     (k : ℕ) :
     SimplicialObject.Augmented.point.obj
         (boundarySevenFaceNeighborhoodIntegralEvaluationCech k) ≅
-      (CoverSmallIntegralSingularChainComplex
+      (coverSmallIntegralSingularChainComplex
         (SSet.toTop.obj (∂Δ[7] : SSet.{0}))
         boundarySevenComparisonFaceNeighborhood).X k :=
   Iso.refl _
@@ -418,7 +418,7 @@ degree-zero complex on the cover-small singular chain complex. -/
 public noncomputable def boundarySevenFaceNeighborhoodCechOuterAugmentation :
     boundarySevenFaceNeighborhoodCechBicomplex ⟶
       (ChainComplex.single₀ (ChainComplex AddCommGrpCat ℕ)).obj
-        (CoverSmallIntegralSingularChainComplex
+        (coverSmallIntegralSingularChainComplex
           (SSet.toTop.obj (∂Δ[7] : SSet.{0}))
           boundarySevenComparisonFaceNeighborhood) :=
   AlternatingFaceMapComplex.ε.app
@@ -433,7 +433,7 @@ public structure BoundarySevenFaceNeighborhoodCechTotalComparison where
       boundarySevenFaceNeighborhoodCechTotal
   augmentation :
     boundarySevenFaceNeighborhoodCechTotal ⟶
-      CoverSmallIntegralSingularChainComplex
+      coverSmallIntegralSingularChainComplex
         (SSet.toTop.obj (∂Δ[7] : SSet.{0}))
         boundarySevenComparisonFaceNeighborhood
   fac : boundaryToCech ≫ augmentation =

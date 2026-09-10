@@ -346,7 +346,7 @@ public theorem bouquetKey_of_ne (φ : ι → F ≃ₜ F) {p : ι × unitInterval
 
 /-- The generating identifications preserve the invariant. -/
 public theorem bouquetKey_of_relation {φ : ι → F ≃ₜ F} {p q : ι × unitInterval × F}
-    (h : finiteBouquetMappingTorusRelation φ p q) : bouquetKey φ p = bouquetKey φ q := by
+    (h : FiniteBouquetMappingTorusRel φ p q) : bouquetKey φ p = bouquetKey φ q := by
   obtain ⟨h1, h2⟩ | ⟨h0, h0', hx⟩ | ⟨h1, h0, hx⟩ := h
   · exact congrArg _ (Prod.ext h1 h2)
   · have hp : p = (p.1, 0, p.2.2) := by
@@ -367,7 +367,7 @@ public theorem bouquetKey_of_relation {φ : ι → F ≃ₜ F} {p q : ι × unit
 /-- Equal invariants are identified by the generating relation. -/
 public theorem eqvGen_of_bouquetKey {φ : ι → F ≃ₜ F} {p q : ι × unitInterval × F}
     (h : bouquetKey φ p = bouquetKey φ q) :
-    Relation.EqvGen (finiteBouquetMappingTorusRelation φ) p q := by
+    Relation.EqvGen (FiniteBouquetMappingTorusRel φ) p q := by
   by_cases hp0 : p.2.1 = 0
   · have hp : p = (p.1, 0, p.2.2) := Prod.ext rfl (Prod.ext hp0 rfl)
     by_cases hq0 : q.2.1 = 0
@@ -436,7 +436,7 @@ public theorem eqvGen_of_bouquetKey {φ : ι → F ≃ₜ F} {p q : ι × unitIn
 invariant `bouquetKey`.  In particular the quotient map is injective away from the cylinder
 ends. -/
 public theorem eqvGen_iff_bouquetKey (φ : ι → F ≃ₜ F) (p q : ι × unitInterval × F) :
-    Relation.EqvGen (finiteBouquetMappingTorusRelation φ) p q ↔
+    Relation.EqvGen (FiniteBouquetMappingTorusRel φ) p q ↔
       bouquetKey φ p = bouquetKey φ q := by
   refine ⟨fun h ↦ ?_, eqvGen_of_bouquetKey⟩
   induction h with

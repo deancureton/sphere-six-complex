@@ -39,7 +39,7 @@ public noncomputable def ellipticFourOverlapToCentral :
       A.orderFourCollarToActualOverlapHomeomorph.symm.continuous
 
 /-- The literal order-four overlap chart commutes with the inclusion into the actual core. -/
-public theorem centralToSectionSevenEulerPiece_orderFourActualOverlapToCentral
+public theorem centralToSectionSevenEulerPiece_ellipticFourOverlapToCentral
     (x : (A.actualVanKampenFourPieceCover.core ∩
       A.actualVanKampenFourPieceCover.ellipticFour : Set A.VanKampenSpace)) :
     A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
@@ -72,7 +72,7 @@ public noncomputable def ellipticFourCentralToCoreEquiv :
         ⟨A.vanKampenBase, A.actualVanKampenFourPieceCover.base_mem_core⟩ :=
   (TauCeti.FundamentalGroup.homeomorphMulEquivOfEq
       A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
-      (A.centralToSectionSevenEulerPiece_orderFourActualOverlapToCentral
+      (A.centralToSectionSevenEulerPiece_ellipticFourOverlapToCentral
         ⟨A.actualVanKampenFourPieceCover.ellipticFourPoint,
           A.actualVanKampenFourPieceCover.ellipticFourPoint_mem⟩)).trans
     (FundamentalGroup.fundamentalGroupMulEquivOfPath
@@ -101,7 +101,7 @@ public theorem ellipticFourOverlapToCore_eq_central
           A.actualVanKampenFourPieceCover.ellipticFour := by
     apply ContinuousMap.ext
     intro x
-    exact A.centralToSectionSevenEulerPiece_orderFourActualOverlapToCentral x
+    exact A.centralToSectionSevenEulerPiece_ellipticFourOverlapToCentral x
   have hcentral :
       A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
           A.ellipticFourOverlapCentralBase =
@@ -109,7 +109,7 @@ public theorem ellipticFourOverlapToCore_eq_central
           A.actualVanKampenFourPieceCover.ellipticFour
           ⟨A.actualVanKampenFourPieceCover.ellipticFourPoint,
             A.actualVanKampenFourPieceCover.ellipticFourPoint_mem⟩ :=
-    A.centralToSectionSevenEulerPiece_orderFourActualOverlapToCentral _
+    A.centralToSectionSevenEulerPiece_ellipticFourOverlapToCentral _
   have hcompbase := congrArg
     (fun k : C((A.actualVanKampenFourPieceCover.core ∩
       A.actualVanKampenFourPieceCover.ellipticFour : Set A.VanKampenSpace),
@@ -202,7 +202,7 @@ public noncomputable def ellipticFourCentralCoverComparison :
     letI := D.action
     QuotientCoverMapData
       (G := OrderFourAffineMappingTorusDeck A.periods)
-      (H := paperCentralFreeAffineDeck)
+      (H := PaperCentralFreeAffineDeck)
       A.ellipticFourBoundaryProjection D.data.projection := by
   let _ := A.ellipticFourBoundaryAction
   let D := A.centralAffineUniversalCover

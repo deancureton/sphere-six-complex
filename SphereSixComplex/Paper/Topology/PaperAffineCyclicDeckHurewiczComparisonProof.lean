@@ -37,10 +37,10 @@ public noncomputable def establishedAffineCyclicDeckHurewiczComparison
       P.lift_continuous P.lift_symm_continuous
   let b : D.reducedCentralFiber := q 0
   let e := hp.fundamentalGroupEquiv (⟨0, rfl⟩ : q ⁻¹' {b})
-  let hOneEquiv := deckHOneEquivOfFundamentalGroupEquivOpposite b e
+  let hOneEquiv := homologyOneEquivOfPi1Opposite b e
   refine { hOneEquiv := hOneEquiv, projection := ?_ }
   intro x
-  apply deckHOneEquivOfFundamentalGroupEquivOpposite_marked
+  apply homologyOneEquivOfPi1Opposite_apply_marked
     b e (fun y : Lattice ↦ affineCyclicKernelIncl P y)
       (fun y ↦ projectedStraightPeriodLoop P y) (coverProjectionLatticeMap P)
   · exact projectedStraightPeriodLoop_fundamentalGroupEquiv P hp

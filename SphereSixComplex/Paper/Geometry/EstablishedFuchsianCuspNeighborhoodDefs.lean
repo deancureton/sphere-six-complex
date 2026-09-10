@@ -13,7 +13,7 @@ This module contains the data structures used to state the classical cusp-neighb
 
 noncomputable section
 
-namespace SphereSixComplex.Geometry.EstablishedFuchsianCuspNeighborhood
+namespace SphereSixComplex.Geometry.FuchsianCuspNeighborhood
 
 open Set SphereSixComplex.TriangleGroup SphereSixComplex.Periods
 open SphereSixComplex.Geometry.CuspPeriodExpansion
@@ -21,13 +21,13 @@ open SphereSixComplex.Geometry.GlobalTorusFamily
 
 /-- The open source horodisc selected by the normalized coordinate and a strict `q`-radius. -/
 public def normalizedCuspRegion
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (r : ℝ) : Set UpperHalfPlane :=
   N.lift '' {s : ℂ | s ∈ cuspHalfPlane N.height ∧ ‖cuspQ s‖ < r}
 
 /-- Exact classical data for a sufficiently deep horodisc at the parabolic end. -/
 public structure Data
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (upperRadius : ℝ) where
   radius : ℝ
   radius_pos : 0 < radius
@@ -52,7 +52,7 @@ public structure Data
 namespace Data
 
 public theorem closure_region_regular
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {upperRadius : ℝ}
     (H : Data N upperRadius) : closure (normalizedCuspRegion N H.radius) ⊆
       {z | IsRegularBasePoint
@@ -72,7 +72,7 @@ end Data
 /-- A compact set of source representatives for the complement of a selected normalized
 horodisc. -/
 public structure CompactTruncationData
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {upperRadius : ℝ}
     (H : Data N upperRadius) where
   core : Set UpperHalfPlane
@@ -81,7 +81,7 @@ public structure CompactTruncationData
     fuchsianSourceAction g • z ∈ normalizedCuspRegion N H.radius ∨
       fuchsianSourceAction g • z ∈ core
 
-end SphereSixComplex.Geometry.EstablishedFuchsianCuspNeighborhood
+end SphereSixComplex.Geometry.FuchsianCuspNeighborhood
 
 end
 

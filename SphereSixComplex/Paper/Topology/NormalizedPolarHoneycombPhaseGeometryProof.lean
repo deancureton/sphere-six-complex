@@ -31,22 +31,22 @@ open SphereSixComplex.Geometry.CuspStraighteningRetraction
 /-- A concrete ambient deformation to the toric zero fibre, with only the preservation and
 equivariance properties needed to restrict it to a normalized polar honeycomb. -/
 public structure CompactPhaseEquivariantAmbientZeroHomotopy
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
     (Q : NormalizedPolarHoneycombConstructionData N M r) where
-  homotopy : C(unitInterval × LocalCarrier M r, LocalCarrier M r)
-  map_zero_left : ∀ p : LocalCarrier M r, homotopy (0, p) = p
-  map_one_t : ∀ p : LocalCarrier M r, M.t (homotopy (1, p)) = 0
-  fixed_of_t_eq_zero : ∀ s (p : LocalCarrier M r),
+  homotopy : C(unitInterval × localCarrier M r, localCarrier M r)
+  map_zero_left : ∀ p : localCarrier M r, homotopy (0, p) = p
+  map_one_t : ∀ p : localCarrier M r, M.t (homotopy (1, p)) = 0
+  fixed_of_t_eq_zero : ∀ s (p : localCarrier M r),
     M.t p = 0 → homotopy (s, p) = p
   positive_mem : ∀ s (q : Q.positivePart), homotopy (s, q) ∈ Q.positivePart
   positiveDeck_equivariant :
     letI := normalizedPositiveDeckAction N M Q.positivePart Q.positiveDeck_mem
     ∀ (g : Multiplicative ParameterLattice) s (q : Q.positivePart),
-      homotopy (s, ((g • q : Q.positivePart) : LocalCarrier M r)) =
+      homotopy (s, ((g • q : Q.positivePart) : localCarrier M r)) =
         ((g • ⟨homotopy (s, q), positive_mem s q⟩ : Q.positivePart) :
-          LocalCarrier M r)
-  compactPhase_equivariant : ∀ s k (p : LocalCarrier M r),
+          localCarrier M r)
+  compactPhase_equivariant : ∀ s k (p : localCarrier M r),
     homotopy (s, compactPhaseLocalAction M r k p) =
       compactPhaseLocalAction M r k (homotopy (s, p))
 
@@ -54,7 +54,7 @@ namespace CompactPhaseEquivariantAmbientZeroHomotopy
 
 /-- Restrict the ambient endpoint to the positive part. -/
 public def positiveRetract
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
     {Q : NormalizedPolarHoneycombConstructionData N M r}
     (H : CompactPhaseEquivariantAmbientZeroHomotopy Q) :
@@ -67,7 +67,7 @@ public def positiveRetract
 
 /-- Restrict the ambient deformation to the positive part. -/
 public def positiveHomotopy
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
     {Q : NormalizedPolarHoneycombConstructionData N M r}
     (H : CompactPhaseEquivariantAmbientZeroHomotopy Q) :
@@ -83,7 +83,7 @@ public def positiveHomotopy
 /-- The restricted ambient deformation is the required lattice-equivariant strong deformation
 retraction of the positive part onto its central honeycomb. -/
 public def positiveEquivariantStrongDeformationRetraction
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
     {Q : NormalizedPolarHoneycombConstructionData N M r}
     (H : CompactPhaseEquivariantAmbientZeroHomotopy Q) :
@@ -117,7 +117,7 @@ public def positiveEquivariantStrongDeformationRetraction
 
 /-- The direct ambient formula packages as the earlier ambient-retraction interface. -/
 public def toAmbientRetraction
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
     {Q : NormalizedPolarHoneycombConstructionData N M r}
     (H : CompactPhaseEquivariantAmbientZeroHomotopy Q) :
@@ -132,7 +132,7 @@ public def toAmbientRetraction
 /-- Hence a single ambient zero-fibre formula gives the exact phase-geometric core, with no
 separate modulus factorization or stabilizer calculation. -/
 public theorem toPolarPhaseGeometricCore
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
     {Q : NormalizedPolarHoneycombConstructionData N M r}
     (H : CompactPhaseEquivariantAmbientZeroHomotopy Q) :
@@ -145,7 +145,7 @@ end CompactPhaseEquivariantAmbientZeroHomotopy
 Unlike the established conclusion, this record does not contain a phase-geometric core or a
 positive-part retraction. -/
 public structure NormalizedPolarHoneycombAmbientZeroGeometry
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) (r : ℝ) where
   construction : NormalizedPolarHoneycombConstructionData N M r
   ambientZeroHomotopy : CompactPhaseEquivariantAmbientZeroHomotopy construction
@@ -154,7 +154,7 @@ namespace NormalizedPolarHoneycombAmbientZeroGeometry
 
 /-- Direct ambient geometry produces the exact subtype occurring in the established axiom. -/
 public def toPhaseGeometry
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
     (G : NormalizedPolarHoneycombAmbientZeroGeometry N M r) :
     {Q : NormalizedPolarHoneycombConstructionData N M r //
@@ -167,7 +167,7 @@ end NormalizedPolarHoneycombAmbientZeroGeometry
 `normalizedPolarHoneycombPhaseGeometry`.  The premise is independent construction data; this
 proof does not select it from that axiom. -/
 public theorem normalizedPolarHoneycombPhaseGeometry_of_ambientZeroGeometry
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) (r : ℝ)
     (_hr : 0 < r)
     (h : Nonempty (NormalizedPolarHoneycombAmbientZeroGeometry N M r)) :

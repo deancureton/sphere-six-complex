@@ -39,7 +39,7 @@ variable (A : PaperAnalyticData)
 /-- The central affine deck product classified by the order-three Cayley and principal-gauge
 windings. -/
 public noncomputable def orderThreeFillingRelationClassifiedCentralProductDeck :
-    paperCentralFreeAffineDeck :=
+    PaperCentralFreeAffineDeck :=
   freeAffineLift (M := paperCentralFreeMonodromy) firstMeridian ^ 3 *
     (Additive.toMul
       (freeAffineTranslation (M := paperCentralFreeMonodromy) (-epsilon)))⁻¹
@@ -47,7 +47,7 @@ public noncomputable def orderThreeFillingRelationClassifiedCentralProductDeck :
 /-- The central affine deck product classified by the order-four Cayley and principal-gauge
 windings. -/
 public noncomputable def orderFourFillingRelationClassifiedCentralProductDeck :
-    paperCentralFreeAffineDeck :=
+    PaperCentralFreeAffineDeck :=
   freeAffineLift (M := paperCentralFreeMonodromy) secondMeridian ^ 4 *
     (Additive.toMul
       (freeAffineTranslation (M := paperCentralFreeMonodromy) epsilon'))⁻¹
@@ -147,7 +147,7 @@ public theorem centralAffineUniversalCoverPointOfPath_projects
 deck label. -/
 public theorem centralAffineUniversalCoverPointOfPath_fundamentalGroupEquiv
     {y : A.CentralFamily} (beta : Path A.cuspCentralBase y)
-    (d : paperCentralFreeAffineDeck) :
+    (d : PaperCentralFreeAffineDeck) :
     let D := A.centralAffineUniversalCover
     letI := D.topology
     letI := D.action
@@ -242,13 +242,13 @@ public theorem centralAffineUniversalCoverPointOfPath_fundamentalGroupEquiv
 public noncomputable def ellipticThreeCentralProductConnector :
     Path A.cuspCentralBase A.ellipticThreeCentralBase :=
   A.ellipticThreeCentralGeometricConnector.cast
-    A.centralAffineBase_eq_actualCuspCentralBase.symm rfl
+    A.centralAffineBase_eq_cuspCentralBase.symm rfl
 
 /-- The order-four analogue of the geometric based-path connector. -/
 public noncomputable def ellipticFourCentralProductConnector :
     Path A.cuspCentralBase A.ellipticFourCentralBase :=
   A.ellipticFourCentralGeometricConnector.cast
-    A.centralAffineBase_eq_actualCuspCentralBase.symm rfl
+    A.centralAffineBase_eq_cuspCentralBase.symm rfl
 
 /-- In the local product coordinates, the complete order-three regular loop is exactly the
 one-turn Cayley loop together with the principal-gauge loop and its fixed fibre offset. -/
@@ -531,7 +531,7 @@ public theorem OrderThreeActualEllipticCentralCoverProductLiftComparison.toWhole
       fundamentalGroupMulEquivOfEq_eq_elementOfBaseEq] using
       fundamentalGroupMulEquivOfPath_elementOfBaseEq_eq_cast_left
         A.ellipticThreeCentralGeometricConnector
-        A.centralAffineBase_eq_actualCuspCentralBase.symm
+        A.centralAffineBase_eq_cuspCentralBase.symm
         (paperPuncturedGlobalFamilyAffinePresentation A
           orderThreeFillingRelationClassifiedCentralProductDeck)
   have hlabelExpected :
@@ -591,7 +591,7 @@ public theorem OrderFourActualEllipticCentralCoverProductLiftComparison.toWholeI
       fundamentalGroupMulEquivOfEq_eq_elementOfBaseEq] using
       fundamentalGroupMulEquivOfPath_elementOfBaseEq_eq_cast_left
         A.ellipticFourCentralGeometricConnector
-        A.centralAffineBase_eq_actualCuspCentralBase.symm
+        A.centralAffineBase_eq_cuspCentralBase.symm
         (paperPuncturedGlobalFamilyAffinePresentation A
           orderFourFillingRelationClassifiedCentralProductDeck)
   have hlabelExpected :

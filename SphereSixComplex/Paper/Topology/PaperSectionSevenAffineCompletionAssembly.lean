@@ -155,7 +155,7 @@ public noncomputable def AffineOrderThreeSideProductInput.bandToReducedFiber
     C((A.actualAffineHeightSplit.allocation.orderThreeSide ∩
         A.actualAffineHeightSplit.allocation.orderFourSide :
           Set A.ellipticInterior),
-      OrderThreeReducedCentralFiber A.periods) :=
+      orderThreeReducedCentralFiber A.periods) :=
   (A.orderThreeFillingImageHomotopyEquiv.toFun.comp
     (P.actualHomotopyEquivalenceInclusion.toHomotopyEquiv.trans
       (nestedSubtypeHomeomorph A.actualAffineHeightSplit.allocation.orderThreeSide
@@ -170,7 +170,7 @@ public noncomputable def affineBandOrderThreeCoverMap (A : PaperAnalyticData) :
     C((A.actualAffineHeightSplit.allocation.orderThreeSide ∩
         A.actualAffineHeightSplit.allocation.orderFourSide :
           Set A.ellipticInterior),
-      OrderThreeReducedCentralFiber A.periods) :=
+      orderThreeReducedCentralFiber A.periods) :=
   (RadialEllipticActionData.centralFiberCoverProjection
       (orderThreeRadialActionData A.periods)).comp
     ⟨A.duplicatedSectionSevenBandToOrderThreeCoverSource,
@@ -187,7 +187,7 @@ public noncomputable def AffineOrderFourSideProductInput.bandToReducedFiber
     C((A.actualAffineHeightSplit.allocation.orderThreeSide ∩
         A.actualAffineHeightSplit.allocation.orderFourSide :
           Set A.ellipticInterior),
-      OrderFourReducedCentralFiber A.periods) :=
+      orderFourReducedCentralFiber A.periods) :=
   (A.orderFourFillingImageHomotopyEquiv.toFun.comp
     (P.actualHomotopyEquivalenceInclusion.toHomotopyEquiv.trans
       (nestedSubtypeHomeomorph A.actualAffineHeightSplit.allocation.orderFourSide
@@ -202,7 +202,7 @@ public noncomputable def affineBandOrderFourCoverMap (A : PaperAnalyticData) :
     C((A.actualAffineHeightSplit.allocation.orderThreeSide ∩
         A.actualAffineHeightSplit.allocation.orderFourSide :
           Set A.ellipticInterior),
-      OrderFourReducedCentralFiber A.periods) :=
+      orderFourReducedCentralFiber A.periods) :=
   (RadialEllipticActionData.centralFiberCoverProjection
       (orderFourRadialActionData A.periods)).comp
     ⟨A.duplicatedSectionSevenBandToOrderFourCoverSource,

@@ -98,7 +98,7 @@ public noncomputable def boundarySevenStrictFlagPositiveFaceOrderIso
       _ ↔ i.1 ≤ j.1 := hF.le_iff_le
 
 /-- The proposition-level positive-face matching interface is unconditional. -/
-public theorem boundarySevenStrictFlagPositiveFaceOrderMatching_proof :
+public theorem BoundarySeven.positiveFace_order_matching :
     BoundarySevenStrictFlagPositiveFaceOrderMatching := by
   intro k m F G w v hF hG h
   let e := boundarySevenStrictFlagPositiveFaceOrderIso
@@ -131,8 +131,8 @@ public theorem boundarySevenStrictFlagCommonRestriction :
     SimplexCategory.mkHom gw.toOrderHom
   let u : stdSimplex ℝ (Fin (r + 1)) :=
     standardSimplexPositiveSupportCompressed w
-  have hfg : BoundarySevenProperFaceNerve.map f.op F =
-      BoundarySevenProperFaceNerve.map g.op G := by
+  have hfg : boundarySevenProperFaceNerve.map f.op F =
+      boundarySevenProperFaceNerve.map g.op G := by
     refine ComposableArrows.ext (fun i ↦ ?_) (fun i hi ↦ ?_)
     · change F.obj (fw i) = G.obj (gw i)
       exact boundarySevenStrictFlagPositiveFaceMatch_face
@@ -152,9 +152,9 @@ public theorem boundarySevenStrictFlagCommonRestriction :
     calc
       boundarySevenProperFaceAffineFlagMap m G (stdSimplex.map g u) =
           boundarySevenProperFaceAffineFlagMap r
-            (BoundarySevenProperFaceNerve.map g.op G) u := hnatG.symm
+            (boundarySevenProperFaceNerve.map g.op G) u := hnatG.symm
       _ = boundarySevenProperFaceAffineFlagMap r
-            (BoundarySevenProperFaceNerve.map f.op F) u := by rw [hfg]
+            (boundarySevenProperFaceNerve.map f.op F) u := by rw [hfg]
       _ = boundarySevenProperFaceAffineFlagMap k F (stdSimplex.map f u) := hnatF
       _ = boundarySevenProperFaceAffineFlagMap k F w := by rw [hmapf]
       _ = boundarySevenProperFaceAffineFlagMap m G v := h

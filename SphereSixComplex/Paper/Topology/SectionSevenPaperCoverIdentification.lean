@@ -55,8 +55,8 @@ public def finiteCoverIntersectionInclusion {s t : Finset iota} (h : s ⊆ t) :
 
 /-- The singular-chain map induced by inclusion of finite cover intersections. -/
 public noncomputable def finiteCoverIntersectionChainMap {s t : Finset iota} (h : s ⊆ t) :
-    IntegralSingularChainComplex (finiteCoverIntersection U t) ⟶
-      IntegralSingularChainComplex (finiteCoverIntersection U s) :=
+    integralSingularChainComplex (finiteCoverIntersection U t) ⟶
+      integralSingularChainComplex (finiteCoverIntersection U s) :=
   integralSingularChainMap (finiteCoverIntersectionInclusion U h)
 
 @[simp]
@@ -95,7 +95,7 @@ public structure SectionSevenStarIntersectionChainModels (A : FourPieceStarGluin
   /-- Each local model is chain-homotopy equivalent to the full singular chains of the actual
   intersection; no acyclicity assumption is made. -/
   realization : ∀ s, HomotopyEquiv (model s)
-    (IntegralSingularChainComplex
+    (integralSingularChainComplex
       (finiteCoverIntersection (sectionSevenStarOpenCover A).piece s.1))
   /-- Forward realizations commute with every intersection inclusion. -/
   realization_hom_naturality : ∀ {s t} (h : s.1 ⊆ t.1),
@@ -240,7 +240,7 @@ public noncomputable def localLerayCechTotal
 /-- The same finite-intersection diagram with the full singular chain complex at every vertex. -/
 public noncomputable def singularIntersectionModels (A : FourPieceStarGluingData) :
     SectionSevenStarIntersectionChainModels A where
-  model s := IntegralSingularChainComplex
+  model s := integralSingularChainComplex
     (finiteCoverIntersection (sectionSevenStarOpenCover A).piece s.1)
   face h := finiteCoverIntersectionChainMap (sectionSevenStarOpenCover A).piece h
   face_id s := by

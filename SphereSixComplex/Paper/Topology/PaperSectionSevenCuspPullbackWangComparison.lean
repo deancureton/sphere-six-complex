@@ -52,7 +52,7 @@ public theorem cuspPulledBackBoundaryHom_apply (x) :
 difference map. -/
 public noncomputable def cuspPulledBackBoundaryInvariantHom :
     IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0) →+
-      (presentationTwo (D := D)).Invariants where
+      (presentationTwo (D := D)).invariants where
   toFun x := ⟨D.cuspPulledBackBoundary x, by
     rw [← D.canonicalBoundary_cuspToEllipticUnionHomology x,
       ← presentationTwo_boundary]

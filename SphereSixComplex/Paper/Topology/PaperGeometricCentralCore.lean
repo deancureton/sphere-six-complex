@@ -103,7 +103,7 @@ public theorem cuspBoundaryTranslationLoop_class_eq_ofDeck (a : Lattice) :
         (additiveCuspRadiusCover W.localWitness.radius) :=
       additiveCuspBoundaryCover_simplyConnected W
     let hp : IsQuotientCoveringMap A.cuspBoundaryProjection
-        paperCuspBoundaryDeck :=
+        PaperCuspBoundaryDeck :=
       (additiveCuspBoundaryProjection_isQuotientCoveringMap W).homeomorph_comp
         A.cuspCollarToStarOverlapHomeomorph
     Path.Homotopic.Quotient.mk (A.cuspBoundaryTranslationLoop a) =
@@ -115,7 +115,7 @@ public theorem cuspBoundaryTranslationLoop_class_eq_ofDeck (a : Lattice) :
       (additiveCuspRadiusCover W.localWitness.radius) :=
     additiveCuspBoundaryCover_simplyConnected W
   let hp : IsQuotientCoveringMap A.cuspBoundaryProjection
-      paperCuspBoundaryDeck :=
+      PaperCuspBoundaryDeck :=
     (additiveCuspBoundaryProjection_isQuotientCoveringMap W).homeomorph_comp
       A.cuspCollarToStarOverlapHomeomorph
   let e : A.cuspBoundaryProjection ⁻¹'
@@ -417,7 +417,7 @@ public theorem exists_geometricCentralTranslationReindexing :
 
 /-- The transported marked translations and the literal cusp translations have exactly the
 same range in the actual central fundamental group. -/
-public theorem geometricCentralTranslation_range_eq_actualCuspCentralTranslation :
+public theorem geometricCentralTranslation_range_eq_cuspCentralTranslation :
     Set.range (fun a ↦ Additive.toMul (A.geometricCentralTranslation a)) =
       Set.range (fun a ↦ Additive.toMul (A.cuspCentralTranslation a)) := by
   obtain ⟨g, hg⟩ := A.exists_geometricCentralTranslationReindexing
@@ -877,7 +877,7 @@ public theorem cuspCentralFundamentalGroup_generated :
     Subgroup.closure
       (Set.range (fun a ↦ Additive.toMul (A.cuspCentralTranslation a)) ∪
         {A.geometricCentralRhoOne, A.geometricCentralRhoTwo}) = ⊤ := by
-  rw [← A.geometricCentralTranslation_range_eq_actualCuspCentralTranslation]
+  rw [← A.geometricCentralTranslation_range_eq_cuspCentralTranslation]
   exact A.geometricCentralFundamentalGroup_generated
 
 /-- The actual cusp translations with the peripheral-conjugator marking and the two geometric

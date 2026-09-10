@@ -54,8 +54,8 @@ public noncomputable def cuspCentralToCoreEquiv :
   (TauCeti.FundamentalGroup.homeomorphMulEquivOfEq
       A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
       (by
-        rw [A.centralAffineBase_eq_actualCuspCentralBase]
-        exact A.centralToSectionSevenEulerPieceHomeomorph_actualCuspOverlapToCentral
+        rw [A.centralAffineBase_eq_cuspCentralBase]
+        exact A.centralToSectionSevenEulerPieceHomeomorph_cuspOverlapToCentral
           A.cuspOverlapBase)).trans
     (FundamentalGroup.fundamentalGroupMulEquivOfPath
       (A.actualVanKampenFourPieceCover.connectorInCore
@@ -73,7 +73,7 @@ public theorem cuspOverlapToCore_eq_central
     A.cuspOverlapToCore γ =
       A.cuspCentralToCoreEquiv
         (FundamentalGroup.mapOfEq A.cuspOverlapToCentral
-          A.centralAffineBase_eq_actualCuspCentralBase.symm γ) := by
+          A.centralAffineBase_eq_cuspCentralBase.symm γ) := by
   have hmap :
       (⟨A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph,
           A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph.continuous⟩ :
@@ -83,18 +83,18 @@ public theorem cuspOverlapToCore_eq_central
           A.actualVanKampenFourPieceCover.cusp := by
     apply ContinuousMap.ext
     intro x
-    exact A.centralToSectionSevenEulerPieceHomeomorph_actualCuspOverlapToCentral x
+    exact A.centralToSectionSevenEulerPieceHomeomorph_cuspOverlapToCentral x
   have hcentral :
       A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
           A.centralAffineBase =
         A.actualVanKampenFourPieceCover.overlapToCore
           A.actualVanKampenFourPieceCover.cusp A.cuspOverlapBase := by
-    rw [A.centralAffineBase_eq_actualCuspCentralBase]
-    exact A.centralToSectionSevenEulerPieceHomeomorph_actualCuspOverlapToCentral
+    rw [A.centralAffineBase_eq_cuspCentralBase]
+    exact A.centralToSectionSevenEulerPieceHomeomorph_cuspOverlapToCentral
       A.cuspOverlapBase
   have hcusp : A.cuspOverlapToCentral A.cuspOverlapBase =
       A.centralAffineBase :=
-    A.centralAffineBase_eq_actualCuspCentralBase.symm
+    A.centralAffineBase_eq_cuspCentralBase.symm
   have hcompbase :
       ((⟨A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph,
           A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph.continuous⟩ :
@@ -231,7 +231,7 @@ public theorem cuspOverlapToCore_eq_fromActual
       (FundamentalGroup.mapOfEq A.cuspOverlapToCentral _ gamma) =
     A.cuspCentralToCoreEquiv
       (SphereSixComplex.Topology.fundamentalGroupMulEquivOfEq
-        A.centralAffineBase_eq_actualCuspCentralBase.symm
+        A.centralAffineBase_eq_cuspCentralBase.symm
         (FundamentalGroup.map A.cuspOverlapToCentral
           A.cuspOverlapBase gamma))
   congr 1

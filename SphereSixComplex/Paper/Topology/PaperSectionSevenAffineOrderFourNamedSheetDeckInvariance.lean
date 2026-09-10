@@ -31,7 +31,7 @@ public theorem orderFourCayleyHomeomorph_norm_eq_of_fix_fuchsianTwo
     (hfix : fuchsianSourceAction g • fuchsianTwoFixedPoint = fuchsianTwoFixedPoint) :
     ‖(orderFourCayleyHomeomorph (fuchsianSourceAction g • z) : ℂ)‖ =
       ‖(orderFourCayleyHomeomorph z : ℂ)‖ := by
-  obtain ⟨a, rfl⟩ := (establishedFuchsianTwoStabilizerExact g).mp hfix
+  obtain ⟨a, rfl⟩ := (fuchsianTwoFixed_iff_mem_range_inr g).mp hfix
   exact orderFourCayleyHomeomorph_norm_inr a z
 
 /-- Global invariance of the order-four Cayley norm is equivalent to fixing its elliptic centre. -/
@@ -61,7 +61,7 @@ public theorem orderFourCayleyHomeomorph_norm_invariant_iff_mem_orderFourFactor 
         ‖(orderFourCayleyHomeomorph z : ℂ)‖) ↔
       ∃ a : CyclicFour, g = Monoid.Coprod.inr a :=
   (orderFourCayleyHomeomorph_norm_invariant_iff_fix_fuchsianTwo g).trans
-    (establishedFuchsianTwoStabilizerExact g)
+    (fuchsianTwoFixed_iff_mem_range_inr g)
 
 /-- The unrestricted deck-invariance claim is false: the order-three generator moves the
 order-four Cayley centre away from radius zero. -/

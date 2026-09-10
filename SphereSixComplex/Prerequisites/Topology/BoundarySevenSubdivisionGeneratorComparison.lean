@@ -162,7 +162,7 @@ the generator of the unique normalized seven-simplex, apply its boundary (the ex
 isomorphism), then transport that cycle back from `Δ[7]` to `∂Δ[7]`. -/
 public noncomputable def boundarySevenNormalizedOrientationGenerator :
     AddCommGrpCat.of ℤ ⟶
-      kernel (BoundarySevenNormalizedIntegralChains.d 6 5) :=
+      kernel (boundarySevenNormalizedIntegralChains.d 6 5) :=
   standardSevenNormalizedChainsXSevenIsoInt.inv ≫
     standardSevenNormalizedChainsXSevenIsoTopCycles.hom ≫
       boundarySevenTopCyclesIsoStandardSevenTopCycles.inv

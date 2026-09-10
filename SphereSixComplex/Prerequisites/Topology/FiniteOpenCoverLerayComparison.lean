@@ -64,12 +64,12 @@ public noncomputable def finiteCoverCechRowArrowIso
     (alternatingFaceMapComplexCompMapHomologicalComplexIso F).app Y
   let r₀ : firstQuadrantHorizontalRow
       (firstQuadrantSingleZeroBicomplex
-        (CoverSmallIntegralSingularChainComplex (TopCat.of X) U)) q ≅
+        (coverSmallIntegralSingularChainComplex (TopCat.of X) U)) q ≅
       (ChainComplex.single₀ AddCommGrpCat).obj
         (SimplicialObject.Augmented.point.obj R) :=
     (HomologicalComplex.singleMapHomologicalComplex F
       (ComplexShape.down ℕ) 0).app
-        (CoverSmallIntegralSingularChainComplex (TopCat.of X) U)
+        (coverSmallIntegralSingularChainComplex (TopCat.of X) U)
   let e₀ : Arrow.mk (firstQuadrantHorizontalRowMap
       (finiteCoverLerayCechOuterAugmentation U) q) ≅
       Arrow.mk (AlternatingFaceMapComplex.ε.app R) :=
@@ -129,11 +129,11 @@ public noncomputable def finiteOpenCoverLerayCechComparison
         (finiteCoverLerayCechOuterAugmentation U) q)
       (finiteCoverCechRowArrowIso U q).symm
   let P := firstQuadrantTotalToSingleZero
-    (CoverSmallIntegralSingularChainComplex (TopCat.of X) U)
+    (coverSmallIntegralSingularChainComplex (TopCat.of X) U)
   have hP : QuasiIso P := by
     let _ : IsIso P :=
       (firstQuadrantSingleZeroTotalIso
-        (CoverSmallIntegralSingularChainComplex (TopCat.of X) U)).isIso_hom
+        (coverSmallIntegralSingularChainComplex (TopCat.of X) U)).isIso_hom
     infer_instance
   refine ⟨finiteCoverLerayCechTotalAugmentation U, ?_⟩
   change QuasiIso (T ≫ P)

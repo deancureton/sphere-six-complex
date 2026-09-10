@@ -29,14 +29,14 @@ variable {E : Type u} {Z : Type v}
   [TopologicalSpace E] [TopologicalSpace Z]
 
 /-- The preimage of a base region under a map. -/
-public abbrev coveringRegionPreimage (p : E → Z) (S : Set Z) :=
+public abbrev CoveringRegionPreimage (p : E → Z) (S : Set Z) :=
   {e : E // p e ∈ S}
 
 /-- An invariant map induces an action on every preimage region. -/
 @[instance_reducible] public noncomputable def coveringRegionPreimageAction
     (totalAction : MulAction G E) (p : E → Z)
     (p_invariant : ∀ g e, p (actionMap totalAction g e) = p e)
-    (S : Set Z) : MulAction G (coveringRegionPreimage p S) where
+    (S : Set Z) : MulAction G (CoveringRegionPreimage p S) where
   smul g e := ⟨actionMap totalAction g e.1, by rw [p_invariant]; exact e.2⟩
   one_smul e := Subtype.ext (one_smul G e.1)
   mul_smul g h e := Subtype.ext (mul_smul g h e.1)
@@ -47,15 +47,15 @@ public theorem coveringRegionPreimageAction_continuous
     (S : Set Z)
     (totalContinuous : letI := totalAction; ContinuousConstSMul G E) :
     letI := coveringRegionPreimageAction totalAction p p_invariant S
-    ContinuousConstSMul G (coveringRegionPreimage p S) := by
+    ContinuousConstSMul G (CoveringRegionPreimage p S) := by
   let _ := totalAction
   let _ : ContinuousConstSMul G E := totalContinuous
   let _ := coveringRegionPreimageAction totalAction p p_invariant S
   constructor
   intro g
-  change Continuous (fun e : coveringRegionPreimage p S ↦
+  change Continuous (fun e : CoveringRegionPreimage p S ↦
     (⟨actionMap totalAction g e.1, by rw [p_invariant]; exact e.2⟩ :
-      coveringRegionPreimage p S))
+      CoveringRegionPreimage p S))
   exact ((continuous_const_smul g).comp continuous_subtype_val).subtype_mk _
 
 public def coveringRegionInclusion
@@ -81,38 +81,38 @@ variable (totalAction : MulAction G E) (p : E → Z)
 variable (p_invariant : ∀ g e, p (actionMap totalAction g e) = p e)
 variable (cov : IsCoveringMap p)
 
-def bigCoordinate : C(coveringRegionPreimage p big, big) where
+def bigCoordinate : C(CoveringRegionPreimage p big, big) where
   toFun e := ⟨p e.1, e.2⟩
   continuous_toFun := (cov.continuous.comp continuous_subtype_val).subtype_mk _
 
-def reversedBaseHomotopy : C(unitInterval × coveringRegionPreimage p big, Z) where
+def reversedBaseHomotopy : C(unitInterval × CoveringRegionPreimage p big, Z) where
   toFun te := (D.homotopy.symm (te.1, bigCoordinate p cov te.2)).1
   continuous_toFun := continuous_subtype_val.comp
     (D.homotopy.symm.continuous.comp
       (continuous_fst.prodMk
         ((bigCoordinate p cov).continuous.comp continuous_snd)))
 
-def initialBigLift : C(coveringRegionPreimage p big, E) :=
+def initialBigLift : C(CoveringRegionPreimage p big, E) :=
   ⟨Subtype.val, continuous_subtype_val⟩
 
-theorem reversedBaseHomotopy_zero (e : coveringRegionPreimage p big) :
+theorem reversedBaseHomotopy_zero (e : CoveringRegionPreimage p big) :
     D.reversedBaseHomotopy p cov (0, e) = p (initialBigLift p e) := by
   change (D.homotopy.symm (0, bigCoordinate p cov e)).1 = p e.1
   exact congrArg Subtype.val (D.homotopy.symm.map_zero_left (bigCoordinate p cov e))
 
 noncomputable def ambientLift :
-    C(unitInterval × coveringRegionPreimage p big, E) :=
+    C(unitInterval × CoveringRegionPreimage p big, E) :=
   cov.liftHomotopy (D.reversedBaseHomotopy p cov) (initialBigLift p)
     (D.reversedBaseHomotopy_zero p cov)
 
 theorem ambientLift_projects (t : unitInterval)
-    (e : coveringRegionPreimage p big) :
+    (e : CoveringRegionPreimage p big) :
     p (D.ambientLift p cov (t, e)) = D.reversedBaseHomotopy p cov (t, e) :=
   congr_fun (cov.liftHomotopy_lifts (D.reversedBaseHomotopy p cov)
     (initialBigLift p) (D.reversedBaseHomotopy_zero p cov)) (t, e)
 
 theorem reversedBaseHomotopy_invariant (g : G) (t : unitInterval)
-    (e : coveringRegionPreimage p big) :
+    (e : CoveringRegionPreimage p big) :
     D.reversedBaseHomotopy p cov
         (t, actionMap (coveringRegionPreimageAction totalAction p p_invariant big) g e) =
       D.reversedBaseHomotopy p cov (t, e) := by
@@ -125,7 +125,7 @@ theorem reversedBaseHomotopy_invariant (g : G) (t : unitInterval)
 
 theorem ambientLift_equivariant
     (totalContinuous : letI := totalAction; ContinuousConstSMul G E)
-    (g : G) (t : unitInterval) (e : coveringRegionPreimage p big) :
+    (g : G) (t : unitInterval) (e : CoveringRegionPreimage p big) :
     D.ambientLift p cov
         (t, actionMap (coveringRegionPreimageAction totalAction p p_invariant big) g e) =
       actionMap totalAction g (D.ambientLift p cov (t, e)) := by
@@ -138,12 +138,12 @@ theorem ambientLift_equivariant
     (fun g e ↦ rfl) g t e
 
 theorem ambientLift_mem_big (t : unitInterval)
-    (e : coveringRegionPreimage p big) :
+    (e : CoveringRegionPreimage p big) :
     p (D.ambientLift p cov (t, e)) ∈ big := by
   rw [D.ambientLift_projects p cov]
   exact (D.homotopy.symm (t, bigCoordinate p cov e)).2
 
-theorem ambientLift_one_mem_small (e : coveringRegionPreimage p big) :
+theorem ambientLift_one_mem_small (e : CoveringRegionPreimage p big) :
     p (D.ambientLift p cov (1, e)) ∈ small := by
   rw [D.ambientLift_projects p cov]
   simp only [reversedBaseHomotopy, ContinuousMap.Homotopy.symm_apply]
@@ -151,9 +151,9 @@ theorem ambientLift_one_mem_small (e : coveringRegionPreimage p big) :
   exact (D.normalize (bigCoordinate p cov e)).2
 
 theorem ambientLift_of_small_mem_small (t : unitInterval)
-    (e : coveringRegionPreimage p small) :
+    (e : CoveringRegionPreimage p small) :
     p (D.ambientLift p cov
-      (t, (⟨e.1, hsmall e.2⟩ : coveringRegionPreimage p big))) ∈ small := by
+      (t, (⟨e.1, hsmall e.2⟩ : CoveringRegionPreimage p big))) ∈ small := by
   rw [D.ambientLift_projects p cov]
   change (D.homotopy.symm
     (t, ⟨p e.1, hsmall e.2⟩)).1 ∈ small
@@ -189,7 +189,7 @@ public noncomputable def equivariantHomotopyEquivData
         apply Subtype.ext
         norm_num
         exact cov.liftHomotopy_zero _ _ _
-          (⟨e.1, hsmall e.2⟩ : coveringRegionPreimage p big) }
+          (⟨e.1, hsmall e.2⟩ : CoveringRegionPreimage p big) }
   rightInvHomotopy :=
     { toFun := fun te ↦ ⟨D.ambientLift p cov (σ te.1, te.2),
         D.ambientLift_mem_big p cov (σ te.1) te.2⟩

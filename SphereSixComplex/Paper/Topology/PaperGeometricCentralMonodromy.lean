@@ -80,7 +80,7 @@ public noncomputable def cuspRegularDeckPathPoint (t : unitInterval) :
   regularFamilyCoverProjection A.periods
     (A.cuspAngularRegularBasePoint t, A.cuspBoundaryCoverBase.1.1)
 
-public theorem continuous_actualCuspRegularDeckPathPoint :
+public theorem continuous_cuspRegularDeckPathPoint :
     Continuous A.cuspRegularDeckPathPoint := by
   apply (regularFamilyCoverProjection A.periods).continuous.comp
   apply Continuous.prodMk
@@ -127,7 +127,7 @@ public noncomputable def cuspRegularDeckPath :
     Path A.cuspRegularRepresentative
       (regularFamilyDeckMap A.periods g₀ A.cuspRegularRepresentative) where
   toFun := A.cuspRegularDeckPathPoint
-  continuous_toFun := A.continuous_actualCuspRegularDeckPathPoint
+  continuous_toFun := A.continuous_cuspRegularDeckPathPoint
   source' := A.cuspRegularDeckPathPoint_zero
   target' := A.cuspRegularDeckPathPoint_one
 

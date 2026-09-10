@@ -77,7 +77,7 @@ public theorem affineCentralBandProductHomeomorphOfLift_symm_fst
   have hcoord := congrArg A.centralFamilyCoordinate hkey
   rw [A.centralFamilyCoordinate_stripLiftPoint] at hcoord
   apply Subtype.ext
-  exact (congrArg (Subtype.val : RegularCoordinateBase → ℂ) hcoord).symm
+  exact (congrArg (Subtype.val : regularCoordinateBase → ℂ) hcoord).symm
 
 /-- The named marked trivialization and the marked trivialization attached to any other strip lift
 differ by a self-homeomorphism of `strip × torus` over the strip. -/

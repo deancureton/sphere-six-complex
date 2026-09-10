@@ -80,8 +80,8 @@ variable {iota : Type} (X : TopCat) (U : iota → Set X)
 
 /-- Finite iteration of affine subdivision on cover-small chains. -/
 public noncomputable def coverSmallAffineSubdivisionIterate :
-    ℕ → (CoverSmallIntegralSingularChainComplex X U ⟶
-      CoverSmallIntegralSingularChainComplex X U)
+    ℕ → (coverSmallIntegralSingularChainComplex X U ⟶
+      coverSmallIntegralSingularChainComplex X U)
   | 0 => 𝟙 _
   | m + 1 => coverSmallAffineSubdivisionIterate m ≫
       coverSmallAffineSubdivisionChainMap X U
@@ -100,7 +100,7 @@ public theorem coverSmallAffineSubdivisionIterate_succ (m : ℕ) :
 /-- Every cover-small affine-subdivision iterate is chain homotopic to the identity. -/
 public noncomputable def coverSmallAffineSubdivisionIterateHomotopy :
     ∀ m : ℕ, Homotopy (coverSmallAffineSubdivisionIterate X U m)
-      (𝟙 (CoverSmallIntegralSingularChainComplex X U))
+      (𝟙 (coverSmallIntegralSingularChainComplex X U))
   | 0 => Homotopy.refl _
   | m + 1 => by
       simpa [coverSmallAffineSubdivisionIterate_succ] using
@@ -112,7 +112,7 @@ public theorem coverSmallAffineSubdivisionIterate_homologyMap
     (m n : ℕ) :
     HomologicalComplex.homologyMap
         (coverSmallAffineSubdivisionIterate X U m) n =
-      𝟙 ((CoverSmallIntegralSingularChainComplex X U).homology n) := by
+      𝟙 ((coverSmallIntegralSingularChainComplex X U).homology n) := by
   rw [(coverSmallAffineSubdivisionIterateHomotopy X U m).homologyMap_eq]
   exact HomologicalComplex.homologyMap_id _ _
 

@@ -25,10 +25,10 @@ open CuspPuncturedCollarBridge
 variable (A : PaperAnalyticData)
 
 /-- The explicit actual cusp meridian meets the precise affine overlap strip. -/
-public theorem exists_actualCuspAngularCoordinateLoop_mem_affineVerticalStrip :
+public theorem exists_cuspAngularCoordinateLoop_mem_affineVerticalStrip :
     ∃ t : unitInterval,
       (A.cuspAngularCoordinateLoop t).1 ∈ affineVerticalStrip := by
-  obtain ⟨t, ht⟩ := A.exists_actualCuspAngularCoordinateLoop_re_eq_half
+  obtain ⟨t, ht⟩ := A.exists_cuspAngularCoordinateLoop_re_eq_half
   refine ⟨t, ?_⟩
   rw [affineVerticalStrip]
   change (1 / 3 : ℝ) < ((A.cuspAngularCoordinateLoop t).1).re ∧
@@ -53,12 +53,12 @@ public theorem cuspToEllipticInteriorMap_actualCuspAngularCollarPoint_mem_centra
   let q := A.cuspAngularCollarPoint t
   let y := A.cuspCollarToSectionSevenFinalOverlapHomeomorph q
   have hy : y.1 ∈
-      (A.openEmbeddingStarData.SectionSevenEulerCover).piece 0 ∩
-        (A.openEmbeddingStarData.SectionSevenEulerCover).piece 1 := by
+      (A.openEmbeddingStarData.sectionSevenEulerCover).piece 0 ∩
+        (A.openEmbeddingStarData.sectionSevenEulerCover).piece 1 := by
     rw [← A.cuspAttachmentOverlap_eq_centralCuspIntersection]
     exact y.2
   change (A.cuspCollarToSectionSevenFinalOverlapHomeomorph q).1 ∈
-    (A.openEmbeddingStarData.SectionSevenEulerCover).piece 0
+    (A.openEmbeddingStarData.sectionSevenEulerCover).piece 0
   exact hy.1
 
 /-- In the central chart, the literal collar point has exactly the actual cusp-loop coordinate. -/
@@ -150,7 +150,7 @@ public theorem exists_actualCuspAngularCollarPoint_mem_pulledBackIntersection
     ∃ t : unitInterval,
       A.cuspAngularCollarPoint t ∈
         R.twoDiscCover.cuspOrderThreeOpen ⊓ R.twoDiscCover.cuspOrderFourOpen := by
-  obtain ⟨t, ht⟩ := A.exists_actualCuspAngularCoordinateLoop_re_eq_half
+  obtain ⟨t, ht⟩ := A.exists_cuspAngularCoordinateLoop_re_eq_half
   refine ⟨t, ?_⟩
   exact cuspToEllipticInteriorMap_actualCuspAngularCollarPoint_mem_sideIntersection R t ht
 

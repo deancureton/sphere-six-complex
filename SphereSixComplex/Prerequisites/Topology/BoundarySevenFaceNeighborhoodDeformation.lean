@@ -394,9 +394,9 @@ public theorem boundarySevenFaceNeighborhoodHomotopyEquiv_apply
 /-- The singular-chain map induced by inclusion of a realized face into its neighbourhood. -/
 public noncomputable def boundarySevenFaceNeighborhoodIntegralSingularChainMap
     (i : Fin 8) :
-    IntegralSingularChainComplexObj
+    integralSingularChainComplexObj
         (SSet.toTop.obj (Δ[6] : SSet.{0})) ⟶
-      IntegralSingularChainComplexObj
+      integralSingularChainComplexObj
         (TopCat.of (boundarySevenComparisonFaceNeighborhood i)) :=
   integralSingularChainMapObj
     (boundarySevenFaceToComparisonFaceNeighborhood i)

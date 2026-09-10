@@ -141,12 +141,12 @@ public noncomputable def boundarySevenProperFaceInclusionHom :
 public noncomputable def subdividedFacetToBoundarySevenProperFaceNerveMap
     (p : Fin 8) :
     SimplexCategory.sd.{0}.obj (SimplexCategory.mk 6) ⟶
-      BoundarySevenProperFaceNerve :=
+      boundarySevenProperFaceNerve :=
   PartOrd.nerveFunctor.map (subdividedFacetToBoundarySevenProperFaceHom p)
 
 /-- The simplicial inclusion of the proper-face nerve into the full subdivision nerve. -/
 public noncomputable def boundarySevenProperFaceNerveInclusion :
-    BoundarySevenProperFaceNerve ⟶
+    boundarySevenProperFaceNerve ⟶
       SimplexCategory.sd.{0}.obj (SimplexCategory.mk 7) :=
   PartOrd.nerveFunctor.map boundarySevenProperFaceInclusionHom
 
@@ -239,7 +239,7 @@ public theorem subdividedFacetToBoundarySevenProperFaceNerveMap_comp_inclusion
 /-- The boundary fundamental chain written intrinsically in the proper-face nerve. -/
 public noncomputable def boundarySevenProperFaceFundamentalChain :
     AddCommGrpCat.of ℤ ⟶
-      (BoundarySevenProperFaceNerve.chainComplex (AddCommGrpCat.of ℤ)).X 6 :=
+      (boundarySevenProperFaceNerve.chainComplex (AddCommGrpCat.of ℤ)).X 6 :=
   ∑ p : Fin 8, (-1 : ℤ) ^ p.val •
     (subdividedSimplexFundamentalChain 6 ≫
       (SSet.chainComplexMap

@@ -31,7 +31,7 @@ equivalence. -/
 public noncomputable def affineOrderThreeSideToReducedFiberHomotopyEquiv
     (A : PaperAnalyticData) :
     A.actualAffineHeightSplit.allocation.orderThreeSide ≃ₕ
-      OrderThreeReducedCentralFiber A.periods :=
+      orderThreeReducedCentralFiber A.periods :=
   (orderThreeOverlapIsHomotopyEquivalence_inclusion
       A.orderThreeOverlapIsHomotopyEquivalence).toHomotopyEquiv |>.trans
     (nestedSubtypeHomeomorph A.actualAffineHeightSplit.allocation.orderThreeSide
@@ -44,7 +44,7 @@ equivalence. -/
 public noncomputable def affineOrderFourSideToReducedFiberHomotopyEquiv
     (A : PaperAnalyticData) :
     A.actualAffineHeightSplit.allocation.orderFourSide ≃ₕ
-      OrderFourReducedCentralFiber A.periods :=
+      orderFourReducedCentralFiber A.periods :=
   (orderFourOverlapIsHomotopyEquivalence_inclusion
       A.orderFourOverlapIsHomotopyEquivalence).toHomotopyEquiv |>.trans
     (nestedSubtypeHomeomorph A.actualAffineHeightSplit.allocation.orderFourSide

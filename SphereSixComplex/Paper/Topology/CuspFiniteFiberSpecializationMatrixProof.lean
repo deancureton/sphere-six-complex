@@ -48,7 +48,7 @@ open SphereSixComplex.LatticeWangAlgebra
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open WangHomologyPresentation
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
 
 namespace ActualCuspRadialClutchingData

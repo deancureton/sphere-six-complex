@@ -11,7 +11,7 @@ open CuspPuncturedCollarBridge CuspStraighteningRetraction
 open InfiniteA2Toric
 
 def cuspFiberSpecializationColumn (A : PaperAnalyticData) (j : Fin 4) :
-    IntegralSingularHomology 2 (actualLocalCuspFilling A.starCuspWitness) :=
+    IntegralSingularHomology 2 (ActualLocalCuspFilling A.starCuspWitness) :=
   integralSingularHomologyMap 2 (A.cuspFiniteFiberTorusToFilling j)
     standardTwoTorusHomologyGenerator
 

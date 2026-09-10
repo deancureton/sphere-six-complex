@@ -65,7 +65,7 @@ public def rightAwaySource : Opens B₁₂.W where
 /-- The source space of each member of the canonical seam cover. -/
 public abbrev OpenPiece : OpenPieceIndex → Type uM
   | .left => leftAwaySource B₀₁
-  | .seam => M₁ × OpenCollarParameter
+  | .seam => M₁ × openCollarParameter
   | .right => rightAwaySource B₁₂
 
 public instance (i : OpenPieceIndex) : TopologicalSpace (OpenPiece B₀₁ B₁₂ i) := by
@@ -115,12 +115,12 @@ public abbrev openPresentation : TopCat.GlueData :=
     (openPieceMap_isOpenEmbedding B₀₁ B₁₂)
 
 /-- The abstract carrier obtained by gluing the three smooth source pieces. -/
-public abbrev OpenGluedCarrier :=
+public abbrev openGluedCarrier :=
   (openPresentation B₀₁ B₁₂).toGlueData.glued
 
 /-- The abstract three-piece gluing is canonically homeomorphic to the direct quotient. -/
 public def openPresentationHomeomorph :
-    OpenGluedCarrier B₀₁ B₁₂ ≃ₜ Glue B₀₁ B₁₂ :=
+    openGluedCarrier B₀₁ B₁₂ ≃ₜ Glue B₀₁ B₁₂ :=
   OpenEmbeddingGluing.glueHomeomorph
     (OpenPiece B₀₁ B₁₂)
     (openPieceMap B₀₁ B₁₂)

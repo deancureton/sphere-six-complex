@@ -97,7 +97,7 @@ public abbrev VanKampenSpace :=
   GluedSpace A.openEmbeddingStarData.toFourPieceStarGluingData.glueData
 
 /-- The canonical four open images of the actual analytic star. -/
-public noncomputable abbrev VanKampenOpenCover :=
+public noncomputable abbrev vanKampenOpenCover :=
   sectionSevenStarOpenCover A.openEmbeddingStarData.toFourPieceStarGluingData
 
 /-- The canonical central and filling images, with concrete connector paths in the central
@@ -107,7 +107,7 @@ public noncomputable def actualVanKampenFourPieceCover :
       (A.openEmbeddingStarData.collarSourceToGlued 0
         (Classical.choice (A.starCollarSourceType_nonempty 0))) := by
   let S := A.openEmbeddingStarData
-  let C := VanKampenOpenCover A
+  let C := vanKampenOpenCover A
   let s₀ : S.collarSource 0 := Classical.choice (A.starCollarSourceType_nonempty 0)
   let s₁ : S.collarSource 1 := Classical.choice (A.starCollarSourceType_nonempty 1)
   let s₂ : S.collarSource 2 := Classical.choice (A.starCollarSourceType_nonempty 2)
@@ -117,15 +117,15 @@ public noncomputable def actualVanKampenFourPieceCover :
   have hp₀ : p₀ ∈ C.piece 0 ∩ C.piece 1 := by
     have h : p₀ ∈ Set.range (S.collarSourceToGlued 0) := ⟨s₀, rfl⟩
     rw [S.range_collarSourceToGlued 0] at h
-    simpa [C, VanKampenOpenCover] using h
+    simpa [C, vanKampenOpenCover] using h
   have hp₁ : p₁ ∈ C.piece 0 ∩ C.piece 2 := by
     have h : p₁ ∈ Set.range (S.collarSourceToGlued 1) := ⟨s₁, rfl⟩
     rw [S.range_collarSourceToGlued 1] at h
-    simpa [C, VanKampenOpenCover] using h
+    simpa [C, vanKampenOpenCover] using h
   have hp₂ : p₂ ∈ C.piece 0 ∩ C.piece 3 := by
     have h : p₂ ∈ Set.range (S.collarSourceToGlued 2) := ⟨s₂, rfl⟩
     rw [S.range_collarSourceToGlued 2] at h
-    simpa [C, VanKampenOpenCover] using h
+    simpa [C, vanKampenOpenCover] using h
   let _ : PathConnectedSpace A.CentralFamily := A.starCentral_pathConnected
   let _ : PathConnectedSpace S.central := A.starCentral_pathConnected
   let _ : PathConnectedSpace (C.piece 0) :=

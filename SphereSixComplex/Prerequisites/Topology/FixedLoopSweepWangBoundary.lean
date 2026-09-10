@@ -227,9 +227,9 @@ public theorem fixedLoopCylinderPreMap_relation
     {G : Type} [TopologicalSpace G]
     (phi : G ≃ₜ G) (c : FixedTopologicalCircle phi)
     {p q : Unit × unitInterval × StdTorus 1}
-    (h : finiteBouquetMappingTorusRelation
+    (h : FiniteBouquetMappingTorusRel
       (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1)) p q) :
-    finiteBouquetMappingTorusRelation (fun _ : Unit ↦ phi)
+    FiniteBouquetMappingTorusRel (fun _ : Unit ↦ phi)
       (fixedLoopCylinderPreMap phi c p) (fixedLoopCylinderPreMap phi c q) := by
   rcases h with h | h | h
   · exact Or.inl ⟨h.1, congrArg (fun z ↦ (z.1, c.1 z.2)) h.2⟩
@@ -244,9 +244,9 @@ public theorem fixedLoopCylinderPreMap_setoid
     {G : Type} [TopologicalSpace G]
     (phi : G ≃ₜ G) (c : FixedTopologicalCircle phi)
     {p q : Unit × unitInterval × StdTorus 1}
-    (hpq : Relation.EqvGen (finiteBouquetMappingTorusRelation
+    (hpq : Relation.EqvGen (FiniteBouquetMappingTorusRel
       (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1))) p q) :
-    Relation.EqvGen (finiteBouquetMappingTorusRelation
+    Relation.EqvGen (FiniteBouquetMappingTorusRel
       (fun _ : Unit ↦ phi))
         (fixedLoopCylinderPreMap phi c p) (fixedLoopCylinderPreMap phi c q) := by
   induction hpq with
@@ -1239,7 +1239,7 @@ open StandardTorusHomology
 
 public theorem fixedLoopSweepClass_boundary
     {G : Type} [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
-    (phi : G ≃ₜ+ G) (c : FixedLoop phi) :
+    (phi : G ≃ₜ+ G) (c : fixedLoops phi) :
     (circleMappingTorusWangPresentationOfCover phi.toHomeomorph 1).boundary
         (fixedLoopSweepClass phi c) =
       integralSingularHomologyMap 1 c.1 standardCircleHomologyGenerator := by

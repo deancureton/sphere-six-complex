@@ -47,7 +47,7 @@ public def sumGlueToPushout :
     (by
       intro a b hab
       rcases a with x | y <;> rcases b with x' | y' <;>
-        change sumGlueRel f g _ _ at hab
+        change SumGlueRel f g _ _ at hab
       · subst x'
         rfl
       · rcases hab with ⟨z, rfl, rfl⟩

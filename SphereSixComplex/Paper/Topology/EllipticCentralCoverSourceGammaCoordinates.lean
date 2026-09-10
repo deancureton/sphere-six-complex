@@ -33,13 +33,13 @@ private theorem homologyEquiv_eq_map {X Y : Type} [TopologicalSpace X]
   rfl
 
 public def orderThreeSourceToGammaProduct :
-    RadialEllipticActionData.centralFiberCoverSource (orderThreeRadialActionData F) ≃ₜ
+    RadialEllipticActionData.CentralFiberCoverSource (orderThreeRadialActionData F) ≃ₜ
       UnitAddCircle × StdTorus 3 :=
   (RadialEllipticActionData.centralFiberCoverSourceHomeomorph
     (orderThreeRadialActionData F)).trans (orderThreeGammaNormalFormHomeomorph F)
 
 public def orderFourSourceToGammaProduct :
-    RadialEllipticActionData.centralFiberCoverSource (orderFourRadialActionData F) ≃ₜ
+    RadialEllipticActionData.CentralFiberCoverSource (orderFourRadialActionData F) ≃ₜ
       UnitAddCircle × StdTorus 3 :=
   (RadialEllipticActionData.centralFiberCoverSourceHomeomorph
     (orderFourRadialActionData F)).trans (orderFourGammaNormalFormHomeomorph F)
@@ -66,7 +66,7 @@ private theorem orderThreeSource_afterHomeomorph (x : Fin 6 → ℤ) :
     integralSingularHomologyMap 2
         ((RadialEllipticActionData.centralFiberCoverSourceHomeomorph
           (orderThreeRadialActionData F)) :
-          C(RadialEllipticActionData.centralFiberCoverSource
+          C(RadialEllipticActionData.CentralFiberCoverSource
               (orderThreeRadialActionData F),
             AdditiveTorus (parameterMap F U.zOne)))
         ((orderThreeCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm x) =
@@ -88,7 +88,7 @@ private theorem orderFourSource_afterHomeomorph (x : Fin 6 → ℤ) :
     integralSingularHomologyMap 2
         ((RadialEllipticActionData.centralFiberCoverSourceHomeomorph
           (orderFourRadialActionData F)) :
-          C(RadialEllipticActionData.centralFiberCoverSource
+          C(RadialEllipticActionData.CentralFiberCoverSource
               (orderFourRadialActionData F),
             AdditiveTorus (parameterMap F U.zTwo)))
         ((orderFourCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm x) =
@@ -159,14 +159,14 @@ public theorem orderThreeSourceToGammaProduct_homologyTwo (x : Fin 6 → ℤ) :
           (integralSingularHomologyMap 2
             ((RadialEllipticActionData.centralFiberCoverSourceHomeomorph
               (orderThreeRadialActionData F)) :
-              C(RadialEllipticActionData.centralFiberCoverSource
+              C(RadialEllipticActionData.CentralFiberCoverSource
                   (orderThreeRadialActionData F),
                 AdditiveTorus (parameterMap F U.zOne)))
             ((orderThreeCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm x)) := by
     exact (integralSingularHomologyMap_comp_wang 2
       ((RadialEllipticActionData.centralFiberCoverSourceHomeomorph
         (orderThreeRadialActionData F)) :
-        C(RadialEllipticActionData.centralFiberCoverSource
+        C(RadialEllipticActionData.CentralFiberCoverSource
             (orderThreeRadialActionData F),
           AdditiveTorus (parameterMap F U.zOne)))
       (orderThreeGammaNormalFormHomeomorph F :
@@ -212,14 +212,14 @@ public theorem orderFourSourceToGammaProduct_homologyTwo (x : Fin 6 → ℤ) :
           (integralSingularHomologyMap 2
             ((RadialEllipticActionData.centralFiberCoverSourceHomeomorph
               (orderFourRadialActionData F)) :
-              C(RadialEllipticActionData.centralFiberCoverSource
+              C(RadialEllipticActionData.CentralFiberCoverSource
                   (orderFourRadialActionData F),
                 AdditiveTorus (parameterMap F U.zTwo)))
             ((orderFourCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm x)) := by
     exact (integralSingularHomologyMap_comp_wang 2
       ((RadialEllipticActionData.centralFiberCoverSourceHomeomorph
         (orderFourRadialActionData F)) :
-        C(RadialEllipticActionData.centralFiberCoverSource
+        C(RadialEllipticActionData.CentralFiberCoverSource
             (orderFourRadialActionData F),
           AdditiveTorus (parameterMap F U.zTwo)))
       (orderFourGammaNormalFormHomeomorph F :

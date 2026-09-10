@@ -108,7 +108,7 @@ The reciprocal source quotient coordinate and the frame are related only suffici
 the cusp.  This is the precise germ statement compatible with the non-parabolic elliptic
 automorphy of the frame. -/
 public structure ExactFuchsianCuspFrameGerm
-    (E : EstablishedFuchsianModularParameter) (s : UpperHalfPlane → ℂ) where
+    (E : NormalizedFuchsianModularParameter) (s : UpperHalfPlane → ℂ) where
   /-- The holomorphic unit remaining after the simple cusp pole is removed. -/
   cuspUnit : ℂ → ℂ
   /-- Radius of a completed source-cusp coordinate neighborhood. -/
@@ -135,7 +135,7 @@ public structure ExactFuchsianCuspFrameGerm
 /-- A holomorphic parabolic-invariant square root of the pulled-back weight-six Eisenstein
 series has a holomorphic germ in the completed source cusp parameter. -/
 public theorem exists_sqrtEisensteinSixCuspGerm
-    (E : EstablishedFuchsianModularParameter)
+    (E : NormalizedFuchsianModularParameter)
     (s : UpperHalfPlane → ℂ)
     (hs_holomorphic : MDiff s)
     (hs_sq : ∀ z, s z ^ 2 = ModularForm.E₆ (E.modularParameter.tau z))
@@ -145,7 +145,7 @@ public theorem exists_sqrtEisensteinSixCuspGerm
       sGerm 0 ≠ 0 ∧
       ∀ z, sGerm (fuchsianSourceCuspQ z) = s z := by
   obtain ⟨phi, hphi_analytic, _hphi_order, hphi_zero, hphi_factor⟩ :=
-    Established.exists_parabolicCuspSimpleGerm sourceCuspWidth 1
+    exists_parabolicCuspSimpleGerm sourceCuspWidth 1
       sourceCuspWidth_pos zero_lt_one E.modularParameter.tau
       E.modularParameter.tau_holomorphic
       (establishedModularParameter_tau_translate E)
@@ -225,7 +225,7 @@ public theorem exists_sqrtEisensteinSixCuspGerm
 /-- The modular frame associated to a parabolic-invariant holomorphic square root has the exact
 eventual simple-pole normalization required at the completed source cusp. -/
 public theorem exists_exactFuchsianCuspFrameGerm
-    (E : EstablishedFuchsianModularParameter)
+    (E : NormalizedFuchsianModularParameter)
     (s : UpperHalfPlane → ℂ)
     (hs_holomorphic : MDiff s)
     (hs_sq : ∀ z, s z ^ 2 = ModularForm.E₆ (E.modularParameter.tau z))
@@ -234,7 +234,7 @@ public theorem exists_exactFuchsianCuspFrameGerm
   obtain ⟨sGerm, hsGerm_analytic, hsGerm_zero_ne, hsGerm_factor⟩ :=
     exists_sqrtEisensteinSixCuspGerm E s hs_holomorphic hs_sq hs_cusp
   obtain ⟨phi, hphi_analytic, _hphi_order, hphi_zero, hphi_factor⟩ :=
-    Established.exists_parabolicCuspSimpleGerm sourceCuspWidth 1
+    exists_parabolicCuspSimpleGerm sourceCuspWidth 1
       sourceCuspWidth_pos zero_lt_one E.modularParameter.tau
       E.modularParameter.tau_holomorphic
       (establishedModularParameter_tau_translate E)

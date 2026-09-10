@@ -120,7 +120,7 @@ public def probeLeftEnd : TopCat.of ↥leftSet ⟶ TopCat.of ℝ :=
     exact ne_of_gt (pos_of_mem_left u)⟩
 
 /-- The probe on the mapping cylinder of the overlap-to-right leg. -/
-public def probeMappingCylinder : TopCat.MappingCylinder spanRight ⟶ TopCat.of ℝ :=
+public def probeMappingCylinder : TopCat.mappingCylinder spanRight ⟶ TopCat.of ℝ :=
   pushout.desc probeCylinder probeBase (by
     ext a
     change ((0 : unitInterval) : ℝ) / (a : ℝ) = 0
@@ -142,7 +142,7 @@ public theorem probeMappingCylinder_base (v : ↥rightSet) :
 
 /-- The probe on the double mapping cylinder of the counterexample span. -/
 public def probeDouble :
-    TopCat.DoubleMappingCylinder spanRight spanLeft ⟶ TopCat.of ℝ :=
+    TopCat.doubleMappingCylinder spanRight spanLeft ⟶ TopCat.of ℝ :=
   pushout.desc probeMappingCylinder probeLeftEnd (by
     ext a
     change probeMappingCylinder
@@ -150,7 +150,7 @@ public def probeDouble :
     rw [probeMappingCylinder_cylinder]
     norm_num)
 
-public theorem probeDouble_left (m : TopCat.MappingCylinder spanRight) :
+public theorem probeDouble_left (m : TopCat.mappingCylinder spanRight) :
     probeDouble (TopCat.doubleMappingCylinderLeft spanRight spanLeft m) =
       probeMappingCylinder m := by
   have h : TopCat.doubleMappingCylinderLeft spanRight spanLeft ≫ probeDouble =
@@ -301,21 +301,21 @@ end ClosedNumeration
 /-! ### Points of the double mapping cylinder of an open cover -/
 
 /-- The double mapping cylinder of the two inclusions of the overlap. -/
-public abbrev Dmc (U V : Set X) : TopCat.{u} :=
-  TopCat.DoubleMappingCylinder (interToRight U V) (interToLeft U V)
+public abbrev doubleMappingCylinder (U V : Set X) : TopCat.{u} :=
+  TopCat.doubleMappingCylinder (interToRight U V) (interToLeft U V)
 
 /-- The point of the inserted cylinder over `a` at height `t`. -/
-public def pointCyl (U V : Set X) (a : ↥(U ∩ V)) (t : unitInterval) : Dmc U V :=
+public def pointCyl (U V : Set X) (a : ↥(U ∩ V)) (t : unitInterval) : doubleMappingCylinder U V :=
   TopCat.doubleMappingCylinderLeft (interToRight U V) (interToLeft U V)
     (TopCat.mappingCylinderCylinder (interToRight U V) (a, t))
 
 /-- The point of the right member of the cover. -/
-public def pointRight (U V : Set X) (v : ↥V) : Dmc U V :=
+public def pointRight (U V : Set X) (v : ↥V) : doubleMappingCylinder U V :=
   TopCat.doubleMappingCylinderLeft (interToRight U V) (interToLeft U V)
     (TopCat.mappingCylinderBase (interToRight U V) v)
 
 /-- The point of the left member of the cover. -/
-public def pointLeft (U V : Set X) (u : ↥U) : Dmc U V :=
+public def pointLeft (U V : Set X) (u : ↥U) : doubleMappingCylinder U V :=
   TopCat.doubleMappingCylinderRight (interToRight U V) (interToLeft U V) u
 
 variable {U V : Set X}
@@ -418,7 +418,7 @@ public def coverSet : Option Bool → Set ↥(U ∪ V)
   | some true => N.chartLeft
 
 /-- The chartwise pieces of the Dold section. -/
-public def coverMap : (i : Option Bool) → C(↥(N.coverSet i), Dmc U V)
+public def coverMap : (i : Option Bool) → C(↥(N.coverSet i), doubleMappingCylinder U V)
   | none => ⟨fun x ↦ pointCyl U V ⟨x.1.1, x.2⟩ (N.weight x.1),
       continuous_pointCyl.comp
         (((continuous_subtype_val.comp continuous_subtype_val).subtype_mk _).prodMk
@@ -466,7 +466,7 @@ public theorem coverSet_nhds (x : ↥(U ∪ V)) : ∃ i, N.coverSet i ∈ 𝓝 x
   · exact ⟨none, (isOpen_chartBoth N.isOpen_left N.isOpen_right).mem_nhds h⟩
 
 /-- Dold's section of the double-mapping-cylinder collapse, glued from the three charts. -/
-public def sectionMap : C(↥(U ∪ V), Dmc U V) :=
+public def sectionMap : C(↥(U ∪ V), doubleMappingCylinder U V) :=
   ContinuousMap.liftCover N.coverSet N.coverMap N.coverMap_compatible N.coverSet_nhds
 
 public theorem sectionMap_of_chartBoth (x : ↥(U ∪ V)) (hx : x.1 ∈ U ∩ V) :
@@ -556,7 +556,7 @@ variable (N : ClosedNumeration U V)
 
 /-- On the inserted cylinder the homotopy slides the cylinder coordinate to the weight. -/
 public def slideCylMap : TopCat.of (↥(U ∩ V) × unitInterval) ⟶
-    TopCat.of C(unitInterval, ↥(Dmc U V)) :=
+    TopCat.of C(unitInterval, ↥(doubleMappingCylinder U V)) :=
   TopCat.ofHom (ContinuousMap.curry
     ⟨fun r : (↥(U ∩ V) × unitInterval) × unitInterval ↦
         pointCyl U V r.1.1 (slide (N.weightInter r.1.1) r.1.2 r.2), by
@@ -578,7 +578,7 @@ public def baseCoverSet : Bool → Set ↥V
 
 /-- The chartwise pieces of the sliding homotopy on the right member. -/
 public def baseCoverMap :
-    (i : Bool) → C(↥(N.baseCoverSet i), C(unitInterval, ↥(Dmc U V)))
+    (i : Bool) → C(↥(N.baseCoverSet i), C(unitInterval, ↥(doubleMappingCylinder U V)))
   | false => ContinuousMap.curry
       ⟨fun r : ↥(N.baseCoverSet false) × unitInterval ↦
           pointCyl U V ⟨r.1.1.1, r.1.2, r.1.1.2⟩
@@ -619,7 +619,7 @@ public theorem baseCoverSet_nhds (v : ↥V) : ∃ i, N.baseCoverSet i ∈ 𝓝 v
       (N.closure_ne_zero (not_not.1 h))⟩
 
 /-- The sliding homotopy on the right member of the cover. -/
-public def slideBase : C(↥V, C(unitInterval, ↥(Dmc U V))) :=
+public def slideBase : C(↥V, C(unitInterval, ↥(doubleMappingCylinder U V))) :=
   ContinuousMap.liftCover N.baseCoverSet N.baseCoverMap N.baseCoverMap_compatible
     N.baseCoverSet_nhds
 
@@ -644,7 +644,7 @@ public def leftCoverSet : Bool → Set ↥U
 
 /-- The chartwise pieces of the sliding homotopy on the left member. -/
 public def leftCoverMap :
-    (i : Bool) → C(↥(N.leftCoverSet i), C(unitInterval, ↥(Dmc U V)))
+    (i : Bool) → C(↥(N.leftCoverSet i), C(unitInterval, ↥(doubleMappingCylinder U V)))
   | false => ContinuousMap.curry
       ⟨fun r : ↥(N.leftCoverSet false) × unitInterval ↦
           pointCyl U V ⟨r.1.1.1, r.1.1.2, r.1.2⟩
@@ -685,7 +685,7 @@ public theorem leftCoverSet_nhds (u : ↥U) : ∃ i, N.leftCoverSet i ∈ 𝓝 u
       (N.closure_ne_one (not_not.1 h))⟩
 
 /-- The sliding homotopy on the left member of the cover. -/
-public def slideLeft : C(↥U, C(unitInterval, ↥(Dmc U V))) :=
+public def slideLeft : C(↥U, C(unitInterval, ↥(doubleMappingCylinder U V))) :=
   ContinuousMap.liftCover N.leftCoverSet N.leftCoverMap N.leftCoverMap_compatible
     N.leftCoverSet_nhds
 
@@ -710,8 +710,8 @@ namespace ClosedNumeration
 variable (N : ClosedNumeration U V)
 
 /-- The sliding homotopy on the mapping-cylinder branch. -/
-public def slideCylinder : TopCat.MappingCylinder (interToRight U V) ⟶
-    TopCat.of C(unitInterval, ↥(Dmc U V)) :=
+public def slideCylinder : TopCat.mappingCylinder (interToRight U V) ⟶
+    TopCat.of C(unitInterval, ↥(doubleMappingCylinder U V)) :=
   pushout.desc N.slideCylMap (TopCat.ofHom N.slideBase) (by
     ext a τ
     exact (N.slideBase_of_mem_left ⟨a.1, a.2.2⟩ a.2.1 τ).symm)
@@ -730,7 +730,8 @@ public theorem slideCylinder_base (v : ↥V) (τ : unitInterval) :
   exact DFunLike.congr_fun (CategoryTheory.congr_fun h v) τ
 
 /-- The sliding homotopy, as a map out of the double mapping cylinder. -/
-public def slideDouble : Dmc U V ⟶ TopCat.of C(unitInterval, ↥(Dmc U V)) :=
+public def slideDouble :
+    doubleMappingCylinder U V ⟶ TopCat.of C(unitInterval, ↥(doubleMappingCylinder U V)) :=
   pushout.desc N.slideCylinder (TopCat.ofHom N.slideLeft) (by
     ext a τ
     show N.slideCylinder (TopCat.mappingCylinderCylinder (interToRight U V) (a, 1)) τ =
@@ -764,7 +765,7 @@ end ClosedNumeration
 
 /-- Evaluation of a path of points of the double mapping cylinder at a parameter. -/
 public def evalAt (U V : Set X) (τ : unitInterval) :
-    TopCat.of C(unitInterval, ↥(Dmc U V)) ⟶ Dmc U V :=
+    TopCat.of C(unitInterval, ↥(doubleMappingCylinder U V)) ⟶ doubleMappingCylinder U V :=
   TopCat.ofHom ⟨fun f ↦ f τ, continuous_eval_const τ⟩
 
 namespace ClosedNumeration
@@ -802,8 +803,8 @@ public theorem slideLeft_zero (u : ↥U) :
     rfl
 
 /-- At parameter one the sliding homotopy is the identity. -/
-public theorem slideDouble_one (p : ↥(Dmc U V)) : N.slideDouble p 1 = p := by
-  have h : N.slideDouble ≫ evalAt U V 1 = 𝟙 (Dmc U V) := by
+public theorem slideDouble_one (p : ↥(doubleMappingCylinder U V)) : N.slideDouble p 1 = p := by
+  have h : N.slideDouble ≫ evalAt U V 1 = 𝟙 (doubleMappingCylinder U V) := by
     apply pushout.hom_ext
     · apply pushout.hom_ext
       · ext r
@@ -818,7 +819,7 @@ public theorem slideDouble_one (p : ↥(Dmc U V)) : N.slideDouble p 1 = p := by
   exact CategoryTheory.congr_fun h p
 
 /-- At parameter zero the sliding homotopy is the section after the collapse. -/
-public theorem slideDouble_zero (p : ↥(Dmc U V)) :
+public theorem slideDouble_zero (p : ↥(doubleMappingCylinder U V)) :
     N.slideDouble p 0 = N.sectionMap (doubleMappingCylinderToUnion U V p) := by
   have h : N.slideDouble ≫ evalAt U V 0 =
       doubleMappingCylinderToUnion U V ≫ TopCat.ofHom N.sectionMap := by
@@ -856,7 +857,7 @@ public theorem collapse_comp_sectionMap :
 mapping cylinder. -/
 public def sourceHomotopy : ContinuousMap.Homotopy
     (N.sectionMap.comp (doubleMappingCylinderToUnion U V).hom)
-    (ContinuousMap.id ↥(Dmc U V)) :=
+    (ContinuousMap.id ↥(doubleMappingCylinder U V)) :=
   ⟨⟨fun q ↦ N.slideDouble q.2 q.1,
       (ContinuousMap.uncurry (TopCat.Hom.hom N.slideDouble)).continuous.comp continuous_swap⟩,
     fun p ↦ N.slideDouble_zero p, fun p ↦ N.slideDouble_one p⟩
@@ -865,7 +866,7 @@ public def sourceHomotopy : ContinuousMap.Homotopy
 double mapping cylinder of the two inclusions of the overlap is a homotopy equivalence. -/
 public theorem isHomotopyExcisiveSpan (N : ClosedNumeration U V) :
     TopCat.IsHomotopyExcisiveSpan (interToRight U V) (interToLeft U V) := by
-  let eUnion : (↥(Dmc U V)) ≃ₕ ↥(U ∪ V) :=
+  let eUnion : (↥(doubleMappingCylinder U V)) ≃ₕ ↥(U ∪ V) :=
     { toFun := (doubleMappingCylinderToUnion U V).hom
       invFun := N.sectionMap
       left_inv := ⟨N.sourceHomotopy⟩
@@ -935,7 +936,7 @@ public theorem exists_closedNumeration (U V : Set X) (hU : IsOpen U) (hV : IsOpe
 /-- The axiom-free replacement of `leftToUnion_isHomotopyEquivalence_of_normal_paracompact`:
 for a normal paracompact open union, a homotopy equivalence from the overlap to the right member
 makes the literal inclusion of the left member into the union a homotopy equivalence. -/
-public theorem leftToUnion_isHomotopyEquivalence_of_normal_paracompact_proved
+public theorem leftToUnion_isHomotopyEquivalence_of_normal_paracompact
     (U V : Set X) (hU : IsOpen U) (hV : IsOpen V)
     [NormalSpace ↥(U ∪ V)] [ParacompactSpace ↥(U ∪ V)]
     (hinter : IsHomotopyEquivalence (interToRight U V).hom) :

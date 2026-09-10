@@ -35,8 +35,8 @@ public theorem cylinderTimeReflectionPair_chainMap_involutive
   rw [h, cwIntegralSingularChainMapObj_id, Category.id_comp, Category.comp_id]
 
 public def cylinderTimeReflectionRelativeIso {X : Type} [TopologicalSpace X] (A : Set X) :
-    CWRelativeIntegralSingularChainComplex (cylinderBoundaryInclusion A) ≅
-      CWRelativeIntegralSingularChainComplex (cylinderBoundaryInclusion A) where
+    cwRelativeIntegralSingularChainComplex (cylinderBoundaryInclusion A) ≅
+      cwRelativeIntegralSingularChainComplex (cylinderBoundaryInclusion A) where
   hom := cwRelativeIntegralSingularChainMapOfPair (cylinderTimeReflectionPair A)
   inv := cwRelativeIntegralSingularChainMapOfPair (cylinderTimeReflectionPair A)
   hom_inv_id := cylinderTimeReflectionPair_chainMap_involutive A

@@ -570,7 +570,7 @@ noncomputable def automatic_branch_one
     (fun z hz0 hz1 ↦
       isFuchsianRegularPoint_of_coordinate_ne_ellipticValues coordinate hinvariant
         hone htwo hz0 hz1)
-    establishedFuchsianOneStabilizerExact
+    fuchsianOneFixed_iff_mem_range_inl
   change analyticOrderAt H 0 ≠ ⊤ at hfinite
   change analyticOrderNatAt H 0 ≤ Fintype.card CyclicThree at hbound
   have hH : AnalyticAt ℂ H 0 :=
@@ -627,7 +627,7 @@ noncomputable def automatic_branch_two
     (fun z hz1 hz0 ↦
       isFuchsianRegularPoint_of_coordinate_ne_ellipticValues coordinate hinvariant
         hone htwo hz0 hz1)
-    establishedFuchsianTwoStabilizerExact
+    fuchsianTwoFixed_iff_mem_range_inr
   change analyticOrderAt H 0 ≠ ⊤ at hfinite
   change analyticOrderNatAt H 0 ≤ Fintype.card CyclicFour at hbound
   have hH : AnalyticAt ℂ H 0 :=

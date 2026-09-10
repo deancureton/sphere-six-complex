@@ -32,22 +32,22 @@ public def hexagonBoundaryPath {X : Type} [TopologicalSpace X] {x y : X}
 
 public theorem hexagonBoundaryPath_homology_zero {X : Type} [TopologicalSpace X] {x y : X}
     (a b c : Path x y) : loopHomologyClass (hexagonBoundaryPath a b c) = 0 := by
-  apply (AddCommGrpCat.mono_iff_injective ((IntegralChains X).homologyι 1)).mp
-    (inferInstance : Mono ((IntegralChains X).homologyι 1))
+  apply (AddCommGrpCat.mono_iff_injective ((integralChains X).homologyι 1)).mp
+    (inferInstance : Mono ((integralChains X).homologyι 1))
   calc
     _ = pathOpchainClass (hexagonBoundaryPath a b c) := homologyι_loopHomologyClass _
     _ = 0 := by
       simp only [hexagonBoundaryPath, pathOpchainClass_trans, pathOpchainClass_symm]
       abel
-    _ = _ := ((IntegralChains X).homologyι 1).hom.map_zero.symm
+    _ = _ := ((integralChains X).homologyι 1).hom.map_zero.symm
 
 public theorem pairedHexagonBoundaryPath_homology_zero
     {X : Type} [TopologicalSpace X] {x y : X}
     (a b c a' b' c' : Path x y)
     (ha : a.Homotopic a') (hb : b.Homotopic b') (hc : c.Homotopic c') :
     loopHomologyClass (((((a.trans b.symm).trans c).trans a'.symm).trans b').trans c'.symm) = 0 := by
-  apply (AddCommGrpCat.mono_iff_injective ((IntegralChains X).homologyι 1)).mp
-    (inferInstance : Mono ((IntegralChains X).homologyι 1))
+  apply (AddCommGrpCat.mono_iff_injective ((integralChains X).homologyι 1)).mp
+    (inferInstance : Mono ((integralChains X).homologyι 1))
   calc
     _ = pathOpchainClass (((((a.trans b.symm).trans c).trans a'.symm).trans b').trans c'.symm) :=
       homologyι_loopHomologyClass _
@@ -56,7 +56,7 @@ public theorem pairedHexagonBoundaryPath_homology_zero
       rw [← pathOpchainClass_homotopic ha, ← pathOpchainClass_homotopic hb,
         ← pathOpchainClass_homotopic hc]
       abel
-    _ = _ := ((IntegralChains X).homologyι 1).hom.map_zero.symm
+    _ = _ := ((integralChains X).homologyι 1).hom.map_zero.symm
 
 public theorem alternatingHexagonBoundaryPath_homology_zero
     {X : Type} [TopologicalSpace X] {x y : X}

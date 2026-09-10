@@ -31,7 +31,7 @@ open SphereSixComplex.LatticeWangAlgebra
 open SphereSixComplex.Topology.PaperCuspSpecializationAlgebra
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
   {W : ActualPuncturedCuspCollarWitness N M} [HasCuspPhaseSpreading W]
 
@@ -41,7 +41,7 @@ namespace ActualCuspRadialClutchingData
 cusp collar. -/
 public def markedFiberToPuncturedCusp (G : ActualCuspRadialClutchingData W) :
     let _ := G.fiberTopology
-    C(G.Fiber, puncturedLocalCuspQuotient W) := by
+    C(G.Fiber, PuncturedLocalCuspQuotient W) := by
   let _ := G.fiberTopology
   let s : C(G.Fiber,
       OpenRadialInterval W.localWitness.radius × CircleMappingTorus G.clutching) :=
@@ -49,14 +49,14 @@ public def markedFiberToPuncturedCusp (G : ActualCuspRadialClutchingData W) :
       (finiteBouquetMappingTorusFiberInclusion (fun _ : Unit ↦ G.clutching))
   exact (⟨G.totalHomeomorph.symm, G.totalHomeomorph.symm.continuous⟩ :
     C(OpenRadialInterval W.localWitness.radius × CircleMappingTorus G.clutching,
-      puncturedLocalCuspQuotient W)).comp s
+      PuncturedLocalCuspQuotient W)).comp s
 
 /-- The literal marked period fibre included into the cusp filling. -/
 public def markedFiberToCuspFilling (G : ActualCuspRadialClutchingData W) :
     let _ := G.fiberTopology
-    C(G.Fiber, actualLocalCuspFilling W) := by
+    C(G.Fiber, ActualLocalCuspFilling W) := by
   let _ := G.fiberTopology
-  let i : C(puncturedLocalCuspQuotient W, actualLocalCuspFilling W) :=
+  let i : C(PuncturedLocalCuspQuotient W, ActualLocalCuspFilling W) :=
     ⟨puncturedLocalCuspToFilling W, puncturedLocalCuspToFilling_continuous W⟩
   exact i.comp G.markedFiberToPuncturedCusp
 

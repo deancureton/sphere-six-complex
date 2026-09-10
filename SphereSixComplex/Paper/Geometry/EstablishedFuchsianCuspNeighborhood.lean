@@ -14,31 +14,27 @@ collar conclusion.
 
 noncomputable section
 
-namespace SphereSixComplex.Geometry.EstablishedFuchsianCuspNeighborhood
+namespace SphereSixComplex.Geometry.FuchsianCuspNeighborhood
 
 open SphereSixComplex.Periods
 open SphereSixComplex.Geometry.CuspPeriodExpansion
-open SphereSixComplex.Geometry.FuchsianCuspNeighborhoodProof
-
-namespace Established
+open FuchsianCuspNeighborhood
 
 /-- A sufficiently deep normalized horodisc is regular and precisely invariant under the
 parabolic cyclic subgroup.  This is the standard cusp-neighbourhood theorem for a cofinite
 Fuchsian group. -/
-public theorem data
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+public theorem nonempty_data
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (upperRadius : ℝ)
     (hupper : 0 < upperRadius) : Nonempty (Data N upperRadius) :=
-  exists_data N upperRadius hupper
+  nonempty_data_of_pos N upperRadius hupper
 
 /-- Removing a precisely invariant horodisc from the explicit cofinite Fuchsian quotient leaves
 a compact truncated quotient. -/
-public theorem compactTruncation
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+public theorem nonempty_compactTruncationData
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {upperRadius : ℝ}
     (H : Data N upperRadius) : Nonempty (CompactTruncationData H) :=
-  exists_compactTruncation N H
+  nonempty_compactTruncationData_of_cuspNeighborhood N H
 
-end Established
-
-end SphereSixComplex.Geometry.EstablishedFuchsianCuspNeighborhood
+end SphereSixComplex.Geometry.FuchsianCuspNeighborhood

@@ -29,7 +29,7 @@ variable {C f₀ : ℂ → ℂ} {U : Set ℂ} {z₀ : ℂ}
 /-- The precise source-local input needed to compare two modular solution germs over one point.
 The set `V` is normally a small punctured coordinate disc. -/
 def HasPuncturedRegularComparison
-    (p q : ModularSolutionEtale C U) : Prop :=
+    (p q : modularSolutionEtaleSet C U) : Prop :=
   ∃ (V : Set ℂ) (w₀ : ℂ),
     IsPreconnected V ∧ w₀ ∈ V ∧
     ContinuousOn (solutionRepresentative p) V ∧
@@ -49,7 +49,7 @@ def HasPuncturedRegularComparison
 a single modular deck element identifying the two solution germs. -/
 theorem exists_modularSolutionDeckHomeomorph_eq
     (J : ExactNormalizedModularJUniformization)
-    {p q : ModularSolutionEtale C U}
+    {p q : modularSolutionEtaleSet C U}
     (hbase : upperHalfPlaneSolutionEtaleBase normalizedModularJCoordinate C U p =
       upperHalfPlaneSolutionEtaleBase normalizedModularJCoordinate C U q)
     (hcompare : HasPuncturedRegularComparison p q) :
@@ -92,16 +92,16 @@ theorem continuesInsideWith_of_punctured_regular_comparison
     (hP₀ : IsUpperHalfPlaneSolutionGerm normalizedModularJCoordinate C z₀ f₀)
     (hlocal : ∀ z ∈ U, ∃ f : ℂ → ℂ, AnalyticAt ℂ f z ∧
       IsUpperHalfPlaneSolutionGerm normalizedModularJCoordinate C z f)
-    (hcompare : ∀ p q : ModularSolutionEtale C U,
+    (hcompare : ∀ p q : modularSolutionEtaleSet C U,
       upperHalfPlaneSolutionEtaleBase normalizedModularJCoordinate C U p =
         upperHalfPlaneSolutionEtaleBase normalizedModularJCoordinate C U q →
       HasPuncturedRegularComparison p q) :
     ContinuesInsideWith f₀ U z₀
       (IsUpperHalfPlaneSolutionGerm normalizedModularJCoordinate C) := by
-  apply UpperHalfPlaneSolutionEtale.continuesInsideWith_of_deck_transitive
+  apply upperHalfPlaneSolutionEtale.continuesInsideWith_of_deck_transitive
     hU hz₀ hf₀ hP₀ hlocal
     (modularSolutionDeckHomeomorph : Delta →
-      ModularSolutionEtale C U ≃ₜ ModularSolutionEtale C U)
+      modularSolutionEtaleSet C U ≃ₜ modularSolutionEtaleSet C U)
   · exact fun g p ↦ modularSolutionDeck_base g p
   · intro p q hpq
     exact exists_modularSolutionDeckHomeomorph_eq J hpq (hcompare p q hpq)

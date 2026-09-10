@@ -652,7 +652,7 @@ public instance boundarySevenSubdivisionToProperFaceNerve_isIso :
 /-- The canonical simplicial isomorphism from the subdivided boundary to the proper-face
 nerve. -/
 public noncomputable def boundarySevenSubdivisionProperFaceNerveIso :
-    SSet.sd.obj (∂Δ[7] : SSet.{0}) ≅ BoundarySevenProperFaceNerve :=
+    SSet.sd.obj (∂Δ[7] : SSet.{0}) ≅ boundarySevenProperFaceNerve :=
   asIso boundarySevenSubdivisionToProperFaceNerve
 
 /-- Every degree of the canonical subdivision comparison is surjective. -/

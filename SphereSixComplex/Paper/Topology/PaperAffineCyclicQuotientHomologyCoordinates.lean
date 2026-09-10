@@ -64,7 +64,7 @@ variable {m : ℕ} [NeZero m] {p : SphereSixComplex.Periods.Parameters}
 /-- The standard homology basis on the source of an affine cyclic central-fibre cover. -/
 public def affineCyclicCentralFiberCoverSourceHomologyBasis
     (P : AffineCyclicCentralFiberPresentationData m p D) :
-    FourTorusHomologyBasis (RadialEllipticActionData.centralFiberCoverSource D) :=
+    FourTorusHomologyBasis (RadialEllipticActionData.CentralFiberCoverSource D) :=
   (EstablishedTorusHomology.additiveTorusHomologyBasis p P.fullRank).homeomorph
     (RadialEllipticActionData.centralFiberCoverSourceHomeomorph D)
 
@@ -139,20 +139,20 @@ namespace EllipticFiniteCoverHomologyRealization
 
 /-- The two order-three quotient homology bases. -/
 public def orderThreeOneBasis (_R : EllipticFiniteCoverHomologyRealization F) :
-    IntegralSingularHomology 1 (OrderThreeReducedCentralFiber F) ≃+ (Fin 2 → ℤ) :=
+    IntegralSingularHomology 1 (orderThreeReducedCentralFiber F) ≃+ (Fin 2 → ℤ) :=
   (orderThreeReducedCentralFiberHOneEquivIntSquared F).toAddEquiv
 
 public def orderThreeTwoBasis (R : EllipticFiniteCoverHomologyRealization F) :
-    IntegralSingularHomology 2 (OrderThreeReducedCentralFiber F) ≃+ (Fin 2 → ℤ) :=
+    IntegralSingularHomology 2 (orderThreeReducedCentralFiber F) ≃+ (Fin 2 → ℤ) :=
   R.orderThreeTwo.quotientBasis
 
 /-- The two order-four quotient homology bases. -/
 public def orderFourOneBasis (_R : EllipticFiniteCoverHomologyRealization F) :
-    IntegralSingularHomology 1 (OrderFourReducedCentralFiber F) ≃+ (Fin 2 → ℤ) :=
+    IntegralSingularHomology 1 (orderFourReducedCentralFiber F) ≃+ (Fin 2 → ℤ) :=
   (orderFourReducedCentralFiberHOneEquivIntSquared F).toAddEquiv
 
 public def orderFourTwoBasis (R : EllipticFiniteCoverHomologyRealization F) :
-    IntegralSingularHomology 2 (OrderFourReducedCentralFiber F) ≃+ (Fin 2 → ℤ) :=
+    IntegralSingularHomology 2 (orderFourReducedCentralFiber F) ≃+ (Fin 2 → ℤ) :=
   R.orderFourTwo.quotientBasis
 
 /-- Coordinate formula for the order-three projection in degree one. -/

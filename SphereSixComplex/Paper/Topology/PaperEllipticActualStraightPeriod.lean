@@ -122,7 +122,7 @@ public theorem ellipticFourStraightCoverPoint_period_projects (t : unitInterval)
   have hstraight : A.orderFourPrincipalGaugeStraightLoop t =
       (Quotient.mk _ ((t : ℝ) • periodVector
         (parameterMap A.periods A.paperTriangleUniformization.zTwo).1 (-epsilon') +
-        A.orderFourFillingRelationPrincipalGaugeCoverLift 0) : A.orderFourTorus) := by
+        A.orderFourFillingRelationPrincipalGaugeCoverLift 0) : A.OrderFourTorus) := by
     change Quotient.mk _ (A.orderFourPrincipalGaugeStraightLiftPath t) = _
     apply congrArg (Quotient.mk _)
     unfold orderFourPrincipalGaugeStraightLiftPath
@@ -170,7 +170,7 @@ public def orderThreeCentralActualBasedStraightFiberPath :
     letI := A.ellipticThreeBoundaryAction
     Path A.ellipticThreeCentralBase A.ellipticThreeCentralBase := by
   let _ := A.ellipticThreeBoundaryAction
-  let g : C(A.orderThreeTorus, A.CentralFamily) :=
+  let g : C(A.OrderThreeTorus, A.CentralFamily) :=
     { toFun := fun q ↦ A.orderThreePuncturedProductToCentralMap
         (A.orderThreeCayleyPuncturedBasepoint,
           q + Quotient.mk _ A.ellipticThreeBoundaryBase.2.2)
@@ -263,7 +263,7 @@ public theorem ellipticThreeStraightCoverPoint_period_projects (t : unitInterval
   have hstraight : A.orderThreePrincipalGaugeStraightLoop t =
       (Quotient.mk _ ((t : ℝ) • periodVector
         (parameterMap A.periods A.paperTriangleUniformization.zOne).1 epsilon +
-        A.orderThreeFillingRelationPrincipalGaugeCoverLift 0) : A.orderThreeTorus) := by
+        A.orderThreeFillingRelationPrincipalGaugeCoverLift 0) : A.OrderThreeTorus) := by
     change Quotient.mk _ (A.orderThreePrincipalGaugeStraightLiftPath t) = _
     apply congrArg (Quotient.mk _)
     unfold orderThreePrincipalGaugeStraightLiftPath
@@ -319,8 +319,8 @@ public theorem orderThreeLocalOffsetFiberCentralPath_homotopic_actualBasedStraig
     A.orderThreeFillingRelationPrincipalGaugeLoop
       A.orderThreePrincipalGaugeStraightLoop) with ⟨Htorus⟩
   let x := A.orderThreeCayleyPuncturedBasepoint
-  let offset : A.orderThreeTorus := Quotient.mk _ A.ellipticThreeBoundaryBase.2.2
-  let g : C(A.orderThreeTorus, A.CentralFamily) :=
+  let offset : A.OrderThreeTorus := Quotient.mk _ A.ellipticThreeBoundaryBase.2.2
+  let g : C(A.OrderThreeTorus, A.CentralFamily) :=
     { toFun := fun q ↦ A.orderThreePuncturedProductToCentralMap (x, q + offset)
       continuous_toFun := A.orderThreePuncturedProductToCentralMap.continuous.comp
         (continuous_const.prodMk (continuous_id.add continuous_const)) }

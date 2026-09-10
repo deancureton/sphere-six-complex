@@ -86,7 +86,7 @@ public theorem reducedCentralFiberCircleMappingTorusHomeomorph_projection
 /-- The central-cover projection is the central orbit projection after forgetting the redundant
 disc coordinate. -/
 public theorem centralFiberOrbitProjection_coverSourceHomeomorph
-    (D : RadialEllipticActionData m T) (x : centralFiberCoverSource D) :
+    (D : RadialEllipticActionData m T) (x : CentralFiberCoverSource D) :
     centralFiberOrbitProjection D (centralFiberCoverSourceHomeomorph D x) =
       centralFiberCoverProjection D x := by
   simp [centralFiberOrbitProjection]
@@ -95,12 +95,12 @@ public theorem centralFiberOrbitProjection_coverSourceHomeomorph
 public def centralCoverToCircleMappingTorus
   (D : RadialEllipticActionData m T) (e : T ≃ₜ UnitAddCircle × F)
     (phi : F ≃ₜ F) (hpow : phi ^ m = 1) :
-    C(centralFiberCoverSource D, CircleMappingTorus phi) :=
+    C(CentralFiberCoverSource D, CircleMappingTorus phi) :=
   (normalizedAffineCoverToCircleMappingTorus phi hpow).comp
     ((⟨e, e.continuous⟩ : C(T, UnitAddCircle × F)).comp
       (⟨centralFiberCoverSourceHomeomorph D,
         (centralFiberCoverSourceHomeomorph D).continuous⟩ :
-          C(centralFiberCoverSource D, T)))
+          C(CentralFiberCoverSource D, T)))
 
 public theorem reducedCentralFiberCircleMappingTorusHomeomorph_coverProjection
     (D : RadialEllipticActionData m T)
@@ -132,7 +132,7 @@ variable {U : Periods.TriangleUniformization} (PF : Periods.PeriodFunctions U)
 public theorem orderThree_coverProjection_square :
     (⟨orderThreeReducedCentralFiberCircleMappingTorusHomeomorph PF,
       (orderThreeReducedCentralFiberCircleMappingTorusHomeomorph PF).continuous⟩ :
-        C(OrderThreeReducedCentralFiber PF,
+        C(orderThreeReducedCentralFiber PF,
           CircleMappingTorus orderThreeThreeTorusClutching)).comp
         (RadialEllipticActionData.centralFiberCoverProjection
           (orderThreeRadialActionData PF)) =
@@ -158,7 +158,7 @@ public theorem orderThree_coverProjection_square :
 public theorem orderFour_coverProjection_square :
     (⟨orderFourReducedCentralFiberCircleMappingTorusHomeomorph PF,
       (orderFourReducedCentralFiberCircleMappingTorusHomeomorph PF).continuous⟩ :
-        C(OrderFourReducedCentralFiber PF,
+        C(orderFourReducedCentralFiber PF,
           CircleMappingTorus orderFourThreeTorusClutching)).comp
         (RadialEllipticActionData.centralFiberCoverProjection
           (orderFourRadialActionData PF)) =

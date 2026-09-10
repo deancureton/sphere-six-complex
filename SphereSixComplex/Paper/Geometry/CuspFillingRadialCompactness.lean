@@ -19,8 +19,8 @@ open Set SphereSixComplex.Periods
 open CuspFilling CuspLocalPhaseAction CuspPuncturedCollarBridge
 open CuspPeriodExpansion InfiniteA2Toric
 open InfiniteA2Toric.QuantitativeRegions
-open CuspPhaseEstimates.CuspPeriodExpansion
-open CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
+open CuspPeriodExpansion
+open CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
 
 noncomputable section
 
@@ -100,16 +100,16 @@ public theorem realL1_fractionalPartVector_le_two (x : Fin 2 → ℝ) :
 
 /-- The phase-corrected real fan displacement at a nonzero height. -/
 @[expose] public noncomputable def effectiveFanDisplacement
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (q : ℂ) (d : Fin 2 → ℝ) :
     Fin 2 → ℝ :=
   d + fun i ↦
-    (CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.phaseLogMatrix
+    (NormalizedFuchsianCuspCoordinate.phaseLogMatrix
       N q).mulVec (realFanShearInverse d) i / Real.log ‖q‖
 
 /-- The effective fan displacement is real-linear. -/
 @[expose] public noncomputable def effectiveFanDisplacementLinearMap
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (q : ℂ) :
     (Fin 2 → ℝ) →ₗ[ℝ] (Fin 2 → ℝ) where
   toFun := effectiveFanDisplacement N q
@@ -126,20 +126,20 @@ public theorem realL1_fractionalPartVector_le_two (x : Fin 2 → ℝ) :
 
 @[simp]
 public theorem effectiveFanDisplacementLinearMap_apply
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (q : ℂ) (d : Fin 2 → ℝ) :
     effectiveFanDisplacementLinearMap N q d = effectiveFanDisplacement N q d :=
   rfl
 
 public theorem phaseLog_mulVec_real_le
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) {q : ℂ} {A : ℝ}
-    (hA : ∀ i j, |CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.phaseLogMatrix
+    (hA : ∀ i j, |NormalizedFuchsianCuspCoordinate.phaseLogMatrix
       N q i j| ≤ A) (x : Fin 2 → ℝ) (i : Fin 2) :
-    |(CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.phaseLogMatrix
+    |(NormalizedFuchsianCuspCoordinate.phaseLogMatrix
       N q).mulVec x i| ≤ A * realL1 x := by
   let R :=
-    CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.phaseLogMatrix N q
+    NormalizedFuchsianCuspCoordinate.phaseLogMatrix N q
   simp only [Matrix.mulVec, dotProduct, Fin.sum_univ_two, realL1]
   calc
     |R i 0 * x 0 + R i 1 * x 1| ≤ |R i 0 * x 0| + |R i 1 * x 1| :=
@@ -152,19 +152,19 @@ public theorem phaseLog_mulVec_real_le
     _ = A * (|x 0| + |x 1|) := by ring
 
 public theorem realFanShearInverse_shearVector (lambda : ParameterLattice) :
-    realFanShearInverse (fun i ↦ (shearVector lambda i : ℝ)) = realParameter lambda := by
+    realFanShearInverse (fun i ↦ (shearVector lambda i : ℝ)) = CuspPhaseEstimates.realParameter lambda := by
   funext i
   fin_cases i <;>
     simp [realFanShearInverse, shearVector, SphereSixComplex.LatticeData.B₀,
-      Matrix.mulVec, dotProduct, Fin.sum_univ_two, realParameter]
+      Matrix.mulVec, dotProduct, Fin.sum_univ_two, CuspPhaseEstimates.realParameter]
 
 public theorem effectiveFanDisplacement_shearVector
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (q : ℂ) (lambda : ParameterLattice) :
     effectiveFanDisplacement N q (fun i ↦ (shearVector lambda i : ℝ)) =
       fun i ↦ (shearVector lambda i : ℝ) +
-        (CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.phaseLogMatrix
-          N q).mulVec (realParameter lambda) i / Real.log ‖q‖ := by
+        (NormalizedFuchsianCuspCoordinate.phaseLogMatrix
+          N q).mulVec (CuspPhaseEstimates.realParameter lambda) i / Real.log ‖q‖ := by
   rw [effectiveFanDisplacement, realFanShearInverse_shearVector]
   rfl
 
@@ -192,14 +192,14 @@ public noncomputable abbrev PhaseCorrectedToricQuotient
     {M : Model} {r : ℝ} (C : LocalHolomorphicPhaseCoefficients M r)
     (F : C.IsFree) :=
   letI := (C.toCuspActionData F).psiAction
-  MulAction.orbitRel.Quotient (Multiplicative ParameterLattice) (LocalCarrier M r)
+  MulAction.orbitRel.Quotient (Multiplicative ParameterLattice) (localCarrier M r)
 
 /-- The height radius descended to a phase-corrected toric quotient. -/
 @[expose] public noncomputable def phaseCorrectedQuotientRadius
     {M : Model} {r : ℝ} (C : LocalHolomorphicPhaseCoefficients M r)
     (F : C.IsFree) : PhaseCorrectedToricQuotient C F → ℝ := by
   let _ := (C.toCuspActionData F).psiAction
-  exact Quotient.lift (fun p : LocalCarrier M r ↦ ‖M.t p‖) (by
+  exact Quotient.lift (fun p : localCarrier M r ↦ ‖M.t p‖) (by
     intro p q hpq
     change MulAction.orbitRel (Multiplicative ParameterLattice) _ p q at hpq
     rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff] at hpq
@@ -209,7 +209,7 @@ public noncomputable abbrev PhaseCorrectedToricQuotient
 @[simp]
 public theorem phaseCorrectedQuotientRadius_mk
     {M : Model} {r : ℝ} (C : LocalHolomorphicPhaseCoefficients M r)
-    (F : C.IsFree) (p : LocalCarrier M r) :
+    (F : C.IsFree) (p : localCarrier M r) :
     phaseCorrectedQuotientRadius C F (Quotient.mk _ p) = ‖M.t p‖ :=
   rfl
 
@@ -219,9 +219,9 @@ it is independent of the six-sphere gluing and does not assume compactness of th
 public structure RadialSublevelCocompactness
     {M : Model} {r : ℝ} (C : LocalHolomorphicPhaseCoefficients M r) : Prop where
   compact_fundamental_domain : ∀ a : ℝ, 0 ≤ a → a < r →
-    ∃ K : Set (LocalCarrier M r), IsCompact K ∧
+    ∃ K : Set (localCarrier M r), IsCompact K ∧
       K ⊆ {p | ‖M.t p‖ ≤ a} ∧
-      ∀ p : LocalCarrier M r, ‖M.t p‖ ≤ a →
+      ∀ p : localCarrier M r, ‖M.t p‖ ≤ a →
         ∃ lambda : ParameterLattice, C.psiMap lambda p ∈ K
 
 /-- Concrete bounded-representative form of the required `A₂` toric cocompactness theorem.
@@ -230,7 +230,7 @@ representative in one of the two fixed affine polydiscs based at the zero vertex
 public structure A2TwoChartRadialSublevelRepresentatives
     {M : Model} {r : ℝ} (C : LocalHolomorphicPhaseCoefficients M r) : Prop where
   bounded_representative : ∀ a : ℝ, 0 ≤ a → a < r →
-    ∃ S : ℝ, ∀ p : LocalCarrier M r, ‖M.t p‖ ≤ a →
+    ∃ S : ℝ, ∀ p : localCarrier M r, ‖M.t p‖ ≤ a →
       ∃ lambda : ParameterLattice, ∃ upper : Bool,
         (C.psiMap lambda p : M.Carrier) ∈
           closedToricPolydisc M upper (fun _ ↦ 0) S
@@ -248,7 +248,7 @@ public theorem radialSublevelCocompactness_of_twoChartRepresentatives
     closedToricPolydisc M false (fun _ ↦ 0) S ∪
       closedToricPolydisc M true (fun _ ↦ 0) S
   let carrierCore : Set M.Carrier := {p | ‖M.t p‖ ≤ a} ∩ polydiscs
-  let K : Set (LocalCarrier M r) := Subtype.val ⁻¹' carrierCore
+  let K : Set (localCarrier M r) := Subtype.val ⁻¹' carrierCore
   have hpolydiscs : IsCompact polydiscs :=
     (compact_closedToricPolydisc M false (fun _ ↦ 0) S).union
       (compact_closedToricPolydisc M true (fun _ ↦ 0) S)
@@ -292,7 +292,7 @@ public theorem phaseCorrectedQuotientRadiusSublevel_isCompact
       phaseCorrectedQuotientRadius C F y ≤ a} := by
   let _ := (C.toCuspActionData F).psiAction
   obtain ⟨K, hK, hKsub, hcover⟩ := H.compact_fundamental_domain a ha har
-  let R : Setoid (LocalCarrier M r) :=
+  let R : Setoid (localCarrier M r) :=
     MulAction.orbitRel (Multiplicative ParameterLattice) _
   have himage : IsCompact ((Quotient.mk R) '' K) := hK.image continuous_quot_mk
   convert himage using 1
@@ -319,31 +319,31 @@ public theorem phaseCorrectedQuotientRadiusSublevel_isCompact
 /-- The exact toric cocompactness input specialized to the actual normalized cusp
 filling. -/
 public def ActualCuspRadialSublevelCocompactness
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) : Prop :=
   RadialSublevelCocompactness
-    (CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
+    (NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
       N M W.localWitness.radius
         W.localWitness.radius_pos W.localWitness.radius_le)
 
 /-- The concrete two-chart bounded-orbit statement for the actual `A₂` cusp action. -/
 public def ActualA2TwoChartRadialSublevelRepresentatives
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) : Prop :=
   A2TwoChartRadialSublevelRepresentatives
-    (CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
+    (NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
       N M W.localWitness.radius
         W.localWitness.radius_pos W.localWitness.radius_le)
 
 public theorem actual_effectiveFanDisplacement_correction_coord_le
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
-    (p : LocalCarrier M W.localWitness.radius) (hp : M.t p ≠ 0)
+    (p : localCarrier M W.localWitness.radius) (hp : M.t p ≠ 0)
     (d : Fin 2 → ℝ) (i : Fin 2) :
-    |(CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.phaseLogMatrix
+    |(NormalizedFuchsianCuspCoordinate.phaseLogMatrix
       N (M.t p)).mulVec (realFanShearInverse d) i / Real.log ‖M.t p‖| ≤
         (1 / 4 : ℝ) * realL1 d := by
   have hnorm_pos : 0 < ‖M.t p‖ := norm_pos_iff.mpr hp
@@ -361,10 +361,10 @@ public theorem actual_effectiveFanDisplacement_correction_coord_le
   nlinarith [W.localWitness.phaseBound_nonneg]
 
 public theorem actual_effectiveFanDisplacement_correction_l1_le
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
-    (p : LocalCarrier M W.localWitness.radius) (hp : M.t p ≠ 0)
+    (p : localCarrier M W.localWitness.radius) (hp : M.t p ≠ 0)
     (d : Fin 2 → ℝ) :
     realL1 (effectiveFanDisplacement N (M.t p) d - d) ≤
       (1 / 2 : ℝ) * realL1 d := by
@@ -376,10 +376,10 @@ public theorem actual_effectiveFanDisplacement_correction_l1_le
     _ = (1 / 2 : ℝ) * realL1 d := by ring
 
 public noncomputable def actualEffectiveFanDisplacementEquiv
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
-    (p : LocalCarrier M W.localWitness.radius) (hp : M.t p ≠ 0) :
+    (p : localCarrier M W.localWitness.radius) (hp : M.t p ≠ 0) :
     (Fin 2 → ℝ) ≃ₗ[ℝ] (Fin 2 → ℝ) :=
   LinearEquiv.ofInjectiveEndo (effectiveFanDisplacementLinearMap N (M.t p)) (by
     intro x y hxy
@@ -401,18 +401,18 @@ public noncomputable def actualEffectiveFanDisplacementEquiv
     exact sub_eq_zero.mp this)
 
 public theorem actual_exists_reduced_rescaledPosition
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
-    (p : LocalCarrier M W.localWitness.radius) (hp : M.t p ≠ 0) :
-    let C := restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
+    (p : localCarrier M W.localWitness.radius) (hp : M.t p ≠ 0) :
+    let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
       W.localWitness.radius_pos W.localWitness.radius_le
     ∃ lambda : ParameterLattice, ∃ u e : Fin 2 → ℝ,
       (∀ i, 0 ≤ u i ∧ u i < 1) ∧
       (∀ i, |e i| ≤
         2 * W.localWitness.phaseBound / |Real.log ‖M.t p‖|) ∧
       rescaledPosition M (C.psiMap lambda p) = u + e := by
-  let C := restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
+  let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
     W.localWitness.radius_pos W.localWitness.radius_le
   let L := actualEffectiveFanDisplacementEquiv W p hp
   let x : Fin 2 → ℝ := L.symm (rescaledPosition M p)
@@ -434,7 +434,7 @@ public theorem actual_exists_reduced_rescaledPosition
     rw [realL1_realFanShearInverse] at hvec
     have hul1 : realL1 u ≤ 2 := realL1_fractionalPartVector_le_two x
     simp only [e, effectiveFanDisplacement, add_sub_cancel_left]
-    change |(phaseLogMatrix N (M.t p)).mulVec (realFanShearInverse u) i /
+    change |(NormalizedFuchsianCuspCoordinate.phaseLogMatrix N (M.t p)).mulVec (realFanShearInverse u) i /
       Real.log ‖M.t p‖| ≤ _
     rw [abs_div]
     apply (div_le_iff₀ habslog_pos).2
@@ -479,16 +479,16 @@ public theorem actual_exists_reduced_rescaledPosition
       _ = u + e := by simp [e]
 
 public theorem actual_exists_twoChart_bounded_representative_of_ne_zero
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
-    (p : LocalCarrier M W.localWitness.radius) (hp : M.t p ≠ 0) :
-    let C := restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
+    (p : localCarrier M W.localWitness.radius) (hp : M.t p ≠ 0) :
+    let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
       W.localWitness.radius_pos W.localWitness.radius_le
     ∃ lambda : ParameterLattice, ∃ upper : Bool,
       (C.psiMap lambda p : M.Carrier) ∈ closedToricPolydisc M upper (fun _ ↦ 0)
         (Real.exp (4 * W.localWitness.phaseBound)) := by
-  let C := restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
+  let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
     W.localWitness.radius_pos W.localWitness.radius_le
   obtain ⟨lambda, u, e, hu, he, hy⟩ := actual_exists_reduced_rescaledPosition W p hp
   have hnorm_pos : 0 < ‖M.t p‖ := norm_pos_iff.mpr hp
@@ -547,16 +547,16 @@ public theorem actual_exists_twoChart_bounded_representative_of_ne_zero
       _ = 4 * W.localWitness.phaseBound := by field_simp
 
 public theorem actual_exists_twoChart_bounded_representative_of_eq_zero
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
-    (p : LocalCarrier M W.localWitness.radius) (hp : M.t p = 0) :
-    let C := restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
+    (p : localCarrier M W.localWitness.radius) (hp : M.t p = 0) :
+    let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
       W.localWitness.radius_pos W.localWitness.radius_le
     ∃ lambda : ParameterLattice, ∃ upper : Bool,
       (C.psiMap lambda p : M.Carrier) ∈ closedToricPolydisc M upper (fun _ ↦ 0)
         (Real.exp (4 * W.localWitness.phaseBound)) := by
-  let C := restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
+  let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
     W.localWitness.radius_pos W.localWitness.radius_le
   let F := W.localWitness.fixedPoint
   let _ := (C.toCuspActionData F).psiAction
@@ -569,7 +569,7 @@ public theorem actual_exists_twoChart_bounded_representative_of_eq_zero
     closedToricPolydisc M false (fun _ ↦ 0) (Real.exp (4 * W.localWitness.phaseBound)) ∪
       closedToricPolydisc M true (fun _ ↦ 0) (Real.exp (4 * W.localWitness.phaseBound))
   let carrierCore : Set M.Carrier := {q | ‖M.t q‖ ≤ b} ∩ polydiscs
-  let K : Set (LocalCarrier M W.localWitness.radius) := Subtype.val ⁻¹' carrierCore
+  let K : Set (localCarrier M W.localWitness.radius) := Subtype.val ⁻¹' carrierCore
   have hpolydiscs : IsCompact polydiscs :=
     (compact_closedToricPolydisc M false (fun _ ↦ 0)
       (Real.exp (4 * W.localWitness.phaseBound))).union
@@ -591,21 +591,21 @@ public theorem actual_exists_twoChart_bounded_representative_of_eq_zero
       exact hz
     · intro hq
       exact ⟨⟨q, hcarrierCore_local hq⟩, hq, rfl⟩
-  let R : Setoid (LocalCarrier M W.localWitness.radius) :=
+  let R : Setoid (localCarrier M W.localWitness.radius) :=
     MulAction.orbitRel (Multiplicative ParameterLattice) _
   let quotientCore : Set (Quotient R) := (Quotient.mk R) '' K
   let _ : LocallyCompactSpace M.Carrier :=
     ChartedSpace.locallyCompactSpace ComplexModel M.Carrier
-  let _ : LocallyCompactSpace (LocalCarrier M W.localWitness.radius) :=
+  let _ : LocallyCompactSpace (localCarrier M W.localWitness.radius) :=
     (cuspNeighborhood M W.localWitness.radius).isOpen.locallyCompactSpace
   let _ : IsCancelSMul (Multiplicative ParameterLattice)
-      (LocalCarrier M W.localWitness.radius) :=
+      (localCarrier M W.localWitness.radius) :=
     (C.toCuspActionData F).action_free
   let _ : ProperlyDiscontinuousSMul (Multiplicative ParameterLattice)
-      (LocalCarrier M W.localWitness.radius) :=
+      (localCarrier M W.localWitness.radius) :=
     C.properlyDiscontinuous F W.localWitness.compactOverlap
   let _ : ContinuousConstSMul (Multiplicative ParameterLattice)
-      (LocalCarrier M W.localWitness.radius) := by
+      (localCarrier M W.localWitness.radius) := by
     constructor
     intro gamma
     convert (C.genericPsiMap_holomorphic F
@@ -616,11 +616,11 @@ public theorem actual_exists_twoChart_bounded_representative_of_eq_zero
   have hquotientCoreCompact : IsCompact quotientCore :=
     hK.image continuous_quot_mk
   have hquotientCoreClosed : IsClosed quotientCore := hquotientCoreCompact.isClosed
-  let saturation : Set (LocalCarrier M W.localWitness.radius) :=
+  let saturation : Set (localCarrier M W.localWitness.radius) :=
     (Quotient.mk R) ⁻¹' quotientCore
   have hsaturationClosed : IsClosed saturation :=
     hquotientCoreClosed.preimage continuous_quot_mk
-  let innerPunctured : Set (LocalCarrier M W.localWitness.radius) :=
+  let innerPunctured : Set (localCarrier M W.localWitness.radius) :=
     {q | M.t q ≠ 0 ∧ ‖M.t q‖ < b}
   have hinner_saturation : innerPunctured ⊆ saturation := by
     intro q hq
@@ -647,10 +647,10 @@ public theorem actual_exists_twoChart_bounded_representative_of_eq_zero
   have htorus : Dense {q : M.Carrier | M.t q ≠ 0} := by
     rw [← M.torus_range]
     exact M.torus_dense
-  have hpuncturedDense : Dense {q : LocalCarrier M W.localWitness.radius | M.t q ≠ 0} := by
+  have hpuncturedDense : Dense {q : localCarrier M W.localWitness.radius | M.t q ≠ 0} := by
     exact htorus.preimage
       (cuspNeighborhood M W.localWitness.radius).isOpen.isOpenMap_subtype_val
-  let inner : Set (LocalCarrier M W.localWitness.radius) :=
+  let inner : Set (localCarrier M W.localWitness.radius) :=
     Subtype.val ⁻¹' cuspNeighborhood M b
   have hinnerOpen : IsOpen inner :=
     (cuspNeighborhood M b).isOpen.preimage continuous_subtype_val
@@ -682,7 +682,7 @@ public theorem actual_exists_twoChart_bounded_representative_of_eq_zero
 /-- The actual polarized `A₂` toric action has uniformly bounded representatives in the two
 fixed affine charts. -/
 public theorem actualA2TwoChartRadialSublevelRepresentatives
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     ActualA2TwoChartRadialSublevelRepresentatives W := by
@@ -696,15 +696,15 @@ public theorem actualA2TwoChartRadialSublevelRepresentatives
 /-- The cocompactness datum proves compactness of every nonnegative closed radial
 sublevel in the actual cusp filling. -/
 public theorem actualLocalCuspFillingRadiusSublevel_isCompact
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (H : ActualCuspRadialSublevelCocompactness W)
     (a : ℝ) (ha : 0 ≤ a) (har : a < W.localWitness.radius) :
-    IsCompact {y : actualLocalCuspFilling W |
+    IsCompact {y : ActualLocalCuspFilling W |
       actualLocalCuspFillingRadius W y ≤ a} := by
   let C :=
-    CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
+    NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
       N M W.localWitness.radius
         W.localWitness.radius_pos W.localWitness.radius_le
   let F := W.localWitness.fixedPoint
@@ -715,12 +715,12 @@ public theorem actualLocalCuspFillingRadiusSublevel_isCompact
 /-- The concrete two-chart bounded-orbit theorem implies compactness of actual cusp-filling
 radial sublevels. -/
 public theorem actualLocalCuspFillingRadiusSublevel_isCompact_of_twoChartRepresentatives
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (H : ActualA2TwoChartRadialSublevelRepresentatives W)
     (a : ℝ) (ha : 0 ≤ a) (har : a < W.localWitness.radius) :
-    IsCompact {y : actualLocalCuspFilling W |
+    IsCompact {y : ActualLocalCuspFilling W |
       actualLocalCuspFillingRadius W y ≤ a} := by
   apply actualLocalCuspFillingRadiusSublevel_isCompact W _ a ha har
   exact radialSublevelCocompactness_of_twoChartRepresentatives _ H
@@ -744,13 +744,13 @@ public theorem actualLocalCuspRadialCoreCompactness_of_cocompactness
     (H : ActualCuspRadialSublevelCocompactness P.starCuspWitness) :
     P.ActualLocalCuspRadialCoreCompactness := by
   change ∀ a, a < P.starCuspWitness.localWitness.radius →
-    IsCompact {y : actualLocalCuspFilling P.starCuspWitness |
+    IsCompact {y : ActualLocalCuspFilling P.starCuspWitness |
       actualLocalCuspFillingRadius P.starCuspWitness y ≤ a}
   intro a ha
   by_cases ha0 : 0 ≤ a
   · exact actualLocalCuspFillingRadiusSublevel_isCompact
       P.starCuspWitness H a ha0 ha
-  · have hempty : {y : actualLocalCuspFilling P.starCuspWitness |
+  · have hempty : {y : ActualLocalCuspFilling P.starCuspWitness |
         actualLocalCuspFillingRadius P.starCuspWitness y ≤ a} = ∅ := by
       ext y
       rw [mem_empty_iff_false, iff_false]

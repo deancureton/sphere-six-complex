@@ -275,7 +275,7 @@ public theorem realMappingTorusIntervalProjection_eq_iff (φ : T ≃ₜ T)
     realMappingTorusIntervalProjection φ p = realMappingTorusIntervalProjection φ q ↔
       circleMappingTorusCylinderProjection φ p = circleMappingTorusCylinderProjection φ q := by
   have key : ∀ a b : Unit × unitInterval × T,
-      finiteBouquetMappingTorusRelation (fun _ : Unit ↦ φ) a b →
+      FiniteBouquetMappingTorusRel (fun _ : Unit ↦ φ) a b →
       realMappingTorusIntervalProjection φ a.2 =
         realMappingTorusIntervalProjection φ b.2 := by
     rintro a b (⟨-, h2⟩ | ⟨ha, hb, hab⟩ | ⟨ha, hb, hab⟩)
@@ -325,7 +325,7 @@ public theorem realMappingTorusIntervalProjection_eq_iff (φ : T ≃ₜ T)
       rw [h2, zpow_one]
   · intro h
     have main : ∀ a b : Unit × unitInterval × T,
-        Relation.EqvGen (finiteBouquetMappingTorusRelation (fun _ : Unit ↦ φ)) a b →
+        Relation.EqvGen (FiniteBouquetMappingTorusRel (fun _ : Unit ↦ φ)) a b →
         realMappingTorusIntervalProjection φ a.2 =
           realMappingTorusIntervalProjection φ b.2 := by
       intro a b hab

@@ -15,7 +15,7 @@ open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public theorem constructedA2TwoCell_attachingDegree_zero
@@ -35,7 +35,7 @@ public theorem constructedA2TwoCell_coordinateBoundary_single_zero
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)] (i : Fin 4) (j : Fin 3) :
     standardA2ToricCellularCoordinateBoundary (constructedCentralCellAtlas W).toCWDecomposition
       1 (Pi.single i 1 : Fin 4 → ℤ) j = 0 := by
-  let : DecidableEq (cuspWCellIndex (1 + 1)) := inferInstanceAs (DecidableEq (Fin 4))
+  let : DecidableEq (CuspWCellIndex (1 + 1)) := inferInstanceAs (DecidableEq (Fin 4))
   exact ((constructedCentralCellAtlas W).coordinateBoundary_single_eq_attachingDegree
     1 i j).trans (constructedA2TwoCell_attachingDegree_zero W _ i j)
 

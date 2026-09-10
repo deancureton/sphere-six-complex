@@ -25,7 +25,7 @@ open SourceChamberTopology
 
 /-- The exact `(3, 4, ∞)` Fuchsian orbifold coordinate exists, with no classical-analysis
 axiom. -/
-theorem establishedExactFuchsianOrbifoldCoordinate_proved :
+theorem nonempty_exactFuchsianOrbifoldCoordinate :
     Nonempty ExactFuchsianOrbifoldCoordinate := by
   obtain ⟨S⟩ := exists_sourceChamberCaratheodorySeed
   exact

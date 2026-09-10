@@ -36,7 +36,7 @@ public noncomputable def degreeOneCoinvariantEquiv :
 
 /-- Degree zero has no invariant term because the two sides and their overlap are connected. -/
 public def degreeOneInvariantEquiv :
-    (presentationOne (D := D)).Invariants ≃ₗ[ℤ] (Fin 0 → ℤ) :=
+    (presentationOne (D := D)).invariants ≃ₗ[ℤ] (Fin 0 → ℤ) :=
   kernelEquivFinZeroOfInjective
     (presentationOne (D := D)).lowDifference.toIntLinearMap B.differenceZero_injective
 
@@ -110,7 +110,7 @@ public noncomputable def degreeTwoCoinvariantEquiv :
 /-- The swept-cycle boundary coordinate, identified with the kernel generator of the actual
 degree-one difference matrix. -/
 public noncomputable def degreeTwoInvariantEquiv :
-    (presentationTwo (D := D)).Invariants ≃ₗ[ℤ] ℤ :=
+    (presentationTwo (D := D)).invariants ≃ₗ[ℤ] ℤ :=
   (kernelEquivOfComm B.bandOne.toIntLinearEquiv B.sidesOne.toIntLinearEquiv
     (presentationTwo (D := D)).lowDifference.toIntLinearMap ellipticActualHOneLinear
       B.differenceOne_linear_comm).trans ellipticActualHOneKernelEquivInt
@@ -127,7 +127,7 @@ public noncomputable def degreeTwoSplittingOfGenerator
     WangHomologyPresentation.NormalizedSplitting (presentationTwo (D := D)) := by
   let P := presentationTwo (D := D)
   let e := degreeTwoInvariantEquiv B
-  let s : P.Invariants →ₗ[ℤ] IntegralSingularHomology 2
+  let s : P.invariants →ₗ[ℤ] IntegralSingularHomology 2
       (D.orderThreeSide ∪ D.orderFourSide : Set A.ellipticInterior) :=
     ((LinearMap.lsmul ℤ _).flip g).comp e.toLinearMap
   refine
@@ -152,8 +152,8 @@ public noncomputable def cuspToEllipticUnionHomology
       (D.orderThreeSide ∪ D.orderFourSide) D.sides_cover)).symm
     (integralSingularHomologyMap k
       (IntegralMayerVietoris.interToLeft
-        ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4))
-        ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3))
+        ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4))
+        ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 3))
       (integralSingularHomologyEquiv k
         A.cuspCollarToSectionSevenFinalOverlapHomeomorph x))
 
@@ -238,7 +238,7 @@ public noncomputable def normalizedEllipticInteriorHomologyTwoEquiv
 two prescribed end coordinates. -/
 public theorem normalizedUnionHomologyTwoEquiv_add
     (S : WangHomologyPresentation.NormalizedSplitting (presentationTwo (D := D)))
-    (c : (presentationTwo (D := D)).Coinvariants) (z : (presentationTwo (D := D)).Invariants) :
+    (c : (presentationTwo (D := D)).Coinvariants) (z : (presentationTwo (D := D)).invariants) :
     normalizedUnionHomologyTwoEquiv B S
         ((presentationTwo (D := D)).coinvariantsToTotal c + S.sweptSection z) =
       ![degreeTwoCoinvariantEquiv B c, degreeTwoInvariantEquiv B z] := by

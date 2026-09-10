@@ -8,13 +8,13 @@ open Set Topology
 namespace SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Periods CuspFilling CuspLocalPhaseAction CuspPuncturedCollarBridge
 open CuspPeriodExpansion InfiniteA2Toric.Construction
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 def constructedPositiveInteriorProjection
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     (p : constructedA2PositiveOffCentral W.localWitness.radius) :
-    ↥((ConstructedA2PositiveQuotientCore W)ᶜ) := by
+    ↥((constructedA2PositiveQuotientCore W)ᶜ) := by
   refine ⟨Quotient.mk _ p.1, ?_⟩
   have h := Set.ext_iff.mp (constructedPositiveDeck_central_preimage W) p.1
   exact fun hp ↦ p.2 (h.mp hp)

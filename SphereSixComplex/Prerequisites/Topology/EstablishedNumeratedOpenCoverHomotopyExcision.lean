@@ -31,7 +31,7 @@ public theorem leftToUnion_isHomotopyEquivalence_of_normal_paracompact
     [NormalSpace ↥(U ∪ V)] [ParacompactSpace ↥(U ∪ V)]
     (hinter : IsHomotopyEquivalence (interToRight U V).hom) :
     IsHomotopyEquivalence (leftToUnion U V).hom :=
-  ClosedCover.leftToUnion_isHomotopyEquivalence_of_normal_paracompact_proved U V hU hV hinter
+  ClosedCover.leftToUnion_isHomotopyEquivalence_of_normal_paracompact U V hU hV hinter
 
 end OpenUnionHomotopy
 

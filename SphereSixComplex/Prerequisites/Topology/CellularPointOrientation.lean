@@ -27,8 +27,8 @@ public theorem cwCharacteristicBoundaryInclusion_zero_chainMap :
 
 public instance : IsIso (cwRelativeIntegralSingularChainProjection
     (cwCharacteristicBoundaryInclusion 0)) := by
-  have h (f : CWIntegralSingularChainComplexObj
-      (TopCat.of (CWCharacteristicBoundarySphere 0)) ⟶ CWIntegralSingularChainComplexObj
+  have h (f : cwIntegralSingularChainComplexObj
+      (TopCat.of (CWCharacteristicBoundarySphere 0)) ⟶ cwIntegralSingularChainComplexObj
       (TopCat.of (CWCharacteristicClosedBall 0))) [HasCokernel f]
       (hf : f = 0) : IsIso (cokernel.π f) := by
     subst f
@@ -41,13 +41,14 @@ public def cwPointDiskPoint : CWCharacteristicClosedBall 0 :=
 public instance : Nonempty (CWCharacteristicClosedBall 0) := ⟨cwPointDiskPoint⟩
 
 public def normalizedPointDiskOrientation :
-    (CWRelativeIntegralSingularChainComplex (cwCharacteristicBoundaryInclusion 0)).homology 0 ≃+ ℤ :=
+    (cwRelativeIntegralSingularChainComplex (cwCharacteristicBoundaryInclusion 0)).homology 0
+      ≃+ ℤ :=
   ((asIso (HomologicalComplex.homologyMap (cwRelativeIntegralSingularChainProjection
     (cwCharacteristicBoundaryInclusion 0)) 0)).symm).addCommGroupIsoToAddEquiv |>.trans
       (pathConnectedIntegralHomologyZeroEquivInteger (CWCharacteristicClosedBall 0))
 
 public def cwOrientedPointClass : AddCommGrpCat.of ℤ ⟶
-    (CWRelativeIntegralSingularChainComplex (cwCharacteristicBoundaryInclusion 0)).homology 0 :=
+    (cwRelativeIntegralSingularChainComplex (cwCharacteristicBoundaryInclusion 0)).homology 0 :=
   cwIntegralPointClass (TopCat.of (CWCharacteristicClosedBall 0)) cwPointDiskPoint ≫
     HomologicalComplex.homologyMap (cwRelativeIntegralSingularChainProjection
       (cwCharacteristicBoundaryInclusion 0)) 0

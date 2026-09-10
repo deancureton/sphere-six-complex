@@ -15,7 +15,7 @@ variable (T : CellularHomology.IntegralComparison)
   [Topology.CWComplex (Set.univ : Set X)]
 
 public theorem homologyEquiv_skeletal_apply (n : ℕ)
-    (x : (CWIntegralSingularChainComplexObj
+    (x : (cwIntegralSingularChainComplexObj
       (TopCat.of (IntegralCWSkeletonLT X (n + 1)))).homology n) :
     T.homologyEquiv X n ((integralCWSkeletalHomologyToCellular X n).hom x) =
       (HomologicalComplex.homologyMap
@@ -26,7 +26,7 @@ public theorem homologyEquiv_of_skeletalCycle (n : ℕ) {A : AddCommGrpCat}
     (a : A ⟶
       (integralCWSkeletalChainComplex X (integralCWRelativeBoundary_comp_self X)).cycles n)
     (b : A ⟶
-      (CWIntegralSingularChainComplexObj (TopCat.of (IntegralCWSkeletonLT X (n + 1)))).homology n)
+      (cwIntegralSingularChainComplexObj (TopCat.of (IntegralCWSkeletonLT X (n + 1)))).homology n)
     (h : b ≫ HomologicalComplex.homologyMap
         (cwRelativeIntegralSingularChainProjection (integralCWSkeletonInclusion X n)) n =
       a ≫ (integralCWSkeletalChainComplex X
@@ -37,7 +37,7 @@ public theorem homologyEquiv_of_skeletalCycle (n : ℕ) {A : AddCommGrpCat}
       b ≫ HomologicalComplex.homologyMap
         (cwIntegralSingularChainMapObj (integralCWSkeletonToSpace X (n + 1))) n := by
   let K := integralCWSkeletalChainComplex X (integralCWRelativeBoundary_comp_self X)
-  let p : (CWIntegralSingularChainComplexObj
+  let p : (cwIntegralSingularChainComplexObj
       (TopCat.of (IntegralCWSkeletonLT X (n + 1)))).homology n ⟶ K.X n :=
     HomologicalComplex.homologyMap
     (cwRelativeIntegralSingularChainProjection (integralCWSkeletonInclusion X n)) n

@@ -20,7 +20,7 @@ namespace SphereSixComplex.Periods
 
 open SphereSixComplex.TriangleGroup
 
-variable (E : EstablishedFuchsianModularParameter)
+variable (E : NormalizedFuchsianModularParameter)
 
 /-- Local analytic data identifying the affine `beta` problem with a Cech torsor under `O` on
 the quotient projective line.  It contains local sections and their overlap mismatch, but no
@@ -165,7 +165,7 @@ public theorem exists_compatibleAdjustedBetaSections {mu : UpperHalfPlane → �
       ∀ z, z ∈ D.zeroRegion ∩ D.infinityRegion →
         adjustedBetaZero E D fZero z = adjustedBetaInfinity E D fInfinity z := by
   obtain ⟨fZero, fInfinity, hfZero, hfInfinity, hsplit⟩ :=
-    establishedProjectiveLineCechZero D.overlapCocycle D.overlapCocycle_holomorphic
+    exists_cech_coboundary_zero D.overlapCocycle D.overlapCocycle_holomorphic
   refine ⟨fZero, fInfinity, hfZero, hfInfinity, ?_⟩
   intro z hz
   have ht := D.infinity_coordinate_ne_zero z hz.2

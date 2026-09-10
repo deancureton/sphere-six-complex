@@ -146,15 +146,15 @@ public theorem boundarySevenFaceNeighborhoodCechTotalAugmentation_quasiIso
         boundarySevenFaceNeighborhoodCechOuterAugmentation q)
       (hident.targetRowArrowIso q).symm
   have hP : QuasiIso (firstQuadrantTotalToSingleZero
-      (CoverSmallIntegralSingularChainComplex
+      (coverSmallIntegralSingularChainComplex
         (SSet.toTop.obj (∂Δ[7] : SSet.{0}))
         boundarySevenComparisonFaceNeighborhood)) := by
     letI : IsIso (firstQuadrantTotalToSingleZero
-        (CoverSmallIntegralSingularChainComplex
+        (coverSmallIntegralSingularChainComplex
           (SSet.toTop.obj (∂Δ[7] : SSet.{0}))
           boundarySevenComparisonFaceNeighborhood)) :=
       (firstQuadrantSingleZeroTotalIso
-        (CoverSmallIntegralSingularChainComplex
+        (coverSmallIntegralSingularChainComplex
           (SSet.toTop.obj (∂Δ[7] : SSet.{0}))
           boundarySevenComparisonFaceNeighborhood)).isIso_hom
     infer_instance

@@ -29,7 +29,7 @@ variable (A : PaperAnalyticData)
 /-- The restricted order-four product chart followed by projection to the central family. -/
 public noncomputable def orderFourPuncturedProductCentralRealizationMap :
     letI := A.ellipticFourBoundaryAction
-    C(A.OrderFourCayleyPuncturedDisc × A.orderFourTorus, A.CentralFamily) := by
+    C(A.OrderFourCayleyPuncturedDisc × A.OrderFourTorus, A.CentralFamily) := by
   let _ := A.ellipticFourBoundaryAction
   exact
     { toFun := fun zq ↦ A.centralQuotientProjection

@@ -94,7 +94,7 @@ public noncomputable def affineBandOrderThreeMarkedProjection
     C((A.actualAffineHeightSplit.allocation.orderThreeSide ∩
         A.actualAffineHeightSplit.allocation.orderFourSide :
           Set A.ellipticInterior),
-      OrderThreeReducedCentralFiber A.periods) :=
+      orderThreeReducedCentralFiber A.periods) :=
   ((RadialEllipticActionData.centralFiberCoverProjection
       (orderThreeRadialActionData A.periods)).comp
     ⟨A.duplicatedSectionSevenBandToOrderThreeCoverSource,
@@ -108,7 +108,7 @@ public noncomputable def affineBandOrderFourMarkedProjection
     C((A.actualAffineHeightSplit.allocation.orderThreeSide ∩
         A.actualAffineHeightSplit.allocation.orderFourSide :
           Set A.ellipticInterior),
-      OrderFourReducedCentralFiber A.periods) :=
+      orderFourReducedCentralFiber A.periods) :=
   ((RadialEllipticActionData.centralFiberCoverProjection
       (orderFourRadialActionData A.periods)).comp
     ⟨A.duplicatedSectionSevenBandToOrderFourCoverSource,

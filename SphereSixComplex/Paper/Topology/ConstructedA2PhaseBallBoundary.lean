@@ -18,7 +18,7 @@ open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 open SphereSixComplex.Geometry.CuspPhaseEstimates
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public theorem constructedA2ClosedBallPositiveCell_boundary_support_ge_two

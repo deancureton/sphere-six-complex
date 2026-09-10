@@ -251,7 +251,7 @@ public theorem logarithmicGaugeSection_continuousAt
 the representative base point. -/
 public theorem familyTranslationMap_continuousAt_of_section
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel n
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
       (projection (parameterMap F)))
     (s : UpperHalfPlane → ComplexTwoSpace)
     (p : UpperHalfPlane × ComplexTwoSpace) (hs : ContinuousAt s p.1) :
@@ -285,7 +285,7 @@ public theorem familyTranslationMap_continuousAt_of_section
 
 public theorem orderThreePrincipalGauge_continuousOn
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel n
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
       (projection (parameterMap F))) (r : ℝ) :
     ContinuousOn (orderThreePrincipalGaugeEquiv F)
       (orderThreePuncturedFamilyCollar F r) := by
@@ -338,7 +338,7 @@ public theorem orderThreePrincipalGauge_continuousOn
 
 public theorem orderFourPrincipalGauge_continuousOn
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel n
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
       (projection (parameterMap F))) (r : ℝ) :
     ContinuousOn (orderFourPrincipalGaugeEquiv F)
       (orderFourPuncturedFamilyCollar F r) := by
@@ -391,7 +391,7 @@ public theorem orderFourPrincipalGauge_continuousOn
 
 public theorem orderThreePrincipalGauge_symm_continuousOn
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel n
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
       (projection (parameterMap F))) (r : ℝ) :
     ContinuousOn (orderThreePrincipalGaugeEquiv F).symm
       (orderThreePuncturedFamilyCollar F r) := by
@@ -443,7 +443,7 @@ public theorem orderThreePrincipalGauge_symm_continuousOn
 
 public theorem orderFourPrincipalGauge_symm_continuousOn
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel n
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
       (projection (parameterMap F))) (r : ℝ) :
     ContinuousOn (orderFourPrincipalGaugeEquiv F).symm
       (orderFourPuncturedFamilyCollar F r) := by
@@ -553,7 +553,7 @@ public theorem orderFourFamilyRadius_principalGauge_symm
 
 @[expose] public noncomputable def orderThreePuncturedCollarGaugeHomeomorph
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel n
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
       (projection (parameterMap F))) (r : ℝ) :
     orderThreePuncturedFamilyCollar F r ≃ₜ
       orderThreePuncturedFamilyCollar F r where
@@ -569,7 +569,7 @@ public theorem orderFourFamilyRadius_principalGauge_symm
 
 @[expose] public noncomputable def orderFourPuncturedCollarGaugeHomeomorph
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel n
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
       (projection (parameterMap F))) (r : ℝ) :
     orderFourPuncturedFamilyCollar F r ≃ₜ
       orderFourPuncturedFamilyCollar F r where
@@ -791,7 +791,7 @@ public theorem orderFourPrincipalGauge_generator
 
 @[expose] public noncomputable def orderThreePuncturedGaugeEquivariantHomeomorph
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel n
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
       (projection (parameterMap F)))
     (hsource : U.sourceAction = fuchsianSourceAction) (r : ℝ) :
     EquivariantOpenHomeomorphOfActions
@@ -817,7 +817,7 @@ public theorem orderFourPrincipalGauge_generator
 
 @[expose] public noncomputable def orderFourPuncturedGaugeEquivariantHomeomorph
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel n
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
       (projection (parameterMap F)))
     (hsource : U.sourceAction = fuchsianSourceAction) (r : ℝ) :
     EquivariantOpenHomeomorphOfActions
@@ -845,7 +845,7 @@ public theorem orderFourPrincipalGauge_generator
 corresponding restricted linear cyclic quotient. -/
 @[expose] public noncomputable def orderThreePuncturedCollarQuotientHomeomorph
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel n
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
       (projection (parameterMap F)))
     (hsource : U.sourceAction = fuchsianSourceAction) (r : ℝ) :
     Quotient (restrictedOrbitRel (orderThreeAffineFamilyAction F)
@@ -859,7 +859,7 @@ corresponding restricted linear cyclic quotient. -/
 corresponding restricted linear cyclic quotient. -/
 @[expose] public noncomputable def orderFourPuncturedCollarQuotientHomeomorph
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel n
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
       (projection (parameterMap F)))
     (hsource : U.sourceAction = fuchsianSourceAction) (r : ℝ) :
     Quotient (restrictedOrbitRel (orderFourAffineFamilyAction F)

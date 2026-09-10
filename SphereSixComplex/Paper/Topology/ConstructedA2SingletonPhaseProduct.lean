@@ -20,7 +20,7 @@ open SphereSixComplex.Geometry.CuspStraighteningRetraction
 open SphereSixComplex.Geometry.CuspPhaseEstimates
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public abbrev ConstructedA2ClosedPhaseCell (r : ℝ) :=
@@ -60,7 +60,7 @@ public theorem constructedA2ClosedPhaseCellMap_isProperMap
   let _ : CompactSpace (constructedPositiveCentralCell W.localWitness.radius 0) :=
     (constructedA2CellSquareProjection_surjective W.localWitness.radius_pos 0).compactSpace
       (constructedA2CellSquareProjection_continuous W.localWitness.radius_pos 0)
-  let _ : T2Space (actualLocalCuspFilling W) :=
+  let _ : T2Space (ActualLocalCuspFilling W) :=
     SphereSixComplex.Geometry.PaperAnalyticData.actualLocalCuspFilling_t2 W
   let _ : T2Space (ActualLocalCuspCentralOrbitQuotient W) :=
     (actualLocalCuspCentralOrbitMap_isEmbedding W).t2Space

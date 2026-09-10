@@ -155,15 +155,15 @@ public theorem orderThreeLocalFiberThenBaseCentralPath_eq_trans :
 public noncomputable def orderThreeCentralAffineCorrectedEpsilonPeriodPath :
     Path A.centralAffineBase A.centralAffineBase :=
   A.ellipticThreeCuspCorrectedEpsilonPeriodPath.cast
-    A.centralAffineBase_eq_actualCuspCentralBase
-    A.centralAffineBase_eq_actualCuspCentralBase
+    A.centralAffineBase_eq_cuspCentralBase
+    A.centralAffineBase_eq_cuspCentralBase
 
 /-- The global zero-section triple displayed at the final affine basepoint. -/
 public noncomputable def orderThreeCentralAffineZeroSectionTriplePath :
     Path A.centralAffineBase A.centralAffineBase :=
   A.ellipticThreeCuspZeroSectionTriplePath.cast
-    A.centralAffineBase_eq_actualCuspCentralBase
-    A.centralAffineBase_eq_actualCuspCentralBase
+    A.centralAffineBase_eq_cuspCentralBase
+    A.centralAffineBase_eq_cuspCentralBase
 
 public theorem orderThreeCentralAffineCorrectedGeometricRelatorPath_eq_trans :
     A.orderThreeCentralAffineCorrectedGeometricRelatorPath =

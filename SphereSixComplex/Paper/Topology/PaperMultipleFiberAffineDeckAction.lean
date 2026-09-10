@@ -270,7 +270,7 @@ public theorem complexTwoReducedCentralFiberProjection_affineEquiv
         (affineEquiv P.affine.lift P.liftTranslation z) =
       complexTwoReducedCentralFiberProjection (D := D) z := by
   let h := SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels.RadialEllipticActionData.centralFiberCoverSourceHomeomorph D
-  let s : SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels.RadialEllipticActionData.centralFiberCoverSource D :=
+  let s : SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels.RadialEllipticActionData.CentralFiberCoverSource D :=
     h.symm (torusProjection p z)
   have hgen := congrArg (fun f ↦ f s)
     (centralFiberCoverProjection_comp_generator

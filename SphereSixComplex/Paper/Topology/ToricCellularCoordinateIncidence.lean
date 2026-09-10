@@ -11,8 +11,8 @@ namespace SphereSixComplex.StandardA2ToricCentralFiberCellAtlas
 public theorem coordinateBoundary_single_eq_attachingDegree
     {X : Type} [TopologicalSpace X] [T2Space X]
     (A : StandardA2ToricCentralFiberCellAtlas X) (n : ℕ)
-    [DecidableEq (cuspWCellIndex (n + 1))]
-    (i : cuspWCellIndex (n + 1)) (j : cuspWCellIndex n) :
+    [DecidableEq (CuspWCellIndex (n + 1))]
+    (i : CuspWCellIndex (n + 1)) (j : CuspWCellIndex n) :
     let _ := A.cwComplex
     standardA2ToricCellularCoordinateBoundary A.toCWDecomposition n (Pi.single i 1) j =
       CellularHomology.integralComparison.normalized.attachingDegree X n i j := by
@@ -30,7 +30,7 @@ public theorem coordinateBoundary_single_eq_attachingDegree
         (Finsupp.addEquivFunOnFinite.symm (Pi.single i 1))))) j = _
   have h : (Finsupp.addEquivFunOnFinite.symm (Pi.single i (1 : ℤ))) = Finsupp.single i 1 := by
     ext k
-    change (Pi.single i 1 : cuspWCellIndex (n + 1) → ℤ) k = (Finsupp.single i 1) k
+    change (Pi.single i 1 : CuspWCellIndex (n + 1) → ℤ) k = (Finsupp.single i 1) k
     simp [Pi.single_apply, Finsupp.single_apply, eq_comm]
   rw [h]
   rfl

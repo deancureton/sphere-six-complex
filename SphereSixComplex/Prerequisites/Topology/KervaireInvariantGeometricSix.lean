@@ -197,7 +197,7 @@ public theorem parallelizableFilling_of_kervaireDetection
 
 /-- Uniform middle-homology vanishing plus the one Kervaire/Pontryagin--Thom detection theorem
 discharges the older, stronger-looking parallelizable-filling obligation. -/
-public theorem stableFramingsBoundParallelizableSevenManifolds_of_kervaireDetection
+public theorem parallelizableFillings_of_modTwoHomology_isZero_of_kervaireDetection
     (hH₃ : ∀ S : OrientedMarkedSmoothHomotopySixSphere.{0},
       IsZero (((singularHomologyFunctor AddCommGrpCat 3).obj
         (AddCommGrpCat.of (ZMod 2))).obj (TopCat.of S.carrier)))
@@ -214,7 +214,7 @@ public theorem stableFramingsBoundParallelizableSevenManifolds_of_standard_modTw
         (AddCommGrpCat.of (ZMod 2))).obj (TopCat.of SixSphere)))
     (hDetection : StableFramedSixSphereKervairePTDetection) :
     StableFramingsBoundParallelizableSevenManifolds :=
-  stableFramingsBoundParallelizableSevenManifolds_of_kervaireDetection
+  parallelizableFillings_of_modTwoHomology_isZero_of_kervaireDetection
     (markedHomotopySixSphere_modTwoHomology_three_isZero_of_standard hstandard) hDetection
 
 end OrientedMarkedSmoothHomotopySixSphere

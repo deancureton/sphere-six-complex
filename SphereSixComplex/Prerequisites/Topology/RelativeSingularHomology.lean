@@ -29,23 +29,23 @@ open AlgebraicTopology CategoryTheory CategoryTheory.Limits
 namespace SphereSixComplex
 
 /-- Integral singular chains of a categorical topological space. -/
-public abbrev IntegralSingularChainComplexObj (X : TopCat) :
+public abbrev integralSingularChainComplexObj (X : TopCat) :
     ChainComplex AddCommGrpCat ℕ :=
   ((singularChainComplexFunctor AddCommGrpCat).obj (AddCommGrpCat.of ℤ)).obj X
 
 /-- The singular-chain map induced by a morphism of categorical topological spaces. -/
 public noncomputable def integralSingularChainMapObj {X Y : TopCat} (i : X ⟶ Y) :
-    IntegralSingularChainComplexObj X ⟶ IntegralSingularChainComplexObj Y :=
+    integralSingularChainComplexObj X ⟶ integralSingularChainComplexObj Y :=
   ((singularChainComplexFunctor AddCommGrpCat).obj (AddCommGrpCat.of ℤ)).map i
 
 /-- Relative integral singular chains, defined as the cokernel of the subspace chain map. -/
-public noncomputable def RelativeIntegralSingularChainComplex {X Y : TopCat} (i : X ⟶ Y) :
+public noncomputable def relativeIntegralSingularChainComplex {X Y : TopCat} (i : X ⟶ Y) :
     ChainComplex AddCommGrpCat ℕ :=
   cokernel (integralSingularChainMapObj i)
 
 /-- The quotient map from ambient singular chains to relative singular chains. -/
 public noncomputable def relativeIntegralSingularChainProjection {X Y : TopCat} (i : X ⟶ Y) :
-    IntegralSingularChainComplexObj Y ⟶ RelativeIntegralSingularChainComplex i :=
+    integralSingularChainComplexObj Y ⟶ relativeIntegralSingularChainComplex i :=
   cokernel.π (integralSingularChainMapObj i)
 
 /-- The canonical short complex of subspace, ambient, and relative singular chains. -/
@@ -78,8 +78,8 @@ public theorem relativeIntegralSingularShortComplex_shortExact
 /-- The connecting map from relative homology in degree `n+1` to subspace homology in degree `n`. -/
 public noncomputable def relativeIntegralSingularBoundary
     {X Y : TopCat} (i : X ⟶ Y) [Mono i] (n : ℕ) :
-    (RelativeIntegralSingularChainComplex i).homology (n + 1) ⟶
-      (IntegralSingularChainComplexObj X).homology n :=
+    (relativeIntegralSingularChainComplex i).homology (n + 1) ⟶
+      (integralSingularChainComplexObj X).homology n :=
   (relativeIntegralSingularShortComplex_shortExact i).δ (n + 1) n
     (ComplexShape.down_mk (n + 1) n (by omega))
 
@@ -125,9 +125,9 @@ public theorem relativeIntegralSingular_homology_exact_subspace
     (n + 1) n (ComplexShape.down_mk (n + 1) n (by omega))
 
 /-- The relative integral singular chain complex of the pair `(D⁷,S⁶)`. -/
-public noncomputable abbrev DiskSevenSphereSixRelativeIntegralSingularChainComplex :
+public noncomputable abbrev diskSevenSphereSixRelativeIntegralSingularChainComplex :
     ChainComplex AddCommGrpCat ℕ :=
-  RelativeIntegralSingularChainComplex (TopCat.diskBoundaryInclusion 7)
+  relativeIntegralSingularChainComplex (TopCat.diskBoundaryInclusion 7)
 
 /-- The short exact sequence of chains for `S⁶ ⟶ D⁷ ⟶ (D⁷,S⁶)`. -/
 public theorem diskSevenSphereSix_relativeIntegralSingularShortComplex_shortExact :
@@ -138,8 +138,8 @@ public theorem diskSevenSphereSix_relativeIntegralSingularShortComplex_shortExac
 the preceding homology of `S⁶`, because both adjacent disk homology objects vanish. -/
 public noncomputable def diskSevenSphereSix_relativeBoundaryIso
     (n : ℕ) (hn : n ≠ 0) :
-    DiskSevenSphereSixRelativeIntegralSingularChainComplex.homology (n + 1) ≅
-      (IntegralSingularChainComplexObj (TopCat.diskBoundary 7)).homology n :=
+    diskSevenSphereSixRelativeIntegralSingularChainComplex.homology (n + 1) ≅
+      (integralSingularChainComplexObj (TopCat.diskBoundary 7)).homology n :=
   diskSevenSphereSix_relativeIntegralSingularShortComplex_shortExact.δIso
     (n + 1) n (ComplexShape.down_mk (n + 1) n (by omega))
     (topCatDiskSeven_integralSingularHomology_isZero (n + 1) (by omega))

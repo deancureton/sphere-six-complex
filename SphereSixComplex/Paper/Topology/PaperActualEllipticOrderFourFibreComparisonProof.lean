@@ -118,7 +118,7 @@ public theorem orderFourCentralPrincipalGaugeFiberPath_homotopic_straight :
   have htorus : Path.Homotopic A.orderFourFillingRelationPrincipalGaugeLoop
       A.orderFourPrincipalGaugeStraightLoop := Quotient.exact hclass
   rcases htorus with ⟨Htorus⟩
-  let f : C(A.orderFourTorus, A.CentralFamily) :=
+  let f : C(A.OrderFourTorus, A.CentralFamily) :=
     { toFun := fun q ↦ A.orderFourPuncturedProductCentralRealizationMap
         (A.orderFourCayleyPuncturedBasepoint, q)
       continuous_toFun := A.orderFourPuncturedProductCentralRealizationMap.continuous.comp

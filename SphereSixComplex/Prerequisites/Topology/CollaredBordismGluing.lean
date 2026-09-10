@@ -78,7 +78,7 @@ public theorem outgoingBoundaryInRightAway_isSmoothEmbedding :
 
 /-- The incoming outer collar on the smoothly glued carrier. -/
 public noncomputable def smoothIncomingCollar :
-    SmoothCollar I M₀ (OpenGluedCarrier B₀₁ B₁₂) where
+    SmoothCollar I M₀ (openGluedCarrier B₀₁ B₁₂) where
   chart := smoothIncomingChart B₀₁ B₁₂
   inclusion_isSmoothEmbedding := by
     have h := (incomingBoundaryInLeftAway_isSmoothEmbedding B₀₁).comp_smoothOpenEmbedding
@@ -97,7 +97,7 @@ public noncomputable def smoothIncomingCollar :
 
 /-- The outgoing outer collar on the smoothly glued carrier. -/
 public noncomputable def smoothOutgoingCollar :
-    SmoothCollar I M₂ (OpenGluedCarrier B₀₁ B₁₂) where
+    SmoothCollar I M₂ (openGluedCarrier B₀₁ B₁₂) where
   chart := smoothOutgoingChart B₀₁ B₁₂
   inclusion_isSmoothEmbedding := by
     have h := (outgoingBoundaryInRightAway_isSmoothEmbedding B₁₂).comp_smoothOpenEmbedding
@@ -129,7 +129,7 @@ public theorem smoothOutgoingCollar_inclusion (x : M₂) :
 /-- The smooth collared bordism obtained by gluing the outgoing collar of `B₀₁` to the
 incoming collar of `B₁₂`. -/
 public noncomputable def smoothGlue : SmoothCollaredBordism.{uE, uH, uM} I M₀ M₂ where
-  W := OpenGluedCarrier B₀₁ B₁₂
+  W := openGluedCarrier B₀₁ B₁₂
   incoming := smoothIncomingCollar B₀₁ B₁₂
   outgoing := smoothOutgoingCollar B₀₁ B₁₂
   ends_disjoint := by

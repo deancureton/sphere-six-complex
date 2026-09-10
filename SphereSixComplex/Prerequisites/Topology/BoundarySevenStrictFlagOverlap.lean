@@ -463,7 +463,7 @@ public def BoundarySevenStrictFlagCommonRestriction : Prop :=
       (u : stdSimplex ℝ (Fin (r + 1))),
       stdSimplex.map f u = w ∧
       stdSimplex.map g u = v ∧
-      BoundarySevenProperFaceNerve.map f.op F =
-        BoundarySevenProperFaceNerve.map g.op G
+      boundarySevenProperFaceNerve.map f.op F =
+        boundarySevenProperFaceNerve.map g.op G
 
 end SphereSixComplex

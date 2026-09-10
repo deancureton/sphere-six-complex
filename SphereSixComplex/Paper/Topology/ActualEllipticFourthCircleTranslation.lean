@@ -64,12 +64,12 @@ public def orderFourFourthCircleTranslation :
     (orderFourFourthPeriodCircle_fixed F)
 
 public def orderThreeReducedFourthCircleTranslation :
-    C(UnitAddCircle × OrderThreeReducedCentralFiber F, OrderThreeReducedCentralFiber F) :=
+    C(UnitAddCircle × orderThreeReducedCentralFiber F, orderThreeReducedCentralFiber F) :=
   (orderThreeRadialActionData F).reducedCircleTranslate (fourthPeriodCircle (parameterMap F U.zOne))
     (orderThreeFourthPeriodCircle_fixed F)
 
 public def orderFourReducedFourthCircleTranslation :
-    C(UnitAddCircle × OrderFourReducedCentralFiber F, OrderFourReducedCentralFiber F) :=
+    C(UnitAddCircle × orderFourReducedCentralFiber F, orderFourReducedCentralFiber F) :=
   (orderFourRadialActionData F).reducedCircleTranslate (fourthPeriodCircle (parameterMap F U.zTwo))
     (orderFourFourthPeriodCircle_fixed F)
 

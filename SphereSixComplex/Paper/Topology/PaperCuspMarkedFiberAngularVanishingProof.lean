@@ -31,7 +31,7 @@ open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open SphereSixComplex.Topology
 open Hurewicz
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
   {W : ActualPuncturedCuspCollarWitness N M}
 
@@ -61,7 +61,7 @@ private theorem additiveCuspAngularCircleMap_factors
 /-- The angular circle coordinate on the punctured cusp collar. -/
 private noncomputable def cuspBoundaryAngularCircleMap
     (W : ActualPuncturedCuspCollarWitness N M) :
-    C(puncturedLocalCuspQuotient W, UnitAddCircle) :=
+    C(PuncturedLocalCuspQuotient W, UnitAddCircle) :=
   (additiveCuspBoundaryProjection_isQuotientMap W).lift
     (additiveCuspAngularCircleMap W) (additiveCuspAngularCircleMap_factors W)
 
@@ -167,7 +167,7 @@ private theorem additiveCuspBasedAngularCircleMap_factors
 private noncomputable def cuspBoundaryBasedAngularCircleMap
     (W : ActualPuncturedCuspCollarWitness N M)
     (e : additiveCuspRadiusCover W.localWitness.radius) :
-    C(puncturedLocalCuspQuotient W, UnitAddCircle) :=
+    C(PuncturedLocalCuspQuotient W, UnitAddCircle) :=
   (additiveCuspBoundaryProjection_isQuotientMap W).lift
     (additiveCuspBasedAngularCircleMap W e)
     (additiveCuspBasedAngularCircleMap_factors W e)
@@ -192,7 +192,7 @@ private theorem cuspBoundaryBasedAngularCircleMap_base
   simp
 
 private def cuspBoundaryAngularDeckHom :
-    paperCuspBoundaryDeck →*
+    PaperCuspBoundaryDeck →*
       Multiplicative (AddSubgroup.zmultiples (1 : ℝ)) where
   toFun g := Multiplicative.ofAdd
     (StandardCircleHomologyLiftDegree.intToUnitDeck (-g.right.toAdd))
@@ -218,7 +218,7 @@ private noncomputable def cuspBoundaryAngularCoverMapData
     (e : additiveCuspRadiusCover W.localWitness.radius) :
     letI := paperCuspBoundaryDeckAction W
     QuotientCoverMapData
-      (G := paperCuspBoundaryDeck)
+      (G := PaperCuspBoundaryDeck)
       (H := Multiplicative (AddSubgroup.zmultiples (1 : ℝ)))
       (additiveCuspBoundaryProjection W)
       (⟨fun x : ℝ ↦ (x : UnitAddCircle), continuous_quotient_mk'⟩ : C(ℝ, UnitAddCircle)) := by
@@ -262,7 +262,7 @@ private theorem unitCircleWinding_firstHurewicz
 
 private theorem cuspBoundaryBasedAngularCircleMap_fundamentalGroup
     (W : ActualPuncturedCuspCollarWitness N M)
-    (b : puncturedLocalCuspQuotient W) (g : paperCuspBoundaryDeck) :
+    (b : PuncturedLocalCuspQuotient W) (g : PaperCuspBoundaryDeck) :
     letI := paperCuspBoundaryDeckAction W
     letI := paperCuspFillingDeckAction W
     let U := paperCuspUnwrappedFillingCover W b
@@ -341,8 +341,8 @@ private theorem unitCircleWinding_map_firstHurewicz
 
 private theorem cuspBoundaryAngularHomologyCoordinate_eq_neg_winding
     (W : ActualPuncturedCuspCollarWitness N M)
-    (b : puncturedLocalCuspQuotient W)
-    (x : IntegralSingularHomology 1 (puncturedLocalCuspQuotient W)) :
+    (b : PuncturedLocalCuspQuotient W)
+    (x : IntegralSingularHomology 1 (PuncturedLocalCuspQuotient W)) :
     letI := paperCuspBoundaryDeckAction W
     letI := paperCuspFillingDeckAction W
     let U := paperCuspUnwrappedFillingCover W b
@@ -356,25 +356,25 @@ private theorem cuspBoundaryAngularHomologyCoordinate_eq_neg_winding
   let T := U.toToricFillingCoverModel
   let _ : SimplyConnectedSpace (additiveCuspRadiusCover W.localWitness.radius) :=
     U.boundarySimplyConnected
-  let _ : PathConnectedSpace (puncturedLocalCuspQuotient W) :=
+  let _ : PathConnectedSpace (PuncturedLocalCuspQuotient W) :=
     U.boundaryQuotient.surjective.pathConnectedSpace U.boundaryProjection.continuous
   let e := T.boundaryFundamentalGroupEquiv
-  let hOne := deckHOneEquivOfFundamentalGroupEquivOpposite
+  let hOne := homologyOneEquivOfPi1Opposite
     (T.boundaryProjection T.base) e
   obtain ⟨z, rfl⟩ := hOne.surjective x
   cases z with
   | ofMul z =>
     obtain ⟨g, rfl⟩ := Quotient.exists_rep z
     let γ := e.symm (MulOpposite.op g)
-    have hdeck : deckAbelianPi1EquivOfFundamentalGroupEquivOpposite
+    have hdeck : abelianizationEquivOfPi1Opposite
         (T.boundaryProjection T.base) e
           (Additive.ofMul (Abelianization.of g)) =
         Additive.ofMul (Abelianization.of γ) := by
-      apply (deckAbelianPi1EquivOfFundamentalGroupEquivOpposite
+      apply (abelianizationEquivOfPi1Opposite
         (T.boundaryProjection T.base) e).symm.injective
       rw [LinearEquiv.symm_apply_apply]
       change Abelianization.of g =
-        abelianizationMulOppositeEquiv paperCuspBoundaryDeck
+        abelianizationMulOppositeEquiv PaperCuspBoundaryDeck
           (Abelianization.of (e γ))
       rw [e.apply_symm_apply, abelianizationMulOppositeEquiv_of_op]
     change cuspDeckAngularAbelianizationCoordinate
@@ -391,7 +391,7 @@ private theorem cuspBoundaryAngularHomologyCoordinate_eq_neg_winding
           (Additive.ofMul (Abelianization.of γ)) by
       change (abelianizationComparison _
           (T.boundaryProjection T.base)).equiv
-            (deckAbelianPi1EquivOfFundamentalGroupEquivOpposite
+            (abelianizationEquivOfPi1Opposite
               (T.boundaryProjection T.base) e
                 (Additive.ofMul (Abelianization.of g))) = _
       rw [hdeck]]
@@ -446,7 +446,7 @@ private theorem cuspBoundaryBasedAngularCircleMap_markedFiber_homology_eq_zero
 
 /-- The actual marked cusp fibre has zero angular coordinate in degree-one homology. -/
 public theorem cuspAngularCoordinateVanishesOnMarkedFiber
-    (G : ActualCuspRadialClutchingData W) (b : puncturedLocalCuspQuotient W) :
+    (G : ActualCuspRadialClutchingData W) (b : PuncturedLocalCuspQuotient W) :
     CuspAngularCoordinateVanishesOnMarkedFiber G b := by
   let _ := G.fiberTopology
   intro x
@@ -459,7 +459,7 @@ public theorem cuspAngularCoordinateVanishesOnMarkedFiber
 
 /-- The actual cusp filling therefore supplies the killed degree-one Wang section. -/
 public theorem actualCuspDegreeOne_section
-    (G : ActualCuspRadialClutchingData W) (b : puncturedLocalCuspQuotient W) :
+    (G : ActualCuspRadialClutchingData W) (b : PuncturedLocalCuspQuotient W) :
     let _ := G.fiberTopology
     ∃ S : (circleMappingTorusHOnePresentation G.clutching).Section,
       (rawDegreeOneTotalSpecialization G).comp S.lift = 0 :=

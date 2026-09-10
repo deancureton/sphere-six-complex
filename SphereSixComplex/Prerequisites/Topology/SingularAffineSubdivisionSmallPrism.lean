@@ -28,7 +28,7 @@ public noncomputable def coverSmallAffinePrismSimplexChain
     (x : (coverSmallSingularSubcomplex X U : SSet).obj
       (Opposite.op (SimplexCategory.mk n))) :
     AddCommGrpCat.of ℤ ⟶
-      (CoverSmallIntegralSingularChainComplex X U).X (n + 1) :=
+      (coverSmallIntegralSingularChainComplex X U).X (n + 1) :=
   (TopCat.toSSet.obj
       (TopCat.of (U (coverSmallSimplexPreimageIndex X U x)))).ιChainComplex
         (coverSmallSimplexPreimage X U x) ≫
@@ -39,8 +39,8 @@ public noncomputable def coverSmallAffinePrismSimplexChain
 
 /-- The degree-raising affine prism operator on cover-small chains. -/
 public noncomputable def coverSmallAffinePrismComponent (n : ℕ) :
-    (CoverSmallIntegralSingularChainComplex X U).X n ⟶
-      (CoverSmallIntegralSingularChainComplex X U).X (n + 1) :=
+    (coverSmallIntegralSingularChainComplex X U).X n ⟶
+      (coverSmallIntegralSingularChainComplex X U).X (n + 1) :=
   Sigma.desc (coverSmallAffinePrismSimplexChain X U n)
 
 @[reassoc (attr := simp)]
@@ -110,11 +110,11 @@ public theorem coverSmallAffinePrismComponent_comp_inclusion
 public theorem coverSmallAffinePrismComponent_identity_succ
     (n : ℕ) :
     (coverSmallAffineSubdivisionChainMap X U).f (n + 1) =
-      (CoverSmallIntegralSingularChainComplex X U).d (n + 1) n ≫
+      (coverSmallIntegralSingularChainComplex X U).d (n + 1) n ≫
           coverSmallAffinePrismComponent X U n +
         coverSmallAffinePrismComponent X U (n + 1) ≫
-          (CoverSmallIntegralSingularChainComplex X U).d (n + 2) (n + 1) +
-        𝟙 ((CoverSmallIntegralSingularChainComplex X U).X (n + 1)) := by
+          (coverSmallIntegralSingularChainComplex X U).d (n + 2) (n + 1) +
+        𝟙 ((coverSmallIntegralSingularChainComplex X U).X (n + 1)) := by
   let I := SSet.chainComplexMap (coverSmallSingularSubcomplex X U).ι
     (AddCommGrpCat.of ℤ)
   haveI : Mono I := by
@@ -149,15 +149,15 @@ public theorem coverSmallAffinePrismComponent_identity_succ
     · rw [← Category.assoc, I.comm]
       symm
       calc
-        ((CoverSmallIntegralSingularChainComplex X U).d (n + 1) n ≫
+        ((coverSmallIntegralSingularChainComplex X U).d (n + 1) n ≫
               coverSmallAffinePrismComponent X U n) ≫ I.f (n + 1) =
-            (CoverSmallIntegralSingularChainComplex X U).d (n + 1) n ≫
+            (coverSmallIntegralSingularChainComplex X U).d (n + 1) n ≫
               (coverSmallAffinePrismComponent X U n ≫ I.f (n + 1)) :=
           Category.assoc _ _ _
-        _ = (CoverSmallIntegralSingularChainComplex X U).d (n + 1) n ≫
+        _ = (coverSmallIntegralSingularChainComplex X U).d (n + 1) n ≫
               (I.f n ≫ affineSingularSubdivisionPrismComponent X n) := by
           rw [hP]
-        _ = ((CoverSmallIntegralSingularChainComplex X U).d (n + 1) n ≫
+        _ = ((coverSmallIntegralSingularChainComplex X U).d (n + 1) n ≫
               I.f n) ≫ affineSingularSubdivisionPrismComponent X n :=
           (Category.assoc _ _ _).symm
     · calc
@@ -175,10 +175,10 @@ public theorem coverSmallAffinePrismComponent_identity_succ
                 (AddCommGrpCat.of ℤ)).d (n + 2) (n + 1)) :=
           Category.assoc _ _ _
         _ = coverSmallAffinePrismComponent X U (n + 1) ≫
-            ((CoverSmallIntegralSingularChainComplex X U).d
+            ((coverSmallIntegralSingularChainComplex X U).d
               (n + 2) (n + 1) ≫ I.f (n + 1)) := by rw [I.comm]
         _ = (coverSmallAffinePrismComponent X U (n + 1) ≫
-              (CoverSmallIntegralSingularChainComplex X U).d
+              (coverSmallIntegralSingularChainComplex X U).d
                 (n + 2) (n + 1)) ≫ I.f (n + 1) :=
           (Category.assoc _ _ _).symm
   · rfl
@@ -187,8 +187,8 @@ public theorem coverSmallAffinePrismComponent_identity_succ
 public theorem coverSmallAffinePrismComponent_identity_zero :
     (coverSmallAffineSubdivisionChainMap X U).f 0 =
       coverSmallAffinePrismComponent X U 0 ≫
-          (CoverSmallIntegralSingularChainComplex X U).d 1 0 +
-        𝟙 ((CoverSmallIntegralSingularChainComplex X U).X 0) := by
+          (coverSmallIntegralSingularChainComplex X U).d 1 0 +
+        𝟙 ((coverSmallIntegralSingularChainComplex X U).X 0) := by
   let I := SSet.chainComplexMap (coverSmallSingularSubcomplex X U).ι
     (AddCommGrpCat.of ℤ)
   haveI : Mono I := by
@@ -228,17 +228,17 @@ public theorem coverSmallAffinePrismComponent_identity_zero :
           (I.f 1 ≫ ((TopCat.toSSet.obj X).chainComplex
             (AddCommGrpCat.of ℤ)).d 1 0) := Category.assoc _ _ _
       _ = coverSmallAffinePrismComponent X U 0 ≫
-          ((CoverSmallIntegralSingularChainComplex X U).d 1 0 ≫ I.f 0) := by
+          ((coverSmallIntegralSingularChainComplex X U).d 1 0 ≫ I.f 0) := by
         rw [I.comm]
       _ = (coverSmallAffinePrismComponent X U 0 ≫
-          (CoverSmallIntegralSingularChainComplex X U).d 1 0) ≫ I.f 0 :=
+          (coverSmallIntegralSingularChainComplex X U).d 1 0) ≫ I.f 0 :=
         (Category.assoc _ _ _).symm
   · rfl
 
 /-- The degree-raising small-prism family. -/
 public noncomputable def coverSmallAffinePrismHom (i j : ℕ) :
-    (CoverSmallIntegralSingularChainComplex X U).X i ⟶
-      (CoverSmallIntegralSingularChainComplex X U).X j :=
+    (coverSmallIntegralSingularChainComplex X U).X i ⟶
+      (coverSmallIntegralSingularChainComplex X U).X j :=
   if h : j = i + 1 then by
     subst j
     exact coverSmallAffinePrismComponent X U i
@@ -253,7 +253,7 @@ public theorem coverSmallAffinePrismHom_succ (i : ℕ) :
 /-- Cover-small affine subdivision is chain homotopic to the identity. -/
 public noncomputable def coverSmallAffineSubdivisionHomotopy :
     Homotopy (coverSmallAffineSubdivisionChainMap X U)
-      (𝟙 (CoverSmallIntegralSingularChainComplex X U)) where
+      (𝟙 (coverSmallIntegralSingularChainComplex X U)) where
   hom := coverSmallAffinePrismHom X U
   zero i j hij := by
     rw [coverSmallAffinePrismHom]

@@ -69,8 +69,8 @@ public theorem cuspFinalRightInclusion_comm (x : A.openEmbeddingStarData.collarS
     A.openEmbeddingStarData.fillingToSectionSevenEulerPieceHomeomorph 0
         (A.openEmbeddingStarData.toFilling 0 x) =
       IntegralMayerVietoris.interToRight
-        ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4))
-        ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3)
+        ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4))
+        ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 3)
         (A.cuspCollarToSectionSevenFinalOverlapHomeomorph x) := by
   apply Subtype.ext
   change
@@ -92,15 +92,15 @@ public theorem cuspFinalRightInclusion_comm (x : A.openEmbeddingStarData.collarS
 collar-to-filling embedding. -/
 public theorem cuspFinalRightHomologyMap_conjugacy (k : ℕ)
     (x : IntegralSingularHomology k
-      ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4) ∩
-        (A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3 :
+      ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4) ∩
+        (A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 3 :
           Set A.openEmbeddingStarData.SectionSevenMayerVietorisSpace)) :
     (integralSingularHomologyEquiv k
       (A.openEmbeddingStarData.fillingToSectionSevenEulerPieceHomeomorph 0)).symm
         (integralSingularHomologyMap k
           (IntegralMayerVietoris.interToRight
-            ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4))
-            ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3)) x) =
+            ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4))
+            ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 3)) x) =
       integralSingularHomologyMap k (A.openEmbeddingStarData.toFilling 0).hom
         ((integralSingularHomologyEquiv k
           A.cuspCollarToSectionSevenFinalOverlapHomeomorph).symm x) := by
@@ -134,8 +134,8 @@ public theorem finalCuspOne (C : A.CuspFillingInclusionCoordinates B) (x) :
     (A.cuspAttachmentHomologyBasesOfLocalBases B).cuspPieceOne
         (integralSingularHomologyMap 1
           (IntegralMayerVietoris.interToRight
-            ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4))
-            ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3)) x) =
+            ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4))
+            ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 3)) x) =
       fun i ↦ -sectionSevenFirstBoundaryHom
         ((A.cuspAttachmentHomologyBasesOfLocalBases B).overlapOne x)
           (Fin.natAdd 1 i) := by
@@ -161,8 +161,8 @@ public theorem finalCuspTwo (C : A.CuspFillingInclusionCoordinates B) (x) :
     (A.cuspAttachmentHomologyBasesOfLocalBases B).cuspPieceTwo
         (integralSingularHomologyMap 2
           (IntegralMayerVietoris.interToRight
-            ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4))
-            ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3)) x) =
+            ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4))
+            ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 3)) x) =
       fun i ↦ -sectionSevenMayerVietorisFinalTwoHom
         ((A.cuspAttachmentHomologyBasesOfLocalBases B).overlapTwo x)
           (Fin.natAdd 2 i) := by
@@ -191,8 +191,8 @@ public theorem toFinalInclusionCoordinates
       (A.cuspAttachmentHomologyBasesOfLocalBases B).interiorOne
           (integralSingularHomologyMap 1
             (IntegralMayerVietoris.interToLeft
-              ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4))
-              ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3)) x) =
+              ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4))
+              ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 3)) x) =
         fun i ↦ sectionSevenFirstBoundaryHom
           ((A.cuspAttachmentHomologyBasesOfLocalBases B).overlapOne x)
             (Fin.castAdd 2 i))
@@ -200,8 +200,8 @@ public theorem toFinalInclusionCoordinates
       (A.cuspAttachmentHomologyBasesOfLocalBases B).interiorTwo
           (integralSingularHomologyMap 2
             (IntegralMayerVietoris.interToLeft
-              ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4))
-              ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3)) x) =
+              ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4))
+              ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 3)) x) =
         fun i ↦ sectionSevenMayerVietorisFinalTwoHom
           ((A.cuspAttachmentHomologyBasesOfLocalBases B).overlapTwo x)
             (Fin.castAdd 4 i)) :

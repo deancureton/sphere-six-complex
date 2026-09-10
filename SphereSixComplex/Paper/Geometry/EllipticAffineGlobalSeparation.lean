@@ -128,12 +128,12 @@ public theorem affineGlobalFamilyAction_properlyDiscontinuous
 /-- The established elliptic stabilizer theorem supplies the exact order-three source input. -/
 public theorem establishedOrderThreeSourceStabilizerExact :
     OrderThreeSourceStabilizerExact :=
-  establishedFuchsianOneStabilizerExact
+  fuchsianOneFixed_iff_mem_range_inl
 
 /-- The established elliptic stabilizer theorem supplies the exact order-four source input. -/
 public theorem establishedOrderFourSourceStabilizerExact :
     OrderFourSourceStabilizerExact :=
-  establishedFuchsianTwoStabilizerExact
+  fuchsianTwoFixed_iff_mem_range_inr
 
 public theorem mem_familyFiber_iff_base_eq
     (z : UpperHalfPlane) (q : TotalSpace (parameterMap F)) :

@@ -32,7 +32,7 @@ public theorem exists_degreeTwoSingularCycle {X : Type} [TopologicalSpace X]
     (x : IntegralSingularHomology 2 X) :
     ∃ c : DegreeTwoSingularCycle X, c.homologyClass = x := by
   classical
-  let K := IntegralSingularChainComplex X
+  let K := integralSingularChainComplex X
   obtain ⟨y, hy⟩ := (AddCommGrpCat.epi_iff_surjective (K.homologyπ 2)).1 inferInstance x
   let p : K.X 2 := K.iCycles 2 y
   have hp : K.d 2 1 p = 0 := by

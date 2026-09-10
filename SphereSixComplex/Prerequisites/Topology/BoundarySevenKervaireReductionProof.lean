@@ -27,17 +27,17 @@ namespace OrientedMarkedSmoothHomotopySixSphere
 
 /-- The proved mod-two computation reduces the parallelizable-filling obligation to the
 Kervaire--Pontryagin--Thom detection theorem alone. -/
-public theorem stableFramingsBoundParallelizableSevenManifolds_of_kervaireDetection_proof
+public theorem parallelizableFillings_of_kervaireDetection
     (hDetection : StableFramedSixSphereKervairePTDetection) :
     StableFramingsBoundParallelizableSevenManifolds :=
   stableFramingsBoundParallelizableSevenManifolds_of_standard_modTwoH₃
-    sixSphere_modTwoHomology_three_isZero_proof hDetection
+    SixSphere.isZero_modTwoHomology_three hDetection
 
 /-- A degree theory furnished by the completed integral simplicial-to-singular comparison. -/
 public noncomputable def constructedSixSphereDegreeTheory : SixSphereDegreeTheory :=
   Classical.choice
     (sixSphereDegreeTheory_of_boundarySevenComparison
-      boundarySeven_integralComparison_proof)
+      BoundarySeven.quasiIso_integral_comparison)
 
 /-- The completed homology calculation reduces the genuine one-step geometric `Theta₆`
 endpoint to the four remaining geometric and stable-homotopy inputs. -/
@@ -51,7 +51,7 @@ public theorem constructedDegree_unconditionalGeometricThetaSixVanishes_of_remai
       constructedSixSphereDegreeTheory).ThetaSixVanishes :=
   unconditionalGeometricThetaSixVanishes_of_framedBordism_and_surgery
     constructedSixSphereDegreeTheory hStable
-    (stableFramingsBoundParallelizableSevenManifolds_of_kervaireDetection_proof
+    (parallelizableFillings_of_kervaireDetection
       hDetection)
     hSurgery hPuncture
 
@@ -69,7 +69,7 @@ public theorem
         constructedSixSphereDegreeTheory).toSmoothHCobordismRelation :=
   unconditionalGeometricThetaSixVanishesAdapter_of_framedBordism_and_surgery
     constructedSixSphereDegreeTheory hStable
-    (stableFramingsBoundParallelizableSevenManifolds_of_kervaireDetection_proof
+    (parallelizableFillings_of_kervaireDetection
       hDetection)
     hSurgery hPuncture
 

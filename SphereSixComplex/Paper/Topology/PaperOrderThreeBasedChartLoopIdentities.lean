@@ -174,7 +174,7 @@ public theorem paperPuncturedGlobalFamilyAffinePresentation_firstMeridian_inv :
 /-- One fixed path used for both translation and meridian comparisons. -/
 public noncomputable def orderThreeCentralBoundaryChartPath :
     Path A.cuspCentralBase A.ellipticThreeCentralBase := by
-  rw [← A.centralAffineBase_eq_actualCuspCentralBase]
+  rw [← A.centralAffineBase_eq_cuspCentralBase]
   exact A.orderThreeCentralBaseWhisker
 
 /-- The exact remaining coordinate calculation, expressed with concrete source and target

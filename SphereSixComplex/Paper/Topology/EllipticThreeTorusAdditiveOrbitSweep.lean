@@ -111,7 +111,7 @@ public theorem orderFourOrbitNorm_coordinateZero :
       pow_succ]
   all_goals abel
 
-public def orderThreeFixedCoordinateTwo : FixedLoop orderThreeClutchingAddEquiv :=
+public def orderThreeFixedCoordinateTwo : fixedLoops orderThreeClutchingAddEquiv :=
   ⟨standardThreeTorusCoordinateCircle 2, by
     apply LinearMap.mem_ker.mpr
     ext x j
@@ -120,7 +120,7 @@ public def orderThreeFixedCoordinateTwo : FixedLoop orderThreeClutchingAddEquiv 
         orderThreeThreeTorusClutching, standardThreeTorusCoordinateCircle_two,
         coordinateCircleTwo]⟩
 
-public def orderFourFixedCoordinateTwo : FixedLoop orderFourClutchingAddEquiv :=
+public def orderFourFixedCoordinateTwo : fixedLoops orderFourClutchingAddEquiv :=
   ⟨standardThreeTorusCoordinateCircle 2, by
     apply LinearMap.mem_ker.mpr
     ext x j

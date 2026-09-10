@@ -310,12 +310,12 @@ end RadialEllipticActionData
     (orderFourRepresentation_continuous F)
 
 /-- The actual fixed-product order-three filling retracts to its reduced central fibre. -/
-public abbrev OrderThreeReducedCentralFiber
+public abbrev orderThreeReducedCentralFiber
     {U : TriangleUniformization} (F : PeriodFunctions U) :=
   (orderThreeRadialActionData F).reducedCentralFiber
 
 /-- The actual fixed-product order-four filling retracts to its reduced central fibre. -/
-public abbrev OrderFourReducedCentralFiber
+public abbrev orderFourReducedCentralFiber
     {U : TriangleUniformization} (F : PeriodFunctions U) :=
   (orderFourRadialActionData F).reducedCentralFiber
 
@@ -323,21 +323,21 @@ public abbrev OrderFourReducedCentralFiber
 @[expose] public def orderThreeFillingHomotopyEquivCentralFiber
     {U : TriangleUniformization} (F : PeriodFunctions U) :
     (orderThreeRadialActionData F).FillingQuotient ≃ₕ
-      OrderThreeReducedCentralFiber F :=
+      orderThreeReducedCentralFiber F :=
   (orderThreeRadialActionData F).quotientHomotopyEquivCentralFiber
 
 /-- Order-four fixed-product filling, homotopy equivalent to the reduced bielliptic fibre. -/
 @[expose] public def orderFourFillingHomotopyEquivCentralFiber
     {U : TriangleUniformization} (F : PeriodFunctions U) :
     (orderFourRadialActionData F).FillingQuotient ≃ₕ
-      OrderFourReducedCentralFiber F :=
+      orderFourReducedCentralFiber F :=
   (orderFourRadialActionData F).quotientHomotopyEquivCentralFiber
 
 /-- Singular chains carry a space-level homotopy equivalence to a chain-homotopy equivalence. -/
 @[expose] public def integralSingularChainHomotopyEquiv
     {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (e : X ≃ₕ Y) :
-    HomotopyEquiv (SphereSixComplex.IntegralSingularChainComplex X)
-      (SphereSixComplex.IntegralSingularChainComplex Y) where
+    HomotopyEquiv (integralSingularChainComplex X)
+      (integralSingularChainComplex Y) where
   hom := SphereSixComplex.integralSingularChainMap e.toFun
   inv := SphereSixComplex.integralSingularChainMap e.invFun
   homotopyHomInvId := by
@@ -513,14 +513,14 @@ public abbrev OrderFourAffineRadialWholeFillingCompatibility :=
 identification. -/
 @[expose] public def orderThreeVaryingFillingHomotopyEquivCentralFiber
     (e : OrderThreeVaryingFillingProductIdentification A r) :
-    A.OrderThreeVaryingFilling r ≃ₕ OrderThreeReducedCentralFiber A.periods :=
+    A.OrderThreeVaryingFilling r ≃ₕ orderThreeReducedCentralFiber A.periods :=
   e.homotopyEquivCentralFiber
 
 /-- The exact order-four varying-filling conclusion obtained from the equivariant product
 identification. -/
 @[expose] public def orderFourVaryingFillingHomotopyEquivCentralFiber
     (e : OrderFourVaryingFillingProductIdentification A r) :
-    A.OrderFourVaryingFilling r ≃ₕ OrderFourReducedCentralFiber A.periods :=
+    A.OrderFourVaryingFilling r ≃ₕ orderFourReducedCentralFiber A.periods :=
   e.homotopyEquivCentralFiber
 
 /-- Integral singular-chain realization of the transported order-three equivalence. -/
@@ -539,14 +539,14 @@ identification. -/
 homotopy equivalence; the conclusion is derived, not stored in the chart. -/
 @[expose] public def orderThreeVaryingFillingHomotopyEquivCentralFiber_of_affineRadialChart
     (C : OrderThreeAffineRadialWholeFillingCompatibility A r) :
-    A.OrderThreeVaryingFilling r ≃ₕ OrderThreeReducedCentralFiber A.periods :=
+    A.OrderThreeVaryingFilling r ≃ₕ orderThreeReducedCentralFiber A.periods :=
   orderThreeVaryingFillingHomotopyEquivCentralFiber A r
     C.toVaryingFillingProductIdentification
 
 /-- The analogous order-four affine whole-filling conclusion. -/
 @[expose] public def orderFourVaryingFillingHomotopyEquivCentralFiber_of_affineRadialChart
     (C : OrderFourAffineRadialWholeFillingCompatibility A r) :
-    A.OrderFourVaryingFilling r ≃ₕ OrderFourReducedCentralFiber A.periods :=
+    A.OrderFourVaryingFilling r ≃ₕ orderFourReducedCentralFiber A.periods :=
   orderFourVaryingFillingHomotopyEquivCentralFiber A r
     C.toVaryingFillingProductIdentification
 

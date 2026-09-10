@@ -98,7 +98,7 @@ public theorem localIntegralHomologyFiniteSix (M : LocalEulerModels A) :
     (M.collarModel i).integralHomologyFiniteSix⟩
   intro i
   fin_cases i
-  · change IntegralHomologyFiniteSix (actualLocalCuspFilling A.starCuspWitness)
+  · change IntegralHomologyFiniteSix (ActualLocalCuspFilling A.starCuspWitness)
     exact M.cuspCells.integralHomologyFiniteSix.homotopyEquiv
       (M.cuspRetraction.quotientCentralFiberHomotopyEquiv A.starCuspWitness).symm
   · change IntegralHomologyFiniteSix

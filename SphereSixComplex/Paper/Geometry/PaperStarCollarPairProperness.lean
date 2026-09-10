@@ -260,17 +260,17 @@ public theorem orderFourCayleyRadiusBand_isCompact
 
 /-- Absolute value of the height coordinate on the actual local cusp filling. -/
 @[expose] public noncomputable def actualLocalCuspFillingRadius
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
-    actualLocalCuspFilling W → ℝ :=
-  Quotient.lift (fun p : LocalCarrier M W.localWitness.radius ↦ ‖M.t p‖) (by
+    ActualLocalCuspFilling W → ℝ :=
+  Quotient.lift (fun p : localCarrier M W.localWitness.radius ↦ ‖M.t p‖) (by
     intro p q hpq
     let C :=
-      CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
+      NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
         N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
     let _ : MulAction (Multiplicative ParameterLattice)
-        (LocalCarrier M W.localWitness.radius) :=
+        (localCarrier M W.localWitness.radius) :=
       (C.toCuspActionData W.localWitness.fixedPoint).psiAction
     change MulAction.orbitRel (Multiplicative ParameterLattice) _ p q at hpq
     rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff] at hpq
@@ -279,7 +279,7 @@ public theorem orderFourCayleyRadiusBand_isCompact
       ((C.toCuspActionData W.localWitness.fixedPoint).preserves_t gamma q))
 
 public theorem actualLocalCuspFillingRadius_continuous
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     Continuous (actualLocalCuspFillingRadius W) := by
@@ -288,10 +288,10 @@ public theorem actualLocalCuspFillingRadius_continuous
     (M.t_holomorphic.continuous.comp continuous_subtype_val)
 
 public theorem actualLocalCuspFillingRadius_lt
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
-    (y : actualLocalCuspFilling W) :
+    (y : ActualLocalCuspFilling W) :
     actualLocalCuspFillingRadius W y < W.localWitness.radius := by
   induction y using Quotient.inductionOn with
   | _ p => exact mem_ball_zero_iff.mp p.property
@@ -428,7 +428,7 @@ public theorem orderFourPuncturedCollarRadiusBand_isCompact
 
 /-- The radius on each of the three concrete filling pieces. -/
 @[expose] public noncomputable def starFillingRadius :
-    ∀ i, P.starFillingType i → ℝ :=
+    ∀ i, P.StarFilling i → ℝ :=
   Fin.cases (actualLocalCuspFillingRadius P.starCuspWitness) fun i ↦
     Fin.cases
       (P.orderThreeFillingRadius P.starSeparation.orderThree.radius)
@@ -436,7 +436,7 @@ public theorem orderFourPuncturedCollarRadiusBand_isCompact
 
 /-- The common radial coordinate on a collar, read through its filling embedding. -/
 @[expose] public noncomputable def starCollarRadius (i : Fin 3) :
-    P.starCollarSourceType i → ℝ :=
+    P.StarCollarSource i → ℝ :=
   P.starFillingRadius i ∘ P.starToFilling i
 
 /-- The selected outer radius for each concrete filling carrier. -/
@@ -453,7 +453,7 @@ public theorem starFillingRadius_continuous (i : Fin 3) :
   · exact P.orderFourFillingRadius_continuous P.starSeparation.orderFour.radius
 
 public theorem starFillingRadius_lt_outer (i : Fin 3)
-    (y : P.starFillingType i) :
+    (y : P.StarFilling i) :
     P.starFillingRadius i y < P.starOuterRadius i := by
   fin_cases i
   · exact actualLocalCuspFillingRadius_lt P.starCuspWitness y
@@ -464,7 +464,7 @@ public theorem starFillingRadius_lt_outer (i : Fin 3)
 public theorem orderThreeStarCollarRadiusBand_isCompact
     (a b : ℝ) (ha : 0 < a)
     (hb : b < P.starSeparation.orderThree.radius) :
-    IsCompact {s : P.starCollarSourceType (1 : Fin 3) |
+    IsCompact {s : P.StarCollarSource (1 : Fin 3) |
       a ≤ P.starCollarRadius (1 : Fin 3) s ∧
         P.starCollarRadius (1 : Fin 3) s ≤ b} := by
   change IsCompact {s : Quotient (restrictedOrbitRel
@@ -486,7 +486,7 @@ public theorem orderThreeStarCollarRadiusBand_isCompact
 public theorem orderFourStarCollarRadiusBand_isCompact
     (a b : ℝ) (ha : 0 < a)
     (hb : b < P.starSeparation.orderFour.radius) :
-    IsCompact {s : P.starCollarSourceType (2 : Fin 3) |
+    IsCompact {s : P.StarCollarSource (2 : Fin 3) |
       a ≤ P.starCollarRadius (2 : Fin 3) s ∧
         P.starCollarRadius (2 : Fin 3) s ≤ b} := by
   change IsCompact {s : Quotient (restrictedOrbitRel
@@ -506,7 +506,7 @@ public theorem orderFourStarCollarRadiusBand_isCompact
 
 /-- Compact subsets of every concrete filling give the upper radial trap automatically. -/
 public theorem starCollarRadius_compact_upperTrap (i : Fin 3) :
-    ∀ K : Set (P.starFillingType i), IsCompact K →
+    ∀ K : Set (P.StarFilling i), IsCompact K →
       ∃ b : ℝ, ∀ s, P.starToFilling i s ∈ K → P.starCollarRadius i s ≤ b := by
   apply compact_upper_radial_trap_of_factorsThrough
     (P.starToFilling i) (P.starCollarRadius i) (P.starFillingRadius i)
@@ -516,7 +516,7 @@ public theorem starCollarRadius_compact_upperTrap (i : Fin 3) :
 
 /-- The filling-side upper trap can be chosen strictly below the selected outer radius. -/
 public theorem starCollarRadius_compact_upperTrap_lt (i : Fin 3) :
-    ∀ K : Set (P.starFillingType i), IsCompact K →
+    ∀ K : Set (P.StarFilling i), IsCompact K →
       ∃ b : ℝ, b < P.starOuterRadius i ∧
         ∀ s, P.starToFilling i s ∈ K → P.starCollarRadius i s ≤ b := by
   apply compact_upper_radial_trap_lt_of_factorsThrough
@@ -530,7 +530,7 @@ public theorem starCollarRadius_compact_upperTrap_lt (i : Fin 3) :
 the compact-band and filling-end estimates are concrete. -/
 public theorem orderThreeCollarPairMap_isProper_of_centralLowerTrap
     (hcentral : ∀ K : Set P.CentralFamily, IsCompact K →
-      ∃ a : ℝ, 0 < a ∧ ∀ s : P.starCollarSourceType (1 : Fin 3),
+      ∃ a : ℝ, 0 < a ∧ ∀ s : P.StarCollarSource (1 : Fin 3),
         P.starToCentral (1 : Fin 3) s ∈ K →
           a ≤ P.starCollarRadius (1 : Fin 3) s) :
     IsProperMap (P.openEmbeddingStarData.collarPairMap (1 : Fin 3)) := by
@@ -542,22 +542,22 @@ public theorem orderThreeCollarPairMap_isProper_of_centralLowerTrap
       (modelWithCornersSelf ℂ ComplexModel)
   let _ := P.starFillingCharts (1 : Fin 3)
   let _ : IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞
-      (P.starFillingType (1 : Fin 3)) := P.starFilling_isManifold (1 : Fin 3)
-  let _ : LocallyCompactSpace (P.starFillingType (1 : Fin 3)) :=
+      (P.StarFilling (1 : Fin 3)) := P.starFilling_isManifold (1 : Fin 3)
+  let _ : LocallyCompactSpace (P.StarFilling (1 : Fin 3)) :=
     Manifold.locallyCompact_of_finiteDimensional
       (modelWithCornersSelf ℂ ComplexModel)
   let _ : T2Space P.openEmbeddingStarData.central := by
     change T2Space P.CentralFamily
     exact P.centralFamily_t2
   let _ : T2Space (P.openEmbeddingStarData.filling (1 : Fin 3)) := by
-    change T2Space (P.starFillingType (1 : Fin 3))
+    change T2Space (P.StarFilling (1 : Fin 3))
     exact P.starFilling_t2 (1 : Fin 3)
   let _ : LocallyCompactSpace P.openEmbeddingStarData.central := by
     change LocallyCompactSpace P.CentralFamily
     infer_instance
   let _ : LocallyCompactSpace
       (P.openEmbeddingStarData.filling (1 : Fin 3)) := by
-    change LocallyCompactSpace (P.starFillingType (1 : Fin 3))
+    change LocallyCompactSpace (P.StarFilling (1 : Fin 3))
     infer_instance
   apply P.openEmbeddingStarData.collarPairMap_isProper_of_twoEndedRadialTraps
     (1 : Fin 3) (P.starCollarRadius (1 : Fin 3))
@@ -570,7 +570,7 @@ public theorem orderThreeCollarPairMap_isProper_of_centralLowerTrap
 the compact-band and filling-end estimates are concrete. -/
 public theorem orderFourCollarPairMap_isProper_of_centralLowerTrap
     (hcentral : ∀ K : Set P.CentralFamily, IsCompact K →
-      ∃ a : ℝ, 0 < a ∧ ∀ s : P.starCollarSourceType (2 : Fin 3),
+      ∃ a : ℝ, 0 < a ∧ ∀ s : P.StarCollarSource (2 : Fin 3),
         P.starToCentral (2 : Fin 3) s ∈ K →
           a ≤ P.starCollarRadius (2 : Fin 3) s) :
     IsProperMap (P.openEmbeddingStarData.collarPairMap (2 : Fin 3)) := by
@@ -582,22 +582,22 @@ public theorem orderFourCollarPairMap_isProper_of_centralLowerTrap
       (modelWithCornersSelf ℂ ComplexModel)
   let _ := P.starFillingCharts (2 : Fin 3)
   let _ : IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞
-      (P.starFillingType (2 : Fin 3)) := P.starFilling_isManifold (2 : Fin 3)
-  let _ : LocallyCompactSpace (P.starFillingType (2 : Fin 3)) :=
+      (P.StarFilling (2 : Fin 3)) := P.starFilling_isManifold (2 : Fin 3)
+  let _ : LocallyCompactSpace (P.StarFilling (2 : Fin 3)) :=
     Manifold.locallyCompact_of_finiteDimensional
       (modelWithCornersSelf ℂ ComplexModel)
   let _ : T2Space P.openEmbeddingStarData.central := by
     change T2Space P.CentralFamily
     exact P.centralFamily_t2
   let _ : T2Space (P.openEmbeddingStarData.filling (2 : Fin 3)) := by
-    change T2Space (P.starFillingType (2 : Fin 3))
+    change T2Space (P.StarFilling (2 : Fin 3))
     exact P.starFilling_t2 (2 : Fin 3)
   let _ : LocallyCompactSpace P.openEmbeddingStarData.central := by
     change LocallyCompactSpace P.CentralFamily
     infer_instance
   let _ : LocallyCompactSpace
       (P.openEmbeddingStarData.filling (2 : Fin 3)) := by
-    change LocallyCompactSpace (P.starFillingType (2 : Fin 3))
+    change LocallyCompactSpace (P.StarFilling (2 : Fin 3))
     infer_instance
   apply P.openEmbeddingStarData.collarPairMap_isProper_of_twoEndedRadialTraps
     (2 : Fin 3) (P.starCollarRadius (2 : Fin 3))

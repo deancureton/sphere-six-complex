@@ -54,7 +54,7 @@ quasi-isomorphism field is needed: it follows from `homologyMap_eq`. -/
 public structure CompatibleIntegralCWCellularChainComparison
     {Y : Type} [TopologicalSpace Y] [Topology.CWComplex (Set.univ : Set Y)]
     (M : IntegralCWCellularHomologyModel Y) where
-  comparison : M.chainComplex ⟶ IntegralSingularChainComplex Y
+  comparison : M.chainComplex ⟶ integralSingularChainComplex Y
   homologyMap_eq : ∀ n, M.chainComplex.homologyMap comparison n =
     (M.homologyEquiv n).toAddCommGrpIso.hom
 
@@ -86,7 +86,7 @@ open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
 
 /-- A chain-level normalization of the actual cusp specialization.  The first field repairs the
@@ -102,7 +102,7 @@ public structure MarkedFiberCellularChainNormalization
     let _ := C.cwComplex
     CompatibleIntegralCWCellularChainComparison C.establishedIntegralCellularChainModel
   cellularSpecialization :
-    IntegralSingularChainComplex (puncturedLocalCuspQuotient W) ⟶
+    integralSingularChainComplex (PuncturedLocalCuspQuotient W) ⟶
       cuspToricCellularChainComplex
   specialization_triangle :
     let C := establishedStandardA2ToricCentralFiberCWDecomposition W R
@@ -120,11 +120,11 @@ variable {W : ActualPuncturedCuspCollarWitness N M}
 /-- The chain map used by the geometric specialization induces the composite homology map used
 in `standardA2CellularSpecializationHomologyMap`. -/
 public theorem actualSpecializationToCWCarrier_homologyMap_apply (k : ℕ)
-    (x : IntegralSingularHomology k (puncturedLocalCuspQuotient W)) :
+    (x : IntegralSingularHomology k (PuncturedLocalCuspQuotient W)) :
     let C := establishedStandardA2ToricCentralFiberCWDecomposition W R
     let _ := C.topology
     ConcreteCategory.hom
-        ((IntegralSingularChainComplex (puncturedLocalCuspQuotient W)).homologyMap
+        ((integralSingularChainComplex (PuncturedLocalCuspQuotient W)).homologyMap
           (actualSpecializationToCWCarrierChainMap W R) k) x =
       integralSingularHomologyEquivOfHomotopyEquiv k C.homotopyEquiv
         (R.specializationHomologyMap W k
@@ -138,16 +138,16 @@ public theorem actualSpecializationToCWCarrier_homologyMap_apply (k : ℕ)
 existing cellular specialization is the map induced by the labelled chain lift. -/
 public theorem cellularSpecialization_homologyMap_apply
     (S : MarkedFiberCellularChainNormalization W R) (k : ℕ)
-    (x : IntegralSingularHomology k (puncturedLocalCuspQuotient W)) :
+    (x : IntegralSingularHomology k (PuncturedLocalCuspQuotient W)) :
     ConcreteCategory.hom
-        ((IntegralSingularChainComplex (puncturedLocalCuspQuotient W)).homologyMap
+        ((integralSingularChainComplex (PuncturedLocalCuspQuotient W)).homologyMap
           S.cellularSpecialization k) x =
       standardA2CellularSpecializationHomologyMap W R k x := by
   let C := establishedStandardA2ToricCentralFiberCWDecomposition W R
   let _ := C.topology
   let _ := C.cwComplex
   let I := establishedStandardA2ToricCentralFiberCellularIncidence W R
-  let Q := IntegralSingularChainComplex (puncturedLocalCuspQuotient W)
+  let Q := integralSingularChainComplex (PuncturedLocalCuspQuotient W)
   have htriangle := congrArg (fun f ↦ Q.homologyMap f k) S.specialization_triangle
   simp only [HomologicalComplex.homologyMap_comp] at htriangle
   let eI := asIso (cuspToricCellularChainComplex.homologyMap I.chainIso.hom k)
@@ -199,7 +199,7 @@ public noncomputable def chainLiftCoinvariantHomologyOneMap (A : PaperAnalyticDa
   let _ := G.fiberTopology
   let e := integralSingularHomologyEquivOfHomotopyEquiv 1 G.totalHomotopyEquiv
   exact (ConcreteCategory.hom
-    ((IntegralSingularChainComplex (puncturedLocalCuspQuotient A.starCuspWitness)).homologyMap
+    ((integralSingularChainComplex (PuncturedLocalCuspQuotient A.starCuspWitness)).homologyMap
       S.cellularSpecialization 1)).comp
         (e.symm.toAddMonoidHom.comp
           (circleMappingTorusHOnePresentation G.clutching).coinvariantsToTotal.toAddMonoidHom)
@@ -220,7 +220,7 @@ public noncomputable def chainLiftCoinvariantHomologyTwoMap (A : PaperAnalyticDa
   let _ := G.fiberTopology
   let e := integralSingularHomologyEquivOfHomotopyEquiv 2 G.totalHomotopyEquiv
   exact (ConcreteCategory.hom
-    ((IntegralSingularChainComplex (puncturedLocalCuspQuotient A.starCuspWitness)).homologyMap
+    ((integralSingularChainComplex (PuncturedLocalCuspQuotient A.starCuspWitness)).homologyMap
       S.cellularSpecialization 2)).comp
         (e.symm.toAddMonoidHom.comp
           (circleMappingTorusHTwoPresentation G.clutching).coinvariantsToTotal.toAddMonoidHom)

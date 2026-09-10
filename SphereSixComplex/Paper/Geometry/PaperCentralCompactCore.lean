@@ -34,7 +34,7 @@ namespace PaperAnalyticData
 variable (P : PaperAnalyticData)
 
 /-- The affine quotient coordinate with the two elliptic values removed. -/
-public abbrev RegularCoordinateBase := ({0, 1} : Set ℂ)ᶜ
+public abbrev regularCoordinateBase := ({0, 1} : Set ℂ)ᶜ
 
 public theorem isRegularBasePoint_iff_coordinate_mem
     (z : UpperHalfPlane) :
@@ -96,7 +96,7 @@ public theorem isRegularBasePoint_iff_coordinate_mem
 /-- The exact quotient coordinate restricted to the regular base. -/
 @[expose] public noncomputable def regularCoordinate :
     RegularBase (U := P.modular.modularParameter.toTriangleUniformization) →
-      RegularCoordinateBase :=
+      regularCoordinateBase :=
   fun z ↦ ⟨P.modular.sourceCoordinate.coordinate z.1,
     (P.isRegularBasePoint_iff_coordinate_mem z.1).mp z.2⟩
 
@@ -134,13 +134,13 @@ public theorem regularCoordinate_surjective :
 
 /-- Compact coordinate sets admit compact sets of regular upper-half-plane representatives. -/
 public theorem regularCoordinate_compact_has_compactRepresentatives
-    (K : Set RegularCoordinateBase) (hK : IsCompact K) :
+    (K : Set regularCoordinateBase) (hK : IsCompact K) :
     ∃ L : Set (RegularBase
         (U := P.modular.modularParameter.toTriangleUniformization)),
       IsCompact L ∧ K ⊆ P.regularCoordinate '' L := by
   have hopen : IsOpen (({0, 1} : Set ℂ)ᶜ) :=
     (Set.toFinite ({0, 1} : Set ℂ)).isClosed.isOpen_compl
-  let _ : LocallyCompactSpace RegularCoordinateBase := hopen.locallyCompactSpace
+  let _ : LocallyCompactSpace regularCoordinateBase := hopen.locallyCompactSpace
   exact SphereSixComplex.IsLocalHomeomorph.exists_compact_source_cover
     P.regularCoordinate_isLocalHomeomorph P.regularCoordinate_surjective hK
 
@@ -203,17 +203,17 @@ public theorem exists_regularFamilyBaseCubeParam_eq
 affine coordinate line; points outside it must already lie in one of the selected central collar
 images. -/
 public structure ThresholdedCentralEndCoverData where
-  coordinateSubset : Set RegularCoordinateBase
+  coordinateSubset : Set regularCoordinateBase
   coordinateSubset_isCompact : IsCompact coordinateSubset
   threshold : Fin 3 → ℝ
   threshold_nonneg : ∀ i, 0 ≤ threshold i
   threshold_lt_outer : ∀ i, threshold i < P.starOuterRadius i
   centralEnd_covers : ∀ q : RegularTotalSpace P.periods,
     P.regularCoordinate (regularTotalSpaceBase P.periods q) ∉ coordinateSubset →
-      ∃ (i : Fin 3) (z : P.starCollarSourceType i),
+      ∃ (i : Fin 3) (z : P.StarCollarSource i),
         P.starToCentral i z = P.centralQuotientProjection q ∧
           P.starCollarRadius i z ≤ threshold i
-  outerCentral_coordinate : ∀ (i : Fin 3) (z : P.starCollarSourceType i)
+  outerCentral_coordinate : ∀ (i : Fin 3) (z : P.StarCollarSource i)
     (q : RegularTotalSpace P.periods),
       P.centralQuotientProjection q = P.starToCentral i z →
         threshold i < P.starCollarRadius i z →
@@ -295,7 +295,7 @@ public theorem centralQuotientProjection_mem_centralSubset
 /-- The thresholded end cover gives the exact central-side radial-core coverage field. -/
 public theorem central_covers_radialCore : ∀ x : P.CentralFamily,
     x ∈ C.centralSubset ∨
-      ∃ (i : Fin 3) (z : P.starCollarSourceType i),
+      ∃ (i : Fin 3) (z : P.StarCollarSource i),
         P.starToCentral i z = x ∧
           P.starToFilling i z ∈ P.starFillingRadialCore C.threshold i := by
   intro x
@@ -309,7 +309,7 @@ public theorem central_covers_radialCore : ∀ x : P.CentralFamily,
     exact hradius
 
 /-- Collar points above the selected thresholds map back into the compact central core. -/
-public theorem outerCentral_covers : ∀ (i : Fin 3) (z : P.starCollarSourceType i),
+public theorem outerCentral_covers : ∀ (i : Fin 3) (z : P.StarCollarSource i),
     C.threshold i < P.starCollarRadius i z → P.starToCentral i z ∈ C.centralSubset := by
   intro i z hz
   obtain ⟨q, hq⟩ := P.centralQuotientProjection_surjective (P.starToCentral i z)

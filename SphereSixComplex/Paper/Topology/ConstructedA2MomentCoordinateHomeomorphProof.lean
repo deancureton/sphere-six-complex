@@ -70,11 +70,11 @@ private theorem carrierModulus_carrierTorusEmbedding (g : DenseTorus) :
 
 private theorem torusCoordinates_positive {r : ℝ}
     (q : constructedLocalPositivePart r)
-    (ht : constructedModel.t (q : LocalCarrier constructedModel r) ≠ 0) :
+    (ht : constructedModel.t (q : localCarrier constructedModel r) ≠ 0) :
     denseTorusModulus
-      (torusCoordinates constructedModel (q : LocalCarrier constructedModel r)) =
-      torusCoordinates constructedModel (q : LocalCarrier constructedModel r) := by
-  let g := torusCoordinates constructedModel (q : LocalCarrier constructedModel r)
+      (torusCoordinates constructedModel (q : localCarrier constructedModel r)) =
+      torusCoordinates constructedModel (q : localCarrier constructedModel r) := by
+  let g := torusCoordinates constructedModel (q : localCarrier constructedModel r)
   have he : carrierTorusEmbedding g = (q.1.1 : Carrier) :=
     torusEmbedding_torusCoordinates constructedModel ht
   apply constructedModel.torus_openEmbedding.injective
@@ -87,7 +87,7 @@ public noncomputable def constructedA2OffCentralMomentInverse {r : ℝ}
     (x : constructedPositiveMomentRegion r) (hx : 0 < x.1 2) :
     constructedLocalPositivePart r := by
   let g := constructedA2MomentTorusPoint x.1 hx
-  let p : LocalCarrier constructedModel r := ⟨carrierTorusEmbedding g, by
+  let p : localCarrier constructedModel r := ⟨carrierTorusEmbedding g, by
     change carrierHeight (carrierTorusEmbedding g) ∈ Metric.ball 0 r
     rw [carrierHeight_torus]
     simpa [g, constructedA2MomentTorusPoint, constructedA2PositiveRealUnit, Metric.mem_ball,
@@ -105,7 +105,7 @@ public theorem constructedA2OffCentralMomentInverse_coe {r : ℝ}
 public theorem constructedA2OffCentralMomentInverse_t {r : ℝ}
     (x : constructedPositiveMomentRegion r) (hx : 0 < x.1 2) :
     constructedModel.t
-      (constructedA2OffCentralMomentInverse x hx : LocalCarrier constructedModel r) =
+      (constructedA2OffCentralMomentInverse x hx : localCarrier constructedModel r) =
       (x.1 2 : ℂ) := by
   change carrierHeight ((constructedA2OffCentralMomentInverse x hx).1.1 : Carrier) = _
   rw [constructedA2OffCentralMomentInverse_coe, carrierHeight_torus]
@@ -114,9 +114,9 @@ public theorem constructedA2OffCentralMomentInverse_t {r : ℝ}
 /-- Logarithmic position together with the nonnegative real height. -/
 public noncomputable def constructedA2OffCentralMomentCoordinate {r : ℝ}
     (q : constructedLocalPositivePart r) : Fin 3 → ℝ :=
-  ![rescaledPosition constructedModel (q : LocalCarrier constructedModel r) 0,
-    rescaledPosition constructedModel (q : LocalCarrier constructedModel r) 1,
-    ‖constructedModel.t (q : LocalCarrier constructedModel r)‖]
+  ![rescaledPosition constructedModel (q : localCarrier constructedModel r) 0,
+    rescaledPosition constructedModel (q : localCarrier constructedModel r) 1,
+    ‖constructedModel.t (q : localCarrier constructedModel r)‖]
 
 /-- The logarithmic coordinate always lies in the height strip defining the moment region. -/
 public noncomputable def constructedA2OffCentralMomentCoordinateTarget {r : ℝ}
@@ -133,12 +133,12 @@ public theorem constructedA2OffCentralMomentCoordinate_inverse
   have hlog : Real.log (x.1 2) ≠ 0 :=
     Real.log_ne_zero_of_pos_of_ne_one hx (ne_of_lt hx1)
   have ht : constructedModel.t
-      (constructedA2OffCentralMomentInverse x hx : LocalCarrier constructedModel r) ≠ 0 := by
+      (constructedA2OffCentralMomentInverse x hx : localCarrier constructedModel r) ≠ 0 := by
     rw [constructedA2OffCentralMomentInverse_t]
     exact_mod_cast hx.ne'
   have htorus :
       torusCoordinates constructedModel
-        (constructedA2OffCentralMomentInverse x hx : LocalCarrier constructedModel r) =
+        (constructedA2OffCentralMomentInverse x hx : localCarrier constructedModel r) =
           constructedA2MomentTorusPoint x.1 hx := by
     exact torusCoordinates_unique constructedModel ht
       (constructedA2OffCentralMomentInverse_coe x hx).symm
@@ -159,30 +159,30 @@ public theorem constructedA2OffCentralMomentCoordinate_inverse
 /-- Logarithmic coordinates recover every positive point away from the central fibre. -/
 public theorem constructedA2OffCentralMomentInverse_coordinate
     {r : ℝ} (hr : r < 1) (q : constructedLocalPositivePart r)
-    (ht : constructedModel.t (q : LocalCarrier constructedModel r) ≠ 0) :
+    (ht : constructedModel.t (q : localCarrier constructedModel r) ≠ 0) :
     constructedA2OffCentralMomentInverse
       (constructedA2OffCentralMomentCoordinateTarget q)
       (show 0 < (constructedA2OffCentralMomentCoordinateTarget q).1 2 by
-        change 0 < ‖constructedModel.t (q : LocalCarrier constructedModel r)‖
+        change 0 < ‖constructedModel.t (q : localCarrier constructedModel r)‖
         exact norm_pos_iff.mpr ht) = q := by
-  let g := torusCoordinates constructedModel (q : LocalCarrier constructedModel r)
+  let g := torusCoordinates constructedModel (q : localCarrier constructedModel r)
   have he : carrierTorusEmbedding g = (q.1.1 : Carrier) :=
     torusEmbedding_torusCoordinates constructedModel ht
   have hmod : denseTorusModulus g = g := torusCoordinates_positive q ht
   have hgi (i : Fin 3) : (‖(g i : ℂ)‖ : ℂ) = (g i : ℂ) := by
     exact congrArg (fun u : ℂˣ ↦ (u : ℂ)) (congrFun hmod i)
-  have htgi : (g 2 : ℂ) = constructedModel.t (q : LocalCarrier constructedModel r) :=
+  have htgi : (g 2 : ℂ) = constructedModel.t (q : localCarrier constructedModel r) :=
     torusCoordinates_last constructedModel ht
-  have hbase : 0 < ‖constructedModel.t (q : LocalCarrier constructedModel r)‖ :=
+  have hbase : 0 < ‖constructedModel.t (q : localCarrier constructedModel r)‖ :=
     norm_pos_iff.mpr ht
-  have hlocal : ‖constructedModel.t (q : LocalCarrier constructedModel r)‖ < r :=
+  have hlocal : ‖constructedModel.t (q : localCarrier constructedModel r)‖ < r :=
     mem_ball_zero_iff.mp q.1.property
-  have hbase1 : ‖constructedModel.t (q : LocalCarrier constructedModel r)‖ < 1 :=
+  have hbase1 : ‖constructedModel.t (q : localCarrier constructedModel r)‖ < 1 :=
     hlocal.trans hr
-  have hlog : Real.log ‖constructedModel.t (q : LocalCarrier constructedModel r)‖ ≠ 0 :=
+  have hlog : Real.log ‖constructedModel.t (q : localCarrier constructedModel r)‖ ≠ 0 :=
     Real.log_ne_zero_of_pos_of_ne_one hbase (ne_of_lt hbase1)
   let hx : 0 < (constructedA2OffCentralMomentCoordinateTarget q).1 2 := by
-    change 0 < ‖constructedModel.t (q : LocalCarrier constructedModel r)‖
+    change 0 < ‖constructedModel.t (q : localCarrier constructedModel r)‖
     exact hbase
   apply Subtype.ext
   apply Subtype.ext
@@ -194,41 +194,41 @@ public theorem constructedA2OffCentralMomentInverse_coordinate
   funext i
   fin_cases i
   · apply Units.ext
-    change ((show ℝ from ‖constructedModel.t (q : LocalCarrier constructedModel r)‖ ^
+    change ((show ℝ from ‖constructedModel.t (q : localCarrier constructedModel r)‖ ^
       (Real.log ‖(g 0 : ℂ)‖ /
-        Real.log ‖constructedModel.t (q : LocalCarrier constructedModel r)‖)) : ℂ) =
+        Real.log ‖constructedModel.t (q : localCarrier constructedModel r)‖)) : ℂ) =
       (g 0 : ℂ)
     rw [Real.rpow_def_of_pos hbase]
-    rw [show Real.log ‖constructedModel.t (q : LocalCarrier constructedModel r)‖ *
+    rw [show Real.log ‖constructedModel.t (q : localCarrier constructedModel r)‖ *
         (Real.log ‖(g 0 : ℂ)‖ /
-          Real.log ‖constructedModel.t (q : LocalCarrier constructedModel r)‖) =
+          Real.log ‖constructedModel.t (q : localCarrier constructedModel r)‖) =
         Real.log ‖(g 0 : ℂ)‖ by field_simp]
     rw [Real.exp_log (Units.norm_pos (g 0))]
     exact hgi 0
   · apply Units.ext
-    change ((show ℝ from ‖constructedModel.t (q : LocalCarrier constructedModel r)‖ ^
+    change ((show ℝ from ‖constructedModel.t (q : localCarrier constructedModel r)‖ ^
       (Real.log ‖(g 1 : ℂ)‖ /
-        Real.log ‖constructedModel.t (q : LocalCarrier constructedModel r)‖)) : ℂ) =
+        Real.log ‖constructedModel.t (q : localCarrier constructedModel r)‖)) : ℂ) =
       (g 1 : ℂ)
     rw [Real.rpow_def_of_pos hbase]
-    rw [show Real.log ‖constructedModel.t (q : LocalCarrier constructedModel r)‖ *
+    rw [show Real.log ‖constructedModel.t (q : localCarrier constructedModel r)‖ *
         (Real.log ‖(g 1 : ℂ)‖ /
-          Real.log ‖constructedModel.t (q : LocalCarrier constructedModel r)‖) =
+          Real.log ‖constructedModel.t (q : localCarrier constructedModel r)‖) =
         Real.log ‖(g 1 : ℂ)‖ by field_simp]
     rw [Real.exp_log (Units.norm_pos (g 1))]
     exact hgi 1
   · apply Units.ext
     simp only [constructedA2MomentTorusPoint, Matrix.cons_val_two,
       constructedA2OffCentralMomentCoordinate]
-    change (‖constructedModel.t (q : LocalCarrier constructedModel r)‖ : ℂ) = (g 2 : ℂ)
+    change (‖constructedModel.t (q : localCarrier constructedModel r)‖ : ℂ) = (g 2 : ℂ)
     rw [← htgi, hgi 2]
 
 private theorem constructedA2PositiveHeight_eq_norm {r : ℝ}
     (q : constructedLocalPositivePart r) :
-    constructedModel.t (q : LocalCarrier constructedModel r) =
-      (‖constructedModel.t (q : LocalCarrier constructedModel r)‖ : ℂ) := by
+    constructedModel.t (q : localCarrier constructedModel r) =
+      (‖constructedModel.t (q : localCarrier constructedModel r)‖ : ℂ) := by
   have h := constructedLocalModulusRetraction_t r
-    (q : LocalCarrier constructedModel r)
+    (q : localCarrier constructedModel r)
   rw [constructedLocalModulusRetraction_fixed r q] at h
   exact h
 
@@ -238,12 +238,12 @@ public structure ConstructedA2ProperMomentCoordinate
     (r : ℝ) (H : ConstructedHoneycombCellData r) where
   coordinate : constructedLocalPositivePart r → constructedPositiveMomentRegion r
   coordinate_height : ∀ q : constructedLocalPositivePart r,
-    (coordinate q).1 2 = ‖constructedModel.t (q : LocalCarrier constructedModel r)‖
+    (coordinate q).1 2 = ‖constructedModel.t (q : localCarrier constructedModel r)‖
   coordinate_offCentral : ∀ q : constructedLocalPositivePart r,
-    constructedModel.t (q : LocalCarrier constructedModel r) ≠ 0 →
+    constructedModel.t (q : localCarrier constructedModel r) ≠ 0 →
       coordinate q = constructedA2OffCentralMomentCoordinateTarget q
   coordinate_central : ∀ (q : constructedLocalPositivePart r)
-      (hq : constructedModel.t (q : LocalCarrier constructedModel r) = 0),
+      (hq : constructedModel.t (q : localCarrier constructedModel r) = 0),
     (fun i : Fin 2 ↦ (coordinate q).1 i.castSucc) =
       H.honeycomb.symm ⟨q, hq⟩
   proper_coordinate : IsProperMap coordinate
@@ -256,22 +256,22 @@ public theorem injective {r : ℝ} {H : ConstructedHoneycombCellData r}
     Injective C.coordinate := by
   intro q q' hqq'
   have hnorm :
-      ‖constructedModel.t (q : LocalCarrier constructedModel r)‖ =
-        ‖constructedModel.t (q' : LocalCarrier constructedModel r)‖ := by
+      ‖constructedModel.t (q : localCarrier constructedModel r)‖ =
+        ‖constructedModel.t (q' : localCarrier constructedModel r)‖ := by
     rw [← C.coordinate_height q, ← C.coordinate_height q']
     exact congrArg (fun x : constructedPositiveMomentRegion r ↦ x.1 2) hqq'
-  have ht : constructedModel.t (q : LocalCarrier constructedModel r) =
-      constructedModel.t (q' : LocalCarrier constructedModel r) := by
+  have ht : constructedModel.t (q : localCarrier constructedModel r) =
+      constructedModel.t (q' : localCarrier constructedModel r) := by
     rw [constructedA2PositiveHeight_eq_norm q, constructedA2PositiveHeight_eq_norm q', hnorm]
-  by_cases hq : constructedModel.t (q : LocalCarrier constructedModel r) = 0
-  · have hq' : constructedModel.t (q' : LocalCarrier constructedModel r) = 0 := ht ▸ hq
+  by_cases hq : constructedModel.t (q : localCarrier constructedModel r) = 0
+  · have hq' : constructedModel.t (q' : localCarrier constructedModel r) = 0 := ht ▸ hq
     have hc := congrArg
       (fun x : constructedPositiveMomentRegion r ↦ fun i : Fin 2 ↦ x.1 i.castSucc) hqq'
     rw [C.coordinate_central q hq, C.coordinate_central q' hq'] at hc
     have hz : (⟨q, hq⟩ : constructedPositiveCentralFiber r) = ⟨q', hq'⟩ :=
       H.honeycomb.symm.injective hc
     exact congrArg Subtype.val hz
-  · have hq' : constructedModel.t (q' : LocalCarrier constructedModel r) ≠ 0 := by
+  · have hq' : constructedModel.t (q' : localCarrier constructedModel r) ≠ 0 := by
       rwa [← ht]
     rw [← constructedA2OffCentralMomentInverse_coordinate hr q hq,
       ← constructedA2OffCentralMomentInverse_coordinate hr q' hq']
@@ -302,7 +302,7 @@ public theorem surjective {r : ℝ} {H : ConstructedHoneycombCellData r}
       rw [C.coordinate_height q, z.property, norm_zero, hx0]
   · have hx : 0 < x.1 2 := lt_of_le_of_ne x.2.1 (Ne.symm hx0)
     let q := constructedA2OffCentralMomentInverse x hx
-    have hqt : constructedModel.t (q : LocalCarrier constructedModel r) ≠ 0 := by
+    have hqt : constructedModel.t (q : localCarrier constructedModel r) ≠ 0 := by
       rw [constructedA2OffCentralMomentInverse_t]
       exact_mod_cast hx.ne'
     refine ⟨q, ?_⟩
@@ -331,7 +331,7 @@ public theorem toHomeomorph_height {r : ℝ} {H : ConstructedHoneycombCellData r
     (hr : r < 1) (C : ConstructedA2ProperMomentCoordinate r H)
     (q : constructedLocalPositivePart r) :
     (C.toHomeomorph hr q).1 2 =
-      ‖constructedModel.t (q : LocalCarrier constructedModel r)‖ := by
+      ‖constructedModel.t (q : localCarrier constructedModel r)‖ := by
   rw [toHomeomorph_apply]
   exact C.coordinate_height q
 
@@ -340,7 +340,7 @@ position-height coordinate, not merely an unspecified homeomorphism. -/
 public theorem toHomeomorph_offCentral {r : ℝ} {H : ConstructedHoneycombCellData r}
     (hr : r < 1) (C : ConstructedA2ProperMomentCoordinate r H)
     (q : constructedLocalPositivePart r)
-    (hq : constructedModel.t (q : LocalCarrier constructedModel r) ≠ 0) :
+    (hq : constructedModel.t (q : localCarrier constructedModel r) ≠ 0) :
     C.toHomeomorph hr q = constructedA2OffCentralMomentCoordinateTarget q := by
   rw [toHomeomorph_apply]
   exact C.coordinate_offCentral q hq
@@ -350,7 +350,7 @@ constructed honeycomb chart. -/
 public theorem toHomeomorph_central {r : ℝ} {H : ConstructedHoneycombCellData r}
     (hr : r < 1) (C : ConstructedA2ProperMomentCoordinate r H)
     (q : constructedLocalPositivePart r)
-    (hq : constructedModel.t (q : LocalCarrier constructedModel r) = 0) :
+    (hq : constructedModel.t (q : localCarrier constructedModel r) = 0) :
     (fun i : Fin 2 ↦ (C.toHomeomorph hr q).1 i.castSucc) =
       H.honeycomb.symm ⟨q, hq⟩ := by
   simpa only [toHomeomorph_apply] using C.coordinate_central q hq
@@ -360,7 +360,7 @@ end ConstructedA2ProperMomentCoordinate
 /-- The semantically pinned global extension gives component one of the constructed polar
 honeycomb coordinate data. -/
 public theorem constructedA2MomentCoordinateHomeomorph_of_properCoordinate
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     (H : ConstructedHoneycombCellData W.localWitness.radius)

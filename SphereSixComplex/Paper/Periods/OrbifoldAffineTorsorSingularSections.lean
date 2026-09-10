@@ -159,7 +159,7 @@ public theorem exists_ellipticOne_local_equivariant_section
     P.exists_local_equivariant_section_of_stabilizer_fixed fuchsianOneFixedPoint
       P.ellipticOne P.ellipticOne_holomorphic (by
         intro g hg
-        obtain ⟨a, rfl⟩ := (establishedFuchsianOneStabilizerExact g).mp hg
+        obtain ⟨a, rfl⟩ := (fuchsianOneFixed_iff_mem_range_inl g).mp hg
         exact P.transportSection_ellipticOne_fixed a)
 
 public theorem exists_ellipticTwo_local_equivariant_section
@@ -173,7 +173,7 @@ public theorem exists_ellipticTwo_local_equivariant_section
     P.exists_local_equivariant_section_of_stabilizer_fixed fuchsianTwoFixedPoint
       P.ellipticTwo P.ellipticTwo_holomorphic (by
         intro g hg
-        obtain ⟨a, rfl⟩ := (establishedFuchsianTwoStabilizerExact g).mp hg
+        obtain ⟨a, rfl⟩ := (fuchsianTwoFixed_iff_mem_range_inr g).mp hg
         exact P.transportSection_ellipticTwo_fixed a)
 
 end SphereSixComplex.Periods.OrbifoldAffineDescentData

@@ -29,7 +29,7 @@ open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open SphereSixComplex.Topology
 open Hurewicz
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
   {W : ActualPuncturedCuspCollarWitness N M}
 
@@ -37,22 +37,22 @@ namespace CuspFiberSpecializationNormalization
 
 /-- The homology class of the angular deck meridian in the punctured cusp collar. -/
 public noncomputable def cuspBoundaryMeridianHomologyClass
-    (W : ActualPuncturedCuspCollarWitness N M) (b : puncturedLocalCuspQuotient W) :
-    IntegralSingularHomology 1 (puncturedLocalCuspQuotient W) := by
+    (W : ActualPuncturedCuspCollarWitness N M) (b : PuncturedLocalCuspQuotient W) :
+    IntegralSingularHomology 1 (PuncturedLocalCuspQuotient W) := by
   let _ := paperCuspBoundaryDeckAction W
   let _ := paperCuspFillingDeckAction W
   let U := paperCuspUnwrappedFillingCover W b
   let T := U.toToricFillingCoverModel
   let _ : SimplyConnectedSpace (additiveCuspRadiusCover W.localWitness.radius) :=
     U.boundarySimplyConnected
-  let _ : PathConnectedSpace (puncturedLocalCuspQuotient W) :=
+  let _ : PathConnectedSpace (PuncturedLocalCuspQuotient W) :=
     U.boundaryQuotient.surjective.pathConnectedSpace U.boundaryProjection.continuous
   exact (abelianizationComparison _ (T.boundaryProjection T.base)).equiv
     (Additive.ofMul (Abelianization.of U.fundamentalGroupData.meridian))
 
 /-- The actual toric cusp filling kills the angular meridian in first homology. -/
 public theorem puncturedLocalCuspToFilling_cuspBoundaryMeridianHomologyClass
-    (W : ActualPuncturedCuspCollarWitness N M) (b : puncturedLocalCuspQuotient W) :
+    (W : ActualPuncturedCuspCollarWitness N M) (b : PuncturedLocalCuspQuotient W) :
     integralSingularHomologyMap 1
         ⟨puncturedLocalCuspToFilling W, puncturedLocalCuspToFilling_continuous W⟩
         (cuspBoundaryMeridianHomologyClass W b) = 0 := by
@@ -62,11 +62,11 @@ public theorem puncturedLocalCuspToFilling_cuspBoundaryMeridianHomologyClass
   let T := U.toToricFillingCoverModel
   let _ : SimplyConnectedSpace (additiveCuspRadiusCover W.localWitness.radius) :=
     U.boundarySimplyConnected
-  let _ : SimplyConnectedSpace (CuspLocalPhaseAction.LocalCarrier M W.localWitness.radius) :=
+  let _ : SimplyConnectedSpace (CuspLocalPhaseAction.localCarrier M W.localWitness.radius) :=
     U.fillingSimplyConnected
-  let _ : PathConnectedSpace (puncturedLocalCuspQuotient W) :=
+  let _ : PathConnectedSpace (PuncturedLocalCuspQuotient W) :=
     U.boundaryQuotient.surjective.pathConnectedSpace U.boundaryProjection.continuous
-  let _ : PathConnectedSpace (actualLocalCuspFilling W) :=
+  let _ : PathConnectedSpace (ActualLocalCuspFilling W) :=
     U.fillingQuotient.surjective.pathConnectedSpace U.fillingProjection.continuous
   have hpi : FundamentalGroup.map T.coverMap.baseMap (T.boundaryProjection T.base)
       U.fundamentalGroupData.meridian = 1 := by
@@ -90,7 +90,7 @@ public theorem puncturedLocalCuspToFilling_cuspBoundaryMeridianHomologyClass
 
 /-- The angular coordinate on the abelianized cusp deck group. -/
 public def cuspDeckAngularAbelianizationCoordinate :
-    Additive (Abelianization paperCuspBoundaryDeck) →ₗ[ℤ] ℤ where
+    Additive (Abelianization PaperCuspBoundaryDeck) →ₗ[ℤ] ℤ where
   toFun := (Abelianization.lift
     (SemidirectProduct.rightHom
       (φ := integerAffineMonodromy paperCuspMonodromy))).toAdditiveLeft
@@ -106,24 +106,24 @@ public def cuspDeckAngularAbelianizationCoordinate :
 
 /-- The first-homology angular coordinate obtained directly from the universal cusp cover. -/
 public noncomputable def cuspBoundaryAngularHomologyCoordinate
-    (W : ActualPuncturedCuspCollarWitness N M) (b : puncturedLocalCuspQuotient W) :
-    IntegralSingularHomology 1 (puncturedLocalCuspQuotient W) →ₗ[ℤ] ℤ := by
+    (W : ActualPuncturedCuspCollarWitness N M) (b : PuncturedLocalCuspQuotient W) :
+    IntegralSingularHomology 1 (PuncturedLocalCuspQuotient W) →ₗ[ℤ] ℤ := by
   let _ := paperCuspBoundaryDeckAction W
   let _ := paperCuspFillingDeckAction W
   let U := paperCuspUnwrappedFillingCover W b
   let T := U.toToricFillingCoverModel
   let _ : SimplyConnectedSpace (additiveCuspRadiusCover W.localWitness.radius) :=
     U.boundarySimplyConnected
-  let _ : PathConnectedSpace (puncturedLocalCuspQuotient W) :=
+  let _ : PathConnectedSpace (PuncturedLocalCuspQuotient W) :=
     U.boundaryQuotient.surjective.pathConnectedSpace U.boundaryProjection.continuous
   exact cuspDeckAngularAbelianizationCoordinate.comp
-    (deckHOneEquivOfFundamentalGroupEquivOpposite
+    (homologyOneEquivOfPi1Opposite
       (T.boundaryProjection T.base) T.boundaryFundamentalGroupEquiv).symm.toLinearMap
 
 /-- In the cover-theoretic coordinate, the selected angular meridian is the positive
 generator. -/
 public theorem cuspBoundaryAngularHomologyCoordinate_meridian
-    (W : ActualPuncturedCuspCollarWitness N M) (b : puncturedLocalCuspQuotient W) :
+    (W : ActualPuncturedCuspCollarWitness N M) (b : PuncturedLocalCuspQuotient W) :
     cuspBoundaryAngularHomologyCoordinate W b
       (cuspBoundaryMeridianHomologyClass W b) = 1 := by
   let _ := paperCuspBoundaryDeckAction W
@@ -132,20 +132,20 @@ public theorem cuspBoundaryAngularHomologyCoordinate_meridian
   let T := U.toToricFillingCoverModel
   let _ : SimplyConnectedSpace (additiveCuspRadiusCover W.localWitness.radius) :=
     U.boundarySimplyConnected
-  let _ : PathConnectedSpace (puncturedLocalCuspQuotient W) :=
+  let _ : PathConnectedSpace (PuncturedLocalCuspQuotient W) :=
     U.boundaryQuotient.surjective.pathConnectedSpace U.boundaryProjection.continuous
   let e := T.boundaryFundamentalGroupEquiv
-  let hOne := deckHOneEquivOfFundamentalGroupEquivOpposite
+  let hOne := homologyOneEquivOfPi1Opposite
     (T.boundaryProjection T.base) e
-  have hdeck : deckAbelianPi1EquivOfFundamentalGroupEquivOpposite
+  have hdeck : abelianizationEquivOfPi1Opposite
       (T.boundaryProjection T.base) e
         (Additive.ofMul (Abelianization.of paperCuspBoundaryMeridian)) =
       Additive.ofMul (Abelianization.of U.fundamentalGroupData.meridian) := by
-    apply (deckAbelianPi1EquivOfFundamentalGroupEquivOpposite
+    apply (abelianizationEquivOfPi1Opposite
       (T.boundaryProjection T.base) e).symm.injective
     rw [LinearEquiv.symm_apply_apply]
     change Abelianization.of paperCuspBoundaryMeridian =
-      abelianizationMulOppositeEquiv paperCuspBoundaryDeck
+      abelianizationMulOppositeEquiv PaperCuspBoundaryDeck
         (Abelianization.of (e U.fundamentalGroupData.meridian))
     have he : e U.fundamentalGroupData.meridian =
         MulOpposite.op paperCuspBoundaryMeridian :=
@@ -163,7 +163,7 @@ public theorem cuspBoundaryAngularHomologyCoordinate_meridian
 
 /-- The angular meridian, transported through the radial collar homotopy equivalence. -/
 public noncomputable def cuspMappingTorusMeridianHomologyClass
-    (G : ActualCuspRadialClutchingData W) (b : puncturedLocalCuspQuotient W) :
+    (G : ActualCuspRadialClutchingData W) (b : PuncturedLocalCuspQuotient W) :
     let _ := G.fiberTopology
     IntegralSingularHomology 1 (CircleMappingTorus G.clutching) := by
   let _ := G.fiberTopology
@@ -173,7 +173,7 @@ public noncomputable def cuspMappingTorusMeridianHomologyClass
 
 /-- The transported angular meridian is killed by raw degree-one specialization. -/
 public theorem rawDegreeOneTotalSpecialization_cuspMappingTorusMeridianHomologyClass
-    (G : ActualCuspRadialClutchingData W) (b : puncturedLocalCuspQuotient W) :
+    (G : ActualCuspRadialClutchingData W) (b : PuncturedLocalCuspQuotient W) :
     let _ := G.fiberTopology
     rawDegreeOneTotalSpecialization G (cuspMappingTorusMeridianHomologyClass G b) = 0 := by
   let _ := G.fiberTopology
@@ -187,7 +187,7 @@ public theorem rawDegreeOneTotalSpecialization_cuspMappingTorusMeridianHomologyC
 
 /-- The cover-theoretic angular coordinate, transported to the radial mapping torus. -/
 public noncomputable def cuspMappingTorusAngularHomologyCoordinate
-    (G : ActualCuspRadialClutchingData W) (b : puncturedLocalCuspQuotient W) :
+    (G : ActualCuspRadialClutchingData W) (b : PuncturedLocalCuspQuotient W) :
     let _ := G.fiberTopology
     IntegralSingularHomology 1 (CircleMappingTorus G.clutching) →ₗ[ℤ] ℤ := by
   let _ := G.fiberTopology
@@ -197,7 +197,7 @@ public noncomputable def cuspMappingTorusAngularHomologyCoordinate
 
 /-- The transported angular meridian still has angular coordinate one. -/
 public theorem cuspMappingTorusAngularHomologyCoordinate_meridian
-    (G : ActualCuspRadialClutchingData W) (b : puncturedLocalCuspQuotient W) :
+    (G : ActualCuspRadialClutchingData W) (b : PuncturedLocalCuspQuotient W) :
     let _ := G.fiberTopology
     cuspMappingTorusAngularHomologyCoordinate G b
       (cuspMappingTorusMeridianHomologyClass G b) = 1 := by
@@ -211,7 +211,7 @@ public theorem cuspMappingTorusAngularHomologyCoordinate_meridian
 public def markedFiberToPuncturedCuspForAngularComparison
     (G : ActualCuspRadialClutchingData W) :
     let _ := G.fiberTopology
-    C(G.Fiber, puncturedLocalCuspQuotient W) := by
+    C(G.Fiber, PuncturedLocalCuspQuotient W) := by
   let _ := G.fiberTopology
   let s : C(G.Fiber,
       OpenRadialInterval W.localWitness.radius × CircleMappingTorus G.clutching) :=
@@ -219,7 +219,7 @@ public def markedFiberToPuncturedCuspForAngularComparison
       (finiteBouquetMappingTorusFiberInclusion (fun _ : Unit ↦ G.clutching))
   exact (⟨G.totalHomeomorph.symm, G.totalHomeomorph.symm.continuous⟩ :
     C(OpenRadialInterval W.localWitness.radius × CircleMappingTorus G.clutching,
-      puncturedLocalCuspQuotient W)).comp s
+      PuncturedLocalCuspQuotient W)).comp s
 
 private theorem totalHomotopyEquiv_comp_markedFiberToPuncturedCuspForAngularComparison
     (G : ActualCuspRadialClutchingData W) :
@@ -238,7 +238,7 @@ private theorem totalHomotopyEquiv_comp_markedFiberToPuncturedCuspForAngularComp
 /-- The sole geometric comparison needed by the factorization argument: the independent angular
 coordinate vanishes on every class carried by the marked fibre. -/
 public def CuspAngularCoordinateVanishesOnMarkedFiber
-    (G : ActualCuspRadialClutchingData W) (b : puncturedLocalCuspQuotient W) : Prop :=
+    (G : ActualCuspRadialClutchingData W) (b : PuncturedLocalCuspQuotient W) : Prop :=
   let _ := G.fiberTopology
     ∀ x : IntegralSingularHomology 1 G.Fiber,
     cuspBoundaryAngularHomologyCoordinate W b
@@ -272,7 +272,7 @@ private theorem markedFiberToPuncturedCusp_homologyOne_eq_coinvariants
 /-- Vanishing on the literal marked fibre implies vanishing on the full Wang coinvariant
 subgroup. -/
 public theorem cuspMappingTorusAngularHomologyCoordinate_comp_coinvariantsToTotal_eq_zero
-    (G : ActualCuspRadialClutchingData W) (b : puncturedLocalCuspQuotient W)
+    (G : ActualCuspRadialClutchingData W) (b : PuncturedLocalCuspQuotient W)
     (h : CuspAngularCoordinateVanishesOnMarkedFiber G b) :
     let _ := G.fiberTopology
     (cuspMappingTorusAngularHomologyCoordinate G b).comp
@@ -292,7 +292,7 @@ public theorem cuspMappingTorusAngularHomologyCoordinate_comp_coinvariantsToTota
 /-- The canonical integer coordinate on the degree-one Wang invariant term. -/
 public def degreeOneWangInvariantEquivInteger (G : ActualCuspRadialClutchingData W) :
     let _ := G.fiberTopology
-    (circleMappingTorusHOnePresentation G.clutching).Invariants ≃ₗ[ℤ] ℤ := by
+    (circleMappingTorusHOnePresentation G.clutching).invariants ≃ₗ[ℤ] ℤ := by
   let _ := G.fiberTopology
   exact (invariantsEquivOfConjugacy G.monodromyCoordinates.degreeZero.toIntLinearEquiv
     (circleMonodromyDifference G.clutching 0).toIntLinearMap 0
@@ -303,13 +303,13 @@ private theorem primitiveWangLift_of_coordinate
     [AddCommGroup HighRelations] [AddCommGroup High] [AddCommGroup Total]
     [AddCommGroup LowRelations] [AddCommGroup Low]
     (P : WangHomologyPresentation HighRelations High Total LowRelations Low)
-    [Module.Projective ℤ P.Invariants] (e : P.Invariants ≃ₗ[ℤ] ℤ)
+    [Module.Projective ℤ P.invariants] (e : P.invariants ≃ₗ[ℤ] ℤ)
     (f : Total →ₗ[ℤ] ℤ) (s : Total)
     (hcoin : f.comp P.coinvariantsToTotal = 0) (hs : f s = 1) :
     e (P.totalToInvariants s) = 1 ∨ e (P.totalToInvariants s) = -1 := by
   let S := WangHomologyPresentation.Section.ofProjective P
-  let q : P.Invariants →ₗ[ℤ] ℤ := f.comp S.lift
-  have hsection (z : P.Invariants) : P.totalToInvariants (S.lift z) = z := by
+  let q : P.invariants →ₗ[ℤ] ℤ := f.comp S.lift
+  have hsection (z : P.invariants) : P.totalToInvariants (S.lift z) = z := by
     have hz := DFunLike.congr_fun S.right_inv z
     simpa only [LinearMap.coe_comp, Function.comp_apply, LinearMap.id_coe, id_eq] using hz
   have hresidual : f (s - S.lift (P.totalToInvariants s)) = 0 := by
@@ -345,7 +345,7 @@ private theorem primitiveWangLift_of_coordinate
 The disjunction deliberately forgets orientation, which is irrelevant for constructing a
 section. -/
 public def CuspMeridianIsPrimitiveWangLift
-    (G : ActualCuspRadialClutchingData W) (b : puncturedLocalCuspQuotient W) : Prop :=
+    (G : ActualCuspRadialClutchingData W) (b : PuncturedLocalCuspQuotient W) : Prop :=
   let _ := G.fiberTopology
   let P := circleMappingTorusHOnePresentation G.clutching
   let s := cuspMappingTorusMeridianHomologyClass G b
@@ -355,13 +355,13 @@ public def CuspMeridianIsPrimitiveWangLift
 /-- If the independent angular coordinate kills the marked fibre, exactness forces the killed
 meridian to be a primitive Wang lift.  The comparison is determined only up to orientation. -/
 public theorem cuspMeridianIsPrimitiveWangLift_of_angularCoordinateVanishesOnMarkedFiber
-    (G : ActualCuspRadialClutchingData W) (b : puncturedLocalCuspQuotient W)
+    (G : ActualCuspRadialClutchingData W) (b : PuncturedLocalCuspQuotient W)
     (h : CuspAngularCoordinateVanishesOnMarkedFiber G b) :
     CuspMeridianIsPrimitiveWangLift G b := by
   let _ := G.fiberTopology
   let P := circleMappingTorusHOnePresentation G.clutching
   let e := degreeOneWangInvariantEquivInteger G
-  let _ : Module.Projective ℤ P.Invariants := Module.Projective.of_equiv' e.symm
+  let _ : Module.Projective ℤ P.invariants := Module.Projective.of_equiv' e.symm
   exact primitiveWangLift_of_coordinate P e
     (cuspMappingTorusAngularHomologyCoordinate G b)
     (cuspMappingTorusMeridianHomologyClass G b)
@@ -373,7 +373,7 @@ private def geometricSectionOfPositiveWangLift
     [AddCommGroup HighRelations] [AddCommGroup High] [AddCommGroup Total]
     [AddCommGroup LowRelations] [AddCommGroup Low]
     (P : WangHomologyPresentation HighRelations High Total LowRelations Low)
-    (e : P.Invariants ≃ₗ[ℤ] ℤ) (s : Total)
+    (e : P.invariants ≃ₗ[ℤ] ℤ) (s : Total)
     (hs : e (P.totalToInvariants s) = 1) : P.Section where
   lift := e.toLinearMap.smulRight s
   right_inv := by
@@ -389,7 +389,7 @@ private theorem map_comp_geometricSectionOfPositiveWangLift_eq_zero
     [AddCommGroup HighRelations] [AddCommGroup High] [AddCommGroup Total]
     [AddCommGroup LowRelations] [AddCommGroup Low] [AddCommGroup L]
     (P : WangHomologyPresentation HighRelations High Total LowRelations Low)
-    (e : P.Invariants ≃ₗ[ℤ] ℤ) (s : Total)
+    (e : P.invariants ≃ₗ[ℤ] ℤ) (s : Total)
     (hs : e (P.totalToInvariants s) = 1) (f : Total →ₗ[ℤ] L) (hfs : f s = 0) :
     f.comp (geometricSectionOfPositiveWangLift P e s hs).lift = 0 := by
   apply LinearMap.ext
@@ -400,7 +400,7 @@ private theorem map_comp_geometricSectionOfPositiveWangLift_eq_zero
 /-- Primitivity of the explicitly killed cusp meridian supplies the required degree-one Wang
 section. -/
 public theorem degreeOne_section_of_cuspMeridianIsPrimitiveWangLift
-    (G : ActualCuspRadialClutchingData W) (b : puncturedLocalCuspQuotient W)
+    (G : ActualCuspRadialClutchingData W) (b : PuncturedLocalCuspQuotient W)
     (h : CuspMeridianIsPrimitiveWangLift G b) :
     let _ := G.fiberTopology
     ∃ S : (circleMappingTorusHOnePresentation G.clutching).Section,
@@ -427,7 +427,7 @@ public theorem degreeOne_section_of_cuspMeridianIsPrimitiveWangLift
 /-- The marked-fibre angular comparison is sufficient for the requested killed degree-one Wang
 section. -/
 public theorem degreeOne_section_of_angularCoordinateVanishesOnMarkedFiber
-    (G : ActualCuspRadialClutchingData W) (b : puncturedLocalCuspQuotient W)
+    (G : ActualCuspRadialClutchingData W) (b : PuncturedLocalCuspQuotient W)
     (h : CuspAngularCoordinateVanishesOnMarkedFiber G b) :
     let _ := G.fiberTopology
     ∃ S : (circleMappingTorusHOnePresentation G.clutching).Section,

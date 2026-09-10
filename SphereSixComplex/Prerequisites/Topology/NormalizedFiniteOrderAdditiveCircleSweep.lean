@@ -36,7 +36,7 @@ public def loopAction (phi : G ≃ₜ+ G) :
     exact map_zsmul phi.toAddEquiv n (c x)
 
 /-- Parametrized circle maps fixed pointwise after postcomposition by `phi`. -/
-public abbrev FixedLoop (phi : G ≃ₜ+ G) :=
+public abbrev fixedLoops (phi : G ≃ₜ+ G) :=
   LinearMap.ker (loopAction phi - LinearMap.id)
 
 private theorem loopAction_pow_apply (phi : G ≃ₜ+ G) (n : ℕ)
@@ -57,7 +57,7 @@ private theorem loopAction_pow_apply (phi : G ≃ₜ+ G) (n : ℕ)
 /-- The cyclic orbit norm, regarded as a pointwise-fixed parametrized loop. -/
 public def orbitNorm (m : ℕ) [NeZero m] (phi : G ≃ₜ+ G)
     (hpow : phi.toHomeomorph ^ m = 1) :
-    C(StdTorus 1, G) →ₗ[ℤ] FixedLoop phi :=
+    C(StdTorus 1, G) →ₗ[ℤ] fixedLoops phi :=
   (∑ i ∈ Finset.range m, (loopAction phi) ^ i).codRestrict _ fun c => by
     apply LinearMap.mem_ker.mpr
     let A : Module.End ℤ C(StdTorus 1, G) := loopAction phi
@@ -97,7 +97,7 @@ public structure SweepData (m : ℕ) [NeZero m] (phi : G ≃ₜ+ G)
         integralSingularHomologyMap 1
           ((phi.toHomeomorph ^ i : G ≃ₜ G) : C(G, G))
           (canonicalProductWangBoundary 1 z)
-  fixedSweep : FixedLoop phi →+ IntegralSingularHomology 2
+  fixedSweep : fixedLoops phi →+ IntegralSingularHomology 2
     (CircleMappingTorus phi.toHomeomorph)
   boundary_fixedSweep : ∀ c,
     (circleMappingTorusWangPresentationOfCover phi.toHomeomorph 1).boundary

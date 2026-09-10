@@ -28,7 +28,7 @@ public theorem contractingPrismClass_comp_cyclesMap_surjective
 
 public theorem cylinderTopPrismClass_surjective {X : Type} [TopologicalSpace X]
     (A : Set X) (n : ℕ) : Function.Surjective (cylinderTopPrismClass A n) := by
-  let f : CWRelativeIntegralSingularChainComplex (cylinderBaseInclusion A) ⟶
+  let f : cwRelativeIntegralSingularChainComplex (cylinderBaseInclusion A) ⟶
       (cylinderRelativeTriple A).X₁ := cylinderTopFaceRelativeChains A
   let : QuasiIso f := cylinderTopFaceRelativeChains_quasiIso A
   exact contractingPrismClass_comp_cyclesMap_surjective (cylinderRelativeTriple A)
@@ -64,8 +64,8 @@ public def cwCharacteristicCylinderInversePair (n : ℕ) :
   comm := rfl
 
 public def cwCharacteristicCylinderRelativeIso (n : ℕ) :
-    CWRelativeIntegralSingularChainComplex (cylinderBoundaryInclusion (cwBallBoundarySet n)) ≅
-      CWRelativeIntegralSingularChainComplex (cwCharacteristicBoundaryInclusion (n + 1)) where
+    cwRelativeIntegralSingularChainComplex (cylinderBoundaryInclusion (cwBallBoundarySet n)) ≅
+      cwRelativeIntegralSingularChainComplex (cwCharacteristicBoundaryInclusion (n + 1)) where
   hom := cwRelativeIntegralSingularChainMapOfPair (cwCharacteristicCylinderPair n)
   inv := cwRelativeIntegralSingularChainMapOfPair (cwCharacteristicCylinderInversePair n)
   hom_inv_id := by

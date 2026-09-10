@@ -57,7 +57,7 @@ public noncomputable def ellipticThreeCentralCoverComparisonOfPath
     letI := D.action
     QuotientCoverMapData
       (G := OrderThreeAffineMappingTorusDeck A.periods)
-      (H := paperCentralFreeAffineDeck)
+      (H := PaperCentralFreeAffineDeck)
       A.ellipticThreeBoundaryProjection D.data.projection := by
   let _ := A.ellipticThreeBoundaryAction
   let D := A.centralAffineUniversalCover
@@ -119,7 +119,7 @@ not introduce a conjugacy ambiguity: the based-path action still records the inv
 deck element. -/
 public theorem orderThreeCentralAffineUniversalCoverPointOfPath_fundamentalGroupEquiv
     (β : Path A.cuspCentralBase A.ellipticThreeCentralBase)
-    (d : paperCentralFreeAffineDeck) :
+    (d : PaperCentralFreeAffineDeck) :
     let D := A.centralAffineUniversalCover
     letI := D.topology
     letI := D.action

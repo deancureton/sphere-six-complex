@@ -184,7 +184,7 @@ variable {A X : TopCat.{u}}
 /-- The L-shaped extension formula on the cylinder branch of a mapping cylinder. -/
 public def mappingCylinderFreeLocalExtension
     {Y : Type u} [TopologicalSpace Y]
-    (f : A ⟶ X) (q : C((MappingCylinder f : TopCat), Y))
+    (f : A ⟶ X) (q : C((mappingCylinder f : TopCat), Y))
     {q₁ : C(A, Y)}
     (H : ContinuousMap.Homotopy (q.comp (mappingCylinderFree f).hom) q₁) :
     unitInterval × (A × unitInterval) → Y :=
@@ -198,7 +198,7 @@ public def mappingCylinderFreeLocalExtension
 
 public theorem continuous_mappingCylinderFreeLocalExtension
     {Y : Type u} [TopologicalSpace Y]
-    (f : A ⟶ X) (q : C((MappingCylinder f : TopCat), Y))
+    (f : A ⟶ X) (q : C((mappingCylinder f : TopCat), Y))
     {q₁ : C(A, Y)}
     (H : ContinuousMap.Homotopy (q.comp (mappingCylinderFree f).hom) q₁) :
     Continuous (mappingCylinderFreeLocalExtension f q H) := by
@@ -241,7 +241,7 @@ public theorem continuous_mappingCylinderFreeLocalExtension
 @[simp]
 public theorem mappingCylinderFreeLocalExtension_zero
     {Y : Type u} [TopologicalSpace Y]
-    (f : A ⟶ X) (q : C((MappingCylinder f : TopCat), Y))
+    (f : A ⟶ X) (q : C((mappingCylinder f : TopCat), Y))
     {q₁ : C(A, Y)}
     (H : ContinuousMap.Homotopy (q.comp (mappingCylinderFree f).hom) q₁)
     (p : A × unitInterval) :
@@ -259,7 +259,7 @@ public theorem mappingCylinderFreeLocalExtension_zero
 @[simp]
 public theorem mappingCylinderFreeLocalExtension_cylinderZero
     {Y : Type u} [TopologicalSpace Y]
-    (f : A ⟶ X) (q : C((MappingCylinder f : TopCat), Y))
+    (f : A ⟶ X) (q : C((mappingCylinder f : TopCat), Y))
     {q₁ : C(A, Y)}
     (H : ContinuousMap.Homotopy (q.comp (mappingCylinderFree f).hom) q₁)
     (s : unitInterval) (a : A) :
@@ -270,7 +270,7 @@ public theorem mappingCylinderFreeLocalExtension_cylinderZero
 @[simp]
 public theorem mappingCylinderFreeLocalExtension_free
     {Y : Type u} [TopologicalSpace Y]
-    (f : A ⟶ X) (q : C((MappingCylinder f : TopCat), Y))
+    (f : A ⟶ X) (q : C((mappingCylinder f : TopCat), Y))
     {q₁ : C(A, Y)}
     (H : ContinuousMap.Homotopy (q.comp (mappingCylinderFree f).hom) q₁)
     (s : unitInterval) (a : A) :
@@ -287,7 +287,7 @@ public theorem mappingCylinderFreeLocalExtension_free
 /-- The cylinder-branch extension, bundled as a continuous map. -/
 public def mappingCylinderFreeLocalExtensionMap
     {Y : Type u} [TopologicalSpace Y]
-    (f : A ⟶ X) (q : C((MappingCylinder f : TopCat), Y))
+    (f : A ⟶ X) (q : C((mappingCylinder f : TopCat), Y))
     {q₁ : C(A, Y)}
     (H : ContinuousMap.Homotopy (q.comp (mappingCylinderFree f).hom) q₁) :
     C(unitInterval × (A × unitInterval), Y) :=
@@ -297,7 +297,7 @@ public def mappingCylinderFreeLocalExtensionMap
 /-- Paths on the cylinder branch, obtained by currying the extension time. -/
 public def mappingCylinderFreeCylinderPaths
     {Y : Type u} [TopologicalSpace Y]
-    (f : A ⟶ X) (q : C((MappingCylinder f : TopCat), Y))
+    (f : A ⟶ X) (q : C((mappingCylinder f : TopCat), Y))
     {q₁ : C(A, Y)}
     (H : ContinuousMap.Homotopy (q.comp (mappingCylinderFree f).hom) q₁) :
     C(A × unitInterval, C(unitInterval, Y)) :=
@@ -307,7 +307,7 @@ public def mappingCylinderFreeCylinderPaths
 /-- Constant paths on the base branch of the mapping cylinder. -/
 public def mappingCylinderFreeBasePaths
     {Y : Type u} [TopologicalSpace Y]
-    (f : A ⟶ X) (q : C((MappingCylinder f : TopCat), Y)) :
+    (f : A ⟶ X) (q : C((mappingCylinder f : TopCat), Y)) :
     C(X, C(unitInterval, Y)) :=
   ContinuousMap.curry
     ⟨fun p : X × unitInterval ↦ q (mappingCylinderBase f p.1),
@@ -316,7 +316,7 @@ public def mappingCylinderFreeBasePaths
 /-- The cylinder and base path families agree along the attached zero section. -/
 public theorem mappingCylinderFreePaths_compatible
     {Y : Type u} [TopologicalSpace Y]
-    (f : A ⟶ X) (q : C((MappingCylinder f : TopCat), Y))
+    (f : A ⟶ X) (q : C((mappingCylinder f : TopCat), Y))
     {q₁ : C(A, Y)}
     (H : ContinuousMap.Homotopy (q.comp (mappingCylinderFree f).hom) q₁) :
     cylinderZeroSection A ≫ TopCat.ofHom (mappingCylinderFreeCylinderPaths f q H) =
@@ -330,10 +330,10 @@ public theorem mappingCylinderFreePaths_compatible
 /-- The continuous family of paths on the whole mapping cylinder. -/
 public def mappingCylinderFreePaths
     {Y : Type u} [TopologicalSpace Y]
-    (f : A ⟶ X) (q : C((MappingCylinder f : TopCat), Y))
+    (f : A ⟶ X) (q : C((mappingCylinder f : TopCat), Y))
     {q₁ : C(A, Y)}
     (H : ContinuousMap.Homotopy (q.comp (mappingCylinderFree f).hom) q₁) :
-    MappingCylinder f ⟶ TopCat.of C(unitInterval, Y) :=
+    mappingCylinder f ⟶ TopCat.of C(unitInterval, Y) :=
   pushout.desc
     (TopCat.ofHom (mappingCylinderFreeCylinderPaths f q H))
     (TopCat.ofHom (mappingCylinderFreeBasePaths f q))
@@ -342,16 +342,16 @@ public def mappingCylinderFreePaths
 /-- Evaluate the descended path family, with extension time as the first coordinate. -/
 public def mappingCylinderFreeGlobalExtension
     {Y : Type u} [TopologicalSpace Y]
-    (f : A ⟶ X) (q : C((MappingCylinder f : TopCat), Y))
+    (f : A ⟶ X) (q : C((mappingCylinder f : TopCat), Y))
     {q₁ : C(A, Y)}
     (H : ContinuousMap.Homotopy (q.comp (mappingCylinderFree f).hom) q₁) :
-    C(unitInterval × (MappingCylinder f : TopCat), Y) :=
+    C(unitInterval × (mappingCylinder f : TopCat), Y) :=
   ContinuousMap.uncurry (mappingCylinderFreePaths f q H).hom |>.comp
     ⟨Prod.swap, continuous_swap⟩
 
 public theorem mappingCylinderFreeGlobalExtension_cylinder
     {Y : Type u} [TopologicalSpace Y]
-    (f : A ⟶ X) (q : C((MappingCylinder f : TopCat), Y))
+    (f : A ⟶ X) (q : C((mappingCylinder f : TopCat), Y))
     {q₁ : C(A, Y)}
     (H : ContinuousMap.Homotopy (q.comp (mappingCylinderFree f).hom) q₁)
     (s : unitInterval) (p : A × unitInterval) :
@@ -370,7 +370,7 @@ public theorem mappingCylinderFreeGlobalExtension_cylinder
 
 public theorem mappingCylinderFreeGlobalExtension_base
     {Y : Type u} [TopologicalSpace Y]
-    (f : A ⟶ X) (q : C((MappingCylinder f : TopCat), Y))
+    (f : A ⟶ X) (q : C((mappingCylinder f : TopCat), Y))
     {q₁ : C(A, Y)}
     (H : ContinuousMap.Homotopy (q.comp (mappingCylinderFree f).hom) q₁)
     (s : unitInterval) (x : X) :
@@ -390,10 +390,10 @@ public theorem mappingCylinderFreeGlobalExtension_base
 /-- At time zero the global extension is the original mapping-cylinder map. -/
 public theorem mappingCylinderFreeGlobalExtension_zero
     {Y : Type u} [TopologicalSpace Y]
-    (f : A ⟶ X) (q : C((MappingCylinder f : TopCat), Y))
+    (f : A ⟶ X) (q : C((mappingCylinder f : TopCat), Y))
     {q₁ : C(A, Y)}
     (H : ContinuousMap.Homotopy (q.comp (mappingCylinderFree f).hom) q₁)
-    (p : MappingCylinder f) :
+    (p : mappingCylinder f) :
     mappingCylinderFreeGlobalExtension f q H (0, p) = q p := by
   have heq : TopCat.ofHom (cylinderSlice (mappingCylinderFreeGlobalExtension f q H) 0) =
       TopCat.ofHom q := by
@@ -410,7 +410,7 @@ public theorem mappingCylinderFreeGlobalExtension_zero
 /-- On the free end, the global extension is the prescribed homotopy. -/
 public theorem mappingCylinderFreeGlobalExtension_free
     {Y : Type u} [TopologicalSpace Y]
-    (f : A ⟶ X) (q : C((MappingCylinder f : TopCat), Y))
+    (f : A ⟶ X) (q : C((mappingCylinder f : TopCat), Y))
     {q₁ : C(A, Y)}
     (H : ContinuousMap.Homotopy (q.comp (mappingCylinderFree f).hom) q₁)
     (s : unitInterval) (a : A) :
@@ -426,7 +426,7 @@ public theorem mappingCylinderFree_homotopyExtensionProperty (f : A ⟶ X) :
     HomotopyExtensionProperty (mappingCylinderFree f).hom := by
   refine ⟨?_⟩
   intro Y _ q q₁ H
-  let qEnd : C((MappingCylinder f : TopCat), Y) :=
+  let qEnd : C((mappingCylinder f : TopCat), Y) :=
     cylinderSlice (mappingCylinderFreeGlobalExtension f q H) 1
   let F : ContinuousMap.Homotopy q qEnd :=
     { toContinuousMap := mappingCylinderFreeGlobalExtension f q H

@@ -24,7 +24,7 @@ open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspCollarPairProperness
 open SphereSixComplex.Geometry.InfiniteA2Toric
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
 
 /-- On the normalized additive universal cover, the actual local-to-global cusp map has exactly

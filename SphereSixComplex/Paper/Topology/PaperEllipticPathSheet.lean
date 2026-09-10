@@ -124,7 +124,7 @@ public theorem orderThree_fixes_of_generator_conjugate_in_factor
   have hfix : fuchsianSourceAction (g * g₁ * g⁻¹) • fuchsianOneFixedPoint =
       fuchsianOneFixedPoint := by
     rw [ha]
-    exact (establishedFuchsianOneStabilizerExact _).mpr ⟨a, rfl⟩
+    exact (fuchsianOneFixed_iff_mem_range_inl _).mpr ⟨a, rfl⟩
   rw [SphereSixComplex.TriangleGroup.g₁.eq_def] at hfix
   exact ((SphereSixComplex.TriangleGroup.FreeProductTorsion.fixed_by_conjugate_inl_iff
     g (Multiplicative.ofAdd (1 : ZMod 3)) (by decide) fuchsianOneFixedPoint).mp hfix).symm
@@ -136,7 +136,7 @@ public theorem orderFour_fixes_of_generator_conjugate_in_factor
   have hfix : fuchsianSourceAction (g * g₂ * g⁻¹) • fuchsianTwoFixedPoint =
       fuchsianTwoFixedPoint := by
     rw [ha]
-    exact (establishedFuchsianTwoStabilizerExact _).mpr ⟨a, rfl⟩
+    exact (fuchsianTwoFixed_iff_mem_range_inr _).mpr ⟨a, rfl⟩
   rw [SphereSixComplex.TriangleGroup.g₂.eq_def] at hfix
   exact ((SphereSixComplex.TriangleGroup.FreeProductTorsion.fixed_by_conjugate_inr_iff
     g (Multiplicative.ofAdd (1 : ZMod 4)) (by decide) fuchsianTwoFixedPoint).mp hfix).symm
@@ -163,7 +163,7 @@ public theorem orderThree_generator_path_stays_standard_collar (A : PaperAnalyti
       rw [A.modular.modularParameter.toTriangleUniformization_sourceAction]
       simp only [map_mul, map_inv, mul_smul, inv_smul_smul])
   have hfix := orderThree_fixes_of_generator_conjugate_in_factor g ⟨a, ha⟩
-  obtain ⟨b, hb⟩ := (establishedFuchsianOneStabilizerExact g).mp hfix
+  obtain ⟨b, hb⟩ := (fuchsianOneFixed_iff_mem_range_inl g).mp hfix
   intro t
   have ht := hstay t
   rw [hb, orderThreeCayleyHomeomorph_norm_inl] at ht
@@ -191,7 +191,7 @@ public theorem orderFour_generator_path_stays_standard_collar (A : PaperAnalytic
       rw [A.modular.modularParameter.toTriangleUniformization_sourceAction]
       simp only [map_mul, map_inv, mul_smul, inv_smul_smul])
   have hfix := orderFour_fixes_of_generator_conjugate_in_factor g ⟨a, ha⟩
-  obtain ⟨b, hb⟩ := (establishedFuchsianTwoStabilizerExact g).mp hfix
+  obtain ⟨b, hb⟩ := (fuchsianTwoFixed_iff_mem_range_inr g).mp hfix
   intro t
   have ht := hstay t
   rw [hb, orderFourCayleyHomeomorph_norm_inr] at ht

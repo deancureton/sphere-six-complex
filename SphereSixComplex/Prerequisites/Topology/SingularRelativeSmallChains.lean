@@ -31,7 +31,7 @@ public theorem coverSmallRelativeShortComplex_shortExact :
 
 public def coverSmallRelativeComparison :
     (coverSmallRelativeShortComplex X U i).X₃ ⟶
-      RelativeIntegralSingularChainComplex (topologicalSubsetInclusion X (U i)) :=
+      relativeIntegralSingularChainComplex (topologicalSubsetInclusion X (U i)) :=
   cokernel.map (coverMemberToSmallIntegralSingularChains X U i)
     (integralSingularChainMapObj (topologicalSubsetInclusion X (U i)))
     (𝟙 _) (coverSmallIntegralSingularChainInclusion X U)
@@ -58,7 +58,7 @@ public theorem coverSmallRelativeComparison_quasiIso
     (coverSmallRelativeShortComplexComparison X U i)
     (coverSmallRelativeShortComplex_shortExact X U i)
     (relativeIntegralSingularShortComplex_shortExact _)
-  · change QuasiIso (𝟙 (IntegralSingularChainComplexObj (TopCat.of (U i))))
+  · change QuasiIso (𝟙 (integralSingularChainComplexObj (TopCat.of (U i))))
     infer_instance
   · exact h
 

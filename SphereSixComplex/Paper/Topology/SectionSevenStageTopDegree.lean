@@ -62,7 +62,7 @@ public theorem sectionSevenStageTopDegreeVanishing_of_collar
     (hcollar : ∀ i, Subsingleton (IntegralSingularHomology 6 (A.collarSource i))) :
     A.SectionSevenStageTopDegreeVanishing := by
   classical
-  set C := A.SectionSevenEulerCover with hC
+  set C := A.sectionSevenEulerCover with hC
   have hpiece0 : Subsingleton (IntegralSingularHomology 7 (C.piece 0)) :=
     subsingleton_homology_of_homeomorph 7 A.centralToSectionSevenEulerPieceHomeomorph hcentral
   have hpieceSucc : ∀ i : Fin 3, Subsingleton (IntegralSingularHomology 7 (C.piece i.succ)) :=

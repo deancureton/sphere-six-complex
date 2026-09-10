@@ -279,7 +279,7 @@ variable (A : PaperAnalyticData)
 
 /-- Correct radial-mapping-torus model of the actual order-three open collar. -/
 public noncomputable def orderThreeCollarRadialMappingTorusHomeomorph :
-    A.starCollarSourceType 1 ≃ₜ
+    A.StarCollarSource 1 ≃ₜ
       OpenRadialInterval A.starSeparation.orderThree.radius ×
         CircleMappingTorus (orderThreeAffineClutchingHomeomorph A.periods) := by
   let D := orderThreeCyclicPuncturedProductData A.periods
@@ -296,7 +296,7 @@ public noncomputable def orderThreeCollarRadialMappingTorusHomeomorph :
 
 /-- Correct radial-mapping-torus model of the actual order-four open collar. -/
 public noncomputable def orderFourCollarRadialMappingTorusHomeomorph :
-    A.starCollarSourceType 2 ≃ₜ
+    A.StarCollarSource 2 ≃ₜ
       OpenRadialInterval A.starSeparation.orderFour.radius ×
         CircleMappingTorus (orderFourAffineClutchingHomeomorph A.periods) := by
   let D := orderFourCyclicPuncturedProductData A.periods

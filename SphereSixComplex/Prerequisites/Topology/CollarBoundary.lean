@@ -24,28 +24,28 @@ universe uE uH uM uW
 
 /-- The only manifold-boundary point of the half-open collar parameter is its initial endpoint. -/
 public theorem boundary_halfCollarParameter :
-    (𝓡∂ 1).boundary HalfCollarParameter = {halfCollarStart} := by
+    (𝓡∂ 1).boundary halfCollarParameter = {halfCollarStart} := by
   rw [ModelWithCorners.boundary_open, boundary_Icc]
   ext t
   simp only [Set.mem_preimage, Set.mem_insert_iff, Set.mem_singleton_iff]
   constructor
   · intro ht
     rcases ht with ht | ht
-    · have hbot : (⊥ : CollarParameter) = collarStart := by
+    · have hbot : (⊥ : collarParameter) = collarStart := by
         apply Subtype.ext
         norm_num [collarStart]
       apply Subtype.ext
       simpa only [halfCollarStart] using ht.trans hbot
     · exfalso
-      have hlt : ((t.1 : CollarParameter) : ℝ) < 1 := t.2
-      have hone : ((t.1 : CollarParameter) : ℝ) = 1 := by
+      have hlt : ((t.1 : collarParameter) : ℝ) < 1 := t.2
+      have hone : ((t.1 : collarParameter) : ℝ) = 1 := by
         have h := congrArg Subtype.val ht
         simpa using h
       linarith
   · intro ht
     left
     subst t
-    have hbot : (⊥ : CollarParameter) = collarStart := by
+    have hbot : (⊥ : collarParameter) = collarStart := by
       apply Subtype.ext
       norm_num [collarStart]
     simpa only [halfCollarStart] using hbot.symm

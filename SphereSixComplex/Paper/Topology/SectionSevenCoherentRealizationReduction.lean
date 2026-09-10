@@ -48,7 +48,7 @@ public structure SectionSevenFourPieceSmallChainComparison
     (X : Type) [TopologicalSpace X] (C : FourPieceOpenCover X) where
   /-- The chain map encoding the collapse/specialization or Leray calculation of Section 7. -/
   comparison : sectionSevenLerayChainModel (-1) ⟶
-    CoverSmallIntegralSingularChainComplex (TopCat.of X) C.piece
+    coverSmallIntegralSingularChainComplex (TopCat.of X) C.piece
   /-- The paper-specific finite calculation proves this map is a quasi-isomorphism. -/
   quasiIso : QuasiIso comparison
 
@@ -60,16 +60,16 @@ public structure SectionSevenFourPieceSmallChainHomotopyData
     (X : Type) [TopologicalSpace X] (C : FourPieceOpenCover X) where
   /-- The finite-model comparison map. -/
   comparison : sectionSevenLerayChainModel (-1) ⟶
-    CoverSmallIntegralSingularChainComplex (TopCat.of X) C.piece
+    coverSmallIntegralSingularChainComplex (TopCat.of X) C.piece
   /-- A chain map back to the finite model. -/
-  inverse : CoverSmallIntegralSingularChainComplex (TopCat.of X) C.piece ⟶
+  inverse : coverSmallIntegralSingularChainComplex (TopCat.of X) C.piece ⟶
     sectionSevenLerayChainModel (-1)
   /-- Comparison followed by the inverse is homotopic to the identity. -/
   homotopyComparisonInverse : Homotopy (comparison ≫ inverse)
     (𝟙 (sectionSevenLerayChainModel (-1)))
   /-- The inverse followed by comparison is homotopic to the identity. -/
   homotopyInverseComparison : Homotopy (inverse ≫ comparison)
-    (𝟙 (CoverSmallIntegralSingularChainComplex (TopCat.of X) C.piece))
+    (𝟙 (coverSmallIntegralSingularChainComplex (TopCat.of X) C.piece))
 
 namespace SectionSevenFourPieceSmallChainHomotopyData
 
@@ -79,7 +79,7 @@ variable {X : Type} [TopologicalSpace X] {C : FourPieceOpenCover X}
 public noncomputable def toHomotopyEquiv
     (h : SectionSevenFourPieceSmallChainHomotopyData X C) :
     HomotopyEquiv (sectionSevenLerayChainModel (-1))
-      (CoverSmallIntegralSingularChainComplex (TopCat.of X) C.piece) where
+      (coverSmallIntegralSingularChainComplex (TopCat.of X) C.piece) where
   hom := h.comparison
   inv := h.inverse
   homotopyHomInvId := h.homotopyComparisonInverse

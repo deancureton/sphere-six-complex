@@ -407,17 +407,17 @@ theorem differenceZero_injective : Function.Injective
   let E₃ := orderThreeRadialActionData A.periods
   let E₄ := orderFourRadialActionData A.periods
   let _ : PathConnectedSpace
-      (centralFiberCoverSource E₃) :=
+      (CentralFiberCoverSource E₃) :=
     (centralFiberCoverSourceHomeomorph E₃).symm.surjective.pathConnectedSpace
       (centralFiberCoverSourceHomeomorph E₃).symm.continuous
   let _ : PathConnectedSpace
-      (centralFiberCoverSource E₄) :=
+      (CentralFiberCoverSource E₄) :=
     (centralFiberCoverSourceHomeomorph E₄).symm.surjective.pathConnectedSpace
       (centralFiberCoverSourceHomeomorph E₄).symm.continuous
-  let _ : PathConnectedSpace (OrderThreeReducedCentralFiber A.periods) :=
+  let _ : PathConnectedSpace (orderThreeReducedCentralFiber A.periods) :=
     (centralFiberCoverProjection_surjective E₃).pathConnectedSpace
       (centralFiberCoverProjection E₃).continuous
-  let _ : PathConnectedSpace (OrderFourReducedCentralFiber A.periods) :=
+  let _ : PathConnectedSpace (orderFourReducedCentralFiber A.periods) :=
     (centralFiberCoverProjection_surjective E₄).pathConnectedSpace
       (centralFiberCoverProjection E₄).continuous
   let _ : PathConnectedSpace D.orderThreeSide :=

@@ -62,23 +62,23 @@ includes as the normalized top differential. -/
 @[reassoc]
 public theorem standardSevenNormalizedChainsXSevenIsoTopCycles_hom_ι :
     standardSevenNormalizedChainsXSevenIsoTopCycles.hom ≫
-        kernel.ι (StandardSevenNormalizedIntegralChains.d 6 5) =
-      StandardSevenNormalizedIntegralChains.d 7 6 := by
-  let _ : Mono (StandardSevenNormalizedIntegralChains.d 7 6) :=
+        kernel.ι (standardSevenNormalizedIntegralChains.d 6 5) =
+      standardSevenNormalizedIntegralChains.d 7 6 := by
+  let _ : Mono (standardSevenNormalizedIntegralChains.d 7 6) :=
     standardSeven_normalized_d_seven_six_mono
   have h₆ := standardSeven_normalizedChains_exactAt 6 (by omega)
-  have h₆' : (StandardSevenNormalizedIntegralChains.sc' 7 6 5).Exact :=
+  have h₆' : (standardSevenNormalizedIntegralChains.sc' 7 6 5).Exact :=
     ShortComplex.exact_of_iso
-      (StandardSevenNormalizedIntegralChains.isoSc' 7 6 5 (by simp) (by simp)) h₆
-  let _ : Mono (StandardSevenNormalizedIntegralChains.sc' 7 6 5).f := by
-    change Mono (StandardSevenNormalizedIntegralChains.d 7 6)
+      (standardSevenNormalizedIntegralChains.isoSc' 7 6 5 (by simp) (by simp)) h₆
+  let _ : Mono (standardSevenNormalizedIntegralChains.sc' 7 6 5).f := by
+    change Mono (standardSevenNormalizedIntegralChains.d 7 6)
     exact standardSeven_normalized_d_seven_six_mono
   change (IsLimit.conePointUniqueUpToIso h₆'.fIsKernel
       (limit.isLimit (parallelPair
-        (StandardSevenNormalizedIntegralChains.d 6 5) 0))).hom ≫
-      limit.π (parallelPair (StandardSevenNormalizedIntegralChains.d 6 5) 0)
+        (standardSevenNormalizedIntegralChains.d 6 5) 0))).hom ≫
+      limit.π (parallelPair (standardSevenNormalizedIntegralChains.d 6 5) 0)
         WalkingParallelPair.zero =
-    StandardSevenNormalizedIntegralChains.d 7 6
+    standardSevenNormalizedIntegralChains.d 7 6
   exact IsLimit.conePointUniqueUpToIso_hom_comp _ _ WalkingParallelPair.zero
 
 /-- The canonical cycle-kernel comparison commutes with the inclusions into normalized
@@ -86,8 +86,8 @@ degree six. -/
 @[reassoc]
 theorem boundarySevenTopCyclesIsoStandardSevenTopCycles_hom_ι :
     boundarySevenTopCyclesIsoStandardSevenTopCycles.hom ≫
-        kernel.ι (StandardSevenNormalizedIntegralChains.d 6 5) =
-      kernel.ι (BoundarySevenNormalizedIntegralChains.d 6 5) ≫
+        kernel.ι (standardSevenNormalizedIntegralChains.d 6 5) =
+      kernel.ι (boundarySevenNormalizedIntegralChains.d 6 5) ≫
         (SSet.normalizedChainComplexMap
           (SSet.boundary 7 : SSet.Subcomplex (Δ[7] : SSet.{0})).ι
           (AddCommGrpCat.of ℤ)).f 6 := by
@@ -96,11 +96,11 @@ theorem boundarySevenTopCyclesIsoStandardSevenTopCycles_hom_ι :
       (AddCommGrpCat.of ℤ)
   let φ := (HomologicalComplex.shortComplexFunctor' AddCommGrpCat
     (ComplexShape.down ℕ) 7 6 5).map f
-  change (((BoundarySevenNormalizedIntegralChains.sc' 7 6 5).cyclesIsoKernel).inv ≫
+  change (((boundarySevenNormalizedIntegralChains.sc' 7 6 5).cyclesIsoKernel).inv ≫
       ShortComplex.cyclesMap φ ≫
-      ((StandardSevenNormalizedIntegralChains.sc' 7 6 5).cyclesIsoKernel).hom) ≫
-        kernel.ι ((StandardSevenNormalizedIntegralChains.sc' 7 6 5).g) =
-    kernel.ι ((BoundarySevenNormalizedIntegralChains.sc' 7 6 5).g) ≫ φ.τ₂
+      ((standardSevenNormalizedIntegralChains.sc' 7 6 5).cyclesIsoKernel).hom) ≫
+        kernel.ι ((standardSevenNormalizedIntegralChains.sc' 7 6 5).g) =
+    kernel.ι ((boundarySevenNormalizedIntegralChains.sc' 7 6 5).g) ≫ φ.τ₂
   rw [Category.assoc, Category.assoc, ShortComplex.cyclesIsoKernel_hom,
     kernel.lift_ι]
   rw [ShortComplex.cyclesMap_i]
@@ -112,11 +112,11 @@ boundary normalized chains is the standard kernel inclusion. -/
 @[reassoc]
 public theorem boundarySevenTopCyclesIsoStandardSevenTopCycles_inv_ι :
     boundarySevenTopCyclesIsoStandardSevenTopCycles.inv ≫
-        kernel.ι (BoundarySevenNormalizedIntegralChains.d 6 5) ≫
+        kernel.ι (boundarySevenNormalizedIntegralChains.d 6 5) ≫
         (SSet.normalizedChainComplexMap
           (SSet.boundary 7 : SSet.Subcomplex (Δ[7] : SSet.{0})).ι
           (AddCommGrpCat.of ℤ)).f 6 =
-      kernel.ι (StandardSevenNormalizedIntegralChains.d 6 5) := by
+      kernel.ι (standardSevenNormalizedIntegralChains.d 6 5) := by
   rw [← cancel_epi boundarySevenTopCyclesIsoStandardSevenTopCycles.hom]
   simp only [Iso.hom_inv_id_assoc,
     boundarySevenTopCyclesIsoStandardSevenTopCycles_hom_ι]
@@ -128,7 +128,7 @@ public theorem standardSevenOriginalBoundaryChain_toNormalized :
         ((Δ[7] : SSet.{0}).toNormalizedChainComplex
           (AddCommGrpCat.of ℤ)).f 6 =
       standardSevenNormalizedChainsXSevenIsoInt.inv ≫
-        StandardSevenNormalizedIntegralChains.d 7 6 := by
+        standardSevenNormalizedIntegralChains.d 7 6 := by
   let F := (Δ[7] : SSet.{0}).toNormalizedChainComplex
     (AddCommGrpCat.of ℤ)
   change (standardSevenTopSimplexChain ≫ _) ≫ F.f 6 = _
@@ -142,7 +142,7 @@ public theorem boundarySevenOriginalFundamentalChain_toNormalized :
         ((∂Δ[7] : SSet.{0}).toNormalizedChainComplex
           (AddCommGrpCat.of ℤ)).f 6 =
       boundarySevenNormalizedOrientationGenerator ≫
-        kernel.ι (BoundarySevenNormalizedIntegralChains.d 6 5) := by
+        kernel.ι (boundarySevenNormalizedIntegralChains.d 6 5) := by
   let j := (SSet.boundary 7 : SSet.Subcomplex (Δ[7] : SSet.{0})).ι
   let g := SSet.normalizedChainComplexMap j (AddCommGrpCat.of ℤ)
   let e₆ := boundarySevenNormalizedChainsXIsoStandard 6 (by omega)
@@ -176,14 +176,14 @@ public theorem boundarySevenOriginalFundamentalChain_toNormalized :
             (AddCommGrpCat.of ℤ)).f 6 := by
       rw [boundarySevenOriginalFundamentalChain_comp_boundaryInclusion]
     _ = standardSevenNormalizedChainsXSevenIsoInt.inv ≫
-          StandardSevenNormalizedIntegralChains.d 7 6 :=
+          standardSevenNormalizedIntegralChains.d 7 6 :=
       standardSevenOriginalBoundaryChain_toNormalized
     _ = standardSevenNormalizedChainsXSevenIsoInt.inv ≫
           standardSevenNormalizedChainsXSevenIsoTopCycles.hom ≫
-            kernel.ι (StandardSevenNormalizedIntegralChains.d 6 5) := by
+            kernel.ι (standardSevenNormalizedIntegralChains.d 6 5) := by
       rw [standardSevenNormalizedChainsXSevenIsoTopCycles_hom_ι]
     _ = (boundarySevenNormalizedOrientationGenerator ≫
-          kernel.ι (BoundarySevenNormalizedIntegralChains.d 6 5)) ≫
+          kernel.ι (boundarySevenNormalizedIntegralChains.d 6 5)) ≫
             g.f 6 := by
       rw [boundarySevenNormalizedOrientationGenerator]
       have h := congrArg

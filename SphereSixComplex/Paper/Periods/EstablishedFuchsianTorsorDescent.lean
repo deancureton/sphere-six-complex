@@ -27,7 +27,7 @@ open SphereSixComplex.TriangleGroup.FuchsianTessellation
 open SphereSixComplex.TriangleGroup.FuchsianFundamentalDomain
 open Filter Set Metric
 
-variable (E : EstablishedFuchsianModularParameter)
+variable (E : NormalizedFuchsianModularParameter)
 
 variable (F : ExactLiftedModularNegOneFrame E)
 

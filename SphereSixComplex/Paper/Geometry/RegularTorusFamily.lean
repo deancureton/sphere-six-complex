@@ -24,7 +24,7 @@ public noncomputable section
 
 variable {U : TriangleUniformization}
 
-public abbrev RegularSmoothnessOrder : WithTop ℕ∞ := (⊤ : ℕ∞)
+public abbrev regularSmoothnessOrder : WithTop ℕ∞ := (⊤ : ℕ∞)
 
 /-- Compact-uniform nondegeneracy restricts from the upper half-plane to the regular base. -/
 public theorem regularParameterMap_compactUniformLowerBound (F : PeriodFunctions U) :
@@ -42,12 +42,12 @@ public theorem regularPeriodSection_contMDiff
     (F : PeriodFunctions U) (hproper : SourceActionProperlyDiscontinuous (U := U))
     (a : IntegerPeriods) (n : WithTop ℕ∞) :
     letI := regularBaseChartedSpace hproper
-    ContMDiff GlobalDeckBaseModel GlobalDeckFiberModel n
+    ContMDiff globalDeckBaseModel globalDeckFiberModel n
       (fun z : RegularBase (U := U) ↦ periodVector (regularParameterMap F z).1 a) := by
   let _ := regularBaseChartedSpace hproper
-  have hval : ContMDiff GlobalDeckBaseModel GlobalDeckBaseModel n
+  have hval : ContMDiff globalDeckBaseModel globalDeckBaseModel n
       (fun z : RegularBase (U := U) ↦ z.1) := by
-    change ContMDiff GlobalDeckBaseModel GlobalDeckBaseModel n
+    change ContMDiff globalDeckBaseModel globalDeckBaseModel n
       (Subtype.val : regularBaseOpen hproper → UpperHalfPlane)
     exact contMDiff_subtype_val
   exact (periodSection_contMDiff F a n).comp hval
@@ -56,9 +56,9 @@ public theorem regularPeriodSection_contMDiff
 public theorem regularBase_isManifold_of_order
     (hproper : SourceActionProperlyDiscontinuous (U := U)) (n : WithTop ℕ∞) :
     letI := regularBaseChartedSpace hproper
-    IsManifold GlobalDeckBaseModel n (RegularBase (U := U)) := by
+    IsManifold globalDeckBaseModel n (RegularBase (U := U)) := by
   let _ := regularBaseChartedSpace hproper
-  change IsManifold GlobalDeckBaseModel n (regularBaseOpen hproper)
+  change IsManifold globalDeckBaseModel n (regularBaseOpen hproper)
   infer_instance
 
 /-- The varying-lattice quotient over the regular base is a complex manifold, and its quotient
@@ -69,7 +69,7 @@ public theorem regularTotalSpace_isManifold_and_projection_isLocalDiffeomorph
     letI := regularBaseChartedSpace hproper
     letI : LocallyCompactSpace (RegularBase (U := U)) :=
       (isOpen_isRegularBasePoint hproper).locallyCompactSpace
-    letI : IsManifold GlobalDeckBaseModel n (RegularBase (U := U)) :=
+    letI : IsManifold globalDeckBaseModel n (RegularBase (U := U)) :=
       regularBase_isManifold_of_order hproper n
     letI := familyIsCancelSMul (regularParameterMap F)
     letI := familyContinuousConstSMul (regularParameterMap F)
@@ -77,16 +77,16 @@ public theorem regularTotalSpace_isManifold_and_projection_isLocalDiffeomorph
     letI := familyProperlyDiscontinuousSMul (regularParameterMap F)
       (compactlyUniformPeriods_of_compactUniformLowerBound (regularParameterMap F)
         (regularParameterMap_compactUniformLowerBound F))
-    IsManifold GlobalDeckTotalModel n (RegularTotalSpace F) ∧
-      IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel n
+    IsManifold globalDeckTotalModel n (RegularTotalSpace F) ∧
+      IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
         (projection (regularParameterMap F)) := by
   let _ := regularBaseChartedSpace hproper
   let _ : LocallyCompactSpace (RegularBase (U := U)) :=
     (isOpen_isRegularBasePoint hproper).locallyCompactSpace
-  let _ : IsManifold GlobalDeckBaseModel n (RegularBase (U := U)) :=
+  let _ : IsManifold globalDeckBaseModel n (RegularBase (U := U)) :=
     regularBase_isManifold_of_order hproper n
   exact TorusFamily.totalSpace_isManifold_and_projection_isLocalDiffeomorph
-    GlobalDeckBaseModel n (regularParameterMap F)
+    globalDeckBaseModel n (regularParameterMap F)
       (regularPeriodSection_contMDiff F hproper · n)
       (compactlyUniformPeriods_of_compactUniformLowerBound (regularParameterMap F)
         (regularParameterMap_compactUniformLowerBound F))
@@ -97,13 +97,13 @@ public theorem regularFamilyDeckMap_contMDiff_of_projection_isLocalDiffeomorph
     (F : PeriodFunctions U)
     [ChartedSpace ℂ (RegularBase (U := U))]
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (RegularTotalSpace F)]
-    [IsManifold GlobalDeckTotalModel RegularSmoothnessOrder (RegularTotalSpace F)]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel
-      RegularSmoothnessOrder
+    [IsManifold globalDeckTotalModel regularSmoothnessOrder (RegularTotalSpace F)]
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel
+      regularSmoothnessOrder
       (projection (regularParameterMap F))) (g : Delta)
-    (hdeck : ContMDiff GlobalDeckTotalModel GlobalDeckTotalModel RegularSmoothnessOrder
+    (hdeck : ContMDiff globalDeckTotalModel globalDeckTotalModel regularSmoothnessOrder
       (regularDeckMap F g)) :
-    ContMDiff GlobalDeckTotalModel GlobalDeckTotalModel RegularSmoothnessOrder
+    ContMDiff globalDeckTotalModel globalDeckTotalModel regularSmoothnessOrder
       (regularFamilyDeckMap F g) := by
   intro q
   induction q using Quotient.inductionOn with
@@ -111,15 +111,15 @@ public theorem regularFamilyDeckMap_contMDiff_of_projection_isLocalDiffeomorph
     let π : RegularBase (U := U) × ComplexTwoSpace → RegularTotalSpace F :=
       projection (regularParameterMap F)
     let s := (hprojection p).localInverse
-    have hs : ContMDiffAt GlobalDeckTotalModel GlobalDeckTotalModel RegularSmoothnessOrder
+    have hs : ContMDiffAt globalDeckTotalModel globalDeckTotalModel regularSmoothnessOrder
         s (π p) :=
       (hprojection p).localInverse_contMDiffAt
     have hsp : s (π p) = p :=
       (hprojection p).localInverse_left_inv (hprojection p).localInverse_mem_target
-    have hdeck : ContMDiffAt GlobalDeckTotalModel GlobalDeckTotalModel RegularSmoothnessOrder
+    have hdeck : ContMDiffAt globalDeckTotalModel globalDeckTotalModel regularSmoothnessOrder
         (regularDeckMap F g ∘ s) (π p) :=
       hdeck.contMDiffAt.comp (π p) hs
-    have hrhs : ContMDiffAt GlobalDeckTotalModel GlobalDeckTotalModel RegularSmoothnessOrder
+    have hrhs : ContMDiffAt globalDeckTotalModel globalDeckTotalModel regularSmoothnessOrder
         (π ∘ regularDeckMap F g ∘ s) (π p) :=
       (hprojection (regularDeckMap F g p)).contMDiffAt.comp_of_eq hdeck (by simp [hsp])
     have hright := (hprojection p).localInverse_eventuallyEq_right
@@ -140,30 +140,30 @@ public theorem regularFamilyDeckMap_contMDiff
     letI := regularBaseChartedSpace hproper
     letI : LocallyCompactSpace (RegularBase (U := U)) :=
       (isOpen_isRegularBasePoint hproper).locallyCompactSpace
-    letI : IsManifold GlobalDeckBaseModel RegularSmoothnessOrder (RegularBase (U := U)) :=
+    letI : IsManifold globalDeckBaseModel regularSmoothnessOrder (RegularBase (U := U)) :=
       regularBase_isManifold hproper
     letI := familyIsCancelSMul (regularParameterMap F)
     letI := familyContinuousConstSMul (regularParameterMap F)
-      fun a ↦ (regularPeriodSection_contMDiff F hproper a RegularSmoothnessOrder).continuous
+      fun a ↦ (regularPeriodSection_contMDiff F hproper a regularSmoothnessOrder).continuous
     letI := familyProperlyDiscontinuousSMul (regularParameterMap F)
       (compactlyUniformPeriods_of_compactUniformLowerBound (regularParameterMap F)
         (regularParameterMap_compactUniformLowerBound F))
-    ContMDiff GlobalDeckTotalModel GlobalDeckTotalModel RegularSmoothnessOrder
+    ContMDiff globalDeckTotalModel globalDeckTotalModel regularSmoothnessOrder
       (regularFamilyDeckMap F g) := by
   let _ := regularBaseChartedSpace hproper
   let _ : LocallyCompactSpace (RegularBase (U := U)) :=
     (isOpen_isRegularBasePoint hproper).locallyCompactSpace
-  let _ : IsManifold GlobalDeckBaseModel RegularSmoothnessOrder (RegularBase (U := U)) :=
+  let _ : IsManifold globalDeckBaseModel regularSmoothnessOrder (RegularBase (U := U)) :=
     regularBase_isManifold hproper
   let _ := familyIsCancelSMul (regularParameterMap F)
   let _ := familyContinuousConstSMul (regularParameterMap F)
-    fun a ↦ (regularPeriodSection_contMDiff F hproper a RegularSmoothnessOrder).continuous
+    fun a ↦ (regularPeriodSection_contMDiff F hproper a regularSmoothnessOrder).continuous
   let _ := familyProperlyDiscontinuousSMul (regularParameterMap F)
     (compactlyUniformPeriods_of_compactUniformLowerBound (regularParameterMap F)
       (regularParameterMap_compactUniformLowerBound F))
   have htotal := regularTotalSpace_isManifold_and_projection_isLocalDiffeomorph F hproper
-    RegularSmoothnessOrder
-  let _ : IsManifold GlobalDeckTotalModel RegularSmoothnessOrder (RegularTotalSpace F) :=
+    regularSmoothnessOrder
+  let _ : IsManifold globalDeckTotalModel regularSmoothnessOrder (RegularTotalSpace F) :=
     htotal.1
   exact regularFamilyDeckMap_contMDiff_of_projection_isLocalDiffeomorph F htotal.2 g
     (regularDeckMap_contMDiff F hproper g)
@@ -251,31 +251,31 @@ public theorem regularFamilyDeckAction_continuousConstSMul
     letI := regularBaseChartedSpace hproper
     letI : LocallyCompactSpace (RegularBase (U := U)) :=
       (isOpen_isRegularBasePoint hproper).locallyCompactSpace
-    letI : IsManifold GlobalDeckBaseModel RegularSmoothnessOrder (RegularBase (U := U)) :=
+    letI : IsManifold globalDeckBaseModel regularSmoothnessOrder (RegularBase (U := U)) :=
       regularBase_isManifold hproper
     letI := familyIsCancelSMul (regularParameterMap F)
     letI := familyContinuousConstSMul (regularParameterMap F)
-      fun a ↦ (regularPeriodSection_contMDiff F hproper a RegularSmoothnessOrder).continuous
+      fun a ↦ (regularPeriodSection_contMDiff F hproper a regularSmoothnessOrder).continuous
     letI := familyProperlyDiscontinuousSMul (regularParameterMap F)
       (compactlyUniformPeriods_of_compactUniformLowerBound (regularParameterMap F)
         (regularParameterMap_compactUniformLowerBound F))
     letI : LocallyCompactSpace (RegularTotalSpace F) :=
-      Manifold.locallyCompact_of_finiteDimensional GlobalDeckTotalModel
+      Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
     letI := regularFamilyDeckAction F
     ContinuousConstSMul Delta (RegularTotalSpace F) := by
   let _ := regularBaseChartedSpace hproper
   let _ : LocallyCompactSpace (RegularBase (U := U)) :=
     (isOpen_isRegularBasePoint hproper).locallyCompactSpace
-  let _ : IsManifold GlobalDeckBaseModel RegularSmoothnessOrder (RegularBase (U := U)) :=
+  let _ : IsManifold globalDeckBaseModel regularSmoothnessOrder (RegularBase (U := U)) :=
     regularBase_isManifold hproper
   let _ := familyIsCancelSMul (regularParameterMap F)
   let _ := familyContinuousConstSMul (regularParameterMap F)
-    fun a ↦ (regularPeriodSection_contMDiff F hproper a RegularSmoothnessOrder).continuous
+    fun a ↦ (regularPeriodSection_contMDiff F hproper a regularSmoothnessOrder).continuous
   let _ := familyProperlyDiscontinuousSMul (regularParameterMap F)
     (compactlyUniformPeriods_of_compactUniformLowerBound (regularParameterMap F)
       (regularParameterMap_compactUniformLowerBound F))
   let _ : LocallyCompactSpace (RegularTotalSpace F) :=
-    Manifold.locallyCompact_of_finiteDimensional GlobalDeckTotalModel
+    Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
   let _ := regularFamilyDeckAction F
   refine ⟨fun g ↦ ?_⟩
   exact (regularFamilyDeckMap_contMDiff F hproper g).continuous
@@ -288,36 +288,36 @@ public theorem puncturedGlobalFamily_isManifold_and_projection_isLocalDiffeomorp
     letI := regularBaseChartedSpace hproper
     letI : LocallyCompactSpace (RegularBase (U := U)) :=
       (isOpen_isRegularBasePoint hproper).locallyCompactSpace
-    letI : IsManifold GlobalDeckBaseModel RegularSmoothnessOrder (RegularBase (U := U)) :=
+    letI : IsManifold globalDeckBaseModel regularSmoothnessOrder (RegularBase (U := U)) :=
       regularBase_isManifold hproper
     letI := familyIsCancelSMul (regularParameterMap F)
     letI := familyContinuousConstSMul (regularParameterMap F)
-      fun a ↦ (regularPeriodSection_contMDiff F hproper a RegularSmoothnessOrder).continuous
+      fun a ↦ (regularPeriodSection_contMDiff F hproper a regularSmoothnessOrder).continuous
     letI := familyProperlyDiscontinuousSMul (regularParameterMap F)
       (compactlyUniformPeriods_of_compactUniformLowerBound (regularParameterMap F)
         (regularParameterMap_compactUniformLowerBound F))
     letI : LocallyCompactSpace (RegularTotalSpace F) :=
-      Manifold.locallyCompact_of_finiteDimensional GlobalDeckTotalModel
+      Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
     letI := regularFamilyDeckAction F
     letI := regularFamilyDeckAction_isCancelSMul_of_fuchsian F hsource hproper
     letI := regularFamilyDeckAction_properlyDiscontinuous_of_source F hproper
     letI := regularFamilyDeckAction_continuousConstSMul F hproper
-    IsManifold GlobalDeckTotalModel RegularSmoothnessOrder (PuncturedGlobalFamily F) ∧
-      IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel RegularSmoothnessOrder
+    IsManifold globalDeckTotalModel regularSmoothnessOrder (PuncturedGlobalFamily F) ∧
+      IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel regularSmoothnessOrder
         (quotientProjection (M := RegularTotalSpace F) (G := Delta)) := by
   let _ := regularBaseChartedSpace hproper
   let _ : LocallyCompactSpace (RegularBase (U := U)) :=
     (isOpen_isRegularBasePoint hproper).locallyCompactSpace
-  let _ : IsManifold GlobalDeckBaseModel RegularSmoothnessOrder (RegularBase (U := U)) :=
+  let _ : IsManifold globalDeckBaseModel regularSmoothnessOrder (RegularBase (U := U)) :=
     regularBase_isManifold hproper
   let _ := familyIsCancelSMul (regularParameterMap F)
   let _ := familyContinuousConstSMul (regularParameterMap F)
-    fun a ↦ (regularPeriodSection_contMDiff F hproper a RegularSmoothnessOrder).continuous
+    fun a ↦ (regularPeriodSection_contMDiff F hproper a regularSmoothnessOrder).continuous
   let _ := familyProperlyDiscontinuousSMul (regularParameterMap F)
     (compactlyUniformPeriods_of_compactUniformLowerBound (regularParameterMap F)
       (regularParameterMap_compactUniformLowerBound F))
   let _ : LocallyCompactSpace (RegularTotalSpace F) :=
-    Manifold.locallyCompact_of_finiteDimensional GlobalDeckTotalModel
+    Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
   let _ := regularFamilyDeckAction F
   let _ : IsCancelSMul Delta (RegularTotalSpace F) :=
     regularFamilyDeckAction_isCancelSMul_of_fuchsian F hsource hproper
@@ -326,11 +326,11 @@ public theorem puncturedGlobalFamily_isManifold_and_projection_isLocalDiffeomorp
   let _ : ContinuousConstSMul Delta (RegularTotalSpace F) :=
     regularFamilyDeckAction_continuousConstSMul F hproper
   have htotal := regularTotalSpace_isManifold_and_projection_isLocalDiffeomorph F hproper
-    RegularSmoothnessOrder
-  let _ : IsManifold GlobalDeckTotalModel RegularSmoothnessOrder (RegularTotalSpace F) :=
+    regularSmoothnessOrder
+  let _ : IsManifold globalDeckTotalModel regularSmoothnessOrder (RegularTotalSpace F) :=
     htotal.1
   exact orbitQuotient_isManifold_and_projection_isLocalDiffeomorph_of_contMDiff_smul
-    GlobalDeckTotalModel RegularSmoothnessOrder
+    globalDeckTotalModel regularSmoothnessOrder
       (fun g ↦ regularFamilyDeckMap_contMDiff F hproper g)
 
 end

@@ -45,7 +45,7 @@ public theorem cuspToricCellular_homologyOne_cycle
 
 public theorem StandardA2ToricCellularIncidenceData.homology_cycle
     {Y : Type} [TopologicalSpace Y] [Topology.CWComplex (Set.univ : Set Y)]
-    {e : ∀ n, Topology.CWComplex.cell (Set.univ : Set Y) n ≃ cuspWCellIndex n}
+    {e : ∀ n, Topology.CWComplex.cell (Set.univ : Set Y) n ≃ CuspWCellIndex n}
     {M : IntegralCWCellularHomologyModel Y}
     (I : StandardA2ToricCellularIncidenceData e M) (n : ℕ) (z : M.chainComplex.cycles n) :
     I.integralSingularHomologyEquiv n
@@ -74,7 +74,7 @@ public theorem StandardA2ToricCellularIncidenceData.homology_cycle
 
 public theorem StandardA2ToricCellularIncidenceData.homologyOne_cycle
     {Y : Type} [TopologicalSpace Y] [Topology.CWComplex (Set.univ : Set Y)]
-    {e : ∀ n, Topology.CWComplex.cell (Set.univ : Set Y) n ≃ cuspWCellIndex n}
+    {e : ∀ n, Topology.CWComplex.cell (Set.univ : Set Y) n ≃ CuspWCellIndex n}
     {M : IntegralCWCellularHomologyModel Y}
     (I : StandardA2ToricCellularIncidenceData e M) (z : M.chainComplex.cycles 1) :
     I.integralSingularHomologyOneEquiv
@@ -94,7 +94,7 @@ public theorem StandardA2ToricCellularIncidenceData.homologyOne_cycle
 public theorem StandardA2ToricCellularIncidenceData.homologyOne_skeletal
     (T : CellularHomology.IntegralComparison)
     (Y : Type) [TopologicalSpace Y] [T2Space Y] [Topology.CWComplex (Set.univ : Set Y)]
-    (e : ∀ n, Topology.CWComplex.cell (Set.univ : Set Y) n ≃ cuspWCellIndex n)
+    (e : ∀ n, Topology.CWComplex.cell (Set.univ : Set Y) n ≃ CuspWCellIndex n)
     (I : StandardA2ToricCellularIncidenceData e (T.objectwiseModel Y))
     (x : IntegralSingularHomology 1 (IntegralCWSkeletonLT Y 2)) :
     I.integralSingularHomologyOneEquiv
@@ -106,7 +106,8 @@ public theorem StandardA2ToricCellularIncidenceData.homologyOne_skeletal
         i.castSucc := by
   rw [← T.homologyEquiv_skeletal_apply Y 1 x]
   let K := integralCWSkeletalChainComplex Y (integralCWRelativeBoundary_comp_self Y)
-  let p : (CWIntegralSingularChainComplexObj (TopCat.of (IntegralCWSkeletonLT Y 2))).homology 1 ⟶ K.X 1 :=
+  let p : (cwIntegralSingularChainComplexObj (TopCat.of (IntegralCWSkeletonLT Y 2))).homology 1
+      ⟶ K.X 1 :=
     HomologicalComplex.homologyMap
     (cwRelativeIntegralSingularChainProjection (integralCWSkeletonInclusion Y 1)) 1
   let z := (K.liftCycles p ((ComplexShape.down ℕ).next 1) rfl (integralCWSkeletalProjection_cycle Y 1)).hom x
@@ -120,9 +121,9 @@ public theorem StandardA2ToricCellularIncidenceData.homologyOne_skeletal
 
 public theorem labelledA2CellBasis_symm_apply
     {Y : Type} [TopologicalSpace Y] [Topology.CWComplex (Set.univ : Set Y)]
-    (e : ∀ n, Topology.CWComplex.cell (Set.univ : Set Y) n ≃ cuspWCellIndex n)
+    (e : ∀ n, Topology.CWComplex.cell (Set.univ : Set Y) n ≃ CuspWCellIndex n)
     (M : IntegralCWCellularHomologyModel Y) (n : ℕ) (x : M.chainComplex.X n)
-    (i : cuspWCellIndex n) :
+    (i : CuspWCellIndex n) :
     (labelledA2CellBasis e M n).symm x i = (M.cellBasis n).symm x ((e n).symm i) := rfl
 
 public theorem cuspToricCellular_homologyTwo_cycle
@@ -148,7 +149,7 @@ public theorem cuspToricCellular_homologyTwo_cycle
 
 public theorem StandardA2ToricCellularIncidenceData.homologyTwo_cycle
     {Y : Type} [TopologicalSpace Y] [Topology.CWComplex (Set.univ : Set Y)]
-    {e : ∀ n, Topology.CWComplex.cell (Set.univ : Set Y) n ≃ cuspWCellIndex n}
+    {e : ∀ n, Topology.CWComplex.cell (Set.univ : Set Y) n ≃ CuspWCellIndex n}
     {M : IntegralCWCellularHomologyModel Y}
     (I : StandardA2ToricCellularIncidenceData e M) (z : M.chainComplex.cycles 2) :
     I.integralSingularHomologyTwoEquiv
@@ -162,7 +163,7 @@ public theorem StandardA2ToricCellularIncidenceData.homologyTwo_cycle
 public theorem StandardA2ToricCellularIncidenceData.homologyTwo_skeletal
     (T : CellularHomology.IntegralComparison)
     (Y : Type) [TopologicalSpace Y] [T2Space Y] [Topology.CWComplex (Set.univ : Set Y)]
-    (e : ∀ n, Topology.CWComplex.cell (Set.univ : Set Y) n ≃ cuspWCellIndex n)
+    (e : ∀ n, Topology.CWComplex.cell (Set.univ : Set Y) n ≃ CuspWCellIndex n)
     (I : StandardA2ToricCellularIncidenceData e (T.objectwiseModel Y))
     (x : IntegralSingularHomology 2 (IntegralCWSkeletonLT Y 3)) :
     I.integralSingularHomologyTwoEquiv
@@ -173,7 +174,8 @@ public theorem StandardA2ToricCellularIncidenceData.homologyTwo_skeletal
           (cwRelativeIntegralSingularChainProjection (integralCWSkeletonInclusion Y 2)) 2).hom x) := by
   rw [← T.homologyEquiv_skeletal_apply Y 2 x]
   let K := integralCWSkeletalChainComplex Y (integralCWRelativeBoundary_comp_self Y)
-  let p : (CWIntegralSingularChainComplexObj (TopCat.of (IntegralCWSkeletonLT Y 3))).homology 2 ⟶ K.X 2 :=
+  let p : (cwIntegralSingularChainComplexObj (TopCat.of (IntegralCWSkeletonLT Y 3))).homology 2
+      ⟶ K.X 2 :=
     HomologicalComplex.homologyMap
       (cwRelativeIntegralSingularChainProjection (integralCWSkeletonInclusion Y 2)) 2
   let z := (K.liftCycles p ((ComplexShape.down ℕ).next 2) rfl

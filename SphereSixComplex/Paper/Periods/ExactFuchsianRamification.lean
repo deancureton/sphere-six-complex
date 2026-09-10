@@ -395,11 +395,11 @@ noncomputable def hasExactHolomorphicBranchAt_of_analyticOrderAt
     simpa only [F, UpperHalfPlane.ofComplex_apply, smul_eq_mul] using hz
 
 /-- Ambient complex representative of the established modular lift. -/
-def ambientEstablishedTau (E : EstablishedFuchsianModularParameter) (w : ℂ) : ℂ :=
+def ambientEstablishedTau (E : NormalizedFuchsianModularParameter) (w : ℂ) : ℂ :=
   (E.modularParameter.tau (UpperHalfPlane.ofComplex w) : ℂ)
 
 /-- Derivative of the ambient representative of the established modular lift. -/
-def ambientEstablishedTauDeriv (E : EstablishedFuchsianModularParameter) (w : ℂ) : ℂ :=
+def ambientEstablishedTauDeriv (E : NormalizedFuchsianModularParameter) (w : ℂ) : ℂ :=
   deriv (ambientEstablishedTau E) w
 
 /-- Ambient representative of an upper-half-plane self-map. -/
@@ -466,7 +466,7 @@ lemma analyticOrderAt_sub_eq_of_upperHalfPlaneMap
     _ = analyticOrderAt F c := by rw [heq]
 
 lemma sourceCoordinate_analyticOrderAt_of_eq_zero
-    (E : EstablishedFuchsianModularParameter) (z : UpperHalfPlane)
+    (E : NormalizedFuchsianModularParameter) (z : UpperHalfPlane)
     (hz : E.sourceCoordinate.coordinate z = 0) :
     analyticOrderAt
       (fun w : ℂ ↦ E.sourceCoordinate.coordinate (UpperHalfPlane.ofComplex w)) z =
@@ -497,7 +497,7 @@ lemma sourceCoordinate_analyticOrderAt_of_eq_zero
           E.sourceCoordinate.coordinate_holomorphic
 
 lemma sourceCoordinate_sub_one_analyticOrderAt_of_eq_one
-    (E : EstablishedFuchsianModularParameter) (z : UpperHalfPlane)
+    (E : NormalizedFuchsianModularParameter) (z : UpperHalfPlane)
     (hz : E.sourceCoordinate.coordinate z = 1) :
     analyticOrderAt
       (fun w : ℂ ↦ E.sourceCoordinate.coordinate (UpperHalfPlane.ofComplex w) - 1) z =
@@ -571,7 +571,7 @@ lemma normalizedModularJCoordinate_sub_one_analyticOrderAt_of_eq_one
     simpa only [Nat.cast_ofNat] using
       J.branch_two.analyticOrderAt normalizedModularJCoordinate_holomorphic
 
-lemma ambientEstablishedTau_analyticAt (E : EstablishedFuchsianModularParameter)
+lemma ambientEstablishedTau_analyticAt (E : NormalizedFuchsianModularParameter)
     (z : UpperHalfPlane) :
     AnalyticAt ℂ (ambientEstablishedTau E) z := by
   have htau : MDiff (fun x : UpperHalfPlane ↦ (E.modularParameter.tau x : ℂ)) :=
@@ -584,7 +584,7 @@ lemma ambientEstablishedTau_analyticAt (E : EstablishedFuchsianModularParameter)
 /-- At a regular source-orbifold point, equality of modular-lift values implies equality of
 nearby source points, because the exact source coordinate is locally injective there. -/
 lemma ambientEstablishedTau_exists_open_injOn_of_regular
-    (E : EstablishedFuchsianModularParameter) (z : UpperHalfPlane)
+    (E : NormalizedFuchsianModularParameter) (z : UpperHalfPlane)
     (hz0 : E.sourceCoordinate.coordinate z ≠ 0)
     (hz1 : E.sourceCoordinate.coordinate z ≠ 1) :
     ∃ U : Set ℂ, IsOpen U ∧ (z : ℂ) ∈ U ∧ U.InjOn (ambientEstablishedTau E) := by
@@ -611,7 +611,7 @@ lemma ambientEstablishedTau_exists_open_injOn_of_regular
 
 /-- The established modular lift is unramified at every regular source-orbifold point. -/
 lemma ambientEstablishedTauDeriv_ne_zero_of_regular
-    (E : EstablishedFuchsianModularParameter) (z : UpperHalfPlane)
+    (E : NormalizedFuchsianModularParameter) (z : UpperHalfPlane)
     (hz0 : E.sourceCoordinate.coordinate z ≠ 0)
     (hz1 : E.sourceCoordinate.coordinate z ≠ 1) :
     ambientEstablishedTauDeriv E z ≠ 0 := by
@@ -622,7 +622,7 @@ lemma ambientEstablishedTauDeriv_ne_zero_of_regular
 /-- The modular lift is unramified at the order-three source point: both the source and target
 quotient coordinates have exact order three there. -/
 lemma ambientEstablishedTau_sub_analyticOrderAt_one
-    (E : EstablishedFuchsianModularParameter) :
+    (E : NormalizedFuchsianModularParameter) :
     analyticOrderAt
       (fun w : ℂ ↦ ambientEstablishedTau E w -
         ambientEstablishedTau E fuchsianOneFixedPoint)
@@ -682,7 +682,7 @@ lemma ambientEstablishedTau_sub_analyticOrderAt_one
 
 /-- In particular the derivative of the modular lift is nonzero at the order-three point. -/
 lemma ambientEstablishedTauDeriv_ne_zero_at_one
-    (E : EstablishedFuchsianModularParameter) :
+    (E : NormalizedFuchsianModularParameter) :
     ambientEstablishedTauDeriv E fuchsianOneFixedPoint ≠ 0 := by
   let g : ℂ → ℂ := fun w ↦ ambientEstablishedTau E w -
     ambientEstablishedTau E fuchsianOneFixedPoint
@@ -696,7 +696,7 @@ lemma ambientEstablishedTauDeriv_ne_zero_at_one
 /-- The modular lift has local degree two at the order-four source point: the source quotient has
 order four there, while the normalized modular quotient has order two at `I`. -/
 lemma ambientEstablishedTau_sub_analyticOrderAt_two
-    (E : EstablishedFuchsianModularParameter) :
+    (E : NormalizedFuchsianModularParameter) :
     analyticOrderAt
       (fun w : ℂ ↦ ambientEstablishedTau E w -
         ambientEstablishedTau E fuchsianTwoFixedPoint)
@@ -756,7 +756,7 @@ lemma ambientEstablishedTau_sub_analyticOrderAt_two
 
 /-- Consequently the derivative of the modular lift has a simple zero at the order-four point. -/
 lemma ambientEstablishedTauDeriv_analyticOrderAt_two
-    (E : EstablishedFuchsianModularParameter) :
+    (E : NormalizedFuchsianModularParameter) :
     analyticOrderAt (ambientEstablishedTauDeriv E) fuchsianTwoFixedPoint =
       (1 : ℕ∞) := by
   have ht := ambientEstablishedTau_analyticAt E fuchsianTwoFixedPoint
@@ -774,7 +774,7 @@ lemma ambientEstablishedTauDeriv_analyticOrderAt_two
 /-- Over the source value zero, the modular lift has local degree one at every point of the
 elliptic orbit. -/
 lemma ambientEstablishedTau_sub_analyticOrderAt_of_coordinate_eq_zero
-    (E : EstablishedFuchsianModularParameter) (z : UpperHalfPlane)
+    (E : NormalizedFuchsianModularParameter) (z : UpperHalfPlane)
     (hz : E.sourceCoordinate.coordinate z = 0) :
     analyticOrderAt
       (fun w : ℂ ↦ ambientEstablishedTau E w - ambientEstablishedTau E z) z =
@@ -832,7 +832,7 @@ lemma ambientEstablishedTau_sub_analyticOrderAt_of_coordinate_eq_zero
 /-- Over the source value one, the modular lift has local degree two at every point of the
 order-four elliptic orbit. -/
 lemma ambientEstablishedTau_sub_analyticOrderAt_of_coordinate_eq_one
-    (E : EstablishedFuchsianModularParameter) (z : UpperHalfPlane)
+    (E : NormalizedFuchsianModularParameter) (z : UpperHalfPlane)
     (hz : E.sourceCoordinate.coordinate z = 1) :
     analyticOrderAt
       (fun w : ℂ ↦ ambientEstablishedTau E w - ambientEstablishedTau E z) z =
@@ -888,13 +888,13 @@ lemma ambientEstablishedTau_sub_analyticOrderAt_of_coordinate_eq_one
   simpa only [t] using horder
 
 lemma ambientEstablishedTauDeriv_analyticAt
-    (E : EstablishedFuchsianModularParameter) (z : UpperHalfPlane) :
+    (E : NormalizedFuchsianModularParameter) (z : UpperHalfPlane) :
     AnalyticAt ℂ (ambientEstablishedTauDeriv E) z := by
   exact (ambientEstablishedTau_analyticAt E z).deriv
 
 /-- The derivative stays nonzero over the entire order-three elliptic orbit. -/
 lemma ambientEstablishedTauDeriv_ne_zero_of_coordinate_eq_zero
-    (E : EstablishedFuchsianModularParameter) (z : UpperHalfPlane)
+    (E : NormalizedFuchsianModularParameter) (z : UpperHalfPlane)
     (hz : E.sourceCoordinate.coordinate z = 0) :
     ambientEstablishedTauDeriv E z ≠ 0 := by
   let g : ℂ → ℂ := fun w ↦ ambientEstablishedTau E w - ambientEstablishedTau E z
@@ -908,7 +908,7 @@ lemma ambientEstablishedTauDeriv_ne_zero_of_coordinate_eq_zero
 
 /-- The derivative has a simple zero at every point over the source value one. -/
 lemma ambientEstablishedTauDeriv_analyticOrderAt_of_coordinate_eq_one
-    (E : EstablishedFuchsianModularParameter) (z : UpperHalfPlane)
+    (E : NormalizedFuchsianModularParameter) (z : UpperHalfPlane)
     (hz : E.sourceCoordinate.coordinate z = 1) :
     analyticOrderAt (ambientEstablishedTauDeriv E) z = (1 : ℕ∞) := by
   have ht := ambientEstablishedTau_analyticAt E z
@@ -923,7 +923,7 @@ lemma ambientEstablishedTauDeriv_analyticOrderAt_of_coordinate_eq_one
 
 /-- Away from the value-one orbit the derivative of the modular lift is nowhere zero. -/
 lemma ambientEstablishedTauDeriv_ne_zero_of_coordinate_ne_one
-    (E : EstablishedFuchsianModularParameter) (z : UpperHalfPlane)
+    (E : NormalizedFuchsianModularParameter) (z : UpperHalfPlane)
     (hz1 : E.sourceCoordinate.coordinate z ≠ 1) :
     ambientEstablishedTauDeriv E z ≠ 0 := by
   by_cases hz0 : E.sourceCoordinate.coordinate z = 0
@@ -932,7 +932,7 @@ lemma ambientEstablishedTauDeriv_ne_zero_of_coordinate_ne_one
 
 /-- Exact zero locus of the derivative: precisely the order-four source elliptic orbit. -/
 lemma ambientEstablishedTauDeriv_eq_zero_iff
-    (E : EstablishedFuchsianModularParameter) (z : UpperHalfPlane) :
+    (E : NormalizedFuchsianModularParameter) (z : UpperHalfPlane) :
     ambientEstablishedTauDeriv E z = 0 ↔ E.sourceCoordinate.coordinate z = 1 := by
   constructor
   · intro hd
@@ -945,7 +945,7 @@ lemma ambientEstablishedTauDeriv_eq_zero_iff
 
 /-- Complete pointwise analytic-order classification of the derivative. -/
 lemma ambientEstablishedTauDeriv_analyticOrderAt
-    (E : EstablishedFuchsianModularParameter) (z : UpperHalfPlane) :
+    (E : NormalizedFuchsianModularParameter) (z : UpperHalfPlane) :
     analyticOrderAt (ambientEstablishedTauDeriv E) z =
       if E.sourceCoordinate.coordinate z = 1 then (1 : ℕ∞) else 0 := by
   by_cases hz1 : E.sourceCoordinate.coordinate z = 1

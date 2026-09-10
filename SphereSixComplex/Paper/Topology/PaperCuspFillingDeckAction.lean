@@ -28,16 +28,16 @@ open SphereSixComplex.LatticeData SphereSixComplex.Topology
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
-open SphereSixComplex.Geometry.CuspPhaseEstimates.CuspPeriodExpansion
+open SphereSixComplex.Geometry.CuspPeriodExpansion
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
 variable {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
 
 /-- The actual local cusp action, reindexed by the canonical filling deck group. -/
 @[instance_reducible] public noncomputable def paperCuspFillingDeckAction
     (W : ActualPuncturedCuspCollarWitness N M) :
     MulAction paperCuspBoundaryDeckData.FillingDeck
-      (LocalCarrier M W.localWitness.radius) := by
+      (localCarrier M W.localWitness.radius) := by
   let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
     N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
   let _ := (C.toCuspActionData W.localWitness.fixedPoint).psiAction
@@ -47,7 +47,7 @@ variable {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
 public theorem paperCuspFillingDeck_smul_apply
     (W : ActualPuncturedCuspCollarWitness N M)
     (g : paperCuspBoundaryDeckData.FillingDeck)
-    (p : LocalCarrier M W.localWitness.radius) :
+    (p : localCarrier M W.localWitness.radius) :
     let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
       N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
     letI := paperCuspFillingDeckAction W
@@ -143,7 +143,7 @@ public theorem additiveCuspFillingLift_latticeTranslate
     (additiveToPuncturedLocalHomeomorph M W.localWitness.radius
       (Quotient.mk _ (cuspBoundaryLatticeTranslate W v p))).1
   rw [show ((additiveToPuncturedLocalHomeomorph M W.localWitness.radius
-      (Quotient.mk _ p)).1 : LocalCarrier M W.localWitness.radius) =
+      (Quotient.mk _ p)).1 : localCarrier M W.localWitness.radius) =
       localCuspExponentialPoint M W.localWitness.radius p.1.1 p.1.2
         (mem_ball_zero_iff.mpr p.2) from
     additiveToPuncturedLocalHomeomorph_mk M W.localWitness.radius p]
@@ -153,7 +153,7 @@ public theorem additiveCuspFillingLift_latticeTranslate
     (mem_ball_zero_iff.mpr p.2) p.1.1 lambda]
   rw [show ((additiveToPuncturedLocalHomeomorph M W.localWitness.radius
       (Quotient.mk _ (cuspBoundaryLatticeTranslate W v p))).1 :
-        LocalCarrier M W.localWitness.radius) =
+        localCarrier M W.localWitness.radius) =
       localCuspExponentialPoint M W.localWitness.radius
         (periodVector x v + p.1.1) p.1.2 (mem_ball_zero_iff.mpr p.2) from
     additiveToPuncturedLocalHomeomorph_mk M W.localWitness.radius
@@ -177,13 +177,13 @@ public theorem additiveCuspFillingLift_angularTranslate
       (Quotient.mk _ p)).1
   rw [show ((additiveToPuncturedLocalHomeomorph M W.localWitness.radius
       (Quotient.mk _ (cuspBoundaryAngularTranslate W k p))).1 :
-        LocalCarrier M W.localWitness.radius) =
+        localCarrier M W.localWitness.radius) =
       localCuspExponentialPoint M W.localWitness.radius p.1.1 (p.1.2 - k)
         (mem_ball_zero_iff.mpr (cuspBoundaryAngularTranslate W k p).2) from
     additiveToPuncturedLocalHomeomorph_mk M W.localWitness.radius
       (cuspBoundaryAngularTranslate W k p),
     show ((additiveToPuncturedLocalHomeomorph M W.localWitness.radius
-      (Quotient.mk _ p)).1 : LocalCarrier M W.localWitness.radius) =
+      (Quotient.mk _ p)).1 : localCarrier M W.localWitness.radius) =
       localCuspExponentialPoint M W.localWitness.radius p.1.1 p.1.2
         (mem_ball_zero_iff.mpr p.2) from
     additiveToPuncturedLocalHomeomorph_mk M W.localWitness.radius p]
@@ -200,7 +200,7 @@ public theorem additiveCuspFillingLift_angularTranslate
 /-- The additive cusp filling lift is equivariant for the boundary deck action and the canonical
 map to the filling deck group. -/
 public theorem additiveCuspFillingLift_paperCuspBoundaryDeck_smul
-    (W : ActualPuncturedCuspCollarWitness N M) (g : paperCuspBoundaryDeck)
+    (W : ActualPuncturedCuspCollarWitness N M) (g : PaperCuspBoundaryDeck)
     (p : additiveCuspRadiusCover W.localWitness.radius) :
     letI := paperCuspBoundaryDeckAction W
     letI := paperCuspFillingDeckAction W

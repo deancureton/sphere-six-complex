@@ -90,7 +90,7 @@ public theorem exp_cuspTwoPiI_add_period_add_int
       rw [Complex.exp_add, Complex.exp_int_mul]
       ring
 
-variable {E : EstablishedFuchsianModularParameter}
+variable {E : NormalizedFuchsianModularParameter}
   {D : FuchsianPeriodLocalData E}
 
 /-- Translation of a fibre coordinate by the normalized cusp period and an additional integral

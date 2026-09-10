@@ -104,22 +104,22 @@ public theorem PaperAnalyticData.centralQuotientProjection_isLocalHomeomorph
   let _ : LocallyCompactSpace
       (RegularBase (U := P.modular.modularParameter.toTriangleUniformization)) :=
     (isOpen_isRegularBasePoint hproper).locallyCompactSpace
-  let _ : IsManifold GlobalDeckBaseModel RegularSmoothnessOrder
+  let _ : IsManifold globalDeckBaseModel regularSmoothnessOrder
       (RegularBase (U := P.modular.modularParameter.toTriangleUniformization)) :=
     regularBase_isManifold hproper
   let _ := familyIsCancelSMul (regularParameterMap P.periods)
   let _ := familyContinuousConstSMul (regularParameterMap P.periods)
     fun a ↦ (regularPeriodSection_contMDiff P.periods hproper a
-      RegularSmoothnessOrder).continuous
+      regularSmoothnessOrder).continuous
   let _ := familyProperlyDiscontinuousSMul (regularParameterMap P.periods)
     (compactlyUniformPeriods_of_compactUniformLowerBound (regularParameterMap P.periods)
       (regularParameterMap_compactUniformLowerBound P.periods))
   let htotal := regularTotalSpace_isManifold_and_projection_isLocalDiffeomorph
-    P.periods hproper RegularSmoothnessOrder
-  let _ : IsManifold GlobalDeckTotalModel RegularSmoothnessOrder
+    P.periods hproper regularSmoothnessOrder
+  let _ : IsManifold globalDeckTotalModel regularSmoothnessOrder
       (RegularTotalSpace P.periods) := htotal.1
   let _ : LocallyCompactSpace (RegularTotalSpace P.periods) :=
-    Manifold.locallyCompact_of_finiteDimensional GlobalDeckTotalModel
+    Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
   let _ : T2Space (RegularTotalSpace P.periods) := by infer_instance
   let _ := regularFamilyDeckAction P.periods
   let _ : IsCancelSMul Delta (RegularTotalSpace P.periods) :=
@@ -406,7 +406,7 @@ elliptic fibre along the actual affine collar. -/
 public theorem PaperAnalyticData.orderThreeCentralPositiveLowerTrap
     (P : PaperAnalyticData) :
     ∀ K : Set P.CentralFamily, IsCompact K →
-      ∃ a : ℝ, 0 < a ∧ ∀ s : P.starCollarSourceType (1 : Fin 3),
+      ∃ a : ℝ, 0 < a ∧ ∀ s : P.StarCollarSource (1 : Fin 3),
         P.starToCentral (1 : Fin 3) s ∈ K →
           a ≤ P.starCollarRadius (1 : Fin 3) s := by
   intro K hK
@@ -457,7 +457,7 @@ elliptic fibre along the actual affine collar. -/
 public theorem PaperAnalyticData.orderFourCentralPositiveLowerTrap
     (P : PaperAnalyticData) :
     ∀ K : Set P.CentralFamily, IsCompact K →
-      ∃ a : ℝ, 0 < a ∧ ∀ s : P.starCollarSourceType (2 : Fin 3),
+      ∃ a : ℝ, 0 < a ∧ ∀ s : P.StarCollarSource (2 : Fin 3),
         P.starToCentral (2 : Fin 3) s ∈ K →
           a ≤ P.starCollarRadius (2 : Fin 3) s := by
   intro K hK

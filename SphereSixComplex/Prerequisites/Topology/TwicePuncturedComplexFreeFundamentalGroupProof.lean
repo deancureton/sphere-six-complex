@@ -870,10 +870,10 @@ private theorem complexExpClockwiseGenerator_zpow_injective :
     Function.Injective (fun n : ℤ ↦
       (MulOpposite.op
         (Multiplicative.ofAdd (complexExpDeckMultiple (-1))) :
-          (Multiplicative ComplexExpDeckGroup)ᵐᵒᵖ) ^ n) := by
+          (Multiplicative complexExpDeckGroup)ᵐᵒᵖ) ^ n) := by
   intro m n h
-  have h' := congrArg (fun x : (Multiplicative ComplexExpDeckGroup)ᵐᵒᵖ ↦
-    (((MulOpposite.unop x).toAdd : ComplexExpDeckGroup) : ℂ).im) h
+  have h' := congrArg (fun x : (Multiplicative complexExpDeckGroup)ᵐᵒᵖ ↦
+    (((MulOpposite.unop x).toAdd : complexExpDeckGroup) : ℂ).im) h
   simp [complexExpDeckMultiple] at h'
   exact_mod_cast h'
 
@@ -920,7 +920,7 @@ private theorem rightMeridian_zpow_bijective :
     exact hx
 
 /-- The canonical presentation by the two actual clockwise meridians is relation-free. -/
-public theorem establishedMarkedMeridianHom_injective :
+public theorem markedMeridianHom_injective :
     Function.Injective markedMeridianHom := by
   let hInter : ContractibleSpace
       ↑(twicePuncturedComplexLeft ∩ twicePuncturedComplexRight :

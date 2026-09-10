@@ -223,7 +223,7 @@ public theorem fuchsianTwo_orbit_ne_one (g : Delta) :
       fuchsianOneFixedPoint := by
     rw [map_mul, map_mul, mul_smul, mul_smul, hinv,
       fuchsianTwoFixedPoint_fixed, hg]
-  obtain ⟨a, ha⟩ := establishedFuchsianOneStabilizerExact (g * g₂ * g⁻¹) |>.mp hfixed
+  obtain ⟨a, ha⟩ := fuchsianOneFixed_iff_mem_range_inl (g * g₂ * g⁻¹) |>.mp hfixed
   let retractThree : Delta →* CyclicThree :=
     Monoid.Coprod.lift (MonoidHom.id CyclicThree) 1
   have haone : a = 1 := by
@@ -357,7 +357,7 @@ public theorem exists_orderThreeLinearCollarSourceData
         simpa only [hsource] using hg⟩, hzS⟩
     have hfix := (htranslate g).mp hinter
     change fuchsianSourceAction g • fuchsianOneFixedPoint = fuchsianOneFixedPoint at hfix
-    exact establishedFuchsianOneStabilizerExact g |>.mp hfix
+    exact fuchsianOneFixed_iff_mem_range_inl g |>.mp hfix
 
 public theorem exists_orderFourLinearCollarSourceData
     (hsource : U.sourceAction = fuchsianSourceAction)
@@ -430,7 +430,7 @@ public theorem exists_orderFourLinearCollarSourceData
         simpa only [hsource] using hg⟩, hzS⟩
     have hfix := (htranslate g).mp hinter
     change fuchsianSourceAction g • fuchsianTwoFixedPoint = fuchsianTwoFixedPoint at hfix
-    exact establishedFuchsianTwoStabilizerExact g |>.mp hfix
+    exact fuchsianTwoFixed_iff_mem_range_inr g |>.mp hfix
 
 @[expose] public noncomputable def orderThreeCollarToRegularPart
     (D : OrderThreeLinearCollarSourceData (U := U) r) :
@@ -872,7 +872,7 @@ public theorem orderFourLinearCollarToPuncturedGlobalFamily_isOpenEmbedding
 paper's punctured global family. -/
 @[expose] public noncomputable def orderThreeAffineCollarToPuncturedGlobalFamily
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel n
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
       (projection (parameterMap F)))
     (hproper : SourceActionProperlyDiscontinuous (U := U))
     (hsource : U.sourceAction = fuchsianSourceAction)
@@ -886,7 +886,7 @@ paper's punctured global family. -/
 paper's punctured global family. -/
 @[expose] public noncomputable def orderFourAffineCollarToPuncturedGlobalFamily
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel n
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
       (projection (parameterMap F)))
     (hproper : SourceActionProperlyDiscontinuous (U := U))
     (hsource : U.sourceAction = fuchsianSourceAction)
@@ -898,7 +898,7 @@ paper's punctured global family. -/
 
 public theorem orderThreeAffineCollarToPuncturedGlobalFamily_isOpenEmbedding
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel n
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
       (projection (parameterMap F)))
     (hproper : SourceActionProperlyDiscontinuous (U := U))
     (hsource : U.sourceAction = fuchsianSourceAction)
@@ -913,7 +913,7 @@ public theorem orderThreeAffineCollarToPuncturedGlobalFamily_isOpenEmbedding
 
 public theorem orderFourAffineCollarToPuncturedGlobalFamily_isOpenEmbedding
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel n
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
       (projection (parameterMap F)))
     (hproper : SourceActionProperlyDiscontinuous (U := U))
     (hsource : U.sourceAction = fuchsianSourceAction)
@@ -928,7 +928,7 @@ public theorem orderFourAffineCollarToPuncturedGlobalFamily_isOpenEmbedding
 
 public theorem orderThreeAffineCollarToPuncturedGlobalFamily_isOpenEmbedding_actual
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel n
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
       (projection (parameterMap F)))
     (hproper : SourceActionProperlyDiscontinuous (U := U))
     (hsource : U.sourceAction = fuchsianSourceAction)
@@ -938,16 +938,16 @@ public theorem orderThreeAffineCollarToPuncturedGlobalFamily_isOpenEmbedding_act
   let _ := regularBaseChartedSpace hproper
   let _ : LocallyCompactSpace (RegularBase (U := U)) :=
     (isOpen_isRegularBasePoint hproper).locallyCompactSpace
-  let _ : IsManifold GlobalDeckBaseModel RegularSmoothnessOrder
+  let _ : IsManifold globalDeckBaseModel regularSmoothnessOrder
       (RegularBase (U := U)) := regularBase_isManifold hproper
   let _ := familyIsCancelSMul (regularParameterMap F)
   let _ := familyContinuousConstSMul (regularParameterMap F)
-    fun a => (regularPeriodSection_contMDiff F hproper a RegularSmoothnessOrder).continuous
+    fun a => (regularPeriodSection_contMDiff F hproper a regularSmoothnessOrder).continuous
   let _ := familyProperlyDiscontinuousSMul (regularParameterMap F)
     (compactlyUniformPeriods_of_compactUniformLowerBound (regularParameterMap F)
       (regularParameterMap_compactUniformLowerBound F))
   let _ : LocallyCompactSpace (RegularTotalSpace F) :=
-    Manifold.locallyCompact_of_finiteDimensional GlobalDeckTotalModel
+    Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
   let _ := regularFamilyDeckAction F
   let hcontinuous : ContinuousConstSMul Delta (RegularTotalSpace F) :=
     regularFamilyDeckAction_continuousConstSMul F hproper
@@ -956,7 +956,7 @@ public theorem orderThreeAffineCollarToPuncturedGlobalFamily_isOpenEmbedding_act
 
 public theorem orderFourAffineCollarToPuncturedGlobalFamily_isOpenEmbedding_actual
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel n
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
       (projection (parameterMap F)))
     (hproper : SourceActionProperlyDiscontinuous (U := U))
     (hsource : U.sourceAction = fuchsianSourceAction)
@@ -966,16 +966,16 @@ public theorem orderFourAffineCollarToPuncturedGlobalFamily_isOpenEmbedding_actu
   let _ := regularBaseChartedSpace hproper
   let _ : LocallyCompactSpace (RegularBase (U := U)) :=
     (isOpen_isRegularBasePoint hproper).locallyCompactSpace
-  let _ : IsManifold GlobalDeckBaseModel RegularSmoothnessOrder
+  let _ : IsManifold globalDeckBaseModel regularSmoothnessOrder
       (RegularBase (U := U)) := regularBase_isManifold hproper
   let _ := familyIsCancelSMul (regularParameterMap F)
   let _ := familyContinuousConstSMul (regularParameterMap F)
-    fun a => (regularPeriodSection_contMDiff F hproper a RegularSmoothnessOrder).continuous
+    fun a => (regularPeriodSection_contMDiff F hproper a regularSmoothnessOrder).continuous
   let _ := familyProperlyDiscontinuousSMul (regularParameterMap F)
     (compactlyUniformPeriods_of_compactUniformLowerBound (regularParameterMap F)
       (regularParameterMap_compactUniformLowerBound F))
   let _ : LocallyCompactSpace (RegularTotalSpace F) :=
-    Manifold.locallyCompact_of_finiteDimensional GlobalDeckTotalModel
+    Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
   let _ := regularFamilyDeckAction F
   let hcontinuous : ContinuousConstSMul Delta (RegularTotalSpace F) :=
     regularFamilyDeckAction_continuousConstSMul F hproper
@@ -984,7 +984,7 @@ public theorem orderFourAffineCollarToPuncturedGlobalFamily_isOpenEmbedding_actu
 
 public theorem exists_orderThreeAffineCollarOpenEmbedding
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel n
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
       (projection (parameterMap F)))
     (hproper : SourceActionProperlyDiscontinuous (U := U))
     (hsource : U.sourceAction = fuchsianSourceAction) :
@@ -1001,7 +1001,7 @@ public theorem exists_orderThreeAffineCollarOpenEmbedding
 
 public theorem exists_orderFourAffineCollarOpenEmbedding
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel n
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
       (projection (parameterMap F)))
     (hproper : SourceActionProperlyDiscontinuous (U := U))
     (hsource : U.sourceAction = fuchsianSourceAction) :

@@ -36,10 +36,10 @@ open SphereSixComplex.Geometry.AnalyticTorusFamily
 open SphereSixComplex.Geometry.TorusFamily
 open SphereSixComplex.Geometry.GlobalTorusFamily
 open SphereSixComplex.Geometry.FamilyEquivariance
-open SphereSixComplex.Geometry.EstablishedFuchsianCuspNeighborhood
+open FuchsianCuspNeighborhood
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
 variable {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
 
 /-- The inverse angular turn conjugates a lattice translation by inverse cusp monodromy. -/
@@ -126,7 +126,7 @@ public theorem cuspBoundaryAngularTranslate_latticeTranslate
 /-- The combined semidirect cusp boundary action on normalized additive coordinates. -/
 @[instance_reducible] public noncomputable def paperCuspBoundaryDeckAction
     (W : ActualPuncturedCuspCollarWitness N M) :
-    MulAction paperCuspBoundaryDeck
+    MulAction PaperCuspBoundaryDeck
       (additiveCuspRadiusCover W.localWitness.radius) where
   smul g p :=
     cuspBoundaryLatticeTranslate W g.left.toAdd
@@ -153,7 +153,7 @@ public theorem cuspBoundaryAngularTranslate_latticeTranslate
 
 @[simp]
 public theorem paperCuspBoundaryDeck_smul_apply
-    (W : ActualPuncturedCuspCollarWitness N M) (g : paperCuspBoundaryDeck)
+    (W : ActualPuncturedCuspCollarWitness N M) (g : PaperCuspBoundaryDeck)
     (p : additiveCuspRadiusCover W.localWitness.radius) :
     letI := paperCuspBoundaryDeckAction W
     g • p = cuspBoundaryLatticeTranslate W g.left.toAdd
@@ -163,7 +163,7 @@ public theorem paperCuspBoundaryDeck_smul_apply
 /-- Every combined boundary deck transformation is invisible under the actual boundary
 projection. -/
 public theorem additiveCuspBoundaryProjection_paperCuspBoundaryDeck_smul
-    (W : ActualPuncturedCuspCollarWitness N M) (g : paperCuspBoundaryDeck)
+    (W : ActualPuncturedCuspCollarWitness N M) (g : PaperCuspBoundaryDeck)
     (p : additiveCuspRadiusCover W.localWitness.radius) :
     letI := paperCuspBoundaryDeckAction W
     additiveCuspBoundaryProjection W (g • p) = additiveCuspBoundaryProjection W p := by
@@ -258,14 +258,14 @@ public theorem additiveCuspBoundaryProjection_eq_iff_mem_paperCuspBoundaryDeck_o
     (a b : additiveCuspRadiusCover W.localWitness.radius) :
     letI := paperCuspBoundaryDeckAction W
     additiveCuspBoundaryProjection W a = additiveCuspBoundaryProjection W b ↔
-      a ∈ MulAction.orbit paperCuspBoundaryDeck b := by
+      a ∈ MulAction.orbit PaperCuspBoundaryDeck b := by
   let _ := paperCuspBoundaryDeckAction W
   constructor
   · intro h
     obtain ⟨k, hs, n, hn⟩ := additiveCuspBoundaryProjection_eq_period_data W a b h
     rw [MulAction.mem_orbit_iff]
     refine ⟨(⟨Multiplicative.ofAdd (-n), Multiplicative.ofAdd k⟩ :
-      paperCuspBoundaryDeck), ?_⟩
+      PaperCuspBoundaryDeck), ?_⟩
     rw [paperCuspBoundaryDeck_smul_apply]
     apply Subtype.ext
     apply Prod.ext
@@ -297,8 +297,8 @@ public theorem additiveCuspBoundaryProjection_isQuotientMap
       Quotient (Setoid.ker (denseCuspExponentialRadius W.localWitness.radius)) :=
     Quotient.mk _
   let e := additiveToPuncturedLocalHomeomorph M W.localWitness.radius
-  let q₂ : {p : LocalCarrier M W.localWitness.radius // M.t p ≠ 0} →
-      puncturedLocalCuspQuotient W := Quotient.mk _
+  let q₂ : {p : localCarrier M W.localWitness.radius // M.t p ≠ 0} →
+      PuncturedLocalCuspQuotient W := Quotient.mk _
   have hq₁ : IsQuotientMap q₁ := isQuotientMap_quotient_mk'
   have he : IsQuotientMap e := e.isQuotientMap
   have hq₂ : IsQuotientMap q₂ := isQuotientMap_quotient_mk'
@@ -311,7 +311,7 @@ public theorem additiveCuspBoundaryProjection_isQuotientMap
 public theorem paperCuspBoundaryDeckAction_isCancelSMul
     (W : ActualPuncturedCuspCollarWitness N M) :
     letI := paperCuspBoundaryDeckAction W
-    IsCancelSMul paperCuspBoundaryDeck
+    IsCancelSMul PaperCuspBoundaryDeck
       (additiveCuspRadiusCover W.localWitness.radius) := by
   let _ := paperCuspBoundaryDeckAction W
   constructor
@@ -378,7 +378,7 @@ public theorem cuspBoundaryAngularTranslate_continuous
 public theorem paperCuspBoundaryDeckAction_continuousConstSMul
     (W : ActualPuncturedCuspCollarWitness N M) :
     letI := paperCuspBoundaryDeckAction W
-    ContinuousConstSMul paperCuspBoundaryDeck
+    ContinuousConstSMul PaperCuspBoundaryDeck
       (additiveCuspRadiusCover W.localWitness.radius) := by
   let _ := paperCuspBoundaryDeckAction W
   constructor
@@ -395,10 +395,10 @@ public theorem paperCuspBoundaryDeckAction_locally_disjoint
     (W : ActualPuncturedCuspCollarWitness N M) :
     letI := paperCuspBoundaryDeckAction W
     ∀ p : additiveCuspRadiusCover W.localWitness.radius,
-      ∃ U ∈ nhds p, ∀ g : paperCuspBoundaryDeck,
+      ∃ U ∈ nhds p, ∀ g : PaperCuspBoundaryDeck,
         ((g • ·) '' U ∩ U).Nonempty → g = 1 := by
   let _ := paperCuspBoundaryDeckAction W
-  let _ : IsCancelSMul paperCuspBoundaryDeck
+  let _ : IsCancelSMul PaperCuspBoundaryDeck
       (additiveCuspRadiusCover W.localWitness.radius) :=
     paperCuspBoundaryDeckAction_isCancelSMul W
   let _ := additiveCuspRadiusCoverCharts W.localWitness.radius
@@ -415,7 +415,7 @@ public theorem paperCuspBoundaryDeckAction_locally_disjoint
       (fun p ↦ actualCuspFillingProjection W (additiveCuspFillingLift W p)) := by
     intro p
     exact IsLocalDiffeomorphAt.comp (modelWithCornersSelf ℂ ComplexModel)
-      (actualLocalCuspFilling W) (hlift p) (hproj (additiveCuspFillingLift W p))
+      (ActualLocalCuspFilling W) (hlift p) (hproj (additiveCuspFillingLift W p))
   intro p
   obtain ⟨U, hUopen, hpU, hUinj⟩ :=
     hcomp.isLocalHomeomorph.isLocallyInjective p
@@ -429,7 +429,7 @@ public theorem paperCuspBoundaryDeckAction_locally_disjoint
       additiveCuspBoundaryProjection_paperCuspBoundaryDeck_smul]
   have hgx : g • x = x := hUinj hgxU hxU hfill
   exact isCancelSMul_iff_eq_one_of_smul_eq.mp (inferInstanceAs
-    (IsCancelSMul paperCuspBoundaryDeck
+    (IsCancelSMul PaperCuspBoundaryDeck
       (additiveCuspRadiusCover W.localWitness.radius))) g x hgx
 
 /-- The normalized additive cusp boundary projection is the quotient covering by the full
@@ -438,7 +438,7 @@ public theorem additiveCuspBoundaryProjection_isQuotientCoveringMap
     (W : ActualPuncturedCuspCollarWitness N M) :
     letI := paperCuspBoundaryDeckAction W
     IsQuotientCoveringMap (additiveCuspBoundaryProjection W)
-      paperCuspBoundaryDeck := by
+      PaperCuspBoundaryDeck := by
   let _ := paperCuspBoundaryDeckAction W
   refine {
     __ := additiveCuspBoundaryProjection_isQuotientMap W

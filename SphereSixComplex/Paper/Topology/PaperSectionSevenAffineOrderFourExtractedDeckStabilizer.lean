@@ -75,7 +75,7 @@ public theorem mem_orderFourFactor_iff_namedOrderFourRadialBase_cayley_lt
   constructor
   · rintro ⟨a, rfl⟩
     apply A.namedOrderFourRadialBase_cayley_lt_of_deck_fixes_fuchsianTwo x _ hdeck
-    exact (establishedFuchsianTwoStabilizerExact _).mpr ⟨a, rfl⟩
+    exact (fuchsianTwoFixed_iff_mem_range_inr _).mpr ⟨a, rfl⟩
   · exact fun hnamed ↦ A.mem_orderFourFactor_of_named_and_deck_cayley_lt x g hdeck hnamed
 
 /-- Equivalently, an extracted deck element fixes the order-four elliptic centre exactly when
@@ -92,7 +92,7 @@ public theorem fixes_fuchsianTwo_iff_namedOrderFourRadialBase_cayley_lt
         (A.affineOrderFourRadialBaseLift
           (A.affineBandStripCoordinate x)).1 : ℂ)‖ <
         A.starSeparation.orderFour.radius := by
-  rw [establishedFuchsianTwoStabilizerExact]
+  rw [fuchsianTwoFixed_iff_mem_range_inr]
   exact A.mem_orderFourFactor_iff_namedOrderFourRadialBase_cayley_lt x g hdeck
 
 /-- The pointwise named-sheet Cayley bound is exactly the assertion that some extracted deck

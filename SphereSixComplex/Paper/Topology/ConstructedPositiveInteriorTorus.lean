@@ -9,9 +9,9 @@ noncomputable section
 open Set Topology
 namespace SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Periods CuspFilling CuspLocalPhaseAction CuspPuncturedCollarBridge
-open CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
+open CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
 open CuspPeriodExpansion InfiniteA2Toric.Construction
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 def positiveLogTorusProjection (r : ℝ) :
@@ -26,7 +26,7 @@ theorem positiveLogTorusProjection_isQuotientMap (r : ℝ) :
 
 theorem realVector_torus_eq_iff (x y : Fin 2 → ℝ) :
     (fun i ↦ (x i : UnitAddCircle)) = (fun i ↦ (y i : UnitAddCircle)) ↔
-      ∃ lambda : ParameterLattice, x = y + realParameter lambda := by
+      ∃ lambda : ParameterLattice, x = y + CuspPhaseEstimates.realParameter lambda := by
   constructor
   · intro h
     have hi (i : Fin 2) : ∃ n : ℤ, (n : ℝ) = x i - y i := by
@@ -78,7 +78,7 @@ theorem constructedPositiveInteriorTorusMap_fibers
 
 def constructedPositiveInteriorTorusHomeomorph
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
-    ↥((ConstructedA2PositiveQuotientCore W)ᶜ) ≃ₜ
+    ↥((constructedA2PositiveQuotientCore W)ᶜ) ≃ₜ
       ((Fin 2 → UnitAddCircle) × Set.Ioo (0 : ℝ) W.localWitness.radius) :=
   CyclicAngularFundamentalDomain.homeomorphOfQuotientMaps
     (constructedPositiveInteriorProjection_isQuotientMap W)

@@ -25,7 +25,7 @@ variable {HighRelations High Total LowRelations Low : Type*}
 /-- The normalized Wang section determined by a lift of the positive invariant generator. -/
 public def rankOneNormalizedSplitting
     (P : WangHomologyPresentation HighRelations High Total LowRelations Low)
-    (invariants : P.Invariants ≃ₗ[ℤ] ℤ) (s : Total)
+    (invariants : P.invariants ≃ₗ[ℤ] ℤ) (s : Total)
     (hs : invariants (P.totalToInvariants s) = 1) : P.NormalizedSplitting where
   sweptSection := invariants.toLinearMap.smulRight s
   rightInverse := by
@@ -58,7 +58,7 @@ Coordinate zero is the invariant coordinate and coordinate one is the coinvarian
 -/
 public def rankOneTotalLinearEquiv
     (P : WangHomologyPresentation HighRelations High Total LowRelations Low)
-    (coinvariants : P.Coinvariants ≃ₗ[ℤ] ℤ) (invariants : P.Invariants ≃ₗ[ℤ] ℤ)
+    (coinvariants : P.Coinvariants ≃ₗ[ℤ] ℤ) (invariants : P.invariants ≃ₗ[ℤ] ℤ)
     (s : Total) (hs : invariants (P.totalToInvariants s) = 1) :
     Total ≃ₗ[ℤ] (Fin 2 → ℤ) :=
   (NormalizedSplitting.totalLinearEquivOfEndCoordinates P
@@ -68,7 +68,7 @@ public def rankOneTotalLinearEquiv
 /-- The additive equivalence underlying the normalized rank-two Wang coordinates. -/
 public def rankOneTotalAddEquiv
     (P : WangHomologyPresentation HighRelations High Total LowRelations Low)
-    (coinvariants : P.Coinvariants ≃ₗ[ℤ] ℤ) (invariants : P.Invariants ≃ₗ[ℤ] ℤ)
+    (coinvariants : P.Coinvariants ≃ₗ[ℤ] ℤ) (invariants : P.invariants ≃ₗ[ℤ] ℤ)
     (s : Total) (hs : invariants (P.totalToInvariants s) = 1) :
     Total ≃+ (Fin 2 → ℤ) :=
   (rankOneTotalLinearEquiv P coinvariants invariants s hs).toAddEquiv
@@ -76,7 +76,7 @@ public def rankOneTotalAddEquiv
 /-- The chosen lift is the first standard basis vector. -/
 public theorem rankOneTotalAddEquiv_apply_generator
     (P : WangHomologyPresentation HighRelations High Total LowRelations Low)
-    (coinvariants : P.Coinvariants ≃ₗ[ℤ] ℤ) (invariants : P.Invariants ≃ₗ[ℤ] ℤ)
+    (coinvariants : P.Coinvariants ≃ₗ[ℤ] ℤ) (invariants : P.invariants ≃ₗ[ℤ] ℤ)
     (s : Total) (hs : invariants (P.totalToInvariants s) = 1) :
     rankOneTotalAddEquiv P coinvariants invariants s hs s = ![1, 0] := by
   change rankOneTotalLinearEquiv P coinvariants invariants s hs s = ![1, 0]
@@ -104,7 +104,7 @@ public theorem rankOneTotalAddEquiv_apply_generator
 /-- A fibre coinvariant is the second coordinate with zero invariant coordinate. -/
 public theorem rankOneTotalAddEquiv_coinvariantsToTotal
     (P : WangHomologyPresentation HighRelations High Total LowRelations Low)
-    (coinvariants : P.Coinvariants ≃ₗ[ℤ] ℤ) (invariants : P.Invariants ≃ₗ[ℤ] ℤ)
+    (coinvariants : P.Coinvariants ≃ₗ[ℤ] ℤ) (invariants : P.invariants ≃ₗ[ℤ] ℤ)
     (s : Total) (hs : invariants (P.totalToInvariants s) = 1) (q : P.Coinvariants) :
     rankOneTotalAddEquiv P coinvariants invariants s hs (P.coinvariantsToTotal q) =
       ![0, coinvariants q] := by

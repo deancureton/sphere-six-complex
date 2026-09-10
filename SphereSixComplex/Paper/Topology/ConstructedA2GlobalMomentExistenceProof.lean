@@ -22,7 +22,7 @@ private def baseApproachRawCoordinates (s a : ℝ) : RawCoordinates :=
 private noncomputable def baseApproachPoint {r : ℝ} (a : ℝ) (ha : 0 ≤ a)
     (s : ℝ) (hs : 0 ≤ s) (hsr : s * a < r) : constructedLocalPositivePart r := by
   let x : Carrier := inclusion baseChart (baseApproachRawCoordinates s a)
-  let q : LocalCarrier constructedModel r := ⟨x, by
+  let q : localCarrier constructedModel r := ⟨x, by
     change carrierHeight x ∈ Metric.ball 0 r
     rw [carrierHeight_inclusion]
     simp only [rawHeight, baseApproachRawCoordinates, Matrix.cons_val_zero,
@@ -39,7 +39,7 @@ private noncomputable def baseApproachPoint {r : ℝ} (a : ℝ) (ha : 0 ≤ a)
 private theorem baseApproachPoint_t {r : ℝ} (a : ℝ) (ha : 0 ≤ a)
     (s : ℝ) (hs : 0 ≤ s) (hsr : s * a < r) :
     constructedModel.t
-        (baseApproachPoint a ha s hs hsr : LocalCarrier constructedModel r) =
+        (baseApproachPoint a ha s hs hsr : localCarrier constructedModel r) =
       (s * a : ℂ) := by
   change carrierHeight (inclusion baseChart (baseApproachRawCoordinates s a)) = _
   rw [carrierHeight_inclusion]
@@ -52,7 +52,7 @@ private def baseApproachTorus (s a : ℝ) (hs : s ≠ 0) (ha : a ≠ 0) : DenseT
 private theorem torusCoordinates_baseApproachPoint {r : ℝ}
     (a : ℝ) (ha : 0 < a) (s : ℝ) (hs : 0 < s) (hsr : s * a < r) :
     torusCoordinates constructedModel
-        (baseApproachPoint a ha.le s hs.le hsr : LocalCarrier constructedModel r) =
+        (baseApproachPoint a ha.le s hs.le hsr : localCarrier constructedModel r) =
       baseApproachTorus s a hs.ne' ha.ne' := by
   apply torusCoordinates_unique constructedModel
     (by
@@ -221,7 +221,7 @@ public theorem constructedA2ProperMomentCoordinate_isEmpty {r : ℝ}
         coordinate_baseCentralPoint_eq_zero hr C (1 / 2) (by norm_num) (by norm_num)]
     have hzero (a : ℝ) (ha : 0 ≤ a) :
         constructedModel.t
-          (baseCentralPoint hr a ha : LocalCarrier constructedModel r) = 0 := by
+          (baseCentralPoint hr a ha : localCarrier constructedModel r) = 0 := by
       unfold baseCentralPoint
       rw [baseApproachPoint_t]
       norm_num

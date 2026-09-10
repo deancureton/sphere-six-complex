@@ -17,7 +17,7 @@ noncomputable section
 
 open Matrix
 
-namespace SphereSixComplex.Geometry.CuspPhaseEstimates
+namespace SphereSixComplex.Geometry
 
 open SphereSixComplex.Geometry.CuspCombinatorics
 open SphereSixComplex.Geometry.CuspFilling
@@ -26,35 +26,7 @@ open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspToricPhaseAction
 open SphereSixComplex.Geometry.InfiniteA2Toric
 
-namespace CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
-
-open SphereSixComplex.Periods
-
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    (N : NormalizedFuchsianCuspCoordinate E D)
-
-/-- The local action coefficients furnished by the actual cusp-period expansion. -/
-public noncomputable def actualLocalPhaseCoefficients (M : Model) :
-    LocalHolomorphicPhaseCoefficients M (cuspRadius N.height) :=
-  CuspLocalPhaseAction.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.toExactLocalHolomorphicPhaseCoefficients
-    N M
-
-/-- Restrict the actual cusp coefficients to any smaller positive disc. -/
-public noncomputable def restrictedActualLocalPhaseCoefficients
-    (M : Model) (r : ℝ) (hr : 0 < r) (hradius : r ≤ cuspRadius N.height) :
-    LocalHolomorphicPhaseCoefficients M r where
-  radius_pos := hr
-  phase := N.phaseCoefficient
-  phase_zero := N.phaseCoefficient_zero
-  phase_add := N.phaseCoefficient_add
-  coefficient_holomorphicOn lambda i :=
-    mdifferentiableOn_iff_differentiableOn.mp
-      ((N.phaseCoefficient_holomorphicOn lambda i).mono fun _q hq ↦
-        lt_of_lt_of_le hq hradius)
-
-/-- The real matrix `R(q) = -2π Im C(q)` from §4.1. -/
-public noncomputable def phaseLogMatrix (q : ℂ) : Matrix (Fin 2) (Fin 2) ℝ :=
-  fun i j ↦ -2 * Real.pi * (N.correctionMatrix q i j).im
+namespace CuspPhaseEstimates
 
 /-- The lattice parameter regarded as a real vector. -/
 public def realParameter (lambda : ParameterLattice) : Fin 2 → ℝ :=
@@ -68,6 +40,78 @@ public theorem realParameter_add (lambda mu : ParameterLattice) :
     realParameter (lambda + mu) = realParameter lambda + realParameter mu := by
   ext i
   simp [realParameter]
+
+/-- The elementary `ℓ¹` size of an integral cusp parameter. -/
+public def parameterL1 (lambda : ParameterLattice) : ℝ :=
+  |(lambda 0 : ℝ)| + |(lambda 1 : ℝ)|
+
+public theorem parameterL1_nonneg (lambda : ParameterLattice) :
+    0 ≤ parameterL1 lambda := by
+  exact add_nonneg (abs_nonneg _) (abs_nonneg _)
+
+public theorem parameterL1_eq_zero_iff (lambda : ParameterLattice) :
+    parameterL1 lambda = 0 ↔ lambda = 0 := by
+  constructor
+  · intro h
+    have h0 : |(lambda 0 : ℝ)| = 0 := by
+      have hle : |(lambda 0 : ℝ)| ≤ 0 := by
+        have := abs_nonneg (lambda 1 : ℝ)
+        simp only [parameterL1] at h
+        linarith
+      exact le_antisymm hle (abs_nonneg _)
+    have h1 : |(lambda 1 : ℝ)| = 0 := by
+      have hle : |(lambda 1 : ℝ)| ≤ 0 := by
+        have := abs_nonneg (lambda 0 : ℝ)
+        simp only [parameterL1] at h
+        linarith
+      exact le_antisymm hle (abs_nonneg _)
+    funext i
+    fin_cases i
+    · exact_mod_cast abs_eq_zero.mp h0
+    · exact_mod_cast abs_eq_zero.mp h1
+  · rintro rfl
+    simp [parameterL1]
+
+/-- The explicit integral matrix `B₀` preserves this elementary `ℓ¹` size. -/
+public theorem shearVector_parameterL1 (lambda : ParameterLattice) :
+    |(shearVector lambda 0 : ℝ)| + |(shearVector lambda 1 : ℝ)| =
+      parameterL1 lambda := by
+  simp [shearVector, SphereSixComplex.LatticeData.B₀, Matrix.mulVec, dotProduct,
+    Fin.sum_univ_two, parameterL1, add_comm]
+
+end CuspPhaseEstimates
+
+open CuspPhaseEstimates
+
+namespace CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
+
+open SphereSixComplex.Periods
+
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    (N : NormalizedFuchsianCuspCoordinate E D)
+
+/-- The local action coefficients furnished by the actual cusp-period expansion. -/
+public noncomputable def actualLocalPhaseCoefficients (M : Model) :
+    CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients M (cuspRadius N.height) :=
+  toLocalHolomorphicPhaseCoefficients
+    N M
+
+/-- Restrict the actual cusp coefficients to any smaller positive disc. -/
+public noncomputable def restrictedActualLocalPhaseCoefficients
+    (M : Model) (r : ℝ) (hr : 0 < r) (hradius : r ≤ cuspRadius N.height) :
+    CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients M r where
+  radius_pos := hr
+  phase := N.phaseCoefficient
+  phase_zero := N.phaseCoefficient_zero
+  phase_add := N.phaseCoefficient_add
+  coefficient_holomorphicOn lambda i :=
+    mdifferentiableOn_iff_differentiableOn.mp
+      ((N.phaseCoefficient_holomorphicOn lambda i).mono fun _q hq ↦
+        lt_of_lt_of_le hq hradius)
+
+/-- The real matrix `R(q) = -2π Im C(q)` from §4.1. -/
+public noncomputable def phaseLogMatrix (q : ℂ) : Matrix (Fin 2) (Fin 2) ℝ :=
+  fun i j ↦ -2 * Real.pi * (N.correctionMatrix q i j).im
 
 /-- The logarithm of the modulus of the actual phase coefficient is exactly `R(q)λ`. -/
 public theorem log_norm_phaseCoefficient
@@ -117,44 +161,6 @@ public theorem exists_phaseLogMatrix_bound
   · exact (hb10 q hq).trans (le_trans (le_max_left _ _) (le_max_right _ _))
   · exact (hb11 q hq).trans (le_trans (le_max_right _ _) (le_max_right _ _))
 
-/-- The elementary `ℓ¹` size of an integral cusp parameter. -/
-public def parameterL1 (lambda : ParameterLattice) : ℝ :=
-  |(lambda 0 : ℝ)| + |(lambda 1 : ℝ)|
-
-public theorem parameterL1_nonneg (lambda : ParameterLattice) :
-    0 ≤ parameterL1 lambda := by
-  exact add_nonneg (abs_nonneg _) (abs_nonneg _)
-
-public theorem parameterL1_eq_zero_iff (lambda : ParameterLattice) :
-    parameterL1 lambda = 0 ↔ lambda = 0 := by
-  constructor
-  · intro h
-    have h0 : |(lambda 0 : ℝ)| = 0 := by
-      have hle : |(lambda 0 : ℝ)| ≤ 0 := by
-        have := abs_nonneg (lambda 1 : ℝ)
-        simp only [parameterL1] at h
-        linarith
-      exact le_antisymm hle (abs_nonneg _)
-    have h1 : |(lambda 1 : ℝ)| = 0 := by
-      have hle : |(lambda 1 : ℝ)| ≤ 0 := by
-        have := abs_nonneg (lambda 0 : ℝ)
-        simp only [parameterL1] at h
-        linarith
-      exact le_antisymm hle (abs_nonneg _)
-    funext i
-    fin_cases i
-    · exact_mod_cast abs_eq_zero.mp h0
-    · exact_mod_cast abs_eq_zero.mp h1
-  · rintro rfl
-    simp [parameterL1]
-
-/-- The explicit integral matrix `B₀` preserves this elementary `ℓ¹` size. -/
-public theorem shearVector_parameterL1 (lambda : ParameterLattice) :
-    |(shearVector lambda 0 : ℝ)| + |(shearVector lambda 1 : ℝ)| =
-      parameterL1 lambda := by
-  simp [shearVector, SphereSixComplex.LatticeData.B₀, Matrix.mulVec, dotProduct,
-    Fin.sum_univ_two, parameterL1, add_comm]
-
 public theorem phaseLog_mulVec_le
     {A : ℝ} {q : ℂ}
     (hq : ∀ i j, |phaseLogMatrix N q i j| ≤ A)
@@ -178,6 +184,8 @@ public theorem phaseLog_mulVec_le
       rw [parameterL1, mul_add]
 
 end CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
+
+namespace CuspPhaseEstimates
 
 /-- The ray components containing a point of the standard toric model. -/
 public def componentSupport (M : Model) (p : M.Carrier) : Set ToricLattice :=
@@ -235,16 +243,18 @@ public theorem phaseAction_component (Q : TorusActionPreservesComponents M)
 
 end TorusActionPreservesComponents
 
+end CuspPhaseEstimates
+
 namespace CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients
 
-variable {M : Model} {r : ℝ} (C : LocalHolomorphicPhaseCoefficients M r)
+variable {M : Model} {r : ℝ} (C : CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients M r)
 
 /-- The central-fibre fixed-point estimate follows from the standard fact that torus
 multiplication preserves ray components.  No analytic estimate is involved in this half of
 Step 1 of Theorem 4.5. -/
 public theorem central_fixedPointEstimate
     (Q : TorusActionPreservesComponents M) (lambda : ParameterLattice)
-    (p : LocalCarrier M r) (ht : M.t p = 0) (hfixed : C.psiMap lambda p = p) :
+    (p : localCarrier M r) (ht : M.t p = 0) (hfixed : C.psiMap lambda p = p) :
     lambda = 0 := by
   have hsupport : (componentSupport M (p : M.Carrier)).Nonempty :=
     componentSupport_nonempty_of_t_eq_zero M ht
@@ -275,15 +285,15 @@ namespace CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
 
 open SphereSixComplex.Periods
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D)
 
 /-- A fixed point away from the central fibre satisfies the logarithmic equation
 `R(q)λ + log |q| B₀λ = 0` coordinatewise. -/
 public theorem offCentral_logarithmic_equation
-    (M : Model) {r : ℝ} (C : LocalHolomorphicPhaseCoefficients M r)
+    (M : Model) {r : ℝ} (C : CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients M r)
     (hphase : C.phase = N.phaseCoefficient) (lambda : ParameterLattice)
-    (p : LocalCarrier M r) (ht : M.t p ≠ 0)
+    (p : localCarrier M r) (ht : M.t p ≠ 0)
     (hfixed : C.psiMap lambda p = p)
     (i : Fin 2) :
     (phaseLogMatrix N (M.t p)).mulVec (realParameter lambda) i +
@@ -335,12 +345,12 @@ public theorem offCentral_logarithmic_equation
 /-- The numerical contradiction in Step 1: once `|log |q||` dominates twice a common entry
 bound for `R(q)`, an off-central fixed point has zero lattice parameter. -/
 public theorem offCentral_fixedPoint_of_log_dominates
-    (M : Model) {r rho A : ℝ} (C : LocalHolomorphicPhaseCoefficients M r)
+    (M : Model) {r rho A : ℝ} (C : CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients M r)
     (hphase : C.phase = N.phaseCoefficient)
     (hR : ∀ q ∈ Metric.closedBall (0 : ℂ) rho,
       ∀ i j, |phaseLogMatrix N q i j| ≤ A)
     (lambda : ParameterLattice)
-    (p : LocalCarrier M r)
+    (p : localCarrier M r)
     (hq : M.t p ∈ Metric.closedBall (0 : ℂ) rho)
     (hlog : 2 * A < |Real.log ‖M.t p‖|) (ht : M.t p ≠ 0)
     (hfixed : C.psiMap lambda p = p) :
@@ -418,10 +428,12 @@ public theorem exists_shrunk_isFree
       hdominates ht hfixed
   · intro lambda p ht hfixed
     exact
-      SphereSixComplex.Geometry.CuspPhaseEstimates.CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients.central_fixedPointEstimate
+      LocalHolomorphicPhaseCoefficients.central_fixedPointEstimate
         C Q lambda p ht hfixed
 
 end CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
+
+namespace CuspPhaseEstimates
 
 /-- Indices for the two translated families of bounded affine regions in Lemma 4.4. -/
 public abbrev ToricRegionIndex := Bool × ToricLattice
@@ -459,7 +471,7 @@ public theorem latticeL1_sublevel_finite (B : ℝ) :
 
 /-- The nonzero fibres are dense in every open cusp neighbourhood. -/
 public theorem offCentral_dense (M : Model) (r : ℝ) :
-    Dense {p : LocalCarrier M r | M.t p ≠ 0} := by
+    Dense {p : localCarrier M r | M.t p ≠ 0} := by
   have htorus : Dense {p : M.Carrier | M.t p ≠ 0} := by
     rw [← M.torus_range]
     exact M.torus_dense
@@ -475,20 +487,20 @@ This formulation deliberately does not require a globally finite error for
 varies.  What the argument uses is finiteness of `lambda` for each fixed pair of bounded
 regions. -/
 public structure QuantitativeToricRegionCover
-    {M : Model} {r : ℝ} (C : LocalHolomorphicPhaseCoefficients M r) where
-  region : ToricRegionIndex → Set (LocalCarrier M r)
+    {M : Model} {r : ℝ} (C : CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients M r) where
+  region : ToricRegionIndex → Set (localCarrier M r)
   region_isOpen : ∀ a, IsOpen (region a)
   cover : ∀ p, ∃ a, p ∈ region a
-  position : LocalCarrier M r → Fin 2 → ℝ
+  position : localCarrier M r → Fin 2 → ℝ
   region_position_bounded : ∀ a, ∃ B : ℝ, ∀ p ∈ region a,
     M.t p ≠ 0 → positionL1 (position p) ≤ B
-  displacement_lower : ∃ c : ℝ, 0 < c ∧ ∀ lambda (p : LocalCarrier M r),
+  displacement_lower : ∃ c : ℝ, 0 < c ∧ ∀ lambda (p : localCarrier M r),
     M.t p ≠ 0 →
       c * latticeL1 lambda ≤ positionL1 (position (C.psiMap lambda p) - position p)
 
 namespace QuantitativeToricRegionCover
 
-variable {M : Model} {r : ℝ} {C : LocalHolomorphicPhaseCoefficients M r}
+variable {M : Model} {r : ℝ} {C : CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients M r}
 
 /-- An overlap of a fixed pair of bounded regions is possible for only finitely many lattice
 parameters.  Density of the nonzero fibres is what permits the `B_t` estimate to control an
@@ -552,4 +564,6 @@ public theorem compactOverlapEstimate (Q : QuantitativeToricRegionCover C) :
 
 end QuantitativeToricRegionCover
 
-end SphereSixComplex.Geometry.CuspPhaseEstimates
+end CuspPhaseEstimates
+
+end SphereSixComplex.Geometry

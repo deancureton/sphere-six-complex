@@ -32,7 +32,7 @@ open InfiniteA2Toric
 
 namespace FrozenLocalCuspPhaseSpreadingData
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
   {P : PolarHoneycombData M r} (F : FrozenLocalCuspPhaseSpreadingData N M r P)
 
@@ -40,24 +40,24 @@ variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData 
 public noncomputable def frozenEquivariantStrongDeformationRetraction :
     letI := frozenLocalCuspAction N M r
     EquivariantStrongDeformationRetraction
-      (Multiplicative ParameterLattice) (LocalCarrier M r) {p | M.t p = 0} := by
+      (Multiplicative ParameterLattice) (localCarrier M r) {p | M.t p = 0} := by
   letI := P.positiveDeckAction
   let R := F.positiveRetraction
   letI := frozenLocalCuspAction N M r
-  let orbit : C(CompactTorus × P.positivePart, LocalCarrier M r) :=
+  let orbit : C(CompactTorus × P.positivePart, localCarrier M r) :=
     ⟨compactPhaseOrbit M r P.positivePart, continuous_compactPhaseOrbit M r P.positivePart⟩
   have htarget (k : CompactTorus) (p : P.positivePart) :
       compactPhaseOrbit M r P.positivePart (k, p) ∈
-          {x : LocalCarrier M r | M.t x = 0} ↔ p ∈ P.central := by
+          {x : localCarrier M r | M.t x = 0} ↔ p ∈ P.central := by
     change M.t (compactPhaseOrbit M r P.positivePart (k, p)) = 0 ↔ p ∈ P.central
     rw [P.central_eq]
     change M.t (compactPhaseOrbit M r P.positivePart (k, p)) = 0 ↔
-      M.t (p : LocalCarrier M r) = 0
+      M.t (p : localCarrier M r) = 0
     change M.t (M.torusAction (compactTorusEmbedding k) (p : M.Carrier)) = 0 ↔ _
     rw [M.t_torusAction, mul_eq_zero]
     exact or_iff_right (Units.ne_zero (compactTorusEmbedding k 2))
-  let S : ToricPhaseSpreadingData (K := CompactTorus) (X := LocalCarrier M r) R
-      {p : LocalCarrier M r | M.t p = 0} := {
+  let S : ToricPhaseSpreadingData (K := CompactTorus) (X := localCarrier M r) R
+      {p : localCarrier M r | M.t p = 0} := {
     orbit := orbit
     orbit_prod_isQuotientMap := F.phaseOrbit_prod_isQuotientMap
     deckPhase := F.deckPhase
@@ -72,7 +72,7 @@ end FrozenLocalCuspPhaseSpreadingData
 /-- Transport the phase-spread frozen retraction through the point-level straightening
 homeomorphism. -/
 public noncomputable def actualLocalCuspCentralFiberRetractionData
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (P : PolarHoneycombData M W.localWitness.radius)
@@ -81,25 +81,25 @@ public noncomputable def actualLocalCuspCentralFiberRetractionData
   letI := P.positiveDeckAction
   letI := frozenLocalCuspAction N M W.localWitness.radius
   let Rf := F.frozenEquivariantStrongDeformationRetraction
-  let rfRetract : C(LocalCarrier M W.localWitness.radius,
-      LocalCarrier M W.localWitness.radius) := Rf.retract
+  let rfRetract : C(localCarrier M W.localWitness.radius,
+      localCarrier M W.localWitness.radius) := Rf.retract
   let rfHomotopy : ContinuousMap.Homotopy (ContinuousMap.id _) rfRetract := Rf.homotopy
-  have hRf_mem (x : LocalCarrier M W.localWitness.radius) :
+  have hRf_mem (x : localCarrier M W.localWitness.radius) :
       M.t (rfRetract x) = 0 := Rf.retract_mem x
-  have hRf_fixed (x : LocalCarrier M W.localWitness.radius) (hx : M.t x = 0) :
+  have hRf_fixed (x : localCarrier M W.localWitness.radius) (hx : M.t x = 0) :
       rfRetract x = x := Rf.retract_fixed x hx
   have hRf_homotopy_fixed (s : unitInterval)
-      (x : LocalCarrier M W.localWitness.radius) (hx : M.t x = 0) :
+      (x : localCarrier M W.localWitness.radius) (hx : M.t x = 0) :
       rfHomotopy (s, x) = x := Rf.homotopy_fixed s x hx
   have hRf_retract (g : Multiplicative ParameterLattice)
-      (x : LocalCarrier M W.localWitness.radius) :
+      (x : localCarrier M W.localWitness.radius) :
       rfRetract (frozenLocalPsiMap N M W.localWitness.radius
         (Multiplicative.toAdd g) x) =
       frozenLocalPsiMap N M W.localWitness.radius
         (Multiplicative.toAdd g) (rfRetract x) :=
     Rf.retract_equivariant g x
   have hRf_homotopy (g : Multiplicative ParameterLattice) (s : unitInterval)
-      (x : LocalCarrier M W.localWitness.radius) :
+      (x : localCarrier M W.localWitness.radius) :
       rfHomotopy (s, frozenLocalPsiMap N M W.localWitness.radius
         (Multiplicative.toAdd g) x) =
       frozenLocalPsiMap N M W.localWitness.radius
@@ -107,8 +107,8 @@ public noncomputable def actualLocalCuspCentralFiberRetractionData
     Rf.homotopy_equivariant g s x
   let J := InfiniteA2Toric.establishedContinuousTorusAction M
   let H := pointStraighteningHomeomorph J W
-  let retract : C(LocalCarrier M W.localWitness.radius,
-      LocalCarrier M W.localWitness.radius) := {
+  let retract : C(localCarrier M W.localWitness.radius,
+      localCarrier M W.localWitness.radius) := {
     toFun := fun x ↦ H.symm (rfRetract (H x))
     continuous_toFun := H.symm.continuous.comp
       (rfRetract.continuous.comp H.continuous)
@@ -151,7 +151,7 @@ public noncomputable def actualLocalCuspCentralFiberRetractionData
     rw [hstraight, hRf_homotopy_fixed s x hx,
       pointUnstraightening_of_t_eq_zero W x hx]
   · intro g x
-    let C := CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
+    let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
       N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
     change pointUnstraightening W
         (rfRetract (pointStraightening W
@@ -164,7 +164,7 @@ public noncomputable def actualLocalCuspCentralFiberRetractionData
     rw [← C.psiMap_eq_generic W.localWitness.fixedPoint]
     exact (actualPsiMap_pointUnstraightening W _ _).symm
   · intro g s x
-    let C := CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
+    let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
       N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
     change pointUnstraightening W
         (rfHomotopy (s, pointStraightening W
@@ -179,7 +179,7 @@ public noncomputable def actualLocalCuspCentralFiberRetractionData
 
 /-- The established positive-part package selected at the radius of a cusp witness. -/
 public noncomputable def selectedPolarHoneycombData
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) [HasCuspPhaseSpreading W] :
     PolarHoneycombData M W.localWitness.radius :=

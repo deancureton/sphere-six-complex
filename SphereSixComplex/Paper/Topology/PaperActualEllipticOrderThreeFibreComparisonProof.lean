@@ -171,7 +171,7 @@ public theorem orderThreeCentralPrincipalGaugeFiberPath_homotopic_straight :
   have htorus : Path.Homotopic A.orderThreeFillingRelationPrincipalGaugeLoop
       A.orderThreePrincipalGaugeStraightLoop := Quotient.exact hclass
   rcases htorus with ⟨Htorus⟩
-  let f : C(A.orderThreeTorus, A.CentralFamily) :=
+  let f : C(A.OrderThreeTorus, A.CentralFamily) :=
     { toFun := fun q ↦ A.orderThreePuncturedProductToCentralMap
         (A.orderThreeCayleyPuncturedBasepoint, q)
       continuous_toFun := A.orderThreePuncturedProductToCentralMap.continuous.comp

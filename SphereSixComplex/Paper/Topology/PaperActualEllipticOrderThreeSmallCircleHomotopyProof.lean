@@ -49,7 +49,7 @@ public theorem orderThreeCayleyChartFunction_ne_zero_one
     exact A.starSeparation.orderThree.sourceData.1 z
       (by simpa [hcay] using hw0) (by simpa [hcay] using hwr)
   have hmem := (A.regularCoordinate ⟨z, hzreg⟩).property
-  simp only [RegularCoordinateBase, Set.mem_compl_iff, Set.mem_insert_iff,
+  simp only [regularCoordinateBase, Set.mem_compl_iff, Set.mem_insert_iff,
     Set.mem_singleton_iff, not_or] at hmem
   simpa [ellipticChartFunction, regularCoordinate, z] using hmem
 

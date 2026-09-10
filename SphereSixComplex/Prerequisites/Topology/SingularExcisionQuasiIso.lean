@@ -188,8 +188,8 @@ variable {iota : Type} (X : TopCat) (U : iota → Set X)
 /-- The geometric input still needed by the small-chain proof: every finite singular chain is
 carried into the cover-small subcomplex by some finite affine-subdivision iterate. -/
 public def CoverSmallAffineSubdivisionEventuallySmall : Prop :=
-  ∀ (n : ℕ) (x : (IntegralSingularChainComplexObj X).X n),
-    ∃ (m : ℕ) (y : (CoverSmallIntegralSingularChainComplex X U).X n),
+  ∀ (n : ℕ) (x : (integralSingularChainComplexObj X).X n),
+    ∃ (m : ℕ) (y : (coverSmallIntegralSingularChainComplex X U).X n),
       (coverSmallIntegralSingularChainInclusion X U).f n y =
         (affineSingularSubdivisionIterate X m).f n x
 

@@ -101,7 +101,7 @@ public theorem boundarySevenProperFaceFundamentalChain_eq_zsmul_of_subdivided
 /-- The intrinsic proper-face fundamental chain is a cycle. -/
 public theorem boundarySevenProperFaceFundamentalChain_isCycle :
     boundarySevenProperFaceFundamentalChain ≫
-        (BoundarySevenProperFaceNerve.chainComplex
+        (boundarySevenProperFaceNerve.chainComplex
           (AddCommGrpCat.of ℤ)).d 6 5 = 0 := by
   let I := SSet.chainComplexMap boundarySevenProperFaceNerveInclusion
     (AddCommGrpCat.of ℤ)
@@ -110,10 +110,10 @@ public theorem boundarySevenProperFaceFundamentalChain_isCycle :
   apply (cancel_mono (I.f 5)).1
   calc
     (boundarySevenProperFaceFundamentalChain ≫
-          (BoundarySevenProperFaceNerve.chainComplex
+          (boundarySevenProperFaceNerve.chainComplex
             (AddCommGrpCat.of ℤ)).d 6 5) ≫ I.f 5 =
         boundarySevenProperFaceFundamentalChain ≫
-          ((BoundarySevenProperFaceNerve.chainComplex
+          ((boundarySevenProperFaceNerve.chainComplex
             (AddCommGrpCat.of ℤ)).d 6 5 ≫ I.f 5) :=
       Category.assoc _ _ _
     _ = boundarySevenProperFaceFundamentalChain ≫

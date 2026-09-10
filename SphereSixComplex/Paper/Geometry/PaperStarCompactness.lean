@@ -64,7 +64,7 @@ public noncomputable def gluingCompletionData_of_endControl
     change T2Space P.CentralFamily
     exact P.centralFamily_t2
   let _ (i : Fin 3) : T2Space (P.openEmbeddingStarData.filling i) := by
-    change T2Space (P.starFillingType i)
+    change T2Space (P.StarFilling i)
     exact P.starFilling_t2 i
   exact (P.compactCoverData_of_endControl hcusp hcentral).toGluingCompletionData
     P.closedCollarPairData.relComponent_isClosed
@@ -76,7 +76,7 @@ public noncomputable def gluingCompletionData_of_endControl
     change T2Space P.CentralFamily
     exact P.centralFamily_t2
   let _ (i : Fin 3) : T2Space (P.openEmbeddingStarData.filling i) := by
-    change T2Space (P.starFillingType i)
+    change T2Space (P.StarFilling i)
     exact P.starFilling_t2 i
   exact P.compactCoverData.toGluingCompletionData
     P.closedCollarPairData.relComponent_isClosed

@@ -51,7 +51,7 @@ public theorem positiveRadialPart_mul (z w : ℂˣ) :
 
 /-- The coordinatewise positive radial part of the normalized frozen cusp multiplier. -/
 public def normalizedCuspPositiveTwist
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) :
     ParameterLattice → DenseTorus :=
   fun lambda i ↦ positiveRadialPart
@@ -59,14 +59,14 @@ public def normalizedCuspPositiveTwist
 
 @[simp]
 public theorem normalizedCuspPositiveTwist_zero
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) :
     normalizedCuspPositiveTwist N 0 = 1 := by
   funext i
   simp [normalizedCuspPositiveTwist, positiveRadialPart]
 
 public theorem normalizedCuspPositiveTwist_add
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (lambda mu : ParameterLattice) :
     normalizedCuspPositiveTwist N (lambda + mu) =
       normalizedCuspPositiveTwist N lambda * normalizedCuspPositiveTwist N mu := by
@@ -78,14 +78,14 @@ public theorem normalizedCuspPositiveTwist_add
 
 @[simp]
 public theorem normalizedCuspPositiveTwist_last
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (lambda : ParameterLattice) :
     normalizedCuspPositiveTwist N lambda 2 = 1 := by
   apply Units.ext
   simp [normalizedCuspPositiveTwist, positiveRadialPart]
 
 public theorem normalizedCuspPositiveTwist_real
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (lambda : ParameterLattice) (i : Fin 3) :
     0 < ((normalizedCuspPositiveTwist N lambda i : ℂˣ) : ℂ).re ∧
       ((normalizedCuspPositiveTwist N lambda i : ℂˣ) : ℂ).im = 0 :=
@@ -93,7 +93,7 @@ public theorem normalizedCuspPositiveTwist_real
 
 /-- The canonical positive twist has exactly the frozen cusp multiplier's radial norm. -/
 public theorem norm_normalizedCuspPositiveTwist
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (lambda : ParameterLattice) (i : Fin 3) :
     ‖((normalizedCuspPositiveTwist N lambda i : ℂˣ) : ℂ)‖ =
       ‖((phaseEmbedding (N.phaseCoefficient lambda 0) i : ℂˣ) : ℂ)‖ :=
@@ -101,7 +101,7 @@ public theorem norm_normalizedCuspPositiveTwist
 
 /-- Fan shear fixes the canonical positive twist because its height coordinate is one. -/
 public theorem denseTorusShear_normalizedCuspPositiveTwist
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (lambda mu : ParameterLattice) :
     denseTorusShear lambda (normalizedCuspPositiveTwist N mu) =
       normalizedCuspPositiveTwist N mu := by
@@ -111,7 +111,7 @@ public theorem denseTorusShear_normalizedCuspPositiveTwist
 
 /-- The canonical positive deck formula on the ambient toric carrier. -/
 public def normalizedPositiveDeckCarrierMap
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (M : Model)
     (lambda : ParameterLattice) (p : M.Carrier) : M.Carrier :=
   M.torusAction (normalizedCuspPositiveTwist N lambda)
@@ -119,13 +119,13 @@ public def normalizedPositiveDeckCarrierMap
 
 @[simp]
 public theorem normalizedPositiveDeckCarrierMap_zero
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) (p : M.Carrier) :
     normalizedPositiveDeckCarrierMap N M 0 p = p := by
   simp [normalizedPositiveDeckCarrierMap, normalizedCuspPositiveTwist_zero]
 
 public theorem normalizedPositiveDeckCarrierMap_add
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (M : Model)
     (lambda mu : ParameterLattice) (p : M.Carrier) :
     normalizedPositiveDeckCarrierMap N M (lambda + mu) p =
@@ -137,9 +137,9 @@ public theorem normalizedPositiveDeckCarrierMap_add
 
 /-- The canonical positive deck formula restricted to a height sublevel. -/
 public def normalizedPositiveDeckLocalMap
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) (r : ℝ)
-    (lambda : ParameterLattice) (p : LocalCarrier M r) : LocalCarrier M r :=
+    (lambda : ParameterLattice) (p : localCarrier M r) : localCarrier M r :=
   ⟨normalizedPositiveDeckCarrierMap N M lambda (p : M.Carrier), by
     change M.t (normalizedPositiveDeckCarrierMap N M lambda (p : M.Carrier)) ∈ Metric.ball 0 r
     rw [normalizedPositiveDeckCarrierMap, M.t_torusAction,
@@ -155,7 +155,7 @@ public theorem compactPhaseOrbit_isProper
     (M : Model) (r : ℝ) (P : PolarHoneycombData M r) :
     IsProperMap (compactPhaseOrbit M r P.positivePart) := by
   let J := establishedContinuousTorusAction M
-  let localAction : CompactTorus × LocalCarrier M r → LocalCarrier M r :=
+  let localAction : CompactTorus × localCarrier M r → localCarrier M r :=
     fun z ↦ ⟨M.torusAction (compactTorusEmbedding z.1) z.2, by
       change M.t (M.torusAction (compactTorusEmbedding z.1) z.2) ∈ Metric.ball 0 r
       rw [Metric.mem_ball, dist_zero_right, M.t_torusAction, norm_mul]
@@ -167,7 +167,7 @@ public theorem compactPhaseOrbit_isProper
     exact J.variable_action
       (continuous_compactTorusEmbedding.comp continuous_fst)
       (continuous_subtype_val.comp continuous_snd)
-  let localActionInv : CompactTorus × LocalCarrier M r → LocalCarrier M r :=
+  let localActionInv : CompactTorus × localCarrier M r → localCarrier M r :=
     fun z ↦ ⟨M.torusAction (compactTorusEmbedding z.1)⁻¹ z.2, by
       change M.t (M.torusAction (compactTorusEmbedding z.1)⁻¹ z.2) ∈ Metric.ball 0 r
       rw [Metric.mem_ball, dist_zero_right, M.t_torusAction, norm_mul]
@@ -182,8 +182,8 @@ public theorem compactPhaseOrbit_isProper
       (continuous_inv.comp
         (continuous_compactTorusEmbedding.comp continuous_fst))
       (continuous_subtype_val.comp continuous_snd)
-  let actionHomeomorph : CompactTorus × LocalCarrier M r ≃ₜ
-      CompactTorus × LocalCarrier M r := {
+  let actionHomeomorph : CompactTorus × localCarrier M r ≃ₜ
+      CompactTorus × localCarrier M r := {
     toFun := fun z ↦ (z.1, localAction z)
     invFun := fun z ↦ (z.1, localActionInv z)
     left_inv := by
@@ -196,23 +196,23 @@ public theorem compactPhaseOrbit_isProper
     continuous_invFun := continuous_fst.prodMk hlocalActionInv }
   have hclosed : IsClosed P.positivePart := by
     have hrange : P.positivePart =
-        Set.range (fun q : P.positivePart ↦ (q : LocalCarrier M r)) := by
+        Set.range (fun q : P.positivePart ↦ (q : localCarrier M r)) := by
       ext x
       simp
     rw [hrange]
     exact (show Function.LeftInverse P.modulus
-      (fun q : P.positivePart ↦ (q : LocalCarrier M r)) from P.modulus_fixed).isClosed_range
+      (fun q : P.positivePart ↦ (q : localCarrier M r)) from P.modulus_fixed).isClosed_range
         P.modulus.continuous continuous_subtype_val
   have hinclusion : Topology.IsClosedEmbedding
       (fun z : CompactTorus × P.positivePart ↦
-        (z.1, (z.2 : LocalCarrier M r))) := by
+        (z.1, (z.2 : localCarrier M r))) := by
     exact Topology.IsClosedEmbedding.id.prodMap
       hclosed.isClosedEmbedding_subtypeVal
   have hj : IsProperMap (fun z : CompactTorus × P.positivePart ↦
-      actionHomeomorph (z.1, (z.2 : LocalCarrier M r))) :=
+      actionHomeomorph (z.1, (z.2 : localCarrier M r))) :=
     actionHomeomorph.isProperMap.comp hinclusion.isProperMap
   have hproper : IsProperMap (fun z : CompactTorus × P.positivePart ↦
-      (actionHomeomorph (z.1, (z.2 : LocalCarrier M r))).2) :=
+      (actionHomeomorph (z.1, (z.2 : localCarrier M r))).2) :=
     isProperMap_snd_of_compactSpace.comp hj
   convert hproper using 1
   funext z
@@ -261,7 +261,7 @@ private theorem positive_units_eq_of_norm_eq
   exact h
 
 private theorem positiveTwist_eq_normalized_of_basis_aux
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) {M : Model} {r : ℝ}
     (P : PolarHoneycombData M r)
     (hP : ∀ j i : Fin 2,
@@ -306,14 +306,14 @@ private theorem positiveTwist_eq_normalized_of_basis_aux
 positive part follows from the modulus identities, while contractibility of the central
 honeycomb follows from its displayed Euclidean homeomorphism. -/
 public structure PolarHoneycombConstructionData (M : Model) (r : ℝ) where
-  positivePart : Set (LocalCarrier M r)
-  modulus : C(LocalCarrier M r, positivePart)
+  positivePart : Set (localCarrier M r)
+  modulus : C(localCarrier M r, positivePart)
   modulus_fixed : ∀ q : positivePart, modulus q = q
   modulus_t : ∀ p, M.t (modulus p) = (‖M.t p‖ : ℝ)
-  polar_surjective : ∀ p : LocalCarrier M r, ∃ phi : CompactTorus,
+  polar_surjective : ∀ p : localCarrier M r, ∃ phi : CompactTorus,
     M.torusAction (compactTorusEmbedding phi) (modulus p) = p
   central : Set positivePart
-  central_eq : central = {q : positivePart | M.t (q : LocalCarrier M r) = 0}
+  central_eq : central = {q : positivePart | M.t (q : localCarrier M r) = 0}
   honeycomb : (Fin 2 → ℝ) ≃ₜ central
   positiveTwist : ParameterLattice → DenseTorus
   positiveTwist_zero : positiveTwist 0 = 1
@@ -325,7 +325,7 @@ public structure PolarHoneycombConstructionData (M : Model) (r : ℝ) where
       ((positiveTwist lambda i : ℂˣ) : ℂ).im = 0
   positiveDeckAction : MulAction (Multiplicative ParameterLattice) positivePart
   positiveDeck_coe : ∀ lambda q,
-    ((((Multiplicative.ofAdd lambda) • q : positivePart) : LocalCarrier M r) : M.Carrier) =
+    ((((Multiplicative.ofAdd lambda) • q : positivePart) : localCarrier M r) : M.Carrier) =
       M.torusAction (positiveTwist lambda)
         (Additive.toMul (M.fanShear lambda) (q : M.Carrier))
   quotientCovering :
@@ -355,13 +355,13 @@ public theorem PolarHoneycombConstructionData.positiveDeckContinuous
   let lambda := Multiplicative.toAdd g
   have heq :
       (fun q : Q.positivePart ↦
-        ((((g • q : Q.positivePart) : LocalCarrier M r)) : M.Carrier)) =
+        ((((g • q : Q.positivePart) : localCarrier M r)) : M.Carrier)) =
       fun q : Q.positivePart ↦ M.torusAction (Q.positiveTwist lambda)
         (Additive.toMul (M.fanShear lambda) (q : M.Carrier)) := by
     funext q
     simpa [lambda] using Q.positiveDeck_coe lambda q
   change Continuous (fun q : Q.positivePart ↦
-    ((((g • q : Q.positivePart) : LocalCarrier M r)) : M.Carrier))
+    ((((g • q : Q.positivePart) : localCarrier M r)) : M.Carrier))
   rw [heq]
   exact (M.torusAction_holomorphic (Q.positiveTwist lambda)).continuous.comp
     ((M.fanShear_holomorphic lambda).continuous.comp
@@ -379,7 +379,7 @@ public theorem PolarHoneycombConstructionData.central_preimage
       (Multiplicative.ofAdd lambda) • q ∈ Q.central ↔ q ∈ Q.central := by
     rw [Q.central_eq]
     change M.t ((((Multiplicative.ofAdd lambda) • q : Q.positivePart) :
-      LocalCarrier M r)) = 0 ↔ M.t (q : LocalCarrier M r) = 0
+      localCarrier M r)) = 0 ↔ M.t (q : localCarrier M r) = 0
     rw [Q.positiveDeck_coe, M.t_torusAction, Q.positiveTwist_last,
       M.fanShear_preserves_t]
     simp
@@ -403,7 +403,7 @@ public noncomputable def PolarHoneycombConstructionData.toPolarHoneycombData
   modulus_fixed := Q.modulus_fixed
   positive_t := by
     intro q
-    have h := Q.modulus_t (q : LocalCarrier M r)
+    have h := Q.modulus_t (q : localCarrier M r)
     rw [Q.modulus_fixed q] at h
     rw [h]
     exact ⟨by simp, norm_nonneg _⟩
@@ -429,27 +429,27 @@ public noncomputable def PolarHoneycombConstructionData.toPolarHoneycombData
 
 /-- The canonical positive deck action on any positive part preserved by the ambient formula. -/
 @[instance_reducible] public def normalizedPositiveDeckAction
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) {r : ℝ}
-    (positivePart : Set (LocalCarrier M r))
+    (positivePart : Set (localCarrier M r))
     (positiveDeck_mem : ∀ lambda (q : positivePart),
-      normalizedPositiveDeckLocalMap N M r lambda (q : LocalCarrier M r) ∈ positivePart) :
+      normalizedPositiveDeckLocalMap N M r lambda (q : localCarrier M r) ∈ positivePart) :
     MulAction (Multiplicative ParameterLattice) positivePart where
   smul g q :=
     ⟨normalizedPositiveDeckLocalMap N M r (Multiplicative.toAdd g) q,
       positiveDeck_mem (Multiplicative.toAdd g) q⟩
   one_smul q := by
     apply Subtype.ext
-    change normalizedPositiveDeckLocalMap N M r 0 (q : LocalCarrier M r) =
-      (q : LocalCarrier M r)
+    change normalizedPositiveDeckLocalMap N M r 0 (q : localCarrier M r) =
+      (q : localCarrier M r)
     exact Subtype.ext (normalizedPositiveDeckCarrierMap_zero N M (q : M.Carrier))
   mul_smul g h q := by
     apply Subtype.ext
     change normalizedPositiveDeckLocalMap N M r
-        (Multiplicative.toAdd (g * h)) (q : LocalCarrier M r) =
+        (Multiplicative.toAdd (g * h)) (q : localCarrier M r) =
       normalizedPositiveDeckLocalMap N M r (Multiplicative.toAdd g)
         (normalizedPositiveDeckLocalMap N M r (Multiplicative.toAdd h)
-          (q : LocalCarrier M r))
+          (q : localCarrier M r))
     apply Subtype.ext
     change normalizedPositiveDeckCarrierMap N M
         (Multiplicative.toAdd g + Multiplicative.toAdd h) (q : M.Carrier) =
@@ -461,17 +461,17 @@ public noncomputable def PolarHoneycombConstructionData.toPolarHoneycombData
 /-- The narrowed geometric residue.  The positive twist and deck action are now canonical;
 only preservation of the positive part and the genuinely global quotient properties remain. -/
 public structure NormalizedPolarHoneycombConstructionData
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) (r : ℝ) where
-  positivePart : Set (LocalCarrier M r)
-  modulus : C(LocalCarrier M r, positivePart)
+  positivePart : Set (localCarrier M r)
+  modulus : C(localCarrier M r, positivePart)
   modulus_fixed : ∀ q : positivePart, modulus q = q
   modulus_t : ∀ p, M.t (modulus p) = (‖M.t p‖ : ℝ)
-  polar_surjective : ∀ p : LocalCarrier M r, ∃ phi : CompactTorus,
+  polar_surjective : ∀ p : localCarrier M r, ∃ phi : CompactTorus,
     M.torusAction (compactTorusEmbedding phi) (modulus p) = p
-  honeycomb : (Fin 2 → ℝ) ≃ₜ {q : positivePart | M.t (q : LocalCarrier M r) = 0}
+  honeycomb : (Fin 2 → ℝ) ≃ₜ {q : positivePart | M.t (q : localCarrier M r) = 0}
   positiveDeck_mem : ∀ lambda (q : positivePart),
-    normalizedPositiveDeckLocalMap N M r lambda (q : LocalCarrier M r) ∈ positivePart
+    normalizedPositiveDeckLocalMap N M r lambda (q : localCarrier M r) ∈ positivePart
   quotientCovering :
     letI := normalizedPositiveDeckAction N M positivePart positiveDeck_mem
     IsQuotientCoveringMap
@@ -483,22 +483,22 @@ public structure NormalizedPolarHoneycombConstructionData
     Topology.RelCWComplex
       (Set.univ : Set (PolarHoneycombData.OrbitQuotient positivePart))
       (PolarHoneycombData.orbitCore
-        {q : positivePart | M.t (q : LocalCarrier M r) = 0})
+        {q : positivePart | M.t (q : localCarrier M r) = 0})
   quotient_t2 :
     letI := normalizedPositiveDeckAction N M positivePart positiveDeck_mem
     T2Space (PolarHoneycombData.OrbitQuotient positivePart)
 
 /-- The central honeycomb is canonically the zero locus of the height coordinate. -/
 public def NormalizedPolarHoneycombConstructionData.central
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
     (Q : NormalizedPolarHoneycombConstructionData N M r) : Set Q.positivePart :=
-  {q : Q.positivePart | M.t (q : LocalCarrier M r) = 0}
+  {q : Q.positivePart | M.t (q : localCarrier M r) = 0}
 
 /-- Build the previous construction interface from the normalized geometric residue. -/
 public noncomputable def
     NormalizedPolarHoneycombConstructionData.toPolarHoneycombConstructionData
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
     (Q : NormalizedPolarHoneycombConstructionData N M r) :
     PolarHoneycombConstructionData M r where
@@ -520,7 +520,7 @@ public noncomputable def
   positiveDeck_coe := by
     intro lambda q
     change ((((normalizedPositiveDeckAction N M Q.positivePart Q.positiveDeck_mem).smul
-        (Multiplicative.ofAdd lambda) q : Q.positivePart) : LocalCarrier M r) : M.Carrier) =
+        (Multiplicative.ofAdd lambda) q : Q.positivePart) : localCarrier M r) : M.Carrier) =
       M.torusAction (normalizedCuspPositiveTwist N lambda)
         (Additive.toMul (M.fanShear lambda) (q : M.Carrier))
     rfl
@@ -531,7 +531,7 @@ public noncomputable def
 
 /-- The full polar-honeycomb datum determined by normalized construction data. -/
 public noncomputable def NormalizedPolarHoneycombConstructionData.toPolarHoneycombData
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
     (Q : NormalizedPolarHoneycombConstructionData N M r) :
     PolarHoneycombData M r :=

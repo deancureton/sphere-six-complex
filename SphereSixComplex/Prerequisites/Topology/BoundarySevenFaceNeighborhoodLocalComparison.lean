@@ -33,7 +33,7 @@ public noncomputable def boundarySevenFaceNeighborhoodLocalComparisonSSetMap
 public noncomputable def boundarySevenFaceNeighborhoodLocalIntegralComparison
     (i : Fin 8) :
     (Δ[6] : SSet.{0}).chainComplex (AddCommGrpCat.of ℤ) ⟶
-      IntegralSingularChainComplexObj
+      integralSingularChainComplexObj
         (TopCat.of (boundarySevenComparisonFaceNeighborhood i)) :=
   SSet.chainComplexMap (boundarySevenFaceNeighborhoodLocalComparisonSSetMap i)
     (AddCommGrpCat.of ℤ)

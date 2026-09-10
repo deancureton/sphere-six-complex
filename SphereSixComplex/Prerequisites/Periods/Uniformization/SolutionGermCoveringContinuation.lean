@@ -26,17 +26,17 @@ def upperHalfPlaneSolutionEtaleSet (j : UpperHalfPlane → ℂ) (C : ℂ → ℂ
 
 /-- The holomorphic germs which locally land in the upper half-plane and solve `j ∘ τ = C`,
 restricted over a source domain `U`. -/
-abbrev UpperHalfPlaneSolutionEtale (j : UpperHalfPlane → ℂ) (C : ℂ → ℂ)
+abbrev upperHalfPlaneSolutionEtale (j : UpperHalfPlane → ℂ) (C : ℂ → ℂ)
     (U : Set ℂ) :=
   upperHalfPlaneSolutionEtaleSet j C U
 
 /-- Projection of the solution-germ space to its source domain. -/
 def upperHalfPlaneSolutionEtaleBase
     (j : UpperHalfPlane → ℂ) (C : ℂ → ℂ) (U : Set ℂ) :
-    UpperHalfPlaneSolutionEtale j C U → U :=
+    upperHalfPlaneSolutionEtale j C U → U :=
   fun p ↦ ⟨p.1.base, p.2.1⟩
 
-namespace UpperHalfPlaneSolutionEtale
+namespace upperHalfPlaneSolutionEtale
 
 variable {j : UpperHalfPlane → ℂ} {C f₀ : ℂ → ℂ}
   {U : Set ℂ} {z₀ : ℂ}
@@ -117,13 +117,13 @@ sheets over one common neighbourhood. -/
 theorem isLocalHomeomorph_upperHalfPlaneSolutionEtaleBase (hU : IsOpen U) :
     IsLocalHomeomorph (upperHalfPlaneSolutionEtaleBase j C U) := by
   have hsub : IsLocalHomeomorph
-      (Subtype.val : UpperHalfPlaneSolutionEtale j C U →
+      (Subtype.val : upperHalfPlaneSolutionEtale j C U →
         (holomorphicPresheaf ℂ).EtaleSpace) :=
     (isOpen_upperHalfPlaneSolutionEtaleSet (j := j) (C := C) hU)
       |>.isOpenEmbedding_subtypeVal.isLocalHomeomorph
   have hfull : IsLocalHomeomorph
       (TopCat.Presheaf.EtaleSpace.base (F := holomorphicPresheaf ℂ) ∘
-        (Subtype.val : UpperHalfPlaneSolutionEtale j C U →
+        (Subtype.val : upperHalfPlaneSolutionEtale j C U →
           (holomorphicPresheaf ℂ).EtaleSpace)) :=
     (TopCat.Presheaf.EtaleSpace.isLocalHomeomorph_base (holomorphicPresheaf ℂ)).comp hsub
   have hcomp : IsLocalHomeomorph
@@ -143,7 +143,7 @@ theorem isSeparatedMap_upperHalfPlaneSolutionEtaleBase :
     IsSeparatedMap (upperHalfPlaneSolutionEtaleBase j C U) := by
   have hfull : IsSeparatedMap
       (TopCat.Presheaf.EtaleSpace.base (F := holomorphicPresheaf ℂ) ∘
-        (Subtype.val : UpperHalfPlaneSolutionEtale j C U →
+        (Subtype.val : upperHalfPlaneSolutionEtale j C U →
           (holomorphicPresheaf ℂ).EtaleSpace)) :=
     HolomorphicPresheaf.isSeparatedMap_base.comp_right
       continuous_subtype_val Subtype.val_injective
@@ -170,7 +170,7 @@ theorem surjective_upperHalfPlaneSolutionEtaleBase_of_local_solutions
   have hPp : IsUpperHalfPlaneSolutionGerm j C (z : ℂ)
       (HolomorphicPresheaf.repFun p) :=
     hPf.congr hrep.symm
-  let q : UpperHalfPlaneSolutionEtale j C U := ⟨p, z.2, hPp⟩
+  let q : upperHalfPlaneSolutionEtale j C U := ⟨p, z.2, hPp⟩
   refine ⟨q, ?_⟩
   exact Subtype.ext rfl
 
@@ -190,13 +190,13 @@ theorem continuesInsideWith_of_isCoveringMap
   have hp₀P : IsUpperHalfPlaneSolutionGerm j C z₀
       (HolomorphicPresheaf.repFun p₀) :=
     hP₀.congr hrep.symm
-  let e₀ : UpperHalfPlaneSolutionEtale j C U := ⟨p₀, hz₀, hp₀P⟩
+  let e₀ : upperHalfPlaneSolutionEtale j C U := ⟨p₀, hz₀, hp₀P⟩
   refine ⟨fun c hc hcU hc0 ↦ ?_⟩
   let γ : C(I, U) := ⟨fun t ↦ ⟨c t, hcU t⟩, hc.subtype_mk hcU⟩
   have hγ0 : γ 0 = upperHalfPlaneSolutionEtaleBase j C U e₀ := by
     apply Subtype.ext
     exact hc0
-  let Γ : C(I, UpperHalfPlaneSolutionEtale j C U) := hcov.liftPath γ e₀ hγ0
+  let Γ : C(I, upperHalfPlaneSolutionEtale j C U) := hcov.liftPath γ e₀ hγ0
   let f : I → ℂ → ℂ := fun t ↦ HolomorphicPresheaf.repFun (Γ t).1
   have hΓbase : (fun t ↦ (Γ t).1.base) = c := by
     funext t
@@ -225,8 +225,8 @@ theorem continuesInsideWith_of_deck_transitive
     (hP₀ : IsUpperHalfPlaneSolutionGerm j C z₀ f₀)
     (hlocal : ∀ z ∈ U, ∃ f : ℂ → ℂ, AnalyticAt ℂ f z ∧
       IsUpperHalfPlaneSolutionGerm j C z f)
-    (deck : ι → UpperHalfPlaneSolutionEtale j C U ≃ₜ
-      UpperHalfPlaneSolutionEtale j C U)
+    (deck : ι → upperHalfPlaneSolutionEtale j C U ≃ₜ
+      upperHalfPlaneSolutionEtale j C U)
     (hdeck : ∀ i p, upperHalfPlaneSolutionEtaleBase j C U (deck i p) =
       upperHalfPlaneSolutionEtaleBase j C U p)
     (htrans : ∀ p q,
@@ -245,6 +245,6 @@ theorem continuesInsideWith_of_deck_transitive
   exact continuesInsideWith_of_isCoveringMap hz₀ hf₀ hP₀ hcov
 
 
-end UpperHalfPlaneSolutionEtale
+end upperHalfPlaneSolutionEtale
 
 end TauCeti

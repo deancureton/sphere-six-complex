@@ -27,7 +27,7 @@ public abbrev paperCentralFreeMonodromy :
     integralOrbifoldPeriodMonodromy
 
 /-- The marked affine deck group of the punctured central family. -/
-public abbrev paperCentralFreeAffineDeck :=
+public abbrev PaperCentralFreeAffineDeck :=
   FreeTwoMeridianAffineDeck Lattice paperCentralFreeMonodromy
 
 /-- The positively oriented local cusp meridian is the inverse of the product of the two finite
@@ -54,7 +54,7 @@ public theorem paperCentralFreeMonodromy_cusp :
 
 /-- Integral powers of the central cusp word, regarded as affine deck transformations. -/
 public def paperCuspCentralAngularDeck :
-    Multiplicative ℤ →* paperCentralFreeAffineDeck where
+    Multiplicative ℤ →* PaperCentralFreeAffineDeck where
   toFun n := freeAffineLift (M := paperCentralFreeMonodromy)
     paperCuspCentralBaseMeridian ^ n.toAdd
   map_one' := by simp
@@ -91,7 +91,7 @@ public theorem paperCentralFreeMonodromy_cusp_zpow
 /-- The actual cusp boundary deck group maps to the canonical parabolic subgroup of the marked
 central affine deck group. -/
 public def paperCuspBoundaryToCentralDeck :
-    paperCuspBoundaryDeck →* paperCentralFreeAffineDeck :=
+    PaperCuspBoundaryDeck →* PaperCentralFreeAffineDeck :=
   SemidirectProduct.lift
     (freeAffineTranslation (M := paperCentralFreeMonodromy)).toMultiplicative
     paperCuspCentralAngularDeck (by

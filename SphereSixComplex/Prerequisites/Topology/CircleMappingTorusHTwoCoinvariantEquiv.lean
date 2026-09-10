@@ -26,7 +26,7 @@ variable {HighRelations High Total LowRelations Low : Type*}
 equivalent to the upper coinvariants. -/
 public noncomputable def coinvariantsLinearEquivTotalOfSubsingletonInvariants
     (P : WangHomologyPresentation HighRelations High Total LowRelations Low)
-    [Subsingleton P.Invariants] : P.Coinvariants ≃ₗ[ℤ] Total := by
+    [Subsingleton P.invariants] : P.Coinvariants ≃ₗ[ℤ] Total := by
   apply LinearEquiv.ofBijective P.coinvariantsToTotal
   refine ⟨P.coinvariantsToTotal_injective, ?_⟩
   intro x
@@ -36,14 +36,14 @@ public noncomputable def coinvariantsLinearEquivTotalOfSubsingletonInvariants
 @[simp]
 public theorem coinvariantsLinearEquivTotalOfSubsingletonInvariants_apply
     (P : WangHomologyPresentation HighRelations High Total LowRelations Low)
-    [Subsingleton P.Invariants] (x : P.Coinvariants) :
+    [Subsingleton P.invariants] (x : P.Coinvariants) :
     P.coinvariantsLinearEquivTotalOfSubsingletonInvariants x = P.coinvariantsToTotal x :=
   rfl
 
 @[simp]
 public theorem coinvariantsLinearEquivTotalOfSubsingletonInvariants_symm_inclusion
     (P : WangHomologyPresentation HighRelations High Total LowRelations Low)
-    [Subsingleton P.Invariants] (x : High) :
+    [Subsingleton P.invariants] (x : High) :
     P.coinvariantsLinearEquivTotalOfSubsingletonInvariants.symm (P.inclusion x) =
       Submodule.Quotient.mk x := by
   apply P.coinvariantsLinearEquivTotalOfSubsingletonInvariants.injective
@@ -64,7 +64,7 @@ public noncomputable def circleMappingTorusHTwoCoinvariantsLinearEquiv
       (circleMonodromyDifference phi 1).toIntLinearMap) :
     (circleMappingTorusHTwoPresentation phi).Coinvariants ≃ₗ[ℤ]
       IntegralSingularHomology 2 (CircleMappingTorus phi) := by
-  let _ : Subsingleton (circleMappingTorusHTwoPresentation phi).Invariants :=
+  let _ : Subsingleton (circleMappingTorusHTwoPresentation phi).invariants :=
     ⟨fun x y ↦ Subtype.ext (hinjective (by
       exact (LinearMap.mem_ker.mp x.2).trans (LinearMap.mem_ker.mp y.2).symm))⟩
   exact WangHomologyPresentation.coinvariantsLinearEquivTotalOfSubsingletonInvariants
@@ -79,7 +79,7 @@ public theorem circleMappingTorusHTwoCoinvariantsLinearEquiv_mk
         (Submodule.Quotient.mk x) =
       integralSingularHomologyMap 2
         (finiteBouquetMappingTorusFiberInclusion (fun _ : Unit ↦ phi)) x := by
-  let _ : Subsingleton (circleMappingTorusHTwoPresentation phi).Invariants :=
+  let _ : Subsingleton (circleMappingTorusHTwoPresentation phi).invariants :=
     ⟨fun y z ↦ Subtype.ext (hinjective (by
       exact (LinearMap.mem_ker.mp y.2).trans (LinearMap.mem_ker.mp z.2).symm))⟩
   change (WangHomologyPresentation.coinvariantsLinearEquivTotalOfSubsingletonInvariants

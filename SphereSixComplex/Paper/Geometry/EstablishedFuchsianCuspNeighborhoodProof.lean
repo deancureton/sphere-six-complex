@@ -18,14 +18,14 @@ action, replacing the two established inputs of
 
 noncomputable section
 
-namespace SphereSixComplex.Geometry.FuchsianCuspNeighborhoodProof
+namespace SphereSixComplex.Geometry.FuchsianCuspNeighborhood
 
 open Set SphereSixComplex.TriangleGroup
 open SphereSixComplex.TriangleGroup.FuchsianArithmetic
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 open SphereSixComplex.TriangleGroup.BinaryIndexedCoprod
 open SphereSixComplex.Geometry.CuspPeriodExpansion
-open SphereSixComplex.Geometry.EstablishedFuchsianCuspNeighborhood
+open FuchsianCuspNeighborhood
 open scoped Manifold
 
 /-! ## Arithmetic of the quadratic-integer bottom row -/
@@ -699,7 +699,7 @@ section Lift
 
 open SphereSixComplex.Periods
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   (N : NormalizedFuchsianCuspCoordinate E D)
 
 /-- The normalized lift goes arbitrarily deep into the source cusp. -/
@@ -861,7 +861,7 @@ public theorem liftQ_bounded : NormBoundedOn (liftQ N) (cuspHalfPlane N.height) 
 /-- The holomorphic descent of the source cusp parameter through the normalized lift. -/
 public noncomputable def liftDescent : HolomorphicCuspDescent N.height (liftQ N) :=
   Classical.choice
-    (CuspPeriodExpansion.Established.periodicBoundedHolomorphicCuspDescent N.height (liftQ N)
+    (nonempty_holomorphicCuspDescent N.height (liftQ N)
       (liftQ_differentiableOn N) (liftQ_periodic N) (liftQ_bounded N))
 
 public theorem liftDescent_zero : (liftDescent N).extension 0 = 0 := by
@@ -1003,8 +1003,8 @@ public theorem exists_translate_mem_region {r : ℝ} (hr0 : 0 < r) :
 /-- The classical cusp-neighbourhood theorem for the explicit cofinite Fuchsian triangle group:
 a sufficiently deep normalized horodisc is regular, has regular orbit closure, and is precisely
 invariant under the parabolic cyclic subgroup. -/
-public theorem exists_data (upperRadius : ℝ) (hupper : 0 < upperRadius) :
-    Nonempty (EstablishedFuchsianCuspNeighborhood.Data N upperRadius) := by
+public theorem nonempty_data_of_pos (upperRadius : ℝ) (hupper : 0 < upperRadius) :
+    Nonempty (Data N upperRadius) := by
   classical
   obtain ⟨M, hM1, hMreg⟩ :=
     exists_regular_height E.modularParameter.toTriangleUniformization rfl
@@ -1055,9 +1055,9 @@ public theorem abs_re_le_two_of_mem_orientedFundamentalRegion {z : UpperHalfPlan
 
 /-- Removing a precisely invariant horodisc from the explicit cofinite Fuchsian quotient leaves a
 compact truncated quotient. -/
-public theorem exists_compactTruncation {upperRadius : ℝ}
-    (H : EstablishedFuchsianCuspNeighborhood.Data N upperRadius) :
-    Nonempty (EstablishedFuchsianCuspNeighborhood.CompactTruncationData H) := by
+public theorem nonempty_compactTruncationData_of_cuspNeighborhood {upperRadius : ℝ}
+    (H : Data N upperRadius) :
+    Nonempty (CompactTruncationData H) := by
   classical
   obtain ⟨Y, hY⟩ := exists_translate_mem_region N H.radius_pos
   refine ⟨{ core := {z : UpperHalfPlane | |z.re| ≤ 2 ∧ 1 / 2 ≤ z.im ∧ z.im ≤ max Y 1}
@@ -1080,9 +1080,9 @@ public theorem exists_compactTruncation {upperRadius : ℝ}
 
 end Lift
 
-#print axioms SphereSixComplex.Geometry.FuchsianCuspNeighborhoodProof.exists_data
+#print axioms nonempty_data_of_pos
 
-end SphereSixComplex.Geometry.FuchsianCuspNeighborhoodProof
+end SphereSixComplex.Geometry.FuchsianCuspNeighborhood
 
 end
 

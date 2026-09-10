@@ -80,7 +80,7 @@ public noncomputable def orderFourFillingRelationCayleyPuncturedLoop :
 order-four product carrier. -/
 public noncomputable def orderFourPuncturedProductCarrierMap :
     letI := A.ellipticFourBoundaryAction
-    C(A.OrderFourCayleyPuncturedDisc × A.orderFourTorus,
+    C(A.OrderFourCayleyPuncturedDisc × A.OrderFourTorus,
       (orderFourCyclicPuncturedProductData A.periods
         A.starSeparation.orderFour.radius A.starSeparation.orderFour.radius_pos
         A.starSeparation.orderFour.radius_lt_one).carrier.carrier) := by
@@ -169,7 +169,7 @@ public theorem orderFourRegularLoop_eq_puncturedProductRealization
 splitting homotopy remains inside the admissible carrier. -/
 public noncomputable def orderFourPuncturedProductRegularRealizationMap :
     letI := A.ellipticFourBoundaryAction
-    C(A.OrderFourCayleyPuncturedDisc × A.orderFourTorus,
+    C(A.OrderFourCayleyPuncturedDisc × A.OrderFourTorus,
       RegularTotalSpace A.periods) := by
   let _ := A.ellipticFourBoundaryAction
   exact

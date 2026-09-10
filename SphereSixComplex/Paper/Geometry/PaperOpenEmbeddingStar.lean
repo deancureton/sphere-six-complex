@@ -30,14 +30,14 @@ public noncomputable abbrev starCuspWitness := A.actualPuncturedCuspWitness
 public noncomputable abbrev starSeparation := A.collarSeparationData
 
 /-- The cusp filling followed by the order-three and order-four varying fillings. -/
-@[expose] public noncomputable def starFillingType : Fin 3 → Type :=
-  Fin.cases (actualLocalCuspFilling A.starCuspWitness) fun i ↦
+@[expose] public noncomputable def StarFilling : Fin 3 → Type :=
+  Fin.cases (ActualLocalCuspFilling A.starCuspWitness) fun i ↦
     Fin.cases (A.OrderThreeVaryingFilling A.starSeparation.orderThree.radius)
       (fun _ ↦ A.OrderFourVaryingFilling A.starSeparation.orderFour.radius) i
 
 /-- The three common collar-source quotients. -/
-@[expose] public noncomputable def starCollarSourceType : Fin 3 → Type :=
-  Fin.cases (puncturedLocalCuspQuotient A.starCuspWitness) fun i ↦
+@[expose] public noncomputable def StarCollarSource : Fin 3 → Type :=
+  Fin.cases (PuncturedLocalCuspQuotient A.starCuspWitness) fun i ↦
     Fin.cases
       (Quotient (restrictedOrbitRel (orderThreeAffineFamilyAction A.periods)
         (orderThreeAffinePuncturedCarrier A.periods
@@ -49,9 +49,9 @@ public noncomputable abbrev starSeparation := A.collarSeparationData
           A.starSeparation.orderFour.radius))) i
 
 public noncomputable instance starFillingTopology (i : Fin 3) :
-    TopologicalSpace (A.starFillingType i) := by
+    TopologicalSpace (A.StarFilling i) := by
   refine Fin.cases ?_ (fun j ↦ ?_) i
-  · change TopologicalSpace (actualLocalCuspFilling A.starCuspWitness)
+  · change TopologicalSpace (ActualLocalCuspFilling A.starCuspWitness)
     infer_instance
   · refine Fin.cases ?_ (fun _ ↦ ?_) j
     · change TopologicalSpace
@@ -62,9 +62,9 @@ public noncomputable instance starFillingTopology (i : Fin 3) :
       infer_instance
 
 public noncomputable instance starCollarSourceTopology (i : Fin 3) :
-    TopologicalSpace (A.starCollarSourceType i) := by
+    TopologicalSpace (A.StarCollarSource i) := by
   refine Fin.cases ?_ (fun j ↦ ?_) i
-  · change TopologicalSpace (puncturedLocalCuspQuotient A.starCuspWitness)
+  · change TopologicalSpace (PuncturedLocalCuspQuotient A.starCuspWitness)
     infer_instance
   · refine Fin.cases ?_ (fun _ ↦ ?_) j
     · change TopologicalSpace (Quotient (restrictedOrbitRel
@@ -82,7 +82,7 @@ public noncomputable instance starCollarSourceTopology (i : Fin 3) :
 
 /-- The three collar maps into the punctured global family. -/
 @[expose] public noncomputable def starToCentral :
-    ∀ i, A.starCollarSourceType i → A.CentralFamily :=
+    ∀ i, A.StarCollarSource i → A.CentralFamily :=
   Fin.cases (puncturedLocalCuspQuotientMap A.starCuspWitness) fun i ↦
     Fin.cases
       (A.orderThreePuncturedCollarToCentralFamily
@@ -92,7 +92,7 @@ public noncomputable instance starCollarSourceTopology (i : Fin 3) :
 
 /-- The three collar maps into their filling pieces. -/
 @[expose] public noncomputable def starToFilling :
-    ∀ i, A.starCollarSourceType i → A.starFillingType i :=
+    ∀ i, A.StarCollarSource i → A.StarFilling i :=
   Fin.cases (puncturedLocalCuspToFilling A.starCuspWitness) fun i ↦
     Fin.cases
       (A.orderThreePuncturedCollarToFilling A.starSeparation.orderThree.radius)
@@ -134,8 +134,8 @@ public theorem starToCentral_ranges_pairwise : Pairwise fun i j ↦
 @[expose] public noncomputable def openEmbeddingStarData :
     SphereSixComplex.OpenEmbeddingStarData where
   central := TopCat.of A.CentralFamily
-  filling i := TopCat.of (A.starFillingType i)
-  collarSource i := TopCat.of (A.starCollarSourceType i)
+  filling i := TopCat.of (A.StarFilling i)
+  collarSource i := TopCat.of (A.StarCollarSource i)
   toCentral i := TopCat.ofHom ⟨A.starToCentral i,
     (A.starToCentral_isOpenEmbedding i).continuous⟩
   toFilling i := TopCat.ofHom ⟨A.starToFilling i,

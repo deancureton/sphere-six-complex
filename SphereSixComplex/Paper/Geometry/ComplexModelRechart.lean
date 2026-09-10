@@ -39,7 +39,7 @@ public noncomputable def globalDeckComplexCharts
 /-- A manifold in the product coordinates is a complex threefold in the canonical model. -/
 public theorem globalDeckComplexManifold
     {M : Type*} [TopologicalSpace M] [c : ChartedSpace (ModelProd ℂ ComplexTwoSpace) M]
-    {n : ℕ∞ω} [m : IsManifold GlobalDeckTotalModel n M] :
+    {n : ℕ∞ω} [m : IsManifold globalDeckTotalModel n M] :
     @IsManifold ℂ inferInstance ComplexModel inferInstance inferInstance ComplexModel
       inferInstance 𝓘(ℂ, ComplexModel) n M inferInstance globalDeckComplexCharts := by
   let cProduct : ChartedSpace (ℂ × ComplexTwoSpace) M := globalDeckProductCharts

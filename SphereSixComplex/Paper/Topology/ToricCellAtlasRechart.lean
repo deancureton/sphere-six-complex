@@ -11,14 +11,14 @@ namespace StandardA2ToricCentralFiberCellAtlas
 variable {X : Type} [TopologicalSpace X]
 
 public def rechart (A : StandardA2ToricCentralFiberCellAtlas X)
-    (f : (n : ℕ) → cuspWCellIndex n → PartialEquiv (Fin n → ℝ) X)
+    (f : (n : ℕ) → CuspWCellIndex n → PartialEquiv (Fin n → ℝ) X)
     (hs : ∀ n i, (f n i).source = Metric.ball 0 1)
     (hc : ∀ n i, ContinuousOn (f n i) (Metric.closedBall 0 1))
     (hi : ∀ n i, ContinuousOn (f n i).symm (f n i).target)
     (ho : ∀ n i, f n i '' Metric.ball 0 1 = A.cellMap n i '' Metric.ball 0 1)
     (hcl : ∀ n i, f n i '' Metric.closedBall 0 1 = A.cellMap n i '' Metric.closedBall 0 1)
     (hb : ∀ n i, MapsTo (f n i) (Metric.sphere 0 1)
-      (⋃ (m < n) (j : cuspWCellIndex m), A.cellMap m j '' Metric.closedBall 0 1)) :
+      (⋃ (m < n) (j : CuspWCellIndex m), A.cellMap m j '' Metric.closedBall 0 1)) :
     StandardA2ToricCentralFiberCellAtlas X where
   cellMap := f
   source_eq := hs
@@ -43,9 +43,9 @@ public theorem skeleton_eq_of_closedCell_eq [T2Space X]
     A.skeletalSet k = B.skeletalSet k := by
   ext x
   simp only [skeletalSet, Topology.RelCWComplex.coe_skeletonLT]
-  change x ∈ (∅ : Set X) ∪ ⋃ (m : ℕ) (_ : m < k) (i : cuspWCellIndex m),
+  change x ∈ (∅ : Set X) ∪ ⋃ (m : ℕ) (_ : m < k) (i : CuspWCellIndex m),
       A.cellMap m i '' Metric.closedBall 0 1 ↔
-    x ∈ (∅ : Set X) ∪ ⋃ (m : ℕ) (_ : m < k) (i : cuspWCellIndex m),
+    x ∈ (∅ : Set X) ∪ ⋃ (m : ℕ) (_ : m < k) (i : CuspWCellIndex m),
       B.cellMap m i '' Metric.closedBall 0 1
   simp only [h]
 
@@ -55,7 +55,7 @@ public def skeletalInclusion [T2Space X] (A : StandardA2ToricCentralFiberCellAtl
   exact integralCWSkeletonInclusion X n
 
 public def relativeChains [T2Space X] (A : StandardA2ToricCentralFiberCellAtlas X) (n : ℕ) :=
-  CWRelativeIntegralSingularChainComplex (A.skeletalInclusion n)
+  cwRelativeIntegralSingularChainComplex (A.skeletalInclusion n)
 
 public def relativeChainsIsoOfClosedCellEq [T2Space X]
     (A B : StandardA2ToricCentralFiberCellAtlas X)
@@ -83,9 +83,9 @@ public theorem characteristicClass_has_integral_retraction
     (X : Type) [TopologicalSpace X] [T2Space X]
     [Topology.CWComplex (Set.univ : Set X)] (n : ℕ)
     (c : Topology.CWComplex.cell (Set.univ : Set X) n)
-    {G : Type} [AddCommGroup G] (e : IntegralCWRelativeCellObject X n ≃+ G) :
+    {G : Type} [AddCommGroup G] (e : integralCWRelativeCellObject X n ≃+ G) :
     ∃ r : G →+ ℤ, r (e (ConcreteCategory.hom
-      ((CWRelativeIntegralSingularChainComplex (cwCharacteristicBoundaryInclusion n)).homologyMap
+      ((cwRelativeIntegralSingularChainComplex (cwCharacteristicBoundaryInclusion n)).homologyMap
         (integralCWCharacteristicPairMap X n c).relativeChainMap n)
           ((T.diskOrientation n).symm 1))) = 1 := by
   classical

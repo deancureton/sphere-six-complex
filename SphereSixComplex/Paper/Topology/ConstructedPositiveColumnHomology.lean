@@ -92,7 +92,7 @@ theorem constructedPositiveHomologyTwoReadout_firstGenerator (A : PaperAnalyticD
   exact constructedPositiveHomologyTwoReadout_firstTorus A
 
 def constructedCuspHomologyTwoPositiveReadout (A : PaperAnalyticData) :
-    IntegralSingularHomology 2 (CuspPuncturedCollarBridge.actualLocalCuspFilling A.starCuspWitness) →+ ℤ :=
+    IntegralSingularHomology 2 (CuspPuncturedCollarBridge.ActualLocalCuspFilling A.starCuspWitness) →+ ℤ :=
   (constructedPositiveHomologyTwoReadout A).comp
     (integralSingularHomologyMap 2 (constructedCuspPositiveProjection A.starCuspWitness))
 

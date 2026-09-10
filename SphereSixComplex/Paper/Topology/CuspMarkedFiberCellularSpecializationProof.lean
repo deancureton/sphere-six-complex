@@ -28,7 +28,7 @@ open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open SphereSixComplex.Topology.PaperCuspSpecializationAlgebra
 open WangHomologyPresentation
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
 
 namespace ActualCuspRadialClutchingData
@@ -202,7 +202,7 @@ public theorem markedFiberCellularSpecializationMatrix_of_coinvariantNaturality
       rw [G'.degreeOneCoinvariantsEquiv_symm_single,
         G'.markedFiberToPuncturedCusp_homologyOne_eq_coinvariants]
     have hk := congrArg (fun z : IntegralSingularHomology 1
-        (puncturedLocalCuspQuotient A.starCuspWitness) ↦
+        (PuncturedLocalCuspQuotient A.starCuspWitness) ↦
       actualCuspDeckCellularHomologyOneEquiv A.starCuspWitness A.cuspCentralFiberRetractionData
         (standardA2CellularSpecializationHomologyMap A.starCuspWitness
           A.cuspCentralFiberRetractionData 1 z)) he
@@ -252,7 +252,7 @@ public theorem coinvariantNaturality_of_markedFiberCellularSpecializationMatrix
       rw [G'.degreeOneCoinvariantsEquiv_symm_single,
         G'.markedFiberToPuncturedCusp_homologyOne_eq_coinvariants]
     have hk := congrArg (fun z : IntegralSingularHomology 1
-        (puncturedLocalCuspQuotient A.starCuspWitness) ↦
+        (PuncturedLocalCuspQuotient A.starCuspWitness) ↦
       K (standardA2CellularSpecializationHomologyMap A.starCuspWitness
           A.cuspCentralFiberRetractionData 1 z)) he
     exact hk.trans ((h₁ j).trans (G'.degreeOneCoinvariantsEquiv.apply_symm_apply _).symm)

@@ -282,7 +282,7 @@ public theorem exists_twoSetNumeration
 
 /-- Collapse the double mapping cylinder directly to the literal open union. -/
 public def doubleMappingCylinderToUnion (U V : Set X) :
-    TopCat.DoubleMappingCylinder (interToRight U V) (interToLeft U V) ⟶
+    TopCat.doubleMappingCylinder (interToRight U V) (interToLeft U V) ⟶
       TopCat.of ↥(U ∪ V) :=
   TopCat.doubleMappingCylinderCollapse (interToRight U V) (interToLeft U V) ≫
     pushoutToUnion U V
@@ -298,7 +298,7 @@ identity.  The standard Dold theorem should construct this data from `N`; all su
 deductions are proved here. -/
 public structure HomotopyExcisionData where
   inverse : C(↥(U ∪ V),
-    TopCat.DoubleMappingCylinder (interToRight U V) (interToLeft U V))
+    TopCat.doubleMappingCylinder (interToRight U V) (interToLeft U V))
   inverse_zero : ∀ (x : ↥(U ∪ V)) (hx : N.weight x = 0), inverse x =
     TopCat.doubleMappingCylinderLeft (interToRight U V) (interToLeft U V)
       (TopCat.mappingCylinderBase (interToRight U V)
@@ -315,7 +315,7 @@ public structure HomotopyExcisionData where
   sourceHomotopy : ContinuousMap.Homotopy
     (inverse.comp (doubleMappingCylinderToUnion U V).hom)
     (ContinuousMap.id
-      (TopCat.DoubleMappingCylinder (interToRight U V) (interToLeft U V)))
+      (TopCat.doubleMappingCylinder (interToRight U V) (interToLeft U V)))
 
 /-- The numeration formula makes the chosen inverse a strict right inverse of the collapse. -/
 public theorem HomotopyExcisionData.collapse_inverse
@@ -406,7 +406,7 @@ public theorem isHomotopyExcisiveSpan
     (D : N.HomotopyExcisionData) (hU : IsOpen U) (hV : IsOpen V) :
     TopCat.IsHomotopyExcisiveSpan (interToRight U V) (interToLeft U V) := by
   let eUnion :
-      (TopCat.DoubleMappingCylinder (interToRight U V) (interToLeft U V) : Type u) ≃ₕ
+      (TopCat.doubleMappingCylinder (interToRight U V) (interToLeft U V) : Type u) ≃ₕ
         ↥(U ∪ V) :=
     { toFun := (doubleMappingCylinderToUnion U V).hom
       invFun := D.inverse

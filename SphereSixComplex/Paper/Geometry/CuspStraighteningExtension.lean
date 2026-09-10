@@ -25,12 +25,12 @@ open CuspFilling CuspFillingRadialCompactness CuspLocalPhaseAction
 open CuspPeriodExpansion CuspPuncturedCollarBridge CuspStraighteningAlgebra
 open CuspToricPhaseAction
 open InfiniteA2Toric InfiniteA2Toric.QuantitativeRegions
-open CuspPhaseEstimates.CuspPeriodExpansion
-open CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
+open CuspPeriodExpansion
+open CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
 
 /-- The vector `B_t⁻¹ y` in the paper's straightening formula. -/
 public noncomputable def straighteningRealParameter
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) (p : PuncturedLocalCarrier W) : Fin 2 → ℝ :=
   realFanShearInverse
@@ -38,7 +38,7 @@ public noncomputable def straighteningRealParameter
 
 /-- The complex exponent `-2πi(C(t)-C(0))B_t⁻¹y`. -/
 public noncomputable def straighteningExponent
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) (p : PuncturedLocalCarrier W) : Fin 2 → ℂ :=
   fun i ↦ -2 * Real.pi * Complex.I *
@@ -47,7 +47,7 @@ public noncomputable def straighteningExponent
 
 /-- The paper's point-level torus multiplier. -/
 public noncomputable def straighteningPhase
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) (p : PuncturedLocalCarrier W) : Phase :=
   fun i ↦ CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.exponentialUnit
@@ -55,7 +55,7 @@ public noncomputable def straighteningPhase
 
 /-- The point-level straightening on the punctured local toric carrier. -/
 public noncomputable def puncturedPointStraightening
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) (p : PuncturedLocalCarrier W) :
     PuncturedLocalCarrier W :=
@@ -75,7 +75,7 @@ public noncomputable def puncturedPointStraightening
 
 /-- The reconstructed point has exactly the paper's multiplier in dense-torus coordinates. -/
 public theorem torusCoordinates_puncturedPointStraightening
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) (p : PuncturedLocalCarrier W) :
     torusCoordinates M (puncturedPointStraightening W p).1 =
@@ -85,7 +85,7 @@ public theorem torusCoordinates_puncturedPointStraightening
 
 /-- The real parameter in the complex multiplier varies continuously off the central fibre. -/
 public theorem continuous_straighteningRealParameter
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     Continuous (straighteningRealParameter W) := by
@@ -105,7 +105,7 @@ public theorem continuous_straighteningRealParameter
 
 /-- The complex straightening exponent varies continuously off the central fibre. -/
 public theorem continuous_straighteningExponent
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     Continuous (straighteningExponent W) := by
@@ -137,7 +137,7 @@ public theorem continuous_straighteningExponent
 
 /-- The multiplier is continuous as a map into the two-dimensional phase torus. -/
 public theorem continuous_straighteningPhase
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     Continuous (straighteningPhase W) := by
@@ -160,7 +160,7 @@ public theorem continuous_straighteningPhase
 
 /-- The point-level straightening is continuous away from the central fibre. -/
 public theorem continuous_puncturedPointStraightening
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     Continuous (puncturedPointStraightening W) := by
@@ -183,16 +183,16 @@ public theorem continuous_puncturedPointStraightening
 
 /-- Under an actual deck transformation, `B_t⁻¹y` translates by the lattice parameter. -/
 public theorem straighteningRealParameter_psiMap
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) (lambda : ParameterLattice)
-    (p : LocalCarrier M W.localWitness.radius) (hp : M.t p ≠ 0) :
-    let C := restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
+    (p : localCarrier M W.localWitness.radius) (hp : M.t p ≠ 0) :
+    let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
       W.localWitness.radius_pos W.localWitness.radius_le
     straighteningRealParameter W
         ⟨C.psiMap lambda p, C.psiMap_preserves_t lambda p ▸ hp⟩ =
-      straighteningRealParameter W ⟨p, hp⟩ + realParameter lambda := by
-  let C := restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
+      straighteningRealParameter W ⟨p, hp⟩ + CuspPhaseEstimates.realParameter lambda := by
+  let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
     W.localWitness.radius_pos W.localWitness.radius_le
   let d : Fin 2 → ℝ := fun i ↦ (shearVector lambda i : ℝ)
   let p' : PuncturedLocalCarrier W :=
@@ -220,11 +220,11 @@ public theorem straighteningRealParameter_psiMap
       _ = rescaledPosition M p + effectiveFanDisplacement N (M.t p) d := add_comm _ _
   dsimp only
   change straighteningRealParameter W p' =
-    straighteningRealParameter W ⟨p, hp⟩ + realParameter lambda
+    straighteningRealParameter W ⟨p, hp⟩ + CuspPhaseEstimates.realParameter lambda
   rw [straighteningRealParameter, straighteningRealParameter]
   rw [← actualDisplacementEquiv_symm_apply, ← actualDisplacementEquiv_symm_apply]
   change realFanShearInverse (A'.symm (rescaledPosition M p'.1)) =
-    realFanShearInverse (A.symm (rescaledPosition M p)) + realParameter lambda
+    realFanShearInverse (A.symm (rescaledPosition M p)) + CuspPhaseEstimates.realParameter lambda
   rw [hA, hdisp, map_add]
   have hd : A.symm (effectiveFanDisplacement N (M.t p) d) = d := by
     change A.symm (A d) = d
@@ -234,17 +234,17 @@ public theorem straighteningRealParameter_psiMap
 /-- The variable complex multiplier converts the actual phase coefficient to its value frozen at
 the central parameter. -/
 public theorem straighteningPhase_mul_phaseCoefficient
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) (lambda : ParameterLattice)
-    (p : LocalCarrier M W.localWitness.radius) (hp : M.t p ≠ 0) :
-    let C := restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
+    (p : localCarrier M W.localWitness.radius) (hp : M.t p ≠ 0) :
+    let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
       W.localWitness.radius_pos W.localWitness.radius_le
     straighteningPhase W
         ⟨C.psiMap lambda p, C.psiMap_preserves_t lambda p ▸ hp⟩ *
         N.phaseCoefficient lambda (M.t p) =
       N.phaseCoefficient lambda 0 * straighteningPhase W ⟨p, hp⟩ := by
-  let C := restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
+  let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
     W.localWitness.radius_pos W.localWitness.radius_le
   let p' : PuncturedLocalCarrier W :=
     ⟨C.psiMap lambda p, C.psiMap_preserves_t lambda p ▸ hp⟩
@@ -259,7 +259,7 @@ public theorem straighteningPhase_mul_phaseCoefficient
   congr 1
   rw [straighteningExponent, straighteningExponent, hparameter]
   simp only [Pi.add_apply, Complex.ofReal_add,
-    CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.realParameter]
+    CuspPhaseEstimates.realParameter]
   rw [C.psiMap_preserves_t]
   simp only [Matrix.mulVec, dotProduct, Fin.sum_univ_two, Matrix.sub_apply]
   have hcast (j : Fin 2) : (((lambda j : ℝ) : ℂ)) = (lambda j : ℂ) := by norm_num
@@ -269,18 +269,18 @@ public theorem straighteningPhase_mul_phaseCoefficient
 /-- The point-level straightening conjugates the actual deck map to the deck map with complex
 twist frozen at the central parameter. -/
 public theorem puncturedPointStraightening_psiMap
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) (lambda : ParameterLattice)
-    (p : LocalCarrier M W.localWitness.radius) (hp : M.t p ≠ 0) :
-    let C := restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
+    (p : localCarrier M W.localWitness.radius) (hp : M.t p ≠ 0) :
+    let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
       W.localWitness.radius_pos W.localWitness.radius_le
     ((puncturedPointStraightening W
         ⟨C.psiMap lambda p, C.psiMap_preserves_t lambda p ▸ hp⟩).1 : M.Carrier) =
       ToricModel.phaseAction M (N.phaseCoefficient lambda 0)
         (Additive.toMul (M.fanShear lambda)
           ((puncturedPointStraightening W ⟨p, hp⟩).1 : M.Carrier)) := by
-  let C := restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
+  let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
     W.localWitness.radius_pos W.localWitness.radius_le
   let p' : PuncturedLocalCarrier W :=
     ⟨C.psiMap lambda p, C.psiMap_preserves_t lambda p ▸ hp⟩
@@ -315,7 +315,7 @@ public theorem puncturedPointStraightening_psiMap
 
 /-- The inverse displacement has operator norm at most two in the coordinate `ℓ¹` norm. -/
 public theorem realL1_puncturedActualInverseDisplacement_le
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) (p : PuncturedLocalCarrier W)
     (y : Fin 2 → ℝ) :
@@ -342,7 +342,7 @@ public theorem realL1_puncturedActualInverseDisplacement_le
 
 /-- On every standard shrunken affine chart, the parameter `B_t⁻¹y` is uniformly bounded. -/
 public theorem straighteningRealParameter_bounded_on_region
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     let R := standardBoundedPolydiscRegions M W.localWitness.radius
@@ -361,27 +361,27 @@ public theorem straighteningRealParameter_bounded_on_region
 
 /-- The straightening exponent extended by zero on the central fibre. -/
 public noncomputable def extendedStraighteningExponent
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
-    (p : LocalCarrier M W.localWitness.radius) : Fin 2 → ℂ :=
+    (p : localCarrier M W.localWitness.radius) : Fin 2 → ℂ :=
   if hp : M.t p = 0 then 0 else straighteningExponent W ⟨p, hp⟩
 
 /-- The complex multiplier extended by the identity on the central fibre. -/
 public noncomputable def extendedStraighteningPhase
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
-    (p : LocalCarrier M W.localWitness.radius) : Phase :=
+    (p : localCarrier M W.localWitness.radius) : Phase :=
   fun i ↦ CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.exponentialUnit
     (extendedStraighteningExponent W p i)
 
 @[simp]
 public theorem extendedStraighteningPhase_of_t_eq_zero
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
-    (p : LocalCarrier M W.localWitness.radius) (hp : M.t p = 0) :
+    (p : localCarrier M W.localWitness.radius) (hp : M.t p = 0) :
     extendedStraighteningPhase W p = 1 := by
   ext i
   simp [extendedStraighteningPhase, extendedStraighteningExponent, hp,
@@ -389,21 +389,21 @@ public theorem extendedStraighteningPhase_of_t_eq_zero
 
 @[simp]
 public theorem extendedStraighteningPhase_of_t_ne_zero
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
-    (p : LocalCarrier M W.localWitness.radius) (hp : M.t p ≠ 0) :
+    (p : localCarrier M W.localWitness.radius) (hp : M.t p ≠ 0) :
     extendedStraighteningPhase W p = straighteningPhase W ⟨p, hp⟩ := by
   ext i
   simp [extendedStraighteningPhase, extendedStraighteningExponent, hp, straighteningPhase]
 
 /-- On a shrunken standard chart, the extended exponent tends to zero at every central point. -/
 public theorem continuousAt_extendedStraighteningExponent_of_mem_region
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (a : CuspPhaseEstimates.ToricRegionIndex)
-    (p₀ : LocalCarrier M W.localWitness.radius)
+    (p₀ : localCarrier M W.localWitness.radius)
     (hp₀ : M.t p₀ = 0)
     (hregion : p₀ ∈ (standardBoundedPolydiscRegions M W.localWitness.radius
       W.localWitness.radius_pos W.localWitness.radius_lt_one).region a) :
@@ -411,17 +411,17 @@ public theorem continuousAt_extendedStraighteningExponent_of_mem_region
   let R := standardBoundedPolydiscRegions M W.localWitness.radius
     W.localWitness.radius_pos W.localWitness.radius_lt_one
   obtain ⟨B, hB⟩ := straighteningRealParameter_bounded_on_region W a
-  have heventually : ∀ᶠ p : LocalCarrier M W.localWitness.radius in 𝓝 p₀,
+  have heventually : ∀ᶠ p : localCarrier M W.localWitness.radius in 𝓝 p₀,
       p ∈ R.region a := (R.region a).isOpen.mem_nhds hregion
-  have ht : Continuous (fun p : LocalCarrier M W.localWitness.radius ↦ M.t p) :=
+  have ht : Continuous (fun p : localCarrier M W.localWitness.radius ↦ M.t p) :=
     M.t_holomorphic.continuous.comp continuous_subtype_val
   have hcorrection (i j : Fin 2) : Continuous
-      (fun p : LocalCarrier M W.localWitness.radius ↦
+      (fun p : localCarrier M W.localWitness.radius ↦
         N.correctionMatrix (M.t p) i j) :=
     (N.correctionMatrix_entry_holomorphic i j).continuousOn.comp_continuous ht fun p ↦
       mem_ball_zero_iff.mpr
         ((mem_ball_zero_iff.mp p.property).trans_le W.localWitness.radius_le)
-  let v (j : Fin 2) (p : LocalCarrier M W.localWitness.radius) : ℂ :=
+  let v (j : Fin 2) (p : localCarrier M W.localWitness.radius) : ℂ :=
     if hp : M.t p = 0 then 0 else straighteningRealParameter W ⟨p, hp⟩ j
   have hv_bounded (j : Fin 2) : Filter.IsBoundedUnder (· ≤ ·) (𝓝 p₀) (norm ∘ v j) := by
     apply Filter.isBoundedUnder_of_eventually_le (a := |B|)
@@ -435,25 +435,25 @@ public theorem continuousAt_extendedStraighteningExponent_of_mem_region
         fin_cases j <;> simp [realL1]
       exact hcoord.trans ((hB ⟨p, hp⟩ hpregion).trans (le_abs_self B))
   have hdelta (i j : Fin 2) : Filter.Tendsto
-      (fun p : LocalCarrier M W.localWitness.radius ↦
+      (fun p : localCarrier M W.localWitness.radius ↦
         N.correctionMatrix (M.t p) i j - N.correctionMatrix 0 i j)
       (𝓝 p₀) (𝓝 0) := by
-    have h : ContinuousAt (fun p : LocalCarrier M W.localWitness.radius ↦
+    have h : ContinuousAt (fun p : localCarrier M W.localWitness.radius ↦
         N.correctionMatrix (M.t p) i j - N.correctionMatrix 0 i j) p₀ :=
       (hcorrection i j).continuousAt.sub continuousAt_const
-    change Filter.Tendsto _ (𝓝 p₀) (𝓝 ((fun p : LocalCarrier M W.localWitness.radius ↦
+    change Filter.Tendsto _ (𝓝 p₀) (𝓝 ((fun p : localCarrier M W.localWitness.radius ↦
       N.correctionMatrix (M.t p) i j - N.correctionMatrix 0 i j) p₀)) at h
     simpa only [hp₀, sub_self] using h
   apply continuousAt_pi.mpr
   intro i
   have h0 := (hdelta i 0).zero_mul_isBoundedUnder_le (hv_bounded 0)
   have h1 := (hdelta i 1).zero_mul_isBoundedUnder_le (hv_bounded 1)
-  have hsum : Filter.Tendsto (fun p : LocalCarrier M W.localWitness.radius ↦
+  have hsum : Filter.Tendsto (fun p : localCarrier M W.localWitness.radius ↦
       (N.correctionMatrix (M.t p) i 0 - N.correctionMatrix 0 i 0) * v 0 p +
       (N.correctionMatrix (M.t p) i 1 - N.correctionMatrix 0 i 1) * v 1 p)
       (𝓝 p₀) (𝓝 0) := by simpa using h0.add h1
   have hmul := Filter.Tendsto.const_mul (-2 * Real.pi * Complex.I) hsum
-  have hmul0 : Filter.Tendsto (fun p : LocalCarrier M W.localWitness.radius ↦
+  have hmul0 : Filter.Tendsto (fun p : localCarrier M W.localWitness.radius ↦
       (-2 * Real.pi * Complex.I) *
         ((N.correctionMatrix (M.t p) i 0 - N.correctionMatrix 0 i 0) * v 0 p +
         (N.correctionMatrix (M.t p) i 1 - N.correctionMatrix 0 i 1) * v 1 p))
@@ -480,11 +480,11 @@ private theorem continuousAt_exponentialUnit {X : Type*} [TopologicalSpace X]
 
 /-- On a shrunken chart, the extended multiplier tends to the identity at every central point. -/
 public theorem continuousAt_extendedStraighteningPhase_of_mem_region
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (a : CuspPhaseEstimates.ToricRegionIndex)
-    (p₀ : LocalCarrier M W.localWitness.radius)
+    (p₀ : localCarrier M W.localWitness.radius)
     (hp₀ : M.t p₀ = 0)
     (hregion : p₀ ∈ (standardBoundedPolydiscRegions M W.localWitness.radius
       W.localWitness.radius_pos W.localWitness.radius_lt_one).region a) :
@@ -498,26 +498,26 @@ public theorem continuousAt_extendedStraighteningPhase_of_mem_region
 
 /-- A local lift to the punctured carrier, used only near a fixed noncentral point. -/
 private noncomputable def puncturedLiftAt
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
-    (p₀ : LocalCarrier M W.localWitness.radius) (hp₀ : M.t p₀ ≠ 0)
-    (p : LocalCarrier M W.localWitness.radius) : PuncturedLocalCarrier W :=
+    (p₀ : localCarrier M W.localWitness.radius) (hp₀ : M.t p₀ ≠ 0)
+    (p : localCarrier M W.localWitness.radius) : PuncturedLocalCarrier W :=
   if hp : M.t p ≠ 0 then ⟨p, hp⟩ else ⟨p₀, hp₀⟩
 
 private theorem continuousAt_puncturedLiftAt
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
-    (p₀ : LocalCarrier M W.localWitness.radius) (hp₀ : M.t p₀ ≠ 0) :
+    (p₀ : localCarrier M W.localWitness.radius) (hp₀ : M.t p₀ ≠ 0) :
     ContinuousAt (puncturedLiftAt W p₀ hp₀) p₀ := by
   rw [show ContinuousAt (puncturedLiftAt W p₀ hp₀) p₀ =
       Filter.Tendsto (puncturedLiftAt W p₀ hp₀) (𝓝 p₀)
         (𝓝 (puncturedLiftAt W p₀ hp₀ p₀)) from rfl,
     tendsto_subtype_rng]
-  have ht : Continuous (fun p : LocalCarrier M W.localWitness.radius ↦ M.t p) :=
+  have ht : Continuous (fun p : localCarrier M W.localWitness.radius ↦ M.t p) :=
     M.t_holomorphic.continuous.comp continuous_subtype_val
-  have heventually : ∀ᶠ p : LocalCarrier M W.localWitness.radius in 𝓝 p₀, M.t p ≠ 0 :=
+  have heventually : ∀ᶠ p : localCarrier M W.localWitness.radius in 𝓝 p₀, M.t p ≠ 0 :=
     (isOpen_compl_singleton.preimage ht).mem_nhds hp₀
   apply continuousAt_id.congr
   filter_upwards [heventually] with p hp
@@ -525,18 +525,18 @@ private theorem continuousAt_puncturedLiftAt
 
 /-- Away from the central fibre, the extended multiplier agrees locally with the punctured one. -/
 public theorem continuousAt_extendedStraighteningPhase_of_t_ne_zero
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
-    (p₀ : LocalCarrier M W.localWitness.radius) (hp₀ : M.t p₀ ≠ 0) :
+    (p₀ : localCarrier M W.localWitness.radius) (hp₀ : M.t p₀ ≠ 0) :
     ContinuousAt (extendedStraighteningPhase W) p₀ := by
   have hpunctured : ContinuousAt
       (fun p ↦ straighteningPhase W (puncturedLiftAt W p₀ hp₀ p)) p₀ :=
     (continuous_straighteningPhase W).continuousAt.comp
       (continuousAt_puncturedLiftAt W p₀ hp₀)
-  have ht : Continuous (fun p : LocalCarrier M W.localWitness.radius ↦ M.t p) :=
+  have ht : Continuous (fun p : localCarrier M W.localWitness.radius ↦ M.t p) :=
     M.t_holomorphic.continuous.comp continuous_subtype_val
-  have heventually : ∀ᶠ p : LocalCarrier M W.localWitness.radius in 𝓝 p₀, M.t p ≠ 0 :=
+  have heventually : ∀ᶠ p : localCarrier M W.localWitness.radius in 𝓝 p₀, M.t p ≠ 0 :=
     (isOpen_compl_singleton.preimage ht).mem_nhds hp₀
   apply hpunctured.congr
   filter_upwards [heventually] with p hp
@@ -547,7 +547,7 @@ public theorem continuousAt_extendedStraighteningPhase_of_t_ne_zero
 
 /-- The paper's multiplier, extended by the identity at `t = 0`, is continuous everywhere. -/
 public theorem continuous_extendedStraighteningPhase
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     Continuous (extendedStraighteningPhase W) := by
@@ -583,11 +583,11 @@ end ContinuousTorusAction
 /-- The point-level straightening on the entire local toric carrier.  At `t = 0` its multiplier
 is one, so this definition is literally the identity on the central fibre. -/
 public noncomputable def pointStraightening
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
-    (p : LocalCarrier M W.localWitness.radius) :
-    LocalCarrier M W.localWitness.radius :=
+    (p : localCarrier M W.localWitness.radius) :
+    localCarrier M W.localWitness.radius :=
   ⟨M.torusAction (phaseEmbedding (extendedStraighteningPhase W p)) p, by
     change M.t (M.torusAction (phaseEmbedding (extendedStraighteningPhase W p)) p) ∈
       Metric.ball 0 W.localWitness.radius
@@ -599,20 +599,20 @@ public noncomputable def pointStraightening
 
 @[simp]
 public theorem pointStraightening_of_t_eq_zero
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
-    (p : LocalCarrier M W.localWitness.radius) (hp : M.t p = 0) :
+    (p : localCarrier M W.localWitness.radius) (hp : M.t p = 0) :
     pointStraightening W p = p := by
   apply Subtype.ext
   simp [pointStraightening, extendedStraighteningPhase_of_t_eq_zero W p hp]
 
 /-- Off the central fibre, the whole-carrier definition agrees with the dense-torus formula. -/
 public theorem pointStraightening_of_t_ne_zero
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
-    (p : LocalCarrier M W.localWitness.radius) (hp : M.t p ≠ 0) :
+    (p : localCarrier M W.localWitness.radius) (hp : M.t p ≠ 0) :
     pointStraightening W p = (puncturedPointStraightening W ⟨p, hp⟩).1 := by
   apply Subtype.ext
   change M.torusAction (phaseEmbedding (extendedStraighteningPhase W p)) p =
@@ -628,7 +628,7 @@ public theorem pointStraightening_of_t_ne_zero
 
 /-- The phase embedding of the extended multiplier is continuous. -/
 public theorem continuous_extendedStraighteningDenseTorusPhase
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     Continuous (fun p ↦ phaseEmbedding (extendedStraighteningPhase W p)) := by
@@ -644,14 +644,14 @@ public theorem continuous_extendedStraighteningDenseTorusPhase
 /-- Joint continuity of the standard torus action turns the chartwise multiplier limit into
 continuity of the identity extension on the whole cusp carrier. -/
 public theorem continuous_pointStraightening
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (J : ContinuousTorusAction M)
     (W : ActualPuncturedCuspCollarWitness N M) :
     Continuous (pointStraightening W) := by
-  change Continuous (fun p : LocalCarrier M W.localWitness.radius ↦
+  change Continuous (fun p : localCarrier M W.localWitness.radius ↦
     (⟨M.torusAction (phaseEmbedding (extendedStraighteningPhase W p)) p, _⟩ :
-      LocalCarrier M W.localWitness.radius))
+      localCarrier M W.localWitness.radius))
   exact (J.variable_action (continuous_extendedStraighteningDenseTorusPhase W)
     continuous_subtype_val).subtype_mk _
 

@@ -72,7 +72,7 @@ the first free-meridian lift. -/
 public def paperOrderThreeCentralBoundaryToUniversalDeck :
     CanonicalCyclicAffineBoundaryDeck
         (orderThreeCentralFiberPresentationData A.periods).affine.latticeMap.toAddEquiv →*
-      paperCentralFreeAffineDeck :=
+      PaperCentralFreeAffineDeck :=
   SemidirectProduct.lift
     ((freeAffineTranslation (M := paperCentralFreeMonodromy)).comp
       (-AddMonoidHom.id Lattice)).toMultiplicative
@@ -118,7 +118,7 @@ public theorem paperOrderThreeCentralBoundaryToUniversalDeck_meridian :
 /-- The physical mapping-torus deck group, mapped with the based-path universal-cover
 orientation. -/
 public noncomputable def paperOrderThreeActualBoundaryToUniversalDeck :
-    OrderThreeAffineMappingTorusDeck A.periods →* paperCentralFreeAffineDeck :=
+    OrderThreeAffineMappingTorusDeck A.periods →* PaperCentralFreeAffineDeck :=
   A.paperOrderThreeCentralBoundaryToUniversalDeck.comp
     A.ellipticThreeToCentralBoundaryDeckEquiv.toMonoidHom
 
@@ -179,7 +179,7 @@ public theorem centralAffineUniversalCoverBasepoint_projects :
 affine presentation element `d` to `op d⁻¹`.  This is the source of the translation sign in
 `paperOrderThreeActualBoundaryToUniversalDeck`. -/
 public theorem centralAffineUniversalCoverBasepoint_fundamentalGroupEquiv
-    (d : paperCentralFreeAffineDeck) :
+    (d : PaperCentralFreeAffineDeck) :
     let D := A.centralAffineUniversalCover
     letI := D.topology
     letI := D.action
@@ -219,7 +219,7 @@ public def OrderThreeCentralBoundaryCoverComparison : Prop :=
   letI := D.action
   ∃ C : QuotientCoverMapData
       (G := OrderThreeAffineMappingTorusDeck A.periods)
-      (H := paperCentralFreeAffineDeck)
+      (H := PaperCentralFreeAffineDeck)
       A.ellipticThreeBoundaryProjection D.data.projection,
     C.deckMap = A.paperOrderThreeActualBoundaryToUniversalDeck ∧
       C.baseMap = A.ellipticThreeOverlapToCentral
@@ -252,7 +252,7 @@ public theorem OrderThreeCentralBoundaryCoverComparison.canonicalDeckPair
   let C := A.ellipticThreeCentralCoverComparison
   change ∃ E : QuotientCoverMapData
       (G := OrderThreeAffineMappingTorusDeck A.periods)
-      (H := paperCentralFreeAffineDeck)
+      (H := PaperCentralFreeAffineDeck)
       A.ellipticThreeBoundaryProjection D.data.projection,
     E.deckMap = A.paperOrderThreeActualBoundaryToUniversalDeck ∧
       E.baseMap = A.ellipticThreeOverlapToCentral at h
@@ -273,7 +273,7 @@ public theorem OrderThreeCentralBoundaryCoverComparison.canonicalDeckPair
 /-- The deck labels of the two central marked loops at the lift selected by the canonical collar
 comparison. -/
 public noncomputable def orderThreeCentralUniversalDeckMarkedPair :
-    paperCentralFreeAffineDeck × paperCentralFreeAffineDeck := by
+    PaperCentralFreeAffineDeck × PaperCentralFreeAffineDeck := by
   let _ := A.ellipticThreeBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology

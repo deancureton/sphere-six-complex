@@ -15,7 +15,7 @@ open InfiniteA2Toric.Construction InfiniteA2Toric
 open SphereSixComplex.StandardCircleHomologyLiftDegree
 open SphereSixComplex.Topology.CircleProductIdentityMappingTorus
 open SphereSixComplex.StandardTorusHomology
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public theorem constructedA2CircleSweepParameter_period (i : Fin 2) (t : unitInterval) :
@@ -51,7 +51,7 @@ public theorem constructedA2CirclePrism_filling
       (AddCommGrpCat.of ℤ)) 0
       (integralSingularHomologyMap 1
         ⟨actualLocalCuspCentralOrbitMap W, (actualLocalCuspCentralOrbitMap_isEmbedding W).continuous⟩ x) := by
-  let f : TopCat.of (ActualLocalCuspCentralOrbitQuotient W) ⟶ TopCat.of (actualLocalCuspFilling W) :=
+  let f : TopCat.of (ActualLocalCuspCentralOrbitQuotient W) ⟶ TopCat.of (ActualLocalCuspFilling W) :=
     TopCat.ofHom ⟨actualLocalCuspCentralOrbitMap W, (actualLocalCuspCentralOrbitMap_isEmbedding W).continuous⟩
   have h := closedPrismHomology_naturality (constructedA2CircleSweepPrism W i) 0
     ((circleSweepHomotopy (cuspFillingPeriodCircle W i)).singularChainComplexFunctorObjMap

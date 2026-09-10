@@ -13,7 +13,7 @@ open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspCombinatorics
 open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public def centralEdgeEndpointDeck : Fin 3 → ParameterLattice :=
@@ -33,7 +33,7 @@ public theorem constructedCentralEdge_endpoints_lift
     F (fun _ ↦ -1) = (constructedCentralOrigin W false).1 ∧
       F (fun _ ↦ 1) =
         (((Additive.toMul (centralEdgeEndpointDeck j) : Multiplicative ParameterLattice) • constructedCentralOrigin W true :
-          LocalCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) := by
+          localCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) := by
   let _ := actualLocalCuspQuotientAction W
   dsimp only
   rw [constructedCentralOrigin_smul_coe]
@@ -93,7 +93,7 @@ public theorem constructedCentralEdgeLift_projects
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)] (j : Fin 3) (t : unitInterval) :
     let _ := (constructedCentralCellAtlas W).cwComplex
-    (Quotient.mk _ (constructedCentralEdgeLift W j t) : actualLocalCuspFilling W) =
+    (Quotient.mk _ (constructedCentralEdgeLift W j t) : ActualLocalCuspFilling W) =
       actualLocalCuspCentralOrbitMap W
         ((constructedCentralCellularEdgePath W j t).1) := by
   let _ := (constructedCentralCellAtlas W).cwComplex

@@ -24,13 +24,13 @@ open scoped ContDiff Manifold Topology
 namespace SphereSixComplex
 
 /-- The compact interval used to parameterize explicit collars. -/
-public abbrev CollarParameter := Set.Icc (0 : ℝ) 1
+public abbrev collarParameter := Set.Icc (0 : ℝ) 1
 
 /-- The initial endpoint of `CollarParameter`. -/
-public def collarStart : CollarParameter := ⟨0, by norm_num⟩
+public def collarStart : collarParameter := ⟨0, by norm_num⟩
 
 /-- The final endpoint of `CollarParameter`. -/
-public def collarFinish : CollarParameter := ⟨1, by norm_num⟩
+public def collarFinish : collarParameter := ⟨1, by norm_num⟩
 
 @[simp]
 public theorem collarStart_val : (collarStart : ℝ) = 0 := rfl
@@ -45,12 +45,12 @@ public inductive CollarSide where
   deriving DecidableEq
 
 /-- The endpoint selected by a collar side. -/
-public def CollarSide.parameter : CollarSide → CollarParameter
+public def CollarSide.parameter : CollarSide → collarParameter
   | .start => collarStart
   | .finish => collarFinish
 
 /-- The selected endpoint section of a cylinder. -/
-public def CollarSide.section (side : CollarSide) (M : Type*) : M → M × CollarParameter :=
+public def CollarSide.section (side : CollarSide) (M : Type*) : M → M × collarParameter :=
   fun x => (x, side.parameter)
 
 @[simp]
@@ -58,19 +58,19 @@ public theorem CollarSide.section_apply (side : CollarSide) {M : Type*} (x : M) 
     side.section M x = (x, side.parameter) := rfl
 
 /-- Reflection of the collar parameter, exchanging its two endpoints. -/
-public def collarReflection (t : CollarParameter) : CollarParameter :=
+public def collarReflection (t : collarParameter) : collarParameter :=
   ⟨1 - t, by
     constructor
     · linarith [t.property.2]
     · linarith [t.property.1]⟩
 
 @[simp]
-public theorem collarReflection_val (t : CollarParameter) :
+public theorem collarReflection_val (t : collarParameter) :
     (collarReflection t : ℝ) = 1 - t :=
   rfl
 
 @[simp]
-public theorem collarReflection_involutive (t : CollarParameter) :
+public theorem collarReflection_involutive (t : collarParameter) :
     collarReflection (collarReflection t) = t := by
   apply Subtype.ext
   simp
@@ -87,7 +87,7 @@ public theorem collarReflection_finish : collarReflection collarFinish = collarS
 
 /-- Reflection is a smooth self-diffeomorphism of the closed collar parameter. -/
 public def collarReflectionDiffeomorph :
-    CollarParameter ≃ₘ⟮(𝓡∂ 1), (𝓡∂ 1)⟯ CollarParameter where
+    collarParameter ≃ₘ⟮(𝓡∂ 1), (𝓡∂ 1)⟯ collarParameter where
   toEquiv :=
     { toFun := collarReflection
       invFun := collarReflection
@@ -113,57 +113,57 @@ public def collarReflectionDiffeomorph :
         (contMDiff_subtypeVal_Icc (x := (0 : ℝ)) (y := 1) (n := ∞))
 
 /-- The half-open parameter neighborhood `[0, 1)` inside the closed interval. -/
-public def collarStartNeighborhood : TopologicalSpace.Opens CollarParameter where
+public def collarStartNeighborhood : TopologicalSpace.Opens collarParameter where
   carrier := {t | (t : ℝ) < 1}
   is_open' := isOpen_Iio.preimage continuous_subtype_val
 
 /-- The half-open parameter neighborhood `(0, 1]` inside the closed interval. -/
-public def collarFinishNeighborhood : TopologicalSpace.Opens CollarParameter where
+public def collarFinishNeighborhood : TopologicalSpace.Opens collarParameter where
   carrier := {t | 0 < (t : ℝ)}
   is_open' := isOpen_Ioi.preimage continuous_subtype_val
 
 @[simp]
-public theorem mem_collarStartNeighborhood (t : CollarParameter) :
+public theorem mem_collarStartNeighborhood (t : collarParameter) :
     t ∈ collarStartNeighborhood ↔ (t : ℝ) < 1 :=
   Iff.rfl
 
 @[simp]
-public theorem mem_collarFinishNeighborhood (t : CollarParameter) :
+public theorem mem_collarFinishNeighborhood (t : collarParameter) :
     t ∈ collarFinishNeighborhood ↔ 0 < (t : ℝ) :=
   Iff.rfl
 
 /-- The standard half-open collar domain `M × [0, 1)`, represented as an open submanifold
 of the closed cylinder. -/
-public def CollarDomain (M : Type*) [TopologicalSpace M] :
-    TopologicalSpace.Opens (M × CollarParameter) where
+public def collarDomain (M : Type*) [TopologicalSpace M] :
+    TopologicalSpace.Opens (M × collarParameter) where
   carrier := {p | p.2 ∈ collarStartNeighborhood}
   is_open' := collarStartNeighborhood.isOpen.preimage continuous_snd
 
 /-- The reflected half-open collar domain `M × (0, 1]`. -/
-public def ReflectedCollarDomain (M : Type*) [TopologicalSpace M] :
-    TopologicalSpace.Opens (M × CollarParameter) where
+public def reflectedCollarDomain (M : Type*) [TopologicalSpace M] :
+    TopologicalSpace.Opens (M × collarParameter) where
   carrier := {p | p.2 ∈ collarFinishNeighborhood}
   is_open' := collarFinishNeighborhood.isOpen.preimage continuous_snd
 
 /-- The zero section as a point of the standard half-open collar domain. -/
-public def collarZeroSection (M : Type*) [TopologicalSpace M] (x : M) : CollarDomain M :=
+public def collarZeroSection (M : Type*) [TopologicalSpace M] (x : M) : collarDomain M :=
   ⟨(x, collarStart), by
-    norm_num [CollarDomain, collarStartNeighborhood, collarStart]⟩
+    norm_num [collarDomain, collarStartNeighborhood, collarStart]⟩
 
 /-- The one section as a point of the reflected half-open collar domain. -/
 public def collarOneSection (M : Type*) [TopologicalSpace M] (x : M) :
-    ReflectedCollarDomain M :=
+    reflectedCollarDomain M :=
   ⟨(x, collarFinish), by
-    norm_num [ReflectedCollarDomain, collarFinishNeighborhood, collarFinish]⟩
+    norm_num [reflectedCollarDomain, collarFinishNeighborhood, collarFinish]⟩
 
 @[simp]
 public theorem collarZeroSection_val (M : Type*) [TopologicalSpace M] (x : M) :
-    (collarZeroSection M x : M × CollarParameter) = (x, collarStart) :=
+    (collarZeroSection M x : M × collarParameter) = (x, collarStart) :=
   rfl
 
 @[simp]
 public theorem collarOneSection_val (M : Type*) [TopologicalSpace M] (x : M) :
-    (collarOneSection M x : M × CollarParameter) = (x, collarFinish) :=
+    (collarOneSection M x : M × collarParameter) = (x, collarFinish) :=
   rfl
 
 variable {E₀ H₀ M₀ : Type*} [NormedAddCommGroup E₀] [NormedSpace ℝ E₀]
@@ -172,7 +172,7 @@ variable {E₀ H₀ M₀ : Type*} [NormedAddCommGroup E₀] [NormedSpace ℝ E�
 
 /-- Product reflection identifies the standard and reflected half-open collar domains. -/
 public def collarDomainReflection :
-    CollarDomain M₀ ≃ₘ⟮I₀.prod (𝓡∂ 1), I₀.prod (𝓡∂ 1)⟯ ReflectedCollarDomain M₀ where
+    collarDomain M₀ ≃ₘ⟮I₀.prod (𝓡∂ 1), I₀.prod (𝓡∂ 1)⟯ reflectedCollarDomain M₀ where
   toEquiv :=
     { toFun := fun p ↦ ⟨(p.1.1, collarReflection p.1.2), by
           change 0 < (collarReflection p.1.2 : ℝ)
@@ -193,31 +193,31 @@ public def collarDomainReflection :
         apply Subtype.ext
         exact Prod.ext rfl (collarReflection_involutive p.1.2) }
   contMDiff_toFun := by
-    apply (ContMDiff.subtypeVal_comp_iff (ReflectedCollarDomain M₀) _).mp
+    apply (ContMDiff.subtypeVal_comp_iff (reflectedCollarDomain M₀) _).mp
     exact (contMDiff_fst.comp contMDiff_subtype_val).prodMk
       (collarReflectionDiffeomorph.contMDiff.comp
         (contMDiff_snd.comp contMDiff_subtype_val))
   contMDiff_invFun := by
-    apply (ContMDiff.subtypeVal_comp_iff (CollarDomain M₀) _).mp
+    apply (ContMDiff.subtypeVal_comp_iff (collarDomain M₀) _).mp
     exact (contMDiff_fst.comp contMDiff_subtype_val).prodMk
       (collarReflectionDiffeomorph.contMDiff.comp
         (contMDiff_snd.comp contMDiff_subtype_val))
 
 @[simp]
-public theorem collarDomainReflection_apply (p : CollarDomain M₀) :
-    (collarDomainReflection (I₀ := I₀) p : M₀ × CollarParameter) =
+public theorem collarDomainReflection_apply (p : collarDomain M₀) :
+    (collarDomainReflection (I₀ := I₀) p : M₀ × collarParameter) =
       (p.1.1, collarReflection p.1.2) :=
   rfl
 
 /-- The half-open interval `[0, 1)` with its inherited manifold-with-boundary structure. -/
-public abbrev HalfCollarParameter := collarStartNeighborhood
+public abbrev halfCollarParameter := collarStartNeighborhood
 
 /-- The distinguished zero of the half-open collar parameter. -/
-public def halfCollarStart : HalfCollarParameter :=
+public def halfCollarStart : halfCollarParameter :=
   ⟨collarStart, by norm_num [collarStartNeighborhood, collarStart]⟩
 
 /-- The standard source type for an explicit collar. -/
-public abbrev CollarSource (M : Type*) [TopologicalSpace M] := M × HalfCollarParameter
+public abbrev CollarSource (M : Type*) [TopologicalSpace M] := M × halfCollarParameter
 
 /-- The zero section of the standard collar source. -/
 public def collarSourceZeroSection (M : Type*) [TopologicalSpace M] (x : M) :
@@ -232,14 +232,14 @@ public theorem collarSourceZeroSection_apply (M : Type*) [TopologicalSpace M] (x
 /-- The natural diffeomorphism from `M × [0, 1)` to the corresponding open submanifold of
 the closed cylinder. -/
 public def collarSourceToDomain :
-    CollarSource M₀ ≃ₘ⟮I₀.prod (𝓡∂ 1), I₀.prod (𝓡∂ 1)⟯ CollarDomain M₀ where
+    CollarSource M₀ ≃ₘ⟮I₀.prod (𝓡∂ 1), I₀.prod (𝓡∂ 1)⟯ collarDomain M₀ where
   toEquiv :=
     { toFun := fun p ↦ ⟨(p.1, p.2.1), p.2.2⟩
       invFun := fun p ↦ (p.1.1, ⟨p.1.2, p.2⟩)
       left_inv := fun _ ↦ rfl
       right_inv := fun _ ↦ rfl }
   contMDiff_toFun := by
-    apply (ContMDiff.subtypeVal_comp_iff (CollarDomain M₀) _).mp
+    apply (ContMDiff.subtypeVal_comp_iff (collarDomain M₀) _).mp
     exact contMDiff_fst.prodMk (contMDiff_subtype_val.comp contMDiff_snd)
   contMDiff_invFun := by
     apply contMDiff_fst.comp contMDiff_subtype_val |>.prodMk
@@ -249,18 +249,18 @@ public def collarSourceToDomain :
 /-- Reflection identifies the standard collar source with the open neighborhood at the other end
 of the closed cylinder. -/
 public def collarSourceToReflectedDomain :
-    CollarSource M₀ ≃ₘ⟮I₀.prod (𝓡∂ 1), I₀.prod (𝓡∂ 1)⟯ ReflectedCollarDomain M₀ :=
+    CollarSource M₀ ≃ₘ⟮I₀.prod (𝓡∂ 1), I₀.prod (𝓡∂ 1)⟯ reflectedCollarDomain M₀ :=
   (collarSourceToDomain (I₀ := I₀)).trans (collarDomainReflection (I₀ := I₀))
 
 @[simp]
 public theorem collarSourceToDomain_apply (p : CollarSource M₀) :
-    (collarSourceToDomain (I₀ := I₀) p : M₀ × CollarParameter) =
+    (collarSourceToDomain (I₀ := I₀) p : M₀ × collarParameter) =
       (p.1, p.2.1) :=
   rfl
 
 @[simp]
 public theorem collarSourceToReflectedDomain_apply (p : CollarSource M₀) :
-    (collarSourceToReflectedDomain (I₀ := I₀) p : M₀ × CollarParameter) =
+    (collarSourceToReflectedDomain (I₀ := I₀) p : M₀ × collarParameter) =
       (p.1, collarReflection p.2.1) :=
   rfl
 

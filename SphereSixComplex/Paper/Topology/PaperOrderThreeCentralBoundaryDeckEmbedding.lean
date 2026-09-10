@@ -44,7 +44,7 @@ public theorem paperOrderThreeCentralMonodromy_first :
 
 /-- Integral powers of the first marked free meridian in the central affine deck group. -/
 public def paperOrderThreeCentralAngularDeck :
-    Multiplicative ℤ →* paperCentralFreeAffineDeck where
+    Multiplicative ℤ →* PaperCentralFreeAffineDeck where
   toFun n := freeAffineLift (M := paperCentralFreeMonodromy)
     (firstMeridian ^ n.toAdd)
   map_one' := by simp
@@ -94,7 +94,7 @@ first marked meridian of the global affine deck group. -/
 public def paperOrderThreeCentralBoundaryToCentralDeck :
     CanonicalCyclicAffineBoundaryDeck
         (orderThreeCentralFiberPresentationData A.periods).affine.latticeMap.toAddEquiv →*
-      paperCentralFreeAffineDeck :=
+      PaperCentralFreeAffineDeck :=
   SemidirectProduct.lift
     (freeAffineTranslation (M := paperCentralFreeMonodromy)).toMultiplicative
     paperOrderThreeCentralAngularDeck (by
@@ -212,7 +212,7 @@ comparison. -/
 public theorem paperOrderThreeCentralBoundaryToCentralDeck_unique
     (f : CanonicalCyclicAffineBoundaryDeck
         (orderThreeCentralFiberPresentationData A.periods).affine.latticeMap.toAddEquiv →*
-      paperCentralFreeAffineDeck)
+      PaperCentralFreeAffineDeck)
     (htranslation : ∀ a : Lattice,
       f (Additive.toMul (canonicalCyclicAffineTranslation
         (orderThreeCentralFiberPresentationData A.periods).affine.latticeMap.toAddEquiv a)) =
@@ -256,7 +256,7 @@ public theorem paperOrderThreeCentralBoundaryToCentralDeck_unique
 
 /-- The physical order-three mapping-torus deck group mapped into the global central deck group. -/
 public noncomputable def paperOrderThreeActualBoundaryToCentralDeck :
-    OrderThreeAffineMappingTorusDeck A.periods →* paperCentralFreeAffineDeck :=
+    OrderThreeAffineMappingTorusDeck A.periods →* PaperCentralFreeAffineDeck :=
   A.paperOrderThreeCentralBoundaryToCentralDeck.comp
     A.ellipticThreeToCentralBoundaryDeckEquiv.toMonoidHom
 

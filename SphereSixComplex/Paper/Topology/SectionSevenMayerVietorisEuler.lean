@@ -132,7 +132,7 @@ namespace OpenEmbeddingStarData
 
 variable (A : OpenEmbeddingStarData)
 
-public abbrev SectionSevenEulerCover :=
+public abbrev sectionSevenEulerCover :=
   sectionSevenStarOpenCover A.toFourPieceStarGluingData
 
 /-- The three intermediate Mayer--Vietoris unions of the star cover carry no seventh integral
@@ -145,45 +145,45 @@ union is an open subset of the completed six-manifold, where the standard dimens
 the vanishing. -/
 public def SectionSevenStageTopDegreeVanishing : Prop :=
   ∀ r : Fin 3, Subsingleton (IntegralSingularHomology 7
-    ((A.SectionSevenEulerCover).stage r.castSucc ∪ (A.SectionSevenEulerCover).piece r.succ :
+    ((A.sectionSevenEulerCover).stage r.castSucc ∪ (A.sectionSevenEulerCover).piece r.succ :
       Set (GluedSpace A.toFourPieceStarGluingData.glueData)))
 
 /-- The central source is homeomorphic to the first actual open piece. -/
 public noncomputable def centralToSectionSevenEulerPieceHomeomorph :
-    A.central ≃ₜ (A.SectionSevenEulerCover).piece 0 :=
+    A.central ≃ₜ (A.sectionSevenEulerCover).piece 0 :=
   (A.toFourPieceStarGluingData.glueData.ι_isOpenEmbedding none)
     |>.isEmbedding.toHomeomorph
 
 /-- Every filling source is homeomorphic to its actual open image. -/
 public noncomputable def fillingToSectionSevenEulerPieceHomeomorph (i : Fin 3) :
-    A.filling i ≃ₜ (A.SectionSevenEulerCover).piece i.succ :=
+    A.filling i ≃ₜ (A.sectionSevenEulerCover).piece i.succ :=
   (A.toFourPieceStarGluingData.glueData.ι_isOpenEmbedding (some i))
     |>.isEmbedding.toHomeomorph
 
 public theorem sectionSevenEulerStage_zero :
-    (A.SectionSevenEulerCover).stage 0 = (A.SectionSevenEulerCover).piece 0 := by
+    (A.sectionSevenEulerCover).stage 0 = (A.sectionSevenEulerCover).piece 0 := by
   ext x
   simp [FourPieceOpenCover.stage]
 
 /-- The central source is homeomorphic to the initial Mayer--Vietoris stage. -/
 public noncomputable def centralToSectionSevenEulerStageZeroHomeomorph :
-    A.central ≃ₜ (A.SectionSevenEulerCover).stage 0 :=
+    A.central ≃ₜ (A.sectionSevenEulerCover).stage 0 :=
   A.centralToSectionSevenEulerPieceHomeomorph.trans
     (Homeomorph.setCongr A.sectionSevenEulerStage_zero.symm)
 
 /-- The union occurring at one binary Mayer--Vietoris step is the next partial stage. -/
 public noncomputable def sectionSevenEulerStageNextHomeomorph (r : Fin 3) :
-    ((A.SectionSevenEulerCover).stage r.castSucc ∪
-      (A.SectionSevenEulerCover).piece r.succ : Set
+    ((A.sectionSevenEulerCover).stage r.castSucc ∪
+      (A.sectionSevenEulerCover).piece r.succ : Set
         (GluedSpace A.toFourPieceStarGluingData.glueData)) ≃ₜ
-      (A.SectionSevenEulerCover).stage r.succ :=
-  Homeomorph.setCongr ((A.SectionSevenEulerCover).stage_union_next r)
+      (A.sectionSevenEulerCover).stage r.succ :=
+  Homeomorph.setCongr ((A.sectionSevenEulerCover).stage_union_next r)
 
 /-- The last partial stage is homeomorphic to the whole glued star. -/
 public noncomputable def sectionSevenEulerStageLastHomeomorph :
-    (A.SectionSevenEulerCover).stage (3 : Fin 4) ≃ₜ
+    (A.sectionSevenEulerCover).stage (3 : Fin 4) ≃ₜ
       GluedSpace A.toFourPieceStarGluingData.glueData :=
-  topologicalSubsetHomeomorphOfEqUniv _ _ (A.SectionSevenEulerCover).stage_last
+  topologicalSubsetHomeomorphOfEqUniv _ _ (A.sectionSevenEulerCover).stage_last
 
 /-- The explicit local finite-rank expression for the Euler characteristic of the star. -/
 public noncomputable def sectionSevenLocalEulerExpression : ℤ :=
@@ -206,7 +206,7 @@ public theorem integralHomologyEulerCharacteristicSix_eq_localExpression
     integralHomologyEulerCharacteristicSix
         (GluedSpace A.toFourPieceStarGluingData.glueData) =
       A.sectionSevenLocalEulerExpression := by
-  let C := A.SectionSevenEulerCover
+  let C := A.sectionSevenEulerCover
   let eCentralStage : A.central ≃ₜ C.stage 0 := by
     simpa only [C] using A.centralToSectionSevenEulerStageZeroHomeomorph
   let ePiece (i : Fin 3) : A.filling i ≃ₜ C.piece i.succ := by
@@ -326,7 +326,7 @@ public theorem integralHomologyEulerCharacteristicSeven_eq_localExpression
     integralHomologyEulerCharacteristicSeven
         (GluedSpace A.toFourPieceStarGluingData.glueData) =
       A.sectionSevenLocalEulerExpression := by
-  let C := A.SectionSevenEulerCover
+  let C := A.sectionSevenEulerCover
   let eCentralStage : A.central ≃ₜ C.stage 0 := by
     simpa only [C] using A.centralToSectionSevenEulerStageZeroHomeomorph
   let ePiece (i : Fin 3) : A.filling i ≃ₜ C.piece i.succ := by

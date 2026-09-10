@@ -56,7 +56,7 @@ variable {m : ℕ} [NeZero m] {p : SphereSixComplex.Periods.Parameters}
 @[expose] public noncomputable def centralFiberCoverSourceDegreeOneBasis
     (P : AffineCyclicCentralFiberPresentationData m p D) :
     IntegralSingularHomology 1
-        (RadialEllipticActionData.centralFiberCoverSource D) ≃+ Lattice :=
+        (RadialEllipticActionData.CentralFiberCoverSource D) ≃+ Lattice :=
   ((EstablishedTorusHomology.additiveTorusHomologyBasis p P.fullRank).homeomorph
     (RadialEllipticActionData.centralFiberCoverSourceHomeomorph D)).degreeOne
 

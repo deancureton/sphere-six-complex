@@ -120,10 +120,10 @@ public theorem exists_exp_re_eq_norm_of_log_turn
 variable (A : PaperAnalyticData)
 
 /-- The actual marked cusp meridian reaches the middle height of the affine strip. -/
-public theorem exists_actualCuspAngularCoordinateLoop_re_eq_half :
+public theorem exists_cuspAngularCoordinateLoop_re_eq_half :
     ∃ t : unitInterval, ((A.cuspAngularCoordinateLoop t).1).re = 1 / 2 := by
   let γ : C(unitInterval, ℂ) :=
-    ⟨A.cuspAngularZeroRawLog, A.continuous_actualCuspAngularZeroRawLog⟩
+    ⟨A.cuspAngularZeroRawLog, A.continuous_cuspAngularZeroRawLog⟩
   obtain ⟨tzero, hzero⟩ :=
     exists_exp_re_eq_zero_of_log_turn γ A.cuspAngularZeroRawLog_one
   obtain ⟨tpositive, hpositive⟩ :=
@@ -146,12 +146,12 @@ public theorem exists_actualCuspAngularCoordinateLoop_re_eq_half :
 
 /-- The selected middle-strip crossing of the actual cusp meridian. -/
 public noncomputable def affineActualCuspCrossingTime : unitInterval :=
-  Classical.choose A.exists_actualCuspAngularCoordinateLoop_re_eq_half
+  Classical.choose A.exists_cuspAngularCoordinateLoop_re_eq_half
 
 public theorem affineActualCuspCrossingTime_re_eq_half :
     ((A.cuspAngularCoordinateLoop A.affineActualCuspCrossingTime).1).re =
       1 / 2 :=
-  Classical.choose_spec A.exists_actualCuspAngularCoordinateLoop_re_eq_half
+  Classical.choose_spec A.exists_cuspAngularCoordinateLoop_re_eq_half
 
 /-- The selected actual cusp-coordinate crossing, regarded as a point of the affine strip. -/
 public noncomputable def affineActualCuspCrossingPoint :
@@ -165,7 +165,7 @@ public noncomputable def affineActualCuspCrossingPoint :
     norm_num⟩
 
 /-- The explicit regular cusp point lies above the selected affine-strip crossing. -/
-public theorem regularCoordinate_actualCuspAngularRegularBasePoint_crossing :
+public theorem regularCoordinate_cuspAngularRegularBasePoint_crossing :
     A.regularCoordinate
         (A.cuspAngularRegularBasePoint A.affineActualCuspCrossingTime) =
       stripInclusion A.affineActualCuspCrossingPoint := by
@@ -181,7 +181,7 @@ public noncomputable def affineActualCuspContinuousLift :
   Classical.choose (A.existsUnique_sectionSevenAffineStripContinuousLift
     A.affineActualCuspCrossingPoint
     (A.cuspAngularRegularBasePoint A.affineActualCuspCrossingTime)
-    A.regularCoordinate_actualCuspAngularRegularBasePoint_crossing)
+    A.regularCoordinate_cuspAngularRegularBasePoint_crossing)
 
 public theorem affineActualCuspContinuousLift_apply_crossing :
     A.affineActualCuspContinuousLift A.affineActualCuspCrossingPoint =
@@ -189,14 +189,14 @@ public theorem affineActualCuspContinuousLift_apply_crossing :
   (Classical.choose_spec (A.existsUnique_sectionSevenAffineStripContinuousLift
     A.affineActualCuspCrossingPoint
     (A.cuspAngularRegularBasePoint A.affineActualCuspCrossingTime)
-    A.regularCoordinate_actualCuspAngularRegularBasePoint_crossing)).1.1
+    A.regularCoordinate_cuspAngularRegularBasePoint_crossing)).1.1
 
 public theorem affineActualCuspContinuousLift_coordinate :
     A.regularCoordinate ∘ A.affineActualCuspContinuousLift = stripInclusion :=
   (Classical.choose_spec (A.existsUnique_sectionSevenAffineStripContinuousLift
     A.affineActualCuspCrossingPoint
     (A.cuspAngularRegularBasePoint A.affineActualCuspCrossingTime)
-    A.regularCoordinate_actualCuspAngularRegularBasePoint_crossing)).1.2
+    A.regularCoordinate_cuspAngularRegularBasePoint_crossing)).1.2
 
 /-- The affine-strip lift uniquely pinned by the selected actual cusp crossing. -/
 public noncomputable def affineActualCuspStripLift : A.AffineStripLift where

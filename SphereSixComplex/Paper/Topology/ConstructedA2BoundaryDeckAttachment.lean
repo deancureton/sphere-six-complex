@@ -21,7 +21,7 @@ open SphereSixComplex.Geometry.CuspStraighteningRetraction
 open SphereSixComplex.Geometry.CuspToricPhaseAction
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public theorem constructedA2EffectivePhase_fanShear_commute
@@ -49,7 +49,7 @@ public theorem constructedA2PositiveDeck_effectivePhase_commute
 
 public theorem constructedA2FrozenDeck_effectivePhase_formula
     (r : ℝ) (lambda : ParameterLattice) (k : Fin 2 → Circle)
-    (p : LocalCarrier constructedModel r) :
+    (p : localCarrier constructedModel r) :
     (frozenLocalPsiMap N constructedModel r lambda
       (compactPhaseLocalAction constructedModel r (constructedA2EffectivePhaseSection k) p) :
         constructedModel.Carrier) =
@@ -72,11 +72,11 @@ public theorem constructedA2ActualDeck_effectivePhase_carrier
       normalizedPositiveDeckCarrierMap N constructedModel lambda (q.1.1.1 : constructedModel.Carrier)) :
     letI := actualLocalCuspQuotientAction W
     (((Multiplicative.ofAdd lambda • constructedA2EffectivePhaseCentralPoint W k q).1 :
-      LocalCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) =
+      localCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) =
         normalizedPositiveDeckCarrierMap N constructedModel lambda
           (q.1.1.1 : constructedModel.Carrier) := by
   let _ := actualLocalCuspQuotientAction W
-  let C := CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
+  let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
     N constructedModel W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
   let p := constructedA2EffectivePhaseCentralPoint W k q
   have hactual : C.psiMap lambda p.1 =

@@ -1119,7 +1119,7 @@ theorem circleMappingTorusVanKampenLift_unique
         circleMappingTorusPatchedGauge_edge phi cV cE hoverlap]
       simpa using he
 
-theorem mappingTorusHNNToFundamentalGroup_rightInverse_proof
+theorem mappingTorusHNNToFundamentalGroup_rightInverse
     {F : Type} [TopologicalSpace F] [PathConnectedSpace F]
     (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x) :
     (mappingTorusHNNToFundamentalGroup phi x delta).comp
@@ -1169,6 +1169,6 @@ theorem mappingTorusHNNToFundamentalGroup_surjective_proof
     (phi : F ≃ₜ F) (x : F) (delta : Path (phi x) x) :
     Function.Surjective (mappingTorusHNNToFundamentalGroup phi x delta) := by
   rw [mappingTorusHNNToFundamentalGroup_surjective_iff_rightInverse]
-  exact mappingTorusHNNToFundamentalGroup_rightInverse_proof phi x delta
+  exact mappingTorusHNNToFundamentalGroup_rightInverse phi x delta
 
 end SphereSixComplex

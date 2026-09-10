@@ -30,8 +30,8 @@ variable (A : PaperAnalyticData)
 public noncomputable def orderThreeCentralAffineCorrectedNegativeEpsilonPeriodPath :
     Path A.centralAffineBase A.centralAffineBase :=
   A.ellipticThreeCuspCorrectedEpsilonPeriodPath.symm.cast
-    A.centralAffineBase_eq_actualCuspCentralBase
-    A.centralAffineBase_eq_actualCuspCentralBase
+    A.centralAffineBase_eq_cuspCentralBase
+    A.centralAffineBase_eq_cuspCentralBase
 
 public theorem ellipticThreeCuspCorrectedNegativeEpsilonPeriodPath_class :
     Path.Homotopic.Quotient.mk

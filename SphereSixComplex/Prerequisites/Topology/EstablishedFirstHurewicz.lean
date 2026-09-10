@@ -92,7 +92,7 @@ public def abelianizationComparison
 /-- The abelianized deck-to-fundamental-group equivalence obtained from quotient-cover monodromy.
 Mathlib's monodromy convention produces the opposite deck group; the opposite convention is
 removed only after abelianization, preserving marked generator orientation. -/
-public def deckAbelianPi1EquivOfFundamentalGroupEquivOpposite
+public def abelianizationEquivOfPi1Opposite
     {X G : Type} [TopologicalSpace X] [PathConnectedSpace X] [Group G] (b : X)
     (e : FundamentalGroup X b ≃* Gᵐᵒᵖ) :
     Additive (Abelianization G) ≃ₗ[ℤ] AbelianPi1 X b :=
@@ -100,37 +100,37 @@ public def deckAbelianPi1EquivOfFundamentalGroupEquivOpposite
       (abelianizationMulOppositeEquiv G)).symm.toAdditive.toIntLinearEquiv)
 
 /-- First homology obtained from a quotient-cover monodromy equivalence. -/
-public def deckHOneEquivOfFundamentalGroupEquivOpposite
+public def homologyOneEquivOfPi1Opposite
     {X G : Type} [TopologicalSpace X] [PathConnectedSpace X] [Group G] (b : X)
     (e : FundamentalGroup X b ≃* Gᵐᵒᵖ) :
     Additive (Abelianization G) ≃ₗ[ℤ] IntegralSingularHomology 1 X :=
-  (deckAbelianPi1EquivOfFundamentalGroupEquivOpposite b e).trans
+  (abelianizationEquivOfPi1Opposite b e).trans
     (abelianizationComparison X b).equiv
 
 /-- A marked deck transformation represented by a loop maps to that loop's integral homology
 class under the quotient-cover first-Hurewicz equivalence. -/
-public theorem deckHOneEquivOfFundamentalGroupEquivOpposite_markedLoop
+public theorem homologyOneEquivOfPi1Opposite_apply_loop
     {X G Λ : Type} [TopologicalSpace X] [PathConnectedSpace X] [Group G] (b : X)
     (e : FundamentalGroup X b ≃* Gᵐᵒᵖ) (deck : Λ → G)
     (loop : Λ → Path b b)
     (hmark : ∀ a, e (Path.Homotopic.Quotient.mk (loop a)) = MulOpposite.op (deck a))
     (a : Λ) :
-    deckHOneEquivOfFundamentalGroupEquivOpposite b e
+    homologyOneEquivOfPi1Opposite b e
         (Additive.ofMul (Abelianization.of (deck a))) =
       StandardCircleHomologyLiftDegree.loopHomologyClass (loop a) := by
-  rw [deckHOneEquivOfFundamentalGroupEquivOpposite]
+  rw [homologyOneEquivOfPi1Opposite]
   rw [LinearEquiv.trans_apply]
   have hloop :
-      deckAbelianPi1EquivOfFundamentalGroupEquivOpposite b e
+      abelianizationEquivOfPi1Opposite b e
           (Additive.ofMul (Abelianization.of (deck a))) = loopClass (loop a) := by
-    apply (deckAbelianPi1EquivOfFundamentalGroupEquivOpposite b e).symm.injective
-    simp [deckAbelianPi1EquivOfFundamentalGroupEquivOpposite, loopClass, hmark,
+    apply (abelianizationEquivOfPi1Opposite b e).symm.injective
+    simp [abelianizationEquivOfPi1Opposite, loopClass, hmark,
       abelianizationCongr_symm]
   rw [hloop, (abelianizationComparison X b).equiv_loopClass]
 
 /-- The marked form of the quotient-cover first-Hurewicz comparison with a prescribed target
 homology class. -/
-public theorem deckHOneEquivOfFundamentalGroupEquivOpposite_marked
+public theorem homologyOneEquivOfPi1Opposite_apply_marked
     {X G Λ : Type} [TopologicalSpace X] [PathConnectedSpace X] [Group G] (b : X)
     (e : FundamentalGroup X b ≃* Gᵐᵒᵖ) (deck : Λ → G)
     (loop : Λ → Path b b)
@@ -138,9 +138,9 @@ public theorem deckHOneEquivOfFundamentalGroupEquivOpposite_marked
     (hmark : ∀ a, e (Path.Homotopic.Quotient.mk (loop a)) = MulOpposite.op (deck a))
     (hhomology : ∀ a, StandardCircleHomologyLiftDegree.loopHomologyClass (loop a) = target a)
     (a : Λ) :
-    deckHOneEquivOfFundamentalGroupEquivOpposite b e
+    homologyOneEquivOfPi1Opposite b e
         (Additive.ofMul (Abelianization.of (deck a))) = target a := by
-  rw [deckHOneEquivOfFundamentalGroupEquivOpposite_markedLoop b e deck loop hmark,
+  rw [homologyOneEquivOfPi1Opposite_apply_loop b e deck loop hmark,
     hhomology]
 
 @[simp]
@@ -175,7 +175,7 @@ public theorem abelianizationMap_surjective {G H : Type*} [Group G] [Group H]
       exact ⟨Abelianization.of x, rfl⟩
 
 /-- A map surjective on fundamental groups is surjective on first integral homology. -/
-public theorem integralSingularHomologyMap_one_surjective_of_fundamentalGroupMap_surjective
+public theorem homologyOneMap_surjective_of_pi1Map_surjective
     {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     [PathConnectedSpace X] [PathConnectedSpace Y]
     (f : C(X, Y)) (b : X)

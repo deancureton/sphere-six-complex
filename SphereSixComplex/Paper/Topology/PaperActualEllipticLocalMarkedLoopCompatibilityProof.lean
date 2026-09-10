@@ -56,7 +56,7 @@ public theorem orderThreeCentralAffineBasedMarkingCoherence :
   let _ := D.action
   let C := A.ellipticThreeCentralCoverComparison
   let β := A.orderThreeCentralBaseWhisker.cast
-    A.centralAffineBase_eq_actualCuspCentralBase.symm rfl
+    A.centralAffineBase_eq_cuspCentralBase.symm rfl
   refine ⟨β, ?_, ?_⟩
   · have hinner : A.orderThreeCentralMeridianAtOverlap =
         FundamentalGroup.fundamentalGroupMulEquivOfPath β
@@ -67,7 +67,7 @@ public theorem orderThreeCentralAffineBasedMarkingCoherence :
         fundamentalGroupMulEquivOfEq_eq_elementOfBaseEq] using
         fundamentalGroupMulEquivOfPath_elementOfBaseEq_eq_cast_left
           A.orderThreeCentralBaseWhisker
-          A.centralAffineBase_eq_actualCuspCentralBase.symm A.geometricCentralRhoOne
+          A.centralAffineBase_eq_cuspCentralBase.symm A.geometricCentralRhoOne
     exact congrArg
       (fundamentalGroupElementOfBaseEq
         (C.commutes A.ellipticThreeBoundaryBase)) hinner
@@ -83,7 +83,7 @@ public theorem orderThreeCentralAffineBasedMarkingCoherence :
         fundamentalGroupMulEquivOfEq_eq_elementOfBaseEq] using
         fundamentalGroupMulEquivOfPath_elementOfBaseEq_eq_cast_left
           A.orderThreeCentralBaseWhisker
-          A.centralAffineBase_eq_actualCuspCentralBase.symm
+          A.centralAffineBase_eq_cuspCentralBase.symm
           (Additive.toMul (A.correctedActualCuspCentralTranslation (-epsilon)))
     exact congrArg
       (fundamentalGroupElementOfBaseEq

@@ -34,7 +34,7 @@ open StandardTorusHomology
 variable {G : Type} [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
   [PathConnectedSpace G]
 
-public abbrev FixedLoopPresentation (phi : G ≃ₜ+ G) :=
+public abbrev fixedLoopPresentation (phi : G ≃ₜ+ G) :=
   circleMappingTorusWangPresentationOfCover phi.toHomeomorph 1
 
 private def unitAddCircleProductProjection :
@@ -110,10 +110,10 @@ public theorem fixedLoopSweepClass_zero (phi : G ≃ₜ+ G) :
 
 /-- The Wang boundary of the explicit sweep is additive in the pointwise-fixed loop. -/
 public theorem fixedLoopSweepClass_boundary_add (phi : G ≃ₜ+ G)
-    (c d : FixedLoop phi) :
-    (FixedLoopPresentation phi).boundary (fixedLoopSweepClass phi (c + d)) =
-      (FixedLoopPresentation phi).boundary (fixedLoopSweepClass phi c) +
-        (FixedLoopPresentation phi).boundary (fixedLoopSweepClass phi d) := by
+    (c d : fixedLoops phi) :
+    (fixedLoopPresentation phi).boundary (fixedLoopSweepClass phi (c + d)) =
+      (fixedLoopPresentation phi).boundary (fixedLoopSweepClass phi c) +
+        (fixedLoopPresentation phi).boundary (fixedLoopSweepClass phi d) := by
   rw [fixedLoopSweepClass_boundary, fixedLoopSweepClass_boundary,
     fixedLoopSweepClass_boundary]
   exact standardCircleHomologyClass_map_add c.1 d.1
@@ -121,28 +121,28 @@ public theorem fixedLoopSweepClass_boundary_add (phi : G ≃ₜ+ G)
 omit [PathConnectedSpace G] in
 /-- The Wang boundary of the explicit sweep of the zero loop vanishes. -/
 public theorem fixedLoopSweepClass_boundary_zero (phi : G ≃ₜ+ G) :
-    (FixedLoopPresentation phi).boundary (fixedLoopSweepClass phi 0) = 0 := by
+    (fixedLoopPresentation phi).boundary (fixedLoopSweepClass phi 0) = 0 := by
   rw [fixedLoopSweepClass_boundary]
   exact standardCircleHomologyClass_map_zero
 
 /-- The additive defect of the explicit fixed-loop sweep lies in the image of the fibre
 inclusion.  This is the strongest conclusion supplied by Wang exactness alone. -/
 public theorem fixedLoopSweepClass_add_defect_mem_fibre (phi : G ≃ₜ+ G)
-    (c d : FixedLoop phi) :
+    (c d : fixedLoops phi) :
     fixedLoopSweepClass phi (c + d) - fixedLoopSweepClass phi c -
         fixedLoopSweepClass phi d ∈
-      Set.range (FixedLoopPresentation phi).inclusion := by
-  apply ((FixedLoopPresentation phi).exact_inclusion_boundary _).mp
+      Set.range (fixedLoopPresentation phi).inclusion := by
+  apply ((fixedLoopPresentation phi).exact_inclusion_boundary _).mp
   rw [map_sub, map_sub, fixedLoopSweepClass_boundary_add]
   abel
 
 /-- Equivalently, the sweep of a sum is the sum of the sweeps up to one fibre class. -/
 public theorem fixedLoopSweepClass_add_eq_add_add_fibre (phi : G ≃ₜ+ G)
-    (c d : FixedLoop phi) :
+    (c d : fixedLoops phi) :
     ∃ x : IntegralSingularHomology 2 G,
       fixedLoopSweepClass phi (c + d) =
         fixedLoopSweepClass phi c + fixedLoopSweepClass phi d +
-          (FixedLoopPresentation phi).inclusion x := by
+          (fixedLoopPresentation phi).inclusion x := by
   obtain ⟨x, hx⟩ := fixedLoopSweepClass_add_defect_mem_fibre phi c d
   refine ⟨x, ?_⟩
   rw [hx]
@@ -152,7 +152,7 @@ public theorem fixedLoopSweepClass_add_eq_add_add_fibre (phi : G ≃ₜ+ G)
 in total-space homology. -/
 public theorem fixedLoopSweepClass_add_of_subsingleton_homologyTwo
     [Subsingleton (IntegralSingularHomology 2 G)] (phi : G ≃ₜ+ G)
-    (c d : FixedLoop phi) :
+    (c d : fixedLoops phi) :
     fixedLoopSweepClass phi (c + d) =
       fixedLoopSweepClass phi c + fixedLoopSweepClass phi d := by
   obtain ⟨x, hx⟩ := fixedLoopSweepClass_add_eq_add_add_fibre phi c d
@@ -164,7 +164,7 @@ public theorem fixedLoopSweepClass_add_of_subsingleton_homologyTwo
 additive homomorphism without passing to a quotient. -/
 public noncomputable def fixedLoopSweepClassHomOfSubsingletonHomologyTwo
     [Subsingleton (IntegralSingularHomology 2 G)] (phi : G ≃ₜ+ G) :
-    FixedLoop phi →+ IntegralSingularHomology 2
+    fixedLoops phi →+ IntegralSingularHomology 2
       (CircleMappingTorus phi.toHomeomorph) where
   toFun := fixedLoopSweepClass phi
   map_zero' := fixedLoopSweepClass_zero phi
@@ -173,23 +173,23 @@ public noncomputable def fixedLoopSweepClassHomOfSubsingletonHomologyTwo
 omit [PathConnectedSpace G] in
 /-- The explicit sweep of the zero loop is itself a fibre-supported class. -/
 public theorem fixedLoopSweepClass_zero_mem_fibre (phi : G ≃ₜ+ G) :
-    fixedLoopSweepClass phi 0 ∈ Set.range (FixedLoopPresentation phi).inclusion := by
-  apply ((FixedLoopPresentation phi).exact_inclusion_boundary _).mp
+    fixedLoopSweepClass phi 0 ∈ Set.range (fixedLoopPresentation phi).inclusion := by
+  apply ((fixedLoopPresentation phi).exact_inclusion_boundary _).mp
   exact fixedLoopSweepClass_boundary_zero phi
 
 omit [PathConnectedSpace G] in
 /-- Any degree-two class with the prescribed fixed-loop Wang boundary differs from the explicit
 sweep by a fibre-supported class. -/
 public theorem eq_fixedLoopSweepClass_add_fibre_of_boundary (phi : G ≃ₜ+ G)
-    (c : FixedLoop phi)
+    (c : fixedLoops phi)
     (z : IntegralSingularHomology 2 (CircleMappingTorus phi.toHomeomorph))
-    (hz : (FixedLoopPresentation phi).boundary z =
+    (hz : (fixedLoopPresentation phi).boundary z =
       integralSingularHomologyMap 1 c.1 standardCircleHomologyGenerator) :
     ∃ x : IntegralSingularHomology 2 G,
-      z = fixedLoopSweepClass phi c + (FixedLoopPresentation phi).inclusion x := by
+      z = fixedLoopSweepClass phi c + (fixedLoopPresentation phi).inclusion x := by
   have hmem : z - fixedLoopSweepClass phi c ∈
-      Set.range (FixedLoopPresentation phi).inclusion := by
-    apply ((FixedLoopPresentation phi).exact_inclusion_boundary _).mp
+      Set.range (fixedLoopPresentation phi).inclusion := by
+    apply ((fixedLoopPresentation phi).exact_inclusion_boundary _).mp
     rw [map_sub, fixedLoopSweepClass_boundary, hz, sub_self]
   obtain ⟨x, hx⟩ := hmem
   refine ⟨x, ?_⟩
@@ -201,7 +201,7 @@ boundary. -/
 public theorem fixedLoopSweepClass_orbitNorm_boundary
     (m : ℕ) [NeZero m] (phi : G ≃ₜ+ G)
     (hpow : phi.toHomeomorph ^ m = 1) (c : C(StdTorus 1, G)) :
-    (FixedLoopPresentation phi).boundary
+    (fixedLoopPresentation phi).boundary
         (fixedLoopSweepClass phi (orbitNorm m phi hpow c)) =
       ∑ i ∈ Finset.range m,
         integralSingularHomologyMap 1
@@ -215,7 +215,7 @@ public theorem normalizedCover_cross_eq_fixedLoopSweepClass_add_fibre_of_boundar
     (m : ℕ) [NeZero m] (phi : G ≃ₜ+ G)
     (hpow : phi.toHomeomorph ^ m = 1) (c : C(StdTorus 1, G))
     (hboundary :
-      (FixedLoopPresentation phi).boundary
+      (fixedLoopPresentation phi).boundary
           (integralSingularHomologyMap 2
             (normalizedAffineCoverToCircleMappingTorus phi.toHomeomorph hpow)
             (positiveCircleCross c)) =
@@ -228,44 +228,44 @@ public theorem normalizedCover_cross_eq_fixedLoopSweepClass_add_fibre_of_boundar
           (normalizedAffineCoverToCircleMappingTorus phi.toHomeomorph hpow)
           (positiveCircleCross c) =
         fixedLoopSweepClass phi (orbitNorm m phi hpow c) +
-          (FixedLoopPresentation phi).inclusion x := by
+          (fixedLoopPresentation phi).inclusion x := by
   apply eq_fixedLoopSweepClass_add_fibre_of_boundary
   rw [standardCircleHomologyClass_orbitNorm]
   exact hboundary
 
 /-- Fibre-supported degree-two classes in the mapping torus. -/
-public abbrev FixedLoopFibreRange (phi : G ≃ₜ+ G) :=
-  LinearMap.range (FixedLoopPresentation phi).inclusion.toIntLinearMap
+public abbrev fixedLoopFiberRange (phi : G ≃ₜ+ G) :=
+  LinearMap.range (fixedLoopPresentation phi).inclusion.toIntLinearMap
 
 /-- Degree-two mapping-torus homology modulo classes supported in the fibre. -/
 public abbrev FixedLoopSweepModuloFibre (phi : G ≃ₜ+ G) :=
   IntegralSingularHomology 2 (CircleMappingTorus phi.toHomeomorph) ⧸
-    FixedLoopFibreRange phi
+    fixedLoopFiberRange phi
 
 /-- The explicit fixed-loop sweep is genuinely additive after quotienting out fibre-supported
 classes. -/
 public noncomputable def fixedLoopSweepClassModuloFibre (phi : G ≃ₜ+ G) :
-    FixedLoop phi →+ FixedLoopSweepModuloFibre phi where
+    fixedLoops phi →+ FixedLoopSweepModuloFibre phi where
   toFun c := Submodule.Quotient.mk (fixedLoopSweepClass phi c)
   map_zero' := by
-    apply (Submodule.Quotient.eq (FixedLoopFibreRange phi)).2
+    apply (Submodule.Quotient.eq (fixedLoopFiberRange phi)).2
     rw [sub_zero]
     obtain ⟨x, hx⟩ := fixedLoopSweepClass_zero_mem_fibre phi
     exact ⟨x, hx⟩
   map_add' c d := by
-    apply (Submodule.Quotient.eq (FixedLoopFibreRange phi)).2
+    apply (Submodule.Quotient.eq (fixedLoopFiberRange phi)).2
     change fixedLoopSweepClass phi (c + d) -
         (fixedLoopSweepClass phi c + fixedLoopSweepClass phi d) ∈
-      FixedLoopFibreRange phi
+      fixedLoopFiberRange phi
     obtain ⟨x, hx⟩ := fixedLoopSweepClass_add_defect_mem_fibre phi c d
     refine ⟨x, ?_⟩
-    change (FixedLoopPresentation phi).inclusion x = _
+    change (fixedLoopPresentation phi).inclusion x = _
     rw [hx]
     abel
 
 @[simp]
 public theorem fixedLoopSweepClassModuloFibre_apply (phi : G ≃ₜ+ G)
-    (c : FixedLoop phi) :
+    (c : fixedLoops phi) :
     fixedLoopSweepClassModuloFibre phi c =
       Submodule.Quotient.mk (fixedLoopSweepClass phi c) :=
   rfl
@@ -273,17 +273,17 @@ public theorem fixedLoopSweepClassModuloFibre_apply (phi : G ≃ₜ+ G)
 /-- In the quotient by fibre-supported classes, the Wang boundary uniquely determines the
 explicit fixed-loop sweep class. -/
 public theorem quotient_mk_eq_fixedLoopSweepClass_of_boundary (phi : G ≃ₜ+ G)
-    (c : FixedLoop phi)
+    (c : fixedLoops phi)
     (z : IntegralSingularHomology 2 (CircleMappingTorus phi.toHomeomorph))
-    (hz : (FixedLoopPresentation phi).boundary z =
+    (hz : (fixedLoopPresentation phi).boundary z =
       integralSingularHomologyMap 1 c.1 standardCircleHomologyGenerator) :
     (Submodule.Quotient.mk z : FixedLoopSweepModuloFibre phi) =
       fixedLoopSweepClassModuloFibre phi c := by
   rw [fixedLoopSweepClassModuloFibre_apply]
-  apply (Submodule.Quotient.eq (FixedLoopFibreRange phi)).2
+  apply (Submodule.Quotient.eq (fixedLoopFiberRange phi)).2
   have hmem : z - fixedLoopSweepClass phi c ∈
-      Set.range (FixedLoopPresentation phi).inclusion := by
-    apply ((FixedLoopPresentation phi).exact_inclusion_boundary _).mp
+      Set.range (fixedLoopPresentation phi).inclusion := by
+    apply ((fixedLoopPresentation phi).exact_inclusion_boundary _).mp
     rw [map_sub, fixedLoopSweepClass_boundary, hz, sub_self]
   obtain ⟨x, hx⟩ := hmem
   exact ⟨x, hx⟩
@@ -450,7 +450,7 @@ public theorem normalizedAffineCover_positiveCircleCross_boundary_of_overlapCalc
     (m : ℕ) [NeZero m] (phi : G ≃ₜ+ G)
     (hpow : phi.toHomeomorph ^ m = 1) (c : C(StdTorus 1, G))
     (hcalc : NormalizedCoverCrossLowOverlapCalculation m phi hpow c) :
-    (FixedLoopPresentation phi).boundary
+    (fixedLoopPresentation phi).boundary
         (integralSingularHomologyMap 2
           (normalizedAffineCoverToCircleMappingTorus phi.toHomeomorph hpow)
           (positiveCircleCross c)) =

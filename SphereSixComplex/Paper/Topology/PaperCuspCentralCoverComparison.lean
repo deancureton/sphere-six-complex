@@ -37,8 +37,8 @@ public noncomputable def cuspCentralCoverComparison :
     let D := A.centralAffineUniversalCover
     letI := D.topology
     letI := D.action
-    QuotientCoverMapData (G := paperCuspBoundaryDeck)
-      (H := paperCentralFreeAffineDeck)
+    QuotientCoverMapData (G := PaperCuspBoundaryDeck)
+      (H := PaperCentralFreeAffineDeck)
       A.cuspBoundaryProjection D.data.projection := by
   let W := A.starCuspWitness
   let _ := paperCuspBoundaryDeckAction W
@@ -124,7 +124,7 @@ public theorem cuspCentralCoverComparison_commutes
 
 /-- The lift is equivariant for the deck homomorphism induced by the actual collar map. -/
 public theorem cuspCentralCoverComparison_equivariant
-    (g : paperCuspBoundaryDeck)
+    (g : PaperCuspBoundaryDeck)
     (p : additiveCuspRadiusCover A.starCuspWitness.localWitness.radius) :
     let W := A.starCuspWitness
     letI := paperCuspBoundaryDeckAction W
@@ -145,7 +145,7 @@ public theorem cuspCentralCoverComparison_equivariant
 transformation.  This is the fundamental-group naturality statement before making any claim
 about which marked element of the central affine deck group the transformation is. -/
 public theorem cuspCentralCoverComparison_ofDeck
-    (g : paperCuspBoundaryDeck) :
+    (g : PaperCuspBoundaryDeck) :
     let W := A.starCuspWitness
     letI := paperCuspBoundaryDeckAction W
     let D := A.centralAffineUniversalCover
@@ -157,7 +157,7 @@ public theorem cuspCentralCoverComparison_ofDeck
     letI : SimplyConnectedSpace D.Cover := D.data.simplyConnected
     let C := A.cuspCentralCoverComparison
     let hp : IsQuotientCoveringMap A.cuspBoundaryProjection
-        paperCuspBoundaryDeck :=
+        PaperCuspBoundaryDeck :=
       (additiveCuspBoundaryProjection_isQuotientCoveringMap W).homeomorph_comp
         A.cuspCollarToStarOverlapHomeomorph
     D.data.quotientCovering.fundamentalGroupEquiv
@@ -177,7 +177,7 @@ public theorem cuspCentralCoverComparison_ofDeck
   let _ : SimplyConnectedSpace D.Cover := D.data.simplyConnected
   let C := A.cuspCentralCoverComparison
   let hp : IsQuotientCoveringMap A.cuspBoundaryProjection
-      paperCuspBoundaryDeck :=
+      PaperCuspBoundaryDeck :=
     (additiveCuspBoundaryProjection_isQuotientCoveringMap W).homeomorph_comp
       A.cuspCollarToStarOverlapHomeomorph
   simpa using
@@ -188,7 +188,7 @@ public theorem cuspCentralCoverComparison_ofDeck
 /-- Based form of the cover naturality theorem at the actual overlap and selected central
 basepoints. -/
 public theorem cuspCentralCoverComparison_ofDeck_actualBase
-    (g : paperCuspBoundaryDeck) :
+    (g : PaperCuspBoundaryDeck) :
     let W := A.starCuspWitness
     letI := paperCuspBoundaryDeckAction W
     let D := A.centralAffineUniversalCover
@@ -199,7 +199,7 @@ public theorem cuspCentralCoverComparison_ofDeck_actualBase
       additiveCuspBoundaryCover_simplyConnected W
     letI : SimplyConnectedSpace D.Cover := D.data.simplyConnected
     let hp : IsQuotientCoveringMap A.cuspBoundaryProjection
-        paperCuspBoundaryDeck :=
+        PaperCuspBoundaryDeck :=
       (additiveCuspBoundaryProjection_isQuotientCoveringMap W).homeomorph_comp
         A.cuspCollarToStarOverlapHomeomorph
     D.data.quotientCovering.fundamentalGroupEquiv
@@ -207,7 +207,7 @@ public theorem cuspCentralCoverComparison_ofDeck_actualBase
         (FundamentalGroup.mapOfEq A.cuspOverlapToCentral
           (by
             rw [A.cuspBoundaryCoverBase_projects]
-            exact A.centralAffineBase_eq_actualCuspCentralBase.symm)
+            exact A.centralAffineBase_eq_cuspCentralBase.symm)
           (ofDeck hp A.cuspBoundaryCoverBase g)) =
       MulOpposite.op (A.cuspCentralCoverComparison.deckMap g) := by
   let W := A.starCuspWitness
@@ -220,7 +220,7 @@ public theorem cuspCentralCoverComparison_ofDeck_actualBase
     additiveCuspBoundaryCover_simplyConnected W
   let _ : SimplyConnectedSpace D.Cover := D.data.simplyConnected
   let hp : IsQuotientCoveringMap A.cuspBoundaryProjection
-      paperCuspBoundaryDeck :=
+      PaperCuspBoundaryDeck :=
     (additiveCuspBoundaryProjection_isQuotientCoveringMap W).homeomorph_comp
       A.cuspCollarToStarOverlapHomeomorph
   let C := A.cuspCentralCoverComparison

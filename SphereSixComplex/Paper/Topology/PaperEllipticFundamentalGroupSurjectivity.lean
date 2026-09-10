@@ -492,10 +492,10 @@ public theorem orderThreePuncturedCollarToFilling_fundamentalGroup_surjective
     A.modular.modularParameter.toTriangleUniformization_sourceAction r
   let q : S.carrier := ⟨projection (parameterMap A.periods) x, hx⟩
   let _ := A.totalSpaceCharts
-  let _ : IsManifold GlobalDeckTotalModel RegularSmoothnessOrder
+  let _ : IsManifold globalDeckTotalModel regularSmoothnessOrder
       (TotalSpace (parameterMap A.periods)) := A.totalSpace_isManifold
   let _ : LocallyCompactSpace (TotalSpace (parameterMap A.periods)) :=
-    Manifold.locallyCompact_of_finiteDimensional GlobalDeckTotalModel
+    Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
   let _ : T2Space (TotalSpace (parameterMap A.periods)) := A.totalSpace_t2
   let _ : LocallyCompactSpace S.carrier := S.isOpen_carrier.locallyCompactSpace
   let _ : T2Space S.carrier := by infer_instance
@@ -578,10 +578,10 @@ public theorem orderFourPuncturedCollarToFilling_fundamentalGroup_surjective
     A.modular.modularParameter.toTriangleUniformization_sourceAction r
   let q : S.carrier := ⟨projection (parameterMap A.periods) x, hx⟩
   let _ := A.totalSpaceCharts
-  let _ : IsManifold GlobalDeckTotalModel RegularSmoothnessOrder
+  let _ : IsManifold globalDeckTotalModel regularSmoothnessOrder
       (TotalSpace (parameterMap A.periods)) := A.totalSpace_isManifold
   let _ : LocallyCompactSpace (TotalSpace (parameterMap A.periods)) :=
-    Manifold.locallyCompact_of_finiteDimensional GlobalDeckTotalModel
+    Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
   let _ : T2Space (TotalSpace (parameterMap A.periods)) := A.totalSpace_t2
   let _ : LocallyCompactSpace S.carrier := S.isOpen_carrier.locallyCompactSpace
   let _ : T2Space S.carrier := by infer_instance

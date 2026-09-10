@@ -101,7 +101,7 @@ public theorem ellipticFillingImages_disjoint :
         A.starCover.piece 1 ∩
           A.starCover.piece 2 = ∅ := by
       simpa [starCover,
-        OpenEmbeddingStarData.SectionSevenMayerVietorisCover,
+        OpenEmbeddingStarData.sectionSevenMayerVietorisCover,
         sectionSevenMayerVietorisOpenCover, sectionSevenMayerVietorisOrder] using
         A.openEmbeddingStarData.fillingPiece_inter_fillingPiece
           (i := 1) (j := 2) (by decide)
@@ -203,7 +203,7 @@ public noncomputable def duplicatedSectionSevenOrderThreeToOrderFourBandHomeomor
 /-- The order-three restricted covering source is the canonical band torus. -/
 public noncomputable def duplicatedSectionSevenBandToOrderThreeCoverSource :
     AdditiveTorus A.duplicatedSectionSevenBandParameter ≃ₜ
-      RadialEllipticActionData.centralFiberCoverSource
+      RadialEllipticActionData.CentralFiberCoverSource
         (orderThreeRadialActionData A.periods) :=
   (RadialEllipticActionData.centralFiberCoverSourceHomeomorph
     (orderThreeRadialActionData A.periods)).symm
@@ -211,7 +211,7 @@ public noncomputable def duplicatedSectionSevenBandToOrderThreeCoverSource :
 /-- Transport the canonical band torus to the order-four restricted covering source. -/
 public noncomputable def duplicatedSectionSevenBandToOrderFourCoverSource :
     AdditiveTorus A.duplicatedSectionSevenBandParameter ≃ₜ
-      RadialEllipticActionData.centralFiberCoverSource
+      RadialEllipticActionData.CentralFiberCoverSource
         (orderFourRadialActionData A.periods) :=
   A.duplicatedSectionSevenOrderThreeToOrderFourBandHomeomorph.trans
     (RadialEllipticActionData.centralFiberCoverSourceHomeomorph

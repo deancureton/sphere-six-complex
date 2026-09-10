@@ -71,7 +71,7 @@ public theorem cuspFiniteFiberCoordinateTorus_real (A : PaperAnalyticData) (j : 
       standardPeriodPairFirst, standardPeriodPairSecond, integerToReal]
 
 public def cuspFiniteFiberTorusToFilling (A : PaperAnalyticData) (j : Fin 4) :
-    C(StdTorus 2,actualLocalCuspFilling A.starCuspWitness) := by
+    C(StdTorus 2,ActualLocalCuspFilling A.starCuspWitness) := by
   let G := CuspRadialClutchingConstruction.actualCuspRadialClutchingData A.starCuspWitness
   let _ := G.fiberTopology
   exact G.markedFiberToCuspFilling.comp (A.cuspFiniteFiberCoordinateTorus j)

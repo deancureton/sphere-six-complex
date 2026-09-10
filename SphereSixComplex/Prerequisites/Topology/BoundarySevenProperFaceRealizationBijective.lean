@@ -40,13 +40,13 @@ public theorem boundarySevenProperFaceRealizationMap_flag
       (Opposite.op (SimplexCategory.mk k))) s) h'
   have hw := congrArg (fun f ↦ f w) h''
   change boundarySevenProperFaceRealizationMap
-      (((sSetTopAdj.unit.app BoundarySevenProperFaceNerve).app
+      (((sSetTopAdj.unit.app boundarySevenProperFaceNerve).app
         (Opposite.op (SimplexCategory.mk k)) F).down.hom (ULift.up w)) =
     boundarySevenProperFaceAffineFlagMap k F w at hw
-  have hunit := sSetTopAdj_unit_app_app_down BoundarySevenProperFaceNerve
+  have hunit := sSetTopAdj_unit_app_app_down boundarySevenProperFaceNerve
     (Opposite.op (SimplexCategory.mk k)) F
   have hpoint := ConcreteCategory.congr_hom hunit (ULift.up w)
-  change (((sSetTopAdj.unit.app BoundarySevenProperFaceNerve).app
+  change (((sSetTopAdj.unit.app boundarySevenProperFaceNerve).app
       (Opposite.op (SimplexCategory.mk k)) F).down.hom (ULift.up w)) =
     SSet.toTop.map (SSet.yonedaEquiv.symm F)
       (SSet.toTopSimplex.inv.app (SimplexCategory.mk k) (ULift.up w)) at hpoint
@@ -58,17 +58,17 @@ public theorem boundarySevenProperFaceRealizationMap_flag
 nondegenerate flag simplex.  This is the point-set covering statement supplied by the
 nonsingular-simplex colimit. -/
 public theorem boundarySevenProperFaceRealization_nondegenerateFlagCovered
-    (x : (SSet.toTop.obj BoundarySevenProperFaceNerve : Type)) :
-    ∃ (s : BoundarySevenProperFaceNerve.N)
+    (x : (SSet.toTop.obj boundarySevenProperFaceNerve : Type)) :
+    ∃ (s : boundarySevenProperFaceNerve.N)
       (y : SSet.toTop.obj
         (SSet.stdSimplex.obj (SimplexCategory.mk s.dim))),
       SSet.toTop.map (SSet.yonedaEquiv.symm s.simplex) y = x := by
-  letI : BoundarySevenProperFaceNerve.Nonsingular :=
+  letI : boundarySevenProperFaceNerve.Nonsingular :=
     boundarySevenProperFaceNerve_nonsingular
-  let cTop := SSet.toTop.mapCocone BoundarySevenProperFaceNerve.coconeN'
+  let cTop := SSet.toTop.mapCocone boundarySevenProperFaceNerve.coconeN'
   have hcTop : IsColimit cTop :=
     isColimitOfPreserves SSet.toTop
-      BoundarySevenProperFaceNerve.isColimitCoconeN'
+      boundarySevenProperFaceNerve.isColimitCoconeN'
   have hcType : IsColimit ((forget TopCat).mapCocone cTop) :=
     isColimitOfPreserves (forget TopCat) hcTop
   obtain ⟨s, y, hy⟩ := Types.jointly_surjective_of_isColimit hcType x
@@ -88,7 +88,7 @@ public theorem boundarySevenProperFaceRealizationMap_surjective :
 /-- On every nondegenerate realization simplex, the affine realization has unique simplex
 coordinates. -/
 public theorem boundarySevenProperFaceAffineFlagMap_injective_nondegenerate
-    (s : BoundarySevenProperFaceNerve.N) :
+    (s : boundarySevenProperFaceNerve.N) :
     Function.Injective
       (boundarySevenProperFaceAffineFlagMap s.dim s.simplex) := by
   apply boundarySevenProperFaceAffineFlagMap_injective_of_strictMono

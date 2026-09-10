@@ -42,7 +42,7 @@ open Topology.PaperEllipticReducedCentralFiberCoverModels
 variable (A : PaperAnalyticData)
 
 public abbrev starCover :=
-  A.openEmbeddingStarData.SectionSevenMayerVietorisCover
+  A.openEmbeddingStarData.sectionSevenMayerVietorisCover
 
 /-- The open image of the order-three filling, regarded as a subset of the elliptic interior. -/
 public def orderThreeFillingImage :
@@ -207,7 +207,7 @@ public def orderFourPieceHomeomorph :
 order-three fibre. -/
 public def orderThreeFillingImageHomotopyEquiv :
     A.orderThreeFillingImage ≃ₕ
-      OrderThreeReducedCentralFiber A.periods :=
+      orderThreeReducedCentralFiber A.periods :=
   A.orderThreeFillingImageToPiece.toHomotopyEquiv |>.trans
     A.orderThreePieceHomeomorph.symm.toHomotopyEquiv |>.trans
       (orderThreeSelectedFillingHomotopyEquivCentralFiber A)
@@ -216,7 +216,7 @@ public def orderThreeFillingImageHomotopyEquiv :
 order-four fibre. -/
 public def orderFourFillingImageHomotopyEquiv :
     A.orderFourFillingImage ≃ₕ
-      OrderFourReducedCentralFiber A.periods :=
+      orderFourReducedCentralFiber A.periods :=
   A.orderFourFillingImageToPiece.toHomotopyEquiv |>.trans
     A.orderFourPieceHomeomorph.symm.toHomotopyEquiv |>.trans
       (orderFourSelectedFillingHomotopyEquivCentralFiber A)
@@ -238,11 +238,11 @@ public structure EllipticCentralAllocation.RadialRealization
       AdditiveTorus bandParameter
   bandToOrderThreeCoverSource :
     AdditiveTorus bandParameter ≃ₜ
-      RadialEllipticActionData.centralFiberCoverSource
+      RadialEllipticActionData.CentralFiberCoverSource
         (orderThreeRadialActionData A.periods)
   bandToOrderFourCoverSource :
     AdditiveTorus bandParameter ≃ₜ
-      RadialEllipticActionData.centralFiberCoverSource
+      RadialEllipticActionData.CentralFiberCoverSource
         (orderFourRadialActionData A.periods)
   orderThree_inclusion_compatibility :
     (((A.orderThreeFillingImageHomotopyEquiv.toFun.comp

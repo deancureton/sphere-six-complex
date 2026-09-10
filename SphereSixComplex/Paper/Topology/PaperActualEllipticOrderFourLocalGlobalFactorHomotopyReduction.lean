@@ -72,8 +72,8 @@ public noncomputable def orderFourCentralActualBasedStraightFiberPath :
     Path A.ellipticFourCentralBase A.ellipticFourCentralBase := by
   let _ := A.ellipticFourBoundaryAction
   let x := A.orderFourCayleyPuncturedBasepoint
-  let offset : A.orderFourTorus := Quotient.mk _ A.ellipticFourBoundaryBase.2.2
-  let g : C(A.orderFourTorus, A.CentralFamily) :=
+  let offset : A.OrderFourTorus := Quotient.mk _ A.ellipticFourBoundaryBase.2.2
+  let g : C(A.OrderFourTorus, A.CentralFamily) :=
     { toFun := fun q ↦ A.orderFourPuncturedProductCentralRealizationMap (x, q + offset)
       continuous_toFun := A.orderFourPuncturedProductCentralRealizationMap.continuous.comp
         (continuous_const.prodMk (continuous_id.add continuous_const)) }
@@ -103,8 +103,8 @@ public theorem orderFourCentralFiberFactor_homotopic_actualBasedStraight :
     A.orderFourFillingRelationPrincipalGaugeLoop
       A.orderFourPrincipalGaugeStraightLoop) with ⟨Htorus⟩
   let x := A.orderFourCayleyPuncturedBasepoint
-  let offset : A.orderFourTorus := Quotient.mk _ A.ellipticFourBoundaryBase.2.2
-  let g : C(A.orderFourTorus, A.CentralFamily) :=
+  let offset : A.OrderFourTorus := Quotient.mk _ A.ellipticFourBoundaryBase.2.2
+  let g : C(A.OrderFourTorus, A.CentralFamily) :=
     { toFun := fun q ↦ A.orderFourPuncturedProductCentralRealizationMap (x, q + offset)
       continuous_toFun := A.orderFourPuncturedProductCentralRealizationMap.continuous.comp
         (continuous_const.prodMk (continuous_id.add continuous_const)) }
@@ -144,8 +144,8 @@ public theorem ellipticFourCuspCorrectedNegEpsilonPrimePeriodPath_class :
 public noncomputable def orderFourCentralAffineCorrectedNegEpsilonPrimePeriodPath :
     Path A.centralAffineBase A.centralAffineBase :=
   A.ellipticFourCuspCorrectedNegEpsilonPrimePeriodPath.cast
-    A.centralAffineBase_eq_actualCuspCentralBase
-    A.centralAffineBase_eq_actualCuspCentralBase
+    A.centralAffineBase_eq_cuspCentralBase
+    A.centralAffineBase_eq_cuspCentralBase
 
 public theorem orderFourCentralAffineCorrectedNegEpsilonPrimePeriodPath_class :
     Path.Homotopic.Quotient.mk
@@ -193,8 +193,8 @@ public theorem ellipticFourCuspCorrectedGeometricRelatorPath_class :
 public noncomputable def orderFourCentralAffineCorrectedGeometricRelatorPath :
     Path A.centralAffineBase A.centralAffineBase :=
   A.ellipticFourCuspCorrectedGeometricRelatorPath.cast
-    A.centralAffineBase_eq_actualCuspCentralBase
-    A.centralAffineBase_eq_actualCuspCentralBase
+    A.centralAffineBase_eq_cuspCentralBase
+    A.centralAffineBase_eq_cuspCentralBase
 
 public theorem orderFourCentralAffineCorrectedGeometricRelatorPath_eq_trans :
     A.orderFourCentralAffineCorrectedGeometricRelatorPath =

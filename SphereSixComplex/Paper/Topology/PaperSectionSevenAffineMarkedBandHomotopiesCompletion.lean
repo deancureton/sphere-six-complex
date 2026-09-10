@@ -105,7 +105,7 @@ public noncomputable def affineOrderThreeGaugeProjectionOfLift
     (A : PaperAnalyticData) (L : A.AffineStripLift)
     (g : C(affineVerticalStrip,
       AdditiveTorus A.duplicatedSectionSevenBandParameter)) :
-    C(A.affineMarkedBand, OrderThreeReducedCentralFiber A.periods) :=
+    C(A.affineMarkedBand, orderThreeReducedCentralFiber A.periods) :=
   ((RadialEllipticActionData.centralFiberCoverProjection
       (orderThreeRadialActionData A.periods)).comp
     ⟨A.duplicatedSectionSevenBandToOrderThreeCoverSource,
@@ -122,7 +122,7 @@ public noncomputable def affineOrderFourGaugeProjectionOfLift
     (A : PaperAnalyticData) (L : A.AffineStripLift)
     (g : C(affineVerticalStrip,
       AdditiveTorus A.duplicatedSectionSevenBandParameter)) :
-    C(A.affineMarkedBand, OrderFourReducedCentralFiber A.periods) :=
+    C(A.affineMarkedBand, orderFourReducedCentralFiber A.periods) :=
   ((RadialEllipticActionData.centralFiberCoverProjection
       (orderFourRadialActionData A.periods)).comp
     ⟨A.duplicatedSectionSevenBandToOrderFourCoverSource,

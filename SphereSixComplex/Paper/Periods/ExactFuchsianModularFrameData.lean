@@ -23,18 +23,18 @@ open Filter Metric
 /-- Pullback of the normalized weight-four Eisenstein series by the established modular
 parameter. -/
 @[expose] public def liftedEisensteinFour
-    (E : EstablishedFuchsianModularParameter) (z : UpperHalfPlane) : ℂ :=
+    (E : NormalizedFuchsianModularParameter) (z : UpperHalfPlane) : ℂ :=
   ModularForm.E₄ (E.modularParameter.tau z)
 
 /-- Pullback of the normalized weight-six Eisenstein series by the established modular
 parameter. -/
 @[expose] public def liftedEisensteinSix
-    (E : EstablishedFuchsianModularParameter) (z : UpperHalfPlane) : ℂ :=
+    (E : NormalizedFuchsianModularParameter) (z : UpperHalfPlane) : ℂ :=
   ModularForm.E₆ (E.modularParameter.tau z)
 
 /-- Pullback of the modular discriminant by the established modular parameter. -/
 @[expose] public def liftedModularDiscriminant
-    (E : EstablishedFuchsianModularParameter) (z : UpperHalfPlane) : ℂ :=
+    (E : NormalizedFuchsianModularParameter) (z : UpperHalfPlane) : ℂ :=
   ModularForm.discriminant (E.modularParameter.tau z)
 
 /-- Exact classical modular-form data used in Lemma 3.10 of the paper.
@@ -43,7 +43,7 @@ The square root is included together with its square identity and exact divisor 
 cusp identity says, as a germ at infinity, that `coordinate⁻¹ * frame` extends as a holomorphic
 unit in the completed cusp coordinate. -/
 public structure ExactLiftedModularNegOneFrame
-    (E : EstablishedFuchsianModularParameter) where
+    (E : NormalizedFuchsianModularParameter) where
   /-- The chosen holomorphic square root of the pulled-back weight-six Eisenstein series. -/
   sqrtEisensteinSix : UpperHalfPlane → ℂ
   /-- Holomorphicity of the chosen square root. -/

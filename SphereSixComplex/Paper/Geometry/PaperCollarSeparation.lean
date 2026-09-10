@@ -21,7 +21,7 @@ open EllipticWholeFiberCompactCover EllipticPuncturedCollarGaugeHomeomorph
 open EllipticVaryingFamilyQuotient EllipticAffineGlobalSeparation
 open EllipticLinearCollarGlobalDescent InfiniteA2Toric
 open InfiniteA2Toric.QuantitativeRegions.BoundedPolydiscRegions
-open CuspPeriodExpansion CuspPuncturedCollarBridge EstablishedFuchsianCuspNeighborhood
+open CuspPeriodExpansion CuspPuncturedCollarBridge FuchsianCuspNeighborhood
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 open SphereSixComplex.TriangleGroup.FuchsianProperFreeness
 
@@ -174,7 +174,7 @@ public theorem exists_actualPuncturedCuspWitness_coordinate_exterior :
   have hrLocal : r ≤ A.actualLocalCuspWitness.radius := min_le_left _ _
   let W₀ := restrictActualLocalCuspQuotientWitness
     A.actualLocalCuspWitness r hr hrLocal
-  obtain ⟨S⟩ := EstablishedFuchsianCuspNeighborhood.Established.data
+  obtain ⟨S⟩ := nonempty_data
     A.cuspCoordinate W₀.radius W₀.radius_pos
   let W₁ := restrictActualLocalCuspQuotientWitness
     W₀ S.radius S.radius_pos S.radius_le_upper

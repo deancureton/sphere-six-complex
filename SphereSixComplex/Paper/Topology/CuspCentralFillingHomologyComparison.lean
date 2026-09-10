@@ -8,14 +8,14 @@ namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 open SphereSixComplex SphereSixComplex.Periods
 open CuspFilling CuspPeriodExpansion InfiniteA2Toric
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
 
 public def actualCuspCentralOrbitFillingHomologyEquiv
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W) (k : ℕ) :
     IntegralSingularHomology k (ActualLocalCuspCentralOrbitQuotient W) ≃+
-      IntegralSingularHomology k (actualLocalCuspFilling W) :=
+      IntegralSingularHomology k (ActualLocalCuspFilling W) :=
   (integralSingularHomologyEquiv k (actualLocalCuspCentralOrbitCoreHomeomorph W R)).trans
     (R.specializationHomologyEquiv W k).symm
 

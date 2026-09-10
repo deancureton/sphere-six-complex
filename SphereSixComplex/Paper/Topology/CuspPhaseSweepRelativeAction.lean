@@ -11,7 +11,7 @@ namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 open SphereSixComplex.Periods
 open InfiniteA2Toric InfiniteA2Toric
 open InfiniteA2Toric.Construction CuspFilling CuspPeriodExpansion
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public def phaseSweepOneSkeletonInclusion
@@ -36,7 +36,7 @@ public theorem phaseSweepCompactAction_zeroSkeleton
   change x.1 ∈ (Topology.RelCWComplex.skeletonLT
     (Set.univ : Set (ActualLocalCuspCentralOrbitQuotient W)) (1 : ℕ∞) : Set _) at hx
   simp only [Topology.RelCWComplex.coe_skeletonLT] at hx
-  change x.1 ∈ (∅ : Set _) ∪ ⋃ (m : ℕ) (_ : m < (1 : ℕ∞)) (j : cuspWCellIndex m),
+  change x.1 ∈ (∅ : Set _) ∪ ⋃ (m : ℕ) (_ : m < (1 : ℕ∞)) (j : CuspWCellIndex m),
     phaseSweepCellMap W m j '' Metric.closedBall 0 1 at hx
   rcases hx with hx | hx
   · exact False.elim hx
@@ -75,7 +75,7 @@ public theorem phaseSweepCompactAction_oneSkeleton
   change x.1 ∈ (Topology.RelCWComplex.skeletonLT
     (Set.univ : Set (ActualLocalCuspCentralOrbitQuotient W)) (2 : ℕ∞) : Set _) at hx
   simp only [Topology.RelCWComplex.coe_skeletonLT] at hx
-  change x.1 ∈ (∅ : Set _) ∪ ⋃ (m : ℕ) (_ : m < (2 : ℕ∞)) (j : cuspWCellIndex m),
+  change x.1 ∈ (∅ : Set _) ∪ ⋃ (m : ℕ) (_ : m < (2 : ℕ∞)) (j : CuspWCellIndex m),
     phaseSweepCellMap W m j '' Metric.closedBall 0 1 at hx
   have hxold : x.1 ∈ constructedCentralOneSkeleton W := by
     rcases hx with hx | hx
@@ -94,7 +94,7 @@ public theorem phaseSweepCompactAction_oneSkeleton
     (Set.univ : Set (ActualLocalCuspCentralOrbitQuotient W)) (3 : ℕ∞) :
       Set (ActualLocalCuspCentralOrbitQuotient W))
   simp only [Topology.RelCWComplex.coe_skeletonLT]
-  change _ ∈ (∅ : Set _) ∪ ⋃ (m : ℕ) (_ : m < (3 : ℕ∞)) (j : cuspWCellIndex m),
+  change _ ∈ (∅ : Set _) ∪ ⋃ (m : ℕ) (_ : m < (3 : ℕ∞)) (j : CuspWCellIndex m),
     phaseSweepCellMap W m j '' Metric.closedBall 0 1
   simp only [phaseSweepCellMap_closedImage]
   apply Or.inr

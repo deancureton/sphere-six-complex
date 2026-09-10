@@ -40,13 +40,13 @@ public structure SevenSpaceChainModels where
   /-- The model map induced by attaching a collar to its filling. -/
   collarToFilling : ∀ i, collarModel i ⟶ fillingModel i
   /-- The central model computes the singular chains of the actual central space. -/
-  centralRealization : HomotopyEquiv centralModel (IntegralSingularChainComplex A.central)
+  centralRealization : HomotopyEquiv centralModel (integralSingularChainComplex A.central)
   /-- Every filling model computes the singular chains of the corresponding actual filling. -/
   fillingRealization : ∀ i,
-    HomotopyEquiv (fillingModel i) (IntegralSingularChainComplex (A.filling i))
+    HomotopyEquiv (fillingModel i) (integralSingularChainComplex (A.filling i))
   /-- Every collar model computes the singular chains of the corresponding common source. -/
   collarRealization : ∀ i,
-    HomotopyEquiv (collarModel i) (IntegralSingularChainComplex (A.collarSource i))
+    HomotopyEquiv (collarModel i) (integralSingularChainComplex (A.collarSource i))
   /-- The central attaching map is the exact map induced by the actual collar embedding. -/
   collarToCentral_naturality : ∀ i,
     collarToCentral i ≫ centralRealization.hom =
@@ -60,9 +60,9 @@ namespace SevenSpaceChainModels
 
 /-- The exact seven-space diagram with unreduced singular chains at every vertex. -/
 public noncomputable def singularModels : A.SevenSpaceChainModels where
-  centralModel := IntegralSingularChainComplex A.central
-  fillingModel i := IntegralSingularChainComplex (A.filling i)
-  collarModel i := IntegralSingularChainComplex (A.collarSource i)
+  centralModel := integralSingularChainComplex A.central
+  fillingModel i := integralSingularChainComplex (A.filling i)
+  collarModel i := integralSingularChainComplex (A.collarSource i)
   collarToCentral i := integralSingularChainMap (A.toCentral i).hom
   collarToFilling i := integralSingularChainMap (A.toFilling i).hom
   centralRealization := HomotopyEquiv.refl _

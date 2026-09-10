@@ -24,7 +24,7 @@ namespace SphereSixComplex.Geometry.PaperAnalyticData
 
 open SphereSixComplex ComplexTorus CuspPuncturedCollarBridge
 open InfiniteA2Toric CuspFilling CuspLocalPhaseAction
-open CuspPeriodExpansion CuspPhaseEstimates.CuspPeriodExpansion
+open CuspPeriodExpansion
 open SphereSixComplex.LatticeData SphereSixComplex.Topology
 open SphereSixComplex.Topology.PaperVanKampenFourPieceCover
 
@@ -52,7 +52,7 @@ public def cuspFillingBase : A.actualVanKampenFourPieceCover.cusp :=
 
 /-- The local boundary base point corresponding to the prescribed star-overlap base point. -/
 public noncomputable def cuspLocalBoundaryBase :
-    puncturedLocalCuspQuotient A.starCuspWitness :=
+    PuncturedLocalCuspQuotient A.starCuspWitness :=
   A.cuspCollarToStarOverlapHomeomorph.symm A.cuspOverlapBase
 
 /-- The unwrapped cusp cover transported to the exact overlap and filling piece of the glued
@@ -60,9 +60,9 @@ star. -/
 public noncomputable def cuspStarUnwrappedFillingCover :
     letI := paperCuspBoundaryDeckAction A.starCuspWitness
     letI := paperCuspFillingDeckAction A.starCuspWitness
-    UnwrappedToricFillingCover Lattice paperToricSubgroup paperCuspBoundaryDeck
+    UnwrappedToricFillingCover Lattice paperToricSubgroup PaperCuspBoundaryDeck
       (additiveCuspRadiusCover A.starCuspWitness.localWitness.radius)
-      (LocalCarrier A.toricModel A.starCuspWitness.localWitness.radius)
+      (localCarrier A.toricModel A.starCuspWitness.localWitness.radius)
       (A.actualVanKampenFourPieceCover.core ∩ A.actualVanKampenFourPieceCover.cusp :
         Set A.VanKampenSpace)
       A.actualVanKampenFourPieceCover.cusp paperCuspBoundaryDeckData := by
@@ -95,10 +95,10 @@ public noncomputable def cuspChosenAffineFillingCover :
       (A.actualVanKampenFourPieceCover.core ∩ A.actualVanKampenFourPieceCover.cusp :
         Set A.VanKampenSpace)
       A.actualVanKampenFourPieceCover.cusp where
-  BoundaryDeck := paperCuspBoundaryDeck
+  BoundaryDeck := PaperCuspBoundaryDeck
   FillingDeck := paperCuspBoundaryDeckData.FillingDeck
   BoundaryCover := additiveCuspRadiusCover A.starCuspWitness.localWitness.radius
-  FillingCover := LocalCarrier A.toricModel A.starCuspWitness.localWitness.radius
+  FillingCover := localCarrier A.toricModel A.starCuspWitness.localWitness.radius
   boundaryDeckGroup := inferInstance
   fillingDeckGroup := inferInstance
   boundaryCoverTopology := inferInstance
@@ -133,7 +133,7 @@ public theorem cuspChosenAffineFillingCover_translation_eq_ofDeck
         (additiveCuspRadiusCover W.localWitness.radius) :=
       additiveCuspBoundaryCover_simplyConnected W
     let hp : IsQuotientCoveringMap A.cuspBoundaryProjection
-        paperCuspBoundaryDeck :=
+        PaperCuspBoundaryDeck :=
       (additiveCuspBoundaryProjection_isQuotientCoveringMap W).homeomorph_comp
         A.cuspCollarToStarOverlapHomeomorph
     fundamentalGroupElementOfBaseEq
@@ -150,7 +150,7 @@ public theorem cuspChosenAffineFillingCover_translation_eq_ofDeck
       (additiveCuspRadiusCover W.localWitness.radius) :=
     additiveCuspBoundaryCover_simplyConnected W
   let hp : IsQuotientCoveringMap A.cuspBoundaryProjection
-      paperCuspBoundaryDeck :=
+      PaperCuspBoundaryDeck :=
     (additiveCuspBoundaryProjection_isQuotientCoveringMap W).homeomorph_comp
       A.cuspCollarToStarOverlapHomeomorph
   let C := A.cuspChosenAffineFillingCover
@@ -188,7 +188,7 @@ public theorem cuspChosenAffineFillingCover_meridian_eq_ofDeck :
         (additiveCuspRadiusCover W.localWitness.radius) :=
       additiveCuspBoundaryCover_simplyConnected W
     let hp : IsQuotientCoveringMap A.cuspBoundaryProjection
-        paperCuspBoundaryDeck :=
+        PaperCuspBoundaryDeck :=
       (additiveCuspBoundaryProjection_isQuotientCoveringMap W).homeomorph_comp
         A.cuspCollarToStarOverlapHomeomorph
     fundamentalGroupElementOfBaseEq
@@ -204,7 +204,7 @@ public theorem cuspChosenAffineFillingCover_meridian_eq_ofDeck :
       (additiveCuspRadiusCover W.localWitness.radius) :=
     additiveCuspBoundaryCover_simplyConnected W
   let hp : IsQuotientCoveringMap A.cuspBoundaryProjection
-      paperCuspBoundaryDeck :=
+      PaperCuspBoundaryDeck :=
     (additiveCuspBoundaryProjection_isQuotientCoveringMap W).homeomorph_comp
       A.cuspCollarToStarOverlapHomeomorph
   let C := A.cuspChosenAffineFillingCover

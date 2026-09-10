@@ -45,10 +45,10 @@ public noncomputable def orderFourFixedLoopSweep :
 
 private theorem orderThreeFixedLoopSweep_positiveInvariant :
     orderThreeInvariantsEquivInt
-        (OrderThreePresentation.totalToInvariants orderThreeFixedLoopSweep) = 1 := by
+        (orderThreePresentation.totalToInvariants orderThreeFixedLoopSweep) = 1 := by
   change standardThreeTorusHomologyOne
-      (OrderThreePresentation.boundary orderThreeFixedLoopSweep) 2 = 1
-  have hboundary : OrderThreePresentation.boundary orderThreeFixedLoopSweep =
+      (orderThreePresentation.boundary orderThreeFixedLoopSweep) 2 = 1
+  have hboundary : orderThreePresentation.boundary orderThreeFixedLoopSweep =
       standardThreeTorusCoordinateHomologyClass 2 := by
     change (circleMappingTorusWangPresentationOfCover
       orderThreeThreeTorusClutching 1).boundary
@@ -64,10 +64,10 @@ private theorem orderThreeFixedLoopSweep_positiveInvariant :
 
 private theorem orderFourFixedLoopSweep_positiveInvariant :
     orderFourInvariantsEquivInt
-        (OrderFourPresentation.totalToInvariants orderFourFixedLoopSweep) = 1 := by
+        (orderFourPresentation.totalToInvariants orderFourFixedLoopSweep) = 1 := by
   change standardThreeTorusHomologyOne
-      (OrderFourPresentation.boundary orderFourFixedLoopSweep) 2 = 1
-  have hboundary : OrderFourPresentation.boundary orderFourFixedLoopSweep =
+      (orderFourPresentation.boundary orderFourFixedLoopSweep) 2 = 1
+  have hboundary : orderFourPresentation.boundary orderFourFixedLoopSweep =
       standardThreeTorusCoordinateHomologyClass 2 := by
     change (circleMappingTorusWangPresentationOfCover
       orderFourThreeTorusClutching 1).boundary

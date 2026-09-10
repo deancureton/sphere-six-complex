@@ -18,7 +18,7 @@ open Set
 
 /-- The elementary threshold core in the affine line with `0` and `1` removed. -/
 @[expose] public def puncturedAffineThresholdCore (delta0 delta1 R : ℝ) :
-    Set RegularCoordinateBase :=
+    Set regularCoordinateBase :=
   {z | delta0 ≤ ‖(z : ℂ)‖ ∧ delta1 ≤ ‖(z : ℂ) - 1‖ ∧ ‖(z : ℂ)‖ ≤ R}
 
 /-- Positive lower distance thresholds make the elementary affine core compact. -/
@@ -45,19 +45,19 @@ public theorem puncturedAffineThresholdCore_isCompact
     have hz0 : z ≠ 0 := norm_pos_iff.mp (hdelta0.trans_le hz.1)
     have hz1 : z ≠ 1 := sub_ne_zero.mp (norm_pos_iff.mp (hdelta1.trans_le hz.2.1))
     refine ⟨⟨z, ?_⟩, hz, rfl⟩
-    simp only [RegularCoordinateBase, mem_compl_iff, mem_insert_iff,
+    simp only [regularCoordinateBase, mem_compl_iff, mem_insert_iff,
       mem_singleton_iff, not_or]
     exact ⟨hz0, hz1⟩
 
 /-- Outside the threshold core, the coordinate lies in one of the three affine ends. -/
 public theorem not_mem_puncturedAffineThresholdCore_iff
-    {delta0 delta1 R : ℝ} {z : RegularCoordinateBase} :
+    {delta0 delta1 R : ℝ} {z : regularCoordinateBase} :
     z ∉ puncturedAffineThresholdCore delta0 delta1 R ↔
       ‖(z : ℂ)‖ < delta0 ∨ ‖(z : ℂ) - 1‖ < delta1 ∨ R < ‖(z : ℂ)‖ := by
   simp only [puncturedAffineThresholdCore, mem_ofPred_eq, not_and_or, not_le]
 
 public theorem not_mem_puncturedAffineThresholdCore
-    {delta0 delta1 R : ℝ} {z : RegularCoordinateBase}
+    {delta0 delta1 R : ℝ} {z : regularCoordinateBase}
     (hz : z ∉ puncturedAffineThresholdCore delta0 delta1 R) :
     ‖(z : ℂ)‖ < delta0 ∨ ‖(z : ℂ) - 1‖ < delta1 ∨ R < ‖(z : ℂ)‖ :=
   not_mem_puncturedAffineThresholdCore_iff.mp hz

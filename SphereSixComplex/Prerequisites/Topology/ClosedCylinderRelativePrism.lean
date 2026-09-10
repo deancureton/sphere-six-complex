@@ -71,8 +71,8 @@ public theorem cylinderPairReverseSweep_comm :
 
 public def closedCylinderRelativePrism
     [Mono (cylinderBaseInclusion A)] :
-    Homotopy (0 : CWRelativeIntegralSingularChainComplex (cylinderBaseInclusion A) ⟶
-      CWRelativeIntegralSingularChainComplex j) 0 :=
+    Homotopy (0 : cwRelativeIntegralSingularChainComplex (cylinderBaseInclusion A) ⟶
+      cwRelativeIntegralSingularChainComplex j) 0 :=
   (Homotopy.ofEq (cylinderSlicePair_chainMap_zero A F 1 (Or.inr rfl)).symm).trans
     ((cwRelativeSingularHomotopy (cylinderBoundaryReverseSweep A F)
       (cylinderPairReverseSweep A F) (cylinderPairReverseSweep_comm A F)).trans

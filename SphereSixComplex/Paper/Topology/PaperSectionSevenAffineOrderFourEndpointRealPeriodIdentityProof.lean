@@ -403,7 +403,7 @@ public theorem centralQuotientProjection_namedDiscLiftPoint
             (fun z ↦ ‖(A.ellipticCentralCoordinate z).1 - 1‖)
             A.affineOrderFourMarkedDiscRadius
             (A.affineOrderFourDiscRegionEndpoint x).2⟩ := by
-  rw [← A.toCentralFamily_sectionSevenAffineOrderFourDiscRegionQuotientHomeomorph
+  rw [← A.toCentralFamily_affineOrderFourDiscRegionQuotientHomeomorph
     A.affineOrderFourMarkedDiscRadius
     (A.affineOrderFourDiscRegionEndpoint x)]
   rw [A.affineOrderFourDiscRegionQuotient_endpoint x]
@@ -452,7 +452,7 @@ public theorem affineOrderFourEndpointRealPeriodIdentity
   refine ⟨?_⟩
   intro x q hq
   let q₀ := A.affineOrderFourNamedCollarLiftPoint C x
-  have hquot : (Quotient.mk _ q : A.starCollarSourceType (2 : Fin 3)) =
+  have hquot : (Quotient.mk _ q : A.StarCollarSource (2 : Fin 3)) =
       Quotient.mk _ q₀ := hq.symm.trans
         (A.orderFourOverlapCollarHomeomorph_endpoint_eq_named C x)
   have hquot' := congrArg

@@ -68,7 +68,7 @@ chains. -/
 public noncomputable def simplicialToCoverSmallSingularChainMap
     (hsmall : SimplicialRealizationUnitLandsInCoverSmall K U) :
     K.chainComplex (AddCommGrpCat.of ℤ) ⟶
-      CoverSmallIntegralSingularChainComplex (SSet.toTop.obj K) U :=
+      coverSmallIntegralSingularChainComplex (SSet.toTop.obj K) U :=
   SSet.chainComplexMap (simplicialToCoverSmallSingularSet K U hsmall)
     (AddCommGrpCat.of ℤ)
 

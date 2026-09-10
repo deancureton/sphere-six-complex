@@ -22,13 +22,13 @@ namespace SphereSixComplex
 
 /-- The former subdivision-generator transport predicate follows with no additional geometric
 input. -/
-public theorem boundarySevenSubdivisionGeneratorDegreeTransport_proof
+public theorem BoundarySeven.subdivision_generator_transport
     (hcomparison : SimplicialToSingularComparisonQuasiIsomorphism
       (∂Δ[7] : SSet.{0}) (AddCommGrpCat.of ℤ))
     (e : StandardSimplexBoundary 7 ≃ₜ SixSphere) :
     BoundarySevenSubdivisionGeneratorDegreeTransport hcomparison e :=
   boundarySevenSubdivisionGeneratorDegreeTransport_of_properFace hcomparison e
-    (boundarySevenProperFaceGeneratorDegreeTransport_proof hcomparison e)
+    (BoundarySeven.properFace_generator_transport hcomparison e)
 
 /-- Coordinate reflection acts by literal negation on top integral homology as soon as the
 canonical boundary comparison is known to be a quasi-isomorphism. -/
@@ -39,7 +39,7 @@ public theorem sixSphereCoordinateReflection_homology_negation_of_boundaryCompar
       -AddMonoidHom.id (IntegralSingularHomology 6 SixSphere) :=
   sixSphereCoordinateReflection_homology_negation_of_subdivisionGeneratorTransport
     hcomparison
-    (boundarySevenSubdivisionGeneratorDegreeTransport_proof hcomparison
+    (BoundarySeven.subdivision_generator_transport hcomparison
       boundarySevenReflectionEquivariantHomeomorph)
 
 /-- The canonical integral boundary comparison is now the only remaining input to the complete

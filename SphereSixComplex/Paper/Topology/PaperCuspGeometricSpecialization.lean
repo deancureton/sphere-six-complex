@@ -352,10 +352,10 @@ elliptic interior's are the only ones the package still has to be given.  `withA
 says the same thing but needs a package to start from; this one does not. -/
 public noncomputable def collarInteriorHomologyBasesOfEllipticInterior
     (ellipticOne : IntegralSingularHomology 1
-        ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4)) ≃+
+        ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4)) ≃+
       (Fin 1 → ℤ))
     (ellipticTwo : IntegralSingularHomology 2
-        ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4)) ≃+
+        ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4)) ≃+
       (Fin 2 → ℤ)) :
     A.CollarInteriorHomologyBases where
   cuspCollarOne := A.cuspSectionSevenHomologyOneEquiv
@@ -367,10 +367,10 @@ public noncomputable def collarInteriorHomologyBasesOfEllipticInterior
 /-- The package built from the elliptic interior already carries the geometric cusp bases. -/
 public theorem withActualGeometricCuspBases_ofEllipticInterior
     (ellipticOne : IntegralSingularHomology 1
-        ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4)) ≃+
+        ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4)) ≃+
       (Fin 1 → ℤ))
     (ellipticTwo : IntegralSingularHomology 2
-        ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4)) ≃+
+        ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4)) ≃+
       (Fin 2 → ℤ)) :
     A.withActualGeometricCuspBases
         (A.collarInteriorHomologyBasesOfEllipticInterior ellipticOne ellipticTwo) =

@@ -16,12 +16,12 @@ open SphereSixComplex.Geometry.CuspPhaseEstimates
 open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 open SphereSixComplex.Geometry.InfiniteA2Toric
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public def constructedCentralCellMap
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
-    (n : ℕ) → SphereSixComplex.cuspWCellIndex n →
+    (n : ℕ) → SphereSixComplex.CuspWCellIndex n →
       PartialEquiv (Fin n → ℝ) (ActualLocalCuspCentralOrbitQuotient W)
   | 0 => constructedCentralZeroCell W
   | 1 => constructedCentralOneCell W
@@ -33,7 +33,7 @@ public def constructedCentralCellMap
 
 public theorem constructedCentralCellMap_source_eq
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    (n : ℕ) (i : SphereSixComplex.cuspWCellIndex n) :
+    (n : ℕ) (i : SphereSixComplex.CuspWCellIndex n) :
     (constructedCentralCellMap W n i).source = Metric.ball 0 1 := by
   rcases n with (_ | _ | _ | _ | _ | n)
   · exact constructedCentralZeroCell_source_eq W i
@@ -50,7 +50,7 @@ public theorem constructedCentralCellMap_source_eq
 
 public theorem constructedCentralCellMap_continuousOn
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    (n : ℕ) (i : SphereSixComplex.cuspWCellIndex n) :
+    (n : ℕ) (i : SphereSixComplex.CuspWCellIndex n) :
     ContinuousOn (constructedCentralCellMap W n i) (Metric.closedBall 0 1) := by
   rcases n with (_ | _ | _ | _ | _ | n)
   · exact constructedCentralZeroCell_continuousOn W i
@@ -67,7 +67,7 @@ public theorem constructedCentralCellMap_continuousOn
 
 public theorem constructedCentralCellMap_continuousOn_symm
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    (n : ℕ) (i : SphereSixComplex.cuspWCellIndex n) :
+    (n : ℕ) (i : SphereSixComplex.CuspWCellIndex n) :
     ContinuousOn (constructedCentralCellMap W n i).symm (constructedCentralCellMap W n i).target := by
   rcases n with (_ | _ | _ | _ | _ | n)
   · exact constructedCentralZeroCell_continuousOn_symm W i
@@ -84,7 +84,7 @@ public theorem constructedCentralCellMap_continuousOn_symm
 
 public def constructedCentralCellSkeleton
     (W : ActualPuncturedCuspCollarWitness N constructedModel) (n : ℕ) :=
-  ⋃ (m < n) (j : SphereSixComplex.cuspWCellIndex m),
+  ⋃ (m < n) (j : SphereSixComplex.CuspWCellIndex m),
     constructedCentralCellMap W m j '' Metric.closedBall 0 1
 
 public theorem constructedCentralOneSkeleton_subset_cellSkeleton
@@ -134,7 +134,7 @@ public theorem constructedA2CorrectedThreeSkeleton_subset_cellSkeleton
 
 public theorem constructedCentralCellMap_mapsTo
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    (n : ℕ) (i : SphereSixComplex.cuspWCellIndex n) :
+    (n : ℕ) (i : SphereSixComplex.CuspWCellIndex n) :
     MapsTo (constructedCentralCellMap W n i) (Metric.sphere 0 1)
       (constructedCentralCellSkeleton W n) := by
   rcases n with (_ | _ | _ | _ | _ | n)
@@ -176,8 +176,8 @@ public theorem constructedCentralCellMap_union_eq
 
 private theorem constructedCentralCellMap_disjoint_0
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    (i : Fin 2) (m : ℕ) (j : SphereSixComplex.cuspWCellIndex m)
-    (hij : (⟨0, i⟩ : Σ n, SphereSixComplex.cuspWCellIndex n) ≠ ⟨m, j⟩) :
+    (i : Fin 2) (m : ℕ) (j : SphereSixComplex.CuspWCellIndex m)
+    (hij : (⟨0, i⟩ : Σ n, SphereSixComplex.CuspWCellIndex n) ≠ ⟨m, j⟩) :
     Disjoint (constructedCentralCellMap W 0 i '' Metric.ball 0 1)
       (constructedCentralCellMap W m j '' Metric.ball 0 1) := by
   have hp : constructedA2CorrectedPositiveTwoCell W '' Metric.ball 0 1 ⊆
@@ -241,8 +241,8 @@ private theorem constructedCentralCellMap_disjoint_0
 
 private theorem constructedCentralCellMap_disjoint_1
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    (i : Fin 3) (m : ℕ) (j : SphereSixComplex.cuspWCellIndex m)
-    (hij : (⟨1, i⟩ : Σ n, SphereSixComplex.cuspWCellIndex n) ≠ ⟨m, j⟩) :
+    (i : Fin 3) (m : ℕ) (j : SphereSixComplex.CuspWCellIndex m)
+    (hij : (⟨1, i⟩ : Σ n, SphereSixComplex.CuspWCellIndex n) ≠ ⟨m, j⟩) :
     Disjoint (constructedCentralCellMap W 1 i '' Metric.ball 0 1)
       (constructedCentralCellMap W m j '' Metric.ball 0 1) := by
   have hp : constructedA2CorrectedPositiveTwoCell W '' Metric.ball 0 1 ⊆
@@ -312,8 +312,8 @@ private theorem constructedCentralCellMap_disjoint_1
 
 private theorem constructedCentralCellMap_disjoint_2_0
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    (i : Fin 4) (hi : i = 0) (m : ℕ) (j : SphereSixComplex.cuspWCellIndex m)
-    (hij : (⟨2, i⟩ : Σ n, SphereSixComplex.cuspWCellIndex n) ≠ ⟨m, j⟩) :
+    (i : Fin 4) (hi : i = 0) (m : ℕ) (j : SphereSixComplex.CuspWCellIndex m)
+    (hij : (⟨2, i⟩ : Σ n, SphereSixComplex.CuspWCellIndex n) ≠ ⟨m, j⟩) :
     Disjoint (constructedCentralCellMap W 2 i '' Metric.ball 0 1)
       (constructedCentralCellMap W m j '' Metric.ball 0 1) := by
   have hp : constructedA2CorrectedPositiveTwoCell W '' Metric.ball 0 1 ⊆
@@ -391,8 +391,8 @@ private theorem constructedCentralCellMap_disjoint_2_0
 
 private theorem constructedCentralCellMap_disjoint_2_1
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    (i : Fin 4) (hi : i = 1) (m : ℕ) (j : SphereSixComplex.cuspWCellIndex m)
-    (hij : (⟨2, i⟩ : Σ n, SphereSixComplex.cuspWCellIndex n) ≠ ⟨m, j⟩) :
+    (i : Fin 4) (hi : i = 1) (m : ℕ) (j : SphereSixComplex.CuspWCellIndex m)
+    (hij : (⟨2, i⟩ : Σ n, SphereSixComplex.CuspWCellIndex n) ≠ ⟨m, j⟩) :
     Disjoint (constructedCentralCellMap W 2 i '' Metric.ball 0 1)
       (constructedCentralCellMap W m j '' Metric.ball 0 1) := by
   have hp : constructedA2CorrectedPositiveTwoCell W '' Metric.ball 0 1 ⊆
@@ -431,8 +431,8 @@ private theorem constructedCentralCellMap_disjoint_2_1
 
 private theorem constructedCentralCellMap_disjoint_2_2
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    (i : Fin 4) (hi : i = 2) (m : ℕ) (j : SphereSixComplex.cuspWCellIndex m)
-    (hij : (⟨2, i⟩ : Σ n, SphereSixComplex.cuspWCellIndex n) ≠ ⟨m, j⟩) :
+    (i : Fin 4) (hi : i = 2) (m : ℕ) (j : SphereSixComplex.CuspWCellIndex m)
+    (hij : (⟨2, i⟩ : Σ n, SphereSixComplex.CuspWCellIndex n) ≠ ⟨m, j⟩) :
     Disjoint (constructedCentralCellMap W 2 i '' Metric.ball 0 1)
       (constructedCentralCellMap W m j '' Metric.ball 0 1) := by
   have hp : constructedA2CorrectedPositiveTwoCell W '' Metric.ball 0 1 ⊆
@@ -471,8 +471,8 @@ private theorem constructedCentralCellMap_disjoint_2_2
 
 private theorem constructedCentralCellMap_disjoint_2_3
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    (i : Fin 4) (hi : i = 3) (m : ℕ) (j : SphereSixComplex.cuspWCellIndex m)
-    (hij : (⟨2, i⟩ : Σ n, SphereSixComplex.cuspWCellIndex n) ≠ ⟨m, j⟩) :
+    (i : Fin 4) (hi : i = 3) (m : ℕ) (j : SphereSixComplex.CuspWCellIndex m)
+    (hij : (⟨2, i⟩ : Σ n, SphereSixComplex.CuspWCellIndex n) ≠ ⟨m, j⟩) :
     Disjoint (constructedCentralCellMap W 2 i '' Metric.ball 0 1)
       (constructedCentralCellMap W m j '' Metric.ball 0 1) := by
   have hp : constructedA2CorrectedPositiveTwoCell W '' Metric.ball 0 1 ⊆
@@ -511,8 +511,8 @@ private theorem constructedCentralCellMap_disjoint_2_3
 
 private theorem constructedCentralCellMap_disjoint_2
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    (i : Fin 4) (m : ℕ) (j : SphereSixComplex.cuspWCellIndex m)
-    (hij : (⟨2, i⟩ : Σ n, SphereSixComplex.cuspWCellIndex n) ≠ ⟨m, j⟩) :
+    (i : Fin 4) (m : ℕ) (j : SphereSixComplex.CuspWCellIndex m)
+    (hij : (⟨2, i⟩ : Σ n, SphereSixComplex.CuspWCellIndex n) ≠ ⟨m, j⟩) :
     Disjoint (constructedCentralCellMap W 2 i '' Metric.ball 0 1)
       (constructedCentralCellMap W m j '' Metric.ball 0 1) := by
   fin_cases i
@@ -523,8 +523,8 @@ private theorem constructedCentralCellMap_disjoint_2
 
 private theorem constructedCentralCellMap_disjoint_3
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    (i : Fin 2) (m : ℕ) (j : SphereSixComplex.cuspWCellIndex m)
-    (hij : (⟨3, i⟩ : Σ n, SphereSixComplex.cuspWCellIndex n) ≠ ⟨m, j⟩) :
+    (i : Fin 2) (m : ℕ) (j : SphereSixComplex.CuspWCellIndex m)
+    (hij : (⟨3, i⟩ : Σ n, SphereSixComplex.CuspWCellIndex n) ≠ ⟨m, j⟩) :
     Disjoint (constructedCentralCellMap W 3 i '' Metric.ball 0 1)
       (constructedCentralCellMap W m j '' Metric.ball 0 1) := by
   have hp : constructedA2CorrectedPositiveTwoCell W '' Metric.ball 0 1 ⊆
@@ -607,8 +607,8 @@ private theorem constructedCentralCellMap_disjoint_3
 
 private theorem constructedCentralCellMap_disjoint_4
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    (i : Fin 1) (m : ℕ) (j : SphereSixComplex.cuspWCellIndex m)
-    (hij : (⟨4, i⟩ : Σ n, SphereSixComplex.cuspWCellIndex n) ≠ ⟨m, j⟩) :
+    (i : Fin 1) (m : ℕ) (j : SphereSixComplex.CuspWCellIndex m)
+    (hij : (⟨4, i⟩ : Σ n, SphereSixComplex.CuspWCellIndex n) ≠ ⟨m, j⟩) :
     Disjoint (constructedCentralCellMap W 4 i '' Metric.ball 0 1)
       (constructedCentralCellMap W m j '' Metric.ball 0 1) := by
   have hp : constructedA2CorrectedPositiveTwoCell W '' Metric.ball 0 1 ⊆
@@ -697,7 +697,7 @@ private theorem constructedCentralCellMap_disjoint_4
 
 public theorem constructedCentralCellMap_pairwiseDisjoint
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
-    (Set.univ : Set (Σ n, SphereSixComplex.cuspWCellIndex n)).PairwiseDisjoint
+    (Set.univ : Set (Σ n, SphereSixComplex.CuspWCellIndex n)).PairwiseDisjoint
       (fun ni ↦ constructedCentralCellMap W ni.1 ni.2 '' Metric.ball 0 1) := by
   rintro ⟨n, i⟩ _ ⟨m, j⟩ _ hij
   rcases n with (_ | _ | _ | _ | _ | n)

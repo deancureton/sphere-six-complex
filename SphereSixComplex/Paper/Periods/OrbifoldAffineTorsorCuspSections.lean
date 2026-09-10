@@ -8,7 +8,7 @@ import all SphereSixComplex.Paper.TriangleGroup.Representation
 noncomputable section
 
 open SphereSixComplex.TriangleGroup SphereSixComplex.Geometry
-open SphereSixComplex.Geometry.FuchsianCuspNeighborhoodProof
+open FuchsianCuspNeighborhood
 open SphereSixComplex.TriangleGroup.FuchsianArithmetic
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 open SphereSixComplex.TriangleGroup.FuchsianTriangleCover

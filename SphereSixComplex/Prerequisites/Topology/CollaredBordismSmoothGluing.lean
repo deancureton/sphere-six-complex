@@ -45,14 +45,14 @@ variable
 
 /-- The manifold instance produced by the smoothly compatible three-piece presentation. -/
 public noncomputable instance instIsManifoldOpenGluedCarrier :
-    IsManifold (I.prod (𝓡∂ 1)) ∞ (OpenGluedCarrier B₀₁ B₁₂) :=
+    IsManifold (I.prod (𝓡∂ 1)) ∞ (openGluedCarrier B₀₁ B₁₂) :=
   openPresentation_isManifold B₀₁ B₁₂
 
 /-- A canonical member of the three-piece cover, bundled as a smooth open embedding into the
 glued carrier. -/
 public noncomputable def openPieceSmoothOpenEmbedding (i : OpenPieceIndex) :
     SmoothOpenEmbedding (I.prod (𝓡∂ 1))
-      (OpenPiece B₀₁ B₁₂ i) (OpenGluedCarrier B₀₁ B₁₂) :=
+      (OpenPiece B₀₁ B₁₂ i) (openGluedCarrier B₀₁ B₁₂) :=
   openGluingPieceSmoothOpenEmbedding (openPresentation B₀₁ B₁₂)
     (I.prod (𝓡∂ 1)) (openPresentation_smoothCompatibility B₀₁ B₁₂) i
 
@@ -69,7 +69,7 @@ public theorem openPieceSmoothOpenEmbedding_apply (i : OpenPieceIndex)
 public theorem openPiece_mem_boundary_iff (i : OpenPieceIndex)
     (x : OpenPiece B₀₁ B₁₂ i) :
     (openPresentation B₀₁ B₁₂).toGlueData.ι i x ∈
-        (I.prod (𝓡∂ 1)).boundary (OpenGluedCarrier B₀₁ B₁₂) ↔
+        (I.prod (𝓡∂ 1)).boundary (openGluedCarrier B₀₁ B₁₂) ↔
       x ∈ (I.prod (𝓡∂ 1)).boundary (OpenPiece B₀₁ B₁₂ i) := by
   let e := openPieceSmoothOpenEmbedding B₀₁ B₁₂ i
   have hpre := e.toDiffeomorph.preimage_boundary (n := ∞) (by simp)
@@ -79,12 +79,12 @@ public theorem openPiece_mem_boundary_iff (i : OpenPieceIndex)
   simpa [e] using hx
 
 /-- The incoming outer end as a map into the smooth three-piece gluing. -/
-public def smoothIncomingInclusion (x : M₀) : OpenGluedCarrier B₀₁ B₁₂ :=
+public def smoothIncomingInclusion (x : M₀) : openGluedCarrier B₀₁ B₁₂ :=
   (openPresentation B₀₁ B₁₂).toGlueData.ι OpenPieceIndex.left
     (incomingBoundaryInLeftAway B₀₁ x)
 
 /-- The outgoing outer end as a map into the smooth three-piece gluing. -/
-public def smoothOutgoingInclusion (x : M₂) : OpenGluedCarrier B₀₁ B₁₂ :=
+public def smoothOutgoingInclusion (x : M₂) : openGluedCarrier B₀₁ B₁₂ :=
   (openPresentation B₀₁ B₁₂).toGlueData.ι OpenPieceIndex.right
     (outgoingBoundaryInRightAway B₁₂ x)
 
@@ -109,7 +109,7 @@ public theorem openPresentationHomeomorph_smoothOutgoingInclusion (x : M₂) :
 /-- The boundary of the smoothly glued carrier consists exactly of the two untouched outer
 ends. -/
 public theorem boundary_openGluedCarrier :
-    (I.prod (𝓡∂ 1)).boundary (OpenGluedCarrier B₀₁ B₁₂) =
+    (I.prod (𝓡∂ 1)).boundary (openGluedCarrier B₀₁ B₁₂) =
       Set.range (smoothIncomingInclusion B₀₁ B₁₂) ∪
         Set.range (smoothOutgoingInclusion B₀₁ B₁₂) := by
   ext q
@@ -140,14 +140,14 @@ public theorem boundary_openGluedCarrier :
 /-- The untouched incoming collar, followed by the left canonical piece inclusion. -/
 public noncomputable def smoothIncomingChart :
     SmoothOpenEmbedding (I.prod (𝓡∂ 1)) (CollarSource M₀)
-      (OpenGluedCarrier B₀₁ B₁₂) :=
+      (openGluedCarrier B₀₁ B₁₂) :=
   (openPieceSmoothOpenEmbedding B₀₁ B₁₂ OpenPieceIndex.left).comp
     (incomingAwayChart B₀₁)
 
 /-- The untouched outgoing collar, followed by the right canonical piece inclusion. -/
 public noncomputable def smoothOutgoingChart :
     SmoothOpenEmbedding (I.prod (𝓡∂ 1)) (CollarSource M₂)
-      (OpenGluedCarrier B₀₁ B₁₂) :=
+      (openGluedCarrier B₀₁ B₁₂) :=
   (openPieceSmoothOpenEmbedding B₀₁ B₁₂ OpenPieceIndex.right).comp
     (outgoingAwayChart B₁₂)
 

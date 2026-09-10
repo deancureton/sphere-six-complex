@@ -570,14 +570,14 @@ noncomputable def boundarySevenFaceNeighborhoodCechRowArrowIso
     (alternatingFaceMapComplexCompMapHomologicalComplexIso F).app Y
   let r₀ : firstQuadrantHorizontalRow
       ((ChainComplex.single₀ (ChainComplex AddCommGrpCat ℕ)).obj
-        (CoverSmallIntegralSingularChainComplex
+        (coverSmallIntegralSingularChainComplex
           (SSet.toTop.obj (∂Δ[7] : SSet.{0}))
           boundarySevenComparisonFaceNeighborhood)) q ≅
       (ChainComplex.single₀ AddCommGrpCat).obj
         (SimplicialObject.Augmented.point.obj X) :=
     (HomologicalComplex.singleMapHomologicalComplex F
       (ComplexShape.down ℕ) 0).app
-        (CoverSmallIntegralSingularChainComplex
+        (coverSmallIntegralSingularChainComplex
           (SSet.toTop.obj (∂Δ[7] : SSet.{0}))
           boundarySevenComparisonFaceNeighborhood)
   let e₀ : Arrow.mk (firstQuadrantHorizontalRowMap

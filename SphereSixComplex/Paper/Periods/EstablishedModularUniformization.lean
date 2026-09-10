@@ -27,13 +27,13 @@ open SphereSixComplex.TriangleGroup
 orbit fibres, elliptic ramification, and completed cusp. -/
 public theorem establishedExactFuchsianOrbifoldCoordinate :
     Nonempty ExactFuchsianOrbifoldCoordinate :=
-  establishedExactFuchsianOrbifoldCoordinate_proved
+  nonempty_exactFuchsianOrbifoldCoordinate
 
 /-- Classical level-one modular uniformization by the normalized modular invariant, including its
 exact orbit fibres, elliptic ramification, special values, and completed cusp. -/
 public theorem establishedExactNormalizedModularJUniformization :
     Nonempty ExactNormalizedModularJUniformization :=
-  establishedExactNormalizedModularJUniformization_proved
+  nonempty_exactNormalizedModularJUniformization
 
 /-- Classical normalized branched-lifting theorem from an exact `(3, 4, ∞)` quotient coordinate
 through the exact level-one modular quotient. -/
@@ -42,7 +42,7 @@ public theorem establishedNormalizedFuchsianModularJLifting :
   NormalizedModularJLiftingExistence.normalizedFuchsianModularJLiftingExistence
 
 /-- A normalized modular parameter together with the exact source quotient coordinate it lifts. -/
-public structure EstablishedFuchsianModularParameter where
+public structure NormalizedFuchsianModularParameter where
   /-- The exact source orbifold quotient coordinate. -/
   sourceCoordinate : ExactFuchsianOrbifoldCoordinate
   /-- The resulting holomorphic equivariant modular parameter. -/
@@ -59,8 +59,8 @@ public structure EstablishedFuchsianModularParameter where
 
 /-- The three classical uniformization inputs produce the normalized Fuchsian modular parameter
 and its exact source quotient coordinate. -/
-public theorem exists_establishedFuchsianModularParameter :
-    Nonempty EstablishedFuchsianModularParameter := by
+public theorem nonempty_normalizedFuchsianModularParameter :
+    Nonempty NormalizedFuchsianModularParameter := by
   obtain ⟨C⟩ := establishedExactFuchsianOrbifoldCoordinate
   obtain ⟨J⟩ := establishedExactNormalizedModularJUniformization
   obtain ⟨P, hOne, hTwo, hCoordinate⟩ :=

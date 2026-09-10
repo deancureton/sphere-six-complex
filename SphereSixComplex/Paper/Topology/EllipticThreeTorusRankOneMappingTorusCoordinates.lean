@@ -28,15 +28,15 @@ open EllipticThreeTorusWangLattice
 open PaperAffineCyclicReducedFiberMappingTorus
 open SphereSixComplex.StandardTorusHomology
 
-public abbrev OrderThreePresentation :=
+public abbrev orderThreePresentation :=
   circleMappingTorusWangPresentationOfCover orderThreeThreeTorusClutching 1
 
-public abbrev OrderFourPresentation :=
+public abbrev orderFourPresentation :=
   circleMappingTorusWangPresentationOfCover orderFourThreeTorusClutching 1
 
 /-- The upper coinvariant of the order-three Wang sequence, in its positive integral coordinate. -/
 public noncomputable def orderThreeCoinvariantsEquivInt :
-    OrderThreePresentation.Coinvariants ≃ₗ[ℤ] ℤ :=
+    orderThreePresentation.Coinvariants ≃ₗ[ℤ] ℤ :=
   (coinvariantsEquivOfConjugacy
     standardThreeTorusHomologyTwo.toIntLinearEquiv
     (circleMonodromyDifference orderThreeThreeTorusClutching 2).toIntLinearMap
@@ -48,7 +48,7 @@ public noncomputable def orderThreeCoinvariantsEquivInt :
     orderThreeDegreeTwoCoinvariantsEquivInt
 
 /-- The lower invariant of the order-three Wang sequence, in its positive integral coordinate. -/
-public def orderThreeInvariantsEquivInt : OrderThreePresentation.Invariants ≃ₗ[ℤ] ℤ :=
+public def orderThreeInvariantsEquivInt : orderThreePresentation.invariants ≃ₗ[ℤ] ℤ :=
   (invariantsEquivOfConjugacy
     standardThreeTorusHomologyOne.toIntLinearEquiv
     (circleMonodromyDifference orderThreeThreeTorusClutching 1).toIntLinearMap
@@ -70,13 +70,13 @@ public theorem orderThreeCoinvariantsEquivInt_mk
   rw [orderThreeDegreeTwoCoinvariantsEquivInt_mk]
 
 @[simp]
-public theorem orderThreeInvariantsEquivInt_apply (x : OrderThreePresentation.Invariants) :
+public theorem orderThreeInvariantsEquivInt_apply (x : orderThreePresentation.invariants) :
     orderThreeInvariantsEquivInt x = standardThreeTorusHomologyOne x.1 2 :=
   rfl
 
 /-- The upper coinvariant of the order-four Wang sequence, in its positive integral coordinate. -/
 public noncomputable def orderFourCoinvariantsEquivInt :
-    OrderFourPresentation.Coinvariants ≃ₗ[ℤ] ℤ :=
+    orderFourPresentation.Coinvariants ≃ₗ[ℤ] ℤ :=
   (coinvariantsEquivOfConjugacy
     standardThreeTorusHomologyTwo.toIntLinearEquiv
     (circleMonodromyDifference orderFourThreeTorusClutching 2).toIntLinearMap
@@ -88,7 +88,7 @@ public noncomputable def orderFourCoinvariantsEquivInt :
     orderFourDegreeTwoCoinvariantsEquivInt
 
 /-- The lower invariant of the order-four Wang sequence, in its positive integral coordinate. -/
-public def orderFourInvariantsEquivInt : OrderFourPresentation.Invariants ≃ₗ[ℤ] ℤ :=
+public def orderFourInvariantsEquivInt : orderFourPresentation.invariants ≃ₗ[ℤ] ℤ :=
   (invariantsEquivOfConjugacy
     standardThreeTorusHomologyOne.toIntLinearEquiv
     (circleMonodromyDifference orderFourThreeTorusClutching 1).toIntLinearMap
@@ -110,7 +110,7 @@ public theorem orderFourCoinvariantsEquivInt_mk
   rw [orderFourDegreeTwoCoinvariantsEquivInt_mk]
 
 @[simp]
-public theorem orderFourInvariantsEquivInt_apply (x : OrderFourPresentation.Invariants) :
+public theorem orderFourInvariantsEquivInt_apply (x : orderFourPresentation.invariants) :
     orderFourInvariantsEquivInt x = standardThreeTorusHomologyOne x.1 2 :=
   rfl
 
@@ -126,12 +126,12 @@ public def intNegLinearEquiv : ℤ ≃ₗ[ℤ] ℤ where
 
 /-- The order-three invariant coordinate with its orientation reversed. -/
 public def orderThreeNegatedInvariantsEquivInt :
-    OrderThreePresentation.Invariants ≃ₗ[ℤ] ℤ :=
+    orderThreePresentation.invariants ≃ₗ[ℤ] ℤ :=
   orderThreeInvariantsEquivInt.trans intNegLinearEquiv
 
 @[simp]
 public theorem orderThreeNegatedInvariantsEquivInt_apply
-    (x : OrderThreePresentation.Invariants) :
+    (x : orderThreePresentation.invariants) :
     orderThreeNegatedInvariantsEquivInt x = -orderThreeInvariantsEquivInt x :=
   rfl
 
@@ -141,10 +141,10 @@ Coordinate zero is the invariant coordinate and coordinate one is the coinvarian
 -/
 public noncomputable def orderThreeTotalAddEquiv
     (s : IntegralSingularHomology 2 (CircleMappingTorus orderThreeThreeTorusClutching))
-    (hs : orderThreeInvariantsEquivInt (OrderThreePresentation.totalToInvariants s) = 1) :
+    (hs : orderThreeInvariantsEquivInt (orderThreePresentation.totalToInvariants s) = 1) :
     IntegralSingularHomology 2 (CircleMappingTorus orderThreeThreeTorusClutching) ≃+
       (Fin 2 → ℤ) :=
-  rankOneTotalAddEquiv OrderThreePresentation orderThreeCoinvariantsEquivInt
+  rankOneTotalAddEquiv orderThreePresentation orderThreeCoinvariantsEquivInt
     orderThreeInvariantsEquivInt s hs
 
 /-- Normalized coordinates on the second homology of the order-four mapping torus.
@@ -153,63 +153,63 @@ Coordinate zero is the invariant coordinate and coordinate one is the coinvarian
 -/
 public noncomputable def orderFourTotalAddEquiv
     (s : IntegralSingularHomology 2 (CircleMappingTorus orderFourThreeTorusClutching))
-    (hs : orderFourInvariantsEquivInt (OrderFourPresentation.totalToInvariants s) = 1) :
+    (hs : orderFourInvariantsEquivInt (orderFourPresentation.totalToInvariants s) = 1) :
     IntegralSingularHomology 2 (CircleMappingTorus orderFourThreeTorusClutching) ≃+
       (Fin 2 → ℤ) :=
-  rankOneTotalAddEquiv OrderFourPresentation orderFourCoinvariantsEquivInt
+  rankOneTotalAddEquiv orderFourPresentation orderFourCoinvariantsEquivInt
     orderFourInvariantsEquivInt s hs
 
 /-- Order-three total coordinates using the reversed orientation of the invariant coordinate. -/
 public noncomputable def orderThreeNegatedTotalAddEquiv
     (s : IntegralSingularHomology 2 (CircleMappingTorus orderThreeThreeTorusClutching))
     (hs : orderThreeNegatedInvariantsEquivInt
-      (OrderThreePresentation.totalToInvariants s) = 1) :
+      (orderThreePresentation.totalToInvariants s) = 1) :
     IntegralSingularHomology 2 (CircleMappingTorus orderThreeThreeTorusClutching) ≃+
       (Fin 2 → ℤ) :=
-  rankOneTotalAddEquiv OrderThreePresentation orderThreeCoinvariantsEquivInt
+  rankOneTotalAddEquiv orderThreePresentation orderThreeCoinvariantsEquivInt
     orderThreeNegatedInvariantsEquivInt s hs
 
 @[simp]
 public theorem orderThreeTotalAddEquiv_section
     (s : IntegralSingularHomology 2 (CircleMappingTorus orderThreeThreeTorusClutching))
-    (hs : orderThreeInvariantsEquivInt (OrderThreePresentation.totalToInvariants s) = 1) :
+    (hs : orderThreeInvariantsEquivInt (orderThreePresentation.totalToInvariants s) = 1) :
     orderThreeTotalAddEquiv s hs s = ![1, 0] :=
-  rankOneTotalAddEquiv_apply_generator OrderThreePresentation orderThreeCoinvariantsEquivInt
+  rankOneTotalAddEquiv_apply_generator orderThreePresentation orderThreeCoinvariantsEquivInt
     orderThreeInvariantsEquivInt s hs
 
 @[simp]
 public theorem orderFourTotalAddEquiv_section
     (s : IntegralSingularHomology 2 (CircleMappingTorus orderFourThreeTorusClutching))
-    (hs : orderFourInvariantsEquivInt (OrderFourPresentation.totalToInvariants s) = 1) :
+    (hs : orderFourInvariantsEquivInt (orderFourPresentation.totalToInvariants s) = 1) :
     orderFourTotalAddEquiv s hs s = ![1, 0] :=
-  rankOneTotalAddEquiv_apply_generator OrderFourPresentation orderFourCoinvariantsEquivInt
+  rankOneTotalAddEquiv_apply_generator orderFourPresentation orderFourCoinvariantsEquivInt
     orderFourInvariantsEquivInt s hs
 
 @[simp]
 public theorem orderThreeNegatedTotalAddEquiv_section
     (s : IntegralSingularHomology 2 (CircleMappingTorus orderThreeThreeTorusClutching))
     (hs : orderThreeNegatedInvariantsEquivInt
-      (OrderThreePresentation.totalToInvariants s) = 1) :
+      (orderThreePresentation.totalToInvariants s) = 1) :
     orderThreeNegatedTotalAddEquiv s hs s = ![1, 0] :=
-  rankOneTotalAddEquiv_apply_generator OrderThreePresentation orderThreeCoinvariantsEquivInt
+  rankOneTotalAddEquiv_apply_generator orderThreePresentation orderThreeCoinvariantsEquivInt
     orderThreeNegatedInvariantsEquivInt s hs
 
 @[simp]
 public theorem orderThreeTotalAddEquiv_fibreCoordinateZero
     (s : IntegralSingularHomology 2 (CircleMappingTorus orderThreeThreeTorusClutching))
-    (hs : orderThreeInvariantsEquivInt (OrderThreePresentation.totalToInvariants s) = 1) :
+    (hs : orderThreeInvariantsEquivInt (orderThreePresentation.totalToInvariants s) = 1) :
     orderThreeTotalAddEquiv s hs
-        (OrderThreePresentation.inclusion
+        (orderThreePresentation.inclusion
           (standardThreeTorusHomologyTwo.symm (Pi.single 0 1))) =
       ![0, 1] := by
-  rw [show OrderThreePresentation.inclusion
+  rw [show orderThreePresentation.inclusion
       (standardThreeTorusHomologyTwo.symm (Pi.single 0 1)) =
-      OrderThreePresentation.coinvariantsToTotal
+      orderThreePresentation.coinvariantsToTotal
         (Submodule.Quotient.mk
           (standardThreeTorusHomologyTwo.symm (Pi.single 0 1))) by rfl]
-  change (rankOneTotalAddEquiv OrderThreePresentation orderThreeCoinvariantsEquivInt
+  change (rankOneTotalAddEquiv orderThreePresentation orderThreeCoinvariantsEquivInt
     orderThreeInvariantsEquivInt s hs)
-      (OrderThreePresentation.coinvariantsToTotal
+      (orderThreePresentation.coinvariantsToTotal
         (Submodule.Quotient.mk
           (standardThreeTorusHomologyTwo.symm (Pi.single 0 1)))) = ![0, 1]
   rw [rankOneTotalAddEquiv_coinvariantsToTotal]
@@ -230,19 +230,19 @@ public theorem orderThreeTotalAddEquiv_fibreCoordinateZero
 public theorem orderThreeNegatedTotalAddEquiv_fibreCoordinateZero
     (s : IntegralSingularHomology 2 (CircleMappingTorus orderThreeThreeTorusClutching))
     (hs : orderThreeNegatedInvariantsEquivInt
-      (OrderThreePresentation.totalToInvariants s) = 1) :
+      (orderThreePresentation.totalToInvariants s) = 1) :
     orderThreeNegatedTotalAddEquiv s hs
-        (OrderThreePresentation.inclusion
+        (orderThreePresentation.inclusion
           (standardThreeTorusHomologyTwo.symm (Pi.single 0 1))) =
       ![0, 1] := by
-  rw [show OrderThreePresentation.inclusion
+  rw [show orderThreePresentation.inclusion
       (standardThreeTorusHomologyTwo.symm (Pi.single 0 1)) =
-      OrderThreePresentation.coinvariantsToTotal
+      orderThreePresentation.coinvariantsToTotal
         (Submodule.Quotient.mk
           (standardThreeTorusHomologyTwo.symm (Pi.single 0 1))) by rfl]
-  change (rankOneTotalAddEquiv OrderThreePresentation orderThreeCoinvariantsEquivInt
+  change (rankOneTotalAddEquiv orderThreePresentation orderThreeCoinvariantsEquivInt
     orderThreeNegatedInvariantsEquivInt s hs)
-      (OrderThreePresentation.coinvariantsToTotal
+      (orderThreePresentation.coinvariantsToTotal
         (Submodule.Quotient.mk
           (standardThreeTorusHomologyTwo.symm (Pi.single 0 1)))) = ![0, 1]
   rw [rankOneTotalAddEquiv_coinvariantsToTotal]
@@ -262,19 +262,19 @@ public theorem orderThreeNegatedTotalAddEquiv_fibreCoordinateZero
 @[simp]
 public theorem orderFourTotalAddEquiv_fibreCoordinateZero
     (s : IntegralSingularHomology 2 (CircleMappingTorus orderFourThreeTorusClutching))
-    (hs : orderFourInvariantsEquivInt (OrderFourPresentation.totalToInvariants s) = 1) :
+    (hs : orderFourInvariantsEquivInt (orderFourPresentation.totalToInvariants s) = 1) :
     orderFourTotalAddEquiv s hs
-        (OrderFourPresentation.inclusion
+        (orderFourPresentation.inclusion
           (standardThreeTorusHomologyTwo.symm (Pi.single 0 1))) =
       ![0, 1] := by
-  rw [show OrderFourPresentation.inclusion
+  rw [show orderFourPresentation.inclusion
       (standardThreeTorusHomologyTwo.symm (Pi.single 0 1)) =
-      OrderFourPresentation.coinvariantsToTotal
+      orderFourPresentation.coinvariantsToTotal
         (Submodule.Quotient.mk
           (standardThreeTorusHomologyTwo.symm (Pi.single 0 1))) by rfl]
-  change (rankOneTotalAddEquiv OrderFourPresentation orderFourCoinvariantsEquivInt
+  change (rankOneTotalAddEquiv orderFourPresentation orderFourCoinvariantsEquivInt
     orderFourInvariantsEquivInt s hs)
-      (OrderFourPresentation.coinvariantsToTotal
+      (orderFourPresentation.coinvariantsToTotal
         (Submodule.Quotient.mk
           (standardThreeTorusHomologyTwo.symm (Pi.single 0 1)))) = ![0, 1]
   rw [rankOneTotalAddEquiv_coinvariantsToTotal]

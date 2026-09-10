@@ -33,7 +33,7 @@ public theorem cuspFiniteFiberCoordinateCircle_generator (A : PaperAnalyticData)
   exact integerPeriodCircle_homology _ _ _
 
 public def cuspFiniteFiberCircleToFilling (A : PaperAnalyticData) (j : Fin 2) :
-    C(StdTorus 1, actualLocalCuspFilling A.starCuspWitness) := by
+    C(StdTorus 1, ActualLocalCuspFilling A.starCuspWitness) := by
   let G := CuspRadialClutchingConstruction.actualCuspRadialClutchingData A.starCuspWitness
   let _ := G.fiberTopology
   exact G.markedFiberToCuspFilling.comp (A.cuspFiniteFiberCoordinateCircle j)
@@ -118,12 +118,12 @@ public theorem cuspFiniteFiberGenerator_deckCoordinates (A : PaperAnalyticData) 
     A.cuspFiniteFiberCircleToFilling_loop j]
   let W := A.starCuspWitness
   let _ := actualLocalCuspQuotientAction W
-  let _ : SimplyConnectedSpace (CuspLocalPhaseAction.LocalCarrier A.toricModel W.localWitness.radius) :=
+  let _ : SimplyConnectedSpace (CuspLocalPhaseAction.localCarrier A.toricModel W.localWitness.radius) :=
     A.toricModel.localCarrierSimplyConnected W.localWitness.radius W.localWitness.radius_pos
   let hp := actualCuspFillingProjection_isQuotientCoveringMap W
-  let _ : PathConnectedSpace (actualLocalCuspFilling W) :=
+  let _ : PathConnectedSpace (ActualLocalCuspFilling W) :=
     hp.surjective.pathConnectedSpace hp.continuous
-  let e : CuspLocalPhaseAction.LocalCarrier A.toricModel W.localWitness.radius := Classical.arbitrary _
+  let e : CuspLocalPhaseAction.localCarrier A.toricModel W.localWitness.radius := Classical.arbitrary _
   have h := localCuspPeriodLoop_homology W _ A.cuspMarkedParameter_halfPlane
     (by simpa only [Metric.mem_ball, dist_zero_right] using markedCuspParameter_mem W)
     e (Pi.single j 1)

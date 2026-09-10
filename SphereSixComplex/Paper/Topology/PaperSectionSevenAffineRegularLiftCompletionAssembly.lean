@@ -76,7 +76,7 @@ public noncomputable def AffineOrderThreeRegularLiftInput.bandToReducedFiber
     C((A.actualAffineHeightSplit.allocation.orderThreeSide ∩
         A.actualAffineHeightSplit.allocation.orderFourSide :
           Set A.ellipticInterior),
-      OrderThreeReducedCentralFiber A.periods) :=
+      orderThreeReducedCentralFiber A.periods) :=
   (A.orderThreeFillingImageHomotopyEquiv.toFun.comp
     (R.actualHomotopyEquivalenceInclusion.toHomotopyEquiv.trans
       (nestedSubtypeHomeomorph A.actualAffineHeightSplit.allocation.orderThreeSide
@@ -92,7 +92,7 @@ public noncomputable def AffineOrderFourRegularLiftInput.bandToReducedFiber
     C((A.actualAffineHeightSplit.allocation.orderThreeSide ∩
         A.actualAffineHeightSplit.allocation.orderFourSide :
           Set A.ellipticInterior),
-      OrderFourReducedCentralFiber A.periods) :=
+      orderFourReducedCentralFiber A.periods) :=
   (A.orderFourFillingImageHomotopyEquiv.toFun.comp
     (R.actualHomotopyEquivalenceInclusion.toHomotopyEquiv.trans
       (nestedSubtypeHomeomorph A.actualAffineHeightSplit.allocation.orderFourSide
@@ -225,7 +225,7 @@ public noncomputable def affineOrderThreeBandToReducedFiber
     C((A.actualAffineHeightSplit.allocation.orderThreeSide ∩
         A.actualAffineHeightSplit.allocation.orderFourSide :
           Set A.ellipticInterior),
-      OrderThreeReducedCentralFiber A.periods) :=
+      orderThreeReducedCentralFiber A.periods) :=
   (A.orderThreeFillingImageHomotopyEquiv.toFun.comp
     (E.toHomotopyEquiv.trans
       (nestedSubtypeHomeomorph A.actualAffineHeightSplit.allocation.orderThreeSide
@@ -242,7 +242,7 @@ public noncomputable def affineOrderFourBandToReducedFiber
     C((A.actualAffineHeightSplit.allocation.orderThreeSide ∩
         A.actualAffineHeightSplit.allocation.orderFourSide :
           Set A.ellipticInterior),
-      OrderFourReducedCentralFiber A.periods) :=
+      orderFourReducedCentralFiber A.periods) :=
   (A.orderFourFillingImageHomotopyEquiv.toFun.comp
     (E.toHomotopyEquiv.trans
       (nestedSubtypeHomeomorph A.actualAffineHeightSplit.allocation.orderFourSide

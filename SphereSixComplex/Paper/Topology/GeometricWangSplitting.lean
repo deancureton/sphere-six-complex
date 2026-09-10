@@ -93,14 +93,14 @@ public noncomputable def sections
     (invariantsEquivOfConjugacy B.degreeZero.toIntLinearEquiv
       (circleMonodromyDifference phi 0).toIntLinearMap 0
       B.degreeZeroDifference_conjugacy).trans zeroKernelEquivInt
-  letI : Module.Projective ℤ degreeOnePresentation.Invariants :=
+  letI : Module.Projective ℤ degreeOnePresentation.invariants :=
     Module.Projective.of_equiv' degreeOneInvariants.symm
   let degreeTwoPresentation := circleMappingTorusHTwoPresentation phi
   let degreeTwoInvariants :=
     (invariantsEquivOfConjugacy B.degreeOne.toIntLinearEquiv
       (circleMonodromyDifference phi 1).toIntLinearMap mZeroDifference
       B.degreeOneDifference_conjugacy).trans mZeroInvariantsEquivIntSquared
-  letI : Module.Projective ℤ degreeTwoPresentation.Invariants :=
+  letI : Module.Projective ℤ degreeTwoPresentation.invariants :=
     Module.Projective.of_equiv' degreeTwoInvariants.symm
   exact
     { degreeOne := WangHomologyPresentation.Section.ofProjective degreeOnePresentation

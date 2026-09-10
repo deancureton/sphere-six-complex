@@ -64,28 +64,28 @@ namespace PaperGluingData
 variable (A : PaperGluingData)
 
 /-- The canonical gluing diagram built from the central piece and three collars. -/
-public abbrev D : TopCat.GlueData := A.star.glueData
+public abbrev glueData : TopCat.GlueData := A.star.glueData
 
 /-- The complex atlases on the central piece and three filling pieces. -/
 @[instance_reducible] public def complexCharts :
-    ∀ i, ChartedSpace ComplexModel (A.D.U i) :=
+    ∀ i, ChartedSpace ComplexModel (A.glueData.U i) :=
   A.biholomorphicStar.complexCharts
 
 /-- Biholomorphic collar gluing makes the transported piece atlases compatible. -/
 public theorem complexCompatible :
     letI := A.star.nonemptyPieceOfCollars A.nonemptyCentralCollar
     letI := A.complexCharts
-    GluingAtlasCompatible (I := modelWithCornersSelf ℂ ComplexModel) (n := ∞) A.D :=
+    GluingAtlasCompatible (I := modelWithCornersSelf ℂ ComplexModel) (n := ∞) A.glueData :=
   BiholomorphicStarGluing.BiholomorphicFourPieceStarData.gluing_atlas_compatible
     A.star A.nonemptyCentralCollar A.biholomorphicStar
 
 /-- Countability of the four-piece gluing follows from countability of its pieces. -/
-public theorem gluedSecondCountable : SecondCountableTopology (GluedSpace A.D) := by
-  let _ : Countable A.D.J := by
+public theorem gluedSecondCountable : SecondCountableTopology (GluedSpace A.glueData) := by
+  let _ : Countable A.glueData.J := by
     change Countable (Option (Fin 3))
     infer_instance
-  let _ (i : A.D.J) := A.pieceSecondCountable i
-  exact secondCountableTopology_gluedSpace A.D
+  let _ (i : A.glueData.J) := A.pieceSecondCountable i
+  exact secondCountableTopology_gluedSpace A.glueData
 
 /-- The standard open-cover Mayer--Vietoris theorem applies to all three stages of the paper's
 four-piece cover. -/
@@ -99,20 +99,20 @@ public theorem underlyingRealManifold :
     letI := A.connectedPiece
     letI := A.complexCharts
     @IsManifold ℝ inferInstance RealModel inferInstance inferInstance RealModel inferInstance
-      (modelWithCornersSelf ℝ RealModel) ∞ (GluedSpace A.D) inferInstance
-      (underlyingRealChartedSpace (gluedChartedSpace A.D)) := by
+      (modelWithCornersSelf ℝ RealModel) ∞ (GluedSpace A.glueData) inferInstance
+      (underlyingRealChartedSpace (gluedChartedSpace A.glueData)) := by
   let _ := A.star.nonemptyPieceOfCollars A.nonemptyCentralCollar
   let _ := A.connectedPiece
   let _ := A.complexCharts
   exact ComplexThreefold.RealAtlas.isManifold
-    (gluedChartedSpace A.D) (isManifold_gluedChartedSpace A.D A.complexCompatible)
+    (gluedChartedSpace A.glueData) (isManifold_gluedChartedSpace A.glueData A.complexCompatible)
 
 /-- Exact assembly of packaged gluing data into the completed-threefold contract. -/
 @[expose] public noncomputable def toCompletedPaperThreefold : CompletedPaperThreefold := by
-  let _ : Finite A.D.J := by
+  let _ : Finite A.glueData.J := by
     change Finite (Option (Fin 3))
     infer_instance
-  let _ : Nonempty A.D.J := by
+  let _ : Nonempty A.glueData.J := by
     change Nonempty (Option (Fin 3))
     infer_instance
   let _ := A.star.nonemptyPieceOfCollars A.nonemptyCentralCollar
@@ -120,7 +120,7 @@ public theorem underlyingRealManifold :
   let _ := A.complexCharts
   let _ := A.gluedT2
   let _ := A.gluedSecondCountable
-  exact completedPaperThreefoldOfGluing A.D A.complexCompatible A.underlyingRealManifold A.gluedCompact
+  exact completedPaperThreefoldOfGluing A.glueData A.complexCompatible A.underlyingRealManifold A.gluedCompact
     (A.star.intersectionGraphConnected A.nonemptyCentralCollar) A.vanKampen A.integralHomology
 
 end PaperGluingData

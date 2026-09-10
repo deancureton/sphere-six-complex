@@ -182,7 +182,7 @@ public noncomputable def orderThreeFillingRelationCayleyPuncturedLoop :
 /-- Include the punctured Cayley collar times its torus in the restricted product carrier. -/
 public noncomputable def orderThreePuncturedProductCarrierMap :
     letI := A.ellipticThreeBoundaryAction
-    C(A.OrderThreeCayleyPuncturedDisc × A.orderThreeTorus,
+    C(A.OrderThreeCayleyPuncturedDisc × A.OrderThreeTorus,
       (orderThreeCyclicPuncturedProductData A.periods
         A.starSeparation.orderThree.radius A.starSeparation.orderThree.radius_pos
         A.starSeparation.orderThree.radius_lt_one).carrier.carrier) := by
@@ -266,7 +266,7 @@ public theorem orderThreeRegularLoop_eq_puncturedProductRealization
 /-- Realize punctured product coordinates directly in the central quotient. -/
 public noncomputable def orderThreePuncturedProductToCentralMap :
     letI := A.ellipticThreeBoundaryAction
-    C(A.OrderThreeCayleyPuncturedDisc × A.orderThreeTorus, A.CentralFamily) := by
+    C(A.OrderThreeCayleyPuncturedDisc × A.OrderThreeTorus, A.CentralFamily) := by
   let _ := A.ellipticThreeBoundaryAction
   let q : C(RegularTotalSpace A.periods, A.CentralFamily) :=
     ⟨A.centralQuotientProjection,

@@ -14,7 +14,7 @@ namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 open SphereSixComplex SphereSixComplex.Periods StandardCircleHomologyLiftDegree
 open CuspFilling CuspPeriodExpansion InfiniteA2Toric
 open InfiniteA2Toric InfiniteA2Toric.Construction
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 def phaseSweepRelativeEdgeVector
@@ -69,7 +69,7 @@ theorem phaseSweepRelativeEdgeVector_edgeZero
     phaseSweepRelativeEdgeVector W T 1 0 = phaseSweepRelativeEdgeVector W T 0 0 := by
   let _ := (phaseSweepCellAtlas W).cwComplex
   ext l
-  exact congrArg (fun q : IntegralCWRelativeCellObject (ActualLocalCuspCentralOrbitQuotient W) 2 ↦
+  exact congrArg (fun q : integralCWRelativeCellObject (ActualLocalCuspCentralOrbitQuotient W) 2 ↦
     (T.cellBasis (ActualLocalCuspCentralOrbitQuotient W) 2).symm q l)
       (phaseSweepRelativePrism_edgeZero_equal T W)
 

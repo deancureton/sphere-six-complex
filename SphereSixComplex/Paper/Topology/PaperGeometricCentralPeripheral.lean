@@ -64,7 +64,7 @@ public theorem cuspAffineBridgeMeridian_eq_angularProjectedLoop :
       (additiveCuspRadiusCover W.localWitness.radius) :=
     additiveCuspBoundaryCover_simplyConnected W
   let hp : IsQuotientCoveringMap A.cuspBoundaryProjection
-      paperCuspBoundaryDeck :=
+      PaperCuspBoundaryDeck :=
     (additiveCuspBoundaryProjection_isQuotientCoveringMap W).homeomorph_comp
       A.cuspCollarToStarOverlapHomeomorph
   rw [A.cuspChosenAffineFillingCover_meridian_eq_ofDeck]

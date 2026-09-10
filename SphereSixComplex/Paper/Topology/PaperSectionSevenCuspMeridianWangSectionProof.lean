@@ -36,7 +36,7 @@ public noncomputable def cuspAngularPuncturedLoop :
             (additiveCuspBoundaryProjection_basePreimage W
               A.cuspLocalBoundaryBase)).symm)
 
-public theorem cuspBoundaryMeridianHomologyClass_eq_actualCuspAngularPuncturedLoop :
+public theorem cuspBoundaryMeridianHomologyClass_eq_cuspAngularPuncturedLoop :
     cuspBoundaryMeridianHomologyClass A.starCuspWitness A.cuspLocalBoundaryBase =
       loopHomologyClass A.cuspAngularPuncturedLoop := by
   let W := A.starCuspWitness
@@ -46,7 +46,7 @@ public theorem cuspBoundaryMeridianHomologyClass_eq_actualCuspAngularPuncturedLo
   let T := U.toToricFillingCoverModel
   let _ : SimplyConnectedSpace (additiveCuspRadiusCover W.localWitness.radius) :=
     U.boundarySimplyConnected
-  let _ : PathConnectedSpace (puncturedLocalCuspQuotient W) :=
+  let _ : PathConnectedSpace (PuncturedLocalCuspQuotient W) :=
     U.boundaryQuotient.surjective.pathConnectedSpace U.boundaryProjection.continuous
   let p := A.cuspAngularPuncturedLoop
   have hb : T.boundaryProjection T.base = A.cuspLocalBoundaryBase :=
@@ -57,7 +57,7 @@ public theorem cuspBoundaryMeridianHomologyClass_eq_actualCuspAngularPuncturedLo
       (Path.Homotopic.Quotient.mk pT) =
       MulOpposite.op paperCuspBoundaryMeridian := by
     let ex : U.boundaryProjection ⁻¹' ({T.boundaryProjection T.base} :
-        Set (puncturedLocalCuspQuotient W)) := ⟨U.base, by rfl⟩
+        Set (PuncturedLocalCuspQuotient W)) := ⟨U.base, by rfl⟩
     change U.boundaryQuotient.fundamentalGroupToMulOpposite
         ex (Path.Homotopic.Quotient.mk pT) = _
     rw [IsQuotientCoveringMap.fundamentalGroupToMulOpposite_apply_eq_Iff]
@@ -83,17 +83,17 @@ public theorem cuspBoundaryMeridianHomologyClass_eq_actualCuspAngularPuncturedLo
     change paperCuspBoundaryMeridian • U.base = _
     exact congrArg Subtype.val hmono.symm
   let e := T.boundaryFundamentalGroupEquiv
-  let hOne := deckHOneEquivOfFundamentalGroupEquivOpposite
+  let hOne := homologyOneEquivOfPi1Opposite
     (T.boundaryProjection T.base) e
-  have hdeck : deckAbelianPi1EquivOfFundamentalGroupEquivOpposite
+  have hdeck : abelianizationEquivOfPi1Opposite
       (T.boundaryProjection T.base) e
         (Additive.ofMul (Abelianization.of paperCuspBoundaryMeridian)) =
       Additive.ofMul (Abelianization.of U.fundamentalGroupData.meridian) := by
-    apply (deckAbelianPi1EquivOfFundamentalGroupEquivOpposite
+    apply (abelianizationEquivOfPi1Opposite
       (T.boundaryProjection T.base) e).symm.injective
     rw [LinearEquiv.symm_apply_apply]
     change Abelianization.of paperCuspBoundaryMeridian =
-      abelianizationMulOppositeEquiv paperCuspBoundaryDeck
+      abelianizationMulOppositeEquiv PaperCuspBoundaryDeck
         (Abelianization.of (e U.fundamentalGroupData.meridian))
     have he : e U.fundamentalGroupData.meridian =
         MulOpposite.op paperCuspBoundaryMeridian :=
@@ -102,13 +102,13 @@ public theorem cuspBoundaryMeridianHomologyClass_eq_actualCuspAngularPuncturedLo
   change (abelianizationComparison _ (T.boundaryProjection T.base)).equiv
       (Additive.ofMul (Abelianization.of U.fundamentalGroupData.meridian)) = _
   rw [← hdeck]
-  exact deckHOneEquivOfFundamentalGroupEquivOpposite_markedLoop
+  exact homologyOneEquivOfPi1Opposite_apply_loop
     (T.boundaryProjection T.base) e
     (fun _ : Unit ↦ paperCuspBoundaryMeridian) (fun _ : Unit ↦ pT)
     (fun _ ↦ hmark) () |>.trans
       (loopHomologyClass_cast p hb)
 
-public theorem cuspMappingTorusMeridianHomologyClass_eq_actualCuspAngularPuncturedLoop_image :
+public theorem cuspMappingTorusMeridianHomologyClass_eq_cuspAngularPuncturedLoop_image :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     cuspMappingTorusMeridianHomologyClass G A.cuspLocalBoundaryBase =
@@ -117,7 +117,7 @@ public theorem cuspMappingTorusMeridianHomologyClass_eq_actualCuspAngularPunctur
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   unfold cuspMappingTorusMeridianHomologyClass
-  rw [A.cuspBoundaryMeridianHomologyClass_eq_actualCuspAngularPuncturedLoop]
+  rw [A.cuspBoundaryMeridianHomologyClass_eq_cuspAngularPuncturedLoop]
   rfl
 
 end SphereSixComplex.Geometry.PaperAnalyticData

@@ -117,20 +117,20 @@ public def cylinderZeroStrongDeformationRetract (A : TopCat.{u}) :
 /-! ## Mapping cylinders -/
 
 /-- The (unreduced) mapping cylinder of `f`, with the zero end of `A × I` attached to `X`. -/
-public abbrev MappingCylinder (f : A ⟶ X) : TopCat.{u} :=
+public abbrev mappingCylinder (f : A ⟶ X) : TopCat.{u} :=
   pushout (cylinderZeroSection A) f
 
 /-- The cylinder branch of a mapping cylinder. -/
 public def mappingCylinderCylinder (f : A ⟶ X) :
-    TopCat.of (A × unitInterval) ⟶ MappingCylinder f :=
+    TopCat.of (A × unitInterval) ⟶ mappingCylinder f :=
   pushout.inl (cylinderZeroSection A) f
 
 /-- The target/base branch of a mapping cylinder. -/
-public def mappingCylinderBase (f : A ⟶ X) : X ⟶ MappingCylinder f :=
+public def mappingCylinderBase (f : A ⟶ X) : X ⟶ mappingCylinder f :=
   pushout.inr (cylinderZeroSection A) f
 
 /-- The unattached, one-end inclusion into a mapping cylinder. -/
-public def mappingCylinderFree (f : A ⟶ X) : A ⟶ MappingCylinder f :=
+public def mappingCylinderFree (f : A ⟶ X) : A ⟶ mappingCylinder f :=
   cylinderOneSection A ≫ mappingCylinderCylinder f
 
 @[reassoc]
@@ -142,7 +142,7 @@ public theorem mappingCylinder_zero_eq_base (f : A ⟶ X) :
 /-- The target copy is homotopy equivalent to the mapping cylinder, without any hypothesis on
 the map. -/
 public def mappingCylinderBaseHomotopyEquiv (f : A ⟶ X) :
-    (X : Type u) ≃ₕ (MappingCylinder f : Type u) :=
+    (X : Type u) ≃ₕ (mappingCylinder f : Type u) :=
   (cylinderZeroStrongDeformationRetract A).pushoutInrHomotopyEquiv f
 
 @[simp]
@@ -215,17 +215,17 @@ public theorem mappingCylinderFree_isHomotopyEquivalence (f : A ⟶ X)
 /-! ## Double mapping cylinders and their collapse to ordinary pushouts -/
 
 /-- The double mapping cylinder of a span `X ← A → Y`. -/
-public abbrev DoubleMappingCylinder (f : A ⟶ X) (g : A ⟶ Y) : TopCat.{u} :=
+public abbrev doubleMappingCylinder (f : A ⟶ X) (g : A ⟶ Y) : TopCat.{u} :=
   pushout (mappingCylinderFree f) g
 
 /-- The mapping-cylinder branch of the double mapping cylinder. -/
 public def doubleMappingCylinderLeft (f : A ⟶ X) (g : A ⟶ Y) :
-    MappingCylinder f ⟶ DoubleMappingCylinder f g :=
+    mappingCylinder f ⟶ doubleMappingCylinder f g :=
   pushout.inl (mappingCylinderFree f) g
 
 /-- The right branch of the double mapping cylinder. -/
 public def doubleMappingCylinderRight (f : A ⟶ X) (g : A ⟶ Y) :
-    Y ⟶ DoubleMappingCylinder f g :=
+    Y ⟶ doubleMappingCylinder f g :=
   pushout.inr (mappingCylinderFree f) g
 
 @[reassoc]
@@ -239,7 +239,7 @@ double mapping cylinder is a homotopy equivalence.  This is the exact input cons
 existing pushout theorem. -/
 public def doubleMappingCylinderRightHomotopyEquiv (f : A ⟶ X) (g : A ⟶ Y)
     (D : TopCat.StrongDeformationRetractData (mappingCylinderFree f)) :
-    (Y : Type u) ≃ₕ (DoubleMappingCylinder f g : Type u) :=
+    (Y : Type u) ≃ₕ (doubleMappingCylinder f g : Type u) :=
   D.pushoutInrHomotopyEquiv g
 
 @[simp]
@@ -256,7 +256,7 @@ stretching homeomorphism is one geometric way to supply such a comparison. -/
 public theorem pushoutInr_isHomotopyEquivalence_of_doubleComparison
     (f : A ⟶ X) (g : A ⟶ Y)
     (D : TopCat.StrongDeformationRetractData (mappingCylinderFree f))
-    (e : (DoubleMappingCylinder f g : Type u) ≃ₕ
+    (e : (doubleMappingCylinder f g : Type u) ≃ₕ
       ((pushout f g : TopCat.{u}) : Type u))
     (he : ∀ y : Y, e (doubleMappingCylinderRight f g y) = pushout.inr f g y) :
     IsHomotopyEquivalence (pushout.inr f g).hom := by
@@ -265,7 +265,7 @@ public theorem pushoutInr_isHomotopyEquivalence_of_doubleComparison
   exact he y
 
 /-- Collapse a mapping cylinder back to its target. -/
-public def mappingCylinderCollapse (f : A ⟶ X) : MappingCylinder f ⟶ X :=
+public def mappingCylinderCollapse (f : A ⟶ X) : mappingCylinder f ⟶ X :=
   pushout.desc (cylinderProjection A ≫ f) (𝟙 X) (by
     ext a
     rfl)
@@ -305,12 +305,12 @@ public theorem mappingCylinderCollapse_eq_pushoutRetraction (f : A ⟶ X) :
 
 /-- Collapsing a mapping cylinder to its target is itself a homotopy equivalence. -/
 public def mappingCylinderCollapseHomotopyEquiv (f : A ⟶ X) :
-    (MappingCylinder f : Type u) ≃ₕ (X : Type u) :=
+    (mappingCylinder f : Type u) ≃ₕ (X : Type u) :=
   (mappingCylinderBaseHomotopyEquiv f).symm
 
 @[simp]
 public theorem mappingCylinderCollapseHomotopyEquiv_apply
-    (f : A ⟶ X) (p : MappingCylinder f) :
+    (f : A ⟶ X) (p : mappingCylinder f) :
     mappingCylinderCollapseHomotopyEquiv f p = mappingCylinderCollapse f p := by
   change (cylinderZeroStrongDeformationRetract A).pushoutRetraction f p = _
   rw [← mappingCylinderCollapse_eq_pushoutRetraction f]
@@ -324,7 +324,7 @@ public theorem mappingCylinderCollapse_isHomotopyEquivalence (f : A ⟶ X) :
 
 /-- Map the mapping-cylinder branch into the ordinary pushout by collapsing its interval. -/
 public def mappingCylinderToPushout (f : A ⟶ X) (g : A ⟶ Y) :
-    MappingCylinder f ⟶ pushout f g :=
+    mappingCylinder f ⟶ pushout f g :=
   mappingCylinderCollapse f ≫ pushout.inl f g
 
 @[reassoc]
@@ -337,7 +337,7 @@ public theorem mappingCylinderFree_comp_toPushout (f : A ⟶ X) (g : A ⟶ Y) :
 /-- Collapse the inserted interval in the double mapping cylinder, obtaining the ordinary
 pushout. -/
 public def doubleMappingCylinderCollapse (f : A ⟶ X) (g : A ⟶ Y) :
-    DoubleMappingCylinder f g ⟶ pushout f g :=
+    doubleMappingCylinder f g ⟶ pushout f g :=
   pushout.desc (mappingCylinderToPushout f g) (pushout.inr f g)
     (mappingCylinderFree_comp_toPushout f g)
 

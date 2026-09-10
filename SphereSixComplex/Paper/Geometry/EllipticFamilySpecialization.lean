@@ -474,10 +474,10 @@ biholomorphism property of the varying-torus projection. -/
 public theorem familyDeckMap_gOne_contMDiff
     (n : WithTop ℕ∞)
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    [IsManifold GlobalDeckTotalModel n (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel n
+    [IsManifold globalDeckTotalModel n (TotalSpace (parameterMap F))]
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
       (projection (parameterMap F))) :
-    ContMDiff GlobalDeckTotalModel GlobalDeckTotalModel n (familyDeckMap F g₁) :=
+    ContMDiff globalDeckTotalModel globalDeckTotalModel n (familyDeckMap F g₁) :=
   familyDeckMap_contMDiff_of_projection_isLocalDiffeomorph F n hprojection g₁
 
 /-- Smoothness of the actual descended second-generator deck transport follows from the same
@@ -485,10 +485,10 @@ varying-family local-biholomorphism hypothesis. -/
 public theorem familyDeckMap_gTwo_contMDiff
     (n : WithTop ℕ∞)
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    [IsManifold GlobalDeckTotalModel n (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel n
+    [IsManifold globalDeckTotalModel n (TotalSpace (parameterMap F))]
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
       (projection (parameterMap F))) :
-    ContMDiff GlobalDeckTotalModel GlobalDeckTotalModel n (familyDeckMap F g₂) :=
+    ContMDiff globalDeckTotalModel globalDeckTotalModel n (familyDeckMap F g₂) :=
   familyDeckMap_contMDiff_of_projection_isLocalDiffeomorph F n hprojection g₂
 
 end FixedFibres

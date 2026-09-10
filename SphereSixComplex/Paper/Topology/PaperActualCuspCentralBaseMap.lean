@@ -76,7 +76,7 @@ public noncomputable def cuspCentralBase : A.CentralFamily :=
 /-- The literal cusp chart is exactly the inclusion of the cusp overlap into the central
 piece of the glued star. -/
 @[simp]
-public theorem centralToSectionSevenEulerPieceHomeomorph_actualCuspOverlapToCentral
+public theorem centralToSectionSevenEulerPieceHomeomorph_cuspOverlapToCentral
     (x : (A.actualVanKampenFourPieceCover.core ∩
       A.actualVanKampenFourPieceCover.cusp : Set A.VanKampenSpace)) :
     A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph

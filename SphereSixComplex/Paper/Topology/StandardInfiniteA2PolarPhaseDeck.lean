@@ -55,7 +55,7 @@ public theorem fanShear_torusAction (M : Model) (lambda : ParameterLattice)
 It only says that the frozen multiplier, after monomial shear, admits the displayed compact-phase
 factor relative to the positive real deck multiplier. -/
 public structure PolarPhaseDeckLift
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) (r : ℝ)
     (P : PolarHoneycombData M r) where
   deckPhase : Multiplicative ParameterLattice → CompactTorus → CompactTorus
@@ -67,7 +67,7 @@ public structure PolarPhaseDeckLift
 
 /-- The radial part of the frozen phase multiplier agrees with the chosen positive deck twist. -/
 public structure PolarPhaseRadialCompatibility
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) (r : ℝ)
     (P : PolarHoneycombData M r) : Prop where
   norm_positiveTwist : ∀ lambda i,
@@ -83,7 +83,7 @@ public theorem norm_denseTorusShear_compactTorusEmbedding
 /-- The compact correction obtained by dividing the frozen sheared multiplier by its positive
 radial part. -/
 public def radialDeckPhase
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
     {P : PolarHoneycombData M r} (H : PolarPhaseRadialCompatibility N M r P)
     (g : Multiplicative ParameterLattice) (k : CompactTorus) : CompactTorus :=
@@ -102,7 +102,7 @@ public def radialDeckPhase
 
 @[simp]
 public theorem compactTorusEmbedding_radialDeckPhase_apply
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
     {P : PolarHoneycombData M r} (H : PolarPhaseRadialCompatibility N M r P)
     (g : Multiplicative ParameterLattice) (k : CompactTorus) (i : Fin 3) :
@@ -116,7 +116,7 @@ public theorem compactTorusEmbedding_radialDeckPhase_apply
 
 /-- Radial compatibility constructs the exact compact multiplier lift. -/
 public def PolarPhaseRadialCompatibility.toDeckLift
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
     {P : PolarHoneycombData M r} (H : PolarPhaseRadialCompatibility N M r P) :
     PolarPhaseDeckLift N M r P where
@@ -132,7 +132,7 @@ public def PolarPhaseRadialCompatibility.toDeckLift
 
 /-- The multiplier identity implies the deck-orbit compatibility required by phase spreading. -/
 public theorem PolarPhaseDeckLift.deck_orbit
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
     {P : PolarHoneycombData M r} (L : PolarPhaseDeckLift N M r P) :
     letI := P.positiveDeckAction
@@ -146,7 +146,7 @@ public theorem PolarPhaseDeckLift.deck_orbit
   rw [ofAdd_toAdd] at hdeck
   apply Subtype.ext
   change M.torusAction (compactTorusEmbedding (L.deckPhase g k))
-      (((g • p : P.positivePart) : LocalCarrier M r) : M.Carrier) =
+      (((g • p : P.positivePart) : localCarrier M r) : M.Carrier) =
     ToricModel.phaseAction M (N.phaseCoefficient (Multiplicative.toAdd g) 0)
       (Additive.toMul (M.fanShear (Multiplicative.toAdd g))
         (M.torusAction (compactTorusEmbedding k) (p : M.Carrier)))
@@ -214,7 +214,7 @@ end PolarPhaseGeometricCore
 /-- Assemble the phase-spreading interface from its geometric core and the explicit multiplier
 lift.  In particular, the deck-orbit field is a theorem rather than an assumed compatibility. -/
 public def FrozenLocalCuspPhaseSpreadingData.ofPolarPhaseData
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
     {P : PolarHoneycombData M r}
     (hquot : Topology.IsQuotientMap

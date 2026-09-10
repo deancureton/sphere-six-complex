@@ -16,7 +16,7 @@ corresponding cyclic free factor.
 namespace SphereSixComplex.TriangleGroup
 
 /-- The stabilizer of the order-three elliptic point is exactly the embedded `C₃` factor. -/
-public theorem establishedFuchsianOneStabilizerExact (g : Delta) :
+public theorem fuchsianOneFixed_iff_mem_range_inl (g : Delta) :
     fuchsianSourceAction g • fuchsianOneFixedPoint = fuchsianOneFixedPoint ↔
       ∃ a : CyclicThree, g = Monoid.Coprod.inl a := by
   constructor
@@ -30,7 +30,7 @@ public theorem establishedFuchsianOneStabilizerExact (g : Delta) :
         a ha fuchsianOneFixedPoint).2 rfl
 
 /-- The stabilizer of the order-four elliptic point is exactly the embedded `C₄` factor. -/
-public theorem establishedFuchsianTwoStabilizerExact (g : Delta) :
+public theorem fuchsianTwoFixed_iff_mem_range_inr (g : Delta) :
     fuchsianSourceAction g • fuchsianTwoFixedPoint = fuchsianTwoFixedPoint ↔
       ∃ a : CyclicFour, g = Monoid.Coprod.inr a := by
   constructor

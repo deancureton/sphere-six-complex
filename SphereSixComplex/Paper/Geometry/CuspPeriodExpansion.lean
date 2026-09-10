@@ -66,12 +66,10 @@ public structure HolomorphicCuspDescent (H : ℝ) (f : ℂ → ℂ) where
     (∀ s ∈ cuspHalfPlane H, g (cuspQ s) = f s) →
     Set.EqOn g extension (Metric.ball 0 (cuspRadius H))
 
-namespace Established
-
 /-- The classical removable-singularity theorem for the exponential quotient of a half-plane.
 This is a general one-variable analytic theorem, independent of the period family and of the
 paper's toric construction. -/
-public theorem periodicBoundedHolomorphicCuspDescent
+public theorem nonempty_holomorphicCuspDescent
     (H : ℝ) (f : ℂ → ℂ)
     (holomorphic : DifferentiableOn ℂ f (cuspHalfPlane H))
     (periodic : ∀ s ∈ cuspHalfPlane H, f (s - 1) = f s)
@@ -179,13 +177,11 @@ public theorem periodicBoundedHolomorphicCuspDescent
       (he_cont.tendsto.mono_left nhdsWithin_le_nhds) heq
   · exact hnonzero q hq hq0
 
-end Established
-
 /-- The missing P1-type normalization for the actual assembled Fuchsian period functions.
 The lift is a holomorphic inverse to `τ` on a half-plane, lands in the source cusp, and intertwines
 translation by `-1` with the exact Fuchsian cusp generator. -/
 public structure NormalizedFuchsianCuspCoordinate
-    (E : EstablishedFuchsianModularParameter) (D : FuchsianPeriodLocalData E) where
+    (E : NormalizedFuchsianModularParameter) (D : FuchsianPeriodLocalData E) where
   height : ℝ
   lift : ℂ → UpperHalfPlane
   lift_holomorphic : MDiff[cuspHalfPlane height] lift
@@ -198,7 +194,7 @@ public structure NormalizedFuchsianCuspCoordinate
 
 namespace NormalizedFuchsianCuspCoordinate
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D)
 
 /-- The invariant `μ` coefficient pulled back to the normalized cusp half-plane. -/
@@ -259,12 +255,12 @@ public theorem bAlong_bounded :
 
 /-- The selected holomorphic extension of `μ` across the cusp point `q = 0`. -/
 public noncomputable def muDescent : HolomorphicCuspDescent N.height N.muAlong :=
-  Classical.choice (Established.periodicBoundedHolomorphicCuspDescent N.height N.muAlong
+  Classical.choice (nonempty_holomorphicCuspDescent N.height N.muAlong
     N.muAlong_holomorphic N.muAlong_periodic N.muAlong_bounded)
 
 /-- The selected holomorphic extension of `β + τ` across the cusp point `q = 0`. -/
 public noncomputable def bDescent : HolomorphicCuspDescent N.height N.bAlong :=
-  Classical.choice (Established.periodicBoundedHolomorphicCuspDescent N.height N.bAlong
+  Classical.choice (nonempty_holomorphicCuspDescent N.height N.bAlong
     N.bAlong_holomorphic N.bAlong_periodic N.bAlong_bounded)
 
 /-- The correction matrix in the normalization `s = τ`. -/

@@ -23,7 +23,7 @@ open GlobalTorusFamily
 they agree at one point. -/
 public theorem regularCoordinate_lifts_eq_of_apply_eq
     {A : PaperAnalyticData}
-    (f : C(affineVerticalStrip, RegularCoordinateBase))
+    (f : C(affineVerticalStrip, regularCoordinateBase))
     (L₁ L₂ : C(affineVerticalStrip,
       RegularBase (U := A.modular.modularParameter.toTriangleUniformization)))
     (a₀ : affineVerticalStrip)

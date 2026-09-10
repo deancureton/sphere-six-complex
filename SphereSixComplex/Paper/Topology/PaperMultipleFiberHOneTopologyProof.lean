@@ -64,11 +64,11 @@ private theorem homologyEquiv_map_symm {X Y : Type} [TopologicalSpace X] [Topolo
 fibre. -/
 @[expose] public def centralFiberCoverGenerator
     (P : AffineCyclicCentralFiberPresentationData m p D) :
-    C(RadialEllipticActionData.centralFiberCoverSource D,
-      RadialEllipticActionData.centralFiberCoverSource D) :=
+    C(RadialEllipticActionData.CentralFiberCoverSource D,
+      RadialEllipticActionData.CentralFiberCoverSource D) :=
   ((⟨(RadialEllipticActionData.centralFiberCoverSourceHomeomorph D).symm,
       (RadialEllipticActionData.centralFiberCoverSourceHomeomorph D).symm.continuous⟩ :
-        C(AdditiveTorus p, RadialEllipticActionData.centralFiberCoverSource D)).comp
+        C(AdditiveTorus p, RadialEllipticActionData.CentralFiberCoverSource D)).comp
     P.affine.map).comp
     ⟨RadialEllipticActionData.centralFiberCoverSourceHomeomorph D,
       (RadialEllipticActionData.centralFiberCoverSourceHomeomorph D).continuous⟩
@@ -81,7 +81,7 @@ coordinate, so this predicate holds by `rfl`; it is carried explicitly because t
 not exposed to importing modules. -/
 public def IsCentralFiberCoverSourceCoordinate
     (D : RadialEllipticActionData m (AdditiveTorus p)) : Prop :=
-  ∀ t : RadialEllipticActionData.centralFiberCoverSource D,
+  ∀ t : RadialEllipticActionData.CentralFiberCoverSource D,
     RadialEllipticActionData.centralFiberCoverSourceHomeomorph D t = t.1.2
 
 /-- The canonical central-fibre covering-source homeomorphism is the torus coordinate. -/
@@ -91,7 +91,7 @@ public theorem isCentralFiberCoverSourceCoordinate :
 
 /-- Points of the covering source sit over the centre of the disc. -/
 public theorem centralFiberCoverSource_fst
-    (t : RadialEllipticActionData.centralFiberCoverSource D) :
+    (t : RadialEllipticActionData.CentralFiberCoverSource D) :
     t.1.1 = ComplexUnitDisc.center := by
   have h :=
     (RadialEllipticActionData.mem_centralSlice_iff_quotient_mem_reducedCentralFiber D t.1).1 t.2
@@ -100,7 +100,7 @@ public theorem centralFiberCoverSource_fst
 /-- The underlying pair of a point of the covering source, in torus coordinates. -/
 public theorem centralFiberCoverSource_val
     (hcoord : IsCentralFiberCoverSourceCoordinate D)
-    (t : RadialEllipticActionData.centralFiberCoverSource D) :
+    (t : RadialEllipticActionData.CentralFiberCoverSource D) :
     t.1 = (ComplexUnitDisc.center, RadialEllipticActionData.centralFiberCoverSourceHomeomorph D t) := by
   rw [hcoord t]
   exact Prod.ext (centralFiberCoverSource_fst t) rfl
@@ -108,7 +108,7 @@ public theorem centralFiberCoverSource_val
 /-- The cyclic generator acts on the covering source as the fibre generator. -/
 public theorem centralFiberCoverSource_smul
     (hcoord : IsCentralFiberCoverSourceCoordinate D)
-    (t : RadialEllipticActionData.centralFiberCoverSource D) :
+    (t : RadialEllipticActionData.CentralFiberCoverSource D) :
     actionMap D.actionData.diagonalAction (cyclicGenerator m) t.1 =
       (ComplexUnitDisc.center, D.actionData.fiberGenerator
         (RadialEllipticActionData.centralFiberCoverSourceHomeomorph D t)) := by
@@ -150,7 +150,7 @@ public theorem centralFiberCoverProjection_comp_generator
 /-- Degree-one naturality of the standard covering basis under the transported generator. -/
 public theorem centralFiberCoverSourceDegreeOneBasis_generator
     (P : AffineCyclicCentralFiberPresentationData m p D)
-    (z : IntegralSingularHomology 1 (RadialEllipticActionData.centralFiberCoverSource D)) :
+    (z : IntegralSingularHomology 1 (RadialEllipticActionData.CentralFiberCoverSource D)) :
     centralFiberCoverSourceDegreeOneBasis P
         (integralSingularHomologyMap 1 (centralFiberCoverGenerator P) z) =
       P.affine.latticeMap (centralFiberCoverSourceDegreeOneBasis P z) := by

@@ -26,7 +26,7 @@ noncomputable section
 
 /-- The coherent analytic choices used by all four pieces of the completed family. -/
 public structure PaperAnalyticData where
-  modular : EstablishedFuchsianModularParameter
+  modular : NormalizedFuchsianModularParameter
   localPeriods : FuchsianPeriodLocalData modular
   cuspCoordinate : CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate modular localPeriods
 
@@ -39,7 +39,7 @@ public abbrev PaperAnalyticData.toricModel (_A : PaperAnalyticData) :
 /-- The established modular, explicit affine-descent, cusp-normalization, and toric inputs supply
 one coherent analytic package. -/
 public theorem exists_paperAnalyticData
-    (E : EstablishedFuchsianModularParameter)
+    (E : NormalizedFuchsianModularParameter)
     (F : ExactLiftedModularNegOneFrame E)
     (Amu : (FuchsianAffineDescent.muDescentData E F).AnalyticDescentData)
     (Abeta : FuchsianAffineDescent.BetaDescentData E F Amu) :
@@ -51,7 +51,7 @@ public theorem exists_paperAnalyticData
 /-- The standard analytic descent theorem supplies the dependent `mu` and `beta` certificates
 needed for the coherent paper package. -/
 public theorem exists_paperAnalyticData_of_establishedAnalyticDescent
-    (E : EstablishedFuchsianModularParameter)
+    (E : NormalizedFuchsianModularParameter)
     (F : ExactLiftedModularNegOneFrame E) :
     Nonempty PaperAnalyticData :=
   exists_paperAnalyticData E F
@@ -61,13 +61,13 @@ public theorem exists_paperAnalyticData_of_establishedAnalyticDescent
 /-- The established modular parameter, modular frame, general analytic descent, cusp
 normalization, and toric model produce the coherent analytic package unconditionally. -/
 public theorem exists_establishedPaperAnalyticData : Nonempty PaperAnalyticData := by
-  obtain ⟨E⟩ := exists_establishedFuchsianModularParameter
+  obtain ⟨E⟩ := nonempty_normalizedFuchsianModularParameter
   obtain ⟨F⟩ := establishedExactLiftedModularNegOneFrame E
   exact exists_paperAnalyticData_of_establishedAnalyticDescent E F
 
 /-- A coherent choice of the analytic data supplied by concrete affine-descent certificates. -/
 @[expose] public noncomputable def paperAnalyticData
-    (E : EstablishedFuchsianModularParameter)
+    (E : NormalizedFuchsianModularParameter)
     (F : ExactLiftedModularNegOneFrame E)
     (Amu : (FuchsianAffineDescent.muDescentData E F).AnalyticDescentData)
     (Abeta : FuchsianAffineDescent.BetaDescentData E F Amu) :
@@ -79,7 +79,7 @@ public theorem exists_establishedPaperAnalyticData : Nonempty PaperAnalyticData 
 
 /-- A coherent production choice requiring only the exact modular parameter and modular frame. -/
 @[expose] public noncomputable def paperAnalyticDataOfEstablishedAnalyticDescent
-    (E : EstablishedFuchsianModularParameter)
+    (E : NormalizedFuchsianModularParameter)
     (F : ExactLiftedModularNegOneFrame E) : PaperAnalyticData :=
   paperAnalyticData E F
     (FuchsianAffineDescent.muAnalyticDescentData E F)
@@ -87,7 +87,7 @@ public theorem exists_establishedPaperAnalyticData : Nonempty PaperAnalyticData 
 
 /-- A coherent production choice of all analytic inputs. -/
 @[expose] public noncomputable def establishedPaperAnalyticData : PaperAnalyticData :=
-  let E := Classical.choice exists_establishedFuchsianModularParameter
+  let E := Classical.choice nonempty_normalizedFuchsianModularParameter
   let F := Classical.choice (establishedExactLiftedModularNegOneFrame E)
   paperAnalyticDataOfEstablishedAnalyticDescent E F
 
@@ -110,45 +110,45 @@ public abbrev periods :
 public abbrev CentralFamily := PuncturedGlobalFamily A.periods
 
 /-- The actual period torus over the order-three fixed point. -/
-public abbrev orderThreeTorus :=
+public abbrev OrderThreeTorus :=
   AdditiveTorus
     (parameterMap A.periods A.modular.modularParameter.toTriangleUniformization.zOne).1
 
 /-- The actual period torus over the order-four fixed point. -/
-public abbrev orderFourTorus :=
+public abbrev OrderFourTorus :=
   AdditiveTorus
     (parameterMap A.periods A.modular.modularParameter.toTriangleUniformization.zTwo).1
 
 /-- The paper's free affine order-three action on the disc times its actual fixed fibre. -/
 public noncomputable abbrev orderThreeActionData :
-    EllipticActionData 3 ComplexUnitDisc A.orderThreeTorus :=
+    EllipticActionData 3 ComplexUnitDisc A.OrderThreeTorus :=
   EllipticFixedPointCriterion.orderThreeActionData A.periods
 
 /-- The paper's free affine order-four action on the disc times its actual fixed fibre. -/
 public noncomputable abbrev orderFourActionData :
-    EllipticActionData 4 ComplexUnitDisc A.orderFourTorus :=
+    EllipticActionData 4 ComplexUnitDisc A.OrderFourTorus :=
   EllipticFixedPointCriterion.orderFourActionData A.periods
 
 /-- The completed order-three local filling before it is attached to the global family. -/
 public abbrev OrderThreeFilling :=
   letI := A.orderThreeActionData.diagonalAction
-  OrbitQuotient (M := ComplexUnitDisc × A.orderThreeTorus) (G := FiniteCyclic 3)
+  OrbitQuotient (M := ComplexUnitDisc × A.OrderThreeTorus) (G := FiniteCyclic 3)
 
 /-- The completed order-four local filling before it is attached to the global family. -/
 public abbrev OrderFourFilling :=
   letI := A.orderFourActionData.diagonalAction
-  OrbitQuotient (M := ComplexUnitDisc × A.orderFourTorus) (G := FiniteCyclic 4)
+  OrbitQuotient (M := ComplexUnitDisc × A.OrderFourTorus) (G := FiniteCyclic 4)
 
 /-- The selected order-three filling action is free. -/
 public theorem orderThreeAction_free :
     letI := A.orderThreeActionData.diagonalAction
-    IsCancelSMul (FiniteCyclic 3) (ComplexUnitDisc × A.orderThreeTorus) :=
+    IsCancelSMul (FiniteCyclic 3) (ComplexUnitDisc × A.OrderThreeTorus) :=
   EllipticFixedPointCriterion.orderThreeAction_free A.periods
 
 /-- The selected order-four filling action is free. -/
 public theorem orderFourAction_free :
     letI := A.orderFourActionData.diagonalAction
-    IsCancelSMul (FiniteCyclic 4) (ComplexUnitDisc × A.orderFourTorus) :=
+    IsCancelSMul (FiniteCyclic 4) (ComplexUnitDisc × A.OrderFourTorus) :=
   EllipticFixedPointCriterion.orderFourAction_free A.periods
 
 end PaperAnalyticData

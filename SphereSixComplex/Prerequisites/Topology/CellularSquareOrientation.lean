@@ -19,9 +19,9 @@ public instance (n : ℕ) : ContractibleSpace (CWCharacteristicClosedBall n) :=
 public theorem cwCharacteristicBoundary_isIso (n : ℕ) (hn : n ≠ 0) :
     IsIso (cwRelativeIntegralSingularBoundary (cwCharacteristicBoundaryInclusion (n + 1)) n) := by
   have hz (k : ℕ) (hk : k ≠ 0) :
-      IsZero ((CWIntegralSingularChainComplexObj
+      IsZero ((cwIntegralSingularChainComplexObj
         (TopCat.of (CWCharacteristicClosedBall (n + 1)))).homology k) := by
-    let _ : Subsingleton ((CWIntegralSingularChainComplexObj
+    let _ : Subsingleton ((cwIntegralSingularChainComplexObj
         (TopCat.of (CWCharacteristicClosedBall (n + 1)))).homology k) :=
       subsingleton_integralSingularHomology_of_contractible
         (X := CWCharacteristicClosedBall (n + 1)) k hk
@@ -103,7 +103,7 @@ public theorem CellularHomology.IntegralComparison.attachingDegree_zero_of_posit
   simp
 
 public def normalizedSquareDiskOrientation :
-    (CWRelativeIntegralSingularChainComplex
+    (cwRelativeIntegralSingularChainComplex
       (cwCharacteristicBoundaryInclusion 2)).homology 2 ≃+ ℤ := by
   let _ := cwCharacteristicBoundary_isIso 1 (by omega)
   exact (asIso (cwRelativeIntegralSingularBoundary
@@ -111,7 +111,7 @@ public def normalizedSquareDiskOrientation :
       cwSquareBoundaryHomologyWinding
 
 public theorem normalizedSquareDiskOrientation_apply
-    (x : (CWRelativeIntegralSingularChainComplex
+    (x : (cwRelativeIntegralSingularChainComplex
       (cwCharacteristicBoundaryInclusion 2)).homology 2) :
     normalizedSquareDiskOrientation x = cwSquareBoundaryHomologyWinding
       ((cwRelativeIntegralSingularBoundary (cwCharacteristicBoundaryInclusion 2) 1).hom x) := rfl

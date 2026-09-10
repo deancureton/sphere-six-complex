@@ -11,7 +11,7 @@ namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 open SphereSixComplex.Periods
 open InfiniteA2Toric InfiniteA2Toric
 open InfiniteA2Toric.Construction CuspFilling CuspPeriodExpansion
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public def phaseSweepCellIndex (i : Fin 3) : Fin 4 := i.succ
@@ -99,7 +99,7 @@ public theorem phaseSweepCylinderPair_relativeChainMap
     (phaseSweepCharacteristicPair W i)
 
 public def phaseSweepCylinderGenerator (T : CellularHomology.IntegralComparison) :
-    (CWRelativeIntegralSingularChainComplex
+    (cwRelativeIntegralSingularChainComplex
       (cylinderBoundaryInclusion (cwBallBoundarySet 1))).homology 2 :=
   homologyMap (cwCharacteristicCylinderRelativeIso 1).inv 2 ((T.diskOrientation 2).symm 1)
 

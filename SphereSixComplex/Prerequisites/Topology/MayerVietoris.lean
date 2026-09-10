@@ -21,13 +21,13 @@ open scoped ContinuousMap
 namespace SphereSixComplex
 
 /-- The integral singular chain complex of a space. -/
-public abbrev IntegralSingularChainComplex (X : Type) [TopologicalSpace X] :=
+public abbrev integralSingularChainComplex (X : Type) [TopologicalSpace X] :=
   ((singularChainComplexFunctor AddCommGrpCat).obj (AddCommGrpCat.of ℤ)).obj (TopCat.of X)
 
 /-- The map of integral singular chain complexes induced by a continuous map. -/
 public noncomputable def integralSingularChainMap
     {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (f : C(X, Y)) :
-    IntegralSingularChainComplex X ⟶ IntegralSingularChainComplex Y :=
+    integralSingularChainComplex X ⟶ integralSingularChainComplex Y :=
   ((singularChainComplexFunctor AddCommGrpCat).obj (AddCommGrpCat.of ℤ)).map
     (TopCat.ofHom f)
 
@@ -170,7 +170,7 @@ public def FourPieceMayerVietorisExactness
 standard sphere induces a quasi-isomorphism on integral singular chains. -/
 public def FourPieceHomologyComputation
     {X : Type} [TopologicalSpace X] (_C : FourPieceOpenCover X) : Prop :=
-  ∃ comparison : IntegralSingularChainComplex X ⟶ IntegralSingularChainComplex SixSphere,
+  ∃ comparison : integralSingularChainComplex X ⟶ integralSingularChainComplex SixSphere,
     QuasiIso comparison
 
 /-- The full four-piece Mayer--Vietoris contract. Its two fields separate the unavailable
@@ -183,7 +183,7 @@ public def FourPieceMayerVietorisContract
 homology equivalences. -/
 public theorem hasIntegralHomologyOfSixSphere_of_quasiIso
     {X : Type} [TopologicalSpace X]
-    (comparison : IntegralSingularChainComplex X ⟶ IntegralSingularChainComplex SixSphere)
+    (comparison : integralSingularChainComplex X ⟶ integralSingularChainComplex SixSphere)
     (h : QuasiIso comparison) :
     HasIntegralHomologyOfSixSphere X := by
   intro k
@@ -207,7 +207,7 @@ public theorem FourPieceMayerVietorisContract.hasIntegralHomologyOfSixSphere
 public theorem fourPieceMayerVietorisContract_of_quasiIso
     {X : Type} [TopologicalSpace X] (C : FourPieceOpenCover X)
     (hExact : FourPieceMayerVietorisExactness C)
-    (comparison : IntegralSingularChainComplex X ⟶ IntegralSingularChainComplex SixSphere)
+    (comparison : integralSingularChainComplex X ⟶ integralSingularChainComplex SixSphere)
     (hcomparison : QuasiIso comparison) :
     FourPieceMayerVietorisContract C :=
   ⟨hExact, comparison, hcomparison⟩

@@ -20,7 +20,7 @@ open scoped ContDiff Manifold Topology
 namespace SphereSixComplex
 
 /-- The central seam parameter `1 / 2`. -/
-public def collarMidpoint : CollarParameter :=
+public def collarMidpoint : collarParameter :=
   ⟨1 / 2, by norm_num⟩
 
 @[simp]
@@ -28,32 +28,32 @@ public theorem collarMidpoint_val : (collarMidpoint : ℝ) = 1 / 2 :=
   rfl
 
 /-- The open interior `(0, 1)` of the closed collar parameter. -/
-public def collarInterior : TopologicalSpace.Opens CollarParameter where
+public def collarInterior : TopologicalSpace.Opens collarParameter where
   carrier := {t | 0 < (t : ℝ) ∧ (t : ℝ) < 1}
   is_open' := (isOpen_Ioi.inter isOpen_Iio).preimage continuous_subtype_val
 
 /-- The left open half `(0, 1 / 2)` of the collar parameter. -/
-public def collarLeftOpenInterval : TopologicalSpace.Opens CollarParameter where
+public def collarLeftOpenInterval : TopologicalSpace.Opens collarParameter where
   carrier := {t | 0 < (t : ℝ) ∧ (t : ℝ) < 1 / 2}
   is_open' := (isOpen_Ioi.inter isOpen_Iio).preimage continuous_subtype_val
 
 /-- The right open half `(1 / 2, 1)` of the collar parameter. -/
-public def collarRightOpenInterval : TopologicalSpace.Opens CollarParameter where
+public def collarRightOpenInterval : TopologicalSpace.Opens collarParameter where
   carrier := {t | 1 / 2 < (t : ℝ) ∧ (t : ℝ) < 1}
   is_open' := (isOpen_Ioi.inter isOpen_Iio).preimage continuous_subtype_val
 
 @[simp]
-public theorem mem_collarInterior (t : CollarParameter) :
+public theorem mem_collarInterior (t : collarParameter) :
     t ∈ collarInterior ↔ 0 < (t : ℝ) ∧ (t : ℝ) < 1 :=
   Iff.rfl
 
 @[simp]
-public theorem mem_collarLeftOpenInterval (t : CollarParameter) :
+public theorem mem_collarLeftOpenInterval (t : collarParameter) :
     t ∈ collarLeftOpenInterval ↔ 0 < (t : ℝ) ∧ (t : ℝ) < 1 / 2 :=
   Iff.rfl
 
 @[simp]
-public theorem mem_collarRightOpenInterval (t : CollarParameter) :
+public theorem mem_collarRightOpenInterval (t : collarParameter) :
     t ∈ collarRightOpenInterval ↔ 1 / 2 < (t : ℝ) ∧ (t : ℝ) < 1 :=
   Iff.rfl
 
@@ -86,17 +86,17 @@ public theorem collarLeftOpenInterval_disjoint_right :
   exact (not_lt_of_ge (le_of_lt ht.1.2)) ht.2.1
 
 /-- The open collar interval `(0, 1)`, as an open submanifold of `CollarParameter`. -/
-public abbrev OpenCollarParameter := collarInterior
+public abbrev openCollarParameter := collarInterior
 
 /-- The left half `(0, 1 / 2)`, as an open submanifold of `CollarParameter`. -/
-public abbrev LeftOpenCollarParameter := collarLeftOpenInterval
+public abbrev leftOpenCollarParameter := collarLeftOpenInterval
 
 /-- The right half `(1 / 2, 1)`, as an open submanifold of `CollarParameter`. -/
-public abbrev RightOpenCollarParameter := collarRightOpenInterval
+public abbrev rightOpenCollarParameter := collarRightOpenInterval
 
 /-- Reflection restricts to a smooth involution of the open collar interval. -/
 public def openCollarReflection :
-    OpenCollarParameter ≃ₘ⟮(𝓡∂ 1), (𝓡∂ 1)⟯ OpenCollarParameter where
+    openCollarParameter ≃ₘ⟮(𝓡∂ 1), (𝓡∂ 1)⟯ openCollarParameter where
   toEquiv :=
     { toFun := fun t ↦
         ⟨collarReflection t.1, by
@@ -124,13 +124,13 @@ public def openCollarReflection :
       (contMDiff_subtype_val (I := (𝓡∂ 1)) (U := collarInterior))
 
 @[simp]
-public theorem openCollarReflection_val (t : OpenCollarParameter) :
-    (openCollarReflection t : CollarParameter) = collarReflection t.1 :=
+public theorem openCollarReflection_val (t : openCollarParameter) :
+    (openCollarReflection t : collarParameter) = collarReflection t.1 :=
   rfl
 
 /-- Affine rescaling `t ↦ t / 2` from `(0, 1)` onto `(0, 1 / 2)`. -/
 public def openCollarToLeftHalf :
-    OpenCollarParameter ≃ₘ⟮(𝓡∂ 1), (𝓡∂ 1)⟯ LeftOpenCollarParameter where
+    openCollarParameter ≃ₘ⟮(𝓡∂ 1), (𝓡∂ 1)⟯ leftOpenCollarParameter where
   toEquiv :=
     { toFun := fun t ↦
         ⟨⟨(t.1 : ℝ) / 2, by
@@ -176,18 +176,18 @@ public def openCollarToLeftHalf :
 /-- Reversed affine coordinate `t ↦ (1 - t) / 2` from an inward left collar parameter to the
 left half of the signed seam interval. -/
 public def openCollarToReversedLeftHalf :
-    OpenCollarParameter ≃ₘ⟮(𝓡∂ 1), (𝓡∂ 1)⟯ LeftOpenCollarParameter :=
+    openCollarParameter ≃ₘ⟮(𝓡∂ 1), (𝓡∂ 1)⟯ leftOpenCollarParameter :=
   openCollarReflection.trans openCollarToLeftHalf
 
 @[simp]
-public theorem openCollarToReversedLeftHalf_val (t : OpenCollarParameter) :
-    ((openCollarToReversedLeftHalf t : CollarParameter) : ℝ) =
+public theorem openCollarToReversedLeftHalf_val (t : openCollarParameter) :
+    ((openCollarToReversedLeftHalf t : collarParameter) : ℝ) =
       (1 - (t.1 : ℝ)) / 2 :=
   rfl
 
 /-- Affine rescaling `t ↦ (t + 1) / 2` from `(0, 1)` onto `(1 / 2, 1)`. -/
 public def openCollarToRightHalf :
-    OpenCollarParameter ≃ₘ⟮(𝓡∂ 1), (𝓡∂ 1)⟯ RightOpenCollarParameter where
+    openCollarParameter ≃ₘ⟮(𝓡∂ 1), (𝓡∂ 1)⟯ rightOpenCollarParameter where
   toEquiv :=
     { toFun := fun t ↦
         ⟨⟨((t.1 : ℝ) + 1) / 2, by
@@ -231,23 +231,23 @@ public def openCollarToRightHalf :
         (contMDiff_subtypeVal_Icc.comp contMDiff_subtype_val)
 
 @[simp]
-public theorem openCollarToLeftHalf_val (t : OpenCollarParameter) :
-    ((openCollarToLeftHalf t : CollarParameter) : ℝ) = (t.1 : ℝ) / 2 :=
+public theorem openCollarToLeftHalf_val (t : openCollarParameter) :
+    ((openCollarToLeftHalf t : collarParameter) : ℝ) = (t.1 : ℝ) / 2 :=
   rfl
 
 @[simp]
-public theorem openCollarToLeftHalf_symm_val (t : LeftOpenCollarParameter) :
-    ((openCollarToLeftHalf.symm t : CollarParameter) : ℝ) = 2 * (t.1 : ℝ) :=
+public theorem openCollarToLeftHalf_symm_val (t : leftOpenCollarParameter) :
+    ((openCollarToLeftHalf.symm t : collarParameter) : ℝ) = 2 * (t.1 : ℝ) :=
   rfl
 
 @[simp]
-public theorem openCollarToRightHalf_val (t : OpenCollarParameter) :
-    ((openCollarToRightHalf t : CollarParameter) : ℝ) = ((t.1 : ℝ) + 1) / 2 :=
+public theorem openCollarToRightHalf_val (t : openCollarParameter) :
+    ((openCollarToRightHalf t : collarParameter) : ℝ) = ((t.1 : ℝ) + 1) / 2 :=
   rfl
 
 @[simp]
-public theorem openCollarToRightHalf_symm_val (t : RightOpenCollarParameter) :
-    ((openCollarToRightHalf.symm t : CollarParameter) : ℝ) = 2 * (t.1 : ℝ) - 1 :=
+public theorem openCollarToRightHalf_symm_val (t : rightOpenCollarParameter) :
+    ((openCollarToRightHalf.symm t : collarParameter) : ℝ) = 2 * (t.1 : ℝ) - 1 :=
   rfl
 
 variable {E H M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -256,34 +256,34 @@ variable {E H M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
 
 /-- Product with the identity on a manifold of the affine identification with the left half. -/
 public def cylinderInteriorToLeftHalf :
-    (M × OpenCollarParameter) ≃ₘ⟮I.prod (𝓡∂ 1), I.prod (𝓡∂ 1)⟯
-      M × LeftOpenCollarParameter :=
+    (M × openCollarParameter) ≃ₘ⟮I.prod (𝓡∂ 1), I.prod (𝓡∂ 1)⟯
+      M × leftOpenCollarParameter :=
   (Diffeomorph.refl I M ∞).prodCongr openCollarToLeftHalf
 
 /-- Product with the identity on a manifold of the affine identification with the right half. -/
 public def cylinderInteriorToRightHalf :
-    (M × OpenCollarParameter) ≃ₘ⟮I.prod (𝓡∂ 1), I.prod (𝓡∂ 1)⟯
-      M × RightOpenCollarParameter :=
+    (M × openCollarParameter) ≃ₘ⟮I.prod (𝓡∂ 1), I.prod (𝓡∂ 1)⟯
+      M × rightOpenCollarParameter :=
   (Diffeomorph.refl I M ∞).prodCongr openCollarToRightHalf
 
 @[simp]
-public theorem cylinderInteriorToLeftHalf_apply (x : M) (t : OpenCollarParameter) :
+public theorem cylinderInteriorToLeftHalf_apply (x : M) (t : openCollarParameter) :
     cylinderInteriorToLeftHalf (I := I) (x, t) = (x, openCollarToLeftHalf t) :=
   rfl
 
 @[simp]
-public theorem cylinderInteriorToRightHalf_apply (x : M) (t : OpenCollarParameter) :
+public theorem cylinderInteriorToRightHalf_apply (x : M) (t : openCollarParameter) :
     cylinderInteriorToRightHalf (I := I) (x, t) = (x, openCollarToRightHalf t) :=
   rfl
 
 @[simp]
-public theorem cylinderInteriorToLeftHalf_symm_apply (x : M) (t : LeftOpenCollarParameter) :
+public theorem cylinderInteriorToLeftHalf_symm_apply (x : M) (t : leftOpenCollarParameter) :
     (cylinderInteriorToLeftHalf (I := I)).symm (x, t) =
       (x, openCollarToLeftHalf.symm t) :=
   rfl
 
 @[simp]
-public theorem cylinderInteriorToRightHalf_symm_apply (x : M) (t : RightOpenCollarParameter) :
+public theorem cylinderInteriorToRightHalf_symm_apply (x : M) (t : rightOpenCollarParameter) :
     (cylinderInteriorToRightHalf (I := I)).symm (x, t) =
       (x, openCollarToRightHalf.symm t) :=
   rfl

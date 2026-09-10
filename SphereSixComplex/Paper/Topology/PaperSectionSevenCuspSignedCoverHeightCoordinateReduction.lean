@@ -28,14 +28,14 @@ namespace EllipticTwoDiscCoverData
 
 /-- A selected additive cusp-cover representative of a cusp-collar point. -/
 public noncomputable def actualCuspAdditiveLift
-    (q : puncturedLocalCuspQuotient A.starCuspWitness) :
+    (q : PuncturedLocalCuspQuotient A.starCuspWitness) :
     additiveCuspRadiusCover A.starCuspWitness.localWitness.radius :=
   Classical.choose
     ((additiveCuspBoundaryProjection_isQuotientCoveringMap A.starCuspWitness).surjective q)
 
 /-- The selected additive representative projects to the original collar point. -/
 public theorem additiveCuspBoundaryProjection_actualCuspAdditiveLift
-    (q : puncturedLocalCuspQuotient A.starCuspWitness) :
+    (q : PuncturedLocalCuspQuotient A.starCuspWitness) :
     additiveCuspBoundaryProjection A.starCuspWitness (actualCuspAdditiveLift q) = q :=
   Classical.choose_spec
     ((additiveCuspBoundaryProjection_isQuotientCoveringMap A.starCuspWitness).surjective q)

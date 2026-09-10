@@ -236,7 +236,7 @@ variable {U : TriangleUniformization} (F : PeriodFunctions U)
 /-- First integral homology of the actual order-three reduced elliptic fibre, with the exact
 multiple-fibre presentation from Lemma 7.13. -/
 public noncomputable def orderThreeReducedCentralFiberHOneEquivPresentation :
-    IntegralSingularHomology 1 (OrderThreeReducedCentralFiber F) ≃ₗ[ℤ]
+    IntegralSingularHomology 1 (orderThreeReducedCentralFiber F) ≃ₗ[ℤ]
       OrderOneSelectedPresentation := by
   exact EstablishedAffineCyclicQuotientHomology.reducedCentralFiberHOneEquivPresentation
     (orderThreeCentralFiberPresentationData F)
@@ -244,7 +244,7 @@ public noncomputable def orderThreeReducedCentralFiberHOneEquivPresentation :
 /-- First integral homology of the actual order-four reduced elliptic fibre, with the exact
 multiple-fibre presentation from Lemma 7.13. -/
 public noncomputable def orderFourReducedCentralFiberHOneEquivPresentation :
-    IntegralSingularHomology 1 (OrderFourReducedCentralFiber F) ≃ₗ[ℤ]
+    IntegralSingularHomology 1 (orderFourReducedCentralFiber F) ≃ₗ[ℤ]
       OrderTwoSelectedPresentation := by
   exact EstablishedAffineCyclicQuotientHomology.reducedCentralFiberHOneEquivPresentation
     (orderFourCentralFiberPresentationData F)
@@ -252,14 +252,14 @@ public noncomputable def orderFourReducedCentralFiberHOneEquivPresentation :
 /-- In particular, first integral homology of the actual order-three reduced fibre is free of
 rank two. -/
 public noncomputable def orderThreeReducedCentralFiberHOneEquivIntSquared :
-    IntegralSingularHomology 1 (OrderThreeReducedCentralFiber F) ≃ₗ[ℤ] IntSquared :=
+    IntegralSingularHomology 1 (orderThreeReducedCentralFiber F) ≃ₗ[ℤ] IntSquared :=
   (orderThreeReducedCentralFiberHOneEquivPresentation F).trans
     orderOneSelectedPresentationEquivIntSquared
 
 /-- In particular, first integral homology of the actual order-four reduced fibre is free of
 rank two. -/
 public noncomputable def orderFourReducedCentralFiberHOneEquivIntSquared :
-    IntegralSingularHomology 1 (OrderFourReducedCentralFiber F) ≃ₗ[ℤ] IntSquared :=
+    IntegralSingularHomology 1 (orderFourReducedCentralFiber F) ≃ₗ[ℤ] IntSquared :=
   (orderFourReducedCentralFiberHOneEquivPresentation F).trans
     orderTwoSelectedPresentationEquivIntSquared
 

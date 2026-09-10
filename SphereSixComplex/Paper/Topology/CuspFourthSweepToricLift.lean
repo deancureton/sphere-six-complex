@@ -52,7 +52,7 @@ public theorem cuspAngularDenseLoop_real (A : PaperAnalyticData) (t : ℝ) :
     ring
 
 public def cuspAngularLocalLoop (A : PaperAnalyticData) :
-    C(UnitAddCircle, LocalCarrier A.toricModel A.starCuspWitness.localWitness.radius) where
+    C(UnitAddCircle, localCarrier A.toricModel A.starCuspWitness.localWitness.radius) where
   toFun z := ⟨A.toricModel.torusEmbedding (cuspAngularDenseLoop A z), by
     obtain ⟨t, rfl⟩ := QuotientAddGroup.mk_surjective z
     change A.toricModel.t (A.toricModel.torusEmbedding _) ∈ Metric.ball 0 _
@@ -68,14 +68,14 @@ public def cuspAngularLocalLoop (A : PaperAnalyticData) :
 
 public def fourthSweepToricFactor (A : PaperAnalyticData) :
     C(UnitAddCircle × StdTorus 1,
-      UnitAddCircle × LocalCarrier A.toricModel A.starCuspWitness.localWitness.radius) where
+      UnitAddCircle × localCarrier A.toricModel A.starCuspWitness.localWitness.radius) where
   toFun z := (z.2 0, cuspAngularLocalLoop A z.1)
   continuous_toFun := ((continuous_apply 0).comp continuous_snd).prodMk
     ((cuspAngularLocalLoop A).continuous.comp continuous_fst)
 
 public def fourthSweepToricLift (A : PaperAnalyticData) :
     C(UnitAddCircle × StdTorus 1,
-      LocalCarrier A.toricModel A.starCuspWitness.localWitness.radius) :=
+      localCarrier A.toricModel A.starCuspWitness.localWitness.radius) :=
   (localHeightPreservingCircleAction A.toricModel A.starCuspWitness.localWitness.radius
     fourthToricCircle fourthToricCircle_last).comp (fourthSweepToricFactor A)
 
@@ -116,7 +116,7 @@ public theorem fourthSweepToricLift_real (A : PaperAnalyticData) (r t : ℝ) :
 public theorem cuspFourthSweep_filling_factor (A : PaperAnalyticData) :
     (⟨puncturedLocalCuspToFilling A.starCuspWitness,
       puncturedLocalCuspToFilling_continuous A.starCuspWitness⟩ :
-      C(A.openEmbeddingStarData.collarSource 0, actualLocalCuspFilling A.starCuspWitness)).comp
+      C(A.openEmbeddingStarData.collarSource 0, ActualLocalCuspFilling A.starCuspWitness)).comp
         (cuspFourthSweep A) =
       (actualCuspFillingProjection A.starCuspWitness).comp (fourthSweepToricLift A) := by
   ext1 z
@@ -139,7 +139,7 @@ public theorem cuspFourthSweep_filling_homology_zero (A : PaperAnalyticData)
     integralSingularHomologyMap 2
       (⟨puncturedLocalCuspToFilling A.starCuspWitness,
         puncturedLocalCuspToFilling_continuous A.starCuspWitness⟩ :
-        C(A.openEmbeddingStarData.collarSource 0, actualLocalCuspFilling A.starCuspWitness))
+        C(A.openEmbeddingStarData.collarSource 0, ActualLocalCuspFilling A.starCuspWitness))
       (integralSingularHomologyMap 2 (cuspFourthSweep A) x) = 0 := by
   rw [integralSingularHomologyMap_comp_wang, cuspFourthSweep_filling_factor,
     ← integralSingularHomologyMap_comp_wang, fourthSweepToricLift_homology_zero, map_zero]

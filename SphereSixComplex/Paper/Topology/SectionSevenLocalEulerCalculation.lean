@@ -54,7 +54,7 @@ public theorem cuspFilling_euler_eq_of_centralFiberRetraction
       (R.quotientCentralFiber A.starCuspWitness) = 2) :
     integralHomologyEulerCharacteristicSix (A.openEmbeddingStarData.filling 0) = 2 := by
   change integralHomologyEulerCharacteristicSix
-      (actualLocalCuspFilling A.starCuspWitness) = 2
+      (ActualLocalCuspFilling A.starCuspWitness) = 2
   exact (integralHomologyEulerCharacteristicSix_homotopyEquiv
     (R.quotientCentralFiberHomotopyEquiv A.starCuspWitness)).trans hCore
 
@@ -64,7 +64,7 @@ public theorem orderThreeFilling_euler_eq_zero_of_affineRadialChart
     (C : OrderThreeAffineRadialWholeFillingCompatibility A
       A.starSeparation.orderThree.radius)
     (hCore : integralHomologyEulerCharacteristicSix
-      (OrderThreeReducedCentralFiber A.periods) = 0) :
+      (orderThreeReducedCentralFiber A.periods) = 0) :
     integralHomologyEulerCharacteristicSix (A.openEmbeddingStarData.filling 1) = 0 := by
   change integralHomologyEulerCharacteristicSix
       (A.OrderThreeVaryingFilling A.starSeparation.orderThree.radius) = 0
@@ -78,7 +78,7 @@ public theorem orderFourFilling_euler_eq_zero_of_affineRadialChart
     (C : OrderFourAffineRadialWholeFillingCompatibility A
       A.starSeparation.orderFour.radius)
     (hCore : integralHomologyEulerCharacteristicSix
-      (OrderFourReducedCentralFiber A.periods) = 0) :
+      (orderFourReducedCentralFiber A.periods) = 0) :
     integralHomologyEulerCharacteristicSix (A.openEmbeddingStarData.filling 2) = 0 := by
   change integralHomologyEulerCharacteristicSix
       (A.OrderFourVaryingFilling A.starSeparation.orderFour.radius) = 0
@@ -101,9 +101,9 @@ public theorem localEulerExpression_eq_two_of_modelCalculations
     (hCuspCore : integralHomologyEulerCharacteristicSix
       (R.quotientCentralFiber A.starCuspWitness) = 2)
     (hThreeCore : integralHomologyEulerCharacteristicSix
-      (OrderThreeReducedCentralFiber A.periods) = 0)
+      (orderThreeReducedCentralFiber A.periods) = 0)
     (hFourCore : integralHomologyEulerCharacteristicSix
-      (OrderFourReducedCentralFiber A.periods) = 0)
+      (orderFourReducedCentralFiber A.periods) = 0)
     (hCollar : ∀ i : Fin 3, integralHomologyEulerCharacteristicSix
       (A.openEmbeddingStarData.collarSource i) = 0) :
     A.openEmbeddingStarData.sectionSevenLocalEulerExpression = 2 := by

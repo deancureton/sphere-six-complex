@@ -104,7 +104,7 @@ the global proper-face nerve. -/
 public noncomputable def boundarySevenNondegenerateSubdivisionChart
     (x : boundarySevenSimplicialBoundary.N) :
     SSet.sd.obj (SSet.stdSimplex.obj (SimplexCategory.mk x.dim)) ⟶
-      BoundarySevenProperFaceNerve :=
+      boundarySevenProperFaceNerve :=
   SSet.stdSimplex.sdIso.hom.app (SimplexCategory.mk x.dim) ≫
     PartOrd.nerveFunctor.map (boundarySevenNondegenerateFaceHom x)
 
@@ -232,7 +232,7 @@ public theorem boundarySevenNondegenerateSubdivisionChart_naturality
 proper-face nerve. -/
 public noncomputable def boundarySevenProperFaceSubdivisionCocone :
     Cocone (boundarySevenSimplicialBoundary.functorN' ⋙ SSet.sd) where
-  pt := BoundarySevenProperFaceNerve
+  pt := boundarySevenProperFaceNerve
   ι :=
     { app := boundarySevenNondegenerateSubdivisionChart
       naturality := fun _ _ f ↦ boundarySevenNondegenerateSubdivisionChart_naturality f }
@@ -246,7 +246,7 @@ public noncomputable def boundarySevenSubdivisionIsColimit :
 /-- The canonical comparison from Mathlib's left-Kan-extension subdivision of `∂Δ[7]` to the
 explicit nerve of nonempty proper faces. -/
 public noncomputable def boundarySevenSubdivisionToProperFaceNerve :
-    SSet.sd.obj (∂Δ[7] : SSet.{0}) ⟶ BoundarySevenProperFaceNerve :=
+    SSet.sd.obj (∂Δ[7] : SSet.{0}) ⟶ boundarySevenProperFaceNerve :=
   boundarySevenSubdivisionIsColimit.desc boundarySevenProperFaceSubdivisionCocone
 
 /-- On every nondegenerate boundary simplex, the global comparison is the explicit map that

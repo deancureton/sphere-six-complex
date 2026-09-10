@@ -19,13 +19,13 @@ open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 
 namespace CuspFiberSpecializationNormalization
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
   {W : ActualPuncturedCuspCollarWitness N M} [HasCuspPhaseSpreading W]
 
 /-- The actual degree-one fibre specialization is a basis-free isomorphism. -/
 public theorem rawDegreeOneFiberSpecialization_bijective
-    (G : ActualCuspRadialClutchingData W) (b : puncturedLocalCuspQuotient W) :
+    (G : ActualCuspRadialClutchingData W) (b : PuncturedLocalCuspQuotient W) :
     Function.Bijective (rawDegreeOneFiberSpecialization G) := by
   let _ := G.fiberTopology
   obtain ⟨S, hS⟩ := actualCuspDegreeOne_section G b
@@ -41,9 +41,9 @@ public theorem rawDegreeOneFiberSpecialization_bijective
 /-- Some target coordinates make the two degree-one fibre-generator coefficients the identity
 matrix. -/
 public theorem exists_degreeOneFiberSpecializationNormalization
-    (G : ActualCuspRadialClutchingData W) (b : puncturedLocalCuspQuotient W) :
+    (G : ActualCuspRadialClutchingData W) (b : PuncturedLocalCuspQuotient W) :
     let _ := G.fiberTopology
-    ∃ e : IntegralSingularHomology 1 (actualLocalCuspFilling W) ≃ₗ[ℤ] (Fin 2 → ℤ),
+    ∃ e : IntegralSingularHomology 1 (ActualLocalCuspFilling W) ≃ₗ[ℤ] (Fin 2 → ℤ),
       ∀ j i : Fin 2,
         e (rawDegreeOneFiberSpecialization G
           (G.degreeOneCoinvariantsEquiv.symm (Pi.single j 1))) i =

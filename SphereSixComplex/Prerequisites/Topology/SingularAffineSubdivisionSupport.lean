@@ -275,7 +275,7 @@ public noncomputable def coverSmallAffineAncestryLiftChain
         Set.range (iteratedAffineCellMap n
           (affinePermutationAncestryFlags n m a)) ⊆ U i) :
     AddCommGrpCat.of ℤ ⟶
-      (CoverSmallIntegralSingularChainComplex X U).X n :=
+      (coverSmallIntegralSingularChainComplex X U).X n :=
   ∑ a : AffinePermutationAncestry n m,
     affinePermutationAncestrySign n m a •
       (coverSmallSingularSubcomplex X U : SSet).ιChainComplex
@@ -331,7 +331,7 @@ public theorem length_affinePermutationAncestryFlags
 well. -/
 public theorem affineSingularSubdivisionIterate_mem_range_add
     (n m r : ℕ)
-    (c : (IntegralSingularChainComplexObj X).X n)
+    (c : (integralSingularChainComplexObj X).X n)
     (h : (affineSingularSubdivisionIterate X m).f n c ∈
       Set.range ((coverSmallIntegralSingularChainInclusion X U).f n)) :
     (affineSingularSubdivisionIterate X (m + r)).f n c ∈
@@ -358,7 +358,7 @@ public theorem affineSingularSubdivisionIterate_mem_range_add
 /-- Chains which become cover-small after some (chain-dependent) number of affine subdivisions
 form an additive subgroup. -/
 public noncomputable def affineSubdivisionEventuallySmallAddSubgroup
-    (n : ℕ) : AddSubgroup ((IntegralSingularChainComplexObj X).X n) where
+    (n : ℕ) : AddSubgroup ((integralSingularChainComplexObj X).X n) where
   carrier := {c | ∃ m : ℕ,
     (affineSingularSubdivisionIterate X m).f n c ∈
       Set.range ((coverSmallIntegralSingularChainInclusion X U).f n)}
@@ -397,17 +397,17 @@ public theorem exists_affineSubdivisionIterate_mem_range_of_generator_ancestries
         ∃ i, X.toSSetObjEquiv _ x ''
           Set.range (iteratedAffineCellMap n
             (affinePermutationAncestryFlags n m a)) ⊆ U i) :
-    ∀ c : (IntegralSingularChainComplexObj X).X n,
+    ∀ c : (integralSingularChainComplexObj X).X n,
       ∃ m : ℕ, (affineSingularSubdivisionIterate X m).f n c ∈
         Set.range ((coverSmallIntegralSingularChainInclusion X U).f n) := by
   let P := affineSubdivisionEventuallySmallAddSubgroup X U n
-  let Q := AddCommGrpCat.of ((IntegralSingularChainComplexObj X).X n ⧸ P)
-  let q : (IntegralSingularChainComplexObj X).X n ⟶ Q :=
+  let Q := AddCommGrpCat.of ((integralSingularChainComplexObj X).X n ⧸ P)
+  let q : (integralSingularChainComplexObj X).X n ⟶ Q :=
     AddCommGrpCat.ofHom (QuotientAddGroup.mk' P)
   have hq : q = 0 := by
     apply (TopCat.toSSet.obj X).chainComplex_hom_ext
     intro x
-    let j : AddCommGrpCat.of ℤ ⟶ (IntegralSingularChainComplexObj X).X n :=
+    let j : AddCommGrpCat.of ℤ ⟶ (integralSingularChainComplexObj X).X n :=
       (TopCat.toSSet.obj X).ιChainComplex x
     apply AddCommGrpCat.hom_ext
     apply AddMonoidHom.ext
@@ -445,7 +445,7 @@ public theorem exists_affineSubdivisionIterate_mem_range_of_ancestries
         ancestry.length = m →
           ∃ i, X.toSSetObjEquiv _ x ''
             Set.range (iteratedAffineCellMap n ancestry) ⊆ U i) :
-    ∀ c : (IntegralSingularChainComplexObj X).X n,
+    ∀ c : (integralSingularChainComplexObj X).X n,
       ∃ m : ℕ, (affineSingularSubdivisionIterate X m).f n c ∈
         Set.range ((coverSmallIntegralSingularChainInclusion X U).f n) := by
   apply exists_affineSubdivisionIterate_mem_range_of_generator_ancestries X U n

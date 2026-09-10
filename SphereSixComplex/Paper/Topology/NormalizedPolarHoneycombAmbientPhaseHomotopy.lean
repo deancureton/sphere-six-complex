@@ -25,33 +25,33 @@ open SphereSixComplex.Geometry.CuspStraighteningRetraction
 
 /-- The compact-torus action on the full local carrier. -/
 public def compactPhaseLocalAction (M : Model) (r : ℝ)
-    (k : CompactTorus) (p : LocalCarrier M r) : LocalCarrier M r :=
+    (k : CompactTorus) (p : localCarrier M r) : localCarrier M r :=
   ⟨M.torusAction (compactTorusEmbedding k) p, by
     change M.t (M.torusAction (compactTorusEmbedding k) (p : M.Carrier)) ∈
       Metric.ball 0 r
     rw [Metric.mem_ball, dist_zero_right, M.t_torusAction, norm_mul]
-    change ‖(k 2 : ℂ)‖ * ‖M.t (p : LocalCarrier M r)‖ < r
+    change ‖(k 2 : ℂ)‖ * ‖M.t (p : localCarrier M r)‖ < r
     rw [Circle.norm_coe, one_mul]
     simpa only [dist_zero_right] using Metric.mem_ball.mp p.property⟩
 
 /-- The compact-phase orbit map is the restriction of the ambient compact-phase action. -/
 @[simp]
 public theorem compactPhaseOrbit_eq_compactPhaseLocalAction
-    (M : Model) (r : ℝ) (positivePart : Set (LocalCarrier M r))
+    (M : Model) (r : ℝ) (positivePart : Set (localCarrier M r))
     (k : CompactTorus) (p : positivePart) :
     compactPhaseOrbit M r positivePart (k, p) =
-      compactPhaseLocalAction M r k (p : LocalCarrier M r) :=
+      compactPhaseLocalAction M r k (p : localCarrier M r) :=
   rfl
 
 /-- An explicit radial-coordinate factorization of the polar modulus.  The coordinate target is
 left abstract so that the eventual toric construction may use its natural nonnegative
 honeycomb coordinates. -/
 public structure CompactPhaseRadialFactorization
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
     (Q : NormalizedPolarHoneycombConstructionData N M r) where
   Coordinates : Type
-  radialCoordinates : LocalCarrier M r → Coordinates
+  radialCoordinates : localCarrier M r → Coordinates
   radialCoordinates_phase : ∀ k p,
     radialCoordinates (compactPhaseLocalAction M r k p) = radialCoordinates p
   positiveSection : Coordinates → Q.positivePart
@@ -62,7 +62,7 @@ namespace CompactPhaseRadialFactorization
 /-- A factorization through phase-invariant radial coordinates proves phase invariance of the
 polar modulus. -/
 public theorem compactPhaseInvariantModulus
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
     {Q : NormalizedPolarHoneycombConstructionData N M r}
     (F : CompactPhaseRadialFactorization Q) : CompactPhaseInvariantModulus Q := by
@@ -80,11 +80,11 @@ public structure CompactPhaseEquivariantAmbientRetraction
     letI := P.positiveDeckAction
     EquivariantStrongDeformationRetraction
       (Multiplicative ParameterLattice) P.positivePart P.central
-  ambientHomotopy : C(unitInterval × LocalCarrier M r, LocalCarrier M r)
+  ambientHomotopy : C(unitInterval × localCarrier M r, localCarrier M r)
   ambientHomotopy_positive :
     letI := P.positiveDeckAction
     ∀ s (p : P.positivePart),
-      ambientHomotopy (s, (p : LocalCarrier M r)) =
+      ambientHomotopy (s, (p : localCarrier M r)) =
         (retraction.homotopy (s, p) : P.positivePart)
   ambientHomotopy_phase : ∀ s k p,
     ambientHomotopy (s, compactPhaseLocalAction M r k p) =
@@ -144,7 +144,7 @@ end CompactPhaseEquivariantAmbientRetraction
 existence claim.  The first field is the underlying polar honeycomb; the second is an explicit
 ambient formula for its positive retraction. -/
 public structure NormalizedPolarHoneycombAmbientPhaseGeometry
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D)
     (M : Model) (r : ℝ) where
   construction : NormalizedPolarHoneycombConstructionData N M r
@@ -156,7 +156,7 @@ namespace NormalizedPolarHoneycombAmbientPhaseGeometry
 
 /-- The explicit radial factorization proves the first remaining phase property. -/
 public theorem modulus_phase_invariant
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
     (G : NormalizedPolarHoneycombAmbientPhaseGeometry N M r) :
     CompactPhaseInvariantModulus G.construction :=
@@ -164,7 +164,7 @@ public theorem modulus_phase_invariant
 
 /-- Consequently, the positive part is a compact-phase fundamental domain. -/
 public theorem positivePart_fundamentalDomain
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
     (G : NormalizedPolarHoneycombAmbientPhaseGeometry N M r) :
     CompactPhaseFundamentalDomain G.construction.toPolarHoneycombData :=
@@ -175,7 +175,7 @@ end NormalizedPolarHoneycombAmbientPhaseGeometry
 
 /-- The explicit construction record implies the exact normalized phase-geometry conclusion. -/
 public theorem normalizedPolarHoneycombPhaseGeometry_of_ambient
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D)
     (M : Model) (r : ℝ)
     (h : Nonempty (NormalizedPolarHoneycombAmbientPhaseGeometry N M r)) :

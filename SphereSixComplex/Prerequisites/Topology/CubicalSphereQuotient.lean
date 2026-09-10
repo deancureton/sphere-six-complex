@@ -20,11 +20,11 @@ open scoped Topology Topology.Homotopy unitInterval
 namespace SphereSixComplex
 
 /-- Two cube points are equivalent when they are equal or both lie on the boundary. -/
-public def cubeBoundaryRel (N : Type*) (a b : I^N) : Prop :=
+public def CubeBoundaryRel (N : Type*) (a b : I^N) : Prop :=
   a = b ∨ (a ∈ Cube.boundary N ∧ b ∈ Cube.boundary N)
 
 theorem cubeBoundaryRel_equivalence (N : Type*) :
-    Equivalence (cubeBoundaryRel N) := by
+    Equivalence (CubeBoundaryRel N) := by
   constructor
   · exact fun a ↦ Or.inl rfl
   · intro a b hab
@@ -38,7 +38,7 @@ theorem cubeBoundaryRel_equivalence (N : Type*) :
 
 /-- The setoid that collapses the boundary of the unit cube. -/
 public def cubeBoundarySetoid (N : Type*) : Setoid (I^N) where
-  r := cubeBoundaryRel N
+  r := CubeBoundaryRel N
   iseqv := cubeBoundaryRel_equivalence N
 
 /-- The cubical `N`-sphere, defined as the unit `N`-cube modulo its boundary. -/
@@ -55,7 +55,7 @@ public theorem cubicalSphereMk_apply (N : Type*) (a : I^N) :
   rfl
 
 public theorem cubicalSphereMk_eq_iff (N : Type*) (a b : I^N) :
-    cubicalSphereMk N a = cubicalSphereMk N b ↔ cubeBoundaryRel N a b :=
+    cubicalSphereMk N a = cubicalSphereMk N b ↔ CubeBoundaryRel N a b :=
   @Quotient.eq _ (cubeBoundarySetoid N) a b
 
 /-- The distinguished point represented by the collapsed boundary. -/

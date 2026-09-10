@@ -24,14 +24,14 @@ variable {HighRelations High Total LowRelations Low : Type*}
 
 /-- A geometrically normalized section of the invariant quotient in a Wang presentation. -/
 public structure NormalizedSplitting where
-  sweptSection : P.Invariants →ₗ[ℤ] Total
+  sweptSection : P.invariants →ₗ[ℤ] Total
   rightInverse : P.totalToInvariants.comp sweptSection = LinearMap.id
 
 namespace NormalizedSplitting
 
 /-- An arbitrary projective lift supplies a splitting.  This construction makes no geometric
 normalization claim about the chosen section. -/
-public noncomputable def ofProjective [Module.Projective ℤ P.Invariants] :
+public noncomputable def ofProjective [Module.Projective ℤ P.invariants] :
     NormalizedSplitting P := by
   let lifting := Module.projective_lifting_property P.totalToInvariants LinearMap.id
     P.totalToInvariants_surjective
@@ -61,10 +61,10 @@ public noncomputable def residualCoordinate : Total →ₗ[ℤ] P.Coinvariants :
 
 /-- Coordinates determined by the chosen swept-cycle section. -/
 public noncomputable def totalLinearEquiv :
-    Total ≃ₗ[ℤ] P.Coinvariants × P.Invariants := by
-  let forward : Total →ₗ[ℤ] P.Coinvariants × P.Invariants :=
+    Total ≃ₗ[ℤ] P.Coinvariants × P.invariants := by
+  let forward : Total →ₗ[ℤ] P.Coinvariants × P.invariants :=
     (residualCoordinate P S).prod P.totalToInvariants
-  let inverse : P.Coinvariants × P.Invariants →ₗ[ℤ] Total :=
+  let inverse : P.Coinvariants × P.invariants →ₗ[ℤ] Total :=
     LinearMap.coprod P.coinvariantsToTotal S.sweptSection
   refine LinearEquiv.ofLinearMap forward inverse ?_ ?_
   · apply LinearMap.ext
@@ -72,7 +72,7 @@ public noncomputable def totalLinearEquiv :
     have hboundaryCoinvariant (y : P.Coinvariants) :
         P.totalToInvariants (P.coinvariantsToTotal y) = 0 :=
       P.exact_coinvariantsToTotal_totalToInvariants.apply_apply_eq_zero y
-    have hboundarySection (z : P.Invariants) :
+    have hboundarySection (z : P.invariants) :
         P.totalToInvariants (S.sweptSection z) = z := by
       have h := DFunLike.congr_fun S.rightInverse z
       simpa only [LinearMap.coe_comp, Function.comp_apply, LinearMap.id_coe, id_eq] using h
@@ -144,7 +144,7 @@ public theorem totalLinearEquiv_coinvariantsToTotal (x : P.Coinvariants) :
 
 /-- The chosen swept cycles have zero fibre coordinate and their prescribed invariant
 coordinate. -/
-public theorem totalLinearEquiv_sweptSection (x : P.Invariants) :
+public theorem totalLinearEquiv_sweptSection (x : P.invariants) :
     totalLinearEquiv P S (S.sweptSection x) = (0, x) := by
   apply Prod.ext
   · change residualCoordinate P S (S.sweptSection x) = 0
@@ -174,7 +174,7 @@ public noncomputable def totalLinearEquivOfEndCoordinates
     {CoinvariantCoordinates InvariantCoordinates : Type*}
     [AddCommGroup CoinvariantCoordinates] [AddCommGroup InvariantCoordinates]
     (coinvariants : P.Coinvariants ≃ₗ[ℤ] CoinvariantCoordinates)
-    (invariants : P.Invariants ≃ₗ[ℤ] InvariantCoordinates) :
+    (invariants : P.invariants ≃ₗ[ℤ] InvariantCoordinates) :
     Total ≃ₗ[ℤ] CoinvariantCoordinates × InvariantCoordinates :=
   (totalLinearEquiv P S).trans (coinvariants.prodCongr invariants)
 

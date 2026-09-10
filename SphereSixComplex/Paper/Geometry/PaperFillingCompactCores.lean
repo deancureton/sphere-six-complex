@@ -59,12 +59,12 @@ local at the missing central fibre: every closed radial sublevel strictly inside
 filling radius must be compact. -/
 @[expose] public def ActualLocalCuspRadialCoreCompactness : Prop :=
   ∀ a, a < P.starCuspWitness.localWitness.radius →
-    IsCompact {y : actualLocalCuspFilling P.starCuspWitness |
+    IsCompact {y : ActualLocalCuspFilling P.starCuspWitness |
       actualLocalCuspFillingRadius P.starCuspWitness y ≤ a}
 
 /-- The closed radial sublevel selected inside each filling piece. -/
 @[expose] public noncomputable def starFillingRadialCore (a : Fin 3 → ℝ) (i : Fin 3) :
-    Set (P.starFillingType i) :=
+    Set (P.StarFilling i) :=
   {y | P.starFillingRadius i y ≤ a i}
 
 /-- Closed radial sublevels in the actual order-three filling are compact. -/
@@ -171,9 +171,9 @@ public theorem starFillingRadialCore_isCompact
 radial coordinate is above the selected threshold. -/
 public theorem starFilling_mem_radialCore_or_exists_collar
     (a : Fin 3 → ℝ) (ha : ∀ i, 0 ≤ a i) :
-    ∀ (i : Fin 3) (y : P.starFillingType i),
+    ∀ (i : Fin 3) (y : P.StarFilling i),
       y ∈ P.starFillingRadialCore a i ∨
-        ∃ s : P.starCollarSourceType i, P.starToFilling i s = y ∧
+        ∃ s : P.StarCollarSource i, P.starToFilling i s = y ∧
           a i < P.starCollarRadius i s := by
   intro i
   fin_cases i
@@ -188,8 +188,8 @@ public theorem starFilling_mem_radialCore_or_exists_collar
             exact lt_of_not_ge hy
           have hqt : P.toricModel.t q ≠ 0 := by
             exact norm_ne_zero_iff.mp (ne_of_gt ((ha 0).trans_lt hqnorm))
-          let s : puncturedLocalCuspQuotient P.starCuspWitness := Quotient.mk _
-            (⟨q, hqt⟩ : {p : LocalCarrier P.toricModel
+          let s : PuncturedLocalCuspQuotient P.starCuspWitness := Quotient.mk _
+            (⟨q, hqt⟩ : {p : localCarrier P.toricModel
               P.starCuspWitness.localWitness.radius //
                 P.toricModel.t p ≠ 0})
           refine ⟨s, ?_, ?_⟩
@@ -238,7 +238,7 @@ public theorem starFilling_mem_radialCore_or_exists_collar
 band in the chosen central compact subset. -/
 public theorem starFilling_covers_radialCore
     (a : Fin 3 → ℝ) (ha : ∀ i, 0 ≤ a i) (K : Set P.CentralFamily)
-    (hK : ∀ (i : Fin 3) (s : P.starCollarSourceType i),
+    (hK : ∀ (i : Fin 3) (s : P.StarCollarSource i),
       a i < P.starCollarRadius i s → P.starToCentral i s ∈ K) :
     ∀ (i : Fin 3) (y : P.openEmbeddingStarData.filling i),
       y ∈ P.starFillingRadialCore a i ∨
@@ -259,9 +259,9 @@ public noncomputable def openEmbeddingStarCompactCoverData_of_radialCores
     (haOuter : ∀ i, a i < P.starOuterRadius i)
     (K : Set P.CentralFamily) (hcentralCompact : IsCompact K)
     (hcentralCovers : ∀ x : P.CentralFamily, x ∈ K ∨
-      ∃ (i : Fin 3) (s : P.starCollarSourceType i),
+      ∃ (i : Fin 3) (s : P.StarCollarSource i),
         P.starToCentral i s = x ∧ P.starToFilling i s ∈ P.starFillingRadialCore a i)
-    (houterCentral : ∀ (i : Fin 3) (s : P.starCollarSourceType i),
+    (houterCentral : ∀ (i : Fin 3) (s : P.StarCollarSource i),
       a i < P.starCollarRadius i s → P.starToCentral i s ∈ K) :
     P.openEmbeddingStarData.CompactCoverData where
   centralSubset := K

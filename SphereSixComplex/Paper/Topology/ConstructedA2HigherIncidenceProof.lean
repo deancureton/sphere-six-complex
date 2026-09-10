@@ -14,7 +14,7 @@ open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public def constructedA2PositiveDiskMap
@@ -161,8 +161,8 @@ public theorem constructedA2ThreeCylinderPair_relative_boundary_zero
       (cwRelativeIntegralSingularChainMapOfPair (constructedA2ThreeCylinderPair W i)) 3 ≫
         cwRelativeIntegralSingularBoundary (constructedA2TwoSkeletonInclusion W) 2 = 0 := by
   let S := cylinderRelativeTriple (cwBallBoundarySet 2)
-  let K := CWRelativeIntegralSingularChainComplex (cylinderBaseInclusion (cwBallBoundarySet 2))
-  let L := CWRelativeIntegralSingularChainComplex (constructedA2TwoSkeletonInclusion W)
+  let K := cwRelativeIntegralSingularChainComplex (cylinderBaseInclusion (cwBallBoundarySet 2))
+  let L := cwRelativeIntegralSingularChainComplex (constructedA2TwoSkeletonInclusion W)
   let f : K ⟶ S.X₁ := cylinderTopFaceRelativeChains (cwBallBoundarySet 2)
   let g : S.X₃ ⟶ L := cwRelativeIntegralSingularChainMapOfPair (constructedA2ThreeCylinderPair W i)
   have ht : f ≫ S.f = cwRelativeIntegralSingularChainMapOfPair
@@ -359,8 +359,8 @@ public theorem constructedA2FourCylinderPair_relative_boundary_zero
       (cwRelativeIntegralSingularChainMapOfPair (constructedA2FourCylinderPair W)) 4 ≫
         cwRelativeIntegralSingularBoundary (constructedA2ThreeSkeletonInclusion W) 3 = 0 := by
   let S := cylinderRelativeTriple (cwBallBoundarySet 3)
-  let K := CWRelativeIntegralSingularChainComplex (cylinderBaseInclusion (cwBallBoundarySet 3))
-  let L := CWRelativeIntegralSingularChainComplex (constructedA2ThreeSkeletonInclusion W)
+  let K := cwRelativeIntegralSingularChainComplex (cylinderBaseInclusion (cwBallBoundarySet 3))
+  let L := cwRelativeIntegralSingularChainComplex (constructedA2ThreeSkeletonInclusion W)
   let f : K ⟶ S.X₁ := cylinderTopFaceRelativeChains (cwBallBoundarySet 3)
   let g : S.X₃ ⟶ L := cwRelativeIntegralSingularChainMapOfPair (constructedA2FourCylinderPair W)
   have ht : f ≫ S.f = cwRelativeIntegralSingularChainMapOfPair

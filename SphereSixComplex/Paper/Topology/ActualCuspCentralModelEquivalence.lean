@@ -16,9 +16,9 @@ open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspPhaseEstimates
 open SphereSixComplex.Geometry.InfiniteA2Toric
-open CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
+open CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M₁ M₂ : Model}
 
 public def centralModelMap (W₁ : ActualPuncturedCuspCollarWitness N M₁)
@@ -52,7 +52,7 @@ public theorem central_smul_coe (W : ActualPuncturedCuspCollarWitness N M₁) :
         (Additive.toMul (M₁.fanShear (Multiplicative.toAdd g)) p.1.1) := by
   let _ := actualLocalCuspQuotientAction W
   intro g p
-  let C := restrictedActualLocalPhaseCoefficients N M₁ W.localWitness.radius
+  let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N M₁ W.localWitness.radius
     W.localWitness.radius_pos W.localWitness.radius_le
   change ((C.toCuspActionData W.localWitness.fixedPoint).psiMap
     (Multiplicative.toAdd g) p.1 : M₁.Carrier) = _

@@ -88,12 +88,12 @@ public theorem diskSevenCoverRangeSubcomplex_bicartSq :
   · rfl
 
 /-- Integral chains on one range subcomplex. -/
-public noncomputable abbrev DiskSevenCoverRangeChainComplex (b : Bool) :
+public noncomputable abbrev diskSevenCoverRangeChainComplex (b : Bool) :
     ChainComplex AddCommGrpCat ℕ :=
   (diskSevenCoverRangeSubcomplex b : SSet).chainComplex (AddCommGrpCat.of ℤ)
 
 /-- Integral chains on the intersection of the two range subcomplexes. -/
-public noncomputable abbrev DiskSevenCoverRangeIntersectionChainComplex :
+public noncomputable abbrev diskSevenCoverRangeIntersectionChainComplex :
     ChainComplex AddCommGrpCat ℕ :=
   (diskSevenCoverRangeIntersectionSubcomplex : SSet).chainComplex
     (AddCommGrpCat.of ℤ)
@@ -114,8 +114,8 @@ public noncomputable def diskSevenCoverRangeToSmallSingularSet (b : Bool) :
 
 /-- The induced inclusion on chains. -/
 public noncomputable def diskSevenCoverRangeToSmallChains (b : Bool) :
-    DiskSevenCoverRangeChainComplex b ⟶
-      DiskSevenCoverSmallIntegralSingularChainComplex :=
+    diskSevenCoverRangeChainComplex b ⟶
+      diskSevenCoverSmallIntegralSingularChainComplex :=
   SSet.chainComplexMap (diskSevenCoverRangeToSmallSingularSet b)
     (AddCommGrpCat.of ℤ)
 
@@ -129,8 +129,8 @@ public noncomputable def diskSevenCoverRangeIntersectionToRangeSingularSet (b : 
 
 /-- The intersection inclusion on chains. -/
 public noncomputable def diskSevenCoverRangeIntersectionToRangeChains (b : Bool) :
-    DiskSevenCoverRangeIntersectionChainComplex ⟶
-      DiskSevenCoverRangeChainComplex b :=
+    diskSevenCoverRangeIntersectionChainComplex ⟶
+      diskSevenCoverRangeChainComplex b :=
   SSet.chainComplexMap (diskSevenCoverRangeIntersectionToRangeSingularSet b)
     (AddCommGrpCat.of ℤ)
 
@@ -243,8 +243,8 @@ public theorem diskSevenCoverMemberToRange_comp_small (b : Bool) :
 
 /-- The boundary chain map lifted specifically to the `false` member range. -/
 public noncomputable def diskBoundaryToDiskSevenFalseRangeChains :
-    IntegralSingularChainComplexObj (TopCat.sphere.{0} 6) ⟶
-      DiskSevenCoverRangeChainComplex false :=
+    integralSingularChainComplexObj (TopCat.sphere.{0} 6) ⟶
+      diskSevenCoverRangeChainComplex false :=
   SSet.chainComplexMap
       (TopCat.toSSet.map diskBoundaryToDiskSevenExcisionCoverFalse)
       (AddCommGrpCat.of ℤ) ≫
@@ -314,14 +314,14 @@ public theorem diskBoundaryToDiskSevenFalseRangeChains_comp_small :
       diskBoundaryToDiskSevenCoverSmallIntegralSingularChains :=
   diskBoundaryToDiskSevenFalseRangeChains_comp_small_aux
 /-- The false range modulo boundary chains. -/
-public noncomputable def DiskSevenFalseRangeRelativeChainComplex :
+public noncomputable def diskSevenFalseRangeRelativeChainComplex :
     ChainComplex AddCommGrpCat ℕ :=
   cokernel diskBoundaryToDiskSevenFalseRangeChains
 
 /-- Projection to the false-range relative complex. -/
 public noncomputable def diskSevenFalseRangeRelativeProjection :
-    DiskSevenCoverRangeChainComplex false ⟶
-      DiskSevenFalseRangeRelativeChainComplex :=
+    diskSevenCoverRangeChainComplex false ⟶
+      diskSevenFalseRangeRelativeChainComplex :=
   cokernel.π diskBoundaryToDiskSevenFalseRangeChains
 
 private theorem diskSevenFalseRangeRelativeProjection_condition :
@@ -331,8 +331,8 @@ private theorem diskSevenFalseRangeRelativeProjection_condition :
 
 /-- The false-range relative complex maps canonically to the cover-small relative complex. -/
 public noncomputable def diskSevenFalseRangeRelativeToCoverSmallRelative :
-    DiskSevenFalseRangeRelativeChainComplex ⟶
-      DiskSevenCoverSmallRelativeIntegralSingularChainComplex :=
+    diskSevenFalseRangeRelativeChainComplex ⟶
+      diskSevenCoverSmallRelativeIntegralSingularChainComplex :=
   cokernel.map diskBoundaryToDiskSevenFalseRangeChains
     diskBoundaryToDiskSevenCoverSmallIntegralSingularChains (𝟙 _)
       (diskSevenCoverRangeToSmallChains false) (by
@@ -365,7 +365,7 @@ private noncomputable def diskSevenFalseRangePushoutDesc
     (s : PushoutCocone
       (diskSevenCoverRangeToSmallChains false)
       diskSevenFalseRangeRelativeProjection) :
-    DiskSevenCoverSmallRelativeIntegralSingularChainComplex ⟶ s.pt :=
+    diskSevenCoverSmallRelativeIntegralSingularChainComplex ⟶ s.pt :=
   cokernel.desc diskBoundaryToDiskSevenCoverSmallIntegralSingularChains
     s.inl (diskSevenFalseRangePushoutDesc_condition s)
 
@@ -435,17 +435,17 @@ public theorem diskSevenFalseRangeRelativeSquare_isPushout :
     exact (diskSevenCoverSmallRelativeProjection_comp_pushoutDesc s).symm
 
 /-- The local middle term: true-range chains together with false-range chains modulo boundary. -/
-public noncomputable abbrev DiskSevenCoverLocalRelativeMiddleChainComplex :
+public noncomputable abbrev diskSevenCoverLocalRelativeMiddleChainComplex :
     ChainComplex AddCommGrpCat ℕ :=
-  DiskSevenCoverRangeChainComplex true ⊞
-    DiskSevenFalseRangeRelativeChainComplex
+  diskSevenCoverRangeChainComplex true ⊞
+    diskSevenFalseRangeRelativeChainComplex
 
 /-- Before quotienting the false range by boundary chains, the two range complexes sum onto the
 cover-small chain complex. -/
 public noncomputable def diskSevenCoverRangeSum :
-    (DiskSevenCoverRangeChainComplex true ⊞
-      DiskSevenCoverRangeChainComplex false) ⟶
-      DiskSevenCoverSmallIntegralSingularChainComplex :=
+    (diskSevenCoverRangeChainComplex true ⊞
+      diskSevenCoverRangeChainComplex false) ⟶
+      diskSevenCoverSmallIntegralSingularChainComplex :=
   biprod.desc (diskSevenCoverRangeToSmallChains true)
     (diskSevenCoverRangeToSmallChains false)
 
@@ -471,9 +471,9 @@ public theorem diskSevenCoverRangeSum_epi : Epi diskSevenCoverRangeSum := by
   | false =>
       have hx := congrArg
         (fun q ↦ ((diskSevenCoverRangeSubcomplex false : SSet).ιChainComplex xb ≫
-          (biprod.inr : DiskSevenCoverRangeChainComplex false ⟶
-            (DiskSevenCoverRangeChainComplex true ⊞
-              DiskSevenCoverRangeChainComplex false)).f n) ≫ q) heqn
+          (biprod.inr : diskSevenCoverRangeChainComplex false ⟶
+            (diskSevenCoverRangeChainComplex true ⊞
+              diskSevenCoverRangeChainComplex false)).f n) ≫ q) heqn
       have hx' :
           ((diskSevenCoverRangeSubcomplex false : SSet).ιChainComplex xb ≫
               (diskSevenCoverRangeToSmallChains false).f n) ≫ g.f n =
@@ -492,9 +492,9 @@ public theorem diskSevenCoverRangeSum_epi : Epi diskSevenCoverRangeSum := by
   | true =>
       have hx := congrArg
         (fun q ↦ ((diskSevenCoverRangeSubcomplex true : SSet).ιChainComplex xb ≫
-          (biprod.inl : DiskSevenCoverRangeChainComplex true ⟶
-            (DiskSevenCoverRangeChainComplex true ⊞
-              DiskSevenCoverRangeChainComplex false)).f n) ≫ q) heqn
+          (biprod.inl : diskSevenCoverRangeChainComplex true ⟶
+            (diskSevenCoverRangeChainComplex true ⊞
+              diskSevenCoverRangeChainComplex false)).f n) ≫ q) heqn
       have hx' :
           ((diskSevenCoverRangeSubcomplex true : SSet).ιChainComplex xb ≫
               (diskSevenCoverRangeToSmallChains true).f n) ≫ g.f n =
@@ -513,15 +513,15 @@ public theorem diskSevenCoverRangeSum_epi : Epi diskSevenCoverRangeSum := by
 /-- Quotienting the false summand sends the absolute two-range middle term to the relative
 middle term. -/
 public noncomputable def diskSevenCoverRangeSumToLocalRelativeMiddle :
-    (DiskSevenCoverRangeChainComplex true ⊞
-      DiskSevenCoverRangeChainComplex false) ⟶
-      DiskSevenCoverLocalRelativeMiddleChainComplex :=
+    (diskSevenCoverRangeChainComplex true ⊞
+      diskSevenCoverRangeChainComplex false) ⟶
+      diskSevenCoverLocalRelativeMiddleChainComplex :=
   biprod.map (𝟙 _) diskSevenFalseRangeRelativeProjection
 
 /-- Difference map from intersection chains to the local relative middle term. -/
 public noncomputable def diskSevenCoverLocalRelativeDifference :
-    DiskSevenCoverRangeIntersectionChainComplex ⟶
-      DiskSevenCoverLocalRelativeMiddleChainComplex :=
+    diskSevenCoverRangeIntersectionChainComplex ⟶
+      diskSevenCoverLocalRelativeMiddleChainComplex :=
   biprod.lift
     (diskSevenCoverRangeIntersectionToRangeChains true)
     (-(diskSevenCoverRangeIntersectionToRangeChains false ≫
@@ -539,16 +539,16 @@ public theorem diskSevenCoverLocalRelativeDifference_mono :
       SSet.chainComplexFunctor]
     apply +allowSynthFailures Functor.map_mono
   let _ : Mono (diskSevenCoverLocalRelativeDifference ≫
-      (biprod.fst : DiskSevenCoverLocalRelativeMiddleChainComplex ⟶
-        DiskSevenCoverRangeChainComplex true)) := by
+      (biprod.fst : diskSevenCoverLocalRelativeMiddleChainComplex ⟶
+        diskSevenCoverRangeChainComplex true)) := by
     rw [diskSevenCoverLocalRelativeDifference, biprod.lift_fst]
     exact hinter
   exact mono_of_mono diskSevenCoverLocalRelativeDifference biprod.fst
 
 /-- Sum map from the local relative middle term to cover-small relative chains. -/
 public noncomputable def diskSevenCoverLocalRelativeSum :
-    DiskSevenCoverLocalRelativeMiddleChainComplex ⟶
-      DiskSevenCoverSmallRelativeIntegralSingularChainComplex :=
+    diskSevenCoverLocalRelativeMiddleChainComplex ⟶
+      diskSevenCoverSmallRelativeIntegralSingularChainComplex :=
   biprod.desc
     (diskSevenCoverRangeToSmallChains true ≫
       diskSevenCoverSmallRelativeChainProjection)
@@ -683,18 +683,18 @@ public theorem diskSevenCoverSmallRelativeMayerVietoris_iff :
 
 /-- The explicit local homology groups whose vanishing suffices in degrees two through four. -/
 public def DiskSevenCoverLocalRelativeLowAcyclic : Prop :=
-  IsZero (DiskSevenCoverLocalRelativeMiddleChainComplex.homology 3) ∧
-    IsZero (DiskSevenCoverLocalRelativeMiddleChainComplex.homology 4) ∧
-    IsZero (DiskSevenCoverRangeIntersectionChainComplex.homology 2) ∧
-    IsZero (DiskSevenCoverRangeIntersectionChainComplex.homology 3)
+  IsZero (diskSevenCoverLocalRelativeMiddleChainComplex.homology 3) ∧
+    IsZero (diskSevenCoverLocalRelativeMiddleChainComplex.homology 4) ∧
+    IsZero (diskSevenCoverRangeIntersectionChainComplex.homology 2) ∧
+    IsZero (diskSevenCoverRangeIntersectionChainComplex.homology 3)
 
 /-- Fully explicit local chain-contraction data.  These are four additive degree-raising maps,
 each satisfying `hd + dh = 1` in the indicated degree. -/
 public def DiskSevenCoverLocalRelativeLowContractions : Prop :=
-  Nonempty (ChainContractionAt DiskSevenCoverLocalRelativeMiddleChainComplex 3) ∧
-    Nonempty (ChainContractionAt DiskSevenCoverLocalRelativeMiddleChainComplex 4) ∧
-    Nonempty (ChainContractionAt DiskSevenCoverRangeIntersectionChainComplex 2) ∧
-    Nonempty (ChainContractionAt DiskSevenCoverRangeIntersectionChainComplex 3)
+  Nonempty (ChainContractionAt diskSevenCoverLocalRelativeMiddleChainComplex 3) ∧
+    Nonempty (ChainContractionAt diskSevenCoverLocalRelativeMiddleChainComplex 4) ∧
+    Nonempty (ChainContractionAt diskSevenCoverRangeIntersectionChainComplex 2) ∧
+    Nonempty (ChainContractionAt diskSevenCoverRangeIntersectionChainComplex 3)
 
 /-- The explicit contractions imply all four local homology vanishings. -/
 public theorem diskSevenCoverLocalRelativeLowAcyclic_of_contractions
@@ -732,8 +732,8 @@ vanishings. -/
 public theorem standardSphereSix_integralSingularHomology_low_isZero_of_local
     (hMV : DiskSevenCoverSmallRelativeMayerVietoris)
     (hlocal : DiskSevenCoverLocalRelativeLowAcyclic) :
-    IsZero ((IntegralSingularChainComplexObj (TopCat.sphere 6)).homology 2) ∧
-      IsZero ((IntegralSingularChainComplexObj (TopCat.sphere 6)).homology 3) := by
+    IsZero ((integralSingularChainComplexObj (TopCat.sphere 6)).homology 2) ∧
+      IsZero ((integralSingularChainComplexObj (TopCat.sphere 6)).homology 3) := by
   rw [← diskSevenCoverSmallRelativeLowAcyclic_iff_standardSphereSix_low_isZero]
   exact diskSevenCoverSmallRelativeLowAcyclic_of_local hMV hlocal
 
@@ -741,8 +741,8 @@ public theorem standardSphereSix_integralSingularHomology_low_isZero_of_local
 vanishings. -/
 public theorem standardSphereSix_integralSingularHomology_low_isZero_of_localAcyclic
     (hlocal : DiskSevenCoverLocalRelativeLowAcyclic) :
-    IsZero ((IntegralSingularChainComplexObj (TopCat.sphere 6)).homology 2) ∧
-      IsZero ((IntegralSingularChainComplexObj (TopCat.sphere 6)).homology 3) :=
+    IsZero ((integralSingularChainComplexObj (TopCat.sphere 6)).homology 2) ∧
+      IsZero ((integralSingularChainComplexObj (TopCat.sphere 6)).homology 3) :=
   standardSphereSix_integralSingularHomology_low_isZero_of_local
     diskSevenCoverSmallRelativeMayerVietoris hlocal
 
@@ -750,8 +750,8 @@ public theorem standardSphereSix_integralSingularHomology_low_isZero_of_localAcy
 identities proves both desired low-degree sphere vanishings. -/
 public theorem standardSphereSix_integralSingularHomology_low_isZero_of_localContractions
     (h : DiskSevenCoverLocalRelativeLowContractions) :
-    IsZero ((IntegralSingularChainComplexObj (TopCat.sphere 6)).homology 2) ∧
-      IsZero ((IntegralSingularChainComplexObj (TopCat.sphere 6)).homology 3) :=
+    IsZero ((integralSingularChainComplexObj (TopCat.sphere 6)).homology 2) ∧
+      IsZero ((integralSingularChainComplexObj (TopCat.sphere 6)).homology 3) :=
   standardSphereSix_integralSingularHomology_low_isZero_of_localAcyclic
     (diskSevenCoverLocalRelativeLowAcyclic_of_contractions h)
 

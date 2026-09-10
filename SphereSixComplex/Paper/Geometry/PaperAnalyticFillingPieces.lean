@@ -152,7 +152,7 @@ public noncomputable def totalSpaceCharts :
     ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap A.periods)) := by
   let _ := familyIsCancelSMul (parameterMap A.periods)
   let _ := familyContinuousConstSMul (parameterMap A.periods)
-    fun a => (periodSection_contMDiff A.periods a RegularSmoothnessOrder).continuous
+    fun a => (periodSection_contMDiff A.periods a regularSmoothnessOrder).continuous
   let _ := familyProperlyDiscontinuousSMul (parameterMap A.periods)
     (compactlyUniformPeriods_of_compactUniformLowerBound (parameterMap A.periods)
       (parameterMap_compactUniformLowerBound A.periods))
@@ -160,37 +160,37 @@ public noncomputable def totalSpaceCharts :
 
 public theorem totalSpace_isManifold :
     @IsManifold ℂ inferInstance (ℂ × ComplexTwoSpace) inferInstance inferInstance
-      (ModelProd ℂ ComplexTwoSpace) inferInstance GlobalDeckTotalModel RegularSmoothnessOrder
+      (ModelProd ℂ ComplexTwoSpace) inferInstance globalDeckTotalModel regularSmoothnessOrder
       (TotalSpace (parameterMap A.periods)) inferInstance A.totalSpaceCharts := by
   let _ := familyIsCancelSMul (parameterMap A.periods)
   let _ := familyContinuousConstSMul (parameterMap A.periods)
-    fun a => (periodSection_contMDiff A.periods a RegularSmoothnessOrder).continuous
+    fun a => (periodSection_contMDiff A.periods a regularSmoothnessOrder).continuous
   let _ := familyProperlyDiscontinuousSMul (parameterMap A.periods)
     (compactlyUniformPeriods_of_compactUniformLowerBound (parameterMap A.periods)
       (parameterMap_compactUniformLowerBound A.periods))
   exact (totalSpace_isManifold_and_projection_isLocalDiffeomorph
-    A.periods RegularSmoothnessOrder).1
+    A.periods regularSmoothnessOrder).1
 
 public theorem totalSpace_projection_isLocalDiffeomorph :
     letI := A.totalSpaceCharts
-    IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel RegularSmoothnessOrder
+    IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel regularSmoothnessOrder
       (projection (parameterMap A.periods)) := by
   let _ := familyIsCancelSMul (parameterMap A.periods)
   let _ := familyContinuousConstSMul (parameterMap A.periods)
-    fun a => (periodSection_contMDiff A.periods a RegularSmoothnessOrder).continuous
+    fun a => (periodSection_contMDiff A.periods a regularSmoothnessOrder).continuous
   let _ := familyProperlyDiscontinuousSMul (parameterMap A.periods)
     (compactlyUniformPeriods_of_compactUniformLowerBound (parameterMap A.periods)
       (parameterMap_compactUniformLowerBound A.periods))
   let _ := A.totalSpaceCharts
   exact (totalSpace_isManifold_and_projection_isLocalDiffeomorph
-    A.periods RegularSmoothnessOrder).2
+    A.periods regularSmoothnessOrder).2
 
 @[instance_reducible]
 public noncomputable def orderThreeFillingSourceCharts (r : ℝ) :
     ChartedSpace (ModelProd ℂ ComplexTwoSpace) (A.orderThreeFillingOpen r) := by
   let _ := familyIsCancelSMul (parameterMap A.periods)
   let _ := familyContinuousConstSMul (parameterMap A.periods)
-    fun a => (periodSection_contMDiff A.periods a RegularSmoothnessOrder).continuous
+    fun a => (periodSection_contMDiff A.periods a regularSmoothnessOrder).continuous
   let _ := familyProperlyDiscontinuousSMul (parameterMap A.periods)
     (compactlyUniformPeriods_of_compactUniformLowerBound (parameterMap A.periods)
       (parameterMap_compactUniformLowerBound A.periods))
@@ -202,7 +202,7 @@ public noncomputable def orderFourFillingSourceCharts (r : ℝ) :
     ChartedSpace (ModelProd ℂ ComplexTwoSpace) (A.orderFourFillingOpen r) := by
   let _ := familyIsCancelSMul (parameterMap A.periods)
   let _ := familyContinuousConstSMul (parameterMap A.periods)
-    fun a => (periodSection_contMDiff A.periods a RegularSmoothnessOrder).continuous
+    fun a => (periodSection_contMDiff A.periods a regularSmoothnessOrder).continuous
   let _ := familyProperlyDiscontinuousSMul (parameterMap A.periods)
     (compactlyUniformPeriods_of_compactUniformLowerBound (parameterMap A.periods)
       (parameterMap_compactUniformLowerBound A.periods))
@@ -211,57 +211,57 @@ public noncomputable def orderFourFillingSourceCharts (r : ℝ) :
 
 public theorem orderThreeFillingSource_isManifold (r : ℝ) :
     @IsManifold ℂ inferInstance (ℂ × ComplexTwoSpace) inferInstance inferInstance
-      (ModelProd ℂ ComplexTwoSpace) inferInstance GlobalDeckTotalModel RegularSmoothnessOrder
+      (ModelProd ℂ ComplexTwoSpace) inferInstance globalDeckTotalModel regularSmoothnessOrder
       (A.orderThreeFillingOpen r) inferInstance
       (A.orderThreeFillingSourceCharts r) := by
   let _ := familyIsCancelSMul (parameterMap A.periods)
   let _ := familyContinuousConstSMul (parameterMap A.periods)
-    fun a => (periodSection_contMDiff A.periods a RegularSmoothnessOrder).continuous
+    fun a => (periodSection_contMDiff A.periods a regularSmoothnessOrder).continuous
   let _ := familyProperlyDiscontinuousSMul (parameterMap A.periods)
     (compactlyUniformPeriods_of_compactUniformLowerBound (parameterMap A.periods)
       (parameterMap_compactUniformLowerBound A.periods))
-  let _ : IsManifold GlobalDeckTotalModel RegularSmoothnessOrder
+  let _ : IsManifold globalDeckTotalModel regularSmoothnessOrder
       (TotalSpace (parameterMap A.periods)) :=
     (totalSpace_isManifold_and_projection_isLocalDiffeomorph
-      A.periods RegularSmoothnessOrder).1
+      A.periods regularSmoothnessOrder).1
   let _ := A.orderThreeFillingSourceCharts r
-  change IsManifold GlobalDeckTotalModel RegularSmoothnessOrder (A.orderThreeFillingOpen r)
+  change IsManifold globalDeckTotalModel regularSmoothnessOrder (A.orderThreeFillingOpen r)
   infer_instance
 
 public theorem orderFourFillingSource_isManifold (r : ℝ) :
     @IsManifold ℂ inferInstance (ℂ × ComplexTwoSpace) inferInstance inferInstance
-      (ModelProd ℂ ComplexTwoSpace) inferInstance GlobalDeckTotalModel RegularSmoothnessOrder
+      (ModelProd ℂ ComplexTwoSpace) inferInstance globalDeckTotalModel regularSmoothnessOrder
       (A.orderFourFillingOpen r) inferInstance
       (A.orderFourFillingSourceCharts r) := by
   let _ := familyIsCancelSMul (parameterMap A.periods)
   let _ := familyContinuousConstSMul (parameterMap A.periods)
-    fun a => (periodSection_contMDiff A.periods a RegularSmoothnessOrder).continuous
+    fun a => (periodSection_contMDiff A.periods a regularSmoothnessOrder).continuous
   let _ := familyProperlyDiscontinuousSMul (parameterMap A.periods)
     (compactlyUniformPeriods_of_compactUniformLowerBound (parameterMap A.periods)
       (parameterMap_compactUniformLowerBound A.periods))
-  let _ : IsManifold GlobalDeckTotalModel RegularSmoothnessOrder
+  let _ : IsManifold globalDeckTotalModel regularSmoothnessOrder
       (TotalSpace (parameterMap A.periods)) :=
     (totalSpace_isManifold_and_projection_isLocalDiffeomorph
-      A.periods RegularSmoothnessOrder).1
+      A.periods regularSmoothnessOrder).1
   let _ := A.orderFourFillingSourceCharts r
-  change IsManifold GlobalDeckTotalModel RegularSmoothnessOrder (A.orderFourFillingOpen r)
+  change IsManifold globalDeckTotalModel regularSmoothnessOrder (A.orderFourFillingOpen r)
   infer_instance
 
 public theorem orderThreeFillingRestrictedAction_contMDiff (r : ℝ) (g : FiniteCyclic 3) :
     letI := A.orderThreeFillingSourceCharts r
     letI := A.orderThreeFillingAction r
-    ContMDiff GlobalDeckTotalModel GlobalDeckTotalModel RegularSmoothnessOrder
+    ContMDiff globalDeckTotalModel globalDeckTotalModel regularSmoothnessOrder
       (fun q : A.orderThreeFillingOpen r => g • q) := by
   let _ := familyIsCancelSMul (parameterMap A.periods)
   let _ := familyContinuousConstSMul (parameterMap A.periods)
-    fun a => (periodSection_contMDiff A.periods a RegularSmoothnessOrder).continuous
+    fun a => (periodSection_contMDiff A.periods a regularSmoothnessOrder).continuous
   let _ := familyProperlyDiscontinuousSMul (parameterMap A.periods)
     (compactlyUniformPeriods_of_compactUniformLowerBound (parameterMap A.periods)
       (parameterMap_compactUniformLowerBound A.periods))
-  let _ : IsManifold GlobalDeckTotalModel RegularSmoothnessOrder
+  let _ : IsManifold globalDeckTotalModel regularSmoothnessOrder
       (TotalSpace (parameterMap A.periods)) :=
     (totalSpace_isManifold_and_projection_isLocalDiffeomorph
-      A.periods RegularSmoothnessOrder).1
+      A.periods regularSmoothnessOrder).1
   let _ := A.orderThreeFillingSourceCharts r
   let _ := A.orderThreeFillingAction r
   have hcharts : A.orderThreeFillingSourceCharts r =
@@ -271,26 +271,26 @@ public theorem orderThreeFillingRestrictedAction_contMDiff (r : ℝ) (g : Finite
   rw [← ContMDiff.subtypeVal_comp_iff (A.orderThreeFillingOpen r)]
   convert (orderThreeAffineFamilyRepresentation_contMDiff A.periods
     (totalSpace_isManifold_and_projection_isLocalDiffeomorph
-      A.periods RegularSmoothnessOrder).2 g).comp
-      (contMDiff_subtype_val (I := GlobalDeckTotalModel)) using 1
+      A.periods regularSmoothnessOrder).2 g).comp
+      (contMDiff_subtype_val (I := globalDeckTotalModel)) using 1
   funext q
   rfl
 
 public theorem orderFourFillingRestrictedAction_contMDiff (r : ℝ) (g : FiniteCyclic 4) :
     letI := A.orderFourFillingSourceCharts r
     letI := A.orderFourFillingAction r
-    ContMDiff GlobalDeckTotalModel GlobalDeckTotalModel RegularSmoothnessOrder
+    ContMDiff globalDeckTotalModel globalDeckTotalModel regularSmoothnessOrder
       (fun q : A.orderFourFillingOpen r => g • q) := by
   let _ := familyIsCancelSMul (parameterMap A.periods)
   let _ := familyContinuousConstSMul (parameterMap A.periods)
-    fun a => (periodSection_contMDiff A.periods a RegularSmoothnessOrder).continuous
+    fun a => (periodSection_contMDiff A.periods a regularSmoothnessOrder).continuous
   let _ := familyProperlyDiscontinuousSMul (parameterMap A.periods)
     (compactlyUniformPeriods_of_compactUniformLowerBound (parameterMap A.periods)
       (parameterMap_compactUniformLowerBound A.periods))
-  let _ : IsManifold GlobalDeckTotalModel RegularSmoothnessOrder
+  let _ : IsManifold globalDeckTotalModel regularSmoothnessOrder
       (TotalSpace (parameterMap A.periods)) :=
     (totalSpace_isManifold_and_projection_isLocalDiffeomorph
-      A.periods RegularSmoothnessOrder).1
+      A.periods regularSmoothnessOrder).1
   let _ := A.orderFourFillingSourceCharts r
   let _ := A.orderFourFillingAction r
   have hcharts : A.orderFourFillingSourceCharts r =
@@ -300,8 +300,8 @@ public theorem orderFourFillingRestrictedAction_contMDiff (r : ℝ) (g : FiniteC
   rw [← ContMDiff.subtypeVal_comp_iff (A.orderFourFillingOpen r)]
   convert (orderFourAffineFamilyRepresentation_contMDiff A.periods
     (totalSpace_isManifold_and_projection_isLocalDiffeomorph
-      A.periods RegularSmoothnessOrder).2 g).comp
-      (contMDiff_subtype_val (I := GlobalDeckTotalModel)) using 1
+      A.periods regularSmoothnessOrder).2 g).comp
+      (contMDiff_subtype_val (I := globalDeckTotalModel)) using 1
   funext q
   rfl
 
@@ -350,7 +350,7 @@ public theorem orderFourFillingAction_continuousConstSMul (r : ℝ) :
 public theorem totalSpace_t2 : T2Space (TotalSpace (parameterMap A.periods)) := by
   let _ := familyIsCancelSMul (parameterMap A.periods)
   let _ := familyContinuousConstSMul (parameterMap A.periods)
-    fun a => (periodSection_contMDiff A.periods a RegularSmoothnessOrder).continuous
+    fun a => (periodSection_contMDiff A.periods a regularSmoothnessOrder).continuous
   let _ := familyProperlyDiscontinuousSMul (parameterMap A.periods)
     (compactlyUniformPeriods_of_compactUniformLowerBound (parameterMap A.periods)
       (parameterMap_compactUniformLowerBound A.periods))
@@ -361,10 +361,10 @@ public noncomputable def orderThreeFillingProductCharts (r : ℝ) :
     ChartedSpace (ModelProd ℂ ComplexTwoSpace) (A.OrderThreeVaryingFilling r) := by
   let _ := A.orderThreeFillingSourceCharts r
   let _ := A.orderThreeFillingAction r
-  let _ : IsManifold GlobalDeckTotalModel RegularSmoothnessOrder
+  let _ : IsManifold globalDeckTotalModel regularSmoothnessOrder
       (A.orderThreeFillingOpen r) := A.orderThreeFillingSource_isManifold r
   let _ : LocallyCompactSpace (A.orderThreeFillingOpen r) :=
-    Manifold.locallyCompact_of_finiteDimensional GlobalDeckTotalModel
+    Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
   let _ : T2Space (TotalSpace (parameterMap A.periods)) := A.totalSpace_t2
   let _ : T2Space (A.orderThreeFillingOpen r) := by infer_instance
   let _ : IsCancelSMul (FiniteCyclic 3) (A.orderThreeFillingOpen r) :=
@@ -378,10 +378,10 @@ public noncomputable def orderFourFillingProductCharts (r : ℝ) :
     ChartedSpace (ModelProd ℂ ComplexTwoSpace) (A.OrderFourVaryingFilling r) := by
   let _ := A.orderFourFillingSourceCharts r
   let _ := A.orderFourFillingAction r
-  let _ : IsManifold GlobalDeckTotalModel RegularSmoothnessOrder
+  let _ : IsManifold globalDeckTotalModel regularSmoothnessOrder
       (A.orderFourFillingOpen r) := A.orderFourFillingSource_isManifold r
   let _ : LocallyCompactSpace (A.orderFourFillingOpen r) :=
-    Manifold.locallyCompact_of_finiteDimensional GlobalDeckTotalModel
+    Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
   let _ : T2Space (TotalSpace (parameterMap A.periods)) := A.totalSpace_t2
   let _ : T2Space (A.orderFourFillingOpen r) := by infer_instance
   let _ : IsCancelSMul (FiniteCyclic 4) (A.orderFourFillingOpen r) :=
@@ -392,14 +392,14 @@ public noncomputable def orderFourFillingProductCharts (r : ℝ) :
 
 public theorem orderThreeFillingProduct_isManifold (r : ℝ) :
     @IsManifold ℂ inferInstance (ℂ × ComplexTwoSpace) inferInstance inferInstance
-      (ModelProd ℂ ComplexTwoSpace) inferInstance GlobalDeckTotalModel RegularSmoothnessOrder
+      (ModelProd ℂ ComplexTwoSpace) inferInstance globalDeckTotalModel regularSmoothnessOrder
       (A.OrderThreeVaryingFilling r) inferInstance (A.orderThreeFillingProductCharts r) := by
   let _ := A.orderThreeFillingSourceCharts r
   let _ := A.orderThreeFillingAction r
-  let _ : IsManifold GlobalDeckTotalModel RegularSmoothnessOrder
+  let _ : IsManifold globalDeckTotalModel regularSmoothnessOrder
       (A.orderThreeFillingOpen r) := A.orderThreeFillingSource_isManifold r
   let _ : LocallyCompactSpace (A.orderThreeFillingOpen r) :=
-    Manifold.locallyCompact_of_finiteDimensional GlobalDeckTotalModel
+    Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
   let _ : T2Space (TotalSpace (parameterMap A.periods)) := A.totalSpace_t2
   let _ : T2Space (A.orderThreeFillingOpen r) := by infer_instance
   let _ : IsCancelSMul (FiniteCyclic 3) (A.orderThreeFillingOpen r) :=
@@ -408,19 +408,19 @@ public theorem orderThreeFillingProduct_isManifold (r : ℝ) :
     A.orderThreeFillingAction_continuousConstSMul r
   let _ := A.orderThreeFillingProductCharts r
   exact (orbitQuotient_isManifold_and_projection_isLocalDiffeomorph_of_contMDiff_smul
-    GlobalDeckTotalModel RegularSmoothnessOrder
+    globalDeckTotalModel regularSmoothnessOrder
       (A.orderThreeFillingRestrictedAction_contMDiff r)).1
 
 public theorem orderFourFillingProduct_isManifold (r : ℝ) :
     @IsManifold ℂ inferInstance (ℂ × ComplexTwoSpace) inferInstance inferInstance
-      (ModelProd ℂ ComplexTwoSpace) inferInstance GlobalDeckTotalModel RegularSmoothnessOrder
+      (ModelProd ℂ ComplexTwoSpace) inferInstance globalDeckTotalModel regularSmoothnessOrder
       (A.OrderFourVaryingFilling r) inferInstance (A.orderFourFillingProductCharts r) := by
   let _ := A.orderFourFillingSourceCharts r
   let _ := A.orderFourFillingAction r
-  let _ : IsManifold GlobalDeckTotalModel RegularSmoothnessOrder
+  let _ : IsManifold globalDeckTotalModel regularSmoothnessOrder
       (A.orderFourFillingOpen r) := A.orderFourFillingSource_isManifold r
   let _ : LocallyCompactSpace (A.orderFourFillingOpen r) :=
-    Manifold.locallyCompact_of_finiteDimensional GlobalDeckTotalModel
+    Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
   let _ : T2Space (TotalSpace (parameterMap A.periods)) := A.totalSpace_t2
   let _ : T2Space (A.orderFourFillingOpen r) := by infer_instance
   let _ : IsCancelSMul (FiniteCyclic 4) (A.orderFourFillingOpen r) :=
@@ -429,7 +429,7 @@ public theorem orderFourFillingProduct_isManifold (r : ℝ) :
     A.orderFourFillingAction_continuousConstSMul r
   let _ := A.orderFourFillingProductCharts r
   exact (orbitQuotient_isManifold_and_projection_isLocalDiffeomorph_of_contMDiff_smul
-    GlobalDeckTotalModel RegularSmoothnessOrder
+    globalDeckTotalModel regularSmoothnessOrder
       (A.orderFourFillingRestrictedAction_contMDiff r)).1
 
 @[instance_reducible]
@@ -446,26 +446,26 @@ public noncomputable def orderFourFillingComplexCharts (r : ℝ) :
 
 public theorem orderThreeFilling_isManifold (r : ℝ) :
     @IsManifold ℂ inferInstance ComplexModel inferInstance inferInstance ComplexModel
-      inferInstance (modelWithCornersSelf ℂ ComplexModel) RegularSmoothnessOrder
+      inferInstance (modelWithCornersSelf ℂ ComplexModel) regularSmoothnessOrder
       (A.OrderThreeVaryingFilling r) inferInstance (A.orderThreeFillingComplexCharts r) := by
   let _ := A.orderThreeFillingProductCharts r
-  let _ : IsManifold GlobalDeckTotalModel RegularSmoothnessOrder
+  let _ : IsManifold globalDeckTotalModel regularSmoothnessOrder
       (A.OrderThreeVaryingFilling r) := A.orderThreeFillingProduct_isManifold r
   exact globalDeckComplexManifold
 
 public theorem orderFourFilling_isManifold (r : ℝ) :
     @IsManifold ℂ inferInstance ComplexModel inferInstance inferInstance ComplexModel
-      inferInstance (modelWithCornersSelf ℂ ComplexModel) RegularSmoothnessOrder
+      inferInstance (modelWithCornersSelf ℂ ComplexModel) regularSmoothnessOrder
       (A.OrderFourVaryingFilling r) inferInstance (A.orderFourFillingComplexCharts r) := by
   let _ := A.orderFourFillingProductCharts r
-  let _ : IsManifold GlobalDeckTotalModel RegularSmoothnessOrder
+  let _ : IsManifold globalDeckTotalModel regularSmoothnessOrder
       (A.OrderFourVaryingFilling r) := A.orderFourFillingProduct_isManifold r
   exact globalDeckComplexManifold
 
 public theorem totalSpace_secondCountable :
     SecondCountableTopology (TotalSpace (parameterMap A.periods)) := by
   let _ := familyContinuousConstSMul (parameterMap A.periods)
-    fun a => (periodSection_contMDiff A.periods a RegularSmoothnessOrder).continuous
+    fun a => (periodSection_contMDiff A.periods a regularSmoothnessOrder).continuous
   exact ContinuousConstSMul.secondCountableTopology
 
 public theorem orderThreeFilling_secondCountable (r : ℝ) :
@@ -1000,14 +1000,14 @@ public noncomputable def selectedOrderFourFillingComplexCharts :
 
 public noncomputable instance selectedOrderThreeFillingManifold :
     @IsManifold ℂ inferInstance ComplexModel inferInstance inferInstance ComplexModel
-      inferInstance (modelWithCornersSelf ℂ ComplexModel) RegularSmoothnessOrder
+      inferInstance (modelWithCornersSelf ℂ ComplexModel) regularSmoothnessOrder
       A.SelectedOrderThreeFilling inferInstance
       A.selectedOrderThreeFillingComplexCharts :=
   A.orderThreeFilling_isManifold A.orderThreeFillingPiece.radius
 
 public noncomputable instance selectedOrderFourFillingManifold :
     @IsManifold ℂ inferInstance ComplexModel inferInstance inferInstance ComplexModel
-      inferInstance (modelWithCornersSelf ℂ ComplexModel) RegularSmoothnessOrder
+      inferInstance (modelWithCornersSelf ℂ ComplexModel) regularSmoothnessOrder
       A.SelectedOrderFourFilling inferInstance
       A.selectedOrderFourFillingComplexCharts :=
   A.orderFourFilling_isManifold A.orderFourFillingPiece.radius

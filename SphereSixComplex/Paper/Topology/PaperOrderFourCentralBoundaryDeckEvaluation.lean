@@ -92,7 +92,7 @@ public theorem paperOrderFourCentralMonodromy_second :
 
 /-- Integral powers of the second marked free meridian in the global affine deck group. -/
 public def paperOrderFourCentralAngularDeck :
-    Multiplicative ℤ →* paperCentralFreeAffineDeck where
+    Multiplicative ℤ →* PaperCentralFreeAffineDeck where
   toFun n := freeAffineLift (M := paperCentralFreeMonodromy)
     (secondMeridian ^ n.toAdd)
   map_one' := by simp
@@ -128,7 +128,7 @@ universal cover. -/
 public def paperOrderFourCentralBoundaryToUniversalDeck :
     CanonicalCyclicAffineBoundaryDeck
         (orderFourCentralFiberPresentationData A.periods).affine.latticeMap.toAddEquiv →*
-      paperCentralFreeAffineDeck :=
+      PaperCentralFreeAffineDeck :=
   SemidirectProduct.lift
     ((freeAffineTranslation (M := paperCentralFreeMonodromy)).comp
       (-AddMonoidHom.id Lattice)).toMultiplicative
@@ -172,7 +172,7 @@ public theorem paperOrderFourCentralBoundaryToUniversalDeck_meridian :
 
 /-- The physical order-four mapping-torus deck group in based-path orientation. -/
 public noncomputable def paperOrderFourActualBoundaryToUniversalDeck :
-    OrderFourAffineMappingTorusDeck A.periods →* paperCentralFreeAffineDeck :=
+    OrderFourAffineMappingTorusDeck A.periods →* PaperCentralFreeAffineDeck :=
   A.paperOrderFourCentralBoundaryToUniversalDeck.comp
     A.ellipticFourToCentralBoundaryDeckEquiv.toMonoidHom
 

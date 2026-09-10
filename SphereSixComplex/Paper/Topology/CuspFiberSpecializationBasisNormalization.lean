@@ -154,7 +154,7 @@ open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
   {W : ActualPuncturedCuspCollarWitness N M}
 
@@ -163,7 +163,7 @@ public noncomputable def rawDegreeOneTotalSpecialization
     (G : ActualCuspRadialClutchingData W) :
     let _ := G.fiberTopology
     IntegralSingularHomology 1 (CircleMappingTorus G.clutching) →ₗ[ℤ]
-      IntegralSingularHomology 1 (actualLocalCuspFilling W) := by
+      IntegralSingularHomology 1 (ActualLocalCuspFilling W) := by
   let _ := G.fiberTopology
   let e := integralSingularHomologyEquivOfHomotopyEquiv 1
     G.toUnnormalizedCuspRadialClutchingData.totalHomotopyEquiv
@@ -176,7 +176,7 @@ public noncomputable def rawDegreeTwoTotalSpecialization
     (G : ActualCuspRadialClutchingData W) :
     let _ := G.fiberTopology
     IntegralSingularHomology 2 (CircleMappingTorus G.clutching) →ₗ[ℤ]
-      IntegralSingularHomology 2 (actualLocalCuspFilling W) := by
+      IntegralSingularHomology 2 (ActualLocalCuspFilling W) := by
   let _ := G.fiberTopology
   let e := integralSingularHomologyEquivOfHomotopyEquiv 2
     G.toUnnormalizedCuspRadialClutchingData.totalHomotopyEquiv
@@ -189,7 +189,7 @@ public noncomputable def rawDegreeOneFiberSpecialization
     (G : ActualCuspRadialClutchingData W) :
     let _ := G.fiberTopology
     (circleMappingTorusHOnePresentation G.clutching).Coinvariants →ₗ[ℤ]
-      IntegralSingularHomology 1 (actualLocalCuspFilling W) := by
+      IntegralSingularHomology 1 (ActualLocalCuspFilling W) := by
   let _ := G.fiberTopology
   exact (rawDegreeOneTotalSpecialization G).comp
     (circleMappingTorusHOnePresentation G.clutching).coinvariantsToTotal
@@ -199,7 +199,7 @@ public noncomputable def rawDegreeTwoFiberSpecialization
     (G : ActualCuspRadialClutchingData W) :
     let _ := G.fiberTopology
     (circleMappingTorusHTwoPresentation G.clutching).Coinvariants →ₗ[ℤ]
-      IntegralSingularHomology 2 (actualLocalCuspFilling W) := by
+      IntegralSingularHomology 2 (ActualLocalCuspFilling W) := by
   let _ := G.fiberTopology
   exact (rawDegreeTwoTotalSpecialization G).comp
     (circleMappingTorusHTwoPresentation G.clutching).coinvariantsToTotal
@@ -269,8 +269,8 @@ specialization isomorphisms. -/
 public theorem fiberCoinvariantSpecializationIsomorphisms_of_surjective_of_section_eq_zero
     (G : ActualCuspRadialClutchingData W)
     (h : TotalSpecializationSurjectivityAndSectionVanishing G)
-    (cOne : IntegralSingularHomology 1 (actualLocalCuspFilling W) ≃ₗ[ℤ] (Fin 2 → ℤ))
-    (cTwo : IntegralSingularHomology 2 (actualLocalCuspFilling W) ≃ₗ[ℤ] (Fin 4 → ℤ)) :
+    (cOne : IntegralSingularHomology 1 (ActualLocalCuspFilling W) ≃ₗ[ℤ] (Fin 2 → ℤ))
+    (cTwo : IntegralSingularHomology 2 (ActualLocalCuspFilling W) ≃ₗ[ℤ] (Fin 4 → ℤ)) :
     FiberCoinvariantSpecializationIsomorphisms G := by
   let _ := G.fiberTopology
   obtain ⟨SOne, hSOne⟩ := h.degreeOne_section
@@ -294,7 +294,7 @@ public theorem fiberCoinvariantSpecializationIsomorphisms_of_surjective_of_secti
 public noncomputable def normalizedCuspFillingHomologyOneEquiv
     (G : ActualCuspRadialClutchingData W)
     (h : FiberCoinvariantSpecializationIsomorphisms G) :
-    IntegralSingularHomology 1 (actualLocalCuspFilling W) ≃+ (Fin 2 → ℤ) := by
+    IntegralSingularHomology 1 (ActualLocalCuspFilling W) ≃+ (Fin 2 → ℤ) := by
   let _ := G.fiberTopology
   let P := circleMappingTorusHOnePresentation G.clutching
   exact (WangHomologyPresentation.normalizedTargetCoordinates P
@@ -304,7 +304,7 @@ public noncomputable def normalizedCuspFillingHomologyOneEquiv
 public noncomputable def normalizedCuspFillingHomologyTwoEquiv
     (G : ActualCuspRadialClutchingData W)
     (h : FiberCoinvariantSpecializationIsomorphisms G) :
-    IntegralSingularHomology 2 (actualLocalCuspFilling W) ≃+ (Fin 4 → ℤ) := by
+    IntegralSingularHomology 2 (ActualLocalCuspFilling W) ≃+ (Fin 4 → ℤ) := by
   let _ := G.fiberTopology
   let P := circleMappingTorusHTwoPresentation G.clutching
   exact (WangHomologyPresentation.normalizedTargetCoordinates P

@@ -31,7 +31,7 @@ public noncomputable def affineMarkedLoopDeck (A : PaperAnalyticData)
     ⟨A.affineMarkedMidpoint, A.affineMarkedMidpoint_projects⟩
     (Path.Homotopic.Quotient.mk γ)).unop
 
-public theorem exists_sectionSevenAffineMarkedLoopLift (A : PaperAnalyticData)
+public theorem exists_affineMarkedLoopLift (A : PaperAnalyticData)
     (γ : Path twicePuncturedComplexBasepoint twicePuncturedComplexBasepoint) :
     ∃ L : Path A.affineMarkedMidpoint
       (regularSourceEquiv (A.affineMarkedLoopDeck γ) A.affineMarkedMidpoint),
@@ -47,7 +47,7 @@ public theorem exists_sectionSevenAffineMarkedLoopLift (A : PaperAnalyticData)
     exact (hp.unop_fundamentalGroupToMulOpposite_smul
       (e := e) (γ := Path.Homotopic.Quotient.mk γ)).symm
   let p : C(RegularBase (U := A.modular.modularParameter.toTriangleUniformization),
-      RegularCoordinateBase) :=
+      regularCoordinateBase) :=
     ⟨A.regularCoordinate, A.regularCoordinate_isLocalHomeomorph.continuous⟩
   obtain ⟨L, hL⟩ := IsCoveringMap.exists_path_lift_of_monodromy_eq
     (p := p) hp.isCoveringMap γ e e' hm
@@ -57,12 +57,12 @@ public noncomputable def affineMarkedLoopLift (A : PaperAnalyticData)
     (γ : Path twicePuncturedComplexBasepoint twicePuncturedComplexBasepoint) :
     Path A.affineMarkedMidpoint
       (regularSourceEquiv (A.affineMarkedLoopDeck γ) A.affineMarkedMidpoint) :=
-  (A.exists_sectionSevenAffineMarkedLoopLift γ).choose
+  (A.exists_affineMarkedLoopLift γ).choose
 
 public theorem affineMarkedLoopLift_projects (A : PaperAnalyticData)
     (γ : Path twicePuncturedComplexBasepoint twicePuncturedComplexBasepoint) (t : unitInterval) :
     A.regularCoordinate (A.affineMarkedLoopLift γ t) = γ t :=
-  (A.exists_sectionSevenAffineMarkedLoopLift γ).choose_spec t
+  (A.exists_affineMarkedLoopLift γ).choose_spec t
 
 public theorem affineMarkedZeroLift_mem_left (A : PaperAnalyticData)
     (t : unitInterval) :

@@ -148,7 +148,7 @@ public theorem orderThree_enter_of_sameSheet
   rw [OrderThreeDeckEntersNamedCollarAtStrip, hg, map_mul, mul_smul]
   rw [orderThreeCayleyHomeomorph_norm_eq_of_fix_fuchsianOne]
   · exact hh
-  · exact (establishedFuchsianOneStabilizerExact _).mpr ⟨a, rfl⟩
+  · exact (fuchsianOneFixed_iff_mem_range_inl _).mpr ⟨a, rfl⟩
 
 /-- Membership in one order-four elliptic deck coset transports collar entry. -/
 public theorem orderFour_enter_of_sameSheet
@@ -164,7 +164,7 @@ public theorem orderFour_enter_of_sameSheet
   rw [OrderFourDeckEntersNamedCollarAtStrip, hg, map_mul, mul_smul]
   rw [orderFourCayleyHomeomorph_norm_eq_of_fix_fuchsianTwo]
   · exact hh
-  · exact (establishedFuchsianTwoStabilizerExact _).mpr ⟨a, rfl⟩
+  · exact (fuchsianTwoFixed_iff_mem_range_inr _).mpr ⟨a, rfl⟩
 
 /-- Entry of a fixed order-three deck sheet is an open condition on the strip. -/
 public theorem isOpen_orderThreeDeckEntersNamedCollarAtStrip

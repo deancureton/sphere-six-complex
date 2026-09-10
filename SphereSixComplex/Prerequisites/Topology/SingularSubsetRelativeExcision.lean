@@ -47,7 +47,7 @@ public theorem singularIntersectionCorestrictionIso_natural (X : TopCat) (U V : 
   rfl
 
 public def singularIntersectionRelativeIso (X : TopCat) (U V : Set X) :
-    RelativeIntegralSingularChainComplex (subsetIntersectionInclusion X U V) ≅
+    relativeIntegralSingularChainComplex (subsetIntersectionInclusion X U V) ≅
       cokernel (BinaryOpenCover.integralSimplicialChains.map
         (SSet.Subcomplex.homOfLE
           (inf_le_left : singularSubsetRange X U ⊓ singularSubsetRange X V ≤ _))) := by
@@ -86,15 +86,15 @@ public def singularUnionSmallRelativeIso (X : TopCat) (U V : Set X) :
     ((congrArg F.map (singularUnionSmallIso_natural X U V)).trans (F.map_comp _ _))
 
 public def singularSubsetSmallRelativeExcisionIso (X : TopCat) (U V : Set X) :
-    RelativeIntegralSingularChainComplex (subsetIntersectionInclusion X U V) ≅
+    relativeIntegralSingularChainComplex (subsetIntersectionInclusion X U V) ≅
       (coverSmallRelativeShortComplex X (binarySubsetCover X U V) true).X₃ :=
   singularIntersectionRelativeIso X U V ≪≫
     simplicialSubcomplexRelativeExcisionIso (singularSubsetRange X U) (singularSubsetRange X V) ≪≫
     (singularUnionSmallRelativeIso X U V).symm
 
 public def singularSubsetRelativeExcisionMap (X : TopCat) (U V : Set X) :
-    RelativeIntegralSingularChainComplex (subsetIntersectionInclusion X U V) ⟶
-      RelativeIntegralSingularChainComplex (topologicalSubsetInclusion X V) :=
+    relativeIntegralSingularChainComplex (subsetIntersectionInclusion X U V) ⟶
+      relativeIntegralSingularChainComplex (topologicalSubsetInclusion X V) :=
   (singularSubsetSmallRelativeExcisionIso X U V).hom ≫
     coverSmallRelativeComparison X (binarySubsetCover X U V) true
 
@@ -121,7 +121,7 @@ public theorem singularSubsetRelativeExcisionMap_projection (X : TopCat) (U V : 
     singularUnionSmallRelativeIso, simplicialSubcomplexRelativeExcisionIso,
     simplicialSubcomplexRelativeExcisionMap, coverSmallRelativeComparison,
     Iso.trans, Iso.symm, cokernel.mapIso, asIso, Functor.mapIso,
-    RelativeIntegralSingularChainComplex, coverSmallRelativeShortComplex, binarySubsetCover]
+    relativeIntegralSingularChainComplex, coverSmallRelativeShortComplex, binarySubsetCover]
   dsimp +instances only [cokernel.map]
   simp +instances only [Category.assoc, cokernel.π_desc_assoc]
   erw [Category.assoc, cokernel.π_desc_assoc, Category.assoc,

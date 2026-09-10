@@ -28,10 +28,10 @@ variable (Y : Type) [TopologicalSpace Y] [T2Space Y] [Topology.CWComplex (Set.un
 /-- A space carrying the standard `A₂` toric cell labelling has no integral singular homology
 above degree four: that labelling has no cells there. -/
 public theorem subsingleton_integralSingularHomology_of_labelledA2Cells
-    (e : ∀ n, Topology.CWComplex.cell (Set.univ : Set Y) n ≃ cuspWCellIndex n)
+    (e : ∀ n, Topology.CWComplex.cell (Set.univ : Set Y) n ≃ CuspWCellIndex n)
     (n : ℕ) (hn : 4 < n) :
     Subsingleton (IntegralSingularHomology n Y) :=
-  letI : IsEmpty (cuspWCellIndex n) := cuspWCellIndex_isEmpty n hn
+  letI : IsEmpty (CuspWCellIndex n) := cuspWCellIndex_isEmpty n hn
   letI : IsEmpty (Topology.CWComplex.cell (Set.univ : Set Y) n) := Function.isEmpty (e n)
   subsingleton_integralSingularHomology_of_isEmpty_cell Y n
 

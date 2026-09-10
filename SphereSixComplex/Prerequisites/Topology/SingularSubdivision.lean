@@ -227,7 +227,7 @@ cover-small singular chain complex. -/
 public noncomputable def oneSubdivisionToCoverSmallChains
     (h : OneSubdivisionMakesCoverSmall X U) :
     (SSet.sd.obj (TopCat.toSSet.obj X)).chainComplex (AddCommGrpCat.of ℤ) ⟶
-      CoverSmallIntegralSingularChainComplex X U :=
+      coverSmallIntegralSingularChainComplex X U :=
   subdivisionLastVertexLiftChainMap (coverSmallSingularSubcomplex X U) h
 
 /-- The cover-small lift recovers the last-vertex chain map after inclusion. -/

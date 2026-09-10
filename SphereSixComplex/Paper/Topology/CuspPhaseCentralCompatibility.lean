@@ -9,7 +9,7 @@ namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 open SphereSixComplex.Periods InfiniteA2Toric
 open InfiniteA2Toric.Construction InfiniteA2Toric
 open CuspCombinatorics CuspPeriodExpansion CuspLocalPhaseAction CuspFilling
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public def cuspPeriodCompactCircle (i : Fin 2) (z : UnitAddCircle) : Fin 2 → Circle :=

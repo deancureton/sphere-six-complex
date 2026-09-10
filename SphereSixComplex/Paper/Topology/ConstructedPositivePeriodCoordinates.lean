@@ -13,13 +13,13 @@ open SphereSixComplex.Periods CuspFilling CuspLocalPhaseAction CuspPuncturedColl
 open CuspPeriodExpansion CuspStraighteningRetraction CuspStraighteningAlgebra
 open CuspStraighteningExtension
 open CuspStraighteningHomeomorph InfiniteA2Toric.QuantitativeRegions
-open CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
+open CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
 open InfiniteA2Toric.Construction
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {r : ℝ}
 
 theorem constructedModulus_torusCoordinates_norm
-    (p : LocalCarrier constructedModel r) (hp : constructedModel.t p ≠ 0) (i : Fin 3) :
+    (p : localCarrier constructedModel r) (hp : constructedModel.t p ≠ 0) (i : Fin 3) :
     ‖(torusCoordinates constructedModel (constructedLocalModulusRetraction r p) i : ℂ)‖ =
       ‖(torusCoordinates constructedModel p i : ℂ)‖ := by
   have hq : constructedModel.t (constructedLocalModulusRetraction r p) ≠ 0 := by
@@ -41,7 +41,7 @@ theorem constructedModulus_torusCoordinates_norm
   rw [hphiNorm, one_mul]
 
 theorem constructedModulus_rescaledPosition
-    (p : LocalCarrier constructedModel r) (hp : constructedModel.t p ≠ 0) :
+    (p : localCarrier constructedModel r) (hp : constructedModel.t p ≠ 0) :
     rescaledPosition constructedModel (constructedLocalModulusRetraction r p) =
       rescaledPosition constructedModel p := by
   ext i
@@ -160,7 +160,7 @@ theorem exponentialStraighteningCoordinate_period
     (lambda : ParameterLattice) :
     exponentialStraighteningCoordinate W s hsr
       (periodVector (actualCuspCollarPeriodParameter N s) (firstPeriodCoefficients lambda)) =
-      realParameter lambda := by
+      CuspPhaseEstimates.realParameter lambda := by
   let p := localCuspExponentialPoint constructedModel W.localWitness.radius 0 s hsr
   have hp : constructedModel.t p ≠ 0 := by
     rw [localCuspExponentialPoint_t]
@@ -174,7 +174,7 @@ theorem exponentialStraighteningCoordinate_period
   simp only [p, he] at ht
   change exponentialStraighteningCoordinate W s hsr
       ((periodBlock (actualCuspCollarPeriodParameter N s)).mulVec (fun i ↦ (lambda i : ℂ))) =
-    exponentialStraighteningCoordinate W s hsr 0 + realParameter lambda at ht
+    exponentialStraighteningCoordinate W s hsr 0 + CuspPhaseEstimates.realParameter lambda at ht
   rw [exponentialStraighteningCoordinate_zero, zero_add] at ht
   rw [periodVector_firstPeriodCoefficients]
   exact ht
@@ -197,7 +197,7 @@ theorem exponentialStraighteningCoordinate_firstTwoPeriods
   rw [h0, h1, exponentialStraighteningCoordinate_period W s hs,
     exponentialStraighteningCoordinate_period W s hs]
   ext i
-  fin_cases i <;> simp [realParameter]
+  fin_cases i <;> simp [CuspPhaseEstimates.realParameter]
 
 theorem constructedCuspPositiveProjection_punctured
     (W : ActualPuncturedCuspCollarWitness N constructedModel) (p : PuncturedLocalCarrier W) :

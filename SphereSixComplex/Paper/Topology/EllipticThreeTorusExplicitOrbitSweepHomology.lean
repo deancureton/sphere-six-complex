@@ -425,7 +425,7 @@ public theorem orderThreeNormalizedCover_fibreSquare
           orderThreeThreeTorusClutching_pow)
         (integralSingularHomologyMap 2
           (circleProductFiberInclusion (X := StdTorus 3)) x) =
-      OrderThreePresentation.inclusion x := by
+      orderThreePresentation.inclusion x := by
   exact normalizedAffineCover_fiber_square orderThreeThreeTorusClutching
     orderThreeThreeTorusClutching_pow 1 x
 
@@ -437,7 +437,7 @@ public theorem orderFourNormalizedCover_fibreSquare
           orderFourThreeTorusClutching_pow)
         (integralSingularHomologyMap 2
           (circleProductFiberInclusion (X := StdTorus 3)) x) =
-      OrderFourPresentation.inclusion x := by
+      orderFourPresentation.inclusion x := by
   exact normalizedAffineCover_fiber_square orderFourThreeTorusClutching
     orderFourThreeTorusClutching_pow 1 x
 
@@ -449,7 +449,7 @@ public theorem orderThreeNormalizedCover_fibreGenerator :
         (integralSingularHomologyMap 2
           (circleProductFiberInclusion (X := StdTorus 3))
           (standardThreeTorusHomologyTwo.symm (Pi.single 0 1))) =
-      OrderThreePresentation.inclusion
+      orderThreePresentation.inclusion
         (standardThreeTorusHomologyTwo.symm (Pi.single 0 1)) :=
   orderThreeNormalizedCover_fibreSquare _
 
@@ -461,7 +461,7 @@ public theorem orderFourNormalizedCover_fibreGenerator :
         (integralSingularHomologyMap 2
           (circleProductFiberInclusion (X := StdTorus 3))
           (standardThreeTorusHomologyTwo.symm (Pi.single 0 1))) =
-      OrderFourPresentation.inclusion
+      orderFourPresentation.inclusion
         (standardThreeTorusHomologyTwo.symm (Pi.single 0 1)) :=
   orderFourNormalizedCover_fibreSquare _
 

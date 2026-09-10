@@ -191,10 +191,10 @@ public theorem degreeSixCycleHomologyClass_eq_of_eq
 /-- The homology class of the proper-face fundamental cycle. -/
 public noncomputable def boundarySevenProperFaceFundamentalHomologyClass :
     AddCommGrpCat.of ℤ ⟶
-      (BoundarySevenProperFaceNerve.chainComplex
+      (boundarySevenProperFaceNerve.chainComplex
         (AddCommGrpCat.of ℤ)).homology 6 :=
   degreeSixCycleHomologyClass
-    (BoundarySevenProperFaceNerve.chainComplex (AddCommGrpCat.of ℤ))
+    (boundarySevenProperFaceNerve.chainComplex (AddCommGrpCat.of ℤ))
     boundarySevenProperFaceFundamentalChain
     boundarySevenProperFaceFundamentalChain_isCycle
 
@@ -230,7 +230,7 @@ public noncomputable def boundarySevenOriginalSingularBoundaryHomologyClass :
 public theorem boundarySevenProperFaceSingularBoundaryHomologyClass_eq_original :
     boundarySevenProperFaceSingularBoundaryHomologyClass =
       boundarySevenOriginalSingularBoundaryHomologyClass := by
-  let K := (BoundarySevenProperFaceNerve.chainComplex (AddCommGrpCat.of ℤ))
+  let K := (boundarySevenProperFaceNerve.chainComplex (AddCommGrpCat.of ℤ))
   let L := (TopCat.toSSet.obj
     (TopCat.of (StandardSimplexBoundary 7))).chainComplex (AddCommGrpCat.of ℤ)
   let A := SSet.chainComplexMap boundarySevenProperFaceAffineSingularMap
@@ -349,7 +349,7 @@ public theorem boundarySevenProperFaceSingularBoundaryHomologyClass_permutation
             (TopCat.toSSet.map (standardSimplexBoundaryPermTopMap sigma))
             (AddCommGrpCat.of ℤ)) 6 =
       z • boundarySevenProperFaceSingularBoundaryHomologyClass := by
-  let K := BoundarySevenProperFaceNerve.chainComplex (AddCommGrpCat.of ℤ)
+  let K := boundarySevenProperFaceNerve.chainComplex (AddCommGrpCat.of ℤ)
   let L := (TopCat.toSSet.obj
     (TopCat.of (StandardSimplexBoundary 7))).chainComplex (AddCommGrpCat.of ℤ)
   let P := SSet.chainComplexMap
@@ -623,7 +623,7 @@ public theorem boundarySevenOriginalSingularSphereHomologyClass_permutation
 permutation.  No generator-transport assumption remains: the explicit normalized orientation
 computes the degree first, and orientation-independence transfers the result to the orientation
 used by the public comparison API. -/
-public theorem boundarySevenProperFaceGeneratorDegreeTransport_proof
+public theorem BoundarySeven.properFace_generator_transport
     (hcomparison : SimplicialToSingularComparisonQuasiIsomorphism
       (∂Δ[7] : SSet.{0}) (AddCommGrpCat.of ℤ))
     (e : StandardSimplexBoundary 7 ≃ₜ SixSphere) :

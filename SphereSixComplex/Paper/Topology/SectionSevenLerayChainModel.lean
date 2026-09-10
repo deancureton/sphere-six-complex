@@ -364,10 +364,10 @@ singular homology. -/
 public theorem integralSingularHomology_middle_subsingleton_of_sectionSevenLerayComparison
     {X : Type} [TopologicalSpace X] (top : ℤ) (htop : top = 1 ∨ top = -1)
     (k : ℕ) (h1 : 1 ≤ k) (h5 : k ≤ 5)
-    (f : sectionSevenLerayChainModel top ⟶ IntegralSingularChainComplex X)
+    (f : sectionSevenLerayChainModel top ⟶ integralSingularChainComplex X)
     [IsIso ((sectionSevenLerayChainModel top).homologyMap f k)] :
     Subsingleton (IntegralSingularHomology k X) := by
-  have hSingular : IsZero ((IntegralSingularChainComplex X).homology k) :=
+  have hSingular : IsZero ((integralSingularChainComplex X).homology k) :=
     IsZero.of_iso (sectionSevenLerayChainModel_middle_homology_isZero top htop k h1 h5)
       (asIso ((sectionSevenLerayChainModel top).homologyMap f k)).symm
   exact AddCommGrpCat.subsingleton_of_isZero hSingular
@@ -376,7 +376,7 @@ public theorem integralSingularHomology_middle_subsingleton_of_sectionSevenLeray
 singular homology. -/
 public noncomputable def integralSingularHomologySixEquivInteger_of_sectionSevenLerayComparison
     {X : Type} [TopologicalSpace X] (top : ℤ)
-    (f : sectionSevenLerayChainModel top ⟶ IntegralSingularChainComplex X)
+    (f : sectionSevenLerayChainModel top ⟶ integralSingularChainComplex X)
     [IsIso ((sectionSevenLerayChainModel top).homologyMap f 6)] :
     IntegralSingularHomology 6 X ≃+ ℤ :=
   (asIso ((sectionSevenLerayChainModel top).homologyMap f 6)).symm.addCommGroupIsoToAddEquiv.trans

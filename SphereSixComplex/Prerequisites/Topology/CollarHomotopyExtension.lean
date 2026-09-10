@@ -29,8 +29,8 @@ namespace SphereSixComplex
 universe u uE uH uM uW
 
 /-- Scale a point of the half-open collar parameter towards its zero endpoint. -/
-public def halfCollarScale (s : unitInterval) (t : HalfCollarParameter) :
-    HalfCollarParameter :=
+public def halfCollarScale (s : unitInterval) (t : halfCollarParameter) :
+    halfCollarParameter :=
   ⟨⟨(s : ℝ) * (t.1 : ℝ), by
       constructor
       · exact mul_nonneg s.2.1 t.1.2.1
@@ -47,14 +47,14 @@ public def halfCollarScale (s : unitInterval) (t : HalfCollarParameter) :
       _ < 1 := by simpa using ht1⟩
 
 @[simp]
-public theorem halfCollarScale_zero (t : HalfCollarParameter) :
+public theorem halfCollarScale_zero (t : halfCollarParameter) :
     halfCollarScale 0 t = halfCollarStart := by
   apply Subtype.ext
   apply Subtype.ext
   simp [halfCollarScale, halfCollarStart, collarStart]
 
 @[simp]
-public theorem halfCollarScale_one (t : HalfCollarParameter) :
+public theorem halfCollarScale_one (t : halfCollarParameter) :
     halfCollarScale 1 t = t := by
   apply Subtype.ext
   apply Subtype.ext
@@ -69,15 +69,15 @@ public theorem halfCollarScale_start (s : unitInterval) :
 
 /-- Joint continuity of collar scaling in the time and collar variables. -/
 public theorem continuous_halfCollarScale :
-    Continuous (fun p : unitInterval × HalfCollarParameter ↦
+    Continuous (fun p : unitInterval × halfCollarParameter ↦
       halfCollarScale p.1 p.2) := by
-  have hReal : Continuous (fun p : unitInterval × HalfCollarParameter ↦
+  have hReal : Continuous (fun p : unitInterval × halfCollarParameter ↦
       (p.1 : ℝ) * (p.2.1 : ℝ)) :=
     (continuous_subtype_val.comp continuous_fst).mul
       ((continuous_subtype_val.comp continuous_subtype_val).comp continuous_snd)
-  have hIcc : Continuous (fun p : unitInterval × HalfCollarParameter ↦
+  have hIcc : Continuous (fun p : unitInterval × halfCollarParameter ↦
       (⟨(p.1 : ℝ) * (p.2.1 : ℝ), (halfCollarScale p.1 p.2).1.2⟩ :
-        CollarParameter)) :=
+        collarParameter)) :=
     hReal.subtype_mk _
   exact hIcc.subtype_mk _
 

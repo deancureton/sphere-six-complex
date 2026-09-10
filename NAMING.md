@@ -14,6 +14,10 @@ Names describe mathematics; module paths distinguish prerequisites from the pape
 - Preserve function spelling inside theorem names, as in `continuous_cayleyToDisc`.
   Refer to a type or predicate with a lowercase initial, as in Mathlib's `neZero_iff`.
   Do not mechanically convert every capital letter to an underscore.
+- Determine capitalization from the result, not from a coerced use as a type:
+  sets, subgroups, and bundled chain complexes are data. Conventional matrix
+  symbols may retain capitals, as do Mathlib's `ModularGroup.S` and `ModularGroup.T` in
+  `LinearAlgebra/Matrix/SpecialLinearGroup.lean`.
 - Avoid proof-development labels such as `Established`, `Foundation`, and
   `Completion`. Retain distinctions between a model and its realization when both
   occur in the same API.

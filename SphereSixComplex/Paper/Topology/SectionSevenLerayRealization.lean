@@ -114,7 +114,7 @@ public structure SectionSevenLerayCoherentRealization
   /-- The explicit algebraic duality data fixing that coefficient. -/
   duality : SectionSevenLerayAlgebraicDuality top
   /-- One chain map realizing the whole finite model. -/
-  comparison : sectionSevenLerayChainModel top ⟶ IntegralSingularChainComplex X
+  comparison : sectionSevenLerayChainModel top ⟶ integralSingularChainComplex X
   /-- The one comparison map induces an isomorphism in every degree. -/
   homologyMap_isIso : ∀ k : ℕ,
     IsIso ((sectionSevenLerayChainModel top).homologyMap comparison k)

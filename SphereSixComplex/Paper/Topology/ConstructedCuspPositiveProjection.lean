@@ -9,7 +9,7 @@ namespace SphereSixComplex.Geometry.CuspStraighteningRetraction
 open SphereSixComplex.Periods CuspFilling CuspLocalPhaseAction CuspPuncturedCollarBridge
 open CuspPeriodExpansion InfiniteA2Toric InfiniteA2Toric
 open InfiniteA2Toric.Construction
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public def constructedCuspPolarData
@@ -37,7 +37,7 @@ public def constructedCuspPositiveProjection
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     let P := constructedCuspPolarData W
     let _ := P.positiveDeckAction
-    C(actualLocalCuspFilling W, PolarHoneycombData.OrbitQuotient P.positivePart) :=
+    C(ActualLocalCuspFilling W, PolarHoneycombData.OrbitQuotient P.positivePart) :=
   actualPositiveModulusProjection W (constructedCuspPolarData W)
     (constructedCuspPolarDeckLift W) (constructedCuspPolar_modulus_phase W)
 

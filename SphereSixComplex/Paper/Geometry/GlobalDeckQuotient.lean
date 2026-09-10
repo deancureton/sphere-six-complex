@@ -85,9 +85,9 @@ public theorem globalDeckOrbitQuotient_isManifold_and_projection_isLocalDiffeomo
     letI := deckAction_isCancelSMul_of_sourceActionFree F hfree
     letI := deckAction_properlyDiscontinuous_of_source F hproper
     letI := deckAction_continuousConstSMul F
-    IsManifold GlobalDeckTotalModel n
+    IsManifold globalDeckTotalModel n
         (OrbitQuotient (M := UpperHalfPlane × ComplexTwoSpace) (G := Delta)) ∧
-      IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel n
+      IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
         (quotientProjection (M := UpperHalfPlane × ComplexTwoSpace) (G := Delta)) := by
   let _ := deckAction F
   let _ : IsCancelSMul Delta (UpperHalfPlane × ComplexTwoSpace) :=
@@ -97,7 +97,7 @@ public theorem globalDeckOrbitQuotient_isManifold_and_projection_isLocalDiffeomo
   let _ : ContinuousConstSMul Delta (UpperHalfPlane × ComplexTwoSpace) :=
     deckAction_continuousConstSMul F
   exact orbitQuotient_isManifold_and_projection_isLocalDiffeomorph_of_contMDiff_smul
-    GlobalDeckTotalModel n (fun g ↦ deckMap_contMDiff F g n)
+    globalDeckTotalModel n (fun g ↦ deckMap_contMDiff F g n)
 
 /-- A locally biholomorphic varying-torus projection descends smooth lifted deck maps to smooth
 deck maps of the torus family.  The required local-diffeomorphism hypothesis is already the
@@ -105,24 +105,24 @@ conclusion of `AnalyticTorusFamily.totalSpace_isManifold_and_projection_isLocalD
 public theorem familyDeckMap_contMDiff_of_projection_isLocalDiffeomorph
     (n : WithTop ℕ∞)
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    [IsManifold GlobalDeckTotalModel n (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel n
+    [IsManifold globalDeckTotalModel n (TotalSpace (parameterMap F))]
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
       (projection (parameterMap F))) (g : Delta) :
-    ContMDiff GlobalDeckTotalModel GlobalDeckTotalModel n (familyDeckMap F g) := by
+    ContMDiff globalDeckTotalModel globalDeckTotalModel n (familyDeckMap F g) := by
   intro q
   induction q using Quotient.inductionOn with
   | _ p =>
     let π : UpperHalfPlane × ComplexTwoSpace → TotalSpace (parameterMap F) :=
       projection (parameterMap F)
     let s := (hprojection p).localInverse
-    have hs : ContMDiffAt GlobalDeckTotalModel GlobalDeckTotalModel n s (π p) :=
+    have hs : ContMDiffAt globalDeckTotalModel globalDeckTotalModel n s (π p) :=
       (hprojection p).localInverse_contMDiffAt
     have hsp : s (π p) = p :=
       (hprojection p).localInverse_left_inv (hprojection p).localInverse_mem_target
-    have hdeck : ContMDiffAt GlobalDeckTotalModel GlobalDeckTotalModel n
+    have hdeck : ContMDiffAt globalDeckTotalModel globalDeckTotalModel n
         (deckMap F g ∘ s) (π p) :=
       (deckMap_contMDiff F g n).contMDiffAt.comp (π p) hs
-    have hrhs : ContMDiffAt GlobalDeckTotalModel GlobalDeckTotalModel n
+    have hrhs : ContMDiffAt globalDeckTotalModel globalDeckTotalModel n
         (π ∘ deckMap F g ∘ s) (π p) :=
       (hprojection (deckMap F g p)).contMDiffAt.comp_of_eq hdeck (by simp [hsp])
     have hright := (hprojection p).localInverse_eventuallyEq_right

@@ -39,7 +39,7 @@ public theorem orderFour_deck_fixes_center_iff_source_cayley_lt_of_target_cayley
     rw [← orderFourCayleyHomeomorph_norm_eq_of_fix_fuchsianTwo g z hfix]
     exact htarget
   · intro hsourceSmall
-    apply (establishedFuchsianTwoStabilizerExact g).mpr
+    apply (fuchsianTwoFixed_iff_mem_range_inr g).mpr
     let U := A.modular.modularParameter.toTriangleUniformization
     have hsource : U.sourceAction = fuchsianSourceAction :=
       A.modular.modularParameter.toTriangleUniformization_sourceAction

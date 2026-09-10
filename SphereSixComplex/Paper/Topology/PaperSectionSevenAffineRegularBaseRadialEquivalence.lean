@@ -26,10 +26,10 @@ open SphereSixComplex.Geometry.EquivariantQuotientHomeomorph
 
 variable (A : PaperAnalyticData)
 
-public abbrev orderThreeAffineDiscCoordinateRegion (r : ℝ) : Set RegularCoordinateBase :=
+public abbrev orderThreeAffineDiscCoordinateRegion (r : ℝ) : Set regularCoordinateBase :=
   {z | ‖z.1‖ < r}
 
-public abbrev orderThreeAffineHalfPlaneCoordinateRegion : Set RegularCoordinateBase :=
+public abbrev orderThreeAffineHalfPlaneCoordinateRegion : Set regularCoordinateBase :=
   {z | z.1.re < 2 / 3}
 
 public theorem orderThreeAffineDiscCoordinateRegion_subset_halfPlane
@@ -38,12 +38,12 @@ public theorem orderThreeAffineDiscCoordinateRegion_subset_halfPlane
   intro z hz
   exact (Complex.re_le_norm z.1).trans_lt (hz.trans_le hr)
 
-theorem regularCoordinate_ne_zero (z : RegularCoordinateBase) : z.1 ≠ 0 := by
+theorem regularCoordinate_ne_zero (z : regularCoordinateBase) : z.1 ≠ 0 := by
   intro hz
   apply z.2
   simp [hz]
 
-theorem regularCoordinate_ne_one (z : RegularCoordinateBase) : z.1 ≠ 1 := by
+theorem regularCoordinate_ne_one (z : regularCoordinateBase) : z.1 ≠ 1 := by
   intro hz
   apply z.2
   simp [hz]
@@ -62,8 +62,8 @@ def orderThreeSmallToRadial (r : ℝ) :
     (continuous_subtype_val.comp continuous_subtype_val).subtype_mk _
 
 theorem radialLeft_mem_regularCoordinate
-    (z : puncturedComplexLeftHalfPlane (2 / 3)) : z.1 ∈ RegularCoordinateBase := by
-    simp only [RegularCoordinateBase, mem_compl_iff, mem_insert_iff,
+    (z : puncturedComplexLeftHalfPlane (2 / 3)) : z.1 ∈ regularCoordinateBase := by
+    simp only [regularCoordinateBase, mem_compl_iff, mem_insert_iff,
       mem_singleton_iff, not_or]
     refine ⟨z.2.1, ?_⟩
     intro hz
@@ -72,14 +72,14 @@ theorem radialLeft_mem_regularCoordinate
     norm_num at h
 
 def radialLeftToRegularCoordinate :
-    C(puncturedComplexLeftHalfPlane (2 / 3), RegularCoordinateBase) where
+    C(puncturedComplexLeftHalfPlane (2 / 3), regularCoordinateBase) where
   toFun z := ⟨z.1, radialLeft_mem_regularCoordinate z⟩
   continuous_toFun := continuous_subtype_val.subtype_mk
     radialLeft_mem_regularCoordinate
 
 theorem radialDisc_mem_regularCoordinate {r : ℝ} (hr : r ≤ 2 / 3)
-    (z : puncturedComplexDisc r) : z.1 ∈ RegularCoordinateBase := by
-    simp only [RegularCoordinateBase, mem_compl_iff, mem_insert_iff,
+    (z : puncturedComplexDisc r) : z.1 ∈ regularCoordinateBase := by
+    simp only [regularCoordinateBase, mem_compl_iff, mem_insert_iff,
       mem_singleton_iff, not_or]
     refine ⟨z.2.1, ?_⟩
     intro hz
@@ -89,7 +89,7 @@ theorem radialDisc_mem_regularCoordinate {r : ℝ} (hr : r ≤ 2 / 3)
     linarith
 
 def radialDiscToRegularCoordinate {r : ℝ} (hr : r ≤ 2 / 3) :
-    C(puncturedComplexDisc r, RegularCoordinateBase) where
+    C(puncturedComplexDisc r, regularCoordinateBase) where
   toFun z := ⟨z.1, radialDisc_mem_regularCoordinate hr z⟩
   continuous_toFun := continuous_subtype_val.subtype_mk
     (radialDisc_mem_regularCoordinate hr)
@@ -145,11 +145,11 @@ public noncomputable def orderThreeCoordinateDeformation
     exact ((puncturedComplexDisc_radial hs hsr).radialHomotopyFunction
       (t, orderThreeSmallToRadial r z)).2.2
 
-public abbrev orderThreeAffineDiscBaseLift (r : ℝ) :=
-  coveringRegionPreimage A.regularCoordinate (orderThreeAffineDiscCoordinateRegion r)
+public abbrev OrderThreeAffineDiscBaseLift (r : ℝ) :=
+  CoveringRegionPreimage A.regularCoordinate (orderThreeAffineDiscCoordinateRegion r)
 
-public abbrev orderThreeAffineHalfPlaneBaseLift :=
-  coveringRegionPreimage A.regularCoordinate orderThreeAffineHalfPlaneCoordinateRegion
+public abbrev OrderThreeAffineHalfPlaneBaseLift :=
+  CoveringRegionPreimage A.regularCoordinate orderThreeAffineHalfPlaneCoordinateRegion
 
 /-- The literal order-three inclusion on the regular base is a full-Delta equivariant homotopy
 equivalence, obtained canonically by covering-space homotopy lifting. -/
@@ -164,10 +164,10 @@ public noncomputable def orderThreeBaseRadialEquiv
     A.regularBaseDeckAction A.regularCoordinate A.regularCoordinate_deck_invariant
     A.regularCoordinate_isCoveringMap A.regularBaseDeckAction_continuous
 
-public abbrev orderFourAffineDiscCoordinateRegion (r : ℝ) : Set RegularCoordinateBase :=
+public abbrev orderFourAffineDiscCoordinateRegion (r : ℝ) : Set regularCoordinateBase :=
   {z | ‖z.1 - 1‖ < r}
 
-public abbrev orderFourAffineHalfPlaneCoordinateRegion : Set RegularCoordinateBase :=
+public abbrev orderFourAffineHalfPlaneCoordinateRegion : Set regularCoordinateBase :=
   {z | 1 / 3 < z.1.re}
 
 public theorem orderFourAffineDiscCoordinateRegion_subset_halfPlane
@@ -218,8 +218,8 @@ def orderFourSmallToRadial (r : ℝ) :
     (continuous_const.sub (continuous_subtype_val.comp continuous_subtype_val)).subtype_mk _
 
 theorem radialLeft_mem_reflectedRegularCoordinate
-    (z : puncturedComplexLeftHalfPlane (2 / 3)) : 1 - z.1 ∈ RegularCoordinateBase := by
-  simp only [RegularCoordinateBase, mem_compl_iff, mem_insert_iff,
+    (z : puncturedComplexLeftHalfPlane (2 / 3)) : 1 - z.1 ∈ regularCoordinateBase := by
+  simp only [regularCoordinateBase, mem_compl_iff, mem_insert_iff,
     mem_singleton_iff, not_or]
   constructor
   · intro hz
@@ -232,14 +232,14 @@ theorem radialLeft_mem_reflectedRegularCoordinate
     exact sub_eq_self.mp hz
 
 def radialLeftToReflectedRegularCoordinate :
-    C(puncturedComplexLeftHalfPlane (2 / 3), RegularCoordinateBase) where
+    C(puncturedComplexLeftHalfPlane (2 / 3), regularCoordinateBase) where
   toFun z := ⟨1 - z.1, radialLeft_mem_reflectedRegularCoordinate z⟩
   continuous_toFun := (continuous_const.sub continuous_subtype_val).subtype_mk
     radialLeft_mem_reflectedRegularCoordinate
 
 theorem radialDisc_mem_reflectedRegularCoordinate {r : ℝ} (hr : r ≤ 2 / 3)
-    (z : puncturedComplexDisc r) : 1 - z.1 ∈ RegularCoordinateBase := by
-  simp only [RegularCoordinateBase, mem_compl_iff, mem_insert_iff,
+    (z : puncturedComplexDisc r) : 1 - z.1 ∈ regularCoordinateBase := by
+  simp only [regularCoordinateBase, mem_compl_iff, mem_insert_iff,
     mem_singleton_iff, not_or]
   constructor
   · intro hz
@@ -253,7 +253,7 @@ theorem radialDisc_mem_reflectedRegularCoordinate {r : ℝ} (hr : r ≤ 2 / 3)
     exact sub_eq_self.mp hz
 
 def radialDiscToReflectedRegularCoordinate {r : ℝ} (hr : r ≤ 2 / 3) :
-    C(puncturedComplexDisc r, RegularCoordinateBase) where
+    C(puncturedComplexDisc r, regularCoordinateBase) where
   toFun z := ⟨1 - z.1, radialDisc_mem_reflectedRegularCoordinate hr z⟩
   continuous_toFun := (continuous_const.sub continuous_subtype_val).subtype_mk
     (radialDisc_mem_reflectedRegularCoordinate hr)
@@ -352,11 +352,11 @@ public noncomputable def orderFourCoordinateDeformation
   preservesSmall := fun t z ↦ by
     exact orderFourCoordinateRadial_preservesSmall hs hsr hr t z
 
-public abbrev orderFourAffineDiscBaseLift (r : ℝ) :=
-  coveringRegionPreimage A.regularCoordinate (orderFourAffineDiscCoordinateRegion r)
+public abbrev OrderFourAffineDiscBaseLift (r : ℝ) :=
+  CoveringRegionPreimage A.regularCoordinate (orderFourAffineDiscCoordinateRegion r)
 
-public abbrev orderFourAffineHalfPlaneBaseLift :=
-  coveringRegionPreimage A.regularCoordinate orderFourAffineHalfPlaneCoordinateRegion
+public abbrev OrderFourAffineHalfPlaneBaseLift :=
+  CoveringRegionPreimage A.regularCoordinate orderFourAffineHalfPlaneCoordinateRegion
 
 /-- The literal order-four inclusion on the regular base is a full-Delta equivariant homotopy
 equivalence, obtained canonically by the reflected covering-space lift. -/

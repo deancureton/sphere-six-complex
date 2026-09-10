@@ -34,7 +34,7 @@ public noncomputable def ellipticFourCentralCoverComparisonOfPath
     letI := D.action
     QuotientCoverMapData
       (G := OrderFourAffineMappingTorusDeck A.periods)
-      (H := paperCentralFreeAffineDeck)
+      (H := PaperCentralFreeAffineDeck)
       A.ellipticFourBoundaryProjection D.data.projection := by
   let _ := A.ellipticFourBoundaryAction
   let D := A.centralAffineUniversalCover

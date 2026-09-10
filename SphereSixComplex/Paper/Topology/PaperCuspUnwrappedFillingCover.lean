@@ -28,14 +28,14 @@ open SphereSixComplex.LatticeData SphereSixComplex.Topology
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
-open SphereSixComplex.Geometry.CuspPhaseEstimates.CuspPeriodExpansion
+open SphereSixComplex.Geometry.CuspPeriodExpansion
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
 variable {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
 
 /-- A selected preimage in the normalized additive cover of a prescribed boundary base point. -/
 public noncomputable def paperCuspBoundaryBasePreimage
-    (W : ActualPuncturedCuspCollarWitness N M) (b : puncturedLocalCuspQuotient W) :
+    (W : ActualPuncturedCuspCollarWitness N M) (b : PuncturedLocalCuspQuotient W) :
     additiveCuspRadiusCover W.localWitness.radius := by
   let _ := paperCuspBoundaryDeckAction W
   exact Classical.choose
@@ -43,7 +43,7 @@ public noncomputable def paperCuspBoundaryBasePreimage
 
 @[simp]
 public theorem additiveCuspBoundaryProjection_basePreimage
-    (W : ActualPuncturedCuspCollarWitness N M) (b : puncturedLocalCuspQuotient W) :
+    (W : ActualPuncturedCuspCollarWitness N M) (b : PuncturedLocalCuspQuotient W) :
     additiveCuspBoundaryProjection W (paperCuspBoundaryBasePreimage W b) = b := by
   let _ := paperCuspBoundaryDeckAction W
   exact Classical.choose_spec
@@ -51,13 +51,13 @@ public theorem additiveCuspBoundaryProjection_basePreimage
 
 /-- The actual cusp collar and its toric filling as a simply connected unwrapped cover square. -/
 public noncomputable def paperCuspUnwrappedFillingCover
-    (W : ActualPuncturedCuspCollarWitness N M) (b : puncturedLocalCuspQuotient W) :
+    (W : ActualPuncturedCuspCollarWitness N M) (b : PuncturedLocalCuspQuotient W) :
     letI := paperCuspBoundaryDeckAction W
     letI := paperCuspFillingDeckAction W
-    UnwrappedToricFillingCover Lattice paperToricSubgroup paperCuspBoundaryDeck
+    UnwrappedToricFillingCover Lattice paperToricSubgroup PaperCuspBoundaryDeck
       (additiveCuspRadiusCover W.localWitness.radius)
-      (LocalCarrier M W.localWitness.radius)
-      (puncturedLocalCuspQuotient W) (actualLocalCuspFilling W)
+      (localCarrier M W.localWitness.radius)
+      (PuncturedLocalCuspQuotient W) (ActualLocalCuspFilling W)
       paperCuspBoundaryDeckData := by
   let _ := paperCuspBoundaryDeckAction W
   let _ := paperCuspFillingDeckAction W

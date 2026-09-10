@@ -22,8 +22,8 @@ namespace SphereSixComplex
 
 /-- An integral singular two-cycle represented as a map from the rank-one free abelian group. -/
 public structure DegreeTwoSingularCycle (X : Type) [TopologicalSpace X] where
-  chain : AddCommGrpCat.of ℤ ⟶ (IntegralSingularChainComplex X).X 2
-  boundary_zero : chain ≫ (IntegralSingularChainComplex X).d 2 1 = 0
+  chain : AddCommGrpCat.of ℤ ⟶ (integralSingularChainComplex X).X 2
+  boundary_zero : chain ≫ (integralSingularChainComplex X).d 2 1 = 0
 
 namespace DegreeTwoSingularCycle
 
@@ -40,9 +40,9 @@ public noncomputable def map (c : DegreeTwoSingularCycle X) (f : C(X, Y)) :
 
 /-- The homology-class morphism represented by a singular two-cycle. -/
 public noncomputable def homologyClassMorphism (c : DegreeTwoSingularCycle X) :
-    AddCommGrpCat.of ℤ ⟶ (IntegralSingularChainComplex X).homology 2 :=
-  (IntegralSingularChainComplex X).liftCycles c.chain 1 (by simp) c.boundary_zero ≫
-    (IntegralSingularChainComplex X).homologyπ 2
+    AddCommGrpCat.of ℤ ⟶ (integralSingularChainComplex X).homology 2 :=
+  (integralSingularChainComplex X).liftCycles c.chain 1 (by simp) c.boundary_zero ≫
+    (integralSingularChainComplex X).homologyπ 2
 
 /-- The homology class represented by a singular two-cycle. -/
 public noncomputable def homologyClass (c : DegreeTwoSingularCycle X) :

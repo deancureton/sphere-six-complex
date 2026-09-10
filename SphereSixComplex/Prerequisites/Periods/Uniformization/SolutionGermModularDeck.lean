@@ -25,48 +25,48 @@ open TauCeti
 
 variable {C : ℂ → ℂ} {U : Set ℂ}
 
-abbrev ModularSolutionEtale (C : ℂ → ℂ) (U : Set ℂ) :=
-  UpperHalfPlaneSolutionEtale normalizedModularJCoordinate C U
+abbrev modularSolutionEtaleSet (C : ℂ → ℂ) (U : Set ℂ) :=
+  upperHalfPlaneSolutionEtale normalizedModularJCoordinate C U
 
 /-- A chosen upper-half-plane-valued representative of a modular solution germ. -/
-def solutionRepresentative (p : ModularSolutionEtale C U) : ℂ → UpperHalfPlane :=
+def solutionRepresentative (p : modularSolutionEtaleSet C U) : ℂ → UpperHalfPlane :=
   p.2.2.choose
 
 theorem solutionRepresentative_coe_eventuallyEq
-    (p : ModularSolutionEtale C U) :
+    (p : modularSolutionEtaleSet C U) :
     (fun w ↦ (solutionRepresentative p w : ℂ)) =ᶠ[𝓝 p.1.base]
       HolomorphicPresheaf.repFun p.1 :=
   p.2.2.choose_spec.1
 
 theorem solutionRepresentative_equation_eventuallyEq
-    (p : ModularSolutionEtale C U) :
+    (p : modularSolutionEtaleSet C U) :
     (fun w ↦ normalizedModularJCoordinate (solutionRepresentative p w)) =ᶠ[𝓝 p.1.base]
       C :=
   p.2.2.choose_spec.2
 
 /-- The complex representative obtained by postcomposing a solution representative with a
 modular deck transformation. -/
-def modularTransformRepresentative (g : Delta) (p : ModularSolutionEtale C U) : ℂ → ℂ :=
+def modularTransformRepresentative (g : Delta) (p : modularSolutionEtaleSet C U) : ℂ → ℂ :=
   fun w ↦ (modularDeckHomeomorph g (solutionRepresentative p w) : ℂ)
 
 theorem analyticAt_modularTransformRepresentative (g : Delta)
-    (p : ModularSolutionEtale C U) :
+    (p : modularSolutionEtaleSet C U) :
     AnalyticAt ℂ (modularTransformRepresentative g p) p.1.base := by
   apply analyticAt_modularDeck_coe g
   exact (HolomorphicPresheaf.analyticAt_repFun p.1).congr
     (solutionRepresentative_coe_eventuallyEq p).symm
 
 /-- The underlying holomorphic germ obtained by a modular deck transformation. -/
-def modularDeckEtalePoint (g : Delta) (p : ModularSolutionEtale C U) :
+def modularDeckEtalePoint (g : Delta) (p : modularSolutionEtaleSet C U) :
     (holomorphicPresheaf ℂ).EtaleSpace :=
   HolomorphicPresheaf.germPoint (modularTransformRepresentative g p) p.1.base
 
 @[simp]
-theorem modularDeckEtalePoint_base (g : Delta) (p : ModularSolutionEtale C U) :
+theorem modularDeckEtalePoint_base (g : Delta) (p : modularSolutionEtaleSet C U) :
     (modularDeckEtalePoint g p).base = p.1.base := rfl
 
 theorem modularDeckEtalePoint_repFun_eventuallyEq (g : Delta)
-    (p : ModularSolutionEtale C U) :
+    (p : modularSolutionEtaleSet C U) :
     HolomorphicPresheaf.repFun (modularDeckEtalePoint g p) =ᶠ[𝓝 p.1.base]
       modularTransformRepresentative g p := by
   apply (HolomorphicPresheaf.germAt_eq_iff
@@ -77,7 +77,7 @@ theorem modularDeckEtalePoint_repFun_eventuallyEq (g : Delta)
 
 /-- Modular postcomposition preserves the local solution relation. -/
 theorem modularDeckEtalePoint_isSolution (g : Delta)
-    (p : ModularSolutionEtale C U) :
+    (p : modularSolutionEtaleSet C U) :
     IsUpperHalfPlaneSolutionGerm normalizedModularJCoordinate C p.1.base
       (HolomorphicPresheaf.repFun (modularDeckEtalePoint g p)) := by
   refine ⟨fun w ↦ modularDeckHomeomorph g (solutionRepresentative p w), ?_, ?_⟩
@@ -87,12 +87,12 @@ theorem modularDeckEtalePoint_isSolution (g : Delta)
     exact hw
 
 /-- Modular postcomposition as a self-map of the solution-germ space. -/
-def modularSolutionDeck (g : Delta) (p : ModularSolutionEtale C U) :
-    ModularSolutionEtale C U :=
+def modularSolutionDeck (g : Delta) (p : modularSolutionEtaleSet C U) :
+    modularSolutionEtaleSet C U :=
   ⟨modularDeckEtalePoint g p, p.2.1, modularDeckEtalePoint_isSolution g p⟩
 
 @[simp]
-theorem modularSolutionDeck_base (g : Delta) (p : ModularSolutionEtale C U) :
+theorem modularSolutionDeck_base (g : Delta) (p : modularSolutionEtaleSet C U) :
     upperHalfPlaneSolutionEtaleBase normalizedModularJCoordinate C U
       (modularSolutionDeck g p) =
     upperHalfPlaneSolutionEtaleBase normalizedModularJCoordinate C U p := by
@@ -108,7 +108,7 @@ theorem modularDeckHomeomorph_inv (g : Delta) :
   exact congrArg ((↑) : UpperHalfPlane → ℂ) hτ
 
 /-- Applying `g⁻¹` after `g` recovers the original solution germ. -/
-theorem modularSolutionDeck_inv_apply (g : Delta) (p : ModularSolutionEtale C U) :
+theorem modularSolutionDeck_inv_apply (g : Delta) (p : modularSolutionEtaleSet C U) :
     modularSolutionDeck g⁻¹ (modularSolutionDeck g p) = p := by
   apply Subtype.ext
   rw [← HolomorphicPresheaf.germPoint_repFun p.1]
@@ -133,7 +133,7 @@ theorem modularSolutionDeck_inv_apply (g : Delta) (p : ModularSolutionEtale C U)
 Locally, every nearby germ is represented by one common holomorphic section; postcomposing that
 section with the fixed modular transformation gives a common local section for all their images. -/
 theorem continuous_modularDeckEtalePoint (g : Delta) :
-    Continuous (fun p : ModularSolutionEtale C U ↦ modularDeckEtalePoint g p) := by
+    Continuous (fun p : modularSolutionEtaleSet C U ↦ modularDeckEtalePoint g p) := by
   rw [continuous_iff_continuousAt]
   intro p
   let f : ℂ → ℂ := fun w ↦ (solutionRepresentative p w : ℂ)
@@ -167,7 +167,7 @@ theorem continuous_modularDeckEtalePoint (g : Delta) :
     exact hpgerm.symm.trans hfgerm
   have hSopen : IsOpen S :=
     TopCat.Presheaf.EtaleSpace.isOpen_sectionRange (F := holomorphicPresheaf ℂ) W sec
-  have hnear : {q : ModularSolutionEtale C U | q.1 ∈ S} ∈ 𝓝 p :=
+  have hnear : {q : modularSolutionEtaleSet C U | q.1 ∈ S} ∈ 𝓝 p :=
     (hSopen.preimage continuous_subtype_val).mem_nhds hpS
   have hbasecont : Continuous
       (TopCat.Presheaf.EtaleSpace.base : (holomorphicPresheaf ℂ).EtaleSpace → ℂ) :=
@@ -178,7 +178,7 @@ theorem continuous_modularDeckEtalePoint (g : Delta) :
     ((HolomorphicPresheaf.continuousOn_germPoint htfW).continuousAt
       (W.isOpen.mem_nhds hpW)).comp' hbasecont.continuousAt
   have hlocal : ContinuousAt
-      (fun q : ModularSolutionEtale C U ↦ HolomorphicPresheaf.germPoint tf q.1.base) p :=
+      (fun q : modularSolutionEtaleSet C U ↦ HolomorphicPresheaf.germPoint tf q.1.base) p :=
     hlocalFull.comp' continuous_subtype_val.continuousAt
   apply hlocal.congr_of_eventuallyEq
   filter_upwards [hnear] with q hqS
@@ -212,14 +212,14 @@ theorem continuous_modularDeckEtalePoint (g : Delta) :
   exact HolomorphicPresheaf.germPoint_congr htqf
 
 theorem continuous_modularSolutionDeck (g : Delta) :
-    Continuous (modularSolutionDeck g : ModularSolutionEtale C U →
-      ModularSolutionEtale C U) :=
+    Continuous (modularSolutionDeck g : modularSolutionEtaleSet C U →
+      modularSolutionEtaleSet C U) :=
   (continuous_modularDeckEtalePoint (C := C) (U := U) g).subtype_mk _
 
 /-- Every modular group element acts by a fiber-preserving homeomorphism of the solution-germ
 space. -/
 def modularSolutionDeckHomeomorph (g : Delta) :
-    ModularSolutionEtale C U ≃ₜ ModularSolutionEtale C U where
+    modularSolutionEtaleSet C U ≃ₜ modularSolutionEtaleSet C U where
   toEquiv :=
     { toFun := modularSolutionDeck g
       invFun := modularSolutionDeck g⁻¹

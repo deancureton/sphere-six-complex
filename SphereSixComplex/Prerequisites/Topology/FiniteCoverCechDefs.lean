@@ -124,24 +124,24 @@ public noncomputable def finiteCoverLerayCechTotal (U : iota → Set X) :
 public noncomputable def finiteCoverLerayCechOuterAugmentation (U : iota → Set X) :
     finiteCoverLerayCechBicomplex U ⟶
       firstQuadrantSingleZeroBicomplex
-        (CoverSmallIntegralSingularChainComplex (TopCat.of X) U) :=
+        (coverSmallIntegralSingularChainComplex (TopCat.of X) U) :=
   AlternatingFaceMapComplex.ε.app (finiteCoverAugmentedCechChains U)
 
 /-- Totalize the outer Cech augmentation and identify the total of its zero column with
 cover-small singular chains. -/
 public noncomputable def finiteCoverLerayCechTotalAugmentation (U : iota → Set X) :
     finiteCoverLerayCechTotal U ⟶
-      CoverSmallIntegralSingularChainComplex (TopCat.of X) U :=
+      coverSmallIntegralSingularChainComplex (TopCat.of X) U :=
   HomologicalComplex₂.total.map (finiteCoverLerayCechOuterAugmentation U)
       (ComplexShape.down ℕ) ≫
     firstQuadrantTotalToSingleZero
-      (CoverSmallIntegralSingularChainComplex (TopCat.of X) U)
+      (coverSmallIntegralSingularChainComplex (TopCat.of X) U)
 
 /-- The output of the augmentation theorem for the cover Cech resolution. -/
 public structure FiniteOpenCoverLerayCechComparison (U : iota → Set X) where
   /-- Augmentation from the canonical total Cech--singular complex to cover-small chains. -/
   augmentation : finiteCoverLerayCechTotal U ⟶
-    CoverSmallIntegralSingularChainComplex (TopCat.of X) U
+    coverSmallIntegralSingularChainComplex (TopCat.of X) U
   /-- The augmentation is a quasi-isomorphism. -/
   quasiIso : QuasiIso augmentation
 

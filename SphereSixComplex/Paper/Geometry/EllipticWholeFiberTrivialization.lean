@@ -99,7 +99,7 @@ variable [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap
 /-- The fixed-torus-valued map supplied at one point of the order-three fibre by the proven local
 analytic lift and the Cayley biholomorphism. -/
 @[expose] public noncomputable def orderThreePointwiseProductMap
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (v : ComplexTwoSpace) :
     TotalSpace (parameterMap F) → OrderThreeFixedProduct F := fun q ↦
   orderThreeFixedProductProjection F
@@ -107,7 +107,7 @@ analytic lift and the Cayley biholomorphism. -/
 
 /-- The analogous fixed-torus-valued pointwise map at the order-four fibre. -/
 @[expose] public noncomputable def orderFourPointwiseProductMap
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (v : ComplexTwoSpace) :
     TotalSpace (parameterMap F) → OrderFourFixedProduct F := fun q ↦
   orderFourFixedProductProjection F
@@ -115,7 +115,7 @@ analytic lift and the Cayley biholomorphism. -/
 
 @[simp]
 public theorem orderThreePointwiseProductMap_center
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (hzOne : U.zOne = fuchsianOneFixedPoint)
     (v : ComplexTwoSpace) :
     orderThreePointwiseProductMap F hprojection v
@@ -127,7 +127,7 @@ public theorem orderThreePointwiseProductMap_center
 
 @[simp]
 public theorem orderFourPointwiseProductMap_center
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (hzTwo : U.zTwo = fuchsianTwoFixedPoint)
     (v : ComplexTwoSpace) :
     orderFourPointwiseProductMap F hprojection v
@@ -149,12 +149,12 @@ variable [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (OrderFourFixedProduct F)
 compatibility, while `pointwise_agreement` requires the glued map to be the map already constructed
 from the quotient local inverse and the fixed-lattice projection. -/
 public structure OrderThreeWholeFiberCompatibility
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) where
   /-- Indexing type for the compatible pointwise charts. -/
   Index : Type
   /-- The compatible charts and their glued source and target neighbourhoods. -/
-  gluing : CompatiblePartialDiffeomorphs Index GlobalDeckTotalModel
+  gluing : CompatiblePartialDiffeomorphs Index globalDeckTotalModel
     (TotalSpace (parameterMap F)) (OrderThreeFixedProduct F) ω
   /-- The glued source contains the entire order-three fibre. -/
   contains_source_fibre : ∀ v : ComplexTwoSpace,
@@ -185,12 +185,12 @@ public structure OrderThreeWholeFiberCompatibility
 
 /-- The exact analogous order-four compatibility input. -/
 public structure OrderFourWholeFiberCompatibility
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) where
   /-- Indexing type for the compatible pointwise charts. -/
   Index : Type
   /-- The compatible charts and their glued source and target neighbourhoods. -/
-  gluing : CompatiblePartialDiffeomorphs Index GlobalDeckTotalModel
+  gluing : CompatiblePartialDiffeomorphs Index globalDeckTotalModel
     (TotalSpace (parameterMap F)) (OrderFourFixedProduct F) ω
   /-- The glued source contains the entire order-four fibre. -/
   contains_source_fibre : ∀ v : ComplexTwoSpace,
@@ -221,13 +221,13 @@ public structure OrderFourWholeFiberCompatibility
 
 namespace OrderThreeWholeFiberCompatibility
 
-variable {F} {hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+variable {F} {hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
     (projection (parameterMap F))}
     (D : OrderThreeWholeFiberCompatibility F hprojection)
 
 /-- The order-three obligation instantiates the generic equivariant gluing theorem. -/
 @[expose] public noncomputable def toEquivariantCompatibility :
-    EquivariantWholeFiberCompatibility (FiniteCyclic 3) D.Index GlobalDeckTotalModel
+    EquivariantWholeFiberCompatibility (FiniteCyclic 3) D.Index globalDeckTotalModel
       (TotalSpace (parameterMap F)) (OrderThreeFixedProduct F) ω where
   gluing := D.gluing
   sourceRepresentation := orderThreeFamilyRepresentation F
@@ -238,7 +238,7 @@ variable {F} {hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTo
 
 /-- The resulting analytic trivialization on one neighbourhood of the entire order-three fibre. -/
 @[expose] public noncomputable def trivialization :
-    PartialDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel
+    PartialDiffeomorph globalDeckTotalModel globalDeckTotalModel
       (TotalSpace (parameterMap F)) (OrderThreeFixedProduct F) ω :=
   D.gluing.toPartialDiffeomorph
 
@@ -271,12 +271,12 @@ end OrderThreeWholeFiberCompatibility
 
 namespace OrderFourWholeFiberCompatibility
 
-variable {F} {hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+variable {F} {hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
     (projection (parameterMap F))}
     (D : OrderFourWholeFiberCompatibility F hprojection)
 
 @[expose] public noncomputable def toEquivariantCompatibility :
-    EquivariantWholeFiberCompatibility (FiniteCyclic 4) D.Index GlobalDeckTotalModel
+    EquivariantWholeFiberCompatibility (FiniteCyclic 4) D.Index globalDeckTotalModel
       (TotalSpace (parameterMap F)) (OrderFourFixedProduct F) ω where
   gluing := D.gluing
   sourceRepresentation := orderFourFamilyRepresentation F
@@ -286,7 +286,7 @@ variable {F} {hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTo
   equivariant := D.equivariant
 
 @[expose] public noncomputable def trivialization :
-    PartialDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel
+    PartialDiffeomorph globalDeckTotalModel globalDeckTotalModel
       (TotalSpace (parameterMap F)) (OrderFourFixedProduct F) ω :=
   D.gluing.toPartialDiffeomorph
 

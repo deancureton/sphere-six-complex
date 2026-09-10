@@ -44,7 +44,7 @@ public theorem gluedT2_of_cuspProper
     change T2Space A.CentralFamily
     exact A.centralFamily_t2
   let _ (i : Fin 3) : T2Space (A.openEmbeddingStarData.filling i) := by
-    change T2Space (A.starFillingType i)
+    change T2Space (A.StarFilling i)
     exact A.starFilling_t2 i
   exact (A.closedCollarPairData_of_cuspProper hcusp).t2Space
 

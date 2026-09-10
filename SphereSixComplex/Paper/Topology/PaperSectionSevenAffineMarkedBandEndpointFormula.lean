@@ -193,8 +193,8 @@ public theorem orderThreeAffineDiscCentralHomotopyEquiv_toFun
   rw [A.quotientToFun_eq_orderThreeAffineDiscLiftQuotientInclusion hr
     (A.orderThreeAffineRadialLiftEquiv (s := r / 2) (by linarith) (by linarith) hr) rfl,
     A.toCentralFamily_orderThreeAffineDiscLiftQuotientInclusion hr,
-    A.toCentralFamily_sectionSevenAffineOrderThreeDiscRegionQuotientHomeomorph r,
-    A.toCentralFamily_sectionSevenAffineOrderThreeCentralRegionQuotientHomeomorph]
+    A.toCentralFamily_affineOrderThreeDiscRegionQuotientHomeomorph r,
+    A.toCentralFamily_affineOrderThreeCentralRegionQuotientHomeomorph]
   rfl
 
 /-- The explicit affine radial inverse deforms the identity of the whole order-three central
@@ -232,7 +232,7 @@ public theorem orderFourAffineRadialEquivChoice_invFun
       A.regularFlatTransport
         (((A.orderFourBaseRadialEquiv (half_pos hr0) (half_lt_self hr0) hr).invFun
             (⟨regularTotalSpaceBase A.periods y.1, y.2⟩ :
-              A.orderFourAffineHalfPlaneBaseLift)).1,
+              A.OrderFourAffineHalfPlaneBaseLift)).1,
           y.1) :=
   rfl
 
@@ -281,7 +281,7 @@ public theorem orderFourAffineDiscCentralHomotopyEquiv_toFun
       (A.orderFourAffineRadialEquivChoice hr0 hr)
       (A.orderFourAffineRadialEquivChoice_toFun hr0 hr),
     A.orderFourAffineHalfPlaneLiftQuotientToCentralFamily_discInclusion hr,
-    A.toCentralFamily_sectionSevenAffineOrderFourDiscRegionQuotientHomeomorph r]
+    A.toCentralFamily_affineOrderFourDiscRegionQuotientHomeomorph r]
 
 /-- The explicit order-four affine radial inverse deforms the identity central region to the
 inclusion of a smaller affine disc. -/
@@ -638,7 +638,7 @@ public theorem AffineMarkedStarEndpointCompatibility.toDiscEndpointCompatibility
     rw [hpiece]
     exact congrArg
       (fun f : C(A.affineMarkedBand,
-        OrderThreeReducedCentralFiber A.periods) ↦ f x) H.orderThree
+        orderThreeReducedCentralFiber A.periods) ↦ f x) H.orderThree
   orderFour := by
     apply ContinuousMap.ext
     intro x
@@ -659,7 +659,7 @@ public theorem AffineMarkedStarEndpointCompatibility.toDiscEndpointCompatibility
     rw [hpiece]
     exact congrArg
       (fun f : C(A.affineMarkedBand,
-        OrderFourReducedCentralFiber A.periods) ↦ f x) H.orderFour
+        orderFourReducedCentralFiber A.periods) ↦ f x) H.orderFour
 
 /-- Include the order-three central region in its affine side. -/
 public def affineOrderThreeCentralRegionToSide (A : PaperAnalyticData) :

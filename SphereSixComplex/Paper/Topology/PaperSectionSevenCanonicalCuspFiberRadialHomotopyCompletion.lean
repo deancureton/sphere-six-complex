@@ -148,7 +148,7 @@ public theorem actualCuspMappingTorusLowOverlapFiberToEllipticInteriorMap_homoto
         (actualCuspWangFibreToBandMap (A := A) R)) := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
-  let slice : C(G.Fiber, puncturedLocalCuspQuotient A.starCuspWitness) :=
+  let slice : C(G.Fiber, PuncturedLocalCuspQuotient A.starCuspWitness) :=
     (TopologicalSpace.Opens.inclusion' (R.twoDiscCover.cuspOrderThreeOpen ⊓
       R.twoDiscCover.cuspOrderFourOpen)).hom.comp
       (actualCuspWangFibreToCuspCoverIntersectionMap (A := A) R)

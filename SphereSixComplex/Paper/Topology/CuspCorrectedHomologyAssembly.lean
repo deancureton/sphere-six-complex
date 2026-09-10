@@ -81,8 +81,8 @@ public theorem correctedFinalInteriorOne {A : PaperAnalyticData}
     (A.cuspAttachmentHomologyBasesOfLocalBases (correctedNormalizedLocalBases B S)).interiorOne
       (integralSingularHomologyMap 1
         (IntegralMayerVietoris.interToLeft
-          ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4))
-          ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3)) x) =
+          ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4))
+          ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 3)) x) =
       fun i ↦ sectionSevenFirstBoundaryHom
         ((A.cuspAttachmentHomologyBasesOfLocalBases
           (correctedNormalizedLocalBases B S)).overlapOne x) (Fin.castAdd 2 i) := by
@@ -119,8 +119,8 @@ public theorem correctedFinalInteriorTwo {A : PaperAnalyticData}
     (A.cuspAttachmentHomologyBasesOfLocalBases (correctedNormalizedLocalBases B S)).interiorTwo
       (integralSingularHomologyMap 2
         (IntegralMayerVietoris.interToLeft
-          ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4))
-          ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3)) x) =
+          ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4))
+          ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 3)) x) =
       fun i ↦ sectionSevenMayerVietorisFinalTwoHom
         ((A.cuspAttachmentHomologyBasesOfLocalBases
           (correctedNormalizedLocalBases B S)).overlapTwo x) (Fin.castAdd 4 i) := by

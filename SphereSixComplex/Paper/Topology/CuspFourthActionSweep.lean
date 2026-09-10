@@ -158,7 +158,7 @@ public theorem cuspChosenZeroCircleInterior_homology (A : PaperAnalyticData)
   apply Subtype.ext
   change (A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
     (A.cuspOverlapToCentral (A.cuspAngularProjectedLoop t))).val = _
-  erw [A.centralToSectionSevenEulerPieceHomeomorph_actualCuspOverlapToCentral]
+  erw [A.centralToSectionSevenEulerPieceHomeomorph_cuspOverlapToCentral]
   rfl
 
 public theorem cuspChosenFourthSweep_action_interior (A : PaperAnalyticData)

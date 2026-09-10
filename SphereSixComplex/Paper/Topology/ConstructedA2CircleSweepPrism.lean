@@ -14,7 +14,7 @@ open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public theorem constructedA2CentralCompactOrbitMap_one
@@ -81,10 +81,11 @@ public def constructedA2CircleSweepPrism
 
 public theorem constructedA2CircleSweepPrism_preserves_boundaries
     (W : ActualPuncturedCuspCollarWitness N constructedModel) (i : Fin 2) (n : ℕ)
-    (z : (CWIntegralSingularChainComplexObj (TopCat.of (ActualLocalCuspCentralOrbitQuotient W))).X n)
-    (hz : ∃ c, (CWIntegralSingularChainComplexObj
+    (z : (cwIntegralSingularChainComplexObj
+      (TopCat.of (ActualLocalCuspCentralOrbitQuotient W))).X n)
+    (hz : ∃ c, (cwIntegralSingularChainComplexObj
       (TopCat.of (ActualLocalCuspCentralOrbitQuotient W))).d (n + 1) n c = z) :
-    ∃ b, (CWIntegralSingularChainComplexObj
+    ∃ b, (cwIntegralSingularChainComplexObj
       (TopCat.of (ActualLocalCuspCentralOrbitQuotient W))).d (n + 2) (n + 1) b =
         (constructedA2CircleSweepPrism W i).hom n (n + 1) z :=
   closedHomotopyPrism_preserves_boundaries (constructedA2CircleSweepPrism W i) n z hz

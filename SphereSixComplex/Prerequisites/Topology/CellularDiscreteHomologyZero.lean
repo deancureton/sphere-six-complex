@@ -9,9 +9,9 @@ open CategoryTheory CategoryTheory.Limits AlgebraicTopology
 namespace SphereSixComplex
 
 public def cwIntegralPointClass (X : TopCat) (x : X) :
-    AddCommGrpCat.of ℤ ⟶ (CWIntegralSingularChainComplexObj X).homology 0 :=
-  (CWIntegralSingularChainComplexObj X).liftCycles (cwIntegralPointChain X x) 0
-    (by simp) (by simp) ≫ (CWIntegralSingularChainComplexObj X).homologyπ 0
+    AddCommGrpCat.of ℤ ⟶ (cwIntegralSingularChainComplexObj X).homology 0 :=
+  (cwIntegralSingularChainComplexObj X).liftCycles (cwIntegralPointChain X x) 0
+    (by simp) (by simp) ≫ (cwIntegralSingularChainComplexObj X).homologyπ 0
 
 public def cwDiscreteComponentWeight (X : TopCat) [TotallyDisconnectedSpace X]
     (w : X → ℤ) : (TopCat.toSSet.obj X).π₀ → ℤ :=
@@ -25,7 +25,7 @@ public def cwDiscreteComponentWeight (X : TopCat) [TotallyDisconnectedSpace X]
     simpa [p] using congrArg w he)
 
 public def cwDiscreteHomologyZeroWeight (X : TopCat) [TotallyDisconnectedSpace X]
-    (w : X → ℤ) : (CWIntegralSingularChainComplexObj X).homology 0 ⟶ AddCommGrpCat.of ℤ :=
+    (w : X → ℤ) : (cwIntegralSingularChainComplexObj X).homology 0 ⟶ AddCommGrpCat.of ℤ :=
   ((TopCat.toSSet.obj X).homology₀Iso (AddCommGrpCat.of ℤ)).hom ≫
     Sigma.desc (fun c ↦ cwDiscreteComponentWeight X w c • 𝟙 (AddCommGrpCat.of ℤ))
 
@@ -49,7 +49,7 @@ public theorem cwRelativePathClass_boundary_pointClasses {A X : TopCat} (i : A �
   unfold cwIntegralPointClass
   rw [← Preadditive.sub_comp]
   congr 1
-  rw [← cancel_mono ((CWIntegralSingularChainComplexObj A).iCycles 0)]
+  rw [← cancel_mono ((cwIntegralSingularChainComplexObj A).iCycles 0)]
   simp
 
 public theorem cwRelativePathClass_boundary_weight {A X : TopCat}

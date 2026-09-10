@@ -45,7 +45,7 @@ Producing the marking is the same real-period-coordinate construction used for t
 `PaperSectionSevenAffineMarkedBandTrivialization`: lift the contractible base through the
 covering, then read the period coordinate on the lifted sheet. -/
 public noncomputable def data
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) : ActualCuspRadialClutchingData W :=
   SphereSixComplex.Geometry.CuspRadialClutchingConstruction.actualCuspRadialClutchingData W
@@ -56,7 +56,7 @@ namespace UnnormalizedCuspRadialClutchingData
 
 open LatticeData LatticeWangAlgebra Topology.PaperCuspSpecializationAlgebra
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
   {W : ActualPuncturedCuspCollarWitness N M} [HasCuspPhaseSpreading W] (G : UnnormalizedCuspRadialClutchingData W)
 
@@ -130,7 +130,7 @@ public noncomputable def geometricWangSections :
 /-- Remove the contractible radial coordinate from the actual punctured cusp quotient. -/
 public noncomputable def totalHomotopyEquiv :
     let _ := G.fiberTopology
-    puncturedLocalCuspQuotient W ≃ₕ CircleMappingTorus G.clutching := by
+    PuncturedLocalCuspQuotient W ≃ₕ CircleMappingTorus G.clutching := by
   let _ := G.fiberTopology
   exact G.totalHomeomorph.toHomotopyEquiv.trans
     (openRadialIntervalProdHomotopyEquiv W.localWitness.radius_pos)
@@ -138,7 +138,7 @@ public noncomputable def totalHomotopyEquiv :
 /-- The geometrically split raw degree-one Wang coordinates: two fibre coinvariants followed by
 the base circle. -/
 public noncomputable def geometricHomologyOneEquiv :
-    IntegralSingularHomology 1 (puncturedLocalCuspQuotient W) ≃+ (Fin 3 → ℤ) := by
+    IntegralSingularHomology 1 (PuncturedLocalCuspQuotient W) ≃+ (Fin 3 → ℤ) := by
   let _ := G.fiberTopology
   exact (integralSingularHomologyEquivOfHomotopyEquiv 1 G.totalHomotopyEquiv).trans
     G.geometricWangSections.circleMappingTorusHOneAddEquiv
@@ -146,7 +146,7 @@ public noncomputable def geometricHomologyOneEquiv :
 /-- The geometrically split raw degree-two Wang coordinates: four fibre coinvariants followed by
 the two invariant suspension classes. -/
 public noncomputable def geometricHomologyTwoEquiv :
-    IntegralSingularHomology 2 (puncturedLocalCuspQuotient W) ≃+ (Fin 6 → ℤ) := by
+    IntegralSingularHomology 2 (PuncturedLocalCuspQuotient W) ≃+ (Fin 6 → ℤ) := by
   let _ := G.fiberTopology
   exact (integralSingularHomologyEquivOfHomotopyEquiv 2 G.totalHomotopyEquiv).trans
     G.geometricWangSections.circleMappingTorusHTwoAddEquiv
@@ -155,7 +155,7 @@ end UnnormalizedCuspRadialClutchingData
 
 namespace ActualCuspRadialClutchingData
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
   {W : ActualPuncturedCuspCollarWitness N M} [HasCuspPhaseSpreading W] (G : ActualCuspRadialClutchingData W)
 
@@ -224,7 +224,7 @@ public theorem geometricWangSections_degreeTwo_first
 
 /-- The specialization-normalized degree-one Wang coordinates for an actual clutching datum. -/
 public noncomputable def geometricHomologyOneEquiv :
-    IntegralSingularHomology 1 (puncturedLocalCuspQuotient W) ≃+ (Fin 3 → ℤ) := by
+    IntegralSingularHomology 1 (PuncturedLocalCuspQuotient W) ≃+ (Fin 3 → ℤ) := by
   let _ := G.fiberTopology
   exact (integralSingularHomologyEquivOfHomotopyEquiv 1
       G.toUnnormalizedCuspRadialClutchingData.totalHomotopyEquiv).trans
@@ -232,7 +232,7 @@ public noncomputable def geometricHomologyOneEquiv :
 
 /-- The specialization-normalized degree-two Wang coordinates for an actual clutching datum. -/
 public noncomputable def geometricHomologyTwoEquiv :
-    IntegralSingularHomology 2 (puncturedLocalCuspQuotient W) ≃+ (Fin 6 → ℤ) := by
+    IntegralSingularHomology 2 (PuncturedLocalCuspQuotient W) ≃+ (Fin 6 → ℤ) := by
   let _ := G.fiberTopology
   exact (integralSingularHomologyEquivOfHomotopyEquiv 2
       G.toUnnormalizedCuspRadialClutchingData.totalHomotopyEquiv).trans

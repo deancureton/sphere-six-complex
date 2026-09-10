@@ -12,12 +12,12 @@ open scoped ContinuousMap
 namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 open ComplexTorus SphereSixComplex.Periods InfiniteA2Toric CuspLocalPhaseAction CuspFilling
 open CuspPeriodExpansion CuspToricPhaseAction CuspPhaseEstimates
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
 
 public theorem localPhaseActionEquiv_psiMap
     {r : ℝ} (C : LocalHolomorphicPhaseCoefficients M r) (c : Phase)
-    (lambda : ParameterLattice) (p : LocalCarrier M r) :
+    (lambda : ParameterLattice) (p : localCarrier M r) :
     localPhaseActionEquiv M r c (C.psiMap lambda p) =
       C.psiMap lambda (localPhaseActionEquiv M r c p) := by
   apply Subtype.ext
@@ -37,8 +37,8 @@ public def cuspPeriodPhaseCircle (i : Fin 2) : C(UnitAddCircle,Phase) where
       exact continuous_const
 
 public def localCuspPeriodCircle (W : ActualPuncturedCuspCollarWitness N M) (i : Fin 2) :
-    C(UnitAddCircle × LocalCarrier M W.localWitness.radius,
-      LocalCarrier M W.localWitness.radius) :=
+    C(UnitAddCircle × localCarrier M W.localWitness.radius,
+      localCarrier M W.localWitness.radius) :=
   localHeightPreservingCircleAction M W.localWitness.radius
     ⟨fun z ↦ phaseEmbedding (cuspPeriodPhaseCircle i z), by
       apply continuous_pi
@@ -54,11 +54,11 @@ public theorem localCuspPeriodCircle_equivariant
     (W : ActualPuncturedCuspCollarWitness N M) (i : Fin 2) :
     letI := actualLocalCuspQuotientAction W
     ∀ (z : UnitAddCircle) (g : Multiplicative ParameterLattice)
-      (p : LocalCarrier M W.localWitness.radius),
+      (p : localCarrier M W.localWitness.radius),
       localCuspPeriodCircle W i (z,g • p) = g • localCuspPeriodCircle W i (z,p) := by
   let _ := actualLocalCuspQuotientAction W
   intro z g p
-  let C := CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
+  let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
     N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
   change localPhaseActionEquiv M W.localWitness.radius (cuspPeriodPhaseCircle i z)
     ((C.toCuspActionData W.localWitness.fixedPoint).psiMap (Multiplicative.toAdd g) p) =
@@ -68,7 +68,7 @@ public theorem localCuspPeriodCircle_equivariant
   exact localPhaseActionEquiv_psiMap C _ _ _
 
 public def cuspFillingPeriodCircle (W : ActualPuncturedCuspCollarWitness N M) (i : Fin 2) :
-    C(UnitAddCircle × actualLocalCuspFilling W,actualLocalCuspFilling W) := by
+    C(UnitAddCircle × ActualLocalCuspFilling W,ActualLocalCuspFilling W) := by
   let _ := actualLocalCuspQuotientAction W
   refine ⟨fun p ↦ Quotient.map (fun q ↦ localCuspPeriodCircle W i (p.1,q)) ?_ p.2, ?_⟩
   · intro a b h
@@ -80,7 +80,7 @@ public def cuspFillingPeriodCircle (W : ActualPuncturedCuspCollarWitness N M) (i
     exact continuous_quotient_mk'.comp (localCuspPeriodCircle W i).continuous
 
 public theorem cuspFillingPeriodCircle_mk (W : ActualPuncturedCuspCollarWitness N M)
-    (i : Fin 2) (z : UnitAddCircle) (p : LocalCarrier M W.localWitness.radius) :
+    (i : Fin 2) (z : UnitAddCircle) (p : localCarrier M W.localWitness.radius) :
     letI := actualLocalCuspQuotientAction W
     cuspFillingPeriodCircle W i (z,Quotient.mk _ p) =
       Quotient.mk _ (localCuspPeriodCircle W i (z,p)) := rfl

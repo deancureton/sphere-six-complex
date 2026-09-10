@@ -35,7 +35,7 @@ public theorem cuspOverlapToInterior_comp_collar
     A.cuspOverlapToEllipticInterior.comp
       (⟨A.cuspCollarToStarOverlapHomeomorph,
         A.cuspCollarToStarOverlapHomeomorph.continuous⟩ :
-          C(puncturedLocalCuspQuotient A.starCuspWitness, _)) =
+          C(PuncturedLocalCuspQuotient A.starCuspWitness, _)) =
       D.cuspToEllipticInteriorMap.hom := by
   ext x
   rfl
@@ -71,7 +71,7 @@ public theorem cuspRawTwo_homology_image
       (Pi.single (2 : Fin 3) 1)) = _
   erw [A.cuspRawDegreeOneThirdBasis_eq_selectedPositiveMeridianClass,
     A.cuspSelectedPositiveMeridianClass_eq_neg_explicit, map_neg,
-    A.cuspMappingTorusMeridianHomologyClass_eq_actualCuspAngularPuncturedLoop_image,
+    A.cuspMappingTorusMeridianHomologyClass_eq_cuspAngularPuncturedLoop_image,
     ← D.cuspToEllipticInteriorMap_homology_mappingTorusModel]
   erw [A.cuspBridgeMeridian_homology_image D]
   rfl

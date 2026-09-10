@@ -95,8 +95,8 @@ public def cylinderTopLowerPair {X : TopCat} (A : Set X) :
 public theorem cylinderRelativeContraction_sweep_relative
     {X Y B : TopCat} (A : Set X) (j : B ⟶ Y)
     (F : CWTopologicalPairMap (cylinderLowerSideInclusion A) j) (p q : ℕ)
-    (R : (CWRelativeIntegralSingularChainComplex (cylinderBaseInclusion A)).X p ⟶
-      (CWRelativeIntegralSingularChainComplex j).X q)
+    (R : (cwRelativeIntegralSingularChainComplex (cylinderBaseInclusion A)).X p ⟶
+      (cwRelativeIntegralSingularChainComplex j).X q)
     (hR : (cwRelativeIntegralSingularChainProjection (cylinderBaseInclusion A)).f p ≫ R =
       ((cylinderReversedSweep F.right).singularChainComplexFunctorObjMap
         (AddCommGrpCat.of ℤ)).hom p q ≫

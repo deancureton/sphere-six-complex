@@ -25,7 +25,7 @@ variable (A : PaperAnalyticData)
 public noncomputable def orderThreeCentralMarkedWhiskerPath :
     Path A.cuspCentralBase A.ellipticThreeCentralBase :=
   A.orderThreeCentralBaseWhisker.cast
-    A.centralAffineBase_eq_actualCuspCentralBase.symm rfl
+    A.centralAffineBase_eq_cuspCentralBase.symm rfl
 
 /-- Pointwise form of the remaining chart calculation.  The explicitly based lift of the
 overlap chart must carry the endpoints of the two straight deck segments to the corresponding
@@ -81,7 +81,7 @@ public theorem OrderThreeCentralMarkedWhiskerLiftEndpointCompatibility.deckMap
     A.ellipticThreeBoundaryCover_simplyConnected
   let β := A.orderThreeCentralMarkedWhiskerPath
   let C := A.ellipticThreeCentralCoverComparisonOfPath β
-  let _ : IsCancelSMul paperCentralFreeAffineDeck D.Cover :=
+  let _ : IsCancelSMul PaperCentralFreeAffineDeck D.Cover :=
     D.data.quotientCovering.isCancelSMul
   change _ ∧ _ at h
   change _ ∧ _
@@ -123,7 +123,7 @@ public theorem OrderThreeCentralMarkedWhiskerLiftEndpointCompatibility.toLoopIde
         fundamentalGroupMulEquivOfEq_eq_elementOfBaseEq] using
         fundamentalGroupMulEquivOfPath_elementOfBaseEq_eq_cast_left
           A.orderThreeCentralBaseWhisker
-          A.centralAffineBase_eq_actualCuspCentralBase.symm A.geometricCentralRhoOne
+          A.centralAffineBase_eq_cuspCentralBase.symm A.geometricCentralRhoOne
     have hnat := A.ellipticThreeCentralCoverComparisonOfPath_ofDeck β
       A.ellipticThreeBoundaryDeckData.meridian
     change E (FundamentalGroup.mapOfEq A.ellipticThreeOverlapToCentral rfl
@@ -164,7 +164,7 @@ public theorem OrderThreeCentralMarkedWhiskerLiftEndpointCompatibility.toLoopIde
         fundamentalGroupMulEquivOfEq_eq_elementOfBaseEq] using
         fundamentalGroupMulEquivOfPath_elementOfBaseEq_eq_cast_left
           A.orderThreeCentralBaseWhisker
-          A.centralAffineBase_eq_actualCuspCentralBase.symm
+          A.centralAffineBase_eq_cuspCentralBase.symm
           (Additive.toMul (A.correctedActualCuspCentralTranslation (-epsilon)))
     have hnat := A.ellipticThreeCentralCoverComparisonOfPath_ofDeck β
       (Additive.toMul

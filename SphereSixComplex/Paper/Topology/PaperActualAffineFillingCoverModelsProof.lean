@@ -169,7 +169,7 @@ variable (A : PaperAnalyticData)
 /-- The analytic order-three collar source, identified with the exact overlap in the actual
 four-piece cover. -/
 public noncomputable def orderThreeCollarToActualOverlapHomeomorph :
-    A.starCollarSourceType 1 ≃ₜ
+    A.StarCollarSource 1 ≃ₜ
       (A.actualVanKampenFourPieceCover.core ∩
         A.actualVanKampenFourPieceCover.ellipticThree : Set A.VanKampenSpace) := by
   refine
@@ -177,13 +177,13 @@ public noncomputable def orderThreeCollarToActualOverlapHomeomorph :
       (Homeomorph.setCongr ?_)
   symm
   ext x
-  simp [actualVanKampenFourPieceCover, VanKampenOpenCover,
+  simp [actualVanKampenFourPieceCover, vanKampenOpenCover,
     finiteCoverIntersection]
 
 /-- The analytic order-four collar source, identified with the exact overlap in the actual
 four-piece cover. -/
 public noncomputable def orderFourCollarToActualOverlapHomeomorph :
-    A.starCollarSourceType 2 ≃ₜ
+    A.StarCollarSource 2 ≃ₜ
       (A.actualVanKampenFourPieceCover.core ∩
         A.actualVanKampenFourPieceCover.ellipticFour : Set A.VanKampenSpace) := by
   refine
@@ -191,7 +191,7 @@ public noncomputable def orderFourCollarToActualOverlapHomeomorph :
       (Homeomorph.setCongr ?_)
   symm
   ext x
-  simp [actualVanKampenFourPieceCover, VanKampenOpenCover,
+  simp [actualVanKampenFourPieceCover, vanKampenOpenCover,
     finiteCoverIntersection]
 
 /-- The radial mapping-torus presentation of the exact actual order-three overlap. -/
@@ -243,7 +243,7 @@ public noncomputable def orderThreeFillingToActualPieceHomeomorph :
     A.OrderThreeVaryingFilling A.starSeparation.orderThree.radius ≃ₜ
       A.actualVanKampenFourPieceCover.ellipticThree := by
   change A.openEmbeddingStarData.filling 1 ≃ₜ
-    (A.openEmbeddingStarData.SectionSevenEulerCover).piece 2
+    (A.openEmbeddingStarData.sectionSevenEulerCover).piece 2
   exact
     A.openEmbeddingStarData.fillingToSectionSevenEulerPieceHomeomorph 1
 
@@ -252,7 +252,7 @@ public noncomputable def orderFourFillingToActualPieceHomeomorph :
     A.OrderFourVaryingFilling A.starSeparation.orderFour.radius ≃ₜ
       A.actualVanKampenFourPieceCover.ellipticFour := by
   change A.openEmbeddingStarData.filling 2 ≃ₜ
-    (A.openEmbeddingStarData.SectionSevenEulerCover).piece 3
+    (A.openEmbeddingStarData.sectionSevenEulerCover).piece 3
   exact
     A.openEmbeddingStarData.fillingToSectionSevenEulerPieceHomeomorph 2
 
@@ -418,7 +418,7 @@ public theorem orderThreeAngularQuotientHomeomorph_apply
       A.starSeparation.orderThree.radius A.starSeparation.orderThree.radius_pos
       A.starSeparation.orderThree.radius_lt_one
     let w : OpenRadialInterval A.starSeparation.orderThree.radius ×
-        (ℝ × A.orderThreeTorus) := (q.1, q.2.1, Quotient.mk _ q.2.2)
+        (ℝ × A.OrderThreeTorus) := (q.1, q.2.1, Quotient.mk _ q.2.2)
   EstablishedCyclicAngularFundamentalDomain.quotientHomeomorphRadialMappingTorus D
         CyclicAngularFundamentalDomain.orderThreeMultiplier_eq_standardMultiplier
         (angularQuotientMap D.action D.radius_lt_one.le D.carrier rfl w) =
@@ -428,7 +428,7 @@ public theorem orderThreeAngularQuotientHomeomorph_apply
     A.starSeparation.orderThree.radius A.starSeparation.orderThree.radius_pos
     A.starSeparation.orderThree.radius_lt_one
   let w : OpenRadialInterval A.starSeparation.orderThree.radius ×
-      (ℝ × A.orderThreeTorus) := (q.1, q.2.1, Quotient.mk _ q.2.2)
+      (ℝ × A.OrderThreeTorus) := (q.1, q.2.1, Quotient.mk _ q.2.2)
   let hgen := CyclicAngularFundamentalDomain.isStandardGenerator_of_multiplier_eq
     D.action D.clutching D.multiplier D.multiplier_norm
       CyclicAngularFundamentalDomain.orderThreeMultiplier_eq_standardMultiplier
@@ -473,7 +473,7 @@ public theorem ellipticThreeRadialFillingLift_commutes
         (A.ellipticThreeRadialFillingLift q))
   rw [A.orderThreeCollarToActualOverlap_toPiece x]
   apply congrArg A.orderThreeFillingToActualPieceHomeomorph
-  let xq : A.starCollarSourceType 1 :=
+  let xq : A.StarCollarSource 1 :=
     A.orderThreeCollarRadialMappingTorusHomeomorph.symm
       (q.1, orderThreeAffineMappingTorusLiftProjection A.periods q.2)
   change A.starToFilling 1 xq =
@@ -490,7 +490,7 @@ public theorem ellipticThreeRadialFillingLift_commutes
   let hang := EstablishedCyclicAngularFundamentalDomain.quotientHomeomorphRadialMappingTorus D
     CyclicAngularFundamentalDomain.orderThreeMultiplier_eq_standardMultiplier
   let w : OpenRadialInterval A.starSeparation.orderThree.radius ×
-      (ℝ × A.orderThreeTorus) := (q.1, q.2.1, Quotient.mk _ q.2.2)
+      (ℝ × A.OrderThreeTorus) := (q.1, q.2.1, Quotient.mk _ q.2.2)
   have hxprod : hprod xq =
       angularQuotientMap D.action D.radius_lt_one.le D.carrier rfl w := by
     apply hang.injective
@@ -507,8 +507,8 @@ public theorem ellipticThreeRadialFillingLift_commutes
   rw [hxx]
   let y : D.carrier.carrier :=
     (Homeomorph.setCongr (show D.carrier.carrier =
-      puncturedProduct A.orderThreeTorus A.starSeparation.orderThree.radius from rfl)).symm
-      (angularCover (T := A.orderThreeTorus) 3 D.radius_lt_one.le w)
+      puncturedProduct A.OrderThreeTorus A.starSeparation.orderThree.radius from rfl)).symm
+      (angularCover (T := A.OrderThreeTorus) 3 D.radius_lt_one.le w)
   let s := e.toHomeomorph.symm y
   have hinv : hprod.symm
       (angularQuotientMap D.action D.radius_lt_one.le D.carrier rfl w) =
@@ -1834,7 +1834,7 @@ public theorem actualOrderThreeOverlapFundamentalGroupMap_surjective :
   let D := A.actualVanKampenFourPieceCover
   let eX := A.orderThreeCollarToActualOverlapHomeomorph
   let eY := A.orderThreeFillingToActualPieceHomeomorph
-  let f : C(A.starCollarSourceType 1, A.starFillingType 1) :=
+  let f : C(A.StarCollarSource 1, A.StarFilling 1) :=
     ⟨A.starToFilling 1, (A.starToFilling_isOpenEmbedding 1).continuous⟩
   let g := D.ellipticThreeOverlapToPiece
   let x' : (D.core ∩ D.ellipticThree : Set A.VanKampenSpace) :=
@@ -1869,7 +1869,7 @@ public theorem actualOrderFourOverlapFundamentalGroupMap_surjective :
   let D := A.actualVanKampenFourPieceCover
   let eX := A.orderFourCollarToActualOverlapHomeomorph
   let eY := A.orderFourFillingToActualPieceHomeomorph
-  let f : C(A.starCollarSourceType 2, A.starFillingType 2) :=
+  let f : C(A.StarCollarSource 2, A.StarFilling 2) :=
     ⟨A.starToFilling 2, (A.starToFilling_isOpenEmbedding 2).continuous⟩
   let g := D.ellipticFourOverlapToPiece
   let x' : (D.core ∩ D.ellipticFour : Set A.VanKampenSpace) :=

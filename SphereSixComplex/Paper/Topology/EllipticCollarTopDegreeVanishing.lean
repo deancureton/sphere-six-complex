@@ -56,7 +56,7 @@ variable (A : PaperAnalyticData)
 
 /-- The order-three elliptic collar has no sixth integral singular homology. -/
 public theorem subsingleton_homology_six_orderThreeCollar :
-    Subsingleton (IntegralSingularHomology 6 (A.starCollarSourceType 1)) :=
+    Subsingleton (IntegralSingularHomology 6 (A.StarCollarSource 1)) :=
   subsingleton_homology_six_of_radialMappingTorus_fourTorusFibre
     (EstablishedFiniteCWTopology.additiveTorusFourTorusHomologicalModel _
       (ComplexTorus.FullRank.ofSetupInequalities _
@@ -66,7 +66,7 @@ public theorem subsingleton_homology_six_orderThreeCollar :
 
 /-- The order-four elliptic collar has no sixth integral singular homology. -/
 public theorem subsingleton_homology_six_orderFourCollar :
-    Subsingleton (IntegralSingularHomology 6 (A.starCollarSourceType 2)) :=
+    Subsingleton (IntegralSingularHomology 6 (A.StarCollarSource 2)) :=
   subsingleton_homology_six_of_radialMappingTorus_fourTorusFibre
     (EstablishedFiniteCWTopology.additiveTorusFourTorusHomologicalModel _
       (ComplexTorus.FullRank.ofSetupInequalities _
@@ -77,7 +77,7 @@ public theorem subsingleton_homology_six_orderFourCollar :
 /-- The Section 7 collar obligation for the actual star, reduced to the cusp collar alone: both
 elliptic collars are already settled by their four-torus fibres. -/
 public theorem subsingleton_homology_six_collarSource_of_cusp
-    (hcusp : Subsingleton (IntegralSingularHomology 6 (A.starCollarSourceType 0)))
+    (hcusp : Subsingleton (IntegralSingularHomology 6 (A.StarCollarSource 0)))
     (i : Fin 3) :
     Subsingleton (IntegralSingularHomology 6 (A.openEmbeddingStarData.collarSource i)) := by
   fin_cases i
@@ -92,7 +92,7 @@ and both elliptic collars are settled above, so the cusp collar's sixth homology
 still asked for. -/
 public theorem stageTopDegreeVanishing_of_cuspCollar
     (M : A.LocalEulerModels)
-    (hcusp : Subsingleton (IntegralSingularHomology 6 (A.starCollarSourceType 0))) :
+    (hcusp : Subsingleton (IntegralSingularHomology 6 (A.StarCollarSource 0))) :
     A.openEmbeddingStarData.SectionSevenStageTopDegreeVanishing :=
   A.openEmbeddingStarData.sectionSevenStageTopDegreeVanishing_of_localFinite
     M.localIntegralHomologyFiniteSix.1 M.localIntegralHomologyFiniteSix.2.1
@@ -101,7 +101,7 @@ public theorem stageTopDegreeVanishing_of_cuspCollar
 /-- The same for the production choice of local Euler models: the actual star's Section 7
 top-degree obligation holds as soon as the cusp collar has no sixth homology. -/
 public theorem stageTopDegreeVanishing_of_actualCuspCollar
-    (hcusp : Subsingleton (IntegralSingularHomology 6 (A.starCollarSourceType 0))) :
+    (hcusp : Subsingleton (IntegralSingularHomology 6 (A.StarCollarSource 0))) :
     A.openEmbeddingStarData.SectionSevenStageTopDegreeVanishing :=
   A.stageTopDegreeVanishing_of_cuspCollar A.localEulerModels hcusp
 

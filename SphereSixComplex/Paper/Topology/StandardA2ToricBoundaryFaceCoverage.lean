@@ -376,7 +376,7 @@ open SphereSixComplex.Periods
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public theorem exists_actualCentral_deck_translate_singleAxis
@@ -391,7 +391,7 @@ public theorem exists_actualCentral_deck_translate_singleAxis
   let _ := actualLocalCuspQuotientAction W
   obtain ⟨lambda, hlambda⟩ := shearVector_surjective (v - a.2)
   let C :=
-    CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
+    NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
       N constructedModel W.localWitness.radius W.localWitness.radius_pos
         W.localWitness.radius_le
   let g := Multiplicative.ofAdd lambda

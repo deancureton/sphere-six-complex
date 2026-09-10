@@ -21,13 +21,13 @@ open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.InfiniteA2Toric
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
 
 /-- The actual cusp-collar inclusion is onto on first integral homology. -/
 public theorem puncturedLocalCuspToFilling_homologyOne_surjective
     (W : ActualPuncturedCuspCollarWitness N M)
-    (b : puncturedLocalCuspQuotient W) :
+    (b : PuncturedLocalCuspQuotient W) :
     Function.Surjective (integralSingularHomologyMap 1
       ⟨puncturedLocalCuspToFilling W, puncturedLocalCuspToFilling_continuous W⟩) := by
   let _ := paperCuspBoundaryDeckAction W
@@ -35,13 +35,13 @@ public theorem puncturedLocalCuspToFilling_homologyOne_surjective
   let U := paperCuspUnwrappedFillingCover W b
   let _ : SimplyConnectedSpace (additiveCuspRadiusCover W.localWitness.radius) :=
     U.boundarySimplyConnected
-  let _ : SimplyConnectedSpace (CuspLocalPhaseAction.LocalCarrier M W.localWitness.radius) :=
+  let _ : SimplyConnectedSpace (CuspLocalPhaseAction.localCarrier M W.localWitness.radius) :=
     U.fillingSimplyConnected
-  let _ : PathConnectedSpace (puncturedLocalCuspQuotient W) :=
+  let _ : PathConnectedSpace (PuncturedLocalCuspQuotient W) :=
     U.boundaryQuotient.surjective.pathConnectedSpace U.boundaryProjection.continuous
-  let _ : PathConnectedSpace (actualLocalCuspFilling W) :=
+  let _ : PathConnectedSpace (ActualLocalCuspFilling W) :=
     U.fillingQuotient.surjective.pathConnectedSpace U.fillingProjection.continuous
-  exact Hurewicz.integralSingularHomologyMap_one_surjective_of_fundamentalGroupMap_surjective
+  exact Hurewicz.homologyOneMap_surjective_of_pi1Map_surjective
     U.baseMap (U.boundaryProjection U.base) U.fundamentalGroupData.map_surjective
 
 namespace CuspFiberSpecializationNormalization
@@ -49,7 +49,7 @@ namespace CuspFiberSpecializationNormalization
 /-- The basis-free degree-one total specialization is onto. -/
 public theorem rawDegreeOneTotalSpecialization_surjective
     {W : ActualPuncturedCuspCollarWitness N M}
-    (G : ActualCuspRadialClutchingData W) (b : puncturedLocalCuspQuotient W) :
+    (G : ActualCuspRadialClutchingData W) (b : PuncturedLocalCuspQuotient W) :
     Function.Surjective (rawDegreeOneTotalSpecialization G) := by
   let _ := G.fiberTopology
   let e := integralSingularHomologyEquivOfHomotopyEquiv 1

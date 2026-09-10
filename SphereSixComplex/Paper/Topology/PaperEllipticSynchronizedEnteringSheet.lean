@@ -26,7 +26,7 @@ public theorem orderFourBaseComparisonTrace_enteringSheet
         A.orderFourCollarRegularBase_projects⟩
     let ey : (regularFamilyQuotientMap A.periods) ⁻¹' {A.centralAffineBase} :=
       ⟨A.cuspRegularRepresentative,
-        A.cuspRegularRepresentative_projects.trans A.centralAffineBase_eq_actualCuspCentralBase.symm⟩
+        A.cuspRegularRepresentative_projects.trans A.centralAffineBase_eq_cuspCentralBase.symm⟩
     ∃ g : Delta,
       hp.isCoveringMap.monodromy
         (Path.Homotopic.Quotient.mk (A.orderFourCentralBaseComparisonTracePath H)) ex =
@@ -44,7 +44,7 @@ public theorem orderFourBaseComparisonTrace_enteringSheet
       A.orderFourCollarRegularBase_projects⟩
   let ey : (regularFamilyQuotientMap A.periods) ⁻¹' {A.centralAffineBase} :=
     ⟨A.cuspRegularRepresentative,
-      A.cuspRegularRepresentative_projects.trans A.centralAffineBase_eq_actualCuspCentralBase.symm⟩
+      A.cuspRegularRepresentative_projects.trans A.centralAffineBase_eq_cuspCentralBase.symm⟩
   let W := A.orderFourCentralBaseComparisonTracePath H
   let gamma := Path.Homotopic.Quotient.mk
     (A.ellipticFourBoundaryDeckStraightCentralLoop
@@ -64,7 +64,7 @@ public theorem orderFourBaseComparisonTrace_enteringSheet
         A.cuspOuterDeckHom A.geometricCentralRhoTwo := by
     exact fundamentalGroupToMulOpposite_fiberBaseEq hp
       ⟨A.cuspRegularRepresentative, A.cuspRegularRepresentative_projects⟩
-      A.centralAffineBase_eq_actualCuspCentralBase.symm A.geometricCentralRhoTwo
+      A.centralAffineBase_eq_cuspCentralBase.symm A.geometricCentralRhoTwo
 
   rw [hglobal] at ht
   have hi := congrArg Inv.inv ht
@@ -91,7 +91,7 @@ public theorem orderThreeBaseComparisonTrace_enteringSheet
         A.orderThreeCollarRegularBase_projects⟩
     let ey : (regularFamilyQuotientMap A.periods) ⁻¹' {A.centralAffineBase} :=
       ⟨A.cuspRegularRepresentative,
-        A.cuspRegularRepresentative_projects.trans A.centralAffineBase_eq_actualCuspCentralBase.symm⟩
+        A.cuspRegularRepresentative_projects.trans A.centralAffineBase_eq_cuspCentralBase.symm⟩
     ∃ g : Delta,
       hp.isCoveringMap.monodromy
         (Path.Homotopic.Quotient.mk (A.orderThreeCentralBaseComparisonTracePath H)) ex =
@@ -109,7 +109,7 @@ public theorem orderThreeBaseComparisonTrace_enteringSheet
       A.orderThreeCollarRegularBase_projects⟩
   let ey : (regularFamilyQuotientMap A.periods) ⁻¹' {A.centralAffineBase} :=
     ⟨A.cuspRegularRepresentative,
-      A.cuspRegularRepresentative_projects.trans A.centralAffineBase_eq_actualCuspCentralBase.symm⟩
+      A.cuspRegularRepresentative_projects.trans A.centralAffineBase_eq_cuspCentralBase.symm⟩
   let W := A.orderThreeCentralBaseComparisonTracePath H
   let gamma := Path.Homotopic.Quotient.mk
     (A.ellipticThreeBoundaryDeckStraightCentralLoop
@@ -129,7 +129,7 @@ public theorem orderThreeBaseComparisonTrace_enteringSheet
         A.cuspOuterDeckHom A.geometricCentralRhoOne := by
     exact fundamentalGroupToMulOpposite_fiberBaseEq hp
       ⟨A.cuspRegularRepresentative, A.cuspRegularRepresentative_projects⟩
-      A.centralAffineBase_eq_actualCuspCentralBase.symm A.geometricCentralRhoOne
+      A.centralAffineBase_eq_cuspCentralBase.symm A.geometricCentralRhoOne
 
   rw [hglobal] at ht
   have hi := congrArg Inv.inv ht

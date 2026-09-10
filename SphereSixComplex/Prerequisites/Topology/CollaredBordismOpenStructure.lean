@@ -70,25 +70,25 @@ public noncomputable def openPresentationPieceChartedSpaces :
 /-- The charted-space structure obtained from the preferred charts on all three open pieces. -/
 public noncomputable instance instChartedSpaceOpenGluedCarrier :
     ChartedSpace (ModelProd H (EuclideanHalfSpace 1))
-      (OpenGluedCarrier B₀₁ B₁₂) :=
+      (openGluedCarrier B₀₁ B₁₂) :=
   @openGluingChartedSpace _ _
     (openPresentation B₀₁ B₁₂)
     (openPresentationPieceChartedSpaces B₀₁ B₁₂)
 
 /-- The abstract open gluing is Hausdorff because it is homeomorphic to the direct quotient. -/
 public noncomputable instance instT2SpaceOpenGluedCarrier :
-    T2Space (OpenGluedCarrier B₀₁ B₁₂) :=
+    T2Space (openGluedCarrier B₀₁ B₁₂) :=
   (openPresentationHomeomorph B₀₁ B₁₂).symm.t2Space
 
 /-- The abstract open gluing is compact because it is homeomorphic to the direct quotient. -/
 public noncomputable instance instCompactSpaceOpenGluedCarrier :
-    CompactSpace (OpenGluedCarrier B₀₁ B₁₂) :=
+    CompactSpace (openGluedCarrier B₀₁ B₁₂) :=
   (openPresentationHomeomorph B₀₁ B₁₂).symm.compactSpace
 
 /-- The abstract open gluing is second countable because it is homeomorphic to the direct
 quotient. -/
 public noncomputable instance instSecondCountableTopologyOpenGluedCarrier :
-    SecondCountableTopology (OpenGluedCarrier B₀₁ B₁₂) :=
+    SecondCountableTopology (openGluedCarrier B₀₁ B₁₂) :=
   (openPresentationHomeomorph B₀₁ B₁₂).secondCountableTopology
 
 end QuotientGluing

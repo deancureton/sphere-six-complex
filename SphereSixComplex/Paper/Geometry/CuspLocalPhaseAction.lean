@@ -17,7 +17,7 @@ noncomputable section
 
 open scoped ContDiff Manifold
 
-namespace SphereSixComplex.Geometry.CuspLocalPhaseAction
+namespace SphereSixComplex.Geometry
 
 open SphereSixComplex.Geometry.CuspCombinatorics
 open SphereSixComplex.Geometry.CuspFilling
@@ -25,13 +25,15 @@ open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspToricPhaseAction
 open SphereSixComplex.Geometry.InfiniteA2Toric
 
+namespace CuspLocalPhaseAction
+
 /-- The open part of the toric model lying over the radius-`r` cusp disc. -/
 public def cuspNeighborhood (M : Model) (r : ℝ) : TopologicalSpace.Opens M.Carrier where
   carrier := M.t ⁻¹' Metric.ball 0 r
   is_open' := Metric.isOpen_ball.preimage M.t_holomorphic.continuous
 
 /-- The carrier of the local toric cusp model. -/
-public abbrev LocalCarrier (M : Model) (r : ℝ) := cuspNeighborhood M r
+public abbrev localCarrier (M : Model) (r : ℝ) := cuspNeighborhood M r
 
 @[simp]
 public theorem mem_cuspNeighborhood_iff (M : Model) (r : ℝ) (p : M.Carrier) :
@@ -39,12 +41,12 @@ public theorem mem_cuspNeighborhood_iff (M : Model) (r : ℝ) (p : M.Carrier) :
   Iff.rfl
 
 /-- The height character restricted to the local carrier. -/
-public def localT (M : Model) (r : ℝ) (p : LocalCarrier M r) : ℂ :=
+public def localT (M : Model) (r : ℝ) (p : localCarrier M r) : ℂ :=
   M.t p
 
 /-- A fan shear restricted to the invariant cusp neighbourhood. -/
 public def localFanShearEquiv (M : Model) (r : ℝ) (lambda : ParameterLattice) :
-    Equiv.Perm (LocalCarrier M r) :=
+    Equiv.Perm (localCarrier M r) :=
   Equiv.subtypeEquiv (Additive.toMul (M.fanShear lambda)) fun p ↦ by
     change M.t p ∈ Metric.ball 0 r ↔
       M.t (Additive.toMul (M.fanShear lambda) p) ∈ Metric.ball 0 r
@@ -52,14 +54,14 @@ public def localFanShearEquiv (M : Model) (r : ℝ) (lambda : ParameterLattice) 
 
 @[simp]
 public theorem localFanShearEquiv_coe
-    (M : Model) (r : ℝ) (lambda : ParameterLattice) (p : LocalCarrier M r) :
-    ((localFanShearEquiv M r lambda p : LocalCarrier M r) : M.Carrier) =
+    (M : Model) (r : ℝ) (lambda : ParameterLattice) (p : localCarrier M r) :
+    ((localFanShearEquiv M r lambda p : localCarrier M r) : M.Carrier) =
       Additive.toMul (M.fanShear lambda) p :=
   rfl
 
 /-- The restricted fan shears still form an additive family of permutations. -/
 public def localFanShear (M : Model) (r : ℝ) :
-    ParameterLattice →+ Additive (Equiv.Perm (LocalCarrier M r)) where
+    ParameterLattice →+ Additive (Equiv.Perm (localCarrier M r)) where
   toFun lambda := Additive.ofMul (localFanShearEquiv M r lambda)
   map_zero' := by
     apply Additive.toMul.injective
@@ -72,7 +74,7 @@ public def localFanShear (M : Model) (r : ℝ) :
 
 /-- A constant phase translation restricted to the invariant cusp neighbourhood. -/
 public def localPhaseActionEquiv (M : Model) (r : ℝ) (c : Phase) :
-    Equiv.Perm (LocalCarrier M r) :=
+    Equiv.Perm (localCarrier M r) :=
   Equiv.subtypeEquiv (CuspToricPhaseAction.ToricModel.phaseAction M c) fun p ↦ by
     change M.t p ∈ Metric.ball 0 r ↔
       M.t (CuspToricPhaseAction.ToricModel.phaseAction M c p) ∈ Metric.ball 0 r
@@ -80,14 +82,14 @@ public def localPhaseActionEquiv (M : Model) (r : ℝ) (c : Phase) :
 
 @[simp]
 public theorem localPhaseActionEquiv_coe
-    (M : Model) (r : ℝ) (c : Phase) (p : LocalCarrier M r) :
-    ((localPhaseActionEquiv M r c p : LocalCarrier M r) : M.Carrier) =
+    (M : Model) (r : ℝ) (c : Phase) (p : localCarrier M r) :
+    ((localPhaseActionEquiv M r c p : localCarrier M r) : M.Carrier) =
       CuspToricPhaseAction.ToricModel.phaseAction M c p :=
   rfl
 
 /-- The restricted phase translations form a group action. -/
 public def localPhaseAction (M : Model) (r : ℝ) :
-    Phase →* Equiv.Perm (LocalCarrier M r) where
+    Phase →* Equiv.Perm (localCarrier M r) where
   toFun c := localPhaseActionEquiv M r c
   map_one' := by
     ext p
@@ -99,7 +101,7 @@ public def localPhaseAction (M : Model) (r : ℝ) :
 /-- The variable phase twist on the local carrier. -/
 public def localPhaseTwist (M : Model) (r : ℝ)
     (phase : ParameterLattice → ℂ → Phase) (lambda : ParameterLattice) :
-    LocalCarrier M r → LocalCarrier M r := fun p ↦
+    localCarrier M r → localCarrier M r := fun p ↦
   localPhaseActionEquiv M r (phase lambda (M.t p)) p
 
 /-- Exact phase data on one cusp disc.  The standard joint toric-action theorem turns
@@ -123,14 +125,14 @@ public theorem phase_comp_t_holomorphic
     (lambda : ParameterLattice) (i : Fin 2) :
     ContMDiff (modelWithCornersSelf ℂ ComplexModel)
       (modelWithCornersSelf ℂ ℂ) ∞
-      (fun p : LocalCarrier M r ↦ (C.phase lambda (M.t p) i : ℂ)) := by
+      (fun p : localCarrier M r ↦ (C.phase lambda (M.t p) i : ℂ)) := by
   have hphase : ContMDiffOn (modelWithCornersSelf ℂ ℂ)
       (modelWithCornersSelf ℂ ℂ) ∞ (fun q ↦ (C.phase lambda q i : ℂ))
       (Metric.ball 0 r) :=
     contMDiffOn_iff_contDiffOn.mpr
       ((C.coefficient_holomorphicOn lambda i).contDiffOn Metric.isOpen_ball)
   have ht : ContMDiff (modelWithCornersSelf ℂ ComplexModel)
-      (modelWithCornersSelf ℂ ℂ) ∞ (fun p : LocalCarrier M r ↦ M.t p) :=
+      (modelWithCornersSelf ℂ ℂ) ∞ (fun p : localCarrier M r ↦ M.t p) :=
     M.t_holomorphic.comp contMDiff_subtype_val
   exact hphase.comp_contMDiff ht fun p ↦ p.property
 
@@ -143,7 +145,7 @@ public theorem localPhaseTwist_holomorphic (lambda : ParameterLattice) :
   rw [← ContMDiff.subtypeVal_comp_iff (cuspNeighborhood M r)]
   change ContMDiff (modelWithCornersSelf ℂ ComplexModel)
     (modelWithCornersSelf ℂ ComplexModel) ∞
-    (fun p : LocalCarrier M r ↦ M.torusAction
+    (fun p : localCarrier M r ↦ M.torusAction
       (phaseEmbedding (C.phase lambda (M.t p))) (p : M.Carrier))
   apply M.variableTorusAction_holomorphic
   intro i
@@ -153,30 +155,30 @@ public theorem localPhaseTwist_holomorphic (lambda : ParameterLattice) :
   · exact contMDiff_const
 
 /-- The local phase-corrected map. -/
-public def psiMap (lambda : ParameterLattice) (p : LocalCarrier M r) : LocalCarrier M r :=
+public def psiMap (lambda : ParameterLattice) (p : localCarrier M r) : localCarrier M r :=
   localPhaseTwist M r C.phase lambda (localFanShearEquiv M r lambda p)
 
 @[simp]
-public theorem psiMap_coe (lambda : ParameterLattice) (p : LocalCarrier M r) :
-    ((C.psiMap lambda p : LocalCarrier M r) : M.Carrier) =
+public theorem psiMap_coe (lambda : ParameterLattice) (p : localCarrier M r) :
+    ((C.psiMap lambda p : localCarrier M r) : M.Carrier) =
       CuspToricPhaseAction.ToricModel.phaseAction M (C.phase lambda (M.t p))
         (Additive.toMul (M.fanShear lambda) p) := by
   simp [psiMap, localPhaseTwist, M.fanShear_preserves_t]
 
 /-- The local phase-corrected maps preserve the height character and hence the cusp disc. -/
-public theorem psiMap_preserves_t (lambda : ParameterLattice) (p : LocalCarrier M r) :
+public theorem psiMap_preserves_t (lambda : ParameterLattice) (p : localCarrier M r) :
     M.t (C.psiMap lambda p) = M.t p := by
   rw [psiMap_coe, CuspToricPhaseAction.ToricModel.phaseAction_preserves_t,
     M.fanShear_preserves_t]
 
 @[simp]
-public theorem psiMap_zero (p : LocalCarrier M r) : C.psiMap 0 p = p := by
+public theorem psiMap_zero (p : localCarrier M r) : C.psiMap 0 p = p := by
   apply Subtype.ext
   simp [psiMap_coe, C.phase_zero]
 
 /-- The local phase-corrected maps form the lattice action. -/
 public theorem psiMap_add
-    (lambda mu : ParameterLattice) (p : LocalCarrier M r) :
+    (lambda mu : ParameterLattice) (p : localCarrier M r) :
     C.psiMap (lambda + mu) p = C.psiMap lambda (C.psiMap mu p) := by
   apply Subtype.ext
   simp only [psiMap_coe]
@@ -198,7 +200,7 @@ public theorem localFanShear_holomorphic (lambda : ParameterLattice) :
   rw [← ContMDiff.subtypeVal_comp_iff (cuspNeighborhood M r)]
   change ContMDiff (modelWithCornersSelf ℂ ComplexModel)
     (modelWithCornersSelf ℂ ComplexModel) ∞
-    (fun p : LocalCarrier M r ↦ Additive.toMul (M.fanShear lambda) (p : M.Carrier))
+    (fun p : localCarrier M r ↦ Additive.toMul (M.fanShear lambda) (p : M.Carrier))
   exact (M.fanShear_holomorphic lambda).comp contMDiff_subtype_val
 
 /-- The local phase-corrected maps are holomorphic. -/
@@ -210,14 +212,14 @@ public theorem psiMap_holomorphic (lambda : ParameterLattice) :
 
 /-- The two paper-specific fixed-point estimates, now restricted to the genuine cusp domain. -/
 public structure IsFree : Prop where
-  offCentral : ∀ lambda (p : LocalCarrier M r),
+  offCentral : ∀ lambda (p : localCarrier M r),
     M.t p ≠ 0 → C.psiMap lambda p = p → lambda = 0
-  central : ∀ lambda (p : LocalCarrier M r),
+  central : ∀ lambda (p : localCarrier M r),
     M.t p = 0 → C.psiMap lambda p = p → lambda = 0
 
 /-- The explicit local map agrees with the composition of the two restricted actions. -/
 public theorem psiMap_eq_restrictedActions
-    (lambda : ParameterLattice) (p : LocalCarrier M r) :
+    (lambda : ParameterLattice) (p : localCarrier M r) :
     C.psiMap lambda p =
       localPhaseAction M r (C.phase lambda (localT M r p))
         (Additive.toMul (localFanShear M r lambda) p) := by
@@ -227,7 +229,7 @@ public theorem psiMap_eq_restrictedActions
 
 /-- The local algebraic action data obtained from the restricted fan and phase actions. -/
 public def toCuspActionData (F : C.IsFree) :
-    CuspActionData (LocalCarrier M r) Phase where
+    CuspActionData (localCarrier M r) Phase where
   t := localT M r
   toricShear := localFanShear M r
   phaseAction := localPhaseAction M r
@@ -249,7 +251,7 @@ public def toCuspActionData (F : C.IsFree) :
 
 @[simp]
 public theorem psiMap_eq_generic (F : C.IsFree)
-    (lambda : ParameterLattice) (p : LocalCarrier M r) :
+    (lambda : ParameterLattice) (p : localCarrier M r) :
     C.psiMap lambda p = (C.toCuspActionData F).psiMap lambda p := by
   apply Subtype.ext
   simp [psiMap, localPhaseTwist, CuspActionData.psiMap, toCuspActionData,
@@ -267,7 +269,7 @@ public theorem genericPsiMap_holomorphic (F : C.IsFree)
 
 /-- The remaining compact-overlap estimate on the restricted cusp carrier. -/
 public def CompactOverlapEstimate : Prop :=
-  ∀ K L : Set (LocalCarrier M r), IsCompact K → IsCompact L →
+  ∀ K L : Set (localCarrier M r), IsCompact K → IsCompact L →
     {lambda : ParameterLattice | (C.psiMap lambda '' K ∩ L).Nonempty}.Finite
 
 /-- The fixed-point and compact-overlap estimates give a free properly discontinuous action on
@@ -276,7 +278,7 @@ public theorem properlyDiscontinuous (F : C.IsFree)
     (H : C.CompactOverlapEstimate) :
     letI := (C.toCuspActionData F).psiAction
     ProperlyDiscontinuousSMul
-      (Multiplicative ParameterLattice) (LocalCarrier M r) := by
+      (Multiplicative ParameterLattice) (localCarrier M r) := by
   apply (C.toCuspActionData F).properlyDiscontinuous
   intro K L hK hL
   simpa only [← C.psiMap_eq_generic F] using H K L hK hL
@@ -287,11 +289,11 @@ public theorem quotient_isQuotientCoveringMap (F : C.IsFree)
     letI := (C.toCuspActionData F).psiAction
     IsQuotientCoveringMap
       (Quotient.mk (MulAction.orbitRel
-        (Multiplicative ParameterLattice) (LocalCarrier M r)))
+        (Multiplicative ParameterLattice) (localCarrier M r)))
       (Multiplicative ParameterLattice) := by
   let _ : LocallyCompactSpace M.Carrier :=
     ChartedSpace.locallyCompactSpace ComplexModel M.Carrier
-  let _ : LocallyCompactSpace (LocalCarrier M r) :=
+  let _ : LocallyCompactSpace (localCarrier M r) :=
     (cuspNeighborhood M r).isOpen.locallyCompactSpace
   apply CuspFilling.quotient_isQuotientCoveringMap (C.toCuspActionData F)
   · intro lambda
@@ -307,10 +309,10 @@ public theorem quotient_chartedSpace (F : C.IsFree)
     letI := (C.toCuspActionData F).psiAction
     Nonempty (ChartedSpace ComplexModel
       (MulAction.orbitRel.Quotient
-        (Multiplicative ParameterLattice) (LocalCarrier M r))) := by
+        (Multiplicative ParameterLattice) (localCarrier M r))) := by
   let _ : LocallyCompactSpace M.Carrier :=
     ChartedSpace.locallyCompactSpace ComplexModel M.Carrier
-  let _ : LocallyCompactSpace (LocalCarrier M r) :=
+  let _ : LocallyCompactSpace (localCarrier M r) :=
     (cuspNeighborhood M r).isOpen.locallyCompactSpace
   apply CuspFilling.quotient_chartedSpace (C.toCuspActionData F)
   · intro lambda
@@ -328,23 +330,23 @@ public theorem quotient_isManifold (F : C.IsFree)
     let hf := C.quotient_isQuotientCoveringMap F H
     letI : ChartedSpace ComplexModel
       (MulAction.orbitRel.Quotient
-        (Multiplicative ParameterLattice) (LocalCarrier M r)) :=
+        (Multiplicative ParameterLattice) (localCarrier M r)) :=
       hf.isCoveringMap.isLocalHomeomorph.chartedSpace hf.surjective
     IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞
       (MulAction.orbitRel.Quotient
-        (Multiplicative ParameterLattice) (LocalCarrier M r)) := by
+        (Multiplicative ParameterLattice) (localCarrier M r)) := by
   let _ := (C.toCuspActionData F).psiAction
   let _ : LocallyCompactSpace M.Carrier :=
     ChartedSpace.locallyCompactSpace ComplexModel M.Carrier
-  let _ : LocallyCompactSpace (LocalCarrier M r) :=
+  let _ : LocallyCompactSpace (localCarrier M r) :=
     (cuspNeighborhood M r).isOpen.locallyCompactSpace
   let hf := C.quotient_isQuotientCoveringMap F H
   let _ : ContinuousConstSMul
-      (Multiplicative ParameterLattice) (LocalCarrier M r) :=
+      (Multiplicative ParameterLattice) (localCarrier M r) :=
     ⟨fun gamma ↦ (C.genericPsiMap_holomorphic F (Multiplicative.toAdd gamma)).continuous⟩
   let _ : ChartedSpace ComplexModel
       (MulAction.orbitRel.Quotient
-        (Multiplicative ParameterLattice) (LocalCarrier M r)) :=
+        (Multiplicative ParameterLattice) (localCarrier M r)) :=
     hf.isCoveringMap.isLocalHomeomorph.chartedSpace hf.surjective
   apply CuspFilling.quotient_isManifold (modelWithCornersSelf ℂ ComplexModel) hf
   intro gamma
@@ -352,18 +354,22 @@ public theorem quotient_isManifold (F : C.IsFree)
 
 end LocalHolomorphicPhaseCoefficients
 
+end CuspLocalPhaseAction
+
+open CuspLocalPhaseAction
+
 namespace CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
 
 open SphereSixComplex.Periods
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D)
 
 /-- The Fuchsian cusp expansion supplies the complete local phase package.  Holomorphicity of the
 variable torus translation is derived from the standard jointly holomorphic toric action. -/
-public noncomputable def toExactLocalHolomorphicPhaseCoefficients
+public noncomputable def toLocalHolomorphicPhaseCoefficients
     (M : Model) :
-    LocalHolomorphicPhaseCoefficients M (cuspRadius N.height) where
+    CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients M (cuspRadius N.height) where
   radius_pos := cuspRadius_pos N.height
   phase := N.phaseCoefficient
   phase_zero := N.phaseCoefficient_zero
@@ -373,4 +379,4 @@ public noncomputable def toExactLocalHolomorphicPhaseCoefficients
 
 end CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
 
-end SphereSixComplex.Geometry.CuspLocalPhaseAction
+end SphereSixComplex.Geometry

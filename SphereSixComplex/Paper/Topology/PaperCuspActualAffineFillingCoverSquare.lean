@@ -35,9 +35,9 @@ open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
-open SphereSixComplex.Geometry.CuspPhaseEstimates.CuspPeriodExpansion
+open SphereSixComplex.Geometry.CuspPeriodExpansion
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
 variable {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
 
 /-- The explicit additive cover mapped to the punctured local carrier before the
@@ -45,7 +45,7 @@ parameter-lattice quotient. -/
 public noncomputable def additiveCuspCoverToPuncturedCarrier
     (W : ActualPuncturedCuspCollarWitness N M) :
     C(additiveCuspRadiusCover W.localWitness.radius,
-      {p : LocalCarrier M W.localWitness.radius // M.t p ≠ 0}) :=
+      {p : localCarrier M W.localWitness.radius // M.t p ≠ 0}) :=
   ⟨fun p ↦ additiveToPuncturedLocalHomeomorph M W.localWitness.radius (Quotient.mk _ p),
     (additiveToPuncturedLocalHomeomorph M W.localWitness.radius).continuous.comp
       continuous_quot_mk⟩
@@ -53,7 +53,7 @@ public noncomputable def additiveCuspCoverToPuncturedCarrier
 /-- The explicit additive cover projected to the actual punctured cusp quotient. -/
 public noncomputable def additiveCuspBoundaryProjection
     (W : ActualPuncturedCuspCollarWitness N M) :
-    C(additiveCuspRadiusCover W.localWitness.radius, puncturedLocalCuspQuotient W) :=
+    C(additiveCuspRadiusCover W.localWitness.radius, PuncturedLocalCuspQuotient W) :=
   ⟨fun p ↦ Quotient.mk _ (additiveCuspCoverToPuncturedCarrier W p),
     continuous_quot_mk.comp (additiveCuspCoverToPuncturedCarrier W).continuous⟩
 
@@ -61,14 +61,14 @@ public noncomputable def additiveCuspBoundaryProjection
 public noncomputable def additiveCuspFillingLift
     (W : ActualPuncturedCuspCollarWitness N M) :
     C(additiveCuspRadiusCover W.localWitness.radius,
-      LocalCarrier M W.localWitness.radius) :=
+      localCarrier M W.localWitness.radius) :=
   ⟨fun p ↦ (additiveCuspCoverToPuncturedCarrier W p).1,
     continuous_subtype_val.comp (additiveCuspCoverToPuncturedCarrier W).continuous⟩
 
 /-- The full local carrier projected to the actual toric cusp filling. -/
 public noncomputable def actualCuspFillingProjection
     (W : ActualPuncturedCuspCollarWitness N M) :
-    C(LocalCarrier M W.localWitness.radius, actualLocalCuspFilling W) :=
+    C(localCarrier M W.localWitness.radius, ActualLocalCuspFilling W) :=
   ⟨Quotient.mk _, continuous_quot_mk⟩
 
 /-- The explicit additive lift gives a commutative collar-to-filling cover square. -/
@@ -104,7 +104,7 @@ namespace Geometry.PaperAnalyticData
 open CuspPuncturedCollarBridge
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
-open SphereSixComplex.Geometry.CuspPhaseEstimates.CuspPeriodExpansion
+open SphereSixComplex.Geometry.CuspPeriodExpansion
 
 variable (A : PaperAnalyticData)
 
@@ -162,7 +162,7 @@ public noncomputable def cuspBoundaryProjection :
 
 /-- The full local-carrier projection transported to the exact cusp piece of the glued star. -/
 public noncomputable def cuspFillingProjectionToStar :
-    C(LocalCarrier A.toricModel A.starCuspWitness.localWitness.radius,
+    C(localCarrier A.toricModel A.starCuspWitness.localWitness.radius,
       (sectionSevenStarOpenCover
         A.openEmbeddingStarData.toFourPieceStarGluingData).piece 1) :=
   (⟨A.cuspFillingToStarPieceHomeomorph,
@@ -215,14 +215,14 @@ public theorem cuspCoverSquare_commutes
 /-- The filling projection transported to the glued cusp piece remains a quotient covering. -/
 public theorem cuspFillingProjectionToStar_isQuotientCoveringMap :
     let C :=
-      NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
+      CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
         A.cuspCoordinate A.toricModel A.starCuspWitness.localWitness.radius
           A.starCuspWitness.localWitness.radius_pos A.starCuspWitness.localWitness.radius_le
     letI := (C.toCuspActionData A.starCuspWitness.localWitness.fixedPoint).psiAction
     IsQuotientCoveringMap A.cuspFillingProjectionToStar
       (Multiplicative ParameterLattice) := by
   let C :=
-    NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
+    CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
       A.cuspCoordinate A.toricModel A.starCuspWitness.localWitness.radius
         A.starCuspWitness.localWitness.radius_pos A.starCuspWitness.localWitness.radius_le
   let _ := (C.toCuspActionData A.starCuspWitness.localWitness.fixedPoint).psiAction

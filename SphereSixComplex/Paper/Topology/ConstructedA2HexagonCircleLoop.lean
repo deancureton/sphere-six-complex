@@ -62,8 +62,8 @@ public theorem constructedA2HexagonBoundaryLoop_homology_eq_circle :
     loopHomologyClass (constructedA2HexagonBoundaryLoop.map
       constructedA2HexagonBoundaryToPunctured.continuous) =
       loopHomologyClass (planeCirclePuncturedLoop (2 / 3) (by norm_num)) := by
-  apply (AddCommGrpCat.mono_iff_injective ((IntegralChains PuncturedRealPlane).homologyι 1)).mp
-    (inferInstance : Mono ((IntegralChains PuncturedRealPlane).homologyι 1))
+  apply (AddCommGrpCat.mono_iff_injective ((integralChains PuncturedRealPlane).homologyι 1)).mp
+    (inferInstance : Mono ((integralChains PuncturedRealPlane).homologyι 1))
   calc
     _ = pathOpchainClass (constructedA2HexagonBoundaryLoop.map
       constructedA2HexagonBoundaryToPunctured.continuous) := homologyι_loopHomologyClass _

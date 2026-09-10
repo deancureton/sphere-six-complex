@@ -56,7 +56,7 @@ public theorem sixSphere_integralSingularHomology_isZero_of_boundarySeven
       (AddCommGrpCat.of ℤ)).obj (TopCat.of SixSphere)) := by
   have hrealization := realizationSingularHomology_isZero_of_simplicial
     (∂Δ[7] : SSet.{0}) (AddCommGrpCat.of ℤ) k
-      boundarySeven_integralComparison_proof hsimplicial
+      BoundarySeven.quasiIso_integral_comparison hsimplicial
   obtain ⟨e⟩ := boundarySevenRealizationHomeomorphSixSphere
   exact hrealization.of_iso
     (((singularHomologyFunctor AddCommGrpCat k).obj (AddCommGrpCat.of ℤ)).mapIso
@@ -67,7 +67,7 @@ standard six-sphere. -/
 public theorem establishedSixSpherePositiveHomologyInputs_proof :
     SixSpherePositiveHomologyInputs where
   degreeSix := ⟨boundarySevenExplicitSphereHomologyAddEquivInt
-    boundarySeven_integralComparison_proof
+    BoundarySeven.quasiIso_integral_comparison
       standardSimplexBoundarySevenHomeomorphSixSphere⟩
   otherDegrees k hkZero hkSix := by
     apply AddCommGrpCat.subsingleton_of_isZero

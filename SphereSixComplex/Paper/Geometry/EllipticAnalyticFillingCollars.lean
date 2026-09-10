@@ -31,10 +31,10 @@ private theorem isLocalDiffeomorph_globalDeckComplex
     {M N : Type*} [TopologicalSpace M] [TopologicalSpace N]
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) M]
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) N]
-    [IsManifold GlobalDeckTotalModel ∞ M]
-    [IsManifold GlobalDeckTotalModel ∞ N]
+    [IsManifold globalDeckTotalModel ∞ M]
+    [IsManifold globalDeckTotalModel ∞ N]
     {f : M → N}
-    (h : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ∞ f) :
+    (h : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ∞ f) :
     letI := globalDeckComplexCharts (M := M)
     letI := globalDeckComplexCharts (M := N)
     IsLocalDiffeomorph (modelWithCornersSelf ℂ ComplexModel)
@@ -42,16 +42,16 @@ private theorem isLocalDiffeomorph_globalDeckComplex
   let cMProduct : ChartedSpace (ℂ × ComplexTwoSpace) M := globalDeckProductCharts
   let _ : ChartedSpace (ℂ × ComplexTwoSpace) M := cMProduct
   let mM : IsManifold (modelWithCornersSelf ℂ (ℂ × ComplexTwoSpace)) ∞ M := by
-    simpa only [GlobalDeckTotalModel, GlobalDeckBaseModel, GlobalDeckFiberModel,
+    simpa only [globalDeckTotalModel, globalDeckBaseModel, globalDeckFiberModel,
       modelWithCornersSelf_prod] using
-      (inferInstance : IsManifold GlobalDeckTotalModel ∞ M)
+      (inferInstance : IsManifold globalDeckTotalModel ∞ M)
   let _ : IsManifold (modelWithCornersSelf ℂ (ℂ × ComplexTwoSpace)) ∞ M := mM
   let cNProduct : ChartedSpace (ℂ × ComplexTwoSpace) N := globalDeckProductCharts
   let _ : ChartedSpace (ℂ × ComplexTwoSpace) N := cNProduct
   let mN : IsManifold (modelWithCornersSelf ℂ (ℂ × ComplexTwoSpace)) ∞ N := by
-    simpa only [GlobalDeckTotalModel, GlobalDeckBaseModel, GlobalDeckFiberModel,
+    simpa only [globalDeckTotalModel, globalDeckBaseModel, globalDeckFiberModel,
       modelWithCornersSelf_prod] using
-      (inferInstance : IsManifold GlobalDeckTotalModel ∞ N)
+      (inferInstance : IsManifold globalDeckTotalModel ∞ N)
   let _ : IsManifold (modelWithCornersSelf ℂ (ℂ × ComplexTwoSpace)) ∞ N := mN
   let dM := linearRechartDiffeomorph (n := ∞) (M := M) globalDeckComplexModelEquiv
   let dN := linearRechartDiffeomorph (n := ∞) (M := N) globalDeckComplexModelEquiv
@@ -63,7 +63,7 @@ private theorem isLocalDiffeomorph_globalDeckComplex
     dM.symm.isLocalDiffeomorph x
   have hf : IsLocalDiffeomorphAt (modelWithCornersSelf ℂ (ℂ × ComplexTwoSpace))
       (modelWithCornersSelf ℂ (ℂ × ComplexTwoSpace)) ∞ f x := by
-    simpa only [GlobalDeckTotalModel, GlobalDeckBaseModel, GlobalDeckFiberModel,
+    simpa only [globalDeckTotalModel, globalDeckBaseModel, globalDeckFiberModel,
       modelWithCornersSelf_prod] using h x
   have hxf := IsLocalDiffeomorphAt.comp
     (modelWithCornersSelf ℂ (ℂ × ComplexTwoSpace)) N hx hf
@@ -100,13 +100,13 @@ public abbrev OrderFourAffinePuncturedQuotient (r : ℝ) :=
 public theorem orderThreeAffinePuncturedAction_contMDiff (r : ℝ)
     (g : FiniteCyclic 3) :
     letI := A.totalSpaceCharts
-    ContMDiff GlobalDeckTotalModel GlobalDeckTotalModel ∞
+    ContMDiff globalDeckTotalModel globalDeckTotalModel ∞
       (fun q : (orderThreeAffinePuncturedCarrier A.periods
         A.modular.modularParameter.toTriangleUniformization_sourceAction r).carrier =>
           restrictedActionMap (orderThreeAffinePuncturedCarrier A.periods
             A.modular.modularParameter.toTriangleUniformization_sourceAction r) g q) := by
   let _ := A.totalSpaceCharts
-  let _ : IsManifold GlobalDeckTotalModel ∞
+  let _ : IsManifold globalDeckTotalModel ∞
       (TotalSpace (parameterMap A.periods)) := A.totalSpace_isManifold
   let S : TopologicalSpace.Opens (TotalSpace (parameterMap A.periods)) :=
     ⟨(orderThreeAffinePuncturedCarrier A.periods
@@ -118,11 +118,11 @@ public theorem orderThreeAffinePuncturedAction_contMDiff (r : ℝ)
         S.instChartedSpace := rfl
   rw [hcharts]
   apply (ContMDiff.subtypeVal_comp_iff S _).mp
-  change ContMDiff GlobalDeckTotalModel GlobalDeckTotalModel ∞
+  change ContMDiff globalDeckTotalModel globalDeckTotalModel ∞
     (fun q : S => orderThreeAffineFamilyRepresentation A.periods g q)
   exact (orderThreeAffineFamilyRepresentation_contMDiff A.periods
     A.totalSpace_projection_isLocalDiffeomorph g).comp
-      (contMDiff_subtype_val (I := GlobalDeckTotalModel))
+      (contMDiff_subtype_val (I := globalDeckTotalModel))
 
 @[instance_reducible]
 public noncomputable def orderThreeAffinePuncturedQuotientCharts (r : ℝ) :
@@ -132,15 +132,15 @@ public noncomputable def orderThreeAffinePuncturedQuotientCharts (r : ℝ) :
   let S := orderThreeAffinePuncturedCarrier A.periods
     A.modular.modularParameter.toTriangleUniformization_sourceAction r
   let _ := restrictedMulAction (orderThreeAffineFamilyAction A.periods) S
-  let _ : IsManifold GlobalDeckTotalModel ∞ S.carrier := by
-    let _ : IsManifold GlobalDeckTotalModel ∞
+  let _ : IsManifold globalDeckTotalModel ∞ S.carrier := by
+    let _ : IsManifold globalDeckTotalModel ∞
         (TotalSpace (parameterMap A.periods)) := A.totalSpace_isManifold
     let O : TopologicalSpace.Opens (TotalSpace (parameterMap A.periods)) :=
       ⟨S.carrier, S.isOpen_carrier⟩
-    change IsManifold GlobalDeckTotalModel ∞ O
+    change IsManifold globalDeckTotalModel ∞ O
     infer_instance
   let _ : LocallyCompactSpace S.carrier :=
-    Manifold.locallyCompact_of_finiteDimensional GlobalDeckTotalModel
+    Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
   let _ : T2Space S.carrier := by
     let _ : T2Space (TotalSpace (parameterMap A.periods)) := A.totalSpace_t2
     infer_instance
@@ -157,20 +157,20 @@ public noncomputable def orderThreeAffinePuncturedQuotientCharts (r : ℝ) :
 public theorem orderThreeAffinePuncturedQuotient_isManifold (r : ℝ) :
     letI := A.totalSpaceCharts
     letI := A.orderThreeAffinePuncturedQuotientCharts r
-    IsManifold GlobalDeckTotalModel ∞ (A.OrderThreeAffinePuncturedQuotient r) := by
+    IsManifold globalDeckTotalModel ∞ (A.OrderThreeAffinePuncturedQuotient r) := by
   let _ := A.totalSpaceCharts
   let S := orderThreeAffinePuncturedCarrier A.periods
     A.modular.modularParameter.toTriangleUniformization_sourceAction r
   let _ := restrictedMulAction (orderThreeAffineFamilyAction A.periods) S
-  let _ : IsManifold GlobalDeckTotalModel ∞ S.carrier := by
-    let _ : IsManifold GlobalDeckTotalModel ∞
+  let _ : IsManifold globalDeckTotalModel ∞ S.carrier := by
+    let _ : IsManifold globalDeckTotalModel ∞
         (TotalSpace (parameterMap A.periods)) := A.totalSpace_isManifold
     let O : TopologicalSpace.Opens (TotalSpace (parameterMap A.periods)) :=
       ⟨S.carrier, S.isOpen_carrier⟩
-    change IsManifold GlobalDeckTotalModel ∞ O
+    change IsManifold globalDeckTotalModel ∞ O
     infer_instance
   let _ : LocallyCompactSpace S.carrier :=
-    Manifold.locallyCompact_of_finiteDimensional GlobalDeckTotalModel
+    Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
   let _ : T2Space S.carrier := by
     let _ : T2Space (TotalSpace (parameterMap A.periods)) := A.totalSpace_t2
     infer_instance
@@ -182,12 +182,12 @@ public theorem orderThreeAffinePuncturedQuotient_isManifold (r : ℝ) :
     ⟨fun g => (A.orderThreeAffinePuncturedAction_contMDiff r g).continuous⟩
   let _ := A.orderThreeAffinePuncturedQuotientCharts r
   exact (orbitQuotient_isManifold_and_projection_isLocalDiffeomorph_of_contMDiff_smul
-    GlobalDeckTotalModel ∞ (A.orderThreeAffinePuncturedAction_contMDiff r)).1
+    globalDeckTotalModel ∞ (A.orderThreeAffinePuncturedAction_contMDiff r)).1
 
 private theorem orderThreeAffinePuncturedProjection_isLocalDiffeomorph (r : ℝ) :
     letI := A.totalSpaceCharts
     letI := A.orderThreeAffinePuncturedQuotientCharts r
-    IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ∞
+    IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ∞
       (Quotient.mk (restrictedOrbitRel (orderThreeAffineFamilyAction A.periods)
         (orderThreeAffinePuncturedCarrier A.periods
           A.modular.modularParameter.toTriangleUniformization_sourceAction r))) := by
@@ -195,15 +195,15 @@ private theorem orderThreeAffinePuncturedProjection_isLocalDiffeomorph (r : ℝ)
   let S := orderThreeAffinePuncturedCarrier A.periods
     A.modular.modularParameter.toTriangleUniformization_sourceAction r
   let _ := restrictedMulAction (orderThreeAffineFamilyAction A.periods) S
-  let _ : IsManifold GlobalDeckTotalModel ∞ S.carrier := by
-    let _ : IsManifold GlobalDeckTotalModel ∞
+  let _ : IsManifold globalDeckTotalModel ∞ S.carrier := by
+    let _ : IsManifold globalDeckTotalModel ∞
         (TotalSpace (parameterMap A.periods)) := A.totalSpace_isManifold
     let O : TopologicalSpace.Opens (TotalSpace (parameterMap A.periods)) :=
       ⟨S.carrier, S.isOpen_carrier⟩
-    change IsManifold GlobalDeckTotalModel ∞ O
+    change IsManifold globalDeckTotalModel ∞ O
     infer_instance
   let _ : LocallyCompactSpace S.carrier :=
-    Manifold.locallyCompact_of_finiteDimensional GlobalDeckTotalModel
+    Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
   let _ : T2Space S.carrier := by
     let _ : T2Space (TotalSpace (parameterMap A.periods)) := A.totalSpace_t2
     infer_instance
@@ -214,23 +214,23 @@ private theorem orderThreeAffinePuncturedProjection_isLocalDiffeomorph (r : ℝ)
   let _ : ContinuousConstSMul (FiniteCyclic 3) S.carrier :=
     ⟨fun g => (A.orderThreeAffinePuncturedAction_contMDiff r g).continuous⟩
   let _ := A.orderThreeAffinePuncturedQuotientCharts r
-  change IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ∞
+  change IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ∞
     (quotientProjection (M := S.carrier) (G := FiniteCyclic 3))
   exact (orbitQuotient_isManifold_and_projection_isLocalDiffeomorph_of_contMDiff_smul
-    GlobalDeckTotalModel ∞ (A.orderThreeAffinePuncturedAction_contMDiff r)).2
+    globalDeckTotalModel ∞ (A.orderThreeAffinePuncturedAction_contMDiff r)).2
 
 private theorem orderThreeFillingProjection_isLocalDiffeomorph (r : ℝ) :
     letI := A.orderThreeFillingSourceCharts r
     letI := A.orderThreeFillingAction r
     letI := A.orderThreeFillingProductCharts r
-    IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ∞
+    IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ∞
       (quotientProjection (M := A.orderThreeFillingOpen r) (G := FiniteCyclic 3)) := by
   let _ := A.orderThreeFillingSourceCharts r
   let _ := A.orderThreeFillingAction r
-  let _ : IsManifold GlobalDeckTotalModel ∞ (A.orderThreeFillingOpen r) :=
+  let _ : IsManifold globalDeckTotalModel ∞ (A.orderThreeFillingOpen r) :=
     A.orderThreeFillingSource_isManifold r
   let _ : LocallyCompactSpace (A.orderThreeFillingOpen r) :=
-    Manifold.locallyCompact_of_finiteDimensional GlobalDeckTotalModel
+    Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
   let _ : T2Space (TotalSpace (parameterMap A.periods)) := A.totalSpace_t2
   let _ : T2Space (A.orderThreeFillingOpen r) := by infer_instance
   let _ : IsCancelSMul (FiniteCyclic 3) (A.orderThreeFillingOpen r) :=
@@ -239,7 +239,7 @@ private theorem orderThreeFillingProjection_isLocalDiffeomorph (r : ℝ) :
     A.orderThreeFillingAction_continuousConstSMul r
   let _ := A.orderThreeFillingProductCharts r
   exact (orbitQuotient_isManifold_and_projection_isLocalDiffeomorph_of_contMDiff_smul
-    GlobalDeckTotalModel ∞ (A.orderThreeFillingRestrictedAction_contMDiff r)).2
+    globalDeckTotalModel ∞ (A.orderThreeFillingRestrictedAction_contMDiff r)).2
 
 public theorem orderThreePuncturedCollarToFilling_isLocalDiffeomorph (r : ℝ) :
     letI := A.totalSpaceCharts
@@ -247,7 +247,7 @@ public theorem orderThreePuncturedCollarToFilling_isLocalDiffeomorph (r : ℝ) :
     letI := A.orderThreeFillingSourceCharts r
     letI := A.orderThreeFillingAction r
     letI := A.orderThreeFillingProductCharts r
-    IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ∞
+    IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ∞
       (A.orderThreePuncturedCollarToFilling r) := by
   let _ := A.totalSpaceCharts
   let _ := A.orderThreeAffinePuncturedQuotientCharts r
@@ -264,13 +264,13 @@ public theorem orderThreePuncturedCollarToFilling_isLocalDiffeomorph (r : ℝ) :
         A.modular.modularParameter.toTriangleUniformization_sourceAction r).isOpen_carrier⟩
   let V := A.orderThreeFillingOpen r
   have hUV : U ≤ V := A.orderThreePuncturedCarrier_subset_filling r
-  let hinc := opensInclusion_isLocalDiffeomorph (I := GlobalDeckTotalModel)
+  let hinc := opensInclusion_isLocalDiffeomorph (I := globalDeckTotalModel)
     hUV
-  have hcomp : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ∞
+  have hcomp : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ∞
       ((quotientProjection (M := A.orderThreeFillingOpen r) (G := FiniteCyclic 3)) ∘
         A.orderThreePuncturedSourceToFillingSource r) := by
     intro q
-    exact (hinc q).comp GlobalDeckTotalModel (A.OrderThreeVaryingFilling r)
+    exact (hinc q).comp globalDeckTotalModel (A.OrderThreeVaryingFilling r)
       (A.orderThreeFillingProjection_isLocalDiffeomorph r
         (TopologicalSpace.Opens.inclusion hUV q))
   convert hcomp using 1
@@ -280,13 +280,13 @@ public theorem orderThreePuncturedCollarToFilling_isLocalDiffeomorph (r : ℝ) :
 public theorem orderFourAffinePuncturedAction_contMDiff (r : ℝ)
     (g : FiniteCyclic 4) :
     letI := A.totalSpaceCharts
-    ContMDiff GlobalDeckTotalModel GlobalDeckTotalModel ∞
+    ContMDiff globalDeckTotalModel globalDeckTotalModel ∞
       (fun q : (orderFourAffinePuncturedCarrier A.periods
         A.modular.modularParameter.toTriangleUniformization_sourceAction r).carrier =>
           restrictedActionMap (orderFourAffinePuncturedCarrier A.periods
             A.modular.modularParameter.toTriangleUniformization_sourceAction r) g q) := by
   let _ := A.totalSpaceCharts
-  let _ : IsManifold GlobalDeckTotalModel ∞
+  let _ : IsManifold globalDeckTotalModel ∞
       (TotalSpace (parameterMap A.periods)) := A.totalSpace_isManifold
   let S : TopologicalSpace.Opens (TotalSpace (parameterMap A.periods)) :=
     ⟨(orderFourAffinePuncturedCarrier A.periods
@@ -298,11 +298,11 @@ public theorem orderFourAffinePuncturedAction_contMDiff (r : ℝ)
         S.instChartedSpace := rfl
   rw [hcharts]
   apply (ContMDiff.subtypeVal_comp_iff S _).mp
-  change ContMDiff GlobalDeckTotalModel GlobalDeckTotalModel ∞
+  change ContMDiff globalDeckTotalModel globalDeckTotalModel ∞
     (fun q : S => orderFourAffineFamilyRepresentation A.periods g q)
   exact (orderFourAffineFamilyRepresentation_contMDiff A.periods
     A.totalSpace_projection_isLocalDiffeomorph g).comp
-      (contMDiff_subtype_val (I := GlobalDeckTotalModel))
+      (contMDiff_subtype_val (I := globalDeckTotalModel))
 
 @[instance_reducible]
 public noncomputable def orderFourAffinePuncturedQuotientCharts (r : ℝ) :
@@ -312,15 +312,15 @@ public noncomputable def orderFourAffinePuncturedQuotientCharts (r : ℝ) :
   let S := orderFourAffinePuncturedCarrier A.periods
     A.modular.modularParameter.toTriangleUniformization_sourceAction r
   let _ := restrictedMulAction (orderFourAffineFamilyAction A.periods) S
-  let _ : IsManifold GlobalDeckTotalModel ∞ S.carrier := by
-    let _ : IsManifold GlobalDeckTotalModel ∞
+  let _ : IsManifold globalDeckTotalModel ∞ S.carrier := by
+    let _ : IsManifold globalDeckTotalModel ∞
         (TotalSpace (parameterMap A.periods)) := A.totalSpace_isManifold
     let O : TopologicalSpace.Opens (TotalSpace (parameterMap A.periods)) :=
       ⟨S.carrier, S.isOpen_carrier⟩
-    change IsManifold GlobalDeckTotalModel ∞ O
+    change IsManifold globalDeckTotalModel ∞ O
     infer_instance
   let _ : LocallyCompactSpace S.carrier :=
-    Manifold.locallyCompact_of_finiteDimensional GlobalDeckTotalModel
+    Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
   let _ : T2Space S.carrier := by
     let _ : T2Space (TotalSpace (parameterMap A.periods)) := A.totalSpace_t2
     infer_instance
@@ -337,20 +337,20 @@ public noncomputable def orderFourAffinePuncturedQuotientCharts (r : ℝ) :
 public theorem orderFourAffinePuncturedQuotient_isManifold (r : ℝ) :
     letI := A.totalSpaceCharts
     letI := A.orderFourAffinePuncturedQuotientCharts r
-    IsManifold GlobalDeckTotalModel ∞ (A.OrderFourAffinePuncturedQuotient r) := by
+    IsManifold globalDeckTotalModel ∞ (A.OrderFourAffinePuncturedQuotient r) := by
   let _ := A.totalSpaceCharts
   let S := orderFourAffinePuncturedCarrier A.periods
     A.modular.modularParameter.toTriangleUniformization_sourceAction r
   let _ := restrictedMulAction (orderFourAffineFamilyAction A.periods) S
-  let _ : IsManifold GlobalDeckTotalModel ∞ S.carrier := by
-    let _ : IsManifold GlobalDeckTotalModel ∞
+  let _ : IsManifold globalDeckTotalModel ∞ S.carrier := by
+    let _ : IsManifold globalDeckTotalModel ∞
         (TotalSpace (parameterMap A.periods)) := A.totalSpace_isManifold
     let O : TopologicalSpace.Opens (TotalSpace (parameterMap A.periods)) :=
       ⟨S.carrier, S.isOpen_carrier⟩
-    change IsManifold GlobalDeckTotalModel ∞ O
+    change IsManifold globalDeckTotalModel ∞ O
     infer_instance
   let _ : LocallyCompactSpace S.carrier :=
-    Manifold.locallyCompact_of_finiteDimensional GlobalDeckTotalModel
+    Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
   let _ : T2Space S.carrier := by
     let _ : T2Space (TotalSpace (parameterMap A.periods)) := A.totalSpace_t2
     infer_instance
@@ -362,12 +362,12 @@ public theorem orderFourAffinePuncturedQuotient_isManifold (r : ℝ) :
     ⟨fun g => (A.orderFourAffinePuncturedAction_contMDiff r g).continuous⟩
   let _ := A.orderFourAffinePuncturedQuotientCharts r
   exact (orbitQuotient_isManifold_and_projection_isLocalDiffeomorph_of_contMDiff_smul
-    GlobalDeckTotalModel ∞ (A.orderFourAffinePuncturedAction_contMDiff r)).1
+    globalDeckTotalModel ∞ (A.orderFourAffinePuncturedAction_contMDiff r)).1
 
 private theorem orderFourAffinePuncturedProjection_isLocalDiffeomorph (r : ℝ) :
     letI := A.totalSpaceCharts
     letI := A.orderFourAffinePuncturedQuotientCharts r
-    IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ∞
+    IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ∞
       (Quotient.mk (restrictedOrbitRel (orderFourAffineFamilyAction A.periods)
         (orderFourAffinePuncturedCarrier A.periods
           A.modular.modularParameter.toTriangleUniformization_sourceAction r))) := by
@@ -375,15 +375,15 @@ private theorem orderFourAffinePuncturedProjection_isLocalDiffeomorph (r : ℝ) 
   let S := orderFourAffinePuncturedCarrier A.periods
     A.modular.modularParameter.toTriangleUniformization_sourceAction r
   let _ := restrictedMulAction (orderFourAffineFamilyAction A.periods) S
-  let _ : IsManifold GlobalDeckTotalModel ∞ S.carrier := by
-    let _ : IsManifold GlobalDeckTotalModel ∞
+  let _ : IsManifold globalDeckTotalModel ∞ S.carrier := by
+    let _ : IsManifold globalDeckTotalModel ∞
         (TotalSpace (parameterMap A.periods)) := A.totalSpace_isManifold
     let O : TopologicalSpace.Opens (TotalSpace (parameterMap A.periods)) :=
       ⟨S.carrier, S.isOpen_carrier⟩
-    change IsManifold GlobalDeckTotalModel ∞ O
+    change IsManifold globalDeckTotalModel ∞ O
     infer_instance
   let _ : LocallyCompactSpace S.carrier :=
-    Manifold.locallyCompact_of_finiteDimensional GlobalDeckTotalModel
+    Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
   let _ : T2Space S.carrier := by
     let _ : T2Space (TotalSpace (parameterMap A.periods)) := A.totalSpace_t2
     infer_instance
@@ -394,23 +394,23 @@ private theorem orderFourAffinePuncturedProjection_isLocalDiffeomorph (r : ℝ) 
   let _ : ContinuousConstSMul (FiniteCyclic 4) S.carrier :=
     ⟨fun g => (A.orderFourAffinePuncturedAction_contMDiff r g).continuous⟩
   let _ := A.orderFourAffinePuncturedQuotientCharts r
-  change IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ∞
+  change IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ∞
     (quotientProjection (M := S.carrier) (G := FiniteCyclic 4))
   exact (orbitQuotient_isManifold_and_projection_isLocalDiffeomorph_of_contMDiff_smul
-    GlobalDeckTotalModel ∞ (A.orderFourAffinePuncturedAction_contMDiff r)).2
+    globalDeckTotalModel ∞ (A.orderFourAffinePuncturedAction_contMDiff r)).2
 
 private theorem orderFourFillingProjection_isLocalDiffeomorph (r : ℝ) :
     letI := A.orderFourFillingSourceCharts r
     letI := A.orderFourFillingAction r
     letI := A.orderFourFillingProductCharts r
-    IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ∞
+    IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ∞
       (quotientProjection (M := A.orderFourFillingOpen r) (G := FiniteCyclic 4)) := by
   let _ := A.orderFourFillingSourceCharts r
   let _ := A.orderFourFillingAction r
-  let _ : IsManifold GlobalDeckTotalModel ∞ (A.orderFourFillingOpen r) :=
+  let _ : IsManifold globalDeckTotalModel ∞ (A.orderFourFillingOpen r) :=
     A.orderFourFillingSource_isManifold r
   let _ : LocallyCompactSpace (A.orderFourFillingOpen r) :=
-    Manifold.locallyCompact_of_finiteDimensional GlobalDeckTotalModel
+    Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
   let _ : T2Space (TotalSpace (parameterMap A.periods)) := A.totalSpace_t2
   let _ : T2Space (A.orderFourFillingOpen r) := by infer_instance
   let _ : IsCancelSMul (FiniteCyclic 4) (A.orderFourFillingOpen r) :=
@@ -419,7 +419,7 @@ private theorem orderFourFillingProjection_isLocalDiffeomorph (r : ℝ) :
     A.orderFourFillingAction_continuousConstSMul r
   let _ := A.orderFourFillingProductCharts r
   exact (orbitQuotient_isManifold_and_projection_isLocalDiffeomorph_of_contMDiff_smul
-    GlobalDeckTotalModel ∞ (A.orderFourFillingRestrictedAction_contMDiff r)).2
+    globalDeckTotalModel ∞ (A.orderFourFillingRestrictedAction_contMDiff r)).2
 
 public theorem orderFourPuncturedCollarToFilling_isLocalDiffeomorph (r : ℝ) :
     letI := A.totalSpaceCharts
@@ -427,7 +427,7 @@ public theorem orderFourPuncturedCollarToFilling_isLocalDiffeomorph (r : ℝ) :
     letI := A.orderFourFillingSourceCharts r
     letI := A.orderFourFillingAction r
     letI := A.orderFourFillingProductCharts r
-    IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ∞
+    IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ∞
       (A.orderFourPuncturedCollarToFilling r) := by
   let _ := A.totalSpaceCharts
   let _ := A.orderFourAffinePuncturedQuotientCharts r
@@ -444,12 +444,12 @@ public theorem orderFourPuncturedCollarToFilling_isLocalDiffeomorph (r : ℝ) :
         A.modular.modularParameter.toTriangleUniformization_sourceAction r).isOpen_carrier⟩
   let V := A.orderFourFillingOpen r
   have hUV : U ≤ V := A.orderFourPuncturedCarrier_subset_filling r
-  let hinc := opensInclusion_isLocalDiffeomorph (I := GlobalDeckTotalModel) hUV
-  have hcomp : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ∞
+  let hinc := opensInclusion_isLocalDiffeomorph (I := globalDeckTotalModel) hUV
+  have hcomp : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ∞
       ((quotientProjection (M := A.orderFourFillingOpen r) (G := FiniteCyclic 4)) ∘
         A.orderFourPuncturedSourceToFillingSource r) := by
     intro q
-    exact (hinc q).comp GlobalDeckTotalModel (A.OrderFourVaryingFilling r)
+    exact (hinc q).comp globalDeckTotalModel (A.OrderFourVaryingFilling r)
       (A.orderFourFillingProjection_isLocalDiffeomorph r
         (TopologicalSpace.Opens.inclusion hUV q))
   convert hcomp using 1
@@ -466,7 +466,7 @@ public noncomputable def regularTotalSpaceProductCharts :
   let _ : LocallyCompactSpace
       (RegularBase (U := A.modular.modularParameter.toTriangleUniformization)) :=
     (isOpen_isRegularBasePoint hproper).locallyCompactSpace
-  let _ : IsManifold GlobalDeckBaseModel ∞
+  let _ : IsManifold globalDeckBaseModel ∞
       (RegularBase (U := A.modular.modularParameter.toTriangleUniformization)) :=
     regularBase_isManifold hproper
   let _ := familyIsCancelSMul (regularParameterMap A.periods)
@@ -485,7 +485,7 @@ private theorem regularBundleInclusion_isLocalDiffeomorph :
     letI : ChartedSpace (ModelProd ℂ ComplexTwoSpace)
         (RegularBase (U := A.modular.modularParameter.toTriangleUniformization) ×
           ComplexTwoSpace) := prodChartedSpace ℂ _ ComplexTwoSpace _
-    IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ∞
+    IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ∞
       (regularBundleInclusion
         (U := A.modular.modularParameter.toTriangleUniformization)) := by
   dsimp only
@@ -496,15 +496,15 @@ private theorem regularBundleInclusion_isLocalDiffeomorph :
   let _ : ChartedSpace (ModelProd ℂ ComplexTwoSpace)
       (RegularBase (U := A.modular.modularParameter.toTriangleUniformization) ×
         ComplexTwoSpace) := prodChartedSpace ℂ _ ComplexTwoSpace _
-  have hbase : IsLocalDiffeomorph GlobalDeckBaseModel GlobalDeckBaseModel ∞
+  have hbase : IsLocalDiffeomorph globalDeckBaseModel globalDeckBaseModel ∞
       (fun z : RegularBase
         (U := A.modular.modularParameter.toTriangleUniformization) => z.1) := by
-    change IsLocalDiffeomorph GlobalDeckBaseModel GlobalDeckBaseModel ∞
+    change IsLocalDiffeomorph globalDeckBaseModel globalDeckBaseModel ∞
       (Subtype.val : regularBaseOpen hproper → UpperHalfPlane)
     exact openSubtypeVal_isLocalDiffeomorph
-      (I := GlobalDeckBaseModel) (regularBaseOpen hproper)
-  have hfiber := (Diffeomorph.refl GlobalDeckFiberModel ComplexTwoSpace ∞).isLocalDiffeomorph
-  change IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ∞
+      (I := globalDeckBaseModel) (regularBaseOpen hproper)
+  have hfiber := (Diffeomorph.refl globalDeckFiberModel ComplexTwoSpace ∞).isLocalDiffeomorph
+  change IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ∞
     (Prod.map (fun z : RegularBase
       (U := A.modular.modularParameter.toTriangleUniformization) => z.1) id)
   exact isLocalDiffeomorph_prodMap hbase hfiber
@@ -518,7 +518,7 @@ private theorem regularTotalSpaceProjection_isLocalDiffeomorph :
         (RegularBase (U := A.modular.modularParameter.toTriangleUniformization) ×
           ComplexTwoSpace) := prodChartedSpace ℂ _ ComplexTwoSpace _
     letI := A.regularTotalSpaceProductCharts
-    IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ∞
+    IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ∞
       (projection (regularParameterMap A.periods)) := by
   dsimp only
   let hproper : SourceActionProperlyDiscontinuous :=
@@ -531,7 +531,7 @@ private theorem regularTotalSpaceProjection_isLocalDiffeomorph :
   let _ : LocallyCompactSpace
       (RegularBase (U := A.modular.modularParameter.toTriangleUniformization)) :=
     (isOpen_isRegularBasePoint hproper).locallyCompactSpace
-  let _ : IsManifold GlobalDeckBaseModel ∞
+  let _ : IsManifold globalDeckBaseModel ∞
       (RegularBase (U := A.modular.modularParameter.toTriangleUniformization)) :=
     regularBase_isManifold hproper
   let _ := familyIsCancelSMul (regularParameterMap A.periods)
@@ -547,7 +547,7 @@ private theorem regularTotalSpaceProjection_isLocalDiffeomorph :
 public theorem regularFamilyInclusion_isLocalDiffeomorph :
     letI := A.totalSpaceCharts
     letI := A.regularTotalSpaceProductCharts
-    IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ∞
+    IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ∞
       (regularFamilyInclusion A.periods) := by
   let _ := A.totalSpaceCharts
   let _ := A.regularTotalSpaceProductCharts
@@ -560,12 +560,12 @@ public theorem regularFamilyInclusion_isLocalDiffeomorph :
         ComplexTwoSpace) := prodChartedSpace ℂ _ ComplexTwoSpace _
   apply isLocalDiffeomorph_of_comp_surjective
     (regularTotalSpaceProjection_isLocalDiffeomorph (A := A)) Quotient.mk_surjective
-  have hcomp : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ∞
+  have hcomp : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ∞
       ((projection (parameterMap A.periods)) ∘
         regularBundleInclusion
           (U := A.modular.modularParameter.toTriangleUniformization)) := by
     intro q
-    exact (regularBundleInclusion_isLocalDiffeomorph (A := A) q).comp GlobalDeckTotalModel
+    exact (regularBundleInclusion_isLocalDiffeomorph (A := A) q).comp globalDeckTotalModel
       (TotalSpace (parameterMap A.periods))
       (A.totalSpace_projection_isLocalDiffeomorph
         (regularBundleInclusion q))
@@ -578,7 +578,7 @@ private theorem orderThreeCollarToRegular_isLocalDiffeomorph {r : ℝ}
       (U := A.modular.modularParameter.toTriangleUniformization) r) :
     letI := A.totalSpaceCharts
     letI := A.regularTotalSpaceProductCharts
-    IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ∞
+    IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ∞
       (orderThreeCollarToRegular A.periods
         (sourceActionProperlyDiscontinuous_of_eq
           A.modular.modularParameter.toTriangleUniformization_sourceAction) D) := by
@@ -596,7 +596,7 @@ private theorem orderThreeCollarToRegular_isLocalDiffeomorph {r : ℝ}
     (A.regularFamilyInclusion_isLocalDiffeomorph)
     (regularFamilyInclusion_injective A.periods)
   have hsub := openSubtypeVal_isLocalDiffeomorph
-    (I := GlobalDeckTotalModel) O
+    (I := globalDeckTotalModel) O
   convert hsub using 1
   · rfl
   · funext q
@@ -604,7 +604,7 @@ private theorem orderThreeCollarToRegular_isLocalDiffeomorph {r : ℝ}
 
 private theorem totalSpace_isManifold_analytic :
     letI := A.totalSpaceCharts
-    IsManifold GlobalDeckTotalModel ω (TotalSpace (parameterMap A.periods)) := by
+    IsManifold globalDeckTotalModel ω (TotalSpace (parameterMap A.periods)) := by
   let _ := familyIsCancelSMul (parameterMap A.periods)
   let _ := familyContinuousConstSMul (parameterMap A.periods)
     fun a => (periodSection_contMDiff A.periods a ω).continuous
@@ -617,7 +617,7 @@ private theorem totalSpace_isManifold_analytic :
 
 private theorem totalSpaceProjection_isLocalDiffeomorph_analytic :
     letI := A.totalSpaceCharts
-    IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap A.periods)) := by
   let _ := familyIsCancelSMul (parameterMap A.periods)
   let _ := familyContinuousConstSMul (parameterMap A.periods)
@@ -633,7 +633,7 @@ private theorem centralFamilyProjection_isLocalDiffeomorph :
     letI := regularFamilyDeckAction A.periods
     letI := A.regularTotalSpaceProductCharts
     letI := A.centralFamilyProductCharts
-    IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ∞
+    IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ∞
       (quotientProjection : RegularTotalSpace A.periods → A.CentralFamily) := by
   let hproper : SourceActionProperlyDiscontinuous :=
     sourceActionProperlyDiscontinuous_of_eq
@@ -642,7 +642,7 @@ private theorem centralFamilyProjection_isLocalDiffeomorph :
   let _ : LocallyCompactSpace
       (RegularBase (U := A.modular.modularParameter.toTriangleUniformization)) :=
     (isOpen_isRegularBasePoint hproper).locallyCompactSpace
-  let _ : IsManifold GlobalDeckBaseModel ∞
+  let _ : IsManifold globalDeckBaseModel ∞
       (RegularBase (U := A.modular.modularParameter.toTriangleUniformization)) :=
     regularBase_isManifold hproper
   let _ := familyIsCancelSMul (regularParameterMap A.periods)
@@ -652,7 +652,7 @@ private theorem centralFamilyProjection_isLocalDiffeomorph :
     (compactlyUniformPeriods_of_compactUniformLowerBound (regularParameterMap A.periods)
       (regularParameterMap_compactUniformLowerBound A.periods))
   let _ : LocallyCompactSpace (RegularTotalSpace A.periods) :=
-    Manifold.locallyCompact_of_finiteDimensional GlobalDeckTotalModel
+    Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
   let _ := regularFamilyDeckAction A.periods
   let _ : IsCancelSMul Delta (RegularTotalSpace A.periods) :=
     regularFamilyDeckAction_isCancelSMul_of_fuchsian A.periods
@@ -664,7 +664,7 @@ private theorem centralFamilyProjection_isLocalDiffeomorph :
   let cProduct : ChartedSpace (ℂ × ComplexTwoSpace) A.CentralFamily :=
     A.centralFamilyProductCharts
   let _ : ChartedSpace (ℂ × ComplexTwoSpace) A.CentralFamily := cProduct
-  simpa [PaperAnalyticData.centralFamilyProductCharts, RegularSmoothnessOrder] using
+  simpa [PaperAnalyticData.centralFamilyProductCharts, regularSmoothnessOrder] using
     (fuchsianPuncturedGlobalFamily_isManifold_and_projection_isLocalDiffeomorph
       A.modular.modularParameter A.periods).2
 
@@ -674,13 +674,13 @@ public theorem orderThreePuncturedCollarToCentralFamily_isLocalDiffeomorph
     letI := A.totalSpaceCharts
     letI := A.orderThreeAffinePuncturedQuotientCharts r
     letI := A.centralFamilyProductCharts
-    IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ∞
+    IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ∞
       (A.orderThreePuncturedCollarToCentralFamily D) := by
   let _ := A.totalSpaceCharts
   let _ := A.orderThreeAffinePuncturedQuotientCharts r
   let _ := A.regularTotalSpaceProductCharts
   let _ := A.centralFamilyProductCharts
-  let _ : IsManifold GlobalDeckTotalModel ω
+  let _ : IsManifold globalDeckTotalModel ω
       (TotalSpace (parameterMap A.periods)) :=
     A.totalSpace_isManifold_analytic
   apply isLocalDiffeomorph_of_comp_surjective
@@ -696,12 +696,12 @@ public theorem orderThreePuncturedCollarToCentralFamily_isLocalDiffeomorph
       A.modular.modularParameter.toTriangleUniformization_sourceAction r =
         orderThreePuncturedCollarCharts A.periods r := rfl
   rw [hcarriercharts]
-  have hcomp : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ∞
+  have hcomp : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ∞
       ((quotientProjection : RegularTotalSpace A.periods → A.CentralFamily) ∘
         orderThreeCollarToRegular A.periods hproper D ∘ gauge) := by
     intro q
-    exact IsLocalDiffeomorphAt.comp GlobalDeckTotalModel A.CentralFamily
-      (IsLocalDiffeomorphAt.comp GlobalDeckTotalModel (RegularTotalSpace A.periods)
+    exact IsLocalDiffeomorphAt.comp globalDeckTotalModel A.CentralFamily
+      (IsLocalDiffeomorphAt.comp globalDeckTotalModel (RegularTotalSpace A.periods)
         (gauge.isLocalDiffeomorph q)
         (A.orderThreeCollarToRegular_isLocalDiffeomorph D (gauge q)))
       (A.centralFamilyProjection_isLocalDiffeomorph
@@ -722,7 +722,7 @@ private theorem orderFourCollarToRegular_isLocalDiffeomorph {r : ℝ}
       (U := A.modular.modularParameter.toTriangleUniformization) r) :
     letI := A.totalSpaceCharts
     letI := A.regularTotalSpaceProductCharts
-    IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ∞
+    IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ∞
       (orderFourCollarToRegular A.periods
         (sourceActionProperlyDiscontinuous_of_eq
           A.modular.modularParameter.toTriangleUniformization_sourceAction) D) := by
@@ -740,7 +740,7 @@ private theorem orderFourCollarToRegular_isLocalDiffeomorph {r : ℝ}
     (A.regularFamilyInclusion_isLocalDiffeomorph)
     (regularFamilyInclusion_injective A.periods)
   have hsub := openSubtypeVal_isLocalDiffeomorph
-    (I := GlobalDeckTotalModel) O
+    (I := globalDeckTotalModel) O
   convert hsub using 1
   · rfl
   · funext q
@@ -752,13 +752,13 @@ public theorem orderFourPuncturedCollarToCentralFamily_isLocalDiffeomorph
     letI := A.totalSpaceCharts
     letI := A.orderFourAffinePuncturedQuotientCharts r
     letI := A.centralFamilyProductCharts
-    IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ∞
+    IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ∞
       (A.orderFourPuncturedCollarToCentralFamily D) := by
   let _ := A.totalSpaceCharts
   let _ := A.orderFourAffinePuncturedQuotientCharts r
   let _ := A.regularTotalSpaceProductCharts
   let _ := A.centralFamilyProductCharts
-  let _ : IsManifold GlobalDeckTotalModel ω
+  let _ : IsManifold globalDeckTotalModel ω
       (TotalSpace (parameterMap A.periods)) :=
     A.totalSpace_isManifold_analytic
   apply isLocalDiffeomorph_of_comp_surjective
@@ -774,12 +774,12 @@ public theorem orderFourPuncturedCollarToCentralFamily_isLocalDiffeomorph
       A.modular.modularParameter.toTriangleUniformization_sourceAction r =
         orderFourPuncturedCollarCharts A.periods r := rfl
   rw [hcarriercharts]
-  have hcomp : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ∞
+  have hcomp : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ∞
       ((quotientProjection : RegularTotalSpace A.periods → A.CentralFamily) ∘
         orderFourCollarToRegular A.periods hproper D ∘ gauge) := by
     intro q
-    exact IsLocalDiffeomorphAt.comp GlobalDeckTotalModel A.CentralFamily
-      (IsLocalDiffeomorphAt.comp GlobalDeckTotalModel (RegularTotalSpace A.periods)
+    exact IsLocalDiffeomorphAt.comp globalDeckTotalModel A.CentralFamily
+      (IsLocalDiffeomorphAt.comp globalDeckTotalModel (RegularTotalSpace A.periods)
         (gauge.isLocalDiffeomorph q)
         (A.orderFourCollarToRegular_isLocalDiffeomorph D (gauge q)))
       (A.centralFamilyProjection_isLocalDiffeomorph
@@ -848,7 +848,7 @@ public noncomputable def orderThreeFillingCollarPartialDiffeomorphProduct
     letI := A.orderThreeFillingSourceCharts P.radius
     letI := A.orderThreeFillingAction P.radius
     letI := A.orderThreeFillingProductCharts P.radius
-    PartialDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel
+    PartialDiffeomorph globalDeckTotalModel globalDeckTotalModel
       A.CentralFamily (A.OrderThreeVaryingFilling P.radius) ∞ := by
   let _ := A.totalSpaceCharts
   let _ := A.orderThreeAffinePuncturedQuotientCharts P.radius
@@ -872,7 +872,7 @@ public noncomputable def orderFourFillingCollarPartialDiffeomorphProduct
     letI := A.orderFourFillingSourceCharts P.radius
     letI := A.orderFourFillingAction P.radius
     letI := A.orderFourFillingProductCharts P.radius
-    PartialDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel
+    PartialDiffeomorph globalDeckTotalModel globalDeckTotalModel
       A.CentralFamily (A.OrderFourVaryingFilling P.radius) ∞ := by
   let _ := A.totalSpaceCharts
   let _ := A.orderFourAffinePuncturedQuotientCharts P.radius
@@ -890,7 +890,7 @@ public noncomputable def orderFourFillingCollarPartialDiffeomorphProduct
 
 public theorem centralFamilyProduct_isManifold :
     letI := A.centralFamilyProductCharts
-    IsManifold GlobalDeckTotalModel ∞ A.CentralFamily := by
+    IsManifold globalDeckTotalModel ∞ A.CentralFamily := by
   let hproper : SourceActionProperlyDiscontinuous :=
     sourceActionProperlyDiscontinuous_of_eq
       A.modular.modularParameter.toTriangleUniformization_sourceAction
@@ -898,7 +898,7 @@ public theorem centralFamilyProduct_isManifold :
   let _ : LocallyCompactSpace
       (RegularBase (U := A.modular.modularParameter.toTriangleUniformization)) :=
     (isOpen_isRegularBasePoint hproper).locallyCompactSpace
-  let _ : IsManifold GlobalDeckBaseModel ∞
+  let _ : IsManifold globalDeckBaseModel ∞
       (RegularBase (U := A.modular.modularParameter.toTriangleUniformization)) :=
     regularBase_isManifold hproper
   let _ := familyIsCancelSMul (regularParameterMap A.periods)
@@ -909,9 +909,9 @@ public theorem centralFamilyProduct_isManifold :
       (regularParameterMap_compactUniformLowerBound A.periods))
   let htotal := regularTotalSpace_isManifold_and_projection_isLocalDiffeomorph
     A.periods hproper ∞
-  let _ : IsManifold GlobalDeckTotalModel ∞ (RegularTotalSpace A.periods) := htotal.1
+  let _ : IsManifold globalDeckTotalModel ∞ (RegularTotalSpace A.periods) := htotal.1
   let _ : LocallyCompactSpace (RegularTotalSpace A.periods) :=
-    Manifold.locallyCompact_of_finiteDimensional GlobalDeckTotalModel
+    Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
   let _ := regularFamilyDeckAction A.periods
   let _ : IsCancelSMul Delta (RegularTotalSpace A.periods) :=
     regularFamilyDeckAction_isCancelSMul_of_fuchsian A.periods
@@ -921,7 +921,7 @@ public theorem centralFamilyProduct_isManifold :
   let _ : ContinuousConstSMul Delta (RegularTotalSpace A.periods) :=
     regularFamilyDeckAction_continuousConstSMul A.periods hproper
   let _ := A.centralFamilyProductCharts
-  simpa [PaperAnalyticData.centralFamilyProductCharts, RegularSmoothnessOrder] using
+  simpa [PaperAnalyticData.centralFamilyProductCharts, regularSmoothnessOrder] using
     (fuchsianPuncturedGlobalFamily_isManifold_and_projection_isLocalDiffeomorph
       A.modular.modularParameter A.periods).1
 
@@ -936,11 +936,11 @@ public theorem orderThreePuncturedCollarToCentralFamily_isLocalDiffeomorph_compl
       (A.orderThreePuncturedCollarToCentralFamily P.sourceData) := by
   let _ := A.totalSpaceCharts
   let _ := A.orderThreeAffinePuncturedQuotientCharts P.radius
-  let _ : IsManifold GlobalDeckTotalModel ∞
+  let _ : IsManifold globalDeckTotalModel ∞
       (A.OrderThreeAffinePuncturedQuotient P.radius) :=
     A.orderThreeAffinePuncturedQuotient_isManifold P.radius
   let _ := A.centralFamilyProductCharts
-  let _ : IsManifold GlobalDeckTotalModel ∞ A.CentralFamily :=
+  let _ : IsManifold globalDeckTotalModel ∞ A.CentralFamily :=
     A.centralFamilyProduct_isManifold
   let h := A.orderThreePuncturedCollarToCentralFamily_isLocalDiffeomorph P.sourceData
   let _ : ChartedSpace ComplexModel (A.OrderThreeAffinePuncturedQuotient P.radius) :=
@@ -960,13 +960,13 @@ public theorem orderThreePuncturedCollarToFilling_isLocalDiffeomorph_complex
       (A.orderThreePuncturedCollarToFilling P.radius) := by
   let _ := A.totalSpaceCharts
   let _ := A.orderThreeAffinePuncturedQuotientCharts P.radius
-  let _ : IsManifold GlobalDeckTotalModel ∞
+  let _ : IsManifold globalDeckTotalModel ∞
       (A.OrderThreeAffinePuncturedQuotient P.radius) :=
     A.orderThreeAffinePuncturedQuotient_isManifold P.radius
   let _ := A.orderThreeFillingSourceCharts P.radius
   let _ := A.orderThreeFillingAction P.radius
   let _ := A.orderThreeFillingProductCharts P.radius
-  let _ : IsManifold GlobalDeckTotalModel ∞
+  let _ : IsManifold globalDeckTotalModel ∞
       (A.OrderThreeVaryingFilling P.radius) :=
     A.orderThreeFillingProduct_isManifold P.radius
   let h := A.orderThreePuncturedCollarToFilling_isLocalDiffeomorph P.radius
@@ -987,11 +987,11 @@ public theorem orderFourPuncturedCollarToCentralFamily_isLocalDiffeomorph_comple
       (A.orderFourPuncturedCollarToCentralFamily P.sourceData) := by
   let _ := A.totalSpaceCharts
   let _ := A.orderFourAffinePuncturedQuotientCharts P.radius
-  let _ : IsManifold GlobalDeckTotalModel ∞
+  let _ : IsManifold globalDeckTotalModel ∞
       (A.OrderFourAffinePuncturedQuotient P.radius) :=
     A.orderFourAffinePuncturedQuotient_isManifold P.radius
   let _ := A.centralFamilyProductCharts
-  let _ : IsManifold GlobalDeckTotalModel ∞ A.CentralFamily :=
+  let _ : IsManifold globalDeckTotalModel ∞ A.CentralFamily :=
     A.centralFamilyProduct_isManifold
   let h := A.orderFourPuncturedCollarToCentralFamily_isLocalDiffeomorph P.sourceData
   let _ : ChartedSpace ComplexModel (A.OrderFourAffinePuncturedQuotient P.radius) :=
@@ -1011,13 +1011,13 @@ public theorem orderFourPuncturedCollarToFilling_isLocalDiffeomorph_complex
       (A.orderFourPuncturedCollarToFilling P.radius) := by
   let _ := A.totalSpaceCharts
   let _ := A.orderFourAffinePuncturedQuotientCharts P.radius
-  let _ : IsManifold GlobalDeckTotalModel ∞
+  let _ : IsManifold globalDeckTotalModel ∞
       (A.OrderFourAffinePuncturedQuotient P.radius) :=
     A.orderFourAffinePuncturedQuotient_isManifold P.radius
   let _ := A.orderFourFillingSourceCharts P.radius
   let _ := A.orderFourFillingAction P.radius
   let _ := A.orderFourFillingProductCharts P.radius
-  let _ : IsManifold GlobalDeckTotalModel ∞
+  let _ : IsManifold globalDeckTotalModel ∞
       (A.OrderFourVaryingFilling P.radius) :=
     A.orderFourFillingProduct_isManifold P.radius
   let h := A.orderFourPuncturedCollarToFilling_isLocalDiffeomorph P.radius

@@ -64,8 +64,6 @@ public structure ParabolicCuspLocalInverse
   lift_shift : ∀ s ∈ upperHalfPlaneAbove targetHeight,
     lift (s - targetWidth) = upperHalfPlaneRealTranslate sourceWidth (lift s)
 
-namespace Established
-
 /-- The degree-one holomorphic germ induced by a translation-equivariant half-plane map.
 
 After passing to exponential coordinates, the equivariance makes the target cusp parameter a
@@ -327,7 +325,7 @@ public theorem exists_parabolicCuspSimpleGerm
 The simple germ above has a holomorphic local inverse at zero. A logarithmic lift, corrected by
 its constant target-period ambiguity, gives the stated coherent inverse. This result is independent
 of modular forms, period functions, and the six-sphere construction. -/
-public theorem parabolicCuspLocalInverse
+public theorem nonempty_parabolicCuspLocalInverse
     (sourceWidth targetWidth sourceHeight : ℝ)
     (sourceWidth_pos : 0 < sourceWidth) (targetWidth_pos : 0 < targetWidth)
     (tau : UpperHalfPlane → UpperHalfPlane) (tau_holomorphic : MDiff tau)
@@ -585,8 +583,6 @@ public theorem parabolicCuspLocalInverse
     rw [show s - targetWidth - offset = (s - offset) - targetWidth by ring]
     exact hraw_shift (s - offset)
 
-end Established
-
 /-- Translation by the explicit source cusp width is the Fuchsian parabolic action. -/
 public theorem upperHalfPlaneRealTranslate_sourceCuspWidth (z : UpperHalfPlane) :
     upperHalfPlaneRealTranslate sourceCuspWidth z = fuchsianSourceAction g₀ • z := by
@@ -598,7 +594,7 @@ public theorem upperHalfPlaneRealTranslate_sourceCuspWidth (z : UpperHalfPlane) 
 /-- The established modular parameter intertwines the explicit source translation with the
 unit target translation. -/
 public theorem establishedModularParameter_tau_translate
-    (E : EstablishedFuchsianModularParameter) (z : UpperHalfPlane) :
+    (E : NormalizedFuchsianModularParameter) (z : UpperHalfPlane) :
     E.modularParameter.tau (upperHalfPlaneRealTranslate sourceCuspWidth z) =
       upperHalfPlaneRealTranslate 1 (E.modularParameter.tau z) := by
   apply UpperHalfPlane.coe_injective
@@ -610,16 +606,16 @@ public theorem establishedModularParameter_tau_translate
 /-- The general parabolic theorem supplies a cusp inverse for the modular parameter retained by
 `EstablishedFuchsianModularParameter`. No additional source or target cusp axiom is required. -/
 public theorem exists_establishedModularParameter_cuspLocalInverse
-    (E : EstablishedFuchsianModularParameter) :
+    (E : NormalizedFuchsianModularParameter) :
     Nonempty (ParabolicCuspLocalInverse sourceCuspWidth 1 1 E.modularParameter.tau) :=
-  Established.parabolicCuspLocalInverse sourceCuspWidth 1 1 sourceCuspWidth_pos zero_lt_one
+  nonempty_parabolicCuspLocalInverse sourceCuspWidth 1 1 sourceCuspWidth_pos zero_lt_one
     E.modularParameter.tau E.modularParameter.tau_holomorphic
       (establishedModularParameter_tau_translate E)
 
 /-- The selected assembled period family has the same exact parabolic translation law, regardless
 of how its final nondegeneracy shift was selected. -/
 public theorem assembledPeriodFunctions_tau_translate
-    (E : EstablishedFuchsianModularParameter) (D : FuchsianPeriodLocalData E)
+    (E : NormalizedFuchsianModularParameter) (D : FuchsianPeriodLocalData E)
     (z : UpperHalfPlane) :
     (assembledFuchsianPeriodFunctions E D).tau
         (upperHalfPlaneRealTranslate sourceCuspWidth z) =
@@ -632,10 +628,10 @@ public theorem assembledPeriodFunctions_tau_translate
 /-- The general parabolic inverse theorem constructs the normalized cusp coordinate required by
 the Fuchsian period expansion. -/
 public theorem exists_normalizedFuchsianCuspCoordinate
-    (E : EstablishedFuchsianModularParameter) (D : FuchsianPeriodLocalData E) :
+    (E : NormalizedFuchsianModularParameter) (D : FuchsianPeriodLocalData E) :
     Nonempty (NormalizedFuchsianCuspCoordinate E D) := by
   let F := assembledFuchsianPeriodFunctions E D
-  obtain ⟨L⟩ := Established.parabolicCuspLocalInverse sourceCuspWidth 1 1
+  obtain ⟨L⟩ := nonempty_parabolicCuspLocalInverse sourceCuspWidth 1 1
     sourceCuspWidth_pos zero_lt_one F.tau F.tau_holomorphic
       (assembledPeriodFunctions_tau_translate E D)
   refine ⟨{

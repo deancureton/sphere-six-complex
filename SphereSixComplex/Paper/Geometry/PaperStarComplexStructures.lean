@@ -29,7 +29,7 @@ variable (A : PaperAnalyticData)
 
 /-- The quotient complex atlases on the cusp, order-three, and order-four fillings. -/
 @[instance_reducible, expose] public noncomputable def starFillingCharts :
-    ∀ i, ChartedSpace ComplexModel (A.starFillingType i) :=
+    ∀ i, ChartedSpace ComplexModel (A.StarFilling i) :=
   Fin.cases (actualLocalCuspFillingCharts A.starCuspWitness) fun i ↦
     Fin.cases
       (A.orderThreeFillingComplexCharts A.starSeparation.orderThree.radius)
@@ -44,7 +44,7 @@ public theorem starCentral_isManifold :
 /-- Every filling member of the concrete star is a complex three-manifold. -/
 public theorem starFilling_isManifold :
     letI (i : Fin 3) := A.starFillingCharts i
-    ∀ i, IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞ (A.starFillingType i) := by
+    ∀ i, IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞ (A.StarFilling i) := by
   intro i
   fin_cases i
   · exact actualLocalCuspFilling_isManifold A.starCuspWitness

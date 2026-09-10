@@ -17,7 +17,7 @@ public theorem cwIntegralPointClass_natural {A X : TopCat} (i : A ⟶ X) (a : A)
 
 public def cwSkeletalPointClass (X : Type) [TopologicalSpace X] [T2Space X]
     [Topology.CWComplex (Set.univ : Set X)] (p : IntegralCWSkeletonLT X 1) :
-    AddCommGrpCat.of ℤ ⟶ IntegralCWRelativeCellObject X 0 :=
+    AddCommGrpCat.of ℤ ⟶ integralCWRelativeCellObject X 0 :=
   cwIntegralPointClass (TopCat.of (IntegralCWSkeletonLT X 1)) p ≫
     HomologicalComplex.homologyMap (cwRelativeIntegralSingularChainProjection
       (integralCWSkeletonInclusion X 0)) 0

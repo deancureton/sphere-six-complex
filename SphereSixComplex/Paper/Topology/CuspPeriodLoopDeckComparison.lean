@@ -14,7 +14,7 @@ open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.InfiniteA2Toric
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
 
 public def localCuspPeriodLift
@@ -68,20 +68,20 @@ public theorem localCuspPeriodLoop_homology
     (W : ActualPuncturedCuspCollarWitness N M) (s : ℂ)
     (hs : s ∈ cuspHalfPlane N.height)
     (hsr : cuspQ s ∈ Metric.ball (0 : ℂ) W.localWitness.radius)
-    (e : LocalCarrier M W.localWitness.radius) (lambda : ParameterLattice) :
+    (e : localCarrier M W.localWitness.radius) (lambda : ParameterLattice) :
     let _ := actualLocalCuspQuotientAction W
-    let _ : SimplyConnectedSpace (LocalCarrier M W.localWitness.radius) :=
+    let _ : SimplyConnectedSpace (localCarrier M W.localWitness.radius) :=
       M.localCarrierSimplyConnected W.localWitness.radius W.localWitness.radius_pos
     let hp := actualCuspFillingProjection_isQuotientCoveringMap W
-    let _ : PathConnectedSpace (actualLocalCuspFilling W) :=
+    let _ : PathConnectedSpace (ActualLocalCuspFilling W) :=
       hp.surjective.pathConnectedSpace hp.continuous
     Topology.abelianCoverHomologyEquiv hp e lambda =
       StandardCircleHomologyLiftDegree.loopHomologyClass (localCuspPeriodLoop W s hs hsr lambda) := by
   let _ := actualLocalCuspQuotientAction W
-  let _ : SimplyConnectedSpace (LocalCarrier M W.localWitness.radius) :=
+  let _ : SimplyConnectedSpace (localCarrier M W.localWitness.radius) :=
     M.localCarrierSimplyConnected W.localWitness.radius W.localWitness.radius_pos
   let hp := actualCuspFillingProjection_isQuotientCoveringMap W
-  let _ : PathConnectedSpace (actualLocalCuspFilling W) :=
+  let _ : PathConnectedSpace (ActualLocalCuspFilling W) :=
     hp.surjective.pathConnectedSpace hp.continuous
   exact Topology.abelianCoverHomologyEquiv_of_lift hp e _
     (Additive.toMul lambda) (localCuspPeriodLoop W s hs hsr lambda)

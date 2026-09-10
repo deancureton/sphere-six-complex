@@ -89,7 +89,7 @@ public theorem affineStripLift_nonempty :
     affineVerticalStrip_contractibleSpace
   let _ : SimplyConnectedSpace affineVerticalStrip :=
     SimplyConnectedSpace.ofContractible _
-  let f : C(affineVerticalStrip, RegularCoordinateBase) :=
+  let f : C(affineVerticalStrip, regularCoordinateBase) :=
     ⟨fun z ↦ ⟨z.1, affineVerticalStrip_subset z.2⟩,
       continuous_subtype_val.subtype_mk _⟩
   let a₀ : affineVerticalStrip :=
@@ -129,7 +129,7 @@ public theorem isOpenMap_of_isLocalHomeomorph_lift
   exact e.open_source.inter ((hopen T hTopen).preimage hp.continuous)
 
 /-- The affine strip, included into the twice-punctured affine coordinate line. -/
-public def stripInclusion (z : affineVerticalStrip) : RegularCoordinateBase :=
+public def stripInclusion (z : affineVerticalStrip) : regularCoordinateBase :=
   ⟨z.1, affineVerticalStrip_subset z.2⟩
 
 public theorem stripInclusion_continuous : Continuous stripInclusion :=
@@ -163,7 +163,7 @@ public theorem existsUnique_sectionSevenAffineStripContinuousLift
     affineVerticalStrip_contractibleSpace
   let _ : SimplyConnectedSpace affineVerticalStrip :=
     SimplyConnectedSpace.ofContractible _
-  let f : C(affineVerticalStrip, RegularCoordinateBase) :=
+  let f : C(affineVerticalStrip, regularCoordinateBase) :=
     ⟨stripInclusion, stripInclusion_continuous⟩
   exact A.regularCoordinate_isCoveringMap'.existsUnique_continuousMap_lifts f a₀ e₀ he₀
 
@@ -445,7 +445,7 @@ public theorem stripLiftCover_inj (L : A.AffineStripLift)
     rw [A.centralFamilyCoordinate_stripLiftCover, A.centralFamilyCoordinate_stripLiftCover]
       at hcoord
     have hval : (z : ℂ) = (z' : ℂ) :=
-      congrArg (Subtype.val : RegularCoordinateBase → ℂ) hcoord
+      congrArg (Subtype.val : regularCoordinateBase → ℂ) hcoord
     exact Subtype.ext hval
   subst hz
   refine ⟨rfl, ?_⟩
@@ -520,7 +520,7 @@ public theorem range_stripLiftMap (L : A.AffineStripLift) :
       Subtype.ext (L.lift_coordinate z)
     obtain ⟨g, hgcoord⟩ :=
       (A.modular.sourceCoordinate.coordinate_eq_iff_orbit (L.lift z).1 bw.1.1).mp
-        (congrArg (Subtype.val : RegularCoordinateBase → ℂ) hcoord)
+        (congrArg (Subtype.val : regularCoordinateBase → ℂ) hcoord)
     have hgb : regularSourceEquiv g (L.lift z) = bw.1 := by
       apply Subtype.ext
       rw [regularSourceEquiv_val,
@@ -660,7 +660,7 @@ public def AffineCentralBandMarkedTrivialization
 real-period coordinates trivialize the varying lattice upstairs and the lifted simply connected
 strip is an honest sheet of the regular-coordinate covering, so their assembly descends to a
 global product homeomorphism with the canonical fibre coordinate. -/
-public theorem establishedActualCentralBandMarkedTrivialization
+public theorem affineCentralBandMarkedTrivialization
     (S : A.AffineCentralSeparation) :
     A.AffineCentralBandMarkedTrivialization S := by
   intro L
@@ -672,7 +672,7 @@ public theorem establishedActualCentralBandMarkedTrivialization
     have hcoord := congrArg A.centralFamilyCoordinate hkey
     rw [A.centralFamilyCoordinate_stripLiftPoint] at hcoord
     apply Subtype.ext
-    exact (congrArg (Subtype.val : RegularCoordinateBase → ℂ) hcoord).symm
+    exact (congrArg (Subtype.val : regularCoordinateBase → ℂ) hcoord).symm
   · intro p
     rw [Homeomorph.symm_symm]
     exact A.affineCentralBandProductHomeomorphOfLift_toCentralFamily S L p

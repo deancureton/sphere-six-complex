@@ -48,8 +48,8 @@ public def cylinderUpperSideHomotopy {X : Type} [TopologicalSpace X] (A : Set X)
   map_one_left p := by apply Subtype.ext; exact (cylinderUpperHomotopy A).map_one_left _
 
 public def cylinderTopUpperRelativeEquivalence {X : Type} [TopologicalSpace X] (A : Set X) :
-    HomotopyEquiv (CWRelativeIntegralSingularChainComplex (cylinderBaseInclusion A))
-      (CWRelativeIntegralSingularChainComplex (cylinderUpperSideInclusion A)) where
+    HomotopyEquiv (cwRelativeIntegralSingularChainComplex (cylinderBaseInclusion A))
+      (cwRelativeIntegralSingularChainComplex (cylinderUpperSideInclusion A)) where
   hom := cwRelativeIntegralSingularChainMapOfPair (cylinderTopUpperPair A)
   inv := cwRelativeIntegralSingularChainMapOfPair (cylinderUpperTopPair A)
   homotopyHomInvId := Homotopy.ofEq (by

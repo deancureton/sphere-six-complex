@@ -21,14 +21,14 @@ open CategoryTheory CategoryTheory.Limits Simplicial
 
 namespace SphereSixComplex
 
-public noncomputable abbrev StandardSevenNormalizedIntegralChains :
+public noncomputable abbrev standardSevenNormalizedIntegralChains :
     ChainComplex AddCommGrpCat ℕ :=
   (Δ[7] : SSet.{0}).normalizedChainComplex (AddCommGrpCat.of ℤ)
 
 /-- The normalized chains of the full standard seven-simplex are exact in every positive
 degree. -/
 public theorem standardSeven_normalizedChains_exactAt (n : ℕ) (hn : n ≠ 0) :
-    StandardSevenNormalizedIntegralChains.ExactAt n := by
+    standardSevenNormalizedIntegralChains.ExactAt n := by
   let ed := (SSet.Augmented.StandardSimplex.extraDegeneracy
     (SimplexCategory.mk 7)).map ((sigmaConst.obj (AddCommGrpCat.of ℤ)))
   let e := ed.homotopyEquiv
@@ -43,8 +43,8 @@ public theorem standardSeven_normalizedChains_exactAt (n : ℕ) (hn : n ≠ 0) :
 simplex, regarded as a simplex of the boundary. -/
 public noncomputable def standardSevenNormalizedChainsToBoundary
     (n : ℕ) (hn : n < 7) :
-    StandardSevenNormalizedIntegralChains.X n ⟶
-      BoundarySevenNormalizedIntegralChains.X n :=
+    standardSevenNormalizedIntegralChains.X n ⟶
+      boundarySevenNormalizedIntegralChains.X n :=
   ((Δ[7] : SSet.{0}).isColimitCofanNormalizedChainComplex
     (AddCommGrpCat.of ℤ) n).desc
       (Cofan.mk _ (fun x ↦
@@ -68,8 +68,8 @@ public theorem ιNormalizedChainComplex_standardSevenNormalizedChainsToBoundary
 /-- Below the top dimension, normalized chains of the boundary and of the full simplex agree. -/
 public noncomputable def boundarySevenNormalizedChainsXIsoStandard
     (n : ℕ) (hn : n < 7) :
-    BoundarySevenNormalizedIntegralChains.X n ≅
-      StandardSevenNormalizedIntegralChains.X n where
+    boundarySevenNormalizedIntegralChains.X n ≅
+      standardSevenNormalizedIntegralChains.X n where
   hom := (SSet.normalizedChainComplexMap
     (SSet.boundary 7 : SSet.Subcomplex (Δ[7] : SSet.{0})).ι
       (AddCommGrpCat.of ℤ)).f n
@@ -99,8 +99,8 @@ public noncomputable def boundarySevenNormalizedChainsXIsoStandard
 /-- The degree-six cycle kernels of the boundary and the full simplex agree, because their
 normalized groups and differential agree in degrees six and five. -/
 public noncomputable def boundarySevenTopCyclesIsoStandardSevenTopCycles :
-    kernel (BoundarySevenNormalizedIntegralChains.d 6 5) ≅
-      kernel (StandardSevenNormalizedIntegralChains.d 6 5) := by
+    kernel (boundarySevenNormalizedIntegralChains.d 6 5) ≅
+      kernel (standardSevenNormalizedIntegralChains.d 6 5) := by
   let f := SSet.normalizedChainComplexMap
     (SSet.boundary 7 : SSet.Subcomplex (Δ[7] : SSet.{0})).ι
       (AddCommGrpCat.of ℤ)
@@ -119,14 +119,14 @@ public noncomputable def boundarySevenTopCyclesIsoStandardSevenTopCycles :
   letI : IsIso φ.τ₃ := by
     dsimp [φ, shortComplexFunctor']
     infer_instance
-  exact ((BoundarySevenNormalizedIntegralChains.sc' 7 6 5).cyclesIsoKernel).symm ≪≫
+  exact ((boundarySevenNormalizedIntegralChains.sc' 7 6 5).cyclesIsoKernel).symm ≪≫
     asIso (ShortComplex.cyclesMap φ) ≪≫
-      (StandardSevenNormalizedIntegralChains.sc' 7 6 5).cyclesIsoKernel
+      (standardSevenNormalizedIntegralChains.sc' 7 6 5).cyclesIsoKernel
 
 /-- The top normalized group of the full seven-simplex is one copy of `ℤ`, indexed by its
 unique nondegenerate top simplex. -/
 public noncomputable def standardSevenNormalizedChainsXSevenIsoInt :
-    StandardSevenNormalizedIntegralChains.X 7 ≅ AddCommGrpCat.of ℤ := by
+    standardSevenNormalizedIntegralChains.X 7 ≅ AddCommGrpCat.of ℤ := by
   let top : (Δ[7] : SSet.{0}).nonDegenerate 7 :=
     ⟨SSet.stdSimplex.objEquiv.symm (𝟙 (SimplexCategory.mk 7)),
       SSet.stdSimplex.objEquiv_symm_id_mem_nonDegenerate 7⟩
@@ -151,12 +151,12 @@ public noncomputable def standardSevenNormalizedChainsXSevenIsoInt :
 /-- Exactness in degree seven and vanishing in degree eight make the top differential of the
 full simplex a monomorphism. -/
 public theorem standardSeven_normalized_d_seven_six_mono :
-    Mono (StandardSevenNormalizedIntegralChains.d 7 6) := by
+    Mono (standardSevenNormalizedIntegralChains.d 7 6) := by
   have h₇ := standardSeven_normalizedChains_exactAt 7 (by omega)
-  have h₇' : (StandardSevenNormalizedIntegralChains.sc' 8 7 6).Exact :=
+  have h₇' : (standardSevenNormalizedIntegralChains.sc' 8 7 6).Exact :=
     ShortComplex.exact_of_iso
-      (StandardSevenNormalizedIntegralChains.isoSc' 8 7 6 (by simp) (by simp)) h₇
-  have h₈ : IsZero (StandardSevenNormalizedIntegralChains.X 8) :=
+      (standardSevenNormalizedIntegralChains.isoSc' 8 7 6 (by simp) (by simp)) h₇
+  have h₈ : IsZero (standardSevenNormalizedIntegralChains.X 8) :=
     (Δ[7] : SSet.{0}).isZero_normalizedChainComplex_X_of_hasDimensionLT
       (AddCommGrpCat.of ℤ) 8 8
   apply h₇'.mono_g
@@ -165,24 +165,24 @@ public theorem standardSeven_normalized_d_seven_six_mono :
 /-- Exactness in degree six identifies the top differential with the kernel of the next
 differential. -/
 public noncomputable def standardSevenNormalizedChainsXSevenIsoTopCycles :
-    StandardSevenNormalizedIntegralChains.X 7 ≅
-      kernel (StandardSevenNormalizedIntegralChains.d 6 5) := by
-  letI : Mono (StandardSevenNormalizedIntegralChains.d 7 6) :=
+    standardSevenNormalizedIntegralChains.X 7 ≅
+      kernel (standardSevenNormalizedIntegralChains.d 6 5) := by
+  letI : Mono (standardSevenNormalizedIntegralChains.d 7 6) :=
     standardSeven_normalized_d_seven_six_mono
   have h₆ := standardSeven_normalizedChains_exactAt 6 (by omega)
-  have h₆' : (StandardSevenNormalizedIntegralChains.sc' 7 6 5).Exact :=
+  have h₆' : (standardSevenNormalizedIntegralChains.sc' 7 6 5).Exact :=
     ShortComplex.exact_of_iso
-      (StandardSevenNormalizedIntegralChains.isoSc' 7 6 5 (by simp) (by simp)) h₆
-  letI : Mono (StandardSevenNormalizedIntegralChains.sc' 7 6 5).f := by
-    change Mono (StandardSevenNormalizedIntegralChains.d 7 6)
+      (standardSevenNormalizedIntegralChains.isoSc' 7 6 5 (by simp) (by simp)) h₆
+  letI : Mono (standardSevenNormalizedIntegralChains.sc' 7 6 5).f := by
+    change Mono (standardSevenNormalizedIntegralChains.d 7 6)
     exact standardSeven_normalized_d_seven_six_mono
   exact IsLimit.conePointUniqueUpToIso h₆'.fIsKernel
-    (limit.isLimit (parallelPair (StandardSevenNormalizedIntegralChains.d 6 5) 0))
+    (limit.isLimit (parallelPair (standardSevenNormalizedIntegralChains.d 6 5) 0))
 
 /-- The degree-six cycle kernel of the full seven-simplex is infinite cyclic, generated by the
 boundary of its unique nondegenerate top simplex. -/
 public noncomputable def standardSevenTopCyclesIsoInt :
-    kernel (StandardSevenNormalizedIntegralChains.d 6 5) ≅ AddCommGrpCat.of ℤ :=
+    kernel (standardSevenNormalizedIntegralChains.d 6 5) ≅ AddCommGrpCat.of ℤ :=
   standardSevenNormalizedChainsXSevenIsoTopCycles.symm ≪≫
     standardSevenNormalizedChainsXSevenIsoInt
 

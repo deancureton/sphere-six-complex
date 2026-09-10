@@ -214,14 +214,14 @@ public theorem regularFlatTransport_continuous : Continuous A.regularFlatTranspo
 section FamilyTransport
 
 variable {A}
-variable {small big : Set RegularCoordinateBase}
+variable {small big : Set regularCoordinateBase}
 variable {Cs Cb : InvariantOpenCarrier (regularFamilyDeckAction A.periods)}
 
 /-- The base point of a family point of an invariant carrier, as a point of the corresponding
 regular-base region preimage. -/
 public def carrierBasePoint (hC : ∀ q, q ∈ Cs.carrier ↔
     A.regularCoordinate (regularTotalSpaceBase A.periods q) ∈ small) :
-    C(Cs.carrier, coveringRegionPreimage A.regularCoordinate small) where
+    C(Cs.carrier, CoveringRegionPreimage A.regularCoordinate small) where
   toFun q := ⟨regularTotalSpaceBase A.periods q.1, (hC q.1).mp q.2⟩
   continuous_toFun :=
     ((regularTotalSpaceBase_continuous A.periods).comp continuous_subtype_val).subtype_mk _
@@ -239,7 +239,7 @@ public theorem carrierBasePoint_equivariant
 public theorem regularFlatTransport_mem_carrier
     (hC : ∀ q, q ∈ Cs.carrier ↔
       A.regularCoordinate (regularTotalSpaceBase A.periods q) ∈ small)
-    (b : coveringRegionPreimage A.regularCoordinate small)
+    (b : CoveringRegionPreimage A.regularCoordinate small)
     (x : RegularTotalSpace A.periods) :
     A.regularFlatTransport (b.1, x) ∈ Cs.carrier := by
   refine (hC _).mpr ?_

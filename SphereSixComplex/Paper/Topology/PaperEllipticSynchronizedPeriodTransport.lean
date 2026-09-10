@@ -31,7 +31,7 @@ public theorem orderFour_correctedPeriodTransportIdentity :
       A.orderFourCollarRegularBase_projects⟩
   let ey : (regularFamilyQuotientMap A.periods) ⁻¹' {A.centralAffineBase} :=
     ⟨A.cuspRegularRepresentative,
-      A.cuspRegularRepresentative_projects.trans A.centralAffineBase_eq_actualCuspCentralBase.symm⟩
+      A.cuspRegularRepresentative_projects.trans A.centralAffineBase_eq_cuspCentralBase.symm⟩
   let W := A.orderFourCentralBaseComparisonTracePath H
   obtain ⟨Q, hQ⟩ := SphereSixComplex.IsCoveringMap.exists_path_lift_of_monodromy_eq
     hp.isCoveringMap W ex (hp.toPermFiber A.centralAffineBase g ey) hg
@@ -132,7 +132,7 @@ public theorem orderThree_correctedPeriodTransportIdentity :
       A.orderThreeCollarRegularBase_projects⟩
   let ey : (regularFamilyQuotientMap A.periods) ⁻¹' {A.centralAffineBase} :=
     ⟨A.cuspRegularRepresentative,
-      A.cuspRegularRepresentative_projects.trans A.centralAffineBase_eq_actualCuspCentralBase.symm⟩
+      A.cuspRegularRepresentative_projects.trans A.centralAffineBase_eq_cuspCentralBase.symm⟩
   let W := A.orderThreeCentralBaseComparisonTracePath H
   obtain ⟨Q, hQ⟩ := SphereSixComplex.IsCoveringMap.exists_path_lift_of_monodromy_eq
     hp.isCoveringMap W ex (hp.toPermFiber A.centralAffineBase g ey) hg

@@ -21,7 +21,7 @@ namespace SphereSixComplex.Periods
 
 open SphereSixComplex.TriangleGroup
 
-variable (E : EstablishedFuchsianModularParameter)
+variable (E : NormalizedFuchsianModularParameter)
 
 /-- The global `mu` selected from exact local `O(-1)` torsor data. -/
 @[expose] public noncomputable def descendedFuchsianMu

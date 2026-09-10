@@ -27,7 +27,7 @@ namespace SphereSixComplex
 
 /-- The complete cellular differential determined by the cusp incidence calculation. -/
 public def cuspToricCellularBoundary :
-    (n : ℕ) → (cuspWCellIndex n.succ → ℤ) →+ (cuspWCellIndex n → ℤ)
+    (n : ℕ) → (CuspWCellIndex n.succ → ℤ) →+ (CuspWCellIndex n → ℤ)
   | 0 => cuspToricCellularBoundaryOne
   | _ + 1 => 0
 
@@ -42,7 +42,7 @@ public theorem cuspToricCellularBoundary_comp (n : ℕ) :
 /-- The explicit integral cellular chain complex predicted by the labelled toric incidence data. -/
 public def cuspToricCellularChainComplex : ChainComplex AddCommGrpCat ℕ :=
   ChainComplex.of
-    (fun n ↦ AddCommGrpCat.of (cuspWCellIndex n → ℤ))
+    (fun n ↦ AddCommGrpCat.of (CuspWCellIndex n → ℤ))
     (fun n ↦ AddCommGrpCat.ofHom (cuspToricCellularBoundary n))
     (by
       intro n
@@ -117,14 +117,14 @@ public noncomputable def cuspToricCellularChainComplex_homologyFourEquiv :
       h.left.homologyIso).addCommGroupIsoToAddEquiv.trans
       cuspToricCellularDegreeFourEquiv
 
-public theorem cuspWCellIndexFinite (n : ℕ) : Finite (cuspWCellIndex n) := by
+public theorem cuspWCellIndexFinite (n : ℕ) : Finite (CuspWCellIndex n) := by
   rcases n with (_ | _ | _ | _ | _ | n)
-  · simpa [cuspWCellIndex] using (inferInstance : Finite (Fin 2))
-  · simpa [cuspWCellIndex] using (inferInstance : Finite (Fin 3))
-  · simpa [cuspWCellIndex] using (inferInstance : Finite (Fin 4))
-  · simpa [cuspWCellIndex] using (inferInstance : Finite (Fin 2))
-  · simpa [cuspWCellIndex] using (inferInstance : Finite (Fin 1))
-  · simpa [cuspWCellIndex] using (inferInstance : Finite Empty)
+  · simpa [CuspWCellIndex] using (inferInstance : Finite (Fin 2))
+  · simpa [CuspWCellIndex] using (inferInstance : Finite (Fin 3))
+  · simpa [CuspWCellIndex] using (inferInstance : Finite (Fin 4))
+  · simpa [CuspWCellIndex] using (inferInstance : Finite (Fin 2))
+  · simpa [CuspWCellIndex] using (inferInstance : Finite (Fin 1))
+  · simpa [CuspWCellIndex] using (inferInstance : Finite Empty)
 
 /-- Reindex integer-valued coordinates along an equivalence. -/
 public def integerFunctionReindexAddEquiv {I J : Type} (e : I ≃ J) :
@@ -138,10 +138,10 @@ public def integerFunctionReindexAddEquiv {I J : Type} (e : I ≃ J) :
 /-- The cellular basis written in the selected standard `A₂` cell coordinates. -/
 public noncomputable def labelledA2CellBasis
     {Y : Type} [TopologicalSpace Y] [Topology.CWComplex (Set.univ : Set Y)]
-    (e : ∀ n, Topology.CWComplex.cell (Set.univ : Set Y) n ≃ cuspWCellIndex n)
+    (e : ∀ n, Topology.CWComplex.cell (Set.univ : Set Y) n ≃ CuspWCellIndex n)
     (M : IntegralCWCellularHomologyModel Y) (n : ℕ) :
-    (cuspWCellIndex n → ℤ) ≃+ M.chainComplex.X n := by
-  letI : Finite (cuspWCellIndex n) := cuspWCellIndexFinite n
+    (CuspWCellIndex n → ℤ) ≃+ M.chainComplex.X n := by
+  letI : Finite (CuspWCellIndex n) := cuspWCellIndexFinite n
   letI : Finite (Topology.CWComplex.cell (Set.univ : Set Y) n) :=
     Finite.of_equiv _ (e n).symm
   exact
@@ -153,16 +153,16 @@ The field identifies the genuine cellular boundary in every degree; it neither s
 any homology calculation. -/
 public structure StandardA2ToricCellularIncidenceData
     {Y : Type} [TopologicalSpace Y] [Topology.CWComplex (Set.univ : Set Y)]
-    (e : ∀ n, Topology.CWComplex.cell (Set.univ : Set Y) n ≃ cuspWCellIndex n)
+    (e : ∀ n, Topology.CWComplex.cell (Set.univ : Set Y) n ≃ CuspWCellIndex n)
     (M : IntegralCWCellularHomologyModel Y) : Prop where
-  boundary_eq : ∀ (n : ℕ) (x : cuspWCellIndex n.succ → ℤ),
+  boundary_eq : ∀ (n : ℕ) (x : CuspWCellIndex n.succ → ℤ),
     M.chainComplex.d n.succ n (labelledA2CellBasis e M n.succ x) =
       labelledA2CellBasis e M n (cuspToricCellularBoundary n x)
 
 namespace StandardA2ToricCellularIncidenceData
 
 variable {Y : Type} [TopologicalSpace Y] [Topology.CWComplex (Set.univ : Set Y)]
-variable {e : ∀ n, Topology.CWComplex.cell (Set.univ : Set Y) n ≃ cuspWCellIndex n}
+variable {e : ∀ n, Topology.CWComplex.cell (Set.univ : Set Y) n ≃ CuspWCellIndex n}
 variable {M : IntegralCWCellularHomologyModel Y}
 
 /-- Exact incidence formulas identify the explicit cusp complex with the genuine cellular

@@ -108,7 +108,7 @@ turn. -/
 public theorem complexExpDeckGroup_generated_by_negOne :
     Subgroup.closure
       ({MulOpposite.op (Multiplicative.ofAdd (complexExpDeckMultiple (-1)))} :
-        Set (Multiplicative ComplexExpDeckGroup)ᵐᵒᵖ) = ⊤ := by
+        Set (Multiplicative complexExpDeckGroup)ᵐᵒᵖ) = ⊤ := by
   apply top_unique
   intro y _
   rw [Subgroup.mem_closure_singleton]
@@ -134,7 +134,7 @@ public theorem leftFundamentalGroup_generated_by_meridian :
   have hx : twicePuncturedComplexLeftFundamentalGroupEquiv x ∈
       Subgroup.closure
         ({MulOpposite.op (Multiplicative.ofAdd (complexExpDeckMultiple (-1)))} :
-          Set (Multiplicative ComplexExpDeckGroup)ᵐᵒᵖ) := by
+          Set (Multiplicative complexExpDeckGroup)ᵐᵒᵖ) := by
     rw [complexExpDeckGroup_generated_by_negOne]
     trivial
   rw [Subgroup.mem_closure_singleton] at hx
@@ -155,7 +155,7 @@ public theorem rightFundamentalGroup_generated_by_meridian :
   have hx : twicePuncturedComplexRightFundamentalGroupEquiv x ∈
       Subgroup.closure
         ({MulOpposite.op (Multiplicative.ofAdd (complexExpDeckMultiple (-1)))} :
-          Set (Multiplicative ComplexExpDeckGroup)ᵐᵒᵖ) := by
+          Set (Multiplicative complexExpDeckGroup)ᵐᵒᵖ) := by
     rw [complexExpDeckGroup_generated_by_negOne]
     trivial
   rw [Subgroup.mem_closure_singleton] at hx

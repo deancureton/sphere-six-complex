@@ -89,7 +89,7 @@ end ActualAffineFillingCoverSquares
 /-- The established analytic choices give a complete van Kampen witness for their actual star. -/
 public theorem actualStarHasVanKampenData :
     Topology.HasVanKampenData A.VanKampenSpace 0 1 (-1) :=
-  A.establishedActualEllipticRelatorNormalClosureResidual.elim fun R ↦
+  A.ellipticRelatorMembership_nonempty.elim fun R ↦
     R.hasVanKampenData
 
 end SphereSixComplex.Geometry.PaperAnalyticData

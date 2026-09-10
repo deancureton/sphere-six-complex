@@ -20,7 +20,7 @@ open GlobalTorusFamily EquivariantQuotientHomeomorph EllipticCayleyHomeomorph
 open EllipticLinearCollarGlobalDescent
 
 public def affineNormalizedOrderThreeHalfPlaneLift (A : PaperAnalyticData) :
-    C(affineVerticalStrip, A.orderThreeAffineHalfPlaneBaseLift) :=
+    C(affineVerticalStrip, A.OrderThreeAffineHalfPlaneBaseLift) :=
   ⟨fun z ↦ ⟨A.affineNormalizedStripContinuousLift z, by
       change (A.regularCoordinate (A.affineNormalizedStripContinuousLift z)).1.re < 2 / 3
       have h := congrArg Subtype.val
@@ -32,7 +32,7 @@ public def affineNormalizedOrderThreeHalfPlaneLift (A : PaperAnalyticData) :
 
 public def affineNormalizedOrderThreeRadialLift (A : PaperAnalyticData) :
     C(affineVerticalStrip,
-      A.orderThreeAffineDiscBaseLift A.affineOrderThreeMarkedDiscRadius) :=
+      A.OrderThreeAffineDiscBaseLift A.affineOrderThreeMarkedDiscRadius) :=
   let r := A.affineOrderThreeMarkedDiscRadius
   let hr₀ := A.affineOrderThreeMarkedDiscRadius_spec.1
   let hr : r ≤ 2 / 3 :=
@@ -57,9 +57,9 @@ public theorem affineNormalizedOrderThreeRadialLift_midpoint_cayley
     A.affineOrderThreeMarkedDiscRadius_spec.2.1.trans (by norm_num)
   let E := A.orderThreeBaseRadialEquiv (s := r / 2)
     (by linarith) (by linarith) hr
-  let xbig : A.orderThreeAffineHalfPlaneBaseLift :=
+  let xbig : A.OrderThreeAffineHalfPlaneBaseLift :=
     ⟨A.affineNormalizedMidpoint, by simpa only [Q.source] using hQhalf 0⟩
-  let xbigg : A.orderThreeAffineHalfPlaneBaseLift :=
+  let xbigg : A.OrderThreeAffineHalfPlaneBaseLift :=
     ⟨regularSourceEquiv g₁ A.affineNormalizedMidpoint,
       by simpa only [Q.target] using hQhalf 1⟩
   let Qbig : Path xbig xbigg :=
@@ -109,7 +109,7 @@ public theorem affineNormalizedOrderThreeRadialLift_midpoint_cayley
   simpa only [Qsmall.source] using hbound
 
 public def affineNormalizedOrderFourHalfPlaneLift (A : PaperAnalyticData) :
-    C(affineVerticalStrip, A.orderFourAffineHalfPlaneBaseLift) :=
+    C(affineVerticalStrip, A.OrderFourAffineHalfPlaneBaseLift) :=
   ⟨fun z ↦ ⟨A.affineNormalizedStripContinuousLift z, by
       change 1 / 3 < (A.regularCoordinate (A.affineNormalizedStripContinuousLift z)).1.re
       have h := congrArg Subtype.val
@@ -121,7 +121,7 @@ public def affineNormalizedOrderFourHalfPlaneLift (A : PaperAnalyticData) :
 
 public def affineNormalizedOrderFourRadialLift (A : PaperAnalyticData) :
     C(affineVerticalStrip,
-      A.orderFourAffineDiscBaseLift A.affineOrderFourMarkedDiscRadius) :=
+      A.OrderFourAffineDiscBaseLift A.affineOrderFourMarkedDiscRadius) :=
   let r := A.affineOrderFourMarkedDiscRadius
   let hr₀ := A.affineOrderFourMarkedDiscRadius_spec.1
   let hr : r ≤ 1 - 1 / 3 :=
@@ -146,9 +146,9 @@ public theorem affineNormalizedOrderFourRadialLift_midpoint_cayley
     A.affineOrderFourMarkedDiscRadius_spec.2.1.trans (by norm_num)
   let E := A.orderFourBaseRadialEquiv (s := r / 2)
     (by linarith) (by linarith) hr
-  let xbig : A.orderFourAffineHalfPlaneBaseLift :=
+  let xbig : A.OrderFourAffineHalfPlaneBaseLift :=
     ⟨A.affineNormalizedMidpoint, by simpa only [Q.source] using hQhalf 0⟩
-  let xbigg : A.orderFourAffineHalfPlaneBaseLift :=
+  let xbigg : A.OrderFourAffineHalfPlaneBaseLift :=
     ⟨regularSourceEquiv g₂ A.affineNormalizedMidpoint,
       by simpa only [Q.target] using hQhalf 1⟩
   let Qbig : Path xbig xbigg :=

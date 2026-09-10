@@ -24,7 +24,7 @@ variable (A : PaperAnalyticData)
 
 /-- The cusp collar has no sixth integral singular homology. -/
 public theorem subsingleton_homology_six_actualCuspCollar :
-    Subsingleton (IntegralSingularHomology 6 (A.starCollarSourceType 0)) := by
+    Subsingleton (IntegralSingularHomology 6 (A.StarCollarSource 0)) := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   have hT : FourTorusHomologicalModel (AdditiveTorus G.fiberParameter) :=

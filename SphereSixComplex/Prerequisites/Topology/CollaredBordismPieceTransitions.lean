@@ -91,7 +91,7 @@ end GenericOpenEmbeddingPresentation
 /-- The affine change from a left collar coordinate to the signed seam coordinate is smooth. -/
 private theorem contMDiff_seamFromLeftCollarSource :
     ContMDiff (I.prod (𝓡∂ 1)) (I.prod (𝓡∂ 1)) ∞
-      (seamFromLeftCollarSource : CollarSource M₁ → M₁ × OpenCollarParameter) := by
+      (seamFromLeftCollarSource : CollarSource M₁ → M₁ × openCollarParameter) := by
   apply contMDiff_fst.prodMk
   apply (ContMDiff.subtypeVal_comp_iff collarInterior _).mp
   apply contMDiff_iff_comp_subtypeVal_Icc.mpr
@@ -109,7 +109,7 @@ private theorem contMDiff_seamFromLeftCollarSource :
 /-- The affine change from a right collar coordinate to the signed seam coordinate is smooth. -/
 private theorem contMDiff_seamFromRightCollarSource :
     ContMDiff (I.prod (𝓡∂ 1)) (I.prod (𝓡∂ 1)) ∞
-      (seamFromRightCollarSource : CollarSource M₁ → M₁ × OpenCollarParameter) := by
+      (seamFromRightCollarSource : CollarSource M₁ → M₁ × openCollarParameter) := by
   apply contMDiff_fst.prodMk
   apply (ContMDiff.subtypeVal_comp_iff collarInterior _).mp
   apply contMDiff_iff_comp_subtypeVal_Icc.mpr
@@ -354,20 +354,20 @@ private theorem seamLeftOverlap_coordinate_lt
       toGlueLeft B₀₁ B₁₂ x.1) at hzrange
   rcases hzrange with ⟨x, hx⟩
   have hzimage : toGlueLeft B₀₁ B₁₂ x.1 ∈
-      signedSeamMap B₀₁ B₁₂ '' ({z.1} : Set (M₁ × OpenCollarParameter)) :=
+      signedSeamMap B₀₁ B₁₂ '' ({z.1} : Set (M₁ × openCollarParameter)) :=
     ⟨z.1, Set.mem_singleton z.1, hx.symm⟩
   obtain ⟨p, hpchart, hpz⟩ :=
     (toGlueLeft_mem_image_signedSeamMap_iff B₀₁ B₁₂ ({z.1} :
-      Set (M₁ × OpenCollarParameter)) x.1).1 hzimage
+      Set (M₁ × openCollarParameter)) x.1).1 hzimage
   have hpz' : seamFromLeftCollarSource p = z.1 := by
     simpa only [Set.mem_singleton_iff] using hpz
   rw [← hpz', seamCoordinate_fromLeftCollarSource]
-  have hnonneg : 0 ≤ ((p.2.1 : CollarParameter) : ℝ) := p.2.1.property.1
-  have hle : (1 - ((p.2.1 : CollarParameter) : ℝ)) / 2 ≤ (1 / 2 : ℝ) := by
+  have hnonneg : 0 ≤ ((p.2.1 : collarParameter) : ℝ) := p.2.1.property.1
+  have hle : (1 - ((p.2.1 : collarParameter) : ℝ)) / 2 ≤ (1 / 2 : ℝ) := by
     linarith
   apply lt_of_le_of_ne hle
   intro heq
-  have hrval : ((p.2.1 : CollarParameter) : ℝ) = 0 := by
+  have hrval : ((p.2.1 : collarParameter) : ℝ) = 0 := by
     linarith
   have hr : p.2 = halfCollarStart := by
     apply Subtype.ext
@@ -395,20 +395,20 @@ private theorem seamRightOverlap_coordinate_lt
       toGlueRight B₀₁ B₁₂ x.1) at hzrange
   rcases hzrange with ⟨x, hx⟩
   have hzimage : toGlueRight B₀₁ B₁₂ x.1 ∈
-      signedSeamMap B₀₁ B₁₂ '' ({z.1} : Set (M₁ × OpenCollarParameter)) :=
+      signedSeamMap B₀₁ B₁₂ '' ({z.1} : Set (M₁ × openCollarParameter)) :=
     ⟨z.1, Set.mem_singleton z.1, hx.symm⟩
   obtain ⟨p, hpchart, hpz⟩ :=
     (toGlueRight_mem_image_signedSeamMap_iff B₀₁ B₁₂ ({z.1} :
-      Set (M₁ × OpenCollarParameter)) x.1).1 hzimage
+      Set (M₁ × openCollarParameter)) x.1).1 hzimage
   have hpz' : seamFromRightCollarSource p = z.1 := by
     simpa only [Set.mem_singleton_iff] using hpz
   rw [← hpz', seamCoordinate_fromRightCollarSource]
-  have hnonneg : 0 ≤ ((p.2.1 : CollarParameter) : ℝ) := p.2.1.property.1
-  have hle : (1 / 2 : ℝ) ≤ (((p.2.1 : CollarParameter) : ℝ) + 1) / 2 := by
+  have hnonneg : 0 ≤ ((p.2.1 : collarParameter) : ℝ) := p.2.1.property.1
+  have hle : (1 / 2 : ℝ) ≤ (((p.2.1 : collarParameter) : ℝ) + 1) / 2 := by
     linarith
   apply lt_of_le_of_ne hle
   intro heq
-  have hrval : ((p.2.1 : CollarParameter) : ℝ) = 0 := by
+  have hrval : ((p.2.1 : collarParameter) : ℝ) = 0 := by
     linarith
   have hr : p.2 = halfCollarStart := by
     apply Subtype.ext
@@ -428,7 +428,7 @@ private def seamLeftOverlapToLeftHalf
       (OpenPiece B₀₁ B₁₂) (openPieceMap B₀₁ B₁₂)
       (openPieceMap_isOpenEmbedding B₀₁ B₁₂)
       OpenPieceIndex.seam OpenPieceIndex.left) :
-    M₁ × LeftOpenCollarParameter :=
+    M₁ × leftOpenCollarParameter :=
   (z.1.1, ⟨z.1.2.1, ⟨z.1.2.2.1, seamLeftOverlap_coordinate_lt B₀₁ B₁₂ z⟩⟩)
 
 private theorem contMDiff_seamLeftOverlapToLeftHalf :
@@ -445,7 +445,7 @@ private theorem contMDiff_seamLeftOverlapToLeftHalf :
   simpa only [Function.comp_def, seamLeftOverlapToLeftHalf] using hval
 
 /-- Regard an interior collar parameter as a point of the half-open collar domain. -/
-private def openCollarToHalfCollar (t : OpenCollarParameter) : HalfCollarParameter :=
+private def openCollarToHalfCollar (t : openCollarParameter) : halfCollarParameter :=
   Opens.inclusion collarInterior_le_startNeighborhood t
 
 private theorem contMDiff_openCollarToHalfCollar :
@@ -453,7 +453,7 @@ private theorem contMDiff_openCollarToHalfCollar :
   contMDiff_inclusion collarInterior_le_startNeighborhood
 
 /-- Convert the strict signed left half-cylinder back to the outgoing collar source. -/
-private def leftHalfToCollarSource (p : M₁ × LeftOpenCollarParameter) : CollarSource M₁ :=
+private def leftHalfToCollarSource (p : M₁ × leftOpenCollarParameter) : CollarSource M₁ :=
   (p.1, openCollarToHalfCollar (openCollarToReversedLeftHalf.symm p.2))
 
 private theorem contMDiff_leftHalfToCollarSource :
@@ -479,7 +479,7 @@ private theorem seamFromLeft_leftHalfToCollarSource
     have ha := openCollarToReversedLeftHalf.apply_symm_apply
       (seamLeftOverlapToLeftHalf B₀₁ B₁₂ z).2
     have hv := congrArg
-      (fun t : LeftOpenCollarParameter ↦ ((t.1 : CollarParameter) : ℝ)) ha
+      (fun t : leftOpenCollarParameter ↦ ((t.1 : collarParameter) : ℝ)) ha
     simpa only [leftHalfToCollarSource, openCollarToHalfCollar,
       seamLeftOverlapToLeftHalf, openCollarToReversedLeftHalf_val,
       seamCoordinate_apply] using hv
@@ -537,7 +537,7 @@ private def seamRightOverlapToRightHalf
       (OpenPiece B₀₁ B₁₂) (openPieceMap B₀₁ B₁₂)
       (openPieceMap_isOpenEmbedding B₀₁ B₁₂)
       OpenPieceIndex.seam OpenPieceIndex.right) :
-    M₁ × RightOpenCollarParameter :=
+    M₁ × rightOpenCollarParameter :=
   (z.1.1, ⟨z.1.2.1, ⟨seamRightOverlap_coordinate_lt B₀₁ B₁₂ z, z.1.2.2.2⟩⟩)
 
 private theorem contMDiff_seamRightOverlapToRightHalf :
@@ -554,7 +554,7 @@ private theorem contMDiff_seamRightOverlapToRightHalf :
   simpa only [Function.comp_def, seamRightOverlapToRightHalf] using hval
 
 /-- Convert the strict signed right half-cylinder back to the incoming collar source. -/
-private def rightHalfToCollarSource (p : M₁ × RightOpenCollarParameter) : CollarSource M₁ :=
+private def rightHalfToCollarSource (p : M₁ × rightOpenCollarParameter) : CollarSource M₁ :=
   (p.1, openCollarToHalfCollar (openCollarToRightHalf.symm p.2))
 
 private theorem contMDiff_rightHalfToCollarSource :
@@ -580,7 +580,7 @@ private theorem seamFromRight_rightHalfToCollarSource
     have ha := openCollarToRightHalf.apply_symm_apply
       (seamRightOverlapToRightHalf B₀₁ B₁₂ z).2
     have hv := congrArg
-      (fun t : RightOpenCollarParameter ↦ ((t.1 : CollarParameter) : ℝ)) ha
+      (fun t : rightOpenCollarParameter ↦ ((t.1 : collarParameter) : ℝ)) ha
     simpa only [rightHalfToCollarSource, openCollarToHalfCollar,
       seamRightOverlapToRightHalf, openCollarToRightHalf_val,
       seamCoordinate_apply] using hv
@@ -714,9 +714,9 @@ public theorem openPresentation_smoothCompatibility :
 /-- The canonical three-piece open gluing is a smooth manifold with corners. -/
 public theorem openPresentation_isManifold :
     letI : ChartedSpace (ModelProd H (EuclideanHalfSpace 1))
-        (OpenGluedCarrier B₀₁ B₁₂) :=
+        (openGluedCarrier B₀₁ B₁₂) :=
       openGluingChartedSpace (openPresentation B₀₁ B₁₂)
-    IsManifold (I.prod (𝓡∂ 1)) ∞ (OpenGluedCarrier B₀₁ B₁₂) := by
+    IsManifold (I.prod (𝓡∂ 1)) ∞ (openGluedCarrier B₀₁ B₁₂) := by
   exact openGluing_isManifold_of_contMDiffOn_pieceTransition
     (openPresentation B₀₁ B₁₂) (I.prod (𝓡∂ 1)) ∞
     (openPresentation_pieceTransition_contMDiffOn B₀₁ B₁₂)

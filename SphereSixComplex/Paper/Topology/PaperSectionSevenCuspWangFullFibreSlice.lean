@@ -38,12 +38,12 @@ public theorem cuspToEllipticInteriorMap_mem_centralImage
     D.cuspToEllipticInteriorMap q ∈ A.ellipticCentralImage := by
   let y := A.cuspCollarToSectionSevenFinalOverlapHomeomorph q
   have hy : y.1 ∈
-      (A.openEmbeddingStarData.SectionSevenEulerCover).piece 0 ∩
-        (A.openEmbeddingStarData.SectionSevenEulerCover).piece 1 := by
+      (A.openEmbeddingStarData.sectionSevenEulerCover).piece 0 ∩
+        (A.openEmbeddingStarData.sectionSevenEulerCover).piece 1 := by
     rw [← A.cuspAttachmentOverlap_eq_centralCuspIntersection]
     exact y.2
   change (A.cuspCollarToSectionSevenFinalOverlapHomeomorph q).1 ∈
-    (A.openEmbeddingStarData.SectionSevenEulerCover).piece 0
+    (A.openEmbeddingStarData.sectionSevenEulerCover).piece 0
   exact hy.1
 
 /-- The central coordinate of an arbitrary additive cusp-cover point is computed before the
@@ -289,13 +289,13 @@ public noncomputable def actualCuspFullFibreToBandHomologyOne
 /-- A selected middle-height crossing of the actual angular cusp loop. -/
 public noncomputable def actualCuspFullFibreCrossingTime (A : PaperAnalyticData) :
     unitInterval :=
-  Classical.choose A.exists_actualCuspAngularCoordinateLoop_re_eq_half
+  Classical.choose A.exists_cuspAngularCoordinateLoop_re_eq_half
 
 /-- The selected full-fibre crossing lies at affine height `1/2`. -/
 public theorem actualCuspFullFibreCrossingTime_spec (A : PaperAnalyticData) :
     ((A.cuspAngularCoordinateLoop
       (actualCuspFullFibreCrossingTime A)).1).re = 1 / 2 :=
-  Classical.choose_spec A.exists_actualCuspAngularCoordinateLoop_re_eq_half
+  Classical.choose_spec A.exists_cuspAngularCoordinateLoop_re_eq_half
 
 /-- The canonical candidate for the fibre-to-intersection map in the chain-realization
 interface, obtained by taking the entire fibre at the selected middle-height crossing. -/

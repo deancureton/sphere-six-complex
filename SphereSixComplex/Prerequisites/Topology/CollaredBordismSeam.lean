@@ -44,11 +44,11 @@ variable
   (B₁₂ : SmoothCollaredBordism.{uE, uH, uW₁₂, uM₁, uM₂} I M₁ M₂)
 
 /-- The real coordinate of an interior collar parameter. -/
-public def seamCoordinate (t : OpenCollarParameter) : ℝ :=
+public def seamCoordinate (t : openCollarParameter) : ℝ :=
   (t.1 : ℝ)
 
 @[simp]
-public theorem seamCoordinate_apply (t : OpenCollarParameter) :
+public theorem seamCoordinate_apply (t : openCollarParameter) :
     seamCoordinate t = (t.1 : ℝ) :=
   rfl
 
@@ -57,7 +57,7 @@ public theorem continuous_seamCoordinate : Continuous seamCoordinate :=
 
 /-- The outgoing-collar radius on the left side of the signed seam.  The `max` extends the
 formula continuously across the midpoint, where this auxiliary map is constant zero. -/
-public def seamLeftRadius (t : OpenCollarParameter) : HalfCollarParameter :=
+public def seamLeftRadius (t : openCollarParameter) : halfCollarParameter :=
   ⟨⟨max 0 (1 - 2 * seamCoordinate t), by
       change 0 ≤ max 0 (1 - 2 * seamCoordinate t) ∧
         max 0 (1 - 2 * seamCoordinate t) ≤ 1
@@ -77,7 +77,7 @@ public def seamLeftRadius (t : OpenCollarParameter) : HalfCollarParameter :=
 
 /-- The incoming-collar radius on the right side of the signed seam.  The `max` extends the
 formula continuously across the midpoint, where this auxiliary map is constant zero. -/
-public def seamRightRadius (t : OpenCollarParameter) : HalfCollarParameter :=
+public def seamRightRadius (t : openCollarParameter) : halfCollarParameter :=
   ⟨⟨max 0 (2 * seamCoordinate t - 1), by
       change 0 ≤ max 0 (2 * seamCoordinate t - 1) ∧
         max 0 (2 * seamCoordinate t - 1) ≤ 1
@@ -96,55 +96,55 @@ public def seamRightRadius (t : OpenCollarParameter) : HalfCollarParameter :=
       linarith⟩
 
 @[simp]
-public theorem seamLeftRadius_val (t : OpenCollarParameter) :
-    ((seamLeftRadius t : CollarParameter) : ℝ) = max 0 (1 - 2 * seamCoordinate t) :=
+public theorem seamLeftRadius_val (t : openCollarParameter) :
+    ((seamLeftRadius t : collarParameter) : ℝ) = max 0 (1 - 2 * seamCoordinate t) :=
   rfl
 
 @[simp]
-public theorem seamRightRadius_val (t : OpenCollarParameter) :
-    ((seamRightRadius t : CollarParameter) : ℝ) = max 0 (2 * seamCoordinate t - 1) :=
+public theorem seamRightRadius_val (t : openCollarParameter) :
+    ((seamRightRadius t : collarParameter) : ℝ) = max 0 (2 * seamCoordinate t - 1) :=
   rfl
 
 public theorem continuous_seamLeftRadius : Continuous seamLeftRadius := by
-  change Continuous (fun t : OpenCollarParameter ↦
-    (⟨⟨max 0 (1 - 2 * seamCoordinate t), _⟩, _⟩ : HalfCollarParameter))
+  change Continuous (fun t : openCollarParameter ↦
+    (⟨⟨max 0 (1 - 2 * seamCoordinate t), _⟩, _⟩ : halfCollarParameter))
   exact ((continuous_const.max
     (continuous_const.sub (continuous_const.mul continuous_seamCoordinate))).subtype_mk _).subtype_mk _
 
 public theorem continuous_seamRightRadius : Continuous seamRightRadius := by
-  change Continuous (fun t : OpenCollarParameter ↦
-    (⟨⟨max 0 (2 * seamCoordinate t - 1), _⟩, _⟩ : HalfCollarParameter))
+  change Continuous (fun t : openCollarParameter ↦
+    (⟨⟨max 0 (2 * seamCoordinate t - 1), _⟩, _⟩ : halfCollarParameter))
   exact ((continuous_const.max
     ((continuous_const.mul continuous_seamCoordinate).sub continuous_const)).subtype_mk _).subtype_mk _
 
 /-- Equality of real coordinates determines an interior collar parameter. -/
-public theorem openCollarParameter_ext {s t : OpenCollarParameter}
+public theorem openCollarParameter_ext {s t : openCollarParameter}
     (h : seamCoordinate s = seamCoordinate t) : s = t := by
   apply Subtype.ext
   apply Subtype.ext
   exact h
 
 /-- On the left half, the auxiliary radius is the expected affine expression. -/
-public theorem seamLeftRadius_eq_of_le {t : OpenCollarParameter}
+public theorem seamLeftRadius_eq_of_le {t : openCollarParameter}
     (ht : seamCoordinate t ≤ 1 / 2) :
-    ((seamLeftRadius t : CollarParameter) : ℝ) = 1 - 2 * seamCoordinate t := by
+    ((seamLeftRadius t : collarParameter) : ℝ) = 1 - 2 * seamCoordinate t := by
   rw [seamLeftRadius_val, max_eq_right]
   linarith
 
 /-- On the right half, the auxiliary radius is the expected affine expression. -/
-public theorem seamRightRadius_eq_of_ge {t : OpenCollarParameter}
+public theorem seamRightRadius_eq_of_ge {t : openCollarParameter}
     (ht : 1 / 2 ≤ seamCoordinate t) :
-    ((seamRightRadius t : CollarParameter) : ℝ) = 2 * seamCoordinate t - 1 := by
+    ((seamRightRadius t : collarParameter) : ℝ) = 2 * seamCoordinate t - 1 := by
   rw [seamRightRadius_val, max_eq_right]
   linarith
 
 /-- The left radius vanishes exactly at the midpoint of the left half. -/
-public theorem seamLeftRadius_eq_start_iff {t : OpenCollarParameter}
+public theorem seamLeftRadius_eq_start_iff {t : openCollarParameter}
     (ht : seamCoordinate t ≤ 1 / 2) :
     seamLeftRadius t = halfCollarStart ↔ seamCoordinate t = 1 / 2 := by
   constructor
   · intro h
-    have hv := congrArg (fun r : HalfCollarParameter ↦ ((r.1 : CollarParameter) : ℝ)) h
+    have hv := congrArg (fun r : halfCollarParameter ↦ ((r.1 : collarParameter) : ℝ)) h
     rw [seamLeftRadius_eq_of_le ht] at hv
     change 1 - 2 * seamCoordinate t = 0 at hv
     linarith
@@ -156,12 +156,12 @@ public theorem seamLeftRadius_eq_start_iff {t : OpenCollarParameter}
     linarith
 
 /-- The right radius vanishes exactly at the midpoint of the right half. -/
-public theorem seamRightRadius_eq_start_iff {t : OpenCollarParameter}
+public theorem seamRightRadius_eq_start_iff {t : openCollarParameter}
     (ht : 1 / 2 ≤ seamCoordinate t) :
     seamRightRadius t = halfCollarStart ↔ seamCoordinate t = 1 / 2 := by
   constructor
   · intro h
-    have hv := congrArg (fun r : HalfCollarParameter ↦ ((r.1 : CollarParameter) : ℝ)) h
+    have hv := congrArg (fun r : halfCollarParameter ↦ ((r.1 : collarParameter) : ℝ)) h
     rw [seamRightRadius_eq_of_ge ht] at hv
     change 2 * seamCoordinate t - 1 = 0 at hv
     linarith
@@ -173,29 +173,29 @@ public theorem seamRightRadius_eq_start_iff {t : OpenCollarParameter}
     linarith
 
 /-- The left affine radius is injective on the closed left half. -/
-public theorem seamLeftRadius_injective_on {s t : OpenCollarParameter}
+public theorem seamLeftRadius_injective_on {s t : openCollarParameter}
     (hs : seamCoordinate s ≤ 1 / 2) (ht : seamCoordinate t ≤ 1 / 2)
     (h : seamLeftRadius s = seamLeftRadius t) : s = t := by
   apply openCollarParameter_ext
-  have hv := congrArg (fun r : HalfCollarParameter ↦ ((r.1 : CollarParameter) : ℝ)) h
+  have hv := congrArg (fun r : halfCollarParameter ↦ ((r.1 : collarParameter) : ℝ)) h
   rw [seamLeftRadius_eq_of_le hs, seamLeftRadius_eq_of_le ht] at hv
   linarith
 
 /-- The right affine radius is injective on the closed right half. -/
-public theorem seamRightRadius_injective_on {s t : OpenCollarParameter}
+public theorem seamRightRadius_injective_on {s t : openCollarParameter}
     (hs : 1 / 2 ≤ seamCoordinate s) (ht : 1 / 2 ≤ seamCoordinate t)
     (h : seamRightRadius s = seamRightRadius t) : s = t := by
   apply openCollarParameter_ext
-  have hv := congrArg (fun r : HalfCollarParameter ↦ ((r.1 : CollarParameter) : ℝ)) h
+  have hv := congrArg (fun r : halfCollarParameter ↦ ((r.1 : collarParameter) : ℝ)) h
   rw [seamRightRadius_eq_of_ge hs, seamRightRadius_eq_of_ge ht] at hv
   linarith
 
 /-- The left-side collar map before the two halves are pasted at the midpoint. -/
-public def seamLeftMap (p : M₁ × OpenCollarParameter) : Glue B₀₁ B₁₂ :=
+public def seamLeftMap (p : M₁ × openCollarParameter) : Glue B₀₁ B₁₂ :=
   toGlueLeft B₀₁ B₁₂ (B₀₁.outgoing.chart (p.1, seamLeftRadius p.2))
 
 /-- The right-side collar map before the two halves are pasted at the midpoint. -/
-public def seamRightMap (p : M₁ × OpenCollarParameter) : Glue B₀₁ B₁₂ :=
+public def seamRightMap (p : M₁ × openCollarParameter) : Glue B₀₁ B₁₂ :=
   toGlueRight B₀₁ B₁₂ (B₁₂.incoming.chart (p.1, seamRightRadius p.2))
 
 public theorem continuous_seamLeftMap : Continuous (seamLeftMap B₀₁ B₁₂) := by
@@ -209,11 +209,11 @@ public theorem continuous_seamRightMap : Continuous (seamRightMap B₀₁ B₁�
       (continuous_fst.prodMk (continuous_seamRightRadius.comp continuous_snd)))
 
 /-- The closed left half of the signed seam cylinder. -/
-public def seamLeftRegion : Set (M₁ × OpenCollarParameter) :=
+public def seamLeftRegion : Set (M₁ × openCollarParameter) :=
   {p | seamCoordinate p.2 ≤ 1 / 2}
 
 /-- The closed right half of the signed seam cylinder. -/
-public def seamRightRegion : Set (M₁ × OpenCollarParameter) :=
+public def seamRightRegion : Set (M₁ × openCollarParameter) :=
   {p | 1 / 2 ≤ seamCoordinate p.2}
 
 public theorem isClosed_seamLeftRegion : IsClosed (seamLeftRegion (M₁ := M₁)) := by
@@ -231,7 +231,7 @@ public theorem seamLeftRegion_union_right :
 
 /-- The two collar charts agree in the quotient at the seam midpoint. -/
 public theorem seamLeftMap_eq_seamRightMap_of_midpoint
-    (p : M₁ × OpenCollarParameter) (hp : seamCoordinate p.2 = 1 / 2) :
+    (p : M₁ × openCollarParameter) (hp : seamCoordinate p.2 = 1 / 2) :
     seamLeftMap B₀₁ B₁₂ p = seamRightMap B₀₁ B₁₂ p := by
   have hl : seamLeftRadius p.2 = halfCollarStart :=
     (seamLeftRadius_eq_start_iff (le_of_eq hp)).2 hp
@@ -241,17 +241,17 @@ public theorem seamLeftMap_eq_seamRightMap_of_midpoint
   exact toGlue_commute B₀₁ B₁₂ p.1
 
 /-- The signed bicollar map into the direct quotient. -/
-public def signedSeamMap (p : M₁ × OpenCollarParameter) : Glue B₀₁ B₁₂ :=
+public def signedSeamMap (p : M₁ × openCollarParameter) : Glue B₀₁ B₁₂ :=
   if seamCoordinate p.2 ≤ 1 / 2 then seamLeftMap B₀₁ B₁₂ p
   else seamRightMap B₀₁ B₁₂ p
 
-public theorem signedSeamMap_eq_left {p : M₁ × OpenCollarParameter}
+public theorem signedSeamMap_eq_left {p : M₁ × openCollarParameter}
     (hp : seamCoordinate p.2 ≤ 1 / 2) :
     signedSeamMap B₀₁ B₁₂ p = seamLeftMap B₀₁ B₁₂ p := by
   unfold signedSeamMap
   rw [if_pos hp]
 
-public theorem signedSeamMap_eq_right {p : M₁ × OpenCollarParameter}
+public theorem signedSeamMap_eq_right {p : M₁ × openCollarParameter}
     (hp : 1 / 2 < seamCoordinate p.2) :
     signedSeamMap B₀₁ B₁₂ p = seamRightMap B₀₁ B₁₂ p := by
   unfold signedSeamMap
@@ -284,9 +284,9 @@ public theorem signedSeamMap_injective : Injective (signedSeamMap B₀₁ B₁�
       have hcharts := (toGlueLeft_isClosedEmbedding B₀₁ B₁₂).injective hpq
       have hsources := B₀₁.outgoing.chart.isOpenEmbedding.injective hcharts
       have hx : p.1 = q.1 :=
-        congrArg (fun z : M₁ × HalfCollarParameter ↦ z.1) hsources
+        congrArg (fun z : M₁ × halfCollarParameter ↦ z.1) hsources
       have hr : seamLeftRadius p.2 = seamLeftRadius q.2 :=
-        congrArg (fun z : M₁ × HalfCollarParameter ↦ z.2) hsources
+        congrArg (fun z : M₁ × halfCollarParameter ↦ z.2) hsources
       exact Prod.ext hx (seamLeftRadius_injective_on hp hq hr)
     · have hqr : 1 / 2 < seamCoordinate q.2 := lt_of_not_ge hq
       rw [signedSeamMap_eq_left B₀₁ B₁₂ hp,
@@ -315,15 +315,15 @@ public theorem signedSeamMap_injective : Injective (signedSeamMap B₀₁ B₁�
       have hcharts := (toGlueRight_isClosedEmbedding B₀₁ B₁₂).injective hpq
       have hsources := B₁₂.incoming.chart.isOpenEmbedding.injective hcharts
       have hx : p.1 = q.1 :=
-        congrArg (fun z : M₁ × HalfCollarParameter ↦ z.1) hsources
+        congrArg (fun z : M₁ × halfCollarParameter ↦ z.1) hsources
       have hr : seamRightRadius p.2 = seamRightRadius q.2 :=
-        congrArg (fun z : M₁ × HalfCollarParameter ↦ z.2) hsources
+        congrArg (fun z : M₁ × halfCollarParameter ↦ z.2) hsources
       exact Prod.ext hx (seamRightRadius_injective_on (le_of_lt hpr) (le_of_lt hqr) hr)
 
 /-- Convert a point of a left half-collar to its signed seam coordinate. -/
 public def seamFromLeftCollarSource (p : CollarSource M₁) :
-    M₁ × OpenCollarParameter :=
-  (p.1, ⟨⟨(1 - ((p.2.1 : CollarParameter) : ℝ)) / 2, by
+    M₁ × openCollarParameter :=
+  (p.1, ⟨⟨(1 - ((p.2.1 : collarParameter) : ℝ)) / 2, by
       constructor
       · have hp := p.2.1.property.2
         linarith
@@ -331,15 +331,15 @@ public def seamFromLeftCollarSource (p : CollarSource M₁) :
         linarith⟩, by
     constructor
     · have hp := p.2.2
-      change ((p.2.1 : CollarParameter) : ℝ) < 1 at hp
+      change ((p.2.1 : collarParameter) : ℝ) < 1 at hp
       linarith
     · have hp := p.2.1.property.1
       linarith⟩)
 
 /-- Convert a point of a right half-collar to its signed seam coordinate. -/
 public def seamFromRightCollarSource (p : CollarSource M₁) :
-    M₁ × OpenCollarParameter :=
-  (p.1, ⟨⟨(((p.2.1 : CollarParameter) : ℝ) + 1) / 2, by
+    M₁ × openCollarParameter :=
+  (p.1, ⟨⟨(((p.2.1 : collarParameter) : ℝ) + 1) / 2, by
       constructor
       · have hp := p.2.1.property.1
         linarith
@@ -349,7 +349,7 @@ public def seamFromRightCollarSource (p : CollarSource M₁) :
     · have hp := p.2.1.property.1
       linarith
     · have hp := p.2.2
-      change ((p.2.1 : CollarParameter) : ℝ) < 1 at hp
+      change ((p.2.1 : collarParameter) : ℝ) < 1 at hp
       linarith⟩)
 
 @[simp]
@@ -365,31 +365,31 @@ public theorem seamFromRightCollarSource_fst (p : CollarSource M₁) :
 @[simp]
 public theorem seamCoordinate_fromLeftCollarSource (p : CollarSource M₁) :
     seamCoordinate (seamFromLeftCollarSource p).2 =
-      (1 - ((p.2.1 : CollarParameter) : ℝ)) / 2 :=
+      (1 - ((p.2.1 : collarParameter) : ℝ)) / 2 :=
   rfl
 
 @[simp]
 public theorem seamCoordinate_fromRightCollarSource (p : CollarSource M₁) :
     seamCoordinate (seamFromRightCollarSource p).2 =
-      (((p.2.1 : CollarParameter) : ℝ) + 1) / 2 :=
+      (((p.2.1 : collarParameter) : ℝ) + 1) / 2 :=
   rfl
 
 public theorem continuous_seamFromLeftCollarSource :
     Continuous (seamFromLeftCollarSource : CollarSource M₁ →
-      M₁ × OpenCollarParameter) := by
+      M₁ × openCollarParameter) := by
   apply continuous_fst.prodMk
   change Continuous (fun p : CollarSource M₁ ↦
-    (⟨⟨(1 - ((p.2.1 : CollarParameter) : ℝ)) / 2, _⟩, _⟩ : OpenCollarParameter))
+    (⟨⟨(1 - ((p.2.1 : collarParameter) : ℝ)) / 2, _⟩, _⟩ : openCollarParameter))
   exact ((continuous_const.sub
     (continuous_subtype_val.comp (continuous_subtype_val.comp continuous_snd))).div_const 2
       |>.subtype_mk _).subtype_mk _
 
 public theorem continuous_seamFromRightCollarSource :
     Continuous (seamFromRightCollarSource : CollarSource M₁ →
-      M₁ × OpenCollarParameter) := by
+      M₁ × openCollarParameter) := by
   apply continuous_fst.prodMk
   change Continuous (fun p : CollarSource M₁ ↦
-    (⟨⟨(((p.2.1 : CollarParameter) : ℝ) + 1) / 2, _⟩, _⟩ : OpenCollarParameter))
+    (⟨⟨(((p.2.1 : collarParameter) : ℝ) + 1) / 2, _⟩, _⟩ : openCollarParameter))
   exact (((continuous_subtype_val.comp (continuous_subtype_val.comp continuous_snd)).add
     continuous_const).div_const 2 |>.subtype_mk _).subtype_mk _
 
@@ -425,7 +425,7 @@ public theorem seamRightRadius_fromRightCollarSource (p : CollarSource M₁) :
     seamCoordinate_fromRightCollarSource]
   ring
 
-public theorem seamFromLeftCollarSource_radius (x : M₁) (t : OpenCollarParameter)
+public theorem seamFromLeftCollarSource_radius (x : M₁) (t : openCollarParameter)
     (ht : seamCoordinate t ≤ 1 / 2) :
     seamFromLeftCollarSource (x, seamLeftRadius t) = (x, t) := by
   apply Prod.ext
@@ -434,7 +434,7 @@ public theorem seamFromLeftCollarSource_radius (x : M₁) (t : OpenCollarParamet
     rw [seamCoordinate_fromLeftCollarSource, seamLeftRadius_eq_of_le ht]
     ring
 
-public theorem seamFromRightCollarSource_radius (x : M₁) (t : OpenCollarParameter)
+public theorem seamFromRightCollarSource_radius (x : M₁) (t : openCollarParameter)
     (ht : 1 / 2 ≤ seamCoordinate t) :
     seamFromRightCollarSource (x, seamRightRadius t) = (x, t) := by
   apply Prod.ext
@@ -583,7 +583,7 @@ public theorem isOpen_range_signedSeamMap :
 
 /-- Pulling an arbitrary subset of the seam cylinder back to the left summand is computed in the
 outgoing collar chart. -/
-public theorem toGlueLeft_mem_image_signedSeamMap_iff (U : Set (M₁ × OpenCollarParameter))
+public theorem toGlueLeft_mem_image_signedSeamMap_iff (U : Set (M₁ × openCollarParameter))
     (w : B₀₁.W) :
     toGlueLeft B₀₁ B₁₂ w ∈ signedSeamMap B₀₁ B₁₂ '' U ↔
       ∃ p : CollarSource M₁,
@@ -605,7 +605,7 @@ public theorem toGlueLeft_mem_image_signedSeamMap_iff (U : Set (M₁ × OpenColl
       have hsource : (a, halfCollarStart) = (z.1, seamRightRadius z.2) :=
         B₁₂.incoming.chart.isOpenEmbedding.injective haright
       have hr : seamRightRadius z.2 = halfCollarStart :=
-        (congrArg (fun p : M₁ × HalfCollarParameter ↦ p.2) hsource).symm
+        (congrArg (fun p : M₁ × halfCollarParameter ↦ p.2) hsource).symm
       have hmid := (seamRightRadius_eq_start_iff (le_of_lt hright)).1 hr
       exact False.elim (ne_of_gt hright hmid)
   · rintro ⟨p, hpw, hpU⟩
@@ -614,7 +614,7 @@ public theorem toGlueLeft_mem_image_signedSeamMap_iff (U : Set (M₁ × OpenColl
 
 /-- Pulling an arbitrary subset of the seam cylinder back to the right summand is computed in the
 incoming collar chart. -/
-public theorem toGlueRight_mem_image_signedSeamMap_iff (U : Set (M₁ × OpenCollarParameter))
+public theorem toGlueRight_mem_image_signedSeamMap_iff (U : Set (M₁ × openCollarParameter))
     (w : B₁₂.W) :
     toGlueRight B₀₁ B₁₂ w ∈ signedSeamMap B₀₁ B₁₂ '' U ↔
       ∃ p : CollarSource M₁,
@@ -629,9 +629,9 @@ public theorem toGlueRight_mem_image_signedSeamMap_iff (U : Set (M₁ × OpenCol
       have hsource : (a, halfCollarStart) = (z.1, seamLeftRadius z.2) :=
         B₀₁.outgoing.chart.isOpenEmbedding.injective haleft
       have hax : a = z.1 :=
-        congrArg (fun p : M₁ × HalfCollarParameter ↦ p.1) hsource
+        congrArg (fun p : M₁ × halfCollarParameter ↦ p.1) hsource
       have hl : seamLeftRadius z.2 = halfCollarStart :=
-        (congrArg (fun p : M₁ × HalfCollarParameter ↦ p.2) hsource).symm
+        (congrArg (fun p : M₁ × halfCollarParameter ↦ p.2) hsource).symm
       have hmid := (seamLeftRadius_eq_start_iff hleft).1 hl
       subst a
       refine ⟨(z.1, halfCollarStart), ?_, ?_⟩
@@ -654,7 +654,7 @@ public theorem toGlueRight_mem_image_signedSeamMap_iff (U : Set (M₁ × OpenCol
 /-- Pointwise description of the preimage of the image of an arbitrary seam-cylinder subset
 under the quotient map. -/
 public theorem preimage_quotientMk_image_signedSeamMap
-    (U : Set (M₁ × OpenCollarParameter)) :
+    (U : Set (M₁ × openCollarParameter)) :
     (fun w : B₀₁.W ⊕ B₁₂.W ↦ (Quotient.mk'' w : Glue B₀₁ B₁₂)) ⁻¹'
         (signedSeamMap B₀₁ B₁₂ '' U) =
       Sum.inl '' (B₀₁.outgoing.chart '' (seamFromLeftCollarSource ⁻¹' U)) ∪
@@ -731,12 +731,12 @@ public theorem seamOpenNeighborhood_coe :
 
 /-- The explicit homeomorphism from the signed open cylinder onto the seam neighborhood. -/
 public def signedSeamHomeomorph :
-    (M₁ × OpenCollarParameter) ≃ₜ seamOpenNeighborhood B₀₁ B₁₂ :=
+    (M₁ × openCollarParameter) ≃ₜ seamOpenNeighborhood B₀₁ B₁₂ :=
   (signedSeamMap_isOpenEmbedding B₀₁ B₁₂).isEmbedding.toHomeomorph |>.trans
     (Homeomorph.setCongr (range_signedSeamMap B₀₁ B₁₂))
 
 @[simp]
-public theorem signedSeamHomeomorph_apply (p : M₁ × OpenCollarParameter) :
+public theorem signedSeamHomeomorph_apply (p : M₁ × openCollarParameter) :
     (signedSeamHomeomorph B₀₁ B₁₂ p : Glue B₀₁ B₁₂) =
       signedSeamMap B₀₁ B₁₂ p :=
   rfl

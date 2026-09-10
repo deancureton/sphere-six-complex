@@ -29,7 +29,7 @@ public structure IntegralCWCellularChainModel
   chainComplex : ChainComplex AddCommGrpCat ℕ
   cellBasis : ∀ n,
     (Topology.CWComplex.cell (Set.univ : Set Y) n →₀ ℤ) ≃+ chainComplex.X n
-  comparison : chainComplex ⟶ IntegralSingularChainComplex Y
+  comparison : chainComplex ⟶ integralSingularChainComplex Y
   comparison_homology_isIso : ∀ n, IsIso (chainComplex.homologyMap comparison n)
 
 variable (Y : Type) [TopologicalSpace Y] [Topology.CWComplex (Set.univ : Set Y)]

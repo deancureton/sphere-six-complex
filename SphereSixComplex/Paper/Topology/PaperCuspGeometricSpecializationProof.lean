@@ -159,7 +159,7 @@ public def htwoCoinv (B : CuspMonodromyCoordinates phi) :
 
 /-- The degree-two invariant coordinates attached to a fibre marking. -/
 public def htwoInv (B : CuspMonodromyCoordinates phi) :
-    (circleMappingTorusHTwoPresentation phi).Invariants ≃ₗ[ℤ] (Fin 2 → ℤ) :=
+    (circleMappingTorusHTwoPresentation phi).invariants ≃ₗ[ℤ] (Fin 2 → ℤ) :=
   (invariantsEquivOfConjugacy B.degreeOne.toIntLinearEquiv
     (circleMonodromyDifference phi 1).toIntLinearMap mZeroDifference
     B.degreeOneDifference_conjugacy).trans mZeroInvariantsEquivIntSquared
@@ -168,7 +168,7 @@ public def htwoInv (B : CuspMonodromyCoordinates phi) :
 public def htwoSplit (S : (circleMappingTorusHTwoPresentation phi).Section) :
     IntegralSingularHomology 2 (CircleMappingTorus phi) ≃ₗ[ℤ]
       (circleMappingTorusHTwoPresentation phi).Coinvariants ×
-        (circleMappingTorusHTwoPresentation phi).Invariants :=
+        (circleMappingTorusHTwoPresentation phi).invariants :=
   WangHomologyPresentation.linearEquivOfSection _ S
 
 public theorem circleMappingTorusHTwoAddEquiv_apply {B : CuspMonodromyCoordinates phi}
@@ -231,7 +231,7 @@ public def honeCoinv (B : CuspMonodromyCoordinates phi) :
 
 /-- The degree-one invariant coordinate attached to a fibre marking. -/
 public def honeInv (B : CuspMonodromyCoordinates phi) :
-    (circleMappingTorusHOnePresentation phi).Invariants ≃ₗ[ℤ] ℤ :=
+    (circleMappingTorusHOnePresentation phi).invariants ≃ₗ[ℤ] ℤ :=
   (invariantsEquivOfConjugacy B.degreeZero.toIntLinearEquiv
     (circleMonodromyDifference phi 0).toIntLinearMap 0
     B.degreeZeroDifference_conjugacy).trans zeroKernelEquivInt
@@ -240,7 +240,7 @@ public def honeInv (B : CuspMonodromyCoordinates phi) :
 public def honeSplit (S : (circleMappingTorusHOnePresentation phi).Section) :
     IntegralSingularHomology 1 (CircleMappingTorus phi) ≃ₗ[ℤ]
       (circleMappingTorusHOnePresentation phi).Coinvariants ×
-        (circleMappingTorusHOnePresentation phi).Invariants :=
+        (circleMappingTorusHOnePresentation phi).invariants :=
   WangHomologyPresentation.linearEquivOfSection _ S
 
 public theorem circleMappingTorusHOneAddEquiv_apply {B : CuspMonodromyCoordinates phi}
@@ -288,7 +288,7 @@ open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
 
 /-- The same geometric radial clutching data with the sign of its degree-two fibre marking
@@ -317,7 +317,7 @@ public def UnnormalizedCuspRadialClutchingData.negDegreeTwo
 /-- The sign-reversed marking changes the raw degree-two coinvariant coordinates by a sign. -/
 public theorem geometricHomologyTwoEquiv_negDegreeTwo
     {W : ActualPuncturedCuspCollarWitness N M} (G : UnnormalizedCuspRadialClutchingData W)
-    (x : IntegralSingularHomology 2 (puncturedLocalCuspQuotient W)) (i : Fin 4) :
+    (x : IntegralSingularHomology 2 (PuncturedLocalCuspQuotient W)) (i : Fin 4) :
     G.negDegreeTwo.geometricHomologyTwoEquiv x (Fin.castAdd 2 i) =
       -G.geometricHomologyTwoEquiv x (Fin.castAdd 2 i) := by
   let _ := G.fiberTopology
@@ -359,7 +359,7 @@ public def UnnormalizedCuspRadialClutchingData.negDegreeOne
 a sign. -/
 public theorem geometricHomologyOneEquiv_negDegreeOne
     {W : ActualPuncturedCuspCollarWitness N M} (G : UnnormalizedCuspRadialClutchingData W)
-    (x : IntegralSingularHomology 1 (puncturedLocalCuspQuotient W)) (i : Fin 2) :
+    (x : IntegralSingularHomology 1 (PuncturedLocalCuspQuotient W)) (i : Fin 2) :
     G.negDegreeOne.geometricHomologyOneEquiv x (Fin.castAdd 1 i) =
       -G.geometricHomologyOneEquiv x (Fin.castAdd 1 i) := by
   let _ := G.fiberTopology
@@ -369,12 +369,12 @@ public theorem geometricHomologyOneEquiv_negDegreeOne
 /-- The false overbroad degree-one statement obtained by quantifying over every *un-normalized*
 clutching datum. -/
 public def StandardA2CuspSpecializationDegreeOneStatement : Prop :=
-  ∀ {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+  ∀ {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W)
     (G : UnnormalizedCuspRadialClutchingData W)
-    (x : IntegralSingularHomology 1 (puncturedLocalCuspQuotient W)),
+    (x : IntegralSingularHomology 1 (PuncturedLocalCuspQuotient W)),
       actualLocalCuspFillingHomologyOneEquiv W R
           (integralSingularHomologyMap 1
             ⟨puncturedLocalCuspToFilling W, puncturedLocalCuspToFilling_continuous W⟩ x) =
@@ -402,12 +402,12 @@ public theorem not_standardA2CuspSpecializationDegreeOneStatement
 /-- The false overbroad degree-two statement obtained by quantifying over every *un-normalized*
 clutching datum. -/
 public def StandardA2CuspSpecializationDegreeTwoStatement : Prop :=
-  ∀ {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+  ∀ {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W)
     (G : UnnormalizedCuspRadialClutchingData W)
-    (x : IntegralSingularHomology 2 (puncturedLocalCuspQuotient W)),
+    (x : IntegralSingularHomology 2 (PuncturedLocalCuspQuotient W)),
       actualLocalCuspFillingHomologyTwoEquiv W R
           (integralSingularHomologyMap 2
             ⟨puncturedLocalCuspToFilling W, puncturedLocalCuspToFilling_continuous W⟩ x) =

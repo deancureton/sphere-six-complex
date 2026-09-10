@@ -24,7 +24,7 @@ open EllipticCayleyHomeomorph
 open EllipticLocalCoordinates
 open EllipticHolomorphicLogCover
 open CuspPeriodExpansion CuspPuncturedCollarBridge CuspCollarPairProperness
-open EstablishedFuchsianCuspNeighborhood
+open FuchsianCuspNeighborhood
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 
 noncomputable section
@@ -472,7 +472,7 @@ public theorem exists_orderThree_starCollar_of_baseRadius
     (hb : ‖(orderThreeCayleyHomeomorph
       (fuchsianSourceAction g • (regularTotalSpaceBase P.periods q).1) : ℂ)‖ < b)
     (hbouter : b < P.starSeparation.orderThree.radius) :
-    ∃ z : P.starCollarSourceType (1 : Fin 3),
+    ∃ z : P.StarCollarSource (1 : Fin 3),
       P.starToCentral (1 : Fin 3) z = P.centralQuotientProjection q ∧
         P.starCollarRadius (1 : Fin 3) z < b := by
   let qg := regularFamilyDeckMap P.periods g q
@@ -507,7 +507,7 @@ public theorem exists_orderThree_starCollar_of_baseRadius
       exact hb.trans hbouter⟩
   let x := (orderThreePuncturedCollarGaugeEquiv P.periods
     P.starSeparation.orderThree.radius).symm qlin
-  let z : P.starCollarSourceType (1 : Fin 3) := Quotient.mk _ x
+  let z : P.StarCollarSource (1 : Fin 3) := Quotient.mk _ x
   refine ⟨z, ?_, ?_⟩
   · rw [P.orderThreeStarToCentral_mk x]
     have hregularEq : orderThreeCollarToRegular P.periods
@@ -537,7 +537,7 @@ public theorem exists_orderFour_starCollar_of_baseRadius
     (hb : ‖(orderFourCayleyHomeomorph
       (fuchsianSourceAction g • (regularTotalSpaceBase P.periods q).1) : ℂ)‖ < b)
     (hbouter : b < P.starSeparation.orderFour.radius) :
-    ∃ z : P.starCollarSourceType (2 : Fin 3),
+    ∃ z : P.StarCollarSource (2 : Fin 3),
       P.starToCentral (2 : Fin 3) z = P.centralQuotientProjection q ∧
         P.starCollarRadius (2 : Fin 3) z < b := by
   let qg := regularFamilyDeckMap P.periods g q
@@ -572,7 +572,7 @@ public theorem exists_orderFour_starCollar_of_baseRadius
       exact hb.trans hbouter⟩
   let x := (orderFourPuncturedCollarGaugeEquiv P.periods
     P.starSeparation.orderFour.radius).symm qlin
-  let z : P.starCollarSourceType (2 : Fin 3) := Quotient.mk _ x
+  let z : P.StarCollarSource (2 : Fin 3) := Quotient.mk _ x
   refine ⟨z, ?_, ?_⟩
   · rw [P.orderFourStarToCentral_mk x]
     have hregularEq : orderFourCollarToRegular P.periods
@@ -604,7 +604,7 @@ public theorem exists_cusp_starCollar_of_normalizedBase
       P.cuspCoordinate.lift s)
     (b : ℝ) (hb : ‖cuspQ s‖ < b)
     (hbouter : b < P.starCuspWitness.localWitness.radius) :
-    ∃ z : P.starCollarSourceType (0 : Fin 3),
+    ∃ z : P.StarCollarSource (0 : Fin 3),
       P.starToCentral (0 : Fin 3) z = P.centralQuotientProjection q ∧
         P.starCollarRadius (0 : Fin 3) z < b := by
   let W := P.starCuspWitness
@@ -646,7 +646,7 @@ public theorem exists_cusp_starCollar_of_normalizedBase
     rw [P.cuspCoordinate.lift_tau p.1.2 hpHalf,
       P.cuspCoordinate.lift_tau s hs] at h
     exact h
-  let z : P.starCollarSourceType (0 : Fin 3) :=
+  let z : P.StarCollarSource (0 : Fin 3) :=
     additiveCuspCoverToPuncturedQuotient W p
   refine ⟨z, ?_, ?_⟩
   · change puncturedLocalCuspQuotientMap W
@@ -682,13 +682,13 @@ public theorem starOuterRadius_pos (i : Fin 3) :
   let cuspUpper := P.starCuspWitness.localWitness.radius / 4
   have hcuspUpper : 0 < cuspUpper := by
     exact div_pos P.starCuspWitness.localWitness.radius_pos (by norm_num)
-  let H : EstablishedFuchsianCuspNeighborhood.Data P.cuspCoordinate cuspUpper :=
+  let H : Data P.cuspCoordinate cuspUpper :=
     Classical.choice
-      (EstablishedFuchsianCuspNeighborhood.Established.data
+      (nonempty_data
         P.cuspCoordinate cuspUpper hcuspUpper)
-  let T : EstablishedFuchsianCuspNeighborhood.CompactTruncationData H :=
+  let T : CompactTruncationData H :=
     Classical.choice
-      (EstablishedFuchsianCuspNeighborhood.Established.compactTruncation H)
+      (nonempty_compactTruncationData H)
   have hH_threshold : H.radius < a 0 := by
     have hle := H.radius_le_upper
     change H.radius ≤ P.starCuspWitness.localWitness.radius / 4 at hle
@@ -715,7 +715,7 @@ public theorem starOuterRadius_pos (i : Fin 3) :
     puncturedAffineThresholdCore_isCompact hdeltaThree hdeltaFour
   have hcentralCover : ∀ q : RegularTotalSpace P.periods,
       P.regularCoordinate (regularTotalSpaceBase P.periods q) ∉ K →
-        ∃ (i : Fin 3) (z : P.starCollarSourceType i),
+        ∃ (i : Fin 3) (z : P.StarCollarSource i),
           P.starToCentral i z = P.centralQuotientProjection q ∧
             P.starCollarRadius i z ≤ a i := by
     intro q hq

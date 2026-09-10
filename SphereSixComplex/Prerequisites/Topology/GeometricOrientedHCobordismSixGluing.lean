@@ -73,7 +73,7 @@ direct quotient and the smooth three-piece presentation. -/
 public noncomputable def gluedLeftCarrierEquiv
     (B₀₁ : SmoothHCobordism D X Y) (B₁₂ : SmoothHCobordism D Y Z) :
     B₀₁.bordism.W ≃ₕ
-      SmoothCollaredBordism.QuotientGluing.OpenGluedCarrier
+      SmoothCollaredBordism.QuotientGluing.openGluedCarrier
         B₀₁.bordism B₁₂.bordism := by
   let hSeam := B₁₂.isHCobordism.1
   let retract := Classical.choice
@@ -90,7 +90,7 @@ carrier. -/
 public noncomputable def gluedRightCarrierEquiv
     (B₀₁ : SmoothHCobordism D X Y) (B₁₂ : SmoothHCobordism D Y Z) :
     B₁₂.bordism.W ≃ₕ
-      SmoothCollaredBordism.QuotientGluing.OpenGluedCarrier
+      SmoothCollaredBordism.QuotientGluing.openGluedCarrier
         B₀₁.bordism B₁₂.bordism := by
   let hSeam := B₀₁.isHCobordism.2
   let retract := Classical.choice
@@ -165,7 +165,7 @@ public theorem gluedIncomingEquiv_toFun
     (B₀₁ : SmoothHCobordism D X Y) (B₁₂ : SmoothHCobordism D Y Z) :
     ((B₀₁.incomingEquiv.trans (gluedLeftCarrierEquiv B₀₁ B₁₂)) :
       X.carrier →
-        SmoothCollaredBordism.QuotientGluing.OpenGluedCarrier
+        SmoothCollaredBordism.QuotientGluing.openGluedCarrier
           B₀₁.bordism B₁₂.bordism) =
       (SmoothCollaredBordism.QuotientGluing.smoothGlue
         B₀₁.bordism B₁₂.bordism).incoming.inclusion := by
@@ -188,7 +188,7 @@ public theorem gluedOutgoingEquiv_toFun
     (B₀₁ : SmoothHCobordism D X Y) (B₁₂ : SmoothHCobordism D Y Z) :
     ((B₁₂.outgoingEquiv.trans (gluedRightCarrierEquiv B₀₁ B₁₂)) :
       Z.carrier →
-        SmoothCollaredBordism.QuotientGluing.OpenGluedCarrier
+        SmoothCollaredBordism.QuotientGluing.openGluedCarrier
           B₀₁.bordism B₁₂.bordism) =
       (SmoothCollaredBordism.QuotientGluing.smoothGlue
         B₀₁.bordism B₁₂.bordism).outgoing.inclusion := by

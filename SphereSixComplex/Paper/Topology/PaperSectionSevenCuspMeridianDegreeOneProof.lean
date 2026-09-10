@@ -305,7 +305,7 @@ public theorem cuspRadialBaseCircleProjection_additivePoint
   exact actualRadialBaseCircleProjection_additivePoint_explicit A p
 
 private noncomputable def actualTransportedBaseCircleMap :
-    C(puncturedLocalCuspQuotient A.starCuspWitness, UnitAddCircle) := by
+    C(PuncturedLocalCuspQuotient A.starCuspWitness, UnitAddCircle) := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   exact (circleMappingTorusBaseCircleProjection G.clutching).comp
@@ -365,7 +365,7 @@ public theorem cuspMappingTorusMeridian_base_winding_neg_one :
         (circleMappingTorusBaseCircleProjection G.clutching)
         (cuspMappingTorusMeridianHomologyClass G
           A.cuspLocalBoundaryBase)) = -1
-  rw [A.cuspMappingTorusMeridianHomologyClass_eq_actualCuspAngularPuncturedLoop_image]
+  rw [A.cuspMappingTorusMeridianHomologyClass_eq_cuspAngularPuncturedLoop_image]
   change StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
       (integralSingularHomologyMap 1
         (circleMappingTorusBaseCircleProjection G.clutching)
@@ -423,7 +423,7 @@ public theorem cuspSelectedPositiveMeridianClass_eq_neg_explicit :
     norm_num
 
 private noncomputable def actualTransportedSourceCircleMap :
-    C(puncturedLocalCuspQuotient A.starCuspWitness, UnitAddCircle) := by
+    C(PuncturedLocalCuspQuotient A.starCuspWitness, UnitAddCircle) := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   exact A.cuspMeridianSourceCircleMap.comp G.totalHomotopyEquiv.toFun
@@ -619,7 +619,7 @@ public theorem cuspMappingTorusMeridian_source_winding_neg_one :
       (integralSingularHomologyMap 1 A.cuspMeridianSourceCircleMap
         (cuspMappingTorusMeridianHomologyClass G
           A.cuspLocalBoundaryBase)) = -1
-  rw [A.cuspMappingTorusMeridianHomologyClass_eq_actualCuspAngularPuncturedLoop_image]
+  rw [A.cuspMappingTorusMeridianHomologyClass_eq_cuspAngularPuncturedLoop_image]
   change StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
       (integralSingularHomologyMap 1 A.cuspMeridianSourceCircleMap
         (integralSingularHomologyMap 1 G.totalHomotopyEquiv.toFun

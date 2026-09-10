@@ -28,9 +28,9 @@ open SphereSixComplex.Geometry.CuspStraighteningRetraction
 
 /-- The compact torus acts freely at every point of nonzero height. -/
 private theorem compactPhase_eq_of_eq_at_nonzero_height
-    {M : Model} {r : ℝ} {positivePart : Set (LocalCarrier M r)}
+    {M : Model} {r : ℝ} {positivePart : Set (localCarrier M r)}
     {k l : CompactTorus} {p : positivePart}
-    (ht : M.t (p : LocalCarrier M r) ≠ 0)
+    (ht : M.t (p : localCarrier M r) ≠ 0)
     (h : compactPhaseOrbit M r positivePart (k, p) =
       compactPhaseOrbit M r positivePart (l, p)) :
     k = l := by
@@ -38,7 +38,7 @@ private theorem compactPhase_eq_of_eq_at_nonzero_height
     rw [M.torus_range]
     exact ht
   obtain ⟨x, hx⟩ := hpRange
-  have hcarrier := congrArg (fun q : LocalCarrier M r ↦ (q : M.Carrier)) h
+  have hcarrier := congrArg (fun q : localCarrier M r ↦ (q : M.Carrier)) h
   change M.torusAction (compactTorusEmbedding k) (p : M.Carrier) =
     M.torusAction (compactTorusEmbedding l) (p : M.Carrier) at hcarrier
   rw [← hx, M.torusAction_torus, M.torusAction_torus] at hcarrier
@@ -58,7 +58,7 @@ public theorem compactPhaseStabilizerMonotone_of_retraction
       CompactPhaseStabilizerMonotone P R := by
   let _ := P.positiveDeckAction
   intro R s k l p hkl
-  by_cases ht : M.t (p : LocalCarrier M r) = 0
+  by_cases ht : M.t (p : localCarrier M r) = 0
   · have hp : p ∈ P.central := by
       rw [P.central_eq]
       exact ht
@@ -70,7 +70,7 @@ public theorem compactPhaseStabilizerMonotone_of_retraction
 /-- On a positive compact-phase fundamental domain, no additional stabilizer hypothesis is
 needed for the phase-geometric core. -/
 public theorem polarPhaseGeometricCore_of_fundamentalDomain_only
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
     (Q : NormalizedPolarHoneycombConstructionData N M r)
     (hfundamental : CompactPhaseFundamentalDomain Q.toPolarHoneycombData) :
@@ -82,7 +82,7 @@ public theorem polarPhaseGeometricCore_of_fundamentalDomain_only
 /-- Phase invariance of the polar modulus is the sole extra phase condition needed after the
 normalized polar-honeycomb construction has been supplied. -/
 public theorem polarPhaseGeometricCore_of_invariantModulus_only
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
     (Q : NormalizedPolarHoneycombConstructionData N M r)
     (hmodulus : CompactPhaseInvariantModulus Q) :
@@ -93,7 +93,7 @@ public theorem polarPhaseGeometricCore_of_invariantModulus_only
 /-- The normalized phase-geometry axiom is reduced to construction data whose modulus is
 compact-phase invariant; stabilizer compatibility is automatic. -/
 public theorem normalizedPolarHoneycombPhaseGeometry_of_invariantModulus_only
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) (r : ℝ)
     (h : Nonempty {Q : NormalizedPolarHoneycombConstructionData N M r //
       CompactPhaseInvariantModulus Q}) :

@@ -51,16 +51,16 @@ public noncomputable def diskSevenCoverMemberRangeSingularSetIso (b : Bool) :
 
 /-- The chain map from a cover member to its range complex. -/
 public noncomputable def diskSevenCoverMemberToRangeChains (b : Bool) :
-    IntegralSingularChainComplexObj (TopCat.of (diskSevenExcisionCover b)) ⟶
-      DiskSevenCoverRangeChainComplex b :=
+    integralSingularChainComplexObj (TopCat.of (diskSevenExcisionCover b)) ⟶
+      diskSevenCoverRangeChainComplex b :=
   SSet.chainComplexMap (diskSevenCoverMemberToRangeSingularSet b)
     (AddCommGrpCat.of ℤ)
 
 /-- Integral singular chains of a cover member are isomorphic to chains on the corresponding
 range subcomplex. -/
 public noncomputable def diskSevenCoverMemberRangeChainsIso (b : Bool) :
-    IntegralSingularChainComplexObj (TopCat.of (diskSevenExcisionCover b)) ≅
-      DiskSevenCoverRangeChainComplex b :=
+    integralSingularChainComplexObj (TopCat.of (diskSevenExcisionCover b)) ≅
+      diskSevenCoverRangeChainComplex b :=
   ((SSet.chainComplexFunctor AddCommGrpCat).obj (AddCommGrpCat.of ℤ)).mapIso
     (diskSevenCoverMemberRangeSingularSetIso b)
 
@@ -72,9 +72,9 @@ public theorem diskSevenCoverMemberRangeChainsIso_hom (b : Bool) :
 
 /-- The induced degreewise homology identification for a cover member and its range. -/
 public noncomputable def diskSevenCoverMemberRangeHomologyIso (b : Bool) (k : ℕ) :
-    (IntegralSingularChainComplexObj
+    (integralSingularChainComplexObj
         (TopCat.of (diskSevenExcisionCover b))).homology k ≅
-      (DiskSevenCoverRangeChainComplex b).homology k :=
+      (diskSevenCoverRangeChainComplex b).homology k :=
   (HomologicalComplex.homologyFunctor AddCommGrpCat
     (ComplexShape.down ℕ) k).mapIso (diskSevenCoverMemberRangeChainsIso b)
 
@@ -100,7 +100,7 @@ public noncomputable def integralSingularHomologyIsoOfHomotopyEquiv
 /-- Every positive-degree integral homology object of the true range vanishes. -/
 public theorem diskSevenCoverTrueRange_homology_isZero
     (k : ℕ) (hk : k ≠ 0) :
-    IsZero ((DiskSevenCoverRangeChainComplex true).homology k) := by
+    IsZero ((diskSevenCoverRangeChainComplex true).homology k) := by
   let _ : ContractibleSpace
       (diskSevenExcisionCover true : Set (TopCat.disk.{0} 7)) :=
     diskSevenCoverTrue_contractibleSpace
@@ -110,7 +110,7 @@ public theorem diskSevenCoverTrueRange_homology_isZero
     AlgebraicTopology.isZero_singularHomologyFunctor_of_totallyDisconnectedSpace
       AddCommGrpCat k (AddCommGrpCat.of ℤ) (TopCat.of Unit) hk
   have hmember : IsZero
-      ((IntegralSingularChainComplexObj
+      ((integralSingularChainComplexObj
         (TopCat.of (diskSevenExcisionCover true))).homology k) :=
     by
       change IsZero (((singularHomologyFunctor AddCommGrpCat k).obj
@@ -122,8 +122,8 @@ public theorem diskSevenCoverTrueRange_homology_isZero
 /-- The boundary inclusion into the false member is a chain-homotopy equivalence. -/
 public noncomputable def diskBoundaryToDiskSevenFalseMemberChainsHomotopyEquiv :
     HomotopyEquiv
-      (IntegralSingularChainComplexObj (TopCat.sphere.{0} 6))
-      (IntegralSingularChainComplexObj
+      (integralSingularChainComplexObj (TopCat.sphere.{0} 6))
+      (integralSingularChainComplexObj
         (TopCat.of (diskSevenExcisionCover false))) where
   hom := integralSingularChainMapObj
     diskBoundaryToDiskSevenExcisionCoverFalse
@@ -161,8 +161,8 @@ public noncomputable def diskBoundaryToDiskSevenFalseMemberChainsHomotopyEquiv :
 boundary-to-false-range chain map used by the relative complex. -/
 public noncomputable def diskBoundaryToDiskSevenFalseRangeChainsHomotopyEquiv :
     HomotopyEquiv
-      (IntegralSingularChainComplexObj (TopCat.sphere.{0} 6))
-      (DiskSevenCoverRangeChainComplex false) :=
+      (integralSingularChainComplexObj (TopCat.sphere.{0} 6))
+      (diskSevenCoverRangeChainComplex false) :=
   diskBoundaryToDiskSevenFalseMemberChainsHomotopyEquiv.trans
     (HomotopyEquiv.ofIso (diskSevenCoverMemberRangeChainsIso false))
 
@@ -227,23 +227,23 @@ public theorem diskSevenFalseRangeRelativeShortComplex_shortExact :
 
 /-- The false-range relative chain complex is acyclic in every degree. -/
 public theorem diskSevenFalseRangeRelativeChainComplex_acyclic :
-    DiskSevenFalseRangeRelativeChainComplex.Acyclic := by
+    diskSevenFalseRangeRelativeChainComplex.Acyclic := by
   have hq : QuasiIso diskSevenFalseRangeRelativeShortComplex.f := by
     exact diskBoundaryToDiskSevenFalseRangeChains_quasiIso
   exact diskSevenFalseRangeRelativeShortComplex_shortExact.acyclic_X₃ hq
 
 /-- Consequently every homology object of the false-range relative complex vanishes. -/
 public theorem diskSevenFalseRangeRelativeChainComplex_homology_isZero (k : ℕ) :
-    IsZero (DiskSevenFalseRangeRelativeChainComplex.homology k) := by
+    IsZero (diskSevenFalseRangeRelativeChainComplex.homology k) := by
   rw [← HomologicalComplex.exactAt_iff_isZero_homology]
   exact diskSevenFalseRangeRelativeChainComplex_acyclic k
 
 /-- Homology of the local relative middle complex is the biproduct of the homologies of its two
 summands. -/
 public noncomputable def diskSevenCoverLocalRelativeMiddleHomologyIso (k : ℕ) :
-    DiskSevenCoverLocalRelativeMiddleChainComplex.homology k ≅
-      (DiskSevenCoverRangeChainComplex true).homology k ⊞
-        DiskSevenFalseRangeRelativeChainComplex.homology k :=
+    diskSevenCoverLocalRelativeMiddleChainComplex.homology k ≅
+      (diskSevenCoverRangeChainComplex true).homology k ⊞
+        diskSevenFalseRangeRelativeChainComplex.homology k :=
   by
     let F := HomologicalComplex.homologyFunctor AddCommGrpCat
       (ComplexShape.down ℕ) k
@@ -256,10 +256,10 @@ public noncomputable def diskSevenCoverLocalRelativeMiddleHomologyIso (k : ℕ) 
 /-- The local relative middle homology vanishes in every positive degree. -/
 public theorem diskSevenCoverLocalRelativeMiddle_homology_isZero
     (k : ℕ) (hk : k ≠ 0) :
-    IsZero (DiskSevenCoverLocalRelativeMiddleChainComplex.homology k) := by
+    IsZero (diskSevenCoverLocalRelativeMiddleChainComplex.homology k) := by
   have hsum : IsZero
-      ((DiskSevenCoverRangeChainComplex true).homology k ⊞
-        DiskSevenFalseRangeRelativeChainComplex.homology k) :=
+      ((diskSevenCoverRangeChainComplex true).homology k ⊞
+        diskSevenFalseRangeRelativeChainComplex.homology k) :=
     (biprod_isZero_iff _ _).2
       ⟨diskSevenCoverTrueRange_homology_isZero k hk,
         diskSevenFalseRangeRelativeChainComplex_homology_isZero k⟩
@@ -267,8 +267,8 @@ public theorem diskSevenCoverLocalRelativeMiddle_homology_isZero
 
 /-- The two middle homology objects needed by local relative Mayer--Vietoris vanish. -/
 public theorem diskSevenCoverLocalRelativeMiddle_low_isZero :
-    IsZero (DiskSevenCoverLocalRelativeMiddleChainComplex.homology 3) ∧
-      IsZero (DiskSevenCoverLocalRelativeMiddleChainComplex.homology 4) :=
+    IsZero (diskSevenCoverLocalRelativeMiddleChainComplex.homology 3) ∧
+      IsZero (diskSevenCoverLocalRelativeMiddleChainComplex.homology 4) :=
   ⟨diskSevenCoverLocalRelativeMiddle_homology_isZero 3 (by omega),
     diskSevenCoverLocalRelativeMiddle_homology_isZero 4 (by omega)⟩
 
@@ -403,24 +403,24 @@ public noncomputable def diskSevenCoverIntersectionRangeSingularSetIso :
 
 /-- The resulting integral singular-chain isomorphism. -/
 public noncomputable def diskSevenCoverIntersectionRangeChainsIso :
-    IntegralSingularChainComplexObj (TopCat.of DiskSevenCoverIntersection) ≅
-      DiskSevenCoverRangeIntersectionChainComplex :=
+    integralSingularChainComplexObj (TopCat.of DiskSevenCoverIntersection) ≅
+      diskSevenCoverRangeIntersectionChainComplex :=
   ((SSet.chainComplexFunctor AddCommGrpCat).obj (AddCommGrpCat.of ℤ)).mapIso
     diskSevenCoverIntersectionRangeSingularSetIso
 
 /-- Homology of the range intersection is homology of the actual punctured interior. -/
 public noncomputable def diskSevenCoverIntersectionRangeHomologyIso (k : ℕ) :
-    (IntegralSingularChainComplexObj
+    (integralSingularChainComplexObj
         (TopCat.of DiskSevenCoverIntersection)).homology k ≅
-      DiskSevenCoverRangeIntersectionChainComplex.homology k :=
+      diskSevenCoverRangeIntersectionChainComplex.homology k :=
   (HomologicalComplex.homologyFunctor AddCommGrpCat
     (ComplexShape.down ℕ) k).mapIso diskSevenCoverIntersectionRangeChainsIso
 
 /-- Combining the range identification with radial normalization identifies intersection-range
 homology with the integral singular homology of the standard six-sphere. -/
 public noncomputable def diskSevenCoverRangeIntersectionHomologyIsoSphereSix (k : ℕ) :
-    DiskSevenCoverRangeIntersectionChainComplex.homology k ≅
-      (IntegralSingularChainComplexObj (TopCat.sphere.{0} 6)).homology k :=
+    diskSevenCoverRangeIntersectionChainComplex.homology k ≅
+      (integralSingularChainComplexObj (TopCat.sphere.{0} 6)).homology k :=
   (diskSevenCoverIntersectionRangeHomologyIso k).symm ≪≫
     integralSingularHomologyIsoOfHomotopyEquiv k
       diskSevenCoverIntersectionHomotopyEquivSphereSix
@@ -428,8 +428,8 @@ public noncomputable def diskSevenCoverRangeIntersectionHomologyIsoSphereSix (k 
 /-- Vanishing of range-intersection homology is exactly vanishing of standard-sphere homology. -/
 public theorem diskSevenCoverRangeIntersection_homology_isZero_iff_sphereSix
     (k : ℕ) :
-    IsZero (DiskSevenCoverRangeIntersectionChainComplex.homology k) ↔
-      IsZero ((IntegralSingularChainComplexObj
+    IsZero (diskSevenCoverRangeIntersectionChainComplex.homology k) ↔
+      IsZero ((integralSingularChainComplexObj
         (TopCat.sphere.{0} 6)).homology k) :=
   (diskSevenCoverRangeIntersectionHomologyIsoSphereSix k).isZero_iff
 
@@ -437,9 +437,9 @@ public theorem diskSevenCoverRangeIntersection_homology_isZero_iff_sphereSix
 homology groups in degrees two and three: the local middle terms have vanished unconditionally. -/
 public theorem diskSevenCoverLocalRelativeLowAcyclic_iff_sphereSix_low_isZero :
     DiskSevenCoverLocalRelativeLowAcyclic ↔
-      IsZero ((IntegralSingularChainComplexObj
+      IsZero ((integralSingularChainComplexObj
         (TopCat.sphere.{0} 6)).homology 2) ∧
-      IsZero ((IntegralSingularChainComplexObj
+      IsZero ((integralSingularChainComplexObj
         (TopCat.sphere.{0} 6)).homology 3) := by
   constructor
   · intro h

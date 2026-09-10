@@ -9,7 +9,7 @@ open CategoryTheory AlgebraicTopology
 namespace SphereSixComplex.CellularHomology.IntegralComparison
 
 public def withDiskOrientations (T : CellularHomology.IntegralComparison)
-    (O : ∀ n, (CWRelativeIntegralSingularChainComplex
+    (O : ∀ n, (cwRelativeIntegralSingularChainComplex
       (cwCharacteristicBoundaryInclusion n)).homology n ≃+ ℤ) :
     CellularHomology.IntegralComparison :=
   { T with
@@ -33,7 +33,7 @@ public def withDiskOrientations (T : CellularHomology.IntegralComparison)
       exact (map_zsmul _ _ _).symm }
 
 public def normalizedDiskOrientations (T : CellularHomology.IntegralComparison) :
-    ∀ n, (CWRelativeIntegralSingularChainComplex
+    ∀ n, (cwRelativeIntegralSingularChainComplex
       (cwCharacteristicBoundaryInclusion n)).homology n ≃+ ℤ
   | 0 => normalizedPointDiskOrientation
   | 1 => normalizedIntervalDiskOrientation T

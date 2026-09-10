@@ -45,7 +45,7 @@ variable (A : PaperAnalyticData)
 
 /-- A collar point sits inside the glued space exactly at its central-family image. -/
 public theorem centralToSectionSevenEulerPiece_starToCentral (i : Fin 3)
-    (q : A.starCollarSourceType i) :
+    (q : A.StarCollarSource i) :
     (A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
         (A.starToCentral i q)).1 =
       A.openEmbeddingStarData.collarSourceToGlued i q := by
@@ -83,7 +83,7 @@ public theorem mem_orderThreeFillingImage_iff_mem_starToCentral_range
         (sectionSevenStarOpenCover
           A.openEmbeddingStarData.toFourPieceStarGluingData).piece 2 := by
       simpa [starCover,
-        OpenEmbeddingStarData.SectionSevenMayerVietorisCover,
+        OpenEmbeddingStarData.sectionSevenMayerVietorisCover,
         sectionSevenMayerVietorisOpenCover, sectionSevenMayerVietorisOrder] using hpair
     rw [← hrange] at hpair'
     obtain ⟨q, hq⟩ := hpair'
@@ -101,7 +101,7 @@ public theorem mem_orderThreeFillingImage_iff_mem_starToCentral_range
     have hpair : x.1.1 ∈ A.starCover.piece 0 ∩
         A.starCover.piece 1 := by
       simpa [starCover,
-        OpenEmbeddingStarData.SectionSevenMayerVietorisCover,
+        OpenEmbeddingStarData.sectionSevenMayerVietorisCover,
         sectionSevenMayerVietorisOpenCover, sectionSevenMayerVietorisOrder] using hmem
     exact hpair.2
 
@@ -109,7 +109,7 @@ public theorem mem_orderThreeFillingImage_iff_mem_starToCentral_range
 /-- The selected order-three collar lies over the affine disc of radius `1/3`.  This is the norm
 form of `orderThreeStarCollar_centralCoordinate_re_lt`. -/
 public theorem orderThreeStarCollar_centralCoordinate_norm_lt
-    (q : A.starCollarSourceType (1 : Fin 3)) :
+    (q : A.StarCollarSource (1 : Fin 3)) :
     ‖(A.centralFamilyCoordinate (A.starToCentral 1 q)).1‖ < 1 / 3 := by
   let U := A.modular.modularParameter.toTriangleUniformization
   let hsource : U.sourceAction = SphereSixComplex.TriangleGroup.fuchsianSourceAction :=
@@ -242,8 +242,8 @@ public theorem discRegionInclusion_isHomotopyEquivalence {r : ℝ} (hr0 : 0 < r)
   rw [Function.comp_apply, Function.comp_apply,
     A.quotientToFun_eq_orderThreeAffineDiscLiftQuotientInclusion hr E hE,
     A.toCentralFamily_orderThreeAffineDiscLiftQuotientInclusion hr,
-    A.toCentralFamily_sectionSevenAffineOrderThreeDiscRegionQuotientHomeomorph r,
-    A.toCentralFamily_sectionSevenAffineOrderThreeCentralRegionQuotientHomeomorph]
+    A.toCentralFamily_affineOrderThreeDiscRegionQuotientHomeomorph r,
+    A.toCentralFamily_affineOrderThreeCentralRegionQuotientHomeomorph]
   rfl
 
 /-- Nested affine disc regions include into one another by homotopy equivalences. -/
@@ -367,7 +367,7 @@ public theorem toCentralFamily_orderFourAffineDiscLiftQuotientHomeomorphRange_sy
 
 /-- The order-four disc-region quotient model is compatible with the central-family
 coordinates. -/
-public theorem toCentralFamily_sectionSevenAffineOrderFourDiscRegionQuotientHomeomorph
+public theorem toCentralFamily_affineOrderFourDiscRegionQuotientHomeomorph
     (r : ℝ) (x : ↥(A.affineOrderFourDiscRegion r)) :
     A.orderFourAffineDiscLiftQuotientToCentralFamily r
         (A.affineOrderFourDiscRegionQuotientHomeomorph r x) =
@@ -430,7 +430,7 @@ public theorem orderFourDiscRegionInclusion_isHomotopyEquivalence
       ⟨u.1, hmem⟩ hheight,
     A.quotientToFun_eq_orderFourAffineDiscLiftQuotientInclusion hr E hE,
     A.orderFourAffineHalfPlaneLiftQuotientToCentralFamily_discInclusion hr,
-    A.toCentralFamily_sectionSevenAffineOrderFourDiscRegionQuotientHomeomorph r]
+    A.toCentralFamily_affineOrderFourDiscRegionQuotientHomeomorph r]
 
 /-- Monotonicity of the order-four affine disc regions. -/
 public theorem orderFourDiscRegion_mono {a b : ℝ} (hab : a ≤ b) :
@@ -487,7 +487,7 @@ public theorem mem_orderFourFillingImage_iff_mem_starToCentral_range
         (sectionSevenStarOpenCover
           A.openEmbeddingStarData.toFourPieceStarGluingData).piece 3 := by
       simpa [starCover,
-        OpenEmbeddingStarData.SectionSevenMayerVietorisCover,
+        OpenEmbeddingStarData.sectionSevenMayerVietorisCover,
         sectionSevenMayerVietorisOpenCover, sectionSevenMayerVietorisOrder] using hpair
     rw [← hrange] at hpair'
     obtain ⟨q, hq⟩ := hpair'
@@ -505,13 +505,13 @@ public theorem mem_orderFourFillingImage_iff_mem_starToCentral_range
     have hpair : x.1.1 ∈ A.starCover.piece 0 ∩
         A.starCover.piece 2 := by
       simpa [starCover,
-        OpenEmbeddingStarData.SectionSevenMayerVietorisCover,
+        OpenEmbeddingStarData.sectionSevenMayerVietorisCover,
         sectionSevenMayerVietorisOpenCover, sectionSevenMayerVietorisOrder] using hmem
     exact hpair.2
 
 /-- The selected order-four collar lies over the affine disc of radius `1/3` centred at `1`. -/
 public theorem orderFourStarCollar_centralCoordinate_norm_lt
-    (q : A.starCollarSourceType (2 : Fin 3)) :
+    (q : A.StarCollarSource (2 : Fin 3)) :
     ‖(A.centralFamilyCoordinate (A.starToCentral 2 q)).1 - 1‖ < 1 / 3 := by
   let U := A.modular.modularParameter.toTriangleUniformization
   let hsource : U.sourceAction = SphereSixComplex.TriangleGroup.fuchsianSourceAction :=
@@ -678,7 +678,7 @@ order-three star collar quotient. -/
 public noncomputable def orderThreeOverlapCollarHomeomorph :
     ↥(A.orderThreeFillingImage ∩
         A.affineOrderThreeCentralRegion) ≃ₜ
-      A.starCollarSourceType (1 : Fin 3) :=
+      A.StarCollarSource (1 : Fin 3) :=
   let e₁ : ↥(A.orderThreeFillingImage ∩
       A.affineOrderThreeCentralRegion) ≃ₜ
       {x : A.ellipticCentralImage //
@@ -718,7 +718,7 @@ public theorem starToCentral_orderThreeOverlapCollarHomeomorph
 /-- The underlying elliptic-interior point of a collar point, through the overlap
 identification. -/
 public theorem starToCentral_orderThreeOverlapCollarHomeomorph_symm
-    (z : A.starCollarSourceType (1 : Fin 3)) :
+    (z : A.StarCollarSource (1 : Fin 3)) :
     A.ellipticCentralImageHomeomorph
         ⟨(A.orderThreeOverlapCollarHomeomorph.symm z).1,
           A.mem_centralImage_of_mem_centralHeightLowerRegion
@@ -736,7 +736,7 @@ public theorem orderThreeStarCollar_centralCoordinate_norm_lt_of_radius
     {a t : ℝ}
     (ht : ∀ z : UpperHalfPlane, ‖(orderThreeCayleyHomeomorph z : ℂ)‖ < t →
       ‖A.modular.sourceCoordinate.coordinate z‖ < a)
-    (z : A.starCollarSourceType (1 : Fin 3))
+    (z : A.StarCollarSource (1 : Fin 3))
     (hz : A.starCollarRadius (1 : Fin 3) z < t) :
     ‖(A.centralFamilyCoordinate (A.starToCentral 1 z)).1‖ < a := by
   induction z using Quotient.inductionOn with
@@ -1124,7 +1124,7 @@ order-four star collar quotient. -/
 public noncomputable def orderFourOverlapCollarHomeomorph :
     ↥(A.orderFourFillingImage ∩
         A.affineOrderFourCentralRegion) ≃ₜ
-      A.starCollarSourceType (2 : Fin 3) :=
+      A.StarCollarSource (2 : Fin 3) :=
   let e₁ : ↥(A.orderFourFillingImage ∩
       A.affineOrderFourCentralRegion) ≃ₜ
       {x : A.ellipticCentralImage //
@@ -1161,7 +1161,7 @@ public theorem starToCentral_orderFourOverlapCollarHomeomorph
   exact hcoe.symm.trans (congrArg Subtype.val (e₃.apply_symm_apply w))
 
 public theorem starToCentral_orderFourOverlapCollarHomeomorph_symm
-    (z : A.starCollarSourceType (2 : Fin 3)) :
+    (z : A.StarCollarSource (2 : Fin 3)) :
     A.ellipticCentralImageHomeomorph
         ⟨(A.orderFourOverlapCollarHomeomorph.symm z).1,
           A.mem_centralImage_of_mem_centralHeightUpperRegion
@@ -1178,7 +1178,7 @@ public theorem orderFourStarCollar_centralCoordinate_norm_lt_of_radius
     {a t : ℝ}
     (ht : ∀ z : UpperHalfPlane, ‖(orderFourCayleyHomeomorph z : ℂ)‖ < t →
       ‖A.modular.sourceCoordinate.coordinate z - 1‖ < a)
-    (z : A.starCollarSourceType (2 : Fin 3))
+    (z : A.StarCollarSource (2 : Fin 3))
     (hz : A.starCollarRadius (2 : Fin 3) z < t) :
     ‖(A.centralFamilyCoordinate (A.starToCentral 2 z)).1 - 1‖ < a := by
   induction z using Quotient.inductionOn with

@@ -130,7 +130,7 @@ private theorem normalizedAffineCover_real
 omit [PathConnectedSpace G] in
 private theorem normalizedAffineCover_comp_circleProductMap_fixed
     (m : ℕ) [NeZero m] (phi : G ≃ₜ+ G)
-    (hpow : phi.toHomeomorph ^ m = 1) (d : FixedLoop phi) :
+    (hpow : phi.toHomeomorph ^ m = 1) (d : fixedLoops phi) :
     (normalizedAffineCoverToCircleMappingTorus phi.toHomeomorph hpow).comp
         (circleProductMap d.1) =
       (fixedLoopMappingTorusMap phi d).comp (baseMultiply m (StdTorus 1)) := by
@@ -165,7 +165,7 @@ omit [PathConnectedSpace G] in
 /-- A pointwise-fixed loop crosses the normalized cover with degree exactly `m` in the base. -/
 public theorem normalizedAffineCover_positiveCircleCross_fixed
     (m : ℕ) [NeZero m] (phi : G ≃ₜ+ G)
-    (hpow : phi.toHomeomorph ^ m = 1) (d : FixedLoop phi) :
+    (hpow : phi.toHomeomorph ^ m = 1) (d : fixedLoops phi) :
     integralSingularHomologyMap 2
         (normalizedAffineCoverToCircleMappingTorus phi.toHomeomorph hpow)
         (positiveCircleCross d.1) =
@@ -179,8 +179,8 @@ public theorem normalizedAffineCover_positiveCircleCross_fixed
 omit [PathConnectedSpace G] in
 private theorem normalizedAffineCover_positiveCircleCross_fixed_boundary
     (m : ℕ) [NeZero m] (phi : G ≃ₜ+ G)
-    (hpow : phi.toHomeomorph ^ m = 1) (d : FixedLoop phi) :
-    (FixedLoopPresentation phi).boundary
+    (hpow : phi.toHomeomorph ^ m = 1) (d : fixedLoops phi) :
+    (fixedLoopPresentation phi).boundary
         (integralSingularHomologyMap 2
           (normalizedAffineCoverToCircleMappingTorus phi.toHomeomorph hpow)
           (positiveCircleCross d.1)) =
@@ -190,7 +190,7 @@ private theorem normalizedAffineCover_positiveCircleCross_fixed_boundary
     fixedLoopSweepClass_boundary]
 
 private def reflFixedLoop (c : C(StdTorus 1, G)) :
-    FixedLoop (ContinuousAddEquiv.refl G) := by
+    fixedLoops (ContinuousAddEquiv.refl G) := by
   refine ⟨c, LinearMap.mem_ker.mpr ?_⟩
   change c - c = 0
   exact sub_self c
@@ -226,8 +226,8 @@ public theorem canonicalProductWangBoundary_positiveCircleCross
     canonicalProductWangBoundary 1 (positiveCircleCross c) =
       integralSingularHomologyMap 1 c standardCircleHomologyGenerator := by
   let phi : G ≃ₜ+ G := ContinuousAddEquiv.refl G
-  let d : FixedLoop phi := reflFixedLoop c
-  change (FixedLoopPresentation phi).boundary
+  let d : fixedLoops phi := reflFixedLoop c
+  change (fixedLoopPresentation phi).boundary
       (integralSingularHomologyMap 2
         (circleProductIdentityMappingTorusHomeomorph (X := G) :
           C(UnitAddCircle × G, CircleMappingTorus (Homeomorph.refl G)))
@@ -250,21 +250,21 @@ private theorem positiveCircleCross_add_defect_mem_fibre
 private theorem normalizedAffineCover_positiveCircleCross_boundary_add
     (m : ℕ) [NeZero m] (phi : G ≃ₜ+ G)
     (hpow : phi.toHomeomorph ^ m = 1) (c d : C(StdTorus 1, G)) :
-    (FixedLoopPresentation phi).boundary
+    (fixedLoopPresentation phi).boundary
         (integralSingularHomologyMap 2
           (normalizedAffineCoverToCircleMappingTorus phi.toHomeomorph hpow)
           (positiveCircleCross (c + d))) =
-      (FixedLoopPresentation phi).boundary
+      (fixedLoopPresentation phi).boundary
           (integralSingularHomologyMap 2
             (normalizedAffineCoverToCircleMappingTorus phi.toHomeomorph hpow)
             (positiveCircleCross c)) +
-        (FixedLoopPresentation phi).boundary
+        (fixedLoopPresentation phi).boundary
           (integralSingularHomologyMap 2
             (normalizedAffineCoverToCircleMappingTorus phi.toHomeomorph hpow)
             (positiveCircleCross d)) := by
   obtain ⟨x, hx⟩ := positiveCircleCross_add_defect_mem_fibre c d
   have hzero :
-      (FixedLoopPresentation phi).boundary
+      (fixedLoopPresentation phi).boundary
           (integralSingularHomologyMap 2
             (normalizedAffineCoverToCircleMappingTorus phi.toHomeomorph hpow)
             (positiveCircleCross (c + d) - positiveCircleCross c -
@@ -274,27 +274,27 @@ private theorem normalizedAffineCover_positiveCircleCross_boundary_add
     change integralSingularHomologyMap 2
         (normalizedAffineCoverToCircleMappingTorus phi.toHomeomorph hpow)
           (integralSingularHomologyMap 2 (productFiberInclusion (X := G)) x) =
-      (FixedLoopPresentation phi).inclusion x at hsquare
-    rw [hsquare, (FixedLoopPresentation phi).boundary_inclusion]
+      (fixedLoopPresentation phi).inclusion x at hsquare
+    rw [hsquare, (fixedLoopPresentation phi).boundary_inclusion]
   rw [map_sub, map_sub, map_sub, map_sub] at hzero
   calc
-    _ = ((FixedLoopPresentation phi).boundary
+    _ = ((fixedLoopPresentation phi).boundary
           (integralSingularHomologyMap 2
             (normalizedAffineCoverToCircleMappingTorus phi.toHomeomorph hpow)
             (positiveCircleCross (c + d))) -
-        (FixedLoopPresentation phi).boundary
+        (fixedLoopPresentation phi).boundary
           (integralSingularHomologyMap 2
             (normalizedAffineCoverToCircleMappingTorus phi.toHomeomorph hpow)
             (positiveCircleCross c)) -
-        (FixedLoopPresentation phi).boundary
+        (fixedLoopPresentation phi).boundary
           (integralSingularHomologyMap 2
             (normalizedAffineCoverToCircleMappingTorus phi.toHomeomorph hpow)
             (positiveCircleCross d))) +
-        (FixedLoopPresentation phi).boundary
+        (fixedLoopPresentation phi).boundary
           (integralSingularHomologyMap 2
             (normalizedAffineCoverToCircleMappingTorus phi.toHomeomorph hpow)
             (positiveCircleCross c)) +
-        (FixedLoopPresentation phi).boundary
+        (fixedLoopPresentation phi).boundary
           (integralSingularHomologyMap 2
             (normalizedAffineCoverToCircleMappingTorus phi.toHomeomorph hpow)
             (positiveCircleCross d)) := by abel

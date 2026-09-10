@@ -70,7 +70,7 @@ public theorem paperCuspResidualProjection_integerAffineMonodromy
 /-- The residual cusp deck map keeps the first two translation coordinates and kills the angular
 meridian. -/
 public def paperCuspBoundaryDeckProjection :
-    paperCuspBoundaryDeck →* Multiplicative ParameterLattice :=
+    PaperCuspBoundaryDeck →* Multiplicative ParameterLattice :=
   SemidirectProduct.lift paperCuspResidualProjection.toMultiplicative 1 (by
     intro n
     apply MonoidHom.ext
@@ -86,7 +86,7 @@ public def paperCuspBoundaryDeckProjection :
 @[simp]
 public theorem paperCuspBoundaryDeckProjection_apply
     (a : Multiplicative Lattice) (n : Multiplicative ℤ) :
-    paperCuspBoundaryDeckProjection (⟨a, n⟩ : paperCuspBoundaryDeck) =
+    paperCuspBoundaryDeckProjection (⟨a, n⟩ : PaperCuspBoundaryDeck) =
       Multiplicative.ofAdd (paperCuspResidualProjection a.toAdd) := by
   change Multiplicative.ofAdd (paperCuspResidualProjection a.toAdd) * 1 = _
   simp
@@ -96,7 +96,7 @@ public theorem paperCuspBoundaryDeckProjection_surjective :
     Function.Surjective paperCuspBoundaryDeckProjection := by
   intro b
   obtain ⟨a, ha⟩ := paperCuspResidualProjection_surjective b.toAdd
-  refine ⟨(⟨Multiplicative.ofAdd a, 1⟩ : paperCuspBoundaryDeck), ?_⟩
+  refine ⟨(⟨Multiplicative.ofAdd a, 1⟩ : PaperCuspBoundaryDeck), ?_⟩
   rw [paperCuspBoundaryDeckProjection_apply]
   apply Multiplicative.toAdd.injective
   exact ha
@@ -109,7 +109,7 @@ public theorem paperCuspBoundaryDeckProjection_ker :
   · intro g hg
     rcases g with ⟨a, n⟩
     have ha0 : paperCuspResidualProjection a.toAdd = 0 := by
-      change paperCuspBoundaryDeckProjection (⟨a, n⟩ : paperCuspBoundaryDeck) = 1 at hg
+      change paperCuspBoundaryDeckProjection (⟨a, n⟩ : PaperCuspBoundaryDeck) = 1 at hg
       rw [paperCuspBoundaryDeckProjection_apply] at hg
       apply Multiplicative.ofAdd.injective
       simpa using hg
@@ -141,7 +141,7 @@ public theorem paperCuspBoundaryDeckProjection_ker :
         simp]
       exact D.fillingKernel.zpow_mem hmeridian n.toAdd
     rw [← SemidirectProduct.inl_left_mul_inr_right
-      (⟨a, n⟩ : paperCuspBoundaryDeck)]
+      (⟨a, n⟩ : PaperCuspBoundaryDeck)]
     exact D.fillingKernel.mul_mem htranslation hright
   · rw [UnwrappedToricBoundaryDeckData.fillingKernel]
     refine Subgroup.normalClosure_le_normal ?_
@@ -153,7 +153,7 @@ public theorem paperCuspBoundaryDeckProjection_ker :
               (paperCuspBoundaryDeckData.translation
                 (paperCuspBoundaryDeckData.vanishing k)) =
             (⟨Multiplicative.ofAdd (paperCuspVanishing k), 1⟩ :
-              paperCuspBoundaryDeck) := by
+              PaperCuspBoundaryDeck) := by
         rfl
       change Additive.toMul
           (paperCuspBoundaryDeckData.translation
@@ -167,7 +167,7 @@ public theorem paperCuspBoundaryDeckProjection_ker :
     · rw [Set.mem_singleton_iff] at hg
       subst g
       have hmeridian : paperCuspBoundaryDeckData.meridian =
-          (⟨1, Multiplicative.ofAdd 1⟩ : paperCuspBoundaryDeck) := by
+          (⟨1, Multiplicative.ofAdd 1⟩ : PaperCuspBoundaryDeck) := by
         rfl
       change paperCuspBoundaryDeckData.meridian ∈ paperCuspBoundaryDeckProjection.ker
       rw [hmeridian, MonoidHom.mem_ker, paperCuspBoundaryDeckProjection_apply]
@@ -181,7 +181,7 @@ public noncomputable def paperCuspFillingDeckEquiv :
 
 /-- The canonical cusp filling quotient map agrees with the residual cusp deck projection. -/
 @[simp]
-public theorem paperCuspFillingDeckEquiv_fillingDeckMap (g : paperCuspBoundaryDeck) :
+public theorem paperCuspFillingDeckEquiv_fillingDeckMap (g : PaperCuspBoundaryDeck) :
     paperCuspFillingDeckEquiv (paperCuspBoundaryDeckData.fillingDeckMap g) =
       paperCuspBoundaryDeckProjection g := by
   exact QuotientGroup.liftEquiv_mk paperCuspBoundaryDeckData.fillingKernel

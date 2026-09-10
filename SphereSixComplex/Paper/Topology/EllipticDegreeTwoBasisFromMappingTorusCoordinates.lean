@@ -37,7 +37,7 @@ mapping-torus models.  The two equations say that the original four-torus coveri
 with those Wang coordinates. -/
 public structure ProjectionCoordinates where
   orderThree :
-    IntegralSingularHomology 2 (OrderThreeReducedCentralFiber F) ≃+ (Fin 2 → ℤ)
+    IntegralSingularHomology 2 (orderThreeReducedCentralFiber F) ≃+ (Fin 2 → ℤ)
   orderThree_projection : ∀ x : DegreeTwoLattice,
     orderThree
         (integralSingularHomologyMap 2
@@ -46,7 +46,7 @@ public structure ProjectionCoordinates where
           ((orderThreeCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm x)) =
       orderThreeCoverCoordinates (orderThreeCoinvariantCoordinates x)
   orderFour :
-    IntegralSingularHomology 2 (OrderFourReducedCentralFiber F) ≃+ (Fin 2 → ℤ)
+    IntegralSingularHomology 2 (orderFourReducedCentralFiber F) ≃+ (Fin 2 → ℤ)
   orderFour_projection : ∀ x : DegreeTwoLattice,
     orderFour
         (integralSingularHomologyMap 2
@@ -89,9 +89,9 @@ public theorem orderFour_projected_three (P : ProjectionCoordinates F) :
 rest of Section 7. -/
 public theorem basisFiniteData (P : ProjectionCoordinates F) :
     Nonempty (EllipticDegreeTwoHomologyBasisFiniteData F) := by
-  let e₃ : IntegralSingularHomology 2 (OrderThreeReducedCentralFiber F) ≃ₗ[ℤ]
+  let e₃ : IntegralSingularHomology 2 (orderThreeReducedCentralFiber F) ≃ₗ[ℤ]
       (Fin 2 → ℤ) := P.orderThree.toIntLinearEquiv
-  let e₄ : IntegralSingularHomology 2 (OrderFourReducedCentralFiber F) ≃ₗ[ℤ]
+  let e₄ : IntegralSingularHomology 2 (orderFourReducedCentralFiber F) ≃ₗ[ℤ]
       (Fin 2 → ℤ) := P.orderFour.toIntLinearEquiv
   have he₃ : (e₃ : _ → _) = P.orderThree := by
     funext x
@@ -100,10 +100,10 @@ public theorem basisFiniteData (P : ProjectionCoordinates F) :
     funext x
     rfl
   let b₃ : Module.Basis (Fin 2) ℤ
-      (IntegralSingularHomology 2 (OrderThreeReducedCentralFiber F)) :=
+      (IntegralSingularHomology 2 (orderThreeReducedCentralFiber F)) :=
     Module.Basis.ofEquivFun e₃
   let b₄ : Module.Basis (Fin 2) ℤ
-      (IntegralSingularHomology 2 (OrderFourReducedCentralFiber F)) :=
+      (IntegralSingularHomology 2 (orderFourReducedCentralFiber F)) :=
     Module.Basis.ofEquivFun e₄
   refine ⟨{
     orderThreeBasis := b₃

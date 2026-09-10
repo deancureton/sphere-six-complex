@@ -423,7 +423,7 @@ enough to prove that some affine-subdivision iterate of every chain lies in the 
 of the cover-small inclusion. -/
 public theorem coverSmallAffineSubdivisionEventuallySmall_of_iterate_mem_range
     {iota : Type} (X : TopCat) (U : iota → Set X)
-    (h : ∀ (n : ℕ) (x : (IntegralSingularChainComplexObj X).X n),
+    (h : ∀ (n : ℕ) (x : (integralSingularChainComplexObj X).X n),
       ∃ m : ℕ, (affineSingularSubdivisionIterate X m).f n x ∈
         Set.range ((coverSmallIntegralSingularChainInclusion X U).f n)) :
     CoverSmallAffineSubdivisionEventuallySmall X U := by

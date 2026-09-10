@@ -31,7 +31,7 @@ variable (A : PaperAnalyticData)
 /-- The corrected translation and positive-meridian formulas determine the full physical
 mapping-torus deck homomorphism. -/
 public theorem paperOrderThreeActualBoundaryToUniversalDeck_unique
-    (f : OrderThreeAffineMappingTorusDeck A.periods →* paperCentralFreeAffineDeck)
+    (f : OrderThreeAffineMappingTorusDeck A.periods →* PaperCentralFreeAffineDeck)
     (htranslation : ∀ a : Lattice,
       f (Additive.toMul (affineTorusMappingTorusDeckTranslation
         (orderThreeDescendedAffineTorusAutomorphism A.periods) a)) =
@@ -77,7 +77,7 @@ public theorem paperOrderThreeActualBoundaryToUniversalDeck_unique
 a physical mapping-torus deck transformation. -/
 public noncomputable def orderThreeCentralBoundaryMappedDeckClass
     (g : OrderThreeAffineMappingTorusDeck A.periods) :
-    paperCentralFreeAffineDeckᵐᵒᵖ := by
+    PaperCentralFreeAffineDeckᵐᵒᵖ := by
   let _ := A.ellipticThreeBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology

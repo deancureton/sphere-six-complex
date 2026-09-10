@@ -91,7 +91,7 @@ public theorem radialCompletionInput_nonempty
 end EstablishedSectionSevenAffineRegularLiftTopology
 
 /-- The affine radial package selected from the explicit regular-cover construction. -/
-public theorem establishedSectionSevenAffineRadialCompletionInput
+public theorem affineRadialCompletion
     (A : PaperAnalyticData) :
     A.AffineRadialCompletionInput :=
   (EstablishedSectionSevenAffineRegularLiftTopology.overlapCompletionInput A).toRadialCompletion

@@ -49,7 +49,7 @@ public theorem centralFamilyCoordinate_respects
 
 /-- The exact affine coordinate on the base of the actual central family. -/
 public noncomputable def centralFamilyCoordinate :
-    A.CentralFamily → RegularCoordinateBase := by
+    A.CentralFamily → regularCoordinateBase := by
   letI := regularFamilyDeckAction A.periods
   exact Quotient.lift
     (fun x ↦ A.regularCoordinate (regularTotalSpaceBase A.periods x))
@@ -106,7 +106,7 @@ public noncomputable def ellipticCentralImageHomeomorph :
 
 /-- A point of the central image inherits the exact affine base coordinate. -/
 public noncomputable def ellipticCentralCoordinate :
-    A.ellipticCentralImage → RegularCoordinateBase :=
+    A.ellipticCentralImage → regularCoordinateBase :=
   fun x ↦ A.centralFamilyCoordinate (A.ellipticCentralImageHomeomorph x)
 
 public theorem ellipticCentralCoordinate_continuous :
@@ -126,7 +126,7 @@ public theorem ellipticCentralHeight_continuous :
 
 /-- The selected order-three collar lies over the affine neighborhood `re < 1/3`. -/
 public theorem orderThreeStarCollar_centralCoordinate_re_lt
-    (q : A.starCollarSourceType (1 : Fin 3)) :
+    (q : A.StarCollarSource (1 : Fin 3)) :
     (A.centralFamilyCoordinate (A.starToCentral 1 q)).1.re < 1 / 3 := by
   let U := A.modular.modularParameter.toTriangleUniformization
   let hsource : U.sourceAction = SphereSixComplex.TriangleGroup.fuchsianSourceAction :=
@@ -163,7 +163,7 @@ public theorem orderThreeStarCollar_centralCoordinate_re_lt
 
 /-- The selected order-four collar lies over the affine neighborhood `2/3 < re`. -/
 public theorem orderFourStarCollar_twoThirds_lt_centralCoordinate_re
-    (q : A.starCollarSourceType (2 : Fin 3)) :
+    (q : A.StarCollarSource (2 : Fin 3)) :
     2 / 3 < (A.centralFamilyCoordinate (A.starToCentral 2 q)).1.re := by
   let U := A.modular.modularParameter.toTriangleUniformization
   let hsource : U.sourceAction = SphereSixComplex.TriangleGroup.fuchsianSourceAction :=
@@ -207,13 +207,13 @@ public theorem orderFourStarCollar_twoThirds_lt_centralCoordinate_re
       linarith
 
 private theorem sectionSevenEllipticCentralImageHomeomorph_of_collar
-    (i : Fin 3) (q : A.starCollarSourceType i)
+    (i : Fin 3) (q : A.StarCollarSource i)
     (x : A.ellipticCentralImage)
     (hx : A.openEmbeddingStarData.collarSourceToGlued i q = x.1.1) :
     A.ellipticCentralImageHomeomorph x = A.starToCentral i q := by
   apply A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph.injective
   apply Subtype.ext
-  let y : A.openEmbeddingStarData.SectionSevenEulerCover.piece 0 := ⟨x.1.1, x.2⟩
+  let y : A.openEmbeddingStarData.sectionSevenEulerCover.piece 0 := ⟨x.1.1, x.2⟩
   have hxy : A.ellipticCentralImageHomeomorph x =
       A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph.symm y := rfl
   calc
@@ -256,7 +256,7 @@ public theorem affineCentralSeparation :
         (sectionSevenStarOpenCover
           A.openEmbeddingStarData.toFourPieceStarGluingData).piece 2 := by
       simpa [starCover,
-        OpenEmbeddingStarData.SectionSevenMayerVietorisCover,
+        OpenEmbeddingStarData.sectionSevenMayerVietorisCover,
         sectionSevenMayerVietorisOpenCover, sectionSevenMayerVietorisOrder] using hpair
     have hrange : Set.range (A.openEmbeddingStarData.collarSourceToGlued 1) =
         (sectionSevenStarOpenCover
@@ -282,7 +282,7 @@ public theorem affineCentralSeparation :
         (sectionSevenStarOpenCover
           A.openEmbeddingStarData.toFourPieceStarGluingData).piece 3 := by
       simpa [starCover,
-        OpenEmbeddingStarData.SectionSevenMayerVietorisCover,
+        OpenEmbeddingStarData.sectionSevenMayerVietorisCover,
         sectionSevenMayerVietorisOpenCover, sectionSevenMayerVietorisOrder] using hpair
     have hrange : Set.range (A.openEmbeddingStarData.collarSourceToGlued 2) =
         (sectionSevenStarOpenCover

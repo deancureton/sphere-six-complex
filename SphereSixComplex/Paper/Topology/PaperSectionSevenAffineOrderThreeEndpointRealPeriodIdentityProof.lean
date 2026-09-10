@@ -213,7 +213,7 @@ public theorem affineOrderThreeCentralRegionQuotient_band
     A.orderThreeAffineHalfPlaneLiftQuotientToCentralFamily
         (A.affineOrderThreeCentralRegionQuotientHomeomorph u) =
         A.ellipticCentralImageHomeomorph y :=
-      A.toCentralFamily_sectionSevenAffineOrderThreeCentralRegionQuotientHomeomorph u
+      A.toCentralFamily_affineOrderThreeCentralRegionQuotientHomeomorph u
     _ = A.affineCentralBandToCentralFamily
           A.affineCentralSeparation
             (A.actualAffineHeightSplit.sidesIntersectionHomeomorph x) := rfl
@@ -371,7 +371,7 @@ public theorem exists_regularDeck_namedOrderThreeRadialBase_cayley_lt
               A.ellipticCentralRadius
               A.affineOrderThreeMarkedDiscRadius
               (A.affineOrderThreeDiscRegionEndpoint x).2⟩ := by
-      rw [← A.toCentralFamily_sectionSevenAffineOrderThreeDiscRegionQuotientHomeomorph
+      rw [← A.toCentralFamily_affineOrderThreeDiscRegionQuotientHomeomorph
         A.affineOrderThreeMarkedDiscRadius
         (A.affineOrderThreeDiscRegionEndpoint x)]
       rw [A.affineOrderThreeDiscRegionQuotient_endpoint x]
@@ -504,7 +504,7 @@ public theorem centralQuotientProjection_namedOrderThreeDiscLiftPoint
             A.ellipticCentralRadius
             A.affineOrderThreeMarkedDiscRadius
             (A.affineOrderThreeDiscRegionEndpoint x).2⟩ := by
-  rw [← A.toCentralFamily_sectionSevenAffineOrderThreeDiscRegionQuotientHomeomorph
+  rw [← A.toCentralFamily_affineOrderThreeDiscRegionQuotientHomeomorph
     A.affineOrderThreeMarkedDiscRadius
     (A.affineOrderThreeDiscRegionEndpoint x)]
   rw [A.affineOrderThreeDiscRegionQuotient_endpoint x]
@@ -563,7 +563,7 @@ public theorem affineOrderThreeEndpointRealPeriodIdentity
   refine ⟨?_⟩
   intro x q hq
   let q₀ := A.affineOrderThreeNamedCollarLiftPoint h x
-  have hquot : (Quotient.mk _ q : A.starCollarSourceType (1 : Fin 3)) =
+  have hquot : (Quotient.mk _ q : A.StarCollarSource (1 : Fin 3)) =
       Quotient.mk _ q₀ := hq.symm.trans
         (A.orderThreeOverlapCollarHomeomorph_endpoint_eq_named h x)
   have hquot' := congrArg

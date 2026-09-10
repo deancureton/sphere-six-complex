@@ -1448,15 +1448,15 @@ private theorem simplexFace_comp_simplexFace (n : ℕ) (i j : Fin (n + 2)) (h : 
   exact congrArg (fun f ↦ stdSimplex.map f s) hδ'
 
 private noncomputable def cupOneOne {X : Type} [TopologicalSpace X]
-    (u v : Chains X 1 →+ ℤ) : Chains X 2 →+ ℤ :=
+    (u v : chains X 1 →+ ℤ) : chains X 2 →+ ℤ :=
   chainLift X 2 fun σ ↦
     u (simplexChain X 1 (σ.comp (simplexFace 1 2))) *
       v (simplexChain X 1 (σ.comp (simplexFace 1 0)))
 
 private theorem cupOneOne_boundary {X : Type} [TopologicalSpace X]
-    (u v : Chains X 1 →+ ℤ) (hu : u.comp (boundaryTwo X) = 0)
+    (u v : chains X 1 →+ ℤ) (hu : u.comp (boundaryTwo X) = 0)
     (hv : v.comp (boundaryTwo X) = 0) (σ : SingularSimplex X 3) :
-    cupOneOne u v ((IntegralChains X).d 3 2 (simplexChain X 3 σ)) = 0 := by
+    cupOneOne u v ((integralChains X).d 3 2 (simplexChain X 3 σ)) = 0 := by
   have h02 : (simplexFace 2 0).comp (simplexFace 1 2) =
       (simplexFace 2 3).comp (simplexFace 1 0) := by
     simpa using (simplexFace_comp_simplexFace 1 0 2 (by decide)).symm
@@ -1496,7 +1496,7 @@ private def standardTwoTorusCircleCoordinate (i : Fin 2) :
   continuous_toFun := continuous_apply i
 
 private noncomputable def standardTwoTorusCoordinateWinding (i : Fin 2) :
-    Chains (StdTorus 2) 1 →+ ℤ :=
+    chains (StdTorus 2) 1 →+ ℤ :=
   edgeWinding.comp ((singularChainMap (standardTwoTorusCircleCoordinate i)).f 1).hom
 
 private theorem standardTwoTorusCoordinateWinding_cocycle (i : Fin 2) :
@@ -1511,18 +1511,18 @@ private theorem standardTwoTorusCoordinateWinding_cocycle (i : Fin 2) :
     edgeWinding_boundaryTwo
       (simplexChain UnitAddCircle 2 ((standardTwoTorusCircleCoordinate i).comp σ))
 
-private noncomputable def standardTwoTorusArea : Chains (StdTorus 2) 2 →+ ℤ :=
+private noncomputable def standardTwoTorusArea : chains (StdTorus 2) 2 →+ ℤ :=
   cupOneOne (standardTwoTorusCoordinateWinding 0) (standardTwoTorusCoordinateWinding 1)
 
 private theorem standardTwoTorusArea_comp_boundary :
-    standardTwoTorusArea.comp ((IntegralChains (StdTorus 2)).d 3 2).hom = 0 := by
+    standardTwoTorusArea.comp ((integralChains (StdTorus 2)).d 3 2).hom = 0 := by
   apply chainHom_ext (StdTorus 2) 3
   intro σ
   exact cupOneOne_boundary _ _ (standardTwoTorusCoordinateWinding_cocycle 0)
     (standardTwoTorusCoordinateWinding_cocycle 1) σ
 
 private noncomputable def standardTwoTorusAreaChainMap :
-    IntegralChains (StdTorus 2) ⟶
+    integralChains (StdTorus 2) ⟶
       (HomologicalComplex.single AddCommGrpCat (ComplexShape.down ℕ) 2).obj
         (AddCommGrpCat.of ℤ) :=
   HomologicalComplex.mkHomToSingle (AddCommGrpCat.ofHom standardTwoTorusArea) (by
@@ -1551,9 +1551,9 @@ private def standardTwoTorusIntegerEdge (v : Fin 2 → ℤ) :
 private def standardTwoTorusTriangleA : SingularSimplex (StdTorus 2) 2 where
   toFun s := ![((s 1 + s 2 : ℝ) : UnitAddCircle), ((s 2 : ℝ) : UnitAddCircle)]
   continuous_toFun := by
-    have h1 : Continuous (fun s : Simplex 2 ↦ s 1) :=
+    have h1 : Continuous (fun s : simplex 2 ↦ s 1) :=
       (continuous_apply 1).comp continuous_subtype_val
-    have h2 : Continuous (fun s : Simplex 2 ↦ s 2) :=
+    have h2 : Continuous (fun s : simplex 2 ↦ s 2) :=
       (continuous_apply 2).comp continuous_subtype_val
     exact continuous_pi fun i ↦ by
       fin_cases i
@@ -1563,9 +1563,9 @@ private def standardTwoTorusTriangleA : SingularSimplex (StdTorus 2) 2 where
 private def standardTwoTorusTriangleB : SingularSimplex (StdTorus 2) 2 where
   toFun s := ![((s 2 : ℝ) : UnitAddCircle), ((s 1 + s 2 : ℝ) : UnitAddCircle)]
   continuous_toFun := by
-    have h1 : Continuous (fun s : Simplex 2 ↦ s 1) :=
+    have h1 : Continuous (fun s : simplex 2 ↦ s 1) :=
       (continuous_apply 1).comp continuous_subtype_val
-    have h2 : Continuous (fun s : Simplex 2 ↦ s 2) :=
+    have h2 : Continuous (fun s : simplex 2 ↦ s 2) :=
       (continuous_apply 2).comp continuous_subtype_val
     exact continuous_pi fun i ↦ by
       fin_cases i
@@ -1660,7 +1660,7 @@ private theorem standardTwoTorusTriangle_face_one :
     apply (unitAddCircle_eq_iff _ _).mpr <;>
     exact ⟨0, by norm_num⟩
 
-private def standardTwoTorusFundamentalCycle : Chains (StdTorus 2) 2 :=
+private def standardTwoTorusFundamentalCycle : chains (StdTorus 2) 2 :=
   simplexChain (StdTorus 2) 2 standardTwoTorusTriangleA -
     simplexChain (StdTorus 2) 2 standardTwoTorusTriangleB
 
@@ -1673,38 +1673,38 @@ private theorem standardTwoTorusFundamentalCycle_isCycle :
   abel
 
 private noncomputable def degreeTwoCycleMap {X : Type} [TopologicalSpace X]
-    (c : Chains X 2) : AddCommGrpCat.of ℤ ⟶ (IntegralChains X).X 2 :=
+    (c : chains X 2) : AddCommGrpCat.of ℤ ⟶ (integralChains X).X 2 :=
   AddCommGrpCat.asHom c
 
 private theorem degreeTwoCycleMap_isCycle {X : Type} [TopologicalSpace X]
-    (c : Chains X 2) (hc : boundaryTwo X c = 0) :
-    degreeTwoCycleMap c ≫ (IntegralChains X).d 2 1 = 0 := by
+    (c : chains X 2) (hc : boundaryTwo X c = 0) :
+    degreeTwoCycleMap c ≫ (integralChains X).d 2 1 = 0 := by
   apply AddCommGrpCat.int_hom_ext
   change boundaryTwo X ((AddCommGrpCat.asHom c) 1) = 0
   rw [AddCommGrpCat.asHom_hom_apply, one_zsmul]
   exact hc
 
 private noncomputable def degreeTwoCycleHomologyMap {X : Type} [TopologicalSpace X]
-    (c : Chains X 2) (hc : boundaryTwo X c = 0) :
-    AddCommGrpCat.of ℤ ⟶ (IntegralChains X).homology 2 :=
-  (IntegralChains X).liftCycles (degreeTwoCycleMap c) 1 (by simp)
+    (c : chains X 2) (hc : boundaryTwo X c = 0) :
+    AddCommGrpCat.of ℤ ⟶ (integralChains X).homology 2 :=
+  (integralChains X).liftCycles (degreeTwoCycleMap c) 1 (by simp)
       (degreeTwoCycleMap_isCycle c hc) ≫
-    (IntegralChains X).homologyπ 2
+    (integralChains X).homologyπ 2
 
 private noncomputable def degreeTwoCycleHomologyClass {X : Type} [TopologicalSpace X]
-    (c : Chains X 2) (hc : boundaryTwo X c = 0) : IntegralSingularHomology 2 X :=
+    (c : chains X 2) (hc : boundaryTwo X c = 0) : IntegralSingularHomology 2 X :=
   degreeTwoCycleHomologyMap c hc 1
 
 private theorem degreeTwoMappedCycle_isCycle {X Y : Type} [TopologicalSpace X]
-    [TopologicalSpace Y] (f : C(X, Y)) (c : Chains X 2) (hc : boundaryTwo X c = 0) :
+    [TopologicalSpace Y] (f : C(X, Y)) (c : chains X 2) (hc : boundaryTwo X c = 0) :
     boundaryTwo Y ((singularChainMap f).f 2 c) = 0 := by
-  change ((IntegralChains Y).d 2 1).hom (((singularChainMap f).f 2).hom c) = 0
+  change ((integralChains Y).d 2 1).hom (((singularChainMap f).f 2).hom c) = 0
   rw [← ConcreteCategory.comp_apply, (singularChainMap f).comm]
   change ((singularChainMap f).f 1).hom (boundaryTwo X c) = 0
   rw [hc, map_zero]
 
 private theorem degreeTwoCycleMap_naturality {X Y : Type} [TopologicalSpace X]
-    [TopologicalSpace Y] (f : C(X, Y)) (c : Chains X 2) :
+    [TopologicalSpace Y] (f : C(X, Y)) (c : chains X 2) :
     degreeTwoCycleMap c ≫ (singularChainMap f).f 2 =
       degreeTwoCycleMap ((singularChainMap f).f 2 c) := by
   apply AddCommGrpCat.int_hom_ext
@@ -1713,7 +1713,7 @@ private theorem degreeTwoCycleMap_naturality {X Y : Type} [TopologicalSpace X]
   rw [AddCommGrpCat.asHom_hom_apply, AddCommGrpCat.asHom_hom_apply, one_zsmul, one_zsmul]
 
 private theorem degreeTwoCycleHomologyMap_naturality {X Y : Type} [TopologicalSpace X]
-    [TopologicalSpace Y] (f : C(X, Y)) (c : Chains X 2) (hc : boundaryTwo X c = 0) :
+    [TopologicalSpace Y] (f : C(X, Y)) (c : chains X 2) (hc : boundaryTwo X c = 0) :
     degreeTwoCycleHomologyMap c hc ≫
         HomologicalComplex.homologyMap (singularChainMap f) 2 =
       degreeTwoCycleHomologyMap ((singularChainMap f).f 2 c)
@@ -1723,7 +1723,7 @@ private theorem degreeTwoCycleHomologyMap_naturality {X Y : Type} [TopologicalSp
   rw [← Category.assoc, HomologicalComplex.liftCycles_comp_cyclesMap]
   simp only [degreeTwoCycleMap_naturality]
 
-private theorem degreeTwoCycleHomologyMap_area (c : Chains (StdTorus 2) 2)
+private theorem degreeTwoCycleHomologyMap_area (c : chains (StdTorus 2) 2)
     (hc : boundaryTwo (StdTorus 2) c = 0) :
     degreeTwoCycleHomologyMap c hc ≫
         HomologicalComplex.homologyMap standardTwoTorusAreaChainMap 2 ≫
@@ -1741,7 +1741,7 @@ private theorem degreeTwoCycleHomologyMap_area (c : Chains (StdTorus 2) 2)
   rw [AddCommGrpCat.asHom_hom_apply, one_zsmul]
 
 private theorem standardTwoTorusHomologyArea_cycle
-    (c : Chains (StdTorus 2) 2) (hc : boundaryTwo (StdTorus 2) c = 0) :
+    (c : chains (StdTorus 2) 2) (hc : boundaryTwo (StdTorus 2) c = 0) :
     standardTwoTorusHomologyArea (degreeTwoCycleHomologyClass c hc) =
       standardTwoTorusArea c := by
   have h := ConcreteCategory.congr_hom (degreeTwoCycleHomologyMap_area c hc) (1 : ℤ)

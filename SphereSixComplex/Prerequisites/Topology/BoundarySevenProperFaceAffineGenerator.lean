@@ -333,10 +333,10 @@ public theorem boundarySevenProperFaceAffineChainMap_comp_val :
   let G := affineFlagChainMap 7
   apply HomologicalComplex.Hom.ext
   funext k
-  apply BoundarySevenProperFaceNerve.chainComplex_hom_ext
+  apply boundarySevenProperFaceNerve.chainComplex_hom_ext
   intro F
-  change ((BoundarySevenProperFaceNerve.ιChainComplex F ≫ A.f k) ≫ V.f k) =
-    ((BoundarySevenProperFaceNerve.ιChainComplex F ≫ I.f k) ≫ G.f k)
+  change ((boundarySevenProperFaceNerve.ιChainComplex F ≫ A.f k) ≫ V.f k) =
+    ((boundarySevenProperFaceNerve.ιChainComplex F ≫ I.f k) ≫ G.f k)
   rw [SSet.ι_chainComplexMap_f, SSet.ι_chainComplexMap_f,
     SSet.ι_chainComplexMap_f]
   dsimp only [G]

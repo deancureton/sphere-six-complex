@@ -39,7 +39,7 @@ public theorem establishedActualCentralBandProductTrivialization
     (A : PaperAnalyticData) (S : A.AffineCentralSeparation) :
     A.AffineCentralBandProductTrivialization S :=
   AffineCentralBandMarkedTrivialization.toProductTrivialization
-    (establishedActualCentralBandMarkedTrivialization A S)
+    (affineCentralBandMarkedTrivialization A S)
 
 end EstablishedSectionSevenAffineBandTopology
 
@@ -89,7 +89,7 @@ public theorem affineCentralBandMarkedProductHomeomorph_fst
   have hcoord := congrArg A.centralFamilyCoordinate hkey
   rw [A.centralFamilyCoordinate_stripLiftPoint] at hcoord
   apply Subtype.ext
-  exact (congrArg (Subtype.val : RegularCoordinateBase → ℂ) hcoord).symm
+  exact (congrArg (Subtype.val : regularCoordinateBase → ℂ) hcoord).symm
 
 /-- The marking itself: the fibre coordinate of the named trivialization is the canonical
 real-period coordinate of the central four-torus along the named strip lift.  This is the

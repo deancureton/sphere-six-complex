@@ -74,7 +74,7 @@ public theorem affineNormalizedCrossing_strict_separation
 
 /-- Reflection across the vertical line through the two affine branch values sends the pinned
 crossing to its complex conjugate. -/
-public theorem one_sub_sectionSevenAffineActualCuspCrossingPoint_eq_conj
+public theorem one_sub_affineActualCuspCrossingPoint_eq_conj
     (A : PaperAnalyticData) :
     1 - (A.affineActualCuspCrossingPoint.1 : ℂ) =
       star (A.affineActualCuspCrossingPoint.1 : ℂ) := by

@@ -71,7 +71,7 @@ dependent end-equivalence fields below. -/
 public abbrev explicitCylinderBordism (X : OrientedMarkedSmoothHomotopySixSphere.{0}) :
     SmoothCollaredBordism.{0, 0, 0, 0, 0}
       𝓘(ℝ, RealModel) X.carrier X.carrier where
-  W := X.carrier × CollarParameter
+  W := X.carrier × collarParameter
   incoming := SmoothCollaredBordism.cylinderIncomingCollar
   outgoing := SmoothCollaredBordism.cylinderOutgoingCollar
   ends_disjoint := by
@@ -79,7 +79,7 @@ public abbrev explicitCylinderBordism (X : OrientedMarkedSmoothHomotopySixSphere
     rintro p ⟨x, hx⟩ ⟨y, hy⟩
     rw [SmoothCollaredBordism.cylinderIncomingCollar_inclusion] at hx
     rw [SmoothCollaredBordism.cylinderOutgoingCollar_inclusion] at hy
-    have h := congrArg (fun q : X.carrier × CollarParameter ↦ (q.2 : ℝ))
+    have h := congrArg (fun q : X.carrier × collarParameter ↦ (q.2 : ℝ))
       (hy.trans hx.symm)
     norm_num [collarStart, collarFinish] at h
   boundary_eq := by
@@ -89,12 +89,12 @@ public abbrev explicitCylinderBordism (X : OrientedMarkedSmoothHomotopySixSphere
     simp only [Set.mem_union, Set.mem_range,
       SmoothCollaredBordism.cylinderIncomingCollar_inclusion,
       SmoothCollaredBordism.cylinderOutgoingCollar_inclusion]
-    change (x ∈ (Set.univ : Set X.carrier) ∧ t ∈ ({⊥, ⊤} : Set CollarParameter)) ↔
+    change (x ∈ (Set.univ : Set X.carrier) ∧ t ∈ ({⊥, ⊤} : Set collarParameter)) ↔
       ((∃ y : X.carrier, (y, collarStart) = (x, t)) ∨
         ∃ y : X.carrier, (y, collarFinish) = (x, t))
     simp [collarStart, collarFinish, eq_comm]
-    have hzero : (⊥ : CollarParameter) = 0 := Subtype.ext (by norm_num)
-    have hone : (⊤ : CollarParameter) = 1 := Subtype.ext (by norm_num)
+    have hzero : (⊥ : collarParameter) = 0 := Subtype.ext (by norm_num)
+    have hone : (⊤ : collarParameter) = 1 := Subtype.ext (by norm_num)
     simp [hzero, hone]
 
 /-- The cylinder of a marked homotopy six-sphere is an oriented h-cobordism. -/

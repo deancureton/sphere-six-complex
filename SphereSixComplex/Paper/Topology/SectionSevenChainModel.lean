@@ -169,10 +169,10 @@ public theorem sectionSevenDegreeOneCellularComplex_homology_two_isZero :
 actual integral singular homology in that degree. -/
 public theorem integralSingularHomology_one_subsingleton_of_sectionSevenCellularComparison
     {X : Type} [TopologicalSpace X]
-    (f : sectionSevenDegreeOneCellularComplex ⟶ IntegralSingularChainComplex X)
+    (f : sectionSevenDegreeOneCellularComplex ⟶ integralSingularChainComplex X)
     [IsIso (sectionSevenDegreeOneCellularComplex.homologyMap f 1)] :
     Subsingleton (IntegralSingularHomology 1 X) := by
-  have hSingular : IsZero ((IntegralSingularChainComplex X).homology 1) :=
+  have hSingular : IsZero ((integralSingularChainComplex X).homology 1) :=
     IsZero.of_iso sectionSevenDegreeOneCellularComplex_homology_one_isZero
       (asIso (sectionSevenDegreeOneCellularComplex.homologyMap f 1)).symm
   exact AddCommGrpCat.subsingleton_of_isZero hSingular
@@ -181,10 +181,10 @@ public theorem integralSingularHomology_one_subsingleton_of_sectionSevenCellular
 actual integral singular homology in that degree. -/
 public theorem integralSingularHomology_two_subsingleton_of_sectionSevenCellularComparison
     {X : Type} [TopologicalSpace X]
-    (f : sectionSevenDegreeOneCellularComplex ⟶ IntegralSingularChainComplex X)
+    (f : sectionSevenDegreeOneCellularComplex ⟶ integralSingularChainComplex X)
     [IsIso (sectionSevenDegreeOneCellularComplex.homologyMap f 2)] :
     Subsingleton (IntegralSingularHomology 2 X) := by
-  have hSingular : IsZero ((IntegralSingularChainComplex X).homology 2) :=
+  have hSingular : IsZero ((integralSingularChainComplex X).homology 2) :=
     IsZero.of_iso sectionSevenDegreeOneCellularComplex_homology_two_isZero
       (asIso (sectionSevenDegreeOneCellularComplex.homologyMap f 2)).symm
   exact AddCommGrpCat.subsingleton_of_isZero hSingular
@@ -193,7 +193,7 @@ public theorem integralSingularHomology_two_subsingleton_of_sectionSevenCellular
 groups. -/
 public noncomputable def integralSingularHomologyOneEquivSectionSevenComputed
     {X : Type} [TopologicalSpace X]
-    (f : sectionSevenDegreeOneCellularComplex ⟶ IntegralSingularChainComplex X)
+    (f : sectionSevenDegreeOneCellularComplex ⟶ integralSingularChainComplex X)
     [IsIso (sectionSevenDegreeOneCellularComplex.homologyMap f 1)] :
     IntegralSingularHomology 1 X ≃+ SectionSevenComputedHomology 1 := by
   let _ : Subsingleton (IntegralSingularHomology 1 X) :=

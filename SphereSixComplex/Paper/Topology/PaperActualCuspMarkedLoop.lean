@@ -84,7 +84,7 @@ public def cuspAngularProjectedLoop :
       (A.cuspBoundaryProjection A.cuspBoundaryCoverBase) := by
   let _ := paperCuspBoundaryDeckAction A.starCuspWitness
   let hp : IsQuotientCoveringMap A.cuspBoundaryProjection
-      paperCuspBoundaryDeck :=
+      PaperCuspBoundaryDeck :=
     (additiveCuspBoundaryProjection_isQuotientCoveringMap
       A.starCuspWitness).homeomorph_comp
         A.cuspCollarToStarOverlapHomeomorph
@@ -149,7 +149,7 @@ theorem cuspAngularProjectedLoop_class_eq_ofDeck :
         (additiveCuspRadiusCover W.localWitness.radius) :=
       additiveCuspBoundaryCover_simplyConnected W
     let hp : IsQuotientCoveringMap A.cuspBoundaryProjection
-        paperCuspBoundaryDeck :=
+        PaperCuspBoundaryDeck :=
       (additiveCuspBoundaryProjection_isQuotientCoveringMap W).homeomorph_comp
         A.cuspCollarToStarOverlapHomeomorph
     Path.Homotopic.Quotient.mk A.cuspAngularProjectedLoop =
@@ -160,7 +160,7 @@ theorem cuspAngularProjectedLoop_class_eq_ofDeck :
       (additiveCuspRadiusCover W.localWitness.radius) :=
     additiveCuspBoundaryCover_simplyConnected W
   let hp : IsQuotientCoveringMap A.cuspBoundaryProjection
-      paperCuspBoundaryDeck :=
+      PaperCuspBoundaryDeck :=
     (additiveCuspBoundaryProjection_isQuotientCoveringMap W).homeomorph_comp
       A.cuspCollarToStarOverlapHomeomorph
   apply (hp.fundamentalGroupEquiv

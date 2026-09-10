@@ -28,7 +28,7 @@ open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open SphereSixComplex.StandardTorusHomology
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
   {W : ActualPuncturedCuspCollarWitness N M} [HasCuspPhaseSpreading W]
 
@@ -104,7 +104,7 @@ public theorem degreeTwoFiberGenerator_eq_coordinateTorus
 /-- The selected filling class corresponding to the `j`th labelled degree-two coordinate. -/
 public noncomputable def degreeTwoCuspFillingCoordinateClass
     (G : ActualCuspRadialClutchingData W) (j : Fin 4) :
-    IntegralSingularHomology 2 (actualLocalCuspFilling W) :=
+    IntegralSingularHomology 2 (ActualLocalCuspFilling W) :=
   (degreeTwoCuspFillingCoordinates G).symm (Pi.single j 1)
 
 /-- Point-set form of the remaining degree-two calculation: the four literal coordinate

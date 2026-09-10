@@ -27,21 +27,21 @@ open SphereSixComplex.Topology.CanonicalProductWangBoundaryNaturality
 
 /-- The canonical degree-zero homology class represented by the unique point of `Unit`. -/
 public noncomputable def pointH0Class : IntegralSingularHomology 0 Unit :=
-  zeroChainHomologyClass (IntegralChains Unit) (pointChain ())
+  zeroChainHomologyClass (integralChains Unit) (pointChain ())
 
 private theorem zeroChainHomologyClass_naturality
     {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
-    (f : C(X, Y)) (c : Chains X 0) :
+    (f : C(X, Y)) (c : chains X 0) :
     integralSingularHomologyMap 0 f
-        (zeroChainHomologyClass (IntegralChains X) c) =
-      zeroChainHomologyClass (IntegralChains Y) ((singularChainMap f).f 0 c) := by
+        (zeroChainHomologyClass (integralChains X) c) =
+      zeroChainHomologyClass (integralChains Y) ((singularChainMap f).f 0 c) := by
   have h :
-      ((IntegralChains X).liftCycles (AddCommGrpCat.asHom c) 0 (by simp) (by simp) ≫
-          (IntegralChains X).homologyπ 0) ≫
+      ((integralChains X).liftCycles (AddCommGrpCat.asHom c) 0 (by simp) (by simp) ≫
+          (integralChains X).homologyπ 0) ≫
           HomologicalComplex.homologyMap (singularChainMap f) 0 =
-        (IntegralChains Y).liftCycles
+        (integralChains Y).liftCycles
             (AddCommGrpCat.asHom ((singularChainMap f).f 0 c)) 0 (by simp) (by simp) ≫
-          (IntegralChains Y).homologyπ 0 := by
+          (integralChains Y).homologyπ 0 := by
     rw [Category.assoc, HomologicalComplex.homologyπ_naturality]
     rw [← Category.assoc, HomologicalComplex.liftCycles_comp_cyclesMap]
     congr 2
@@ -52,33 +52,33 @@ private theorem zeroChainHomologyClass_naturality
 private theorem pointH0Class_map
     {X : Type} [TopologicalSpace X] (f : C(Unit, X)) :
     integralSingularHomologyMap 0 f pointH0Class =
-      zeroChainHomologyClass (IntegralChains X) (pointChain (f ())) := by
+      zeroChainHomologyClass (integralChains X) (pointChain (f ())) := by
   rw [pointH0Class, zeroChainHomologyClass_naturality]
   simp only [pointChain, singularChainMap_simplex]
   rfl
 
 private theorem zeroChainHomologyClass_sub
-    {X : Type} [TopologicalSpace X] (c d : Chains X 0) :
-    zeroChainHomologyClass (IntegralChains X) (c - d) =
-      zeroChainHomologyClass (IntegralChains X) c -
-        zeroChainHomologyClass (IntegralChains X) d := by
+    {X : Type} [TopologicalSpace X] (c d : chains X 0) :
+    zeroChainHomologyClass (integralChains X) (c - d) =
+      zeroChainHomologyClass (integralChains X) c -
+        zeroChainHomologyClass (integralChains X) d := by
   change
-    (((IntegralChains X).liftCycles (AddCommGrpCat.asHom (c - d)) 0 (by simp) (by simp) ≫
-        (IntegralChains X).homologyπ 0) 1) =
-      (((IntegralChains X).liftCycles (AddCommGrpCat.asHom c) 0 (by simp) (by simp) ≫
-          (IntegralChains X).homologyπ 0) 1) -
-        (((IntegralChains X).liftCycles (AddCommGrpCat.asHom d) 0 (by simp) (by simp) ≫
-          (IntegralChains X).homologyπ 0) 1)
+    (((integralChains X).liftCycles (AddCommGrpCat.asHom (c - d)) 0 (by simp) (by simp) ≫
+        (integralChains X).homologyπ 0) 1) =
+      (((integralChains X).liftCycles (AddCommGrpCat.asHom c) 0 (by simp) (by simp) ≫
+          (integralChains X).homologyπ 0) 1) -
+        (((integralChains X).liftCycles (AddCommGrpCat.asHom d) 0 (by simp) (by simp) ≫
+          (integralChains X).homologyπ 0) 1)
   have hLift :
-      (IntegralChains X).liftCycles (AddCommGrpCat.asHom c) 0 (by simp) (by simp) -
-          (IntegralChains X).liftCycles (AddCommGrpCat.asHom d) 0 (by simp) (by simp) =
-        (IntegralChains X).liftCycles (AddCommGrpCat.asHom (c - d)) 0 (by simp) (by simp) := by
-    rw [← cancel_mono ((IntegralChains X).iCycles 0),
+      (integralChains X).liftCycles (AddCommGrpCat.asHom c) 0 (by simp) (by simp) -
+          (integralChains X).liftCycles (AddCommGrpCat.asHom d) 0 (by simp) (by simp) =
+        (integralChains X).liftCycles (AddCommGrpCat.asHom (c - d)) 0 (by simp) (by simp) := by
+    rw [← cancel_mono ((integralChains X).iCycles 0),
       CategoryTheory.Preadditive.sub_comp]
     simp only [HomologicalComplex.liftCycles_i]
     apply AddCommGrpCat.int_hom_ext
     simp
-  have hComp := congrArg (fun f ↦ f ≫ (IntegralChains X).homologyπ 0) hLift
+  have hComp := congrArg (fun f ↦ f ≫ (integralChains X).homologyπ 0) hLift
   rw [CategoryTheory.Preadditive.sub_comp] at hComp
   have hEval := ConcreteCategory.congr_hom hComp (1 : ℤ)
   symm
@@ -105,7 +105,7 @@ private theorem positiveBoundaryCalibration_legacy_coordinates :
           pointChain positiveBoundaryCalibration.high) =
       overlapEquiv (fun _ : Unit ↦ Homeomorph.refl Unit) 0
         ((fun _ : Unit ↦ pointH0Class), fun _ : Unit ↦ -pointH0Class) := by
-  change zeroChainHomologyClass (IntegralChains _)
+  change zeroChainHomologyClass (integralChains _)
       (pointChain positiveBoundaryCalibration.low -
         pointChain positiveBoundaryCalibration.high) = _
   rw [overlapEquiv]
@@ -161,14 +161,14 @@ public theorem positiveBoundaryCalibration_lowOverlapRead_integer :
   change ConcreteCategory.hom
       ((TopCat.of Unit).singularHomology₀ε (AddCommGrpCat.of ℤ)) pointH0Class = 1
   unfold pointH0Class zeroChainHomologyClass
-  change (((IntegralChains Unit).liftCycles
+  change (((integralChains Unit).liftCycles
       (AddCommGrpCat.asHom (pointChain ())) 0 (by simp) (by simp) ≫
-        (IntegralChains Unit).homologyπ 0 ≫
+        (integralChains Unit).homologyπ 0 ≫
           (TopCat.toSSet.obj (TopCat.of Unit)).homology₀ε (AddCommGrpCat.of ℤ)) 1) = 1
   have hpoint : AddCommGrpCat.asHom (pointChain ()) =
       (TopCat.toSSet.obj (TopCat.of Unit)).ιChainComplex
         (R := AddCommGrpCat.of ℤ)
-        (simplexIndex Unit 0 (ContinuousMap.const (Simplex 0) ())) := by
+        (simplexIndex Unit 0 (ContinuousMap.const (simplex 0) ())) := by
     apply AddCommGrpCat.int_hom_ext
     simp [pointChain, simplexChain]
   rw [hpoint]

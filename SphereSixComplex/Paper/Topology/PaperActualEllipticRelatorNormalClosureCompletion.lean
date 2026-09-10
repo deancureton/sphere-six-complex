@@ -30,7 +30,7 @@ variable (A : PaperAnalyticData)
 /-- The order-three global path-class marking also forces the exact deck value of the
 connector-pinned comparison. -/
 public theorem
-    orderThreeActualCentralProductCoverComparison_deckMap_fillingRelation_of_pathClassIdentity
+    ellipticThreeCentralProductCoverComparison_deckMap_fillingRelation_of_pathClassIdentity
     (h : A.OrderThreeActualEllipticCentralProductPathClassIdentity) :
     letI := A.ellipticThreeBoundaryAction
     let D := A.centralAffineUniversalCover
@@ -81,7 +81,7 @@ public theorem
 
 /-- The order-four global path-class marking forces the corresponding exact deck value. -/
 public theorem
-    orderFourActualCentralProductCoverComparison_deckMap_fillingRelation_of_pathClassIdentity
+    ellipticFourCentralProductCoverComparison_deckMap_fillingRelation_of_pathClassIdentity
     (h : A.OrderFourActualEllipticCentralProductPathClassIdentity) :
     letI := A.ellipticFourBoundaryAction
     let D := A.centralAffineUniversalCover
@@ -132,7 +132,7 @@ public theorem
 
 /-- The order-three deck evaluation is exactly the remaining transported path-class identity. -/
 public theorem
-    orderThreeActualCentralProductCoverComparison_deckMap_fillingRelation_iff_pathClassIdentity :
+    ellipticThreeCentralProductCoverComparison_deckMap_fillingRelation_iff_pathClassIdentity :
     (letI := A.ellipticThreeBoundaryAction
       let D := A.centralAffineUniversalCover
       letI := D.topology
@@ -143,11 +143,11 @@ public theorem
         orderThreeFillingRelationClassifiedCentralProductDeck⁻¹) ↔
       A.OrderThreeActualEllipticCentralProductPathClassIdentity :=
   ⟨A.ellipticThreeCentralProductPathClassIdentity_of_deckMap_fillingRelation,
-    A.orderThreeActualCentralProductCoverComparison_deckMap_fillingRelation_of_pathClassIdentity⟩
+    A.ellipticThreeCentralProductCoverComparison_deckMap_fillingRelation_of_pathClassIdentity⟩
 
 /-- The order-four deck evaluation is exactly the remaining transported path-class identity. -/
 public theorem
-    orderFourActualCentralProductCoverComparison_deckMap_fillingRelation_iff_pathClassIdentity :
+    ellipticFourCentralProductCoverComparison_deckMap_fillingRelation_iff_pathClassIdentity :
     (letI := A.ellipticFourBoundaryAction
       let D := A.centralAffineUniversalCover
       letI := D.topology
@@ -158,12 +158,12 @@ public theorem
         orderFourFillingRelationClassifiedCentralProductDeck⁻¹) ↔
       A.OrderFourActualEllipticCentralProductPathClassIdentity :=
   ⟨A.ellipticFourCentralProductPathClassIdentity_of_deckMap_fillingRelation,
-    A.orderFourActualCentralProductCoverComparison_deckMap_fillingRelation_of_pathClassIdentity⟩
+    A.ellipticFourCentralProductCoverComparison_deckMap_fillingRelation_of_pathClassIdentity⟩
 
 /-- The order-three connector-pinned lift endpoint is equivalent to the exact remaining
 fundamental-group marking. -/
 public theorem
-    orderThreeActualCentralProductCoverComparison_endpoint_iff_pathClassIdentity :
+    ellipticThreeCentralProductCoverComparison_endpoint_iff_pathClassIdentity :
     (letI := A.ellipticThreeBoundaryAction
       let D := A.centralAffineUniversalCover
       letI := D.topology
@@ -179,12 +179,12 @@ public theorem
   rw [← A.ellipticThreeCentralProductCoverComparison_deckMap_fillingRelation_iff_endpoint]
   constructor
   · exact A.ellipticThreeCentralProductPathClassIdentity_of_deckMap_fillingRelation
-  · exact A.orderThreeActualCentralProductCoverComparison_deckMap_fillingRelation_of_pathClassIdentity
+  · exact A.ellipticThreeCentralProductCoverComparison_deckMap_fillingRelation_of_pathClassIdentity
 
 /-- The order-four connector-pinned lift endpoint is equivalent to its exact remaining
 fundamental-group marking. -/
 public theorem
-    orderFourActualCentralProductCoverComparison_endpoint_iff_pathClassIdentity :
+    ellipticFourCentralProductCoverComparison_endpoint_iff_pathClassIdentity :
     (letI := A.ellipticFourBoundaryAction
       let D := A.centralAffineUniversalCover
       letI := D.topology
@@ -200,11 +200,11 @@ public theorem
   rw [← A.ellipticFourCentralProductCoverComparison_deckMap_fillingRelation_iff_endpoint]
   constructor
   · exact A.ellipticFourCentralProductPathClassIdentity_of_deckMap_fillingRelation
-  · exact A.orderFourActualCentralProductCoverComparison_deckMap_fillingRelation_of_pathClassIdentity
+  · exact A.ellipticFourCentralProductCoverComparison_deckMap_fillingRelation_of_pathClassIdentity
 
 /-- The two concrete class-level markings give the requested nonempty residual. -/
 public theorem
-    actualEllipticRelatorNormalClosureResidual_nonempty_of_centralProductPathClassIdentities
+    ellipticRelatorMembership_nonempty_of_centralProductPathClassIdentities
     (hThree : A.OrderThreeActualEllipticCentralProductPathClassIdentity)
     (hFour : A.OrderFourActualEllipticCentralProductPathClassIdentity) :
     Nonempty
@@ -232,9 +232,9 @@ public theorem orderThreeWholeFillingRelatorChartIdentity_of_pathClassIdentity_a
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
     A.ellipticThreeBoundaryCover_simplyConnected
-  let alpha := beta.cast A.centralAffineBase_eq_actualCuspCentralBase rfl
+  let alpha := beta.cast A.centralAffineBase_eq_cuspCentralBase rfl
   have hcast :
-      alpha.cast A.centralAffineBase_eq_actualCuspCentralBase.symm rfl = beta := by
+      alpha.cast A.centralAffineBase_eq_cuspCentralBase.symm rfl = beta := by
     apply Path.ext
     funext t
     rfl
@@ -249,7 +249,7 @@ public theorem orderThreeWholeFillingRelatorChartIdentity_of_pathClassIdentity_a
           (paperPuncturedGlobalFamilyAffinePresentation A
             orderThreeFillingRelationClassifiedCentralProductDeck) =
         fundamentalGroupElementOfBaseEq
-          A.centralAffineBase_eq_actualCuspCentralBase.symm
+          A.centralAffineBase_eq_cuspCentralBase.symm
           (paperPuncturedGlobalFamilyAffinePresentation A
             orderThreeFillingRelationClassifiedCentralProductDeck) by
       simp [cuspToCentralAffineBaseEquiv,
@@ -283,9 +283,9 @@ public theorem orderFourWholeFillingRelatorChartIdentity_of_pathClassIdentity_at
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :=
     A.ellipticFourBoundaryCover_simplyConnected
-  let alpha := beta.cast A.centralAffineBase_eq_actualCuspCentralBase rfl
+  let alpha := beta.cast A.centralAffineBase_eq_cuspCentralBase rfl
   have hcast :
-      alpha.cast A.centralAffineBase_eq_actualCuspCentralBase.symm rfl = beta := by
+      alpha.cast A.centralAffineBase_eq_cuspCentralBase.symm rfl = beta := by
     apply Path.ext
     funext t
     rfl
@@ -300,7 +300,7 @@ public theorem orderFourWholeFillingRelatorChartIdentity_of_pathClassIdentity_at
           (paperPuncturedGlobalFamilyAffinePresentation A
             orderFourFillingRelationClassifiedCentralProductDeck) =
         fundamentalGroupElementOfBaseEq
-          A.centralAffineBase_eq_actualCuspCentralBase.symm
+          A.centralAffineBase_eq_cuspCentralBase.symm
           (paperPuncturedGlobalFamilyAffinePresentation A
             orderFourFillingRelationClassifiedCentralProductDeck) by
       simp [cuspToCentralAffineBaseEquiv,

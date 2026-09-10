@@ -38,7 +38,7 @@ variable {HighRelations High Total LowRelations Low : Type*}
 coordinate. -/
 public theorem linearEquivOfSection_lift
     (P : WangHomologyPresentation HighRelations High Total LowRelations Low)
-    (S : P.Section) (x : P.Invariants) :
+    (S : P.Section) (x : P.invariants) :
     P.linearEquivOfSection S (S.lift x) = (0, x) := by
   let e := P.linearEquivOfSection S
   apply e.symm.injective
@@ -79,7 +79,7 @@ public noncomputable def cuspPositiveDegreeOneInvariantGenerator
     (A : PaperAnalyticData) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
-    (circleMappingTorusHOnePresentation G.clutching).Invariants := by
+    (circleMappingTorusHOnePresentation G.clutching).invariants := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   exact (degreeOneWangInvariantEquivInteger G).symm 1
@@ -215,7 +215,7 @@ public theorem cuspRawDegreeOneThirdBasis_baseCircle_winding_one
 /-- The actual filling map is an isomorphism on the degree-one Wang coinvariants, without using
 the coordinate specialization matrix. -/
 public theorem cuspRawDegreeOneFiberSpecialization_bijective
-    (A : PaperAnalyticData) (b : puncturedLocalCuspQuotient A.starCuspWitness) :
+    (A : PaperAnalyticData) (b : PuncturedLocalCuspQuotient A.starCuspWitness) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     Function.Bijective (rawDegreeOneFiberSpecialization G) := by
@@ -234,7 +234,7 @@ public theorem cuspRawDegreeOneFiberSpecialization_bijective
 is killed by specialization, uniqueness in the specialization kernel identifies the selected
 positive class with the negative angular meridian. -/
 public theorem cuspSelectedPositiveMeridianClass_eq_neg_explicit_of_normalizations
-    (A : PaperAnalyticData) (b : puncturedLocalCuspQuotient A.starCuspWitness)
+    (A : PaperAnalyticData) (b : PuncturedLocalCuspQuotient A.starCuspWitness)
     (hselected :
       let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
@@ -276,7 +276,7 @@ public theorem cuspSelectedPositiveMeridianClass_eq_neg_explicit_of_normalizatio
 selected section lies in the filling kernel, the explicit angular meridian has negative Wang
 orientation, and its negative has positive source winding. -/
 public theorem cuspSelectedPositiveMeridianClass_winding_one_of_explicit_normalizations
-    (A : PaperAnalyticData) (b : puncturedLocalCuspQuotient A.starCuspWitness)
+    (A : PaperAnalyticData) (b : PuncturedLocalCuspQuotient A.starCuspWitness)
     (hselected :
       let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology

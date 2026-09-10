@@ -23,7 +23,7 @@ open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public theorem constructedA2HexagonGauge_neg (x : Fin 2 → ℝ) :
@@ -194,10 +194,10 @@ public theorem constructedA2ActualCentral_parameter_eq_zero_of_singletonSupport
     (v : ToricLattice) (g : Multiplicative ParameterLattice)
     (p q : actualLocalCuspCentralSubMulAction W)
     (hp : componentSupport constructedModel
-      ((p : LocalCarrier constructedModel W.localWitness.radius) :
+      ((p : localCarrier constructedModel W.localWitness.radius) :
         constructedModel.Carrier) = {v})
     (hq : componentSupport constructedModel
-      ((q : LocalCarrier constructedModel W.localWitness.radius) :
+      ((q : localCarrier constructedModel W.localWitness.radius) :
         constructedModel.Carrier) = {v})
     (hg : g • q = p) :
     Multiplicative.toAdd g = 0 := by
@@ -205,27 +205,27 @@ public theorem constructedA2ActualCentral_parameter_eq_zero_of_singletonSupport
   let S := actualLocalCuspCentralSubMulAction W
   let _ : MulAction (Multiplicative ParameterLattice) S := inferInstance
   have hcarrier := congrArg
-    (fun z : S ↦ ((z : LocalCarrier constructedModel W.localWitness.radius) :
+    (fun z : S ↦ ((z : localCarrier constructedModel W.localWitness.radius) :
       constructedModel.Carrier)) hg
   let C :=
-    CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
+    NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
       N constructedModel W.localWitness.radius W.localWitness.radius_pos
         W.localWitness.radius_le
   let lambda := Multiplicative.toAdd g
   have hphase := hcarrier
   change (((C.toCuspActionData W.localWitness.fixedPoint).psiMap lambda
-    (q : LocalCarrier constructedModel W.localWitness.radius) :
-      LocalCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) =
-        ((p : LocalCarrier constructedModel W.localWitness.radius) :
+    (q : localCarrier constructedModel W.localWitness.radius) :
+      localCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) =
+        ((p : localCarrier constructedModel W.localWitness.radius) :
           constructedModel.Carrier) at hphase
   rw [← C.psiMap_eq_generic, C.psiMap_coe] at hphase
   have hvq : v ∈ componentSupport constructedModel
-      ((q : LocalCarrier constructedModel W.localWitness.radius) :
+      ((q : localCarrier constructedModel W.localWitness.radius) :
         constructedModel.Carrier) := by
     rw [hq]
     simp
   have hfan : Additive.toMul (constructedModel.fanShear lambda)
-      ((q : LocalCarrier constructedModel W.localWitness.radius) :
+      ((q : localCarrier constructedModel W.localWitness.radius) :
         constructedModel.Carrier) ∈
         constructedModel.centralComponent (v + shearVector lambda) := by
     rw [← constructedModel.fanShear_component lambda v]
@@ -233,9 +233,9 @@ public theorem constructedA2ActualCentral_parameter_eq_zero_of_singletonSupport
   have hphaseComponent :
       CuspToricPhaseAction.ToricModel.phaseAction constructedModel
         (C.phase lambda (constructedModel.t
-          (q : LocalCarrier constructedModel W.localWitness.radius)))
+          (q : localCarrier constructedModel W.localWitness.radius)))
         (Additive.toMul (constructedModel.fanShear lambda)
-          (q : LocalCarrier constructedModel W.localWitness.radius)) ∈
+          (q : localCarrier constructedModel W.localWitness.radius)) ∈
             constructedModel.centralComponent (v + shearVector lambda) :=
     (constructedModel.torusAction_centralComponent _ _ _).mpr hfan
   rw [hphase] at hphaseComponent
@@ -253,16 +253,16 @@ public theorem constructedA2ActualCentralOrbitRel_coe_eq_of_singletonSupport
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     (v : ToricLattice) (p q : actualLocalCuspCentralSubMulAction W)
     (hp : componentSupport constructedModel
-      ((p : LocalCarrier constructedModel W.localWitness.radius) :
+      ((p : localCarrier constructedModel W.localWitness.radius) :
         constructedModel.Carrier) = {v})
     (hq : componentSupport constructedModel
-      ((q : LocalCarrier constructedModel W.localWitness.radius) :
+      ((q : localCarrier constructedModel W.localWitness.radius) :
         constructedModel.Carrier) = {v})
     (hrel : MulAction.orbitRel (Multiplicative ParameterLattice)
       (actualLocalCuspCentralSubMulAction W) p q) :
-    ((p : LocalCarrier constructedModel W.localWitness.radius) :
+    ((p : localCarrier constructedModel W.localWitness.radius) :
       constructedModel.Carrier) =
-      ((q : LocalCarrier constructedModel W.localWitness.radius) :
+      ((q : localCarrier constructedModel W.localWitness.radius) :
         constructedModel.Carrier) := by
   let _ := actualLocalCuspQuotientAction W
   let S := actualLocalCuspCentralSubMulAction W
@@ -272,16 +272,16 @@ public theorem constructedA2ActualCentralOrbitRel_coe_eq_of_singletonSupport
   have hlambda := constructedA2ActualCentral_parameter_eq_zero_of_singletonSupport
     W v g p q hp hq hg
   have hcarrier := congrArg
-    (fun z : S ↦ ((z : LocalCarrier constructedModel W.localWitness.radius) :
+    (fun z : S ↦ ((z : localCarrier constructedModel W.localWitness.radius) :
       constructedModel.Carrier)) hg
   let C :=
-    CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
+    NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
       N constructedModel W.localWitness.radius W.localWitness.radius_pos
         W.localWitness.radius_le
   change (((C.toCuspActionData W.localWitness.fixedPoint).psiMap
-    (Multiplicative.toAdd g) (q : LocalCarrier constructedModel W.localWitness.radius) :
-      LocalCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) =
-        ((p : LocalCarrier constructedModel W.localWitness.radius) :
+    (Multiplicative.toAdd g) (q : localCarrier constructedModel W.localWitness.radius) :
+      localCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) =
+        ((p : localCarrier constructedModel W.localWitness.radius) :
           constructedModel.Carrier) at hcarrier
   rw [← C.psiMap_eq_generic, hlambda, C.psiMap_zero] at hcarrier
   exact hcarrier.symm
@@ -318,10 +318,10 @@ public theorem constructedA2ActualCentralOrbitRel_componentSupport_ncard_eq
     (hrel : MulAction.orbitRel (Multiplicative ParameterLattice)
       (actualLocalCuspCentralSubMulAction W) p q) :
     (componentSupport constructedModel
-      ((p : LocalCarrier constructedModel W.localWitness.radius) :
+      ((p : localCarrier constructedModel W.localWitness.radius) :
         constructedModel.Carrier)).ncard =
     (componentSupport constructedModel
-      ((q : LocalCarrier constructedModel W.localWitness.radius) :
+      ((q : localCarrier constructedModel W.localWitness.radius) :
         constructedModel.Carrier)).ncard := by
   let _ := actualLocalCuspQuotientAction W
   let S := actualLocalCuspCentralSubMulAction W
@@ -329,23 +329,23 @@ public theorem constructedA2ActualCentralOrbitRel_componentSupport_ncard_eq
   rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff] at hrel
   obtain ⟨g, hg⟩ := hrel
   have hcarrier := congrArg
-    (fun z : S ↦ ((z : LocalCarrier constructedModel W.localWitness.radius) :
+    (fun z : S ↦ ((z : localCarrier constructedModel W.localWitness.radius) :
       constructedModel.Carrier)) hg
   let C :=
-    CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
+    NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
       N constructedModel W.localWitness.radius W.localWitness.radius_pos
         W.localWitness.radius_le
   let lambda := Multiplicative.toAdd g
   change (((C.toCuspActionData W.localWitness.fixedPoint).psiMap lambda
-    (q : LocalCarrier constructedModel W.localWitness.radius) :
-      LocalCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) =
-        ((p : LocalCarrier constructedModel W.localWitness.radius) :
+    (q : localCarrier constructedModel W.localWitness.radius) :
+      localCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) =
+        ((p : localCarrier constructedModel W.localWitness.radius) :
           constructedModel.Carrier) at hcarrier
   rw [← C.psiMap_eq_generic, C.psiMap_coe] at hcarrier
   have hsupport := constructedA2ComponentSupport_phase_fanShear lambda
     (C.phase lambda (constructedModel.t
-      (q : LocalCarrier constructedModel W.localWitness.radius)))
-    ((q : LocalCarrier constructedModel W.localWitness.radius) :
+      (q : localCarrier constructedModel W.localWitness.radius)))
+    ((q : localCarrier constructedModel W.localWitness.radius) :
       constructedModel.Carrier)
   rw [hcarrier] at hsupport
   rw [hsupport]
@@ -416,7 +416,7 @@ private theorem constructedA2CorrectedActualHexagonMap_boundary_ne_interior
   let py := constructedA2CorrectedPositiveHexagonMap W.localWitness.radius_pos v y
   have hyncard : (componentSupport constructedModel
       ((constructedA2PositiveCentralPoint W py :
-        LocalCarrier constructedModel W.localWitness.radius) :
+        localCarrier constructedModel W.localWitness.radius) :
           constructedModel.Carrier)).ncard = 1 := by
     change (componentSupport constructedModel
       ((py.1.1.1 : Carrier) : constructedModel.Carrier)).ncard = 1
@@ -425,14 +425,14 @@ private theorem constructedA2CorrectedActualHexagonMap_boundary_ne_interior
     simp
   have hxcard : (componentSupport constructedModel
       ((constructedA2PositiveCentralPoint W px :
-        LocalCarrier constructedModel W.localWitness.radius) :
+        localCarrier constructedModel W.localWitness.radius) :
           constructedModel.Carrier)).ncard = 1 := by
     rw [constructedA2ActualCentralOrbitRel_componentSupport_ncard_eq W _ _ hrel]
     exact hyncard
   obtain ⟨w, hxSupport⟩ := Set.ncard_eq_one.mp hxcard
   have hvx : v ∈ componentSupport constructedModel
       ((constructedA2PositiveCentralPoint W px :
-        LocalCarrier constructedModel W.localWitness.radius) :
+        localCarrier constructedModel W.localWitness.radius) :
           constructedModel.Carrier) := by
     change px ∈ constructedPositiveCentralCell W.localWitness.radius v
     dsimp only [px]
@@ -540,7 +540,7 @@ public theorem constructedA2CorrectedActualHexagonMap_isEmbedding
     Topology.IsEmbedding
       ((Metric.ball (0 : Fin 2 → ℝ) 1).domRestrict
         (constructedA2CorrectedActualHexagonMap W v)) := by
-  let _ : T2Space (actualLocalCuspFilling W) :=
+  let _ : T2Space (ActualLocalCuspFilling W) :=
     SphereSixComplex.Geometry.PaperAnalyticData.actualLocalCuspFilling_t2 W
   let _ : T2Space (ActualLocalCuspCentralOrbitQuotient W) :=
     (actualLocalCuspCentralOrbitMap_isEmbedding W).t2Space

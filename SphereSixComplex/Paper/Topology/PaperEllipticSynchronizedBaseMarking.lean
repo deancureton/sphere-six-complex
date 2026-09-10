@@ -17,7 +17,7 @@ open SphereSixComplex.Geometry.EllipticLinearCollarGlobalDescent
 variable (A : PaperAnalyticData)
 
 public theorem orderFourPuncturedProductCentralRealization_coordinate_fiber_independent
-    (z : A.OrderFourCayleyPuncturedDisc) (v w : A.orderFourTorus) :
+    (z : A.OrderFourCayleyPuncturedDisc) (v w : A.OrderFourTorus) :
     letI := A.ellipticFourBoundaryAction
     A.centralFamilyCoordinate (A.orderFourPuncturedProductCentralRealizationMap (z, v)) =
       A.centralFamilyCoordinate (A.orderFourPuncturedProductCentralRealizationMap (z, w)) := by
@@ -66,7 +66,7 @@ public theorem twicePuncturedFundamentalGroup_pow_injective
   let E := FundamentalGroup.fundamentalGroupMulEquivOfPath
     (PathConnectedSpace.somePath x twicePuncturedComplexBasepoint)
   let F := (TwicePuncturedComplex.markedMeridianMulEquiv
-    TwicePuncturedComplex.establishedMarkedMeridianHom_injective).symm
+    TwicePuncturedComplex.markedMeridianHom_injective).symm
   intro a b hab
   apply E.injective
   apply F.injective
@@ -139,7 +139,7 @@ public theorem orderFourCentralBaseComparisonTrace_first_power
     ← A.orderFourBoundaryBaseHom_fillingRelation, A.orderFourBoundaryBaseHom_ofDeck]
 
 public theorem orderThreePuncturedProductCentralRealization_coordinate_fiber_independent
-    (z : A.OrderThreeCayleyPuncturedDisc) (v w : A.orderThreeTorus) :
+    (z : A.OrderThreeCayleyPuncturedDisc) (v w : A.OrderThreeTorus) :
     letI := A.ellipticThreeBoundaryAction
     A.centralFamilyCoordinate (A.orderThreePuncturedProductToCentralMap (z, v)) =
       A.centralFamilyCoordinate (A.orderThreePuncturedProductToCentralMap (z, w)) := by

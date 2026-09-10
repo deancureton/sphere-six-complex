@@ -19,7 +19,7 @@ open AlgebraicTopology CategoryTheory CategoryTheory.Limits Simplicial
 
 namespace SphereSixComplex
 
-public noncomputable abbrev BoundarySevenUnnormalizedIntegralChains :
+public noncomputable abbrev boundarySevenUnnormalizedIntegralChains :
     ChainComplex AddCommGrpCat ℕ :=
   (∂Δ[7] : SSet.{0}).chainComplex (AddCommGrpCat.of ℤ)
 
@@ -27,7 +27,7 @@ public noncomputable abbrev BoundarySevenUnnormalizedIntegralChains :
 `∂Δ[7]` with `ℤ`: normalize, identify normalized homology with its top cycle kernel,
 and use the orientation coming from the unique normalized seven-simplex of `Δ[7]`. -/
 public noncomputable def boundarySevenSimplicialHomologySixIsoInt :
-    BoundarySevenUnnormalizedIntegralChains.homology 6 ≅ AddCommGrpCat.of ℤ := by
+    boundarySevenUnnormalizedIntegralChains.homology 6 ≅ AddCommGrpCat.of ℤ := by
   let _ : QuasiIso ((∂Δ[7] : SSet.{0}).toNormalizedChainComplex
       (AddCommGrpCat.of ℤ)) := inferInstance
   exact isoOfQuasiIsoAt
@@ -40,30 +40,30 @@ public noncomputable def boundarySevenSimplicialHomologySixIsoInt :
 /-- The explicit additive equivalence underlying
 `boundarySevenSimplicialHomologySixIsoInt`. -/
 public noncomputable def boundarySevenSimplicialHomologySixAddEquivInt :
-    BoundarySevenUnnormalizedIntegralChains.homology 6 ≃+ ℤ :=
+    boundarySevenUnnormalizedIntegralChains.homology 6 ≃+ ℤ :=
   boundarySevenSimplicialHomologySixIsoInt.addCommGroupIsoToAddEquiv
 
 /-- The intrinsic alternating facet chain, lifted to the cycle object of the unnormalized
 simplicial chain complex. -/
 public noncomputable def boundarySevenOriginalFundamentalCycle :
-    AddCommGrpCat.of ℤ ⟶ BoundarySevenUnnormalizedIntegralChains.cycles 6 :=
-  BoundarySevenUnnormalizedIntegralChains.liftCycles
+    AddCommGrpCat.of ℤ ⟶ boundarySevenUnnormalizedIntegralChains.cycles 6 :=
+  boundarySevenUnnormalizedIntegralChains.liftCycles
     boundarySevenOriginalFundamentalChain 5 (by simp)
       boundarySevenOriginalFundamentalChain_isCycle
 
 @[reassoc (attr := simp)]
 public theorem boundarySevenOriginalFundamentalCycle_iCycles :
     boundarySevenOriginalFundamentalCycle ≫
-        BoundarySevenUnnormalizedIntegralChains.iCycles 6 =
+        boundarySevenUnnormalizedIntegralChains.iCycles 6 =
       boundarySevenOriginalFundamentalChain := by
   rw [boundarySevenOriginalFundamentalCycle]
   apply HomologicalComplex.liftCycles_i
 
 /-- The homology class represented by the intrinsic alternating facet chain. -/
 public noncomputable def boundarySevenOriginalFundamentalHomologyClass :
-    AddCommGrpCat.of ℤ ⟶ BoundarySevenUnnormalizedIntegralChains.homology 6 :=
+    AddCommGrpCat.of ℤ ⟶ boundarySevenUnnormalizedIntegralChains.homology 6 :=
   boundarySevenOriginalFundamentalCycle ≫
-    BoundarySevenUnnormalizedIntegralChains.homologyπ 6
+    boundarySevenUnnormalizedIntegralChains.homologyπ 6
 
 /-- A degree-six cycle followed by the standard homology--cycle-kernel composite is the
 corresponding kernel element when degree seven vanishes. -/
@@ -92,13 +92,13 @@ private theorem cycle_homologySixIsoScTopCycles
 the corresponding element of the differential kernel. -/
 private theorem normalizedCycle_homologySixIsoTopCycles
     {A : AddCommGrpCat}
-    (c : A ⟶ BoundarySevenNormalizedIntegralChains.cycles 6)
-    (z : A ⟶ kernel (BoundarySevenNormalizedIntegralChains.d 6 5))
-    (hz : c ≫ BoundarySevenNormalizedIntegralChains.iCycles 6 =
-      z ≫ kernel.ι (BoundarySevenNormalizedIntegralChains.d 6 5)) :
-    c ≫ BoundarySevenNormalizedIntegralChains.homologyπ 6 ≫
+    (c : A ⟶ boundarySevenNormalizedIntegralChains.cycles 6)
+    (z : A ⟶ kernel (boundarySevenNormalizedIntegralChains.d 6 5))
+    (hz : c ≫ boundarySevenNormalizedIntegralChains.iCycles 6 =
+      z ≫ kernel.ι (boundarySevenNormalizedIntegralChains.d 6 5)) :
+    c ≫ boundarySevenNormalizedIntegralChains.homologyπ 6 ≫
         boundarySeven_normalizedHomologySixIsoTopCycles.hom = z := by
-  let N := BoundarySevenNormalizedIntegralChains
+  let N := boundarySevenNormalizedIntegralChains
   let S := N.sc' 7 6 5
   let hf : S.f = 0 :=
     boundarySeven_normalizedChains_degreeSeven_isZero.eq_of_src _ _

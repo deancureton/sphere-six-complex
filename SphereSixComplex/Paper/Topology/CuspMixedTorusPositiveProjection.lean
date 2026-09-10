@@ -59,7 +59,7 @@ public theorem cuspCellularGraphSweep_positiveProjection_zero
   let p := (constructedCentralCellularEdgePath A.starCuspWitness j).trans
     (constructedCentralCellularEdgePath A.starCuspWitness k).symm
   let inc : C(IntegralCWSkeletonLT (ActualLocalCuspCentralOrbitQuotient A.starCuspWitness) 2,
-      actualLocalCuspFilling A.starCuspWitness) :=
+      ActualLocalCuspFilling A.starCuspWitness) :=
     ⟨fun x ↦ actualLocalCuspCentralOrbitMap A.starCuspWitness x.1,
       (actualLocalCuspCentralOrbitMap_isEmbedding A.starCuspWitness).continuous.comp
         continuous_subtype_val⟩

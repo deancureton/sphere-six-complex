@@ -149,7 +149,7 @@ private theorem cuspNeighborhood_eq_iUnion_toricChartCuspRegion (M : Model) (r :
 
 /-- Every positive-radius neighborhood in the standard toric model is connected. -/
 public theorem localCarrier_connected (M : Model) {r : ℝ} (hr : 0 < r) :
-    ConnectedSpace (LocalCarrier M r) := by
+    ConnectedSpace (localCarrier M r) := by
   have hinter :
       (⋂ a : Bool × ToricLattice, toricChartCuspRegion M r a.1 a.2).Nonempty := by
     refine ⟨M.torusEmbedding (commonDenseTorusPoint r hr), Set.mem_iInter.mpr ?_⟩
@@ -168,17 +168,17 @@ public theorem localCarrier_connected (M : Model) {r : ℝ} (hr : 0 < r) :
 
 /-- The actual phase-corrected local cusp quotient is connected. -/
 public theorem actualLocalCuspFilling_connected
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
-    ConnectedSpace (actualLocalCuspFilling W) := by
+    ConnectedSpace (ActualLocalCuspFilling W) := by
   let C :=
-    CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
+    NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
       N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
   let _ : MulAction (Multiplicative ParameterLattice)
-      (LocalCarrier M W.localWitness.radius) :=
+      (localCarrier M W.localWitness.radius) :=
     (C.toCuspActionData W.localWitness.fixedPoint).psiAction
-  let _ : ConnectedSpace (LocalCarrier M W.localWitness.radius) :=
+  let _ : ConnectedSpace (localCarrier M W.localWitness.radius) :=
     localCarrier_connected M W.localWitness.radius_pos
   exact Quotient.mk_surjective.connectedSpace continuous_quot_mk
 
@@ -187,7 +187,7 @@ namespace PaperAnalyticData
 variable (A : PaperAnalyticData)
 
 /-- Each of the three concrete filling pieces is connected. -/
-public theorem starFilling_connected (i : Fin 3) : ConnectedSpace (A.starFillingType i) := by
+public theorem starFilling_connected (i : Fin 3) : ConnectedSpace (A.StarFilling i) := by
   fin_cases i
   · exact actualLocalCuspFilling_connected A.starCuspWitness
   · exact A.orderThreeFilling_connected A.starSeparation.orderThree.radius_pos

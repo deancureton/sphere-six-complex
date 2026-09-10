@@ -67,7 +67,7 @@ public theorem cuspFactorizationUnit_zero_not_mem_image :
   exact hzero
 
 /-- A continuous logarithm of the exact unit on the entire selected parameter disc. -/
-public theorem exists_actualCuspFactorizationUnitLog :
+public theorem exists_cuspFactorizationUnitLog :
     ∃ f : ℂ → ℂ, ContinuousOn f A.cuspParameterBall ∧
       Set.EqOn (Complex.exp ∘ f) A.cuspFactorizationUnit
         A.cuspParameterBall := by
@@ -84,17 +84,17 @@ public theorem exists_actualCuspFactorizationUnitLog :
     A.cuspFactorizationUnit_zero_not_mem_image
 
 public noncomputable def cuspFactorizationUnitLog : ℂ → ℂ :=
-  Classical.choose A.exists_actualCuspFactorizationUnitLog
+  Classical.choose A.exists_cuspFactorizationUnitLog
 
 public theorem cuspFactorizationUnitLog_continuousOn :
     ContinuousOn A.cuspFactorizationUnitLog A.cuspParameterBall :=
-  (Classical.choose_spec A.exists_actualCuspFactorizationUnitLog).1
+  (Classical.choose_spec A.exists_cuspFactorizationUnitLog).1
 
 public theorem cuspFactorizationUnitLog_exp
     {q : ℂ} (hq : q ∈ A.cuspParameterBall) :
     Complex.exp (A.cuspFactorizationUnitLog q) =
       A.cuspFactorizationUnit q :=
-  (Classical.choose_spec A.exists_actualCuspFactorizationUnitLog).2 hq
+  (Classical.choose_spec A.exists_cuspFactorizationUnitLog).2 hq
 
 /-! ## The completed-cusp parameter along the actual angular loop -/
 
@@ -162,7 +162,7 @@ public theorem cuspAngularQPoint_zero_ne :
   unfold cuspAngularQPoint cuspQ
   exact Complex.exp_ne_zero _
 
-public theorem continuous_actualCuspAngularZeroRawLog :
+public theorem continuous_cuspAngularZeroRawLog :
     Continuous A.cuspAngularZeroRawLog := by
   have hq : Continuous A.cuspAngularQPoint := by
     unfold cuspAngularQPoint cuspQ
@@ -234,11 +234,11 @@ public theorem cuspAngularZeroLogLiftPoint_one :
   rw [cuspAngularZeroLogLiftPoint, A.cuspAngularZeroRawLog_one]
   simp
 
-public theorem continuous_actualCuspAngularZeroLogLiftPoint :
+public theorem continuous_cuspAngularZeroLogLiftPoint :
     Continuous A.cuspAngularZeroLogLiftPoint := by
   unfold cuspAngularZeroLogLiftPoint
   exact continuous_const.add
-    (A.continuous_actualCuspAngularZeroRawLog.sub continuous_const)
+    (A.continuous_cuspAngularZeroRawLog.sub continuous_const)
 
 public theorem cuspAngularZeroLogLiftPoint_exp (t : unitInterval) :
     Complex.exp (A.cuspAngularZeroLogLiftPoint t) =
@@ -271,7 +271,7 @@ public noncomputable def cuspAngularZeroLogLift :
       (Complex.log A.cuspAngularZeroPuncturedBasepoint.1 +
         (1 : ℤ) • (2 * Real.pi * Complex.I)) where
   toFun := A.cuspAngularZeroLogLiftPoint
-  continuous_toFun := A.continuous_actualCuspAngularZeroLogLiftPoint
+  continuous_toFun := A.continuous_cuspAngularZeroLogLiftPoint
   source' := A.cuspAngularZeroLogLiftPoint_zero
   target' := A.cuspAngularZeroLogLiftPoint_one
 

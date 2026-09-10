@@ -12,7 +12,7 @@ open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public def constructedCentralEdgeLoopLift
@@ -48,7 +48,7 @@ public def constructedCellularLoopInFilling
 public theorem constructedCentralEdgeLoopLift_projects
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)] (j k : Fin 3) (t : unitInterval) :
-    (Quotient.mk _ (constructedCentralEdgeLoopLift W j k t) : actualLocalCuspFilling W) =
+    (Quotient.mk _ (constructedCentralEdgeLoopLift W j k t) : ActualLocalCuspFilling W) =
       constructedCellularLoopInFilling W j k t := by
   let _ := actualLocalCuspQuotientAction W
   change Quotient.mk _ ((constructedCentralEdgeLift W j).trans _ t) =
@@ -61,12 +61,12 @@ public theorem constructedCentralEdgeLoopLift_projects
   · change (Quotient.mk _
       ((Additive.toMul (centralEdgeEndpointDeck j - centralEdgeEndpointDeck k) :
         Multiplicative ParameterLattice) • constructedCentralEdgeLift W k _) :
-        actualLocalCuspFilling W) = _
-    have hq (g : Multiplicative ParameterLattice) (x : LocalCarrier constructedModel W.localWitness.radius) :
-        (Quotient.mk _ (g • x) : actualLocalCuspFilling W) = Quotient.mk _ x := by
+        ActualLocalCuspFilling W) = _
+    have hq (g : Multiplicative ParameterLattice) (x : localCarrier constructedModel W.localWitness.radius) :
+        (Quotient.mk _ (g • x) : ActualLocalCuspFilling W) = Quotient.mk _ x := by
       apply Quotient.sound
       change MulAction.orbitRel (Multiplicative ParameterLattice)
-        (LocalCarrier constructedModel W.localWitness.radius) (g • x) x
+        (localCarrier constructedModel W.localWitness.radius) (g • x) x
       rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff]
       exact ⟨g, rfl⟩
     rw [hq]
@@ -74,19 +74,19 @@ public theorem constructedCentralEdgeLoopLift_projects
 
 public def constructedLocalFillingProjection
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
-    C(LocalCarrier constructedModel W.localWitness.radius, actualLocalCuspFilling W) :=
+    C(localCarrier constructedModel W.localWitness.radius, ActualLocalCuspFilling W) :=
   ⟨Quotient.mk _, continuous_quot_mk⟩
 
 public theorem constructedLocalFillingProjection_smul
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     (g : Multiplicative ParameterLattice)
-    (x : LocalCarrier constructedModel W.localWitness.radius) :
+    (x : localCarrier constructedModel W.localWitness.radius) :
     let _ := actualLocalCuspQuotientAction W
     constructedLocalFillingProjection W (g • x) = constructedLocalFillingProjection W x := by
   let _ := actualLocalCuspQuotientAction W
   apply Quotient.sound
   change MulAction.orbitRel (Multiplicative ParameterLattice)
-    (LocalCarrier constructedModel W.localWitness.radius) (g • x) x
+    (localCarrier constructedModel W.localWitness.radius) (g • x) x
   rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff]
   exact ⟨g, rfl⟩
 
@@ -130,12 +130,12 @@ public theorem constructedProjectedGraphLoop_deck
 
 public def constructedLocalFillingDeckHomology
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
-    ParameterLattice ≃+ IntegralSingularHomology 1 (actualLocalCuspFilling W) := by
+    ParameterLattice ≃+ IntegralSingularHomology 1 (ActualLocalCuspFilling W) := by
   let _ := actualLocalCuspQuotientAction W
-  let _ : SimplyConnectedSpace (LocalCarrier constructedModel W.localWitness.radius) :=
+  let _ : SimplyConnectedSpace (localCarrier constructedModel W.localWitness.radius) :=
     constructedModel.localCarrierSimplyConnected W.localWitness.radius W.localWitness.radius_pos
   let hp := constructedLocalFillingProjection_covering W
-  let _ : PathConnectedSpace (actualLocalCuspFilling W) :=
+  let _ : PathConnectedSpace (ActualLocalCuspFilling W) :=
     hp.surjective.pathConnectedSpace hp.continuous
   exact Topology.abelianCoverHomologyEquiv hp (constructedCentralOrigin W false)
 
@@ -145,10 +145,10 @@ public theorem constructedLocalFillingDeckHomology_graphLoop
       (centralEdgeEndpointDeck j - centralEdgeEndpointDeck k) =
       StandardCircleHomologyLiftDegree.loopHomologyClass (constructedProjectedGraphLoop W j k) := by
   let _ := actualLocalCuspQuotientAction W
-  let _ : SimplyConnectedSpace (LocalCarrier constructedModel W.localWitness.radius) :=
+  let _ : SimplyConnectedSpace (localCarrier constructedModel W.localWitness.radius) :=
     constructedModel.localCarrierSimplyConnected W.localWitness.radius W.localWitness.radius_pos
   let hp := constructedLocalFillingProjection_covering W
-  let _ : PathConnectedSpace (actualLocalCuspFilling W) :=
+  let _ : PathConnectedSpace (ActualLocalCuspFilling W) :=
     hp.surjective.pathConnectedSpace hp.continuous
   have h := Topology.abelianCoverHomologyEquiv_hurewicz hp (constructedCentralOrigin W false)
     (Path.Homotopic.Quotient.mk (constructedProjectedGraphLoop W j k))

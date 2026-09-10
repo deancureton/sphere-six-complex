@@ -49,7 +49,7 @@ public theorem orderFourCayleyChartFunction_sub_one_ne_zero_neg_one
     exact A.starSeparation.orderFour.sourceData.1 z
       (by simpa [hcay] using hw0) (by simpa [hcay] using hwr)
   have hmem := (A.regularCoordinate ⟨z, hzreg⟩).property
-  simp only [RegularCoordinateBase, Set.mem_compl_iff, Set.mem_insert_iff,
+  simp only [regularCoordinateBase, Set.mem_compl_iff, Set.mem_insert_iff,
     Set.mem_singleton_iff, not_or] at hmem
   have hraw :
       ellipticChartFunction A.modular.sourceCoordinate.coordinate

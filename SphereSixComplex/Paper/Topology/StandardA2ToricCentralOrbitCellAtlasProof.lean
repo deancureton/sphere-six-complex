@@ -21,7 +21,7 @@ open SphereSixComplex.Geometry.CuspToricPhaseAction
 open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 private theorem centralPhaseDisk_one_add_ne_zero_of_ball'
@@ -139,42 +139,42 @@ private theorem centralOrbitRel_coe_eq_of_same_componentSupport'
     (T : Set ToricLattice) (hTfinite : T.Finite) (hTnonempty : T.Nonempty)
     (p q : actualLocalCuspCentralSubMulAction W)
     (hp : componentSupport constructedModel
-      ((p : LocalCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) = T)
+      ((p : localCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) = T)
     (hq : componentSupport constructedModel
-      ((q : LocalCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) = T)
+      ((q : localCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) = T)
     (hrel : MulAction.orbitRel (Multiplicative ParameterLattice)
       (actualLocalCuspCentralSubMulAction W) p q) :
-    ((p : LocalCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) =
-      ((q : LocalCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) := by
+    ((p : localCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) =
+      ((q : localCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) := by
   let _ := actualLocalCuspQuotientAction W
   let S := actualLocalCuspCentralSubMulAction W
   let _ : MulAction (Multiplicative ParameterLattice) S := inferInstance
   rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff] at hrel
   obtain ⟨g, hg⟩ := hrel
   have hcarrier := congrArg
-    (fun z : S ↦ ((z : LocalCarrier constructedModel W.localWitness.radius) :
+    (fun z : S ↦ ((z : localCarrier constructedModel W.localWitness.radius) :
       constructedModel.Carrier)) hg
   let C :=
-    CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
+    NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
       N constructedModel W.localWitness.radius W.localWitness.radius_pos
         W.localWitness.radius_le
   let lambda := Multiplicative.toAdd g
   have hphase := hcarrier
   change (((C.toCuspActionData W.localWitness.fixedPoint).psiMap lambda
-    (q : LocalCarrier constructedModel W.localWitness.radius) :
-      LocalCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) =
-        ((p : LocalCarrier constructedModel W.localWitness.radius) :
+    (q : localCarrier constructedModel W.localWitness.radius) :
+      localCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) =
+        ((p : localCarrier constructedModel W.localWitness.radius) :
           constructedModel.Carrier) at hphase
   rw [← C.psiMap_eq_generic, C.psiMap_coe] at hphase
   have hforward : ∀ v ∈ T, v + shearVector lambda ∈ T := by
     intro v hv
     have hvq : v ∈ componentSupport constructedModel
-        ((q : LocalCarrier constructedModel W.localWitness.radius) :
+        ((q : localCarrier constructedModel W.localWitness.radius) :
           constructedModel.Carrier) := by
       rw [hq]
       exact hv
     have hfan : Additive.toMul (constructedModel.fanShear lambda)
-        ((q : LocalCarrier constructedModel W.localWitness.radius) :
+        ((q : localCarrier constructedModel W.localWitness.radius) :
           constructedModel.Carrier) ∈
           constructedModel.centralComponent (v + shearVector lambda) := by
       rw [← constructedModel.fanShear_component lambda v]
@@ -182,9 +182,9 @@ private theorem centralOrbitRel_coe_eq_of_same_componentSupport'
     have hphaseComponent :
         CuspToricPhaseAction.ToricModel.phaseAction constructedModel
           (C.phase lambda (constructedModel.t
-            (q : LocalCarrier constructedModel W.localWitness.radius)))
+            (q : localCarrier constructedModel W.localWitness.radius)))
           (Additive.toMul (constructedModel.fanShear lambda)
-            (q : LocalCarrier constructedModel W.localWitness.radius)) ∈
+            (q : localCarrier constructedModel W.localWitness.radius)) ∈
               constructedModel.centralComponent (v + shearVector lambda) :=
       (constructedModel.torusAction_centralComponent _ _ _).mpr hfan
     rw [hphase] at hphaseComponent
@@ -198,9 +198,9 @@ private theorem centralOrbitRel_coe_eq_of_same_componentSupport'
     ext i
     simp [shearVector, Matrix.mulVec]
   change (((C.toCuspActionData W.localWitness.fixedPoint).psiMap lambda
-    (q : LocalCarrier constructedModel W.localWitness.radius) :
-      LocalCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) =
-        ((p : LocalCarrier constructedModel W.localWitness.radius) :
+    (q : localCarrier constructedModel W.localWitness.radius) :
+      localCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) =
+        ((p : localCarrier constructedModel W.localWitness.radius) :
           constructedModel.Carrier) at hcarrier
   rw [← C.psiMap_eq_generic, hlambda, C.psiMap_zero] at hcarrier
   exact hcarrier.symm

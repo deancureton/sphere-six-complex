@@ -64,7 +64,7 @@ public theorem orderFourAffinePuncturedCarrier_nonempty
 
 /-- Each of the cusp, order-three, and order-four common collar sources is nonempty. -/
 public theorem starCollarSourceType_nonempty (i : Fin 3) :
-    Nonempty (A.starCollarSourceType i) := by
+    Nonempty (A.StarCollarSource i) := by
   fin_cases i
   · exact ⟨Quotient.mk _ (puncturedLocalCarrier_nonempty A.starCuspWitness).some⟩
   · exact ⟨Quotient.mk _
@@ -79,7 +79,7 @@ public theorem starCollarSourceType_nonempty (i : Fin 3) :
 /-- The collar sources in the packaged open-embedding star are nonempty. -/
 public theorem openEmbeddingStarData_collarSource_nonempty :
     ∀ i, Nonempty (A.openEmbeddingStarData.collarSource i) := fun i ↦ by
-  change Nonempty (A.starCollarSourceType i)
+  change Nonempty (A.StarCollarSource i)
   exact A.starCollarSourceType_nonempty i
 
 /-- All three central collar images in the packaged star are nonempty. -/
@@ -104,7 +104,7 @@ end PaperAnalyticData
 
 /-- The three collar sources for supplied paper analytic data are nonempty. -/
 public theorem paperStarCollarSourceType_nonempty (A : PaperAnalyticData) :
-    ∀ i, Nonempty (A.starCollarSourceType i) :=
+    ∀ i, Nonempty (A.StarCollarSource i) :=
   A.starCollarSourceType_nonempty
 
 /-- The central collars of a supplied paper open-embedding star are nonempty. -/

@@ -27,7 +27,7 @@ open SphereSixComplex.Geometry.CuspToricPhaseAction
 open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public theorem rawHeight_a2CyclicRaw (upper : Bool) (z : RawCoordinates) :
@@ -69,7 +69,7 @@ public theorem a2CyclicConstructedCarrier_apply_three (p : constructedModel.Carr
 
 /-- The carrier rotation restricted to an arbitrary local cusp neighbourhood. -/
 public noncomputable def a2CyclicLocalCarrierHomeomorph (r : ℝ) :
-    LocalCarrier constructedModel r ≃ₜ LocalCarrier constructedModel r where
+    localCarrier constructedModel r ≃ₜ localCarrier constructedModel r where
   toFun p := ⟨a2CyclicConstructedCarrier p, by
     change constructedModel.t (a2CyclicConstructedCarrier p) ∈ Metric.ball 0 r
     rw [constructedModel_t_a2CyclicConstructedCarrier]
@@ -94,14 +94,14 @@ public noncomputable def a2CyclicLocalCarrierHomeomorph (r : ℝ) :
 
 @[simp]
 public theorem a2CyclicLocalCarrierHomeomorph_coe (r : ℝ)
-    (p : LocalCarrier constructedModel r) :
-    ((a2CyclicLocalCarrierHomeomorph r p : LocalCarrier constructedModel r) :
+    (p : localCarrier constructedModel r) :
+    ((a2CyclicLocalCarrierHomeomorph r p : localCarrier constructedModel r) :
       constructedModel.Carrier) = a2CyclicConstructedCarrier p :=
   rfl
 
 @[simp]
 public theorem a2CyclicLocalCarrierHomeomorph_apply_three (r : ℝ)
-    (p : LocalCarrier constructedModel r) :
+    (p : localCarrier constructedModel r) :
     a2CyclicLocalCarrierHomeomorph r
         (a2CyclicLocalCarrierHomeomorph r (a2CyclicLocalCarrierHomeomorph r p)) = p := by
   apply Subtype.ext
@@ -109,8 +109,8 @@ public theorem a2CyclicLocalCarrierHomeomorph_apply_three (r : ℝ)
 
 /-- The local carrier rotation restricted to the height-zero fibre. -/
 public noncomputable def a2CyclicLocalCentralFiberHomeomorph (r : ℝ) :
-    {p : LocalCarrier constructedModel r // constructedModel.t p = 0} ≃ₜ
-      {p : LocalCarrier constructedModel r // constructedModel.t p = 0} where
+    {p : localCarrier constructedModel r // constructedModel.t p = 0} ≃ₜ
+      {p : localCarrier constructedModel r // constructedModel.t p = 0} where
   toFun p := ⟨a2CyclicLocalCarrierHomeomorph r p, by
     rw [a2CyclicLocalCarrierHomeomorph_coe,
       constructedModel_t_a2CyclicConstructedCarrier]
@@ -308,7 +308,7 @@ public theorem a2CyclicCarrier_phaseAction_fanShear
 
 public def constructedCentralPhaseFaceOneLocal
     (W : ActualPuncturedCuspCollarWitness N constructedModel) (x : Fin 2 → ℝ) :
-    LocalCarrier constructedModel W.localWitness.radius :=
+    localCarrier constructedModel W.localWitness.radius :=
   ⟨constructedCentralPhaseFaceOneCarrier x, by
     change carrierHeight (constructedCentralPhaseFaceOneCarrier x) ∈
       Metric.ball 0 W.localWitness.radius
@@ -358,7 +358,7 @@ public theorem constructedCentralPhaseFaceOneOrbit_continuousOn_closedBall
 
 public def constructedCentralPhaseFaceTwoLocal
     (W : ActualPuncturedCuspCollarWitness N constructedModel) (x : Fin 2 → ℝ) :
-    LocalCarrier constructedModel W.localWitness.radius :=
+    localCarrier constructedModel W.localWitness.radius :=
   ⟨constructedCentralPhaseFaceTwoCarrier x, by
     change carrierHeight (constructedCentralPhaseFaceTwoCarrier x) ∈
       Metric.ball 0 W.localWitness.radius

@@ -25,13 +25,13 @@ public theorem sixSphere_modTwoHomology_three_isZero_of_coverSmallRelative
     (h : DiskSevenCoverSmallRelativeLowAcyclic) :
     IsZero (((singularHomologyFunctor AddCommGrpCat 3).obj
       (AddCommGrpCat.of (ZMod 2))).obj (TopCat.of SixSphere)) := by
-  have h₂ : IsZero ((IntegralSingularChainComplexObj
+  have h₂ : IsZero ((integralSingularChainComplexObj
       (TopCat.sphere 6)).homology 2) :=
     standardSphereSix_integralSingularHomology_two_isZero_of_coverSmallRelative h.1
-  have h₃ : IsZero ((IntegralSingularChainComplexObj
+  have h₃ : IsZero ((integralSingularChainComplexObj
       (TopCat.sphere 6)).homology 3) :=
     standardSphereSix_integralSingularHomology_three_isZero_of_coverSmallRelative h.2
-  have hmod : IsZero ((ModTwoSingularChainComplexObj
+  have hmod : IsZero ((modTwoSingularChainComplexObj
       (TopCat.sphere 6)).homology 3) :=
     modTwoSingularHomologyThree_isZero (TopCat.sphere 6) h₃ h₂
   exact hmod.of_iso

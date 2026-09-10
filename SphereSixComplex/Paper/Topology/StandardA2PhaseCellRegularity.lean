@@ -15,7 +15,7 @@ open SphereSixComplex.Geometry.CuspPhaseEstimates
 open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 open SphereSixComplex.Geometry.InfiniteA2Toric
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 private theorem isEmbedding_restrict_of_compact_boundary_separation
@@ -126,7 +126,7 @@ public theorem constructedCentralPhaseTwoCell_isEmbedding
     (W : ActualPuncturedCuspCollarWitness N constructedModel) (i : Fin 3) :
     Topology.IsEmbedding ((Metric.ball (0 : Fin 2 → ℝ) 1).domRestrict
       (constructedCentralPhaseTwoCell W i)) := by
-  let _ : T2Space (actualLocalCuspFilling W) :=
+  let _ : T2Space (ActualLocalCuspFilling W) :=
     SphereSixComplex.Geometry.PaperAnalyticData.actualLocalCuspFilling_t2 W
   let _ : T2Space (ActualLocalCuspCentralOrbitQuotient W) :=
     (actualLocalCuspCentralOrbitMap_isEmbedding W).t2Space

@@ -29,7 +29,7 @@ open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 /-- The noncentral stratum of the constructed positive carrier. -/
 public def constructedA2PositiveOffCentral (r : ℝ) : Set (constructedLocalPositivePart r) :=
-  {q | constructedModel.t (q : LocalCarrier constructedModel r) ≠ 0}
+  {q | constructedModel.t (q : localCarrier constructedModel r) ≠ 0}
 
 /-- The noncentral positive stratum is dense. The polar-modulus retraction preserves
 nonvanishing height, so this follows from density of the dense torus in the ambient carrier. -/
@@ -38,7 +38,7 @@ public theorem constructedA2PositiveOffCentral_dense (r : ℝ) :
   have htorus : Dense {q : constructedModel.Carrier | constructedModel.t q ≠ 0} := by
     rw [← constructedModel.torus_range]
     exact constructedModel.torus_dense
-  have hlocal : Dense {q : LocalCarrier constructedModel r | constructedModel.t q ≠ 0} :=
+  have hlocal : Dense {q : localCarrier constructedModel r | constructedModel.t q ≠ 0} :=
     htorus.preimage (cuspNeighborhood constructedModel r).isOpen.isOpenMap_subtype_val
   let R := constructedLocalModulusRetraction r
   have hR : Surjective R := fun q ↦ ⟨q, constructedLocalModulusRetraction_fixed r q⟩

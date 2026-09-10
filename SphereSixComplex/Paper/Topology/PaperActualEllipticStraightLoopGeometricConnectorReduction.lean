@@ -164,8 +164,8 @@ public noncomputable def ellipticThreeCentralGeometricConnector :
     have hcore : H A.centralAffineBase =
         (⟨A.vanKampenBase, A.actualVanKampenFourPieceCover.base_mem_core⟩ :
           A.actualVanKampenFourPieceCover.core) := by
-      rw [A.centralAffineBase_eq_actualCuspCentralBase]
-      exact A.centralToSectionSevenEulerPieceHomeomorph_actualCuspOverlapToCentral
+      rw [A.centralAffineBase_eq_cuspCentralBase]
+      exact A.centralToSectionSevenEulerPieceHomeomorph_cuspOverlapToCentral
         A.cuspOverlapBase
     apply H.injective
     exact (H.apply_symm_apply _).trans hcore.symm
@@ -178,7 +178,7 @@ public noncomputable def ellipticThreeCentralGeometricConnector :
           A.actualVanKampenFourPieceCover.ellipticThreePoint_mem.1⟩ :
             A.actualVanKampenFourPieceCover.core) := by
       rw [A.ellipticThreeCentralBase_eq_overlapCentralBase]
-      exact A.centralToSectionSevenEulerPiece_orderThreeActualOverlapToCentral
+      exact A.centralToSectionSevenEulerPiece_ellipticThreeOverlapToCentral
         ⟨A.actualVanKampenFourPieceCover.ellipticThreePoint,
           A.actualVanKampenFourPieceCover.ellipticThreePoint_mem⟩
     apply H.injective
@@ -199,8 +199,8 @@ public noncomputable def ellipticFourCentralGeometricConnector :
     have hcore : H A.centralAffineBase =
         (⟨A.vanKampenBase, A.actualVanKampenFourPieceCover.base_mem_core⟩ :
           A.actualVanKampenFourPieceCover.core) := by
-      rw [A.centralAffineBase_eq_actualCuspCentralBase]
-      exact A.centralToSectionSevenEulerPieceHomeomorph_actualCuspOverlapToCentral
+      rw [A.centralAffineBase_eq_cuspCentralBase]
+      exact A.centralToSectionSevenEulerPieceHomeomorph_cuspOverlapToCentral
         A.cuspOverlapBase
     apply H.injective
     exact (H.apply_symm_apply _).trans hcore.symm
@@ -213,14 +213,14 @@ public noncomputable def ellipticFourCentralGeometricConnector :
           A.actualVanKampenFourPieceCover.ellipticFourPoint_mem.1⟩ :
             A.actualVanKampenFourPieceCover.core) := by
       rw [A.ellipticFourCentralBase_eq_overlapCentralBase]
-      exact A.centralToSectionSevenEulerPiece_orderFourActualOverlapToCentral
+      exact A.centralToSectionSevenEulerPiece_ellipticFourOverlapToCentral
         ⟨A.actualVanKampenFourPieceCover.ellipticFourPoint,
           A.actualVanKampenFourPieceCover.ellipticFourPoint_mem⟩
     apply H.injective
     exact (H.apply_symm_apply _).trans hcore.symm
   exact (c.map H.symm.continuous).cast hs.symm ht.symm
 
-public theorem centralToSectionSevenEulerPiece_orderThreeActualCentralGeometricConnector_apply
+public theorem centralToSectionSevenEulerPiece_ellipticThreeCentralGeometricConnector_apply
     (t : unitInterval) :
     A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
         (A.ellipticThreeCentralGeometricConnector t) =
@@ -231,7 +231,7 @@ public theorem centralToSectionSevenEulerPiece_orderThreeActualCentralGeometricC
   unfold ellipticThreeCentralGeometricConnector
   exact A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph.apply_symm_apply _
 
-public theorem centralToSectionSevenEulerPiece_orderFourActualCentralGeometricConnector_apply
+public theorem centralToSectionSevenEulerPiece_ellipticFourCentralGeometricConnector_apply
     (t : unitInterval) :
     A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
         (A.ellipticFourCentralGeometricConnector t) =

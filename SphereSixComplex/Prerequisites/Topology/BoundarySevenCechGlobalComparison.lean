@@ -275,13 +275,13 @@ public noncomputable def boundarySevenSimplicialFaceCechTotalAugmentation :
 integral singular chains. -/
 public noncomputable def boundarySevenFaceNeighborhoodCechTotalAugmentation :
     boundarySevenFaceNeighborhoodCechTotal ⟶
-      CoverSmallIntegralSingularChainComplex
+      coverSmallIntegralSingularChainComplex
         (SSet.toTop.obj (∂Δ[7] : SSet.{0}))
         boundarySevenComparisonFaceNeighborhood :=
   HomologicalComplex₂.total.map boundarySevenFaceNeighborhoodCechOuterAugmentation
       (ComplexShape.down ℕ) ≫
     firstQuadrantTotalToSingleZero
-      (CoverSmallIntegralSingularChainComplex
+      (coverSmallIntegralSingularChainComplex
         (SSet.toTop.obj (∂Δ[7] : SSet.{0}))
         boundarySevenComparisonFaceNeighborhood)
 
@@ -457,8 +457,8 @@ public noncomputable def boundarySevenFaceNeighborhoodCechLowComparison_of_assem
 six-sphere homology vanishings and the disk-cover local acyclicity package. -/
 public theorem sixSphere_lowHomology_and_diskLocalAcyclic_of_cechAssembly
     (h : BoundarySevenCechLowAssemblyInput) :
-    (IsZero ((IntegralSingularChainComplexObj (TopCat.sphere.{0} 6)).homology 2) ∧
-      IsZero ((IntegralSingularChainComplexObj (TopCat.sphere.{0} 6)).homology 3)) ∧
+    (IsZero ((integralSingularChainComplexObj (TopCat.sphere.{0} 6)).homology 2) ∧
+      IsZero ((integralSingularChainComplexObj (TopCat.sphere.{0} 6)).homology 3)) ∧
       DiskSevenCoverLocalRelativeLowAcyclic :=
   sixSphere_lowHomology_and_diskLocalAcyclic_of_cechLow
     (boundarySevenFaceNeighborhoodCechLowComparison_of_assembly h)

@@ -92,17 +92,17 @@ public theorem cayleyInverseUpper_contMDiff (a : UpperHalfPlane) (n : WithTop �
 
 /-- The order-three Cayley chart on the vector cover as a biholomorphism. -/
 @[expose] public noncomputable def orderThreeCoverDiffeomorph (n : WithTop ℕ∞) :
-    (UpperHalfPlane × ComplexTwoSpace) ≃ₘ^n⟮GlobalDeckTotalModel, GlobalDeckTotalModel⟯
+    (UpperHalfPlane × ComplexTwoSpace) ≃ₘ^n⟮globalDeckTotalModel, globalDeckTotalModel⟯
       (ComplexUnitDisc × ComplexTwoSpace) :=
   (orderThreeCayleyDiffeomorph n).prodCongr
-    (Diffeomorph.refl GlobalDeckFiberModel ComplexTwoSpace n)
+    (Diffeomorph.refl globalDeckFiberModel ComplexTwoSpace n)
 
 /-- The order-four Cayley chart on the vector cover as a biholomorphism. -/
 @[expose] public noncomputable def orderFourCoverDiffeomorph (n : WithTop ℕ∞) :
-    (UpperHalfPlane × ComplexTwoSpace) ≃ₘ^n⟮GlobalDeckTotalModel, GlobalDeckTotalModel⟯
+    (UpperHalfPlane × ComplexTwoSpace) ≃ₘ^n⟮globalDeckTotalModel, globalDeckTotalModel⟯
       (ComplexUnitDisc × ComplexTwoSpace) :=
   (orderFourCayleyDiffeomorph n).prodCongr
-    (Diffeomorph.refl GlobalDeckFiberModel ComplexTwoSpace n)
+    (Diffeomorph.refl globalDeckFiberModel ComplexTwoSpace n)
 
 /-- The order-three Cayley coordinate on the vector-bundle cover. -/
 @[expose] public noncomputable def orderThreeCoverHomeomorph :
@@ -363,35 +363,35 @@ variable [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap
 of the order-three fibre.  Its source is an open neighbourhood in the torus family and its target
 is an open neighbourhood in the vector cover. -/
 @[expose] public noncomputable def orderThreeFamilyLocalDiffeomorph
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (v : ComplexTwoSpace) :
-    PartialDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel
+    PartialDiffeomorph globalDeckTotalModel globalDeckTotalModel
       (TotalSpace (parameterMap F)) (UpperHalfPlane × ComplexTwoSpace) ω :=
   (hprojection (U.zOne, v)).localInverse
 
 /-- The genuine complex-analytic local chart at a point of the order-four fibre. -/
 @[expose] public noncomputable def orderFourFamilyLocalDiffeomorph
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (v : ComplexTwoSpace) :
-    PartialDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel
+    PartialDiffeomorph globalDeckTotalModel globalDeckTotalModel
       (TotalSpace (parameterMap F)) (UpperHalfPlane × ComplexTwoSpace) ω :=
   (hprojection (U.zTwo, v)).localInverse
 
 /-- The actual analytic local trivialization at a point of the order-three fibre, now with the
 base written in the Cayley disc. -/
 @[expose] public noncomputable def orderThreeFamilyCayleyLocalDiffeomorph
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (v : ComplexTwoSpace) :
-    PartialDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel
+    PartialDiffeomorph globalDeckTotalModel globalDeckTotalModel
       (TotalSpace (parameterMap F)) (ComplexUnitDisc × ComplexTwoSpace) ω :=
   (orderThreeFamilyLocalDiffeomorph F hprojection v).trans
     (orderThreeCoverDiffeomorph ω).toPartialDiffeomorph
 
 /-- The analogous analytic local trivialization at a point of the order-four fibre. -/
 @[expose] public noncomputable def orderFourFamilyCayleyLocalDiffeomorph
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (v : ComplexTwoSpace) :
-    PartialDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel
+    PartialDiffeomorph globalDeckTotalModel globalDeckTotalModel
       (TotalSpace (parameterMap F)) (ComplexUnitDisc × ComplexTwoSpace) ω :=
   (orderFourFamilyLocalDiffeomorph F hprojection v).trans
     (orderFourCoverDiffeomorph ω).toPartialDiffeomorph
@@ -399,56 +399,56 @@ base written in the Cayley disc. -/
 /-- The actual local analytic lift from the torus family to its vector cover at a point of the
 order-three fibre. -/
 @[expose] public noncomputable def orderThreeLocalLift
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (v : ComplexTwoSpace) :
     TotalSpace (parameterMap F) → UpperHalfPlane × ComplexTwoSpace :=
   orderThreeFamilyLocalDiffeomorph F hprojection v
 
 /-- The analogous lift at a point of the order-four fibre. -/
 @[expose] public noncomputable def orderFourLocalLift
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (v : ComplexTwoSpace) :
     TotalSpace (parameterMap F) → UpperHalfPlane × ComplexTwoSpace :=
   orderFourFamilyLocalDiffeomorph F hprojection v
 
 public theorem orderThreeFamilyLocalDiffeomorph_open_source
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (v : ComplexTwoSpace) :
     IsOpen (orderThreeFamilyLocalDiffeomorph F hprojection v).source :=
   (orderThreeFamilyLocalDiffeomorph F hprojection v).open_source
 
 public theorem orderFourFamilyLocalDiffeomorph_open_source
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (v : ComplexTwoSpace) :
     IsOpen (orderFourFamilyLocalDiffeomorph F hprojection v).source :=
   (orderFourFamilyLocalDiffeomorph F hprojection v).open_source
 
 public theorem orderThreeFamilyLocalDiffeomorph_center_mem_source
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (v : ComplexTwoSpace) :
     projection (parameterMap F) (U.zOne, v) ∈
       (orderThreeFamilyLocalDiffeomorph F hprojection v).source :=
   (hprojection (U.zOne, v)).localInverse_mem_source
 
 public theorem orderFourFamilyLocalDiffeomorph_center_mem_source
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (v : ComplexTwoSpace) :
     projection (parameterMap F) (U.zTwo, v) ∈
       (orderFourFamilyLocalDiffeomorph F hprojection v).source :=
   (hprojection (U.zTwo, v)).localInverse_mem_source
 
 public theorem orderThreeLocalLift_contMDiffAt
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (v : ComplexTwoSpace) :
-    ContMDiffAt GlobalDeckTotalModel GlobalDeckTotalModel ω
+    ContMDiffAt globalDeckTotalModel globalDeckTotalModel ω
       (orderThreeLocalLift F hprojection v)
       (projection (parameterMap F) (U.zOne, v)) :=
   (hprojection (U.zOne, v)).localInverse_contMDiffAt
 
 public theorem orderFourLocalLift_contMDiffAt
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (v : ComplexTwoSpace) :
-    ContMDiffAt GlobalDeckTotalModel GlobalDeckTotalModel ω
+    ContMDiffAt globalDeckTotalModel globalDeckTotalModel ω
       (orderFourLocalLift F hprojection v)
       (projection (parameterMap F) (U.zTwo, v)) :=
   (hprojection (U.zTwo, v)).localInverse_contMDiffAt
@@ -456,7 +456,7 @@ public theorem orderFourLocalLift_contMDiffAt
 /-- The local lift is a right inverse to the quotient projection near the chosen point of the
 order-three fibre. -/
 public theorem orderThreeLocalLift_eventually_right
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (v : ComplexTwoSpace) :
     Filter.EventuallyEq (nhds (projection (parameterMap F) (U.zOne, v)))
       ((projection (parameterMap F)) ∘ orderThreeLocalLift F hprojection v) id :=
@@ -464,7 +464,7 @@ public theorem orderThreeLocalLift_eventually_right
 
 /-- The corresponding local right-inverse identity at the order-four fibre. -/
 public theorem orderFourLocalLift_eventually_right
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (v : ComplexTwoSpace) :
     Filter.EventuallyEq (nhds (projection (parameterMap F) (U.zTwo, v)))
       ((projection (parameterMap F)) ∘ orderFourLocalLift F hprojection v) id :=
@@ -472,7 +472,7 @@ public theorem orderFourLocalLift_eventually_right
 
 @[simp]
 public theorem orderThreeLocalLift_center
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (v : ComplexTwoSpace) :
     orderThreeLocalLift F hprojection v
         (projection (parameterMap F) (U.zOne, v)) = (U.zOne, v) :=
@@ -481,7 +481,7 @@ public theorem orderThreeLocalLift_center
 
 @[simp]
 public theorem orderFourLocalLift_center
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (v : ComplexTwoSpace) :
     orderFourLocalLift F hprojection v
         (projection (parameterMap F) (U.zTwo, v)) = (U.zTwo, v) :=
@@ -490,7 +490,7 @@ public theorem orderFourLocalLift_center
 
 @[simp]
 public theorem orderThreeCayleyLocalChart_center
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (hzOne : U.zOne = fuchsianOneFixedPoint)
     (v : ComplexTwoSpace) :
     orderThreeCoverDiffeomorph ω
@@ -504,7 +504,7 @@ public theorem orderThreeCayleyLocalChart_center
 
 @[simp]
 public theorem orderFourCayleyLocalChart_center
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (hzTwo : U.zTwo = fuchsianTwoFixedPoint)
     (v : ComplexTwoSpace) :
     orderFourCoverDiffeomorph ω
@@ -518,22 +518,22 @@ public theorem orderFourCayleyLocalChart_center
 
 /-- The holomorphic scalar Cayley base coordinate obtained from the local analytic family lift. -/
 @[expose] public noncomputable def orderThreeLocalBaseCoordinate
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (v : ComplexTwoSpace)
     (q : TotalSpace (parameterMap F)) : ℂ :=
   orderThreeCayley (orderThreeLocalLift F hprojection v q).1
 
 /-- The order-four scalar base coordinate. -/
 @[expose] public noncomputable def orderFourLocalBaseCoordinate
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (v : ComplexTwoSpace)
     (q : TotalSpace (parameterMap F)) : ℂ :=
   orderFourCayley (orderFourLocalLift F hprojection v q).1
 
 public theorem orderThreeLocalBaseCoordinate_contMDiffAt
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (v : ComplexTwoSpace) :
-    ContMDiffAt GlobalDeckTotalModel (modelWithCornersSelf ℂ ℂ) ω
+    ContMDiffAt globalDeckTotalModel (modelWithCornersSelf ℂ ℂ) ω
       (orderThreeLocalBaseCoordinate F hprojection v)
       (projection (parameterMap F) (U.zOne, v)) := by
   exact (contMDiff_of_mdifferentiable
@@ -541,9 +541,9 @@ public theorem orderThreeLocalBaseCoordinate_contMDiffAt
     (contMDiff_fst.contMDiffAt.comp _ (orderThreeLocalLift_contMDiffAt F hprojection v))
 
 public theorem orderFourLocalBaseCoordinate_contMDiffAt
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (v : ComplexTwoSpace) :
-    ContMDiffAt GlobalDeckTotalModel (modelWithCornersSelf ℂ ℂ) ω
+    ContMDiffAt globalDeckTotalModel (modelWithCornersSelf ℂ ℂ) ω
       (orderFourLocalBaseCoordinate F hprojection v)
       (projection (parameterMap F) (U.zTwo, v)) := by
   exact (contMDiff_of_mdifferentiable
@@ -552,7 +552,7 @@ public theorem orderFourLocalBaseCoordinate_contMDiffAt
 
 @[simp]
 public theorem orderThreeLocalBaseCoordinate_center
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (hzOne : U.zOne = fuchsianOneFixedPoint)
     (v : ComplexTwoSpace) :
     orderThreeLocalBaseCoordinate F hprojection v
@@ -562,7 +562,7 @@ public theorem orderThreeLocalBaseCoordinate_center
 
 @[simp]
 public theorem orderFourLocalBaseCoordinate_center
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (hzTwo : U.zTwo = fuchsianTwoFixedPoint)
     (v : ComplexTwoSpace) :
     orderFourLocalBaseCoordinate F hprojection v

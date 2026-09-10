@@ -31,16 +31,16 @@ open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 open SphereSixComplex.Geometry.CuspStraighteningRetraction
-open SphereSixComplex.Geometry.CuspPhaseEstimates.CuspPeriodExpansion
+open SphereSixComplex.Geometry.CuspPeriodExpansion
 open
-  SphereSixComplex.Geometry.CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
+  SphereSixComplex.Geometry.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 /-- The exact coordinate and cellular inputs still needed for the constructed model at the
 actual cusp radius.  Unlike the former phase-geometry assumption, every field refers to the
 single explicit carrier used in the paper. -/
 public structure ConstructedPolarHoneycombCoordinateData
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) where
   momentHomeomorph :
@@ -56,13 +56,13 @@ public structure ConstructedPolarHoneycombCoordinateData
       (PolarHoneycombData.orbitCore
         {q : constructedLocalPositivePart W.localWitness.radius |
           constructedModel.t
-            (q : LocalCarrier constructedModel W.localWitness.radius) = 0})
+            (q : localCarrier constructedModel W.localWitness.radius) = 0})
 
 namespace ConstructedPolarHoneycombCoordinateData
 
 /-- Coordinate data provide all three fields of the constructed-model residual package. -/
 public noncomputable def toResidualData
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     {W : ActualPuncturedCuspCollarWitness N constructedModel}
     (C : ConstructedPolarHoneycombCoordinateData W) :
@@ -75,7 +75,7 @@ public noncomputable def toResidualData
 
 /-- The explicit coordinate package gives the specialized normalized phase geometry. -/
 public noncomputable def toPhaseGeometry
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     {W : ActualPuncturedCuspCollarWitness N constructedModel}
     (C : ConstructedPolarHoneycombCoordinateData W) :
@@ -91,7 +91,7 @@ end ConstructedPolarHoneycombCoordinateData
 the moment coordinates and the quotient relative CW structure for
 the actual constructed carrier. -/
 public theorem constructedNormalizedPolarHoneycombPhaseGeometry
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     (h : Nonempty (ConstructedPolarHoneycombCoordinateData W)) :
@@ -104,7 +104,7 @@ public theorem constructedNormalizedPolarHoneycombPhaseGeometry
 /-- The same specialized inputs give precisely the phase-spreading package consumed by the
 paper's cusp retraction. -/
 public theorem constructedPolarHoneycombPhaseSpreadingPackage
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     (h : Nonempty (ConstructedPolarHoneycombCoordinateData W)) :

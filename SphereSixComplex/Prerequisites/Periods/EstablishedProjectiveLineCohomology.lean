@@ -445,7 +445,7 @@ private theorem exists_entire_laurent_decomposition_negOne
 
 The zero-chart coordinate is `z`; the infinity-chart coordinate is `z⁻¹`; and the infinity
 section is expressed in the zero-chart frame by the transition factor `z⁻¹`. -/
-public theorem establishedProjectiveLineCechNegOne
+public theorem exists_cech_coboundary_neg_one
     (c : ℂ → ℂ) (hc : HolomorphicOnPuncturedPlane c) :
     ∃ fZero fInfinity : ℂ → ℂ,
       MDiff fZero ∧ MDiff fInfinity ∧
@@ -459,7 +459,7 @@ public theorem establishedProjectiveLineCechNegOne
     mdiff_complex_iff_differentiable.mpr hfInfinity, hsplit⟩
 
 /-- Analytic two-chart Cech exactness for the structure sheaf `O` on `ℙ¹`. -/
-public theorem establishedProjectiveLineCechZero
+public theorem exists_cech_coboundary_zero
     (c : ℂ → ℂ) (hc : HolomorphicOnPuncturedPlane c) :
     ∃ fZero fInfinity : ℂ → ℂ,
       MDiff fZero ∧ MDiff fInfinity ∧
@@ -487,7 +487,7 @@ public theorem exists_compatibleProjectiveLineNegOneAdjustments
     intro z hz
     exact (hZero z hz).sub (hInfinity z hz)
   obtain ⟨fZero, fInfinity, hfZero, hfInfinity, hsplit⟩ :=
-    establishedProjectiveLineCechNegOne (fun z ↦ sZero z - sInfinity z) hc
+    exists_cech_coboundary_neg_one (fun z ↦ sZero z - sInfinity z) hc
   refine ⟨fZero, fInfinity, hfZero, hfInfinity, ?_⟩
   intro z hz
   have h := hsplit z hz
@@ -507,7 +507,7 @@ public theorem exists_compatibleProjectiveLineZeroAdjustments
     intro z hz
     exact (hZero z hz).sub (hInfinity z hz)
   obtain ⟨fZero, fInfinity, hfZero, hfInfinity, hsplit⟩ :=
-    establishedProjectiveLineCechZero (fun z ↦ sZero z - sInfinity z) hc
+    exists_cech_coboundary_zero (fun z ↦ sZero z - sInfinity z) hc
   refine ⟨fZero, fInfinity, hfZero, hfInfinity, ?_⟩
   intro z hz
   have h := hsplit z hz

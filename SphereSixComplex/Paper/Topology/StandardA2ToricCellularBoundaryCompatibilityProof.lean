@@ -28,7 +28,7 @@ public def StandardA2ToricCentralFiberSelectedBoundaryCompatibility
   let D := A.toCWDecomposition
   let _ := D.topology
   let _ := D.cwComplex
-  ∀ (n : ℕ) (x : cuspWCellIndex (n + 1) → ℤ),
+  ∀ (n : ℕ) (x : CuspWCellIndex (n + 1) → ℤ),
     D.integralCellularChainModel.chainComplex.d (n + 1) n
         (D.labelledCellBasis (n + 1) x) =
       D.labelledCellBasis n (standardA2ToricCellularBoundary n x)
@@ -36,7 +36,7 @@ public def StandardA2ToricCentralFiberSelectedBoundaryCompatibility
 private theorem labelledCellBasis_coordinateBoundary
     {X : Type} [TopologicalSpace X]
     (D : StandardA2ToricCentralFiberCWDecomposition X) (n : ℕ)
-    (x : cuspWCellIndex n.succ → ℤ) :
+    (x : CuspWCellIndex n.succ → ℤ) :
     let _ := D.topology
     let _ := D.cwComplex
     D.labelledCellBasis n (standardA2ToricCellularCoordinateBoundary D n x) =
@@ -78,7 +78,7 @@ public theorem incidenceValues
       standardA2ToricCellularBoundary 0 (Pi.single j 1 : Fin 3 → ℤ) := by
       apply (A.toCWDecomposition.labelledCellBasis 0).injective
       exact (labelledCellBasis_coordinateBoundary A.toCWDecomposition 0
-        (show cuspWCellIndex 1 → ℤ from (Pi.single j 1 : Fin 3 → ℤ))).trans h
+        (show CuspWCellIndex 1 → ℤ from (Pi.single j 1 : Fin 3 → ℤ))).trans h
     exact congrFun hall i
   · dsimp only
     intro j i
@@ -88,7 +88,7 @@ public theorem incidenceValues
       standardA2ToricCellularBoundary 1 (Pi.single j 1 : Fin 4 → ℤ) := by
       apply (A.toCWDecomposition.labelledCellBasis 1).injective
       exact (labelledCellBasis_coordinateBoundary A.toCWDecomposition 1
-        (show cuspWCellIndex 2 → ℤ from (Pi.single j 1 : Fin 4 → ℤ))).trans h
+        (show CuspWCellIndex 2 → ℤ from (Pi.single j 1 : Fin 4 → ℤ))).trans h
     exact congrFun hall i.castSucc
   · dsimp only
     intro j i
@@ -98,7 +98,7 @@ public theorem incidenceValues
       standardA2ToricCellularBoundary 2 (Pi.single j 1 : Fin 2 → ℤ) := by
       apply (A.toCWDecomposition.labelledCellBasis 2).injective
       exact (labelledCellBasis_coordinateBoundary A.toCWDecomposition 2
-        (show cuspWCellIndex 3 → ℤ from (Pi.single j 1 : Fin 2 → ℤ))).trans h
+        (show CuspWCellIndex 3 → ℤ from (Pi.single j 1 : Fin 2 → ℤ))).trans h
     exact congrFun hall i
   · dsimp only
     intro j i
@@ -108,7 +108,7 @@ public theorem incidenceValues
       standardA2ToricCellularBoundary 3 (Pi.single j 1 : Fin 1 → ℤ) := by
       apply (A.toCWDecomposition.labelledCellBasis 3).injective
       exact (labelledCellBasis_coordinateBoundary A.toCWDecomposition 3
-        (show cuspWCellIndex 4 → ℤ from (Pi.single j 1 : Fin 1 → ℤ))).trans h
+        (show CuspWCellIndex 4 → ℤ from (Pi.single j 1 : Fin 1 → ℤ))).trans h
     exact congrFun hall i
 
 /-- Consequently, the full classical boundary formula implies the unchanged independent

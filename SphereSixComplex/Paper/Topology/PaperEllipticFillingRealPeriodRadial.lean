@@ -35,13 +35,13 @@ variable (A : PaperAnalyticData) (r : ℝ)
 /-- The whole-family order-three product chart restricted to the radius-`r` filling. -/
 @[expose] public def orderThreeFillingProductMap :
     A.orderThreeFillingOpen r →
-      ComplexUnitDisc × A.orderThreeTorus :=
+      ComplexUnitDisc × A.OrderThreeTorus :=
   fun q ↦ orderThreeRealPeriodProductHomeomorph A.periods q.1
 
 /-- The whole-family order-four product chart restricted to the radius-`r` filling. -/
 @[expose] public def orderFourFillingProductMap :
     A.orderFourFillingOpen r →
-      ComplexUnitDisc × A.orderFourTorus :=
+      ComplexUnitDisc × A.OrderFourTorus :=
   fun q ↦ orderFourRealPeriodProductHomeomorph A.periods q.1
 
 public theorem orderThreeFillingProductMap_isOpenEmbedding :
@@ -112,7 +112,7 @@ public theorem orderFourFillingProductMap_range :
 
 public theorem orderThreeFillingOpen_nonempty (hr : 0 < r) :
     Nonempty (A.orderThreeFillingOpen r) := by
-  let p : ComplexUnitDisc × A.orderThreeTorus := (ComplexUnitDisc.center, 0)
+  let p : ComplexUnitDisc × A.OrderThreeTorus := (ComplexUnitDisc.center, 0)
   let q := (orderThreeRealPeriodProductHomeomorph A.periods).symm p
   refine ⟨⟨q, ?_⟩⟩
   change orderThreeFamilyRadius A.periods q < r
@@ -122,7 +122,7 @@ public theorem orderThreeFillingOpen_nonempty (hr : 0 < r) :
 
 public theorem orderFourFillingOpen_nonempty (hr : 0 < r) :
     Nonempty (A.orderFourFillingOpen r) := by
-  let p : ComplexUnitDisc × A.orderFourTorus := (ComplexUnitDisc.center, 0)
+  let p : ComplexUnitDisc × A.OrderFourTorus := (ComplexUnitDisc.center, 0)
   let q := (orderFourRealPeriodProductHomeomorph A.periods).symm p
   refine ⟨⟨q, ?_⟩⟩
   change orderFourFamilyRadius A.periods q < r
@@ -285,7 +285,7 @@ bielliptic fibre. -/
 @[expose] public def orderThreeSelectedFillingHomotopyEquivCentralFiber
     (A : PaperAnalyticData) :
     A.OrderThreeVaryingFilling A.starSeparation.orderThree.radius ≃ₕ
-      OrderThreeReducedCentralFiber A.periods :=
+      orderThreeReducedCentralFiber A.periods :=
   orderThreeVaryingFillingHomotopyEquivCentralFiber_of_affineRadialChart A
     A.starSeparation.orderThree.radius (orderThreeSelectedAffineRadialCompatibility A)
 
@@ -294,7 +294,7 @@ bielliptic fibre. -/
 @[expose] public def orderFourSelectedFillingHomotopyEquivCentralFiber
     (A : PaperAnalyticData) :
     A.OrderFourVaryingFilling A.starSeparation.orderFour.radius ≃ₕ
-      OrderFourReducedCentralFiber A.periods :=
+      orderFourReducedCentralFiber A.periods :=
   orderFourVaryingFillingHomotopyEquivCentralFiber_of_affineRadialChart A
     A.starSeparation.orderFour.radius (orderFourSelectedAffineRadialCompatibility A)
 

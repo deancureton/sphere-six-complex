@@ -21,7 +21,7 @@ public theorem attachingDegree_zero_of_contractible_boundary_factor
     (v : TopCat.of Z ⟶ TopCat.of (IntegralCWSkeletonLT X (n + 1)))
     (h : (T.characteristicPair X (n + 1) e).boundaryMap = u ≫ v) :
     T.attachingDegree X n e e' = 0 := by
-  let _ : Subsingleton ((CWIntegralSingularChainComplexObj (TopCat.of Z)).homology n) :=
+  let _ : Subsingleton ((cwIntegralSingularChainComplexObj (TopCat.of Z)).homology n) :=
     subsingleton_integralSingularHomology_of_contractible (X := Z) n hn
   rw [T.attachingDegree_eq_homologicalAttachingMapDegree]
   unfold homologicalAttachingMapDegree

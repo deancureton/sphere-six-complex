@@ -166,7 +166,7 @@ public theorem affineNormalizedMidpointTotal_base (A : PaperAnalyticData) :
       A.affinePeripheralMidpointTotal.val) = _
   exact regularTotalSpaceBase_familyDeckMap A.periods _ _
 
-public theorem exists_sectionSevenAffineNormalizedCuspPath (A : PaperAnalyticData) :
+public theorem exists_affineNormalizedCuspPath (A : PaperAnalyticData) :
     ∃ L : Path A.affineNormalizedMidpoint
       (regularSourceEquiv (((g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent)⁻¹)
         (regularTotalSpaceBase A.periods A.cuspRegularRepresentative)),
@@ -201,13 +201,13 @@ public noncomputable def affineNormalizedCuspPath (A : PaperAnalyticData) :
     Path A.affineNormalizedMidpoint
       (regularSourceEquiv (((g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent)⁻¹)
         (regularTotalSpaceBase A.periods A.cuspRegularRepresentative)) :=
-  A.exists_sectionSevenAffineNormalizedCuspPath.choose
+  A.exists_affineNormalizedCuspPath.choose
 
 public theorem affineNormalizedCuspPath_projects (A : PaperAnalyticData)
     (t : unitInterval) :
     A.regularCoordinate (A.affineNormalizedCuspPath t) =
       A.centralFamilyCoordinate (A.cuspMarkedCentralWhisker t) :=
-  A.exists_sectionSevenAffineNormalizedCuspPath.choose_spec t
+  A.exists_affineNormalizedCuspPath.choose_spec t
 
 public theorem affineNormalizedMidpoint_projects (A : PaperAnalyticData) :
     A.regularCoordinate A.affineNormalizedMidpoint =
@@ -232,7 +232,7 @@ public theorem affineMarkedCentralCoordinate_base (A : PaperAnalyticData) :
   simp [markedPuncturedBasepoint]
 
 public noncomputable def affineNormalizedBaseDeckHom (A : PaperAnalyticData) :
-    FundamentalGroup RegularCoordinateBase twicePuncturedComplexBasepoint →* Deltaᵐᵒᵖ := by
+    FundamentalGroup regularCoordinateBase twicePuncturedComplexBasepoint →* Deltaᵐᵒᵖ := by
   let _ := A.regularBaseDeckAction
   exact A.regularCoordinate_isQuotientCoveringMap.fundamentalGroupToMulOpposite
     ⟨A.affineNormalizedMidpoint, A.affineNormalizedMidpoint_projects⟩
@@ -353,7 +353,7 @@ public theorem exists_sectionSevenAffineNormalizedLoopLift (A : PaperAnalyticDat
     rw [hg] at h
     exact h.symm
   let p : C(RegularBase (U := A.modular.modularParameter.toTriangleUniformization),
-      RegularCoordinateBase) :=
+      regularCoordinateBase) :=
     ⟨A.regularCoordinate, A.regularCoordinate_isLocalHomeomorph.continuous⟩
   obtain ⟨L, hL⟩ := IsCoveringMap.exists_path_lift_of_monodromy_eq
     (p := p) hp.isCoveringMap γ e e' hm

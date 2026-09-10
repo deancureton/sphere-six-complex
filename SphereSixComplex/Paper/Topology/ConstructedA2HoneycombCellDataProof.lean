@@ -339,7 +339,7 @@ public def constructedA2CellSquarePoint {r : ℝ} (hr : 0 < r)
     (v : ToricLattice) (i : Fin 6) (p : ConstructedA2CellSquare) :
     constructedPositiveCentralCell r v := by
   let x := constructedA2CellSquareCarrierPoint v i p
-  let q : LocalCarrier constructedModel r := ⟨x, by
+  let q : localCarrier constructedModel r := ⟨x, by
     change carrierHeight x ∈ Metric.ball 0 r
     rw [constructedA2CellSquareCarrierPoint_height]
     exact Metric.mem_ball_self hr⟩

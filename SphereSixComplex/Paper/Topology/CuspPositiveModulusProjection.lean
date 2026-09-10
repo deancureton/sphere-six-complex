@@ -8,7 +8,7 @@ open scoped ContinuousMap
 namespace SphereSixComplex.Geometry.CuspStraighteningRetraction
 open SphereSixComplex.Periods CuspFilling CuspLocalPhaseAction CuspPuncturedCollarBridge
 open CuspPeriodExpansion InfiniteA2Toric
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
 
 public theorem polarModulus_frozenDeck
@@ -16,7 +16,7 @@ public theorem polarModulus_frozenDeck
     (hmod : ∀ k p, P.modulus (compactPhaseOrbit M r P.positivePart (k, p)) = p) :
     let _ := P.positiveDeckAction
     let _ := frozenLocalCuspAction N M r
-    ∀ (g : Multiplicative ParameterLattice) (x : LocalCarrier M r),
+    ∀ (g : Multiplicative ParameterLattice) (x : localCarrier M r),
       P.modulus (g • x) = g • P.modulus x := by
   let _ := P.positiveDeckAction
   let _ := frozenLocalCuspAction N M r
@@ -36,7 +36,7 @@ public def frozenPositiveModulusProjection
   let _ := frozenLocalCuspAction N M r
   refine ⟨Quotient.lift (fun x ↦ Quotient.mk _ (P.modulus x)) ?_, ?_⟩
   · intro a b hab
-    change MulAction.orbitRel (Multiplicative ParameterLattice) (LocalCarrier M r) a b at hab
+    change MulAction.orbitRel (Multiplicative ParameterLattice) (localCarrier M r) a b at hab
     rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff] at hab
     obtain ⟨g, rfl⟩ := hab
     apply Quotient.sound
@@ -50,7 +50,7 @@ public def frozenPositiveModulusProjection
 public theorem frozenPositiveModulusProjection_mk
     (P : PolarHoneycombData M r) (L : PolarPhaseDeckLift N M r P)
     (hmod : ∀ k p, P.modulus (compactPhaseOrbit M r P.positivePart (k, p)) = p)
-    (x : LocalCarrier M r) :
+    (x : localCarrier M r) :
     let _ := P.positiveDeckAction
     frozenPositiveModulusProjection P L hmod (Quotient.mk _ x) =
       Quotient.mk _ (P.modulus x) := rfl
@@ -61,7 +61,7 @@ public def actualPositiveModulusProjection
     (L : PolarPhaseDeckLift N M W.localWitness.radius P)
     (hmod : ∀ k p, P.modulus (compactPhaseOrbit M W.localWitness.radius P.positivePart (k, p)) = p) :
     let _ := P.positiveDeckAction
-    C(actualLocalCuspFilling W, PolarHoneycombData.OrbitQuotient P.positivePart) := by
+    C(ActualLocalCuspFilling W, PolarHoneycombData.OrbitQuotient P.positivePart) := by
   let _ := P.positiveDeckAction
   exact (frozenPositiveModulusProjection P L hmod).comp
     (quotientStraighteningHomeomorph W : C(_, _))
@@ -87,7 +87,7 @@ public theorem actualPositiveModulusProjection_central_phase
 public theorem polarModulus_compactPhase
     (P : PolarHoneycombData M r)
     (hmod : ∀ k p, P.modulus (compactPhaseOrbit M r P.positivePart (k, p)) = p)
-    (k : CompactTorus) (x : LocalCarrier M r) :
+    (k : CompactTorus) (x : localCarrier M r) :
     P.modulus (compactPhaseLocalAction M r k x) = P.modulus x := by
   obtain ⟨l, hl⟩ := P.polar_surjective x
   have h : compactPhaseLocalAction M r k x =
@@ -103,7 +103,7 @@ public theorem actualPositiveModulusProjection_central_compact
     (P : PolarHoneycombData M W.localWitness.radius)
     (L : PolarPhaseDeckLift N M W.localWitness.radius P)
     (hmod : ∀ k p, P.modulus (compactPhaseOrbit M W.localWitness.radius P.positivePart (k, p)) = p)
-    (k : CompactTorus) (x : LocalCarrier M W.localWitness.radius) (hx : M.t x.1 = 0) :
+    (k : CompactTorus) (x : localCarrier M W.localWitness.radius) (hx : M.t x.1 = 0) :
     let _ := P.positiveDeckAction
     actualPositiveModulusProjection W P L hmod
       (Quotient.mk _ (compactPhaseLocalAction M W.localWitness.radius k x)) =

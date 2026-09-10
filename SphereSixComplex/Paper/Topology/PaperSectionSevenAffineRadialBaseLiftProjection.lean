@@ -29,7 +29,7 @@ coordinate. -/
 public theorem CoveringPreimageDeformationData.ambientLift_one_projects_normalize
     (D : CoveringPreimageDeformationData small big hsmall)
     (p : E → Z) (cov : IsCoveringMap p)
-    (e : coveringRegionPreimage p big) :
+    (e : CoveringRegionPreimage p big) :
     p (D.ambientLift p cov (1, e)) =
       (D.normalize (CoveringPreimageDeformationData.bigCoordinate p cov e)).1 := by
   rw [D.ambientLift_projects p cov 1 e]
@@ -49,7 +49,7 @@ open SphereSixComplex
 public theorem orderThreeBaseRadialEquiv_invFun_regularCoordinate
     (A : PaperAnalyticData) {s r : ℝ}
     (hs : 0 < s) (hsr : s < r) (hr : r ≤ 2 / 3)
-    (e : A.orderThreeAffineHalfPlaneBaseLift) :
+    (e : A.OrderThreeAffineHalfPlaneBaseLift) :
     A.regularCoordinate
         ((A.orderThreeBaseRadialEquiv hs hsr hr).invFun e).1 =
       ((orderThreeCoordinateDeformation hs hsr hr).normalize
@@ -61,7 +61,7 @@ public theorem orderThreeBaseRadialEquiv_invFun_regularCoordinate
 public theorem orderFourBaseRadialEquiv_invFun_regularCoordinate
     (A : PaperAnalyticData) {s r : ℝ}
     (hs : 0 < s) (hsr : s < r) (hr : r ≤ 1 - 1 / 3)
-    (e : A.orderFourAffineHalfPlaneBaseLift) :
+    (e : A.OrderFourAffineHalfPlaneBaseLift) :
     A.regularCoordinate
         ((A.orderFourBaseRadialEquiv hs hsr hr).invFun e).1 =
       ((orderFourCoordinateDeformation hs hsr hr).normalize

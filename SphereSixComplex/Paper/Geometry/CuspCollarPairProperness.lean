@@ -27,7 +27,7 @@ noncomputable section
 
 /-- The source orbifold coordinate descended to the actual punctured global family. -/
 @[expose] public noncomputable def centralCuspCoordinate
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E} :
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E} :
     PuncturedGlobalFamily (assembledFuchsianPeriodFunctions E D) → ℂ := by
   let _ := regularFamilyDeckAction (assembledFuchsianPeriodFunctions E D)
   exact Quotient.lift
@@ -45,7 +45,7 @@ noncomputable section
       exact E.sourceCoordinate.coordinate_invariant g _)
 
 public theorem centralCuspCoordinate_continuous
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E} :
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E} :
     Continuous (centralCuspCoordinate (E := E) (D := D)) := by
   let _ := regularFamilyDeckAction (assembledFuchsianPeriodFunctions E D)
   unfold centralCuspCoordinate
@@ -55,7 +55,7 @@ public theorem centralCuspCoordinate_continuous
       (regularTotalSpaceBase_continuous (assembledFuchsianPeriodFunctions E D)))
 
 public theorem centralCuspCoordinate_additiveCover
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (p : additiveCuspRadiusCover W.localWitness.radius) :
@@ -77,7 +77,7 @@ public def fundamentalCuspBand (a b : ℝ) : Set ℂ :=
   {s | a ≤ ‖cuspQ s‖ ∧ ‖cuspQ s‖ ≤ b ∧ 0 ≤ s.re ∧ s.re ≤ 1}
 
 public theorem fundamentalCuspBand_isCompact
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (a b : ℝ) (ha : 0 < a) (hb : b < W.localWitness.radius) :
@@ -119,7 +119,7 @@ public theorem fundamentalCuspBand_isCompact
     nlinarith
 
 public theorem fundamentalCuspBand_subset_halfPlane
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (a b : ℝ) (hb : b < W.localWitness.radius) :
@@ -148,7 +148,7 @@ public theorem cuspBandCube_q_ge (a b : ℝ) (p : cuspBandCube a b) :
 
 /-- The compact fundamental band and period cube mapped into the global cusp collar. -/
 @[expose] public noncomputable def cuspBandCubeToGlobal
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (a b : ℝ) (hb : b < W.localWitness.radius) :
@@ -160,7 +160,7 @@ public theorem cuspBandCube_q_ge (a b : ℝ) (p : cuspBandCube a b) :
       (cuspBandCube_q_le a b p).trans_lt hb⟩
 
 public theorem cuspBandCubeToGlobal_continuous
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (a b : ℝ) (hb : b < W.localWitness.radius) :
@@ -187,7 +187,7 @@ public theorem cuspBandCubeToGlobal_continuous
   exact hzeta.prodMk (continuous_fst.comp continuous_subtype_val)
 
 public theorem cuspBandCube_isCompact
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (a b : ℝ) (ha : 0 < a) (hb : b < W.localWitness.radius) :
@@ -195,7 +195,7 @@ public theorem cuspBandCube_isCompact
   (fundamentalCuspBand_isCompact W a b ha hb).prod isCompact_Icc
 
 public theorem cuspBandCubeToGlobal_range_isCompact
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (a b : ℝ) (ha : 0 < a) (hb : b < W.localWitness.radius) :
@@ -205,7 +205,7 @@ public theorem cuspBandCubeToGlobal_range_isCompact
   exact isCompact_range (cuspBandCubeToGlobal_continuous W a b hb)
 
 private theorem actualPuncturedGlobalCuspPoint_eq_of_family_projection_eq
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) (s : ℂ)
     (hs : s ∈ cuspHalfPlane N.height) (hq : ‖cuspQ s‖ < W.localWitness.radius)
@@ -224,7 +224,7 @@ private theorem actualPuncturedGlobalCuspPoint_eq_of_family_projection_eq
   exact h
 
 private theorem actualPuncturedGlobalCuspPoint_eq_period_cube
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) (s : ℂ)
     (hs : s ∈ cuspHalfPlane N.height) (hq : ‖cuspQ s‖ < W.localWitness.radius)
@@ -244,7 +244,7 @@ private theorem actualPuncturedGlobalCuspPoint_eq_period_cube
   simpa only [familyFiberRealParam] using heq.symm
 
 public theorem additiveCuspCoverToGlobal_mem_cuspBandCube_range
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (a b : ℝ) (hb : b < W.localWitness.radius)
@@ -285,15 +285,15 @@ public theorem additiveCuspCoverToGlobal_mem_cuspBandCube_range
 
 /-- The additive cusp cover mapped into the actual punctured local quotient. -/
 @[expose] public noncomputable def additiveCuspCoverToPuncturedQuotient
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
-    additiveCuspRadiusCover W.localWitness.radius → puncturedLocalCuspQuotient W :=
+    additiveCuspRadiusCover W.localWitness.radius → PuncturedLocalCuspQuotient W :=
   fun p ↦ Quotient.mk _
     (additiveToPuncturedLocalHomeomorph M W.localWitness.radius (Quotient.mk _ p))
 
 public theorem puncturedLocalCuspQuotientMap_additiveCover
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (p : additiveCuspRadiusCover W.localWitness.radius) :
@@ -305,14 +305,14 @@ public theorem puncturedLocalCuspQuotientMap_additiveCover
 
 /-- The radial coordinate on the punctured local quotient. -/
 @[expose] public noncomputable def puncturedLocalCuspRadius
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
-    puncturedLocalCuspQuotient W → ℝ :=
+    PuncturedLocalCuspQuotient W → ℝ :=
   actualLocalCuspFillingRadius W ∘ puncturedLocalCuspToFilling W
 
 public theorem puncturedLocalCuspRadius_additiveCover
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (p : additiveCuspRadiusCover W.localWitness.radius) :
@@ -329,17 +329,17 @@ public theorem puncturedLocalCuspRadius_additiveCover
   change ‖M.t ((additiveToPuncturedLocalHomeomorph M W.localWitness.radius
     (Quotient.mk _ p)).1)‖ = _
   rw [show ((additiveToPuncturedLocalHomeomorph M W.localWitness.radius
-      (Quotient.mk _ p)).1 : LocalCarrier M W.localWitness.radius) =
+      (Quotient.mk _ p)).1 : localCarrier M W.localWitness.radius) =
         localCuspExponentialPoint M W.localWitness.radius p.1.1 p.1.2
           (mem_ball_zero_iff.mpr p.2) from
     additiveToPuncturedLocalHomeomorph_mk M W.localWitness.radius p]
   rw [localCuspExponentialPoint_t]
 
 private theorem puncturedLocalCuspQuotient_exists_additive
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
-    (q : puncturedLocalCuspQuotient W) :
+    (q : PuncturedLocalCuspQuotient W) :
     ∃ p : additiveCuspRadiusCover W.localWitness.radius,
       q = additiveCuspCoverToPuncturedQuotient W p := by
   induction q using Quotient.inductionOn with
@@ -353,7 +353,7 @@ private theorem puncturedLocalCuspQuotient_exists_additive
       exact congrArg (Quotient.mk _) hv.symm
 
 public theorem puncturedLocalCuspRadiusBand_image
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (a b : ℝ) (hb : b < W.localWitness.radius) :
@@ -385,7 +385,7 @@ public theorem puncturedLocalCuspRadiusBand_image
     · exact puncturedLocalCuspQuotientMap_additiveCover W p
 
 public theorem puncturedLocalCuspRadiusBand_isCompact
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (a b : ℝ) (ha : 0 < a) (hb : b < W.localWitness.radius) :
@@ -396,7 +396,7 @@ public theorem puncturedLocalCuspRadiusBand_isCompact
   exact cuspBandCubeToGlobal_range_isCompact W a b ha hb
 
 public theorem modularCuspQ_lift
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (s : ℂ) (hs : s ∈ cuspHalfPlane N.height) :
     modularCuspQ ((assembledFuchsianPeriodFunctions E D).tau (N.lift s)) =
@@ -409,7 +409,7 @@ public theorem modularCuspQ_lift
 /-- Compact subsets of the global family stay a positive normalized cusp radius away from the
 completed central end. -/
 public theorem additiveCuspRadius_compact_central_lowerTrap
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     ∀ K : Set (PuncturedGlobalFamily (assembledFuchsianPeriodFunctions E D)), IsCompact K →
@@ -524,11 +524,11 @@ public theorem additiveCuspRadius_compact_central_lowerTrap
     exact (min_le_right delta inverseBound).trans hinvle
 
 public theorem puncturedLocalCuspRadius_compact_central_lowerTrap
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     ∀ K : Set (PuncturedGlobalFamily (assembledFuchsianPeriodFunctions E D)), IsCompact K →
-      ∃ a : ℝ, 0 < a ∧ ∀ q : puncturedLocalCuspQuotient W,
+      ∃ a : ℝ, 0 < a ∧ ∀ q : PuncturedLocalCuspQuotient W,
         puncturedLocalCuspQuotientMap W q ∈ K → a ≤ puncturedLocalCuspRadius W q := by
   intro K hK
   obtain ⟨a, ha, htrap⟩ := additiveCuspRadius_compact_central_lowerTrap W K hK
@@ -557,10 +557,10 @@ variable (P : PaperAnalyticData)
 /-- Compact middle bands in the cusp collar of the concrete star. -/
 public theorem cuspStarCollarRadiusBand_isCompact
     (a b : ℝ) (ha : 0 < a) (hb : b < P.starCuspWitness.localWitness.radius) :
-    IsCompact {s : P.starCollarSourceType (0 : Fin 3) |
+    IsCompact {s : P.StarCollarSource (0 : Fin 3) |
       a ≤ P.starCollarRadius (0 : Fin 3) s ∧
         P.starCollarRadius (0 : Fin 3) s ≤ b} := by
-  change IsCompact {s : puncturedLocalCuspQuotient P.starCuspWitness |
+  change IsCompact {s : PuncturedLocalCuspQuotient P.starCuspWitness |
     a ≤ puncturedLocalCuspRadius P.starCuspWitness s ∧
       puncturedLocalCuspRadius P.starCuspWitness s ≤ b}
   exact puncturedLocalCuspRadiusBand_isCompact P.starCuspWitness a b ha hb
@@ -569,11 +569,11 @@ public theorem cuspStarCollarRadiusBand_isCompact
 central fibre. -/
 public theorem cuspStarCollarRadius_compact_lowerTrap :
     ∀ K : Set P.CentralFamily, IsCompact K →
-      ∃ a : ℝ, 0 < a ∧ ∀ s : P.starCollarSourceType (0 : Fin 3),
+      ∃ a : ℝ, 0 < a ∧ ∀ s : P.StarCollarSource (0 : Fin 3),
         P.starToCentral (0 : Fin 3) s ∈ K →
           a ≤ P.starCollarRadius (0 : Fin 3) s := by
   change ∀ K : Set P.CentralFamily, IsCompact K →
-    ∃ a : ℝ, 0 < a ∧ ∀ s : puncturedLocalCuspQuotient P.starCuspWitness,
+    ∃ a : ℝ, 0 < a ∧ ∀ s : PuncturedLocalCuspQuotient P.starCuspWitness,
       puncturedLocalCuspQuotientMap P.starCuspWitness s ∈ K →
         a ≤ puncturedLocalCuspRadius P.starCuspWitness s
   exact puncturedLocalCuspRadius_compact_central_lowerTrap P.starCuspWitness
@@ -589,22 +589,22 @@ public theorem cuspCollarPairMap_isProper :
       (modelWithCornersSelf ℂ ComplexModel)
   let _ := P.starFillingCharts (0 : Fin 3)
   let _ : IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞
-      (P.starFillingType (0 : Fin 3)) := P.starFilling_isManifold (0 : Fin 3)
-  let _ : LocallyCompactSpace (P.starFillingType (0 : Fin 3)) :=
+      (P.StarFilling (0 : Fin 3)) := P.starFilling_isManifold (0 : Fin 3)
+  let _ : LocallyCompactSpace (P.StarFilling (0 : Fin 3)) :=
     Manifold.locallyCompact_of_finiteDimensional
       (modelWithCornersSelf ℂ ComplexModel)
   let _ : T2Space P.openEmbeddingStarData.central := by
     change T2Space P.CentralFamily
     exact P.centralFamily_t2
   let _ : T2Space (P.openEmbeddingStarData.filling (0 : Fin 3)) := by
-    change T2Space (P.starFillingType (0 : Fin 3))
+    change T2Space (P.StarFilling (0 : Fin 3))
     exact P.starFilling_t2 (0 : Fin 3)
   let _ : LocallyCompactSpace P.openEmbeddingStarData.central := by
     change LocallyCompactSpace P.CentralFamily
     infer_instance
   let _ : LocallyCompactSpace
       (P.openEmbeddingStarData.filling (0 : Fin 3)) := by
-    change LocallyCompactSpace (P.starFillingType (0 : Fin 3))
+    change LocallyCompactSpace (P.StarFilling (0 : Fin 3))
     infer_instance
   apply P.openEmbeddingStarData.collarPairMap_isProper_of_twoEndedRadialTraps
     (0 : Fin 3) (P.starCollarRadius (0 : Fin 3))

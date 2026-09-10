@@ -39,17 +39,17 @@ open SphereSixComplex.Geometry.CuspStraighteningAlgebra
 open SphereSixComplex.Geometry.CuspStraighteningRetraction
 open SphereSixComplex.Geometry.CuspStraighteningHomeomorph
 open SphereSixComplex.Geometry.CuspToricPhaseAction
-open SphereSixComplex.Geometry.CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
+open SphereSixComplex.Geometry.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
 open SphereSixComplex.Geometry.InfiniteA2Toric.QuantitativeRegions
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 /-- The normalized positive deck formula preserves the explicit nonnegative part. -/
 public theorem constructedPositiveDeck_mem
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (r : ℝ)
     (lambda : ParameterLattice) (q : constructedLocalPositivePart r) :
     normalizedPositiveDeckLocalMap N constructedModel r lambda
-      (q : LocalCarrier constructedModel r) ∈ constructedLocalPositivePart r := by
+      (q : localCarrier constructedModel r) ∈ constructedLocalPositivePart r := by
   rw [mem_constructedLocalPositivePart_iff]
   exact carrierPositivePart_torusAction_fanShear
     (normalizedCuspPositiveTwist N lambda)
@@ -65,13 +65,13 @@ public theorem constructedLocalPositivePart_locallyCompactSpace (r : ℝ) :
   let _ : ChartedSpace ComplexModel constructedModel.Carrier := constructedModel.charts
   let _ : LocallyCompactSpace constructedModel.Carrier :=
     ChartedSpace.locallyCompactSpace ComplexModel constructedModel.Carrier
-  let _ : LocallyCompactSpace (LocalCarrier constructedModel r) :=
+  let _ : LocallyCompactSpace (localCarrier constructedModel r) :=
     (cuspNeighborhood constructedModel r).isOpen.locallyCompactSpace
   exact (constructedLocalPositivePart_isClosed r).locallyCompactSpace
 
 /-- Every normalized positive deck transformation is continuous. -/
 public theorem constructedPositiveDeck_continuous
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (r : ℝ) :
     letI := normalizedPositiveDeckAction N constructedModel
       (constructedLocalPositivePart r) (constructedPositiveDeck_mem N r)
@@ -85,7 +85,7 @@ public theorem constructedPositiveDeck_continuous
   let lambda := Multiplicative.toAdd g
   change Continuous (fun q : constructedLocalPositivePart r ↦
     normalizedPositiveDeckCarrierMap N constructedModel lambda
-      (((q : LocalCarrier constructedModel r) : constructedModel.Carrier)))
+      (((q : localCarrier constructedModel r) : constructedModel.Carrier)))
   exact (constructedModel.torusAction_holomorphic
       (normalizedCuspPositiveTwist N lambda)).continuous.comp
     ((constructedModel.fanShear_holomorphic lambda).continuous.comp
@@ -94,14 +94,14 @@ public theorem constructedPositiveDeck_continuous
 /-- At the quantitative cusp radius, straightening transfers proper discontinuity from the
 actual action to its frozen action. -/
 public theorem constructedFrozenAction_properlyDiscontinuous
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     letI := frozenLocalCuspAction N constructedModel W.localWitness.radius
     ProperlyDiscontinuousSMul (Multiplicative ParameterLattice)
-      (LocalCarrier constructedModel W.localWitness.radius) := by
+      (localCarrier constructedModel W.localWitness.radius) := by
   let _ := frozenLocalCuspAction N constructedModel W.localWitness.radius
-  let C := CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
+  let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
     N constructedModel W.localWitness.radius W.localWitness.radius_pos
       W.localWitness.radius_le
   let J := establishedContinuousTorusAction constructedModel
@@ -128,7 +128,7 @@ public theorem constructedFrozenAction_properlyDiscontinuous
 /-- The compact phase left after dividing the frozen complex multiplier by its positive radial
 part. -/
 public def frozenCompactPhase
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (lambda : ParameterLattice) : CompactTorus :=
   fun i ↦ ⟨(phaseEmbedding (N.phaseCoefficient lambda 0) i : ℂ) /
       (normalizedCuspPositiveTwist N lambda i : ℂ), by
@@ -139,7 +139,7 @@ public def frozenCompactPhase
     exact div_self (norm_ne_zero_iff.mpr (Units.ne_zero _))⟩
 
 public theorem compactTorusEmbedding_frozenCompactPhase_mul
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (lambda : ParameterLattice) :
     compactTorusEmbedding (frozenCompactPhase N lambda) *
         normalizedCuspPositiveTwist N lambda =
@@ -153,9 +153,9 @@ public theorem compactTorusEmbedding_frozenCompactPhase_mul
 
 /-- A frozen deck map is its positive radial deck map followed by one compact phase. -/
 public theorem frozenLocalPsiMap_eq_compactPhase_positiveDeck
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) (r : ℝ)
-    (lambda : ParameterLattice) (p : LocalCarrier M r) :
+    (lambda : ParameterLattice) (p : localCarrier M r) :
     frozenLocalPsiMap N M r lambda p =
       compactPhaseLocalAction M r (frozenCompactPhase N lambda)
         (normalizedPositiveDeckLocalMap N M r lambda p) := by
@@ -216,7 +216,7 @@ public theorem carrierCentralComponents_locallyFinite :
 /-- The explicit positive central fibre used as the honeycomb target. -/
 public abbrev constructedPositiveCentralFiber (r : ℝ) :=
   {q : constructedLocalPositivePart r |
-    constructedModel.t (q : LocalCarrier constructedModel r) = 0}
+    constructedModel.t (q : localCarrier constructedModel r) = 0}
 
 /-- The radius-independent global positive central fibre. -/
 public abbrev constructedGlobalPositiveCentralFiber :=
@@ -230,7 +230,7 @@ public def constructedPositiveCentralFiberHomeomorph (r : ℝ) (hr : 0 < r) :
     ⟨⟨q.1.1.1, (mem_constructedLocalPositivePart_iff r q.1).mp q.1.property⟩,
       q.property⟩
   invFun x := by
-    let p : LocalCarrier constructedModel r :=
+    let p : localCarrier constructedModel r :=
       ⟨(show constructedModel.Carrier from x.1.1), by
       change carrierHeight x.1.1 ∈ Metric.ball 0 r
       rw [x.property]
@@ -536,27 +536,27 @@ end ConstructedHoneycombCellData
 
 /-- The logarithmic norm of the positive frozen multiplier is the frozen correction matrix. -/
 public theorem log_norm_normalizedCuspPositiveTwist
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (lambda : ParameterLattice)
     (i : Fin 2) :
     Real.log ‖((normalizedCuspPositiveTwist N lambda i.castSucc : ℂˣ) : ℂ)‖ =
-      (phaseLogMatrix N 0).mulVec (realParameter lambda) i := by
+      (NormalizedFuchsianCuspCoordinate.phaseLogMatrix N 0).mulVec (realParameter lambda) i := by
   rw [norm_normalizedCuspPositiveTwist]
   fin_cases i
   · simpa [phaseEmbedding_apply_zero] using
-      log_norm_phaseCoefficient N lambda 0 0
+      NormalizedFuchsianCuspCoordinate.log_norm_phaseCoefficient N lambda 0 0
   · simpa [phaseEmbedding_apply_one] using
-      log_norm_phaseCoefficient N lambda 0 1
+      NormalizedFuchsianCuspCoordinate.log_norm_phaseCoefficient N lambda 0 1
 
 /-- A fixed point of the positive deck action away from the central fibre satisfies the frozen
 logarithmic displacement equation. -/
 public theorem normalizedPositiveDeck_offCentral_logarithmic_equation
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) {r : ℝ}
-    (lambda : ParameterLattice) (p : LocalCarrier M r) (ht : M.t p ≠ 0)
+    (lambda : ParameterLattice) (p : localCarrier M r) (ht : M.t p ≠ 0)
     (hfixed : normalizedPositiveDeckLocalMap N M r lambda p = p)
     (i : Fin 2) :
-    (phaseLogMatrix N 0).mulVec (realParameter lambda) i +
+    (NormalizedFuchsianCuspCoordinate.phaseLogMatrix N 0).mulVec (realParameter lambda) i +
       Real.log ‖M.t p‖ * (shearVector lambda i : ℝ) = 0 := by
   obtain ⟨x, hx⟩ : ∃ x, M.torusEmbedding x = (p : M.Carrier) := by
     have hp : (p : M.Carrier) ∈ {q | M.t q ≠ 0} := ht
@@ -602,9 +602,9 @@ public theorem normalizedPositiveDeck_offCentral_logarithmic_equation
 
 /-- A fixed point of the positive deck action on the central fibre has zero lattice parameter. -/
 public theorem normalizedPositiveDeck_central_fixedPoint
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) {r : ℝ}
-    (lambda : ParameterLattice) (p : LocalCarrier M r) (ht : M.t p = 0)
+    (lambda : ParameterLattice) (p : localCarrier M r) (ht : M.t p = 0)
     (hfixed : normalizedPositiveDeckLocalMap N M r lambda p = p) :
     lambda = 0 := by
   have hsupport : (componentSupport M (p : M.Carrier)).Nonempty :=
@@ -633,11 +633,11 @@ public theorem normalizedPositiveDeck_central_fixedPoint
 
 /-- Frozen displacement injectivity rules out positive-deck fixed points off the central fibre. -/
 public theorem normalizedPositiveDeck_offCentral_fixedPoint
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     (lambda : ParameterLattice)
-    (p : LocalCarrier constructedModel W.localWitness.radius)
+    (p : localCarrier constructedModel W.localWitness.radius)
     (ht : constructedModel.t p ≠ 0)
     (hfixed : normalizedPositiveDeckLocalMap N constructedModel
       W.localWitness.radius lambda p = p) :
@@ -685,11 +685,11 @@ public theorem normalizedPositiveDeck_offCentral_fixedPoint
 
 /-- The positive deck action has no nontrivial fixed parameter at the quantitative radius. -/
 public theorem normalizedPositiveDeck_fixedPoint
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     (lambda : ParameterLattice)
-    (p : LocalCarrier constructedModel W.localWitness.radius)
+    (p : localCarrier constructedModel W.localWitness.radius)
     (hfixed : normalizedPositiveDeckLocalMap N constructedModel
       W.localWitness.radius lambda p = p) :
     lambda = 0 := by
@@ -700,7 +700,7 @@ public theorem normalizedPositiveDeck_fixedPoint
 
 /-- The normalized positive deck action is free at the quantitative cusp radius. -/
 public theorem constructedPositiveDeck_isCancelSMul
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     letI := normalizedPositiveDeckAction N constructedModel
@@ -715,7 +715,7 @@ public theorem constructedPositiveDeck_isCancelSMul
   intro g q hfixed
   have hlocal : normalizedPositiveDeckLocalMap N constructedModel
       W.localWitness.radius (Multiplicative.toAdd g)
-      (q : LocalCarrier constructedModel W.localWitness.radius) = q :=
+      (q : localCarrier constructedModel W.localWitness.radius) = q :=
     congrArg Subtype.val hfixed
   have hlambda : Multiplicative.toAdd g = 0 :=
     normalizedPositiveDeck_fixedPoint W (Multiplicative.toAdd g) q hlocal
@@ -723,7 +723,7 @@ public theorem constructedPositiveDeck_isCancelSMul
 
 /-- Proper discontinuity descends from the frozen action to its positive radial section. -/
 public theorem constructedPositiveDeck_properlyDiscontinuous
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     letI := normalizedPositiveDeckAction N constructedModel
@@ -736,13 +736,13 @@ public theorem constructedPositiveDeck_properlyDiscontinuous
     (constructedLocalPositivePart r) (constructedPositiveDeck_mem N r)
   let _ := frozenLocalCuspAction N constructedModel r
   let _ : ProperlyDiscontinuousSMul (Multiplicative ParameterLattice)
-      (LocalCarrier constructedModel r) :=
+      (localCarrier constructedModel r) :=
     constructedFrozenAction_properlyDiscontinuous W
   constructor
   intro K L hK hL
-  let K₀ : Set (LocalCarrier constructedModel r) :=
+  let K₀ : Set (localCarrier constructedModel r) :=
     Subtype.val '' K
-  let L₀ : Set (LocalCarrier constructedModel r) :=
+  let L₀ : Set (localCarrier constructedModel r) :=
     compactPhaseOrbit constructedModel r (constructedLocalPositivePart r) ''
       (Set.univ ×ˢ L)
   have hK₀ : IsCompact K₀ := hK.image continuous_subtype_val
@@ -757,25 +757,25 @@ public theorem constructedPositiveDeck_properlyDiscontinuous
   let lambda := Multiplicative.toAdd g
   have hpositive :
       normalizedPositiveDeckLocalMap N constructedModel r lambda
-          (q : LocalCarrier constructedModel r) =
-        (y : LocalCarrier constructedModel r) := by
+          (q : localCarrier constructedModel r) =
+        (y : localCarrier constructedModel r) := by
     exact congrArg Subtype.val hqy
   let x := frozenLocalPsiMap N constructedModel r lambda
-    (q : LocalCarrier constructedModel r)
+    (q : localCarrier constructedModel r)
   refine ⟨x, ?_, ?_⟩
-  · refine ⟨(q : LocalCarrier constructedModel r), ⟨q, hqK, rfl⟩, ?_⟩
+  · refine ⟨(q : localCarrier constructedModel r), ⟨q, hqK, rfl⟩, ?_⟩
     rfl
   · refine ⟨(frozenCompactPhase N lambda, y), ⟨Set.mem_univ _, hyL⟩, ?_⟩
     change compactPhaseLocalAction constructedModel r
-      (frozenCompactPhase N lambda) (y : LocalCarrier constructedModel r) = x
+      (frozenCompactPhase N lambda) (y : localCarrier constructedModel r) = x
     rw [show x = frozenLocalPsiMap N constructedModel r lambda
-        (q : LocalCarrier constructedModel r) by rfl,
+        (q : localCarrier constructedModel r) by rfl,
       frozenLocalPsiMap_eq_compactPhase_positiveDeck, hpositive]
 
 /-- Proper discontinuity and freeness discharge the covering field through Mathlib's regular
 orbit-cover theorem. -/
 public theorem constructedQuotientCovering_of_properlyDiscontinuous
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (r : ℝ)
     (hcancel :
       letI := normalizedPositiveDeckAction N constructedModel
@@ -807,7 +807,7 @@ public theorem constructedQuotientCovering_of_properlyDiscontinuous
 
 /-- The positive orbit projection at the quantitative cusp radius is a covering quotient. -/
 public theorem constructedPositiveDeck_quotientCovering
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     letI := normalizedPositiveDeckAction N constructedModel
@@ -823,7 +823,7 @@ public theorem constructedPositiveDeck_quotientCovering
 
 /-- Proper discontinuity also discharges the Hausdorff quotient field. -/
 public theorem constructedQuotient_t2_of_properlyDiscontinuous
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (r : ℝ)
     (hproper :
       letI := normalizedPositiveDeckAction N constructedModel
@@ -847,7 +847,7 @@ public theorem constructedQuotient_t2_of_properlyDiscontinuous
 
 /-- The positive quotient at the quantitative cusp radius is Hausdorff. -/
 public theorem constructedPositiveDeck_quotient_t2
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     letI := normalizedPositiveDeckAction N constructedModel
@@ -867,15 +867,15 @@ public theorem constructedLocalModulus_compactPhase (r : ℝ) (k : CompactTorus)
   apply Subtype.ext
   apply Subtype.ext
   exact carrierModulus_compactTorusAction k
-    (show Carrier from (p : LocalCarrier constructedModel r).1)
+    (show Carrier from (p : localCarrier constructedModel r).1)
 
 /-- The remaining topological residue after the explicit carrier construction. -/
 public structure ConstructedPolarHoneycombTopologicalData
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (r : ℝ) where
   honeycomb : (Fin 2 → ℝ) ≃ₜ
     {q : constructedLocalPositivePart r |
-      constructedModel.t (q : LocalCarrier constructedModel r) = 0}
+      constructedModel.t (q : localCarrier constructedModel r) = 0}
   quotientCovering :
     letI := normalizedPositiveDeckAction N constructedModel
       (constructedLocalPositivePart r) (constructedPositiveDeck_mem N r)
@@ -891,7 +891,7 @@ public structure ConstructedPolarHoneycombTopologicalData
         (constructedLocalPositivePart r)))
       (PolarHoneycombData.orbitCore
         {q : constructedLocalPositivePart r |
-          constructedModel.t (q : LocalCarrier constructedModel r) = 0})
+          constructedModel.t (q : localCarrier constructedModel r) = 0})
   quotient_t2 :
     letI := normalizedPositiveDeckAction N constructedModel
       (constructedLocalPositivePart r) (constructedPositiveDeck_mem N r)
@@ -901,13 +901,13 @@ public structure ConstructedPolarHoneycombTopologicalData
 relative CW structure remain: covering and Hausdorffness are consequences of the explicit
 positive deck action. -/
 public structure ConstructedPolarHoneycombResidualData
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) where
   honeycomb : (Fin 2 → ℝ) ≃ₜ
     {q : constructedLocalPositivePart W.localWitness.radius |
       constructedModel.t
-        (q : LocalCarrier constructedModel W.localWitness.radius) = 0}
+        (q : localCarrier constructedModel W.localWitness.radius) = 0}
   positive_contractible :
     ContractibleSpace (constructedLocalPositivePart W.localWitness.radius)
   quotient_relativeCW :
@@ -920,13 +920,13 @@ public structure ConstructedPolarHoneycombResidualData
       (PolarHoneycombData.orbitCore
         {q : constructedLocalPositivePart W.localWitness.radius |
           constructedModel.t
-            (q : LocalCarrier constructedModel W.localWitness.radius) = 0})
+            (q : localCarrier constructedModel W.localWitness.radius) = 0})
 
 namespace ConstructedPolarHoneycombResidualData
 
 /-- Add the proved positive-deck covering and Hausdorff fields. -/
 public def toTopologicalData
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     {W : ActualPuncturedCuspCollarWitness N constructedModel}
     (T : ConstructedPolarHoneycombResidualData W) :
@@ -943,7 +943,7 @@ namespace ConstructedPolarHoneycombTopologicalData
 
 /-- Add the proved polar and deck fields to the remaining topological residue. -/
 public def toConstructionData
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {r : ℝ}
     (T : ConstructedPolarHoneycombTopologicalData N r) :
     NormalizedPolarHoneycombConstructionData N constructedModel r where
@@ -961,7 +961,7 @@ public def toConstructionData
 
 /-- Its modulus has the compact-phase invariance needed by the phase-spreading reduction. -/
 public theorem toConstructionData_invariantModulus
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {r : ℝ}
     (T : ConstructedPolarHoneycombTopologicalData N r) :
     CompactPhaseInvariantModulus T.toConstructionData := by
@@ -969,7 +969,7 @@ public theorem toConstructionData_invariantModulus
 
 /-- The reduced topological residue implies the full normalized phase geometry. -/
 public def toPhaseGeometry
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {r : ℝ}
     (T : ConstructedPolarHoneycombTopologicalData N r) :
     {Q : NormalizedPolarHoneycombConstructionData N constructedModel r //
@@ -984,7 +984,7 @@ namespace ConstructedPolarHoneycombResidualData
 
 /-- The three-field geometric residue implies the full normalized phase geometry. -/
 public def toPhaseGeometry
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     {W : ActualPuncturedCuspCollarWitness N constructedModel}
     (T : ConstructedPolarHoneycombResidualData W) :
@@ -998,7 +998,7 @@ end ConstructedPolarHoneycombResidualData
 
 /-- The three remaining topological fields suffice at the actual quantitative cusp radius. -/
 public theorem normalizedPolarHoneycombPhaseGeometry_of_constructedResidual
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     (h : Nonempty (ConstructedPolarHoneycombResidualData W)) :
@@ -1011,7 +1011,7 @@ public theorem normalizedPolarHoneycombPhaseGeometry_of_constructedResidual
 /-- A construction of the five remaining topological fields replaces the broad phase axiom for
 the explicit model. -/
 public theorem normalizedPolarHoneycombPhaseGeometry_of_constructedTopology
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (r : ℝ)
     (h : Nonempty (ConstructedPolarHoneycombTopologicalData N r)) :
     Nonempty {Q : NormalizedPolarHoneycombConstructionData N constructedModel r //

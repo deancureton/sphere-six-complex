@@ -98,7 +98,7 @@ public theorem additiveCuspRadiusCover_pathConnected (r : ℝ) (hr : 0 < r) :
 path-connected space. -/
 public theorem puncturedLocalCarrier_pathConnected
     (M : Model) (r : ℝ) (hr : 0 < r) :
-    PathConnectedSpace {p : LocalCarrier M r // M.t p ≠ 0} := by
+    PathConnectedSpace {p : localCarrier M r // M.t p ≠ 0} := by
   let _ : PathConnectedSpace (additiveCuspRadiusCover r) :=
     additiveCuspRadiusCover_pathConnected r hr
   let _ : PathConnectedSpace
@@ -107,12 +107,12 @@ public theorem puncturedLocalCarrier_pathConnected
 
 /-- The actual phase-action quotient of the punctured local cusp carrier is path-connected. -/
 public theorem puncturedLocalCuspQuotient_pathConnected
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
-    PathConnectedSpace (puncturedLocalCuspQuotient W) := by
+    PathConnectedSpace (PuncturedLocalCuspQuotient W) := by
   let _ : PathConnectedSpace
-      {p : LocalCarrier M W.localWitness.radius // M.t p ≠ 0} :=
+      {p : localCarrier M W.localWitness.radius // M.t p ≠ 0} :=
     puncturedLocalCarrier_pathConnected M W.localWitness.radius W.localWitness.radius_pos
   change PathConnectedSpace (Quotient (puncturedPsiOrbitRel W))
   infer_instance
@@ -133,27 +133,27 @@ public theorem starCentral_pathConnected : PathConnectedSpace A.CentralFamily :=
 
 /-- Every filling source of the analytic star is path-connected. -/
 public theorem starFilling_pathConnected (i : Fin 3) :
-    PathConnectedSpace (A.starFillingType i) := by
+    PathConnectedSpace (A.StarFilling i) := by
   let _ := A.starFillingCharts i
-  let _ : ConnectedSpace (A.starFillingType i) := A.starFilling_connected i
-  let _ : LocallyPathConnectedSpace (A.starFillingType i) :=
-    ChartedSpace.locallyPathConnectedSpace ComplexModel (A.starFillingType i)
+  let _ : ConnectedSpace (A.StarFilling i) := A.starFilling_connected i
+  let _ : LocallyPathConnectedSpace (A.StarFilling i) :=
+    ChartedSpace.locallyPathConnectedSpace ComplexModel (A.StarFilling i)
   exact PathConnectedSpace.of_locallyPathConnectedSpace
 
 /-- The punctured cusp collar source in the analytic star is path-connected. -/
 public theorem starCuspCollarSource_pathConnected :
     PathConnectedSpace (A.openEmbeddingStarData.collarSource 0) := by
   change PathConnectedSpace
-    (CuspPuncturedCollarBridge.puncturedLocalCuspQuotient A.starCuspWitness)
+    (CuspPuncturedCollarBridge.PuncturedLocalCuspQuotient A.starCuspWitness)
   exact CuspPuncturedCollarBridge.puncturedLocalCuspQuotient_pathConnected A.starCuspWitness
 
 /-- The penultimate Mayer--Vietoris stage is the union of the central, order-three, and
 order-four pieces. -/
 public theorem ellipticInterior_eq_threePieceUnion :
-    (A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4) =
-      (A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 0 ∪
-      (A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 1 ∪
-      (A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 2 := by
+    (A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4) =
+      (A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 0 ∪
+      (A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 1 ∪
+      (A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 2 := by
   ext x
   simp only [FourPieceOpenCover.stage, mem_iUnion, mem_union]
   constructor
@@ -167,46 +167,46 @@ public theorem ellipticInterior_eq_threePieceUnion :
 /-- The penultimate Mayer--Vietoris stage of the analytic star is path-connected. -/
 public theorem ellipticInterior_pathConnected :
     PathConnectedSpace
-      ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4)) := by
+      ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4)) := by
   let _ : PathConnectedSpace A.CentralFamily := A.starCentral_pathConnected
-  let _ : PathConnectedSpace (A.starFillingType 1) := A.starFilling_pathConnected 1
-  let _ : PathConnectedSpace (A.starFillingType 2) := A.starFilling_pathConnected 2
+  let _ : PathConnectedSpace (A.StarFilling 1) := A.starFilling_pathConnected 1
+  let _ : PathConnectedSpace (A.StarFilling 2) := A.starFilling_pathConnected 2
   let _ : PathConnectedSpace A.openEmbeddingStarData.central := by
     change PathConnectedSpace A.CentralFamily
     exact A.starCentral_pathConnected
   let _ : PathConnectedSpace (A.openEmbeddingStarData.filling 1) := by
-    change PathConnectedSpace (A.starFillingType 1)
+    change PathConnectedSpace (A.StarFilling 1)
     exact A.starFilling_pathConnected 1
   let _ : PathConnectedSpace (A.openEmbeddingStarData.filling 2) := by
-    change PathConnectedSpace (A.starFillingType 2)
+    change PathConnectedSpace (A.StarFilling 2)
     exact A.starFilling_pathConnected 2
   let _ : PathConnectedSpace
-      ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 0) :=
+      ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 0) :=
     pathConnectedSpace_of_homeomorph
       A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
   let _ : PathConnectedSpace
-      ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 1) :=
+      ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 1) :=
     pathConnectedSpace_of_homeomorph
       (A.openEmbeddingStarData.fillingToSectionSevenEulerPieceHomeomorph 1)
   let _ : PathConnectedSpace
-      ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 2) :=
+      ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 2) :=
     pathConnectedSpace_of_homeomorph
       (A.openEmbeddingStarData.fillingToSectionSevenEulerPieceHomeomorph 2)
   have hPieceZero :
       IsPathConnected
-        ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 0) :=
+        ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 0) :=
     isPathConnected_iff_pathConnectedSpace.mpr inferInstance
   have hPieceOne :
       IsPathConnected
-        ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 1) :=
+        ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 1) :=
     isPathConnected_iff_pathConnectedSpace.mpr inferInstance
   have hPieceTwo :
       IsPathConnected
-        ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 2) :=
+        ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 2) :=
     isPathConnected_iff_pathConnectedSpace.mpr inferInstance
   have hZeroOne :
-      ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 0 ∩
-        (A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 1).Nonempty := by
+      ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 0 ∩
+        (A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 1).Nonempty := by
     let _ : Nonempty (A.openEmbeddingStarData.collarSource 1) :=
       A.openEmbeddingStarData_collarSource_nonempty 1
     have h := Set.range_nonempty
@@ -214,8 +214,8 @@ public theorem ellipticInterior_pathConnected :
     rw [A.openEmbeddingStarData.range_collarSourceToGlued 1] at h
     exact h
   have hZeroTwo :
-      ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 0 ∩
-        (A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 2).Nonempty := by
+      ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 0 ∩
+        (A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 2).Nonempty := by
     let _ : Nonempty (A.openEmbeddingStarData.collarSource 2) :=
       A.openEmbeddingStarData_collarSource_nonempty 2
     have h := Set.range_nonempty
@@ -224,13 +224,13 @@ public theorem ellipticInterior_pathConnected :
     exact h
   have hZeroOnePath :
       IsPathConnected
-        ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 0 ∪
-          (A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 1) :=
+        ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 0 ∪
+          (A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 1) :=
     hPieceZero.union hPieceOne hZeroOne
   have hUnionInterTwo :
-      (((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 0 ∪
-          (A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 1) ∩
-        (A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 2).Nonempty := by
+      (((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 0 ∪
+          (A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 1) ∩
+        (A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 2).Nonempty := by
     obtain ⟨x, hxzero, hxtwo⟩ := hZeroTwo
     exact ⟨x, Or.inl hxzero, hxtwo⟩
   apply isPathConnected_iff_pathConnectedSpace.mp
@@ -241,20 +241,20 @@ public theorem ellipticInterior_pathConnected :
 path-connected. -/
 public theorem cuspAttachmentPiece_pathConnected :
     PathConnectedSpace
-      ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3) := by
-  let _ : PathConnectedSpace (A.starFillingType 0) := A.starFilling_pathConnected 0
+      ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 3) := by
+  let _ : PathConnectedSpace (A.StarFilling 0) := A.starFilling_pathConnected 0
   let _ : PathConnectedSpace (A.openEmbeddingStarData.filling 0) := by
-    change PathConnectedSpace (A.starFillingType 0)
+    change PathConnectedSpace (A.StarFilling 0)
     exact A.starFilling_pathConnected 0
   exact pathConnectedSpace_of_homeomorph
     (A.openEmbeddingStarData.fillingToSectionSevenEulerPieceHomeomorph 0)
 
 /-- The actual final overlap is exactly the central--cusp intersection. -/
 public theorem cuspAttachmentOverlap_eq_centralCuspIntersection :
-    (A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4) ∩
-      (A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3 =
-      (A.openEmbeddingStarData.SectionSevenEulerCover).piece 0 ∩
-        (A.openEmbeddingStarData.SectionSevenEulerCover).piece 1 := by
+    (A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4) ∩
+      (A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 3 =
+      (A.openEmbeddingStarData.sectionSevenEulerCover).piece 0 ∩
+        (A.openEmbeddingStarData.sectionSevenEulerCover).piece 1 := by
   ext x
   constructor
   · rintro ⟨hxstage, hxcusp⟩
@@ -264,21 +264,21 @@ public theorem cuspAttachmentOverlap_eq_centralCuspIntersection :
     fin_cases i
     · exact ⟨hxi, hxcusp⟩
     · have hbad :
-          x ∈ (A.openEmbeddingStarData.SectionSevenEulerCover).piece 2 ∩
-            (A.openEmbeddingStarData.SectionSevenEulerCover).piece 1 := ⟨hxi, hxcusp⟩
+          x ∈ (A.openEmbeddingStarData.sectionSevenEulerCover).piece 2 ∩
+            (A.openEmbeddingStarData.sectionSevenEulerCover).piece 1 := ⟨hxi, hxcusp⟩
       have hempty :
-          (A.openEmbeddingStarData.SectionSevenEulerCover).piece 2 ∩
-            (A.openEmbeddingStarData.SectionSevenEulerCover).piece 1 = ∅ := by
+          (A.openEmbeddingStarData.sectionSevenEulerCover).piece 2 ∩
+            (A.openEmbeddingStarData.sectionSevenEulerCover).piece 1 = ∅ := by
         simpa using A.openEmbeddingStarData.fillingPiece_inter_fillingPiece
           (i := 1) (j := 0) (by decide)
       rw [hempty] at hbad
       exact hbad.elim
     · have hbad :
-          x ∈ (A.openEmbeddingStarData.SectionSevenEulerCover).piece 3 ∩
-            (A.openEmbeddingStarData.SectionSevenEulerCover).piece 1 := ⟨hxi, hxcusp⟩
+          x ∈ (A.openEmbeddingStarData.sectionSevenEulerCover).piece 3 ∩
+            (A.openEmbeddingStarData.sectionSevenEulerCover).piece 1 := ⟨hxi, hxcusp⟩
       have hempty :
-          (A.openEmbeddingStarData.SectionSevenEulerCover).piece 3 ∩
-            (A.openEmbeddingStarData.SectionSevenEulerCover).piece 1 = ∅ := by
+          (A.openEmbeddingStarData.sectionSevenEulerCover).piece 3 ∩
+            (A.openEmbeddingStarData.sectionSevenEulerCover).piece 1 = ∅ := by
         simpa using A.openEmbeddingStarData.fillingPiece_inter_fillingPiece
           (i := 2) (j := 0) (by decide)
       rw [hempty] at hbad
@@ -293,24 +293,24 @@ public theorem cuspAttachmentOverlap_eq_centralCuspIntersection :
 /-- The punctured cusp collar is homeomorphic to the actual final overlap. -/
 public noncomputable def cuspCollarToSectionSevenFinalOverlapHomeomorph :
     A.openEmbeddingStarData.collarSource 0 ≃ₜ
-      ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4) ∩
-        (A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3 :
+      ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4) ∩
+        (A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 3 :
           Set A.openEmbeddingStarData.SectionSevenMayerVietorisSpace) :=
   (A.openEmbeddingStarData.collarToMayerVietorisOverlapHomeomorph 0).trans
     (Homeomorph.setCongr (by
       change
-        (A.openEmbeddingStarData.SectionSevenEulerCover).stage 0 ∩
-            (A.openEmbeddingStarData.SectionSevenEulerCover).piece 1 =
-          (A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage 2 ∩
-            (A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3
+        (A.openEmbeddingStarData.sectionSevenEulerCover).stage 0 ∩
+            (A.openEmbeddingStarData.sectionSevenEulerCover).piece 1 =
+          (A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage 2 ∩
+            (A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 3
       rw [A.openEmbeddingStarData.sectionSevenEulerStage_zero]
       exact (A.cuspAttachmentOverlap_eq_centralCuspIntersection).symm))
 
 /-- Path-connectedness of the punctured cusp collar transports to the actual final overlap. -/
 public theorem cuspAttachmentOverlap_pathConnected :
     PathConnectedSpace
-      ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4) ∩
-        (A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3 :
+      ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4) ∩
+        (A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 3 :
           Set A.openEmbeddingStarData.SectionSevenMayerVietorisSpace) := by
   let _ := A.starCuspCollarSource_pathConnected
   exact pathConnectedSpace_of_homeomorph
@@ -319,8 +319,8 @@ public theorem cuspAttachmentOverlap_pathConnected :
 /-- The canonical augmentation basis on the actual final overlap. -/
 public noncomputable def cuspAttachmentOverlapHomologyZeroEquiv :
     IntegralSingularHomology 0
-      ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4) ∩
-        (A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3 :
+      ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4) ∩
+        (A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 3 :
           Set A.openEmbeddingStarData.SectionSevenMayerVietorisSpace) ≃+ (Fin 1 → ℤ) := by
   let _ := A.cuspAttachmentOverlap_pathConnected
   exact (pathConnectedIntegralHomologyZeroEquivInteger _).trans integerToFinOneAddEquiv
@@ -328,9 +328,9 @@ public noncomputable def cuspAttachmentOverlapHomologyZeroEquiv :
 /-- The product of the canonical augmentation bases on the two final sides. -/
 public noncomputable def cuspAttachmentSidesHomologyZeroEquiv :
     (IntegralSingularHomology 0
-        ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4)) ×
+        ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4)) ×
       IntegralSingularHomology 0
-        ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3)) ≃+
+        ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 3)) ≃+
       (Fin 2 → ℤ) := by
   let _ := A.ellipticInterior_pathConnected
   let _ := A.cuspAttachmentPiece_pathConnected
@@ -341,13 +341,13 @@ public noncomputable def cuspAttachmentSidesHomologyZeroEquiv :
 displayed `Fin 1 → Fin 2` antidiagonal. -/
 public theorem cuspAttachment_differenceMap_zero_coordinates
     (x : IntegralSingularHomology 0
-      ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4) ∩
-        (A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3 :
+      ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4) ∩
+        (A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 3 :
           Set A.openEmbeddingStarData.SectionSevenMayerVietorisSpace)) :
     A.cuspAttachmentSidesHomologyZeroEquiv
         (IntegralMayerVietoris.differenceMap
-          ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4))
-          ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3) 0 x) =
+          ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4))
+          ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 3) 0 x) =
       sectionSevenMayerVietorisFinalZeroHom
         (A.cuspAttachmentOverlapHomologyZeroEquiv x) := by
   let _ := A.ellipticInterior_pathConnected
@@ -355,8 +355,8 @@ public theorem cuspAttachment_differenceMap_zero_coordinates
   let _ := A.cuspAttachmentOverlap_pathConnected
   have hnormal :=
     IntegralMayerVietoris.differenceMap_zero_apply_normalForm
-      ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4))
-      ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3) x
+      ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4))
+      ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 3) x
   funext i
   fin_cases i
   · simpa [cuspAttachmentSidesHomologyZeroEquiv, cuspAttachmentOverlapHomologyZeroEquiv,
@@ -371,8 +371,8 @@ basis or compatibility square is an input. -/
 public theorem cuspAttachment_differenceMap_zero_injective :
     Function.Injective
       (IntegralMayerVietoris.differenceMap
-        ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4))
-        ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3) 0) := by
+        ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4))
+        ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 3) 0) := by
   let _ := A.ellipticInterior_pathConnected
   let _ := A.cuspAttachmentPiece_pathConnected
   let _ := A.cuspAttachmentOverlap_pathConnected

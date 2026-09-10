@@ -31,24 +31,24 @@ public theorem fuchsianPuncturedGlobalFamily_isManifold_and_projection_isLocalDi
     letI := regularBaseChartedSpace hproper
     letI : LocallyCompactSpace (RegularBase (U := P.toTriangleUniformization)) :=
       (isOpen_isRegularBasePoint hproper).locallyCompactSpace
-    letI : IsManifold GlobalDeckBaseModel RegularSmoothnessOrder
+    letI : IsManifold globalDeckBaseModel regularSmoothnessOrder
         (RegularBase (U := P.toTriangleUniformization)) :=
       regularBase_isManifold hproper
     letI := familyIsCancelSMul (regularParameterMap F)
     letI := familyContinuousConstSMul (regularParameterMap F)
-      fun a ↦ (regularPeriodSection_contMDiff F hproper a RegularSmoothnessOrder).continuous
+      fun a ↦ (regularPeriodSection_contMDiff F hproper a regularSmoothnessOrder).continuous
     letI := familyProperlyDiscontinuousSMul (regularParameterMap F)
       (compactlyUniformPeriods_of_compactUniformLowerBound (regularParameterMap F)
         (regularParameterMap_compactUniformLowerBound F))
     letI : LocallyCompactSpace (RegularTotalSpace F) :=
-      Manifold.locallyCompact_of_finiteDimensional GlobalDeckTotalModel
+      Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
     letI := regularFamilyDeckAction F
     letI := regularFamilyDeckAction_isCancelSMul_of_fuchsian F
       P.toTriangleUniformization_sourceAction hproper
     letI := regularFamilyDeckAction_properlyDiscontinuous_of_source F hproper
     letI := regularFamilyDeckAction_continuousConstSMul F hproper
-    IsManifold GlobalDeckTotalModel RegularSmoothnessOrder (PuncturedGlobalFamily F) ∧
-      IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel RegularSmoothnessOrder
+    IsManifold globalDeckTotalModel regularSmoothnessOrder (PuncturedGlobalFamily F) ∧
+      IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel regularSmoothnessOrder
         (quotientProjection (M := RegularTotalSpace F) (G := Delta)) := by
   exact puncturedGlobalFamily_isManifold_and_projection_isLocalDiffeomorph F
     P.toTriangleUniformization_sourceAction

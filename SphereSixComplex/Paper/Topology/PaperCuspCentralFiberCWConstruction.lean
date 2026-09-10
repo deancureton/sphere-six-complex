@@ -28,7 +28,7 @@ open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspPhaseEstimates
 open SphereSixComplex.Geometry.InfiniteA2Toric
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
 
 /-- The prequotient central fibre as an invariant subspace of the actual cusp action. -/
@@ -36,16 +36,16 @@ public noncomputable def actualLocalCuspCentralSubMulAction
     (W : ActualPuncturedCuspCollarWitness N M) :
     letI := actualLocalCuspQuotientAction W
     SubMulAction (Multiplicative ParameterLattice)
-      (LocalCarrier M W.localWitness.radius) := by
+      (localCarrier M W.localWitness.radius) := by
   letI := actualLocalCuspQuotientAction W
   refine { carrier := actualLocalCuspCentralFiber W, smul_mem' := ?_ }
   intro g p hp
-  change M.t ((g • p : LocalCarrier M W.localWitness.radius) : M.Carrier) = 0
+  change M.t ((g • p : localCarrier M W.localWitness.radius) : M.Carrier) = 0
   let C :=
-    CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
+    NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
       N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
   change M.t ((C.toCuspActionData W.localWitness.fixedPoint).psiMap
-    (Multiplicative.toAdd g) p : LocalCarrier M W.localWitness.radius) = 0
+    (Multiplicative.toAdd g) p : localCarrier M W.localWitness.radius) = 0
   rw [← C.psiMap_eq_generic, C.psiMap_preserves_t]
   exact hp
 
@@ -60,13 +60,13 @@ public noncomputable abbrev ActualLocalCuspCentralOrbitQuotient
 /-- The restricted central-fibre quotient map into the full local cusp filling. -/
 public noncomputable def actualLocalCuspCentralOrbitMap
     (W : ActualPuncturedCuspCollarWitness N M) :
-    ActualLocalCuspCentralOrbitQuotient W → actualLocalCuspFilling W := by
+    ActualLocalCuspCentralOrbitQuotient W → ActualLocalCuspFilling W := by
   letI := actualLocalCuspQuotientAction W
   let S := actualLocalCuspCentralSubMulAction W
   letI : MulAction (Multiplicative ParameterLattice) S := inferInstance
   exact Quotient.lift
     (fun x : S => Quotient.mk (MulAction.orbitRel
-      (Multiplicative ParameterLattice) (LocalCarrier M W.localWitness.radius)) x.1)
+      (Multiplicative ParameterLattice) (localCarrier M W.localWitness.radius)) x.1)
     (by
       intro x y h
       apply Quotient.sound
@@ -88,11 +88,11 @@ public theorem actualLocalCuspCentralOrbitMap_injective
       apply Quotient.sound
       rw [SubMulAction.orbitRel_of_subMul]
       change (Quotient.mk (MulAction.orbitRel (Multiplicative ParameterLattice)
-        (LocalCarrier M W.localWitness.radius)) x.1) =
+        (localCarrier M W.localWitness.radius)) x.1) =
         Quotient.mk (MulAction.orbitRel (Multiplicative ParameterLattice)
-          (LocalCarrier M W.localWitness.radius)) y.1 at h
+          (localCarrier M W.localWitness.radius)) y.1 at h
       exact @Quotient.exact _ (MulAction.orbitRel (Multiplicative ParameterLattice)
-        (LocalCarrier M W.localWitness.radius)) x.1 y.1 h
+        (localCarrier M W.localWitness.radius)) x.1 y.1 h
 
 /-- The central orbit quotient has the subspace topology inherited from the full cusp filling. -/
 public theorem actualLocalCuspCentralOrbitMap_isEmbedding
@@ -102,14 +102,14 @@ public theorem actualLocalCuspCentralOrbitMap_isEmbedding
   let S := actualLocalCuspCentralSubMulAction W
   let _ : MulAction (Multiplicative ParameterLattice) S := inferInstance
   let _ : ContinuousConstSMul (Multiplicative ParameterLattice)
-      (LocalCarrier M W.localWitness.radius) := actualLocalPsiContinuousConstSMul W
+      (localCarrier M W.localWitness.radius) := actualLocalPsiContinuousConstSMul W
   let _ : ContinuousConstSMul (Multiplicative ParameterLattice) S :=
     ⟨fun g => ((continuous_const_smul g).comp continuous_subtype_val).subtype_mk _⟩
   apply isEmbedding_of_isOpenQuotientMap_of_isInducing
-    (f := (Subtype.val : S → LocalCarrier M W.localWitness.radius))
+    (f := (Subtype.val : S → localCarrier M W.localWitness.radius))
     (p := Quotient.mk (MulAction.orbitRel (Multiplicative ParameterLattice) S))
     (q := Quotient.mk (MulAction.orbitRel (Multiplicative ParameterLattice)
-      (LocalCarrier M W.localWitness.radius)))
+      (localCarrier M W.localWitness.radius)))
   · rfl
   · exact Topology.IsInducing.subtypeVal
   · exact isQuotientMap_quotient_mk'
@@ -118,9 +118,9 @@ public theorem actualLocalCuspCentralOrbitMap_isEmbedding
   · rintro x ⟨_, ⟨z, rfl⟩, hx⟩
     refine ⟨⟨x, ?_⟩, rfl⟩
     have horbit : MulAction.orbitRel (Multiplicative ParameterLattice)
-        (LocalCarrier M W.localWitness.radius) x z :=
+        (localCarrier M W.localWitness.radius) x z :=
       @Quotient.exact _ (MulAction.orbitRel (Multiplicative ParameterLattice)
-        (LocalCarrier M W.localWitness.radius)) x z hx.symm
+        (localCarrier M W.localWitness.radius)) x z hx.symm
     rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff] at horbit
     obtain ⟨g, rfl⟩ := horbit
     exact S.smul_mem' g z.property

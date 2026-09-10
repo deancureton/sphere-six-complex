@@ -24,7 +24,7 @@ open SphereSixComplex.Geometry.CuspStraighteningRetraction
 
 /-- The polar modulus is constant on compact-phase orbits. -/
 public def CompactPhaseInvariantModulus
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
     (Q : NormalizedPolarHoneycombConstructionData N M r) : Prop :=
   ∀ k p, Q.modulus (compactPhaseOrbit M r Q.positivePart (k, p)) = Q.modulus p
@@ -54,7 +54,7 @@ public def CompactPhaseFundamentalDomain
 /-- A phase-invariant modulus makes the positive part a section of the compact-phase orbit
 map. -/
 public theorem compactPhaseOrbit_modulus
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
     (Q : NormalizedPolarHoneycombConstructionData N M r)
     (hmodulus : CompactPhaseInvariantModulus Q) (k : CompactTorus)
@@ -64,7 +64,7 @@ public theorem compactPhaseOrbit_modulus
 
 /-- Phase invariance of the modulus proves uniqueness of positive orbit representatives. -/
 public theorem compactPhaseFundamentalDomain_of_invariantModulus
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
     (Q : NormalizedPolarHoneycombConstructionData N M r)
     (hmodulus : CompactPhaseInvariantModulus Q) :
@@ -123,7 +123,7 @@ public theorem polarPhaseGeometricCore_iff_exists_stabilizerMonotone
 /-- Once the modulus is phase-invariant, preservation of arbitrary phase-orbit fibers is
 equivalent to the same-point stabilizer condition. -/
 public theorem compactPhaseOrbit_fiberwise_iff_stabilizerMonotone
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
     (Q : NormalizedPolarHoneycombConstructionData N M r)
     (hmodulus : CompactPhaseInvariantModulus Q) :
@@ -147,7 +147,7 @@ public theorem compactPhaseOrbit_fiberwise_iff_stabilizerMonotone
 /-- A positive fundamental domain and stabilizer-monotone retraction imply the full phase
 geometric core. -/
 public theorem polarPhaseGeometricCore_of_fundamentalDomain
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
     (Q : NormalizedPolarHoneycombConstructionData N M r)
     (hfundamental : CompactPhaseFundamentalDomain Q.toPolarHoneycombData)
@@ -166,7 +166,7 @@ public theorem polarPhaseGeometricCore_of_fundamentalDomain
 /-- Phase invariance of the modulus is a concrete sufficient condition for the fundamental
 domain hypothesis. -/
 public theorem polarPhaseGeometricCore_of_stabilizerMonotone
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
     (Q : NormalizedPolarHoneycombConstructionData N M r)
     (hmodulus : CompactPhaseInvariantModulus Q)
@@ -182,7 +182,7 @@ public theorem polarPhaseGeometricCore_of_stabilizerMonotone
 is the already narrowed polar-honeycomb construction; the last two are explicit point-set
 properties of the positive section and the canonical lifted retraction. -/
 public structure NormalizedPolarHoneycombExplicitPhaseGeometry
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) (r : ℝ) where
   construction : NormalizedPolarHoneycombConstructionData N M r
   positivePart_fundamentalDomain :
@@ -194,7 +194,7 @@ public structure NormalizedPolarHoneycombExplicitPhaseGeometry
 
 /-- A phase-invariant modulus supplies the fundamental-domain field of the explicit residue. -/
 public noncomputable def NormalizedPolarHoneycombExplicitPhaseGeometry.ofInvariantModulus
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
     (Q : NormalizedPolarHoneycombConstructionData N M r)
     (hmodulus : CompactPhaseInvariantModulus Q)
@@ -211,7 +211,7 @@ public noncomputable def NormalizedPolarHoneycombExplicitPhaseGeometry.ofInvaria
 /-- Explicit phase geometry supplies exactly the conclusion formerly taken as a single
 paper-specific black box. -/
 public noncomputable def NormalizedPolarHoneycombExplicitPhaseGeometry.toPhaseGeometry
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
   (G : NormalizedPolarHoneycombExplicitPhaseGeometry N M r) :
     {Q : NormalizedPolarHoneycombConstructionData N M r //
@@ -221,7 +221,7 @@ public noncomputable def NormalizedPolarHoneycombExplicitPhaseGeometry.toPhaseGe
 
 /-- Existence of the explicit residue implies the exact normalized phase-geometry statement. -/
 public theorem normalizedPolarHoneycombPhaseGeometry_of_explicit
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) (r : ℝ)
     (h : Nonempty (NormalizedPolarHoneycombExplicitPhaseGeometry N M r)) :
     Nonempty {Q : NormalizedPolarHoneycombConstructionData N M r //

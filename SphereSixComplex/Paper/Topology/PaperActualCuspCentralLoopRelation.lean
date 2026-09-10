@@ -192,7 +192,7 @@ public noncomputable def cuspAngularCentralZeroHomotopyValue
     (A.cuspAngularLiftPoint t).2
     ((1 - (u : ℝ)) • (A.cuspAngularLiftPoint t).1.1)
 
-public theorem continuous_actualCuspAngularCentralZeroHomotopyValue :
+public theorem continuous_cuspAngularCentralZeroHomotopyValue :
     Continuous (fun p : unitInterval × unitInterval =>
       A.cuspAngularCentralZeroHomotopyValue p.1 p.2) := by
   change Continuous (fun p : unitInterval × unitInterval =>
@@ -251,7 +251,7 @@ public noncomputable def cuspAngularCentralZeroHomotopy :
     ContinuousMap.Homotopy A.cuspAngularCentralLoop.toContinuousMap
       A.cuspAngularZeroSectionLoop.toContinuousMap where
   toFun p := A.cuspAngularCentralZeroHomotopyValue p.1 p.2
-  continuous_toFun := A.continuous_actualCuspAngularCentralZeroHomotopyValue
+  continuous_toFun := A.continuous_cuspAngularCentralZeroHomotopyValue
   map_zero_left t := A.cuspAngularCentralZeroHomotopyValue_zero t
   map_one_left t := A.cuspAngularCentralZeroHomotopyValue_one t
 
@@ -314,7 +314,7 @@ public theorem cuspAngularCentralLoop_class_eq_zeroSectionWhisker :
 public noncomputable def cuspCommonCoordinateWhisker :
     Path twicePuncturedComplexBasepoint
       (A.centralFamilyCoordinate A.cuspCentralBase) :=
-  paperStandardExteriorBridge.trans A.cuspExteriorTwiceWhisker
+  TwicePuncturedComplex.PairOfPants.exteriorBridge.trans A.cuspExteriorTwiceWhisker
 
 /-- Insert the marked ordinary base into the central family along its zero section. -/
 public noncomputable def markedBaseToCentralZeroSection :

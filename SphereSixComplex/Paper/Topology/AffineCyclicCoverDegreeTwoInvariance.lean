@@ -50,7 +50,7 @@ variable {m : ℕ} [NeZero m] {p : SphereSixComplex.Periods.Parameters}
 action of its integral linear part. -/
 public theorem centralFiberCoverSourceDegreeTwoBasis_generator
     (P : AffineCyclicCentralFiberPresentationData m p D)
-    (z : IntegralSingularHomology 2 (RadialEllipticActionData.centralFiberCoverSource D)) :
+    (z : IntegralSingularHomology 2 (RadialEllipticActionData.CentralFiberCoverSource D)) :
     (affineCyclicCentralFiberCoverSourceHomologyBasis P).degreeTwo
         (integralSingularHomologyMap 2
           (EstablishedAffineCyclicQuotientHomology.centralFiberCoverGenerator P) z) =

@@ -172,7 +172,7 @@ public noncomputable def boundarySevenProperFaceAffineSingularSimplex
 /-- The affine flag construction is a morphism from the proper-face nerve to the singular
 simplicial set of the ordinary boundary. -/
 public noncomputable def boundarySevenProperFaceAffineSingularMap :
-    BoundarySevenProperFaceNerve ⟶
+    boundarySevenProperFaceNerve ⟶
       TopCat.toSSet.obj (TopCat.of (StandardSimplexBoundary 7)) where
   app n := ↾fun F ↦ boundarySevenProperFaceAffineSingularSimplex n.unop.len F
   naturality n m f := by
@@ -194,19 +194,19 @@ public theorem boundarySevenProperFaceAffineSingularMap_equivariant
 /-- The continuous affine-barycentric realization map, obtained from the compatible singular
 simplices by the geometric-realization/singular-set adjunction. -/
 public noncomputable def boundarySevenProperFaceRealizationMap :
-    SSet.toTop.obj BoundarySevenProperFaceNerve ⟶
+    SSet.toTop.obj boundarySevenProperFaceNerve ⟶
       TopCat.of (StandardSimplexBoundary 7) :=
-  (sSetTopAdj.homEquiv BoundarySevenProperFaceNerve
+  (sSetTopAdj.homEquiv boundarySevenProperFaceNerve
     (TopCat.of (StandardSimplexBoundary 7))).symm
       boundarySevenProperFaceAffineSingularMap
 
 /-- By construction, the adjoint of the affine realization map is the explicit affine singular
 map on flags. -/
 public theorem boundarySevenProperFaceRealizationMap_adjunct :
-    sSetTopAdj.unit.app BoundarySevenProperFaceNerve ≫
+    sSetTopAdj.unit.app boundarySevenProperFaceNerve ≫
         TopCat.toSSet.map boundarySevenProperFaceRealizationMap =
       boundarySevenProperFaceAffineSingularMap := by
-  change (sSetTopAdj.homEquiv BoundarySevenProperFaceNerve
+  change (sSetTopAdj.homEquiv boundarySevenProperFaceNerve
       (TopCat.of (StandardSimplexBoundary 7)))
         boundarySevenProperFaceRealizationMap =
     boundarySevenProperFaceAffineSingularMap
@@ -214,7 +214,7 @@ public theorem boundarySevenProperFaceRealizationMap_adjunct :
 
 /-- The same adjunction identity in `homEquiv` form. -/
 public theorem boundarySevenProperFaceRealizationMap_homEquiv :
-    (sSetTopAdj.homEquiv BoundarySevenProperFaceNerve
+    (sSetTopAdj.homEquiv boundarySevenProperFaceNerve
       (TopCat.of (StandardSimplexBoundary 7)))
         boundarySevenProperFaceRealizationMap =
       boundarySevenProperFaceAffineSingularMap :=
@@ -223,7 +223,7 @@ public theorem boundarySevenProperFaceRealizationMap_homEquiv :
 /-- The canonical simplicial-to-singular comparison followed by the singular chain map of the
 affine realization is exactly the explicit affine flag chain map. -/
 public theorem boundarySevenProperFaceCanonicalComparison_comp_realizationChainMap :
-    simplicialToRealizationSingularChainMap BoundarySevenProperFaceNerve
+    simplicialToRealizationSingularChainMap boundarySevenProperFaceNerve
         (AddCommGrpCat.of ℤ) ≫
       SSet.chainComplexMap
         (TopCat.toSSet.map boundarySevenProperFaceRealizationMap)
@@ -239,7 +239,7 @@ public theorem boundarySevenProperFaceCanonicalComparison_comp_realizationChainM
 the realization map is the explicit affine singular fundamental chain. -/
 public theorem boundarySevenProperFaceFundamentalChain_comparison_realization :
     (boundarySevenProperFaceFundamentalChain ≫
-      (simplicialToRealizationSingularChainMap BoundarySevenProperFaceNerve
+      (simplicialToRealizationSingularChainMap boundarySevenProperFaceNerve
         (AddCommGrpCat.of ℤ)).f 6) ≫
         (SSet.chainComplexMap
           (TopCat.toSSet.map boundarySevenProperFaceRealizationMap)
@@ -251,7 +251,7 @@ public theorem boundarySevenProperFaceFundamentalChain_comparison_realization :
   have h := congrArg (fun f ↦ f.f 6)
     boundarySevenProperFaceCanonicalComparison_comp_realizationChainMap
   change
-    (simplicialToRealizationSingularChainMap BoundarySevenProperFaceNerve
+    (simplicialToRealizationSingularChainMap boundarySevenProperFaceNerve
       (AddCommGrpCat.of ℤ)).f 6 ≫
         (SSet.chainComplexMap
           (TopCat.toSSet.map boundarySevenProperFaceRealizationMap)
@@ -264,16 +264,16 @@ public theorem boundarySevenProperFaceFundamentalChain_comparison_realization :
 a homeomorphism.  It contains no chain-level or equivariance condition. -/
 public def BoundarySevenProperFaceAffineRealizationHomeomorphismInput : Prop :=
   IsCompact (Set.univ : Set
-      (SSet.toTop.obj BoundarySevenProperFaceNerve : Type)) ∧
+      (SSet.toTop.obj boundarySevenProperFaceNerve : Type)) ∧
     Function.Bijective boundarySevenProperFaceRealizationMap
 
 /-- Compactness of the finite order-complex realization and bijectivity of the affine map promote
 it to the desired explicit homeomorphism. -/
 public noncomputable def boundarySevenProperFaceRealizationHomeomorph_of_input
     (h : BoundarySevenProperFaceAffineRealizationHomeomorphismInput) :
-    (SSet.toTop.obj BoundarySevenProperFaceNerve : Type) ≃ₜ
+    (SSet.toTop.obj boundarySevenProperFaceNerve : Type) ≃ₜ
       StandardSimplexBoundary 7 := by
-  letI : CompactSpace (SSet.toTop.obj BoundarySevenProperFaceNerve : Type) :=
+  letI : CompactSpace (SSet.toTop.obj boundarySevenProperFaceNerve : Type) :=
     isCompact_univ_iff.mp h.1
   exact Continuous.homeoOfEquivCompactToT2
     (f := Equiv.ofBijective boundarySevenProperFaceRealizationMap h.2)
@@ -282,7 +282,7 @@ public noncomputable def boundarySevenProperFaceRealizationHomeomorph_of_input
 @[simp]
 public theorem boundarySevenProperFaceRealizationHomeomorph_of_input_apply
     (h : BoundarySevenProperFaceAffineRealizationHomeomorphismInput)
-    (x : (SSet.toTop.obj BoundarySevenProperFaceNerve : Type)) :
+    (x : (SSet.toTop.obj boundarySevenProperFaceNerve : Type)) :
     boundarySevenProperFaceRealizationHomeomorph_of_input h x =
       boundarySevenProperFaceRealizationMap x :=
   rfl
@@ -294,7 +294,7 @@ public theorem boundarySevenProperFaceRealizationMap_equivariant
         boundarySevenProperFaceRealizationMap =
       boundarySevenProperFaceRealizationMap ≫
         standardSimplexBoundaryPermTopMap sigma := by
-  apply (sSetTopAdj.homEquiv BoundarySevenProperFaceNerve
+  apply (sSetTopAdj.homEquiv boundarySevenProperFaceNerve
     (TopCat.of (StandardSimplexBoundary 7))).injective
   rw [sSetTopAdj.homEquiv_naturality_left,
     sSetTopAdj.homEquiv_naturality_right,
@@ -316,7 +316,7 @@ homeomorphism is equivariant for every vertex permutation. -/
 public theorem boundarySevenProperFaceRealizationHomeomorph_of_input_equivariant
     (h : BoundarySevenProperFaceAffineRealizationHomeomorphismInput)
     (sigma : Equiv.Perm (Fin 8))
-    (x : (SSet.toTop.obj BoundarySevenProperFaceNerve : Type)) :
+    (x : (SSet.toTop.obj boundarySevenProperFaceNerve : Type)) :
     boundarySevenProperFaceRealizationHomeomorph_of_input h
         (SSet.toTop.map (boundarySevenProperFaceNervePermIso sigma).hom x) =
       standardSimplexBoundaryPermHomeomorph sigma
@@ -332,7 +332,7 @@ public theorem boundarySevenProperFaceRealizationHomeomorph_of_input_equivariant
 public theorem
     boundarySevenProperFaceRealizationHomeomorph_of_input_reflection_equivariant
     (h : BoundarySevenProperFaceAffineRealizationHomeomorphismInput)
-    (x : (SSet.toTop.obj BoundarySevenProperFaceNerve : Type)) :
+    (x : (SSet.toTop.obj boundarySevenProperFaceNerve : Type)) :
     boundarySevenProperFaceRealizationHomeomorph_of_input h
         (SSet.toTop.map boundarySevenProperFaceNerveReflectionIso.hom x) =
       standardSimplexBoundaryPermHomeomorph boundarySevenReflectionPermutation

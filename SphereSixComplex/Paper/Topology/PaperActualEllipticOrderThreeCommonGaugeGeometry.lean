@@ -36,7 +36,7 @@ public noncomputable def ellipticThreeOverlapToCentral :
       A.orderThreeCollarToActualOverlapHomeomorph.symm.continuous
 
 /-- The literal order-three overlap chart commutes with the inclusion into the actual core. -/
-public theorem centralToSectionSevenEulerPiece_orderThreeActualOverlapToCentral
+public theorem centralToSectionSevenEulerPiece_ellipticThreeOverlapToCentral
     (x : (A.actualVanKampenFourPieceCover.core ∩
       A.actualVanKampenFourPieceCover.ellipticThree : Set A.VanKampenSpace)) :
     A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
@@ -69,7 +69,7 @@ public noncomputable def ellipticThreeCentralToCoreEquiv :
         ⟨A.vanKampenBase, A.actualVanKampenFourPieceCover.base_mem_core⟩ :=
   (TauCeti.FundamentalGroup.homeomorphMulEquivOfEq
       A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
-      (A.centralToSectionSevenEulerPiece_orderThreeActualOverlapToCentral
+      (A.centralToSectionSevenEulerPiece_ellipticThreeOverlapToCentral
         ⟨A.actualVanKampenFourPieceCover.ellipticThreePoint,
           A.actualVanKampenFourPieceCover.ellipticThreePoint_mem⟩)).trans
     (FundamentalGroup.fundamentalGroupMulEquivOfPath
@@ -98,7 +98,7 @@ public theorem ellipticThreeOverlapToCore_eq_central
           A.actualVanKampenFourPieceCover.ellipticThree := by
     apply ContinuousMap.ext
     intro x
-    exact A.centralToSectionSevenEulerPiece_orderThreeActualOverlapToCentral x
+    exact A.centralToSectionSevenEulerPiece_ellipticThreeOverlapToCentral x
   have hcentral :
       A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
           A.ellipticThreeOverlapCentralBase =
@@ -106,7 +106,7 @@ public theorem ellipticThreeOverlapToCore_eq_central
           A.actualVanKampenFourPieceCover.ellipticThree
           ⟨A.actualVanKampenFourPieceCover.ellipticThreePoint,
             A.actualVanKampenFourPieceCover.ellipticThreePoint_mem⟩ :=
-    A.centralToSectionSevenEulerPiece_orderThreeActualOverlapToCentral _
+    A.centralToSectionSevenEulerPiece_ellipticThreeOverlapToCentral _
   have hcompbase := congrArg
     (fun k : C((A.actualVanKampenFourPieceCover.core ∩
       A.actualVanKampenFourPieceCover.ellipticThree : Set A.VanKampenSpace),
@@ -199,7 +199,7 @@ public noncomputable def ellipticThreeCentralCoverComparison :
     letI := D.action
     QuotientCoverMapData
       (G := OrderThreeAffineMappingTorusDeck A.periods)
-      (H := paperCentralFreeAffineDeck)
+      (H := PaperCentralFreeAffineDeck)
       A.ellipticThreeBoundaryProjection D.data.projection := by
   let _ := A.ellipticThreeBoundaryAction
   let D := A.centralAffineUniversalCover

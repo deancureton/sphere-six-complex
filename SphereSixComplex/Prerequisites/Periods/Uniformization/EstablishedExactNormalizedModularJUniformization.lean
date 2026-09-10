@@ -18,7 +18,7 @@ namespace SphereSixComplex.Periods
 open ExactNormalizedModularJTau
 
 /-- The formerly axiomatized exact normalized modular-J uniformization theorem. -/
-theorem establishedExactNormalizedModularJUniformization_proved :
+theorem nonempty_exactNormalizedModularJUniformization :
     Nonempty ExactNormalizedModularJUniformization :=
   ⟨exactNormalizedModularJUniformization⟩
 

@@ -9,7 +9,7 @@ open CategoryTheory HomologicalComplex
 namespace SphereSixComplex
 
 public def orientedIntervalCylinderPrism :
-    (CWRelativeIntegralSingularChainComplex
+    (cwRelativeIntegralSingularChainComplex
       (cylinderBoundaryInclusion (cwBallBoundarySet 1))).homology 2 :=
   (cylinderTopPrismHomologyIso (cwBallBoundarySet 1) 0).hom
     (homologyMap (cwNestedBoundaryRelativeIso 1).hom 1 (cwOrientedIntervalClass.hom 1))
@@ -55,7 +55,7 @@ public theorem cylinderTopPrismHomologyIso_comp_eq_closedPrism
     {X : Type} [TopologicalSpace X] (A : Set X)
     (L : ChainComplex AddCommGrpCat ℕ)
     (g : (cylinderRelativeTriple A).X₃ ⟶ L)
-    {r : CWRelativeIntegralSingularChainComplex (cylinderBaseInclusion A) ⟶ L}
+    {r : cwRelativeIntegralSingularChainComplex (cylinderBaseInclusion A) ⟶ L}
     (R : Homotopy r r) (n : ℕ)
     (h : (cylinderTopFaceRelativeChains A).f (n + 1) ≫
       (cylinderRelativeTriple A).f.f (n + 1) ≫
@@ -64,7 +64,7 @@ public theorem cylinderTopPrismHomologyIso_comp_eq_closedPrism
         R.hom (n + 1) (n + 2)) :
     (cylinderTopPrismHomologyIso A n).hom ≫ homologyMap g (n + 2) =
       closedPrismHomology R n := by
-  apply (cancel_epi ((CWRelativeIntegralSingularChainComplex
+  apply (cancel_epi ((cwRelativeIntegralSingularChainComplex
     (cylinderBaseInclusion A)).homologyπ (n + 1))).mp
   rw [← Category.assoc, cylinderTopPrismHomologyIso_projection]
   exact mappedContractingPrismClass_eq_closedPrism (cylinderRelativeTriple A)

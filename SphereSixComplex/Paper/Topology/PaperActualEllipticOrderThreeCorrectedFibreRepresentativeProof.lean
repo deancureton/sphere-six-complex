@@ -71,8 +71,8 @@ free-homotopy reduction. -/
 public noncomputable def orderThreeCentralAffineCorrectedGeometricRelatorPath :
     Path A.centralAffineBase A.centralAffineBase :=
   A.ellipticThreeCuspCorrectedGeometricRelatorPath.cast
-    A.centralAffineBase_eq_actualCuspCentralBase
-    A.centralAffineBase_eq_actualCuspCentralBase
+    A.centralAffineBase_eq_cuspCentralBase
+    A.centralAffineBase_eq_cuspCentralBase
 
 public theorem orderThreeCentralAffineCorrectedGeometricRelatorPath_class :
     Path.Homotopic.Quotient.mk

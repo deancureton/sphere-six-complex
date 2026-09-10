@@ -27,14 +27,14 @@ universe u uE uH
 /-! ## The scalar retraction in a half collar -/
 
 /-- A cutoff which is one at the zero section and vanishes beyond the half-depth subcollar. -/
-public def collarHEPCutoff (r : HalfCollarParameter) : ℝ :=
+public def collarHEPCutoff (r : halfCollarParameter) : ℝ :=
   max (1 - 2 * (r.1 : ℝ)) 0
 
-public theorem collarHEPCutoff_nonneg (r : HalfCollarParameter) :
+public theorem collarHEPCutoff_nonneg (r : halfCollarParameter) :
     0 ≤ collarHEPCutoff r :=
   le_max_right _ _
 
-public theorem collarHEPCutoff_le_one (r : HalfCollarParameter) :
+public theorem collarHEPCutoff_le_one (r : halfCollarParameter) :
     collarHEPCutoff r ≤ 1 := by
   apply max_le
   · linarith [r.1.2.1]
@@ -45,7 +45,7 @@ public theorem collarHEPCutoff_start : collarHEPCutoff halfCollarStart = 1 := by
   norm_num [collarHEPCutoff, halfCollarStart, collarStart]
 
 public theorem collarHEPCutoff_eq_zero_of_half_le
-    {r : HalfCollarParameter} (hr : (1 / 2 : ℝ) ≤ (r.1 : ℝ)) :
+    {r : halfCollarParameter} (hr : (1 / 2 : ℝ) ≤ (r.1 : ℝ)) :
     collarHEPCutoff r = 0 := by
   rw [collarHEPCutoff, max_eq_right]
   linarith
@@ -55,27 +55,27 @@ public theorem continuous_collarHEPCutoff : Continuous collarHEPCutoff := by
   fun_prop
 
 /-- The amount of cylinder time used by the collar retraction. -/
-public def collarHEPEffectiveTime (t : unitInterval) (r : HalfCollarParameter) : ℝ :=
+public def collarHEPEffectiveTime (t : unitInterval) (r : halfCollarParameter) : ℝ :=
   (t : ℝ) * collarHEPCutoff r
 
-public theorem collarHEPEffectiveTime_nonneg (t : unitInterval) (r : HalfCollarParameter) :
+public theorem collarHEPEffectiveTime_nonneg (t : unitInterval) (r : halfCollarParameter) :
     0 ≤ collarHEPEffectiveTime t r :=
   mul_nonneg t.2.1 (collarHEPCutoff_nonneg r)
 
-public theorem collarHEPEffectiveTime_le (t : unitInterval) (r : HalfCollarParameter) :
+public theorem collarHEPEffectiveTime_le (t : unitInterval) (r : halfCollarParameter) :
     collarHEPEffectiveTime t r ≤ (t : ℝ) := by
   simpa [collarHEPEffectiveTime] using
     mul_le_mul_of_nonneg_left (collarHEPCutoff_le_one r) t.2.1
 
 public theorem continuous_collarHEPEffectiveTime :
-    Continuous (fun p : unitInterval × HalfCollarParameter ↦
+    Continuous (fun p : unitInterval × halfCollarParameter ↦
       collarHEPEffectiveTime p.1 p.2) := by
   exact (continuous_subtype_val.comp continuous_fst).mul
     (continuous_collarHEPCutoff.comp continuous_snd)
 
 /-- The radial coordinate after retracting the collar cylinder to its L-shaped boundary. -/
-public def collarHEPRadius (t : unitInterval) (r : HalfCollarParameter) :
-    HalfCollarParameter :=
+public def collarHEPRadius (t : unitInterval) (r : halfCollarParameter) :
+    halfCollarParameter :=
   ⟨⟨max ((r.1 : ℝ) - collarHEPEffectiveTime t r) 0, by
       constructor
       · exact le_max_right _ _
@@ -91,7 +91,7 @@ public def collarHEPRadius (t : unitInterval) (r : HalfCollarParameter) :
     exact hle.trans_lt r.2⟩
 
 /-- The vertical coordinate after retracting the collar cylinder to its L-shaped boundary. -/
-public def collarHEPVerticalTime (t : unitInterval) (r : HalfCollarParameter) :
+public def collarHEPVerticalTime (t : unitInterval) (r : halfCollarParameter) :
     unitInterval :=
   ⟨max (collarHEPEffectiveTime t r - (r.1 : ℝ)) 0, by
     constructor
@@ -101,18 +101,18 @@ public def collarHEPVerticalTime (t : unitInterval) (r : HalfCollarParameter) :
       · exact zero_le_one⟩
 
 public theorem continuous_collarHEPRadius :
-    Continuous (fun p : unitInterval × HalfCollarParameter ↦
+    Continuous (fun p : unitInterval × halfCollarParameter ↦
       collarHEPRadius p.1 p.2) := by
-  have hreal : Continuous (fun p : unitInterval × HalfCollarParameter ↦
+  have hreal : Continuous (fun p : unitInterval × halfCollarParameter ↦
       max ((p.2.1 : ℝ) - collarHEPEffectiveTime p.1 p.2) 0) := by
     exact (((continuous_subtype_val.comp continuous_subtype_val).comp continuous_snd).sub
       continuous_collarHEPEffectiveTime).max continuous_const
   exact (hreal.subtype_mk _).subtype_mk _
 
 public theorem continuous_collarHEPVerticalTime :
-    Continuous (fun p : unitInterval × HalfCollarParameter ↦
+    Continuous (fun p : unitInterval × halfCollarParameter ↦
       collarHEPVerticalTime p.1 p.2) := by
-  have hreal : Continuous (fun p : unitInterval × HalfCollarParameter ↦
+  have hreal : Continuous (fun p : unitInterval × halfCollarParameter ↦
       max (collarHEPEffectiveTime p.1 p.2 - (p.2.1 : ℝ)) 0) := by
     exact (continuous_collarHEPEffectiveTime.sub
       ((continuous_subtype_val.comp continuous_subtype_val).comp continuous_snd)).max
@@ -120,14 +120,14 @@ public theorem continuous_collarHEPVerticalTime :
   exact hreal.subtype_mk _
 
 @[simp]
-public theorem collarHEPRadius_zero (r : HalfCollarParameter) :
+public theorem collarHEPRadius_zero (r : halfCollarParameter) :
     collarHEPRadius 0 r = r := by
   apply Subtype.ext
   apply Subtype.ext
   simp [collarHEPRadius, collarHEPEffectiveTime, collarHEPCutoff, r.1.2.1]
 
 @[simp]
-public theorem collarHEPVerticalTime_zero (r : HalfCollarParameter) :
+public theorem collarHEPVerticalTime_zero (r : halfCollarParameter) :
     collarHEPVerticalTime 0 r = 0 := by
   apply Subtype.ext
   simp [collarHEPVerticalTime, collarHEPEffectiveTime, r.1.2.1]
@@ -154,7 +154,7 @@ public theorem collarHEPVerticalTime_start (t : unitInterval) :
   rw [collarHEPEffectiveTime_start, sub_zero, max_eq_left t.2.1]
 
 public theorem collarHEPRadius_eq_self_of_half_le
-    (t : unitInterval) {r : HalfCollarParameter} (hr : (1 / 2 : ℝ) ≤ (r.1 : ℝ)) :
+    (t : unitInterval) {r : halfCollarParameter} (hr : (1 / 2 : ℝ) ≤ (r.1 : ℝ)) :
     collarHEPRadius t r = r := by
   apply Subtype.ext
   apply Subtype.ext
@@ -162,14 +162,14 @@ public theorem collarHEPRadius_eq_self_of_half_le
     collarHEPCutoff_eq_zero_of_half_le hr, r.1.2.1]
 
 public theorem collarHEPVerticalTime_eq_zero_of_half_le
-    (t : unitInterval) {r : HalfCollarParameter} (hr : (1 / 2 : ℝ) ≤ (r.1 : ℝ)) :
+    (t : unitInterval) {r : halfCollarParameter} (hr : (1 / 2 : ℝ) ≤ (r.1 : ℝ)) :
     collarHEPVerticalTime t r = 0 := by
   apply Subtype.ext
   simp [collarHEPVerticalTime, collarHEPEffectiveTime,
     collarHEPCutoff_eq_zero_of_half_le hr, r.1.2.1]
 
 public theorem collarHEPRadius_eq_start_of_effective_eq
-    {t : unitInterval} {r : HalfCollarParameter}
+    {t : unitInterval} {r : halfCollarParameter}
     (h : collarHEPEffectiveTime t r = (r.1 : ℝ)) :
     collarHEPRadius t r = halfCollarStart := by
   apply Subtype.ext
@@ -177,7 +177,7 @@ public theorem collarHEPRadius_eq_start_of_effective_eq
   simp [collarHEPRadius, h, halfCollarStart, collarStart]
 
 public theorem collarHEPVerticalTime_eq_zero_of_effective_eq
-    {t : unitInterval} {r : HalfCollarParameter}
+    {t : unitInterval} {r : halfCollarParameter}
     (h : collarHEPEffectiveTime t r = (r.1 : ℝ)) :
     collarHEPVerticalTime t r = 0 := by
   apply Subtype.ext
@@ -292,10 +292,10 @@ end LocalExtension
 /-! ## A compactly supported ambient extension -/
 
 /-- The compact interval used to close off the support of the collar construction. -/
-public abbrev CollarHEPDeepParameter := Set.Icc (0 : ℝ) (1 / 2 : ℝ)
+public abbrev collarHEPDeepParameter := Set.Icc (0 : ℝ) (1 / 2 : ℝ)
 
 /-- Regard a parameter in `[0,1/2]` as a point of the half-open collar. -/
-public def collarHEPDeepToHalf (r : CollarHEPDeepParameter) : HalfCollarParameter :=
+public def collarHEPDeepToHalf (r : collarHEPDeepParameter) : halfCollarParameter :=
   ⟨⟨(r : ℝ), ⟨r.2.1, r.2.2.trans (by norm_num)⟩⟩,
     r.2.2.trans_lt (by norm_num)⟩
 
@@ -315,7 +315,7 @@ variable {E : Type uE} [NormedAddCommGroup E] [NormedSpace ℝ E]
 
 /-- The closed half-depth subcollar, parametrized by the compact product `M × [0,1/2]`. -/
 public def collarHEPDeepMap (c : SmoothCollar I M W) :
-    M × CollarHEPDeepParameter → W :=
+    M × collarHEPDeepParameter → W :=
   fun p ↦ c.chart (p.1, collarHEPDeepToHalf p.2)
 
 public theorem continuous_collarHEPDeepMap (c : SmoothCollar I M W) :
@@ -347,7 +347,7 @@ public theorem mem_collarHEPDeepSet_of_targetCoordinate_le
     (hdeep : ((c.chart.toDiffeomorph.symm ⟨w, hw⟩).2.1 : ℝ) ≤ 1 / 2) :
     w ∈ collarHEPDeepSet c := by
   let q : CollarSource M := c.chart.toDiffeomorph.symm ⟨w, hw⟩
-  let r : CollarHEPDeepParameter :=
+  let r : collarHEPDeepParameter :=
     ⟨(q.2.1 : ℝ), q.2.1.2.1, hdeep⟩
   refine ⟨(q.1, r), ?_⟩
   have hr : collarHEPDeepToHalf r = q.2 := by

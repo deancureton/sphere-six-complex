@@ -407,7 +407,7 @@ public noncomputable def paperPuncturedGlobalFamilyBaseProjection
     FundamentalGroup A.CentralFamily A.cuspCentralBase →*
       TwoMeridianDeckGroup :=
   (TwicePuncturedComplex.markedMeridianMulEquiv
-      TwicePuncturedComplex.establishedMarkedMeridianHom_injective).symm.toMonoidHom.comp
+      TwicePuncturedComplex.markedMeridianHom_injective).symm.toMonoidHom.comp
     ((markedCentralBaseProjection A).comp
       A.markedCentralToActualCuspEquiv.symm.toMonoidHom)
 
@@ -419,7 +419,7 @@ public theorem paperPuncturedGlobalFamilyBaseProjection_rhoOne
     PaperAnalyticData.geometricCentralRhoOne
   simp only [MonoidHom.comp_apply]
   change (TwicePuncturedComplex.markedMeridianMulEquiv
-      TwicePuncturedComplex.establishedMarkedMeridianHom_injective).symm
+      TwicePuncturedComplex.markedMeridianHom_injective).symm
     (markedCentralBaseProjection A
       (A.markedCentralToActualCuspEquiv.symm
         (A.markedCentralToActualCuspEquiv
@@ -428,7 +428,7 @@ public theorem paperPuncturedGlobalFamilyBaseProjection_rhoOne
     map_inv, markedCentralBaseProjection_zero, map_inv]
   apply congrArg Inv.inv
   exact (TwicePuncturedComplex.markedMeridianMulEquiv
-    TwicePuncturedComplex.establishedMarkedMeridianHom_injective).symm_apply_eq.mpr
+    TwicePuncturedComplex.markedMeridianHom_injective).symm_apply_eq.mpr
       TwicePuncturedComplex.markedMeridianHom_first.symm
 
 public theorem paperPuncturedGlobalFamilyBaseProjection_rhoTwo
@@ -439,7 +439,7 @@ public theorem paperPuncturedGlobalFamilyBaseProjection_rhoTwo
     PaperAnalyticData.geometricCentralRhoTwo
   simp only [MonoidHom.comp_apply]
   change (TwicePuncturedComplex.markedMeridianMulEquiv
-      TwicePuncturedComplex.establishedMarkedMeridianHom_injective).symm
+      TwicePuncturedComplex.markedMeridianHom_injective).symm
     (markedCentralBaseProjection A
       (A.markedCentralToActualCuspEquiv.symm
         (A.markedCentralToActualCuspEquiv
@@ -448,7 +448,7 @@ public theorem paperPuncturedGlobalFamilyBaseProjection_rhoTwo
     map_inv, markedCentralBaseProjection_one, map_inv]
   apply congrArg Inv.inv
   exact (TwicePuncturedComplex.markedMeridianMulEquiv
-    TwicePuncturedComplex.establishedMarkedMeridianHom_injective).symm_apply_eq.mpr
+    TwicePuncturedComplex.markedMeridianHom_injective).symm_apply_eq.mpr
       TwicePuncturedComplex.markedMeridianHom_second.symm
 
 public theorem paperPuncturedGlobalFamilyBaseProjection_translation
@@ -457,7 +457,7 @@ public theorem paperPuncturedGlobalFamilyBaseProjection_translation
         (Additive.toMul (A.correctedActualCuspCentralTranslation a)) = 1 := by
   have hm : Additive.toMul (A.correctedActualCuspCentralTranslation a) ∈
       Set.range (fun b ↦ Additive.toMul (A.geometricCentralTranslation b)) := by
-    rw [A.geometricCentralTranslation_range_eq_actualCuspCentralTranslation,
+    rw [A.geometricCentralTranslation_range_eq_cuspCentralTranslation,
       ← A.correctedActualCuspCentralTranslation_range_eq_actual]
     exact ⟨a, rfl⟩
   obtain ⟨b, hb⟩ := hm
@@ -467,7 +467,7 @@ public theorem paperPuncturedGlobalFamilyBaseProjection_translation
   simp only [MonoidHom.comp_apply, AddMonoidHom.comp_apply,
     MonoidHom.coe_toAdditive, Function.comp_apply, toMul_ofMul]
   change (TwicePuncturedComplex.markedMeridianMulEquiv
-      TwicePuncturedComplex.establishedMarkedMeridianHom_injective).symm
+      TwicePuncturedComplex.markedMeridianHom_injective).symm
     (markedCentralBaseProjection A
       (A.markedCentralToActualCuspEquiv.symm
         (A.markedCentralToActualCuspEquiv

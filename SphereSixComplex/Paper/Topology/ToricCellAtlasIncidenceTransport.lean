@@ -14,13 +14,13 @@ public theorem transport_attachingDegree
     [TopologicalSpace Y] [T2Space Y]
     (A : StandardA2ToricCentralFiberCellAtlas X) (e : X ≃ₜ Y)
     (T : CellularHomology.IntegralComparison) (n : ℕ)
-    (i : cuspWCellIndex (n + 1)) (j : cuspWCellIndex n) :
+    (i : CuspWCellIndex (n + 1)) (j : CuspWCellIndex n) :
     let _ := A.cwComplex
     let _ := (A.transport e).cwComplex
     T.attachingDegree X n i j = T.attachingDegree Y n i j := by
   let _ := A.cwComplex
   let _ := (A.transport e).cwComplex
-  have h : ∀ n (i : cuspWCellIndex n) (x : Fin n → ℝ),
+  have h : ∀ n (i : CuspWCellIndex n) (x : Fin n → ℝ),
       x ∈ Metric.closedBall 0 1 →
       e (Topology.CWComplex.map (C := (Set.univ : Set X)) n i x) =
         (Topology.CWComplex.map (C := (Set.univ : Set Y)) n i x) := by
@@ -34,8 +34,8 @@ public theorem transport_coordinateBoundary_single
     {X Y : Type} [TopologicalSpace X] [T2Space X]
     [TopologicalSpace Y] [T2Space Y]
     (A : StandardA2ToricCentralFiberCellAtlas X) (e : X ≃ₜ Y) (n : ℕ)
-    [DecidableEq (cuspWCellIndex (n + 1))]
-    (i : cuspWCellIndex (n + 1)) (j : cuspWCellIndex n) :
+    [DecidableEq (CuspWCellIndex (n + 1))]
+    (i : CuspWCellIndex (n + 1)) (j : CuspWCellIndex n) :
     standardA2ToricCellularCoordinateBoundary A.toCWDecomposition n (Pi.single i 1) j =
       standardA2ToricCellularCoordinateBoundary (A.transport e).toCWDecomposition n
         (Pi.single i 1) j := by

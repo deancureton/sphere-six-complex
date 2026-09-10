@@ -22,42 +22,42 @@ open SphereSixComplex.Geometry.FamilyEquivariance
 
 public noncomputable section
 
-public abbrev GlobalDeckBaseModel := modelWithCornersSelf ℂ ℂ
-public abbrev GlobalDeckFiberModel := modelWithCornersSelf ℂ ComplexTwoSpace
-public abbrev GlobalDeckTotalModel := GlobalDeckBaseModel.prod GlobalDeckFiberModel
+public abbrev globalDeckBaseModel := modelWithCornersSelf ℂ ℂ
+public abbrev globalDeckFiberModel := modelWithCornersSelf ℂ ComplexTwoSpace
+public abbrev globalDeckTotalModel := globalDeckBaseModel.prod globalDeckFiberModel
 
 variable {U : TriangleUniformization} (F : PeriodFunctions U)
 
 private theorem tauOnTotal_contMDiff (n : WithTop ℕ∞) :
-    ContMDiff GlobalDeckTotalModel (modelWithCornersSelf ℂ ℂ) n
+    ContMDiff globalDeckTotalModel (modelWithCornersSelf ℂ ℂ) n
       (fun p : UpperHalfPlane × ComplexTwoSpace ↦ (F.tau p.1 : ℂ)) :=
   (tau_contMDiff F n).comp contMDiff_fst
 
 private theorem muOnTotal_contMDiff (n : WithTop ℕ∞) :
-    ContMDiff GlobalDeckTotalModel (modelWithCornersSelf ℂ ℂ) n
+    ContMDiff globalDeckTotalModel (modelWithCornersSelf ℂ ℂ) n
       (fun p : UpperHalfPlane × ComplexTwoSpace ↦ F.mu p.1) :=
   (mu_contMDiff F n).comp contMDiff_fst
 
 private theorem fiberComponent_contMDiff (i : Fin 2) (n : WithTop ℕ∞) :
-    ContMDiff GlobalDeckTotalModel (modelWithCornersSelf ℂ ℂ) n
+    ContMDiff globalDeckTotalModel (modelWithCornersSelf ℂ ℂ) n
       (fun p : UpperHalfPlane × ComplexTwoSpace ↦ p.2 i) := by
-  have h : ContMDiff GlobalDeckTotalModel GlobalDeckFiberModel n
+  have h : ContMDiff globalDeckTotalModel globalDeckFiberModel n
       (fun p : UpperHalfPlane × ComplexTwoSpace ↦ p.2) := contMDiff_snd
   exact (contMDiff_pi_space.mp h) i
 
 private theorem inverseTauOnTotal_contMDiff (n : WithTop ℕ∞) :
-    ContMDiff GlobalDeckTotalModel (modelWithCornersSelf ℂ ℂ) n
+    ContMDiff globalDeckTotalModel (modelWithCornersSelf ℂ ℂ) n
       (fun p : UpperHalfPlane × ComplexTwoSpace ↦ ((F.tau p.1 : ℂ))⁻¹) :=
   (tauOnTotal_contMDiff F n).inv₀ fun p ↦ (F.tau p.1).ne_zero
 
 private theorem oneOnTotal_contMDiff (n : WithTop ℕ∞) :
-    ContMDiff GlobalDeckTotalModel (modelWithCornersSelf ℂ ℂ) n
+    ContMDiff globalDeckTotalModel (modelWithCornersSelf ℂ ℂ) n
       (fun _ : UpperHalfPlane × ComplexTwoSpace ↦ (1 : ℂ)) :=
   contMDiff_const
 
 /-- The first generator's explicit fibre-coordinate change is jointly smooth in base and fibre. -/
 public theorem rightOne_parameterMap_mulVec_contMDiff (n : WithTop ℕ∞) :
-    ContMDiff GlobalDeckTotalModel GlobalDeckFiberModel n
+    ContMDiff globalDeckTotalModel globalDeckFiberModel n
       (fun p : UpperHalfPlane × ComplexTwoSpace ↦
         rightOne (parameterMap F p.1).1 *ᵥ p.2) := by
   rw [contMDiff_pi_space]
@@ -83,7 +83,7 @@ public theorem rightOne_parameterMap_mulVec_contMDiff (n : WithTop ℕ∞) :
 
 /-- The second generator's explicit fibre-coordinate change is jointly smooth in base and fibre. -/
 public theorem rightTwo_parameterMap_mulVec_contMDiff (n : WithTop ℕ∞) :
-    ContMDiff GlobalDeckTotalModel GlobalDeckFiberModel n
+    ContMDiff globalDeckTotalModel globalDeckFiberModel n
       (fun p : UpperHalfPlane × ComplexTwoSpace ↦
         rightTwo (parameterMap F p.1).1 *ᵥ p.2) := by
   rw [contMDiff_pi_space]
@@ -127,8 +127,8 @@ public theorem periodTransport_gZero (x : PeriodDomain) : periodTransport g₀ x
 
 /-- The lifted deck transformation at the order-three generator is smooth. -/
 public theorem deckMap_gOne_contMDiff (n : WithTop ℕ∞) :
-    ContMDiff GlobalDeckTotalModel GlobalDeckTotalModel n (deckMap F g₁) := by
-  have hbase : ContMDiff GlobalDeckTotalModel GlobalDeckBaseModel n
+    ContMDiff globalDeckTotalModel globalDeckTotalModel n (deckMap F g₁) := by
+  have hbase : ContMDiff globalDeckTotalModel globalDeckBaseModel n
       (fun p : UpperHalfPlane × ComplexTwoSpace ↦ U.sourceAction g₁ • p.1) :=
     (U.sourceAction_contMDiff g₁ n).comp contMDiff_fst
   apply hbase.prodMk
@@ -141,8 +141,8 @@ public theorem deckMap_gOne_contMDiff (n : WithTop ℕ∞) :
 
 /-- The lifted deck transformation at the order-four generator is smooth. -/
 public theorem deckMap_gTwo_contMDiff (n : WithTop ℕ∞) :
-    ContMDiff GlobalDeckTotalModel GlobalDeckTotalModel n (deckMap F g₂) := by
-  have hbase : ContMDiff GlobalDeckTotalModel GlobalDeckBaseModel n
+    ContMDiff globalDeckTotalModel globalDeckTotalModel n (deckMap F g₂) := by
+  have hbase : ContMDiff globalDeckTotalModel globalDeckBaseModel n
       (fun p : UpperHalfPlane × ComplexTwoSpace ↦ U.sourceAction g₂ • p.1) :=
     (U.sourceAction_contMDiff g₂ n).comp contMDiff_fst
   apply hbase.prodMk
@@ -155,8 +155,8 @@ public theorem deckMap_gTwo_contMDiff (n : WithTop ℕ∞) :
 
 /-- The lifted cusp deck transformation is smooth. -/
 public theorem deckMap_gZero_contMDiff (n : WithTop ℕ∞) :
-    ContMDiff GlobalDeckTotalModel GlobalDeckTotalModel n (deckMap F g₀) := by
-  have hbase : ContMDiff GlobalDeckTotalModel GlobalDeckBaseModel n
+    ContMDiff globalDeckTotalModel globalDeckTotalModel n (deckMap F g₀) := by
+  have hbase : ContMDiff globalDeckTotalModel globalDeckBaseModel n
       (fun p : UpperHalfPlane × ComplexTwoSpace ↦ U.sourceAction g₀ • p.1) :=
     (U.sourceAction_contMDiff g₀ n).comp contMDiff_fst
   apply hbase.prodMk
@@ -165,11 +165,11 @@ public theorem deckMap_gZero_contMDiff (n : WithTop ℕ∞) :
   simp [periodTransport_gZero]
 
 private def DeckMapContMDiff (n : WithTop ℕ∞) (g : Delta) : Prop :=
-  ContMDiff GlobalDeckTotalModel GlobalDeckTotalModel n (deckMap F g)
+  ContMDiff globalDeckTotalModel globalDeckTotalModel n (deckMap F g)
 
 private theorem deckMap_one_contMDiff (n : WithTop ℕ∞) : DeckMapContMDiff F n 1 := by
-  change ContMDiff GlobalDeckTotalModel GlobalDeckTotalModel n (deckMap F 1)
-  convert (contMDiff_id : ContMDiff GlobalDeckTotalModel GlobalDeckTotalModel n
+  change ContMDiff globalDeckTotalModel globalDeckTotalModel n (deckMap F 1)
+  convert (contMDiff_id : ContMDiff globalDeckTotalModel globalDeckTotalModel n
     (id : UpperHalfPlane × ComplexTwoSpace → UpperHalfPlane × ComplexTwoSpace)) using 1
   funext p
   exact deckMap_one F p
@@ -177,7 +177,7 @@ private theorem deckMap_one_contMDiff (n : WithTop ℕ∞) : DeckMapContMDiff F 
 private theorem deckMapContMDiff_mul {n : WithTop ℕ∞} {g h : Delta}
     (hg : DeckMapContMDiff F n g) (hh : DeckMapContMDiff F n h) :
     DeckMapContMDiff F n (g * h) := by
-  change ContMDiff GlobalDeckTotalModel GlobalDeckTotalModel n (deckMap F (g * h))
+  change ContMDiff globalDeckTotalModel globalDeckTotalModel n (deckMap F (g * h))
   convert hg.comp hh using 1
   funext p
   exact deckMap_mul F g h p
@@ -193,7 +193,7 @@ private theorem deckMapContMDiff_pow {n : WithTop ℕ∞} {g : Delta}
 /-- Every lifted triangle-group deck map is smooth.  This is the smooth-action hypothesis needed
 by the generic quotient-manifold construction, independently of freeness or proper discontinuity. -/
 public theorem deckMap_contMDiff (g : Delta) (n : WithTop ℕ∞) :
-    ContMDiff GlobalDeckTotalModel GlobalDeckTotalModel n (deckMap F g) := by
+    ContMDiff globalDeckTotalModel globalDeckTotalModel n (deckMap F g) := by
   induction g using Monoid.Coprod.induction_on with
   | inl a =>
       obtain ⟨k, hk⟩ := inl_exists_gOne_pow a

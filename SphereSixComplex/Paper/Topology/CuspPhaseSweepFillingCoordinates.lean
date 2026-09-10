@@ -9,7 +9,7 @@ namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 open SphereSixComplex.Periods
 open CuspFilling CuspPeriodExpansion InfiniteA2Toric
 open InfiniteA2Toric.Construction
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public def phaseSweepFillingHomologyTwoEquiv
@@ -17,7 +17,7 @@ public def phaseSweepFillingHomologyTwoEquiv
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
     (R : ActualLocalCuspCentralFiberRetractionData W)
     (T : CellularHomology.IntegralComparison) :
-    IntegralSingularHomology 2 (actualLocalCuspFilling W) ≃+ (Fin 4 → ℤ) :=
+    IntegralSingularHomology 2 (ActualLocalCuspFilling W) ≃+ (Fin 4 → ℤ) :=
   (actualCuspCentralOrbitFillingHomologyEquiv W R 2).symm.trans
     (phaseSweepHomologyTwoCellEquiv W T)
 

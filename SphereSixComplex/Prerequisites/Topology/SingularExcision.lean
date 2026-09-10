@@ -60,13 +60,13 @@ public theorem mem_coverSmallSingularSubcomplex_iff_exists_preimage
   simp [mem_coverSmallSingularSubcomplex_iff, Subfunctor.range_obj]
 
 /-- Integral chains on the cover-small singular simplicial set. -/
-public noncomputable abbrev CoverSmallIntegralSingularChainComplex :
+public noncomputable abbrev coverSmallIntegralSingularChainComplex :
     ChainComplex AddCommGrpCat ℕ :=
   (coverSmallSingularSubcomplex X U : SSet).chainComplex (AddCommGrpCat.of ℤ)
 
 /-- Inclusion of cover-small integral singular chains into all integral singular chains. -/
 public noncomputable def coverSmallIntegralSingularChainInclusion :
-    CoverSmallIntegralSingularChainComplex X U ⟶ IntegralSingularChainComplexObj X :=
+    coverSmallIntegralSingularChainComplex X U ⟶ integralSingularChainComplexObj X :=
   SSet.chainComplexMap (coverSmallSingularSubcomplex X U).ι (AddCommGrpCat.of ℤ)
 
 instance coverSmallIntegralSingularChainInclusion_mono :
@@ -91,8 +91,8 @@ public theorem coverMemberToSmallSingularSet_comp_inclusion (j : ι) :
 
 /-- The chain map from a cover member into the small singular chains. -/
 public noncomputable def coverMemberToSmallIntegralSingularChains (j : ι) :
-    IntegralSingularChainComplexObj (TopCat.of (U j)) ⟶
-      CoverSmallIntegralSingularChainComplex X U :=
+    integralSingularChainComplexObj (TopCat.of (U j)) ⟶
+      coverSmallIntegralSingularChainComplex X U :=
   SSet.chainComplexMap (coverMemberToSmallSingularSet X U j) (AddCommGrpCat.of ℤ)
 
 /-- Chains from a cover member factor coherently through the small-chain inclusion. -/
@@ -115,21 +115,21 @@ chains small, together with the two chain homotopies required for a homotopy inv
 strictly algebraic data, rather than a homology-isomorphism assumption. -/
 public structure CoverSmallChainRetractionData where
   /-- A chain map sending arbitrary singular chains to cover-small chains. -/
-  smallify : IntegralSingularChainComplexObj X ⟶ CoverSmallIntegralSingularChainComplex X U
+  smallify : integralSingularChainComplexObj X ⟶ coverSmallIntegralSingularChainComplex X U
   /-- Smallifying after inclusion is chain-homotopic to the identity on small chains. -/
   homotopyInclusionSmallify :
     Homotopy (coverSmallIntegralSingularChainInclusion X U ≫ smallify)
-      (𝟙 (CoverSmallIntegralSingularChainComplex X U))
+      (𝟙 (coverSmallIntegralSingularChainComplex X U))
   /-- Including after smallifying is chain-homotopic to the identity on all singular chains. -/
   homotopySmallifyInclusion :
     Homotopy (smallify ≫ coverSmallIntegralSingularChainInclusion X U)
-      (𝟙 (IntegralSingularChainComplexObj X))
+      (𝟙 (integralSingularChainComplexObj X))
 
 /-- Retraction data packages directly into mathlib's chain-homotopy equivalence. -/
 public noncomputable def CoverSmallChainRetractionData.toHomotopyEquiv
     (d : CoverSmallChainRetractionData X U) :
-    HomotopyEquiv (CoverSmallIntegralSingularChainComplex X U)
-      (IntegralSingularChainComplexObj X) where
+    HomotopyEquiv (coverSmallIntegralSingularChainComplex X U)
+      (integralSingularChainComplexObj X) where
   hom := coverSmallIntegralSingularChainInclusion X U
   inv := d.smallify
   homotopyHomInvId := d.homotopyInclusionSmallify
@@ -150,8 +150,8 @@ public theorem CoverSmallChainRetractionData.approximation
 /-- A selected chain-homotopy equivalence witnessing small-chain approximation. -/
 public noncomputable def coverSmallChainHomotopyEquiv
     (h : CoverSmallChainApproximation X U) :
-    HomotopyEquiv (CoverSmallIntegralSingularChainComplex X U)
-      (IntegralSingularChainComplexObj X) :=
+    HomotopyEquiv (coverSmallIntegralSingularChainComplex X U)
+      (integralSingularChainComplexObj X) :=
   h.choose
 
 public theorem coverSmallChainHomotopyEquiv_hom
@@ -163,8 +163,8 @@ public theorem coverSmallChainHomotopyEquiv_hom
 /-- Small-chain approximation gives the expected homology isomorphism in every degree. -/
 public noncomputable def coverSmallIntegralSingularHomologyIso
     (h : CoverSmallChainApproximation X U) (n : ℕ) :
-    (CoverSmallIntegralSingularChainComplex X U).homology n ≅
-      (IntegralSingularChainComplexObj X).homology n :=
+    (coverSmallIntegralSingularChainComplex X U).homology n ≅
+      (integralSingularChainComplexObj X).homology n :=
   (coverSmallChainHomotopyEquiv X U h).toHomologyIso n
 
 public theorem coverSmallIntegralSingularHomologyIso_hom
@@ -299,8 +299,8 @@ public theorem diskBoundaryToDiskSevenExcisionCoverFalse_comp_inclusion :
 
 /-- The boundary singular chain map factors through the concrete cover-small disk chains. -/
 public noncomputable def diskBoundaryToDiskSevenCoverSmallIntegralSingularChains :
-    IntegralSingularChainComplexObj (TopCat.sphere.{0} 6) ⟶
-      CoverSmallIntegralSingularChainComplex (TopCat.disk.{0} 7) diskSevenExcisionCover :=
+    integralSingularChainComplexObj (TopCat.sphere.{0} 6) ⟶
+      coverSmallIntegralSingularChainComplex (TopCat.disk.{0} 7) diskSevenExcisionCover :=
   integralSingularChainMapObj diskBoundaryToDiskSevenExcisionCoverFalse ≫
     coverMemberToSmallIntegralSingularChains
       (TopCat.disk.{0} 7) diskSevenExcisionCover false
@@ -325,14 +325,14 @@ public theorem diskBoundaryToDiskSevenCoverSmallIntegralSingularChains_comp_incl
   rfl
 
 /-- Cover-small integral singular chains for the concrete disk cover. -/
-public noncomputable abbrev DiskSevenCoverSmallIntegralSingularChainComplex :
+public noncomputable abbrev diskSevenCoverSmallIntegralSingularChainComplex :
     ChainComplex AddCommGrpCat ℕ :=
-  CoverSmallIntegralSingularChainComplex (TopCat.disk.{0} 7) diskSevenExcisionCover
+  coverSmallIntegralSingularChainComplex (TopCat.disk.{0} 7) diskSevenExcisionCover
 
 /-- Inclusion of concrete cover-small disk chains into all disk singular chains. -/
 public noncomputable abbrev diskSevenCoverSmallIntegralSingularChainInclusion :
-    DiskSevenCoverSmallIntegralSingularChainComplex ⟶
-      IntegralSingularChainComplexObj (TopCat.disk.{0} 7) :=
+    diskSevenCoverSmallIntegralSingularChainComplex ⟶
+      integralSingularChainComplexObj (TopCat.disk.{0} 7) :=
   coverSmallIntegralSingularChainInclusion (TopCat.disk.{0} 7) diskSevenExcisionCover
 
 /-- The exact next subdivision theorem for the disk: iterated barycentric subdivision should make
@@ -344,8 +344,8 @@ public def DiskSevenSmallChainApproximation : Prop :=
 homology. -/
 public noncomputable def diskSevenCoverSmallHomologyIso
     (h : DiskSevenSmallChainApproximation) (n : ℕ) :
-    DiskSevenCoverSmallIntegralSingularChainComplex.homology n ≅
-      (IntegralSingularChainComplexObj (TopCat.disk.{0} 7)).homology n :=
+    diskSevenCoverSmallIntegralSingularChainComplex.homology n ≅
+      (integralSingularChainComplexObj (TopCat.disk.{0} 7)).homology n :=
   coverSmallIntegralSingularHomologyIso (TopCat.disk.{0} 7)
     diskSevenExcisionCover h n
 

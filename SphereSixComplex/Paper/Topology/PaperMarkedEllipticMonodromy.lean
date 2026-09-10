@@ -230,9 +230,9 @@ public theorem markedZeroBaseDeck_pow_three :
   have hs : 0 < s := by dsimp [s]; linarith
   have hsr : s < r := by dsimp [s]; linarith
   let E := A.orderThreeBaseRadialEquiv hs hsr hrhalf
-  let xbig : A.orderThreeAffineHalfPlaneBaseLift :=
+  let xbig : A.OrderThreeAffineHalfPlaneBaseLift :=
     ⟨A.markedRegularBaseLift, by simpa [Q.source] using hQhalf 0⟩
-  let xbigg : A.orderThreeAffineHalfPlaneBaseLift :=
+  let xbigg : A.OrderThreeAffineHalfPlaneBaseLift :=
     ⟨actionMap A.regularBaseDeckAction g A.markedRegularBaseLift,
       by simpa [Q.target] using hQhalf 1⟩
   let Qbig : Path xbig xbigg :=
@@ -368,9 +368,9 @@ public theorem markedOneBaseDeck_pow_four :
   have hs : 0 < s := by dsimp [s]; linarith
   have hsr : s < r := by dsimp [s]; linarith
   let E := A.orderFourBaseRadialEquiv hs hsr hrhalf
-  let xbig : A.orderFourAffineHalfPlaneBaseLift :=
+  let xbig : A.OrderFourAffineHalfPlaneBaseLift :=
     ⟨A.markedRegularBaseLift, by simpa [Q.source] using hQhalf 0⟩
-  let xbigg : A.orderFourAffineHalfPlaneBaseLift :=
+  let xbigg : A.OrderFourAffineHalfPlaneBaseLift :=
     ⟨actionMap A.regularBaseDeckAction g A.markedRegularBaseLift,
       by simpa [Q.target] using hQhalf 1⟩
   let Qbig : Path xbig xbigg :=

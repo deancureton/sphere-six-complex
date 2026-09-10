@@ -165,7 +165,7 @@ def circleMappingTorusHighCollarPath
     apply Subtype.ext
     apply Quotient.sound
     apply Relation.EqvGen.rel
-    change finiteBouquetMappingTorusRelation (fun _ : Unit ↦ phi)
+    change FiniteBouquetMappingTorusRel (fun _ : Unit ↦ phi)
       ((), upperParam 1, x) ((), 0, phi x)
     rw [upperParam_one]
     exact Or.inr (Or.inr ⟨rfl, rfl, rfl⟩)

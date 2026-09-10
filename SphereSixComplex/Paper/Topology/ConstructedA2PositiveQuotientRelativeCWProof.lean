@@ -33,7 +33,7 @@ open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 /-- The orbit quotient of the constructed positive part at the quantitative cusp radius. -/
 public abbrev ConstructedA2PositiveQuotient
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :=
   letI := normalizedPositiveDeckAction N constructedModel
@@ -43,8 +43,8 @@ public abbrev ConstructedA2PositiveQuotient
     (constructedLocalPositivePart W.localWitness.radius)
 
 /-- The image of the zero-height honeycomb in the constructed positive quotient. -/
-public abbrev ConstructedA2PositiveQuotientCore
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+public abbrev constructedA2PositiveQuotientCore
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     Set (ConstructedA2PositiveQuotient W) :=
@@ -54,19 +54,19 @@ public abbrev ConstructedA2PositiveQuotientCore
   PolarHoneycombData.orbitCore
     {q : constructedLocalPositivePart W.localWitness.radius |
       constructedModel.t
-        (q : LocalCarrier constructedModel W.localWitness.radius) = 0}
+        (q : localCarrier constructedModel W.localWitness.radius) = 0}
 
 /-- The zero-height fibre is closed in the constructed positive part. -/
 public theorem constructedPositiveCentralFiber_isClosed (r : ℝ) :
     IsClosed {q : constructedLocalPositivePart r |
-      constructedModel.t (q : LocalCarrier constructedModel r) = 0} := by
+      constructedModel.t (q : localCarrier constructedModel r) = 0} := by
   exact isClosed_singleton.preimage
     (constructedModel.t_holomorphic.continuous.comp
       (continuous_subtype_val.comp continuous_subtype_val))
 
 /-- The zero-height fibre is saturated under the normalized positive deck action. -/
 public theorem constructedPositiveDeck_central_preimage
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     letI := normalizedPositiveDeckAction N constructedModel
@@ -77,27 +77,27 @@ public theorem constructedPositiveDeck_central_preimage
       PolarHoneycombData.orbitCore
         {q : constructedLocalPositivePart W.localWitness.radius |
           constructedModel.t
-            (q : LocalCarrier constructedModel W.localWitness.radius) = 0} =
+            (q : localCarrier constructedModel W.localWitness.radius) = 0} =
       {q : constructedLocalPositivePart W.localWitness.radius |
         constructedModel.t
-          (q : LocalCarrier constructedModel W.localWitness.radius) = 0} := by
+          (q : localCarrier constructedModel W.localWitness.radius) = 0} := by
   let _ := normalizedPositiveDeckAction N constructedModel
     (constructedLocalPositivePart W.localWitness.radius)
     (constructedPositiveDeck_mem N W.localWitness.radius)
   let central := {q : constructedLocalPositivePart W.localWitness.radius |
-    constructedModel.t (q : LocalCarrier constructedModel W.localWitness.radius) = 0}
+    constructedModel.t (q : localCarrier constructedModel W.localWitness.radius) = 0}
   have hmem (lambda : ParameterLattice)
       (q : constructedLocalPositivePart W.localWitness.radius) :
       (Multiplicative.ofAdd lambda) • q ∈ central ↔ q ∈ central := by
     change constructedModel.t
         (((Multiplicative.ofAdd lambda) • q :
           constructedLocalPositivePart W.localWitness.radius) :
-          LocalCarrier constructedModel W.localWitness.radius) = 0 ↔
+          localCarrier constructedModel W.localWitness.radius) = 0 ↔
       constructedModel.t
-        (q : LocalCarrier constructedModel W.localWitness.radius) = 0
+        (q : localCarrier constructedModel W.localWitness.radius) = 0
     change constructedModel.t
         (normalizedPositiveDeckLocalMap N constructedModel W.localWitness.radius lambda
-          (q : LocalCarrier constructedModel W.localWitness.radius)) = 0 ↔ _
+          (q : localCarrier constructedModel W.localWitness.radius)) = 0 ↔ _
     simp only [normalizedPositiveDeckLocalMap, normalizedPositiveDeckCarrierMap,
       constructedModel.t_torusAction, normalizedCuspPositiveTwist_last, Units.val_one, one_mul,
       constructedModel.fanShear_preserves_t]
@@ -117,10 +117,10 @@ public theorem constructedPositiveDeck_central_preimage
 
 /-- The central orbit core is closed in the positive quotient. -/
 public theorem constructedPositiveDeck_orbitCore_isClosed
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
-    IsClosed (ConstructedA2PositiveQuotientCore W) := by
+    IsClosed (constructedA2PositiveQuotientCore W) := by
   let _ := normalizedPositiveDeckAction N constructedModel
     (constructedLocalPositivePart W.localWitness.radius)
     (constructedPositiveDeck_mem N W.localWitness.radius)
@@ -132,7 +132,7 @@ public theorem constructedPositiveDeck_orbitCore_isClosed
     PolarHoneycombData.orbitCore
       {q : constructedLocalPositivePart W.localWitness.radius |
         constructedModel.t
-          (q : LocalCarrier constructedModel W.localWitness.radius) = 0})
+          (q : localCarrier constructedModel W.localWitness.radius) = 0})
   rw [constructedPositiveDeck_central_preimage W]
   exact constructedPositiveCentralFiber_isClosed W.localWitness.radius
 
@@ -141,7 +141,7 @@ positive quotient.  Its three fields are intrinsic to the explicit positive tori
 quadrant manifold structure, identification of its boundary with the zero-height fibre, and
 smoothness of the normalized deck transformations. -/
 public structure ConstructedA2PositiveCOneManifoldBoundaryData
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) where
   charts : ChartedSpace (EuclideanQuadrant 3)
@@ -156,7 +156,7 @@ public structure ConstructedA2PositiveCOneManifoldBoundaryData
         (constructedLocalPositivePart W.localWitness.radius) =
       {q : constructedLocalPositivePart W.localWitness.radius |
         constructedModel.t
-          (q : LocalCarrier constructedModel W.localWitness.radius) = 0}
+          (q : localCarrier constructedModel W.localWitness.radius) = 0}
   deck_contMDiff :
     let _ := normalizedPositiveDeckAction N constructedModel
       (constructedLocalPositivePart W.localWitness.radius)
@@ -171,7 +171,7 @@ public structure ConstructedA2PositiveCOneManifoldBoundaryData
 Relative triangulation and preservation of manifold boundary by the quotient local
 diffeomorphism then give the required relative CW structure. -/
 public theorem constructedA2PositiveQuotientRelativeCW_of_cOneManifoldBoundary
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     {W : ActualPuncturedCuspCollarWitness N constructedModel}
     (A : ConstructedA2PositiveCOneManifoldBoundaryData W) :
@@ -213,7 +213,7 @@ public theorem constructedA2PositiveQuotientRelativeCW_of_cOneManifoldBoundary
   have hboundary :
       (modelWithCornersEuclideanQuadrant 3).boundary
           (ConstructedA2PositiveQuotient W) =
-        ConstructedA2PositiveQuotientCore W := by
+        constructedA2PositiveQuotientCore W := by
     apply SphereSixComplex.Geometry.quotientProjection_surjective.preimage_injective
     rw [hboundaryPreimage, A.boundary_eq]
     exact (constructedPositiveDeck_central_preimage W).symm
@@ -224,7 +224,7 @@ public theorem constructedA2PositiveQuotientRelativeCW_of_cOneManifoldBoundary
 /-- The exact locally finite attachment data still needed for the positive quotient.  The core
 closedness and the weak-topology condition are consequences rather than fields. -/
 public structure ConstructedA2PositiveQuotientCWAttachmentData
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) where
   cell : ℕ → Type
@@ -236,15 +236,15 @@ public structure ConstructedA2PositiveQuotientCWAttachmentData
     (Set.univ : Set (Σ n, cell n)).PairwiseDisjoint
       (fun ni ↦ map ni.1 ni.2 '' ball 0 1)
   disjointCore : ∀ n i,
-    Disjoint (map n i '' ball 0 1) (ConstructedA2PositiveQuotientCore W)
+    Disjoint (map n i '' ball 0 1) (constructedA2PositiveQuotientCore W)
   frontier_finite : ∀ n i, ∃ I : Π m, Finset (cell m),
     MapsTo (map n i) (sphere 0 1)
-      (ConstructedA2PositiveQuotientCore W ∪
+      (constructedA2PositiveQuotientCore W ∪
         ⋃ (m < n) (j ∈ I m), map m j '' closedBall 0 1)
   closedCells_locallyFinite :
     LocallyFinite (fun ni : Σ n, cell n ↦ map ni.1 ni.2 '' closedBall 0 1)
   union :
-    ConstructedA2PositiveQuotientCore W ∪
+    constructedA2PositiveQuotientCore W ∪
       ⋃ ni : Σ n, cell n, map ni.1 ni.2 '' closedBall 0 1 = Set.univ
 
 namespace ConstructedA2PositiveQuotientCWAttachmentData
@@ -252,7 +252,7 @@ namespace ConstructedA2PositiveQuotientCWAttachmentData
 /-- Locally finite attachment data assemble into the required relative CW structure. -/
 @[instance_reducible]
 public noncomputable def toRelativeCW
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     {W : ActualPuncturedCuspCollarWitness N constructedModel}
     (A : ConstructedA2PositiveQuotientCWAttachmentData W) :
@@ -284,7 +284,7 @@ end ConstructedA2PositiveQuotientCWAttachmentData
 /-- Existence of explicit locally finite attachments gives component three of the constructed
 polar-honeycomb coordinate package. -/
 public theorem constructedA2PositiveQuotientRelativeCW_of_attachments
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     {W : ActualPuncturedCuspCollarWitness N constructedModel}
     (h : Nonempty (ConstructedA2PositiveQuotientCWAttachmentData W)) :

@@ -17,8 +17,8 @@ variable {HighRelations High Total LowRelations Low : Type*}
 projective. -/
 public noncomputable def linearEquiv
     (P : WangHomologyPresentation HighRelations High Total LowRelations Low)
-    [Module.Projective ℤ P.Invariants] :
-    Total ≃ₗ[ℤ] P.Coinvariants × P.Invariants := by
+    [Module.Projective ℤ P.invariants] :
+    Total ≃ₗ[ℤ] P.Coinvariants × P.invariants := by
   let i := P.coinvariantsToTotal
   let p := P.totalToInvariants
   let splitting := Module.projective_lifting_property p LinearMap.id
@@ -37,14 +37,14 @@ public noncomputable def linearEquiv
   let iEquivRange : P.Coinvariants ≃ₗ[ℤ] LinearMap.range i :=
     LinearEquiv.ofInjective i P.coinvariantsToTotal_injective
   let r : Total →ₗ[ℤ] P.Coinvariants := iEquivRange.symm.toLinearMap.comp residualRange
-  let forward : Total →ₗ[ℤ] P.Coinvariants × P.Invariants := r.prod p
-  let inverse : P.Coinvariants × P.Invariants →ₗ[ℤ] Total := LinearMap.coprod i s
+  let forward : Total →ₗ[ℤ] P.Coinvariants × P.invariants := r.prod p
+  let inverse : P.Coinvariants × P.invariants →ₗ[ℤ] Total := LinearMap.coprod i s
   refine LinearEquiv.ofLinearMap forward inverse ?_ ?_
   · apply LinearMap.ext
     rintro ⟨y, z⟩
     have hpi (y : P.Coinvariants) : p (i y) = 0 := by
       exact P.exact_coinvariantsToTotal_totalToInvariants.apply_apply_eq_zero y
-    have hps (y : P.Invariants) : p (s y) = y := by
+    have hps (y : P.invariants) : p (s y) = y := by
       have hsy := DFunLike.congr_fun hs y
       simpa only [LinearMap.coe_comp, Function.comp_apply, LinearMap.id_coe, id_eq] using hsy
     have hr : r (i y + s z) = y := by
@@ -81,9 +81,9 @@ public noncomputable def linearEquivOfCoordinates
     [AddCommGroup CoinvariantCoordinates] [AddCommGroup InvariantCoordinates]
     [Module.Projective ℤ InvariantCoordinates]
     (coinvariants : P.Coinvariants ≃ₗ[ℤ] CoinvariantCoordinates)
-    (invariants : P.Invariants ≃ₗ[ℤ] InvariantCoordinates) :
+    (invariants : P.invariants ≃ₗ[ℤ] InvariantCoordinates) :
     Total ≃ₗ[ℤ] CoinvariantCoordinates × InvariantCoordinates := by
-  letI : Module.Projective ℤ P.Invariants :=
+  letI : Module.Projective ℤ P.invariants :=
     Module.Projective.of_equiv' invariants.symm
   exact P.linearEquiv.trans
     (coinvariants.prodCongr invariants)

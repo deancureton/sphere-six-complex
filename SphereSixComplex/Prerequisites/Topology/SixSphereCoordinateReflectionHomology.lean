@@ -82,7 +82,7 @@ public noncomputable def boundarySevenProperFacePermOrderIso
 
 /-- The proper-face order complex, the expected barycentric subdivision model of `boundary
 (Delta[7])`. -/
-public abbrev BoundarySevenProperFaceNerve : SSet.{0} :=
+public abbrev boundarySevenProperFaceNerve : SSet.{0} :=
   PartOrd.nerveFunctor.obj (PartOrd.of BoundarySevenProperFace)
 
 /-- Mathlib's available representable case: subdivision of the full standard seven-simplex is
@@ -97,12 +97,12 @@ boundary should be the order complex of nonempty proper faces.  The representabl
 above does not restrict automatically because Mathlib has no general subdivision-to-
 nondegenerate-simplex-poset comparison yet. -/
 public def BoundarySevenSubdivisionProperFaceNerveComparison : Prop :=
-  Nonempty (SSet.sd.obj (∂Δ[7] : SSet.{0}) ≅ BoundarySevenProperFaceNerve)
+  Nonempty (SSet.sd.obj (∂Δ[7] : SSet.{0}) ≅ boundarySevenProperFaceNerve)
 
 /-- Every vertex permutation is an honest simplicial automorphism of the proper-face nerve. -/
 public noncomputable def boundarySevenProperFaceNervePermIso
     (sigma : Equiv.Perm (Fin 8)) :
-    BoundarySevenProperFaceNerve ≅ BoundarySevenProperFaceNerve :=
+    boundarySevenProperFaceNerve ≅ boundarySevenProperFaceNerve :=
   PartOrd.nerveFunctor.mapIso
     (PartOrd.Iso.mk (boundarySevenProperFacePermOrderIso sigma))
 
@@ -118,7 +118,7 @@ public theorem boundarySevenReflectionPermutation_sign :
 
 /-- Its action on the proper-face nerve is a concrete simplicial automorphism. -/
 public noncomputable def boundarySevenProperFaceNerveReflectionIso :
-    BoundarySevenProperFaceNerve ≅ BoundarySevenProperFaceNerve :=
+    boundarySevenProperFaceNerve ≅ boundarySevenProperFaceNerve :=
   boundarySevenProperFaceNervePermIso boundarySevenReflectionPermutation
 
 /-- The affine action of a vertex permutation on the ordinary simplex boundary, conjugated by a

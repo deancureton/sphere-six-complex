@@ -82,9 +82,9 @@ public noncomputable def boundarySevenRealizationHomeomorphTopCatSphereSix :
 
 /-- Degreewise integral singular homology is transported by the preceding homeomorphism. -/
 public noncomputable def boundarySevenRealizationHomologyIsoTopCatSphereSix (k : ℕ) :
-    ((IntegralSingularChainComplexObj
+    ((integralSingularChainComplexObj
       (SSet.toTop.obj (∂Δ[7] : SSet.{0}))).homology k) ≅
-      ((IntegralSingularChainComplexObj (TopCat.sphere.{0} 6)).homology k) :=
+      ((integralSingularChainComplexObj (TopCat.sphere.{0} 6)).homology k) :=
   ((singularHomologyFunctor AddCommGrpCat k).obj
     (AddCommGrpCat.of ℤ)).mapIso
       (TopCat.isoOfHomeo boundarySevenRealizationHomeomorphTopCatSphereSix)
@@ -93,8 +93,8 @@ public noncomputable def boundarySevenRealizationHomologyIsoTopCatSphereSix (k :
 components of the canonical boundary comparison. -/
 public theorem boundarySevenLowIntegralComparison_iff_standardSphereSix_low_isZero :
     BoundarySevenLowIntegralComparison ↔
-      IsZero ((IntegralSingularChainComplexObj (TopCat.sphere.{0} 6)).homology 2) ∧
-      IsZero ((IntegralSingularChainComplexObj (TopCat.sphere.{0} 6)).homology 3) := by
+      IsZero ((integralSingularChainComplexObj (TopCat.sphere.{0} 6)).homology 2) ∧
+      IsZero ((integralSingularChainComplexObj (TopCat.sphere.{0} 6)).homology 3) := by
   rw [boundarySevenLowIntegralComparison_iff_realization_low_isZero]
   constructor
   · rintro ⟨h₂, h₃⟩
@@ -117,8 +117,8 @@ public theorem diskSevenCoverLocalRelativeLowAcyclic_iff_boundarySevenLowIntegra
 degreewise comparison input. -/
 public theorem standardSphereSix_integralSingularHomology_low_isZero_of_boundaryLowComparison
     (h : BoundarySevenLowIntegralComparison) :
-    IsZero ((IntegralSingularChainComplexObj (TopCat.sphere.{0} 6)).homology 2) ∧
-      IsZero ((IntegralSingularChainComplexObj (TopCat.sphere.{0} 6)).homology 3) :=
+    IsZero ((integralSingularChainComplexObj (TopCat.sphere.{0} 6)).homology 2) ∧
+      IsZero ((integralSingularChainComplexObj (TopCat.sphere.{0} 6)).homology 3) :=
   boundarySevenLowIntegralComparison_iff_standardSphereSix_low_isZero.mp h
 
 /-- The same minimal comparison input discharges all four fields of the local relative
@@ -139,7 +139,7 @@ public structure BoundarySevenFaceNeighborhoodCechLowComparison where
       boundarySevenFaceNeighborhoodCechTotal
   augmentation :
     boundarySevenFaceNeighborhoodCechTotal ⟶
-      CoverSmallIntegralSingularChainComplex
+      coverSmallIntegralSingularChainComplex
         (SSet.toTop.obj (∂Δ[7] : SSet.{0}))
         boundarySevenComparisonFaceNeighborhood
   fac : boundaryToCech ≫ augmentation =
@@ -222,8 +222,8 @@ public theorem boundarySevenLowIntegralComparison_of_cechLow
 the two low standard-sphere homology vanishings simultaneously. -/
 public theorem sixSphere_lowHomology_and_diskLocalAcyclic_of_cechLow
     (h : BoundarySevenFaceNeighborhoodCechLowComparison) :
-    (IsZero ((IntegralSingularChainComplexObj (TopCat.sphere.{0} 6)).homology 2) ∧
-      IsZero ((IntegralSingularChainComplexObj (TopCat.sphere.{0} 6)).homology 3)) ∧
+    (IsZero ((integralSingularChainComplexObj (TopCat.sphere.{0} 6)).homology 2) ∧
+      IsZero ((integralSingularChainComplexObj (TopCat.sphere.{0} 6)).homology 3)) ∧
       DiskSevenCoverLocalRelativeLowAcyclic := by
   have hc := boundarySevenLowIntegralComparison_of_cechLow h
   exact ⟨standardSphereSix_integralSingularHomology_low_isZero_of_boundaryLowComparison hc,

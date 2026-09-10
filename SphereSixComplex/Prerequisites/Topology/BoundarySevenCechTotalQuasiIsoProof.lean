@@ -266,7 +266,7 @@ public theorem boundarySevenFaceCechTotalMap_quasiIso :
 
 /-- The canonical integral simplicial-to-singular comparison for the boundary of the
 seven-simplex. -/
-public theorem boundarySeven_integralComparison_proof :
+public theorem BoundarySeven.quasiIso_integral_comparison :
     SimplicialToSingularComparisonQuasiIsomorphism
       (∂Δ[7] : SSet.{0}) (AddCommGrpCat.of ℤ) :=
   boundarySeven_integralComparison_of_faceCechTotalMap_quasiIso
@@ -274,43 +274,43 @@ public theorem boundarySeven_integralComparison_proof :
 
 /-- The completed canonical boundary comparison supplies the full degree theory of the standard
 six-sphere. -/
-public theorem sixSphereDegreeTheory_proof :
+public theorem SixSphere.nonempty_degreeTheory :
     Nonempty OrientedMarkedSmoothHomotopySixSphere.SixSphereDegreeTheory :=
   sixSphereDegreeTheory_of_boundarySevenComparison
-    boundarySeven_integralComparison_proof
+    BoundarySeven.quasiIso_integral_comparison
 
 /-- The low-degree integral comparison used by the disk-cover and Kervaire branches. -/
-public theorem boundarySevenLowIntegralComparison_proof :
+public theorem BoundarySeven.low_integral_comparison :
     BoundarySevenLowIntegralComparison :=
   boundarySevenLowIntegralComparison_of_quasiIso
-    boundarySeven_integralComparison_proof
+    BoundarySeven.quasiIso_integral_comparison
 
 /-- The four local disk-cover relative vanishings follow from the now-unconditional boundary
 comparison. -/
-public theorem diskSevenCoverLocalRelativeLowAcyclic_proof :
+public theorem DiskSeven.cover_local_relative_low_acyclic :
     DiskSevenCoverLocalRelativeLowAcyclic :=
   diskSevenCoverLocalRelativeLowAcyclic_of_boundaryLowComparison
-    boundarySevenLowIntegralComparison_proof
+    BoundarySeven.low_integral_comparison
 
 /-- Hence the explicit cover-small relative disk complex is acyclic in degrees three and four. -/
-public theorem diskSevenCoverSmallRelativeLowAcyclic_proof :
+public theorem DiskSeven.coverSmall_relative_low_acyclic :
     DiskSevenCoverSmallRelativeLowAcyclic :=
   diskSevenCoverSmallRelativeLowAcyclic_of_localAcyclic
-    diskSevenCoverLocalRelativeLowAcyclic_proof
+    DiskSeven.cover_local_relative_low_acyclic
 
 /-- The required middle mod-two homology of the standard six-sphere vanishes. -/
-public theorem sixSphere_modTwoHomology_three_isZero_proof :
+public theorem SixSphere.isZero_modTwoHomology_three :
     IsZero (((singularHomologyFunctor AddCommGrpCat 3).obj
       (AddCommGrpCat.of (ZMod 2))).obj (TopCat.of SixSphere)) :=
   sixSphere_modTwoHomology_three_isZero_of_coverSmallRelative
-    diskSevenCoverSmallRelativeLowAcyclic_proof
+    DiskSeven.coverSmall_relative_low_acyclic
 
 /-- The same mod-two vanishing holds for every marked smooth homotopy six-sphere. -/
-public theorem markedHomotopySixSphere_modTwoHomology_three_isZero_proof
+public theorem OrientedMarkedSmoothHomotopySixSphere.isZero_modTwoHomology_three
     (S : OrientedMarkedSmoothHomotopySixSphere) :
     IsZero (((singularHomologyFunctor AddCommGrpCat 3).obj
       (AddCommGrpCat.of (ZMod 2))).obj (TopCat.of S.carrier)) :=
   markedHomotopySixSphere_modTwoHomology_three_isZero_of_coverSmallRelative
-    diskSevenCoverSmallRelativeLowAcyclic_proof S
+    DiskSeven.coverSmall_relative_low_acyclic S
 
 end SphereSixComplex

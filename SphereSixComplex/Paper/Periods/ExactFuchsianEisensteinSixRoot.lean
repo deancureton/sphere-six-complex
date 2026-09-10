@@ -24,22 +24,22 @@ open SphereSixComplex.TriangleGroup
 open SphereSixComplex.Periods.AnalyticSquareRoot
 
 private def ambientLiftedEisensteinSix
-    (E : EstablishedFuchsianModularParameter) (w : ℂ) : ℂ :=
+    (E : NormalizedFuchsianModularParameter) (w : ℂ) : ℂ :=
   liftedEisensteinSix E (UpperHalfPlane.ofComplex w)
 
 private def rawEisensteinSixDerivativeQuotient
-    (E : EstablishedFuchsianModularParameter) (w : ℂ) : ℂ :=
+    (E : NormalizedFuchsianModularParameter) (w : ℂ) : ℂ :=
   ambientLiftedEisensteinSix E w / ambientEstablishedTauDeriv E w ^ 2
 
 private lemma ambientLiftedEisensteinSix_analyticAt
-    (E : EstablishedFuchsianModularParameter) (z : UpperHalfPlane) :
+    (E : NormalizedFuchsianModularParameter) (z : UpperHalfPlane) :
     AnalyticAt ℂ (ambientLiftedEisensteinSix E) z := by
   have hE6 : MDiff (liftedEisensteinSix E) :=
     (ModularFormClass.holo ModularForm.E₆).comp E.modularParameter.tau_holomorphic
   exact MDifferentiable.analyticAt_comp_ofComplex hE6 z
 
 private lemma sourceCoordinate_eq_liftedEisensteinFour_cube_div
-    (E : EstablishedFuchsianModularParameter) (z : UpperHalfPlane) :
+    (E : NormalizedFuchsianModularParameter) (z : UpperHalfPlane) :
     E.sourceCoordinate.coordinate z =
       liftedEisensteinFour E z ^ 3 /
         (1728 * liftedModularDiscriminant E z) := by
@@ -49,7 +49,7 @@ private lemma sourceCoordinate_eq_liftedEisensteinFour_cube_div
   field_simp [ModularForm.discriminant_ne_zero]
 
 private lemma liftedEisensteinSix_sq_eq_sourceCoordinate
-    (E : EstablishedFuchsianModularParameter) (z : UpperHalfPlane) :
+    (E : NormalizedFuchsianModularParameter) (z : UpperHalfPlane) :
     liftedEisensteinSix E z ^ 2 =
       1728 * liftedModularDiscriminant E z *
         (E.sourceCoordinate.coordinate z - 1) := by
@@ -78,7 +78,7 @@ private lemma liftedEisensteinSix_sq_eq_sourceCoordinate
       ring
 
 private lemma ambientLiftedEisensteinSix_zero_iff
-    (E : EstablishedFuchsianModularParameter) (z : UpperHalfPlane) :
+    (E : NormalizedFuchsianModularParameter) (z : UpperHalfPlane) :
     ambientLiftedEisensteinSix E z = 0 ↔
       E.sourceCoordinate.coordinate z = 1 := by
   have hdisc : liftedModularDiscriminant E z ≠ 0 :=
@@ -89,7 +89,7 @@ private lemma ambientLiftedEisensteinSix_zero_iff
   simp only [mul_eq_zero, OfNat.ofNat_ne_zero, hdisc, false_or, sub_eq_zero]
 
 private lemma ambientLiftedEisensteinSix_analyticOrderAt_of_coordinate_eq_one
-    (E : EstablishedFuchsianModularParameter) (z : UpperHalfPlane)
+    (E : NormalizedFuchsianModularParameter) (z : UpperHalfPlane)
     (hz : E.sourceCoordinate.coordinate z = 1) :
     analyticOrderAt (ambientLiftedEisensteinSix E) z = (2 : ℕ∞) := by
   let C1 : ℂ → ℂ := fun w ↦
@@ -129,7 +129,7 @@ private lemma ambientLiftedEisensteinSix_analyticOrderAt_of_coordinate_eq_one
   convert hord using 1 <;> norm_num
 
 private lemma ambientLiftedEisensteinSix_analyticOrderAt
-    (E : EstablishedFuchsianModularParameter) (z : UpperHalfPlane) :
+    (E : NormalizedFuchsianModularParameter) (z : UpperHalfPlane) :
     analyticOrderAt (ambientLiftedEisensteinSix E) z =
       if E.sourceCoordinate.coordinate z = 1 then (2 : ℕ∞) else 0 := by
   by_cases hz : E.sourceCoordinate.coordinate z = 1
@@ -140,7 +140,7 @@ private lemma ambientLiftedEisensteinSix_analyticOrderAt
       ((ambientLiftedEisensteinSix_zero_iff E z).not.mpr hz)
 
 private lemma rawEisensteinSixDerivativeQuotient_meromorphicOn
-    (E : EstablishedFuchsianModularParameter) :
+    (E : NormalizedFuchsianModularParameter) :
     MeromorphicOn (rawEisensteinSixDerivativeQuotient E)
       UpperHalfPlane.upperHalfPlaneSet := by
   intro w hw
@@ -152,7 +152,7 @@ private lemma rawEisensteinSixDerivativeQuotient_meromorphicOn
   exact hF.meromorphicAt.div (hD.pow 2).meromorphicAt
 
 private lemma rawEisensteinSixDerivativeQuotient_order_zero
-    (E : EstablishedFuchsianModularParameter) (w : ℂ)
+    (E : NormalizedFuchsianModularParameter) (w : ℂ)
     (hw : w ∈ UpperHalfPlane.upperHalfPlaneSet) :
     meromorphicOrderAt (rawEisensteinSixDerivativeQuotient E) w = 0 := by
   let z : UpperHalfPlane := ⟨w, hw⟩
@@ -176,7 +176,7 @@ private lemma rawEisensteinSixDerivativeQuotient_order_zero
 /-- A global holomorphic square root of the weight-six Eisenstein series pulled back by the
 established Fuchsian modular parameter. -/
 public structure ExactFuchsianEisensteinSixRoot
-    (E : EstablishedFuchsianModularParameter) where
+    (E : NormalizedFuchsianModularParameter) where
   /-- The selected global square root. -/
   root : UpperHalfPlane → ℂ
   /-- Holomorphicity of the selected root. -/
@@ -187,7 +187,7 @@ public structure ExactFuchsianEisensteinSixRoot
 /-- The pulled-back weight-six Eisenstein series has a global holomorphic square root on the
 Fuchsian upper half-plane. -/
 public theorem exists_exactFuchsianEisensteinSixRoot
-    (E : EstablishedFuchsianModularParameter) :
+    (E : NormalizedFuchsianModularParameter) :
     Nonempty (ExactFuchsianEisensteinSixRoot E) := by
   let U : Set ℂ := UpperHalfPlane.upperHalfPlaneSet
   let raw : ℂ → ℂ := rawEisensteinSixDerivativeQuotient E
@@ -248,7 +248,7 @@ public theorem exists_exactFuchsianEisensteinSixRoot
 
 /-- Existential form of `exists_exactFuchsianEisensteinSixRoot`. -/
 public theorem exists_globalEisensteinSixRoot
-    (E : EstablishedFuchsianModularParameter) :
+    (E : NormalizedFuchsianModularParameter) :
     ∃ s : UpperHalfPlane → ℂ,
       MDiff s ∧ ∀ z, s z ^ 2 = liftedEisensteinSix E z := by
   obtain ⟨S⟩ := exists_exactFuchsianEisensteinSixRoot E

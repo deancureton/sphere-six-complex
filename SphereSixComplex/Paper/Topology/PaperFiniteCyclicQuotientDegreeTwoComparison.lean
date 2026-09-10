@@ -72,10 +72,10 @@ public theorem projection_conjugacy_apply
 end DegreeTwoPullbackRealization
 
 /-- The two order-three pullback classes used in the paper's degree-two matrix. -/
-public def orderThreePullbackInvariantZero : OrderThreeDegreeTwoInvariants :=
+public def orderThreePullbackInvariantZero : orderThreeDegreeTwoInvariants :=
   ⟨1 • gammaEpsilonOne + 0 • qClass, orderThree_combination_fixed 1 0⟩
 
-public def orderThreePullbackInvariantOne : OrderThreeDegreeTwoInvariants :=
+public def orderThreePullbackInvariantOne : orderThreeDegreeTwoInvariants :=
   ⟨(-2 : ℤ) • gammaEpsilonOne + 1 • qClass, orderThree_combination_fixed (-2) 1⟩
 
 public def orderThreePullbackClasses :
@@ -84,10 +84,10 @@ public def orderThreePullbackClasses :
     ⟨orderThreePullbackInvariantOne, Submodule.mem_top⟩]
 
 /-- The two order-four pullback classes form the parity sublattice from Proposition 7.14. -/
-public def orderFourPullbackInvariantZero : OrderFourDegreeTwoInvariants :=
+public def orderFourPullbackInvariantZero : orderFourDegreeTwoInvariants :=
   ⟨2 • gammaEpsilonTwo + 0 • qClass, orderFour_combination_fixed 2 0⟩
 
-public def orderFourPullbackInvariantOne : OrderFourDegreeTwoInvariants :=
+public def orderFourPullbackInvariantOne : orderFourDegreeTwoInvariants :=
   ⟨(-3 : ℤ) • gammaEpsilonTwo + 1 • qClass, orderFour_combination_fixed (-3) 1⟩
 
 public theorem orderFourPullbackInvariantZero_mem :

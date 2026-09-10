@@ -217,14 +217,14 @@ public theorem continuous_collapseToOnePointComplement [T2Space X]
 
 /-- Reduced singular chains based at `b`, modeled as the cokernel of the singular chains of the
 basepoint inclusion. -/
-public noncomputable abbrev ReducedIntegralSingularChainComplex
+public noncomputable abbrev reducedIntegralSingularChainComplex
     {Q : TopCat} (b : TopCat.of PUnit ⟶ Q) : ChainComplex AddCommGrpCat ℕ :=
-  RelativeIntegralSingularChainComplex b
+  relativeIntegralSingularChainComplex b
 
 /-- The quotient singular-chain map followed by projection away from the collapsed basepoint. -/
 public noncomputable def collapseAmbientToReducedChains (a : A) :
-    IntegralSingularChainComplexObj X ⟶
-      ReducedIntegralSingularChainComplex (collapseQuotientBasepoint i a) :=
+    integralSingularChainComplexObj X ⟶
+      reducedIntegralSingularChainComplex (collapseQuotientBasepoint i a) :=
   integralSingularChainMapObj (collapseQuotientMap i) ≫
     relativeIntegralSingularChainProjection (collapseQuotientBasepoint i a)
 
@@ -250,8 +250,8 @@ public theorem collapseAmbientToReducedChains_comp_subspace (a : A) :
 
 /-- The canonical chain map from relative chains to reduced chains of the collapse quotient. -/
 public noncomputable def relativeChainsToReducedCollapseChains (a : A) :
-    RelativeIntegralSingularChainComplex i ⟶
-      ReducedIntegralSingularChainComplex (collapseQuotientBasepoint i a) :=
+    relativeIntegralSingularChainComplex i ⟶
+      reducedIntegralSingularChainComplex (collapseQuotientBasepoint i a) :=
   cokernel.desc (integralSingularChainMapObj i)
     (collapseAmbientToReducedChains i a)
     (collapseAmbientToReducedChains_comp_subspace i a)
@@ -271,12 +271,12 @@ public noncomputable abbrev DiskBoundaryQuotientSeven :=
   CollapseQuotient (TopCat.diskBoundaryInclusion.{0} 7)
 
 /-- The topological quotient `D⁷/S⁶`. -/
-public noncomputable abbrev DiskBoundaryQuotientSevenObj :=
+public noncomputable abbrev diskBoundaryQuotientSevenObj :=
   collapseQuotientObj (TopCat.diskBoundaryInclusion.{0} 7)
 
 /-- The quotient map `D⁷ ⟶ D⁷/S⁶`. -/
 public noncomputable abbrev diskBoundaryQuotientSevenMap :
-    TopCat.disk.{0} 7 ⟶ DiskBoundaryQuotientSevenObj :=
+    TopCat.disk.{0} 7 ⟶ diskBoundaryQuotientSevenObj :=
   collapseQuotientMap (TopCat.diskBoundaryInclusion.{0} 7)
 
 /-- The canonical disk-collapse map is a quotient map. -/
@@ -291,7 +291,7 @@ public noncomputable def diskBoundarySevenBasepoint : TopCat.diskBoundary.{0} 7 
 
 /-- The distinguished collapsed boundary point of `D⁷/S⁶`. -/
 public noncomputable abbrev diskBoundaryQuotientSevenBasepoint :
-    TopCat.of PUnit ⟶ DiskBoundaryQuotientSevenObj :=
+    TopCat.of PUnit ⟶ diskBoundaryQuotientSevenObj :=
   collapseQuotientBasepoint (TopCat.diskBoundaryInclusion.{0} 7) diskBoundarySevenBasepoint
 
 /-- Every boundary point maps to the distinguished collapsed point. -/
@@ -454,7 +454,7 @@ public noncomputable def diskBoundaryQuotientSevenHomeomorphSphereSeven
 
 /-- The collapse quotient as a categorical space is isomorphic to the standard seven-sphere. -/
 public noncomputable def diskBoundaryQuotientSevenSphereIso :
-    DiskBoundaryQuotientSevenObj ≅ TopCat.sphere.{0} 7 :=
+    diskBoundaryQuotientSevenObj ≅ TopCat.sphere.{0} 7 :=
   TopCat.isoOfHomeo diskBoundaryQuotientSevenHomeomorphSphereSeven
 
 /-- The image on the sphere of the collapsed boundary basepoint. -/
@@ -474,12 +474,12 @@ public theorem diskBoundaryQuotientSevenSphereIso_basepoint :
 /-- Reduced singular chains of the quotient are isomorphic to reduced singular chains of the
 standard seven-sphere, based at the image of the collapsed boundary. -/
 public noncomputable def reducedDiskBoundaryQuotientChainsIsoReducedSphereSevenChains :
-    ReducedIntegralSingularChainComplex diskBoundaryQuotientSevenBasepoint ≅
-      ReducedIntegralSingularChainComplex sphereSevenCollapsedBoundaryBasepoint := by
+    reducedIntegralSingularChainComplex diskBoundaryQuotientSevenBasepoint ≅
+      reducedIntegralSingularChainComplex sphereSevenCollapsedBoundaryBasepoint := by
   let F := (singularChainComplexFunctor AddCommGrpCat).obj (AddCommGrpCat.of ℤ)
   exact cokernel.mapIso (integralSingularChainMapObj diskBoundaryQuotientSevenBasepoint)
     (integralSingularChainMapObj sphereSevenCollapsedBoundaryBasepoint)
-    (Iso.refl (IntegralSingularChainComplexObj (TopCat.of PUnit)))
+    (Iso.refl (integralSingularChainComplexObj (TopCat.of PUnit)))
     (F.mapIso diskBoundaryQuotientSevenSphereIso) (by
       change F.map diskBoundaryQuotientSevenBasepoint ≫
           F.map diskBoundaryQuotientSevenSphereIso.hom =
@@ -489,16 +489,16 @@ public noncomputable def reducedDiskBoundaryQuotientChainsIsoReducedSphereSevenC
 
 /-- The canonical relative-to-reduced chain comparison for the pair `(D⁷,S⁶)`. -/
 public noncomputable abbrev diskSevenRelativeChainsToReducedQuotientChains :
-    DiskSevenSphereSixRelativeIntegralSingularChainComplex ⟶
-      ReducedIntegralSingularChainComplex diskBoundaryQuotientSevenBasepoint :=
+    diskSevenSphereSixRelativeIntegralSingularChainComplex ⟶
+      reducedIntegralSingularChainComplex diskBoundaryQuotientSevenBasepoint :=
   relativeChainsToReducedCollapseChains
     (TopCat.diskBoundaryInclusion.{0} 7) diskBoundarySevenBasepoint
 
 /-- The canonical comparison transported along `D⁷/S⁶ ≃ₜ S⁷`, now landing in reduced
 singular chains of the standard seven-sphere. -/
 public noncomputable def diskSevenRelativeChainsToReducedSphereSevenChains :
-    DiskSevenSphereSixRelativeIntegralSingularChainComplex ⟶
-      ReducedIntegralSingularChainComplex sphereSevenCollapsedBoundaryBasepoint :=
+    diskSevenSphereSixRelativeIntegralSingularChainComplex ⟶
+      reducedIntegralSingularChainComplex sphereSevenCollapsedBoundaryBasepoint :=
   diskSevenRelativeChainsToReducedQuotientChains ≫
     reducedDiskBoundaryQuotientChainsIsoReducedSphereSevenChains.hom
 

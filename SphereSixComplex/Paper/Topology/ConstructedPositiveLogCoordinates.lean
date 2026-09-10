@@ -11,18 +11,18 @@ namespace SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Periods CuspFilling CuspLocalPhaseAction CuspPuncturedCollarBridge
 open CuspPeriodExpansion CuspStraighteningRetraction CuspStraighteningAlgebra
 open CuspStraighteningHomeomorph InfiniteA2Toric.QuantitativeRegions
-open CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+open CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
 
-theorem positiveDeck_preserves_height (lambda : ParameterLattice) (p : LocalCarrier M r) :
+theorem positiveDeck_preserves_height (lambda : ParameterLattice) (p : localCarrier M r) :
     M.t (normalizedPositiveDeckLocalMap N M r lambda p) = M.t p := by
   change M.t (M.torusAction _ (Additive.toMul (M.fanShear lambda) p.1)) = _
   rw [M.t_torusAction, normalizedCuspPositiveTwist_last]
   simp only [Units.val_one, one_mul, M.fanShear_preserves_t]
 
 theorem positiveDeck_torusCoordinates (lambda : ParameterLattice)
-    (p : LocalCarrier M r) (hp : M.t p ≠ 0) :
+    (p : localCarrier M r) (hp : M.t p ≠ 0) :
     torusCoordinates M (normalizedPositiveDeckLocalMap N M r lambda p) =
       normalizedCuspPositiveTwist N lambda * denseTorusShear lambda (torusCoordinates M p) := by
   apply M.torus_openEmbedding.injective
@@ -32,10 +32,10 @@ theorem positiveDeck_torusCoordinates (lambda : ParameterLattice)
   rw [torusEmbedding_torusCoordinates M hp]
 
 theorem positiveDeck_logCoordinate (lambda : ParameterLattice)
-    (p : LocalCarrier M r) (hp : M.t p ≠ 0) (i : Fin 2) :
+    (p : localCarrier M r) (hp : M.t p ≠ 0) (i : Fin 2) :
     Real.log ‖(torusCoordinates M (normalizedPositiveDeckLocalMap N M r lambda p)
       i.castSucc : ℂ)‖ =
-    (phaseLogMatrix N 0).mulVec (realParameter lambda) i +
+    (NormalizedFuchsianCuspCoordinate.phaseLogMatrix N 0).mulVec (CuspPhaseEstimates.realParameter lambda) i +
       Real.log ‖(torusCoordinates M p i.castSucc : ℂ)‖ +
         (shearVector lambda i : ℝ) * Real.log ‖M.t p‖ := by
   rw [positiveDeck_torusCoordinates lambda p hp]
@@ -55,7 +55,7 @@ theorem positiveDeck_logCoordinate (lambda : ParameterLattice)
   ring
 
 theorem positiveDeck_rescaledPosition (hr : r < 1) (lambda : ParameterLattice)
-    (p : LocalCarrier M r) (hp : M.t p ≠ 0) :
+    (p : localCarrier M r) (hp : M.t p ≠ 0) :
     rescaledPosition M (normalizedPositiveDeckLocalMap N M r lambda p) =
       rescaledPosition M p + frozenEffectiveFanDisplacement N (M.t p)
         (fun i ↦ (shearVector lambda i : ℝ)) := by
@@ -81,7 +81,7 @@ def positivePuncturedDeck (W : ActualPuncturedCuspCollarWitness N M)
 theorem positiveLogPeriodCoordinate_deck (W : ActualPuncturedCuspCollarWitness N M)
     (lambda : ParameterLattice) (p : PuncturedLocalCarrier W) :
     positiveLogPeriodCoordinate W (positivePuncturedDeck W lambda p) =
-      positiveLogPeriodCoordinate W p + realParameter lambda := by
+      positiveLogPeriodCoordinate W p + CuspPhaseEstimates.realParameter lambda := by
   unfold positiveLogPeriodCoordinate
   change CuspFillingRadialCompactness.realFanShearInverse
     ((frozenDisplacementMatrix N (M.t (normalizedPositiveDeckLocalMap N M
@@ -232,7 +232,7 @@ theorem positiveInteriorLogProduct_deck
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     (lambda : ParameterLattice) (q : constructedA2PositiveOffCentral W.localWitness.radius) :
     positiveInteriorLogProduct W (positiveOffCentralDeck W lambda q) =
-      ((positiveInteriorLogProduct W q).1 + realParameter lambda,
+      ((positiveInteriorLogProduct W q).1 + CuspPhaseEstimates.realParameter lambda,
         (positiveInteriorLogProduct W q).2) := by
   apply Prod.ext
   · rw [positiveInteriorLogProduct_first, positiveInteriorLogProduct_first]
@@ -247,7 +247,7 @@ theorem positiveOffCentralDeck_eq_iff_logProduct
     (lambda : ParameterLattice) (p q : constructedA2PositiveOffCentral W.localWitness.radius) :
     positiveOffCentralDeck W lambda p = q ↔
       (positiveInteriorLogProduct W q).1 =
-          (positiveInteriorLogProduct W p).1 + realParameter lambda ∧
+          (positiveInteriorLogProduct W p).1 + CuspPhaseEstimates.realParameter lambda ∧
         (positiveInteriorLogProduct W q).2 = (positiveInteriorLogProduct W p).2 := by
   rw [← (positiveInteriorLogProduct W).injective.eq_iff,
     positiveInteriorLogProduct_deck, Prod.mk.injEq]

@@ -202,7 +202,7 @@ public theorem familyTranslationCover_contMDiff
     (s : UpperHalfPlane → ComplexTwoSpace)
     (hs : ContMDiff (modelWithCornersSelf ℂ ℂ)
       (modelWithCornersSelf ℂ ComplexTwoSpace) n s) :
-    ContMDiff GlobalDeckTotalModel GlobalDeckTotalModel n (familyTranslationCover s) := by
+    ContMDiff globalDeckTotalModel globalDeckTotalModel n (familyTranslationCover s) := by
   exact contMDiff_fst.prodMk ((hs.comp contMDiff_fst).add contMDiff_snd)
 
 /-- Smooth fibre translations on the cover descend through the locally biholomorphic family
@@ -212,24 +212,24 @@ public theorem familyTranslationMap_contMDiff_of_projection_isLocalDiffeomorph
     (hs : ContMDiff (modelWithCornersSelf ℂ ℂ)
       (modelWithCornersSelf ℂ ComplexTwoSpace) n s)
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    [IsManifold GlobalDeckTotalModel n (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel n
+    [IsManifold globalDeckTotalModel n (TotalSpace (parameterMap F))]
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
       (projection (parameterMap F))) :
-    ContMDiff GlobalDeckTotalModel GlobalDeckTotalModel n (familyTranslationMap F s) := by
+    ContMDiff globalDeckTotalModel globalDeckTotalModel n (familyTranslationMap F s) := by
   intro q
   induction q using Quotient.inductionOn with
   | _ p =>
     let π : UpperHalfPlane × ComplexTwoSpace → TotalSpace (parameterMap F) :=
       projection (parameterMap F)
     let loc := (hprojection p).localInverse
-    have hlocal : ContMDiffAt GlobalDeckTotalModel GlobalDeckTotalModel n loc (π p) :=
+    have hlocal : ContMDiffAt globalDeckTotalModel globalDeckTotalModel n loc (π p) :=
       (hprojection p).localInverse_contMDiffAt
     have hlocalp : loc (π p) = p :=
       (hprojection p).localInverse_left_inv (hprojection p).localInverse_mem_target
-    have hcover : ContMDiffAt GlobalDeckTotalModel GlobalDeckTotalModel n
+    have hcover : ContMDiffAt globalDeckTotalModel globalDeckTotalModel n
         (familyTranslationCover s ∘ loc) (π p) :=
       (familyTranslationCover_contMDiff s hs).contMDiffAt.comp (π p) hlocal
-    have hrhs : ContMDiffAt GlobalDeckTotalModel GlobalDeckTotalModel n
+    have hrhs : ContMDiffAt globalDeckTotalModel globalDeckTotalModel n
         (π ∘ familyTranslationCover s ∘ loc) (π p) :=
       (hprojection (familyTranslationCover s p)).contMDiffAt.comp_of_eq hcover (by
         simp [hlocalp])
@@ -382,10 +382,10 @@ public theorem orderFourAffineFamilyGenerator_pow :
 
 public theorem orderThreeAffineFamilyGenerator_contMDiff
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    [IsManifold GlobalDeckTotalModel n (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel n
+    [IsManifold globalDeckTotalModel n (TotalSpace (parameterMap F))]
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
       (projection (parameterMap F))) :
-    ContMDiff GlobalDeckTotalModel GlobalDeckTotalModel n
+    ContMDiff globalDeckTotalModel globalDeckTotalModel n
       (orderThreeAffineFamilyGenerator F) := by
   exact (familyTranslationMap_contMDiff_of_projection_isLocalDiffeomorph F
     (orderThreeTwistSection F) (orderThreeTwistSection_contMDiff F n) hprojection).comp
@@ -393,10 +393,10 @@ public theorem orderThreeAffineFamilyGenerator_contMDiff
 
 public theorem orderFourAffineFamilyGenerator_contMDiff
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    [IsManifold GlobalDeckTotalModel n (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel n
+    [IsManifold globalDeckTotalModel n (TotalSpace (parameterMap F))]
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
       (projection (parameterMap F))) :
-    ContMDiff GlobalDeckTotalModel GlobalDeckTotalModel n
+    ContMDiff globalDeckTotalModel globalDeckTotalModel n
       (orderFourAffineFamilyGenerator F) := by
   exact (familyTranslationMap_contMDiff_of_projection_isLocalDiffeomorph F
     (orderFourTwistSection F) (orderFourTwistSection_contMDiff F n) hprojection).comp
@@ -404,13 +404,13 @@ public theorem orderFourAffineFamilyGenerator_contMDiff
 
 public theorem orderThreeAffineFamilyRepresentation_contMDiff
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    [IsManifold GlobalDeckTotalModel n (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel n
+    [IsManifold globalDeckTotalModel n (TotalSpace (parameterMap F))]
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
       (projection (parameterMap F))) (g : FiniteCyclic 3) :
-    ContMDiff GlobalDeckTotalModel GlobalDeckTotalModel n
+    ContMDiff globalDeckTotalModel globalDeckTotalModel n
       (orderThreeAffineFamilyRepresentation F g) := by
   rw [cyclic_eq_generator_pow g, map_pow]
-  change ContMDiff GlobalDeckTotalModel GlobalDeckTotalModel n
+  change ContMDiff globalDeckTotalModel globalDeckTotalModel n
     ((orderThreeAffineFamilyGenerator F) ^ (Multiplicative.toAdd g).val)
   simpa only [Equiv.Perm.iterate_eq_pow] using
     (orderThreeAffineFamilyGenerator_contMDiff F hprojection).iterate
@@ -418,13 +418,13 @@ public theorem orderThreeAffineFamilyRepresentation_contMDiff
 
 public theorem orderFourAffineFamilyRepresentation_contMDiff
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    [IsManifold GlobalDeckTotalModel n (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel n
+    [IsManifold globalDeckTotalModel n (TotalSpace (parameterMap F))]
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
       (projection (parameterMap F))) (g : FiniteCyclic 4) :
-    ContMDiff GlobalDeckTotalModel GlobalDeckTotalModel n
+    ContMDiff globalDeckTotalModel globalDeckTotalModel n
       (orderFourAffineFamilyRepresentation F g) := by
   rw [cyclic_eq_generator_pow g, map_pow]
-  change ContMDiff GlobalDeckTotalModel GlobalDeckTotalModel n
+  change ContMDiff globalDeckTotalModel globalDeckTotalModel n
     ((orderFourAffineFamilyGenerator F) ^ (Multiplicative.toAdd g).val)
   simpa only [Equiv.Perm.iterate_eq_pow] using
     (orderFourAffineFamilyGenerator_contMDiff F hprojection).iterate
@@ -754,19 +754,19 @@ the canonical family manifold structure. -/
 public theorem orderThreeVaryingFamilyQuotient_isManifold
     (hsource : U.sourceAction = fuchsianSourceAction)
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    [IsManifold GlobalDeckTotalModel n (TotalSpace (parameterMap F))]
+    [IsManifold globalDeckTotalModel n (TotalSpace (parameterMap F))]
     [T2Space (TotalSpace (parameterMap F))]
     [LocallyCompactSpace (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel n
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
       (projection (parameterMap F))) :
     letI := orderThreeAffineFamilyAction F
     letI := orderThreeAffineFamilyAction_free F hsource
     letI := orderThreeAffineFamilyAction_properlyDiscontinuous F
     letI : ContinuousConstSMul (FiniteCyclic 3) (TotalSpace (parameterMap F)) :=
       ⟨fun g ↦ (orderThreeAffineFamilyRepresentation_contMDiff F hprojection g).continuous⟩
-    IsManifold GlobalDeckTotalModel n
+    IsManifold globalDeckTotalModel n
         (OrbitQuotient (M := TotalSpace (parameterMap F)) (G := FiniteCyclic 3)) ∧
-      IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel n
+      IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
         (quotientProjection (M := TotalSpace (parameterMap F)) (G := FiniteCyclic 3)) := by
   let _ := orderThreeAffineFamilyAction F
   let _ : IsCancelSMul (FiniteCyclic 3) (TotalSpace (parameterMap F)) :=
@@ -776,7 +776,7 @@ public theorem orderThreeVaryingFamilyQuotient_isManifold
   let _ : ContinuousConstSMul (FiniteCyclic 3) (TotalSpace (parameterMap F)) :=
     ⟨fun g ↦ (orderThreeAffineFamilyRepresentation_contMDiff F hprojection g).continuous⟩
   exact orbitQuotient_isManifold_and_projection_isLocalDiffeomorph_of_contMDiff_smul
-    GlobalDeckTotalModel n
+    globalDeckTotalModel n
       (orderThreeAffineFamilyRepresentation_contMDiff F hprojection)
 
 /-- The analogous order-four finite quotient is a complex manifold with locally biholomorphic
@@ -784,19 +784,19 @@ quotient projection. -/
 public theorem orderFourVaryingFamilyQuotient_isManifold
     (hsource : U.sourceAction = fuchsianSourceAction)
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    [IsManifold GlobalDeckTotalModel n (TotalSpace (parameterMap F))]
+    [IsManifold globalDeckTotalModel n (TotalSpace (parameterMap F))]
     [T2Space (TotalSpace (parameterMap F))]
     [LocallyCompactSpace (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel n
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
       (projection (parameterMap F))) :
     letI := orderFourAffineFamilyAction F
     letI := orderFourAffineFamilyAction_free F hsource
     letI := orderFourAffineFamilyAction_properlyDiscontinuous F
     letI : ContinuousConstSMul (FiniteCyclic 4) (TotalSpace (parameterMap F)) :=
       ⟨fun g ↦ (orderFourAffineFamilyRepresentation_contMDiff F hprojection g).continuous⟩
-    IsManifold GlobalDeckTotalModel n
+    IsManifold globalDeckTotalModel n
         (OrbitQuotient (M := TotalSpace (parameterMap F)) (G := FiniteCyclic 4)) ∧
-      IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel n
+      IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
         (quotientProjection (M := TotalSpace (parameterMap F)) (G := FiniteCyclic 4)) := by
   let _ := orderFourAffineFamilyAction F
   let _ : IsCancelSMul (FiniteCyclic 4) (TotalSpace (parameterMap F)) :=
@@ -806,7 +806,7 @@ public theorem orderFourVaryingFamilyQuotient_isManifold
   let _ : ContinuousConstSMul (FiniteCyclic 4) (TotalSpace (parameterMap F)) :=
     ⟨fun g ↦ (orderFourAffineFamilyRepresentation_contMDiff F hprojection g).continuous⟩
   exact orbitQuotient_isManifold_and_projection_isLocalDiffeomorph_of_contMDiff_smul
-    GlobalDeckTotalModel n
+    globalDeckTotalModel n
       (orderFourAffineFamilyRepresentation_contMDiff F hprojection)
 
 /-- Unconditional complex-manifold construction of the direct order-three varying-family
@@ -820,19 +820,19 @@ public theorem orderThreeVaryingFamilyQuotient_isManifold_actual
     letI := familyProperlyDiscontinuousSMul (parameterMap F)
       (compactlyUniformPeriods_of_compactUniformLowerBound (parameterMap F)
         (parameterMap_compactUniformLowerBound F))
-    letI : IsManifold GlobalDeckTotalModel ω (TotalSpace (parameterMap F)) :=
+    letI : IsManifold globalDeckTotalModel ω (TotalSpace (parameterMap F)) :=
       (totalSpace_isManifold_and_projection_isLocalDiffeomorph F ω).1
     letI : LocallyCompactSpace (TotalSpace (parameterMap F)) :=
-      Manifold.locallyCompact_of_finiteDimensional GlobalDeckTotalModel
+      Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
     letI := orderThreeAffineFamilyAction F
     letI := orderThreeAffineFamilyAction_free F hsource
     letI := orderThreeAffineFamilyAction_properlyDiscontinuous F
     letI : ContinuousConstSMul (FiniteCyclic 3) (TotalSpace (parameterMap F)) :=
       ⟨fun g ↦ (orderThreeAffineFamilyRepresentation_contMDiff F
         (totalSpace_isManifold_and_projection_isLocalDiffeomorph F ω).2 g).continuous⟩
-    IsManifold GlobalDeckTotalModel ω
+    IsManifold globalDeckTotalModel ω
         (OrbitQuotient (M := TotalSpace (parameterMap F)) (G := FiniteCyclic 3)) ∧
-      IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+      IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
         (quotientProjection (M := TotalSpace (parameterMap F)) (G := FiniteCyclic 3)) := by
   let _ := familyIsCancelSMul (parameterMap F)
   let _ := familyContinuousConstSMul (parameterMap F)
@@ -841,9 +841,9 @@ public theorem orderThreeVaryingFamilyQuotient_isManifold_actual
     (compactlyUniformPeriods_of_compactUniformLowerBound (parameterMap F)
       (parameterMap_compactUniformLowerBound F))
   have htotal := totalSpace_isManifold_and_projection_isLocalDiffeomorph F ω
-  let _ : IsManifold GlobalDeckTotalModel ω (TotalSpace (parameterMap F)) := htotal.1
+  let _ : IsManifold globalDeckTotalModel ω (TotalSpace (parameterMap F)) := htotal.1
   let _ : LocallyCompactSpace (TotalSpace (parameterMap F)) :=
-    Manifold.locallyCompact_of_finiteDimensional GlobalDeckTotalModel
+    Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
   exact orderThreeVaryingFamilyQuotient_isManifold F hsource htotal.2
 
 /-- Unconditional complex-manifold construction of the direct order-four varying-family
@@ -856,19 +856,19 @@ public theorem orderFourVaryingFamilyQuotient_isManifold_actual
     letI := familyProperlyDiscontinuousSMul (parameterMap F)
       (compactlyUniformPeriods_of_compactUniformLowerBound (parameterMap F)
         (parameterMap_compactUniformLowerBound F))
-    letI : IsManifold GlobalDeckTotalModel ω (TotalSpace (parameterMap F)) :=
+    letI : IsManifold globalDeckTotalModel ω (TotalSpace (parameterMap F)) :=
       (totalSpace_isManifold_and_projection_isLocalDiffeomorph F ω).1
     letI : LocallyCompactSpace (TotalSpace (parameterMap F)) :=
-      Manifold.locallyCompact_of_finiteDimensional GlobalDeckTotalModel
+      Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
     letI := orderFourAffineFamilyAction F
     letI := orderFourAffineFamilyAction_free F hsource
     letI := orderFourAffineFamilyAction_properlyDiscontinuous F
     letI : ContinuousConstSMul (FiniteCyclic 4) (TotalSpace (parameterMap F)) :=
       ⟨fun g ↦ (orderFourAffineFamilyRepresentation_contMDiff F
         (totalSpace_isManifold_and_projection_isLocalDiffeomorph F ω).2 g).continuous⟩
-    IsManifold GlobalDeckTotalModel ω
+    IsManifold globalDeckTotalModel ω
         (OrbitQuotient (M := TotalSpace (parameterMap F)) (G := FiniteCyclic 4)) ∧
-      IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+      IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
         (quotientProjection (M := TotalSpace (parameterMap F)) (G := FiniteCyclic 4)) := by
   let _ := familyIsCancelSMul (parameterMap F)
   let _ := familyContinuousConstSMul (parameterMap F)
@@ -877,9 +877,9 @@ public theorem orderFourVaryingFamilyQuotient_isManifold_actual
     (compactlyUniformPeriods_of_compactUniformLowerBound (parameterMap F)
       (parameterMap_compactUniformLowerBound F))
   have htotal := totalSpace_isManifold_and_projection_isLocalDiffeomorph F ω
-  let _ : IsManifold GlobalDeckTotalModel ω (TotalSpace (parameterMap F)) := htotal.1
+  let _ : IsManifold globalDeckTotalModel ω (TotalSpace (parameterMap F)) := htotal.1
   let _ : LocallyCompactSpace (TotalSpace (parameterMap F)) :=
-    Manifold.locallyCompact_of_finiteDimensional GlobalDeckTotalModel
+    Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
   exact orderFourVaryingFamilyQuotient_isManifold F hsource htotal.2
 
 public theorem familyTotalSpaceBase_continuous :
@@ -1103,10 +1103,10 @@ public theorem affineGlobalFamilyRepresentation_inr (a : CyclicFour) :
 
 public theorem affineGlobalFamilyRepresentation_contMDiff
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    [IsManifold GlobalDeckTotalModel n (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel n
+    [IsManifold globalDeckTotalModel n (TotalSpace (parameterMap F))]
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
       (projection (parameterMap F))) (g : Delta) :
-    ContMDiff GlobalDeckTotalModel GlobalDeckTotalModel n
+    ContMDiff globalDeckTotalModel globalDeckTotalModel n
       (affineGlobalFamilyRepresentation F g) := by
   induction g using Monoid.Coprod.induction_on with
   | inl a =>
@@ -1134,8 +1134,8 @@ public theorem affineGlobalFamilyRepresentation_contMDiff
 
 public theorem affineGlobalFamilyAction_continuousConstSmul
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    [IsManifold GlobalDeckTotalModel n (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel n
+    [IsManifold globalDeckTotalModel n (TotalSpace (parameterMap F))]
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
       (projection (parameterMap F))) :
     letI := affineGlobalFamilyAction F
     ContinuousConstSMul Delta (TotalSpace (parameterMap F)) := by

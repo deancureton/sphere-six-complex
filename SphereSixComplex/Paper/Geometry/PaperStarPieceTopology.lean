@@ -21,20 +21,20 @@ noncomputable section
 
 /-- The actual local cusp quotient is second countable. -/
 public theorem actualLocalCuspFilling_secondCountable
-    {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
-    SecondCountableTopology (actualLocalCuspFilling W) := by
+    SecondCountableTopology (ActualLocalCuspFilling W) := by
   let C :=
-    CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
+    NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
       N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
   let _ : MulAction (Multiplicative ParameterLattice)
-      (LocalCarrier M W.localWitness.radius) :=
+      (localCarrier M W.localWitness.radius) :=
     (C.toCuspActionData W.localWitness.fixedPoint).psiAction
   let hdeck : ∀ gamma : Multiplicative ParameterLattice,
       ContMDiff (modelWithCornersSelf ℂ ComplexModel)
         (modelWithCornersSelf ℂ ComplexModel) ∞
-        (fun p : LocalCarrier M W.localWitness.radius ↦ gamma • p) := by
+        (fun p : localCarrier M W.localWitness.radius ↦ gamma • p) := by
     intro gamma
     convert C.genericPsiMap_holomorphic W.localWitness.fixedPoint
       (Multiplicative.toAdd gamma) using 1
@@ -42,7 +42,7 @@ public theorem actualLocalCuspFilling_secondCountable
     exact (C.toCuspActionData W.localWitness.fixedPoint).psi_smul
       (Multiplicative.toAdd gamma) p
   let _ : ContinuousConstSMul (Multiplicative ParameterLattice)
-      (LocalCarrier M W.localWitness.radius) :=
+      (localCarrier M W.localWitness.radius) :=
     ⟨fun gamma ↦ (hdeck gamma).continuous⟩
   exact ContinuousConstSMul.secondCountableTopology
 
@@ -52,7 +52,7 @@ variable (A : PaperAnalyticData)
 
 /-- Each of the three concrete filling pieces is second countable. -/
 public theorem starFilling_secondCountable (i : Fin 3) :
-    SecondCountableTopology (A.starFillingType i) := by
+    SecondCountableTopology (A.StarFilling i) := by
   fin_cases i
   · exact actualLocalCuspFilling_secondCountable A.starCuspWitness
   · exact A.orderThreeFilling_secondCountable A.starSeparation.orderThree.radius

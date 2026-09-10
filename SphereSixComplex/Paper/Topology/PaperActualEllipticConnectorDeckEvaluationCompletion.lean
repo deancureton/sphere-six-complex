@@ -244,7 +244,7 @@ public theorem ellipticThreeCentralProductCoverComparison_deckMap_fillingRelatio
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
     A.ellipticThreeBoundaryCover_simplyConnected
-  let _ : IsCancelSMul paperCentralFreeAffineDeck D.Cover :=
+  let _ : IsCancelSMul PaperCentralFreeAffineDeck D.Cover :=
     D.data.quotientCovering.isCancelSMul
   let beta := A.ellipticThreeCentralProductConnector
   let C := A.ellipticThreeCentralCoverComparisonOfPath beta
@@ -282,7 +282,7 @@ public theorem ellipticFourCentralProductCoverComparison_deckMap_fillingRelation
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :=
     A.ellipticFourBoundaryCover_simplyConnected
-  let _ : IsCancelSMul paperCentralFreeAffineDeck D.Cover :=
+  let _ : IsCancelSMul PaperCentralFreeAffineDeck D.Cover :=
     D.data.quotientCovering.isCancelSMul
   let beta := A.ellipticFourCentralProductConnector
   let C := A.ellipticFourCentralCoverComparisonOfPath beta
@@ -403,7 +403,7 @@ public theorem ellipticRelatorMembership_of_productConnectorLiftEndpoints
 
 /-- The same two endpoint equalities supply the exact nonempty established-input target. -/
 public theorem
-    actualEllipticRelatorNormalClosureResidual_nonempty_of_productConnectorLiftEndpoints
+    ellipticRelatorMembership_nonempty_of_productConnectorLiftEndpoints
     (hThree :
       letI := A.ellipticThreeBoundaryAction
       let D := A.centralAffineUniversalCover

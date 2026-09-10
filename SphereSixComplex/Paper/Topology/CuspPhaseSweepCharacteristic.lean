@@ -12,7 +12,7 @@ open SphereSixComplex.Periods
 open InfiniteA2Toric InfiniteA2Toric.Construction
 open InfiniteA2Toric CuspLocalPhaseAction CuspFilling CuspPeriodExpansion
 open CuspStraighteningRetraction
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public def phaseSweepZeroCarrier (x : Fin 2 → ℝ) : Carrier :=
@@ -232,7 +232,7 @@ public theorem phaseSweepZeroOrbit_closedImage
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     phaseSweepZeroOrbit W '' Metric.closedBall 0 1 =
       constructedCentralPhaseFaceZeroOrbit W '' Metric.closedBall 0 1 := by
-  let _ : T2Space (actualLocalCuspFilling W) :=
+  let _ : T2Space (ActualLocalCuspFilling W) :=
     SphereSixComplex.Geometry.PaperAnalyticData.actualLocalCuspFilling_t2 W
   let _ : T2Space (ActualLocalCuspCentralOrbitQuotient W) :=
     (actualLocalCuspCentralOrbitMap_isEmbedding W).t2Space
@@ -277,7 +277,7 @@ public theorem phaseSweepZeroOrbit_isEmbedding
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     Topology.IsEmbedding ((Metric.ball (0 : Fin 2 → ℝ) 1).domRestrict
       (phaseSweepZeroOrbit W)) := by
-  let _ : T2Space (actualLocalCuspFilling W) :=
+  let _ : T2Space (ActualLocalCuspFilling W) :=
     SphereSixComplex.Geometry.PaperAnalyticData.actualLocalCuspFilling_t2 W
   let _ : T2Space (ActualLocalCuspCentralOrbitQuotient W) :=
     (actualLocalCuspCentralOrbitMap_isEmbedding W).t2Space

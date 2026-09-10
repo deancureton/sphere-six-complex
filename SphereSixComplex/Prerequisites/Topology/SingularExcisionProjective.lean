@@ -40,14 +40,14 @@ public theorem coverSmallChainApproximation_of_quasiIso
     exact ((forget₂ (ModuleCat ℤ) AddCommGrpCat).asEquivalence.map_projective_iff
       (ModuleCat.of ℤ ℤ)).mpr (by infer_instance)
   letI projectiveSmall (n : ℕ) :
-      Projective ((CoverSmallIntegralSingularChainComplex X U).X n) := by
+      Projective ((coverSmallIntegralSingularChainComplex X U).X n) := by
     change Projective
       (∐ fun _ : (coverSmallSingularSubcomplex X U : SSet).obj
           (Opposite.op (SimplexCategory.mk n)) ↦
         AddCommGrpCat.of ℤ)
     infer_instance
   letI projectiveFull (n : ℕ) :
-      Projective ((IntegralSingularChainComplexObj X).X n) := by
+      Projective ((integralSingularChainComplexObj X).X n) := by
     change Projective
       (∐ fun _ : (TopCat.toSSet.obj X).obj
           (Opposite.op (SimplexCategory.mk n)) ↦ AddCommGrpCat.of ℤ)

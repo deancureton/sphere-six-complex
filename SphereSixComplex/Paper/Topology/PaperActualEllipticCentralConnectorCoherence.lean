@@ -191,15 +191,15 @@ public theorem cuspCentralToCorePair_simultaneouslyConjugate_orderThree
   have hcusp : H A.centralAffineBase =
       A.actualVanKampenFourPieceCover.overlapToCore
         A.actualVanKampenFourPieceCover.cusp A.cuspOverlapBase := by
-    rw [A.centralAffineBase_eq_actualCuspCentralBase]
-    exact A.centralToSectionSevenEulerPieceHomeomorph_actualCuspOverlapToCentral
+    rw [A.centralAffineBase_eq_cuspCentralBase]
+    exact A.centralToSectionSevenEulerPieceHomeomorph_cuspOverlapToCentral
       A.cuspOverlapBase
   have hthree : H A.ellipticThreeOverlapCentralBase =
       A.actualVanKampenFourPieceCover.overlapToCore
         A.actualVanKampenFourPieceCover.ellipticThree
         ⟨A.actualVanKampenFourPieceCover.ellipticThreePoint,
           A.actualVanKampenFourPieceCover.ellipticThreePoint_mem⟩ :=
-    A.centralToSectionSevenEulerPiece_orderThreeActualOverlapToCentral _
+    A.centralToSectionSevenEulerPiece_ellipticThreeOverlapToCentral _
   let p := cuspConnector.cast hcusp rfl
   let q := threeConnector.cast hthree rfl
   have h := fundamentalGroupMappedPair_simultaneouslyConjugate_of_sourcePath

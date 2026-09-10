@@ -132,30 +132,30 @@ public theorem regularDeckMap_contMDiff
     (F : PeriodFunctions U) (hproper : SourceActionProperlyDiscontinuous (U := U))
     (g : Delta) :
     letI := regularBaseChartedSpace hproper
-    ContMDiff GlobalDeckTotalModel GlobalDeckTotalModel ∞ (regularDeckMap F g) := by
+    ContMDiff globalDeckTotalModel globalDeckTotalModel ∞ (regularDeckMap F g) := by
   let _ := regularBaseChartedSpace hproper
-  have hval : ContMDiff GlobalDeckBaseModel GlobalDeckBaseModel ∞
+  have hval : ContMDiff globalDeckBaseModel globalDeckBaseModel ∞
       (fun z : RegularBase (U := U) ↦ z.1) := by
-    change ContMDiff GlobalDeckBaseModel GlobalDeckBaseModel ∞
+    change ContMDiff globalDeckBaseModel globalDeckBaseModel ∞
       (Subtype.val : regularBaseOpen hproper → UpperHalfPlane)
     exact contMDiff_subtype_val
-  have hinclude : ContMDiff GlobalDeckTotalModel GlobalDeckTotalModel ∞
+  have hinclude : ContMDiff globalDeckTotalModel globalDeckTotalModel ∞
       (fun p : RegularBase (U := U) × ComplexTwoSpace ↦ (p.1.1, p.2)) :=
     (hval.comp contMDiff_fst).prodMk contMDiff_snd
-  have hfull : ContMDiff GlobalDeckTotalModel GlobalDeckTotalModel ∞
+  have hfull : ContMDiff globalDeckTotalModel globalDeckTotalModel ∞
       (deckMap F g ∘ fun p : RegularBase (U := U) × ComplexTwoSpace ↦ (p.1.1, p.2)) :=
     (deckMap_contMDiff F g ∞).comp hinclude
-  have hbaseVal : ContMDiff GlobalDeckTotalModel GlobalDeckBaseModel ∞
+  have hbaseVal : ContMDiff globalDeckTotalModel globalDeckBaseModel ∞
       (fun p : RegularBase (U := U) × ComplexTwoSpace ↦
         (regularSourceEquiv g p.1).1) := by
     exact (U.sourceAction_contMDiff g ∞).comp
       (hval.comp contMDiff_fst)
-  have hbase : ContMDiff GlobalDeckTotalModel GlobalDeckBaseModel ∞
+  have hbase : ContMDiff globalDeckTotalModel globalDeckBaseModel ∞
       (fun p : RegularBase (U := U) × ComplexTwoSpace ↦ regularSourceEquiv g p.1) := by
     apply (ContMDiff.subtypeVal_comp_iff (regularBaseOpen hproper) _).mp
     convert hbaseVal using 1
     rfl
-  have hfiber : ContMDiff GlobalDeckTotalModel GlobalDeckFiberModel ∞
+  have hfiber : ContMDiff globalDeckTotalModel globalDeckFiberModel ∞
       (fun p : RegularBase (U := U) × ComplexTwoSpace ↦
         periodTransport g (regularParameterMap F p.1) p.2) := by
     have hsnd := contMDiff_snd.comp hfull

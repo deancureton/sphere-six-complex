@@ -1189,21 +1189,21 @@ public noncomputable def additiveCuspTransportedSourceHomotopyCorrectedCentral :
 
 /-- The transported source character on the actual punctured cusp quotient. -/
 public noncomputable def puncturedCuspTransportedSourceCircleMap :
-    C(puncturedLocalCuspQuotient A.starCuspWitness, UnitAddCircle) := by
+    C(PuncturedLocalCuspQuotient A.starCuspWitness, UnitAddCircle) := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   exact A.cuspMeridianSourceCircleMap.comp G.totalHomotopyEquiv.toFun
 
 /-- The global corrected central character restricted to the actual punctured cusp quotient. -/
 public noncomputable def puncturedCuspCorrectedCentralCircleMap :
-    C(puncturedLocalCuspQuotient A.starCuspWitness, UnitAddCircle) :=
+    C(PuncturedLocalCuspQuotient A.starCuspWitness, UnitAddCircle) :=
   A.centralFamilyCorrectedTwelveGamma.comp
     ⟨puncturedLocalCuspQuotientMap A.starCuspWitness,
       puncturedLocalCuspQuotientMap_continuous A.starCuspWitness⟩
 
 /-- The constant-translated corrected central character on the punctured cusp quotient. -/
 public noncomputable def puncturedCuspCorrectedCentralMinusCenterUnitMap :
-    C(puncturedLocalCuspQuotient A.starCuspWitness, UnitAddCircle) where
+    C(PuncturedLocalCuspQuotient A.starCuspWitness, UnitAddCircle) where
   toFun q := A.puncturedCuspCorrectedCentralCircleMap q -
     SphereSixComplex.Topology.puncturedComplexPhase
       (Subtype.mk

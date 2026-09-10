@@ -46,9 +46,9 @@ public theorem orderFourCollarDecksFixCenterAt_iff_mem_orderFourFactor
           ∃ a : CyclicFour, g = Monoid.Coprod.inr a := by
   constructor
   · intro h g hsmall
-    exact (establishedFuchsianTwoStabilizerExact g).mp (h g hsmall)
+    exact (fuchsianTwoFixed_iff_mem_range_inr g).mp (h g hsmall)
   · intro h g hsmall
-    exact (establishedFuchsianTwoStabilizerExact g).mpr (h g hsmall)
+    exact (fuchsianTwoFixed_iff_mem_range_inr g).mpr (h g hsmall)
 
 /-- Pointwise, the old named-sheet Cayley bound is equivalent to the precise centre-fixing
 condition on every deck translate detected by the quotient overlap construction. -/
@@ -61,7 +61,7 @@ public theorem namedOrderFourRadialBase_cayley_lt_iff_collarDecksFixCenterAt
       A.OrderFourCollarDecksFixCenterAt x := by
   constructor
   · intro hnamed g hsmall
-    apply (establishedFuchsianTwoStabilizerExact g).mpr
+    apply (fuchsianTwoFixed_iff_mem_range_inr g).mpr
     exact A.mem_orderFourFactor_of_named_and_deck_cayley_lt x g hsmall hnamed
   · intro h
     obtain ⟨g, hsmall⟩ := A.exists_regularDeck_namedOrderFourRadialBase_cayley_lt x

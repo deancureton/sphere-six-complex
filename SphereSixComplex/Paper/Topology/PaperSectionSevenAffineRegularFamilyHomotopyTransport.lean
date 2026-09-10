@@ -33,7 +33,7 @@ triangle-group deck action on the regular base. -/
 public theorem regularCoordinate_liftHomotopy_equivariant
     {B : Type u} [TopologicalSpace B]
     (parameterAction : MulAction Delta B)
-    (H : C(unitInterval × B, RegularCoordinateBase))
+    (H : C(unitInterval × B, regularCoordinateBase))
     (f : C(B, RegularBase
       (U := A.modular.modularParameter.toTriangleUniformization)))
     (H0 : ∀ b, H (0, b) = A.regularCoordinate (f b))

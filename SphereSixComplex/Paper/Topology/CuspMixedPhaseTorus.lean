@@ -15,7 +15,7 @@ open CuspPuncturedCollarBridge CuspRadialClutchingConstruction CuspPeriodExpansi
 open PositiveCircleCross CircleProductIdentityMappingTorus
 
 public def cuspFirstPeriodFillingCircle (A : PaperAnalyticData) :
-    C(StdTorus 1,actualLocalCuspFilling A.starCuspWitness) :=
+    C(StdTorus 1,ActualLocalCuspFilling A.starCuspWitness) :=
   (A.cuspFiniteFiberTorusToFilling 1).comp
     ⟨fun z ↦ ![z 0,0], by fun_prop⟩
 
@@ -45,8 +45,8 @@ public theorem cuspFourthCircle_firstPeriod (A : PaperAnalyticData) (t s : UnitA
   fin_cases i <;> simp [periodVector, periodMatrix, Matrix.vecHead, Matrix.vecTail]
 
 public def cuspFillingPhaseSweep (A : PaperAnalyticData) (i : Fin 2) :
-    IntegralSingularHomology 1 (actualLocalCuspFilling A.starCuspWitness) →+
-      IntegralSingularHomology 2 (actualLocalCuspFilling A.starCuspWitness) :=
+    IntegralSingularHomology 1 (ActualLocalCuspFilling A.starCuspWitness) →+
+      IntegralSingularHomology 2 (ActualLocalCuspFilling A.starCuspWitness) :=
   (integralSingularHomologyMap 2 (cuspFillingPeriodCircle A.starCuspWitness i)).comp
     (normalizedCircleCross 1)
 

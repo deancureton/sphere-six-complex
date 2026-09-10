@@ -27,7 +27,7 @@ open SphereSixComplex.Geometry.CuspToricPhaseAction
 open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
-variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 @[simp]
@@ -59,7 +59,7 @@ public theorem frozenCompactPhase_neg (lambda : ParameterLattice) :
   exact eq_inv_of_mul_eq_one_left h.symm
 
 public theorem compactPhaseLocalAction_frozen_inverse_frozenLocalPsiMap
-    (M : Model) (r : ℝ) (lambda : ParameterLattice) (p : LocalCarrier M r) :
+    (M : Model) (r : ℝ) (lambda : ParameterLattice) (p : localCarrier M r) :
     compactPhaseLocalAction M r (frozenCompactPhase N lambda)⁻¹
         (frozenLocalPsiMap N M r lambda p) =
       normalizedPositiveDeckLocalMap N M r lambda p := by
@@ -88,7 +88,7 @@ public theorem shearVector_constructedA2BoundaryShearParameter (i : Fin 6) :
   simp
 
 public theorem constructedA2BoundaryShearPhase_cancellation
-    (M : Model) (r : ℝ) (i : Fin 6) (p : LocalCarrier M r) :
+    (M : Model) (r : ℝ) (i : Fin 6) (p : localCarrier M r) :
     compactPhaseLocalAction M r
         (frozenCompactPhase N (constructedA2BoundaryShearParameter i))⁻¹
         (frozenLocalPsiMap N M r (constructedA2BoundaryShearParameter i) p) =
@@ -249,7 +249,7 @@ public theorem constructedA2HoneycombCompactPhaseCorrection_boundaryShear
 frozen phase and leaves exactly the positive deck map. -/
 public theorem constructedA2BoundaryShear_interpolatedPhase_cancellation
     (M : Model) (r : ℝ) (x : Fin 2 → ℝ) (i : Fin 6)
-    (p : LocalCarrier M r) :
+    (p : localCarrier M r) :
     compactPhaseLocalAction M r
         (constructedA2HoneycombCompactPhaseCorrection (N := N)
           (x + constructedA2CorrectedPlaneCenter
@@ -282,14 +282,14 @@ public theorem constructedA2BoundaryShear_interpolatedPhase_cancellation
 /-- The positive hexagonal representative with the flat compact-phase cocycle cancelled. -/
 public def constructedA2PhaseCorrectedHexagonLocal
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    (x : Fin 2 → ℝ) : LocalCarrier constructedModel W.localWitness.radius :=
+    (x : Fin 2 → ℝ) : localCarrier constructedModel W.localWitness.radius :=
   compactPhaseLocalAction constructedModel W.localWitness.radius
     (constructedA2HoneycombCompactPhaseCorrection (N := N)
       (constructedA2CorrectedHexagonHomeomorph 0 x))
     (constructedA2PositiveCentralPoint W
       (constructedA2CorrectedPositiveHexagonMap
         W.localWitness.radius_pos 0 x) :
-      LocalCarrier constructedModel W.localWitness.radius)
+      localCarrier constructedModel W.localWitness.radius)
 
 public theorem constructedA2PhaseCorrectedHexagonLocal_height
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
@@ -382,10 +382,10 @@ public theorem constructedCentralCarrier_eq_oneCell_implies_mem_oneSkeleton
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     (q : actualLocalCuspCentralSubMulAction W) (i : Fin 3)
     (x : Fin 1 → ℝ) (hx : x ∈ Metric.closedBall 0 1)
-    (h : ((q : LocalCarrier constructedModel W.localWitness.radius) :
+    (h : ((q : localCarrier constructedModel W.localWitness.radius) :
           constructedModel.Carrier) =
         ((constructedCentralOneCellRepresentativePoint W i x :
-          LocalCarrier constructedModel W.localWitness.radius) :
+          localCarrier constructedModel W.localWitness.radius) :
             constructedModel.Carrier)) :
     Quotient.mk (MulAction.orbitRel (Multiplicative ParameterLattice)
       (actualLocalCuspCentralSubMulAction W)) q ∈

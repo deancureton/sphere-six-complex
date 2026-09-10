@@ -275,7 +275,7 @@ public theorem carrierModulus_mem_cuspNeighborhood_iff (r : ℝ) (x : Carrier) :
 
 /-- The polar modulus restricted to a constructed cusp neighbourhood. -/
 public def constructedLocalModulus (r : ℝ)
-    (p : LocalCarrier constructedModel r) : LocalCarrier constructedModel r :=
+    (p : localCarrier constructedModel r) : localCarrier constructedModel r :=
   ⟨carrierModulus (show Carrier from p.1),
     (carrierModulus_mem_cuspNeighborhood_iff r (show Carrier from p.1)).mpr p.property⟩
 
@@ -285,21 +285,21 @@ public theorem constructedLocalModulus_continuous (r : ℝ) :
   exact carrierModulus_continuous.comp continuous_subtype_val
 
 @[simp]
-public theorem constructedLocalModulus_coe (r : ℝ) (p : LocalCarrier constructedModel r) :
+public theorem constructedLocalModulus_coe (r : ℝ) (p : localCarrier constructedModel r) :
     (show Carrier from (constructedLocalModulus r p).1) =
       carrierModulus (show Carrier from p.1) :=
   rfl
 
 @[simp]
 public theorem constructedLocalModulus_idempotent (r : ℝ)
-    (p : LocalCarrier constructedModel r) :
+    (p : localCarrier constructedModel r) :
     constructedLocalModulus r (constructedLocalModulus r p) = constructedLocalModulus r p := by
   apply Subtype.ext
   exact carrierModulus_idempotent (show Carrier from p.1)
 
 /-- The fixed-point set of the local modulus. -/
 public def constructedLocalPositivePart (r : ℝ) :
-    Set (LocalCarrier constructedModel r) :=
+    Set (localCarrier constructedModel r) :=
   {p | constructedLocalModulus r p = p}
 
 public theorem constructedLocalPositivePart_isClosed (r : ℝ) :
@@ -307,7 +307,7 @@ public theorem constructedLocalPositivePart_isClosed (r : ℝ) :
   exact isClosed_eq (constructedLocalModulus_continuous r) continuous_id
 
 public theorem mem_constructedLocalPositivePart_iff (r : ℝ)
-    (p : LocalCarrier constructedModel r) :
+    (p : localCarrier constructedModel r) :
     p ∈ constructedLocalPositivePart r ↔
       (show Carrier from p.1) ∈ carrierPositivePart := by
   change constructedLocalModulus r p = p ↔
@@ -317,7 +317,7 @@ public theorem mem_constructedLocalPositivePart_iff (r : ℝ)
 
 /-- The local modulus as a continuous retraction onto its fixed-point set. -/
 public def constructedLocalModulusRetraction (r : ℝ) :
-    C(LocalCarrier constructedModel r, constructedLocalPositivePart r) where
+    C(localCarrier constructedModel r, constructedLocalPositivePart r) where
   toFun p := ⟨constructedLocalModulus r p, constructedLocalModulus_idempotent r p⟩
   continuous_toFun := (constructedLocalModulus_continuous r).subtype_mk _
 
@@ -328,13 +328,13 @@ public theorem constructedLocalModulusRetraction_fixed (r : ℝ)
   exact q.property
 
 public theorem constructedLocalModulusRetraction_t (r : ℝ)
-    (p : LocalCarrier constructedModel r) :
+    (p : localCarrier constructedModel r) :
     constructedModel.t (constructedLocalModulusRetraction r p) =
       (‖constructedModel.t p‖ : ℝ) := by
   exact carrierHeight_modulus (show Carrier from p.1)
 
 public theorem constructedLocalModulusRetraction_polar_surjective (r : ℝ)
-    (p : LocalCarrier constructedModel r) :
+    (p : localCarrier constructedModel r) :
     ∃ phi : CompactTorus,
       constructedModel.torusAction (compactTorusEmbedding phi)
         (constructedLocalModulusRetraction r p) = p := by

@@ -183,10 +183,10 @@ public theorem familyTranslationMap_contMDiffAt_of_section
     (hs : ContMDiffAt (modelWithCornersSelf ℂ ℂ)
       (modelWithCornersSelf ℂ ComplexTwoSpace) ω s (familyTotalSpaceBase F q))
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    [IsManifold GlobalDeckTotalModel ω (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    [IsManifold globalDeckTotalModel ω (TotalSpace (parameterMap F))]
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) :
-    ContMDiffAt GlobalDeckTotalModel GlobalDeckTotalModel ω
+    ContMDiffAt globalDeckTotalModel globalDeckTotalModel ω
       (familyTranslationMap F s) q := by
   induction q using Quotient.inductionOn with
   | _ p =>
@@ -196,17 +196,17 @@ public theorem familyTranslationMap_contMDiffAt_of_section
     have hs' : ContMDiffAt (modelWithCornersSelf ℂ ℂ)
         (modelWithCornersSelf ℂ ComplexTwoSpace) ω s p.1 := by
       simpa only [familyTotalSpaceBase_mk] using hs
-    have hlocal : ContMDiffAt GlobalDeckTotalModel GlobalDeckTotalModel ω loc (π p) :=
+    have hlocal : ContMDiffAt globalDeckTotalModel globalDeckTotalModel ω loc (π p) :=
       (hprojection p).localInverse_contMDiffAt
     have hlocalp : loc (π p) = p :=
       (hprojection p).localInverse_left_inv (hprojection p).localInverse_mem_target
-    have htranslation : ContMDiffAt GlobalDeckTotalModel GlobalDeckTotalModel ω
+    have htranslation : ContMDiffAt globalDeckTotalModel globalDeckTotalModel ω
         (familyTranslationCover s) p :=
       contMDiffAt_fst.prodMk ((hs'.comp p contMDiffAt_fst).add contMDiffAt_snd)
-    have hcover : ContMDiffAt GlobalDeckTotalModel GlobalDeckTotalModel ω
+    have hcover : ContMDiffAt globalDeckTotalModel globalDeckTotalModel ω
         (familyTranslationCover s ∘ loc) (π p) :=
       htranslation.comp_of_eq hlocal hlocalp
-    have hrhs : ContMDiffAt GlobalDeckTotalModel GlobalDeckTotalModel ω
+    have hrhs : ContMDiffAt globalDeckTotalModel globalDeckTotalModel ω
         (π ∘ familyTranslationCover s ∘ loc) (π p) :=
       (hprojection (familyTranslationCover s p)).contMDiffAt.comp_of_eq hcover (by
         simp [hlocalp])
@@ -222,11 +222,11 @@ public theorem familyTranslationMap_contMDiffAt_of_section
 
 public theorem orderThreePrincipalGauge_contMDiffAt
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    [IsManifold GlobalDeckTotalModel ω (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    [IsManifold globalDeckTotalModel ω (TotalSpace (parameterMap F))]
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (r : ℝ)
     (q : TotalSpace (parameterMap F)) (hq : q ∈ orderThreePuncturedFamilyCollar F r) :
-    ContMDiffAt GlobalDeckTotalModel GlobalDeckTotalModel ω
+    ContMDiffAt globalDeckTotalModel globalDeckTotalModel ω
       (orderThreePrincipalGaugeEquiv F) q := by
   induction q using Quotient.inductionOn with
   | _ p =>
@@ -239,7 +239,7 @@ public theorem orderThreePrincipalGauge_contMDiffAt
       norm_num [ComplexUnitDisc.center] at hpos
     let B := (orderThreeBranchesAt w hw).source
     have hwB : (w : ℂ) ∈ B.carrier := mem_orderThreeBranchesAt w hw
-    have hbranch : ContMDiffAt GlobalDeckTotalModel GlobalDeckTotalModel ω
+    have hbranch : ContMDiffAt globalDeckTotalModel globalDeckTotalModel ω
         (orderThreeLogarithmicGaugeMap F (fun u => B.log u)) (Quotient.mk _ p) := by
       apply familyTranslationMap_contMDiffAt_of_section F _ (Quotient.mk _ p) _ hprojection
       exact logarithmicGaugeSection_contMDiffAt F
@@ -271,11 +271,11 @@ public theorem orderThreePrincipalGauge_contMDiffAt
 
 public theorem orderFourPrincipalGauge_contMDiffAt
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    [IsManifold GlobalDeckTotalModel ω (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    [IsManifold globalDeckTotalModel ω (TotalSpace (parameterMap F))]
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (r : ℝ)
     (q : TotalSpace (parameterMap F)) (hq : q ∈ orderFourPuncturedFamilyCollar F r) :
-    ContMDiffAt GlobalDeckTotalModel GlobalDeckTotalModel ω
+    ContMDiffAt globalDeckTotalModel globalDeckTotalModel ω
       (orderFourPrincipalGaugeEquiv F) q := by
   induction q using Quotient.inductionOn with
   | _ p =>
@@ -288,7 +288,7 @@ public theorem orderFourPrincipalGauge_contMDiffAt
       norm_num [ComplexUnitDisc.center] at hpos
     let B := (orderFourBranchesAt w hw).source
     have hwB : (w : ℂ) ∈ B.carrier := mem_orderFourBranchesAt w hw
-    have hbranch : ContMDiffAt GlobalDeckTotalModel GlobalDeckTotalModel ω
+    have hbranch : ContMDiffAt globalDeckTotalModel globalDeckTotalModel ω
         (orderFourLogarithmicGaugeMap F (fun u => B.log u)) (Quotient.mk _ p) := by
       apply familyTranslationMap_contMDiffAt_of_section F _ (Quotient.mk _ p) _ hprojection
       exact logarithmicGaugeSection_contMDiffAt F
@@ -320,11 +320,11 @@ public theorem orderFourPrincipalGauge_contMDiffAt
 
 public theorem orderThreePrincipalGauge_symm_contMDiffAt
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    [IsManifold GlobalDeckTotalModel ω (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    [IsManifold globalDeckTotalModel ω (TotalSpace (parameterMap F))]
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (r : ℝ)
     (q : TotalSpace (parameterMap F)) (hq : q ∈ orderThreePuncturedFamilyCollar F r) :
-    ContMDiffAt GlobalDeckTotalModel GlobalDeckTotalModel ω
+    ContMDiffAt globalDeckTotalModel globalDeckTotalModel ω
       (orderThreePrincipalGaugeEquiv F).symm q := by
   induction q using Quotient.inductionOn with
   | _ p =>
@@ -340,7 +340,7 @@ public theorem orderThreePrincipalGauge_symm_contMDiffAt
     let localMap := familyTranslationMap F
       (-logarithmicGaugeSection F orderThreeCayleyHomeomorph epsilon
         (fun u => B.log u))
-    have hbranch : ContMDiffAt GlobalDeckTotalModel GlobalDeckTotalModel ω
+    have hbranch : ContMDiffAt globalDeckTotalModel globalDeckTotalModel ω
         localMap (Quotient.mk _ p) := by
       apply familyTranslationMap_contMDiffAt_of_section F _ (Quotient.mk _ p) _ hprojection
       exact (logarithmicGaugeSection_contMDiffAt F
@@ -372,11 +372,11 @@ public theorem orderThreePrincipalGauge_symm_contMDiffAt
 
 public theorem orderFourPrincipalGauge_symm_contMDiffAt
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    [IsManifold GlobalDeckTotalModel ω (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    [IsManifold globalDeckTotalModel ω (TotalSpace (parameterMap F))]
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (r : ℝ)
     (q : TotalSpace (parameterMap F)) (hq : q ∈ orderFourPuncturedFamilyCollar F r) :
-    ContMDiffAt GlobalDeckTotalModel GlobalDeckTotalModel ω
+    ContMDiffAt globalDeckTotalModel globalDeckTotalModel ω
       (orderFourPrincipalGaugeEquiv F).symm q := by
   induction q using Quotient.inductionOn with
   | _ p =>
@@ -392,7 +392,7 @@ public theorem orderFourPrincipalGauge_symm_contMDiffAt
     let localMap := familyTranslationMap F
       (-logarithmicGaugeSection F orderFourCayleyHomeomorph (-epsilon')
         (fun u => B.log u))
-    have hbranch : ContMDiffAt GlobalDeckTotalModel GlobalDeckTotalModel ω
+    have hbranch : ContMDiffAt globalDeckTotalModel globalDeckTotalModel ω
         localMap (Quotient.mk _ p) := by
       apply familyTranslationMap_contMDiffAt_of_section F _ (Quotient.mk _ p) _ hprojection
       exact (logarithmicGaugeSection_contMDiffAt F
@@ -480,11 +480,11 @@ public noncomputable instance orderFourLinearPuncturedCarrierCharts
 
 public noncomputable def orderThreePuncturedCollarGaugeDiffeomorph
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    [IsManifold GlobalDeckTotalModel ω (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    [IsManifold globalDeckTotalModel ω (TotalSpace (parameterMap F))]
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (r : ℝ) :
-    orderThreePuncturedFamilyCollar F r ≃ₘ^∞⟮GlobalDeckTotalModel,
-      GlobalDeckTotalModel⟯ orderThreePuncturedFamilyCollar F r where
+    orderThreePuncturedFamilyCollar F r ≃ₘ^∞⟮globalDeckTotalModel,
+      globalDeckTotalModel⟯ orderThreePuncturedFamilyCollar F r where
   toEquiv := orderThreePuncturedCollarGaugeEquiv F r
   contMDiff_toFun := by
     let S : TopologicalSpace.Opens (TotalSpace (parameterMap F)) :=
@@ -494,7 +494,7 @@ public noncomputable def orderThreePuncturedCollarGaugeDiffeomorph
     rw [hcharts]
     intro q
     apply (ContMDiffAt.subtypeVal_comp_iff S _ q).mp
-    change ContMDiffAt GlobalDeckTotalModel GlobalDeckTotalModel ∞
+    change ContMDiffAt globalDeckTotalModel globalDeckTotalModel ∞
       (fun x : S => orderThreePrincipalGaugeEquiv F x.1) q
     rw [contMDiffAt_subtype_iff]
     exact (orderThreePrincipalGauge_contMDiffAt F hprojection r q q.property).of_le (by simp)
@@ -506,18 +506,18 @@ public noncomputable def orderThreePuncturedCollarGaugeDiffeomorph
     rw [hcharts]
     intro q
     apply (ContMDiffAt.subtypeVal_comp_iff S _ q).mp
-    change ContMDiffAt GlobalDeckTotalModel GlobalDeckTotalModel ∞
+    change ContMDiffAt globalDeckTotalModel globalDeckTotalModel ∞
       (fun x : S => (orderThreePrincipalGaugeEquiv F).symm x.1) q
     rw [contMDiffAt_subtype_iff]
     exact (orderThreePrincipalGauge_symm_contMDiffAt F hprojection r q q.property).of_le (by simp)
 
 public noncomputable def orderFourPuncturedCollarGaugeDiffeomorph
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    [IsManifold GlobalDeckTotalModel ω (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    [IsManifold globalDeckTotalModel ω (TotalSpace (parameterMap F))]
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (r : ℝ) :
-    orderFourPuncturedFamilyCollar F r ≃ₘ^∞⟮GlobalDeckTotalModel,
-      GlobalDeckTotalModel⟯ orderFourPuncturedFamilyCollar F r where
+    orderFourPuncturedFamilyCollar F r ≃ₘ^∞⟮globalDeckTotalModel,
+      globalDeckTotalModel⟯ orderFourPuncturedFamilyCollar F r where
   toEquiv := orderFourPuncturedCollarGaugeEquiv F r
   contMDiff_toFun := by
     let S : TopologicalSpace.Opens (TotalSpace (parameterMap F)) :=
@@ -527,7 +527,7 @@ public noncomputable def orderFourPuncturedCollarGaugeDiffeomorph
     rw [hcharts]
     intro q
     apply (ContMDiffAt.subtypeVal_comp_iff S _ q).mp
-    change ContMDiffAt GlobalDeckTotalModel GlobalDeckTotalModel ∞
+    change ContMDiffAt globalDeckTotalModel globalDeckTotalModel ∞
       (fun x : S => orderFourPrincipalGaugeEquiv F x.1) q
     rw [contMDiffAt_subtype_iff]
     exact (orderFourPrincipalGauge_contMDiffAt F hprojection r q q.property).of_le (by simp)
@@ -539,7 +539,7 @@ public noncomputable def orderFourPuncturedCollarGaugeDiffeomorph
     rw [hcharts]
     intro q
     apply (ContMDiffAt.subtypeVal_comp_iff S _ q).mp
-    change ContMDiffAt GlobalDeckTotalModel GlobalDeckTotalModel ∞
+    change ContMDiffAt globalDeckTotalModel globalDeckTotalModel ∞
       (fun x : S => (orderFourPrincipalGaugeEquiv F).symm x.1) q
     rw [contMDiffAt_subtype_iff]
     exact (orderFourPrincipalGauge_symm_contMDiffAt F hprojection r q q.property).of_le (by simp)
@@ -547,8 +547,8 @@ public noncomputable def orderFourPuncturedCollarGaugeDiffeomorph
 @[simp]
 public theorem orderThreePuncturedCollarGaugeDiffeomorph_apply
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    [IsManifold GlobalDeckTotalModel ω (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    [IsManifold globalDeckTotalModel ω (TotalSpace (parameterMap F))]
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (r : ℝ)
     (q : orderThreePuncturedFamilyCollar F r) :
     orderThreePuncturedCollarGaugeDiffeomorph F hprojection r q =
@@ -560,8 +560,8 @@ public theorem orderThreePuncturedCollarGaugeDiffeomorph_apply
 @[simp]
 public theorem orderFourPuncturedCollarGaugeDiffeomorph_apply
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    [IsManifold GlobalDeckTotalModel ω (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    [IsManifold globalDeckTotalModel ω (TotalSpace (parameterMap F))]
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F))) (r : ℝ)
     (q : orderFourPuncturedFamilyCollar F r) :
     orderFourPuncturedCollarGaugeDiffeomorph F hprojection r q =
@@ -572,11 +572,11 @@ public theorem orderFourPuncturedCollarGaugeDiffeomorph_apply
 
 public noncomputable def orderThreePuncturedGaugeEquivariantDiffeomorph
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    [IsManifold GlobalDeckTotalModel ω (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    [IsManifold globalDeckTotalModel ω (TotalSpace (parameterMap F))]
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F)))
     (hsource : U.sourceAction = fuchsianSourceAction) (r : ℝ) :
-    EquivariantOpenDiffeomorphOfActions GlobalDeckTotalModel
+    EquivariantOpenDiffeomorphOfActions globalDeckTotalModel
       (orderThreeAffineFamilyAction F) (orderThreeLinearFamilyAction F)
       (orderThreeAffinePuncturedCarrier F hsource r)
       (orderThreeLinearPuncturedCarrier F hsource r) where
@@ -586,11 +586,11 @@ public noncomputable def orderThreePuncturedGaugeEquivariantDiffeomorph
 
 public noncomputable def orderFourPuncturedGaugeEquivariantDiffeomorph
     [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    [IsManifold GlobalDeckTotalModel ω (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph GlobalDeckTotalModel GlobalDeckTotalModel ω
+    [IsManifold globalDeckTotalModel ω (TotalSpace (parameterMap F))]
+    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
       (projection (parameterMap F)))
     (hsource : U.sourceAction = fuchsianSourceAction) (r : ℝ) :
-    EquivariantOpenDiffeomorphOfActions GlobalDeckTotalModel
+    EquivariantOpenDiffeomorphOfActions globalDeckTotalModel
       (orderFourAffineFamilyAction F) (orderFourLinearFamilyAction F)
       (orderFourAffinePuncturedCarrier F hsource r)
       (orderFourLinearPuncturedCarrier F hsource r) where

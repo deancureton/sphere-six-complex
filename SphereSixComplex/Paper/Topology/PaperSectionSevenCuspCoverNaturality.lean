@@ -31,8 +31,8 @@ public def cuspToEllipticInteriorMap (_D : A.EllipticTwoDiscCoverData) :
     TopCat.of (A.openEmbeddingStarData.collarSource 0) ⟶
       TopCat.of A.ellipticInterior :=
   TopCat.ofHom ((IntegralMayerVietoris.interToLeft
-      ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4))
-      ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3)).comp
+      ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4))
+      ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 3)).comp
     ⟨A.cuspCollarToSectionSevenFinalOverlapHomeomorph,
       A.cuspCollarToSectionSevenFinalOverlapHomeomorph.continuous⟩)
 

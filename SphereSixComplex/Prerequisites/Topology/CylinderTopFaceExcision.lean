@@ -12,7 +12,7 @@ namespace SphereSixComplex
 private def relativePairIso {A X B Y : TopCat} {i : A ⟶ X} {j : B ⟶ Y}
     (f : CWTopologicalPairMap i j) (g : CWTopologicalPairMap j i)
     (hf : f.right ≫ g.right = 𝟙 _) (hg : g.right ≫ f.right = 𝟙 _) :
-    CWRelativeIntegralSingularChainComplex i ≅ CWRelativeIntegralSingularChainComplex j where
+    cwRelativeIntegralSingularChainComplex i ≅ cwRelativeIntegralSingularChainComplex j where
   hom := cwRelativeIntegralSingularChainMapOfPair f
   inv := cwRelativeIntegralSingularChainMapOfPair g
   hom_inv_id := by
@@ -77,10 +77,10 @@ public def cylinderUpperBoundaryPair {X : Type} [TopologicalSpace X] (A : Set X)
   comm := rfl
 
 public def cylinderUpperExcisionChains {X : Type} [TopologicalSpace X] (A : Set X) :
-    CWRelativeIntegralSingularChainComplex
+    cwRelativeIntegralSingularChainComplex
       (subsetIntersectionInclusion (TopCat.of (cylinderBoundary A))
         (cylinderUpperNeighborhood A) {p | p.1 ∈ cylinderLowerSide A}) ⟶
-    CWRelativeIntegralSingularChainComplex
+    cwRelativeIntegralSingularChainComplex
       (topologicalSubsetInclusion (TopCat.of (cylinderBoundary A))
         {p | p.1 ∈ cylinderLowerSide A}) := cylinderUpperRelativeExcisionMap A
 
@@ -98,7 +98,7 @@ public theorem cylinderUpperBoundaryPair_factorization {X : Type} [TopologicalSp
     (cokernelIsCokernel (cwIntegralSingularChainMapObj (cylinderUpperSideInclusion A)))
   change cwRelativeIntegralSingularChainProjection _ ≫ _ =
     cwRelativeIntegralSingularChainProjection _ ≫ (_ ≫ _ ≫ _)
-  dsimp only [CWRelativeIntegralSingularChainComplex, RelativeIntegralSingularChainComplex]
+  dsimp only [cwRelativeIntegralSingularChainComplex, relativeIntegralSingularChainComplex]
   erw [cwRelativeIntegralSingularChainProjection_natural, ← Category.assoc,
     ← Category.assoc, cwRelativeIntegralSingularChainProjection_natural (cylinderUpperIntersectionPair A)]
   change _ = ((cwIntegralSingularChainMapObj (𝟙 _) ≫ _) ≫ _) ≫ _
