@@ -48,3 +48,16 @@ This is the final consequence of {uses "six-sphere-complex-structure"}[the defin
 Transport the complex atlas of the constructed threefold along the diffeomorphism supplied by
 {uses "smooth-recognition"}[smooth recognition].
 :::
+
+:::definition "classical-trust-boundary" (parent := "main_construction") (lean := "SphereSixComplex.Hurewicz.exists_map, SphereSixComplex.CWType.homological_whitehead, SphereSixComplex.SmoothSixSphere.poincare, SphereSixComplex.PoincareDuality.nonempty_addEquiv, SphereSixComplex.IntegralCohomology.universalCoefficients, SphereSixComplex.SmoothManifold.finiteCWModel, SphereSixComplex.CellularHomology.integralComparison, SphereSixComplex.CWPair.whitehead, SphereSixComplex.LocallyCollared.nonempty_collar, SphereSixComplex.ManifoldWithCorners.relativeCWComplex")
+The final theorem depends on Lean's three standard logical axioms and ten general classical
+results: higher Hurewicz, homological Whitehead, smooth Poincaré in dimension six, integral
+Poincaré duality, universal coefficients, finite CW models of compact smooth manifolds,
+cellular-to-singular homology comparison, Whitehead for CW pairs, local-to-global collaring,
+and relative CW structures for manifolds with corners. Their exact contracts are reviewed in the
+repository's `TRUST-BOUNDARY.md`.
+
+The modular uniformization, analytic descent, toric construction, and specialized filling and
+homology computations are proved. No construction-specific axiom remains. This describes the
+mathematical dependency boundary; build and Comparator acceptance are checked separately.
+:::

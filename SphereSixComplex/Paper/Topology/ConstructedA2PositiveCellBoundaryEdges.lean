@@ -5,13 +5,13 @@ public import SphereSixComplex.Paper.Topology.ConstructedA2BoundaryDeckAttachmen
 @[expose] public section
 noncomputable section
 open Function Set Topology
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Periods
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
@@ -98,4 +98,4 @@ public theorem constructedA2ActualBoundaryGauge_square_zero_zero_mem_edge
     rw [hz]
     exact constructedA2PositiveZeroZeroAxis_mem_edge i z hpos
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric

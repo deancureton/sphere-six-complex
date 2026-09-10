@@ -35,14 +35,14 @@ variable (A : PaperAnalyticData)
 /-- The straight path in the explicit radial cover from its selected basepoint to a deck
 translate.  The radial coordinate is fixed and the affine cover coordinates follow the segment
 joining the two endpoints. -/
-public noncomputable def orderThreeActualEllipticBoundaryDeckStraightLift
+public noncomputable def ellipticThreeBoundaryDeckStraightLift
     (g : OrderThreeAffineMappingTorusDeck A.periods) :
-    letI := A.orderThreeActualEllipticBoundaryAction
-    Path A.orderThreeActualEllipticBoundaryBase
-      (g • A.orderThreeActualEllipticBoundaryBase) := by
+    letI := A.ellipticThreeBoundaryAction
+    Path A.ellipticThreeBoundaryBase
+      (g • A.ellipticThreeBoundaryBase) := by
   let _ := orderThreeAffineMappingTorusDeckAction A.periods
-  let _ := A.orderThreeActualEllipticBoundaryAction
-  let b := A.orderThreeActualEllipticBoundaryBase
+  let _ := A.ellipticThreeBoundaryAction
+  let b := A.ellipticThreeBoundaryBase
   exact {
     toFun := fun t ↦ (b.1, Path.segment b.2 (g • b.2) t)
     continuous_toFun :=
@@ -55,57 +55,57 @@ public noncomputable def orderThreeActualEllipticBoundaryDeckStraightLift
   }
 
 /-- Projection of the straight deck path is a loop in the literal order-three overlap. -/
-public noncomputable def orderThreeActualEllipticBoundaryDeckStraightLoop
+public noncomputable def ellipticThreeBoundaryDeckStraightLoop
     (g : OrderThreeAffineMappingTorusDeck A.periods) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     Path
-      (A.orderThreeActualEllipticBoundaryProjection A.orderThreeActualEllipticBoundaryBase)
-      (A.orderThreeActualEllipticBoundaryProjection A.orderThreeActualEllipticBoundaryBase) := by
+      (A.ellipticThreeBoundaryProjection A.ellipticThreeBoundaryBase)
+      (A.ellipticThreeBoundaryProjection A.ellipticThreeBoundaryBase) := by
   let _ := orderThreeAffineMappingTorusDeckAction A.periods
-  let _ := A.orderThreeActualEllipticBoundaryAction
-  let hp := A.orderThreeActualEllipticBoundaryProjection_isQuotientCoveringMap
-  exact ((A.orderThreeActualEllipticBoundaryDeckStraightLift g).map
-      A.orderThreeActualEllipticBoundaryProjection.continuous).cast rfl
+  let _ := A.ellipticThreeBoundaryAction
+  let hp := A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
+  exact ((A.ellipticThreeBoundaryDeckStraightLift g).map
+      A.ellipticThreeBoundaryProjection.continuous).cast rfl
         (hp.map_smul g).symm
 
 /-- The straight projected loop represents exactly the `ofDeck` class with the same deck
 label.  In particular, no inverse is introduced at this stage. -/
-public theorem orderThreeActualEllipticBoundaryDeckStraightLoop_class_eq_ofDeck
+public theorem ellipticThreeBoundaryDeckStraightLoop_class_eq_ofDeck
     (g : OrderThreeAffineMappingTorusDeck A.periods) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     letI : SimplyConnectedSpace
         (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-      A.orderThreeActualEllipticBoundaryCover_simplyConnected
-    Path.Homotopic.Quotient.mk (A.orderThreeActualEllipticBoundaryDeckStraightLoop g) =
-      ofDeck A.orderThreeActualEllipticBoundaryProjection_isQuotientCoveringMap
-        A.orderThreeActualEllipticBoundaryBase g := by
+      A.ellipticThreeBoundaryCover_simplyConnected
+    Path.Homotopic.Quotient.mk (A.ellipticThreeBoundaryDeckStraightLoop g) =
+      ofDeck A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
+        A.ellipticThreeBoundaryBase g := by
   let _ := orderThreeAffineMappingTorusDeckAction A.periods
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderThreeActualEllipticBoundaryCover_simplyConnected
-  let hp := A.orderThreeActualEllipticBoundaryProjection_isQuotientCoveringMap
-  let e : A.orderThreeActualEllipticBoundaryProjection ⁻¹'
-      {A.orderThreeActualEllipticBoundaryProjection A.orderThreeActualEllipticBoundaryBase} :=
-    ⟨A.orderThreeActualEllipticBoundaryBase, rfl⟩
+    A.ellipticThreeBoundaryCover_simplyConnected
+  let hp := A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
+  let e : A.ellipticThreeBoundaryProjection ⁻¹'
+      {A.ellipticThreeBoundaryProjection A.ellipticThreeBoundaryBase} :=
+    ⟨A.ellipticThreeBoundaryBase, rfl⟩
   apply (hp.fundamentalGroupEquiv e).injective
   rw [fundamentalGroupEquiv_ofDeck]
   apply (hp.fundamentalGroupToMulOpposite_apply_eq_Iff).mpr
-  let e' : A.orderThreeActualEllipticBoundaryProjection ⁻¹'
-      {A.orderThreeActualEllipticBoundaryProjection A.orderThreeActualEllipticBoundaryBase} :=
-    ⟨g • A.orderThreeActualEllipticBoundaryBase, hp.map_smul g⟩
-  let Γ : Path.Homotopic.Quotient A.orderThreeActualEllipticBoundaryBase
-      (g • A.orderThreeActualEllipticBoundaryBase) :=
-    Path.Homotopic.Quotient.mk (A.orderThreeActualEllipticBoundaryDeckStraightLift g)
+  let e' : A.ellipticThreeBoundaryProjection ⁻¹'
+      {A.ellipticThreeBoundaryProjection A.ellipticThreeBoundaryBase} :=
+    ⟨g • A.ellipticThreeBoundaryBase, hp.map_smul g⟩
+  let Γ : Path.Homotopic.Quotient A.ellipticThreeBoundaryBase
+      (g • A.ellipticThreeBoundaryBase) :=
+    Path.Homotopic.Quotient.mk (A.ellipticThreeBoundaryDeckStraightLift g)
   have hm := hp.isCoveringMap.monodromy_eq_of_map_eq (ex := e) (ey := e') Γ (by
     dsimp [e, e']
     change (Path.Homotopic.Quotient.mk
-        (A.orderThreeActualEllipticBoundaryDeckStraightLift g)).map
-          A.orderThreeActualEllipticBoundaryProjection =
+        (A.ellipticThreeBoundaryDeckStraightLift g)).map
+          A.ellipticThreeBoundaryProjection =
       (Path.Homotopic.Quotient.mk
-        (A.orderThreeActualEllipticBoundaryDeckStraightLoop g)).cast _ _
+        (A.ellipticThreeBoundaryDeckStraightLoop g)).cast _ _
     rw [← Path.Homotopic.Quotient.mk_map]
-    unfold orderThreeActualEllipticBoundaryDeckStraightLoop
+    unfold ellipticThreeBoundaryDeckStraightLoop
     rw [Path.Homotopic.Quotient.mk_cast]
     exact eq_of_heq
       ((Path.Homotopic.Quotient.cast_heq _ _).trans
@@ -114,29 +114,29 @@ public theorem orderThreeActualEllipticBoundaryDeckStraightLoop_class_eq_ofDeck
 
 /-- The endpoint of a physical lattice-translation lift is the literal period translate of the
 selected affine coordinate. -/
-public theorem orderThreeActualEllipticBoundaryTranslation_endpoint (a : Lattice) :
+public theorem ellipticThreeBoundaryTranslation_endpoint (a : Lattice) :
     letI := orderThreeAffineMappingTorusDeckAction A.periods
     Additive.toMul (affineTorusMappingTorusDeckTranslation
       (orderThreeDescendedAffineTorusAutomorphism A.periods) a) •
-        A.orderThreeActualEllipticBoundaryBase.2 =
-      (A.orderThreeActualEllipticBoundaryBase.2.1,
+        A.ellipticThreeBoundaryBase.2 =
+      (A.ellipticThreeBoundaryBase.2.1,
         periodVector
             (parameterMap A.periods
               A.modular.modularParameter.toTriangleUniformization.zOne).1 a +
-          A.orderThreeActualEllipticBoundaryBase.2.2) := by
+          A.ellipticThreeBoundaryBase.2.2) := by
   let _ := orderThreeAffineMappingTorusDeckAction A.periods
   exact affineTorusMappingTorusDeckTranslation_smul _ _ _ _
 
 /-- The positive angular deck generator moves one turn in the negative real-cover direction and
 applies the order-three affine clutching lift. -/
-public theorem orderThreeActualEllipticBoundaryPositiveMeridian_endpoint :
+public theorem ellipticThreeBoundaryPositiveMeridian_endpoint :
     letI := orderThreeAffineMappingTorusDeckAction A.periods
     affineTorusMappingTorusDeckMeridian
         (orderThreeDescendedAffineTorusAutomorphism A.periods) •
-        A.orderThreeActualEllipticBoundaryBase.2 =
-      (A.orderThreeActualEllipticBoundaryBase.2.1 - 1,
+        A.ellipticThreeBoundaryBase.2 =
+      (A.ellipticThreeBoundaryBase.2.1 - 1,
         (orderThreeDescendedAffineTorusAutomorphism A.periods).lift
-            A.orderThreeActualEllipticBoundaryBase.2.2 +
+            A.ellipticThreeBoundaryBase.2.2 +
           (3 : ℂ)⁻¹ • periodVector
             (parameterMap A.periods
               A.modular.modularParameter.toTriangleUniformization.zOne).1 epsilon) := by
@@ -151,13 +151,13 @@ public theorem paperPuncturedGlobalFamilyAffinePresentation_translation_loop
         (Additive.toMul
           (freeAffineTranslation (M := paperCentralFreeMonodromy) a)) =
       Path.Homotopic.Quotient.mk
-        (A.actualCuspCentralPeriodLoop
+        (A.cuspCentralPeriodLoop
           (rhoLambda ((g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent) a)) := by
   unfold paperPuncturedGlobalFamilyAffinePresentation
   rw [AffineTorusCorePiOneData.freeAffinePresentationHom_translation]
-  change Additive.toMul (A.actualCuspCentralTranslation
+  change Additive.toMul (A.cuspCentralTranslation
     (rhoLambda ((g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent) a)) = _
-  rw [A.actualCuspCentralTranslation_eq_periodLoop]
+  rw [A.cuspCentralTranslation_eq_periodLoop]
 
 /-- The inverse first free meridian occurring in the order-three chart statement is the inverse
 geometric first meridian.  Together with the preceding positive-deck formula, this records the
@@ -173,7 +173,7 @@ public theorem paperPuncturedGlobalFamilyAffinePresentation_firstMeridian_inv :
 
 /-- One fixed path used for both translation and meridian comparisons. -/
 public noncomputable def orderThreeCentralBoundaryChartPath :
-    Path A.actualCuspCentralBase A.orderThreeActualEllipticCentralBase := by
+    Path A.cuspCentralBase A.ellipticThreeCentralBase := by
   rw [← A.centralAffineBase_eq_actualCuspCentralBase]
   exact A.orderThreeCentralBaseWhisker
 
@@ -182,24 +182,24 @@ loops.  The source loops are straight segments in the explicit radial universal 
 target translation loops are literal global period loops, and the target angular loop is the
 inverse geometric first finite meridian. -/
 public def OrderThreeCentralBoundaryStraightLoopIdentities : Prop :=
-  letI := A.orderThreeActualEllipticBoundaryAction
+  letI := A.ellipticThreeBoundaryAction
   letI : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderThreeActualEllipticBoundaryCover_simplyConnected
+    A.ellipticThreeBoundaryCover_simplyConnected
   (∀ a : Lattice,
-    FundamentalGroup.mapOfEq A.orderThreeActualOverlapToCentral rfl
+    FundamentalGroup.mapOfEq A.ellipticThreeOverlapToCentral rfl
         (Path.Homotopic.Quotient.mk
-          (A.orderThreeActualEllipticBoundaryDeckStraightLoop
+          (A.ellipticThreeBoundaryDeckStraightLoop
             (Additive.toMul (affineTorusMappingTorusDeckTranslation
               (orderThreeDescendedAffineTorusAutomorphism A.periods) a)))) =
       FundamentalGroup.fundamentalGroupMulEquivOfPath
         A.orderThreeCentralBoundaryChartPath
         (Path.Homotopic.Quotient.mk
-          (A.actualCuspCentralPeriodLoop
+          (A.cuspCentralPeriodLoop
             (rhoLambda ((g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent) a)))) ∧
-  FundamentalGroup.mapOfEq A.orderThreeActualOverlapToCentral rfl
+  FundamentalGroup.mapOfEq A.ellipticThreeOverlapToCentral rfl
       (Path.Homotopic.Quotient.mk
-        (A.orderThreeActualEllipticBoundaryDeckStraightLoop
+        (A.ellipticThreeBoundaryDeckStraightLoop
           (affineTorusMappingTorusDeckMeridian
             (orderThreeDescendedAffineTorusAutomorphism A.periods)))) =
     FundamentalGroup.fundamentalGroupMulEquivOfPath
@@ -210,17 +210,17 @@ public theorem OrderThreeCentralBoundaryStraightLoopIdentities.toBasedChartIdent
     (h : A.OrderThreeCentralBoundaryStraightLoopIdentities) :
     A.OrderThreeCentralBoundaryBasedChartIdentities := by
   let _ := orderThreeAffineMappingTorusDeckAction A.periods
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderThreeActualEllipticBoundaryCover_simplyConnected
+    A.ellipticThreeBoundaryCover_simplyConnected
   change (∀ a : Lattice, _) ∧ _ at h
   refine ⟨A.orderThreeCentralBoundaryChartPath, ?_, ?_⟩
   · intro a
-    rw [← A.orderThreeActualEllipticBoundaryDeckStraightLoop_class_eq_ofDeck]
+    rw [← A.ellipticThreeBoundaryDeckStraightLoop_class_eq_ofDeck]
     rw [A.paperPuncturedGlobalFamilyAffinePresentation_translation_loop]
     exact h.1 a
-  · rw [← A.orderThreeActualEllipticBoundaryDeckStraightLoop_class_eq_ofDeck]
+  · rw [← A.ellipticThreeBoundaryDeckStraightLoop_class_eq_ofDeck]
     rw [A.paperPuncturedGlobalFamilyAffinePresentation_firstMeridian_inv]
     exact h.2
 

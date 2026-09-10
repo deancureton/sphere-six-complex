@@ -24,9 +24,9 @@ open Function Matrix Set Topology
 open scoped ContDiff Manifold
 open SphereSixComplex.Geometry.CuspCombinatorics
 open SphereSixComplex.Geometry.CuspFilling
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricQuantitativeRegions
+open SphereSixComplex.Geometry.InfiniteA2Toric.QuantitativeRegions
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+namespace SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 public def unitPolydisc (a : ChartIndex) : Set Carrier :=
   {p | p ∈ (toricChart a).source ∧ ∀ i, ‖toricChart a p i‖ ≤ 1}
@@ -646,4 +646,4 @@ public theorem closedUnitPolydisc_union_below_closed :
     unitPolydisc a ∩ {p | ‖carrierHeight p‖ ≤ c})
   rw [unitPolydisc_union_below_eq c hc]
   exact isClosed_le carrierHeight_contMDiff.continuous.norm continuous_const
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+end SphereSixComplex.Geometry.InfiniteA2Toric.Construction

@@ -22,15 +22,15 @@ noncomputable section
 
 open Function Set Topology
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
 open SphereSixComplex.Periods
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricQuantitativeRegions
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
+open SphereSixComplex.Geometry.InfiniteA2Toric.QuantitativeRegions
 
 public noncomputable def constructedA2PositiveRealUnit (x : ℝ) (hx : 0 < x) : ℂˣ :=
   Units.mk0 (x : ℂ) (by exact_mod_cast hx.ne')
@@ -369,6 +369,6 @@ public theorem constructedA2MomentCoordinateHomeomorph_of_properCoordinate
       constructedPositiveMomentRegion W.localWitness.radius) :=
   ⟨C.toHomeomorph W.localWitness.radius_lt_one⟩
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric
 
 end

@@ -13,7 +13,7 @@ open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.ComplexTorus
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
+open SphereSixComplex.Geometry.InfiniteA2Toric
 variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
 
@@ -47,7 +47,7 @@ public def localCuspPeriodLift
       W.localWitness.radius_pos W.localWitness.radius_le s hs hsr 0 lambda
     dsimp only at h
     rw [add_zero] at h
-    erw [CuspLocalPhaseAction.ExactLocalHolomorphicPhaseCoefficients.psiMap_eq_generic
+    erw [CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients.psiMap_eq_generic
       _ W.localWitness.fixedPoint] at h
     exact h.symm
 

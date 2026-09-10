@@ -285,7 +285,7 @@ namespace Geometry.CuspPuncturedCollarBridge
 
 open SphereSixComplex.CircleMappingTorusHomologyBases
 open SphereSixComplex.Geometry.CuspPeriodExpansion
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
+open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 
 variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}

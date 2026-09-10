@@ -10,7 +10,7 @@ noncomputable section
 
 open Function Set Topology Matrix
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
 open SphereSixComplex
 open SphereSixComplex.Periods
@@ -24,8 +24,8 @@ open SphereSixComplex.Geometry.CuspPhaseEstimates
 open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 open SphereSixComplex.Geometry.CuspStraighteningRetraction
 open SphereSixComplex.Geometry.CuspToricPhaseAction
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+open SphereSixComplex.Geometry.InfiniteA2Toric
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
@@ -761,6 +761,6 @@ public theorem constructedA2EffectivePhaseCentralOrbit_jointly_injective
   have hkl := constructedA2EffectivePhaseCentralOrbit_injective W q.1 q.property h
   exact Prod.ext rfl hkl
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric
 
 end

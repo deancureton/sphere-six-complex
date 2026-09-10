@@ -8,7 +8,7 @@ noncomputable section
 
 open Function Set Topology
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
 open SphereSixComplex.Periods
 open SphereSixComplex.Geometry.CuspFilling
@@ -16,7 +16,7 @@ open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 open SphereSixComplex.Geometry.CuspPhaseEstimates
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
@@ -123,6 +123,6 @@ public def constructedA2ActualSingletonPhaseHomeomorph
   (constructedA2SingletonPhaseHomeomorph W).trans
     (Homeomorph.setCongr (constructedA2SingletonPhaseImage_eq_actualSingletonStratum W))
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric
 
 end

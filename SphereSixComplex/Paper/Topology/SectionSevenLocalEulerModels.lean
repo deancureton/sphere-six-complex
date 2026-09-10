@@ -52,7 +52,7 @@ public theorem integralHomologyFiniteSix (M : CuspToricCellModel X) :
 /-- The toric cusp cell decomposition has Euler characteristic two. -/
 public theorem euler_eq_two (M : CuspToricCellModel X) :
     integralHomologyEulerCharacteristicSix X = 2 := by
-  rw [M.toFiniteCWModelSix.establishedIntegralCellularEulerPoincareSix,
+  rw [M.toFiniteCWModelSix.eulerCharacteristic_eq_cellSum,
     M.cellsZero, M.cellsOne, M.cellsTwo, M.cellsThree, M.cellsFour,
     M.cellsFive, M.cellsSix]
   norm_num
@@ -75,7 +75,7 @@ public structure CentralHomologyEulerModel
 /-- Exact geometric models still required for the seven local Section 7 spaces.  The fields are
 CW decompositions, direct central homology and Euler data, explicit collar mapping-torus models,
 and the already stated deformation retractions. -/
-public structure SectionSevenLocalEulerModels where
+public structure LocalEulerModels where
   cuspRetraction : ActualLocalCuspCentralFiberRetractionData A.starCuspWitness
   orderThreeRadialChart : OrderThreeAffineRadialWholeFillingCompatibility A
     A.starSeparation.orderThree.radius
@@ -87,10 +87,10 @@ public structure SectionSevenLocalEulerModels where
   collarModel : ∀ i : Fin 3, FourTorusCircleMappingTorusModel
     (A.openEmbeddingStarData.collarSource i)
 
-namespace SectionSevenLocalEulerModels
+namespace LocalEulerModels
 
 /-- All seven local spaces have finite integral homology supported in degrees at most six. -/
-public theorem localIntegralHomologyFiniteSix (M : SectionSevenLocalEulerModels A) :
+public theorem localIntegralHomologyFiniteSix (M : LocalEulerModels A) :
     IntegralHomologyFiniteSix A.openEmbeddingStarData.central ∧
     (∀ i : Fin 3, IntegralHomologyFiniteSix (A.openEmbeddingStarData.filling i)) ∧
     (∀ i : Fin 3, IntegralHomologyFiniteSix (A.openEmbeddingStarData.collarSource i)) := by
@@ -115,16 +115,16 @@ public theorem localIntegralHomologyFiniteSix (M : SectionSevenLocalEulerModels 
         A.starSeparation.orderFour.radius M.orderFourRadialChart).symm
 
 /-- The exact Section 7 local Euler calculation, derived from geometric models. -/
-public theorem sectionSevenLocalEulerExpression_eq_two (M : SectionSevenLocalEulerModels A) :
+public theorem sectionSevenLocalEulerExpression_eq_two (M : LocalEulerModels A) :
     A.openEmbeddingStarData.sectionSevenLocalEulerExpression = 2 :=
-  A.sectionSevenLocalEulerExpression_eq_two_of_modelCalculations
+  A.localEulerExpression_eq_two_of_modelCalculations
     M.cuspRetraction M.orderThreeRadialChart M.orderFourRadialChart
     M.centralModel.euler_eq_zero M.cuspCells.euler_eq_two
     (Topology.EllipticReducedFiberMappingTorusHomology.orderThreeEuler_eq_zero A.periods)
     (Topology.EllipticReducedFiberMappingTorusHomology.orderFourEuler_eq_zero A.periods)
     (fun i ↦ (M.collarModel i).euler_eq_zero)
 
-end SectionSevenLocalEulerModels
+end LocalEulerModels
 
 end Geometry.PaperAnalyticData
 

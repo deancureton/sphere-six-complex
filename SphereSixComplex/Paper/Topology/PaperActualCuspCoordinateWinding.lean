@@ -42,72 +42,72 @@ open CuspPeriodExpansion CuspPuncturedCollarBridge
 variable (A : PaperAnalyticData)
 
 /-- The completed-cusp parameter disc retained by the actual collar choice. -/
-public def actualCuspParameterBall : Set ℂ :=
+public def cuspParameterBall : Set ℂ :=
   Metric.ball 0 A.starCuspWitness.localWitness.radius
 
 /-- The exact holomorphic unit in the selected reciprocal cusp factorization. -/
-public abbrev actualCuspFactorizationUnit : ℂ → ℂ :=
+public abbrev cuspFactorizationUnit : ℂ → ℂ :=
   A.actualNormalizedModularJUniformization.cusp.cuspUnit
 
-public theorem actualCuspFactorizationUnit_continuousOn :
-    ContinuousOn A.actualCuspFactorizationUnit A.actualCuspParameterBall := by
+public theorem cuspFactorizationUnit_continuousOn :
+    ContinuousOn A.cuspFactorizationUnit A.cuspParameterBall := by
   intro q hq
   apply (A.actualNormalizedModularJUniformization.cusp
     |>.cuspUnit_holomorphic q ?_).continuousAt.continuousWithinAt
   rw [Metric.mem_ball, dist_zero_right]
   exact (show ‖q‖ < A.starCuspWitness.localWitness.radius by
-    simpa [actualCuspParameterBall, Metric.mem_ball, dist_zero_right] using hq).trans_le
+    simpa [cuspParameterBall, Metric.mem_ball, dist_zero_right] using hq).trans_le
       A.actualPuncturedCuspWitness_radius_le_cuspUnitRadius
 
-public theorem actualCuspFactorizationUnit_zero_not_mem_image :
-    0 ∉ A.actualCuspFactorizationUnit '' A.actualCuspParameterBall := by
+public theorem cuspFactorizationUnit_zero_not_mem_image :
+    0 ∉ A.cuspFactorizationUnit '' A.cuspParameterBall := by
   rintro ⟨q, hq, hzero⟩
   apply A.actualPuncturedCuspWitness_cuspUnit_ne q
-    (by simpa [actualCuspParameterBall, Metric.mem_ball, dist_zero_right] using hq)
+    (by simpa [cuspParameterBall, Metric.mem_ball, dist_zero_right] using hq)
   exact hzero
 
 /-- A continuous logarithm of the exact unit on the entire selected parameter disc. -/
 public theorem exists_actualCuspFactorizationUnitLog :
-    ∃ f : ℂ → ℂ, ContinuousOn f A.actualCuspParameterBall ∧
-      Set.EqOn (Complex.exp ∘ f) A.actualCuspFactorizationUnit
-        A.actualCuspParameterBall := by
-  let _ : ContractibleSpace A.actualCuspParameterBall :=
+    ∃ f : ℂ → ℂ, ContinuousOn f A.cuspParameterBall ∧
+      Set.EqOn (Complex.exp ∘ f) A.cuspFactorizationUnit
+        A.cuspParameterBall := by
+  let _ : ContractibleSpace A.cuspParameterBall :=
     (convex_ball (0 : ℂ) A.starCuspWitness.localWitness.radius).contractibleSpace
       ⟨0, by
-        simpa [actualCuspParameterBall, Metric.mem_ball] using
+        simpa [cuspParameterBall, Metric.mem_ball] using
           A.starCuspWitness.localWitness.radius_pos⟩
-  have hSimplyConnected : IsSimplyConnected A.actualCuspParameterBall := by
-    change SimplyConnectedSpace A.actualCuspParameterBall
+  have hSimplyConnected : IsSimplyConnected A.cuspParameterBall := by
+    change SimplyConnectedSpace A.cuspParameterBall
     infer_instance
   exact Complex.exists_continuousOn_eqOn_exp_comp hSimplyConnected Metric.isOpen_ball
-    A.actualCuspFactorizationUnit_continuousOn
-    A.actualCuspFactorizationUnit_zero_not_mem_image
+    A.cuspFactorizationUnit_continuousOn
+    A.cuspFactorizationUnit_zero_not_mem_image
 
-public noncomputable def actualCuspFactorizationUnitLog : ℂ → ℂ :=
+public noncomputable def cuspFactorizationUnitLog : ℂ → ℂ :=
   Classical.choose A.exists_actualCuspFactorizationUnitLog
 
-public theorem actualCuspFactorizationUnitLog_continuousOn :
-    ContinuousOn A.actualCuspFactorizationUnitLog A.actualCuspParameterBall :=
+public theorem cuspFactorizationUnitLog_continuousOn :
+    ContinuousOn A.cuspFactorizationUnitLog A.cuspParameterBall :=
   (Classical.choose_spec A.exists_actualCuspFactorizationUnitLog).1
 
-public theorem actualCuspFactorizationUnitLog_exp
-    {q : ℂ} (hq : q ∈ A.actualCuspParameterBall) :
-    Complex.exp (A.actualCuspFactorizationUnitLog q) =
-      A.actualCuspFactorizationUnit q :=
+public theorem cuspFactorizationUnitLog_exp
+    {q : ℂ} (hq : q ∈ A.cuspParameterBall) :
+    Complex.exp (A.cuspFactorizationUnitLog q) =
+      A.cuspFactorizationUnit q :=
   (Classical.choose_spec A.exists_actualCuspFactorizationUnitLog).2 hq
 
 /-! ## The completed-cusp parameter along the actual angular loop -/
 
 public def cuspAngularQPoint (t : unitInterval) : ℂ :=
-  cuspQ (A.actualCuspBoundaryCoverBase.1.2 - (t : ℝ))
+  cuspQ (A.cuspBoundaryCoverBase.1.2 - (t : ℝ))
 
 public theorem cuspAngularQPoint_mem_parameterBall (t : unitInterval) :
-    A.cuspAngularQPoint t ∈ A.actualCuspParameterBall := by
-  rw [actualCuspParameterBall, Metric.mem_ball, dist_zero_right]
+    A.cuspAngularQPoint t ∈ A.cuspParameterBall := by
+  rw [cuspParameterBall, Metric.mem_ball, dist_zero_right]
   unfold cuspAngularQPoint
-  have hbase : ‖cuspQ A.actualCuspBoundaryCoverBase.1.2‖ <
+  have hbase : ‖cuspQ A.cuspBoundaryCoverBase.1.2‖ <
       A.starCuspWitness.localWitness.radius :=
-    A.actualCuspBoundaryCoverBase.2
+    A.cuspBoundaryCoverBase.2
   rw [norm_cuspQ] at hbase ⊢
   simpa using hbase
 
@@ -119,9 +119,9 @@ public theorem cuspAngularQPoint_apply (t : unitInterval) :
   unfold cuspAngularQPoint cuspQ
   rw [show
     2 * (Real.pi : ℂ) * Complex.I *
-          (A.actualCuspBoundaryCoverBase.1.2 - ((t : ℝ) : ℂ)) =
+          (A.cuspBoundaryCoverBase.1.2 - ((t : ℝ) : ℂ)) =
         2 * (Real.pi : ℂ) * Complex.I *
-            (A.actualCuspBoundaryCoverBase.1.2 - (0 : ℂ)) +
+            (A.cuspBoundaryCoverBase.1.2 - (0 : ℂ)) +
           -(((2 * Real.pi * (t : ℝ) : ℝ) : ℂ) * Complex.I) by
       push_cast
       ring]
@@ -135,19 +135,19 @@ public theorem cuspAngularQPoint_one :
 public theorem cuspAngularCoordinateLoop_inv_apply (t : unitInterval) :
     ((A.cuspAngularCoordinateLoop t).1)⁻¹ =
       A.cuspAngularQPoint t *
-        A.actualCuspFactorizationUnit (A.cuspAngularQPoint t) := by
+        A.cuspFactorizationUnit (A.cuspAngularQPoint t) := by
   rw [A.cuspAngularCoordinateLoop_apply]
   apply A.actualPuncturedCuspWitness_reciprocal_factorization
   · apply mem_cuspHalfPlane_of_norm_cuspQ_lt
       A.starCuspWitness.localWitness.radius_le
-    have hbase : ‖cuspQ A.actualCuspBoundaryCoverBase.1.2‖ <
+    have hbase : ‖cuspQ A.cuspBoundaryCoverBase.1.2‖ <
         A.starCuspWitness.localWitness.radius :=
-      A.actualCuspBoundaryCoverBase.2
+      A.cuspBoundaryCoverBase.2
     rw [norm_cuspQ] at hbase ⊢
     simpa using hbase
-  · have hbase : ‖cuspQ A.actualCuspBoundaryCoverBase.1.2‖ <
+  · have hbase : ‖cuspQ A.cuspBoundaryCoverBase.1.2‖ <
         A.actualPuncturedCuspWitness.localWitness.radius :=
-      A.actualCuspBoundaryCoverBase.2
+      A.cuspBoundaryCoverBase.2
     rw [norm_cuspQ] at hbase ⊢
     simpa using hbase
 
@@ -155,7 +155,7 @@ public theorem cuspAngularCoordinateLoop_inv_apply (t : unitInterval) :
 public noncomputable def cuspAngularZeroRawLog (t : unitInterval) : ℂ :=
   -(Complex.log (A.cuspAngularQPoint 0) -
       (((2 * Real.pi * (t : ℝ) : ℝ) : ℂ) * Complex.I) +
-      A.actualCuspFactorizationUnitLog (A.cuspAngularQPoint t))
+      A.cuspFactorizationUnitLog (A.cuspAngularQPoint t))
 
 public theorem cuspAngularQPoint_zero_ne :
     A.cuspAngularQPoint 0 ≠ 0 := by
@@ -168,8 +168,8 @@ public theorem continuous_actualCuspAngularZeroRawLog :
     unfold cuspAngularQPoint cuspQ
     fun_prop
   have hunitLog : Continuous
-      (A.actualCuspFactorizationUnitLog ∘ A.cuspAngularQPoint) :=
-    A.actualCuspFactorizationUnitLog_continuousOn.comp_continuous hq
+      (A.cuspFactorizationUnitLog ∘ A.cuspAngularQPoint) :=
+    A.cuspFactorizationUnitLog_continuousOn.comp_continuous hq
       A.cuspAngularQPoint_mem_parameterBall
   unfold cuspAngularZeroRawLog
   fun_prop
@@ -180,7 +180,7 @@ public theorem cuspAngularZeroRawLog_exp (t : unitInterval) :
   unfold cuspAngularZeroRawLog
   rw [Complex.exp_neg, Complex.exp_add, Complex.exp_sub,
     Complex.exp_log A.cuspAngularQPoint_zero_ne,
-    A.actualCuspFactorizationUnitLog_exp
+    A.cuspFactorizationUnitLog_exp
       (A.cuspAngularQPoint_mem_parameterBall t)]
   have hq : A.cuspAngularQPoint 0 /
         Complex.exp ((((2 * Real.pi * (t : ℝ) : ℝ) : ℂ) * Complex.I)) =
@@ -208,14 +208,14 @@ public theorem cuspAngularZeroRawLog_one :
 
 public def cuspAngularZeroPuncturedLoop :
     Path (twicePuncturedComplexForgetZero
-      (A.centralFamilyCoordinate A.actualCuspCentralBase))
+      (A.centralFamilyCoordinate A.cuspCentralBase))
       (twicePuncturedComplexForgetZero
-        (A.centralFamilyCoordinate A.actualCuspCentralBase)) :=
+        (A.centralFamilyCoordinate A.cuspCentralBase)) :=
   A.cuspAngularCoordinateLoop.map twicePuncturedComplexForgetZero.continuous
 
 public abbrev cuspAngularZeroPuncturedBasepoint : PuncturedComplex :=
   twicePuncturedComplexForgetZero
-    (A.centralFamilyCoordinate A.actualCuspCentralBase)
+    (A.centralFamilyCoordinate A.cuspCentralBase)
 
 public noncomputable def cuspAngularZeroLogLiftPoint
     (t : unitInterval) : ℂ :=
@@ -250,7 +250,7 @@ public theorem cuspAngularZeroLogLiftPoint_exp (t : unitInterval) :
     A.cuspAngularZeroRawLog_exp]
   have hbase : A.cuspAngularZeroPuncturedBasepoint.1 =
       (A.cuspAngularCoordinateLoop 0).1 := by
-    change (A.centralFamilyCoordinate A.actualCuspCentralBase).1 =
+    change (A.centralFamilyCoordinate A.cuspCentralBase).1 =
       (A.cuspAngularCoordinateLoop 0).1
     exact (congrArg (fun z ↦ z.1)
       A.cuspAngularCoordinateLoop.source).symm

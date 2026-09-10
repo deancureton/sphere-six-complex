@@ -22,9 +22,9 @@ noncomputable section
 
 open Function Set Topology
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 /-- The convex moment-coordinate model of the local positive part. -/
 public def constructedPositiveMomentRegion (r : ℝ) : Set (Fin 3 → ℝ) :=
@@ -57,4 +57,4 @@ public theorem constructedLocalPositivePart_contractible_of_momentHomeomorph
     constructedPositiveMomentRegion_contractible hr
   exact e.contractibleSpace
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric

@@ -94,7 +94,7 @@ private theorem orderThreeActualCayleyBaseCoordinate_tripleHomotopy_with_trace :
             (norm_pos_iff.mpr A.orderThreeFillingRelationCayleyBaseValue_ne_zero)
             (by
               rw [A.orderThreeFillingRelationCayleyBaseValue_norm]
-              exact A.orderThreeActualEllipticBoundaryBase.1.2.2)))
+              exact A.ellipticThreeBoundaryBase.1.2.2)))
         twicePuncturedCounterclockwiseZeroTriple.toContinuousMap,
       ∀ s : unitInterval, H (s, 0) = H (s, 1) := by
   obtain ⟨u, a, c, hc, hc1, haeq, hu, hune, hfac, hbound⟩ :=
@@ -114,7 +114,7 @@ private theorem orderThreeActualCayleyBaseCoordinate_tripleHomotopy_with_trace :
       (norm_pos_iff.mpr
         A.orderThreeFillingRelationCayleyBaseValue_ne_zero)).trans (by
           rw [A.orderThreeFillingRelationCayleyBaseValue_norm]
-          simpa using A.orderThreeActualEllipticBoundaryBase.1.2.2)
+          simpa using A.ellipticThreeBoundaryBase.1.2.2)
   have hsmall :
       A.orderThreeCayleyChartCircleMap a (norm_pos_iff.mpr ha) har =
         factorizedLocalDegreeCircleTwoPunctures
@@ -140,7 +140,7 @@ private theorem orderThreeActualCayleyBaseCoordinate_tripleHomotopy_with_trace :
               (norm_pos_iff.mpr
                 A.orderThreeFillingRelationCayleyBaseValue_ne_zero)).trans (by
                   rw [A.orderThreeFillingRelationCayleyBaseValue_norm]
-                  simpa using A.orderThreeActualEllipticBoundaryBase.1.2.2)) =
+                  simpa using A.ellipticThreeBoundaryBase.1.2.2)) =
         factorizedLocalDegreeCircleTwoPunctures
           u 3 a 1 ha hu hune hbound' := by
     exact hsmall
@@ -200,7 +200,7 @@ public noncomputable def orderThreeZeroSectionTriplePath :
 public theorem orderThreeZeroSectionBase_tripleHomotopy :
     Nonempty (ContinuousMap.Homotopy A.orderThreeZeroSectionBaseMap
       A.orderThreeZeroSectionTriplePath.toContinuousMap) := by
-  rcases A.orderThreeActualCayleyBaseCoordinate_tripleHomotopy with ⟨H⟩
+  rcases A.ellipticThreeCayleyBaseCoordinate_tripleHomotopy with ⟨H⟩
   let H' := H.cast A.orderThreeFillingRelationBaseCoordinateMap_eq_cayley.symm rfl
   exact ⟨{
     toFun := fun st ↦ A.markedBaseToCentralZeroSection (H' st)
@@ -251,15 +251,15 @@ public theorem orderThreeZeroSectionTriplePath_class :
   exact h
 
 /-- Rebase the lifted three-turn zero-section circle at the selected actual cusp point. -/
-public noncomputable def orderThreeActualCuspZeroSectionTriplePath :
-    Path A.actualCuspCentralBase A.actualCuspCentralBase :=
-  A.actualCuspMarkedCentralWhisker.symm.trans
-    (A.orderThreeZeroSectionTriplePath.trans A.actualCuspMarkedCentralWhisker)
+public noncomputable def ellipticThreeCuspZeroSectionTriplePath :
+    Path A.cuspCentralBase A.cuspCentralBase :=
+  A.cuspMarkedCentralWhisker.symm.trans
+    (A.orderThreeZeroSectionTriplePath.trans A.cuspMarkedCentralWhisker)
 
 /-- At the actual cusp basepoint, the zero-section part of the order-three loop is exactly
 the cube of the geometric first central meridian. -/
-public theorem orderThreeActualCuspZeroSectionTriplePath_class :
-    Path.Homotopic.Quotient.mk A.orderThreeActualCuspZeroSectionTriplePath =
+public theorem ellipticThreeCuspZeroSectionTriplePath_class :
+    Path.Homotopic.Quotient.mk A.ellipticThreeCuspZeroSectionTriplePath =
       A.geometricCentralRhoOne ^ 3 := by
   have h := congrArg A.markedCentralToActualCuspEquiv
     A.orderThreeZeroSectionTriplePath_class

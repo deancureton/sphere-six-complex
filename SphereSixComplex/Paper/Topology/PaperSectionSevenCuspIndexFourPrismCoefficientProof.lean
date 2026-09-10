@@ -19,12 +19,12 @@ open AlgebraicTopology
 
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 
-open SectionSevenEllipticTwoDiscCoverData
-open SectionSevenEllipticTwoDiscHomologyCoordinates
-open SectionSevenEllipticInteriorMarkedCycleData
+open EllipticTwoDiscCoverData
+open EllipticTwoDiscHomologyCoordinates
+open EllipticInteriorMarkedCycleData
 open SphereSixComplex.CircleMappingTorusHomologyBases
 
-variable {A : PaperAnalyticData} {D : A.SectionSevenEllipticTwoDiscCoverData}
+variable {A : PaperAnalyticData} {D : A.EllipticTwoDiscCoverData}
   {N : A.EllipticBandHomologyAlignment D}
   {G₀ : D.SectionSevenCuspPulledBackBoundaryBasisBridge N}
 
@@ -99,7 +99,7 @@ public theorem cuspFiberCoordinate_eq_ellipticInteriorDegreeTwoFiberCoordinateHo
 actual affine radial input discharges the index-four prism coefficient calculation for every
 prism geometric package over that input. -/
 public theorem normalizedIndexFourPrismCoefficientCalculation_of_actualCuspFiberCoordinate
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (G₀ : R.twoDiscCover.SectionSevenCuspPulledBackBoundaryBasisBridge
       R.homologyAlignment)
     (C : R.twoDiscCover.CuspEllipticMappingTorusPrismGeometricData R.homologyAlignment

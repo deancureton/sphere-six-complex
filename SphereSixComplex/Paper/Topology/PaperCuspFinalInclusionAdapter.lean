@@ -113,8 +113,8 @@ public theorem cuspFinalRightHomologyMap_conjugacy (k : ℕ)
 attachment.  The collar bases can, in particular, be supplied by a
 `CuspCollarRadialMappingTorusRealization`; no dimensionally incorrect bare mapping-torus model is
 used. -/
-public structure ActualCuspFillingInclusionCoordinates
-    (B : A.SectionSevenCollarInteriorHomologyBases) where
+public structure CuspFillingInclusionCoordinates
+    (B : A.CollarInteriorHomologyBases) where
   degreeOne : ∀ x,
     (A.cuspFillingHomologyOneEquiv A.cuspCentralFiberRetractionData)
         (integralSingularHomologyMap 1 (A.openEmbeddingStarData.toFilling 0).hom x) =
@@ -125,21 +125,21 @@ public structure ActualCuspFillingInclusionCoordinates
       fun i ↦
         -sectionSevenMayerVietorisFinalTwoHom (B.cuspCollarTwo x) (Fin.natAdd 2 i)
 
-namespace ActualCuspFillingInclusionCoordinates
+namespace CuspFillingInclusionCoordinates
 
-variable {A : PaperAnalyticData} {B : A.SectionSevenCollarInteriorHomologyBases}
+variable {A : PaperAnalyticData} {B : A.CollarInteriorHomologyBases}
 
 /-- Transport the actual degree-one cusp calculation to the final Mayer--Vietoris overlap. -/
-public theorem finalCuspOne (C : A.ActualCuspFillingInclusionCoordinates B) (x) :
-    (A.sectionSevenFinalSixHomologyBasesOfLocalBases B).cuspPieceOne
+public theorem finalCuspOne (C : A.CuspFillingInclusionCoordinates B) (x) :
+    (A.cuspAttachmentHomologyBasesOfLocalBases B).cuspPieceOne
         (integralSingularHomologyMap 1
           (IntegralMayerVietoris.interToRight
             ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4))
             ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3)) x) =
       fun i ↦ -sectionSevenFirstBoundaryHom
-        ((A.sectionSevenFinalSixHomologyBasesOfLocalBases B).overlapOne x)
+        ((A.cuspAttachmentHomologyBasesOfLocalBases B).overlapOne x)
           (Fin.natAdd 1 i) := by
-  rw [show (A.sectionSevenFinalSixHomologyBasesOfLocalBases B).cuspPieceOne =
+  rw [show (A.cuspAttachmentHomologyBasesOfLocalBases B).cuspPieceOne =
       (integralSingularHomologyEquiv 1
         (A.openEmbeddingStarData.fillingToSectionSevenEulerPieceHomeomorph 0)).symm.trans
           (A.cuspFillingHomologyOneEquiv A.cuspCentralFiberRetractionData) from rfl]
@@ -157,16 +157,16 @@ public theorem finalCuspOne (C : A.ActualCuspFillingInclusionCoordinates B) (x) 
     _ = _ := by rw [C.degreeOne]; rfl
 
 /-- Transport the actual degree-two cusp calculation to the final Mayer--Vietoris overlap. -/
-public theorem finalCuspTwo (C : A.ActualCuspFillingInclusionCoordinates B) (x) :
-    (A.sectionSevenFinalSixHomologyBasesOfLocalBases B).cuspPieceTwo
+public theorem finalCuspTwo (C : A.CuspFillingInclusionCoordinates B) (x) :
+    (A.cuspAttachmentHomologyBasesOfLocalBases B).cuspPieceTwo
         (integralSingularHomologyMap 2
           (IntegralMayerVietoris.interToRight
             ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4))
             ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3)) x) =
       fun i ↦ -sectionSevenMayerVietorisFinalTwoHom
-        ((A.sectionSevenFinalSixHomologyBasesOfLocalBases B).overlapTwo x)
+        ((A.cuspAttachmentHomologyBasesOfLocalBases B).overlapTwo x)
           (Fin.natAdd 2 i) := by
-  rw [show (A.sectionSevenFinalSixHomologyBasesOfLocalBases B).cuspPieceTwo =
+  rw [show (A.cuspAttachmentHomologyBasesOfLocalBases B).cuspPieceTwo =
       (integralSingularHomologyEquiv 2
         (A.openEmbeddingStarData.fillingToSectionSevenEulerPieceHomeomorph 0)).symm.trans
           (B.cuspFillingTwo A.cuspCentralFiberRetractionData) from rfl]
@@ -186,33 +186,33 @@ public theorem finalCuspTwo (C : A.ActualCuspFillingInclusionCoordinates B) (x) 
 /-- Combine the two proved cusp transports with the independently computed elliptic-interior
 maps. -/
 public theorem toFinalInclusionCoordinates
-    (C : A.ActualCuspFillingInclusionCoordinates B)
+    (C : A.CuspFillingInclusionCoordinates B)
     (interiorOne : ∀ x,
-      (A.sectionSevenFinalSixHomologyBasesOfLocalBases B).interiorOne
+      (A.cuspAttachmentHomologyBasesOfLocalBases B).interiorOne
           (integralSingularHomologyMap 1
             (IntegralMayerVietoris.interToLeft
               ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4))
               ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3)) x) =
         fun i ↦ sectionSevenFirstBoundaryHom
-          ((A.sectionSevenFinalSixHomologyBasesOfLocalBases B).overlapOne x)
+          ((A.cuspAttachmentHomologyBasesOfLocalBases B).overlapOne x)
             (Fin.castAdd 2 i))
     (interiorTwo : ∀ x,
-      (A.sectionSevenFinalSixHomologyBasesOfLocalBases B).interiorTwo
+      (A.cuspAttachmentHomologyBasesOfLocalBases B).interiorTwo
           (integralSingularHomologyMap 2
             (IntegralMayerVietoris.interToLeft
               ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4))
               ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3)) x) =
         fun i ↦ sectionSevenMayerVietorisFinalTwoHom
-          ((A.sectionSevenFinalSixHomologyBasesOfLocalBases B).overlapTwo x)
+          ((A.cuspAttachmentHomologyBasesOfLocalBases B).overlapTwo x)
             (Fin.castAdd 4 i)) :
-    A.SectionSevenFinalInclusionCoordinates
-      (A.sectionSevenFinalSixHomologyBasesOfLocalBases B) where
+    A.CuspAttachmentInclusionCoordinates
+      (A.cuspAttachmentHomologyBasesOfLocalBases B) where
   interiorOne := interiorOne
   cuspOne := C.finalCuspOne
   interiorTwo := interiorTwo
   cuspTwo := C.finalCuspTwo
 
-end ActualCuspFillingInclusionCoordinates
+end CuspFillingInclusionCoordinates
 
 end Geometry.PaperAnalyticData
 

@@ -26,7 +26,7 @@ open SphereSixComplex.Periods.ExactNormalizedModularJTau
 
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 /-- A factor in a broad left sector remains in the left half-plane after multiplication by the
 narrowly right-facing cusp unit. -/
@@ -126,7 +126,7 @@ public theorem actualCuspCylinderReciprocalProduct_re_neg_of_broadLeftSector
 /-- Pointwise, the fixed Wang vertex band does not map into the order-four cusp open. -/
 public theorem not_actualCuspSwappedVertexPointwiseMembership
     {A : PaperAnalyticData}
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     ¬ (let G := A.actualCuspRadialClutchingData
        let _ := G.fiberTopology
        ∀ z : CircleMappingTorus G.clutching,
@@ -151,7 +151,7 @@ public theorem not_actualCuspSwappedVertexPointwiseMembership
       R.twoDiscCover.cuspOrderFourOpen := h z hzvertex
   have hgt := (cuspToEllipticInteriorMap_mem_orderFourSide_iff_height R _).1 hmem
   have hneg :
-      A.sectionSevenEllipticCentralHeight
+      A.ellipticCentralHeight
         ⟨R.twoDiscCover.cuspToEllipticInteriorMap (G.totalHomotopyEquiv.invFun z),
           R.twoDiscCover.cuspToEllipticInteriorMap_mem_centralImage _⟩ < 0 := by
     rw [R.twoDiscCover.sectionSevenEllipticCentralHeight_cuspToEllipticInteriorMap_mappingTorus z]
@@ -163,7 +163,7 @@ public theorem not_actualCuspSwappedVertexPointwiseMembership
 /-- Therefore the fixed swapped refinement has no witness. -/
 public theorem not_actualCuspSwappedCoverRefinement
     {A : PaperAnalyticData}
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     ¬ ActualCuspSwappedCoverRefinement R := by
   intro C
   apply not_actualCuspSwappedVertexPointwiseMembership R
@@ -171,7 +171,7 @@ public theorem not_actualCuspSwappedCoverRefinement
   intro z hz
   exact C.vertex_le hz
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

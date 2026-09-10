@@ -10,8 +10,8 @@ noncomputable section
 open Set Topology CategoryTheory CategoryTheory.Limits
 namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 open SphereSixComplex.Periods StandardA2ToricCentralFiberCellAtlas
-open StandardInfiniteA2ToricModel StandardInfiniteA2ToricModel.Construction
-open StandardInfiniteA2ToricModel.Established CuspPeriodExpansion
+open InfiniteA2Toric InfiniteA2Toric.Construction
+open InfiniteA2Toric CuspPeriodExpansion
 variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 

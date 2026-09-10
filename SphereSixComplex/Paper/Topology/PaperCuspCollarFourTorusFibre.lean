@@ -39,9 +39,9 @@ public theorem subsingleton_homology_six_actualCuspCollar :
     A.starCuspWitness.localWitness.radius_pos G.totalHomeomorph h5 h6
 
 /-- The Section 7 top-degree obligation for the actual star, with no hypotheses left. -/
-public theorem sectionSevenStageTopDegreeVanishing_actual :
+public theorem stageTopDegreeVanishing :
     A.openEmbeddingStarData.SectionSevenStageTopDegreeVanishing :=
-  A.sectionSevenStageTopDegreeVanishing_of_actualCuspCollar
+  A.stageTopDegreeVanishing_of_actualCuspCollar
     A.subsingleton_homology_six_actualCuspCollar
 
 end SphereSixComplex.Geometry.PaperAnalyticData

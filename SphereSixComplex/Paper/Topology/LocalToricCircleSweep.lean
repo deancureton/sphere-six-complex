@@ -6,7 +6,7 @@ public import SphereSixComplex.Paper.Geometry.EstablishedContinuousTorusAction
 noncomputable section
 open AlgebraicTopology
 open scoped ContinuousMap
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Topology CuspStraighteningExtension
 open CuspPhaseEstimates CuspLocalPhaseAction
 
@@ -17,7 +17,7 @@ public def localHeightPreservingCircleAction (M : Model) (r : ℝ)
     change M.t (M.torusAction (g z.1) z.2) ∈ Metric.ball 0 r
     rw [M.t_torusAction, hg, Units.val_one, one_mul]
     exact z.2.property⟩
-  continuous_toFun := ((Established.establishedContinuousTorusAction M).variable_action
+  continuous_toFun := ((establishedContinuousTorusAction M).variable_action
     (g.continuous.comp continuous_fst) (continuous_subtype_val.comp continuous_snd)).subtype_mk _
 
 public theorem localHeightPreservingCircleSweep_zero (M : Model) (r : ℝ) (hr : 0 < r)
@@ -32,4 +32,4 @@ public theorem localHeightPreservingCircleSweep_zero (M : Model) (r : ℝ) (hr :
   let : SimplyConnectedSpace (LocalCarrier M r) := M.localCarrierSimplyConnected r hr
   rw [← integralSingularHomologyMap_comp_wang, circleFactor_homologyTwo_zero f p h hf, map_zero]
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
+end SphereSixComplex.Geometry.InfiniteA2Toric

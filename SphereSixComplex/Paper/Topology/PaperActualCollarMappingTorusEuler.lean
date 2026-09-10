@@ -26,7 +26,7 @@ open SphereSixComplex.Geometry.CuspRadialClutchingConstruction
 variable (A : PaperAnalyticData)
 
 /-- The actual cusp collar as a circle mapping torus with four-torus fibre. -/
-public noncomputable def actualCuspCollarCircleMappingTorusModel :
+public noncomputable def cuspCollarCircleMappingTorusModel :
     FourTorusCircleMappingTorusModel (A.openEmbeddingStarData.collarSource 0) := by
   let W := A.starCuspWitness
   let s := markedCuspParameter W
@@ -46,15 +46,15 @@ public noncomputable def actualCuspCollarCircleMappingTorusModel :
           (openRadialIntervalProdHomotopyEquiv W.localWitness.radius_pos) }
 
 /-- The actual cusp collar has finite integral homology supported in degrees at most six. -/
-public theorem actualCuspCollar_integralHomologyFiniteSix :
+public theorem cuspCollar_integralHomologyFiniteSix :
     IntegralHomologyFiniteSix (A.openEmbeddingStarData.collarSource 0) :=
-  A.actualCuspCollarCircleMappingTorusModel.integralHomologyFiniteSix
+  A.cuspCollarCircleMappingTorusModel.integralHomologyFiniteSix
 
 /-- The actual cusp collar has Euler characteristic zero. -/
-public theorem actualCuspCollar_euler_eq_zero :
+public theorem cuspCollar_euler_eq_zero :
     integralHomologyEulerCharacteristicSix
       (A.openEmbeddingStarData.collarSource 0) = 0 :=
-  A.actualCuspCollarCircleMappingTorusModel.euler_eq_zero
+  A.cuspCollarCircleMappingTorusModel.euler_eq_zero
 
 /-- The actual order-three elliptic collar as a circle mapping torus with four-torus fibre. -/
 public noncomputable def actualOrderThreeCollarCircleMappingTorusModel :
@@ -121,7 +121,7 @@ public theorem actualOrderFourCollar_euler_eq_zero :
 /-- Every actual collar, uniformly packaged by its explicit circle mapping-torus model. -/
 public noncomputable def actualCollarCircleMappingTorusModel (i : Fin 3) :
     FourTorusCircleMappingTorusModel (A.openEmbeddingStarData.collarSource i) := by
-  refine Fin.cases A.actualCuspCollarCircleMappingTorusModel ?_ i
+  refine Fin.cases A.cuspCollarCircleMappingTorusModel ?_ i
   intro j
   refine Fin.cases A.actualOrderThreeCollarCircleMappingTorusModel ?_ j
   intro k
@@ -133,7 +133,7 @@ public noncomputable def actualCollarCircleMappingTorusModel (i : Fin 3) :
 public theorem actualCollar_integralHomologyFiniteSix (i : Fin 3) :
     IntegralHomologyFiniteSix (A.openEmbeddingStarData.collarSource i) := by
   fin_cases i
-  · exact A.actualCuspCollar_integralHomologyFiniteSix
+  · exact A.cuspCollar_integralHomologyFiniteSix
   · exact A.actualOrderThreeCollar_integralHomologyFiniteSix
   · exact A.actualOrderFourCollar_integralHomologyFiniteSix
 
@@ -142,7 +142,7 @@ public theorem actualCollar_euler_eq_zero (i : Fin 3) :
     integralHomologyEulerCharacteristicSix
       (A.openEmbeddingStarData.collarSource i) = 0 := by
   fin_cases i
-  · exact A.actualCuspCollar_euler_eq_zero
+  · exact A.cuspCollar_euler_eq_zero
   · exact A.actualOrderThreeCollar_euler_eq_zero
   · exact A.actualOrderFourCollar_euler_eq_zero
 

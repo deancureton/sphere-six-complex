@@ -119,7 +119,7 @@ public theorem positiveCircleCross_add
     positiveCircleCross (c + d) = positiveCircleCross c + positiveCircleCross d := by
   rw [positiveCircleCross_eq_normalized, positiveCircleCross_eq_normalized,
     positiveCircleCross_eq_normalized,
-    NormalizedFiniteOrderAdditiveCircleSweepProof.standardCircleHomologyClass_map_add,
+    CyclicMappingTorus.CircleSweep.standardCircleHomologyClass_map_add,
     map_add]
 
 public noncomputable def circleSweepClass

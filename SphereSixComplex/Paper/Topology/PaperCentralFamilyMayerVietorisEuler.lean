@@ -42,7 +42,7 @@ variable (A : PaperAnalyticData)
 /-- The order-three affine half-plane region has the homotopy type of the actual order-three
 collar. -/
 public noncomputable def centralOrderThreeRegionHomotopyEquiv :
-    A.sectionSevenAffineOrderThreeCentralRegion ≃ₕ
+    A.affineOrderThreeCentralRegion ≃ₕ
       A.openEmbeddingStarData.collarSource 1 :=
   A.orderThreeOverlapIsHomotopyEquivalence.homotopyEquiv.symm.trans
     A.orderThreeOverlapCollarHomeomorph.toHomotopyEquiv
@@ -50,60 +50,60 @@ public noncomputable def centralOrderThreeRegionHomotopyEquiv :
 /-- The order-four affine half-plane region has the homotopy type of the actual order-four
 collar. -/
 public noncomputable def centralOrderFourRegionHomotopyEquiv :
-    A.sectionSevenAffineOrderFourCentralRegion ≃ₕ
+    A.affineOrderFourCentralRegion ≃ₕ
       A.openEmbeddingStarData.collarSource 2 :=
   A.orderFourOverlapIsHomotopyEquivalence.homotopyEquiv.symm.trans
     A.orderFourOverlapCollarHomeomorph.toHomotopyEquiv
 
 public theorem centralOrderThreeRegion_integralHomologyFiniteSix :
-    IntegralHomologyFiniteSix A.sectionSevenAffineOrderThreeCentralRegion :=
+    IntegralHomologyFiniteSix A.affineOrderThreeCentralRegion :=
   A.actualOrderThreeCollar_integralHomologyFiniteSix.homotopyEquiv
     A.centralOrderThreeRegionHomotopyEquiv.symm
 
 public theorem centralOrderFourRegion_integralHomologyFiniteSix :
-    IntegralHomologyFiniteSix A.sectionSevenAffineOrderFourCentralRegion :=
+    IntegralHomologyFiniteSix A.affineOrderFourCentralRegion :=
   A.actualOrderFourCollar_integralHomologyFiniteSix.homotopyEquiv
     A.centralOrderFourRegionHomotopyEquiv.symm
 
 public theorem centralOrderThreeRegion_euler_eq_zero :
     integralHomologyEulerCharacteristicSix
-      A.sectionSevenAffineOrderThreeCentralRegion = 0 :=
+      A.affineOrderThreeCentralRegion = 0 :=
   (integralHomologyEulerCharacteristicSix_homotopyEquiv
     A.centralOrderThreeRegionHomotopyEquiv).trans
       A.actualOrderThreeCollar_euler_eq_zero
 
 public theorem centralOrderFourRegion_euler_eq_zero :
     integralHomologyEulerCharacteristicSix
-      A.sectionSevenAffineOrderFourCentralRegion = 0 :=
+      A.affineOrderFourCentralRegion = 0 :=
   (integralHomologyEulerCharacteristicSix_homotopyEquiv
     A.centralOrderFourRegionHomotopyEquiv).trans
       A.actualOrderFourCollar_euler_eq_zero
 
 /-- The intersection of the two affine regions is the four-torus central band. -/
 public noncomputable def centralAffineRegionsIntersectionHomotopyEquiv :
-    (A.sectionSevenAffineOrderThreeCentralRegion ∩
-        A.sectionSevenAffineOrderFourCentralRegion :
-      Set A.SectionSevenEllipticInterior) ≃ₕ
+    (A.affineOrderThreeCentralRegion ∩
+        A.affineOrderFourCentralRegion :
+      Set A.ellipticInterior) ≃ₕ
       AdditiveTorus A.duplicatedSectionSevenBandParameter :=
   (Homeomorph.setCongr
-    A.sectionSevenActualAffineSplit.centralRegions_intersection).toHomotopyEquiv.trans
-      (A.sectionSevenAffineCentralBandHomotopyEquiv
-        A.sectionSevenAffineCentralSeparation)
+    A.actualAffineHeightSplit.centralRegions_intersection).toHomotopyEquiv.trans
+      (A.affineCentralBandHomotopyEquiv
+        A.affineCentralSeparation)
 
 public theorem centralAffineRegionsIntersection_integralHomologyFiniteSix :
     IntegralHomologyFiniteSix
-      (A.sectionSevenAffineOrderThreeCentralRegion ∩
-        A.sectionSevenAffineOrderFourCentralRegion :
-          Set A.SectionSevenEllipticInterior) :=
+      (A.affineOrderThreeCentralRegion ∩
+        A.affineOrderFourCentralRegion :
+          Set A.ellipticInterior) :=
   (EstablishedFiniteCWTopology.additiveTorus_integralHomologyFiniteSix
     A.duplicatedSectionSevenBandParameter A.duplicatedSectionSevenBandFullRank).homotopyEquiv
       A.centralAffineRegionsIntersectionHomotopyEquiv.symm
 
 public theorem centralAffineRegionsIntersection_euler_eq_zero :
     integralHomologyEulerCharacteristicSix
-      (A.sectionSevenAffineOrderThreeCentralRegion ∩
-        A.sectionSevenAffineOrderFourCentralRegion :
-          Set A.SectionSevenEllipticInterior) = 0 :=
+      (A.affineOrderThreeCentralRegion ∩
+        A.affineOrderFourCentralRegion :
+          Set A.ellipticInterior) = 0 :=
   (integralHomologyEulerCharacteristicSix_homotopyEquiv
     A.centralAffineRegionsIntersectionHomotopyEquiv).trans
       (EstablishedFiniteCWTopology.additiveTorus_euler_eq_zero
@@ -111,9 +111,9 @@ public theorem centralAffineRegionsIntersection_euler_eq_zero :
 
 public theorem centralAffineRegionsIntersection_subsingleton_homology_six :
     Subsingleton (IntegralSingularHomology 6
-      (A.sectionSevenAffineOrderThreeCentralRegion ∩
-        A.sectionSevenAffineOrderFourCentralRegion :
-          Set A.SectionSevenEllipticInterior)) :=
+      (A.affineOrderThreeCentralRegion ∩
+        A.affineOrderFourCentralRegion :
+          Set A.ellipticInterior)) :=
   subsingleton_homology_of_homotopyEquiv 6
     A.centralAffineRegionsIntersectionHomotopyEquiv
       (EstablishedFiniteCWTopology.additiveTorus_subsingleton_homology_six
@@ -121,9 +121,9 @@ public theorem centralAffineRegionsIntersection_subsingleton_homology_six :
 
 /-- The two affine half-plane regions are exactly the regular central image. -/
 public theorem centralAffineRegions_union :
-    A.sectionSevenAffineOrderThreeCentralRegion ∪
-        A.sectionSevenAffineOrderFourCentralRegion =
-      A.sectionSevenEllipticCentralImage := by
+    A.affineOrderThreeCentralRegion ∪
+        A.affineOrderFourCentralRegion =
+      A.ellipticCentralImage := by
   ext x
   constructor
   · rintro (hx | hx)
@@ -132,43 +132,45 @@ public theorem centralAffineRegions_union :
     · obtain ⟨y, _, rfl⟩ := hx
       exact y.2
   · intro hx
-    exact A.sectionSevenActualAffineSplit.allocation.central_cover hx
+    exact A.actualAffineHeightSplit.allocation.central_cover hx
 
 /-- The affine union is the actual central family. -/
 public noncomputable def centralAffineRegionsUnionHomeomorph :
-    (A.sectionSevenAffineOrderThreeCentralRegion ∪
-        A.sectionSevenAffineOrderFourCentralRegion :
-      Set A.SectionSevenEllipticInterior) ≃ₜ A.openEmbeddingStarData.central :=
+    (A.affineOrderThreeCentralRegion ∪
+        A.affineOrderFourCentralRegion :
+      Set A.ellipticInterior) ≃ₜ A.openEmbeddingStarData.central :=
   (Homeomorph.setCongr A.centralAffineRegions_union).trans
-    A.sectionSevenEllipticCentralImageHomeomorph
+    A.ellipticCentralImageHomeomorph
 
 private theorem centralAffineRegionsUnion_subsingleton_homology_seven :
     Subsingleton (IntegralSingularHomology 7
-      (A.sectionSevenAffineOrderThreeCentralRegion ∪
-        A.sectionSevenAffineOrderFourCentralRegion :
-          Set A.SectionSevenEllipticInterior)) := by
+      (A.affineOrderThreeCentralRegion ∪
+        A.affineOrderFourCentralRegion :
+          Set A.ellipticInterior)) := by
   apply subsingleton_homology_seven_union
-  · exact A.sectionSevenActualAffineSplit.centralHeightLowerRegion_isOpen
-  · exact A.sectionSevenActualAffineSplit.centralHeightUpperRegion_isOpen
-  · exact A.centralOrderThreeRegion_integralHomologyFiniteSix.homologyAboveDimension 7 (by omega)
-  · exact A.centralOrderFourRegion_integralHomologyFiniteSix.homologyAboveDimension 7 (by omega)
+  · exact A.actualAffineHeightSplit.centralHeightLowerRegion_isOpen
+  · exact A.actualAffineHeightSplit.centralHeightUpperRegion_isOpen
+  · exact A.centralOrderThreeRegion_integralHomologyFiniteSix.subsingleton_homology_of_six_lt
+      7 (by omega)
+  · exact A.centralOrderFourRegion_integralHomologyFiniteSix.subsingleton_homology_of_six_lt
+      7 (by omega)
   · exact A.centralAffineRegionsIntersection_subsingleton_homology_six
 
 private theorem centralAffineRegionsUnion_finite_and_euler :
     IntegralHomologyFiniteSix
-        (A.sectionSevenAffineOrderThreeCentralRegion ∪
-          A.sectionSevenAffineOrderFourCentralRegion :
-            Set A.SectionSevenEllipticInterior) ∧
+        (A.affineOrderThreeCentralRegion ∪
+          A.affineOrderFourCentralRegion :
+            Set A.ellipticInterior) ∧
       integralHomologyEulerCharacteristicSix
-        (A.sectionSevenAffineOrderThreeCentralRegion ∪
-          A.sectionSevenAffineOrderFourCentralRegion :
-            Set A.SectionSevenEllipticInterior) = 0 := by
+        (A.affineOrderThreeCentralRegion ∪
+          A.affineOrderFourCentralRegion :
+            Set A.ellipticInterior) = 0 := by
   obtain ⟨hfinite, heuler⟩ :=
     integralMayerVietorisEulerAdditivitySix_of_topDegreeVanishing
-      A.sectionSevenAffineOrderThreeCentralRegion
-      A.sectionSevenAffineOrderFourCentralRegion
-      A.sectionSevenActualAffineSplit.centralHeightLowerRegion_isOpen
-      A.sectionSevenActualAffineSplit.centralHeightUpperRegion_isOpen
+      A.affineOrderThreeCentralRegion
+      A.affineOrderFourCentralRegion
+      A.actualAffineHeightSplit.centralHeightLowerRegion_isOpen
+      A.actualAffineHeightSplit.centralHeightUpperRegion_isOpen
       A.centralOrderThreeRegion_integralHomologyFiniteSix
       A.centralOrderFourRegion_integralHomologyFiniteSix
       A.centralAffineRegionsIntersection_integralHomologyFiniteSix

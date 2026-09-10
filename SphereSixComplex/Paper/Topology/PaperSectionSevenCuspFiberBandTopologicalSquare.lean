@@ -20,9 +20,9 @@ open scoped ContinuousMap
 
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 
-variable {A : PaperAnalyticData} (D : A.SectionSevenEllipticTwoDiscCoverData)
+variable {A : PaperAnalyticData} (D : A.EllipticTwoDiscCoverData)
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 /-- Include the mapping-torus fibre into the actual punctured cusp collar. -/
 public noncomputable def actualCuspMappingTorusFiberToCollarMap (A : PaperAnalyticData) :
@@ -36,25 +36,25 @@ public noncomputable def actualCuspMappingTorusFiberToCollarMap (A : PaperAnalyt
 
 /-- Map the mapping-torus fibre into the elliptic interior through the actual cusp collar. -/
 public noncomputable def actualCuspMappingTorusFiberToEllipticInteriorMap
-    (D : A.SectionSevenEllipticTwoDiscCoverData) :
+    (D : A.EllipticTwoDiscCoverData) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
-    C(G.Fiber, A.SectionSevenEllipticInterior) := by
+    C(G.Fiber, A.ellipticInterior) := by
   let G := A.actualCuspRadialClutchingData
   letI := G.fiberTopology
   exact D.cuspToEllipticInteriorMap.hom.comp (actualCuspMappingTorusFiberToCollarMap A)
 
 /-- Map the same fibre into the elliptic interior through the canonical central-band map. -/
 public noncomputable def canonicalCuspFiberToEllipticInteriorMap
-    (D : A.SectionSevenEllipticTwoDiscCoverData) :
+    (D : A.EllipticTwoDiscCoverData) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
-    C(G.Fiber, A.SectionSevenEllipticInterior) := by
+    C(G.Fiber, A.ellipticInterior) := by
   let G := A.actualCuspRadialClutchingData
   letI := G.fiberTopology
   exact (⟨Subtype.val, continuous_subtype_val⟩ :
-      C((D.orderThreeSide ∩ D.orderFourSide : Set A.SectionSevenEllipticInterior),
-        A.SectionSevenEllipticInterior)).comp D.canonicalCuspFiberToBandMap
+      C((D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior),
+        A.ellipticInterior)).comp D.canonicalCuspFiberToBandMap
 
 /-- The fibre over the lower overlap collar in the explicit vertex--edge cover of the actual
 cusp mapping torus. -/
@@ -73,7 +73,7 @@ model. -/
 public noncomputable def actualCuspMappingTorusLowOverlapFiberToEllipticInteriorMap :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
-    C(G.Fiber, A.SectionSevenEllipticInterior) := by
+    C(G.Fiber, A.ellipticInterior) := by
   let G := A.actualCuspRadialClutchingData
   letI := G.fiberTopology
   exact D.cuspToEllipticInteriorMap.hom.comp
@@ -162,6 +162,6 @@ public theorem canonicalCuspFiberBand_homology_naturality
         (TopCat.ofHom (canonicalCuspFiberToEllipticInteriorMap D))) x
   rw [integralSingularHomologyMap_eq_of_homotopic h k]
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end SphereSixComplex.Geometry.PaperAnalyticData

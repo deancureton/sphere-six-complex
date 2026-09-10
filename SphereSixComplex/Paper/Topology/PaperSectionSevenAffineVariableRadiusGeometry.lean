@@ -21,9 +21,9 @@ namespace SphereSixComplex.Geometry.PaperAnalyticData
 public theorem exists_orderThree_discRegion_subset_overlap_lt
     (A : PaperAnalyticData) {b : ℝ} (hb : 0 < b) :
     ∃ r : ℝ, 0 < r ∧ r < b ∧ r ≤ 1 / 3 ∧
-      A.sectionSevenAffineOrderThreeDiscRegion r ⊆
-        A.sectionSevenOrderThreeFillingImage ∩
-          A.sectionSevenAffineOrderThreeCentralRegion := by
+      A.affineOrderThreeDiscRegion r ⊆
+        A.orderThreeFillingImage ∩
+          A.affineOrderThreeCentralRegion := by
   obtain ⟨a, ha, ha3, hsub⟩ := A.exists_discRegion_subset_orderThreeOverlap
   let r := min (a / 2) (b / 2)
   have hr : 0 < r := lt_min (half_pos ha) (half_pos hb)
@@ -36,9 +36,9 @@ radius. -/
 public theorem exists_orderFour_discRegion_subset_overlap_lt
     (A : PaperAnalyticData) {b : ℝ} (hb : 0 < b) :
     ∃ r : ℝ, 0 < r ∧ r < b ∧ r ≤ 1 / 3 ∧
-      A.sectionSevenAffineOrderFourDiscRegion r ⊆
-        A.sectionSevenOrderFourFillingImage ∩
-          A.sectionSevenAffineOrderFourCentralRegion := by
+      A.affineOrderFourDiscRegion r ⊆
+        A.orderFourFillingImage ∩
+          A.affineOrderFourCentralRegion := by
   obtain ⟨a, ha, ha3, hsub⟩ := A.exists_discRegion_subset_orderFourOverlap
   let r := min (a / 2) (b / 2)
   have hr : 0 < r := lt_min (half_pos ha) (half_pos hb)
@@ -48,30 +48,30 @@ public theorem exists_orderFour_discRegion_subset_overlap_lt
 
 /-- The order-three radial inverse at a variable affine-disc radius, evaluated on the named
 sheet at the pinned crossing. -/
-public noncomputable def sectionSevenAffineOrderThreePinnedRadialBaseAtRadius
+public noncomputable def affineOrderThreePinnedRadialBaseAtRadius
     (A : PaperAnalyticData) (r : ℝ) (hr : 0 < r) (hr3 : r ≤ 1 / 3) :=
   ((A.orderThreeBaseRadialEquiv (s := r / 2)
       (half_pos hr) (half_lt_self hr) (hr3.trans (by norm_num))).invFun
-    (A.sectionSevenAffineOrderThreeHalfPlaneBaseLift
-      A.sectionSevenAffineActualCuspCrossingPoint)).1
+    (A.affineOrderThreeHalfPlaneBaseLift
+      A.affineActualCuspCrossingPoint)).1
 
 /-- The order-four radial inverse at a variable affine-disc radius, evaluated on the named
 sheet at the pinned crossing. -/
-public noncomputable def sectionSevenAffineOrderFourPinnedRadialBaseAtRadius
+public noncomputable def affineOrderFourPinnedRadialBaseAtRadius
     (A : PaperAnalyticData) (r : ℝ) (hr : 0 < r) (hr3 : r ≤ 1 / 3) :=
   ((A.orderFourBaseRadialEquiv (s := r / 2)
       (half_pos hr) (half_lt_self hr) (hr3.trans (by norm_num))).invFun
-    (A.sectionSevenAffineOrderFourHalfPlaneBaseLift
-      A.sectionSevenAffineActualCuspCrossingPoint)).1
+    (A.affineOrderFourHalfPlaneBaseLift
+      A.affineActualCuspCrossingPoint)).1
 
 /-- The variable order-three endpoint has affine quotient-coordinate norm exactly `r / 2`. -/
 public theorem regularCoordinate_orderThreePinnedRadialBaseAtRadius_norm
     (A : PaperAnalyticData) (r : ℝ) (hr : 0 < r) (hr3 : r ≤ 1 / 3) :
     ‖(A.regularCoordinate
-      (A.sectionSevenAffineOrderThreePinnedRadialBaseAtRadius r hr hr3)).1‖ = r / 2 := by
-  let w := A.sectionSevenAffineOrderThreeHalfPlaneCoordinate
-    A.sectionSevenAffineActualCuspCrossingPoint
-  rw [sectionSevenAffineOrderThreePinnedRadialBaseAtRadius,
+      (A.affineOrderThreePinnedRadialBaseAtRadius r hr hr3)).1‖ = r / 2 := by
+  let w := A.affineOrderThreeHalfPlaneCoordinate
+    A.affineActualCuspCrossingPoint
+  rw [affineOrderThreePinnedRadialBaseAtRadius,
     A.orderThreeBaseRadialEquiv_invFun_regularCoordinate]
   change ‖((r / 2 * ‖(w.1.1 : ℂ)‖⁻¹ : ℝ) • (w.1.1 : ℂ))‖ = r / 2
   have hw : (w.1.1 : ℂ) ≠ 0 := regularCoordinate_ne_zero w.1
@@ -84,10 +84,10 @@ order-four branch value. -/
 public theorem regularCoordinate_orderFourPinnedRadialBaseAtRadius_sub_one_norm
     (A : PaperAnalyticData) (r : ℝ) (hr : 0 < r) (hr3 : r ≤ 1 / 3) :
     ‖(A.regularCoordinate
-      (A.sectionSevenAffineOrderFourPinnedRadialBaseAtRadius r hr hr3)).1 - 1‖ = r / 2 := by
-  let w := A.sectionSevenAffineOrderFourHalfPlaneCoordinate
-    A.sectionSevenAffineActualCuspCrossingPoint
-  rw [sectionSevenAffineOrderFourPinnedRadialBaseAtRadius,
+      (A.affineOrderFourPinnedRadialBaseAtRadius r hr hr3)).1 - 1‖ = r / 2 := by
+  let w := A.affineOrderFourHalfPlaneCoordinate
+    A.affineActualCuspCrossingPoint
+  rw [affineOrderFourPinnedRadialBaseAtRadius,
     A.orderFourBaseRadialEquiv_invFun_regularCoordinate]
   change ‖1 - (r / 2 * ‖1 - (w.1.1 : ℂ)‖⁻¹ : ℝ) •
     (1 - (w.1.1 : ℂ)) - 1‖ = r / 2
@@ -107,11 +107,11 @@ close to the branch value in the affine quotient coordinate. -/
 public theorem exists_orderThree_overlap_radius_with_pinned_affine_coordinate_lt
     (A : PaperAnalyticData) {b : ℝ} (hb : 0 < b) :
     ∃ (r : ℝ) (hr : 0 < r) (hr3 : r ≤ 1 / 3),
-      A.sectionSevenAffineOrderThreeDiscRegion r ⊆
-          A.sectionSevenOrderThreeFillingImage ∩
-            A.sectionSevenAffineOrderThreeCentralRegion ∧
+      A.affineOrderThreeDiscRegion r ⊆
+          A.orderThreeFillingImage ∩
+            A.affineOrderThreeCentralRegion ∧
         ‖(A.regularCoordinate
-          (A.sectionSevenAffineOrderThreePinnedRadialBaseAtRadius r hr hr3)).1‖ < b := by
+          (A.affineOrderThreePinnedRadialBaseAtRadius r hr hr3)).1‖ < b := by
   obtain ⟨r, hr, hrb, hr3, hsub⟩ := A.exists_orderThree_discRegion_subset_overlap_lt hb
   refine ⟨r, hr, hr3, hsub, ?_⟩
   rw [A.regularCoordinate_orderThreePinnedRadialBaseAtRadius_norm]
@@ -121,11 +121,11 @@ public theorem exists_orderThree_overlap_radius_with_pinned_affine_coordinate_lt
 public theorem exists_orderFour_overlap_radius_with_pinned_affine_coordinate_lt
     (A : PaperAnalyticData) {b : ℝ} (hb : 0 < b) :
     ∃ (r : ℝ) (hr : 0 < r) (hr3 : r ≤ 1 / 3),
-      A.sectionSevenAffineOrderFourDiscRegion r ⊆
-          A.sectionSevenOrderFourFillingImage ∩
-            A.sectionSevenAffineOrderFourCentralRegion ∧
+      A.affineOrderFourDiscRegion r ⊆
+          A.orderFourFillingImage ∩
+            A.affineOrderFourCentralRegion ∧
         ‖(A.regularCoordinate
-          (A.sectionSevenAffineOrderFourPinnedRadialBaseAtRadius r hr hr3)).1 - 1‖ < b := by
+          (A.affineOrderFourPinnedRadialBaseAtRadius r hr hr3)).1 - 1‖ < b := by
   obtain ⟨r, hr, hrb, hr3, hsub⟩ := A.exists_orderFour_discRegion_subset_overlap_lt hb
   refine ⟨r, hr, hr3, hsub, ?_⟩
   rw [A.regularCoordinate_orderFourPinnedRadialBaseAtRadius_sub_one_norm]

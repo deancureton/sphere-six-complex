@@ -129,11 +129,11 @@ public theorem circleMappingTorus_integralHomologyFiniteSix_of_homeomorph
   constructor
   · intro k
     let _ : Module.Finite ℤ
-        (IntegralSingularHomology k (CircleMappingTorus φ)) := hT.finiteHomology k
+        (IntegralSingularHomology k (CircleMappingTorus φ)) := hT.finite_homology k
     exact Module.Finite.equiv
       (integralSingularHomologyEquiv k e).symm.toIntLinearEquiv
   · intro k hk
-    let h := hT.homologyAboveDimension k hk
+    let h := hT.subsingleton_homology_of_six_lt k hk
     let eH := integralSingularHomologyEquiv k e
     exact ⟨fun x y ↦ eH.injective (@Subsingleton.elim _ h _ _)⟩
 

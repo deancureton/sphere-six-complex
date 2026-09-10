@@ -32,7 +32,7 @@ open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspPhaseEstimates
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
+open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 
 variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}

@@ -19,7 +19,7 @@ variable (A : PaperAnalyticData)
 
 /-- The local fixed-base fibre loop after removing the constant collar offset. -/
 public noncomputable def orderFourCentralPrincipalGaugeFiberPath :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     Path
       (A.orderFourPuncturedProductCentralRealizationMap
         (A.orderFourCayleyPuncturedBasepoint,
@@ -27,7 +27,7 @@ public noncomputable def orderFourCentralPrincipalGaugeFiberPath :
       (A.orderFourPuncturedProductCentralRealizationMap
         (A.orderFourCayleyPuncturedBasepoint,
           A.orderFourFillingRelationPrincipalGaugeLoop 0)) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   exact ((Path.refl A.orderFourCayleyPuncturedBasepoint).prod
     A.orderFourFillingRelationPrincipalGaugeLoop).map
       A.orderFourPuncturedProductCentralRealizationMap.continuous
@@ -35,10 +35,10 @@ public noncomputable def orderFourCentralPrincipalGaugeFiberPath :
 /-- Contracting the collar offset gives a free homotopy to the literal principal-gauge fibre
 loop. -/
 public def orderFourCentralFiberFactor_offsetHomotopy :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     ContinuousMap.Homotopy A.orderFourCentralFiberFactor.toContinuousMap
       A.orderFourCentralPrincipalGaugeFiberPath.toContinuousMap := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let x := A.orderFourCayleyPuncturedBasepoint
   let f := A.orderFourPuncturedProductCentralRealizationMap
   let Hoffset := A.orderFourPrincipalGaugeOffsetHomotopy
@@ -59,10 +59,10 @@ public def orderFourCentralFiberFactor_offsetHomotopy :
 /-- The offset contraction has equal loop-endpoint traces. -/
 public theorem orderFourCentralFiberFactor_offsetHomotopy_trace
     (s : unitInterval) :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     let H := A.orderFourCentralFiberFactor_offsetHomotopy
     H (s, 0) = H (s, 1) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   change A.orderFourPuncturedProductCentralRealizationMap
       (A.orderFourCayleyPuncturedBasepoint,
         A.orderFourPrincipalGaugeOffsetHomotopy (s, 0)) =
@@ -79,7 +79,7 @@ public theorem orderFourCentralFiberFactor_offsetHomotopy_trace
 /-- The same fixed-base fibre loop, using the straight cover segment with the classified
 period endpoint. -/
 public noncomputable def orderFourCentralPrincipalGaugeStraightFiberPath :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     Path
       (A.orderFourPuncturedProductCentralRealizationMap
         (A.orderFourCayleyPuncturedBasepoint,
@@ -87,7 +87,7 @@ public noncomputable def orderFourCentralPrincipalGaugeStraightFiberPath :
       (A.orderFourPuncturedProductCentralRealizationMap
         (A.orderFourCayleyPuncturedBasepoint,
           A.orderFourFillingRelationPrincipalGaugeLoop 0)) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let q := A.orderFourPrincipalGaugeStraightLoop
   have hbase :
       torusProjection
@@ -108,10 +108,10 @@ public noncomputable def orderFourCentralPrincipalGaugeStraightFiberPath :
 /-- Equality of the two fixed-torus path classes yields an endpoint-relative homotopy after
 mapping through the local central realization. -/
 public theorem orderFourCentralPrincipalGaugeFiberPath_homotopic_straight :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     Nonempty (Path.Homotopy A.orderFourCentralPrincipalGaugeFiberPath
       A.orderFourCentralPrincipalGaugeStraightFiberPath) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   have hclass := A.orderFourFillingRelationPrincipalGaugeLoop_class_eq_straight
   change Path.Homotopic.Quotient.mk A.orderFourFillingRelationPrincipalGaugeLoop =
     Path.Homotopic.Quotient.mk A.orderFourPrincipalGaugeStraightLoop at hclass
@@ -141,11 +141,11 @@ public theorem orderFourCentralPrincipalGaugeFiberPath_homotopic_straight :
 /-- The local fibre factor is freely homotopic, with equal endpoint traces, to the central
 realization of the classified straight period loop. -/
 public theorem orderFourCentralFiberFactor_homotopy_localStraight_with_trace :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     ∃ H : ContinuousMap.Homotopy A.orderFourCentralFiberFactor.toContinuousMap
         A.orderFourCentralPrincipalGaugeStraightFiberPath.toContinuousMap,
       ∀ s : unitInterval, H (s, 0) = H (s, 1) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let Hoffset := A.orderFourCentralFiberFactor_offsetHomotopy
   rcases A.orderFourCentralPrincipalGaugeFiberPath_homotopic_straight with ⟨Hpath⟩
   let Hstraight := pathHomotopyToFreeHomotopy Hpath

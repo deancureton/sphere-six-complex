@@ -8,8 +8,8 @@ noncomputable section
 open Set Topology Matrix
 namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 open SphereSixComplex.Periods
-open StandardInfiniteA2ToricModel StandardInfiniteA2ToricModel.Construction
-open StandardInfiniteA2ToricModel.Established CuspLocalPhaseAction CuspFilling CuspPeriodExpansion
+open InfiniteA2Toric InfiniteA2Toric.Construction
+open InfiniteA2Toric CuspLocalPhaseAction CuspFilling CuspPeriodExpansion
 variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 

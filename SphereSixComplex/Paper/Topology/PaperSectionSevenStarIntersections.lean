@@ -129,7 +129,7 @@ variable (P : PaperAnalyticData)
 /-- The exact singular-intersection diagram for the concrete analytic four-piece star.  This is
 the canonical unreduced local model; reducing it to the finite Section 7 matrix requires the
 additional deformation-retract data isolated by the preceding homeomorphisms. -/
-public noncomputable def sectionSevenSingularIntersectionChainModels :
+public noncomputable def singularIntersectionChainModels :
     SectionSevenStarIntersectionChainModels
       P.openEmbeddingStarData.toFourPieceStarGluingData :=
   SectionSevenStarIntersectionChainModels.singularIntersectionModels
@@ -137,7 +137,7 @@ public noncomputable def sectionSevenSingularIntersectionChainModels :
 
 /-- The actual central--filling intersections are the cusp and elliptic common collar sources
 selected by the analytic construction. -/
-public noncomputable def sectionSevenCentralFillingIntersectionHomeomorph (i : Fin 3) :
+public noncomputable def centralFillingIntersectionHomeomorph (i : Fin 3) :
     P.openEmbeddingStarData.collarSource i ≃ₜ
       finiteCoverIntersection
         (sectionSevenStarOpenCover

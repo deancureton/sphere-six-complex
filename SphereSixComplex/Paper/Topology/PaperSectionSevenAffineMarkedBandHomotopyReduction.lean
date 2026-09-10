@@ -28,46 +28,46 @@ variable {A : PaperAnalyticData}
 
 /-- The side-to-reduced-fibre equivalence selected from the proved order-three overlap
 equivalence. -/
-public noncomputable def sectionSevenAffineOrderThreeSideToReducedFiberHomotopyEquiv
+public noncomputable def affineOrderThreeSideToReducedFiberHomotopyEquiv
     (A : PaperAnalyticData) :
-    A.sectionSevenActualAffineSplit.allocation.orderThreeSide ≃ₕ
+    A.actualAffineHeightSplit.allocation.orderThreeSide ≃ₕ
       OrderThreeReducedCentralFiber A.periods :=
   (orderThreeOverlapIsHomotopyEquivalence_inclusion
       A.orderThreeOverlapIsHomotopyEquivalence).toHomotopyEquiv |>.trans
-    (nestedSubtypeHomeomorph A.sectionSevenActualAffineSplit.allocation.orderThreeSide
-      A.sectionSevenOrderThreeFillingImage
-      A.sectionSevenActualAffineSplit.orderThreeFillingImage_subset_side).toHomotopyEquiv |>.trans
-    A.sectionSevenOrderThreeFillingImageHomotopyEquiv
+    (nestedSubtypeHomeomorph A.actualAffineHeightSplit.allocation.orderThreeSide
+      A.orderThreeFillingImage
+      A.actualAffineHeightSplit.orderThreeFillingImage_subset_side).toHomotopyEquiv |>.trans
+    A.orderThreeFillingImageHomotopyEquiv
 
 /-- The side-to-reduced-fibre equivalence selected from the proved order-four overlap
 equivalence. -/
-public noncomputable def sectionSevenAffineOrderFourSideToReducedFiberHomotopyEquiv
+public noncomputable def affineOrderFourSideToReducedFiberHomotopyEquiv
     (A : PaperAnalyticData) :
-    A.sectionSevenActualAffineSplit.allocation.orderFourSide ≃ₕ
+    A.actualAffineHeightSplit.allocation.orderFourSide ≃ₕ
       OrderFourReducedCentralFiber A.periods :=
   (orderFourOverlapIsHomotopyEquivalence_inclusion
       A.orderFourOverlapIsHomotopyEquivalence).toHomotopyEquiv |>.trans
-    (nestedSubtypeHomeomorph A.sectionSevenActualAffineSplit.allocation.orderFourSide
-      A.sectionSevenOrderFourFillingImage
-      A.sectionSevenActualAffineSplit.orderFourFillingImage_subset_side).toHomotopyEquiv |>.trans
-    A.sectionSevenOrderFourFillingImageHomotopyEquiv
+    (nestedSubtypeHomeomorph A.actualAffineHeightSplit.allocation.orderFourSide
+      A.orderFourFillingImage
+      A.actualAffineHeightSplit.orderFourFillingImage_subset_side).toHomotopyEquiv |>.trans
+    A.orderFourFillingImageHomotopyEquiv
 
 /-- The exact remaining side-level geometry.  Each common-band inclusion is deformed, within
 the corresponding affine side, to the inverse image of its explicit marked finite-cover
 projection. -/
-public structure SectionSevenAffineMarkedBandSideContractions (A : PaperAnalyticData) where
+public structure AffineMarkedBandSideContractions (A : PaperAnalyticData) where
   orderThree :
     (IntegralMayerVietoris.interToLeft
-      A.sectionSevenActualAffineSplit.allocation.orderThreeSide
-      A.sectionSevenActualAffineSplit.allocation.orderFourSide).Homotopic
-    ((sectionSevenAffineOrderThreeSideToReducedFiberHomotopyEquiv A).invFun.comp
-      (sectionSevenAffineBandOrderThreeMarkedProjection A))
+      A.actualAffineHeightSplit.allocation.orderThreeSide
+      A.actualAffineHeightSplit.allocation.orderFourSide).Homotopic
+    ((affineOrderThreeSideToReducedFiberHomotopyEquiv A).invFun.comp
+      (affineBandOrderThreeMarkedProjection A))
   orderFour :
     (IntegralMayerVietoris.interToRight
-      A.sectionSevenActualAffineSplit.allocation.orderThreeSide
-      A.sectionSevenActualAffineSplit.allocation.orderFourSide).Homotopic
-    ((sectionSevenAffineOrderFourSideToReducedFiberHomotopyEquiv A).invFun.comp
-      (sectionSevenAffineBandOrderFourMarkedProjection A))
+      A.actualAffineHeightSplit.allocation.orderThreeSide
+      A.actualAffineHeightSplit.allocation.orderFourSide).Homotopic
+    ((affineOrderFourSideToReducedFiberHomotopyEquiv A).invFun.comp
+      (affineBandOrderFourMarkedProjection A))
 
 /-- Cancelling a homotopy equivalence against its inverse turns a side-level marked contraction
 into the required band-to-fibre homotopy. -/
@@ -92,44 +92,44 @@ private theorem forward_comp_homotopic_implies_homotopic_to_inverse_comp
 /-- The two exact side-level contractions imply the paper's residual marked-band assertion,
 with no additional topological assumptions. -/
 public theorem markedBandHomotopies_of_sideContractions
-    (A : PaperAnalyticData) (H : A.SectionSevenAffineMarkedBandSideContractions) :
-    A.SectionSevenAffineOverlapBandCompatibility := by
+    (A : PaperAnalyticData) (H : A.AffineMarkedBandSideContractions) :
+    A.AffineOverlapBandCompatibility := by
   refine { orderThree := ?_, orderFour := ?_ }
-  · rw [← sectionSevenAffineBandOrderThreeMarkedProjection_eq_coverMap A]
+  · rw [← affineBandOrderThreeMarkedProjection_eq_coverMap A]
     exact homotopic_to_inverse_comp_implies_forward_comp_homotopic
-      (sectionSevenAffineOrderThreeSideToReducedFiberHomotopyEquiv A)
+      (affineOrderThreeSideToReducedFiberHomotopyEquiv A)
       (IntegralMayerVietoris.interToLeft
-        A.sectionSevenActualAffineSplit.allocation.orderThreeSide
-        A.sectionSevenActualAffineSplit.allocation.orderFourSide)
-      (sectionSevenAffineBandOrderThreeMarkedProjection A) H.orderThree
-  · rw [← sectionSevenAffineBandOrderFourMarkedProjection_eq_coverMap A]
+        A.actualAffineHeightSplit.allocation.orderThreeSide
+        A.actualAffineHeightSplit.allocation.orderFourSide)
+      (affineBandOrderThreeMarkedProjection A) H.orderThree
+  · rw [← affineBandOrderFourMarkedProjection_eq_coverMap A]
     exact homotopic_to_inverse_comp_implies_forward_comp_homotopic
-      (sectionSevenAffineOrderFourSideToReducedFiberHomotopyEquiv A)
+      (affineOrderFourSideToReducedFiberHomotopyEquiv A)
       (IntegralMayerVietoris.interToRight
-        A.sectionSevenActualAffineSplit.allocation.orderThreeSide
-        A.sectionSevenActualAffineSplit.allocation.orderFourSide)
-      (sectionSevenAffineBandOrderFourMarkedProjection A) H.orderFour
+        A.actualAffineHeightSplit.allocation.orderThreeSide
+        A.actualAffineHeightSplit.allocation.orderFourSide)
+      (affineBandOrderFourMarkedProjection A) H.orderFour
 
 /-- The reduction is exact: the original residual marked-band package also recovers the two
 side-level marked contractions. -/
 public theorem sideContractions_of_markedBandHomotopies
-    (A : PaperAnalyticData) (H : A.SectionSevenAffineOverlapBandCompatibility) :
-    A.SectionSevenAffineMarkedBandSideContractions := by
+    (A : PaperAnalyticData) (H : A.AffineOverlapBandCompatibility) :
+    A.AffineMarkedBandSideContractions := by
   refine { orderThree := ?_, orderFour := ?_ }
-  · rw [sectionSevenAffineBandOrderThreeMarkedProjection_eq_coverMap A]
+  · rw [affineBandOrderThreeMarkedProjection_eq_coverMap A]
     exact forward_comp_homotopic_implies_homotopic_to_inverse_comp
-      (sectionSevenAffineOrderThreeSideToReducedFiberHomotopyEquiv A)
+      (affineOrderThreeSideToReducedFiberHomotopyEquiv A)
       (IntegralMayerVietoris.interToLeft
-        A.sectionSevenActualAffineSplit.allocation.orderThreeSide
-        A.sectionSevenActualAffineSplit.allocation.orderFourSide)
-      (sectionSevenAffineBandOrderThreeCoverMap A) H.orderThree
-  · rw [sectionSevenAffineBandOrderFourMarkedProjection_eq_coverMap A]
+        A.actualAffineHeightSplit.allocation.orderThreeSide
+        A.actualAffineHeightSplit.allocation.orderFourSide)
+      (affineBandOrderThreeCoverMap A) H.orderThree
+  · rw [affineBandOrderFourMarkedProjection_eq_coverMap A]
     exact forward_comp_homotopic_implies_homotopic_to_inverse_comp
-      (sectionSevenAffineOrderFourSideToReducedFiberHomotopyEquiv A)
+      (affineOrderFourSideToReducedFiberHomotopyEquiv A)
       (IntegralMayerVietoris.interToRight
-        A.sectionSevenActualAffineSplit.allocation.orderThreeSide
-        A.sectionSevenActualAffineSplit.allocation.orderFourSide)
-      (sectionSevenAffineBandOrderFourCoverMap A) H.orderFour
+        A.actualAffineHeightSplit.allocation.orderThreeSide
+        A.actualAffineHeightSplit.allocation.orderFourSide)
+      (affineBandOrderFourCoverMap A) H.orderFour
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

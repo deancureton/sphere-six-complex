@@ -31,41 +31,41 @@ variable (A : PaperAnalyticData)
 /-- The point of the based-path universal cover represented by a path from the global affine
 base to the order-three overlap base. -/
 public noncomputable def orderThreeCentralAffineUniversalCoverPointOfPath
-    (β : Path A.actualCuspCentralBase A.orderThreeActualEllipticCentralBase) :
+    (β : Path A.cuspCentralBase A.ellipticThreeCentralBase) :
     A.centralAffineUniversalCover.Cover := by
-  change TauCeti.UniversalCover A.actualCuspCentralBase
-  exact TauCeti.UniversalCover.ofBasedPath A.actualCuspCentralBase (BasedPath.ofPath β)
+  change TauCeti.UniversalCover A.cuspCentralBase
+  exact TauCeti.UniversalCover.ofBasedPath A.cuspCentralBase (BasedPath.ofPath β)
 
 @[simp]
 public theorem orderThreeCentralAffineUniversalCoverPointOfPath_projects
-    (β : Path A.actualCuspCentralBase A.orderThreeActualEllipticCentralBase) :
+    (β : Path A.cuspCentralBase A.ellipticThreeCentralBase) :
     let D := A.centralAffineUniversalCover
     letI := D.topology
     letI := D.action
     D.data.projection (A.orderThreeCentralAffineUniversalCoverPointOfPath β) =
-      A.orderThreeActualEllipticCentralBase := by
+      A.ellipticThreeCentralBase := by
   change TauCeti.UniversalCover.proj
-      (TauCeti.UniversalCover.ofBasedPath A.actualCuspCentralBase (BasedPath.ofPath β)) = _
+      (TauCeti.UniversalCover.ofBasedPath A.cuspCentralBase (BasedPath.ofPath β)) = _
   rw [TauCeti.UniversalCover.proj_ofBasedPath, BasedPath.endpoint_ofPath]
 
 /-- The canonical lift of the literal overlap chart pinned to the point represented by `β`. -/
-public noncomputable def orderThreeActualCentralCoverComparisonOfPath
-    (β : Path A.actualCuspCentralBase A.orderThreeActualEllipticCentralBase) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+public noncomputable def ellipticThreeCentralCoverComparisonOfPath
+    (β : Path A.cuspCentralBase A.ellipticThreeCentralBase) :
+    letI := A.ellipticThreeBoundaryAction
     let D := A.centralAffineUniversalCover
     letI := D.topology
     letI := D.action
     QuotientCoverMapData
       (G := OrderThreeAffineMappingTorusDeck A.periods)
       (H := paperCentralFreeAffineDeck)
-      A.orderThreeActualEllipticBoundaryProjection D.data.projection := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+      A.ellipticThreeBoundaryProjection D.data.projection := by
+  let _ := A.ellipticThreeBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderThreeActualEllipticBoundaryCover_simplyConnected
+    A.ellipticThreeBoundaryCover_simplyConnected
   let _ : LocallyPathConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
     let _ : LocallyPathConnectedSpace
@@ -74,9 +74,9 @@ public noncomputable def orderThreeActualCentralCoverComparisonOfPath
     inferInstance
   let _ : SimplyConnectedSpace D.Cover := D.data.simplyConnected
   exact quotientCoverMapDataOfBaseMap
-    A.orderThreeActualEllipticBoundaryProjection_isQuotientCoveringMap
-    D.data.quotientCovering A.orderThreeActualOverlapToCentral
-    A.orderThreeActualEllipticBoundaryBase
+    A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
+    D.data.quotientCovering A.ellipticThreeOverlapToCentral
+    A.ellipticThreeBoundaryBase
     (A.orderThreeCentralAffineUniversalCoverPointOfPath β)
     (by
       rw [A.orderThreeCentralAffineUniversalCoverPointOfPath_projects]
@@ -84,25 +84,25 @@ public noncomputable def orderThreeActualCentralCoverComparisonOfPath
 
 /-- The explicitly based comparison sends the source basepoint to the point represented by
 `β`. -/
-public theorem orderThreeActualCentralCoverComparisonOfPath_lift_base
-    (β : Path A.actualCuspCentralBase A.orderThreeActualEllipticCentralBase) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+public theorem ellipticThreeCentralCoverComparisonOfPath_lift_base
+    (β : Path A.cuspCentralBase A.ellipticThreeCentralBase) :
+    letI := A.ellipticThreeBoundaryAction
     let D := A.centralAffineUniversalCover
     letI := D.topology
     letI := D.action
     letI : SimplyConnectedSpace
         (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-      A.orderThreeActualEllipticBoundaryCover_simplyConnected
-    let C := A.orderThreeActualCentralCoverComparisonOfPath β
-    C.lift A.orderThreeActualEllipticBoundaryBase =
+      A.ellipticThreeBoundaryCover_simplyConnected
+    let C := A.ellipticThreeCentralCoverComparisonOfPath β
+    C.lift A.ellipticThreeBoundaryBase =
       A.orderThreeCentralAffineUniversalCoverPointOfPath β := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderThreeActualEllipticBoundaryCover_simplyConnected
+    A.ellipticThreeBoundaryCover_simplyConnected
   let _ : LocallyPathConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
     let _ : LocallyPathConnectedSpace
@@ -118,7 +118,7 @@ public theorem orderThreeActualCentralCoverComparisonOfPath_lift_base
 not introduce a conjugacy ambiguity: the based-path action still records the inverse affine
 deck element. -/
 public theorem orderThreeCentralAffineUniversalCoverPointOfPath_fundamentalGroupEquiv
-    (β : Path A.actualCuspCentralBase A.orderThreeActualEllipticCentralBase)
+    (β : Path A.cuspCentralBase A.ellipticThreeCentralBase)
     (d : paperCentralFreeAffineDeck) :
     let D := A.centralAffineUniversalCover
     letI := D.topology
@@ -145,46 +145,46 @@ public theorem orderThreeCentralAffineUniversalCoverPointOfPath_fundamentalGroup
   let _ : SimplyConnectedSpace D.Cover := D.data.simplyConnected
   let g := paperPuncturedGlobalFamilyAffinePresentation A d
   let δ := FundamentalGroup.fundamentalGroupMulEquivOfPath β g
-  let e : (TauCeti.UniversalCover.proj (x₀ := A.actualCuspCentralBase)) ⁻¹'
-      {A.orderThreeActualEllipticCentralBase} :=
-    ⟨TauCeti.UniversalCover.ofBasedPath A.actualCuspCentralBase (BasedPath.ofPath β), by
+  let e : (TauCeti.UniversalCover.proj (x₀ := A.cuspCentralBase)) ⁻¹'
+      {A.ellipticThreeCentralBase} :=
+    ⟨TauCeti.UniversalCover.ofBasedPath A.cuspCentralBase (BasedPath.ofPath β), by
       change TauCeti.UniversalCover.proj
-          (TauCeti.UniversalCover.ofBasedPath A.actualCuspCentralBase (BasedPath.ofPath β)) =
-        A.orderThreeActualEllipticCentralBase
+          (TauCeti.UniversalCover.ofBasedPath A.cuspCentralBase (BasedPath.ofPath β)) =
+        A.ellipticThreeCentralBase
       rw [TauCeti.UniversalCover.proj_ofBasedPath, BasedPath.endpoint_ofPath]⟩
   apply (D.data.quotientCovering.fundamentalGroupToMulOpposite_apply_eq_Iff).mpr
   change (paperPuncturedGlobalFamilyAffinePresentation A d⁻¹) •
-      TauCeti.UniversalCover.ofBasedPath A.actualCuspCentralBase (BasedPath.ofPath β) =
-    ((TauCeti.UniversalCover.isCoveringMap A.actualCuspCentralBase).monodromy δ.toPath e :
-        TauCeti.UniversalCover A.actualCuspCentralBase)
+      TauCeti.UniversalCover.ofBasedPath A.cuspCentralBase (BasedPath.ofPath β) =
+    ((TauCeti.UniversalCover.isCoveringMap A.cuspCentralBase).monodromy δ.toPath e :
+        TauCeti.UniversalCover A.cuspCentralBase)
   rw [map_inv]
   obtain ⟨γ, hγ⟩ := Quotient.exists_rep δ.toPath
   rw [← hγ]
   let η : Path (BasedPath.endpoint (BasedPath.ofPath β))
-      A.orderThreeActualEllipticCentralBase :=
+      A.ellipticThreeCentralBase :=
     γ.cast (BasedPath.endpoint_ofPath _) rfl
   have hγ0 : γ 0 = TauCeti.UniversalCover.proj
-      (TauCeti.UniversalCover.ofBasedPath A.actualCuspCentralBase (BasedPath.ofPath β)) := by
+      (TauCeti.UniversalCover.ofBasedPath A.cuspCentralBase (BasedPath.ofPath β)) := by
     rw [TauCeti.UniversalCover.proj_ofBasedPath, BasedPath.endpoint_ofPath]
     exact γ.source
   have hη0 : η 0 = TauCeti.UniversalCover.proj
-      (TauCeti.UniversalCover.ofBasedPath A.actualCuspCentralBase (BasedPath.ofPath β)) := by
+      (TauCeti.UniversalCover.ofBasedPath A.cuspCentralBase (BasedPath.ofPath β)) := by
     rw [TauCeti.UniversalCover.proj_ofBasedPath]
     exact η.source
-  change g⁻¹ • TauCeti.UniversalCover.ofBasedPath A.actualCuspCentralBase
+  change g⁻¹ • TauCeti.UniversalCover.ofBasedPath A.cuspCentralBase
       (BasedPath.ofPath β) =
-    (TauCeti.UniversalCover.isCoveringMap A.actualCuspCentralBase).liftPath γ
-      (TauCeti.UniversalCover.ofBasedPath A.actualCuspCentralBase (BasedPath.ofPath β))
+    (TauCeti.UniversalCover.isCoveringMap A.cuspCentralBase).liftPath γ
+      (TauCeti.UniversalCover.ofBasedPath A.cuspCentralBase (BasedPath.ofPath β))
       hγ0 1
   have hlift :
-      (TauCeti.UniversalCover.isCoveringMap A.actualCuspCentralBase).liftPath γ
-          (TauCeti.UniversalCover.ofBasedPath A.actualCuspCentralBase (BasedPath.ofPath β))
+      (TauCeti.UniversalCover.isCoveringMap A.cuspCentralBase).liftPath γ
+          (TauCeti.UniversalCover.ofBasedPath A.cuspCentralBase (BasedPath.ofPath β))
           hγ0 1 =
-        TauCeti.UniversalCover.ofBasedPath A.actualCuspCentralBase
+        TauCeti.UniversalCover.ofBasedPath A.cuspCentralBase
           (BasedPath.append (BasedPath.ofPath β) η) := by
     calc
-      _ = (TauCeti.UniversalCover.isCoveringMap A.actualCuspCentralBase).liftPath η
-          (TauCeti.UniversalCover.ofBasedPath A.actualCuspCentralBase (BasedPath.ofPath β))
+      _ = (TauCeti.UniversalCover.isCoveringMap A.cuspCentralBase).liftPath η
+          (TauCeti.UniversalCover.ofBasedPath A.cuspCentralBase (BasedPath.ofPath β))
           hη0 1 := by congr 1
       _ = _ :=
         TauCeti.UniversalCover.liftPath_apply_one_eq_ofBasedPath_append η
@@ -216,24 +216,24 @@ public theorem orderThreeCentralAffineUniversalCoverPointOfPath_fundamentalGroup
 /-- The remaining literal chart calculation.  Both generator families use one path `β`, so the
 statement retains the common basepoint gauge rather than choosing unrelated conjugators. -/
 public def OrderThreeCentralBoundaryBasedChartIdentities : Prop :=
-  letI := A.orderThreeActualEllipticBoundaryAction
+  letI := A.ellipticThreeBoundaryAction
   letI : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderThreeActualEllipticBoundaryCover_simplyConnected
-  ∃ β : Path A.actualCuspCentralBase A.orderThreeActualEllipticCentralBase,
+    A.ellipticThreeBoundaryCover_simplyConnected
+  ∃ β : Path A.cuspCentralBase A.ellipticThreeCentralBase,
     (∀ a : Lattice,
-      FundamentalGroup.mapOfEq A.orderThreeActualOverlapToCentral rfl
-          (ofDeck A.orderThreeActualEllipticBoundaryProjection_isQuotientCoveringMap
-            A.orderThreeActualEllipticBoundaryBase
+      FundamentalGroup.mapOfEq A.ellipticThreeOverlapToCentral rfl
+          (ofDeck A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
+            A.ellipticThreeBoundaryBase
             (Additive.toMul (affineTorusMappingTorusDeckTranslation
               (orderThreeDescendedAffineTorusAutomorphism A.periods) a))) =
         FundamentalGroup.fundamentalGroupMulEquivOfPath β
           (paperPuncturedGlobalFamilyAffinePresentation A
             (Additive.toMul
               (freeAffineTranslation (M := paperCentralFreeMonodromy) a)))) ∧
-    FundamentalGroup.mapOfEq A.orderThreeActualOverlapToCentral rfl
-        (ofDeck A.orderThreeActualEllipticBoundaryProjection_isQuotientCoveringMap
-          A.orderThreeActualEllipticBoundaryBase
+    FundamentalGroup.mapOfEq A.ellipticThreeOverlapToCentral rfl
+        (ofDeck A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
+          A.ellipticThreeBoundaryBase
           (affineTorusMappingTorusDeckMeridian
             (orderThreeDescendedAffineTorusAutomorphism A.periods))) =
       FundamentalGroup.fundamentalGroupMulEquivOfPath β
@@ -258,106 +258,106 @@ private theorem quotientCoverFundamentalGroupNaturality_of_lift_eq_to_eq
       (MonoidHom.op C.deckMap) (hp.fundamentalGroupEquiv ⟨e, rfl⟩ g) := by
   subst x'
   simpa using
-    (establishedQuotientCoverFundamentalGroupNaturality_of_lift_eq
+    (QuotientCoverMapData.fundamentalGroupEquiv_natural_of_lift_eq
       hp hq C e e' he' g).symm
 
 /-- Naturality computes the deck label of every physical loop for the explicitly based
 comparison. -/
-public theorem orderThreeActualCentralCoverComparisonOfPath_ofDeck
-    (β : Path A.actualCuspCentralBase A.orderThreeActualEllipticCentralBase)
+public theorem ellipticThreeCentralCoverComparisonOfPath_ofDeck
+    (β : Path A.cuspCentralBase A.ellipticThreeCentralBase)
     (g : OrderThreeAffineMappingTorusDeck A.periods) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     let D := A.centralAffineUniversalCover
     letI := D.topology
     letI := D.action
     letI : SimplyConnectedSpace
         (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-      A.orderThreeActualEllipticBoundaryCover_simplyConnected
+      A.ellipticThreeBoundaryCover_simplyConnected
     letI : SimplyConnectedSpace D.Cover := D.data.simplyConnected
-    let C := A.orderThreeActualCentralCoverComparisonOfPath β
-    let hbase := (C.commutes A.orderThreeActualEllipticBoundaryBase).trans
+    let C := A.ellipticThreeCentralCoverComparisonOfPath β
+    let hbase := (C.commutes A.ellipticThreeBoundaryBase).trans
       ((congrArg D.data.projection
-        (A.orderThreeActualCentralCoverComparisonOfPath_lift_base β)).trans
+        (A.ellipticThreeCentralCoverComparisonOfPath_lift_base β)).trans
           (A.orderThreeCentralAffineUniversalCoverPointOfPath_projects β))
     D.data.quotientCovering.fundamentalGroupEquiv
         ⟨A.orderThreeCentralAffineUniversalCoverPointOfPath β,
           A.orderThreeCentralAffineUniversalCoverPointOfPath_projects β⟩
         (FundamentalGroup.mapOfEq C.baseMap hbase
-          (ofDeck A.orderThreeActualEllipticBoundaryProjection_isQuotientCoveringMap
-            A.orderThreeActualEllipticBoundaryBase g)) =
+          (ofDeck A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
+            A.ellipticThreeBoundaryBase g)) =
       MulOpposite.op (C.deckMap g) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderThreeActualEllipticBoundaryCover_simplyConnected
+    A.ellipticThreeBoundaryCover_simplyConnected
   let _ : SimplyConnectedSpace D.Cover := D.data.simplyConnected
-  let C := A.orderThreeActualCentralCoverComparisonOfPath β
-  let hbase := (C.commutes A.orderThreeActualEllipticBoundaryBase).trans
+  let C := A.ellipticThreeCentralCoverComparisonOfPath β
+  let hbase := (C.commutes A.ellipticThreeBoundaryBase).trans
     ((congrArg D.data.projection
-      (A.orderThreeActualCentralCoverComparisonOfPath_lift_base β)).trans
+      (A.ellipticThreeCentralCoverComparisonOfPath_lift_base β)).trans
         (A.orderThreeCentralAffineUniversalCoverPointOfPath_projects β))
   change _ = (MonoidHom.op C.deckMap) (MulOpposite.op g)
   simpa only [fundamentalGroupEquiv_ofDeck] using
     (quotientCoverFundamentalGroupNaturality_of_lift_eq_to_eq
-      A.orderThreeActualEllipticBoundaryProjection_isQuotientCoveringMap
-      D.data.quotientCovering C A.orderThreeActualEllipticBoundaryBase
+      A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
+      D.data.quotientCovering C A.ellipticThreeBoundaryBase
       (A.orderThreeCentralAffineUniversalCoverPointOfPath β)
-      (A.orderThreeActualCentralCoverComparisonOfPath_lift_base β)
+      (A.ellipticThreeCentralCoverComparisonOfPath_lift_base β)
       (A.orderThreeCentralAffineUniversalCoverPointOfPath_projects β)
-      (ofDeck A.orderThreeActualEllipticBoundaryProjection_isQuotientCoveringMap
-        A.orderThreeActualEllipticBoundaryBase g))
+      (ofDeck A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
+        A.ellipticThreeBoundaryBase g))
 
 /-- The literal translation-loop identity forces the corrected negative translation in the
 based-path deck action. -/
-public theorem orderThreeActualCentralCoverComparisonOfPath_deckMap_translation
-    (β : Path A.actualCuspCentralBase A.orderThreeActualEllipticCentralBase)
+public theorem ellipticThreeCentralCoverComparisonOfPath_deckMap_translation
+    (β : Path A.cuspCentralBase A.ellipticThreeCentralBase)
     (a : Lattice)
     (hchart :
-      letI := A.orderThreeActualEllipticBoundaryAction
+      letI := A.ellipticThreeBoundaryAction
       letI : SimplyConnectedSpace
           (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-        A.orderThreeActualEllipticBoundaryCover_simplyConnected
-      FundamentalGroup.mapOfEq A.orderThreeActualOverlapToCentral rfl
-          (ofDeck A.orderThreeActualEllipticBoundaryProjection_isQuotientCoveringMap
-            A.orderThreeActualEllipticBoundaryBase
+        A.ellipticThreeBoundaryCover_simplyConnected
+      FundamentalGroup.mapOfEq A.ellipticThreeOverlapToCentral rfl
+          (ofDeck A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
+            A.ellipticThreeBoundaryBase
             (Additive.toMul (affineTorusMappingTorusDeckTranslation
               (orderThreeDescendedAffineTorusAutomorphism A.periods) a))) =
         FundamentalGroup.fundamentalGroupMulEquivOfPath β
           (paperPuncturedGlobalFamilyAffinePresentation A
             (Additive.toMul
               (freeAffineTranslation (M := paperCentralFreeMonodromy) a)))) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     let D := A.centralAffineUniversalCover
     letI := D.topology
     letI := D.action
     letI : SimplyConnectedSpace
         (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-      A.orderThreeActualEllipticBoundaryCover_simplyConnected
-    let C := A.orderThreeActualCentralCoverComparisonOfPath β
+      A.ellipticThreeBoundaryCover_simplyConnected
+    let C := A.ellipticThreeCentralCoverComparisonOfPath β
     C.deckMap (Additive.toMul (affineTorusMappingTorusDeckTranslation
       (orderThreeDescendedAffineTorusAutomorphism A.periods) a)) =
       Additive.toMul (freeAffineTranslation (M := paperCentralFreeMonodromy) (-a)) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderThreeActualEllipticBoundaryCover_simplyConnected
+    A.ellipticThreeBoundaryCover_simplyConnected
   let _ : SimplyConnectedSpace D.Cover := D.data.simplyConnected
-  let C := A.orderThreeActualCentralCoverComparisonOfPath β
-  have hnat := A.orderThreeActualCentralCoverComparisonOfPath_ofDeck β
+  let C := A.ellipticThreeCentralCoverComparisonOfPath β
+  have hnat := A.ellipticThreeCentralCoverComparisonOfPath_ofDeck β
     (Additive.toMul (affineTorusMappingTorusDeckTranslation
       (orderThreeDescendedAffineTorusAutomorphism A.periods) a))
   change D.data.quotientCovering.fundamentalGroupEquiv
       ⟨A.orderThreeCentralAffineUniversalCoverPointOfPath β,
         A.orderThreeCentralAffineUniversalCoverPointOfPath_projects β⟩
-      (FundamentalGroup.mapOfEq A.orderThreeActualOverlapToCentral rfl
-        (ofDeck A.orderThreeActualEllipticBoundaryProjection_isQuotientCoveringMap
-          A.orderThreeActualEllipticBoundaryBase
+      (FundamentalGroup.mapOfEq A.ellipticThreeOverlapToCentral rfl
+        (ofDeck A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
+          A.ellipticThreeBoundaryBase
           (Additive.toMul (affineTorusMappingTorusDeckTranslation
             (orderThreeDescendedAffineTorusAutomorphism A.periods) a)))) =
     MulOpposite.op
@@ -378,50 +378,50 @@ public theorem orderThreeActualCentralCoverComparisonOfPath_deckMap_translation
 
 /-- The literal positive-angular-loop identity forces the positive first free lift in the
 based-path deck action. -/
-public theorem orderThreeActualCentralCoverComparisonOfPath_deckMap_meridian
-    (β : Path A.actualCuspCentralBase A.orderThreeActualEllipticCentralBase)
+public theorem ellipticThreeCentralCoverComparisonOfPath_deckMap_meridian
+    (β : Path A.cuspCentralBase A.ellipticThreeCentralBase)
     (hchart :
-      letI := A.orderThreeActualEllipticBoundaryAction
+      letI := A.ellipticThreeBoundaryAction
       letI : SimplyConnectedSpace
           (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-        A.orderThreeActualEllipticBoundaryCover_simplyConnected
-      FundamentalGroup.mapOfEq A.orderThreeActualOverlapToCentral rfl
-          (ofDeck A.orderThreeActualEllipticBoundaryProjection_isQuotientCoveringMap
-            A.orderThreeActualEllipticBoundaryBase
+        A.ellipticThreeBoundaryCover_simplyConnected
+      FundamentalGroup.mapOfEq A.ellipticThreeOverlapToCentral rfl
+          (ofDeck A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
+            A.ellipticThreeBoundaryBase
             (affineTorusMappingTorusDeckMeridian
               (orderThreeDescendedAffineTorusAutomorphism A.periods))) =
         FundamentalGroup.fundamentalGroupMulEquivOfPath β
           (paperPuncturedGlobalFamilyAffinePresentation A
             (freeAffineLift (M := paperCentralFreeMonodromy) firstMeridian)⁻¹)) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     let D := A.centralAffineUniversalCover
     letI := D.topology
     letI := D.action
     letI : SimplyConnectedSpace
         (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-      A.orderThreeActualEllipticBoundaryCover_simplyConnected
-    let C := A.orderThreeActualCentralCoverComparisonOfPath β
+      A.ellipticThreeBoundaryCover_simplyConnected
+    let C := A.ellipticThreeCentralCoverComparisonOfPath β
     C.deckMap (affineTorusMappingTorusDeckMeridian
       (orderThreeDescendedAffineTorusAutomorphism A.periods)) =
       freeAffineLift (M := paperCentralFreeMonodromy) firstMeridian := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderThreeActualEllipticBoundaryCover_simplyConnected
+    A.ellipticThreeBoundaryCover_simplyConnected
   let _ : SimplyConnectedSpace D.Cover := D.data.simplyConnected
-  let C := A.orderThreeActualCentralCoverComparisonOfPath β
-  have hnat := A.orderThreeActualCentralCoverComparisonOfPath_ofDeck β
+  let C := A.ellipticThreeCentralCoverComparisonOfPath β
+  have hnat := A.ellipticThreeCentralCoverComparisonOfPath_ofDeck β
     (affineTorusMappingTorusDeckMeridian
       (orderThreeDescendedAffineTorusAutomorphism A.periods))
   change D.data.quotientCovering.fundamentalGroupEquiv
       ⟨A.orderThreeCentralAffineUniversalCoverPointOfPath β,
         A.orderThreeCentralAffineUniversalCoverPointOfPath_projects β⟩
-      (FundamentalGroup.mapOfEq A.orderThreeActualOverlapToCentral rfl
-        (ofDeck A.orderThreeActualEllipticBoundaryProjection_isQuotientCoveringMap
-          A.orderThreeActualEllipticBoundaryBase
+      (FundamentalGroup.mapOfEq A.ellipticThreeOverlapToCentral rfl
+        (ofDeck A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
+          A.ellipticThreeBoundaryBase
           (affineTorusMappingTorusDeckMeridian
             (orderThreeDescendedAffineTorusAutomorphism A.periods)))) =
     MulOpposite.op
@@ -444,22 +444,22 @@ target-fibre choice. -/
 public theorem OrderThreeCentralBoundaryBasedChartIdentities.toCoverComparison
     (h : A.OrderThreeCentralBoundaryBasedChartIdentities) :
     A.OrderThreeCentralBoundaryCoverComparison := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderThreeActualEllipticBoundaryCover_simplyConnected
-  change ∃ β : Path A.actualCuspCentralBase A.orderThreeActualEllipticCentralBase,
+    A.ellipticThreeBoundaryCover_simplyConnected
+  change ∃ β : Path A.cuspCentralBase A.ellipticThreeCentralBase,
       (∀ a : Lattice, _) ∧ _ at h
   obtain ⟨β, htranslation, hmeridian⟩ := h
-  let C := A.orderThreeActualCentralCoverComparisonOfPath β
+  let C := A.ellipticThreeCentralCoverComparisonOfPath β
   have hdeck : C.deckMap = A.paperOrderThreeActualBoundaryToUniversalDeck :=
     A.paperOrderThreeActualBoundaryToUniversalDeck_unique C.deckMap
-      (fun a ↦ A.orderThreeActualCentralCoverComparisonOfPath_deckMap_translation
+      (fun a ↦ A.ellipticThreeCentralCoverComparisonOfPath_deckMap_translation
         β a (htranslation a))
-      (A.orderThreeActualCentralCoverComparisonOfPath_deckMap_meridian β hmeridian)
+      (A.ellipticThreeCentralCoverComparisonOfPath_deckMap_meridian β hmeridian)
   refine ⟨C, hdeck, ?_⟩
   rfl
 

@@ -32,27 +32,27 @@ variable (A : PaperAnalyticData)
 /-- A chosen vector lift of the fixed torus coordinate carried by the local base factor. -/
 public noncomputable def orderThreeLocalOffsetBaseVector : ComplexTwoSpace :=
   A.orderThreeFillingRelationPrincipalGaugeCoverLift 0 +
-    A.orderThreeActualEllipticBoundaryBase.2.2
+    A.ellipticThreeBoundaryBase.2.2
 
 public theorem orderThreePrincipalGaugeWithOffsetPath_zero_eq_mk :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     A.orderThreePrincipalGaugeWithOffsetPath 0 =
       (Quotient.mk _ A.orderThreeLocalOffsetBaseVector : A.orderThreeTorus) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   unfold orderThreePrincipalGaugeWithOffsetPath
     orderThreePrincipalGaugeWithOffsetMap orderThreeLocalOffsetBaseVector
   change A.orderThreeFillingRelationPrincipalGaugeLoop 0 +
-      Quotient.mk _ A.orderThreeActualEllipticBoundaryBase.2.2 =
+      Quotient.mk _ A.ellipticThreeBoundaryBase.2.2 =
     Quotient.mk _ (A.orderThreeFillingRelationPrincipalGaugeCoverLift 0 +
-      A.orderThreeActualEllipticBoundaryBase.2.2)
+      A.ellipticThreeBoundaryBase.2.2)
   rw [A.orderThreeFillingRelationPrincipalGaugeLoop.source]
   rfl
 
 /-- The local base circle realized with zero torus coordinate. -/
 public noncomputable def orderThreeLocalZeroBaseCentralMap :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     C(unitInterval, A.CentralFamily) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   exact
     { toFun := fun t ↦ A.orderThreePuncturedProductToCentralMap
         (A.orderThreeFillingRelationCayleyPuncturedLoop t, 0)
@@ -62,11 +62,11 @@ public noncomputable def orderThreeLocalZeroBaseCentralMap :
 
 /-- Contract the fixed local torus coordinate to zero through its chosen vector lift. -/
 public def orderThreeLocalBaseFiberContractionHomotopy :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     ContinuousMap.Homotopy
       A.orderThreeLocalOffsetBaseCentralPath.toContinuousMap
       A.orderThreeLocalZeroBaseCentralMap := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let p := (parameterMap A.periods
     A.modular.modularParameter.toTriangleUniformization.zOne).1
   exact
@@ -108,10 +108,10 @@ public def orderThreeLocalBaseFiberContractionHomotopy :
 point-set path. -/
 public theorem orderThreeLocalBaseFiberContractionHomotopy_trace
     (s : unitInterval) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     A.orderThreeLocalBaseFiberContractionHomotopy (s, 0) =
       A.orderThreeLocalBaseFiberContractionHomotopy (s, 1) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   unfold orderThreeLocalBaseFiberContractionHomotopy
   apply congrArg A.orderThreePuncturedProductToCentralMap
   apply Prod.ext
@@ -122,12 +122,12 @@ public theorem orderThreeLocalBaseFiberContractionHomotopy_trace
 /-- The restricted inverse chart has exactly the product coordinate with which it was fed. -/
 public theorem orderThreePuncturedProductToRegularMap_productCoordinate
     (zq : A.OrderThreeCayleyPuncturedDisc × A.orderThreeTorus) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     orderThreeRealPeriodProductHomeomorph A.periods
         (regularFamilyInclusion A.periods
           (A.orderThreePuncturedProductToRegularMap
             (A.orderThreePuncturedProductCarrierMap zq))) = (zq.1.1, zq.2) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let hproper : SourceActionProperlyDiscontinuous
       (U := A.modular.modularParameter.toTriangleUniformization) :=
     sourceActionProperlyDiscontinuous_of_eq
@@ -156,12 +156,12 @@ public theorem orderThreePuncturedProductToRegularMap_productCoordinate
 over the base of the realized point. -/
 public theorem orderThreePuncturedProductToRegularMap_zero_eq_zeroSection
     (z : A.OrderThreeCayleyPuncturedDisc) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     let x := A.orderThreePuncturedProductToRegularMap
       (A.orderThreePuncturedProductCarrierMap (z, 0))
     x = regularFamilyZeroSection A.periods
       (regularTotalSpaceBase A.periods x) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let x := A.orderThreePuncturedProductToRegularMap
     (A.orderThreePuncturedProductCarrierMap (z, 0))
   have hcoord := A.orderThreePuncturedProductToRegularMap_productCoordinate (z, 0)
@@ -181,9 +181,9 @@ public theorem orderThreePuncturedProductToRegularMap_zero_eq_zeroSection
 /-- With zero torus coordinate, the local punctured-product realization is literally the
 global zero-section lift of the same Cayley base loop. -/
 public theorem orderThreeLocalZeroBaseCentralMap_eq_zeroSectionBaseMap :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     A.orderThreeLocalZeroBaseCentralMap = A.orderThreeZeroSectionBaseMap := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   ext t
   let z := A.orderThreeFillingRelationCayleyPuncturedLoop t
   let x := A.orderThreePuncturedProductToRegularMap
@@ -237,11 +237,11 @@ public theorem orderThreeLocalZeroBaseCentralMap_eq_zeroSectionBaseMap :
 global zero-section triple by explicit zero-fibre contraction followed by the cubic base
 homotopy. -/
 public theorem orderThreeLocalOffsetBaseCentralPath_homotopy_zeroSectionTriple :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     Nonempty (ContinuousMap.Homotopy
       A.orderThreeLocalOffsetBaseCentralPath.toContinuousMap
       A.orderThreeZeroSectionTriplePath.toContinuousMap) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let Hzero := A.orderThreeLocalBaseFiberContractionHomotopy
   let Hzero' := Hzero.cast rfl
     A.orderThreeLocalZeroBaseCentralMap_eq_zeroSectionBaseMap
@@ -251,12 +251,12 @@ public theorem orderThreeLocalOffsetBaseCentralPath_homotopy_zeroSectionTriple :
 /-- The local base factor reaches the globally based zero-section triple through one genuine
 free homotopy. -/
 public theorem orderThreeLocalOffsetBaseCentralPath_homotopy_globalZeroSectionTriple :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     ∃ H : ContinuousMap.Homotopy
         A.orderThreeLocalOffsetBaseCentralPath.toContinuousMap
         A.orderThreeCentralAffineZeroSectionTriplePath.toContinuousMap,
       ∀ s : unitInterval, H (s, 0) = H (s, 1) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let Hzero := A.orderThreeLocalBaseFiberContractionHomotopy
   let Hzero' := Hzero.cast rfl
     A.orderThreeLocalZeroBaseCentralMap_eq_zeroSectionBaseMap
@@ -270,14 +270,14 @@ public theorem orderThreeLocalOffsetBaseCentralPath_homotopy_globalZeroSectionTr
       exact A.orderThreeLocalBaseFiberContractionHomotopy_trace r
     · exact htripleTrace
   rcases exists_freeLoopChangeBasepointHomotopy A.orderThreeZeroSectionTriplePath
-      A.actualCuspMarkedCentralWhisker with ⟨Hrebase, hrebaseTrace⟩
+      A.cuspMarkedCentralWhisker with ⟨Hrebase, hrebaseTrace⟩
   have htarget :
-      (A.actualCuspMarkedCentralWhisker.symm.trans
+      (A.cuspMarkedCentralWhisker.symm.trans
         (A.orderThreeZeroSectionTriplePath.trans
-          A.actualCuspMarkedCentralWhisker)).toContinuousMap =
-        A.orderThreeActualCuspZeroSectionTriplePath.toContinuousMap := by
+          A.cuspMarkedCentralWhisker)).toContinuousMap =
+        A.ellipticThreeCuspZeroSectionTriplePath.toContinuousMap := by
     rfl
-  have hcast : A.orderThreeActualCuspZeroSectionTriplePath.toContinuousMap =
+  have hcast : A.ellipticThreeCuspZeroSectionTriplePath.toContinuousMap =
       A.orderThreeCentralAffineZeroSectionTriplePath.toContinuousMap := by
     ext t
     rfl

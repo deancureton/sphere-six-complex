@@ -15,7 +15,7 @@ open scoped ContDiff Manifold
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open CuspPuncturedCollarBridge CuspPhaseEstimates CuspPeriodExpansion
 open CuspFilling CuspLocalPhaseAction
-open StandardInfiniteA2ToricModel
+open InfiniteA2Toric
 
 noncomputable section
 

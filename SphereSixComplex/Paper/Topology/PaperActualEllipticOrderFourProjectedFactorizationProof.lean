@@ -20,9 +20,9 @@ variable (A : PaperAnalyticData)
 /-- The fibre-then-base factorization after projection to the central family and the canonical
 endpoint cast to the selected order-four elliptic basepoint. -/
 public noncomputable def orderFourCentralFiberThenBaseLoop :
-    letI := A.orderFourActualEllipticBoundaryAction
-    Path A.orderFourActualEllipticCentralBase A.orderFourActualEllipticCentralBase := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
+    Path A.ellipticFourCentralBase A.ellipticFourCentralBase := by
+  let _ := A.ellipticFourBoundaryAction
   exact (A.orderFourRegularFiberThenBaseLoop.map
     A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
       A.orderFourCollarRegularRepresentative_base_projects.symm
@@ -31,14 +31,14 @@ public noncomputable def orderFourCentralFiberThenBaseLoop :
 /-- Projecting the punctured-carrier splitting gives an endpoint-relative homotopy from the
 actual order-four filling loop to its central fibre-then-base factorization. -/
 public theorem orderFourProjectedRegularLoop_homotopic_fiberThenBase :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     Nonempty (Path.Homotopy
       ((A.orderFourFillingRelationRegularLoop.map
         A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
           A.orderFourCollarRegularRepresentative_base_projects.symm
           A.orderFourCollarRegularRepresentative_base_projects.symm)
       A.orderFourCentralFiberThenBaseLoop) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   rcases A.orderFourRegularLoop_homotopic_fiberThenBase with ⟨H⟩
   let Hmap := H.map
     ⟨A.centralQuotientProjection,
@@ -49,7 +49,7 @@ public theorem orderFourProjectedRegularLoop_homotopic_fiberThenBase :
 /-- The projected factorization supplies exactly the free homotopy and equal endpoint traces
 required by the final order-four free-loop reduction. -/
 public theorem orderFourProjectedRegularLoop_freeHomotopy_fiberThenBase_with_trace :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     ∃ H : ContinuousMap.Homotopy
         ((A.orderFourFillingRelationRegularLoop.map
           A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
@@ -68,7 +68,7 @@ public theorem orderFourProjectedRegularLoop_freeHomotopy_fiberThenBase_with_tra
               A.orderFourCollarRegularRepresentative_base_projects.symm
               A.orderFourCollarRegularRepresentative_base_projects.symm).target.symm
           A.orderFourCentralFiberThenBaseLoop.target.symm := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   rcases A.orderFourProjectedRegularLoop_homotopic_fiberThenBase with ⟨Hpath⟩
   let H := pathHomotopyToFreeHomotopy Hpath
   exact ⟨H, pathHomotopyToFreeHomotopy_trace Hpath⟩

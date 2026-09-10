@@ -18,10 +18,10 @@ variable (A : PaperAnalyticData)
 
 public theorem orderFourPuncturedProductCentralRealization_coordinate_fiber_independent
     (z : A.OrderFourCayleyPuncturedDisc) (v w : A.orderFourTorus) :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     A.centralFamilyCoordinate (A.orderFourPuncturedProductCentralRealizationMap (z, v)) =
       A.centralFamilyCoordinate (A.orderFourPuncturedProductCentralRealizationMap (z, w)) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   apply Subtype.ext
   change (A.centralFamilyCoordinate
     (A.centralQuotientProjection (A.orderFourPuncturedProductRegularRealizationMap (z, v)))).1 =
@@ -40,17 +40,17 @@ public theorem orderFourPuncturedProductCentralRealization_coordinate_fiber_inde
   exact hv.trans hw.symm
 
 public theorem orderFourCentralBaseFactor_basePath_eq_filling :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     A.orderFourCentralBaseFactor.map A.centralFamilyCoordinate_continuous =
-      (A.orderFourActualEllipticBoundaryDeckStraightCentralLoop
-        A.orderFourActualEllipticBoundaryDeckData.fillingRelation).map
+      (A.ellipticFourBoundaryDeckStraightCentralLoop
+        A.ellipticFourBoundaryDeckData.fillingRelation).map
           A.centralFamilyCoordinate_continuous := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   apply Path.ext
   funext t
   change A.centralFamilyCoordinate (A.orderFourCentralBaseFactor t) =
-    A.centralFamilyCoordinate (A.orderFourActualEllipticBoundaryDeckStraightCentralLoop
-      A.orderFourActualEllipticBoundaryDeckData.fillingRelation t)
+    A.centralFamilyCoordinate (A.ellipticFourBoundaryDeckStraightCentralLoop
+      A.ellipticFourBoundaryDeckData.fillingRelation t)
   unfold orderFourCentralBaseFactor
   simp only [Path.cast_coe, Path.map_coe, Path.prod_coe, Path.refl_apply, Function.comp_apply]
   rw [A.orderFourDeckStraightCentralLoop_projects_representative]
@@ -75,31 +75,31 @@ public theorem twicePuncturedFundamentalGroup_pow_injective
 
 public theorem orderFourCentralAffineZeroSectionQuadruplePath_class :
     Path.Homotopic.Quotient.mk A.orderFourCentralAffineZeroSectionQuadruplePath =
-      (A.actualCuspToCentralAffineBaseEquiv A.geometricCentralRhoTwo) ^ 4 := by
+      (A.cuspToCentralAffineBaseEquiv A.geometricCentralRhoTwo) ^ 4 := by
   unfold orderFourCentralAffineZeroSectionQuadruplePath
   rw [Path.Homotopic.Quotient.mk_cast,
-    A.orderFourActualCuspZeroSectionQuadruplePath_class]
+    A.ellipticFourCuspZeroSectionQuadruplePath_class]
   rw [← map_pow]
-  unfold actualCuspToCentralAffineBaseEquiv
+  unfold cuspToCentralAffineBaseEquiv
   rw [fundamentalGroupMulEquivOfEq_apply]
 
 public theorem orderFourCentralBaseComparisonTrace_first_power
     (H : ContinuousMap.Homotopy A.orderFourCentralBaseFactor.toContinuousMap
       A.orderFourCentralAffineZeroSectionQuadruplePath.toContinuousMap)
     (hH : ∀ s : unitInterval, H (s, 0) = H (s, 1)) :
-    letI := A.orderFourActualEllipticBoundaryAction
-    letI := A.orderFourActualEllipticBoundaryCover_simplyConnected
+    letI := A.ellipticFourBoundaryAction
+    letI := A.ellipticFourBoundaryCover_simplyConnected
     let f : C(A.CentralFamily, TwicePuncturedComplex) :=
       ⟨A.centralFamilyCoordinate, A.centralFamilyCoordinate_continuous⟩
     FundamentalGroup.map f A.centralAffineBase
       (FundamentalGroup.fundamentalGroupMulEquivOfPath
         (A.orderFourCentralBaseComparisonTracePath H)
-        (Path.Homotopic.Quotient.mk (A.orderFourActualEllipticBoundaryDeckStraightCentralLoop
-          A.orderFourActualEllipticBoundaryDeckData.meridian))) =
+        (Path.Homotopic.Quotient.mk (A.ellipticFourBoundaryDeckStraightCentralLoop
+          A.ellipticFourBoundaryDeckData.meridian))) =
       FundamentalGroup.map f A.centralAffineBase
-        (A.actualCuspToCentralAffineBaseEquiv A.geometricCentralRhoTwo) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
-  let _ := A.orderFourActualEllipticBoundaryCover_simplyConnected
+        (A.cuspToCentralAffineBaseEquiv A.geometricCentralRhoTwo) := by
+  let _ := A.ellipticFourBoundaryAction
+  let _ := A.ellipticFourBoundaryCover_simplyConnected
   let f : C(A.CentralFamily, TwicePuncturedComplex) :=
     ⟨A.centralFamilyCoordinate, A.centralFamilyCoordinate_continuous⟩
   let W := A.orderFourCentralBaseComparisonTracePath H
@@ -123,10 +123,10 @@ public theorem orderFourCentralBaseComparisonTrace_first_power
     exact hf
   apply twicePuncturedFundamentalGroup_pow_injective _ 4 (by decide)
   change (FundamentalGroup.map f A.centralAffineBase
-    (E (Path.Homotopic.Quotient.mk (A.orderFourActualEllipticBoundaryDeckStraightCentralLoop
-      A.orderFourActualEllipticBoundaryDeckData.meridian)))) ^ 4 =
+    (E (Path.Homotopic.Quotient.mk (A.ellipticFourBoundaryDeckStraightCentralLoop
+      A.ellipticFourBoundaryDeckData.meridian)))) ^ 4 =
     (FundamentalGroup.map f A.centralAffineBase
-      (A.actualCuspToCentralAffineBaseEquiv A.geometricCentralRhoTwo)) ^ 4
+      (A.cuspToCentralAffineBaseEquiv A.geometricCentralRhoTwo)) ^ 4
   rw [← map_pow, ← map_pow, ← map_pow,
     ← A.orderFourCentralAffineZeroSectionQuadruplePath_class, ← hE]
   dsimp only [E]
@@ -140,10 +140,10 @@ public theorem orderFourCentralBaseComparisonTrace_first_power
 
 public theorem orderThreePuncturedProductCentralRealization_coordinate_fiber_independent
     (z : A.OrderThreeCayleyPuncturedDisc) (v w : A.orderThreeTorus) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     A.centralFamilyCoordinate (A.orderThreePuncturedProductToCentralMap (z, v)) =
       A.centralFamilyCoordinate (A.orderThreePuncturedProductToCentralMap (z, w)) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   apply Subtype.ext
   change (A.centralFamilyCoordinate
     (A.centralQuotientProjection (A.orderThreePuncturedProductToRegularMap (A.orderThreePuncturedProductCarrierMap (z, v))))).1 =
@@ -162,17 +162,17 @@ public theorem orderThreePuncturedProductCentralRealization_coordinate_fiber_ind
   exact hv.trans hw.symm
 
 public theorem orderThreeLocalOffsetBaseCentralPath_basePath_eq_filling :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     A.orderThreeLocalOffsetBaseCentralPath.map A.centralFamilyCoordinate_continuous =
-      (A.orderThreeActualEllipticBoundaryDeckStraightCentralLoop
-        A.orderThreeActualEllipticBoundaryDeckData.fillingRelation).map
+      (A.ellipticThreeBoundaryDeckStraightCentralLoop
+        A.ellipticThreeBoundaryDeckData.fillingRelation).map
           A.centralFamilyCoordinate_continuous := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   apply Path.ext
   funext t
   change A.centralFamilyCoordinate (A.orderThreeLocalOffsetBaseCentralPath t) =
-    A.centralFamilyCoordinate (A.orderThreeActualEllipticBoundaryDeckStraightCentralLoop
-      A.orderThreeActualEllipticBoundaryDeckData.fillingRelation t)
+    A.centralFamilyCoordinate (A.ellipticThreeBoundaryDeckStraightCentralLoop
+      A.ellipticThreeBoundaryDeckData.fillingRelation t)
   unfold orderThreeLocalOffsetBaseCentralPath
   simp only [Path.cast_coe, Path.map_coe, Path.prod_coe, Path.refl_apply, Function.comp_apply]
   rw [A.orderThreeDeckStraightCentralLoop_projects_representative]
@@ -185,37 +185,37 @@ public theorem orderThreeLocalOffsetBaseCentralPath_basePath_eq_filling :
 public def orderThreeCentralBaseComparisonTracePath
     (H : ContinuousMap.Homotopy A.orderThreeLocalOffsetBaseCentralPath.toContinuousMap
       A.orderThreeCentralAffineZeroSectionTriplePath.toContinuousMap) :
-    Path A.orderThreeActualEllipticCentralBase A.centralAffineBase :=
+    Path A.ellipticThreeCentralBase A.centralAffineBase :=
   (H.evalAt 0).cast A.orderThreeLocalOffsetBaseCentralPath.source.symm
     A.orderThreeCentralAffineZeroSectionTriplePath.source.symm
 
 public theorem orderThreeCentralAffineZeroSectionTriplePath_class :
     Path.Homotopic.Quotient.mk A.orderThreeCentralAffineZeroSectionTriplePath =
-      (A.actualCuspToCentralAffineBaseEquiv A.geometricCentralRhoOne) ^ 3 := by
+      (A.cuspToCentralAffineBaseEquiv A.geometricCentralRhoOne) ^ 3 := by
   unfold orderThreeCentralAffineZeroSectionTriplePath
   rw [Path.Homotopic.Quotient.mk_cast,
-    A.orderThreeActualCuspZeroSectionTriplePath_class]
+    A.ellipticThreeCuspZeroSectionTriplePath_class]
   rw [← map_pow]
-  unfold actualCuspToCentralAffineBaseEquiv
+  unfold cuspToCentralAffineBaseEquiv
   rw [fundamentalGroupMulEquivOfEq_apply]
 
 public theorem orderThreeCentralBaseComparisonTrace_first_power
     (H : ContinuousMap.Homotopy A.orderThreeLocalOffsetBaseCentralPath.toContinuousMap
       A.orderThreeCentralAffineZeroSectionTriplePath.toContinuousMap)
     (hH : ∀ s : unitInterval, H (s, 0) = H (s, 1)) :
-    letI := A.orderThreeActualEllipticBoundaryAction
-    letI := A.orderThreeActualEllipticBoundaryCover_simplyConnected
+    letI := A.ellipticThreeBoundaryAction
+    letI := A.ellipticThreeBoundaryCover_simplyConnected
     let f : C(A.CentralFamily, TwicePuncturedComplex) :=
       ⟨A.centralFamilyCoordinate, A.centralFamilyCoordinate_continuous⟩
     FundamentalGroup.map f A.centralAffineBase
       (FundamentalGroup.fundamentalGroupMulEquivOfPath
         (A.orderThreeCentralBaseComparisonTracePath H)
-        (Path.Homotopic.Quotient.mk (A.orderThreeActualEllipticBoundaryDeckStraightCentralLoop
-          A.orderThreeActualEllipticBoundaryDeckData.meridian))) =
+        (Path.Homotopic.Quotient.mk (A.ellipticThreeBoundaryDeckStraightCentralLoop
+          A.ellipticThreeBoundaryDeckData.meridian))) =
       FundamentalGroup.map f A.centralAffineBase
-        (A.actualCuspToCentralAffineBaseEquiv A.geometricCentralRhoOne) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
-  let _ := A.orderThreeActualEllipticBoundaryCover_simplyConnected
+        (A.cuspToCentralAffineBaseEquiv A.geometricCentralRhoOne) := by
+  let _ := A.ellipticThreeBoundaryAction
+  let _ := A.ellipticThreeBoundaryCover_simplyConnected
   let f : C(A.CentralFamily, TwicePuncturedComplex) :=
     ⟨A.centralFamilyCoordinate, A.centralFamilyCoordinate_continuous⟩
   let W := A.orderThreeCentralBaseComparisonTracePath H
@@ -239,10 +239,10 @@ public theorem orderThreeCentralBaseComparisonTrace_first_power
     exact hf
   apply twicePuncturedFundamentalGroup_pow_injective _ 3 (by decide)
   change (FundamentalGroup.map f A.centralAffineBase
-    (E (Path.Homotopic.Quotient.mk (A.orderThreeActualEllipticBoundaryDeckStraightCentralLoop
-      A.orderThreeActualEllipticBoundaryDeckData.meridian)))) ^ 3 =
+    (E (Path.Homotopic.Quotient.mk (A.ellipticThreeBoundaryDeckStraightCentralLoop
+      A.ellipticThreeBoundaryDeckData.meridian)))) ^ 3 =
     (FundamentalGroup.map f A.centralAffineBase
-      (A.actualCuspToCentralAffineBaseEquiv A.geometricCentralRhoOne)) ^ 3
+      (A.cuspToCentralAffineBaseEquiv A.geometricCentralRhoOne)) ^ 3
   rw [← map_pow, ← map_pow, ← map_pow,
     ← A.orderThreeCentralAffineZeroSectionTriplePath_class, ← hE]
   dsimp only [E]

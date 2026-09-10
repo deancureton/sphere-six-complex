@@ -24,7 +24,7 @@ open SphereSixComplex.Geometry.CuspPeriodExpansion
 
 variable {A : PaperAnalyticData}
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 /-- A selected additive cusp-cover representative of a cusp-collar point. -/
 public noncomputable def actualCuspAdditiveLift
@@ -43,21 +43,21 @@ public theorem additiveCuspBoundaryProjection_actualCuspAdditiveLift
 /-- On an additive cusp lift, the affine height is the real part of the normalized modular
 coordinate. -/
 public theorem sectionSevenEllipticCentralHeight_cuspToEllipticInteriorMap_additivePoint
-    (D : A.SectionSevenEllipticTwoDiscCoverData)
+    (D : A.EllipticTwoDiscCoverData)
     (p : additiveCuspRadiusCover A.starCuspWitness.localWitness.radius) :
-    A.sectionSevenEllipticCentralHeight
+    A.ellipticCentralHeight
         ⟨D.cuspToEllipticInteriorMap
             (additiveCuspBoundaryProjection A.starCuspWitness p),
           D.cuspToEllipticInteriorMap_mem_centralImage _⟩ =
       (A.modular.sourceCoordinate.coordinate (A.cuspCoordinate.lift p.1.2)).re := by
-  change (A.sectionSevenEllipticCentralCoordinate _).1.re = _
+  change (A.ellipticCentralCoordinate _).1.re = _
   rw [D.sectionSevenEllipticCentralCoordinate_cuspToEllipticInteriorMap_additivePoint_fst]
 
 /-- The same height written using the exact reciprocal cusp factorization. -/
 public theorem sectionSevenEllipticCentralHeight_cuspToEllipticInteriorMap_additivePoint_eq
-    (D : A.SectionSevenEllipticTwoDiscCoverData)
+    (D : A.EllipticTwoDiscCoverData)
     (p : additiveCuspRadiusCover A.starCuspWitness.localWitness.radius) :
-    A.sectionSevenEllipticCentralHeight
+    A.ellipticCentralHeight
         ⟨D.cuspToEllipticInteriorMap
             (additiveCuspBoundaryProjection A.starCuspWitness p),
           D.cuspToEllipticInteriorMap_mem_centralImage _⟩ =
@@ -73,13 +73,13 @@ public theorem sectionSevenEllipticCentralHeight_cuspToEllipticInteriorMap_addit
 /-- The exact reciprocal-product formula after passing from the radial mapping torus to the
 actual cusp collar. -/
 public theorem sectionSevenEllipticCentralHeight_cuspToEllipticInteriorMap_mappingTorus
-    (D : A.SectionSevenEllipticTwoDiscCoverData)
+    (D : A.EllipticTwoDiscCoverData)
     (z : let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
       CircleMappingTorus G.clutching) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
-    A.sectionSevenEllipticCentralHeight
+    A.ellipticCentralHeight
         ⟨D.cuspToEllipticInteriorMap (G.totalHomotopyEquiv.invFun z),
           D.cuspToEllipticInteriorMap_mem_centralImage _⟩ =
       let p := actualCuspAdditiveLift (G.totalHomotopyEquiv.invFun z)
@@ -91,7 +91,7 @@ public theorem sectionSevenEllipticCentralHeight_cuspToEllipticInteriorMap_mappi
   let q := G.totalHomotopyEquiv.invFun z
   let p := actualCuspAdditiveLift q
   have hp := additiveCuspBoundaryProjection_actualCuspAdditiveLift q
-  change A.sectionSevenEllipticCentralHeight
+  change A.ellipticCentralHeight
       ⟨D.cuspToEllipticInteriorMap q,
         D.cuspToEllipticInteriorMap_mem_centralImage _⟩ =
     ((cuspQ p.1.2 * A.actualNormalizedModularJUniformization.cusp.cuspUnit
@@ -101,16 +101,16 @@ public theorem sectionSevenEllipticCentralHeight_cuspToEllipticInteriorMap_mappi
       (⟨D.cuspToEllipticInteriorMap
           (additiveCuspBoundaryProjection A.starCuspWitness p),
         D.cuspToEllipticInteriorMap_mem_centralImage _⟩ :
-          A.sectionSevenEllipticCentralImage) =
+          A.ellipticCentralImage) =
         ⟨D.cuspToEllipticInteriorMap q,
           D.cuspToEllipticInteriorMap_mem_centralImage _⟩ :=
     Subtype.ext hmap
   calc
-    _ = A.sectionSevenEllipticCentralHeight
+    _ = A.ellipticCentralHeight
         ⟨D.cuspToEllipticInteriorMap
             (additiveCuspBoundaryProjection A.starCuspWitness p),
           D.cuspToEllipticInteriorMap_mem_centralImage _⟩ :=
-      congrArg A.sectionSevenEllipticCentralHeight hpoint.symm
+      congrArg A.ellipticCentralHeight hpoint.symm
     _ = _ :=
       D.sectionSevenEllipticCentralHeight_cuspToEllipticInteriorMap_additivePoint_eq p
 
@@ -118,34 +118,34 @@ public theorem sectionSevenEllipticCentralHeight_cuspToEllipticInteriorMap_mappi
 when its central height is below `2/3`.  The filling-image alternative cannot add points above
 that height because of the proved central separation. -/
 public theorem cuspToEllipticInteriorMap_mem_orderThreeSide_iff_height
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (q : A.openEmbeddingStarData.collarSource 0) :
     R.twoDiscCover.cuspToEllipticInteriorMap q ∈ R.twoDiscCover.orderThreeSide ↔
-      A.sectionSevenEllipticCentralHeight
+      A.ellipticCentralHeight
         ⟨R.twoDiscCover.cuspToEllipticInteriorMap q,
           R.twoDiscCover.cuspToEllipticInteriorMap_mem_centralImage q⟩ < 2 / 3 := by
   let x := R.twoDiscCover.cuspToEllipticInteriorMap q
-  have hxcentral : x ∈ A.sectionSevenEllipticCentralImage :=
+  have hxcentral : x ∈ A.ellipticCentralImage :=
     R.twoDiscCover.cuspToEllipticInteriorMap_mem_centralImage q
-  change x ∈ A.sectionSevenActualAffineSplit.allocation.orderThreeSide ↔
-    A.sectionSevenEllipticCentralHeight ⟨x, hxcentral⟩ < (2 : ℝ) / 3
+  change x ∈ A.actualAffineHeightSplit.allocation.orderThreeSide ↔
+    A.ellipticCentralHeight ⟨x, hxcentral⟩ < (2 : ℝ) / 3
   constructor
   · rintro (hxfill | hxlower)
     · by_contra hheight
       have hge : (2 : ℝ) / 3 ≤
-          A.sectionSevenEllipticCentralHeight ⟨x, hxcentral⟩ :=
+          A.ellipticCentralHeight ⟨x, hxcentral⟩ :=
         le_of_not_gt hheight
       have hxupper : x ∈ centralHeightUpperRegion
-          A.sectionSevenEllipticCentralHeight (1 / 3 : ℝ) :=
+          A.ellipticCentralHeight (1 / 3 : ℝ) :=
         ⟨⟨x, hxcentral⟩, (by linarith : (1 : ℝ) / 3 <
-          A.sectionSevenEllipticCentralHeight ⟨x, hxcentral⟩), rfl⟩
+          A.ellipticCentralHeight ⟨x, hxcentral⟩), rfl⟩
       exact (Set.disjoint_left.mp
-        A.sectionSevenAffineCentralSeparation.orderThreeFilling_disjoint_upper
+        A.affineCentralSeparation.orderThreeFilling_disjoint_upper
           hxfill hxupper).elim
     · rcases hxlower with ⟨y, hy, hyx⟩
-      have hxy : y = (⟨x, hxcentral⟩ : A.sectionSevenEllipticCentralImage) :=
+      have hxy : y = (⟨x, hxcentral⟩ : A.ellipticCentralImage) :=
         Subtype.ext hyx
-      change A.sectionSevenEllipticCentralHeight y < (2 : ℝ) / 3 at hy
+      change A.ellipticCentralHeight y < (2 : ℝ) / 3 at hy
       simpa [hxy] using hy
   · intro hheight
     exact Or.inr ⟨⟨x, hxcentral⟩, hheight, rfl⟩
@@ -153,40 +153,40 @@ public theorem cuspToEllipticInteriorMap_mem_orderThreeSide_iff_height
 /-- On the actual affine allocation, a cusp-collar point belongs to the order-four side exactly
 when its central height is above `1/3`. -/
 public theorem cuspToEllipticInteriorMap_mem_orderFourSide_iff_height
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (q : A.openEmbeddingStarData.collarSource 0) :
     R.twoDiscCover.cuspToEllipticInteriorMap q ∈ R.twoDiscCover.orderFourSide ↔
-      1 / 3 < A.sectionSevenEllipticCentralHeight
+      1 / 3 < A.ellipticCentralHeight
         ⟨R.twoDiscCover.cuspToEllipticInteriorMap q,
           R.twoDiscCover.cuspToEllipticInteriorMap_mem_centralImage q⟩ := by
   let x := R.twoDiscCover.cuspToEllipticInteriorMap q
-  have hxcentral : x ∈ A.sectionSevenEllipticCentralImage :=
+  have hxcentral : x ∈ A.ellipticCentralImage :=
     R.twoDiscCover.cuspToEllipticInteriorMap_mem_centralImage q
-  change x ∈ A.sectionSevenActualAffineSplit.allocation.orderFourSide ↔
-    (1 : ℝ) / 3 < A.sectionSevenEllipticCentralHeight ⟨x, hxcentral⟩
+  change x ∈ A.actualAffineHeightSplit.allocation.orderFourSide ↔
+    (1 : ℝ) / 3 < A.ellipticCentralHeight ⟨x, hxcentral⟩
   constructor
   · rintro (hxfill | hxupper)
     · by_contra hheight
-      have hle : A.sectionSevenEllipticCentralHeight ⟨x, hxcentral⟩ ≤ 1 / 3 :=
+      have hle : A.ellipticCentralHeight ⟨x, hxcentral⟩ ≤ 1 / 3 :=
         le_of_not_gt hheight
       have hxlower : x ∈ centralHeightLowerRegion
-          A.sectionSevenEllipticCentralHeight (2 / 3 : ℝ) :=
+          A.ellipticCentralHeight (2 / 3 : ℝ) :=
         ⟨⟨x, hxcentral⟩, (by linarith :
-          A.sectionSevenEllipticCentralHeight ⟨x, hxcentral⟩ < (2 : ℝ) / 3), rfl⟩
+          A.ellipticCentralHeight ⟨x, hxcentral⟩ < (2 : ℝ) / 3), rfl⟩
       exact (Set.disjoint_left.mp
-        A.sectionSevenAffineCentralSeparation.orderFourFilling_disjoint_lower
+        A.affineCentralSeparation.orderFourFilling_disjoint_lower
           hxfill hxlower).elim
     · rcases hxupper with ⟨y, hy, hyx⟩
-      have hxy : y = (⟨x, hxcentral⟩ : A.sectionSevenEllipticCentralImage) :=
+      have hxy : y = (⟨x, hxcentral⟩ : A.ellipticCentralImage) :=
         Subtype.ext hyx
-      change (1 : ℝ) / 3 < A.sectionSevenEllipticCentralHeight y at hy
+      change (1 : ℝ) / 3 < A.ellipticCentralHeight y at hy
       simpa [hxy] using hy
   · intro hheight
     exact Or.inr ⟨⟨x, hxcentral⟩, hheight, rfl⟩
 
 /-- The proposed vertex inclusion is equivalent, not merely implied by, its height bound. -/
 public theorem actualCuspVertexOrderThreePointwiseMembership_iff_heightBound
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     ActualCuspVertexOrderThreePointwiseMembership R ↔
       ActualCuspVertexOrderThreeHeightBound R := by
   let G := A.actualCuspRadialClutchingData
@@ -198,7 +198,7 @@ public theorem actualCuspVertexOrderThreePointwiseMembership_iff_heightBound
 
 /-- The proposed edge inclusion is equivalent, not merely implied by, its height bound. -/
 public theorem actualCuspEdgeOrderFourPointwiseMembership_iff_heightBound
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     ActualCuspEdgeOrderFourPointwiseMembership R ↔
       ActualCuspEdgeOrderFourHeightBound R := by
   let G := A.actualCuspRadialClutchingData
@@ -211,7 +211,7 @@ public theorem actualCuspEdgeOrderFourPointwiseMembership_iff_heightBound
 /-- Consequently, the proposed oriented refinement exists exactly when both reciprocal-product
 sector inequalities hold; there is no weaker set-theoretic route hidden in the filling sides. -/
 public theorem actualCuspOrientedCoverRefinement_iff_heightBounds
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     ActualCuspOrientedCoverRefinement R ↔
       ActualCuspVertexOrderThreeHeightBound R ∧
         ActualCuspEdgeOrderFourHeightBound R := by
@@ -244,7 +244,7 @@ public def ActualCuspEdgeReciprocalProductBound (A : PaperAnalyticData) : Prop :
 /-- The vertex height bound is exactly the upper-sector inequality for the normalized modular
 cusp product. -/
 public theorem actualCuspVertexOrderThreeHeightBound_iff_reciprocalProductBound
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     ActualCuspVertexOrderThreeHeightBound R ↔
       ActualCuspVertexReciprocalProductBound A := by
   let G := A.actualCuspRadialClutchingData
@@ -262,7 +262,7 @@ public theorem actualCuspVertexOrderThreeHeightBound_iff_reciprocalProductBound
 /-- The edge height bound is exactly the lower-sector inequality for the normalized modular
 cusp product. -/
 public theorem actualCuspEdgeOrderFourHeightBound_iff_reciprocalProductBound
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     ActualCuspEdgeOrderFourHeightBound R ↔
       ActualCuspEdgeReciprocalProductBound A := by
   let G := A.actualCuspRadialClutchingData
@@ -280,7 +280,7 @@ public theorem actualCuspEdgeOrderFourHeightBound_iff_reciprocalProductBound
 /-- Exact final form of the residual: the proposed oriented refinement is equivalent to the two
 explicit sector inequalities for the reciprocal normalized cusp product. -/
 public theorem actualCuspOrientedCoverRefinement_iff_reciprocalProductBounds
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     ActualCuspOrientedCoverRefinement R ↔
       ActualCuspVertexReciprocalProductBound A ∧
         ActualCuspEdgeReciprocalProductBound A := by
@@ -290,7 +290,7 @@ public theorem actualCuspOrientedCoverRefinement_iff_reciprocalProductBounds
 
 /-- Exact form of a counterexample to the proposed vertex inclusion. -/
 public theorem not_actualCuspVertexOrderThreeHeightBound_iff_exists_counterexample
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     (¬ ActualCuspVertexOrderThreeHeightBound R) ↔
       let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
@@ -306,7 +306,7 @@ public theorem not_actualCuspVertexOrderThreeHeightBound_iff_exists_counterexamp
 
 /-- Exact form of a counterexample to the proposed edge inclusion. -/
 public theorem not_actualCuspEdgeOrderFourHeightBound_iff_exists_counterexample
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     (¬ ActualCuspEdgeOrderFourHeightBound R) ↔
       let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
@@ -320,7 +320,7 @@ public theorem not_actualCuspEdgeOrderFourHeightBound_iff_exists_counterexample
   push Not
   rfl
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

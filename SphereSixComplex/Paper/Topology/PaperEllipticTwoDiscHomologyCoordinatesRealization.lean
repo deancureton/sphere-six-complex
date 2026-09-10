@@ -49,13 +49,13 @@ public theorem pathConnectedSpace_of_homotopyEquiv
 
 namespace Geometry.PaperAnalyticData
 
-variable {A : PaperAnalyticData} {D : A.SectionSevenEllipticTwoDiscCoverData}
+variable {A : PaperAnalyticData} {D : A.EllipticTwoDiscCoverData}
 
 /-- The two trivializations of the regular band induce one common period basis.  This is the
 precise naturality input needed to compare the two finite-cover projections; it contains no
 Mayer--Vietoris matrix or homology computation of the union. -/
 public structure EllipticBandHomologyAlignment
-    (D : A.SectionSevenEllipticTwoDiscCoverData) : Prop where
+    (D : A.EllipticTwoDiscCoverData) : Prop where
   degreeOne : ∀ x : IntegralSingularHomology 1 (AdditiveTorus D.bandParameter),
     (orderFourCentralFiberCoverSourceHomologyBasis A.periods).degreeOne
         (integralSingularHomologyMap 1
@@ -88,7 +88,7 @@ def finTwoProdFinTwoEquivFinFour :
 
 def bandOne :
     IntegralSingularHomology 1
-        (D.orderThreeSide ∩ D.orderFourSide : Set A.SectionSevenEllipticInterior) ≃+
+        (D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior) ≃+
       (Fin 4 → ℤ) :=
   (D.bandHomologyEquiv 1).trans <|
     (integralSingularHomologyEquiv 1 D.bandToOrderThreeCoverSource).trans
@@ -96,7 +96,7 @@ def bandOne :
 
 def bandTwo :
     IntegralSingularHomology 2
-        (D.orderThreeSide ∩ D.orderFourSide : Set A.SectionSevenEllipticInterior) ≃+
+        (D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior) ≃+
       (Fin 6 → ℤ) :=
   (D.bandHomologyEquiv 2).trans <|
     (integralSingularHomologyEquiv 2 D.bandToOrderThreeCoverSource).trans
@@ -152,7 +152,7 @@ theorem orderThreeOne_projection (x : IntegralSingularHomology 1 (AdditiveTorus 
       ⟨D.bandToOrderThreeCoverSource, D.bandToOrderThreeCoverSource.continuous⟩ x)
   rw [show integralSingularHomologyMap 1 D.orderThreeBandProjection x =
       orderThreeReducedCentralFiberCoverHomologyDegreeOne A.periods y by
-    rw [SectionSevenEllipticTwoDiscCoverData.orderThreeBandProjection,
+    rw [EllipticTwoDiscCoverData.orderThreeBandProjection,
       integralHomologyMap_comp]
     change (integralSingularHomologyMap 1 (centralFiberCoverProjection
         (orderThreeRadialActionData A.periods)))
@@ -186,7 +186,7 @@ theorem orderFourOne_projection (x : IntegralSingularHomology 1 (AdditiveTorus D
       ⟨D.bandToOrderFourCoverSource, D.bandToOrderFourCoverSource.continuous⟩ x)
   rw [show integralSingularHomologyMap 1 D.orderFourBandProjection x =
       orderFourReducedCentralFiberCoverHomologyDegreeOne A.periods y by
-    rw [SectionSevenEllipticTwoDiscCoverData.orderFourBandProjection,
+    rw [EllipticTwoDiscCoverData.orderFourBandProjection,
       integralHomologyMap_comp]
     change (integralSingularHomologyMap 1 (centralFiberCoverProjection
         (orderFourRadialActionData A.periods)))
@@ -219,7 +219,7 @@ theorem orderThreeTwo_projection (x : IntegralSingularHomology 2 (AdditiveTorus 
       ⟨D.bandToOrderThreeCoverSource, D.bandToOrderThreeCoverSource.continuous⟩ x)
   rw [show integralSingularHomologyMap 2 D.orderThreeBandProjection x =
       orderThreeReducedCentralFiberCoverHomologyDegreeTwo A.periods y by
-    rw [SectionSevenEllipticTwoDiscCoverData.orderThreeBandProjection,
+    rw [EllipticTwoDiscCoverData.orderThreeBandProjection,
       integralHomologyMap_comp]
     change (integralSingularHomologyMap 2 (centralFiberCoverProjection
         (orderThreeRadialActionData A.periods)))
@@ -252,7 +252,7 @@ theorem orderFourTwo_projection (x : IntegralSingularHomology 2 (AdditiveTorus D
       ⟨D.bandToOrderFourCoverSource, D.bandToOrderFourCoverSource.continuous⟩ x)
   rw [show integralSingularHomologyMap 2 D.orderFourBandProjection x =
       orderFourReducedCentralFiberCoverHomologyDegreeTwo A.periods y by
-    rw [SectionSevenEllipticTwoDiscCoverData.orderFourBandProjection,
+    rw [EllipticTwoDiscCoverData.orderFourBandProjection,
       integralHomologyMap_comp]
     change (integralSingularHomologyMap 2 (centralFiberCoverProjection
         (orderFourRadialActionData A.periods)))
@@ -425,14 +425,14 @@ theorem differenceZero_injective : Function.Injective
   let _ : PathConnectedSpace D.orderFourSide :=
     pathConnectedSpace_of_homotopyEquiv D.orderFourSideHomotopyEquiv
   let _ : PathConnectedSpace
-      (D.orderThreeSide ∩ D.orderFourSide : Set A.SectionSevenEllipticInterior) :=
+      (D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior) :=
     pathConnectedSpace_of_homotopyEquiv D.bandHomotopyEquiv
   exact IntegralMayerVietoris.differenceMap_zero_injective _ _
 
 /-- The band alignment and the four finite-cover computations construct all coordinate data
 needed for the elliptic-interior Mayer--Vietoris calculation. -/
 public noncomputable def homologyCoordinates :
-    A.SectionSevenEllipticTwoDiscHomologyCoordinates D where
+    A.EllipticTwoDiscHomologyCoordinates D where
   bandOne := bandOne (D := D)
   sidesOne := sidesOne (D := D) R
   differenceOne := differenceOne (D := D) R N
@@ -444,7 +444,7 @@ public noncomputable def homologyCoordinates :
 /-- The actual finite-cover realization leaves only band-basis naturality as input to the
 elliptic-interior Mayer--Vietoris coordinates. -/
 public noncomputable def actualHomologyCoordinates :
-    A.SectionSevenEllipticTwoDiscHomologyCoordinates D :=
+    A.EllipticTwoDiscHomologyCoordinates D :=
   homologyCoordinates (D := D)
     (Topology.FiniteCoverPerfectPairing.ellipticFiniteCoverHomologyRealization A.periods
       (Topology.FiniteCoverPerfectPairing.establishedActualEllipticDegreeTwoHomologyBasisFiniteData A)) N

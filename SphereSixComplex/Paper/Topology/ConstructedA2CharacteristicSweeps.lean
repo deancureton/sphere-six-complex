@@ -16,14 +16,14 @@ public def cwBallBoundaryToSphere (n : ℕ) :
 
 end SphereSixComplex
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex
 open SphereSixComplex.Periods
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
@@ -43,7 +43,7 @@ public theorem constructedA2CircleSweepHomotopy_threeCell_last
   ext j
   fin_cases j <;>
     simp [constructedA2CircleSweepParameter, constructedA2CircleOnePhase,
-      constructedA2CircleTwoPhase, constructedCircleBallCell]
+      constructedA2CircleTwoPhase, CircleCell.ballParam]
 
 public theorem constructedA2ThreeCell_cylinder
     (W : ActualPuncturedCuspCollarWitness N constructedModel) (i : Fin 2)
@@ -362,4 +362,4 @@ public theorem constructedA2ThreeNestedBoundaryReverseSweep_homology_zero
     HomologicalComplex.homologyMap_id, Category.comp_id] at hn
   exact hn.symm
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric

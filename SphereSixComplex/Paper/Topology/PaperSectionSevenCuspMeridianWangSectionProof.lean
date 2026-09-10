@@ -22,35 +22,35 @@ open CuspPuncturedCollarBridge.CuspFiberSpecializationNormalization
 variable (A : PaperAnalyticData)
 
 public noncomputable def cuspAngularPuncturedLoop :
-    Path A.actualCuspLocalBoundaryBase A.actualCuspLocalBoundaryBase := by
+    Path A.cuspLocalBoundaryBase A.cuspLocalBoundaryBase := by
   let W := A.starCuspWitness
   let _ := paperCuspBoundaryDeckAction W
   exact (A.cuspAngularLiftPath.map
     (additiveCuspBoundaryProjection W).continuous).cast
       (by
         exact (additiveCuspBoundaryProjection_basePreimage W
-          A.actualCuspLocalBoundaryBase).symm)
+          A.cuspLocalBoundaryBase).symm)
       (by
         exact ((additiveCuspBoundaryProjection_paperCuspBoundaryDeck_smul W
-          paperCuspBoundaryMeridian A.actualCuspBoundaryCoverBase).trans
+          paperCuspBoundaryMeridian A.cuspBoundaryCoverBase).trans
             (additiveCuspBoundaryProjection_basePreimage W
-              A.actualCuspLocalBoundaryBase)).symm)
+              A.cuspLocalBoundaryBase)).symm)
 
 public theorem cuspBoundaryMeridianHomologyClass_eq_actualCuspAngularPuncturedLoop :
-    cuspBoundaryMeridianHomologyClass A.starCuspWitness A.actualCuspLocalBoundaryBase =
+    cuspBoundaryMeridianHomologyClass A.starCuspWitness A.cuspLocalBoundaryBase =
       loopHomologyClass A.cuspAngularPuncturedLoop := by
   let W := A.starCuspWitness
   let _ := paperCuspBoundaryDeckAction W
   let _ := paperCuspFillingDeckAction W
-  let U := paperCuspUnwrappedFillingCover W A.actualCuspLocalBoundaryBase
+  let U := paperCuspUnwrappedFillingCover W A.cuspLocalBoundaryBase
   let T := U.toToricFillingCoverModel
   let _ : SimplyConnectedSpace (additiveCuspRadiusCover W.localWitness.radius) :=
     U.boundarySimplyConnected
   let _ : PathConnectedSpace (puncturedLocalCuspQuotient W) :=
     U.boundaryQuotient.surjective.pathConnectedSpace U.boundaryProjection.continuous
   let p := A.cuspAngularPuncturedLoop
-  have hb : T.boundaryProjection T.base = A.actualCuspLocalBoundaryBase :=
-    additiveCuspBoundaryProjection_basePreimage W A.actualCuspLocalBoundaryBase
+  have hb : T.boundaryProjection T.base = A.cuspLocalBoundaryBase :=
+    additiveCuspBoundaryProjection_basePreimage W A.cuspLocalBoundaryBase
   let pT : Path (T.boundaryProjection T.base) (T.boundaryProjection T.base) :=
     p.cast hb hb
   have hmark : T.boundaryFundamentalGroupEquiv
@@ -111,7 +111,7 @@ public theorem cuspBoundaryMeridianHomologyClass_eq_actualCuspAngularPuncturedLo
 public theorem cuspMappingTorusMeridianHomologyClass_eq_actualCuspAngularPuncturedLoop_image :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
-    cuspMappingTorusMeridianHomologyClass G A.actualCuspLocalBoundaryBase =
+    cuspMappingTorusMeridianHomologyClass G A.cuspLocalBoundaryBase =
       integralSingularHomologyMap 1 G.totalHomotopyEquiv.toFun
         (loopHomologyClass A.cuspAngularPuncturedLoop) := by
   let G := A.actualCuspRadialClutchingData

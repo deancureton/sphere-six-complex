@@ -24,7 +24,7 @@ noncomputable section
 open Function Set Topology
 open scoped ContDiff Manifold
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+namespace SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 private theorem denseTorusCoordinate_contMDiff (i : Fin 3) :
     letI := denseTorusCharts
@@ -183,4 +183,4 @@ public theorem carrierTorusEmbedding_isLocalDiffeomorph :
       toricChart_invFun_denseTorusCoordinates y
   rwa [heq] at hlocal
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+end SphereSixComplex.Geometry.InfiniteA2Toric.Construction

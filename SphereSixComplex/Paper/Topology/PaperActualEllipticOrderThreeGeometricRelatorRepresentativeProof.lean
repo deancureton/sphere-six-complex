@@ -16,20 +16,20 @@ variable (A : PaperAnalyticData)
 
 /-- A literal global loop representing the geometric order-three meridian-cube relator with its
 marked `epsilon`-period contribution. -/
-public noncomputable def orderThreeActualCuspGeometricRelatorPath :
-    Path A.actualCuspCentralBase A.actualCuspCentralBase :=
-  A.orderThreeActualCuspMarkedEpsilonPeriodPath.trans
-    A.orderThreeActualCuspZeroSectionTriplePath
+public noncomputable def ellipticThreeCuspGeometricRelatorPath :
+    Path A.cuspCentralBase A.cuspCentralBase :=
+  A.ellipticThreeCuspMarkedEpsilonPeriodPath.trans
+    A.ellipticThreeCuspZeroSectionTriplePath
 
 /-- The explicit global representative has the expected geometric product class. -/
-public theorem orderThreeActualCuspGeometricRelatorPath_class :
-    Path.Homotopic.Quotient.mk A.orderThreeActualCuspGeometricRelatorPath =
+public theorem ellipticThreeCuspGeometricRelatorPath_class :
+    Path.Homotopic.Quotient.mk A.ellipticThreeCuspGeometricRelatorPath =
       A.geometricCentralRhoOne ^ 3 *
         Additive.toMul (A.geometricCentralTranslation epsilon) := by
-  rw [orderThreeActualCuspGeometricRelatorPath,
+  rw [ellipticThreeCuspGeometricRelatorPath,
     Path.Homotopic.Quotient.mk_trans,
-    A.orderThreeActualCuspZeroSectionTriplePath_class,
-    A.orderThreeActualCuspMarkedEpsilonPeriodPath_class]
+    A.ellipticThreeCuspZeroSectionTriplePath_class,
+    A.ellipticThreeCuspMarkedEpsilonPeriodPath_class]
   rfl
 
 end SphereSixComplex.Geometry.PaperAnalyticData

@@ -17,7 +17,9 @@ noncomputable section
 open AlgebraicTopology
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Topology.NormalizedCoverCrossLowOverlapCalculationProof
+namespace SphereSixComplex.CyclicMappingTorus.Cross
+
+open SphereSixComplex.Topology
 
 open CanonicalProductWangBoundaryNaturality
 open CircleProductIdentityMappingTorus
@@ -26,7 +28,7 @@ open FixedLoopSweepAdditivityReduction
 open FixedLoopSweepWangBoundary
 open NormalizedAffineMappingTorusCover
 open NormalizedFiniteOrderAdditiveCircleSweep
-open NormalizedFiniteOrderAdditiveCircleSweepProof
+open CircleSweep
 open CyclicMappingTorus
 open PositiveCircleCross
 open StandardTorusHomology
@@ -298,7 +300,7 @@ private theorem normalizedAffineCover_positiveCircleCross_boundary_add
             (positiveCircleCross d)) := by abel
     _ = _ := by rw [hzero]; abel
 
-end SphereSixComplex.Topology.NormalizedCoverCrossLowOverlapCalculationProof
+end SphereSixComplex.CyclicMappingTorus.Cross
 
 end
 

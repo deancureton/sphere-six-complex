@@ -26,7 +26,7 @@ open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspRadialClutchingConstruction
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
+open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open SphereSixComplex.Topology
 open Hurewicz
@@ -299,7 +299,7 @@ private theorem cuspBoundaryBasedAngularCircleMap_fundamentalGroup
     ((C.commutes U.base).trans (congrArg Q he)) γ
   change StandardCircleHomologyLiftDegree.unitCircleFundamentalGroupEquiv δ =
     Multiplicative.ofAdd (-g.right.toAdd)
-  have hnat := establishedQuotientCoverFundamentalGroupNaturality_of_lift_eq
+  have hnat := QuotientCoverMapData.fundamentalGroupEquiv_natural_of_lift_eq
     hp hq C U.base 0 he γ
   have hsource : hp.fundamentalGroupEquiv ⟨U.base, rfl⟩ γ = MulOpposite.op g := by
     change T.boundaryFundamentalGroupEquiv γ = MulOpposite.op g

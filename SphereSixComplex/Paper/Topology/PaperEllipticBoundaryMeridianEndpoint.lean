@@ -21,7 +21,7 @@ variable (A : PaperAnalyticData)
 
 public theorem orderFourCollarInverseRepresentative_forwardMeridian
     (q : OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     A.orderFourCollarInverseRepresentative
         (affineTorusMappingTorusDeckMeridian
           (orderFourDescendedAffineTorusAutomorphism A.periods) • q) =
@@ -31,7 +31,7 @@ public theorem orderFourCollarInverseRepresentative_forwardMeridian
           A.starSeparation.orderFour.radius)
         (cyclicGenerator 4) (A.orderFourCollarInverseRepresentative q) := by
   let _ := orderFourAffineMappingTorusDeckAction A.periods
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let D := orderFourCyclicPuncturedProductData A.periods
     A.starSeparation.orderFour.radius A.starSeparation.orderFour.radius_pos
     A.starSeparation.orderFour.radius_lt_one
@@ -77,13 +77,13 @@ public theorem orderFourCollarInverseRepresentative_forwardMeridian
 
 public theorem orderFourCollarRegularRepresentative_forwardMeridian
     (q : OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     A.orderFourCollarRegularRepresentativeMap
         (affineTorusMappingTorusDeckMeridian
           (orderFourDescendedAffineTorusAutomorphism A.periods) • q) =
       regularFamilyDeckMap A.periods g₂ (A.orderFourCollarRegularRepresentativeMap q) := by
   let _ := A.totalSpaceCharts
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let hproper : SourceActionProperlyDiscontinuous
       (U := A.modular.modularParameter.toTriangleUniformization) :=
     sourceActionProperlyDiscontinuous_of_eq
@@ -101,28 +101,28 @@ public theorem orderFourCollarRegularRepresentative_forwardMeridian
 
 public theorem orderFourCollarRegularRepresentative_meridian
     (q : OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     A.orderFourCollarRegularRepresentativeMap
-        (A.orderFourActualEllipticBoundaryDeckData.meridian • q) =
+        (A.ellipticFourBoundaryDeckData.meridian • q) =
       regularFamilyDeckMap A.periods g₂⁻¹ (A.orderFourCollarRegularRepresentativeMap q) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let _ := regularFamilyDeckAction A.periods
   have h := A.orderFourCollarRegularRepresentative_forwardMeridian
-    (A.orderFourActualEllipticBoundaryDeckData.meridian • q)
+    (A.ellipticFourBoundaryDeckData.meridian • q)
   change A.orderFourCollarRegularRepresentativeMap
       (affineTorusMappingTorusDeckMeridian
         (orderFourDescendedAffineTorusAutomorphism A.periods) •
         ((affineTorusMappingTorusDeckMeridian
           (orderFourDescendedAffineTorusAutomorphism A.periods))⁻¹ • q)) =
       g₂ • A.orderFourCollarRegularRepresentativeMap
-        (A.orderFourActualEllipticBoundaryDeckData.meridian • q) at h
+        (A.ellipticFourBoundaryDeckData.meridian • q) at h
   rw [smul_inv_smul] at h
   change _ = g₂⁻¹ • A.orderFourCollarRegularRepresentativeMap q
   rw [h, inv_smul_smul]
 
 public theorem orderThreeCollarInverseRepresentative_forwardMeridian
     (q : OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     A.orderThreeCollarInverseRepresentative
         (affineTorusMappingTorusDeckMeridian
           (orderThreeDescendedAffineTorusAutomorphism A.periods) • q) =
@@ -132,7 +132,7 @@ public theorem orderThreeCollarInverseRepresentative_forwardMeridian
           A.starSeparation.orderThree.radius)
         (cyclicGenerator 3) (A.orderThreeCollarInverseRepresentative q) := by
   let _ := orderThreeAffineMappingTorusDeckAction A.periods
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let D := orderThreeCyclicPuncturedProductData A.periods
     A.starSeparation.orderThree.radius A.starSeparation.orderThree.radius_pos
     A.starSeparation.orderThree.radius_lt_one
@@ -178,13 +178,13 @@ public theorem orderThreeCollarInverseRepresentative_forwardMeridian
 
 public theorem orderThreeCollarRegularRepresentative_forwardMeridian
     (q : OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     A.orderThreeCollarRegularRepresentativeMap
         (affineTorusMappingTorusDeckMeridian
           (orderThreeDescendedAffineTorusAutomorphism A.periods) • q) =
       regularFamilyDeckMap A.periods g₁ (A.orderThreeCollarRegularRepresentativeMap q) := by
   let _ := A.totalSpaceCharts
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let hproper : SourceActionProperlyDiscontinuous
       (U := A.modular.modularParameter.toTriangleUniformization) :=
     sourceActionProperlyDiscontinuous_of_eq
@@ -202,66 +202,66 @@ public theorem orderThreeCollarRegularRepresentative_forwardMeridian
 
 public theorem orderThreeCollarRegularRepresentative_meridian
     (q : OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     A.orderThreeCollarRegularRepresentativeMap
-        (A.orderThreeActualEllipticBoundaryDeckData.meridian • q) =
+        (A.ellipticThreeBoundaryDeckData.meridian • q) =
       regularFamilyDeckMap A.periods g₁⁻¹ (A.orderThreeCollarRegularRepresentativeMap q) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let _ := regularFamilyDeckAction A.periods
   have h := A.orderThreeCollarRegularRepresentative_forwardMeridian
-    (A.orderThreeActualEllipticBoundaryDeckData.meridian • q)
+    (A.ellipticThreeBoundaryDeckData.meridian • q)
   change A.orderThreeCollarRegularRepresentativeMap
       (affineTorusMappingTorusDeckMeridian
         (orderThreeDescendedAffineTorusAutomorphism A.periods) •
         ((affineTorusMappingTorusDeckMeridian
           (orderThreeDescendedAffineTorusAutomorphism A.periods))⁻¹ • q)) =
       g₁ • A.orderThreeCollarRegularRepresentativeMap
-        (A.orderThreeActualEllipticBoundaryDeckData.meridian • q) at h
+        (A.ellipticThreeBoundaryDeckData.meridian • q) at h
   rw [smul_inv_smul] at h
   change _ = g₁⁻¹ • A.orderThreeCollarRegularRepresentativeMap q
   rw [h, inv_smul_smul]
 
 public theorem orderFourCollarRegularBase_projects :
     regularFamilyQuotientMap A.periods
-      (A.orderFourCollarRegularRepresentativeMap A.orderFourActualEllipticBoundaryBase) =
-      A.orderFourActualEllipticCentralBase := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+      (A.orderFourCollarRegularRepresentativeMap A.ellipticFourBoundaryBase) =
+      A.ellipticFourCentralBase := by
+  let _ := A.ellipticFourBoundaryAction
   have h := A.orderFourDeckStraightCentralLoop_projects_representative 1 0
-  rw [(A.orderFourActualEllipticBoundaryDeckStraightCentralLoop 1).source] at h
+  rw [(A.ellipticFourBoundaryDeckStraightCentralLoop 1).source] at h
   change A.centralQuotientProjection _ = _
-  simpa only [(A.orderFourActualEllipticBoundaryDeckStraightLift 1).source] using h.symm
+  simpa only [(A.ellipticFourBoundaryDeckStraightLift 1).source] using h.symm
 
 public theorem orderFourBoundaryMeridian_outerLabel :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     letI := regularFamilyDeckAction A.periods
     let hp := regularFamilyQuotientMap_isQuotientCoveringMap A.periods
       A.modular.modularParameter.toTriangleUniformization_sourceAction
       (sourceActionProperlyDiscontinuous_of_eq
         A.modular.modularParameter.toTriangleUniformization_sourceAction)
     hp.fundamentalGroupToMulOpposite
-      ⟨A.orderFourCollarRegularRepresentativeMap A.orderFourActualEllipticBoundaryBase,
+      ⟨A.orderFourCollarRegularRepresentativeMap A.ellipticFourBoundaryBase,
         A.orderFourCollarRegularBase_projects⟩
-      (Path.Homotopic.Quotient.mk (A.orderFourActualEllipticBoundaryDeckStraightCentralLoop
-        A.orderFourActualEllipticBoundaryDeckData.meridian)) = MulOpposite.op g₂⁻¹ := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+      (Path.Homotopic.Quotient.mk (A.ellipticFourBoundaryDeckStraightCentralLoop
+        A.ellipticFourBoundaryDeckData.meridian)) = MulOpposite.op g₂⁻¹ := by
+  let _ := A.ellipticFourBoundaryAction
   let _ := regularFamilyDeckAction A.periods
   let hp := regularFamilyQuotientMap_isQuotientCoveringMap A.periods
     A.modular.modularParameter.toTriangleUniformization_sourceAction
     (sourceActionProperlyDiscontinuous_of_eq
       A.modular.modularParameter.toTriangleUniformization_sourceAction)
-  let e : (regularFamilyQuotientMap A.periods) ⁻¹' {A.orderFourActualEllipticCentralBase} :=
-    ⟨A.orderFourCollarRegularRepresentativeMap A.orderFourActualEllipticBoundaryBase,
+  let e : (regularFamilyQuotientMap A.periods) ⁻¹' {A.ellipticFourCentralBase} :=
+    ⟨A.orderFourCollarRegularRepresentativeMap A.ellipticFourBoundaryBase,
       A.orderFourCollarRegularBase_projects⟩
-  let e' : (regularFamilyQuotientMap A.periods) ⁻¹' {A.orderFourActualEllipticCentralBase} :=
+  let e' : (regularFamilyQuotientMap A.periods) ⁻¹' {A.ellipticFourCentralBase} :=
     ⟨regularFamilyDeckMap A.periods g₂⁻¹ e.val,
       (regularFamilyQuotientMap_deck A.periods e.val g₂⁻¹).trans e.property⟩
-  let W := A.orderFourActualEllipticBoundaryDeckStraightLift
-    A.orderFourActualEllipticBoundaryDeckData.meridian
-  let L := A.orderFourActualEllipticBoundaryDeckStraightCentralLoop
-    A.orderFourActualEllipticBoundaryDeckData.meridian
+  let W := A.ellipticFourBoundaryDeckStraightLift
+    A.ellipticFourBoundaryDeckData.meridian
+  let L := A.ellipticFourBoundaryDeckStraightCentralLoop
+    A.ellipticFourBoundaryDeckData.meridian
   let Q : Path e.val e'.val :=
     (W.map A.orderFourCollarRegularRepresentativeMap.continuous).cast rfl
-      (A.orderFourCollarRegularRepresentative_meridian A.orderFourActualEllipticBoundaryBase).symm
+      (A.orderFourCollarRegularRepresentative_meridian A.ellipticFourBoundaryBase).symm
   have hm := hp.isCoveringMap.monodromy_eq_of_map_eq
     (ex := e) (ey := e') (Path.Homotopic.Quotient.mk Q) (γ := Path.Homotopic.Quotient.mk L) (by
       erw [← Path.Homotopic.Quotient.mk_map, ← Path.Homotopic.Quotient.mk_cast]
@@ -274,45 +274,45 @@ public theorem orderFourBoundaryMeridian_outerLabel :
 
 public theorem orderThreeCollarRegularBase_projects :
     regularFamilyQuotientMap A.periods
-      (A.orderThreeCollarRegularRepresentativeMap A.orderThreeActualEllipticBoundaryBase) =
-      A.orderThreeActualEllipticCentralBase := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+      (A.orderThreeCollarRegularRepresentativeMap A.ellipticThreeBoundaryBase) =
+      A.ellipticThreeCentralBase := by
+  let _ := A.ellipticThreeBoundaryAction
   have h := A.orderThreeDeckStraightCentralLoop_projects_representative 1 0
-  rw [(A.orderThreeActualEllipticBoundaryDeckStraightCentralLoop 1).source] at h
+  rw [(A.ellipticThreeBoundaryDeckStraightCentralLoop 1).source] at h
   change A.centralQuotientProjection _ = _
-  simpa only [(A.orderThreeActualEllipticBoundaryDeckStraightLift 1).source] using h.symm
+  simpa only [(A.ellipticThreeBoundaryDeckStraightLift 1).source] using h.symm
 
 public theorem orderThreeBoundaryMeridian_outerLabel :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     letI := regularFamilyDeckAction A.periods
     let hp := regularFamilyQuotientMap_isQuotientCoveringMap A.periods
       A.modular.modularParameter.toTriangleUniformization_sourceAction
       (sourceActionProperlyDiscontinuous_of_eq
         A.modular.modularParameter.toTriangleUniformization_sourceAction)
     hp.fundamentalGroupToMulOpposite
-      ⟨A.orderThreeCollarRegularRepresentativeMap A.orderThreeActualEllipticBoundaryBase,
+      ⟨A.orderThreeCollarRegularRepresentativeMap A.ellipticThreeBoundaryBase,
         A.orderThreeCollarRegularBase_projects⟩
-      (Path.Homotopic.Quotient.mk (A.orderThreeActualEllipticBoundaryDeckStraightCentralLoop
-        A.orderThreeActualEllipticBoundaryDeckData.meridian)) = MulOpposite.op g₁⁻¹ := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+      (Path.Homotopic.Quotient.mk (A.ellipticThreeBoundaryDeckStraightCentralLoop
+        A.ellipticThreeBoundaryDeckData.meridian)) = MulOpposite.op g₁⁻¹ := by
+  let _ := A.ellipticThreeBoundaryAction
   let _ := regularFamilyDeckAction A.periods
   let hp := regularFamilyQuotientMap_isQuotientCoveringMap A.periods
     A.modular.modularParameter.toTriangleUniformization_sourceAction
     (sourceActionProperlyDiscontinuous_of_eq
       A.modular.modularParameter.toTriangleUniformization_sourceAction)
-  let e : (regularFamilyQuotientMap A.periods) ⁻¹' {A.orderThreeActualEllipticCentralBase} :=
-    ⟨A.orderThreeCollarRegularRepresentativeMap A.orderThreeActualEllipticBoundaryBase,
+  let e : (regularFamilyQuotientMap A.periods) ⁻¹' {A.ellipticThreeCentralBase} :=
+    ⟨A.orderThreeCollarRegularRepresentativeMap A.ellipticThreeBoundaryBase,
       A.orderThreeCollarRegularBase_projects⟩
-  let e' : (regularFamilyQuotientMap A.periods) ⁻¹' {A.orderThreeActualEllipticCentralBase} :=
+  let e' : (regularFamilyQuotientMap A.periods) ⁻¹' {A.ellipticThreeCentralBase} :=
     ⟨regularFamilyDeckMap A.periods g₁⁻¹ e.val,
       (regularFamilyQuotientMap_deck A.periods e.val g₁⁻¹).trans e.property⟩
-  let W := A.orderThreeActualEllipticBoundaryDeckStraightLift
-    A.orderThreeActualEllipticBoundaryDeckData.meridian
-  let L := A.orderThreeActualEllipticBoundaryDeckStraightCentralLoop
-    A.orderThreeActualEllipticBoundaryDeckData.meridian
+  let W := A.ellipticThreeBoundaryDeckStraightLift
+    A.ellipticThreeBoundaryDeckData.meridian
+  let L := A.ellipticThreeBoundaryDeckStraightCentralLoop
+    A.ellipticThreeBoundaryDeckData.meridian
   let Q : Path e.val e'.val :=
     (W.map A.orderThreeCollarRegularRepresentativeMap.continuous).cast rfl
-      (A.orderThreeCollarRegularRepresentative_meridian A.orderThreeActualEllipticBoundaryBase).symm
+      (A.orderThreeCollarRegularRepresentative_meridian A.ellipticThreeBoundaryBase).symm
   have hm := hp.isCoveringMap.monodromy_eq_of_map_eq
     (ex := e) (ey := e') (Path.Homotopic.Quotient.mk Q) (γ := Path.Homotopic.Quotient.mk L) (by
       erw [← Path.Homotopic.Quotient.mk_map, ← Path.Homotopic.Quotient.mk_cast]

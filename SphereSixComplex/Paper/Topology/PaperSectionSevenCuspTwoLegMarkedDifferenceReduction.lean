@@ -20,11 +20,11 @@ open AlgebraicTopology
 
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 
-open SectionSevenEllipticInteriorMarkedCycleData
+open EllipticInteriorMarkedCycleData
 
 variable {A : PaperAnalyticData}
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 /-- The explicit vertex--edge cover boundary is the low Wang leg minus the corresponding high
 leg. -/
@@ -70,7 +70,7 @@ public theorem actualCuspVertexEdgeCoverConnecting_eq_low_add_signedHigh
 
 /-- The marked value of the transported low leg. -/
 public noncomputable def actualCuspSignedRefinementLowMarkedValue
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (C : ActualCuspOrientedCoverRefinement R)
     (x : ActualCuspFiberHomologyOne A) : ℤ :=
   (R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
@@ -80,7 +80,7 @@ public noncomputable def actualCuspSignedRefinementLowMarkedValue
 
 /-- The marked value of the transported high leg carrying the negative Wang class. -/
 public noncomputable def actualCuspSignedRefinementNegativeHighMarkedValue
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (C : ActualCuspOrientedCoverRefinement R)
     (x : ActualCuspFiberHomologyOne A) : ℤ :=
   (R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
@@ -91,7 +91,7 @@ public noncomputable def actualCuspSignedRefinementNegativeHighMarkedValue
 /-- The honest marked residual on the image of the Wang boundary: the low marked value minus
 the high marked value is the selected cusp-fibre coordinate. -/
 public def ActualCuspTwoLegMarkedBoundaryDifferenceNaturality
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (C : ActualCuspOrientedCoverRefinement R) : Prop :=
   ∀ x : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0),
     actualCuspSignedRefinementLowMarkedValue R C (actualCuspWangBoundaryHom A x) +
@@ -101,7 +101,7 @@ public def ActualCuspTwoLegMarkedBoundaryDifferenceNaturality
 
 /-- The signed low-minus-high formula gives the complete marked connecting square. -/
 public theorem cuspMarkedConnectingNaturality_of_twoLegMarkedBoundaryDifference
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (C : ActualCuspOrientedCoverRefinement R)
     (h : ActualCuspTwoLegMarkedBoundaryDifferenceNaturality R C) :
     R.twoDiscCover.CuspMarkedConnectingNaturality R.homologyAlignment := by
@@ -118,7 +118,7 @@ public theorem cuspMarkedConnectingNaturality_of_twoLegMarkedBoundaryDifference
 /-- Conversely, the marked connecting square determines the signed low-minus-high value on the
 entire Wang-boundary image. -/
 public theorem twoLegMarkedBoundaryDifference_of_cuspMarkedConnectingNaturality
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (C : ActualCuspOrientedCoverRefinement R)
     (h : R.twoDiscCover.CuspMarkedConnectingNaturality R.homologyAlignment) :
     ActualCuspTwoLegMarkedBoundaryDifferenceNaturality R C := by
@@ -136,7 +136,7 @@ public theorem twoLegMarkedBoundaryDifference_of_cuspMarkedConnectingNaturality
 /-- For every actual oriented refinement, the signed two-leg residual is exactly the marked
 connecting square. -/
 public theorem twoLegMarkedBoundaryDifference_iff_connectingNaturality
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (C : ActualCuspOrientedCoverRefinement R) :
     ActualCuspTwoLegMarkedBoundaryDifferenceNaturality R C ↔
       R.twoDiscCover.CuspMarkedConnectingNaturality R.homologyAlignment :=
@@ -146,14 +146,14 @@ public theorem twoLegMarkedBoundaryDifference_iff_connectingNaturality
 /-- Hence the established invariant-basis input is exactly the signed low-minus-high formula,
 provided the two pointwise cover inclusions constructing the oriented refinement are supplied. -/
 public theorem cuspPulledBackMarkedInvariantBasisData_iff_twoLegMarkedBoundaryDifference
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (C : ActualCuspOrientedCoverRefinement R) :
     CuspPulledBackMarkedInvariantBasisData R ↔
       ActualCuspTwoLegMarkedBoundaryDifferenceNaturality R C := by
   rw [cuspPulledBackMarkedInvariantBasisData_iff_markedConnectingNaturality,
     twoLegMarkedBoundaryDifference_iff_connectingNaturality]
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

@@ -8,8 +8,8 @@ public import SphereSixComplex.Paper.Topology.ConstructedA2CircleSweepPrism
 noncomputable section
 open Set Topology Matrix
 namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
-open StandardInfiniteA2ToricModel StandardInfiniteA2ToricModel.Construction
-open StandardInfiniteA2ToricModel.Established CuspToricPhaseAction
+open InfiniteA2Toric InfiniteA2Toric.Construction
+open InfiniteA2Toric CuspToricPhaseAction
 open SphereSixComplex.Periods CuspPeriodExpansion CuspFilling CuspLocalPhaseAction
 
 public theorem phase_edgeZero_swap (u : ℂˣ) (x : Fin 1 → ℝ) :

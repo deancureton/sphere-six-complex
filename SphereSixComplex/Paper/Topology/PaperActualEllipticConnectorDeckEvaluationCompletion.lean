@@ -29,31 +29,31 @@ variable (A : PaperAnalyticData)
 
 /-- Along a straight order-three deck path, the canonical comparison lift is the unique path
 lift of its image in the central family. -/
-public theorem orderThreeActualCentralProductCoverComparison_lift_deckTranslate_eq_liftPath
+public theorem ellipticThreeCentralProductCoverComparison_lift_deckTranslate_eq_liftPath
     (g : OrderThreeAffineMappingTorusDeck A.periods) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     let D := A.centralAffineUniversalCover
     letI := D.topology
     letI := D.action
-    let beta := A.orderThreeActualCentralProductConnector
-    let C := A.orderThreeActualCentralCoverComparisonOfPath beta
-    let delta := A.orderThreeActualEllipticBoundaryDeckStraightCentralLoop g
+    let beta := A.ellipticThreeCentralProductConnector
+    let C := A.ellipticThreeCentralCoverComparisonOfPath beta
+    let delta := A.ellipticThreeBoundaryDeckStraightCentralLoop g
     let e := A.centralAffineUniversalCoverPointOfPath beta
-    C.lift (g • A.orderThreeActualEllipticBoundaryBase) =
+    C.lift (g • A.ellipticThreeBoundaryBase) =
       D.data.quotientCovering.isCoveringMap.liftPath delta e
         (delta.source.trans
           (A.centralAffineUniversalCoverPointOfPath_projects beta).symm) 1 := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderThreeActualEllipticBoundaryCover_simplyConnected
-  let beta := A.orderThreeActualCentralProductConnector
-  let C := A.orderThreeActualCentralCoverComparisonOfPath beta
-  let Gamma := A.orderThreeActualEllipticBoundaryDeckStraightLift g
-  let delta := A.orderThreeActualEllipticBoundaryDeckStraightCentralLoop g
+    A.ellipticThreeBoundaryCover_simplyConnected
+  let beta := A.ellipticThreeCentralProductConnector
+  let C := A.ellipticThreeCentralCoverComparisonOfPath beta
+  let Gamma := A.ellipticThreeBoundaryDeckStraightLift g
+  let delta := A.ellipticThreeBoundaryDeckStraightCentralLoop g
   let e := A.centralAffineUniversalCoverPointOfPath beta
   let hzero : delta 0 = D.data.projection e :=
     delta.source.trans
@@ -69,37 +69,37 @@ public theorem orderThreeActualCentralProductCoverComparison_lift_deckTranslate_
       rfl
     · change C.lift (Gamma 0) = e
       rw [Gamma.source]
-      exact A.orderThreeActualCentralCoverComparisonOfPath_lift_base beta
+      exact A.ellipticThreeCentralCoverComparisonOfPath_lift_base beta
   have hone := congrFun hlift 1
   simpa [Gamma, delta, e, hzero] using hone
 
 /-- Along a straight order-four deck path, the canonical comparison lift is the unique path
 lift of its image in the central family. -/
-public theorem orderFourActualCentralProductCoverComparison_lift_deckTranslate_eq_liftPath
+public theorem ellipticFourCentralProductCoverComparison_lift_deckTranslate_eq_liftPath
     (g : OrderFourAffineMappingTorusDeck A.periods) :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     let D := A.centralAffineUniversalCover
     letI := D.topology
     letI := D.action
-    let beta := A.orderFourActualCentralProductConnector
-    let C := A.orderFourActualCentralCoverComparisonOfPath beta
-    let delta := A.orderFourActualEllipticBoundaryDeckStraightCentralLoop g
+    let beta := A.ellipticFourCentralProductConnector
+    let C := A.ellipticFourCentralCoverComparisonOfPath beta
+    let delta := A.ellipticFourBoundaryDeckStraightCentralLoop g
     let e := A.centralAffineUniversalCoverPointOfPath beta
-    C.lift (g • A.orderFourActualEllipticBoundaryBase) =
+    C.lift (g • A.ellipticFourBoundaryBase) =
       D.data.quotientCovering.isCoveringMap.liftPath delta e
         (delta.source.trans
           (A.centralAffineUniversalCoverPointOfPath_projects beta).symm) 1 := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderFourActualEllipticBoundaryCover_simplyConnected
-  let beta := A.orderFourActualCentralProductConnector
-  let C := A.orderFourActualCentralCoverComparisonOfPath beta
-  let Gamma := A.orderFourActualEllipticBoundaryDeckStraightLift g
-  let delta := A.orderFourActualEllipticBoundaryDeckStraightCentralLoop g
+    A.ellipticFourBoundaryCover_simplyConnected
+  let beta := A.ellipticFourCentralProductConnector
+  let C := A.ellipticFourCentralCoverComparisonOfPath beta
+  let Gamma := A.ellipticFourBoundaryDeckStraightLift g
+  let delta := A.ellipticFourBoundaryDeckStraightCentralLoop g
   let e := A.centralAffineUniversalCoverPointOfPath beta
   let hzero : delta 0 = D.data.projection e :=
     delta.source.trans
@@ -115,26 +115,26 @@ public theorem orderFourActualCentralProductCoverComparison_lift_deckTranslate_e
       rfl
     · change C.lift (Gamma 0) = e
       rw [Gamma.source]
-      exact A.orderFourActualCentralCoverComparisonOfPath_lift_base beta
+      exact A.ellipticFourCentralCoverComparisonOfPath_lift_base beta
   have hone := congrFun hlift 1
   simpa [Gamma, delta, e, hzero] using hone
 
 /-- The actual order-three comparison endpoint is the based-path class obtained by appending
 the mapped straight loop to the prescribed connector. -/
-public theorem orderThreeActualCentralProductCoverComparison_lift_deckTranslate_eq_append
+public theorem ellipticThreeCentralProductCoverComparison_lift_deckTranslate_eq_append
     (g : OrderThreeAffineMappingTorusDeck A.periods) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     let D := A.centralAffineUniversalCover
     letI := D.topology
     letI := D.action
-    let beta := A.orderThreeActualCentralProductConnector
-    let C := A.orderThreeActualCentralCoverComparisonOfPath beta
-    let delta := A.orderThreeActualEllipticBoundaryDeckStraightCentralLoop g
+    let beta := A.ellipticThreeCentralProductConnector
+    let C := A.ellipticThreeCentralCoverComparisonOfPath beta
+    let delta := A.ellipticThreeBoundaryDeckStraightCentralLoop g
     let eta := delta.cast (BasedPath.endpoint_ofPath beta) rfl
-    C.lift (g • A.orderThreeActualEllipticBoundaryBase) =
-      TauCeti.UniversalCover.ofBasedPath A.actualCuspCentralBase
+    C.lift (g • A.ellipticThreeBoundaryBase) =
+      TauCeti.UniversalCover.ofBasedPath A.cuspCentralBase
         (BasedPath.append (BasedPath.ofPath beta) eta) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let _ : LocallyPathConnectedSpace A.CentralFamily :=
     fuchsianPuncturedGlobalFamily_locallyPathConnected
       A.modular.modularParameter A.periods
@@ -149,39 +149,39 @@ public theorem orderThreeActualCentralProductCoverComparison_lift_deckTranslate_
   let _ := D.action
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderThreeActualEllipticBoundaryCover_simplyConnected
-  let beta := A.orderThreeActualCentralProductConnector
-  let C := A.orderThreeActualCentralCoverComparisonOfPath beta
-  let delta := A.orderThreeActualEllipticBoundaryDeckStraightCentralLoop g
+    A.ellipticThreeBoundaryCover_simplyConnected
+  let beta := A.ellipticThreeCentralProductConnector
+  let C := A.ellipticThreeCentralCoverComparisonOfPath beta
+  let delta := A.ellipticThreeBoundaryDeckStraightCentralLoop g
   let eta := delta.cast (BasedPath.endpoint_ofPath beta) rfl
-  change C.lift (g • A.orderThreeActualEllipticBoundaryBase) =
-    TauCeti.UniversalCover.ofBasedPath A.actualCuspCentralBase
+  change C.lift (g • A.ellipticThreeBoundaryBase) =
+    TauCeti.UniversalCover.ofBasedPath A.cuspCentralBase
       (BasedPath.append (BasedPath.ofPath beta) eta)
-  rw [A.orderThreeActualCentralProductCoverComparison_lift_deckTranslate_eq_liftPath g]
-  change (TauCeti.UniversalCover.isCoveringMap A.actualCuspCentralBase).liftPath delta
-      (TauCeti.UniversalCover.ofBasedPath A.actualCuspCentralBase
+  rw [A.ellipticThreeCentralProductCoverComparison_lift_deckTranslate_eq_liftPath g]
+  change (TauCeti.UniversalCover.isCoveringMap A.cuspCentralBase).liftPath delta
+      (TauCeti.UniversalCover.ofBasedPath A.cuspCentralBase
         (BasedPath.ofPath beta)) _ 1 = _
   calc
-    _ = (TauCeti.UniversalCover.isCoveringMap A.actualCuspCentralBase).liftPath eta
-        (TauCeti.UniversalCover.ofBasedPath A.actualCuspCentralBase
+    _ = (TauCeti.UniversalCover.isCoveringMap A.cuspCentralBase).liftPath eta
+        (TauCeti.UniversalCover.ofBasedPath A.cuspCentralBase
           (BasedPath.ofPath beta)) (by simp) 1 := by congr 1
     _ = _ := TauCeti.UniversalCover.liftPath_apply_one_eq_ofBasedPath_append eta
 
 /-- The actual order-four comparison endpoint has the same connector-append description. -/
-public theorem orderFourActualCentralProductCoverComparison_lift_deckTranslate_eq_append
+public theorem ellipticFourCentralProductCoverComparison_lift_deckTranslate_eq_append
     (g : OrderFourAffineMappingTorusDeck A.periods) :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     let D := A.centralAffineUniversalCover
     letI := D.topology
     letI := D.action
-    let beta := A.orderFourActualCentralProductConnector
-    let C := A.orderFourActualCentralCoverComparisonOfPath beta
-    let delta := A.orderFourActualEllipticBoundaryDeckStraightCentralLoop g
+    let beta := A.ellipticFourCentralProductConnector
+    let C := A.ellipticFourCentralCoverComparisonOfPath beta
+    let delta := A.ellipticFourBoundaryDeckStraightCentralLoop g
     let eta := delta.cast (BasedPath.endpoint_ofPath beta) rfl
-    C.lift (g • A.orderFourActualEllipticBoundaryBase) =
-      TauCeti.UniversalCover.ofBasedPath A.actualCuspCentralBase
+    C.lift (g • A.ellipticFourBoundaryBase) =
+      TauCeti.UniversalCover.ofBasedPath A.cuspCentralBase
         (BasedPath.append (BasedPath.ofPath beta) eta) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let _ : LocallyPathConnectedSpace A.CentralFamily :=
     fuchsianPuncturedGlobalFamily_locallyPathConnected
       A.modular.modularParameter A.periods
@@ -196,242 +196,242 @@ public theorem orderFourActualCentralProductCoverComparison_lift_deckTranslate_e
   let _ := D.action
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderFourActualEllipticBoundaryCover_simplyConnected
-  let beta := A.orderFourActualCentralProductConnector
-  let C := A.orderFourActualCentralCoverComparisonOfPath beta
-  let delta := A.orderFourActualEllipticBoundaryDeckStraightCentralLoop g
+    A.ellipticFourBoundaryCover_simplyConnected
+  let beta := A.ellipticFourCentralProductConnector
+  let C := A.ellipticFourCentralCoverComparisonOfPath beta
+  let delta := A.ellipticFourBoundaryDeckStraightCentralLoop g
   let eta := delta.cast (BasedPath.endpoint_ofPath beta) rfl
-  change C.lift (g • A.orderFourActualEllipticBoundaryBase) =
-    TauCeti.UniversalCover.ofBasedPath A.actualCuspCentralBase
+  change C.lift (g • A.ellipticFourBoundaryBase) =
+    TauCeti.UniversalCover.ofBasedPath A.cuspCentralBase
       (BasedPath.append (BasedPath.ofPath beta) eta)
-  rw [A.orderFourActualCentralProductCoverComparison_lift_deckTranslate_eq_liftPath g]
-  change (TauCeti.UniversalCover.isCoveringMap A.actualCuspCentralBase).liftPath delta
-      (TauCeti.UniversalCover.ofBasedPath A.actualCuspCentralBase
+  rw [A.ellipticFourCentralProductCoverComparison_lift_deckTranslate_eq_liftPath g]
+  change (TauCeti.UniversalCover.isCoveringMap A.cuspCentralBase).liftPath delta
+      (TauCeti.UniversalCover.ofBasedPath A.cuspCentralBase
         (BasedPath.ofPath beta)) _ 1 = _
   calc
-    _ = (TauCeti.UniversalCover.isCoveringMap A.actualCuspCentralBase).liftPath eta
-        (TauCeti.UniversalCover.ofBasedPath A.actualCuspCentralBase
+    _ = (TauCeti.UniversalCover.isCoveringMap A.cuspCentralBase).liftPath eta
+        (TauCeti.UniversalCover.ofBasedPath A.cuspCentralBase
           (BasedPath.ofPath beta)) (by simp) 1 := by congr 1
     _ = _ := TauCeti.UniversalCover.liftPath_apply_one_eq_ofBasedPath_append eta
 
 /-- The endpoint of the connector-pinned order-three lift determines its deck value on the
 complete filling relation. -/
-public theorem orderThreeActualCentralProductCoverComparison_deckMap_fillingRelation_of_endpoint
+public theorem ellipticThreeCentralProductCoverComparison_deckMap_fillingRelation_of_endpoint
     (hendpoint :
-      letI := A.orderThreeActualEllipticBoundaryAction
+      letI := A.ellipticThreeBoundaryAction
       let D := A.centralAffineUniversalCover
       letI := D.topology
       letI := D.action
-      let beta := A.orderThreeActualCentralProductConnector
-      let C := A.orderThreeActualCentralCoverComparisonOfPath beta
+      let beta := A.ellipticThreeCentralProductConnector
+      let C := A.ellipticThreeCentralCoverComparisonOfPath beta
       C.lift
-          (A.orderThreeActualEllipticBoundaryDeckData.fillingRelation •
-            A.orderThreeActualEllipticBoundaryBase) =
+          (A.ellipticThreeBoundaryDeckData.fillingRelation •
+            A.ellipticThreeBoundaryBase) =
         orderThreeFillingRelationClassifiedCentralProductDeck⁻¹ •
-          C.lift A.orderThreeActualEllipticBoundaryBase) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+          C.lift A.ellipticThreeBoundaryBase) :
+    letI := A.ellipticThreeBoundaryAction
     let D := A.centralAffineUniversalCover
     letI := D.topology
     letI := D.action
-    let beta := A.orderThreeActualCentralProductConnector
-    let C := A.orderThreeActualCentralCoverComparisonOfPath beta
-    C.deckMap A.orderThreeActualEllipticBoundaryDeckData.fillingRelation =
+    let beta := A.ellipticThreeCentralProductConnector
+    let C := A.ellipticThreeCentralCoverComparisonOfPath beta
+    C.deckMap A.ellipticThreeBoundaryDeckData.fillingRelation =
       orderThreeFillingRelationClassifiedCentralProductDeck⁻¹ := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderThreeActualEllipticBoundaryCover_simplyConnected
+    A.ellipticThreeBoundaryCover_simplyConnected
   let _ : IsCancelSMul paperCentralFreeAffineDeck D.Cover :=
     D.data.quotientCovering.isCancelSMul
-  let beta := A.orderThreeActualCentralProductConnector
-  let C := A.orderThreeActualCentralCoverComparisonOfPath beta
-  apply IsCancelSMul.right_cancel _ _ (C.lift A.orderThreeActualEllipticBoundaryBase)
-  exact (C.equivariant A.orderThreeActualEllipticBoundaryDeckData.fillingRelation
-    A.orderThreeActualEllipticBoundaryBase).symm.trans hendpoint
+  let beta := A.ellipticThreeCentralProductConnector
+  let C := A.ellipticThreeCentralCoverComparisonOfPath beta
+  apply IsCancelSMul.right_cancel _ _ (C.lift A.ellipticThreeBoundaryBase)
+  exact (C.equivariant A.ellipticThreeBoundaryDeckData.fillingRelation
+    A.ellipticThreeBoundaryBase).symm.trans hendpoint
 
 /-- The endpoint of the connector-pinned order-four lift determines its deck value on the
 complete filling relation. -/
-public theorem orderFourActualCentralProductCoverComparison_deckMap_fillingRelation_of_endpoint
+public theorem ellipticFourCentralProductCoverComparison_deckMap_fillingRelation_of_endpoint
     (hendpoint :
-      letI := A.orderFourActualEllipticBoundaryAction
+      letI := A.ellipticFourBoundaryAction
       let D := A.centralAffineUniversalCover
       letI := D.topology
       letI := D.action
-      let beta := A.orderFourActualCentralProductConnector
-      let C := A.orderFourActualCentralCoverComparisonOfPath beta
+      let beta := A.ellipticFourCentralProductConnector
+      let C := A.ellipticFourCentralCoverComparisonOfPath beta
       C.lift
-          (A.orderFourActualEllipticBoundaryDeckData.fillingRelation •
-            A.orderFourActualEllipticBoundaryBase) =
+          (A.ellipticFourBoundaryDeckData.fillingRelation •
+            A.ellipticFourBoundaryBase) =
         orderFourFillingRelationClassifiedCentralProductDeck⁻¹ •
-          C.lift A.orderFourActualEllipticBoundaryBase) :
-    letI := A.orderFourActualEllipticBoundaryAction
+          C.lift A.ellipticFourBoundaryBase) :
+    letI := A.ellipticFourBoundaryAction
     let D := A.centralAffineUniversalCover
     letI := D.topology
     letI := D.action
-    let beta := A.orderFourActualCentralProductConnector
-    let C := A.orderFourActualCentralCoverComparisonOfPath beta
-    C.deckMap A.orderFourActualEllipticBoundaryDeckData.fillingRelation =
+    let beta := A.ellipticFourCentralProductConnector
+    let C := A.ellipticFourCentralCoverComparisonOfPath beta
+    C.deckMap A.ellipticFourBoundaryDeckData.fillingRelation =
       orderFourFillingRelationClassifiedCentralProductDeck⁻¹ := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderFourActualEllipticBoundaryCover_simplyConnected
+    A.ellipticFourBoundaryCover_simplyConnected
   let _ : IsCancelSMul paperCentralFreeAffineDeck D.Cover :=
     D.data.quotientCovering.isCancelSMul
-  let beta := A.orderFourActualCentralProductConnector
-  let C := A.orderFourActualCentralCoverComparisonOfPath beta
-  apply IsCancelSMul.right_cancel _ _ (C.lift A.orderFourActualEllipticBoundaryBase)
-  exact (C.equivariant A.orderFourActualEllipticBoundaryDeckData.fillingRelation
-    A.orderFourActualEllipticBoundaryBase).symm.trans hendpoint
+  let beta := A.ellipticFourCentralProductConnector
+  let C := A.ellipticFourCentralCoverComparisonOfPath beta
+  apply IsCancelSMul.right_cancel _ _ (C.lift A.ellipticFourBoundaryBase)
+  exact (C.equivariant A.ellipticFourBoundaryDeckData.fillingRelation
+    A.ellipticFourBoundaryBase).symm.trans hendpoint
 
 /-- The order-three endpoint equality is exactly equivalent to the requested deck evaluation. -/
-public theorem orderThreeActualCentralProductCoverComparison_deckMap_fillingRelation_iff_endpoint :
-    (letI := A.orderThreeActualEllipticBoundaryAction
+public theorem ellipticThreeCentralProductCoverComparison_deckMap_fillingRelation_iff_endpoint :
+    (letI := A.ellipticThreeBoundaryAction
       let D := A.centralAffineUniversalCover
       letI := D.topology
       letI := D.action
-      let beta := A.orderThreeActualCentralProductConnector
-      let C := A.orderThreeActualCentralCoverComparisonOfPath beta
-      C.deckMap A.orderThreeActualEllipticBoundaryDeckData.fillingRelation =
+      let beta := A.ellipticThreeCentralProductConnector
+      let C := A.ellipticThreeCentralCoverComparisonOfPath beta
+      C.deckMap A.ellipticThreeBoundaryDeckData.fillingRelation =
         orderThreeFillingRelationClassifiedCentralProductDeck⁻¹) ↔
-      (letI := A.orderThreeActualEllipticBoundaryAction
+      (letI := A.ellipticThreeBoundaryAction
         let D := A.centralAffineUniversalCover
         letI := D.topology
         letI := D.action
-        let beta := A.orderThreeActualCentralProductConnector
-        let C := A.orderThreeActualCentralCoverComparisonOfPath beta
+        let beta := A.ellipticThreeCentralProductConnector
+        let C := A.ellipticThreeCentralCoverComparisonOfPath beta
         C.lift
-            (A.orderThreeActualEllipticBoundaryDeckData.fillingRelation •
-              A.orderThreeActualEllipticBoundaryBase) =
+            (A.ellipticThreeBoundaryDeckData.fillingRelation •
+              A.ellipticThreeBoundaryBase) =
           orderThreeFillingRelationClassifiedCentralProductDeck⁻¹ •
-            C.lift A.orderThreeActualEllipticBoundaryBase) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+            C.lift A.ellipticThreeBoundaryBase) := by
+  let _ := A.ellipticThreeBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderThreeActualEllipticBoundaryCover_simplyConnected
-  let beta := A.orderThreeActualCentralProductConnector
-  let C := A.orderThreeActualCentralCoverComparisonOfPath beta
+    A.ellipticThreeBoundaryCover_simplyConnected
+  let beta := A.ellipticThreeCentralProductConnector
+  let C := A.ellipticThreeCentralCoverComparisonOfPath beta
   constructor
   · intro hdeck
-    change C.deckMap A.orderThreeActualEllipticBoundaryDeckData.fillingRelation =
+    change C.deckMap A.ellipticThreeBoundaryDeckData.fillingRelation =
       orderThreeFillingRelationClassifiedCentralProductDeck⁻¹ at hdeck
     change C.lift
-        (A.orderThreeActualEllipticBoundaryDeckData.fillingRelation •
-          A.orderThreeActualEllipticBoundaryBase) = _
+        (A.ellipticThreeBoundaryDeckData.fillingRelation •
+          A.ellipticThreeBoundaryBase) = _
     rw [C.equivariant, hdeck]
-  · exact A.orderThreeActualCentralProductCoverComparison_deckMap_fillingRelation_of_endpoint
+  · exact A.ellipticThreeCentralProductCoverComparison_deckMap_fillingRelation_of_endpoint
 
 /-- The order-four endpoint equality is exactly equivalent to the requested deck evaluation. -/
-public theorem orderFourActualCentralProductCoverComparison_deckMap_fillingRelation_iff_endpoint :
-    (letI := A.orderFourActualEllipticBoundaryAction
+public theorem ellipticFourCentralProductCoverComparison_deckMap_fillingRelation_iff_endpoint :
+    (letI := A.ellipticFourBoundaryAction
       let D := A.centralAffineUniversalCover
       letI := D.topology
       letI := D.action
-      let beta := A.orderFourActualCentralProductConnector
-      let C := A.orderFourActualCentralCoverComparisonOfPath beta
-      C.deckMap A.orderFourActualEllipticBoundaryDeckData.fillingRelation =
+      let beta := A.ellipticFourCentralProductConnector
+      let C := A.ellipticFourCentralCoverComparisonOfPath beta
+      C.deckMap A.ellipticFourBoundaryDeckData.fillingRelation =
         orderFourFillingRelationClassifiedCentralProductDeck⁻¹) ↔
-      (letI := A.orderFourActualEllipticBoundaryAction
+      (letI := A.ellipticFourBoundaryAction
         let D := A.centralAffineUniversalCover
         letI := D.topology
         letI := D.action
-        let beta := A.orderFourActualCentralProductConnector
-        let C := A.orderFourActualCentralCoverComparisonOfPath beta
+        let beta := A.ellipticFourCentralProductConnector
+        let C := A.ellipticFourCentralCoverComparisonOfPath beta
         C.lift
-            (A.orderFourActualEllipticBoundaryDeckData.fillingRelation •
-              A.orderFourActualEllipticBoundaryBase) =
+            (A.ellipticFourBoundaryDeckData.fillingRelation •
+              A.ellipticFourBoundaryBase) =
           orderFourFillingRelationClassifiedCentralProductDeck⁻¹ •
-            C.lift A.orderFourActualEllipticBoundaryBase) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+            C.lift A.ellipticFourBoundaryBase) := by
+  let _ := A.ellipticFourBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderFourActualEllipticBoundaryCover_simplyConnected
-  let beta := A.orderFourActualCentralProductConnector
-  let C := A.orderFourActualCentralCoverComparisonOfPath beta
+    A.ellipticFourBoundaryCover_simplyConnected
+  let beta := A.ellipticFourCentralProductConnector
+  let C := A.ellipticFourCentralCoverComparisonOfPath beta
   constructor
   · intro hdeck
-    change C.deckMap A.orderFourActualEllipticBoundaryDeckData.fillingRelation =
+    change C.deckMap A.ellipticFourBoundaryDeckData.fillingRelation =
       orderFourFillingRelationClassifiedCentralProductDeck⁻¹ at hdeck
     change C.lift
-        (A.orderFourActualEllipticBoundaryDeckData.fillingRelation •
-          A.orderFourActualEllipticBoundaryBase) = _
+        (A.ellipticFourBoundaryDeckData.fillingRelation •
+          A.ellipticFourBoundaryBase) = _
     rw [C.equivariant, hdeck]
-  · exact A.orderFourActualCentralProductCoverComparison_deckMap_fillingRelation_of_endpoint
+  · exact A.ellipticFourCentralProductCoverComparison_deckMap_fillingRelation_of_endpoint
 
 /-- The two connector-pinned endpoint equalities give the exact remaining elliptic residual. -/
-public theorem actualEllipticRelatorNormalClosureResidual_of_productConnectorLiftEndpoints
+public theorem ellipticRelatorMembership_of_productConnectorLiftEndpoints
     (hThree :
-      letI := A.orderThreeActualEllipticBoundaryAction
+      letI := A.ellipticThreeBoundaryAction
       let D := A.centralAffineUniversalCover
       letI := D.topology
       letI := D.action
-      let beta := A.orderThreeActualCentralProductConnector
-      let C := A.orderThreeActualCentralCoverComparisonOfPath beta
+      let beta := A.ellipticThreeCentralProductConnector
+      let C := A.ellipticThreeCentralCoverComparisonOfPath beta
       C.lift
-          (A.orderThreeActualEllipticBoundaryDeckData.fillingRelation •
-            A.orderThreeActualEllipticBoundaryBase) =
+          (A.ellipticThreeBoundaryDeckData.fillingRelation •
+            A.ellipticThreeBoundaryBase) =
         orderThreeFillingRelationClassifiedCentralProductDeck⁻¹ •
-          C.lift A.orderThreeActualEllipticBoundaryBase)
+          C.lift A.ellipticThreeBoundaryBase)
     (hFour :
-      letI := A.orderFourActualEllipticBoundaryAction
+      letI := A.ellipticFourBoundaryAction
       let D := A.centralAffineUniversalCover
       letI := D.topology
       letI := D.action
-      let beta := A.orderFourActualCentralProductConnector
-      let C := A.orderFourActualCentralCoverComparisonOfPath beta
+      let beta := A.ellipticFourCentralProductConnector
+      let C := A.ellipticFourCentralCoverComparisonOfPath beta
       C.lift
-          (A.orderFourActualEllipticBoundaryDeckData.fillingRelation •
-            A.orderFourActualEllipticBoundaryBase) =
+          (A.ellipticFourBoundaryDeckData.fillingRelation •
+            A.ellipticFourBoundaryBase) =
         orderFourFillingRelationClassifiedCentralProductDeck⁻¹ •
-          C.lift A.orderFourActualEllipticBoundaryBase) :
-    A.ActualEllipticRelatorNormalClosureResidual A.actualCuspCentralNaturality :=
-  A.actualEllipticRelatorNormalClosureResidual_of_productConnectorDeckMaps
-    (A.orderThreeActualCentralProductCoverComparison_deckMap_fillingRelation_of_endpoint hThree)
-    (A.orderFourActualCentralProductCoverComparison_deckMap_fillingRelation_of_endpoint hFour)
+          C.lift A.ellipticFourBoundaryBase) :
+    A.EllipticRelatorMembership A.cuspCentralNaturality :=
+  A.ellipticRelatorMembership_of_productConnectorDeckMaps
+    (A.ellipticThreeCentralProductCoverComparison_deckMap_fillingRelation_of_endpoint hThree)
+    (A.ellipticFourCentralProductCoverComparison_deckMap_fillingRelation_of_endpoint hFour)
 
 /-- The same two endpoint equalities supply the exact nonempty established-input target. -/
 public theorem
     actualEllipticRelatorNormalClosureResidual_nonempty_of_productConnectorLiftEndpoints
     (hThree :
-      letI := A.orderThreeActualEllipticBoundaryAction
+      letI := A.ellipticThreeBoundaryAction
       let D := A.centralAffineUniversalCover
       letI := D.topology
       letI := D.action
-      let beta := A.orderThreeActualCentralProductConnector
-      let C := A.orderThreeActualCentralCoverComparisonOfPath beta
+      let beta := A.ellipticThreeCentralProductConnector
+      let C := A.ellipticThreeCentralCoverComparisonOfPath beta
       C.lift
-          (A.orderThreeActualEllipticBoundaryDeckData.fillingRelation •
-            A.orderThreeActualEllipticBoundaryBase) =
+          (A.ellipticThreeBoundaryDeckData.fillingRelation •
+            A.ellipticThreeBoundaryBase) =
         orderThreeFillingRelationClassifiedCentralProductDeck⁻¹ •
-          C.lift A.orderThreeActualEllipticBoundaryBase)
+          C.lift A.ellipticThreeBoundaryBase)
     (hFour :
-      letI := A.orderFourActualEllipticBoundaryAction
+      letI := A.ellipticFourBoundaryAction
       let D := A.centralAffineUniversalCover
       letI := D.topology
       letI := D.action
-      let beta := A.orderFourActualCentralProductConnector
-      let C := A.orderFourActualCentralCoverComparisonOfPath beta
+      let beta := A.ellipticFourCentralProductConnector
+      let C := A.ellipticFourCentralCoverComparisonOfPath beta
       C.lift
-          (A.orderFourActualEllipticBoundaryDeckData.fillingRelation •
-            A.orderFourActualEllipticBoundaryBase) =
+          (A.ellipticFourBoundaryDeckData.fillingRelation •
+            A.ellipticFourBoundaryBase) =
         orderFourFillingRelationClassifiedCentralProductDeck⁻¹ •
-          C.lift A.orderFourActualEllipticBoundaryBase) :
+          C.lift A.ellipticFourBoundaryBase) :
     Nonempty
-      (ActualEllipticRelatorNormalClosureResidual
-        A A.actualCuspCentralNaturality) :=
-  ⟨A.actualEllipticRelatorNormalClosureResidual_of_productConnectorLiftEndpoints
+      (EllipticRelatorMembership
+        A A.cuspCentralNaturality) :=
+  ⟨A.ellipticRelatorMembership_of_productConnectorLiftEndpoints
     hThree hFour⟩
 
 end SphereSixComplex.Geometry.PaperAnalyticData

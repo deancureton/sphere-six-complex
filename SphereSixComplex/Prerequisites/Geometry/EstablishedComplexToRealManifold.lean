@@ -22,11 +22,11 @@ This module used to state the theorem as an axiom; it is now proved.
 open scoped ContDiff Manifold
 open Set
 
-namespace SphereSixComplex.Geometry.EstablishedComplexToRealManifold
+namespace SphereSixComplex.ComplexThreefold.RealAtlas
 
 /-- Every chart of the real coordinate system on `ℂ³` agrees with the real-linear identification
 `complexToRealModel` on its source. -/
-public theorem complexModelRealChart_eq_on_source
+public theorem chart_apply_of_mem_atlas
     (f : OpenPartialHomeomorph ComplexModel RealModel)
     (hf : f ∈ complexModelRealChartedSpace.atlas) {y : ComplexModel} (hy : y ∈ f.source) :
     f y = complexToRealModel y := by
@@ -38,7 +38,7 @@ public theorem complexModelRealChart_eq_on_source
 
 /-- The inverse of every chart of the real coordinate system on `ℂ³` is the inverse real-linear
 identification, as a function. -/
-public theorem complexModelRealChart_symm_eq
+public theorem chart_symm_eq
     (f : OpenPartialHomeomorph ComplexModel RealModel)
     (hf : f ∈ complexModelRealChartedSpace.atlas) :
     (f.symm : RealModel → ComplexModel) = complexToRealModel.symm := by
@@ -50,7 +50,7 @@ public theorem complexModelRealChart_symm_eq
 /-- Standard restriction of scalars from a complex three-manifold to its underlying smooth real
 six-manifold: the transition maps of the underlying real atlas are the complex transition maps
 conjugated by `complexToRealModel`, hence real-smooth. -/
-public theorem establishedUnderlyingRealIsManifold
+public theorem isManifold
     {M : Type*} [TopologicalSpace M]
     (c : ChartedSpace ComplexModel M)
     (h : @IsManifold ℂ inferInstance ComplexModel inferInstance inferInstance ComplexModel
@@ -78,7 +78,7 @@ public theorem establishedUnderlyingRealIsManifold
       (complexToRealModel : ComplexModel →L[ℝ] RealModel)
     simpa using this
   have hf₁' : (f₁.symm : RealModel → ComplexModel) = complexToRealModel.symm :=
-    complexModelRealChart_symm_eq f₁ hf₁
+    chart_symm_eq f₁ hf₁
   refine (hg.mono ?_).congr ?_
   · rintro x ⟨⟨_, hx₁⟩, hx₂, _⟩
     simp only [mem_preimage, Function.comp] at hx₁ hx₂ ⊢
@@ -87,6 +87,6 @@ public theorem establishedUnderlyingRealIsManifold
   · rintro x ⟨⟨_, _⟩, _, hx₃⟩
     simp only [mem_preimage, Function.comp] at hx₃ ⊢
     rw [hf₁']
-    exact complexModelRealChart_eq_on_source f₂ hf₂ (by simpa [hf₁'] using hx₃)
+    exact chart_apply_of_mem_atlas f₂ hf₂ (by simpa [hf₁'] using hx₃)
 
-end SphereSixComplex.Geometry.EstablishedComplexToRealManifold
+end SphereSixComplex.ComplexThreefold.RealAtlas

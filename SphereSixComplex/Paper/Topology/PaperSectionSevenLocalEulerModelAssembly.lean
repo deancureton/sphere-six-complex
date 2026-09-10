@@ -24,47 +24,47 @@ open CuspPuncturedCollarBridge
 variable (A : PaperAnalyticData)
 
 /-- Assemble every local Euler model from an explicitly supplied actual cusp retraction. -/
-public noncomputable def sectionSevenLocalEulerModelsOfCuspRetraction
+public noncomputable def localEulerModelsOfCuspRetraction
     (R : ActualLocalCuspCentralFiberRetractionData A.starCuspWitness) :
-    A.SectionSevenLocalEulerModels :=
-  SectionSevenLocalEulerModels.ofCuspCentralModelAndCollarMappingTorusModels A
+    A.LocalEulerModels :=
+  LocalEulerModels.ofCuspCentralModelAndCollarMappingTorusModels A
     R A.centralHomologyEulerModel
       (actualCuspCentralFiberCellModel A.starCuspWitness R)
       A.actualCollarCircleMappingTorusModel
 
 /-- The assembled local models give finite integral homology for all seven local spaces. -/
-public theorem sectionSevenLocalIntegralHomologyFiniteSixOfCuspRetraction
+public theorem localIntegralHomologyFiniteSix_of_cuspRetraction
     (R : ActualLocalCuspCentralFiberRetractionData A.starCuspWitness) :
     IntegralHomologyFiniteSix A.openEmbeddingStarData.central ∧
       (∀ i : Fin 3, IntegralHomologyFiniteSix (A.openEmbeddingStarData.filling i)) ∧
       (∀ i : Fin 3, IntegralHomologyFiniteSix
         (A.openEmbeddingStarData.collarSource i)) :=
-  (A.sectionSevenLocalEulerModelsOfCuspRetraction R).localIntegralHomologyFiniteSix
+  (A.localEulerModelsOfCuspRetraction R).localIntegralHomologyFiniteSix
 
 /-- The exact local Euler expression is two once the explicit actual cusp retraction is supplied. -/
-public theorem sectionSevenLocalEulerExpression_eq_two_of_cuspRetraction
+public theorem localEulerExpression_eq_two_of_cuspRetraction
     (R : ActualLocalCuspCentralFiberRetractionData A.starCuspWitness) :
     A.openEmbeddingStarData.sectionSevenLocalEulerExpression = 2 :=
-  (A.sectionSevenLocalEulerModelsOfCuspRetraction R).sectionSevenLocalEulerExpression_eq_two
+  (A.localEulerModelsOfCuspRetraction R).sectionSevenLocalEulerExpression_eq_two
 
 /-- Assemble the seven local models using the standard phase-spread cusp retraction. -/
-public noncomputable def sectionSevenLocalEulerModels :
-    A.SectionSevenLocalEulerModels :=
-  A.sectionSevenLocalEulerModelsOfCuspRetraction A.cuspCentralFiberRetractionData
+public noncomputable def localEulerModels :
+    A.LocalEulerModels :=
+  A.localEulerModelsOfCuspRetraction A.cuspCentralFiberRetractionData
 
 /-- All seven local spaces have finite integral homology. -/
-public theorem sectionSevenLocalIntegralHomologyFiniteSix :
+public theorem localIntegralHomologyFiniteSix :
     IntegralHomologyFiniteSix A.openEmbeddingStarData.central ∧
       (∀ i : Fin 3, IntegralHomologyFiniteSix (A.openEmbeddingStarData.filling i)) ∧
       (∀ i : Fin 3, IntegralHomologyFiniteSix
         (A.openEmbeddingStarData.collarSource i)) :=
-  A.sectionSevenLocalIntegralHomologyFiniteSixOfCuspRetraction
+  A.localIntegralHomologyFiniteSix_of_cuspRetraction
     A.cuspCentralFiberRetractionData
 
 /-- The unconditional local Section 7 Euler expression is two. -/
-public theorem sectionSevenLocalEulerExpression_eq_two :
+public theorem localEulerExpression_eq_two :
     A.openEmbeddingStarData.sectionSevenLocalEulerExpression = 2 :=
-  A.sectionSevenLocalEulerExpression_eq_two_of_cuspRetraction
+  A.localEulerExpression_eq_two_of_cuspRetraction
     A.cuspCentralFiberRetractionData
 
 end SphereSixComplex.Geometry.PaperAnalyticData

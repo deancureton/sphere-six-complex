@@ -141,20 +141,20 @@ open SphereSixComplex.OpenUnionHomotopy
 variable (A : PaperAnalyticData)
 
 /-- The regular central region on the order-three side of the affine split. -/
-public abbrev sectionSevenAffineOrderThreeCentralRegion :
-    Set A.SectionSevenEllipticInterior :=
-  centralHeightLowerRegion A.sectionSevenEllipticCentralHeight (2 / 3 : ℝ)
+public abbrev affineOrderThreeCentralRegion :
+    Set A.ellipticInterior :=
+  centralHeightLowerRegion A.ellipticCentralHeight (2 / 3 : ℝ)
 
 /-- The regular central region on the order-four side of the affine split. -/
-public abbrev sectionSevenAffineOrderFourCentralRegion :
-    Set A.SectionSevenEllipticInterior :=
-  centralHeightUpperRegion A.sectionSevenEllipticCentralHeight (1 / 3 : ℝ)
+public abbrev affineOrderFourCentralRegion :
+    Set A.ellipticInterior :=
+  centralHeightUpperRegion A.ellipticCentralHeight (1 / 3 : ℝ)
 
 variable {A : PaperAnalyticData}
 
 /-- Exact product-coordinate input for the order-three overlap-to-central-region map.  The radius
 is an affine-coordinate radius; it is not identified with a Cayley collar radius. -/
-public structure SectionSevenAffineOrderThreeSideProductInput
+public structure AffineOrderThreeSideProductInput
     (fiber : Type*) [TopologicalSpace fiber] where
   normalizationRadius : ℝ
   affineDiscRadius : ℝ
@@ -162,19 +162,19 @@ public structure SectionSevenAffineOrderThreeSideProductInput
   normalizationRadius_lt_disc : normalizationRadius < affineDiscRadius
   affineDiscRadius_le_halfPlane : affineDiscRadius ≤ 2 / 3
   overlapTrivialization :
-    ↥(A.sectionSevenOrderThreeFillingImage ∩ A.sectionSevenAffineOrderThreeCentralRegion) ≃ₜ
+    ↥(A.orderThreeFillingImage ∩ A.affineOrderThreeCentralRegion) ≃ₜ
       puncturedComplexDisc affineDiscRadius × fiber
   centralTrivialization :
-    A.sectionSevenAffineOrderThreeCentralRegion ≃ₜ
+    A.affineOrderThreeCentralRegion ≃ₜ
       puncturedComplexLeftHalfPlane (2 / 3) × fiber
   commutes : centralTrivialization ∘
-      (interToRight A.sectionSevenOrderThreeFillingImage
-        A.sectionSevenAffineOrderThreeCentralRegion).hom =
+      (interToRight A.orderThreeFillingImage
+        A.affineOrderThreeCentralRegion).hom =
     Prod.map (puncturedComplexDiscToLeftHalfPlane affineDiscRadius_le_halfPlane) id ∘
       overlapTrivialization
 
 /-- Exact product-coordinate input for the order-four overlap-to-central-region map. -/
-public structure SectionSevenAffineOrderFourSideProductInput
+public structure AffineOrderFourSideProductInput
     (fiber : Type*) [TopologicalSpace fiber] where
   normalizationRadius : ℝ
   affineDiscRadius : ℝ
@@ -182,32 +182,32 @@ public structure SectionSevenAffineOrderFourSideProductInput
   normalizationRadius_lt_disc : normalizationRadius < affineDiscRadius
   affineDiscRadius_le_halfPlane : affineDiscRadius ≤ 1 - 1 / 3
   overlapTrivialization :
-    ↥(A.sectionSevenOrderFourFillingImage ∩ A.sectionSevenAffineOrderFourCentralRegion) ≃ₜ
+    ↥(A.orderFourFillingImage ∩ A.affineOrderFourCentralRegion) ≃ₜ
       puncturedComplexDiscAtOne affineDiscRadius × fiber
   centralTrivialization :
-    A.sectionSevenAffineOrderFourCentralRegion ≃ₜ
+    A.affineOrderFourCentralRegion ≃ₜ
       puncturedComplexRightHalfPlane (1 / 3) × fiber
   commutes : centralTrivialization ∘
-      (interToRight A.sectionSevenOrderFourFillingImage
-        A.sectionSevenAffineOrderFourCentralRegion).hom =
+      (interToRight A.orderFourFillingImage
+        A.affineOrderFourCentralRegion).hom =
     Prod.map (puncturedComplexDiscAtOneToRightHalfPlane
       affineDiscRadius_le_halfPlane) id ∘ overlapTrivialization
 
-namespace SectionSevenAffineOrderThreeSideProductInput
+namespace AffineOrderThreeSideProductInput
 
 variable {fiber : Type*} [TopologicalSpace fiber]
 
 /-- Product coordinates and radial normalization prove the order-three overlap map is a
 homotopy equivalence. -/
 public theorem overlapIsHomotopyEquivalence
-    (P : A.SectionSevenAffineOrderThreeSideProductInput fiber) :
+    (P : A.AffineOrderThreeSideProductInput fiber) :
     IsHomotopyEquivalence
-      (interToRight A.sectionSevenOrderThreeFillingImage
-        A.sectionSevenAffineOrderThreeCentralRegion).hom :=
+      (interToRight A.orderThreeFillingImage
+        A.affineOrderThreeCentralRegion).hom :=
   isHomotopyEquivalence_of_product_trivializations_right_id
     (puncturedComplexDiscToLeftHalfPlane P.affineDiscRadius_le_halfPlane)
-    (interToRight A.sectionSevenOrderThreeFillingImage
-      A.sectionSevenAffineOrderThreeCentralRegion).hom
+    (interToRight A.orderThreeFillingImage
+      A.affineOrderThreeCentralRegion).hom
     P.overlapTrivialization P.centralTrivialization P.commutes
     (puncturedComplexDiscToLeftHalfPlane_isHomotopyEquivalence
       P.normalizationRadius_pos P.normalizationRadius_lt_disc
@@ -216,40 +216,40 @@ public theorem overlapIsHomotopyEquivalence
 /-- Dold's theorem upgrades the order-three overlap equivalence to the literal filling-to-side
 inclusion. -/
 public theorem homotopyEquivalenceInclusion
-    (P : A.SectionSevenAffineOrderThreeSideProductInput fiber)
-    [NormalSpace ↥(A.sectionSevenOrderThreeFillingImage ∪
-      A.sectionSevenAffineOrderThreeCentralRegion)]
-    [ParacompactSpace ↥(A.sectionSevenOrderThreeFillingImage ∪
-      A.sectionSevenAffineOrderThreeCentralRegion)] :
+    (P : A.AffineOrderThreeSideProductInput fiber)
+    [NormalSpace ↥(A.orderThreeFillingImage ∪
+      A.affineOrderThreeCentralRegion)]
+    [ParacompactSpace ↥(A.orderThreeFillingImage ∪
+      A.affineOrderThreeCentralRegion)] :
     IsHomotopyEquivalenceInclusion
-      A.sectionSevenActualAffineSplit.orderThreeFillingSubspace := by
+      A.actualAffineHeightSplit.orderThreeFillingSubspace := by
   change IsHomotopyEquivalenceInclusion
-    (Subtype.val ⁻¹' A.sectionSevenOrderThreeFillingImage :
-      Set ↥(A.sectionSevenOrderThreeFillingImage ∪
-        A.sectionSevenAffineOrderThreeCentralRegion))
+    (Subtype.val ⁻¹' A.orderThreeFillingImage :
+      Set ↥(A.orderThreeFillingImage ∪
+        A.affineOrderThreeCentralRegion))
   exact isHomotopyEquivalenceInclusion_of_leftToUnion _ _
     (leftToUnion_isHomotopyEquivalence_of_normal_paracompact _ _
-      A.sectionSevenOrderThreeFillingImage_isOpen
-      A.sectionSevenActualAffineSplit.centralHeightLowerRegion_isOpen
+      A.orderThreeFillingImage_isOpen
+      A.actualAffineHeightSplit.centralHeightLowerRegion_isOpen
       P.overlapIsHomotopyEquivalence)
 
-end SectionSevenAffineOrderThreeSideProductInput
+end AffineOrderThreeSideProductInput
 
-namespace SectionSevenAffineOrderFourSideProductInput
+namespace AffineOrderFourSideProductInput
 
 variable {fiber : Type*} [TopologicalSpace fiber]
 
 /-- Product coordinates and radial normalization prove the order-four overlap map is a homotopy
 equivalence. -/
 public theorem overlapIsHomotopyEquivalence
-    (P : A.SectionSevenAffineOrderFourSideProductInput fiber) :
+    (P : A.AffineOrderFourSideProductInput fiber) :
     IsHomotopyEquivalence
-      (interToRight A.sectionSevenOrderFourFillingImage
-        A.sectionSevenAffineOrderFourCentralRegion).hom :=
+      (interToRight A.orderFourFillingImage
+        A.affineOrderFourCentralRegion).hom :=
   isHomotopyEquivalence_of_product_trivializations_right_id
     (puncturedComplexDiscAtOneToRightHalfPlane P.affineDiscRadius_le_halfPlane)
-    (interToRight A.sectionSevenOrderFourFillingImage
-      A.sectionSevenAffineOrderFourCentralRegion).hom
+    (interToRight A.orderFourFillingImage
+      A.affineOrderFourCentralRegion).hom
     P.overlapTrivialization P.centralTrivialization P.commutes
     (puncturedComplexDiscAtOneToRightHalfPlane_isHomotopyEquivalence
       P.normalizationRadius_pos P.normalizationRadius_lt_disc
@@ -258,24 +258,24 @@ public theorem overlapIsHomotopyEquivalence
 /-- Dold's theorem upgrades the order-four overlap equivalence to the literal filling-to-side
 inclusion. -/
 public theorem homotopyEquivalenceInclusion
-    (P : A.SectionSevenAffineOrderFourSideProductInput fiber)
-    [NormalSpace ↥(A.sectionSevenOrderFourFillingImage ∪
-      A.sectionSevenAffineOrderFourCentralRegion)]
-    [ParacompactSpace ↥(A.sectionSevenOrderFourFillingImage ∪
-      A.sectionSevenAffineOrderFourCentralRegion)] :
+    (P : A.AffineOrderFourSideProductInput fiber)
+    [NormalSpace ↥(A.orderFourFillingImage ∪
+      A.affineOrderFourCentralRegion)]
+    [ParacompactSpace ↥(A.orderFourFillingImage ∪
+      A.affineOrderFourCentralRegion)] :
     IsHomotopyEquivalenceInclusion
-      A.sectionSevenActualAffineSplit.orderFourFillingSubspace := by
+      A.actualAffineHeightSplit.orderFourFillingSubspace := by
   change IsHomotopyEquivalenceInclusion
-    (Subtype.val ⁻¹' A.sectionSevenOrderFourFillingImage :
-      Set ↥(A.sectionSevenOrderFourFillingImage ∪
-        A.sectionSevenAffineOrderFourCentralRegion))
+    (Subtype.val ⁻¹' A.orderFourFillingImage :
+      Set ↥(A.orderFourFillingImage ∪
+        A.affineOrderFourCentralRegion))
   exact isHomotopyEquivalenceInclusion_of_leftToUnion _ _
     (leftToUnion_isHomotopyEquivalence_of_normal_paracompact _ _
-      A.sectionSevenOrderFourFillingImage_isOpen
-      A.sectionSevenActualAffineSplit.centralHeightUpperRegion_isOpen
+      A.orderFourFillingImage_isOpen
+      A.actualAffineHeightSplit.centralHeightUpperRegion_isOpen
       P.overlapIsHomotopyEquivalence)
 
-end SectionSevenAffineOrderFourSideProductInput
+end AffineOrderFourSideProductInput
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

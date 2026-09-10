@@ -49,11 +49,11 @@ end SphereSixComplex
 
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 
-open SectionSevenEllipticInteriorMarkedCycleData
+open EllipticInteriorMarkedCycleData
 
 variable {A : PaperAnalyticData}
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 open CuspPuncturedCollarBridge CuspRadialClutchingConstruction CuspPeriodExpansion
 
@@ -85,7 +85,7 @@ public theorem actualCuspAdditiveLift_norm_eq_fixedRadius
   rfl
 
 public theorem actualCuspCylinderHeightLoop_independent_fibre
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (y y' : let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
       G.Fiber) (t : unitInterval) :
@@ -100,7 +100,7 @@ public theorem actualCuspCylinderHeightLoop_independent_fibre
     actualCuspAdditiveLift_norm_eq_fixedRadius]
 
 public theorem actualCuspCylinderHeightLoop_uniform_middle_crossings
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (y₀ : let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
       G.Fiber) :
@@ -116,7 +116,7 @@ public theorem actualCuspCylinderHeightLoop_uniform_middle_crossings
     (actualCuspCylinderHeightLoop_independent_fibre R y y₀ t₁).trans hv₁⟩
 
 public noncomputable def actualCuspCylinderMiddleIntersectionSlice
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (t : unitInterval)
     (ht : ∀ y, actualCuspCylinderHeightLoop R y t = 1 / 2) :
     let G := A.actualCuspRadialClutchingData
@@ -142,7 +142,7 @@ public noncomputable def actualCuspCylinderMiddleIntersectionSlice
 
 /-- The index-five boundary in the natural-order adaptive mapping-torus overlap. -/
 public noncomputable def actualCuspAdaptiveIndexFiveBoundary
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     IntegralSingularHomology 1
@@ -157,10 +157,10 @@ public noncomputable def actualCuspAdaptiveIndexFiveBoundary
 
 /-- The same adaptive boundary after radial pullback and inclusion in the elliptic band. -/
 public noncomputable def actualCuspAdaptiveIndexFiveBandCarrier
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     IntegralSingularHomology 1
       (R.twoDiscCover.orderThreeSide ∩ R.twoDiscCover.orderFourSide :
-        Set A.SectionSevenEllipticInterior) := by
+        Set A.ellipticInterior) := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   let pullback :=
@@ -172,7 +172,7 @@ public noncomputable def actualCuspAdaptiveIndexFiveBandCarrier
 
 /-- The coefficient actually used by the marked degree-two Mayer--Vietoris matrix. -/
 public noncomputable def actualCuspIndexFiveBoundaryCoefficient
-    (R : A.SectionSevenAffineRadialCompletionInput) : ℤ :=
+    (R : A.AffineRadialCompletionInput) : ℤ :=
   R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment
     (R.twoDiscCover.cuspPulledBackBoundaryHom
       (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)))
@@ -180,7 +180,7 @@ public noncomputable def actualCuspIndexFiveBoundaryCoefficient
 /-- The adaptive source read evaluates the index-five boundary as the positive primitive fibre
 coordinate. -/
 public theorem actualCuspAdaptiveIndexFiveBoundary_read_eq_one
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     actualCuspFiberFourthCoordinateHom A
@@ -209,7 +209,7 @@ public theorem actualCuspAdaptiveIndexFiveBoundary_read_eq_one
 /-- Pullback naturality identifies the adaptive carrier with the literal index-five boundary
 used in the elliptic two-disc presentation. -/
 public theorem actualCuspAdaptiveIndexFiveBandCarrier_eq_pulledBackBoundary
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     actualCuspAdaptiveIndexFiveBandCarrier R =
       R.twoDiscCover.cuspPulledBackBoundaryHom
         (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) := by
@@ -243,10 +243,10 @@ public theorem actualCuspAdaptiveIndexFiveBandCarrier_eq_pulledBackBoundary
 coefficient is a unit.  This is weaker than identifying the carrier with the canonical marked
 fibre map, and it is insensitive to a simultaneous reversal of the overlap orientation. -/
 public theorem actualCuspIndexFiveBoundaryCoefficient_sq_eq_one_of_split_carrier
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (read : IntegralSingularHomology 1
         (R.twoDiscCover.orderThreeSide ∩ R.twoDiscCover.orderFourSide :
-          Set A.SectionSevenEllipticInterior) →+
+          Set A.ellipticInterior) →+
       let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
       IntegralSingularHomology 1
@@ -284,14 +284,14 @@ public theorem actualCuspIndexFiveBoundaryCoefficient_sq_eq_one_of_split_carrier
 /-- The former exact invariant-basis datum implies the weaker orientation-free endpoint, but
 the converse deliberately does not recover either the index-four value or the positive sign. -/
 public theorem actualCuspIndexFiveBoundaryCoefficient_sq_eq_one_of_invariantBasisData
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (h : CuspPulledBackMarkedInvariantBasisData R) :
     actualCuspIndexFiveBoundaryCoefficient R *
         actualCuspIndexFiveBoundaryCoefficient R = 1 := by
   rw [actualCuspIndexFiveBoundaryCoefficient, h.2]
   norm_num
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

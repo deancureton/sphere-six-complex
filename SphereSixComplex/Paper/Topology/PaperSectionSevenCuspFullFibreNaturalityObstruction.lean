@@ -16,16 +16,16 @@ open AlgebraicTopology
 
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 
-open SectionSevenEllipticTwoDiscCoverData
-open SectionSevenEllipticInteriorMarkedCycleData
+open EllipticTwoDiscCoverData
+open EllipticInteriorMarkedCycleData
 
 variable {A : PaperAnalyticData}
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 public theorem cuspPulledBackBoundary_coordinate_ne_fourthBasis
-    (D : A.SectionSevenEllipticTwoDiscCoverData)
-    (B : A.SectionSevenEllipticTwoDiscHomologyCoordinates D)
+    (D : A.EllipticTwoDiscCoverData)
+    (B : A.EllipticTwoDiscHomologyCoordinates D)
     (x : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0)) :
     B.bandOne (D.cuspPulledBackBoundaryHom x) ≠ ![0, 0, 0, 1] := by
   intro hc
@@ -39,7 +39,7 @@ public theorem cuspPulledBackBoundary_coordinate_ne_fourthBasis
     Fin.sum_univ_succ] at he
 
 public theorem not_canonicalCuspWangBoundaryNaturality
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     ¬ R.twoDiscCover.CanonicalCuspWangBoundaryNaturality := by
   intro h
   let G := A.actualCuspRadialClutchingData
@@ -49,7 +49,7 @@ public theorem not_canonicalCuspWangBoundaryNaturality
   have hm : R.twoDiscCover.CanonicalCuspFiberBandPeriodMarking R.homologyAlignment :=
     R.twoDiscCover.canonicalCuspFiberBandPeriodMarking_of_orderThree R.homologyAlignment
       (R.canonicalCuspFiberOrderThreePeriodMarking
-        (actualCuspFiberPeriodMarkingCompatibility A))
+        (cuspFiberPeriodMarkingCompatibility A))
   have hc : B.bandOne (R.twoDiscCover.cuspPulledBackBoundaryHom x) =
       ![0, 0, 0, 1] := by
     have hh := DFunLike.congr_fun h x
@@ -62,26 +62,26 @@ public theorem not_canonicalCuspWangBoundaryNaturality
   exact cuspPulledBackBoundary_coordinate_ne_fourthBasis R.twoDiscCover B x hc
 
 public theorem not_actualCuspWangFullFibreOrientedBoundaryNaturality
-    (hmark : A.sectionSevenAffineNamedStripLift.lift
-      A.sectionSevenAffineActualCuspCrossingPoint =
-        A.cuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (hmark : A.affineNamedStripLift.lift
+      A.affineActualCuspCrossingPoint =
+        A.cuspAngularRegularBasePoint A.affineActualCuspCrossingTime)
+    (R : A.AffineRadialCompletionInput) :
     ¬ ActualCuspWangFullFibreOrientedBoundaryNaturality R := by
   intro h
   exact not_canonicalCuspWangBoundaryNaturality R
     (canonicalCuspWangBoundaryNaturality_of_fullFibreOrientedBoundaryNaturality hmark R h)
 
 public theorem not_actualCuspWangFullFibreSliceInvariantResidual
-    (hmark : A.sectionSevenAffineNamedStripLift.lift
-      A.sectionSevenAffineActualCuspCrossingPoint =
-        A.cuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (hmark : A.affineNamedStripLift.lift
+      A.affineActualCuspCrossingPoint =
+        A.cuspAngularRegularBasePoint A.affineActualCuspCrossingTime)
+    (R : A.AffineRadialCompletionInput) :
     ¬ ActualCuspWangFullFibreSliceInvariantResidual R := by
   intro h
   exact not_actualCuspWangFullFibreOrientedBoundaryNaturality hmark R
     ((fullFibreOrientedBoundaryNaturality_iff_invariantResidual R).mpr h)
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 end SphereSixComplex.Geometry.PaperAnalyticData
 end
 end

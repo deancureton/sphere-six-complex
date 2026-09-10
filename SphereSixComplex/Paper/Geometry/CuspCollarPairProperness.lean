@@ -20,7 +20,7 @@ open SphereSixComplex Geometry
 open ComplexTorus AnalyticTorusFamily TorusFamily GlobalTorusFamily
 open CuspCombinatorics CuspFilling CuspLocalPhaseAction CuspPeriodExpansion
 open CuspPuncturedCollarBridge CuspAnalyticFillingCollar
-open StandardInfiniteA2ToricModel EllipticWholeFiberCompactCover
+open InfiniteA2Toric EllipticWholeFiberCompactCover
 open EllipticLinearCollarGlobalDescent
 
 noncomputable section

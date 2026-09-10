@@ -8,12 +8,12 @@ noncomputable section
 
 open Matrix Set
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
 open SphereSixComplex.Geometry.CuspCombinatorics
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 public theorem constructedA2CellTransitionMatrix_zero_two (v : ToricLattice) :
     transitionMatrix (constructedA2CellChart v 0) (constructedA2CellChart v 2) =
@@ -362,6 +362,6 @@ public theorem not_constructedA2HoneycombLaurentFiniteIdentity :
   apply constructedA2NeighborMismatch_plane 0
   simpa using hv.mpr (constructedA2NeighborMismatch_laurent 0)
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric
 
 end

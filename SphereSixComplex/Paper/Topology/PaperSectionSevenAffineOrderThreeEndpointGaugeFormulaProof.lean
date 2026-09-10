@@ -86,24 +86,24 @@ public theorem orderThreeRealPeriodProductHomeomorph_principalGauge_symm_snd
 /-- The zero vector over the explicit order-three radial strip lift lies in a fixed punctured
 collar of radius two.  The large auxiliary radius is used only to obtain a global continuous
 principal-gauge chart. -/
-public noncomputable def sectionSevenAffineOrderThreeRadialZeroCollarPoint
+public noncomputable def affineOrderThreeRadialZeroCollarPoint
     (A : PaperAnalyticData) :
-    C(sectionSevenAffineVerticalStrip,
+    C(affineVerticalStrip,
       orderThreePuncturedFamilyCollar A.periods 2) :=
   ⟨fun z ↦
       ⟨regularFamilyInclusion A.periods
           (regularFamilyZeroSection A.periods
-            (A.sectionSevenAffineOrderThreeRadialBaseLift z)), by
+            (A.affineOrderThreeRadialBaseLift z)), by
         constructor
         · rw [orderThreeFamilyRadius.eq_def,
             familyTotalSpaceBase_regularFamilyInclusion]
           change 0 < ‖(orderThreeCayleyHomeomorph
-            (A.sectionSevenAffineOrderThreeRadialBaseLift z).1 : ℂ)‖
+            (A.affineOrderThreeRadialBaseLift z).1 : ℂ)‖
           rw [norm_pos_iff]
           apply coe_ne_zero_of_ne_center
           intro hcenter
           have hbase :
-              (A.sectionSevenAffineOrderThreeRadialBaseLift z).1 =
+              (A.affineOrderThreeRadialBaseLift z).1 =
                 A.modular.modularParameter.toTriangleUniformization.zOne := by
             apply orderThreeCayleyHomeomorph.injective
             refine hcenter.trans ?_
@@ -111,10 +111,10 @@ public noncomputable def sectionSevenAffineOrderThreeRadialZeroCollarPoint
               A.modular.modularParameter.toTriangleUniformization_sourceAction).1]
             apply Subtype.ext
             exact orderThreeCayley_fixedPoint.symm
-          have hregular := (A.sectionSevenAffineOrderThreeRadialBaseLift z).2
+          have hregular := (A.affineOrderThreeRadialBaseLift z).2
           have hnot := (isRegularBasePoint_iff_not_mem_orbits
             (U := A.modular.modularParameter.toTriangleUniformization)
-            (A.sectionSevenAffineOrderThreeRadialBaseLift z).1).mp hregular
+            (A.affineOrderThreeRadialBaseLift z).1).mp hregular
           apply hnot
           left
           rw [sourceOrbitSet]
@@ -124,42 +124,42 @@ public noncomputable def sectionSevenAffineOrderThreeRadialZeroCollarPoint
         · rw [orderThreeFamilyRadius.eq_def,
             familyTotalSpaceBase_regularFamilyInclusion]
           exact (norm_orderThreeCayley_lt_one
-            (A.sectionSevenAffineOrderThreeRadialBaseLift z).1).trans (by norm_num)⟩,
+            (A.affineOrderThreeRadialBaseLift z).1).trans (by norm_num)⟩,
     (regularFamilyInclusion_continuous A.periods).comp
       ((regularFamilyZeroSection A.periods).continuous.comp
-        A.sectionSevenAffineOrderThreeRadialBaseLift.continuous) |>.subtype_mk _⟩
+        A.affineOrderThreeRadialBaseLift.continuous) |>.subtype_mk _⟩
 
 /-- The explicit continuous strip gauge: undo the principal logarithmic gauge at the zero vector
 over the radial strip lift, then read the fixed order-three real-period coordinate. -/
-public noncomputable def sectionSevenAffineOrderThreeEndpointGauge
+public noncomputable def affineOrderThreeEndpointGauge
     (A : PaperAnalyticData) :
-    C(sectionSevenAffineVerticalStrip,
+    C(affineVerticalStrip,
       AdditiveTorus A.duplicatedSectionSevenBandParameter) :=
   let _ := A.totalSpaceCharts
   let e := orderThreePuncturedCollarGaugeHomeomorph A.periods
     A.totalSpace_projection_isLocalDiffeomorph 2
   ⟨fun z ↦ (orderThreeRealPeriodProductHomeomorph A.periods
-      (e.symm (A.sectionSevenAffineOrderThreeRadialZeroCollarPoint z)).1).2,
+      (e.symm (A.affineOrderThreeRadialZeroCollarPoint z)).1).2,
     continuous_snd.comp
       ((orderThreeRealPeriodProductHomeomorph A.periods).continuous.comp
         (continuous_subtype_val.comp
           (e.symm.continuous.comp
-            A.sectionSevenAffineOrderThreeRadialZeroCollarPoint.continuous)))⟩
+            A.affineOrderThreeRadialZeroCollarPoint.continuous)))⟩
 
 /-- Pointwise, the continuous strip gauge is the negative principal real-period gauge evaluated
 at the explicit radial base lift. -/
-public theorem sectionSevenAffineOrderThreeEndpointGauge_apply
-    (A : PaperAnalyticData) (z : sectionSevenAffineVerticalStrip) :
-    A.sectionSevenAffineOrderThreeEndpointGauge z =
+public theorem affineOrderThreeEndpointGauge_apply
+    (A : PaperAnalyticData) (z : affineVerticalStrip) :
+    A.affineOrderThreeEndpointGauge z =
       -A.orderThreePrincipalRealPeriodGauge
-        (A.sectionSevenAffineOrderThreeRadialBaseLift z).1 := by
+        (A.affineOrderThreeRadialBaseLift z).1 := by
   let _ := A.totalSpaceCharts
-  rw [sectionSevenAffineOrderThreeEndpointGauge]
+  rw [affineOrderThreeEndpointGauge]
   change (orderThreeRealPeriodProductHomeomorph A.periods
       ((orderThreePrincipalGaugeEquiv A.periods).symm
         (regularFamilyInclusion A.periods
           (regularFamilyZeroSection A.periods
-            (A.sectionSevenAffineOrderThreeRadialBaseLift z))))).2 = _
+            (A.affineOrderThreeRadialBaseLift z))))).2 = _
   rw [A.orderThreeRealPeriodProductHomeomorph_principalGauge_symm_snd]
   simp only [regularFamilyZeroSection_apply, regularFamilyInclusion_mk,
     regularBundleInclusion]
@@ -168,27 +168,27 @@ public theorem sectionSevenAffineOrderThreeEndpointGauge_apply
   let p := (parameterMap A.periods
     A.modular.modularParameter.toTriangleUniformization.zOne).1
   change -A.orderThreePrincipalRealPeriodGauge
-      (A.sectionSevenAffineOrderThreeRadialBaseLift z).1 +
+      (A.affineOrderThreeRadialBaseLift z).1 +
         (Quotient.mk _ (0 : ComplexTwoSpace) : AdditiveTorus p) =
     -A.orderThreePrincipalRealPeriodGauge
-      (A.sectionSevenAffineOrderThreeRadialBaseLift z).1
+      (A.affineOrderThreeRadialBaseLift z).1
   calc
     _ = -A.orderThreePrincipalRealPeriodGauge
-          (A.sectionSevenAffineOrderThreeRadialBaseLift z).1 +
+          (A.affineOrderThreeRadialBaseLift z).1 +
         (0 : AdditiveTorus p) := congrArg _ (additiveTorus_mk_zero p)
     _ = _ := add_zero _
 
 /-- The remaining representative-level identity.  It compares the actual star-collar endpoint
 with the explicit inverse-principal-gauge radial model after passing to the finite central cover.
 All maps and the gauge in this statement have already been constructed. -/
-public structure SectionSevenAffineOrderThreeEndpointRealPeriodIdentity
+public structure AffineOrderThreeEndpointRealPeriodIdentity
     (A : PaperAnalyticData) : Prop where
-  eq_projection : ∀ (x : A.SectionSevenAffineMarkedBand)
+  eq_projection : ∀ (x : A.affineMarkedBand)
       (q : (orderThreeAffinePuncturedCarrier A.periods
         A.modular.modularParameter.toTriangleUniformization_sourceAction
         A.starSeparation.orderThree.radius).carrier),
     A.orderThreeOverlapCollarHomeomorph
-        (A.sectionSevenAffineOrderThreeDiscOverlapEndpoint x) = Quotient.mk _ q →
+        (A.affineOrderThreeDiscOverlapEndpoint x) = Quotient.mk _ q →
       RadialEllipticActionData.centralFiberCoverProjection
           (orderThreeRadialActionData A.periods)
           ((RadialEllipticActionData.centralFiberCoverSourceHomeomorph
@@ -197,24 +197,24 @@ public structure SectionSevenAffineOrderThreeEndpointRealPeriodIdentity
         RadialEllipticActionData.centralFiberCoverProjection
           (orderThreeRadialActionData A.periods)
           (A.duplicatedSectionSevenBandToOrderThreeCoverSource
-            (A.sectionSevenAffineOrderThreeEndpointGauge
-                (A.sectionSevenAffineBandStripCoordinate x) +
-              A.sectionSevenAffineBandFiberCoordinateOfLift
-                A.sectionSevenAffineNamedStripLift x))
+            (A.affineOrderThreeEndpointGauge
+                (A.affineBandStripCoordinate x) +
+              A.affineBandFiberCoordinateOfLift
+                A.affineNamedStripLift x))
 
 /-- The single representative-level identity gives exactly the order-three field of the pinned
 lift endpoint-gauge formulas, for the named strip lift and the explicit continuous gauge. -/
-public theorem sectionSevenAffineOrderThreeEndpointGaugeFormula
+public theorem affineOrderThreeEndpointGauge_formula
     (A : PaperAnalyticData)
-    (H : A.SectionSevenAffineOrderThreeEndpointRealPeriodIdentity) :
+    (H : A.AffineOrderThreeEndpointRealPeriodIdentity) :
     (orderThreeSelectedFillingHomotopyEquivCentralFiber A).toFun.comp
-        A.sectionSevenAffineOrderThreeStarEndpoint =
-      A.sectionSevenAffineOrderThreeGaugeProjectionOfLift
-        A.sectionSevenAffineNamedStripLift
-        A.sectionSevenAffineOrderThreeEndpointGauge := by
+        A.affineOrderThreeStarEndpoint =
+      A.affineOrderThreeGaugeProjectionOfLift
+        A.affineNamedStripLift
+        A.affineOrderThreeEndpointGauge := by
   apply ContinuousMap.ext
   intro x
-  let u := A.sectionSevenAffineOrderThreeDiscOverlapEndpoint x
+  let u := A.affineOrderThreeDiscOverlapEndpoint x
   change (orderThreeSelectedFillingHomotopyEquivCentralFiber A).toFun
       (A.starToFilling 1 (A.orderThreeOverlapCollarHomeomorph u)) = _
   generalize hq : A.orderThreeOverlapCollarHomeomorph u = y

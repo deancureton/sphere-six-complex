@@ -157,22 +157,22 @@ variable (A : PaperAnalyticData)
 
 /-- The central point obtained from the selected radial lift is the marked order-three overlap
 point after applying the overlap chart. -/
-public theorem orderThreeActualEllipticCentralBase_eq_overlapCentralBase :
-    A.orderThreeActualEllipticCentralBase = A.orderThreeActualOverlapCentralBase := by
-  exact congrArg A.orderThreeActualOverlapToCentral
-    A.orderThreeActualEllipticBoundaryProjection_base
+public theorem ellipticThreeCentralBase_eq_overlapCentralBase :
+    A.ellipticThreeCentralBase = A.ellipticThreeOverlapCentralBase := by
+  exact congrArg A.ellipticThreeOverlapToCentral
+    A.ellipticThreeBoundaryProjection_base
 
 /-- The cusp connector and the order-three connector induce the same diagonal conjugacy orbit
 on every ordered pair transported through the central-family homeomorphism. -/
-public theorem actualCuspCentralToCorePair_simultaneouslyConjugate_orderThree
+public theorem cuspCentralToCorePair_simultaneouslyConjugate_orderThree
     (a b : FundamentalGroup A.CentralFamily A.centralAffineBase) :
     let source := A.orderThreeCentralBaseWhisker.cast rfl
-      A.orderThreeActualEllipticCentralBase_eq_overlapCentralBase.symm
+      A.ellipticThreeCentralBase_eq_overlapCentralBase.symm
     SimultaneouslyConjugate
-      (A.actualCuspCentralToCoreEquiv a, A.actualCuspCentralToCoreEquiv b)
-      (A.orderThreeActualCentralToCoreEquiv
+      (A.cuspCentralToCoreEquiv a, A.cuspCentralToCoreEquiv b)
+      (A.ellipticThreeCentralToCoreEquiv
           (FundamentalGroup.fundamentalGroupMulEquivOfPath source a),
-        A.orderThreeActualCentralToCoreEquiv
+        A.ellipticThreeCentralToCoreEquiv
           (FundamentalGroup.fundamentalGroupMulEquivOfPath source b)) := by
   let H := A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
   let f : C(A.CentralFamily, A.actualVanKampenFourPieceCover.core) := ⟨H, H.continuous⟩
@@ -187,14 +187,14 @@ public theorem actualCuspCentralToCorePair_simultaneouslyConjugate_orderThree
       A.actualVanKampenFourPieceCover.ellipticThreeConnector_mem
       A.actualVanKampenFourPieceCover.ellipticThreePoint_mem.1).symm
   let source := A.orderThreeCentralBaseWhisker.cast rfl
-    A.orderThreeActualEllipticCentralBase_eq_overlapCentralBase.symm
+    A.ellipticThreeCentralBase_eq_overlapCentralBase.symm
   have hcusp : H A.centralAffineBase =
       A.actualVanKampenFourPieceCover.overlapToCore
-        A.actualVanKampenFourPieceCover.cusp A.actualCuspOverlapBase := by
+        A.actualVanKampenFourPieceCover.cusp A.cuspOverlapBase := by
     rw [A.centralAffineBase_eq_actualCuspCentralBase]
     exact A.centralToSectionSevenEulerPieceHomeomorph_actualCuspOverlapToCentral
-      A.actualCuspOverlapBase
-  have hthree : H A.orderThreeActualOverlapCentralBase =
+      A.cuspOverlapBase
+  have hthree : H A.ellipticThreeOverlapCentralBase =
       A.actualVanKampenFourPieceCover.overlapToCore
         A.actualVanKampenFourPieceCover.ellipticThree
         ⟨A.actualVanKampenFourPieceCover.ellipticThreePoint,
@@ -215,7 +215,7 @@ public theorem actualCuspCentralToCorePair_simultaneouslyConjugate_orderThree
     f hthree threeConnector
       (FundamentalGroup.fundamentalGroupMulEquivOfPath source b)
   change SimultaneouslyConjugate
-    (A.actualCuspCentralToCoreEquiv a, A.actualCuspCentralToCoreEquiv b) _
+    (A.cuspCentralToCoreEquiv a, A.cuspCentralToCoreEquiv b) _
   change SimultaneouslyConjugate
     (FundamentalGroup.fundamentalGroupMulEquivOfPath cuspConnector
         (FundamentalGroup.mapOfEq f hcusp a),
@@ -233,22 +233,22 @@ public theorem actualCuspCentralToCorePair_simultaneouslyConjugate_orderThree
 
 /-- The marking correction in the constructed cusp naturality changes any ordered pair only by
 one common inner conjugation after transport to the actual core. -/
-public theorem actualCuspCentralNaturalityPair_simultaneouslyConjugate_actualCusp
+public theorem cuspCentralNaturalityPair_simultaneouslyConjugate_actualCusp
     (a b : FundamentalGroup A.CentralFamily A.centralAffineBase) :
     SimultaneouslyConjugate
-      (A.actualCuspCentralNaturality.centralToCore a,
-        A.actualCuspCentralNaturality.centralToCore b)
-      (A.actualCuspCentralToCoreEquiv a, A.actualCuspCentralToCoreEquiv b) := by
-  let c : FundamentalGroup A.CentralFamily A.actualCuspCentralBase :=
-    (A.actualCuspCentralMeridian ^ A.geometricCentralCuspConjugatorExponent)⁻¹
-  let d := A.actualCuspToCentralAffineBaseEquiv c
+      (A.cuspCentralNaturality.centralToCore a,
+        A.cuspCentralNaturality.centralToCore b)
+      (A.cuspCentralToCoreEquiv a, A.cuspCentralToCoreEquiv b) := by
+  let c : FundamentalGroup A.CentralFamily A.cuspCentralBase :=
+    (A.cuspCentralMeridian ^ A.geometricCentralCuspConjugatorExponent)⁻¹
+  let d := A.cuspToCentralAffineBaseEquiv c
   change SimultaneouslyConjugate
     (A.geometricMarkedCentralToCoreEquiv a,
       A.geometricMarkedCentralToCoreEquiv b)
-    (A.actualCuspCentralToCoreEquiv a, A.actualCuspCentralToCoreEquiv b)
-  refine ⟨A.actualCuspCentralToCoreEquiv d, ?_, ?_⟩ <;>
-    simp only [geometricMarkedCentralToCoreEquiv, actualCuspToCoreEquiv,
-      actualCuspCentralMarkingCorrection, MulEquiv.trans_apply, MulAut.conj_inv_apply,
+    (A.cuspCentralToCoreEquiv a, A.cuspCentralToCoreEquiv b)
+  refine ⟨A.cuspCentralToCoreEquiv d, ?_, ?_⟩ <;>
+    simp only [geometricMarkedCentralToCoreEquiv, cuspToCoreEquiv,
+      cuspCentralMarkingCorrection, MulEquiv.trans_apply, MulAut.conj_inv_apply,
       map_mul, map_inv, MulEquiv.apply_symm_apply]
   <;> dsimp only [d, c]
   <;> simp only [map_inv, inv_inv]
@@ -256,19 +256,19 @@ public theorem actualCuspCentralNaturalityPair_simultaneouslyConjugate_actualCus
 /-- After both the cusp marking correction and the change of geometric connector, the
 constructed central-to-core marking and the order-three overlap marking give the same diagonal
 conjugacy orbit on every ordered pair. -/
-public theorem actualCuspCentralNaturalityPair_simultaneouslyConjugate_orderThree
+public theorem cuspCentralNaturalityPair_simultaneouslyConjugate_orderThree
     (a b : FundamentalGroup A.CentralFamily A.centralAffineBase) :
     let source := A.orderThreeCentralBaseWhisker.cast rfl
-      A.orderThreeActualEllipticCentralBase_eq_overlapCentralBase.symm
+      A.ellipticThreeCentralBase_eq_overlapCentralBase.symm
     SimultaneouslyConjugate
-      (A.actualCuspCentralNaturality.centralToCore a,
-        A.actualCuspCentralNaturality.centralToCore b)
-      (A.orderThreeActualCentralToCoreEquiv
+      (A.cuspCentralNaturality.centralToCore a,
+        A.cuspCentralNaturality.centralToCore b)
+      (A.ellipticThreeCentralToCoreEquiv
           (FundamentalGroup.fundamentalGroupMulEquivOfPath source a),
-        A.orderThreeActualCentralToCoreEquiv
+        A.ellipticThreeCentralToCoreEquiv
           (FundamentalGroup.fundamentalGroupMulEquivOfPath source b)) := by
-  exact (A.actualCuspCentralNaturalityPair_simultaneouslyConjugate_actualCusp a b).trans
-    (A.actualCuspCentralToCorePair_simultaneouslyConjugate_orderThree a b)
+  exact (A.cuspCentralNaturalityPair_simultaneouslyConjugate_actualCusp a b).trans
+    (A.cuspCentralToCorePair_simultaneouslyConjugate_orderThree a b)
 
 public theorem orderThreeCentralMeridianAtOverlap_eq_pathTransport :
     A.orderThreeCentralMeridianAtOverlap =
@@ -289,38 +289,38 @@ and its geometric connector, is the physical marked pair in the actual core. -/
 public theorem OrderThreeCentralMarkedLoopCompatibility.toActualCorePair
     (H : A.OrderThreeCentralMarkedLoopCompatibility) :
     let source := A.orderThreeCentralBaseWhisker.cast rfl
-      A.orderThreeActualEllipticCentralBase_eq_overlapCentralBase.symm
+      A.ellipticThreeCentralBase_eq_overlapCentralBase.symm
     SimultaneouslyConjugate
-      (A.orderThreeActualCentralToCoreEquiv
+      (A.ellipticThreeCentralToCoreEquiv
           (FundamentalGroup.fundamentalGroupMulEquivOfPath source
             A.centralAffineCorePiOneData.rhoOne),
-        A.orderThreeActualCentralToCoreEquiv
+        A.ellipticThreeCentralToCoreEquiv
           (FundamentalGroup.fundamentalGroupMulEquivOfPath source
             (Additive.toMul (A.centralAffineCorePiOneData.translation (-epsilon)))))
-      (A.orderThreeActualEllipticPhysicalMeridianToCore,
-        Additive.toMul (A.orderThreeActualEllipticPhysicalTranslationToCore (-epsilon))) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+      (A.ellipticThreePhysicalMeridianToCore,
+        Additive.toMul (A.ellipticThreePhysicalTranslationToCore (-epsilon))) := by
+  let _ := A.ellipticThreeBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius ×
         (ℝ × SphereSixComplex.Geometry.ComplexTorus.ComplexTwoSpace)) :=
-    A.orderThreeActualEllipticBoundaryCover_simplyConnected
-  let C := A.orderThreeActualCentralCoverComparison
+    A.ellipticThreeBoundaryCover_simplyConnected
+  let C := A.ellipticThreeCentralCoverComparison
   dsimp only [OrderThreeCentralMarkedLoopCompatibility] at H
-  let hbase := C.commutes A.orderThreeActualEllipticBoundaryBase
-  let hoverlap := A.orderThreeActualEllipticCentralBase_eq_overlapCentralBase
-  have hpoint : D.data.projection (C.lift A.orderThreeActualEllipticBoundaryBase) =
-      A.orderThreeActualOverlapCentralBase := by
+  let hbase := C.commutes A.ellipticThreeBoundaryBase
+  let hoverlap := A.ellipticThreeCentralBase_eq_overlapCentralBase
+  have hpoint : D.data.projection (C.lift A.ellipticThreeBoundaryBase) =
+      A.ellipticThreeOverlapCentralBase := by
     calc
       _ = C.baseMap
-          (A.orderThreeActualEllipticBoundaryProjection
-            A.orderThreeActualEllipticBoundaryBase) :=
-        (C.commutes A.orderThreeActualEllipticBoundaryBase).symm
-      _ = A.orderThreeActualEllipticCentralBase := rfl
-      _ = A.orderThreeActualOverlapCentralBase :=
-        A.orderThreeActualEllipticCentralBase_eq_overlapCentralBase
+          (A.ellipticThreeBoundaryProjection
+            A.ellipticThreeBoundaryBase) :=
+        (C.commutes A.ellipticThreeBoundaryBase).symm
+      _ = A.ellipticThreeCentralBase := rfl
+      _ = A.ellipticThreeOverlapCentralBase :=
+        A.ellipticThreeCentralBase_eq_overlapCentralBase
   let E := fundamentalGroupMulEquivOfEq hpoint
   let source := A.orderThreeCentralBaseWhisker.cast rfl hoverlap.symm
   have hcomp : hbase.trans hpoint = hoverlap := Subsingleton.elim _ _
@@ -339,15 +339,15 @@ public theorem OrderThreeCentralMarkedLoopCompatibility.toActualCorePair
   rw [A.orderThreeCentralMeridianAtOverlap_eq_pathTransport,
     A.orderThreeCentralTranslationAtOverlap_eq_pathTransport] at H
   let meridianLoop :=
-    ofDeck A.orderThreeActualEllipticBoundaryProjection_isQuotientCoveringMap
-      A.orderThreeActualEllipticBoundaryBase
-      A.orderThreeActualEllipticBoundaryDeckData.meridian
+    ofDeck A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
+      A.ellipticThreeBoundaryBase
+      A.ellipticThreeBoundaryDeckData.meridian
   let translationLoop :=
-    ofDeck A.orderThreeActualEllipticBoundaryProjection_isQuotientCoveringMap
-      A.orderThreeActualEllipticBoundaryBase
+    ofDeck A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
+      A.ellipticThreeBoundaryBase
       (Additive.toMul
-        (A.orderThreeActualEllipticBoundaryDeckData.translation (-epsilon)))
-  let boundaryEq := A.orderThreeActualEllipticCanonicalChosenCover_boundaryBase_eq
+        (A.ellipticThreeBoundaryDeckData.translation (-epsilon)))
+  let boundaryEq := A.ellipticThreeCanonicalChosenCover_boundaryBase_eq
   have htransportRightMeridian :
       E (FundamentalGroup.mapOfEq C.baseMap hbase meridianLoop) =
         FundamentalGroup.mapOfEq C.baseMap hoverlap meridianLoop := by
@@ -357,12 +357,12 @@ public theorem OrderThreeCentralMarkedLoopCompatibility.toActualCorePair
     exact ht
   have hrightMeridian :
       E (FundamentalGroup.mapOfEq C.baseMap hbase meridianLoop) =
-        FundamentalGroup.mapOfEq A.orderThreeActualOverlapToCentral rfl
+        FundamentalGroup.mapOfEq A.ellipticThreeOverlapToCentral rfl
           (fundamentalGroupElementOfBaseEq boundaryEq meridianLoop) := by
     rw [htransportRightMeridian]
     symm
     exact mapOfEq_fundamentalGroupElementOfBaseEq boundaryEq
-      A.orderThreeActualOverlapToCentral hoverlap rfl meridianLoop
+      A.ellipticThreeOverlapToCentral hoverlap rfl meridianLoop
   have htransportRightTranslation :
       E (FundamentalGroup.mapOfEq C.baseMap hbase translationLoop) =
         FundamentalGroup.mapOfEq C.baseMap hoverlap translationLoop := by
@@ -372,31 +372,31 @@ public theorem OrderThreeCentralMarkedLoopCompatibility.toActualCorePair
     exact ht
   have hrightTranslation :
       E (FundamentalGroup.mapOfEq C.baseMap hbase translationLoop) =
-        FundamentalGroup.mapOfEq A.orderThreeActualOverlapToCentral rfl
+        FundamentalGroup.mapOfEq A.ellipticThreeOverlapToCentral rfl
           (fundamentalGroupElementOfBaseEq boundaryEq translationLoop) := by
     rw [htransportRightTranslation]
     symm
     exact mapOfEq_fundamentalGroupElementOfBaseEq boundaryEq
-      A.orderThreeActualOverlapToCentral hoverlap rfl translationLoop
+      A.ellipticThreeOverlapToCentral hoverlap rfl translationLoop
   have hcoreMeridian :
-      A.orderThreeActualCentralToCoreEquiv
+      A.ellipticThreeCentralToCoreEquiv
           (E (FundamentalGroup.mapOfEq C.baseMap hbase meridianLoop)) =
-        A.orderThreeActualEllipticPhysicalMeridianToCore := by
-    rw [hrightMeridian, ← A.actualEllipticThreeOverlapToCore_eq_central]
+        A.ellipticThreePhysicalMeridianToCore := by
+    rw [hrightMeridian, ← A.ellipticThreeOverlapToCore_eq_central]
     rfl
   have hcoreTranslation :
-      A.orderThreeActualCentralToCoreEquiv
+      A.ellipticThreeCentralToCoreEquiv
           (E (FundamentalGroup.mapOfEq C.baseMap hbase translationLoop)) =
         Additive.toMul
-          (A.orderThreeActualEllipticPhysicalTranslationToCore (-epsilon)) := by
-    rw [hrightTranslation, ← A.actualEllipticThreeOverlapToCore_eq_central]
+          (A.ellipticThreePhysicalTranslationToCore (-epsilon)) := by
+    rw [hrightTranslation, ← A.ellipticThreeOverlapToCore_eq_central]
     rfl
-  have h := H.map (E.trans A.orderThreeActualCentralToCoreEquiv).toMonoidHom
+  have h := H.map (E.trans A.ellipticThreeCentralToCoreEquiv).toMonoidHom
   convert h using 1
   · exact Prod.ext
-      (congrArg A.orderThreeActualCentralToCoreEquiv
+      (congrArg A.ellipticThreeCentralToCoreEquiv
         (hleftAny A.centralAffineCorePiOneData.rhoOne)).symm
-      (congrArg A.orderThreeActualCentralToCoreEquiv
+      (congrArg A.ellipticThreeCentralToCoreEquiv
         (hleftAny (Additive.toMul
           (A.centralAffineCorePiOneData.translation (-epsilon))))).symm
   · exact Prod.ext hcoreMeridian.symm hcoreTranslation.symm
@@ -405,9 +405,9 @@ public theorem OrderThreeCentralMarkedLoopCompatibility.toActualCorePair
 constructed cusp naturality, with no coherence assumption on the arbitrary central whisker. -/
 public theorem OrderThreeCentralMarkedLoopCompatibility.toActualCommonGaugeComparison
     (H : A.OrderThreeCentralMarkedLoopCompatibility) :
-    A.OrderThreeCommonGaugeComparison A.actualCuspCentralNaturality := by
+    A.OrderThreeCommonGaugeComparison A.cuspCentralNaturality := by
   have hcentral :=
-    A.actualCuspCentralNaturalityPair_simultaneouslyConjugate_orderThree
+    A.cuspCentralNaturalityPair_simultaneouslyConjugate_orderThree
       A.centralAffineCorePiOneData.rhoOne
       (Additive.toMul (A.centralAffineCorePiOneData.translation (-epsilon)))
   have hphysical := H.toActualCorePair A

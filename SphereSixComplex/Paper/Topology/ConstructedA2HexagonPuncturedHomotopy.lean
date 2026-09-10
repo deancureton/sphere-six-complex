@@ -24,7 +24,7 @@ public def planeCirclePuncturedPoint (r : ℝ) (hr : r ≠ 0) : ContinuousMap �
   ⟨fun t ↦ ⟨planeCirclePoint r t, planeCirclePoint_ne_zero r hr t⟩,
     (planeCirclePoint_continuous r).subtype_mk _⟩
 
-namespace Geometry.StandardInfiniteA2ToricModel.Established
+namespace Geometry.InfiniteA2Toric
 
 public theorem constructedA2HexagonBoundary_ne_zero (z : ConstructedA2HexagonBoundary) :
     z.1 ≠ 0 := by
@@ -67,5 +67,5 @@ public theorem constructedA2HexagonPuncturedQuarterPath_homotopic (i : Fin 4) :
     hx hy (constructedA2HexagonPlaneQuarterPath_mem_quadrant i)
     (planeCircleQuarterPath_mem_halfspace (2 / 3) (by norm_num) i)
 
-end Geometry.StandardInfiniteA2ToricModel.Established
+end Geometry.InfiniteA2Toric
 end SphereSixComplex

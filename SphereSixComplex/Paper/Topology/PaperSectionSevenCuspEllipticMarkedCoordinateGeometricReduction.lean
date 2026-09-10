@@ -19,8 +19,8 @@ noncomputable section
 
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 
-open SectionSevenEllipticInteriorMarkedCycleData
-open SectionSevenEllipticTwoDiscCoverData
+open EllipticInteriorMarkedCycleData
+open EllipticTwoDiscCoverData
 
 variable {A : PaperAnalyticData}
 
@@ -29,7 +29,7 @@ namespace EstablishedSectionSevenCuspTopology
 /-- The canonical pulled-back boundary bridge constructed from the two invariant-basis
 evaluations, with no established input. -/
 public theorem pulledBackBoundaryBasisBridgeOfInvariantBasisData
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (h : CuspPulledBackMarkedInvariantBasisData R) :
     R.twoDiscCover.SectionSevenCuspPulledBackBoundaryBasisBridge R.homologyAlignment :=
   SectionSevenCuspMarkedBoundaryComparison.pulledBackBoundaryBasisBridge
@@ -42,7 +42,7 @@ public theorem pulledBackBoundaryBasisBridgeOfInvariantBasisData
 the mapping-torus meridian projection and explicit prism cycles, together with identification
 of the first invariant-suspension prism with the positively oriented normalized fibre class. -/
 public structure ActualCuspEllipticMarkedGeometricResidue
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (h : CuspPulledBackMarkedInvariantBasisData R) where
   prismGeometry :
     R.twoDiscCover.CuspEllipticMappingTorusPrismGeometricData R.homologyAlignment
@@ -53,7 +53,7 @@ public structure ActualCuspEllipticMarkedGeometricResidue
 /-- The invariant-basis boundary calculation and the exact meridian/prism geometry imply all
 eight marked cusp-to-elliptic coordinate evaluations. -/
 public theorem actualCuspFiberEllipticMarkedCoordinateCalculation_of_geometricResidue
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (h : CuspPulledBackMarkedInvariantBasisData R)
     (C : ActualCuspEllipticMarkedGeometricResidue R h) :
     ActualCuspFiberEllipticMarkedCoordinateCalculation R

@@ -73,8 +73,8 @@ public theorem subsingleton_homology_stdTorus_of_lt (n k : ℕ) (h : n < k) :
 /-- Homological finiteness through degree six for the standard four-torus. -/
 public theorem stdTorusFour_integralHomologyFiniteSix :
     IntegralHomologyFiniteSix (StdTorus 4) where
-  finiteHomology := finite_homology_stdTorus 4
-  homologyAboveDimension k hk :=
+  finite_homology := finite_homology_stdTorus 4
+  subsingleton_homology_of_six_lt k hk :=
     subsingleton_homology_stdTorus_of_lt 4 k (by omega)
 
 /-- The fifth integral homology of the standard four-torus vanishes. -/
@@ -138,8 +138,8 @@ public theorem subsingleton_homology_of_four_lt (M : FourTorusHomologicalModel X
 /-- The package expected by consumers that only need finite homology through dimension six. -/
 public theorem integralHomologyFiniteSix (M : FourTorusHomologicalModel X) :
     IntegralHomologyFiniteSix X where
-  finiteHomology := M.finiteHomology
-  homologyAboveDimension k hk := M.subsingleton_homology_of_four_lt k (by omega)
+  finite_homology := M.finiteHomology
+  subsingleton_homology_of_six_lt k hk := M.subsingleton_homology_of_four_lt k (by omega)
 
 public theorem subsingleton_homology_five (M : FourTorusHomologicalModel X) :
     Subsingleton (IntegralSingularHomology 5 X) :=

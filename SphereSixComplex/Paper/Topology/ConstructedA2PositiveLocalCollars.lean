@@ -13,7 +13,7 @@ noncomputable section
 open Function Set Topology
 open scoped NNReal
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+namespace SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 public def carrierPositiveHalfSpaceChart (a : ChartIndex) :
     (Fin 2 → ℝ) × ℝ≥0 → carrierPositivePart :=
@@ -75,8 +75,8 @@ public theorem constructedPositiveCentralFiber_locallyCollared (r : ℝ) :
 
 public theorem constructedLocalPositivePart_metrizable (r : ℝ) :
     TopologicalSpace.MetrizableSpace (constructedLocalPositivePart r) := by
-  let _ := Established.constructedLocalPositivePart_t2Space r
-  let _ := Established.constructedLocalPositivePart_locallyCompactSpace r
+  let _ := constructedLocalPositivePart_t2Space r
+  let _ := constructedLocalPositivePart_locallyCompactSpace r
   infer_instance
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+end SphereSixComplex.Geometry.InfiniteA2Toric.Construction

@@ -10,8 +10,8 @@ noncomputable section
 open CategoryTheory AlgebraicTopology MonoidalCategory
 namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 open SphereSixComplex SphereSixComplex.Periods
-open CuspFilling CuspPeriodExpansion StandardInfiniteA2ToricModel
-open StandardInfiniteA2ToricModel.Construction StandardInfiniteA2ToricModel.Established
+open CuspFilling CuspPeriodExpansion InfiniteA2Toric
+open InfiniteA2Toric.Construction InfiniteA2Toric
 open SphereSixComplex.StandardCircleHomologyLiftDegree
 open SphereSixComplex.Topology.CircleProductIdentityMappingTorus
 open SphereSixComplex.StandardTorusHomology
@@ -20,7 +20,7 @@ variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData 
 
 public theorem constructedA2CircleSweepParameter_period (i : Fin 2) (t : unitInterval) :
     constructedA2CircleSweepParameter i t = cuspPeriodCompactCircle i ((t : ℝ) : UnitAddCircle) := by
-  have h : constructedCircleBallCell ![2 * (t : ℝ) - 1] =
+  have h : CircleCell.ballParam ![2 * (t : ℝ) - 1] =
       AddCircle.toCircle ((t : ℝ) : UnitAddCircle) := by
     rw [AddCircle.toCircle_apply_mk]
     change Circle.exp (Real.pi * ((2 * (t : ℝ) - 1) + 1)) = _

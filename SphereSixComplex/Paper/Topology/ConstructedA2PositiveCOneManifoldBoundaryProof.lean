@@ -16,9 +16,9 @@ noncomputable section
 
 open Function Set TopologicalSpace Topology WithLp
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 /-- The open quadrant target of the exponential log-position and height coordinates. -/
 public def constructedA2PositiveQuadrantTarget (r : ℝ) : Opens (EuclideanQuadrant 3) where
@@ -151,7 +151,7 @@ public theorem constructedA2PositiveQuadrantTarget_boundary (r : ℝ) :
   · intro hzero
     exact ⟨u.1.2, fun hpos ↦ (ne_of_gt (hpos 2)) hzero⟩
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric
 
 end
 

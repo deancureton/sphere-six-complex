@@ -25,163 +25,163 @@ open SphereSixComplex.Topology.PaperVanKampenFourPieceCover
 
 variable (A : PaperAnalyticData)
 
-public theorem orderThreeActualEllipticCanonicalChosenCover_fillingBase_eq :
-    A.orderThreeActualEllipticCanonicalChosenCover.fillingBase =
+public theorem ellipticThreeCanonicalChosenCover_fillingBase_eq :
+    A.ellipticThreeCanonicalChosenCover.fillingBase =
       ⟨A.actualVanKampenFourPieceCover.ellipticThreePoint,
         A.actualVanKampenFourPieceCover.ellipticThreePoint_mem.2⟩ :=
-  A.orderThreeActualEllipticFillingMarkedDeckData.toExtensionAtBase.toFillingExtension
+  A.ellipticThreeFillingMarkedDeckData.toExtensionAtBase.toFillingExtension
     |>.toChosenCover_fillingBase_eq
 
-public theorem orderFourActualEllipticCanonicalChosenCover_fillingBase_eq :
-    A.orderFourActualEllipticCanonicalChosenCover.fillingBase =
+public theorem ellipticFourCanonicalChosenCover_fillingBase_eq :
+    A.ellipticFourCanonicalChosenCover.fillingBase =
       ⟨A.actualVanKampenFourPieceCover.ellipticFourPoint,
         A.actualVanKampenFourPieceCover.ellipticFourPoint_mem.2⟩ :=
-  A.orderFourActualEllipticFillingExtensionAtBase.toFillingExtension
+  A.ellipticFourFillingExtensionAtBase.toFillingExtension
     |>.toChosenCover_fillingBase_eq
 
-public theorem orderThreeActualEllipticCanonicalChosenCover_map_eq :
+public theorem ellipticThreeCanonicalChosenCover_map_eq :
     fundamentalGroupHomOfBaseEq
-        A.orderThreeActualEllipticCanonicalChosenCover_boundaryBase_eq
-        A.orderThreeActualEllipticCanonicalChosenCover_fillingBase_eq
-        A.orderThreeActualEllipticCanonicalChosenCover.fundamentalGroupMap =
+        A.ellipticThreeCanonicalChosenCover_boundaryBase_eq
+        A.ellipticThreeCanonicalChosenCover_fillingBase_eq
+        A.ellipticThreeCanonicalChosenCover.fundamentalGroupMap =
       A.actualVanKampenFourPieceCover.ellipticThreeOverlapFundamentalGroupMap :=
   fundamentalGroupHomOfBaseEq_map_transport
     A.actualVanKampenFourPieceCover.ellipticThreeOverlapToPiece
-    A.orderThreeActualEllipticCanonicalChosenCover_boundaryBase_eq
-    A.orderThreeActualEllipticCanonicalChosenCover_fillingBase_eq
+    A.ellipticThreeCanonicalChosenCover_boundaryBase_eq
+    A.ellipticThreeCanonicalChosenCover_fillingBase_eq
 
-public theorem orderFourActualEllipticCanonicalChosenCover_map_eq :
+public theorem ellipticFourCanonicalChosenCover_map_eq :
     fundamentalGroupHomOfBaseEq
-        A.orderFourActualEllipticCanonicalChosenCover_boundaryBase_eq
-        A.orderFourActualEllipticCanonicalChosenCover_fillingBase_eq
-        A.orderFourActualEllipticCanonicalChosenCover.fundamentalGroupMap =
+        A.ellipticFourCanonicalChosenCover_boundaryBase_eq
+        A.ellipticFourCanonicalChosenCover_fillingBase_eq
+        A.ellipticFourCanonicalChosenCover.fundamentalGroupMap =
       A.actualVanKampenFourPieceCover.ellipticFourOverlapFundamentalGroupMap :=
   fundamentalGroupHomOfBaseEq_map_transport
     A.actualVanKampenFourPieceCover.ellipticFourOverlapToPiece
-    A.orderFourActualEllipticCanonicalChosenCover_boundaryBase_eq
-    A.orderFourActualEllipticCanonicalChosenCover_fillingBase_eq
+    A.ellipticFourCanonicalChosenCover_boundaryBase_eq
+    A.ellipticFourCanonicalChosenCover_fillingBase_eq
 
 /-- The sign-correct order-three filling relator in the actual overlap fundamental group. -/
-public noncomputable def orderThreeActualEllipticCanonicalRelator :
+public noncomputable def ellipticThreeCanonicalRelator :
     FundamentalGroup
         (A.actualVanKampenFourPieceCover.core ∩
           A.actualVanKampenFourPieceCover.ellipticThree : Set A.VanKampenSpace)
         ⟨A.actualVanKampenFourPieceCover.ellipticThreePoint,
           A.actualVanKampenFourPieceCover.ellipticThreePoint_mem⟩ :=
   (fundamentalGroupElementOfBaseEq
-      A.orderThreeActualEllipticCanonicalChosenCover_boundaryBase_eq
-      A.orderThreeActualEllipticCanonicalChosenCover.meridian) ^ 3 *
+      A.ellipticThreeCanonicalChosenCover_boundaryBase_eq
+      A.ellipticThreeCanonicalChosenCover.meridian) ^ 3 *
     (Additive.toMul
       ((fundamentalGroupAddHomOfBaseEq
-        A.orderThreeActualEllipticCanonicalChosenCover_boundaryBase_eq
-        A.orderThreeActualEllipticCanonicalChosenCover.translation) (-epsilon)))⁻¹
+        A.ellipticThreeCanonicalChosenCover_boundaryBase_eq
+        A.ellipticThreeCanonicalChosenCover.translation) (-epsilon)))⁻¹
 
 /-- The sign-correct order-four filling relator in the actual overlap fundamental group. -/
-public noncomputable def orderFourActualEllipticCanonicalRelator :
+public noncomputable def ellipticFourCanonicalRelator :
     FundamentalGroup
         (A.actualVanKampenFourPieceCover.core ∩
           A.actualVanKampenFourPieceCover.ellipticFour : Set A.VanKampenSpace)
         ⟨A.actualVanKampenFourPieceCover.ellipticFourPoint,
           A.actualVanKampenFourPieceCover.ellipticFourPoint_mem⟩ :=
   (fundamentalGroupElementOfBaseEq
-      A.orderFourActualEllipticCanonicalChosenCover_boundaryBase_eq
-      A.orderFourActualEllipticCanonicalChosenCover.meridian) ^ 4 *
+      A.ellipticFourCanonicalChosenCover_boundaryBase_eq
+      A.ellipticFourCanonicalChosenCover.meridian) ^ 4 *
     (Additive.toMul
       ((fundamentalGroupAddHomOfBaseEq
-        A.orderFourActualEllipticCanonicalChosenCover_boundaryBase_eq
-        A.orderFourActualEllipticCanonicalChosenCover.translation) epsilon'))⁻¹
+        A.ellipticFourCanonicalChosenCover_boundaryBase_eq
+        A.ellipticFourCanonicalChosenCover.translation) epsilon'))⁻¹
 
-public theorem orderThreeActualEllipticCanonicalRelator_killed :
+public theorem ellipticThreeCanonicalRelator_killed :
     A.actualVanKampenFourPieceCover.ellipticThreeOverlapFundamentalGroupMap
-        A.orderThreeActualEllipticCanonicalRelator = 1 := by
-  rw [← A.orderThreeActualEllipticCanonicalChosenCover_map_eq]
+        A.ellipticThreeCanonicalRelator = 1 := by
+  rw [← A.ellipticThreeCanonicalChosenCover_map_eq]
   exact chosenCyclicRelation_killed
-    A.orderThreeActualEllipticCanonicalChosenCover
-    A.orderThreeActualEllipticCanonicalChosenCover_boundaryBase_eq
-    A.orderThreeActualEllipticCanonicalChosenCover_fillingBase_eq rfl
+    A.ellipticThreeCanonicalChosenCover
+    A.ellipticThreeCanonicalChosenCover_boundaryBase_eq
+    A.ellipticThreeCanonicalChosenCover_fillingBase_eq rfl
 
-public theorem orderFourActualEllipticCanonicalRelator_killed :
+public theorem ellipticFourCanonicalRelator_killed :
     A.actualVanKampenFourPieceCover.ellipticFourOverlapFundamentalGroupMap
-        A.orderFourActualEllipticCanonicalRelator = 1 := by
-  rw [← A.orderFourActualEllipticCanonicalChosenCover_map_eq]
+        A.ellipticFourCanonicalRelator = 1 := by
+  rw [← A.ellipticFourCanonicalChosenCover_map_eq]
   exact chosenCyclicRelation_killed
-    A.orderFourActualEllipticCanonicalChosenCover
-    A.orderFourActualEllipticCanonicalChosenCover_boundaryBase_eq
-    A.orderFourActualEllipticCanonicalChosenCover_fillingBase_eq rfl
+    A.ellipticFourCanonicalChosenCover
+    A.ellipticFourCanonicalChosenCover_boundaryBase_eq
+    A.ellipticFourCanonicalChosenCover_fillingBase_eq rfl
 
-public theorem orderThreeActualEllipticOverlapFundamentalGroupMap_surjective :
+public theorem ellipticThreeOverlapFundamentalGroupMap_surjective :
     Function.Surjective
       A.actualVanKampenFourPieceCover.ellipticThreeOverlapFundamentalGroupMap := by
-  rw [← A.orderThreeActualEllipticCanonicalChosenCover_map_eq]
+  rw [← A.ellipticThreeCanonicalChosenCover_map_eq]
   exact fundamentalGroupHomOfBaseEq_surjective
-    A.orderThreeActualEllipticCanonicalChosenCover_boundaryBase_eq
-    A.orderThreeActualEllipticCanonicalChosenCover_fillingBase_eq
-    A.orderThreeActualEllipticCanonicalChosenCover.fundamentalGroupMap
-    A.orderThreeActualEllipticCanonicalChosenCover.fundamentalGroupMap_surjective
+    A.ellipticThreeCanonicalChosenCover_boundaryBase_eq
+    A.ellipticThreeCanonicalChosenCover_fillingBase_eq
+    A.ellipticThreeCanonicalChosenCover.fundamentalGroupMap
+    A.ellipticThreeCanonicalChosenCover.fundamentalGroupMap_surjective
 
-public theorem orderFourActualEllipticOverlapFundamentalGroupMap_surjective :
+public theorem ellipticFourOverlapFundamentalGroupMap_surjective :
     Function.Surjective
       A.actualVanKampenFourPieceCover.ellipticFourOverlapFundamentalGroupMap := by
-  rw [← A.orderFourActualEllipticCanonicalChosenCover_map_eq]
+  rw [← A.ellipticFourCanonicalChosenCover_map_eq]
   exact fundamentalGroupHomOfBaseEq_surjective
-    A.orderFourActualEllipticCanonicalChosenCover_boundaryBase_eq
-    A.orderFourActualEllipticCanonicalChosenCover_fillingBase_eq
-    A.orderFourActualEllipticCanonicalChosenCover.fundamentalGroupMap
-    A.orderFourActualEllipticCanonicalChosenCover.fundamentalGroupMap_surjective
+    A.ellipticFourCanonicalChosenCover_boundaryBase_eq
+    A.ellipticFourCanonicalChosenCover_fillingBase_eq
+    A.ellipticFourCanonicalChosenCover.fundamentalGroupMap
+    A.ellipticFourCanonicalChosenCover.fundamentalGroupMap_surjective
 
 /-- The only remaining connector-invariant elliptic input: each expected central relator is in
 the normal closure of the corresponding actual transported local relator. -/
-public structure ActualEllipticRelatorNormalClosureResidual
-    (N : A.ActualCuspCentralNaturality) : Prop where
+public structure EllipticRelatorMembership
+    (N : A.CuspCentralNaturality) : Prop where
   orderThree :
     (A.coreDataOf N).rhoOne ^ 3 *
         (Additive.toMul ((A.coreDataOf N).translation (-epsilon)))⁻¹ ∈
       Subgroup.normalClosure
-        {A.actualEllipticThreeOverlapToCore
-          A.orderThreeActualEllipticCanonicalRelator}
+        {A.ellipticThreeOverlapToCore
+          A.ellipticThreeCanonicalRelator}
   orderFour :
     (A.coreDataOf N).rhoTwo ^ 4 *
         (Additive.toMul ((A.coreDataOf N).translation epsilon'))⁻¹ ∈
       Subgroup.normalClosure
-        {A.actualEllipticFourOverlapToCore
-          A.orderFourActualEllipticCanonicalRelator}
+        {A.ellipticFourOverlapToCore
+          A.ellipticFourCanonicalRelator}
 
-namespace ActualEllipticRelatorNormalClosureResidual
+namespace EllipticRelatorMembership
 
-variable {A : PaperAnalyticData} {N : A.ActualCuspCentralNaturality}
+variable {A : PaperAnalyticData} {N : A.CuspCentralNaturality}
 
 /-- Assemble the connector-invariant affine filling bridge for the actual four-piece star. -/
 public noncomputable def bridge
-    (R : ActualEllipticRelatorNormalClosureResidual A N) :
+    (R : EllipticRelatorMembership A N) :
     AffineTorusStarRelatorNormalClosureBridge
       A.actualVanKampenFourPieceCover (A.coreDataOf N)
       3 4 (-epsilon) epsilon' 0 paperToricSubgroup where
-  cuspSurjective := A.actualCuspOverlapFundamentalGroupMap_surjective
-  oneSurjective := A.orderThreeActualEllipticOverlapFundamentalGroupMap_surjective
-  twoSurjective := A.orderFourActualEllipticOverlapFundamentalGroupMap_surjective
-  cuspToCore := A.actualCuspOverlapToCore
-  oneToCore := A.actualEllipticThreeOverlapToCore
-  twoToCore := A.actualEllipticFourOverlapToCore
-  cuspSquare := A.actualCuspAffineBridge_cuspSquare
-  oneSquare := A.actualEllipticThreeAffineBridge_square
-  twoSquare := A.actualEllipticFourAffineBridge_square
-  cuspTranslation := A.actualCuspAffineBridgeTranslation
-  cuspMeridian := A.actualCuspAffineBridgeMeridian
+  cuspSurjective := A.cuspOverlapFundamentalGroupMap_surjective
+  oneSurjective := A.ellipticThreeOverlapFundamentalGroupMap_surjective
+  twoSurjective := A.ellipticFourOverlapFundamentalGroupMap_surjective
+  cuspToCore := A.cuspOverlapToCore
+  oneToCore := A.ellipticThreeOverlapToCore
+  twoToCore := A.ellipticFourOverlapToCore
+  cuspSquare := A.cuspAffineBridge_cuspSquare
+  oneSquare := A.ellipticThreeAffineBridge_square
+  twoSquare := A.ellipticFourAffineBridge_square
+  cuspTranslation := A.cuspAffineBridgeTranslation
+  cuspMeridian := A.cuspAffineBridgeMeridian
   cuspTranslation_core := A.cuspBridge_translation_core N
   cuspMeridian_core := A.cuspBridge_meridian_core N
-  cuspMeridian_killed := A.actualCuspAffineBridge_meridian_killed
-  cuspToric_killed := A.actualCuspAffineBridge_toric_killed
-  oneRelator := A.orderThreeActualEllipticCanonicalRelator
-  oneRelator_killed := A.orderThreeActualEllipticCanonicalRelator_killed
+  cuspMeridian_killed := A.cuspAffineBridge_meridian_killed
+  cuspToric_killed := A.cuspAffineBridge_toric_killed
+  oneRelator := A.ellipticThreeCanonicalRelator
+  oneRelator_killed := A.ellipticThreeCanonicalRelator_killed
   oneExpected_mem_normalClosure := R.orderThree
-  twoRelator := A.orderFourActualEllipticCanonicalRelator
-  twoRelator_killed := A.orderFourActualEllipticCanonicalRelator_killed
+  twoRelator := A.ellipticFourCanonicalRelator
+  twoRelator_killed := A.ellipticFourCanonicalRelator_killed
   twoExpected_mem_normalClosure := R.orderFour
 
 /-- The two connector-invariant elliptic relator comparisons imply the paper's complete van
 Kampen presentation for the actual analytic star. -/
 public theorem hasVanKampenData
-    (R : ActualEllipticRelatorNormalClosureResidual A N) :
+    (R : EllipticRelatorMembership A N) :
     HasVanKampenData A.VanKampenSpace 0 1 (-1) := by
   let _ := A.vanKampenCharts
   have _ : StronglyLocallyContractibleSpace A.VanKampenSpace := A.vanKampen_locallyNice
@@ -194,7 +194,7 @@ public theorem hasVanKampenData
       A.actualVanKampenFourPieceCover.coreFundamentalGroupMap hcore)
     relations
 
-end ActualEllipticRelatorNormalClosureResidual
+end EllipticRelatorMembership
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

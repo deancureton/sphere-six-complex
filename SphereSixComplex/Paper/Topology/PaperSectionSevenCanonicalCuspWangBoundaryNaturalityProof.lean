@@ -21,12 +21,12 @@ namespace SphereSixComplex.Geometry.PaperAnalyticData
 
 variable {A : PaperAnalyticData}
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 /-- The two invariant-basis comparisons remaining after the four zero-boundary cases have been
 proved from the Wang presentation and the explicit pulled-back cover. -/
 public def CanonicalCuspWangBoundaryInvariantResidual
-    (R : A.SectionSevenAffineRadialCompletionInput) : Prop :=
+    (R : A.AffineRadialCompletionInput) : Prop :=
   R.twoDiscCover.canonicalCuspFiberToBandHomologyOne
       (actualCuspWangBoundaryHom A
         (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) =
@@ -40,7 +40,7 @@ public def CanonicalCuspWangBoundaryInvariantResidual
 
 /-- The two invariant-basis comparisons imply the complete canonical Wang boundary square. -/
 public theorem canonicalCuspWangBoundaryNaturality_of_invariantResidual
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (h : CanonicalCuspWangBoundaryInvariantResidual R) :
     R.twoDiscCover.CanonicalCuspWangBoundaryNaturality := by
   rw [CanonicalCuspWangBoundaryNaturality]
@@ -69,6 +69,6 @@ public theorem canonicalCuspWangBoundaryNaturality_of_invariantResidual
     · exact h.1
     · exact h.2
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end SphereSixComplex.Geometry.PaperAnalyticData

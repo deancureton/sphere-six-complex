@@ -20,7 +20,7 @@ open scoped ContinuousMap
 
 namespace SphereSixComplex
 
-open Geometry.PaperAnalyticData.SectionSevenEllipticTwoDiscCoverData
+open Geometry.PaperAnalyticData.EllipticTwoDiscCoverData
 
 /-- A degree-one homology coordinate realized by a continuous projection to a common base. -/
 public structure HomologyOneCoordinateProjection
@@ -65,11 +65,11 @@ end HomologyOneCoordinateProjection
 namespace Geometry.PaperAnalyticData
 
 open CircleMappingTorusHomologyBases
-open SectionSevenEllipticInteriorMarkedCycleData
+open EllipticInteriorMarkedCycleData
 
-variable {A : PaperAnalyticData} (D : A.SectionSevenEllipticTwoDiscCoverData)
+variable {A : PaperAnalyticData} (D : A.EllipticTwoDiscCoverData)
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 /-- A common base projection realizing both the geometric Wang meridian and the marked
 elliptic-interior degree-one coordinate.  The last field is the sole geometric square: the
@@ -91,7 +91,7 @@ public structure CuspEllipticMappingTorusMeridianProjectionComparison
       baseCoordinate
   targetProjection :
     let _ := baseTopology
-    HomologyOneCoordinateProjection A.SectionSevenEllipticInterior Base
+    HomologyOneCoordinateProjection A.ellipticInterior Base
       (D.ellipticInteriorDegreeOneCoordinateHom N) baseCoordinate
   projectionHomotopy :
     let G := A.actualCuspRadialClutchingData
@@ -102,7 +102,7 @@ public structure CuspEllipticMappingTorusMeridianProjectionComparison
 
 namespace CuspEllipticMappingTorusMeridianProjectionComparison
 
-variable {D : A.SectionSevenEllipticTwoDiscCoverData}
+variable {D : A.EllipticTwoDiscCoverData}
   {N : A.EllipticBandHomologyAlignment D}
 
 /-- The projection square computes the first residual cusp coordinate. -/
@@ -132,7 +132,7 @@ public structure CuspEllipticMappingTorusMeridianGeometricComparison
   referenceMap :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
-    C(CircleMappingTorus G.clutching, A.SectionSevenEllipticInterior)
+    C(CircleMappingTorus G.clutching, A.ellipticInterior)
   modelHomotopy :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
@@ -147,7 +147,7 @@ public structure CuspEllipticMappingTorusMeridianGeometricComparison
 
 namespace CuspEllipticMappingTorusMeridianGeometricComparison
 
-variable {D : A.SectionSevenEllipticTwoDiscCoverData}
+variable {D : A.EllipticTwoDiscCoverData}
   {N : A.EllipticBandHomologyAlignment D}
   {G₀ : D.SectionSevenCuspPulledBackBoundaryBasisBridge N}
 
@@ -163,7 +163,7 @@ public theorem coordinateComparison
 
 end CuspEllipticMappingTorusMeridianGeometricComparison
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end Geometry.PaperAnalyticData
 

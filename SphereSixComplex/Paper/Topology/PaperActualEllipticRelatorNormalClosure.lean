@@ -8,7 +8,7 @@ public import SphereSixComplex.Paper.Topology.PaperEllipticSynchronizedPeriodTra
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 
 public theorem establishedActualEllipticRelatorNormalClosureResidual (A : PaperAnalyticData) :
-    Nonempty (A.ActualEllipticRelatorNormalClosureResidual A.actualCuspCentralNaturality) :=
-  A.actualEllipticRelatorNormalClosureResidual_proved
+    Nonempty (A.EllipticRelatorMembership A.cuspCentralNaturality) :=
+  A.ellipticRelatorMembership_proved
 
 end SphereSixComplex.Geometry.PaperAnalyticData

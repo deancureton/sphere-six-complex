@@ -20,12 +20,12 @@ namespace SphereSixComplex.Geometry.PaperAnalyticData
 
 variable {A : PaperAnalyticData}
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 /-- Reading the swapped adaptive boundary and then transporting from the actual cusp collar is
 exactly the cusp Wang boundary. -/
 public theorem actualCuspAdaptiveOverlapRead_boundary_eq_wang
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     ((actualCuspAdaptiveCoverDegreeOneSelfMap R).actualSourceRead.comp
@@ -41,7 +41,7 @@ public theorem actualCuspAdaptiveOverlapRead_boundary_eq_wang
 /-- Returning the pulled-back cover from its marked order to the order dictated by the adaptive
 phase contributes exactly one minus sign before the low-overlap read. -/
 public theorem actualCuspAdaptiveOverlapRead_marked_boundary_eq_neg_wang
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     let swap : IntegralSingularHomology 1
@@ -90,7 +90,7 @@ public theorem actualCuspAdaptiveOverlapRead_marked_boundary_eq_neg_wang
   exact congrArg Neg.neg (DFunLike.congr_fun
     (actualCuspAdaptiveCover_actual_boundary_eq_wang R) x)
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

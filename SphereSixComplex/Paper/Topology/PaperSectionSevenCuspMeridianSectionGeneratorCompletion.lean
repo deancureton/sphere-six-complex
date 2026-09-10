@@ -71,11 +71,11 @@ namespace Geometry.PaperAnalyticData
 
 open CuspPuncturedCollarBridge
 open CuspPuncturedCollarBridge.CuspFiberSpecializationNormalization
-open SectionSevenEllipticInteriorMarkedCycleData
-open SectionSevenEllipticTwoDiscCoverData
+open EllipticInteriorMarkedCycleData
+open EllipticTwoDiscCoverData
 
 /-- The positive generator of the actual cusp degree-one Wang invariant lattice. -/
-public noncomputable def actualCuspPositiveDegreeOneInvariantGenerator
+public noncomputable def cuspPositiveDegreeOneInvariantGenerator
     (A : PaperAnalyticData) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
@@ -93,15 +93,15 @@ public noncomputable def cuspSelectedPositiveMeridianClass
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   exact G.geometricWangSections.degreeOne.lift
-    (actualCuspPositiveDegreeOneInvariantGenerator A)
+    (cuspPositiveDegreeOneInvariantGenerator A)
 
 /-- The chosen positive invariant generator has invariant coordinate one. -/
-public theorem actualCuspPositiveDegreeOneInvariantGenerator_coordinate
+public theorem cuspPositiveDegreeOneInvariantGenerator_coordinate
     (A : PaperAnalyticData) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     degreeOneWangInvariantEquivInteger G
-      (actualCuspPositiveDegreeOneInvariantGenerator A) = 1 := by
+      (cuspPositiveDegreeOneInvariantGenerator A) = 1 := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   exact (degreeOneWangInvariantEquivInteger G).apply_symm_apply 1
@@ -133,15 +133,15 @@ public theorem cuspSelectedPositiveMeridianClass_baseCircle_winding_one
   change degreeOneWangInvariantEquivInteger G
       ((circleMappingTorusHOnePresentation G.clutching).totalToInvariants
         (G.geometricWangSections.degreeOne.lift
-          (actualCuspPositiveDegreeOneInvariantGenerator A))) = 1
+          (cuspPositiveDegreeOneInvariantGenerator A))) = 1
   have hright := DFunLike.congr_fun
     G.geometricWangSections.degreeOne.right_inv
-    (actualCuspPositiveDegreeOneInvariantGenerator A)
+    (cuspPositiveDegreeOneInvariantGenerator A)
   change (circleMappingTorusHOnePresentation G.clutching).totalToInvariants
       (G.geometricWangSections.degreeOne.lift
-        (actualCuspPositiveDegreeOneInvariantGenerator A)) =
-    actualCuspPositiveDegreeOneInvariantGenerator A at hright
-  rw [hright, actualCuspPositiveDegreeOneInvariantGenerator_coordinate]
+        (cuspPositiveDegreeOneInvariantGenerator A)) =
+    cuspPositiveDegreeOneInvariantGenerator A at hright
+  rw [hright, cuspPositiveDegreeOneInvariantGenerator_coordinate]
 
 /-- The selected positive section class is exactly the third raw degree-one basis class. -/
 public theorem cuspSelectedPositiveMeridianClass_raw_coordinate
@@ -163,17 +163,17 @@ public theorem cuspSelectedPositiveMeridianClass_raw_coordinate
         (P.linearEquivOfSection
           G.geometricWangSections.degreeOne
           (G.geometricWangSections.degreeOne.lift
-            (actualCuspPositiveDegreeOneInvariantGenerator A)))) = _
+            (cuspPositiveDegreeOneInvariantGenerator A)))) = _
   rw [P.linearEquivOfSection_lift]
   change finTwoProdIntLinearEquiv
       (honeCoinv G.monodromyCoordinates 0,
         honeInv G.monodromyCoordinates
-          (actualCuspPositiveDegreeOneInvariantGenerator A)) = _
+          (cuspPositiveDegreeOneInvariantGenerator A)) = _
   rw [map_zero]
   change finTwoProdIntLinearEquiv
       (0, degreeOneWangInvariantEquivInteger G
-        (actualCuspPositiveDegreeOneInvariantGenerator A)) = _
-  rw [actualCuspPositiveDegreeOneInvariantGenerator_coordinate]
+        (cuspPositiveDegreeOneInvariantGenerator A)) = _
+  rw [cuspPositiveDegreeOneInvariantGenerator_coordinate]
   funext i
   fin_cases i <;> rfl
 
@@ -260,14 +260,14 @@ public theorem cuspSelectedPositiveMeridianClass_eq_neg_explicit_of_normalizatio
     change degreeOneWangInvariantEquivInteger G
         (P.totalToInvariants
           (G.geometricWangSections.degreeOne.lift
-            (actualCuspPositiveDegreeOneInvariantGenerator A))) = 1
+            (cuspPositiveDegreeOneInvariantGenerator A))) = 1
     have hright := DFunLike.congr_fun G.geometricWangSections.degreeOne.right_inv
-      (actualCuspPositiveDegreeOneInvariantGenerator A)
+      (cuspPositiveDegreeOneInvariantGenerator A)
     change P.totalToInvariants
         (G.geometricWangSections.degreeOne.lift
-          (actualCuspPositiveDegreeOneInvariantGenerator A)) =
-      actualCuspPositiveDegreeOneInvariantGenerator A at hright
-    rw [hright, actualCuspPositiveDegreeOneInvariantGenerator_coordinate]
+          (cuspPositiveDegreeOneInvariantGenerator A)) =
+      cuspPositiveDegreeOneInvariantGenerator A at hright
+    rw [hright, cuspPositiveDegreeOneInvariantGenerator_coordinate]
   · exact hselected
   · rw [map_neg,
       rawDegreeOneTotalSpecialization_cuspMappingTorusMeridianHomologyClass, neg_zero]
@@ -416,15 +416,15 @@ public theorem cuspMeridianSourceCircleMap_homology_coordinate_of_selectedPositi
   intro i
   have hvalues := congrFun
     (cuspMeridianSourceCircleMap_rawBasisValues_of_selectedPositive_winding_one A hmeridian) i
-  change actualCuspEllipticDegreeOneRawCoordinate
+  change cuspEllipticDegreeOneRawCoordinate
       (G.geometricWangSections.circleMappingTorusHOneAddEquiv
         (G.geometricWangSections.circleMappingTorusHOneAddEquiv.symm
           (Pi.single i 1))) = _
   rw [G.geometricWangSections.circleMappingTorusHOneAddEquiv.apply_symm_apply]
   rw [AddMonoidHom.comp_apply]
   calc
-    actualCuspEllipticDegreeOneRawCoordinate (Pi.single i 1) = ![12, 0, 1] i := by
-      fin_cases i <;> simp [actualCuspEllipticDegreeOneRawCoordinate]
+    cuspEllipticDegreeOneRawCoordinate (Pi.single i 1) = ![12, 0, 1] i := by
+      fin_cases i <;> simp [cuspEllipticDegreeOneRawCoordinate]
     _ = StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
         (integralSingularHomologyMap 1 (A.cuspMeridianSourceCircleMap)
           (G.geometricWangSections.circleMappingTorusHOneAddEquiv.symm
@@ -448,14 +448,14 @@ public theorem cuspMeridianSourceCircleMap_homology_coordinate_iff_selectedPosit
   constructor
   · intro h
     have hvalue := DFunLike.congr_fun h (cuspSelectedPositiveMeridianClass A)
-    change actualCuspEllipticDegreeOneRawCoordinate
+    change cuspEllipticDegreeOneRawCoordinate
         (G.geometricWangSections.circleMappingTorusHOneAddEquiv
           (cuspSelectedPositiveMeridianClass A)) =
       StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
         (integralSingularHomologyMap 1 (A.cuspMeridianSourceCircleMap)
           (cuspSelectedPositiveMeridianClass A)) at hvalue
     rw [cuspSelectedPositiveMeridianClass_raw_coordinate] at hvalue
-    simpa [actualCuspEllipticDegreeOneRawCoordinate] using hvalue.symm
+    simpa [cuspEllipticDegreeOneRawCoordinate] using hvalue.symm
   · exact cuspMeridianSourceCircleMap_homology_coordinate_of_selectedPositive_winding_one A
 
 end Geometry.PaperAnalyticData

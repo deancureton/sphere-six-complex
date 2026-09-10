@@ -6,8 +6,8 @@ public import SphereSixComplex.Paper.Topology.ConstructedA2CentralCompactAction
 noncomputable section
 open scoped ContinuousMap
 namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
-open SphereSixComplex.Periods StandardInfiniteA2ToricModel
-open StandardInfiniteA2ToricModel.Construction StandardInfiniteA2ToricModel.Established
+open SphereSixComplex.Periods InfiniteA2Toric
+open InfiniteA2Toric.Construction InfiniteA2Toric
 open CuspCombinatorics CuspPeriodExpansion CuspLocalPhaseAction CuspFilling
 variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}

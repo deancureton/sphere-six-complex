@@ -82,12 +82,12 @@ end DegreeTwoSingularCycle
 namespace Geometry.PaperAnalyticData
 
 open CircleMappingTorusHomologyBases
-open SectionSevenEllipticTwoDiscHomologyCoordinates
-open SectionSevenEllipticInteriorMarkedCycleData
+open EllipticTwoDiscHomologyCoordinates
+open EllipticInteriorMarkedCycleData
 
-variable {A : PaperAnalyticData} (D : A.SectionSevenEllipticTwoDiscCoverData)
+variable {A : PaperAnalyticData} (D : A.EllipticTwoDiscCoverData)
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 /-- The second normalized elliptic coordinate of a cusp class is its raw Wang boundary
 coordinate. -/
@@ -101,7 +101,7 @@ public theorem normalizedEllipticInteriorHomologyTwoEquiv_cuspToEllipticInterior
       A.cuspRawHomologyTwoEquiv x 5 := by
   rw [D.cuspToEllipticInteriorMap_homology]
   let e := integralSingularHomologyEquiv 2
-    (topologicalSubsetHomeomorphOfEqUniv (TopCat.of A.SectionSevenEllipticInterior)
+    (topologicalSubsetHomeomorphOfEqUniv (TopCat.of A.ellipticInterior)
       (D.orderThreeSide ∪ D.orderFourSide) D.sides_cover)
   change (N.actualHomologyCoordinates.normalizedUnionHomologyTwoEquiv
       (D.cuspNormalizedDegreeTwoSplitting N G))
@@ -120,12 +120,12 @@ public structure CuspEllipticInvariantSuspensionPrismComparison
     (referenceMap :
       let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
-      C(CircleMappingTorus G.clutching, A.SectionSevenEllipticInterior)) where
+      C(CircleMappingTorus G.clutching, A.ellipticInterior)) where
   sourceBasisCycle :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     Fin 6 → DegreeTwoSingularCycle (CircleMappingTorus G.clutching)
-  targetImageCycle : Fin 6 → DegreeTwoSingularCycle A.SectionSevenEllipticInterior
+  targetImageCycle : Fin 6 → DegreeTwoSingularCycle A.ellipticInterior
   sourceBasisClass :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
@@ -139,17 +139,17 @@ public structure CuspEllipticInvariantSuspensionPrismComparison
   targetCoordinate : ∀ i : Fin 6,
     D.ellipticInteriorDegreeTwoFiberCoordinateHom N G₀
         (targetImageCycle i).homologyClass =
-      actualCuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1)
+      cuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1)
 
 namespace CuspEllipticInvariantSuspensionPrismComparison
 
-variable {D : A.SectionSevenEllipticTwoDiscCoverData}
+variable {D : A.EllipticTwoDiscCoverData}
   {N : A.EllipticBandHomologyAlignment D}
   {G₀ : D.SectionSevenCuspPulledBackBoundaryBasisBridge N}
   {referenceMap :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
-    C(CircleMappingTorus G.clutching, A.SectionSevenEllipticInterior)}
+    C(CircleMappingTorus G.clutching, A.ellipticInterior)}
 
 /-- The reference map sends every explicit source-basis cycle to the homology class represented
 by its target chain image. -/
@@ -185,7 +185,7 @@ public theorem firstInvariantSuspensionPrism_coordinate
         (G.geometricWangSections.circleMappingTorusHTwoAddEquiv.symm
           (Pi.single (4 : Fin 6) 1))) = 1
   rw [P.referenceMap_on_basis 4, P.targetCoordinate 4]
-  simp [actualCuspEllipticDegreeTwoFiberRawCoordinate]
+  simp [cuspEllipticDegreeTwoFiberRawCoordinate]
 
 /-- The explicit prism-chain comparison computes the remaining degree-two coordinate map. -/
 public theorem degreeTwoFiber
@@ -202,7 +202,7 @@ public theorem degreeTwoFiber
     G.geometricWangSections.circleMappingTorusHTwoAddEquiv
   intro i
   rw [AddMonoidHom.comp_apply, P.referenceMap_on_basis i]
-  change _ = actualCuspEllipticDegreeTwoFiberRawCoordinate
+  change _ = cuspEllipticDegreeTwoFiberRawCoordinate
     (G.geometricWangSections.circleMappingTorusHTwoAddEquiv
       (G.geometricWangSections.circleMappingTorusHTwoAddEquiv.symm (Pi.single i 1)))
   rw [AddEquiv.apply_symm_apply]
@@ -220,7 +220,7 @@ public structure CuspEllipticMappingTorusPrismGeometricData
   referenceMap :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
-    C(CircleMappingTorus G.clutching, A.SectionSevenEllipticInterior)
+    C(CircleMappingTorus G.clutching, A.ellipticInterior)
   modelHomotopy :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
@@ -229,7 +229,7 @@ public structure CuspEllipticMappingTorusPrismGeometricData
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     Fin 6 → DegreeTwoSingularCycle (CircleMappingTorus G.clutching)
-  targetImageCycle : Fin 6 → DegreeTwoSingularCycle A.SectionSevenEllipticInterior
+  targetImageCycle : Fin 6 → DegreeTwoSingularCycle A.ellipticInterior
   sourceBasisClass :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
@@ -243,7 +243,7 @@ public structure CuspEllipticMappingTorusPrismGeometricData
   targetComplementCoefficient : Fin 6 → ℤ
   targetComplementSweptClass : ∀ i : Fin 6, i ≠ 4 →
     (targetImageCycle i).homologyClass =
-      actualCuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1) •
+      cuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1) •
           (N.actualHomologyCoordinates.normalizedEllipticInteriorHomologyTwoEquiv
             (D.cuspNormalizedDegreeTwoSplitting N G₀)).symm (Pi.single (0 : Fin 2) 1) +
         targetComplementCoefficient i •
@@ -274,7 +274,7 @@ public structure NormalizedIndexFourPrismCoefficientCalculation
 
 namespace CuspEllipticMappingTorusPrismGeometricData
 
-variable {D : A.SectionSevenEllipticTwoDiscCoverData}
+variable {D : A.EllipticTwoDiscCoverData}
   {N : A.EllipticBandHomologyAlignment D}
   {G₀ : D.SectionSevenCuspPulledBackBoundaryBasisBridge N}
 
@@ -366,11 +366,11 @@ public noncomputable def suspensionPrismComparison
     let E := N.actualHomologyCoordinates.normalizedEllipticInteriorHomologyTwoEquiv
       (D.cuspNormalizedDegreeTwoSplitting N G₀)
     change E (C.targetImageCycle i).homologyClass 0 =
-      actualCuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1)
+      cuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1)
     by_cases hi : i = 4
     · subst i
       rw [I.indexFourClass, E.apply_symm_apply]
-      simp [actualCuspEllipticDegreeTwoFiberRawCoordinate]
+      simp [cuspEllipticDegreeTwoFiberRawCoordinate]
     · rw [C.targetComplementSweptClass i hi, map_add, map_zsmul, map_zsmul,
         E.apply_symm_apply, E.apply_symm_apply]
       simp
@@ -398,7 +398,7 @@ public structure CuspEllipticMappingTorusPrismGeometricComparison
   referenceMap :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
-    C(CircleMappingTorus G.clutching, A.SectionSevenEllipticInterior)
+    C(CircleMappingTorus G.clutching, A.ellipticInterior)
   modelHomotopy :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
@@ -408,7 +408,7 @@ public structure CuspEllipticMappingTorusPrismGeometricComparison
 
 namespace CuspEllipticMappingTorusPrismGeometricComparison
 
-variable {D : A.SectionSevenEllipticTwoDiscCoverData}
+variable {D : A.EllipticTwoDiscCoverData}
   {N : A.EllipticBandHomologyAlignment D}
   {G₀ : D.SectionSevenCuspPulledBackBoundaryBasisBridge N}
 
@@ -424,7 +424,7 @@ public theorem coordinateComparison
 
 end CuspEllipticMappingTorusPrismGeometricComparison
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end Geometry.PaperAnalyticData
 

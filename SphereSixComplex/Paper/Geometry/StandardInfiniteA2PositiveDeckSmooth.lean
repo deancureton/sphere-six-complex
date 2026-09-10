@@ -9,7 +9,7 @@ noncomputable section
 open Function Set Topology WithLp
 open scoped ContDiff Manifold
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+namespace SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 public def positiveQuadrantScale (c : Fin 3 → ℝ) (hc : ∀ i, 0 ≤ c i)
     (u : EuclideanQuadrant 3) : EuclideanQuadrant 3 :=
@@ -102,4 +102,4 @@ public theorem positiveTorusShear_contMDiff (g : DenseTorus)
   conv_lhs => rw [← he]
   exact positiveTorusShear_chart g hg lambda a _
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+end SphereSixComplex.Geometry.InfiniteA2Toric.Construction

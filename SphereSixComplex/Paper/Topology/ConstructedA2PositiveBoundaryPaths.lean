@@ -6,13 +6,13 @@ public import SphereSixComplex.Prerequisites.Topology.HexagonBoundaryPathHomolog
 @[expose] public section
 noncomputable section
 open Function Set Topology Matrix
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Periods
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
@@ -246,4 +246,4 @@ public theorem constructedA2ActualHexagonSidePath_opposite_homotopic
     · intro t
       exact constructedA2CorrectedPlaneCellOrbit_side_mem_edge W 5 (unitInterval.symm t)
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric

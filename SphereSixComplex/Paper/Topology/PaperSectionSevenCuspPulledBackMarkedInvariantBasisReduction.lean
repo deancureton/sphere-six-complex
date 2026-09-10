@@ -24,12 +24,12 @@ open AlgebraicTopology
 
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 
-open SectionSevenEllipticTwoDiscCoverData
-open SectionSevenEllipticInteriorMarkedCycleData
+open EllipticTwoDiscCoverData
+open EllipticInteriorMarkedCycleData
 
 variable {A : PaperAnalyticData}
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 /-- First homology of the actual cusp mapping-torus fibre. -/
 public abbrev ActualCuspFiberHomologyOne (A : PaperAnalyticData) :=
@@ -39,7 +39,7 @@ public abbrev ActualCuspFiberHomologyOne (A : PaperAnalyticData) :=
 
 /-- First homology of the overlap of the two pulled-back cusp-cover pieces. -/
 public abbrev CuspCoverIntersectionHomologyOne
-    {A : PaperAnalyticData} (R : A.SectionSevenAffineRadialCompletionInput) :=
+    {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput) :=
   IntegralSingularHomology 1
     ((TopologicalSpace.Opens.toTopCat
       (TopCat.of (A.openEmbeddingStarData.collarSource 0))).obj
@@ -52,7 +52,7 @@ transport of `low_*(a) + high_*(-a)`.  Thus it carries the whole antidiagonal ov
 the image of either slice alone.  The two equations assert compatibility with the connecting map
 and with the marked fourth coordinate. -/
 public structure ActualCuspWangSignedOverlapComparison
-    (R : A.SectionSevenAffineRadialCompletionInput) where
+    (R : A.AffineRadialCompletionInput) where
   signedOverlap : ActualCuspFiberHomologyOne A →+ CuspCoverIntersectionHomologyOne R
   boundary :
     signedOverlap.comp (actualCuspWangBoundaryHom A) =
@@ -66,7 +66,7 @@ namespace ActualCuspWangSignedOverlapComparison
 
 /-- A signed low/high overlap comparison gives the marked connecting-morphism square. -/
 public theorem connectingNaturality
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (C : ActualCuspWangSignedOverlapComparison R) :
     R.twoDiscCover.CuspMarkedConnectingNaturality R.homologyAlignment := by
   constructor
@@ -77,7 +77,7 @@ public theorem connectingNaturality
 
 /-- A signed low/high overlap comparison implies the two marked invariant-basis evaluations. -/
 public theorem invariantBasisData
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (C : ActualCuspWangSignedOverlapComparison R) :
     CuspPulledBackMarkedInvariantBasisData R := by
   have hSquare := (C.connectingNaturality R).square
@@ -92,7 +92,7 @@ public theorem invariantBasisData
 
 end ActualCuspWangSignedOverlapComparison
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

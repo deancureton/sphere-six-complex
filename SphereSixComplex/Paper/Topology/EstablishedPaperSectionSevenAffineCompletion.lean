@@ -23,14 +23,14 @@ namespace EstablishedSectionSevenAffineTopology
 /-- Equivariant radial extension across the two actual affine filling collars, including its
 compatibility with the canonical maps on their common band. -/
 public theorem radialCompletionInput (A : PaperAnalyticData) :
-    Nonempty A.SectionSevenAffineRadialCompletionInput :=
+    Nonempty A.AffineRadialCompletionInput :=
   EstablishedSectionSevenAffineRegularLiftTopology.radialCompletionInput_nonempty A
 
 end EstablishedSectionSevenAffineTopology
 
 /-- The coherent radial completion selected for the paper's actual affine height split. -/
-public theorem sectionSevenAffineRadialCompletionInput (A : PaperAnalyticData) :
-    A.SectionSevenAffineRadialCompletionInput :=
+public theorem affineRadialCompletionInput (A : PaperAnalyticData) :
+    A.AffineRadialCompletionInput :=
   Classical.choice (EstablishedSectionSevenAffineTopology.radialCompletionInput A)
 
 end SphereSixComplex.Geometry.PaperAnalyticData

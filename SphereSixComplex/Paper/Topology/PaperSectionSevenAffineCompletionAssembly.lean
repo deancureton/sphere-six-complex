@@ -24,31 +24,31 @@ open scoped ContinuousMap ContDiff Manifold
 
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 
-open SphereSixComplex.Geometry.EstablishedBiholomorphicStarGluing
+open BiholomorphicStarGluing
 open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
 open SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
 
 variable (A : PaperAnalyticData)
 
 /-- The space obtained by gluing the four analytic pieces is locally compact. -/
-public theorem sectionSevenMayerVietorisSpace_locallyCompact :
+public theorem starUnion_locallyCompact :
     LocallyCompactSpace A.openEmbeddingStarData.SectionSevenMayerVietorisSpace := by
   let S := A.openEmbeddingStarData.toFourPieceStarGluingData
   let B := A.biholomorphicFourPieceStarData
   let _ := S.nonemptyPieceOfCollars A.fourPieceStarGluingData_nonemptyCentralCollar
   let _ := B.complexCharts
   let _ : ∀ i, IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞ (S.glueData.U i) :=
-    B.pieceManifold A.fourPieceStarGluingData_nonemptyCentralCollar
+    B.isManifold_piece A.fourPieceStarGluingData_nonemptyCentralCollar
   let _ : ChartedSpace ComplexModel (GluedSpace S.glueData) := gluedChartedSpace S.glueData
   let _ : IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞ (GluedSpace S.glueData) :=
     isManifold_gluedChartedSpace S.glueData
-      (establishedFourPieceBiholomorphicGluingAtlasCompatible S
+      (BiholomorphicFourPieceStarData.gluing_atlas_compatible S
         A.fourPieceStarGluingData_nonemptyCentralCollar B)
   exact Manifold.locallyCompact_of_finiteDimensional
     (modelWithCornersSelf ℂ ComplexModel)
 
 /-- The concrete four-piece gluing is second countable. -/
-public theorem sectionSevenMayerVietorisSpace_secondCountable :
+public theorem starUnion_secondCountable :
     SecondCountableTopology A.openEmbeddingStarData.SectionSevenMayerVietorisSpace := by
   let D := A.openEmbeddingStarData.toFourPieceStarGluingData.glueData
   let _ : Countable D.J := by
@@ -58,173 +58,173 @@ public theorem sectionSevenMayerVietorisSpace_secondCountable :
   exact secondCountableTopology_gluedSpace D
 
 /-- The elliptic interior is locally compact. -/
-public theorem sectionSevenEllipticInterior_locallyCompact :
-    LocallyCompactSpace A.SectionSevenEllipticInterior := by
+public theorem ellipticInterior_locallyCompact :
+    LocallyCompactSpace A.ellipticInterior := by
   let _ : LocallyCompactSpace
       A.openEmbeddingStarData.SectionSevenMayerVietorisSpace :=
-    A.sectionSevenMayerVietorisSpace_locallyCompact
-  exact A.SectionSevenEllipticCover.isOpen_stage (2 : Fin 4) |>.locallyCompactSpace
+    A.starUnion_locallyCompact
+  exact A.starCover.isOpen_stage (2 : Fin 4) |>.locallyCompactSpace
 
 /-- The elliptic interior is paracompact. -/
-public theorem sectionSevenEllipticInterior_paracompact :
-    ParacompactSpace A.SectionSevenEllipticInterior := by
-  let _ : LocallyCompactSpace A.SectionSevenEllipticInterior :=
-    A.sectionSevenEllipticInterior_locallyCompact
+public theorem ellipticInterior_paracompact :
+    ParacompactSpace A.ellipticInterior := by
+  let _ : LocallyCompactSpace A.ellipticInterior :=
+    A.ellipticInterior_locallyCompact
   let _ : T2Space A.openEmbeddingStarData.SectionSevenMayerVietorisSpace := A.starGluedT2
   let _ : SecondCountableTopology
       A.openEmbeddingStarData.SectionSevenMayerVietorisSpace :=
-    A.sectionSevenMayerVietorisSpace_secondCountable
+    A.starUnion_secondCountable
   infer_instance
 
 /-- Every open subspace of the elliptic interior is paracompact. -/
-public theorem sectionSevenOpenSubspace_paracompact
-    (U : Set A.SectionSevenEllipticInterior) (hU : IsOpen U) :
+public theorem ellipticInteriorOpenSubspace_paracompact
+    (U : Set A.ellipticInterior) (hU : IsOpen U) :
     ParacompactSpace U := by
-  let _ : LocallyCompactSpace A.SectionSevenEllipticInterior :=
-    A.sectionSevenEllipticInterior_locallyCompact
+  let _ : LocallyCompactSpace A.ellipticInterior :=
+    A.ellipticInterior_locallyCompact
   let _ : LocallyCompactSpace U := hU.locallyCompactSpace
   let _ : SecondCountableTopology
       A.openEmbeddingStarData.SectionSevenMayerVietorisSpace :=
-    A.sectionSevenMayerVietorisSpace_secondCountable
+    A.starUnion_secondCountable
   let _ : T2Space A.openEmbeddingStarData.SectionSevenMayerVietorisSpace := A.starGluedT2
   infer_instance
 
 /-- Every open subspace of the elliptic interior is normal. -/
-public theorem sectionSevenOpenSubspace_normal
-    (U : Set A.SectionSevenEllipticInterior) (hU : IsOpen U) :
+public theorem ellipticInteriorOpenSubspace_normal
+    (U : Set A.ellipticInterior) (hU : IsOpen U) :
     NormalSpace U := by
-  let _ : ParacompactSpace U := A.sectionSevenOpenSubspace_paracompact U hU
+  let _ : ParacompactSpace U := A.ellipticInteriorOpenSubspace_paracompact U hU
   let _ : T2Space A.openEmbeddingStarData.SectionSevenMayerVietorisSpace := A.starGluedT2
   infer_instance
 
 variable {A : PaperAnalyticData}
 
-namespace SectionSevenAffineOrderThreeSideProductInput
+namespace AffineOrderThreeSideProductInput
 
 variable {fiber : Type*} [TopologicalSpace fiber]
 
 /-- The order-three product coordinates construct the required side contraction with all
 separation-space instances discharged from the analytic star. -/
 public theorem actualHomotopyEquivalenceInclusion
-    (P : A.SectionSevenAffineOrderThreeSideProductInput fiber) :
+    (P : A.AffineOrderThreeSideProductInput fiber) :
     IsHomotopyEquivalenceInclusion
-      A.sectionSevenActualAffineSplit.orderThreeFillingSubspace := by
-  have hopen : IsOpen (A.sectionSevenOrderThreeFillingImage ∪
-      A.sectionSevenAffineOrderThreeCentralRegion) :=
-    A.sectionSevenOrderThreeFillingImage_isOpen.union
-      A.sectionSevenActualAffineSplit.centralHeightLowerRegion_isOpen
-  let _ : ParacompactSpace ↑(A.sectionSevenOrderThreeFillingImage ∪
-      A.sectionSevenAffineOrderThreeCentralRegion) :=
-    A.sectionSevenOpenSubspace_paracompact _ hopen
-  let _ : NormalSpace ↑(A.sectionSevenOrderThreeFillingImage ∪
-      A.sectionSevenAffineOrderThreeCentralRegion) :=
-    A.sectionSevenOpenSubspace_normal _ hopen
+      A.actualAffineHeightSplit.orderThreeFillingSubspace := by
+  have hopen : IsOpen (A.orderThreeFillingImage ∪
+      A.affineOrderThreeCentralRegion) :=
+    A.orderThreeFillingImage_isOpen.union
+      A.actualAffineHeightSplit.centralHeightLowerRegion_isOpen
+  let _ : ParacompactSpace ↑(A.orderThreeFillingImage ∪
+      A.affineOrderThreeCentralRegion) :=
+    A.ellipticInteriorOpenSubspace_paracompact _ hopen
+  let _ : NormalSpace ↑(A.orderThreeFillingImage ∪
+      A.affineOrderThreeCentralRegion) :=
+    A.ellipticInteriorOpenSubspace_normal _ hopen
   exact P.homotopyEquivalenceInclusion
 
-end SectionSevenAffineOrderThreeSideProductInput
+end AffineOrderThreeSideProductInput
 
-namespace SectionSevenAffineOrderFourSideProductInput
+namespace AffineOrderFourSideProductInput
 
 variable {fiber : Type*} [TopologicalSpace fiber]
 
 /-- The order-four product coordinates construct the required side contraction with all
 separation-space instances discharged from the analytic star. -/
 public theorem actualHomotopyEquivalenceInclusion
-    (P : A.SectionSevenAffineOrderFourSideProductInput fiber) :
+    (P : A.AffineOrderFourSideProductInput fiber) :
     IsHomotopyEquivalenceInclusion
-      A.sectionSevenActualAffineSplit.orderFourFillingSubspace := by
-  have hopen : IsOpen (A.sectionSevenOrderFourFillingImage ∪
-      A.sectionSevenAffineOrderFourCentralRegion) :=
-    A.sectionSevenOrderFourFillingImage_isOpen.union
-      A.sectionSevenActualAffineSplit.centralHeightUpperRegion_isOpen
-  let _ : ParacompactSpace ↑(A.sectionSevenOrderFourFillingImage ∪
-      A.sectionSevenAffineOrderFourCentralRegion) :=
-    A.sectionSevenOpenSubspace_paracompact _ hopen
-  let _ : NormalSpace ↑(A.sectionSevenOrderFourFillingImage ∪
-      A.sectionSevenAffineOrderFourCentralRegion) :=
-    A.sectionSevenOpenSubspace_normal _ hopen
+      A.actualAffineHeightSplit.orderFourFillingSubspace := by
+  have hopen : IsOpen (A.orderFourFillingImage ∪
+      A.affineOrderFourCentralRegion) :=
+    A.orderFourFillingImage_isOpen.union
+      A.actualAffineHeightSplit.centralHeightUpperRegion_isOpen
+  let _ : ParacompactSpace ↑(A.orderFourFillingImage ∪
+      A.affineOrderFourCentralRegion) :=
+    A.ellipticInteriorOpenSubspace_paracompact _ hopen
+  let _ : NormalSpace ↑(A.orderFourFillingImage ∪
+      A.affineOrderFourCentralRegion) :=
+    A.ellipticInteriorOpenSubspace_normal _ hopen
   exact P.homotopyEquivalenceInclusion
 
-end SectionSevenAffineOrderFourSideProductInput
+end AffineOrderFourSideProductInput
 
 /-- The map from the affine band to the reduced order-three fibre obtained from the side
 contraction constructed by the open-union argument. -/
-public noncomputable def SectionSevenAffineOrderThreeSideProductInput.bandToReducedFiber
+public noncomputable def AffineOrderThreeSideProductInput.bandToReducedFiber
     {fiber : Type*} [TopologicalSpace fiber]
-    (P : A.SectionSevenAffineOrderThreeSideProductInput fiber) :
-    C((A.sectionSevenActualAffineSplit.allocation.orderThreeSide ∩
-        A.sectionSevenActualAffineSplit.allocation.orderFourSide :
-          Set A.SectionSevenEllipticInterior),
+    (P : A.AffineOrderThreeSideProductInput fiber) :
+    C((A.actualAffineHeightSplit.allocation.orderThreeSide ∩
+        A.actualAffineHeightSplit.allocation.orderFourSide :
+          Set A.ellipticInterior),
       OrderThreeReducedCentralFiber A.periods) :=
-  (A.sectionSevenOrderThreeFillingImageHomotopyEquiv.toFun.comp
+  (A.orderThreeFillingImageHomotopyEquiv.toFun.comp
     (P.actualHomotopyEquivalenceInclusion.toHomotopyEquiv.trans
-      (nestedSubtypeHomeomorph A.sectionSevenActualAffineSplit.allocation.orderThreeSide
-        A.sectionSevenOrderThreeFillingImage
-        A.sectionSevenActualAffineSplit.orderThreeFillingImage_subset_side).toHomotopyEquiv).toFun)
+      (nestedSubtypeHomeomorph A.actualAffineHeightSplit.allocation.orderThreeSide
+        A.orderThreeFillingImage
+        A.actualAffineHeightSplit.orderThreeFillingImage_subset_side).toHomotopyEquiv).toFun)
     |>.comp (IntegralMayerVietoris.interToLeft
-      A.sectionSevenActualAffineSplit.allocation.orderThreeSide
-      A.sectionSevenActualAffineSplit.allocation.orderFourSide)
+      A.actualAffineHeightSplit.allocation.orderThreeSide
+      A.actualAffineHeightSplit.allocation.orderFourSide)
 
 /-- The fixed order-three covering projection on the affine band. -/
-public noncomputable def sectionSevenAffineBandOrderThreeCoverMap (A : PaperAnalyticData) :
-    C((A.sectionSevenActualAffineSplit.allocation.orderThreeSide ∩
-        A.sectionSevenActualAffineSplit.allocation.orderFourSide :
-          Set A.SectionSevenEllipticInterior),
+public noncomputable def affineBandOrderThreeCoverMap (A : PaperAnalyticData) :
+    C((A.actualAffineHeightSplit.allocation.orderThreeSide ∩
+        A.actualAffineHeightSplit.allocation.orderFourSide :
+          Set A.ellipticInterior),
       OrderThreeReducedCentralFiber A.periods) :=
   (RadialEllipticActionData.centralFiberCoverProjection
       (orderThreeRadialActionData A.periods)).comp
     ⟨A.duplicatedSectionSevenBandToOrderThreeCoverSource,
       A.duplicatedSectionSevenBandToOrderThreeCoverSource.continuous⟩ |>.comp
-        (A.sectionSevenActualAffineSplit.sidesIntersectionHomeomorph.toHomotopyEquiv.trans
-          (A.sectionSevenAffineCentralBandHomotopyEquiv
-            A.sectionSevenAffineCentralSeparation)).toFun
+        (A.actualAffineHeightSplit.sidesIntersectionHomeomorph.toHomotopyEquiv.trans
+          (A.affineCentralBandHomotopyEquiv
+            A.affineCentralSeparation)).toFun
 
 /-- The map from the affine band to the reduced order-four fibre obtained from the side
 contraction constructed by the open-union argument. -/
-public noncomputable def SectionSevenAffineOrderFourSideProductInput.bandToReducedFiber
+public noncomputable def AffineOrderFourSideProductInput.bandToReducedFiber
     {fiber : Type*} [TopologicalSpace fiber]
-    (P : A.SectionSevenAffineOrderFourSideProductInput fiber) :
-    C((A.sectionSevenActualAffineSplit.allocation.orderThreeSide ∩
-        A.sectionSevenActualAffineSplit.allocation.orderFourSide :
-          Set A.SectionSevenEllipticInterior),
+    (P : A.AffineOrderFourSideProductInput fiber) :
+    C((A.actualAffineHeightSplit.allocation.orderThreeSide ∩
+        A.actualAffineHeightSplit.allocation.orderFourSide :
+          Set A.ellipticInterior),
       OrderFourReducedCentralFiber A.periods) :=
-  (A.sectionSevenOrderFourFillingImageHomotopyEquiv.toFun.comp
+  (A.orderFourFillingImageHomotopyEquiv.toFun.comp
     (P.actualHomotopyEquivalenceInclusion.toHomotopyEquiv.trans
-      (nestedSubtypeHomeomorph A.sectionSevenActualAffineSplit.allocation.orderFourSide
-        A.sectionSevenOrderFourFillingImage
-        A.sectionSevenActualAffineSplit.orderFourFillingImage_subset_side).toHomotopyEquiv).toFun)
+      (nestedSubtypeHomeomorph A.actualAffineHeightSplit.allocation.orderFourSide
+        A.orderFourFillingImage
+        A.actualAffineHeightSplit.orderFourFillingImage_subset_side).toHomotopyEquiv).toFun)
     |>.comp (IntegralMayerVietoris.interToRight
-      A.sectionSevenActualAffineSplit.allocation.orderThreeSide
-      A.sectionSevenActualAffineSplit.allocation.orderFourSide)
+      A.actualAffineHeightSplit.allocation.orderThreeSide
+      A.actualAffineHeightSplit.allocation.orderFourSide)
 
 /-- The fixed order-four covering projection on the affine band. -/
-public noncomputable def sectionSevenAffineBandOrderFourCoverMap (A : PaperAnalyticData) :
-    C((A.sectionSevenActualAffineSplit.allocation.orderThreeSide ∩
-        A.sectionSevenActualAffineSplit.allocation.orderFourSide :
-          Set A.SectionSevenEllipticInterior),
+public noncomputable def affineBandOrderFourCoverMap (A : PaperAnalyticData) :
+    C((A.actualAffineHeightSplit.allocation.orderThreeSide ∩
+        A.actualAffineHeightSplit.allocation.orderFourSide :
+          Set A.ellipticInterior),
       OrderFourReducedCentralFiber A.periods) :=
   (RadialEllipticActionData.centralFiberCoverProjection
       (orderFourRadialActionData A.periods)).comp
     ⟨A.duplicatedSectionSevenBandToOrderFourCoverSource,
       A.duplicatedSectionSevenBandToOrderFourCoverSource.continuous⟩ |>.comp
-        (A.sectionSevenActualAffineSplit.sidesIntersectionHomeomorph.toHomotopyEquiv.trans
-          (A.sectionSevenAffineCentralBandHomotopyEquiv
-            A.sectionSevenAffineCentralSeparation)).toFun
+        (A.actualAffineHeightSplit.sidesIntersectionHomeomorph.toHomotopyEquiv.trans
+          (A.affineCentralBandHomotopyEquiv
+            A.affineCentralSeparation)).toFun
 
 /-- The smallest exact affine completion package after the point-set topology and radial base
 equivalences have been discharged.  Its only proof fields are the two geometric compatibility
 homotopies between the constructed side contractions and the fixed finite-cover projections. -/
-public structure SectionSevenAffineSideCompletionInput
+public structure AffineSideCompletionInput
     (orderThreeFiber orderFourFiber : Type*)
     [TopologicalSpace orderThreeFiber] [TopologicalSpace orderFourFiber] where
-  orderThreeProduct : A.SectionSevenAffineOrderThreeSideProductInput orderThreeFiber
-  orderFourProduct : A.SectionSevenAffineOrderFourSideProductInput orderFourFiber
+  orderThreeProduct : A.AffineOrderThreeSideProductInput orderThreeFiber
+  orderFourProduct : A.AffineOrderFourSideProductInput orderFourFiber
   orderThreeCompatibility : orderThreeProduct.bandToReducedFiber.Homotopic
-    (sectionSevenAffineBandOrderThreeCoverMap A)
+    (affineBandOrderThreeCoverMap A)
   orderFourCompatibility : orderFourProduct.bandToReducedFiber.Homotopic
-    (sectionSevenAffineBandOrderFourCoverMap A)
+    (affineBandOrderFourCoverMap A)
 
-namespace SectionSevenAffineSideCompletionInput
+namespace AffineSideCompletionInput
 
 variable {orderThreeFiber orderFourFiber : Type*}
 variable [TopologicalSpace orderThreeFiber] [TopologicalSpace orderFourFiber]
@@ -232,14 +232,14 @@ variable [TopologicalSpace orderThreeFiber] [TopologicalSpace orderFourFiber]
 /-- Assemble the original four-field affine radial input from product coordinates and the two
 remaining band compatibility homotopies. -/
 public theorem toRadialCompletion
-    (P : A.SectionSevenAffineSideCompletionInput orderThreeFiber orderFourFiber) :
-    A.SectionSevenAffineRadialCompletionInput where
+    (P : A.AffineSideCompletionInput orderThreeFiber orderFourFiber) :
+    A.AffineRadialCompletionInput where
   orderThreeHomotopyEquivalence := P.orderThreeProduct.actualHomotopyEquivalenceInclusion
   orderFourHomotopyEquivalence := P.orderFourProduct.actualHomotopyEquivalenceInclusion
   orderThree_inclusion_compatibility := P.orderThreeCompatibility
   orderFour_inclusion_compatibility := P.orderFourCompatibility
 
-end SectionSevenAffineSideCompletionInput
+end AffineSideCompletionInput
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

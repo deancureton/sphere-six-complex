@@ -46,12 +46,12 @@ namespace Geometry.PaperAnalyticData
 
 open SphereSixComplex.LatticeData
 open SphereSixComplex.Topology.PaperLemmaSevenThirteenAlgebra
-open SectionSevenEllipticTwoDiscHomologyCoordinates
+open EllipticTwoDiscHomologyCoordinates
 
-variable {A : PaperAnalyticData} {D : A.SectionSevenEllipticTwoDiscCoverData}
+variable {A : PaperAnalyticData} {D : A.EllipticTwoDiscCoverData}
 
 private theorem affineTwoDiscCover_degreeTwoBasis_aux
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (z : IntegralSingularHomology 2 (AdditiveTorus R.twoDiscCover.bandParameter)) :
     (orderThreeCentralFiberCoverSourceHomologyBasis A.periods).degreeTwo
         (integralSingularHomologyMap 2 R.twoDiscCover.bandToOrderThreeCoverSource z) =
@@ -59,11 +59,11 @@ private theorem affineTwoDiscCover_degreeTwoBasis_aux
         R.twoDiscCover.bandParameter R.twoDiscCover.bandFullRank).degreeTwo z :=
   orderThreeCoverSourceDegreeTwo_symm_aux A.periods z
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 private theorem sideHomologyEquiv_interToLeft_aux (k : ℕ)
     (x : IntegralSingularHomology k
-      (D.orderThreeSide ∩ D.orderFourSide : Set A.SectionSevenEllipticInterior)) :
+      (D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior)) :
     D.sideHomologyEquiv k
         (integralSingularHomologyMap k
           (IntegralMayerVietoris.interToLeft D.orderThreeSide D.orderFourSide) x, 0) =
@@ -107,7 +107,7 @@ private theorem sideHomologyEquiv_interToLeft_aux (k : ℕ)
 public theorem actualHomologyCoordinates_sidesOne_interToLeft
     (N : A.EllipticBandHomologyAlignment D)
     (x : IntegralSingularHomology 1
-      (D.orderThreeSide ∩ D.orderFourSide : Set A.SectionSevenEllipticInterior)) :
+      (D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior)) :
     N.actualHomologyCoordinates.sidesOne
         (integralSingularHomologyMap 1
           (IntegralMayerVietoris.interToLeft D.orderThreeSide D.orderFourSide) x, 0) =
@@ -138,7 +138,7 @@ public theorem actualHomologyCoordinates_sidesOne_interToLeft
 public theorem actualHomologyCoordinates_sidesTwo_interToLeft
     (N : A.EllipticBandHomologyAlignment D)
     (x : IntegralSingularHomology 2
-      (D.orderThreeSide ∩ D.orderFourSide : Set A.SectionSevenEllipticInterior)) :
+      (D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior)) :
     N.actualHomologyCoordinates.sidesTwo
         (integralSingularHomologyMap 2
           (IntegralMayerVietoris.interToLeft D.orderThreeSide D.orderFourSide) x, 0) =
@@ -169,7 +169,7 @@ public theorem actualHomologyCoordinates_sidesTwo_interToLeft
 public theorem actualHomologyCoordinates_normalizedUnionHomologyOneEquiv_canonicalBand_zero
     (N : A.EllipticBandHomologyAlignment D)
     (x : IntegralSingularHomology 1
-      (D.orderThreeSide ∩ D.orderFourSide : Set A.SectionSevenEllipticInterior)) :
+      (D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior)) :
     N.actualHomologyCoordinates.normalizedUnionHomologyOneEquiv
         (integralSingularHomologyMap 1 D.canonicalBandToEllipticUnionMap x) 0 =
       12 * N.actualHomologyCoordinates.bandOne x 0 := by
@@ -183,7 +183,7 @@ public theorem actualHomologyCoordinates_normalizedUnionHomologyTwoEquiv_canonic
     (N : A.EllipticBandHomologyAlignment D)
     (S : WangHomologyPresentation.NormalizedSplitting (presentationTwo (D := D)))
     (x : IntegralSingularHomology 2
-      (D.orderThreeSide ∩ D.orderFourSide : Set A.SectionSevenEllipticInterior)) :
+      (D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior)) :
     N.actualHomologyCoordinates.normalizedUnionHomologyTwoEquiv S
         (integralSingularHomologyMap 2 D.canonicalBandToEllipticUnionMap x) 0 =
       12 * N.actualHomologyCoordinates.bandTwo x 2 +
@@ -195,7 +195,7 @@ public theorem actualHomologyCoordinates_normalizedUnionHomologyTwoEquiv_canonic
 
 /-- The actual affine band marking agrees with the cusp marking in degree one. -/
 public theorem affineActualHomologyCoordinates_bandOne_canonicalCuspFiber
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (x : let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
       IntegralSingularHomology 1 G.Fiber) :
@@ -209,12 +209,12 @@ public theorem affineActualHomologyCoordinates_bandOne_canonicalCuspFiber
   have hMarking := R.twoDiscCover.canonicalCuspFiberBandPeriodMarking_of_orderThree
     R.homologyAlignment
     (R.canonicalCuspFiberOrderThreePeriodMarking
-      (actualCuspFiberPeriodMarkingCompatibility A))
+      (cuspFiberPeriodMarkingCompatibility A))
   exact DFunLike.congr_fun hMarking x
 
 /-- The actual affine band marking agrees with the cusp marking in degree two. -/
 public theorem affineActualHomologyCoordinates_bandTwo_canonicalCuspFiber
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (x : let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
       IntegralSingularHomology 2 G.Fiber) :
@@ -240,7 +240,7 @@ public theorem affineActualHomologyCoordinates_bandTwo_canonicalCuspFiber
 
 /-- The canonical actual cusp fibre has scalar coordinate `12 q₀` in degree one. -/
 public theorem affineNormalizedEllipticInteriorHomologyOne_canonicalCuspFiber_zero
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (x : let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
       IntegralSingularHomology 1 G.Fiber) :
@@ -256,7 +256,7 @@ public theorem affineNormalizedEllipticInteriorHomologyOne_canonicalCuspFiber_ze
   let B := R.homologyAlignment.actualHomologyCoordinates
   let y := D.canonicalCuspFiberToBandHomologyOne x
   let eTop := integralSingularHomologyEquiv 1
-    (topologicalSubsetHomeomorphOfEqUniv (TopCat.of A.SectionSevenEllipticInterior)
+    (topologicalSubsetHomeomorphOfEqUniv (TopCat.of A.ellipticInterior)
       (D.orderThreeSide ∪ D.orderFourSide) D.sides_cover)
   change B.normalizedUnionHomologyOneEquiv
       (eTop.symm (integralSingularHomologyMap 1
@@ -276,7 +276,7 @@ public theorem affineNormalizedEllipticInteriorHomologyOne_canonicalCuspFiber_ze
 
 /-- The canonical actual cusp fibre has scalar coordinate `12 q₂ + 2 q₃` in degree two. -/
 public theorem affineNormalizedEllipticInteriorHomologyTwo_canonicalCuspFiber_zero
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (S : WangHomologyPresentation.NormalizedSplitting
       (presentationTwo (D := R.twoDiscCover)))
     (x : let G := A.actualCuspRadialClutchingData
@@ -295,7 +295,7 @@ public theorem affineNormalizedEllipticInteriorHomologyTwo_canonicalCuspFiber_ze
   let B := R.homologyAlignment.actualHomologyCoordinates
   let y := D.canonicalCuspFiberToBandHomologyTwo x
   let eTop := integralSingularHomologyEquiv 2
-    (topologicalSubsetHomeomorphOfEqUniv (TopCat.of A.SectionSevenEllipticInterior)
+    (topologicalSubsetHomeomorphOfEqUniv (TopCat.of A.ellipticInterior)
       (D.orderThreeSide ∪ D.orderFourSide) D.sides_cover)
   change B.normalizedUnionHomologyTwoEquiv S
       (eTop.symm (integralSingularHomologyMap 2
@@ -315,7 +315,7 @@ public theorem affineNormalizedEllipticInteriorHomologyTwo_canonicalCuspFiber_ze
 
 /-- The two selected degree-one fibre classes have scalar values `[12, 0]`. -/
 public theorem affineCanonicalCuspFiberCoinvariantHomologyOneBasis_scalarValues
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     (fun i : Fin 2 ↦
@@ -335,7 +335,7 @@ public theorem affineCanonicalCuspFiberCoinvariantHomologyOneBasis_scalarValues
 
 /-- The four selected degree-two fibre classes have scalar values `[0, 12, 2, 0]`. -/
 public theorem affineCanonicalCuspFiberCoinvariantHomologyTwoBasis_scalarValues
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (S : WangHomologyPresentation.NormalizedSplitting
       (presentationTwo (D := R.twoDiscCover))) :
     let G := A.actualCuspRadialClutchingData
@@ -362,7 +362,7 @@ public theorem affineCanonicalCuspFiberCoinvariantHomologyTwoBasis_scalarValues
 
 /-- Under the topological cusp--band square, the first two Wang fibre values are `[12, 0]`. -/
 public theorem affineActualCuspDegreeOneFiberBasis_scalarValues
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (hTop : R.twoDiscCover.CanonicalCuspFiberBandTopologicalCompatibility) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
@@ -379,7 +379,7 @@ public theorem affineActualCuspDegreeOneFiberBasis_scalarValues
 
 /-- Under the same square, the first four Wang fibre values are `[0, 12, 2, 0]`. -/
 public theorem affineActualCuspDegreeTwoFiberBasis_scalarValues
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (S : WangHomologyPresentation.NormalizedSplitting
       (presentationTwo (D := R.twoDiscCover)))
     (hTop : R.twoDiscCover.CanonicalCuspFiberBandTopologicalCompatibility) :
@@ -396,7 +396,7 @@ public theorem affineActualCuspDegreeTwoFiberBasis_scalarValues
   rw [R.twoDiscCover.actualCuspDegreeTwoFiberBasis_eq_canonicalBand hTop i]
   exact congrFun (affineCanonicalCuspFiberCoinvariantHomologyTwoBasis_scalarValues R S) i
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end Geometry.PaperAnalyticData
 

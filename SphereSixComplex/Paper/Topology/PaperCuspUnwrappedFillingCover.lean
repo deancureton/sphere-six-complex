@@ -19,7 +19,7 @@ open scoped ContinuousMap
 namespace SphereSixComplex
 
 open Geometry Geometry.ComplexTorus Geometry.CuspPuncturedCollarBridge
-open Geometry.StandardInfiniteA2ToricModel
+open Geometry.InfiniteA2Toric
 
 namespace Geometry.CuspPuncturedCollarBridge
 

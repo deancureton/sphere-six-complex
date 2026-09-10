@@ -79,19 +79,19 @@ public theorem centralFamilyCoordinate_surjective :
   change A.regularCoordinate u = z
   exact hu
 
-public theorem sectionSevenCentralPiece_subset_ellipticInterior :
-    A.SectionSevenEllipticCover.piece 0 ⊆
-      A.SectionSevenEllipticCover.stage (2 : Fin 4) := by
+public theorem centralPiece_subset_ellipticInterior :
+    A.starCover.piece 0 ⊆
+      A.starCover.stage (2 : Fin 4) := by
   intro x hx
   rw [FourPieceOpenCover.stage]
   exact mem_iUnion.mpr ⟨0, mem_iUnion.mpr ⟨by decide, hx⟩⟩
 
 /-- Forgetting the elliptic-interior subtype identifies its central image with the central cover
 piece. -/
-public def sectionSevenEllipticCentralImageToPiece :
-    A.sectionSevenEllipticCentralImage ≃ₜ A.SectionSevenEllipticCover.piece 0 where
+public def ellipticCentralImageToPiece :
+    A.ellipticCentralImage ≃ₜ A.starCover.piece 0 where
   toFun x := ⟨x.1.1, x.2⟩
-  invFun x := ⟨⟨x.1, A.sectionSevenCentralPiece_subset_ellipticInterior x.2⟩, x.2⟩
+  invFun x := ⟨⟨x.1, A.centralPiece_subset_ellipticInterior x.2⟩, x.2⟩
   left_inv _ := rfl
   right_inv _ := rfl
   continuous_toFun :=
@@ -99,30 +99,30 @@ public def sectionSevenEllipticCentralImageToPiece :
   continuous_invFun := (continuous_subtype_val.subtype_mk _).subtype_mk _
 
 /-- The central image inside the elliptic interior is the actual central family. -/
-public noncomputable def sectionSevenEllipticCentralImageHomeomorph :
-    A.sectionSevenEllipticCentralImage ≃ₜ A.CentralFamily :=
-  A.sectionSevenEllipticCentralImageToPiece.trans
+public noncomputable def ellipticCentralImageHomeomorph :
+    A.ellipticCentralImage ≃ₜ A.CentralFamily :=
+  A.ellipticCentralImageToPiece.trans
     A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph.symm
 
 /-- A point of the central image inherits the exact affine base coordinate. -/
-public noncomputable def sectionSevenEllipticCentralCoordinate :
-    A.sectionSevenEllipticCentralImage → RegularCoordinateBase :=
-  fun x ↦ A.centralFamilyCoordinate (A.sectionSevenEllipticCentralImageHomeomorph x)
+public noncomputable def ellipticCentralCoordinate :
+    A.ellipticCentralImage → RegularCoordinateBase :=
+  fun x ↦ A.centralFamilyCoordinate (A.ellipticCentralImageHomeomorph x)
 
-public theorem sectionSevenEllipticCentralCoordinate_continuous :
-    Continuous A.sectionSevenEllipticCentralCoordinate :=
+public theorem ellipticCentralCoordinate_continuous :
+    Continuous A.ellipticCentralCoordinate :=
   A.centralFamilyCoordinate_continuous.comp
-    A.sectionSevenEllipticCentralImageHomeomorph.continuous
+    A.ellipticCentralImageHomeomorph.continuous
 
 /-- The real part of the affine base coordinate supplies the central splitting height. -/
-public noncomputable def sectionSevenEllipticCentralHeight :
-    A.sectionSevenEllipticCentralImage → ℝ :=
-  fun x ↦ (A.sectionSevenEllipticCentralCoordinate x).1.re
+public noncomputable def ellipticCentralHeight :
+    A.ellipticCentralImage → ℝ :=
+  fun x ↦ (A.ellipticCentralCoordinate x).1.re
 
-public theorem sectionSevenEllipticCentralHeight_continuous :
-    Continuous A.sectionSevenEllipticCentralHeight :=
+public theorem ellipticCentralHeight_continuous :
+    Continuous A.ellipticCentralHeight :=
   Complex.continuous_re.comp
-    (continuous_subtype_val.comp A.sectionSevenEllipticCentralCoordinate_continuous)
+    (continuous_subtype_val.comp A.ellipticCentralCoordinate_continuous)
 
 /-- The selected order-three collar lies over the affine neighborhood `re < 1/3`. -/
 public theorem orderThreeStarCollar_centralCoordinate_re_lt
@@ -208,17 +208,17 @@ public theorem orderFourStarCollar_twoThirds_lt_centralCoordinate_re
 
 private theorem sectionSevenEllipticCentralImageHomeomorph_of_collar
     (i : Fin 3) (q : A.starCollarSourceType i)
-    (x : A.sectionSevenEllipticCentralImage)
+    (x : A.ellipticCentralImage)
     (hx : A.openEmbeddingStarData.collarSourceToGlued i q = x.1.1) :
-    A.sectionSevenEllipticCentralImageHomeomorph x = A.starToCentral i q := by
+    A.ellipticCentralImageHomeomorph x = A.starToCentral i q := by
   apply A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph.injective
   apply Subtype.ext
   let y : A.openEmbeddingStarData.SectionSevenEulerCover.piece 0 := ⟨x.1.1, x.2⟩
-  have hxy : A.sectionSevenEllipticCentralImageHomeomorph x =
+  have hxy : A.ellipticCentralImageHomeomorph x =
       A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph.symm y := rfl
   calc
     ↑(A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
-        (A.sectionSevenEllipticCentralImageHomeomorph x)) = y.1 := by
+        (A.ellipticCentralImageHomeomorph x)) = y.1 := by
       rw [hxy]
       exact congrArg Subtype.val
         (A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph.apply_symm_apply y)
@@ -233,29 +233,29 @@ private theorem sectionSevenEllipticCentralImageHomeomorph_of_collar
 
 /-- The only separation facts needed to turn the affine half-plane cut into the actual central
 allocation. -/
-public structure SectionSevenAffineCentralSeparation : Prop where
+public structure AffineCentralSeparation : Prop where
   orderThreeFilling_disjoint_upper :
-    Disjoint A.sectionSevenOrderThreeFillingImage
-      (centralHeightUpperRegion A.sectionSevenEllipticCentralHeight (1 / 3 : ℝ))
+    Disjoint A.orderThreeFillingImage
+      (centralHeightUpperRegion A.ellipticCentralHeight (1 / 3 : ℝ))
   orderFourFilling_disjoint_lower :
-    Disjoint A.sectionSevenOrderFourFillingImage
-      (centralHeightLowerRegion A.sectionSevenEllipticCentralHeight (2 / 3 : ℝ))
+    Disjoint A.orderFourFillingImage
+      (centralHeightLowerRegion A.ellipticCentralHeight (2 / 3 : ℝ))
 
 /-- The affine bounds built into the selected elliptic collar radii give the required central
 separation. -/
-public theorem sectionSevenAffineCentralSeparation :
-    A.SectionSevenAffineCentralSeparation := by
+public theorem affineCentralSeparation :
+    A.AffineCentralSeparation := by
   constructor
   · rw [Set.disjoint_left]
     rintro x hx₃ ⟨y, hy, rfl⟩
-    have hpair : y.1.1 ∈ A.SectionSevenEllipticCover.piece 0 ∩
-        A.SectionSevenEllipticCover.piece 1 := ⟨y.2, hx₃⟩
+    have hpair : y.1.1 ∈ A.starCover.piece 0 ∩
+        A.starCover.piece 1 := ⟨y.2, hx₃⟩
     have hpair' : y.1.1 ∈
         (sectionSevenStarOpenCover
           A.openEmbeddingStarData.toFourPieceStarGluingData).piece 0 ∩
         (sectionSevenStarOpenCover
           A.openEmbeddingStarData.toFourPieceStarGluingData).piece 2 := by
-      simpa [SectionSevenEllipticCover,
+      simpa [starCover,
         OpenEmbeddingStarData.SectionSevenMayerVietorisCover,
         sectionSevenMayerVietorisOpenCover, sectionSevenMayerVietorisOrder] using hpair
     have hrange : Set.range (A.openEmbeddingStarData.collarSourceToGlued 1) =
@@ -269,19 +269,19 @@ public theorem sectionSevenAffineCentralSeparation :
     have hcoord := A.orderThreeStarCollar_centralCoordinate_re_lt q
     have hcentral := sectionSevenEllipticCentralImageHomeomorph_of_collar A 1 q y hq
     change 1 / 3 <
-      (A.centralFamilyCoordinate (A.sectionSevenEllipticCentralImageHomeomorph y)).1.re at hy
+      (A.centralFamilyCoordinate (A.ellipticCentralImageHomeomorph y)).1.re at hy
     rw [hcentral] at hy
     linarith
   · rw [Set.disjoint_left]
     rintro x hx₄ ⟨y, hy, rfl⟩
-    have hpair : y.1.1 ∈ A.SectionSevenEllipticCover.piece 0 ∩
-        A.SectionSevenEllipticCover.piece 2 := ⟨y.2, hx₄⟩
+    have hpair : y.1.1 ∈ A.starCover.piece 0 ∩
+        A.starCover.piece 2 := ⟨y.2, hx₄⟩
     have hpair' : y.1.1 ∈
         (sectionSevenStarOpenCover
           A.openEmbeddingStarData.toFourPieceStarGluingData).piece 0 ∩
         (sectionSevenStarOpenCover
           A.openEmbeddingStarData.toFourPieceStarGluingData).piece 3 := by
-      simpa [SectionSevenEllipticCover,
+      simpa [starCover,
         OpenEmbeddingStarData.SectionSevenMayerVietorisCover,
         sectionSevenMayerVietorisOpenCover, sectionSevenMayerVietorisOrder] using hpair
     have hrange : Set.range (A.openEmbeddingStarData.collarSourceToGlued 2) =
@@ -295,17 +295,17 @@ public theorem sectionSevenAffineCentralSeparation :
     have hcoord := A.orderFourStarCollar_twoThirds_lt_centralCoordinate_re q
     have hcentral := sectionSevenEllipticCentralImageHomeomorph_of_collar A 2 q y hq
     change (A.centralFamilyCoordinate
-      (A.sectionSevenEllipticCentralImageHomeomorph y)).1.re < 2 / 3 at hy
+      (A.ellipticCentralImageHomeomorph y)).1.re < 2 / 3 at hy
     rw [hcentral] at hy
     linarith
 
 /-- The overlapping half-planes `re < 2/3` and `1/3 < re` give the concrete central height
 split. -/
-public noncomputable def sectionSevenAffineCentralHeightSplit
-    (S : A.SectionSevenAffineCentralSeparation) :
-    A.SectionSevenCentralHeightSplit where
-  height := A.sectionSevenEllipticCentralHeight
-  height_continuous := A.sectionSevenEllipticCentralHeight_continuous
+public noncomputable def affineCentralHeightSplit
+    (S : A.AffineCentralSeparation) :
+    A.CentralHeightSplit where
+  height := A.ellipticCentralHeight
+  height_continuous := A.ellipticCentralHeight_continuous
   lower := 1 / 3
   upper := 2 / 3
   lower_lt_upper := by norm_num

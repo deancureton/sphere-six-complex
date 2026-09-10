@@ -72,16 +72,16 @@ public theorem orderFourAffineHalfPlaneLiftQuotientToCentralFamily_homeomorphRan
 /-- The fixed central-region quotient homeomorphism is the identity in central-family
 coordinates. -/
 public theorem orderFourAffineHalfPlaneLiftQuotientToCentralFamily_centralRegionQuotient
-    (x : A.sectionSevenEllipticCentralImage)
-    (hx : (1 : ℝ) / 3 < A.sectionSevenEllipticCentralHeight x) :
+    (x : A.ellipticCentralImage)
+    (hx : (1 : ℝ) / 3 < A.ellipticCentralHeight x) :
     A.orderFourAffineHalfPlaneLiftQuotientToCentralFamily
-        (A.sectionSevenAffineOrderFourCentralRegionQuotientHomeomorph ⟨x.1, ⟨x, hx, rfl⟩⟩) =
-      A.sectionSevenEllipticCentralImageHomeomorph x := by
-  have h1 : (centralHeightUpperRegionHomeomorph A A.sectionSevenEllipticCentralHeight
+        (A.affineOrderFourCentralRegionQuotientHomeomorph ⟨x.1, ⟨x, hx, rfl⟩⟩) =
+      A.ellipticCentralImageHomeomorph x := by
+  have h1 : (centralHeightUpperRegionHomeomorph A A.ellipticCentralHeight
       (1 / 3 : ℝ)).symm ⟨x.1, ⟨x, hx, rfl⟩⟩ = ⟨x, hx⟩ := by
     rw [Homeomorph.symm_apply_eq]
     rfl
-  simp only [sectionSevenAffineOrderFourCentralRegionQuotientHomeomorph,
+  simp only [affineOrderFourCentralRegionQuotientHomeomorph,
     Homeomorph.trans_apply,
     A.orderFourAffineHalfPlaneLiftQuotientToCentralFamily_homeomorphRange_symm, h1]
   rfl
@@ -136,50 +136,50 @@ public theorem orderFourAffineDiscLiftQuotientInclusion_isEmbedding
 actual order-four star overlap as an affine coordinate disc region. -/
 public theorem orderFourOverlapQuotientIdentification_nonempty_of_overlap_eq
     {n r : ℝ} (hn : 0 < n) (hnr : n < r) (hr : r ≤ 1 - 1 / 3)
-    (hoverlap : A.sectionSevenOrderFourFillingImage ∩
-        A.sectionSevenAffineOrderFourCentralRegion =
-      Subtype.val '' {z : A.sectionSevenEllipticCentralImage |
-        ‖(A.sectionSevenEllipticCentralCoordinate z).1 - 1‖ < r}) :
-    Nonempty A.SectionSevenAffineOrderFourOverlapQuotientIdentification := by
-  have key : ∀ v : ↥A.sectionSevenAffineOrderFourCentralRegion,
-      v.1 ∈ A.sectionSevenOrderFourFillingImage ↔
-        A.sectionSevenAffineOrderFourCentralRegionQuotientHomeomorph v ∈
+    (hoverlap : A.orderFourFillingImage ∩
+        A.affineOrderFourCentralRegion =
+      Subtype.val '' {z : A.ellipticCentralImage |
+        ‖(A.ellipticCentralCoordinate z).1 - 1‖ < r}) :
+    Nonempty A.AffineOrderFourOverlapQuotientIdentification := by
+  have key : ∀ v : ↥A.affineOrderFourCentralRegion,
+      v.1 ∈ A.orderFourFillingImage ↔
+        A.affineOrderFourCentralRegionQuotientHomeomorph v ∈
           Set.range (A.orderFourAffineDiscLiftQuotientInclusion hr) := by
     rintro ⟨y, hy⟩
     obtain ⟨z, hz, rfl⟩ := hy
     rw [A.range_orderFourAffineDiscLiftQuotientInclusion hr]
     show _ ↔ ‖(A.centralFamilyCoordinate
       (A.orderFourAffineHalfPlaneLiftQuotientToCentralFamily
-        (A.sectionSevenAffineOrderFourCentralRegionQuotientHomeomorph ⟨z.1, _⟩))).1 - 1‖ < r
+        (A.affineOrderFourCentralRegionQuotientHomeomorph ⟨z.1, _⟩))).1 - 1‖ < r
     rw [A.orderFourAffineHalfPlaneLiftQuotientToCentralFamily_centralRegionQuotient z hz]
     constructor
     · intro hmem
-      have : (z : A.SectionSevenEllipticInterior) ∈
-          A.sectionSevenOrderFourFillingImage ∩
-            A.sectionSevenAffineOrderFourCentralRegion := ⟨hmem, ⟨z, hz, rfl⟩⟩
+      have : (z : A.ellipticInterior) ∈
+          A.orderFourFillingImage ∩
+            A.affineOrderFourCentralRegion := ⟨hmem, ⟨z, hz, rfl⟩⟩
       rw [hoverlap] at this
       obtain ⟨w, hw, hwz⟩ := this
       have : w = z := Subtype.ext hwz
       subst this
       exact hw
     · intro hlt
-      have : (z : A.SectionSevenEllipticInterior) ∈
-          A.sectionSevenOrderFourFillingImage ∩
-            A.sectionSevenAffineOrderFourCentralRegion := by
+      have : (z : A.ellipticInterior) ∈
+          A.orderFourFillingImage ∩
+            A.affineOrderFourCentralRegion := by
         rw [hoverlap]
         exact ⟨z, hlt, rfl⟩
       exact this.1
-  let e₁ : ↥(A.sectionSevenOrderFourFillingImage ∩
-      A.sectionSevenAffineOrderFourCentralRegion) ≃ₜ
-      {v : ↥A.sectionSevenAffineOrderFourCentralRegion //
-        v.1 ∈ A.sectionSevenOrderFourFillingImage} :=
+  let e₁ : ↥(A.orderFourFillingImage ∩
+      A.affineOrderFourCentralRegion) ≃ₜ
+      {v : ↥A.affineOrderFourCentralRegion //
+        v.1 ∈ A.orderFourFillingImage} :=
     { toFun := fun x ↦ ⟨⟨x.1, x.2.2⟩, x.2.1⟩
       invFun := fun v ↦ ⟨v.1.1, ⟨v.2, v.1.2⟩⟩
       left_inv := fun _ ↦ rfl
       right_inv := fun _ ↦ rfl
       continuous_toFun := (continuous_subtype_val.subtype_mk _).subtype_mk _
       continuous_invFun := (continuous_subtype_val.comp continuous_subtype_val).subtype_mk _ }
-  let e₂ := A.sectionSevenAffineOrderFourCentralRegionQuotientHomeomorph.subtype key
+  let e₂ := A.affineOrderFourCentralRegionQuotientHomeomorph.subtype key
   let e₃ := (A.orderFourAffineDiscLiftQuotientInclusion_isEmbedding hr).toHomeomorph
   refine ⟨{
     normalizationRadius := n
@@ -190,7 +190,7 @@ public theorem orderFourOverlapQuotientIdentification_nonempty_of_overlap_eq
     overlapModel := e₁.trans (e₂.trans e₃.symm)
     commutes := ?_ }⟩
   funext x
-  show A.sectionSevenAffineOrderFourCentralRegionQuotientHomeomorph ⟨x.1, x.2.2⟩ =
+  show A.affineOrderFourCentralRegionQuotientHomeomorph ⟨x.1, x.2.2⟩ =
     A.orderFourAffineDiscLiftQuotientInclusion hr (e₃.symm (e₂ (e₁ x)))
   have h := Topology.IsEmbedding.toHomeomorph_apply_coe
     (A.orderFourAffineDiscLiftQuotientInclusion_isEmbedding hr) (e₃.symm (e₂ (e₁ x)))
@@ -200,22 +200,22 @@ public theorem orderFourOverlapQuotientIdentification_nonempty_of_overlap_eq
 
 /-- Conversely, any order-four overlap quotient identification forces the actual order-four star
 overlap to be exactly the affine coordinate disc region of its own radius. -/
-public theorem SectionSevenAffineOrderFourOverlapQuotientIdentification.overlap_eq
-    (Q : A.SectionSevenAffineOrderFourOverlapQuotientIdentification) :
-    A.sectionSevenOrderFourFillingImage ∩ A.sectionSevenAffineOrderFourCentralRegion =
-      Subtype.val '' {z : A.sectionSevenEllipticCentralImage |
-        ‖(A.sectionSevenEllipticCentralCoordinate z).1 - 1‖ < Q.affineDiscRadius} := by
-  have hmemIff : ∀ (z : A.sectionSevenEllipticCentralImage)
-      (hz : (1 : ℝ) / 3 < A.sectionSevenEllipticCentralHeight z),
-      (A.sectionSevenAffineOrderFourCentralRegionQuotientHomeomorph ⟨z.1, ⟨z, hz, rfl⟩⟩ ∈
+public theorem AffineOrderFourOverlapQuotientIdentification.overlap_eq
+    (Q : A.AffineOrderFourOverlapQuotientIdentification) :
+    A.orderFourFillingImage ∩ A.affineOrderFourCentralRegion =
+      Subtype.val '' {z : A.ellipticCentralImage |
+        ‖(A.ellipticCentralCoordinate z).1 - 1‖ < Q.affineDiscRadius} := by
+  have hmemIff : ∀ (z : A.ellipticCentralImage)
+      (hz : (1 : ℝ) / 3 < A.ellipticCentralHeight z),
+      (A.affineOrderFourCentralRegionQuotientHomeomorph ⟨z.1, ⟨z, hz, rfl⟩⟩ ∈
         Set.range (A.orderFourAffineDiscLiftQuotientInclusion
           Q.affineDiscRadius_le_halfPlane)) ↔
-        ‖(A.sectionSevenEllipticCentralCoordinate z).1 - 1‖ < Q.affineDiscRadius := by
+        ‖(A.ellipticCentralCoordinate z).1 - 1‖ < Q.affineDiscRadius := by
     intro z hz
     rw [A.range_orderFourAffineDiscLiftQuotientInclusion Q.affineDiscRadius_le_halfPlane]
     show ‖(A.centralFamilyCoordinate
       (A.orderFourAffineHalfPlaneLiftQuotientToCentralFamily
-        (A.sectionSevenAffineOrderFourCentralRegionQuotientHomeomorph
+        (A.affineOrderFourCentralRegionQuotientHomeomorph
           ⟨z.1, ⟨z, hz, rfl⟩⟩))).1 - 1‖ < Q.affineDiscRadius ↔ _
     rw [A.orderFourAffineHalfPlaneLiftQuotientToCentralFamily_centralRegionQuotient z hz]
     exact Iff.rfl
@@ -226,15 +226,15 @@ public theorem SectionSevenAffineOrderFourOverlapQuotientIdentification.overlap_
     refine ⟨z, (hmemIff z hz).mp ⟨Q.overlapModel ⟨z.1, ⟨hyU, ⟨z, hz, rfl⟩⟩⟩, ?_⟩, rfl⟩
     exact (congrFun Q.commutes ⟨z.1, ⟨hyU, ⟨z, hz, rfl⟩⟩⟩).symm
   · rintro ⟨z, hz, rfl⟩
-    have hre : (1 : ℝ) / 3 < A.sectionSevenEllipticCentralHeight z := by
+    have hre : (1 : ℝ) / 3 < A.ellipticCentralHeight z := by
       have habs := Complex.abs_re_le_norm
-        ((A.sectionSevenEllipticCentralCoordinate z).1 - 1)
+        ((A.ellipticCentralCoordinate z).1 - 1)
       simp only [Complex.sub_re, Complex.one_re] at habs
-      have hlow : -‖(A.sectionSevenEllipticCentralCoordinate z).1 - 1‖ ≤
-          (A.sectionSevenEllipticCentralCoordinate z).1.re - 1 := (abs_le.mp habs).1
+      have hlow : -‖(A.ellipticCentralCoordinate z).1 - 1‖ ≤
+          (A.ellipticCentralCoordinate z).1.re - 1 := (abs_le.mp habs).1
       have hbound := Q.affineDiscRadius_le_halfPlane
-      show (1 : ℝ) / 3 < (A.sectionSevenEllipticCentralCoordinate z).1.re
-      have hlt : ‖(A.sectionSevenEllipticCentralCoordinate z).1 - 1‖ < Q.affineDiscRadius := hz
+      show (1 : ℝ) / 3 < (A.ellipticCentralCoordinate z).1.re
+      have hlt : ‖(A.ellipticCentralCoordinate z).1 - 1‖ < Q.affineDiscRadius := hz
       norm_num at hbound ⊢
       linarith
     obtain ⟨p, hp⟩ := (hmemIff z hre).mpr hz
@@ -242,10 +242,10 @@ public theorem SectionSevenAffineOrderFourOverlapQuotientIdentification.overlap_
     have hx := congrFun Q.commutes (Q.overlapModel.symm p)
     simp only [Function.comp_apply, Homeomorph.apply_symm_apply] at hx
     have hval : (⟨(Q.overlapModel.symm p).1, (Q.overlapModel.symm p).2.2⟩ :
-        ↥A.sectionSevenAffineOrderFourCentralRegion) = ⟨z.1, ⟨z, hre, rfl⟩⟩ :=
-      A.sectionSevenAffineOrderFourCentralRegionQuotientHomeomorph.injective
+        ↥A.affineOrderFourCentralRegion) = ⟨z.1, ⟨z, hre, rfl⟩⟩ :=
+      A.affineOrderFourCentralRegionQuotientHomeomorph.injective
         (hx.trans hp)
-    have : (Q.overlapModel.symm p).1 = (z : A.SectionSevenEllipticInterior) :=
+    have : (Q.overlapModel.symm p).1 = (z : A.ellipticInterior) :=
       congrArg Subtype.val hval
     rw [← this]
     exact (Q.overlapModel.symm p).2.1

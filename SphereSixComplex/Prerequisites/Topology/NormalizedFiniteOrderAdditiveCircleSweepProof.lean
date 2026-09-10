@@ -20,7 +20,9 @@ noncomputable section
 open AlgebraicTopology
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Topology.NormalizedFiniteOrderAdditiveCircleSweepProof
+namespace SphereSixComplex.CyclicMappingTorus.CircleSweep
+
+open SphereSixComplex.Topology
 
 open CanonicalProductWangBoundaryNaturality
 open CircleProductIdentityMappingTorus
@@ -461,7 +463,7 @@ public noncomputable def fixedLoopSweepClass
   integralSingularHomologyMap 2 (fixedLoopMappingTorusMap phi c)
     positiveCircleProductGenerator
 
-end SphereSixComplex.Topology.NormalizedFiniteOrderAdditiveCircleSweepProof
+end SphereSixComplex.CyclicMappingTorus.CircleSweep
 
 end
 

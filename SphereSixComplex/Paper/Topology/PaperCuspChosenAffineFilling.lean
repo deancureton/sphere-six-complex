@@ -23,7 +23,7 @@ open scoped ContinuousMap
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 
 open SphereSixComplex ComplexTorus CuspPuncturedCollarBridge
-open StandardInfiniteA2ToricModel CuspFilling CuspLocalPhaseAction
+open InfiniteA2Toric CuspFilling CuspLocalPhaseAction
 open CuspPeriodExpansion CuspPhaseEstimates.CuspPeriodExpansion
 open SphereSixComplex.LatticeData SphereSixComplex.Topology
 open SphereSixComplex.Topology.PaperVanKampenFourPieceCover
@@ -39,25 +39,25 @@ private theorem fundamentalGroupHomOfBaseEq_map
   rfl
 
 /-- The prescribed cusp point regarded as a point of the actual central--cusp overlap. -/
-public def actualCuspOverlapBase :
+public def cuspOverlapBase :
     (A.actualVanKampenFourPieceCover.core ∩ A.actualVanKampenFourPieceCover.cusp :
       Set A.VanKampenSpace) :=
   ⟨A.actualVanKampenFourPieceCover.cuspPoint,
     A.actualVanKampenFourPieceCover.cuspPoint_mem⟩
 
 /-- The prescribed cusp point regarded as a point of the actual cusp piece. -/
-public def actualCuspFillingBase : A.actualVanKampenFourPieceCover.cusp :=
+public def cuspFillingBase : A.actualVanKampenFourPieceCover.cusp :=
   ⟨A.actualVanKampenFourPieceCover.cuspPoint,
     A.actualVanKampenFourPieceCover.cuspPoint_mem.2⟩
 
 /-- The local boundary base point corresponding to the prescribed star-overlap base point. -/
-public noncomputable def actualCuspLocalBoundaryBase :
+public noncomputable def cuspLocalBoundaryBase :
     puncturedLocalCuspQuotient A.starCuspWitness :=
-  A.cuspCollarToStarOverlapHomeomorph.symm A.actualCuspOverlapBase
+  A.cuspCollarToStarOverlapHomeomorph.symm A.cuspOverlapBase
 
 /-- The unwrapped cusp cover transported to the exact overlap and filling piece of the glued
 star. -/
-public noncomputable def actualCuspStarUnwrappedFillingCover :
+public noncomputable def cuspStarUnwrappedFillingCover :
     letI := paperCuspBoundaryDeckAction A.starCuspWitness
     letI := paperCuspFillingDeckAction A.starCuspWitness
     UnwrappedToricFillingCover Lattice paperToricSubgroup paperCuspBoundaryDeck
@@ -70,8 +70,8 @@ public noncomputable def actualCuspStarUnwrappedFillingCover :
   let _ := paperCuspBoundaryDeckAction W
   let _ := paperCuspFillingDeckAction W
   exact {
-    boundaryProjection := A.actualCuspBoundaryProjection
-    fillingProjection := A.actualCuspFillingProjectionToStar
+    boundaryProjection := A.cuspBoundaryProjection
+    fillingProjection := A.cuspFillingProjectionToStar
     boundaryQuotient :=
       (additiveCuspBoundaryProjection_isQuotientCoveringMap W).homeomorph_comp
         A.cuspCollarToStarOverlapHomeomorph
@@ -83,14 +83,14 @@ public noncomputable def actualCuspStarUnwrappedFillingCover :
       A.toricModel.localCarrierSimplyConnected W.localWitness.radius
         W.localWitness.radius_pos
     lift := additiveCuspFillingLift W
-    baseMap := A.actualCuspOverlapToFillingPiece
-    commutes := A.actualCuspCoverSquare_commutes
+    baseMap := A.cuspOverlapToFillingPiece
+    commutes := A.cuspCoverSquare_commutes
     equivariant := additiveCuspFillingLift_paperCuspBoundaryDeck_smul W
-    base := paperCuspBoundaryBasePreimage W A.actualCuspLocalBoundaryBase
+    base := paperCuspBoundaryBasePreimage W A.cuspLocalBoundaryBase
   }
 
 /-- The actual cusp affine filling, bundled with its chosen cover and deck groups. -/
-public noncomputable def actualCuspChosenAffineFillingCover :
+public noncomputable def cuspChosenAffineFillingCover :
     ChosenToricFillingCoverModel Lattice paperToricSubgroup
       (A.actualVanKampenFourPieceCover.core ∩ A.actualVanKampenFourPieceCover.cusp :
         Set A.VanKampenSpace)
@@ -108,52 +108,52 @@ public noncomputable def actualCuspChosenAffineFillingCover :
   model := by
     let _ := paperCuspBoundaryDeckAction A.starCuspWitness
     let _ := paperCuspFillingDeckAction A.starCuspWitness
-    exact A.actualCuspStarUnwrappedFillingCover.toToricFillingCoverModel
+    exact A.cuspStarUnwrappedFillingCover.toToricFillingCoverModel
 
 /-- The chosen cover base projects to the prescribed central--cusp overlap point. -/
-public theorem actualCuspChosenAffineFillingCover_boundaryBase_eq :
-    A.actualCuspChosenAffineFillingCover.boundaryBase = A.actualCuspOverlapBase := by
-  change A.actualCuspBoundaryProjection
-      (paperCuspBoundaryBasePreimage A.starCuspWitness A.actualCuspLocalBoundaryBase) =
-    A.actualCuspOverlapBase
+public theorem cuspChosenAffineFillingCover_boundaryBase_eq :
+    A.cuspChosenAffineFillingCover.boundaryBase = A.cuspOverlapBase := by
+  change A.cuspBoundaryProjection
+      (paperCuspBoundaryBasePreimage A.starCuspWitness A.cuspLocalBoundaryBase) =
+    A.cuspOverlapBase
   change A.cuspCollarToStarOverlapHomeomorph
       (additiveCuspBoundaryProjection A.starCuspWitness
-        (paperCuspBoundaryBasePreimage A.starCuspWitness A.actualCuspLocalBoundaryBase)) =
-    A.actualCuspOverlapBase
+        (paperCuspBoundaryBasePreimage A.starCuspWitness A.cuspLocalBoundaryBase)) =
+    A.cuspOverlapBase
   rw [additiveCuspBoundaryProjection_basePreimage]
-  exact A.cuspCollarToStarOverlapHomeomorph.apply_symm_apply A.actualCuspOverlapBase
+  exact A.cuspCollarToStarOverlapHomeomorph.apply_symm_apply A.cuspOverlapBase
 
 /-- After transport to the prescribed overlap base, the chosen lattice loop is the loop attached
 to the corresponding deck translation of the actual additive cusp cover. -/
-public theorem actualCuspChosenAffineFillingCover_translation_eq_ofDeck
+public theorem cuspChosenAffineFillingCover_translation_eq_ofDeck
     (a : Lattice) :
     let W := A.starCuspWitness
     letI := paperCuspBoundaryDeckAction W
     letI : SimplyConnectedSpace
         (additiveCuspRadiusCover W.localWitness.radius) :=
       additiveCuspBoundaryCover_simplyConnected W
-    let hp : IsQuotientCoveringMap A.actualCuspBoundaryProjection
+    let hp : IsQuotientCoveringMap A.cuspBoundaryProjection
         paperCuspBoundaryDeck :=
       (additiveCuspBoundaryProjection_isQuotientCoveringMap W).homeomorph_comp
         A.cuspCollarToStarOverlapHomeomorph
     fundamentalGroupElementOfBaseEq
-        A.actualCuspChosenAffineFillingCover_boundaryBase_eq
-        (Additive.toMul (A.actualCuspChosenAffineFillingCover.translation a)) =
+        A.cuspChosenAffineFillingCover_boundaryBase_eq
+        (Additive.toMul (A.cuspChosenAffineFillingCover.translation a)) =
       fundamentalGroupElementOfBaseEq
-        A.actualCuspChosenAffineFillingCover_boundaryBase_eq
+        A.cuspChosenAffineFillingCover_boundaryBase_eq
         (ofDeck hp
-          (paperCuspBoundaryBasePreimage W A.actualCuspLocalBoundaryBase)
+          (paperCuspBoundaryBasePreimage W A.cuspLocalBoundaryBase)
           (Additive.toMul (paperCuspBoundaryTranslation a))) := by
   let W := A.starCuspWitness
   let _ := paperCuspBoundaryDeckAction W
   let _ : SimplyConnectedSpace
       (additiveCuspRadiusCover W.localWitness.radius) :=
     additiveCuspBoundaryCover_simplyConnected W
-  let hp : IsQuotientCoveringMap A.actualCuspBoundaryProjection
+  let hp : IsQuotientCoveringMap A.cuspBoundaryProjection
       paperCuspBoundaryDeck :=
     (additiveCuspBoundaryProjection_isQuotientCoveringMap W).homeomorph_comp
       A.cuspCollarToStarOverlapHomeomorph
-  let C := A.actualCuspChosenAffineFillingCover
+  let C := A.cuspChosenAffineFillingCover
   let _ := C.boundaryDeckGroup
   let _ := C.fillingDeckGroup
   let _ := C.boundaryCoverTopology
@@ -161,96 +161,96 @@ public theorem actualCuspChosenAffineFillingCover_translation_eq_ofDeck
   let _ := C.boundaryAction
   let _ := C.fillingAction
   have hraw :
-      Additive.toMul (A.actualCuspChosenAffineFillingCover.translation a) =
-        ofDeck hp (paperCuspBoundaryBasePreimage W A.actualCuspLocalBoundaryBase)
+      Additive.toMul (A.cuspChosenAffineFillingCover.translation a) =
+        ofDeck hp (paperCuspBoundaryBasePreimage W A.cuspLocalBoundaryBase)
           (Additive.toMul (paperCuspBoundaryTranslation a)) := by
     apply (hp.fundamentalGroupEquiv
-      ⟨paperCuspBoundaryBasePreimage W A.actualCuspLocalBoundaryBase, rfl⟩).injective
+      ⟨paperCuspBoundaryBasePreimage W A.cuspLocalBoundaryBase, rfl⟩).injective
     rw [fundamentalGroupEquiv_ofDeck]
-    exact A.actualCuspChosenAffineFillingCover.fundamentalGroupData.translation_deck a
+    exact A.cuspChosenAffineFillingCover.fundamentalGroupData.translation_deck a
   change fundamentalGroupElementOfBaseEq
-      A.actualCuspChosenAffineFillingCover_boundaryBase_eq
-      (Additive.toMul (A.actualCuspChosenAffineFillingCover.translation a)) =
+      A.cuspChosenAffineFillingCover_boundaryBase_eq
+      (Additive.toMul (A.cuspChosenAffineFillingCover.translation a)) =
     fundamentalGroupElementOfBaseEq
-      A.actualCuspChosenAffineFillingCover_boundaryBase_eq
-      (ofDeck hp (paperCuspBoundaryBasePreimage W A.actualCuspLocalBoundaryBase)
+      A.cuspChosenAffineFillingCover_boundaryBase_eq
+      (ofDeck hp (paperCuspBoundaryBasePreimage W A.cuspLocalBoundaryBase)
         (Additive.toMul (paperCuspBoundaryTranslation a)))
   exact congrArg
     (fundamentalGroupElementOfBaseEq
-      A.actualCuspChosenAffineFillingCover_boundaryBase_eq) hraw
+      A.cuspChosenAffineFillingCover_boundaryBase_eq) hraw
 
 /-- After transport to the prescribed overlap base, the chosen angular meridian is the loop
 attached to the actual cusp deck meridian. -/
-public theorem actualCuspChosenAffineFillingCover_meridian_eq_ofDeck :
+public theorem cuspChosenAffineFillingCover_meridian_eq_ofDeck :
     let W := A.starCuspWitness
     letI := paperCuspBoundaryDeckAction W
     letI : SimplyConnectedSpace
         (additiveCuspRadiusCover W.localWitness.radius) :=
       additiveCuspBoundaryCover_simplyConnected W
-    let hp : IsQuotientCoveringMap A.actualCuspBoundaryProjection
+    let hp : IsQuotientCoveringMap A.cuspBoundaryProjection
         paperCuspBoundaryDeck :=
       (additiveCuspBoundaryProjection_isQuotientCoveringMap W).homeomorph_comp
         A.cuspCollarToStarOverlapHomeomorph
     fundamentalGroupElementOfBaseEq
-        A.actualCuspChosenAffineFillingCover_boundaryBase_eq
-        A.actualCuspChosenAffineFillingCover.meridian =
+        A.cuspChosenAffineFillingCover_boundaryBase_eq
+        A.cuspChosenAffineFillingCover.meridian =
       fundamentalGroupElementOfBaseEq
-        A.actualCuspChosenAffineFillingCover_boundaryBase_eq
-        (ofDeck hp (paperCuspBoundaryBasePreimage W A.actualCuspLocalBoundaryBase)
+        A.cuspChosenAffineFillingCover_boundaryBase_eq
+        (ofDeck hp (paperCuspBoundaryBasePreimage W A.cuspLocalBoundaryBase)
           paperCuspBoundaryMeridian) := by
   let W := A.starCuspWitness
   let _ := paperCuspBoundaryDeckAction W
   let _ : SimplyConnectedSpace
       (additiveCuspRadiusCover W.localWitness.radius) :=
     additiveCuspBoundaryCover_simplyConnected W
-  let hp : IsQuotientCoveringMap A.actualCuspBoundaryProjection
+  let hp : IsQuotientCoveringMap A.cuspBoundaryProjection
       paperCuspBoundaryDeck :=
     (additiveCuspBoundaryProjection_isQuotientCoveringMap W).homeomorph_comp
       A.cuspCollarToStarOverlapHomeomorph
-  let C := A.actualCuspChosenAffineFillingCover
+  let C := A.cuspChosenAffineFillingCover
   let _ := C.boundaryDeckGroup
   let _ := C.fillingDeckGroup
   let _ := C.boundaryCoverTopology
   let _ := C.fillingCoverTopology
   let _ := C.boundaryAction
   let _ := C.fillingAction
-  have hraw : A.actualCuspChosenAffineFillingCover.meridian =
-      ofDeck hp (paperCuspBoundaryBasePreimage W A.actualCuspLocalBoundaryBase)
+  have hraw : A.cuspChosenAffineFillingCover.meridian =
+      ofDeck hp (paperCuspBoundaryBasePreimage W A.cuspLocalBoundaryBase)
         paperCuspBoundaryMeridian := by
     apply (hp.fundamentalGroupEquiv
-      ⟨paperCuspBoundaryBasePreimage W A.actualCuspLocalBoundaryBase, rfl⟩).injective
+      ⟨paperCuspBoundaryBasePreimage W A.cuspLocalBoundaryBase, rfl⟩).injective
     rw [fundamentalGroupEquiv_ofDeck]
-    exact A.actualCuspChosenAffineFillingCover.fundamentalGroupData.meridian_deck
+    exact A.cuspChosenAffineFillingCover.fundamentalGroupData.meridian_deck
   change fundamentalGroupElementOfBaseEq
-      A.actualCuspChosenAffineFillingCover_boundaryBase_eq
-      A.actualCuspChosenAffineFillingCover.meridian =
+      A.cuspChosenAffineFillingCover_boundaryBase_eq
+      A.cuspChosenAffineFillingCover.meridian =
     fundamentalGroupElementOfBaseEq
-      A.actualCuspChosenAffineFillingCover_boundaryBase_eq
-      (ofDeck hp (paperCuspBoundaryBasePreimage W A.actualCuspLocalBoundaryBase)
+      A.cuspChosenAffineFillingCover_boundaryBase_eq
+      (ofDeck hp (paperCuspBoundaryBasePreimage W A.cuspLocalBoundaryBase)
         paperCuspBoundaryMeridian)
   exact congrArg
     (fundamentalGroupElementOfBaseEq
-      A.actualCuspChosenAffineFillingCover_boundaryBase_eq) hraw
+      A.cuspChosenAffineFillingCover_boundaryBase_eq) hraw
 
 /-- The chosen filling base is the prescribed cusp-piece point. -/
-public theorem actualCuspChosenAffineFillingCover_fillingBase_eq :
-    A.actualCuspChosenAffineFillingCover.fillingBase = A.actualCuspFillingBase := by
-  change A.actualCuspOverlapToFillingPiece
-      A.actualCuspChosenAffineFillingCover.boundaryBase = A.actualCuspFillingBase
-  rw [A.actualCuspChosenAffineFillingCover_boundaryBase_eq]
+public theorem cuspChosenAffineFillingCover_fillingBase_eq :
+    A.cuspChosenAffineFillingCover.fillingBase = A.cuspFillingBase := by
+  change A.cuspOverlapToFillingPiece
+      A.cuspChosenAffineFillingCover.boundaryBase = A.cuspFillingBase
+  rw [A.cuspChosenAffineFillingCover_boundaryBase_eq]
   rfl
 
 /-- The chosen cover carries the actual cusp-overlap inclusion on fundamental groups. -/
-public theorem actualCuspChosenAffineFillingCover_map_eq :
+public theorem cuspChosenAffineFillingCover_map_eq :
     fundamentalGroupHomOfBaseEq
-        A.actualCuspChosenAffineFillingCover_boundaryBase_eq
-        A.actualCuspChosenAffineFillingCover_fillingBase_eq
-        A.actualCuspChosenAffineFillingCover.fundamentalGroupMap =
+        A.cuspChosenAffineFillingCover_boundaryBase_eq
+        A.cuspChosenAffineFillingCover_fillingBase_eq
+        A.cuspChosenAffineFillingCover.fundamentalGroupMap =
       A.actualVanKampenFourPieceCover.cuspOverlapFundamentalGroupMap := by
   exact fundamentalGroupHomOfBaseEq_map
     A.actualVanKampenFourPieceCover.cuspOverlapToPiece
-    A.actualCuspChosenAffineFillingCover_boundaryBase_eq
-    A.actualCuspChosenAffineFillingCover_fillingBase_eq
+    A.cuspChosenAffineFillingCover_boundaryBase_eq
+    A.cuspChosenAffineFillingCover_fillingBase_eq
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

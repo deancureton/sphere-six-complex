@@ -19,7 +19,7 @@ open Matrix
 open SphereSixComplex.Geometry.CuspCombinatorics
 open SphereSixComplex.Geometry.CuspFilling
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
 /-- The lifted generators of a lower `A₂` triangle have determinant one. -/
 public theorem a2ConeMatrix_det_false (v : ToricLattice) :
@@ -52,4 +52,4 @@ public theorem Model.cone_unimodular (_M : Model) (upper : Bool) (v : ToricLatti
     IsUnit (a2ConeMatrix upper v).det :=
   a2ConeMatrix_isUnit_det upper v
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
+end SphereSixComplex.Geometry.InfiniteA2Toric

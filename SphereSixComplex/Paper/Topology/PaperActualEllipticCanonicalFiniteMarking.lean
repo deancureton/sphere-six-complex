@@ -22,50 +22,50 @@ variable (A : PaperAnalyticData)
 
 /-- The canonical chosen order-three filling cover produced by the explicit radial action and
 lift. -/
-public noncomputable def orderThreeActualEllipticCanonicalChosenCover :=
-  A.orderThreeActualEllipticFillingMarkedDeckData.toExtensionAtBase.toFillingExtension.toChosenCover
+public noncomputable def ellipticThreeCanonicalChosenCover :=
+  A.ellipticThreeFillingMarkedDeckData.toExtensionAtBase.toFillingExtension.toChosenCover
 
 /-- The canonical chosen order-four filling cover produced by the explicit radial action and
 lift. -/
-public noncomputable def orderFourActualEllipticCanonicalChosenCover :=
-  A.orderFourActualEllipticFillingExtensionAtBase.toFillingExtension.toChosenCover
+public noncomputable def ellipticFourCanonicalChosenCover :=
+  A.ellipticFourFillingExtensionAtBase.toFillingExtension.toChosenCover
 
-public theorem orderThreeActualEllipticCanonicalChosenCover_boundaryBase_eq :
-    A.orderThreeActualEllipticCanonicalChosenCover.boundaryBase =
+public theorem ellipticThreeCanonicalChosenCover_boundaryBase_eq :
+    A.ellipticThreeCanonicalChosenCover.boundaryBase =
       ⟨A.actualVanKampenFourPieceCover.ellipticThreePoint,
         A.actualVanKampenFourPieceCover.ellipticThreePoint_mem⟩ :=
-  A.orderThreeActualEllipticFillingMarkedDeckData.toExtensionAtBase.toFillingExtension
+  A.ellipticThreeFillingMarkedDeckData.toExtensionAtBase.toFillingExtension
     |>.toChosenCover_boundaryBase_eq
 
-public theorem orderFourActualEllipticCanonicalChosenCover_boundaryBase_eq :
-    A.orderFourActualEllipticCanonicalChosenCover.boundaryBase =
+public theorem ellipticFourCanonicalChosenCover_boundaryBase_eq :
+    A.ellipticFourCanonicalChosenCover.boundaryBase =
       ⟨A.actualVanKampenFourPieceCover.ellipticFourPoint,
         A.actualVanKampenFourPieceCover.ellipticFourPoint_mem⟩ :=
-  A.orderFourActualEllipticFillingExtensionAtBase.toFillingExtension
+  A.ellipticFourFillingExtensionAtBase.toFillingExtension
     |>.toChosenCover_boundaryBase_eq
 
 /-- The canonical order-three translation loop is exactly the loop attached to the physical
 real-period deck translation. -/
-public theorem orderThreeActualEllipticCanonicalChosenCover_translation_eq_ofDeck
+public theorem ellipticThreeCanonicalChosenCover_translation_eq_ofDeck
     (a : Lattice) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     letI : SimplyConnectedSpace
         (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-      A.orderThreeActualEllipticBoundaryCover_simplyConnected
-    let hp := A.orderThreeActualEllipticBoundaryProjection_isQuotientCoveringMap
+      A.ellipticThreeBoundaryCover_simplyConnected
+    let hp := A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
     fundamentalGroupElementOfBaseEq
-        A.orderThreeActualEllipticCanonicalChosenCover_boundaryBase_eq
-        (Additive.toMul (A.orderThreeActualEllipticCanonicalChosenCover.translation a)) =
+        A.ellipticThreeCanonicalChosenCover_boundaryBase_eq
+        (Additive.toMul (A.ellipticThreeCanonicalChosenCover.translation a)) =
       fundamentalGroupElementOfBaseEq
-        A.orderThreeActualEllipticCanonicalChosenCover_boundaryBase_eq
-        (ofDeck hp A.orderThreeActualEllipticBoundaryBase
-          (Additive.toMul (A.orderThreeActualEllipticBoundaryDeckData.translation a))) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+        A.ellipticThreeCanonicalChosenCover_boundaryBase_eq
+        (ofDeck hp A.ellipticThreeBoundaryBase
+          (Additive.toMul (A.ellipticThreeBoundaryDeckData.translation a))) := by
+  let _ := A.ellipticThreeBoundaryAction
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderThreeActualEllipticBoundaryCover_simplyConnected
-  let hp := A.orderThreeActualEllipticBoundaryProjection_isQuotientCoveringMap
-  let C := A.orderThreeActualEllipticCanonicalChosenCover
+    A.ellipticThreeBoundaryCover_simplyConnected
+  let hp := A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
+  let C := A.ellipticThreeCanonicalChosenCover
   let _ := C.boundaryDeckGroup
   let _ := C.fillingDeckGroup
   let _ := C.boundaryCoverTopology
@@ -73,75 +73,75 @@ public theorem orderThreeActualEllipticCanonicalChosenCover_translation_eq_ofDec
   let _ := C.boundaryAction
   let _ := C.fillingAction
   have hraw : Additive.toMul (C.translation a) =
-      ofDeck hp A.orderThreeActualEllipticBoundaryBase
-        (Additive.toMul (A.orderThreeActualEllipticBoundaryDeckData.translation a)) := by
+      ofDeck hp A.ellipticThreeBoundaryBase
+        (Additive.toMul (A.ellipticThreeBoundaryDeckData.translation a)) := by
     apply (hp.fundamentalGroupEquiv
-      ⟨A.orderThreeActualEllipticBoundaryBase, rfl⟩).injective
+      ⟨A.ellipticThreeBoundaryBase, rfl⟩).injective
     rw [fundamentalGroupEquiv_ofDeck]
     exact C.fundamentalGroupData.translation_deck a
   exact congrArg
     (fundamentalGroupElementOfBaseEq
-      A.orderThreeActualEllipticCanonicalChosenCover_boundaryBase_eq) hraw
+      A.ellipticThreeCanonicalChosenCover_boundaryBase_eq) hraw
 
 /-- The canonical order-three meridian loop is exactly the loop attached to the physical inverse
 mapping-torus meridian. -/
-public theorem orderThreeActualEllipticCanonicalChosenCover_meridian_eq_ofDeck :
-    letI := A.orderThreeActualEllipticBoundaryAction
+public theorem ellipticThreeCanonicalChosenCover_meridian_eq_ofDeck :
+    letI := A.ellipticThreeBoundaryAction
     letI : SimplyConnectedSpace
         (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-      A.orderThreeActualEllipticBoundaryCover_simplyConnected
-    let hp := A.orderThreeActualEllipticBoundaryProjection_isQuotientCoveringMap
+      A.ellipticThreeBoundaryCover_simplyConnected
+    let hp := A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
     fundamentalGroupElementOfBaseEq
-        A.orderThreeActualEllipticCanonicalChosenCover_boundaryBase_eq
-        A.orderThreeActualEllipticCanonicalChosenCover.meridian =
+        A.ellipticThreeCanonicalChosenCover_boundaryBase_eq
+        A.ellipticThreeCanonicalChosenCover.meridian =
       fundamentalGroupElementOfBaseEq
-        A.orderThreeActualEllipticCanonicalChosenCover_boundaryBase_eq
-        (ofDeck hp A.orderThreeActualEllipticBoundaryBase
-          A.orderThreeActualEllipticBoundaryDeckData.meridian) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+        A.ellipticThreeCanonicalChosenCover_boundaryBase_eq
+        (ofDeck hp A.ellipticThreeBoundaryBase
+          A.ellipticThreeBoundaryDeckData.meridian) := by
+  let _ := A.ellipticThreeBoundaryAction
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderThreeActualEllipticBoundaryCover_simplyConnected
-  let hp := A.orderThreeActualEllipticBoundaryProjection_isQuotientCoveringMap
-  let C := A.orderThreeActualEllipticCanonicalChosenCover
+    A.ellipticThreeBoundaryCover_simplyConnected
+  let hp := A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
+  let C := A.ellipticThreeCanonicalChosenCover
   let _ := C.boundaryDeckGroup
   let _ := C.fillingDeckGroup
   let _ := C.boundaryCoverTopology
   let _ := C.fillingCoverTopology
   let _ := C.boundaryAction
   let _ := C.fillingAction
-  have hraw : C.meridian = ofDeck hp A.orderThreeActualEllipticBoundaryBase
-      A.orderThreeActualEllipticBoundaryDeckData.meridian := by
+  have hraw : C.meridian = ofDeck hp A.ellipticThreeBoundaryBase
+      A.ellipticThreeBoundaryDeckData.meridian := by
     apply (hp.fundamentalGroupEquiv
-      ⟨A.orderThreeActualEllipticBoundaryBase, rfl⟩).injective
+      ⟨A.ellipticThreeBoundaryBase, rfl⟩).injective
     rw [fundamentalGroupEquiv_ofDeck]
     exact C.fundamentalGroupData.meridian_deck
   exact congrArg
     (fundamentalGroupElementOfBaseEq
-      A.orderThreeActualEllipticCanonicalChosenCover_boundaryBase_eq) hraw
+      A.ellipticThreeCanonicalChosenCover_boundaryBase_eq) hraw
 
 /-- The canonical order-four translation loop is exactly the loop attached to the physical
 real-period deck translation. -/
-public theorem orderFourActualEllipticCanonicalChosenCover_translation_eq_ofDeck
+public theorem ellipticFourCanonicalChosenCover_translation_eq_ofDeck
     (a : Lattice) :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     letI : SimplyConnectedSpace
         (OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :=
-      A.orderFourActualEllipticBoundaryCover_simplyConnected
-    let hp := A.orderFourActualEllipticBoundaryProjection_isQuotientCoveringMap
+      A.ellipticFourBoundaryCover_simplyConnected
+    let hp := A.ellipticFourBoundaryProjection_isQuotientCoveringMap
     fundamentalGroupElementOfBaseEq
-        A.orderFourActualEllipticCanonicalChosenCover_boundaryBase_eq
-        (Additive.toMul (A.orderFourActualEllipticCanonicalChosenCover.translation a)) =
+        A.ellipticFourCanonicalChosenCover_boundaryBase_eq
+        (Additive.toMul (A.ellipticFourCanonicalChosenCover.translation a)) =
       fundamentalGroupElementOfBaseEq
-        A.orderFourActualEllipticCanonicalChosenCover_boundaryBase_eq
-        (ofDeck hp A.orderFourActualEllipticBoundaryBase
-          (Additive.toMul (A.orderFourActualEllipticBoundaryDeckData.translation a))) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+        A.ellipticFourCanonicalChosenCover_boundaryBase_eq
+        (ofDeck hp A.ellipticFourBoundaryBase
+          (Additive.toMul (A.ellipticFourBoundaryDeckData.translation a))) := by
+  let _ := A.ellipticFourBoundaryAction
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderFourActualEllipticBoundaryCover_simplyConnected
-  let hp := A.orderFourActualEllipticBoundaryProjection_isQuotientCoveringMap
-  let C := A.orderFourActualEllipticCanonicalChosenCover
+    A.ellipticFourBoundaryCover_simplyConnected
+  let hp := A.ellipticFourBoundaryProjection_isQuotientCoveringMap
+  let C := A.ellipticFourCanonicalChosenCover
   let _ := C.boundaryDeckGroup
   let _ := C.fillingDeckGroup
   let _ := C.boundaryCoverTopology
@@ -149,229 +149,229 @@ public theorem orderFourActualEllipticCanonicalChosenCover_translation_eq_ofDeck
   let _ := C.boundaryAction
   let _ := C.fillingAction
   have hraw : Additive.toMul (C.translation a) =
-      ofDeck hp A.orderFourActualEllipticBoundaryBase
-        (Additive.toMul (A.orderFourActualEllipticBoundaryDeckData.translation a)) := by
+      ofDeck hp A.ellipticFourBoundaryBase
+        (Additive.toMul (A.ellipticFourBoundaryDeckData.translation a)) := by
     apply (hp.fundamentalGroupEquiv
-      ⟨A.orderFourActualEllipticBoundaryBase, rfl⟩).injective
+      ⟨A.ellipticFourBoundaryBase, rfl⟩).injective
     rw [fundamentalGroupEquiv_ofDeck]
     exact C.fundamentalGroupData.translation_deck a
   exact congrArg
     (fundamentalGroupElementOfBaseEq
-      A.orderFourActualEllipticCanonicalChosenCover_boundaryBase_eq) hraw
+      A.ellipticFourCanonicalChosenCover_boundaryBase_eq) hraw
 
 /-- The canonical order-four meridian loop is exactly the loop attached to the physical inverse
 mapping-torus meridian. -/
-public theorem orderFourActualEllipticCanonicalChosenCover_meridian_eq_ofDeck :
-    letI := A.orderFourActualEllipticBoundaryAction
+public theorem ellipticFourCanonicalChosenCover_meridian_eq_ofDeck :
+    letI := A.ellipticFourBoundaryAction
     letI : SimplyConnectedSpace
         (OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :=
-      A.orderFourActualEllipticBoundaryCover_simplyConnected
-    let hp := A.orderFourActualEllipticBoundaryProjection_isQuotientCoveringMap
+      A.ellipticFourBoundaryCover_simplyConnected
+    let hp := A.ellipticFourBoundaryProjection_isQuotientCoveringMap
     fundamentalGroupElementOfBaseEq
-        A.orderFourActualEllipticCanonicalChosenCover_boundaryBase_eq
-        A.orderFourActualEllipticCanonicalChosenCover.meridian =
+        A.ellipticFourCanonicalChosenCover_boundaryBase_eq
+        A.ellipticFourCanonicalChosenCover.meridian =
       fundamentalGroupElementOfBaseEq
-        A.orderFourActualEllipticCanonicalChosenCover_boundaryBase_eq
-        (ofDeck hp A.orderFourActualEllipticBoundaryBase
-          A.orderFourActualEllipticBoundaryDeckData.meridian) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+        A.ellipticFourCanonicalChosenCover_boundaryBase_eq
+        (ofDeck hp A.ellipticFourBoundaryBase
+          A.ellipticFourBoundaryDeckData.meridian) := by
+  let _ := A.ellipticFourBoundaryAction
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderFourActualEllipticBoundaryCover_simplyConnected
-  let hp := A.orderFourActualEllipticBoundaryProjection_isQuotientCoveringMap
-  let C := A.orderFourActualEllipticCanonicalChosenCover
+    A.ellipticFourBoundaryCover_simplyConnected
+  let hp := A.ellipticFourBoundaryProjection_isQuotientCoveringMap
+  let C := A.ellipticFourCanonicalChosenCover
   let _ := C.boundaryDeckGroup
   let _ := C.fillingDeckGroup
   let _ := C.boundaryCoverTopology
   let _ := C.fillingCoverTopology
   let _ := C.boundaryAction
   let _ := C.fillingAction
-  have hraw : C.meridian = ofDeck hp A.orderFourActualEllipticBoundaryBase
-      A.orderFourActualEllipticBoundaryDeckData.meridian := by
+  have hraw : C.meridian = ofDeck hp A.ellipticFourBoundaryBase
+      A.ellipticFourBoundaryDeckData.meridian := by
     apply (hp.fundamentalGroupEquiv
-      ⟨A.orderFourActualEllipticBoundaryBase, rfl⟩).injective
+      ⟨A.ellipticFourBoundaryBase, rfl⟩).injective
     rw [fundamentalGroupEquiv_ofDeck]
     exact C.fundamentalGroupData.meridian_deck
   exact congrArg
     (fundamentalGroupElementOfBaseEq
-      A.orderFourActualEllipticCanonicalChosenCover_boundaryBase_eq) hraw
+      A.ellipticFourCanonicalChosenCover_boundaryBase_eq) hraw
 
 /-- The physical order-three deck translation, transported from the marked overlap to the
 central core. -/
-public noncomputable def orderThreeActualEllipticPhysicalTranslationToCore
+public noncomputable def ellipticThreePhysicalTranslationToCore
     (a : Lattice) :
     Additive
       (FundamentalGroup A.actualVanKampenFourPieceCover.core
         ⟨A.vanKampenBase, A.actualVanKampenFourPieceCover.base_mem_core⟩) := by
-  letI := A.orderThreeActualEllipticBoundaryAction
+  letI := A.ellipticThreeBoundaryAction
   letI : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderThreeActualEllipticBoundaryCover_simplyConnected
+    A.ellipticThreeBoundaryCover_simplyConnected
   exact Additive.ofMul
-    (A.actualEllipticThreeOverlapToCore
+    (A.ellipticThreeOverlapToCore
       (fundamentalGroupElementOfBaseEq
-        A.orderThreeActualEllipticCanonicalChosenCover_boundaryBase_eq
-        (ofDeck A.orderThreeActualEllipticBoundaryProjection_isQuotientCoveringMap
-          A.orderThreeActualEllipticBoundaryBase
-          (Additive.toMul (A.orderThreeActualEllipticBoundaryDeckData.translation a)))))
+        A.ellipticThreeCanonicalChosenCover_boundaryBase_eq
+        (ofDeck A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
+          A.ellipticThreeBoundaryBase
+          (Additive.toMul (A.ellipticThreeBoundaryDeckData.translation a)))))
 
 /-- The physical order-three inverse-meridian deck loop, transported to the central core. -/
-public noncomputable def orderThreeActualEllipticPhysicalMeridianToCore :
+public noncomputable def ellipticThreePhysicalMeridianToCore :
     FundamentalGroup A.actualVanKampenFourPieceCover.core
       ⟨A.vanKampenBase, A.actualVanKampenFourPieceCover.base_mem_core⟩ := by
-  letI := A.orderThreeActualEllipticBoundaryAction
+  letI := A.ellipticThreeBoundaryAction
   letI : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderThreeActualEllipticBoundaryCover_simplyConnected
-  exact A.actualEllipticThreeOverlapToCore
+    A.ellipticThreeBoundaryCover_simplyConnected
+  exact A.ellipticThreeOverlapToCore
     (fundamentalGroupElementOfBaseEq
-      A.orderThreeActualEllipticCanonicalChosenCover_boundaryBase_eq
-      (ofDeck A.orderThreeActualEllipticBoundaryProjection_isQuotientCoveringMap
-        A.orderThreeActualEllipticBoundaryBase
-        A.orderThreeActualEllipticBoundaryDeckData.meridian))
+      A.ellipticThreeCanonicalChosenCover_boundaryBase_eq
+      (ofDeck A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
+        A.ellipticThreeBoundaryBase
+        A.ellipticThreeBoundaryDeckData.meridian))
 
 /-- The physical order-four deck translation, transported from the marked overlap to the
 central core. -/
-public noncomputable def orderFourActualEllipticPhysicalTranslationToCore
+public noncomputable def ellipticFourPhysicalTranslationToCore
     (a : Lattice) :
     Additive
       (FundamentalGroup A.actualVanKampenFourPieceCover.core
         ⟨A.vanKampenBase, A.actualVanKampenFourPieceCover.base_mem_core⟩) := by
-  letI := A.orderFourActualEllipticBoundaryAction
+  letI := A.ellipticFourBoundaryAction
   letI : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderFourActualEllipticBoundaryCover_simplyConnected
+    A.ellipticFourBoundaryCover_simplyConnected
   exact Additive.ofMul
-    (A.actualEllipticFourOverlapToCore
+    (A.ellipticFourOverlapToCore
       (fundamentalGroupElementOfBaseEq
-        A.orderFourActualEllipticCanonicalChosenCover_boundaryBase_eq
-        (ofDeck A.orderFourActualEllipticBoundaryProjection_isQuotientCoveringMap
-          A.orderFourActualEllipticBoundaryBase
-          (Additive.toMul (A.orderFourActualEllipticBoundaryDeckData.translation a)))))
+        A.ellipticFourCanonicalChosenCover_boundaryBase_eq
+        (ofDeck A.ellipticFourBoundaryProjection_isQuotientCoveringMap
+          A.ellipticFourBoundaryBase
+          (Additive.toMul (A.ellipticFourBoundaryDeckData.translation a)))))
 
 /-- The physical order-four inverse-meridian deck loop, transported to the central core. -/
-public noncomputable def orderFourActualEllipticPhysicalMeridianToCore :
+public noncomputable def ellipticFourPhysicalMeridianToCore :
     FundamentalGroup A.actualVanKampenFourPieceCover.core
       ⟨A.vanKampenBase, A.actualVanKampenFourPieceCover.base_mem_core⟩ := by
-  letI := A.orderFourActualEllipticBoundaryAction
+  letI := A.ellipticFourBoundaryAction
   letI : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderFourActualEllipticBoundaryCover_simplyConnected
-  exact A.actualEllipticFourOverlapToCore
+    A.ellipticFourBoundaryCover_simplyConnected
+  exact A.ellipticFourOverlapToCore
     (fundamentalGroupElementOfBaseEq
-      A.orderFourActualEllipticCanonicalChosenCover_boundaryBase_eq
-      (ofDeck A.orderFourActualEllipticBoundaryProjection_isQuotientCoveringMap
-        A.orderFourActualEllipticBoundaryBase
-        A.orderFourActualEllipticBoundaryDeckData.meridian))
+      A.ellipticFourCanonicalChosenCover_boundaryBase_eq
+      (ofDeck A.ellipticFourBoundaryProjection_isQuotientCoveringMap
+        A.ellipticFourBoundaryBase
+        A.ellipticFourBoundaryDeckData.meridian))
 
-public theorem orderThreeActualEllipticCanonicalTranslationToCore_eq_physical
+public theorem ellipticThreeCanonicalTranslationToCore_eq_physical
     (a : Lattice) :
-    A.actualEllipticThreeTranslationToCore
-        A.orderThreeActualEllipticCanonicalChosenCover
-        A.orderThreeActualEllipticCanonicalChosenCover_boundaryBase_eq a =
-      A.orderThreeActualEllipticPhysicalTranslationToCore a := by
-  simp only [actualEllipticThreeTranslationToCore, AddMonoidHom.comp_apply,
+    A.ellipticThreeTranslationToCore
+        A.ellipticThreeCanonicalChosenCover
+        A.ellipticThreeCanonicalChosenCover_boundaryBase_eq a =
+      A.ellipticThreePhysicalTranslationToCore a := by
+  simp only [ellipticThreeTranslationToCore, AddMonoidHom.comp_apply,
     MonoidHom.coe_toAdditive, Function.comp_apply, fundamentalGroupAddHomOfBaseEq_apply]
-  rw [A.orderThreeActualEllipticCanonicalChosenCover_translation_eq_ofDeck a]
+  rw [A.ellipticThreeCanonicalChosenCover_translation_eq_ofDeck a]
   simp only [toMul_ofMul]
-  unfold orderThreeActualEllipticPhysicalTranslationToCore
+  unfold ellipticThreePhysicalTranslationToCore
   rfl
 
-public theorem orderThreeActualEllipticCanonicalMeridianToCore_eq_physical :
-    A.actualEllipticThreeOverlapToCore
+public theorem ellipticThreeCanonicalMeridianToCore_eq_physical :
+    A.ellipticThreeOverlapToCore
         (fundamentalGroupElementOfBaseEq
-          A.orderThreeActualEllipticCanonicalChosenCover_boundaryBase_eq
-          A.orderThreeActualEllipticCanonicalChosenCover.meridian) =
-      A.orderThreeActualEllipticPhysicalMeridianToCore := by
-  rw [A.orderThreeActualEllipticCanonicalChosenCover_meridian_eq_ofDeck]
+          A.ellipticThreeCanonicalChosenCover_boundaryBase_eq
+          A.ellipticThreeCanonicalChosenCover.meridian) =
+      A.ellipticThreePhysicalMeridianToCore := by
+  rw [A.ellipticThreeCanonicalChosenCover_meridian_eq_ofDeck]
   rfl
 
-public theorem orderFourActualEllipticCanonicalTranslationToCore_eq_physical
+public theorem ellipticFourCanonicalTranslationToCore_eq_physical
     (a : Lattice) :
-    A.actualEllipticFourTranslationToCore
-        A.orderFourActualEllipticCanonicalChosenCover
-        A.orderFourActualEllipticCanonicalChosenCover_boundaryBase_eq a =
-      A.orderFourActualEllipticPhysicalTranslationToCore a := by
-  simp only [actualEllipticFourTranslationToCore, AddMonoidHom.comp_apply,
+    A.ellipticFourTranslationToCore
+        A.ellipticFourCanonicalChosenCover
+        A.ellipticFourCanonicalChosenCover_boundaryBase_eq a =
+      A.ellipticFourPhysicalTranslationToCore a := by
+  simp only [ellipticFourTranslationToCore, AddMonoidHom.comp_apply,
     MonoidHom.coe_toAdditive, Function.comp_apply, fundamentalGroupAddHomOfBaseEq_apply]
-  rw [A.orderFourActualEllipticCanonicalChosenCover_translation_eq_ofDeck a]
+  rw [A.ellipticFourCanonicalChosenCover_translation_eq_ofDeck a]
   simp only [toMul_ofMul]
-  unfold orderFourActualEllipticPhysicalTranslationToCore
+  unfold ellipticFourPhysicalTranslationToCore
   rfl
 
-public theorem orderFourActualEllipticCanonicalMeridianToCore_eq_physical :
-    A.actualEllipticFourOverlapToCore
+public theorem ellipticFourCanonicalMeridianToCore_eq_physical :
+    A.ellipticFourOverlapToCore
         (fundamentalGroupElementOfBaseEq
-          A.orderFourActualEllipticCanonicalChosenCover_boundaryBase_eq
-          A.orderFourActualEllipticCanonicalChosenCover.meridian) =
-      A.orderFourActualEllipticPhysicalMeridianToCore := by
-  rw [A.orderFourActualEllipticCanonicalChosenCover_meridian_eq_ofDeck]
+          A.ellipticFourCanonicalChosenCover_boundaryBase_eq
+          A.ellipticFourCanonicalChosenCover.meridian) =
+      A.ellipticFourPhysicalMeridianToCore := by
+  rw [A.ellipticFourCanonicalChosenCover_meridian_eq_ofDeck]
   rfl
 
 /-- The seven finite marked-star comparisons after replacing chosen filling-cover loops by the
 canonical physical deck loops. -/
-public structure ActualEllipticCanonicalDeckLoopNaturality
-    (N : A.ActualCuspCentralNaturality) where
+public structure EllipticCanonicalDeckLoopNaturality
+    (N : A.CuspCentralNaturality) where
   orderThreeTranslation_zero :
-    A.orderThreeActualEllipticPhysicalTranslationToCore
+    A.ellipticThreePhysicalTranslationToCore
         (integralBasisVector 0) =
       A.actualCentralTranslationToCore N (integralBasisVector 0)
   orderThreeTranslation_one :
-    A.orderThreeActualEllipticPhysicalTranslationToCore
+    A.ellipticThreePhysicalTranslationToCore
         (integralBasisVector 1) =
       A.actualCentralTranslationToCore N (integralBasisVector 1)
   orderThreeTranslation_three :
-    A.orderThreeActualEllipticPhysicalTranslationToCore
+    A.ellipticThreePhysicalTranslationToCore
         (integralBasisVector 3) =
       A.actualCentralTranslationToCore N (integralBasisVector 3)
   orderThreeMeridian_naturality :
-    A.orderThreeActualEllipticPhysicalMeridianToCore =
+    A.ellipticThreePhysicalMeridianToCore =
       N.centralToCore A.centralAffineCorePiOneData.rhoOne
   orderFourTranslation_zero :
-    A.orderFourActualEllipticPhysicalTranslationToCore
+    A.ellipticFourPhysicalTranslationToCore
         (integralBasisVector 0) =
       A.actualCentralTranslationToCore N (integralBasisVector 0)
   orderFourTranslation_one :
-    A.orderFourActualEllipticPhysicalTranslationToCore
+    A.ellipticFourPhysicalTranslationToCore
         (integralBasisVector 1) =
       A.actualCentralTranslationToCore N (integralBasisVector 1)
   orderFourMeridian_naturality :
-    A.orderFourActualEllipticPhysicalMeridianToCore =
+    A.ellipticFourPhysicalMeridianToCore =
       N.centralToCore A.centralAffineCorePiOneData.rhoTwo
 
-namespace ActualEllipticCanonicalDeckLoopNaturality
+namespace EllipticCanonicalDeckLoopNaturality
 
-variable {A} {N : A.ActualCuspCentralNaturality}
+variable {A} {N : A.CuspCentralNaturality}
 
 /-- Assemble the former residual from the explicit radial filling extensions and the seven
 physical deck-loop comparisons. -/
 public noncomputable def toMarkedFillingExtensionAtBaseResidual
-    (E : ActualEllipticCanonicalDeckLoopNaturality A N) :
-    ActualEllipticMarkedFillingExtensionAtBaseResidual A N where
-  orderThreeData := A.orderThreeActualEllipticFillingMarkedDeckData
+    (E : EllipticCanonicalDeckLoopNaturality A N) :
+    EllipticMarkedFillingExtensionAtBaseResidual A N where
+  orderThreeData := A.ellipticThreeFillingMarkedDeckData
   orderThreeTranslation_zero :=
-    (A.orderThreeActualEllipticCanonicalTranslationToCore_eq_physical
+    (A.ellipticThreeCanonicalTranslationToCore_eq_physical
       (integralBasisVector 0)).trans E.orderThreeTranslation_zero
   orderThreeTranslation_one :=
-    (A.orderThreeActualEllipticCanonicalTranslationToCore_eq_physical
+    (A.ellipticThreeCanonicalTranslationToCore_eq_physical
       (integralBasisVector 1)).trans E.orderThreeTranslation_one
   orderThreeTranslation_three :=
-    (A.orderThreeActualEllipticCanonicalTranslationToCore_eq_physical
+    (A.ellipticThreeCanonicalTranslationToCore_eq_physical
       (integralBasisVector 3)).trans E.orderThreeTranslation_three
   orderThreeMeridian_naturality :=
-    A.orderThreeActualEllipticCanonicalMeridianToCore_eq_physical.trans
+    A.ellipticThreeCanonicalMeridianToCore_eq_physical.trans
       E.orderThreeMeridian_naturality
-  orderFourExtension := A.orderFourActualEllipticFillingExtensionAtBase
+  orderFourExtension := A.ellipticFourFillingExtensionAtBase
   orderFourTranslation_zero :=
-    (A.orderFourActualEllipticCanonicalTranslationToCore_eq_physical
+    (A.ellipticFourCanonicalTranslationToCore_eq_physical
       (integralBasisVector 0)).trans E.orderFourTranslation_zero
   orderFourTranslation_one :=
-    (A.orderFourActualEllipticCanonicalTranslationToCore_eq_physical
+    (A.ellipticFourCanonicalTranslationToCore_eq_physical
       (integralBasisVector 1)).trans E.orderFourTranslation_one
   orderFourMeridian_naturality :=
-    A.orderFourActualEllipticCanonicalMeridianToCore_eq_physical.trans
+    A.ellipticFourCanonicalMeridianToCore_eq_physical.trans
       E.orderFourMeridian_naturality
 
-end ActualEllipticCanonicalDeckLoopNaturality
+end EllipticCanonicalDeckLoopNaturality
 
 end SphereSixComplex.Geometry.PaperAnalyticData

@@ -27,7 +27,7 @@ open SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
 
 /-- The monodromy coordinates selected by the radial cusp realization agree with the standard
 integral period basis under its recorded fibre homeomorphism. -/
-public def ActualCuspFiberPeriodMarkingCompatibility (A : PaperAnalyticData) : Prop :=
+public def CuspFiberPeriodMarkingCompatibility (A : PaperAnalyticData) : Prop :=
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   ∀ x : IntegralSingularHomology 1 G.Fiber,
@@ -37,13 +37,13 @@ public def ActualCuspFiberPeriodMarkingCompatibility (A : PaperAnalyticData) : P
       G.monodromyCoordinates.degreeOne x
 
 /-- The chosen radial clutching coordinates carry their defining period marking. -/
-public theorem actualCuspFiberPeriodMarkingCompatibility (A : PaperAnalyticData) :
-    A.ActualCuspFiberPeriodMarkingCompatibility :=
+public theorem cuspFiberPeriodMarkingCompatibility (A : PaperAnalyticData) :
+    A.CuspFiberPeriodMarkingCompatibility :=
   A.actualCuspRadialClutchingData.fiberMarkingCompatibility
 
-variable {A : PaperAnalyticData} (D : A.SectionSevenEllipticTwoDiscCoverData)
+variable {A : PaperAnalyticData} (D : A.EllipticTwoDiscCoverData)
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 /-- Real-period coordinates identify the actual cusp fibre with the torus selected by the
 elliptic band. -/
@@ -62,7 +62,7 @@ public noncomputable def canonicalCuspFiberToBandMap :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     C(G.Fiber,
-      (D.orderThreeSide ∩ D.orderFourSide : Set A.SectionSevenEllipticInterior)) := by
+      (D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior)) := by
   let G := A.actualCuspRadialClutchingData
   letI := G.fiberTopology
   exact D.bandHomotopyEquiv.invFun.comp
@@ -86,7 +86,7 @@ public noncomputable def canonicalCuspFiberToBandHomologyOne :
       let _ := G.fiberTopology
       IntegralSingularHomology 1 G.Fiber) →+
       IntegralSingularHomology 1
-        (D.orderThreeSide ∩ D.orderFourSide : Set A.SectionSevenEllipticInterior) := by
+        (D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior) := by
   let G := A.actualCuspRadialClutchingData
   letI := G.fiberTopology
   exact integralSingularHomologyMap 1 D.canonicalCuspFiberToBandMap
@@ -143,7 +143,7 @@ public def CanonicalCuspFiberOrderThreePeriodMarking : Prop :=
 theorem actualHomologyCoordinates_bandOne_apply
     (N : A.EllipticBandHomologyAlignment D)
     (x : IntegralSingularHomology 1
-      (D.orderThreeSide ∩ D.orderFourSide : Set A.SectionSevenEllipticInterior)) :
+      (D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior)) :
     N.actualHomologyCoordinates.bandOne x =
       EllipticBandHomologyAlignment.bandOne (D := D) x := by
   rfl
@@ -180,6 +180,6 @@ public noncomputable def sectionSevenCuspWangBandCompatibility_of_canonicalMap
     have hx := DFunLike.congr_fun hMarking x
     exact congrFun hx 3
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end SphereSixComplex.Geometry.PaperAnalyticData

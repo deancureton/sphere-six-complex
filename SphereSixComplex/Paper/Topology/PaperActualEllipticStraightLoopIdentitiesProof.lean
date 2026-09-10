@@ -24,79 +24,79 @@ open SphereSixComplex.Geometry.ComplexTorus
 variable (A : PaperAnalyticData)
 
 public def OrderThreeCentralBoundaryExistentialStraightLoopIdentities : Prop :=
-  letI := A.orderThreeActualEllipticBoundaryAction
+  letI := A.ellipticThreeBoundaryAction
   letI : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderThreeActualEllipticBoundaryCover_simplyConnected
-  ∃ β : Path A.centralAffineBase A.orderThreeActualEllipticCentralBase,
-    FundamentalGroup.mapOfEq A.orderThreeActualOverlapToCentral rfl
+    A.ellipticThreeBoundaryCover_simplyConnected
+  ∃ β : Path A.centralAffineBase A.ellipticThreeCentralBase,
+    FundamentalGroup.mapOfEq A.ellipticThreeOverlapToCentral rfl
         (Path.Homotopic.Quotient.mk
-          (A.orderThreeActualEllipticBoundaryDeckStraightLoop
-            A.orderThreeActualEllipticBoundaryDeckData.meridian)) =
+          (A.ellipticThreeBoundaryDeckStraightLoop
+            A.ellipticThreeBoundaryDeckData.meridian)) =
         FundamentalGroup.fundamentalGroupMulEquivOfPath β
           A.centralAffineCorePiOneData.rhoOne ∧
-      FundamentalGroup.mapOfEq A.orderThreeActualOverlapToCentral rfl
+      FundamentalGroup.mapOfEq A.ellipticThreeOverlapToCentral rfl
         (Path.Homotopic.Quotient.mk
-          (A.orderThreeActualEllipticBoundaryDeckStraightLoop
+          (A.ellipticThreeBoundaryDeckStraightLoop
             (Additive.toMul
-              (A.orderThreeActualEllipticBoundaryDeckData.translation (-epsilon))))) =
+              (A.ellipticThreeBoundaryDeckData.translation (-epsilon))))) =
         FundamentalGroup.fundamentalGroupMulEquivOfPath β
           (Additive.toMul (A.centralAffineCorePiOneData.translation (-epsilon)))
 
 public def OrderFourCentralBoundaryExistentialStraightLoopIdentities : Prop :=
-  letI := A.orderFourActualEllipticBoundaryAction
+  letI := A.ellipticFourBoundaryAction
   letI : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderFourActualEllipticBoundaryCover_simplyConnected
-  ∃ β : Path A.centralAffineBase A.orderFourActualEllipticCentralBase,
-    FundamentalGroup.mapOfEq A.orderFourActualOverlapToCentral rfl
+    A.ellipticFourBoundaryCover_simplyConnected
+  ∃ β : Path A.centralAffineBase A.ellipticFourCentralBase,
+    FundamentalGroup.mapOfEq A.ellipticFourOverlapToCentral rfl
         (Path.Homotopic.Quotient.mk
-          (A.orderFourActualEllipticBoundaryDeckStraightLoop
-            A.orderFourActualEllipticBoundaryDeckData.meridian)) =
+          (A.ellipticFourBoundaryDeckStraightLoop
+            A.ellipticFourBoundaryDeckData.meridian)) =
         FundamentalGroup.fundamentalGroupMulEquivOfPath β
           A.centralAffineCorePiOneData.rhoTwo ∧
-      FundamentalGroup.mapOfEq A.orderFourActualOverlapToCentral rfl
+      FundamentalGroup.mapOfEq A.ellipticFourOverlapToCentral rfl
         (Path.Homotopic.Quotient.mk
-          (A.orderFourActualEllipticBoundaryDeckStraightLoop
+          (A.ellipticFourBoundaryDeckStraightLoop
             (Additive.toMul
-              (A.orderFourActualEllipticBoundaryDeckData.translation epsilon')))) =
+              (A.ellipticFourBoundaryDeckData.translation epsilon')))) =
         FundamentalGroup.fundamentalGroupMulEquivOfPath β
           (Additive.toMul (A.centralAffineCorePiOneData.translation epsilon'))
 
 public theorem OrderThreeCentralBoundaryExistentialStraightLoopIdentities.toMarkedLoopCompatibility
     (H : A.OrderThreeCentralBoundaryExistentialStraightLoopIdentities) :
     A.OrderThreeCentralMarkedLoopCompatibility := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderThreeActualEllipticBoundaryCover_simplyConnected
+    A.ellipticThreeBoundaryCover_simplyConnected
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
-  let C := A.orderThreeActualCentralCoverComparison
-  change ∃ β : Path A.centralAffineBase A.orderThreeActualEllipticCentralBase,
+  let C := A.ellipticThreeCentralCoverComparison
+  change ∃ β : Path A.centralAffineBase A.ellipticThreeCentralBase,
       _ ∧ _ at H
   obtain ⟨β, hmeridian, htranslation⟩ := H
   have hpaths := fundamentalGroupPair_simultaneouslyConjugate_of_paths
     A.orderThreeCentralBaseWhisker β A.centralAffineCorePiOneData.rhoOne
       (Additive.toMul (A.centralAffineCorePiOneData.translation (-epsilon)))
   rw [← hmeridian, ← htranslation] at hpaths
-  let hbase := C.commutes A.orderThreeActualEllipticBoundaryBase
+  let hbase := C.commutes A.ellipticThreeBoundaryBase
   have h := hpaths.map (fundamentalGroupMulEquivOfEq hbase).toMonoidHom
   change SimultaneouslyConjugate
     (fundamentalGroupElementOfBaseEq hbase A.orderThreeCentralMeridianAtOverlap,
       fundamentalGroupElementOfBaseEq hbase A.orderThreeCentralTranslationAtOverlap)
-    (FundamentalGroup.mapOfEq A.orderThreeActualOverlapToCentral hbase
-        (ofDeck A.orderThreeActualEllipticBoundaryProjection_isQuotientCoveringMap
-          A.orderThreeActualEllipticBoundaryBase
-          A.orderThreeActualEllipticBoundaryDeckData.meridian),
-      FundamentalGroup.mapOfEq A.orderThreeActualOverlapToCentral hbase
-        (ofDeck A.orderThreeActualEllipticBoundaryProjection_isQuotientCoveringMap
-          A.orderThreeActualEllipticBoundaryBase
+    (FundamentalGroup.mapOfEq A.ellipticThreeOverlapToCentral hbase
+        (ofDeck A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
+          A.ellipticThreeBoundaryBase
+          A.ellipticThreeBoundaryDeckData.meridian),
+      FundamentalGroup.mapOfEq A.ellipticThreeOverlapToCentral hbase
+        (ofDeck A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
+          A.ellipticThreeBoundaryBase
           (Additive.toMul
-            (A.orderThreeActualEllipticBoundaryDeckData.translation (-epsilon)))))
-  rw [← A.orderThreeActualEllipticBoundaryDeckStraightLoop_class_eq_ofDeck,
-    ← A.orderThreeActualEllipticBoundaryDeckStraightLoop_class_eq_ofDeck]
+            (A.ellipticThreeBoundaryDeckData.translation (-epsilon)))))
+  rw [← A.ellipticThreeBoundaryDeckStraightLoop_class_eq_ofDeck,
+    ← A.ellipticThreeBoundaryDeckStraightLoop_class_eq_ofDeck]
   convert h using 1
   · apply Prod.ext
     · change fundamentalGroupElementOfBaseEq hbase
@@ -118,64 +118,64 @@ public theorem OrderThreeCentralBoundaryExistentialStraightLoopIdentities.toMark
               (A.centralAffineCorePiOneData.translation (-epsilon))))
       exact (fundamentalGroupMulEquivOfEq_eq_elementOfBaseEq hbase _).symm
   · apply Prod.ext
-    · change FundamentalGroup.mapOfEq A.orderThreeActualOverlapToCentral hbase _ =
+    · change FundamentalGroup.mapOfEq A.ellipticThreeOverlapToCentral hbase _ =
           fundamentalGroupMulEquivOfEq hbase
-            (FundamentalGroup.mapOfEq A.orderThreeActualOverlapToCentral rfl _)
+            (FundamentalGroup.mapOfEq A.ellipticThreeOverlapToCentral rfl _)
       calc
         _ = fundamentalGroupElementOfBaseEq hbase
-            (FundamentalGroup.mapOfEq A.orderThreeActualOverlapToCentral rfl
+            (FundamentalGroup.mapOfEq A.ellipticThreeOverlapToCentral rfl
               (Path.Homotopic.Quotient.mk
-                (A.orderThreeActualEllipticBoundaryDeckStraightLoop
-                  A.orderThreeActualEllipticBoundaryDeckData.meridian))) :=
+                (A.ellipticThreeBoundaryDeckStraightLoop
+                  A.ellipticThreeBoundaryDeckData.meridian))) :=
           mapOfEq_eq_elementOfBaseEq_mapOfEq_rfl _ _ _
         _ = _ := (fundamentalGroupMulEquivOfEq_eq_elementOfBaseEq hbase _).symm
-    · change FundamentalGroup.mapOfEq A.orderThreeActualOverlapToCentral hbase _ =
+    · change FundamentalGroup.mapOfEq A.ellipticThreeOverlapToCentral hbase _ =
           fundamentalGroupMulEquivOfEq hbase
-            (FundamentalGroup.mapOfEq A.orderThreeActualOverlapToCentral rfl _)
+            (FundamentalGroup.mapOfEq A.ellipticThreeOverlapToCentral rfl _)
       calc
         _ = fundamentalGroupElementOfBaseEq hbase
-            (FundamentalGroup.mapOfEq A.orderThreeActualOverlapToCentral rfl
+            (FundamentalGroup.mapOfEq A.ellipticThreeOverlapToCentral rfl
               (Path.Homotopic.Quotient.mk
-                (A.orderThreeActualEllipticBoundaryDeckStraightLoop
+                (A.ellipticThreeBoundaryDeckStraightLoop
                   (Additive.toMul
-                    (A.orderThreeActualEllipticBoundaryDeckData.translation (-epsilon)))))) :=
+                    (A.ellipticThreeBoundaryDeckData.translation (-epsilon)))))) :=
           mapOfEq_eq_elementOfBaseEq_mapOfEq_rfl _ _ _
         _ = _ := (fundamentalGroupMulEquivOfEq_eq_elementOfBaseEq hbase _).symm
 
 public theorem OrderFourCentralBoundaryExistentialStraightLoopIdentities.toMarkedLoopCompatibility
     (H : A.OrderFourCentralBoundaryExistentialStraightLoopIdentities) :
     A.OrderFourCentralMarkedLoopCompatibility := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderFourActualEllipticBoundaryCover_simplyConnected
+    A.ellipticFourBoundaryCover_simplyConnected
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
-  let C := A.orderFourActualCentralCoverComparison
-  change ∃ β : Path A.centralAffineBase A.orderFourActualEllipticCentralBase,
+  let C := A.ellipticFourCentralCoverComparison
+  change ∃ β : Path A.centralAffineBase A.ellipticFourCentralBase,
       _ ∧ _ at H
   obtain ⟨β, hmeridian, htranslation⟩ := H
   have hpaths := fundamentalGroupPair_simultaneouslyConjugate_of_paths
     A.orderFourCentralBaseWhisker β A.centralAffineCorePiOneData.rhoTwo
       (Additive.toMul (A.centralAffineCorePiOneData.translation epsilon'))
   rw [← hmeridian, ← htranslation] at hpaths
-  let hbase := C.commutes A.orderFourActualEllipticBoundaryBase
+  let hbase := C.commutes A.ellipticFourBoundaryBase
   have h := hpaths.map (fundamentalGroupMulEquivOfEq hbase).toMonoidHom
   change SimultaneouslyConjugate
     (fundamentalGroupElementOfBaseEq hbase A.orderFourCentralMeridianAtOverlap,
       fundamentalGroupElementOfBaseEq hbase A.orderFourCentralTranslationAtOverlap)
-    (FundamentalGroup.mapOfEq A.orderFourActualOverlapToCentral hbase
-        (ofDeck A.orderFourActualEllipticBoundaryProjection_isQuotientCoveringMap
-          A.orderFourActualEllipticBoundaryBase
-          A.orderFourActualEllipticBoundaryDeckData.meridian),
-      FundamentalGroup.mapOfEq A.orderFourActualOverlapToCentral hbase
-        (ofDeck A.orderFourActualEllipticBoundaryProjection_isQuotientCoveringMap
-          A.orderFourActualEllipticBoundaryBase
+    (FundamentalGroup.mapOfEq A.ellipticFourOverlapToCentral hbase
+        (ofDeck A.ellipticFourBoundaryProjection_isQuotientCoveringMap
+          A.ellipticFourBoundaryBase
+          A.ellipticFourBoundaryDeckData.meridian),
+      FundamentalGroup.mapOfEq A.ellipticFourOverlapToCentral hbase
+        (ofDeck A.ellipticFourBoundaryProjection_isQuotientCoveringMap
+          A.ellipticFourBoundaryBase
           (Additive.toMul
-            (A.orderFourActualEllipticBoundaryDeckData.translation epsilon'))))
-  rw [← A.orderFourActualEllipticBoundaryDeckStraightLoop_class_eq_ofDeck,
-    ← A.orderFourActualEllipticBoundaryDeckStraightLoop_class_eq_ofDeck]
+            (A.ellipticFourBoundaryDeckData.translation epsilon'))))
+  rw [← A.ellipticFourBoundaryDeckStraightLoop_class_eq_ofDeck,
+    ← A.ellipticFourBoundaryDeckStraightLoop_class_eq_ofDeck]
   convert h using 1
   · apply Prod.ext
     · change fundamentalGroupElementOfBaseEq hbase
@@ -197,35 +197,35 @@ public theorem OrderFourCentralBoundaryExistentialStraightLoopIdentities.toMarke
               (A.centralAffineCorePiOneData.translation epsilon')))
       exact (fundamentalGroupMulEquivOfEq_eq_elementOfBaseEq hbase _).symm
   · apply Prod.ext
-    · change FundamentalGroup.mapOfEq A.orderFourActualOverlapToCentral hbase _ =
+    · change FundamentalGroup.mapOfEq A.ellipticFourOverlapToCentral hbase _ =
           fundamentalGroupMulEquivOfEq hbase
-            (FundamentalGroup.mapOfEq A.orderFourActualOverlapToCentral rfl _)
+            (FundamentalGroup.mapOfEq A.ellipticFourOverlapToCentral rfl _)
       calc
         _ = fundamentalGroupElementOfBaseEq hbase
-            (FundamentalGroup.mapOfEq A.orderFourActualOverlapToCentral rfl
+            (FundamentalGroup.mapOfEq A.ellipticFourOverlapToCentral rfl
               (Path.Homotopic.Quotient.mk
-                (A.orderFourActualEllipticBoundaryDeckStraightLoop
-                  A.orderFourActualEllipticBoundaryDeckData.meridian))) :=
+                (A.ellipticFourBoundaryDeckStraightLoop
+                  A.ellipticFourBoundaryDeckData.meridian))) :=
           mapOfEq_eq_elementOfBaseEq_mapOfEq_rfl _ _ _
         _ = _ := (fundamentalGroupMulEquivOfEq_eq_elementOfBaseEq hbase _).symm
-    · change FundamentalGroup.mapOfEq A.orderFourActualOverlapToCentral hbase _ =
+    · change FundamentalGroup.mapOfEq A.ellipticFourOverlapToCentral hbase _ =
           fundamentalGroupMulEquivOfEq hbase
-            (FundamentalGroup.mapOfEq A.orderFourActualOverlapToCentral rfl _)
+            (FundamentalGroup.mapOfEq A.ellipticFourOverlapToCentral rfl _)
       calc
         _ = fundamentalGroupElementOfBaseEq hbase
-            (FundamentalGroup.mapOfEq A.orderFourActualOverlapToCentral rfl
+            (FundamentalGroup.mapOfEq A.ellipticFourOverlapToCentral rfl
               (Path.Homotopic.Quotient.mk
-                (A.orderFourActualEllipticBoundaryDeckStraightLoop
+                (A.ellipticFourBoundaryDeckStraightLoop
                   (Additive.toMul
-                    (A.orderFourActualEllipticBoundaryDeckData.translation epsilon'))))) :=
+                    (A.ellipticFourBoundaryDeckData.translation epsilon'))))) :=
           mapOfEq_eq_elementOfBaseEq_mapOfEq_rfl _ _ _
         _ = _ := (fundamentalGroupMulEquivOfEq_eq_elementOfBaseEq hbase _).symm
 
-public theorem actualEllipticRelatorNormalClosureResidual_of_existentialStraightLoopIdentities
+public theorem ellipticRelatorMembership_of_existentialStraightLoopIdentities
     (H3 : A.OrderThreeCentralBoundaryExistentialStraightLoopIdentities)
     (H4 : A.OrderFourCentralBoundaryExistentialStraightLoopIdentities) :
-    A.ActualEllipticRelatorNormalClosureResidual A.actualCuspCentralNaturality :=
-  A.actualEllipticRelatorNormalClosureResidual_of_markedLoopCompatibilities
+    A.EllipticRelatorMembership A.cuspCentralNaturality :=
+  A.ellipticRelatorMembership_of_markedLoopCompatibilities
     (H3.toMarkedLoopCompatibility A) (H4.toMarkedLoopCompatibility A)
 
 end SphereSixComplex.Geometry.PaperAnalyticData

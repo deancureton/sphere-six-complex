@@ -24,7 +24,7 @@ open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspToricPhaseAction
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
+open SphereSixComplex.Geometry.InfiniteA2Toric
 
 namespace CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
 
@@ -35,14 +35,14 @@ variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData 
 
 /-- The local action coefficients furnished by the actual cusp-period expansion. -/
 public noncomputable def actualLocalPhaseCoefficients (M : Model) :
-    ExactLocalHolomorphicPhaseCoefficients M (cuspRadius N.height) :=
+    LocalHolomorphicPhaseCoefficients M (cuspRadius N.height) :=
   CuspLocalPhaseAction.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.toExactLocalHolomorphicPhaseCoefficients
     N M
 
 /-- Restrict the actual cusp coefficients to any smaller positive disc. -/
 public noncomputable def restrictedActualLocalPhaseCoefficients
     (M : Model) (r : ℝ) (hr : 0 < r) (hradius : r ≤ cuspRadius N.height) :
-    ExactLocalHolomorphicPhaseCoefficients M r where
+    LocalHolomorphicPhaseCoefficients M r where
   radius_pos := hr
   phase := N.phaseCoefficient
   phase_zero := N.phaseCoefficient_zero
@@ -235,9 +235,9 @@ public theorem phaseAction_component (Q : TorusActionPreservesComponents M)
 
 end TorusActionPreservesComponents
 
-namespace CuspLocalPhaseAction.ExactLocalHolomorphicPhaseCoefficients
+namespace CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients
 
-variable {M : Model} {r : ℝ} (C : ExactLocalHolomorphicPhaseCoefficients M r)
+variable {M : Model} {r : ℝ} (C : LocalHolomorphicPhaseCoefficients M r)
 
 /-- The central-fibre fixed-point estimate follows from the standard fact that torus
 multiplication preserves ray components.  No analytic estimate is involved in this half of
@@ -269,7 +269,7 @@ public theorem central_fixedPointEstimate
   apply shearVector_injective
   simpa [shearVector] using hshear_zero
 
-end CuspLocalPhaseAction.ExactLocalHolomorphicPhaseCoefficients
+end CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients
 
 namespace CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
 
@@ -281,7 +281,7 @@ variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData 
 /-- A fixed point away from the central fibre satisfies the logarithmic equation
 `R(q)λ + log |q| B₀λ = 0` coordinatewise. -/
 public theorem offCentral_logarithmic_equation
-    (M : Model) {r : ℝ} (C : ExactLocalHolomorphicPhaseCoefficients M r)
+    (M : Model) {r : ℝ} (C : LocalHolomorphicPhaseCoefficients M r)
     (hphase : C.phase = N.phaseCoefficient) (lambda : ParameterLattice)
     (p : LocalCarrier M r) (ht : M.t p ≠ 0)
     (hfixed : C.psiMap lambda p = p)
@@ -335,7 +335,7 @@ public theorem offCentral_logarithmic_equation
 /-- The numerical contradiction in Step 1: once `|log |q||` dominates twice a common entry
 bound for `R(q)`, an off-central fixed point has zero lattice parameter. -/
 public theorem offCentral_fixedPoint_of_log_dominates
-    (M : Model) {r rho A : ℝ} (C : ExactLocalHolomorphicPhaseCoefficients M r)
+    (M : Model) {r rho A : ℝ} (C : LocalHolomorphicPhaseCoefficients M r)
     (hphase : C.phase = N.phaseCoefficient)
     (hR : ∀ q ∈ Metric.closedBall (0 : ℂ) rho,
       ∀ i j, |phaseLogMatrix N q i j| ≤ A)
@@ -382,10 +382,10 @@ public theorem offCentral_fixedPoint_of_log_dominates
 /-- After shrinking the cusp disc, the actual phase-corrected action is free.  The off-central
 part is the logarithmic estimate above; the central part uses only preservation of toric ray
 components. -/
-public theorem exists_shrunk_fixedPointEstimates
+public theorem exists_shrunk_isFree
     (M : Model) (Q : TorusActionPreservesComponents M) :
     ∃ r : ℝ, ∃ hr : 0 < r, ∃ hradius : r ≤ cuspRadius N.height,
-      (restrictedActualLocalPhaseCoefficients N M r hr hradius).FixedPointEstimates := by
+      (restrictedActualLocalPhaseCoefficients N M r hr hradius).IsFree := by
   let rho := cuspRadius N.height / 2
   have hrho_pos : 0 < rho := div_pos (cuspRadius_pos N.height) (by norm_num)
   have hrho_lt : rho < cuspRadius N.height := by
@@ -398,7 +398,7 @@ public theorem exists_shrunk_fixedPointEstimates
     (min_le_left _ _).trans (le_of_lt hrho_lt)
   refine ⟨r, hr_pos, hradius, ?_⟩
   let C := restrictedActualLocalPhaseCoefficients N M r hr_pos hradius
-  change C.FixedPointEstimates
+  change C.IsFree
   constructor
   · intro lambda p ht hfixed
     have hpball : ‖M.t p‖ < r := mem_ball_zero_iff.mp p.property
@@ -418,7 +418,7 @@ public theorem exists_shrunk_fixedPointEstimates
       hdominates ht hfixed
   · intro lambda p ht hfixed
     exact
-      SphereSixComplex.Geometry.CuspPhaseEstimates.CuspLocalPhaseAction.ExactLocalHolomorphicPhaseCoefficients.central_fixedPointEstimate
+      SphereSixComplex.Geometry.CuspPhaseEstimates.CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients.central_fixedPointEstimate
         C Q lambda p ht hfixed
 
 end CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
@@ -475,7 +475,7 @@ This formulation deliberately does not require a globally finite error for
 varies.  What the argument uses is finiteness of `lambda` for each fixed pair of bounded
 regions. -/
 public structure QuantitativeToricRegionCover
-    {M : Model} {r : ℝ} (C : ExactLocalHolomorphicPhaseCoefficients M r) where
+    {M : Model} {r : ℝ} (C : LocalHolomorphicPhaseCoefficients M r) where
   region : ToricRegionIndex → Set (LocalCarrier M r)
   region_isOpen : ∀ a, IsOpen (region a)
   cover : ∀ p, ∃ a, p ∈ region a
@@ -488,7 +488,7 @@ public structure QuantitativeToricRegionCover
 
 namespace QuantitativeToricRegionCover
 
-variable {M : Model} {r : ℝ} {C : ExactLocalHolomorphicPhaseCoefficients M r}
+variable {M : Model} {r : ℝ} {C : LocalHolomorphicPhaseCoefficients M r}
 
 /-- An overlap of a fixed pair of bounded regions is possible for only finitely many lattice
 parameters.  Density of the nonzero fibres is what permits the `B_t` estimate to control an

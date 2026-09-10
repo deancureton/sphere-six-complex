@@ -26,13 +26,13 @@ open SphereSixComplex.CircleMappingTorusHomologyBases
 open SphereSixComplex.LatticeData
 open SphereSixComplex.LatticeWangAlgebra
 open SphereSixComplex.Topology.PaperCuspSpecializationAlgebra
-open SectionSevenEllipticInteriorMarkedCycleData
-open SectionSevenEllipticTwoDiscHomologyCoordinates
-open SectionSevenEllipticTwoDiscCoverData
+open EllipticInteriorMarkedCycleData
+open EllipticTwoDiscHomologyCoordinates
+open EllipticTwoDiscCoverData
 
-variable {A : PaperAnalyticData} (D : A.SectionSevenEllipticTwoDiscCoverData)
+variable {A : PaperAnalyticData} (D : A.EllipticTwoDiscCoverData)
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 private theorem geometricWangSplitting_coinvariantsToTotal
     {HighRelations High Total LowRelations Low : Type*}
@@ -53,7 +53,7 @@ private theorem mZeroCoinvariantsEquivIntSquared_mk (x : Lattice) :
   rfl
 
 private theorem degreeOneCoinvariantEquiv_mk
-    (B : A.SectionSevenEllipticTwoDiscHomologyCoordinates D)
+    (B : A.EllipticTwoDiscHomologyCoordinates D)
     (z : IntegralSingularHomology 1 D.orderThreeSide ×
       IntegralSingularHomology 1 D.orderFourSide) :
     B.degreeOneCoinvariantEquiv (Submodule.Quotient.mk z) =
@@ -61,7 +61,7 @@ private theorem degreeOneCoinvariantEquiv_mk
   rfl
 
 private theorem degreeTwoCoinvariantEquiv_mk
-    (B : A.SectionSevenEllipticTwoDiscHomologyCoordinates D)
+    (B : A.EllipticTwoDiscHomologyCoordinates D)
     (z : IntegralSingularHomology 2 D.orderThreeSide ×
       IntegralSingularHomology 2 D.orderFourSide) :
     B.degreeTwoCoinvariantEquiv (Submodule.Quotient.mk z) =
@@ -70,28 +70,28 @@ private theorem degreeTwoCoinvariantEquiv_mk
 
 /-- Include the elliptic band into the literal union through the order-three side. -/
 public def canonicalBandToEllipticUnionMap :
-    C((D.orderThreeSide ∩ D.orderFourSide : Set A.SectionSevenEllipticInterior),
-      (D.orderThreeSide ∪ D.orderFourSide : Set A.SectionSevenEllipticInterior)) :=
+    C((D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior),
+      (D.orderThreeSide ∪ D.orderFourSide : Set A.ellipticInterior)) :=
   (IntegralMayerVietoris.leftToUnion D.orderThreeSide D.orderFourSide).comp
     (IntegralMayerVietoris.interToLeft D.orderThreeSide D.orderFourSide)
 
 public def canonicalBandToEllipticInteriorInclusionMap :
-    C((D.orderThreeSide ∩ D.orderFourSide : Set A.SectionSevenEllipticInterior),
-      A.SectionSevenEllipticInterior) :=
+    C((D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior),
+      A.ellipticInterior) :=
   ⟨Subtype.val, continuous_subtype_val⟩
 
 public theorem ellipticInteriorEquiv_symm_bandInclusion
     (k : ℕ)
     (x : IntegralSingularHomology k
-      (D.orderThreeSide ∩ D.orderFourSide : Set A.SectionSevenEllipticInterior)) :
+      (D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior)) :
     (integralSingularHomologyEquiv k
-      (topologicalSubsetHomeomorphOfEqUniv (TopCat.of A.SectionSevenEllipticInterior)
+      (topologicalSubsetHomeomorphOfEqUniv (TopCat.of A.ellipticInterior)
         (D.orderThreeSide ∪ D.orderFourSide) D.sides_cover)).symm
         (integralSingularHomologyMap k
           (canonicalBandToEllipticInteriorInclusionMap D) x) =
       integralSingularHomologyMap k (canonicalBandToEllipticUnionMap D) x := by
   let eTop := integralSingularHomologyEquiv k
-    (topologicalSubsetHomeomorphOfEqUniv (TopCat.of A.SectionSevenEllipticInterior)
+    (topologicalSubsetHomeomorphOfEqUniv (TopCat.of A.ellipticInterior)
       (D.orderThreeSide ∪ D.orderFourSide) D.sides_cover)
   apply eTop.injective
   rw [eTop.apply_symm_apply]
@@ -99,10 +99,10 @@ public theorem ellipticInteriorEquiv_symm_bandInclusion
       (canonicalBandToEllipticInteriorInclusionMap D) x =
     integralSingularHomologyMap k
       ⟨topologicalSubsetHomeomorphOfEqUniv
-        (TopCat.of A.SectionSevenEllipticInterior)
+        (TopCat.of A.ellipticInterior)
         (D.orderThreeSide ∪ D.orderFourSide) D.sides_cover,
         (topologicalSubsetHomeomorphOfEqUniv
-          (TopCat.of A.SectionSevenEllipticInterior)
+          (TopCat.of A.ellipticInterior)
           (D.orderThreeSide ∪ D.orderFourSide) D.sides_cover).continuous⟩
       (integralSingularHomologyMap k (canonicalBandToEllipticUnionMap D) x)
   rw [integralSingularHomologyMap_comp_wang]
@@ -110,7 +110,7 @@ public theorem ellipticInteriorEquiv_symm_bandInclusion
 
 public theorem canonicalBandToEllipticUnionHomologyOne_eq_coinvariants
     (x : IntegralSingularHomology 1
-      (D.orderThreeSide ∩ D.orderFourSide : Set A.SectionSevenEllipticInterior)) :
+      (D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior)) :
     integralSingularHomologyMap 1 (canonicalBandToEllipticUnionMap D) x =
       (presentationOne (D := D)).coinvariantsToTotal
         (Submodule.Quotient.mk
@@ -124,7 +124,7 @@ public theorem canonicalBandToEllipticUnionHomologyOne_eq_coinvariants
 
 public theorem canonicalBandToEllipticUnionHomologyTwo_eq_coinvariants
     (x : IntegralSingularHomology 2
-      (D.orderThreeSide ∩ D.orderFourSide : Set A.SectionSevenEllipticInterior)) :
+      (D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior)) :
     integralSingularHomologyMap 2 (canonicalBandToEllipticUnionMap D) x =
       (presentationTwo (D := D)).coinvariantsToTotal
         (Submodule.Quotient.mk
@@ -137,9 +137,9 @@ public theorem canonicalBandToEllipticUnionHomologyTwo_eq_coinvariants
   simp [IntegralMayerVietoris.sumMap]
 
 public theorem normalizedUnionHomologyOneEquiv_canonicalBand
-    (B : A.SectionSevenEllipticTwoDiscHomologyCoordinates D)
+    (B : A.EllipticTwoDiscHomologyCoordinates D)
     (x : IntegralSingularHomology 1
-      (D.orderThreeSide ∩ D.orderFourSide : Set A.SectionSevenEllipticInterior)) :
+      (D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior)) :
     B.normalizedUnionHomologyOneEquiv
         (integralSingularHomologyMap 1 (canonicalBandToEllipticUnionMap D) x) 0 =
       ellipticActualHOneCokernelFunctional
@@ -151,10 +151,10 @@ public theorem normalizedUnionHomologyOneEquiv_canonicalBand
   exact degreeOneCoinvariantEquiv_mk D B _
 
 public theorem normalizedUnionHomologyTwoEquiv_canonicalBand
-    (B : A.SectionSevenEllipticTwoDiscHomologyCoordinates D)
+    (B : A.EllipticTwoDiscHomologyCoordinates D)
     (S : WangHomologyPresentation.NormalizedSplitting (presentationTwo (D := D)))
     (x : IntegralSingularHomology 2
-      (D.orderThreeSide ∩ D.orderFourSide : Set A.SectionSevenEllipticInterior)) :
+      (D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior)) :
     B.normalizedUnionHomologyTwoEquiv S
         (integralSingularHomologyMap 2 (canonicalBandToEllipticUnionMap D) x) 0 =
       alphaTwoFunctional
@@ -177,7 +177,7 @@ public noncomputable def canonicalCuspFiberToBandHomologyTwo :
       let _ := G.fiberTopology
       IntegralSingularHomology 2 G.Fiber) →+
       IntegralSingularHomology 2
-        (D.orderThreeSide ∩ D.orderFourSide : Set A.SectionSevenEllipticInterior) := by
+        (D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior) := by
   let G := A.actualCuspRadialClutchingData
   letI := G.fiberTopology
   exact integralSingularHomologyMap 2 D.canonicalCuspFiberToBandMap
@@ -462,7 +462,7 @@ public theorem actualCuspDegreeTwoFiberBasis_eq_canonicalBand
   rw [integralSingularHomologyMap_comp_wang]
   exact DFunLike.congr_fun (D.canonicalCuspFiberBand_homology_naturality hTop 2) x
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

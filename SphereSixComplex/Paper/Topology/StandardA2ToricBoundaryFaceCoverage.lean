@@ -11,11 +11,11 @@ open Function Set Topology Matrix
 
 namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 open SphereSixComplex.Geometry.CuspCombinatorics
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspPhaseEstimates
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
+open SphereSixComplex.Geometry.InfiniteA2Toric
 
 public theorem centralPhaseDiskComplex_surjective : Function.Surjective centralPhaseDiskComplex := by
   intro z
@@ -437,7 +437,7 @@ public theorem constructedCentralCarrier_mem_edge_or_phaseFace_implies_mem_bound
   let _ := actualLocalCuspQuotientAction W
   rcases hp with ⟨x, hx, heq⟩ | ⟨x, hx, heq⟩
   · apply Or.inl
-    apply Established.constructedCentralCarrier_eq_oneCell_implies_mem_oneSkeleton W p j x hx
+    apply constructedCentralCarrier_eq_oneCell_implies_mem_oneSkeleton W p j x hx
     fin_cases j <;> exact heq.symm
   · apply Or.inr
     refine Set.mem_iUnion.mpr ⟨j, x, hx, ?_⟩

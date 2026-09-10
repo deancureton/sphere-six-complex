@@ -8,13 +8,13 @@ noncomputable section
 
 open Matrix Set
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
 open SphereSixComplex.Geometry.CuspCombinatorics
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+open SphereSixComplex.Geometry.InfiniteA2Toric
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 public theorem constructedA2NeighborChart_zero_two (v : ToricLattice) :
     constructedA2CellChart v 0 = constructedA2CellChart (v + e₁) 2 := by
@@ -357,6 +357,6 @@ public theorem constructedA2Neighbor_e1_chartIncidence
       simp at hb0 hb1
       omega
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric
 
 end

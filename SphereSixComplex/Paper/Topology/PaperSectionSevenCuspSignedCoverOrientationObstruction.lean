@@ -26,7 +26,7 @@ open SphereSixComplex.Periods.ExactNormalizedModularJTau
 
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 /-- A small complex number in the right `45°` sector has reciprocal real part greater than
 `2 / 3`. -/
@@ -97,7 +97,7 @@ public theorem two_thirds_lt_actualCuspCylinderReciprocalProduct_re
 /-- The entire mapping-torus fibre over the vertex maps into the order-four open. -/
 public theorem actualCuspFiberInclusion_mem_orderFourOpen
     {A : PaperAnalyticData}
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (y : let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
       G.Fiber) :
@@ -121,7 +121,7 @@ public theorem actualCuspFiberInclusion_mem_orderFourOpen
 affine cover. -/
 public theorem not_actualCuspVertexOrderThreePointwiseMembership
     {A : PaperAnalyticData}
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     ¬ ActualCuspVertexOrderThreePointwiseMembership R := by
   intro h
   let G := A.actualCuspRadialClutchingData
@@ -138,7 +138,7 @@ public theorem not_actualCuspVertexOrderThreePointwiseMembership
   have hmem := h z hzvertex
   have hlt := (cuspToEllipticInteriorMap_mem_orderThreeSide_iff_height R _).1 hmem
   have hgt : (2 / 3 : ℝ) <
-      A.sectionSevenEllipticCentralHeight
+      A.ellipticCentralHeight
         ⟨R.twoDiscCover.cuspToEllipticInteriorMap (G.totalHomotopyEquiv.invFun z),
           R.twoDiscCover.cuspToEllipticInteriorMap_mem_centralImage _⟩ := by
     rw [R.twoDiscCover.sectionSevenEllipticCentralHeight_cuspToEllipticInteriorMap_mappingTorus z]
@@ -156,13 +156,13 @@ public theorem not_actualCuspVertexOrderThreePointwiseMembership
 /-- Hence the unswapped oriented refinement proposed for the standard Wang cover is empty. -/
 public theorem not_actualCuspOrientedCoverRefinement
     {A : PaperAnalyticData}
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     ¬ ActualCuspOrientedCoverRefinement R := by
   intro C
   exact not_actualCuspVertexOrderThreePointwiseMembership R
     ((actualCuspOrientedCoverRefinement_iff_pointwiseMembership R).1 C).1
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

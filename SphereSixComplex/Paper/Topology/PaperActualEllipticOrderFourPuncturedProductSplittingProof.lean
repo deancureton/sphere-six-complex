@@ -47,17 +47,17 @@ public noncomputable def orderFourCayleyPuncturedBasepoint :
     A.OrderFourCayleyPuncturedDisc :=
   ⟨⟨A.orderFourFillingRelationCayleyBaseValue, by
       rw [A.orderFourFillingRelationCayleyBaseValue_norm]
-      exact A.orderFourActualEllipticBoundaryBase.1.2.2.trans
+      exact A.ellipticFourBoundaryBase.1.2.2.trans
         A.starSeparation.orderFour.radius_lt_one⟩, by
     rw [A.orderFourFillingRelationCayleyBaseValue_norm]
-    exact A.orderFourActualEllipticBoundaryBase.1.2⟩
+    exact A.ellipticFourBoundaryBase.1.2⟩
 
 /-- The actual Cayley loop, now as a loop in the punctured Cayley disc. -/
 public noncomputable def orderFourFillingRelationCayleyPuncturedLoop :
     Path A.orderFourCayleyPuncturedBasepoint A.orderFourCayleyPuncturedBasepoint where
   toFun t := ⟨A.orderFourFillingRelationCayleyDiscLoop t, by
     have hnorm : ‖((A.orderFourFillingRelationCayleyDiscLoop t : ComplexUnitDisc) : ℂ)‖ =
-        (A.orderFourActualEllipticBoundaryBase.1 : ℝ) := by
+        (A.ellipticFourBoundaryBase.1 : ℝ) := by
       change ‖((A.orderFourFillingRelationCayleyLoop t).1 : ℂ)‖ = _
       have hpoint : (A.orderFourFillingRelationCayleyLoop t).1 =
           localDegreeCirclePoint A.orderFourFillingRelationCayleyBaseValue t := by
@@ -66,7 +66,7 @@ public noncomputable def orderFourFillingRelationCayleyPuncturedLoop :
       rw [hpoint, localDegreeCirclePoint_norm,
         A.orderFourFillingRelationCayleyBaseValue_norm]
     rw [hnorm]
-    exact A.orderFourActualEllipticBoundaryBase.1.2⟩
+    exact A.ellipticFourBoundaryBase.1.2⟩
   continuous_toFun := by
     exact Continuous.subtype_mk A.orderFourFillingRelationCayleyDiscLoop.continuous _
   source' := by
@@ -79,12 +79,12 @@ public noncomputable def orderFourFillingRelationCayleyPuncturedLoop :
 /-- The tautological inclusion of punctured Cayley-disc times torus into the restricted
 order-four product carrier. -/
 public noncomputable def orderFourPuncturedProductCarrierMap :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     C(A.OrderFourCayleyPuncturedDisc × A.orderFourTorus,
       (orderFourCyclicPuncturedProductData A.periods
         A.starSeparation.orderFour.radius A.starSeparation.orderFour.radius_pos
         A.starSeparation.orderFour.radius_lt_one).carrier.carrier) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   exact
     { toFun := fun zq => ⟨(zq.1.1, zq.2), zq.1.2⟩
       continuous_toFun := by
@@ -93,12 +93,12 @@ public noncomputable def orderFourPuncturedProductCarrierMap :
 
 /-- Realize the restricted punctured product chart inside the regular total space. -/
 public noncomputable def orderFourPuncturedProductToRegularMap :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     C((orderFourCyclicPuncturedProductData A.periods
         A.starSeparation.orderFour.radius A.starSeparation.orderFour.radius_pos
         A.starSeparation.orderFour.radius_lt_one).carrier.carrier,
       RegularTotalSpace A.periods) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let hproper : SourceActionProperlyDiscontinuous
       (U := A.modular.modularParameter.toTriangleUniformization) :=
     sourceActionProperlyDiscontinuous_of_eq
@@ -125,13 +125,13 @@ public noncomputable def orderFourPuncturedProductToRegularMap :
 /-- The punctured product coordinates realize the actual regular filling loop pointwise. -/
 public theorem orderFourRegularLoop_eq_puncturedProductRealization
     (t : unitInterval) :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     A.orderFourPuncturedProductToRegularMap
         (A.orderFourPuncturedProductCarrierMap
           (A.orderFourFillingRelationCayleyPuncturedLoop t,
             A.orderFourPrincipalGaugeWithOffsetPath t)) =
       A.orderFourFillingRelationRegularLoop t := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let hproper : SourceActionProperlyDiscontinuous
       (U := A.modular.modularParameter.toTriangleUniformization) :=
     sourceActionProperlyDiscontinuous_of_eq
@@ -168,10 +168,10 @@ public theorem orderFourRegularLoop_eq_puncturedProductRealization
 /-- The punctured-product realization, expressed on a genuine product so the product-loop
 splitting homotopy remains inside the admissible carrier. -/
 public noncomputable def orderFourPuncturedProductRegularRealizationMap :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     C(A.OrderFourCayleyPuncturedDisc × A.orderFourTorus,
       RegularTotalSpace A.periods) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   exact
     { toFun := fun zq => A.orderFourPuncturedProductToRegularMap
         (A.orderFourPuncturedProductCarrierMap zq)
@@ -181,23 +181,23 @@ public noncomputable def orderFourPuncturedProductRegularRealizationMap :
 /-- The fibre-then-base factorization of the actual order-four filling loop, realized through
 the restricted punctured product chart. -/
 public noncomputable def orderFourRegularFiberThenBaseLoop :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     Path
       (A.orderFourCollarRegularRepresentativeMap
-        A.orderFourActualEllipticBoundaryBase)
+        A.ellipticFourBoundaryBase)
       (A.orderFourCollarRegularRepresentativeMap
-        A.orderFourActualEllipticBoundaryBase) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+        A.ellipticFourBoundaryBase) := by
+  let _ := A.ellipticFourBoundaryAction
   let p := A.orderFourFillingRelationCayleyPuncturedLoop
   let q := A.orderFourPrincipalGaugeWithOffsetPath
   let f := A.orderFourPuncturedProductRegularRealizationMap
   let x := A.orderFourCayleyPuncturedBasepoint
   let y := A.orderFourFillingRelationPrincipalGaugeLoop 0 +
-    Quotient.mk _ A.orderFourActualEllipticBoundaryBase.2.2
+    Quotient.mk _ A.ellipticFourBoundaryBase.2.2
   let raw := (((Path.refl x).prod q).trans
     (p.prod (Path.refl y))).map f.continuous
   have hbase : A.orderFourCollarRegularRepresentativeMap
-      A.orderFourActualEllipticBoundaryBase = f (x, y) := by
+      A.ellipticFourBoundaryBase = f (x, y) := by
     exact A.orderFourFillingRelationRegularLoop.source.symm |>.trans
       ((A.orderFourRegularLoop_eq_puncturedProductRealization 0).symm.trans
         (congrArg f (Prod.ext p.source q.source)))
@@ -207,20 +207,20 @@ public noncomputable def orderFourRegularFiberThenBaseLoop :
 fibre-then-base factorization, with the entire homotopy realized through the restricted
 punctured product carrier. -/
 public theorem orderFourRegularLoop_homotopic_fiberThenBase :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     Nonempty (Path.Homotopy A.orderFourFillingRelationRegularLoop
       A.orderFourRegularFiberThenBaseLoop) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let p := A.orderFourFillingRelationCayleyPuncturedLoop
   let q := A.orderFourPrincipalGaugeWithOffsetPath
   let f := A.orderFourPuncturedProductRegularRealizationMap
   let x := A.orderFourCayleyPuncturedBasepoint
   let y := A.orderFourFillingRelationPrincipalGaugeLoop 0 +
-    Quotient.mk _ A.orderFourActualEllipticBoundaryBase.2.2
+    Quotient.mk _ A.ellipticFourBoundaryBase.2.2
   let raw := (((Path.refl x).prod q).trans
     (p.prod (Path.refl y))).map f.continuous
   have hbase : A.orderFourCollarRegularRepresentativeMap
-      A.orderFourActualEllipticBoundaryBase = f (x, y) := by
+      A.ellipticFourBoundaryBase = f (x, y) := by
     exact A.orderFourFillingRelationRegularLoop.source.symm |>.trans
       ((A.orderFourRegularLoop_eq_puncturedProductRealization 0).symm.trans
         (congrArg f (Prod.ext p.source q.source)))

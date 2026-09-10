@@ -27,77 +27,77 @@ open SphereSixComplex.TriangleGroup
 open SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
 
 /-- The marked affine band in its pinned strip-by-torus coordinates. -/
-public noncomputable def sectionSevenAffineMarkedBandProductHomeomorph
+public noncomputable def affineMarkedBandProductHomeomorph
     (A : PaperAnalyticData) :
-    A.SectionSevenAffineMarkedBand ≃ₜ
-      sectionSevenAffineVerticalStrip ×
+    A.affineMarkedBand ≃ₜ
+      affineVerticalStrip ×
         AdditiveTorus A.duplicatedSectionSevenBandParameter := by
   change
-    ((A.sectionSevenAffineCentralHeightSplit
-        A.sectionSevenAffineCentralSeparation).allocation.orderThreeSide ∩
-      (A.sectionSevenAffineCentralHeightSplit
-        A.sectionSevenAffineCentralSeparation).allocation.orderFourSide :
-        Set A.SectionSevenEllipticInterior) ≃ₜ _
+    ((A.affineCentralHeightSplit
+        A.affineCentralSeparation).allocation.orderThreeSide ∩
+      (A.affineCentralHeightSplit
+        A.affineCentralSeparation).allocation.orderFourSide :
+        Set A.ellipticInterior) ≃ₜ _
   exact
-    (A.sectionSevenAffineCentralHeightSplit A.sectionSevenAffineCentralSeparation)
+    (A.affineCentralHeightSplit A.affineCentralSeparation)
       |>.sidesIntersectionHomeomorph |>.trans
-        (A.sectionSevenAffineCentralBandMarkedProductHomeomorph
-          A.sectionSevenAffineCentralSeparation)
+        (A.affineCentralBandMarkedProductHomeomorph
+          A.affineCentralSeparation)
 
 /-- A marked-band point over a prescribed point of the affine strip, with zero fibre
 coordinate. -/
-public noncomputable def sectionSevenAffineMarkedBandPointOfStrip
-    (A : PaperAnalyticData) (z : sectionSevenAffineVerticalStrip) :
-    A.SectionSevenAffineMarkedBand :=
-  A.sectionSevenAffineMarkedBandProductHomeomorph.symm (z, 0)
+public noncomputable def affineMarkedBandPointOfStrip
+    (A : PaperAnalyticData) (z : affineVerticalStrip) :
+    A.affineMarkedBand :=
+  A.affineMarkedBandProductHomeomorph.symm (z, 0)
 
 @[simp]
-public theorem sectionSevenAffineBandStripCoordinate_markedBandPointOfStrip
-    (A : PaperAnalyticData) (z : sectionSevenAffineVerticalStrip) :
-    A.sectionSevenAffineBandStripCoordinate
-        (A.sectionSevenAffineMarkedBandPointOfStrip z) = z := by
-  change (A.sectionSevenAffineMarkedBandProductHomeomorph
-    (A.sectionSevenAffineMarkedBandProductHomeomorph.symm (z, 0))).1 = z
+public theorem affineBandStripCoordinate_markedBandPointOfStrip
+    (A : PaperAnalyticData) (z : affineVerticalStrip) :
+    A.affineBandStripCoordinate
+        (A.affineMarkedBandPointOfStrip z) = z := by
+  change (A.affineMarkedBandProductHomeomorph
+    (A.affineMarkedBandProductHomeomorph.symm (z, 0))).1 = z
   rw [Homeomorph.apply_symm_apply]
 
 /-- A deck element places the order-three named radial lift in the selected collar at `z`. -/
 public def OrderThreeDeckEntersNamedCollarAtStrip
-    (A : PaperAnalyticData) (g : Delta) (z : sectionSevenAffineVerticalStrip) : Prop :=
+    (A : PaperAnalyticData) (g : Delta) (z : affineVerticalStrip) : Prop :=
   ‖(orderThreeCayleyHomeomorph
       (fuchsianSourceAction g •
-        (A.sectionSevenAffineOrderThreeRadialBaseLift z).1) : ℂ)‖ <
+        (A.affineOrderThreeRadialBaseLift z).1) : ℂ)‖ <
     A.starSeparation.orderThree.radius
 
 /-- A deck element places the order-four named radial lift in the selected collar at `z`. -/
 public def OrderFourDeckEntersNamedCollarAtStrip
-    (A : PaperAnalyticData) (g : Delta) (z : sectionSevenAffineVerticalStrip) : Prop :=
+    (A : PaperAnalyticData) (g : Delta) (z : affineVerticalStrip) : Prop :=
   ‖(orderFourCayleyHomeomorph
       (fuchsianSourceAction g •
-        (A.sectionSevenAffineOrderFourRadialBaseLift z).1) : ℂ)‖ <
+        (A.affineOrderFourRadialBaseLift z).1) : ℂ)‖ <
     A.starSeparation.orderFour.radius
 
 /-- The quotient-overlap construction supplies an entering order-three sheet over every strip
 point. -/
 public theorem exists_orderThreeDeckEntersNamedCollarAtStrip
-    (A : PaperAnalyticData) (z : sectionSevenAffineVerticalStrip) :
+    (A : PaperAnalyticData) (z : affineVerticalStrip) :
     ∃ g : Delta, A.OrderThreeDeckEntersNamedCollarAtStrip g z := by
   obtain ⟨g, hg⟩ := A.exists_regularDeck_namedOrderThreeRadialBase_cayley_lt
-    (A.sectionSevenAffineMarkedBandPointOfStrip z)
+    (A.affineMarkedBandPointOfStrip z)
   exact ⟨g, by simpa [OrderThreeDeckEntersNamedCollarAtStrip] using hg⟩
 
 /-- The quotient-overlap construction supplies an entering order-four sheet over every strip
 point. -/
 public theorem exists_orderFourDeckEntersNamedCollarAtStrip
-    (A : PaperAnalyticData) (z : sectionSevenAffineVerticalStrip) :
+    (A : PaperAnalyticData) (z : affineVerticalStrip) :
     ∃ g : Delta, A.OrderFourDeckEntersNamedCollarAtStrip g z := by
   obtain ⟨g, hg⟩ := A.exists_regularDeck_namedOrderFourRadialBase_cayley_lt
-    (A.sectionSevenAffineMarkedBandPointOfStrip z)
+    (A.affineMarkedBandPointOfStrip z)
   exact ⟨g, by simpa [OrderFourDeckEntersNamedCollarAtStrip] using hg⟩
 
 /-- Two order-three deck elements entering at the same point differ by the order-three elliptic
 factor. -/
 public theorem orderThree_sameSheet_of_both_enter
-    (A : PaperAnalyticData) (z : sectionSevenAffineVerticalStrip) (g h : Delta)
+    (A : PaperAnalyticData) (z : affineVerticalStrip) (g h : Delta)
     (hg : A.OrderThreeDeckEntersNamedCollarAtStrip g z)
     (hh : A.OrderThreeDeckEntersNamedCollarAtStrip h z) :
     ∃ a : CyclicThree, g * h⁻¹ = Monoid.Coprod.inl a := by
@@ -108,16 +108,16 @@ public theorem orderThree_sameSheet_of_both_enter
   rw [OrderThreeLinearCollarSourceData.eq_def] at D
   apply D.2
     (fuchsianSourceAction g •
-      (A.sectionSevenAffineOrderThreeRadialBaseLift z).1)
+      (A.affineOrderThreeRadialBaseLift z).1)
     (fuchsianSourceAction h •
-      (A.sectionSevenAffineOrderThreeRadialBaseLift z).1)
+      (A.affineOrderThreeRadialBaseLift z).1)
     hg hh (g * h⁻¹)
   rw [hsource, map_mul, mul_smul, map_inv, inv_smul_smul]
 
 /-- Two order-four deck elements entering at the same point differ by the order-four elliptic
 factor. -/
 public theorem orderFour_sameSheet_of_both_enter
-    (A : PaperAnalyticData) (z : sectionSevenAffineVerticalStrip) (g h : Delta)
+    (A : PaperAnalyticData) (z : affineVerticalStrip) (g h : Delta)
     (hg : A.OrderFourDeckEntersNamedCollarAtStrip g z)
     (hh : A.OrderFourDeckEntersNamedCollarAtStrip h z) :
     ∃ a : CyclicFour, g * h⁻¹ = Monoid.Coprod.inr a := by
@@ -128,15 +128,15 @@ public theorem orderFour_sameSheet_of_both_enter
   rw [OrderFourLinearCollarSourceData.eq_def] at D
   apply D.2
     (fuchsianSourceAction g •
-      (A.sectionSevenAffineOrderFourRadialBaseLift z).1)
+      (A.affineOrderFourRadialBaseLift z).1)
     (fuchsianSourceAction h •
-      (A.sectionSevenAffineOrderFourRadialBaseLift z).1)
+      (A.affineOrderFourRadialBaseLift z).1)
     hg hh (g * h⁻¹)
   rw [hsource, map_mul, mul_smul, map_inv, inv_smul_smul]
 
 /-- Membership in one order-three elliptic deck coset transports collar entry. -/
 public theorem orderThree_enter_of_sameSheet
-    (A : PaperAnalyticData) (z : sectionSevenAffineVerticalStrip) (g h : Delta)
+    (A : PaperAnalyticData) (z : affineVerticalStrip) (g h : Delta)
     (hsheet : ∃ a : CyclicThree, g * h⁻¹ = Monoid.Coprod.inl a)
     (hh : A.OrderThreeDeckEntersNamedCollarAtStrip h z) :
     A.OrderThreeDeckEntersNamedCollarAtStrip g z := by
@@ -152,7 +152,7 @@ public theorem orderThree_enter_of_sameSheet
 
 /-- Membership in one order-four elliptic deck coset transports collar entry. -/
 public theorem orderFour_enter_of_sameSheet
-    (A : PaperAnalyticData) (z : sectionSevenAffineVerticalStrip) (g h : Delta)
+    (A : PaperAnalyticData) (z : affineVerticalStrip) (g h : Delta)
     (hsheet : ∃ a : CyclicFour, g * h⁻¹ = Monoid.Coprod.inr a)
     (hh : A.OrderFourDeckEntersNamedCollarAtStrip h z) :
     A.OrderFourDeckEntersNamedCollarAtStrip g z := by
@@ -169,7 +169,7 @@ public theorem orderFour_enter_of_sameSheet
 /-- Entry of a fixed order-three deck sheet is an open condition on the strip. -/
 public theorem isOpen_orderThreeDeckEntersNamedCollarAtStrip
     (A : PaperAnalyticData) (g : Delta) :
-    IsOpen {z : sectionSevenAffineVerticalStrip |
+    IsOpen {z : affineVerticalStrip |
       A.OrderThreeDeckEntersNamedCollarAtStrip g z} := by
   apply isOpen_lt
   · exact continuous_norm.comp
@@ -177,13 +177,13 @@ public theorem isOpen_orderThreeDeckEntersNamedCollarAtStrip
         (orderThreeCayleyHomeomorph.continuous.comp
           ((fuchsianSourceAction_contMDiff g 0).continuous.comp
             (continuous_subtype_val.comp
-              A.sectionSevenAffineOrderThreeRadialBaseLift.continuous))))
+              A.affineOrderThreeRadialBaseLift.continuous))))
   · exact continuous_const
 
 /-- Entry of a fixed order-four deck sheet is an open condition on the strip. -/
 public theorem isOpen_orderFourDeckEntersNamedCollarAtStrip
     (A : PaperAnalyticData) (g : Delta) :
-    IsOpen {z : sectionSevenAffineVerticalStrip |
+    IsOpen {z : affineVerticalStrip |
       A.OrderFourDeckEntersNamedCollarAtStrip g z} := by
   apply isOpen_lt
   · exact continuous_norm.comp
@@ -191,13 +191,13 @@ public theorem isOpen_orderFourDeckEntersNamedCollarAtStrip
         (orderFourCayleyHomeomorph.continuous.comp
           ((fuchsianSourceAction_contMDiff g 0).continuous.comp
             (continuous_subtype_val.comp
-              A.sectionSevenAffineOrderFourRadialBaseLift.continuous))))
+              A.affineOrderFourRadialBaseLift.continuous))))
   · exact continuous_const
 
 /-- The order-three entry set of each fixed deck representative is clopen. -/
 public theorem isClopen_orderThreeDeckEntersNamedCollarAtStrip
     (A : PaperAnalyticData) (g : Delta) :
-    IsClopen {z : sectionSevenAffineVerticalStrip |
+    IsClopen {z : affineVerticalStrip |
       A.OrderThreeDeckEntersNamedCollarAtStrip g z} := by
   refine ⟨?_, A.isOpen_orderThreeDeckEntersNamedCollarAtStrip g⟩
   rw [← isOpen_compl_iff, isOpen_iff_mem_nhds]
@@ -213,7 +213,7 @@ public theorem isClopen_orderThreeDeckEntersNamedCollarAtStrip
 /-- The order-four entry set of each fixed deck representative is clopen. -/
 public theorem isClopen_orderFourDeckEntersNamedCollarAtStrip
     (A : PaperAnalyticData) (g : Delta) :
-    IsClopen {z : sectionSevenAffineVerticalStrip |
+    IsClopen {z : affineVerticalStrip |
       A.OrderFourDeckEntersNamedCollarAtStrip g z} := by
   refine ⟨?_, A.isOpen_orderFourDeckEntersNamedCollarAtStrip g⟩
   rw [← isOpen_compl_iff, isOpen_iff_mem_nhds]
@@ -229,14 +229,14 @@ public theorem isClopen_orderFourDeckEntersNamedCollarAtStrip
 /-- On the connected affine strip, a fixed order-three deck sheet that enters once enters
 everywhere. -/
 public theorem orderThreeDeckEntersNamedCollarAtStrip_of_basepoint
-    (A : PaperAnalyticData) (g : Delta) (z₀ : sectionSevenAffineVerticalStrip)
+    (A : PaperAnalyticData) (g : Delta) (z₀ : affineVerticalStrip)
     (h₀ : A.OrderThreeDeckEntersNamedCollarAtStrip g z₀) :
     ∀ z, A.OrderThreeDeckEntersNamedCollarAtStrip g z := by
-  let _ : ContractibleSpace sectionSevenAffineVerticalStrip :=
-    sectionSevenAffineVerticalStripContractible
+  let _ : ContractibleSpace affineVerticalStrip :=
+    affineVerticalStrip_contractibleSpace
   have hset := (A.isClopen_orderThreeDeckEntersNamedCollarAtStrip g).eq_univ ⟨z₀, h₀⟩
   intro z
-  have hz : z ∈ ({z : sectionSevenAffineVerticalStrip |
+  have hz : z ∈ ({z : affineVerticalStrip |
       A.OrderThreeDeckEntersNamedCollarAtStrip g z} : Set _) := by
     rw [hset]
     exact mem_univ z
@@ -245,14 +245,14 @@ public theorem orderThreeDeckEntersNamedCollarAtStrip_of_basepoint
 /-- On the connected affine strip, a fixed order-four deck sheet that enters once enters
 everywhere. -/
 public theorem orderFourDeckEntersNamedCollarAtStrip_of_basepoint
-    (A : PaperAnalyticData) (g : Delta) (z₀ : sectionSevenAffineVerticalStrip)
+    (A : PaperAnalyticData) (g : Delta) (z₀ : affineVerticalStrip)
     (h₀ : A.OrderFourDeckEntersNamedCollarAtStrip g z₀) :
     ∀ z, A.OrderFourDeckEntersNamedCollarAtStrip g z := by
-  let _ : ContractibleSpace sectionSevenAffineVerticalStrip :=
-    sectionSevenAffineVerticalStripContractible
+  let _ : ContractibleSpace affineVerticalStrip :=
+    affineVerticalStrip_contractibleSpace
   have hset := (A.isClopen_orderFourDeckEntersNamedCollarAtStrip g).eq_univ ⟨z₀, h₀⟩
   intro z
-  have hz : z ∈ ({z : sectionSevenAffineVerticalStrip |
+  have hz : z ∈ ({z : affineVerticalStrip |
       A.OrderFourDeckEntersNamedCollarAtStrip g z} : Set _) := by
     rw [hset]
     exact mem_univ z
@@ -260,36 +260,36 @@ public theorem orderFourDeckEntersNamedCollarAtStrip_of_basepoint
 
 /-- The exact remaining sheet marking at the pinned actual-cusp crossing.  Each entering deck
 representative is required only to lie in the corresponding elliptic stabilizer. -/
-public structure SectionSevenAffineActualCuspCrossingStabilizingSheets
+public structure AffineActualCuspCrossingStabilizingSheets
     (A : PaperAnalyticData) : Prop where
   orderThree : ∃ g : Delta,
     A.OrderThreeDeckEntersNamedCollarAtStrip g
-        A.sectionSevenAffineActualCuspCrossingPoint ∧
+        A.affineActualCuspCrossingPoint ∧
       fuchsianSourceAction g • fuchsianOneFixedPoint = fuchsianOneFixedPoint
   orderFour : ∃ g : Delta,
     A.OrderFourDeckEntersNamedCollarAtStrip g
-        A.sectionSevenAffineActualCuspCrossingPoint ∧
+        A.affineActualCuspCrossingPoint ∧
       fuchsianSourceAction g • fuchsianTwoFixedPoint = fuchsianTwoFixedPoint
 
 /-- Stabilizing named sheets at the single pinned crossing imply both marked-band homotopies. -/
 public theorem markedBandHomotopies_of_actualCuspCrossingStabilizingSheets
     (A : PaperAnalyticData)
-    (H : A.SectionSevenAffineActualCuspCrossingStabilizingSheets) :
-    A.SectionSevenAffineOverlapBandCompatibility := by
+    (H : A.AffineActualCuspCrossingStabilizingSheets) :
+    A.AffineOverlapBandCompatibility := by
   apply markedBandHomotopies_of_affineNamedSheetStabilizingDecks A
   · intro x
     obtain ⟨g, hg, hfix⟩ := H.orderThree
     exact ⟨g,
       A.orderThreeDeckEntersNamedCollarAtStrip_of_basepoint g
-        A.sectionSevenAffineActualCuspCrossingPoint hg
-          (A.sectionSevenAffineBandStripCoordinate x),
+        A.affineActualCuspCrossingPoint hg
+          (A.affineBandStripCoordinate x),
       hfix⟩
   · intro x
     obtain ⟨g, hg, hfix⟩ := H.orderFour
     exact ⟨g,
       A.orderFourDeckEntersNamedCollarAtStrip_of_basepoint g
-        A.sectionSevenAffineActualCuspCrossingPoint hg
-          (A.sectionSevenAffineBandStripCoordinate x),
+        A.affineActualCuspCrossingPoint hg
+          (A.affineBandStripCoordinate x),
       hfix⟩
 
 /-- Equivalently, it suffices to check that the named identity sheets enter the two selected
@@ -297,14 +297,14 @@ collars at the pinned crossing. -/
 public theorem markedBandHomotopies_of_actualCuspCrossingCayleyBounds
     (A : PaperAnalyticData)
     (h₃ : ‖(orderThreeCayleyHomeomorph
-      (A.sectionSevenAffineOrderThreeRadialBaseLift
-        A.sectionSevenAffineActualCuspCrossingPoint).1 : ℂ)‖ <
+      (A.affineOrderThreeRadialBaseLift
+        A.affineActualCuspCrossingPoint).1 : ℂ)‖ <
       A.starSeparation.orderThree.radius)
     (h₄ : ‖(orderFourCayleyHomeomorph
-      (A.sectionSevenAffineOrderFourRadialBaseLift
-        A.sectionSevenAffineActualCuspCrossingPoint).1 : ℂ)‖ <
+      (A.affineOrderFourRadialBaseLift
+        A.affineActualCuspCrossingPoint).1 : ℂ)‖ <
       A.starSeparation.orderFour.radius) :
-    A.SectionSevenAffineOverlapBandCompatibility := by
+    A.AffineOverlapBandCompatibility := by
   apply A.markedBandHomotopies_of_actualCuspCrossingStabilizingSheets
   constructor
   · refine ⟨1, ?_, by simp⟩

@@ -17,7 +17,7 @@ variable (A : PaperAnalyticData)
 
 public theorem orderFour_correctedPeriodTransportIdentity :
     A.OrderFourCorrectedPeriodTransportIdentity := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let _ := regularFamilyDeckAction A.periods
   obtain ⟨H, hH⟩ := A.orderFourCentralBaseFactor_homotopy_globalZeroSectionQuadruple
   obtain ⟨g, hg, hmeridian⟩ := A.orderFourBaseComparisonTrace_enteringSheet H hH
@@ -26,22 +26,22 @@ public theorem orderFour_correctedPeriodTransportIdentity :
     A.modular.modularParameter.toTriangleUniformization_sourceAction
     (sourceActionProperlyDiscontinuous_of_eq
       A.modular.modularParameter.toTriangleUniformization_sourceAction)
-  let ex : (regularFamilyQuotientMap A.periods) ⁻¹' {A.orderFourActualEllipticCentralBase} :=
-    ⟨A.orderFourCollarRegularRepresentativeMap A.orderFourActualEllipticBoundaryBase,
+  let ex : (regularFamilyQuotientMap A.periods) ⁻¹' {A.ellipticFourCentralBase} :=
+    ⟨A.orderFourCollarRegularRepresentativeMap A.ellipticFourBoundaryBase,
       A.orderFourCollarRegularBase_projects⟩
   let ey : (regularFamilyQuotientMap A.periods) ⁻¹' {A.centralAffineBase} :=
-    ⟨A.actualCuspRegularRepresentative,
-      A.actualCuspRegularRepresentative_projects.trans A.centralAffineBase_eq_actualCuspCentralBase.symm⟩
+    ⟨A.cuspRegularRepresentative,
+      A.cuspRegularRepresentative_projects.trans A.centralAffineBase_eq_actualCuspCentralBase.symm⟩
   let W := A.orderFourCentralBaseComparisonTracePath H
   obtain ⟨Q, hQ⟩ := SphereSixComplex.IsCoveringMap.exists_path_lift_of_monodromy_eq
     hp.isCoveringMap W ex (hp.toPermFiber A.centralAffineBase g ey) hg
-  let p₀ := A.orderFourActualStraightCoverPoint
-  let p₁ := regularDeckMap A.periods g A.actualCuspRegularCoverPoint
+  let p₀ := A.ellipticFourStraightCoverPoint
+  let p₁ := regularDeckMap A.periods g A.cuspRegularCoverPoint
   have hp₀ : regularFamilyCoverProjection A.periods p₀ = ex.val :=
-    A.orderFourActualStraightCoverPoint_projects
+    A.ellipticFourStraightCoverPoint_projects
   have hp₁ : regularFamilyCoverProjection A.periods p₁ =
       (hp.toPermFiber A.centralAffineBase g ey).val :=
-    regularFamilyCoverProjection_regularDeckMap A.periods g A.actualCuspRegularCoverPoint
+    regularFamilyCoverProjection_regularDeckMap A.periods g A.cuspRegularCoverPoint
   let Q' : Path (regularFamilyCoverProjection A.periods p₀)
       (regularFamilyCoverProjection A.periods p₁) := Q.cast hp₀ hp₁
   let h₀ := (congrArg (regularFamilyQuotientMap A.periods) hp₀).trans ex.property
@@ -64,7 +64,7 @@ public theorem orderFour_correctedPeriodTransportIdentity :
   have hcoeff : rhoLambda g⁻¹ (-epsilon') =
       rhoLambda ((g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent) (-epsilon') := by
     simp only [map_neg, A.orderFour_enteringSheet_inverse_transports_epsilon' g hmeridian]
-  have hdeck := regularFamilyPeriodLoop_deck A.periods g A.actualCuspRegularCoverPoint
+  have hdeck := regularFamilyPeriodLoop_deck A.periods g A.cuspRegularCoverPoint
     (rhoLambda g⁻¹ (-epsilon'))
   have hcancel : rhoLambda g (rhoLambda g⁻¹ (-epsilon')) = -epsilon' := by simp
   rw [hcancel] at hdeck
@@ -77,7 +77,7 @@ public theorem orderFour_correctedPeriodTransportIdentity :
     change L₁ t = _
     rw [ht]
     change regularFamilyQuotientMap A.periods
-        (regularFamilyPeriodLoop A.periods A.actualCuspRegularCoverPoint
+        (regularFamilyPeriodLoop A.periods A.cuspRegularCoverPoint
           (rhoLambda g⁻¹ (-epsilon')) t) = _
     rw [hcoeff]
     rfl
@@ -109,7 +109,7 @@ public def orderThreeCentralTraceTransportedStraightPeriodPath
   w.symm.trans (A.orderThreeCentralActualBasedStraightFiberPath.trans w)
 
 public def OrderThreeCorrectedPeriodTransportIdentity : Prop :=
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   ∃ H : ContinuousMap.Homotopy A.orderThreeLocalOffsetBaseCentralPath.toContinuousMap
       A.orderThreeCentralAffineZeroSectionTriplePath.toContinuousMap,
     (∀ s : unitInterval, H (s, 0) = H (s, 1)) ∧
@@ -118,7 +118,7 @@ public def OrderThreeCorrectedPeriodTransportIdentity : Prop :=
 
 public theorem orderThree_correctedPeriodTransportIdentity :
     A.OrderThreeCorrectedPeriodTransportIdentity := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let _ := regularFamilyDeckAction A.periods
   obtain ⟨H, hH⟩ := A.orderThreeLocalOffsetBaseCentralPath_homotopy_globalZeroSectionTriple
   obtain ⟨g, hg, hmeridian⟩ := A.orderThreeBaseComparisonTrace_enteringSheet H hH
@@ -127,22 +127,22 @@ public theorem orderThree_correctedPeriodTransportIdentity :
     A.modular.modularParameter.toTriangleUniformization_sourceAction
     (sourceActionProperlyDiscontinuous_of_eq
       A.modular.modularParameter.toTriangleUniformization_sourceAction)
-  let ex : (regularFamilyQuotientMap A.periods) ⁻¹' {A.orderThreeActualEllipticCentralBase} :=
-    ⟨A.orderThreeCollarRegularRepresentativeMap A.orderThreeActualEllipticBoundaryBase,
+  let ex : (regularFamilyQuotientMap A.periods) ⁻¹' {A.ellipticThreeCentralBase} :=
+    ⟨A.orderThreeCollarRegularRepresentativeMap A.ellipticThreeBoundaryBase,
       A.orderThreeCollarRegularBase_projects⟩
   let ey : (regularFamilyQuotientMap A.periods) ⁻¹' {A.centralAffineBase} :=
-    ⟨A.actualCuspRegularRepresentative,
-      A.actualCuspRegularRepresentative_projects.trans A.centralAffineBase_eq_actualCuspCentralBase.symm⟩
+    ⟨A.cuspRegularRepresentative,
+      A.cuspRegularRepresentative_projects.trans A.centralAffineBase_eq_actualCuspCentralBase.symm⟩
   let W := A.orderThreeCentralBaseComparisonTracePath H
   obtain ⟨Q, hQ⟩ := SphereSixComplex.IsCoveringMap.exists_path_lift_of_monodromy_eq
     hp.isCoveringMap W ex (hp.toPermFiber A.centralAffineBase g ey) hg
-  let p₀ := A.orderThreeActualStraightCoverPoint
-  let p₁ := regularDeckMap A.periods g A.actualCuspRegularCoverPoint
+  let p₀ := A.ellipticThreeStraightCoverPoint
+  let p₁ := regularDeckMap A.periods g A.cuspRegularCoverPoint
   have hp₀ : regularFamilyCoverProjection A.periods p₀ = ex.val :=
-    A.orderThreeActualStraightCoverPoint_projects
+    A.ellipticThreeStraightCoverPoint_projects
   have hp₁ : regularFamilyCoverProjection A.periods p₁ =
       (hp.toPermFiber A.centralAffineBase g ey).val :=
-    regularFamilyCoverProjection_regularDeckMap A.periods g A.actualCuspRegularCoverPoint
+    regularFamilyCoverProjection_regularDeckMap A.periods g A.cuspRegularCoverPoint
   let Q' : Path (regularFamilyCoverProjection A.periods p₀)
       (regularFamilyCoverProjection A.periods p₁) := Q.cast hp₀ hp₁
   let h₀ := (congrArg (regularFamilyQuotientMap A.periods) hp₀).trans ex.property
@@ -165,7 +165,7 @@ public theorem orderThree_correctedPeriodTransportIdentity :
   have hcoeff : rhoLambda g⁻¹ epsilon =
       rhoLambda ((g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent) epsilon := by
     simp only [A.orderThree_enteringSheet_inverse_transports_epsilon g hmeridian]
-  have hdeck := regularFamilyPeriodLoop_deck A.periods g A.actualCuspRegularCoverPoint
+  have hdeck := regularFamilyPeriodLoop_deck A.periods g A.cuspRegularCoverPoint
     (rhoLambda g⁻¹ epsilon)
   have hcancel : rhoLambda g (rhoLambda g⁻¹ epsilon) = epsilon := by simp
   rw [hcancel] at hdeck
@@ -178,7 +178,7 @@ public theorem orderThree_correctedPeriodTransportIdentity :
     change L₁ t = _
     rw [ht]
     change regularFamilyQuotientMap A.periods
-        (regularFamilyPeriodLoop A.periods A.actualCuspRegularCoverPoint
+        (regularFamilyPeriodLoop A.periods A.cuspRegularCoverPoint
           (rhoLambda g⁻¹ epsilon) t) = _
     rw [hcoeff]
     rfl
@@ -205,15 +205,15 @@ public theorem orderThree_correctedPeriodTransportIdentity :
 public theorem OrderThreeCorrectedPeriodTransportIdentity.toLocalGlobalFactorPointSetComparison
     (h : A.OrderThreeCorrectedPeriodTransportIdentity) :
     A.OrderThreeLocalGlobalFactorPointSetComparison := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   rcases h with ⟨Hbase, hbaseTrace, hperiod⟩
   rcases A.orderThreeLocalOffsetFiberCentralPath_homotopic_actualBasedStraight with ⟨HlocalPath⟩
   let p := A.orderThreeCentralActualBasedStraightFiberPath
   let w := A.orderThreeCentralBaseComparisonTracePath Hbase
   let transported := A.orderThreeCentralTraceTransportedStraightPeriodPath Hbase
   have hpad : Nonempty (Path.Homotopy p
-      ((Path.refl A.orderThreeActualEllipticCentralBase).trans
-        (p.trans (Path.refl A.orderThreeActualEllipticCentralBase)))) := by
+      ((Path.refl A.ellipticThreeCentralBase).trans
+        (p.trans (Path.refl A.ellipticThreeCentralBase)))) := by
     apply Path.Homotopic.Quotient.exact
     simp
   rcases hpad with ⟨HpadPath⟩
@@ -289,12 +289,12 @@ public theorem OrderThreeCorrectedPeriodTransportIdentity.toLocalGlobalFactorPoi
 public theorem OrderThreeLocalGlobalFactorPointSetComparison.toRegularLoopChartIdentity
     (h : A.OrderThreeLocalGlobalFactorPointSetComparison) :
     A.OrderThreeActualEllipticRegularLoopChartIdentity := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   rcases A.orderThreeProjectedRegularLoop_freeHomotopy_localFiberThenBase_trace with
     ⟨Hsplit, hsplitTrace⟩
   rcases h.assemble A with ⟨Hglobal, hglobalTrace⟩
   let H := Hsplit.trans Hglobal
-  apply A.orderThreeActualEllipticRegularLoopChartIdentity_of_freeHomotopy
+  apply A.ellipticThreeRegularLoopChartIdentity_of_freeHomotopy
     A.orderThreeCentralAffineCorrectedGeometricRelatorPath
     A.orderThreeCentralAffineCorrectedGeometricRelatorPath_class H
   apply Path.ext
@@ -304,8 +304,8 @@ public theorem OrderThreeLocalGlobalFactorPointSetComparison.toRegularLoopChartI
     exact congrArg (fun p : Path _ _ ↦ p r) hsplitTrace
   · exact hglobalTrace
 
-public theorem actualEllipticRelatorNormalClosureResidual_proved :
-    Nonempty (A.ActualEllipticRelatorNormalClosureResidual A.actualCuspCentralNaturality) := by
+public theorem ellipticRelatorMembership_proved :
+    Nonempty (A.EllipticRelatorMembership A.cuspCentralNaturality) := by
   constructor
   constructor
   · exact (A.orderThree_correctedPeriodTransportIdentity.toLocalGlobalFactorPointSetComparison A

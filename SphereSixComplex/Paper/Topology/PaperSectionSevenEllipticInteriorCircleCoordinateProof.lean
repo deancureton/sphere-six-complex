@@ -652,10 +652,10 @@ public theorem additiveCuspRadialFactorizationUnit_ne_zero
 
 public theorem additiveCuspRadialFactorizationUnit_continuous :
     Continuous A.additiveCuspRadialFactorizationUnit := by
-  apply A.actualCuspFactorizationUnit_continuousOn.comp_continuous
+  apply A.cuspFactorizationUnit_continuousOn.comp_continuous
     A.additiveCuspRadialQ_continuous
   intro u
-  rw [actualCuspParameterBall, Metric.mem_ball, dist_zero_right]
+  rw [cuspParameterBall, Metric.mem_ball, dist_zero_right]
   exact A.additiveCuspRadialQ_norm_lt u
 
 /-- The unit-phase summand on the additive cusp cover. -/
@@ -665,16 +665,16 @@ public def additiveCuspFactorizationUnitPhaseMap :
   SphereSixComplex.Topology.puncturedComplexPhase.comp
     ⟨A.additiveCuspFactorizationUnitPhasePoint, by
       apply Continuous.subtype_mk
-      have hunit := A.actualCuspFactorizationUnit_continuousOn.comp_continuous
+      have hunit := A.cuspFactorizationUnit_continuousOn.comp_continuous
         (show Continuous (fun p : additiveCuspRadiusCover
             A.starCuspWitness.localWitness.radius ↦
               CuspPeriodExpansion.cuspQ p.1.2) by
           unfold CuspPeriodExpansion.cuspQ
           fun_prop)
         (fun p ↦ by
-          rw [actualCuspParameterBall, Metric.mem_ball, dist_zero_right]
+          rw [cuspParameterBall, Metric.mem_ball, dist_zero_right]
           exact p.2)
-      change Continuous (A.actualCuspFactorizationUnit ∘
+      change Continuous (A.cuspFactorizationUnit ∘
         fun p : additiveCuspRadiusCover A.starCuspWitness.localWitness.radius ↦
           CuspPeriodExpansion.cuspQ p.1.2)
       exact hunit⟩
@@ -1436,7 +1436,7 @@ degree-one coordinate `[12,0,1]`. -/
 public theorem cuspMappingTorusCorrectedCentralCircleMap_homologyCoordinate :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
-    SectionSevenEllipticInteriorMarkedCycleData.actualCuspEllipticDegreeOneCoordinateAfterAddEquiv
+    EllipticInteriorMarkedCycleData.actualCuspEllipticDegreeOneCoordinateAfterAddEquiv
         G.geometricWangSections.circleMappingTorusHOneAddEquiv =
       StandardCircleHomologyLiftDegree.unitCircleHomologyWinding.comp
         (integralSingularHomologyMap 1 A.cuspMappingTorusCorrectedCentralCircleMap) := by

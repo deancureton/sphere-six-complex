@@ -10,7 +10,7 @@ noncomputable section
 open Function Set Topology
 open scoped ContDiff Manifold
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+namespace SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 public def positiveSublevel (r : ℝ) : TopologicalSpace.Opens carrierPositivePart where
   carrier := {x | constructedModel.t x.1 ∈ Metric.ball 0 r}
@@ -65,4 +65,4 @@ public theorem localPositiveQuadrant_boundary (r : ℝ) :
   rw [Homeomorph.apply_symm_apply] at hq
   exact hq
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+end SphereSixComplex.Geometry.InfiniteA2Toric.Construction

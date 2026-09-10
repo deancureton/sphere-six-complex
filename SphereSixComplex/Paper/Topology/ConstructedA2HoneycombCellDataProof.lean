@@ -19,12 +19,12 @@ noncomputable section
 
 open Function Set Topology
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
 open SphereSixComplex.Geometry.CuspCombinatorics
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 /-- The closed hexagon centred at an integral axial coordinate. -/
 public def constructedA2PlaneCell (v : ToricLattice) : Set (Fin 2 → ℝ) :=
@@ -814,7 +814,7 @@ public theorem constructedA2HoneycombCellData_nonempty_of_finiteQuotient
   H.map fun h ↦ constructedA2HoneycombCellData
     (constructedA2HoneycombCellChartResidualOfFiniteQuotient hr h)
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric
 
 end
 

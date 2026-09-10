@@ -16,7 +16,7 @@ noncomputable section
 
 namespace SphereSixComplex
 
-namespace Geometry.PaperAnalyticData.SectionSevenLocalEulerModels
+namespace Geometry.PaperAnalyticData.LocalEulerModels
 
 open CuspPuncturedCollarBridge
 open Topology.PaperEllipticFillingRealPeriodRadial
@@ -32,7 +32,7 @@ public noncomputable def ofCuspCentralModelAndCollarMappingTorusModels
       (cuspRetraction.quotientCentralFiber A.starCuspWitness))
     (collarMappingTorus : ∀ i : Fin 3, FourTorusCircleMappingTorusModel
       (A.openEmbeddingStarData.collarSource i)) :
-    A.SectionSevenLocalEulerModels where
+    A.LocalEulerModels where
   cuspRetraction := cuspRetraction
   orderThreeRadialChart := orderThreeSelectedAffineRadialCompatibility A
   orderFourRadialChart := orderFourSelectedAffineRadialCompatibility A
@@ -40,7 +40,7 @@ public noncomputable def ofCuspCentralModelAndCollarMappingTorusModels
   cuspCells := cuspCells
   collarModel := collarMappingTorus
 
-end Geometry.PaperAnalyticData.SectionSevenLocalEulerModels
+end Geometry.PaperAnalyticData.LocalEulerModels
 
 end SphereSixComplex
 

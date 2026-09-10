@@ -7,7 +7,7 @@ public import Mathlib.Topology.Separation.Hausdorff
 noncomputable section
 open Set SphereSixComplex.Geometry.CuspCombinatorics SphereSixComplex.Geometry.CuspFilling
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Model
+namespace SphereSixComplex.Geometry.InfiniteA2Toric.Model
 
 public def chartTransport (M N : Model) (upper : Bool) (v : ToricLattice)
     (p : M.Carrier) : N.Carrier :=
@@ -157,4 +157,4 @@ public def centralFiberHomeomorph (M N : Model) :
   continuous_toFun := ((transport_continuous M N).comp continuous_subtype_val).subtype_mk _
   continuous_invFun := ((transport_continuous N M).comp continuous_subtype_val).subtype_mk _
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Model
+end SphereSixComplex.Geometry.InfiniteA2Toric.Model

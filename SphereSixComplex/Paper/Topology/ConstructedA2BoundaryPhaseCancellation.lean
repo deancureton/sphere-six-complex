@@ -6,7 +6,7 @@ public import SphereSixComplex.Paper.Topology.ConstructedA2HexagonBoundaryPhaseG
 noncomputable section
 open Function Set Topology Matrix
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 public def constructedA2CellPreviousIndex : Fin 6 → Fin 6 := ![5, 0, 1, 2, 3, 4]
 
 public theorem constructedA2CorrectedPlaneTile_zero_one (i : Fin 6)
@@ -57,7 +57,7 @@ public theorem constructedA2BoundaryCompactGauge_square_zero_zero (u v : Compact
   simpa only [show 1 - (1 - p.1 1 / 2) = p.1 1 / 2 by ring] using h
 
 open SphereSixComplex.Geometry.CuspCombinatorics
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 public theorem constructedCompactPhaseMonomial_mul (A : Matrix (Fin 3) (Fin 3) ℤ)
     (u v : CompactTorus) :
@@ -184,6 +184,6 @@ public theorem constructedA2BoundaryGauge_zero_zero_fixes_axis (u v : CompactTor
   apply constructedA2BoundaryZeroZeroPhase_cancellation
   exact constructedA2BoundaryCompactGauge_square_zero_zero u v i p hp
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric
 
 end

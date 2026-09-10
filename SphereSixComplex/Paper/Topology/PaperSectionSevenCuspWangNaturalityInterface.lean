@@ -36,13 +36,13 @@ public structure ConnectingCoordinateNaturality
 
 namespace Geometry.PaperAnalyticData
 
-open SectionSevenEllipticTwoDiscHomologyCoordinates
-open SectionSevenEllipticInteriorMarkedCycleData
+open EllipticTwoDiscHomologyCoordinates
+open EllipticInteriorMarkedCycleData
 open SphereSixComplex.CircleMappingTorusHomologyBases
 
-variable {A : PaperAnalyticData} (D : A.SectionSevenEllipticTwoDiscCoverData)
+variable {A : PaperAnalyticData} (D : A.EllipticTwoDiscCoverData)
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 /-- The actual cusp Wang connecting homomorphism before taking monodromy-invariant
 coordinates. -/
@@ -67,7 +67,7 @@ public theorem actualCuspWangBoundaryHom_apply
 public noncomputable def ellipticBandFourthCoordinateHom
     (N : A.EllipticBandHomologyAlignment D) :
     IntegralSingularHomology 1
-        (D.orderThreeSide ∩ D.orderFourSide : Set A.SectionSevenEllipticInterior) →+ ℤ :=
+        (D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior) →+ ℤ :=
   coordinateAfterAddEquiv N.actualHomologyCoordinates.bandOne 3
 
 /-- The fourth marked coordinate on the fibre in the actual cusp Wang presentation. -/
@@ -109,7 +109,7 @@ public theorem sectionSevenCuspPulledBackWangBoundaryComparison_of_connectingNat
   SectionSevenCuspMarkedBoundaryComparison.toPulledBackWangBoundaryComparison D N
     (D.sectionSevenCuspMarkedBoundaryComparison_of_connectingNaturality N h)
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end Geometry.PaperAnalyticData
 

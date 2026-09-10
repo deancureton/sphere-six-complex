@@ -31,7 +31,7 @@ public theorem subsingleton_homology_seven_union
     (hB7 : Subsingleton (IntegralSingularHomology 7 B))
     (hAB6 : Subsingleton (IntegralSingularHomology 6 (A ∩ B : Set X))) :
     Subsingleton (IntegralSingularHomology 7 (A ∪ B : Set X)) := by
-  obtain ⟨boundary, hexact⟩ := establishedIntegralMayerVietorisExactSequence A B hA hB
+  obtain ⟨boundary, hexact⟩ := IntegralMayerVietoris.exact_sequence_of_isOpen A B hA hB
   refine ⟨fun x y => ?_⟩
   have key : ∀ z : IntegralSingularHomology 7 (A ∪ B : Set X), z = 0 := by
     intro z
@@ -98,8 +98,8 @@ public theorem sectionSevenStageTopDegreeVanishing_of_localFinite
     (hcollar : ∀ i, Subsingleton (IntegralSingularHomology 6 (A.collarSource i))) :
     A.SectionSevenStageTopDegreeVanishing :=
   A.sectionSevenStageTopDegreeVanishing_of_collar
-    (hcentral.homologyAboveDimension 7 (by norm_num))
-    (fun i => (hfilling i).homologyAboveDimension 7 (by norm_num)) hcollar
+    (hcentral.subsingleton_homology_of_six_lt 7 (by norm_num))
+    (fun i => (hfilling i).subsingleton_homology_of_six_lt 7 (by norm_num)) hcollar
 
 end OpenEmbeddingStarData
 

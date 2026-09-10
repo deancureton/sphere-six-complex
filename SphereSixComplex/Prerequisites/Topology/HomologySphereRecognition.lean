@@ -33,7 +33,7 @@ public axiom Hurewicz.exists_map :
 /-- For a simply connected space whose positive integral homology vanishes below `n`, every
 degree-`n` class is represented by a map from the standard `n`-sphere. This is the application
 corollary of the general higher Hurewicz theorem. -/
-public theorem generalHigherHurewiczClassSurjectivity
+public theorem Hurewicz.exists_sphere_representative
     (n : ℕ) (hn : 2 ≤ n)
     (X : Type) [TopologicalSpace X] [SimplyConnectedSpace X]
     (hLower : ∀ k : ℕ, 0 < k → k < n →
@@ -43,7 +43,7 @@ public theorem generalHigherHurewiczClassSurjectivity
         ∃ s : IntegralSingularHomology n (TopCat.sphere n : Type),
           integralSingularHomologyMap n f s = c := by
   obtain ⟨H, hH⟩ := Hurewicz.exists_map
-  exact generalHigherHurewiczClassSurjectivity_of_map H hH n hn X hLower
+  exact Hurewicz.Map.exists_sphere_representative H hH n hn X hLower
 
 /-- The homological Whitehead theorem for simply connected spaces of classical CW type. The
 simple-connectivity hypotheses are essential: the corresponding unrestricted integral-homology
@@ -112,7 +112,7 @@ private theorem addMonoidHom_bijective_of_infiniteCyclic_generator_mem_range
     exact hz
 
 /-- The general higher-Hurewicz theorem gives the degree-six interface used by recognition. -/
-public theorem establishedHigherHurewiczSixGenerator
+public theorem SixSphere.has_spherical_generator_of_homology
     (X : Type) [TopologicalSpace X] [SimplyConnectedSpace X]
     (hLower : ∀ n : ℕ, 0 < n → n < 6 → Subsingleton (IntegralSingularHomology n X))
     (hTop : Nonempty (IntegralSingularHomology 6 X ≃+ ℤ)) :
@@ -125,7 +125,7 @@ public theorem establishedHigherHurewiczSixGenerator
   let targetOrientation : IntegralSingularHomology 6 X ≃+ ℤ :=
     Classical.choice hTop
   obtain ⟨f, s, hs⟩ :=
-    generalHigherHurewiczClassSurjectivity 6 (by norm_num) X hLower
+    Hurewicz.exists_sphere_representative 6 (by norm_num) X hLower
       (targetOrientation.symm 1)
   have hfBijective :
       Function.Bijective (integralSingularHomologyMap 6 f) :=
@@ -151,7 +151,7 @@ public theorem establishedHigherHurewiczSixGenerator
   infer_instance
 
 /-- The general smooth-manifold CW theorem gives the fixed six-dimensional interface. -/
-public theorem establishedCompactSmoothSixManifoldClassicalCWType
+public theorem SmoothSixManifold.hasCWType
     (X : Type) [TopologicalSpace X] [T2Space X] [SecondCountableTopology X]
     [ChartedSpace RealModel X]
     [IsManifold (modelWithCornersSelf ℝ RealModel) ∞ X] [CompactSpace X] :
@@ -161,14 +161,14 @@ public theorem establishedCompactSmoothSixManifoldClassicalCWType
   let M := SmoothManifold.finiteCWModel RealModel X hManifold inferInstance
   let _ := M.topology
   let _ := M.cwComplex
-  exact hasClassicalCWType_precomp_homotopyEquiv M.homotopyEquiv
-    (hasClassicalCWType_of_cwComplex M.Carrier)
+  exact CWType.of_homotopyEquiv M.homotopyEquiv
+    (CWType.of_cwComplex M.Carrier)
 
 /-- The general homological Whitehead theorem gives the property-valued interface used here. -/
-public theorem establishedSimplyConnectedClassicalCWIntegralHomologyWhitehead
+public theorem CWType.homological_whitehead_property
     (X Y : Type) [TopologicalSpace X] [TopologicalSpace Y]
     [SimplyConnectedSpace X] [SimplyConnectedSpace Y] :
-    ClassicalCWIntegralHomologyWhiteheadProperty X Y := by
+    CWType.HomologicalWhiteheadProperty X Y := by
   intro hX hY f hf
   exact CWType.homological_whitehead X Y hX hY f hf
 

@@ -19,12 +19,12 @@ open AlgebraicTopology
 
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 
-open SectionSevenEllipticTwoDiscCoverData
-open SectionSevenEllipticInteriorMarkedCycleData
+open EllipticTwoDiscCoverData
+open EllipticInteriorMarkedCycleData
 
 variable {A : PaperAnalyticData}
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 /-- First homology of the two-component overlap in the explicit vertex/edge cover of the actual
 cusp mapping torus. -/
@@ -76,7 +76,7 @@ public theorem actualCuspVertexEdgeOverlapFirstLeg_comp_connecting
 /-- The unconditional signed carrier, viewed as a transport from the full two-legged overlap by
 first projecting to the oriented low leg. -/
 public noncomputable def actualCuspCanonicalTwoLegTransport
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     ActualCuspVertexEdgeOverlapHomologyOne A →+
       CuspCoverIntersectionHomologyOne R :=
   (actualCuspCanonicalSignedOverlap R).comp
@@ -85,7 +85,7 @@ public noncomputable def actualCuspCanonicalTwoLegTransport
 /-- Naturality of the explicit two-legged mapping-torus cover boundary under a proposed
 transport to the overlap of the pulled-back cusp cover. -/
 public def ActualCuspTwoLegConnectingNaturality
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (overlapTransport : ActualCuspVertexEdgeOverlapHomologyOne A →+
       CuspCoverIntersectionHomologyOne R) : Prop :=
   overlapTransport.comp (actualCuspVertexEdgeCoverConnectingHom A) =
@@ -94,7 +94,7 @@ public def ActualCuspTwoLegConnectingNaturality
 /-- Compatibility of the same two-leg transport with the fourth marked band coordinate.  The
 right side reads the low leg before applying the actual cusp-fibre marking. -/
 public def ActualCuspTwoLegMarkedOverlapNaturality
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (overlapTransport : ActualCuspVertexEdgeOverlapHomologyOne A →+
       CuspCoverIntersectionHomologyOne R) : Prop :=
   (R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment).comp
@@ -105,7 +105,7 @@ public def ActualCuspTwoLegMarkedOverlapNaturality
 
 /-- The exact two-leg chain comparison still missing from the geometric development. -/
 public def ActualCuspTwoLegCoverChainNaturality
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (overlapTransport : ActualCuspVertexEdgeOverlapHomologyOne A →+
       CuspCoverIntersectionHomologyOne R) : Prop :=
   ActualCuspTwoLegConnectingNaturality R overlapTransport ∧
@@ -114,7 +114,7 @@ public def ActualCuspTwoLegCoverChainNaturality
 /-- The canonical two-leg transport already intertwines the two oriented connecting maps.  No
 marked coordinate or invariant-basis calculation enters this statement. -/
 public theorem actualCuspCanonicalTwoLegTransport_connectingNaturality
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     ActualCuspTwoLegConnectingNaturality R
       (actualCuspCanonicalTwoLegTransport R) := by
   rw [ActualCuspTwoLegConnectingNaturality, actualCuspCanonicalTwoLegTransport,
@@ -124,7 +124,7 @@ public theorem actualCuspCanonicalTwoLegTransport_connectingNaturality
 /-- For the canonical two-leg transport, the entire residual is its compatibility with the
 fourth marked band coordinate. -/
 public theorem canonicalTwoLegCoverChainNaturality_iff_markedOverlapNaturality
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     ActualCuspTwoLegCoverChainNaturality R
         (actualCuspCanonicalTwoLegTransport R) ↔
       ActualCuspTwoLegMarkedOverlapNaturality R
@@ -134,7 +134,7 @@ public theorem canonicalTwoLegCoverChainNaturality_iff_markedOverlapNaturality
 /-- A two-leg cover-chain comparison gives the marked connecting square without evaluating a
 single raw cusp basis vector. -/
 public theorem cuspMarkedConnectingNaturality_of_twoLegCoverChainNaturality
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (overlapTransport : ActualCuspVertexEdgeOverlapHomologyOne A →+
       CuspCoverIntersectionHomologyOne R)
     (h : ActualCuspTwoLegCoverChainNaturality R overlapTransport) :
@@ -170,7 +170,7 @@ public theorem cuspMarkedConnectingNaturality_of_twoLegCoverChainNaturality
 /-- The explicit two-leg cover-chain comparison discharges the two remaining invariant-basis
 evaluations. -/
 public theorem cuspPulledBackMarkedInvariantBasisData_of_twoLegCoverChainNaturality
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (overlapTransport : ActualCuspVertexEdgeOverlapHomologyOne A →+
       CuspCoverIntersectionHomologyOne R)
     (h : ActualCuspTwoLegCoverChainNaturality R overlapTransport) :
@@ -189,7 +189,7 @@ public theorem cuspPulledBackMarkedInvariantBasisData_of_twoLegCoverChainNatural
 /-- Consequently, only marked-band compatibility of the canonical explicit two-leg transport
 remains in order to eliminate the invariant-basis input. -/
 public theorem cuspPulledBackMarkedInvariantBasisData_of_canonicalTwoLegMarkedNaturality
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (h : ActualCuspTwoLegMarkedOverlapNaturality R
       (actualCuspCanonicalTwoLegTransport R)) :
     CuspPulledBackMarkedInvariantBasisData R :=
@@ -197,7 +197,7 @@ public theorem cuspPulledBackMarkedInvariantBasisData_of_canonicalTwoLegMarkedNa
     (actualCuspCanonicalTwoLegTransport R)
     ⟨actualCuspCanonicalTwoLegTransport_connectingNaturality R, h⟩
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

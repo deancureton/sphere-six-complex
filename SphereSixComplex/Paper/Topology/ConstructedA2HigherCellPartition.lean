@@ -7,7 +7,7 @@ public import SphereSixComplex.Paper.Topology.ConstructedA2HigherCells
 noncomputable section
 open Function Set Topology Matrix
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Periods
@@ -15,7 +15,7 @@ open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 open SphereSixComplex.Geometry.CuspPhaseEstimates
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
@@ -37,8 +37,8 @@ public theorem constructedA2CorrectedPhaseOrbit_relativePhase_eq
     (y : Metric.ball (0 : Fin (2 + n) → ℝ) 1)
     (h : constructedA2CorrectedPhaseOrbit W m phase x.1 =
       constructedA2CorrectedPhaseOrbit W n phase' y.1) :
-    phase (constructedBallSplitHomeomorph 2 m x).2.1 =
-      phase' (constructedBallSplitHomeomorph 2 n y).2.1 := by
+    phase (SupNormBall.prodHomeomorph 2 m x).2.1 =
+      phase' (SupNormBall.prodHomeomorph 2 n y).2.1 := by
   rw [constructedA2CorrectedPhaseOrbit_ball_formula,
     constructedA2CorrectedPhaseOrbit_ball_formula] at h
   have hp := (constructedA2CorrectedSingletonProductHomeomorph W).injective (Subtype.ext h)
@@ -51,15 +51,15 @@ public theorem constructedA2CorrectedPositiveTwo_relativePhase_eq_one
     (y : Metric.ball (0 : Fin (2 + n) → ℝ) 1)
     (h : constructedA2CorrectedPositiveTwoOrbit W x.1 =
       constructedA2CorrectedPhaseOrbit W n phase y.1) :
-    phase (constructedBallSplitHomeomorph 2 n y).2.1 = 1 := by
+    phase (SupNormBall.prodHomeomorph 2 n y).2.1 = 1 := by
   rw [constructedA2CorrectedPositiveTwoOrbit_corrected_formula,
     constructedA2CorrectedPhaseOrbit_ball_formula] at h
   have hp := (constructedA2CorrectedSingletonProductHomeomorph W).injective (Subtype.ext h)
   exact (congrArg Prod.snd hp).symm
 
 public theorem constructedCircleBallCell_ne_one {x : Fin 1 → ℝ}
-    (hx : x ∈ Metric.ball 0 1) : constructedCircleBallCell x ≠ 1 :=
-  constructedCircleCell_ne_one (constructedBallOneHomeomorph ⟨x, hx⟩).property
+    (hx : x ∈ Metric.ball 0 1) : CircleCell.ballParam x ≠ 1 :=
+  CircleCell.param_ne_one (SupNormBall.oneHomeomorphIoo ⟨x, hx⟩).property
 
 public theorem constructedA2CircleOnePhase_ne_one {x : Fin 1 → ℝ}
     (hx : x ∈ Metric.ball 0 1) (i : Fin 2) : constructedA2CircleOnePhase i x ≠ 1 := by
@@ -73,7 +73,7 @@ public theorem constructedA2CircleTwoPhase_apply_ne_one {x : Fin 2 → ℝ}
     (hx : x ∈ Metric.ball 0 1) (i : Fin 2) : constructedA2CircleTwoPhase x i ≠ 1 := by
   have hn : ‖x‖ < 1 := by simpa [Metric.mem_ball, dist_zero_right] using hx
   have hi : |x i| < 1 := (norm_le_pi_norm x i).trans_lt hn
-  exact constructedCircleCell_ne_one (abs_lt.mp hi)
+  exact CircleCell.param_ne_one (abs_lt.mp hi)
 
 public theorem constructedA2CorrectedPositiveTwo_three_disjoint
     (W : ActualPuncturedCuspCollarWitness N constructedModel) (i : Fin 2) :
@@ -83,7 +83,7 @@ public theorem constructedA2CorrectedPositiveTwo_three_disjoint
   rintro q ⟨x, hx, hxq⟩ ⟨y, hy, hyq⟩
   have h := constructedA2CorrectedPositiveTwo_relativePhase_eq_one W 1 _
     ⟨x, hx⟩ ⟨y, hy⟩ (hxq.trans hyq.symm)
-  exact constructedA2CircleOnePhase_ne_one (constructedBallSplitHomeomorph 2 1 ⟨y, hy⟩).2.property i h
+  exact constructedA2CircleOnePhase_ne_one (SupNormBall.prodHomeomorph 2 1 ⟨y, hy⟩).2.property i h
 
 public theorem constructedA2CorrectedPositiveTwo_four_disjoint
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
@@ -94,7 +94,7 @@ public theorem constructedA2CorrectedPositiveTwo_four_disjoint
   have h := constructedA2CorrectedPositiveTwo_relativePhase_eq_one W 2 _
     ⟨x, hx⟩ ⟨y, hy⟩ (hxq.trans hyq.symm)
   exact constructedA2CircleTwoPhase_apply_ne_one
-    (constructedBallSplitHomeomorph 2 2 ⟨y, hy⟩).2.property 0 (congrFun h 0)
+    (SupNormBall.prodHomeomorph 2 2 ⟨y, hy⟩).2.property 0 (congrFun h 0)
 
 public theorem constructedA2CorrectedThreeOrbit_pairwiseDisjoint
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
@@ -112,7 +112,7 @@ public theorem constructedA2CorrectedThreeOrbit_pairwiseDisjoint
     | exact (hij rfl).elim
     | dsimp [constructedA2CircleOnePhase] at hi
       exact constructedCircleBallCell_ne_one
-        (constructedBallSplitHomeomorph 2 1 ⟨x, hx⟩).2.property hi
+        (SupNormBall.prodHomeomorph 2 1 ⟨x, hx⟩).2.property hi
 
 public theorem constructedA2CorrectedThree_four_disjoint
     (W : ActualPuncturedCuspCollarWitness N constructedModel) (i : Fin 2) :
@@ -126,11 +126,11 @@ public theorem constructedA2CorrectedThree_four_disjoint
   · have hi := congrFun h 1
     dsimp [constructedA2CircleOnePhase] at hi
     exact constructedA2CircleTwoPhase_apply_ne_one
-      (constructedBallSplitHomeomorph 2 2 ⟨y, hy⟩).2.property 1 hi.symm
+      (SupNormBall.prodHomeomorph 2 2 ⟨y, hy⟩).2.property 1 hi.symm
   · have hi := congrFun h 0
     dsimp [constructedA2CircleOnePhase] at hi
     exact constructedA2CircleTwoPhase_apply_ne_one
-      (constructedBallSplitHomeomorph 2 2 ⟨y, hy⟩).2.property 0 hi.symm
+      (SupNormBall.prodHomeomorph 2 2 ⟨y, hy⟩).2.property 0 hi.symm
 
 public theorem constructedA2CorrectedPositiveTwoOrbit_mem_singleton
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
@@ -160,11 +160,11 @@ public theorem constructedA2ActualSingleton_not_of_support_ge_two
   omega
 
 public theorem constructedCircleCell_surjOn_closed :
-    Set.SurjOn constructedCircleCell (Icc (-1 : ℝ) 1) Set.univ := by
+    Set.SurjOn CircleCell.param (Icc (-1 : ℝ) 1) Set.univ := by
   intro z _
   by_cases hz : z = 1
   · exact ⟨-1, by norm_num, by simp [hz]⟩
-  · obtain ⟨t, ht, heq⟩ := constructedCircleCell_surjOn hz
+  · obtain ⟨t, ht, heq⟩ := CircleCell.surjOn_param hz
     exact ⟨t, ⟨ht.1.le, ht.2.le⟩, heq⟩
 
 public theorem constructedA2CircleTwoPhase_surjOn_closed :
@@ -220,6 +220,6 @@ public theorem constructedA2BoundaryTwoSkeleton_union_closedFour
       apply constructedA2ActualSingleton_subset_closedFour W
       exact ⟨p, rfl, by omega⟩
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric
 
 end

@@ -27,27 +27,27 @@ variable (A : PaperAnalyticData)
 /-- The fixed order-four fibre coordinate of the complete filling loop before removing the
 constant collar offset. -/
 public noncomputable def orderFourPrincipalGaugeWithOffsetMap :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     C(unitInterval,
       AdditiveTorus
         (parameterMap A.periods
           A.modular.modularParameter.toTriangleUniformization.zTwo).1) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   exact
     { toFun := fun t ↦ A.orderFourFillingRelationPrincipalGaugeLoop t +
-        Quotient.mk _ A.orderFourActualEllipticBoundaryBase.2.2
+        Quotient.mk _ A.ellipticFourBoundaryBase.2.2
       continuous_toFun := by fun_prop }
 
 /-- Straight contraction of the fixed collar offset in the universal vector cover of the
 order-four torus fibre. -/
 public def orderFourPrincipalGaugeOffsetHomotopy :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     ContinuousMap.Homotopy A.orderFourPrincipalGaugeWithOffsetMap
       A.orderFourFillingRelationPrincipalGaugeLoop.toContinuousMap := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let p := (parameterMap A.periods
     A.modular.modularParameter.toTriangleUniformization.zTwo).1
-  let v := A.orderFourActualEllipticBoundaryBase.2.2
+  let v := A.ellipticFourBoundaryBase.2.2
   exact
     { toFun := fun st ↦ A.orderFourFillingRelationPrincipalGaugeLoop st.2 +
         (Quotient.mk _
@@ -73,26 +73,26 @@ public def orderFourPrincipalGaugeOffsetHomotopy :
 /-- The base coordinate paired with the exact fixed-fibre coordinate from the local-product
 formula. -/
 public noncomputable def orderFourBaseGaugeProductMap :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     C(unitInterval,
       TwicePuncturedComplex ×
         AdditiveTorus
           (parameterMap A.periods
             A.modular.modularParameter.toTriangleUniformization.zTwo).1) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   exact A.orderFourFillingRelationBaseCoordinateMap.prodMk
     A.orderFourPrincipalGaugeWithOffsetMap
 
 /-- Removing the fixed fibre offset and applying the quartic base homotopy gives the complete
 coordinate pair: the positive one-meridian quadruple together with the principal gauge loop. -/
 public theorem orderFourBaseGaugeProduct_quadrupleGaugeHomotopy :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     Nonempty (ContinuousMap.Homotopy
       A.orderFourBaseGaugeProductMap
       (twicePuncturedCounterclockwiseOneQuadruple.toContinuousMap.prodMk
         A.orderFourFillingRelationPrincipalGaugeLoop.toContinuousMap)) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
-  rcases A.orderFourActualCayleyBaseCoordinate_quadrupleHomotopy with ⟨Hbase⟩
+  let _ := A.ellipticFourBoundaryAction
+  rcases A.ellipticFourCayleyBaseCoordinate_quadrupleHomotopy with ⟨Hbase⟩
   let Hbase' := Hbase.cast
     A.orderFourFillingRelationBaseCoordinateMap_eq_cayley.symm rfl
   let Hoffset := A.orderFourPrincipalGaugeOffsetHomotopy
@@ -152,7 +152,7 @@ public noncomputable def orderFourZeroSectionQuadruplePath :
 public theorem orderFourZeroSectionBase_quadrupleHomotopy :
     Nonempty (ContinuousMap.Homotopy A.orderFourZeroSectionBaseMap
       A.orderFourZeroSectionQuadruplePath.toContinuousMap) := by
-  rcases A.orderFourActualCayleyBaseCoordinate_quadrupleHomotopy with ⟨H⟩
+  rcases A.ellipticFourCayleyBaseCoordinate_quadrupleHomotopy with ⟨H⟩
   let H' := H.cast A.orderFourFillingRelationBaseCoordinateMap_eq_cayley.symm rfl
   exact ⟨{
     toFun := fun st ↦ A.markedBaseToCentralZeroSection (H' st)
@@ -181,15 +181,15 @@ public theorem orderFourZeroSectionQuadruplePath_class :
   exact h
 
 /-- Rebase the lifted four-turn zero-section circle at the selected actual cusp point. -/
-public noncomputable def orderFourActualCuspZeroSectionQuadruplePath :
-    Path A.actualCuspCentralBase A.actualCuspCentralBase :=
-  A.actualCuspMarkedCentralWhisker.symm.trans
-    (A.orderFourZeroSectionQuadruplePath.trans A.actualCuspMarkedCentralWhisker)
+public noncomputable def ellipticFourCuspZeroSectionQuadruplePath :
+    Path A.cuspCentralBase A.cuspCentralBase :=
+  A.cuspMarkedCentralWhisker.symm.trans
+    (A.orderFourZeroSectionQuadruplePath.trans A.cuspMarkedCentralWhisker)
 
 /-- At the actual cusp basepoint, the zero-section part is the fourth power of the geometric
 second central meridian. -/
-public theorem orderFourActualCuspZeroSectionQuadruplePath_class :
-    Path.Homotopic.Quotient.mk A.orderFourActualCuspZeroSectionQuadruplePath =
+public theorem ellipticFourCuspZeroSectionQuadruplePath_class :
+    Path.Homotopic.Quotient.mk A.ellipticFourCuspZeroSectionQuadruplePath =
       A.geometricCentralRhoTwo ^ 4 := by
   have h := congrArg A.markedCentralToActualCuspEquiv
     A.orderFourZeroSectionQuadruplePath_class
@@ -199,17 +199,17 @@ public theorem orderFourActualCuspZeroSectionQuadruplePath_class :
 /-- The straight vector-cover segment with the same period endpoint as the order-four
 principal gauge. -/
 public noncomputable def orderFourPrincipalGaugeStraightLiftPath :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     Path (A.orderFourFillingRelationPrincipalGaugeCoverLift 0)
       (A.orderFourFillingRelationPrincipalGaugeDeck •
         A.orderFourFillingRelationPrincipalGaugeCoverLift 0) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   exact Path.segment _ _
 
 /-- The fixed-fibre loop obtained by projecting the straight negative-epsilon-prime period
 segment. -/
 public noncomputable def orderFourPrincipalGaugeStraightLoop :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     Path
       (torusProjection
         (parameterMap A.periods
@@ -219,7 +219,7 @@ public noncomputable def orderFourPrincipalGaugeStraightLoop :
         (parameterMap A.periods
           A.modular.modularParameter.toTriangleUniformization.zTwo).1
         (A.orderFourFillingRelationPrincipalGaugeCoverLift 0)) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let _ : ProperlyDiscontinuousSMul
       (PeriodGroup
         (parameterMap A.periods
@@ -245,10 +245,10 @@ public noncomputable def orderFourPrincipalGaugeStraightLoop :
 /-- The analytic principal gauge and the literal straight negative-epsilon-prime period loop
 have the same fixed-torus path class. -/
 public theorem orderFourFillingRelationPrincipalGaugeLoop_class_eq_straight :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     pathLoopClass A.orderFourFillingRelationPrincipalGaugeLoop =
       pathLoopClass A.orderFourPrincipalGaugeStraightLoop := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let _ : ProperlyDiscontinuousSMul
       (PeriodGroup
         (parameterMap A.periods
@@ -318,15 +318,15 @@ public theorem orderFourMarkedCentralNegEpsilonPrimePeriodPath_class :
 
 /-- Rebase the marked literal negative-epsilon-prime period path at the selected actual cusp
 point. -/
-public noncomputable def orderFourActualCuspMarkedNegEpsilonPrimePeriodPath :
-    Path A.actualCuspCentralBase A.actualCuspCentralBase :=
-  A.actualCuspMarkedCentralWhisker.symm.trans
+public noncomputable def ellipticFourCuspMarkedNegEpsilonPrimePeriodPath :
+    Path A.cuspCentralBase A.cuspCentralBase :=
+  A.cuspMarkedCentralWhisker.symm.trans
     (A.orderFourMarkedCentralNegEpsilonPrimePeriodPath.trans
-      A.actualCuspMarkedCentralWhisker)
+      A.cuspMarkedCentralWhisker)
 
 /-- The rebased literal period path represents the transported geometric translation. -/
-public theorem orderFourActualCuspMarkedNegEpsilonPrimePeriodPath_class :
-    Path.Homotopic.Quotient.mk A.orderFourActualCuspMarkedNegEpsilonPrimePeriodPath =
+public theorem ellipticFourCuspMarkedNegEpsilonPrimePeriodPath_class :
+    Path.Homotopic.Quotient.mk A.ellipticFourCuspMarkedNegEpsilonPrimePeriodPath =
       Additive.toMul (A.geometricCentralTranslation (-epsilon')) := by
   have h := congrArg A.markedCentralToActualCuspEquiv
     A.orderFourMarkedCentralNegEpsilonPrimePeriodPath_class
@@ -334,20 +334,20 @@ public theorem orderFourActualCuspMarkedNegEpsilonPrimePeriodPath_class :
 
 /-- A literal global loop representing the geometric order-four meridian relator with its
 negative-epsilon-prime period contribution. -/
-public noncomputable def orderFourActualCuspGeometricRelatorPath :
-    Path A.actualCuspCentralBase A.actualCuspCentralBase :=
-  A.orderFourActualCuspMarkedNegEpsilonPrimePeriodPath.trans
-    A.orderFourActualCuspZeroSectionQuadruplePath
+public noncomputable def ellipticFourCuspGeometricRelatorPath :
+    Path A.cuspCentralBase A.cuspCentralBase :=
+  A.ellipticFourCuspMarkedNegEpsilonPrimePeriodPath.trans
+    A.ellipticFourCuspZeroSectionQuadruplePath
 
 /-- The explicit global representative has the expected order-four geometric product class. -/
-public theorem orderFourActualCuspGeometricRelatorPath_class :
-    Path.Homotopic.Quotient.mk A.orderFourActualCuspGeometricRelatorPath =
+public theorem ellipticFourCuspGeometricRelatorPath_class :
+    Path.Homotopic.Quotient.mk A.ellipticFourCuspGeometricRelatorPath =
       A.geometricCentralRhoTwo ^ 4 *
         (Additive.toMul (A.geometricCentralTranslation epsilon'))⁻¹ := by
-  rw [orderFourActualCuspGeometricRelatorPath,
+  rw [ellipticFourCuspGeometricRelatorPath,
     Path.Homotopic.Quotient.mk_trans,
-    A.orderFourActualCuspZeroSectionQuadruplePath_class,
-    A.orderFourActualCuspMarkedNegEpsilonPrimePeriodPath_class]
+    A.ellipticFourCuspZeroSectionQuadruplePath_class,
+    A.ellipticFourCuspMarkedNegEpsilonPrimePeriodPath_class]
   rw [map_neg, toMul_neg]
   rfl
 

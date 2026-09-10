@@ -27,13 +27,13 @@ public theorem regularThirdCircleFamily_gZero (A : PaperAnalyticData) (k : ℤ)
   exact h
 
 public def normalizedThirdPeriodLoop (A : PaperAnalyticData)
-    (p : Path A.sectionSevenAffineNormalizedMidpoint
-      (regularSourceEquiv g₀⁻¹ A.sectionSevenAffineNormalizedMidpoint)) :
-    Path (A.regularThirdCircleFamily A.sectionSevenAffineNormalizedMidpoint)
-      (A.regularThirdCircleFamily A.sectionSevenAffineNormalizedMidpoint) :=
+    (p : Path A.affineNormalizedMidpoint
+      (regularSourceEquiv g₀⁻¹ A.affineNormalizedMidpoint)) :
+    Path (A.regularThirdCircleFamily A.affineNormalizedMidpoint)
+      (A.regularThirdCircleFamily A.affineNormalizedMidpoint) :=
   (p.map A.regularThirdCircleFamily.continuous).cast rfl
     (by simpa using (A.regularThirdCircleFamily_gZero (-1)
-      A.sectionSevenAffineNormalizedMidpoint).symm)
+      A.affineNormalizedMidpoint).symm)
 
 public theorem normalizedThirdPeriodLoop_homotopic (A : PaperAnalyticData) :
     (A.normalizedThirdPeriodLoop A.normalizedWhiskeredCuspRegularPath).Homotopic
@@ -54,31 +54,31 @@ public theorem regularThirdCircleFamily_peripheral (A : PaperAnalyticData) (k : 
 public theorem regularThirdCircleFamily_normalizedCuspEndpoint (A : PaperAnalyticData) :
     A.regularThirdCircleFamily
       (regularSourceEquiv (((g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent)⁻¹)
-        (regularTotalSpaceBase A.periods A.actualCuspRegularRepresentative)) =
-      A.actualCuspChosenThirdPeriodFamily 0 := by
+        (regularTotalSpaceBase A.periods A.cuspRegularRepresentative)) =
+      A.cuspChosenThirdPeriodFamily 0 := by
   rw [← zpow_neg, A.regularThirdCircleFamily_peripheral]
-  rw [← A.actualCuspChosenPositiveRegularBase_zero]
+  rw [← A.cuspChosenPositiveRegularBase_zero]
   rfl
 
 public def normalizedThirdCircleWhisker (A : PaperAnalyticData) :
-    Path (A.regularThirdCircleFamily A.sectionSevenAffineNormalizedMidpoint)
-      (A.actualCuspChosenThirdPeriodFamily 0) :=
-  (A.sectionSevenAffineNormalizedCuspPath.map A.regularThirdCircleFamily.continuous).cast rfl
+    Path (A.regularThirdCircleFamily A.affineNormalizedMidpoint)
+      (A.cuspChosenThirdPeriodFamily 0) :=
+  (A.affineNormalizedCuspPath.map A.regularThirdCircleFamily.continuous).cast rfl
     A.regularThirdCircleFamily_normalizedCuspEndpoint.symm
 
 public theorem regularThirdCircleFamily_positivePath (A : PaperAnalyticData) (t : unitInterval) :
     A.regularThirdCircleFamily (A.normalizedCuspPositiveRegularPath t) =
-      A.actualCuspChosenThirdPeriodFamily t := by
+      A.cuspChosenThirdPeriodFamily t := by
   change A.regularThirdCircleFamily
     (regularSourceEquiv (((g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent)⁻¹)
-      (A.actualCuspChosenPositiveRegularBase t)) = _
+      (A.cuspChosenPositiveRegularBase t)) = _
   rw [← zpow_neg, A.regularThirdCircleFamily_peripheral]
   rfl
 
 public theorem normalizedThirdPeriodLoop_eq_whisker (A : PaperAnalyticData) :
     A.normalizedThirdPeriodLoop A.normalizedWhiskeredCuspRegularPath =
       A.normalizedThirdCircleWhisker.trans
-        (A.actualCuspChosenThirdPeriodLoop.trans A.normalizedThirdCircleWhisker.symm) := by
+        (A.cuspChosenThirdPeriodLoop.trans A.normalizedThirdCircleWhisker.symm) := by
   apply Path.ext
   funext t
   simp only [normalizedThirdPeriodLoop, normalizedWhiskeredCuspRegularPath,
@@ -88,18 +88,18 @@ public theorem normalizedThirdPeriodLoop_eq_whisker (A : PaperAnalyticData) :
   · rfl
   · exact A.regularThirdCircleFamily_positivePath _
   · simpa using A.regularThirdCircleFamily_gZero (-1)
-      (A.sectionSevenAffineNormalizedCuspPath (unitInterval.symm _))
+      (A.affineNormalizedCuspPath (unitInterval.symm _))
 
-public def actualCuspChosenThirdSweep_homotopy_normalizedMeridians (A : PaperAnalyticData) :
-    (A.actualCuspChosenThirdSweepCentral.comp
+public def cuspChosenThirdSweep_homotopy_normalizedMeridians (A : PaperAnalyticData) :
+    (A.cuspChosenThirdSweepCentral.comp
       ((CircleProductIdentityMappingTorus.circleProductIdentityMappingTorusHomeomorph
         (X := StdTorus 1)).symm :
           C(CircleMappingTorus (Homeomorph.refl (StdTorus 1)), UnitAddCircle × StdTorus 1))).Homotopy
       (identityMappingTorusMapOfLoop
         (A.normalizedThirdPeriodLoop A.normalizedMeridianPairRegularPath)) := by
-  rw [← A.actualCuspChosenThirdSweepCentral_loop_realization]
+  rw [← A.cuspChosenThirdSweepCentral_loop_realization]
   refine (identityMappingTorusMapOfLoop_whiskerHomotopy
-    A.normalizedThirdCircleWhisker A.actualCuspChosenThirdPeriodLoop).symm.trans ?_
+    A.normalizedThirdCircleWhisker A.cuspChosenThirdPeriodLoop).symm.trans ?_
   rw [← A.normalizedThirdPeriodLoop_eq_whisker]
   exact identityMappingTorusMapOfLoop_homotopy A.normalizedThirdPeriodLoop_homotopic.some
 

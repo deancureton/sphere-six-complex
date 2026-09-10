@@ -19,13 +19,13 @@ open AlgebraicTopology
 
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 
-open SectionSevenEllipticInteriorMarkedCycleData
-open SectionSevenEllipticTwoDiscCoverData
-open SectionSevenEllipticTwoDiscHomologyCoordinates
+open EllipticInteriorMarkedCycleData
+open EllipticTwoDiscCoverData
+open EllipticTwoDiscHomologyCoordinates
 
-variable {A : PaperAnalyticData} {D : A.SectionSevenEllipticTwoDiscCoverData}
+variable {A : PaperAnalyticData} {D : A.EllipticTwoDiscCoverData}
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 /-- Any side lift of the fourth raw cusp class has the same class in the degree-two
 coinvariants as the lift selected by `indexFourSideLift`. -/
@@ -184,7 +184,7 @@ public theorem normalizedIndexFourPrismCoefficientCalculation_iff_total_orientat
   rw [D.normalizedIndexFourPrismCoefficientCalculation_iff_sideLiftGenerator N G C]
   exact D.indexFourSideLift_quotient_eq_generator_iff_total_orientation N G
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 namespace EstablishedSectionSevenCuspTopology
 
@@ -192,7 +192,7 @@ namespace EstablishedSectionSevenCuspTopology
 cusp--band square and meridian projection leaves exactly the total-homology orientation of the
 fourth raw cusp class. -/
 public theorem normalizedIndexFourPrismCoefficientCalculation_existingGeometry_iff_orientation
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (G : R.twoDiscCover.SectionSevenCuspPulledBackBoundaryBasisBridge R.homologyAlignment)
     (hTop : R.twoDiscCover.CanonicalCuspFiberBandTopologicalCompatibility)
     (M : R.twoDiscCover.CuspEllipticMappingTorusMeridianProjectionComparison
@@ -210,7 +210,7 @@ public theorem normalizedIndexFourPrismCoefficientCalculation_existingGeometry_i
 existence of a side lift with the explicit primitive positive finite-cover coordinates. -/
 public theorem
     normalizedIndexFourPrismCoefficientCalculation_existingGeometry_iff_positive_side_lift
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (G : R.twoDiscCover.SectionSevenCuspPulledBackBoundaryBasisBridge R.homologyAlignment)
     (hTop : R.twoDiscCover.CanonicalCuspFiberBandTopologicalCompatibility)
     (M : R.twoDiscCover.CuspEllipticMappingTorusMeridianProjectionComparison

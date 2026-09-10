@@ -27,20 +27,20 @@ open SphereSixComplex.Geometry.CuspRadialClutchingConstruction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
 
-variable {A : PaperAnalyticData} (D : A.SectionSevenEllipticTwoDiscCoverData)
+variable {A : PaperAnalyticData} (D : A.EllipticTwoDiscCoverData)
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 /-- Every point of the actual cusp collar enters the elliptic interior through its central
 piece. -/
 public theorem cuspToEllipticInteriorMap_mem_centralImage
     (q : A.openEmbeddingStarData.collarSource 0) :
-    D.cuspToEllipticInteriorMap q ∈ A.sectionSevenEllipticCentralImage := by
+    D.cuspToEllipticInteriorMap q ∈ A.ellipticCentralImage := by
   let y := A.cuspCollarToSectionSevenFinalOverlapHomeomorph q
   have hy : y.1 ∈
       (A.openEmbeddingStarData.SectionSevenEulerCover).piece 0 ∩
         (A.openEmbeddingStarData.SectionSevenEulerCover).piece 1 := by
-    rw [← A.sectionSevenFinalOverlap_eq_centralCuspIntersection]
+    rw [← A.cuspAttachmentOverlap_eq_centralCuspIntersection]
     exact y.2
   change (A.cuspCollarToSectionSevenFinalOverlapHomeomorph q).1 ∈
     (A.openEmbeddingStarData.SectionSevenEulerCover).piece 0
@@ -50,19 +50,19 @@ public theorem cuspToEllipticInteriorMap_mem_centralImage
 quotient by the explicit additive-to-global map. -/
 public theorem sectionSevenEllipticCentralCoordinate_cuspToEllipticInteriorMap_additivePoint
     (p : additiveCuspRadiusCover A.starCuspWitness.localWitness.radius) :
-    A.sectionSevenEllipticCentralCoordinate
+    A.ellipticCentralCoordinate
       ⟨D.cuspToEllipticInteriorMap
           (additiveCuspBoundaryProjection A.starCuspWitness p),
         D.cuspToEllipticInteriorMap_mem_centralImage
           (additiveCuspBoundaryProjection A.starCuspWitness p)⟩ =
       A.centralFamilyCoordinate
-        (A.actualCuspOverlapToCentral (A.actualCuspBoundaryProjection p)) := by
-  unfold sectionSevenEllipticCentralCoordinate
+        (A.cuspOverlapToCentral (A.cuspBoundaryProjection p)) := by
+  unfold ellipticCentralCoordinate
   congr 1
   apply A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph.injective
   apply Subtype.ext
   rw [A.centralToSectionSevenEulerPiece_centralImage,
-    A.actualCuspOverlapToCentral_boundaryProjection]
+    A.cuspOverlapToCentral_boundaryProjection]
   have hglobal :
       additiveCuspCoverToGlobal A.starCuspWitness p =
         A.starToCentral 0 (additiveCuspBoundaryProjection A.starCuspWitness p) := by
@@ -76,7 +76,7 @@ public theorem sectionSevenEllipticCentralCoordinate_cuspToEllipticInteriorMap_a
         (additiveCuspBoundaryProjection A.starCuspWitness p),
       D.cuspToEllipticInteriorMap_mem_centralImage
         (additiveCuspBoundaryProjection A.starCuspWitness p)⟩ :
-          A.sectionSevenEllipticCentralImage) =
+          A.ellipticCentralImage) =
         A.openEmbeddingStarData.collarSourceToGlued 0
           (additiveCuspBoundaryProjection A.starCuspWitness p) := rfl
     _ = (A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
@@ -90,20 +90,20 @@ public theorem sectionSevenEllipticCentralCoordinate_cuspToEllipticInteriorMap_a
 public theorem
     sectionSevenEllipticCentralCoordinate_cuspToEllipticInteriorMap_additivePoint_fst
     (p : additiveCuspRadiusCover A.starCuspWitness.localWitness.radius) :
-    (A.sectionSevenEllipticCentralCoordinate
+    (A.ellipticCentralCoordinate
       ⟨D.cuspToEllipticInteriorMap
           (additiveCuspBoundaryProjection A.starCuspWitness p),
         D.cuspToEllipticInteriorMap_mem_centralImage
           (additiveCuspBoundaryProjection A.starCuspWitness p)⟩).1 =
       A.modular.sourceCoordinate.coordinate (A.cuspCoordinate.lift p.1.2) := by
   rw [D.sectionSevenEllipticCentralCoordinate_cuspToEllipticInteriorMap_additivePoint,
-    A.actualCuspOverlapToCentral_boundaryProjection]
+    A.cuspOverlapToCentral_boundaryProjection]
   rfl
 
 /-- Every period point over affine height `1/2` lies in both concrete sides of the pulled-back
 two-open cover. -/
 public theorem cuspToEllipticInteriorMap_additivePoint_mem_sideIntersection
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (p : additiveCuspRadiusCover A.starCuspWitness.localWitness.radius)
     (hp : (A.modular.sourceCoordinate.coordinate (A.cuspCoordinate.lift p.1.2)).re =
       1 / 2) :
@@ -111,25 +111,25 @@ public theorem cuspToEllipticInteriorMap_additivePoint_mem_sideIntersection
         (additiveCuspBoundaryProjection A.starCuspWitness p) ∈
       R.twoDiscCover.orderThreeSide ∩ R.twoDiscCover.orderFourSide := by
   let D := R.twoDiscCover
-  let x : A.SectionSevenEllipticInterior :=
+  let x : A.ellipticInterior :=
     D.cuspToEllipticInteriorMap (additiveCuspBoundaryProjection A.starCuspWitness p)
-  have hxcentral : x ∈ A.sectionSevenEllipticCentralImage :=
+  have hxcentral : x ∈ A.ellipticCentralImage :=
     D.cuspToEllipticInteriorMap_mem_centralImage _
-  have hheight : A.sectionSevenEllipticCentralHeight ⟨x, hxcentral⟩ = 1 / 2 := by
-    change (A.sectionSevenEllipticCentralCoordinate ⟨x, hxcentral⟩).1.re = 1 / 2
+  have hheight : A.ellipticCentralHeight ⟨x, hxcentral⟩ = 1 / 2 := by
+    change (A.ellipticCentralCoordinate ⟨x, hxcentral⟩).1.re = 1 / 2
     rw [D.sectionSevenEllipticCentralCoordinate_cuspToEllipticInteriorMap_additivePoint_fst]
     exact hp
-  change x ∈ A.sectionSevenActualAffineSplit.allocation.orderThreeSide ∩
-    A.sectionSevenActualAffineSplit.allocation.orderFourSide
+  change x ∈ A.actualAffineHeightSplit.allocation.orderThreeSide ∩
+    A.actualAffineHeightSplit.allocation.orderFourSide
   constructor
   · right
     exact ⟨⟨x, hxcentral⟩, by
-      change A.sectionSevenEllipticCentralHeight ⟨x, hxcentral⟩ < 2 / 3
+      change A.ellipticCentralHeight ⟨x, hxcentral⟩ < 2 / 3
       rw [hheight]
       norm_num, rfl⟩
   · right
     exact ⟨⟨x, hxcentral⟩, by
-      change 1 / 3 < A.sectionSevenEllipticCentralHeight ⟨x, hxcentral⟩
+      change 1 / 3 < A.ellipticCentralHeight ⟨x, hxcentral⟩
       rw [hheight]
       norm_num, rfl⟩
 
@@ -195,7 +195,7 @@ public theorem actualCuspFullFibreSlice_additiveTorusProjection
 /-- At a middle-height crossing, every point of the four-torus slice lies in the pulled-back
 intersection, not merely the single marked additive point used by the pointwise argument. -/
 public theorem actualCuspFullFibreSlice_mem_pulledBackIntersection
-    (R : A.SectionSevenAffineRadialCompletionInput) (t : unitInterval)
+    (R : A.AffineRadialCompletionInput) (t : unitInterval)
     (ht : ((A.cuspAngularCoordinateLoop t).1).re = 1 / 2)
     (y : let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
@@ -240,7 +240,7 @@ public theorem actualCuspFullFibreSlice_mem_pulledBackIntersection
 
 /-- The continuous full four-torus slice, corestricted to the pulled-back cover intersection. -/
 public noncomputable def actualCuspFullFibreIntersectionSlice
-    (R : A.SectionSevenAffineRadialCompletionInput) (t : unitInterval)
+    (R : A.AffineRadialCompletionInput) (t : unitInterval)
     (ht : ((A.cuspAngularCoordinateLoop t).1).re = 1 / 2) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
@@ -257,7 +257,7 @@ public noncomputable def actualCuspFullFibreIntersectionSlice
 /-- The crossing slice induces a map on first integral homology of the pulled-back
 intersection. -/
 public noncomputable def actualCuspFullFibreIntersectionHomologyOne
-    (R : A.SectionSevenAffineRadialCompletionInput) (t : unitInterval)
+    (R : A.AffineRadialCompletionInput) (t : unitInterval)
     (ht : ((A.cuspAngularCoordinateLoop t).1).re = 1 / 2) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
@@ -273,14 +273,14 @@ public noncomputable def actualCuspFullFibreIntersectionHomologyOne
 /-- Transport the induced full-fibre map from the pulled-back intersection to the actual
 elliptic band. -/
 public noncomputable def actualCuspFullFibreToBandHomologyOne
-    (R : A.SectionSevenAffineRadialCompletionInput) (t : unitInterval)
+    (R : A.AffineRadialCompletionInput) (t : unitInterval)
     (ht : ((A.cuspAngularCoordinateLoop t).1).re = 1 / 2) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     IntegralSingularHomology 1 G.Fiber →+
       IntegralSingularHomology 1
         (R.twoDiscCover.orderThreeSide ∩ R.twoDiscCover.orderFourSide :
-          Set A.SectionSevenEllipticInterior) := by
+          Set A.ellipticInterior) := by
   let G := A.actualCuspRadialClutchingData
   letI := G.fiberTopology
   exact R.twoDiscCover.cuspCoverIntersectionToEllipticBandHomologyOne.comp
@@ -300,7 +300,7 @@ public theorem actualCuspFullFibreCrossingTime_spec (A : PaperAnalyticData) :
 /-- The canonical candidate for the fibre-to-intersection map in the chain-realization
 interface, obtained by taking the entire fibre at the selected middle-height crossing. -/
 public noncomputable def actualCuspWangFibreToCuspCoverIntersectionMap
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     C(G.Fiber,
@@ -312,7 +312,7 @@ public noncomputable def actualCuspWangFibreToCuspCoverIntersectionMap
 
 /-- The first-homology map induced by the selected full-fibre intersection slice. -/
 public noncomputable def actualCuspWangFibreToCuspCoverIntersectionHomologyOne
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     IntegralSingularHomology 1 G.Fiber →+
@@ -326,13 +326,13 @@ public noncomputable def actualCuspWangFibreToCuspCoverIntersectionHomologyOne
 
 /-- The induced full-fibre map after transport to the actual elliptic band. -/
 public noncomputable def actualCuspWangFibreToBandHomologyOne
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     IntegralSingularHomology 1 G.Fiber →+
       IntegralSingularHomology 1
         (R.twoDiscCover.orderThreeSide ∩ R.twoDiscCover.orderFourSide :
-          Set A.SectionSevenEllipticInterior) := by
+          Set A.ellipticInterior) := by
   let G := A.actualCuspRadialClutchingData
   letI := G.fiberTopology
   exact R.twoDiscCover.cuspCoverIntersectionToEllipticBandHomologyOne.comp
@@ -342,7 +342,7 @@ public noncomputable def actualCuspWangFibreToBandHomologyOne
 remaining inputs are exactly the period-marked band identification and the oriented Wang
 boundary comparison. -/
 public noncomputable def actualCuspWangOpenCoverChainRealization_of_fullFibreSlice
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (hBand : R.twoDiscCover.canonicalCuspFiberToBandHomologyOne =
       actualCuspWangFibreToBandHomologyOne (A := A) R)
     (hBoundary :
@@ -370,7 +370,7 @@ public noncomputable def actualCuspFullFibreSliceHomologyOne
   exact integralSingularHomologyMap 1
     (actualCuspFullFibreSlice (A := A) s hs)
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

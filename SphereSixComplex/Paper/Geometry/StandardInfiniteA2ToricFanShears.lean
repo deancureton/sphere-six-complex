@@ -25,7 +25,7 @@ open scoped ContDiff Manifold
 open SphereSixComplex.Geometry.CuspCombinatorics
 open SphereSixComplex.Geometry.CuspFilling
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+namespace SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 /-- Translation of a maximal-cone label by the fan shear. -/
 public def translateChartIndex (lambda : ParameterLattice) (a : ChartIndex) : ChartIndex :=
@@ -451,4 +451,4 @@ public theorem carrierFanShear_component_exact
       carrierCentralComponent (v + shearVector lambda) := by
   simpa only [carrierFanShear_apply] using carrierFanShear_component lambda v
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+end SphereSixComplex.Geometry.InfiniteA2Toric.Construction

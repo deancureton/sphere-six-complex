@@ -245,16 +245,16 @@ public theorem orderFourCollarRadialMappingTorusHomeomorph_symm_apply_liftProjec
     exact e.toHomeomorph.apply_symm_apply y]
   exact (A.orderFourAngularQuotientHomeomorph_apply q).symm
 
-public theorem orderThreeActualEllipticBoundaryDeckStraightCentralLoop_apply_explicit
+public theorem ellipticThreeBoundaryDeckStraightCentralLoop_apply_explicit
     (g : OrderThreeAffineMappingTorusDeck A.periods) (t : unitInterval) :
     letI := orderThreeAffineMappingTorusDeckAction A.periods
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     let q : OpenRadialInterval A.starSeparation.orderThree.radius ×
         (ℝ × ComplexTwoSpace) :=
-      (A.orderThreeActualEllipticBoundaryBase.1,
-        Path.segment A.orderThreeActualEllipticBoundaryBase.2
-          (g • A.orderThreeActualEllipticBoundaryBase.2) t)
-    A.orderThreeActualEllipticBoundaryDeckStraightCentralLoop g t =
+      (A.ellipticThreeBoundaryBase.1,
+        Path.segment A.ellipticThreeBoundaryBase.2
+          (g • A.ellipticThreeBoundaryBase.2) t)
+    A.ellipticThreeBoundaryDeckStraightCentralLoop g t =
       A.centralQuotientProjection
         (orderThreeCollarToRegular A.periods
           (sourceActionProperlyDiscontinuous_of_eq
@@ -264,13 +264,13 @@ public theorem orderThreeActualEllipticBoundaryDeckStraightCentralLoop_apply_exp
             A.starSeparation.orderThree.radius
             (A.orderThreeCollarInverseRepresentative q))) := by
   let _ := orderThreeAffineMappingTorusDeckAction A.periods
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let q : OpenRadialInterval A.starSeparation.orderThree.radius ×
       (ℝ × ComplexTwoSpace) :=
-    (A.orderThreeActualEllipticBoundaryBase.1,
-      Path.segment A.orderThreeActualEllipticBoundaryBase.2
-        (g • A.orderThreeActualEllipticBoundaryBase.2) t)
-  change A.orderThreeActualEllipticBoundaryDeckStraightCentralLoop g t =
+    (A.ellipticThreeBoundaryBase.1,
+      Path.segment A.ellipticThreeBoundaryBase.2
+        (g • A.ellipticThreeBoundaryBase.2) t)
+  change A.ellipticThreeBoundaryDeckStraightCentralLoop g t =
     A.centralQuotientProjection
       (orderThreeCollarToRegular A.periods
         (sourceActionProperlyDiscontinuous_of_eq
@@ -283,23 +283,23 @@ public theorem orderThreeActualEllipticBoundaryDeckStraightCentralLoop_apply_exp
     _ = A.starToCentral 1
         (A.orderThreeCollarRadialMappingTorusHomeomorph.symm
           (q.1, orderThreeAffineMappingTorusLiftProjection A.periods q.2)) :=
-      A.orderThreeActualEllipticBoundaryDeckStraightCentralLoop_apply_segment g t
+      A.ellipticThreeBoundaryDeckStraightCentralLoop_apply_segment g t
     _ = A.starToCentral 1
         (Quotient.mk _ (A.orderThreeCollarInverseRepresentative q)) :=
       congrArg (A.starToCentral 1)
         (A.orderThreeCollarRadialMappingTorusHomeomorph_symm_apply_liftProjection q)
     _ = _ := A.orderThreeStarToCentral_mk (A.orderThreeCollarInverseRepresentative q)
 
-public theorem orderFourActualEllipticBoundaryDeckStraightCentralLoop_apply_explicit
+public theorem ellipticFourBoundaryDeckStraightCentralLoop_apply_explicit
     (g : OrderFourAffineMappingTorusDeck A.periods) (t : unitInterval) :
     letI := orderFourAffineMappingTorusDeckAction A.periods
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     let q : OpenRadialInterval A.starSeparation.orderFour.radius ×
         (ℝ × ComplexTwoSpace) :=
-      (A.orderFourActualEllipticBoundaryBase.1,
-        Path.segment A.orderFourActualEllipticBoundaryBase.2
-          (g • A.orderFourActualEllipticBoundaryBase.2) t)
-    A.orderFourActualEllipticBoundaryDeckStraightCentralLoop g t =
+      (A.ellipticFourBoundaryBase.1,
+        Path.segment A.ellipticFourBoundaryBase.2
+          (g • A.ellipticFourBoundaryBase.2) t)
+    A.ellipticFourBoundaryDeckStraightCentralLoop g t =
       A.centralQuotientProjection
         (orderFourCollarToRegular A.periods
           (sourceActionProperlyDiscontinuous_of_eq
@@ -309,13 +309,13 @@ public theorem orderFourActualEllipticBoundaryDeckStraightCentralLoop_apply_expl
             A.starSeparation.orderFour.radius
             (A.orderFourCollarInverseRepresentative q))) := by
   let _ := orderFourAffineMappingTorusDeckAction A.periods
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let q : OpenRadialInterval A.starSeparation.orderFour.radius ×
       (ℝ × ComplexTwoSpace) :=
-    (A.orderFourActualEllipticBoundaryBase.1,
-      Path.segment A.orderFourActualEllipticBoundaryBase.2
-        (g • A.orderFourActualEllipticBoundaryBase.2) t)
-  change A.orderFourActualEllipticBoundaryDeckStraightCentralLoop g t =
+    (A.ellipticFourBoundaryBase.1,
+      Path.segment A.ellipticFourBoundaryBase.2
+        (g • A.ellipticFourBoundaryBase.2) t)
+  change A.ellipticFourBoundaryDeckStraightCentralLoop g t =
     A.centralQuotientProjection
       (orderFourCollarToRegular A.periods
         (sourceActionProperlyDiscontinuous_of_eq
@@ -328,7 +328,7 @@ public theorem orderFourActualEllipticBoundaryDeckStraightCentralLoop_apply_expl
     _ = A.starToCentral 2
         (A.orderFourCollarRadialMappingTorusHomeomorph.symm
           (q.1, orderFourAffineMappingTorusLiftProjection A.periods q.2)) :=
-      A.orderFourActualEllipticBoundaryDeckStraightCentralLoop_apply_segment g t
+      A.ellipticFourBoundaryDeckStraightCentralLoop_apply_segment g t
     _ = A.starToCentral 2
         (Quotient.mk _ (A.orderFourCollarInverseRepresentative q)) :=
       congrArg (A.starToCentral 2)

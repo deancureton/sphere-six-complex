@@ -70,7 +70,7 @@ public theorem orderFourFillingRelationClassifiedCentralProductDeck_eq :
 product label in the based-path orientation. -/
 public theorem paperOrderThreeActualBoundaryToUniversalDeck_fillingRelation :
     A.paperOrderThreeActualBoundaryToUniversalDeck
-        A.orderThreeActualEllipticBoundaryDeckData.fillingRelation =
+        A.ellipticThreeBoundaryDeckData.fillingRelation =
       orderThreeFillingRelationClassifiedCentralProductDeck⁻¹ := by
   have hcomm : Commute
       (freeAffineLift (M := paperCentralFreeMonodromy) firstMeridian)
@@ -86,7 +86,7 @@ public theorem paperOrderThreeActualBoundaryToUniversalDeck_fillingRelation :
       rw [twoMeridianOrbifoldMap_first, rhoLambda_g₁_apply, A₁_epsilon]] at h
     exact mul_inv_eq_iff_eq_mul.mp h
   simp only [UnwrappedCyclicAffineBoundaryDeckData.fillingRelation,
-    orderThreeActualEllipticBoundaryDeckData, map_mul, map_pow, map_inv]
+    ellipticThreeBoundaryDeckData, map_mul, map_pow, map_inv]
   rw [A.paperOrderThreeActualBoundaryToUniversalDeck_positive_meridian]
   rw [A.paperOrderThreeActualBoundaryToUniversalDeck_translation]
   rw [orderThreeFillingRelationClassifiedCentralProductDeck]
@@ -96,7 +96,7 @@ public theorem paperOrderThreeActualBoundaryToUniversalDeck_fillingRelation :
 /-- The order-three expected relator is the affine presentation of the classified product. -/
 public theorem orderThreeCentralExpectedRelator_eq_classifiedPresentation :
     A.orderThreeCentralExpectedRelator =
-      A.actualCuspToCentralAffineBaseEquiv
+      A.cuspToCentralAffineBaseEquiv
         (paperPuncturedGlobalFamilyAffinePresentation A
           orderThreeFillingRelationClassifiedCentralProductDeck) := by
   rw [orderThreeCentralExpectedRelator,
@@ -112,7 +112,7 @@ public theorem orderThreeCentralExpectedRelator_eq_classifiedPresentation :
 /-- The order-four expected relator is the affine presentation of the classified product. -/
 public theorem orderFourCentralExpectedRelator_eq_classifiedPresentation :
     A.orderFourCentralExpectedRelator =
-      A.actualCuspToCentralAffineBaseEquiv
+      A.cuspToCentralAffineBaseEquiv
         (paperPuncturedGlobalFamilyAffinePresentation A
           orderFourFillingRelationClassifiedCentralProductDeck) := by
   rw [orderFourCentralExpectedRelator,
@@ -127,26 +127,26 @@ public theorem orderFourCentralExpectedRelator_eq_classifiedPresentation :
 
 /-- The based-path universal-cover point represented by a connector from the actual cusp base. -/
 public noncomputable def centralAffineUniversalCoverPointOfPath
-    {y : A.CentralFamily} (beta : Path A.actualCuspCentralBase y) :
+    {y : A.CentralFamily} (beta : Path A.cuspCentralBase y) :
     A.centralAffineUniversalCover.Cover := by
-  change TauCeti.UniversalCover A.actualCuspCentralBase
-  exact TauCeti.UniversalCover.ofBasedPath A.actualCuspCentralBase (BasedPath.ofPath beta)
+  change TauCeti.UniversalCover A.cuspCentralBase
+  exact TauCeti.UniversalCover.ofBasedPath A.cuspCentralBase (BasedPath.ofPath beta)
 
 @[simp]
 public theorem centralAffineUniversalCoverPointOfPath_projects
-    {y : A.CentralFamily} (beta : Path A.actualCuspCentralBase y) :
+    {y : A.CentralFamily} (beta : Path A.cuspCentralBase y) :
     let D := A.centralAffineUniversalCover
     letI := D.topology
     letI := D.action
     D.data.projection (A.centralAffineUniversalCoverPointOfPath beta) = y := by
   change TauCeti.UniversalCover.proj
-      (TauCeti.UniversalCover.ofBasedPath A.actualCuspCentralBase (BasedPath.ofPath beta)) = y
+      (TauCeti.UniversalCover.ofBasedPath A.cuspCentralBase (BasedPath.ofPath beta)) = y
   rw [TauCeti.UniversalCover.proj_ofBasedPath, BasedPath.endpoint_ofPath]
 
 /-- At the point represented by `beta`, a transported affine-presentation loop has the inverse
 deck label. -/
 public theorem centralAffineUniversalCoverPointOfPath_fundamentalGroupEquiv
-    {y : A.CentralFamily} (beta : Path A.actualCuspCentralBase y)
+    {y : A.CentralFamily} (beta : Path A.cuspCentralBase y)
     (d : paperCentralFreeAffineDeck) :
     let D := A.centralAffineUniversalCover
     letI := D.topology
@@ -173,46 +173,46 @@ public theorem centralAffineUniversalCoverPointOfPath_fundamentalGroupEquiv
   let _ : SimplyConnectedSpace D.Cover := D.data.simplyConnected
   let g := paperPuncturedGlobalFamilyAffinePresentation A d
   let delta := FundamentalGroup.fundamentalGroupMulEquivOfPath beta g
-  let e : (TauCeti.UniversalCover.proj (x₀ := A.actualCuspCentralBase)) ⁻¹' {y} :=
-    ⟨TauCeti.UniversalCover.ofBasedPath A.actualCuspCentralBase (BasedPath.ofPath beta), by
+  let e : (TauCeti.UniversalCover.proj (x₀ := A.cuspCentralBase)) ⁻¹' {y} :=
+    ⟨TauCeti.UniversalCover.ofBasedPath A.cuspCentralBase (BasedPath.ofPath beta), by
       change TauCeti.UniversalCover.proj
-        (TauCeti.UniversalCover.ofBasedPath A.actualCuspCentralBase
+        (TauCeti.UniversalCover.ofBasedPath A.cuspCentralBase
           (BasedPath.ofPath beta)) = y
       rw [TauCeti.UniversalCover.proj_ofBasedPath, BasedPath.endpoint_ofPath]⟩
   apply (D.data.quotientCovering.fundamentalGroupToMulOpposite_apply_eq_Iff).mpr
   change (paperPuncturedGlobalFamilyAffinePresentation A d⁻¹) •
-      TauCeti.UniversalCover.ofBasedPath A.actualCuspCentralBase (BasedPath.ofPath beta) =
-    ((TauCeti.UniversalCover.isCoveringMap A.actualCuspCentralBase).monodromy delta.toPath e :
-      TauCeti.UniversalCover A.actualCuspCentralBase)
+      TauCeti.UniversalCover.ofBasedPath A.cuspCentralBase (BasedPath.ofPath beta) =
+    ((TauCeti.UniversalCover.isCoveringMap A.cuspCentralBase).monodromy delta.toPath e :
+      TauCeti.UniversalCover A.cuspCentralBase)
   rw [map_inv]
   obtain ⟨gamma, hgamma⟩ := Quotient.exists_rep delta.toPath
   rw [← hgamma]
   let eta : Path (BasedPath.endpoint (BasedPath.ofPath beta)) y :=
     gamma.cast (BasedPath.endpoint_ofPath _) rfl
   have hgamma0 : gamma 0 = TauCeti.UniversalCover.proj
-      (TauCeti.UniversalCover.ofBasedPath A.actualCuspCentralBase
+      (TauCeti.UniversalCover.ofBasedPath A.cuspCentralBase
         (BasedPath.ofPath beta)) := by
     rw [TauCeti.UniversalCover.proj_ofBasedPath, BasedPath.endpoint_ofPath]
     exact gamma.source
   have heta0 : eta 0 = TauCeti.UniversalCover.proj
-      (TauCeti.UniversalCover.ofBasedPath A.actualCuspCentralBase
+      (TauCeti.UniversalCover.ofBasedPath A.cuspCentralBase
         (BasedPath.ofPath beta)) := by
     rw [TauCeti.UniversalCover.proj_ofBasedPath]
     exact eta.source
-  change g⁻¹ • TauCeti.UniversalCover.ofBasedPath A.actualCuspCentralBase
+  change g⁻¹ • TauCeti.UniversalCover.ofBasedPath A.cuspCentralBase
       (BasedPath.ofPath beta) =
-    (TauCeti.UniversalCover.isCoveringMap A.actualCuspCentralBase).liftPath gamma
-      (TauCeti.UniversalCover.ofBasedPath A.actualCuspCentralBase (BasedPath.ofPath beta))
+    (TauCeti.UniversalCover.isCoveringMap A.cuspCentralBase).liftPath gamma
+      (TauCeti.UniversalCover.ofBasedPath A.cuspCentralBase (BasedPath.ofPath beta))
       hgamma0 1
   have hlift :
-      (TauCeti.UniversalCover.isCoveringMap A.actualCuspCentralBase).liftPath gamma
-          (TauCeti.UniversalCover.ofBasedPath A.actualCuspCentralBase
+      (TauCeti.UniversalCover.isCoveringMap A.cuspCentralBase).liftPath gamma
+          (TauCeti.UniversalCover.ofBasedPath A.cuspCentralBase
             (BasedPath.ofPath beta)) hgamma0 1 =
-        TauCeti.UniversalCover.ofBasedPath A.actualCuspCentralBase
+        TauCeti.UniversalCover.ofBasedPath A.cuspCentralBase
           (BasedPath.append (BasedPath.ofPath beta) eta) := by
     calc
-      _ = (TauCeti.UniversalCover.isCoveringMap A.actualCuspCentralBase).liftPath eta
-          (TauCeti.UniversalCover.ofBasedPath A.actualCuspCentralBase
+      _ = (TauCeti.UniversalCover.isCoveringMap A.cuspCentralBase).liftPath eta
+          (TauCeti.UniversalCover.ofBasedPath A.cuspCentralBase
             (BasedPath.ofPath beta)) heta0 1 := by congr 1
       _ = _ := TauCeti.UniversalCover.liftPath_apply_one_eq_ofBasedPath_append eta
   rw [hlift, TauCeti.UniversalCover.ofBasedPath_ofPath,
@@ -239,35 +239,35 @@ public theorem centralAffineUniversalCoverPointOfPath_fundamentalGroupEquiv
   exact hdelta.trans htrans.symm
 
 /-- The geometric connector, regarded as a path from the based-path cover's basepoint. -/
-public noncomputable def orderThreeActualCentralProductConnector :
-    Path A.actualCuspCentralBase A.orderThreeActualEllipticCentralBase :=
-  A.orderThreeActualCentralGeometricConnector.cast
+public noncomputable def ellipticThreeCentralProductConnector :
+    Path A.cuspCentralBase A.ellipticThreeCentralBase :=
+  A.ellipticThreeCentralGeometricConnector.cast
     A.centralAffineBase_eq_actualCuspCentralBase.symm rfl
 
 /-- The order-four analogue of the geometric based-path connector. -/
-public noncomputable def orderFourActualCentralProductConnector :
-    Path A.actualCuspCentralBase A.orderFourActualEllipticCentralBase :=
-  A.orderFourActualCentralGeometricConnector.cast
+public noncomputable def ellipticFourCentralProductConnector :
+    Path A.cuspCentralBase A.ellipticFourCentralBase :=
+  A.ellipticFourCentralGeometricConnector.cast
     A.centralAffineBase_eq_actualCuspCentralBase.symm rfl
 
 /-- In the local product coordinates, the complete order-three regular loop is exactly the
 one-turn Cayley loop together with the principal-gauge loop and its fixed fibre offset. -/
 public theorem orderThreeFillingRelationRegularLoop_localProductCoordinate
     (t : unitInterval) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     (((orderThreeCayleyHomeomorph
           (familyTotalSpaceBase A.periods
             (A.orderThreeCollarInverseRepresentative
-              (A.orderThreeActualEllipticBoundaryDeckStraightLift
-                A.orderThreeActualEllipticBoundaryDeckData.fillingRelation t)).1) :
+              (A.ellipticThreeBoundaryDeckStraightLift
+                A.ellipticThreeBoundaryDeckData.fillingRelation t)).1) :
             ComplexUnitDisc) : ℂ),
       (orderThreeRealPeriodProductHomeomorph A.periods
         (regularFamilyInclusion A.periods
           (A.orderThreeFillingRelationRegularLoop t))).2) =
       ((A.orderThreeFillingRelationCayleyLoop t).1,
         A.orderThreeFillingRelationPrincipalGaugeLoop t +
-          Quotient.mk _ A.orderThreeActualEllipticBoundaryBase.2.2) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+          Quotient.mk _ A.ellipticThreeBoundaryBase.2.2) := by
+  let _ := A.ellipticThreeBoundaryAction
   apply Prod.ext
   · exact A.orderThreeFillingRelationCayleyLoop_apply t
   · rw [A.orderThreeFillingRelationRegularLoop_realPeriod_snd]
@@ -276,20 +276,20 @@ public theorem orderThreeFillingRelationRegularLoop_localProductCoordinate
 /-- The analogous exact local-product description of the order-four complete loop. -/
 public theorem orderFourFillingRelationRegularLoop_localProductCoordinate
     (t : unitInterval) :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     (((orderFourCayleyHomeomorph
           (familyTotalSpaceBase A.periods
             (A.orderFourCollarInverseRepresentative
-              (A.orderFourActualEllipticBoundaryDeckStraightLift
-                A.orderFourActualEllipticBoundaryDeckData.fillingRelation t)).1) :
+              (A.ellipticFourBoundaryDeckStraightLift
+                A.ellipticFourBoundaryDeckData.fillingRelation t)).1) :
             ComplexUnitDisc) : ℂ),
       (orderFourRealPeriodProductHomeomorph A.periods
         (regularFamilyInclusion A.periods
           (A.orderFourFillingRelationRegularLoop t))).2) =
       ((A.orderFourFillingRelationCayleyLoop t).1,
         A.orderFourFillingRelationPrincipalGaugeLoop t +
-          Quotient.mk _ A.orderFourActualEllipticBoundaryBase.2.2) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+          Quotient.mk _ A.ellipticFourBoundaryBase.2.2) := by
+  let _ := A.ellipticFourBoundaryAction
   apply Prod.ext
   · exact A.orderFourFillingRelationCayleyLoop_apply t
   · rw [A.orderFourFillingRelationRegularLoop_realPeriod_snd]
@@ -298,12 +298,12 @@ public theorem orderFourFillingRelationRegularLoop_localProductCoordinate
 /-- The single remaining order-three point-set statement: the complete regular loop has the
 classified product endpoint in the central affine universal cover. -/
 public def OrderThreeActualEllipticCentralCoverProductLiftComparison : Prop :=
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
   let _ : SimplyConnectedSpace D.Cover := D.data.simplyConnected
-  let beta := A.orderThreeActualCentralProductConnector
+  let beta := A.ellipticThreeCentralProductConnector
   D.data.quotientCovering.fundamentalGroupEquiv
       ⟨A.centralAffineUniversalCoverPointOfPath beta,
         A.centralAffineUniversalCoverPointOfPath_projects beta⟩
@@ -316,12 +316,12 @@ public def OrderThreeActualEllipticCentralCoverProductLiftComparison : Prop :=
 
 /-- The single remaining order-four point-set statement. -/
 public def OrderFourActualEllipticCentralCoverProductLiftComparison : Prop :=
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
   let _ : SimplyConnectedSpace D.Cover := D.data.simplyConnected
-  let beta := A.orderFourActualCentralProductConnector
+  let beta := A.ellipticFourCentralProductConnector
   D.data.quotientCovering.fundamentalGroupEquiv
       ⟨A.centralAffineUniversalCoverPointOfPath beta,
         A.centralAffineUniversalCoverPointOfPath_projects beta⟩
@@ -335,12 +335,12 @@ public def OrderFourActualEllipticCentralCoverProductLiftComparison : Prop :=
 /-- Endpoint form of the order-three comparison.  This is the literal remaining point-set
 calculation in the chosen universal cover. -/
 public def OrderThreeActualEllipticCentralCoverProductMonodromyEndpoint : Prop :=
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
-  let beta := A.orderThreeActualCentralProductConnector
-  let e : D.data.projection ⁻¹' {A.orderThreeActualEllipticCentralBase} :=
+  let beta := A.ellipticThreeCentralProductConnector
+  let e : D.data.projection ⁻¹' {A.ellipticThreeCentralBase} :=
     ⟨A.centralAffineUniversalCoverPointOfPath beta,
       A.centralAffineUniversalCoverPointOfPath_projects beta⟩
   orderThreeFillingRelationClassifiedCentralProductDeck⁻¹ • e.1 =
@@ -353,12 +353,12 @@ public def OrderThreeActualEllipticCentralCoverProductMonodromyEndpoint : Prop :
 
 /-- Endpoint form of the order-four comparison. -/
 public def OrderFourActualEllipticCentralCoverProductMonodromyEndpoint : Prop :=
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
-  let beta := A.orderFourActualCentralProductConnector
-  let e : D.data.projection ⁻¹' {A.orderFourActualEllipticCentralBase} :=
+  let beta := A.ellipticFourCentralProductConnector
+  let e : D.data.projection ⁻¹' {A.ellipticFourCentralBase} :=
     ⟨A.centralAffineUniversalCoverPointOfPath beta,
       A.centralAffineUniversalCoverPointOfPath_projects beta⟩
   orderFourFillingRelationClassifiedCentralProductDeck⁻¹ • e.1 =
@@ -373,8 +373,8 @@ public def OrderFourActualEllipticCentralCoverProductMonodromyEndpoint : Prop :=
 projected complete loop must be the transported affine-presentation loop through the chosen
 geometric connector. -/
 public def OrderThreeActualEllipticCentralProductPathClassIdentity : Prop :=
-  let _ := A.orderThreeActualEllipticBoundaryAction
-  let beta := A.orderThreeActualCentralProductConnector
+  let _ := A.ellipticThreeBoundaryAction
+  let beta := A.ellipticThreeCentralProductConnector
   Path.Homotopic.Quotient.mk
       ((A.orderThreeFillingRelationRegularLoop.map
         A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
@@ -386,8 +386,8 @@ public def OrderThreeActualEllipticCentralProductPathClassIdentity : Prop :=
 
 /-- Order-four form of the remaining global marking identity. -/
 public def OrderFourActualEllipticCentralProductPathClassIdentity : Prop :=
-  let _ := A.orderFourActualEllipticBoundaryAction
-  let beta := A.orderFourActualCentralProductConnector
+  let _ := A.ellipticFourBoundaryAction
+  let beta := A.ellipticFourCentralProductConnector
   Path.Homotopic.Quotient.mk
       ((A.orderFourFillingRelationRegularLoop.map
         A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
@@ -400,13 +400,13 @@ public def OrderFourActualEllipticCentralProductPathClassIdentity : Prop :=
 public theorem orderThreeCentralCoverProductLiftComparison_iff_pathClassIdentity :
     A.OrderThreeActualEllipticCentralCoverProductLiftComparison ↔
       A.OrderThreeActualEllipticCentralProductPathClassIdentity := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
   let _ : SimplyConnectedSpace D.Cover := D.data.simplyConnected
-  let beta := A.orderThreeActualCentralProductConnector
-  let e : D.data.projection ⁻¹' {A.orderThreeActualEllipticCentralBase} :=
+  let beta := A.ellipticThreeCentralProductConnector
+  let e : D.data.projection ⁻¹' {A.ellipticThreeCentralBase} :=
     ⟨A.centralAffineUniversalCoverPointOfPath beta,
       A.centralAffineUniversalCoverPointOfPath_projects beta⟩
   let E := D.data.quotientCovering.fundamentalGroupEquiv e
@@ -432,13 +432,13 @@ public theorem orderThreeCentralCoverProductLiftComparison_iff_pathClassIdentity
 public theorem orderFourCentralCoverProductLiftComparison_iff_pathClassIdentity :
     A.OrderFourActualEllipticCentralCoverProductLiftComparison ↔
       A.OrderFourActualEllipticCentralProductPathClassIdentity := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
   let _ : SimplyConnectedSpace D.Cover := D.data.simplyConnected
-  let beta := A.orderFourActualCentralProductConnector
-  let e : D.data.projection ⁻¹' {A.orderFourActualEllipticCentralBase} :=
+  let beta := A.ellipticFourCentralProductConnector
+  let e : D.data.projection ⁻¹' {A.ellipticFourCentralBase} :=
     ⟨A.centralAffineUniversalCoverPointOfPath beta,
       A.centralAffineUniversalCoverPointOfPath_projects beta⟩
   let E := D.data.quotientCovering.fundamentalGroupEquiv e
@@ -464,7 +464,7 @@ public theorem orderFourCentralCoverProductLiftComparison_iff_pathClassIdentity 
 public theorem orderThreeCentralCoverProductLiftComparison_iff_monodromyEndpoint :
     A.OrderThreeActualEllipticCentralCoverProductLiftComparison ↔
       A.OrderThreeActualEllipticCentralCoverProductMonodromyEndpoint := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
@@ -476,7 +476,7 @@ public theorem orderThreeCentralCoverProductLiftComparison_iff_monodromyEndpoint
 public theorem orderFourCentralCoverProductLiftComparison_iff_monodromyEndpoint :
     A.OrderFourActualEllipticCentralCoverProductLiftComparison ↔
       A.OrderFourActualEllipticCentralCoverProductMonodromyEndpoint := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
@@ -504,13 +504,13 @@ identity. -/
 public theorem OrderThreeActualEllipticCentralCoverProductLiftComparison.toWholeIdentity
     (h : A.OrderThreeActualEllipticCentralCoverProductLiftComparison) :
     A.OrderThreeWholeFillingRelatorChartIdentity := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
   let _ : SimplyConnectedSpace D.Cover := D.data.simplyConnected
-  let beta := A.orderThreeActualCentralProductConnector
-  let e : D.data.projection ⁻¹' {A.orderThreeActualEllipticCentralBase} :=
+  let beta := A.ellipticThreeCentralProductConnector
+  let e : D.data.projection ⁻¹' {A.ellipticThreeCentralBase} :=
     ⟨A.centralAffineUniversalCoverPointOfPath beta,
       A.centralAffineUniversalCoverPointOfPath_projects beta⟩
   let E := D.data.quotientCovering.fundamentalGroupEquiv e
@@ -521,16 +521,16 @@ public theorem OrderThreeActualEllipticCentralCoverProductLiftComparison.toWhole
         A.orderThreeCollarRegularRepresentative_base_projects.symm)
   have htransport :
       FundamentalGroup.fundamentalGroupMulEquivOfPath
-          A.orderThreeActualCentralGeometricConnector A.orderThreeCentralExpectedRelator =
+          A.ellipticThreeCentralGeometricConnector A.orderThreeCentralExpectedRelator =
         FundamentalGroup.fundamentalGroupMulEquivOfPath beta
           (paperPuncturedGlobalFamilyAffinePresentation A
             orderThreeFillingRelationClassifiedCentralProductDeck) := by
     rw [A.orderThreeCentralExpectedRelator_eq_classifiedPresentation]
-    simpa [beta, orderThreeActualCentralProductConnector,
-      actualCuspToCentralAffineBaseEquiv,
+    simpa [beta, ellipticThreeCentralProductConnector,
+      cuspToCentralAffineBaseEquiv,
       fundamentalGroupMulEquivOfEq_eq_elementOfBaseEq] using
       fundamentalGroupMulEquivOfPath_elementOfBaseEq_eq_cast_left
-        A.orderThreeActualCentralGeometricConnector
+        A.ellipticThreeCentralGeometricConnector
         A.centralAffineBase_eq_actualCuspCentralBase.symm
         (paperPuncturedGlobalFamilyAffinePresentation A
           orderThreeFillingRelationClassifiedCentralProductDeck)
@@ -544,33 +544,33 @@ public theorem OrderThreeActualEllipticCentralCoverProductLiftComparison.toWhole
   have hloop :
       loopClass =
         FundamentalGroup.fundamentalGroupMulEquivOfPath
-          A.orderThreeActualCentralGeometricConnector A.orderThreeCentralExpectedRelator := by
+          A.ellipticThreeCentralGeometricConnector A.orderThreeCentralExpectedRelator := by
     apply E.injective
     rw [htransport]
     exact h.trans hlabelExpected.symm
-  let hover := A.orderThreeActualEllipticCentralBase_eq_overlapCentralBase
-  refine ⟨A.orderThreeActualCentralGeometricConnector.cast rfl hover.symm, ?_⟩
-  rw [A.orderThreeActualCanonicalRelatorInCentral_eq_regularLoopProjection]
+  let hover := A.ellipticThreeCentralBase_eq_overlapCentralBase
+  refine ⟨A.ellipticThreeCentralGeometricConnector.cast rfl hover.symm, ?_⟩
+  rw [A.ellipticThreeCanonicalRelatorInCentral_eq_regularLoopProjection]
   change fundamentalGroupElementOfBaseEq hover loopClass =
     FundamentalGroup.fundamentalGroupMulEquivOfPath
-      (A.orderThreeActualCentralGeometricConnector.cast rfl hover.symm)
+      (A.ellipticThreeCentralGeometricConnector.cast rfl hover.symm)
       A.orderThreeCentralExpectedRelator
   rw [hloop]
   exact (fundamentalGroupMulEquivOfPath_cast_right
-    A.orderThreeActualCentralGeometricConnector hover.symm
+    A.ellipticThreeCentralGeometricConnector hover.symm
       A.orderThreeCentralExpectedRelator).symm
 
 /-- The order-four product-lift endpoint calculation implies its complete chart identity. -/
 public theorem OrderFourActualEllipticCentralCoverProductLiftComparison.toWholeIdentity
     (h : A.OrderFourActualEllipticCentralCoverProductLiftComparison) :
     A.OrderFourWholeFillingRelatorChartIdentity := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
   let _ : SimplyConnectedSpace D.Cover := D.data.simplyConnected
-  let beta := A.orderFourActualCentralProductConnector
-  let e : D.data.projection ⁻¹' {A.orderFourActualEllipticCentralBase} :=
+  let beta := A.ellipticFourCentralProductConnector
+  let e : D.data.projection ⁻¹' {A.ellipticFourCentralBase} :=
     ⟨A.centralAffineUniversalCoverPointOfPath beta,
       A.centralAffineUniversalCoverPointOfPath_projects beta⟩
   let E := D.data.quotientCovering.fundamentalGroupEquiv e
@@ -581,16 +581,16 @@ public theorem OrderFourActualEllipticCentralCoverProductLiftComparison.toWholeI
         A.orderFourCollarRegularRepresentative_base_projects.symm)
   have htransport :
       FundamentalGroup.fundamentalGroupMulEquivOfPath
-          A.orderFourActualCentralGeometricConnector A.orderFourCentralExpectedRelator =
+          A.ellipticFourCentralGeometricConnector A.orderFourCentralExpectedRelator =
         FundamentalGroup.fundamentalGroupMulEquivOfPath beta
           (paperPuncturedGlobalFamilyAffinePresentation A
             orderFourFillingRelationClassifiedCentralProductDeck) := by
     rw [A.orderFourCentralExpectedRelator_eq_classifiedPresentation]
-    simpa [beta, orderFourActualCentralProductConnector,
-      actualCuspToCentralAffineBaseEquiv,
+    simpa [beta, ellipticFourCentralProductConnector,
+      cuspToCentralAffineBaseEquiv,
       fundamentalGroupMulEquivOfEq_eq_elementOfBaseEq] using
       fundamentalGroupMulEquivOfPath_elementOfBaseEq_eq_cast_left
-        A.orderFourActualCentralGeometricConnector
+        A.ellipticFourCentralGeometricConnector
         A.centralAffineBase_eq_actualCuspCentralBase.symm
         (paperPuncturedGlobalFamilyAffinePresentation A
           orderFourFillingRelationClassifiedCentralProductDeck)
@@ -604,38 +604,38 @@ public theorem OrderFourActualEllipticCentralCoverProductLiftComparison.toWholeI
   have hloop :
       loopClass =
         FundamentalGroup.fundamentalGroupMulEquivOfPath
-          A.orderFourActualCentralGeometricConnector A.orderFourCentralExpectedRelator := by
+          A.ellipticFourCentralGeometricConnector A.orderFourCentralExpectedRelator := by
     apply E.injective
     rw [htransport]
     exact h.trans hlabelExpected.symm
-  let hover := A.orderFourActualEllipticCentralBase_eq_overlapCentralBase
-  refine ⟨A.orderFourActualCentralGeometricConnector.cast rfl hover.symm, ?_⟩
-  rw [A.orderFourActualCanonicalRelatorInCentral_eq_regularLoopProjection]
+  let hover := A.ellipticFourCentralBase_eq_overlapCentralBase
+  refine ⟨A.ellipticFourCentralGeometricConnector.cast rfl hover.symm, ?_⟩
+  rw [A.ellipticFourCanonicalRelatorInCentral_eq_regularLoopProjection]
   change fundamentalGroupElementOfBaseEq hover loopClass =
     FundamentalGroup.fundamentalGroupMulEquivOfPath
-      (A.orderFourActualCentralGeometricConnector.cast rfl hover.symm)
+      (A.ellipticFourCentralGeometricConnector.cast rfl hover.symm)
       A.orderFourCentralExpectedRelator
   rw [hloop]
   exact (fundamentalGroupMulEquivOfPath_cast_right
-    A.orderFourActualCentralGeometricConnector hover.symm
+    A.ellipticFourCentralGeometricConnector hover.symm
       A.orderFourCentralExpectedRelator).symm
 
 /-- The two product-lift endpoint comparisons imply the exact remaining normal-closure
 residual. -/
-public theorem actualEllipticRelatorNormalClosureResidual_of_centralCoverProductLiftComparisons
+public theorem ellipticRelatorMembership_of_centralCoverProductLiftComparisons
     (hThree : A.OrderThreeActualEllipticCentralCoverProductLiftComparison)
     (hFour : A.OrderFourActualEllipticCentralCoverProductLiftComparison) :
-    A.ActualEllipticRelatorNormalClosureResidual A.actualCuspCentralNaturality :=
-  A.actualEllipticRelatorNormalClosureResidual_of_wholeFillingRelatorChartIdentities
+    A.EllipticRelatorMembership A.cuspCentralNaturality :=
+  A.ellipticRelatorMembership_of_wholeFillingRelatorChartIdentities
     (hThree.toWholeIdentity A) (hFour.toWholeIdentity A)
 
 /-- Consequently, the two exact global path-class markings are the only remaining inputs for the
 normal-closure residual. -/
-public theorem actualEllipticRelatorNormalClosureResidual_of_centralProductPathClassIdentities
+public theorem ellipticRelatorMembership_of_centralProductPathClassIdentities
     (hThree : A.OrderThreeActualEllipticCentralProductPathClassIdentity)
     (hFour : A.OrderFourActualEllipticCentralProductPathClassIdentity) :
-    A.ActualEllipticRelatorNormalClosureResidual A.actualCuspCentralNaturality :=
-  A.actualEllipticRelatorNormalClosureResidual_of_centralCoverProductLiftComparisons
+    A.EllipticRelatorMembership A.cuspCentralNaturality :=
+  A.ellipticRelatorMembership_of_centralCoverProductLiftComparisons
     (A.orderThreeCentralCoverProductLiftComparison_iff_pathClassIdentity.mpr hThree)
     (A.orderFourCentralCoverProductLiftComparison_iff_pathClassIdentity.mpr hFour)
 

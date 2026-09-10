@@ -78,44 +78,44 @@ a physical mapping-torus deck transformation. -/
 public noncomputable def orderThreeCentralBoundaryMappedDeckClass
     (g : OrderThreeAffineMappingTorusDeck A.periods) :
     paperCentralFreeAffineDeckᵐᵒᵖ := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderThreeActualEllipticBoundaryCover_simplyConnected
+    A.ellipticThreeBoundaryCover_simplyConnected
   let _ : SimplyConnectedSpace D.Cover := D.data.simplyConnected
-  let C := A.orderThreeActualCentralCoverComparison
+  let C := A.ellipticThreeCentralCoverComparison
   exact D.data.quotientCovering.fundamentalGroupEquiv
-    ⟨C.lift A.orderThreeActualEllipticBoundaryBase, rfl⟩
+    ⟨C.lift A.ellipticThreeBoundaryBase, rfl⟩
     (FundamentalGroup.mapOfEq C.baseMap
-      (C.commutes A.orderThreeActualEllipticBoundaryBase)
-      (ofDeck A.orderThreeActualEllipticBoundaryProjection_isQuotientCoveringMap
-        A.orderThreeActualEllipticBoundaryBase g))
+      (C.commutes A.ellipticThreeBoundaryBase)
+      (ofDeck A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
+        A.ellipticThreeBoundaryBase g))
 
 /-- Naturality identifies the mapped loop label with the deck map of the canonical continuous
 lift. -/
 public theorem orderThreeCentralBoundaryMappedDeckClass_eq
     (g : OrderThreeAffineMappingTorusDeck A.periods) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     let D := A.centralAffineUniversalCover
     letI := D.topology
     letI := D.action
     letI : SimplyConnectedSpace
         (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-      A.orderThreeActualEllipticBoundaryCover_simplyConnected
-    let C := A.orderThreeActualCentralCoverComparison
+      A.ellipticThreeBoundaryCover_simplyConnected
+    let C := A.ellipticThreeCentralCoverComparison
     A.orderThreeCentralBoundaryMappedDeckClass g = MulOpposite.op (C.deckMap g) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderThreeActualEllipticBoundaryCover_simplyConnected
+    A.ellipticThreeBoundaryCover_simplyConnected
   let _ : SimplyConnectedSpace D.Cover := D.data.simplyConnected
-  exact A.orderThreeActualCentralCoverComparison_ofDeck g
+  exact A.ellipticThreeCentralCoverComparison_ofDeck g
 
 /-- Exact loop-level residual.  It asks for the images of the explicit mapping-torus generator
 loops under the literal collar chart, stated in the target cover's based-path convention. -/
@@ -133,14 +133,14 @@ public def OrderThreeCentralBoundaryGeneratorMonodromy : Prop :=
 
 /-- The exact generator calculation missing from the canonical continuous lift. -/
 public def OrderThreeCentralBoundaryDeckGeneratorCompatibility : Prop :=
-  letI := A.orderThreeActualEllipticBoundaryAction
+  letI := A.ellipticThreeBoundaryAction
   let D := A.centralAffineUniversalCover
   letI := D.topology
   letI := D.action
   letI : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderThreeActualEllipticBoundaryCover_simplyConnected
-  let C := A.orderThreeActualCentralCoverComparison
+    A.ellipticThreeBoundaryCover_simplyConnected
+  let C := A.ellipticThreeCentralCoverComparison
   (∀ a : Lattice,
       C.deckMap (Additive.toMul (affineTorusMappingTorusDeckTranslation
         (orderThreeDescendedAffineTorusAutomorphism A.periods) a)) =
@@ -154,15 +154,15 @@ deck homomorphism on generators. -/
 public theorem OrderThreeCentralBoundaryGeneratorMonodromy.toDeckGeneratorCompatibility
     (h : A.OrderThreeCentralBoundaryGeneratorMonodromy) :
     A.OrderThreeCentralBoundaryDeckGeneratorCompatibility := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderThreeActualEllipticBoundaryCover_simplyConnected
+    A.ellipticThreeBoundaryCover_simplyConnected
   let _ : SimplyConnectedSpace D.Cover := D.data.simplyConnected
-  let C := A.orderThreeActualCentralCoverComparison
+  let C := A.ellipticThreeCentralCoverComparison
   change (∀ a : Lattice,
       A.orderThreeCentralBoundaryMappedDeckClass
           (Additive.toMul (affineTorusMappingTorusDeckTranslation
@@ -194,14 +194,14 @@ its canonical continuous lift is the required exact equivariant comparison. -/
 public theorem OrderThreeCentralBoundaryDeckGeneratorCompatibility.toCoverComparison
     (h : A.OrderThreeCentralBoundaryDeckGeneratorCompatibility) :
     A.OrderThreeCentralBoundaryCoverComparison := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderThreeActualEllipticBoundaryCover_simplyConnected
-  let C := A.orderThreeActualCentralCoverComparison
+    A.ellipticThreeBoundaryCover_simplyConnected
+  let C := A.ellipticThreeCentralCoverComparison
   change (∀ a : Lattice,
       C.deckMap (Additive.toMul (affineTorusMappingTorusDeckTranslation
         (orderThreeDescendedAffineTorusAutomorphism A.periods) a)) =
@@ -224,18 +224,18 @@ public theorem OrderThreeCentralBoundaryGeneratorMonodromy.toCoverComparison
 comparison used by the downstream common-gauge argument. -/
 public theorem OrderThreeCentralBoundaryDeckGeneratorCompatibility.canonicalDeckPair
     (h : A.OrderThreeCentralBoundaryDeckGeneratorCompatibility) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     let D := A.centralAffineUniversalCover
     letI := D.topology
     letI := D.action
     letI : SimplyConnectedSpace
         (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-      A.orderThreeActualEllipticBoundaryCover_simplyConnected
-    let C := A.orderThreeActualCentralCoverComparison
+      A.ellipticThreeBoundaryCover_simplyConnected
+    let C := A.ellipticThreeCentralCoverComparison
     SimultaneouslyConjugate
-      (C.deckMap A.orderThreeActualEllipticBoundaryDeckData.meridian,
+      (C.deckMap A.ellipticThreeBoundaryDeckData.meridian,
         C.deckMap (Additive.toMul
-          (A.orderThreeActualEllipticBoundaryDeckData.translation (-epsilon))))
+          (A.ellipticThreeBoundaryDeckData.translation (-epsilon))))
       ((freeAffineLift (M := paperCentralFreeMonodromy) firstMeridian)⁻¹,
         Additive.toMul (freeAffineTranslation (M := paperCentralFreeMonodromy) epsilon)) :=
   (h.toCoverComparison A).canonicalDeckPair A
@@ -243,18 +243,18 @@ public theorem OrderThreeCentralBoundaryDeckGeneratorCompatibility.canonicalDeck
 /-- Loop-level generator monodromy therefore also gives the canonical simultaneous deck pair. -/
 public theorem OrderThreeCentralBoundaryGeneratorMonodromy.canonicalDeckPair
     (h : A.OrderThreeCentralBoundaryGeneratorMonodromy) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     let D := A.centralAffineUniversalCover
     letI := D.topology
     letI := D.action
     letI : SimplyConnectedSpace
         (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-      A.orderThreeActualEllipticBoundaryCover_simplyConnected
-    let C := A.orderThreeActualCentralCoverComparison
+      A.ellipticThreeBoundaryCover_simplyConnected
+    let C := A.ellipticThreeCentralCoverComparison
     SimultaneouslyConjugate
-      (C.deckMap A.orderThreeActualEllipticBoundaryDeckData.meridian,
+      (C.deckMap A.ellipticThreeBoundaryDeckData.meridian,
         C.deckMap (Additive.toMul
-          (A.orderThreeActualEllipticBoundaryDeckData.translation (-epsilon))))
+          (A.ellipticThreeBoundaryDeckData.translation (-epsilon))))
       ((freeAffineLift (M := paperCentralFreeMonodromy) firstMeridian)⁻¹,
         Additive.toMul (freeAffineTranslation (M := paperCentralFreeMonodromy) epsilon)) :=
   (h.toDeckGeneratorCompatibility A).canonicalDeckPair A

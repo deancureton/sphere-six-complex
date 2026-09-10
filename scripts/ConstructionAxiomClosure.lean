@@ -11,7 +11,7 @@ run_cmd do
     #[`SphereSixComplex.exists_paperGluingData_from_sectionSeven,
       `SphereSixComplex.Geometry.PaperAnalyticData.toPaperGluingData_of_positiveDegree,
       `SphereSixComplex.exists_completedPaperThreefold_of_paperGluingData,
-      `SphereSixComplex.Geometry.PaperAnalyticData.sectionSevenStageTopDegreeVanishing_actual,
+      `SphereSixComplex.Geometry.PaperAnalyticData.stageTopDegreeVanishing,
       `SphereSixComplex.Geometry.PaperAnalyticData.actualStarHasVanKampenData]
   let mut checked : Std.HashSet Name := {}
   let mut axioms : Std.HashSet Name := {}

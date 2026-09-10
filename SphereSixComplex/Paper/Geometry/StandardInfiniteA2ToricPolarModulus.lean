@@ -22,9 +22,9 @@ noncomputable section
 
 open Function Set Topology
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+namespace SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
+open SphereSixComplex.Geometry.InfiniteA2Toric
 
 /-- Coordinatewise complex modulus, regarded again as a complex affine coordinate. -/
 public def coordinateModulus (z : RawCoordinates) : RawCoordinates :=
@@ -407,4 +407,4 @@ public theorem carrierPositiveChart_jointly_surjective (x : carrierPositivePart)
       simp [u]]
   exact hz
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+end SphereSixComplex.Geometry.InfiniteA2Toric.Construction

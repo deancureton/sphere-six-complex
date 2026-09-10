@@ -9,45 +9,45 @@ namespace SphereSixComplex.Geometry.PaperAnalyticData
 open SphereSixComplex.Topology Hurewicz.Chains
 variable (A : PaperAnalyticData)
 
-public def actualCuspOverlapToEllipticInterior :
+public def cuspOverlapToEllipticInterior :
     C((A.actualVanKampenFourPieceCover.core ∩ A.actualVanKampenFourPieceCover.cusp :
-      Set A.VanKampenSpace), A.SectionSevenEllipticInterior) :=
+      Set A.VanKampenSpace), A.ellipticInterior) :=
   A.actualCoreToEllipticInterior.comp
     (A.actualVanKampenFourPieceCover.overlapToCore A.actualVanKampenFourPieceCover.cusp)
 
-public theorem actualCuspOverlapToCore_hurewicz
+public theorem cuspOverlapToCore_hurewicz
     (g : FundamentalGroup
       (A.actualVanKampenFourPieceCover.core ∩ A.actualVanKampenFourPieceCover.cusp :
-        Set A.VanKampenSpace) A.actualCuspOverlapBase) :
+        Set A.VanKampenSpace) A.cuspOverlapBase) :
     hurewiczFunction _
-      (A.actualCoreToEllipticInteriorPiOne (A.actualCuspOverlapToCore g)) =
-      integralSingularHomologyMap 1 A.actualCuspOverlapToEllipticInterior
-        (hurewiczFunction A.actualCuspOverlapBase g) := by
+      (A.actualCoreToEllipticInteriorPiOne (A.cuspOverlapToCore g)) =
+      integralSingularHomologyMap 1 A.cuspOverlapToEllipticInterior
+        (hurewiczFunction A.cuspOverlapBase g) := by
   rw [actualCoreToEllipticInteriorPiOne, hurewiczFunction_map]
-  simp only [actualCuspOverlapToCore]
+  simp only [cuspOverlapToCore]
   erw [hurewiczFunction_basePath]
   erw [hurewiczFunction_map
     (A.actualVanKampenFourPieceCover.overlapToCore A.actualVanKampenFourPieceCover.cusp)
-    A.actualCuspOverlapBase g]
+    A.cuspOverlapBase g]
   exact integralSingularHomologyMap_comp_wang 1 _ _ _
 
-public theorem actualCuspOverlap_homology_fullIterate :
+public theorem cuspOverlap_homology_fullIterate :
     (12 : ℤ) •
-      (-integralSingularHomologyMap 1 A.actualCuspOverlapToEllipticInterior
-        (hurewiczFunction A.actualCuspOverlapBase A.actualCuspAffineBridgeMeridian)) =
-      integralSingularHomologyMap 1 A.actualCuspOverlapToEllipticInterior
-        (hurewiczFunction A.actualCuspOverlapBase
-          (Additive.toMul (A.actualCuspAffineBridgeTranslation
+      (-integralSingularHomologyMap 1 A.cuspOverlapToEllipticInterior
+        (hurewiczFunction A.cuspOverlapBase A.cuspAffineBridgeMeridian)) =
+      integralSingularHomologyMap 1 A.cuspOverlapToEllipticInterior
+        (hurewiczFunction A.cuspOverlapBase
+          (Additive.toMul (A.cuspAffineBridgeTranslation
             (Pi.single (0 : Fin 4) 1)))) := by
   have h := A.ellipticInterior_cuspMeridian_twelfth_abelian (hurewiczPi1 _)
   rw [map_inv, map_inv] at h
   change (12 : ℕ) • (-hurewiczFunction _
     (A.actualCoreToEllipticInteriorPiOne
-      (A.actualCuspOverlapToCore A.actualCuspAffineBridgeMeridian))) =
+      (A.cuspOverlapToCore A.cuspAffineBridgeMeridian))) =
       hurewiczFunction _ (A.actualCoreToEllipticInteriorPiOne
-        (A.actualCuspOverlapToCore (Additive.toMul
-          (A.actualCuspAffineBridgeTranslation (Pi.single (0 : Fin 4) 1))))) at h
-  rw [A.actualCuspOverlapToCore_hurewicz, A.actualCuspOverlapToCore_hurewicz] at h
+        (A.cuspOverlapToCore (Additive.toMul
+          (A.cuspAffineBridgeTranslation (Pi.single (0 : Fin 4) 1))))) at h
+  rw [A.cuspOverlapToCore_hurewicz, A.cuspOverlapToCore_hurewicz] at h
   change (Int.ofNat 12) • _ = _
   erw [natCast_zsmul]
   exact h

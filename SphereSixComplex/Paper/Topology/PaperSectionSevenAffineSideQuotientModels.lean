@@ -37,7 +37,7 @@ variable {A : PaperAnalyticData}
 /-- Honest quotient-bundle coordinates for the order-three overlap and central region.  The
 actions on the lifted radial domains and on the fibre remain explicit, so the quotient retains
 all finite monodromy. -/
-public structure SectionSevenAffineOrderThreeSideQuotientInput
+public structure AffineOrderThreeSideQuotientInput
     (G : Type u) [Group G] (fiber : Type v) [TopologicalSpace fiber] where
   normalizationRadius : ℝ
   affineDiscRadius : ℝ
@@ -60,30 +60,30 @@ public structure SectionSevenAffineOrderThreeSideQuotientInput
     letI := fiberAction
     ContinuousConstSMul G fiber
   overlapModel :
-    ↥(A.sectionSevenOrderThreeFillingImage ∩ A.sectionSevenAffineOrderThreeCentralRegion) ≃ₜ
+    ↥(A.orderThreeFillingImage ∩ A.affineOrderThreeCentralRegion) ≃ₜ
       Quotient (orbitRelOf
         (explicitProductAction radialData.smallAction fiberAction))
   centralModel :
-    A.sectionSevenAffineOrderThreeCentralRegion ≃ₜ
+    A.affineOrderThreeCentralRegion ≃ₜ
       Quotient (orbitRelOf
         (explicitProductAction radialData.bigAction fiberAction))
   commutes : centralModel ∘
-      (interToRight A.sectionSevenOrderThreeFillingImage
-        A.sectionSevenAffineOrderThreeCentralRegion).hom =
+      (interToRight A.orderThreeFillingImage
+        A.affineOrderThreeCentralRegion).hom =
     (radialData.toEquivariantHomotopyEquivData.prodRightId
       fiberAction).quotientToFun ∘ overlapModel
 
-namespace SectionSevenAffineOrderThreeSideQuotientInput
+namespace AffineOrderThreeSideQuotientInput
 
 variable {G : Type u} [Group G] {fiber : Type v} [TopologicalSpace fiber]
 
 /-- Equivariant radial descent proves the literal order-three overlap map is a homotopy
 equivalence without globally trivializing its torus monodromy. -/
 public theorem overlapIsHomotopyEquivalence
-    (Q : A.SectionSevenAffineOrderThreeSideQuotientInput G fiber) :
+    (Q : A.AffineOrderThreeSideQuotientInput G fiber) :
     IsHomotopyEquivalence
-      (interToRight A.sectionSevenOrderThreeFillingImage
-        A.sectionSevenAffineOrderThreeCentralRegion).hom := by
+      (interToRight A.orderThreeFillingImage
+        A.affineOrderThreeCentralRegion).hom := by
   let E := Q.radialData.toEquivariantHomotopyEquivData.prodRightId Q.fiberAction
   apply E.isHomotopyEquivalence_of_quotient_models _ Q.overlapModel Q.centralModel Q.commutes
   · exact explicitProductAction_continuous Q.radialData.smallAction Q.fiberAction
@@ -94,29 +94,29 @@ public theorem overlapIsHomotopyEquivalence
 /-- Dold's open-union theorem upgrades the quotient-radial overlap equivalence to the actual
 order-three filling-to-side equivalence. -/
 public theorem homotopyEquivalenceInclusion
-    (Q : A.SectionSevenAffineOrderThreeSideQuotientInput G fiber)
-    [NormalSpace ↥(A.sectionSevenOrderThreeFillingImage ∪
-      A.sectionSevenAffineOrderThreeCentralRegion)]
-    [ParacompactSpace ↥(A.sectionSevenOrderThreeFillingImage ∪
-      A.sectionSevenAffineOrderThreeCentralRegion)] :
+    (Q : A.AffineOrderThreeSideQuotientInput G fiber)
+    [NormalSpace ↥(A.orderThreeFillingImage ∪
+      A.affineOrderThreeCentralRegion)]
+    [ParacompactSpace ↥(A.orderThreeFillingImage ∪
+      A.affineOrderThreeCentralRegion)] :
     IsHomotopyEquivalenceInclusion
-      A.sectionSevenActualAffineSplit.orderThreeFillingSubspace := by
+      A.actualAffineHeightSplit.orderThreeFillingSubspace := by
   change IsHomotopyEquivalenceInclusion
-    (Subtype.val ⁻¹' A.sectionSevenOrderThreeFillingImage :
-      Set ↥(A.sectionSevenOrderThreeFillingImage ∪
-        A.sectionSevenAffineOrderThreeCentralRegion))
+    (Subtype.val ⁻¹' A.orderThreeFillingImage :
+      Set ↥(A.orderThreeFillingImage ∪
+        A.affineOrderThreeCentralRegion))
   exact isHomotopyEquivalenceInclusion_of_leftToUnion _ _
     (leftToUnion_isHomotopyEquivalence_of_normal_paracompact _ _
-      A.sectionSevenOrderThreeFillingImage_isOpen
-      A.sectionSevenActualAffineSplit.centralHeightLowerRegion_isOpen
+      A.orderThreeFillingImage_isOpen
+      A.actualAffineHeightSplit.centralHeightLowerRegion_isOpen
       Q.overlapIsHomotopyEquivalence)
 
-end SectionSevenAffineOrderThreeSideQuotientInput
+end AffineOrderThreeSideQuotientInput
 
 /-- Honest quotient-bundle coordinates for the order-four overlap and central region, written
 after reflection about `1 / 2`.  This converts the puncture at one to the radial puncture at zero
 while preserving the diagonal quotient model. -/
-public structure SectionSevenAffineOrderFourSideQuotientInput
+public structure AffineOrderFourSideQuotientInput
     (G : Type u) [Group G] (fiber : Type v) [TopologicalSpace fiber] where
   normalizationRadius : ℝ
   affineDiscRadius : ℝ
@@ -139,30 +139,30 @@ public structure SectionSevenAffineOrderFourSideQuotientInput
     letI := fiberAction
     ContinuousConstSMul G fiber
   overlapModel :
-    ↥(A.sectionSevenOrderFourFillingImage ∩ A.sectionSevenAffineOrderFourCentralRegion) ≃ₜ
+    ↥(A.orderFourFillingImage ∩ A.affineOrderFourCentralRegion) ≃ₜ
       Quotient (orbitRelOf
         (explicitProductAction radialData.smallAction fiberAction))
   centralModel :
-    A.sectionSevenAffineOrderFourCentralRegion ≃ₜ
+    A.affineOrderFourCentralRegion ≃ₜ
       Quotient (orbitRelOf
         (explicitProductAction radialData.bigAction fiberAction))
   commutes : centralModel ∘
-      (interToRight A.sectionSevenOrderFourFillingImage
-        A.sectionSevenAffineOrderFourCentralRegion).hom =
+      (interToRight A.orderFourFillingImage
+        A.affineOrderFourCentralRegion).hom =
     (radialData.toEquivariantHomotopyEquivData.prodRightId
       fiberAction).quotientToFun ∘ overlapModel
 
-namespace SectionSevenAffineOrderFourSideQuotientInput
+namespace AffineOrderFourSideQuotientInput
 
 variable {G : Type u} [Group G] {fiber : Type v} [TopologicalSpace fiber]
 
 /-- Equivariant radial descent proves the literal order-four overlap map is a homotopy
 equivalence without globally trivializing its torus monodromy. -/
 public theorem overlapIsHomotopyEquivalence
-    (Q : A.SectionSevenAffineOrderFourSideQuotientInput G fiber) :
+    (Q : A.AffineOrderFourSideQuotientInput G fiber) :
     IsHomotopyEquivalence
-      (interToRight A.sectionSevenOrderFourFillingImage
-        A.sectionSevenAffineOrderFourCentralRegion).hom := by
+      (interToRight A.orderFourFillingImage
+        A.affineOrderFourCentralRegion).hom := by
   let E := Q.radialData.toEquivariantHomotopyEquivData.prodRightId Q.fiberAction
   apply E.isHomotopyEquivalence_of_quotient_models _ Q.overlapModel Q.centralModel Q.commutes
   · exact explicitProductAction_continuous Q.radialData.smallAction Q.fiberAction
@@ -173,24 +173,24 @@ public theorem overlapIsHomotopyEquivalence
 /-- Dold's open-union theorem upgrades the quotient-radial overlap equivalence to the actual
 order-four filling-to-side equivalence. -/
 public theorem homotopyEquivalenceInclusion
-    (Q : A.SectionSevenAffineOrderFourSideQuotientInput G fiber)
-    [NormalSpace ↥(A.sectionSevenOrderFourFillingImage ∪
-      A.sectionSevenAffineOrderFourCentralRegion)]
-    [ParacompactSpace ↥(A.sectionSevenOrderFourFillingImage ∪
-      A.sectionSevenAffineOrderFourCentralRegion)] :
+    (Q : A.AffineOrderFourSideQuotientInput G fiber)
+    [NormalSpace ↥(A.orderFourFillingImage ∪
+      A.affineOrderFourCentralRegion)]
+    [ParacompactSpace ↥(A.orderFourFillingImage ∪
+      A.affineOrderFourCentralRegion)] :
     IsHomotopyEquivalenceInclusion
-      A.sectionSevenActualAffineSplit.orderFourFillingSubspace := by
+      A.actualAffineHeightSplit.orderFourFillingSubspace := by
   change IsHomotopyEquivalenceInclusion
-    (Subtype.val ⁻¹' A.sectionSevenOrderFourFillingImage :
-      Set ↥(A.sectionSevenOrderFourFillingImage ∪
-        A.sectionSevenAffineOrderFourCentralRegion))
+    (Subtype.val ⁻¹' A.orderFourFillingImage :
+      Set ↥(A.orderFourFillingImage ∪
+        A.affineOrderFourCentralRegion))
   exact isHomotopyEquivalenceInclusion_of_leftToUnion _ _
     (leftToUnion_isHomotopyEquivalence_of_normal_paracompact _ _
-      A.sectionSevenOrderFourFillingImage_isOpen
-      A.sectionSevenActualAffineSplit.centralHeightUpperRegion_isOpen
+      A.orderFourFillingImage_isOpen
+      A.actualAffineHeightSplit.centralHeightUpperRegion_isOpen
       Q.overlapIsHomotopyEquivalence)
 
-end SectionSevenAffineOrderFourSideQuotientInput
+end AffineOrderFourSideQuotientInput
 
 end Geometry.PaperAnalyticData
 

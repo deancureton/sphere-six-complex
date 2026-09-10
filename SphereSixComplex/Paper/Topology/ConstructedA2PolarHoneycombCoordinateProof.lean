@@ -16,7 +16,7 @@ noncomputable section
 
 open Function Set Topology
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
 open SphereSixComplex.Periods
 open SphereSixComplex.Geometry.CuspFilling
@@ -24,7 +24,7 @@ open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 open SphereSixComplex.Geometry.CuspStraighteningRetraction
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 /-- The global moment-coordinate homeomorphism still required for the constructed carrier. -/
 public abbrev ConstructedA2MomentCoordinateHomeomorph
@@ -83,6 +83,6 @@ public theorem constructedNormalizedPolarHoneycombPhaseGeometry_of_coordinateCom
     ((constructedPolarHoneycombCoordinateData_nonempty_iff W).mpr
       ⟨hMoment, hCW⟩)
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric
 
 end

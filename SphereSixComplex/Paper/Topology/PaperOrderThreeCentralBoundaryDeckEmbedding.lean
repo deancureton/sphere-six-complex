@@ -258,7 +258,7 @@ public theorem paperOrderThreeCentralBoundaryToCentralDeck_unique
 public noncomputable def paperOrderThreeActualBoundaryToCentralDeck :
     OrderThreeAffineMappingTorusDeck A.periods →* paperCentralFreeAffineDeck :=
   A.paperOrderThreeCentralBoundaryToCentralDeck.comp
-    A.orderThreeActualToCentralBoundaryDeckEquiv.toMonoidHom
+    A.ellipticThreeToCentralBoundaryDeckEquiv.toMonoidHom
 
 @[simp]
 public theorem paperOrderThreeActualBoundaryToCentralDeck_translation (a : Lattice) :
@@ -269,11 +269,11 @@ public theorem paperOrderThreeActualBoundaryToCentralDeck_translation (a : Latti
         (freeAffineTranslation (M := paperCentralFreeMonodromy) a) := by
   rw [paperOrderThreeActualBoundaryToCentralDeck, MonoidHom.comp_apply]
   change A.paperOrderThreeCentralBoundaryToCentralDeck
-      (A.orderThreeActualToCentralBoundaryDeckEquiv
+      (A.ellipticThreeToCentralBoundaryDeckEquiv
         (Additive.toMul (affineTorusMappingTorusDeckTranslation
           (orderThreeDescendedAffineTorusAutomorphism A.periods) a))) = _
   rw [
-    A.orderThreeActualToCentralBoundaryDeckEquiv_translation,
+    A.ellipticThreeToCentralBoundaryDeckEquiv_translation,
     A.paperOrderThreeCentralBoundaryToCentralDeck_translation]
 
 @[simp]
@@ -284,11 +284,11 @@ public theorem paperOrderThreeActualBoundaryToCentralDeck_positive_meridian :
       freeAffineLift (M := paperCentralFreeMonodromy) firstMeridian := by
   rw [paperOrderThreeActualBoundaryToCentralDeck, MonoidHom.comp_apply]
   change A.paperOrderThreeCentralBoundaryToCentralDeck
-      (A.orderThreeActualToCentralBoundaryDeckEquiv
+      (A.ellipticThreeToCentralBoundaryDeckEquiv
         (affineTorusMappingTorusDeckMeridian
           (orderThreeDescendedAffineTorusAutomorphism A.periods))) = _
   rw [
-    A.orderThreeActualToCentralBoundaryDeckEquiv_meridian,
+    A.ellipticThreeToCentralBoundaryDeckEquiv_meridian,
     A.paperOrderThreeCentralBoundaryToCentralDeck_meridian]
 
 /-- The selected physical meridian in the actual order-three deck data maps to the inverse first
@@ -296,15 +296,15 @@ free lift, hence to the deck element underlying the central `rhoOne`. -/
 @[simp]
 public theorem paperOrderThreeActualBoundaryToCentralDeck_physical_meridian :
     A.paperOrderThreeActualBoundaryToCentralDeck
-        A.orderThreeActualEllipticBoundaryDeckData.meridian =
+        A.ellipticThreeBoundaryDeckData.meridian =
       (freeAffineLift (M := paperCentralFreeMonodromy) firstMeridian)⁻¹ := by
-  rw [orderThreeActualEllipticBoundaryDeckData, map_inv,
+  rw [ellipticThreeBoundaryDeckData, map_inv,
     A.paperOrderThreeActualBoundaryToCentralDeck_positive_meridian]
 
 public theorem opposite_paperOrderThreeActualBoundaryToCentralDeck_physical_meridian :
     MulOpposite.op
         (A.paperOrderThreeActualBoundaryToCentralDeck
-          A.orderThreeActualEllipticBoundaryDeckData.meridian) =
+          A.ellipticThreeBoundaryDeckData.meridian) =
       (oppositeFreeAffineCorePiOneData paperCentralFreeMonodromy).rhoOne := by
   rw [A.paperOrderThreeActualBoundaryToCentralDeck_physical_meridian]
   rfl

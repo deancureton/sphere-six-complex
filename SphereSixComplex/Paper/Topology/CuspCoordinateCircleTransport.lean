@@ -11,9 +11,9 @@ open SphereSixComplex.Topology SphereSixComplex.StandardTorusHomology
 open GlobalTorusFamily CuspPuncturedCollarBridge CuspRadialClutchingConstruction
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open ComplexTorus TorusFamily CuspPeriodExpansion
-open SectionSevenEllipticTwoDiscCoverData
+open EllipticTwoDiscCoverData
 
-public theorem actualCuspFullFibreSlice_coordinateCircle_real (A : PaperAnalyticData)
+public theorem cuspFullFibreSlice_coordinateCircle_real (A : PaperAnalyticData)
     (i : Fin 4) (s : ℂ) (hs : ‖cuspQ s‖ < A.starCuspWitness.localWitness.radius) (t : ℝ) :
     actualCuspFullFibreSlice (A := A) s hs
       (cuspCoordinateCircle (cuspBasePoint A.cuspCoordinate
@@ -34,7 +34,7 @@ public theorem actualCuspFullFibreSlice_coordinateCircle_real (A : PaperAnalytic
   rw [← h]
   exact actualCuspFullFibreSlice_additiveTorusProjection s hs _
 
-public theorem actualCuspFullFibreSlice_coordinateCircle_central (A : PaperAnalyticData)
+public theorem cuspFullFibreSlice_coordinateCircle_central (A : PaperAnalyticData)
     (i : Fin 4) (s : ℂ) (hs : ‖cuspQ s‖ < A.starCuspWitness.localWitness.radius)
     (t : UnitAddCircle) :
     A.starToCentral 0
@@ -44,7 +44,7 @@ public theorem actualCuspFullFibreSlice_coordinateCircle_central (A : PaperAnaly
     regularPeriodCircleInGlobal A.periods (Pi.single i 1)
       (t, (additiveCuspBundleHomeomorph A.starCuspWitness ⟨(0, s), hs⟩).1.1) := by
   obtain ⟨r, rfl⟩ := QuotientAddGroup.mk_surjective t
-  rw [actualCuspFullFibreSlice_coordinateCircle_real]
+  rw [cuspFullFibreSlice_coordinateCircle_real]
   trans additiveCuspCoverToGlobal A.starCuspWitness
     ⟨(r • periodVector (cuspBasePoint A.cuspCoordinate s).1 (Pi.single i 1), s), hs⟩
   · exact puncturedLocalCuspQuotientMap_additiveCuspBoundaryProjection A.starCuspWitness _
@@ -53,7 +53,7 @@ public theorem actualCuspFullFibreSlice_coordinateCircle_central (A : PaperAnaly
   rw [regularPeriodCircle_real]
   rfl
 
-public def actualCuspPolarZeroCover (A : PaperAnalyticData) :
+public def cuspPolarZeroCover (A : PaperAnalyticData) :
     C(ℝ, additiveCuspRadiusCover A.starCuspWitness.localWitness.radius) := by
   let rho : OpenRadialInterval A.starCuspWitness.localWitness.radius :=
     ⟨A.starCuspWitness.localWitness.radius / 2, by
@@ -66,28 +66,28 @@ public def actualCuspPolarZeroCover (A : PaperAnalyticData) :
   · exact (continuous_const.prodMk
       (continuous_cuspParameterOfPolar.comp (continuous_const.prodMk continuous_id))).subtype_mk _
 
-public def actualCuspPolarRegularBase (A : PaperAnalyticData) :
+public def cuspPolarRegularBase (A : PaperAnalyticData) :
     C(ℝ, RegularBase (U := A.modular.modularParameter.toTriangleUniformization)) :=
-  ⟨fun r ↦ (additiveCuspBundleHomeomorph A.starCuspWitness (A.actualCuspPolarZeroCover r)).1.1,
+  ⟨fun r ↦ (additiveCuspBundleHomeomorph A.starCuspWitness (A.cuspPolarZeroCover r)).1.1,
     continuous_fst.comp (continuous_subtype_val.comp
       ((additiveCuspBundleHomeomorph A.starCuspWitness).continuous.comp
-        A.actualCuspPolarZeroCover.continuous))⟩
+        A.cuspPolarZeroCover.continuous))⟩
 
 public theorem cuspThirdSweep_central_real (A : PaperAnalyticData)
     (r : ℝ) (t : UnitAddCircle) :
     A.starToCentral 0 (cuspThirdSweep A ((r : UnitAddCircle), fun _ ↦ t)) =
       regularPeriodCircleInGlobal A.periods (Pi.single 2 1)
-        (t, A.actualCuspPolarRegularBase r) := by
+        (t, A.cuspPolarRegularBase r) := by
   change A.starToCentral 0 (cuspFixedCircleSweep A _ _) = _
   rw [cuspFixedCircleSweep_real]
-  exact actualCuspFullFibreSlice_coordinateCircle_central A 2 _ _ t
+  exact cuspFullFibreSlice_coordinateCircle_central A 2 _ _ t
 
 public def cuspThirdPeriodFamily (A : PaperAnalyticData) :
     C(ℝ, C(StdTorus 1, A.CentralFamily)) :=
   ((regularPeriodCircleInGlobal A.periods (Pi.single 2 1)).comp
-    ⟨fun p : ℝ × StdTorus 1 ↦ (p.2 0, A.actualCuspPolarRegularBase p.1),
+    ⟨fun p : ℝ × StdTorus 1 ↦ (p.2 0, A.cuspPolarRegularBase p.1),
       (continuous_apply 0 |>.comp continuous_snd).prodMk
-        (A.actualCuspPolarRegularBase.continuous.comp continuous_fst)⟩).curry
+        (A.cuspPolarRegularBase.continuous.comp continuous_fst)⟩).curry
 
 public theorem cuspThirdPeriodFamily_eq_sweep (A : PaperAnalyticData)
     (r : ℝ) (z : StdTorus 1) :
@@ -114,7 +114,7 @@ public theorem cuspThirdPeriodLoop_apply (A : PaperAnalyticData)
     (t : unitInterval) (z : StdTorus 1) :
     A.cuspThirdPeriodLoop t z =
       regularPeriodCircleInGlobal A.periods (Pi.single 2 1)
-        (z 0, A.actualCuspPolarRegularBase t) := rfl
+        (z 0, A.cuspPolarRegularBase t) := rfl
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 end

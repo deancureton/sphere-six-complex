@@ -187,7 +187,7 @@ basepoint. -/
 public noncomputable def paperPuncturedGlobalFamilyAffineCorePiOneData
     (A : PaperAnalyticData) :
     AffineTorusCorePiOneData
-      (FundamentalGroup A.CentralFamily A.actualCuspCentralBase)
+      (FundamentalGroup A.CentralFamily A.cuspCentralBase)
       Lattice (firstFreeMonodromy paperPuncturedGlobalFamilyFreeMonodromy)
         (secondFreeMonodromy paperPuncturedGlobalFamilyFreeMonodromy) where
   translation := A.correctedActualCuspCentralTranslation
@@ -199,7 +199,7 @@ public noncomputable def paperPuncturedGlobalFamilyAffineCorePiOneData
   conjugate_two a := by
     rw [secondFreeMonodromy_paperPuncturedGlobalFamilyFreeMonodromy]
     exact A.geometricCentralRhoTwo_conjugates_correctedTranslation a
-  generators_generate := A.actualCuspGeometricCorePiOneData.generators_generate
+  generators_generate := A.cuspGeometricCorePiOneData.generators_generate
 
 @[simp]
 public theorem paperPuncturedGlobalFamilyAffineCorePiOneData_translation
@@ -275,7 +275,7 @@ private theorem geometricCentralTranslation_injective
 
 private theorem actualCuspCentralTranslation_injective
     (A : PaperAnalyticData) :
-    Function.Injective A.actualCuspCentralTranslation := by
+    Function.Injective A.cuspCentralTranslation := by
   obtain ⟨g, hg⟩ := A.exists_geometricCentralTranslationReindexing
   intro a b hab
   apply (rhoLambda g).injective
@@ -404,7 +404,7 @@ public theorem markedCentralBaseProjection_translation
 /-- The actual central-family projection to the free group on the two marked base meridians. -/
 public noncomputable def paperPuncturedGlobalFamilyBaseProjection
     (A : PaperAnalyticData) :
-    FundamentalGroup A.CentralFamily A.actualCuspCentralBase →*
+    FundamentalGroup A.CentralFamily A.cuspCentralBase →*
       TwoMeridianDeckGroup :=
   (TwicePuncturedComplex.markedMeridianMulEquiv
       TwicePuncturedComplex.establishedMarkedMeridianHom_injective).symm.toMonoidHom.comp
@@ -503,7 +503,7 @@ marked meridians. -/
 public noncomputable def paperPuncturedGlobalFamilyAffinePresentation
     (A : PaperAnalyticData) :
     FreeTwoMeridianAffineDeck Lattice paperPuncturedGlobalFamilyFreeMonodromy →*
-      FundamentalGroup A.CentralFamily A.actualCuspCentralBase :=
+      FundamentalGroup A.CentralFamily A.cuspCentralBase :=
   AffineTorusCorePiOneData.freeAffinePresentationHom
     paperPuncturedGlobalFamilyFreeMonodromy
     (paperPuncturedGlobalFamilyAffineCorePiOneData A)
@@ -590,7 +590,7 @@ canonical presentation and its proved injectivity. -/
 public noncomputable def establishedPuncturedGlobalFamilyAffineFundamentalGroup
     (A : PaperAnalyticData) :
     PuncturedGlobalFamilyAffineFundamentalGroup A.periods where
-  base := A.actualCuspCentralBase
+  base := A.cuspCentralBase
   identification := MulEquiv.ofBijective (paperPuncturedGlobalFamilyAffinePresentation A)
     ⟨paperPuncturedGlobalFamilyAffinePresentation_injective A,
       AffineTorusCorePiOneData.freeAffinePresentationHom_surjective

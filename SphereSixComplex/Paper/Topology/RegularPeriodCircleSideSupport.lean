@@ -10,10 +10,10 @@ open SphereSixComplex.Topology GlobalTorusFamily TriangleGroup ComplexTorus
 
 public def regularPeriodCircleToInterior (A : PaperAnalyticData) (n : IntegerPeriods) :
     C(UnitAddCircle × RegularBase (U := A.modular.modularParameter.toTriangleUniformization),
-      A.SectionSevenEllipticInterior) :=
-  ⟨fun p ↦ (A.sectionSevenEllipticCentralImageHomeomorph.symm
+      A.ellipticInterior) :=
+  ⟨fun p ↦ (A.ellipticCentralImageHomeomorph.symm
     (regularPeriodCircleInGlobal A.periods n p)).1,
-    continuous_subtype_val.comp (A.sectionSevenEllipticCentralImageHomeomorph.symm.continuous.comp
+    continuous_subtype_val.comp (A.ellipticCentralImageHomeomorph.symm.continuous.comp
       (regularPeriodCircleInGlobal A.periods n).continuous)⟩
 
 public theorem regularPeriodCircleInGlobal_coordinate (A : PaperAnalyticData)
@@ -28,28 +28,28 @@ public theorem regularPeriodCircleInGlobal_coordinate (A : PaperAnalyticData)
   rfl
 
 public theorem regularPeriodCircleToInterior_mem_three {A : PaperAnalyticData}
-    (R : A.SectionSevenAffineRadialCompletionInput) (n : IntegerPeriods) (t : UnitAddCircle)
+    (R : A.AffineRadialCompletionInput) (n : IntegerPeriods) (t : UnitAddCircle)
     (b : RegularBase (U := A.modular.modularParameter.toTriangleUniformization))
     (hb : (A.puncturedBaseHomeomorphTwicePuncturedComplex (Quotient.mk _ b)).1.re < 2 / 3) :
     A.regularPeriodCircleToInterior n (t, b) ∈ R.twoDiscCover.orderThreeSide := by
-  change _ ∈ A.sectionSevenActualAffineSplit.allocation.orderThreeSide
-  refine Or.inr ⟨A.sectionSevenEllipticCentralImageHomeomorph.symm
+  change _ ∈ A.actualAffineHeightSplit.allocation.orderThreeSide
+  refine Or.inr ⟨A.ellipticCentralImageHomeomorph.symm
     (regularPeriodCircleInGlobal A.periods n (t, b)), ?_, rfl⟩
-  change (A.centralFamilyCoordinate (A.sectionSevenEllipticCentralImageHomeomorph
-    (A.sectionSevenEllipticCentralImageHomeomorph.symm _))).1.re < _
+  change (A.centralFamilyCoordinate (A.ellipticCentralImageHomeomorph
+    (A.ellipticCentralImageHomeomorph.symm _))).1.re < _
   rw [Homeomorph.apply_symm_apply, regularPeriodCircleInGlobal_coordinate]
   exact hb
 
 public theorem regularPeriodCircleToInterior_mem_four {A : PaperAnalyticData}
-    (R : A.SectionSevenAffineRadialCompletionInput) (n : IntegerPeriods) (t : UnitAddCircle)
+    (R : A.AffineRadialCompletionInput) (n : IntegerPeriods) (t : UnitAddCircle)
     (b : RegularBase (U := A.modular.modularParameter.toTriangleUniformization))
     (hb : 1 / 3 < (A.puncturedBaseHomeomorphTwicePuncturedComplex (Quotient.mk _ b)).1.re) :
     A.regularPeriodCircleToInterior n (t, b) ∈ R.twoDiscCover.orderFourSide := by
-  change _ ∈ A.sectionSevenActualAffineSplit.allocation.orderFourSide
-  refine Or.inr ⟨A.sectionSevenEllipticCentralImageHomeomorph.symm
+  change _ ∈ A.actualAffineHeightSplit.allocation.orderFourSide
+  refine Or.inr ⟨A.ellipticCentralImageHomeomorph.symm
     (regularPeriodCircleInGlobal A.periods n (t, b)), ?_, rfl⟩
-  change _ < (A.centralFamilyCoordinate (A.sectionSevenEllipticCentralImageHomeomorph
-    (A.sectionSevenEllipticCentralImageHomeomorph.symm _))).1.re
+  change _ < (A.centralFamilyCoordinate (A.ellipticCentralImageHomeomorph
+    (A.ellipticCentralImageHomeomorph.symm _))).1.re
   rw [Homeomorph.apply_symm_apply, regularPeriodCircleInGlobal_coordinate]
   exact hb
 

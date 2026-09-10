@@ -6,7 +6,7 @@ public import SphereSixComplex.Paper.Topology.ConstructedA2HexagonCircleLoop
 noncomputable section
 open Set Topology Matrix
 namespace SphereSixComplex
-open Geometry.StandardInfiniteA2ToricModel.Established
+open Geometry.InfiniteA2Toric
 open StandardCircleHomologyLiftDegree
 
 public theorem squareRadialCirclePoint (r : ℝ) (hr : 0 < r) (t : ℝ) :

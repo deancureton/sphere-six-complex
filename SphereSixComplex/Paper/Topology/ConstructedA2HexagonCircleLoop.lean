@@ -6,7 +6,7 @@ public import SphereSixComplex.Prerequisites.Topology.PathOpchainSubdivision
 @[expose] public section
 noncomputable section
 open Set Topology CategoryTheory
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex Hurewicz.Chains
 open SphereSixComplex.StandardCircleHomologyLiftDegree
 
@@ -71,4 +71,4 @@ public theorem constructedA2HexagonBoundaryLoop_homology_eq_circle :
       constructedA2HexagonBoundaryLoop_opchain_eq_circle
     _ = _ := (homologyι_loopHomologyClass _).symm
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric

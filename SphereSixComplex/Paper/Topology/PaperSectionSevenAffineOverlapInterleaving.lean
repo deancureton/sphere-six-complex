@@ -54,9 +54,9 @@ public theorem centralToSectionSevenEulerPiece_starToCentral (i : Fin 3)
 
 /-- A central-image point sits inside the glued space at its own underlying point. -/
 public theorem centralToSectionSevenEulerPiece_centralImage
-    (x : A.sectionSevenEllipticCentralImage) :
+    (x : A.ellipticCentralImage) :
     (A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
-        (A.sectionSevenEllipticCentralImageHomeomorph x)).1 = x.1.1 :=
+        (A.ellipticCentralImageHomeomorph x)).1 = x.1.1 :=
   congrArg Subtype.val
     (A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph.apply_symm_apply
       ⟨x.1.1, x.2⟩)
@@ -64,9 +64,9 @@ public theorem centralToSectionSevenEulerPiece_centralImage
 /-- The central-image homeomorphism identifies the collar points of the elliptic interior with
 the collar range inside the actual central family. -/
 public theorem mem_orderThreeFillingImage_iff_mem_starToCentral_range
-    (x : A.sectionSevenEllipticCentralImage) :
-    x.1 ∈ A.sectionSevenOrderThreeFillingImage ↔
-      A.sectionSevenEllipticCentralImageHomeomorph x ∈ Set.range (A.starToCentral (1 : Fin 3)) := by
+    (x : A.ellipticCentralImage) :
+    x.1 ∈ A.orderThreeFillingImage ↔
+      A.ellipticCentralImageHomeomorph x ∈ Set.range (A.starToCentral (1 : Fin 3)) := by
   have hrange : Set.range (A.openEmbeddingStarData.collarSourceToGlued 1) =
       (sectionSevenStarOpenCover
         A.openEmbeddingStarData.toFourPieceStarGluingData).piece 0 ∩
@@ -75,14 +75,14 @@ public theorem mem_orderThreeFillingImage_iff_mem_starToCentral_range
     simpa using A.openEmbeddingStarData.range_collarSourceToGlued 1
   constructor
   · intro hx
-    have hpair : x.1.1 ∈ A.SectionSevenEllipticCover.piece 0 ∩
-        A.SectionSevenEllipticCover.piece 1 := ⟨x.2, hx⟩
+    have hpair : x.1.1 ∈ A.starCover.piece 0 ∩
+        A.starCover.piece 1 := ⟨x.2, hx⟩
     have hpair' : x.1.1 ∈
         (sectionSevenStarOpenCover
           A.openEmbeddingStarData.toFourPieceStarGluingData).piece 0 ∩
         (sectionSevenStarOpenCover
           A.openEmbeddingStarData.toFourPieceStarGluingData).piece 2 := by
-      simpa [SectionSevenEllipticCover,
+      simpa [starCover,
         OpenEmbeddingStarData.SectionSevenMayerVietorisCover,
         sectionSevenMayerVietorisOpenCover, sectionSevenMayerVietorisOrder] using hpair
     rw [← hrange] at hpair'
@@ -98,9 +98,9 @@ public theorem mem_orderThreeFillingImage_iff_mem_starToCentral_range
         A.centralToSectionSevenEulerPiece_centralImage x]
     have hmem : x.1.1 ∈ Set.range (A.openEmbeddingStarData.collarSourceToGlued 1) := ⟨q, hglued⟩
     rw [hrange] at hmem
-    have hpair : x.1.1 ∈ A.SectionSevenEllipticCover.piece 0 ∩
-        A.SectionSevenEllipticCover.piece 1 := by
-      simpa [SectionSevenEllipticCover,
+    have hpair : x.1.1 ∈ A.starCover.piece 0 ∩
+        A.starCover.piece 1 := by
+      simpa [starCover,
         OpenEmbeddingStarData.SectionSevenMayerVietorisCover,
         sectionSevenMayerVietorisOpenCover, sectionSevenMayerVietorisOrder] using hmem
     exact hpair.2
@@ -146,18 +146,18 @@ public theorem orderThreeStarCollar_centralCoordinate_norm_lt
 /-- Outer interleaving step: the actual order-three star overlap is contained in the affine disc
 region of radius `1/3`. -/
 public theorem orderThreeOverlap_subset_discRegion :
-    A.sectionSevenOrderThreeFillingImage ∩ A.sectionSevenAffineOrderThreeCentralRegion ⊆
-      A.sectionSevenAffineOrderThreeDiscRegion (1 / 3) := by
+    A.orderThreeFillingImage ∩ A.affineOrderThreeCentralRegion ⊆
+      A.affineOrderThreeDiscRegion (1 / 3) := by
   intro x hx
-  have hmem : x ∈ A.sectionSevenEllipticCentralImage :=
+  have hmem : x ∈ A.ellipticCentralImage :=
     A.mem_centralImage_of_mem_centralHeightLowerRegion
-      A.sectionSevenEllipticCentralHeight (2 / 3 : ℝ) hx.2
+      A.ellipticCentralHeight (2 / 3 : ℝ) hx.2
   obtain ⟨q, hq⟩ :=
     (A.mem_orderThreeFillingImage_iff_mem_starToCentral_range ⟨x, hmem⟩).mp hx.1
   refine ⟨⟨x, hmem⟩, ?_, rfl⟩
-  show A.sectionSevenEllipticCentralRadius ⟨x, hmem⟩ < 1 / 3
+  show A.ellipticCentralRadius ⟨x, hmem⟩ < 1 / 3
   change ‖(A.centralFamilyCoordinate
-    (A.sectionSevenEllipticCentralImageHomeomorph ⟨x, hmem⟩)).1‖ < 1 / 3
+    (A.ellipticCentralImageHomeomorph ⟨x, hmem⟩)).1‖ < 1 / 3
   rw [← hq]
   exact A.orderThreeStarCollar_centralCoordinate_norm_lt q
 
@@ -166,17 +166,17 @@ overlap.  This is the exact `lambda`-small implies `Cayley`-small escape stateme
 the central end cover. -/
 public theorem exists_discRegion_subset_orderThreeOverlap :
     ∃ a : ℝ, 0 < a ∧ a ≤ 1 / 3 ∧
-      A.sectionSevenAffineOrderThreeDiscRegion a ⊆
-        A.sectionSevenOrderThreeFillingImage ∩ A.sectionSevenAffineOrderThreeCentralRegion := by
+      A.affineOrderThreeDiscRegion a ⊆
+        A.orderThreeFillingImage ∩ A.affineOrderThreeCentralRegion := by
   set s := A.starSeparation.orderThree.radius with hs
   have hspos : 0 < s := A.starSeparation.orderThree.radius_pos
   obtain ⟨δ, hδ, hball⟩ := A.exists_orderThree_coordinate_radius (s / 2) (by positivity)
   refine ⟨min δ (1 / 3), lt_min hδ (by norm_num), min_le_right _ _, ?_⟩
   rintro x ⟨y, hy, rfl⟩
   have hnorm : ‖(A.centralFamilyCoordinate
-      (A.sectionSevenEllipticCentralImageHomeomorph y)).1‖ < min δ (1 / 3) := hy
+      (A.ellipticCentralImageHomeomorph y)).1‖ < min δ (1 / 3) := hy
   obtain ⟨Q, hQ⟩ := A.centralQuotientProjection_surjective
-    (A.sectionSevenEllipticCentralImageHomeomorph y)
+    (A.ellipticCentralImageHomeomorph y)
   have hcoord : ‖A.modular.sourceCoordinate.coordinate
       (regularTotalSpaceBase A.periods Q).1‖ < δ := by
     have := hnorm.trans_le (min_le_left _ _)
@@ -184,18 +184,18 @@ public theorem exists_discRegion_subset_orderThreeOverlap :
   obtain ⟨g, hg⟩ := hball (regularTotalSpaceBase A.periods Q).1 hcoord
   obtain ⟨z, hz, -⟩ := A.exists_orderThree_starCollar_of_baseRadius Q g (s / 2) hg
     (by linarith)
-  have hrange : A.sectionSevenEllipticCentralImageHomeomorph y ∈
+  have hrange : A.ellipticCentralImageHomeomorph y ∈
       Set.range (A.starToCentral (1 : Fin 3)) := ⟨z, by rw [hz, hQ]⟩
   refine ⟨(A.mem_orderThreeFillingImage_iff_mem_starToCentral_range y).mpr hrange, ?_⟩
   refine ⟨y, ?_, rfl⟩
-  show A.sectionSevenEllipticCentralHeight y < 2 / 3
+  show A.ellipticCentralHeight y < 2 / 3
   have hre : (A.centralFamilyCoordinate
-      (A.sectionSevenEllipticCentralImageHomeomorph y)).1.re ≤
-      ‖(A.centralFamilyCoordinate (A.sectionSevenEllipticCentralImageHomeomorph y)).1‖ :=
+      (A.ellipticCentralImageHomeomorph y)).1.re ≤
+      ‖(A.centralFamilyCoordinate (A.ellipticCentralImageHomeomorph y)).1‖ :=
     Complex.re_le_norm _
   have hlt := hnorm.trans_le (min_le_right _ _)
   change (A.centralFamilyCoordinate
-    (A.sectionSevenEllipticCentralImageHomeomorph y)).1.re < 2 / 3
+    (A.ellipticCentralImageHomeomorph y)).1.re < 2 / 3
   linarith
 
 
@@ -206,19 +206,19 @@ public def regionInclusion {X : Type*} [TopologicalSpace X] {s t : Set X} (h : s
 
 /-- Affine disc regions of radius at most `2/3` lie in the order-three central region. -/
 public theorem discRegion_subset_centralRegion {r : ℝ} (hr : r ≤ 2 / 3) :
-    A.sectionSevenAffineOrderThreeDiscRegion r ⊆
-      A.sectionSevenAffineOrderThreeCentralRegion := by
+    A.affineOrderThreeDiscRegion r ⊆
+      A.affineOrderThreeCentralRegion := by
   rintro x ⟨y, hy, rfl⟩
   refine ⟨y, ?_, rfl⟩
   have hnorm : ‖(A.centralFamilyCoordinate
-      (A.sectionSevenEllipticCentralImageHomeomorph y)).1‖ < r := hy
+      (A.ellipticCentralImageHomeomorph y)).1‖ < r := hy
   have hre : (A.centralFamilyCoordinate
-      (A.sectionSevenEllipticCentralImageHomeomorph y)).1.re ≤
-      ‖(A.centralFamilyCoordinate (A.sectionSevenEllipticCentralImageHomeomorph y)).1‖ :=
+      (A.ellipticCentralImageHomeomorph y)).1.re ≤
+      ‖(A.centralFamilyCoordinate (A.ellipticCentralImageHomeomorph y)).1‖ :=
     Complex.re_le_norm _
-  show A.sectionSevenEllipticCentralHeight y < 2 / 3
+  show A.ellipticCentralHeight y < 2 / 3
   change (A.centralFamilyCoordinate
-    (A.sectionSevenEllipticCentralImageHomeomorph y)).1.re < 2 / 3
+    (A.ellipticCentralImageHomeomorph y)).1.re < 2 / 3
   linarith
 
 /-- The affine disc region of any positive radius at most `2/3` includes into the order-three
@@ -227,14 +227,14 @@ through the full deck action and transported to the two named region models. -/
 public theorem discRegionInclusion_isHomotopyEquivalence {r : ℝ} (hr0 : 0 < r) (hr : r ≤ 2 / 3) :
     IsHomotopyEquivalence
       ((regionInclusion (A.discRegion_subset_centralRegion hr) :
-        C(↥(A.sectionSevenAffineOrderThreeDiscRegion r),
-          ↥A.sectionSevenAffineOrderThreeCentralRegion)) :
-        ↥(A.sectionSevenAffineOrderThreeDiscRegion r) →
-          ↥A.sectionSevenAffineOrderThreeCentralRegion) := by
+        C(↥(A.affineOrderThreeDiscRegion r),
+          ↥A.affineOrderThreeCentralRegion)) :
+        ↥(A.affineOrderThreeDiscRegion r) →
+          ↥A.affineOrderThreeCentralRegion) := by
   obtain ⟨E, hE⟩ := A.exists_orderThreeAffineRadialEquiv hr0 hr
   refine E.isHomotopyEquivalence_of_quotient_models _
-    (A.sectionSevenAffineOrderThreeDiscRegionQuotientHomeomorph r)
-    A.sectionSevenAffineOrderThreeCentralRegionQuotientHomeomorph ?_
+    (A.affineOrderThreeDiscRegionQuotientHomeomorph r)
+    A.affineOrderThreeCentralRegionQuotientHomeomorph ?_
     (A.orderThreeAffineDiscLiftAction_continuous r)
     A.orderThreeAffineHalfPlaneLiftAction_continuous
   funext x
@@ -249,13 +249,13 @@ public theorem discRegionInclusion_isHomotopyEquivalence {r : ℝ} (hr0 : 0 < r)
 /-- Nested affine disc regions include into one another by homotopy equivalences. -/
 public theorem discRegionInclusion_mono_isHomotopyEquivalence
     {a b : ℝ} (ha0 : 0 < a) (hab : a ≤ b) (hb : b ≤ 2 / 3)
-    (hsub : A.sectionSevenAffineOrderThreeDiscRegion a ⊆
-      A.sectionSevenAffineOrderThreeDiscRegion b) :
+    (hsub : A.affineOrderThreeDiscRegion a ⊆
+      A.affineOrderThreeDiscRegion b) :
     IsHomotopyEquivalence
-      ((regionInclusion hsub : C(↥(A.sectionSevenAffineOrderThreeDiscRegion a),
-        ↥(A.sectionSevenAffineOrderThreeDiscRegion b))) :
-        ↥(A.sectionSevenAffineOrderThreeDiscRegion a) →
-          ↥(A.sectionSevenAffineOrderThreeDiscRegion b)) := by
+      ((regionInclusion hsub : C(↥(A.affineOrderThreeDiscRegion a),
+        ↥(A.affineOrderThreeDiscRegion b))) :
+        ↥(A.affineOrderThreeDiscRegion a) →
+          ↥(A.affineOrderThreeDiscRegion b)) := by
   refine SphereSixComplex.isHomotopyEquivalence_of_comp_left
     (f := regionInclusion hsub)
     (g := regionInclusion (A.discRegion_subset_centralRegion hb)) ?_
@@ -264,8 +264,8 @@ public theorem discRegionInclusion_mono_isHomotopyEquivalence
 
 /-- Monotonicity of the affine disc regions. -/
 public theorem discRegion_mono {a b : ℝ} (hab : a ≤ b) :
-    A.sectionSevenAffineOrderThreeDiscRegion a ⊆
-      A.sectionSevenAffineOrderThreeDiscRegion b := by
+    A.affineOrderThreeDiscRegion a ⊆
+      A.affineOrderThreeDiscRegion b := by
   rintro x ⟨y, hy, rfl⟩
   exact ⟨y, lt_of_lt_of_le hy hab, rfl⟩
 
@@ -279,50 +279,50 @@ elliptic centre; no identification of the collar with an affine disc region is r
 particular the false set equality forced by the overlap quotient structures is avoided. -/
 public theorem orderThreeOverlapIsHomotopyEquivalence_of_shrink
     {a : ℝ} (ha0 : 0 < a) (ha3 : a ≤ 1 / 3)
-    (hsub : A.sectionSevenAffineOrderThreeDiscRegion a ⊆
-      A.sectionSevenOrderThreeFillingImage ∩ A.sectionSevenAffineOrderThreeCentralRegion)
-    (shrink : C(↥(A.sectionSevenOrderThreeFillingImage ∩
-        A.sectionSevenAffineOrderThreeCentralRegion),
-      ↥(A.sectionSevenAffineOrderThreeDiscRegion a)))
+    (hsub : A.affineOrderThreeDiscRegion a ⊆
+      A.orderThreeFillingImage ∩ A.affineOrderThreeCentralRegion)
+    (shrink : C(↥(A.orderThreeFillingImage ∩
+        A.affineOrderThreeCentralRegion),
+      ↥(A.affineOrderThreeDiscRegion a)))
     (hshrink : (((regionInclusion hsub).comp shrink :
-      C(↥(A.sectionSevenOrderThreeFillingImage ∩
-          A.sectionSevenAffineOrderThreeCentralRegion),
-        ↥(A.sectionSevenOrderThreeFillingImage ∩
-          A.sectionSevenAffineOrderThreeCentralRegion)))).Homotopic
+      C(↥(A.orderThreeFillingImage ∩
+          A.affineOrderThreeCentralRegion),
+        ↥(A.orderThreeFillingImage ∩
+          A.affineOrderThreeCentralRegion)))).Homotopic
       (ContinuousMap.id _)) :
-    IsHomotopyEquivalence (interToRight A.sectionSevenOrderThreeFillingImage
-      A.sectionSevenAffineOrderThreeCentralRegion).hom := by
-  have hOuter : A.sectionSevenOrderThreeFillingImage ∩
-      A.sectionSevenAffineOrderThreeCentralRegion ⊆
-      A.sectionSevenAffineOrderThreeDiscRegion (1 / 3) :=
+    IsHomotopyEquivalence (interToRight A.orderThreeFillingImage
+      A.affineOrderThreeCentralRegion).hom := by
+  have hOuter : A.orderThreeFillingImage ∩
+      A.affineOrderThreeCentralRegion ⊆
+      A.affineOrderThreeDiscRegion (1 / 3) :=
     A.orderThreeOverlap_subset_discRegion
   have hgf : IsHomotopyEquivalence
       (((regionInclusion hsub).comp shrink :
-        C(↥(A.sectionSevenOrderThreeFillingImage ∩
-            A.sectionSevenAffineOrderThreeCentralRegion),
-          ↥(A.sectionSevenOrderThreeFillingImage ∩
-            A.sectionSevenAffineOrderThreeCentralRegion))) :
-        ↥(A.sectionSevenOrderThreeFillingImage ∩
-          A.sectionSevenAffineOrderThreeCentralRegion) →
-          ↥(A.sectionSevenOrderThreeFillingImage ∩
-            A.sectionSevenAffineOrderThreeCentralRegion)) :=
+        C(↥(A.orderThreeFillingImage ∩
+            A.affineOrderThreeCentralRegion),
+          ↥(A.orderThreeFillingImage ∩
+            A.affineOrderThreeCentralRegion))) :
+        ↥(A.orderThreeFillingImage ∩
+          A.affineOrderThreeCentralRegion) →
+          ↥(A.orderThreeFillingImage ∩
+            A.affineOrderThreeCentralRegion)) :=
     SphereSixComplex.isHomotopyEquivalence_of_homotopic hshrink
       SphereSixComplex.isHomotopyEquivalence_id
   have hhg : IsHomotopyEquivalence
       ((((regionInclusion hOuter).comp (regionInclusion hsub)) :
-        C(↥(A.sectionSevenAffineOrderThreeDiscRegion a),
-          ↥(A.sectionSevenAffineOrderThreeDiscRegion (1 / 3)))) :
-        ↥(A.sectionSevenAffineOrderThreeDiscRegion a) →
-          ↥(A.sectionSevenAffineOrderThreeDiscRegion (1 / 3))) :=
+        C(↥(A.affineOrderThreeDiscRegion a),
+          ↥(A.affineOrderThreeDiscRegion (1 / 3)))) :
+        ↥(A.affineOrderThreeDiscRegion a) →
+          ↥(A.affineOrderThreeDiscRegion (1 / 3))) :=
     A.discRegionInclusion_mono_isHomotopyEquivalence ha0 ha3 (by norm_num)
       (A.discRegion_mono ha3)
   have hmid : IsHomotopyEquivalence
-      ((regionInclusion hOuter : C(↥(A.sectionSevenOrderThreeFillingImage ∩
-          A.sectionSevenAffineOrderThreeCentralRegion),
-        ↥(A.sectionSevenAffineOrderThreeDiscRegion (1 / 3)))) :
-        ↥(A.sectionSevenOrderThreeFillingImage ∩
-          A.sectionSevenAffineOrderThreeCentralRegion) →
-          ↥(A.sectionSevenAffineOrderThreeDiscRegion (1 / 3))) :=
+      ((regionInclusion hOuter : C(↥(A.orderThreeFillingImage ∩
+          A.affineOrderThreeCentralRegion),
+        ↥(A.affineOrderThreeDiscRegion (1 / 3)))) :
+        ↥(A.orderThreeFillingImage ∩
+          A.affineOrderThreeCentralRegion) →
+          ↥(A.affineOrderThreeDiscRegion (1 / 3))) :=
     SphereSixComplex.isHomotopyEquivalence_last_of_interleaving
       shrink (regionInclusion hsub) (regionInclusion hOuter) hgf hhg
   exact (A.discRegionInclusion_isHomotopyEquivalence (r := 1 / 3) (by norm_num)
@@ -332,10 +332,10 @@ public theorem orderThreeOverlapIsHomotopyEquivalence_of_shrink
 /-! ## The order-four side -/
 
 /-- The order-four affine disc region at `1`, inside the regular central image. -/
-public noncomputable def sectionSevenAffineOrderFourDiscRegion (r : ℝ) :
-    Set A.SectionSevenEllipticInterior :=
+public noncomputable def affineOrderFourDiscRegion (r : ℝ) :
+    Set A.ellipticInterior :=
   centralHeightLowerRegion
-    (fun z ↦ ‖(A.sectionSevenEllipticCentralCoordinate z).1 - 1‖) r
+    (fun z ↦ ‖(A.ellipticCentralCoordinate z).1 - 1‖) r
 
 public theorem orderFourAffineDiscLiftQuotientToCentralFamily_isOpenEmbedding (r : ℝ) :
     IsOpenEmbedding (A.orderFourAffineDiscLiftQuotientToCentralFamily r) :=
@@ -348,12 +348,12 @@ public noncomputable def orderFourAffineDiscLiftQuotientHomeomorphRange (r : ℝ
   (A.orderFourAffineDiscLiftQuotientToCentralFamily_isOpenEmbedding r).isEmbedding.toHomeomorph
 
 /-- The order-four affine disc region, expressed as the quotient of its full-deck-action lift. -/
-public noncomputable def sectionSevenAffineOrderFourDiscRegionQuotientHomeomorph (r : ℝ) :
-    ↥(A.sectionSevenAffineOrderFourDiscRegion r) ≃ₜ
+public noncomputable def affineOrderFourDiscRegionQuotientHomeomorph (r : ℝ) :
+    ↥(A.affineOrderFourDiscRegion r) ≃ₜ
       Quotient (orbitRelOf (A.orderFourAffineDiscLiftAction r)) :=
   (centralHeightLowerRegionHomeomorph A
-      (fun z ↦ ‖(A.sectionSevenEllipticCentralCoordinate z).1 - 1‖) r).symm |>.trans
-    (A.sectionSevenEllipticCentralImageHomeomorph.subtype fun _ ↦ Iff.rfl) |>.trans
+      (fun z ↦ ‖(A.ellipticCentralCoordinate z).1 - 1‖) r).symm |>.trans
+    (A.ellipticCentralImageHomeomorph.subtype fun _ ↦ Iff.rfl) |>.trans
     (Homeomorph.setCongr
       (A.range_orderFourAffineDiscLiftQuotientToCentralFamily r).symm) |>.trans
     (A.orderFourAffineDiscLiftQuotientHomeomorphRange r).symm
@@ -368,31 +368,31 @@ public theorem toCentralFamily_orderFourAffineDiscLiftQuotientHomeomorphRange_sy
 /-- The order-four disc-region quotient model is compatible with the central-family
 coordinates. -/
 public theorem toCentralFamily_sectionSevenAffineOrderFourDiscRegionQuotientHomeomorph
-    (r : ℝ) (x : ↥(A.sectionSevenAffineOrderFourDiscRegion r)) :
+    (r : ℝ) (x : ↥(A.affineOrderFourDiscRegion r)) :
     A.orderFourAffineDiscLiftQuotientToCentralFamily r
-        (A.sectionSevenAffineOrderFourDiscRegionQuotientHomeomorph r x) =
-      A.sectionSevenEllipticCentralImageHomeomorph
+        (A.affineOrderFourDiscRegionQuotientHomeomorph r x) =
+      A.ellipticCentralImageHomeomorph
         ⟨x.1, A.mem_centralImage_of_mem_centralHeightLowerRegion
-          (fun z ↦ ‖(A.sectionSevenEllipticCentralCoordinate z).1 - 1‖) r x.2⟩ := by
+          (fun z ↦ ‖(A.ellipticCentralCoordinate z).1 - 1‖) r x.2⟩ := by
   refine (A.toCentralFamily_orderFourAffineDiscLiftQuotientHomeomorphRange_symm r _).trans ?_
-  exact congrArg A.sectionSevenEllipticCentralImageHomeomorph
+  exact congrArg A.ellipticCentralImageHomeomorph
     (Subtype.ext (A.coe_centralHeightLowerRegionHomeomorph_symm
-      (fun z ↦ ‖(A.sectionSevenEllipticCentralCoordinate z).1 - 1‖) r x))
+      (fun z ↦ ‖(A.ellipticCentralCoordinate z).1 - 1‖) r x))
 
 /-- Order-four affine disc regions of radius at most `1 - 1/3` lie in the order-four central
 region. -/
 public theorem orderFourDiscRegion_subset_centralRegion {r : ℝ} (hr : r ≤ 1 - 1 / 3) :
-    A.sectionSevenAffineOrderFourDiscRegion r ⊆
-      A.sectionSevenAffineOrderFourCentralRegion := by
+    A.affineOrderFourDiscRegion r ⊆
+      A.affineOrderFourCentralRegion := by
   rintro x ⟨y, hy, rfl⟩
   refine ⟨y, ?_, rfl⟩
-  have hnorm : ‖(A.sectionSevenEllipticCentralCoordinate y).1 - 1‖ < r := hy
-  have hre := Complex.abs_re_le_norm ((A.sectionSevenEllipticCentralCoordinate y).1 - 1)
+  have hnorm : ‖(A.ellipticCentralCoordinate y).1 - 1‖ < r := hy
+  have hre := Complex.abs_re_le_norm ((A.ellipticCentralCoordinate y).1 - 1)
   simp only [Complex.sub_re, Complex.one_re] at hre
-  have hlow : -‖(A.sectionSevenEllipticCentralCoordinate y).1 - 1‖ ≤
-      (A.sectionSevenEllipticCentralCoordinate y).1.re - 1 := (abs_le.mp hre).1
-  show (1 : ℝ) / 3 < A.sectionSevenEllipticCentralHeight y
-  change (1 : ℝ) / 3 < (A.sectionSevenEllipticCentralCoordinate y).1.re
+  have hlow : -‖(A.ellipticCentralCoordinate y).1 - 1‖ ≤
+      (A.ellipticCentralCoordinate y).1.re - 1 := (abs_le.mp hre).1
+  show (1 : ℝ) / 3 < A.ellipticCentralHeight y
+  change (1 : ℝ) / 3 < (A.ellipticCentralCoordinate y).1.re
   linarith
 
 /-- The order-four disc region includes into the order-four central region by a homotopy
@@ -401,29 +401,29 @@ public theorem orderFourDiscRegionInclusion_isHomotopyEquivalence
     {r : ℝ} (hr0 : 0 < r) (hr : r ≤ 1 - 1 / 3) :
     IsHomotopyEquivalence
       ((regionInclusion (A.orderFourDiscRegion_subset_centralRegion hr) :
-        C(↥(A.sectionSevenAffineOrderFourDiscRegion r),
-          ↥A.sectionSevenAffineOrderFourCentralRegion)) :
-        ↥(A.sectionSevenAffineOrderFourDiscRegion r) →
-          ↥A.sectionSevenAffineOrderFourCentralRegion) := by
+        C(↥(A.affineOrderFourDiscRegion r),
+          ↥A.affineOrderFourCentralRegion)) :
+        ↥(A.affineOrderFourDiscRegion r) →
+          ↥A.affineOrderFourCentralRegion) := by
   obtain ⟨E, hE⟩ := A.exists_orderFourAffineRadialEquiv hr0 hr
   refine E.isHomotopyEquivalence_of_quotient_models _
-    (A.sectionSevenAffineOrderFourDiscRegionQuotientHomeomorph r)
-    A.sectionSevenAffineOrderFourCentralRegionQuotientHomeomorph ?_
+    (A.affineOrderFourDiscRegionQuotientHomeomorph r)
+    A.affineOrderFourCentralRegionQuotientHomeomorph ?_
     (A.orderFourAffineDiscLiftAction_continuous r)
     A.orderFourAffineHalfPlaneLiftAction_continuous
   funext u
   apply A.orderFourAffineHalfPlaneLiftQuotientToCentralFamily_isOpenEmbedding.injective
-  have hmem : u.1 ∈ A.sectionSevenEllipticCentralImage :=
+  have hmem : u.1 ∈ A.ellipticCentralImage :=
     A.mem_centralImage_of_mem_centralHeightLowerRegion
-      (fun z ↦ ‖(A.sectionSevenEllipticCentralCoordinate z).1 - 1‖) r u.2
+      (fun z ↦ ‖(A.ellipticCentralCoordinate z).1 - 1‖) r u.2
   have hheight : (1 : ℝ) / 3 <
-      A.sectionSevenEllipticCentralHeight ⟨u.1, hmem⟩ := by
+      A.ellipticCentralHeight ⟨u.1, hmem⟩ := by
     obtain ⟨y, hy, hyu⟩ := A.orderFourDiscRegion_subset_centralRegion hr u.2
-    have hxy : y = (⟨u.1, hmem⟩ : A.sectionSevenEllipticCentralImage) := Subtype.ext hyu
+    have hxy : y = (⟨u.1, hmem⟩ : A.ellipticCentralImage) := Subtype.ext hyu
     exact hxy ▸ hy
   have hleft : (regionInclusion (A.orderFourDiscRegion_subset_centralRegion hr) u :
-      ↥A.sectionSevenAffineOrderFourCentralRegion) =
-      ⟨(⟨u.1, hmem⟩ : A.sectionSevenEllipticCentralImage).1,
+      ↥A.affineOrderFourCentralRegion) =
+      ⟨(⟨u.1, hmem⟩ : A.ellipticCentralImage).1,
         ⟨⟨u.1, hmem⟩, hheight, rfl⟩⟩ := rfl
   rw [Function.comp_apply, Function.comp_apply, hleft,
     A.orderFourAffineHalfPlaneLiftQuotientToCentralFamily_centralRegionQuotient
@@ -434,21 +434,21 @@ public theorem orderFourDiscRegionInclusion_isHomotopyEquivalence
 
 /-- Monotonicity of the order-four affine disc regions. -/
 public theorem orderFourDiscRegion_mono {a b : ℝ} (hab : a ≤ b) :
-    A.sectionSevenAffineOrderFourDiscRegion a ⊆
-      A.sectionSevenAffineOrderFourDiscRegion b := by
+    A.affineOrderFourDiscRegion a ⊆
+      A.affineOrderFourDiscRegion b := by
   rintro x ⟨y, hy, rfl⟩
   exact ⟨y, lt_of_lt_of_le hy hab, rfl⟩
 
 /-- Nested order-four affine disc regions include into one another by homotopy equivalences. -/
 public theorem orderFourDiscRegionInclusion_mono_isHomotopyEquivalence
     {a b : ℝ} (ha0 : 0 < a) (hab : a ≤ b) (hb : b ≤ 1 - 1 / 3)
-    (hsub : A.sectionSevenAffineOrderFourDiscRegion a ⊆
-      A.sectionSevenAffineOrderFourDiscRegion b) :
+    (hsub : A.affineOrderFourDiscRegion a ⊆
+      A.affineOrderFourDiscRegion b) :
     IsHomotopyEquivalence
-      ((regionInclusion hsub : C(↥(A.sectionSevenAffineOrderFourDiscRegion a),
-        ↥(A.sectionSevenAffineOrderFourDiscRegion b))) :
-        ↥(A.sectionSevenAffineOrderFourDiscRegion a) →
-          ↥(A.sectionSevenAffineOrderFourDiscRegion b)) := by
+      ((regionInclusion hsub : C(↥(A.affineOrderFourDiscRegion a),
+        ↥(A.affineOrderFourDiscRegion b))) :
+        ↥(A.affineOrderFourDiscRegion a) →
+          ↥(A.affineOrderFourDiscRegion b)) := by
   refine SphereSixComplex.isHomotopyEquivalence_of_comp_left
     (f := regionInclusion hsub)
     (g := regionInclusion (A.orderFourDiscRegion_subset_centralRegion hb)) ?_
@@ -457,19 +457,19 @@ public theorem orderFourDiscRegionInclusion_mono_isHomotopyEquivalence
 
 
 public theorem mem_centralImage_of_mem_centralHeightUpperRegion
-    (height : A.sectionSevenEllipticCentralImage → ℝ) (lower : ℝ)
-    {x : A.SectionSevenEllipticInterior}
+    (height : A.ellipticCentralImage → ℝ) (lower : ℝ)
+    {x : A.ellipticInterior}
     (hx : x ∈ centralHeightUpperRegion height lower) :
-    x ∈ A.sectionSevenEllipticCentralImage := by
+    x ∈ A.ellipticCentralImage := by
   obtain ⟨y, _, rfl⟩ := hx
   exact y.2
 
 /-- The central-image homeomorphism identifies the order-four collar points of the elliptic
 interior with the order-four collar range inside the actual central family. -/
 public theorem mem_orderFourFillingImage_iff_mem_starToCentral_range
-    (x : A.sectionSevenEllipticCentralImage) :
-    x.1 ∈ A.sectionSevenOrderFourFillingImage ↔
-      A.sectionSevenEllipticCentralImageHomeomorph x ∈
+    (x : A.ellipticCentralImage) :
+    x.1 ∈ A.orderFourFillingImage ↔
+      A.ellipticCentralImageHomeomorph x ∈
         Set.range (A.starToCentral (2 : Fin 3)) := by
   have hrange : Set.range (A.openEmbeddingStarData.collarSourceToGlued 2) =
       (sectionSevenStarOpenCover
@@ -479,14 +479,14 @@ public theorem mem_orderFourFillingImage_iff_mem_starToCentral_range
     simpa using A.openEmbeddingStarData.range_collarSourceToGlued 2
   constructor
   · intro hx
-    have hpair : x.1.1 ∈ A.SectionSevenEllipticCover.piece 0 ∩
-        A.SectionSevenEllipticCover.piece 2 := ⟨x.2, hx⟩
+    have hpair : x.1.1 ∈ A.starCover.piece 0 ∩
+        A.starCover.piece 2 := ⟨x.2, hx⟩
     have hpair' : x.1.1 ∈
         (sectionSevenStarOpenCover
           A.openEmbeddingStarData.toFourPieceStarGluingData).piece 0 ∩
         (sectionSevenStarOpenCover
           A.openEmbeddingStarData.toFourPieceStarGluingData).piece 3 := by
-      simpa [SectionSevenEllipticCover,
+      simpa [starCover,
         OpenEmbeddingStarData.SectionSevenMayerVietorisCover,
         sectionSevenMayerVietorisOpenCover, sectionSevenMayerVietorisOrder] using hpair
     rw [← hrange] at hpair'
@@ -502,9 +502,9 @@ public theorem mem_orderFourFillingImage_iff_mem_starToCentral_range
         A.centralToSectionSevenEulerPiece_centralImage x]
     have hmem : x.1.1 ∈ Set.range (A.openEmbeddingStarData.collarSourceToGlued 2) := ⟨q, hglued⟩
     rw [hrange] at hmem
-    have hpair : x.1.1 ∈ A.SectionSevenEllipticCover.piece 0 ∩
-        A.SectionSevenEllipticCover.piece 2 := by
-      simpa [SectionSevenEllipticCover,
+    have hpair : x.1.1 ∈ A.starCover.piece 0 ∩
+        A.starCover.piece 2 := by
+      simpa [starCover,
         OpenEmbeddingStarData.SectionSevenMayerVietorisCover,
         sectionSevenMayerVietorisOpenCover, sectionSevenMayerVietorisOrder] using hmem
     exact hpair.2
@@ -547,35 +547,35 @@ public theorem orderFourStarCollar_centralCoordinate_norm_lt
 
 /-- Outer interleaving step on the order-four side. -/
 public theorem orderFourOverlap_subset_discRegion :
-    A.sectionSevenOrderFourFillingImage ∩ A.sectionSevenAffineOrderFourCentralRegion ⊆
-      A.sectionSevenAffineOrderFourDiscRegion (1 / 3) := by
+    A.orderFourFillingImage ∩ A.affineOrderFourCentralRegion ⊆
+      A.affineOrderFourDiscRegion (1 / 3) := by
   intro x hx
-  have hmem : x ∈ A.sectionSevenEllipticCentralImage :=
+  have hmem : x ∈ A.ellipticCentralImage :=
     A.mem_centralImage_of_mem_centralHeightUpperRegion
-      A.sectionSevenEllipticCentralHeight (1 / 3 : ℝ) hx.2
+      A.ellipticCentralHeight (1 / 3 : ℝ) hx.2
   obtain ⟨q, hq⟩ :=
     (A.mem_orderFourFillingImage_iff_mem_starToCentral_range ⟨x, hmem⟩).mp hx.1
   refine ⟨⟨x, hmem⟩, ?_, rfl⟩
-  show ‖(A.sectionSevenEllipticCentralCoordinate ⟨x, hmem⟩).1 - 1‖ < 1 / 3
+  show ‖(A.ellipticCentralCoordinate ⟨x, hmem⟩).1 - 1‖ < 1 / 3
   change ‖(A.centralFamilyCoordinate
-    (A.sectionSevenEllipticCentralImageHomeomorph ⟨x, hmem⟩)).1 - 1‖ < 1 / 3
+    (A.ellipticCentralImageHomeomorph ⟨x, hmem⟩)).1 - 1‖ < 1 / 3
   rw [← hq]
   exact A.orderFourStarCollar_centralCoordinate_norm_lt q
 
 /-- Inner interleaving step on the order-four side. -/
 public theorem exists_discRegion_subset_orderFourOverlap :
     ∃ a : ℝ, 0 < a ∧ a ≤ 1 / 3 ∧
-      A.sectionSevenAffineOrderFourDiscRegion a ⊆
-        A.sectionSevenOrderFourFillingImage ∩ A.sectionSevenAffineOrderFourCentralRegion := by
+      A.affineOrderFourDiscRegion a ⊆
+        A.orderFourFillingImage ∩ A.affineOrderFourCentralRegion := by
   set s := A.starSeparation.orderFour.radius with hs
   have hspos : 0 < s := A.starSeparation.orderFour.radius_pos
   obtain ⟨δ, hδ, hball⟩ := A.exists_orderFour_coordinate_radius (s / 2) (by positivity)
   refine ⟨min δ (1 / 3), lt_min hδ (by norm_num), min_le_right _ _, ?_⟩
   rintro x ⟨y, hy, rfl⟩
   have hnorm : ‖(A.centralFamilyCoordinate
-      (A.sectionSevenEllipticCentralImageHomeomorph y)).1 - 1‖ < min δ (1 / 3) := hy
+      (A.ellipticCentralImageHomeomorph y)).1 - 1‖ < min δ (1 / 3) := hy
   obtain ⟨Q, hQ⟩ := A.centralQuotientProjection_surjective
-    (A.sectionSevenEllipticCentralImageHomeomorph y)
+    (A.ellipticCentralImageHomeomorph y)
   have hcoord : ‖A.modular.sourceCoordinate.coordinate
       (regularTotalSpaceBase A.periods Q).1 - 1‖ < δ := by
     have := hnorm.trans_le (min_le_left _ _)
@@ -583,70 +583,70 @@ public theorem exists_discRegion_subset_orderFourOverlap :
   obtain ⟨g, hg⟩ := hball (regularTotalSpaceBase A.periods Q).1 hcoord
   obtain ⟨z, hz, -⟩ := A.exists_orderFour_starCollar_of_baseRadius Q g (s / 2) hg
     (by linarith)
-  have hrange : A.sectionSevenEllipticCentralImageHomeomorph y ∈
+  have hrange : A.ellipticCentralImageHomeomorph y ∈
       Set.range (A.starToCentral (2 : Fin 3)) := ⟨z, by rw [hz, hQ]⟩
   refine ⟨(A.mem_orderFourFillingImage_iff_mem_starToCentral_range y).mpr hrange, ?_⟩
   refine ⟨y, ?_, rfl⟩
   have hlt := hnorm.trans_le (min_le_right _ _)
   have hre := Complex.abs_re_le_norm
-    ((A.centralFamilyCoordinate (A.sectionSevenEllipticCentralImageHomeomorph y)).1 - 1)
+    ((A.centralFamilyCoordinate (A.ellipticCentralImageHomeomorph y)).1 - 1)
   simp only [Complex.sub_re, Complex.one_re] at hre
   have hlow : -‖(A.centralFamilyCoordinate
-      (A.sectionSevenEllipticCentralImageHomeomorph y)).1 - 1‖ ≤
-      (A.centralFamilyCoordinate (A.sectionSevenEllipticCentralImageHomeomorph y)).1.re - 1 :=
+      (A.ellipticCentralImageHomeomorph y)).1 - 1‖ ≤
+      (A.centralFamilyCoordinate (A.ellipticCentralImageHomeomorph y)).1.re - 1 :=
     (abs_le.mp hre).1
-  show (1 : ℝ) / 3 < A.sectionSevenEllipticCentralHeight y
+  show (1 : ℝ) / 3 < A.ellipticCentralHeight y
   change (1 : ℝ) / 3 <
-    (A.centralFamilyCoordinate (A.sectionSevenEllipticCentralImageHomeomorph y)).1.re
+    (A.centralFamilyCoordinate (A.ellipticCentralImageHomeomorph y)).1.re
   linarith
 
 /-- **Interleaving reduction, order-four side.** -/
 public theorem orderFourOverlapIsHomotopyEquivalence_of_shrink
     {a : ℝ} (ha0 : 0 < a) (ha3 : a ≤ 1 / 3)
-    (hsub : A.sectionSevenAffineOrderFourDiscRegion a ⊆
-      A.sectionSevenOrderFourFillingImage ∩ A.sectionSevenAffineOrderFourCentralRegion)
-    (shrink : C(↥(A.sectionSevenOrderFourFillingImage ∩
-        A.sectionSevenAffineOrderFourCentralRegion),
-      ↥(A.sectionSevenAffineOrderFourDiscRegion a)))
+    (hsub : A.affineOrderFourDiscRegion a ⊆
+      A.orderFourFillingImage ∩ A.affineOrderFourCentralRegion)
+    (shrink : C(↥(A.orderFourFillingImage ∩
+        A.affineOrderFourCentralRegion),
+      ↥(A.affineOrderFourDiscRegion a)))
     (hshrink : (((regionInclusion hsub).comp shrink :
-      C(↥(A.sectionSevenOrderFourFillingImage ∩
-          A.sectionSevenAffineOrderFourCentralRegion),
-        ↥(A.sectionSevenOrderFourFillingImage ∩
-          A.sectionSevenAffineOrderFourCentralRegion)))).Homotopic
+      C(↥(A.orderFourFillingImage ∩
+          A.affineOrderFourCentralRegion),
+        ↥(A.orderFourFillingImage ∩
+          A.affineOrderFourCentralRegion)))).Homotopic
       (ContinuousMap.id _)) :
-    IsHomotopyEquivalence (interToRight A.sectionSevenOrderFourFillingImage
-      A.sectionSevenAffineOrderFourCentralRegion).hom := by
-  have hOuter : A.sectionSevenOrderFourFillingImage ∩
-      A.sectionSevenAffineOrderFourCentralRegion ⊆
-      A.sectionSevenAffineOrderFourDiscRegion (1 / 3) :=
+    IsHomotopyEquivalence (interToRight A.orderFourFillingImage
+      A.affineOrderFourCentralRegion).hom := by
+  have hOuter : A.orderFourFillingImage ∩
+      A.affineOrderFourCentralRegion ⊆
+      A.affineOrderFourDiscRegion (1 / 3) :=
     A.orderFourOverlap_subset_discRegion
   have hgf : IsHomotopyEquivalence
       (((regionInclusion hsub).comp shrink :
-        C(↥(A.sectionSevenOrderFourFillingImage ∩
-            A.sectionSevenAffineOrderFourCentralRegion),
-          ↥(A.sectionSevenOrderFourFillingImage ∩
-            A.sectionSevenAffineOrderFourCentralRegion))) :
-        ↥(A.sectionSevenOrderFourFillingImage ∩
-          A.sectionSevenAffineOrderFourCentralRegion) →
-          ↥(A.sectionSevenOrderFourFillingImage ∩
-            A.sectionSevenAffineOrderFourCentralRegion)) :=
+        C(↥(A.orderFourFillingImage ∩
+            A.affineOrderFourCentralRegion),
+          ↥(A.orderFourFillingImage ∩
+            A.affineOrderFourCentralRegion))) :
+        ↥(A.orderFourFillingImage ∩
+          A.affineOrderFourCentralRegion) →
+          ↥(A.orderFourFillingImage ∩
+            A.affineOrderFourCentralRegion)) :=
     SphereSixComplex.isHomotopyEquivalence_of_homotopic hshrink
       SphereSixComplex.isHomotopyEquivalence_id
   have hhg : IsHomotopyEquivalence
       ((((regionInclusion hOuter).comp (regionInclusion hsub)) :
-        C(↥(A.sectionSevenAffineOrderFourDiscRegion a),
-          ↥(A.sectionSevenAffineOrderFourDiscRegion (1 / 3)))) :
-        ↥(A.sectionSevenAffineOrderFourDiscRegion a) →
-          ↥(A.sectionSevenAffineOrderFourDiscRegion (1 / 3))) :=
+        C(↥(A.affineOrderFourDiscRegion a),
+          ↥(A.affineOrderFourDiscRegion (1 / 3)))) :
+        ↥(A.affineOrderFourDiscRegion a) →
+          ↥(A.affineOrderFourDiscRegion (1 / 3))) :=
     A.orderFourDiscRegionInclusion_mono_isHomotopyEquivalence ha0 ha3 (by norm_num)
       (A.orderFourDiscRegion_mono ha3)
   have hmid : IsHomotopyEquivalence
-      ((regionInclusion hOuter : C(↥(A.sectionSevenOrderFourFillingImage ∩
-          A.sectionSevenAffineOrderFourCentralRegion),
-        ↥(A.sectionSevenAffineOrderFourDiscRegion (1 / 3)))) :
-        ↥(A.sectionSevenOrderFourFillingImage ∩
-          A.sectionSevenAffineOrderFourCentralRegion) →
-          ↥(A.sectionSevenAffineOrderFourDiscRegion (1 / 3))) :=
+      ((regionInclusion hOuter : C(↥(A.orderFourFillingImage ∩
+          A.affineOrderFourCentralRegion),
+        ↥(A.affineOrderFourDiscRegion (1 / 3)))) :
+        ↥(A.orderFourFillingImage ∩
+          A.affineOrderFourCentralRegion) →
+          ↥(A.affineOrderFourDiscRegion (1 / 3))) :=
     SphereSixComplex.isHomotopyEquivalence_last_of_interleaving
       shrink (regionInclusion hsub) (regionInclusion hOuter) hgf hhg
   exact (A.orderFourDiscRegionInclusion_isHomotopyEquivalence (r := 1 / 3) (by norm_num)
@@ -660,14 +660,14 @@ shrinking of the collar be read as a self-map of the overlap. -/
 /-- A central-image point of the order-three filling image already lies in the order-three
 central region: the selected collar is trapped in `‖lambda‖ < 1/3`. -/
 public theorem mem_orderThreeCentralRegion_of_mem_fillingImage
-    (x : A.sectionSevenEllipticCentralImage)
-    (hx : x.1 ∈ A.sectionSevenOrderThreeFillingImage) :
-    x.1 ∈ A.sectionSevenAffineOrderThreeCentralRegion := by
+    (x : A.ellipticCentralImage)
+    (hx : x.1 ∈ A.orderThreeFillingImage) :
+    x.1 ∈ A.affineOrderThreeCentralRegion := by
   obtain ⟨q, hq⟩ := (A.mem_orderThreeFillingImage_iff_mem_starToCentral_range x).mp hx
   refine ⟨x, ?_, rfl⟩
-  show A.sectionSevenEllipticCentralHeight x < 2 / 3
+  show A.ellipticCentralHeight x < 2 / 3
   change (A.centralFamilyCoordinate
-    (A.sectionSevenEllipticCentralImageHomeomorph x)).1.re < 2 / 3
+    (A.ellipticCentralImageHomeomorph x)).1.re < 2 / 3
   rw [← hq]
   have hnorm := A.orderThreeStarCollar_centralCoordinate_norm_lt q
   have hre := Complex.re_le_norm (A.centralFamilyCoordinate (A.starToCentral 1 q)).1
@@ -676,39 +676,39 @@ public theorem mem_orderThreeCentralRegion_of_mem_fillingImage
 /-- The order-three star overlap, as a subspace of the elliptic interior, is exactly the
 order-three star collar quotient. -/
 public noncomputable def orderThreeOverlapCollarHomeomorph :
-    ↥(A.sectionSevenOrderThreeFillingImage ∩
-        A.sectionSevenAffineOrderThreeCentralRegion) ≃ₜ
+    ↥(A.orderThreeFillingImage ∩
+        A.affineOrderThreeCentralRegion) ≃ₜ
       A.starCollarSourceType (1 : Fin 3) :=
-  let e₁ : ↥(A.sectionSevenOrderThreeFillingImage ∩
-      A.sectionSevenAffineOrderThreeCentralRegion) ≃ₜ
-      {x : A.sectionSevenEllipticCentralImage //
-        x.1 ∈ A.sectionSevenOrderThreeFillingImage} :=
+  let e₁ : ↥(A.orderThreeFillingImage ∩
+      A.affineOrderThreeCentralRegion) ≃ₜ
+      {x : A.ellipticCentralImage //
+        x.1 ∈ A.orderThreeFillingImage} :=
     { toFun := fun u ↦ ⟨⟨u.1, A.mem_centralImage_of_mem_centralHeightLowerRegion
-        A.sectionSevenEllipticCentralHeight (2 / 3 : ℝ) u.2.2⟩, u.2.1⟩
+        A.ellipticCentralHeight (2 / 3 : ℝ) u.2.2⟩, u.2.1⟩
       invFun := fun v ↦ ⟨v.1.1,
         ⟨v.2, A.mem_orderThreeCentralRegion_of_mem_fillingImage v.1 v.2⟩⟩
       left_inv := fun _ ↦ rfl
       right_inv := fun _ ↦ rfl
       continuous_toFun := (continuous_subtype_val.subtype_mk _).subtype_mk _
       continuous_invFun := (continuous_subtype_val.comp continuous_subtype_val).subtype_mk _ }
-  let e₂ := A.sectionSevenEllipticCentralImageHomeomorph.subtype
+  let e₂ := A.ellipticCentralImageHomeomorph.subtype
     A.mem_orderThreeFillingImage_iff_mem_starToCentral_range
   let e₃ := (A.starToCentral_isOpenEmbedding (1 : Fin 3)).isEmbedding.toHomeomorph
   e₁.trans (e₂.trans e₃.symm)
 
 /-- The overlap-to-collar homeomorphism is compatible with the central-family coordinates. -/
 public theorem starToCentral_orderThreeOverlapCollarHomeomorph
-    (u : ↥(A.sectionSevenOrderThreeFillingImage ∩
-      A.sectionSevenAffineOrderThreeCentralRegion)) :
+    (u : ↥(A.orderThreeFillingImage ∩
+      A.affineOrderThreeCentralRegion)) :
     A.starToCentral 1 (A.orderThreeOverlapCollarHomeomorph u) =
-      A.sectionSevenEllipticCentralImageHomeomorph
+      A.ellipticCentralImageHomeomorph
         ⟨u.1, A.mem_centralImage_of_mem_centralHeightLowerRegion
-          A.sectionSevenEllipticCentralHeight (2 / 3 : ℝ) u.2.2⟩ := by
+          A.ellipticCentralHeight (2 / 3 : ℝ) u.2.2⟩ := by
   let e₃ := (A.starToCentral_isOpenEmbedding (1 : Fin 3)).isEmbedding.toHomeomorph
   let w : ↥(Set.range (A.starToCentral (1 : Fin 3))) :=
-    ⟨A.sectionSevenEllipticCentralImageHomeomorph
+    ⟨A.ellipticCentralImageHomeomorph
         ⟨u.1, A.mem_centralImage_of_mem_centralHeightLowerRegion
-          A.sectionSevenEllipticCentralHeight (2 / 3 : ℝ) u.2.2⟩,
+          A.ellipticCentralHeight (2 / 3 : ℝ) u.2.2⟩,
       (A.mem_orderThreeFillingImage_iff_mem_starToCentral_range _).mp u.2.1⟩
   have hcoe := Topology.IsEmbedding.toHomeomorph_apply_coe
     (A.starToCentral_isOpenEmbedding (1 : Fin 3)).isEmbedding (e₃.symm w)
@@ -719,10 +719,10 @@ public theorem starToCentral_orderThreeOverlapCollarHomeomorph
 identification. -/
 public theorem starToCentral_orderThreeOverlapCollarHomeomorph_symm
     (z : A.starCollarSourceType (1 : Fin 3)) :
-    A.sectionSevenEllipticCentralImageHomeomorph
+    A.ellipticCentralImageHomeomorph
         ⟨(A.orderThreeOverlapCollarHomeomorph.symm z).1,
           A.mem_centralImage_of_mem_centralHeightLowerRegion
-            A.sectionSevenEllipticCentralHeight (2 / 3 : ℝ)
+            A.ellipticCentralHeight (2 / 3 : ℝ)
             (A.orderThreeOverlapCollarHomeomorph.symm z).2.2⟩ =
       A.starToCentral 1 z := by
   have h := A.starToCentral_orderThreeOverlapCollarHomeomorph
@@ -1028,8 +1028,8 @@ public theorem starCollarRadius_lt_orderThreeSeparation
 Cayley star collar towards its elliptic centre lands in an affine `lambda`-disc region, and is
 homotopic to the identity through collar shrinks; the interleaving reduction then applies. -/
 public theorem orderThreeOverlapIsHomotopyEquivalence :
-    IsHomotopyEquivalence (interToRight A.sectionSevenOrderThreeFillingImage
-      A.sectionSevenAffineOrderThreeCentralRegion).hom := by
+    IsHomotopyEquivalence (interToRight A.orderThreeFillingImage
+      A.affineOrderThreeCentralRegion).hom := by
   obtain ⟨a, ha0, ha3, hsub⟩ := A.exists_discRegion_subset_orderThreeOverlap
   obtain ⟨tc, htc0, htc⟩ := A.exists_orderThreeCayleyRadius_coordinate_lt ha0
   have hs0 : 0 < A.starSeparation.orderThree.radius := A.starSeparation.orderThree.radius_pos
@@ -1053,19 +1053,19 @@ public theorem orderThreeOverlapIsHomotopyEquivalence :
         < (c : ℝ) * A.starSeparation.orderThree.radius := by
           exact mul_lt_mul_of_pos_left hlt hc
       _ ≤ tc := hcs
-  have key : ∀ u : ↥(A.sectionSevenOrderThreeFillingImage ∩
-      A.sectionSevenAffineOrderThreeCentralRegion),
+  have key : ∀ u : ↥(A.orderThreeFillingImage ∩
+      A.affineOrderThreeCentralRegion),
       (A.orderThreeOverlapCollarHomeomorph.symm
           (A.orderThreeCollarShrinkFun hc
             (0, A.orderThreeOverlapCollarHomeomorph u))).1 ∈
-        A.sectionSevenAffineOrderThreeDiscRegion a := by
+        A.affineOrderThreeDiscRegion a := by
     intro u
     set z := A.orderThreeCollarShrinkFun hc (0, A.orderThreeOverlapCollarHomeomorph u) with hz
     set v := A.orderThreeOverlapCollarHomeomorph.symm z with hv
     refine ⟨⟨v.1, A.mem_centralImage_of_mem_centralHeightLowerRegion
-      A.sectionSevenEllipticCentralHeight (2 / 3 : ℝ) v.2.2⟩, ?_, rfl⟩
+      A.ellipticCentralHeight (2 / 3 : ℝ) v.2.2⟩, ?_, rfl⟩
     show ‖(A.centralFamilyCoordinate
-      (A.sectionSevenEllipticCentralImageHomeomorph _)).1‖ < a
+      (A.ellipticCentralImageHomeomorph _)).1‖ < a
     rw [A.starToCentral_orderThreeOverlapCollarHomeomorph_symm z]
     exact A.orderThreeStarCollar_centralCoordinate_norm_lt_of_radius htc z (hradius _)
   refine A.orderThreeOverlapIsHomotopyEquivalence_of_shrink ha0 ha3 hsub
@@ -1102,14 +1102,14 @@ disc coordinate is the order-four Cayley radius and the affine centre is `lambda
 /-- A central-image point of the order-four filling image already lies in the order-four central
 region. -/
 public theorem mem_orderFourCentralRegion_of_mem_fillingImage
-    (x : A.sectionSevenEllipticCentralImage)
-    (hx : x.1 ∈ A.sectionSevenOrderFourFillingImage) :
-    x.1 ∈ A.sectionSevenAffineOrderFourCentralRegion := by
+    (x : A.ellipticCentralImage)
+    (hx : x.1 ∈ A.orderFourFillingImage) :
+    x.1 ∈ A.affineOrderFourCentralRegion := by
   obtain ⟨q, hq⟩ := (A.mem_orderFourFillingImage_iff_mem_starToCentral_range x).mp hx
   refine ⟨x, ?_, rfl⟩
-  show (1 : ℝ) / 3 < A.sectionSevenEllipticCentralHeight x
+  show (1 : ℝ) / 3 < A.ellipticCentralHeight x
   change (1 : ℝ) / 3 <
-    (A.centralFamilyCoordinate (A.sectionSevenEllipticCentralImageHomeomorph x)).1.re
+    (A.centralFamilyCoordinate (A.ellipticCentralImageHomeomorph x)).1.re
   rw [← hq]
   have hnorm := A.orderFourStarCollar_centralCoordinate_norm_lt q
   have hre := Complex.abs_re_le_norm
@@ -1122,38 +1122,38 @@ public theorem mem_orderFourCentralRegion_of_mem_fillingImage
 /-- The order-four star overlap, as a subspace of the elliptic interior, is exactly the
 order-four star collar quotient. -/
 public noncomputable def orderFourOverlapCollarHomeomorph :
-    ↥(A.sectionSevenOrderFourFillingImage ∩
-        A.sectionSevenAffineOrderFourCentralRegion) ≃ₜ
+    ↥(A.orderFourFillingImage ∩
+        A.affineOrderFourCentralRegion) ≃ₜ
       A.starCollarSourceType (2 : Fin 3) :=
-  let e₁ : ↥(A.sectionSevenOrderFourFillingImage ∩
-      A.sectionSevenAffineOrderFourCentralRegion) ≃ₜ
-      {x : A.sectionSevenEllipticCentralImage //
-        x.1 ∈ A.sectionSevenOrderFourFillingImage} :=
+  let e₁ : ↥(A.orderFourFillingImage ∩
+      A.affineOrderFourCentralRegion) ≃ₜ
+      {x : A.ellipticCentralImage //
+        x.1 ∈ A.orderFourFillingImage} :=
     { toFun := fun u ↦ ⟨⟨u.1, A.mem_centralImage_of_mem_centralHeightUpperRegion
-        A.sectionSevenEllipticCentralHeight (1 / 3 : ℝ) u.2.2⟩, u.2.1⟩
+        A.ellipticCentralHeight (1 / 3 : ℝ) u.2.2⟩, u.2.1⟩
       invFun := fun v ↦ ⟨v.1.1,
         ⟨v.2, A.mem_orderFourCentralRegion_of_mem_fillingImage v.1 v.2⟩⟩
       left_inv := fun _ ↦ rfl
       right_inv := fun _ ↦ rfl
       continuous_toFun := (continuous_subtype_val.subtype_mk _).subtype_mk _
       continuous_invFun := (continuous_subtype_val.comp continuous_subtype_val).subtype_mk _ }
-  let e₂ := A.sectionSevenEllipticCentralImageHomeomorph.subtype
+  let e₂ := A.ellipticCentralImageHomeomorph.subtype
     A.mem_orderFourFillingImage_iff_mem_starToCentral_range
   let e₃ := (A.starToCentral_isOpenEmbedding (2 : Fin 3)).isEmbedding.toHomeomorph
   e₁.trans (e₂.trans e₃.symm)
 
 public theorem starToCentral_orderFourOverlapCollarHomeomorph
-    (u : ↥(A.sectionSevenOrderFourFillingImage ∩
-      A.sectionSevenAffineOrderFourCentralRegion)) :
+    (u : ↥(A.orderFourFillingImage ∩
+      A.affineOrderFourCentralRegion)) :
     A.starToCentral 2 (A.orderFourOverlapCollarHomeomorph u) =
-      A.sectionSevenEllipticCentralImageHomeomorph
+      A.ellipticCentralImageHomeomorph
         ⟨u.1, A.mem_centralImage_of_mem_centralHeightUpperRegion
-          A.sectionSevenEllipticCentralHeight (1 / 3 : ℝ) u.2.2⟩ := by
+          A.ellipticCentralHeight (1 / 3 : ℝ) u.2.2⟩ := by
   let e₃ := (A.starToCentral_isOpenEmbedding (2 : Fin 3)).isEmbedding.toHomeomorph
   let w : ↥(Set.range (A.starToCentral (2 : Fin 3))) :=
-    ⟨A.sectionSevenEllipticCentralImageHomeomorph
+    ⟨A.ellipticCentralImageHomeomorph
         ⟨u.1, A.mem_centralImage_of_mem_centralHeightUpperRegion
-          A.sectionSevenEllipticCentralHeight (1 / 3 : ℝ) u.2.2⟩,
+          A.ellipticCentralHeight (1 / 3 : ℝ) u.2.2⟩,
       (A.mem_orderFourFillingImage_iff_mem_starToCentral_range _).mp u.2.1⟩
   have hcoe := Topology.IsEmbedding.toHomeomorph_apply_coe
     (A.starToCentral_isOpenEmbedding (2 : Fin 3)).isEmbedding (e₃.symm w)
@@ -1162,10 +1162,10 @@ public theorem starToCentral_orderFourOverlapCollarHomeomorph
 
 public theorem starToCentral_orderFourOverlapCollarHomeomorph_symm
     (z : A.starCollarSourceType (2 : Fin 3)) :
-    A.sectionSevenEllipticCentralImageHomeomorph
+    A.ellipticCentralImageHomeomorph
         ⟨(A.orderFourOverlapCollarHomeomorph.symm z).1,
           A.mem_centralImage_of_mem_centralHeightUpperRegion
-            A.sectionSevenEllipticCentralHeight (1 / 3 : ℝ)
+            A.ellipticCentralHeight (1 / 3 : ℝ)
             (A.orderFourOverlapCollarHomeomorph.symm z).2.2⟩ =
       A.starToCentral 2 z := by
   have h := A.starToCentral_orderFourOverlapCollarHomeomorph
@@ -1420,8 +1420,8 @@ public theorem starCollarRadius_lt_orderFourSeparation
 
 /-- **The order-four overlap inclusion is a homotopy equivalence.** -/
 public theorem orderFourOverlapIsHomotopyEquivalence :
-    IsHomotopyEquivalence (interToRight A.sectionSevenOrderFourFillingImage
-      A.sectionSevenAffineOrderFourCentralRegion).hom := by
+    IsHomotopyEquivalence (interToRight A.orderFourFillingImage
+      A.affineOrderFourCentralRegion).hom := by
   obtain ⟨a, ha0, ha3, hsub⟩ := A.exists_discRegion_subset_orderFourOverlap
   obtain ⟨tc, htc0, htc⟩ := A.exists_orderFourCayleyRadius_coordinate_lt ha0
   have hs0 : 0 < A.starSeparation.orderFour.radius := A.starSeparation.orderFour.radius_pos
@@ -1444,19 +1444,19 @@ public theorem orderFourOverlapIsHomotopyEquivalence :
     calc (c : ℝ) * A.starCollarRadius (2 : Fin 3) x
         < (c : ℝ) * A.starSeparation.orderFour.radius := mul_lt_mul_of_pos_left hlt hc
       _ ≤ tc := hcs
-  have key : ∀ u : ↥(A.sectionSevenOrderFourFillingImage ∩
-      A.sectionSevenAffineOrderFourCentralRegion),
+  have key : ∀ u : ↥(A.orderFourFillingImage ∩
+      A.affineOrderFourCentralRegion),
       (A.orderFourOverlapCollarHomeomorph.symm
           (A.orderFourCollarShrinkFun hc
             (0, A.orderFourOverlapCollarHomeomorph u))).1 ∈
-        A.sectionSevenAffineOrderFourDiscRegion a := by
+        A.affineOrderFourDiscRegion a := by
     intro u
     set z := A.orderFourCollarShrinkFun hc (0, A.orderFourOverlapCollarHomeomorph u) with hz
     set v := A.orderFourOverlapCollarHomeomorph.symm z with hv
     refine ⟨⟨v.1, A.mem_centralImage_of_mem_centralHeightUpperRegion
-      A.sectionSevenEllipticCentralHeight (1 / 3 : ℝ) v.2.2⟩, ?_, rfl⟩
+      A.ellipticCentralHeight (1 / 3 : ℝ) v.2.2⟩, ?_, rfl⟩
     show ‖(A.centralFamilyCoordinate
-      (A.sectionSevenEllipticCentralImageHomeomorph _)).1 - 1‖ < a
+      (A.ellipticCentralImageHomeomorph _)).1 - 1‖ < a
     rw [A.starToCentral_orderFourOverlapCollarHomeomorph_symm z]
     exact A.orderFourStarCollar_centralCoordinate_norm_lt_of_radius htc z (hradius _)
   refine A.orderFourOverlapIsHomotopyEquivalence_of_shrink ha0 ha3 hsub
@@ -1484,29 +1484,29 @@ public theorem orderFourOverlapIsHomotopyEquivalence :
 
 /-! ## Residual affine overlap data
 
-Both overlap homotopy equivalences of `SectionSevenAffineOverlapCompletionInput` are now proved.
+Both overlap homotopy equivalences of `AffineOverlapCompletionInput` are now proved.
 What remains of that structure is exactly the two marked band square homotopies. -/
 
 /-- The two marked band square homotopies, stated against the *proved* overlap homotopy
 equivalences.  By proof irrelevance the band maps do not depend on which proof is used, so this
-is the exact residue of `SectionSevenAffineOverlapCompletionInput`. -/
-public structure SectionSevenAffineOverlapBandCompatibility where
+is the exact residue of `AffineOverlapCompletionInput`. -/
+public structure AffineOverlapBandCompatibility where
   orderThree :
-    (sectionSevenAffineOrderThreeBandToReducedFiber
+    (affineOrderThreeBandToReducedFiber
       (orderThreeOverlapIsHomotopyEquivalence_inclusion
         A.orderThreeOverlapIsHomotopyEquivalence)).Homotopic
-      (sectionSevenAffineBandOrderThreeCoverMap A)
+      (affineBandOrderThreeCoverMap A)
   orderFour :
-    (sectionSevenAffineOrderFourBandToReducedFiber
+    (affineOrderFourBandToReducedFiber
       (orderFourOverlapIsHomotopyEquivalence_inclusion
         A.orderFourOverlapIsHomotopyEquivalence)).Homotopic
-      (sectionSevenAffineBandOrderFourCoverMap A)
+      (affineBandOrderFourCoverMap A)
 
 /-- The full affine overlap completion input, assembled from the two proved overlap homotopy
 equivalences and the residual marked band squares. -/
-public theorem SectionSevenAffineOverlapBandCompatibility.toOverlapCompletionInput
-    (B : A.SectionSevenAffineOverlapBandCompatibility) :
-    A.SectionSevenAffineOverlapCompletionInput where
+public theorem AffineOverlapBandCompatibility.toOverlapCompletionInput
+    (B : A.AffineOverlapBandCompatibility) :
+    A.AffineOverlapCompletionInput where
   orderThreeOverlap := A.orderThreeOverlapIsHomotopyEquivalence
   orderFourOverlap := A.orderFourOverlapIsHomotopyEquivalence
   orderThreeCompatibility := B.orderThree

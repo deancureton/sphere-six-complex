@@ -22,7 +22,7 @@ open Matrix Set
 open SphereSixComplex.Geometry.CuspCombinatorics
 open SphereSixComplex.Geometry.CuspFilling
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+namespace SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 private theorem heightOneRay_injective : Function.Injective heightOneRay := by
   intro v w h
@@ -200,4 +200,4 @@ public theorem carrierTorusAction_centralComponent
   · intro hp
     exact carrierTorusAction_mapsTo_centralComponent g v hp
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+end SphereSixComplex.Geometry.InfiniteA2Toric.Construction

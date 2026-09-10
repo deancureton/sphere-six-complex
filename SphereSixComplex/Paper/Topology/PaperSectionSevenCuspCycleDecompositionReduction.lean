@@ -18,31 +18,31 @@ open AlgebraicTopology
 
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 
-open SectionSevenEllipticTwoDiscHomologyCoordinates
-open SectionSevenEllipticInteriorMarkedCycleData
+open EllipticTwoDiscHomologyCoordinates
+open EllipticInteriorMarkedCycleData
 
-variable {A : PaperAnalyticData} {D : A.SectionSevenEllipticTwoDiscCoverData}
+variable {A : PaperAnalyticData} {D : A.EllipticTwoDiscCoverData}
 variable {N : A.EllipticBandHomologyAlignment D}
 variable {G : D.SectionSevenCuspPulledBackBoundaryBasisBridge N}
 
 /-- The degree-one fibre coordinate and the degree-two fibre coordinate determine the complete
 cycle decomposition.  The swept coordinate follows from the boundary formula that defines the
 normalized splitting. -/
-public theorem SectionSevenEllipticInteriorCycleDecomposition.ofFiberScalarCoordinates
+public theorem EllipticInteriorCycleDecomposition.ofFiberScalarCoordinates
     (hOne : ∀ x : IntegralSingularHomology 1
         (A.openEmbeddingStarData.collarSource 0),
       N.actualHomologyCoordinates.normalizedUnionHomologyOneEquiv
           (cuspToEllipticUnionHomology D 1 x) 0 =
-        actualCuspEllipticDegreeOneRawCoordinate (A.cuspRawHomologyOneEquiv x))
+        cuspEllipticDegreeOneRawCoordinate (A.cuspRawHomologyOneEquiv x))
     (hTwoFiber : ∀ x : IntegralSingularHomology 2
         (A.openEmbeddingStarData.collarSource 0),
       N.actualHomologyCoordinates.normalizedUnionHomologyTwoEquiv
           (D.cuspNormalizedDegreeTwoSplitting N G)
           (cuspToEllipticUnionHomology D 2 x) 0 =
-        actualCuspEllipticDegreeTwoFiberRawCoordinate (A.cuspRawHomologyTwoEquiv x)) :
-    A.SectionSevenEllipticInteriorCycleDecomposition N.actualHomologyCoordinates
+        cuspEllipticDegreeTwoFiberRawCoordinate (A.cuspRawHomologyTwoEquiv x)) :
+    A.EllipticInteriorCycleDecomposition N.actualHomologyCoordinates
       (D.cuspNormalizedDegreeTwoSplitting N G) := by
-  apply SectionSevenEllipticInteriorCycleDecomposition.ofRawScalarCoordinates hOne hTwoFiber
+  apply EllipticInteriorCycleDecomposition.ofRawScalarCoordinates hOne hTwoFiber
   intro x
   rw [N.actualHomologyCoordinates.normalizedUnionHomologyTwoEquiv_one]
   exact D.cuspBoundaryCoordinateFormula N G x
@@ -50,9 +50,9 @@ public theorem SectionSevenEllipticInteriorCycleDecomposition.ofFiberScalarCoord
 /-- The two actual inclusion-naturality squares recover the full cycle decomposition. -/
 public theorem SectionSevenCuspEllipticInclusionNaturality.cycleDecomposition
     (C : D.SectionSevenCuspEllipticInclusionNaturality N G) :
-    A.SectionSevenEllipticInteriorCycleDecomposition N.actualHomologyCoordinates
+    A.EllipticInteriorCycleDecomposition N.actualHomologyCoordinates
       (D.cuspNormalizedDegreeTwoSplitting N G) := by
-  apply SectionSevenEllipticInteriorCycleDecomposition.ofFiberScalarCoordinates
+  apply EllipticInteriorCycleDecomposition.ofFiberScalarCoordinates
   · intro x
     have hx := DFunLike.congr_fun C.degreeOne x
     change D.ellipticInteriorDegreeOneCoordinateHom N
@@ -67,12 +67,12 @@ public theorem SectionSevenCuspEllipticInclusionNaturality.cycleDecomposition
     rw [D.ellipticInteriorDegreeTwoFiberCoordinateHom_cuspToEllipticInteriorMap] at hx
     simpa [cuspDegreeTwoFiberCoordinateHom_apply,
       actualCuspEllipticDegreeTwoFiberCoordinateAfterAddEquiv,
-      SectionSevenEllipticTwoDiscCoverData.cuspNormalizedDegreeTwoSplitting] using hx
+      EllipticTwoDiscCoverData.cuspNormalizedDegreeTwoSplitting] using hx
 
 /-- For the cusp-normalized splitting, the cycle-level statement is exactly equivalent to the
 two marked naturality squares for the actual inclusion map. -/
-public theorem sectionSevenEllipticInteriorCycleDecomposition_iff_inclusionNaturality :
-    A.SectionSevenEllipticInteriorCycleDecomposition N.actualHomologyCoordinates
+public theorem ellipticInteriorCycleDecomposition_iff_inclusionNaturality :
+    A.EllipticInteriorCycleDecomposition N.actualHomologyCoordinates
         (D.cuspNormalizedDegreeTwoSplitting N G) ↔
       D.SectionSevenCuspEllipticInclusionNaturality N G :=
   ⟨fun C ↦ by
@@ -85,7 +85,7 @@ public theorem sectionSevenEllipticInteriorCycleDecomposition_iff_inclusionNatur
           have h := C.normalizedDegreeOne_onCuspCollar x
           simpa [cuspDegreeOneCoordinateHom_apply,
             actualCuspEllipticDegreeOneCoordinateAfterAddEquiv,
-            sectionSevenFirstBoundaryHom_actualCusp_zero] using congrFun h 0
+            cuspAttachmentBoundaryOne_actualCusp_zero] using congrFun h 0
         degreeTwoFiber := by
           ext x
           change D.ellipticInteriorDegreeTwoFiberCoordinateHom N G
@@ -94,18 +94,18 @@ public theorem sectionSevenEllipticInteriorCycleDecomposition_iff_inclusionNatur
           have h := C.normalizedDegreeTwo_onCuspCollar x
           simpa [cuspDegreeTwoFiberCoordinateHom_apply,
             actualCuspEllipticDegreeTwoFiberCoordinateAfterAddEquiv,
-            SectionSevenEllipticTwoDiscCoverData.cuspNormalizedDegreeTwoSplitting,
-            sectionSevenMayerVietorisFinalTwoHom_actualCusp_zero] using congrFun h 0 },
+            EllipticTwoDiscCoverData.cuspNormalizedDegreeTwoSplitting,
+            cuspAttachmentBoundaryTwo_actualCusp_zero] using congrFun h 0 },
     SectionSevenCuspEllipticInclusionNaturality.cycleDecomposition⟩
 
 /-- The unmarked Wang comparison and the two actual inclusion squares directly supply the final
 marked completion input; the intermediate full cycle-decomposition package is unnecessary. -/
 public theorem SectionSevenCuspWangBandCompatibility.markedCompletionInput_of_inclusionNaturality
-    {R : A.SectionSevenAffineRadialCompletionInput}
+    {R : A.AffineRadialCompletionInput}
     (W : R.twoDiscCover.SectionSevenCuspWangBandCompatibility R.homologyAlignment)
     (I : R.twoDiscCover.SectionSevenCuspEllipticInclusionNaturality R.homologyAlignment
       W.pulledBackBoundaryBasisBridge) :
-    A.SectionSevenAffineMarkedCompletionInput R where
+    A.AffineMarkedCompletionInput R where
   connectingNaturality := W.connectingNaturality
   inclusionNaturality := I
 

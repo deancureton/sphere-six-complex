@@ -12,8 +12,8 @@ noncomputable section
 open CategoryTheory HomologicalComplex Matrix
 namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 open SphereSixComplex SphereSixComplex.Periods StandardCircleHomologyLiftDegree
-open CuspFilling CuspPeriodExpansion StandardInfiniteA2ToricModel
-open StandardInfiniteA2ToricModel.Established StandardInfiniteA2ToricModel.Construction
+open CuspFilling CuspPeriodExpansion InfiniteA2Toric
+open InfiniteA2Toric InfiniteA2Toric.Construction
 variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 

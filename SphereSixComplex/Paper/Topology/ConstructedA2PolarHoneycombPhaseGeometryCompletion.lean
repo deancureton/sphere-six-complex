@@ -23,7 +23,7 @@ noncomputable section
 
 open Function Set Topology
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
 open SphereSixComplex.Periods
 open SphereSixComplex.Geometry.CuspFilling
@@ -34,7 +34,7 @@ open SphereSixComplex.Geometry.CuspStraighteningRetraction
 open SphereSixComplex.Geometry.CuspPhaseEstimates.CuspPeriodExpansion
 open
   SphereSixComplex.Geometry.CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 /-- The exact coordinate and cellular inputs still needed for the constructed model at the
 actual cusp radius.  Unlike the former phase-geometry assumption, every field refers to the
@@ -122,4 +122,4 @@ public theorem constructedPolarHoneycombPhaseSpreadingPackage
     (compactPhaseOrbit_prod_isQuotientMap constructedModel W.localWitness.radius P)
     H.toDeckLift G⟩⟩
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric

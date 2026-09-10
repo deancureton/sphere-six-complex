@@ -8,13 +8,13 @@ noncomputable section
 
 open Matrix Set
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
 open SphereSixComplex.Geometry.CuspCombinatorics
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+open SphereSixComplex.Geometry.InfiniteA2Toric
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 public def constructedA2PositiveNeighborDisplacement : Fin 3 → ToricLattice :=
   ![e₁, e₂, e₂ - e₁]
@@ -964,6 +964,6 @@ public theorem constructedA2CorrectedLaurentIdentity_positiveNeighbor
     exact (constructedA2CorrectedLaurentIdentity_positiveNeighbor_of_chartIncidence
       r v i j p q hi hj).mp h
   · exact constructedA2CorrectedPlaneTile_eq_of_positiveNeighborLaurent r v i j p q
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric
 
 end

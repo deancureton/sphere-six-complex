@@ -39,73 +39,73 @@ open SphereSixComplex.TriangleGroup
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 
 /-- The named marked-band point lifted to the order-four affine half-plane carrier. -/
-public noncomputable def sectionSevenAffineOrderFourNamedHalfPlaneLiftPoint
-    (A : PaperAnalyticData) (x : A.SectionSevenAffineMarkedBand) :
+public noncomputable def affineOrderFourNamedHalfPlaneLiftPoint
+    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
     A.orderFourAffineHalfPlaneLiftCarrier.carrier :=
-  let z := A.sectionSevenAffineBandStripCoordinate x
-  let t := A.sectionSevenAffineBandFiberCoordinateOfLift
-    A.sectionSevenAffineNamedStripLift x
+  let z := A.affineBandStripCoordinate x
+  let t := A.affineBandFiberCoordinateOfLift
+    A.affineNamedStripLift x
   let v : ComplexTwoSpace := Quotient.out t
-  let b := A.sectionSevenAffineNamedStripLift.lift z
+  let b := A.affineNamedStripLift.lift z
   ⟨projection (regularParameterMap A.periods)
       (b, A.regularFixedToMoving b v), by
     change 1 / 3 < (A.regularCoordinate b).1.re
-    rw [A.sectionSevenAffineNamedStripLift.lift_coordinate]
+    rw [A.affineNamedStripLift.lift_coordinate]
     exact z.2.1⟩
 
 /-- The corresponding point of the order-four affine disc carrier selected by the radial
 inverse. -/
-public noncomputable def sectionSevenAffineOrderFourNamedDiscLiftPoint
-    (A : PaperAnalyticData) (x : A.SectionSevenAffineMarkedBand) :
+public noncomputable def affineOrderFourNamedDiscLiftPoint
+    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
     (A.orderFourAffineDiscLiftCarrier
-      A.sectionSevenAffineOrderFourMarkedDiscRadius).carrier :=
-  let r := A.sectionSevenAffineOrderFourMarkedDiscRadius
-  let hr₀ := A.sectionSevenAffineOrderFourMarkedDiscRadius_spec.1
+      A.affineOrderFourMarkedDiscRadius).carrier :=
+  let r := A.affineOrderFourMarkedDiscRadius
+  let hr₀ := A.affineOrderFourMarkedDiscRadius_spec.1
   let hr : r ≤ 1 - 1 / 3 :=
-    A.sectionSevenAffineOrderFourMarkedDiscRadius_spec.2.1.trans (by norm_num)
+    A.affineOrderFourMarkedDiscRadius_spec.2.1.trans (by norm_num)
   (A.orderFourAffineRadialEquivChoice hr₀ hr).invFun
-    (A.sectionSevenAffineOrderFourNamedHalfPlaneLiftPoint x)
+    (A.affineOrderFourNamedHalfPlaneLiftPoint x)
 
 /-- The named half-plane lift represents exactly the actual marked-band point in the central
 family. -/
-public theorem sectionSevenAffineOrderFourNamedHalfPlaneLiftPoint_toCentralFamily
-    (A : PaperAnalyticData) (x : A.SectionSevenAffineMarkedBand) :
+public theorem affineOrderFourNamedHalfPlaneLiftPoint_toCentralFamily
+    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
     A.orderFourAffineHalfPlaneLiftQuotientToCentralFamily
-        (Quotient.mk _ (A.sectionSevenAffineOrderFourNamedHalfPlaneLiftPoint x)) =
-      A.sectionSevenAffineCentralBandToCentralFamily
-        A.sectionSevenAffineCentralSeparation
-          (A.sectionSevenActualAffineSplit.sidesIntersectionHomeomorph x) := by
-  rw [A.sectionSevenAffineBandPoint_toCentralFamily_eq_namedStripLiftPoint]
-  unfold sectionSevenAffineOrderFourNamedHalfPlaneLiftPoint
-  let z := A.sectionSevenAffineBandStripCoordinate x
-  let t := A.sectionSevenAffineBandFiberCoordinateOfLift
-    A.sectionSevenAffineNamedStripLift x
+        (Quotient.mk _ (A.affineOrderFourNamedHalfPlaneLiftPoint x)) =
+      A.affineCentralBandToCentralFamily
+        A.affineCentralSeparation
+          (A.actualAffineHeightSplit.sidesIntersectionHomeomorph x) := by
+  rw [A.affineBandPoint_toCentralFamily_eq_namedStripLiftPoint]
+  unfold affineOrderFourNamedHalfPlaneLiftPoint
+  let z := A.affineBandStripCoordinate x
+  let t := A.affineBandFiberCoordinateOfLift
+    A.affineNamedStripLift x
   let v : ComplexTwoSpace := Quotient.out t
-  let b := A.sectionSevenAffineNamedStripLift.lift z
+  let b := A.affineNamedStripLift.lift z
   change A.centralQuotientProjection
       (projection (regularParameterMap A.periods)
         (b, A.regularFixedToMoving b v)) = A.stripLiftPoint
-          A.sectionSevenAffineNamedStripLift z t
+          A.affineNamedStripLift z t
   rw [← A.stripLiftPoint_regularMovingToFixed
-    A.sectionSevenAffineNamedStripLift z (A.regularFixedToMoving b v)]
+    A.affineNamedStripLift z (A.regularFixedToMoving b v)]
   rw [A.regularMovingToFixed_regularFixedToMoving]
   simp [v]
 
 /-- In the fixed order-four torus, the named half-plane lift has the marked band coordinate
 transported from the common period basis. -/
 public theorem orderFourRealPeriod_namedHalfPlaneLiftPoint
-    (A : PaperAnalyticData) (x : A.SectionSevenAffineMarkedBand) :
+    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
     (orderFourRealPeriodProductHomeomorph A.periods
       (regularFamilyInclusion A.periods
-        (A.sectionSevenAffineOrderFourNamedHalfPlaneLiftPoint x).1)).2 =
+        (A.affineOrderFourNamedHalfPlaneLiftPoint x).1)).2 =
       A.duplicatedSectionSevenOrderThreeToOrderFourBandHomeomorph
-        (A.sectionSevenAffineBandFiberCoordinateOfLift
-          A.sectionSevenAffineNamedStripLift x) := by
-  let z := A.sectionSevenAffineBandStripCoordinate x
-  let t := A.sectionSevenAffineBandFiberCoordinateOfLift
-    A.sectionSevenAffineNamedStripLift x
+        (A.affineBandFiberCoordinateOfLift
+          A.affineNamedStripLift x) := by
+  let z := A.affineBandStripCoordinate x
+  let t := A.affineBandFiberCoordinateOfLift
+    A.affineNamedStripLift x
   let v : ComplexTwoSpace := Quotient.out t
-  let b := A.sectionSevenAffineNamedStripLift.lift z
+  let b := A.affineNamedStripLift.lift z
   change (orderFourRealPeriodProductHomeomorph A.periods
       (regularFamilyInclusion A.periods
         (Quotient.mk _ (b, A.regularFixedToMoving b v)))).2 = _
@@ -133,159 +133,159 @@ public theorem orderFourRealPeriod_namedHalfPlaneLiftPoint
 /-- The named disc lift lies over the explicitly constructed order-four radial base. -/
 public theorem regularTotalSpaceBase_namedDiscLiftPoint
     {A : PaperAnalyticData}
-    (x : A.SectionSevenAffineMarkedBand) :
+    (x : A.affineMarkedBand) :
     regularTotalSpaceBase A.periods
-        (A.sectionSevenAffineOrderFourNamedDiscLiftPoint x).1 =
-      A.sectionSevenAffineOrderFourRadialBaseLift
-        (A.sectionSevenAffineBandStripCoordinate x) := by
-  let r := A.sectionSevenAffineOrderFourMarkedDiscRadius
-  let hr₀ := A.sectionSevenAffineOrderFourMarkedDiscRadius_spec.1
+        (A.affineOrderFourNamedDiscLiftPoint x).1 =
+      A.affineOrderFourRadialBaseLift
+        (A.affineBandStripCoordinate x) := by
+  let r := A.affineOrderFourMarkedDiscRadius
+  let hr₀ := A.affineOrderFourMarkedDiscRadius_spec.1
   let hr : r ≤ 1 - 1 / 3 :=
-    A.sectionSevenAffineOrderFourMarkedDiscRadius_spec.2.1.trans (by norm_num)
-  rw [sectionSevenAffineOrderFourNamedDiscLiftPoint,
+    A.affineOrderFourMarkedDiscRadius_spec.2.1.trans (by norm_num)
+  rw [affineOrderFourNamedDiscLiftPoint,
     A.orderFourAffineRadialEquivChoice_invFun]
   rw [A.regularTotalSpaceBase_regularFlatTransport]
   rfl
 
 /-- The explicit radial base lies in the chosen affine coordinate disc. -/
 public theorem regularCoordinate_namedOrderFourRadialBaseLift_norm_lt_markedRadius
-    (A : PaperAnalyticData) (x : A.SectionSevenAffineMarkedBand) :
+    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
     ‖(A.regularCoordinate
-        (A.sectionSevenAffineOrderFourRadialBaseLift
-          (A.sectionSevenAffineBandStripCoordinate x))).1 - 1‖ <
-      A.sectionSevenAffineOrderFourMarkedDiscRadius := by
-  have h := (A.sectionSevenAffineOrderFourNamedDiscLiftPoint x).2
+        (A.affineOrderFourRadialBaseLift
+          (A.affineBandStripCoordinate x))).1 - 1‖ <
+      A.affineOrderFourMarkedDiscRadius := by
+  have h := (A.affineOrderFourNamedDiscLiftPoint x).2
   change ‖(A.regularCoordinate
       (regularTotalSpaceBase A.periods
-        (A.sectionSevenAffineOrderFourNamedDiscLiftPoint x).1)).1 - 1‖ <
-    A.sectionSevenAffineOrderFourMarkedDiscRadius at h
+        (A.affineOrderFourNamedDiscLiftPoint x).1)).1 - 1‖ <
+    A.affineOrderFourMarkedDiscRadius at h
   rw [A.regularTotalSpaceBase_namedDiscLiftPoint x] at h
   exact h
 
 /-- In particular, the quotient coordinate of the named radial base lies in the standard
 order-four affine disc of radius `1/3`. -/
 public theorem regularCoordinate_namedOrderFourRadialBaseLift_norm_lt_one_third
-    (A : PaperAnalyticData) (x : A.SectionSevenAffineMarkedBand) :
+    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
     ‖(A.regularCoordinate
-        (A.sectionSevenAffineOrderFourRadialBaseLift
-          (A.sectionSevenAffineBandStripCoordinate x))).1 - 1‖ < 1 / 3 :=
+        (A.affineOrderFourRadialBaseLift
+          (A.affineBandStripCoordinate x))).1 - 1‖ < 1 / 3 :=
   (A.regularCoordinate_namedOrderFourRadialBaseLift_norm_lt_markedRadius x).trans_le
-    A.sectionSevenAffineOrderFourMarkedDiscRadius_spec.2.1
+    A.affineOrderFourMarkedDiscRadius_spec.2.1
 
 /-- Affine radial transport preserves the named order-four real-period coordinate. -/
 public theorem orderFourRealPeriod_namedDiscLiftPoint
     {A : PaperAnalyticData}
-    (x : A.SectionSevenAffineMarkedBand) :
+    (x : A.affineMarkedBand) :
     (orderFourRealPeriodProductHomeomorph A.periods
       (regularFamilyInclusion A.periods
-        (A.sectionSevenAffineOrderFourNamedDiscLiftPoint x).1)).2 =
+        (A.affineOrderFourNamedDiscLiftPoint x).1)).2 =
       A.duplicatedSectionSevenOrderThreeToOrderFourBandHomeomorph
-        (A.sectionSevenAffineBandFiberCoordinateOfLift
-          A.sectionSevenAffineNamedStripLift x) := by
-  let r := A.sectionSevenAffineOrderFourMarkedDiscRadius
-  let hr₀ := A.sectionSevenAffineOrderFourMarkedDiscRadius_spec.1
+        (A.affineBandFiberCoordinateOfLift
+          A.affineNamedStripLift x) := by
+  let r := A.affineOrderFourMarkedDiscRadius
+  let hr₀ := A.affineOrderFourMarkedDiscRadius_spec.1
   let hr : r ≤ 1 - 1 / 3 :=
-    A.sectionSevenAffineOrderFourMarkedDiscRadius_spec.2.1.trans (by norm_num)
-  rw [sectionSevenAffineOrderFourNamedDiscLiftPoint,
+    A.affineOrderFourMarkedDiscRadius_spec.2.1.trans (by norm_num)
+  rw [affineOrderFourNamedDiscLiftPoint,
     A.orderFourAffineRadialEquivChoice_invFun]
   rw [A.orderFourRealPeriodProductHomeomorph_regularFlatTransport_snd]
   exact A.orderFourRealPeriod_namedHalfPlaneLiftPoint x
 
 /-- The central-region quotient coordinate of a marked band point is represented by its named
 half-plane lift. -/
-public theorem sectionSevenAffineOrderFourCentralRegionQuotient_band
-    (A : PaperAnalyticData) (x : A.SectionSevenAffineMarkedBand) :
-    A.sectionSevenAffineOrderFourCentralRegionQuotientHomeomorph
-        (A.sectionSevenAffineBandToOrderFourCentralRegion x) =
-      Quotient.mk _ (A.sectionSevenAffineOrderFourNamedHalfPlaneLiftPoint x) := by
+public theorem affineOrderFourCentralRegionQuotient_band
+    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
+    A.affineOrderFourCentralRegionQuotientHomeomorph
+        (A.affineBandToOrderFourCentralRegion x) =
+      Quotient.mk _ (A.affineOrderFourNamedHalfPlaneLiftPoint x) := by
   apply A.orderFourAffineHalfPlaneLiftQuotientToCentralFamily_isOpenEmbedding.injective
-  let u := A.sectionSevenAffineBandToOrderFourCentralRegion x
-  let y : A.sectionSevenEllipticCentralImage :=
+  let u := A.affineBandToOrderFourCentralRegion x
+  let y : A.ellipticCentralImage :=
     ⟨u.1, A.mem_centralImage_of_mem_centralHeightUpperRegion
-      A.sectionSevenEllipticCentralHeight (1 / 3 : ℝ) u.2⟩
-  have hy : (1 : ℝ) / 3 < A.sectionSevenEllipticCentralHeight y := by
+      A.ellipticCentralHeight (1 / 3 : ℝ) u.2⟩
+  have hy : (1 : ℝ) / 3 < A.ellipticCentralHeight y := by
     obtain ⟨y', hy', hxy⟩ := u.2
     have hyy : y' = y := Subtype.ext hxy
     exact hyy ▸ hy'
   calc
     A.orderFourAffineHalfPlaneLiftQuotientToCentralFamily
-        (A.sectionSevenAffineOrderFourCentralRegionQuotientHomeomorph u) =
-        A.sectionSevenEllipticCentralImageHomeomorph y :=
+        (A.affineOrderFourCentralRegionQuotientHomeomorph u) =
+        A.ellipticCentralImageHomeomorph y :=
       A.orderFourAffineHalfPlaneLiftQuotientToCentralFamily_centralRegionQuotient y hy
-    _ = A.sectionSevenAffineCentralBandToCentralFamily
-          A.sectionSevenAffineCentralSeparation
-            (A.sectionSevenActualAffineSplit.sidesIntersectionHomeomorph x) := rfl
+    _ = A.affineCentralBandToCentralFamily
+          A.affineCentralSeparation
+            (A.actualAffineHeightSplit.sidesIntersectionHomeomorph x) := rfl
     _ = A.orderFourAffineHalfPlaneLiftQuotientToCentralFamily
-          (Quotient.mk _ (A.sectionSevenAffineOrderFourNamedHalfPlaneLiftPoint x)) :=
-      (A.sectionSevenAffineOrderFourNamedHalfPlaneLiftPoint_toCentralFamily x).symm
+          (Quotient.mk _ (A.affineOrderFourNamedHalfPlaneLiftPoint x)) :=
+      (A.affineOrderFourNamedHalfPlaneLiftPoint_toCentralFamily x).symm
 
 /-- The unembedded order-four affine-disc endpoint used inside the overlap endpoint. -/
-public noncomputable def sectionSevenAffineOrderFourDiscRegionEndpoint
-    (A : PaperAnalyticData) (x : A.SectionSevenAffineMarkedBand) :
-    A.sectionSevenAffineOrderFourDiscRegion
-      A.sectionSevenAffineOrderFourMarkedDiscRadius :=
-  let r := A.sectionSevenAffineOrderFourMarkedDiscRadius
-  let hr₀ := A.sectionSevenAffineOrderFourMarkedDiscRadius_spec.1
+public noncomputable def affineOrderFourDiscRegionEndpoint
+    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
+    A.affineOrderFourDiscRegion
+      A.affineOrderFourMarkedDiscRadius :=
+  let r := A.affineOrderFourMarkedDiscRadius
+  let hr₀ := A.affineOrderFourMarkedDiscRadius_spec.1
   let hr : r ≤ 1 - 1 / 3 :=
-    A.sectionSevenAffineOrderFourMarkedDiscRadius_spec.2.1.trans (by norm_num)
+    A.affineOrderFourMarkedDiscRadius_spec.2.1.trans (by norm_num)
   (A.orderFourAffineDiscCentralHomotopyEquiv hr₀ hr).invFun
-    (A.sectionSevenAffineBandToOrderFourCentralRegion x)
+    (A.affineBandToOrderFourCentralRegion x)
 
 /-- The affine-disc quotient coordinate of the endpoint is represented by the selected named
 disc lift. -/
-public theorem sectionSevenAffineOrderFourDiscRegionQuotient_endpoint
-    (A : PaperAnalyticData) (x : A.SectionSevenAffineMarkedBand) :
-    A.sectionSevenAffineOrderFourDiscRegionQuotientHomeomorph
-        A.sectionSevenAffineOrderFourMarkedDiscRadius
-        (A.sectionSevenAffineOrderFourDiscRegionEndpoint x) =
-      Quotient.mk _ (A.sectionSevenAffineOrderFourNamedDiscLiftPoint x) := by
-  let r := A.sectionSevenAffineOrderFourMarkedDiscRadius
-  let hr₀ := A.sectionSevenAffineOrderFourMarkedDiscRadius_spec.1
+public theorem affineOrderFourDiscRegionQuotient_endpoint
+    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
+    A.affineOrderFourDiscRegionQuotientHomeomorph
+        A.affineOrderFourMarkedDiscRadius
+        (A.affineOrderFourDiscRegionEndpoint x) =
+      Quotient.mk _ (A.affineOrderFourNamedDiscLiftPoint x) := by
+  let r := A.affineOrderFourMarkedDiscRadius
+  let hr₀ := A.affineOrderFourMarkedDiscRadius_spec.1
   let hr : r ≤ 1 - 1 / 3 :=
-    A.sectionSevenAffineOrderFourMarkedDiscRadius_spec.2.1.trans (by norm_num)
-  change A.sectionSevenAffineOrderFourDiscRegionQuotientHomeomorph r
-      (A.sectionSevenAffineOrderFourDiscRegionQuotientHomeomorph r |>.symm
+    A.affineOrderFourMarkedDiscRadius_spec.2.1.trans (by norm_num)
+  change A.affineOrderFourDiscRegionQuotientHomeomorph r
+      (A.affineOrderFourDiscRegionQuotientHomeomorph r |>.symm
         ((A.orderFourAffineRadialEquivChoice hr₀ hr).quotientInvFun
-          (A.sectionSevenAffineOrderFourCentralRegionQuotientHomeomorph
-            (A.sectionSevenAffineBandToOrderFourCentralRegion x)))) = _
+          (A.affineOrderFourCentralRegionQuotientHomeomorph
+            (A.affineBandToOrderFourCentralRegion x)))) = _
   rw [Homeomorph.apply_symm_apply,
-    A.sectionSevenAffineOrderFourCentralRegionQuotient_band x]
+    A.affineOrderFourCentralRegionQuotient_band x]
   rfl
 
 /-- The overlap endpoint and the unembedded disc-region endpoint have the same underlying
 elliptic-interior point. -/
-public theorem sectionSevenAffineOrderFourDiscOverlapEndpoint_val
-    (A : PaperAnalyticData) (x : A.SectionSevenAffineMarkedBand) :
-    (A.sectionSevenAffineOrderFourDiscOverlapEndpoint x).1 =
-      (A.sectionSevenAffineOrderFourDiscRegionEndpoint x).1 :=
+public theorem affineOrderFourDiscOverlapEndpoint_val
+    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
+    (A.affineOrderFourDiscOverlapEndpoint x).1 =
+      (A.affineOrderFourDiscRegionEndpoint x).1 :=
   rfl
 
 /-- Undo the principal gauge on the named radial disc representative. -/
-public noncomputable def sectionSevenAffineOrderFourNamedCollarTotalPoint
-    (A : PaperAnalyticData) (x : A.SectionSevenAffineMarkedBand) :
+public noncomputable def affineOrderFourNamedCollarTotalPoint
+    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
     TotalSpace (parameterMap A.periods) :=
   (orderFourPrincipalGaugeEquiv A.periods).symm
     (regularFamilyInclusion A.periods
-      (A.sectionSevenAffineOrderFourNamedDiscLiftPoint x).1)
+      (A.affineOrderFourNamedDiscLiftPoint x).1)
 
 /-- The genuinely geometric residue: the inverse-gauged named radial representative lies in the
 selected order-four collar. -/
-public structure SectionSevenAffineOrderFourNamedRadialCollarCompatibility
+public structure AffineOrderFourNamedRadialCollarCompatibility
     (A : PaperAnalyticData) : Prop where
-  collar_mem : ∀ x : A.SectionSevenAffineMarkedBand,
-    A.sectionSevenAffineOrderFourNamedCollarTotalPoint x ∈
+  collar_mem : ∀ x : A.affineMarkedBand,
+    A.affineOrderFourNamedCollarTotalPoint x ∈
       orderFourPuncturedFamilyCollar A.periods A.starSeparation.orderFour.radius
 
 /-- The collar radius of the inverse-gauged named representative is the Cayley radius of its
 explicit radial base lift. -/
 public theorem orderFourFamilyRadius_namedCollarTotalPoint
-    (A : PaperAnalyticData) (x : A.SectionSevenAffineMarkedBand) :
+    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
     orderFourFamilyRadius A.periods
-        (A.sectionSevenAffineOrderFourNamedCollarTotalPoint x) =
+        (A.affineOrderFourNamedCollarTotalPoint x) =
       ‖(orderFourCayleyHomeomorph
-        (A.sectionSevenAffineOrderFourRadialBaseLift
-          (A.sectionSevenAffineBandStripCoordinate x)).1 : ℂ)‖ := by
-  rw [sectionSevenAffineOrderFourNamedCollarTotalPoint,
+        (A.affineOrderFourRadialBaseLift
+          (A.affineBandStripCoordinate x)).1 : ℂ)‖ := by
+  rw [affineOrderFourNamedCollarTotalPoint,
     orderFourFamilyRadius_principalGauge_symm,
     orderFourFamilyRadius.eq_def,
     familyTotalSpaceBase_regularFamilyInclusion,
@@ -294,23 +294,23 @@ public theorem orderFourFamilyRadius_namedCollarTotalPoint
 /-- The named radial representative cannot hit the puncture, because its base belongs to the
 regular source and the order-four Cayley centre lies over the excluded coordinate `1`. -/
 public theorem orderFourFamilyRadius_namedCollarTotalPoint_pos
-    (A : PaperAnalyticData) (x : A.SectionSevenAffineMarkedBand) :
+    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
     0 < orderFourFamilyRadius A.periods
-      (A.sectionSevenAffineOrderFourNamedCollarTotalPoint x) := by
+      (A.affineOrderFourNamedCollarTotalPoint x) := by
   rw [A.orderFourFamilyRadius_namedCollarTotalPoint x]
   apply norm_pos_iff.mpr
   apply coe_ne_zero_of_ne_center
   intro hzero
   have hfixed :
-      (A.sectionSevenAffineOrderFourRadialBaseLift
-        (A.sectionSevenAffineBandStripCoordinate x)).1 =
+      (A.affineOrderFourRadialBaseLift
+        (A.affineBandStripCoordinate x)).1 =
         fuchsianTwoFixedPoint := by
     apply orderFourCayleyHomeomorph.injective
     simpa [orderFourCayleyHomeomorph, UpperHalfPlane.cayleyHomeomorph, UpperHalfPlane.cayleyToDisc,
       ComplexUnitDisc.center, orderFourCayley_fixedPoint] using hzero
   have hregular :=
-    (A.sectionSevenAffineOrderFourRadialBaseLift
-      (A.sectionSevenAffineBandStripCoordinate x)).2
+    (A.affineOrderFourRadialBaseLift
+      (A.affineBandStripCoordinate x)).2
   have hmem := (A.isRegularBasePoint_iff_coordinate_mem _).mp hregular
   simp only [Set.mem_compl_iff, Set.mem_insert_iff, Set.mem_singleton_iff, not_or] at hmem
   exact hmem.2 (hfixed ▸ A.modular.sourceCoordinate.coordinate_at_two)
@@ -318,75 +318,75 @@ public theorem orderFourFamilyRadius_namedCollarTotalPoint_pos
 /-- Thus collar compatibility is equivalent to the sole remaining analytic inequality: the
 chosen radial lift, rather than merely some regular-deck translate of it, lies inside the selected
 order-four Cayley radius. -/
-public theorem sectionSevenAffineOrderFourNamedRadialCollarCompatibility_iff
+public theorem affineOrderFourNamedRadialCollarCompatibility_iff
     (A : PaperAnalyticData) :
-    A.SectionSevenAffineOrderFourNamedRadialCollarCompatibility ↔
-      ∀ x : A.SectionSevenAffineMarkedBand,
+    A.AffineOrderFourNamedRadialCollarCompatibility ↔
+      ∀ x : A.affineMarkedBand,
         ‖(orderFourCayleyHomeomorph
-          (A.sectionSevenAffineOrderFourRadialBaseLift
-            (A.sectionSevenAffineBandStripCoordinate x)).1 : ℂ)‖ <
+          (A.affineOrderFourRadialBaseLift
+            (A.affineBandStripCoordinate x)).1 : ℂ)‖ <
           A.starSeparation.orderFour.radius := by
   constructor
   · intro C x
     have hx := C.collar_mem x
     change 0 < orderFourFamilyRadius A.periods
-        (A.sectionSevenAffineOrderFourNamedCollarTotalPoint x) ∧
+        (A.affineOrderFourNamedCollarTotalPoint x) ∧
       orderFourFamilyRadius A.periods
-        (A.sectionSevenAffineOrderFourNamedCollarTotalPoint x) <
+        (A.affineOrderFourNamedCollarTotalPoint x) <
           A.starSeparation.orderFour.radius at hx
     rw [A.orderFourFamilyRadius_namedCollarTotalPoint x] at hx
     exact hx.2
   · intro h
     refine ⟨fun x ↦ ?_⟩
     change 0 < orderFourFamilyRadius A.periods
-        (A.sectionSevenAffineOrderFourNamedCollarTotalPoint x) ∧
+        (A.affineOrderFourNamedCollarTotalPoint x) ∧
       orderFourFamilyRadius A.periods
-        (A.sectionSevenAffineOrderFourNamedCollarTotalPoint x) <
+        (A.affineOrderFourNamedCollarTotalPoint x) <
           A.starSeparation.orderFour.radius
     exact ⟨A.orderFourFamilyRadius_namedCollarTotalPoint_pos x, by
       rw [A.orderFourFamilyRadius_namedCollarTotalPoint x]
       exact h x⟩
 
 /-- The named collar representative as a point of the affine collar carrier. -/
-public noncomputable def sectionSevenAffineOrderFourNamedCollarLiftPoint
+public noncomputable def affineOrderFourNamedCollarLiftPoint
     (A : PaperAnalyticData)
-    (C : A.SectionSevenAffineOrderFourNamedRadialCollarCompatibility)
-    (x : A.SectionSevenAffineMarkedBand) :
+    (C : A.AffineOrderFourNamedRadialCollarCompatibility)
+    (x : A.affineMarkedBand) :
     (orderFourAffinePuncturedCarrier A.periods
       A.modular.modularParameter.toTriangleUniformization_sourceAction
       A.starSeparation.orderFour.radius).carrier :=
-  ⟨A.sectionSevenAffineOrderFourNamedCollarTotalPoint x, C.collar_mem x⟩
+  ⟨A.affineOrderFourNamedCollarTotalPoint x, C.collar_mem x⟩
 
 /-- Gauging the named collar representative recovers the named radial disc representative. -/
 public theorem orderFourPrincipalGauge_namedCollarLiftPoint
     (A : PaperAnalyticData)
-    (C : A.SectionSevenAffineOrderFourNamedRadialCollarCompatibility)
-    (x : A.SectionSevenAffineMarkedBand) :
+    (C : A.AffineOrderFourNamedRadialCollarCompatibility)
+    (x : A.affineMarkedBand) :
     (orderFourPuncturedCollarGaugeEquiv A.periods
       A.starSeparation.orderFour.radius
-      (A.sectionSevenAffineOrderFourNamedCollarLiftPoint C x)).1 =
+      (A.affineOrderFourNamedCollarLiftPoint C x)).1 =
         regularFamilyInclusion A.periods
-          (A.sectionSevenAffineOrderFourNamedDiscLiftPoint x).1 := by
+          (A.affineOrderFourNamedDiscLiftPoint x).1 := by
   change orderFourPrincipalGaugeEquiv A.periods
       ((orderFourPrincipalGaugeEquiv A.periods).symm
         (regularFamilyInclusion A.periods
-          (A.sectionSevenAffineOrderFourNamedDiscLiftPoint x).1)) = _
+          (A.affineOrderFourNamedDiscLiftPoint x).1)) = _
   exact (orderFourPrincipalGaugeEquiv A.periods).apply_symm_apply _
 
 /-- The linear collar's regular representative of the named point is exactly the named radial
 disc representative. -/
 public theorem orderFourCollarToRegular_namedCollarLiftPoint
     (A : PaperAnalyticData)
-    (C : A.SectionSevenAffineOrderFourNamedRadialCollarCompatibility)
-    (x : A.SectionSevenAffineMarkedBand) :
+    (C : A.AffineOrderFourNamedRadialCollarCompatibility)
+    (x : A.affineMarkedBand) :
     orderFourCollarToRegular A.periods
         (sourceActionProperlyDiscontinuous_of_eq
           A.modular.modularParameter.toTriangleUniformization_sourceAction)
         A.starSeparation.orderFour.sourceData
         (orderFourPuncturedCollarGaugeEquiv A.periods
           A.starSeparation.orderFour.radius
-          (A.sectionSevenAffineOrderFourNamedCollarLiftPoint C x)) =
-      (A.sectionSevenAffineOrderFourNamedDiscLiftPoint x).1 := by
+          (A.affineOrderFourNamedCollarLiftPoint C x)) =
+      (A.affineOrderFourNamedDiscLiftPoint x).1 := by
   apply regularFamilyInclusion_injective A.periods
   rw [regularFamilyInclusion_orderFourCollarToRegular]
   exact A.orderFourPrincipalGauge_namedCollarLiftPoint C x
@@ -394,35 +394,35 @@ public theorem orderFourCollarToRegular_namedCollarLiftPoint
 /-- The named radial disc representative maps to the actual affine-disc endpoint in the central
 family. -/
 public theorem centralQuotientProjection_namedDiscLiftPoint
-    (A : PaperAnalyticData) (x : A.SectionSevenAffineMarkedBand) :
+    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
     A.centralQuotientProjection
-        (A.sectionSevenAffineOrderFourNamedDiscLiftPoint x).1 =
-      A.sectionSevenEllipticCentralImageHomeomorph
-        ⟨(A.sectionSevenAffineOrderFourDiscRegionEndpoint x).1,
+        (A.affineOrderFourNamedDiscLiftPoint x).1 =
+      A.ellipticCentralImageHomeomorph
+        ⟨(A.affineOrderFourDiscRegionEndpoint x).1,
           A.mem_centralImage_of_mem_centralHeightLowerRegion
-            (fun z ↦ ‖(A.sectionSevenEllipticCentralCoordinate z).1 - 1‖)
-            A.sectionSevenAffineOrderFourMarkedDiscRadius
-            (A.sectionSevenAffineOrderFourDiscRegionEndpoint x).2⟩ := by
+            (fun z ↦ ‖(A.ellipticCentralCoordinate z).1 - 1‖)
+            A.affineOrderFourMarkedDiscRadius
+            (A.affineOrderFourDiscRegionEndpoint x).2⟩ := by
   rw [← A.toCentralFamily_sectionSevenAffineOrderFourDiscRegionQuotientHomeomorph
-    A.sectionSevenAffineOrderFourMarkedDiscRadius
-    (A.sectionSevenAffineOrderFourDiscRegionEndpoint x)]
-  rw [A.sectionSevenAffineOrderFourDiscRegionQuotient_endpoint x]
+    A.affineOrderFourMarkedDiscRadius
+    (A.affineOrderFourDiscRegionEndpoint x)]
+  rw [A.affineOrderFourDiscRegionQuotient_endpoint x]
   rfl
 
 /-- The selected star-collar image of the named collar representative is the actual radial
 disc endpoint. -/
 public theorem starToCentral_namedCollarLiftPoint
     (A : PaperAnalyticData)
-    (C : A.SectionSevenAffineOrderFourNamedRadialCollarCompatibility)
-    (x : A.SectionSevenAffineMarkedBand) :
+    (C : A.AffineOrderFourNamedRadialCollarCompatibility)
+    (x : A.affineMarkedBand) :
     A.starToCentral 2
-        (Quotient.mk _ (A.sectionSevenAffineOrderFourNamedCollarLiftPoint C x)) =
-      A.sectionSevenEllipticCentralImageHomeomorph
-        ⟨(A.sectionSevenAffineOrderFourDiscRegionEndpoint x).1,
+        (Quotient.mk _ (A.affineOrderFourNamedCollarLiftPoint C x)) =
+      A.ellipticCentralImageHomeomorph
+        ⟨(A.affineOrderFourDiscRegionEndpoint x).1,
           A.mem_centralImage_of_mem_centralHeightLowerRegion
-            (fun z ↦ ‖(A.sectionSevenEllipticCentralCoordinate z).1 - 1‖)
-            A.sectionSevenAffineOrderFourMarkedDiscRadius
-            (A.sectionSevenAffineOrderFourDiscRegionEndpoint x).2⟩ := by
+            (fun z ↦ ‖(A.ellipticCentralCoordinate z).1 - 1‖)
+            A.affineOrderFourMarkedDiscRadius
+            (A.affineOrderFourDiscRegionEndpoint x).2⟩ := by
   rw [A.orderFourStarToCentral_mk]
   rw [A.orderFourCollarToRegular_namedCollarLiftPoint C x]
   exact A.centralQuotientProjection_namedDiscLiftPoint x
@@ -431,27 +431,27 @@ public theorem starToCentral_namedCollarLiftPoint
 representative. -/
 public theorem orderFourOverlapCollarHomeomorph_endpoint_eq_named
     (A : PaperAnalyticData)
-    (C : A.SectionSevenAffineOrderFourNamedRadialCollarCompatibility)
-    (x : A.SectionSevenAffineMarkedBand) :
+    (C : A.AffineOrderFourNamedRadialCollarCompatibility)
+    (x : A.affineMarkedBand) :
     A.orderFourOverlapCollarHomeomorph
-        (A.sectionSevenAffineOrderFourDiscOverlapEndpoint x) =
-      Quotient.mk _ (A.sectionSevenAffineOrderFourNamedCollarLiftPoint C x) := by
+        (A.affineOrderFourDiscOverlapEndpoint x) =
+      Quotient.mk _ (A.affineOrderFourNamedCollarLiftPoint C x) := by
   apply (A.starToCentral_isOpenEmbedding (2 : Fin 3)).injective
   rw [A.starToCentral_orderFourOverlapCollarHomeomorph]
   rw [A.starToCentral_namedCollarLiftPoint C x]
-  apply congrArg A.sectionSevenEllipticCentralImageHomeomorph
+  apply congrArg A.ellipticCentralImageHomeomorph
   apply Subtype.ext
-  exact A.sectionSevenAffineOrderFourDiscOverlapEndpoint_val x
+  exact A.affineOrderFourDiscOverlapEndpoint_val x
 
 /-- The single collar-membership fact implies the full representative-independent endpoint
 real-period identity. -/
-public theorem sectionSevenAffineOrderFourEndpointRealPeriodIdentity
+public theorem affineOrderFourEndpointRealPeriodIdentity
     (A : PaperAnalyticData)
-    (C : A.SectionSevenAffineOrderFourNamedRadialCollarCompatibility) :
-    A.SectionSevenAffineOrderFourEndpointRealPeriodIdentity := by
+    (C : A.AffineOrderFourNamedRadialCollarCompatibility) :
+    A.AffineOrderFourEndpointRealPeriodIdentity := by
   refine ⟨?_⟩
   intro x q hq
-  let q₀ := A.sectionSevenAffineOrderFourNamedCollarLiftPoint C x
+  let q₀ := A.affineOrderFourNamedCollarLiftPoint C x
   have hquot : (Quotient.mk _ q : A.starCollarSourceType (2 : Fin 3)) =
       Quotient.mk _ q₀ := hq.symm.trans
         (A.orderFourOverlapCollarHomeomorph_endpoint_eq_named C x)
@@ -469,7 +469,7 @@ public theorem sectionSevenAffineOrderFourEndpointRealPeriodIdentity
   change (orderFourRealPeriodProductHomeomorph A.periods
       ((orderFourPrincipalGaugeEquiv A.periods).symm
         (regularFamilyInclusion A.periods
-          (A.sectionSevenAffineOrderFourNamedDiscLiftPoint x).1))).2 = _
+          (A.affineOrderFourNamedDiscLiftPoint x).1))).2 = _
   rw [A.orderFourRealPeriodProductHomeomorph_principalGauge_symm_snd]
   rw [familyTotalSpaceBase_regularFamilyInclusion,
     regularTotalSpaceBase_namedDiscLiftPoint x,

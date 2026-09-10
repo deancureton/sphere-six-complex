@@ -15,12 +15,12 @@ noncomputable section
 
 open Set
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
 open SphereSixComplex.Geometry.CuspCombinatorics
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 /-- Each of the six planar tile parametrizations is injective. -/
 public theorem constructedA2PlaneTile_injective (v : ToricLattice) (i : Fin 6) :
@@ -100,7 +100,7 @@ public theorem constructedA2CellTransitionMatrix_nextIndex (v : ToricLattice) (i
       a2DualCharacter, a2ConeMatrix, heightOneRay, a2Triangle, e₁, e₂, Matrix.mul_apply,
       Fin.sum_univ_succ, hv0, hv1] <;> ring
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric
 
 end
 

@@ -38,11 +38,11 @@ public noncomputable def orderThreeFillingRelationCayleyDiscLoop :
     Path
       (⟨A.orderThreeFillingRelationCayleyBaseValue, by
         rw [A.orderThreeFillingRelationCayleyBaseValue_norm]
-        exact A.orderThreeActualEllipticBoundaryBase.1.2.2.trans
+        exact A.ellipticThreeBoundaryBase.1.2.2.trans
           A.starSeparation.orderThree.radius_lt_one⟩ : ComplexUnitDisc)
       (⟨A.orderThreeFillingRelationCayleyBaseValue, by
         rw [A.orderThreeFillingRelationCayleyBaseValue_norm]
-        exact A.orderThreeActualEllipticBoundaryBase.1.2.2.trans
+        exact A.ellipticThreeBoundaryBase.1.2.2.trans
           A.starSeparation.orderThree.radius_lt_one⟩ : ComplexUnitDisc) where
   toFun t := ⟨(A.orderThreeFillingRelationCayleyLoop t).1, by
     have hpoint : (A.orderThreeFillingRelationCayleyLoop t).1 =
@@ -51,7 +51,7 @@ public noncomputable def orderThreeFillingRelationCayleyDiscLoop :
         puncturedComplexIntegerCirclePoint, localDegreeCirclePoint]
     rw [hpoint]
     rw [localDegreeCirclePoint_norm, A.orderThreeFillingRelationCayleyBaseValue_norm]
-    exact A.orderThreeActualEllipticBoundaryBase.1.2.2.trans
+    exact A.ellipticThreeBoundaryBase.1.2.2.trans
       A.starSeparation.orderThree.radius_lt_one⟩
   continuous_toFun := by
     apply Continuous.subtype_mk
@@ -69,13 +69,13 @@ public noncomputable def orderThreeFillingRelationCayleyDiscLoop :
 
 /-- Add the fixed collar offset to the based principal-gauge loop. -/
 public noncomputable def orderThreePrincipalGaugeWithOffsetPath :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     Path
       (A.orderThreeFillingRelationPrincipalGaugeLoop 0 +
-        Quotient.mk _ A.orderThreeActualEllipticBoundaryBase.2.2)
+        Quotient.mk _ A.ellipticThreeBoundaryBase.2.2)
       (A.orderThreeFillingRelationPrincipalGaugeLoop 0 +
-        Quotient.mk _ A.orderThreeActualEllipticBoundaryBase.2.2) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+        Quotient.mk _ A.ellipticThreeBoundaryBase.2.2) := by
+  let _ := A.ellipticThreeBoundaryAction
   exact
     { toFun := A.orderThreePrincipalGaugeWithOffsetMap
       continuous_toFun := A.orderThreePrincipalGaugeWithOffsetMap.continuous
@@ -83,20 +83,20 @@ public noncomputable def orderThreePrincipalGaugeWithOffsetPath :
       target' := by
         rw [orderThreePrincipalGaugeWithOffsetMap]
         exact congrArg
-          (fun q ↦ q + Quotient.mk _ A.orderThreeActualEllipticBoundaryBase.2.2)
+          (fun q ↦ q + Quotient.mk _ A.ellipticThreeBoundaryBase.2.2)
           A.orderThreeFillingRelationPrincipalGaugeLoop.target }
 
 /-- The full regular filling loop has exactly the Cayley-disc and offset principal-gauge
 coordinates, including their subtype data. -/
 public theorem orderThreeRegularLoop_cayleyGaugeProductCoordinate
     (t : unitInterval) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     orderThreeRealPeriodProductHomeomorph A.periods
         (regularFamilyInclusion A.periods
           (A.orderThreeFillingRelationRegularLoop t)) =
       (A.orderThreeFillingRelationCayleyDiscLoop t,
         A.orderThreePrincipalGaugeWithOffsetPath t) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   have hcoord := A.orderThreeFillingRelationRegularLoop_localProductCoordinate t
   apply Prod.ext
   · apply Subtype.ext
@@ -106,8 +106,8 @@ public theorem orderThreeRegularLoop_cayleyGaugeProductCoordinate
         (U := A.modular.modularParameter.toTriangleUniformization) :=
       sourceActionProperlyDiscontinuous_of_eq
         A.modular.modularParameter.toTriangleUniformization_sourceAction
-    let lift := A.orderThreeActualEllipticBoundaryDeckStraightLift
-      A.orderThreeActualEllipticBoundaryDeckData.fillingRelation t
+    let lift := A.ellipticThreeBoundaryDeckStraightLift
+      A.ellipticThreeBoundaryDeckData.fillingRelation t
     have hb : (regularTotalSpaceBase A.periods
         (A.orderThreeCollarRegularRepresentativeMap lift)).1 =
         familyTotalSpaceBase A.periods
@@ -129,7 +129,7 @@ public theorem orderThreeRegularLoop_cayleyGaugeProductCoordinate
         (regularFamilyInclusion A.periods
           (A.orderThreeFillingRelationRegularLoop t))).2) =
       A.orderThreeFillingRelationPrincipalGaugeLoop t +
-        Quotient.mk _ A.orderThreeActualEllipticBoundaryBase.2.2
+        Quotient.mk _ A.ellipticThreeBoundaryBase.2.2
     exact congrArg Prod.snd hcoord
 
 public structure OrderThreePuncturedProductProperData : Type where
@@ -150,17 +150,17 @@ public noncomputable def orderThreeCayleyPuncturedBasepoint :
     A.OrderThreeCayleyPuncturedDisc :=
   ⟨⟨A.orderThreeFillingRelationCayleyBaseValue, by
       rw [A.orderThreeFillingRelationCayleyBaseValue_norm]
-      exact A.orderThreeActualEllipticBoundaryBase.1.2.2.trans
+      exact A.ellipticThreeBoundaryBase.1.2.2.trans
         A.starSeparation.orderThree.radius_lt_one⟩, by
     rw [A.orderThreeFillingRelationCayleyBaseValue_norm]
-    exact A.orderThreeActualEllipticBoundaryBase.1.2⟩
+    exact A.ellipticThreeBoundaryBase.1.2⟩
 
 /-- The actual three-turn Cayley loop in the punctured collar. -/
 public noncomputable def orderThreeFillingRelationCayleyPuncturedLoop :
     Path A.orderThreeCayleyPuncturedBasepoint A.orderThreeCayleyPuncturedBasepoint where
   toFun t := ⟨A.orderThreeFillingRelationCayleyDiscLoop t, by
     have hnorm : ‖((A.orderThreeFillingRelationCayleyDiscLoop t : ComplexUnitDisc) : ℂ)‖ =
-        (A.orderThreeActualEllipticBoundaryBase.1 : ℝ) := by
+        (A.ellipticThreeBoundaryBase.1 : ℝ) := by
       change ‖((A.orderThreeFillingRelationCayleyLoop t).1 : ℂ)‖ = _
       have hpoint : (A.orderThreeFillingRelationCayleyLoop t).1 =
           localDegreeCirclePoint A.orderThreeFillingRelationCayleyBaseValue t := by
@@ -169,7 +169,7 @@ public noncomputable def orderThreeFillingRelationCayleyPuncturedLoop :
       rw [hpoint, localDegreeCirclePoint_norm,
         A.orderThreeFillingRelationCayleyBaseValue_norm]
     rw [hnorm]
-    exact A.orderThreeActualEllipticBoundaryBase.1.2⟩
+    exact A.ellipticThreeBoundaryBase.1.2⟩
   continuous_toFun := by
     exact Continuous.subtype_mk A.orderThreeFillingRelationCayleyDiscLoop.continuous _
   source' := by
@@ -181,12 +181,12 @@ public noncomputable def orderThreeFillingRelationCayleyPuncturedLoop :
 
 /-- Include the punctured Cayley collar times its torus in the restricted product carrier. -/
 public noncomputable def orderThreePuncturedProductCarrierMap :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     C(A.OrderThreeCayleyPuncturedDisc × A.orderThreeTorus,
       (orderThreeCyclicPuncturedProductData A.periods
         A.starSeparation.orderThree.radius A.starSeparation.orderThree.radius_pos
         A.starSeparation.orderThree.radius_lt_one).carrier.carrier) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   exact
     { toFun := fun zq => ⟨(zq.1.1, zq.2), zq.1.2⟩
       continuous_toFun := by
@@ -195,12 +195,12 @@ public noncomputable def orderThreePuncturedProductCarrierMap :
 
 /-- Realize the restricted order-three product chart in the regular total space. -/
 public noncomputable def orderThreePuncturedProductToRegularMap :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     C((orderThreeCyclicPuncturedProductData A.periods
         A.starSeparation.orderThree.radius A.starSeparation.orderThree.radius_pos
         A.starSeparation.orderThree.radius_lt_one).carrier.carrier,
       RegularTotalSpace A.periods) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   exact
     { toFun := fun q => orderThreeCollarToRegular A.periods
         A.orderThreePuncturedProductProperData.proper
@@ -223,13 +223,13 @@ public noncomputable def orderThreePuncturedProductToRegularMap :
 /-- The punctured product coordinates recover the actual regular filling loop pointwise. -/
 public theorem orderThreeRegularLoop_eq_puncturedProductRealization
     (t : unitInterval) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     A.orderThreePuncturedProductToRegularMap
         (A.orderThreePuncturedProductCarrierMap
           (A.orderThreeFillingRelationCayleyPuncturedLoop t,
             A.orderThreePrincipalGaugeWithOffsetPath t)) =
       A.orderThreeFillingRelationRegularLoop t := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let hproper : SourceActionProperlyDiscontinuous
       (U := A.modular.modularParameter.toTriangleUniformization) :=
     sourceActionProperlyDiscontinuous_of_eq
@@ -265,9 +265,9 @@ public theorem orderThreeRegularLoop_eq_puncturedProductRealization
 
 /-- Realize punctured product coordinates directly in the central quotient. -/
 public noncomputable def orderThreePuncturedProductToCentralMap :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     C(A.OrderThreeCayleyPuncturedDisc × A.orderThreeTorus, A.CentralFamily) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let q : C(RegularTotalSpace A.periods, A.CentralFamily) :=
     ⟨A.centralQuotientProjection,
       A.centralQuotientProjection_isLocalHomeomorph.continuous⟩
@@ -276,13 +276,13 @@ public noncomputable def orderThreePuncturedProductToCentralMap :
 
 /-- Remove the constant collar offset without moving the Cayley coordinate. -/
 public def orderThreePuncturedProduct_offsetHomotopy :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     ContinuousMap.Homotopy
       ((A.orderThreeFillingRelationCayleyPuncturedLoop.prod
         A.orderThreePrincipalGaugeWithOffsetPath).toContinuousMap)
       ((A.orderThreeFillingRelationCayleyPuncturedLoop.prod
         A.orderThreeFillingRelationPrincipalGaugeLoop).toContinuousMap) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let H := A.orderThreePrincipalGaugeOffsetHomotopy
   exact
     { toFun := fun st ↦
@@ -304,7 +304,7 @@ public def orderThreePuncturedProduct_offsetHomotopy :
 /-- In the punctured collar, the actual coordinate loop is freely homotopic to its fibre-first
 product splitting. -/
 public theorem orderThreePuncturedProduct_freeHomotopy_fiberThenBase :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     Nonempty (ContinuousMap.Homotopy
       ((A.orderThreeFillingRelationCayleyPuncturedLoop.prod
         A.orderThreePrincipalGaugeWithOffsetPath).toContinuousMap)
@@ -312,7 +312,7 @@ public theorem orderThreePuncturedProduct_freeHomotopy_fiberThenBase :
           A.orderThreeFillingRelationPrincipalGaugeLoop).trans
         (A.orderThreeFillingRelationCayleyPuncturedLoop.prod
           (Path.refl (A.orderThreeFillingRelationPrincipalGaugeLoop 0)))).toContinuousMap)) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   rcases productLoop_homotopic_fiberThenBase
       A.orderThreeFillingRelationCayleyPuncturedLoop
       A.orderThreeFillingRelationPrincipalGaugeLoop with ⟨Hsplit⟩
@@ -322,7 +322,7 @@ public theorem orderThreePuncturedProduct_freeHomotopy_fiberThenBase :
 /-- Splitting before removing the collar offset is endpoint-relative and therefore preserves
 the endpoint-trace condition required by the final free-homotopy criterion. -/
 public theorem orderThreePuncturedProductWithOffset_homotopic_fiberThenBase :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     Nonempty (Path.Homotopy
       ((A.orderThreeFillingRelationCayleyPuncturedLoop.prod
         A.orderThreePrincipalGaugeWithOffsetPath).map
@@ -332,7 +332,7 @@ public theorem orderThreePuncturedProductWithOffset_homotopic_fiberThenBase :
         (A.orderThreeFillingRelationCayleyPuncturedLoop.prod
           (Path.refl (A.orderThreePrincipalGaugeWithOffsetPath 0)))).map
             A.orderThreePuncturedProductToCentralMap.continuous))) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   exact productLoop_map_homotopic_fiberThenBase
     A.orderThreeFillingRelationCayleyPuncturedLoop
     A.orderThreePrincipalGaugeWithOffsetPath
@@ -342,12 +342,12 @@ public theorem orderThreePuncturedProductWithOffset_homotopic_fiberThenBase :
 filling loop. -/
 public theorem orderThreePuncturedProductToCentralMap_apply_filling
     (t : unitInterval) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     A.orderThreePuncturedProductToCentralMap
         (A.orderThreeFillingRelationCayleyPuncturedLoop t,
           A.orderThreePrincipalGaugeWithOffsetPath t) =
       A.centralQuotientProjection (A.orderThreeFillingRelationRegularLoop t) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   unfold orderThreePuncturedProductToCentralMap
   change A.centralQuotientProjection
       (A.orderThreePuncturedProductToRegularMap
@@ -359,7 +359,7 @@ public theorem orderThreePuncturedProductToCentralMap_apply_filling
 /-- The central realization of the local product splitting has an endpoint-relative homotopy
 from the actual projected filling loop before its harmless endpoint cast. -/
 public theorem orderThreeProjectedRegularLoop_homotopic_localFiberThenBase :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     Nonempty (Path.Homotopy
       ((A.orderThreeFillingRelationCayleyPuncturedLoop.prod
         A.orderThreePrincipalGaugeWithOffsetPath).map
@@ -371,13 +371,13 @@ public theorem orderThreeProjectedRegularLoop_homotopic_localFiberThenBase :
             A.orderThreePuncturedProductToCentralMap.continuous))) :=
   A.orderThreePuncturedProductWithOffset_homotopic_fiberThenBase
 
-public theorem orderThreeActualEllipticCentralBase_eq_puncturedProductBase :
-    letI := A.orderThreeActualEllipticBoundaryAction
-    A.orderThreeActualEllipticCentralBase =
+public theorem ellipticThreeCentralBase_eq_puncturedProductBase :
+    letI := A.ellipticThreeBoundaryAction
+    A.ellipticThreeCentralBase =
       A.orderThreePuncturedProductToCentralMap
         (A.orderThreeCayleyPuncturedBasepoint,
           A.orderThreePrincipalGaugeWithOffsetPath 0) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   symm
   calc
     A.orderThreePuncturedProductToCentralMap
@@ -393,39 +393,39 @@ public theorem orderThreeActualEllipticCentralBase_eq_puncturedProductBase :
           A.orderThreeFillingRelationCayleyPuncturedLoop.source.symm
     _ = A.centralQuotientProjection
           (A.orderThreeCollarRegularRepresentativeMap
-            A.orderThreeActualEllipticBoundaryBase) := by
+            A.ellipticThreeBoundaryBase) := by
       exact congrArg A.centralQuotientProjection
         A.orderThreeFillingRelationRegularLoop.source
-    _ = A.orderThreeActualEllipticCentralBase :=
+    _ = A.ellipticThreeCentralBase :=
       A.orderThreeCollarRegularRepresentative_base_projects
 
 /-- The fibre-first local splitting, cast to the displayed order-three boundary basepoint. -/
 public noncomputable def orderThreeLocalFiberThenBaseCentralPath :
-    letI := A.orderThreeActualEllipticBoundaryAction
-    Path A.orderThreeActualEllipticCentralBase A.orderThreeActualEllipticCentralBase := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
+    Path A.ellipticThreeCentralBase A.ellipticThreeCentralBase := by
+  let _ := A.ellipticThreeBoundaryAction
   exact (((((Path.refl A.orderThreeCayleyPuncturedBasepoint).prod
       A.orderThreePrincipalGaugeWithOffsetPath).trans
     (A.orderThreeFillingRelationCayleyPuncturedLoop.prod
       (Path.refl (A.orderThreePrincipalGaugeWithOffsetPath 0)))).map
         A.orderThreePuncturedProductToCentralMap.continuous).cast
-          A.orderThreeActualEllipticCentralBase_eq_puncturedProductBase
-          A.orderThreeActualEllipticCentralBase_eq_puncturedProductBase)
+          A.ellipticThreeCentralBase_eq_puncturedProductBase
+          A.ellipticThreeCentralBase_eq_puncturedProductBase)
 
 /-- The endpoint-cast central realization of the product loop is literally the projected actual
 regular filling loop. -/
 public theorem orderThreePuncturedProductCentralPath_eq_projectedRegularLoop :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     (((A.orderThreeFillingRelationCayleyPuncturedLoop.prod
         A.orderThreePrincipalGaugeWithOffsetPath).map
           A.orderThreePuncturedProductToCentralMap.continuous).cast
-            A.orderThreeActualEllipticCentralBase_eq_puncturedProductBase
-            A.orderThreeActualEllipticCentralBase_eq_puncturedProductBase) =
+            A.ellipticThreeCentralBase_eq_puncturedProductBase
+            A.ellipticThreeCentralBase_eq_puncturedProductBase) =
       ((A.orderThreeFillingRelationRegularLoop.map
         A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
           A.orderThreeCollarRegularRepresentative_base_projects.symm
           A.orderThreeCollarRegularRepresentative_base_projects.symm) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   apply Path.ext
   funext t
   exact A.orderThreePuncturedProductToCentralMap_apply_filling t
@@ -434,23 +434,23 @@ public theorem orderThreePuncturedProductCentralPath_eq_projectedRegularLoop :
 fibre-first splitting.  Hence the associated free homotopy automatically has identical endpoint
 traces. -/
 public theorem orderThreeProjectedRegularLoop_pathHomotopic_localFiberThenBase :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     Nonempty (Path.Homotopy
       ((A.orderThreeFillingRelationRegularLoop.map
         A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
           A.orderThreeCollarRegularRepresentative_base_projects.symm
           A.orderThreeCollarRegularRepresentative_base_projects.symm)
       A.orderThreeLocalFiberThenBaseCentralPath) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   rcases A.orderThreePuncturedProductWithOffset_homotopic_fiberThenBase with ⟨H⟩
   let H' := H.pathCast
-    A.orderThreeActualEllipticCentralBase_eq_puncturedProductBase
-    A.orderThreeActualEllipticCentralBase_eq_puncturedProductBase
+    A.ellipticThreeCentralBase_eq_puncturedProductBase
+    A.ellipticThreeCentralBase_eq_puncturedProductBase
   exact ⟨H'.cast
     A.orderThreePuncturedProductCentralPath_eq_projectedRegularLoop rfl⟩
 
 public theorem orderThreeProjectedRegularLoop_freeHomotopy_localFiberThenBase_trace :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     ∃ H : ContinuousMap.Homotopy
       ((A.orderThreeFillingRelationRegularLoop.map
         A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
@@ -469,7 +469,7 @@ public theorem orderThreeProjectedRegularLoop_freeHomotopy_localFiberThenBase_tr
               A.orderThreeCollarRegularRepresentative_base_projects.symm
               A.orderThreeCollarRegularRepresentative_base_projects.symm).target.symm
           A.orderThreeLocalFiberThenBaseCentralPath.target.symm := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   rcases A.orderThreeProjectedRegularLoop_pathHomotopic_localFiberThenBase with ⟨H⟩
   exact ⟨pathHomotopyToFreeHomotopy H, pathHomotopyToFreeHomotopy_trace H⟩
 

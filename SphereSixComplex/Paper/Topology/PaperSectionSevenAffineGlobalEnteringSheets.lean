@@ -46,28 +46,28 @@ public theorem regularMovingToFixed_deck_fixedToMoving
   simp
 
 public theorem exists_orderThree_globalEnteringSheet (A : PaperAnalyticData) :
-    ∃ g : Delta, ∀ z : sectionSevenAffineVerticalStrip,
+    ∃ g : Delta, ∀ z : affineVerticalStrip,
       A.OrderThreeDeckEntersNamedCollarAtStrip g z := by
   obtain ⟨g, hg⟩ := A.exists_orderThreeDeckEntersNamedCollarAtStrip
-    A.sectionSevenAffineActualCuspCrossingPoint
+    A.affineActualCuspCrossingPoint
   exact ⟨g, A.orderThreeDeckEntersNamedCollarAtStrip_of_basepoint g
-    A.sectionSevenAffineActualCuspCrossingPoint hg⟩
+    A.affineActualCuspCrossingPoint hg⟩
 
 public theorem exists_orderFour_globalEnteringSheet (A : PaperAnalyticData) :
-    ∃ g : Delta, ∀ z : sectionSevenAffineVerticalStrip,
+    ∃ g : Delta, ∀ z : affineVerticalStrip,
       A.OrderFourDeckEntersNamedCollarAtStrip g z := by
   obtain ⟨g, hg⟩ := A.exists_orderFourDeckEntersNamedCollarAtStrip
-    A.sectionSevenAffineActualCuspCrossingPoint
+    A.affineActualCuspCrossingPoint
   exact ⟨g, A.orderFourDeckEntersNamedCollarAtStrip_of_basepoint g
-    A.sectionSevenAffineActualCuspCrossingPoint hg⟩
+    A.affineActualCuspCrossingPoint hg⟩
 
 public theorem exists_orderThree_globalCollarRepresentative (A : PaperAnalyticData) :
-    ∃ g : Delta, ∀ x : A.SectionSevenAffineMarkedBand,
+    ∃ g : Delta, ∀ x : A.affineMarkedBand,
       ∃ q : (orderThreeAffinePuncturedCarrier A.periods
         A.modular.modularParameter.toTriangleUniformization_sourceAction
         A.starSeparation.orderThree.radius).carrier,
         A.orderThreeOverlapCollarHomeomorph
-          (A.sectionSevenAffineOrderThreeDiscOverlapEndpoint x) = Quotient.mk _ q ∧
+          (A.affineOrderThreeDiscOverlapEndpoint x) = Quotient.mk _ q ∧
         orderThreeCollarToRegular A.periods
           (sourceActionProperlyDiscontinuous_of_eq
             A.modular.modularParameter.toTriangleUniformization_sourceAction)
@@ -75,11 +75,11 @@ public theorem exists_orderThree_globalCollarRepresentative (A : PaperAnalyticDa
           (orderThreePuncturedCollarGaugeEquiv A.periods
             A.starSeparation.orderThree.radius q) =
           regularFamilyDeckMap A.periods g
-            (A.sectionSevenAffineOrderThreeNamedDiscLiftPoint x).1 := by
+            (A.affineOrderThreeNamedDiscLiftPoint x).1 := by
   obtain ⟨g, hg⟩ := A.exists_orderThree_globalEnteringSheet
   refine ⟨g, fun x ↦ ?_⟩
   let y := regularFamilyDeckMap A.periods g
-    (A.sectionSevenAffineOrderThreeNamedDiscLiftPoint x).1
+    (A.affineOrderThreeNamedDiscLiftPoint x).1
   let q := (orderThreePrincipalGaugeEquiv A.periods).symm
     (regularFamilyInclusion A.periods y)
   have hb : familyTotalSpaceBase A.periods q =
@@ -105,7 +105,7 @@ public theorem exists_orderThree_globalCollarRepresentative (A : PaperAnalyticDa
     rw [orderThreeFamilyRadius.eq_def, hb]
     dsimp only [y]
     rw [regularTotalSpaceBase_familyDeckMap, regularTotalSpaceBase_namedOrderThreeDiscLiftPoint]
-    exact hg (A.sectionSevenAffineBandStripCoordinate x)
+    exact hg (A.affineBandStripCoordinate x)
   let q' : (orderThreeAffinePuncturedCarrier A.periods
       A.modular.modularParameter.toTriangleUniformization_sourceAction
       A.starSeparation.orderThree.radius).carrier := ⟨q, ⟨hpos, hlt⟩⟩
@@ -125,17 +125,17 @@ public theorem exists_orderThree_globalCollarRepresentative (A : PaperAnalyticDa
   dsimp only [y]
   rw [A.centralQuotientProjection_familyDeckMap,
     A.centralQuotientProjection_namedOrderThreeDiscLiftPoint]
-  apply congrArg A.sectionSevenEllipticCentralImageHomeomorph
+  apply congrArg A.ellipticCentralImageHomeomorph
   apply Subtype.ext
-  exact A.sectionSevenAffineOrderThreeDiscOverlapEndpoint_val x
+  exact A.affineOrderThreeDiscOverlapEndpoint_val x
 
 public theorem exists_orderFour_globalCollarRepresentative (A : PaperAnalyticData) :
-    ∃ g : Delta, ∀ x : A.SectionSevenAffineMarkedBand,
+    ∃ g : Delta, ∀ x : A.affineMarkedBand,
       ∃ q : (orderFourAffinePuncturedCarrier A.periods
         A.modular.modularParameter.toTriangleUniformization_sourceAction
         A.starSeparation.orderFour.radius).carrier,
         A.orderFourOverlapCollarHomeomorph
-          (A.sectionSevenAffineOrderFourDiscOverlapEndpoint x) = Quotient.mk _ q ∧
+          (A.affineOrderFourDiscOverlapEndpoint x) = Quotient.mk _ q ∧
         orderFourCollarToRegular A.periods
           (sourceActionProperlyDiscontinuous_of_eq
             A.modular.modularParameter.toTriangleUniformization_sourceAction)
@@ -143,11 +143,11 @@ public theorem exists_orderFour_globalCollarRepresentative (A : PaperAnalyticDat
           (orderFourPuncturedCollarGaugeEquiv A.periods
             A.starSeparation.orderFour.radius q) =
           regularFamilyDeckMap A.periods g
-            (A.sectionSevenAffineOrderFourNamedDiscLiftPoint x).1 := by
+            (A.affineOrderFourNamedDiscLiftPoint x).1 := by
   obtain ⟨g, hg⟩ := A.exists_orderFour_globalEnteringSheet
   refine ⟨g, fun x ↦ ?_⟩
   let y := regularFamilyDeckMap A.periods g
-    (A.sectionSevenAffineOrderFourNamedDiscLiftPoint x).1
+    (A.affineOrderFourNamedDiscLiftPoint x).1
   let q := (orderFourPrincipalGaugeEquiv A.periods).symm
     (regularFamilyInclusion A.periods y)
   have hb : familyTotalSpaceBase A.periods q =
@@ -173,7 +173,7 @@ public theorem exists_orderFour_globalCollarRepresentative (A : PaperAnalyticDat
     rw [orderFourFamilyRadius.eq_def, hb]
     dsimp only [y]
     rw [regularTotalSpaceBase_familyDeckMap, regularTotalSpaceBase_namedDiscLiftPoint]
-    exact hg (A.sectionSevenAffineBandStripCoordinate x)
+    exact hg (A.affineBandStripCoordinate x)
   let q' : (orderFourAffinePuncturedCarrier A.periods
       A.modular.modularParameter.toTriangleUniformization_sourceAction
       A.starSeparation.orderFour.radius).carrier := ⟨q, ⟨hpos, hlt⟩⟩
@@ -193,9 +193,9 @@ public theorem exists_orderFour_globalCollarRepresentative (A : PaperAnalyticDat
   dsimp only [y]
   rw [A.centralQuotientProjection_familyDeckMap,
     A.centralQuotientProjection_namedDiscLiftPoint]
-  apply congrArg A.sectionSevenEllipticCentralImageHomeomorph
+  apply congrArg A.ellipticCentralImageHomeomorph
   apply Subtype.ext
-  exact A.sectionSevenAffineOrderFourDiscOverlapEndpoint_val x
+  exact A.affineOrderFourDiscOverlapEndpoint_val x
 
 end
 

@@ -25,11 +25,11 @@ namespace SphereSixComplex.Geometry.PaperAnalyticData
 
 variable {A : PaperAnalyticData}
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 /-- The affine height along a fixed fibre point of the actual cusp mapping torus. -/
 public noncomputable def actualCuspCylinderHeightLoop
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (y : let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
       G.Fiber) : C(unitInterval, ℝ) := by
@@ -40,24 +40,24 @@ public noncomputable def actualCuspCylinderHeightLoop
       ⟨fun t ↦ (t, y), continuous_id.prodMk continuous_const⟩
   let collar : C(unitInterval, A.openEmbeddingStarData.collarSource 0) :=
     G.totalHomotopyEquiv.invFun.comp cylinder
-  let central : C(unitInterval, A.sectionSevenEllipticCentralImage) :=
+  let central : C(unitInterval, A.ellipticCentralImage) :=
     ⟨fun t ↦
       ⟨R.twoDiscCover.cuspToEllipticInteriorMap (collar t),
         R.twoDiscCover.cuspToEllipticInteriorMap_mem_centralImage _⟩,
       (R.twoDiscCover.cuspToEllipticInteriorMap.hom.continuous.comp
         collar.continuous).subtype_mk _⟩
-  exact ⟨fun t ↦ A.sectionSevenEllipticCentralHeight (central t),
-    A.sectionSevenEllipticCentralHeight_continuous.comp central.continuous⟩
+  exact ⟨fun t ↦ A.ellipticCentralHeight (central t),
+    A.ellipticCentralHeight_continuous.comp central.continuous⟩
 
 public theorem actualCuspCylinderHeightLoop_apply
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (y : let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
       G.Fiber) (t : unitInterval) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     actualCuspCylinderHeightLoop R y t =
-      A.sectionSevenEllipticCentralHeight
+      A.ellipticCentralHeight
         ⟨R.twoDiscCover.cuspToEllipticInteriorMap
             (G.totalHomotopyEquiv.invFun
               (circleMappingTorusCylinderProjection G.clutching (t, y))),
@@ -66,7 +66,7 @@ public theorem actualCuspCylinderHeightLoop_apply
 
 /-- The height starts above the upper affine threshold. -/
 public theorem two_thirds_lt_actualCuspCylinderHeightLoop_zero
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (y : let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
       G.Fiber) :
@@ -81,7 +81,7 @@ public theorem two_thirds_lt_actualCuspCylinderHeightLoop_zero
 
 /-- At phase `5/16`, the actual height is negative. -/
 public theorem actualCuspCylinderHeightLoop_five_sixteenths_neg
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (y : let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
       G.Fiber) :
@@ -100,7 +100,7 @@ public theorem actualCuspCylinderHeightLoop_five_sixteenths_neg
 
 /-- The height returns above the upper affine threshold after one full turn. -/
 public theorem two_thirds_lt_actualCuspCylinderHeightLoop_one
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (y : let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
       G.Fiber) :
@@ -121,7 +121,7 @@ public theorem two_thirds_lt_actualCuspCylinderHeightLoop_one
 phase.  No uniqueness is claimed: the present analytic hypotheses do not exclude additional
 crossings. -/
 public theorem actualCuspCylinderHeightLoop_crosses_level_on_both_sides
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (y : let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
       G.Fiber)
@@ -151,7 +151,7 @@ public theorem actualCuspCylinderHeightLoop_crosses_level_on_both_sides
     intermediate_value_Icc hm_one h.continuous.continuousOn hrightMem
   exact ⟨t₀, ht₀, hvalue₀, t₁, ht₁, hvalue₁⟩
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

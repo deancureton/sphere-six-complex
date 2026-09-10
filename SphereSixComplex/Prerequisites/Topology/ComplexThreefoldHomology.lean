@@ -13,12 +13,12 @@ namespace SphereSixComplex
 
 The complex atlas is converted to a real smooth atlas on the same model carrier. Its orientation
 is constructed from the complex transition maps, whose real determinants are positive. -/
-public noncomputable def establishedCompactComplexThreefoldHomologyTheory
+public noncomputable def ComplexThreefold.integralPoincareUCT
     (X : Type) [TopologicalSpace X] [ChartedSpace ComplexModel X]
     [T2Space X] [SecondCountableTopology X]
     (hManifold : IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞ X)
     (hCompact : CompactSpace X) :
-    ClosedOrientedSixManifoldHomologyTheory X := by
+    IntegralPoincareUCTData.Six X := by
   letI : IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞ X := hManifold
   let hComplexOne : IsManifold (modelWithCornersSelf ℂ ComplexModel) 1 X := inferInstance
   let hRealOne : IsManifold (modelWithCornersSelf ℝ ComplexModel) 1 X :=
@@ -28,7 +28,7 @@ public noncomputable def establishedCompactComplexThreefoldHomologyTheory
     norm_num [ComplexModel]
   let hOrientation : SmoothAtlasOrientation 6 ComplexModel X :=
     hdim ▸ smoothAtlasOrientationOfComplex hComplexOne
-  exact establishedCompactSmoothOrientedManifoldHomologyTheory
+  exact SmoothAtlasOrientation.integralPoincareUCT
     6 ComplexModel X hRealOne hOrientation hCompact
 
 /-- Degree-zero homology of a connected complex manifold is infinite cyclic. -/

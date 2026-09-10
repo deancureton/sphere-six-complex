@@ -365,8 +365,8 @@ public theorem range_orderFourAffineHalfPlaneLiftQuotientToCentralFamily :
       exact hq
 
 public noncomputable def centralHeightLowerRegionHomeomorph
-    (height : A.sectionSevenEllipticCentralImage → ℝ) (upper : ℝ) :
-    {x : A.sectionSevenEllipticCentralImage | height x < upper} ≃ₜ
+    (height : A.ellipticCentralImage → ℝ) (upper : ℝ) :
+    {x : A.ellipticCentralImage | height x < upper} ≃ₜ
       ↥(centralHeightLowerRegion height upper) :=
   ((IsEmbedding.subtypeVal.comp IsEmbedding.subtypeVal).toHomeomorph).trans
     (Homeomorph.setCongr (by
@@ -374,8 +374,8 @@ public noncomputable def centralHeightLowerRegionHomeomorph
       simp [centralHeightLowerRegion]))
 
 public noncomputable def centralHeightUpperRegionHomeomorph
-    (height : A.sectionSevenEllipticCentralImage → ℝ) (lower : ℝ) :
-    {x : A.sectionSevenEllipticCentralImage | lower < height x} ≃ₜ
+    (height : A.ellipticCentralImage → ℝ) (lower : ℝ) :
+    {x : A.ellipticCentralImage | lower < height x} ≃ₜ
       ↥(centralHeightUpperRegion height lower) :=
   ((IsEmbedding.subtypeVal.comp IsEmbedding.subtypeVal).toHomeomorph).trans
     (Homeomorph.setCongr (by
@@ -384,22 +384,22 @@ public noncomputable def centralHeightUpperRegionHomeomorph
 
 /-- The actual order-three central region, expressed as the quotient of its full-deck-action
 half-plane lift. -/
-public noncomputable def sectionSevenAffineOrderThreeCentralRegionQuotientHomeomorph :
-    A.sectionSevenAffineOrderThreeCentralRegion ≃ₜ
+public noncomputable def affineOrderThreeCentralRegionQuotientHomeomorph :
+    A.affineOrderThreeCentralRegion ≃ₜ
       Quotient (orbitRelOf A.orderThreeAffineHalfPlaneLiftAction) :=
-  (centralHeightLowerRegionHomeomorph A A.sectionSevenEllipticCentralHeight (2 / 3 : ℝ)).symm |>.trans
-    (A.sectionSevenEllipticCentralImageHomeomorph.subtype fun _ ↦ Iff.rfl) |>.trans
+  (centralHeightLowerRegionHomeomorph A A.ellipticCentralHeight (2 / 3 : ℝ)).symm |>.trans
+    (A.ellipticCentralImageHomeomorph.subtype fun _ ↦ Iff.rfl) |>.trans
     (Homeomorph.setCongr
       A.range_orderThreeAffineHalfPlaneLiftQuotientToCentralFamily.symm) |>.trans
     A.orderThreeAffineHalfPlaneLiftQuotientHomeomorphRange.symm
 
 /-- The actual order-four central region, expressed as the quotient of its full-deck-action
 half-plane lift. -/
-public noncomputable def sectionSevenAffineOrderFourCentralRegionQuotientHomeomorph :
-    A.sectionSevenAffineOrderFourCentralRegion ≃ₜ
+public noncomputable def affineOrderFourCentralRegionQuotientHomeomorph :
+    A.affineOrderFourCentralRegion ≃ₜ
       Quotient (orbitRelOf A.orderFourAffineHalfPlaneLiftAction) :=
-  (centralHeightUpperRegionHomeomorph A A.sectionSevenEllipticCentralHeight (1 / 3 : ℝ)).symm |>.trans
-    (A.sectionSevenEllipticCentralImageHomeomorph.subtype fun _ ↦ Iff.rfl) |>.trans
+  (centralHeightUpperRegionHomeomorph A A.ellipticCentralHeight (1 / 3 : ℝ)).symm |>.trans
+    (A.ellipticCentralImageHomeomorph.subtype fun _ ↦ Iff.rfl) |>.trans
     (Homeomorph.setCongr
       A.range_orderFourAffineHalfPlaneLiftQuotientToCentralFamily.symm) |>.trans
     A.orderFourAffineHalfPlaneLiftQuotientHomeomorphRange.symm
@@ -436,38 +436,38 @@ public theorem quotientToFun_eq_orderFourAffineDiscLiftQuotientInclusion
 
 /-- The precise point-set identification still needed between the actual order-three star
 overlap and a full-deck-action affine disc lift. -/
-public structure SectionSevenAffineOrderThreeOverlapQuotientIdentification where
+public structure AffineOrderThreeOverlapQuotientIdentification where
   normalizationRadius : ℝ
   affineDiscRadius : ℝ
   normalizationRadius_pos : 0 < normalizationRadius
   normalizationRadius_lt_disc : normalizationRadius < affineDiscRadius
   affineDiscRadius_le_halfPlane : affineDiscRadius ≤ 2 / 3
   overlapModel :
-    ↥(A.sectionSevenOrderThreeFillingImage ∩ A.sectionSevenAffineOrderThreeCentralRegion) ≃ₜ
+    ↥(A.orderThreeFillingImage ∩ A.affineOrderThreeCentralRegion) ≃ₜ
       Quotient (orbitRelOf (A.orderThreeAffineDiscLiftAction affineDiscRadius))
-  commutes : A.sectionSevenAffineOrderThreeCentralRegionQuotientHomeomorph ∘
-      (interToRight A.sectionSevenOrderThreeFillingImage
-        A.sectionSevenAffineOrderThreeCentralRegion).hom =
+  commutes : A.affineOrderThreeCentralRegionQuotientHomeomorph ∘
+      (interToRight A.orderThreeFillingImage
+        A.affineOrderThreeCentralRegion).hom =
     A.orderThreeAffineDiscLiftQuotientInclusion affineDiscRadius_le_halfPlane ∘ overlapModel
 
 /-- The precise point-set identification still needed between the actual order-four star
 overlap and a full-deck-action affine disc lift. -/
-public structure SectionSevenAffineOrderFourOverlapQuotientIdentification where
+public structure AffineOrderFourOverlapQuotientIdentification where
   normalizationRadius : ℝ
   affineDiscRadius : ℝ
   normalizationRadius_pos : 0 < normalizationRadius
   normalizationRadius_lt_disc : normalizationRadius < affineDiscRadius
   affineDiscRadius_le_halfPlane : affineDiscRadius ≤ 1 - 1 / 3
   overlapModel :
-    ↥(A.sectionSevenOrderFourFillingImage ∩ A.sectionSevenAffineOrderFourCentralRegion) ≃ₜ
+    ↥(A.orderFourFillingImage ∩ A.affineOrderFourCentralRegion) ≃ₜ
       Quotient (orbitRelOf (A.orderFourAffineDiscLiftAction affineDiscRadius))
-  commutes : A.sectionSevenAffineOrderFourCentralRegionQuotientHomeomorph ∘
-      (interToRight A.sectionSevenOrderFourFillingImage
-        A.sectionSevenAffineOrderFourCentralRegion).hom =
+  commutes : A.affineOrderFourCentralRegionQuotientHomeomorph ∘
+      (interToRight A.orderFourFillingImage
+        A.affineOrderFourCentralRegion).hom =
     A.orderFourAffineDiscLiftQuotientInclusion affineDiscRadius_le_halfPlane ∘ overlapModel
 
 /-- Exact remaining lifted-radial data on the genuine regular cover for the order-three side. -/
-public structure SectionSevenAffineOrderThreeRegularLiftInput where
+public structure AffineOrderThreeRegularLiftInput where
   affineDiscRadius : ℝ
   affineDiscRadius_le_halfPlane : affineDiscRadius ≤ 2 / 3
   radialEquiv : EquivariantHomotopyEquivData
@@ -478,24 +478,24 @@ public structure SectionSevenAffineOrderThreeRegularLiftInput where
         A.orderThreeAffineHalfPlaneLiftCarrier.carrier) =
     A.orderThreeAffineDiscLiftInclusion affineDiscRadius_le_halfPlane
   overlapModel :
-    ↥(A.sectionSevenOrderThreeFillingImage ∩ A.sectionSevenAffineOrderThreeCentralRegion) ≃ₜ
+    ↥(A.orderThreeFillingImage ∩ A.affineOrderThreeCentralRegion) ≃ₜ
       Quotient (orbitRelOf (A.orderThreeAffineDiscLiftAction affineDiscRadius))
-  commutes : A.sectionSevenAffineOrderThreeCentralRegionQuotientHomeomorph ∘
-      (interToRight A.sectionSevenOrderThreeFillingImage
-        A.sectionSevenAffineOrderThreeCentralRegion).hom =
+  commutes : A.affineOrderThreeCentralRegionQuotientHomeomorph ∘
+      (interToRight A.orderThreeFillingImage
+        A.affineOrderThreeCentralRegion).hom =
     radialEquiv.quotientToFun ∘ overlapModel
 
 /-- Combine the exact overlap quotient identification with an equivariant lifted radial
 equivalence. -/
-public noncomputable def SectionSevenAffineOrderThreeOverlapQuotientIdentification.toRegularLiftInput
-    (Q : A.SectionSevenAffineOrderThreeOverlapQuotientIdentification)
+public noncomputable def AffineOrderThreeOverlapQuotientIdentification.toRegularLiftInput
+    (Q : A.AffineOrderThreeOverlapQuotientIdentification)
     (E : EquivariantHomotopyEquivData
       (A.orderThreeAffineDiscLiftAction Q.affineDiscRadius)
       A.orderThreeAffineHalfPlaneLiftAction)
     (hE : (E.toFun : (A.orderThreeAffineDiscLiftCarrier Q.affineDiscRadius).carrier →
       A.orderThreeAffineHalfPlaneLiftCarrier.carrier) =
         A.orderThreeAffineDiscLiftInclusion Q.affineDiscRadius_le_halfPlane) :
-    A.SectionSevenAffineOrderThreeRegularLiftInput where
+    A.AffineOrderThreeRegularLiftInput where
   affineDiscRadius := Q.affineDiscRadius
   affineDiscRadius_le_halfPlane := Q.affineDiscRadius_le_halfPlane
   radialEquiv := E
@@ -506,41 +506,41 @@ public noncomputable def SectionSevenAffineOrderThreeOverlapQuotientIdentificati
       Q.affineDiscRadius_le_halfPlane E hE]
     exact Q.commutes
 
-namespace SectionSevenAffineOrderThreeRegularLiftInput
+namespace AffineOrderThreeRegularLiftInput
 
 /-- The genuine regular-cover radial input proves the actual order-three overlap equivalence. -/
 public theorem overlapIsHomotopyEquivalence
-    (R : A.SectionSevenAffineOrderThreeRegularLiftInput) :
+    (R : A.AffineOrderThreeRegularLiftInput) :
     IsHomotopyEquivalence
-      (interToRight A.sectionSevenOrderThreeFillingImage
-        A.sectionSevenAffineOrderThreeCentralRegion).hom :=
+      (interToRight A.orderThreeFillingImage
+        A.affineOrderThreeCentralRegion).hom :=
   R.radialEquiv.isHomotopyEquivalence_of_quotient_models _
-    R.overlapModel A.sectionSevenAffineOrderThreeCentralRegionQuotientHomeomorph R.commutes
+    R.overlapModel A.affineOrderThreeCentralRegionQuotientHomeomorph R.commutes
     (A.orderThreeAffineDiscLiftAction_continuous R.affineDiscRadius)
     A.orderThreeAffineHalfPlaneLiftAction_continuous
 
 public theorem homotopyEquivalenceInclusion
-    (R : A.SectionSevenAffineOrderThreeRegularLiftInput)
-    [NormalSpace ↥(A.sectionSevenOrderThreeFillingImage ∪
-      A.sectionSevenAffineOrderThreeCentralRegion)]
-    [ParacompactSpace ↥(A.sectionSevenOrderThreeFillingImage ∪
-      A.sectionSevenAffineOrderThreeCentralRegion)] :
+    (R : A.AffineOrderThreeRegularLiftInput)
+    [NormalSpace ↥(A.orderThreeFillingImage ∪
+      A.affineOrderThreeCentralRegion)]
+    [ParacompactSpace ↥(A.orderThreeFillingImage ∪
+      A.affineOrderThreeCentralRegion)] :
     IsHomotopyEquivalenceInclusion
-      A.sectionSevenActualAffineSplit.orderThreeFillingSubspace := by
+      A.actualAffineHeightSplit.orderThreeFillingSubspace := by
   change IsHomotopyEquivalenceInclusion
-    (Subtype.val ⁻¹' A.sectionSevenOrderThreeFillingImage :
-      Set ↥(A.sectionSevenOrderThreeFillingImage ∪
-        A.sectionSevenAffineOrderThreeCentralRegion))
+    (Subtype.val ⁻¹' A.orderThreeFillingImage :
+      Set ↥(A.orderThreeFillingImage ∪
+        A.affineOrderThreeCentralRegion))
   exact isHomotopyEquivalenceInclusion_of_leftToUnion _ _
     (leftToUnion_isHomotopyEquivalence_of_normal_paracompact _ _
-      A.sectionSevenOrderThreeFillingImage_isOpen
-      A.sectionSevenActualAffineSplit.centralHeightLowerRegion_isOpen
+      A.orderThreeFillingImage_isOpen
+      A.actualAffineHeightSplit.centralHeightLowerRegion_isOpen
       R.overlapIsHomotopyEquivalence)
 
-end SectionSevenAffineOrderThreeRegularLiftInput
+end AffineOrderThreeRegularLiftInput
 
 /-- Exact remaining lifted-radial data on the genuine regular cover for the order-four side. -/
-public structure SectionSevenAffineOrderFourRegularLiftInput where
+public structure AffineOrderFourRegularLiftInput where
   affineDiscRadius : ℝ
   affineDiscRadius_le_halfPlane : affineDiscRadius ≤ 1 - 1 / 3
   radialEquiv : EquivariantHomotopyEquivData
@@ -551,24 +551,24 @@ public structure SectionSevenAffineOrderFourRegularLiftInput where
         A.orderFourAffineHalfPlaneLiftCarrier.carrier) =
     A.orderFourAffineDiscLiftInclusion affineDiscRadius_le_halfPlane
   overlapModel :
-    ↥(A.sectionSevenOrderFourFillingImage ∩ A.sectionSevenAffineOrderFourCentralRegion) ≃ₜ
+    ↥(A.orderFourFillingImage ∩ A.affineOrderFourCentralRegion) ≃ₜ
       Quotient (orbitRelOf (A.orderFourAffineDiscLiftAction affineDiscRadius))
-  commutes : A.sectionSevenAffineOrderFourCentralRegionQuotientHomeomorph ∘
-      (interToRight A.sectionSevenOrderFourFillingImage
-        A.sectionSevenAffineOrderFourCentralRegion).hom =
+  commutes : A.affineOrderFourCentralRegionQuotientHomeomorph ∘
+      (interToRight A.orderFourFillingImage
+        A.affineOrderFourCentralRegion).hom =
     radialEquiv.quotientToFun ∘ overlapModel
 
 /-- Combine the exact order-four overlap quotient identification with an equivariant lifted
 radial equivalence. -/
-public noncomputable def SectionSevenAffineOrderFourOverlapQuotientIdentification.toRegularLiftInput
-    (Q : A.SectionSevenAffineOrderFourOverlapQuotientIdentification)
+public noncomputable def AffineOrderFourOverlapQuotientIdentification.toRegularLiftInput
+    (Q : A.AffineOrderFourOverlapQuotientIdentification)
     (E : EquivariantHomotopyEquivData
       (A.orderFourAffineDiscLiftAction Q.affineDiscRadius)
       A.orderFourAffineHalfPlaneLiftAction)
     (hE : (E.toFun : (A.orderFourAffineDiscLiftCarrier Q.affineDiscRadius).carrier →
       A.orderFourAffineHalfPlaneLiftCarrier.carrier) =
         A.orderFourAffineDiscLiftInclusion Q.affineDiscRadius_le_halfPlane) :
-    A.SectionSevenAffineOrderFourRegularLiftInput where
+    A.AffineOrderFourRegularLiftInput where
   affineDiscRadius := Q.affineDiscRadius
   affineDiscRadius_le_halfPlane := Q.affineDiscRadius_le_halfPlane
   radialEquiv := E
@@ -582,8 +582,8 @@ public noncomputable def SectionSevenAffineOrderFourOverlapQuotientIdentificatio
 /-- The exact space-level affine geometry: two actual overlap quotient identifications and two
 full-deck equivariant lifted radial equivalences.  All central models and quotient maps are
 derived from these fields. -/
-public structure SectionSevenAffineRegularLiftGeometry where
-  orderThreeOverlap : A.SectionSevenAffineOrderThreeOverlapQuotientIdentification
+public structure AffineRegularLiftGeometry where
+  orderThreeOverlap : A.AffineOrderThreeOverlapQuotientIdentification
   orderThreeRadialEquiv : EquivariantHomotopyEquivData
     (A.orderThreeAffineDiscLiftAction orderThreeOverlap.affineDiscRadius)
     A.orderThreeAffineHalfPlaneLiftAction
@@ -591,7 +591,7 @@ public structure SectionSevenAffineRegularLiftGeometry where
       (A.orderThreeAffineDiscLiftCarrier orderThreeOverlap.affineDiscRadius).carrier →
         A.orderThreeAffineHalfPlaneLiftCarrier.carrier) =
     A.orderThreeAffineDiscLiftInclusion orderThreeOverlap.affineDiscRadius_le_halfPlane
-  orderFourOverlap : A.SectionSevenAffineOrderFourOverlapQuotientIdentification
+  orderFourOverlap : A.AffineOrderFourOverlapQuotientIdentification
   orderFourRadialEquiv : EquivariantHomotopyEquivData
     (A.orderFourAffineDiscLiftAction orderFourOverlap.affineDiscRadius)
     A.orderFourAffineHalfPlaneLiftAction
@@ -600,59 +600,59 @@ public structure SectionSevenAffineRegularLiftGeometry where
         A.orderFourAffineHalfPlaneLiftCarrier.carrier) =
     A.orderFourAffineDiscLiftInclusion orderFourOverlap.affineDiscRadius_le_halfPlane
 
-namespace SectionSevenAffineRegularLiftGeometry
+namespace AffineRegularLiftGeometry
 
 public noncomputable def orderThreeRegularLiftInput
-    (R : A.SectionSevenAffineRegularLiftGeometry) :
-    A.SectionSevenAffineOrderThreeRegularLiftInput :=
-  SectionSevenAffineOrderThreeOverlapQuotientIdentification.toRegularLiftInput
+    (R : A.AffineRegularLiftGeometry) :
+    A.AffineOrderThreeRegularLiftInput :=
+  AffineOrderThreeOverlapQuotientIdentification.toRegularLiftInput
     A R.orderThreeOverlap R.orderThreeRadialEquiv R.orderThreeRadialEquiv_toFun
 
 public noncomputable def orderFourRegularLiftInput
-    (R : A.SectionSevenAffineRegularLiftGeometry) :
-    A.SectionSevenAffineOrderFourRegularLiftInput :=
-  SectionSevenAffineOrderFourOverlapQuotientIdentification.toRegularLiftInput
+    (R : A.AffineRegularLiftGeometry) :
+    A.AffineOrderFourRegularLiftInput :=
+  AffineOrderFourOverlapQuotientIdentification.toRegularLiftInput
     A R.orderFourOverlap R.orderFourRadialEquiv R.orderFourRadialEquiv_toFun
 
 public noncomputable def regularLiftInputs
-    (R : A.SectionSevenAffineRegularLiftGeometry) :
-    A.SectionSevenAffineOrderThreeRegularLiftInput ×
-      A.SectionSevenAffineOrderFourRegularLiftInput :=
+    (R : A.AffineRegularLiftGeometry) :
+    A.AffineOrderThreeRegularLiftInput ×
+      A.AffineOrderFourRegularLiftInput :=
   (R.orderThreeRegularLiftInput, R.orderFourRegularLiftInput)
 
-end SectionSevenAffineRegularLiftGeometry
+end AffineRegularLiftGeometry
 
-namespace SectionSevenAffineOrderFourRegularLiftInput
+namespace AffineOrderFourRegularLiftInput
 
 /-- The genuine regular-cover radial input proves the actual order-four overlap equivalence. -/
 public theorem overlapIsHomotopyEquivalence
-    (R : A.SectionSevenAffineOrderFourRegularLiftInput) :
+    (R : A.AffineOrderFourRegularLiftInput) :
     IsHomotopyEquivalence
-      (interToRight A.sectionSevenOrderFourFillingImage
-        A.sectionSevenAffineOrderFourCentralRegion).hom :=
+      (interToRight A.orderFourFillingImage
+        A.affineOrderFourCentralRegion).hom :=
   R.radialEquiv.isHomotopyEquivalence_of_quotient_models _
-    R.overlapModel A.sectionSevenAffineOrderFourCentralRegionQuotientHomeomorph R.commutes
+    R.overlapModel A.affineOrderFourCentralRegionQuotientHomeomorph R.commutes
     (A.orderFourAffineDiscLiftAction_continuous R.affineDiscRadius)
     A.orderFourAffineHalfPlaneLiftAction_continuous
 
 public theorem homotopyEquivalenceInclusion
-    (R : A.SectionSevenAffineOrderFourRegularLiftInput)
-    [NormalSpace ↥(A.sectionSevenOrderFourFillingImage ∪
-      A.sectionSevenAffineOrderFourCentralRegion)]
-    [ParacompactSpace ↥(A.sectionSevenOrderFourFillingImage ∪
-      A.sectionSevenAffineOrderFourCentralRegion)] :
+    (R : A.AffineOrderFourRegularLiftInput)
+    [NormalSpace ↥(A.orderFourFillingImage ∪
+      A.affineOrderFourCentralRegion)]
+    [ParacompactSpace ↥(A.orderFourFillingImage ∪
+      A.affineOrderFourCentralRegion)] :
     IsHomotopyEquivalenceInclusion
-      A.sectionSevenActualAffineSplit.orderFourFillingSubspace := by
+      A.actualAffineHeightSplit.orderFourFillingSubspace := by
   change IsHomotopyEquivalenceInclusion
-    (Subtype.val ⁻¹' A.sectionSevenOrderFourFillingImage :
-      Set ↥(A.sectionSevenOrderFourFillingImage ∪
-        A.sectionSevenAffineOrderFourCentralRegion))
+    (Subtype.val ⁻¹' A.orderFourFillingImage :
+      Set ↥(A.orderFourFillingImage ∪
+        A.affineOrderFourCentralRegion))
   exact isHomotopyEquivalenceInclusion_of_leftToUnion _ _
     (leftToUnion_isHomotopyEquivalence_of_normal_paracompact _ _
-      A.sectionSevenOrderFourFillingImage_isOpen
-      A.sectionSevenActualAffineSplit.centralHeightUpperRegion_isOpen
+      A.orderFourFillingImage_isOpen
+      A.actualAffineHeightSplit.centralHeightUpperRegion_isOpen
       R.overlapIsHomotopyEquivalence)
 
-end SectionSevenAffineOrderFourRegularLiftInput
+end AffineOrderFourRegularLiftInput
 
 end SphereSixComplex.Geometry.PaperAnalyticData

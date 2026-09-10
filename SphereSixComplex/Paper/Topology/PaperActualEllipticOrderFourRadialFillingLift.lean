@@ -53,7 +53,7 @@ public theorem orderFourCollarToActualOverlap_toPiece
 
 /-- The explicit order-four lift from radial universal-cover coordinates to the vector-bundle
 cover of the filling. -/
-public noncomputable def orderFourActualEllipticRadialFillingLift :
+public noncomputable def ellipticFourRadialFillingLift :
     C(OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace),
       ComplexDiscBall A.starSeparation.orderFour.radius × ComplexTwoSpace) where
   toFun q :=
@@ -93,17 +93,17 @@ public noncomputable def orderFourActualEllipticRadialFillingLift :
     exact hd.prodMk hmoving
 
 @[simp]
-public theorem orderFourActualEllipticRadialFillingLift_fst
+public theorem ellipticFourRadialFillingLift_fst
     (q : OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :
-    (A.orderFourActualEllipticRadialFillingLift q).1.1 =
+    (A.ellipticFourRadialFillingLift q).1.1 =
       (angularCover (T := ComplexTwoSpace) 4
         A.starSeparation.orderFour.radius_lt_one.le q).1.1 :=
   rfl
 
 @[simp]
-public theorem orderFourActualEllipticRadialFillingLift_snd
+public theorem ellipticFourRadialFillingLift_snd
     (q : OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :
-    (A.orderFourActualEllipticRadialFillingLift q).2 =
+    (A.ellipticFourRadialFillingLift q).2 =
       (fixedToMovingCover A.periods
         A.modular.modularParameter.toTriangleUniformization.zTwo
         (orderFourCayleyHomeomorph.symm
@@ -119,15 +119,15 @@ public theorem orderFourFillingProductMap_actualEllipticRadialFillingLift
     (q : OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :
     orderFourFillingProductMap A A.starSeparation.orderFour.radius
         (A.orderFourFillingCoverMap A.starSeparation.orderFour.radius
-          (A.orderFourActualEllipticRadialFillingLift q)) =
+          (A.ellipticFourRadialFillingLift q)) =
       ((angularCover (T := ComplexTwoSpace) 4
           A.starSeparation.orderFour.radius_lt_one.le q).1.1,
         Quotient.mk _ q.2.2) := by
   rw [orderFourFillingProductMap]
   rw [orderFourFillingCoverMap.eq_def]
   rw [orderFourRealPeriodProductHomeomorph_mk]
-  rw [A.orderFourActualEllipticRadialFillingLift_fst,
-    A.orderFourActualEllipticRadialFillingLift_snd]
+  rw [A.ellipticFourRadialFillingLift_fst,
+    A.ellipticFourRadialFillingLift_snd]
   rw [orderFourCayleyHomeomorph.apply_symm_apply]
   let u := angularCover (T := ComplexTwoSpace) 4
     A.starSeparation.orderFour.radius_lt_one.le q
@@ -193,30 +193,30 @@ public theorem orderFourAngularQuotientHomeomorph_apply
 
 /-- The explicit order-four radial lift commutes with the collar inclusion into the actual
 filling piece. -/
-public theorem orderFourActualEllipticRadialFillingLift_commutes
+public theorem ellipticFourRadialFillingLift_commutes
     (q : OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :
     A.actualVanKampenFourPieceCover.ellipticFourOverlapToPiece
-        (A.orderFourActualEllipticBoundaryProjection q) =
-      A.orderFourActualEllipticFillingProjection
-        (A.orderFourActualEllipticRadialFillingLift q) := by
-  rw [orderFourActualEllipticBoundaryProjection]
-  rw [orderFourActualEllipticFillingProjection]
+        (A.ellipticFourBoundaryProjection q) =
+      A.ellipticFourFillingProjection
+        (A.ellipticFourRadialFillingLift q) := by
+  rw [ellipticFourBoundaryProjection]
+  rw [ellipticFourFillingProjection]
   let x : A.openEmbeddingStarData.collarSource 2 :=
     A.orderFourCollarRadialMappingTorusHomeomorph.symm
       (q.1, orderFourAffineMappingTorusLiftProjection A.periods q.2)
   change A.actualVanKampenFourPieceCover.ellipticFourOverlapToPiece
       (A.orderFourCollarToActualOverlapHomeomorph x) =
     A.orderFourFillingToActualPieceHomeomorph
-      (A.orderFourActualFillingCoverProjection A.starSeparation.orderFour.radius
-        (A.orderFourActualEllipticRadialFillingLift q))
+      (A.ellipticFourFillingCoverProjection A.starSeparation.orderFour.radius
+        (A.ellipticFourRadialFillingLift q))
   rw [A.orderFourCollarToActualOverlap_toPiece x]
   apply congrArg A.orderFourFillingToActualPieceHomeomorph
   let xq : A.starCollarSourceType 2 :=
     A.orderFourCollarRadialMappingTorusHomeomorph.symm
       (q.1, orderFourAffineMappingTorusLiftProjection A.periods q.2)
   change A.starToFilling 2 xq =
-    A.orderFourActualFillingCoverProjection A.starSeparation.orderFour.radius
-      (A.orderFourActualEllipticRadialFillingLift q)
+    A.ellipticFourFillingCoverProjection A.starSeparation.orderFour.radius
+      (A.ellipticFourRadialFillingLift q)
   let D := orderFourCyclicPuncturedProductData A.periods
     A.starSeparation.orderFour.radius A.starSeparation.orderFour.radius_pos
     A.starSeparation.orderFour.radius_lt_one
@@ -259,17 +259,17 @@ public theorem orderFourActualEllipticRadialFillingLift_commutes
   rw [hinv]
   change A.orderFourPuncturedCollarToFilling A.starSeparation.orderFour.radius
       (Quotient.mk _ s) =
-    A.orderFourActualFillingCoverProjection A.starSeparation.orderFour.radius
-      (A.orderFourActualEllipticRadialFillingLift q)
+    A.ellipticFourFillingCoverProjection A.starSeparation.orderFour.radius
+      (A.ellipticFourRadialFillingLift q)
   rw [A.orderFourPuncturedCollarToFilling_mk]
-  rw [orderFourActualFillingCoverProjection]
+  rw [ellipticFourFillingCoverProjection]
   apply congrArg (Quotient.mk _)
   apply Subtype.ext
   apply (orderFourRealPeriodProductHomeomorph A.periods).injective
   change (e.toHomeomorph s).1 =
     orderFourFillingProductMap A A.starSeparation.orderFour.radius
       (A.orderFourFillingCoverMap A.starSeparation.orderFour.radius
-        (A.orderFourActualEllipticRadialFillingLift q))
+        (A.ellipticFourRadialFillingLift q))
   rw [show e.toHomeomorph s = y from e.toHomeomorph.apply_symm_apply y]
   rw [A.orderFourFillingProductMap_actualEllipticRadialFillingLift q]
   rfl

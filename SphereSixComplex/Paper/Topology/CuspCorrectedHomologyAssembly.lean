@@ -36,25 +36,25 @@ public theorem cuspCorrectedSectionSevenTwoCoordinateChange_specialization (x : 
 
 namespace Geometry.PaperAnalyticData
 open SphereSixComplex.Topology
-open SectionSevenEllipticTwoDiscHomologyCoordinates
+open EllipticTwoDiscHomologyCoordinates
 open CuspPuncturedCollarBridge
 
-public def actualCuspCorrectedHomologyTwoEquiv (A : PaperAnalyticData) :
+public def cuspCorrectedHomologyTwoEquiv (A : PaperAnalyticData) :
     IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0) ≃+ (Fin 6 → ℤ) :=
   A.cuspRawHomologyTwoEquiv.trans cuspCorrectedSectionSevenTwoCoordinateChange
 
 public def correctedCuspLocalBases {A : PaperAnalyticData}
-    (B : A.SectionSevenCollarInteriorHomologyBases) : A.SectionSevenCollarInteriorHomologyBases where
-  cuspCollarOne := A.actualCuspSectionSevenHomologyOneEquiv
+    (B : A.CollarInteriorHomologyBases) : A.CollarInteriorHomologyBases where
+  cuspCollarOne := A.cuspSectionSevenHomologyOneEquiv
   ellipticInteriorOne := B.ellipticInteriorOne
-  cuspCollarTwo := A.actualCuspCorrectedHomologyTwoEquiv
+  cuspCollarTwo := A.cuspCorrectedHomologyTwoEquiv
   cuspFillingTwo := (A.withActualGeometricCuspBases B).cuspFillingTwo
   ellipticInteriorTwo := B.ellipticInteriorTwo
 
 public theorem correctedCuspFillingInclusionCoordinates (A : PaperAnalyticData)
-    (B : A.SectionSevenCollarInteriorHomologyBases) :
-    A.ActualCuspFillingInclusionCoordinates (correctedCuspLocalBases B) where
-  degreeOne x := (A.actualCuspFillingInclusionCoordinates B).degreeOne x
+    (B : A.CollarInteriorHomologyBases) :
+    A.CuspFillingInclusionCoordinates (correctedCuspLocalBases B) where
+  degreeOne x := (A.cuspFillingInclusionCoordinates B).degreeOne x
   degreeTwo x := by
     change A.actualCuspFillingHomologyTwoEquiv
           (integralSingularHomologyMap 2
@@ -65,39 +65,39 @@ public theorem correctedCuspFillingInclusionCoordinates (A : PaperAnalyticData)
         (A.cuspRawHomologyTwoEquiv x))
 
 public def correctedNormalizedLocalBases {A : PaperAnalyticData}
-    {D : A.SectionSevenEllipticTwoDiscCoverData}
-    (B : A.SectionSevenEllipticTwoDiscHomologyCoordinates D)
+    {D : A.EllipticTwoDiscCoverData}
+    (B : A.EllipticTwoDiscHomologyCoordinates D)
     (S : WangHomologyPresentation.NormalizedSplitting (presentationTwo (D := D))) :
-    A.SectionSevenCollarInteriorHomologyBases :=
-  correctedCuspLocalBases (A.sectionSevenActualNormalizedLocalBases B S)
+    A.CollarInteriorHomologyBases :=
+  correctedCuspLocalBases (A.actualNormalizedLocalBases B S)
 
 public theorem correctedFinalInteriorOne {A : PaperAnalyticData}
-    {D : A.SectionSevenEllipticTwoDiscCoverData}
-    (B : A.SectionSevenEllipticTwoDiscHomologyCoordinates D)
+    {D : A.EllipticTwoDiscCoverData}
+    (B : A.EllipticTwoDiscHomologyCoordinates D)
     (S : WangHomologyPresentation.NormalizedSplitting (presentationTwo (D := D)))
     (hOne : ∀ y : IntegralSingularHomology 1 (A.openEmbeddingStarData.collarSource 0),
       B.normalizedUnionHomologyOneEquiv (cuspToEllipticUnionHomology D 1 y) 0 =
-        actualCuspEllipticDegreeOneRawCoordinate (A.cuspRawHomologyOneEquiv y)) (x) :
-    (A.sectionSevenFinalSixHomologyBasesOfLocalBases (correctedNormalizedLocalBases B S)).interiorOne
+        cuspEllipticDegreeOneRawCoordinate (A.cuspRawHomologyOneEquiv y)) (x) :
+    (A.cuspAttachmentHomologyBasesOfLocalBases (correctedNormalizedLocalBases B S)).interiorOne
       (integralSingularHomologyMap 1
         (IntegralMayerVietoris.interToLeft
           ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4))
           ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3)) x) =
       fun i ↦ sectionSevenFirstBoundaryHom
-        ((A.sectionSevenFinalSixHomologyBasesOfLocalBases
+        ((A.cuspAttachmentHomologyBasesOfLocalBases
           (correctedNormalizedLocalBases B S)).overlapOne x) (Fin.castAdd 2 i) := by
   let e := integralSingularHomologyEquiv 1 A.cuspCollarToSectionSevenFinalOverlapHomeomorph
   let y := e.symm x
   have h : B.normalizedUnionHomologyOneEquiv (cuspToEllipticUnionHomology D 1 y) =
-      ![sectionSevenFirstBoundaryHom (A.actualCuspSectionSevenHomologyOneEquiv y) 0] := by
+      ![sectionSevenFirstBoundaryHom (A.cuspSectionSevenHomologyOneEquiv y) 0] := by
     funext i
     fin_cases i
-    exact (hOne y).trans (sectionSevenFirstBoundaryHom_actualCusp_zero y).symm
+    exact (hOne y).trans (cuspAttachmentBoundaryOne_actualCusp_zero y).symm
   calc
-    _ = ![sectionSevenFirstBoundaryHom (A.actualCuspSectionSevenHomologyOneEquiv y) 0] := by
+    _ = ![sectionSevenFirstBoundaryHom (A.cuspSectionSevenHomologyOneEquiv y) 0] := by
       simpa [e, y, correctedNormalizedLocalBases, correctedCuspLocalBases,
-        sectionSevenActualNormalizedLocalBases, sectionSevenNormalizedCollarInteriorHomologyBases,
-        sectionSevenFinalSixHomologyBasesOfLocalBases, sectionSevenFinalSixHomologyBases,
+        actualNormalizedLocalBases, normalizedCollarInteriorHomologyBases,
+        cuspAttachmentHomologyBasesOfLocalBases, cuspAttachmentHomologyBases,
         withActualGeometricCuspBases, cuspToEllipticUnionHomology,
         normalizedEllipticInteriorHomologyOneEquiv, normalizedUnionHomologyOneEquiv] using h
     _ = _ := by
@@ -106,8 +106,8 @@ public theorem correctedFinalInteriorOne {A : PaperAnalyticData}
       rfl
 
 public theorem correctedFinalInteriorTwo {A : PaperAnalyticData}
-    {D : A.SectionSevenEllipticTwoDiscCoverData}
-    (B : A.SectionSevenEllipticTwoDiscHomologyCoordinates D)
+    {D : A.EllipticTwoDiscCoverData}
+    (B : A.EllipticTwoDiscHomologyCoordinates D)
     (S : WangHomologyPresentation.NormalizedSplitting (presentationTwo (D := D)))
     (hFiber : ∀ y : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0),
       B.normalizedUnionHomologyTwoEquiv S (cuspToEllipticUnionHomology D 2 y) 0 =
@@ -116,29 +116,29 @@ public theorem correctedFinalInteriorTwo {A : PaperAnalyticData}
     (hBoundary : ∀ y : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0),
       B.normalizedUnionHomologyTwoEquiv S (cuspToEllipticUnionHomology D 2 y) 1 =
         A.cuspRawHomologyTwoEquiv y 4) (x) :
-    (A.sectionSevenFinalSixHomologyBasesOfLocalBases (correctedNormalizedLocalBases B S)).interiorTwo
+    (A.cuspAttachmentHomologyBasesOfLocalBases (correctedNormalizedLocalBases B S)).interiorTwo
       (integralSingularHomologyMap 2
         (IntegralMayerVietoris.interToLeft
           ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4))
           ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3)) x) =
       fun i ↦ sectionSevenMayerVietorisFinalTwoHom
-        ((A.sectionSevenFinalSixHomologyBasesOfLocalBases
+        ((A.cuspAttachmentHomologyBasesOfLocalBases
           (correctedNormalizedLocalBases B S)).overlapTwo x) (Fin.castAdd 4 i) := by
   let e := integralSingularHomologyEquiv 2 A.cuspCollarToSectionSevenFinalOverlapHomeomorph
   let y := e.symm x
   have h : B.normalizedUnionHomologyTwoEquiv S (cuspToEllipticUnionHomology D 2 y) =
-      ![sectionSevenMayerVietorisFinalTwoHom (A.actualCuspCorrectedHomologyTwoEquiv y) 0,
-        sectionSevenMayerVietorisFinalTwoHom (A.actualCuspCorrectedHomologyTwoEquiv y) 1] := by
+      ![sectionSevenMayerVietorisFinalTwoHom (A.cuspCorrectedHomologyTwoEquiv y) 0,
+        sectionSevenMayerVietorisFinalTwoHom (A.cuspCorrectedHomologyTwoEquiv y) 1] := by
     funext i
     fin_cases i
     · exact (hFiber y).trans (cuspCorrectedSectionSevenTwoCoordinateChange_fiber _).symm
     · exact (hBoundary y).trans (cuspCorrectedSectionSevenTwoCoordinateChange_boundary _).symm
   calc
-    _ = ![sectionSevenMayerVietorisFinalTwoHom (A.actualCuspCorrectedHomologyTwoEquiv y) 0,
-        sectionSevenMayerVietorisFinalTwoHom (A.actualCuspCorrectedHomologyTwoEquiv y) 1] := by
+    _ = ![sectionSevenMayerVietorisFinalTwoHom (A.cuspCorrectedHomologyTwoEquiv y) 0,
+        sectionSevenMayerVietorisFinalTwoHom (A.cuspCorrectedHomologyTwoEquiv y) 1] := by
       simpa [e, y, correctedNormalizedLocalBases, correctedCuspLocalBases,
-        sectionSevenActualNormalizedLocalBases, sectionSevenNormalizedCollarInteriorHomologyBases,
-        sectionSevenFinalSixHomologyBasesOfLocalBases, sectionSevenFinalSixHomologyBases,
+        actualNormalizedLocalBases, normalizedCollarInteriorHomologyBases,
+        cuspAttachmentHomologyBasesOfLocalBases, cuspAttachmentHomologyBases,
         withActualGeometricCuspBases, cuspToEllipticUnionHomology,
         normalizedEllipticInteriorHomologyTwoEquiv, normalizedUnionHomologyTwoEquiv] using h
     _ = _ := by
@@ -146,12 +146,12 @@ public theorem correctedFinalInteriorTwo {A : PaperAnalyticData}
       fin_cases i <;> rfl
 
 public def correctedPositiveDegreeHomologyAssembly {A : PaperAnalyticData}
-    {D : A.SectionSevenEllipticTwoDiscCoverData}
-    (B : A.SectionSevenEllipticTwoDiscHomologyCoordinates D)
+    {D : A.EllipticTwoDiscCoverData}
+    (B : A.EllipticTwoDiscHomologyCoordinates D)
     (S : WangHomologyPresentation.NormalizedSplitting (presentationTwo (D := D)))
     (hOne : ∀ y : IntegralSingularHomology 1 (A.openEmbeddingStarData.collarSource 0),
       B.normalizedUnionHomologyOneEquiv (cuspToEllipticUnionHomology D 1 y) 0 =
-        actualCuspEllipticDegreeOneRawCoordinate (A.cuspRawHomologyOneEquiv y))
+        cuspEllipticDegreeOneRawCoordinate (A.cuspRawHomologyOneEquiv y))
     (hFiber : ∀ y : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0),
       B.normalizedUnionHomologyTwoEquiv S (cuspToEllipticUnionHomology D 2 y) 0 =
         12 * A.cuspRawHomologyTwoEquiv y 1 + 2 * A.cuspRawHomologyTwoEquiv y 2 +
@@ -159,9 +159,9 @@ public def correctedPositiveDegreeHomologyAssembly {A : PaperAnalyticData}
     (hBoundary : ∀ y : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0),
       B.normalizedUnionHomologyTwoEquiv S (cuspToEllipticUnionHomology D 2 y) 1 =
         A.cuspRawHomologyTwoEquiv y 4) :
-    A.SectionSevenPositiveDegreeHomologyAssembly :=
-  A.sectionSevenPositiveDegreeHomologyAssemblyOfLocalBases (correctedNormalizedLocalBases B S)
-    ((A.correctedCuspFillingInclusionCoordinates (A.sectionSevenActualNormalizedLocalBases B S)).toFinalInclusionCoordinates
+    A.PositiveDegreeHomologyAssembly :=
+  A.positiveDegreeHomologyAssemblyOfLocalBases (correctedNormalizedLocalBases B S)
+    ((A.correctedCuspFillingInclusionCoordinates (A.actualNormalizedLocalBases B S)).toFinalInclusionCoordinates
       (correctedFinalInteriorOne B S hOne) (correctedFinalInteriorTwo B S hFiber hBoundary))
 
 end Geometry.PaperAnalyticData

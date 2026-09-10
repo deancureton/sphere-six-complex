@@ -34,14 +34,14 @@ open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 translation.  This is the strongest sheet-sensitive conclusion available from the selected
 affine-disc inclusion. -/
 public theorem exists_regularDeck_namedOrderFourRadialBase_cayley_lt
-    (A : PaperAnalyticData) (x : A.SectionSevenAffineMarkedBand) :
+    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
     ∃ g : Delta,
       ‖(orderFourCayleyHomeomorph
         (fuchsianSourceAction g •
-          (A.sectionSevenAffineOrderFourRadialBaseLift
-            (A.sectionSevenAffineBandStripCoordinate x)).1) : ℂ)‖ <
+          (A.affineOrderFourRadialBaseLift
+            (A.affineBandStripCoordinate x)).1) : ℂ)‖ <
         A.starSeparation.orderFour.radius := by
-  let u := A.sectionSevenAffineOrderFourDiscOverlapEndpoint x
+  let u := A.affineOrderFourDiscOverlapEndpoint x
   let z := A.orderFourOverlapCollarHomeomorph u
   let q := Quotient.out z
   have hq : Quotient.mk _ q = z := Quotient.out_eq z
@@ -57,31 +57,31 @@ public theorem exists_regularDeck_namedOrderFourRadialBase_cayley_lt
         A.starSeparation.orderFour.radius q)
   have hstar : A.starToCentral 2 z =
       A.centralQuotientProjection
-        (A.sectionSevenAffineOrderFourNamedDiscLiftPoint x).1 := by
+        (A.affineOrderFourNamedDiscLiftPoint x).1 := by
     rw [show z = A.orderFourOverlapCollarHomeomorph u by rfl]
     rw [A.starToCentral_orderFourOverlapCollarHomeomorph]
     rw [A.centralQuotientProjection_namedDiscLiftPoint x]
-    apply congrArg A.sectionSevenEllipticCentralImageHomeomorph
+    apply congrArg A.ellipticCentralImageHomeomorph
     apply Subtype.ext
-    exact A.sectionSevenAffineOrderFourDiscOverlapEndpoint_val x
+    exact A.affineOrderFourDiscOverlapEndpoint_val x
   have hcentral : A.centralQuotientProjection qreg =
       A.centralQuotientProjection
-        (A.sectionSevenAffineOrderFourNamedDiscLiftPoint x).1 := by
+        (A.affineOrderFourNamedDiscLiftPoint x).1 := by
     rw [← A.orderFourStarToCentral_mk q, hq]
     exact hstar
   let _ := regularFamilyDeckAction A.periods
   rw [centralQuotientProjection.eq_def] at hcentral
   have hrel := Quotient.exact hcentral
   change MulAction.orbitRel Delta _ qreg
-    (A.sectionSevenAffineOrderFourNamedDiscLiftPoint x).1 at hrel
+    (A.affineOrderFourNamedDiscLiftPoint x).1 at hrel
   rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff] at hrel
   obtain ⟨g, hg⟩ := hrel
   change regularFamilyDeckMap A.periods g
-      (A.sectionSevenAffineOrderFourNamedDiscLiftPoint x).1 = qreg at hg
+      (A.affineOrderFourNamedDiscLiftPoint x).1 = qreg at hg
   refine ⟨g, ?_⟩
   have hbase : fuchsianSourceAction g •
-      (A.sectionSevenAffineOrderFourRadialBaseLift
-        (A.sectionSevenAffineBandStripCoordinate x)).1 =
+      (A.affineOrderFourRadialBaseLift
+        (A.affineBandStripCoordinate x)).1 =
       (regularTotalSpaceBase A.periods qreg).1 := by
     rw [← A.regularTotalSpaceBase_namedDiscLiftPoint x]
     rw [← hg, regularTotalSpaceBase_familyDeckMap]
@@ -114,42 +114,42 @@ public theorem exists_regularDeck_namedOrderFourRadialBase_cayley_lt
 /-- The smallest equality needed to transfer the selected-collar bound from a deck translate to
 the named radial lift is equality of their order-four Cayley norms. -/
 public theorem namedOrderFourRadialBase_cayley_lt_of_deck_cayley_norm_eq
-    (A : PaperAnalyticData) (x : A.SectionSevenAffineMarkedBand) (g : Delta)
+    (A : PaperAnalyticData) (x : A.affineMarkedBand) (g : Delta)
     (hsmall : ‖(orderFourCayleyHomeomorph
       (fuchsianSourceAction g •
-        (A.sectionSevenAffineOrderFourRadialBaseLift
-          (A.sectionSevenAffineBandStripCoordinate x)).1) : ℂ)‖ <
+        (A.affineOrderFourRadialBaseLift
+          (A.affineBandStripCoordinate x)).1) : ℂ)‖ <
         A.starSeparation.orderFour.radius)
     (hnorm : ‖(orderFourCayleyHomeomorph
         (fuchsianSourceAction g •
-          (A.sectionSevenAffineOrderFourRadialBaseLift
-            (A.sectionSevenAffineBandStripCoordinate x)).1) : ℂ)‖ =
+          (A.affineOrderFourRadialBaseLift
+            (A.affineBandStripCoordinate x)).1) : ℂ)‖ =
       ‖(orderFourCayleyHomeomorph
-        (A.sectionSevenAffineOrderFourRadialBaseLift
-          (A.sectionSevenAffineBandStripCoordinate x)).1 : ℂ)‖) :
+        (A.affineOrderFourRadialBaseLift
+          (A.affineBandStripCoordinate x)).1 : ℂ)‖) :
     ‖(orderFourCayleyHomeomorph
-      (A.sectionSevenAffineOrderFourRadialBaseLift
-        (A.sectionSevenAffineBandStripCoordinate x)).1 : ℂ)‖ <
+      (A.affineOrderFourRadialBaseLift
+        (A.affineBandStripCoordinate x)).1 : ℂ)‖ <
       A.starSeparation.orderFour.radius := by
   rw [hnorm] at hsmall
   exact hsmall
 
 /-- Identity-sheet normalization implies the required Cayley-norm equality, hence the bound. -/
 public theorem namedOrderFourRadialBase_cayley_lt_of_deck_fixed
-    (A : PaperAnalyticData) (x : A.SectionSevenAffineMarkedBand) (g : Delta)
+    (A : PaperAnalyticData) (x : A.affineMarkedBand) (g : Delta)
     (hsmall : ‖(orderFourCayleyHomeomorph
       (fuchsianSourceAction g •
-        (A.sectionSevenAffineOrderFourRadialBaseLift
-          (A.sectionSevenAffineBandStripCoordinate x)).1) : ℂ)‖ <
+        (A.affineOrderFourRadialBaseLift
+          (A.affineBandStripCoordinate x)).1) : ℂ)‖ <
         A.starSeparation.orderFour.radius)
     (hfixed : fuchsianSourceAction g •
-        (A.sectionSevenAffineOrderFourRadialBaseLift
-          (A.sectionSevenAffineBandStripCoordinate x)).1 =
-      (A.sectionSevenAffineOrderFourRadialBaseLift
-        (A.sectionSevenAffineBandStripCoordinate x)).1) :
+        (A.affineOrderFourRadialBaseLift
+          (A.affineBandStripCoordinate x)).1 =
+      (A.affineOrderFourRadialBaseLift
+        (A.affineBandStripCoordinate x)).1) :
     ‖(orderFourCayleyHomeomorph
-      (A.sectionSevenAffineOrderFourRadialBaseLift
-        (A.sectionSevenAffineBandStripCoordinate x)).1 : ℂ)‖ <
+      (A.affineOrderFourRadialBaseLift
+        (A.affineBandStripCoordinate x)).1 : ℂ)‖ <
       A.starSeparation.orderFour.radius := by
   apply A.namedOrderFourRadialBase_cayley_lt_of_deck_cayley_norm_eq x g hsmall
   rw [hfixed]

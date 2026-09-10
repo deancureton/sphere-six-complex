@@ -21,7 +21,7 @@ open Matrix Set Topology
 namespace SphereSixComplex
 
 open Geometry Geometry.ComplexTorus Geometry.CuspPuncturedCollarBridge
-open Geometry.StandardInfiniteA2ToricModel
+open Geometry.InfiniteA2Toric
 
 namespace Topology
 

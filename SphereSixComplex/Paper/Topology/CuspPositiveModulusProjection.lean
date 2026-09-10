@@ -7,7 +7,7 @@ noncomputable section
 open scoped ContinuousMap
 namespace SphereSixComplex.Geometry.CuspStraighteningRetraction
 open SphereSixComplex.Periods CuspFilling CuspLocalPhaseAction CuspPuncturedCollarBridge
-open CuspPeriodExpansion StandardInfiniteA2ToricModel
+open CuspPeriodExpansion InfiniteA2Toric
 variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
 
@@ -88,9 +88,9 @@ public theorem polarModulus_compactPhase
     (P : PolarHoneycombData M r)
     (hmod : ∀ k p, P.modulus (compactPhaseOrbit M r P.positivePart (k, p)) = p)
     (k : CompactTorus) (x : LocalCarrier M r) :
-    P.modulus (Established.compactPhaseLocalAction M r k x) = P.modulus x := by
+    P.modulus (compactPhaseLocalAction M r k x) = P.modulus x := by
   obtain ⟨l, hl⟩ := P.polar_surjective x
-  have h : Established.compactPhaseLocalAction M r k x =
+  have h : compactPhaseLocalAction M r k x =
       compactPhaseOrbit M r P.positivePart (k * l, P.modulus x) := by
     apply Subtype.ext
     change M.torusAction (compactTorusEmbedding k) x.1 =
@@ -106,7 +106,7 @@ public theorem actualPositiveModulusProjection_central_compact
     (k : CompactTorus) (x : LocalCarrier M W.localWitness.radius) (hx : M.t x.1 = 0) :
     let _ := P.positiveDeckAction
     actualPositiveModulusProjection W P L hmod
-      (Quotient.mk _ (Established.compactPhaseLocalAction M W.localWitness.radius k x)) =
+      (Quotient.mk _ (compactPhaseLocalAction M W.localWitness.radius k x)) =
       actualPositiveModulusProjection W P L hmod (Quotient.mk _ x) := by
   let _ := P.positiveDeckAction
   change Quotient.mk _ (P.modulus (CuspStraighteningExtension.pointStraightening W _)) =

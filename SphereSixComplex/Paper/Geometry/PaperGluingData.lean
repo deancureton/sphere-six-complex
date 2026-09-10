@@ -47,7 +47,7 @@ public structure PaperGluingData where
   nonemptyCentralCollar : ∀ i, Nonempty (star.centralCollar i)
   /-- The four pieces are complex manifolds and the collar maps are biholomorphic. -/
   biholomorphicStar :
-    Geometry.EstablishedBiholomorphicStarGluing.BiholomorphicFourPieceStarData star
+    BiholomorphicStarGluing.BiholomorphicFourPieceStarData star
   /-- Every piece is second countable. -/
   pieceSecondCountable : ∀ i, SecondCountableTopology (star.glueData.U i)
   /-- The glued topology is Hausdorff. -/
@@ -76,7 +76,7 @@ public theorem complexCompatible :
     letI := A.star.nonemptyPieceOfCollars A.nonemptyCentralCollar
     letI := A.complexCharts
     GluingAtlasCompatible (I := modelWithCornersSelf ℂ ComplexModel) (n := ∞) A.D :=
-  Geometry.EstablishedBiholomorphicStarGluing.establishedFourPieceBiholomorphicGluingAtlasCompatible
+  BiholomorphicStarGluing.BiholomorphicFourPieceStarData.gluing_atlas_compatible
     A.star A.nonemptyCentralCollar A.biholomorphicStar
 
 /-- Countability of the four-piece gluing follows from countability of its pieces. -/
@@ -104,7 +104,7 @@ public theorem underlyingRealManifold :
   let _ := A.star.nonemptyPieceOfCollars A.nonemptyCentralCollar
   let _ := A.connectedPiece
   let _ := A.complexCharts
-  exact Geometry.EstablishedComplexToRealManifold.establishedUnderlyingRealIsManifold
+  exact ComplexThreefold.RealAtlas.isManifold
     (gluedChartedSpace A.D) (isManifold_gluedChartedSpace A.D A.complexCompatible)
 
 /-- Exact assembly of packaged gluing data into the completed-threefold contract. -/

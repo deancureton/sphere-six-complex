@@ -25,12 +25,12 @@ open scoped ContinuousMap
 
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 
-open SectionSevenEllipticInteriorMarkedCycleData
+open EllipticInteriorMarkedCycleData
 open SphereSixComplex.Topology.CanonicalProductWangBoundaryNaturality
 
 variable {A : PaperAnalyticData}
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 /-- The radial mapping-torus equivalence, directed from the mapping torus to the actual cusp
 collar. -/
@@ -45,7 +45,7 @@ public noncomputable def actualCuspMappingTorusToCollarTopCatMap (A : PaperAnaly
 
 /-- The pullback of the order-three cusp open to the radial mapping torus. -/
 public abbrev actualCuspMappingTorusOrderThreeOpen
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     Opens (TopCat.of (CircleMappingTorus G.clutching)) :=
@@ -54,7 +54,7 @@ public abbrev actualCuspMappingTorusOrderThreeOpen
 
 /-- The pullback of the order-four cusp open to the radial mapping torus. -/
 public abbrev actualCuspMappingTorusOrderFourOpen
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     Opens (TopCat.of (CircleMappingTorus G.clutching)) :=
@@ -63,7 +63,7 @@ public abbrev actualCuspMappingTorusOrderFourOpen
 
 /-- Pullback of the cusp cover still covers the mapping torus. -/
 public theorem actualCuspMappingTorusPulledBackOpenCover
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     actualCuspMappingTorusOrderThreeOpen R ⊔
@@ -77,7 +77,7 @@ public theorem actualCuspMappingTorusPulledBackOpenCover
 
 /-- The canonical homology comparison for the pulled-back cusp cover on the mapping torus. -/
 public noncomputable def actualCuspMappingTorusPulledBackHomologyComparison
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     SphereSixComplex.BinaryOpenCover.OpenCoverHomologyComparison
@@ -92,7 +92,7 @@ public noncomputable def actualCuspMappingTorusPulledBackHomologyComparison
 two fields orient the refinement.  The last field says that the canonical ordinary-homology
 comparisons are induced by the resulting morphism of generated cover-chain short complexes. -/
 public structure ActualCuspOrientedCoverRefinement
-    (R : A.SectionSevenAffineRadialCompletionInput) : Prop where
+    (R : A.AffineRadialCompletionInput) : Prop where
   vertex_le :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
@@ -110,7 +110,7 @@ public structure ActualCuspOrientedCoverRefinement
 /-- The map from the full two-component vertex/edge overlap to the pulled-back cusp-cover
 intersection induced by an oriented refinement and the radial mapping-torus equivalence. -/
 public noncomputable def actualCuspSignedRefinementOverlapTransport
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (C : ActualCuspOrientedCoverRefinement R) :
     ActualCuspVertexEdgeOverlapHomologyOne A →+
       CuspCoverIntersectionHomologyOne R := by
@@ -130,7 +130,7 @@ public noncomputable def actualCuspSignedRefinementOverlapTransport
 oriented refinement.  Its sign is fixed by the order `vertex → order-three`,
 `edge → order-four`; swapping the two fields would negate the Mayer--Vietoris boundary. -/
 public theorem actualCuspSignedRefinement_boundary_naturality
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (C : ActualCuspOrientedCoverRefinement R) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
@@ -188,7 +188,7 @@ private theorem mappingTorusOpensUnionHomologyIso_hom_apply
 
 /-- The categorical refinement square supplies the legacy two-leg connecting naturality. -/
 public theorem actualCuspSignedRefinement_connectingNaturality
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (C : ActualCuspOrientedCoverRefinement R) :
     ActualCuspTwoLegConnectingNaturality R
       (actualCuspSignedRefinementOverlapTransport R C) := by
@@ -286,7 +286,7 @@ public theorem actualCuspSignedRefinement_connectingNaturality
 
 /-- The marked sign required of the concrete full-overlap refinement transport. -/
 public def ActualCuspOrientedCoverRefinementMarkedSign
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (C : ActualCuspOrientedCoverRefinement R) : Prop :=
   (R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment).comp
       (R.twoDiscCover.cuspCoverIntersectionToEllipticBandHomologyOne.comp
@@ -297,7 +297,7 @@ public def ActualCuspOrientedCoverRefinementMarkedSign
 /-- The oriented refinement and its marked sign prove the exact remaining invariant-basis
 statement. -/
 public theorem cuspPulledBackMarkedInvariantBasisData_of_signedCoverRefinement
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (C : ActualCuspOrientedCoverRefinement R)
     (hsign : ActualCuspOrientedCoverRefinementMarkedSign R C) :
     CuspPulledBackMarkedInvariantBasisData R := by
@@ -305,7 +305,7 @@ public theorem cuspPulledBackMarkedInvariantBasisData_of_signedCoverRefinement
     (actualCuspSignedRefinementOverlapTransport R C)
   exact ⟨actualCuspSignedRefinement_connectingNaturality R C, hsign⟩
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

@@ -107,7 +107,7 @@ public theorem exists_orderFourCayleyRegularCoordinate_quarticUnit :
 applying the quartic local chart function to its explicit one-turn Cayley loop. -/
 public theorem orderFourFillingRelation_baseCoordinate_eq_chartFunction
     (t : unitInterval) :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     (A.centralFamilyCoordinate
       (((A.orderFourFillingRelationRegularLoop.map
         A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
@@ -115,23 +115,23 @@ public theorem orderFourFillingRelation_baseCoordinate_eq_chartFunction
           A.orderFourCollarRegularRepresentative_base_projects.symm) t)).1 =
       ellipticChartFunction A.modular.sourceCoordinate.coordinate
         fuchsianTwoFixedPoint (A.orderFourFillingRelationCayleyLoop t).1 := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   change (A.centralFamilyCoordinate
     (A.centralQuotientProjection (A.orderFourFillingRelationRegularLoop t))).1 = _
   rw [A.centralFamilyCoordinate_centralQuotientProjection]
   change A.modular.sourceCoordinate.coordinate
       (regularTotalSpaceBase A.periods
         (A.orderFourCollarRegularRepresentativeMap
-          (A.orderFourActualEllipticBoundaryDeckStraightLift
-            A.orderFourActualEllipticBoundaryDeckData.fillingRelation t))).1 = _
+          (A.ellipticFourBoundaryDeckStraightLift
+            A.ellipticFourBoundaryDeckData.fillingRelation t))).1 = _
   let _ := A.totalSpaceCharts
   let hproper : SourceActionProperlyDiscontinuous
       (U := A.modular.modularParameter.toTriangleUniformization) :=
     sourceActionProperlyDiscontinuous_of_eq
       A.modular.modularParameter.toTriangleUniformization_sourceAction
   let lift :=
-    A.orderFourActualEllipticBoundaryDeckStraightLift
-      A.orderFourActualEllipticBoundaryDeckData.fillingRelation t
+    A.ellipticFourBoundaryDeckStraightLift
+      A.ellipticFourBoundaryDeckData.fillingRelation t
   let q :=
     orderFourPuncturedCollarGaugeEquiv A.periods
       A.starSeparation.orderFour.radius

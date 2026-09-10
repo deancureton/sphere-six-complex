@@ -45,7 +45,7 @@ public theorem orderFour_fixedToMoving_period_realization
     (b : RegularBase (U := A.paperTriangleUniformization))
     (hb : orderFourCayleyHomeomorph b.1 = z.1)
     (v : ComplexTwoSpace) (a : IntegerPeriods) (t : ℝ) :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     regularFamilyCoverProjection A.periods
       (b, t • periodVector (parameterMap A.periods b.1).1 a +
         (fixedToMovingCover A.periods A.paperTriangleUniformization.zTwo (b.1, v)).2) =
@@ -53,7 +53,7 @@ public theorem orderFour_fixedToMoving_period_realization
         (A.orderFourPuncturedProductCarrierMap
           (z, Quotient.mk _ (t • periodVector
             (parameterMap A.periods A.paperTriangleUniformization.zTwo).1 a + v))) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   apply regularFamilyInclusion_injective A.periods
   apply (orderFourRealPeriodProductHomeomorph A.periods).injective
   rw [A.orderFourPuncturedProductToRegularMap_productCoordinate]
@@ -70,13 +70,13 @@ public theorem orderFour_fixedToMoving_period_realization
   rw [hcancel]
   exact Prod.ext hb rfl
 
-public theorem orderFourActualRegularBase_cayley :
-    letI := A.orderFourActualEllipticBoundaryAction
+public theorem ellipticFourRegularBase_cayley :
+    letI := A.ellipticFourBoundaryAction
     orderFourCayleyHomeomorph
       (regularTotalSpaceBase A.periods
-        (A.orderFourCollarRegularRepresentativeMap A.orderFourActualEllipticBoundaryBase)).1 =
+        (A.orderFourCollarRegularRepresentativeMap A.ellipticFourBoundaryBase)).1 =
       A.orderFourCayleyPuncturedBasepoint.1 := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   have h := congrArg Prod.fst (A.orderFourRegularLoop_cayleyGaugeProductCoordinate 0)
   rw [orderFourRealPeriodProductHomeomorph_fst,
     familyTotalSpaceBase_regularFamilyInclusion,
@@ -84,41 +84,41 @@ public theorem orderFourActualRegularBase_cayley :
     A.orderFourFillingRelationCayleyDiscLoop.source] at h
   exact h
 
-public def orderFourActualStraightCoverPoint :
+public def ellipticFourStraightCoverPoint :
     RegularBase (U := A.paperTriangleUniformization) × ComplexTwoSpace :=
   let b := regularTotalSpaceBase A.periods
-    (A.orderFourCollarRegularRepresentativeMap A.orderFourActualEllipticBoundaryBase)
+    (A.orderFourCollarRegularRepresentativeMap A.ellipticFourBoundaryBase)
   (b, (fixedToMovingCover A.periods A.paperTriangleUniformization.zTwo
     (b.1, A.orderFourFillingRelationPrincipalGaugeCoverLift 0 +
-      A.orderFourActualEllipticBoundaryBase.2.2)).2)
+      A.ellipticFourBoundaryBase.2.2)).2)
 
-public theorem orderFourActualStraightCoverPoint_period_projects (t : unitInterval) :
-    letI := A.orderFourActualEllipticBoundaryAction
+public theorem ellipticFourStraightCoverPoint_period_projects (t : unitInterval) :
+    letI := A.ellipticFourBoundaryAction
     regularFamilyCoverProjection A.periods
-      (regularFamilyPeriodLiftPath A.periods A.orderFourActualStraightCoverPoint (-epsilon') t) =
+      (regularFamilyPeriodLiftPath A.periods A.ellipticFourStraightCoverPoint (-epsilon') t) =
       A.orderFourPuncturedProductToRegularMap
         (A.orderFourPuncturedProductCarrierMap
           (A.orderFourCayleyPuncturedBasepoint,
             A.orderFourPrincipalGaugeStraightLoop t +
-              Quotient.mk _ A.orderFourActualEllipticBoundaryBase.2.2)) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+              Quotient.mk _ A.ellipticFourBoundaryBase.2.2)) := by
+  let _ := A.ellipticFourBoundaryAction
   rw [show regularFamilyCoverProjection A.periods
-      (regularFamilyPeriodLiftPath A.periods A.orderFourActualStraightCoverPoint (-epsilon') t) =
+      (regularFamilyPeriodLiftPath A.periods A.ellipticFourStraightCoverPoint (-epsilon') t) =
       A.orderFourPuncturedProductToRegularMap
         (A.orderFourPuncturedProductCarrierMap
           (A.orderFourCayleyPuncturedBasepoint,
             Quotient.mk _ ((t : ℝ) • periodVector
               (parameterMap A.periods A.paperTriangleUniformization.zTwo).1 (-epsilon') +
               (A.orderFourFillingRelationPrincipalGaugeCoverLift 0 +
-                A.orderFourActualEllipticBoundaryBase.2.2)))) from
-    A.orderFour_fixedToMoving_period_realization _ _ A.orderFourActualRegularBase_cayley _ _ _]
+                A.ellipticFourBoundaryBase.2.2)))) from
+    A.orderFour_fixedToMoving_period_realization _ _ A.ellipticFourRegularBase_cayley _ _ _]
   congr 2
   apply Prod.ext
   · rfl
   change Quotient.mk _ ((t : ℝ) • periodVector
       (parameterMap A.periods A.paperTriangleUniformization.zTwo).1 (-epsilon') +
       (A.orderFourFillingRelationPrincipalGaugeCoverLift 0 +
-        A.orderFourActualEllipticBoundaryBase.2.2)) = _
+        A.ellipticFourBoundaryBase.2.2)) = _
   have hstraight : A.orderFourPrincipalGaugeStraightLoop t =
       (Quotient.mk _ ((t : ℝ) • periodVector
         (parameterMap A.periods A.paperTriangleUniformization.zTwo).1 (-epsilon') +
@@ -135,25 +135,25 @@ public theorem orderFourActualStraightCoverPoint_period_projects (t : unitInterv
   abel
 
 public theorem orderFourMappedActualStraightPeriod_eq_actualBasedStraightFiber :
-    letI := A.orderFourActualEllipticBoundaryAction
-    ((regularFamilyPeriodLoop A.periods A.orderFourActualStraightCoverPoint (-epsilon')).map
+    letI := A.ellipticFourBoundaryAction
+    ((regularFamilyPeriodLoop A.periods A.ellipticFourStraightCoverPoint (-epsilon')).map
       (regularFamilyQuotientMap A.periods).continuous).toContinuousMap =
       A.orderFourCentralActualBasedStraightFiberPath.toContinuousMap := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   ext t
   change regularFamilyQuotientMap A.periods
     (regularFamilyCoverProjection A.periods
-      (regularFamilyPeriodLiftPath A.periods A.orderFourActualStraightCoverPoint (-epsilon') t)) = _
-  rw [A.orderFourActualStraightCoverPoint_period_projects]
+      (regularFamilyPeriodLiftPath A.periods A.ellipticFourStraightCoverPoint (-epsilon') t)) = _
+  rw [A.ellipticFourStraightCoverPoint_period_projects]
   rfl
 
-public theorem orderFourActualStraightCoverPoint_projects :
-    letI := A.orderFourActualEllipticBoundaryAction
-    regularFamilyCoverProjection A.periods A.orderFourActualStraightCoverPoint =
-      A.orderFourCollarRegularRepresentativeMap A.orderFourActualEllipticBoundaryBase := by
-  let _ := A.orderFourActualEllipticBoundaryAction
-  have h := A.orderFourActualStraightCoverPoint_period_projects 0
-  rw [(regularFamilyPeriodLiftPath A.periods A.orderFourActualStraightCoverPoint (-epsilon')).source] at h
+public theorem ellipticFourStraightCoverPoint_projects :
+    letI := A.ellipticFourBoundaryAction
+    regularFamilyCoverProjection A.periods A.ellipticFourStraightCoverPoint =
+      A.orderFourCollarRegularRepresentativeMap A.ellipticFourBoundaryBase := by
+  let _ := A.ellipticFourBoundaryAction
+  have h := A.ellipticFourStraightCoverPoint_period_projects 0
+  rw [(regularFamilyPeriodLiftPath A.periods A.ellipticFourStraightCoverPoint (-epsilon')).source] at h
   rw [h]
   have hzero : A.orderFourPrincipalGaugeStraightLoop 0 =
       A.orderFourFillingRelationPrincipalGaugeLoop 0 := by
@@ -167,18 +167,18 @@ public theorem orderFourActualStraightCoverPoint_projects :
   exact hreal
 
 public def orderThreeCentralActualBasedStraightFiberPath :
-    letI := A.orderThreeActualEllipticBoundaryAction
-    Path A.orderThreeActualEllipticCentralBase A.orderThreeActualEllipticCentralBase := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
+    Path A.ellipticThreeCentralBase A.ellipticThreeCentralBase := by
+  let _ := A.ellipticThreeBoundaryAction
   let g : C(A.orderThreeTorus, A.CentralFamily) :=
     { toFun := fun q ↦ A.orderThreePuncturedProductToCentralMap
         (A.orderThreeCayleyPuncturedBasepoint,
-          q + Quotient.mk _ A.orderThreeActualEllipticBoundaryBase.2.2)
+          q + Quotient.mk _ A.ellipticThreeBoundaryBase.2.2)
       continuous_toFun := A.orderThreePuncturedProductToCentralMap.continuous.comp
         (continuous_const.prodMk (continuous_id.add continuous_const)) }
-  have hbase : A.orderThreeActualEllipticCentralBase =
+  have hbase : A.ellipticThreeCentralBase =
       g (A.orderThreeFillingRelationPrincipalGaugeLoop 0) :=
-    A.orderThreeActualEllipticCentralBase_eq_puncturedProductBase
+    A.ellipticThreeCentralBase_eq_puncturedProductBase
   exact (A.orderThreePrincipalGaugeStraightLoop.map g.continuous).cast hbase hbase
 
 public theorem orderThree_fixedToMoving_period_realization
@@ -186,7 +186,7 @@ public theorem orderThree_fixedToMoving_period_realization
     (b : RegularBase (U := A.paperTriangleUniformization))
     (hb : orderThreeCayleyHomeomorph b.1 = z.1)
     (v : ComplexTwoSpace) (a : IntegerPeriods) (t : ℝ) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     regularFamilyCoverProjection A.periods
       (b, t • periodVector (parameterMap A.periods b.1).1 a +
         (fixedToMovingCover A.periods A.paperTriangleUniformization.zOne (b.1, v)).2) =
@@ -194,7 +194,7 @@ public theorem orderThree_fixedToMoving_period_realization
         (A.orderThreePuncturedProductCarrierMap
           (z, Quotient.mk _ (t • periodVector
             (parameterMap A.periods A.paperTriangleUniformization.zOne).1 a + v))) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   apply regularFamilyInclusion_injective A.periods
   apply (orderThreeRealPeriodProductHomeomorph A.periods).injective
   rw [A.orderThreePuncturedProductToRegularMap_productCoordinate]
@@ -211,13 +211,13 @@ public theorem orderThree_fixedToMoving_period_realization
   rw [hcancel]
   exact Prod.ext hb rfl
 
-public theorem orderThreeActualRegularBase_cayley :
-    letI := A.orderThreeActualEllipticBoundaryAction
+public theorem ellipticThreeRegularBase_cayley :
+    letI := A.ellipticThreeBoundaryAction
     orderThreeCayleyHomeomorph
       (regularTotalSpaceBase A.periods
-        (A.orderThreeCollarRegularRepresentativeMap A.orderThreeActualEllipticBoundaryBase)).1 =
+        (A.orderThreeCollarRegularRepresentativeMap A.ellipticThreeBoundaryBase)).1 =
       A.orderThreeCayleyPuncturedBasepoint.1 := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   have h := congrArg Prod.fst (A.orderThreeRegularLoop_cayleyGaugeProductCoordinate 0)
   rw [orderThreeRealPeriodProductHomeomorph_fst,
     familyTotalSpaceBase_regularFamilyInclusion,
@@ -225,41 +225,41 @@ public theorem orderThreeActualRegularBase_cayley :
     A.orderThreeFillingRelationCayleyDiscLoop.source] at h
   exact h
 
-public def orderThreeActualStraightCoverPoint :
+public def ellipticThreeStraightCoverPoint :
     RegularBase (U := A.paperTriangleUniformization) × ComplexTwoSpace :=
   let b := regularTotalSpaceBase A.periods
-    (A.orderThreeCollarRegularRepresentativeMap A.orderThreeActualEllipticBoundaryBase)
+    (A.orderThreeCollarRegularRepresentativeMap A.ellipticThreeBoundaryBase)
   (b, (fixedToMovingCover A.periods A.paperTriangleUniformization.zOne
     (b.1, A.orderThreeFillingRelationPrincipalGaugeCoverLift 0 +
-      A.orderThreeActualEllipticBoundaryBase.2.2)).2)
+      A.ellipticThreeBoundaryBase.2.2)).2)
 
-public theorem orderThreeActualStraightCoverPoint_period_projects (t : unitInterval) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+public theorem ellipticThreeStraightCoverPoint_period_projects (t : unitInterval) :
+    letI := A.ellipticThreeBoundaryAction
     regularFamilyCoverProjection A.periods
-      (regularFamilyPeriodLiftPath A.periods A.orderThreeActualStraightCoverPoint epsilon t) =
+      (regularFamilyPeriodLiftPath A.periods A.ellipticThreeStraightCoverPoint epsilon t) =
       A.orderThreePuncturedProductToRegularMap
         (A.orderThreePuncturedProductCarrierMap
           (A.orderThreeCayleyPuncturedBasepoint,
             A.orderThreePrincipalGaugeStraightLoop t +
-              Quotient.mk _ A.orderThreeActualEllipticBoundaryBase.2.2)) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+              Quotient.mk _ A.ellipticThreeBoundaryBase.2.2)) := by
+  let _ := A.ellipticThreeBoundaryAction
   rw [show regularFamilyCoverProjection A.periods
-      (regularFamilyPeriodLiftPath A.periods A.orderThreeActualStraightCoverPoint epsilon t) =
+      (regularFamilyPeriodLiftPath A.periods A.ellipticThreeStraightCoverPoint epsilon t) =
       A.orderThreePuncturedProductToRegularMap
         (A.orderThreePuncturedProductCarrierMap
           (A.orderThreeCayleyPuncturedBasepoint,
             Quotient.mk _ ((t : ℝ) • periodVector
               (parameterMap A.periods A.paperTriangleUniformization.zOne).1 epsilon +
               (A.orderThreeFillingRelationPrincipalGaugeCoverLift 0 +
-                A.orderThreeActualEllipticBoundaryBase.2.2)))) from
-    A.orderThree_fixedToMoving_period_realization _ _ A.orderThreeActualRegularBase_cayley _ _ _]
+                A.ellipticThreeBoundaryBase.2.2)))) from
+    A.orderThree_fixedToMoving_period_realization _ _ A.ellipticThreeRegularBase_cayley _ _ _]
   congr 2
   apply Prod.ext
   · rfl
   change Quotient.mk _ ((t : ℝ) • periodVector
       (parameterMap A.periods A.paperTriangleUniformization.zOne).1 epsilon +
       (A.orderThreeFillingRelationPrincipalGaugeCoverLift 0 +
-        A.orderThreeActualEllipticBoundaryBase.2.2)) = _
+        A.ellipticThreeBoundaryBase.2.2)) = _
   have hstraight : A.orderThreePrincipalGaugeStraightLoop t =
       (Quotient.mk _ ((t : ℝ) • periodVector
         (parameterMap A.periods A.paperTriangleUniformization.zOne).1 epsilon +
@@ -276,25 +276,25 @@ public theorem orderThreeActualStraightCoverPoint_period_projects (t : unitInter
   abel
 
 public theorem orderThreeMappedActualStraightPeriod_eq_actualBasedStraightFiber :
-    letI := A.orderThreeActualEllipticBoundaryAction
-    ((regularFamilyPeriodLoop A.periods A.orderThreeActualStraightCoverPoint epsilon).map
+    letI := A.ellipticThreeBoundaryAction
+    ((regularFamilyPeriodLoop A.periods A.ellipticThreeStraightCoverPoint epsilon).map
       (regularFamilyQuotientMap A.periods).continuous).toContinuousMap =
       A.orderThreeCentralActualBasedStraightFiberPath.toContinuousMap := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   ext t
   change regularFamilyQuotientMap A.periods
     (regularFamilyCoverProjection A.periods
-      (regularFamilyPeriodLiftPath A.periods A.orderThreeActualStraightCoverPoint epsilon t)) = _
-  rw [A.orderThreeActualStraightCoverPoint_period_projects]
+      (regularFamilyPeriodLiftPath A.periods A.ellipticThreeStraightCoverPoint epsilon t)) = _
+  rw [A.ellipticThreeStraightCoverPoint_period_projects]
   rfl
 
-public theorem orderThreeActualStraightCoverPoint_projects :
-    letI := A.orderThreeActualEllipticBoundaryAction
-    regularFamilyCoverProjection A.periods A.orderThreeActualStraightCoverPoint =
-      A.orderThreeCollarRegularRepresentativeMap A.orderThreeActualEllipticBoundaryBase := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
-  have h := A.orderThreeActualStraightCoverPoint_period_projects 0
-  rw [(regularFamilyPeriodLiftPath A.periods A.orderThreeActualStraightCoverPoint epsilon).source] at h
+public theorem ellipticThreeStraightCoverPoint_projects :
+    letI := A.ellipticThreeBoundaryAction
+    regularFamilyCoverProjection A.periods A.ellipticThreeStraightCoverPoint =
+      A.orderThreeCollarRegularRepresentativeMap A.ellipticThreeBoundaryBase := by
+  let _ := A.ellipticThreeBoundaryAction
+  have h := A.ellipticThreeStraightCoverPoint_period_projects 0
+  rw [(regularFamilyPeriodLiftPath A.periods A.ellipticThreeStraightCoverPoint epsilon).source] at h
   rw [h]
   have hzero : A.orderThreePrincipalGaugeStraightLoop 0 =
       A.orderThreeFillingRelationPrincipalGaugeLoop 0 := by
@@ -308,10 +308,10 @@ public theorem orderThreeActualStraightCoverPoint_projects :
   exact hreal
 
 public theorem orderThreeLocalOffsetFiberCentralPath_homotopic_actualBasedStraight :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     Nonempty (Path.Homotopy A.orderThreeLocalOffsetFiberCentralPath
       A.orderThreeCentralActualBasedStraightFiberPath) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   have hclass := A.orderThreeFillingRelationPrincipalGaugeLoop_class_eq_straight
   change Path.Homotopic.Quotient.mk A.orderThreeFillingRelationPrincipalGaugeLoop =
     Path.Homotopic.Quotient.mk A.orderThreePrincipalGaugeStraightLoop at hclass
@@ -319,14 +319,14 @@ public theorem orderThreeLocalOffsetFiberCentralPath_homotopic_actualBasedStraig
     A.orderThreeFillingRelationPrincipalGaugeLoop
       A.orderThreePrincipalGaugeStraightLoop) with ⟨Htorus⟩
   let x := A.orderThreeCayleyPuncturedBasepoint
-  let offset : A.orderThreeTorus := Quotient.mk _ A.orderThreeActualEllipticBoundaryBase.2.2
+  let offset : A.orderThreeTorus := Quotient.mk _ A.ellipticThreeBoundaryBase.2.2
   let g : C(A.orderThreeTorus, A.CentralFamily) :=
     { toFun := fun q ↦ A.orderThreePuncturedProductToCentralMap (x, q + offset)
       continuous_toFun := A.orderThreePuncturedProductToCentralMap.continuous.comp
         (continuous_const.prodMk (continuous_id.add continuous_const)) }
-  have hbase : A.orderThreeActualEllipticCentralBase =
+  have hbase : A.ellipticThreeCentralBase =
       g (A.orderThreeFillingRelationPrincipalGaugeLoop 0) :=
-    A.orderThreeActualEllipticCentralBase_eq_puncturedProductBase
+    A.ellipticThreeCentralBase_eq_puncturedProductBase
   let Hmapped := (Htorus.map g).pathCast hbase hbase
   have hsource :
       (A.orderThreeFillingRelationPrincipalGaugeLoop.map g.continuous).cast hbase hbase =

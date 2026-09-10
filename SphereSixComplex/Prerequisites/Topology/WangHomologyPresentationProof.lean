@@ -764,7 +764,7 @@ degree: integral singular homology is additive on finite disjoint open unions. -
 public theorem sumMap_bijective_of_isEmpty_inter {X : Type} [TopologicalSpace X] (A B : Set X)
     (hA : IsOpen A) (hB : IsOpen B) [IsEmpty (A ∩ B : Set X)] (k : ℕ) :
     Function.Bijective (sumMap A B k) := by
-  obtain ⟨boundary, hb⟩ := establishedIntegralMayerVietorisExactSequence A B hA hB
+  obtain ⟨boundary, hb⟩ := IntegralMayerVietoris.exact_sequence_of_isOpen A B hA hB
   constructor
   · obtain ⟨-, -, h₃⟩ := hb k
     rw [injective_iff_map_eq_zero]
@@ -2486,7 +2486,7 @@ omit [Fintype ι] [Inhabited ι] [DiscreteTopology ι] in
 /-- The Mayer--Vietoris sequence of the vertex/edge open cover of the mapping torus. -/
 public theorem coverMayerVietoris (φ : ι → F ≃ₜ F) :
     IntegralMayerVietoris.ExactSequence (vertexPiece φ) (edgePiece φ) :=
-  establishedIntegralMayerVietorisExactSequence (vertexPiece φ) (edgePiece φ)
+  IntegralMayerVietoris.exact_sequence_of_isOpen (vertexPiece φ) (edgePiece φ)
     (isOpen_vertexPiece φ) (isOpen_edgePiece φ)
 
 /-- The Mayer--Vietoris boundary of the vertex/edge open cover. -/

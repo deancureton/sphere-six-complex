@@ -23,7 +23,7 @@ open SphereSixComplex.Geometry.CuspCombinatorics
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspToricPhaseAction
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
+open SphereSixComplex.Geometry.InfiniteA2Toric
 
 /-- The open part of the toric model lying over the radius-`r` cusp disc. -/
 public def cuspNeighborhood (M : Model) (r : ℝ) : TopologicalSpace.Opens M.Carrier where
@@ -105,7 +105,7 @@ public def localPhaseTwist (M : Model) (r : ℝ)
 /-- Exact phase data on one cusp disc.  The standard joint toric-action theorem turns
 coefficientwise holomorphicity into holomorphicity of the variable phase twist on the
 corresponding open toric submanifold. -/
-public structure ExactLocalHolomorphicPhaseCoefficients (M : Model) (r : ℝ) where
+public structure LocalHolomorphicPhaseCoefficients (M : Model) (r : ℝ) where
   radius_pos : 0 < r
   phase : ParameterLattice → ℂ → Phase
   phase_zero : ∀ q, phase 0 q = 1
@@ -113,9 +113,9 @@ public structure ExactLocalHolomorphicPhaseCoefficients (M : Model) (r : ℝ) wh
   coefficient_holomorphicOn : ∀ lambda i,
     DifferentiableOn ℂ (fun q ↦ (phase lambda q i : ℂ)) (Metric.ball 0 r)
 
-namespace ExactLocalHolomorphicPhaseCoefficients
+namespace LocalHolomorphicPhaseCoefficients
 
-variable {M : Model} {r : ℝ} (C : ExactLocalHolomorphicPhaseCoefficients M r)
+variable {M : Model} {r : ℝ} (C : LocalHolomorphicPhaseCoefficients M r)
 
 /-- Each variable phase coordinate is holomorphic after composition with the height character on
 the local carrier. -/
@@ -209,7 +209,7 @@ public theorem psiMap_holomorphic (lambda : ParameterLattice) :
     (localFanShear_holomorphic (M := M) (r := r) lambda)
 
 /-- The two paper-specific fixed-point estimates, now restricted to the genuine cusp domain. -/
-public structure FixedPointEstimates : Prop where
+public structure IsFree : Prop where
   offCentral : ∀ lambda (p : LocalCarrier M r),
     M.t p ≠ 0 → C.psiMap lambda p = p → lambda = 0
   central : ∀ lambda (p : LocalCarrier M r),
@@ -226,7 +226,7 @@ public theorem psiMap_eq_restrictedActions
     M.fanShear_preserves_t]
 
 /-- The local algebraic action data obtained from the restricted fan and phase actions. -/
-public def toCuspActionData (F : C.FixedPointEstimates) :
+public def toCuspActionData (F : C.IsFree) :
     CuspActionData (LocalCarrier M r) Phase where
   t := localT M r
   toricShear := localFanShear M r
@@ -248,7 +248,7 @@ public def toCuspActionData (F : C.FixedPointEstimates) :
     F.central lambda p ht ((C.psiMap_eq_restrictedActions lambda p).trans hp)
 
 @[simp]
-public theorem psiMap_eq_generic (F : C.FixedPointEstimates)
+public theorem psiMap_eq_generic (F : C.IsFree)
     (lambda : ParameterLattice) (p : LocalCarrier M r) :
     C.psiMap lambda p = (C.toCuspActionData F).psiMap lambda p := by
   apply Subtype.ext
@@ -256,7 +256,7 @@ public theorem psiMap_eq_generic (F : C.FixedPointEstimates)
     localT, localFanShear, localPhaseAction, M.fanShear_preserves_t]
 
 /-- Holomorphicity in the generic local action package. -/
-public theorem genericPsiMap_holomorphic (F : C.FixedPointEstimates)
+public theorem genericPsiMap_holomorphic (F : C.IsFree)
     (lambda : ParameterLattice) :
     ContMDiff (modelWithCornersSelf ℂ ComplexModel)
       (modelWithCornersSelf ℂ ComplexModel) ∞
@@ -272,7 +272,7 @@ public def CompactOverlapEstimate : Prop :=
 
 /-- The fixed-point and compact-overlap estimates give a free properly discontinuous action on
 the local cusp carrier. -/
-public theorem properlyDiscontinuous (F : C.FixedPointEstimates)
+public theorem properlyDiscontinuous (F : C.IsFree)
     (H : C.CompactOverlapEstimate) :
     letI := (C.toCuspActionData F).psiAction
     ProperlyDiscontinuousSMul
@@ -282,7 +282,7 @@ public theorem properlyDiscontinuous (F : C.FixedPointEstimates)
   simpa only [← C.psiMap_eq_generic F] using H K L hK hL
 
 /-- The local cusp quotient map is a quotient covering map. -/
-public theorem quotient_isQuotientCoveringMap (F : C.FixedPointEstimates)
+public theorem quotient_isQuotientCoveringMap (F : C.IsFree)
     (H : C.CompactOverlapEstimate) :
     letI := (C.toCuspActionData F).psiAction
     IsQuotientCoveringMap
@@ -302,7 +302,7 @@ public theorem quotient_isQuotientCoveringMap (F : C.FixedPointEstimates)
     simpa only [← C.psiMap_eq_generic F] using H K L hK hL
 
 /-- The quotient of the local cusp carrier has the induced complex charted space. -/
-public theorem quotient_chartedSpace (F : C.FixedPointEstimates)
+public theorem quotient_chartedSpace (F : C.IsFree)
     (H : C.CompactOverlapEstimate) :
     letI := (C.toCuspActionData F).psiAction
     Nonempty (ChartedSpace ComplexModel
@@ -322,7 +322,7 @@ public theorem quotient_chartedSpace (F : C.FixedPointEstimates)
 
 /-- The local cusp quotient is a complex manifold once the same two fixed-point estimates and
 compact-overlap estimate used in the global formulation are supplied on the restricted carrier. -/
-public theorem quotient_isManifold (F : C.FixedPointEstimates)
+public theorem quotient_isManifold (F : C.IsFree)
     (H : C.CompactOverlapEstimate) :
     letI := (C.toCuspActionData F).psiAction
     let hf := C.quotient_isQuotientCoveringMap F H
@@ -350,7 +350,7 @@ public theorem quotient_isManifold (F : C.FixedPointEstimates)
   intro gamma
   exact C.genericPsiMap_holomorphic F (Multiplicative.toAdd gamma)
 
-end ExactLocalHolomorphicPhaseCoefficients
+end LocalHolomorphicPhaseCoefficients
 
 namespace CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
 
@@ -363,7 +363,7 @@ variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData 
 variable torus translation is derived from the standard jointly holomorphic toric action. -/
 public noncomputable def toExactLocalHolomorphicPhaseCoefficients
     (M : Model) :
-    ExactLocalHolomorphicPhaseCoefficients M (cuspRadius N.height) where
+    LocalHolomorphicPhaseCoefficients M (cuspRadius N.height) where
   radius_pos := cuspRadius_pos N.height
   phase := N.phaseCoefficient
   phase_zero := N.phaseCoefficient_zero

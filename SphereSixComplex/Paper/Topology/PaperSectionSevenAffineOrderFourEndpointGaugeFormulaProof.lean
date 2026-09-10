@@ -107,24 +107,24 @@ public theorem orderFourRealPeriodProductHomeomorph_principalGauge_symm_snd
 
 /-- The zero vector over the explicit order-four radial strip lift lies in a fixed punctured
 collar of radius two. -/
-public noncomputable def sectionSevenAffineOrderFourRadialZeroCollarPoint
+public noncomputable def affineOrderFourRadialZeroCollarPoint
     (A : PaperAnalyticData) :
-    C(sectionSevenAffineVerticalStrip,
+    C(affineVerticalStrip,
       orderFourPuncturedFamilyCollar A.periods 2) :=
   ⟨fun z ↦
       ⟨regularFamilyInclusion A.periods
           (regularFamilyZeroSection A.periods
-            (A.sectionSevenAffineOrderFourRadialBaseLift z)), by
+            (A.affineOrderFourRadialBaseLift z)), by
         constructor
         · rw [orderFourFamilyRadius.eq_def,
             familyTotalSpaceBase_regularFamilyInclusion]
           change 0 < ‖(orderFourCayleyHomeomorph
-            (A.sectionSevenAffineOrderFourRadialBaseLift z).1 : ℂ)‖
+            (A.affineOrderFourRadialBaseLift z).1 : ℂ)‖
           rw [norm_pos_iff]
           apply coe_ne_zero_of_ne_center
           intro hcenter
           have hbase :
-              (A.sectionSevenAffineOrderFourRadialBaseLift z).1 =
+              (A.affineOrderFourRadialBaseLift z).1 =
                 A.modular.modularParameter.toTriangleUniformization.zTwo := by
             apply orderFourCayleyHomeomorph.injective
             refine hcenter.trans ?_
@@ -132,10 +132,10 @@ public noncomputable def sectionSevenAffineOrderFourRadialZeroCollarPoint
               A.modular.modularParameter.toTriangleUniformization_sourceAction).2]
             apply Subtype.ext
             exact orderFourCayley_fixedPoint.symm
-          have hregular := (A.sectionSevenAffineOrderFourRadialBaseLift z).2
+          have hregular := (A.affineOrderFourRadialBaseLift z).2
           have hnot := (isRegularBasePoint_iff_not_mem_orbits
             (U := A.modular.modularParameter.toTriangleUniformization)
-            (A.sectionSevenAffineOrderFourRadialBaseLift z).1).mp hregular
+            (A.affineOrderFourRadialBaseLift z).1).mp hregular
           apply hnot
           right
           rw [sourceOrbitSet]
@@ -145,45 +145,45 @@ public noncomputable def sectionSevenAffineOrderFourRadialZeroCollarPoint
         · rw [orderFourFamilyRadius.eq_def,
             familyTotalSpaceBase_regularFamilyInclusion]
           exact (norm_orderFourCayley_lt_one
-            (A.sectionSevenAffineOrderFourRadialBaseLift z).1).trans (by norm_num)⟩,
+            (A.affineOrderFourRadialBaseLift z).1).trans (by norm_num)⟩,
     (regularFamilyInclusion_continuous A.periods).comp
       ((regularFamilyZeroSection A.periods).continuous.comp
-        A.sectionSevenAffineOrderFourRadialBaseLift.continuous) |>.subtype_mk _⟩
+        A.affineOrderFourRadialBaseLift.continuous) |>.subtype_mk _⟩
 
 /-- The explicit continuous order-four strip gauge, transported back to the common band torus. -/
-public noncomputable def sectionSevenAffineOrderFourEndpointGauge
+public noncomputable def affineOrderFourEndpointGauge
     (A : PaperAnalyticData) :
-    C(sectionSevenAffineVerticalStrip,
+    C(affineVerticalStrip,
       AdditiveTorus A.duplicatedSectionSevenBandParameter) :=
   let _ := A.totalSpaceCharts
   let e := orderFourPuncturedCollarGaugeHomeomorph A.periods
     A.totalSpace_projection_isLocalDiffeomorph 2
   ⟨fun z ↦ A.duplicatedSectionSevenOrderThreeToOrderFourBandHomeomorph.symm
       (orderFourRealPeriodProductHomeomorph A.periods
-        (e.symm (A.sectionSevenAffineOrderFourRadialZeroCollarPoint z)).1).2,
+        (e.symm (A.affineOrderFourRadialZeroCollarPoint z)).1).2,
     A.duplicatedSectionSevenOrderThreeToOrderFourBandHomeomorph.symm.continuous.comp
       (continuous_snd.comp
         ((orderFourRealPeriodProductHomeomorph A.periods).continuous.comp
           (continuous_subtype_val.comp
             (e.symm.continuous.comp
-              A.sectionSevenAffineOrderFourRadialZeroCollarPoint.continuous))))⟩
+              A.affineOrderFourRadialZeroCollarPoint.continuous))))⟩
 
 /-- Pointwise, the common-band gauge is the inverse period-basis transport of the negative
 order-four principal real-period gauge. -/
-public theorem sectionSevenAffineOrderFourEndpointGauge_apply
-    (A : PaperAnalyticData) (z : sectionSevenAffineVerticalStrip) :
-    A.sectionSevenAffineOrderFourEndpointGauge z =
+public theorem affineOrderFourEndpointGauge_apply
+    (A : PaperAnalyticData) (z : affineVerticalStrip) :
+    A.affineOrderFourEndpointGauge z =
       A.duplicatedSectionSevenOrderThreeToOrderFourBandHomeomorph.symm
         (-A.orderFourPrincipalRealPeriodGauge
-          (A.sectionSevenAffineOrderFourRadialBaseLift z).1) := by
+          (A.affineOrderFourRadialBaseLift z).1) := by
   let _ := A.totalSpaceCharts
-  rw [sectionSevenAffineOrderFourEndpointGauge]
+  rw [affineOrderFourEndpointGauge]
   apply congrArg A.duplicatedSectionSevenOrderThreeToOrderFourBandHomeomorph.symm
   change (orderFourRealPeriodProductHomeomorph A.periods
       ((orderFourPrincipalGaugeEquiv A.periods).symm
         (regularFamilyInclusion A.periods
           (regularFamilyZeroSection A.periods
-            (A.sectionSevenAffineOrderFourRadialBaseLift z))))).2 = _
+            (A.affineOrderFourRadialBaseLift z))))).2 = _
   rw [A.orderFourRealPeriodProductHomeomorph_principalGauge_symm_snd]
   simp only [regularFamilyZeroSection_apply, regularFamilyInclusion_mk,
     regularBundleInclusion]
@@ -192,27 +192,27 @@ public theorem sectionSevenAffineOrderFourEndpointGauge_apply
   let p := (parameterMap A.periods
     A.modular.modularParameter.toTriangleUniformization.zTwo).1
   change -A.orderFourPrincipalRealPeriodGauge
-      (A.sectionSevenAffineOrderFourRadialBaseLift z).1 +
+      (A.affineOrderFourRadialBaseLift z).1 +
         (Quotient.mk _ (0 : ComplexTwoSpace) : AdditiveTorus p) =
     -A.orderFourPrincipalRealPeriodGauge
-      (A.sectionSevenAffineOrderFourRadialBaseLift z).1
+      (A.affineOrderFourRadialBaseLift z).1
   calc
     _ = -A.orderFourPrincipalRealPeriodGauge
-          (A.sectionSevenAffineOrderFourRadialBaseLift z).1 +
+          (A.affineOrderFourRadialBaseLift z).1 +
         (0 : AdditiveTorus p) := congrArg _ (additiveTorus_mk_zero p)
     _ = _ := add_zero _
 
 /-- The remaining representative-level identity after the explicit gauge and all continuous
 maps have been constructed.  It is stated in the fixed order-four torus: the endpoint coordinate
 is the negative principal gauge plus the transported named-strip fibre coordinate. -/
-public structure SectionSevenAffineOrderFourEndpointRealPeriodIdentity
+public structure AffineOrderFourEndpointRealPeriodIdentity
     (A : PaperAnalyticData) : Prop where
-  eq_projection : ∀ (x : A.SectionSevenAffineMarkedBand)
+  eq_projection : ∀ (x : A.affineMarkedBand)
       (q : (orderFourAffinePuncturedCarrier A.periods
         A.modular.modularParameter.toTriangleUniformization_sourceAction
         A.starSeparation.orderFour.radius).carrier),
     A.orderFourOverlapCollarHomeomorph
-        (A.sectionSevenAffineOrderFourDiscOverlapEndpoint x) = Quotient.mk _ q →
+        (A.affineOrderFourDiscOverlapEndpoint x) = Quotient.mk _ q →
       RadialEllipticActionData.centralFiberCoverProjection
           (orderFourRadialActionData A.periods)
           ((RadialEllipticActionData.centralFiberCoverSourceHomeomorph
@@ -223,25 +223,25 @@ public structure SectionSevenAffineOrderFourEndpointRealPeriodIdentity
           ((RadialEllipticActionData.centralFiberCoverSourceHomeomorph
             (orderFourRadialActionData A.periods)).symm
               (-A.orderFourPrincipalRealPeriodGauge
-                  (A.sectionSevenAffineOrderFourRadialBaseLift
-                    (A.sectionSevenAffineBandStripCoordinate x)).1 +
+                  (A.affineOrderFourRadialBaseLift
+                    (A.affineBandStripCoordinate x)).1 +
                 A.duplicatedSectionSevenOrderThreeToOrderFourBandHomeomorph
-                  (A.sectionSevenAffineBandFiberCoordinateOfLift
-                    A.sectionSevenAffineNamedStripLift x)))
+                  (A.affineBandFiberCoordinateOfLift
+                    A.affineNamedStripLift x)))
 
 /-- The representative-level identity gives exactly the order-four field of the pinned-lift
 endpoint-gauge formulas. -/
-public theorem sectionSevenAffineOrderFourEndpointGaugeFormula
+public theorem affineOrderFourEndpointGauge_formula
     (A : PaperAnalyticData)
-    (H : A.SectionSevenAffineOrderFourEndpointRealPeriodIdentity) :
+    (H : A.AffineOrderFourEndpointRealPeriodIdentity) :
     (orderFourSelectedFillingHomotopyEquivCentralFiber A).toFun.comp
-        A.sectionSevenAffineOrderFourStarEndpoint =
-      A.sectionSevenAffineOrderFourGaugeProjectionOfLift
-        A.sectionSevenAffineNamedStripLift
-        A.sectionSevenAffineOrderFourEndpointGauge := by
+        A.affineOrderFourStarEndpoint =
+      A.affineOrderFourGaugeProjectionOfLift
+        A.affineNamedStripLift
+        A.affineOrderFourEndpointGauge := by
   apply ContinuousMap.ext
   intro x
-  let u := A.sectionSevenAffineOrderFourDiscOverlapEndpoint x
+  let u := A.affineOrderFourDiscOverlapEndpoint x
   change (orderFourSelectedFillingHomotopyEquivCentralFiber A).toFun
       (A.starToFilling 2 (A.orderFourOverlapCollarHomeomorph u)) = _
   generalize hq : A.orderFourOverlapCollarHomeomorph u = y
@@ -254,23 +254,23 @@ public theorem sectionSevenAffineOrderFourEndpointGaugeFormula
           ((RadialEllipticActionData.centralFiberCoverSourceHomeomorph
             (orderFourRadialActionData A.periods)).symm
               (-A.orderFourPrincipalRealPeriodGauge
-                  (A.sectionSevenAffineOrderFourRadialBaseLift
-                    (A.sectionSevenAffineBandStripCoordinate x)).1 +
+                  (A.affineOrderFourRadialBaseLift
+                    (A.affineBandStripCoordinate x)).1 +
                 A.duplicatedSectionSevenOrderThreeToOrderFourBandHomeomorph
-                  (A.sectionSevenAffineBandFiberCoordinateOfLift
-                    A.sectionSevenAffineNamedStripLift x))) =
+                  (A.affineBandFiberCoordinateOfLift
+                    A.affineNamedStripLift x))) =
         RadialEllipticActionData.centralFiberCoverProjection
           (orderFourRadialActionData A.periods)
           (A.duplicatedSectionSevenBandToOrderFourCoverSource
-            (A.sectionSevenAffineOrderFourEndpointGauge
-                (A.sectionSevenAffineBandStripCoordinate x) +
-              A.sectionSevenAffineBandFiberCoordinateOfLift
-                A.sectionSevenAffineNamedStripLift x))
+            (A.affineOrderFourEndpointGauge
+                (A.affineBandStripCoordinate x) +
+              A.affineBandFiberCoordinateOfLift
+                A.affineNamedStripLift x))
       rw [duplicatedSectionSevenBandToOrderFourCoverSource]
       simp only [Homeomorph.trans_apply]
       congr 2
       rw [A.duplicatedSectionSevenOrderThreeToOrderFourBandHomeomorph_add,
-        A.sectionSevenAffineOrderFourEndpointGauge_apply]
+        A.affineOrderFourEndpointGauge_apply]
       congr 1
       exact
         (A.duplicatedSectionSevenOrderThreeToOrderFourBandHomeomorph.apply_symm_apply _).symm

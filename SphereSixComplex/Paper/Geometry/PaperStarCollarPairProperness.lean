@@ -179,7 +179,7 @@ namespace Geometry
 
 open Set Topology SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open CuspPuncturedCollarBridge CuspPhaseEstimates CuspPeriodExpansion
-open CuspFilling CuspLocalPhaseAction StandardInfiniteA2ToricModel
+open CuspFilling CuspLocalPhaseAction InfiniteA2Toric
 open EllipticVaryingFamilyQuotient EllipticPuncturedCollarGaugeHomeomorph
 open EllipticWholeFiberCompactCover
 open EllipticCayleyHomeomorph TorusFamily

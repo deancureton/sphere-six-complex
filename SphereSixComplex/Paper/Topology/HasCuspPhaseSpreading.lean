@@ -11,7 +11,7 @@ namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 
 open SphereSixComplex.Periods
 open SphereSixComplex.Geometry.CuspPeriodExpansion
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
+open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Geometry.CuspStraighteningRetraction
 
 public class HasCuspPhaseSpreading

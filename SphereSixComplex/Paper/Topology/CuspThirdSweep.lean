@@ -9,7 +9,7 @@ open scoped ContinuousMap
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 open SphereSixComplex.Topology SphereSixComplex.StandardTorusHomology
 open CuspRadialClutchingConstruction CuspPuncturedCollarBridge
-open SectionSevenEllipticTwoDiscCoverData
+open EllipticTwoDiscCoverData
 
 public def cuspThirdSweep (A : PaperAnalyticData) :
     C(UnitAddCircle × StdTorus 1, A.openEmbeddingStarData.collarSource 0) :=
@@ -31,7 +31,7 @@ public theorem cuspThirdSweep_wang (A : PaperAnalyticData) :
   exact cuspCoordinateCircle_homology _ 2
 
 public theorem cuspRawFour_pulled_back_boundary_eq_sweep {A : PaperAnalyticData}
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     R.twoDiscCover.cuspPulledBackBoundaryHom
       (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) =
     R.twoDiscCover.cuspPulledBackBoundaryHom

@@ -47,14 +47,14 @@ public theorem orderThreeMarkedCentralEpsilonPeriodPath_class :
   exact Path.Homotopic.Quotient.mk_cast _ _ _
 
 /-- Rebase the marked literal `epsilon`-period path at the selected actual cusp point. -/
-public noncomputable def orderThreeActualCuspMarkedEpsilonPeriodPath :
-    Path A.actualCuspCentralBase A.actualCuspCentralBase :=
-  A.actualCuspMarkedCentralWhisker.symm.trans
-    (A.orderThreeMarkedCentralEpsilonPeriodPath.trans A.actualCuspMarkedCentralWhisker)
+public noncomputable def ellipticThreeCuspMarkedEpsilonPeriodPath :
+    Path A.cuspCentralBase A.cuspCentralBase :=
+  A.cuspMarkedCentralWhisker.symm.trans
+    (A.orderThreeMarkedCentralEpsilonPeriodPath.trans A.cuspMarkedCentralWhisker)
 
 /-- The rebased literal period path represents the transported geometric translation. -/
-public theorem orderThreeActualCuspMarkedEpsilonPeriodPath_class :
-    Path.Homotopic.Quotient.mk A.orderThreeActualCuspMarkedEpsilonPeriodPath =
+public theorem ellipticThreeCuspMarkedEpsilonPeriodPath_class :
+    Path.Homotopic.Quotient.mk A.ellipticThreeCuspMarkedEpsilonPeriodPath =
       Additive.toMul (A.geometricCentralTranslation epsilon) := by
   have h := congrArg A.markedCentralToActualCuspEquiv
     A.orderThreeMarkedCentralEpsilonPeriodPath_class

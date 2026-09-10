@@ -21,7 +21,7 @@ noncomputable section
 open Set
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
@@ -157,5 +157,5 @@ public noncomputable def positiveEquivariantStrongDeformationRetraction :
 
 end PolarHoneycombData
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
+end SphereSixComplex.Geometry.InfiniteA2Toric
 

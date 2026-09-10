@@ -26,126 +26,126 @@ open SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
 
 variable {A : PaperAnalyticData}
 
-namespace SectionSevenAffineOrderThreeRegularLiftInput
+namespace AffineOrderThreeRegularLiftInput
 
 /-- The genuine order-three regular-cover quotient model constructs the actual filling-to-side
 homotopy equivalence, with normality and paracompactness supplied by the analytic star. -/
 public theorem actualHomotopyEquivalenceInclusion
-    (R : A.SectionSevenAffineOrderThreeRegularLiftInput) :
+    (R : A.AffineOrderThreeRegularLiftInput) :
     IsHomotopyEquivalenceInclusion
-      A.sectionSevenActualAffineSplit.orderThreeFillingSubspace := by
-  have hopen : IsOpen (A.sectionSevenOrderThreeFillingImage ∪
-      A.sectionSevenAffineOrderThreeCentralRegion) :=
-    A.sectionSevenOrderThreeFillingImage_isOpen.union
-      A.sectionSevenActualAffineSplit.centralHeightLowerRegion_isOpen
-  let _ : ParacompactSpace ↑(A.sectionSevenOrderThreeFillingImage ∪
-      A.sectionSevenAffineOrderThreeCentralRegion) :=
-    A.sectionSevenOpenSubspace_paracompact _ hopen
-  let _ : NormalSpace ↑(A.sectionSevenOrderThreeFillingImage ∪
-      A.sectionSevenAffineOrderThreeCentralRegion) :=
-    A.sectionSevenOpenSubspace_normal _ hopen
+      A.actualAffineHeightSplit.orderThreeFillingSubspace := by
+  have hopen : IsOpen (A.orderThreeFillingImage ∪
+      A.affineOrderThreeCentralRegion) :=
+    A.orderThreeFillingImage_isOpen.union
+      A.actualAffineHeightSplit.centralHeightLowerRegion_isOpen
+  let _ : ParacompactSpace ↑(A.orderThreeFillingImage ∪
+      A.affineOrderThreeCentralRegion) :=
+    A.ellipticInteriorOpenSubspace_paracompact _ hopen
+  let _ : NormalSpace ↑(A.orderThreeFillingImage ∪
+      A.affineOrderThreeCentralRegion) :=
+    A.ellipticInteriorOpenSubspace_normal _ hopen
   exact R.homotopyEquivalenceInclusion
 
-end SectionSevenAffineOrderThreeRegularLiftInput
+end AffineOrderThreeRegularLiftInput
 
-namespace SectionSevenAffineOrderFourRegularLiftInput
+namespace AffineOrderFourRegularLiftInput
 
 /-- The genuine order-four regular-cover quotient model constructs the actual filling-to-side
 homotopy equivalence, with normality and paracompactness supplied by the analytic star. -/
 public theorem actualHomotopyEquivalenceInclusion
-    (R : A.SectionSevenAffineOrderFourRegularLiftInput) :
+    (R : A.AffineOrderFourRegularLiftInput) :
     IsHomotopyEquivalenceInclusion
-      A.sectionSevenActualAffineSplit.orderFourFillingSubspace := by
-  have hopen : IsOpen (A.sectionSevenOrderFourFillingImage ∪
-      A.sectionSevenAffineOrderFourCentralRegion) :=
-    A.sectionSevenOrderFourFillingImage_isOpen.union
-      A.sectionSevenActualAffineSplit.centralHeightUpperRegion_isOpen
-  let _ : ParacompactSpace ↑(A.sectionSevenOrderFourFillingImage ∪
-      A.sectionSevenAffineOrderFourCentralRegion) :=
-    A.sectionSevenOpenSubspace_paracompact _ hopen
-  let _ : NormalSpace ↑(A.sectionSevenOrderFourFillingImage ∪
-      A.sectionSevenAffineOrderFourCentralRegion) :=
-    A.sectionSevenOpenSubspace_normal _ hopen
+      A.actualAffineHeightSplit.orderFourFillingSubspace := by
+  have hopen : IsOpen (A.orderFourFillingImage ∪
+      A.affineOrderFourCentralRegion) :=
+    A.orderFourFillingImage_isOpen.union
+      A.actualAffineHeightSplit.centralHeightUpperRegion_isOpen
+  let _ : ParacompactSpace ↑(A.orderFourFillingImage ∪
+      A.affineOrderFourCentralRegion) :=
+    A.ellipticInteriorOpenSubspace_paracompact _ hopen
+  let _ : NormalSpace ↑(A.orderFourFillingImage ∪
+      A.affineOrderFourCentralRegion) :=
+    A.ellipticInteriorOpenSubspace_normal _ hopen
   exact R.homotopyEquivalenceInclusion
 
-end SectionSevenAffineOrderFourRegularLiftInput
+end AffineOrderFourRegularLiftInput
 
 /-- The band-to-fibre map induced by the actual order-three regular-cover contraction. -/
-public noncomputable def SectionSevenAffineOrderThreeRegularLiftInput.bandToReducedFiber
-    (R : A.SectionSevenAffineOrderThreeRegularLiftInput) :
-    C((A.sectionSevenActualAffineSplit.allocation.orderThreeSide ∩
-        A.sectionSevenActualAffineSplit.allocation.orderFourSide :
-          Set A.SectionSevenEllipticInterior),
+public noncomputable def AffineOrderThreeRegularLiftInput.bandToReducedFiber
+    (R : A.AffineOrderThreeRegularLiftInput) :
+    C((A.actualAffineHeightSplit.allocation.orderThreeSide ∩
+        A.actualAffineHeightSplit.allocation.orderFourSide :
+          Set A.ellipticInterior),
       OrderThreeReducedCentralFiber A.periods) :=
-  (A.sectionSevenOrderThreeFillingImageHomotopyEquiv.toFun.comp
+  (A.orderThreeFillingImageHomotopyEquiv.toFun.comp
     (R.actualHomotopyEquivalenceInclusion.toHomotopyEquiv.trans
-      (nestedSubtypeHomeomorph A.sectionSevenActualAffineSplit.allocation.orderThreeSide
-        A.sectionSevenOrderThreeFillingImage
-        A.sectionSevenActualAffineSplit.orderThreeFillingImage_subset_side).toHomotopyEquiv).toFun)
+      (nestedSubtypeHomeomorph A.actualAffineHeightSplit.allocation.orderThreeSide
+        A.orderThreeFillingImage
+        A.actualAffineHeightSplit.orderThreeFillingImage_subset_side).toHomotopyEquiv).toFun)
     |>.comp (IntegralMayerVietoris.interToLeft
-      A.sectionSevenActualAffineSplit.allocation.orderThreeSide
-      A.sectionSevenActualAffineSplit.allocation.orderFourSide)
+      A.actualAffineHeightSplit.allocation.orderThreeSide
+      A.actualAffineHeightSplit.allocation.orderFourSide)
 
 /-- The band-to-fibre map induced by the actual order-four regular-cover contraction. -/
-public noncomputable def SectionSevenAffineOrderFourRegularLiftInput.bandToReducedFiber
-    (R : A.SectionSevenAffineOrderFourRegularLiftInput) :
-    C((A.sectionSevenActualAffineSplit.allocation.orderThreeSide ∩
-        A.sectionSevenActualAffineSplit.allocation.orderFourSide :
-          Set A.SectionSevenEllipticInterior),
+public noncomputable def AffineOrderFourRegularLiftInput.bandToReducedFiber
+    (R : A.AffineOrderFourRegularLiftInput) :
+    C((A.actualAffineHeightSplit.allocation.orderThreeSide ∩
+        A.actualAffineHeightSplit.allocation.orderFourSide :
+          Set A.ellipticInterior),
       OrderFourReducedCentralFiber A.periods) :=
-  (A.sectionSevenOrderFourFillingImageHomotopyEquiv.toFun.comp
+  (A.orderFourFillingImageHomotopyEquiv.toFun.comp
     (R.actualHomotopyEquivalenceInclusion.toHomotopyEquiv.trans
-      (nestedSubtypeHomeomorph A.sectionSevenActualAffineSplit.allocation.orderFourSide
-        A.sectionSevenOrderFourFillingImage
-        A.sectionSevenActualAffineSplit.orderFourFillingImage_subset_side).toHomotopyEquiv).toFun)
+      (nestedSubtypeHomeomorph A.actualAffineHeightSplit.allocation.orderFourSide
+        A.orderFourFillingImage
+        A.actualAffineHeightSplit.orderFourFillingImage_subset_side).toHomotopyEquiv).toFun)
     |>.comp (IntegralMayerVietoris.interToRight
-      A.sectionSevenActualAffineSplit.allocation.orderThreeSide
-      A.sectionSevenActualAffineSplit.allocation.orderFourSide)
+      A.actualAffineHeightSplit.allocation.orderThreeSide
+      A.actualAffineHeightSplit.allocation.orderFourSide)
 
 /-- Exact residual affine geometry on the genuine regular cover.  The two side equivalences are
 derived from explicit `Delta`-equivariant quotient models; only compatibility of those derived
 contractions with the two fixed marked finite-cover projections remains as proof data. -/
-public structure SectionSevenAffineRegularLiftCompletionInput where
-  orderThreeRegularLift : A.SectionSevenAffineOrderThreeRegularLiftInput
-  orderFourRegularLift : A.SectionSevenAffineOrderFourRegularLiftInput
+public structure AffineRegularLiftCompletionInput where
+  orderThreeRegularLift : A.AffineOrderThreeRegularLiftInput
+  orderFourRegularLift : A.AffineOrderFourRegularLiftInput
   orderThreeCompatibility : orderThreeRegularLift.bandToReducedFiber.Homotopic
-    (sectionSevenAffineBandOrderThreeCoverMap A)
+    (affineBandOrderThreeCoverMap A)
   orderFourCompatibility : orderFourRegularLift.bandToReducedFiber.Homotopic
-    (sectionSevenAffineBandOrderFourCoverMap A)
+    (affineBandOrderFourCoverMap A)
 
 /-- The genuinely homotopy-only residual marking data after the two regular-cover quotient
 models have been fixed.  This structure contains no radii, actions, quotient coordinates, or
 side-equivalence assumptions. -/
-public structure SectionSevenAffineRegularLiftBandCompatibilityInput
-    (orderThreeRegularLift : A.SectionSevenAffineOrderThreeRegularLiftInput)
-    (orderFourRegularLift : A.SectionSevenAffineOrderFourRegularLiftInput) where
+public structure AffineRegularLiftBandCompatibilityInput
+    (orderThreeRegularLift : A.AffineOrderThreeRegularLiftInput)
+    (orderFourRegularLift : A.AffineOrderFourRegularLiftInput) where
   orderThreeCompatibility : orderThreeRegularLift.bandToReducedFiber.Homotopic
-    (sectionSevenAffineBandOrderThreeCoverMap A)
+    (affineBandOrderThreeCoverMap A)
   orderFourCompatibility : orderFourRegularLift.bandToReducedFiber.Homotopic
-    (sectionSevenAffineBandOrderFourCoverMap A)
+    (affineBandOrderFourCoverMap A)
 
-namespace SectionSevenAffineRegularLiftBandCompatibilityInput
+namespace AffineRegularLiftBandCompatibilityInput
 
 /-- Combine fixed regular-cover quotient geometry with its two marked band homotopies. -/
 public def toCompletionInput
-    {orderThreeRegularLift : A.SectionSevenAffineOrderThreeRegularLiftInput}
-    {orderFourRegularLift : A.SectionSevenAffineOrderFourRegularLiftInput}
-    (H : A.SectionSevenAffineRegularLiftBandCompatibilityInput
+    {orderThreeRegularLift : A.AffineOrderThreeRegularLiftInput}
+    {orderFourRegularLift : A.AffineOrderFourRegularLiftInput}
+    (H : A.AffineRegularLiftBandCompatibilityInput
       orderThreeRegularLift orderFourRegularLift) :
-    A.SectionSevenAffineRegularLiftCompletionInput where
+    A.AffineRegularLiftCompletionInput where
   orderThreeRegularLift := orderThreeRegularLift
   orderFourRegularLift := orderFourRegularLift
   orderThreeCompatibility := H.orderThreeCompatibility
   orderFourCompatibility := H.orderFourCompatibility
 
-end SectionSevenAffineRegularLiftBandCompatibilityInput
+end AffineRegularLiftBandCompatibilityInput
 
-namespace SectionSevenAffineRegularLiftCompletionInput
+namespace AffineRegularLiftCompletionInput
 
 /-- Assemble the original affine radial input from the genuine regular-cover quotient models. -/
 public theorem toRadialCompletion
-    (R : A.SectionSevenAffineRegularLiftCompletionInput) :
-    A.SectionSevenAffineRadialCompletionInput where
+    (R : A.AffineRegularLiftCompletionInput) :
+    A.AffineRadialCompletionInput where
   orderThreeHomotopyEquivalence :=
     R.orderThreeRegularLift.actualHomotopyEquivalenceInclusion
   orderFourHomotopyEquivalence :=
@@ -153,7 +153,7 @@ public theorem toRadialCompletion
   orderThree_inclusion_compatibility := R.orderThreeCompatibility
   orderFour_inclusion_compatibility := R.orderFourCompatibility
 
-end SectionSevenAffineRegularLiftCompletionInput
+end AffineRegularLiftCompletionInput
 
 
 /-! ### Proposition-level overlap inputs
@@ -168,126 +168,126 @@ lets the affine completion be assembled without ever exhibiting an overlap quoti
 inclusion equivalence; no quotient model of the overlap is needed. -/
 public theorem orderThreeOverlapIsHomotopyEquivalence_inclusion
     (h : IsHomotopyEquivalence (SphereSixComplex.OpenUnionHomotopy.interToRight
-      A.sectionSevenOrderThreeFillingImage
-      A.sectionSevenAffineOrderThreeCentralRegion).hom) :
+      A.orderThreeFillingImage
+      A.affineOrderThreeCentralRegion).hom) :
     IsHomotopyEquivalenceInclusion
-      A.sectionSevenActualAffineSplit.orderThreeFillingSubspace := by
-  have hopen : IsOpen (A.sectionSevenOrderThreeFillingImage ∪
-      A.sectionSevenAffineOrderThreeCentralRegion) :=
-    A.sectionSevenOrderThreeFillingImage_isOpen.union
-      A.sectionSevenActualAffineSplit.centralHeightLowerRegion_isOpen
-  let _ : ParacompactSpace ↑(A.sectionSevenOrderThreeFillingImage ∪
-      A.sectionSevenAffineOrderThreeCentralRegion) :=
-    A.sectionSevenOpenSubspace_paracompact _ hopen
-  let _ : NormalSpace ↑(A.sectionSevenOrderThreeFillingImage ∪
-      A.sectionSevenAffineOrderThreeCentralRegion) :=
-    A.sectionSevenOpenSubspace_normal _ hopen
+      A.actualAffineHeightSplit.orderThreeFillingSubspace := by
+  have hopen : IsOpen (A.orderThreeFillingImage ∪
+      A.affineOrderThreeCentralRegion) :=
+    A.orderThreeFillingImage_isOpen.union
+      A.actualAffineHeightSplit.centralHeightLowerRegion_isOpen
+  let _ : ParacompactSpace ↑(A.orderThreeFillingImage ∪
+      A.affineOrderThreeCentralRegion) :=
+    A.ellipticInteriorOpenSubspace_paracompact _ hopen
+  let _ : NormalSpace ↑(A.orderThreeFillingImage ∪
+      A.affineOrderThreeCentralRegion) :=
+    A.ellipticInteriorOpenSubspace_normal _ hopen
   change IsHomotopyEquivalenceInclusion
-    (Subtype.val ⁻¹' A.sectionSevenOrderThreeFillingImage :
-      Set ↥(A.sectionSevenOrderThreeFillingImage ∪
-        A.sectionSevenAffineOrderThreeCentralRegion))
+    (Subtype.val ⁻¹' A.orderThreeFillingImage :
+      Set ↥(A.orderThreeFillingImage ∪
+        A.affineOrderThreeCentralRegion))
   exact SphereSixComplex.isHomotopyEquivalenceInclusion_of_leftToUnion _ _
     (SphereSixComplex.OpenUnionHomotopy.leftToUnion_isHomotopyEquivalence_of_normal_paracompact
-      _ _ A.sectionSevenOrderThreeFillingImage_isOpen
-      A.sectionSevenActualAffineSplit.centralHeightLowerRegion_isOpen h)
+      _ _ A.orderThreeFillingImage_isOpen
+      A.actualAffineHeightSplit.centralHeightLowerRegion_isOpen h)
 
 /-- The order-four overlap homotopy equivalence already gives the actual filling-to-side
 inclusion equivalence; no quotient model of the overlap is needed. -/
 public theorem orderFourOverlapIsHomotopyEquivalence_inclusion
     (h : IsHomotopyEquivalence (SphereSixComplex.OpenUnionHomotopy.interToRight
-      A.sectionSevenOrderFourFillingImage
-      A.sectionSevenAffineOrderFourCentralRegion).hom) :
+      A.orderFourFillingImage
+      A.affineOrderFourCentralRegion).hom) :
     IsHomotopyEquivalenceInclusion
-      A.sectionSevenActualAffineSplit.orderFourFillingSubspace := by
-  have hopen : IsOpen (A.sectionSevenOrderFourFillingImage ∪
-      A.sectionSevenAffineOrderFourCentralRegion) :=
-    A.sectionSevenOrderFourFillingImage_isOpen.union
-      A.sectionSevenActualAffineSplit.centralHeightUpperRegion_isOpen
-  let _ : ParacompactSpace ↑(A.sectionSevenOrderFourFillingImage ∪
-      A.sectionSevenAffineOrderFourCentralRegion) :=
-    A.sectionSevenOpenSubspace_paracompact _ hopen
-  let _ : NormalSpace ↑(A.sectionSevenOrderFourFillingImage ∪
-      A.sectionSevenAffineOrderFourCentralRegion) :=
-    A.sectionSevenOpenSubspace_normal _ hopen
+      A.actualAffineHeightSplit.orderFourFillingSubspace := by
+  have hopen : IsOpen (A.orderFourFillingImage ∪
+      A.affineOrderFourCentralRegion) :=
+    A.orderFourFillingImage_isOpen.union
+      A.actualAffineHeightSplit.centralHeightUpperRegion_isOpen
+  let _ : ParacompactSpace ↑(A.orderFourFillingImage ∪
+      A.affineOrderFourCentralRegion) :=
+    A.ellipticInteriorOpenSubspace_paracompact _ hopen
+  let _ : NormalSpace ↑(A.orderFourFillingImage ∪
+      A.affineOrderFourCentralRegion) :=
+    A.ellipticInteriorOpenSubspace_normal _ hopen
   change IsHomotopyEquivalenceInclusion
-    (Subtype.val ⁻¹' A.sectionSevenOrderFourFillingImage :
-      Set ↥(A.sectionSevenOrderFourFillingImage ∪
-        A.sectionSevenAffineOrderFourCentralRegion))
+    (Subtype.val ⁻¹' A.orderFourFillingImage :
+      Set ↥(A.orderFourFillingImage ∪
+        A.affineOrderFourCentralRegion))
   exact SphereSixComplex.isHomotopyEquivalenceInclusion_of_leftToUnion _ _
     (SphereSixComplex.OpenUnionHomotopy.leftToUnion_isHomotopyEquivalence_of_normal_paracompact
-      _ _ A.sectionSevenOrderFourFillingImage_isOpen
-      A.sectionSevenActualAffineSplit.centralHeightUpperRegion_isOpen h)
+      _ _ A.orderFourFillingImage_isOpen
+      A.actualAffineHeightSplit.centralHeightUpperRegion_isOpen h)
 
 /-- The order-three band-to-fibre map built from a bare filling-to-side inclusion equivalence. -/
-public noncomputable def sectionSevenAffineOrderThreeBandToReducedFiber
+public noncomputable def affineOrderThreeBandToReducedFiber
     (E : IsHomotopyEquivalenceInclusion
-      A.sectionSevenActualAffineSplit.orderThreeFillingSubspace) :
-    C((A.sectionSevenActualAffineSplit.allocation.orderThreeSide ∩
-        A.sectionSevenActualAffineSplit.allocation.orderFourSide :
-          Set A.SectionSevenEllipticInterior),
+      A.actualAffineHeightSplit.orderThreeFillingSubspace) :
+    C((A.actualAffineHeightSplit.allocation.orderThreeSide ∩
+        A.actualAffineHeightSplit.allocation.orderFourSide :
+          Set A.ellipticInterior),
       OrderThreeReducedCentralFiber A.periods) :=
-  (A.sectionSevenOrderThreeFillingImageHomotopyEquiv.toFun.comp
+  (A.orderThreeFillingImageHomotopyEquiv.toFun.comp
     (E.toHomotopyEquiv.trans
-      (nestedSubtypeHomeomorph A.sectionSevenActualAffineSplit.allocation.orderThreeSide
-        A.sectionSevenOrderThreeFillingImage
-        A.sectionSevenActualAffineSplit.orderThreeFillingImage_subset_side).toHomotopyEquiv).toFun)
+      (nestedSubtypeHomeomorph A.actualAffineHeightSplit.allocation.orderThreeSide
+        A.orderThreeFillingImage
+        A.actualAffineHeightSplit.orderThreeFillingImage_subset_side).toHomotopyEquiv).toFun)
     |>.comp (IntegralMayerVietoris.interToLeft
-      A.sectionSevenActualAffineSplit.allocation.orderThreeSide
-      A.sectionSevenActualAffineSplit.allocation.orderFourSide)
+      A.actualAffineHeightSplit.allocation.orderThreeSide
+      A.actualAffineHeightSplit.allocation.orderFourSide)
 
 /-- The order-four band-to-fibre map built from a bare filling-to-side inclusion equivalence. -/
-public noncomputable def sectionSevenAffineOrderFourBandToReducedFiber
+public noncomputable def affineOrderFourBandToReducedFiber
     (E : IsHomotopyEquivalenceInclusion
-      A.sectionSevenActualAffineSplit.orderFourFillingSubspace) :
-    C((A.sectionSevenActualAffineSplit.allocation.orderThreeSide ∩
-        A.sectionSevenActualAffineSplit.allocation.orderFourSide :
-          Set A.SectionSevenEllipticInterior),
+      A.actualAffineHeightSplit.orderFourFillingSubspace) :
+    C((A.actualAffineHeightSplit.allocation.orderThreeSide ∩
+        A.actualAffineHeightSplit.allocation.orderFourSide :
+          Set A.ellipticInterior),
       OrderFourReducedCentralFiber A.periods) :=
-  (A.sectionSevenOrderFourFillingImageHomotopyEquiv.toFun.comp
+  (A.orderFourFillingImageHomotopyEquiv.toFun.comp
     (E.toHomotopyEquiv.trans
-      (nestedSubtypeHomeomorph A.sectionSevenActualAffineSplit.allocation.orderFourSide
-        A.sectionSevenOrderFourFillingImage
-        A.sectionSevenActualAffineSplit.orderFourFillingImage_subset_side).toHomotopyEquiv).toFun)
+      (nestedSubtypeHomeomorph A.actualAffineHeightSplit.allocation.orderFourSide
+        A.orderFourFillingImage
+        A.actualAffineHeightSplit.orderFourFillingImage_subset_side).toHomotopyEquiv).toFun)
     |>.comp (IntegralMayerVietoris.interToRight
-      A.sectionSevenActualAffineSplit.allocation.orderThreeSide
-      A.sectionSevenActualAffineSplit.allocation.orderFourSide)
+      A.actualAffineHeightSplit.allocation.orderThreeSide
+      A.actualAffineHeightSplit.allocation.orderFourSide)
 
 /-- The regular-lift band map is literally the proposition-level band map. -/
-public theorem SectionSevenAffineOrderThreeRegularLiftInput.bandToReducedFiber_eq
-    (R : A.SectionSevenAffineOrderThreeRegularLiftInput) :
+public theorem AffineOrderThreeRegularLiftInput.bandToReducedFiber_eq
+    (R : A.AffineOrderThreeRegularLiftInput) :
     R.bandToReducedFiber =
-      sectionSevenAffineOrderThreeBandToReducedFiber R.actualHomotopyEquivalenceInclusion :=
+      affineOrderThreeBandToReducedFiber R.actualHomotopyEquivalenceInclusion :=
   rfl
 
 /-- The regular-lift band map is literally the proposition-level band map. -/
-public theorem SectionSevenAffineOrderFourRegularLiftInput.bandToReducedFiber_eq
-    (R : A.SectionSevenAffineOrderFourRegularLiftInput) :
+public theorem AffineOrderFourRegularLiftInput.bandToReducedFiber_eq
+    (R : A.AffineOrderFourRegularLiftInput) :
     R.bandToReducedFiber =
-      sectionSevenAffineOrderFourBandToReducedFiber R.actualHomotopyEquivalenceInclusion :=
+      affineOrderFourBandToReducedFiber R.actualHomotopyEquivalenceInclusion :=
   rfl
 
 /-- Exact residual affine data once the overlap geometry is a bare pair of homotopy
 equivalences: the two overlap equivalences and the two marked band homotopies. -/
-public structure SectionSevenAffineOverlapCompletionInput where
+public structure AffineOverlapCompletionInput where
   orderThreeOverlap : IsHomotopyEquivalence (SphereSixComplex.OpenUnionHomotopy.interToRight
-    A.sectionSevenOrderThreeFillingImage A.sectionSevenAffineOrderThreeCentralRegion).hom
+    A.orderThreeFillingImage A.affineOrderThreeCentralRegion).hom
   orderFourOverlap : IsHomotopyEquivalence (SphereSixComplex.OpenUnionHomotopy.interToRight
-    A.sectionSevenOrderFourFillingImage A.sectionSevenAffineOrderFourCentralRegion).hom
+    A.orderFourFillingImage A.affineOrderFourCentralRegion).hom
   orderThreeCompatibility :
-    (sectionSevenAffineOrderThreeBandToReducedFiber
+    (affineOrderThreeBandToReducedFiber
       (orderThreeOverlapIsHomotopyEquivalence_inclusion orderThreeOverlap)).Homotopic
-      (sectionSevenAffineBandOrderThreeCoverMap A)
+      (affineBandOrderThreeCoverMap A)
   orderFourCompatibility :
-    (sectionSevenAffineOrderFourBandToReducedFiber
+    (affineOrderFourBandToReducedFiber
       (orderFourOverlapIsHomotopyEquivalence_inclusion orderFourOverlap)).Homotopic
-      (sectionSevenAffineBandOrderFourCoverMap A)
+      (affineBandOrderFourCoverMap A)
 
-namespace SectionSevenAffineOverlapCompletionInput
+namespace AffineOverlapCompletionInput
 
 /-- Assemble the original affine radial input from the two bare overlap homotopy equivalences. -/
 public theorem toRadialCompletion
-    (R : A.SectionSevenAffineOverlapCompletionInput) :
-    A.SectionSevenAffineRadialCompletionInput where
+    (R : A.AffineOverlapCompletionInput) :
+    A.AffineRadialCompletionInput where
   orderThreeHomotopyEquivalence :=
     orderThreeOverlapIsHomotopyEquivalence_inclusion R.orderThreeOverlap
   orderFourHomotopyEquivalence :=
@@ -295,7 +295,7 @@ public theorem toRadialCompletion
   orderThree_inclusion_compatibility := R.orderThreeCompatibility
   orderFour_inclusion_compatibility := R.orderFourCompatibility
 
-end SectionSevenAffineOverlapCompletionInput
+end AffineOverlapCompletionInput
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

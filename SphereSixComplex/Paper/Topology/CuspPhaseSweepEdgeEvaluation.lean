@@ -8,8 +8,8 @@ noncomputable section
 open Set Topology CategoryTheory CategoryTheory.Limits HomologicalComplex Matrix MonoidalCategory
 namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 open SphereSixComplex.Periods
-open StandardInfiniteA2ToricModel StandardInfiniteA2ToricModel.Established
-open StandardInfiniteA2ToricModel.Construction CuspFilling CuspPeriodExpansion
+open InfiniteA2Toric InfiniteA2Toric
+open InfiniteA2Toric.Construction CuspFilling CuspPeriodExpansion
 variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
@@ -18,7 +18,7 @@ theorem circleSweepParameter_eq_period (i : Fin 2) (t : unitInterval) :
   ext j
   fin_cases i <;> fin_cases j <;>
     simp [constructedA2CircleSweepParameter, constructedA2CircleOnePhase,
-      constructedCircleBallCell, constructedCircleCell, cuspPeriodCompactCircle,
+      CircleCell.ballParam, CircleCell.param, cuspPeriodCompactCircle,
       AddCircle.toCircle_apply_mk]
   all_goals congr 2; ring
 

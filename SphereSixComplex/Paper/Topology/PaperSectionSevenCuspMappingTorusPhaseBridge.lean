@@ -27,7 +27,7 @@ namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 variable {E : Periods.EstablishedFuchsianModularParameter}
   {D : Periods.FuchsianPeriodLocalData E}
   {N : CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate E D}
-  {M : StandardInfiniteA2ToricModel.Model}
+  {M : InfiniteA2Toric.Model}
   {W : ActualPuncturedCuspCollarWitness N M}
 
 namespace UnnormalizedCuspRadialClutchingData
@@ -198,7 +198,7 @@ open CategoryTheory TopologicalSpace
 
 variable {A : PaperAnalyticData}
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 /-- The normalized cusp product has its expected nondegenerate linear term at the cusp. -/
 public theorem actualCuspProduct_hasStrictDerivAt_zero (A : PaperAnalyticData) :
@@ -255,7 +255,7 @@ public theorem exists_actualCuspProduct_injOn (A : PaperAnalyticData) :
 /-- The pulled-back affine cusp cover in the corrected order: order four first, order three
 second. -/
 public theorem actualCuspMappingTorusPulledBackSwappedOpenCover
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     actualCuspMappingTorusOrderFourOpen R ⊔
@@ -265,7 +265,7 @@ public theorem actualCuspMappingTorusPulledBackSwappedOpenCover
 
 /-- Canonical Mayer--Vietoris comparison for the pulled-back cusp cover in corrected order. -/
 public noncomputable def actualCuspMappingTorusPulledBackSwappedHomologyComparison
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     SphereSixComplex.BinaryOpenCover.OpenCoverHomologyComparison
@@ -278,7 +278,7 @@ public noncomputable def actualCuspMappingTorusPulledBackSwappedHomologyComparis
 
 /-- Reversing the pulled-back cusp cover negates its ordinary Mayer--Vietoris boundary. -/
 public theorem actualCuspMappingTorusPulledBack_boundary_swap
-    (R : A.SectionSevenAffineRadialCompletionInput) (n : ℕ) :
+    (R : A.AffineRadialCompletionInput) (n : ℕ) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     (actualCuspMappingTorusPulledBackHomologyComparison R).boundary n ≫
@@ -428,11 +428,11 @@ public theorem actualCuspCylinderReciprocalProduct_re_lt_two_thirds
     rw [hre, him, abs_mul, abs_of_pos hrho]
     nlinarith [mul_nonneg hrho.le
       (abs_nonneg (Real.sin (2 * Real.pi * (p.1 : ℝ))))]
-  exact actualCuspReciprocalProduct_re_lt_two_thirds q a.2 hqre hqsector
+  exact cuspReciprocalProduct_re_lt_two_thirds q a.2 hqre hqsector
 
 /-- The right-sector cylinder band maps into the pulled-back order-four open. -/
 public theorem actualCuspCylinder_mem_orderFourOpen_of_rightSector
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (p : let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
       unitInterval × G.Fiber)
@@ -456,7 +456,7 @@ public theorem actualCuspCylinder_mem_orderFourOpen_of_rightSector
 
 /-- The left-sector cylinder band maps into the pulled-back order-three open. -/
 public theorem actualCuspCylinder_mem_orderThreeOpen_of_leftSector
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (p : let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
       unitInterval × G.Fiber)
@@ -478,7 +478,7 @@ public theorem actualCuspCylinder_mem_orderThreeOpen_of_leftSector
   rw [R.twoDiscCover.sectionSevenEllipticCentralHeight_cuspToEllipticInteriorMap_mappingTorus z]
   exact actualCuspCylinderReciprocalProduct_re_lt_two_thirds p hcos hsector
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

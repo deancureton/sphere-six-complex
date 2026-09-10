@@ -8,10 +8,10 @@ public import SphereSixComplex.Paper.Topology.ConstructedA2PositiveQuotientRelat
 noncomputable section
 open Set Topology
 open scoped NNReal
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex SphereSixComplex.Periods
 open CuspFilling CuspLocalPhaseAction CuspPuncturedCollarBridge CuspPeriodExpansion
-open CuspStraighteningRetraction StandardInfiniteA2ToricModel.Construction
+open CuspStraighteningRetraction InfiniteA2Toric.Construction
 variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
@@ -94,4 +94,4 @@ public theorem constructedPositiveQuotientInteriorHomotopyEquiv_inv
     (x : ↥((ConstructedA2PositiveQuotientCore W)ᶜ)) :
     (constructedPositiveQuotientInteriorHomotopyEquiv W).invFun x = x.1 := rfl
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric

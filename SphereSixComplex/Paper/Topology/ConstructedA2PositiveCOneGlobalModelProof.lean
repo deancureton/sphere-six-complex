@@ -16,9 +16,9 @@ noncomputable section
 
 open Function Set TopologicalSpace Topology WithLp
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 /-- The global exponential log-position chart of the moment strip. -/
 public noncomputable def constructedA2MomentQuadrantEmbedding (r : ℝ) :
@@ -98,7 +98,7 @@ public theorem constructedA2MomentRegion_boundary {r : ℝ} (hr : 0 < r) :
     · intro hpos
       exact (ne_of_gt (hpos 2)) hzero
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric
 
 end
 

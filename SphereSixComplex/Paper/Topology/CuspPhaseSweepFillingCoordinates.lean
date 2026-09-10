@@ -7,8 +7,8 @@ public import SphereSixComplex.Paper.Topology.CuspCentralFillingHomologyComparis
 noncomputable section
 namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 open SphereSixComplex.Periods
-open CuspFilling CuspPeriodExpansion StandardInfiniteA2ToricModel
-open StandardInfiniteA2ToricModel.Construction
+open CuspFilling CuspPeriodExpansion InfiniteA2Toric
+open InfiniteA2Toric.Construction
 variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 

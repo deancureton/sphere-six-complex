@@ -60,35 +60,35 @@ public theorem range_orderThreeAffineDiscLiftQuotientToCentralFamily (r : ℝ) :
       exact hq
 
 /-- The affine-coordinate radius of a point of the regular central image. -/
-public noncomputable def sectionSevenEllipticCentralRadius :
-    A.sectionSevenEllipticCentralImage → ℝ :=
-  fun x ↦ ‖(A.sectionSevenEllipticCentralCoordinate x).1‖
+public noncomputable def ellipticCentralRadius :
+    A.ellipticCentralImage → ℝ :=
+  fun x ↦ ‖(A.ellipticCentralCoordinate x).1‖
 
 /-- The affine disc region of radius `r` inside the regular central image. -/
-public noncomputable def sectionSevenAffineOrderThreeDiscRegion (r : ℝ) :
-    Set A.SectionSevenEllipticInterior :=
-  centralHeightLowerRegion A.sectionSevenEllipticCentralRadius r
+public noncomputable def affineOrderThreeDiscRegion (r : ℝ) :
+    Set A.ellipticInterior :=
+  centralHeightLowerRegion A.ellipticCentralRadius r
 
 /-- The affine disc region, expressed as the quotient of its full-deck-action disc lift. -/
-public noncomputable def sectionSevenAffineOrderThreeDiscRegionQuotientHomeomorph (r : ℝ) :
-    ↥(A.sectionSevenAffineOrderThreeDiscRegion r) ≃ₜ
+public noncomputable def affineOrderThreeDiscRegionQuotientHomeomorph (r : ℝ) :
+    ↥(A.affineOrderThreeDiscRegion r) ≃ₜ
       Quotient (orbitRelOf (A.orderThreeAffineDiscLiftAction r)) :=
-  (centralHeightLowerRegionHomeomorph A A.sectionSevenEllipticCentralRadius r).symm |>.trans
-    (A.sectionSevenEllipticCentralImageHomeomorph.subtype fun _ ↦ Iff.rfl) |>.trans
+  (centralHeightLowerRegionHomeomorph A A.ellipticCentralRadius r).symm |>.trans
+    (A.ellipticCentralImageHomeomorph.subtype fun _ ↦ Iff.rfl) |>.trans
     (Homeomorph.setCongr
       (A.range_orderThreeAffineDiscLiftQuotientToCentralFamily r).symm) |>.trans
     (A.orderThreeAffineDiscLiftQuotientHomeomorphRange r).symm
 
 public theorem mem_centralImage_of_mem_centralHeightLowerRegion
-    (height : A.sectionSevenEllipticCentralImage → ℝ) (upper : ℝ)
-    {x : A.SectionSevenEllipticInterior}
+    (height : A.ellipticCentralImage → ℝ) (upper : ℝ)
+    {x : A.ellipticInterior}
     (hx : x ∈ centralHeightLowerRegion height upper) :
-    x ∈ A.sectionSevenEllipticCentralImage := by
+    x ∈ A.ellipticCentralImage := by
   obtain ⟨y, _, rfl⟩ := hx
   exact y.2
 
 public theorem coe_centralHeightLowerRegionHomeomorph_symm
-    (height : A.sectionSevenEllipticCentralImage → ℝ) (upper : ℝ)
+    (height : A.ellipticCentralImage → ℝ) (upper : ℝ)
     (x : ↥(centralHeightLowerRegion height upper)) :
     (((centralHeightLowerRegionHomeomorph A height upper).symm x).1).1 = x.1 :=
   congrArg Subtype.val
@@ -110,29 +110,29 @@ public theorem toCentralFamily_orderThreeAffineHalfPlaneLiftQuotientHomeomorphRa
 
 /-- The disc-region quotient model is compatible with the central-family coordinates. -/
 public theorem toCentralFamily_sectionSevenAffineOrderThreeDiscRegionQuotientHomeomorph
-    (r : ℝ) (x : ↥(A.sectionSevenAffineOrderThreeDiscRegion r)) :
+    (r : ℝ) (x : ↥(A.affineOrderThreeDiscRegion r)) :
     A.orderThreeAffineDiscLiftQuotientToCentralFamily r
-        (A.sectionSevenAffineOrderThreeDiscRegionQuotientHomeomorph r x) =
-      A.sectionSevenEllipticCentralImageHomeomorph
+        (A.affineOrderThreeDiscRegionQuotientHomeomorph r x) =
+      A.ellipticCentralImageHomeomorph
         ⟨x.1, A.mem_centralImage_of_mem_centralHeightLowerRegion
-          A.sectionSevenEllipticCentralRadius r x.2⟩ := by
+          A.ellipticCentralRadius r x.2⟩ := by
   refine (A.toCentralFamily_orderThreeAffineDiscLiftQuotientHomeomorphRange_symm r _).trans ?_
-  exact congrArg A.sectionSevenEllipticCentralImageHomeomorph
+  exact congrArg A.ellipticCentralImageHomeomorph
     (Subtype.ext (A.coe_centralHeightLowerRegionHomeomorph_symm
-      A.sectionSevenEllipticCentralRadius r x))
+      A.ellipticCentralRadius r x))
 
 /-- The central-region quotient model is compatible with the central-family coordinates. -/
 public theorem toCentralFamily_sectionSevenAffineOrderThreeCentralRegionQuotientHomeomorph
-    (x : ↥A.sectionSevenAffineOrderThreeCentralRegion) :
+    (x : ↥A.affineOrderThreeCentralRegion) :
     A.orderThreeAffineHalfPlaneLiftQuotientToCentralFamily
-        (A.sectionSevenAffineOrderThreeCentralRegionQuotientHomeomorph x) =
-      A.sectionSevenEllipticCentralImageHomeomorph
+        (A.affineOrderThreeCentralRegionQuotientHomeomorph x) =
+      A.ellipticCentralImageHomeomorph
         ⟨x.1, A.mem_centralImage_of_mem_centralHeightLowerRegion
-          A.sectionSevenEllipticCentralHeight (2 / 3 : ℝ) x.2⟩ := by
+          A.ellipticCentralHeight (2 / 3 : ℝ) x.2⟩ := by
   refine (A.toCentralFamily_orderThreeAffineHalfPlaneLiftQuotientHomeomorphRange_symm _).trans ?_
-  exact congrArg A.sectionSevenEllipticCentralImageHomeomorph
+  exact congrArg A.ellipticCentralImageHomeomorph
     (Subtype.ext (A.coe_centralHeightLowerRegionHomeomorph_symm
-      A.sectionSevenEllipticCentralHeight (2 / 3 : ℝ) x))
+      A.ellipticCentralHeight (2 / 3 : ℝ) x))
 
 /-- Including the disc lift quotient into the half-plane lift quotient and then into the actual
 central family is the direct disc-lift inclusion. -/
@@ -149,16 +149,16 @@ family, then the order-three overlap quotient identification exists. -/
 public theorem orderThreeOverlapQuotientIdentification_nonempty_of_overlap_eq
     {s r : ℝ} (hs : 0 < s) (hsr : s < r) (hr : r ≤ 2 / 3)
     (hoverlap :
-      A.sectionSevenOrderThreeFillingImage ∩ A.sectionSevenAffineOrderThreeCentralRegion =
-        A.sectionSevenAffineOrderThreeDiscRegion r) :
-    Nonempty A.SectionSevenAffineOrderThreeOverlapQuotientIdentification := by
+      A.orderThreeFillingImage ∩ A.affineOrderThreeCentralRegion =
+        A.affineOrderThreeDiscRegion r) :
+    Nonempty A.AffineOrderThreeOverlapQuotientIdentification := by
   refine ⟨{ normalizationRadius := s
             affineDiscRadius := r
             normalizationRadius_pos := hs
             normalizationRadius_lt_disc := hsr
             affineDiscRadius_le_halfPlane := hr
             overlapModel := (Homeomorph.setCongr hoverlap).trans
-              (A.sectionSevenAffineOrderThreeDiscRegionQuotientHomeomorph r)
+              (A.affineOrderThreeDiscRegionQuotientHomeomorph r)
             commutes := ?_ }⟩
   funext x
   apply (A.orderThreeAffineHalfPlaneLiftQuotientToCentralFamily_isOpenEmbedding).injective
@@ -170,13 +170,13 @@ public theorem orderThreeOverlapQuotientIdentification_nonempty_of_overlap_eq
 
 /-- Any overlap quotient identification computes the central-family point of an overlap point. -/
 public theorem toCentralFamily_overlapModel
-    (Q : A.SectionSevenAffineOrderThreeOverlapQuotientIdentification)
-    (u : ↥(A.sectionSevenOrderThreeFillingImage ∩
-      A.sectionSevenAffineOrderThreeCentralRegion)) :
+    (Q : A.AffineOrderThreeOverlapQuotientIdentification)
+    (u : ↥(A.orderThreeFillingImage ∩
+      A.affineOrderThreeCentralRegion)) :
     A.orderThreeAffineDiscLiftQuotientToCentralFamily Q.affineDiscRadius (Q.overlapModel u) =
-      A.sectionSevenEllipticCentralImageHomeomorph
+      A.ellipticCentralImageHomeomorph
         ⟨u.1, A.mem_centralImage_of_mem_centralHeightLowerRegion
-          A.sectionSevenEllipticCentralHeight (2 / 3 : ℝ) u.2.2⟩ := by
+          A.ellipticCentralHeight (2 / 3 : ℝ) u.2.2⟩ := by
   have h := congrFun Q.commutes u
   simp only [Function.comp_apply] at h
   rw [← A.toCentralFamily_orderThreeAffineDiscLiftQuotientInclusion
@@ -187,14 +187,14 @@ public theorem toCentralFamily_overlapModel
 be the affine disc region of its own radius.  The identification is therefore exactly equivalent
 to that set equality. -/
 public theorem overlap_eq_sectionSevenAffineOrderThreeDiscRegion
-    (Q : A.SectionSevenAffineOrderThreeOverlapQuotientIdentification) :
-    A.sectionSevenOrderThreeFillingImage ∩ A.sectionSevenAffineOrderThreeCentralRegion =
-      A.sectionSevenAffineOrderThreeDiscRegion Q.affineDiscRadius := by
+    (Q : A.AffineOrderThreeOverlapQuotientIdentification) :
+    A.orderThreeFillingImage ∩ A.affineOrderThreeCentralRegion =
+      A.affineOrderThreeDiscRegion Q.affineDiscRadius := by
   ext x
   constructor
   · intro hx
     have hmem := A.mem_centralImage_of_mem_centralHeightLowerRegion
-      A.sectionSevenEllipticCentralHeight (2 / 3 : ℝ) hx.2
+      A.ellipticCentralHeight (2 / 3 : ℝ) hx.2
     refine ⟨⟨x, hmem⟩, ?_, rfl⟩
     have hrange : A.orderThreeAffineDiscLiftQuotientToCentralFamily Q.affineDiscRadius
         (Q.overlapModel ⟨x, hx⟩) ∈
@@ -204,19 +204,19 @@ public theorem overlap_eq_sectionSevenAffineOrderThreeDiscRegion
       A.toCentralFamily_overlapModel Q ⟨x, hx⟩] at hrange
     exact hrange
   · rintro ⟨y, hy, rfl⟩
-    have hrange : A.sectionSevenEllipticCentralImageHomeomorph y ∈
+    have hrange : A.ellipticCentralImageHomeomorph y ∈
         Set.range (A.orderThreeAffineDiscLiftQuotientToCentralFamily Q.affineDiscRadius) := by
       rw [A.range_orderThreeAffineDiscLiftQuotientToCentralFamily]
       exact hy
     obtain ⟨q, hq⟩ := hrange
     refine (Q.overlapModel.symm q).2 |>.imp ?_ ?_ <;> intro h <;>
-      · have hpoint : ((Q.overlapModel.symm q : ↥(A.sectionSevenOrderThreeFillingImage ∩
-            A.sectionSevenAffineOrderThreeCentralRegion)) : A.SectionSevenEllipticInterior) =
+      · have hpoint : ((Q.overlapModel.symm q : ↥(A.orderThreeFillingImage ∩
+            A.affineOrderThreeCentralRegion)) : A.ellipticInterior) =
             y.1 := by
           have := A.toCentralFamily_overlapModel Q (Q.overlapModel.symm q)
           rw [Q.overlapModel.apply_symm_apply, hq] at this
           exact congrArg Subtype.val
-            (A.sectionSevenEllipticCentralImageHomeomorph.injective this.symm)
+            (A.ellipticCentralImageHomeomorph.injective this.symm)
         rwa [hpoint] at h
 
 end SphereSixComplex.Geometry.PaperAnalyticData

@@ -21,11 +21,11 @@ noncomputable section
 
 open Filter Function Set Topology
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 /-- The noncentral stratum of the constructed positive carrier. -/
 public def constructedA2PositiveOffCentral (r : ℝ) : Set (constructedLocalPositivePart r) :=
@@ -88,6 +88,6 @@ public theorem ConstructedA2ProperMomentCoordinate.coordinate_eq
   · intro q hq
     exact D.coordinate_offCentral q hq
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric
 
 end

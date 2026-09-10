@@ -22,7 +22,7 @@ open SphereSixComplex.Periods
 open CuspFilling CuspLocalPhaseAction CuspPuncturedCollarBridge
 open CuspPeriodExpansion CuspStraighteningAlgebra CuspStraighteningExtension
 open CuspStraighteningHomeomorph CuspToricPhaseAction
-open StandardInfiniteA2ToricModel
+open InfiniteA2Toric
 open CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
 
 /-- The deck map with the complex phase coefficient frozen at the central parameter. -/
@@ -205,7 +205,7 @@ public noncomputable def quotientStraighteningHomeomorph
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     actualLocalCuspFilling W ≃ₜ FrozenLocalCuspFilling N M W.localWitness.radius :=
-  let J := StandardInfiniteA2ToricModel.Established.establishedContinuousTorusAction M
+  let J := InfiniteA2Toric.establishedContinuousTorusAction M
   Homeomorph.Quotient.congr (pointStraighteningHomeomorph J W) fun x y ↦ by
     let C := restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
       W.localWitness.radius_pos W.localWitness.radius_le

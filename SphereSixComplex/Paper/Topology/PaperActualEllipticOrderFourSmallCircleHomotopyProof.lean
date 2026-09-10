@@ -67,10 +67,10 @@ public theorem orderFourCayleyChartFunction_sub_one_ne_zero_neg_one
 
 public theorem orderFourFillingRelationCayleyBaseValue_norm :
     ‖A.orderFourFillingRelationCayleyBaseValue‖ =
-      (A.orderFourActualEllipticBoundaryBase.1 : ℝ) := by
+      (A.ellipticFourBoundaryBase.1 : ℝ) := by
   rw [orderFourFillingRelationCayleyBaseValue, norm_mul,
     Complex.norm_real, Real.norm_eq_abs,
-    abs_of_pos A.orderFourActualEllipticBoundaryBase.1.2.1]
+    abs_of_pos A.ellipticFourBoundaryBase.1.2.1]
   rw [Circle.norm_coe, mul_one]
 
 /-- The affine coordinate of a positive Cayley circle contained in the selected collar. -/
@@ -127,7 +127,7 @@ public theorem orderFourAlignedCayleyRadialPoint_norm_pos_lt
   have hbaser : ‖A.orderFourFillingRelationCayleyBaseValue‖ <
       A.starSeparation.orderFour.radius := by
     rw [A.orderFourFillingRelationCayleyBaseValue_norm]
-    exact A.orderFourActualEllipticBoundaryBase.1.2.2
+    exact A.ellipticFourBoundaryBase.1.2.2
   rw [orderFourAlignedCayleyRadialPoint, norm_mul,
     localDegreeCirclePoint_norm, Complex.norm_real, Real.norm_eq_abs,
     abs_of_pos hd0]
@@ -144,7 +144,7 @@ public noncomputable def orderFourCayleyChartRadialHomotopy
         (norm_pos_iff.mpr A.orderFourFillingRelationCayleyBaseValue_ne_zero)
         (by
           rw [A.orderFourFillingRelationCayleyBaseValue_norm]
-          exact A.orderFourActualEllipticBoundaryBase.1.2.2))
+          exact A.ellipticFourBoundaryBase.1.2.2))
       (A.orderFourCayleyChartSubOneCircleMap
         ((c : ℂ) * A.orderFourFillingRelationCayleyBaseValue)
         (by
@@ -157,7 +157,7 @@ public noncomputable def orderFourCayleyChartRadialHomotopy
             (norm_pos_iff.mpr
               A.orderFourFillingRelationCayleyBaseValue_ne_zero)).trans (by
               rw [A.orderFourFillingRelationCayleyBaseValue_norm]
-              simpa using A.orderFourActualEllipticBoundaryBase.1.2.2))) where
+              simpa using A.ellipticFourBoundaryBase.1.2.2))) where
   toFun p :=
     ⟨ellipticChartFunction A.modular.sourceCoordinate.coordinate
           fuchsianTwoFixedPoint (A.orderFourAlignedCayleyRadialPoint c p) - 1,
@@ -285,7 +285,7 @@ public theorem exists_orderFourActualCayleyBaseCoordinate_fourTurnHomotopy :
           (norm_pos_iff.mpr A.orderFourFillingRelationCayleyBaseValue_ne_zero)
           (by
             rw [A.orderFourFillingRelationCayleyBaseValue_norm]
-            exact A.orderFourActualEllipticBoundaryBase.1.2.2))
+            exact A.ellipticFourBoundaryBase.1.2.2))
         (frozenLocalDegreeCircleTwoPunctures
           u 4 a (-1) ha hune hbound)) := by
   obtain ⟨u, a, c, hc, hc1, haeq, hu, hune, hfac, hbound⟩ :=
@@ -305,7 +305,7 @@ public theorem exists_orderFourActualCayleyBaseCoordinate_fourTurnHomotopy :
       (norm_pos_iff.mpr
         A.orderFourFillingRelationCayleyBaseValue_ne_zero)).trans (by
           rw [A.orderFourFillingRelationCayleyBaseValue_norm]
-          simpa using A.orderFourActualEllipticBoundaryBase.1.2.2)
+          simpa using A.ellipticFourBoundaryBase.1.2.2)
   have hsmall :
       A.orderFourCayleyChartSubOneCircleMap a (norm_pos_iff.mpr ha) har =
         factorizedLocalDegreeCircleTwoPunctures
@@ -331,7 +331,7 @@ public theorem exists_orderFourActualCayleyBaseCoordinate_fourTurnHomotopy :
               (norm_pos_iff.mpr
                 A.orderFourFillingRelationCayleyBaseValue_ne_zero)).trans (by
                   rw [A.orderFourFillingRelationCayleyBaseValue_norm]
-                  simpa using A.orderFourActualEllipticBoundaryBase.1.2.2)) =
+                  simpa using A.ellipticFourBoundaryBase.1.2.2)) =
         factorizedLocalDegreeCircleTwoPunctures
           u 4 a (-1) ha hu hune hbound' := by
     exact hsmall

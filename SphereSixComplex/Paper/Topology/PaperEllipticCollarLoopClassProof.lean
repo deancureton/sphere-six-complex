@@ -162,221 +162,221 @@ public theorem orderFourCollarRegularRepresentativeMap_fullTurn
     (A.orderFourCollarInverseRepresentative_fullTurn q)
 
 public theorem orderThreeFillingRelation_regularRepresentative_endpoint
-    : letI := A.orderThreeActualEllipticBoundaryAction
+    : letI := A.ellipticThreeBoundaryAction
       A.orderThreeCollarRegularRepresentativeMap
-          (A.orderThreeActualEllipticBoundaryDeckData.fillingRelation •
-            A.orderThreeActualEllipticBoundaryBase) =
+          (A.ellipticThreeBoundaryDeckData.fillingRelation •
+            A.ellipticThreeBoundaryBase) =
         A.orderThreeCollarRegularRepresentativeMap
-          A.orderThreeActualEllipticBoundaryBase := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
-  rw [A.orderThreeActualFillingRelation_boundary_smul]
+          A.ellipticThreeBoundaryBase := by
+  let _ := A.ellipticThreeBoundaryAction
+  rw [A.ellipticThreeFillingRelation_boundary_smul]
   exact A.orderThreeCollarRegularRepresentativeMap_fullTurn
-    A.orderThreeActualEllipticBoundaryBase
+    A.ellipticThreeBoundaryBase
 
 public theorem orderFourFillingRelation_regularRepresentative_endpoint
-    : letI := A.orderFourActualEllipticBoundaryAction
+    : letI := A.ellipticFourBoundaryAction
       A.orderFourCollarRegularRepresentativeMap
-          (A.orderFourActualEllipticBoundaryDeckData.fillingRelation •
-            A.orderFourActualEllipticBoundaryBase) =
+          (A.ellipticFourBoundaryDeckData.fillingRelation •
+            A.ellipticFourBoundaryBase) =
         A.orderFourCollarRegularRepresentativeMap
-          A.orderFourActualEllipticBoundaryBase := by
-  let _ := A.orderFourActualEllipticBoundaryAction
-  rw [A.orderFourActualFillingRelation_boundary_smul]
+          A.ellipticFourBoundaryBase := by
+  let _ := A.ellipticFourBoundaryAction
+  rw [A.ellipticFourFillingRelation_boundary_smul]
   exact A.orderFourCollarRegularRepresentativeMap_fullTurn
-    A.orderFourActualEllipticBoundaryBase
+    A.ellipticFourBoundaryBase
 
 public noncomputable def orderThreeFillingRelationRegularLoop :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     Path
       (A.orderThreeCollarRegularRepresentativeMap
-        A.orderThreeActualEllipticBoundaryBase)
+        A.ellipticThreeBoundaryBase)
       (A.orderThreeCollarRegularRepresentativeMap
-        A.orderThreeActualEllipticBoundaryBase) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
-  exact ((A.orderThreeActualEllipticBoundaryDeckStraightLift
-    A.orderThreeActualEllipticBoundaryDeckData.fillingRelation).map
+        A.ellipticThreeBoundaryBase) := by
+  let _ := A.ellipticThreeBoundaryAction
+  exact ((A.ellipticThreeBoundaryDeckStraightLift
+    A.ellipticThreeBoundaryDeckData.fillingRelation).map
       A.orderThreeCollarRegularRepresentativeMap.continuous).cast rfl
         A.orderThreeFillingRelation_regularRepresentative_endpoint.symm
 
 public noncomputable def orderFourFillingRelationRegularLoop :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     Path
       (A.orderFourCollarRegularRepresentativeMap
-        A.orderFourActualEllipticBoundaryBase)
+        A.ellipticFourBoundaryBase)
       (A.orderFourCollarRegularRepresentativeMap
-        A.orderFourActualEllipticBoundaryBase) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
-  exact ((A.orderFourActualEllipticBoundaryDeckStraightLift
-    A.orderFourActualEllipticBoundaryDeckData.fillingRelation).map
+        A.ellipticFourBoundaryBase) := by
+  let _ := A.ellipticFourBoundaryAction
+  exact ((A.ellipticFourBoundaryDeckStraightLift
+    A.ellipticFourBoundaryDeckData.fillingRelation).map
       A.orderFourCollarRegularRepresentativeMap.continuous).cast rfl
         A.orderFourFillingRelation_regularRepresentative_endpoint.symm
 
 public theorem orderThreeCollarRegularRepresentative_base_projects :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     A.centralQuotientProjection
         (A.orderThreeCollarRegularRepresentativeMap
-          A.orderThreeActualEllipticBoundaryBase) =
-      A.orderThreeActualEllipticCentralBase := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
-  have h := A.orderThreeActualEllipticBoundaryDeckStraightCentralLoop_apply_explicit
-    A.orderThreeActualEllipticBoundaryDeckData.fillingRelation 0
+          A.ellipticThreeBoundaryBase) =
+      A.ellipticThreeCentralBase := by
+  let _ := A.ellipticThreeBoundaryAction
+  have h := A.ellipticThreeBoundaryDeckStraightCentralLoop_apply_explicit
+    A.ellipticThreeBoundaryDeckData.fillingRelation 0
   simpa [orderThreeCollarRegularRepresentativeMap] using h.symm
 
 public theorem orderFourCollarRegularRepresentative_base_projects :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     A.centralQuotientProjection
         (A.orderFourCollarRegularRepresentativeMap
-          A.orderFourActualEllipticBoundaryBase) =
-      A.orderFourActualEllipticCentralBase := by
-  let _ := A.orderFourActualEllipticBoundaryAction
-  have h := A.orderFourActualEllipticBoundaryDeckStraightCentralLoop_apply_explicit
-    A.orderFourActualEllipticBoundaryDeckData.fillingRelation 0
+          A.ellipticFourBoundaryBase) =
+      A.ellipticFourCentralBase := by
+  let _ := A.ellipticFourBoundaryAction
+  have h := A.ellipticFourBoundaryDeckStraightCentralLoop_apply_explicit
+    A.ellipticFourBoundaryDeckData.fillingRelation 0
   simpa [orderFourCollarRegularRepresentativeMap] using h.symm
 
 public theorem orderThreeFillingRelationRegularLoop_projects :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     ((A.orderThreeFillingRelationRegularLoop.map
       A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
         A.orderThreeCollarRegularRepresentative_base_projects.symm
         A.orderThreeCollarRegularRepresentative_base_projects.symm) =
-      A.orderThreeActualEllipticBoundaryDeckStraightCentralLoop
-        A.orderThreeActualEllipticBoundaryDeckData.fillingRelation := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+      A.ellipticThreeBoundaryDeckStraightCentralLoop
+        A.ellipticThreeBoundaryDeckData.fillingRelation := by
+  let _ := A.ellipticThreeBoundaryAction
   apply Path.ext
   funext t
   change A.centralQuotientProjection
       (A.orderThreeCollarRegularRepresentativeMap
-        (A.orderThreeActualEllipticBoundaryDeckStraightLift
-          A.orderThreeActualEllipticBoundaryDeckData.fillingRelation t)) =
-    A.orderThreeActualEllipticBoundaryDeckStraightCentralLoop
-      A.orderThreeActualEllipticBoundaryDeckData.fillingRelation t
+        (A.ellipticThreeBoundaryDeckStraightLift
+          A.ellipticThreeBoundaryDeckData.fillingRelation t)) =
+    A.ellipticThreeBoundaryDeckStraightCentralLoop
+      A.ellipticThreeBoundaryDeckData.fillingRelation t
   symm
   simpa [orderThreeCollarRegularRepresentativeMap,
-    orderThreeActualEllipticBoundaryDeckStraightLift] using
-    A.orderThreeActualEllipticBoundaryDeckStraightCentralLoop_apply_explicit
-      A.orderThreeActualEllipticBoundaryDeckData.fillingRelation t
+    ellipticThreeBoundaryDeckStraightLift] using
+    A.ellipticThreeBoundaryDeckStraightCentralLoop_apply_explicit
+      A.ellipticThreeBoundaryDeckData.fillingRelation t
 
 public theorem orderFourFillingRelationRegularLoop_projects :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     ((A.orderFourFillingRelationRegularLoop.map
       A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
         A.orderFourCollarRegularRepresentative_base_projects.symm
         A.orderFourCollarRegularRepresentative_base_projects.symm) =
-      A.orderFourActualEllipticBoundaryDeckStraightCentralLoop
-        A.orderFourActualEllipticBoundaryDeckData.fillingRelation := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+      A.ellipticFourBoundaryDeckStraightCentralLoop
+        A.ellipticFourBoundaryDeckData.fillingRelation := by
+  let _ := A.ellipticFourBoundaryAction
   apply Path.ext
   funext t
   change A.centralQuotientProjection
       (A.orderFourCollarRegularRepresentativeMap
-        (A.orderFourActualEllipticBoundaryDeckStraightLift
-          A.orderFourActualEllipticBoundaryDeckData.fillingRelation t)) =
-    A.orderFourActualEllipticBoundaryDeckStraightCentralLoop
-      A.orderFourActualEllipticBoundaryDeckData.fillingRelation t
+        (A.ellipticFourBoundaryDeckStraightLift
+          A.ellipticFourBoundaryDeckData.fillingRelation t)) =
+    A.ellipticFourBoundaryDeckStraightCentralLoop
+      A.ellipticFourBoundaryDeckData.fillingRelation t
   symm
   simpa [orderFourCollarRegularRepresentativeMap,
-    orderFourActualEllipticBoundaryDeckStraightLift] using
-    A.orderFourActualEllipticBoundaryDeckStraightCentralLoop_apply_explicit
-      A.orderFourActualEllipticBoundaryDeckData.fillingRelation t
+    ellipticFourBoundaryDeckStraightLift] using
+    A.ellipticFourBoundaryDeckStraightCentralLoop_apply_explicit
+      A.ellipticFourBoundaryDeckData.fillingRelation t
 
 public theorem orderThreeFillingRelationStraightCentralLoop_class_eq_regularLoopProjection :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     Path.Homotopic.Quotient.mk
-        (A.orderThreeActualEllipticBoundaryDeckStraightCentralLoop
-          A.orderThreeActualEllipticBoundaryDeckData.fillingRelation) =
+        (A.ellipticThreeBoundaryDeckStraightCentralLoop
+          A.ellipticThreeBoundaryDeckData.fillingRelation) =
       Path.Homotopic.Quotient.mk
         ((A.orderThreeFillingRelationRegularLoop.map
           A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
             A.orderThreeCollarRegularRepresentative_base_projects.symm
             A.orderThreeCollarRegularRepresentative_base_projects.symm) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   exact congrArg Path.Homotopic.Quotient.mk
     A.orderThreeFillingRelationRegularLoop_projects.symm
 
 public theorem orderFourFillingRelationStraightCentralLoop_class_eq_regularLoopProjection :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     Path.Homotopic.Quotient.mk
-        (A.orderFourActualEllipticBoundaryDeckStraightCentralLoop
-          A.orderFourActualEllipticBoundaryDeckData.fillingRelation) =
+        (A.ellipticFourBoundaryDeckStraightCentralLoop
+          A.ellipticFourBoundaryDeckData.fillingRelation) =
       Path.Homotopic.Quotient.mk
         ((A.orderFourFillingRelationRegularLoop.map
           A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
             A.orderFourCollarRegularRepresentative_base_projects.symm
             A.orderFourCollarRegularRepresentative_base_projects.symm) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   exact congrArg Path.Homotopic.Quotient.mk
     A.orderFourFillingRelationRegularLoop_projects.symm
 
-public theorem orderThreeActualCanonicalRelatorInCentral_eq_regularLoopProjection :
-    letI := A.orderThreeActualEllipticBoundaryAction
+public theorem ellipticThreeCanonicalRelatorInCentral_eq_regularLoopProjection :
+    letI := A.ellipticThreeBoundaryAction
     letI : SimplyConnectedSpace
         (OpenRadialInterval A.starSeparation.orderThree.radius ×
           (ℝ × ComplexTwoSpace)) :=
-      A.orderThreeActualEllipticBoundaryCover_simplyConnected
-    A.orderThreeActualCanonicalRelatorInCentral =
+      A.ellipticThreeBoundaryCover_simplyConnected
+    A.ellipticThreeCanonicalRelatorInCentral =
       fundamentalGroupElementOfBaseEq
-        A.orderThreeActualEllipticCentralBase_eq_overlapCentralBase
+        A.ellipticThreeCentralBase_eq_overlapCentralBase
         (Path.Homotopic.Quotient.mk
           ((A.orderThreeFillingRelationRegularLoop.map
             A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
               A.orderThreeCollarRegularRepresentative_base_projects.symm
               A.orderThreeCollarRegularRepresentative_base_projects.symm)) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius ×
         (ℝ × ComplexTwoSpace)) :=
-    A.orderThreeActualEllipticBoundaryCover_simplyConnected
+    A.ellipticThreeBoundaryCover_simplyConnected
   let g := Path.Homotopic.Quotient.mk
-    (A.orderThreeActualEllipticBoundaryDeckStraightLoop
-      A.orderThreeActualEllipticBoundaryDeckData.fillingRelation)
-  let f := A.orderThreeActualOverlapToCentral
-  let hb := A.orderThreeActualEllipticCanonicalChosenCover_boundaryBase_eq
-  let hover := A.orderThreeActualEllipticCentralBase_eq_overlapCentralBase
-  rw [A.orderThreeActualCanonicalRelatorInCentral_eq_fillingRelationStraightLoop]
+    (A.ellipticThreeBoundaryDeckStraightLoop
+      A.ellipticThreeBoundaryDeckData.fillingRelation)
+  let f := A.ellipticThreeOverlapToCentral
+  let hb := A.ellipticThreeCanonicalChosenCover_boundaryBase_eq
+  let hover := A.ellipticThreeCentralBase_eq_overlapCentralBase
+  rw [A.ellipticThreeCanonicalRelatorInCentral_eq_fillingRelationStraightLoop]
   change FundamentalGroup.mapOfEq f rfl
       (fundamentalGroupElementOfBaseEq hb g) = _
   have h₁ := mapOfEq_fundamentalGroupElementOfBaseEq hb f hover rfl g
   have h₂ := mapOfEq_eq_elementOfBaseEq_mapOfEq_rfl f hover g
   have h₃ := congrArg (fundamentalGroupElementOfBaseEq hover)
-    (A.orderThreeActualEllipticBoundaryDeckStraightCentralLoop_class
-      A.orderThreeActualEllipticBoundaryDeckData.fillingRelation)
+    (A.ellipticThreeBoundaryDeckStraightCentralLoop_class
+      A.ellipticThreeBoundaryDeckData.fillingRelation)
   have h₄ := congrArg (fundamentalGroupElementOfBaseEq hover)
     A.orderThreeFillingRelationStraightCentralLoop_class_eq_regularLoopProjection
   exact h₁.trans (h₂.trans (h₃.trans h₄))
 
-public theorem orderFourActualCanonicalRelatorInCentral_eq_regularLoopProjection :
-    letI := A.orderFourActualEllipticBoundaryAction
+public theorem ellipticFourCanonicalRelatorInCentral_eq_regularLoopProjection :
+    letI := A.ellipticFourBoundaryAction
     letI : SimplyConnectedSpace
         (OpenRadialInterval A.starSeparation.orderFour.radius ×
           (ℝ × ComplexTwoSpace)) :=
-      A.orderFourActualEllipticBoundaryCover_simplyConnected
-    A.orderFourActualCanonicalRelatorInCentral =
+      A.ellipticFourBoundaryCover_simplyConnected
+    A.ellipticFourCanonicalRelatorInCentral =
       fundamentalGroupElementOfBaseEq
-        A.orderFourActualEllipticCentralBase_eq_overlapCentralBase
+        A.ellipticFourCentralBase_eq_overlapCentralBase
         (Path.Homotopic.Quotient.mk
           ((A.orderFourFillingRelationRegularLoop.map
             A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
               A.orderFourCollarRegularRepresentative_base_projects.symm
               A.orderFourCollarRegularRepresentative_base_projects.symm)) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderFour.radius ×
         (ℝ × ComplexTwoSpace)) :=
-    A.orderFourActualEllipticBoundaryCover_simplyConnected
+    A.ellipticFourBoundaryCover_simplyConnected
   let g := Path.Homotopic.Quotient.mk
-    (A.orderFourActualEllipticBoundaryDeckStraightLoop
-      A.orderFourActualEllipticBoundaryDeckData.fillingRelation)
-  let f := A.orderFourActualOverlapToCentral
-  let hb := A.orderFourActualEllipticCanonicalChosenCover_boundaryBase_eq
-  let hover := A.orderFourActualEllipticCentralBase_eq_overlapCentralBase
-  rw [A.orderFourActualCanonicalRelatorInCentral_eq_fillingRelationStraightLoop]
+    (A.ellipticFourBoundaryDeckStraightLoop
+      A.ellipticFourBoundaryDeckData.fillingRelation)
+  let f := A.ellipticFourOverlapToCentral
+  let hb := A.ellipticFourCanonicalChosenCover_boundaryBase_eq
+  let hover := A.ellipticFourCentralBase_eq_overlapCentralBase
+  rw [A.ellipticFourCanonicalRelatorInCentral_eq_fillingRelationStraightLoop]
   change FundamentalGroup.mapOfEq f rfl
       (fundamentalGroupElementOfBaseEq hb g) = _
   have h₁ := mapOfEq_fundamentalGroupElementOfBaseEq hb f hover rfl g
   have h₂ := mapOfEq_eq_elementOfBaseEq_mapOfEq_rfl f hover g
   have h₃ := congrArg (fundamentalGroupElementOfBaseEq hover)
-    (A.orderFourActualEllipticBoundaryDeckStraightCentralLoop_class
-      A.orderFourActualEllipticBoundaryDeckData.fillingRelation)
+    (A.ellipticFourBoundaryDeckStraightCentralLoop_class
+      A.ellipticFourBoundaryDeckData.fillingRelation)
   have h₄ := congrArg (fundamentalGroupElementOfBaseEq hover)
     A.orderFourFillingRelationStraightCentralLoop_class_eq_regularLoopProjection
   exact h₁.trans (h₂.trans (h₃.trans h₄))
@@ -443,77 +443,77 @@ public theorem orderFourCollarRegularRepresentativeMap_realPeriod_snd
 
 public theorem orderThreeFillingRelationStraightLift_vector
     (t : unitInterval) :
-    letI := A.orderThreeActualEllipticBoundaryAction
-    (A.orderThreeActualEllipticBoundaryDeckStraightLift
-      A.orderThreeActualEllipticBoundaryDeckData.fillingRelation t).2.2 =
-        A.orderThreeActualEllipticBoundaryBase.2.2 := by
+    letI := A.ellipticThreeBoundaryAction
+    (A.ellipticThreeBoundaryDeckStraightLift
+      A.ellipticThreeBoundaryDeckData.fillingRelation t).2.2 =
+        A.ellipticThreeBoundaryBase.2.2 := by
   let _ := orderThreeAffineMappingTorusDeckAction A.periods
-  let _ := A.orderThreeActualEllipticBoundaryAction
-  have h : A.orderThreeActualEllipticBoundaryDeckData.fillingRelation •
-      A.orderThreeActualEllipticBoundaryBase.2 =
-        (A.orderThreeActualEllipticBoundaryBase.2.1 + 3,
-          A.orderThreeActualEllipticBoundaryBase.2.2) := by
-    change (A.orderThreeActualEllipticBoundaryDeckData.fillingRelation •
-      A.orderThreeActualEllipticBoundaryBase).2 = _
-    rw [A.orderThreeActualFillingRelation_boundary_smul]
-  simp [orderThreeActualEllipticBoundaryDeckStraightLift, h]
+  let _ := A.ellipticThreeBoundaryAction
+  have h : A.ellipticThreeBoundaryDeckData.fillingRelation •
+      A.ellipticThreeBoundaryBase.2 =
+        (A.ellipticThreeBoundaryBase.2.1 + 3,
+          A.ellipticThreeBoundaryBase.2.2) := by
+    change (A.ellipticThreeBoundaryDeckData.fillingRelation •
+      A.ellipticThreeBoundaryBase).2 = _
+    rw [A.ellipticThreeFillingRelation_boundary_smul]
+  simp [ellipticThreeBoundaryDeckStraightLift, h]
 
 public theorem orderFourFillingRelationStraightLift_vector
     (t : unitInterval) :
-    letI := A.orderFourActualEllipticBoundaryAction
-    (A.orderFourActualEllipticBoundaryDeckStraightLift
-      A.orderFourActualEllipticBoundaryDeckData.fillingRelation t).2.2 =
-        A.orderFourActualEllipticBoundaryBase.2.2 := by
+    letI := A.ellipticFourBoundaryAction
+    (A.ellipticFourBoundaryDeckStraightLift
+      A.ellipticFourBoundaryDeckData.fillingRelation t).2.2 =
+        A.ellipticFourBoundaryBase.2.2 := by
   let _ := orderFourAffineMappingTorusDeckAction A.periods
-  let _ := A.orderFourActualEllipticBoundaryAction
-  have h : A.orderFourActualEllipticBoundaryDeckData.fillingRelation •
-      A.orderFourActualEllipticBoundaryBase.2 =
-        (A.orderFourActualEllipticBoundaryBase.2.1 + 4,
-          A.orderFourActualEllipticBoundaryBase.2.2) := by
-    change (A.orderFourActualEllipticBoundaryDeckData.fillingRelation •
-      A.orderFourActualEllipticBoundaryBase).2 = _
-    rw [A.orderFourActualFillingRelation_boundary_smul]
-  simp [orderFourActualEllipticBoundaryDeckStraightLift, h]
+  let _ := A.ellipticFourBoundaryAction
+  have h : A.ellipticFourBoundaryDeckData.fillingRelation •
+      A.ellipticFourBoundaryBase.2 =
+        (A.ellipticFourBoundaryBase.2.1 + 4,
+          A.ellipticFourBoundaryBase.2.2) := by
+    change (A.ellipticFourBoundaryDeckData.fillingRelation •
+      A.ellipticFourBoundaryBase).2 = _
+    rw [A.ellipticFourFillingRelation_boundary_smul]
+  simp [ellipticFourBoundaryDeckStraightLift, h]
 
 public theorem orderThreeFillingRelationRegularLoop_realPeriod_snd
     (t : unitInterval) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     (orderThreeRealPeriodProductHomeomorph A.periods
       (regularFamilyInclusion A.periods
         (A.orderThreeFillingRelationRegularLoop t))).2 =
       A.orderThreePrincipalRealPeriodGauge
           (familyTotalSpaceBase A.periods
             (A.orderThreeCollarInverseRepresentative
-              (A.orderThreeActualEllipticBoundaryDeckStraightLift
-                A.orderThreeActualEllipticBoundaryDeckData.fillingRelation t)).1) +
-        Quotient.mk _ A.orderThreeActualEllipticBoundaryBase.2.2 := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+              (A.ellipticThreeBoundaryDeckStraightLift
+                A.ellipticThreeBoundaryDeckData.fillingRelation t)).1) +
+        Quotient.mk _ A.ellipticThreeBoundaryBase.2.2 := by
+  let _ := A.ellipticThreeBoundaryAction
   change (orderThreeRealPeriodProductHomeomorph A.periods
       (regularFamilyInclusion A.periods
         (A.orderThreeCollarRegularRepresentativeMap
-          (A.orderThreeActualEllipticBoundaryDeckStraightLift
-            A.orderThreeActualEllipticBoundaryDeckData.fillingRelation t)))).2 = _
+          (A.ellipticThreeBoundaryDeckStraightLift
+            A.ellipticThreeBoundaryDeckData.fillingRelation t)))).2 = _
   rw [A.orderThreeCollarRegularRepresentativeMap_realPeriod_snd]
   rw [A.orderThreeFillingRelationStraightLift_vector]
 
 public theorem orderFourFillingRelationRegularLoop_realPeriod_snd
     (t : unitInterval) :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     (orderFourRealPeriodProductHomeomorph A.periods
       (regularFamilyInclusion A.periods
         (A.orderFourFillingRelationRegularLoop t))).2 =
       A.orderFourPrincipalRealPeriodGauge
           (familyTotalSpaceBase A.periods
             (A.orderFourCollarInverseRepresentative
-              (A.orderFourActualEllipticBoundaryDeckStraightLift
-                A.orderFourActualEllipticBoundaryDeckData.fillingRelation t)).1) +
-        Quotient.mk _ A.orderFourActualEllipticBoundaryBase.2.2 := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+              (A.ellipticFourBoundaryDeckStraightLift
+                A.ellipticFourBoundaryDeckData.fillingRelation t)).1) +
+        Quotient.mk _ A.ellipticFourBoundaryBase.2.2 := by
+  let _ := A.ellipticFourBoundaryAction
   change (orderFourRealPeriodProductHomeomorph A.periods
       (regularFamilyInclusion A.periods
         (A.orderFourCollarRegularRepresentativeMap
-          (A.orderFourActualEllipticBoundaryDeckStraightLift
-            A.orderFourActualEllipticBoundaryDeckData.fillingRelation t)))).2 = _
+          (A.ellipticFourBoundaryDeckStraightLift
+            A.ellipticFourBoundaryDeckData.fillingRelation t)))).2 = _
   rw [A.orderFourCollarRegularRepresentativeMap_realPeriod_snd]
   rw [A.orderFourFillingRelationStraightLift_vector]
 

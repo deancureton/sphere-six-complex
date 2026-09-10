@@ -29,16 +29,16 @@ variable (A : PaperAnalyticData)
 /-- The inverse corrected `epsilon`-period, rebased at the displayed affine basepoint. -/
 public noncomputable def orderThreeCentralAffineCorrectedNegativeEpsilonPeriodPath :
     Path A.centralAffineBase A.centralAffineBase :=
-  A.orderThreeActualCuspCorrectedEpsilonPeriodPath.symm.cast
+  A.ellipticThreeCuspCorrectedEpsilonPeriodPath.symm.cast
     A.centralAffineBase_eq_actualCuspCentralBase
     A.centralAffineBase_eq_actualCuspCentralBase
 
-public theorem orderThreeActualCuspCorrectedNegativeEpsilonPeriodPath_class :
+public theorem ellipticThreeCuspCorrectedNegativeEpsilonPeriodPath_class :
     Path.Homotopic.Quotient.mk
-        A.orderThreeActualCuspCorrectedEpsilonPeriodPath.symm =
+        A.ellipticThreeCuspCorrectedEpsilonPeriodPath.symm =
       Additive.toMul (A.correctedActualCuspCentralTranslation (-epsilon)) := by
   rw [Path.Homotopic.Quotient.mk_symm]
-  rw [A.orderThreeActualCuspCorrectedEpsilonPeriodPath_class]
+  rw [A.ellipticThreeCuspCorrectedEpsilonPeriodPath_class]
   rw [map_neg, toMul_neg]
   change Path.Homotopic.Quotient.symm
       (Additive.toMul (A.correctedActualCuspCentralTranslation epsilon)) =
@@ -52,9 +52,9 @@ public theorem orderThreeCentralAffineCorrectedNegativeEpsilonPeriodPath_class :
       Additive.toMul (A.centralAffineCorePiOneData.translation (-epsilon)) := by
   unfold orderThreeCentralAffineCorrectedNegativeEpsilonPeriodPath
   rw [Path.Homotopic.Quotient.mk_cast]
-  rw [A.orderThreeActualCuspCorrectedNegativeEpsilonPeriodPath_class]
+  rw [A.ellipticThreeCuspCorrectedNegativeEpsilonPeriodPath_class]
   rw [A.centralAffineCorePiOneData_translation]
-  unfold actualCuspToCentralAffineBaseEquiv
+  unfold cuspToCentralAffineBaseEquiv
   rw [SphereSixComplex.Topology.fundamentalGroupMulEquivOfEq_apply]
 
 /-- Pointwise, the physical translation loop is the central projection of the inverse-collar
@@ -62,14 +62,14 @@ representative of its straight affine-cover segment. -/
 public theorem orderThreeTranslationStraightCentralLoop_apply_collarInverse
     (t : unitInterval) :
     letI := orderThreeAffineMappingTorusDeckAction A.periods
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     let g := Additive.toMul
-      (A.orderThreeActualEllipticBoundaryDeckData.translation (-epsilon))
+      (A.ellipticThreeBoundaryDeckData.translation (-epsilon))
     let q :=
-      (A.orderThreeActualEllipticBoundaryBase.1,
-        Path.segment A.orderThreeActualEllipticBoundaryBase.2
-          (g • A.orderThreeActualEllipticBoundaryBase.2) t)
-    A.orderThreeActualEllipticBoundaryDeckStraightCentralLoop g t =
+      (A.ellipticThreeBoundaryBase.1,
+        Path.segment A.ellipticThreeBoundaryBase.2
+          (g • A.ellipticThreeBoundaryBase.2) t)
+    A.ellipticThreeBoundaryDeckStraightCentralLoop g t =
       A.centralQuotientProjection
         (orderThreeCollarToRegular A.periods
           (sourceActionProperlyDiscontinuous_of_eq
@@ -78,14 +78,14 @@ public theorem orderThreeTranslationStraightCentralLoop_apply_collarInverse
           (orderThreePuncturedCollarGaugeEquiv A.periods
             A.starSeparation.orderThree.radius
             (A.orderThreeCollarInverseRepresentative q))) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
-  exact A.orderThreeActualEllipticBoundaryDeckStraightCentralLoop_apply_explicit
+  let _ := A.ellipticThreeBoundaryAction
+  exact A.ellipticThreeBoundaryDeckStraightCentralLoop_apply_explicit
     (Additive.toMul
-      (A.orderThreeActualEllipticBoundaryDeckData.translation (-epsilon))) t
+      (A.ellipticThreeBoundaryDeckData.translation (-epsilon))) t
 
 /-- The corrected negative period transported to the order-three boundary chart basepoint. -/
 public noncomputable def orderThreeCentralBoundaryCorrectedNegativeEpsilonPeriodPath :
-    Path A.orderThreeActualEllipticCentralBase A.orderThreeActualEllipticCentralBase :=
+    Path A.ellipticThreeCentralBase A.ellipticThreeCentralBase :=
   A.orderThreeCentralBaseWhisker.symm.trans
     (A.orderThreeCentralAffineCorrectedNegativeEpsilonPeriodPath.trans
       A.orderThreeCentralBaseWhisker)
@@ -107,9 +107,9 @@ public theorem orderThreeCentralBoundaryCorrectedNegativeEpsilonPeriodPath_class
 
 /-- The same transported loop written at the literal cusp basepoint used by the chart API. -/
 public noncomputable def orderThreeCentralBoundaryChartCorrectedNegativeEpsilonPeriodPath :
-    Path A.orderThreeActualEllipticCentralBase A.orderThreeActualEllipticCentralBase :=
+    Path A.ellipticThreeCentralBase A.ellipticThreeCentralBase :=
   A.orderThreeCentralBoundaryChartPath.symm.trans
-    (A.orderThreeActualCuspCorrectedEpsilonPeriodPath.symm.trans
+    (A.ellipticThreeCuspCorrectedEpsilonPeriodPath.symm.trans
       A.orderThreeCentralBoundaryChartPath)
 
 public theorem orderThreeCentralBoundaryChartCorrectedNegativeEpsilonPeriodPath_class :
@@ -122,9 +122,9 @@ public theorem orderThreeCentralBoundaryChartCorrectedNegativeEpsilonPeriodPath_
   simp only [Path.Homotopic.Quotient.mk_trans, Path.Homotopic.Quotient.mk_symm]
   change (Path.Homotopic.Quotient.mk A.orderThreeCentralBoundaryChartPath).symm.trans
       ((Path.Homotopic.Quotient.mk
-        A.orderThreeActualCuspCorrectedEpsilonPeriodPath.symm).trans
+        A.ellipticThreeCuspCorrectedEpsilonPeriodPath.symm).trans
         (Path.Homotopic.Quotient.mk A.orderThreeCentralBoundaryChartPath)) = _
-  rw [A.orderThreeActualCuspCorrectedNegativeEpsilonPeriodPath_class]
+  rw [A.ellipticThreeCuspCorrectedNegativeEpsilonPeriodPath_class]
   change _ = FundamentalGroup.fundamentalGroupMulEquivOfPath
     A.orderThreeCentralBoundaryChartPath _
   unfold FundamentalGroup.fundamentalGroupMulEquivOfPath
@@ -133,21 +133,21 @@ public theorem orderThreeCentralBoundaryChartCorrectedNegativeEpsilonPeriodPath_
 
 /-- The corrected negative period transported along the prescribed geometric connector. -/
 public noncomputable def orderThreeGeometricConnectorCorrectedNegativeEpsilonPeriodPath :
-    Path A.orderThreeActualEllipticCentralBase A.orderThreeActualEllipticCentralBase :=
-  A.orderThreeActualCentralGeometricConnector.symm.trans
+    Path A.ellipticThreeCentralBase A.ellipticThreeCentralBase :=
+  A.ellipticThreeCentralGeometricConnector.symm.trans
     (A.orderThreeCentralAffineCorrectedNegativeEpsilonPeriodPath.trans
-      A.orderThreeActualCentralGeometricConnector)
+      A.ellipticThreeCentralGeometricConnector)
 
 public theorem orderThreeGeometricConnectorCorrectedNegativeEpsilonPeriodPath_class :
     Path.Homotopic.Quotient.mk
         A.orderThreeGeometricConnectorCorrectedNegativeEpsilonPeriodPath =
       FundamentalGroup.fundamentalGroupMulEquivOfPath
-        A.orderThreeActualCentralGeometricConnector
+        A.ellipticThreeCentralGeometricConnector
         (Additive.toMul (A.centralAffineCorePiOneData.translation (-epsilon))) := by
   unfold orderThreeGeometricConnectorCorrectedNegativeEpsilonPeriodPath
   simp only [Path.Homotopic.Quotient.mk_trans, Path.Homotopic.Quotient.mk_symm]
   change _ = FundamentalGroup.fundamentalGroupMulEquivOfPath
-    A.orderThreeActualCentralGeometricConnector _
+    A.ellipticThreeCentralGeometricConnector _
   unfold FundamentalGroup.fundamentalGroupMulEquivOfPath
   simp only [CategoryTheory.Iso.conj_apply]
   rw [A.orderThreeCentralAffineCorrectedNegativeEpsilonPeriodPath_class]
@@ -156,20 +156,20 @@ public theorem orderThreeGeometricConnectorCorrectedNegativeEpsilonPeriodPath_cl
 /-- The translation premise in the geometric-connector reduction is exactly one relative path
 homotopy between two explicit loops. -/
 public theorem orderThreeGeometricConnector_translationClass_iff_pathHomotopic :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     (Path.Homotopic.Quotient.mk
-          (A.orderThreeActualEllipticBoundaryDeckStraightCentralLoop
+          (A.ellipticThreeBoundaryDeckStraightCentralLoop
             (Additive.toMul
-              (A.orderThreeActualEllipticBoundaryDeckData.translation (-epsilon)))) =
+              (A.ellipticThreeBoundaryDeckData.translation (-epsilon)))) =
         FundamentalGroup.fundamentalGroupMulEquivOfPath
-          A.orderThreeActualCentralGeometricConnector
+          A.ellipticThreeCentralGeometricConnector
           (Additive.toMul (A.centralAffineCorePiOneData.translation (-epsilon)))) ↔
       Path.Homotopic
-        (A.orderThreeActualEllipticBoundaryDeckStraightCentralLoop
+        (A.ellipticThreeBoundaryDeckStraightCentralLoop
           (Additive.toMul
-            (A.orderThreeActualEllipticBoundaryDeckData.translation (-epsilon))))
+            (A.ellipticThreeBoundaryDeckData.translation (-epsilon))))
         A.orderThreeGeometricConnectorCorrectedNegativeEpsilonPeriodPath := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   rw [← A.orderThreeGeometricConnectorCorrectedNegativeEpsilonPeriodPath_class]
   exact Path.Homotopic.Quotient.eq
 
@@ -177,21 +177,21 @@ public theorem orderThreeGeometricConnector_translationClass_iff_pathHomotopic :
 premise of the geometric-connector assembly theorem. -/
 public theorem orderThreeCentralBoundaryExistentialStraightLoopIdentities_of_translationHomotopy
     (hmeridian :
-      letI := A.orderThreeActualEllipticBoundaryAction
+      letI := A.ellipticThreeBoundaryAction
       Path.Homotopic.Quotient.mk
-          (A.orderThreeActualEllipticBoundaryDeckStraightCentralLoop
-            A.orderThreeActualEllipticBoundaryDeckData.meridian) =
+          (A.ellipticThreeBoundaryDeckStraightCentralLoop
+            A.ellipticThreeBoundaryDeckData.meridian) =
         FundamentalGroup.fundamentalGroupMulEquivOfPath
-          A.orderThreeActualCentralGeometricConnector A.centralAffineCorePiOneData.rhoOne)
+          A.ellipticThreeCentralGeometricConnector A.centralAffineCorePiOneData.rhoOne)
     (htranslation :
-      letI := A.orderThreeActualEllipticBoundaryAction
+      letI := A.ellipticThreeBoundaryAction
       Path.Homotopic
-        (A.orderThreeActualEllipticBoundaryDeckStraightCentralLoop
+        (A.ellipticThreeBoundaryDeckStraightCentralLoop
           (Additive.toMul
-            (A.orderThreeActualEllipticBoundaryDeckData.translation (-epsilon))))
+            (A.ellipticThreeBoundaryDeckData.translation (-epsilon))))
         A.orderThreeGeometricConnectorCorrectedNegativeEpsilonPeriodPath) :
     A.OrderThreeCentralBoundaryExistentialStraightLoopIdentities := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   apply A.orderThreeCentralBoundaryExistentialStraightLoopIdentities_of_geometricConnector_loopClasses
     hmeridian
   exact A.orderThreeGeometricConnector_translationClass_iff_pathHomotopic.mpr htranslation

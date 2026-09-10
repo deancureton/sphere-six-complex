@@ -23,41 +23,41 @@ public theorem cuspPeripheral_inverse_commute (A : PaperAnalyticData) :
 
 public def normalizedCuspPositiveRegularPath (A : PaperAnalyticData) :
     Path (regularSourceEquiv (((g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent)⁻¹)
-      (regularTotalSpaceBase A.periods A.actualCuspRegularRepresentative))
+      (regularTotalSpaceBase A.periods A.cuspRegularRepresentative))
       (regularSourceEquiv g₀⁻¹
         (regularSourceEquiv (((g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent)⁻¹)
-          (regularTotalSpaceBase A.periods A.actualCuspRegularRepresentative))) where
+          (regularTotalSpaceBase A.periods A.cuspRegularRepresentative))) where
   toFun t := regularSourceEquiv (((g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent)⁻¹)
-    (A.actualCuspChosenPositiveRegularBase (t : ℝ))
+    (A.cuspChosenPositiveRegularBase (t : ℝ))
   continuous_toFun := (regularSourceEquiv_continuous A _).comp
-    (A.actualCuspChosenPositiveRegularBase.continuous.comp continuous_subtype_val)
-  source' := congrArg (regularSourceEquiv _ ) A.actualCuspChosenPositiveRegularBase_zero
+    (A.cuspChosenPositiveRegularBase.continuous.comp continuous_subtype_val)
+  source' := congrArg (regularSourceEquiv _ ) A.cuspChosenPositiveRegularBase_zero
   target' := by
     let _ := regularSourceMulAction A.paperTriangleUniformization
     simp only [show ((1 : unitInterval) : ℝ) = 1 from rfl]
-    rw [A.actualCuspChosenPositiveRegularBase_one, A.actualCuspChosenPositiveRegularBase_zero]
+    rw [A.cuspChosenPositiveRegularBase_one, A.cuspChosenPositiveRegularBase_zero]
     change (((g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent)⁻¹) •
-      (g₀⁻¹ • (regularTotalSpaceBase A.periods A.actualCuspRegularRepresentative)) =
+      (g₀⁻¹ • (regularTotalSpaceBase A.periods A.cuspRegularRepresentative)) =
         g₀⁻¹ • ((((g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent)⁻¹) •
-          (regularTotalSpaceBase A.periods A.actualCuspRegularRepresentative))
+          (regularTotalSpaceBase A.periods A.cuspRegularRepresentative))
     rw [← mul_smul, (cuspPeripheral_inverse_commute A).eq, mul_smul]
 
 public def normalizedWhiskeredCuspRegularPath (A : PaperAnalyticData) :
-    Path A.sectionSevenAffineNormalizedMidpoint
-      (regularSourceEquiv g₀⁻¹ A.sectionSevenAffineNormalizedMidpoint) :=
-  A.sectionSevenAffineNormalizedCuspPath.trans
+    Path A.affineNormalizedMidpoint
+      (regularSourceEquiv g₀⁻¹ A.affineNormalizedMidpoint) :=
+  A.affineNormalizedCuspPath.trans
     (A.normalizedCuspPositiveRegularPath.trans
-      (A.sectionSevenAffineNormalizedCuspPath.symm.map (regularSourceEquiv_continuous A g₀⁻¹)))
+      (A.affineNormalizedCuspPath.symm.map (regularSourceEquiv_continuous A g₀⁻¹)))
 
 public def normalizedMeridianPairRegularPath (A : PaperAnalyticData) :
-    Path A.sectionSevenAffineNormalizedMidpoint
-      (regularSourceEquiv g₀⁻¹ A.sectionSevenAffineNormalizedMidpoint) := by
+    Path A.affineNormalizedMidpoint
+      (regularSourceEquiv g₀⁻¹ A.affineNormalizedMidpoint) := by
   let _ := regularSourceMulAction A.paperTriangleUniformization
-  let p := A.sectionSevenAffineNormalizedZeroLift.trans
-    (A.sectionSevenAffineNormalizedOneLift.map (regularSourceEquiv_continuous A g₁))
+  let p := A.affineNormalizedZeroLift.trans
+    (A.affineNormalizedOneLift.map (regularSourceEquiv_continuous A g₁))
   refine p.cast rfl ?_
-  change g₀⁻¹ • A.sectionSevenAffineNormalizedMidpoint =
-    g₁ • (g₂ • A.sectionSevenAffineNormalizedMidpoint)
+  change g₀⁻¹ • A.affineNormalizedMidpoint =
+    g₁ • (g₂ • A.affineNormalizedMidpoint)
   rw [← mul_smul, eq_inv_of_mul_eq_one_left g₁_mul_g₂_mul_g₀]
 
 public theorem normalizedCuspPositiveRegularPath_projects (A : PaperAnalyticData)
@@ -66,9 +66,9 @@ public theorem normalizedCuspPositiveRegularPath_projects (A : PaperAnalyticData
       A.cuspAngularCoordinateLoop.symm t := by
   change A.regularCoordinate
     (SphereSixComplex.Geometry.EquivariantQuotientHomeomorph.actionMap A.regularBaseDeckAction _
-      (A.actualCuspChosenPositiveRegularBase t)) = _
+      (A.cuspChosenPositiveRegularBase t)) = _
   rw [A.regularCoordinate_deck_invariant]
-  exact A.actualCuspChosenPositiveRegularBase_projects t
+  exact A.cuspChosenPositiveRegularBase_projects t
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 end

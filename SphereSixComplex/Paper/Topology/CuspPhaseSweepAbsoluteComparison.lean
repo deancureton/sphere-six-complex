@@ -17,8 +17,8 @@ public def topologicalClosedPrismHomology {X Y : TopCat} {f : X ⟶ Y}
 
 namespace Geometry.CuspPuncturedCollarBridge
 open SphereSixComplex.Periods
-open StandardInfiniteA2ToricModel StandardInfiniteA2ToricModel.Established
-open StandardInfiniteA2ToricModel.Construction
+open InfiniteA2Toric InfiniteA2Toric
+open InfiniteA2Toric.Construction
 open CuspPeriodExpansion
 variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}

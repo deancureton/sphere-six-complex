@@ -77,7 +77,7 @@ public theorem orderThree_enteringSheet_inverse_transports_epsilon
 
 /-- The local fixed-base fibre loop after removing the constant collar offset. -/
 public noncomputable def orderThreeCentralPrincipalGaugeFiberPath :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     Path
       (A.orderThreePuncturedProductToCentralMap
         (A.orderThreeCayleyPuncturedBasepoint,
@@ -85,17 +85,17 @@ public noncomputable def orderThreeCentralPrincipalGaugeFiberPath :
       (A.orderThreePuncturedProductToCentralMap
         (A.orderThreeCayleyPuncturedBasepoint,
           A.orderThreeFillingRelationPrincipalGaugeLoop 0)) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   exact ((Path.refl A.orderThreeCayleyPuncturedBasepoint).prod
     A.orderThreeFillingRelationPrincipalGaugeLoop).map
       A.orderThreePuncturedProductToCentralMap.continuous
 
 /-- Contracting the collar offset gives a free homotopy to the principal-gauge fibre loop. -/
 public def orderThreeLocalOffsetFiberCentralPath_offsetHomotopy :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     ContinuousMap.Homotopy A.orderThreeLocalOffsetFiberCentralPath.toContinuousMap
       A.orderThreeCentralPrincipalGaugeFiberPath.toContinuousMap := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let x := A.orderThreeCayleyPuncturedBasepoint
   let f := A.orderThreePuncturedProductToCentralMap
   let Hoffset := A.orderThreePrincipalGaugeOffsetHomotopy
@@ -115,10 +115,10 @@ public def orderThreeLocalOffsetFiberCentralPath_offsetHomotopy :
 
 public theorem orderThreeLocalOffsetFiberCentralPath_offsetHomotopy_trace
     (s : unitInterval) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     let H := A.orderThreeLocalOffsetFiberCentralPath_offsetHomotopy
     H (s, 0) = H (s, 1) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   change A.orderThreePuncturedProductToCentralMap
       (A.orderThreeCayleyPuncturedBasepoint,
         A.orderThreePrincipalGaugeOffsetHomotopy (s, 0)) =
@@ -134,7 +134,7 @@ public theorem orderThreeLocalOffsetFiberCentralPath_offsetHomotopy_trace
 
 /-- The fixed-base local realization of the classified straight period segment. -/
 public noncomputable def orderThreeCentralPrincipalGaugeStraightFiberPath :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     Path
       (A.orderThreePuncturedProductToCentralMap
         (A.orderThreeCayleyPuncturedBasepoint,
@@ -142,7 +142,7 @@ public noncomputable def orderThreeCentralPrincipalGaugeStraightFiberPath :
       (A.orderThreePuncturedProductToCentralMap
         (A.orderThreeCayleyPuncturedBasepoint,
           A.orderThreeFillingRelationPrincipalGaugeLoop 0)) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let q := A.orderThreePrincipalGaugeStraightLoop
   have hbase :
       torusProjection
@@ -161,10 +161,10 @@ public noncomputable def orderThreeCentralPrincipalGaugeStraightFiberPath :
           (A.orderThreeCayleyPuncturedBasepoint, z)) hbase)
 
 public theorem orderThreeCentralPrincipalGaugeFiberPath_homotopic_straight :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     Nonempty (Path.Homotopy A.orderThreeCentralPrincipalGaugeFiberPath
       A.orderThreeCentralPrincipalGaugeStraightFiberPath) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   have hclass := A.orderThreeFillingRelationPrincipalGaugeLoop_class_eq_straight
   change Path.Homotopic.Quotient.mk A.orderThreeFillingRelationPrincipalGaugeLoop =
     Path.Homotopic.Quotient.mk A.orderThreePrincipalGaugeStraightLoop at hclass
@@ -192,11 +192,11 @@ public theorem orderThreeCentralPrincipalGaugeFiberPath_homotopic_straight :
   exact ⟨Hmapped.cast hsource htarget⟩
 
 public theorem orderThreeLocalOffsetFiberCentralPath_homotopy_localStraight_with_trace :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     ∃ H : ContinuousMap.Homotopy A.orderThreeLocalOffsetFiberCentralPath.toContinuousMap
         A.orderThreeCentralPrincipalGaugeStraightFiberPath.toContinuousMap,
       ∀ s : unitInterval, H (s, 0) = H (s, 1) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let Hoffset := A.orderThreeLocalOffsetFiberCentralPath_offsetHomotopy
   rcases A.orderThreeCentralPrincipalGaugeFiberPath_homotopic_straight with ⟨Hpath⟩
   let Hstraight := pathHomotopyToFreeHomotopy Hpath
@@ -225,10 +225,10 @@ public noncomputable def orderThreeLocalStraightCoverPoint :
     (b.1, A.orderThreeFillingRelationPrincipalGaugeCoverLift 0)).2)
 
 public theorem orderThreeLocalStraightCoverPoint_projects :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     regularFamilyCoverProjection A.periods A.orderThreeLocalStraightCoverPoint =
       A.orderThreeLocalStraightRegularPoint := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let x := A.orderThreeLocalStraightRegularPoint
   let b := regularTotalSpaceBase A.periods x
   let v := (fixedToMovingCover A.periods
@@ -267,7 +267,7 @@ public theorem orderThreeLocalStraightCoverPoint_projects :
 
 public theorem orderThreeLocalStraightCoverPoint_period_projects
     (t : unitInterval) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     regularFamilyCoverProjection A.periods
         (regularFamilyPeriodLiftPath A.periods
           A.orderThreeLocalStraightCoverPoint epsilon t) =
@@ -275,7 +275,7 @@ public theorem orderThreeLocalStraightCoverPoint_period_projects
         (A.orderThreePuncturedProductCarrierMap
           (A.orderThreeCayleyPuncturedBasepoint,
             A.orderThreePrincipalGaugeStraightLoop t)) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   apply regularFamilyInclusion_injective A.periods
   apply (orderThreeRealPeriodProductHomeomorph A.periods).injective
   have hlocal := A.orderThreePuncturedProductToRegularMap_productCoordinate
@@ -454,7 +454,7 @@ public noncomputable def orderThreeLocalStraightToCorrectedCuspCoverPath :
     Path A.orderThreeLocalStraightCoverPoint
       (regularDeckMap A.periods
         (((g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent)⁻¹)
-        A.actualCuspRegularCoverPoint) := by
+        A.cuspRegularCoverPoint) := by
   letI : PathConnectedSpace
       (RegularBase (U := A.paperTriangleUniformization)) :=
     regularBase_pathConnected A.paperTriangleUniformization
@@ -468,7 +468,7 @@ public noncomputable def orderThreeLocalStraightToCorrectedCuspRegularHomotopy :
       (regularFamilyPeriodLoop A.periods
         (regularDeckMap A.periods
           (((g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent)⁻¹)
-          A.actualCuspRegularCoverPoint) epsilon).toContinuousMap :=
+          A.cuspRegularCoverPoint) epsilon).toContinuousMap :=
   regularFamilyPeriodLoopHomotopyAlong A.periods
     A.orderThreeLocalStraightToCorrectedCuspCoverPath epsilon
 
@@ -480,7 +480,7 @@ public noncomputable def orderThreeLocalStraightToCorrectedCuspCentralHomotopy :
       (((regularFamilyPeriodLoop A.periods
         (regularDeckMap A.periods
           (((g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent)⁻¹)
-          A.actualCuspRegularCoverPoint) epsilon).map
+          A.cuspRegularCoverPoint) epsilon).map
         (regularFamilyQuotientMap A.periods).continuous).toContinuousMap) :=
   (ContinuousMap.Homotopy.refl (regularFamilyQuotientMap A.periods)).comp
     A.orderThreeLocalStraightToCorrectedCuspRegularHomotopy
@@ -514,11 +514,11 @@ public theorem orderThreeLocalStraightToCorrectedCuspCentralHomotopy_trace
   exact congrArg (regularFamilyQuotientMap A.periods) hraw
 
 public theorem orderThreeMappedLocalStraightPeriod_eq_principalGaugeStraightFiberPath :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     ((regularFamilyPeriodLoop A.periods A.orderThreeLocalStraightCoverPoint epsilon).map
         (regularFamilyQuotientMap A.periods).continuous).toContinuousMap =
       A.orderThreeCentralPrincipalGaugeStraightFiberPath.toContinuousMap := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   ext t
   change regularFamilyQuotientMap A.periods
       (regularFamilyCoverProjection A.periods
@@ -531,12 +531,12 @@ public theorem orderThreeMappedCorrectedCuspPeriod_eq_centralAffineCorrectedPeri
     ((regularFamilyPeriodLoop A.periods
         (regularDeckMap A.periods
           (((g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent)⁻¹)
-          A.actualCuspRegularCoverPoint) epsilon).map
+          A.cuspRegularCoverPoint) epsilon).map
         (regularFamilyQuotientMap A.periods).continuous).toContinuousMap =
       A.orderThreeCentralAffineCorrectedEpsilonPeriodPath.toContinuousMap := by
   ext t
   unfold orderThreeCentralAffineCorrectedEpsilonPeriodPath
-    orderThreeActualCuspCorrectedEpsilonPeriodPath actualCuspCentralPeriodLoop
+    ellipticThreeCuspCorrectedEpsilonPeriodPath cuspCentralPeriodLoop
   have hlabel :
       rhoLambda (((g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent)⁻¹)
           (rhoLambda ((g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent) epsilon) =
@@ -546,28 +546,28 @@ public theorem orderThreeMappedCorrectedCuspPeriod_eq_centralAffineCorrectedPeri
       ((g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent)).symm_apply_apply epsilon
   have hdeck := regularFamilyPeriodLoop_deck A.periods
     (((g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent)⁻¹)
-    A.actualCuspRegularCoverPoint
+    A.cuspRegularCoverPoint
     (rhoLambda ((g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent) epsilon)
   have ht := congrArg (fun L ↦ L t) hdeck
   have haffine :
       (A.orderThreeCentralAffineCorrectedEpsilonPeriodPath : unitInterval → _) =
-        (A.orderThreeActualCuspCorrectedEpsilonPeriodPath : unitInterval → _) := by
+        (A.ellipticThreeCuspCorrectedEpsilonPeriodPath : unitInterval → _) := by
     unfold orderThreeCentralAffineCorrectedEpsilonPeriodPath
     exact Path.cast_coe _ _ _
   have hcusp :
-      (A.orderThreeActualCuspCorrectedEpsilonPeriodPath : unitInterval → _) =
-        (((regularFamilyPeriodLoop A.periods A.actualCuspRegularCoverPoint
+      (A.ellipticThreeCuspCorrectedEpsilonPeriodPath : unitInterval → _) =
+        (((regularFamilyPeriodLoop A.periods A.cuspRegularCoverPoint
           (rhoLambda ((g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent) epsilon)).map
             (regularFamilyQuotientMap A.periods).continuous) : unitInterval → _) := by
-    unfold orderThreeActualCuspCorrectedEpsilonPeriodPath actualCuspCentralPeriodLoop
+    unfold ellipticThreeCuspCorrectedEpsilonPeriodPath cuspCentralPeriodLoop
     exact Path.cast_coe _ _ _
   have ht' :
       ((regularFamilyPeriodLoop A.periods
         (regularDeckMap A.periods
           (((g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent)⁻¹)
-          A.actualCuspRegularCoverPoint) epsilon).map
+          A.cuspRegularCoverPoint) epsilon).map
         (regularFamilyQuotientMap A.periods).continuous) t =
-      ((regularFamilyPeriodLoop A.periods A.actualCuspRegularCoverPoint
+      ((regularFamilyPeriodLoop A.periods A.cuspRegularCoverPoint
         (rhoLambda ((g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent) epsilon)).map
         (regularFamilyQuotientMap A.periods).continuous) t := by
     simpa only [hlabel, Path.cast_coe] using ht
@@ -577,12 +577,12 @@ public theorem orderThreeMappedCorrectedCuspPeriod_eq_centralAffineCorrectedPeri
 affine-period representative, and every intermediate path remains a free loop. -/
 public theorem
     orderThreeCentralPrincipalGaugeStraightFiberPath_homotopy_globalCorrectedPeriod_with_trace :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     ∃ H : ContinuousMap.Homotopy
         A.orderThreeCentralPrincipalGaugeStraightFiberPath.toContinuousMap
         A.orderThreeCentralAffineCorrectedEpsilonPeriodPath.toContinuousMap,
       ∀ s : unitInterval, H (s, 0) = H (s, 1) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let H := A.orderThreeLocalStraightToCorrectedCuspCentralHomotopy.cast
     A.orderThreeMappedLocalStraightPeriod_eq_principalGaugeStraightFiberPath
     A.orderThreeMappedCorrectedCuspPeriod_eq_centralAffineCorrectedPeriod
@@ -593,12 +593,12 @@ public theorem
 with its endpoint trace retained, to the exact global affine-period representative used by the
 relator classification. -/
 public theorem orderThreeLocalOffsetFiberCentralPath_homotopy_globalCorrectedPeriod_with_trace :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     ∃ H : ContinuousMap.Homotopy
         A.orderThreeLocalOffsetFiberCentralPath.toContinuousMap
         A.orderThreeCentralAffineCorrectedEpsilonPeriodPath.toContinuousMap,
       ∀ s : unitInterval, H (s, 0) = H (s, 1) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   rcases A.orderThreeLocalOffsetFiberCentralPath_homotopy_localStraight_with_trace with
     ⟨Hlocal, hlocal⟩
   rcases A.orderThreeCentralPrincipalGaugeStraightFiberPath_homotopy_globalCorrectedPeriod_with_trace
@@ -611,12 +611,12 @@ public theorem orderThreeLocalOffsetFiberCentralPath_homotopy_globalCorrectedPer
 
 /-- Remove the whole initial fibre coordinate, including its principal-gauge component. -/
 public noncomputable def orderThreeLocalZeroBasedFiberCentralPath :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     Path (A.orderThreePuncturedProductToCentralMap
         (A.orderThreeCayleyPuncturedBasepoint, 0))
       (A.orderThreePuncturedProductToCentralMap
         (A.orderThreeCayleyPuncturedBasepoint, 0)) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let q := A.orderThreePrincipalGaugeWithOffsetPath
   exact
     { toFun := fun t ↦ A.orderThreePuncturedProductToCentralMap
@@ -628,10 +628,10 @@ public noncomputable def orderThreeLocalZeroBasedFiberCentralPath :
 
 /-- This fibre contraction uses exactly the vector contraction of the base factor. -/
 public def orderThreeLocalSynchronizedFiberContractionHomotopy :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     ContinuousMap.Homotopy A.orderThreeLocalOffsetFiberCentralPath.toContinuousMap
       A.orderThreeLocalZeroBasedFiberCentralPath.toContinuousMap := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let p := (parameterMap A.periods
     A.modular.modularParameter.toTriangleUniformization.zOne).1
   let q := A.orderThreePrincipalGaugeWithOffsetPath
@@ -667,11 +667,11 @@ public def orderThreeLocalSynchronizedFiberContractionHomotopy :
 
 public theorem orderThreeLocalSynchronizedFiberContractionHomotopy_endpoints
     (s : unitInterval) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     let Hfiber := A.orderThreeLocalSynchronizedFiberContractionHomotopy
     let Hbase := A.orderThreeLocalBaseFiberContractionHomotopy
     Hfiber (s, 1) = Hbase (s, 0) ∧ Hfiber (s, 0) = Hbase (s, 1) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   change A.orderThreePuncturedProductToCentralMap (_, _ - _ + _) =
       A.orderThreePuncturedProductToCentralMap (_, _) ∧
     A.orderThreePuncturedProductToCentralMap (_, _ - _ + _) =
@@ -684,12 +684,12 @@ public theorem orderThreeLocalSynchronizedFiberContractionHomotopy_endpoints
 
 /-- The zero-fibre base factor has the same basepoint as the normalized fibre factor. -/
 public noncomputable def orderThreeLocalZeroBaseCentralPath :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     Path (A.orderThreePuncturedProductToCentralMap
         (A.orderThreeCayleyPuncturedBasepoint, 0))
       (A.orderThreePuncturedProductToCentralMap
         (A.orderThreeCayleyPuncturedBasepoint, 0)) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   exact
     { toContinuousMap := A.orderThreeLocalZeroBaseCentralMap
       source' := congrArg (fun x ↦ A.orderThreePuncturedProductToCentralMap (x, 0))
@@ -700,12 +700,12 @@ public noncomputable def orderThreeLocalZeroBaseCentralPath :
 /-- Both factors can be normalized simultaneously, retaining a single moving basepoint for
 the complete local relator. -/
 public theorem orderThreeLocalFiberThenBaseCentralPath_homotopy_zeroBased_with_trace :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     ∃ H : ContinuousMap.Homotopy A.orderThreeLocalFiberThenBaseCentralPath.toContinuousMap
         (A.orderThreeLocalZeroBasedFiberCentralPath.trans
           A.orderThreeLocalZeroBaseCentralPath).toContinuousMap,
       ∀ s : unitInterval, H (s, 0) = H (s, 1) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let F := A.orderThreeLocalSynchronizedFiberContractionHomotopy
   let G : ContinuousMap.Homotopy A.orderThreeLocalOffsetBaseCentralPath.toContinuousMap
       A.orderThreeLocalZeroBaseCentralPath.toContinuousMap :=

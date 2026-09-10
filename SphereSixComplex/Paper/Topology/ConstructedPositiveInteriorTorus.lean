@@ -7,10 +7,10 @@ public import Mathlib.Topology.Instances.AddCircle.Real
 @[expose] public section
 noncomputable section
 open Set Topology
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Periods CuspFilling CuspLocalPhaseAction CuspPuncturedCollarBridge
 open CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
-open CuspPeriodExpansion StandardInfiniteA2ToricModel.Construction
+open CuspPeriodExpansion InfiniteA2Toric.Construction
 variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
@@ -92,4 +92,4 @@ theorem constructedPositiveInteriorTorusHomeomorph_projection
       constructedPositiveInteriorTorusMap W p :=
   CyclicAngularFundamentalDomain.homeomorphOfQuotientMaps_apply _ _ _ p
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric

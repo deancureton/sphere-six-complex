@@ -363,7 +363,7 @@ variable (A : PaperAnalyticData)
 
 /-- The actual order-four Cayley base circle is freely homotopic to the marked positive
 four-turn circle about one. -/
-public theorem orderFourActualCayleyBaseCoordinate_quadrupleHomotopy :
+public theorem ellipticFourCayleyBaseCoordinate_quadrupleHomotopy :
     Nonempty (ContinuousMap.Homotopy
       (twoPunctureComplementNegOneMap.comp
         (A.orderFourCayleyChartSubOneCircleMap
@@ -371,7 +371,7 @@ public theorem orderFourActualCayleyBaseCoordinate_quadrupleHomotopy :
           (norm_pos_iff.mpr A.orderFourFillingRelationCayleyBaseValue_ne_zero)
           (by
             rw [A.orderFourFillingRelationCayleyBaseValue_norm]
-            exact A.orderFourActualEllipticBoundaryBase.1.2.2)))
+            exact A.ellipticFourBoundaryBase.1.2.2)))
       twicePuncturedCounterclockwiseOneQuadruple.toContinuousMap) := by
   obtain ⟨u, a, ha, hune, hbound, H⟩ :=
     A.exists_orderFourActualCayleyBaseCoordinate_fourTurnHomotopy
@@ -398,7 +398,7 @@ public theorem orderFourActualCayleyBaseCoordinate_quadrupleHomotopy :
 /-- The affine base coordinate of the projected complete order-four filling loop. -/
 public noncomputable def orderFourFillingRelationBaseCoordinateMap :
     C(unitInterval, TwicePuncturedComplex) := by
-  letI := A.orderFourActualEllipticBoundaryAction
+  letI := A.ellipticFourBoundaryAction
   let L :=
     (A.orderFourFillingRelationRegularLoop.map
       A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
@@ -416,8 +416,8 @@ public theorem orderFourFillingRelationBaseCoordinateMap_eq_cayley :
           (norm_pos_iff.mpr A.orderFourFillingRelationCayleyBaseValue_ne_zero)
           (by
             rw [A.orderFourFillingRelationCayleyBaseValue_norm]
-            exact A.orderFourActualEllipticBoundaryBase.1.2.2)) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+            exact A.ellipticFourBoundaryBase.1.2.2)) := by
+  let _ := A.ellipticFourBoundaryAction
   ext t
   have h := A.orderFourFillingRelation_baseCoordinate_eq_chartFunction t
   simpa [orderFourFillingRelationBaseCoordinateMap,
@@ -437,7 +437,7 @@ public theorem orderFourFillingRelation_baseCoordinate_freeHomotopy_oneMeridianF
         gamma.toContinuousMap) := by
   refine ⟨twicePuncturedCounterclockwiseOneQuadruple,
     twicePuncturedCounterclockwiseOneQuadruple_class, ?_⟩
-  rcases A.orderFourActualCayleyBaseCoordinate_quadrupleHomotopy with ⟨H⟩
+  rcases A.ellipticFourCayleyBaseCoordinate_quadrupleHomotopy with ⟨H⟩
   exact ⟨H.cast A.orderFourFillingRelationBaseCoordinateMap_eq_cayley.symm rfl⟩
 
 end SphereSixComplex.Geometry.PaperAnalyticData

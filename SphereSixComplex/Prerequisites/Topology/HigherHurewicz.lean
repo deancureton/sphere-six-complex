@@ -129,7 +129,7 @@ private theorem homotopyGroupPiOne_subsingleton
 
 /-- A constructed natural Hurewicz map and the general isomorphism theorem imply the former
 class-surjectivity boundary. This reduction is axiom-free. -/
-public theorem generalHigherHurewiczClassSurjectivity_of_map
+public theorem Hurewicz.Map.exists_sphere_representative
     (H : Hurewicz.Map) (hHurewicz : Hurewicz.IsIsoInRange H)
     (n : ℕ) (hn : 2 ≤ n)
     (X : Type) [TopologicalSpace X] [SimplyConnectedSpace X]

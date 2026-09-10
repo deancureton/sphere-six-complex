@@ -17,7 +17,7 @@ noncomputable section
 open scoped ContDiff Manifold
 open SphereSixComplex.Geometry.CuspCombinatorics
 open SphereSixComplex.Geometry.CuspFilling
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
+open SphereSixComplex.Geometry.InfiniteA2Toric
 
 namespace SphereSixComplex.Geometry.CuspToricPhaseAction
 
@@ -113,7 +113,7 @@ end ToricModel
 /-- Exact phase coefficients used in the cusp correction.  In addition to coefficientwise
 holomorphicity, `twist_holomorphic` records the directly usable chartwise consequence for the
 variable torus translation.  This is an explicit analytic input, not an axiom. -/
-public structure ExactHolomorphicPhaseCoefficients (M : Model) where
+public structure HolomorphicPhaseCoefficients (M : Model) where
   phase : ParameterLattice → ℂ → Phase
   phase_zero : ∀ z, phase 0 z = 1
   phase_add : ∀ lambda mu z,
@@ -125,12 +125,12 @@ public structure ExactHolomorphicPhaseCoefficients (M : Model) where
       (modelWithCornersSelf ℂ ComplexModel) ∞
       (fun p : M.Carrier ↦ ToricModel.phaseAction M (phase lambda (M.t p)) p)
 
-namespace ExactHolomorphicPhaseCoefficients
+namespace HolomorphicPhaseCoefficients
 
-variable {M : Model} (C : ExactHolomorphicPhaseCoefficients M)
+variable {M : Model} (C : HolomorphicPhaseCoefficients M)
 
 /-- The two fixed-point estimates isolated from the algebraic and holomorphic construction. -/
-public structure FixedPointEstimates : Prop where
+public structure IsFree : Prop where
   offCentral : ∀ lambda p, M.t p ≠ 0 →
     ToricModel.phaseAction M (C.phase lambda (M.t p))
         (Additive.toMul (M.fanShear lambda) p) = p →
@@ -142,7 +142,7 @@ public structure FixedPointEstimates : Prop where
 
 /-- Instantiate the generic cusp-action package once the two paper-specific fixed-point
 estimates have been proved. -/
-public def toCuspActionData (F : C.FixedPointEstimates) :
+public def toCuspActionData (F : C.IsFree) :
     CuspActionData M.Carrier Phase where
   t := M.t
   toricShear := M.fanShear
@@ -162,7 +162,7 @@ public def psiMap (lambda : ParameterLattice) (p : M.Carrier) : M.Carrier :=
     (Additive.toMul (M.fanShear lambda) p)
 
 @[simp]
-public theorem psiMap_eq_generic (F : C.FixedPointEstimates)
+public theorem psiMap_eq_generic (F : C.IsFree)
     (lambda : ParameterLattice) (p : M.Carrier) :
     C.psiMap lambda p = (C.toCuspActionData F).psiMap lambda p :=
   rfl
@@ -212,7 +212,7 @@ public def CompactOverlapEstimate : Prop :=
       (C.psiMap lambda '' K ∩ L).Nonempty}.Finite
 
 /-- A proved compact-overlap estimate supplies the generic proper-discontinuity conclusion. -/
-public theorem properlyDiscontinuous (F : C.FixedPointEstimates)
+public theorem properlyDiscontinuous (F : C.IsFree)
     (H : C.CompactOverlapEstimate) :
     letI := (C.toCuspActionData F).psiAction
     ProperlyDiscontinuousSMul (Multiplicative ParameterLattice) M.Carrier := by
@@ -222,6 +222,6 @@ public theorem properlyDiscontinuous (F : C.FixedPointEstimates)
     (C.psiMap lambda '' K ∩ L).Nonempty}.Finite
   exact H K L hK hL
 
-end ExactHolomorphicPhaseCoefficients
+end HolomorphicPhaseCoefficients
 
 end SphereSixComplex.Geometry.CuspToricPhaseAction

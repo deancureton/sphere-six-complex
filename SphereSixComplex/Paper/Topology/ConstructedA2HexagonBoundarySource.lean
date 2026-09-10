@@ -6,7 +6,7 @@ public import SphereSixComplex.Prerequisites.Topology.CellularSquareOrientation
 @[expose] public section
 noncomputable section
 open Function Set Topology Matrix
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex
 
 public theorem constructedA2HexagonSide_gauge (i : Fin 6) (t : unitInterval) :
@@ -76,4 +76,4 @@ public def constructedA2HexagonBoundaryLoop :
     (constructedA2HexagonBoundarySidePath 4)).trans
     (constructedA2HexagonBoundarySidePath 5)
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric

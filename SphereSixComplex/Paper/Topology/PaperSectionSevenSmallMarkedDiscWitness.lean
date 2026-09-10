@@ -10,8 +10,8 @@ open SphereSixComplex.Geometry.EllipticCayleyHomeomorph
 
 public theorem exists_small_discRegion_subset_orderThreeOverlap (A : PaperAnalyticData) :
     ∃ r : ℝ, 0 < r ∧ r ≤ 1 / 3 ∧
-      A.sectionSevenAffineOrderThreeDiscRegion r ⊆
-        A.sectionSevenOrderThreeFillingImage ∩ A.sectionSevenAffineOrderThreeCentralRegion ∧
+      A.affineOrderThreeDiscRegion r ⊆
+        A.orderThreeFillingImage ∩ A.affineOrderThreeCentralRegion ∧
       ∀ z : UpperHalfPlane, ‖A.modular.sourceCoordinate.coordinate z‖ < r →
         ∃ k : Delta, ‖(orderThreeCayleyHomeomorph
           (fuchsianSourceAction k • z) : ℂ)‖ < A.starSeparation.orderThree.radius / 2 := by
@@ -26,8 +26,8 @@ public theorem exists_small_discRegion_subset_orderThreeOverlap (A : PaperAnalyt
 
 public theorem exists_small_discRegion_subset_orderFourOverlap (A : PaperAnalyticData) :
     ∃ r : ℝ, 0 < r ∧ r ≤ 1 / 3 ∧
-      A.sectionSevenAffineOrderFourDiscRegion r ⊆
-        A.sectionSevenOrderFourFillingImage ∩ A.sectionSevenAffineOrderFourCentralRegion ∧
+      A.affineOrderFourDiscRegion r ⊆
+        A.orderFourFillingImage ∩ A.affineOrderFourCentralRegion ∧
       ∀ z : UpperHalfPlane, ‖A.modular.sourceCoordinate.coordinate z - 1‖ < r →
         ∃ k : Delta, ‖(orderFourCayleyHomeomorph
           (fuchsianSourceAction k • z) : ℂ)‖ < A.starSeparation.orderFour.radius / 2 := by

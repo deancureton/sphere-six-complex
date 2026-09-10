@@ -18,17 +18,17 @@ open AlgebraicTopology
 
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 
-open SectionSevenEllipticTwoDiscHomologyCoordinates
-open SectionSevenEllipticInteriorMarkedCycleData
+open EllipticTwoDiscHomologyCoordinates
+open EllipticInteriorMarkedCycleData
 
-variable {A : PaperAnalyticData} (D : A.SectionSevenEllipticTwoDiscCoverData)
+variable {A : PaperAnalyticData} (D : A.EllipticTwoDiscCoverData)
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 /-- The marked degree-one coordinate on the actual elliptic interior. -/
 public noncomputable def ellipticInteriorDegreeOneCoordinateHom
     (N : A.EllipticBandHomologyAlignment D) :
-    IntegralSingularHomology 1 A.SectionSevenEllipticInterior →+ ℤ :=
+    IntegralSingularHomology 1 A.ellipticInterior →+ ℤ :=
   coordinateAfterAddEquiv
     N.actualHomologyCoordinates.normalizedEllipticInteriorHomologyOneEquiv 0
 
@@ -58,7 +58,7 @@ public noncomputable def cuspNormalizedDegreeTwoSplitting
 public noncomputable def ellipticInteriorDegreeTwoFiberCoordinateHom
     (N : A.EllipticBandHomologyAlignment D)
     (G : D.SectionSevenCuspPulledBackBoundaryBasisBridge N) :
-    IntegralSingularHomology 2 A.SectionSevenEllipticInterior →+ ℤ :=
+    IntegralSingularHomology 2 A.ellipticInterior →+ ℤ :=
   coordinateAfterAddEquiv
     (N.actualHomologyCoordinates.normalizedEllipticInteriorHomologyTwoEquiv
       (D.cuspNormalizedDegreeTwoSplitting N G)) 0
@@ -73,7 +73,7 @@ public theorem ellipticInteriorDegreeOneCoordinateHom_cuspToEllipticInteriorMap
       cuspDegreeOneCoordinateHom N x := by
   rw [D.cuspToEllipticInteriorMap_homology]
   let e := integralSingularHomologyEquiv 1
-    (topologicalSubsetHomeomorphOfEqUniv (TopCat.of A.SectionSevenEllipticInterior)
+    (topologicalSubsetHomeomorphOfEqUniv (TopCat.of A.ellipticInterior)
       (D.orderThreeSide ∪ D.orderFourSide) D.sides_cover)
   change N.actualHomologyCoordinates.normalizedUnionHomologyOneEquiv
       (e.symm (e (cuspToEllipticUnionHomology D 1 x))) 0 = _
@@ -90,7 +90,7 @@ public theorem ellipticInteriorDegreeTwoFiberCoordinateHom_cuspToEllipticInterio
       cuspDegreeTwoFiberCoordinateHom N (D.cuspBoundaryCoordinateFormula N G) x := by
   rw [D.cuspToEllipticInteriorMap_homology]
   let e := integralSingularHomologyEquiv 2
-    (topologicalSubsetHomeomorphOfEqUniv (TopCat.of A.SectionSevenEllipticInterior)
+    (topologicalSubsetHomeomorphOfEqUniv (TopCat.of A.ellipticInterior)
       (D.orderThreeSide ∪ D.orderFourSide) D.sides_cover)
   change (N.actualHomologyCoordinates.normalizedUnionHomologyTwoEquiv
       (D.cuspNormalizedDegreeTwoSplitting N G))
@@ -114,7 +114,7 @@ public structure SectionSevenCuspEllipticInclusionNaturality
 
 namespace SectionSevenCuspEllipticInclusionNaturality
 
-variable {D : A.SectionSevenEllipticTwoDiscCoverData}
+variable {D : A.EllipticTwoDiscCoverData}
   {N : A.EllipticBandHomologyAlignment D}
   {G : D.SectionSevenCuspPulledBackBoundaryBasisBridge N}
 
@@ -122,7 +122,7 @@ variable {D : A.SectionSevenEllipticTwoDiscCoverData}
 assembly. -/
 public theorem toCoordinateComparison
     (C : D.SectionSevenCuspEllipticInclusionNaturality N G) :
-    A.SectionSevenPositiveDegreeCuspCoordinateComparison N G where
+    A.PositiveDegreeCuspCoordinateComparison N G where
   degreeOneCoordinateHom := by
     calc
       cuspDegreeOneCoordinateHom N =
@@ -145,15 +145,15 @@ public theorem toCoordinateComparison
 
 end SectionSevenCuspEllipticInclusionNaturality
 
-namespace SectionSevenPositiveDegreeCuspCoordinateComparison
+namespace PositiveDegreeCuspCoordinateComparison
 
-variable {D : A.SectionSevenEllipticTwoDiscCoverData}
+variable {D : A.EllipticTwoDiscCoverData}
   {N : A.EllipticBandHomologyAlignment D}
   {G : D.SectionSevenCuspPulledBackBoundaryBasisBridge N}
 
 /-- The literal-union coordinate identities imply naturality for the actual inclusion map. -/
 public theorem toCuspEllipticInclusionNaturality
-    (C : A.SectionSevenPositiveDegreeCuspCoordinateComparison N G) :
+    (C : A.PositiveDegreeCuspCoordinateComparison N G) :
     D.SectionSevenCuspEllipticInclusionNaturality N G where
   degreeOne := by
     calc
@@ -176,16 +176,16 @@ public theorem toCuspEllipticInclusionNaturality
           A.cuspRawHomologyTwoEquiv :=
         C.degreeTwoFiberCoordinateHom
 
-end SectionSevenPositiveDegreeCuspCoordinateComparison
+end PositiveDegreeCuspCoordinateComparison
 
 /-- The two residual coordinate identities are exactly the marked naturality squares for the
 actual cusp-to-elliptic-interior inclusion. -/
 public theorem sectionSevenPositiveDegreeCuspCoordinateComparison_iff_inclusionNaturality
     (N : A.EllipticBandHomologyAlignment D)
     (G : D.SectionSevenCuspPulledBackBoundaryBasisBridge N) :
-    A.SectionSevenPositiveDegreeCuspCoordinateComparison N G ↔
+    A.PositiveDegreeCuspCoordinateComparison N G ↔
       D.SectionSevenCuspEllipticInclusionNaturality N G :=
-  ⟨SectionSevenPositiveDegreeCuspCoordinateComparison.toCuspEllipticInclusionNaturality,
+  ⟨PositiveDegreeCuspCoordinateComparison.toCuspEllipticInclusionNaturality,
     SectionSevenCuspEllipticInclusionNaturality.toCoordinateComparison⟩
 
 /-- The remaining positive-degree input stated entirely for actual maps: the marked Wang
@@ -198,17 +198,17 @@ public structure SectionSevenPositiveDegreeActualMapInput
 
 namespace SectionSevenPositiveDegreeActualMapInput
 
-variable {D : A.SectionSevenEllipticTwoDiscCoverData}
+variable {D : A.EllipticTwoDiscCoverData}
   {N : A.EllipticBandHomologyAlignment D}
 
 /-- The three actual-map naturality squares supply the production positive-degree assembly. -/
 public noncomputable def positiveDegreeHomologyAssembly
     (C : D.SectionSevenPositiveDegreeActualMapInput N) :
-    A.SectionSevenPositiveDegreeHomologyAssembly :=
+    A.PositiveDegreeHomologyAssembly :=
   C.inclusion.toCoordinateComparison.toCuspBasisInput.positiveDegreeHomologyAssembly
 
 end SectionSevenPositiveDegreeActualMapInput
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end SphereSixComplex.Geometry.PaperAnalyticData

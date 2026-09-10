@@ -20,23 +20,23 @@ open AlgebraicTopology CategoryTheory Set
 
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 
-open SectionSevenEllipticTwoDiscHomologyCoordinates
-open SectionSevenEllipticInteriorMarkedCycleData
+open EllipticTwoDiscHomologyCoordinates
+open EllipticInteriorMarkedCycleData
 open SphereSixComplex.CircleMappingTorusHomologyBases
 open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 open SphereSixComplex.LatticeData SphereSixComplex.LatticeWangAlgebra
 open SphereSixComplex.Topology.PaperCuspSpecializationAlgebra
 
-variable {A : PaperAnalyticData} (D : A.SectionSevenEllipticTwoDiscCoverData)
+variable {A : PaperAnalyticData} (D : A.EllipticTwoDiscCoverData)
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 /-- The pulled-back boundary as an additive homomorphism before restricting its codomain to
 elliptic side-difference invariants. -/
 public noncomputable def cuspPulledBackBoundaryHom :
     IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0) →+
       IntegralSingularHomology 1
-        (D.orderThreeSide ∩ D.orderFourSide : Set A.SectionSevenEllipticInterior) :=
+        (D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior) :=
   ConcreteCategory.hom
     (D.cuspOpenCoverHomologyComparison.boundary 1 ≫
       BinaryOpenCover.openIntersectionPullbackHomologyMap D.cuspToEllipticInteriorMap
@@ -244,6 +244,6 @@ public theorem SectionSevenCuspPulledBackWangBoundaryComparison.toPulledBackBoun
       simp
     exact congrArg Subtype.val hInvariant
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end SphereSixComplex.Geometry.PaperAnalyticData

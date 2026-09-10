@@ -7,14 +7,14 @@ public import SphereSixComplex.Paper.Topology.ToricCellularCoordinateIncidence
 @[expose] public section
 noncomputable section
 open Set Topology
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex
 open SphereSixComplex.Periods
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
@@ -39,4 +39,4 @@ public theorem constructedA2TwoCell_coordinateBoundary_single_zero
   exact ((constructedCentralCellAtlas W).coordinateBoundary_single_eq_attachingDegree
     1 i j).trans (constructedA2TwoCell_attachingDegree_zero W _ i j)
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric

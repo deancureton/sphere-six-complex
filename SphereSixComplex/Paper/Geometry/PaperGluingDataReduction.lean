@@ -21,11 +21,11 @@ namespace SphereSixComplex.Geometry
 
 /-- The production gluing data, given the one Section 7 obligation that is still open. -/
 public theorem exists_paperGluingData_of_positiveDegreeAssembly
-    (H : establishedPaperAnalyticData.SectionSevenPositiveDegreeHomologyAssembly) :
+    (H : establishedPaperAnalyticData.PositiveDegreeHomologyAssembly) :
     Nonempty PaperGluingData :=
   ⟨establishedPaperAnalyticData.toPaperGluingData_of_positiveDegree
       establishedPaperStarHasVanKampenData H
-      establishedPaperAnalyticData.sectionSevenStageTopDegreeVanishing_actual⟩
+      establishedPaperAnalyticData.stageTopDegreeVanishing⟩
 
 end SphereSixComplex.Geometry
 

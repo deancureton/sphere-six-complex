@@ -36,9 +36,9 @@ the simply connected strip through the regular-coordinate covering trivializes t
 quotient bundle.  Both ingredients are assembled into the marked trivialization, of which this is
 the forgetful consequence. -/
 public theorem establishedActualCentralBandProductTrivialization
-    (A : PaperAnalyticData) (S : A.SectionSevenAffineCentralSeparation) :
-    A.SectionSevenAffineCentralBandProductTrivialization S :=
-  SectionSevenAffineCentralBandMarkedTrivialization.toProductTrivialization
+    (A : PaperAnalyticData) (S : A.AffineCentralSeparation) :
+    A.AffineCentralBandProductTrivialization S :=
+  AffineCentralBandMarkedTrivialization.toProductTrivialization
     (establishedActualCentralBandMarkedTrivialization A S)
 
 end EstablishedSectionSevenAffineBandTopology
@@ -48,44 +48,44 @@ open EstablishedSectionSevenAffineBandTopology
 variable (A : PaperAnalyticData)
 
 /-- The affine strip lift normalized by the common peripheral marking. -/
-public noncomputable def sectionSevenAffineNamedStripLift : A.SectionSevenAffineStripLift :=
-  A.sectionSevenAffineNormalizedStripLift
+public noncomputable def affineNamedStripLift : A.AffineStripLift :=
+  A.affineNormalizedStripLift
 
-public theorem sectionSevenAffineNamedStripLift_apply_midpoint :
-    A.sectionSevenAffineNamedStripLift.lift sectionSevenAffineStripMidpoint =
-      A.sectionSevenAffineNormalizedMidpoint :=
-  A.sectionSevenAffineNormalizedStripContinuousLift_midpoint
+public theorem affineNamedStripLift_apply_midpoint :
+    A.affineNamedStripLift.lift affineStripMidpoint =
+      A.affineNormalizedMidpoint :=
+  A.affineNormalizedStripContinuousLift_midpoint
 
 /-- The named marked product trivialization of the affine central band: the marked trivialization
-of `PaperSectionSevenAffineMarkedBandTrivialization` taken at `sectionSevenAffineNamedStripLift`.
+of `PaperSectionSevenAffineMarkedBandTrivialization` taken at `affineNamedStripLift`.
 Both coordinates are pinned — the base coordinate by
-`sectionSevenAffineCentralBandMarkedProductHomeomorph_fst` and the fibre coordinate by
-`sectionSevenAffineCentralBandMarkedProductHomeomorph_symm_toCentralFamily`. -/
-public noncomputable def sectionSevenAffineCentralBandMarkedProductHomeomorph
-    (S : A.SectionSevenAffineCentralSeparation) :
+`affineCentralBandMarkedProductHomeomorph_fst` and the fibre coordinate by
+`affineCentralBandMarkedProductHomeomorph_symm_toCentralFamily`. -/
+public noncomputable def affineCentralBandMarkedProductHomeomorph
+    (S : A.AffineCentralSeparation) :
     centralHeightBand
-        (A.sectionSevenAffineCentralHeightSplit S).height
-        (A.sectionSevenAffineCentralHeightSplit S).lower
-        (A.sectionSevenAffineCentralHeightSplit S).upper ≃ₜ
-      sectionSevenAffineVerticalStrip ×
+        (A.affineCentralHeightSplit S).height
+        (A.affineCentralHeightSplit S).lower
+        (A.affineCentralHeightSplit S).upper ≃ₜ
+      affineVerticalStrip ×
         AdditiveTorus A.duplicatedSectionSevenBandParameter :=
-  (A.sectionSevenAffineCentralBandProductHomeomorphOfLift S
-    A.sectionSevenAffineNamedStripLift).symm
+  (A.affineCentralBandProductHomeomorphOfLift S
+    A.affineNamedStripLift).symm
 
 /-- The named marked trivialization has the affine band projection as its base coordinate, so it
 is in particular a witness of the unmarked product-trivialization statement. -/
-public theorem sectionSevenAffineCentralBandMarkedProductHomeomorph_fst
-    (S : A.SectionSevenAffineCentralSeparation)
+public theorem affineCentralBandMarkedProductHomeomorph_fst
+    (S : A.AffineCentralSeparation)
     (x : centralHeightBand
-      (A.sectionSevenAffineCentralHeightSplit S).height
-      (A.sectionSevenAffineCentralHeightSplit S).lower
-      (A.sectionSevenAffineCentralHeightSplit S).upper) :
-    (A.sectionSevenAffineCentralBandMarkedProductHomeomorph S x).1 =
-      A.sectionSevenAffineCentralBandProjection S x := by
-  have hkey := A.sectionSevenAffineCentralBandProductHomeomorphOfLift_toCentralFamily S
-    A.sectionSevenAffineNamedStripLift
-    (A.sectionSevenAffineCentralBandMarkedProductHomeomorph S x)
-  rw [sectionSevenAffineCentralBandMarkedProductHomeomorph, Homeomorph.apply_symm_apply] at hkey
+      (A.affineCentralHeightSplit S).height
+      (A.affineCentralHeightSplit S).lower
+      (A.affineCentralHeightSplit S).upper) :
+    (A.affineCentralBandMarkedProductHomeomorph S x).1 =
+      A.affineCentralBandProjection S x := by
+  have hkey := A.affineCentralBandProductHomeomorphOfLift_toCentralFamily S
+    A.affineNamedStripLift
+    (A.affineCentralBandMarkedProductHomeomorph S x)
+  rw [affineCentralBandMarkedProductHomeomorph, Homeomorph.apply_symm_apply] at hkey
   have hcoord := congrArg A.centralFamilyCoordinate hkey
   rw [A.centralFamilyCoordinate_stripLiftPoint] at hcoord
   apply Subtype.ext
@@ -94,48 +94,48 @@ public theorem sectionSevenAffineCentralBandMarkedProductHomeomorph_fst
 /-- The marking itself: the fibre coordinate of the named trivialization is the canonical
 real-period coordinate of the central four-torus along the named strip lift.  This is the
 property that `Exists.choose` of the unmarked statement could never supply. -/
-public theorem sectionSevenAffineCentralBandMarkedProductHomeomorph_symm_toCentralFamily
-    (S : A.SectionSevenAffineCentralSeparation)
-    (p : sectionSevenAffineVerticalStrip ×
+public theorem affineCentralBandMarkedProductHomeomorph_symm_toCentralFamily
+    (S : A.AffineCentralSeparation)
+    (p : affineVerticalStrip ×
       AdditiveTorus A.duplicatedSectionSevenBandParameter) :
-    A.sectionSevenAffineCentralBandToCentralFamily S
-        ((A.sectionSevenAffineCentralBandMarkedProductHomeomorph S).symm p) =
-      A.stripLiftPoint A.sectionSevenAffineNamedStripLift p.1 p.2 := by
-  rw [sectionSevenAffineCentralBandMarkedProductHomeomorph, Homeomorph.symm_symm]
-  exact A.sectionSevenAffineCentralBandProductHomeomorphOfLift_toCentralFamily S
-    A.sectionSevenAffineNamedStripLift p
+    A.affineCentralBandToCentralFamily S
+        ((A.affineCentralBandMarkedProductHomeomorph S).symm p) =
+      A.stripLiftPoint A.affineNamedStripLift p.1 p.2 := by
+  rw [affineCentralBandMarkedProductHomeomorph, Homeomorph.symm_symm]
+  exact A.affineCentralBandProductHomeomorphOfLift_toCentralFamily S
+    A.affineNamedStripLift p
 
 /-- A named product decomposition of the affine central band supplies exactly the
 `bandHomotopyEquiv` field of the central-height radial input.  The decomposition is data, so the
 fibre coordinate of the resulting homotopy equivalence is the one carried by that data. -/
-public noncomputable def SectionSevenAffineCentralBandProductTrivialization.bandHomotopyEquiv
-    {S : A.SectionSevenAffineCentralSeparation}
+public noncomputable def AffineCentralBandProductTrivialization.bandHomotopyEquiv
+    {S : A.AffineCentralSeparation}
     (e : centralHeightBand
-        (A.sectionSevenAffineCentralHeightSplit S).height
-        (A.sectionSevenAffineCentralHeightSplit S).lower
-        (A.sectionSevenAffineCentralHeightSplit S).upper ≃ₜ
-      sectionSevenAffineVerticalStrip ×
+        (A.affineCentralHeightSplit S).height
+        (A.affineCentralHeightSplit S).lower
+        (A.affineCentralHeightSplit S).upper ≃ₜ
+      affineVerticalStrip ×
         AdditiveTorus A.duplicatedSectionSevenBandParameter) :
     centralHeightBand
-        (A.sectionSevenAffineCentralHeightSplit S).height
-        (A.sectionSevenAffineCentralHeightSplit S).lower
-        (A.sectionSevenAffineCentralHeightSplit S).upper ≃ₕ
+        (A.affineCentralHeightSplit S).height
+        (A.affineCentralHeightSplit S).lower
+        (A.affineCentralHeightSplit S).upper ≃ₕ
       AdditiveTorus A.duplicatedSectionSevenBandParameter := by
-  let _ : ContractibleSpace sectionSevenAffineVerticalStrip :=
-    sectionSevenAffineVerticalStripContractible
+  let _ : ContractibleSpace affineVerticalStrip :=
+    affineVerticalStrip_contractibleSpace
   exact homotopyEquivFiberOfTrivialBundle e
 
 /-- The named marked product decomposition gives the concrete central band equivalence used by
 the radial realization.  Its forward map is the marked fibre coordinate of the affine central
-band relative to `sectionSevenAffineNamedStripLift`. -/
-public noncomputable def sectionSevenAffineCentralBandHomotopyEquiv
-    (S : A.SectionSevenAffineCentralSeparation) :
+band relative to `affineNamedStripLift`. -/
+public noncomputable def affineCentralBandHomotopyEquiv
+    (S : A.AffineCentralSeparation) :
     centralHeightBand
-        (A.sectionSevenAffineCentralHeightSplit S).height
-        (A.sectionSevenAffineCentralHeightSplit S).lower
-        (A.sectionSevenAffineCentralHeightSplit S).upper ≃ₕ
+        (A.affineCentralHeightSplit S).height
+        (A.affineCentralHeightSplit S).lower
+        (A.affineCentralHeightSplit S).upper ≃ₕ
       AdditiveTorus A.duplicatedSectionSevenBandParameter :=
-  SectionSevenAffineCentralBandProductTrivialization.bandHomotopyEquiv A
-    (A.sectionSevenAffineCentralBandMarkedProductHomeomorph S)
+  AffineCentralBandProductTrivialization.bandHomotopyEquiv A
+    (A.affineCentralBandMarkedProductHomeomorph S)
 
 end SphereSixComplex.Geometry.PaperAnalyticData

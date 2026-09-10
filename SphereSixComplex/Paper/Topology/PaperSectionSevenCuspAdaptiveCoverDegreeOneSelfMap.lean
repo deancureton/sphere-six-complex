@@ -27,7 +27,7 @@ open SphereSixComplex.Topology.CanonicalProductWangBoundaryNaturality
 
 variable {A : PaperAnalyticData}
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 /-! ## Scalar phase charts -/
 
@@ -152,7 +152,7 @@ public theorem heightToLowerPhase_eq_heightToUpperPhase_of_nonpos {h : ℝ} (hh 
 
 /-- The lower and upper charts glue at the certified negative phase of the actual cusp loop. -/
 public theorem actualCuspHeightPhaseCharts_agree_at_five_sixteenths
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (y : let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
       G.Fiber) :
@@ -166,7 +166,7 @@ public theorem actualCuspHeightPhaseCharts_agree_at_five_sixteenths
 /-- The lower chart reads the order-four member of the genuine cusp cover as the standard
 vertex member on every mapping-torus cylinder. -/
 public theorem heightToLowerPhase_mem_vertexBand_iff_orderFourOpen
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (y : let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
       G.Fiber) (t : unitInterval) :
@@ -189,7 +189,7 @@ public theorem heightToLowerPhase_mem_vertexBand_iff_orderFourOpen
 /-- The lower chart reads the order-three member of the genuine cusp cover as the standard
 edge member on every mapping-torus cylinder. -/
 public theorem heightToLowerPhase_mem_edgeBand_iff_orderThreeOpen
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (y : let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
       G.Fiber) (t : unitInterval) :
@@ -214,7 +214,7 @@ public theorem heightToLowerPhase_mem_edgeBand_iff_orderThreeOpen
 /-- Exact data still needed to realize the adaptive height-preimage cover as the pullback of
 the ordered standard vertex--edge cover by a degree-one self-map. -/
 public structure ActualCuspAdaptiveCoverDegreeOneSelfMap
-    (R : A.SectionSevenAffineRadialCompletionInput) where
+    (R : A.AffineRadialCompletionInput) where
   selfMap :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
@@ -237,7 +237,7 @@ public structure ActualCuspAdaptiveCoverDegreeOneSelfMap
 /-- Read the adaptive overlap through the low leg of the target vertex--edge overlap.  This
 definition, rather than another hypothesis, fixes the Mayer--Vietoris orientation. -/
 public noncomputable def ActualCuspAdaptiveCoverDegreeOneSelfMap.sourceRead
-    {R : A.SectionSevenAffineRadialCompletionInput}
+    {R : A.AffineRadialCompletionInput}
     (D : ActualCuspAdaptiveCoverDegreeOneSelfMap R) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
@@ -257,7 +257,7 @@ public noncomputable def ActualCuspAdaptiveCoverDegreeOneSelfMap.sourceRead
 /-- Transport the oriented pullback-overlap reading along specified equalities of the two
 ordered cover members. -/
 public noncomputable def ActualCuspAdaptiveCoverDegreeOneSelfMap.sourceReadOfOpenEq
-    {R : A.SectionSevenAffineRadialCompletionInput}
+    {R : A.AffineRadialCompletionInput}
     (D : ActualCuspAdaptiveCoverDegreeOneSelfMap R)
     (U V : let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
@@ -281,7 +281,7 @@ public noncomputable def ActualCuspAdaptiveCoverDegreeOneSelfMap.sourceReadOfOpe
 /-- The same oriented reading, transported to the literal order-four/order-three intersection
 of the genuine height-preimage cover. -/
 public noncomputable def ActualCuspAdaptiveCoverDegreeOneSelfMap.actualSourceRead
-    {R : A.SectionSevenAffineRadialCompletionInput}
+    {R : A.AffineRadialCompletionInput}
     (D : ActualCuspAdaptiveCoverDegreeOneSelfMap R) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
@@ -298,7 +298,7 @@ public noncomputable def ActualCuspAdaptiveCoverDegreeOneSelfMap.actualSourceRea
 
 /-- The exact adaptive self-map residual supplies the degree-one pullback-cover comparison. -/
 public theorem ActualCuspAdaptiveCoverDegreeOneSelfMap.toPullbackCoverComparison
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (D : ActualCuspAdaptiveCoverDegreeOneSelfMap R) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
@@ -315,7 +315,7 @@ public theorem ActualCuspAdaptiveCoverDegreeOneSelfMap.toPullbackCoverComparison
 /-- Consequently, the oriented boundary of the adaptive pullback cover is the canonical Wang
 boundary. -/
 public theorem ActualCuspAdaptiveCoverDegreeOneSelfMap.boundary_eq_wang
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (D : ActualCuspAdaptiveCoverDegreeOneSelfMap R) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
@@ -332,7 +332,7 @@ public theorem ActualCuspAdaptiveCoverDegreeOneSelfMap.boundary_eq_wang
     D.sourceRead D.toPullbackCoverComparison
 
 private theorem adaptive_boundary_eq_wang_of_open_eq_aux
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (D : ActualCuspAdaptiveCoverDegreeOneSelfMap R)
     (U V : let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
@@ -357,7 +357,7 @@ private theorem adaptive_boundary_eq_wang_of_open_eq_aux
 /-- In the literal adaptive-cover interface, the oriented order-four/order-three
 Mayer--Vietoris boundary is the canonical Wang boundary. -/
 public theorem ActualCuspAdaptiveCoverDegreeOneSelfMap.actual_boundary_eq_wang
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (D : ActualCuspAdaptiveCoverDegreeOneSelfMap R) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
@@ -373,7 +373,7 @@ public theorem ActualCuspAdaptiveCoverDegreeOneSelfMap.actual_boundary_eq_wang
     D.vertex_pullback.symm D.edge_pullback.symm
     (actualCuspMappingTorusPulledBackSwappedOpenCover R)
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

@@ -28,7 +28,7 @@ open SphereSixComplex.Periods
 open CuspFilling CuspLocalPhaseAction CuspPeriodExpansion CuspPuncturedCollarBridge
 open CuspStraighteningExtension
 open CuspStraighteningHomeomorph
-open StandardInfiniteA2ToricModel
+open InfiniteA2Toric
 
 namespace FrozenLocalCuspPhaseSpreadingData
 
@@ -105,7 +105,7 @@ public noncomputable def actualLocalCuspCentralFiberRetractionData
       frozenLocalPsiMap N M W.localWitness.radius
         (Multiplicative.toAdd g) (rfHomotopy (s, x)) :=
     Rf.homotopy_equivariant g s x
-  let J := StandardInfiniteA2ToricModel.Established.establishedContinuousTorusAction M
+  let J := InfiniteA2Toric.establishedContinuousTorusAction M
   let H := pointStraighteningHomeomorph J W
   let retract : C(LocalCarrier M W.localWitness.radius,
       LocalCarrier M W.localWitness.radius) := {

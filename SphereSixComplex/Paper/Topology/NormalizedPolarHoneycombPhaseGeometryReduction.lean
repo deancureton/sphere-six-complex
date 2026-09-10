@@ -15,7 +15,7 @@ phase-invariant, and the retraction does not shrink compact-torus stabilizers.
 
 noncomputable section
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
 open SphereSixComplex.Periods
 open SphereSixComplex.Geometry.CuspFilling
@@ -228,4 +228,4 @@ public theorem normalizedPolarHoneycombPhaseGeometry_of_explicit
       PolarPhaseGeometricCore M r Q.toPolarHoneycombData} :=
   h.map NormalizedPolarHoneycombExplicitPhaseGeometry.toPhaseGeometry
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric

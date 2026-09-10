@@ -35,29 +35,29 @@ variable (A : PaperAnalyticData)
 /-- A globally based loop representative, whiskered to the order-three elliptic base by the
 prescribed geometric connector. -/
 public noncomputable def orderThreeWhiskeredGlobalAffineProductLoop
-    (gamma : Path A.actualCuspCentralBase A.actualCuspCentralBase) :
-    Path A.orderThreeActualEllipticCentralBase A.orderThreeActualEllipticCentralBase :=
-  A.orderThreeActualCentralProductConnector.symm.trans
-    (gamma.trans A.orderThreeActualCentralProductConnector)
+    (gamma : Path A.cuspCentralBase A.cuspCentralBase) :
+    Path A.ellipticThreeCentralBase A.ellipticThreeCentralBase :=
+  A.ellipticThreeCentralProductConnector.symm.trans
+    (gamma.trans A.ellipticThreeCentralProductConnector)
 
 /-- The order-four analogue of the whiskered global affine-product loop. -/
 public noncomputable def orderFourWhiskeredGlobalAffineProductLoop
-    (gamma : Path A.actualCuspCentralBase A.actualCuspCentralBase) :
-    Path A.orderFourActualEllipticCentralBase A.orderFourActualEllipticCentralBase :=
-  A.orderFourActualCentralProductConnector.symm.trans
-    (gamma.trans A.orderFourActualCentralProductConnector)
+    (gamma : Path A.cuspCentralBase A.cuspCentralBase) :
+    Path A.ellipticFourCentralBase A.ellipticFourCentralBase :=
+  A.ellipticFourCentralProductConnector.symm.trans
+    (gamma.trans A.ellipticFourCentralProductConnector)
 
 /-- Strong point-set form of the remaining order-three local/global comparison.  The witness is
 an actual representative of the canonical affine-presentation class, and the conclusion is an
 equality of paths rather than merely an equality of their homotopy classes. -/
 public def OrderThreeActualEllipticLocalGlobalAffineProductCompatibility : Prop :=
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let localLoop :=
     (A.orderThreeFillingRelationRegularLoop.map
       A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
         A.orderThreeCollarRegularRepresentative_base_projects.symm
         A.orderThreeCollarRegularRepresentative_base_projects.symm
-  ∃ gamma : Path A.actualCuspCentralBase A.actualCuspCentralBase,
+  ∃ gamma : Path A.cuspCentralBase A.cuspCentralBase,
     Path.Homotopic.Quotient.mk gamma =
         (paperPuncturedGlobalFamilyAffinePresentation A
           orderThreeFillingRelationClassifiedCentralProductDeck).toPath ∧
@@ -65,13 +65,13 @@ public def OrderThreeActualEllipticLocalGlobalAffineProductCompatibility : Prop 
 
 /-- Strong point-set form of the remaining order-four local/global comparison. -/
 public def OrderFourActualEllipticLocalGlobalAffineProductCompatibility : Prop :=
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let localLoop :=
     (A.orderFourFillingRelationRegularLoop.map
       A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
         A.orderFourCollarRegularRepresentative_base_projects.symm
         A.orderFourCollarRegularRepresentative_base_projects.symm
-  ∃ gamma : Path A.actualCuspCentralBase A.actualCuspCentralBase,
+  ∃ gamma : Path A.cuspCentralBase A.cuspCentralBase,
     Path.Homotopic.Quotient.mk gamma =
         (paperPuncturedGlobalFamilyAffinePresentation A
           orderFourFillingRelationClassifiedCentralProductDeck).toPath ∧
@@ -82,8 +82,8 @@ coordinate all the way to a connector-whiskered representative of the global aff
 presentation. -/
 public theorem OrderThreeActualEllipticLocalGlobalAffineProductCompatibility.coordinate
     (h : A.OrderThreeActualEllipticLocalGlobalAffineProductCompatibility) :
-    letI := A.orderThreeActualEllipticBoundaryAction
-    ∃ gamma : Path A.actualCuspCentralBase A.actualCuspCentralBase,
+    letI := A.ellipticThreeBoundaryAction
+    ∃ gamma : Path A.cuspCentralBase A.cuspCentralBase,
       Path.Homotopic.Quotient.mk gamma =
           (paperPuncturedGlobalFamilyAffinePresentation A
             orderThreeFillingRelationClassifiedCentralProductDeck).toPath ∧
@@ -91,22 +91,22 @@ public theorem OrderThreeActualEllipticLocalGlobalAffineProductCompatibility.coo
           (((orderThreeCayleyHomeomorph
                 (familyTotalSpaceBase A.periods
                   (A.orderThreeCollarInverseRepresentative
-                    (A.orderThreeActualEllipticBoundaryDeckStraightLift
-                      A.orderThreeActualEllipticBoundaryDeckData.fillingRelation t)).1) :
+                    (A.ellipticThreeBoundaryDeckStraightLift
+                      A.ellipticThreeBoundaryDeckData.fillingRelation t)).1) :
                   ComplexUnitDisc) : ℂ),
             (orderThreeRealPeriodProductHomeomorph A.periods
               (regularFamilyInclusion A.periods
                 (A.orderThreeFillingRelationRegularLoop t))).2) =
               ((A.orderThreeFillingRelationCayleyLoop t).1,
                 A.orderThreeFillingRelationPrincipalGaugeLoop t +
-                  Quotient.mk _ A.orderThreeActualEllipticBoundaryBase.2.2) ∧
+                  Quotient.mk _ A.ellipticThreeBoundaryBase.2.2) ∧
             ((A.orderThreeFillingRelationRegularLoop.map
                 A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
                   A.orderThreeCollarRegularRepresentative_base_projects.symm
                   A.orderThreeCollarRegularRepresentative_base_projects.symm) t =
               A.orderThreeWhiskeredGlobalAffineProductLoop gamma t := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
-  change ∃ gamma : Path A.actualCuspCentralBase A.actualCuspCentralBase, _ ∧ _ at h
+  let _ := A.ellipticThreeBoundaryAction
+  change ∃ gamma : Path A.cuspCentralBase A.cuspCentralBase, _ ∧ _ at h
   obtain ⟨gamma, hgamma, hloop⟩ := h
   refine ⟨gamma, hgamma, fun t ↦
     ⟨A.orderThreeFillingRelationRegularLoop_localProductCoordinate t,
@@ -115,8 +115,8 @@ public theorem OrderThreeActualEllipticLocalGlobalAffineProductCompatibility.coo
 /-- The corresponding order-four pointwise transport. -/
 public theorem OrderFourActualEllipticLocalGlobalAffineProductCompatibility.coordinate
     (h : A.OrderFourActualEllipticLocalGlobalAffineProductCompatibility) :
-    letI := A.orderFourActualEllipticBoundaryAction
-    ∃ gamma : Path A.actualCuspCentralBase A.actualCuspCentralBase,
+    letI := A.ellipticFourBoundaryAction
+    ∃ gamma : Path A.cuspCentralBase A.cuspCentralBase,
       Path.Homotopic.Quotient.mk gamma =
           (paperPuncturedGlobalFamilyAffinePresentation A
             orderFourFillingRelationClassifiedCentralProductDeck).toPath ∧
@@ -124,22 +124,22 @@ public theorem OrderFourActualEllipticLocalGlobalAffineProductCompatibility.coor
           (((orderFourCayleyHomeomorph
                 (familyTotalSpaceBase A.periods
                   (A.orderFourCollarInverseRepresentative
-                    (A.orderFourActualEllipticBoundaryDeckStraightLift
-                      A.orderFourActualEllipticBoundaryDeckData.fillingRelation t)).1) :
+                    (A.ellipticFourBoundaryDeckStraightLift
+                      A.ellipticFourBoundaryDeckData.fillingRelation t)).1) :
                   ComplexUnitDisc) : ℂ),
             (orderFourRealPeriodProductHomeomorph A.periods
               (regularFamilyInclusion A.periods
                 (A.orderFourFillingRelationRegularLoop t))).2) =
               ((A.orderFourFillingRelationCayleyLoop t).1,
                 A.orderFourFillingRelationPrincipalGaugeLoop t +
-                  Quotient.mk _ A.orderFourActualEllipticBoundaryBase.2.2) ∧
+                  Quotient.mk _ A.ellipticFourBoundaryBase.2.2) ∧
             ((A.orderFourFillingRelationRegularLoop.map
                 A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
                   A.orderFourCollarRegularRepresentative_base_projects.symm
                   A.orderFourCollarRegularRepresentative_base_projects.symm) t =
               A.orderFourWhiskeredGlobalAffineProductLoop gamma t := by
-  let _ := A.orderFourActualEllipticBoundaryAction
-  change ∃ gamma : Path A.actualCuspCentralBase A.actualCuspCentralBase, _ ∧ _ at h
+  let _ := A.ellipticFourBoundaryAction
+  change ∃ gamma : Path A.cuspCentralBase A.cuspCentralBase, _ ∧ _ at h
   obtain ⟨gamma, hgamma, hloop⟩ := h
   refine ⟨gamma, hgamma, fun t ↦
     ⟨A.orderFourFillingRelationRegularLoop_localProductCoordinate t,
@@ -151,15 +151,15 @@ public theorem OrderThreeActualEllipticLocalGlobalAffineProductCompatibility.toC
     (h : A.OrderThreeActualEllipticLocalGlobalAffineProductCompatibility) :
     A.OrderThreeActualEllipticCentralCoverProductLiftComparison := by
   rw [A.orderThreeCentralCoverProductLiftComparison_iff_pathClassIdentity]
-  let _ := A.orderThreeActualEllipticBoundaryAction
-  change ∃ gamma : Path A.actualCuspCentralBase A.actualCuspCentralBase, _ ∧ _ at h
+  let _ := A.ellipticThreeBoundaryAction
+  change ∃ gamma : Path A.cuspCentralBase A.cuspCentralBase, _ ∧ _ at h
   obtain ⟨gamma, hgamma, hloop⟩ := h
   change Path.Homotopic.Quotient.mk _ = _
   rw [hloop]
   unfold orderThreeWhiskeredGlobalAffineProductLoop
   simp only [Path.Homotopic.Quotient.mk_trans, Path.Homotopic.Quotient.mk_symm]
   change _ = FundamentalGroup.fundamentalGroupMulEquivOfPath
-    A.orderThreeActualCentralProductConnector _
+    A.ellipticThreeCentralProductConnector _
   unfold FundamentalGroup.fundamentalGroupMulEquivOfPath
   simp only [CategoryTheory.Iso.conj_apply]
   rw [hgamma]
@@ -170,15 +170,15 @@ public theorem OrderFourActualEllipticLocalGlobalAffineProductCompatibility.toCo
     (h : A.OrderFourActualEllipticLocalGlobalAffineProductCompatibility) :
     A.OrderFourActualEllipticCentralCoverProductLiftComparison := by
   rw [A.orderFourCentralCoverProductLiftComparison_iff_pathClassIdentity]
-  let _ := A.orderFourActualEllipticBoundaryAction
-  change ∃ gamma : Path A.actualCuspCentralBase A.actualCuspCentralBase, _ ∧ _ at h
+  let _ := A.ellipticFourBoundaryAction
+  change ∃ gamma : Path A.cuspCentralBase A.cuspCentralBase, _ ∧ _ at h
   obtain ⟨gamma, hgamma, hloop⟩ := h
   change Path.Homotopic.Quotient.mk _ = _
   rw [hloop]
   unfold orderFourWhiskeredGlobalAffineProductLoop
   simp only [Path.Homotopic.Quotient.mk_trans, Path.Homotopic.Quotient.mk_symm]
   change _ = FundamentalGroup.fundamentalGroupMulEquivOfPath
-    A.orderFourActualCentralProductConnector _
+    A.ellipticFourCentralProductConnector _
   unfold FundamentalGroup.fundamentalGroupMulEquivOfPath
   simp only [CategoryTheory.Iso.conj_apply]
   rw [hgamma]

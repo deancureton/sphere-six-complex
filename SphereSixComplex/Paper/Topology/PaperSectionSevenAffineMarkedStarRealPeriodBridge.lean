@@ -347,94 +347,94 @@ open SphereSixComplex.Topology.PaperEllipticFillingRealPeriodRadial
 open SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
 
 /-- The strip coordinate of the marked affine band. -/
-public noncomputable def sectionSevenAffineBandStripCoordinate (A : PaperAnalyticData) :
-    C(A.SectionSevenAffineMarkedBand, sectionSevenAffineVerticalStrip) :=
+public noncomputable def affineBandStripCoordinate (A : PaperAnalyticData) :
+    C(A.affineMarkedBand, affineVerticalStrip) :=
   ⟨fun x ↦
-      (A.sectionSevenAffineCentralBandMarkedProductHomeomorph
-        A.sectionSevenAffineCentralSeparation
-          (A.sectionSevenActualAffineSplit.sidesIntersectionHomeomorph x)).1,
+      (A.affineCentralBandMarkedProductHomeomorph
+        A.affineCentralSeparation
+          (A.actualAffineHeightSplit.sidesIntersectionHomeomorph x)).1,
     continuous_fst.comp
-      ((A.sectionSevenAffineCentralBandMarkedProductHomeomorph
-        A.sectionSevenAffineCentralSeparation).continuous.comp
-          A.sectionSevenActualAffineSplit.sidesIntersectionHomeomorph.continuous)⟩
+      ((A.affineCentralBandMarkedProductHomeomorph
+        A.affineCentralSeparation).continuous.comp
+          A.actualAffineHeightSplit.sidesIntersectionHomeomorph.continuous)⟩
 
 /-- Translate the marked order-three torus coordinate by a gauge depending on the strip
 coordinate, then pass to the reduced central fibre. -/
-public noncomputable def sectionSevenAffineOrderThreeGaugeTranslatedProjection
+public noncomputable def affineOrderThreeGaugeTranslatedProjection
     (A : PaperAnalyticData)
-    (g : C(sectionSevenAffineVerticalStrip,
+    (g : C(affineVerticalStrip,
       AdditiveTorus A.duplicatedSectionSevenBandParameter)) :
-    C(A.SectionSevenAffineMarkedBand, OrderThreeReducedCentralFiber A.periods) :=
+    C(A.affineMarkedBand, OrderThreeReducedCentralFiber A.periods) :=
   ((RadialEllipticActionData.centralFiberCoverProjection
       (orderThreeRadialActionData A.periods)).comp
     ⟨A.duplicatedSectionSevenBandToOrderThreeCoverSource,
       A.duplicatedSectionSevenBandToOrderThreeCoverSource.continuous⟩).comp
-      ⟨fun x ↦ g (A.sectionSevenAffineBandStripCoordinate x) +
-          sectionSevenAffineBandFiberCoordinate A x,
+      ⟨fun x ↦ g (A.affineBandStripCoordinate x) +
+          affineBandFiberCoordinate A x,
         continuous_add.comp
-          ((g.continuous.comp A.sectionSevenAffineBandStripCoordinate.continuous).prodMk
-            (sectionSevenAffineBandFiberCoordinate A).continuous)⟩
+          ((g.continuous.comp A.affineBandStripCoordinate.continuous).prodMk
+            (affineBandFiberCoordinate A).continuous)⟩
 
 /-- Translate the marked order-four torus coordinate by a gauge depending on the strip
 coordinate, then pass to the reduced central fibre. -/
-public noncomputable def sectionSevenAffineOrderFourGaugeTranslatedProjection
+public noncomputable def affineOrderFourGaugeTranslatedProjection
     (A : PaperAnalyticData)
-    (g : C(sectionSevenAffineVerticalStrip,
+    (g : C(affineVerticalStrip,
       AdditiveTorus A.duplicatedSectionSevenBandParameter)) :
-    C(A.SectionSevenAffineMarkedBand, OrderFourReducedCentralFiber A.periods) :=
+    C(A.affineMarkedBand, OrderFourReducedCentralFiber A.periods) :=
   ((RadialEllipticActionData.centralFiberCoverProjection
       (orderFourRadialActionData A.periods)).comp
     ⟨A.duplicatedSectionSevenBandToOrderFourCoverSource,
       A.duplicatedSectionSevenBandToOrderFourCoverSource.continuous⟩).comp
-      ⟨fun x ↦ g (A.sectionSevenAffineBandStripCoordinate x) +
-          sectionSevenAffineBandFiberCoordinate A x,
+      ⟨fun x ↦ g (A.affineBandStripCoordinate x) +
+          affineBandFiberCoordinate A x,
         continuous_add.comp
-          ((g.continuous.comp A.sectionSevenAffineBandStripCoordinate.continuous).prodMk
-            (sectionSevenAffineBandFiberCoordinate A).continuous)⟩
+          ((g.continuous.comp A.affineBandStripCoordinate.continuous).prodMk
+            (affineBandFiberCoordinate A).continuous)⟩
 
 /-- The honest point-set residue of the logarithmic-gauge calculation.  It says that, in fixed
 real-period coordinates, each selected-filling endpoint differs from the marked band coordinate
 by a torus translation depending only on the strip coordinate. -/
-public structure SectionSevenAffineMarkedEndpointGaugeTranslation
+public structure AffineMarkedEndpointGaugeTranslation
     (A : PaperAnalyticData) where
   orderThreeGauge :
-    C(sectionSevenAffineVerticalStrip,
+    C(affineVerticalStrip,
       AdditiveTorus A.duplicatedSectionSevenBandParameter)
   orderThreeFormula :
     (orderThreeSelectedFillingHomotopyEquivCentralFiber A).toFun.comp
-        A.sectionSevenAffineOrderThreeStarEndpoint =
-      A.sectionSevenAffineOrderThreeGaugeTranslatedProjection orderThreeGauge
+        A.affineOrderThreeStarEndpoint =
+      A.affineOrderThreeGaugeTranslatedProjection orderThreeGauge
   orderFourGauge :
-    C(sectionSevenAffineVerticalStrip,
+    C(affineVerticalStrip,
       AdditiveTorus A.duplicatedSectionSevenBandParameter)
   orderFourFormula :
     (orderFourSelectedFillingHomotopyEquivCentralFiber A).toFun.comp
-        A.sectionSevenAffineOrderFourStarEndpoint =
-      A.sectionSevenAffineOrderFourGaugeTranslatedProjection orderFourGauge
+        A.affineOrderFourStarEndpoint =
+      A.affineOrderFourGaugeTranslatedProjection orderFourGauge
 
 /-- The endpoint-level homotopy statement left after removing the logarithmic gauge. -/
-public structure SectionSevenAffineMarkedDiscEndpointHomotopyCompatibility
+public structure AffineMarkedDiscEndpointHomotopyCompatibility
     (A : PaperAnalyticData) where
   orderThree :
-    ((A.sectionSevenOrderThreeFillingImageHomotopyEquiv.toFun.comp
-      A.sectionSevenAffineOrderThreeDiscFillingEndpoint)).Homotopic
-        (sectionSevenAffineBandOrderThreeMarkedProjection A)
+    ((A.orderThreeFillingImageHomotopyEquiv.toFun.comp
+      A.affineOrderThreeDiscFillingEndpoint)).Homotopic
+        (affineBandOrderThreeMarkedProjection A)
   orderFour :
-    ((A.sectionSevenOrderFourFillingImageHomotopyEquiv.toFun.comp
-      A.sectionSevenAffineOrderFourDiscFillingEndpoint)).Homotopic
-        (sectionSevenAffineBandOrderFourMarkedProjection A)
+    ((A.orderFourFillingImageHomotopyEquiv.toFun.comp
+      A.affineOrderFourDiscFillingEndpoint)).Homotopic
+        (affineBandOrderFourMarkedProjection A)
 
 /-- Homotopic disc endpoints suffice for the original marked-band compatibility; literal
 endpoint equality is unnecessary. -/
-public theorem SectionSevenAffineMarkedDiscEndpointHomotopyCompatibility.toBandCompatibility
+public theorem AffineMarkedDiscEndpointHomotopyCompatibility.toBandCompatibility
     {A : PaperAnalyticData}
-    (H : A.SectionSevenAffineMarkedDiscEndpointHomotopyCompatibility) :
-    A.SectionSevenAffineOverlapBandCompatibility := by
+    (H : A.AffineMarkedDiscEndpointHomotopyCompatibility) :
+    A.AffineOverlapBandCompatibility := by
   apply markedBandHomotopies_of_sideContractions A
   refine { orderThree := ?_, orderFour := ?_ }
-  · let q := A.sectionSevenAffineOrderThreeDiscFillingEndpoint
-    let g := A.sectionSevenOrderThreeFillingImageHomotopyEquiv
-    let p := sectionSevenAffineBandOrderThreeMarkedProjection A
+  · let q := A.affineOrderThreeDiscFillingEndpoint
+    let g := A.orderThreeFillingImageHomotopyEquiv
+    let p := affineBandOrderThreeMarkedProjection A
     have hleft : (g.invFun.comp (g.toFun.comp q)).Homotopic q := by
       simpa only [ContinuousMap.comp_assoc, ContinuousMap.id_comp] using
         ContinuousMap.Homotopic.comp g.left_inv (.refl q)
@@ -443,34 +443,34 @@ public theorem SectionSevenAffineMarkedDiscEndpointHomotopyCompatibility.toBandC
       ContinuousMap.Homotopic.comp (.refl g.invFun) H.orderThree
     have hfill : q.Homotopic (g.invFun.comp p) := hleft.symm.trans hright
     have hside := ContinuousMap.Homotopic.comp
-      (.refl A.sectionSevenAffineOrderThreeFillingImageToSide) hfill
+      (.refl A.affineOrderThreeFillingImageToSide) hfill
     have hendpoint :
-        A.sectionSevenAffineOrderThreeFillingImageToSide.comp (g.invFun.comp p) =
-          (sectionSevenAffineOrderThreeSideToReducedFiberHomotopyEquiv A).invFun.comp p := by
+        A.affineOrderThreeFillingImageToSide.comp (g.invFun.comp p) =
+          (affineOrderThreeSideToReducedFiberHomotopyEquiv A).invFun.comp p := by
       dsimp [g, p]
       have hraw :
-          A.sectionSevenAffineOrderThreeFillingImageToSide.comp
-              (A.sectionSevenOrderThreeFillingImageHomotopyEquiv.invFun.comp
-                (sectionSevenAffineBandOrderThreeMarkedProjection A)) =
+          A.affineOrderThreeFillingImageToSide.comp
+              (A.orderThreeFillingImageHomotopyEquiv.invFun.comp
+                (affineBandOrderThreeMarkedProjection A)) =
             (orderThreeOverlapIsHomotopyEquivalence_inclusion
                 A.orderThreeOverlapIsHomotopyEquivalence).toHomotopyEquiv.invFun.comp
               ((nestedSubtypeHomeomorph
-                A.sectionSevenActualAffineSplit.allocation.orderThreeSide
-                A.sectionSevenOrderThreeFillingImage
-                A.sectionSevenActualAffineSplit.orderThreeFillingImage_subset_side)
+                A.actualAffineHeightSplit.allocation.orderThreeSide
+                A.orderThreeFillingImage
+                A.actualAffineHeightSplit.orderThreeFillingImage_subset_side)
                 |>.toHomotopyEquiv.invFun.comp
-                  (A.sectionSevenOrderThreeFillingImageHomotopyEquiv.invFun.comp
-                    (sectionSevenAffineBandOrderThreeMarkedProjection A))) := by
+                  (A.orderThreeFillingImageHomotopyEquiv.invFun.comp
+                    (affineBandOrderThreeMarkedProjection A))) := by
         rw [(orderThreeOverlapIsHomotopyEquivalence_inclusion
           A.orderThreeOverlapIsHomotopyEquivalence).toHomotopyEquiv_invFun]
         ext x
         rfl
-      exact hraw.trans (sectionSevenAffineOrderThreeSideInverse_markedProjection A).symm
+      exact hraw.trans (affineOrderThreeSideInverse_markedProjection A).symm
     rw [hendpoint] at hside
     exact A.orderThreeBandInclusion_homotopic_discFillingEndpoint.trans hside
-  · let q := A.sectionSevenAffineOrderFourDiscFillingEndpoint
-    let g := A.sectionSevenOrderFourFillingImageHomotopyEquiv
-    let p := sectionSevenAffineBandOrderFourMarkedProjection A
+  · let q := A.affineOrderFourDiscFillingEndpoint
+    let g := A.orderFourFillingImageHomotopyEquiv
+    let p := affineBandOrderFourMarkedProjection A
     have hleft : (g.invFun.comp (g.toFun.comp q)).Homotopic q := by
       simpa only [ContinuousMap.comp_assoc, ContinuousMap.id_comp] using
         ContinuousMap.Homotopic.comp g.left_inv (.refl q)
@@ -479,130 +479,130 @@ public theorem SectionSevenAffineMarkedDiscEndpointHomotopyCompatibility.toBandC
       ContinuousMap.Homotopic.comp (.refl g.invFun) H.orderFour
     have hfill : q.Homotopic (g.invFun.comp p) := hleft.symm.trans hright
     have hside := ContinuousMap.Homotopic.comp
-      (.refl A.sectionSevenAffineOrderFourFillingImageToSide) hfill
+      (.refl A.affineOrderFourFillingImageToSide) hfill
     have hendpoint :
-        A.sectionSevenAffineOrderFourFillingImageToSide.comp (g.invFun.comp p) =
-          (sectionSevenAffineOrderFourSideToReducedFiberHomotopyEquiv A).invFun.comp p := by
+        A.affineOrderFourFillingImageToSide.comp (g.invFun.comp p) =
+          (affineOrderFourSideToReducedFiberHomotopyEquiv A).invFun.comp p := by
       dsimp [g, p]
       have hraw :
-          A.sectionSevenAffineOrderFourFillingImageToSide.comp
-              (A.sectionSevenOrderFourFillingImageHomotopyEquiv.invFun.comp
-                (sectionSevenAffineBandOrderFourMarkedProjection A)) =
+          A.affineOrderFourFillingImageToSide.comp
+              (A.orderFourFillingImageHomotopyEquiv.invFun.comp
+                (affineBandOrderFourMarkedProjection A)) =
             (orderFourOverlapIsHomotopyEquivalence_inclusion
                 A.orderFourOverlapIsHomotopyEquivalence).toHomotopyEquiv.invFun.comp
               ((nestedSubtypeHomeomorph
-                A.sectionSevenActualAffineSplit.allocation.orderFourSide
-                A.sectionSevenOrderFourFillingImage
-                A.sectionSevenActualAffineSplit.orderFourFillingImage_subset_side)
+                A.actualAffineHeightSplit.allocation.orderFourSide
+                A.orderFourFillingImage
+                A.actualAffineHeightSplit.orderFourFillingImage_subset_side)
                 |>.toHomotopyEquiv.invFun.comp
-                  (A.sectionSevenOrderFourFillingImageHomotopyEquiv.invFun.comp
-                    (sectionSevenAffineBandOrderFourMarkedProjection A))) := by
+                  (A.orderFourFillingImageHomotopyEquiv.invFun.comp
+                    (affineBandOrderFourMarkedProjection A))) := by
         rw [(orderFourOverlapIsHomotopyEquivalence_inclusion
           A.orderFourOverlapIsHomotopyEquivalence).toHomotopyEquiv_invFun]
         ext x
         rfl
-      exact hraw.trans (sectionSevenAffineOrderFourSideInverse_markedProjection A).symm
+      exact hraw.trans (affineOrderFourSideInverse_markedProjection A).symm
     rw [hendpoint] at hside
     exact A.orderFourBandInclusion_homotopic_discFillingEndpoint.trans hside
 
 /-- Reading the order-three disc endpoint in the filling retraction is exactly the same map as
 reading its selected star endpoint. -/
-public theorem sectionSevenAffineOrderThreeDiscEndpoint_toFun_eq_starEndpoint
+public theorem affineOrderThreeDiscEndpoint_toFun_eq_starEndpoint
     (A : PaperAnalyticData) :
-    A.sectionSevenOrderThreeFillingImageHomotopyEquiv.toFun.comp
-        A.sectionSevenAffineOrderThreeDiscFillingEndpoint =
+    A.orderThreeFillingImageHomotopyEquiv.toFun.comp
+        A.affineOrderThreeDiscFillingEndpoint =
       (orderThreeSelectedFillingHomotopyEquivCentralFiber A).toFun.comp
-        A.sectionSevenAffineOrderThreeStarEndpoint := by
+        A.affineOrderThreeStarEndpoint := by
   apply ContinuousMap.ext
   intro x
-  let u := A.sectionSevenAffineOrderThreeDiscOverlapEndpoint x
-  have hfill : A.sectionSevenAffineOrderThreeDiscFillingEndpoint x =
+  let u := A.affineOrderThreeDiscOverlapEndpoint x
+  have hfill : A.affineOrderThreeDiscFillingEndpoint x =
       ⟨u.1, u.2.1⟩ := rfl
   change (orderThreeSelectedFillingHomotopyEquivCentralFiber A).toFun
-      (A.sectionSevenOrderThreePieceHomeomorph.symm
-        (A.sectionSevenOrderThreeFillingImageToPiece
-          (A.sectionSevenAffineOrderThreeDiscFillingEndpoint x))) =
+      (A.orderThreePieceHomeomorph.symm
+        (A.orderThreeFillingImageToPiece
+          (A.affineOrderThreeDiscFillingEndpoint x))) =
     (orderThreeSelectedFillingHomotopyEquivCentralFiber A).toFun
       (A.starToFilling 1 (A.orderThreeOverlapCollarHomeomorph u))
   rw [hfill]
   exact congrArg (orderThreeSelectedFillingHomotopyEquivCentralFiber A).toFun
-    (A.sectionSevenOrderThreeFillingImageToPiece_symm_overlap u)
+    (A.orderThreeFillingImageToPiece_symm_overlap u)
 
 /-- Reading the order-four disc endpoint in the filling retraction is exactly the same map as
 reading its selected star endpoint. -/
-public theorem sectionSevenAffineOrderFourDiscEndpoint_toFun_eq_starEndpoint
+public theorem affineOrderFourDiscEndpoint_toFun_eq_starEndpoint
     (A : PaperAnalyticData) :
-    A.sectionSevenOrderFourFillingImageHomotopyEquiv.toFun.comp
-        A.sectionSevenAffineOrderFourDiscFillingEndpoint =
+    A.orderFourFillingImageHomotopyEquiv.toFun.comp
+        A.affineOrderFourDiscFillingEndpoint =
       (orderFourSelectedFillingHomotopyEquivCentralFiber A).toFun.comp
-        A.sectionSevenAffineOrderFourStarEndpoint := by
+        A.affineOrderFourStarEndpoint := by
   apply ContinuousMap.ext
   intro x
-  let u := A.sectionSevenAffineOrderFourDiscOverlapEndpoint x
-  have hfill : A.sectionSevenAffineOrderFourDiscFillingEndpoint x =
+  let u := A.affineOrderFourDiscOverlapEndpoint x
+  have hfill : A.affineOrderFourDiscFillingEndpoint x =
       ⟨u.1, u.2.1⟩ := rfl
   change (orderFourSelectedFillingHomotopyEquivCentralFiber A).toFun
-      (A.sectionSevenOrderFourPieceHomeomorph.symm
-        (A.sectionSevenOrderFourFillingImageToPiece
-          (A.sectionSevenAffineOrderFourDiscFillingEndpoint x))) =
+      (A.orderFourPieceHomeomorph.symm
+        (A.orderFourFillingImageToPiece
+          (A.affineOrderFourDiscFillingEndpoint x))) =
     (orderFourSelectedFillingHomotopyEquivCentralFiber A).toFun
       (A.starToFilling 2 (A.orderFourOverlapCollarHomeomorph u))
   rw [hfill]
   exact congrArg (orderFourSelectedFillingHomotopyEquivCentralFiber A).toFun
-    (A.sectionSevenOrderFourFillingImageToPiece_symm_overlap u)
+    (A.orderFourFillingImageToPiece_symm_overlap u)
 
 /-- A base-dependent gauge translation gives the order-three selected-filling endpoint
 homotopy. -/
-public theorem SectionSevenAffineMarkedEndpointGaugeTranslation.orderThreeEndpointHomotopy
-    {A : PaperAnalyticData} (G : A.SectionSevenAffineMarkedEndpointGaugeTranslation) :
+public theorem AffineMarkedEndpointGaugeTranslation.orderThreeEndpointHomotopy
+    {A : PaperAnalyticData} (G : A.AffineMarkedEndpointGaugeTranslation) :
     ((orderThreeSelectedFillingHomotopyEquivCentralFiber A).toFun.comp
-        A.sectionSevenAffineOrderThreeStarEndpoint).Homotopic
-        (sectionSevenAffineBandOrderThreeMarkedProjection A) := by
-  let _ : ContractibleSpace sectionSevenAffineVerticalStrip :=
-    sectionSevenAffineVerticalStripContractible
+        A.affineOrderThreeStarEndpoint).Homotopic
+        (affineBandOrderThreeMarkedProjection A) := by
+  let _ : ContractibleSpace affineVerticalStrip :=
+    affineVerticalStrip_contractibleSpace
   rw [G.orderThreeFormula]
-  change (A.sectionSevenAffineOrderThreeGaugeTranslatedProjection
+  change (A.affineOrderThreeGaugeTranslatedProjection
     G.orderThreeGauge).Homotopic _
-  unfold sectionSevenAffineOrderThreeGaugeTranslatedProjection
+  unfold affineOrderThreeGaugeTranslatedProjection
   exact (continuousMap_comp_add_homotopic_of_contractible
     ((RadialEllipticActionData.centralFiberCoverProjection
       (orderThreeRadialActionData A.periods)).comp
         ⟨A.duplicatedSectionSevenBandToOrderThreeCoverSource,
           A.duplicatedSectionSevenBandToOrderThreeCoverSource.continuous⟩)
-    (sectionSevenAffineBandFiberCoordinate A)
-    A.sectionSevenAffineBandStripCoordinate G.orderThreeGauge).symm
+    (affineBandFiberCoordinate A)
+    A.affineBandStripCoordinate G.orderThreeGauge).symm
 
 /-- A base-dependent gauge translation gives the order-four selected-filling endpoint
 homotopy. -/
-public theorem SectionSevenAffineMarkedEndpointGaugeTranslation.orderFourEndpointHomotopy
-    {A : PaperAnalyticData} (G : A.SectionSevenAffineMarkedEndpointGaugeTranslation) :
+public theorem AffineMarkedEndpointGaugeTranslation.orderFourEndpointHomotopy
+    {A : PaperAnalyticData} (G : A.AffineMarkedEndpointGaugeTranslation) :
     ((orderFourSelectedFillingHomotopyEquivCentralFiber A).toFun.comp
-        A.sectionSevenAffineOrderFourStarEndpoint).Homotopic
-        (sectionSevenAffineBandOrderFourMarkedProjection A) := by
-  let _ : ContractibleSpace sectionSevenAffineVerticalStrip :=
-    sectionSevenAffineVerticalStripContractible
+        A.affineOrderFourStarEndpoint).Homotopic
+        (affineBandOrderFourMarkedProjection A) := by
+  let _ : ContractibleSpace affineVerticalStrip :=
+    affineVerticalStrip_contractibleSpace
   rw [G.orderFourFormula]
-  change (A.sectionSevenAffineOrderFourGaugeTranslatedProjection
+  change (A.affineOrderFourGaugeTranslatedProjection
     G.orderFourGauge).Homotopic _
-  unfold sectionSevenAffineOrderFourGaugeTranslatedProjection
+  unfold affineOrderFourGaugeTranslatedProjection
   exact (continuousMap_comp_add_homotopic_of_contractible
     ((RadialEllipticActionData.centralFiberCoverProjection
       (orderFourRadialActionData A.periods)).comp
         ⟨A.duplicatedSectionSevenBandToOrderFourCoverSource,
           A.duplicatedSectionSevenBandToOrderFourCoverSource.continuous⟩)
-    (sectionSevenAffineBandFiberCoordinate A)
-    A.sectionSevenAffineBandStripCoordinate G.orderFourGauge).symm
+    (affineBandFiberCoordinate A)
+    A.affineBandStripCoordinate G.orderFourGauge).symm
 
 /-- The base-dependent logarithmic-gauge formula implies the original Section Seven marked-band
 compatibility. -/
-public theorem SectionSevenAffineMarkedEndpointGaugeTranslation.toBandCompatibility
-    {A : PaperAnalyticData} (G : A.SectionSevenAffineMarkedEndpointGaugeTranslation) :
-    A.SectionSevenAffineOverlapBandCompatibility := by
-  apply SectionSevenAffineMarkedDiscEndpointHomotopyCompatibility.toBandCompatibility
+public theorem AffineMarkedEndpointGaugeTranslation.toBandCompatibility
+    {A : PaperAnalyticData} (G : A.AffineMarkedEndpointGaugeTranslation) :
+    A.AffineOverlapBandCompatibility := by
+  apply AffineMarkedDiscEndpointHomotopyCompatibility.toBandCompatibility
   refine { orderThree := ?_, orderFour := ?_ }
-  · rw [sectionSevenAffineOrderThreeDiscEndpoint_toFun_eq_starEndpoint]
+  · rw [affineOrderThreeDiscEndpoint_toFun_eq_starEndpoint]
     exact G.orderThreeEndpointHomotopy
-  · rw [sectionSevenAffineOrderFourDiscEndpoint_toFun_eq_starEndpoint]
+  · rw [affineOrderFourDiscEndpoint_toFun_eq_starEndpoint]
     exact G.orderFourEndpointHomotopy
 
 end SphereSixComplex.Geometry.PaperAnalyticData

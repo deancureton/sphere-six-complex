@@ -8,13 +8,13 @@ noncomputable section
 
 open Function Set Topology Matrix
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
 open SphereSixComplex.Geometry.CuspCombinatorics
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+open SphereSixComplex.Geometry.InfiniteA2Toric
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 public def constructedA2PlaneCorrection (v : ToricLattice) : Fin 2 → ℝ :=
   constructedA2CorrectedPlaneCenter v - fun k ↦ (v k : ℝ)
@@ -148,6 +148,6 @@ public theorem constructedA2CorrectedFiniteQuotientCellHomeomorph_compatible
   simpa only [constructedA2CorrectedPlaneSquareProjection] using
     constructedA2CorrectedPlaneTile_eq_iff_cellSquareProjection hr v w i j p q
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric
 
 end

@@ -23,20 +23,20 @@ open SphereSixComplex.LatticeData
 
 variable (A : PaperAnalyticData)
 
-public theorem orderFourActualEllipticCentralBase_eq_overlapCentralBase :
-    A.orderFourActualEllipticCentralBase = A.orderFourActualOverlapCentralBase := by
-  exact congrArg A.orderFourActualOverlapToCentral
-    A.orderFourActualEllipticBoundaryProjection_base
+public theorem ellipticFourCentralBase_eq_overlapCentralBase :
+    A.ellipticFourCentralBase = A.ellipticFourOverlapCentralBase := by
+  exact congrArg A.ellipticFourOverlapToCentral
+    A.ellipticFourBoundaryProjection_base
 
-public theorem actualCuspCentralToCorePair_simultaneouslyConjugate_orderFour
+public theorem cuspCentralToCorePair_simultaneouslyConjugate_orderFour
     (a b : FundamentalGroup A.CentralFamily A.centralAffineBase) :
     let source := A.orderFourCentralBaseWhisker.cast rfl
-      A.orderFourActualEllipticCentralBase_eq_overlapCentralBase.symm
+      A.ellipticFourCentralBase_eq_overlapCentralBase.symm
     SimultaneouslyConjugate
-      (A.actualCuspCentralToCoreEquiv a, A.actualCuspCentralToCoreEquiv b)
-      (A.orderFourActualCentralToCoreEquiv
+      (A.cuspCentralToCoreEquiv a, A.cuspCentralToCoreEquiv b)
+      (A.ellipticFourCentralToCoreEquiv
           (FundamentalGroup.fundamentalGroupMulEquivOfPath source a),
-        A.orderFourActualCentralToCoreEquiv
+        A.ellipticFourCentralToCoreEquiv
           (FundamentalGroup.fundamentalGroupMulEquivOfPath source b)) := by
   let H := A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
   let f : C(A.CentralFamily, A.actualVanKampenFourPieceCover.core) := ⟨H, H.continuous⟩
@@ -51,14 +51,14 @@ public theorem actualCuspCentralToCorePair_simultaneouslyConjugate_orderFour
       A.actualVanKampenFourPieceCover.ellipticFourConnector_mem
       A.actualVanKampenFourPieceCover.ellipticFourPoint_mem.1).symm
   let source := A.orderFourCentralBaseWhisker.cast rfl
-    A.orderFourActualEllipticCentralBase_eq_overlapCentralBase.symm
+    A.ellipticFourCentralBase_eq_overlapCentralBase.symm
   have hcusp : H A.centralAffineBase =
       A.actualVanKampenFourPieceCover.overlapToCore
-        A.actualVanKampenFourPieceCover.cusp A.actualCuspOverlapBase := by
+        A.actualVanKampenFourPieceCover.cusp A.cuspOverlapBase := by
     rw [A.centralAffineBase_eq_actualCuspCentralBase]
     exact A.centralToSectionSevenEulerPieceHomeomorph_actualCuspOverlapToCentral
-      A.actualCuspOverlapBase
-  have hfour : H A.orderFourActualOverlapCentralBase =
+      A.cuspOverlapBase
+  have hfour : H A.ellipticFourOverlapCentralBase =
       A.actualVanKampenFourPieceCover.overlapToCore
         A.actualVanKampenFourPieceCover.ellipticFour
         ⟨A.actualVanKampenFourPieceCover.ellipticFourPoint,
@@ -79,7 +79,7 @@ public theorem actualCuspCentralToCorePair_simultaneouslyConjugate_orderFour
     f hfour fourConnector
       (FundamentalGroup.fundamentalGroupMulEquivOfPath source b)
   change SimultaneouslyConjugate
-    (A.actualCuspCentralToCoreEquiv a, A.actualCuspCentralToCoreEquiv b) _
+    (A.cuspCentralToCoreEquiv a, A.cuspCentralToCoreEquiv b) _
   change SimultaneouslyConjugate
     (FundamentalGroup.fundamentalGroupMulEquivOfPath cuspConnector
         (FundamentalGroup.mapOfEq f hcusp a),
@@ -95,19 +95,19 @@ public theorem actualCuspCentralToCorePair_simultaneouslyConjugate_orderFour
   · exact Prod.ext hcuspA hcuspB
   · exact Prod.ext hfourA hfourB
 
-public theorem actualCuspCentralNaturalityPair_simultaneouslyConjugate_orderFour
+public theorem cuspCentralNaturalityPair_simultaneouslyConjugate_orderFour
     (a b : FundamentalGroup A.CentralFamily A.centralAffineBase) :
     let source := A.orderFourCentralBaseWhisker.cast rfl
-      A.orderFourActualEllipticCentralBase_eq_overlapCentralBase.symm
+      A.ellipticFourCentralBase_eq_overlapCentralBase.symm
     SimultaneouslyConjugate
-      (A.actualCuspCentralNaturality.centralToCore a,
-        A.actualCuspCentralNaturality.centralToCore b)
-      (A.orderFourActualCentralToCoreEquiv
+      (A.cuspCentralNaturality.centralToCore a,
+        A.cuspCentralNaturality.centralToCore b)
+      (A.ellipticFourCentralToCoreEquiv
           (FundamentalGroup.fundamentalGroupMulEquivOfPath source a),
-        A.orderFourActualCentralToCoreEquiv
+        A.ellipticFourCentralToCoreEquiv
           (FundamentalGroup.fundamentalGroupMulEquivOfPath source b)) := by
-  exact (A.actualCuspCentralNaturalityPair_simultaneouslyConjugate_actualCusp a b).trans
-    (A.actualCuspCentralToCorePair_simultaneouslyConjugate_orderFour a b)
+  exact (A.cuspCentralNaturalityPair_simultaneouslyConjugate_actualCusp a b).trans
+    (A.cuspCentralToCorePair_simultaneouslyConjugate_orderFour a b)
 
 public theorem orderFourCentralMeridianAtOverlap_eq_pathTransport :
     A.orderFourCentralMeridianAtOverlap =
@@ -126,38 +126,38 @@ public theorem orderFourCentralTranslationAtOverlap_eq_pathTransport :
 public theorem OrderFourCentralMarkedLoopCompatibility.toActualCorePair
     (H : A.OrderFourCentralMarkedLoopCompatibility) :
     let source := A.orderFourCentralBaseWhisker.cast rfl
-      A.orderFourActualEllipticCentralBase_eq_overlapCentralBase.symm
+      A.ellipticFourCentralBase_eq_overlapCentralBase.symm
     SimultaneouslyConjugate
-      (A.orderFourActualCentralToCoreEquiv
+      (A.ellipticFourCentralToCoreEquiv
           (FundamentalGroup.fundamentalGroupMulEquivOfPath source
             A.centralAffineCorePiOneData.rhoTwo),
-        A.orderFourActualCentralToCoreEquiv
+        A.ellipticFourCentralToCoreEquiv
           (FundamentalGroup.fundamentalGroupMulEquivOfPath source
             (Additive.toMul (A.centralAffineCorePiOneData.translation epsilon'))))
-      (A.orderFourActualEllipticPhysicalMeridianToCore,
-        Additive.toMul (A.orderFourActualEllipticPhysicalTranslationToCore epsilon')) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+      (A.ellipticFourPhysicalMeridianToCore,
+        Additive.toMul (A.ellipticFourPhysicalTranslationToCore epsilon')) := by
+  let _ := A.ellipticFourBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderFour.radius ×
         (ℝ × SphereSixComplex.Geometry.ComplexTorus.ComplexTwoSpace)) :=
-    A.orderFourActualEllipticBoundaryCover_simplyConnected
-  let C := A.orderFourActualCentralCoverComparison
+    A.ellipticFourBoundaryCover_simplyConnected
+  let C := A.ellipticFourCentralCoverComparison
   dsimp only [OrderFourCentralMarkedLoopCompatibility] at H
-  let hbase := C.commutes A.orderFourActualEllipticBoundaryBase
-  let hoverlap := A.orderFourActualEllipticCentralBase_eq_overlapCentralBase
-  have hpoint : D.data.projection (C.lift A.orderFourActualEllipticBoundaryBase) =
-      A.orderFourActualOverlapCentralBase := by
+  let hbase := C.commutes A.ellipticFourBoundaryBase
+  let hoverlap := A.ellipticFourCentralBase_eq_overlapCentralBase
+  have hpoint : D.data.projection (C.lift A.ellipticFourBoundaryBase) =
+      A.ellipticFourOverlapCentralBase := by
     calc
       _ = C.baseMap
-          (A.orderFourActualEllipticBoundaryProjection
-            A.orderFourActualEllipticBoundaryBase) :=
-        (C.commutes A.orderFourActualEllipticBoundaryBase).symm
-      _ = A.orderFourActualEllipticCentralBase := rfl
-      _ = A.orderFourActualOverlapCentralBase :=
-        A.orderFourActualEllipticCentralBase_eq_overlapCentralBase
+          (A.ellipticFourBoundaryProjection
+            A.ellipticFourBoundaryBase) :=
+        (C.commutes A.ellipticFourBoundaryBase).symm
+      _ = A.ellipticFourCentralBase := rfl
+      _ = A.ellipticFourOverlapCentralBase :=
+        A.ellipticFourCentralBase_eq_overlapCentralBase
   let E := fundamentalGroupMulEquivOfEq hpoint
   let source := A.orderFourCentralBaseWhisker.cast rfl hoverlap.symm
   have hcomp : hbase.trans hpoint = hoverlap := Subsingleton.elim _ _
@@ -176,15 +176,15 @@ public theorem OrderFourCentralMarkedLoopCompatibility.toActualCorePair
   rw [A.orderFourCentralMeridianAtOverlap_eq_pathTransport,
     A.orderFourCentralTranslationAtOverlap_eq_pathTransport] at H
   let meridianLoop :=
-    ofDeck A.orderFourActualEllipticBoundaryProjection_isQuotientCoveringMap
-      A.orderFourActualEllipticBoundaryBase
-      A.orderFourActualEllipticBoundaryDeckData.meridian
+    ofDeck A.ellipticFourBoundaryProjection_isQuotientCoveringMap
+      A.ellipticFourBoundaryBase
+      A.ellipticFourBoundaryDeckData.meridian
   let translationLoop :=
-    ofDeck A.orderFourActualEllipticBoundaryProjection_isQuotientCoveringMap
-      A.orderFourActualEllipticBoundaryBase
+    ofDeck A.ellipticFourBoundaryProjection_isQuotientCoveringMap
+      A.ellipticFourBoundaryBase
       (Additive.toMul
-        (A.orderFourActualEllipticBoundaryDeckData.translation epsilon'))
-  let boundaryEq := A.orderFourActualEllipticCanonicalChosenCover_boundaryBase_eq
+        (A.ellipticFourBoundaryDeckData.translation epsilon'))
+  let boundaryEq := A.ellipticFourCanonicalChosenCover_boundaryBase_eq
   have htransportRightMeridian :
       E (FundamentalGroup.mapOfEq C.baseMap hbase meridianLoop) =
         FundamentalGroup.mapOfEq C.baseMap hoverlap meridianLoop := by
@@ -194,12 +194,12 @@ public theorem OrderFourCentralMarkedLoopCompatibility.toActualCorePair
     exact ht
   have hrightMeridian :
       E (FundamentalGroup.mapOfEq C.baseMap hbase meridianLoop) =
-        FundamentalGroup.mapOfEq A.orderFourActualOverlapToCentral rfl
+        FundamentalGroup.mapOfEq A.ellipticFourOverlapToCentral rfl
           (fundamentalGroupElementOfBaseEq boundaryEq meridianLoop) := by
     rw [htransportRightMeridian]
     symm
     exact mapOfEq_fundamentalGroupElementOfBaseEq boundaryEq
-      A.orderFourActualOverlapToCentral hoverlap rfl meridianLoop
+      A.ellipticFourOverlapToCentral hoverlap rfl meridianLoop
   have htransportRightTranslation :
       E (FundamentalGroup.mapOfEq C.baseMap hbase translationLoop) =
         FundamentalGroup.mapOfEq C.baseMap hoverlap translationLoop := by
@@ -209,50 +209,50 @@ public theorem OrderFourCentralMarkedLoopCompatibility.toActualCorePair
     exact ht
   have hrightTranslation :
       E (FundamentalGroup.mapOfEq C.baseMap hbase translationLoop) =
-        FundamentalGroup.mapOfEq A.orderFourActualOverlapToCentral rfl
+        FundamentalGroup.mapOfEq A.ellipticFourOverlapToCentral rfl
           (fundamentalGroupElementOfBaseEq boundaryEq translationLoop) := by
     rw [htransportRightTranslation]
     symm
     exact mapOfEq_fundamentalGroupElementOfBaseEq boundaryEq
-      A.orderFourActualOverlapToCentral hoverlap rfl translationLoop
+      A.ellipticFourOverlapToCentral hoverlap rfl translationLoop
   have hcoreMeridian :
-      A.orderFourActualCentralToCoreEquiv
+      A.ellipticFourCentralToCoreEquiv
           (E (FundamentalGroup.mapOfEq C.baseMap hbase meridianLoop)) =
-        A.orderFourActualEllipticPhysicalMeridianToCore := by
-    rw [hrightMeridian, ← A.actualEllipticFourOverlapToCore_eq_central]
+        A.ellipticFourPhysicalMeridianToCore := by
+    rw [hrightMeridian, ← A.ellipticFourOverlapToCore_eq_central]
     rfl
   have hcoreTranslation :
-      A.orderFourActualCentralToCoreEquiv
+      A.ellipticFourCentralToCoreEquiv
           (E (FundamentalGroup.mapOfEq C.baseMap hbase translationLoop)) =
         Additive.toMul
-          (A.orderFourActualEllipticPhysicalTranslationToCore epsilon') := by
-    rw [hrightTranslation, ← A.actualEllipticFourOverlapToCore_eq_central]
+          (A.ellipticFourPhysicalTranslationToCore epsilon') := by
+    rw [hrightTranslation, ← A.ellipticFourOverlapToCore_eq_central]
     rfl
-  have h := H.map (E.trans A.orderFourActualCentralToCoreEquiv).toMonoidHom
+  have h := H.map (E.trans A.ellipticFourCentralToCoreEquiv).toMonoidHom
   convert h using 1
   · exact Prod.ext
-      (congrArg A.orderFourActualCentralToCoreEquiv
+      (congrArg A.ellipticFourCentralToCoreEquiv
         (hleftAny A.centralAffineCorePiOneData.rhoTwo)).symm
-      (congrArg A.orderFourActualCentralToCoreEquiv
+      (congrArg A.ellipticFourCentralToCoreEquiv
         (hleftAny (Additive.toMul
           (A.centralAffineCorePiOneData.translation epsilon')))).symm
   · exact Prod.ext hcoreMeridian.symm hcoreTranslation.symm
 
 public theorem OrderFourCentralMarkedLoopCompatibility.toActualCommonGaugeComparison
     (H : A.OrderFourCentralMarkedLoopCompatibility) :
-    A.OrderFourCommonGaugeComparison A.actualCuspCentralNaturality := by
+    A.OrderFourCommonGaugeComparison A.cuspCentralNaturality := by
   have hcentral :=
-    A.actualCuspCentralNaturalityPair_simultaneouslyConjugate_orderFour
+    A.cuspCentralNaturalityPair_simultaneouslyConjugate_orderFour
       A.centralAffineCorePiOneData.rhoTwo
       (Additive.toMul (A.centralAffineCorePiOneData.translation epsilon'))
   have hphysical := H.toActualCorePair A
   exact hcentral.trans hphysical
 
-public theorem actualEllipticRelatorNormalClosureResidual_of_markedLoopCompatibilities
+public theorem ellipticRelatorMembership_of_markedLoopCompatibilities
     (H3 : A.OrderThreeCentralMarkedLoopCompatibility)
     (H4 : A.OrderFourCentralMarkedLoopCompatibility) :
-    A.ActualEllipticRelatorNormalClosureResidual A.actualCuspCentralNaturality :=
-  A.actualEllipticRelatorNormalClosureResidual_of_commonGaugeComparisons
+    A.EllipticRelatorMembership A.cuspCentralNaturality :=
+  A.ellipticRelatorMembership_of_commonGaugeComparisons
     (H3.toActualCommonGaugeComparison A)
     (H4.toActualCommonGaugeComparison A)
 

@@ -21,7 +21,7 @@ open Set Topology
 open SphereSixComplex SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open ComplexTorus AnalyticTorusFamily TorusFamily GlobalTorusFamily
 open CuspCombinatorics CuspFilling CuspLocalPhaseAction CuspPeriodExpansion
-open CuspPuncturedCollarBridge StandardInfiniteA2ToricModel
+open CuspPuncturedCollarBridge InfiniteA2Toric
 open EstablishedFuchsianCuspNeighborhood
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 

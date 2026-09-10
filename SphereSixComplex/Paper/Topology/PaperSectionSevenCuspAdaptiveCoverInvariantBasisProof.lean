@@ -24,17 +24,17 @@ open AlgebraicTopology CategoryTheory TopologicalSpace
 
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 
-open SectionSevenEllipticInteriorMarkedCycleData
+open EllipticInteriorMarkedCycleData
 
 variable {A : PaperAnalyticData}
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 /-- The Mayer--Vietoris boundary of the genuine height-preimage cover is natural under the
 radial mapping-torus equivalence.  This uses the exact pullback cover, rather than either of the
 two refuted fixed vertex--edge refinements. -/
 public theorem actualCuspHeightPreimageCover_boundary_naturality
-    (R : A.SectionSevenAffineRadialCompletionInput) (n : ℕ) :
+    (R : A.AffineRadialCompletionInput) (n : ℕ) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     (actualCuspMappingTorusPulledBackHomologyComparison R).boundary n ≫
@@ -60,7 +60,7 @@ public theorem actualCuspHeightPreimageCover_boundary_naturality
 /-- The canonical map from the actual cusp fibre to the elliptic overlap preserves the fourth
 period coordinate. -/
 public theorem canonicalCuspFiberToBand_fourthCoordinate
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     (R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment).comp
         R.twoDiscCover.canonicalCuspFiberToBandHomologyOne =
       actualCuspFiberFourthCoordinateHom A := by
@@ -70,7 +70,7 @@ public theorem canonicalCuspFiberToBand_fourthCoordinate
       R.twoDiscCover.CanonicalCuspFiberBandPeriodMarking R.homologyAlignment :=
     R.twoDiscCover.canonicalCuspFiberBandPeriodMarking_of_orderThree R.homologyAlignment
       (R.canonicalCuspFiberOrderThreePeriodMarking
-        (actualCuspFiberPeriodMarkingCompatibility A))
+        (cuspFiberPeriodMarkingCompatibility A))
   apply AddMonoidHom.ext
   intro x
   have hx := DFunLike.congr_fun hMarking x
@@ -85,7 +85,7 @@ the Mayer--Vietoris boundary of the height-preimage cover agrees, after the four
 coordinate, with the canonical Wang boundary. -/
 public theorem
     cuspPulledBackMarkedInvariantBasisData_iff_canonicalMarkedHeightPreimageBoundary
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     CuspPulledBackMarkedInvariantBasisData R ↔
       (R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment).comp
           R.twoDiscCover.cuspPulledBackBoundaryHom =
@@ -106,7 +106,7 @@ public theorem
 calculation.  The cover in this statement is the genuine height-preimage cover above, so this
 does not assume either impossible fixed refinement. -/
 public theorem cuspPulledBackMarkedInvariantBasisData_of_canonicalHeightPreimageBoundary
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (h : R.twoDiscCover.CanonicalCuspWangBoundaryNaturality) :
     CuspPulledBackMarkedInvariantBasisData R := by
   apply
@@ -114,7 +114,7 @@ public theorem cuspPulledBackMarkedInvariantBasisData_of_canonicalHeightPreimage
   rw [CanonicalCuspWangBoundaryNaturality] at h
   rw [h]
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

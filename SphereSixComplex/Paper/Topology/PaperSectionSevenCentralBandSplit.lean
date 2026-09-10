@@ -29,59 +29,59 @@ variable {A : PaperAnalyticData}
 
 /-- The part of the regular central image below an upper height. -/
 public def centralHeightLowerRegion
-    (height : A.sectionSevenEllipticCentralImage → ℝ) (upper : ℝ) :
-    Set A.SectionSevenEllipticInterior :=
+    (height : A.ellipticCentralImage → ℝ) (upper : ℝ) :
+    Set A.ellipticInterior :=
   Subtype.val '' {x | height x < upper}
 
 /-- The part of the regular central image above a lower height. -/
 public def centralHeightUpperRegion
-    (height : A.sectionSevenEllipticCentralImage → ℝ) (lower : ℝ) :
-    Set A.SectionSevenEllipticInterior :=
+    (height : A.ellipticCentralImage → ℝ) (lower : ℝ) :
+    Set A.ellipticInterior :=
   Subtype.val '' {x | lower < height x}
 
 /-- The open central band between two height levels. -/
 public def centralHeightBand
-    (height : A.sectionSevenEllipticCentralImage → ℝ) (lower upper : ℝ) :
-    Set A.SectionSevenEllipticInterior :=
+    (height : A.ellipticCentralImage → ℝ) (lower upper : ℝ) :
+    Set A.ellipticInterior :=
   Subtype.val '' {x | lower < height x ∧ height x < upper}
 
 /-- A height split whose opposite filling collars do not enter the allocated central regions. -/
-public structure SectionSevenCentralHeightSplit where
-  height : A.sectionSevenEllipticCentralImage → ℝ
+public structure CentralHeightSplit where
+  height : A.ellipticCentralImage → ℝ
   height_continuous : Continuous height
   lower : ℝ
   upper : ℝ
   lower_lt_upper : lower < upper
   orderThreeFilling_disjoint_upper :
-    Disjoint A.sectionSevenOrderThreeFillingImage
+    Disjoint A.orderThreeFillingImage
       (centralHeightUpperRegion height lower)
   orderFourFilling_disjoint_lower :
-    Disjoint A.sectionSevenOrderFourFillingImage
+    Disjoint A.orderFourFillingImage
       (centralHeightLowerRegion height upper)
 
-namespace SectionSevenCentralHeightSplit
+namespace CentralHeightSplit
 
-variable (S : A.SectionSevenCentralHeightSplit)
+variable (S : A.CentralHeightSplit)
 
 public theorem centralHeightLowerRegion_isOpen :
     IsOpen (centralHeightLowerRegion S.height S.upper) :=
-  A.sectionSevenEllipticCentralImage_isOpen.isOpenMap_subtype_val _
+  A.ellipticCentralImage_isOpen.isOpenMap_subtype_val _
     (isOpen_lt S.height_continuous continuous_const)
 
 public theorem centralHeightUpperRegion_isOpen :
     IsOpen (centralHeightUpperRegion S.height S.lower) :=
-  A.sectionSevenEllipticCentralImage_isOpen.isOpenMap_subtype_val _
+  A.ellipticCentralImage_isOpen.isOpenMap_subtype_val _
     (isOpen_lt continuous_const S.height_continuous)
 
 /-- The genuine central allocation obtained from the overlapping height cut. -/
-public def allocation : A.SectionSevenEllipticCentralAllocation where
+public def allocation : A.EllipticCentralAllocation where
   orderThreeCentral := centralHeightLowerRegion S.height S.upper
   orderFourCentral := centralHeightUpperRegion S.height S.lower
   orderThreeCentral_isOpen := S.centralHeightLowerRegion_isOpen
   orderFourCentral_isOpen := S.centralHeightUpperRegion_isOpen
   central_cover := by
     intro x hx
-    let y : A.sectionSevenEllipticCentralImage := ⟨x, hx⟩
+    let y : A.ellipticCentralImage := ⟨x, hx⟩
     by_cases hy : S.height y < S.upper
     · exact Or.inl ⟨y, hy, rfl⟩
     · exact Or.inr ⟨y, S.lower_lt_upper.trans_le (le_of_not_gt hy), rfl⟩
@@ -105,15 +105,15 @@ public theorem sides_intersection :
     S.allocation.orderThreeSide ∩ S.allocation.orderFourSide =
       centralHeightBand S.height S.lower S.upper := by
   ext x
-  change ((x ∈ A.sectionSevenOrderThreeFillingImage ∨
+  change ((x ∈ A.orderThreeFillingImage ∨
       x ∈ centralHeightLowerRegion S.height S.upper) ∧
-    (x ∈ A.sectionSevenOrderFourFillingImage ∨
+    (x ∈ A.orderFourFillingImage ∨
       x ∈ centralHeightUpperRegion S.height S.lower)) ↔ _
   constructor
   · rintro ⟨h₃ | hLower, h₄ | hUpper⟩
-    · have h : x ∈ A.sectionSevenOrderThreeFillingImage ∩
-          A.sectionSevenOrderFourFillingImage := ⟨h₃, h₄⟩
-      rw [A.sectionSevenEllipticFillingImages_disjoint] at h
+    · have h : x ∈ A.orderThreeFillingImage ∩
+          A.orderFourFillingImage := ⟨h₃, h₄⟩
+      rw [A.ellipticFillingImages_disjoint] at h
       exact h.elim
     · exact (Set.disjoint_left.mp S.orderThreeFilling_disjoint_upper h₃ hUpper).elim
     · exact (Set.disjoint_left.mp S.orderFourFilling_disjoint_lower h₄ hLower).elim
@@ -129,24 +129,24 @@ public theorem sides_intersection :
 /-- Identify the actual side intersection with the central height band. -/
 public def sidesIntersectionHomeomorph :
     (S.allocation.orderThreeSide ∩ S.allocation.orderFourSide :
-      Set A.SectionSevenEllipticInterior) ≃ₜ
+      Set A.ellipticInterior) ≃ₜ
       centralHeightBand S.height S.lower S.upper :=
   Homeomorph.setCongr S.sides_intersection
 
 /-- The order-three filling as a subspace of the height-split side. -/
 public def orderThreeFillingSubspace : Set S.allocation.orderThreeSide :=
-  Subtype.val ⁻¹' A.sectionSevenOrderThreeFillingImage
+  Subtype.val ⁻¹' A.orderThreeFillingImage
 
 /-- The order-four filling as a subspace of the height-split side. -/
 public def orderFourFillingSubspace : Set S.allocation.orderFourSide :=
-  Subtype.val ⁻¹' A.sectionSevenOrderFourFillingImage
+  Subtype.val ⁻¹' A.orderFourFillingImage
 
 public theorem orderThreeFillingImage_subset_side :
-    A.sectionSevenOrderThreeFillingImage ⊆ S.allocation.orderThreeSide :=
+    A.orderThreeFillingImage ⊆ S.allocation.orderThreeSide :=
   fun _ hx ↦ Or.inl hx
 
 public theorem orderFourFillingImage_subset_side :
-    A.sectionSevenOrderFourFillingImage ⊆ S.allocation.orderFourSide :=
+    A.orderFourFillingImage ⊆ S.allocation.orderFourSide :=
   fun _ hx ↦ Or.inl hx
 
 /-- The remaining geometric input after replacing the duplicated allocation by a genuine band
@@ -160,10 +160,10 @@ public structure RadialInput where
     centralHeightBand S.height S.lower S.upper ≃ₕ
       AdditiveTorus A.duplicatedSectionSevenBandParameter
   orderThree_inclusion_compatibility :
-    (((A.sectionSevenOrderThreeFillingImageHomotopyEquiv.toFun.comp
+    (((A.orderThreeFillingImageHomotopyEquiv.toFun.comp
       (orderThreeHomotopyEquivalence.toHomotopyEquiv.trans
         (nestedSubtypeHomeomorph S.allocation.orderThreeSide
-          A.sectionSevenOrderThreeFillingImage
+          A.orderThreeFillingImage
           S.orderThreeFillingImage_subset_side).toHomotopyEquiv).toFun).comp
         (IntegralMayerVietoris.interToLeft
           S.allocation.orderThreeSide S.allocation.orderFourSide))).Homotopic
@@ -174,10 +174,10 @@ public structure RadialInput where
             (S.sidesIntersectionHomeomorph.toHomotopyEquiv.trans
               bandHomotopyEquiv).toFun)
   orderFour_inclusion_compatibility :
-    (((A.sectionSevenOrderFourFillingImageHomotopyEquiv.toFun.comp
+    (((A.orderFourFillingImageHomotopyEquiv.toFun.comp
       (orderFourHomotopyEquivalence.toHomotopyEquiv.trans
         (nestedSubtypeHomeomorph S.allocation.orderFourSide
-          A.sectionSevenOrderFourFillingImage
+          A.orderFourFillingImage
           S.orderFourFillingImage_subset_side).toHomotopyEquiv).toFun).comp
         (IntegralMayerVietoris.interToRight
           S.allocation.orderThreeSide S.allocation.orderFourSide))).Homotopic
@@ -190,7 +190,7 @@ public structure RadialInput where
 
 namespace RadialInput
 
-variable {S : A.SectionSevenCentralHeightSplit}
+variable {S : A.CentralHeightSplit}
 
 /-- Assemble all fields of the radial realization from the genuine central-band input. -/
 public noncomputable def toRadialRealization (R : S.RadialInput) :
@@ -198,12 +198,12 @@ public noncomputable def toRadialRealization (R : S.RadialInput) :
   orderThreeLiftedContraction :=
     R.orderThreeHomotopyEquivalence.toHomotopyEquiv.trans
       (nestedSubtypeHomeomorph S.allocation.orderThreeSide
-        A.sectionSevenOrderThreeFillingImage
+        A.orderThreeFillingImage
         S.orderThreeFillingImage_subset_side).toHomotopyEquiv
   orderFourLiftedContraction :=
     R.orderFourHomotopyEquivalence.toHomotopyEquiv.trans
       (nestedSubtypeHomeomorph S.allocation.orderFourSide
-        A.sectionSevenOrderFourFillingImage
+        A.orderFourFillingImage
         S.orderFourFillingImage_subset_side).toHomotopyEquiv
   bandParameter := A.duplicatedSectionSevenBandParameter
   bandFullRank := A.duplicatedSectionSevenBandFullRank
@@ -216,6 +216,6 @@ public noncomputable def toRadialRealization (R : S.RadialInput) :
 
 end RadialInput
 
-end SectionSevenCentralHeightSplit
+end CentralHeightSplit
 
 end SphereSixComplex.Geometry.PaperAnalyticData

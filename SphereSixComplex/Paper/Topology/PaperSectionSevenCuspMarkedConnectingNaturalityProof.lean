@@ -20,10 +20,10 @@ open AlgebraicTopology
 
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 
-open SectionSevenEllipticInteriorMarkedCycleData
+open EllipticInteriorMarkedCycleData
 open SphereSixComplex.CircleMappingTorusHomologyBases
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 /-- The marked Wang composite is the last raw degree-two coordinate. -/
 public theorem actualCuspMarkedWangComposite_eq_rawCoordinateFive
@@ -40,7 +40,7 @@ public theorem actualCuspMarkedWangComposite_eq_rawCoordinateFive
 
 /-- The pulled-back marked boundary vanishes on the four non-invariant raw basis vectors. -/
 public theorem cuspPulledBackMarkedBoundary_rawBasis_castAdd_eq_zero
-    {A : PaperAnalyticData} (R : A.SectionSevenAffineRadialCompletionInput)
+    {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput)
     (i : Fin 4) :
     (R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
         (R.twoDiscCover.cuspPulledBackBoundaryHom
@@ -57,7 +57,7 @@ public theorem cuspPulledBackMarkedBoundary_rawBasis_castAdd_eq_zero
 
 /-- The two invariant-basis scalar evaluations left after the explicit zero-boundary cases. -/
 public def CuspPulledBackMarkedInvariantBasisData
-    {A : PaperAnalyticData} (R : A.SectionSevenAffineRadialCompletionInput) : Prop :=
+    {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput) : Prop :=
   (R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
       (R.twoDiscCover.cuspPulledBackBoundaryHom
         (A.cuspRawHomologyTwoEquiv.symm
@@ -69,7 +69,7 @@ public def CuspPulledBackMarkedInvariantBasisData
 
 /-- The two invariant-basis evaluations imply the complete marked connecting square. -/
 public theorem cuspMarkedConnectingNaturality_of_invariantBasisData
-    {A : PaperAnalyticData} (R : A.SectionSevenAffineRadialCompletionInput)
+    {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput)
     (h : CuspPulledBackMarkedInvariantBasisData R) :
     R.twoDiscCover.CuspMarkedConnectingNaturality R.homologyAlignment where
   square := by
@@ -95,7 +95,7 @@ public theorem cuspMarkedConnectingNaturality_of_invariantBasisData
       · rw [h.2]
         simp [coordinateAfterAddEquiv_apply]
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

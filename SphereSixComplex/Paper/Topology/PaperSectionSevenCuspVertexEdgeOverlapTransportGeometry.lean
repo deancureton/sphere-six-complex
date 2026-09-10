@@ -21,9 +21,9 @@ open scoped ContinuousMap
 
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 
-variable {A : PaperAnalyticData} (D : A.SectionSevenEllipticTwoDiscCoverData)
+variable {A : PaperAnalyticData} (D : A.EllipticTwoDiscCoverData)
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 /-- Transport the whole vertex--edge overlap of the standard mapping-torus cover into the
 actual cusp collar. -/
@@ -46,7 +46,7 @@ public noncomputable def actualCuspVertexEdgeOverlapToEllipticInteriorMap :
     C((vertexPiece (fun _ : Unit ↦ G.clutching) ∩
         edgePiece (fun _ : Unit ↦ G.clutching) :
           Set (CircleMappingTorus G.clutching)),
-      A.SectionSevenEllipticInterior) := by
+      A.ellipticInterior) := by
   let G := A.actualCuspRadialClutchingData
   letI := G.fiberTopology
   exact D.cuspToEllipticInteriorMap.hom.comp
@@ -69,7 +69,7 @@ interior. -/
 public noncomputable def actualCuspMappingTorusHighOverlapFiberToEllipticInteriorMap :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
-    C(G.Fiber, A.SectionSevenEllipticInterior) := by
+    C(G.Fiber, A.ellipticInterior) := by
   let G := A.actualCuspRadialClutchingData
   letI := G.fiberTopology
   exact D.actualCuspVertexEdgeOverlapToEllipticInteriorMap.comp
@@ -225,7 +225,7 @@ public theorem actualCuspVertexEdgeOverlapToEllipticInteriorMap_overlapEquiv_eq_
         (D.actualCuspMappingTorusLowOverlapFiber_homology_eq_highOverlap k) (p.2 ())]
     _ = _ := (map_add _ _ _).symm
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

@@ -56,17 +56,18 @@ public theorem hasIntegralHomologyOfSixSphere_of_closedComplexThreefold
     (hEuler : integralHomologyEulerCharacteristicSix
       (A.SectionSevenMayerVietorisSpace) = 2) :
     HasIntegralHomologyOfSixSphere (A.SectionSevenMayerVietorisSpace) := by
-  let T := establishedCompactComplexThreefoldHomologyTheory
+  let T := ComplexThreefold.integralPoincareUCT
     (A.SectionSevenMayerVietorisSpace) hManifold hCompact
   let hZero := connectedComplexManifoldHomologyZeroEquivInteger
     (A.SectionSevenMayerVietorisSpace) hConnected
   let hOne := H.homologyOne_subsingleton
   let hTwo := H.homologyTwo_subsingleton
-  let hThree := T.homologyThree_subsingleton_of_eulerCharacteristic
+  let hThree :=
+    IntegralPoincareUCTData.Six.subsingleton_homology_three_of_eulerCharacteristic T
     hZero hOne hTwo hEuler
-  let hFour := T.homologyFour_subsingleton hOne hTwo
-  let hFive := T.homologyFive_subsingleton hZero hOne
-  let hSix := T.homologySixEquivInteger hZero
+  let hFour := IntegralPoincareUCTData.Six.subsingleton_homology_four T hOne hTwo
+  let hFive := IntegralPoincareUCTData.Six.subsingleton_homology_five T hZero hOne
+  let hSix := IntegralPoincareUCTData.Six.homologySixEquivInt T hZero
   have hRealization : SectionSevenHomologyRealization
       (A.SectionSevenMayerVietorisSpace) := by
     intro k
@@ -91,7 +92,7 @@ public theorem hasIntegralHomologyOfSixSphere_of_closedComplexThreefold
           · exact hFour
           · exact hFive
           · exact False.elim (hk6 rfl)
-        · exact T.homologyAboveDimension k (by omega)
+        · exact T.subsingleton_homology_of_lt k (by omega)
     exact ⟨addEquivOfSubsingleton hActual hComputed⟩
   exact hasIntegralHomologyOfSixSphere_of_sectionSevenRealizations
     hRealization establishedSixSphereSectionSevenHomology

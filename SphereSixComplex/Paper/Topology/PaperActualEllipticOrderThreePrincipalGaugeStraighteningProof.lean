@@ -20,16 +20,16 @@ variable (A : PaperAnalyticData)
 /-- The straight vector-cover segment with the same period endpoint as the order-three
 principal gauge. -/
 public noncomputable def orderThreePrincipalGaugeStraightLiftPath :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     Path (A.orderThreeFillingRelationPrincipalGaugeCoverLift 0)
       (A.orderThreeFillingRelationPrincipalGaugeDeck •
         A.orderThreeFillingRelationPrincipalGaugeCoverLift 0) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   exact Path.segment _ _
 
 /-- The fixed-fibre loop obtained by projecting the straight `epsilon`-period segment. -/
 public noncomputable def orderThreePrincipalGaugeStraightLoop :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     Path
       (torusProjection
         (parameterMap A.periods
@@ -39,7 +39,7 @@ public noncomputable def orderThreePrincipalGaugeStraightLoop :
         (parameterMap A.periods
           A.modular.modularParameter.toTriangleUniformization.zOne).1
         (A.orderThreeFillingRelationPrincipalGaugeCoverLift 0)) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let _ : ProperlyDiscontinuousSMul
       (PeriodGroup
         (parameterMap A.periods
@@ -65,10 +65,10 @@ public noncomputable def orderThreePrincipalGaugeStraightLoop :
 /-- The analytic principal gauge and the literal straight `epsilon`-period loop have the same
 fixed-torus path class. -/
 public theorem orderThreeFillingRelationPrincipalGaugeLoop_class_eq_straight :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     pathLoopClass A.orderThreeFillingRelationPrincipalGaugeLoop =
       pathLoopClass A.orderThreePrincipalGaugeStraightLoop := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let _ : ProperlyDiscontinuousSMul
       (PeriodGroup
         (parameterMap A.periods

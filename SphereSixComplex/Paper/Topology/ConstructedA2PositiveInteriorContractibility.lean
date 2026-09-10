@@ -8,11 +8,11 @@ noncomputable section
 
 open Function Set Topology
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricQuantitativeRegions
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
+open SphereSixComplex.Geometry.InfiniteA2Toric.QuantitativeRegions
 
 public theorem continuous_torusCoordinates_of_height_ne_zero
     {X : Type*} [TopologicalSpace X] (M : Model) (f : X → M.Carrier)
@@ -119,4 +119,4 @@ public theorem constructedA2PositiveOffCentral_contractible {r : ℝ}
   let _ := (constructedA2PositiveInteriorRegion_convex r).contractibleSpace hn
   exact (constructedA2PositiveInteriorHomeomorph hr1).contractibleSpace
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric

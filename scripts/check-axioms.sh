@@ -62,8 +62,11 @@ if [[ "$fix_mode" -eq 0 ]]; then
   "$project_root/scripts/update-axiom-catalog.sh" --check
 fi
 
-lake env lean "$project_root/scripts/ComparatorAxiomClosure.lean" \
-  > "$work/comparator-closure.txt"
+if ! lake env lean "$project_root/scripts/ComparatorAxiomClosure.lean" \
+    > "$work/comparator-closure.txt"; then
+  cat "$work/comparator-closure.txt" >&2
+  exit 1
+fi
 sort -u "$work/allowed-in-order.txt" > "$work/allowed-sorted.txt"
 sort -u "$work/comparator-closure.txt" > "$work/comparator-closure-sorted.txt"
 
@@ -73,8 +76,11 @@ if [[ "$fix_mode" -eq 0 ]] && ! cmp -s "$work/allowed-sorted.txt" "$work/compara
   exit 1
 fi
 
-lake env lean "$project_root/scripts/ConstructionAxiomClosure.lean" \
-  > "$work/construction-closure.txt"
+if ! lake env lean "$project_root/scripts/ConstructionAxiomClosure.lean" \
+    > "$work/construction-closure.txt"; then
+  cat "$work/construction-closure.txt" >&2
+  exit 1
+fi
 sort -u "$work/construction-closure.txt" > "$work/construction.txt"
 
 if [[ "$fix_mode" -eq 1 ]]; then

@@ -7,7 +7,7 @@ public import SphereSixComplex.Paper.Topology.ConstructedA2BoundaryDeckAttachmen
 noncomputable section
 open Function Set Topology Matrix
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
 open SphereSixComplex.Periods
 open SphereSixComplex.Geometry.CuspCombinatorics
@@ -15,7 +15,7 @@ open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
@@ -133,6 +133,6 @@ public theorem constructedA2CorrectedPositiveTwoCell_mapsTo_oneSkeleton
       (constructedCentralOneSkeleton W) :=
   constructedA2CorrectedPositiveTwoOrbit_mapsTo_oneSkeleton W
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric
 
 end

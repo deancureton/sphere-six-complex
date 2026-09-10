@@ -22,7 +22,7 @@ namespace SphereSixComplex
 
 /-- The homological consequences of smooth triangulation, the integral UCT, and integral Poincare
 duality for a compact smooth oriented manifold without boundary. -/
-public noncomputable def establishedCompactSmoothOrientedManifoldHomologyTheory
+public noncomputable def SmoothAtlasOrientation.integralPoincareUCT
     (d : ℕ) (E X : Type)
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [TopologicalSpace X] [ChartedSpace E X]
@@ -35,10 +35,10 @@ public noncomputable def establishedCompactSmoothOrientedManifoldHomologyTheory
   let M0 := SmoothManifold.finiteCWModel E X hManifold hCompact
   let M : CWType.FiniteModelOfDimension d X := hOrientation.dimension_eq ▸ M0
   refine {
-    topHomologyEquivDualZero := ?_
-    complementaryHomologyEquivDualOfPreviousFree := ?_
-    finiteHomology := M.finite_homology
-    homologyAboveDimension := M.subsingleton_homology_of_lt }
+    topEquivDualZero := ?_
+    complementEquivDual := ?_
+    finite_homology := M.finite_homology
+    subsingleton_homology_of_lt := M.subsingleton_homology_of_lt }
   · exact (Classical.choice (P 0)).symm.trans
       (IntegralCohomology.universalCoefficients.zeroEquiv X)
   · intro k hk hFree

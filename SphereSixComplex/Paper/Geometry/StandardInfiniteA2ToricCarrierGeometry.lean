@@ -23,7 +23,7 @@ noncomputable section
 open Function Set Topology
 open scoped ContDiff Manifold
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+namespace SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 /-- The height monomial in raw affine coordinates. -/
 public def rawHeight (z : RawCoordinates) : ℂ := z 0 * z 1 * z 2
@@ -744,4 +744,4 @@ public theorem carrierVariableTorusAction_contMDiff :
     _ = (toricChart a).invFun (torusScale a (c q) (toricChart a (q : Carrier))) := by
       rw [toricChart_carrierTorusAction (c q) a hq]
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+end SphereSixComplex.Geometry.InfiniteA2Toric.Construction

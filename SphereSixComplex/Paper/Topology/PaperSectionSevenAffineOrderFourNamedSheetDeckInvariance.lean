@@ -95,16 +95,16 @@ namespace PaperAnalyticData
 /-- If the deck element carrying the named radial lift into the selected collar belongs to the
 order-four elliptic stabilizer, the named lift itself lies in that collar. -/
 public theorem namedOrderFourRadialBase_cayley_lt_of_deck_fixes_fuchsianTwo
-    (A : PaperAnalyticData) (x : A.SectionSevenAffineMarkedBand) (g : Delta)
+    (A : PaperAnalyticData) (x : A.affineMarkedBand) (g : Delta)
     (hsmall : ‖(orderFourCayleyHomeomorph
       (fuchsianSourceAction g •
-        (A.sectionSevenAffineOrderFourRadialBaseLift
-          (A.sectionSevenAffineBandStripCoordinate x)).1) : ℂ)‖ <
+        (A.affineOrderFourRadialBaseLift
+          (A.affineBandStripCoordinate x)).1) : ℂ)‖ <
         A.starSeparation.orderFour.radius)
     (hfix : fuchsianSourceAction g • fuchsianTwoFixedPoint = fuchsianTwoFixedPoint) :
     ‖(orderFourCayleyHomeomorph
-      (A.sectionSevenAffineOrderFourRadialBaseLift
-        (A.sectionSevenAffineBandStripCoordinate x)).1 : ℂ)‖ <
+      (A.affineOrderFourRadialBaseLift
+        (A.affineBandStripCoordinate x)).1 : ℂ)‖ <
       A.starSeparation.orderFour.radius := by
   apply A.namedOrderFourRadialBase_cayley_lt_of_deck_cayley_norm_eq x g hsmall
   exact orderFourCayleyHomeomorph_norm_eq_of_fix_fuchsianTwo g _ hfix
@@ -112,20 +112,20 @@ public theorem namedOrderFourRadialBase_cayley_lt_of_deck_fixes_fuchsianTwo
 /-- A nonidentity element of the order-four factor preserves the Cayley radius but does not fix
 the regular named radial point.  Thus literal fixed-sheet equality is unnecessarily strong. -/
 public theorem namedOrderFourRadialBase_ne_deck_smul_of_nontrivial_orderFourFactor
-    (A : PaperAnalyticData) (x : A.SectionSevenAffineMarkedBand)
+    (A : PaperAnalyticData) (x : A.affineMarkedBand)
     (a : CyclicFour) (ha : a ≠ 1) :
     fuchsianSourceAction (Monoid.Coprod.inr a) •
-        (A.sectionSevenAffineOrderFourRadialBaseLift
-          (A.sectionSevenAffineBandStripCoordinate x)).1 ≠
-      (A.sectionSevenAffineOrderFourRadialBaseLift
-        (A.sectionSevenAffineBandStripCoordinate x)).1 := by
+        (A.affineOrderFourRadialBaseLift
+          (A.affineBandStripCoordinate x)).1 ≠
+      (A.affineOrderFourRadialBaseLift
+        (A.affineBandStripCoordinate x)).1 := by
   intro hfixed
   have hcenter := (fuchsianSourceAction_inr_fixed_iff a ha _).mp hfixed
   have hpos := A.orderFourFamilyRadius_namedCollarTotalPoint_pos x
   rw [A.orderFourFamilyRadius_namedCollarTotalPoint x] at hpos
   have hzero : (orderFourCayleyHomeomorph
-      (A.sectionSevenAffineOrderFourRadialBaseLift
-        (A.sectionSevenAffineBandStripCoordinate x)).1 : ℂ) = 0 := by
+      (A.affineOrderFourRadialBaseLift
+        (A.affineBandStripCoordinate x)).1 : ℂ) = 0 := by
     rw [hcenter, orderFourCayleyHomeomorph_fixedPoint]
     rfl
   exact (norm_pos_iff.mp hpos) hzero

@@ -140,10 +140,10 @@ public theorem normalClosure_singleton_inv {G : Type*} [Group G] (g : G) :
 
 /-- Under the canonical deck-group identification, the corrected actual order-three filling
 relation is the inverse of the positive-meridian canonical filling relation. -/
-public theorem orderThreeActualFillingRelation_map_eq_canonical_inv :
+public theorem ellipticThreeFillingRelation_map_eq_canonical_inv :
     actualToCanonicalBoundaryDeckEquiv
         (orderThreeDescendedAffineTorusAutomorphism A.periods)
-        A.orderThreeActualEllipticBoundaryDeckData.fillingRelation =
+        A.ellipticThreeBoundaryDeckData.fillingRelation =
       (affineCyclicBoundaryDeckData
         (orderThreeCentralFiberPresentationData A.periods)).fillingRelation⁻¹ := by
   let g := canonicalCyclicAffineMeridian
@@ -164,7 +164,7 @@ public theorem orderThreeActualFillingRelation_map_eq_canonical_inv :
     rw [commute_iff_eq]
     exact mul_inv_eq_iff_eq_mul.mp h
   simp only [UnwrappedCyclicAffineBoundaryDeckData.fillingRelation,
-    orderThreeActualEllipticBoundaryDeckData, affineCyclicBoundaryDeckData,
+    ellipticThreeBoundaryDeckData, affineCyclicBoundaryDeckData,
     orderThreeCentralFiberPresentationData, map_mul, map_pow, map_inv,
     actualToCanonicalBoundaryDeckEquiv_translation,
     actualToCanonicalBoundaryDeckEquiv_meridian]
@@ -178,10 +178,10 @@ public theorem orderThreeActualFillingRelation_map_eq_canonical_inv :
 
 /-- Under the canonical deck-group identification, the corrected actual order-four filling
 relation is the inverse of the positive-meridian canonical filling relation. -/
-public theorem orderFourActualFillingRelation_map_eq_canonical_inv :
+public theorem ellipticFourFillingRelation_map_eq_canonical_inv :
     actualToCanonicalBoundaryDeckEquiv
         (orderFourDescendedAffineTorusAutomorphism A.periods)
-        A.orderFourActualEllipticBoundaryDeckData.fillingRelation =
+        A.ellipticFourBoundaryDeckData.fillingRelation =
       (affineCyclicBoundaryDeckData
         (orderFourCentralFiberPresentationData A.periods)).fillingRelation⁻¹ := by
   let g := canonicalCyclicAffineMeridian
@@ -202,7 +202,7 @@ public theorem orderFourActualFillingRelation_map_eq_canonical_inv :
     rw [commute_iff_eq]
     exact mul_inv_eq_iff_eq_mul.mp h
   simp only [UnwrappedCyclicAffineBoundaryDeckData.fillingRelation,
-    orderFourActualEllipticBoundaryDeckData, affineCyclicBoundaryDeckData,
+    ellipticFourBoundaryDeckData, affineCyclicBoundaryDeckData,
     orderFourCentralFiberPresentationData, map_mul, map_pow, map_inv,
     actualToCanonicalBoundaryDeckEquiv_translation,
     actualToCanonicalBoundaryDeckEquiv_meridian]
@@ -216,7 +216,7 @@ public theorem orderFourActualFillingRelation_map_eq_canonical_inv :
 
 /-- The actual order-three boundary deck group identified directly with the central
 presentation's deck group. -/
-public noncomputable def orderThreeActualToCentralBoundaryDeckEquiv :
+public noncomputable def ellipticThreeToCentralBoundaryDeckEquiv :
     OrderThreeAffineMappingTorusDeck A.periods ≃*
       CanonicalCyclicAffineBoundaryDeck
         (orderThreeCentralFiberPresentationData A.periods).affine.latticeMap.toAddEquiv where
@@ -245,24 +245,24 @@ public noncomputable def orderThreeActualToCentralBoundaryDeckEquiv :
     · rfl
 
 @[simp]
-public theorem orderThreeActualToCentralBoundaryDeckEquiv_translation (a : Lattice) :
-    A.orderThreeActualToCentralBoundaryDeckEquiv
+public theorem ellipticThreeToCentralBoundaryDeckEquiv_translation (a : Lattice) :
+    A.ellipticThreeToCentralBoundaryDeckEquiv
         (Additive.toMul (affineTorusMappingTorusDeckTranslation
           (orderThreeDescendedAffineTorusAutomorphism A.periods) a)) =
       Additive.toMul (canonicalCyclicAffineTranslation
         (orderThreeCentralFiberPresentationData A.periods).affine.latticeMap.toAddEquiv a) := rfl
 
 @[simp]
-public theorem orderThreeActualToCentralBoundaryDeckEquiv_meridian :
-    A.orderThreeActualToCentralBoundaryDeckEquiv
+public theorem ellipticThreeToCentralBoundaryDeckEquiv_meridian :
+    A.ellipticThreeToCentralBoundaryDeckEquiv
         (affineTorusMappingTorusDeckMeridian
           (orderThreeDescendedAffineTorusAutomorphism A.periods)) =
       canonicalCyclicAffineMeridian
         (orderThreeCentralFiberPresentationData A.periods).affine.latticeMap.toAddEquiv := rfl
 
-public theorem orderThreeActualFillingRelation_map_eq_central_inv :
-    A.orderThreeActualToCentralBoundaryDeckEquiv
-        A.orderThreeActualEllipticBoundaryDeckData.fillingRelation =
+public theorem ellipticThreeFillingRelation_map_eq_central_inv :
+    A.ellipticThreeToCentralBoundaryDeckEquiv
+        A.ellipticThreeBoundaryDeckData.fillingRelation =
       (affineCyclicBoundaryDeckData
         (orderThreeCentralFiberPresentationData A.periods)).fillingRelation⁻¹ := by
   let D := affineCyclicBoundaryDeckData
@@ -275,9 +275,9 @@ public theorem orderThreeActualFillingRelation_map_eq_central_inv :
     rw [commute_iff_eq]
     exact mul_inv_eq_iff_eq_mul.mp h
   simp only [UnwrappedCyclicAffineBoundaryDeckData.fillingRelation,
-    orderThreeActualEllipticBoundaryDeckData, map_mul, map_pow, map_inv,
-    orderThreeActualToCentralBoundaryDeckEquiv_translation,
-    orderThreeActualToCentralBoundaryDeckEquiv_meridian]
+    ellipticThreeBoundaryDeckData, map_mul, map_pow, map_inv,
+    ellipticThreeToCentralBoundaryDeckEquiv_translation,
+    ellipticThreeToCentralBoundaryDeckEquiv_meridian]
   change g⁻¹ ^ 3 * (Additive.toMul (D.translation (-epsilon)))⁻¹ =
     (g ^ 3 * t⁻¹)⁻¹
   rw [map_neg, toMul_neg]
@@ -285,7 +285,7 @@ public theorem orderThreeActualFillingRelation_map_eq_central_inv :
 
 /-- The actual order-four boundary deck group identified directly with the central
 presentation's deck group. -/
-public noncomputable def orderFourActualToCentralBoundaryDeckEquiv :
+public noncomputable def ellipticFourToCentralBoundaryDeckEquiv :
     OrderFourAffineMappingTorusDeck A.periods ≃*
       CanonicalCyclicAffineBoundaryDeck
         (orderFourCentralFiberPresentationData A.periods).affine.latticeMap.toAddEquiv where
@@ -314,24 +314,24 @@ public noncomputable def orderFourActualToCentralBoundaryDeckEquiv :
     · rfl
 
 @[simp]
-public theorem orderFourActualToCentralBoundaryDeckEquiv_translation (a : Lattice) :
-    A.orderFourActualToCentralBoundaryDeckEquiv
+public theorem ellipticFourToCentralBoundaryDeckEquiv_translation (a : Lattice) :
+    A.ellipticFourToCentralBoundaryDeckEquiv
         (Additive.toMul (affineTorusMappingTorusDeckTranslation
           (orderFourDescendedAffineTorusAutomorphism A.periods) a)) =
       Additive.toMul (canonicalCyclicAffineTranslation
         (orderFourCentralFiberPresentationData A.periods).affine.latticeMap.toAddEquiv a) := rfl
 
 @[simp]
-public theorem orderFourActualToCentralBoundaryDeckEquiv_meridian :
-    A.orderFourActualToCentralBoundaryDeckEquiv
+public theorem ellipticFourToCentralBoundaryDeckEquiv_meridian :
+    A.ellipticFourToCentralBoundaryDeckEquiv
         (affineTorusMappingTorusDeckMeridian
           (orderFourDescendedAffineTorusAutomorphism A.periods)) =
       canonicalCyclicAffineMeridian
         (orderFourCentralFiberPresentationData A.periods).affine.latticeMap.toAddEquiv := rfl
 
-public theorem orderFourActualFillingRelation_map_eq_central_inv :
-    A.orderFourActualToCentralBoundaryDeckEquiv
-        A.orderFourActualEllipticBoundaryDeckData.fillingRelation =
+public theorem ellipticFourFillingRelation_map_eq_central_inv :
+    A.ellipticFourToCentralBoundaryDeckEquiv
+        A.ellipticFourBoundaryDeckData.fillingRelation =
       (affineCyclicBoundaryDeckData
         (orderFourCentralFiberPresentationData A.periods)).fillingRelation⁻¹ := by
   let D := affineCyclicBoundaryDeckData
@@ -344,120 +344,120 @@ public theorem orderFourActualFillingRelation_map_eq_central_inv :
     rw [commute_iff_eq]
     exact mul_inv_eq_iff_eq_mul.mp h
   simp only [UnwrappedCyclicAffineBoundaryDeckData.fillingRelation,
-    orderFourActualEllipticBoundaryDeckData, map_mul, map_pow, map_inv,
-    orderFourActualToCentralBoundaryDeckEquiv_translation,
-    orderFourActualToCentralBoundaryDeckEquiv_meridian]
+    ellipticFourBoundaryDeckData, map_mul, map_pow, map_inv,
+    ellipticFourToCentralBoundaryDeckEquiv_translation,
+    ellipticFourToCentralBoundaryDeckEquiv_meridian]
   change g⁻¹ ^ 4 * (Additive.toMul (D.translation epsilon'))⁻¹ =
     (g ^ 4 * t⁻¹)⁻¹
   rw [show epsilon' = -(-epsilon') by simp, map_neg, toMul_neg]
   exact inverse_meridian_negative_twist_relation g t 4 hgt
 
-public theorem orderThreeActualFillingKernel_map_eq_central :
-    Subgroup.map A.orderThreeActualToCentralBoundaryDeckEquiv.toMonoidHom
-        A.orderThreeActualEllipticBoundaryDeckData.fillingKernel =
+public theorem ellipticThreeFillingKernel_map_eq_central :
+    Subgroup.map A.ellipticThreeToCentralBoundaryDeckEquiv.toMonoidHom
+        A.ellipticThreeBoundaryDeckData.fillingKernel =
       (affineCyclicBoundaryDeckData
         (orderThreeCentralFiberPresentationData A.periods)).fillingKernel := by
-  let e := A.orderThreeActualToCentralBoundaryDeckEquiv
+  let e := A.ellipticThreeToCentralBoundaryDeckEquiv
   rw [UnwrappedCyclicAffineBoundaryDeckData.fillingKernel,
     UnwrappedCyclicAffineBoundaryDeckData.fillingKernel]
   calc
     Subgroup.map e.toMonoidHom
-        (Subgroup.normalClosure {A.orderThreeActualEllipticBoundaryDeckData.fillingRelation}) =
+        (Subgroup.normalClosure {A.ellipticThreeBoundaryDeckData.fillingRelation}) =
       Subgroup.normalClosure
-        (e '' {A.orderThreeActualEllipticBoundaryDeckData.fillingRelation}) :=
+        (e '' {A.ellipticThreeBoundaryDeckData.fillingRelation}) :=
           Subgroup.map_normalClosure _ e.toMonoidHom e.surjective
     _ = Subgroup.normalClosure
         {(affineCyclicBoundaryDeckData
           (orderThreeCentralFiberPresentationData A.periods)).fillingRelation⁻¹} := by
-      rw [Set.image_singleton, A.orderThreeActualFillingRelation_map_eq_central_inv]
+      rw [Set.image_singleton, A.ellipticThreeFillingRelation_map_eq_central_inv]
     _ = _ := normalClosure_singleton_inv _
 
 /-- The corrected actual order-three filling quotient is canonically the established central
 filling quotient. -/
-public noncomputable def orderThreeActualToCanonicalFillingDeckEquiv :
-    A.orderThreeActualEllipticBoundaryDeckData.FillingDeck ≃*
+public noncomputable def ellipticThreeToCanonicalFillingDeckEquiv :
+    A.ellipticThreeBoundaryDeckData.FillingDeck ≃*
       (affineCyclicBoundaryDeckData
         (orderThreeCentralFiberPresentationData A.periods)).FillingDeck := by
-  letI : A.orderThreeActualEllipticBoundaryDeckData.fillingKernel.Normal :=
-    A.orderThreeActualEllipticBoundaryDeckData.fillingKernel_normal
+  letI : A.ellipticThreeBoundaryDeckData.fillingKernel.Normal :=
+    A.ellipticThreeBoundaryDeckData.fillingKernel_normal
   letI : (affineCyclicBoundaryDeckData
       (orderThreeCentralFiberPresentationData A.periods)).fillingKernel.Normal :=
     (affineCyclicBoundaryDeckData
       (orderThreeCentralFiberPresentationData A.periods)).fillingKernel_normal
   exact QuotientGroup.congr
-    A.orderThreeActualEllipticBoundaryDeckData.fillingKernel
+    A.ellipticThreeBoundaryDeckData.fillingKernel
     (affineCyclicBoundaryDeckData
       (orderThreeCentralFiberPresentationData A.periods)).fillingKernel
-    A.orderThreeActualToCentralBoundaryDeckEquiv
-    A.orderThreeActualFillingKernel_map_eq_central
+    A.ellipticThreeToCentralBoundaryDeckEquiv
+    A.ellipticThreeFillingKernel_map_eq_central
 
 @[simp]
-public theorem orderThreeActualToCanonicalFillingDeckEquiv_fillingDeckMap
+public theorem ellipticThreeToCanonicalFillingDeckEquiv_fillingDeckMap
     (g : OrderThreeAffineMappingTorusDeck A.periods) :
-    A.orderThreeActualToCanonicalFillingDeckEquiv
-        (A.orderThreeActualEllipticBoundaryDeckData.fillingDeckMap g) =
+    A.ellipticThreeToCanonicalFillingDeckEquiv
+        (A.ellipticThreeBoundaryDeckData.fillingDeckMap g) =
       (affineCyclicBoundaryDeckData
         (orderThreeCentralFiberPresentationData A.periods)).fillingDeckMap
-        (A.orderThreeActualToCentralBoundaryDeckEquiv g) := by
+        (A.ellipticThreeToCentralBoundaryDeckEquiv g) := by
   exact QuotientGroup.congr_mk'
-    A.orderThreeActualEllipticBoundaryDeckData.fillingKernel
+    A.ellipticThreeBoundaryDeckData.fillingKernel
     (affineCyclicBoundaryDeckData
       (orderThreeCentralFiberPresentationData A.periods)).fillingKernel
-    A.orderThreeActualToCentralBoundaryDeckEquiv
-    A.orderThreeActualFillingKernel_map_eq_central g
+    A.ellipticThreeToCentralBoundaryDeckEquiv
+    A.ellipticThreeFillingKernel_map_eq_central g
 
-public theorem orderFourActualFillingKernel_map_eq_central :
-    Subgroup.map A.orderFourActualToCentralBoundaryDeckEquiv.toMonoidHom
-        A.orderFourActualEllipticBoundaryDeckData.fillingKernel =
+public theorem ellipticFourFillingKernel_map_eq_central :
+    Subgroup.map A.ellipticFourToCentralBoundaryDeckEquiv.toMonoidHom
+        A.ellipticFourBoundaryDeckData.fillingKernel =
       (affineCyclicBoundaryDeckData
         (orderFourCentralFiberPresentationData A.periods)).fillingKernel := by
-  let e := A.orderFourActualToCentralBoundaryDeckEquiv
+  let e := A.ellipticFourToCentralBoundaryDeckEquiv
   rw [UnwrappedCyclicAffineBoundaryDeckData.fillingKernel,
     UnwrappedCyclicAffineBoundaryDeckData.fillingKernel]
   calc
     Subgroup.map e.toMonoidHom
-        (Subgroup.normalClosure {A.orderFourActualEllipticBoundaryDeckData.fillingRelation}) =
+        (Subgroup.normalClosure {A.ellipticFourBoundaryDeckData.fillingRelation}) =
       Subgroup.normalClosure
-        (e '' {A.orderFourActualEllipticBoundaryDeckData.fillingRelation}) :=
+        (e '' {A.ellipticFourBoundaryDeckData.fillingRelation}) :=
           Subgroup.map_normalClosure _ e.toMonoidHom e.surjective
     _ = Subgroup.normalClosure
         {(affineCyclicBoundaryDeckData
           (orderFourCentralFiberPresentationData A.periods)).fillingRelation⁻¹} := by
-      rw [Set.image_singleton, A.orderFourActualFillingRelation_map_eq_central_inv]
+      rw [Set.image_singleton, A.ellipticFourFillingRelation_map_eq_central_inv]
     _ = _ := normalClosure_singleton_inv _
 
 /-- The corrected actual order-four filling quotient is canonically the established central
 filling quotient. -/
-public noncomputable def orderFourActualToCanonicalFillingDeckEquiv :
-    A.orderFourActualEllipticBoundaryDeckData.FillingDeck ≃*
+public noncomputable def ellipticFourToCanonicalFillingDeckEquiv :
+    A.ellipticFourBoundaryDeckData.FillingDeck ≃*
       (affineCyclicBoundaryDeckData
         (orderFourCentralFiberPresentationData A.periods)).FillingDeck := by
-  letI : A.orderFourActualEllipticBoundaryDeckData.fillingKernel.Normal :=
-    A.orderFourActualEllipticBoundaryDeckData.fillingKernel_normal
+  letI : A.ellipticFourBoundaryDeckData.fillingKernel.Normal :=
+    A.ellipticFourBoundaryDeckData.fillingKernel_normal
   letI : (affineCyclicBoundaryDeckData
       (orderFourCentralFiberPresentationData A.periods)).fillingKernel.Normal :=
     (affineCyclicBoundaryDeckData
       (orderFourCentralFiberPresentationData A.periods)).fillingKernel_normal
   exact QuotientGroup.congr
-    A.orderFourActualEllipticBoundaryDeckData.fillingKernel
+    A.ellipticFourBoundaryDeckData.fillingKernel
     (affineCyclicBoundaryDeckData
       (orderFourCentralFiberPresentationData A.periods)).fillingKernel
-    A.orderFourActualToCentralBoundaryDeckEquiv
-    A.orderFourActualFillingKernel_map_eq_central
+    A.ellipticFourToCentralBoundaryDeckEquiv
+    A.ellipticFourFillingKernel_map_eq_central
 
 @[simp]
-public theorem orderFourActualToCanonicalFillingDeckEquiv_fillingDeckMap
+public theorem ellipticFourToCanonicalFillingDeckEquiv_fillingDeckMap
     (g : OrderFourAffineMappingTorusDeck A.periods) :
-    A.orderFourActualToCanonicalFillingDeckEquiv
-        (A.orderFourActualEllipticBoundaryDeckData.fillingDeckMap g) =
+    A.ellipticFourToCanonicalFillingDeckEquiv
+        (A.ellipticFourBoundaryDeckData.fillingDeckMap g) =
       (affineCyclicBoundaryDeckData
         (orderFourCentralFiberPresentationData A.periods)).fillingDeckMap
-        (A.orderFourActualToCentralBoundaryDeckEquiv g) := by
+        (A.ellipticFourToCentralBoundaryDeckEquiv g) := by
   exact QuotientGroup.congr_mk'
-    A.orderFourActualEllipticBoundaryDeckData.fillingKernel
+    A.ellipticFourBoundaryDeckData.fillingKernel
     (affineCyclicBoundaryDeckData
       (orderFourCentralFiberPresentationData A.periods)).fillingKernel
-    A.orderFourActualToCentralBoundaryDeckEquiv
-    A.orderFourActualFillingKernel_map_eq_central g
+    A.ellipticFourToCentralBoundaryDeckEquiv
+    A.ellipticFourFillingKernel_map_eq_central g
 
 end SphereSixComplex.Geometry.PaperAnalyticData

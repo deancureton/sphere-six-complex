@@ -7,18 +7,18 @@ noncomputable section
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 open SphereSixComplex SphereSixComplex.Topology GlobalTorusFamily TriangleGroup
 
-public theorem actualCuspPositiveWhisker_class (A : PaperAnalyticData) :
+public theorem cuspPositiveWhisker_class (A : PaperAnalyticData) :
     Path.Homotopic.Quotient.mk
-      (A.actualCuspMarkedCentralWhisker.trans
+      (A.cuspMarkedCentralWhisker.trans
         (A.cuspAngularCentralLoop.symm.trans
-          A.actualCuspMarkedCentralWhisker.symm)) =
+          A.cuspMarkedCentralWhisker.symm)) =
       A.markedOneCentralMeridianClass * A.markedZeroCentralMeridianClass := by
   have h := congrArg (fun x : FundamentalGroup A.CentralFamily
     (A.centralZeroSection A.markedPuncturedBasepoint) => x⁻¹)
-      A.actualCuspMarkedCentralLoop_class_eq_finiteProduct
+      A.cuspMarkedCentralLoop_class_eq_finiteProduct
   rw [mul_inv_rev, inv_inv, inv_inv] at h
   rw [← h]
-  unfold actualCuspMarkedCentralLoop
+  unfold cuspMarkedCentralLoop
   simp only [FundamentalGroup.inv_def, Path.Homotopic.Quotient.mk_trans,
     Path.Homotopic.Quotient.mk_symm, homotopicQuotient_symm_trans,
     homotopicQuotient_symm_symm, Path.Homotopic.Quotient.trans_assoc]
@@ -26,7 +26,7 @@ public theorem actualCuspPositiveWhisker_class (A : PaperAnalyticData) :
 public theorem centralFamilyCoordinate_markedZero (A : PaperAnalyticData) :
     FundamentalGroup.mapOfEq
       ⟨A.centralFamilyCoordinate, A.centralFamilyCoordinate_continuous⟩
-      A.sectionSevenAffineMarkedCentralCoordinate_base A.markedZeroCentralMeridianClass =
+      A.affineMarkedCentralCoordinate_base A.markedZeroCentralMeridianClass =
         Path.Homotopic.Quotient.mk twicePuncturedClockwiseZeroMeridian := by
   rw [A.markedZeroCentralMeridianClass_eq_pathLoopClass, FundamentalGroup.mapOfEq_apply]
   unfold markedZeroCentralMeridian markedZeroBaseMeridian
@@ -45,7 +45,7 @@ public theorem centralFamilyCoordinate_markedZero (A : PaperAnalyticData) :
 public theorem centralFamilyCoordinate_markedOne (A : PaperAnalyticData) :
     FundamentalGroup.mapOfEq
       ⟨A.centralFamilyCoordinate, A.centralFamilyCoordinate_continuous⟩
-      A.sectionSevenAffineMarkedCentralCoordinate_base A.markedOneCentralMeridianClass =
+      A.affineMarkedCentralCoordinate_base A.markedOneCentralMeridianClass =
         Path.Homotopic.Quotient.mk twicePuncturedClockwiseOneMeridian := by
   rw [A.markedOneCentralMeridianClass_eq_pathLoopClass, FundamentalGroup.mapOfEq_apply]
   unfold markedOneCentralMeridian markedOneBaseMeridian
@@ -61,17 +61,17 @@ public theorem centralFamilyCoordinate_markedOne (A : PaperAnalyticData) :
   rw [A.centralFamilyCoordinate_zeroSection]
   exact A.puncturedBaseHomeomorphTwicePuncturedComplex.apply_symm_apply _
 
-public theorem actualCuspPositiveWhisker_coordinate_homotopy (A : PaperAnalyticData) :
-    (((A.actualCuspMarkedCentralWhisker.trans
-      (A.cuspAngularCentralLoop.symm.trans A.actualCuspMarkedCentralWhisker.symm)).map
+public theorem cuspPositiveWhisker_coordinate_homotopy (A : PaperAnalyticData) :
+    (((A.cuspMarkedCentralWhisker.trans
+      (A.cuspAngularCentralLoop.symm.trans A.cuspMarkedCentralWhisker.symm)).map
         A.centralFamilyCoordinate_continuous).cast
-          A.sectionSevenAffineMarkedCentralCoordinate_base.symm
-          A.sectionSevenAffineMarkedCentralCoordinate_base.symm).Homotopic
+          A.affineMarkedCentralCoordinate_base.symm
+          A.affineMarkedCentralCoordinate_base.symm).Homotopic
       (twicePuncturedClockwiseZeroMeridian.trans twicePuncturedClockwiseOneMeridian) := by
   have h := congrArg
     (FundamentalGroup.mapOfEq
       ⟨A.centralFamilyCoordinate, A.centralFamilyCoordinate_continuous⟩
-      A.sectionSevenAffineMarkedCentralCoordinate_base) A.actualCuspPositiveWhisker_class
+      A.affineMarkedCentralCoordinate_base) A.cuspPositiveWhisker_class
   rw [map_mul, A.centralFamilyCoordinate_markedOne, A.centralFamilyCoordinate_markedZero,
     FundamentalGroup.mul_def, ← Path.Homotopic.Quotient.mk_trans] at h
   apply Path.Homotopic.Quotient.eq.mp
@@ -87,13 +87,13 @@ public theorem normalizedWhiskeredCuspRegularPath_projects (A : PaperAnalyticDat
     (t : unitInterval) :
     A.regularCoordinate (A.normalizedWhiskeredCuspRegularPath t) =
       A.centralFamilyCoordinate
-        ((A.actualCuspMarkedCentralWhisker.trans
+        ((A.cuspMarkedCentralWhisker.trans
           (A.cuspAngularCentralLoop.symm.trans
-            A.actualCuspMarkedCentralWhisker.symm)) t) := by
+            A.cuspMarkedCentralWhisker.symm)) t) := by
   simp only [normalizedWhiskeredCuspRegularPath, Path.trans_apply, Path.map_coe,
     Path.symm_apply, Function.comp_apply]
   split_ifs <;>
-    simp only [A.sectionSevenAffineNormalizedCuspPath_projects,
+    simp only [A.affineNormalizedCuspPath_projects,
       A.normalizedCuspPositiveRegularPath_projects, A.regularCoordinate_sourceEquiv,
       cuspAngularCoordinateLoop, Path.symm_apply, Path.map_coe, Function.comp_apply]
 
@@ -104,8 +104,8 @@ public theorem normalizedMeridianPairRegularPath_projects (A : PaperAnalyticData
   simp only [normalizedMeridianPairRegularPath, Path.cast_coe, Path.trans_apply,
     Path.map_coe, Function.comp_apply]
   split_ifs <;>
-    simp only [A.sectionSevenAffineNormalizedZeroLift_projects,
-      A.sectionSevenAffineNormalizedOneLift_projects, A.regularCoordinate_sourceEquiv]
+    simp only [A.affineNormalizedZeroLift_projects,
+      A.affineNormalizedOneLift_projects, A.regularCoordinate_sourceEquiv]
 
 public theorem normalizedWhiskeredCuspRegularPath_homotopic_meridianPair
     (A : PaperAnalyticData) :
@@ -115,10 +115,10 @@ public theorem normalizedWhiskeredCuspRegularPath_homotopic_meridianPair
     (f₁ := A.normalizedMeridianPairRegularPath.toContinuousMap) (S := {0, 1})
     ⟨0, Or.inl rfl, A.normalizedWhiskeredCuspRegularPath.source.trans
       A.normalizedMeridianPairRegularPath.source.symm⟩).mpr
-  have h := A.actualCuspPositiveWhisker_coordinate_homotopy
+  have h := A.cuspPositiveWhisker_coordinate_homotopy
   change ContinuousMap.HomotopicRel
-    ((A.actualCuspMarkedCentralWhisker.trans
-      (A.cuspAngularCentralLoop.symm.trans A.actualCuspMarkedCentralWhisker.symm)).map
+    ((A.cuspMarkedCentralWhisker.trans
+      (A.cuspAngularCentralLoop.symm.trans A.cuspMarkedCentralWhisker.symm)).map
         A.centralFamilyCoordinate_continuous).toContinuousMap
     (twicePuncturedClockwiseZeroMeridian.trans twicePuncturedClockwiseOneMeridian).toContinuousMap
     {0, 1} at h

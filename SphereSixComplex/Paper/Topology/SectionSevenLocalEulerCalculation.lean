@@ -90,7 +90,7 @@ public theorem orderFourFilling_euler_eq_zero_of_affineRadialChart
 deformation retractions.  The remaining hypotheses are precisely the finite-torus-bundle Euler
 calculations for the central piece and collars and the finite-cell/finite-quotient calculations for
 the three reduced central fibres. -/
-public theorem sectionSevenLocalEulerExpression_eq_two_of_modelCalculations
+public theorem localEulerExpression_eq_two_of_modelCalculations
     (R : ActualLocalCuspCentralFiberRetractionData A.starCuspWitness)
     (C₃ : OrderThreeAffineRadialWholeFillingCompatibility A
       A.starSeparation.orderThree.radius)

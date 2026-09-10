@@ -53,7 +53,7 @@ private noncomputable def actualCuspFiberToPeriodTorusHomologyOne
 
 private theorem canonicalCuspFiberToBandTorusHomologyOne_eq_comp
     {A : Geometry.PaperAnalyticData}
-    (D : A.SectionSevenEllipticTwoDiscCoverData) :
+    (D : A.EllipticTwoDiscCoverData) :
     D.canonicalCuspFiberToBandTorusHomologyOne =
       (integralSingularHomologyMap 1
         (Geometry.PaperAnalyticData.fullRankAdditiveTorusHomeomorph
@@ -72,7 +72,7 @@ namespace Geometry.PaperAnalyticData
 variable {A : PaperAnalyticData}
 
 private theorem affineTwoDiscCover_degreeOneBasis
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (z : IntegralSingularHomology 1 (AdditiveTorus R.twoDiscCover.bandParameter)) :
     (orderThreeCentralFiberCoverSourceHomologyBasis A.periods).degreeOne
         (integralSingularHomologyMap 1 R.twoDiscCover.bandToOrderThreeCoverSource z) =
@@ -82,9 +82,9 @@ private theorem affineTwoDiscCover_degreeOneBasis
 
 /-- Compatibility of the actual cusp fibre marking implies the complete order-three period
 marking for the canonical map into the affine elliptic band. -/
-public theorem SectionSevenAffineRadialCompletionInput.canonicalCuspFiberOrderThreePeriodMarking
-    (R : A.SectionSevenAffineRadialCompletionInput)
-    (hCusp : A.ActualCuspFiberPeriodMarkingCompatibility) :
+public theorem AffineRadialCompletionInput.canonicalCuspFiberOrderThreePeriodMarking
+    (R : A.AffineRadialCompletionInput)
+    (hCusp : A.CuspFiberPeriodMarkingCompatibility) :
     R.twoDiscCover.CanonicalCuspFiberOrderThreePeriodMarking := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology

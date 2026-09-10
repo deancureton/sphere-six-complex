@@ -24,7 +24,7 @@ noncomputable section
 
 open Function Set Topology
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+namespace SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 /-- The height sublevel in one raw affine chart. -/
 public def affineHeightSublevel (r : ℝ) : Set RawCoordinates :=
@@ -462,4 +462,4 @@ public theorem carrierHeightSublevel_simplyConnected (r : ℝ) (hr : 0 < r) :
     (fun a ↦ hxChart a)
     (carrierHeightSublevelCharts_inter_isPathConnected hr)
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+end SphereSixComplex.Geometry.InfiniteA2Toric.Construction

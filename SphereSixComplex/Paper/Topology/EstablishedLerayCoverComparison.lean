@@ -27,7 +27,7 @@ identification above, imply the paper-specific small-chain comparison. -/
 public noncomputable def toFourPieceSmallChainComparison
     (h : SectionSevenLerayCechIdentification X C) :
     SectionSevenFourPieceSmallChainComparison X C := by
-  let e := establishedFiniteOpenCoverLerayCechComparison
+  let e := finiteOpenCoverLerayCechComparison
     C.piece C.isOpen_piece C.covers
   refine
     { comparison := h.identification.hom ≫ e.augmentation

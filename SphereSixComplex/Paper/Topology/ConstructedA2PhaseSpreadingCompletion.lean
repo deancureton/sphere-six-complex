@@ -11,7 +11,7 @@ noncomputable section
 
 open Function Set Topology
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
 open SphereSixComplex.Periods
 open SphereSixComplex.Geometry.CuspFilling
@@ -19,7 +19,7 @@ open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 open SphereSixComplex.Geometry.CuspStraighteningRetraction
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 public theorem constructedLocalPositivePart_contractible {r : ℝ}
     (hr : 0 < r) (hr1 : r < 1) : ContractibleSpace (constructedLocalPositivePart r) := by
@@ -56,4 +56,4 @@ public instance constructedHasCuspPhaseSpreading
     (compactPhaseOrbit_prod_isQuotientMap constructedModel W.localWitness.radius P)
     H.toDeckLift G⟩⟩⟩
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric

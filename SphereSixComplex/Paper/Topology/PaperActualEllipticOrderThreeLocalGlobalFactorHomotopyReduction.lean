@@ -120,32 +120,32 @@ variable (A : PaperAnalyticData)
 
 /-- The local offset-period factor of the punctured product splitting. -/
 public noncomputable def orderThreeLocalOffsetFiberCentralPath :
-    letI := A.orderThreeActualEllipticBoundaryAction
-    Path A.orderThreeActualEllipticCentralBase A.orderThreeActualEllipticCentralBase := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
+    Path A.ellipticThreeCentralBase A.ellipticThreeCentralBase := by
+  let _ := A.ellipticThreeBoundaryAction
   exact (((Path.refl A.orderThreeCayleyPuncturedBasepoint).prod
     A.orderThreePrincipalGaugeWithOffsetPath).map
       A.orderThreePuncturedProductToCentralMap.continuous).cast
-        A.orderThreeActualEllipticCentralBase_eq_puncturedProductBase
-        A.orderThreeActualEllipticCentralBase_eq_puncturedProductBase
+        A.ellipticThreeCentralBase_eq_puncturedProductBase
+        A.ellipticThreeCentralBase_eq_puncturedProductBase
 
 /-- The local base-circle factor, with its torus coordinate held fixed. -/
 public noncomputable def orderThreeLocalOffsetBaseCentralPath :
-    letI := A.orderThreeActualEllipticBoundaryAction
-    Path A.orderThreeActualEllipticCentralBase A.orderThreeActualEllipticCentralBase := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
+    Path A.ellipticThreeCentralBase A.ellipticThreeCentralBase := by
+  let _ := A.ellipticThreeBoundaryAction
   exact ((A.orderThreeFillingRelationCayleyPuncturedLoop.prod
     (Path.refl (A.orderThreePrincipalGaugeWithOffsetPath 0))).map
       A.orderThreePuncturedProductToCentralMap.continuous).cast
-        A.orderThreeActualEllipticCentralBase_eq_puncturedProductBase
-        A.orderThreeActualEllipticCentralBase_eq_puncturedProductBase
+        A.ellipticThreeCentralBase_eq_puncturedProductBase
+        A.ellipticThreeCentralBase_eq_puncturedProductBase
 
 public theorem orderThreeLocalFiberThenBaseCentralPath_eq_trans :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     A.orderThreeLocalFiberThenBaseCentralPath =
       A.orderThreeLocalOffsetFiberCentralPath.trans
         A.orderThreeLocalOffsetBaseCentralPath := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   unfold orderThreeLocalFiberThenBaseCentralPath
     orderThreeLocalOffsetFiberCentralPath orderThreeLocalOffsetBaseCentralPath
   rw [Path.map_trans]
@@ -154,14 +154,14 @@ public theorem orderThreeLocalFiberThenBaseCentralPath_eq_trans :
 /-- The corrected cusp period displayed at the final affine basepoint. -/
 public noncomputable def orderThreeCentralAffineCorrectedEpsilonPeriodPath :
     Path A.centralAffineBase A.centralAffineBase :=
-  A.orderThreeActualCuspCorrectedEpsilonPeriodPath.cast
+  A.ellipticThreeCuspCorrectedEpsilonPeriodPath.cast
     A.centralAffineBase_eq_actualCuspCentralBase
     A.centralAffineBase_eq_actualCuspCentralBase
 
 /-- The global zero-section triple displayed at the final affine basepoint. -/
 public noncomputable def orderThreeCentralAffineZeroSectionTriplePath :
     Path A.centralAffineBase A.centralAffineBase :=
-  A.orderThreeActualCuspZeroSectionTriplePath.cast
+  A.ellipticThreeCuspZeroSectionTriplePath.cast
     A.centralAffineBase_eq_actualCuspCentralBase
     A.centralAffineBase_eq_actualCuspCentralBase
 
@@ -170,7 +170,7 @@ public theorem orderThreeCentralAffineCorrectedGeometricRelatorPath_eq_trans :
       A.orderThreeCentralAffineCorrectedEpsilonPeriodPath.trans
         A.orderThreeCentralAffineZeroSectionTriplePath := by
   unfold orderThreeCentralAffineCorrectedGeometricRelatorPath
-    orderThreeActualCuspCorrectedGeometricRelatorPath
+    ellipticThreeCuspCorrectedGeometricRelatorPath
     orderThreeCentralAffineCorrectedEpsilonPeriodPath
     orderThreeCentralAffineZeroSectionTriplePath
   rw [Path.cast_trans]
@@ -179,7 +179,7 @@ public theorem orderThreeCentralAffineCorrectedGeometricRelatorPath_eq_trans :
 global counterparts through one common moving basepoint.  This is strictly point-set data, not
 an equality of fundamental-group classes. -/
 public def OrderThreeLocalGlobalFactorPointSetComparison : Prop :=
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   ∃ Hfiber : ContinuousMap.Homotopy
       A.orderThreeLocalOffsetFiberCentralPath.toContinuousMap
       A.orderThreeCentralAffineCorrectedEpsilonPeriodPath.toContinuousMap,
@@ -191,34 +191,34 @@ public def OrderThreeLocalGlobalFactorPointSetComparison : Prop :=
 
 public theorem OrderThreeLocalGlobalFactorPointSetComparison.fiber
     (h : A.OrderThreeLocalGlobalFactorPointSetComparison) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     Nonempty (ContinuousMap.Homotopy
       A.orderThreeLocalOffsetFiberCentralPath.toContinuousMap
       A.orderThreeCentralAffineCorrectedEpsilonPeriodPath.toContinuousMap) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   rcases h with ⟨Hfiber, Hbase, hjoin, htrace⟩
   exact ⟨Hfiber⟩
 
 public theorem OrderThreeLocalGlobalFactorPointSetComparison.base
     (h : A.OrderThreeLocalGlobalFactorPointSetComparison) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     Nonempty (ContinuousMap.Homotopy
       A.orderThreeLocalOffsetBaseCentralPath.toContinuousMap
       A.orderThreeCentralAffineZeroSectionTriplePath.toContinuousMap) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   rcases h with ⟨Hfiber, Hbase, hjoin, htrace⟩
   exact ⟨Hbase⟩
 
 public theorem OrderThreeLocalGlobalFactorPointSetComparison.factorConcatenation
     (h : A.OrderThreeLocalGlobalFactorPointSetComparison) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     ∃ H : ContinuousMap.Homotopy
       (A.orderThreeLocalOffsetFiberCentralPath.trans
         A.orderThreeLocalOffsetBaseCentralPath).toContinuousMap
       (A.orderThreeCentralAffineCorrectedEpsilonPeriodPath.trans
         A.orderThreeCentralAffineZeroSectionTriplePath).toContinuousMap,
       ∀ s : unitInterval, H (s, 0) = H (s, 1) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   rcases h with ⟨Hfiber, Hbase, hjoin, htrace⟩
   let Hfactors := freeLoopHomotopyHcomp Hfiber Hbase hjoin
   exact ⟨Hfactors, freeLoopHomotopyHcomp_trace Hfiber Hbase hjoin htrace⟩
@@ -227,12 +227,12 @@ public theorem OrderThreeLocalGlobalFactorPointSetComparison.factorConcatenation
 relator, with pointwise equal endpoint traces. -/
 public theorem OrderThreeLocalGlobalFactorPointSetComparison.assemble
     (h : A.OrderThreeLocalGlobalFactorPointSetComparison) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     ∃ H : ContinuousMap.Homotopy
       A.orderThreeLocalFiberThenBaseCentralPath.toContinuousMap
       A.orderThreeCentralAffineCorrectedGeometricRelatorPath.toContinuousMap,
       ∀ s : unitInterval, H (s, 0) = H (s, 1) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   rcases h with ⟨Hfiber, Hbase, hjoin, htrace⟩
   let H := freeLoopHomotopyHcomp Hfiber Hbase hjoin
   have hsource :

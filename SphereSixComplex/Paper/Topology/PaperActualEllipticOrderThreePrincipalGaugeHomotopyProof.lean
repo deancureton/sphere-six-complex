@@ -22,27 +22,27 @@ variable (A : PaperAnalyticData)
 /-- The fixed order-three fibre coordinate of the complete filling loop before removing the
 constant collar offset. -/
 public noncomputable def orderThreePrincipalGaugeWithOffsetMap :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     C(unitInterval,
       AdditiveTorus
         (parameterMap A.periods
           A.modular.modularParameter.toTriangleUniformization.zOne).1) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   exact
     { toFun := fun t ↦ A.orderThreeFillingRelationPrincipalGaugeLoop t +
-        Quotient.mk _ A.orderThreeActualEllipticBoundaryBase.2.2
+        Quotient.mk _ A.ellipticThreeBoundaryBase.2.2
       continuous_toFun := by fun_prop }
 
 /-- Straight contraction of the fixed collar offset in the universal vector cover of the
 order-three torus fibre. -/
 public def orderThreePrincipalGaugeOffsetHomotopy :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     ContinuousMap.Homotopy A.orderThreePrincipalGaugeWithOffsetMap
       A.orderThreeFillingRelationPrincipalGaugeLoop.toContinuousMap := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let p := (parameterMap A.periods
     A.modular.modularParameter.toTriangleUniformization.zOne).1
-  let v := A.orderThreeActualEllipticBoundaryBase.2.2
+  let v := A.ellipticThreeBoundaryBase.2.2
   exact
     { toFun := fun st ↦ A.orderThreeFillingRelationPrincipalGaugeLoop st.2 +
         (Quotient.mk _
@@ -68,26 +68,26 @@ public def orderThreePrincipalGaugeOffsetHomotopy :
 /-- The base coordinate paired with the exact fixed-fibre coordinate from the local-product
 formula. -/
 public noncomputable def orderThreeBaseGaugeProductMap :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     C(unitInterval,
       TwicePuncturedComplex ×
         AdditiveTorus
           (parameterMap A.periods
             A.modular.modularParameter.toTriangleUniformization.zOne).1) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   exact A.orderThreeFillingRelationBaseCoordinateMap.prodMk
     A.orderThreePrincipalGaugeWithOffsetMap
 
 /-- Removing the fixed fibre offset and applying the cubic base homotopy gives the complete
 coordinate pair: the positive zero-meridian cube together with the principal gauge loop. -/
 public theorem orderThreeBaseGaugeProduct_tripleGaugeHomotopy :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     Nonempty (ContinuousMap.Homotopy
       A.orderThreeBaseGaugeProductMap
       (twicePuncturedCounterclockwiseZeroTriple.toContinuousMap.prodMk
         A.orderThreeFillingRelationPrincipalGaugeLoop.toContinuousMap)) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
-  rcases A.orderThreeActualCayleyBaseCoordinate_tripleHomotopy with ⟨Hbase⟩
+  let _ := A.ellipticThreeBoundaryAction
+  rcases A.ellipticThreeCayleyBaseCoordinate_tripleHomotopy with ⟨Hbase⟩
   let Hbase' := Hbase.cast
     A.orderThreeFillingRelationBaseCoordinateMap_eq_cayley.symm rfl
   let Hoffset := A.orderThreePrincipalGaugeOffsetHomotopy

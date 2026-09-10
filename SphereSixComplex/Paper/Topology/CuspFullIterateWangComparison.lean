@@ -23,16 +23,16 @@ open SphereSixComplex.Topology Hurewicz.Chains
 open CuspPuncturedCollarBridge CuspPuncturedCollarBridge.CuspFiberSpecializationNormalization
 variable (A : PaperAnalyticData)
 
-public theorem actualCuspBridgeMeridian_hurewicz :
-    hurewiczFunction A.actualCuspOverlapBase A.actualCuspAffineBridgeMeridian =
+public theorem cuspBridgeMeridian_hurewicz :
+    hurewiczFunction A.cuspOverlapBase A.cuspAffineBridgeMeridian =
       loopHomologyClass A.cuspAngularProjectedLoop := by
-  erw [actualCuspAffineBridgeMeridian,
-    A.actualCuspAffineBridgeMeridian_eq_angularProjectedLoop, hurewiczFunction_baseEq]
+  erw [cuspAffineBridgeMeridian,
+    A.cuspAffineBridgeMeridian_eq_angularProjectedLoop, hurewiczFunction_baseEq]
   rfl
 
-public theorem actualCuspOverlapToInterior_comp_collar
-    (D : A.SectionSevenEllipticTwoDiscCoverData) :
-    A.actualCuspOverlapToEllipticInterior.comp
+public theorem cuspOverlapToInterior_comp_collar
+    (D : A.EllipticTwoDiscCoverData) :
+    A.cuspOverlapToEllipticInterior.comp
       (⟨A.cuspCollarToStarOverlapHomeomorph,
         A.cuspCollarToStarOverlapHomeomorph.continuous⟩ :
           C(puncturedLocalCuspQuotient A.starCuspWitness, _)) =
@@ -40,14 +40,14 @@ public theorem actualCuspOverlapToInterior_comp_collar
   ext x
   rfl
 
-public theorem actualCuspBridgeMeridian_homology_image
-    (D : A.SectionSevenEllipticTwoDiscCoverData) :
-    integralSingularHomologyMap 1 A.actualCuspOverlapToEllipticInterior
-      (hurewiczFunction A.actualCuspOverlapBase A.actualCuspAffineBridgeMeridian) =
+public theorem cuspBridgeMeridian_homology_image
+    (D : A.EllipticTwoDiscCoverData) :
+    integralSingularHomologyMap 1 A.cuspOverlapToEllipticInterior
+      (hurewiczFunction A.cuspOverlapBase A.cuspAffineBridgeMeridian) =
     integralSingularHomologyMap 1 D.cuspToEllipticInteriorMap.hom
       (loopHomologyClass A.cuspAngularPuncturedLoop) := by
-  erw [A.actualCuspBridgeMeridian_hurewicz]
-  erw [← A.actualCuspOverlapToInterior_comp_collar D]
+  erw [A.cuspBridgeMeridian_hurewicz]
+  erw [← A.cuspOverlapToInterior_comp_collar D]
   erw [integralSingularHomologyMap_loopHomologyClass,
     integralSingularHomologyMap_loopHomologyClass]
   apply loopHomologyClass_eq_of_pointwise
@@ -56,14 +56,14 @@ public theorem actualCuspBridgeMeridian_homology_image
   rfl
 
 public theorem cuspRawTwo_homology_image
-    (D : A.SectionSevenEllipticTwoDiscCoverData) :
+    (D : A.EllipticTwoDiscCoverData) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     integralSingularHomologyMap 1 D.cuspMappingTorusToEllipticInteriorMap
       (G.geometricWangSections.circleMappingTorusHOneAddEquiv.symm
         (Pi.single (2 : Fin 3) 1)) =
-    -integralSingularHomologyMap 1 A.actualCuspOverlapToEllipticInterior
-      (hurewiczFunction A.actualCuspOverlapBase A.actualCuspAffineBridgeMeridian) := by
+    -integralSingularHomologyMap 1 A.cuspOverlapToEllipticInterior
+      (hurewiczFunction A.cuspOverlapBase A.cuspAffineBridgeMeridian) := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   change integralSingularHomologyMap 1 D.cuspMappingTorusToEllipticInteriorMap
@@ -73,7 +73,7 @@ public theorem cuspRawTwo_homology_image
     A.cuspSelectedPositiveMeridianClass_eq_neg_explicit, map_neg,
     A.cuspMappingTorusMeridianHomologyClass_eq_actualCuspAngularPuncturedLoop_image,
     ← D.cuspToEllipticInteriorMap_homology_mappingTorusModel]
-  erw [A.actualCuspBridgeMeridian_homology_image D]
+  erw [A.cuspBridgeMeridian_homology_image D]
   rfl
 
 end Geometry.PaperAnalyticData

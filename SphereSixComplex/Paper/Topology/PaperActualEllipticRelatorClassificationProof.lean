@@ -68,11 +68,11 @@ public theorem orderFourFillingRelationPrincipalGaugeDeck_smul (z : ComplexTwoSp
 
 /-- The explicit order-three gauge lift, regarded as a path to its lattice translate. -/
 public noncomputable def orderThreeFillingRelationPrincipalGaugeLiftPath :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     Path (A.orderThreeFillingRelationPrincipalGaugeCoverLift 0)
       (A.orderThreeFillingRelationPrincipalGaugeDeck •
         A.orderThreeFillingRelationPrincipalGaugeCoverLift 0) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   exact
     { toFun := A.orderThreeFillingRelationPrincipalGaugeCoverLiftMap
       continuous_toFun := A.orderThreeFillingRelationPrincipalGaugeCoverLiftMap.continuous
@@ -84,11 +84,11 @@ public noncomputable def orderThreeFillingRelationPrincipalGaugeLiftPath :
 
 /-- The explicit order-four gauge lift, regarded as a path to its lattice translate. -/
 public noncomputable def orderFourFillingRelationPrincipalGaugeLiftPath :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     Path (A.orderFourFillingRelationPrincipalGaugeCoverLift 0)
       (A.orderFourFillingRelationPrincipalGaugeDeck •
         A.orderFourFillingRelationPrincipalGaugeCoverLift 0) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   exact
     { toFun := A.orderFourFillingRelationPrincipalGaugeCoverLiftMap
       continuous_toFun := A.orderFourFillingRelationPrincipalGaugeCoverLiftMap.continuous
@@ -100,7 +100,7 @@ public noncomputable def orderFourFillingRelationPrincipalGaugeLiftPath :
 
 /-- The order-three gauge winding as a based loop in the fixed torus fibre. -/
 public noncomputable def orderThreeFillingRelationPrincipalGaugeLoop :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     Path
       (torusProjection
         (parameterMap A.periods
@@ -110,7 +110,7 @@ public noncomputable def orderThreeFillingRelationPrincipalGaugeLoop :
         (parameterMap A.periods
           A.modular.modularParameter.toTriangleUniformization.zOne).1
         (A.orderThreeFillingRelationPrincipalGaugeCoverLift 0)) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let _ : ProperlyDiscontinuousSMul
       (PeriodGroup
         (parameterMap A.periods
@@ -135,7 +135,7 @@ public noncomputable def orderThreeFillingRelationPrincipalGaugeLoop :
 
 /-- The order-four gauge winding as a based loop in the fixed torus fibre. -/
 public noncomputable def orderFourFillingRelationPrincipalGaugeLoop :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     Path
       (torusProjection
         (parameterMap A.periods
@@ -145,7 +145,7 @@ public noncomputable def orderFourFillingRelationPrincipalGaugeLoop :
         (parameterMap A.periods
           A.modular.modularParameter.toTriangleUniformization.zTwo).1
         (A.orderFourFillingRelationPrincipalGaugeCoverLift 0)) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let _ : ProperlyDiscontinuousSMul
       (PeriodGroup
         (parameterMap A.periods
@@ -169,14 +169,14 @@ public noncomputable def orderFourFillingRelationPrincipalGaugeLoop :
     A.orderFourFillingRelationPrincipalGaugeLiftPath
 
 public theorem orderThreeFillingRelationPrincipalGaugeLoop_apply (t : unitInterval) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     A.orderThreeFillingRelationPrincipalGaugeLoop t =
       A.orderThreePrincipalRealPeriodGauge
         (familyTotalSpaceBase A.periods
           (A.orderThreeCollarInverseRepresentative
-            (A.orderThreeActualEllipticBoundaryDeckStraightLift
-              A.orderThreeActualEllipticBoundaryDeckData.fillingRelation t)).1) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+            (A.ellipticThreeBoundaryDeckStraightLift
+              A.ellipticThreeBoundaryDeckData.fillingRelation t)).1) := by
+  let _ := A.ellipticThreeBoundaryAction
   change torusProjection
       (parameterMap A.periods
         A.modular.modularParameter.toTriangleUniformization.zOne).1
@@ -184,14 +184,14 @@ public theorem orderThreeFillingRelationPrincipalGaugeLoop_apply (t : unitInterv
   exact A.orderThreeFillingRelationPrincipalGaugeCoverLift_projects t
 
 public theorem orderFourFillingRelationPrincipalGaugeLoop_apply (t : unitInterval) :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     A.orderFourFillingRelationPrincipalGaugeLoop t =
       A.orderFourPrincipalRealPeriodGauge
         (familyTotalSpaceBase A.periods
           (A.orderFourCollarInverseRepresentative
-            (A.orderFourActualEllipticBoundaryDeckStraightLift
-              A.orderFourActualEllipticBoundaryDeckData.fillingRelation t)).1) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+            (A.ellipticFourBoundaryDeckStraightLift
+              A.ellipticFourBoundaryDeckData.fillingRelation t)).1) := by
+  let _ := A.ellipticFourBoundaryAction
   change torusProjection
       (parameterMap A.periods
         A.modular.modularParameter.toTriangleUniformization.zTwo).1
@@ -200,7 +200,7 @@ public theorem orderFourFillingRelationPrincipalGaugeLoop_apply (t : unitInterva
 
 /-- The order-three principal gauge has exactly the lattice label `epsilon`. -/
 public theorem orderThreeFillingRelationPrincipalGaugeLoop_classification :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     letI : ProperlyDiscontinuousSMul
         (PeriodGroup
           (parameterMap A.periods
@@ -222,7 +222,7 @@ public theorem orderThreeFillingRelationPrincipalGaugeLoop_classification :
         ⟨A.orderThreeFillingRelationPrincipalGaugeCoverLift 0, rfl⟩
         (pathLoopClass A.orderThreeFillingRelationPrincipalGaugeLoop) =
       MulOpposite.op A.orderThreeFillingRelationPrincipalGaugeDeck := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let _ : ProperlyDiscontinuousSMul
       (PeriodGroup
         (parameterMap A.periods
@@ -247,7 +247,7 @@ public theorem orderThreeFillingRelationPrincipalGaugeLoop_classification :
 
 /-- The order-four principal gauge has exactly the lattice label `-epsilon'`. -/
 public theorem orderFourFillingRelationPrincipalGaugeLoop_classification :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     letI : ProperlyDiscontinuousSMul
         (PeriodGroup
           (parameterMap A.periods
@@ -269,7 +269,7 @@ public theorem orderFourFillingRelationPrincipalGaugeLoop_classification :
         ⟨A.orderFourFillingRelationPrincipalGaugeCoverLift 0, rfl⟩
         (pathLoopClass A.orderFourFillingRelationPrincipalGaugeLoop) =
       MulOpposite.op A.orderFourFillingRelationPrincipalGaugeDeck := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let _ : ProperlyDiscontinuousSMul
       (PeriodGroup
         (parameterMap A.periods

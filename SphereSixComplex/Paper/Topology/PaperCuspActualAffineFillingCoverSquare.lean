@@ -27,7 +27,7 @@ open scoped ContinuousMap
 namespace SphereSixComplex
 
 open Geometry Geometry.ComplexTorus Geometry.CuspPuncturedCollarBridge
-open Geometry.StandardInfiniteA2ToricModel
+open Geometry.InfiniteA2Toric
 
 namespace Geometry.CuspPuncturedCollarBridge
 
@@ -148,7 +148,7 @@ public theorem cuspFillingToStarPieceHomeomorph_coe
   rfl
 
 /-- The normalized additive projection transported to the exact cusp overlap of the glued star. -/
-public noncomputable def actualCuspBoundaryProjection :
+public noncomputable def cuspBoundaryProjection :
     C(additiveCuspRadiusCover A.starCuspWitness.localWitness.radius,
       ((sectionSevenStarOpenCover
           A.openEmbeddingStarData.toFourPieceStarGluingData).piece 0 ∩
@@ -161,7 +161,7 @@ public noncomputable def actualCuspBoundaryProjection :
       (additiveCuspBoundaryProjection A.starCuspWitness)
 
 /-- The full local-carrier projection transported to the exact cusp piece of the glued star. -/
-public noncomputable def actualCuspFillingProjectionToStar :
+public noncomputable def cuspFillingProjectionToStar :
     C(LocalCarrier A.toricModel A.starCuspWitness.localWitness.radius,
       (sectionSevenStarOpenCover
         A.openEmbeddingStarData.toFourPieceStarGluingData).piece 1) :=
@@ -170,7 +170,7 @@ public noncomputable def actualCuspFillingProjectionToStar :
       (actualCuspFillingProjection A.starCuspWitness)
 
 /-- Inclusion of the actual central--cusp overlap into the cusp piece. -/
-public def actualCuspOverlapToFillingPiece :
+public def cuspOverlapToFillingPiece :
     C(((sectionSevenStarOpenCover
           A.openEmbeddingStarData.toFourPieceStarGluingData).piece 0 ∩
         (sectionSevenStarOpenCover
@@ -184,10 +184,10 @@ public def actualCuspOverlapToFillingPiece :
 
 /-- The transported additive lift commutes with the actual overlap inclusion in the glued
 star. -/
-public theorem actualCuspCoverSquare_commutes
+public theorem cuspCoverSquare_commutes
     (p : additiveCuspRadiusCover A.starCuspWitness.localWitness.radius) :
-    A.actualCuspOverlapToFillingPiece (A.actualCuspBoundaryProjection p) =
-      A.actualCuspFillingProjectionToStar
+    A.cuspOverlapToFillingPiece (A.cuspBoundaryProjection p) =
+      A.cuspFillingProjectionToStar
         (additiveCuspFillingLift A.starCuspWitness p) := by
   let S := A.openEmbeddingStarData
   let q : S.collarSource 0 := additiveCuspBoundaryProjection A.starCuspWitness p
@@ -213,13 +213,13 @@ public theorem actualCuspCoverSquare_commutes
     rfl⟩
 
 /-- The filling projection transported to the glued cusp piece remains a quotient covering. -/
-public theorem actualCuspFillingProjectionToStar_isQuotientCoveringMap :
+public theorem cuspFillingProjectionToStar_isQuotientCoveringMap :
     let C :=
       NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
         A.cuspCoordinate A.toricModel A.starCuspWitness.localWitness.radius
           A.starCuspWitness.localWitness.radius_pos A.starCuspWitness.localWitness.radius_le
     letI := (C.toCuspActionData A.starCuspWitness.localWitness.fixedPoint).psiAction
-    IsQuotientCoveringMap A.actualCuspFillingProjectionToStar
+    IsQuotientCoveringMap A.cuspFillingProjectionToStar
       (Multiplicative ParameterLattice) := by
   let C :=
     NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients

@@ -23,26 +23,26 @@ open SphereSixComplex.TriangleGroup
 /-- The exact stabilizer condition on a deck element carrying the named radial lift into the
 selected order-four collar. -/
 public def IsOrderFourExtractedDeckStabilizer
-    (A : PaperAnalyticData) (x : A.SectionSevenAffineMarkedBand) (g : Delta) : Prop :=
+    (A : PaperAnalyticData) (x : A.affineMarkedBand) (g : Delta) : Prop :=
   (‖(orderFourCayleyHomeomorph
       (fuchsianSourceAction g •
-        (A.sectionSevenAffineOrderFourRadialBaseLift
-          (A.sectionSevenAffineBandStripCoordinate x)).1) : ℂ)‖ <
+        (A.affineOrderFourRadialBaseLift
+          (A.affineBandStripCoordinate x)).1) : ℂ)‖ <
       A.starSeparation.orderFour.radius) ∧
     ∃ a : CyclicFour, g = Monoid.Coprod.inr a
 
 /-- If both the named radial lift and its deck translate lie in the selected order-four collar,
 collar separation forces the deck element into the embedded `C₄` factor. -/
 public theorem mem_orderFourFactor_of_named_and_deck_cayley_lt
-    (A : PaperAnalyticData) (x : A.SectionSevenAffineMarkedBand) (g : Delta)
+    (A : PaperAnalyticData) (x : A.affineMarkedBand) (g : Delta)
     (hdeck : ‖(orderFourCayleyHomeomorph
       (fuchsianSourceAction g •
-        (A.sectionSevenAffineOrderFourRadialBaseLift
-          (A.sectionSevenAffineBandStripCoordinate x)).1) : ℂ)‖ <
+        (A.affineOrderFourRadialBaseLift
+          (A.affineBandStripCoordinate x)).1) : ℂ)‖ <
         A.starSeparation.orderFour.radius)
     (hnamed : ‖(orderFourCayleyHomeomorph
-      (A.sectionSevenAffineOrderFourRadialBaseLift
-        (A.sectionSevenAffineBandStripCoordinate x)).1 : ℂ)‖ <
+      (A.affineOrderFourRadialBaseLift
+        (A.affineBandStripCoordinate x)).1 : ℂ)‖ <
         A.starSeparation.orderFour.radius) :
     ∃ a : CyclicFour, g = Monoid.Coprod.inr a := by
   let U := A.modular.modularParameter.toTriangleUniformization
@@ -52,25 +52,25 @@ public theorem mem_orderFourFactor_of_named_and_deck_cayley_lt
   rw [OrderFourLinearCollarSourceData.eq_def] at hseparation
   apply hseparation.2
     (fuchsianSourceAction g •
-      (A.sectionSevenAffineOrderFourRadialBaseLift
-        (A.sectionSevenAffineBandStripCoordinate x)).1)
-    (A.sectionSevenAffineOrderFourRadialBaseLift
-      (A.sectionSevenAffineBandStripCoordinate x)).1 hdeck hnamed g
+      (A.affineOrderFourRadialBaseLift
+        (A.affineBandStripCoordinate x)).1)
+    (A.affineOrderFourRadialBaseLift
+      (A.affineBandStripCoordinate x)).1 hdeck hnamed g
   rw [hsource]
 
 /-- For any deck element already known to carry the named radial lift into the collar, membership
 in the order-four factor is equivalent to the missing named-sheet Cayley bound. -/
 public theorem mem_orderFourFactor_iff_namedOrderFourRadialBase_cayley_lt
-    (A : PaperAnalyticData) (x : A.SectionSevenAffineMarkedBand) (g : Delta)
+    (A : PaperAnalyticData) (x : A.affineMarkedBand) (g : Delta)
     (hdeck : ‖(orderFourCayleyHomeomorph
       (fuchsianSourceAction g •
-        (A.sectionSevenAffineOrderFourRadialBaseLift
-          (A.sectionSevenAffineBandStripCoordinate x)).1) : ℂ)‖ <
+        (A.affineOrderFourRadialBaseLift
+          (A.affineBandStripCoordinate x)).1) : ℂ)‖ <
         A.starSeparation.orderFour.radius) :
     (∃ a : CyclicFour, g = Monoid.Coprod.inr a) ↔
       ‖(orderFourCayleyHomeomorph
-        (A.sectionSevenAffineOrderFourRadialBaseLift
-          (A.sectionSevenAffineBandStripCoordinate x)).1 : ℂ)‖ <
+        (A.affineOrderFourRadialBaseLift
+          (A.affineBandStripCoordinate x)).1 : ℂ)‖ <
         A.starSeparation.orderFour.radius := by
   constructor
   · rintro ⟨a, rfl⟩
@@ -81,16 +81,16 @@ public theorem mem_orderFourFactor_iff_namedOrderFourRadialBase_cayley_lt
 /-- Equivalently, an extracted deck element fixes the order-four elliptic centre exactly when
 the named radial lift satisfies the missing collar bound. -/
 public theorem fixes_fuchsianTwo_iff_namedOrderFourRadialBase_cayley_lt
-    (A : PaperAnalyticData) (x : A.SectionSevenAffineMarkedBand) (g : Delta)
+    (A : PaperAnalyticData) (x : A.affineMarkedBand) (g : Delta)
     (hdeck : ‖(orderFourCayleyHomeomorph
       (fuchsianSourceAction g •
-        (A.sectionSevenAffineOrderFourRadialBaseLift
-          (A.sectionSevenAffineBandStripCoordinate x)).1) : ℂ)‖ <
+        (A.affineOrderFourRadialBaseLift
+          (A.affineBandStripCoordinate x)).1) : ℂ)‖ <
         A.starSeparation.orderFour.radius) :
     fuchsianSourceAction g • fuchsianTwoFixedPoint = fuchsianTwoFixedPoint ↔
       ‖(orderFourCayleyHomeomorph
-        (A.sectionSevenAffineOrderFourRadialBaseLift
-          (A.sectionSevenAffineBandStripCoordinate x)).1 : ℂ)‖ <
+        (A.affineOrderFourRadialBaseLift
+          (A.affineBandStripCoordinate x)).1 : ℂ)‖ <
         A.starSeparation.orderFour.radius := by
   rw [establishedFuchsianTwoStabilizerExact]
   exact A.mem_orderFourFactor_iff_namedOrderFourRadialBase_cayley_lt x g hdeck
@@ -98,11 +98,11 @@ public theorem fixes_fuchsianTwo_iff_namedOrderFourRadialBase_cayley_lt
 /-- The pointwise named-sheet Cayley bound is exactly the assertion that some extracted deck
 element carrying the named lift into the collar belongs to the order-four stabilizer. -/
 public theorem exists_orderFourExtractedDeckStabilizer_iff
-    (A : PaperAnalyticData) (x : A.SectionSevenAffineMarkedBand) :
+    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
     (∃ g : Delta, A.IsOrderFourExtractedDeckStabilizer x g) ↔
       ‖(orderFourCayleyHomeomorph
-        (A.sectionSevenAffineOrderFourRadialBaseLift
-          (A.sectionSevenAffineBandStripCoordinate x)).1 : ℂ)‖ <
+        (A.affineOrderFourRadialBaseLift
+          (A.affineBandStripCoordinate x)).1 : ℂ)‖ <
         A.starSeparation.orderFour.radius := by
   constructor
   · rintro ⟨g, hdeck, hfactor⟩
@@ -114,12 +114,12 @@ public theorem exists_orderFourExtractedDeckStabilizer_iff
 
 /-- Globally, the extracted-deck stabilizer statement is equivalent to the existing named radial
 collar compatibility predicate. -/
-public theorem sectionSevenAffineOrderFourNamedRadialCollarCompatibility_iff_extractedDeck
+public theorem affineOrderFourNamedRadialCollarCompatibility_iff_extractedDeck
     (A : PaperAnalyticData) :
-    A.SectionSevenAffineOrderFourNamedRadialCollarCompatibility ↔
-      ∀ x : A.SectionSevenAffineMarkedBand,
+    A.AffineOrderFourNamedRadialCollarCompatibility ↔
+      ∀ x : A.affineMarkedBand,
         ∃ g : Delta, A.IsOrderFourExtractedDeckStabilizer x g := by
-  rw [A.sectionSevenAffineOrderFourNamedRadialCollarCompatibility_iff]
+  rw [A.affineOrderFourNamedRadialCollarCompatibility_iff]
   constructor
   · intro h x
     exact (A.exists_orderFourExtractedDeckStabilizer_iff x).mpr (h x)

@@ -31,7 +31,7 @@ public theorem fourthFirstCoordinateTorus_real (A : PaperAnalyticData) (t s : �
 
 public def normalizedFourthFirstTorus (A : PaperAnalyticData) :
     C(StdTorus 2, A.CentralFamily) :=
-  (A.regularFixedFiberMap A.sectionSevenAffineNormalizedMidpoint).comp
+  (A.regularFixedFiberMap A.affineNormalizedMidpoint).comp
     (((additiveTorusStdHomeomorph A.duplicatedSectionSevenBandParameter
       A.duplicatedSectionSevenBandFullRank).symm : C(_, _)).comp fourthFirstCoordinateTorus)
 
@@ -39,7 +39,7 @@ public theorem normalizedFourthFirstTorus_real (A : PaperAnalyticData) (t s : �
     A.normalizedFourthFirstTorus ![(t : UnitAddCircle), (s : UnitAddCircle)] =
     A.centralFourthTranslation ((t : UnitAddCircle),
       regularPeriodCircleInGlobal A.periods (Pi.single 0 1)
-        ((s : UnitAddCircle), A.sectionSevenAffineNormalizedMidpoint)) := by
+        ((s : UnitAddCircle), A.affineNormalizedMidpoint)) := by
   change A.regularFixedFiberMap _ ((additiveTorusStdHomeomorph _ _).symm _) = _
   rw [A.fourthFirstCoordinateTorus_real]
   change A.regularFixedFiberCover _ _ = _
@@ -51,15 +51,15 @@ public theorem normalizedFourthFirstTorus_real (A : PaperAnalyticData) (t s : �
   rw [regularPeriodCircle_real, invariantPeriodRealTranslation_mk]
   change A.centralQuotientProjection (TorusFamily.projection _ (_, _)) =
     A.centralQuotientProjection (TorusFamily.projection _
-      (A.sectionSevenAffineNormalizedMidpoint,
-        t • periodVector (regularParameterMap A.periods A.sectionSevenAffineNormalizedMidpoint).1 ![0,0,0,1] +
-        s • periodVector (regularParameterMap A.periods A.sectionSevenAffineNormalizedMidpoint).1 (Pi.single 0 1)))
+      (A.affineNormalizedMidpoint,
+        t • periodVector (regularParameterMap A.periods A.affineNormalizedMidpoint).1 ![0,0,0,1] +
+        s • periodVector (regularParameterMap A.periods A.affineNormalizedMidpoint).1 (Pi.single 0 1)))
   apply congrArg A.centralQuotientProjection
   apply congrArg (TorusFamily.projection (regularParameterMap A.periods))
   congr 1
-  apply_fun A.regularMovingToFixed A.sectionSevenAffineNormalizedMidpoint
+  apply_fun A.regularMovingToFixed A.affineNormalizedMidpoint
     using (fun a b h ↦ by
-      have := congrArg (A.regularFixedToMoving A.sectionSevenAffineNormalizedMidpoint) h
+      have := congrArg (A.regularFixedToMoving A.affineNormalizedMidpoint) h
       simpa only [regularFixedToMoving_regularMovingToFixed] using this)
   rw [regularMovingToFixed_regularFixedToMoving]
   change _ = (fullRankDomain _).realEquiv ((fullRankDomain _).realEquiv.symm (_ + _))
@@ -69,7 +69,7 @@ public theorem normalizedFourthFirstTorus_real (A : PaperAnalyticData) (t s : �
     (A.regularMovingToFixed_period_smul _ _ s)).symm
 
 public theorem ellipticFourthSweep_markedCircle_map (A : PaperAnalyticData)
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     A.ellipticFourthTranslation.comp
       (circleProductMap (R.twoDiscCover.canonicalBandToEllipticInteriorInclusionMap.comp
         (normalizedMarkedPeriodBandCircle R (Pi.single 0 1)))) =
@@ -93,7 +93,7 @@ public theorem ellipticFourthSweep_markedCircle_map (A : PaperAnalyticData)
   exact (A.normalizedFourthFirstTorus_real t s).symm
 
 public theorem ellipticFourthSweep_markedCircle (A : PaperAnalyticData)
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     A.ellipticFourthHomologySweep
       (integralSingularHomologyMap 1 R.twoDiscCover.canonicalBandToEllipticInteriorInclusionMap
         (integralSingularHomologyMap 1 (normalizedMarkedPeriodBandCircle R (Pi.single 0 1))
@@ -134,40 +134,40 @@ public theorem fourthFirstCoordinateTorus_homology :
   rw [standardFourTorusCoordinateTwoTorusHom_coordinateHomologyClass]
 
 public def normalizedFourthFirstBandTorus {A : PaperAnalyticData}
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     C(StdTorus 2, (R.twoDiscCover.orderThreeSide ∩ R.twoDiscCover.orderFourSide : Set _)) where
-  toFun z := A.sectionSevenActualAffineSplit.sidesIntersectionHomeomorph.symm
-    ((A.sectionSevenAffineCentralBandMarkedProductHomeomorph
-      A.sectionSevenAffineCentralSeparation).symm
-        (sectionSevenAffineStripMidpoint,
+  toFun z := A.actualAffineHeightSplit.sidesIntersectionHomeomorph.symm
+    ((A.affineCentralBandMarkedProductHomeomorph
+      A.affineCentralSeparation).symm
+        (affineStripMidpoint,
           (additiveTorusStdHomeomorph A.duplicatedSectionSevenBandParameter
             A.duplicatedSectionSevenBandFullRank).symm (fourthFirstCoordinateTorus z)))
-  continuous_toFun := A.sectionSevenActualAffineSplit.sidesIntersectionHomeomorph.symm.continuous.comp
-    ((A.sectionSevenAffineCentralBandMarkedProductHomeomorph
-      A.sectionSevenAffineCentralSeparation).symm.continuous.comp
+  continuous_toFun := A.actualAffineHeightSplit.sidesIntersectionHomeomorph.symm.continuous.comp
+    ((A.affineCentralBandMarkedProductHomeomorph
+      A.affineCentralSeparation).symm.continuous.comp
       (continuous_const.prodMk ((additiveTorusStdHomeomorph _ _).symm.continuous.comp
         fourthFirstCoordinateTorus.continuous)))
 
 public theorem normalizedFourthFirstBandTorus_interior {A : PaperAnalyticData}
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     R.twoDiscCover.canonicalBandToEllipticInteriorInclusionMap.comp
       (normalizedFourthFirstBandTorus R) =
     A.fourthTranslationCentralInclusion.comp A.normalizedFourthFirstTorus := by
   ext1 z
-  have h := A.sectionSevenAffineCentralBandMarkedProductHomeomorph_symm_toCentralFamily
-    A.sectionSevenAffineCentralSeparation
-    (sectionSevenAffineStripMidpoint, (additiveTorusStdHomeomorph
+  have h := A.affineCentralBandMarkedProductHomeomorph_symm_toCentralFamily
+    A.affineCentralSeparation
+    (affineStripMidpoint, (additiveTorusStdHomeomorph
       A.duplicatedSectionSevenBandParameter A.duplicatedSectionSevenBandFullRank).symm
       (fourthFirstCoordinateTorus z))
-  rw [← A.regularFixedFiberPoint_strip, A.sectionSevenAffineNamedStripLift_apply_midpoint] at h
+  rw [← A.regularFixedFiberPoint_strip, A.affineNamedStripLift_apply_midpoint] at h
   have h' := congrArg A.centralToEllipticInterior h
-  dsimp only [centralToEllipticInterior, sectionSevenAffineCentralBandToCentralFamily,
+  dsimp only [centralToEllipticInterior, affineCentralBandToCentralFamily,
     ContinuousMap.coe_mk] at h'
   rw [Homeomorph.symm_apply_apply] at h'
   exact h'
 
 private theorem bandTwo_fixedCoordinates {A : PaperAnalyticData}
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (x : IntegralSingularHomology 2 (R.twoDiscCover.orderThreeSide ∩ R.twoDiscCover.orderFourSide : Set _)) :
     EllipticBandHomologyAlignment.bandTwo (D := R.twoDiscCover) x =
     additiveTorusHomologyDegreeTwo A.duplicatedSectionSevenBandParameter A.duplicatedSectionSevenBandFullRank
@@ -191,7 +191,7 @@ private theorem additiveTorusTwo_apply (p : Parameters) (h : FullRank p)
       (integralSingularHomologyMap 2 (additiveTorusStdHomeomorph p h : C(_, _)) x) := rfl
 
 public theorem normalizedFourthFirstBandTorus_bandTwo {A : PaperAnalyticData}
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     EllipticBandHomologyAlignment.bandTwo
       (D := R.twoDiscCover)
       (integralSingularHomologyMap 2 (normalizedFourthFirstBandTorus R)
@@ -207,33 +207,33 @@ public theorem normalizedFourthFirstBandTorus_bandTwo {A : PaperAnalyticData}
       (R.twoDiscCover.bandHomotopyEquiv.toFun.comp (normalizedFourthFirstBandTorus R)) =
       fourthFirstCoordinateTorus := by
     ext1 z
-    change (additiveTorusStdHomeomorph _ _) ((A.sectionSevenAffineCentralBandMarkedProductHomeomorph
-      A.sectionSevenAffineCentralSeparation
-        (A.sectionSevenActualAffineSplit.sidesIntersectionHomeomorph
-          (A.sectionSevenActualAffineSplit.sidesIntersectionHomeomorph.symm
-            ((A.sectionSevenAffineCentralBandMarkedProductHomeomorph
-              A.sectionSevenAffineCentralSeparation).symm _)))).2) = _
+    change (additiveTorusStdHomeomorph _ _) ((A.affineCentralBandMarkedProductHomeomorph
+      A.affineCentralSeparation
+        (A.actualAffineHeightSplit.sidesIntersectionHomeomorph
+          (A.actualAffineHeightSplit.sidesIntersectionHomeomorph.symm
+            ((A.affineCentralBandMarkedProductHomeomorph
+              A.affineCentralSeparation).symm _)))).2) = _
     erw [Homeomorph.apply_symm_apply, Homeomorph.apply_symm_apply]
   erw [hc]
   exact fourthFirstCoordinateTorus_homology
 
 public theorem ellipticFourthSweep_translation_fiberCoordinate (A : PaperAnalyticData)
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (S : WangHomologyPresentation.NormalizedSplitting
-      (SectionSevenEllipticTwoDiscHomologyCoordinates.presentationTwo (D := R.twoDiscCover))) :
+      (EllipticTwoDiscHomologyCoordinates.presentationTwo (D := R.twoDiscCover))) :
     R.homologyAlignment.actualHomologyCoordinates.normalizedEllipticInteriorHomologyTwoEquiv S
       (A.ellipticFourthHomologySweep
-        (integralSingularHomologyMap 1 A.actualCuspOverlapToEllipticInterior
-          (Hurewicz.Chains.hurewiczFunction A.actualCuspOverlapBase
-            (Additive.toMul (A.actualCuspAffineBridgeTranslation (Pi.single 0 1)))))) 0 = -12 := by
-  erw [A.actualCuspTranslation_homology_eq_band R (Pi.single 0 1)]
+        (integralSingularHomologyMap 1 A.cuspOverlapToEllipticInterior
+          (Hurewicz.Chains.hurewiczFunction A.cuspOverlapBase
+            (Additive.toMul (A.cuspAffineBridgeTranslation (Pi.single 0 1)))))) 0 = -12 := by
+  erw [A.cuspTranslation_homology_eq_band R (Pi.single 0 1)]
   rw [A.ellipticFourthSweep_markedCircle R]
   rw [integralSingularHomologyMap_comp_wang,
     ← normalizedFourthFirstBandTorus_interior R,
     ← integralSingularHomologyMap_comp_wang]
   change R.homologyAlignment.actualHomologyCoordinates.normalizedUnionHomologyTwoEquiv S
     ((integralSingularHomologyEquiv 2
-      (topologicalSubsetHomeomorphOfEqUniv (TopCat.of A.SectionSevenEllipticInterior)
+      (topologicalSubsetHomeomorphOfEqUniv (TopCat.of A.ellipticInterior)
         (R.twoDiscCover.orderThreeSide ∪ R.twoDiscCover.orderFourSide) R.twoDiscCover.sides_cover)).symm
       (integralSingularHomologyMap 2 R.twoDiscCover.canonicalBandToEllipticInteriorInclusionMap
         (integralSingularHomologyMap 2 (normalizedFourthFirstBandTorus R)

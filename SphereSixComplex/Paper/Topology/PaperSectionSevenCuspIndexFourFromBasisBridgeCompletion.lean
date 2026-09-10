@@ -17,13 +17,13 @@ open AlgebraicTopology
 
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 
-open SectionSevenEllipticInteriorMarkedCycleData
-open SectionSevenEllipticTwoDiscCoverData
-open SectionSevenEllipticTwoDiscHomologyCoordinates
+open EllipticInteriorMarkedCycleData
+open EllipticTwoDiscCoverData
+open EllipticTwoDiscHomologyCoordinates
 
-variable {A : PaperAnalyticData} {D : A.SectionSevenEllipticTwoDiscCoverData}
+variable {A : PaperAnalyticData} {D : A.EllipticTwoDiscCoverData}
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 /-- A side-homology lift of the fourth raw cusp class, selected from the boundary bridge. -/
 public noncomputable def indexFourSideLift
@@ -47,7 +47,7 @@ public theorem inclusion_indexFourSideLift
 /-- The normalized fibre coordinate of a class included from the two sides is its cokernel
 coordinate. -/
 public theorem normalizedUnionHomologyTwoEquiv_inclusion_zero
-    (B : A.SectionSevenEllipticTwoDiscHomologyCoordinates D)
+    (B : A.EllipticTwoDiscHomologyCoordinates D)
     (S : WangHomologyPresentation.NormalizedSplitting (presentationTwo (D := D)))
     (y : IntegralSingularHomology 2 D.orderThreeSide ×
       IntegralSingularHomology 2 D.orderFourSide) :
@@ -136,7 +136,7 @@ public theorem normalizedIndexFourPrismCoefficientCalculation_iff_sideLiftGenera
           (N.actualHomologyCoordinates.degreeTwoCoinvariantEquiv.symm 1) := congrArg _ h
       _ = 1 := LinearEquiv.apply_symm_apply _ _
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

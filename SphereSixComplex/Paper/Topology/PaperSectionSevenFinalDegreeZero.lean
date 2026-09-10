@@ -50,9 +50,9 @@ open SphereSixComplex.Geometry
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricQuantitativeRegions
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricQuantitativeRegions.BoundedPolydiscRegions
+open SphereSixComplex.Geometry.InfiniteA2Toric
+open SphereSixComplex.Geometry.InfiniteA2Toric.QuantitativeRegions
+open SphereSixComplex.Geometry.InfiniteA2Toric.QuantitativeRegions.BoundedPolydiscRegions
 
 /-- The radial condition on the additive cusp cover is an affine half-space condition. -/
 public theorem mem_additiveCuspRadiusCover_iff_halfSpace
@@ -149,7 +149,7 @@ public theorem starCuspCollarSource_pathConnected :
 
 /-- The penultimate Mayer--Vietoris stage is the union of the central, order-three, and
 order-four pieces. -/
-public theorem sectionSevenFinalStage_eq_threePieceUnion :
+public theorem ellipticInterior_eq_threePieceUnion :
     (A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4) =
       (A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 0 ∪
       (A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 1 ∪
@@ -165,7 +165,7 @@ public theorem sectionSevenFinalStage_eq_threePieceUnion :
     · exact ⟨2, by omega, hx⟩
 
 /-- The penultimate Mayer--Vietoris stage of the analytic star is path-connected. -/
-public theorem sectionSevenFinalStage_pathConnected :
+public theorem ellipticInterior_pathConnected :
     PathConnectedSpace
       ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4)) := by
   let _ : PathConnectedSpace A.CentralFamily := A.starCentral_pathConnected
@@ -234,12 +234,12 @@ public theorem sectionSevenFinalStage_pathConnected :
     obtain ⟨x, hxzero, hxtwo⟩ := hZeroTwo
     exact ⟨x, Or.inl hxzero, hxtwo⟩
   apply isPathConnected_iff_pathConnectedSpace.mp
-  rw [A.sectionSevenFinalStage_eq_threePieceUnion]
+  rw [A.ellipticInterior_eq_threePieceUnion]
   exact hZeroOnePath.union hPieceTwo hUnionInterTwo
 
 /-- The last piece in the paper's Mayer--Vietoris order is the cusp filling and is
 path-connected. -/
-public theorem sectionSevenFinalCuspPiece_pathConnected :
+public theorem cuspAttachmentPiece_pathConnected :
     PathConnectedSpace
       ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3) := by
   let _ : PathConnectedSpace (A.starFillingType 0) := A.starFilling_pathConnected 0
@@ -250,7 +250,7 @@ public theorem sectionSevenFinalCuspPiece_pathConnected :
     (A.openEmbeddingStarData.fillingToSectionSevenEulerPieceHomeomorph 0)
 
 /-- The actual final overlap is exactly the central--cusp intersection. -/
-public theorem sectionSevenFinalOverlap_eq_centralCuspIntersection :
+public theorem cuspAttachmentOverlap_eq_centralCuspIntersection :
     (A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4) ∩
       (A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3 =
       (A.openEmbeddingStarData.SectionSevenEulerCover).piece 0 ∩
@@ -304,10 +304,10 @@ public noncomputable def cuspCollarToSectionSevenFinalOverlapHomeomorph :
           (A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage 2 ∩
             (A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3
       rw [A.openEmbeddingStarData.sectionSevenEulerStage_zero]
-      exact (A.sectionSevenFinalOverlap_eq_centralCuspIntersection).symm))
+      exact (A.cuspAttachmentOverlap_eq_centralCuspIntersection).symm))
 
 /-- Path-connectedness of the punctured cusp collar transports to the actual final overlap. -/
-public theorem sectionSevenFinalOverlap_pathConnected :
+public theorem cuspAttachmentOverlap_pathConnected :
     PathConnectedSpace
       ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4) ∩
         (A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3 :
@@ -317,65 +317,65 @@ public theorem sectionSevenFinalOverlap_pathConnected :
     A.cuspCollarToSectionSevenFinalOverlapHomeomorph
 
 /-- The canonical augmentation basis on the actual final overlap. -/
-public noncomputable def sectionSevenFinalZeroSource :
+public noncomputable def cuspAttachmentOverlapHomologyZeroEquiv :
     IntegralSingularHomology 0
       ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4) ∩
         (A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3 :
           Set A.openEmbeddingStarData.SectionSevenMayerVietorisSpace) ≃+ (Fin 1 → ℤ) := by
-  let _ := A.sectionSevenFinalOverlap_pathConnected
+  let _ := A.cuspAttachmentOverlap_pathConnected
   exact (pathConnectedIntegralHomologyZeroEquivInteger _).trans integerToFinOneAddEquiv
 
 /-- The product of the canonical augmentation bases on the two final sides. -/
-public noncomputable def sectionSevenFinalZeroTarget :
+public noncomputable def cuspAttachmentSidesHomologyZeroEquiv :
     (IntegralSingularHomology 0
         ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4)) ×
       IntegralSingularHomology 0
         ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3)) ≃+
       (Fin 2 → ℤ) := by
-  let _ := A.sectionSevenFinalStage_pathConnected
-  let _ := A.sectionSevenFinalCuspPiece_pathConnected
+  let _ := A.ellipticInterior_pathConnected
+  let _ := A.cuspAttachmentPiece_pathConnected
   exact ((pathConnectedIntegralHomologyZeroEquivInteger _).prodCongr
     (pathConnectedIntegralHomologyZeroEquivInteger _)).trans integerPairToFinTwoAddEquiv
 
 /-- In the canonical augmentation bases, the actual final degree-zero difference map is the
 displayed `Fin 1 → Fin 2` antidiagonal. -/
-public theorem sectionSevenFinalZero_comm
+public theorem cuspAttachment_differenceMap_zero_coordinates
     (x : IntegralSingularHomology 0
       ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4) ∩
         (A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3 :
           Set A.openEmbeddingStarData.SectionSevenMayerVietorisSpace)) :
-    A.sectionSevenFinalZeroTarget
+    A.cuspAttachmentSidesHomologyZeroEquiv
         (IntegralMayerVietoris.differenceMap
           ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4))
           ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3) 0 x) =
       sectionSevenMayerVietorisFinalZeroHom
-        (A.sectionSevenFinalZeroSource x) := by
-  let _ := A.sectionSevenFinalStage_pathConnected
-  let _ := A.sectionSevenFinalCuspPiece_pathConnected
-  let _ := A.sectionSevenFinalOverlap_pathConnected
+        (A.cuspAttachmentOverlapHomologyZeroEquiv x) := by
+  let _ := A.ellipticInterior_pathConnected
+  let _ := A.cuspAttachmentPiece_pathConnected
+  let _ := A.cuspAttachmentOverlap_pathConnected
   have hnormal :=
     IntegralMayerVietoris.differenceMap_zero_apply_normalForm
       ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4))
       ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3) x
   funext i
   fin_cases i
-  · simpa [sectionSevenFinalZeroTarget, sectionSevenFinalZeroSource,
+  · simpa [cuspAttachmentSidesHomologyZeroEquiv, cuspAttachmentOverlapHomologyZeroEquiv,
       integerPairToFinTwoAddEquiv, integerToFinOneAddEquiv,
       sectionSevenMayerVietorisFinalZeroHom] using congrArg Prod.fst hnormal
-  · simpa [sectionSevenFinalZeroTarget, sectionSevenFinalZeroSource,
+  · simpa [cuspAttachmentSidesHomologyZeroEquiv, cuspAttachmentOverlapHomologyZeroEquiv,
       integerPairToFinTwoAddEquiv, integerToFinOneAddEquiv,
       sectionSevenMayerVietorisFinalZeroHom] using congrArg Prod.snd hnormal
 
 /-- The actual final degree-zero Mayer--Vietoris difference map is injective; no chosen homology
 basis or compatibility square is an input. -/
-public theorem sectionSevenFinalDifferenceZero_injective :
+public theorem cuspAttachment_differenceMap_zero_injective :
     Function.Injective
       (IntegralMayerVietoris.differenceMap
         ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4))
         ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3) 0) := by
-  let _ := A.sectionSevenFinalStage_pathConnected
-  let _ := A.sectionSevenFinalCuspPiece_pathConnected
-  let _ := A.sectionSevenFinalOverlap_pathConnected
+  let _ := A.ellipticInterior_pathConnected
+  let _ := A.cuspAttachmentPiece_pathConnected
+  let _ := A.cuspAttachmentOverlap_pathConnected
   exact IntegralMayerVietoris.differenceMap_zero_injective _ _
 
 end Geometry.PaperAnalyticData

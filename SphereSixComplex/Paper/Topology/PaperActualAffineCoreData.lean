@@ -37,19 +37,19 @@ public noncomputable def centralAffineUniversalCoverPoint :
   let _ := D.topology
   let _ := D.action
   let _ : SimplyConnectedSpace D.Cover := D.data.simplyConnected
-  exact Classical.choose (D.data.quotientCovering.surjective A.actualCuspCentralBase)
+  exact Classical.choose (D.data.quotientCovering.surjective A.cuspCentralBase)
 
 @[simp]
 public theorem centralAffineUniversalCoverPoint_projects :
     let D := A.centralAffineUniversalCover
     letI := D.topology
     letI := D.action
-    D.data.projection A.centralAffineUniversalCoverPoint = A.actualCuspCentralBase := by
+    D.data.projection A.centralAffineUniversalCoverPoint = A.cuspCentralBase := by
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
   exact Classical.choose_spec
-    (D.data.quotientCovering.surjective A.actualCuspCentralBase)
+    (D.data.quotientCovering.surjective A.cuspCentralBase)
 
 /-- The induced base point in the actual central family. -/
 public noncomputable def centralAffineBase : A.CentralFamily := by
@@ -60,12 +60,12 @@ public noncomputable def centralAffineBase : A.CentralFamily := by
 
 @[simp]
 public theorem centralAffineBase_eq_actualCuspCentralBase :
-    A.centralAffineBase = A.actualCuspCentralBase := by
+    A.centralAffineBase = A.cuspCentralBase := by
   exact A.centralAffineUniversalCoverPoint_projects
 
 /-- Equality transport from the literal actual cusp base to the displayed affine base. -/
-public noncomputable def actualCuspToCentralAffineBaseEquiv :
-    FundamentalGroup A.CentralFamily A.actualCuspCentralBase ≃*
+public noncomputable def cuspToCentralAffineBaseEquiv :
+    FundamentalGroup A.CentralFamily A.cuspCentralBase ≃*
       FundamentalGroup A.CentralFamily A.centralAffineBase :=
   SphereSixComplex.Topology.fundamentalGroupMulEquivOfEq
     A.centralAffineBase_eq_actualCuspCentralBase.symm
@@ -76,28 +76,28 @@ arbitrary labelling of the chosen universal cover. -/
 public noncomputable def centralAffineCorePiOneData :
     AffineTorusCorePiOneData (FundamentalGroup A.CentralFamily A.centralAffineBase)
       Lattice paperMonodromyOne paperMonodromyTwo :=
-  A.actualCuspGeometricCorePiOneData.mapSurjective
-    A.actualCuspToCentralAffineBaseEquiv.toMonoidHom
-    A.actualCuspToCentralAffineBaseEquiv.surjective
+  A.cuspGeometricCorePiOneData.mapSurjective
+    A.cuspToCentralAffineBaseEquiv.toMonoidHom
+    A.cuspToCentralAffineBaseEquiv.surjective
 
 /-- The affine core's translation field is the corrected literal cusp marking transported to
 the displayed affine base. -/
 public theorem centralAffineCorePiOneData_translation (a : Lattice) :
     Additive.toMul (A.centralAffineCorePiOneData.translation a) =
-      A.actualCuspToCentralAffineBaseEquiv
+      A.cuspToCentralAffineBaseEquiv
         (Additive.toMul (A.correctedActualCuspCentralTranslation a)) := by
   rfl
 
 /-- The first core meridian is the transported first geometric meridian. -/
 public theorem centralAffineCorePiOneData_rhoOne :
     A.centralAffineCorePiOneData.rhoOne =
-      A.actualCuspToCentralAffineBaseEquiv A.geometricCentralRhoOne := by
+      A.cuspToCentralAffineBaseEquiv A.geometricCentralRhoOne := by
   rfl
 
 /-- The second core meridian is the transported second geometric meridian. -/
 public theorem centralAffineCorePiOneData_rhoTwo :
     A.centralAffineCorePiOneData.rhoTwo =
-      A.actualCuspToCentralAffineBaseEquiv A.geometricCentralRhoTwo := by
+      A.cuspToCentralAffineBaseEquiv A.geometricCentralRhoTwo := by
   rfl
 
 end SphereSixComplex.Geometry.PaperAnalyticData

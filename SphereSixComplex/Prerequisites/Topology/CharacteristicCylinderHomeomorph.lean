@@ -57,7 +57,7 @@ public theorem cwCharacteristicCylinderHomeomorph_mem_ball (n : ℕ)
     (cwCharacteristicCylinderHomeomorph n (t, b)).1 ∈ Metric.ball 0 1 ↔
       b.1 ∈ Metric.ball 0 1 ∧ 0 < (t : ℝ) ∧ (t : ℝ) < 1 := by
   rw [cwCharacteristicCylinderHomeomorph_apply,
-    Geometry.StandardInfiniteA2ToricModel.Established.constructedAppend_mem_ball n 1
+    SupNormBall.append_mem_ball_iff n 1
       (b.1, ![2 * (t : ℝ) - 1])]
   simp only [Set.mem_prod]
   apply and_congr_right

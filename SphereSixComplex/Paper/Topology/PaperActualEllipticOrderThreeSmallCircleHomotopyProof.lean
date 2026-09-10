@@ -55,10 +55,10 @@ public theorem orderThreeCayleyChartFunction_ne_zero_one
 
 public theorem orderThreeFillingRelationCayleyBaseValue_norm :
     ‖A.orderThreeFillingRelationCayleyBaseValue‖ =
-      (A.orderThreeActualEllipticBoundaryBase.1 : ℝ) := by
+      (A.ellipticThreeBoundaryBase.1 : ℝ) := by
   rw [orderThreeFillingRelationCayleyBaseValue, norm_mul,
     Complex.norm_real, Real.norm_eq_abs,
-    abs_of_pos A.orderThreeActualEllipticBoundaryBase.1.2.1]
+    abs_of_pos A.ellipticThreeBoundaryBase.1.2.1]
   rw [Circle.norm_coe, mul_one]
 
 /-- The affine coordinate of a positive Cayley circle contained in the selected collar. -/
@@ -116,7 +116,7 @@ public theorem orderThreeAlignedCayleyRadialPoint_norm_pos_lt
   have hbaser : ‖A.orderThreeFillingRelationCayleyBaseValue‖ <
       A.starSeparation.orderThree.radius := by
     rw [A.orderThreeFillingRelationCayleyBaseValue_norm]
-    exact A.orderThreeActualEllipticBoundaryBase.1.2.2
+    exact A.ellipticThreeBoundaryBase.1.2.2
   rw [orderThreeAlignedCayleyRadialPoint, norm_mul,
     localDegreeCirclePoint_norm, Complex.norm_real, Real.norm_eq_abs,
     abs_of_pos hd0]
@@ -133,7 +133,7 @@ public noncomputable def orderThreeCayleyChartRadialHomotopy
         (norm_pos_iff.mpr A.orderThreeFillingRelationCayleyBaseValue_ne_zero)
         (by
           rw [A.orderThreeFillingRelationCayleyBaseValue_norm]
-          exact A.orderThreeActualEllipticBoundaryBase.1.2.2))
+          exact A.ellipticThreeBoundaryBase.1.2.2))
       (A.orderThreeCayleyChartCircleMap
         ((c : ℂ) * A.orderThreeFillingRelationCayleyBaseValue)
         (by
@@ -146,7 +146,7 @@ public noncomputable def orderThreeCayleyChartRadialHomotopy
             (norm_pos_iff.mpr
               A.orderThreeFillingRelationCayleyBaseValue_ne_zero)).trans (by
               rw [A.orderThreeFillingRelationCayleyBaseValue_norm]
-              simpa using A.orderThreeActualEllipticBoundaryBase.1.2.2))) where
+              simpa using A.ellipticThreeBoundaryBase.1.2.2))) where
   toFun p :=
     ⟨ellipticChartFunction A.modular.sourceCoordinate.coordinate
         fuchsianOneFixedPoint (A.orderThreeAlignedCayleyRadialPoint c p),
@@ -275,7 +275,7 @@ public theorem exists_orderThreeActualCayleyBaseCoordinate_threeTurnHomotopy :
           (norm_pos_iff.mpr A.orderThreeFillingRelationCayleyBaseValue_ne_zero)
           (by
             rw [A.orderThreeFillingRelationCayleyBaseValue_norm]
-            exact A.orderThreeActualEllipticBoundaryBase.1.2.2))
+            exact A.ellipticThreeBoundaryBase.1.2.2))
         (frozenLocalDegreeCircleTwoPunctures
           u 3 a 1 ha hune hbound)) := by
   obtain ⟨u, a, c, hc, hc1, haeq, hu, hune, hfac, hbound⟩ :=
@@ -295,7 +295,7 @@ public theorem exists_orderThreeActualCayleyBaseCoordinate_threeTurnHomotopy :
       (norm_pos_iff.mpr
         A.orderThreeFillingRelationCayleyBaseValue_ne_zero)).trans (by
           rw [A.orderThreeFillingRelationCayleyBaseValue_norm]
-          simpa using A.orderThreeActualEllipticBoundaryBase.1.2.2)
+          simpa using A.ellipticThreeBoundaryBase.1.2.2)
   have hsmall :
       A.orderThreeCayleyChartCircleMap a (norm_pos_iff.mpr ha) har =
         factorizedLocalDegreeCircleTwoPunctures
@@ -321,7 +321,7 @@ public theorem exists_orderThreeActualCayleyBaseCoordinate_threeTurnHomotopy :
               (norm_pos_iff.mpr
                 A.orderThreeFillingRelationCayleyBaseValue_ne_zero)).trans (by
                   rw [A.orderThreeFillingRelationCayleyBaseValue_norm]
-                  simpa using A.orderThreeActualEllipticBoundaryBase.1.2.2)) =
+                  simpa using A.ellipticThreeBoundaryBase.1.2.2)) =
         factorizedLocalDegreeCircleTwoPunctures
           u 3 a 1 ha hu hune hbound' := by
     exact hsmall

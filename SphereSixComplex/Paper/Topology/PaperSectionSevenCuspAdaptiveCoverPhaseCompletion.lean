@@ -345,7 +345,7 @@ public theorem upperEndpointCorrectionFamily_apply {X : Type*} [TopologicalSpace
     upperEndpointCorrectionFamily b x hb z = upperEndpointCorrection (b z) (hb z) (x z) := by
   rfl
 
-namespace Geometry.PaperAnalyticData.SectionSevenEllipticTwoDiscCoverData
+namespace Geometry.PaperAnalyticData.EllipticTwoDiscCoverData
 
 open MappingTorusDegreeOneCoverComparison
 
@@ -368,7 +368,7 @@ public theorem heightToLowerPhase_lt_one_sixth_iff (h : ℝ) :
       linarith
 
 public noncomputable def actualCuspCylinderHeight
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     C(unitInterval × G.Fiber, ℝ) := by
@@ -378,18 +378,18 @@ public noncomputable def actualCuspCylinderHeight
     circleMappingTorusCylinderProjection G.clutching
   let collar : C(unitInterval × G.Fiber, A.openEmbeddingStarData.collarSource 0) :=
     G.totalHomotopyEquiv.invFun.comp cylinder
-  let central : C(unitInterval × G.Fiber, A.sectionSevenEllipticCentralImage) :=
+  let central : C(unitInterval × G.Fiber, A.ellipticCentralImage) :=
     ⟨fun p =>
       ⟨R.twoDiscCover.cuspToEllipticInteriorMap (collar p),
         R.twoDiscCover.cuspToEllipticInteriorMap_mem_centralImage _⟩,
       (R.twoDiscCover.cuspToEllipticInteriorMap.hom.continuous.comp
         collar.continuous).subtype_mk _⟩
-  exact ⟨fun p => A.sectionSevenEllipticCentralHeight (central p),
-    A.sectionSevenEllipticCentralHeight_continuous.comp central.continuous⟩
+  exact ⟨fun p => A.ellipticCentralHeight (central p),
+    A.ellipticCentralHeight_continuous.comp central.continuous⟩
 
 @[simp]
 public theorem actualCuspCylinderHeight_apply
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (p : let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
       unitInterval × G.Fiber) :
@@ -397,7 +397,7 @@ public theorem actualCuspCylinderHeight_apply
   rfl
 
 public noncomputable def actualCuspLowerRawPhase
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     C(unitInterval × G.Fiber, unitInterval) := by
@@ -406,7 +406,7 @@ public noncomputable def actualCuspLowerRawPhase
   exact heightToLowerPhase.comp (actualCuspCylinderHeight R)
 
 public noncomputable def actualCuspUpperRawPhase
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     C(unitInterval × G.Fiber, unitInterval) := by
@@ -415,7 +415,7 @@ public noncomputable def actualCuspUpperRawPhase
   exact heightToUpperPhase.comp (actualCuspCylinderHeight R)
 
 public noncomputable def actualCuspCylinderStart
-    (_R : A.SectionSevenAffineRadialCompletionInput) :
+    (_R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     C(unitInterval × G.Fiber, unitInterval × G.Fiber) := by
@@ -424,7 +424,7 @@ public noncomputable def actualCuspCylinderStart
   exact ⟨fun p => (0, p.2), continuous_const.prodMk continuous_snd⟩
 
 public noncomputable def actualCuspCylinderEnd
-    (_R : A.SectionSevenAffineRadialCompletionInput) :
+    (_R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     C(unitInterval × G.Fiber, unitInterval × G.Fiber) := by
@@ -433,7 +433,7 @@ public noncomputable def actualCuspCylinderEnd
   exact ⟨fun p => (1, p.2), continuous_const.prodMk continuous_snd⟩
 
 public noncomputable def actualCuspLowerEndpointParameter
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     C(unitInterval × G.Fiber, unitInterval) := by
@@ -442,7 +442,7 @@ public noncomputable def actualCuspLowerEndpointParameter
   exact (actualCuspLowerRawPhase R).comp (actualCuspCylinderStart R)
 
 public noncomputable def actualCuspUpperEndpointParameter
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     C(unitInterval × G.Fiber, unitInterval) := by
@@ -451,7 +451,7 @@ public noncomputable def actualCuspUpperEndpointParameter
   exact (actualCuspUpperRawPhase R).comp (actualCuspCylinderEnd R)
 
 public theorem actualCuspLowerEndpointParameter_lt_one_sixth
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (p : let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
       unitInterval × G.Fiber) :
@@ -461,7 +461,7 @@ public theorem actualCuspLowerEndpointParameter_lt_one_sixth
   exact two_thirds_lt_actualCuspCylinderHeightLoop_zero R p.2
 
 public theorem five_sixths_lt_actualCuspUpperEndpointParameter
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (p : let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
       unitInterval × G.Fiber) :
@@ -474,7 +474,7 @@ public theorem five_sixths_lt_actualCuspUpperEndpointParameter
   linarith
 
 public noncomputable def actualCuspCorrectedLowerPhase
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     C(unitInterval × G.Fiber, unitInterval) := by
@@ -484,7 +484,7 @@ public noncomputable def actualCuspCorrectedLowerPhase
     (actualCuspLowerRawPhase R) (actualCuspLowerEndpointParameter_lt_one_sixth R)
 
 public noncomputable def actualCuspCorrectedUpperPhase
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     C(unitInterval × G.Fiber, unitInterval) := by
@@ -494,7 +494,7 @@ public noncomputable def actualCuspCorrectedUpperPhase
     (actualCuspUpperRawPhase R) (five_sixths_lt_actualCuspUpperEndpointParameter R)
 
 public theorem actualCuspCorrectedPhases_agree_at_five_sixteenths
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (y : let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
       G.Fiber) :
@@ -529,7 +529,7 @@ public theorem actualCuspCorrectedPhases_agree_at_five_sixteenths
   exact actualCuspHeightPhaseCharts_agree_at_five_sixteenths R y
 
 public noncomputable def actualCuspAdaptivePhase
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     C(unitInterval × G.Fiber, unitInterval) := by
@@ -551,7 +551,7 @@ public noncomputable def actualCuspAdaptivePhase
 
 @[simp]
 public theorem actualCuspAdaptivePhase_apply
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (p : let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
       unitInterval × G.Fiber) :
@@ -561,7 +561,7 @@ public theorem actualCuspAdaptivePhase_apply
   rfl
 
 public theorem actualCuspAdaptivePhase_zero
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (y : let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
       G.Fiber) : actualCuspAdaptivePhase R (0, y) = 0 := by
@@ -572,7 +572,7 @@ public theorem actualCuspAdaptivePhase_zero
   apply lowerEndpointCorrection_self
 
 public theorem actualCuspAdaptivePhase_one
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (y : let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
       G.Fiber) : actualCuspAdaptivePhase R (1, y) = 1 := by
@@ -588,7 +588,7 @@ public theorem actualCuspAdaptivePhase_one
   apply upperEndpointCorrection_self
 
 public theorem actualCuspAdaptivePhase_mem_vertexBand_iff
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (p : let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
       unitInterval × G.Fiber) :
@@ -629,7 +629,7 @@ public theorem actualCuspAdaptivePhase_mem_vertexBand_iff
     exact heightToLowerPhase_mem_vertexBand_iff_orderFourOpen R p.2 p.1
 
 public theorem actualCuspAdaptivePhase_mem_edgeBand_iff
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (p : let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
       unitInterval × G.Fiber) :
@@ -670,7 +670,7 @@ public theorem actualCuspAdaptivePhase_mem_edgeBand_iff
     exact heightToLowerPhase_mem_edgeBand_iff_orderThreeOpen R p.2 p.1
 
 public noncomputable def actualCuspAdaptiveCoverDegreeOneSelfMap
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     ActualCuspAdaptiveCoverDegreeOneSelfMap R :=
   actualCuspAdaptiveCoverDegreeOneSelfMapOfPhase R (actualCuspAdaptivePhase R)
     (actualCuspAdaptivePhase_zero R) (actualCuspAdaptivePhase_one R)
@@ -678,7 +678,7 @@ public noncomputable def actualCuspAdaptiveCoverDegreeOneSelfMap
     (actualCuspAdaptivePhase_mem_edgeBand_iff R)
 
 public theorem actualCuspAdaptiveCover_actual_boundary_eq_wang
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     (actualCuspAdaptiveCoverDegreeOneSelfMap R).actualSourceRead.comp
@@ -686,7 +686,7 @@ public theorem actualCuspAdaptiveCover_actual_boundary_eq_wang
       (circleMappingTorusWangPresentationOfCover G.clutching 1).boundary :=
   (actualCuspAdaptiveCoverDegreeOneSelfMap R).actual_boundary_eq_wang R
 
-end Geometry.PaperAnalyticData.SectionSevenEllipticTwoDiscCoverData
+end Geometry.PaperAnalyticData.EllipticTwoDiscCoverData
 
 end SphereSixComplex
 

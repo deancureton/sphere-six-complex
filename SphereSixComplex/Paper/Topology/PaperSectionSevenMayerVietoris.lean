@@ -123,7 +123,7 @@ namespace Geometry.PaperAnalyticData
 variable (P : PaperAnalyticData)
 
 /-- The exact seven-space chain-model interface specialized to the analytic star in the paper. -/
-public abbrev SectionSevenSevenSpaceChainModels :=
+public abbrev SevenSpaceChainModels :=
   P.openEmbeddingStarData.SevenSpaceChainModels
 
 end Geometry.PaperAnalyticData

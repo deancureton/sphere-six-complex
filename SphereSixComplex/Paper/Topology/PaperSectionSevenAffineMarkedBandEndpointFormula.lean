@@ -83,53 +83,53 @@ variable {A : PaperAnalyticData}
 
 /-- The order-three marked band point, inserted into the fixed-product filling quotient before
 transport back to the actual varying filling. -/
-public noncomputable def sectionSevenAffineOrderThreeMarkedFixedCentralPoint
+public noncomputable def affineOrderThreeMarkedFixedCentralPoint
     (A : PaperAnalyticData) :
-    C((A.sectionSevenActualAffineSplit.allocation.orderThreeSide ∩
-        A.sectionSevenActualAffineSplit.allocation.orderFourSide :
-          Set A.SectionSevenEllipticInterior),
+    C((A.actualAffineHeightSplit.allocation.orderThreeSide ∩
+        A.actualAffineHeightSplit.allocation.orderFourSide :
+          Set A.ellipticInterior),
       (orderThreeRadialActionData A.periods).FillingQuotient) :=
   (orderThreeRadialActionData A.periods).centralInclusion.comp
-    (sectionSevenAffineBandOrderThreeMarkedProjection A)
+    (affineBandOrderThreeMarkedProjection A)
 
-/-- The order-four analogue of `sectionSevenAffineOrderThreeMarkedFixedCentralPoint`. -/
-public noncomputable def sectionSevenAffineOrderFourMarkedFixedCentralPoint
+/-- The order-four analogue of `affineOrderThreeMarkedFixedCentralPoint`. -/
+public noncomputable def affineOrderFourMarkedFixedCentralPoint
     (A : PaperAnalyticData) :
-    C((A.sectionSevenActualAffineSplit.allocation.orderThreeSide ∩
-        A.sectionSevenActualAffineSplit.allocation.orderFourSide :
-          Set A.SectionSevenEllipticInterior),
+    C((A.actualAffineHeightSplit.allocation.orderThreeSide ∩
+        A.actualAffineHeightSplit.allocation.orderFourSide :
+          Set A.ellipticInterior),
       (orderFourRadialActionData A.periods).FillingQuotient) :=
   (orderFourRadialActionData A.periods).centralInclusion.comp
-    (sectionSevenAffineBandOrderFourMarkedProjection A)
+    (affineBandOrderFourMarkedProjection A)
 
 /-- Pointwise, the order-three endpoint is the orbit class at the disc centre with the marked
 band fibre coordinate. -/
-public theorem sectionSevenAffineOrderThreeMarkedFixedCentralPoint_apply
+public theorem affineOrderThreeMarkedFixedCentralPoint_apply
     (A : PaperAnalyticData)
-    (x : (A.sectionSevenActualAffineSplit.allocation.orderThreeSide ∩
-      A.sectionSevenActualAffineSplit.allocation.orderFourSide :
-        Set A.SectionSevenEllipticInterior)) :
-    sectionSevenAffineOrderThreeMarkedFixedCentralPoint A x =
+    (x : (A.actualAffineHeightSplit.allocation.orderThreeSide ∩
+      A.actualAffineHeightSplit.allocation.orderFourSide :
+        Set A.ellipticInterior)) :
+    affineOrderThreeMarkedFixedCentralPoint A x =
       Quotient.mk _ ((orderThreeRadialActionData A.periods).actionData.center,
-        sectionSevenAffineBandFiberCoordinate A x) := by
+        affineBandFiberCoordinate A x) := by
   exact RadialEllipticActionData.centralInclusion_coverProjection_sourceHomeomorph_symm
-    (orderThreeRadialActionData A.periods) (sectionSevenAffineBandFiberCoordinate A x)
+    (orderThreeRadialActionData A.periods) (affineBandFiberCoordinate A x)
 
 /-- Pointwise, the order-four endpoint is the orbit class at its disc centre with the marked
 band coordinate transported to the order-four fixed torus. -/
-public theorem sectionSevenAffineOrderFourMarkedFixedCentralPoint_apply
+public theorem affineOrderFourMarkedFixedCentralPoint_apply
     (A : PaperAnalyticData)
-    (x : (A.sectionSevenActualAffineSplit.allocation.orderThreeSide ∩
-      A.sectionSevenActualAffineSplit.allocation.orderFourSide :
-        Set A.SectionSevenEllipticInterior)) :
-    sectionSevenAffineOrderFourMarkedFixedCentralPoint A x =
+    (x : (A.actualAffineHeightSplit.allocation.orderThreeSide ∩
+      A.actualAffineHeightSplit.allocation.orderFourSide :
+        Set A.ellipticInterior)) :
+    affineOrderFourMarkedFixedCentralPoint A x =
       Quotient.mk _ ((orderFourRadialActionData A.periods).actionData.center,
         A.duplicatedSectionSevenOrderThreeToOrderFourBandHomeomorph
-          (sectionSevenAffineBandFiberCoordinate A x)) := by
+          (affineBandFiberCoordinate A x)) := by
   exact RadialEllipticActionData.centralInclusion_coverProjection_sourceHomeomorph_symm
     (orderFourRadialActionData A.periods)
       (A.duplicatedSectionSevenOrderThreeToOrderFourBandHomeomorph
-        (sectionSevenAffineBandFiberCoordinate A x))
+        (affineBandFiberCoordinate A x))
 
 /-- Before transport through the open filling image, the inverse of the selected order-three
 radial equivalence is exactly the inverse product-quotient homeomorphism applied to the explicit
@@ -137,28 +137,28 @@ fixed central point. -/
 public theorem orderThreeSelectedFilling_invFun_markedProjection
     (A : PaperAnalyticData) :
     (orderThreeSelectedFillingHomotopyEquivCentralFiber A).invFun.comp
-        (sectionSevenAffineBandOrderThreeMarkedProjection A) =
+        (affineBandOrderThreeMarkedProjection A) =
       (⟨(orderThreeSelectedAffineRadialCompatibility A).toVaryingFillingProductIdentification
           |>.quotientHomeomorph.symm,
         (orderThreeSelectedAffineRadialCompatibility A).toVaryingFillingProductIdentification
           |>.quotientHomeomorph.symm.continuous⟩ :
         C((orderThreeRadialActionData A.periods).FillingQuotient,
           A.OrderThreeVaryingFilling A.starSeparation.orderThree.radius)).comp
-        (sectionSevenAffineOrderThreeMarkedFixedCentralPoint A) := by
+        (affineOrderThreeMarkedFixedCentralPoint A) := by
   rfl
 
 /-- The analogous formula for the selected order-four filling equivalence. -/
 public theorem orderFourSelectedFilling_invFun_markedProjection
     (A : PaperAnalyticData) :
     (orderFourSelectedFillingHomotopyEquivCentralFiber A).invFun.comp
-        (sectionSevenAffineBandOrderFourMarkedProjection A) =
+        (affineBandOrderFourMarkedProjection A) =
       (⟨(orderFourSelectedAffineRadialCompatibility A).toVaryingFillingProductIdentification
           |>.quotientHomeomorph.symm,
         (orderFourSelectedAffineRadialCompatibility A).toVaryingFillingProductIdentification
           |>.quotientHomeomorph.symm.continuous⟩ :
         C((orderFourRadialActionData A.periods).FillingQuotient,
           A.OrderFourVaryingFilling A.starSeparation.orderFour.radius)).comp
-        (sectionSevenAffineOrderFourMarkedFixedCentralPoint A) := by
+        (affineOrderFourMarkedFixedCentralPoint A) := by
   rfl
 
 /-- The explicit order-three affine radial equivalence between an affine disc region and the
@@ -166,14 +166,14 @@ whole order-three central half-plane region.  Unlike selecting a witness from th
 `discRegionInclusion_isHomotopyEquivalence`, its inverse retains the real-period formula. -/
 public noncomputable def orderThreeAffineDiscCentralHomotopyEquiv
     (A : PaperAnalyticData) {r : ℝ} (hr0 : 0 < r) (hr : r ≤ 2 / 3) :
-    ↥(A.sectionSevenAffineOrderThreeDiscRegion r) ≃ₕ
-      ↥A.sectionSevenAffineOrderThreeCentralRegion :=
-  (A.sectionSevenAffineOrderThreeDiscRegionQuotientHomeomorph r).toHomotopyEquiv |>.trans
+    ↥(A.affineOrderThreeDiscRegion r) ≃ₕ
+      ↥A.affineOrderThreeCentralRegion :=
+  (A.affineOrderThreeDiscRegionQuotientHomeomorph r).toHomotopyEquiv |>.trans
     ((A.orderThreeAffineRadialLiftEquiv (s := r / 2) (by linarith) (by linarith) hr)
       |>.quotientHomotopyEquiv
         (A.orderThreeAffineDiscLiftAction_continuous r)
         A.orderThreeAffineHalfPlaneLiftAction_continuous) |>.trans
-    A.sectionSevenAffineOrderThreeCentralRegionQuotientHomeomorph.symm.toHomotopyEquiv
+    A.affineOrderThreeCentralRegionQuotientHomeomorph.symm.toHomotopyEquiv
 
 /-- The forward map of the explicit order-three equivalence is the literal region inclusion. -/
 public theorem orderThreeAffineDiscCentralHomotopyEquiv_toFun
@@ -182,13 +182,13 @@ public theorem orderThreeAffineDiscCentralHomotopyEquiv_toFun
       regionInclusion (A.discRegion_subset_centralRegion hr) := by
   apply ContinuousMap.ext
   intro x
-  apply A.sectionSevenAffineOrderThreeCentralRegionQuotientHomeomorph.injective
-  change A.sectionSevenAffineOrderThreeCentralRegionQuotientHomeomorph
-      (A.sectionSevenAffineOrderThreeCentralRegionQuotientHomeomorph.symm
+  apply A.affineOrderThreeCentralRegionQuotientHomeomorph.injective
+  change A.affineOrderThreeCentralRegionQuotientHomeomorph
+      (A.affineOrderThreeCentralRegionQuotientHomeomorph.symm
         ((A.orderThreeAffineRadialLiftEquiv (s := r / 2)
           (by linarith) (by linarith) hr).quotientToFun
-            (A.sectionSevenAffineOrderThreeDiscRegionQuotientHomeomorph r x))) = _
-  rw [A.sectionSevenAffineOrderThreeCentralRegionQuotientHomeomorph.apply_symm_apply]
+            (A.affineOrderThreeDiscRegionQuotientHomeomorph r x))) = _
+  rw [A.affineOrderThreeCentralRegionQuotientHomeomorph.apply_symm_apply]
   apply A.orderThreeAffineHalfPlaneLiftQuotientToCentralFamily_isOpenEmbedding.injective
   rw [A.quotientToFun_eq_orderThreeAffineDiscLiftQuotientInclusion hr
     (A.orderThreeAffineRadialLiftEquiv (s := r / 2) (by linarith) (by linarith) hr) rfl,
@@ -202,7 +202,7 @@ region to the inclusion of a smaller affine disc, without forgetting its period-
 formula. -/
 public theorem orderThreeAffineDiscCentral_inverse_deformation
     (A : PaperAnalyticData) {r : ℝ} (hr0 : 0 < r) (hr : r ≤ 2 / 3) :
-    (ContinuousMap.id ↥A.sectionSevenAffineOrderThreeCentralRegion).Homotopic
+    (ContinuousMap.id ↥A.affineOrderThreeCentralRegion).Homotopic
       ((regionInclusion (A.discRegion_subset_centralRegion hr)).comp
         (A.orderThreeAffineDiscCentralHomotopyEquiv hr0 hr).invFun) := by
   rw [← A.orderThreeAffineDiscCentralHomotopyEquiv_toFun hr0 hr]
@@ -240,13 +240,13 @@ public theorem orderFourAffineRadialEquivChoice_invFun
 order-four central half-plane region. -/
 public noncomputable def orderFourAffineDiscCentralHomotopyEquiv
     (A : PaperAnalyticData) {r : ℝ} (hr0 : 0 < r) (hr : r ≤ 1 - 1 / 3) :
-    ↥(A.sectionSevenAffineOrderFourDiscRegion r) ≃ₕ
-      ↥A.sectionSevenAffineOrderFourCentralRegion :=
-  (A.sectionSevenAffineOrderFourDiscRegionQuotientHomeomorph r).toHomotopyEquiv |>.trans
+    ↥(A.affineOrderFourDiscRegion r) ≃ₕ
+      ↥A.affineOrderFourCentralRegion :=
+  (A.affineOrderFourDiscRegionQuotientHomeomorph r).toHomotopyEquiv |>.trans
     ((A.orderFourAffineRadialEquivChoice hr0 hr).quotientHomotopyEquiv
       (A.orderFourAffineDiscLiftAction_continuous r)
       A.orderFourAffineHalfPlaneLiftAction_continuous) |>.trans
-    A.sectionSevenAffineOrderFourCentralRegionQuotientHomeomorph.symm.toHomotopyEquiv
+    A.affineOrderFourCentralRegionQuotientHomeomorph.symm.toHomotopyEquiv
 
 /-- The forward map of the explicit order-four equivalence is the literal region inclusion. -/
 public theorem orderFourAffineDiscCentralHomotopyEquiv_toFun
@@ -255,24 +255,24 @@ public theorem orderFourAffineDiscCentralHomotopyEquiv_toFun
       regionInclusion (A.orderFourDiscRegion_subset_centralRegion hr) := by
   apply ContinuousMap.ext
   intro u
-  apply A.sectionSevenAffineOrderFourCentralRegionQuotientHomeomorph.injective
-  change A.sectionSevenAffineOrderFourCentralRegionQuotientHomeomorph
-      (A.sectionSevenAffineOrderFourCentralRegionQuotientHomeomorph.symm
+  apply A.affineOrderFourCentralRegionQuotientHomeomorph.injective
+  change A.affineOrderFourCentralRegionQuotientHomeomorph
+      (A.affineOrderFourCentralRegionQuotientHomeomorph.symm
         ((A.orderFourAffineRadialEquivChoice hr0 hr).quotientToFun
-          (A.sectionSevenAffineOrderFourDiscRegionQuotientHomeomorph r u))) = _
-  rw [A.sectionSevenAffineOrderFourCentralRegionQuotientHomeomorph.apply_symm_apply]
+          (A.affineOrderFourDiscRegionQuotientHomeomorph r u))) = _
+  rw [A.affineOrderFourCentralRegionQuotientHomeomorph.apply_symm_apply]
   apply A.orderFourAffineHalfPlaneLiftQuotientToCentralFamily_isOpenEmbedding.injective
-  have hmem : u.1 ∈ A.sectionSevenEllipticCentralImage :=
+  have hmem : u.1 ∈ A.ellipticCentralImage :=
     A.mem_centralImage_of_mem_centralHeightLowerRegion
-      (fun z ↦ ‖(A.sectionSevenEllipticCentralCoordinate z).1 - 1‖) r u.2
+      (fun z ↦ ‖(A.ellipticCentralCoordinate z).1 - 1‖) r u.2
   have hheight : (1 : ℝ) / 3 <
-      A.sectionSevenEllipticCentralHeight ⟨u.1, hmem⟩ := by
+      A.ellipticCentralHeight ⟨u.1, hmem⟩ := by
     obtain ⟨y, hy, hyu⟩ := A.orderFourDiscRegion_subset_centralRegion hr u.2
-    have hxy : y = (⟨u.1, hmem⟩ : A.sectionSevenEllipticCentralImage) := Subtype.ext hyu
+    have hxy : y = (⟨u.1, hmem⟩ : A.ellipticCentralImage) := Subtype.ext hyu
     exact hxy ▸ hy
   have hleft : (regionInclusion (A.orderFourDiscRegion_subset_centralRegion hr) u :
-      ↥A.sectionSevenAffineOrderFourCentralRegion) =
-      ⟨(⟨u.1, hmem⟩ : A.sectionSevenEllipticCentralImage).1,
+      ↥A.affineOrderFourCentralRegion) =
+      ⟨(⟨u.1, hmem⟩ : A.ellipticCentralImage).1,
         ⟨⟨u.1, hmem⟩, hheight, rfl⟩⟩ := rfl
   rw [hleft,
     A.orderFourAffineHalfPlaneLiftQuotientToCentralFamily_centralRegionQuotient
@@ -287,47 +287,47 @@ public theorem orderFourAffineDiscCentralHomotopyEquiv_toFun
 inclusion of a smaller affine disc. -/
 public theorem orderFourAffineDiscCentral_inverse_deformation
     (A : PaperAnalyticData) {r : ℝ} (hr0 : 0 < r) (hr : r ≤ 1 - 1 / 3) :
-    (ContinuousMap.id ↥A.sectionSevenAffineOrderFourCentralRegion).Homotopic
+    (ContinuousMap.id ↥A.affineOrderFourCentralRegion).Homotopic
       ((regionInclusion (A.orderFourDiscRegion_subset_centralRegion hr)).comp
         (A.orderFourAffineDiscCentralHomotopyEquiv hr0 hr).invFun) := by
   rw [← A.orderFourAffineDiscCentralHomotopyEquiv_toFun hr0 hr]
   exact (A.orderFourAffineDiscCentralHomotopyEquiv hr0 hr).right_inv.symm
 
 /-- The common affine band. -/
-public abbrev SectionSevenAffineMarkedBand (A : PaperAnalyticData) :=
-  (A.sectionSevenActualAffineSplit.allocation.orderThreeSide ∩
-    A.sectionSevenActualAffineSplit.allocation.orderFourSide :
-      Set A.SectionSevenEllipticInterior)
+public abbrev affineMarkedBand (A : PaperAnalyticData) :=
+  (A.actualAffineHeightSplit.allocation.orderThreeSide ∩
+    A.actualAffineHeightSplit.allocation.orderFourSide :
+      Set A.ellipticInterior)
 
 /-- Reading an order-three central overlap point in the actual filling chart returns its exact
 star-collar filling representative. -/
-public theorem sectionSevenOrderThreeFillingImageToPiece_symm_overlap
+public theorem orderThreeFillingImageToPiece_symm_overlap
     (A : PaperAnalyticData)
-    (u : ↥(A.sectionSevenOrderThreeFillingImage ∩
-      A.sectionSevenAffineOrderThreeCentralRegion)) :
-    A.sectionSevenOrderThreePieceHomeomorph.symm
-        (A.sectionSevenOrderThreeFillingImageToPiece ⟨u.1, u.2.1⟩) =
+    (u : ↥(A.orderThreeFillingImage ∩
+      A.affineOrderThreeCentralRegion)) :
+    A.orderThreePieceHomeomorph.symm
+        (A.orderThreeFillingImageToPiece ⟨u.1, u.2.1⟩) =
       A.starToFilling 1 (A.orderThreeOverlapCollarHomeomorph u) := by
-  have hu : u.1 ∈ A.sectionSevenOrderThreeFillingImage := u.2.1
-  let v : A.sectionSevenOrderThreeFillingImage := ⟨u.1, hu⟩
-  change A.sectionSevenOrderThreePieceHomeomorph.symm
-      (A.sectionSevenOrderThreeFillingImageToPiece v) = _
-  apply A.sectionSevenOrderThreePieceHomeomorph.injective
-  rw [A.sectionSevenOrderThreePieceHomeomorph.apply_symm_apply]
+  have hu : u.1 ∈ A.orderThreeFillingImage := u.2.1
+  let v : A.orderThreeFillingImage := ⟨u.1, hu⟩
+  change A.orderThreePieceHomeomorph.symm
+      (A.orderThreeFillingImageToPiece v) = _
+  apply A.orderThreePieceHomeomorph.injective
+  rw [A.orderThreePieceHomeomorph.apply_symm_apply]
   apply Subtype.ext
   let S := A.openEmbeddingStarData
   let q : S.collarSource 1 := A.orderThreeOverlapCollarHomeomorph u
-  let y : A.sectionSevenEllipticCentralImage :=
+  let y : A.ellipticCentralImage :=
     ⟨u.1, A.mem_centralImage_of_mem_centralHeightLowerRegion
-      A.sectionSevenEllipticCentralHeight (2 / 3 : ℝ) u.2.2⟩
+      A.ellipticCentralHeight (2 / 3 : ℝ) u.2.2⟩
   have hstar : A.starToCentral 1 q =
-      A.sectionSevenEllipticCentralImageHomeomorph y :=
+      A.ellipticCentralImageHomeomorph y :=
     A.starToCentral_orderThreeOverlapCollarHomeomorph u
   have hglued : u.1.1 = S.collarSourceToGlued 1 q := by
     calc
       u.1.1 =
           (S.centralToSectionSevenEulerPieceHomeomorph
-            (A.sectionSevenEllipticCentralImageHomeomorph y)).1 :=
+            (A.ellipticCentralImageHomeomorph y)).1 :=
         (A.centralToSectionSevenEulerPiece_centralImage y).symm
       _ = (S.centralToSectionSevenEulerPieceHomeomorph
             (A.starToCentral 1 q)).1 := by rw [hstar]
@@ -350,39 +350,39 @@ public theorem sectionSevenOrderThreeFillingImageToPiece_symm_overlap
     (S.toFourPieceStarGluingData.glueData.ι_isOpenEmbedding
       (some (1 : Fin 3))).isEmbedding (S.toFilling 1 q)
   calc
-    (A.sectionSevenOrderThreeFillingImageToPiece v).1 = u.1.1 := rfl
+    (A.orderThreeFillingImageToPiece v).1 = u.1.1 := rfl
     _ = S.collarSourceToGlued 1 q := hglued
     _ = _ := hrelation
-    _ = (A.sectionSevenOrderThreePieceHomeomorph (S.toFilling 1 q)).1 := hcoe.symm
+    _ = (A.orderThreePieceHomeomorph (S.toFilling 1 q)).1 := hcoe.symm
 
 /-- The corresponding exact order-four filling representative. -/
-public theorem sectionSevenOrderFourFillingImageToPiece_symm_overlap
+public theorem orderFourFillingImageToPiece_symm_overlap
     (A : PaperAnalyticData)
-    (u : ↥(A.sectionSevenOrderFourFillingImage ∩
-      A.sectionSevenAffineOrderFourCentralRegion)) :
-    A.sectionSevenOrderFourPieceHomeomorph.symm
-        (A.sectionSevenOrderFourFillingImageToPiece ⟨u.1, u.2.1⟩) =
+    (u : ↥(A.orderFourFillingImage ∩
+      A.affineOrderFourCentralRegion)) :
+    A.orderFourPieceHomeomorph.symm
+        (A.orderFourFillingImageToPiece ⟨u.1, u.2.1⟩) =
       A.starToFilling 2 (A.orderFourOverlapCollarHomeomorph u) := by
-  have hu : u.1 ∈ A.sectionSevenOrderFourFillingImage := u.2.1
-  let v : A.sectionSevenOrderFourFillingImage := ⟨u.1, hu⟩
-  change A.sectionSevenOrderFourPieceHomeomorph.symm
-      (A.sectionSevenOrderFourFillingImageToPiece v) = _
-  apply A.sectionSevenOrderFourPieceHomeomorph.injective
-  rw [A.sectionSevenOrderFourPieceHomeomorph.apply_symm_apply]
+  have hu : u.1 ∈ A.orderFourFillingImage := u.2.1
+  let v : A.orderFourFillingImage := ⟨u.1, hu⟩
+  change A.orderFourPieceHomeomorph.symm
+      (A.orderFourFillingImageToPiece v) = _
+  apply A.orderFourPieceHomeomorph.injective
+  rw [A.orderFourPieceHomeomorph.apply_symm_apply]
   apply Subtype.ext
   let S := A.openEmbeddingStarData
   let q : S.collarSource 2 := A.orderFourOverlapCollarHomeomorph u
-  let y : A.sectionSevenEllipticCentralImage :=
+  let y : A.ellipticCentralImage :=
     ⟨u.1, A.mem_centralImage_of_mem_centralHeightUpperRegion
-      A.sectionSevenEllipticCentralHeight (1 / 3 : ℝ) u.2.2⟩
+      A.ellipticCentralHeight (1 / 3 : ℝ) u.2.2⟩
   have hstar : A.starToCentral 2 q =
-      A.sectionSevenEllipticCentralImageHomeomorph y :=
+      A.ellipticCentralImageHomeomorph y :=
     A.starToCentral_orderFourOverlapCollarHomeomorph u
   have hglued : u.1.1 = S.collarSourceToGlued 2 q := by
     calc
       u.1.1 =
           (S.centralToSectionSevenEulerPieceHomeomorph
-            (A.sectionSevenEllipticCentralImageHomeomorph y)).1 :=
+            (A.ellipticCentralImageHomeomorph y)).1 :=
         (A.centralToSectionSevenEulerPiece_centralImage y).symm
       _ = (S.centralToSectionSevenEulerPieceHomeomorph
             (A.starToCentral 2 q)).1 := by rw [hstar]
@@ -405,73 +405,73 @@ public theorem sectionSevenOrderFourFillingImageToPiece_symm_overlap
     (S.toFourPieceStarGluingData.glueData.ι_isOpenEmbedding
       (some (2 : Fin 3))).isEmbedding (S.toFilling 2 q)
   calc
-    (A.sectionSevenOrderFourFillingImageToPiece v).1 = u.1.1 := rfl
+    (A.orderFourFillingImageToPiece v).1 = u.1.1 := rfl
     _ = S.collarSourceToGlued 2 q := hglued
     _ = _ := hrelation
-    _ = (A.sectionSevenOrderFourPieceHomeomorph (S.toFilling 2 q)).1 := hcoe.symm
+    _ = (A.orderFourPieceHomeomorph (S.toFilling 2 q)).1 := hcoe.symm
 
 /-- The common band included in the order-three affine central region. -/
-public def sectionSevenAffineBandToOrderThreeCentralRegion (A : PaperAnalyticData) :
-    C(A.SectionSevenAffineMarkedBand, ↥A.sectionSevenAffineOrderThreeCentralRegion) where
+public def affineBandToOrderThreeCentralRegion (A : PaperAnalyticData) :
+    C(A.affineMarkedBand, ↥A.affineOrderThreeCentralRegion) where
   toFun x := ⟨x.1, by
-    change x.1 ∈ centralHeightLowerRegion A.sectionSevenEllipticCentralHeight (2 / 3 : ℝ)
+    change x.1 ∈ centralHeightLowerRegion A.ellipticCentralHeight (2 / 3 : ℝ)
     obtain ⟨y, hy, hxy⟩ :=
-      (A.sectionSevenActualAffineSplit.sidesIntersectionHomeomorph x).2
+      (A.actualAffineHeightSplit.sidesIntersectionHomeomorph x).2
     exact ⟨y, hy.2, hxy⟩⟩
   continuous_toFun := continuous_subtype_val.subtype_mk _
 
 /-- The common band included in the order-four affine central region. -/
-public def sectionSevenAffineBandToOrderFourCentralRegion (A : PaperAnalyticData) :
-    C(A.SectionSevenAffineMarkedBand, ↥A.sectionSevenAffineOrderFourCentralRegion) where
+public def affineBandToOrderFourCentralRegion (A : PaperAnalyticData) :
+    C(A.affineMarkedBand, ↥A.affineOrderFourCentralRegion) where
   toFun x := ⟨x.1, by
-    change x.1 ∈ centralHeightUpperRegion A.sectionSevenEllipticCentralHeight (1 / 3 : ℝ)
+    change x.1 ∈ centralHeightUpperRegion A.ellipticCentralHeight (1 / 3 : ℝ)
     obtain ⟨y, hy, hxy⟩ :=
-      (A.sectionSevenActualAffineSplit.sidesIntersectionHomeomorph x).2
+      (A.actualAffineHeightSplit.sidesIntersectionHomeomorph x).2
     exact ⟨y, hy.1, hxy⟩⟩
   continuous_toFun := continuous_subtype_val.subtype_mk _
 
 /-- A fixed small affine disc contained in the actual order-three star overlap. -/
-public noncomputable def sectionSevenAffineOrderThreeMarkedDiscRadius (A : PaperAnalyticData) : ℝ :=
+public noncomputable def affineOrderThreeMarkedDiscRadius (A : PaperAnalyticData) : ℝ :=
   A.exists_small_discRegion_subset_orderThreeOverlap.choose
 
-public theorem sectionSevenAffineOrderThreeMarkedDiscRadius_spec (A : PaperAnalyticData) :
-    0 < A.sectionSevenAffineOrderThreeMarkedDiscRadius ∧
-      A.sectionSevenAffineOrderThreeMarkedDiscRadius ≤ 1 / 3 ∧
-      A.sectionSevenAffineOrderThreeDiscRegion
-          A.sectionSevenAffineOrderThreeMarkedDiscRadius ⊆
-        A.sectionSevenOrderThreeFillingImage ∩
-          A.sectionSevenAffineOrderThreeCentralRegion :=
+public theorem affineOrderThreeMarkedDiscRadius_spec (A : PaperAnalyticData) :
+    0 < A.affineOrderThreeMarkedDiscRadius ∧
+      A.affineOrderThreeMarkedDiscRadius ≤ 1 / 3 ∧
+      A.affineOrderThreeDiscRegion
+          A.affineOrderThreeMarkedDiscRadius ⊆
+        A.orderThreeFillingImage ∩
+          A.affineOrderThreeCentralRegion :=
   by
     have h := A.exists_small_discRegion_subset_orderThreeOverlap.choose_spec
     exact ⟨h.1, h.2.1, h.2.2.1⟩
 
 /-- A fixed small affine disc contained in the actual order-four star overlap. -/
-public noncomputable def sectionSevenAffineOrderFourMarkedDiscRadius (A : PaperAnalyticData) : ℝ :=
+public noncomputable def affineOrderFourMarkedDiscRadius (A : PaperAnalyticData) : ℝ :=
   A.exists_small_discRegion_subset_orderFourOverlap.choose
 
-public theorem sectionSevenAffineOrderFourMarkedDiscRadius_spec (A : PaperAnalyticData) :
-    0 < A.sectionSevenAffineOrderFourMarkedDiscRadius ∧
-      A.sectionSevenAffineOrderFourMarkedDiscRadius ≤ 1 / 3 ∧
-      A.sectionSevenAffineOrderFourDiscRegion
-          A.sectionSevenAffineOrderFourMarkedDiscRadius ⊆
-        A.sectionSevenOrderFourFillingImage ∩
-          A.sectionSevenAffineOrderFourCentralRegion :=
+public theorem affineOrderFourMarkedDiscRadius_spec (A : PaperAnalyticData) :
+    0 < A.affineOrderFourMarkedDiscRadius ∧
+      A.affineOrderFourMarkedDiscRadius ≤ 1 / 3 ∧
+      A.affineOrderFourDiscRegion
+          A.affineOrderFourMarkedDiscRadius ⊆
+        A.orderFourFillingImage ∩
+          A.affineOrderFourCentralRegion :=
   by
     have h := A.exists_small_discRegion_subset_orderFourOverlap.choose_spec
     exact ⟨h.1, h.2.1, h.2.2.1⟩
 
-public theorem sectionSevenAffineOrderThreeMarkedDiscRadius_cayley (A : PaperAnalyticData)
+public theorem affineOrderThreeMarkedDiscRadius_cayley (A : PaperAnalyticData)
     (z : UpperHalfPlane)
-    (hz : ‖A.modular.sourceCoordinate.coordinate z‖ < A.sectionSevenAffineOrderThreeMarkedDiscRadius) :
+    (hz : ‖A.modular.sourceCoordinate.coordinate z‖ < A.affineOrderThreeMarkedDiscRadius) :
     ∃ k : SphereSixComplex.TriangleGroup.Delta,
       ‖(SphereSixComplex.Geometry.EllipticCayleyHomeomorph.orderThreeCayleyHomeomorph
         (SphereSixComplex.TriangleGroup.fuchsianSourceAction k • z) : ℂ)‖ <
         A.starSeparation.orderThree.radius / 2 :=
   A.exists_small_discRegion_subset_orderThreeOverlap.choose_spec.2.2.2 z hz
 
-public theorem sectionSevenAffineOrderFourMarkedDiscRadius_cayley (A : PaperAnalyticData)
+public theorem affineOrderFourMarkedDiscRadius_cayley (A : PaperAnalyticData)
     (z : UpperHalfPlane)
-    (hz : ‖A.modular.sourceCoordinate.coordinate z - 1‖ < A.sectionSevenAffineOrderFourMarkedDiscRadius) :
+    (hz : ‖A.modular.sourceCoordinate.coordinate z - 1‖ < A.affineOrderFourMarkedDiscRadius) :
     ∃ k : SphereSixComplex.TriangleGroup.Delta,
       ‖(SphereSixComplex.Geometry.EllipticCayleyHomeomorph.orderFourCayleyHomeomorph
         (SphereSixComplex.TriangleGroup.fuchsianSourceAction k • z) : ℂ)‖ <
@@ -480,212 +480,212 @@ public theorem sectionSevenAffineOrderFourMarkedDiscRadius_cayley (A : PaperAnal
 
 /-- The explicit order-three affine radial inverse, restricted to the common band and then read
 as a point of the actual filling image through the proved small-disc inclusion. -/
-public noncomputable def sectionSevenAffineOrderThreeDiscFillingEndpoint
+public noncomputable def affineOrderThreeDiscFillingEndpoint
     (A : PaperAnalyticData) :
-    C(A.SectionSevenAffineMarkedBand, ↥A.sectionSevenOrderThreeFillingImage) :=
-  let r := A.sectionSevenAffineOrderThreeMarkedDiscRadius
-  let hr0 := (A.sectionSevenAffineOrderThreeMarkedDiscRadius_spec).1
+    C(A.affineMarkedBand, ↥A.orderThreeFillingImage) :=
+  let r := A.affineOrderThreeMarkedDiscRadius
+  let hr0 := (A.affineOrderThreeMarkedDiscRadius_spec).1
   let hr : r ≤ 2 / 3 :=
-    (A.sectionSevenAffineOrderThreeMarkedDiscRadius_spec).2.1.trans (by norm_num)
-  let hsub := (A.sectionSevenAffineOrderThreeMarkedDiscRadius_spec).2.2
-  (⟨fun z : ↥(A.sectionSevenAffineOrderThreeDiscRegion r) ↦
+    (A.affineOrderThreeMarkedDiscRadius_spec).2.1.trans (by norm_num)
+  let hsub := (A.affineOrderThreeMarkedDiscRadius_spec).2.2
+  (⟨fun z : ↥(A.affineOrderThreeDiscRegion r) ↦
       ⟨z.1, (hsub z.2).1⟩, continuous_subtype_val.subtype_mk _⟩ :
-    C(↥(A.sectionSevenAffineOrderThreeDiscRegion r),
-      ↥A.sectionSevenOrderThreeFillingImage)).comp
+    C(↥(A.affineOrderThreeDiscRegion r),
+      ↥A.orderThreeFillingImage)).comp
     ((A.orderThreeAffineDiscCentralHomotopyEquiv hr0 hr).invFun.comp
-      (A.sectionSevenAffineBandToOrderThreeCentralRegion))
+      (A.affineBandToOrderThreeCentralRegion))
 
 /-- The analogous explicit order-four disc endpoint in the actual filling image. -/
-public noncomputable def sectionSevenAffineOrderFourDiscFillingEndpoint
+public noncomputable def affineOrderFourDiscFillingEndpoint
     (A : PaperAnalyticData) :
-    C(A.SectionSevenAffineMarkedBand, ↥A.sectionSevenOrderFourFillingImage) :=
-  let r := A.sectionSevenAffineOrderFourMarkedDiscRadius
-  let hr0 := (A.sectionSevenAffineOrderFourMarkedDiscRadius_spec).1
+    C(A.affineMarkedBand, ↥A.orderFourFillingImage) :=
+  let r := A.affineOrderFourMarkedDiscRadius
+  let hr0 := (A.affineOrderFourMarkedDiscRadius_spec).1
   let hr : r ≤ 1 - 1 / 3 :=
-    (A.sectionSevenAffineOrderFourMarkedDiscRadius_spec).2.1.trans (by norm_num)
-  let hsub := (A.sectionSevenAffineOrderFourMarkedDiscRadius_spec).2.2
-  (⟨fun z : ↥(A.sectionSevenAffineOrderFourDiscRegion r) ↦
+    (A.affineOrderFourMarkedDiscRadius_spec).2.1.trans (by norm_num)
+  let hsub := (A.affineOrderFourMarkedDiscRadius_spec).2.2
+  (⟨fun z : ↥(A.affineOrderFourDiscRegion r) ↦
       ⟨z.1, (hsub z.2).1⟩, continuous_subtype_val.subtype_mk _⟩ :
-    C(↥(A.sectionSevenAffineOrderFourDiscRegion r),
-      ↥A.sectionSevenOrderFourFillingImage)).comp
+    C(↥(A.affineOrderFourDiscRegion r),
+      ↥A.orderFourFillingImage)).comp
     ((A.orderFourAffineDiscCentralHomotopyEquiv hr0 hr).invFun.comp
-      (A.sectionSevenAffineBandToOrderFourCentralRegion))
+      (A.affineBandToOrderFourCentralRegion))
 
 /-- The order-three disc endpoint retaining membership in both the filling and central regions. -/
-public noncomputable def sectionSevenAffineOrderThreeDiscOverlapEndpoint
+public noncomputable def affineOrderThreeDiscOverlapEndpoint
     (A : PaperAnalyticData) :
-    C(A.SectionSevenAffineMarkedBand,
-      ↥(A.sectionSevenOrderThreeFillingImage ∩
-        A.sectionSevenAffineOrderThreeCentralRegion)) :=
-  let r := A.sectionSevenAffineOrderThreeMarkedDiscRadius
-  let hr0 := (A.sectionSevenAffineOrderThreeMarkedDiscRadius_spec).1
+    C(A.affineMarkedBand,
+      ↥(A.orderThreeFillingImage ∩
+        A.affineOrderThreeCentralRegion)) :=
+  let r := A.affineOrderThreeMarkedDiscRadius
+  let hr0 := (A.affineOrderThreeMarkedDiscRadius_spec).1
   let hr : r ≤ 2 / 3 :=
-    (A.sectionSevenAffineOrderThreeMarkedDiscRadius_spec).2.1.trans (by norm_num)
-  let hsub := (A.sectionSevenAffineOrderThreeMarkedDiscRadius_spec).2.2
-  (⟨fun z : ↥(A.sectionSevenAffineOrderThreeDiscRegion r) ↦
+    (A.affineOrderThreeMarkedDiscRadius_spec).2.1.trans (by norm_num)
+  let hsub := (A.affineOrderThreeMarkedDiscRadius_spec).2.2
+  (⟨fun z : ↥(A.affineOrderThreeDiscRegion r) ↦
       ⟨z.1, hsub z.2⟩, continuous_subtype_val.subtype_mk _⟩ :
-    C(↥(A.sectionSevenAffineOrderThreeDiscRegion r),
-      ↥(A.sectionSevenOrderThreeFillingImage ∩
-        A.sectionSevenAffineOrderThreeCentralRegion))).comp
+    C(↥(A.affineOrderThreeDiscRegion r),
+      ↥(A.orderThreeFillingImage ∩
+        A.affineOrderThreeCentralRegion))).comp
     ((A.orderThreeAffineDiscCentralHomotopyEquiv hr0 hr).invFun.comp
-      A.sectionSevenAffineBandToOrderThreeCentralRegion)
+      A.affineBandToOrderThreeCentralRegion)
 
 /-- The order-four endpoint retaining both overlap memberships. -/
-public noncomputable def sectionSevenAffineOrderFourDiscOverlapEndpoint
+public noncomputable def affineOrderFourDiscOverlapEndpoint
     (A : PaperAnalyticData) :
-    C(A.SectionSevenAffineMarkedBand,
-      ↥(A.sectionSevenOrderFourFillingImage ∩
-        A.sectionSevenAffineOrderFourCentralRegion)) :=
-  let r := A.sectionSevenAffineOrderFourMarkedDiscRadius
-  let hr0 := (A.sectionSevenAffineOrderFourMarkedDiscRadius_spec).1
+    C(A.affineMarkedBand,
+      ↥(A.orderFourFillingImage ∩
+        A.affineOrderFourCentralRegion)) :=
+  let r := A.affineOrderFourMarkedDiscRadius
+  let hr0 := (A.affineOrderFourMarkedDiscRadius_spec).1
   let hr : r ≤ 1 - 1 / 3 :=
-    (A.sectionSevenAffineOrderFourMarkedDiscRadius_spec).2.1.trans (by norm_num)
-  let hsub := (A.sectionSevenAffineOrderFourMarkedDiscRadius_spec).2.2
-  (⟨fun z : ↥(A.sectionSevenAffineOrderFourDiscRegion r) ↦
+    (A.affineOrderFourMarkedDiscRadius_spec).2.1.trans (by norm_num)
+  let hsub := (A.affineOrderFourMarkedDiscRadius_spec).2.2
+  (⟨fun z : ↥(A.affineOrderFourDiscRegion r) ↦
       ⟨z.1, hsub z.2⟩, continuous_subtype_val.subtype_mk _⟩ :
-    C(↥(A.sectionSevenAffineOrderFourDiscRegion r),
-      ↥(A.sectionSevenOrderFourFillingImage ∩
-        A.sectionSevenAffineOrderFourCentralRegion))).comp
+    C(↥(A.affineOrderFourDiscRegion r),
+      ↥(A.orderFourFillingImage ∩
+        A.affineOrderFourCentralRegion))).comp
     ((A.orderFourAffineDiscCentralHomotopyEquiv hr0 hr).invFun.comp
-      A.sectionSevenAffineBandToOrderFourCentralRegion)
+      A.affineBandToOrderFourCentralRegion)
 
-public theorem sectionSevenAffineOrderThreeDiscOverlapEndpoint_toFilling
+public theorem affineOrderThreeDiscOverlapEndpoint_toFilling
     (A : PaperAnalyticData) :
-    (IntegralMayerVietoris.interToLeft A.sectionSevenOrderThreeFillingImage
-      A.sectionSevenAffineOrderThreeCentralRegion).comp
-        A.sectionSevenAffineOrderThreeDiscOverlapEndpoint =
-      A.sectionSevenAffineOrderThreeDiscFillingEndpoint := by
+    (IntegralMayerVietoris.interToLeft A.orderThreeFillingImage
+      A.affineOrderThreeCentralRegion).comp
+        A.affineOrderThreeDiscOverlapEndpoint =
+      A.affineOrderThreeDiscFillingEndpoint := by
   rfl
 
-public theorem sectionSevenAffineOrderFourDiscOverlapEndpoint_toFilling
+public theorem affineOrderFourDiscOverlapEndpoint_toFilling
     (A : PaperAnalyticData) :
-    (IntegralMayerVietoris.interToLeft A.sectionSevenOrderFourFillingImage
-      A.sectionSevenAffineOrderFourCentralRegion).comp
-        A.sectionSevenAffineOrderFourDiscOverlapEndpoint =
-      A.sectionSevenAffineOrderFourDiscFillingEndpoint := by
+    (IntegralMayerVietoris.interToLeft A.orderFourFillingImage
+      A.affineOrderFourCentralRegion).comp
+        A.affineOrderFourDiscOverlapEndpoint =
+      A.affineOrderFourDiscFillingEndpoint := by
   rfl
 
 /-- The explicit endpoint read in the selected order-three varying filling, with all gluing
 homeomorphisms removed. -/
-public noncomputable def sectionSevenAffineOrderThreeStarEndpoint (A : PaperAnalyticData) :
-    C(A.SectionSevenAffineMarkedBand,
+public noncomputable def affineOrderThreeStarEndpoint (A : PaperAnalyticData) :
+    C(A.affineMarkedBand,
       A.OrderThreeVaryingFilling A.starSeparation.orderThree.radius) :=
   (⟨fun u ↦ A.starToFilling 1 (A.orderThreeOverlapCollarHomeomorph u),
     (A.starToFilling_isOpenEmbedding 1).continuous.comp
       A.orderThreeOverlapCollarHomeomorph.continuous⟩ :
-    C(↥(A.sectionSevenOrderThreeFillingImage ∩
-      A.sectionSevenAffineOrderThreeCentralRegion),
+    C(↥(A.orderThreeFillingImage ∩
+      A.affineOrderThreeCentralRegion),
       A.OrderThreeVaryingFilling A.starSeparation.orderThree.radius)).comp
-    A.sectionSevenAffineOrderThreeDiscOverlapEndpoint
+    A.affineOrderThreeDiscOverlapEndpoint
 
 /-- The corresponding order-four selected-filling endpoint. -/
-public noncomputable def sectionSevenAffineOrderFourStarEndpoint (A : PaperAnalyticData) :
-    C(A.SectionSevenAffineMarkedBand,
+public noncomputable def affineOrderFourStarEndpoint (A : PaperAnalyticData) :
+    C(A.affineMarkedBand,
       A.OrderFourVaryingFilling A.starSeparation.orderFour.radius) :=
   (⟨fun u ↦ A.starToFilling 2 (A.orderFourOverlapCollarHomeomorph u),
     (A.starToFilling_isOpenEmbedding 2).continuous.comp
       A.orderFourOverlapCollarHomeomorph.continuous⟩ :
-    C(↥(A.sectionSevenOrderFourFillingImage ∩
-      A.sectionSevenAffineOrderFourCentralRegion),
+    C(↥(A.orderFourFillingImage ∩
+      A.affineOrderFourCentralRegion),
       A.OrderFourVaryingFilling A.starSeparation.orderFour.radius)).comp
-    A.sectionSevenAffineOrderFourDiscOverlapEndpoint
+    A.affineOrderFourDiscOverlapEndpoint
 
 /-- The remaining coordinate calculation with the ambient glued-space homeomorphisms removed. -/
-public structure SectionSevenAffineMarkedStarEndpointCompatibility (A : PaperAnalyticData) where
+public structure AffineMarkedStarEndpointCompatibility (A : PaperAnalyticData) where
   orderThree :
     (orderThreeSelectedFillingHomotopyEquivCentralFiber A).toFun.comp
-        A.sectionSevenAffineOrderThreeStarEndpoint =
-      sectionSevenAffineBandOrderThreeMarkedProjection A
+        A.affineOrderThreeStarEndpoint =
+      affineBandOrderThreeMarkedProjection A
   orderFour :
     (orderFourSelectedFillingHomotopyEquivCentralFiber A).toFun.comp
-        A.sectionSevenAffineOrderFourStarEndpoint =
-      sectionSevenAffineBandOrderFourMarkedProjection A
+        A.affineOrderFourStarEndpoint =
+      affineBandOrderFourMarkedProjection A
 
 /-- The exact remaining coordinate calculation after the band-wide affine radial inverse has
 been constructed: the filling radial retraction of each explicit disc endpoint must be the
 marked central-fibre projection. -/
-public structure SectionSevenAffineMarkedDiscEndpointCompatibility (A : PaperAnalyticData) where
+public structure AffineMarkedDiscEndpointCompatibility (A : PaperAnalyticData) where
   orderThree :
-    (A.sectionSevenOrderThreeFillingImageHomotopyEquiv.toFun.comp
-      (A.sectionSevenAffineOrderThreeDiscFillingEndpoint)) =
-        sectionSevenAffineBandOrderThreeMarkedProjection A
+    (A.orderThreeFillingImageHomotopyEquiv.toFun.comp
+      (A.affineOrderThreeDiscFillingEndpoint)) =
+        affineBandOrderThreeMarkedProjection A
   orderFour :
-    (A.sectionSevenOrderFourFillingImageHomotopyEquiv.toFun.comp
-      (A.sectionSevenAffineOrderFourDiscFillingEndpoint)) =
-        sectionSevenAffineBandOrderFourMarkedProjection A
+    (A.orderFourFillingImageHomotopyEquiv.toFun.comp
+      (A.affineOrderFourDiscFillingEndpoint)) =
+        affineBandOrderFourMarkedProjection A
 
 /-- The star-coordinate equalities imply the filling-image endpoint equalities. -/
-public theorem SectionSevenAffineMarkedStarEndpointCompatibility.toDiscEndpointCompatibility
-    {A : PaperAnalyticData} (H : A.SectionSevenAffineMarkedStarEndpointCompatibility) :
-    A.SectionSevenAffineMarkedDiscEndpointCompatibility where
+public theorem AffineMarkedStarEndpointCompatibility.toDiscEndpointCompatibility
+    {A : PaperAnalyticData} (H : A.AffineMarkedStarEndpointCompatibility) :
+    A.AffineMarkedDiscEndpointCompatibility where
   orderThree := by
     apply ContinuousMap.ext
     intro x
-    let u := A.sectionSevenAffineOrderThreeDiscOverlapEndpoint x
-    have hfill : A.sectionSevenAffineOrderThreeDiscFillingEndpoint x =
+    let u := A.affineOrderThreeDiscOverlapEndpoint x
+    have hfill : A.affineOrderThreeDiscFillingEndpoint x =
         ⟨u.1, u.2.1⟩ := rfl
     change (orderThreeSelectedFillingHomotopyEquivCentralFiber A).toFun
-        (A.sectionSevenOrderThreePieceHomeomorph.symm
-          (A.sectionSevenOrderThreeFillingImageToPiece
-            (A.sectionSevenAffineOrderThreeDiscFillingEndpoint x))) = _
+        (A.orderThreePieceHomeomorph.symm
+          (A.orderThreeFillingImageToPiece
+            (A.affineOrderThreeDiscFillingEndpoint x))) = _
     rw [hfill]
     have hpiece :
-        (A.sectionSevenOrderThreePieceHomeomorph.symm
-          (A.sectionSevenOrderThreeFillingImageToPiece ⟨u.1, u.2.1⟩) :
+        (A.orderThreePieceHomeomorph.symm
+          (A.orderThreeFillingImageToPiece ⟨u.1, u.2.1⟩) :
             A.OrderThreeVaryingFilling A.starSeparation.orderThree.radius) =
           A.starToFilling 1 (A.orderThreeOverlapCollarHomeomorph u) :=
-      A.sectionSevenOrderThreeFillingImageToPiece_symm_overlap u
+      A.orderThreeFillingImageToPiece_symm_overlap u
     rw [hpiece]
     exact congrArg
-      (fun f : C(A.SectionSevenAffineMarkedBand,
+      (fun f : C(A.affineMarkedBand,
         OrderThreeReducedCentralFiber A.periods) ↦ f x) H.orderThree
   orderFour := by
     apply ContinuousMap.ext
     intro x
-    let u := A.sectionSevenAffineOrderFourDiscOverlapEndpoint x
-    have hfill : A.sectionSevenAffineOrderFourDiscFillingEndpoint x =
+    let u := A.affineOrderFourDiscOverlapEndpoint x
+    have hfill : A.affineOrderFourDiscFillingEndpoint x =
         ⟨u.1, u.2.1⟩ := rfl
     change (orderFourSelectedFillingHomotopyEquivCentralFiber A).toFun
-        (A.sectionSevenOrderFourPieceHomeomorph.symm
-          (A.sectionSevenOrderFourFillingImageToPiece
-            (A.sectionSevenAffineOrderFourDiscFillingEndpoint x))) = _
+        (A.orderFourPieceHomeomorph.symm
+          (A.orderFourFillingImageToPiece
+            (A.affineOrderFourDiscFillingEndpoint x))) = _
     rw [hfill]
     have hpiece :
-        (A.sectionSevenOrderFourPieceHomeomorph.symm
-          (A.sectionSevenOrderFourFillingImageToPiece ⟨u.1, u.2.1⟩) :
+        (A.orderFourPieceHomeomorph.symm
+          (A.orderFourFillingImageToPiece ⟨u.1, u.2.1⟩) :
             A.OrderFourVaryingFilling A.starSeparation.orderFour.radius) =
           A.starToFilling 2 (A.orderFourOverlapCollarHomeomorph u) :=
-      A.sectionSevenOrderFourFillingImageToPiece_symm_overlap u
+      A.orderFourFillingImageToPiece_symm_overlap u
     rw [hpiece]
     exact congrArg
-      (fun f : C(A.SectionSevenAffineMarkedBand,
+      (fun f : C(A.affineMarkedBand,
         OrderFourReducedCentralFiber A.periods) ↦ f x) H.orderFour
 
 /-- Include the order-three central region in its affine side. -/
-public def sectionSevenAffineOrderThreeCentralRegionToSide (A : PaperAnalyticData) :
-    C(↥A.sectionSevenAffineOrderThreeCentralRegion,
-      A.sectionSevenActualAffineSplit.allocation.orderThreeSide) where
+public def affineOrderThreeCentralRegionToSide (A : PaperAnalyticData) :
+    C(↥A.affineOrderThreeCentralRegion,
+      A.actualAffineHeightSplit.allocation.orderThreeSide) where
   toFun x := ⟨x.1, Or.inr x.2⟩
   continuous_toFun := continuous_subtype_val.subtype_mk _
 
 /-- Include the order-four central region in its affine side. -/
-public def sectionSevenAffineOrderFourCentralRegionToSide (A : PaperAnalyticData) :
-    C(↥A.sectionSevenAffineOrderFourCentralRegion,
-      A.sectionSevenActualAffineSplit.allocation.orderFourSide) where
+public def affineOrderFourCentralRegionToSide (A : PaperAnalyticData) :
+    C(↥A.affineOrderFourCentralRegion,
+      A.actualAffineHeightSplit.allocation.orderFourSide) where
   toFun x := ⟨x.1, Or.inr x.2⟩
   continuous_toFun := continuous_subtype_val.subtype_mk _
 
 /-- Include the order-three filling image in its affine side. -/
-public def sectionSevenAffineOrderThreeFillingImageToSide (A : PaperAnalyticData) :
-    C(↥A.sectionSevenOrderThreeFillingImage,
-      A.sectionSevenActualAffineSplit.allocation.orderThreeSide) where
+public def affineOrderThreeFillingImageToSide (A : PaperAnalyticData) :
+    C(↥A.orderThreeFillingImage,
+      A.actualAffineHeightSplit.allocation.orderThreeSide) where
   toFun x := ⟨x.1, Or.inl x.2⟩
   continuous_toFun := continuous_subtype_val.subtype_mk _
 
 /-- Include the order-four filling image in its affine side. -/
-public def sectionSevenAffineOrderFourFillingImageToSide (A : PaperAnalyticData) :
-    C(↥A.sectionSevenOrderFourFillingImage,
-      A.sectionSevenActualAffineSplit.allocation.orderFourSide) where
+public def affineOrderFourFillingImageToSide (A : PaperAnalyticData) :
+    C(↥A.orderFourFillingImage,
+      A.actualAffineHeightSplit.allocation.orderFourSide) where
   toFun x := ⟨x.1, Or.inl x.2⟩
   continuous_toFun := continuous_subtype_val.subtype_mk _
 
@@ -694,34 +694,34 @@ disc endpoint, viewed in the order-three filling image. -/
 public theorem orderThreeBandInclusion_homotopic_discFillingEndpoint
     (A : PaperAnalyticData) :
     (IntegralMayerVietoris.interToLeft
-      A.sectionSevenActualAffineSplit.allocation.orderThreeSide
-      A.sectionSevenActualAffineSplit.allocation.orderFourSide).Homotopic
-    ((A.sectionSevenAffineOrderThreeFillingImageToSide).comp
-      (A.sectionSevenAffineOrderThreeDiscFillingEndpoint)) := by
-  let r := A.sectionSevenAffineOrderThreeMarkedDiscRadius
-  let hr0 := (A.sectionSevenAffineOrderThreeMarkedDiscRadius_spec).1
+      A.actualAffineHeightSplit.allocation.orderThreeSide
+      A.actualAffineHeightSplit.allocation.orderFourSide).Homotopic
+    ((A.affineOrderThreeFillingImageToSide).comp
+      (A.affineOrderThreeDiscFillingEndpoint)) := by
+  let r := A.affineOrderThreeMarkedDiscRadius
+  let hr0 := (A.affineOrderThreeMarkedDiscRadius_spec).1
   let hr : r ≤ 2 / 3 :=
-    (A.sectionSevenAffineOrderThreeMarkedDiscRadius_spec).2.1.trans (by norm_num)
+    (A.affineOrderThreeMarkedDiscRadius_spec).2.1.trans (by norm_num)
   have h := ContinuousMap.Homotopic.comp
-    (.refl A.sectionSevenAffineOrderThreeCentralRegionToSide)
+    (.refl A.affineOrderThreeCentralRegionToSide)
     (ContinuousMap.Homotopic.comp
       (A.orderThreeAffineDiscCentral_inverse_deformation hr0 hr)
-      (.refl A.sectionSevenAffineBandToOrderThreeCentralRegion))
+      (.refl A.affineBandToOrderThreeCentralRegion))
   have hleft :
-      A.sectionSevenAffineOrderThreeCentralRegionToSide.comp
-          A.sectionSevenAffineBandToOrderThreeCentralRegion =
+      A.affineOrderThreeCentralRegionToSide.comp
+          A.affineBandToOrderThreeCentralRegion =
         IntegralMayerVietoris.interToLeft
-          A.sectionSevenActualAffineSplit.allocation.orderThreeSide
-          A.sectionSevenActualAffineSplit.allocation.orderFourSide := by
+          A.actualAffineHeightSplit.allocation.orderThreeSide
+          A.actualAffineHeightSplit.allocation.orderFourSide := by
     ext x
     rfl
   have hright :
-      A.sectionSevenAffineOrderThreeCentralRegionToSide.comp
+      A.affineOrderThreeCentralRegionToSide.comp
           ((regionInclusion (A.discRegion_subset_centralRegion hr)).comp
             ((A.orderThreeAffineDiscCentralHomotopyEquiv hr0 hr).invFun.comp
-              A.sectionSevenAffineBandToOrderThreeCentralRegion)) =
-        A.sectionSevenAffineOrderThreeFillingImageToSide.comp
-          A.sectionSevenAffineOrderThreeDiscFillingEndpoint := by
+              A.affineBandToOrderThreeCentralRegion)) =
+        A.affineOrderThreeFillingImageToSide.comp
+          A.affineOrderThreeDiscFillingEndpoint := by
     ext x
     rfl
   simp only [ContinuousMap.id_comp, ContinuousMap.comp_assoc] at h
@@ -733,34 +733,34 @@ endpoint in the filling image. -/
 public theorem orderFourBandInclusion_homotopic_discFillingEndpoint
     (A : PaperAnalyticData) :
     (IntegralMayerVietoris.interToRight
-      A.sectionSevenActualAffineSplit.allocation.orderThreeSide
-      A.sectionSevenActualAffineSplit.allocation.orderFourSide).Homotopic
-    ((A.sectionSevenAffineOrderFourFillingImageToSide).comp
-      (A.sectionSevenAffineOrderFourDiscFillingEndpoint)) := by
-  let r := A.sectionSevenAffineOrderFourMarkedDiscRadius
-  let hr0 := (A.sectionSevenAffineOrderFourMarkedDiscRadius_spec).1
+      A.actualAffineHeightSplit.allocation.orderThreeSide
+      A.actualAffineHeightSplit.allocation.orderFourSide).Homotopic
+    ((A.affineOrderFourFillingImageToSide).comp
+      (A.affineOrderFourDiscFillingEndpoint)) := by
+  let r := A.affineOrderFourMarkedDiscRadius
+  let hr0 := (A.affineOrderFourMarkedDiscRadius_spec).1
   let hr : r ≤ 1 - 1 / 3 :=
-    (A.sectionSevenAffineOrderFourMarkedDiscRadius_spec).2.1.trans (by norm_num)
+    (A.affineOrderFourMarkedDiscRadius_spec).2.1.trans (by norm_num)
   have h := ContinuousMap.Homotopic.comp
-    (.refl A.sectionSevenAffineOrderFourCentralRegionToSide)
+    (.refl A.affineOrderFourCentralRegionToSide)
     (ContinuousMap.Homotopic.comp
       (A.orderFourAffineDiscCentral_inverse_deformation hr0 hr)
-      (.refl A.sectionSevenAffineBandToOrderFourCentralRegion))
+      (.refl A.affineBandToOrderFourCentralRegion))
   have hleft :
-      A.sectionSevenAffineOrderFourCentralRegionToSide.comp
-          A.sectionSevenAffineBandToOrderFourCentralRegion =
+      A.affineOrderFourCentralRegionToSide.comp
+          A.affineBandToOrderFourCentralRegion =
         IntegralMayerVietoris.interToRight
-          A.sectionSevenActualAffineSplit.allocation.orderThreeSide
-          A.sectionSevenActualAffineSplit.allocation.orderFourSide := by
+          A.actualAffineHeightSplit.allocation.orderThreeSide
+          A.actualAffineHeightSplit.allocation.orderFourSide := by
     ext x
     rfl
   have hright :
-      A.sectionSevenAffineOrderFourCentralRegionToSide.comp
+      A.affineOrderFourCentralRegionToSide.comp
           ((regionInclusion (A.orderFourDiscRegion_subset_centralRegion hr)).comp
             ((A.orderFourAffineDiscCentralHomotopyEquiv hr0 hr).invFun.comp
-              A.sectionSevenAffineBandToOrderFourCentralRegion)) =
-        A.sectionSevenAffineOrderFourFillingImageToSide.comp
-          A.sectionSevenAffineOrderFourDiscFillingEndpoint := by
+              A.affineBandToOrderFourCentralRegion)) =
+        A.affineOrderFourFillingImageToSide.comp
+          A.affineOrderFourDiscFillingEndpoint := by
     ext x
     rfl
   simp only [ContinuousMap.id_comp, ContinuousMap.comp_assoc] at h
@@ -769,66 +769,66 @@ public theorem orderFourBandInclusion_homotopic_discFillingEndpoint
 
 private theorem orderThreeSideInverse_markedProjection_formula
     (A : PaperAnalyticData) :
-    (sectionSevenAffineOrderThreeSideToReducedFiberHomotopyEquiv A).invFun.comp
-        (sectionSevenAffineBandOrderThreeMarkedProjection A) =
+    (affineOrderThreeSideToReducedFiberHomotopyEquiv A).invFun.comp
+        (affineBandOrderThreeMarkedProjection A) =
       (orderThreeOverlapIsHomotopyEquivalence_inclusion
           A.orderThreeOverlapIsHomotopyEquivalence).toHomotopyEquiv.invFun.comp
         ((nestedSubtypeHomeomorph
-          A.sectionSevenActualAffineSplit.allocation.orderThreeSide
-          A.sectionSevenOrderThreeFillingImage
-          A.sectionSevenActualAffineSplit.orderThreeFillingImage_subset_side).toHomotopyEquiv
+          A.actualAffineHeightSplit.allocation.orderThreeSide
+          A.orderThreeFillingImage
+          A.actualAffineHeightSplit.orderThreeFillingImage_subset_side).toHomotopyEquiv
           |>.invFun.comp
-            (A.sectionSevenOrderThreeFillingImageHomotopyEquiv.invFun.comp
-              (sectionSevenAffineBandOrderThreeMarkedProjection A))) := by
+            (A.orderThreeFillingImageHomotopyEquiv.invFun.comp
+              (affineBandOrderThreeMarkedProjection A))) := by
   rfl
 
 private theorem orderFourSideInverse_markedProjection_formula
     (A : PaperAnalyticData) :
-    (sectionSevenAffineOrderFourSideToReducedFiberHomotopyEquiv A).invFun.comp
-        (sectionSevenAffineBandOrderFourMarkedProjection A) =
+    (affineOrderFourSideToReducedFiberHomotopyEquiv A).invFun.comp
+        (affineBandOrderFourMarkedProjection A) =
       (orderFourOverlapIsHomotopyEquivalence_inclusion
           A.orderFourOverlapIsHomotopyEquivalence).toHomotopyEquiv.invFun.comp
         ((nestedSubtypeHomeomorph
-          A.sectionSevenActualAffineSplit.allocation.orderFourSide
-          A.sectionSevenOrderFourFillingImage
-          A.sectionSevenActualAffineSplit.orderFourFillingImage_subset_side).toHomotopyEquiv
+          A.actualAffineHeightSplit.allocation.orderFourSide
+          A.orderFourFillingImage
+          A.actualAffineHeightSplit.orderFourFillingImage_subset_side).toHomotopyEquiv
           |>.invFun.comp
-            (A.sectionSevenOrderFourFillingImageHomotopyEquiv.invFun.comp
-              (sectionSevenAffineBandOrderFourMarkedProjection A))) := by
+            (A.orderFourFillingImageHomotopyEquiv.invFun.comp
+              (affineBandOrderFourMarkedProjection A))) := by
   rfl
 
 /-- The two explicit fixed-coordinate endpoint calculations are the only remaining input needed
 after the affine radial deformations: filling homotopy-inverse cancellation supplies the desired
 side contractions. -/
-public theorem SectionSevenAffineMarkedDiscEndpointCompatibility.toSideContractions
-    {A : PaperAnalyticData} (H : A.SectionSevenAffineMarkedDiscEndpointCompatibility) :
-    A.SectionSevenAffineMarkedBandSideContractions := by
+public theorem AffineMarkedDiscEndpointCompatibility.toSideContractions
+    {A : PaperAnalyticData} (H : A.AffineMarkedDiscEndpointCompatibility) :
+    A.AffineMarkedBandSideContractions := by
   refine { orderThree := ?_, orderFour := ?_ }
-  · let q := A.sectionSevenAffineOrderThreeDiscFillingEndpoint
-    let g := A.sectionSevenOrderThreeFillingImageHomotopyEquiv
-    let p := sectionSevenAffineBandOrderThreeMarkedProjection A
+  · let q := A.affineOrderThreeDiscFillingEndpoint
+    let g := A.orderThreeFillingImageHomotopyEquiv
+    let p := affineBandOrderThreeMarkedProjection A
     have hfill := ContinuousMap.Homotopic.comp g.left_inv (.refl q)
     have hcomp : g.toFun.comp q = p := H.orderThree
     simp only [ContinuousMap.comp_assoc, hcomp] at hfill
     have hside := ContinuousMap.Homotopic.comp
-      (.refl A.sectionSevenAffineOrderThreeFillingImageToSide) hfill.symm
+      (.refl A.affineOrderThreeFillingImageToSide) hfill.symm
     have hendpoint :
-        A.sectionSevenAffineOrderThreeFillingImageToSide.comp (g.invFun.comp p) =
-          (sectionSevenAffineOrderThreeSideToReducedFiberHomotopyEquiv A).invFun.comp p := by
+        A.affineOrderThreeFillingImageToSide.comp (g.invFun.comp p) =
+          (affineOrderThreeSideToReducedFiberHomotopyEquiv A).invFun.comp p := by
       dsimp [g, p]
       have hraw :
-          A.sectionSevenAffineOrderThreeFillingImageToSide.comp
-              (A.sectionSevenOrderThreeFillingImageHomotopyEquiv.invFun.comp
-                (sectionSevenAffineBandOrderThreeMarkedProjection A)) =
+          A.affineOrderThreeFillingImageToSide.comp
+              (A.orderThreeFillingImageHomotopyEquiv.invFun.comp
+                (affineBandOrderThreeMarkedProjection A)) =
             (orderThreeOverlapIsHomotopyEquivalence_inclusion
                 A.orderThreeOverlapIsHomotopyEquivalence).toHomotopyEquiv.invFun.comp
               ((nestedSubtypeHomeomorph
-                A.sectionSevenActualAffineSplit.allocation.orderThreeSide
-                A.sectionSevenOrderThreeFillingImage
-                A.sectionSevenActualAffineSplit.orderThreeFillingImage_subset_side)
+                A.actualAffineHeightSplit.allocation.orderThreeSide
+                A.orderThreeFillingImage
+                A.actualAffineHeightSplit.orderThreeFillingImage_subset_side)
                 |>.toHomotopyEquiv.invFun.comp
-                  (A.sectionSevenOrderThreeFillingImageHomotopyEquiv.invFun.comp
-                    (sectionSevenAffineBandOrderThreeMarkedProjection A))) := by
+                  (A.orderThreeFillingImageHomotopyEquiv.invFun.comp
+                    (affineBandOrderThreeMarkedProjection A))) := by
         rw [(orderThreeOverlapIsHomotopyEquivalence_inclusion
           A.orderThreeOverlapIsHomotopyEquivalence).toHomotopyEquiv_invFun]
         ext x
@@ -837,31 +837,31 @@ public theorem SectionSevenAffineMarkedDiscEndpointCompatibility.toSideContracti
     simp only [ContinuousMap.id_comp] at hside
     rw [hendpoint] at hside
     exact (A.orderThreeBandInclusion_homotopic_discFillingEndpoint).trans hside
-  · let q := A.sectionSevenAffineOrderFourDiscFillingEndpoint
-    let g := A.sectionSevenOrderFourFillingImageHomotopyEquiv
-    let p := sectionSevenAffineBandOrderFourMarkedProjection A
+  · let q := A.affineOrderFourDiscFillingEndpoint
+    let g := A.orderFourFillingImageHomotopyEquiv
+    let p := affineBandOrderFourMarkedProjection A
     have hfill := ContinuousMap.Homotopic.comp g.left_inv (.refl q)
     have hcomp : g.toFun.comp q = p := H.orderFour
     simp only [ContinuousMap.comp_assoc, hcomp] at hfill
     have hside := ContinuousMap.Homotopic.comp
-      (.refl A.sectionSevenAffineOrderFourFillingImageToSide) hfill.symm
+      (.refl A.affineOrderFourFillingImageToSide) hfill.symm
     have hendpoint :
-        A.sectionSevenAffineOrderFourFillingImageToSide.comp (g.invFun.comp p) =
-          (sectionSevenAffineOrderFourSideToReducedFiberHomotopyEquiv A).invFun.comp p := by
+        A.affineOrderFourFillingImageToSide.comp (g.invFun.comp p) =
+          (affineOrderFourSideToReducedFiberHomotopyEquiv A).invFun.comp p := by
       dsimp [g, p]
       have hraw :
-          A.sectionSevenAffineOrderFourFillingImageToSide.comp
-              (A.sectionSevenOrderFourFillingImageHomotopyEquiv.invFun.comp
-                (sectionSevenAffineBandOrderFourMarkedProjection A)) =
+          A.affineOrderFourFillingImageToSide.comp
+              (A.orderFourFillingImageHomotopyEquiv.invFun.comp
+                (affineBandOrderFourMarkedProjection A)) =
             (orderFourOverlapIsHomotopyEquivalence_inclusion
                 A.orderFourOverlapIsHomotopyEquivalence).toHomotopyEquiv.invFun.comp
               ((nestedSubtypeHomeomorph
-                A.sectionSevenActualAffineSplit.allocation.orderFourSide
-                A.sectionSevenOrderFourFillingImage
-                A.sectionSevenActualAffineSplit.orderFourFillingImage_subset_side)
+                A.actualAffineHeightSplit.allocation.orderFourSide
+                A.orderFourFillingImage
+                A.actualAffineHeightSplit.orderFourFillingImage_subset_side)
                 |>.toHomotopyEquiv.invFun.comp
-                  (A.sectionSevenOrderFourFillingImageHomotopyEquiv.invFun.comp
-                    (sectionSevenAffineBandOrderFourMarkedProjection A))) := by
+                  (A.orderFourFillingImageHomotopyEquiv.invFun.comp
+                    (affineBandOrderFourMarkedProjection A))) := by
         rw [(orderFourOverlapIsHomotopyEquivalence_inclusion
           A.orderFourOverlapIsHomotopyEquivalence).toHomotopyEquiv_invFun]
         ext x
@@ -874,78 +874,78 @@ public theorem SectionSevenAffineMarkedDiscEndpointCompatibility.toSideContracti
 /-- Thus the exact two fixed-coordinate endpoint equalities imply the original residual
 marked-band package. -/
 public theorem markedBandHomotopies_of_discEndpointCompatibility
-    (A : PaperAnalyticData) (H : A.SectionSevenAffineMarkedDiscEndpointCompatibility) :
-    A.SectionSevenAffineOverlapBandCompatibility :=
+    (A : PaperAnalyticData) (H : A.AffineMarkedDiscEndpointCompatibility) :
+    A.AffineOverlapBandCompatibility :=
   markedBandHomotopies_of_sideContractions A H.toSideContractions
 
 /-- The order-three inverse endpoint in the actual affine side is obtained by transporting the
 explicit fixed central point back through the selected varying-filling and open-image
 homeomorphisms. -/
-public theorem sectionSevenAffineOrderThreeSideInverse_markedProjection
+public theorem affineOrderThreeSideInverse_markedProjection
     (A : PaperAnalyticData) :
-    (sectionSevenAffineOrderThreeSideToReducedFiberHomotopyEquiv A).invFun.comp
-        (sectionSevenAffineBandOrderThreeMarkedProjection A) =
+    (affineOrderThreeSideToReducedFiberHomotopyEquiv A).invFun.comp
+        (affineBandOrderThreeMarkedProjection A) =
       (orderThreeOverlapIsHomotopyEquivalence_inclusion
           A.orderThreeOverlapIsHomotopyEquivalence).toHomotopyEquiv.invFun.comp
         ((nestedSubtypeHomeomorph
-          A.sectionSevenActualAffineSplit.allocation.orderThreeSide
-          A.sectionSevenOrderThreeFillingImage
-          A.sectionSevenActualAffineSplit.orderThreeFillingImage_subset_side).toHomotopyEquiv
+          A.actualAffineHeightSplit.allocation.orderThreeSide
+          A.orderThreeFillingImage
+          A.actualAffineHeightSplit.orderThreeFillingImage_subset_side).toHomotopyEquiv
           |>.invFun.comp
-            (A.sectionSevenOrderThreeFillingImageHomotopyEquiv.invFun.comp
-              (sectionSevenAffineBandOrderThreeMarkedProjection A))) := by
+            (A.orderThreeFillingImageHomotopyEquiv.invFun.comp
+              (affineBandOrderThreeMarkedProjection A))) := by
   rfl
 
 /-- The corresponding unfolded order-four endpoint. -/
-public theorem sectionSevenAffineOrderFourSideInverse_markedProjection
+public theorem affineOrderFourSideInverse_markedProjection
     (A : PaperAnalyticData) :
-    (sectionSevenAffineOrderFourSideToReducedFiberHomotopyEquiv A).invFun.comp
-        (sectionSevenAffineBandOrderFourMarkedProjection A) =
+    (affineOrderFourSideToReducedFiberHomotopyEquiv A).invFun.comp
+        (affineBandOrderFourMarkedProjection A) =
       (orderFourOverlapIsHomotopyEquivalence_inclusion
           A.orderFourOverlapIsHomotopyEquivalence).toHomotopyEquiv.invFun.comp
         ((nestedSubtypeHomeomorph
-          A.sectionSevenActualAffineSplit.allocation.orderFourSide
-          A.sectionSevenOrderFourFillingImage
-          A.sectionSevenActualAffineSplit.orderFourFillingImage_subset_side).toHomotopyEquiv
+          A.actualAffineHeightSplit.allocation.orderFourSide
+          A.orderFourFillingImage
+          A.actualAffineHeightSplit.orderFourFillingImage_subset_side).toHomotopyEquiv
           |>.invFun.comp
-            (A.sectionSevenOrderFourFillingImageHomotopyEquiv.invFun.comp
-              (sectionSevenAffineBandOrderFourMarkedProjection A))) := by
+            (A.orderFourFillingImageHomotopyEquiv.invFun.comp
+              (affineBandOrderFourMarkedProjection A))) := by
   rfl
 
 /-- Fully point-set form of the remaining geometry.  The two functions must glue the affine
 central-family transport to the cyclic filling contraction continuously across the star collar.
 The endpoint equalities are literal equalities of points in the corresponding affine side. -/
-public structure SectionSevenAffineMarkedBandGluedHomotopies (A : PaperAnalyticData) where
-  orderThreeToFun : unitInterval × A.SectionSevenAffineMarkedBand →
-    A.sectionSevenActualAffineSplit.allocation.orderThreeSide
+public structure AffineMarkedBandGluedHomotopies (A : PaperAnalyticData) where
+  orderThreeToFun : unitInterval × A.affineMarkedBand →
+    A.actualAffineHeightSplit.allocation.orderThreeSide
   orderThree_continuous : Continuous orderThreeToFun
   orderThree_zero : ∀ x,
     orderThreeToFun (0, x) =
       IntegralMayerVietoris.interToLeft
-        A.sectionSevenActualAffineSplit.allocation.orderThreeSide
-        A.sectionSevenActualAffineSplit.allocation.orderFourSide x
+        A.actualAffineHeightSplit.allocation.orderThreeSide
+        A.actualAffineHeightSplit.allocation.orderFourSide x
   orderThree_one : ∀ x,
     orderThreeToFun (1, x) =
-      (sectionSevenAffineOrderThreeSideToReducedFiberHomotopyEquiv A).invFun
-        (sectionSevenAffineBandOrderThreeMarkedProjection A x)
-  orderFourToFun : unitInterval × A.SectionSevenAffineMarkedBand →
-    A.sectionSevenActualAffineSplit.allocation.orderFourSide
+      (affineOrderThreeSideToReducedFiberHomotopyEquiv A).invFun
+        (affineBandOrderThreeMarkedProjection A x)
+  orderFourToFun : unitInterval × A.affineMarkedBand →
+    A.actualAffineHeightSplit.allocation.orderFourSide
   orderFour_continuous : Continuous orderFourToFun
   orderFour_zero : ∀ x,
     orderFourToFun (0, x) =
       IntegralMayerVietoris.interToRight
-        A.sectionSevenActualAffineSplit.allocation.orderThreeSide
-        A.sectionSevenActualAffineSplit.allocation.orderFourSide x
+        A.actualAffineHeightSplit.allocation.orderThreeSide
+        A.actualAffineHeightSplit.allocation.orderFourSide x
   orderFour_one : ∀ x,
     orderFourToFun (1, x) =
-      (sectionSevenAffineOrderFourSideToReducedFiberHomotopyEquiv A).invFun
-        (sectionSevenAffineBandOrderFourMarkedProjection A x)
+      (affineOrderFourSideToReducedFiberHomotopyEquiv A).invFun
+        (affineBandOrderFourMarkedProjection A x)
 
 /-- The explicit glued functions and their point-set endpoint formulas supply the exact
 side-contraction package of the preceding reduction. -/
-public theorem SectionSevenAffineMarkedBandGluedHomotopies.toSideContractions
-    {A : PaperAnalyticData} (H : A.SectionSevenAffineMarkedBandGluedHomotopies) :
-    A.SectionSevenAffineMarkedBandSideContractions where
+public theorem AffineMarkedBandGluedHomotopies.toSideContractions
+    {A : PaperAnalyticData} (H : A.AffineMarkedBandGluedHomotopies) :
+    A.AffineMarkedBandSideContractions where
   orderThree := ⟨{
     toFun := H.orderThreeToFun
     continuous_toFun := H.orderThree_continuous
@@ -960,8 +960,8 @@ public theorem SectionSevenAffineMarkedBandGluedHomotopies.toSideContractions
 /-- Consequently the fully point-set glued homotopies prove the original residual marked-band
 assertion. -/
 public theorem markedBandHomotopies_of_gluedHomotopies
-    (A : PaperAnalyticData) (H : A.SectionSevenAffineMarkedBandGluedHomotopies) :
-    A.SectionSevenAffineOverlapBandCompatibility :=
+    (A : PaperAnalyticData) (H : A.AffineMarkedBandGluedHomotopies) :
+    A.AffineOverlapBandCompatibility :=
   markedBandHomotopies_of_sideContractions A H.toSideContractions
 
 end SphereSixComplex.Geometry.PaperAnalyticData

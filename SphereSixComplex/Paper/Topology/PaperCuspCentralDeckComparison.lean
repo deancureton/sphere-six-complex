@@ -131,7 +131,7 @@ public theorem paperCuspBoundaryToCentralDeck_meridian :
   rw [one_mul, paperCuspCentralAngularDeck_one]
 
 /-- In covering-space orientation, the marked central cusp word is the product of the two core
-meridians in the order used by `ActualCuspCentralNaturality`. -/
+meridians in the order used by `CuspCentralNaturality`. -/
 public theorem opposite_paperCuspCentralBaseMeridian_eq_rhoOne_mul_rhoTwo :
     MulOpposite.op
         (freeAffineLift (M := paperCentralFreeMonodromy)

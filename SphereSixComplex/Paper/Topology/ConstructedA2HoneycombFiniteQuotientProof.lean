@@ -15,12 +15,12 @@ noncomputable section
 
 open Set
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
 open SphereSixComplex.Geometry.CuspCombinatorics
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 /-- Equality of two projected positive square points is exactly equality through the explicit
 partial Laurent transition between their affine carrier charts. -/
@@ -93,7 +93,7 @@ public theorem nonempty_constructedA2HoneycombFiniteQuotientResidual_iff
     exact h.trans (constructedA2CellSquareProjection_eq_iff_monomial hr v w i j p q)
   · exact fun H ↦ ⟨constructedA2HoneycombFiniteQuotientResidual_of_laurentFiniteIdentity hr H⟩
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric
 
 end
 

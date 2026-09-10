@@ -8,7 +8,7 @@ noncomputable section
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 open SphereSixComplex.StandardTorusHomology
 open CuspPuncturedCollarBridge CuspStraighteningRetraction
-open StandardInfiniteA2ToricModel.Established
+open InfiniteA2Toric
 
 def cuspFiberSpecializationColumn (A : PaperAnalyticData) (j : Fin 4) :
     IntegralSingularHomology 2 (actualLocalCuspFilling A.starCuspWitness) :=

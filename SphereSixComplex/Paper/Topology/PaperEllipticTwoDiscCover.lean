@@ -38,22 +38,22 @@ namespace Geometry.PaperAnalyticData
 variable (A : PaperAnalyticData)
 
 /-- The actual cusp-complement: the central family with both elliptic fillings attached. -/
-public abbrev SectionSevenEllipticInterior :=
+public abbrev ellipticInterior :=
   (A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4)
 
 /-- Geometric data for the two-disc cover used in Lemma 7.19.  The compatibility fields say
 that, after trivializing the band fibre and retracting either side to its reduced central fibre,
 the two inclusions are the actual order-three and order-four finite-cover projections. -/
-public structure SectionSevenEllipticTwoDiscCoverData where
-  orderThreeSide : Set A.SectionSevenEllipticInterior
-  orderFourSide : Set A.SectionSevenEllipticInterior
+public structure EllipticTwoDiscCoverData where
+  orderThreeSide : Set A.ellipticInterior
+  orderFourSide : Set A.ellipticInterior
   orderThreeSide_isOpen : IsOpen orderThreeSide
   orderFourSide_isOpen : IsOpen orderFourSide
   sides_cover : orderThreeSide ∪ orderFourSide = Set.univ
   bandParameter : SphereSixComplex.Periods.Parameters
   bandFullRank : FullRank bandParameter
   bandHomotopyEquiv :
-    (orderThreeSide ∩ orderFourSide : Set A.SectionSevenEllipticInterior) ≃ₕ
+    (orderThreeSide ∩ orderFourSide : Set A.ellipticInterior) ≃ₕ
       AdditiveTorus bandParameter
   orderThreeSideHomotopyEquiv :
     orderThreeSide ≃ₕ OrderThreeReducedCentralFiber A.periods
@@ -82,14 +82,14 @@ public structure SectionSevenEllipticTwoDiscCoverData where
           ⟨bandToOrderFourCoverSource,
             bandToOrderFourCoverSource.continuous⟩ |>.comp bandHomotopyEquiv.toFun)
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
-variable {A : PaperAnalyticData} (D : A.SectionSevenEllipticTwoDiscCoverData)
+variable {A : PaperAnalyticData} (D : A.EllipticTwoDiscCoverData)
 
 /-- The homology basis change from the actual band overlap to its selected regular fibre. -/
 public noncomputable def bandHomologyEquiv (k : ℕ) :
     IntegralSingularHomology k
-        (D.orderThreeSide ∩ D.orderFourSide : Set A.SectionSevenEllipticInterior) ≃+
+        (D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior) ≃+
       IntegralSingularHomology k (AdditiveTorus D.bandParameter) :=
   integralSingularHomologyEquivOfHomotopyEquiv k D.bandHomotopyEquiv
 
@@ -156,7 +156,7 @@ Mayer--Vietoris difference map is the pair of finite-cover projection maps, with
 minus sign on the order-four side. -/
 public theorem differenceMap_conjugacy (k : ℕ)
     (x : IntegralSingularHomology k
-      (D.orderThreeSide ∩ D.orderFourSide : Set A.SectionSevenEllipticInterior)) :
+      (D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior)) :
     D.sideHomologyEquiv k
         (IntegralMayerVietoris.differenceMap
           D.orderThreeSide D.orderFourSide k x) =
@@ -196,7 +196,7 @@ public theorem differenceMap_conjugacy (k : ℕ)
 /-- Degree-one specialization of `differenceMap_conjugacy`. -/
 public theorem differenceMap_one_conjugacy
     (x : IntegralSingularHomology 1
-      (D.orderThreeSide ∩ D.orderFourSide : Set A.SectionSevenEllipticInterior)) :
+      (D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior)) :
     D.sideHomologyEquiv 1
         (IntegralMayerVietoris.differenceMap
           D.orderThreeSide D.orderFourSide 1 x) =
@@ -209,7 +209,7 @@ public theorem differenceMap_one_conjugacy
 /-- Degree-two specialization of `differenceMap_conjugacy`. -/
 public theorem differenceMap_two_conjugacy
     (x : IntegralSingularHomology 2
-      (D.orderThreeSide ∩ D.orderFourSide : Set A.SectionSevenEllipticInterior)) :
+      (D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior)) :
     D.sideHomologyEquiv 2
         (IntegralMayerVietoris.differenceMap
           D.orderThreeSide D.orderFourSide 2 x) =
@@ -219,7 +219,7 @@ public theorem differenceMap_two_conjugacy
           (D.bandHomologyEquiv 2 x)) :=
   D.differenceMap_conjugacy 2 x
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end Geometry.PaperAnalyticData
 

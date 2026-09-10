@@ -49,7 +49,7 @@ public theorem star_hasIntegralHomologyOfSixSphere
   let _ := P.biholomorphicFourPieceStarData.complexCharts
   let hComplex : GluingAtlasCompatible
       (I := modelWithCornersSelf ℂ ComplexModel) (n := ∞) D :=
-    EstablishedBiholomorphicStarGluing.establishedFourPieceBiholomorphicGluingAtlasCompatible
+    BiholomorphicStarGluing.BiholomorphicFourPieceStarData.gluing_atlas_compatible
       A P.fourPieceStarGluingData_nonemptyCentralCollar
         P.biholomorphicFourPieceStarData
   let _ : ChartedSpace ComplexModel (GluedSpace D) := gluedChartedSpace D
@@ -72,7 +72,7 @@ public theorem star_hasIntegralHomologyOfSixSphere
 Euler-characteristic input in the Section 7 homology calculation. -/
 public theorem star_hasIntegralHomologyOfSixSphere_of_localModels
     (H : P.openEmbeddingStarData.SectionSevenMayerVietorisHomologyAssembly)
-    (M : P.SectionSevenLocalEulerModels)
+    (M : P.LocalEulerModels)
     (hTop : P.openEmbeddingStarData.SectionSevenStageTopDegreeVanishing) :
     HasIntegralHomologyOfSixSphere
       (GluedSpace P.openEmbeddingStarData.toFourPieceStarGluingData.glueData) := by
@@ -86,7 +86,7 @@ geometric local models assemble directly into the paper's complete gluing packag
     (vanKampen : Topology.HasVanKampenData
       (GluedSpace P.openEmbeddingStarData.toFourPieceStarGluingData.glueData) 0 1 (-1))
     (H : P.openEmbeddingStarData.SectionSevenMayerVietorisHomologyAssembly)
-    (M : P.SectionSevenLocalEulerModels)
+    (M : P.LocalEulerModels)
     (hTop : P.openEmbeddingStarData.SectionSevenStageTopDegreeVanishing) :
     SphereSixComplex.PaperGluingData :=
   P.toPaperGluingData vanKampen
@@ -97,8 +97,8 @@ from the actual analytic star rather than from an input. -/
 public noncomputable def toPaperGluingData_of_positiveDegreeAndLocalModels
     (vanKampen : Topology.HasVanKampenData
       (GluedSpace P.openEmbeddingStarData.toFourPieceStarGluingData.glueData) 0 1 (-1))
-    (H : P.SectionSevenPositiveDegreeHomologyAssembly)
-    (M : P.SectionSevenLocalEulerModels)
+    (H : P.PositiveDegreeHomologyAssembly)
+    (M : P.LocalEulerModels)
     (hTop : P.openEmbeddingStarData.SectionSevenStageTopDegreeVanishing) :
     SphereSixComplex.PaperGluingData :=
   P.toPaperGluingData_of_sectionSevenLocalModels vanKampen
@@ -109,11 +109,11 @@ Mayer--Vietoris calculation and van Kampen datum remain. -/
 public noncomputable def toPaperGluingData_of_positiveDegree
     (vanKampen : Topology.HasVanKampenData
       (GluedSpace P.openEmbeddingStarData.toFourPieceStarGluingData.glueData) 0 1 (-1))
-    (H : P.SectionSevenPositiveDegreeHomologyAssembly)
+    (H : P.PositiveDegreeHomologyAssembly)
     (hTop : P.openEmbeddingStarData.SectionSevenStageTopDegreeVanishing) :
     SphereSixComplex.PaperGluingData :=
   P.toPaperGluingData_of_positiveDegreeAndLocalModels vanKampen H
-    P.sectionSevenLocalEulerModels hTop
+    P.localEulerModels hTop
 
 end PaperAnalyticData
 

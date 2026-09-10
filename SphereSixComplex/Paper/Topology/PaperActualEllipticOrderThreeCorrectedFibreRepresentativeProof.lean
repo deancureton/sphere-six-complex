@@ -17,38 +17,38 @@ open SphereSixComplex.TriangleGroup
 variable (A : PaperAnalyticData)
 
 /-- The literal global period loop carrying the corrected order-three `epsilon` label. -/
-public noncomputable def orderThreeActualCuspCorrectedEpsilonPeriodPath :
-    Path A.actualCuspCentralBase A.actualCuspCentralBase :=
-  A.actualCuspCentralPeriodLoop
+public noncomputable def ellipticThreeCuspCorrectedEpsilonPeriodPath :
+    Path A.cuspCentralBase A.cuspCentralBase :=
+  A.cuspCentralPeriodLoop
     (rhoLambda ((g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent) epsilon)
 
 /-- The corrected literal period path has exactly the marked affine-core translation class. -/
-public theorem orderThreeActualCuspCorrectedEpsilonPeriodPath_class :
-    Path.Homotopic.Quotient.mk A.orderThreeActualCuspCorrectedEpsilonPeriodPath =
+public theorem ellipticThreeCuspCorrectedEpsilonPeriodPath_class :
+    Path.Homotopic.Quotient.mk A.ellipticThreeCuspCorrectedEpsilonPeriodPath =
       Additive.toMul (A.correctedActualCuspCentralTranslation epsilon) := by
-  unfold orderThreeActualCuspCorrectedEpsilonPeriodPath
+  unfold ellipticThreeCuspCorrectedEpsilonPeriodPath
     correctedActualCuspCentralTranslation
-  rw [← A.actualCuspCentralTranslation_eq_periodLoop]
+  rw [← A.cuspCentralTranslation_eq_periodLoop]
   rfl
 
 /-- A concrete global representative of the corrected order-three affine relator. -/
-public noncomputable def orderThreeActualCuspCorrectedGeometricRelatorPath :
-    Path A.actualCuspCentralBase A.actualCuspCentralBase :=
-  A.orderThreeActualCuspCorrectedEpsilonPeriodPath.trans
-    A.orderThreeActualCuspZeroSectionTriplePath
+public noncomputable def ellipticThreeCuspCorrectedGeometricRelatorPath :
+    Path A.cuspCentralBase A.cuspCentralBase :=
+  A.ellipticThreeCuspCorrectedEpsilonPeriodPath.trans
+    A.ellipticThreeCuspZeroSectionTriplePath
 
 /-- Transporting the concrete corrected representative to the displayed affine base gives the
 exact order-three expected relator, with no range-level choice of a lattice label. -/
-public theorem orderThreeActualCuspCorrectedGeometricRelatorPath_class :
-    A.actualCuspToCentralAffineBaseEquiv
+public theorem ellipticThreeCuspCorrectedGeometricRelatorPath_class :
+    A.cuspToCentralAffineBaseEquiv
         (Path.Homotopic.Quotient.mk
-          A.orderThreeActualCuspCorrectedGeometricRelatorPath) =
+          A.ellipticThreeCuspCorrectedGeometricRelatorPath) =
       A.orderThreeCentralExpectedRelator := by
-  rw [orderThreeActualCuspCorrectedGeometricRelatorPath,
+  rw [ellipticThreeCuspCorrectedGeometricRelatorPath,
     Path.Homotopic.Quotient.mk_trans,
-    A.orderThreeActualCuspZeroSectionTriplePath_class,
-    A.orderThreeActualCuspCorrectedEpsilonPeriodPath_class]
-  change A.actualCuspToCentralAffineBaseEquiv
+    A.ellipticThreeCuspZeroSectionTriplePath_class,
+    A.ellipticThreeCuspCorrectedEpsilonPeriodPath_class]
+  change A.cuspToCentralAffineBaseEquiv
       (A.geometricCentralRhoOne ^ 3 *
         Additive.toMul (A.correctedActualCuspCentralTranslation epsilon)) = _
   unfold orderThreeCentralExpectedRelator
@@ -56,9 +56,9 @@ public theorem orderThreeActualCuspCorrectedGeometricRelatorPath_class :
   have ht := A.centralAffineCorePiOneData_translation (-epsilon)
   congr 1
   calc
-    A.actualCuspToCentralAffineBaseEquiv
+    A.cuspToCentralAffineBaseEquiv
           (Additive.toMul (A.correctedActualCuspCentralTranslation epsilon)) =
-        (A.actualCuspToCentralAffineBaseEquiv
+        (A.cuspToCentralAffineBaseEquiv
           (Additive.toMul (A.correctedActualCuspCentralTranslation (-epsilon))))⁻¹ := by
             rw [map_neg, toMul_neg, map_inv]
             simp
@@ -70,7 +70,7 @@ public theorem orderThreeActualCuspCorrectedGeometricRelatorPath_class :
 free-homotopy reduction. -/
 public noncomputable def orderThreeCentralAffineCorrectedGeometricRelatorPath :
     Path A.centralAffineBase A.centralAffineBase :=
-  A.orderThreeActualCuspCorrectedGeometricRelatorPath.cast
+  A.ellipticThreeCuspCorrectedGeometricRelatorPath.cast
     A.centralAffineBase_eq_actualCuspCentralBase
     A.centralAffineBase_eq_actualCuspCentralBase
 
@@ -80,8 +80,8 @@ public theorem orderThreeCentralAffineCorrectedGeometricRelatorPath_class :
       A.orderThreeCentralExpectedRelator := by
   unfold orderThreeCentralAffineCorrectedGeometricRelatorPath
   rw [Path.Homotopic.Quotient.mk_cast]
-  rw [← A.orderThreeActualCuspCorrectedGeometricRelatorPath_class]
-  unfold actualCuspToCentralAffineBaseEquiv
+  rw [← A.ellipticThreeCuspCorrectedGeometricRelatorPath_class]
+  unfold cuspToCentralAffineBaseEquiv
   rw [SphereSixComplex.Topology.fundamentalGroupMulEquivOfEq_apply]
 
 end SphereSixComplex.Geometry.PaperAnalyticData

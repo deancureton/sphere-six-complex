@@ -42,30 +42,30 @@ public noncomputable def cuspAngularCollarLoop :
     exact (additiveCuspBoundaryProjection A.starCuspWitness).continuous.comp
       A.cuspAngularLiftPath.continuous
   · apply A.cuspCollarToStarOverlapHomeomorph.injective
-    change A.actualCuspBoundaryProjection (A.cuspAngularLiftPoint 1) =
-      A.actualCuspBoundaryProjection (A.cuspAngularLiftPoint 0)
+    change A.cuspBoundaryProjection (A.cuspAngularLiftPoint 1) =
+      A.cuspBoundaryProjection (A.cuspAngularLiftPoint 0)
     exact A.cuspAngularProjectedLoop.target.trans
       A.cuspAngularProjectedLoop.source.symm
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
-variable (D : A.SectionSevenEllipticTwoDiscCoverData)
+variable (D : A.EllipticTwoDiscCoverData)
 
 /-- On every additive cusp-cover point, the full central-family point underlying the elliptic
 inclusion is the literal cusp-overlap chart point. -/
 public theorem
     sectionSevenEllipticCentralPoint_cuspToEllipticInteriorMap_additivePoint
     (p : additiveCuspRadiusCover A.starCuspWitness.localWitness.radius) :
-    A.sectionSevenEllipticCentralImageHomeomorph
+    A.ellipticCentralImageHomeomorph
       ⟨D.cuspToEllipticInteriorMap
           (additiveCuspBoundaryProjection A.starCuspWitness p),
         D.cuspToEllipticInteriorMap_mem_centralImage
           (additiveCuspBoundaryProjection A.starCuspWitness p)⟩ =
-      A.actualCuspOverlapToCentral (A.actualCuspBoundaryProjection p) := by
+      A.cuspOverlapToCentral (A.cuspBoundaryProjection p) := by
   apply A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph.injective
   apply Subtype.ext
   rw [A.centralToSectionSevenEulerPiece_centralImage,
-    A.actualCuspOverlapToCentral_boundaryProjection]
+    A.cuspOverlapToCentral_boundaryProjection]
   have hglobal :
       additiveCuspCoverToGlobal A.starCuspWitness p =
         A.starToCentral 0 (additiveCuspBoundaryProjection A.starCuspWitness p) := by
@@ -79,7 +79,7 @@ public theorem
         (additiveCuspBoundaryProjection A.starCuspWitness p),
       D.cuspToEllipticInteriorMap_mem_centralImage
         (additiveCuspBoundaryProjection A.starCuspWitness p)⟩ :
-          A.sectionSevenEllipticCentralImage) =
+          A.ellipticCentralImage) =
         A.openEmbeddingStarData.collarSourceToGlued 0
           (additiveCuspBoundaryProjection A.starCuspWitness p) := rfl
     _ = (A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
@@ -93,7 +93,7 @@ public theorem
 public theorem
     sectionSevenEllipticCentralPoint_cuspToEllipticInteriorMap_actualCuspAngularCollarPoint
     (t : unitInterval) :
-    A.sectionSevenEllipticCentralImageHomeomorph
+    A.ellipticCentralImageHomeomorph
       ⟨D.cuspToEllipticInteriorMap (A.cuspAngularCollarPoint t),
         D.cuspToEllipticInteriorMap_mem_centralImage
           (A.cuspAngularCollarPoint t)⟩ =
@@ -105,16 +105,16 @@ public theorem
 /-- The image of the actual angular collar loop, retained as a loop in the elliptic central
 image rather than merely in the whole elliptic interior. -/
 public noncomputable def actualCuspAngularEllipticCentralImageLoop :
-    let x : A.sectionSevenEllipticCentralImage :=
+    let x : A.ellipticCentralImage :=
       ⟨D.cuspToEllipticInteriorMap (A.cuspAngularCollarPoint 0),
         D.cuspToEllipticInteriorMap_mem_centralImage
           (A.cuspAngularCollarPoint 0)⟩
     Path x x := by
-  let x : A.sectionSevenEllipticCentralImage :=
+  let x : A.ellipticCentralImage :=
     ⟨D.cuspToEllipticInteriorMap (A.cuspAngularCollarPoint 0),
       D.cuspToEllipticInteriorMap_mem_centralImage
         (A.cuspAngularCollarPoint 0)⟩
-  let f : unitInterval → A.sectionSevenEllipticCentralImage := fun t ↦
+  let f : unitInterval → A.ellipticCentralImage := fun t ↦
     ⟨D.cuspToEllipticInteriorMap (A.cuspAngularCollarPoint t),
       D.cuspToEllipticInteriorMap_mem_centralImage
         (A.cuspAngularCollarPoint t)⟩
@@ -146,7 +146,7 @@ public theorem actualCuspAngularEllipticCentralImageLoop_inclusion :
 loop, including its based-loop endpoint normalization. -/
 public theorem actualCuspAngularEllipticCentralImageLoop_map :
     ((D.actualCuspAngularEllipticCentralImageLoop.map
-      A.sectionSevenEllipticCentralImageHomeomorph.continuous).cast
+      A.ellipticCentralImageHomeomorph.continuous).cast
         ((D.sectionSevenEllipticCentralPoint_cuspToEllipticInteriorMap_actualCuspAngularCollarPoint
           0).trans A.cuspAngularCentralLoop.source).symm
         ((D.sectionSevenEllipticCentralPoint_cuspToEllipticInteriorMap_actualCuspAngularCollarPoint
@@ -161,15 +161,15 @@ public theorem actualCuspAngularEllipticCentralImageLoop_map :
 central loop. -/
 public theorem actualCuspAngularEllipticCentralImageLoop_homology :
     integralSingularHomologyMap 1
-      (⟨A.sectionSevenEllipticCentralImageHomeomorph,
-        A.sectionSevenEllipticCentralImageHomeomorph.continuous⟩ :
-          C(A.sectionSevenEllipticCentralImage, A.CentralFamily))
+      (⟨A.ellipticCentralImageHomeomorph,
+        A.ellipticCentralImageHomeomorph.continuous⟩ :
+          C(A.ellipticCentralImage, A.CentralFamily))
       (loopHomologyClass D.actualCuspAngularEllipticCentralImageLoop) =
         loopHomologyClass A.cuspAngularCentralLoop := by
   rw [integralSingularHomologyMap_loopHomologyClass]
   rw [← loopHomologyClass_cast
     (D.actualCuspAngularEllipticCentralImageLoop.map
-      A.sectionSevenEllipticCentralImageHomeomorph.continuous)
+      A.ellipticCentralImageHomeomorph.continuous)
     ((D.sectionSevenEllipticCentralPoint_cuspToEllipticInteriorMap_actualCuspAngularCollarPoint
       0).trans A.cuspAngularCentralLoop.source).symm]
   rw [D.actualCuspAngularEllipticCentralImageLoop_map]
@@ -180,15 +180,15 @@ public theorem actualCuspAngularCollarLoop_homology_image :
     integralSingularHomologyMap 1 D.cuspToEllipticInteriorMap.hom
         (loopHomologyClass A.cuspAngularCollarLoop) =
       integralSingularHomologyMap 1
-        (⟨(fun x : A.sectionSevenEllipticCentralImage ↦ x.1),
-          continuous_subtype_val⟩ : C(_, A.SectionSevenEllipticInterior))
+        (⟨(fun x : A.ellipticCentralImage ↦ x.1),
+          continuous_subtype_val⟩ : C(_, A.ellipticInterior))
         (loopHomologyClass D.actualCuspAngularEllipticCentralImageLoop) := by
   rw [integralSingularHomologyMap_loopHomologyClass,
     integralSingularHomologyMap_loopHomologyClass]
   exact congrArg loopHomologyClass
     D.actualCuspAngularEllipticCentralImageLoop_inclusion.symm
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

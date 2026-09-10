@@ -18,7 +18,7 @@ public theorem establishedFourPieceMayerVietorisExactness
     {X : Type} [TopologicalSpace X] (C : FourPieceOpenCover X) :
     FourPieceMayerVietorisExactness C := by
   intro r
-  exact establishedIntegralMayerVietorisExactSequence _ _
+  exact IntegralMayerVietoris.exact_sequence_of_isOpen _ _
     (C.isOpen_stage r.castSucc) (C.isOpen_piece r.succ)
 
 /-- A paper-specific comparison quasi-isomorphism, together with the established open-cover

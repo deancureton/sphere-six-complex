@@ -10,7 +10,7 @@ open scoped ContinuousMap
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 open SphereSixComplex.Topology SphereSixComplex.StandardTorusHomology
 open CuspPuncturedCollarBridge CuspRadialClutchingConstruction
-open CuspLocalPhaseAction StandardInfiniteA2ToricModel
+open CuspLocalPhaseAction InfiniteA2Toric
 
 public def fourthToricCircle : C(UnitAddCircle, DenseTorus) where
   toFun z := ![1, CircleExponential.toUnits z, 1]
@@ -129,7 +129,7 @@ public theorem cuspFourthSweep_filling_factor (A : PaperAnalyticData) :
     exact ht.symm
   rw [hz]
   change puncturedLocalCuspToFilling A.starCuspWitness (cuspFourthSweep A _) = _
-  rw [cuspFourthSweep_real, actualCuspFullFibreSlice_fourthCircle_real,
+  rw [cuspFourthSweep_real, cuspFullFibreSlice_fourthCircle_real,
     additiveCuspCoverSquare_commutes]
   change _ = actualCuspFillingProjection A.starCuspWitness (fourthSweepToricLift A _)
   rw [fourthSweepToricLift_real]

@@ -23,7 +23,7 @@ variable (A : PaperAnalyticData)
 /-- The final positive-degree cusp-attachment identifications that remain after the canonical
 `H₀` calculation.  No field describes the homology of the completed star.  The paper's earlier
 `α₁` and `α₂` calculation uses a separate two-set cover. -/
-public structure SectionSevenPositiveDegreeHomologyAssembly where
+public structure PositiveDegreeHomologyAssembly where
   finalOneSource :
     IntegralSingularHomology 1
         ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4) ∩
@@ -59,11 +59,11 @@ public structure SectionSevenPositiveDegreeHomologyAssembly where
         ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3) 2 x) =
       sectionSevenMayerVietorisFinalTwoHom (finalTwoSource x)
 
-namespace SectionSevenPositiveDegreeHomologyAssembly
+namespace PositiveDegreeHomologyAssembly
 
 /-- Insert the proved canonical degree-zero bases and compatibility square. -/
 public noncomputable def toSectionSevenMayerVietorisHomologyAssembly
-    (H : A.SectionSevenPositiveDegreeHomologyAssembly) :
+    (H : A.PositiveDegreeHomologyAssembly) :
     A.openEmbeddingStarData.SectionSevenMayerVietorisHomologyAssembly where
   pieceModel i k := AddCommGrpCat.of
     (IntegralSingularHomology k
@@ -76,9 +76,9 @@ public noncomputable def toSectionSevenMayerVietorisHomologyAssembly
     (IntegralSingularHomology k
       ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage r.castSucc))
   stageEquiv _ _ := AddEquiv.refl _
-  finalZeroSource := A.sectionSevenFinalZeroSource
-  finalZeroTarget := A.sectionSevenFinalZeroTarget
-  finalZero_comm := A.sectionSevenFinalZero_comm
+  finalZeroSource := A.cuspAttachmentOverlapHomologyZeroEquiv
+  finalZeroTarget := A.cuspAttachmentSidesHomologyZeroEquiv
+  finalZero_comm := A.cuspAttachment_differenceMap_zero_coordinates
   finalOneSource := H.finalOneSource
   finalOneTarget := H.finalOneTarget
   finalOne_comm := H.finalOne_comm
@@ -86,6 +86,6 @@ public noncomputable def toSectionSevenMayerVietorisHomologyAssembly
   finalTwoTarget := H.finalTwoTarget
   finalTwo_comm := H.finalTwo_comm
 
-end SectionSevenPositiveDegreeHomologyAssembly
+end PositiveDegreeHomologyAssembly
 
 end SphereSixComplex.Geometry.PaperAnalyticData

@@ -5,9 +5,9 @@ public import SphereSixComplex.Paper.Topology.ConstructedPositiveLogCoordinates
 @[expose] public section
 noncomputable section
 open Set Topology
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Periods CuspFilling CuspLocalPhaseAction CuspPuncturedCollarBridge
-open CuspPeriodExpansion StandardInfiniteA2ToricModel.Construction
+open CuspPeriodExpansion InfiniteA2Toric.Construction
 variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
@@ -70,4 +70,4 @@ theorem constructedPositiveInteriorProjection_isQuotientMap
     (constructedPositiveInteriorProjection_continuous W)
     (constructedPositiveInteriorProjection_surjective W)
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric

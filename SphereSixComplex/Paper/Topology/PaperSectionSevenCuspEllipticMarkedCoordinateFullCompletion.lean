@@ -19,9 +19,9 @@ open AlgebraicTopology
 
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 
-open SectionSevenEllipticInteriorMarkedCycleData
-open SectionSevenEllipticTwoDiscCoverData
-open SectionSevenEllipticTwoDiscHomologyCoordinates
+open EllipticInteriorMarkedCycleData
+open EllipticTwoDiscCoverData
+open EllipticTwoDiscHomologyCoordinates
 
 variable {A : PaperAnalyticData}
 
@@ -29,7 +29,7 @@ namespace EstablishedSectionSevenCuspTopology
 
 /-- The canonical prism geometry obtained from the proved fibre-coordinate values. -/
 public noncomputable def cuspPrismGeometryOfExistingFiberValues
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (G₀ : R.twoDiscCover.SectionSevenCuspPulledBackBoundaryBasisBridge
       R.homologyAlignment)
     (hTop : R.twoDiscCover.CanonicalCuspFiberBandTopologicalCompatibility)
@@ -40,19 +40,19 @@ public noncomputable def cuspPrismGeometryOfExistingFiberValues
   intro i hi4 hi5
   fin_cases i
   · rw [← cuspMappingTorusToEllipticInteriorMap_basis]
-    simpa [actualCuspEllipticDegreeTwoFiberRawCoordinate] using congrFun
+    simpa [cuspEllipticDegreeTwoFiberRawCoordinate] using congrFun
       (affineActualCuspDegreeTwoFiberBasis_scalarValues R
         (R.twoDiscCover.cuspNormalizedDegreeTwoSplitting R.homologyAlignment G₀) hTop) 0
   · rw [← cuspMappingTorusToEllipticInteriorMap_basis]
-    simpa [actualCuspEllipticDegreeTwoFiberRawCoordinate] using congrFun
+    simpa [cuspEllipticDegreeTwoFiberRawCoordinate] using congrFun
       (affineActualCuspDegreeTwoFiberBasis_scalarValues R
         (R.twoDiscCover.cuspNormalizedDegreeTwoSplitting R.homologyAlignment G₀) hTop) 1
   · rw [← cuspMappingTorusToEllipticInteriorMap_basis]
-    simpa [actualCuspEllipticDegreeTwoFiberRawCoordinate] using congrFun
+    simpa [cuspEllipticDegreeTwoFiberRawCoordinate] using congrFun
       (affineActualCuspDegreeTwoFiberBasis_scalarValues R
         (R.twoDiscCover.cuspNormalizedDegreeTwoSplitting R.homologyAlignment G₀) hTop) 2
   · rw [← cuspMappingTorusToEllipticInteriorMap_basis]
-    simpa [actualCuspEllipticDegreeTwoFiberRawCoordinate] using congrFun
+    simpa [cuspEllipticDegreeTwoFiberRawCoordinate] using congrFun
       (affineActualCuspDegreeTwoFiberBasis_scalarValues R
         (R.twoDiscCover.cuspNormalizedDegreeTwoSplitting R.homologyAlignment G₀) hTop) 3
   · exact (hi4 rfl).elim
@@ -61,7 +61,7 @@ public noncomputable def cuspPrismGeometryOfExistingFiberValues
 /-- The complete marked-coordinate calculation follows from the topological cusp--band square,
 the meridian projection, and normalization of the first invariant-suspension prism. -/
 public theorem actualCuspFiberEllipticMarkedCoordinateCalculation_of_existingGeometry
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (G₀ : R.twoDiscCover.SectionSevenCuspPulledBackBoundaryBasisBridge
       R.homologyAlignment)
     (hTop : R.twoDiscCover.CanonicalCuspFiberBandTopologicalCompatibility)
@@ -85,11 +85,11 @@ public theorem actualCuspFiberEllipticMarkedCoordinateCalculation_of_existingGeo
   refine { degreeOne := ?_, degreeTwoFiberCoinvariant := ?_, degreeTwoIndexFour := ?_ }
   · intro i
     fin_cases i
-    · simpa [SectionSevenEllipticTwoDiscCoverData.ellipticInteriorDegreeOneCoordinateHom,
-        coordinateAfterAddEquiv_apply, actualCuspEllipticDegreeOneRawCoordinate] using congrFun
+    · simpa [EllipticTwoDiscCoverData.ellipticInteriorDegreeOneCoordinateHom,
+        coordinateAfterAddEquiv_apply, cuspEllipticDegreeOneRawCoordinate] using congrFun
         (affineActualCuspDegreeOneFiberBasis_scalarValues R hTop) 0
-    · simpa [SectionSevenEllipticTwoDiscCoverData.ellipticInteriorDegreeOneCoordinateHom,
-        coordinateAfterAddEquiv_apply, actualCuspEllipticDegreeOneRawCoordinate] using congrFun
+    · simpa [EllipticTwoDiscCoverData.ellipticInteriorDegreeOneCoordinateHom,
+        coordinateAfterAddEquiv_apply, cuspEllipticDegreeOneRawCoordinate] using congrFun
         (affineActualCuspDegreeOneFiberBasis_scalarValues R hTop) 1
     · have h := DFunLike.congr_fun M.degreeOne
           (A.actualCuspRadialClutchingData.geometricWangSections
@@ -110,7 +110,7 @@ public theorem actualCuspFiberEllipticMarkedCoordinateCalculation_of_existingGeo
       (G.geometricWangSections.circleMappingTorusHTwoAddEquiv.symm
         (Pi.single (4 : Fin 6) 1))
     simpa [actualCuspEllipticDegreeTwoFiberCoordinateAfterAddEquiv,
-      actualCuspEllipticDegreeTwoFiberRawCoordinate, AddMonoidHom.comp_apply] using h
+      cuspEllipticDegreeTwoFiberRawCoordinate, AddMonoidHom.comp_apply] using h
 
 end EstablishedSectionSevenCuspTopology
 

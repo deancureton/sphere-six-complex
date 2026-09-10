@@ -13,11 +13,11 @@ public import SphereSixComplex.Paper.Geometry.StandardInfiniteA2ToricCarrierGeom
 
 @[expose] public section
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricQuantitativeRegions
+namespace SphereSixComplex.Geometry.InfiniteA2Toric.QuantitativeRegions
 
 open SphereSixComplex.Geometry.CuspCombinatorics
 open SphereSixComplex.Geometry.CuspFilling
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
+open SphereSixComplex.Geometry.InfiniteA2Toric
 
 /-- Barycentric coordinates of the two standard `A₂` triangles based at an integral vertex. -/
 public def a2Barycentric
@@ -76,4 +76,4 @@ public theorem log_norm_evaluateCharacter (m : FanLattice) (x : DenseTorus) :
   norm_num
   ring
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricQuantitativeRegions
+end SphereSixComplex.Geometry.InfiniteA2Toric.QuantitativeRegions

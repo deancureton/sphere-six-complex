@@ -72,11 +72,11 @@ public theorem integralSingularHomologyMap_id {X : Type} [TopologicalSpace X] (k
 namespace Geometry.PaperAnalyticData
 
 open CircleMappingTorusHomologyBases
-open SectionSevenEllipticTwoDiscHomologyCoordinates
-open SectionSevenEllipticInteriorMarkedCycleData
-open SectionSevenEllipticTwoDiscCoverData
+open EllipticTwoDiscHomologyCoordinates
+open EllipticInteriorMarkedCycleData
+open EllipticTwoDiscCoverData
 
-variable {A : PaperAnalyticData} {D : A.SectionSevenEllipticTwoDiscCoverData}
+variable {A : PaperAnalyticData} {D : A.EllipticTwoDiscCoverData}
   {N : A.EllipticBandHomologyAlignment D}
   {G₀ : D.SectionSevenCuspPulledBackBoundaryBasisBridge N}
 
@@ -193,7 +193,7 @@ public noncomputable def cuspEllipticMappingTorusMeridianProjectionComparison_of
       actualCuspEllipticDegreeOneCoordinateAfterAddEquiv
         G.geometricWangSections.circleMappingTorusHOneAddEquiv) :
     D.CuspEllipticMappingTorusMeridianProjectionComparison N where
-  Base := A.SectionSevenEllipticInterior
+  Base := A.ellipticInterior
   baseTopology := inferInstance
   baseCoordinate := D.ellipticInteriorDegreeOneCoordinateHom N
   sourceProjection :=
@@ -220,7 +220,7 @@ public noncomputable def cuspEllipticMappingTorusPrismGeometricData_of_fiberCoin
         (D.cuspNormalizedDegreeTwoSplitting N G₀))
           (integralSingularHomologyMap 2 D.cuspToEllipticInteriorMap.hom
             (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1))) 0 =
-        actualCuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1)) :
+        cuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1)) :
     D.CuspEllipticMappingTorusPrismGeometricData N G₀ := by
   classical
   let G := A.actualCuspRadialClutchingData
@@ -240,7 +240,7 @@ public noncomputable def cuspEllipticMappingTorusPrismGeometricData_of_fiberCoin
   by_cases h5 : i = 5
   · subst h5
     rw [cuspMappingTorusBasisCycle_map_homologyClass_five (N := N) (G₀ := G₀)]
-    simp [actualCuspEllipticDegreeTwoFiberRawCoordinate]
+    simp [cuspEllipticDegreeTwoFiberRawCoordinate]
   rw [cuspMappingTorusBasisCycle_map_homologyClass]
   apply (N.actualHomologyCoordinates.normalizedEllipticInteriorHomologyTwoEquiv
     (D.cuspNormalizedDegreeTwoSplitting N G₀)).injective
@@ -268,7 +268,7 @@ public noncomputable def cuspEllipticMappingTorusPrismGeometricData_of_coordinat
         (D.cuspNormalizedDegreeTwoSplitting N G₀))
           (integralSingularHomologyMap 2 D.cuspToEllipticInteriorMap.hom
             (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1))) 0 =
-        actualCuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1)) :
+        cuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1)) :
     D.CuspEllipticMappingTorusPrismGeometricData N G₀ :=
   cuspEllipticMappingTorusPrismGeometricData_of_fiberCoinvariantValues
     (cuspEllipticMappingTorusMeridianProjectionComparison_of_degreeOne hOne) hTwo
@@ -276,7 +276,7 @@ public noncomputable def cuspEllipticMappingTorusPrismGeometricData_of_coordinat
 /-- The Section 7 cusp package in the exact shape used by the affine radial completion, given the
 two residual geometric coordinate identities. -/
 public noncomputable def cuspEllipticMappingTorusPrismGeometricData_proved_of_coordinateIdentities
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (G₀ : R.twoDiscCover.SectionSevenCuspPulledBackBoundaryBasisBridge
       R.homologyAlignment)
     (hOne : (R.twoDiscCover.ellipticInteriorDegreeOneCoordinateHom R.homologyAlignment).comp
@@ -292,7 +292,7 @@ public noncomputable def cuspEllipticMappingTorusPrismGeometricData_proved_of_co
           G₀))
           (integralSingularHomologyMap 2 R.twoDiscCover.cuspToEllipticInteriorMap.hom
             (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1))) 0 =
-        actualCuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1)) :
+        cuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1)) :
     R.twoDiscCover.CuspEllipticMappingTorusPrismGeometricData R.homologyAlignment
       G₀ :=
   cuspEllipticMappingTorusPrismGeometricData_of_coordinateIdentities hOne hTwo

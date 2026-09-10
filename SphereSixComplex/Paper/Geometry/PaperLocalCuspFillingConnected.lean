@@ -16,7 +16,7 @@ open TopologicalSpace Topology
 namespace SphereSixComplex.Geometry
 
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
-open StandardInfiniteA2ToricModel CuspCombinatorics CuspFilling CuspLocalPhaseAction
+open InfiniteA2Toric CuspCombinatorics CuspFilling CuspLocalPhaseAction
 open CuspPuncturedCollarBridge CuspPhaseEstimates CuspPeriodExpansion
 
 noncomputable section

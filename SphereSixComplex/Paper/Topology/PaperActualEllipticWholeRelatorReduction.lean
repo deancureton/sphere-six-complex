@@ -44,116 +44,116 @@ public noncomputable def orderFourCentralExpectedRelator :
     (Additive.toMul (A.centralAffineCorePiOneData.translation epsilon'))⁻¹
 
 /-- The canonical order-three relator is the loop of the complete physical filling relation. -/
-public theorem orderThreeActualEllipticCanonicalRelator_eq_fillingRelationClass :
-    letI := A.orderThreeActualEllipticBoundaryAction
+public theorem ellipticThreeCanonicalRelator_eq_fillingRelationClass :
+    letI := A.ellipticThreeBoundaryAction
     letI : SimplyConnectedSpace
         (OpenRadialInterval A.starSeparation.orderThree.radius ×
           (ℝ × SphereSixComplex.Geometry.ComplexTorus.ComplexTwoSpace)) :=
-      A.orderThreeActualEllipticBoundaryCover_simplyConnected
-    A.orderThreeActualEllipticCanonicalRelator =
+      A.ellipticThreeBoundaryCover_simplyConnected
+    A.ellipticThreeCanonicalRelator =
       fundamentalGroupElementOfBaseEq
-        A.orderThreeActualEllipticCanonicalChosenCover_boundaryBase_eq
-        (ofDeck A.orderThreeActualEllipticBoundaryProjection_isQuotientCoveringMap
-          A.orderThreeActualEllipticBoundaryBase
-          A.orderThreeActualEllipticBoundaryDeckData.fillingRelation) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+        A.ellipticThreeCanonicalChosenCover_boundaryBase_eq
+        (ofDeck A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
+          A.ellipticThreeBoundaryBase
+          A.ellipticThreeBoundaryDeckData.fillingRelation) := by
+  let _ := A.ellipticThreeBoundaryAction
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius ×
         (ℝ × SphereSixComplex.Geometry.ComplexTorus.ComplexTwoSpace)) :=
-    A.orderThreeActualEllipticBoundaryCover_simplyConnected
-  let hp := A.orderThreeActualEllipticBoundaryProjection_isQuotientCoveringMap
-  let D := A.orderThreeActualEllipticBoundaryDeckData
-  let hb := A.orderThreeActualEllipticCanonicalChosenCover_boundaryBase_eq
+    A.ellipticThreeBoundaryCover_simplyConnected
+  let hp := A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
+  let D := A.ellipticThreeBoundaryDeckData
+  let hb := A.ellipticThreeCanonicalChosenCover_boundaryBase_eq
   have hcomm : Commute D.meridian (Additive.toMul (D.translation D.twist)) := by
     rw [commute_iff_eq]
     have h := D.conjugate D.twist
     rw [D.twist_fixed] at h
     exact eq_mul_of_mul_inv_eq h
-  unfold orderThreeActualEllipticCanonicalRelator
-  rw [A.orderThreeActualEllipticCanonicalChosenCover_meridian_eq_ofDeck]
+  unfold ellipticThreeCanonicalRelator
+  rw [A.ellipticThreeCanonicalChosenCover_meridian_eq_ofDeck]
   simp only [fundamentalGroupAddHomOfBaseEq_apply, toMul_ofMul]
-  rw [A.orderThreeActualEllipticCanonicalChosenCover_translation_eq_ofDeck]
+  rw [A.ellipticThreeCanonicalChosenCover_translation_eq_ofDeck]
   change fundamentalGroupElementOfBaseEq hb
-          (ofDeck hp A.orderThreeActualEllipticBoundaryBase D.meridian) ^ 3 *
+          (ofDeck hp A.ellipticThreeBoundaryBase D.meridian) ^ 3 *
         (fundamentalGroupElementOfBaseEq hb
-          (ofDeck hp A.orderThreeActualEllipticBoundaryBase
+          (ofDeck hp A.ellipticThreeBoundaryBase
             (Additive.toMul (D.translation D.twist))))⁻¹ =
       fundamentalGroupElementOfBaseEq hb
-        (ofDeck hp A.orderThreeActualEllipticBoundaryBase D.fillingRelation)
+        (ofDeck hp A.ellipticThreeBoundaryBase D.fillingRelation)
   simp only [UnwrappedCyclicAffineBoundaryDeckData.fillingRelation,
     ofDeck_mul, ofDeck_pow, ofDeck_inv]
-  have hloop := ofDeck_mul_comm hp A.orderThreeActualEllipticBoundaryBase
+  have hloop := ofDeck_mul_comm hp A.ellipticThreeBoundaryBase
     (hcomm.pow_left 3).inv_right.eq
   have hloop' :
-      ofDeck hp A.orderThreeActualEllipticBoundaryBase D.meridian ^ 3 *
-          (ofDeck hp A.orderThreeActualEllipticBoundaryBase
+      ofDeck hp A.ellipticThreeBoundaryBase D.meridian ^ 3 *
+          (ofDeck hp A.ellipticThreeBoundaryBase
             (Additive.toMul (D.translation D.twist)))⁻¹ =
-        (ofDeck hp A.orderThreeActualEllipticBoundaryBase
+        (ofDeck hp A.ellipticThreeBoundaryBase
             (Additive.toMul (D.translation D.twist)))⁻¹ *
-          ofDeck hp A.orderThreeActualEllipticBoundaryBase D.meridian ^ 3 := by
+          ofDeck hp A.ellipticThreeBoundaryBase D.meridian ^ 3 := by
     simpa only [ofDeck_pow, ofDeck_inv] using hloop
   calc
     _ = fundamentalGroupElementOfBaseEq hb
-        (ofDeck hp A.orderThreeActualEllipticBoundaryBase D.meridian ^ 3 *
-          (ofDeck hp A.orderThreeActualEllipticBoundaryBase
+        (ofDeck hp A.ellipticThreeBoundaryBase D.meridian ^ 3 *
+          (ofDeck hp A.ellipticThreeBoundaryBase
             (Additive.toMul (D.translation D.twist)))⁻¹) := by
       exact fundamentalGroupElementOfBaseEq_pow_mul_inv hb _ _ 3
     _ = _ := congrArg
       (fundamentalGroupElementOfBaseEq hb) hloop'
 
 /-- The canonical order-four relator is the loop of the complete physical filling relation. -/
-public theorem orderFourActualEllipticCanonicalRelator_eq_fillingRelationClass :
-    letI := A.orderFourActualEllipticBoundaryAction
+public theorem ellipticFourCanonicalRelator_eq_fillingRelationClass :
+    letI := A.ellipticFourBoundaryAction
     letI : SimplyConnectedSpace
         (OpenRadialInterval A.starSeparation.orderFour.radius ×
           (ℝ × SphereSixComplex.Geometry.ComplexTorus.ComplexTwoSpace)) :=
-      A.orderFourActualEllipticBoundaryCover_simplyConnected
-    A.orderFourActualEllipticCanonicalRelator =
+      A.ellipticFourBoundaryCover_simplyConnected
+    A.ellipticFourCanonicalRelator =
       fundamentalGroupElementOfBaseEq
-        A.orderFourActualEllipticCanonicalChosenCover_boundaryBase_eq
-        (ofDeck A.orderFourActualEllipticBoundaryProjection_isQuotientCoveringMap
-          A.orderFourActualEllipticBoundaryBase
-          A.orderFourActualEllipticBoundaryDeckData.fillingRelation) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+        A.ellipticFourCanonicalChosenCover_boundaryBase_eq
+        (ofDeck A.ellipticFourBoundaryProjection_isQuotientCoveringMap
+          A.ellipticFourBoundaryBase
+          A.ellipticFourBoundaryDeckData.fillingRelation) := by
+  let _ := A.ellipticFourBoundaryAction
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderFour.radius ×
         (ℝ × SphereSixComplex.Geometry.ComplexTorus.ComplexTwoSpace)) :=
-    A.orderFourActualEllipticBoundaryCover_simplyConnected
-  let hp := A.orderFourActualEllipticBoundaryProjection_isQuotientCoveringMap
-  let D := A.orderFourActualEllipticBoundaryDeckData
-  let hb := A.orderFourActualEllipticCanonicalChosenCover_boundaryBase_eq
+    A.ellipticFourBoundaryCover_simplyConnected
+  let hp := A.ellipticFourBoundaryProjection_isQuotientCoveringMap
+  let D := A.ellipticFourBoundaryDeckData
+  let hb := A.ellipticFourCanonicalChosenCover_boundaryBase_eq
   have hcomm : Commute D.meridian (Additive.toMul (D.translation D.twist)) := by
     rw [commute_iff_eq]
     have h := D.conjugate D.twist
     rw [D.twist_fixed] at h
     exact eq_mul_of_mul_inv_eq h
-  unfold orderFourActualEllipticCanonicalRelator
-  rw [A.orderFourActualEllipticCanonicalChosenCover_meridian_eq_ofDeck]
+  unfold ellipticFourCanonicalRelator
+  rw [A.ellipticFourCanonicalChosenCover_meridian_eq_ofDeck]
   simp only [fundamentalGroupAddHomOfBaseEq_apply, toMul_ofMul]
-  rw [A.orderFourActualEllipticCanonicalChosenCover_translation_eq_ofDeck]
+  rw [A.ellipticFourCanonicalChosenCover_translation_eq_ofDeck]
   change fundamentalGroupElementOfBaseEq hb
-          (ofDeck hp A.orderFourActualEllipticBoundaryBase D.meridian) ^ 4 *
+          (ofDeck hp A.ellipticFourBoundaryBase D.meridian) ^ 4 *
         (fundamentalGroupElementOfBaseEq hb
-          (ofDeck hp A.orderFourActualEllipticBoundaryBase
+          (ofDeck hp A.ellipticFourBoundaryBase
             (Additive.toMul (D.translation D.twist))))⁻¹ =
       fundamentalGroupElementOfBaseEq hb
-        (ofDeck hp A.orderFourActualEllipticBoundaryBase D.fillingRelation)
+        (ofDeck hp A.ellipticFourBoundaryBase D.fillingRelation)
   simp only [UnwrappedCyclicAffineBoundaryDeckData.fillingRelation,
     ofDeck_mul, ofDeck_pow, ofDeck_inv]
-  have hloop := ofDeck_mul_comm hp A.orderFourActualEllipticBoundaryBase
+  have hloop := ofDeck_mul_comm hp A.ellipticFourBoundaryBase
     (hcomm.pow_left 4).inv_right.eq
   have hloop' :
-      ofDeck hp A.orderFourActualEllipticBoundaryBase D.meridian ^ 4 *
-          (ofDeck hp A.orderFourActualEllipticBoundaryBase
+      ofDeck hp A.ellipticFourBoundaryBase D.meridian ^ 4 *
+          (ofDeck hp A.ellipticFourBoundaryBase
             (Additive.toMul (D.translation D.twist)))⁻¹ =
-        (ofDeck hp A.orderFourActualEllipticBoundaryBase
+        (ofDeck hp A.ellipticFourBoundaryBase
             (Additive.toMul (D.translation D.twist)))⁻¹ *
-          ofDeck hp A.orderFourActualEllipticBoundaryBase D.meridian ^ 4 := by
+          ofDeck hp A.ellipticFourBoundaryBase D.meridian ^ 4 := by
     simpa only [ofDeck_pow, ofDeck_inv] using hloop
   calc
     _ = fundamentalGroupElementOfBaseEq hb
-        (ofDeck hp A.orderFourActualEllipticBoundaryBase D.meridian ^ 4 *
-          (ofDeck hp A.orderFourActualEllipticBoundaryBase
+        (ofDeck hp A.ellipticFourBoundaryBase D.meridian ^ 4 *
+          (ofDeck hp A.ellipticFourBoundaryBase
             (Additive.toMul (D.translation D.twist)))⁻¹) := by
       exact fundamentalGroupElementOfBaseEq_pow_mul_inv hb _ _ 4
     _ = _ := congrArg
@@ -161,168 +161,168 @@ public theorem orderFourActualEllipticCanonicalRelator_eq_fillingRelationClass :
 
 /-- Equivalently, the order-three relator is represented by the straight complete-relation
 deck loop. -/
-public theorem orderThreeActualEllipticCanonicalRelator_eq_fillingRelationStraightLoop :
-    letI := A.orderThreeActualEllipticBoundaryAction
+public theorem ellipticThreeCanonicalRelator_eq_fillingRelationStraightLoop :
+    letI := A.ellipticThreeBoundaryAction
     letI : SimplyConnectedSpace
         (OpenRadialInterval A.starSeparation.orderThree.radius ×
           (ℝ × SphereSixComplex.Geometry.ComplexTorus.ComplexTwoSpace)) :=
-      A.orderThreeActualEllipticBoundaryCover_simplyConnected
-    A.orderThreeActualEllipticCanonicalRelator =
+      A.ellipticThreeBoundaryCover_simplyConnected
+    A.ellipticThreeCanonicalRelator =
       fundamentalGroupElementOfBaseEq
-        A.orderThreeActualEllipticCanonicalChosenCover_boundaryBase_eq
+        A.ellipticThreeCanonicalChosenCover_boundaryBase_eq
         (Path.Homotopic.Quotient.mk
-          (A.orderThreeActualEllipticBoundaryDeckStraightLoop
-            A.orderThreeActualEllipticBoundaryDeckData.fillingRelation)) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+          (A.ellipticThreeBoundaryDeckStraightLoop
+            A.ellipticThreeBoundaryDeckData.fillingRelation)) := by
+  let _ := A.ellipticThreeBoundaryAction
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius ×
         (ℝ × SphereSixComplex.Geometry.ComplexTorus.ComplexTwoSpace)) :=
-    A.orderThreeActualEllipticBoundaryCover_simplyConnected
+    A.ellipticThreeBoundaryCover_simplyConnected
   calc
-    A.orderThreeActualEllipticCanonicalRelator =
+    A.ellipticThreeCanonicalRelator =
         fundamentalGroupElementOfBaseEq
-          A.orderThreeActualEllipticCanonicalChosenCover_boundaryBase_eq
-          (ofDeck A.orderThreeActualEllipticBoundaryProjection_isQuotientCoveringMap
-            A.orderThreeActualEllipticBoundaryBase
-            A.orderThreeActualEllipticBoundaryDeckData.fillingRelation) :=
-      A.orderThreeActualEllipticCanonicalRelator_eq_fillingRelationClass
+          A.ellipticThreeCanonicalChosenCover_boundaryBase_eq
+          (ofDeck A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
+            A.ellipticThreeBoundaryBase
+            A.ellipticThreeBoundaryDeckData.fillingRelation) :=
+      A.ellipticThreeCanonicalRelator_eq_fillingRelationClass
     _ = _ := congrArg
       (fundamentalGroupElementOfBaseEq
-        A.orderThreeActualEllipticCanonicalChosenCover_boundaryBase_eq)
-      (A.orderThreeActualEllipticBoundaryDeckStraightLoop_class_eq_ofDeck
-        A.orderThreeActualEllipticBoundaryDeckData.fillingRelation).symm
+        A.ellipticThreeCanonicalChosenCover_boundaryBase_eq)
+      (A.ellipticThreeBoundaryDeckStraightLoop_class_eq_ofDeck
+        A.ellipticThreeBoundaryDeckData.fillingRelation).symm
 
 /-- Equivalently, the order-four relator is represented by the straight complete-relation
 deck loop. -/
-public theorem orderFourActualEllipticCanonicalRelator_eq_fillingRelationStraightLoop :
-    letI := A.orderFourActualEllipticBoundaryAction
+public theorem ellipticFourCanonicalRelator_eq_fillingRelationStraightLoop :
+    letI := A.ellipticFourBoundaryAction
     letI : SimplyConnectedSpace
         (OpenRadialInterval A.starSeparation.orderFour.radius ×
           (ℝ × SphereSixComplex.Geometry.ComplexTorus.ComplexTwoSpace)) :=
-      A.orderFourActualEllipticBoundaryCover_simplyConnected
-    A.orderFourActualEllipticCanonicalRelator =
+      A.ellipticFourBoundaryCover_simplyConnected
+    A.ellipticFourCanonicalRelator =
       fundamentalGroupElementOfBaseEq
-        A.orderFourActualEllipticCanonicalChosenCover_boundaryBase_eq
+        A.ellipticFourCanonicalChosenCover_boundaryBase_eq
         (Path.Homotopic.Quotient.mk
-          (A.orderFourActualEllipticBoundaryDeckStraightLoop
-            A.orderFourActualEllipticBoundaryDeckData.fillingRelation)) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+          (A.ellipticFourBoundaryDeckStraightLoop
+            A.ellipticFourBoundaryDeckData.fillingRelation)) := by
+  let _ := A.ellipticFourBoundaryAction
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderFour.radius ×
         (ℝ × SphereSixComplex.Geometry.ComplexTorus.ComplexTwoSpace)) :=
-    A.orderFourActualEllipticBoundaryCover_simplyConnected
+    A.ellipticFourBoundaryCover_simplyConnected
   calc
-    A.orderFourActualEllipticCanonicalRelator =
+    A.ellipticFourCanonicalRelator =
         fundamentalGroupElementOfBaseEq
-          A.orderFourActualEllipticCanonicalChosenCover_boundaryBase_eq
-          (ofDeck A.orderFourActualEllipticBoundaryProjection_isQuotientCoveringMap
-            A.orderFourActualEllipticBoundaryBase
-            A.orderFourActualEllipticBoundaryDeckData.fillingRelation) :=
-      A.orderFourActualEllipticCanonicalRelator_eq_fillingRelationClass
+          A.ellipticFourCanonicalChosenCover_boundaryBase_eq
+          (ofDeck A.ellipticFourBoundaryProjection_isQuotientCoveringMap
+            A.ellipticFourBoundaryBase
+            A.ellipticFourBoundaryDeckData.fillingRelation) :=
+      A.ellipticFourCanonicalRelator_eq_fillingRelationClass
     _ = _ := congrArg
       (fundamentalGroupElementOfBaseEq
-        A.orderFourActualEllipticCanonicalChosenCover_boundaryBase_eq)
-      (A.orderFourActualEllipticBoundaryDeckStraightLoop_class_eq_ofDeck
-        A.orderFourActualEllipticBoundaryDeckData.fillingRelation).symm
+        A.ellipticFourCanonicalChosenCover_boundaryBase_eq)
+      (A.ellipticFourBoundaryDeckStraightLoop_class_eq_ofDeck
+        A.ellipticFourBoundaryDeckData.fillingRelation).symm
 
 /-- The canonical order-three physical relator, viewed at the literal central overlap base. -/
-public noncomputable def orderThreeActualCanonicalRelatorInCentral :
-    FundamentalGroup A.CentralFamily A.orderThreeActualOverlapCentralBase :=
+public noncomputable def ellipticThreeCanonicalRelatorInCentral :
+    FundamentalGroup A.CentralFamily A.ellipticThreeOverlapCentralBase :=
   fundamentalGroupElementOfBaseEq (by rfl)
-    (FundamentalGroup.mapOfEq A.orderThreeActualOverlapToCentral rfl
-      A.orderThreeActualEllipticCanonicalRelator)
+    (FundamentalGroup.mapOfEq A.ellipticThreeOverlapToCentral rfl
+      A.ellipticThreeCanonicalRelator)
 
 /-- The canonical order-four physical relator, viewed at the literal central overlap base. -/
-public noncomputable def orderFourActualCanonicalRelatorInCentral :
-    FundamentalGroup A.CentralFamily A.orderFourActualOverlapCentralBase :=
+public noncomputable def ellipticFourCanonicalRelatorInCentral :
+    FundamentalGroup A.CentralFamily A.ellipticFourOverlapCentralBase :=
   fundamentalGroupElementOfBaseEq (by rfl)
-    (FundamentalGroup.mapOfEq A.orderFourActualOverlapToCentral rfl
-      A.orderFourActualEllipticCanonicalRelator)
+    (FundamentalGroup.mapOfEq A.ellipticFourOverlapToCentral rfl
+      A.ellipticFourCanonicalRelator)
 
 /-- Pointwise description of the order-three central relator as the mapped straight complete
 filling-relation loop. -/
-public theorem orderThreeActualCanonicalRelatorInCentral_eq_fillingRelationStraightLoop :
-    letI := A.orderThreeActualEllipticBoundaryAction
+public theorem ellipticThreeCanonicalRelatorInCentral_eq_fillingRelationStraightLoop :
+    letI := A.ellipticThreeBoundaryAction
     letI : SimplyConnectedSpace
         (OpenRadialInterval A.starSeparation.orderThree.radius ×
           (ℝ × SphereSixComplex.Geometry.ComplexTorus.ComplexTwoSpace)) :=
-      A.orderThreeActualEllipticBoundaryCover_simplyConnected
-    A.orderThreeActualCanonicalRelatorInCentral =
+      A.ellipticThreeBoundaryCover_simplyConnected
+    A.ellipticThreeCanonicalRelatorInCentral =
       fundamentalGroupElementOfBaseEq (by rfl)
-        (FundamentalGroup.mapOfEq A.orderThreeActualOverlapToCentral rfl
+        (FundamentalGroup.mapOfEq A.ellipticThreeOverlapToCentral rfl
           (fundamentalGroupElementOfBaseEq
-            A.orderThreeActualEllipticCanonicalChosenCover_boundaryBase_eq
+            A.ellipticThreeCanonicalChosenCover_boundaryBase_eq
             (Path.Homotopic.Quotient.mk
-              (A.orderThreeActualEllipticBoundaryDeckStraightLoop
-                A.orderThreeActualEllipticBoundaryDeckData.fillingRelation)))) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+              (A.ellipticThreeBoundaryDeckStraightLoop
+                A.ellipticThreeBoundaryDeckData.fillingRelation)))) := by
+  let _ := A.ellipticThreeBoundaryAction
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius ×
         (ℝ × SphereSixComplex.Geometry.ComplexTorus.ComplexTwoSpace)) :=
-    A.orderThreeActualEllipticBoundaryCover_simplyConnected
-  unfold orderThreeActualCanonicalRelatorInCentral
-  rw [A.orderThreeActualEllipticCanonicalRelator_eq_fillingRelationStraightLoop]
+    A.ellipticThreeBoundaryCover_simplyConnected
+  unfold ellipticThreeCanonicalRelatorInCentral
+  rw [A.ellipticThreeCanonicalRelator_eq_fillingRelationStraightLoop]
 
 /-- Pointwise description of the order-four central relator as the mapped straight complete
 filling-relation loop. -/
-public theorem orderFourActualCanonicalRelatorInCentral_eq_fillingRelationStraightLoop :
-    letI := A.orderFourActualEllipticBoundaryAction
+public theorem ellipticFourCanonicalRelatorInCentral_eq_fillingRelationStraightLoop :
+    letI := A.ellipticFourBoundaryAction
     letI : SimplyConnectedSpace
         (OpenRadialInterval A.starSeparation.orderFour.radius ×
           (ℝ × SphereSixComplex.Geometry.ComplexTorus.ComplexTwoSpace)) :=
-      A.orderFourActualEllipticBoundaryCover_simplyConnected
-    A.orderFourActualCanonicalRelatorInCentral =
+      A.ellipticFourBoundaryCover_simplyConnected
+    A.ellipticFourCanonicalRelatorInCentral =
       fundamentalGroupElementOfBaseEq (by rfl)
-        (FundamentalGroup.mapOfEq A.orderFourActualOverlapToCentral rfl
+        (FundamentalGroup.mapOfEq A.ellipticFourOverlapToCentral rfl
           (fundamentalGroupElementOfBaseEq
-            A.orderFourActualEllipticCanonicalChosenCover_boundaryBase_eq
+            A.ellipticFourCanonicalChosenCover_boundaryBase_eq
             (Path.Homotopic.Quotient.mk
-              (A.orderFourActualEllipticBoundaryDeckStraightLoop
-                A.orderFourActualEllipticBoundaryDeckData.fillingRelation)))) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+              (A.ellipticFourBoundaryDeckStraightLoop
+                A.ellipticFourBoundaryDeckData.fillingRelation)))) := by
+  let _ := A.ellipticFourBoundaryAction
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderFour.radius ×
         (ℝ × SphereSixComplex.Geometry.ComplexTorus.ComplexTwoSpace)) :=
-    A.orderFourActualEllipticBoundaryCover_simplyConnected
-  unfold orderFourActualCanonicalRelatorInCentral
-  rw [A.orderFourActualEllipticCanonicalRelator_eq_fillingRelationStraightLoop]
+    A.ellipticFourBoundaryCover_simplyConnected
+  unfold ellipticFourCanonicalRelatorInCentral
+  rw [A.ellipticFourCanonicalRelator_eq_fillingRelationStraightLoop]
 
 /-- The remaining order-three geometry, with connector choice existentially quantified: one
 complete physical filling-relation loop is the transported expected affine relator. -/
 public def OrderThreeWholeFillingRelatorChartIdentity : Prop :=
-  ∃ β : Path A.centralAffineBase A.orderThreeActualOverlapCentralBase,
-    A.orderThreeActualCanonicalRelatorInCentral =
+  ∃ β : Path A.centralAffineBase A.ellipticThreeOverlapCentralBase,
+    A.ellipticThreeCanonicalRelatorInCentral =
       FundamentalGroup.fundamentalGroupMulEquivOfPath β A.orderThreeCentralExpectedRelator
 
 /-- The remaining order-four geometry, with connector choice existentially quantified: one
 complete physical filling-relation loop is the transported expected affine relator. -/
 public def OrderFourWholeFillingRelatorChartIdentity : Prop :=
-  ∃ β : Path A.centralAffineBase A.orderFourActualOverlapCentralBase,
-    A.orderFourActualCanonicalRelatorInCentral =
+  ∃ β : Path A.centralAffineBase A.ellipticFourOverlapCentralBase,
+    A.ellipticFourCanonicalRelatorInCentral =
       FundamentalGroup.fundamentalGroupMulEquivOfPath β A.orderFourCentralExpectedRelator
 
-public theorem orderThreeActualCanonicalRelatorInCentral_toCore :
-    A.orderThreeActualCentralToCoreEquiv A.orderThreeActualCanonicalRelatorInCentral =
-      A.actualEllipticThreeOverlapToCore A.orderThreeActualEllipticCanonicalRelator := by
-  rw [A.actualEllipticThreeOverlapToCore_eq_central]
+public theorem ellipticThreeCanonicalRelatorInCentral_toCore :
+    A.ellipticThreeCentralToCoreEquiv A.ellipticThreeCanonicalRelatorInCentral =
+      A.ellipticThreeOverlapToCore A.ellipticThreeCanonicalRelator := by
+  rw [A.ellipticThreeOverlapToCore_eq_central]
   rfl
 
-public theorem orderFourActualCanonicalRelatorInCentral_toCore :
-    A.orderFourActualCentralToCoreEquiv A.orderFourActualCanonicalRelatorInCentral =
-      A.actualEllipticFourOverlapToCore A.orderFourActualEllipticCanonicalRelator := by
-  rw [A.actualEllipticFourOverlapToCore_eq_central]
+public theorem ellipticFourCanonicalRelatorInCentral_toCore :
+    A.ellipticFourCentralToCoreEquiv A.ellipticFourCanonicalRelatorInCentral =
+      A.ellipticFourOverlapToCore A.ellipticFourCanonicalRelator := by
+  rw [A.ellipticFourOverlapToCore_eq_central]
   rfl
 
-public theorem actualCuspCentralNaturality_centralToCore_orderThreeCentralExpectedRelator :
-    A.actualCuspCentralNaturality.centralToCore A.orderThreeCentralExpectedRelator =
-      A.orderThreeCentralRelatorToCore A.actualCuspCentralNaturality := by
+public theorem cuspCentralNaturality_centralToCore_orderThreeCentralExpectedRelator :
+    A.cuspCentralNaturality.centralToCore A.orderThreeCentralExpectedRelator =
+      A.orderThreeCentralRelatorToCore A.cuspCentralNaturality := by
   rw [orderThreeCentralExpectedRelator, orderThreeCentralRelatorToCore]
   simp only [map_mul, map_pow, map_inv]
   rfl
 
-public theorem actualCuspCentralNaturality_centralToCore_orderFourCentralExpectedRelator :
-    A.actualCuspCentralNaturality.centralToCore A.orderFourCentralExpectedRelator =
-      A.orderFourCentralRelatorToCore A.actualCuspCentralNaturality := by
+public theorem cuspCentralNaturality_centralToCore_orderFourCentralExpectedRelator :
+    A.cuspCentralNaturality.centralToCore A.orderFourCentralExpectedRelator =
+      A.orderFourCentralRelatorToCore A.cuspCentralNaturality := by
   rw [orderFourCentralExpectedRelator, orderFourCentralRelatorToCore]
   simp only [map_mul, map_pow, map_inv]
   rfl
@@ -332,112 +332,112 @@ public theorem OrderThreeWholeFillingRelatorChartIdentity.core_conjugacy
     (h : A.OrderThreeWholeFillingRelatorChartIdentity) :
     ∃ c : FundamentalGroup A.actualVanKampenFourPieceCover.core
         ⟨A.vanKampenBase, A.actualVanKampenFourPieceCover.base_mem_core⟩,
-      A.orderThreeCentralRelatorToCore A.actualCuspCentralNaturality =
-        c * A.actualEllipticThreeOverlapToCore
-          A.orderThreeActualEllipticCanonicalRelator * c⁻¹ := by
+      A.orderThreeCentralRelatorToCore A.cuspCentralNaturality =
+        c * A.ellipticThreeOverlapToCore
+          A.ellipticThreeCanonicalRelator * c⁻¹ := by
   obtain ⟨β, hβ⟩ := h
   let source := A.orderThreeCentralBaseWhisker.cast rfl
-    A.orderThreeActualEllipticCentralBase_eq_overlapCentralBase.symm
+    A.ellipticThreeCentralBase_eq_overlapCentralBase.symm
   have htransport :=
-    A.actualCuspCentralNaturalityPair_simultaneouslyConjugate_orderThree
+    A.cuspCentralNaturalityPair_simultaneouslyConjugate_orderThree
       A.orderThreeCentralExpectedRelator 1
   change SimultaneouslyConjugate
-    (A.actualCuspCentralNaturality.centralToCore A.orderThreeCentralExpectedRelator,
-      A.actualCuspCentralNaturality.centralToCore 1)
-    (A.orderThreeActualCentralToCoreEquiv
+    (A.cuspCentralNaturality.centralToCore A.orderThreeCentralExpectedRelator,
+      A.cuspCentralNaturality.centralToCore 1)
+    (A.ellipticThreeCentralToCoreEquiv
         (FundamentalGroup.fundamentalGroupMulEquivOfPath source
           A.orderThreeCentralExpectedRelator),
-      A.orderThreeActualCentralToCoreEquiv
+      A.ellipticThreeCentralToCoreEquiv
         (FundamentalGroup.fundamentalGroupMulEquivOfPath source 1)) at htransport
   have hpaths := fundamentalGroupPair_simultaneouslyConjugate_of_paths
     source β A.orderThreeCentralExpectedRelator 1
-  have hpathsCore := hpaths.map A.orderThreeActualCentralToCoreEquiv.toMonoidHom
+  have hpathsCore := hpaths.map A.ellipticThreeCentralToCoreEquiv.toMonoidHom
   have htotal := htransport.trans hpathsCore
   obtain ⟨c, hrelator, _⟩ := htotal
-  change A.actualCuspCentralNaturality.centralToCore A.orderThreeCentralExpectedRelator =
-    c * A.orderThreeActualCentralToCoreEquiv
+  change A.cuspCentralNaturality.centralToCore A.orderThreeCentralExpectedRelator =
+    c * A.ellipticThreeCentralToCoreEquiv
       (FundamentalGroup.fundamentalGroupMulEquivOfPath β
         A.orderThreeCentralExpectedRelator) * c⁻¹ at hrelator
   refine ⟨c, ?_⟩
-  rw [← A.actualCuspCentralNaturality_centralToCore_orderThreeCentralExpectedRelator]
+  rw [← A.cuspCentralNaturality_centralToCore_orderThreeCentralExpectedRelator]
   rw [hrelator]
   congr 2
   rw [← hβ]
-  exact A.orderThreeActualCanonicalRelatorInCentral_toCore
+  exact A.ellipticThreeCanonicalRelatorInCentral_toCore
 
 /-- The one order-four whole-loop identity gives a conjugacy in the actual core. -/
 public theorem OrderFourWholeFillingRelatorChartIdentity.core_conjugacy
     (h : A.OrderFourWholeFillingRelatorChartIdentity) :
     ∃ c : FundamentalGroup A.actualVanKampenFourPieceCover.core
         ⟨A.vanKampenBase, A.actualVanKampenFourPieceCover.base_mem_core⟩,
-      A.orderFourCentralRelatorToCore A.actualCuspCentralNaturality =
-        c * A.actualEllipticFourOverlapToCore
-          A.orderFourActualEllipticCanonicalRelator * c⁻¹ := by
+      A.orderFourCentralRelatorToCore A.cuspCentralNaturality =
+        c * A.ellipticFourOverlapToCore
+          A.ellipticFourCanonicalRelator * c⁻¹ := by
   obtain ⟨β, hβ⟩ := h
   let source := A.orderFourCentralBaseWhisker.cast rfl
-    A.orderFourActualEllipticCentralBase_eq_overlapCentralBase.symm
+    A.ellipticFourCentralBase_eq_overlapCentralBase.symm
   have htransport :=
-    A.actualCuspCentralNaturalityPair_simultaneouslyConjugate_orderFour
+    A.cuspCentralNaturalityPair_simultaneouslyConjugate_orderFour
       A.orderFourCentralExpectedRelator 1
   change SimultaneouslyConjugate
-    (A.actualCuspCentralNaturality.centralToCore A.orderFourCentralExpectedRelator,
-      A.actualCuspCentralNaturality.centralToCore 1)
-    (A.orderFourActualCentralToCoreEquiv
+    (A.cuspCentralNaturality.centralToCore A.orderFourCentralExpectedRelator,
+      A.cuspCentralNaturality.centralToCore 1)
+    (A.ellipticFourCentralToCoreEquiv
         (FundamentalGroup.fundamentalGroupMulEquivOfPath source
           A.orderFourCentralExpectedRelator),
-      A.orderFourActualCentralToCoreEquiv
+      A.ellipticFourCentralToCoreEquiv
         (FundamentalGroup.fundamentalGroupMulEquivOfPath source 1)) at htransport
   have hpaths := fundamentalGroupPair_simultaneouslyConjugate_of_paths
     source β A.orderFourCentralExpectedRelator 1
-  have hpathsCore := hpaths.map A.orderFourActualCentralToCoreEquiv.toMonoidHom
+  have hpathsCore := hpaths.map A.ellipticFourCentralToCoreEquiv.toMonoidHom
   have htotal := htransport.trans hpathsCore
   obtain ⟨c, hrelator, _⟩ := htotal
-  change A.actualCuspCentralNaturality.centralToCore A.orderFourCentralExpectedRelator =
-    c * A.orderFourActualCentralToCoreEquiv
+  change A.cuspCentralNaturality.centralToCore A.orderFourCentralExpectedRelator =
+    c * A.ellipticFourCentralToCoreEquiv
       (FundamentalGroup.fundamentalGroupMulEquivOfPath β
         A.orderFourCentralExpectedRelator) * c⁻¹ at hrelator
   refine ⟨c, ?_⟩
-  rw [← A.actualCuspCentralNaturality_centralToCore_orderFourCentralExpectedRelator]
+  rw [← A.cuspCentralNaturality_centralToCore_orderFourCentralExpectedRelator]
   rw [hrelator]
   congr 2
   rw [← hβ]
-  exact A.orderFourActualCanonicalRelatorInCentral_toCore
+  exact A.ellipticFourCanonicalRelatorInCentral_toCore
 
 /-- The order-three whole-loop identity supplies exactly the order-three field of the residual. -/
 public theorem OrderThreeWholeFillingRelatorChartIdentity.relator_mem_normalClosure
     (h : A.OrderThreeWholeFillingRelatorChartIdentity) :
-    (A.coreDataOf A.actualCuspCentralNaturality).rhoOne ^ 3 *
+    (A.coreDataOf A.cuspCentralNaturality).rhoOne ^ 3 *
         (Additive.toMul
-          ((A.coreDataOf A.actualCuspCentralNaturality).translation (-epsilon)))⁻¹ ∈
+          ((A.coreDataOf A.cuspCentralNaturality).translation (-epsilon)))⁻¹ ∈
       Subgroup.normalClosure
-        {A.actualEllipticThreeOverlapToCore
-          A.orderThreeActualEllipticCanonicalRelator} := by
+        {A.ellipticThreeOverlapToCore
+          A.ellipticThreeCanonicalRelator} := by
   obtain ⟨c, hc⟩ := h.core_conjugacy A
-  change A.orderThreeCentralRelatorToCore A.actualCuspCentralNaturality ∈ _
+  change A.orderThreeCentralRelatorToCore A.cuspCentralNaturality ∈ _
   rw [hc]
   exact conjugate_mem_normalClosure_singleton c
-    (A.actualEllipticThreeOverlapToCore A.orderThreeActualEllipticCanonicalRelator)
+    (A.ellipticThreeOverlapToCore A.ellipticThreeCanonicalRelator)
 
 /-- The order-four whole-loop identity supplies exactly the order-four field of the residual. -/
 public theorem OrderFourWholeFillingRelatorChartIdentity.relator_mem_normalClosure
     (h : A.OrderFourWholeFillingRelatorChartIdentity) :
-    (A.coreDataOf A.actualCuspCentralNaturality).rhoTwo ^ 4 *
+    (A.coreDataOf A.cuspCentralNaturality).rhoTwo ^ 4 *
         (Additive.toMul
-          ((A.coreDataOf A.actualCuspCentralNaturality).translation epsilon'))⁻¹ ∈
+          ((A.coreDataOf A.cuspCentralNaturality).translation epsilon'))⁻¹ ∈
       Subgroup.normalClosure
-        {A.actualEllipticFourOverlapToCore
-          A.orderFourActualEllipticCanonicalRelator} := by
+        {A.ellipticFourOverlapToCore
+          A.ellipticFourCanonicalRelator} := by
   obtain ⟨c, hc⟩ := h.core_conjugacy A
-  change A.orderFourCentralRelatorToCore A.actualCuspCentralNaturality ∈ _
+  change A.orderFourCentralRelatorToCore A.cuspCentralNaturality ∈ _
   rw [hc]
   exact conjugate_mem_normalClosure_singleton c
-    (A.actualEllipticFourOverlapToCore A.orderFourActualEllipticCanonicalRelator)
+    (A.ellipticFourOverlapToCore A.ellipticFourCanonicalRelator)
 
 /-- The residual is reduced to exactly one whole-loop chart identity for each elliptic collar. -/
-public theorem actualEllipticRelatorNormalClosureResidual_of_wholeFillingRelatorChartIdentities
+public theorem ellipticRelatorMembership_of_wholeFillingRelatorChartIdentities
     (hThree : A.OrderThreeWholeFillingRelatorChartIdentity)
     (hFour : A.OrderFourWholeFillingRelatorChartIdentity) :
-    A.ActualEllipticRelatorNormalClosureResidual A.actualCuspCentralNaturality where
+    A.EllipticRelatorMembership A.cuspCentralNaturality where
   orderThree := hThree.relator_mem_normalClosure A
   orderFour := hFour.relator_mem_normalClosure A
 

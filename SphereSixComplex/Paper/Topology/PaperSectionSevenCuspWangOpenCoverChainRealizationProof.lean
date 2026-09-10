@@ -95,9 +95,9 @@ end FiniteBouquet
 
 namespace Geometry.PaperAnalyticData
 
-variable {A : PaperAnalyticData} (D : A.SectionSevenEllipticTwoDiscCoverData)
+variable {A : PaperAnalyticData} (D : A.EllipticTwoDiscCoverData)
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 /-- The type of connecting maps the cusp chain realization can be asked to realize. -/
 public abbrev CuspFiberBoundaryHom (A : PaperAnalyticData) : Type :=
@@ -174,7 +174,7 @@ public theorem cuspPulledBackBoundaryHom_eq_neg_self_of_chainRealizationFor_neg
 period basis of the selected full-rank band torus. -/
 public theorem bandHomologyOne_eq_zero_of_eq_neg
     {x : IntegralSingularHomology 1
-      (D.orderThreeSide ∩ D.orderFourSide : Set A.SectionSevenEllipticInterior)}
+      (D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior)}
     (h : x = -x) : x = 0 := by
   let e := (D.bandHomologyEquiv 1).trans
     (EstablishedTorusHomology.additiveTorusHomologyBasis D.bandParameter D.bandFullRank).degreeOne
@@ -291,7 +291,7 @@ public theorem false_of_chainRealizationFor_neg
     exact h
   exact one_ne_zero h1
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end Geometry.PaperAnalyticData
 

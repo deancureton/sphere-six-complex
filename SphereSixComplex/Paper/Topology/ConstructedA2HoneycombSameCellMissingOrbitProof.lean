@@ -8,13 +8,13 @@ noncomputable section
 
 open Matrix Set
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
 open SphereSixComplex.Geometry.CuspCombinatorics
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+open SphereSixComplex.Geometry.InfiniteA2Toric
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 public theorem constructedA2CellTransitionMatrix_four_zero (v : ToricLattice) :
     transitionMatrix (constructedA2CellChart v 4) (constructedA2CellChart v 0) =
@@ -716,6 +716,6 @@ public theorem constructedA2CorrectedLaurentIdentity_thirdNext
       constructedA2CorrectedLaurentIdentity_reverse v v 2 5 q p
         (constructedA2CorrectedLaurentIdentity_two_five v q p)
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric
 
 end

@@ -23,19 +23,19 @@ open GlobalTorusFamily
 they agree at one point. -/
 public theorem regularCoordinate_lifts_eq_of_apply_eq
     {A : PaperAnalyticData}
-    (f : C(sectionSevenAffineVerticalStrip, RegularCoordinateBase))
-    (L₁ L₂ : C(sectionSevenAffineVerticalStrip,
+    (f : C(affineVerticalStrip, RegularCoordinateBase))
+    (L₁ L₂ : C(affineVerticalStrip,
       RegularBase (U := A.modular.modularParameter.toTriangleUniformization)))
-    (a₀ : sectionSevenAffineVerticalStrip)
+    (a₀ : affineVerticalStrip)
     (h₁ : A.regularCoordinate ∘ L₁ = f)
     (h₂ : A.regularCoordinate ∘ L₂ = f)
     (h₀ : L₁ a₀ = L₂ a₀) :
     L₁ = L₂ := by
-  let _ : LocallyPathConnectedSpace sectionSevenAffineVerticalStrip :=
-    sectionSevenAffineVerticalStrip_isOpen.locallyPathConnectedSpace
-  let _ : ContractibleSpace sectionSevenAffineVerticalStrip :=
-    sectionSevenAffineVerticalStripContractible
-  let _ : SimplyConnectedSpace sectionSevenAffineVerticalStrip :=
+  let _ : LocallyPathConnectedSpace affineVerticalStrip :=
+    affineVerticalStrip_isOpen.locallyPathConnectedSpace
+  let _ : ContractibleSpace affineVerticalStrip :=
+    affineVerticalStrip_contractibleSpace
+  let _ : SimplyConnectedSpace affineVerticalStrip :=
     SimplyConnectedSpace.ofContractible _
   let U := A.regularCoordinate_isCoveringMap.existsUnique_continuousMap_lifts
     f a₀ (L₁ a₀) (by rw [← h₁]; rfl)
@@ -44,17 +44,17 @@ public theorem regularCoordinate_lifts_eq_of_apply_eq
   · exact ⟨h₀.symm, h₂⟩
 
 /-- Midpoint normalization determines the marked strip lift. -/
-public theorem SectionSevenAffineStripLift.eq_named_of_apply_midpoint
-    {A : PaperAnalyticData} (L : A.SectionSevenAffineStripLift)
-    (hL : L.lift sectionSevenAffineStripMidpoint = A.sectionSevenAffineNormalizedMidpoint) :
-    L.lift = A.sectionSevenAffineNamedStripLift.lift := by
+public theorem AffineStripLift.eq_named_of_apply_midpoint
+    {A : PaperAnalyticData} (L : A.AffineStripLift)
+    (hL : L.lift affineStripMidpoint = A.affineNormalizedMidpoint) :
+    L.lift = A.affineNamedStripLift.lift := by
   let U := A.existsUnique_sectionSevenAffineStripContinuousLift
-    sectionSevenAffineStripMidpoint A.sectionSevenAffineNormalizedMidpoint
-    A.sectionSevenAffineNormalizedMidpoint_projects
+    affineStripMidpoint A.affineNormalizedMidpoint
+    A.affineNormalizedMidpoint_projects
   apply U.unique
   · exact ⟨hL, L.lift_comp_coordinate⟩
-  · exact ⟨A.sectionSevenAffineNamedStripLift_apply_midpoint,
-      A.sectionSevenAffineNamedStripLift.lift_comp_coordinate⟩
+  · exact ⟨A.affineNamedStripLift_apply_midpoint,
+      A.affineNamedStripLift.lift_comp_coordinate⟩
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

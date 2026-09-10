@@ -54,89 +54,89 @@ variable (A : PaperAnalyticData)
 
 /-- The physical order-three filling relator after transporting the marked overlap loops into
 the actual affine core. -/
-public noncomputable def orderThreeActualPhysicalRelatorToCore :
+public noncomputable def ellipticThreePhysicalRelatorToCore :
     FundamentalGroup A.actualVanKampenFourPieceCover.core
       ⟨A.vanKampenBase, A.actualVanKampenFourPieceCover.base_mem_core⟩ :=
-  A.orderThreeActualEllipticPhysicalMeridianToCore ^ 3 *
+  A.ellipticThreePhysicalMeridianToCore ^ 3 *
     (Additive.toMul
-      (A.orderThreeActualEllipticPhysicalTranslationToCore (-epsilon)))⁻¹
+      (A.ellipticThreePhysicalTranslationToCore (-epsilon)))⁻¹
 
 /-- The order-three affine relator in the central marking transported to the actual core. -/
 public noncomputable def orderThreeCentralRelatorToCore
-    (N : A.ActualCuspCentralNaturality) :
+    (N : A.CuspCentralNaturality) :
     FundamentalGroup A.actualVanKampenFourPieceCover.core
       ⟨A.vanKampenBase, A.actualVanKampenFourPieceCover.base_mem_core⟩ :=
   (N.centralToCore A.centralAffineCorePiOneData.rhoOne) ^ 3 *
     (Additive.toMul (A.actualCentralTranslationToCore N (-epsilon)))⁻¹
 
 /-- The relator of the canonical chosen order-three cover maps to the physical core relator. -/
-public theorem orderThreeActualCanonicalRelatorToCore_eq_physical :
-    A.actualEllipticThreeOverlapToCore
+public theorem ellipticThreeCanonicalRelatorToCore_eq_physical :
+    A.ellipticThreeOverlapToCore
         ((fundamentalGroupElementOfBaseEq
-            A.orderThreeActualEllipticCanonicalChosenCover_boundaryBase_eq
-            A.orderThreeActualEllipticCanonicalChosenCover.meridian) ^ 3 *
+            A.ellipticThreeCanonicalChosenCover_boundaryBase_eq
+            A.ellipticThreeCanonicalChosenCover.meridian) ^ 3 *
           (Additive.toMul
             (fundamentalGroupAddHomOfBaseEq
-              A.orderThreeActualEllipticCanonicalChosenCover_boundaryBase_eq
-              A.orderThreeActualEllipticCanonicalChosenCover.translation
+              A.ellipticThreeCanonicalChosenCover_boundaryBase_eq
+              A.ellipticThreeCanonicalChosenCover.translation
               (-epsilon)))⁻¹) =
-      A.orderThreeActualPhysicalRelatorToCore := by
+      A.ellipticThreePhysicalRelatorToCore := by
   rw [map_mul, map_pow, map_inv,
-    A.orderThreeActualEllipticCanonicalMeridianToCore_eq_physical]
-  change A.orderThreeActualEllipticPhysicalMeridianToCore ^ 3 *
+    A.ellipticThreeCanonicalMeridianToCore_eq_physical]
+  change A.ellipticThreePhysicalMeridianToCore ^ 3 *
       (Additive.toMul
-        (A.actualEllipticThreeTranslationToCore
-          A.orderThreeActualEllipticCanonicalChosenCover
-          A.orderThreeActualEllipticCanonicalChosenCover_boundaryBase_eq
+        (A.ellipticThreeTranslationToCore
+          A.ellipticThreeCanonicalChosenCover
+          A.ellipticThreeCanonicalChosenCover_boundaryBase_eq
           (-epsilon)))⁻¹ = _
-  rw [A.orderThreeActualEllipticCanonicalTranslationToCore_eq_physical]
+  rw [A.ellipticThreeCanonicalTranslationToCore_eq_physical]
   rfl
 
 /-- A single relator conjugacy is sufficient for the order-three normal-closure bridge. -/
 public theorem orderThreeCentralRelator_mem_normalClosure_of_conjugacy
-    (N : A.ActualCuspCentralNaturality)
+    (N : A.CuspCentralNaturality)
     (c : FundamentalGroup A.actualVanKampenFourPieceCover.core
       ⟨A.vanKampenBase, A.actualVanKampenFourPieceCover.base_mem_core⟩)
     (h : A.orderThreeCentralRelatorToCore N =
-      c * A.orderThreeActualPhysicalRelatorToCore * c⁻¹) :
+      c * A.ellipticThreePhysicalRelatorToCore * c⁻¹) :
     A.orderThreeCentralRelatorToCore N ∈
-      Subgroup.normalClosure ({A.orderThreeActualPhysicalRelatorToCore} :
+      Subgroup.normalClosure ({A.ellipticThreePhysicalRelatorToCore} :
         Set (FundamentalGroup A.actualVanKampenFourPieceCover.core
           ⟨A.vanKampenBase, A.actualVanKampenFourPieceCover.base_mem_core⟩)) := by
   rw [h]
-  exact conjugate_mem_normalClosure_singleton c A.orderThreeActualPhysicalRelatorToCore
+  exact conjugate_mem_normalClosure_singleton c A.ellipticThreePhysicalRelatorToCore
 
 /-- The exact remaining order-three geometric comparison: one connector carries both the
 physical meridian and the physical `-epsilon` translation to the central marking. -/
 public def OrderThreeCommonGaugeComparison
-    (N : A.ActualCuspCentralNaturality) : Prop :=
+    (N : A.CuspCentralNaturality) : Prop :=
   ∃ c : FundamentalGroup A.actualVanKampenFourPieceCover.core
       ⟨A.vanKampenBase, A.actualVanKampenFourPieceCover.base_mem_core⟩,
     N.centralToCore A.centralAffineCorePiOneData.rhoOne =
-        c * A.orderThreeActualEllipticPhysicalMeridianToCore * c⁻¹ ∧
+        c * A.ellipticThreePhysicalMeridianToCore * c⁻¹ ∧
       Additive.toMul (A.actualCentralTranslationToCore N (-epsilon)) =
         c * Additive.toMul
-          (A.orderThreeActualEllipticPhysicalTranslationToCore (-epsilon)) * c⁻¹
+          (A.ellipticThreePhysicalTranslationToCore (-epsilon)) * c⁻¹
 
 /-- A common gauge/basepoint path for the physical meridian and translation implies the single
 order-three normal-closure membership needed downstream. -/
 public theorem orderThreeCentralRelator_mem_normalClosure_of_simultaneous_conjugacy
-    (N : A.ActualCuspCentralNaturality)
+    (N : A.CuspCentralNaturality)
     (c : FundamentalGroup A.actualVanKampenFourPieceCover.core
       ⟨A.vanKampenBase, A.actualVanKampenFourPieceCover.base_mem_core⟩)
     (hmeridian : N.centralToCore A.centralAffineCorePiOneData.rhoOne =
-      c * A.orderThreeActualEllipticPhysicalMeridianToCore * c⁻¹)
+      c * A.ellipticThreePhysicalMeridianToCore * c⁻¹)
     (htranslation :
       Additive.toMul (A.actualCentralTranslationToCore N (-epsilon)) =
         c * Additive.toMul
-          (A.orderThreeActualEllipticPhysicalTranslationToCore (-epsilon)) * c⁻¹) :
+          (A.ellipticThreePhysicalTranslationToCore (-epsilon)) * c⁻¹) :
     A.orderThreeCentralRelatorToCore N ∈
-      Subgroup.normalClosure ({A.orderThreeActualPhysicalRelatorToCore} :
+      Subgroup.normalClosure ({A.ellipticThreePhysicalRelatorToCore} :
         Set (FundamentalGroup A.actualVanKampenFourPieceCover.core
           ⟨A.vanKampenBase, A.actualVanKampenFourPieceCover.base_mem_core⟩)) := by
   exact affineRelator_mem_normalClosure_of_simultaneous_conjugacy c
-    A.orderThreeActualEllipticPhysicalMeridianToCore
-    (Additive.toMul (A.orderThreeActualEllipticPhysicalTranslationToCore (-epsilon)))
+    A.ellipticThreePhysicalMeridianToCore
+    (Additive.toMul (A.ellipticThreePhysicalTranslationToCore (-epsilon)))
     (N.centralToCore A.centralAffineCorePiOneData.rhoOne)
     (Additive.toMul (A.actualCentralTranslationToCore N (-epsilon))) 3
     hmeridian htranslation
@@ -144,9 +144,9 @@ public theorem orderThreeCentralRelator_mem_normalClosure_of_simultaneous_conjug
 /-- Package the exact common-gauge residual as the required order-three normal-closure
 membership. -/
 public theorem OrderThreeCommonGaugeComparison.relator_mem_normalClosure
-    {N : A.ActualCuspCentralNaturality} (H : A.OrderThreeCommonGaugeComparison N) :
+    {N : A.CuspCentralNaturality} (H : A.OrderThreeCommonGaugeComparison N) :
     A.orderThreeCentralRelatorToCore N ∈
-      Subgroup.normalClosure ({A.orderThreeActualPhysicalRelatorToCore} :
+      Subgroup.normalClosure ({A.ellipticThreePhysicalRelatorToCore} :
         Set (FundamentalGroup A.actualVanKampenFourPieceCover.core
           ⟨A.vanKampenBase, A.actualVanKampenFourPieceCover.base_mem_core⟩)) := by
   obtain ⟨c, hmeridian, htranslation⟩ := H

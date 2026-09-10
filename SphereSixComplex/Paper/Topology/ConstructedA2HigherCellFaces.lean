@@ -5,12 +5,12 @@ public import SphereSixComplex.Paper.Topology.ConstructedA2CellAtlas
 @[expose] public section
 noncomputable section
 open Set Topology Matrix
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Periods
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
@@ -34,7 +34,7 @@ public theorem constructedA2CorrectedThreeOrbit_phase_face
   rw [constructedA2CorrectedPhaseOrbit_append]
   have hp : constructedA2CircleOnePhase i ![s] = 1 := by
     fin_cases i <;> ext j <;> fin_cases j <;>
-      simp [constructedA2CircleOnePhase, constructedCircleBallCell,
+      simp [constructedA2CircleOnePhase, CircleCell.ballParam,
         constructedCircleCell_eq_one_of_abs_eq hs]
   rw [hp, mul_one]
   rfl
@@ -49,7 +49,7 @@ public theorem constructedA2CorrectedFourOrbit_phase_face_zero
   congr 2
   ext j
   fin_cases j <;> simp [constructedA2CircleTwoPhase, constructedA2CircleOnePhase,
-    constructedCircleBallCell, constructedCircleCell_eq_one_of_abs_eq hs]
+    CircleCell.ballParam, constructedCircleCell_eq_one_of_abs_eq hs]
 
 public theorem constructedA2CorrectedFourOrbit_phase_face_one
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
@@ -61,7 +61,7 @@ public theorem constructedA2CorrectedFourOrbit_phase_face_one
   congr 2
   ext j
   fin_cases j <;> simp [constructedA2CircleTwoPhase, constructedA2CircleOnePhase,
-    constructedCircleBallCell, constructedCircleCell_eq_one_of_abs_eq hs]
+    CircleCell.ballParam, constructedCircleCell_eq_one_of_abs_eq hs]
 
 public theorem constructedCentralThreeCell_phase_face
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
@@ -118,4 +118,4 @@ public theorem constructedCentralFourCell_opposite_phase_faces_one
   (constructedCentralFourCell_phase_face_one W b (-1) t (by norm_num)).trans
     (constructedCentralFourCell_phase_face_one W b 1 t (by norm_num)).symm
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric

@@ -70,11 +70,11 @@ end EstablishedTorusHomology
 
 namespace Geometry.PaperAnalyticData
 
-variable {A : PaperAnalyticData} {S : A.SectionSevenCentralHeightSplit}
+variable {A : PaperAnalyticData} {S : A.CentralHeightSplit}
 
 /-- The canonical period-coordinate identifications in a genuine height-split radial input
 induce the same integral period basis from both sides of its central band. -/
-public theorem SectionSevenCentralHeightSplit.RadialInput.bandHomologyAlignment
+public theorem CentralHeightSplit.RadialInput.bandHomologyAlignment
     (R : S.RadialInput) :
     A.EllipticBandHomologyAlignment
       R.toRadialRealization.toSectionSevenEllipticTwoDiscCoverData where
@@ -92,8 +92,8 @@ public theorem SectionSevenCentralHeightSplit.RadialInput.bandHomologyAlignment
           A.modular.modularParameter.toTriangleUniformization.zTwo).1
         (AnalyticTorusFamily.parameterMap A.periods
           A.modular.modularParameter.toTriangleUniformization.zTwo).2)).1 z
-    dsimp only [SectionSevenCentralHeightSplit.RadialInput.toRadialRealization,
-      SectionSevenEllipticCentralAllocation.RadialRealization.toSectionSevenEllipticTwoDiscCoverData,
+    dsimp only [CentralHeightSplit.RadialInput.toRadialRealization,
+      EllipticCentralAllocation.RadialRealization.toSectionSevenEllipticTwoDiscCoverData,
       duplicatedSectionSevenBandToOrderThreeCoverSource,
       duplicatedSectionSevenBandToOrderFourCoverSource,
       orderThreeCentralFiberCoverSourceHomologyBasis,
@@ -141,8 +141,8 @@ public theorem SectionSevenCentralHeightSplit.RadialInput.bandHomologyAlignment
           A.modular.modularParameter.toTriangleUniformization.zTwo).1
         (AnalyticTorusFamily.parameterMap A.periods
           A.modular.modularParameter.toTriangleUniformization.zTwo).2)).2 z
-    dsimp only [SectionSevenCentralHeightSplit.RadialInput.toRadialRealization,
-      SectionSevenEllipticCentralAllocation.RadialRealization.toSectionSevenEllipticTwoDiscCoverData,
+    dsimp only [CentralHeightSplit.RadialInput.toRadialRealization,
+      EllipticCentralAllocation.RadialRealization.toSectionSevenEllipticTwoDiscCoverData,
       duplicatedSectionSevenBandToOrderThreeCoverSource,
       duplicatedSectionSevenBandToOrderFourCoverSource,
       orderThreeCentralFiberCoverSourceHomologyBasis,

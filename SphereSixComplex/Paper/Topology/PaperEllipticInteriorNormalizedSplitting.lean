@@ -20,10 +20,10 @@ open AlgebraicTopology Set
 
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 
-variable {A : PaperAnalyticData} {D : A.SectionSevenEllipticTwoDiscCoverData}
-  (B : A.SectionSevenEllipticTwoDiscHomologyCoordinates D)
+variable {A : PaperAnalyticData} {D : A.EllipticTwoDiscCoverData}
+  (B : A.EllipticTwoDiscHomologyCoordinates D)
 
-namespace SectionSevenEllipticTwoDiscHomologyCoordinates
+namespace EllipticTwoDiscHomologyCoordinates
 
 include B
 
@@ -58,7 +58,7 @@ public def degreeOneZeroSplitting :
 /-- Canonical degree-one coordinates on the literal union of the two elliptic sides. -/
 public noncomputable def normalizedUnionHomologyOneEquiv :
     IntegralSingularHomology 1
-        (D.orderThreeSide ∪ D.orderFourSide : Set A.SectionSevenEllipticInterior) ≃+
+        (D.orderThreeSide ∪ D.orderFourSide : Set A.ellipticInterior) ≃+
       (Fin 1 → ℤ) :=
   ((WangHomologyPresentation.NormalizedSplitting.totalLinearEquivOfEndCoordinates
       (presentationOne (D := D)) (degreeOneZeroSplitting B) (degreeOneCoinvariantEquiv B)
@@ -66,9 +66,9 @@ public noncomputable def normalizedUnionHomologyOneEquiv :
 
 /-- Canonical degree-one coordinates on the actual elliptic interior. -/
 public noncomputable def normalizedEllipticInteriorHomologyOneEquiv :
-    IntegralSingularHomology 1 A.SectionSevenEllipticInterior ≃+ (Fin 1 → ℤ) := by
+    IntegralSingularHomology 1 A.ellipticInterior ≃+ (Fin 1 → ℤ) := by
   let eTop := integralSingularHomologyEquiv 1
-    (topologicalSubsetHomeomorphOfEqUniv (TopCat.of A.SectionSevenEllipticInterior)
+    (topologicalSubsetHomeomorphOfEqUniv (TopCat.of A.ellipticInterior)
       (D.orderThreeSide ∪ D.orderFourSide) D.sides_cover)
   exact eTop.symm.trans (normalizedUnionHomologyOneEquiv B)
 
@@ -120,7 +120,7 @@ determines a splitting.  The boundary equality is deliberately explicit: no arbi
 is asserted to have the paper's geometric normalization. -/
 public noncomputable def degreeTwoSplittingOfGenerator
     (g : IntegralSingularHomology 2
-      (D.orderThreeSide ∪ D.orderFourSide : Set A.SectionSevenEllipticInterior))
+      (D.orderThreeSide ∪ D.orderFourSide : Set A.ellipticInterior))
     (hboundary :
       (presentationTwo (D := D)).totalToInvariants g =
         (degreeTwoInvariantEquiv B).symm 1) :
@@ -128,7 +128,7 @@ public noncomputable def degreeTwoSplittingOfGenerator
   let P := presentationTwo (D := D)
   let e := degreeTwoInvariantEquiv B
   let s : P.Invariants →ₗ[ℤ] IntegralSingularHomology 2
-      (D.orderThreeSide ∪ D.orderFourSide : Set A.SectionSevenEllipticInterior) :=
+      (D.orderThreeSide ∪ D.orderFourSide : Set A.ellipticInterior) :=
     ((LinearMap.lsmul ℤ _).flip g).comp e.toLinearMap
   refine
     { sweptSection := s
@@ -143,12 +143,12 @@ public noncomputable def degreeTwoSplittingOfGenerator
 /-- Pull the actual cusp-collar inclusion into the literal union used by the elliptic
 Mayer--Vietoris presentation. -/
 public noncomputable def cuspToEllipticUnionHomology
-    (D : A.SectionSevenEllipticTwoDiscCoverData) (k : ℕ)
+    (D : A.EllipticTwoDiscCoverData) (k : ℕ)
     (x : IntegralSingularHomology k (A.openEmbeddingStarData.collarSource 0)) :
     IntegralSingularHomology k
-        (D.orderThreeSide ∪ D.orderFourSide : Set A.SectionSevenEllipticInterior) :=
+        (D.orderThreeSide ∪ D.orderFourSide : Set A.ellipticInterior) :=
   (integralSingularHomologyEquiv k
-    (topologicalSubsetHomeomorphOfEqUniv (TopCat.of A.SectionSevenEllipticInterior)
+    (topologicalSubsetHomeomorphOfEqUniv (TopCat.of A.ellipticInterior)
       (D.orderThreeSide ∪ D.orderFourSide) D.sides_cover)).symm
     (integralSingularHomologyMap k
       (IntegralMayerVietoris.interToLeft
@@ -161,7 +161,7 @@ public noncomputable def cuspToEllipticUnionHomology
 two-disc union. -/
 public noncomputable def degreeTwoCuspE5Generator :
     IntegralSingularHomology 2
-      (D.orderThreeSide ∪ D.orderFourSide : Set A.SectionSevenEllipticInterior) :=
+      (D.orderThreeSide ∪ D.orderFourSide : Set A.ellipticInterior) :=
   cuspToEllipticUnionHomology D 2
     (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))
 
@@ -209,7 +209,7 @@ swept-cycle section. -/
 public noncomputable def normalizedUnionHomologyTwoEquiv
     (S : WangHomologyPresentation.NormalizedSplitting (presentationTwo (D := D))) :
     IntegralSingularHomology 2
-        (D.orderThreeSide ∪ D.orderFourSide : Set A.SectionSevenEllipticInterior) ≃+
+        (D.orderThreeSide ∪ D.orderFourSide : Set A.ellipticInterior) ≃+
       (Fin 2 → ℤ) :=
   ((WangHomologyPresentation.NormalizedSplitting.totalLinearEquivOfEndCoordinates
       (presentationTwo (D := D)) S (degreeTwoCoinvariantEquiv B)
@@ -220,7 +220,7 @@ independent of the chosen splitting. -/
 public theorem normalizedUnionHomologyTwoEquiv_one
     (S : WangHomologyPresentation.NormalizedSplitting (presentationTwo (D := D)))
     (x : IntegralSingularHomology 2
-      (D.orderThreeSide ∪ D.orderFourSide : Set A.SectionSevenEllipticInterior)) :
+      (D.orderThreeSide ∪ D.orderFourSide : Set A.ellipticInterior)) :
     normalizedUnionHomologyTwoEquiv B S x 1 =
       degreeTwoInvariantEquiv B ((presentationTwo (D := D)).totalToInvariants x) := by
   rfl
@@ -228,9 +228,9 @@ public theorem normalizedUnionHomologyTwoEquiv_one
 /-- The resulting normalized basis on the actual elliptic interior. -/
 public noncomputable def normalizedEllipticInteriorHomologyTwoEquiv
     (S : WangHomologyPresentation.NormalizedSplitting (presentationTwo (D := D))) :
-    IntegralSingularHomology 2 A.SectionSevenEllipticInterior ≃+ (Fin 2 → ℤ) :=
+    IntegralSingularHomology 2 A.ellipticInterior ≃+ (Fin 2 → ℤ) :=
   let eTop := integralSingularHomologyEquiv 2
-    (topologicalSubsetHomeomorphOfEqUniv (TopCat.of A.SectionSevenEllipticInterior)
+    (topologicalSubsetHomeomorphOfEqUniv (TopCat.of A.ellipticInterior)
       (D.orderThreeSide ∪ D.orderFourSide) D.sides_cover)
   eTop.symm.trans (normalizedUnionHomologyTwoEquiv B S)
 
@@ -283,6 +283,6 @@ public theorem normalizedUnionHomologyTwoEquiv_add
   funext i
   fin_cases i <;> simp [intProdEquivFinTwo]
 
-end SectionSevenEllipticTwoDiscHomologyCoordinates
+end EllipticTwoDiscHomologyCoordinates
 
 end SphereSixComplex.Geometry.PaperAnalyticData

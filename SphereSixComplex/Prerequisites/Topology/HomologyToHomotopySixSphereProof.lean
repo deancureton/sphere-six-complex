@@ -115,7 +115,7 @@ public theorem homologyToHomotopySixSphere_of_hurewicz_of_cwType_of_whitehead
     {X : Type} [TopologicalSpace X] [ChartedSpace RealModel X]
     (hHurewicz : SixSphereHurewiczGeneratorInput X)
     (hCWType : SmoothSixManifoldClassicalCWTypeInput X)
-    (hWhitehead : ClassicalCWIntegralHomologyWhiteheadProperty SixSphere X) :
+    (hWhitehead : CWType.HomologicalWhiteheadProperty SixSphere X) :
     HomologyToHomotopySixSphereObligation X := by
   intro hX
   let _ : PathConnectedSpace X := hX.pathConnectedSpace
@@ -129,13 +129,13 @@ public theorem homologyToHomotopySixSphere_of_hurewicz_of_cwType_of_whitehead
 public theorem hasTopDimensionalSphericalGenerator_of_homotopyEquivSixSphere
     {X : Type} [TopologicalSpace X] (e : X ≃ₕ SixSphere) :
     HasTopDimensionalSphericalGenerator X :=
-  sixSphere_hasTopDimensionalSphericalGenerator.postcompHomotopyEquiv e.symm
+  sixSphere_hasTopDimensionalSphericalGenerator.of_homotopyEquiv e.symm
 
 /-- A space homotopy equivalent to `S⁶` has classical CW type, via the explicit finite two-cell
 model of the standard sphere. -/
 public theorem hasClassicalCWType_of_homotopyEquivSixSphere
     {X : Type} [TopologicalSpace X] (e : X ≃ₕ SixSphere) : HasCWType X :=
-  hasClassicalCWType_precomp_homotopyEquiv e sixSphere_hasClassicalCWType
+  CWType.of_homotopyEquiv e SixSphere.hasCWType
 
 /-- The Hurewicz input is implied by the recognition obligation, hence is genuinely necessary: no
 proof of `HomologyToHomotopySixSphereObligation X` can avoid producing a map `S⁶ → X` which is an

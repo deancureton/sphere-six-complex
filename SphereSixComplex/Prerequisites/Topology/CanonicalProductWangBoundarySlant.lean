@@ -154,7 +154,7 @@ public theorem canonicalProductWangBoundary_positiveCircleCross
     (c : C(StdTorus 1, G)) :
     canonicalProductWangBoundary 1 (positiveCircleCross c) =
       integralSingularHomologyMap 1 c standardCircleHomologyGenerator := by
-  exact NormalizedCoverCrossLowOverlapCalculationProof.canonicalProductWangBoundary_positiveCircleCross c
+  exact CyclicMappingTorus.Cross.canonicalProductWangBoundary_positiveCircleCross c
 
 /-- The canonical product Wang boundary of the selected degree-two generator has winding
 coordinate `+1`. -/

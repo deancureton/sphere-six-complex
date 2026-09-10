@@ -24,15 +24,15 @@ open AlgebraicTopology
 
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 
-open SectionSevenEllipticInteriorMarkedCycleData
+open EllipticInteriorMarkedCycleData
 
 variable {A : PaperAnalyticData}
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 /-- The two invariant raw degree-two generators, transported by the pulled-back cover boundary. -/
 public noncomputable def actualCuspInvariantCoverBoundary
-    (R : A.SectionSevenAffineRadialCompletionInput) (j : Fin 2) :
+    (R : A.AffineRadialCompletionInput) (j : Fin 2) :
     CuspCoverIntersectionHomologyOne R :=
   R.twoDiscCover.cuspOpenCoverConnectingHom
     (A.cuspRawHomologyTwoEquiv.symm
@@ -41,7 +41,7 @@ public noncomputable def actualCuspInvariantCoverBoundary
 /-- The canonical signed-overlap carrier.  Its last two coordinates are the two invariant
 pulled-back cover boundaries; the other two coordinates are killed. -/
 public noncomputable def actualCuspCanonicalSignedOverlap
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     ActualCuspFiberHomologyOne A →+ CuspCoverIntersectionHomologyOne R := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
@@ -68,7 +68,7 @@ public theorem actualCuspMonodromyDegreeOne_symm_single_apply
 
 @[simp]
 public theorem actualCuspCanonicalSignedOverlap_coordinateBasis
-    (R : A.SectionSevenAffineRadialCompletionInput) (j : Fin 4) :
+    (R : A.AffineRadialCompletionInput) (j : Fin 4) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     actualCuspCanonicalSignedOverlap R
@@ -84,7 +84,7 @@ public theorem actualCuspCanonicalSignedOverlap_coordinateBasis
 the pulled-back two-open cover.  This is the full unmarked boundary equality, including its
 orientation. -/
 public theorem actualCuspCanonicalSignedOverlap_boundary
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     (actualCuspCanonicalSignedOverlap R).comp (actualCuspWangBoundaryHom A) =
       R.twoDiscCover.cuspOpenCoverConnectingHom := by
   apply SphereSixComplex.addMonoidHom_ext_of_equiv_pi_single_one
@@ -109,7 +109,7 @@ public theorem actualCuspCanonicalSignedOverlap_boundary
 /-- For the canonical signed carrier, the marked-band equation is equivalent to the two
 remaining invariant-basis evaluations. -/
 public theorem actualCuspCanonicalSignedOverlap_markedBandDifference_iff
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     (R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment).comp
           (R.twoDiscCover.cuspCoverIntersectionToEllipticBandHomologyOne.comp
             (actualCuspCanonicalSignedOverlap R)) =
@@ -158,7 +158,7 @@ public theorem actualCuspCanonicalSignedOverlap_markedBandDifference_iff
 /-- The canonical signed carrier constructs the complete comparison precisely when the two
 remaining marked geometric evaluations hold. -/
 public noncomputable def actualCuspWangSignedOverlapComparison_of_invariantBasisData
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (h : CuspPulledBackMarkedInvariantBasisData R) :
     ActualCuspWangSignedOverlapComparison R where
   signedOverlap := actualCuspCanonicalSignedOverlap R
@@ -170,7 +170,7 @@ public noncomputable def actualCuspWangSignedOverlapComparison_of_invariantBasis
 remaining marked geometric evaluations.  In particular, the unmarked signed boundary carrier
 is unconditional; no further Wang or Mayer--Vietoris naturality assumption remains. -/
 public theorem nonempty_actualCuspWangSignedOverlapComparison_iff
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     Nonempty (ActualCuspWangSignedOverlapComparison R) ↔
       CuspPulledBackMarkedInvariantBasisData R := by
   constructor
@@ -178,7 +178,7 @@ public theorem nonempty_actualCuspWangSignedOverlapComparison_iff
     exact C.invariantBasisData R
   · exact fun h ↦ ⟨actualCuspWangSignedOverlapComparison_of_invariantBasisData R h⟩
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

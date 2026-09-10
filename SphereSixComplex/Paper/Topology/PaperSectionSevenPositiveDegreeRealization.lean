@@ -56,24 +56,24 @@ public theorem addMonoidHom_ext_of_equiv_pi_single_one
 
 namespace Geometry.PaperAnalyticData
 
-open SectionSevenEllipticTwoDiscHomologyCoordinates
+open EllipticTwoDiscHomologyCoordinates
 
 variable {A : PaperAnalyticData}
 
 /-- The marked band and cusp-cycle data remaining after the actual finite-cover calculation. -/
-public structure SectionSevenEllipticInteriorMarkedCycleData
-    (D : A.SectionSevenEllipticTwoDiscCoverData) where
+public structure EllipticInteriorMarkedCycleData
+    (D : A.EllipticTwoDiscCoverData) where
   alignment : A.EllipticBandHomologyAlignment D
   splitting :
     WangHomologyPresentation.NormalizedSplitting (presentationTwo (D := D))
   cycleDecomposition :
-    A.SectionSevenEllipticInteriorCycleDecomposition
+    A.EllipticInteriorCycleDecomposition
       alignment.actualHomologyCoordinates splitting
 
-namespace SectionSevenEllipticInteriorMarkedCycleData
+namespace EllipticInteriorMarkedCycleData
 
-variable {D : A.SectionSevenEllipticTwoDiscCoverData}
-  (M : A.SectionSevenEllipticInteriorMarkedCycleData D)
+variable {D : A.EllipticTwoDiscCoverData}
+  (M : A.EllipticInteriorMarkedCycleData D)
 
 /-- Build the marked-cycle package from the three scalar comparisons supplied by a concrete
 cycle model. -/
@@ -84,22 +84,22 @@ public def ofRawScalarCoordinates
         (A.openEmbeddingStarData.collarSource 0),
       N.actualHomologyCoordinates.normalizedUnionHomologyOneEquiv
           (cuspToEllipticUnionHomology D 1 x) 0 =
-        actualCuspEllipticDegreeOneRawCoordinate (A.cuspRawHomologyOneEquiv x))
+        cuspEllipticDegreeOneRawCoordinate (A.cuspRawHomologyOneEquiv x))
     (hTwoFiber : ∀ x : IntegralSingularHomology 2
         (A.openEmbeddingStarData.collarSource 0),
       N.actualHomologyCoordinates.normalizedUnionHomologyTwoEquiv S
           (cuspToEllipticUnionHomology D 2 x) 0 =
-        actualCuspEllipticDegreeTwoFiberRawCoordinate (A.cuspRawHomologyTwoEquiv x))
+        cuspEllipticDegreeTwoFiberRawCoordinate (A.cuspRawHomologyTwoEquiv x))
     (hTwoOne : ∀ x : IntegralSingularHomology 2
         (A.openEmbeddingStarData.collarSource 0),
       N.actualHomologyCoordinates.normalizedUnionHomologyTwoEquiv S
           (cuspToEllipticUnionHomology D 2 x) 1 =
         A.cuspRawHomologyTwoEquiv x 5) :
-    A.SectionSevenEllipticInteriorMarkedCycleData D where
+    A.EllipticInteriorMarkedCycleData D where
   alignment := N
   splitting := S
   cycleDecomposition :=
-    SectionSevenEllipticInteriorCycleDecomposition.ofRawScalarCoordinates
+    EllipticInteriorCycleDecomposition.ofRawScalarCoordinates
       hOne hTwoFiber hTwoOne
 
 /-- Build the marked-cycle package from a cusp boundary formula and the remaining fibre
@@ -111,7 +111,7 @@ public noncomputable def ofCuspBoundaryCoordinates
         (A.openEmbeddingStarData.collarSource 0),
       N.actualHomologyCoordinates.normalizedUnionHomologyOneEquiv
           (cuspToEllipticUnionHomology D 1 x) 0 =
-        actualCuspEllipticDegreeOneRawCoordinate (A.cuspRawHomologyOneEquiv x))
+        cuspEllipticDegreeOneRawCoordinate (A.cuspRawHomologyOneEquiv x))
     (hBoundary : ∀ x : IntegralSingularHomology 2
         (A.openEmbeddingStarData.collarSource 0),
       N.actualHomologyCoordinates.degreeTwoInvariantEquiv
@@ -123,8 +123,8 @@ public noncomputable def ofCuspBoundaryCoordinates
       N.actualHomologyCoordinates.normalizedUnionHomologyTwoEquiv
           (N.actualHomologyCoordinates.degreeTwoCuspE5SplittingOfCoordinates hBoundary)
           (cuspToEllipticUnionHomology D 2 x) 0 =
-        actualCuspEllipticDegreeTwoFiberRawCoordinate (A.cuspRawHomologyTwoEquiv x)) :
-    A.SectionSevenEllipticInteriorMarkedCycleData D := by
+        cuspEllipticDegreeTwoFiberRawCoordinate (A.cuspRawHomologyTwoEquiv x)) :
+    A.EllipticInteriorMarkedCycleData D := by
   let B := N.actualHomologyCoordinates
   let S := B.degreeTwoCuspE5SplittingOfCoordinates hBoundary
   apply ofRawScalarCoordinates N S hOne hTwoFiber
@@ -142,16 +142,16 @@ public def coordinateAfterAddEquiv {G : Type*} [AddCommGroup G] {n : ℕ}
 /-- Evaluate the corrected elliptic degree-one functional after an additive equivalence. -/
 public def actualCuspEllipticDegreeOneCoordinateAfterAddEquiv
     {G : Type*} [AddCommGroup G] (e : G ≃+ (Fin 3 → ℤ)) : G →+ ℤ where
-  toFun x := actualCuspEllipticDegreeOneRawCoordinate (e x)
-  map_zero' := by simp [actualCuspEllipticDegreeOneRawCoordinate]
-  map_add' x y := by simp [actualCuspEllipticDegreeOneRawCoordinate]; ring
+  toFun x := cuspEllipticDegreeOneRawCoordinate (e x)
+  map_zero' := by simp [cuspEllipticDegreeOneRawCoordinate]
+  map_add' x y := by simp [cuspEllipticDegreeOneRawCoordinate]; ring
 
 /-- Evaluate the corrected elliptic degree-two fibre functional after an additive equivalence. -/
 public def actualCuspEllipticDegreeTwoFiberCoordinateAfterAddEquiv
     {G : Type*} [AddCommGroup G] (e : G ≃+ (Fin 6 → ℤ)) : G →+ ℤ where
-  toFun x := actualCuspEllipticDegreeTwoFiberRawCoordinate (e x)
-  map_zero' := by simp [actualCuspEllipticDegreeTwoFiberRawCoordinate]
-  map_add' x y := by simp [actualCuspEllipticDegreeTwoFiberRawCoordinate]; ring
+  toFun x := cuspEllipticDegreeTwoFiberRawCoordinate (e x)
+  map_zero' := by simp [cuspEllipticDegreeTwoFiberRawCoordinate]
+  map_add' x y := by simp [cuspEllipticDegreeTwoFiberRawCoordinate]; ring
 
 /-- The first normalized elliptic-interior coordinate of an included cusp degree-one class. -/
 public noncomputable def cuspDegreeOneCoordinateHom
@@ -260,7 +260,7 @@ public noncomputable def ofCuspBoundaryBasisCoordinates
       N.actualHomologyCoordinates.normalizedUnionHomologyOneEquiv
           (cuspToEllipticUnionHomology D 1
             (A.cuspRawHomologyOneEquiv.symm (Pi.single i 1))) 0 =
-        actualCuspEllipticDegreeOneRawCoordinate (Pi.single i 1))
+        cuspEllipticDegreeOneRawCoordinate (Pi.single i 1))
     (hBoundaryBasis : ∀ i : Fin 6,
       N.actualHomologyCoordinates.degreeTwoInvariantEquiv
           ((presentationTwo (D := D)).totalToInvariants
@@ -273,14 +273,14 @@ public noncomputable def ofCuspBoundaryBasisCoordinates
             (degreeTwoCuspBoundaryCoordinates_of_basis N hBoundaryBasis))
           (cuspToEllipticUnionHomology D 2
             (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1))) 0 =
-        actualCuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1)) :
-    A.SectionSevenEllipticInteriorMarkedCycleData D := by
+        cuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1)) :
+    A.EllipticInteriorMarkedCycleData D := by
   have hOneMap := addMonoidHom_ext_of_equiv_pi_single_one
     A.cuspRawHomologyOneEquiv (cuspDegreeOneCoordinateHom N)
       (actualCuspEllipticDegreeOneCoordinateAfterAddEquiv A.cuspRawHomologyOneEquiv)
       (fun i => by
         rw [cuspDegreeOneCoordinateHom_apply]
-        change _ = actualCuspEllipticDegreeOneRawCoordinate
+        change _ = cuspEllipticDegreeOneRawCoordinate
           (A.cuspRawHomologyOneEquiv
             (A.cuspRawHomologyOneEquiv.symm (Pi.single i 1)))
         rw [AddEquiv.apply_symm_apply]
@@ -289,7 +289,7 @@ public noncomputable def ofCuspBoundaryBasisCoordinates
       (A.openEmbeddingStarData.collarSource 0),
     N.actualHomologyCoordinates.normalizedUnionHomologyOneEquiv
         (cuspToEllipticUnionHomology D 1 x) 0 =
-      actualCuspEllipticDegreeOneRawCoordinate
+      cuspEllipticDegreeOneRawCoordinate
         (A.cuspRawHomologyOneEquiv x) := DFunLike.congr_fun hOneMap
   have hBoundary : ∀ x : IntegralSingularHomology 2
       (A.openEmbeddingStarData.collarSource 0),
@@ -304,7 +304,7 @@ public noncomputable def ofCuspBoundaryBasisCoordinates
         A.cuspRawHomologyTwoEquiv)
       (fun i => by
         rw [cuspDegreeTwoFiberCoordinateHom_apply]
-        change _ = actualCuspEllipticDegreeTwoFiberRawCoordinate
+        change _ = cuspEllipticDegreeTwoFiberRawCoordinate
           (A.cuspRawHomologyTwoEquiv
             (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1)))
         rw [AddEquiv.apply_symm_apply]
@@ -313,30 +313,30 @@ public noncomputable def ofCuspBoundaryBasisCoordinates
 
 /-- The marked-cycle data supplies the production positive-degree homology assembly. -/
 public def positiveDegreeHomologyAssembly :
-    A.SectionSevenPositiveDegreeHomologyAssembly :=
-  sectionSevenPositiveDegreeHomologyAssemblyOfActualEllipticData
+    A.PositiveDegreeHomologyAssembly :=
+  positiveDegreeHomologyAssemblyOfActualEllipticData
     M.alignment M.splitting M.cycleDecomposition
 
-end SectionSevenEllipticInteriorMarkedCycleData
+end EllipticInteriorMarkedCycleData
 
 /-- The exact remaining geometric realization for the Section 7 positive-degree calculation. -/
-public structure SectionSevenPositiveDegreeGeometricRealization (A : PaperAnalyticData) where
-  allocation : A.SectionSevenEllipticCentralAllocation
+public structure PositiveDegreeGeometricRealization (A : PaperAnalyticData) where
+  allocation : A.EllipticCentralAllocation
   radial : allocation.RadialRealization
   markedCycles :
-    A.SectionSevenEllipticInteriorMarkedCycleData
+    A.EllipticInteriorMarkedCycleData
       radial.toSectionSevenEllipticTwoDiscCoverData
 
-namespace SectionSevenPositiveDegreeGeometricRealization
+namespace PositiveDegreeGeometricRealization
 
-variable (R : SectionSevenPositiveDegreeGeometricRealization A)
+variable (R : PositiveDegreeGeometricRealization A)
 
 /-- A complete geometric realization discharges the positive-degree Section 7 input. -/
 public def positiveDegreeHomologyAssembly :
-    A.SectionSevenPositiveDegreeHomologyAssembly :=
+    A.PositiveDegreeHomologyAssembly :=
   R.markedCycles.positiveDegreeHomologyAssembly
 
-end SectionSevenPositiveDegreeGeometricRealization
+end PositiveDegreeGeometricRealization
 
 end Geometry.PaperAnalyticData
 

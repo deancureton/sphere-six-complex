@@ -26,7 +26,7 @@ open SphereSixComplex.CircleMappingTorusHomologyBases
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
+open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.LatticeWangAlgebra
 open SphereSixComplex.Topology.PaperCuspSpecializationAlgebra
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup

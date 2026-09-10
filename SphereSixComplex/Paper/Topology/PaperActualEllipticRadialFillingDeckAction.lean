@@ -72,93 +72,93 @@ public theorem isQuotientCoveringMap_compMulEquiv
     simpa using hdisj (e g) hg
 
 @[instance_reducible]
-public noncomputable def orderThreeActualCentralFillingDeckAction :
-    MulAction A.orderThreeActualEllipticBoundaryDeckData.FillingDeck ComplexTwoSpace := by
+public noncomputable def ellipticThreeCentralFillingDeckAction :
+    MulAction A.ellipticThreeBoundaryDeckData.FillingDeck ComplexTwoSpace := by
   let P := orderThreeCentralFiberPresentationData A.periods
   let actionH := affineCyclicFillingDeckAction P
   let _ := actionH
   exact MulAction.compHom ComplexTwoSpace
-    A.orderThreeActualToCanonicalFillingDeckEquiv.toMonoidHom
+    A.ellipticThreeToCanonicalFillingDeckEquiv.toMonoidHom
 
-public theorem orderThreeActualCentralFilling_isQuotientCoveringMap :
-    letI := A.orderThreeActualCentralFillingDeckAction
+public theorem ellipticThreeCentralFilling_isQuotientCoveringMap :
+    letI := A.ellipticThreeCentralFillingDeckAction
     IsQuotientCoveringMap
       (complexTwoReducedCentralFiberProjection
         (D := orderThreeRadialActionData A.periods))
-      A.orderThreeActualEllipticBoundaryDeckData.FillingDeck := by
+      A.ellipticThreeBoundaryDeckData.FillingDeck := by
   let P := orderThreeCentralFiberPresentationData A.periods
   let actionH := affineCyclicFillingDeckAction P
   exact isQuotientCoveringMap_compMulEquiv actionH
-    A.orderThreeActualToCanonicalFillingDeckEquiv _
+    A.ellipticThreeToCanonicalFillingDeckEquiv _
     (orderThreeAffineCyclicFilling_isQuotientCoveringMap A.periods)
 
 @[instance_reducible]
-public noncomputable def orderFourActualCentralFillingDeckAction :
-    MulAction A.orderFourActualEllipticBoundaryDeckData.FillingDeck ComplexTwoSpace := by
+public noncomputable def ellipticFourCentralFillingDeckAction :
+    MulAction A.ellipticFourBoundaryDeckData.FillingDeck ComplexTwoSpace := by
   let P := orderFourCentralFiberPresentationData A.periods
   let actionH := affineCyclicFillingDeckAction P
   let _ := actionH
   exact MulAction.compHom ComplexTwoSpace
-    A.orderFourActualToCanonicalFillingDeckEquiv.toMonoidHom
+    A.ellipticFourToCanonicalFillingDeckEquiv.toMonoidHom
 
-public theorem orderFourActualCentralFilling_isQuotientCoveringMap :
-    letI := A.orderFourActualCentralFillingDeckAction
+public theorem ellipticFourCentralFilling_isQuotientCoveringMap :
+    letI := A.ellipticFourCentralFillingDeckAction
     IsQuotientCoveringMap
       (complexTwoReducedCentralFiberProjection
         (D := orderFourRadialActionData A.periods))
-      A.orderFourActualEllipticBoundaryDeckData.FillingDeck := by
+      A.ellipticFourBoundaryDeckData.FillingDeck := by
   let P := orderFourCentralFiberPresentationData A.periods
   let actionH := affineCyclicFillingDeckAction P
   exact isQuotientCoveringMap_compMulEquiv actionH
-    A.orderFourActualToCanonicalFillingDeckEquiv _
+    A.ellipticFourToCanonicalFillingDeckEquiv _
     (orderFourAffineCyclicFilling_isQuotientCoveringMap A.periods)
 
-public noncomputable def orderThreeActualFillingDegree :
-    A.orderThreeActualEllipticBoundaryDeckData.FillingDeck →* FiniteCyclic 3 :=
+public noncomputable def ellipticThreeFillingDegree :
+    A.ellipticThreeBoundaryDeckData.FillingDeck →* FiniteCyclic 3 :=
   (canonicalAffineCyclicFillingExtension
     (orderThreeCentralFiberPresentationData A.periods)).proj.comp
-      A.orderThreeActualToCanonicalFillingDeckEquiv.toMonoidHom
+      A.ellipticThreeToCanonicalFillingDeckEquiv.toMonoidHom
 
-public noncomputable def orderFourActualFillingDegree :
-    A.orderFourActualEllipticBoundaryDeckData.FillingDeck →* FiniteCyclic 4 :=
+public noncomputable def ellipticFourFillingDegree :
+    A.ellipticFourBoundaryDeckData.FillingDeck →* FiniteCyclic 4 :=
   (canonicalAffineCyclicFillingExtension
     (orderFourCentralFiberPresentationData A.periods)).proj.comp
-      A.orderFourActualToCanonicalFillingDeckEquiv.toMonoidHom
+      A.ellipticFourToCanonicalFillingDeckEquiv.toMonoidHom
 
-public noncomputable def orderThreeActualDiscRepresentation :
-    A.orderThreeActualEllipticBoundaryDeckData.FillingDeck →* Equiv.Perm ComplexUnitDisc :=
+public noncomputable def ellipticThreeDiscRepresentation :
+    A.ellipticThreeBoundaryDeckData.FillingDeck →* Equiv.Perm ComplexUnitDisc :=
   (cyclicRepresentation 3 orderThreeDiscRotation orderThreeDiscRotation_pow).comp
-    A.orderThreeActualFillingDegree
+    A.ellipticThreeFillingDegree
 
-public noncomputable def orderFourActualDiscRepresentation :
-    A.orderFourActualEllipticBoundaryDeckData.FillingDeck →* Equiv.Perm ComplexUnitDisc :=
+public noncomputable def ellipticFourDiscRepresentation :
+    A.ellipticFourBoundaryDeckData.FillingDeck →* Equiv.Perm ComplexUnitDisc :=
   (cyclicRepresentation 4 orderFourDiscRotation orderFourDiscRotation_pow).comp
-    A.orderFourActualFillingDegree
+    A.ellipticFourFillingDegree
 
-public theorem orderThreeActualDiscRepresentation_norm
-    (g : A.orderThreeActualEllipticBoundaryDeckData.FillingDeck) (u : ComplexUnitDisc) :
-    ‖((A.orderThreeActualDiscRepresentation g u : ComplexUnitDisc) : ℂ)‖ = ‖(u : ℂ)‖ := by
-  rw [orderThreeActualDiscRepresentation, MonoidHom.comp_apply,
-    cyclic_eq_generator_pow (A.orderThreeActualFillingDegree g), map_pow,
+public theorem ellipticThreeDiscRepresentation_norm
+    (g : A.ellipticThreeBoundaryDeckData.FillingDeck) (u : ComplexUnitDisc) :
+    ‖((A.ellipticThreeDiscRepresentation g u : ComplexUnitDisc) : ℂ)‖ = ‖(u : ℂ)‖ := by
+  rw [ellipticThreeDiscRepresentation, MonoidHom.comp_apply,
+    cyclic_eq_generator_pow (A.ellipticThreeFillingDegree g), map_pow,
     show cyclicGenerator 3 = Multiplicative.ofAdd 1 from rfl,
     cyclicRepresentation_generator]
   change ‖(((orderThreeDiscRotation ^
-    (Multiplicative.toAdd (A.orderThreeActualFillingDegree g)).val) u :
+    (Multiplicative.toAdd (A.ellipticThreeFillingDegree g)).val) u :
       ComplexUnitDisc) : ℂ)‖ = _
   rw [show orderThreeDiscRotation =
       ComplexUnitDisc.rotation orderThreeMultiplier norm_orderThreeMultiplier from rfl,
     ComplexUnitDisc.coe_rotation_pow_apply, norm_mul, norm_pow,
     norm_orderThreeMultiplier, one_pow, one_mul]
 
-public theorem orderFourActualDiscRepresentation_norm
-    (g : A.orderFourActualEllipticBoundaryDeckData.FillingDeck) (u : ComplexUnitDisc) :
-    ‖((A.orderFourActualDiscRepresentation g u : ComplexUnitDisc) : ℂ)‖ = ‖(u : ℂ)‖ := by
-  rw [orderFourActualDiscRepresentation, MonoidHom.comp_apply,
-    cyclic_eq_generator_pow (A.orderFourActualFillingDegree g), map_pow,
+public theorem ellipticFourDiscRepresentation_norm
+    (g : A.ellipticFourBoundaryDeckData.FillingDeck) (u : ComplexUnitDisc) :
+    ‖((A.ellipticFourDiscRepresentation g u : ComplexUnitDisc) : ℂ)‖ = ‖(u : ℂ)‖ := by
+  rw [ellipticFourDiscRepresentation, MonoidHom.comp_apply,
+    cyclic_eq_generator_pow (A.ellipticFourFillingDegree g), map_pow,
     show cyclicGenerator 4 = Multiplicative.ofAdd 1 from rfl,
     cyclicRepresentation_generator]
   change ‖(((orderFourDiscRotation ^
-    (Multiplicative.toAdd (A.orderFourActualFillingDegree g)).val) u :
+    (Multiplicative.toAdd (A.ellipticFourFillingDegree g)).val) u :
       ComplexUnitDisc) : ℂ)‖ = _
   rw [show orderFourDiscRotation =
       ComplexUnitDisc.rotation orderFourMultiplier norm_orderFourMultiplier from rfl,
@@ -166,108 +166,108 @@ public theorem orderFourActualDiscRepresentation_norm
     norm_orderFourMultiplier, one_pow, one_mul]
 
 @[instance_reducible]
-public noncomputable def orderThreeActualDiscBallAction :
-    MulAction A.orderThreeActualEllipticBoundaryDeckData.FillingDeck
+public noncomputable def ellipticThreeDiscBallAction :
+    MulAction A.ellipticThreeBoundaryDeckData.FillingDeck
       (ComplexDiscBall A.starSeparation.orderThree.radius) where
-  smul g u := ⟨A.orderThreeActualDiscRepresentation g u.1, by
-    rw [A.orderThreeActualDiscRepresentation_norm]
+  smul g u := ⟨A.ellipticThreeDiscRepresentation g u.1, by
+    rw [A.ellipticThreeDiscRepresentation_norm]
     exact u.2⟩
   one_smul u := by
     apply Subtype.ext
-    change A.orderThreeActualDiscRepresentation 1 u.1 = u.1
+    change A.ellipticThreeDiscRepresentation 1 u.1 = u.1
     rw [map_one]
     rfl
   mul_smul g h u := by
     apply Subtype.ext
-    change A.orderThreeActualDiscRepresentation (g * h) u.1 =
-      A.orderThreeActualDiscRepresentation g (A.orderThreeActualDiscRepresentation h u.1)
+    change A.ellipticThreeDiscRepresentation (g * h) u.1 =
+      A.ellipticThreeDiscRepresentation g (A.ellipticThreeDiscRepresentation h u.1)
     rw [map_mul]
     rfl
 
 @[instance_reducible]
-public noncomputable def orderFourActualDiscBallAction :
-    MulAction A.orderFourActualEllipticBoundaryDeckData.FillingDeck
+public noncomputable def ellipticFourDiscBallAction :
+    MulAction A.ellipticFourBoundaryDeckData.FillingDeck
       (ComplexDiscBall A.starSeparation.orderFour.radius) where
-  smul g u := ⟨A.orderFourActualDiscRepresentation g u.1, by
-    rw [A.orderFourActualDiscRepresentation_norm]
+  smul g u := ⟨A.ellipticFourDiscRepresentation g u.1, by
+    rw [A.ellipticFourDiscRepresentation_norm]
     exact u.2⟩
   one_smul u := by
     apply Subtype.ext
-    change A.orderFourActualDiscRepresentation 1 u.1 = u.1
+    change A.ellipticFourDiscRepresentation 1 u.1 = u.1
     rw [map_one]
     rfl
   mul_smul g h u := by
     apply Subtype.ext
-    change A.orderFourActualDiscRepresentation (g * h) u.1 =
-      A.orderFourActualDiscRepresentation g (A.orderFourActualDiscRepresentation h u.1)
+    change A.ellipticFourDiscRepresentation (g * h) u.1 =
+      A.ellipticFourDiscRepresentation g (A.ellipticFourDiscRepresentation h u.1)
     rw [map_mul]
     rfl
 
 @[instance_reducible]
-public noncomputable def orderThreeActualFixedRadialFillingDeckAction :
-    MulAction A.orderThreeActualEllipticBoundaryDeckData.FillingDeck
+public noncomputable def ellipticThreeFixedRadialFillingDeckAction :
+    MulAction A.ellipticThreeBoundaryDeckData.FillingDeck
       (ComplexDiscBall A.starSeparation.orderThree.radius × ComplexTwoSpace) := by
-  let _ := A.orderThreeActualDiscBallAction
-  let _ := A.orderThreeActualCentralFillingDeckAction
+  let _ := A.ellipticThreeDiscBallAction
+  let _ := A.ellipticThreeCentralFillingDeckAction
   infer_instance
 
 @[instance_reducible]
-public noncomputable def orderFourActualFixedRadialFillingDeckAction :
-    MulAction A.orderFourActualEllipticBoundaryDeckData.FillingDeck
+public noncomputable def ellipticFourFixedRadialFillingDeckAction :
+    MulAction A.ellipticFourBoundaryDeckData.FillingDeck
       (ComplexDiscBall A.starSeparation.orderFour.radius × ComplexTwoSpace) := by
-  let _ := A.orderFourActualDiscBallAction
-  let _ := A.orderFourActualCentralFillingDeckAction
+  let _ := A.ellipticFourDiscBallAction
+  let _ := A.ellipticFourCentralFillingDeckAction
   infer_instance
 
 @[instance_reducible]
-public noncomputable def orderThreeActualUnitRadialFillingDeckAction :
-    MulAction A.orderThreeActualEllipticBoundaryDeckData.FillingDeck
+public noncomputable def ellipticThreeUnitRadialFillingDeckAction :
+    MulAction A.ellipticThreeBoundaryDeckData.FillingDeck
       (ComplexUnitDisc × ComplexTwoSpace) := by
   let P := orderThreeCentralFiberPresentationData A.periods
   let actionH := affineCyclicRadialFillingDeckAction P
   let _ := actionH
   exact MulAction.compHom (ComplexUnitDisc × ComplexTwoSpace)
-    A.orderThreeActualToCanonicalFillingDeckEquiv.toMonoidHom
+    A.ellipticThreeToCanonicalFillingDeckEquiv.toMonoidHom
 
-public theorem orderThreeActualUnitRadialFilling_isQuotientCoveringMap :
-    letI := A.orderThreeActualUnitRadialFillingDeckAction
+public theorem ellipticThreeUnitRadialFilling_isQuotientCoveringMap :
+    letI := A.ellipticThreeUnitRadialFillingDeckAction
     IsQuotientCoveringMap
       (affineCyclicRadialFillingProjection
         (orderThreeCentralFiberPresentationData A.periods))
-      A.orderThreeActualEllipticBoundaryDeckData.FillingDeck := by
+      A.ellipticThreeBoundaryDeckData.FillingDeck := by
   let P := orderThreeCentralFiberPresentationData A.periods
   let actionH := affineCyclicRadialFillingDeckAction P
   exact isQuotientCoveringMap_compMulEquiv actionH
-    A.orderThreeActualToCanonicalFillingDeckEquiv _
+    A.ellipticThreeToCanonicalFillingDeckEquiv _
     (affineCyclicRadialFilling_isQuotientCoveringMap P
       (orderThreeCentralFiberPresentationData_lift_continuous A.periods)
       (orderThreeCentralFiberPresentationData_lift_symm_continuous A.periods))
 
 @[instance_reducible]
-public noncomputable def orderFourActualUnitRadialFillingDeckAction :
-    MulAction A.orderFourActualEllipticBoundaryDeckData.FillingDeck
+public noncomputable def ellipticFourUnitRadialFillingDeckAction :
+    MulAction A.ellipticFourBoundaryDeckData.FillingDeck
       (ComplexUnitDisc × ComplexTwoSpace) := by
   let P := orderFourCentralFiberPresentationData A.periods
   let actionH := affineCyclicRadialFillingDeckAction P
   let _ := actionH
   exact MulAction.compHom (ComplexUnitDisc × ComplexTwoSpace)
-    A.orderFourActualToCanonicalFillingDeckEquiv.toMonoidHom
+    A.ellipticFourToCanonicalFillingDeckEquiv.toMonoidHom
 
-public theorem orderFourActualUnitRadialFilling_isQuotientCoveringMap :
-    letI := A.orderFourActualUnitRadialFillingDeckAction
+public theorem ellipticFourUnitRadialFilling_isQuotientCoveringMap :
+    letI := A.ellipticFourUnitRadialFillingDeckAction
     IsQuotientCoveringMap
       (affineCyclicRadialFillingProjection
         (orderFourCentralFiberPresentationData A.periods))
-      A.orderFourActualEllipticBoundaryDeckData.FillingDeck := by
+      A.ellipticFourBoundaryDeckData.FillingDeck := by
   let P := orderFourCentralFiberPresentationData A.periods
   let actionH := affineCyclicRadialFillingDeckAction P
   exact isQuotientCoveringMap_compMulEquiv actionH
-    A.orderFourActualToCanonicalFillingDeckEquiv _
+    A.ellipticFourToCanonicalFillingDeckEquiv _
     (affineCyclicRadialFilling_isQuotientCoveringMap P
       (orderFourCentralFiberPresentationData_lift_continuous A.periods)
       (orderFourCentralFiberPresentationData_lift_symm_continuous A.periods))
 
-public noncomputable def orderThreeActualCoverToCanonicalRadialHomeomorph :
+public noncomputable def ellipticThreeCoverToCanonicalRadialHomeomorph :
     ComplexDiscBall A.starSeparation.orderThree.radius × ComplexTwoSpace ≃ₜ
       ComplexUnitDisc × ComplexTwoSpace :=
   (A.orderThreeFillingCoverRealPeriodHomeomorph
@@ -277,7 +277,7 @@ public noncomputable def orderThreeActualCoverToCanonicalRadialHomeomorph :
       (ComplexDisc.productBallHomeomorph A.starSeparation.orderThree.radius_pos
         A.starSeparation.orderThree.radius_lt_one))
 
-public noncomputable def orderFourActualCoverToCanonicalRadialHomeomorph :
+public noncomputable def ellipticFourCoverToCanonicalRadialHomeomorph :
     ComplexDiscBall A.starSeparation.orderFour.radius × ComplexTwoSpace ≃ₜ
       ComplexUnitDisc × ComplexTwoSpace :=
   (A.orderFourFillingCoverRealPeriodHomeomorph
@@ -288,44 +288,44 @@ public noncomputable def orderFourActualCoverToCanonicalRadialHomeomorph :
         A.starSeparation.orderFour.radius_lt_one))
 
 @[instance_reducible]
-public noncomputable def orderThreeActualRadialFillingDeckAction :
-    MulAction A.orderThreeActualEllipticBoundaryDeckData.FillingDeck
+public noncomputable def ellipticThreeRadialFillingDeckAction :
+    MulAction A.ellipticThreeBoundaryDeckData.FillingDeck
       (ComplexDiscBall A.starSeparation.orderThree.radius × ComplexTwoSpace) :=
-  pullbackMulActionHomeomorph A.orderThreeActualUnitRadialFillingDeckAction
-    A.orderThreeActualCoverToCanonicalRadialHomeomorph
+  pullbackMulActionHomeomorph A.ellipticThreeUnitRadialFillingDeckAction
+    A.ellipticThreeCoverToCanonicalRadialHomeomorph
 
-public theorem orderThreeActualCanonicalRadialProjection_isQuotientCoveringMap :
-    letI := A.orderThreeActualRadialFillingDeckAction
+public theorem ellipticThreeCanonicalRadialProjection_isQuotientCoveringMap :
+    letI := A.ellipticThreeRadialFillingDeckAction
     IsQuotientCoveringMap
       ((affineCyclicRadialFillingProjection
         (orderThreeCentralFiberPresentationData A.periods)) ∘
-          A.orderThreeActualCoverToCanonicalRadialHomeomorph)
-      A.orderThreeActualEllipticBoundaryDeckData.FillingDeck := by
+          A.ellipticThreeCoverToCanonicalRadialHomeomorph)
+      A.ellipticThreeBoundaryDeckData.FillingDeck := by
   exact isQuotientCoveringMap_comp_homeomorph
-    A.orderThreeActualUnitRadialFillingDeckAction
-    A.orderThreeActualCoverToCanonicalRadialHomeomorph _
-    A.orderThreeActualUnitRadialFilling_isQuotientCoveringMap
+    A.ellipticThreeUnitRadialFillingDeckAction
+    A.ellipticThreeCoverToCanonicalRadialHomeomorph _
+    A.ellipticThreeUnitRadialFilling_isQuotientCoveringMap
 
 @[instance_reducible]
-public noncomputable def orderFourActualRadialFillingDeckAction :
-    MulAction A.orderFourActualEllipticBoundaryDeckData.FillingDeck
+public noncomputable def ellipticFourRadialFillingDeckAction :
+    MulAction A.ellipticFourBoundaryDeckData.FillingDeck
       (ComplexDiscBall A.starSeparation.orderFour.radius × ComplexTwoSpace) :=
-  pullbackMulActionHomeomorph A.orderFourActualUnitRadialFillingDeckAction
-    A.orderFourActualCoverToCanonicalRadialHomeomorph
+  pullbackMulActionHomeomorph A.ellipticFourUnitRadialFillingDeckAction
+    A.ellipticFourCoverToCanonicalRadialHomeomorph
 
-public theorem orderFourActualCanonicalRadialProjection_isQuotientCoveringMap :
-    letI := A.orderFourActualRadialFillingDeckAction
+public theorem ellipticFourCanonicalRadialProjection_isQuotientCoveringMap :
+    letI := A.ellipticFourRadialFillingDeckAction
     IsQuotientCoveringMap
       ((affineCyclicRadialFillingProjection
         (orderFourCentralFiberPresentationData A.periods)) ∘
-          A.orderFourActualCoverToCanonicalRadialHomeomorph)
-      A.orderFourActualEllipticBoundaryDeckData.FillingDeck := by
+          A.ellipticFourCoverToCanonicalRadialHomeomorph)
+      A.ellipticFourBoundaryDeckData.FillingDeck := by
   exact isQuotientCoveringMap_comp_homeomorph
-    A.orderFourActualUnitRadialFillingDeckAction
-    A.orderFourActualCoverToCanonicalRadialHomeomorph _
-    A.orderFourActualUnitRadialFilling_isQuotientCoveringMap
+    A.ellipticFourUnitRadialFillingDeckAction
+    A.ellipticFourCoverToCanonicalRadialHomeomorph _
+    A.ellipticFourUnitRadialFilling_isQuotientCoveringMap
 
-public noncomputable def orderThreeActualFillingToCanonicalRadialHomeomorph :
+public noncomputable def ellipticThreeFillingToCanonicalRadialHomeomorph :
     A.actualVanKampenFourPieceCover.ellipticThree ≃ₜ
       (orderThreeRadialActionData A.periods).FillingQuotient :=
   A.orderThreeFillingToActualPieceHomeomorph.symm.trans
@@ -334,7 +334,7 @@ public noncomputable def orderThreeActualFillingToCanonicalRadialHomeomorph :
       A.starSeparation.orderThree.radius_pos
       A.starSeparation.orderThree.radius_lt_one).toProductIdentification.quotientHomeomorph)
 
-public noncomputable def orderFourActualFillingToCanonicalRadialHomeomorph :
+public noncomputable def ellipticFourFillingToCanonicalRadialHomeomorph :
     A.actualVanKampenFourPieceCover.ellipticFour ≃ₜ
       (orderFourRadialActionData A.periods).FillingQuotient :=
   A.orderFourFillingToActualPieceHomeomorph.symm.trans
@@ -343,27 +343,27 @@ public noncomputable def orderFourActualFillingToCanonicalRadialHomeomorph :
       A.starSeparation.orderFour.radius_pos
       A.starSeparation.orderFour.radius_lt_one).toProductIdentification.quotientHomeomorph)
 
-public theorem orderThreeActualFillingProjection_canonicalRadial
+public theorem ellipticThreeFillingProjection_canonicalRadial
     (q : ComplexDiscBall A.starSeparation.orderThree.radius × ComplexTwoSpace) :
-    A.orderThreeActualFillingToCanonicalRadialHomeomorph
-        (A.orderThreeActualEllipticFillingProjection q) =
+    A.ellipticThreeFillingToCanonicalRadialHomeomorph
+        (A.ellipticThreeFillingProjection q) =
       affineCyclicRadialFillingProjection
         (orderThreeCentralFiberPresentationData A.periods)
-        (A.orderThreeActualCoverToCanonicalRadialHomeomorph q) := by
+        (A.ellipticThreeCoverToCanonicalRadialHomeomorph q) := by
   change
     (orderThreeAffineRadialCompatibility A
       A.starSeparation.orderThree.radius
       A.starSeparation.orderThree.radius_pos
       A.starSeparation.orderThree.radius_lt_one).toProductIdentification.quotientHomeomorph
         (A.orderThreeFillingToActualPieceHomeomorph.symm
-          (A.orderThreeActualEllipticFillingProjection q)) = _
-  have hproj : A.orderThreeActualEllipticFillingProjection q =
+          (A.ellipticThreeFillingProjection q)) = _
+  have hproj : A.ellipticThreeFillingProjection q =
       A.orderThreeFillingToActualPieceHomeomorph
-        (A.orderThreeActualFillingCoverProjection
+        (A.ellipticThreeFillingCoverProjection
           A.starSeparation.orderThree.radius q) := rfl
   rw [hproj]
   rw [A.orderThreeFillingToActualPieceHomeomorph.symm_apply_apply]
-  have hcover : A.orderThreeActualFillingCoverProjection
+  have hcover : A.ellipticThreeFillingCoverProjection
       A.starSeparation.orderThree.radius q =
     (Quotient.mk _ (A.orderThreeFillingCoverMap
       A.starSeparation.orderThree.radius q) :
@@ -393,27 +393,27 @@ public theorem orderThreeActualFillingProjection_canonicalRadial
       A.orderThreeFillingProductMap_coverMap_eq_fixed]
     rfl
 
-public theorem orderFourActualFillingProjection_canonicalRadial
+public theorem ellipticFourFillingProjection_canonicalRadial
     (q : ComplexDiscBall A.starSeparation.orderFour.radius × ComplexTwoSpace) :
-    A.orderFourActualFillingToCanonicalRadialHomeomorph
-        (A.orderFourActualEllipticFillingProjection q) =
+    A.ellipticFourFillingToCanonicalRadialHomeomorph
+        (A.ellipticFourFillingProjection q) =
       affineCyclicRadialFillingProjection
         (orderFourCentralFiberPresentationData A.periods)
-        (A.orderFourActualCoverToCanonicalRadialHomeomorph q) := by
+        (A.ellipticFourCoverToCanonicalRadialHomeomorph q) := by
   change
     (orderFourAffineRadialCompatibility A
       A.starSeparation.orderFour.radius
       A.starSeparation.orderFour.radius_pos
       A.starSeparation.orderFour.radius_lt_one).toProductIdentification.quotientHomeomorph
         (A.orderFourFillingToActualPieceHomeomorph.symm
-          (A.orderFourActualEllipticFillingProjection q)) = _
-  have hproj : A.orderFourActualEllipticFillingProjection q =
+          (A.ellipticFourFillingProjection q)) = _
+  have hproj : A.ellipticFourFillingProjection q =
       A.orderFourFillingToActualPieceHomeomorph
-        (A.orderFourActualFillingCoverProjection
+        (A.ellipticFourFillingCoverProjection
           A.starSeparation.orderFour.radius q) := rfl
   rw [hproj]
   rw [A.orderFourFillingToActualPieceHomeomorph.symm_apply_apply]
-  have hcover : A.orderFourActualFillingCoverProjection
+  have hcover : A.ellipticFourFillingCoverProjection
       A.starSeparation.orderFour.radius q =
     (Quotient.mk _ (A.orderFourFillingCoverMap
       A.starSeparation.orderFour.radius q) :
@@ -443,59 +443,59 @@ public theorem orderFourActualFillingProjection_canonicalRadial
       A.orderFourFillingProductMap_coverMap_eq_fixed]
     rfl
 
-public theorem orderThreeActualEllipticFillingProjection_isQuotientCoveringMap :
-    letI := A.orderThreeActualRadialFillingDeckAction
-    IsQuotientCoveringMap A.orderThreeActualEllipticFillingProjection
-      A.orderThreeActualEllipticBoundaryDeckData.FillingDeck := by
-  let _ := A.orderThreeActualRadialFillingDeckAction
-  have h := A.orderThreeActualCanonicalRadialProjection_isQuotientCoveringMap.homeomorph_comp
-    A.orderThreeActualFillingToCanonicalRadialHomeomorph.symm
+public theorem ellipticThreeFillingProjection_isQuotientCoveringMap :
+    letI := A.ellipticThreeRadialFillingDeckAction
+    IsQuotientCoveringMap A.ellipticThreeFillingProjection
+      A.ellipticThreeBoundaryDeckData.FillingDeck := by
+  let _ := A.ellipticThreeRadialFillingDeckAction
+  have h := A.ellipticThreeCanonicalRadialProjection_isQuotientCoveringMap.homeomorph_comp
+    A.ellipticThreeFillingToCanonicalRadialHomeomorph.symm
   have heq :
-      A.orderThreeActualFillingToCanonicalRadialHomeomorph.symm ∘
+      A.ellipticThreeFillingToCanonicalRadialHomeomorph.symm ∘
           ((affineCyclicRadialFillingProjection
             (orderThreeCentralFiberPresentationData A.periods)) ∘
-              A.orderThreeActualCoverToCanonicalRadialHomeomorph) =
-        A.orderThreeActualEllipticFillingProjection := by
+              A.ellipticThreeCoverToCanonicalRadialHomeomorph) =
+        A.ellipticThreeFillingProjection := by
     funext q
     calc
-      A.orderThreeActualFillingToCanonicalRadialHomeomorph.symm
+      A.ellipticThreeFillingToCanonicalRadialHomeomorph.symm
           (affineCyclicRadialFillingProjection
             (orderThreeCentralFiberPresentationData A.periods)
-              (A.orderThreeActualCoverToCanonicalRadialHomeomorph q)) =
-        A.orderThreeActualFillingToCanonicalRadialHomeomorph.symm
-          (A.orderThreeActualFillingToCanonicalRadialHomeomorph
-            (A.orderThreeActualEllipticFillingProjection q)) := by
-              rw [A.orderThreeActualFillingProjection_canonicalRadial]
-      _ = A.orderThreeActualEllipticFillingProjection q :=
-        A.orderThreeActualFillingToCanonicalRadialHomeomorph.symm_apply_apply _
+              (A.ellipticThreeCoverToCanonicalRadialHomeomorph q)) =
+        A.ellipticThreeFillingToCanonicalRadialHomeomorph.symm
+          (A.ellipticThreeFillingToCanonicalRadialHomeomorph
+            (A.ellipticThreeFillingProjection q)) := by
+              rw [A.ellipticThreeFillingProjection_canonicalRadial]
+      _ = A.ellipticThreeFillingProjection q :=
+        A.ellipticThreeFillingToCanonicalRadialHomeomorph.symm_apply_apply _
   rw [heq] at h
   exact h
 
-public theorem orderFourActualEllipticFillingProjection_isQuotientCoveringMap :
-    letI := A.orderFourActualRadialFillingDeckAction
-    IsQuotientCoveringMap A.orderFourActualEllipticFillingProjection
-      A.orderFourActualEllipticBoundaryDeckData.FillingDeck := by
-  let _ := A.orderFourActualRadialFillingDeckAction
-  have h := A.orderFourActualCanonicalRadialProjection_isQuotientCoveringMap.homeomorph_comp
-    A.orderFourActualFillingToCanonicalRadialHomeomorph.symm
+public theorem ellipticFourFillingProjection_isQuotientCoveringMap :
+    letI := A.ellipticFourRadialFillingDeckAction
+    IsQuotientCoveringMap A.ellipticFourFillingProjection
+      A.ellipticFourBoundaryDeckData.FillingDeck := by
+  let _ := A.ellipticFourRadialFillingDeckAction
+  have h := A.ellipticFourCanonicalRadialProjection_isQuotientCoveringMap.homeomorph_comp
+    A.ellipticFourFillingToCanonicalRadialHomeomorph.symm
   have heq :
-      A.orderFourActualFillingToCanonicalRadialHomeomorph.symm ∘
+      A.ellipticFourFillingToCanonicalRadialHomeomorph.symm ∘
           ((affineCyclicRadialFillingProjection
             (orderFourCentralFiberPresentationData A.periods)) ∘
-              A.orderFourActualCoverToCanonicalRadialHomeomorph) =
-        A.orderFourActualEllipticFillingProjection := by
+              A.ellipticFourCoverToCanonicalRadialHomeomorph) =
+        A.ellipticFourFillingProjection := by
     funext q
     calc
-      A.orderFourActualFillingToCanonicalRadialHomeomorph.symm
+      A.ellipticFourFillingToCanonicalRadialHomeomorph.symm
           (affineCyclicRadialFillingProjection
             (orderFourCentralFiberPresentationData A.periods)
-              (A.orderFourActualCoverToCanonicalRadialHomeomorph q)) =
-        A.orderFourActualFillingToCanonicalRadialHomeomorph.symm
-          (A.orderFourActualFillingToCanonicalRadialHomeomorph
-            (A.orderFourActualEllipticFillingProjection q)) := by
-              rw [A.orderFourActualFillingProjection_canonicalRadial]
-      _ = A.orderFourActualEllipticFillingProjection q :=
-        A.orderFourActualFillingToCanonicalRadialHomeomorph.symm_apply_apply _
+              (A.ellipticFourCoverToCanonicalRadialHomeomorph q)) =
+        A.ellipticFourFillingToCanonicalRadialHomeomorph.symm
+          (A.ellipticFourFillingToCanonicalRadialHomeomorph
+            (A.ellipticFourFillingProjection q)) := by
+              rw [A.ellipticFourFillingProjection_canonicalRadial]
+      _ = A.ellipticFourFillingProjection q :=
+        A.ellipticFourFillingToCanonicalRadialHomeomorph.symm_apply_apply _
   rw [heq] at h
   exact h
 

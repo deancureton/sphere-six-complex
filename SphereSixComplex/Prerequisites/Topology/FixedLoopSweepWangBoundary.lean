@@ -25,7 +25,7 @@ open CircleProductIdentityMappingTorus
 open CanonicalProductWangBoundarySlant
 open CyclicAngularFundamentalDomain
 open NormalizedFiniteOrderAdditiveCircleSweep
-open NormalizedFiniteOrderAdditiveCircleSweepProof
+open CyclicMappingTorus.CircleSweep
 open PositiveCircleCross
 open StandardTorusHomology
 
@@ -1234,7 +1234,7 @@ noncomputable section
 open AlgebraicTopology
 namespace SphereSixComplex.Topology.FixedLoopSweepWangBoundary
 open NormalizedFiniteOrderAdditiveCircleSweep
-open NormalizedFiniteOrderAdditiveCircleSweepProof
+open CyclicMappingTorus.CircleSweep
 open StandardTorusHomology
 
 public theorem fixedLoopSweepClass_boundary

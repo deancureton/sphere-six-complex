@@ -25,7 +25,7 @@ noncomputable section
 
 open Function Set Topology
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
 open SphereSixComplex.Periods
 open SphereSixComplex.Geometry.CuspPhaseEstimates
@@ -40,8 +40,8 @@ open SphereSixComplex.Geometry.CuspStraighteningRetraction
 open SphereSixComplex.Geometry.CuspStraighteningHomeomorph
 open SphereSixComplex.Geometry.CuspToricPhaseAction
 open SphereSixComplex.Geometry.CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricQuantitativeRegions
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+open SphereSixComplex.Geometry.InfiniteA2Toric.QuantitativeRegions
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 /-- The normalized positive deck formula preserves the explicit nonnegative part. -/
 public theorem constructedPositiveDeck_mem
@@ -1018,4 +1018,4 @@ public theorem normalizedPolarHoneycombPhaseGeometry_of_constructedTopology
       PolarPhaseGeometricCore constructedModel r Q.toPolarHoneycombData} :=
   h.map ConstructedPolarHoneycombTopologicalData.toPhaseGeometry
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric

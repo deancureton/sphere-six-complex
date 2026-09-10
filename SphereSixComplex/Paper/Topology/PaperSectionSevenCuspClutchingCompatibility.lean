@@ -22,12 +22,12 @@ open AlgebraicTopology Set
 
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 
-open SectionSevenEllipticTwoDiscHomologyCoordinates
-open SectionSevenEllipticInteriorMarkedCycleData
+open EllipticTwoDiscHomologyCoordinates
+open EllipticInteriorMarkedCycleData
 
-variable {A : PaperAnalyticData} {D : A.SectionSevenEllipticTwoDiscCoverData}
+variable {A : PaperAnalyticData} {D : A.EllipticTwoDiscCoverData}
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 /-- An unmarked comparison between the actual cusp Wang boundary and the boundary of the
 pulled-back elliptic cover, together with compatibility of the chosen fibre markings. -/
@@ -38,7 +38,7 @@ public structure SectionSevenCuspWangBandCompatibility
       let _ := G.fiberTopology
       IntegralSingularHomology 1 G.Fiber) →+
       IntegralSingularHomology 1
-        (D.orderThreeSide ∩ D.orderFourSide : Set A.SectionSevenEllipticInterior)
+        (D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior)
   boundary_naturality :
     fiberToBandHomologyOne.comp (actualCuspWangBoundaryHom A) =
       D.cuspPulledBackBoundaryHom
@@ -83,7 +83,7 @@ public structure SectionSevenCuspClutchingCompatibility
     (N : A.EllipticBandHomologyAlignment D) where
   wangBand : D.SectionSevenCuspWangBandCompatibility N
   cycleDecomposition :
-    A.SectionSevenEllipticInteriorCycleDecomposition N.actualHomologyCoordinates
+    A.EllipticInteriorCycleDecomposition N.actualHomologyCoordinates
       (D.cuspNormalizedDegreeTwoSplitting N wangBand.pulledBackBoundaryBasisBridge)
 
 namespace SectionSevenCuspClutchingCompatibility
@@ -103,7 +103,7 @@ public theorem inclusionNaturality
     have h := C.cycleDecomposition.normalizedDegreeOne_onCuspCollar x
     simpa [cuspDegreeOneCoordinateHom_apply,
       actualCuspEllipticDegreeOneCoordinateAfterAddEquiv,
-      sectionSevenFirstBoundaryHom_actualCusp_zero] using congrFun h 0
+      cuspAttachmentBoundaryOne_actualCusp_zero] using congrFun h 0
   degreeTwoFiber := by
     ext x
     change D.ellipticInteriorDegreeTwoFiberCoordinateHom N
@@ -114,19 +114,19 @@ public theorem inclusionNaturality
     simpa [cuspDegreeTwoFiberCoordinateHom_apply,
       actualCuspEllipticDegreeTwoFiberCoordinateAfterAddEquiv,
       cuspNormalizedDegreeTwoSplitting,
-      sectionSevenMayerVietorisFinalTwoHom_actualCusp_zero] using congrFun h 0
+      cuspAttachmentBoundaryTwo_actualCusp_zero] using congrFun h 0
 
 /-- The unmarked Wang comparison and actual cycle decomposition supply the three marked squares
 isolated by the affine completion reduction. -/
 public theorem markedCompletionInput
-    {R : A.SectionSevenAffineRadialCompletionInput}
+    {R : A.AffineRadialCompletionInput}
     (C : R.twoDiscCover.SectionSevenCuspClutchingCompatibility R.homologyAlignment) :
-    A.SectionSevenAffineMarkedCompletionInput R where
+    A.AffineMarkedCompletionInput R where
   connectingNaturality := C.wangBand.connectingNaturality
   inclusionNaturality := C.inclusionNaturality
 
 end SectionSevenCuspClutchingCompatibility
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end SphereSixComplex.Geometry.PaperAnalyticData

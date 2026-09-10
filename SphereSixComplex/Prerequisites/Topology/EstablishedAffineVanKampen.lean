@@ -156,7 +156,7 @@ Both sides are pinned down by their action on the chosen basepoint lift: Mathlib
 `fundamentalGroupToMulOpposite_apply_eq_Iff` says the equivalence sends `γ` to the unique group
 element moving the lift along the monodromy of `γ`, and `monodromy_naturality` says the equivariant
 map carries one monodromy to the other. -/
-public theorem establishedQuotientCoverFundamentalGroupNaturality
+public theorem QuotientCoverMapData.fundamentalGroupEquiv_natural
     {E E' X X' G H : Type*}
     [TopologicalSpace E] [TopologicalSpace E'] [TopologicalSpace X] [TopologicalSpace X']
     [Group G] [Group H] [MulAction G E] [MulAction H E']
@@ -179,7 +179,7 @@ public theorem establishedQuotientCoverFundamentalGroupNaturality
     e γ).symm
 
 /-- Naturality with the target cover basepoint replaced by an equal selected lift. -/
-public theorem establishedQuotientCoverFundamentalGroupNaturality_of_lift_eq
+public theorem QuotientCoverMapData.fundamentalGroupEquiv_natural_of_lift_eq
     {E E' X X' G H : Type*}
     [TopologicalSpace E] [TopologicalSpace E'] [TopologicalSpace X] [TopologicalSpace X']
     [Group G] [Group H] [MulAction G E] [MulAction H E']
@@ -193,7 +193,7 @@ public theorem establishedQuotientCoverFundamentalGroupNaturality_of_lift_eq
         (FundamentalGroup.mapOfEq D.baseMap
           ((D.commutes e).trans (congrArg q he')) γ) := by
   subst e'
-  exact establishedQuotientCoverFundamentalGroupNaturality hp hq D e γ
+  exact QuotientCoverMapData.fundamentalGroupEquiv_natural hp hq D e γ
 
 /-- A bijective equivariant deck comparison gives the corresponding equivalence of the two
 based fundamental groups. -/
@@ -226,7 +226,7 @@ public theorem quotientCoverFundamentalGroupEquiv_apply
     quotientCoverFundamentalGroupEquiv hp hq D hdeck e γ =
       FundamentalGroup.mapOfEq D.baseMap (D.commutes e) γ := by
   have h := congrArg (hq.fundamentalGroupEquiv ⟨D.lift e, rfl⟩).symm
-    (establishedQuotientCoverFundamentalGroupNaturality hp hq D e γ)
+    (QuotientCoverMapData.fundamentalGroupEquiv_natural hp hq D e γ)
   simpa [quotientCoverFundamentalGroupEquiv] using h
 
 /-- A based map between the quotient bases of two simply connected regular covers has a
@@ -529,7 +529,7 @@ public theorem map_surjective_of_deckMap_surjective (hsurj : Function.Surjective
     obtain ⟨g, hg⟩ := hsurj (hq.fundamentalGroupEquiv ⟨cm.lift base, rfl⟩ y).unop
     refine ⟨ofDeck hp base g, ?_⟩
     apply (hq.fundamentalGroupEquiv ⟨cm.lift base, rfl⟩).injective
-    rw [← establishedQuotientCoverFundamentalGroupNaturality hp hq cm base]
+    rw [← QuotientCoverMapData.fundamentalGroupEquiv_natural hp hq cm base]
     simp only [fundamentalGroupEquiv_ofDeck]
     exact MulOpposite.unop_injective (by simpa using hg)
   intro y
@@ -562,10 +562,10 @@ public theorem ker_map_of_deckMap_ker (S : Set G) (hker : cm.deckMap.ker = norma
     constructor
     · intro h
       show (MonoidHom.op cm.deckMap) (hp.fundamentalGroupEquiv ⟨base, rfl⟩ x) = 1
-      rw [establishedQuotientCoverFundamentalGroupNaturality hp hq cm base, h, map_one]
+      rw [QuotientCoverMapData.fundamentalGroupEquiv_natural hp hq cm base, h, map_one]
     · intro h
       have h' : (MonoidHom.op cm.deckMap) (hp.fundamentalGroupEquiv ⟨base, rfl⟩ x) = 1 := h
-      rw [establishedQuotientCoverFundamentalGroupNaturality hp hq cm base] at h'
+      rw [QuotientCoverMapData.fundamentalGroupEquiv_natural hp hq cm base] at h'
       refine (hq.fundamentalGroupEquiv ⟨cm.lift base, rfl⟩).injective ?_
       rw [map_one]
       exact h'

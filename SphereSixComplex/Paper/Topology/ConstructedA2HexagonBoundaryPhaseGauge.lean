@@ -6,7 +6,7 @@ public import SphereSixComplex.Paper.Topology.ConstructedA2HoneycombCompactPhase
 
 noncomputable section
 open Function Set Topology Matrix
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
 public def constructedA2HexagonVertexWeights (x : Fin 2 → ℝ) : Fin 6 → ℝ :=
   let a := (3 / 2 : ℝ) * x 0
@@ -216,6 +216,6 @@ public theorem constructedA2BoundaryCompactGauge_edge (u v : CompactTorus) (i : 
       constructedA2BoundaryAngleCharacter, Circle.exp_add, Circle.exp_neg,
       Circle.exp_arg, hu, hv] using h
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric
 
 end

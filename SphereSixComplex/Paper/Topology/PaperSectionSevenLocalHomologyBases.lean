@@ -24,11 +24,11 @@ variable {A : PaperAnalyticData}
 
 /-- A cusp mapping-torus realization and two-disc coordinates supply all four local bases needed
 by the final attachment. -/
-public noncomputable def sectionSevenCollarInteriorHomologyBases
+public noncomputable def collarInteriorHomologyBases
     (R : A.CuspCollarRadialMappingTorusRealization)
-    {D : A.SectionSevenEllipticTwoDiscCoverData}
-    (B : A.SectionSevenEllipticTwoDiscHomologyCoordinates D) :
-    A.SectionSevenCollarInteriorHomologyBases where
+    {D : A.EllipticTwoDiscCoverData}
+    (B : A.EllipticTwoDiscHomologyCoordinates D) :
+    A.CollarInteriorHomologyBases where
   cuspCollarOne := R.homologyOneEquiv
   ellipticInteriorOne := B.ellipticInteriorHomologyOneEquiv
   cuspCollarTwo := R.homologyTwoEquiv
@@ -36,12 +36,12 @@ public noncomputable def sectionSevenCollarInteriorHomologyBases
 
 /-- The radial cusp realization, finite-cover calculations, and band-basis naturality supply the
 four local bases without assuming either elliptic-interior homology group. -/
-public noncomputable def sectionSevenCollarInteriorHomologyBasesOfEllipticRealization
+public noncomputable def collarInteriorHomologyBasesOfEllipticRealization
     (R : A.CuspCollarRadialMappingTorusRealization)
-    {D : A.SectionSevenEllipticTwoDiscCoverData}
+    {D : A.EllipticTwoDiscCoverData}
     (F : EllipticFiniteCoverHomologyRealization A.periods)
     (N : A.EllipticBandHomologyAlignment D) :
-    A.SectionSevenCollarInteriorHomologyBases :=
-  A.sectionSevenCollarInteriorHomologyBases R (N.homologyCoordinates F)
+    A.CollarInteriorHomologyBases :=
+  A.collarInteriorHomologyBases R (N.homologyCoordinates F)
 
 end SphereSixComplex.Geometry.PaperAnalyticData

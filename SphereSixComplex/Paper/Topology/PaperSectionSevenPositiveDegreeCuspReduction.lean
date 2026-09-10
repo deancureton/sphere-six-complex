@@ -17,18 +17,18 @@ open AlgebraicTopology
 
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 
-open SectionSevenEllipticTwoDiscHomologyCoordinates
-open SectionSevenEllipticInteriorMarkedCycleData
+open EllipticTwoDiscHomologyCoordinates
+open EllipticInteriorMarkedCycleData
 
-variable {A : PaperAnalyticData} {D : A.SectionSevenEllipticTwoDiscCoverData}
+variable {A : PaperAnalyticData} {D : A.EllipticTwoDiscCoverData}
 
 /-- The Mayer--Vietoris bridge canonically obtained from the six pulled-back cusp-cover boundary
 computations. -/
 public theorem SectionSevenCuspPulledBackBoundaryBasisBridge.mayerVietorisBridge
     (N : A.EllipticBandHomologyAlignment D)
     (G : D.SectionSevenCuspPulledBackBoundaryBasisBridge N) :
-    A.SectionSevenCuspDegreeTwoMayerVietorisBasisBridge N :=
-  SectionSevenEllipticTwoDiscCoverData.SectionSevenCuspPulledBackBoundaryBasisBridge.toMayerVietorisBasisBridge
+    A.CuspDegreeTwoMayerVietorisBasisBridge N :=
+  EllipticTwoDiscCoverData.SectionSevenCuspPulledBackBoundaryBasisBridge.toMayerVietorisBasisBridge
     D N G
 
 /-- The six pulled-back boundary calculations obtained from the single Wang-boundary map
@@ -37,7 +37,7 @@ public theorem SectionSevenCuspPulledBackWangBoundaryComparison.pulledBackBounda
     (N : A.EllipticBandHomologyAlignment D)
     (G : D.SectionSevenCuspPulledBackWangBoundaryComparison N) :
     D.SectionSevenCuspPulledBackBoundaryBasisBridge N :=
-  SectionSevenEllipticTwoDiscCoverData.SectionSevenCuspPulledBackWangBoundaryComparison.toPulledBackBoundaryBasisBridge
+  EllipticTwoDiscCoverData.SectionSevenCuspPulledBackWangBoundaryComparison.toPulledBackBoundaryBasisBridge
     D N G
 
 /-- The pulled-back boundary basis obtained from the marked Wang-boundary comparison. -/
@@ -45,36 +45,36 @@ public theorem SectionSevenCuspMarkedBoundaryComparison.pulledBackBoundaryBasisB
     (N : A.EllipticBandHomologyAlignment D)
     (G : D.SectionSevenCuspMarkedBoundaryComparison N) :
     D.SectionSevenCuspPulledBackBoundaryBasisBridge N :=
-  SectionSevenEllipticTwoDiscCoverData.SectionSevenCuspPulledBackWangBoundaryComparison.toPulledBackBoundaryBasisBridge
+  EllipticTwoDiscCoverData.SectionSevenCuspPulledBackWangBoundaryComparison.toPulledBackBoundaryBasisBridge
     D N
-      (SectionSevenEllipticTwoDiscCoverData.SectionSevenCuspMarkedBoundaryComparison.toPulledBackWangBoundaryComparison
+      (EllipticTwoDiscCoverData.SectionSevenCuspMarkedBoundaryComparison.toPulledBackWangBoundaryComparison
         D N G)
 
 /-- The exact eight scalar comparisons remaining after the six canonical cusp-cover boundary
 computations. -/
-public structure SectionSevenPositiveDegreeCuspBasisInput
+public structure PositiveDegreeCuspBasisInput
     (N : A.EllipticBandHomologyAlignment D)
     (G : D.SectionSevenCuspPulledBackBoundaryBasisBridge N) : Prop where
   degreeOne : ∀ i : Fin 3,
     N.actualHomologyCoordinates.normalizedUnionHomologyOneEquiv
         (cuspToEllipticUnionHomology D 1
           (A.cuspRawHomologyOneEquiv.symm (Pi.single i 1))) 0 =
-      actualCuspEllipticDegreeOneRawCoordinate (Pi.single i 1)
+      cuspEllipticDegreeOneRawCoordinate (Pi.single i 1)
   degreeTwoFiber : ∀ i : Fin 6, i ≠ 5 →
     N.actualHomologyCoordinates.normalizedUnionHomologyTwoEquiv
         (N.actualHomologyCoordinates.degreeTwoCuspE5SplittingOfCoordinates
-          (SectionSevenEllipticInteriorMarkedCycleData.degreeTwoCuspBoundaryCoordinates_of_basis N
+          (EllipticInteriorMarkedCycleData.degreeTwoCuspBoundaryCoordinates_of_basis N
             (fun j ↦
               (SectionSevenCuspPulledBackBoundaryBasisBridge.mayerVietorisBridge N G).boundaryCoordinates
                 N j)))
         (cuspToEllipticUnionHomology D 2
           (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1))) 0 =
-      actualCuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1)
+      cuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1)
 
 /-- The residual cusp comparison expressed without choosing basis vectors: the included
 degree-one meridian coordinate and the degree-two fibre coordinate are the corresponding raw
 cusp coordinate homomorphisms. -/
-public structure SectionSevenPositiveDegreeCuspCoordinateComparison
+public structure PositiveDegreeCuspCoordinateComparison
     (N : A.EllipticBandHomologyAlignment D)
     (G : D.SectionSevenCuspPulledBackBoundaryBasisBridge N) : Prop where
   degreeOneCoordinateHom :
@@ -89,31 +89,31 @@ public structure SectionSevenPositiveDegreeCuspCoordinateComparison
       actualCuspEllipticDegreeTwoFiberCoordinateAfterAddEquiv
         A.cuspRawHomologyTwoEquiv
 
-namespace SectionSevenPositiveDegreeCuspCoordinateComparison
+namespace PositiveDegreeCuspCoordinateComparison
 
 variable {N : A.EllipticBandHomologyAlignment D}
   {G : D.SectionSevenCuspPulledBackBoundaryBasisBridge N}
 
 /-- The two coordinate-homomorphism identities imply all eight residual basis checks. -/
 public theorem toCuspBasisInput
-    (C : A.SectionSevenPositiveDegreeCuspCoordinateComparison N G) :
-    A.SectionSevenPositiveDegreeCuspBasisInput N G where
+    (C : A.PositiveDegreeCuspCoordinateComparison N G) :
+    A.PositiveDegreeCuspBasisInput N G where
   degreeOne i := by
     have h := DFunLike.congr_fun C.degreeOneCoordinateHom
       (A.cuspRawHomologyOneEquiv.symm (Pi.single i 1))
-    change _ = actualCuspEllipticDegreeOneRawCoordinate (Pi.single i 1)
+    change _ = cuspEllipticDegreeOneRawCoordinate (Pi.single i 1)
     simpa [cuspDegreeOneCoordinateHom_apply,
       actualCuspEllipticDegreeOneCoordinateAfterAddEquiv] using h
   degreeTwoFiber i hi := by
     have h := DFunLike.congr_fun C.degreeTwoFiberCoordinateHom
       (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1))
-    change _ = actualCuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1)
+    change _ = cuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1)
     simpa [cuspDegreeTwoFiberCoordinateHom_apply,
       actualCuspEllipticDegreeTwoFiberCoordinateAfterAddEquiv] using h
 
-end SectionSevenPositiveDegreeCuspCoordinateComparison
+end PositiveDegreeCuspCoordinateComparison
 
-namespace SectionSevenPositiveDegreeCuspBasisInput
+namespace PositiveDegreeCuspBasisInput
 
 variable {N : A.EllipticBandHomologyAlignment D}
   {G : D.SectionSevenCuspPulledBackBoundaryBasisBridge N}
@@ -121,13 +121,13 @@ variable {N : A.EllipticBandHomologyAlignment D}
 /-- The eight basis checks are equivalent to the two coordinate-homomorphism identities.  The
 missing `e₅` fibre evaluation is zero because `e₅` defines the swept-section splitting. -/
 public theorem coordinateComparison
-    (C : A.SectionSevenPositiveDegreeCuspBasisInput N G) :
-    A.SectionSevenPositiveDegreeCuspCoordinateComparison N G where
+    (C : A.PositiveDegreeCuspBasisInput N G) :
+    A.PositiveDegreeCuspCoordinateComparison N G where
   degreeOneCoordinateHom := by
     apply addMonoidHom_ext_of_equiv_pi_single_one A.cuspRawHomologyOneEquiv
     intro i
     rw [cuspDegreeOneCoordinateHom_apply]
-    change _ = actualCuspEllipticDegreeOneRawCoordinate
+    change _ = cuspEllipticDegreeOneRawCoordinate
       (A.cuspRawHomologyOneEquiv
         (A.cuspRawHomologyOneEquiv.symm (Pi.single i 1)))
     rw [AddEquiv.apply_symm_apply]
@@ -136,14 +136,14 @@ public theorem coordinateComparison
     apply addMonoidHom_ext_of_equiv_pi_single_one A.cuspRawHomologyTwoEquiv
     intro i
     rw [cuspDegreeTwoFiberCoordinateHom_apply]
-    change _ = actualCuspEllipticDegreeTwoFiberRawCoordinate
+    change _ = cuspEllipticDegreeTwoFiberRawCoordinate
       (A.cuspRawHomologyTwoEquiv
         (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1)))
     rw [AddEquiv.apply_symm_apply]
     by_cases hi : i = 5
     · subst i
       simpa [degreeTwoCuspE5Generator,
-        actualCuspEllipticDegreeTwoFiberRawCoordinate] using
+        cuspEllipticDegreeTwoFiberRawCoordinate] using
         degreeTwoCuspE5_fiberCoordinate_zero N
           (degreeTwoCuspBoundaryCoordinates_of_basis N
             (fun i ↦
@@ -153,68 +153,68 @@ public theorem coordinateComparison
 
 /-- The eight remaining scalar calculations assemble into the marked-cycle package. -/
 public noncomputable def markedCycles
-    (C : A.SectionSevenPositiveDegreeCuspBasisInput N G) :
-    A.SectionSevenEllipticInteriorMarkedCycleData D :=
-  SectionSevenEllipticInteriorMarkedCycleData.ofCuspMayerVietorisBasisBridge
+    (C : A.PositiveDegreeCuspBasisInput N G) :
+    A.EllipticInteriorMarkedCycleData D :=
+  EllipticInteriorMarkedCycleData.ofCuspMayerVietorisBasisBridge
     N (SectionSevenCuspPulledBackBoundaryBasisBridge.mayerVietorisBridge N G)
       C.degreeOne C.degreeTwoFiber
 
 /-- The cusp-basis input supplies the production positive-degree homology assembly. -/
 public noncomputable def positiveDegreeHomologyAssembly
-    (C : A.SectionSevenPositiveDegreeCuspBasisInput N G) :
-    A.SectionSevenPositiveDegreeHomologyAssembly :=
+    (C : A.PositiveDegreeCuspBasisInput N G) :
+    A.PositiveDegreeHomologyAssembly :=
   C.markedCycles.positiveDegreeHomologyAssembly
 
-end SectionSevenPositiveDegreeCuspBasisInput
+end PositiveDegreeCuspBasisInput
 
 /-- The original eight basis evaluations and the two coordinate-map comparisons are logically
 equivalent. -/
-public theorem sectionSevenPositiveDegreeCuspBasisInput_iff_coordinateComparison
+public theorem positiveDegreeCuspBasisInput_iff_coordinateComparison
     (N : A.EllipticBandHomologyAlignment D)
     (G : D.SectionSevenCuspPulledBackBoundaryBasisBridge N) :
-    A.SectionSevenPositiveDegreeCuspBasisInput N G ↔
-      A.SectionSevenPositiveDegreeCuspCoordinateComparison N G :=
-  ⟨SectionSevenPositiveDegreeCuspBasisInput.coordinateComparison,
-    SectionSevenPositiveDegreeCuspCoordinateComparison.toCuspBasisInput⟩
+    A.PositiveDegreeCuspBasisInput N G ↔
+      A.PositiveDegreeCuspCoordinateComparison N G :=
+  ⟨PositiveDegreeCuspBasisInput.coordinateComparison,
+    PositiveDegreeCuspCoordinateComparison.toCuspBasisInput⟩
 
 /-- The remaining positive-degree input expressed as one Wang-boundary comparison and the eight
 residual scalar coordinates. -/
-public structure SectionSevenPositiveDegreeWangInput
+public structure PositiveDegreeWangInput
     (N : A.EllipticBandHomologyAlignment D) : Prop where
   boundary : D.SectionSevenCuspPulledBackWangBoundaryComparison N
-  scalar : A.SectionSevenPositiveDegreeCuspBasisInput N
+  scalar : A.PositiveDegreeCuspBasisInput N
     (SectionSevenCuspPulledBackWangBoundaryComparison.pulledBackBoundaryBasisBridge N boundary)
 
-namespace SectionSevenPositiveDegreeWangInput
+namespace PositiveDegreeWangInput
 
 variable {N : A.EllipticBandHomologyAlignment D}
 
 /-- The Wang comparison and eight residual scalar coordinates supply the production assembly. -/
 public noncomputable def positiveDegreeHomologyAssembly
-    (C : A.SectionSevenPositiveDegreeWangInput N) :
-    A.SectionSevenPositiveDegreeHomologyAssembly :=
+    (C : A.PositiveDegreeWangInput N) :
+    A.PositiveDegreeHomologyAssembly :=
   C.scalar.positiveDegreeHomologyAssembly
 
-end SectionSevenPositiveDegreeWangInput
+end PositiveDegreeWangInput
 
 /-- The remaining positive-degree input stated as three exact marked-coordinate comparisons:
 one boundary comparison and two inclusion-coordinate homomorphism identities. -/
-public structure SectionSevenPositiveDegreeMarkedCoordinateInput
+public structure PositiveDegreeMarkedCoordinateInput
     (N : A.EllipticBandHomologyAlignment D) : Prop where
   boundary : D.SectionSevenCuspMarkedBoundaryComparison N
-  inclusionCoordinates : A.SectionSevenPositiveDegreeCuspCoordinateComparison N
+  inclusionCoordinates : A.PositiveDegreeCuspCoordinateComparison N
     (SectionSevenCuspMarkedBoundaryComparison.pulledBackBoundaryBasisBridge N boundary)
 
-namespace SectionSevenPositiveDegreeMarkedCoordinateInput
+namespace PositiveDegreeMarkedCoordinateInput
 
 variable {N : A.EllipticBandHomologyAlignment D}
 
 /-- The three marked-coordinate comparisons supply the production positive-degree assembly. -/
 public noncomputable def positiveDegreeHomologyAssembly
-    (C : A.SectionSevenPositiveDegreeMarkedCoordinateInput N) :
-    A.SectionSevenPositiveDegreeHomologyAssembly :=
+    (C : A.PositiveDegreeMarkedCoordinateInput N) :
+    A.PositiveDegreeHomologyAssembly :=
   C.inclusionCoordinates.toCuspBasisInput.positiveDegreeHomologyAssembly
 
-end SectionSevenPositiveDegreeMarkedCoordinateInput
+end PositiveDegreeMarkedCoordinateInput
 
 end SphereSixComplex.Geometry.PaperAnalyticData

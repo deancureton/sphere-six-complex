@@ -24,53 +24,53 @@ end SphereSixComplex.Topology.CircleProductIdentityMappingTorus
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 open SphereSixComplex.Topology
 open CircleProductIdentityMappingTorus PositiveCircleCross StandardTorusHomology
-open SectionSevenEllipticTwoDiscCoverData
-open SectionSevenEllipticTwoDiscHomologyCoordinates
-open SectionSevenEllipticInteriorMarkedCycleData
+open EllipticTwoDiscCoverData
+open EllipticTwoDiscHomologyCoordinates
+open EllipticInteriorMarkedCycleData
 variable {A : PaperAnalyticData}
 
 public noncomputable def centralFourthPeriodCircleToUnion
-    (D : A.SectionSevenEllipticTwoDiscCoverData) :
+    (D : A.EllipticTwoDiscCoverData) :
     C(UnitAddCircle × TwicePuncturedComplex,
-      (D.orderThreeSide ∪ D.orderFourSide : Set A.SectionSevenEllipticInterior)) := by
-  refine ⟨fun p ↦ ⟨(A.sectionSevenEllipticCentralImageHomeomorph.symm
+      (D.orderThreeSide ∪ D.orderFourSide : Set A.ellipticInterior)) := by
+  refine ⟨fun p ↦ ⟨(A.ellipticCentralImageHomeomorph.symm
     (A.centralFourthPeriodCircle p)).1, ?_⟩, ?_⟩
   · rw [D.sides_cover]
     trivial
   · exact ((continuous_subtype_val.comp
-      (A.sectionSevenEllipticCentralImageHomeomorph.symm.continuous.comp
+      (A.ellipticCentralImageHomeomorph.symm.continuous.comp
         A.centralFourthPeriodCircle.continuous))).subtype_mk _
 
 public theorem centralFourthPeriodCircleToUnion_height
-    (D : A.SectionSevenEllipticTwoDiscCoverData)
+    (D : A.EllipticTwoDiscCoverData)
     (t : UnitAddCircle) (b : TwicePuncturedComplex) :
-    A.sectionSevenEllipticCentralHeight
+    A.ellipticCentralHeight
       ⟨(centralFourthPeriodCircleToUnion D (t, b)).1,
-        (A.sectionSevenEllipticCentralImageHomeomorph.symm
+        (A.ellipticCentralImageHomeomorph.symm
           (A.centralFourthPeriodCircle (t, b))).2⟩ = b.1.re := by
   change (A.centralFamilyCoordinate
-    (A.sectionSevenEllipticCentralImageHomeomorph
-      (A.sectionSevenEllipticCentralImageHomeomorph.symm
+    (A.ellipticCentralImageHomeomorph
+      (A.ellipticCentralImageHomeomorph.symm
         (A.centralFourthPeriodCircle (t, b))))).1.re = _
   rw [Homeomorph.apply_symm_apply, A.centralFourthPeriodCircle_coordinate]
 
 public theorem centralFourthPeriodCircleToUnion_mem_three
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (t : UnitAddCircle) (b : TwicePuncturedComplex) (hb : b.1.re < 2 / 3) :
     (centralFourthPeriodCircleToUnion R.twoDiscCover (t, b)).1 ∈
       R.twoDiscCover.orderThreeSide := by
-  change _ ∈ A.sectionSevenActualAffineSplit.allocation.orderThreeSide
-  refine Or.inr ⟨A.sectionSevenEllipticCentralImageHomeomorph.symm
+  change _ ∈ A.actualAffineHeightSplit.allocation.orderThreeSide
+  refine Or.inr ⟨A.ellipticCentralImageHomeomorph.symm
     (A.centralFourthPeriodCircle (t, b)), ?_, rfl⟩
   exact (centralFourthPeriodCircleToUnion_height R.twoDiscCover t b).trans_lt hb
 
 public theorem centralFourthPeriodCircleToUnion_mem_four
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (t : UnitAddCircle) (b : TwicePuncturedComplex) (hb : 1 / 3 < b.1.re) :
     (centralFourthPeriodCircleToUnion R.twoDiscCover (t, b)).1 ∈
       R.twoDiscCover.orderFourSide := by
-  change _ ∈ A.sectionSevenActualAffineSplit.allocation.orderFourSide
-  refine Or.inr ⟨A.sectionSevenEllipticCentralImageHomeomorph.symm
+  change _ ∈ A.actualAffineHeightSplit.allocation.orderFourSide
+  refine Or.inr ⟨A.ellipticCentralImageHomeomorph.symm
     (A.centralFourthPeriodCircle (t, b)), ?_, rfl⟩
   exact hb.trans_eq (centralFourthPeriodCircleToUnion_height R.twoDiscCover t b).symm
 
@@ -99,7 +99,7 @@ private theorem oneMeridian_re_gt (t : unitInterval) :
   linarith
 
 private theorem canonicalBoundary_left_image
-    (D : A.SectionSevenEllipticTwoDiscCoverData)
+    (D : A.EllipticTwoDiscCoverData)
     (x : IntegralSingularHomology 2 D.orderThreeSide) :
     canonicalBoundary D 1 (integralSingularHomologyMap 2
       (IntegralMayerVietoris.leftToUnion D.orderThreeSide D.orderFourSide) x) = 0 := by
@@ -111,7 +111,7 @@ private theorem canonicalBoundary_left_image
   simpa only [map_zero, add_zero] using h
 
 private theorem canonicalBoundary_right_image
-    (D : A.SectionSevenEllipticTwoDiscCoverData)
+    (D : A.EllipticTwoDiscCoverData)
     (x : IntegralSingularHomology 2 D.orderFourSide) :
     canonicalBoundary D 1 (integralSingularHomologyMap 2
       (IntegralMayerVietoris.rightToUnion D.orderThreeSide D.orderFourSide) x) = 0 := by
@@ -123,7 +123,7 @@ private theorem canonicalBoundary_right_image
   simpa only [map_zero, zero_add] using h
 
 private theorem centralCircleSweep_boundary_left
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     {b : TwicePuncturedComplex} (p : Path b b)
     (hp : ∀ t, (p t).1.re < 2 / 3) :
     canonicalBoundary R.twoDiscCover 1
@@ -155,7 +155,7 @@ private theorem centralCircleSweep_boundary_left
   exact canonicalBoundary_left_image R.twoDiscCover _
 
 private theorem centralCircleSweep_boundary_right
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     {b : TwicePuncturedComplex} (p : Path b b)
     (hp : ∀ t, 1 / 3 < (p t).1.re) :
     canonicalBoundary R.twoDiscCover 1
@@ -187,7 +187,7 @@ private theorem centralCircleSweep_boundary_right
   exact canonicalBoundary_right_image R.twoDiscCover _
 
 public theorem centralFourthPeriodCircle_normalizedCross_boundary
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (x : IntegralSingularHomology 1 TwicePuncturedComplex) :
     canonicalBoundary R.twoDiscCover 1
       (integralSingularHomologyMap 2 (centralFourthPeriodCircleToUnion R.twoDiscCover)
@@ -202,7 +202,7 @@ public theorem centralFourthPeriodCircle_normalizedCross_boundary
 
 
 public theorem centralFourthPeriodCircle_boundary_of_projection_zero
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (x : IntegralSingularHomology 2 (UnitAddCircle × TwicePuncturedComplex))
     (hx : integralSingularHomologyMap 2 productFiberProjection x = 0) :
     canonicalBoundary R.twoDiscCover 1

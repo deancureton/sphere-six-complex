@@ -67,7 +67,7 @@ public def finTwoProdFinFourAddEquiv :
 The collar ranks are the Wang-sequence calculation for the cusp monodromy.  The interior ranks
 are the Mayer--Vietoris calculation for the two elliptic discs.  Keeping these four statements
 separate prevents a basis choice from silently assuming either final inclusion map. -/
-public structure SectionSevenCollarInteriorHomologyBases where
+public structure CollarInteriorHomologyBases where
   cuspCollarOne :
     IntegralSingularHomology 1 (A.openEmbeddingStarData.collarSource 0) ≃+
       (Fin 3 → ℤ)
@@ -89,7 +89,7 @@ public structure SectionSevenCollarInteriorHomologyBases where
         (Fin 4 → ℤ) := A.cuspFillingHomologyTwoEquiv
 
 /-- The six separate source/side bases used by the final positive-degree calculation. -/
-public structure SectionSevenFinalSixHomologyBases where
+public structure CuspAttachmentHomologyBases where
   overlapOne :
     IntegralSingularHomology 1
         ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4) ∩
@@ -119,12 +119,12 @@ public structure SectionSevenFinalSixHomologyBases where
         ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3) ≃+
       (Fin 4 → ℤ)
 
-namespace SectionSevenFinalSixHomologyBases
+namespace CuspAttachmentHomologyBases
 
 variable {A : PaperAnalyticData}
 
 /-- Combine the two degree-one side bases in the order interior, cusp filling. -/
-public def finalOneTarget (B : A.SectionSevenFinalSixHomologyBases) :
+public def finalOneTarget (B : A.CuspAttachmentHomologyBases) :
     (IntegralSingularHomology 1
           ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4)) ×
         IntegralSingularHomology 1
@@ -133,7 +133,7 @@ public def finalOneTarget (B : A.SectionSevenFinalSixHomologyBases) :
   (B.interiorOne.prodCongr B.cuspPieceOne).trans finOneProdFinTwoAddEquiv
 
 /-- Combine the two degree-two side bases in the order interior, cusp filling. -/
-public def finalTwoTarget (B : A.SectionSevenFinalSixHomologyBases) :
+public def finalTwoTarget (B : A.CuspAttachmentHomologyBases) :
     (IntegralSingularHomology 2
           ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4)) ×
         IntegralSingularHomology 2
@@ -141,15 +141,15 @@ public def finalTwoTarget (B : A.SectionSevenFinalSixHomologyBases) :
       (Fin 6 → ℤ) :=
   (B.interiorTwo.prodCongr B.cuspPieceTwo).trans finTwoProdFinFourAddEquiv
 
-end SectionSevenFinalSixHomologyBases
+end CuspAttachmentHomologyBases
 
 /-- Transport the actual cusp-filling homology calculations and the four remaining local bases
 to all six spaces in the final Mayer--Vietoris attachment. -/
-public noncomputable def sectionSevenFinalSixHomologyBases
+public noncomputable def cuspAttachmentHomologyBases
     (R : CuspPuncturedCollarBridge.ActualLocalCuspCentralFiberRetractionData
       A.starCuspWitness)
-    (B : A.SectionSevenCollarInteriorHomologyBases) :
-    A.SectionSevenFinalSixHomologyBases where
+    (B : A.CollarInteriorHomologyBases) :
+    A.CuspAttachmentHomologyBases where
   overlapOne :=
     (integralSingularHomologyEquiv 1
       A.cuspCollarToSectionSevenFinalOverlapHomeomorph).symm.trans B.cuspCollarOne
@@ -168,16 +168,16 @@ public noncomputable def sectionSevenFinalSixHomologyBases
         (B.cuspFillingTwo R)
 
 /-- Use the established phase-spreading retraction to discharge the cusp-filling input. -/
-public noncomputable def sectionSevenFinalSixHomologyBasesOfLocalBases
-    (B : A.SectionSevenCollarInteriorHomologyBases) :
-    A.SectionSevenFinalSixHomologyBases :=
-  A.sectionSevenFinalSixHomologyBases A.cuspCentralFiberRetractionData B
+public noncomputable def cuspAttachmentHomologyBasesOfLocalBases
+    (B : A.CollarInteriorHomologyBases) :
+    A.CuspAttachmentHomologyBases :=
+  A.cuspAttachmentHomologyBases A.cuspCentralFiberRetractionData B
 
 /-- The four geometric map identifications left after the six bases have been fixed.  Each field
 identifies one actual inclusion, rather than assuming the signed Mayer--Vietoris map or the final
 homology conclusion. -/
-public structure SectionSevenFinalInclusionCoordinates
-    (B : A.SectionSevenFinalSixHomologyBases) where
+public structure CuspAttachmentInclusionCoordinates
+    (B : A.CuspAttachmentHomologyBases) where
   interiorOne : ∀ x,
     B.interiorOne
         (integralSingularHomologyMap 1
@@ -207,12 +207,12 @@ public structure SectionSevenFinalInclusionCoordinates
             ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3)) x) =
       fun i ↦ -sectionSevenMayerVietorisFinalTwoHom (B.overlapTwo x) (Fin.natAdd 2 i)
 
-namespace SectionSevenFinalInclusionCoordinates
+namespace CuspAttachmentInclusionCoordinates
 
-variable {A : PaperAnalyticData} {B : A.SectionSevenFinalSixHomologyBases}
+variable {A : PaperAnalyticData} {B : A.CuspAttachmentHomologyBases}
 
 /-- The four unsigned inclusion computations imply the signed degree-one square. -/
-public theorem finalOne_comm (C : A.SectionSevenFinalInclusionCoordinates B) (x) :
+public theorem finalOne_comm (C : A.CuspAttachmentInclusionCoordinates B) (x) :
     B.finalOneTarget
         (IntegralMayerVietoris.differenceMap
           ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4))
@@ -242,7 +242,7 @@ public theorem finalOne_comm (C : A.SectionSevenFinalInclusionCoordinates B) (x)
     simp
 
 /-- The four unsigned inclusion computations imply the signed degree-two square. -/
-public theorem finalTwo_comm (C : A.SectionSevenFinalInclusionCoordinates B) (x) :
+public theorem finalTwo_comm (C : A.CuspAttachmentInclusionCoordinates B) (x) :
     B.finalTwoTarget
         (IntegralMayerVietoris.differenceMap
           ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4))
@@ -293,8 +293,8 @@ public theorem finalTwo_comm (C : A.SectionSevenFinalInclusionCoordinates B) (x)
 
 /-- Assemble the exact production interface from six bases and four inclusion computations. -/
 public noncomputable def toPositiveDegreeHomologyAssembly
-    (C : A.SectionSevenFinalInclusionCoordinates B) :
-    A.SectionSevenPositiveDegreeHomologyAssembly where
+    (C : A.CuspAttachmentInclusionCoordinates B) :
+    A.PositiveDegreeHomologyAssembly where
   finalOneSource := B.overlapOne
   finalOneTarget := B.finalOneTarget
   finalOne_comm := C.finalOne_comm
@@ -302,15 +302,15 @@ public noncomputable def toPositiveDegreeHomologyAssembly
   finalTwoTarget := B.finalTwoTarget
   finalTwo_comm := C.finalTwo_comm
 
-end SectionSevenFinalInclusionCoordinates
+end CuspAttachmentInclusionCoordinates
 
 /-- For the actual paper cusp retraction, the four local bases and four inclusion formulas are
 the complete remaining input to the production positive-degree assembly. -/
-public noncomputable def sectionSevenPositiveDegreeHomologyAssemblyOfLocalBases
-    (B : A.SectionSevenCollarInteriorHomologyBases)
-    (C : A.SectionSevenFinalInclusionCoordinates
-      (A.sectionSevenFinalSixHomologyBasesOfLocalBases B)) :
-    A.SectionSevenPositiveDegreeHomologyAssembly :=
+public noncomputable def positiveDegreeHomologyAssemblyOfLocalBases
+    (B : A.CollarInteriorHomologyBases)
+    (C : A.CuspAttachmentInclusionCoordinates
+      (A.cuspAttachmentHomologyBasesOfLocalBases B)) :
+    A.PositiveDegreeHomologyAssembly :=
   C.toPositiveDegreeHomologyAssembly
 
 end SphereSixComplex.Geometry.PaperAnalyticData

@@ -18,9 +18,9 @@ open AlgebraicTopology
 
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 
-open SectionSevenEllipticInteriorMarkedCycleData
-open SectionSevenEllipticTwoDiscCoverData
-open SectionSevenEllipticTwoDiscHomologyCoordinates
+open EllipticInteriorMarkedCycleData
+open EllipticTwoDiscCoverData
+open EllipticTwoDiscHomologyCoordinates
 
 variable {A : PaperAnalyticData}
 
@@ -28,7 +28,7 @@ namespace EstablishedSectionSevenCuspTopology
 
 /-- The unique side-homology class with the primitive positive index-four coordinates. -/
 public noncomputable def actualCuspIndexFourPositiveSideLift
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     IntegralSingularHomology 2 R.twoDiscCover.orderThreeSide ×
       IntegralSingularHomology 2 R.twoDiscCover.orderFourSide :=
   R.homologyAlignment.actualHomologyCoordinates.sidesTwo.symm
@@ -36,7 +36,7 @@ public noncomputable def actualCuspIndexFourPositiveSideLift
 
 /-- The canonical side lift has coordinates `(0, -1, 1, 0)`. -/
 public theorem actualCuspIndexFourPositiveSideLift_coordinate
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     R.homologyAlignment.actualHomologyCoordinates.sidesTwo
         (actualCuspIndexFourPositiveSideLift R) =
       positiveIndexFourSideCoordinate :=
@@ -45,7 +45,7 @@ public theorem actualCuspIndexFourPositiveSideLift_coordinate
 /-- The canonical side lift represents the positive generator of the degree-two
 coinvariants. -/
 public theorem actualCuspIndexFourPositiveSideLift_quotient_generator
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     (Submodule.Quotient.mk (actualCuspIndexFourPositiveSideLift R) :
         (presentationTwo (D := R.twoDiscCover)).Coinvariants) =
       R.homologyAlignment.actualHomologyCoordinates.degreeTwoCoinvariantEquiv.symm 1 := by
@@ -61,7 +61,7 @@ public theorem actualCuspIndexFourPositiveSideLift_quotient_generator
 the first invariant-suspension cusp class.  Thus the right-hand equality is the smallest exact
 geometric realization statement still required by the current chain-level API. -/
 public theorem actualCuspDegreeTwoIndexFour_iff_positiveSideLift_inclusion
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (G : R.twoDiscCover.SectionSevenCuspPulledBackBoundaryBasisBridge
       R.homologyAlignment) :
     R.twoDiscCover.ellipticInteriorDegreeTwoFiberCoordinateHom R.homologyAlignment

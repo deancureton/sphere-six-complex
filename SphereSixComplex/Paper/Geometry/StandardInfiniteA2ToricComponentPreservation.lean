@@ -14,7 +14,7 @@ cusp fixed-point estimate.
 
 noncomputable section
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Model
+namespace SphereSixComplex.Geometry.InfiniteA2Toric.Model
 
 open SphereSixComplex.Geometry.CuspPhaseEstimates
 
@@ -24,9 +24,9 @@ public theorem toTorusActionPreservesComponents (M : Model) :
     TorusActionPreservesComponents M where
   torusAction_component := M.torusAction_centralComponent
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Model
+end SphereSixComplex.Geometry.InfiniteA2Toric.Model
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
 open SphereSixComplex.Geometry.CuspPhaseEstimates
 
@@ -37,4 +37,4 @@ public theorem exists_model_and_torusActionPreservesComponents :
   obtain ⟨M⟩ := model
   exact ⟨M, M.toTorusActionPreservesComponents⟩
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric

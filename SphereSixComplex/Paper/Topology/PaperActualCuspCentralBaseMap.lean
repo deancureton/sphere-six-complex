@@ -26,7 +26,7 @@ open CuspPuncturedCollarBridge
 variable (A : PaperAnalyticData)
 
 /-- The exact cusp-overlap chart into the actual central family. -/
-public noncomputable def actualCuspOverlapToCentral :
+public noncomputable def cuspOverlapToCentral :
     C((A.actualVanKampenFourPieceCover.core ∩ A.actualVanKampenFourPieceCover.cusp :
         Set A.VanKampenSpace), A.CentralFamily) where
   toFun x := puncturedLocalCuspQuotientMap A.starCuspWitness
@@ -38,9 +38,9 @@ public noncomputable def actualCuspOverlapToCentral :
 /-- On the additive universal cover, the actual overlap chart is the already constructed
 normalized map into the global cusp collar. -/
 @[simp]
-public theorem actualCuspOverlapToCentral_boundaryProjection
+public theorem cuspOverlapToCentral_boundaryProjection
     (p : additiveCuspRadiusCover A.starCuspWitness.localWitness.radius) :
-    A.actualCuspOverlapToCentral (A.actualCuspBoundaryProjection p) =
+    A.cuspOverlapToCentral (A.cuspBoundaryProjection p) =
       additiveCuspCoverToGlobal A.starCuspWitness p := by
   let q : A.openEmbeddingStarData.collarSource 0 :=
     additiveCuspBoundaryProjection A.starCuspWitness p
@@ -54,24 +54,24 @@ public theorem actualCuspOverlapToCentral_boundaryProjection
     A.starCuspWitness p
 
 /-- The canonical additive-cover point above the selected cusp-overlap base. -/
-public noncomputable def actualCuspBoundaryCoverBase :
+public noncomputable def cuspBoundaryCoverBase :
     additiveCuspRadiusCover A.starCuspWitness.localWitness.radius :=
-  paperCuspBoundaryBasePreimage A.starCuspWitness A.actualCuspLocalBoundaryBase
+  paperCuspBoundaryBasePreimage A.starCuspWitness A.cuspLocalBoundaryBase
 
 @[simp]
-public theorem actualCuspBoundaryCoverBase_projects :
-    A.actualCuspBoundaryProjection A.actualCuspBoundaryCoverBase =
-      A.actualCuspOverlapBase := by
+public theorem cuspBoundaryCoverBase_projects :
+    A.cuspBoundaryProjection A.cuspBoundaryCoverBase =
+      A.cuspOverlapBase := by
   change A.cuspCollarToStarOverlapHomeomorph
       (additiveCuspBoundaryProjection A.starCuspWitness
         (paperCuspBoundaryBasePreimage A.starCuspWitness
-          A.actualCuspLocalBoundaryBase)) = A.actualCuspOverlapBase
+          A.cuspLocalBoundaryBase)) = A.cuspOverlapBase
   rw [additiveCuspBoundaryProjection_basePreimage]
   exact A.cuspCollarToStarOverlapHomeomorph.apply_symm_apply _
 
 /-- The selected point of the actual central family at which cusp naturality is based. -/
-public noncomputable def actualCuspCentralBase : A.CentralFamily :=
-  A.actualCuspOverlapToCentral A.actualCuspOverlapBase
+public noncomputable def cuspCentralBase : A.CentralFamily :=
+  A.cuspOverlapToCentral A.cuspOverlapBase
 
 /-- The literal cusp chart is exactly the inclusion of the cusp overlap into the central
 piece of the glued star. -/
@@ -80,14 +80,14 @@ public theorem centralToSectionSevenEulerPieceHomeomorph_actualCuspOverlapToCent
     (x : (A.actualVanKampenFourPieceCover.core ∩
       A.actualVanKampenFourPieceCover.cusp : Set A.VanKampenSpace)) :
     A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
-        (A.actualCuspOverlapToCentral x) =
+        (A.cuspOverlapToCentral x) =
       A.actualVanKampenFourPieceCover.overlapToCore
         A.actualVanKampenFourPieceCover.cusp x := by
   let q := A.cuspCollarToStarOverlapHomeomorph.symm x
   apply Subtype.ext
   calc
     ↑(A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
-        (A.actualCuspOverlapToCentral x)) =
+        (A.cuspOverlapToCentral x)) =
         A.openEmbeddingStarData.collarSourceToGlued 0 q := rfl
     _ = ↑(A.cuspCollarToStarOverlapHomeomorph q) :=
       (A.cuspCollarToStarOverlapHomeomorph_coe q).symm

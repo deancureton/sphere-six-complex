@@ -6,7 +6,7 @@ public import SphereSixComplex.Prerequisites.Topology.QuarterCirclePathCompariso
 @[expose] public section
 noncomputable section
 open Set Topology Matrix
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex
 
 private theorem path_trans_forall {X : Type*} [TopologicalSpace X] {x y z : X}
@@ -79,4 +79,4 @@ public theorem constructedA2HexagonPlaneQuarterPath_mem_quadrant (i : Fin 4) (t 
     0 < quadrantFunctional i (constructedA2HexagonPlaneQuarterPath i t) :=
   constructedA2HexagonBoundaryQuarterPath_mem_quadrant i t
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric

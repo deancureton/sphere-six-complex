@@ -23,17 +23,17 @@ namespace SphereSixComplex.Geometry.PaperAnalyticData
 
 open SphereSixComplex.CircleMappingTorusHomologyBases
 open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
-open SectionSevenEllipticInteriorMarkedCycleData
+open EllipticInteriorMarkedCycleData
 
-variable {A : PaperAnalyticData} (D : A.SectionSevenEllipticTwoDiscCoverData)
+variable {A : PaperAnalyticData} (D : A.EllipticTwoDiscCoverData)
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 /-- The actual cusp-to-elliptic map, expressed on the radial circle mapping torus. -/
 public noncomputable def cuspMappingTorusToEllipticInteriorMap :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
-    C(CircleMappingTorus G.clutching, A.SectionSevenEllipticInterior) := by
+    C(CircleMappingTorus G.clutching, A.ellipticInterior) := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   exact D.cuspToEllipticInteriorMap.hom.comp G.totalHomotopyEquiv.invFun
@@ -143,7 +143,7 @@ public structure CuspEllipticMappingTorusGeometricComparison
   referenceMap :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
-    C(CircleMappingTorus G.clutching, A.SectionSevenEllipticInterior)
+    C(CircleMappingTorus G.clutching, A.ellipticInterior)
   modelHomotopy :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
@@ -165,7 +165,7 @@ public structure CuspEllipticMappingTorusGeometricComparison
 
 namespace CuspEllipticMappingTorusGeometricComparison
 
-variable {D : A.SectionSevenEllipticTwoDiscCoverData}
+variable {D : A.EllipticTwoDiscCoverData}
 variable {N : A.EllipticBandHomologyAlignment D}
 variable {G₀ : D.SectionSevenCuspPulledBackBoundaryBasisBridge N}
 
@@ -184,7 +184,7 @@ end CuspEllipticMappingTorusGeometricComparison
 
 namespace CuspEllipticMappingTorusCoordinateComparison
 
-variable {D : A.SectionSevenEllipticTwoDiscCoverData}
+variable {D : A.EllipticTwoDiscCoverData}
 variable {N : A.EllipticBandHomologyAlignment D}
 variable {G₀ : D.SectionSevenCuspPulledBackBoundaryBasisBridge N}
 
@@ -202,10 +202,10 @@ public theorem inclusionNaturality
     have hx := DFunLike.congr_fun C.degreeOne
       (integralSingularHomologyMap 1
         A.actualCuspRadialClutchingData.totalHomotopyEquiv.toFun x)
-    change _ = actualCuspEllipticDegreeOneRawCoordinate
+    change _ = cuspEllipticDegreeOneRawCoordinate
       (A.cuspRawHomologyOneEquiv x)
     rw [actualCuspRawHomologyOneEquiv_apply_mappingTorus]
-    change _ = actualCuspEllipticDegreeOneRawCoordinate _ at hx
+    change _ = cuspEllipticDegreeOneRawCoordinate _ at hx
     exact hx
   degreeTwoFiber := by
     apply AddMonoidHom.ext
@@ -216,15 +216,15 @@ public theorem inclusionNaturality
     have hx := DFunLike.congr_fun C.degreeTwoFiber
       (integralSingularHomologyMap 2
         A.actualCuspRadialClutchingData.totalHomotopyEquiv.toFun x)
-    change _ = actualCuspEllipticDegreeTwoFiberRawCoordinate
+    change _ = cuspEllipticDegreeTwoFiberRawCoordinate
       (A.cuspRawHomologyTwoEquiv x)
     rw [actualCuspRawHomologyTwoEquiv_apply_mappingTorus]
-    change _ = actualCuspEllipticDegreeTwoFiberRawCoordinate _ at hx
+    change _ = cuspEllipticDegreeTwoFiberRawCoordinate _ at hx
     exact hx
 
 end CuspEllipticMappingTorusCoordinateComparison
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

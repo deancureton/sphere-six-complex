@@ -25,7 +25,7 @@ namespace Geometry.CuspPuncturedCollarBridge
 
 open SphereSixComplex.CircleMappingTorusHomologyBases
 open SphereSixComplex.Geometry.CuspPeriodExpansion
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
+open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
@@ -70,7 +70,7 @@ basepoint consists of the collar points with period coordinate `zeta`, and `e` r
 that `zeta` modulo periods.
 
 This is the cusp analogue of the marking carried by
-`SectionSevenAffineCentralBandMarkedTrivialization`, and unlike a bare homeomorphism to a
+`AffineCentralBandMarkedTrivialization`, and unlike a bare homeomorphism to a
 full-rank torus it admits no `±1` ambiguity: see
 `IsActualCuspFiberPeriodCoordinate.fiberCoordinate_unique`. -/
 public def IsActualCuspFiberPeriodCoordinate

@@ -20,10 +20,10 @@ noncomputable section
 
 open ContinuousMap Function Set Topology
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 /-- A continuous retract of a contractible space is contractible. -/
 public theorem contractibleSpace_of_continuousRetract
@@ -65,4 +65,4 @@ public theorem no_constructedA2ProperMomentCoordinate
     constructedA2ProperMomentCoordinate_isEmpty hr H
   exact IsEmpty.false h.some
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric

@@ -238,11 +238,11 @@ variable {A : PaperAnalyticData}
 
 /-- Exact coordinate input for the two-disc Mayer--Vietoris calculation.  It contains bases only
 on the overlap and the two sides, not on their union. -/
-public structure SectionSevenEllipticTwoDiscHomologyCoordinates
-    (D : A.SectionSevenEllipticTwoDiscCoverData) where
+public structure EllipticTwoDiscHomologyCoordinates
+    (D : A.EllipticTwoDiscCoverData) where
   bandOne :
     IntegralSingularHomology 1
-        (D.orderThreeSide ∩ D.orderFourSide : Set A.SectionSevenEllipticInterior) ≃+
+        (D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior) ≃+
       (Fin 4 → ℤ)
   sidesOne :
     (IntegralSingularHomology 1 D.orderThreeSide ×
@@ -253,7 +253,7 @@ public structure SectionSevenEllipticTwoDiscHomologyCoordinates
         ellipticActualHOneDifferenceMatrix *ᵥ bandOne x
   bandTwo :
     IntegralSingularHomology 2
-        (D.orderThreeSide ∩ D.orderFourSide : Set A.SectionSevenEllipticInterior) ≃+
+        (D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior) ≃+
       (Fin 6 → ℤ)
   sidesTwo :
     (IntegralSingularHomology 2 D.orderThreeSide ×
@@ -264,39 +264,39 @@ public structure SectionSevenEllipticTwoDiscHomologyCoordinates
   differenceZero_injective : Function.Injective
     (IntegralMayerVietoris.differenceMap D.orderThreeSide D.orderFourSide 0)
 
-namespace SectionSevenEllipticTwoDiscHomologyCoordinates
+namespace EllipticTwoDiscHomologyCoordinates
 
-variable {D : A.SectionSevenEllipticTwoDiscCoverData}
-  (B : A.SectionSevenEllipticTwoDiscHomologyCoordinates D)
+variable {D : A.EllipticTwoDiscCoverData}
+  (B : A.EllipticTwoDiscHomologyCoordinates D)
 
 /-- The order-three side as an open subspace of the elliptic interior. -/
-public def orderThreeOpen (D : A.SectionSevenEllipticTwoDiscCoverData) :
-    Opens (TopCat.of A.SectionSevenEllipticInterior) where
+public def orderThreeOpen (D : A.EllipticTwoDiscCoverData) :
+    Opens (TopCat.of A.ellipticInterior) where
   carrier := D.orderThreeSide
   is_open' := D.orderThreeSide_isOpen
 
 /-- The order-four side as an open subspace of the elliptic interior. -/
-public def orderFourOpen (D : A.SectionSevenEllipticTwoDiscCoverData) :
-    Opens (TopCat.of A.SectionSevenEllipticInterior) where
+public def orderFourOpen (D : A.EllipticTwoDiscCoverData) :
+    Opens (TopCat.of A.ellipticInterior) where
   carrier := D.orderFourSide
   is_open' := D.orderFourSide_isOpen
 
 /-- The two paper sides form a binary open cover of the elliptic interior. -/
-public theorem ellipticOpenCover (D : A.SectionSevenEllipticTwoDiscCoverData) :
+public theorem ellipticOpenCover (D : A.EllipticTwoDiscCoverData) :
     orderThreeOpen D ⊔ orderFourOpen D = ⊤ := by
   ext x
   simpa [orderThreeOpen, orderFourOpen] using Set.ext_iff.mp D.sides_cover x
 
 /-- The canonical chain-level Mayer--Vietoris data for the elliptic two-disc cover. -/
 public noncomputable def canonicalMayerVietorisData
-    (D : A.SectionSevenEllipticTwoDiscCoverData) :=
+    (D : A.EllipticTwoDiscCoverData) :=
   BinaryOpenCover.OpenCoverHomologyComparison.toIntegralMayerVietorisData
     (BinaryOpenCover.openCoverHomologyComparisonOfCover (ellipticOpenCover D))
     (ellipticOpenCover D)
 
 /-- The canonical connecting map for the elliptic two-disc cover. -/
 public noncomputable def canonicalBoundary
-    (D : A.SectionSevenEllipticTwoDiscCoverData) (n : ℕ) :=
+    (D : A.EllipticTwoDiscCoverData) (n : ℕ) :=
   (canonicalMayerVietorisData D).legacyBoundary n
 
 theorem differenceOne_linear_comm :
@@ -319,19 +319,19 @@ theorem differenceTwo_linear_comm :
 
 theorem exactSequence :
     IntegralMayerVietoris.ExactSequence D.orderThreeSide D.orderFourSide :=
-  establishedIntegralMayerVietorisExactSequence D.orderThreeSide D.orderFourSide
+  IntegralMayerVietoris.exact_sequence_of_isOpen D.orderThreeSide D.orderFourSide
     D.orderThreeSide_isOpen D.orderFourSide_isOpen
 
 noncomputable def presentationOne :
     WangHomologyPresentation
       (IntegralSingularHomology 1
-        (D.orderThreeSide ∩ D.orderFourSide : Set A.SectionSevenEllipticInterior))
+        (D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior))
       (IntegralSingularHomology 1 D.orderThreeSide ×
         IntegralSingularHomology 1 D.orderFourSide)
       (IntegralSingularHomology 1
-        (D.orderThreeSide ∪ D.orderFourSide : Set A.SectionSevenEllipticInterior))
+        (D.orderThreeSide ∪ D.orderFourSide : Set A.ellipticInterior))
       (IntegralSingularHomology 0
-        (D.orderThreeSide ∩ D.orderFourSide : Set A.SectionSevenEllipticInterior))
+        (D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior))
       (IntegralSingularHomology 0 D.orderThreeSide ×
         IntegralSingularHomology 0 D.orderFourSide) := by
   let M := canonicalMayerVietorisData D
@@ -350,13 +350,13 @@ noncomputable def presentationOne :
 noncomputable def presentationTwo :
     WangHomologyPresentation
       (IntegralSingularHomology 2
-        (D.orderThreeSide ∩ D.orderFourSide : Set A.SectionSevenEllipticInterior))
+        (D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior))
       (IntegralSingularHomology 2 D.orderThreeSide ×
         IntegralSingularHomology 2 D.orderFourSide)
       (IntegralSingularHomology 2
-        (D.orderThreeSide ∪ D.orderFourSide : Set A.SectionSevenEllipticInterior))
+        (D.orderThreeSide ∪ D.orderFourSide : Set A.ellipticInterior))
       (IntegralSingularHomology 1
-        (D.orderThreeSide ∩ D.orderFourSide : Set A.SectionSevenEllipticInterior))
+        (D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior))
       (IntegralSingularHomology 1 D.orderThreeSide ×
         IntegralSingularHomology 1 D.orderFourSide) := by
   let M := canonicalMayerVietorisData D
@@ -384,7 +384,7 @@ public theorem presentationTwo_boundary :
 
 /-- The two-disc coordinate calculation constructs `H₁(X°; ℤ) ≅ ℤ`. -/
 public noncomputable def ellipticInteriorHomologyOneEquiv :
-    IntegralSingularHomology 1 A.SectionSevenEllipticInterior ≃+ (Fin 1 → ℤ) := by
+    IntegralSingularHomology 1 A.ellipticInterior ≃+ (Fin 1 → ℤ) := by
   let P := presentationOne (D := D)
   let coinvariants :=
     (cokernelEquivOfComm B.bandOne.toIntLinearEquiv B.sidesOne.toIntLinearEquiv
@@ -396,13 +396,13 @@ public noncomputable def ellipticInteriorHomologyOneEquiv :
   let eUnion := (P.linearEquivOfCoordinates coinvariants invariants).trans
     intProdFinZeroEquivFinOne
   let eTop := integralSingularHomologyEquiv 1
-    (topologicalSubsetHomeomorphOfEqUniv (TopCat.of A.SectionSevenEllipticInterior)
+    (topologicalSubsetHomeomorphOfEqUniv (TopCat.of A.ellipticInterior)
       (D.orderThreeSide ∪ D.orderFourSide) D.sides_cover)
   exact (eTop.symm.toIntLinearEquiv.trans eUnion).toAddEquiv
 
 /-- The two-disc coordinate calculation constructs `H₂(X°; ℤ) ≅ ℤ²`. -/
 public noncomputable def ellipticInteriorHomologyTwoEquiv :
-    IntegralSingularHomology 2 A.SectionSevenEllipticInterior ≃+ (Fin 2 → ℤ) := by
+    IntegralSingularHomology 2 A.ellipticInterior ≃+ (Fin 2 → ℤ) := by
   let P := presentationTwo (D := D)
   let coinvariants :=
     (cokernelEquivOfComm B.bandTwo.toIntLinearEquiv B.sidesTwo.toIntLinearEquiv
@@ -416,11 +416,11 @@ public noncomputable def ellipticInteriorHomologyTwoEquiv :
   let eUnion := (P.linearEquivOfCoordinates coinvariants invariants).trans
     intProdEquivFinTwo
   let eTop := integralSingularHomologyEquiv 2
-    (topologicalSubsetHomeomorphOfEqUniv (TopCat.of A.SectionSevenEllipticInterior)
+    (topologicalSubsetHomeomorphOfEqUniv (TopCat.of A.ellipticInterior)
       (D.orderThreeSide ∪ D.orderFourSide) D.sides_cover)
   exact (eTop.symm.toIntLinearEquiv.trans eUnion).toAddEquiv
 
-end SectionSevenEllipticTwoDiscHomologyCoordinates
+end EllipticTwoDiscHomologyCoordinates
 
 end Geometry.PaperAnalyticData
 

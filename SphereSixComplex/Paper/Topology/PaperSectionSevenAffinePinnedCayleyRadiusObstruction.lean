@@ -27,22 +27,22 @@ public theorem CollarSeparationData.exists_shrink_excluding_pinned_identity_shee
     ∃ S' : A.CollarSeparationData A.actualPuncturedCuspWitness,
       S'.orderThree.radius <
           ‖(orderThreeCayleyHomeomorph
-            (A.sectionSevenAffineOrderThreeRadialBaseLift
-              A.sectionSevenAffineActualCuspCrossingPoint).1 : ℂ)‖ ∧
+            (A.affineOrderThreeRadialBaseLift
+              A.affineActualCuspCrossingPoint).1 : ℂ)‖ ∧
         S'.orderFour.radius <
           ‖(orderFourCayleyHomeomorph
-            (A.sectionSevenAffineOrderFourRadialBaseLift
-              A.sectionSevenAffineActualCuspCrossingPoint).1 : ℂ)‖ := by
+            (A.affineOrderFourRadialBaseLift
+              A.affineActualCuspCrossingPoint).1 : ℂ)‖ := by
   let c₃ := ‖(orderThreeCayleyHomeomorph
-    (A.sectionSevenAffineOrderThreeRadialBaseLift
-      A.sectionSevenAffineActualCuspCrossingPoint).1 : ℂ)‖
+    (A.affineOrderThreeRadialBaseLift
+      A.affineActualCuspCrossingPoint).1 : ℂ)‖
   let c₄ := ‖(orderFourCayleyHomeomorph
-    (A.sectionSevenAffineOrderFourRadialBaseLift
-      A.sectionSevenAffineActualCuspCrossingPoint).1 : ℂ)‖
+    (A.affineOrderFourRadialBaseLift
+      A.affineActualCuspCrossingPoint).1 : ℂ)‖
   let r₃ := min (S.orderThree.radius / 2) (c₃ / 2)
   let r₄ := min (S.orderFour.radius / 2) (c₄ / 2)
-  have hc₃ : 0 < c₃ := A.sectionSevenAffineOrderThreePinnedCayley_norm_pos
-  have hc₄ : 0 < c₄ := A.sectionSevenAffineOrderFourPinnedCayley_norm_pos
+  have hc₃ : 0 < c₃ := A.affineOrderThreePinnedCayley_norm_pos
+  have hc₄ : 0 < c₄ := A.affineOrderFourPinnedCayley_norm_pos
   have hr₃ : 0 < r₃ := lt_min (half_pos S.orderThree.radius_pos) (half_pos hc₃)
   have hr₄ : 0 < r₄ := lt_min (half_pos S.orderFour.radius_pos) (half_pos hc₄)
   let P₃ : A.OrderThreeFillingPiece :=
@@ -91,12 +91,12 @@ public theorem exists_collarSeparationData_excluding_pinned_identity_sheets
     ∃ S : A.CollarSeparationData A.actualPuncturedCuspWitness,
       S.orderThree.radius <
           ‖(orderThreeCayleyHomeomorph
-            (A.sectionSevenAffineOrderThreeRadialBaseLift
-              A.sectionSevenAffineActualCuspCrossingPoint).1 : ℂ)‖ ∧
+            (A.affineOrderThreeRadialBaseLift
+              A.affineActualCuspCrossingPoint).1 : ℂ)‖ ∧
         S.orderFour.radius <
           ‖(orderFourCayleyHomeomorph
-            (A.sectionSevenAffineOrderFourRadialBaseLift
-              A.sectionSevenAffineActualCuspCrossingPoint).1 : ℂ)‖ :=
+            (A.affineOrderFourRadialBaseLift
+              A.affineActualCuspCrossingPoint).1 : ℂ)‖ :=
   A.starSeparation.exists_shrink_excluding_pinned_identity_sheets
 
 end SphereSixComplex.Geometry.PaperAnalyticData

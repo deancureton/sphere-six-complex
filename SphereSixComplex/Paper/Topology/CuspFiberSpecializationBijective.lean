@@ -9,7 +9,7 @@ public import SphereSixComplex.Paper.Topology.CuspMixedTorusIntegralColumns
 noncomputable section
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 open CuspPuncturedCollarBridge CuspRadialClutchingConstruction
-open StandardInfiniteA2ToricModel.Established
+open InfiniteA2Toric
 open CircleMappingTorusHomologyBases
 
 theorem cuspFiberSpecializationTwoBijective_of_columns (A : PaperAnalyticData)

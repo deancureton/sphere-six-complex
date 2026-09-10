@@ -20,17 +20,17 @@ open AlgebraicTopology CategoryTheory TopologicalSpace
 
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 
-open SectionSevenEllipticInteriorMarkedCycleData
+open EllipticInteriorMarkedCycleData
 
 variable {A : PaperAnalyticData}
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 /-- The exact remaining marked carrier equality on the adaptive Mayer--Vietoris boundary image.
 The left side transports the literal pullback boundary into the elliptic band; the right side
 reads the same boundary through the oriented low overlap and applies the cusp-fibre marking. -/
 public def ActualCuspAdaptiveMarkedBoundaryCarrierResidual
-    (R : A.SectionSevenAffineRadialCompletionInput) : Prop :=
+    (R : A.AffineRadialCompletionInput) : Prop :=
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   let boundary :=
@@ -47,7 +47,7 @@ public def ActualCuspAdaptiveMarkedBoundaryCarrierResidual
 
 /-- The adaptive marked carrier equality implies both invariant-basis evaluations. -/
 public theorem cuspPulledBackMarkedInvariantBasisData_of_adaptiveMarkedBoundaryCarrierResidual
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (h : ActualCuspAdaptiveMarkedBoundaryCarrierResidual R) :
     CuspPulledBackMarkedInvariantBasisData R := by
   apply (cuspPulledBackMarkedInvariantBasisData_iff_markedConnectingNaturality R).2
@@ -101,7 +101,7 @@ public theorem cuspPulledBackMarkedInvariantBasisData_of_adaptiveMarkedBoundaryC
 /-- Conversely, the two invariant-basis evaluations determine the marked adaptive carrier on
 the complete boundary image. -/
 public theorem adaptiveMarkedBoundaryCarrierResidual_of_cuspPulledBackMarkedInvariantBasisData
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (h : CuspPulledBackMarkedInvariantBasisData R) :
     ActualCuspAdaptiveMarkedBoundaryCarrierResidual R := by
   let G := A.actualCuspRadialClutchingData
@@ -155,13 +155,13 @@ public theorem adaptiveMarkedBoundaryCarrierResidual_of_cuspPulledBackMarkedInva
 /-- The former pair of scalar evaluations is exactly one marked equality on the adaptive
 boundary image. -/
 public theorem cuspPulledBackMarkedInvariantBasisData_iff_adaptiveMarkedBoundaryCarrierResidual
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     CuspPulledBackMarkedInvariantBasisData R ↔
       ActualCuspAdaptiveMarkedBoundaryCarrierResidual R :=
   ⟨adaptiveMarkedBoundaryCarrierResidual_of_cuspPulledBackMarkedInvariantBasisData R,
     cuspPulledBackMarkedInvariantBasisData_of_adaptiveMarkedBoundaryCarrierResidual R⟩
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

@@ -7,7 +7,7 @@ noncomputable section
 open AlgebraicTopology
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 open SphereSixComplex.Topology CuspPuncturedCollarBridge
-open SectionSevenEllipticTwoDiscCoverData
+open EllipticTwoDiscCoverData
 
 public theorem cuspFourthSweepClass_raw_fiber_zero_of_projection
     (A : PaperAnalyticData)

@@ -15,10 +15,10 @@ standard toric fact; it contains no cusp straightening, quotient, or retraction 
 
 noncomputable section
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
 open SphereSixComplex.Geometry.CuspStraighteningExtension
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
+open SphereSixComplex.Geometry.InfiniteA2Toric
 
 /-- Every integral character of the dense algebraic torus is continuous. -/
 public theorem continuous_evaluateCharacter (m : FanLattice) :
@@ -91,4 +91,4 @@ public theorem establishedContinuousTorusAction (M : Model) : ContinuousTorusAct
   refine (hGon.continuousAt hnhds).congr ?_
   filter_upwards [hnhds] with z hz using (key z.1 hz.2).symm
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric

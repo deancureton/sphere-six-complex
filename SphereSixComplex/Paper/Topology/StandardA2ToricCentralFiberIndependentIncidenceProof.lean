@@ -156,7 +156,7 @@ namespace Geometry.CuspPuncturedCollarBridge
 
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open SphereSixComplex.Geometry.CuspPeriodExpansion
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
+open SphereSixComplex.Geometry.InfiniteA2Toric
 
 variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}

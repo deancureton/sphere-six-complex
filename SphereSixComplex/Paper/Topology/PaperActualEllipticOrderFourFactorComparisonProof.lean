@@ -28,9 +28,9 @@ variable (A : PaperAnalyticData)
 
 /-- The restricted order-four product chart followed by projection to the central family. -/
 public noncomputable def orderFourPuncturedProductCentralRealizationMap :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     C(A.OrderFourCayleyPuncturedDisc × A.orderFourTorus, A.CentralFamily) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   exact
     { toFun := fun zq ↦ A.centralQuotientProjection
         (A.orderFourPuncturedProductRegularRealizationMap zq)
@@ -39,58 +39,58 @@ public noncomputable def orderFourPuncturedProductCentralRealizationMap :
 
 /-- The fixed-base fibre factor supplied by the restricted product splitting. -/
 public noncomputable def orderFourCentralFiberFactor :
-    letI := A.orderFourActualEllipticBoundaryAction
-    Path A.orderFourActualEllipticCentralBase A.orderFourActualEllipticCentralBase := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
+    Path A.ellipticFourCentralBase A.ellipticFourCentralBase := by
+  let _ := A.ellipticFourBoundaryAction
   let x := A.orderFourCayleyPuncturedBasepoint
   let q := A.orderFourPrincipalGaugeWithOffsetPath
   let y := A.orderFourFillingRelationPrincipalGaugeLoop 0 +
-    Quotient.mk _ A.orderFourActualEllipticBoundaryBase.2.2
+    Quotient.mk _ A.ellipticFourBoundaryBase.2.2
   let f := A.orderFourPuncturedProductCentralRealizationMap
   let raw := ((Path.refl x).prod q).map f.continuous
   have hregular : A.orderFourCollarRegularRepresentativeMap
-      A.orderFourActualEllipticBoundaryBase =
+      A.ellipticFourBoundaryBase =
         A.orderFourPuncturedProductRegularRealizationMap (x, y) := by
     exact A.orderFourFillingRelationRegularLoop.source.symm |>.trans
       ((A.orderFourRegularLoop_eq_puncturedProductRealization 0).symm.trans
         (congrArg A.orderFourPuncturedProductRegularRealizationMap
           (Prod.ext A.orderFourFillingRelationCayleyPuncturedLoop.source
             A.orderFourPrincipalGaugeWithOffsetPath.source)))
-  have hbase : A.orderFourActualEllipticCentralBase = f (x, y) := by
+  have hbase : A.ellipticFourCentralBase = f (x, y) := by
     exact A.orderFourCollarRegularRepresentative_base_projects.symm.trans
       (congrArg A.centralQuotientProjection hregular)
   exact raw.cast hbase hbase
 
 /-- The fixed-fibre base factor supplied by the restricted product splitting. -/
 public noncomputable def orderFourCentralBaseFactor :
-    letI := A.orderFourActualEllipticBoundaryAction
-    Path A.orderFourActualEllipticCentralBase A.orderFourActualEllipticCentralBase := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
+    Path A.ellipticFourCentralBase A.ellipticFourCentralBase := by
+  let _ := A.ellipticFourBoundaryAction
   let x := A.orderFourCayleyPuncturedBasepoint
   let p := A.orderFourFillingRelationCayleyPuncturedLoop
   let y := A.orderFourFillingRelationPrincipalGaugeLoop 0 +
-    Quotient.mk _ A.orderFourActualEllipticBoundaryBase.2.2
+    Quotient.mk _ A.ellipticFourBoundaryBase.2.2
   let f := A.orderFourPuncturedProductCentralRealizationMap
   let raw := (p.prod (Path.refl y)).map f.continuous
   have hregular : A.orderFourCollarRegularRepresentativeMap
-      A.orderFourActualEllipticBoundaryBase =
+      A.ellipticFourBoundaryBase =
         A.orderFourPuncturedProductRegularRealizationMap (x, y) := by
     exact A.orderFourFillingRelationRegularLoop.source.symm |>.trans
       ((A.orderFourRegularLoop_eq_puncturedProductRealization 0).symm.trans
         (congrArg A.orderFourPuncturedProductRegularRealizationMap
           (Prod.ext A.orderFourFillingRelationCayleyPuncturedLoop.source
             A.orderFourPrincipalGaugeWithOffsetPath.source)))
-  have hbase : A.orderFourActualEllipticCentralBase = f (x, y) := by
+  have hbase : A.ellipticFourCentralBase = f (x, y) := by
     exact A.orderFourCollarRegularRepresentative_base_projects.symm.trans
       (congrArg A.centralQuotientProjection hregular)
   exact raw.cast hbase hbase
 
 /-- The central fibre-then-base loop is literally the concatenation of its two factors. -/
 public theorem orderFourCentralFiberThenBaseLoop_eq_factors :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     A.orderFourCentralFiberThenBaseLoop =
       A.orderFourCentralFiberFactor.trans A.orderFourCentralBaseFactor := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   unfold orderFourCentralFiberThenBaseLoop orderFourRegularFiberThenBaseLoop
     orderFourCentralFiberFactor orderFourCentralBaseFactor
   simp only [Path.map_trans, Path.cast_trans]
@@ -98,28 +98,28 @@ public theorem orderFourCentralFiberThenBaseLoop_eq_factors :
 
 /-- The same Cayley base factor with the fixed torus coordinate contracted to zero. -/
 public noncomputable def orderFourCentralZeroFibreBasePath :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     Path
       (A.orderFourPuncturedProductCentralRealizationMap
         (A.orderFourCayleyPuncturedBasepoint, 0))
       (A.orderFourPuncturedProductCentralRealizationMap
         (A.orderFourCayleyPuncturedBasepoint, 0)) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   exact (A.orderFourFillingRelationCayleyPuncturedLoop.prod (Path.refl 0)).map
     A.orderFourPuncturedProductCentralRealizationMap.continuous
 
 /-- Contract the fixed torus coordinate of the base factor through an explicit vector-cover
 representative. -/
 public def orderFourCentralBaseFactor_zeroFibreHomotopy :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     ContinuousMap.Homotopy A.orderFourCentralBaseFactor.toContinuousMap
       A.orderFourCentralZeroFibreBasePath.toContinuousMap := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let p := (parameterMap A.periods
     A.modular.modularParameter.toTriangleUniformization.zTwo).1
   let v : ComplexTwoSpace :=
     A.orderFourFillingRelationPrincipalGaugeCoverLift 0 +
-      A.orderFourActualEllipticBoundaryBase.2.2
+      A.ellipticFourBoundaryBase.2.2
   let f := A.orderFourPuncturedProductCentralRealizationMap
   exact
     { toFun := fun st ↦ f
@@ -152,13 +152,13 @@ public def orderFourCentralBaseFactor_zeroFibreHomotopy :
 
 /-- The base-factor contraction has the same moving-basepoint trace at both loop endpoints. -/
 public theorem orderFourCentralBaseFactor_zeroFibreHomotopy_trace :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     let H := A.orderFourCentralBaseFactor_zeroFibreHomotopy
     (H.evalAt 0).cast A.orderFourCentralBaseFactor.source.symm
         A.orderFourCentralZeroFibreBasePath.source.symm =
       (H.evalAt 1).cast A.orderFourCentralBaseFactor.target.symm
         A.orderFourCentralZeroFibreBasePath.target.symm := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   apply Path.ext
   funext t
   change A.orderFourPuncturedProductCentralRealizationMap

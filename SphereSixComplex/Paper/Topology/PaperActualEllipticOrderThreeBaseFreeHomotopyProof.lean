@@ -334,7 +334,7 @@ variable (A : PaperAnalyticData)
 
 /-- The actual order-three Cayley base circle is freely homotopic to the marked positive
 three-turn zero circle. -/
-public theorem orderThreeActualCayleyBaseCoordinate_tripleHomotopy :
+public theorem ellipticThreeCayleyBaseCoordinate_tripleHomotopy :
     Nonempty (ContinuousMap.Homotopy
       (twoPunctureComplementOneMap.comp
         (A.orderThreeCayleyChartCircleMap
@@ -342,7 +342,7 @@ public theorem orderThreeActualCayleyBaseCoordinate_tripleHomotopy :
           (norm_pos_iff.mpr A.orderThreeFillingRelationCayleyBaseValue_ne_zero)
           (by
             rw [A.orderThreeFillingRelationCayleyBaseValue_norm]
-            exact A.orderThreeActualEllipticBoundaryBase.1.2.2)))
+            exact A.ellipticThreeBoundaryBase.1.2.2)))
       twicePuncturedCounterclockwiseZeroTriple.toContinuousMap) := by
   obtain ⟨u, a, ha, hune, hbound, H⟩ :=
     A.exists_orderThreeActualCayleyBaseCoordinate_threeTurnHomotopy
@@ -369,7 +369,7 @@ public theorem orderThreeActualCayleyBaseCoordinate_tripleHomotopy :
 /-- The affine base coordinate of the projected complete order-three filling loop. -/
 public noncomputable def orderThreeFillingRelationBaseCoordinateMap :
     C(unitInterval, TwicePuncturedComplex) := by
-  letI := A.orderThreeActualEllipticBoundaryAction
+  letI := A.ellipticThreeBoundaryAction
   let L :=
     (A.orderThreeFillingRelationRegularLoop.map
       A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
@@ -387,8 +387,8 @@ public theorem orderThreeFillingRelationBaseCoordinateMap_eq_cayley :
           (norm_pos_iff.mpr A.orderThreeFillingRelationCayleyBaseValue_ne_zero)
           (by
             rw [A.orderThreeFillingRelationCayleyBaseValue_norm]
-            exact A.orderThreeActualEllipticBoundaryBase.1.2.2)) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+            exact A.ellipticThreeBoundaryBase.1.2.2)) := by
+  let _ := A.ellipticThreeBoundaryAction
   ext t
   have h := A.orderThreeFillingRelation_baseCoordinate_eq_chartFunction t
   simpa [orderThreeFillingRelationBaseCoordinateMap,
@@ -408,7 +408,7 @@ public theorem orderThreeFillingRelation_baseCoordinate_freeHomotopy_zeroMeridia
         gamma.toContinuousMap) := by
   refine ⟨twicePuncturedCounterclockwiseZeroTriple,
     twicePuncturedCounterclockwiseZeroTriple_class, ?_⟩
-  rcases A.orderThreeActualCayleyBaseCoordinate_tripleHomotopy with ⟨H⟩
+  rcases A.ellipticThreeCayleyBaseCoordinate_tripleHomotopy with ⟨H⟩
   exact ⟨H.cast A.orderThreeFillingRelationBaseCoordinateMap_eq_cayley.symm rfl⟩
 
 end SphereSixComplex.Geometry.PaperAnalyticData

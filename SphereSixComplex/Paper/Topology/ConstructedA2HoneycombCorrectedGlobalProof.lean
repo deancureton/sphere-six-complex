@@ -8,13 +8,13 @@ noncomputable section
 
 open Matrix Set
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
 open SphereSixComplex.Geometry.CuspCombinatorics
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+open SphereSixComplex.Geometry.InfiniteA2Toric
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 public theorem constructedA2CorrectedLaurentIdentity_sameCell
     (v : ToricLattice) (i j : Fin 6) (p q : ConstructedA2CellSquare) :
@@ -218,6 +218,6 @@ public theorem constructedA2CorrectedPlaneTile_eq_iff_cellSquareProjection
   (constructedA2CorrectedLaurentIdentity_global v w i j p q).trans
     (constructedA2CellSquareProjection_eq_iff_monomial hr v w i j p q).symm
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric
 
 end

@@ -17,23 +17,23 @@ open AlgebraicTopology
 
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 
-open SectionSevenEllipticInteriorMarkedCycleData
-open SectionSevenEllipticTwoDiscCoverData
+open EllipticInteriorMarkedCycleData
+open EllipticTwoDiscCoverData
 
 /-- The corrected degree-one functional has basis values `[12, 0, 1]`. -/
-public theorem actualCuspEllipticDegreeOneRawCoordinate_basisValues :
+public theorem cuspEllipticDegreeOneRawCoordinate_basisValues :
     (fun i : Fin 3 ↦
-      actualCuspEllipticDegreeOneRawCoordinate (Pi.single i 1)) = ![12, 0, 1] := by
+      cuspEllipticDegreeOneRawCoordinate (Pi.single i 1)) = ![12, 0, 1] := by
   funext i
-  fin_cases i <;> simp [actualCuspEllipticDegreeOneRawCoordinate]
+  fin_cases i <;> simp [cuspEllipticDegreeOneRawCoordinate]
 
 /-- The corrected degree-two fibre functional has basis values `[0, 12, 2, 0, 1, 0]`. -/
-public theorem actualCuspEllipticDegreeTwoFiberRawCoordinate_basisValues :
+public theorem cuspEllipticDegreeTwoFiberRawCoordinate_basisValues :
     (fun i : Fin 6 ↦
-      actualCuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1)) =
+      cuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1)) =
         ![0, 12, 2, 0, 1, 0] := by
   funext i
-  fin_cases i <;> simp [actualCuspEllipticDegreeTwoFiberRawCoordinate]
+  fin_cases i <;> simp [cuspEllipticDegreeTwoFiberRawCoordinate]
 
 namespace EstablishedSectionSevenCuspTopology
 
@@ -41,7 +41,7 @@ variable {A : PaperAnalyticData}
 
 /-- Naturality for the actual cusp inclusion implies all eight marked basis evaluations. -/
 public theorem actualCuspFiberEllipticMarkedCoordinateCalculation_of_inclusionNaturality
-    {R : A.SectionSevenAffineRadialCompletionInput}
+    {R : A.AffineRadialCompletionInput}
     {G₀ : R.twoDiscCover.SectionSevenCuspPulledBackBoundaryBasisBridge
       R.homologyAlignment}
     (I : R.twoDiscCover.SectionSevenCuspEllipticInclusionNaturality
@@ -63,13 +63,13 @@ public theorem actualCuspFiberEllipticMarkedCoordinateCalculation_of_inclusionNa
     have hI := DFunLike.congr_fun I.degreeOne x
     change R.twoDiscCover.ellipticInteriorDegreeOneCoordinateHom R.homologyAlignment
         (integralSingularHomologyMap 1 R.twoDiscCover.cuspToEllipticInteriorMap.hom x) =
-      actualCuspEllipticDegreeOneRawCoordinate (A.cuspRawHomologyOneEquiv x) at hI
+      cuspEllipticDegreeOneRawCoordinate (A.cuspRawHomologyOneEquiv x) at hI
     rw [show A.cuspRawHomologyOneEquiv x = Pi.single i 1 by simp [x]] at hI
     rw [AddMonoidHom.comp_apply]
     change R.twoDiscCover.ellipticInteriorDegreeOneCoordinateHom R.homologyAlignment
         (integralSingularHomologyMap 1 R.twoDiscCover.cuspMappingTorusToEllipticInteriorMap
           (G.geometricWangSections.circleMappingTorusHOneAddEquiv.symm (Pi.single i 1))) =
-      actualCuspEllipticDegreeOneRawCoordinate
+      cuspEllipticDegreeOneRawCoordinate
         (G.geometricWangSections.circleMappingTorusHOneAddEquiv
           (G.geometricWangSections.circleMappingTorusHOneAddEquiv.symm (Pi.single i 1)))
     rw [AddEquiv.apply_symm_apply]
@@ -89,13 +89,13 @@ public theorem actualCuspFiberEllipticMarkedCoordinateCalculation_of_inclusionNa
     have hI := DFunLike.congr_fun I.degreeTwoFiber x
     change R.twoDiscCover.ellipticInteriorDegreeTwoFiberCoordinateHom R.homologyAlignment G₀
         (integralSingularHomologyMap 2 R.twoDiscCover.cuspToEllipticInteriorMap.hom x) =
-      actualCuspEllipticDegreeTwoFiberRawCoordinate (A.cuspRawHomologyTwoEquiv x) at hI
+      cuspEllipticDegreeTwoFiberRawCoordinate (A.cuspRawHomologyTwoEquiv x) at hI
     rw [show A.cuspRawHomologyTwoEquiv x = Pi.single i 1 by simp [x]] at hI
     rw [AddMonoidHom.comp_apply]
     change R.twoDiscCover.ellipticInteriorDegreeTwoFiberCoordinateHom R.homologyAlignment G₀
         (integralSingularHomologyMap 2 R.twoDiscCover.cuspMappingTorusToEllipticInteriorMap
           (G.geometricWangSections.circleMappingTorusHTwoAddEquiv.symm (Pi.single i 1))) =
-      actualCuspEllipticDegreeTwoFiberRawCoordinate
+      cuspEllipticDegreeTwoFiberRawCoordinate
         (G.geometricWangSections.circleMappingTorusHTwoAddEquiv
           (G.geometricWangSections.circleMappingTorusHTwoAddEquiv.symm (Pi.single i 1)))
     rw [AddEquiv.apply_symm_apply]
@@ -104,15 +104,15 @@ public theorem actualCuspFiberEllipticMarkedCoordinateCalculation_of_inclusionNa
 
 /-- The paper's cycle-level cusp decomposition is sufficient for the marked calculation. -/
 public theorem actualCuspFiberEllipticMarkedCoordinateCalculation_of_cycleDecomposition
-    {R : A.SectionSevenAffineRadialCompletionInput}
+    {R : A.AffineRadialCompletionInput}
     {G₀ : R.twoDiscCover.SectionSevenCuspPulledBackBoundaryBasisBridge
       R.homologyAlignment}
-    (C : A.SectionSevenEllipticInteriorCycleDecomposition
+    (C : A.EllipticInteriorCycleDecomposition
       R.homologyAlignment.actualHomologyCoordinates
       (R.twoDiscCover.cuspNormalizedDegreeTwoSplitting R.homologyAlignment G₀)) :
     ActualCuspFiberEllipticMarkedCoordinateCalculation R G₀ :=
   actualCuspFiberEllipticMarkedCoordinateCalculation_of_inclusionNaturality
-    (sectionSevenEllipticInteriorCycleDecomposition_iff_inclusionNaturality.mp C)
+    (ellipticInteriorCycleDecomposition_iff_inclusionNaturality.mp C)
 
 end EstablishedSectionSevenCuspTopology
 

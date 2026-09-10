@@ -19,7 +19,7 @@ public def puncturedPlaneToSquareBoundary : ContinuousMap PuncturedRealPlane
       (fun x ↦ norm_ne_zero_iff.mpr x.2)).smul continuous_subtype_val).subtype_mk
         puncturedPlane_normalize_mem_sphere⟩
 
-namespace Geometry.StandardInfiniteA2ToricModel.Established
+namespace Geometry.InfiniteA2Toric
 
 public theorem constructedA2Hexagon_radial_to_square (z : ConstructedA2HexagonBoundary) :
     puncturedPlaneToSquareBoundary (constructedA2HexagonBoundaryToPunctured z) =
@@ -42,5 +42,5 @@ public theorem constructedA2Hexagon_radial_to_square_map :
   intro z
   exact constructedA2Hexagon_radial_to_square z
 
-end Geometry.StandardInfiniteA2ToricModel.Established
+end Geometry.InfiniteA2Toric
 end SphereSixComplex

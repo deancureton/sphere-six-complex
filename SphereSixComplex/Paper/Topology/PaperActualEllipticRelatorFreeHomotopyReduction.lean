@@ -29,7 +29,7 @@ variable (A : PaperAnalyticData)
 /-- A free homotopy from the explicit order-three regular loop to a representative of the
 expected affine relator supplies the required chart identity.  The connector is the reverse of
 the moving-basepoint trace, rather than any independently selected path. -/
-public theorem orderThreeActualEllipticRegularLoopChartIdentity_of_freeHomotopy
+public theorem ellipticThreeRegularLoopChartIdentity_of_freeHomotopy
     (gamma : Path A.centralAffineBase A.centralAffineBase)
     (hgamma :
       Path.Homotopic.Quotient.mk gamma =
@@ -54,19 +54,19 @@ public theorem orderThreeActualEllipticRegularLoopChartIdentity_of_freeHomotopy
               A.orderThreeCollarRegularRepresentative_base_projects.symm).target.symm
           gamma.target.symm) :
     A.OrderThreeActualEllipticRegularLoopChartIdentity := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius ×
         (ℝ × ComplexTwoSpace)) :=
-    A.orderThreeActualEllipticBoundaryCover_simplyConnected
+    A.ellipticThreeBoundaryCover_simplyConnected
   let L :=
     (A.orderThreeFillingRelationRegularLoop.map
       A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
         A.orderThreeCollarRegularRepresentative_base_projects.symm
         A.orderThreeCollarRegularRepresentative_base_projects.symm
-  let w : Path A.orderThreeActualEllipticCentralBase A.centralAffineBase :=
+  let w : Path A.ellipticThreeCentralBase A.centralAffineBase :=
     (H.evalAt 0).cast L.source.symm gamma.source.symm
-  let hover := A.orderThreeActualEllipticCentralBase_eq_overlapCentralBase
+  let hover := A.ellipticThreeCentralBase_eq_overlapCentralBase
   refine ⟨w.symm.cast rfl hover.symm, ?_⟩
   have hfree := SphereSixComplex.loopClass_eq_whiskered_of_freeHomotopy
     L gamma H htrace
@@ -97,7 +97,7 @@ public theorem orderThreeActualEllipticRegularLoopChartIdentity_of_freeHomotopy
     w.symm hover.symm A.orderThreeCentralExpectedRelator).symm
 
 /-- Order-four analogue of the free-loop reduction. -/
-public theorem orderFourActualEllipticRegularLoopChartIdentity_of_freeHomotopy
+public theorem ellipticFourRegularLoopChartIdentity_of_freeHomotopy
     (gamma : Path A.centralAffineBase A.centralAffineBase)
     (hgamma :
       Path.Homotopic.Quotient.mk gamma =
@@ -122,19 +122,19 @@ public theorem orderFourActualEllipticRegularLoopChartIdentity_of_freeHomotopy
               A.orderFourCollarRegularRepresentative_base_projects.symm).target.symm
           gamma.target.symm) :
     A.OrderFourActualEllipticRegularLoopChartIdentity := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderFour.radius ×
         (ℝ × ComplexTwoSpace)) :=
-    A.orderFourActualEllipticBoundaryCover_simplyConnected
+    A.ellipticFourBoundaryCover_simplyConnected
   let L :=
     (A.orderFourFillingRelationRegularLoop.map
       A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
         A.orderFourCollarRegularRepresentative_base_projects.symm
         A.orderFourCollarRegularRepresentative_base_projects.symm
-  let w : Path A.orderFourActualEllipticCentralBase A.centralAffineBase :=
+  let w : Path A.ellipticFourCentralBase A.centralAffineBase :=
     (H.evalAt 0).cast L.source.symm gamma.source.symm
-  let hover := A.orderFourActualEllipticCentralBase_eq_overlapCentralBase
+  let hover := A.ellipticFourCentralBase_eq_overlapCentralBase
   refine ⟨w.symm.cast rfl hover.symm, ?_⟩
   have hfree := SphereSixComplex.loopClass_eq_whiskered_of_freeHomotopy
     L gamma H htrace
@@ -167,7 +167,7 @@ public theorem orderFourActualEllipticRegularLoopChartIdentity_of_freeHomotopy
 /-- Free homotopies of the two complete local filling loops give both normal-closure
 memberships.  No relation between their moving-basepoint traces and the van Kampen connectors
 is required. -/
-public theorem actualEllipticRelatorNormalClosureResidual_of_regularLoopFreeHomotopies
+public theorem ellipticRelatorMembership_of_regularLoopFreeHomotopies
     (gammaThree : Path A.centralAffineBase A.centralAffineBase)
     (hgammaThree :
       Path.Homotopic.Quotient.mk gammaThree =
@@ -214,12 +214,12 @@ public theorem actualEllipticRelatorNormalClosureResidual_of_regularLoopFreeHomo
               A.orderFourCollarRegularRepresentative_base_projects.symm
               A.orderFourCollarRegularRepresentative_base_projects.symm).target.symm
           gammaFour.target.symm) :
-    A.ActualEllipticRelatorNormalClosureResidual
-      A.actualCuspCentralNaturality :=
-  A.actualEllipticRelatorNormalClosureResidual_of_regularLoopChartIdentities
-    (A.orderThreeActualEllipticRegularLoopChartIdentity_of_freeHomotopy
+    A.EllipticRelatorMembership
+      A.cuspCentralNaturality :=
+  A.ellipticRelatorMembership_of_regularLoopChartIdentities
+    (A.ellipticThreeRegularLoopChartIdentity_of_freeHomotopy
       gammaThree hgammaThree HThree htraceThree)
-    (A.orderFourActualEllipticRegularLoopChartIdentity_of_freeHomotopy
+    (A.ellipticFourRegularLoopChartIdentity_of_freeHomotopy
       gammaFour hgammaFour HFour htraceFour)
 
 end SphereSixComplex.Geometry.PaperAnalyticData

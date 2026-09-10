@@ -14,12 +14,12 @@ noncomputable section
 
 open Set
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
 open SphereSixComplex.Geometry.CuspCombinatorics
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 public theorem constructedA2PlaneTile_eq_nextIndex_iff
     (v : ToricLattice) (i : Fin 6) (p q : ConstructedA2CellSquare) :
@@ -213,7 +213,7 @@ public theorem constructedA2HoneycombLaurentFiniteIdentity_nextChart
   (constructedA2PlaneTile_eq_nextIndex_iff v i p q).trans
     (constructedA2_nextTransition_boundary_iff v i p q).symm
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric
 
 end
 

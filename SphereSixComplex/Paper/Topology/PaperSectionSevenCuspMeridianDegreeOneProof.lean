@@ -293,7 +293,7 @@ private theorem actualRadialBaseCircleProjection_additivePoint_explicit
 
 /-- The actual radial equivalence sends an additive cusp point to its logarithmic real part on
 the mapping-torus base circle. -/
-public theorem actualCuspRadialBaseCircleProjection_additivePoint
+public theorem cuspRadialBaseCircleProjection_additivePoint
     (p : additiveCuspRadiusCover A.starCuspWitness.localWitness.radius) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
@@ -321,7 +321,7 @@ private theorem actualTransportedBaseCircleMap_additivePoint
   change circleMappingTorusBaseCircleProjection G.clutching
       (G.totalHomotopyEquiv.toFun
         (additiveCuspBoundaryProjection A.starCuspWitness p)) = _
-  exact actualCuspRadialBaseCircleProjection_additivePoint A p
+  exact cuspRadialBaseCircleProjection_additivePoint A p
 
 private theorem actualCuspAngularPuncturedLoop_apply (t : unitInterval) :
     A.cuspAngularPuncturedLoop t =
@@ -342,29 +342,29 @@ private theorem actualCuspAngularPuncturedLoop_base_winding_neg_one :
     actualCuspAngularPuncturedLoop_apply A 0,
     actualTransportedBaseCircleMap_additivePoint A]
   change
-    ((((A.actualCuspBoundaryCoverBase.1.2 - (t : ℝ)).re : ℝ) : UnitAddCircle) -
-      (((A.actualCuspBoundaryCoverBase.1.2 - (0 : ℝ)).re : ℝ) : UnitAddCircle)) =
+    ((((A.cuspBoundaryCoverBase.1.2 - (t : ℝ)).re : ℝ) : UnitAddCircle) -
+      (((A.cuspBoundaryCoverBase.1.2 - (0 : ℝ)).re : ℝ) : UnitAddCircle)) =
         (((-(t : ℝ)) : ℝ) : UnitAddCircle)
   rw [← AddCircle.coe_sub]
   congr 1
   simp
 
 /-- The literal actual cusp meridian winds negatively once around the mapping-torus base. -/
-public theorem actualCuspMappingTorusMeridian_base_winding_neg_one :
+public theorem cuspMappingTorusMeridian_base_winding_neg_one :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
         (integralSingularHomologyMap 1
           (circleMappingTorusBaseCircleProjection G.clutching)
           (cuspMappingTorusMeridianHomologyClass G
-            A.actualCuspLocalBoundaryBase)) = -1 := by
+            A.cuspLocalBoundaryBase)) = -1 := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   change StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
       (integralSingularHomologyMap 1
         (circleMappingTorusBaseCircleProjection G.clutching)
         (cuspMappingTorusMeridianHomologyClass G
-          A.actualCuspLocalBoundaryBase)) = -1
+          A.cuspLocalBoundaryBase)) = -1
   rw [A.cuspMappingTorusMeridianHomologyClass_eq_actualCuspAngularPuncturedLoop_image]
   change StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
       (integralSingularHomologyMap 1
@@ -380,13 +380,13 @@ public theorem actualCuspMappingTorusMeridian_base_winding_neg_one :
   exact actualCuspAngularPuncturedLoop_base_winding_neg_one A
 
 /-- Equivalently, the literal meridian has Wang invariant coordinate `-1`. -/
-public theorem actualCuspMappingTorusMeridian_wangInvariant_neg_one :
+public theorem cuspMappingTorusMeridian_wangInvariant_neg_one :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     degreeOneWangInvariantEquivInteger G
         ((circleMappingTorusHOnePresentation G.clutching).totalToInvariants
           (cuspMappingTorusMeridianHomologyClass G
-            A.actualCuspLocalBoundaryBase)) = -1 := by
+            A.cuspLocalBoundaryBase)) = -1 := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   let _ : PathConnectedSpace (AdditiveTorus G.fiberParameter) :=
@@ -397,9 +397,9 @@ public theorem actualCuspMappingTorusMeridian_wangInvariant_neg_one :
   change pathConnectedIntegralHomologyZeroEquivInteger G.Fiber
       ((circleMappingTorusWangPresentationOfCover G.clutching 0).boundary
         (cuspMappingTorusMeridianHomologyClass G
-          A.actualCuspLocalBoundaryBase)) = -1
+          A.cuspLocalBoundaryBase)) = -1
   rw [← SphereSixComplex.Topology.IdentityPointMappingTorusWindingBoundary.circleMappingTorusBaseCircle_winding_eq_wangBoundary]
-  exact actualCuspMappingTorusMeridian_base_winding_neg_one A
+  exact cuspMappingTorusMeridian_base_winding_neg_one A
 
 /-- The specialization-normalized positive Wang section is the negative of the literal angular
 meridian. -/
@@ -408,18 +408,18 @@ public theorem cuspSelectedPositiveMeridianClass_eq_neg_explicit :
     let _ := G.fiberTopology
     cuspSelectedPositiveMeridianClass A =
       -(cuspMappingTorusMeridianHomologyClass G
-        A.actualCuspLocalBoundaryBase) := by
+        A.cuspLocalBoundaryBase) := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   apply cuspSelectedPositiveMeridianClass_eq_neg_explicit_of_normalizations
-    A A.actualCuspLocalBoundaryBase
+    A A.cuspLocalBoundaryBase
   · exact rawDegreeOneTotalSpecialization_selectedPositiveMeridianClass A
   · change degreeOneWangInvariantEquivInteger G
         ((circleMappingTorusHOnePresentation G.clutching).totalToInvariants
           (-(cuspMappingTorusMeridianHomologyClass G
-            A.actualCuspLocalBoundaryBase))) = 1
+            A.cuspLocalBoundaryBase))) = 1
     rw [map_neg, map_neg,
-      actualCuspMappingTorusMeridian_wangInvariant_neg_one]
+      cuspMappingTorusMeridian_wangInvariant_neg_one]
     norm_num
 
 private noncomputable def actualTransportedSourceCircleMap :
@@ -472,34 +472,34 @@ private theorem actualTransportedSourceCircleMap_additivePoint
                 (markedCuspParameter A.starCuspWitness) p.1.2 p.1.1)))) = _
   exact cuspMeridianSourceCircleMap_realMappingTorus_mk _ _ _
 
-public noncomputable def actualCuspSourceRealLift : C(unitInterval, ℝ) where
+public noncomputable def cuspSourceRealLift : C(unitInterval, ℝ) where
   toFun t :=
-    (A.actualCuspBoundaryCoverBase.1.2 - (t : ℝ)).re +
+    (A.cuspBoundaryCoverBase.1.2 - (t : ℝ)).re +
       12 * periodCoordinates
         (cuspBasePoint A.cuspCoordinate
           (markedCuspParameter A.starCuspWitness))
         (collarFiberEquiv A.cuspCoordinate
           (markedCuspParameter A.starCuspWitness)
-          (A.actualCuspBoundaryCoverBase.1.2 - (t : ℝ))
-          A.actualCuspBoundaryCoverBase.1.1) 0
+          (A.cuspBoundaryCoverBase.1.2 - (t : ℝ))
+          A.cuspBoundaryCoverBase.1.1) 0
   continuous_toFun := by
     let x := cuspBasePoint A.cuspCoordinate
       (markedCuspParameter A.starCuspWitness)
-    have hs : A.actualCuspBoundaryCoverBase.1.2 ∈
+    have hs : A.cuspBoundaryCoverBase.1.2 ∈
         cuspHalfPlane A.cuspCoordinate.height :=
       additiveCuspRadiusCover_halfPlane A.starCuspWitness.localWitness.radius_le
-        A.actualCuspBoundaryCoverBase
+        A.cuspBoundaryCoverBase
     have hparameter : Continuous (fun t : unitInterval ↦
-        A.actualCuspBoundaryCoverBase.1.2 - (t : ℝ)) := by
+        A.cuspBoundaryCoverBase.1.2 - (t : ℝ)) := by
       fun_prop
     have hparameter_mem : ∀ t : unitInterval,
-        A.actualCuspBoundaryCoverBase.1.2 - (t : ℝ) ∈
+        A.cuspBoundaryCoverBase.1.2 - (t : ℝ) ∈
           cuspHalfPlane A.cuspCoordinate.height := by
       intro t
       simpa [cuspHalfPlane] using hs
     have hlift : Continuous (fun t : unitInterval ↦
         A.cuspCoordinate.lift
-          (A.actualCuspBoundaryCoverBase.1.2 - (t : ℝ))) :=
+          (A.cuspBoundaryCoverBase.1.2 - (t : ℝ))) :=
       A.cuspCoordinate.lift_holomorphic.continuousOn.comp_continuous
         hparameter hparameter_mem
     have hmoving : Continuous (fun t : unitInterval ↦
@@ -507,8 +507,8 @@ public noncomputable def actualCuspSourceRealLift : C(unitInterval, ℝ) where
           (assembledFuchsianPeriodFunctions A.modular A.localPeriods)
           (A.cuspCoordinate.lift (markedCuspParameter A.starCuspWitness))
           (A.cuspCoordinate.lift
-            (A.actualCuspBoundaryCoverBase.1.2 - (t : ℝ)),
-              A.actualCuspBoundaryCoverBase.1.1)).2) :=
+            (A.cuspBoundaryCoverBase.1.2 - (t : ℝ)),
+              A.cuspBoundaryCoverBase.1.1)).2) :=
       continuous_snd.comp
         ((movingToFixedCover_continuous
           (assembledFuchsianPeriodFunctions A.modular A.localPeriods)
@@ -517,8 +517,8 @@ public noncomputable def actualCuspSourceRealLift : C(unitInterval, ℝ) where
     have hz : Continuous (fun t : unitInterval ↦
         collarFiberEquiv A.cuspCoordinate
           (markedCuspParameter A.starCuspWitness)
-          (A.actualCuspBoundaryCoverBase.1.2 - (t : ℝ))
-          A.actualCuspBoundaryCoverBase.1.1) := by
+          (A.cuspBoundaryCoverBase.1.2 - (t : ℝ))
+          A.cuspBoundaryCoverBase.1.1) := by
       convert hmoving using 1
       funext t
       exact collarFiberEquiv_eq_movingToFixed
@@ -527,25 +527,25 @@ public noncomputable def actualCuspSourceRealLift : C(unitInterval, ℝ) where
         periodCoordinates x
           (collarFiberEquiv A.cuspCoordinate
             (markedCuspParameter A.starCuspWitness)
-            (A.actualCuspBoundaryCoverBase.1.2 - (t : ℝ))
-            A.actualCuspBoundaryCoverBase.1.1) 0) :=
+            (A.cuspBoundaryCoverBase.1.2 - (t : ℝ))
+            A.cuspBoundaryCoverBase.1.1) 0) :=
       (continuous_apply 0).comp
         ((fullRankDomain x).realEquiv.symm.continuous.comp hz)
     exact (by fun_prop : Continuous (fun t : unitInterval ↦
-      (A.actualCuspBoundaryCoverBase.1.2 - (t : ℝ)).re)).add
+      (A.cuspBoundaryCoverBase.1.2 - (t : ℝ)).re)).add
         (continuous_const.mul hc)
 
 /-- The twelvefold fibre summand has zero endpoint increment along the literal meridian, so the
 source-character lift changes by exactly `-1`. -/
-public theorem actualCuspSourceRealLift_endpoint :
-    actualCuspSourceRealLift A 1 - actualCuspSourceRealLift A 0 = -1 := by
-  let s := A.actualCuspBoundaryCoverBase.1.2
-  let zeta := A.actualCuspBoundaryCoverBase.1.1
+public theorem cuspSourceRealLift_endpoint :
+    cuspSourceRealLift A 1 - cuspSourceRealLift A 0 = -1 := by
+  let s := A.cuspBoundaryCoverBase.1.2
+  let zeta := A.cuspBoundaryCoverBase.1.1
   let s0 := markedCuspParameter A.starCuspWitness
   let x := cuspBasePoint A.cuspCoordinate s0
   have hs : s ∈ cuspHalfPlane A.cuspCoordinate.height :=
     additiveCuspRadiusCover_halfPlane A.starCuspWitness.localWitness.radius_le
-      A.actualCuspBoundaryCoverBase
+      A.cuspBoundaryCoverBase
   have hsub : s - (1 : ℝ) = s + ((-1 : ℤ) : ℂ) := by
     apply Complex.ext
     · simp
@@ -574,51 +574,51 @@ private theorem actualCuspAngularPuncturedLoop_source_winding_neg_one :
           (StandardCircleHomologyLiftDegree.loopHomologyClass
             A.cuspAngularPuncturedLoop)) = -1 := by
   apply winding_of_real_lift A.cuspAngularPuncturedLoop
-    (actualTransportedSourceCircleMap A) (actualCuspSourceRealLift A) (-1)
+    (actualTransportedSourceCircleMap A) (cuspSourceRealLift A) (-1)
   · intro t
     have hvalue (u : unitInterval) :
         actualTransportedSourceCircleMap A (A.cuspAngularPuncturedLoop u) =
-          ((actualCuspSourceRealLift A u : ℝ) : UnitAddCircle) := by
+          ((cuspSourceRealLift A u : ℝ) : UnitAddCircle) := by
       rw [actualCuspAngularPuncturedLoop_apply A u,
         actualTransportedSourceCircleMap_additivePoint A,
         cuspFiberTwelveFirstCoordinate_projection]
       change
-        (((A.actualCuspBoundaryCoverBase.1.2 - (u : ℝ)).re : ℝ) : UnitAddCircle) +
+        (((A.cuspBoundaryCoverBase.1.2 - (u : ℝ)).re : ℝ) : UnitAddCircle) +
             (12 : ℤ) •
               ((periodCoordinates
                 (cuspBasePoint A.cuspCoordinate
                   (markedCuspParameter A.starCuspWitness))
                 (collarFiberEquiv A.cuspCoordinate
                   (markedCuspParameter A.starCuspWitness)
-                  (A.actualCuspBoundaryCoverBase.1.2 - (u : ℝ))
-                  A.actualCuspBoundaryCoverBase.1.1) 0 : ℝ) : UnitAddCircle) =
-          (((A.actualCuspBoundaryCoverBase.1.2 - (u : ℝ)).re +
+                  (A.cuspBoundaryCoverBase.1.2 - (u : ℝ))
+                  A.cuspBoundaryCoverBase.1.1) 0 : ℝ) : UnitAddCircle) =
+          (((A.cuspBoundaryCoverBase.1.2 - (u : ℝ)).re +
             12 * periodCoordinates
               (cuspBasePoint A.cuspCoordinate
                 (markedCuspParameter A.starCuspWitness))
               (collarFiberEquiv A.cuspCoordinate
                 (markedCuspParameter A.starCuspWitness)
-                (A.actualCuspBoundaryCoverBase.1.2 - (u : ℝ))
-                A.actualCuspBoundaryCoverBase.1.1) 0 : ℝ) : UnitAddCircle)
+                (A.cuspBoundaryCoverBase.1.2 - (u : ℝ))
+                A.cuspBoundaryCoverBase.1.1) 0 : ℝ) : UnitAddCircle)
       rw [← AddCircle.coe_zsmul]
       norm_num [zsmul_eq_mul]
     rw [hvalue t, hvalue 0, ← AddCircle.coe_sub]
-  · exact_mod_cast actualCuspSourceRealLift_endpoint A
+  · exact_mod_cast cuspSourceRealLift_endpoint A
 
 /-- The literal angular meridian evaluates to `-1` under the full cusp source character. -/
-public theorem actualCuspMappingTorusMeridian_source_winding_neg_one :
+public theorem cuspMappingTorusMeridian_source_winding_neg_one :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
         (integralSingularHomologyMap 1 A.cuspMeridianSourceCircleMap
           (cuspMappingTorusMeridianHomologyClass G
-            A.actualCuspLocalBoundaryBase)) = -1 := by
+            A.cuspLocalBoundaryBase)) = -1 := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   change StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
       (integralSingularHomologyMap 1 A.cuspMeridianSourceCircleMap
         (cuspMappingTorusMeridianHomologyClass G
-          A.actualCuspLocalBoundaryBase)) = -1
+          A.cuspLocalBoundaryBase)) = -1
   rw [A.cuspMappingTorusMeridianHomologyClass_eq_actualCuspAngularPuncturedLoop_image]
   change StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
       (integralSingularHomologyMap 1 A.cuspMeridianSourceCircleMap
@@ -643,7 +643,7 @@ public theorem cuspSelectedPositiveMeridianClass_source_winding_one :
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   rw [cuspSelectedPositiveMeridianClass_eq_neg_explicit]
-  rw [map_neg, map_neg, actualCuspMappingTorusMeridian_source_winding_neg_one]
+  rw [map_neg, map_neg, cuspMappingTorusMeridian_source_winding_neg_one]
   norm_num
 
 /-- The actual source circle map realizes the complete corrected degree-one coordinate
@@ -651,7 +651,7 @@ public theorem cuspSelectedPositiveMeridianClass_source_winding_one :
 public theorem cuspMeridianSourceCircleMap_homology_coordinate :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
-    SectionSevenEllipticInteriorMarkedCycleData.actualCuspEllipticDegreeOneCoordinateAfterAddEquiv
+    EllipticInteriorMarkedCycleData.actualCuspEllipticDegreeOneCoordinateAfterAddEquiv
         G.geometricWangSections.circleMappingTorusHOneAddEquiv =
       StandardCircleHomologyLiftDegree.unitCircleHomologyWinding.comp
         (integralSingularHomologyMap 1 A.cuspMeridianSourceCircleMap) := by

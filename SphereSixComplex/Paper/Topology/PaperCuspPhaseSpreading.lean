@@ -18,7 +18,7 @@ namespace SphereSixComplex.Geometry.PaperAnalyticData
 
 open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 open SphereSixComplex.Geometry.CuspStraighteningRetraction
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
+open SphereSixComplex.Geometry.InfiniteA2Toric
 
 variable (A : PaperAnalyticData)
 

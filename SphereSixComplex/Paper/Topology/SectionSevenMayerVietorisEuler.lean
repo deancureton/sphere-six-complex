@@ -59,9 +59,9 @@ public theorem establishedIntegralMayerVietorisEulerAdditivitySeven
   obtain ⟨hUnionFinite, hEuler⟩ :=
     integralMayerVietorisEulerAdditivitySeven_of_finiteSix U V
       hUFinite hVFinite hInterFinite
-      (establishedIntegralMayerVietorisExactSequence U V hUOpen hVOpen)
+      (IntegralMayerVietoris.exact_sequence_of_isOpen U V hUOpen hVOpen)
       (IntegralMayerVietoris.sumMap_zero_surjective U V hUOpen hVOpen)
-  refine ⟨hUnionFinite.finiteHomology, hUnionFinite.homologyAboveDimension, ?_⟩
+  refine ⟨hUnionFinite.finite_homology, hUnionFinite.subsingleton_homology_of_seven_lt, ?_⟩
   unfold integralHomologyEulerCharacteristicSeven at hEuler
   omega
 
@@ -108,7 +108,7 @@ public theorem establishedIntegralMayerVietorisEulerAdditivitySeven_structured
         integralHomologyEulerCharacteristicSix (U ∩ V : Set X) :=
   integralMayerVietorisEulerAdditivitySeven_of_finiteSix U V
     hUFinite hVFinite hInterFinite
-    (establishedIntegralMayerVietorisExactSequence U V hUOpen hVOpen)
+    (IntegralMayerVietoris.exact_sequence_of_isOpen U V hUOpen hVOpen)
     (IntegralMayerVietoris.sumMap_zero_surjective U V hUOpen hVOpen)
 
 /-- The asymmetric form used to adjoin successive six-dimensional pieces to a partial union that
@@ -125,7 +125,7 @@ public theorem establishedIntegralMayerVietorisEulerAdditivitySeven_asymmetric
         integralHomologyEulerCharacteristicSix V -
         integralHomologyEulerCharacteristicSix (U ∩ V : Set X) :=
   integralMayerVietorisEulerAdditivitySeven U V hUFinite hVFinite hInterFinite
-    (establishedIntegralMayerVietorisExactSequence U V hUOpen hVOpen)
+    (IntegralMayerVietoris.exact_sequence_of_isOpen U V hUOpen hVOpen)
     (IntegralMayerVietoris.sumMap_zero_surjective U V hUOpen hVOpen)
 
 namespace OpenEmbeddingStarData
@@ -351,7 +351,7 @@ public theorem integralHomologyEulerCharacteristicSeven_eq_localExpression
   have hStageZeroSix : IntegralHomologyFiniteSix (C.stage (0 : Fin 4)) :=
     hCentralFinite.homeomorph eCentralStage
   have hStageZero : IntegralHomologyFiniteSeven (C.stage (0 : Fin 4)) :=
-    IntegralHomologyFiniteSeven.ofFiniteSix hStageZeroSix
+    IntegralHomologyFiniteSeven.of_six hStageZeroSix
   obtain ⟨hUnionZero, hAddZero⟩ :=
     establishedIntegralMayerVietorisEulerAdditivitySeven_asymmetric
       (C.stage (0 : Fin 4)) (C.piece 1)
@@ -447,7 +447,7 @@ public theorem integralHomologyEulerCharacteristicSeven_eq_localExpression
 /-- Six-manifold dimensionality removes the final degree-seven correction from the sound
 Mayer--Vietoris iteration. -/
 public theorem integralHomologyEulerCharacteristicSix_eq_localExpression_of_homologyTheory
-    (T : ClosedOrientedSixManifoldHomologyTheory
+    (T : IntegralPoincareUCTData.Six
       (GluedSpace A.toFourPieceStarGluingData.glueData))
     (hCentralFinite : IntegralHomologyFiniteSix A.central)
     (hFillingFinite : ∀ i, IntegralHomologyFiniteSix (A.filling i))
@@ -457,7 +457,7 @@ public theorem integralHomologyEulerCharacteristicSix_eq_localExpression_of_homo
       A.sectionSevenLocalEulerExpression := by
   have hSeven : Subsingleton (IntegralSingularHomology 7
       (GluedSpace A.toFourPieceStarGluingData.glueData)) :=
-    T.homologyAboveDimension 7 (by omega)
+    T.subsingleton_homology_of_lt 7 (by omega)
   have hTruncation : integralHomologyEulerCharacteristicSeven
       (GluedSpace A.toFourPieceStarGluingData.glueData) =
         integralHomologyEulerCharacteristicSix
@@ -502,7 +502,7 @@ public theorem hasIntegralHomologyOfSixSphere_of_localEulerCalculation
     (_hTop : A.SectionSevenStageTopDegreeVanishing)
     (hLocal : A.sectionSevenLocalEulerExpression = 2) :
     HasIntegralHomologyOfSixSphere (A.SectionSevenMayerVietorisSpace) :=
-  let T := establishedCompactComplexThreefoldHomologyTheory
+  let T := ComplexThreefold.integralPoincareUCT
     (A.SectionSevenMayerVietorisSpace) hManifold hCompact
   have hEuler : integralHomologyEulerCharacteristicSix
       (A.SectionSevenMayerVietorisSpace) = 2 := by

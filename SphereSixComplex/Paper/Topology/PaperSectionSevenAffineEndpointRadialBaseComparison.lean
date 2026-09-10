@@ -25,145 +25,145 @@ open EllipticWholeFiberCompactCover
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 
 /-- The named strip lift, regarded as a point of the order-three half-plane preimage. -/
-public def sectionSevenAffineOrderThreeHalfPlaneBaseLift
+public def affineOrderThreeHalfPlaneBaseLift
     (A : PaperAnalyticData) :
-    C(sectionSevenAffineVerticalStrip, A.orderThreeAffineHalfPlaneBaseLift) :=
-  ⟨fun z ↦ ⟨A.sectionSevenAffineNamedStripLift.lift z, by
-      change (A.regularCoordinate (A.sectionSevenAffineNamedStripLift.lift z)).1.re < 2 / 3
-      rw [A.sectionSevenAffineNamedStripLift.lift_coordinate]
+    C(affineVerticalStrip, A.orderThreeAffineHalfPlaneBaseLift) :=
+  ⟨fun z ↦ ⟨A.affineNamedStripLift.lift z, by
+      change (A.regularCoordinate (A.affineNamedStripLift.lift z)).1.re < 2 / 3
+      rw [A.affineNamedStripLift.lift_coordinate]
       exact z.2.2⟩,
-    A.sectionSevenAffineNamedStripLift.lift.continuous.subtype_mk _⟩
+    A.affineNamedStripLift.lift.continuous.subtype_mk _⟩
 
 /-- The named strip lift, regarded as a point of the order-four half-plane preimage. -/
-public def sectionSevenAffineOrderFourHalfPlaneBaseLift
+public def affineOrderFourHalfPlaneBaseLift
     (A : PaperAnalyticData) :
-    C(sectionSevenAffineVerticalStrip, A.orderFourAffineHalfPlaneBaseLift) :=
-  ⟨fun z ↦ ⟨A.sectionSevenAffineNamedStripLift.lift z, by
+    C(affineVerticalStrip, A.orderFourAffineHalfPlaneBaseLift) :=
+  ⟨fun z ↦ ⟨A.affineNamedStripLift.lift z, by
       change 1 / 3 < (A.regularCoordinate
-        (A.sectionSevenAffineNamedStripLift.lift z)).1.re
-      rw [A.sectionSevenAffineNamedStripLift.lift_coordinate]
+        (A.affineNamedStripLift.lift z)).1.re
+      rw [A.affineNamedStripLift.lift_coordinate]
       exact z.2.1⟩,
-    A.sectionSevenAffineNamedStripLift.lift.continuous.subtype_mk _⟩
+    A.affineNamedStripLift.lift.continuous.subtype_mk _⟩
 
 /-- The order-three half-plane coordinate carried by the named strip lift. -/
-public noncomputable def sectionSevenAffineOrderThreeHalfPlaneCoordinate
+public noncomputable def affineOrderThreeHalfPlaneCoordinate
     (A : PaperAnalyticData) :
-    C(sectionSevenAffineVerticalStrip, orderThreeAffineHalfPlaneCoordinateRegion) :=
+    C(affineVerticalStrip, orderThreeAffineHalfPlaneCoordinateRegion) :=
   ⟨fun z ↦
-      ⟨A.regularCoordinate (A.sectionSevenAffineOrderThreeHalfPlaneBaseLift z).1,
-        (A.sectionSevenAffineOrderThreeHalfPlaneBaseLift z).2⟩,
+      ⟨A.regularCoordinate (A.affineOrderThreeHalfPlaneBaseLift z).1,
+        (A.affineOrderThreeHalfPlaneBaseLift z).2⟩,
     (A.regularCoordinate_isLocalHomeomorph.continuous.comp
       (continuous_subtype_val.comp
-        A.sectionSevenAffineOrderThreeHalfPlaneBaseLift.continuous)).subtype_mk _⟩
+        A.affineOrderThreeHalfPlaneBaseLift.continuous)).subtype_mk _⟩
 
 /-- The order-four half-plane coordinate carried by the named strip lift. -/
-public noncomputable def sectionSevenAffineOrderFourHalfPlaneCoordinate
+public noncomputable def affineOrderFourHalfPlaneCoordinate
     (A : PaperAnalyticData) :
-    C(sectionSevenAffineVerticalStrip, orderFourAffineHalfPlaneCoordinateRegion) :=
+    C(affineVerticalStrip, orderFourAffineHalfPlaneCoordinateRegion) :=
   ⟨fun z ↦
-      ⟨A.regularCoordinate (A.sectionSevenAffineOrderFourHalfPlaneBaseLift z).1,
-        (A.sectionSevenAffineOrderFourHalfPlaneBaseLift z).2⟩,
+      ⟨A.regularCoordinate (A.affineOrderFourHalfPlaneBaseLift z).1,
+        (A.affineOrderFourHalfPlaneBaseLift z).2⟩,
     (A.regularCoordinate_isLocalHomeomorph.continuous.comp
       (continuous_subtype_val.comp
-        A.sectionSevenAffineOrderFourHalfPlaneBaseLift.continuous)).subtype_mk _⟩
+        A.affineOrderFourHalfPlaneBaseLift.continuous)).subtype_mk _⟩
 
 /-- The order-three inverse radial lift over the named strip. -/
-public noncomputable def sectionSevenAffineOrderThreeRadialBaseLift
+public noncomputable def affineOrderThreeRadialBaseLift
     (A : PaperAnalyticData) :
-    C(sectionSevenAffineVerticalStrip,
+    C(affineVerticalStrip,
       RegularBase (U := A.modular.modularParameter.toTriangleUniformization)) :=
-  let r := A.sectionSevenAffineOrderThreeMarkedDiscRadius
-  let hr₀ := A.sectionSevenAffineOrderThreeMarkedDiscRadius_spec.1
+  let r := A.affineOrderThreeMarkedDiscRadius
+  let hr₀ := A.affineOrderThreeMarkedDiscRadius_spec.1
   let hr : r ≤ 2 / 3 :=
-    A.sectionSevenAffineOrderThreeMarkedDiscRadius_spec.2.1.trans (by norm_num)
+    A.affineOrderThreeMarkedDiscRadius_spec.2.1.trans (by norm_num)
   ⟨fun z ↦ ((A.orderThreeBaseRadialEquiv
       (s := r / 2) (by linarith) (by linarith) hr).invFun
-        (A.sectionSevenAffineOrderThreeHalfPlaneBaseLift z)).1,
+        (A.affineOrderThreeHalfPlaneBaseLift z)).1,
     continuous_subtype_val.comp
       ((A.orderThreeBaseRadialEquiv
         (s := r / 2) (by linarith) (by linarith) hr).invFun.continuous.comp
-          A.sectionSevenAffineOrderThreeHalfPlaneBaseLift.continuous)⟩
+          A.affineOrderThreeHalfPlaneBaseLift.continuous)⟩
 
 /-- The order-four inverse radial lift over the named strip. -/
-public noncomputable def sectionSevenAffineOrderFourRadialBaseLift
+public noncomputable def affineOrderFourRadialBaseLift
     (A : PaperAnalyticData) :
-    C(sectionSevenAffineVerticalStrip,
+    C(affineVerticalStrip,
       RegularBase (U := A.modular.modularParameter.toTriangleUniformization)) :=
-  let r := A.sectionSevenAffineOrderFourMarkedDiscRadius
-  let hr₀ := A.sectionSevenAffineOrderFourMarkedDiscRadius_spec.1
+  let r := A.affineOrderFourMarkedDiscRadius
+  let hr₀ := A.affineOrderFourMarkedDiscRadius_spec.1
   let hr : r ≤ 1 - 1 / 3 :=
-    A.sectionSevenAffineOrderFourMarkedDiscRadius_spec.2.1.trans (by norm_num)
+    A.affineOrderFourMarkedDiscRadius_spec.2.1.trans (by norm_num)
   ⟨fun z ↦ ((A.orderFourBaseRadialEquiv
       (s := r / 2) (by linarith) (by linarith) hr).invFun
-        (A.sectionSevenAffineOrderFourHalfPlaneBaseLift z)).1,
+        (A.affineOrderFourHalfPlaneBaseLift z)).1,
     continuous_subtype_val.comp
       ((A.orderFourBaseRadialEquiv
         (s := r / 2) (by linarith) (by linarith) hr).invFun.continuous.comp
-          A.sectionSevenAffineOrderFourHalfPlaneBaseLift.continuous)⟩
+          A.affineOrderFourHalfPlaneBaseLift.continuous)⟩
 
 /-- The normalized order-three coordinate map on the affine strip. -/
-public noncomputable def sectionSevenAffineOrderThreeNormalizedBaseCoordinate
+public noncomputable def affineOrderThreeNormalizedBaseCoordinate
     (A : PaperAnalyticData) :
-    C(sectionSevenAffineVerticalStrip, RegularCoordinateBase) :=
-  let r := A.sectionSevenAffineOrderThreeMarkedDiscRadius
-  let hr₀ := A.sectionSevenAffineOrderThreeMarkedDiscRadius_spec.1
+    C(affineVerticalStrip, RegularCoordinateBase) :=
+  let r := A.affineOrderThreeMarkedDiscRadius
+  let hr₀ := A.affineOrderThreeMarkedDiscRadius_spec.1
   let hr : r ≤ 2 / 3 :=
-    A.sectionSevenAffineOrderThreeMarkedDiscRadius_spec.2.1.trans (by norm_num)
+    A.affineOrderThreeMarkedDiscRadius_spec.2.1.trans (by norm_num)
   let D := orderThreeCoordinateDeformation
     (s := r / 2) (by linarith) (by linarith) hr
-  ⟨fun z ↦ (D.normalize (A.sectionSevenAffineOrderThreeHalfPlaneCoordinate z)).1,
+  ⟨fun z ↦ (D.normalize (A.affineOrderThreeHalfPlaneCoordinate z)).1,
     continuous_subtype_val.comp
       (D.normalize.continuous.comp
-        A.sectionSevenAffineOrderThreeHalfPlaneCoordinate.continuous)⟩
+        A.affineOrderThreeHalfPlaneCoordinate.continuous)⟩
 
 /-- The normalized order-four coordinate map on the affine strip. -/
-public noncomputable def sectionSevenAffineOrderFourNormalizedBaseCoordinate
+public noncomputable def affineOrderFourNormalizedBaseCoordinate
     (A : PaperAnalyticData) :
-    C(sectionSevenAffineVerticalStrip, RegularCoordinateBase) :=
-  let r := A.sectionSevenAffineOrderFourMarkedDiscRadius
-  let hr₀ := A.sectionSevenAffineOrderFourMarkedDiscRadius_spec.1
+    C(affineVerticalStrip, RegularCoordinateBase) :=
+  let r := A.affineOrderFourMarkedDiscRadius
+  let hr₀ := A.affineOrderFourMarkedDiscRadius_spec.1
   let hr : r ≤ 1 - 1 / 3 :=
-    A.sectionSevenAffineOrderFourMarkedDiscRadius_spec.2.1.trans (by norm_num)
+    A.affineOrderFourMarkedDiscRadius_spec.2.1.trans (by norm_num)
   let D := orderFourCoordinateDeformation
     (s := r / 2) (by linarith) (by linarith) hr
-  ⟨fun z ↦ (D.normalize (A.sectionSevenAffineOrderFourHalfPlaneCoordinate z)).1,
+  ⟨fun z ↦ (D.normalize (A.affineOrderFourHalfPlaneCoordinate z)).1,
     continuous_subtype_val.comp
       (D.normalize.continuous.comp
-        A.sectionSevenAffineOrderFourHalfPlaneCoordinate.continuous)⟩
+        A.affineOrderFourHalfPlaneCoordinate.continuous)⟩
 
 /-- The order-three radial base lift projects to the explicit normalized strip coordinate. -/
 public theorem regularCoordinate_sectionSevenAffineOrderThreeRadialBaseLift
-    (A : PaperAnalyticData) (z : sectionSevenAffineVerticalStrip) :
-    A.regularCoordinate (A.sectionSevenAffineOrderThreeRadialBaseLift z) =
-      A.sectionSevenAffineOrderThreeNormalizedBaseCoordinate z := by
-  dsimp only [sectionSevenAffineOrderThreeRadialBaseLift,
-    sectionSevenAffineOrderThreeNormalizedBaseCoordinate,
-    sectionSevenAffineOrderThreeHalfPlaneCoordinate]
+    (A : PaperAnalyticData) (z : affineVerticalStrip) :
+    A.regularCoordinate (A.affineOrderThreeRadialBaseLift z) =
+      A.affineOrderThreeNormalizedBaseCoordinate z := by
+  dsimp only [affineOrderThreeRadialBaseLift,
+    affineOrderThreeNormalizedBaseCoordinate,
+    affineOrderThreeHalfPlaneCoordinate]
   exact A.orderThreeBaseRadialEquiv_invFun_regularCoordinate _ _ _ _
 
 /-- The order-four radial base lift projects to the explicit normalized strip coordinate. -/
 public theorem regularCoordinate_sectionSevenAffineOrderFourRadialBaseLift
-    (A : PaperAnalyticData) (z : sectionSevenAffineVerticalStrip) :
-    A.regularCoordinate (A.sectionSevenAffineOrderFourRadialBaseLift z) =
-      A.sectionSevenAffineOrderFourNormalizedBaseCoordinate z := by
-  dsimp only [sectionSevenAffineOrderFourRadialBaseLift,
-    sectionSevenAffineOrderFourNormalizedBaseCoordinate,
-    sectionSevenAffineOrderFourHalfPlaneCoordinate]
+    (A : PaperAnalyticData) (z : affineVerticalStrip) :
+    A.regularCoordinate (A.affineOrderFourRadialBaseLift z) =
+      A.affineOrderFourNormalizedBaseCoordinate z := by
+  dsimp only [affineOrderFourRadialBaseLift,
+    affineOrderFourNormalizedBaseCoordinate,
+    affineOrderFourHalfPlaneCoordinate]
   exact A.orderFourBaseRadialEquiv_invFun_regularCoordinate _ _ _ _
 
 /-- Continuous-map form of the order-three radial base square. -/
 public theorem regularCoordinate_comp_sectionSevenAffineOrderThreeRadialBaseLift
     (A : PaperAnalyticData) :
-    A.regularCoordinate ∘ A.sectionSevenAffineOrderThreeRadialBaseLift =
-      A.sectionSevenAffineOrderThreeNormalizedBaseCoordinate := by
+    A.regularCoordinate ∘ A.affineOrderThreeRadialBaseLift =
+      A.affineOrderThreeNormalizedBaseCoordinate := by
   funext z
   exact A.regularCoordinate_sectionSevenAffineOrderThreeRadialBaseLift z
 
 /-- Continuous-map form of the order-four radial base square. -/
 public theorem regularCoordinate_comp_sectionSevenAffineOrderFourRadialBaseLift
     (A : PaperAnalyticData) :
-    A.regularCoordinate ∘ A.sectionSevenAffineOrderFourRadialBaseLift =
-      A.sectionSevenAffineOrderFourNormalizedBaseCoordinate := by
+    A.regularCoordinate ∘ A.affineOrderFourRadialBaseLift =
+      A.affineOrderFourNormalizedBaseCoordinate := by
   funext z
   exact A.regularCoordinate_sectionSevenAffineOrderFourRadialBaseLift z
 
@@ -171,7 +171,7 @@ public theorem regularCoordinate_comp_sectionSevenAffineOrderFourRadialBaseLift
 
 /-- The regular base obtained after applying the order-three principal gauge to a selected
 collar representative. -/
-public noncomputable def sectionSevenAffineOrderThreePrincipalGaugeRegularBase
+public noncomputable def affineOrderThreePrincipalGaugeRegularBase
     (A : PaperAnalyticData) (q : A.orderThreeCollarCarrier.carrier) :
     RegularBase (U := A.modular.modularParameter.toTriangleUniformization) :=
   regularTotalSpaceBase A.periods
@@ -184,7 +184,7 @@ public noncomputable def sectionSevenAffineOrderThreePrincipalGaugeRegularBase
 
 /-- The regular base obtained after applying the order-four principal gauge to a selected
 collar representative. -/
-public noncomputable def sectionSevenAffineOrderFourPrincipalGaugeRegularBase
+public noncomputable def affineOrderFourPrincipalGaugeRegularBase
     (A : PaperAnalyticData) (q : A.orderFourCollarCarrier.carrier) :
     RegularBase (U := A.modular.modularParameter.toTriangleUniformization) :=
   regularTotalSpaceBase A.periods
@@ -197,11 +197,11 @@ public noncomputable def sectionSevenAffineOrderFourPrincipalGaugeRegularBase
 
 /-- The order-three principal-gauge regular base retains the base of its collar
 representative. -/
-public theorem sectionSevenAffineOrderThreePrincipalGaugeRegularBase_val
+public theorem affineOrderThreePrincipalGaugeRegularBase_val
     (A : PaperAnalyticData) (q : A.orderThreeCollarCarrier.carrier) :
-    (A.sectionSevenAffineOrderThreePrincipalGaugeRegularBase q).1 =
+    (A.affineOrderThreePrincipalGaugeRegularBase q).1 =
       familyTotalSpaceBase A.periods q.1 := by
-  unfold sectionSevenAffineOrderThreePrincipalGaugeRegularBase
+  unfold affineOrderThreePrincipalGaugeRegularBase
   exact orderThreeCollarToRegular_principalGauge_base A.periods
     (sourceActionProperlyDiscontinuous_of_eq
       A.modular.modularParameter.toTriangleUniformization_sourceAction)
@@ -210,11 +210,11 @@ public theorem sectionSevenAffineOrderThreePrincipalGaugeRegularBase_val
 
 /-- The order-four principal-gauge regular base retains the base of its collar
 representative. -/
-public theorem sectionSevenAffineOrderFourPrincipalGaugeRegularBase_val
+public theorem affineOrderFourPrincipalGaugeRegularBase_val
     (A : PaperAnalyticData) (q : A.orderFourCollarCarrier.carrier) :
-    (A.sectionSevenAffineOrderFourPrincipalGaugeRegularBase q).1 =
+    (A.affineOrderFourPrincipalGaugeRegularBase q).1 =
       familyTotalSpaceBase A.periods q.1 := by
-  unfold sectionSevenAffineOrderFourPrincipalGaugeRegularBase
+  unfold affineOrderFourPrincipalGaugeRegularBase
   exact orderFourCollarToRegular_principalGauge_base A.periods
     (sourceActionProperlyDiscontinuous_of_eq
       A.modular.modularParameter.toTriangleUniformization_sourceAction)
@@ -223,50 +223,50 @@ public theorem sectionSevenAffineOrderFourPrincipalGaugeRegularBase_val
 
 /-- An order-three collar representative over the named radial strip produces exactly the
 named radial base lift after applying the principal gauge. -/
-public theorem sectionSevenAffineOrderThreePrincipalGaugeRegularBase_eq_radialBaseLift
-    (A : PaperAnalyticData) (z : sectionSevenAffineVerticalStrip)
+public theorem affineOrderThreePrincipalGaugeRegularBase_eq_radialBaseLift
+    (A : PaperAnalyticData) (z : affineVerticalStrip)
     (q : A.orderThreeCollarCarrier.carrier)
     (hbase : familyTotalSpaceBase A.periods q.1 =
-      (A.sectionSevenAffineOrderThreeRadialBaseLift z).1) :
-    A.sectionSevenAffineOrderThreePrincipalGaugeRegularBase q =
-      A.sectionSevenAffineOrderThreeRadialBaseLift z := by
+      (A.affineOrderThreeRadialBaseLift z).1) :
+    A.affineOrderThreePrincipalGaugeRegularBase q =
+      A.affineOrderThreeRadialBaseLift z := by
   apply Subtype.ext
-  exact (A.sectionSevenAffineOrderThreePrincipalGaugeRegularBase_val q).trans hbase
+  exact (A.affineOrderThreePrincipalGaugeRegularBase_val q).trans hbase
 
 /-- An order-four collar representative over the named radial strip produces exactly the
 named radial base lift after applying the principal gauge. -/
-public theorem sectionSevenAffineOrderFourPrincipalGaugeRegularBase_eq_radialBaseLift
-    (A : PaperAnalyticData) (z : sectionSevenAffineVerticalStrip)
+public theorem affineOrderFourPrincipalGaugeRegularBase_eq_radialBaseLift
+    (A : PaperAnalyticData) (z : affineVerticalStrip)
     (q : A.orderFourCollarCarrier.carrier)
     (hbase : familyTotalSpaceBase A.periods q.1 =
-      (A.sectionSevenAffineOrderFourRadialBaseLift z).1) :
-    A.sectionSevenAffineOrderFourPrincipalGaugeRegularBase q =
-      A.sectionSevenAffineOrderFourRadialBaseLift z := by
+      (A.affineOrderFourRadialBaseLift z).1) :
+    A.affineOrderFourPrincipalGaugeRegularBase q =
+      A.affineOrderFourRadialBaseLift z := by
   apply Subtype.ext
-  exact (A.sectionSevenAffineOrderFourPrincipalGaugeRegularBase_val q).trans hbase
+  exact (A.affineOrderFourPrincipalGaugeRegularBase_val q).trans hbase
 
 /-- The order-three principal-gauge base and the radial lift have the same explicit normalized
 strip coordinate. -/
 public theorem regularCoordinate_sectionSevenAffineOrderThreePrincipalGaugeRegularBase
-    (A : PaperAnalyticData) (z : sectionSevenAffineVerticalStrip)
+    (A : PaperAnalyticData) (z : affineVerticalStrip)
     (q : A.orderThreeCollarCarrier.carrier)
     (hbase : familyTotalSpaceBase A.periods q.1 =
-      (A.sectionSevenAffineOrderThreeRadialBaseLift z).1) :
-    A.regularCoordinate (A.sectionSevenAffineOrderThreePrincipalGaugeRegularBase q) =
-      A.sectionSevenAffineOrderThreeNormalizedBaseCoordinate z := by
-  rw [A.sectionSevenAffineOrderThreePrincipalGaugeRegularBase_eq_radialBaseLift z q hbase]
+      (A.affineOrderThreeRadialBaseLift z).1) :
+    A.regularCoordinate (A.affineOrderThreePrincipalGaugeRegularBase q) =
+      A.affineOrderThreeNormalizedBaseCoordinate z := by
+  rw [A.affineOrderThreePrincipalGaugeRegularBase_eq_radialBaseLift z q hbase]
   exact A.regularCoordinate_sectionSevenAffineOrderThreeRadialBaseLift z
 
 /-- The order-four principal-gauge base and the radial lift have the same explicit normalized
 strip coordinate. -/
 public theorem regularCoordinate_sectionSevenAffineOrderFourPrincipalGaugeRegularBase
-    (A : PaperAnalyticData) (z : sectionSevenAffineVerticalStrip)
+    (A : PaperAnalyticData) (z : affineVerticalStrip)
     (q : A.orderFourCollarCarrier.carrier)
     (hbase : familyTotalSpaceBase A.periods q.1 =
-      (A.sectionSevenAffineOrderFourRadialBaseLift z).1) :
-    A.regularCoordinate (A.sectionSevenAffineOrderFourPrincipalGaugeRegularBase q) =
-      A.sectionSevenAffineOrderFourNormalizedBaseCoordinate z := by
-  rw [A.sectionSevenAffineOrderFourPrincipalGaugeRegularBase_eq_radialBaseLift z q hbase]
+      (A.affineOrderFourRadialBaseLift z).1) :
+    A.regularCoordinate (A.affineOrderFourPrincipalGaugeRegularBase q) =
+      A.affineOrderFourNormalizedBaseCoordinate z := by
+  rw [A.affineOrderFourPrincipalGaugeRegularBase_eq_radialBaseLift z q hbase]
   exact A.regularCoordinate_sectionSevenAffineOrderFourRadialBaseLift z
 
 end SphereSixComplex.Geometry.PaperAnalyticData

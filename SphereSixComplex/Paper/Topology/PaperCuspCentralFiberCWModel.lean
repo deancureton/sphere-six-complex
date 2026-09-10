@@ -19,7 +19,7 @@ namespace Geometry.CuspPuncturedCollarBridge
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
+open SphereSixComplex.Geometry.InfiniteA2Toric
 
 /-- Transport the explicit characteristic maps from the constructed toric model. -/
 public noncomputable def establishedStandardA2ToricCentralOrbitCellAtlas
@@ -28,7 +28,7 @@ public noncomputable def establishedStandardA2ToricCentralOrbitCellAtlas
     (W : ActualPuncturedCuspCollarWitness N M) :
     StandardA2ToricCentralFiberCellAtlas (ActualLocalCuspCentralOrbitQuotient W) := by
   let W₀ := Classical.choice
-    (SphereSixComplex.Geometry.StandardInfiniteA2ToricQuantitativeRegions.BoundedPolydiscRegions.exists_actualLocalCuspQuotientWitness
+    (SphereSixComplex.Geometry.InfiniteA2Toric.QuantitativeRegions.BoundedPolydiscRegions.exists_actualLocalCuspQuotientWitness
       N Construction.constructedModel Construction.constructedModel.toTorusActionPreservesComponents)
   let W₁ := Classical.choice (exists_actualPuncturedCuspCollarWitness W₀)
   exact (constructedCentralCellAtlas W₁).transport (centralOrbitModelHomeomorph W₁ W)
@@ -65,7 +65,7 @@ public theorem establishedStandardA2ToricCentralFiberHigherIncidenceResidual
     SphereSixComplex.Geometry.PaperAnalyticData.actualLocalCuspFilling_t2 W
   let _ : T2Space (R.quotientCentralFiber W) := inferInstance
   let W₀ := Classical.choice
-    (SphereSixComplex.Geometry.StandardInfiniteA2ToricQuantitativeRegions.BoundedPolydiscRegions.exists_actualLocalCuspQuotientWitness
+    (SphereSixComplex.Geometry.InfiniteA2Toric.QuantitativeRegions.BoundedPolydiscRegions.exists_actualLocalCuspQuotientWitness
       N Construction.constructedModel Construction.constructedModel.toTorusActionPreservesComponents)
   let W₁ := Classical.choice (exists_actualPuncturedCuspCollarWitness W₀)
   let _ : T2Space (ActualLocalCuspCentralOrbitQuotient W) :=
@@ -86,7 +86,7 @@ public theorem establishedStandardA2ToricCentralFiberHigherIncidenceResidual
     refine ((C.transport e₁).transport_coordinateBoundary_single e₂ 2 j i).symm.trans ?_
     refine (C.transport_coordinateBoundary_single e₁ 2 j i).symm.trans ?_
     exact (C.coordinateBoundary_single_eq_attachingDegree 2 j i).trans
-      (Established.constructedA2ThreeCell_attachingDegree_zero W₁ _ j i)
+      (constructedA2ThreeCell_attachingDegree_zero W₁ _ j i)
   · dsimp only
     intro j i
     fin_cases j
@@ -96,7 +96,7 @@ public theorem establishedStandardA2ToricCentralFiberHigherIncidenceResidual
     refine ((C.transport e₁).transport_coordinateBoundary_single e₂ 3 (0 : Fin 1) i).symm.trans ?_
     refine (C.transport_coordinateBoundary_single e₁ 3 (0 : Fin 1) i).symm.trans ?_
     exact (C.coordinateBoundary_single_eq_attachingDegree 3 (0 : Fin 1) i).trans
-      (Established.constructedA2FourCell_attachingDegree_zero W₁ _ i)
+      (constructedA2FourCell_attachingDegree_zero W₁ _ i)
 
 public theorem establishedStandardA2ToricCentralFiberIndependentIncidenceResidual
     {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
@@ -113,7 +113,7 @@ public theorem establishedStandardA2ToricCentralFiberIndependentIncidenceResidua
   let _ : T2Space (R.quotientCentralFiber W) := inferInstance
   let H := establishedStandardA2ToricCentralFiberHigherIncidenceResidual W R
   let W₀ := Classical.choice
-    (SphereSixComplex.Geometry.StandardInfiniteA2ToricQuantitativeRegions.BoundedPolydiscRegions.exists_actualLocalCuspQuotientWitness
+    (SphereSixComplex.Geometry.InfiniteA2Toric.QuantitativeRegions.BoundedPolydiscRegions.exists_actualLocalCuspQuotientWitness
       N Construction.constructedModel Construction.constructedModel.toTorusActionPreservesComponents)
   let W₁ := Classical.choice (exists_actualPuncturedCuspCollarWitness W₀)
   let _ : T2Space (ActualLocalCuspCentralOrbitQuotient W) :=
@@ -143,7 +143,7 @@ public theorem establishedStandardA2ToricCentralFiberIndependentIncidenceResidua
       1 (Pi.single j 1 : Fin 4 → ℤ) i.castSucc = _
     refine ((C.transport e₁).transport_coordinateBoundary_single e₂ 1 j i.castSucc).symm.trans ?_
     refine (C.transport_coordinateBoundary_single e₁ 1 j i.castSucc).symm.trans ?_
-    exact Established.constructedA2TwoCell_coordinateBoundary_single_zero W₁ j i.castSucc
+    exact constructedA2TwoCell_coordinateBoundary_single_zero W₁ j i.castSucc
 
 /-- The remaining combinatorial input: the twenty-eight scalar cellular-incidence entries in
 the atlas coordinates. -/
@@ -231,7 +231,7 @@ variable (A : PaperAnalyticData)
 
 /-- The actual cusp filling has Euler characteristic two once equipped with the independently
 constructed equivariant central-fibre retraction. -/
-public theorem actualCuspFilling_euler_eq_two
+public theorem cuspFilling_euler_eq_two
     (R : ActualLocalCuspCentralFiberRetractionData A.starCuspWitness) :
     integralHomologyEulerCharacteristicSix (A.openEmbeddingStarData.filling 0) = 2 :=
   A.cuspFilling_euler_eq_of_centralFiberRetraction R

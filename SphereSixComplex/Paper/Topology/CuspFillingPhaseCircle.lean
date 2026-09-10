@@ -10,18 +10,18 @@ noncomputable section
 open Set Topology
 open scoped ContinuousMap
 namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
-open ComplexTorus SphereSixComplex.Periods StandardInfiniteA2ToricModel CuspLocalPhaseAction CuspFilling
+open ComplexTorus SphereSixComplex.Periods InfiniteA2Toric CuspLocalPhaseAction CuspFilling
 open CuspPeriodExpansion CuspToricPhaseAction CuspPhaseEstimates
 variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
 
 public theorem localPhaseActionEquiv_psiMap
-    {r : ℝ} (C : ExactLocalHolomorphicPhaseCoefficients M r) (c : Phase)
+    {r : ℝ} (C : LocalHolomorphicPhaseCoefficients M r) (c : Phase)
     (lambda : ParameterLattice) (p : LocalCarrier M r) :
     localPhaseActionEquiv M r c (C.psiMap lambda p) =
       C.psiMap lambda (localPhaseActionEquiv M r c p) := by
   apply Subtype.ext
-  rw [localPhaseActionEquiv_coe, ExactLocalHolomorphicPhaseCoefficients.psiMap_coe, ExactLocalHolomorphicPhaseCoefficients.psiMap_coe, localPhaseActionEquiv_coe,
+  rw [localPhaseActionEquiv_coe, LocalHolomorphicPhaseCoefficients.psiMap_coe, LocalHolomorphicPhaseCoefficients.psiMap_coe, localPhaseActionEquiv_coe,
     ToricModel.phaseAction_preserves_t, ToricModel.fanShear_phase_commute]
   rw [← Equiv.Perm.mul_apply, ← map_mul, mul_comm, map_mul, Equiv.Perm.mul_apply]
 

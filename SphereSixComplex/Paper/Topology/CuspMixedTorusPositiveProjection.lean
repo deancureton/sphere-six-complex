@@ -40,7 +40,7 @@ end SphereSixComplex.Topology.CircleProductIdentityMappingTorus
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 open SphereSixComplex.Topology SphereSixComplex.StandardTorusHomology
 open CuspPuncturedCollarBridge CuspStraighteningRetraction
-open StandardInfiniteA2ToricModel.Established CircleProductIdentityMappingTorus
+open InfiniteA2Toric CircleProductIdentityMappingTorus
 open StandardCircleHomologyLiftDegree
 
 local instance (A : PaperAnalyticData) :

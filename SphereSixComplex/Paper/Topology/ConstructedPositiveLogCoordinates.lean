@@ -7,10 +7,10 @@ public import SphereSixComplex.Paper.Topology.ConstructedA2PositiveInteriorContr
 
 noncomputable section
 open Set Topology Matrix
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Periods CuspFilling CuspLocalPhaseAction CuspPuncturedCollarBridge
 open CuspPeriodExpansion CuspStraighteningRetraction CuspStraighteningAlgebra
-open CuspStraighteningHomeomorph StandardInfiniteA2ToricQuantitativeRegions
+open CuspStraighteningHomeomorph InfiniteA2Toric.QuantitativeRegions
 open CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
 variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
@@ -98,7 +98,7 @@ theorem positiveLogPeriodCoordinate_continuous (W : ActualPuncturedCuspCollarWit
     Continuous (positiveLogPeriodCoordinate W) :=
   continuous_inverseStraighteningRealParameter W
 
-open StandardInfiniteA2ToricModel.Construction
+open InfiniteA2Toric.Construction
 
 def positiveInteriorRegionProduct (r : ℝ) :
     constructedA2PositiveInteriorRegion r ≃ₜ ((Fin 2 → ℝ) × Set.Ioo (0 : ℝ) r) where
@@ -253,4 +253,4 @@ theorem positiveOffCentralDeck_eq_iff_logProduct
     positiveInteriorLogProduct_deck, Prod.mk.injEq]
   exact and_congr eq_comm eq_comm
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric

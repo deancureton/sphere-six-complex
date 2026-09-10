@@ -17,7 +17,7 @@ noncomputable section
 
 open Set
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
 open SphereSixComplex
 open SphereSixComplex.Periods
@@ -102,7 +102,7 @@ public theorem normalizedPolarHoneycombPhaseGeometry_of_invariantModulus_only
   exact h.map fun ⟨Q, hQ⟩ ↦
     ⟨Q, polarPhaseGeometricCore_of_invariantModulus_only Q hQ⟩
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric
 
 end
 

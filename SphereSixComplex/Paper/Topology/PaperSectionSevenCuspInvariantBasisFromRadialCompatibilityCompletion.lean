@@ -28,14 +28,14 @@ namespace SphereSixComplex.Geometry.PaperAnalyticData
 
 variable {A : PaperAnalyticData}
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 /-- The explicit full-fibre slice induces the canonical fibre-to-band map on first homology. -/
 public theorem canonicalCuspFiberToBandHomologyOne_eq_actualCuspWang
-    (hmark : A.sectionSevenAffineNamedStripLift.lift
-      A.sectionSevenAffineActualCuspCrossingPoint =
-        A.cuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (hmark : A.affineNamedStripLift.lift
+      A.affineActualCuspCrossingPoint =
+        A.cuspAngularRegularBasePoint A.affineActualCuspCrossingTime)
+    (R : A.AffineRadialCompletionInput) :
     R.twoDiscCover.canonicalCuspFiberToBandHomologyOne =
       actualCuspWangFibreToBandHomologyOne (A := A) R := by
   let G := A.actualCuspRadialClutchingData
@@ -51,7 +51,7 @@ public theorem canonicalCuspFiberToBandHomologyOne_eq_actualCuspWang
 /-- The radial homotopy identifies the low-overlap fibre and the selected full-fibre slice
 after both are included in the elliptic interior. -/
 public theorem actualCuspRadialLowOverlapCarrier_homology
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     integralSingularHomologyMap 1
@@ -59,8 +59,8 @@ public theorem actualCuspRadialLowOverlapCarrier_homology
       integralSingularHomologyMap 1
         ((⟨Subtype.val, continuous_subtype_val⟩ :
             C((R.twoDiscCover.orderThreeSide ∩ R.twoDiscCover.orderFourSide :
-                Set A.SectionSevenEllipticInterior),
-              A.SectionSevenEllipticInterior)).comp
+                Set A.ellipticInterior),
+              A.ellipticInterior)).comp
           (actualCuspWangFibreToBandMap (A := A) R)) := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
@@ -76,7 +76,7 @@ public theorem actualCuspRadialLowOverlapCarrier_homology
 /-- Read the adaptive overlap in the natural order `order three, order four`.  The minus sign
 compensates for swapping the order used by the endpoint-corrected phase. -/
 public noncomputable def actualCuspAdaptiveNaturalSourceRead
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     IntegralSingularHomology 1
@@ -103,7 +103,7 @@ public noncomputable def actualCuspAdaptiveNaturalSourceRead
 /-- The natural-order adaptive read sends the pulled-back Mayer--Vietoris boundary to the
 actual cusp Wang boundary. -/
 public theorem actualCuspAdaptiveNaturalSourceRead_boundary_eq_wang
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     (actualCuspAdaptiveNaturalSourceRead R).comp
@@ -123,7 +123,7 @@ public theorem actualCuspAdaptiveNaturalSourceRead_boundary_eq_wang
 natural-order adaptive read followed by the selected full-fibre slice agrees with the literal
 pullback map into the cusp-cover intersection. -/
 public def ActualCuspAdaptiveBoundaryCarrierCompatibility
-    (R : A.SectionSevenAffineRadialCompletionInput) : Prop :=
+    (R : A.AffineRadialCompletionInput) : Prop :=
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   let boundary :=
@@ -136,7 +136,7 @@ public def ActualCuspAdaptiveBoundaryCarrierCompatibility
 
 /-- Full-fibre carrier compatibility gives the oriented full-fibre boundary square. -/
 public theorem fullFibreOrientedBoundaryNaturality_of_adaptiveCarrierCompatibility
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (h : ActualCuspAdaptiveBoundaryCarrierCompatibility R) :
     ActualCuspWangFullFibreOrientedBoundaryNaturality R := by
   let G := A.actualCuspRadialClutchingData
@@ -187,16 +187,16 @@ public theorem fullFibreOrientedBoundaryNaturality_of_adaptiveCarrierCompatibili
 
 /-- The one remaining carrier comparison implies the two marked invariant-basis evaluations. -/
 public theorem cuspPulledBackMarkedInvariantBasisData_of_adaptiveCarrierCompatibility
-    (hmark : A.sectionSevenAffineNamedStripLift.lift
-      A.sectionSevenAffineActualCuspCrossingPoint =
-        A.cuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (hmark : A.affineNamedStripLift.lift
+      A.affineActualCuspCrossingPoint =
+        A.cuspAngularRegularBasePoint A.affineActualCuspCrossingTime)
+    (R : A.AffineRadialCompletionInput)
     (h : ActualCuspAdaptiveBoundaryCarrierCompatibility R) :
     CuspPulledBackMarkedInvariantBasisData R :=
   cuspPulledBackMarkedInvariantBasisData_of_fullFibreOrientedBoundaryNaturality hmark R
     (fullFibreOrientedBoundaryNaturality_of_adaptiveCarrierCompatibility R h)
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

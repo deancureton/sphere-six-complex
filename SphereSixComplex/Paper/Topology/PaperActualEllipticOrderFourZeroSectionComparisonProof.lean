@@ -92,7 +92,7 @@ private theorem orderFourActualCayleyBaseCoordinate_quadrupleHomotopy_with_trace
             (norm_pos_iff.mpr A.orderFourFillingRelationCayleyBaseValue_ne_zero)
             (by
               rw [A.orderFourFillingRelationCayleyBaseValue_norm]
-              exact A.orderFourActualEllipticBoundaryBase.1.2.2)))
+              exact A.ellipticFourBoundaryBase.1.2.2)))
         twicePuncturedCounterclockwiseOneQuadruple.toContinuousMap,
       ∀ s : unitInterval, H (s, 0) = H (s, 1) := by
   obtain ⟨u, a, c, hc, hc1, haeq, hu, hune, hfac, hbound⟩ :=
@@ -112,7 +112,7 @@ private theorem orderFourActualCayleyBaseCoordinate_quadrupleHomotopy_with_trace
       (norm_pos_iff.mpr
         A.orderFourFillingRelationCayleyBaseValue_ne_zero)).trans (by
           rw [A.orderFourFillingRelationCayleyBaseValue_norm]
-          simpa using A.orderFourActualEllipticBoundaryBase.1.2.2)
+          simpa using A.ellipticFourBoundaryBase.1.2.2)
   have hsmall :
       A.orderFourCayleyChartSubOneCircleMap a (norm_pos_iff.mpr ha) har =
         factorizedLocalDegreeCircleTwoPunctures
@@ -138,7 +138,7 @@ private theorem orderFourActualCayleyBaseCoordinate_quadrupleHomotopy_with_trace
               (norm_pos_iff.mpr
                 A.orderFourFillingRelationCayleyBaseValue_ne_zero)).trans (by
                   rw [A.orderFourFillingRelationCayleyBaseValue_norm]
-                  simpa using A.orderFourActualEllipticBoundaryBase.1.2.2)) =
+                  simpa using A.ellipticFourBoundaryBase.1.2.2)) =
         factorizedLocalDegreeCircleTwoPunctures
           u 4 a (-1) ha hu hune hbound' := by
     exact hsmall
@@ -185,12 +185,12 @@ private theorem orderFourActualCayleyBaseCoordinate_quadrupleHomotopy_with_trace
 /-- The restricted order-four inverse chart has the product coordinate with which it was fed. -/
 public theorem orderFourPuncturedProductToRegularMap_productCoordinate
     (zq : A.OrderFourCayleyPuncturedDisc × A.orderFourTorus) :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     orderFourRealPeriodProductHomeomorph A.periods
         (regularFamilyInclusion A.periods
           (A.orderFourPuncturedProductToRegularMap
             (A.orderFourPuncturedProductCarrierMap zq))) = (zq.1.1, zq.2) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let hproper : SourceActionProperlyDiscontinuous
       (U := A.modular.modularParameter.toTriangleUniformization) :=
     sourceActionProperlyDiscontinuous_of_eq
@@ -219,12 +219,12 @@ public theorem orderFourPuncturedProductToRegularMap_productCoordinate
 section over the base of the realized point. -/
 public theorem orderFourPuncturedProductToRegularMap_zero_eq_zeroSection
     (z : A.OrderFourCayleyPuncturedDisc) :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     let x := A.orderFourPuncturedProductToRegularMap
       (A.orderFourPuncturedProductCarrierMap (z, 0))
     x = regularFamilyZeroSection A.periods
       (regularTotalSpaceBase A.periods x) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let x := A.orderFourPuncturedProductToRegularMap
     (A.orderFourPuncturedProductCarrierMap (z, 0))
   have hcoord := A.orderFourPuncturedProductToRegularMap_productCoordinate (z, 0)
@@ -244,10 +244,10 @@ public theorem orderFourPuncturedProductToRegularMap_zero_eq_zeroSection
 /-- The zero-fibre local realization is the global zero-section lift of the same order-four
 Cayley base loop. -/
 public theorem orderFourCentralZeroFibreBasePath_eq_zeroSectionBasePath :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     A.orderFourCentralZeroFibreBasePath.toContinuousMap =
       A.orderFourZeroSectionBaseMap := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   ext t
   let z := A.orderFourFillingRelationCayleyPuncturedLoop t
   let x := A.orderFourPuncturedProductToRegularMap
@@ -324,10 +324,10 @@ public theorem orderFourZeroSectionBase_quadrupleHomotopy_with_trace :
 /-- Pointwise form of the equal endpoint trace for the local fibre contraction. -/
 public theorem orderFourCentralBaseFactor_zeroFibreHomotopy_point_trace
     (s : unitInterval) :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     let H := A.orderFourCentralBaseFactor_zeroFibreHomotopy
     H (s, 0) = H (s, 1) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   change A.orderFourPuncturedProductCentralRealizationMap
       (A.orderFourFillingRelationCayleyPuncturedLoop 0, _) =
     A.orderFourPuncturedProductCentralRealizationMap
@@ -338,11 +338,11 @@ public theorem orderFourCentralBaseFactor_zeroFibreHomotopy_point_trace
 /-- The local order-four base factor reaches the standard zero-section four-turn loop by
 the explicit fibre contraction followed by the global base homotopy. -/
 public theorem orderFourCentralBaseFactor_homotopy_zeroSectionQuadruple :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     Nonempty (ContinuousMap.Homotopy
       A.orderFourCentralBaseFactor.toContinuousMap
       A.orderFourZeroSectionQuadruplePath.toContinuousMap) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let Hzero := A.orderFourCentralBaseFactor_zeroFibreHomotopy
   let Hzero' := Hzero.cast rfl
     A.orderFourCentralZeroFibreBasePath_eq_zeroSectionBasePath
@@ -352,12 +352,12 @@ public theorem orderFourCentralBaseFactor_homotopy_zeroSectionQuadruple :
 /-- The local order-four base factor reaches the standard zero-section four-turn loop through
 a genuine free homotopy. -/
 public theorem orderFourCentralBaseFactor_homotopy_zeroSectionQuadruple_with_trace :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     ∃ H : ContinuousMap.Homotopy
         A.orderFourCentralBaseFactor.toContinuousMap
         A.orderFourZeroSectionQuadruplePath.toContinuousMap,
       ∀ s : unitInterval, H (s, 0) = H (s, 1) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let Hzero := A.orderFourCentralBaseFactor_zeroFibreHomotopy
   let Hzero' := Hzero.cast rfl
     A.orderFourCentralZeroFibreBasePath_eq_zeroSectionBasePath
@@ -373,30 +373,30 @@ public theorem orderFourCentralBaseFactor_homotopy_zeroSectionQuadruple_with_tra
 /-- The rebased zero-section quadruple displayed at the final affine basepoint. -/
 public noncomputable def orderFourCentralAffineZeroSectionQuadruplePath :
     Path A.centralAffineBase A.centralAffineBase :=
-  A.orderFourActualCuspZeroSectionQuadruplePath.cast
+  A.ellipticFourCuspZeroSectionQuadruplePath.cast
     A.centralAffineBase_eq_actualCuspCentralBase
     A.centralAffineBase_eq_actualCuspCentralBase
 
 /-- The local order-four base factor reaches the globally based zero-section quadruple through
 one genuine free homotopy. -/
 public theorem orderFourCentralBaseFactor_homotopy_globalZeroSectionQuadruple :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     ∃ H : ContinuousMap.Homotopy
         A.orderFourCentralBaseFactor.toContinuousMap
         A.orderFourCentralAffineZeroSectionQuadruplePath.toContinuousMap,
       ∀ s : unitInterval, H (s, 0) = H (s, 1) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   rcases A.orderFourCentralBaseFactor_homotopy_zeroSectionQuadruple_with_trace with
     ⟨Hlocal, hlocalTrace⟩
   rcases exists_freeLoopChangeBasepointHomotopy A.orderFourZeroSectionQuadruplePath
-      A.actualCuspMarkedCentralWhisker with ⟨Hrebase, hrebaseTrace⟩
+      A.cuspMarkedCentralWhisker with ⟨Hrebase, hrebaseTrace⟩
   have htarget :
-      (A.actualCuspMarkedCentralWhisker.symm.trans
+      (A.cuspMarkedCentralWhisker.symm.trans
         (A.orderFourZeroSectionQuadruplePath.trans
-          A.actualCuspMarkedCentralWhisker)).toContinuousMap =
-        A.orderFourActualCuspZeroSectionQuadruplePath.toContinuousMap := by
+          A.cuspMarkedCentralWhisker)).toContinuousMap =
+        A.ellipticFourCuspZeroSectionQuadruplePath.toContinuousMap := by
     rfl
-  have hcast : A.orderFourActualCuspZeroSectionQuadruplePath.toContinuousMap =
+  have hcast : A.ellipticFourCuspZeroSectionQuadruplePath.toContinuousMap =
       A.orderFourCentralAffineZeroSectionQuadruplePath.toContinuousMap := by
     ext t
     rfl

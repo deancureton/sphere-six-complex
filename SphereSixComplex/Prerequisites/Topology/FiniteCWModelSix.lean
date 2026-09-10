@@ -44,7 +44,7 @@ counts).  Truncating the sum at degree six is sound because `FiniteCWModelSix` r
 are no cells above degree six.  The proof is the rank bookkeeping of
 `CellularEulerPoincare.integralHomologyEulerCharacteristicSix_eq_cellSum` on the cellular chain
 complex of the chosen carrier. -/
-public theorem establishedIntegralCellularEulerPoincareSix (M : FiniteCWModelSix X) :
+public theorem eulerCharacteristic_eq_cellSum (M : FiniteCWModelSix X) :
     integralHomologyEulerCharacteristicSix X =
       (M.cellCount 0 : ℤ) - M.cellCount 1 + M.cellCount 2 - M.cellCount 3 +
         M.cellCount 4 - M.cellCount 5 + M.cellCount 6 := by
@@ -60,7 +60,7 @@ extra assumptions: the chain groups are free on finitely many cells, homology is
 them, and there are no cells above degree six. -/
 public theorem integralHomologyFiniteSix (M : FiniteCWModelSix X) :
     IntegralHomologyFiniteSix X where
-  finiteHomology k := by
+  finite_homology k := by
     let _ := M.topology
     let _ := M.t2
     let _ := M.cwComplex
@@ -76,7 +76,7 @@ public theorem integralHomologyFiniteSix (M : FiniteCWModelSix X) :
       Module.Finite.equiv (CM.homologyEquiv k).toIntLinearEquiv
     exact Module.Finite.equiv
       (integralSingularHomologyEquivOfHomotopyEquiv k M.homotopyEquiv).symm.toIntLinearEquiv
-  homologyAboveDimension k hk := by
+  subsingleton_homology_of_six_lt k hk := by
     let _ := M.topology
     let _ := M.t2
     let _ := M.cwComplex
@@ -94,12 +94,12 @@ namespace IntegralHomologyFiniteSix
 /-- Homological finiteness and the dimension bound transport through a homotopy equivalence. -/
 public theorem homotopyEquiv {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (hX : IntegralHomologyFiniteSix X) (e : X ≃ₕ Y) : IntegralHomologyFiniteSix Y where
-  finiteHomology k := by
-    let _ : Module.Finite ℤ (IntegralSingularHomology k X) := hX.finiteHomology k
+  finite_homology k := by
+    let _ : Module.Finite ℤ (IntegralSingularHomology k X) := hX.finite_homology k
     exact Module.Finite.equiv
       (integralSingularHomologyEquivOfHomotopyEquiv k e).toIntLinearEquiv
-  homologyAboveDimension k hk := by
-    let h := hX.homologyAboveDimension k hk
+  subsingleton_homology_of_six_lt k hk := by
+    let h := hX.subsingleton_homology_of_six_lt k hk
     let eH := integralSingularHomologyEquivOfHomotopyEquiv k e
     exact ⟨fun x y ↦ eH.symm.injective (@Subsingleton.elim _ h _ _)⟩
 

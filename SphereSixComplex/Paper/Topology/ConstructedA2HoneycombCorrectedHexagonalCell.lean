@@ -8,7 +8,7 @@ noncomputable section
 
 open Function Set Topology Matrix
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
 open SphereSixComplex.Geometry.CuspCombinatorics
 
@@ -355,6 +355,6 @@ public theorem constructedA2CorrectedHexagonHomeomorph_mapsTo_sphere_boundary
     constructedA2HexagonGauge_squareToHexagonRadial, hx]
   norm_num
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric
 
 end

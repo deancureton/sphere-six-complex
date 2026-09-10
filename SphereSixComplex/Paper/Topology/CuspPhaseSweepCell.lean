@@ -8,8 +8,8 @@ public import SphereSixComplex.Paper.Topology.StandardA2PhaseCellDisjointness
 noncomputable section
 open Set Topology Matrix
 namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
-open StandardInfiniteA2ToricModel StandardInfiniteA2ToricModel.Construction
-open StandardInfiniteA2ToricModel.Established
+open InfiniteA2Toric InfiniteA2Toric.Construction
+open InfiniteA2Toric
 
 public def fourthPhaseEdgeZeroSweep (c : Circle) (x : Fin 1 → ℝ) : Carrier :=
   constructedModel.torusAction

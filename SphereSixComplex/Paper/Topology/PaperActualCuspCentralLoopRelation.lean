@@ -122,9 +122,9 @@ variable (A : PaperAnalyticData)
 public noncomputable def cuspAngularMarkedBaseLoop :
     Path
       (A.puncturedBaseHomeomorphTwicePuncturedComplex.symm
-        (A.centralFamilyCoordinate A.actualCuspCentralBase))
+        (A.centralFamilyCoordinate A.cuspCentralBase))
       (A.puncturedBaseHomeomorphTwicePuncturedComplex.symm
-        (A.centralFamilyCoordinate A.actualCuspCentralBase)) :=
+        (A.centralFamilyCoordinate A.cuspCentralBase)) :=
   A.cuspAngularCoordinateLoop.map
     A.puncturedBaseHomeomorphTwicePuncturedComplex.symm.continuous
 
@@ -133,10 +133,10 @@ public noncomputable def cuspAngularZeroSectionLoop :
     Path
       (A.centralZeroSection
         (A.puncturedBaseHomeomorphTwicePuncturedComplex.symm
-          (A.centralFamilyCoordinate A.actualCuspCentralBase)))
+          (A.centralFamilyCoordinate A.cuspCentralBase)))
       (A.centralZeroSection
         (A.puncturedBaseHomeomorphTwicePuncturedComplex.symm
-          (A.centralFamilyCoordinate A.actualCuspCentralBase))) :=
+          (A.centralFamilyCoordinate A.cuspCentralBase))) :=
   A.cuspAngularMarkedBaseLoop.map A.centralZeroSection.continuous
 
 /-- A regular-source representative of the actual cusp coordinate at time `t`. -/
@@ -223,9 +223,9 @@ public theorem cuspAngularCentralZeroHomotopyValue_zero
       (A.cuspAngularLiftPoint t).1.2 _ _
       ((1 - ((0 : unitInterval) : ℝ)) •
         (A.cuspAngularLiftPoint t).1.1) =
-    A.actualCuspOverlapToCentral
-      (A.actualCuspBoundaryProjection (A.cuspAngularLiftPoint t))
-  rw [A.actualCuspOverlapToCentral_boundaryProjection]
+    A.cuspOverlapToCentral
+      (A.cuspBoundaryProjection (A.cuspAngularLiftPoint t))
+  rw [A.cuspOverlapToCentral_boundaryProjection]
   change actualPuncturedGlobalCuspPoint A.starCuspWitness
       (A.cuspAngularLiftPoint t).1.2 _ _
       ((1 - (0 : ℝ)) • (A.cuspAngularLiftPoint t).1.1) =
@@ -257,11 +257,11 @@ public noncomputable def cuspAngularCentralZeroHomotopy :
 
 /-- The moving basepoint of the fibre-scaling homotopy is the explicit vertical segment from
 the selected cusp point to the zero section over the same ordinary base point. -/
-public noncomputable def actualCuspToZeroSectionPath :
-    Path A.actualCuspCentralBase
+public noncomputable def cuspToZeroSectionPath :
+    Path A.cuspCentralBase
       (A.centralZeroSection
         (A.puncturedBaseHomeomorphTwicePuncturedComplex.symm
-          (A.centralFamilyCoordinate A.actualCuspCentralBase))) :=
+          (A.centralFamilyCoordinate A.cuspCentralBase))) :=
   ((A.cuspAngularCentralZeroHomotopy).evalAt 0).cast
     A.cuspAngularCentralLoop.source.symm
     A.cuspAngularZeroSectionLoop.source.symm
@@ -280,18 +280,18 @@ public theorem cuspAngularCentralZeroHomotopy_trace :
   unfold cuspAngularCentralZeroHomotopyValue
   have hshift := puncturedGlobalCuspPoint_shift
     A.cuspCoordinate
-    A.actualCuspBoundaryCoverBase.1.2
+    A.cuspBoundaryCoverBase.1.2
     (additiveCuspRadiusCover_halfPlane
-      A.starCuspWitness.localWitness.radius_le A.actualCuspBoundaryCoverBase)
+      A.starCuspWitness.localWitness.radius_le A.cuspBoundaryCoverBase)
     (A.starCuspWitness.lift_regular
       (additiveCuspRadiusCover_halfPlane
-        A.starCuspWitness.localWitness.radius_le A.actualCuspBoundaryCoverBase)
-      A.actualCuspBoundaryCoverBase.2)
+        A.starCuspWitness.localWitness.radius_le A.cuspBoundaryCoverBase)
+      A.cuspBoundaryCoverBase.2)
     (A.starCuspWitness.lift_regular
       (additiveCuspRadiusCover_halfPlane
         A.starCuspWitness.localWitness.radius_le (A.cuspAngularLiftPoint 1))
       (A.cuspAngularLiftPoint 1).2)
-    ((1 - (u : ℝ)) • A.actualCuspBoundaryCoverBase.1.1)
+    ((1 - (u : ℝ)) • A.cuspBoundaryCoverBase.1.1)
   unfold actualPuncturedGlobalCuspPoint
   simpa [cuspAngularLiftPoint] using hshift.symm
 
@@ -300,9 +300,9 @@ whiskered by the literal vertical contraction of its fibre coordinate. -/
 public theorem cuspAngularCentralLoop_class_eq_zeroSectionWhisker :
     Path.Homotopic.Quotient.mk A.cuspAngularCentralLoop =
       Path.Homotopic.Quotient.mk
-        (A.actualCuspToZeroSectionPath.trans
+        (A.cuspToZeroSectionPath.trans
           (A.cuspAngularZeroSectionLoop.trans
-            A.actualCuspToZeroSectionPath.symm)) := by
+            A.cuspToZeroSectionPath.symm)) := by
   exact loopClass_eq_whiskered_of_freeHomotopy
     A.cuspAngularCentralLoop A.cuspAngularZeroSectionLoop
     A.cuspAngularCentralZeroHomotopy
@@ -311,10 +311,10 @@ public theorem cuspAngularCentralLoop_class_eq_zeroSectionWhisker :
 /-! ## Rebase the central loop at the marked ordinary basepoint -/
 
 /-- The coherent base path from `1/2` to the actual exterior cusp coordinate. -/
-public noncomputable def actualCuspCommonCoordinateWhisker :
+public noncomputable def cuspCommonCoordinateWhisker :
     Path twicePuncturedComplexBasepoint
-      (A.centralFamilyCoordinate A.actualCuspCentralBase) :=
-  paperStandardExteriorBridge.trans A.actualCuspExteriorTwiceWhisker
+      (A.centralFamilyCoordinate A.cuspCentralBase) :=
+  paperStandardExteriorBridge.trans A.cuspExteriorTwiceWhisker
 
 /-- Insert the marked ordinary base into the central family along its zero section. -/
 public noncomputable def markedBaseToCentralZeroSection :
@@ -331,19 +331,19 @@ public theorem markedBaseToCentralZeroSection_basepoint :
       A.centralZeroSection A.markedPuncturedBasepoint := rfl
 
 /-- The common coordinate whisker, lifted along the zero section. -/
-public noncomputable def actualCuspCommonZeroSectionWhisker :
+public noncomputable def cuspCommonZeroSectionWhisker :
     Path (A.centralZeroSection A.markedPuncturedBasepoint)
       (A.centralZeroSection
         (A.puncturedBaseHomeomorphTwicePuncturedComplex.symm
-          (A.centralFamilyCoordinate A.actualCuspCentralBase))) :=
-  A.actualCuspCommonCoordinateWhisker.map
+          (A.centralFamilyCoordinate A.cuspCentralBase))) :=
+  A.cuspCommonCoordinateWhisker.map
     A.markedBaseToCentralZeroSection.continuous
 
 /-- The actual common-base coordinate loop lifted along the zero section. -/
-public noncomputable def actualCuspCommonZeroSectionLoop :
+public noncomputable def cuspCommonZeroSectionLoop :
     Path (A.centralZeroSection A.markedPuncturedBasepoint)
       (A.centralZeroSection A.markedPuncturedBasepoint) :=
-  A.actualCuspCommonCoordinateLoop.map
+  A.cuspCommonCoordinateLoop.map
     A.markedBaseToCentralZeroSection.continuous
 
 public theorem cuspAngularZeroSectionLoop_eq_map :
@@ -355,24 +355,24 @@ public theorem cuspAngularZeroSectionLoop_eq_map :
   rfl
 
 /-- The zero-section lift of the common coordinate loop is its explicit whiskered form. -/
-public theorem actualCuspCommonZeroSectionLoop_class_eq_whisker :
-    Path.Homotopic.Quotient.mk A.actualCuspCommonZeroSectionLoop =
+public theorem cuspCommonZeroSectionLoop_class_eq_whisker :
+    Path.Homotopic.Quotient.mk A.cuspCommonZeroSectionLoop =
       Path.Homotopic.Quotient.mk
-        (A.actualCuspCommonZeroSectionWhisker.trans
+        (A.cuspCommonZeroSectionWhisker.trans
           (A.cuspAngularZeroSectionLoop.trans
-            A.actualCuspCommonZeroSectionWhisker.symm)) := by
+            A.cuspCommonZeroSectionWhisker.symm)) := by
   change Path.Homotopic.Quotient.mk
-      (A.actualCuspCommonCoordinateLoop.map
+      (A.cuspCommonCoordinateLoop.map
         A.markedBaseToCentralZeroSection.continuous) =
     Path.Homotopic.Quotient.mk
-      ((A.actualCuspCommonCoordinateWhisker.map
+      ((A.cuspCommonCoordinateWhisker.map
           A.markedBaseToCentralZeroSection.continuous).trans
         ((A.cuspAngularCoordinateLoop.map
             A.markedBaseToCentralZeroSection.continuous).trans
-          (A.actualCuspCommonCoordinateWhisker.map
+          (A.cuspCommonCoordinateWhisker.map
             A.markedBaseToCentralZeroSection.continuous).symm))
-  unfold actualCuspCommonCoordinateLoop actualCuspCommonCoordinateWhisker
-    actualCuspExteriorWhiskeredTwiceLoop
+  unfold cuspCommonCoordinateLoop cuspCommonCoordinateWhisker
+    cuspExteriorWhiskeredTwiceLoop
   simp only [Path.Homotopic.Quotient.mk_trans,
     Path.Homotopic.Quotient.mk_symm, Path.map_trans, ← Path.map_symm]
   rw [homotopicQuotient_symm_trans]
@@ -406,19 +406,19 @@ public theorem markedBaseToCentralZeroSection_map_one :
 
 /-- The planar pair-of-pants relation, lifted into the actual central family along the literal
 zero section. -/
-public theorem actualCuspCommonZeroSectionLoop_class_eq_finiteProduct :
-    Path.Homotopic.Quotient.mk A.actualCuspCommonZeroSectionLoop =
+public theorem cuspCommonZeroSectionLoop_class_eq_finiteProduct :
+    Path.Homotopic.Quotient.mk A.cuspCommonZeroSectionLoop =
       A.markedZeroCentralMeridianClass⁻¹ *
         A.markedOneCentralMeridianClass⁻¹ := by
   have h := congrArg
     (FundamentalGroup.map A.markedBaseToCentralZeroSection
       twicePuncturedComplexBasepoint)
-    A.actualCuspCommonCoordinateLoop_class_eq_finiteProduct
+    A.cuspCommonCoordinateLoop_class_eq_finiteProduct
   rw [FundamentalGroup.map_apply, map_mul, map_inv, map_inv,
     A.markedBaseToCentralZeroSection_map_zero,
     A.markedBaseToCentralZeroSection_map_one] at h
   change (Path.Homotopic.Quotient.mk
-      A.actualCuspCommonCoordinateLoop).map
+      A.cuspCommonCoordinateLoop).map
         A.markedBaseToCentralZeroSection =
     A.markedZeroCentralMeridianClass⁻¹ *
       A.markedOneCentralMeridianClass⁻¹
@@ -426,26 +426,26 @@ public theorem actualCuspCommonZeroSectionLoop_class_eq_finiteProduct :
   rfl
 
 /-- The path from the marked zero-section basepoint to the selected actual cusp point. -/
-public noncomputable def actualCuspMarkedCentralWhisker :
+public noncomputable def cuspMarkedCentralWhisker :
     Path (A.centralZeroSection A.markedPuncturedBasepoint)
-      A.actualCuspCentralBase :=
-  A.actualCuspCommonZeroSectionWhisker.trans A.actualCuspToZeroSectionPath.symm
+      A.cuspCentralBase :=
+  A.cuspCommonZeroSectionWhisker.trans A.cuspToZeroSectionPath.symm
 
 /-- The actual angular cusp loop, now based at the marked zero-section point. -/
-public noncomputable def actualCuspMarkedCentralLoop :
+public noncomputable def cuspMarkedCentralLoop :
     Path (A.centralZeroSection A.markedPuncturedBasepoint)
       (A.centralZeroSection A.markedPuncturedBasepoint) :=
-  A.actualCuspMarkedCentralWhisker.trans
-    (A.cuspAngularCentralLoop.trans A.actualCuspMarkedCentralWhisker.symm)
+  A.cuspMarkedCentralWhisker.trans
+    (A.cuspAngularCentralLoop.trans A.cuspMarkedCentralWhisker.symm)
 
 /-- Fibre contraction removes the vertical portion of the common whisker, leaving precisely the
 zero-section lift of the normalized common-base loop. -/
-public theorem actualCuspMarkedCentralLoop_class_eq_zeroSectionLoop :
-    Path.Homotopic.Quotient.mk A.actualCuspMarkedCentralLoop =
-      Path.Homotopic.Quotient.mk A.actualCuspCommonZeroSectionLoop := by
-  rw [A.actualCuspCommonZeroSectionLoop_class_eq_whisker]
+public theorem cuspMarkedCentralLoop_class_eq_zeroSectionLoop :
+    Path.Homotopic.Quotient.mk A.cuspMarkedCentralLoop =
+      Path.Homotopic.Quotient.mk A.cuspCommonZeroSectionLoop := by
+  rw [A.cuspCommonZeroSectionLoop_class_eq_whisker]
   have hcusp := A.cuspAngularCentralLoop_class_eq_zeroSectionWhisker
-  unfold actualCuspMarkedCentralLoop actualCuspMarkedCentralWhisker
+  unfold cuspMarkedCentralLoop cuspMarkedCentralWhisker
   simp only [Path.Homotopic.Quotient.mk_trans,
     Path.Homotopic.Quotient.mk_symm]
   simp only [Path.Homotopic.Quotient.mk_trans,
@@ -454,26 +454,26 @@ public theorem actualCuspMarkedCentralLoop_class_eq_zeroSectionLoop :
   rw [homotopicQuotient_symm_trans]
   simp only [Path.Homotopic.Quotient.trans_assoc]
   rw [← Path.Homotopic.Quotient.trans_assoc
-      (Path.Homotopic.Quotient.mk A.actualCuspToZeroSectionPath).symm
-      (Path.Homotopic.Quotient.mk A.actualCuspToZeroSectionPath),
+      (Path.Homotopic.Quotient.mk A.cuspToZeroSectionPath).symm
+      (Path.Homotopic.Quotient.mk A.cuspToZeroSectionPath),
     Path.Homotopic.Quotient.symm_trans,
     Path.Homotopic.Quotient.refl_trans]
   rw [homotopicQuotient_symm_symm]
   rw [← Path.Homotopic.Quotient.trans_assoc
-      (Path.Homotopic.Quotient.mk A.actualCuspToZeroSectionPath).symm
-      (Path.Homotopic.Quotient.mk A.actualCuspToZeroSectionPath)
-      (Path.Homotopic.Quotient.mk A.actualCuspCommonZeroSectionWhisker).symm,
+      (Path.Homotopic.Quotient.mk A.cuspToZeroSectionPath).symm
+      (Path.Homotopic.Quotient.mk A.cuspToZeroSectionPath)
+      (Path.Homotopic.Quotient.mk A.cuspCommonZeroSectionWhisker).symm,
     Path.Homotopic.Quotient.symm_trans,
     Path.Homotopic.Quotient.refl_trans]
 
 /-- At the actual marked central basepoint, the cusp loop is the product of the two
 counterclockwise finite meridians. -/
-public theorem actualCuspMarkedCentralLoop_class_eq_finiteProduct :
-    Path.Homotopic.Quotient.mk A.actualCuspMarkedCentralLoop =
+public theorem cuspMarkedCentralLoop_class_eq_finiteProduct :
+    Path.Homotopic.Quotient.mk A.cuspMarkedCentralLoop =
       A.markedZeroCentralMeridianClass⁻¹ *
         A.markedOneCentralMeridianClass⁻¹ := by
-  rw [A.actualCuspMarkedCentralLoop_class_eq_zeroSectionLoop,
-    A.actualCuspCommonZeroSectionLoop_class_eq_finiteProduct]
+  rw [A.cuspMarkedCentralLoop_class_eq_zeroSectionLoop,
+    A.cuspCommonZeroSectionLoop_class_eq_finiteProduct]
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

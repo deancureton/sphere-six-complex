@@ -23,7 +23,7 @@ variable (A : PaperAnalyticData)
 
 /-- The arbitrary central base whisker, with its source transported to the literal cusp base. -/
 public noncomputable def orderThreeCentralMarkedWhiskerPath :
-    Path A.actualCuspCentralBase A.orderThreeActualEllipticCentralBase :=
+    Path A.cuspCentralBase A.ellipticThreeCentralBase :=
   A.orderThreeCentralBaseWhisker.cast
     A.centralAffineBase_eq_actualCuspCentralBase.symm rfl
 
@@ -31,80 +31,80 @@ public noncomputable def orderThreeCentralMarkedWhiskerPath :
 overlap chart must carry the endpoints of the two straight deck segments to the corresponding
 affine deck translates. -/
 public def OrderThreeCentralMarkedWhiskerLiftEndpointCompatibility : Prop :=
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderThreeActualEllipticBoundaryCover_simplyConnected
+    A.ellipticThreeBoundaryCover_simplyConnected
   let β := A.orderThreeCentralMarkedWhiskerPath
-  let C := A.orderThreeActualCentralCoverComparisonOfPath β
+  let C := A.ellipticThreeCentralCoverComparisonOfPath β
   C.lift
-      (A.orderThreeActualEllipticBoundaryDeckData.meridian •
-        A.orderThreeActualEllipticBoundaryBase) =
+      (A.ellipticThreeBoundaryDeckData.meridian •
+        A.ellipticThreeBoundaryBase) =
       (freeAffineLift (M := paperCentralFreeMonodromy) firstMeridian)⁻¹ •
-        C.lift A.orderThreeActualEllipticBoundaryBase ∧
+        C.lift A.ellipticThreeBoundaryBase ∧
     C.lift
       (Additive.toMul
-          (A.orderThreeActualEllipticBoundaryDeckData.translation (-epsilon)) •
-        A.orderThreeActualEllipticBoundaryBase) =
+          (A.ellipticThreeBoundaryDeckData.translation (-epsilon)) •
+        A.ellipticThreeBoundaryBase) =
       Additive.toMul
           (freeAffineTranslation (M := paperCentralFreeMonodromy) epsilon) •
-        C.lift A.orderThreeActualEllipticBoundaryBase
+        C.lift A.ellipticThreeBoundaryBase
 
 /-- The endpoint calculation is exactly the two required deck-map evaluations for the lift
 pinned by the marked whisker. -/
 public theorem OrderThreeCentralMarkedWhiskerLiftEndpointCompatibility.deckMap
     (h : A.OrderThreeCentralMarkedWhiskerLiftEndpointCompatibility) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     let D := A.centralAffineUniversalCover
     letI := D.topology
     letI := D.action
     letI : SimplyConnectedSpace
         (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-      A.orderThreeActualEllipticBoundaryCover_simplyConnected
+      A.ellipticThreeBoundaryCover_simplyConnected
     let β := A.orderThreeCentralMarkedWhiskerPath
-    let C := A.orderThreeActualCentralCoverComparisonOfPath β
-    C.deckMap A.orderThreeActualEllipticBoundaryDeckData.meridian =
+    let C := A.ellipticThreeCentralCoverComparisonOfPath β
+    C.deckMap A.ellipticThreeBoundaryDeckData.meridian =
         (freeAffineLift (M := paperCentralFreeMonodromy) firstMeridian)⁻¹ ∧
       C.deckMap (Additive.toMul
-          (A.orderThreeActualEllipticBoundaryDeckData.translation (-epsilon))) =
+          (A.ellipticThreeBoundaryDeckData.translation (-epsilon))) =
         Additive.toMul
           (freeAffineTranslation (M := paperCentralFreeMonodromy) epsilon) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderThreeActualEllipticBoundaryCover_simplyConnected
+    A.ellipticThreeBoundaryCover_simplyConnected
   let β := A.orderThreeCentralMarkedWhiskerPath
-  let C := A.orderThreeActualCentralCoverComparisonOfPath β
+  let C := A.ellipticThreeCentralCoverComparisonOfPath β
   let _ : IsCancelSMul paperCentralFreeAffineDeck D.Cover :=
     D.data.quotientCovering.isCancelSMul
   change _ ∧ _ at h
   change _ ∧ _
   constructor
-  · apply IsCancelSMul.right_cancel _ _ (C.lift A.orderThreeActualEllipticBoundaryBase)
+  · apply IsCancelSMul.right_cancel _ _ (C.lift A.ellipticThreeBoundaryBase)
     exact (C.equivariant _ _).symm.trans h.1
-  · apply IsCancelSMul.right_cancel _ _ (C.lift A.orderThreeActualEllipticBoundaryBase)
+  · apply IsCancelSMul.right_cancel _ _ (C.lift A.ellipticThreeBoundaryBase)
     exact (C.equivariant _ _).symm.trans h.2
 
 /-- The two pointwise endpoint formulas give the exact marked-whisker loop classes. -/
 public theorem OrderThreeCentralMarkedWhiskerLiftEndpointCompatibility.toLoopIdentities
     (h : A.OrderThreeCentralMarkedWhiskerLiftEndpointCompatibility) :
     A.OrderThreeCentralBoundaryMarkedStraightLoopIdentities := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderThreeActualEllipticBoundaryCover_simplyConnected
+    A.ellipticThreeBoundaryCover_simplyConnected
   let _ : SimplyConnectedSpace D.Cover := D.data.simplyConnected
   let β := A.orderThreeCentralMarkedWhiskerPath
-  let C := A.orderThreeActualCentralCoverComparisonOfPath β
+  let C := A.ellipticThreeCentralCoverComparisonOfPath β
   let E := D.data.quotientCovering.fundamentalGroupEquiv
     ⟨A.orderThreeCentralAffineUniversalCoverPointOfPath β,
       A.orderThreeCentralAffineUniversalCoverPointOfPath_projects β⟩
@@ -119,28 +119,28 @@ public theorem OrderThreeCentralMarkedWhiskerLiftEndpointCompatibility.toLoopIde
             (paperPuncturedGlobalFamilyAffinePresentation A
               (freeAffineLift (M := paperCentralFreeMonodromy) firstMeridian)) := by
       simpa [β, orderThreeCentralMarkedWhiskerPath, centralAffineCorePiOneData_rhoOne,
-        paperPuncturedGlobalFamilyAffinePresentation, actualCuspToCentralAffineBaseEquiv,
+        paperPuncturedGlobalFamilyAffinePresentation, cuspToCentralAffineBaseEquiv,
         fundamentalGroupMulEquivOfEq_eq_elementOfBaseEq] using
         fundamentalGroupMulEquivOfPath_elementOfBaseEq_eq_cast_left
           A.orderThreeCentralBaseWhisker
           A.centralAffineBase_eq_actualCuspCentralBase.symm A.geometricCentralRhoOne
-    have hnat := A.orderThreeActualCentralCoverComparisonOfPath_ofDeck β
-      A.orderThreeActualEllipticBoundaryDeckData.meridian
-    change E (FundamentalGroup.mapOfEq A.orderThreeActualOverlapToCentral rfl
-        (ofDeck A.orderThreeActualEllipticBoundaryProjection_isQuotientCoveringMap
-          A.orderThreeActualEllipticBoundaryBase
-          A.orderThreeActualEllipticBoundaryDeckData.meridian)) =
+    have hnat := A.ellipticThreeCentralCoverComparisonOfPath_ofDeck β
+      A.ellipticThreeBoundaryDeckData.meridian
+    change E (FundamentalGroup.mapOfEq A.ellipticThreeOverlapToCentral rfl
+        (ofDeck A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
+          A.ellipticThreeBoundaryBase
+          A.ellipticThreeBoundaryDeckData.meridian)) =
       MulOpposite.op
-        (C.deckMap A.orderThreeActualEllipticBoundaryDeckData.meridian) at hnat
-    rw [A.orderThreeActualEllipticBoundaryDeckStraightLoop_class_eq_ofDeck, hmarked]
+        (C.deckMap A.ellipticThreeBoundaryDeckData.meridian) at hnat
+    rw [A.ellipticThreeBoundaryDeckStraightLoop_class_eq_ofDeck, hmarked]
     apply E.injective
     calc
-      E (FundamentalGroup.mapOfEq A.orderThreeActualOverlapToCentral rfl
-          (ofDeck A.orderThreeActualEllipticBoundaryProjection_isQuotientCoveringMap
-            A.orderThreeActualEllipticBoundaryBase
-            A.orderThreeActualEllipticBoundaryDeckData.meridian)) =
+      E (FundamentalGroup.mapOfEq A.ellipticThreeOverlapToCentral rfl
+          (ofDeck A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
+            A.ellipticThreeBoundaryBase
+            A.ellipticThreeBoundaryDeckData.meridian)) =
           MulOpposite.op
-            (C.deckMap A.orderThreeActualEllipticBoundaryDeckData.meridian) := by
+            (C.deckMap A.ellipticThreeBoundaryDeckData.meridian) := by
               exact hnat
       _ = MulOpposite.op
           (freeAffineLift (M := paperCentralFreeMonodromy) firstMeridian)⁻¹ := by
@@ -160,34 +160,34 @@ public theorem OrderThreeCentralMarkedWhiskerLiftEndpointCompatibility.toLoopIde
                 (freeAffineTranslation (M := paperCentralFreeMonodromy) (-epsilon)))) := by
       simpa [β, orderThreeCentralMarkedWhiskerPath,
         centralAffineCorePiOneData_translation,
-        paperPuncturedGlobalFamilyAffinePresentation, actualCuspToCentralAffineBaseEquiv,
+        paperPuncturedGlobalFamilyAffinePresentation, cuspToCentralAffineBaseEquiv,
         fundamentalGroupMulEquivOfEq_eq_elementOfBaseEq] using
         fundamentalGroupMulEquivOfPath_elementOfBaseEq_eq_cast_left
           A.orderThreeCentralBaseWhisker
           A.centralAffineBase_eq_actualCuspCentralBase.symm
           (Additive.toMul (A.correctedActualCuspCentralTranslation (-epsilon)))
-    have hnat := A.orderThreeActualCentralCoverComparisonOfPath_ofDeck β
+    have hnat := A.ellipticThreeCentralCoverComparisonOfPath_ofDeck β
       (Additive.toMul
-        (A.orderThreeActualEllipticBoundaryDeckData.translation (-epsilon)))
-    change E (FundamentalGroup.mapOfEq A.orderThreeActualOverlapToCentral rfl
-        (ofDeck A.orderThreeActualEllipticBoundaryProjection_isQuotientCoveringMap
-          A.orderThreeActualEllipticBoundaryBase
+        (A.ellipticThreeBoundaryDeckData.translation (-epsilon)))
+    change E (FundamentalGroup.mapOfEq A.ellipticThreeOverlapToCentral rfl
+        (ofDeck A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
+          A.ellipticThreeBoundaryBase
           (Additive.toMul
-            (A.orderThreeActualEllipticBoundaryDeckData.translation (-epsilon))))) =
+            (A.ellipticThreeBoundaryDeckData.translation (-epsilon))))) =
       MulOpposite.op
         (C.deckMap (Additive.toMul
-          (A.orderThreeActualEllipticBoundaryDeckData.translation (-epsilon)))) at hnat
-    rw [A.orderThreeActualEllipticBoundaryDeckStraightLoop_class_eq_ofDeck, hmarked]
+          (A.ellipticThreeBoundaryDeckData.translation (-epsilon)))) at hnat
+    rw [A.ellipticThreeBoundaryDeckStraightLoop_class_eq_ofDeck, hmarked]
     apply E.injective
     calc
-      E (FundamentalGroup.mapOfEq A.orderThreeActualOverlapToCentral rfl
-          (ofDeck A.orderThreeActualEllipticBoundaryProjection_isQuotientCoveringMap
-            A.orderThreeActualEllipticBoundaryBase
+      E (FundamentalGroup.mapOfEq A.ellipticThreeOverlapToCentral rfl
+          (ofDeck A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
+            A.ellipticThreeBoundaryBase
             (Additive.toMul
-              (A.orderThreeActualEllipticBoundaryDeckData.translation (-epsilon))))) =
+              (A.ellipticThreeBoundaryDeckData.translation (-epsilon))))) =
           MulOpposite.op
             (C.deckMap (Additive.toMul
-              (A.orderThreeActualEllipticBoundaryDeckData.translation (-epsilon)))) := by
+              (A.ellipticThreeBoundaryDeckData.translation (-epsilon)))) := by
               exact hnat
       _ = MulOpposite.op
           (Additive.toMul

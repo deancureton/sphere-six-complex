@@ -87,16 +87,16 @@ variable (A : PaperAnalyticData)
 
 /-! ## A coherent logarithmic whisker to the actual exterior basepoint -/
 
-public noncomputable def actualCuspExteriorWhiskerLiftPoint (t : unitInterval) : ℂ :=
+public noncomputable def cuspExteriorWhiskerLiftPoint (t : unitInterval) : ℂ :=
   ((1 - (t : ℝ) : ℝ) : ℂ) * Complex.log 2 +
     ((t : ℝ) : ℂ) * Complex.log A.cuspAngularZeroPuncturedBasepoint.1
 
-public theorem actualCuspExteriorWhiskerLiftPoint_norm_ge (t : unitInterval) :
-    2 ≤ ‖Complex.exp (A.actualCuspExteriorWhiskerLiftPoint t)‖ := by
+public theorem cuspExteriorWhiskerLiftPoint_norm_ge (t : unitInterval) :
+    2 ≤ ‖Complex.exp (A.cuspExteriorWhiskerLiftPoint t)‖ := by
   have hzgt : 2 < ‖A.cuspAngularZeroPuncturedBasepoint.1‖ := by
     have h := A.cuspAngularCoordinateLoop_norm_gt_two 0
     have hs := congrArg Subtype.val A.cuspAngularCoordinateLoop.source
-    change 2 < ‖(A.centralFamilyCoordinate A.actualCuspCentralBase).1‖
+    change 2 < ‖(A.centralFamilyCoordinate A.cuspCentralBase).1‖
     rw [← hs]
     exact h
   have hzpos : 0 < ‖A.cuspAngularZeroPuncturedBasepoint.1‖ :=
@@ -107,7 +107,7 @@ public theorem actualCuspExteriorWhiskerLiftPoint_norm_ge (t : unitInterval) :
   rw [Complex.norm_exp]
   apply (Real.exp_log (by norm_num : (0 : ℝ) < 2)).symm.trans_le
   apply Real.exp_le_exp.mpr
-  unfold actualCuspExteriorWhiskerLiftPoint
+  unfold cuspExteriorWhiskerLiftPoint
   norm_num only [Complex.add_re, Complex.mul_re, Complex.ofReal_re,
     Complex.ofReal_im, zero_mul, sub_zero]
   rw [Complex.log_re, Complex.log_re]
@@ -116,125 +116,125 @@ public theorem actualCuspExteriorWhiskerLiftPoint_norm_ge (t : unitInterval) :
   nlinarith [t.2.1, t.2.2]
 
 @[simp]
-public theorem actualCuspExteriorWhiskerLiftPoint_zero :
-    A.actualCuspExteriorWhiskerLiftPoint 0 = Complex.log 2 := by
-  simp [actualCuspExteriorWhiskerLiftPoint]
+public theorem cuspExteriorWhiskerLiftPoint_zero :
+    A.cuspExteriorWhiskerLiftPoint 0 = Complex.log 2 := by
+  simp [cuspExteriorWhiskerLiftPoint]
 
 @[simp]
-public theorem actualCuspExteriorWhiskerLiftPoint_one :
-    A.actualCuspExteriorWhiskerLiftPoint 1 =
+public theorem cuspExteriorWhiskerLiftPoint_one :
+    A.cuspExteriorWhiskerLiftPoint 1 =
       Complex.log A.cuspAngularZeroPuncturedBasepoint.1 := by
-  simp [actualCuspExteriorWhiskerLiftPoint]
+  simp [cuspExteriorWhiskerLiftPoint]
 
 public theorem continuous_actualCuspExteriorWhiskerLiftPoint :
-    Continuous A.actualCuspExteriorWhiskerLiftPoint := by
-  unfold actualCuspExteriorWhiskerLiftPoint
+    Continuous A.cuspExteriorWhiskerLiftPoint := by
+  unfold cuspExteriorWhiskerLiftPoint
   fun_prop
 
-public noncomputable def actualCuspExteriorWhiskerLift :
+public noncomputable def cuspExteriorWhiskerLift :
     Path (Complex.log 2)
       (Complex.log A.cuspAngularZeroPuncturedBasepoint.1) where
-  toFun := A.actualCuspExteriorWhiskerLiftPoint
+  toFun := A.cuspExteriorWhiskerLiftPoint
   continuous_toFun := A.continuous_actualCuspExteriorWhiskerLiftPoint
-  source' := A.actualCuspExteriorWhiskerLiftPoint_zero
-  target' := A.actualCuspExteriorWhiskerLiftPoint_one
+  source' := A.cuspExteriorWhiskerLiftPoint_zero
+  target' := A.cuspExteriorWhiskerLiftPoint_one
 
-public noncomputable def actualCuspExteriorPuncturedWhiskerPoint
+public noncomputable def cuspExteriorPuncturedWhiskerPoint
     (t : unitInterval) : PuncturedComplex :=
-  ⟨Complex.exp (A.actualCuspExteriorWhiskerLiftPoint t), Complex.exp_ne_zero _⟩
+  ⟨Complex.exp (A.cuspExteriorWhiskerLiftPoint t), Complex.exp_ne_zero _⟩
 
 @[simp]
-public theorem actualCuspExteriorPuncturedWhiskerPoint_zero :
-    A.actualCuspExteriorPuncturedWhiskerPoint 0 =
+public theorem cuspExteriorPuncturedWhiskerPoint_zero :
+    A.cuspExteriorPuncturedWhiskerPoint 0 =
       (⟨(2 : ℂ), by norm_num⟩ : PuncturedComplex) := by
   apply Subtype.ext
-  change Complex.exp (A.actualCuspExteriorWhiskerLiftPoint 0) = 2
-  rw [A.actualCuspExteriorWhiskerLiftPoint_zero, Complex.exp_log]
+  change Complex.exp (A.cuspExteriorWhiskerLiftPoint 0) = 2
+  rw [A.cuspExteriorWhiskerLiftPoint_zero, Complex.exp_log]
   norm_num
 
 @[simp]
-public theorem actualCuspExteriorPuncturedWhiskerPoint_one :
-    A.actualCuspExteriorPuncturedWhiskerPoint 1 =
+public theorem cuspExteriorPuncturedWhiskerPoint_one :
+    A.cuspExteriorPuncturedWhiskerPoint 1 =
       A.cuspAngularZeroPuncturedBasepoint := by
   apply Subtype.ext
-  change Complex.exp (A.actualCuspExteriorWhiskerLiftPoint 1) =
+  change Complex.exp (A.cuspExteriorWhiskerLiftPoint 1) =
     A.cuspAngularZeroPuncturedBasepoint.1
-  rw [A.actualCuspExteriorWhiskerLiftPoint_one,
+  rw [A.cuspExteriorWhiskerLiftPoint_one,
     Complex.exp_log A.cuspAngularZeroPuncturedBasepoint.2]
 
-public noncomputable def actualCuspExteriorPuncturedWhisker :
+public noncomputable def cuspExteriorPuncturedWhisker :
     Path (⟨(2 : ℂ), by norm_num⟩ : PuncturedComplex)
       A.cuspAngularZeroPuncturedBasepoint where
-  toFun := A.actualCuspExteriorPuncturedWhiskerPoint
+  toFun := A.cuspExteriorPuncturedWhiskerPoint
   continuous_toFun := by
     apply Continuous.subtype_mk
     exact Complex.continuous_exp.comp A.continuous_actualCuspExteriorWhiskerLiftPoint
-  source' := A.actualCuspExteriorPuncturedWhiskerPoint_zero
-  target' := A.actualCuspExteriorPuncturedWhiskerPoint_one
+  source' := A.cuspExteriorPuncturedWhiskerPoint_zero
+  target' := A.cuspExteriorPuncturedWhiskerPoint_one
 
-public noncomputable def actualCuspExteriorTwiceWhiskerPoint
+public noncomputable def cuspExteriorTwiceWhiskerPoint
     (t : unitInterval) : TwicePuncturedComplex :=
-  ⟨Complex.exp (A.actualCuspExteriorWhiskerLiftPoint t), by
+  ⟨Complex.exp (A.cuspExteriorWhiskerLiftPoint t), by
     rw [Set.mem_compl_iff]
     simp only [Set.mem_insert_iff, Set.mem_singleton_iff, not_or]
     refine ⟨Complex.exp_ne_zero _, ?_⟩
     intro hone
-    have hn := A.actualCuspExteriorWhiskerLiftPoint_norm_ge t
+    have hn := A.cuspExteriorWhiskerLiftPoint_norm_ge t
     rw [hone, norm_one] at hn
     norm_num at hn⟩
 
 @[simp]
-public theorem actualCuspExteriorTwiceWhiskerPoint_zero :
-    A.actualCuspExteriorTwiceWhiskerPoint 0 = paperStandardExteriorBasepoint := by
+public theorem cuspExteriorTwiceWhiskerPoint_zero :
+    A.cuspExteriorTwiceWhiskerPoint 0 = paperStandardExteriorBasepoint := by
   apply Subtype.ext
-  change Complex.exp (A.actualCuspExteriorWhiskerLiftPoint 0) = 2
-  rw [A.actualCuspExteriorWhiskerLiftPoint_zero, Complex.exp_log]
+  change Complex.exp (A.cuspExteriorWhiskerLiftPoint 0) = 2
+  rw [A.cuspExteriorWhiskerLiftPoint_zero, Complex.exp_log]
   norm_num
 
 @[simp]
-public theorem actualCuspExteriorTwiceWhiskerPoint_one :
-    A.actualCuspExteriorTwiceWhiskerPoint 1 =
-      A.centralFamilyCoordinate A.actualCuspCentralBase := by
+public theorem cuspExteriorTwiceWhiskerPoint_one :
+    A.cuspExteriorTwiceWhiskerPoint 1 =
+      A.centralFamilyCoordinate A.cuspCentralBase := by
   apply Subtype.ext
-  change Complex.exp (A.actualCuspExteriorWhiskerLiftPoint 1) = _
-  rw [A.actualCuspExteriorWhiskerLiftPoint_one,
+  change Complex.exp (A.cuspExteriorWhiskerLiftPoint 1) = _
+  rw [A.cuspExteriorWhiskerLiftPoint_one,
     Complex.exp_log A.cuspAngularZeroPuncturedBasepoint.2]
   rfl
 
-public noncomputable def actualCuspExteriorTwiceWhisker :
+public noncomputable def cuspExteriorTwiceWhisker :
     Path paperStandardExteriorBasepoint
-      (A.centralFamilyCoordinate A.actualCuspCentralBase) where
-  toFun := A.actualCuspExteriorTwiceWhiskerPoint
+      (A.centralFamilyCoordinate A.cuspCentralBase) where
+  toFun := A.cuspExteriorTwiceWhiskerPoint
   continuous_toFun := by
     apply Continuous.subtype_mk
     exact Complex.continuous_exp.comp A.continuous_actualCuspExteriorWhiskerLiftPoint
-  source' := A.actualCuspExteriorTwiceWhiskerPoint_zero
-  target' := A.actualCuspExteriorTwiceWhiskerPoint_one
+  source' := A.cuspExteriorTwiceWhiskerPoint_zero
+  target' := A.cuspExteriorTwiceWhiskerPoint_one
 
 /-! ## The actual loop is the positive exterior circle -/
 
-public noncomputable def actualCuspExteriorShiftedReverseLiftPoint
+public noncomputable def cuspExteriorShiftedReverseLiftPoint
     (t : unitInterval) : ℂ :=
-  A.actualCuspExteriorWhiskerLiftPoint (unitInterval.symm t) +
+  A.cuspExteriorWhiskerLiftPoint (unitInterval.symm t) +
     (1 : ℤ) • (2 * Real.pi * Complex.I)
 
-public noncomputable def actualCuspExteriorShiftedReverseLift :
+public noncomputable def cuspExteriorShiftedReverseLift :
     Path
       (Complex.log A.cuspAngularZeroPuncturedBasepoint.1 +
         (1 : ℤ) • (2 * Real.pi * Complex.I))
       (Complex.log 2 + (1 : ℤ) • (2 * Real.pi * Complex.I)) where
-  toFun := A.actualCuspExteriorShiftedReverseLiftPoint
+  toFun := A.cuspExteriorShiftedReverseLiftPoint
   continuous_toFun := by
-    unfold actualCuspExteriorShiftedReverseLiftPoint
+    unfold cuspExteriorShiftedReverseLiftPoint
     exact (A.continuous_actualCuspExteriorWhiskerLiftPoint.comp
       unitInterval.continuous_symm).add continuous_const
-  source' := by simp [actualCuspExteriorShiftedReverseLiftPoint]
-  target' := by simp [actualCuspExteriorShiftedReverseLiftPoint]
+  source' := by simp [cuspExteriorShiftedReverseLiftPoint]
+  target' := by simp [cuspExteriorShiftedReverseLiftPoint]
 
-public theorem actualCuspExteriorShiftedReverseLiftPoint_exp (t : unitInterval) :
-    Complex.exp (A.actualCuspExteriorShiftedReverseLiftPoint t) =
-      (A.actualCuspExteriorPuncturedWhisker.symm t).1 := by
-  unfold actualCuspExteriorShiftedReverseLiftPoint
+public theorem cuspExteriorShiftedReverseLiftPoint_exp (t : unitInterval) :
+    Complex.exp (A.cuspExteriorShiftedReverseLiftPoint t) =
+      (A.cuspExteriorPuncturedWhisker.symm t).1 := by
+  unfold cuspExteriorShiftedReverseLiftPoint
   rw [Complex.exp_add]
   have hdeck : Complex.exp ((1 : ℤ) • (2 * Real.pi * Complex.I)) = 1 := by
     rw [show (1 : ℤ) • (2 * Real.pi * Complex.I) =
@@ -244,63 +244,63 @@ public theorem actualCuspExteriorShiftedReverseLiftPoint_exp (t : unitInterval) 
   rw [hdeck, mul_one]
   rfl
 
-public noncomputable def actualCuspExteriorWhiskeredPuncturedLoop :
+public noncomputable def cuspExteriorWhiskeredPuncturedLoop :
     Path (⟨(2 : ℂ), by norm_num⟩ : PuncturedComplex)
       (⟨(2 : ℂ), by norm_num⟩ : PuncturedComplex) :=
-  A.actualCuspExteriorPuncturedWhisker.trans
+  A.cuspExteriorPuncturedWhisker.trans
     (A.cuspAngularZeroPuncturedLoop.trans
-      A.actualCuspExteriorPuncturedWhisker.symm)
+      A.cuspExteriorPuncturedWhisker.symm)
 
-public noncomputable def actualCuspExteriorWhiskeredLogLift :
+public noncomputable def cuspExteriorWhiskeredLogLift :
     Path (Complex.log 2)
       (Complex.log 2 + (1 : ℤ) • (2 * Real.pi * Complex.I)) :=
-  A.actualCuspExteriorWhiskerLift.trans
+  A.cuspExteriorWhiskerLift.trans
     (A.cuspAngularZeroLogLift.trans
-      A.actualCuspExteriorShiftedReverseLift)
+      A.cuspExteriorShiftedReverseLift)
 
-public theorem actualCuspExteriorWhiskeredLogLift_map_exp :
-    ((A.actualCuspExteriorWhiskeredLogLift.map
+public theorem cuspExteriorWhiskeredLogLift_map_exp :
+    ((A.cuspExteriorWhiskeredLogLift.map
       complexExpCoverContinuousMap.continuous).cast
         (complexExpCoverContinuousMap_log 2 (by norm_num)).symm
         (complexExpCoverContinuousMap_log_add_deck 2 (by norm_num) 1).symm) =
-      A.actualCuspExteriorWhiskeredPuncturedLoop := by
+      A.cuspExteriorWhiskeredPuncturedLoop := by
   apply Path.ext
   funext t
   apply Subtype.ext
-  unfold actualCuspExteriorWhiskeredLogLift
-    actualCuspExteriorWhiskeredPuncturedLoop
+  unfold cuspExteriorWhiskeredLogLift
+    cuspExteriorWhiskeredPuncturedLoop
   simp only [Path.cast_coe, Path.map_coe, Function.comp_apply, Path.trans_apply,
     Path.symm_apply]
   split_ifs
   · rfl
   · exact A.cuspAngularZeroLogLiftPoint_exp _
-  · exact A.actualCuspExteriorShiftedReverseLiftPoint_exp _
+  · exact A.cuspExteriorShiftedReverseLiftPoint_exp _
 
-public theorem actualCuspExteriorWhiskeredPuncturedLoop_class_eq_integerCircle :
-    Path.Homotopic.Quotient.mk A.actualCuspExteriorWhiskeredPuncturedLoop =
+public theorem cuspExteriorWhiskeredPuncturedLoop_class_eq_integerCircle :
+    Path.Homotopic.Quotient.mk A.cuspExteriorWhiskeredPuncturedLoop =
       Path.Homotopic.Quotient.mk
         (puncturedComplexIntegerCircle 2 (by norm_num) 1) := by
   exact puncturedComplex_loopClass_eq_integerCircle_of_lift
-    2 (by norm_num) 1 A.actualCuspExteriorWhiskeredPuncturedLoop
-    A.actualCuspExteriorWhiskeredLogLift
-    A.actualCuspExteriorWhiskeredLogLift_map_exp
+    2 (by norm_num) 1 A.cuspExteriorWhiskeredPuncturedLoop
+    A.cuspExteriorWhiskeredLogLift
+    A.cuspExteriorWhiskeredLogLift_map_exp
 
-public noncomputable def actualCuspExteriorWhiskeredTwiceLoop :
+public noncomputable def cuspExteriorWhiskeredTwiceLoop :
     Path paperStandardExteriorBasepoint paperStandardExteriorBasepoint :=
-  A.actualCuspExteriorTwiceWhisker.trans
-    (A.cuspAngularCoordinateLoop.trans A.actualCuspExteriorTwiceWhisker.symm)
+  A.cuspExteriorTwiceWhisker.trans
+    (A.cuspAngularCoordinateLoop.trans A.cuspExteriorTwiceWhisker.symm)
 
-public theorem actualCuspExteriorWhiskeredPuncturedLoop_map_expansion :
-    (A.actualCuspExteriorWhiskeredPuncturedLoop.map
+public theorem cuspExteriorWhiskeredPuncturedLoop_map_expansion :
+    (A.cuspExteriorWhiskeredPuncturedLoop.map
       puncturedExteriorRadialExpansionTwice.continuous).cast
         puncturedExteriorRadialExpansionTwice_standardBasepoint
         puncturedExteriorRadialExpansionTwice_standardBasepoint =
-      A.actualCuspExteriorWhiskeredTwiceLoop := by
+      A.cuspExteriorWhiskeredTwiceLoop := by
   apply Path.ext
   funext t
   apply Subtype.ext
-  unfold actualCuspExteriorWhiskeredPuncturedLoop
-    actualCuspExteriorWhiskeredTwiceLoop
+  unfold cuspExteriorWhiskeredPuncturedLoop
+    cuspExteriorWhiskeredTwiceLoop
   simp only [Path.cast_coe, Path.map_coe, Function.comp_apply, Path.trans_apply,
     Path.symm_apply]
   split_ifs
@@ -308,8 +308,8 @@ public theorem actualCuspExteriorWhiskeredPuncturedLoop_map_expansion :
       constructor <;> nlinarith [t.2.1]⟩
     exact congrArg Subtype.val
       (puncturedExteriorRadialExpansionTwice_eq
-        (A.actualCuspExteriorPuncturedWhisker u)
-        (A.actualCuspExteriorWhiskerLiftPoint_norm_ge u))
+        (A.cuspExteriorPuncturedWhisker u)
+        (A.cuspExteriorWhiskerLiftPoint_norm_ge u))
   · let u : unitInterval := ⟨2 * (2 * (t : ℝ) - 1), by
       constructor
       · nlinarith [t.2.1]
@@ -324,8 +324,8 @@ public theorem actualCuspExteriorWhiskeredPuncturedLoop_map_expansion :
       · nlinarith [t.2.2]⟩
     exact congrArg Subtype.val
       (puncturedExteriorRadialExpansionTwice_eq
-        (A.actualCuspExteriorPuncturedWhisker (unitInterval.symm u))
-        (A.actualCuspExteriorWhiskerLiftPoint_norm_ge (unitInterval.symm u)))
+        (A.cuspExteriorPuncturedWhisker (unitInterval.symm u))
+        (A.cuspExteriorWhiskerLiftPoint_norm_ge (unitInterval.symm u)))
 
 public theorem puncturedIntegerCircle_one_map_expansion :
     ((puncturedComplexIntegerCircle 2 (by norm_num) 1).map
@@ -359,38 +359,38 @@ public theorem puncturedIntegerCircle_one_map_expansion :
       ring
   rw [harg, Complex.exp_add, Complex.exp_two_pi_mul_I, mul_one]
 
-public theorem actualCuspExteriorWhiskeredTwiceLoop_class_eq_counterclockwise :
-    Path.Homotopic.Quotient.mk A.actualCuspExteriorWhiskeredTwiceLoop =
+public theorem cuspExteriorWhiskeredTwiceLoop_class_eq_counterclockwise :
+    Path.Homotopic.Quotient.mk A.cuspExteriorWhiskeredTwiceLoop =
       Path.Homotopic.Quotient.mk paperStandardClockwiseExteriorMeridian.symm := by
   have h := congrArg
     (fun q : Path.Homotopic.Quotient
         (⟨(2 : ℂ), by norm_num⟩ : PuncturedComplex)
         (⟨(2 : ℂ), by norm_num⟩ : PuncturedComplex) =>
       q.map puncturedExteriorRadialExpansionTwice)
-    A.actualCuspExteriorWhiskeredPuncturedLoop_class_eq_integerCircle
+    A.cuspExteriorWhiskeredPuncturedLoop_class_eq_integerCircle
   have hc := congrArg (fun q => q.cast
       puncturedExteriorRadialExpansionTwice_standardBasepoint
       puncturedExteriorRadialExpansionTwice_standardBasepoint) h
   rw [← Path.Homotopic.Quotient.mk_map, ← Path.Homotopic.Quotient.mk_map,
     ← Path.Homotopic.Quotient.mk_cast, ← Path.Homotopic.Quotient.mk_cast,
-    A.actualCuspExteriorWhiskeredPuncturedLoop_map_expansion,
+    A.cuspExteriorWhiskeredPuncturedLoop_map_expansion,
     puncturedIntegerCircle_one_map_expansion] at hc
   exact hc
 
 /-! ## Rebase at `1/2` and apply the pair-of-pants relation -/
 
-public noncomputable def actualCuspCommonCoordinateLoop :
+public noncomputable def cuspCommonCoordinateLoop :
     Path twicePuncturedComplexBasepoint twicePuncturedComplexBasepoint :=
   paperStandardExteriorBridge.trans
-    (A.actualCuspExteriorWhiskeredTwiceLoop.trans paperStandardExteriorBridge.symm)
+    (A.cuspExteriorWhiskeredTwiceLoop.trans paperStandardExteriorBridge.symm)
 
 /-- The actual cusp coordinate is the product of the two counterclockwise finite meridians.
 Equivalently, it is the product of the inverses of the two marked clockwise classes. -/
-public theorem actualCuspCommonCoordinateLoop_class_eq_finiteProduct :
-    Path.Homotopic.Quotient.mk A.actualCuspCommonCoordinateLoop =
+public theorem cuspCommonCoordinateLoop_class_eq_finiteProduct :
+    Path.Homotopic.Quotient.mk A.cuspCommonCoordinateLoop =
       (TwicePuncturedComplex.zeroMeridianClass)⁻¹ *
         (TwicePuncturedComplex.oneMeridianClass)⁻¹ := by
-  have hcusp : Path.Homotopic.Quotient.mk A.actualCuspCommonCoordinateLoop =
+  have hcusp : Path.Homotopic.Quotient.mk A.cuspCommonCoordinateLoop =
       Path.Homotopic.Quotient.mk
         paperStandardClockwiseExteriorMeridianAtCommonBasepoint.symm := by
     have h := congrArg
@@ -398,7 +398,7 @@ public theorem actualCuspCommonCoordinateLoop_class_eq_finiteProduct :
           paperStandardExteriorBasepoint =>
         (Path.Homotopic.Quotient.mk paperStandardExteriorBridge).trans
           (q.trans (Path.Homotopic.Quotient.mk paperStandardExteriorBridge).symm))
-      A.actualCuspExteriorWhiskeredTwiceLoop_class_eq_counterclockwise
+      A.cuspExteriorWhiskeredTwiceLoop_class_eq_counterclockwise
     have hinv :
         (Path.Homotopic.Quotient.mk paperStandardExteriorBridge).trans
             ((Path.Homotopic.Quotient.mk
@@ -447,7 +447,7 @@ public theorem actualCuspCommonCoordinateLoop_class_eq_finiteProduct :
           Path.Homotopic.Quotient.trans_assoc _ _ _
         _ = (p.trans (q.trans p.symm)).symm := by
           rw [hrightInverse, Path.Homotopic.Quotient.trans_refl]
-    unfold actualCuspCommonCoordinateLoop
+    unfold cuspCommonCoordinateLoop
     simpa only [Path.Homotopic.Quotient.mk_trans,
       Path.Homotopic.Quotient.mk_symm] using h.trans hinv
   rw [hcusp, Path.Homotopic.Quotient.mk_symm,

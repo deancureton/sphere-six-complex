@@ -15,7 +15,7 @@ namespace SphereSixComplex.Geometry.PaperAnalyticData
 open SphereSixComplex.LatticeWangAlgebra
 open SphereSixComplex.CircleMappingTorusHomologyBases
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 private theorem circleMappingTorusBoundary_coordinates
     {F : Type} [TopologicalSpace F] {phi : F ≃ₜ F}
@@ -105,7 +105,7 @@ public theorem actualCuspWangBoundaryRawBasisCoordinates_five :
 /-- The explicit value occurring for the first four raw basis vectors maps to zero in the
 cover intersection. -/
 public theorem actualCuspWangFibreToCuspCoverIntersectionHomologyOne_rawZero
-    {A : PaperAnalyticData} (R : A.SectionSevenAffineRadialCompletionInput) :
+    {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     actualCuspWangFibreToCuspCoverIntersectionHomologyOne (A := A) R
@@ -179,7 +179,7 @@ private def circleMappingTorusRealFibreSliceHomotopy
         phi x
 
 private theorem cuspOpenCoverConnectingHom_eq_zero_of_intersection_image
-    {A : PaperAnalyticData} (R : A.SectionSevenAffineRadialCompletionInput)
+    {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput)
     (x : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0))
     (w : IntegralSingularHomology 2
       ((TopologicalSpace.Opens.toTopCat
@@ -217,7 +217,7 @@ private theorem cuspOpenCoverConnectingHom_eq_zero_of_intersection_image
   exact hw
 
 private theorem actualCuspWangFibreSlice_to_mappingTorus
-    {A : PaperAnalyticData} (R : A.SectionSevenAffineRadialCompletionInput) :
+    {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     G.totalHomotopyEquiv.toFun.comp
@@ -241,7 +241,7 @@ private theorem actualCuspWangFibreSlice_to_mappingTorus
   exact totalHomeomorph_actualCuspFullFibreSlice_snd _ _ y
 
 private theorem actualCuspRawCastAdd_mem_cuspCoverIntersectionImage
-    {A : PaperAnalyticData} (R : A.SectionSevenAffineRadialCompletionInput)
+    {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput)
     (i : Fin 4) :
     ∃ w : IntegralSingularHomology 2
         ((TopologicalSpace.Opens.toTopCat
@@ -312,7 +312,7 @@ private theorem actualCuspRawCastAdd_mem_cuspCoverIntersectionImage
 /-- The four raw degree-two basis vectors with zero Wang boundary are represented by the
 full-fibre slice inside the cusp-cover intersection, so their cover connecting classes vanish. -/
 public theorem cuspOpenCoverConnectingHom_rawBasis_castAdd_eq_zero
-    {A : PaperAnalyticData} (R : A.SectionSevenAffineRadialCompletionInput)
+    {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput)
     (i : Fin 4) :
     R.twoDiscCover.cuspOpenCoverConnectingHom
         (A.cuspRawHomologyTwoEquiv.symm
@@ -323,7 +323,7 @@ public theorem cuspOpenCoverConnectingHom_rawBasis_castAdd_eq_zero
 /-- The remaining comparison after evaluating the Wang boundary on all six raw basis vectors.
 It involves only the explicit full-fibre images of two invariant generators and four zeros. -/
 public def ActualCuspWangFullFibreSliceExplicitFiniteResidual
-    {A : PaperAnalyticData} (R : A.SectionSevenAffineRadialCompletionInput) : Prop :=
+    {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput) : Prop :=
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   (∀ i : Fin 4,
@@ -343,7 +343,7 @@ public def ActualCuspWangFullFibreSliceExplicitFiniteResidual
 /-- After exactness kills the four zero-boundary basis vectors, only the two invariant
 degree-two generators remain to be compared with the cover boundary. -/
 public def ActualCuspWangFullFibreSliceInvariantResidual
-    {A : PaperAnalyticData} (R : A.SectionSevenAffineRadialCompletionInput) : Prop :=
+    {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput) : Prop :=
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   actualCuspWangFibreToCuspCoverIntersectionHomologyOne (A := A) R
@@ -358,7 +358,7 @@ public def ActualCuspWangFullFibreSliceInvariantResidual
 /-- The former six-equation residual is equivalent to the strictly smaller pair of invariant
 generator comparisons. -/
 public theorem explicitFiniteResidual_iff_invariantResidual
-    {A : PaperAnalyticData} (R : A.SectionSevenAffineRadialCompletionInput) :
+    {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput) :
     ActualCuspWangFullFibreSliceExplicitFiniteResidual R ↔
       ActualCuspWangFullFibreSliceInvariantResidual R := by
   dsimp [ActualCuspWangFullFibreSliceExplicitFiniteResidual,
@@ -372,7 +372,7 @@ public theorem explicitFiniteResidual_iff_invariantResidual
 /-- The original six basis comparisons are equivalent to the finite residual in which the Wang
 boundary has been completely evaluated. -/
 public theorem wangBoundaryBasisComparison_iff_explicitFiniteResidual
-    {A : PaperAnalyticData} (R : A.SectionSevenAffineRadialCompletionInput) :
+    {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput) :
     (let G := A.actualCuspRadialClutchingData
      let _ := G.fiberTopology
      ∀ i : Fin 6,
@@ -406,6 +406,6 @@ public theorem wangBoundaryBasisComparison_iff_explicitFiniteResidual
       · exact hfour
       · exact hfive
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end SphereSixComplex.Geometry.PaperAnalyticData

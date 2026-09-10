@@ -47,10 +47,10 @@ public theorem angularCover_fullTurn {T : Type} [TopologicalSpace T]
     · rfl
 
 /-- A full order-three angular turn is invisible to the actual radial filling lift. -/
-public theorem orderThreeActualEllipticRadialFillingLift_fullTurn
+public theorem ellipticThreeRadialFillingLift_fullTurn
     (q : OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :
-    A.orderThreeActualEllipticRadialFillingLift (q.1, q.2.1 + 3, q.2.2) =
-      A.orderThreeActualEllipticRadialFillingLift q := by
+    A.ellipticThreeRadialFillingLift (q.1, q.2.1 + 3, q.2.2) =
+      A.ellipticThreeRadialFillingLift q := by
   let f : puncturedProduct ComplexTwoSpace A.starSeparation.orderThree.radius →
       ComplexDiscBall A.starSeparation.orderThree.radius × ComplexTwoSpace := fun u =>
     (⟨u.1.1, u.2.2⟩,
@@ -65,10 +65,10 @@ public theorem orderThreeActualEllipticRadialFillingLift_fullTurn
     A.starSeparation.orderThree.radius_lt_one.le q)
 
 /-- A full order-four angular turn is invisible to the actual radial filling lift. -/
-public theorem orderFourActualEllipticRadialFillingLift_fullTurn
+public theorem ellipticFourRadialFillingLift_fullTurn
     (q : OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :
-    A.orderFourActualEllipticRadialFillingLift (q.1, q.2.1 + 4, q.2.2) =
-      A.orderFourActualEllipticRadialFillingLift q := by
+    A.ellipticFourRadialFillingLift (q.1, q.2.1 + 4, q.2.2) =
+      A.ellipticFourRadialFillingLift q := by
   let f : puncturedProduct ComplexTwoSpace A.starSeparation.orderFour.radius →
       ComplexDiscBall A.starSeparation.orderFour.radius × ComplexTwoSpace := fun u =>
     (⟨u.1.1, u.2.2⟩,
@@ -184,7 +184,7 @@ private theorem orderThreeInverseMeridian_cube_smul (w : ℝ × ComplexTwoSpace)
 twice the marked period. -/
 public theorem orderThreeLegacyPositiveTwistFillingRelation_boundary_smul
     (q : OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     ((affineTorusMappingTorusDeckMeridian
         (orderThreeDescendedAffineTorusAutomorphism A.periods))⁻¹ ^ 3 *
       (Additive.toMul ((affineTorusMappingTorusDeckTranslation
@@ -192,7 +192,7 @@ public theorem orderThreeLegacyPositiveTwistFillingRelation_boundary_smul
       (q.1, q.2.1 + 3, periodVector
         (parameterMap A.periods
           A.modular.modularParameter.toTriangleUniformization.zOne).1 (-2 • epsilon) + q.2.2) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let _ := orderThreeAffineMappingTorusDeckAction A.periods
   change (q.1,
     (((affineTorusMappingTorusDeckMeridian
@@ -257,12 +257,12 @@ public theorem orderThreeLegacyPositiveTwistFillingRelation_boundary_smul
 
 /-- The corrected actual order-three filling relation acts by one full angular turn and fixes the
 vector coordinate. -/
-public theorem orderThreeActualFillingRelation_boundary_smul
+public theorem ellipticThreeFillingRelation_boundary_smul
     (q : OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :
-    letI := A.orderThreeActualEllipticBoundaryAction
-    A.orderThreeActualEllipticBoundaryDeckData.fillingRelation • q =
+    letI := A.ellipticThreeBoundaryAction
+    A.ellipticThreeBoundaryDeckData.fillingRelation • q =
       (q.1, q.2.1 + 3, q.2.2) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let _ := orderThreeAffineMappingTorusDeckAction A.periods
   change (q.1,
     (((affineTorusMappingTorusDeckMeridian
@@ -287,15 +287,15 @@ public theorem orderThreeActualFillingRelation_boundary_smul
       abel
 
 /-- The corrected actual order-three filling relation is killed by the radial filling lift. -/
-public theorem orderThreeActualFillingRelation_radialLift
+public theorem ellipticThreeFillingRelation_radialLift
     (q : OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :
-    letI := A.orderThreeActualEllipticBoundaryAction
-    A.orderThreeActualEllipticRadialFillingLift
-        (A.orderThreeActualEllipticBoundaryDeckData.fillingRelation • q) =
-      A.orderThreeActualEllipticRadialFillingLift q := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
-  rw [A.orderThreeActualFillingRelation_boundary_smul]
-  exact A.orderThreeActualEllipticRadialFillingLift_fullTurn q
+    letI := A.ellipticThreeBoundaryAction
+    A.ellipticThreeRadialFillingLift
+        (A.ellipticThreeBoundaryDeckData.fillingRelation • q) =
+      A.ellipticThreeRadialFillingLift q := by
+  let _ := A.ellipticThreeBoundaryAction
+  rw [A.ellipticThreeFillingRelation_boundary_smul]
+  exact A.ellipticThreeRadialFillingLift_fullTurn q
 
 
 private theorem orderFourAffineEquiv_inv_four (z : ComplexTwoSpace) :
@@ -398,7 +398,7 @@ private theorem orderFourInverseMeridian_fourth_smul (w : ℝ × ComplexTwoSpace
 marked period. -/
 public theorem orderFourLegacyNegativeTwistFillingRelation_boundary_smul
     (q : OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     ((affineTorusMappingTorusDeckMeridian
         (orderFourDescendedAffineTorusAutomorphism A.periods))⁻¹ ^ 4 *
       (Additive.toMul ((affineTorusMappingTorusDeckTranslation
@@ -406,7 +406,7 @@ public theorem orderFourLegacyNegativeTwistFillingRelation_boundary_smul
       (q.1, q.2.1 + 4, periodVector
         (parameterMap A.periods
           A.modular.modularParameter.toTriangleUniformization.zTwo).1 (2 • epsilon') + q.2.2) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let _ := orderFourAffineMappingTorusDeckAction A.periods
   change (q.1,
     (((affineTorusMappingTorusDeckMeridian
@@ -446,12 +446,12 @@ public theorem orderFourLegacyNegativeTwistFillingRelation_boundary_smul
 
 /-- The corrected actual order-four filling relation acts by one full angular turn and fixes the
 vector coordinate. -/
-public theorem orderFourActualFillingRelation_boundary_smul
+public theorem ellipticFourFillingRelation_boundary_smul
     (q : OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :
-    letI := A.orderFourActualEllipticBoundaryAction
-    A.orderFourActualEllipticBoundaryDeckData.fillingRelation • q =
+    letI := A.ellipticFourBoundaryAction
+    A.ellipticFourBoundaryDeckData.fillingRelation • q =
       (q.1, q.2.1 + 4, q.2.2) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let _ := orderFourAffineMappingTorusDeckAction A.periods
   change (q.1,
     (((affineTorusMappingTorusDeckMeridian
@@ -476,15 +476,15 @@ public theorem orderFourActualFillingRelation_boundary_smul
       abel
 
 /-- The corrected actual order-four filling relation is killed by the radial filling lift. -/
-public theorem orderFourActualFillingRelation_radialLift
+public theorem ellipticFourFillingRelation_radialLift
     (q : OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :
-    letI := A.orderFourActualEllipticBoundaryAction
-    A.orderFourActualEllipticRadialFillingLift
-        (A.orderFourActualEllipticBoundaryDeckData.fillingRelation • q) =
-      A.orderFourActualEllipticRadialFillingLift q := by
-  let _ := A.orderFourActualEllipticBoundaryAction
-  rw [A.orderFourActualFillingRelation_boundary_smul]
-  exact A.orderFourActualEllipticRadialFillingLift_fullTurn q
+    letI := A.ellipticFourBoundaryAction
+    A.ellipticFourRadialFillingLift
+        (A.ellipticFourBoundaryDeckData.fillingRelation • q) =
+      A.ellipticFourRadialFillingLift q := by
+  let _ := A.ellipticFourBoundaryAction
+  rw [A.ellipticFourFillingRelation_boundary_smul]
+  exact A.ellipticFourRadialFillingLift_fullTurn q
 
 
 public theorem orderThreeLegacyFillingRelation_latticeTranslation_ne_zero :

@@ -188,7 +188,7 @@ public theorem subsingleton_degreeOne_of_pathConnected (hMV : ExactSequence A B)
 public theorem sumMap_zero_bijective (hA : IsOpen A) (hB : IsOpen B)
     [IsEmpty (A ∩ B : Set X)] : Function.Bijective (sumMap A B 0) := by
   refine ⟨?_, sumMap_zero_surjective A B hA hB⟩
-  obtain ⟨boundary, hb⟩ := establishedIntegralMayerVietorisExactSequence A B hA hB
+  obtain ⟨boundary, hb⟩ := exact_sequence_of_isOpen A B hA hB
   obtain ⟨-, -, h₃⟩ := hb 0
   have := subsingleton_integralSingularHomology_zero_of_isEmpty (A ∩ B : Set X)
   rw [injective_iff_map_eq_zero]
@@ -361,7 +361,7 @@ public def twoPunctureIntersectionHomotopyEquiv :
 /-- The established Mayer--Vietoris sequence of the two-puncture cover. -/
 public theorem twoPunctureExactSequence :
     IntegralMayerVietoris.ExactSequence ({v}ᶜ : Set (StandardSphere (d + 1))) {-v}ᶜ :=
-  establishedIntegralMayerVietorisExactSequence _ _ isOpen_compl_singleton isOpen_compl_singleton
+  IntegralMayerVietoris.exact_sequence_of_isOpen _ _ isOpen_compl_singleton isOpen_compl_singleton
 
 /-- A punctured standard sphere has trivial integral homology in every positive degree. -/
 public theorem subsingleton_puncturedStandardSphere_homology (k : ℕ) (hk : k ≠ 0) :

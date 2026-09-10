@@ -174,7 +174,7 @@ public theorem paperOrderFourCentralBoundaryToUniversalDeck_meridian :
 public noncomputable def paperOrderFourActualBoundaryToUniversalDeck :
     OrderFourAffineMappingTorusDeck A.periods →* paperCentralFreeAffineDeck :=
   A.paperOrderFourCentralBoundaryToUniversalDeck.comp
-    A.orderFourActualToCentralBoundaryDeckEquiv.toMonoidHom
+    A.ellipticFourToCentralBoundaryDeckEquiv.toMonoidHom
 
 @[simp]
 public theorem paperOrderFourActualBoundaryToUniversalDeck_translation (a : Lattice) :
@@ -184,10 +184,10 @@ public theorem paperOrderFourActualBoundaryToUniversalDeck_translation (a : Latt
       Additive.toMul (freeAffineTranslation (M := paperCentralFreeMonodromy) (-a)) := by
   rw [paperOrderFourActualBoundaryToUniversalDeck, MonoidHom.comp_apply]
   change A.paperOrderFourCentralBoundaryToUniversalDeck
-      (A.orderFourActualToCentralBoundaryDeckEquiv
+      (A.ellipticFourToCentralBoundaryDeckEquiv
         (Additive.toMul (affineTorusMappingTorusDeckTranslation
           (orderFourDescendedAffineTorusAutomorphism A.periods) a))) = _
-  rw [A.orderFourActualToCentralBoundaryDeckEquiv_translation,
+  rw [A.ellipticFourToCentralBoundaryDeckEquiv_translation,
     A.paperOrderFourCentralBoundaryToUniversalDeck_translation]
 
 @[simp]
@@ -198,18 +198,18 @@ public theorem paperOrderFourActualBoundaryToUniversalDeck_positive_meridian :
       freeAffineLift (M := paperCentralFreeMonodromy) secondMeridian := by
   rw [paperOrderFourActualBoundaryToUniversalDeck, MonoidHom.comp_apply]
   change A.paperOrderFourCentralBoundaryToUniversalDeck
-      (A.orderFourActualToCentralBoundaryDeckEquiv
+      (A.ellipticFourToCentralBoundaryDeckEquiv
         (affineTorusMappingTorusDeckMeridian
           (orderFourDescendedAffineTorusAutomorphism A.periods))) = _
-  rw [A.orderFourActualToCentralBoundaryDeckEquiv_meridian,
+  rw [A.ellipticFourToCentralBoundaryDeckEquiv_meridian,
     A.paperOrderFourCentralBoundaryToUniversalDeck_meridian]
 
 @[simp]
 public theorem paperOrderFourActualBoundaryToUniversalDeck_physical_meridian :
     A.paperOrderFourActualBoundaryToUniversalDeck
-        A.orderFourActualEllipticBoundaryDeckData.meridian =
+        A.ellipticFourBoundaryDeckData.meridian =
       (freeAffineLift (M := paperCentralFreeMonodromy) secondMeridian)⁻¹ := by
-  rw [orderFourActualEllipticBoundaryDeckData, map_inv,
+  rw [ellipticFourBoundaryDeckData, map_inv,
     A.paperOrderFourActualBoundaryToUniversalDeck_positive_meridian]
 
 /-- The second marked free meridian commutes with the invariant order-four twist translation. -/
@@ -231,10 +231,10 @@ public theorem paperOrderFourCentralDeck_second_commutes_epsilon' :
 /-- The complete order-four physical relation has the inverse classified central deck label. -/
 public theorem paperOrderFourActualBoundaryToUniversalDeck_fillingRelation :
     A.paperOrderFourActualBoundaryToUniversalDeck
-        A.orderFourActualEllipticBoundaryDeckData.fillingRelation =
+        A.ellipticFourBoundaryDeckData.fillingRelation =
       orderFourFillingRelationClassifiedCentralProductDeck⁻¹ := by
   simp only [UnwrappedCyclicAffineBoundaryDeckData.fillingRelation,
-    orderFourActualEllipticBoundaryDeckData, map_mul, map_pow, map_inv]
+    ellipticFourBoundaryDeckData, map_mul, map_pow, map_inv]
   rw [A.paperOrderFourActualBoundaryToUniversalDeck_positive_meridian]
   rw [A.paperOrderFourActualBoundaryToUniversalDeck_translation]
   rw [orderFourFillingRelationClassifiedCentralProductDeck]

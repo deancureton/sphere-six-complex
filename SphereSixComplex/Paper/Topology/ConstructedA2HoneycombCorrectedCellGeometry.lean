@@ -8,11 +8,11 @@ noncomputable section
 
 open Matrix Set
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
 open SphereSixComplex.Geometry.CuspCombinatorics
 open SphereSixComplex.Geometry.CuspFilling
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 public def constructedA2CorrectedPlaneCell (v : ToricLattice) : Set (Fin 2 → ℝ) :=
   {x | |x 0 - constructedA2CorrectedPlaneCenter v 0| ≤ 2 / 3 ∧
@@ -170,6 +170,6 @@ public theorem constructedA2LaurentRelation_displacement
     abel_nf <;>
     simp
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric
 
 end

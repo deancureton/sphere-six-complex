@@ -22,16 +22,16 @@ open AlgebraicTopology
 
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 
-open SectionSevenEllipticTwoDiscCoverData
-open SectionSevenEllipticInteriorMarkedCycleData
+open EllipticTwoDiscCoverData
+open EllipticInteriorMarkedCycleData
 
 variable {A : PaperAnalyticData}
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 /-- The marked connecting-morphism square directly supplies the two invariant evaluations. -/
 public theorem cuspPulledBackMarkedInvariantBasisData_of_markedConnectingNaturality
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (h : R.twoDiscCover.CuspMarkedConnectingNaturality R.homologyAlignment) :
     CuspPulledBackMarkedInvariantBasisData R := by
   have hSquare := h.square
@@ -48,14 +48,14 @@ public theorem cuspPulledBackMarkedInvariantBasisData_of_markedConnectingNatural
 The first four basis evaluations used in the converse are already theorems of the explicit
 pulled-back cover calculation. -/
 public theorem cuspPulledBackMarkedInvariantBasisData_iff_markedConnectingNaturality
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     CuspPulledBackMarkedInvariantBasisData R ↔
       R.twoDiscCover.CuspMarkedConnectingNaturality R.homologyAlignment := by
   constructor
   · exact cuspMarkedConnectingNaturality_of_invariantBasisData R
   · exact cuspPulledBackMarkedInvariantBasisData_of_markedConnectingNaturality R
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

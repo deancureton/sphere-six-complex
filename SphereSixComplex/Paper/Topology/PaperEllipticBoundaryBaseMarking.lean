@@ -88,42 +88,42 @@ public theorem orderFourCollarRegularRepresentative_coordinate_fiber_independent
 
 public theorem orderFourDeckStraightCentralLoop_projects_representative
     (g : OrderFourAffineMappingTorusDeck A.periods) (t : unitInterval) :
-    letI := A.orderFourActualEllipticBoundaryAction
-    A.orderFourActualEllipticBoundaryDeckStraightCentralLoop g t =
+    letI := A.ellipticFourBoundaryAction
+    A.ellipticFourBoundaryDeckStraightCentralLoop g t =
       A.centralQuotientProjection (A.orderFourCollarRegularRepresentativeMap
-        (A.orderFourActualEllipticBoundaryDeckStraightLift g t)) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+        (A.ellipticFourBoundaryDeckStraightLift g t)) := by
+  let _ := A.ellipticFourBoundaryAction
   simpa [orderFourCollarRegularRepresentativeMap,
-    orderFourActualEllipticBoundaryDeckStraightLift] using
-    A.orderFourActualEllipticBoundaryDeckStraightCentralLoop_apply_explicit g t
+    ellipticFourBoundaryDeckStraightLift] using
+    A.ellipticFourBoundaryDeckStraightCentralLoop_apply_explicit g t
 
 public theorem orderFourTranslationStraightLift_angle
     (a : SphereSixComplex.LatticeData.Lattice) (t : unitInterval) :
-    letI := A.orderFourActualEllipticBoundaryAction
-    (A.orderFourActualEllipticBoundaryDeckStraightLift
-      (Additive.toMul (A.orderFourActualEllipticBoundaryDeckData.translation a)) t).2.1 =
-      A.orderFourActualEllipticBoundaryBase.2.1 := by
+    letI := A.ellipticFourBoundaryAction
+    (A.ellipticFourBoundaryDeckStraightLift
+      (Additive.toMul (A.ellipticFourBoundaryDeckData.translation a)) t).2.1 =
+      A.ellipticFourBoundaryBase.2.1 := by
   let _ := orderFourAffineMappingTorusDeckAction A.periods
-  let _ := A.orderFourActualEllipticBoundaryAction
-  change (Path.segment A.orderFourActualEllipticBoundaryBase.2
+  let _ := A.ellipticFourBoundaryAction
+  change (Path.segment A.ellipticFourBoundaryBase.2
     (Additive.toMul (affineTorusMappingTorusDeckTranslation
       (orderFourDescendedAffineTorusAutomorphism A.periods) a) •
-        A.orderFourActualEllipticBoundaryBase.2) t).1 = _
+        A.ellipticFourBoundaryBase.2) t).1 = _
   rw [affineTorusMappingTorusDeckTranslation_smul]
-  change (t : ℝ) * (A.orderFourActualEllipticBoundaryBase.2.1 -
-    A.orderFourActualEllipticBoundaryBase.2.1) + A.orderFourActualEllipticBoundaryBase.2.1 = _
+  change (t : ℝ) * (A.ellipticFourBoundaryBase.2.1 -
+    A.ellipticFourBoundaryBase.2.1) + A.ellipticFourBoundaryBase.2.1 = _
   ring
 
 public theorem orderFourTranslationStraightCentralLoop_basePath
     (a : SphereSixComplex.LatticeData.Lattice) :
-    letI := A.orderFourActualEllipticBoundaryAction
-    (A.orderFourActualEllipticBoundaryDeckStraightCentralLoop
-      (Additive.toMul (A.orderFourActualEllipticBoundaryDeckData.translation a))).map
+    letI := A.ellipticFourBoundaryAction
+    (A.ellipticFourBoundaryDeckStraightCentralLoop
+      (Additive.toMul (A.ellipticFourBoundaryDeckData.translation a))).map
         A.centralFamilyCoordinate_continuous =
-      Path.refl (A.centralFamilyCoordinate A.orderFourActualEllipticCentralBase) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
-  let g := Additive.toMul (A.orderFourActualEllipticBoundaryDeckData.translation a)
-  let L := A.orderFourActualEllipticBoundaryDeckStraightCentralLoop g
+      Path.refl (A.centralFamilyCoordinate A.ellipticFourCentralBase) := by
+  let _ := A.ellipticFourBoundaryAction
+  let g := Additive.toMul (A.ellipticFourBoundaryDeckData.translation a)
+  let L := A.ellipticFourBoundaryDeckStraightCentralLoop g
   apply Path.ext
   funext t
   change A.centralFamilyCoordinate (L t) = _
@@ -143,76 +143,76 @@ public theorem orderFourTranslationStraightCentralLoop_basePath
 public noncomputable def orderFourBoundaryBaseHom :
     FundamentalGroup (A.actualVanKampenFourPieceCover.core ∩
       A.actualVanKampenFourPieceCover.ellipticFour : Set A.VanKampenSpace)
-      (A.orderFourActualEllipticBoundaryProjection A.orderFourActualEllipticBoundaryBase) →*
+      (A.ellipticFourBoundaryProjection A.ellipticFourBoundaryBase) →*
       FundamentalGroup TwicePuncturedComplex
-        (A.centralFamilyCoordinate A.orderFourActualEllipticCentralBase) :=
+        (A.centralFamilyCoordinate A.ellipticFourCentralBase) :=
   (FundamentalGroup.mapOfEq
     (⟨A.centralFamilyCoordinate, A.centralFamilyCoordinate_continuous⟩ :
       C(A.CentralFamily, TwicePuncturedComplex)) rfl).comp
-    (FundamentalGroup.mapOfEq A.orderFourActualOverlapToCentral rfl)
+    (FundamentalGroup.mapOfEq A.ellipticFourOverlapToCentral rfl)
 
 public theorem orderFourBoundaryBaseHom_ofDeck
     (g : OrderFourAffineMappingTorusDeck A.periods) :
-    letI := A.orderFourActualEllipticBoundaryAction
-    letI := A.orderFourActualEllipticBoundaryCover_simplyConnected
+    letI := A.ellipticFourBoundaryAction
+    letI := A.ellipticFourBoundaryCover_simplyConnected
     A.orderFourBoundaryBaseHom
-      (SphereSixComplex.ofDeck A.orderFourActualEllipticBoundaryProjection_isQuotientCoveringMap
-        A.orderFourActualEllipticBoundaryBase g) =
+      (SphereSixComplex.ofDeck A.ellipticFourBoundaryProjection_isQuotientCoveringMap
+        A.ellipticFourBoundaryBase g) =
       Path.Homotopic.Quotient.mk
-        ((A.orderFourActualEllipticBoundaryDeckStraightCentralLoop g).map
+        ((A.ellipticFourBoundaryDeckStraightCentralLoop g).map
           A.centralFamilyCoordinate_continuous) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
-  let _ := A.orderFourActualEllipticBoundaryCover_simplyConnected
-  rw [← A.orderFourActualEllipticBoundaryDeckStraightLoop_class_eq_ofDeck]
+  let _ := A.ellipticFourBoundaryAction
+  let _ := A.ellipticFourBoundaryCover_simplyConnected
+  rw [← A.ellipticFourBoundaryDeckStraightLoop_class_eq_ofDeck]
   simp only [orderFourBoundaryBaseHom, MonoidHom.comp_apply]
-  erw [A.orderFourActualEllipticBoundaryDeckStraightCentralLoop_class g,
+  erw [A.ellipticFourBoundaryDeckStraightCentralLoop_class g,
     FundamentalGroup.mapOfEq_apply, ← Path.Homotopic.Quotient.mk_map]
   rfl
 
 public theorem orderFourBoundaryBaseHom_translation
     (a : SphereSixComplex.LatticeData.Lattice) :
-    letI := A.orderFourActualEllipticBoundaryAction
-    letI := A.orderFourActualEllipticBoundaryCover_simplyConnected
+    letI := A.ellipticFourBoundaryAction
+    letI := A.ellipticFourBoundaryCover_simplyConnected
     A.orderFourBoundaryBaseHom
-      (SphereSixComplex.ofDeck A.orderFourActualEllipticBoundaryProjection_isQuotientCoveringMap
-        A.orderFourActualEllipticBoundaryBase
-          (Additive.toMul (A.orderFourActualEllipticBoundaryDeckData.translation a))) = 1 := by
-  let _ := A.orderFourActualEllipticBoundaryAction
-  let _ := A.orderFourActualEllipticBoundaryCover_simplyConnected
+      (SphereSixComplex.ofDeck A.ellipticFourBoundaryProjection_isQuotientCoveringMap
+        A.ellipticFourBoundaryBase
+          (Additive.toMul (A.ellipticFourBoundaryDeckData.translation a))) = 1 := by
+  let _ := A.ellipticFourBoundaryAction
+  let _ := A.ellipticFourBoundaryCover_simplyConnected
   rw [A.orderFourBoundaryBaseHom_ofDeck, A.orderFourTranslationStraightCentralLoop_basePath]
   rfl
 
 public theorem orderFourBoundaryBaseHom_fillingRelation
-    : letI := A.orderFourActualEllipticBoundaryAction
-    letI := A.orderFourActualEllipticBoundaryCover_simplyConnected
+    : letI := A.ellipticFourBoundaryAction
+    letI := A.ellipticFourBoundaryCover_simplyConnected
     A.orderFourBoundaryBaseHom
-      (SphereSixComplex.ofDeck A.orderFourActualEllipticBoundaryProjection_isQuotientCoveringMap
-        A.orderFourActualEllipticBoundaryBase
-          A.orderFourActualEllipticBoundaryDeckData.fillingRelation) =
+      (SphereSixComplex.ofDeck A.ellipticFourBoundaryProjection_isQuotientCoveringMap
+        A.ellipticFourBoundaryBase
+          A.ellipticFourBoundaryDeckData.fillingRelation) =
       (A.orderFourBoundaryBaseHom
-        (SphereSixComplex.ofDeck A.orderFourActualEllipticBoundaryProjection_isQuotientCoveringMap
-          A.orderFourActualEllipticBoundaryBase
-            A.orderFourActualEllipticBoundaryDeckData.meridian)) ^ 4 := by
-  let _ := A.orderFourActualEllipticBoundaryAction
-  let _ := A.orderFourActualEllipticBoundaryCover_simplyConnected
+        (SphereSixComplex.ofDeck A.ellipticFourBoundaryProjection_isQuotientCoveringMap
+          A.ellipticFourBoundaryBase
+            A.ellipticFourBoundaryDeckData.meridian)) ^ 4 := by
+  let _ := A.ellipticFourBoundaryAction
+  let _ := A.ellipticFourBoundaryCover_simplyConnected
   rw [UnwrappedCyclicAffineBoundaryDeckData.fillingRelation, SphereSixComplex.ofDeck_mul,
     SphereSixComplex.ofDeck_pow, SphereSixComplex.ofDeck_inv, map_mul, map_inv, map_pow,
     A.orderFourBoundaryBaseHom_translation, inv_one, one_mul]
 
 public theorem orderFourBoundaryMeridian_base_first_power :
-    letI := A.orderFourActualEllipticBoundaryAction
-    letI := A.orderFourActualEllipticBoundaryCover_simplyConnected
-    ∃ w : Path (A.centralFamilyCoordinate A.orderFourActualEllipticCentralBase)
+    letI := A.ellipticFourBoundaryAction
+    letI := A.ellipticFourBoundaryCover_simplyConnected
+    ∃ w : Path (A.centralFamilyCoordinate A.ellipticFourCentralBase)
         twicePuncturedComplexBasepoint,
       A.orderFourBoundaryBaseHom
-        (SphereSixComplex.ofDeck A.orderFourActualEllipticBoundaryProjection_isQuotientCoveringMap
-          A.orderFourActualEllipticBoundaryBase A.orderFourActualEllipticBoundaryDeckData.meridian) =
+        (SphereSixComplex.ofDeck A.ellipticFourBoundaryProjection_isQuotientCoveringMap
+          A.ellipticFourBoundaryBase A.ellipticFourBoundaryDeckData.meridian) =
         FundamentalGroup.fundamentalGroupMulEquivOfPath w.symm
           TwicePuncturedComplex.oneMeridianClass⁻¹ := by
-  let _ := A.orderFourActualEllipticBoundaryAction
-  let _ := A.orderFourActualEllipticBoundaryCover_simplyConnected
-  let L := (A.orderFourActualEllipticBoundaryDeckStraightCentralLoop
-    A.orderFourActualEllipticBoundaryDeckData.fillingRelation).map
+  let _ := A.ellipticFourBoundaryAction
+  let _ := A.ellipticFourBoundaryCover_simplyConnected
+  let L := (A.ellipticFourBoundaryDeckStraightCentralLoop
+    A.ellipticFourBoundaryDeckData.fillingRelation).map
       A.centralFamilyCoordinate_continuous
   let gamma := twicePuncturedCounterclockwiseOneQuadruple
   have hmap : A.orderFourFillingRelationBaseCoordinateMap = L.toContinuousMap := by
@@ -244,8 +244,8 @@ public theorem orderFourBoundaryMeridian_base_first_power :
     simp only [← Path.Homotopic.Quotient.mk_symm]
     rw [Path.symm_symm]
   have hpow : (A.orderFourBoundaryBaseHom
-      (SphereSixComplex.ofDeck A.orderFourActualEllipticBoundaryProjection_isQuotientCoveringMap
-        A.orderFourActualEllipticBoundaryBase A.orderFourActualEllipticBoundaryDeckData.meridian)) ^ 4 =
+      (SphereSixComplex.ofDeck A.ellipticFourBoundaryProjection_isQuotientCoveringMap
+        A.ellipticFourBoundaryBase A.ellipticFourBoundaryDeckData.meridian)) ^ 4 =
       (E TwicePuncturedComplex.oneMeridianClass⁻¹) ^ 4 := by
     rw [← A.orderFourBoundaryBaseHom_fillingRelation, A.orderFourBoundaryBaseHom_ofDeck]
     change Path.Homotopic.Quotient.mk L = _
@@ -300,42 +300,42 @@ public theorem orderThreeCollarRegularRepresentative_coordinate_fiber_independen
 
 public theorem orderThreeDeckStraightCentralLoop_projects_representative
     (g : OrderThreeAffineMappingTorusDeck A.periods) (t : unitInterval) :
-    letI := A.orderThreeActualEllipticBoundaryAction
-    A.orderThreeActualEllipticBoundaryDeckStraightCentralLoop g t =
+    letI := A.ellipticThreeBoundaryAction
+    A.ellipticThreeBoundaryDeckStraightCentralLoop g t =
       A.centralQuotientProjection (A.orderThreeCollarRegularRepresentativeMap
-        (A.orderThreeActualEllipticBoundaryDeckStraightLift g t)) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+        (A.ellipticThreeBoundaryDeckStraightLift g t)) := by
+  let _ := A.ellipticThreeBoundaryAction
   simpa [orderThreeCollarRegularRepresentativeMap,
-    orderThreeActualEllipticBoundaryDeckStraightLift] using
-    A.orderThreeActualEllipticBoundaryDeckStraightCentralLoop_apply_explicit g t
+    ellipticThreeBoundaryDeckStraightLift] using
+    A.ellipticThreeBoundaryDeckStraightCentralLoop_apply_explicit g t
 
 public theorem orderThreeTranslationStraightLift_angle
     (a : SphereSixComplex.LatticeData.Lattice) (t : unitInterval) :
-    letI := A.orderThreeActualEllipticBoundaryAction
-    (A.orderThreeActualEllipticBoundaryDeckStraightLift
-      (Additive.toMul (A.orderThreeActualEllipticBoundaryDeckData.translation a)) t).2.1 =
-      A.orderThreeActualEllipticBoundaryBase.2.1 := by
+    letI := A.ellipticThreeBoundaryAction
+    (A.ellipticThreeBoundaryDeckStraightLift
+      (Additive.toMul (A.ellipticThreeBoundaryDeckData.translation a)) t).2.1 =
+      A.ellipticThreeBoundaryBase.2.1 := by
   let _ := orderThreeAffineMappingTorusDeckAction A.periods
-  let _ := A.orderThreeActualEllipticBoundaryAction
-  change (Path.segment A.orderThreeActualEllipticBoundaryBase.2
+  let _ := A.ellipticThreeBoundaryAction
+  change (Path.segment A.ellipticThreeBoundaryBase.2
     (Additive.toMul (affineTorusMappingTorusDeckTranslation
       (orderThreeDescendedAffineTorusAutomorphism A.periods) a) •
-        A.orderThreeActualEllipticBoundaryBase.2) t).1 = _
+        A.ellipticThreeBoundaryBase.2) t).1 = _
   rw [affineTorusMappingTorusDeckTranslation_smul]
-  change (t : ℝ) * (A.orderThreeActualEllipticBoundaryBase.2.1 -
-    A.orderThreeActualEllipticBoundaryBase.2.1) + A.orderThreeActualEllipticBoundaryBase.2.1 = _
+  change (t : ℝ) * (A.ellipticThreeBoundaryBase.2.1 -
+    A.ellipticThreeBoundaryBase.2.1) + A.ellipticThreeBoundaryBase.2.1 = _
   ring
 
 public theorem orderThreeTranslationStraightCentralLoop_basePath
     (a : SphereSixComplex.LatticeData.Lattice) :
-    letI := A.orderThreeActualEllipticBoundaryAction
-    (A.orderThreeActualEllipticBoundaryDeckStraightCentralLoop
-      (Additive.toMul (A.orderThreeActualEllipticBoundaryDeckData.translation a))).map
+    letI := A.ellipticThreeBoundaryAction
+    (A.ellipticThreeBoundaryDeckStraightCentralLoop
+      (Additive.toMul (A.ellipticThreeBoundaryDeckData.translation a))).map
         A.centralFamilyCoordinate_continuous =
-      Path.refl (A.centralFamilyCoordinate A.orderThreeActualEllipticCentralBase) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
-  let g := Additive.toMul (A.orderThreeActualEllipticBoundaryDeckData.translation a)
-  let L := A.orderThreeActualEllipticBoundaryDeckStraightCentralLoop g
+      Path.refl (A.centralFamilyCoordinate A.ellipticThreeCentralBase) := by
+  let _ := A.ellipticThreeBoundaryAction
+  let g := Additive.toMul (A.ellipticThreeBoundaryDeckData.translation a)
+  let L := A.ellipticThreeBoundaryDeckStraightCentralLoop g
   apply Path.ext
   funext t
   change A.centralFamilyCoordinate (L t) = _
@@ -355,76 +355,76 @@ public theorem orderThreeTranslationStraightCentralLoop_basePath
 public noncomputable def orderThreeBoundaryBaseHom :
     FundamentalGroup (A.actualVanKampenFourPieceCover.core ∩
       A.actualVanKampenFourPieceCover.ellipticThree : Set A.VanKampenSpace)
-      (A.orderThreeActualEllipticBoundaryProjection A.orderThreeActualEllipticBoundaryBase) →*
+      (A.ellipticThreeBoundaryProjection A.ellipticThreeBoundaryBase) →*
       FundamentalGroup TwicePuncturedComplex
-        (A.centralFamilyCoordinate A.orderThreeActualEllipticCentralBase) :=
+        (A.centralFamilyCoordinate A.ellipticThreeCentralBase) :=
   (FundamentalGroup.mapOfEq
     (⟨A.centralFamilyCoordinate, A.centralFamilyCoordinate_continuous⟩ :
       C(A.CentralFamily, TwicePuncturedComplex)) rfl).comp
-    (FundamentalGroup.mapOfEq A.orderThreeActualOverlapToCentral rfl)
+    (FundamentalGroup.mapOfEq A.ellipticThreeOverlapToCentral rfl)
 
 public theorem orderThreeBoundaryBaseHom_ofDeck
     (g : OrderThreeAffineMappingTorusDeck A.periods) :
-    letI := A.orderThreeActualEllipticBoundaryAction
-    letI := A.orderThreeActualEllipticBoundaryCover_simplyConnected
+    letI := A.ellipticThreeBoundaryAction
+    letI := A.ellipticThreeBoundaryCover_simplyConnected
     A.orderThreeBoundaryBaseHom
-      (SphereSixComplex.ofDeck A.orderThreeActualEllipticBoundaryProjection_isQuotientCoveringMap
-        A.orderThreeActualEllipticBoundaryBase g) =
+      (SphereSixComplex.ofDeck A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
+        A.ellipticThreeBoundaryBase g) =
       Path.Homotopic.Quotient.mk
-        ((A.orderThreeActualEllipticBoundaryDeckStraightCentralLoop g).map
+        ((A.ellipticThreeBoundaryDeckStraightCentralLoop g).map
           A.centralFamilyCoordinate_continuous) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
-  let _ := A.orderThreeActualEllipticBoundaryCover_simplyConnected
-  rw [← A.orderThreeActualEllipticBoundaryDeckStraightLoop_class_eq_ofDeck]
+  let _ := A.ellipticThreeBoundaryAction
+  let _ := A.ellipticThreeBoundaryCover_simplyConnected
+  rw [← A.ellipticThreeBoundaryDeckStraightLoop_class_eq_ofDeck]
   simp only [orderThreeBoundaryBaseHom, MonoidHom.comp_apply]
-  erw [A.orderThreeActualEllipticBoundaryDeckStraightCentralLoop_class g,
+  erw [A.ellipticThreeBoundaryDeckStraightCentralLoop_class g,
     FundamentalGroup.mapOfEq_apply, ← Path.Homotopic.Quotient.mk_map]
   rfl
 
 public theorem orderThreeBoundaryBaseHom_translation
     (a : SphereSixComplex.LatticeData.Lattice) :
-    letI := A.orderThreeActualEllipticBoundaryAction
-    letI := A.orderThreeActualEllipticBoundaryCover_simplyConnected
+    letI := A.ellipticThreeBoundaryAction
+    letI := A.ellipticThreeBoundaryCover_simplyConnected
     A.orderThreeBoundaryBaseHom
-      (SphereSixComplex.ofDeck A.orderThreeActualEllipticBoundaryProjection_isQuotientCoveringMap
-        A.orderThreeActualEllipticBoundaryBase
-          (Additive.toMul (A.orderThreeActualEllipticBoundaryDeckData.translation a))) = 1 := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
-  let _ := A.orderThreeActualEllipticBoundaryCover_simplyConnected
+      (SphereSixComplex.ofDeck A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
+        A.ellipticThreeBoundaryBase
+          (Additive.toMul (A.ellipticThreeBoundaryDeckData.translation a))) = 1 := by
+  let _ := A.ellipticThreeBoundaryAction
+  let _ := A.ellipticThreeBoundaryCover_simplyConnected
   rw [A.orderThreeBoundaryBaseHom_ofDeck, A.orderThreeTranslationStraightCentralLoop_basePath]
   rfl
 
 public theorem orderThreeBoundaryBaseHom_fillingRelation
-    : letI := A.orderThreeActualEllipticBoundaryAction
-    letI := A.orderThreeActualEllipticBoundaryCover_simplyConnected
+    : letI := A.ellipticThreeBoundaryAction
+    letI := A.ellipticThreeBoundaryCover_simplyConnected
     A.orderThreeBoundaryBaseHom
-      (SphereSixComplex.ofDeck A.orderThreeActualEllipticBoundaryProjection_isQuotientCoveringMap
-        A.orderThreeActualEllipticBoundaryBase
-          A.orderThreeActualEllipticBoundaryDeckData.fillingRelation) =
+      (SphereSixComplex.ofDeck A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
+        A.ellipticThreeBoundaryBase
+          A.ellipticThreeBoundaryDeckData.fillingRelation) =
       (A.orderThreeBoundaryBaseHom
-        (SphereSixComplex.ofDeck A.orderThreeActualEllipticBoundaryProjection_isQuotientCoveringMap
-          A.orderThreeActualEllipticBoundaryBase
-            A.orderThreeActualEllipticBoundaryDeckData.meridian)) ^ 3 := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
-  let _ := A.orderThreeActualEllipticBoundaryCover_simplyConnected
+        (SphereSixComplex.ofDeck A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
+          A.ellipticThreeBoundaryBase
+            A.ellipticThreeBoundaryDeckData.meridian)) ^ 3 := by
+  let _ := A.ellipticThreeBoundaryAction
+  let _ := A.ellipticThreeBoundaryCover_simplyConnected
   rw [UnwrappedCyclicAffineBoundaryDeckData.fillingRelation, SphereSixComplex.ofDeck_mul,
     SphereSixComplex.ofDeck_pow, SphereSixComplex.ofDeck_inv, map_mul, map_inv, map_pow,
     A.orderThreeBoundaryBaseHom_translation, inv_one, one_mul]
 
 public theorem orderThreeBoundaryMeridian_base_first_power :
-    letI := A.orderThreeActualEllipticBoundaryAction
-    letI := A.orderThreeActualEllipticBoundaryCover_simplyConnected
-    ∃ w : Path (A.centralFamilyCoordinate A.orderThreeActualEllipticCentralBase)
+    letI := A.ellipticThreeBoundaryAction
+    letI := A.ellipticThreeBoundaryCover_simplyConnected
+    ∃ w : Path (A.centralFamilyCoordinate A.ellipticThreeCentralBase)
         twicePuncturedComplexBasepoint,
       A.orderThreeBoundaryBaseHom
-        (SphereSixComplex.ofDeck A.orderThreeActualEllipticBoundaryProjection_isQuotientCoveringMap
-          A.orderThreeActualEllipticBoundaryBase A.orderThreeActualEllipticBoundaryDeckData.meridian) =
+        (SphereSixComplex.ofDeck A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
+          A.ellipticThreeBoundaryBase A.ellipticThreeBoundaryDeckData.meridian) =
         FundamentalGroup.fundamentalGroupMulEquivOfPath w.symm
           TwicePuncturedComplex.zeroMeridianClass⁻¹ := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
-  let _ := A.orderThreeActualEllipticBoundaryCover_simplyConnected
-  let L := (A.orderThreeActualEllipticBoundaryDeckStraightCentralLoop
-    A.orderThreeActualEllipticBoundaryDeckData.fillingRelation).map
+  let _ := A.ellipticThreeBoundaryAction
+  let _ := A.ellipticThreeBoundaryCover_simplyConnected
+  let L := (A.ellipticThreeBoundaryDeckStraightCentralLoop
+    A.ellipticThreeBoundaryDeckData.fillingRelation).map
       A.centralFamilyCoordinate_continuous
   let gamma := twicePuncturedCounterclockwiseZeroTriple
   have hmap : A.orderThreeFillingRelationBaseCoordinateMap = L.toContinuousMap := by
@@ -456,8 +456,8 @@ public theorem orderThreeBoundaryMeridian_base_first_power :
     simp only [← Path.Homotopic.Quotient.mk_symm]
     rw [Path.symm_symm]
   have hpow : (A.orderThreeBoundaryBaseHom
-      (SphereSixComplex.ofDeck A.orderThreeActualEllipticBoundaryProjection_isQuotientCoveringMap
-        A.orderThreeActualEllipticBoundaryBase A.orderThreeActualEllipticBoundaryDeckData.meridian)) ^ 3 =
+      (SphereSixComplex.ofDeck A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
+        A.ellipticThreeBoundaryBase A.ellipticThreeBoundaryDeckData.meridian)) ^ 3 =
       (E TwicePuncturedComplex.zeroMeridianClass⁻¹) ^ 3 := by
     rw [← A.orderThreeBoundaryBaseHom_fillingRelation, A.orderThreeBoundaryBaseHom_ofDeck]
     change Path.Homotopic.Quotient.mk L = _

@@ -29,11 +29,11 @@ namespace SphereSixComplex
 namespace Geometry.PaperAnalyticData
 
 open CircleMappingTorusHomologyBases
-open SectionSevenEllipticInteriorMarkedCycleData
+open EllipticInteriorMarkedCycleData
 
-variable {A : PaperAnalyticData} (D : A.SectionSevenEllipticTwoDiscCoverData)
+variable {A : PaperAnalyticData} (D : A.EllipticTwoDiscCoverData)
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 /-- Independent circle-valued realizations of the two marked degree-one coordinates.
 
@@ -45,7 +45,7 @@ public structure CuspEllipticMeridianCircleCoordinateRealization
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     C(CircleMappingTorus G.clutching, UnitAddCircle)
-  targetProjection : C(A.SectionSevenEllipticInterior, UnitAddCircle)
+  targetProjection : C(A.ellipticInterior, UnitAddCircle)
   sourceCoordinate_eq :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
@@ -60,7 +60,7 @@ public structure CuspEllipticMeridianCircleCoordinateRealization
 
 namespace CuspEllipticMeridianCircleCoordinateRealization
 
-variable {D : A.SectionSevenEllipticTwoDiscCoverData}
+variable {D : A.EllipticTwoDiscCoverData}
   {N : A.EllipticBandHomologyAlignment D}
 
 /-- Coordinate-realizing circle maps and a homotopy-commutative circle projection square give
@@ -105,7 +105,7 @@ public noncomputable def toMeridianProjectionComparison_of_pointwise_projection
 
 end CuspEllipticMeridianCircleCoordinateRealization
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end Geometry.PaperAnalyticData
 

@@ -8,12 +8,12 @@ noncomputable section
 
 open Matrix Set
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
 open SphereSixComplex.Geometry.CuspCombinatorics
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 public def constructedA2CorrectedPlaneCenter (v : ToricLattice) : Fin 2 → ℝ :=
   ![(2 / 3 : ℝ) * v 0 + (4 / 3 : ℝ) * v 1,
@@ -385,6 +385,6 @@ public theorem constructedA2CorrectedLaurentIdentity_reverse
           constructedA2CellLiftCoordinates i (fun k ↦ (p.1 k : ℂ)) := by
   rw [eq_comm, h, constructedA2LaurentTransition_comm]
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric
 
 end

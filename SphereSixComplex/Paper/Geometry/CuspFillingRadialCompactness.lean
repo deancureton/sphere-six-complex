@@ -17,8 +17,8 @@ namespace SphereSixComplex.Geometry.CuspFillingRadialCompactness
 
 open Set SphereSixComplex.Periods
 open CuspFilling CuspLocalPhaseAction CuspPuncturedCollarBridge
-open CuspPeriodExpansion StandardInfiniteA2ToricModel
-open StandardInfiniteA2ToricQuantitativeRegions
+open CuspPeriodExpansion InfiniteA2Toric
+open InfiniteA2Toric.QuantitativeRegions
 open CuspPhaseEstimates.CuspPeriodExpansion
 open CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
 
@@ -189,15 +189,15 @@ public theorem exists_upper_barycentric_perturbation_lower
 /-- The quotient of a local toric degeneration by a fixed-point-free phase-corrected lattice
 action. -/
 public noncomputable abbrev PhaseCorrectedToricQuotient
-    {M : Model} {r : ℝ} (C : ExactLocalHolomorphicPhaseCoefficients M r)
-    (F : C.FixedPointEstimates) :=
+    {M : Model} {r : ℝ} (C : LocalHolomorphicPhaseCoefficients M r)
+    (F : C.IsFree) :=
   letI := (C.toCuspActionData F).psiAction
   MulAction.orbitRel.Quotient (Multiplicative ParameterLattice) (LocalCarrier M r)
 
 /-- The height radius descended to a phase-corrected toric quotient. -/
 @[expose] public noncomputable def phaseCorrectedQuotientRadius
-    {M : Model} {r : ℝ} (C : ExactLocalHolomorphicPhaseCoefficients M r)
-    (F : C.FixedPointEstimates) : PhaseCorrectedToricQuotient C F → ℝ := by
+    {M : Model} {r : ℝ} (C : LocalHolomorphicPhaseCoefficients M r)
+    (F : C.IsFree) : PhaseCorrectedToricQuotient C F → ℝ := by
   let _ := (C.toCuspActionData F).psiAction
   exact Quotient.lift (fun p : LocalCarrier M r ↦ ‖M.t p‖) (by
     intro p q hpq
@@ -208,8 +208,8 @@ public noncomputable abbrev PhaseCorrectedToricQuotient
 
 @[simp]
 public theorem phaseCorrectedQuotientRadius_mk
-    {M : Model} {r : ℝ} (C : ExactLocalHolomorphicPhaseCoefficients M r)
-    (F : C.FixedPointEstimates) (p : LocalCarrier M r) :
+    {M : Model} {r : ℝ} (C : LocalHolomorphicPhaseCoefficients M r)
+    (F : C.IsFree) (p : LocalCarrier M r) :
     phaseCorrectedQuotientRadius C F (Quotient.mk _ p) = ‖M.t p‖ :=
   rfl
 
@@ -217,7 +217,7 @@ public theorem phaseCorrectedQuotientRadius_mk
 height disc.  This is the usual compact fundamental-domain assertion for the lattice action;
 it is independent of the six-sphere gluing and does not assume compactness of the quotient. -/
 public structure RadialSublevelCocompactness
-    {M : Model} {r : ℝ} (C : ExactLocalHolomorphicPhaseCoefficients M r) : Prop where
+    {M : Model} {r : ℝ} (C : LocalHolomorphicPhaseCoefficients M r) : Prop where
   compact_fundamental_domain : ∀ a : ℝ, 0 ≤ a → a < r →
     ∃ K : Set (LocalCarrier M r), IsCompact K ∧
       K ⊆ {p | ‖M.t p‖ ≤ a} ∧
@@ -228,7 +228,7 @@ public structure RadialSublevelCocompactness
 Modulo the phase-corrected fan lattice, every point over a closed smaller height disc has a
 representative in one of the two fixed affine polydiscs based at the zero vertex. -/
 public structure A2TwoChartRadialSublevelRepresentatives
-    {M : Model} {r : ℝ} (C : ExactLocalHolomorphicPhaseCoefficients M r) : Prop where
+    {M : Model} {r : ℝ} (C : LocalHolomorphicPhaseCoefficients M r) : Prop where
   bounded_representative : ∀ a : ℝ, 0 ≤ a → a < r →
     ∃ S : ℝ, ∀ p : LocalCarrier M r, ‖M.t p‖ ≤ a →
       ∃ lambda : ParameterLattice, ∃ upper : Bool,
@@ -238,7 +238,7 @@ public structure A2TwoChartRadialSublevelRepresentatives
 /-- Bounded representatives in the two fixed affine `A₂` charts supply compact radial
 fundamental domains. -/
 public theorem radialSublevelCocompactness_of_twoChartRepresentatives
-    {M : Model} {r : ℝ} (C : ExactLocalHolomorphicPhaseCoefficients M r)
+    {M : Model} {r : ℝ} (C : LocalHolomorphicPhaseCoefficients M r)
     (H : A2TwoChartRadialSublevelRepresentatives C) :
     RadialSublevelCocompactness C := by
   constructor
@@ -285,8 +285,8 @@ public theorem radialSublevelCocompactness_of_twoChartRepresentatives
 
 /-- A compact fundamental domain makes each closed radial sublevel of the quotient compact. -/
 public theorem phaseCorrectedQuotientRadiusSublevel_isCompact
-    {M : Model} {r : ℝ} (C : ExactLocalHolomorphicPhaseCoefficients M r)
-    (F : C.FixedPointEstimates) (H : RadialSublevelCocompactness C)
+    {M : Model} {r : ℝ} (C : LocalHolomorphicPhaseCoefficients M r)
+    (F : C.IsFree) (H : RadialSublevelCocompactness C)
     (a : ℝ) (ha : 0 ≤ a) (har : a < r) :
     IsCompact {y : PhaseCorrectedToricQuotient C F |
       phaseCorrectedQuotientRadius C F y ≤ a} := by

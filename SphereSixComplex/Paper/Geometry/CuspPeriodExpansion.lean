@@ -422,7 +422,7 @@ public noncomputable def localHolomorphicPhaseCoefficients :
 extend holomorphically to all of `ℂ`, together with the corresponding holomorphic toric twist.
 Neither global premise follows from bounded cusp descent. -/
 public noncomputable def toExactHolomorphicPhaseCoefficients
-    (M : StandardInfiniteA2ToricModel.Model)
+    (M : InfiniteA2Toric.Model)
     (global_holomorphic : ∀ lambda i,
       Differentiable ℂ (fun q ↦ (N.phaseCoefficient lambda q i : ℂ)))
     (twist_holomorphic : ∀ lambda,
@@ -430,7 +430,7 @@ public noncomputable def toExactHolomorphicPhaseCoefficients
         (modelWithCornersSelf ℂ ComplexModel) ∞
         (fun p : M.Carrier ↦ CuspToricPhaseAction.ToricModel.phaseAction M
           (N.phaseCoefficient lambda (M.t p)) p)) :
-    ExactHolomorphicPhaseCoefficients M where
+    HolomorphicPhaseCoefficients M where
   phase := N.phaseCoefficient
   phase_zero := N.phaseCoefficient_zero
   phase_add := N.phaseCoefficient_add

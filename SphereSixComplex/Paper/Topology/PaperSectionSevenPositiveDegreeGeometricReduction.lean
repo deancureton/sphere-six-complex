@@ -30,11 +30,11 @@ variable (A : PaperAnalyticData)
 
 /-- Assign the whole regular central image to both elliptic sides. -/
 public def duplicatedSectionSevenEllipticCentralAllocation :
-    A.SectionSevenEllipticCentralAllocation where
-  orderThreeCentral := A.sectionSevenEllipticCentralImage
-  orderFourCentral := A.sectionSevenEllipticCentralImage
-  orderThreeCentral_isOpen := A.sectionSevenEllipticCentralImage_isOpen
-  orderFourCentral_isOpen := A.sectionSevenEllipticCentralImage_isOpen
+    A.EllipticCentralAllocation where
+  orderThreeCentral := A.ellipticCentralImage
+  orderFourCentral := A.ellipticCentralImage
+  orderThreeCentral_isOpen := A.ellipticCentralImage_isOpen
+  orderFourCentral_isOpen := A.ellipticCentralImage_isOpen
   central_cover := fun _ hx ↦ Or.inl hx
 
 /-- A nested subspace is canonically homeomorphic to the same set in the original ambient
@@ -67,40 +67,40 @@ public noncomputable def fullRankAdditiveTorusHomeomorph
 /-- The order-three filling regarded as a subspace of its duplicated-central side. -/
 public def duplicatedOrderThreeFillingSubspace :
     Set A.duplicatedSectionSevenEllipticCentralAllocation.orderThreeSide :=
-  Subtype.val ⁻¹' A.sectionSevenOrderThreeFillingImage
+  Subtype.val ⁻¹' A.orderThreeFillingImage
 
 /-- The order-four filling regarded as a subspace of its duplicated-central side. -/
 public def duplicatedOrderFourFillingSubspace :
     Set A.duplicatedSectionSevenEllipticCentralAllocation.orderFourSide :=
-  Subtype.val ⁻¹' A.sectionSevenOrderFourFillingImage
+  Subtype.val ⁻¹' A.orderFourFillingImage
 
-public theorem sectionSevenOrderThreeFillingImage_subset_duplicatedSide :
-    A.sectionSevenOrderThreeFillingImage ⊆
+public theorem orderThreeFillingImage_subset_duplicatedSide :
+    A.orderThreeFillingImage ⊆
       A.duplicatedSectionSevenEllipticCentralAllocation.orderThreeSide :=
   fun _ hx ↦ Or.inl hx
 
-public theorem sectionSevenOrderFourFillingImage_subset_duplicatedSide :
-    A.sectionSevenOrderFourFillingImage ⊆
+public theorem orderFourFillingImage_subset_duplicatedSide :
+    A.orderFourFillingImage ⊆
       A.duplicatedSectionSevenEllipticCentralAllocation.orderFourSide :=
   fun _ hx ↦ Or.inl hx
 
 /-- The two distinct filling images in the star are disjoint. -/
-public theorem sectionSevenEllipticFillingImages_disjoint :
-    A.sectionSevenOrderThreeFillingImage ∩
-      A.sectionSevenOrderFourFillingImage = ∅ := by
+public theorem ellipticFillingImages_disjoint :
+    A.orderThreeFillingImage ∩
+      A.orderFourFillingImage = ∅ := by
   ext x
   constructor
   · rintro ⟨h₃, h₄⟩
-    change x.1 ∈ A.SectionSevenEllipticCover.piece 1 at h₃
-    change x.1 ∈ A.SectionSevenEllipticCover.piece 2 at h₄
+    change x.1 ∈ A.starCover.piece 1 at h₃
+    change x.1 ∈ A.starCover.piece 2 at h₄
     have h :
-        x.1 ∈ A.SectionSevenEllipticCover.piece 1 ∩
-          A.SectionSevenEllipticCover.piece 2 :=
+        x.1 ∈ A.starCover.piece 1 ∩
+          A.starCover.piece 2 :=
       ⟨h₃, h₄⟩
     have hdisjoint :
-        A.SectionSevenEllipticCover.piece 1 ∩
-          A.SectionSevenEllipticCover.piece 2 = ∅ := by
-      simpa [SectionSevenEllipticCover,
+        A.starCover.piece 1 ∩
+          A.starCover.piece 2 = ∅ := by
+      simpa [starCover,
         OpenEmbeddingStarData.SectionSevenMayerVietorisCover,
         sectionSevenMayerVietorisOpenCover, sectionSevenMayerVietorisOrder] using
         A.openEmbeddingStarData.fillingPiece_inter_fillingPiece
@@ -113,18 +113,18 @@ public theorem sectionSevenEllipticFillingImages_disjoint :
 public theorem duplicatedSectionSevenSides_intersection :
     A.duplicatedSectionSevenEllipticCentralAllocation.orderThreeSide ∩
         A.duplicatedSectionSevenEllipticCentralAllocation.orderFourSide =
-      A.sectionSevenEllipticCentralImage := by
+      A.ellipticCentralImage := by
   ext x
-  change ((x ∈ A.sectionSevenOrderThreeFillingImage ∨
-      x ∈ A.sectionSevenEllipticCentralImage) ∧
-    (x ∈ A.sectionSevenOrderFourFillingImage ∨
-      x ∈ A.sectionSevenEllipticCentralImage)) ↔
-    x ∈ A.sectionSevenEllipticCentralImage
+  change ((x ∈ A.orderThreeFillingImage ∨
+      x ∈ A.ellipticCentralImage) ∧
+    (x ∈ A.orderFourFillingImage ∨
+      x ∈ A.ellipticCentralImage)) ↔
+    x ∈ A.ellipticCentralImage
   constructor
   · rintro ⟨h₃ | hc, h₄ | hc'⟩
-    · have h : x ∈ A.sectionSevenOrderThreeFillingImage ∩
-          A.sectionSevenOrderFourFillingImage := ⟨h₃, h₄⟩
-      rw [A.sectionSevenEllipticFillingImages_disjoint] at h
+    · have h : x ∈ A.orderThreeFillingImage ∩
+          A.orderFourFillingImage := ⟨h₃, h₄⟩
+      rw [A.ellipticFillingImages_disjoint] at h
       exact h.elim
     · exact hc'
     · exact hc
@@ -135,8 +135,8 @@ public theorem duplicatedSectionSevenSides_intersection :
 public def duplicatedSectionSevenSidesIntersectionHomeomorph :
     (A.duplicatedSectionSevenEllipticCentralAllocation.orderThreeSide ∩
       A.duplicatedSectionSevenEllipticCentralAllocation.orderFourSide :
-        Set A.SectionSevenEllipticInterior) ≃ₜ
-      A.sectionSevenEllipticCentralImage :=
+        Set A.ellipticInterior) ≃ₜ
+      A.ellipticCentralImage :=
   Homeomorph.setCongr A.duplicatedSectionSevenSides_intersection
 
 /-- The two concrete filling inclusions are homotopy equivalences.  This is precisely the input
@@ -155,23 +155,23 @@ variable {A : PaperAnalyticData}
 public noncomputable def orderThreeLiftedContraction
     (L : A.DuplicatedSectionSevenLiftedContractionInput) :
     A.duplicatedSectionSevenEllipticCentralAllocation.orderThreeSide ≃ₕ
-      A.sectionSevenOrderThreeFillingImage :=
+      A.orderThreeFillingImage :=
   L.orderThreeHomotopyEquivalence.toHomotopyEquiv.trans
     (nestedSubtypeHomeomorph
       A.duplicatedSectionSevenEllipticCentralAllocation.orderThreeSide
-      A.sectionSevenOrderThreeFillingImage
-      A.sectionSevenOrderThreeFillingImage_subset_duplicatedSide).toHomotopyEquiv
+      A.orderThreeFillingImage
+      A.orderThreeFillingImage_subset_duplicatedSide).toHomotopyEquiv
 
 /-- Upgrade the order-four filling inclusion to the required lifted contraction. -/
 public noncomputable def orderFourLiftedContraction
     (L : A.DuplicatedSectionSevenLiftedContractionInput) :
     A.duplicatedSectionSevenEllipticCentralAllocation.orderFourSide ≃ₕ
-      A.sectionSevenOrderFourFillingImage :=
+      A.orderFourFillingImage :=
   L.orderFourHomotopyEquivalence.toHomotopyEquiv.trans
     (nestedSubtypeHomeomorph
       A.duplicatedSectionSevenEllipticCentralAllocation.orderFourSide
-      A.sectionSevenOrderFourFillingImage
-      A.sectionSevenOrderFourFillingImage_subset_duplicatedSide).toHomotopyEquiv
+      A.orderFourFillingImage
+      A.orderFourFillingImage_subset_duplicatedSide).toHomotopyEquiv
 
 end DuplicatedSectionSevenLiftedContractionInput
 
@@ -222,10 +222,10 @@ compatibility homotopies remain. -/
 public structure DuplicatedSectionSevenRadialBandInput
     (L : A.DuplicatedSectionSevenLiftedContractionInput) where
   centralBandHomotopyEquiv :
-    A.sectionSevenEllipticCentralImage ≃ₕ
+    A.ellipticCentralImage ≃ₕ
       AdditiveTorus A.duplicatedSectionSevenBandParameter
   orderThree_inclusion_compatibility :
-    (((A.sectionSevenOrderThreeFillingImageHomotopyEquiv.toFun.comp
+    (((A.orderThreeFillingImageHomotopyEquiv.toFun.comp
       L.orderThreeLiftedContraction.toFun).comp
         (IntegralMayerVietoris.interToLeft
           A.duplicatedSectionSevenEllipticCentralAllocation.orderThreeSide
@@ -237,7 +237,7 @@ public structure DuplicatedSectionSevenRadialBandInput
             (A.duplicatedSectionSevenSidesIntersectionHomeomorph.toHomotopyEquiv.trans
               centralBandHomotopyEquiv).toFun)
   orderFour_inclusion_compatibility :
-    (((A.sectionSevenOrderFourFillingImageHomotopyEquiv.toFun.comp
+    (((A.orderFourFillingImageHomotopyEquiv.toFun.comp
       L.orderFourLiftedContraction.toFun).comp
         (IntegralMayerVietoris.interToRight
           A.duplicatedSectionSevenEllipticCentralAllocation.orderThreeSide
@@ -274,11 +274,11 @@ end DuplicatedSectionSevenRadialBandInput
 
 /-- The canonical central allocation and a radial realization extend by exactly the dependent
 marked-cycle package to the complete geometric realization. -/
-public def SectionSevenPositiveDegreeGeometricRealization.ofDuplicatedCentralAllocation
+public def PositiveDegreeGeometricRealization.ofDuplicatedCentralAllocation
     (R : A.duplicatedSectionSevenEllipticCentralAllocation.RadialRealization)
-    (M : A.SectionSevenEllipticInteriorMarkedCycleData
+    (M : A.EllipticInteriorMarkedCycleData
       R.toSectionSevenEllipticTwoDiscCoverData) :
-    A.SectionSevenPositiveDegreeGeometricRealization where
+    A.PositiveDegreeGeometricRealization where
   allocation := A.duplicatedSectionSevenEllipticCentralAllocation
   radial := R
   markedCycles := M
@@ -286,18 +286,18 @@ public def SectionSevenPositiveDegreeGeometricRealization.ofDuplicatedCentralAll
 /-- A realized two-disc cover with its marked cycles is sufficient for the production
 positive-degree homology assembly; no further central-allocation data enters the calculation. -/
 public theorem exists_positiveDegreeHomologyAssembly_of_exists_markedCycles
-    (h : ∃ D : A.SectionSevenEllipticTwoDiscCoverData,
-      Nonempty (A.SectionSevenEllipticInteriorMarkedCycleData D)) :
-    Nonempty A.SectionSevenPositiveDegreeHomologyAssembly := by
+    (h : ∃ D : A.EllipticTwoDiscCoverData,
+      Nonempty (A.EllipticInteriorMarkedCycleData D)) :
+    Nonempty A.PositiveDegreeHomologyAssembly := by
   obtain ⟨D, ⟨M⟩⟩ := h
   exact ⟨M.positiveDegreeHomologyAssembly⟩
 
 /-- Every complete geometric realization determines the weaker dependent marked-cycle witness
 that is sufficient for the production homology assembly. -/
-public theorem SectionSevenPositiveDegreeGeometricRealization.exists_markedCycles
-    (R : A.SectionSevenPositiveDegreeGeometricRealization) :
-    ∃ D : A.SectionSevenEllipticTwoDiscCoverData,
-      Nonempty (A.SectionSevenEllipticInteriorMarkedCycleData D) :=
+public theorem PositiveDegreeGeometricRealization.exists_markedCycles
+    (R : A.PositiveDegreeGeometricRealization) :
+    ∃ D : A.EllipticTwoDiscCoverData,
+      Nonempty (A.EllipticInteriorMarkedCycleData D) :=
   ⟨R.radial.toSectionSevenEllipticTwoDiscCoverData, ⟨R.markedCycles⟩⟩
 
 end SphereSixComplex.Geometry.PaperAnalyticData

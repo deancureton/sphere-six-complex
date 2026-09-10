@@ -20,139 +20,139 @@ open SphereSixComplex.Geometry.ComplexTorus
 
 variable (A : PaperAnalyticData)
 
-public theorem orderThreeActualOverlapToCentral_boundaryProjection_apply
+public theorem ellipticThreeOverlapToCentral_boundaryProjection_apply
     (q : OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :
-    A.orderThreeActualOverlapToCentral
-        (A.orderThreeActualEllipticBoundaryProjection q) =
+    A.ellipticThreeOverlapToCentral
+        (A.ellipticThreeBoundaryProjection q) =
       A.starToCentral 1
         (A.orderThreeCollarRadialMappingTorusHomeomorph.symm
           (q.1, orderThreeAffineMappingTorusLiftProjection A.periods q.2)) := by
-  simp [orderThreeActualOverlapToCentral,
-    orderThreeActualEllipticBoundaryProjection,
+  simp [ellipticThreeOverlapToCentral,
+    ellipticThreeBoundaryProjection,
     orderThreeRadialMappingTorusToActualOverlapHomeomorph]
   apply congrArg (A.starToCentral 1)
   exact A.orderThreeCollarToActualOverlapHomeomorph.symm_apply_apply _
 
-public theorem orderFourActualOverlapToCentral_boundaryProjection_apply
+public theorem ellipticFourOverlapToCentral_boundaryProjection_apply
     (q : OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :
-    A.orderFourActualOverlapToCentral
-        (A.orderFourActualEllipticBoundaryProjection q) =
+    A.ellipticFourOverlapToCentral
+        (A.ellipticFourBoundaryProjection q) =
       A.starToCentral 2
         (A.orderFourCollarRadialMappingTorusHomeomorph.symm
           (q.1, orderFourAffineMappingTorusLiftProjection A.periods q.2)) := by
-  simp [orderFourActualOverlapToCentral,
-    orderFourActualEllipticBoundaryProjection,
+  simp [ellipticFourOverlapToCentral,
+    ellipticFourBoundaryProjection,
     orderFourRadialMappingTorusToActualOverlapHomeomorph]
   apply congrArg (A.starToCentral 2)
   exact A.orderFourCollarToActualOverlapHomeomorph.symm_apply_apply _
 
 /-- The order-three straight deck loop after applying the literal overlap chart. -/
-public noncomputable def orderThreeActualEllipticBoundaryDeckStraightCentralLoop
+public noncomputable def ellipticThreeBoundaryDeckStraightCentralLoop
     (g : OrderThreeAffineMappingTorusDeck A.periods) :
-    letI := A.orderThreeActualEllipticBoundaryAction
-    Path A.orderThreeActualEllipticCentralBase A.orderThreeActualEllipticCentralBase := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
-  exact (A.orderThreeActualEllipticBoundaryDeckStraightLoop g).map
-    A.orderThreeActualOverlapToCentral.continuous
+    letI := A.ellipticThreeBoundaryAction
+    Path A.ellipticThreeCentralBase A.ellipticThreeCentralBase := by
+  let _ := A.ellipticThreeBoundaryAction
+  exact (A.ellipticThreeBoundaryDeckStraightLoop g).map
+    A.ellipticThreeOverlapToCentral.continuous
 
 /-- The order-four straight deck loop after applying the literal overlap chart. -/
-public noncomputable def orderFourActualEllipticBoundaryDeckStraightCentralLoop
+public noncomputable def ellipticFourBoundaryDeckStraightCentralLoop
     (g : OrderFourAffineMappingTorusDeck A.periods) :
-    letI := A.orderFourActualEllipticBoundaryAction
-    Path A.orderFourActualEllipticCentralBase A.orderFourActualEllipticCentralBase := by
-  let _ := A.orderFourActualEllipticBoundaryAction
-  exact (A.orderFourActualEllipticBoundaryDeckStraightLoop g).map
-    A.orderFourActualOverlapToCentral.continuous
+    letI := A.ellipticFourBoundaryAction
+    Path A.ellipticFourCentralBase A.ellipticFourCentralBase := by
+  let _ := A.ellipticFourBoundaryAction
+  exact (A.ellipticFourBoundaryDeckStraightLoop g).map
+    A.ellipticFourOverlapToCentral.continuous
 
-public theorem orderThreeActualEllipticBoundaryDeckStraightCentralLoop_class
+public theorem ellipticThreeBoundaryDeckStraightCentralLoop_class
     (g : OrderThreeAffineMappingTorusDeck A.periods) :
-    letI := A.orderThreeActualEllipticBoundaryAction
-    FundamentalGroup.mapOfEq A.orderThreeActualOverlapToCentral rfl
+    letI := A.ellipticThreeBoundaryAction
+    FundamentalGroup.mapOfEq A.ellipticThreeOverlapToCentral rfl
         (Path.Homotopic.Quotient.mk
-          (A.orderThreeActualEllipticBoundaryDeckStraightLoop g)) =
+          (A.ellipticThreeBoundaryDeckStraightLoop g)) =
       Path.Homotopic.Quotient.mk
-        (A.orderThreeActualEllipticBoundaryDeckStraightCentralLoop g) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+        (A.ellipticThreeBoundaryDeckStraightCentralLoop g) := by
+  let _ := A.ellipticThreeBoundaryAction
   rw [FundamentalGroup.mapOfEq_apply, ← Path.Homotopic.Quotient.mk_map]
   rfl
 
-public theorem orderFourActualEllipticBoundaryDeckStraightCentralLoop_class
+public theorem ellipticFourBoundaryDeckStraightCentralLoop_class
     (g : OrderFourAffineMappingTorusDeck A.periods) :
-    letI := A.orderFourActualEllipticBoundaryAction
-    FundamentalGroup.mapOfEq A.orderFourActualOverlapToCentral rfl
+    letI := A.ellipticFourBoundaryAction
+    FundamentalGroup.mapOfEq A.ellipticFourOverlapToCentral rfl
         (Path.Homotopic.Quotient.mk
-          (A.orderFourActualEllipticBoundaryDeckStraightLoop g)) =
+          (A.ellipticFourBoundaryDeckStraightLoop g)) =
       Path.Homotopic.Quotient.mk
-        (A.orderFourActualEllipticBoundaryDeckStraightCentralLoop g) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+        (A.ellipticFourBoundaryDeckStraightCentralLoop g) := by
+  let _ := A.ellipticFourBoundaryAction
   rw [FundamentalGroup.mapOfEq_apply, ← Path.Homotopic.Quotient.mk_map]
   rfl
 
-public theorem orderThreeActualEllipticBoundaryDeckStraightCentralLoop_apply
+public theorem ellipticThreeBoundaryDeckStraightCentralLoop_apply
     (g : OrderThreeAffineMappingTorusDeck A.periods) (t : unitInterval) :
     letI := orderThreeAffineMappingTorusDeckAction A.periods
-    letI := A.orderThreeActualEllipticBoundaryAction
-    A.orderThreeActualEllipticBoundaryDeckStraightCentralLoop g t =
+    letI := A.ellipticThreeBoundaryAction
+    A.ellipticThreeBoundaryDeckStraightCentralLoop g t =
       A.starToCentral 1
         (A.orderThreeCollarRadialMappingTorusHomeomorph.symm
-          ((A.orderThreeActualEllipticBoundaryDeckStraightLift g t).1,
+          ((A.ellipticThreeBoundaryDeckStraightLift g t).1,
             orderThreeAffineMappingTorusLiftProjection A.periods
-              (A.orderThreeActualEllipticBoundaryDeckStraightLift g t).2)) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
-  unfold orderThreeActualEllipticBoundaryDeckStraightCentralLoop
-    orderThreeActualEllipticBoundaryDeckStraightLoop
-  exact A.orderThreeActualOverlapToCentral_boundaryProjection_apply
-    (A.orderThreeActualEllipticBoundaryDeckStraightLift g t)
+              (A.ellipticThreeBoundaryDeckStraightLift g t).2)) := by
+  let _ := A.ellipticThreeBoundaryAction
+  unfold ellipticThreeBoundaryDeckStraightCentralLoop
+    ellipticThreeBoundaryDeckStraightLoop
+  exact A.ellipticThreeOverlapToCentral_boundaryProjection_apply
+    (A.ellipticThreeBoundaryDeckStraightLift g t)
 
-public theorem orderFourActualEllipticBoundaryDeckStraightCentralLoop_apply
+public theorem ellipticFourBoundaryDeckStraightCentralLoop_apply
     (g : OrderFourAffineMappingTorusDeck A.periods) (t : unitInterval) :
     letI := orderFourAffineMappingTorusDeckAction A.periods
-    letI := A.orderFourActualEllipticBoundaryAction
-    A.orderFourActualEllipticBoundaryDeckStraightCentralLoop g t =
+    letI := A.ellipticFourBoundaryAction
+    A.ellipticFourBoundaryDeckStraightCentralLoop g t =
       A.starToCentral 2
         (A.orderFourCollarRadialMappingTorusHomeomorph.symm
-          ((A.orderFourActualEllipticBoundaryDeckStraightLift g t).1,
+          ((A.ellipticFourBoundaryDeckStraightLift g t).1,
             orderFourAffineMappingTorusLiftProjection A.periods
-              (A.orderFourActualEllipticBoundaryDeckStraightLift g t).2)) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
-  unfold orderFourActualEllipticBoundaryDeckStraightCentralLoop
-    orderFourActualEllipticBoundaryDeckStraightLoop
-  exact A.orderFourActualOverlapToCentral_boundaryProjection_apply
-    (A.orderFourActualEllipticBoundaryDeckStraightLift g t)
+              (A.ellipticFourBoundaryDeckStraightLift g t).2)) := by
+  let _ := A.ellipticFourBoundaryAction
+  unfold ellipticFourBoundaryDeckStraightCentralLoop
+    ellipticFourBoundaryDeckStraightLoop
+  exact A.ellipticFourOverlapToCentral_boundaryProjection_apply
+    (A.ellipticFourBoundaryDeckStraightLift g t)
 
-public theorem orderThreeActualEllipticBoundaryDeckStraightCentralLoop_apply_segment
+public theorem ellipticThreeBoundaryDeckStraightCentralLoop_apply_segment
     (g : OrderThreeAffineMappingTorusDeck A.periods) (t : unitInterval) :
     letI := orderThreeAffineMappingTorusDeckAction A.periods
-    letI := A.orderThreeActualEllipticBoundaryAction
-    A.orderThreeActualEllipticBoundaryDeckStraightCentralLoop g t =
+    letI := A.ellipticThreeBoundaryAction
+    A.ellipticThreeBoundaryDeckStraightCentralLoop g t =
       A.starToCentral 1
         (A.orderThreeCollarRadialMappingTorusHomeomorph.symm
-          (A.orderThreeActualEllipticBoundaryBase.1,
+          (A.ellipticThreeBoundaryBase.1,
             orderThreeAffineMappingTorusLiftProjection A.periods
-              (Path.segment A.orderThreeActualEllipticBoundaryBase.2
-                (g • A.orderThreeActualEllipticBoundaryBase.2) t))) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
-  simpa [orderThreeActualEllipticBoundaryDeckStraightLift] using
-    A.orderThreeActualEllipticBoundaryDeckStraightCentralLoop_apply g t
+              (Path.segment A.ellipticThreeBoundaryBase.2
+                (g • A.ellipticThreeBoundaryBase.2) t))) := by
+  let _ := A.ellipticThreeBoundaryAction
+  simpa [ellipticThreeBoundaryDeckStraightLift] using
+    A.ellipticThreeBoundaryDeckStraightCentralLoop_apply g t
 
-public theorem orderFourActualEllipticBoundaryDeckStraightCentralLoop_apply_segment
+public theorem ellipticFourBoundaryDeckStraightCentralLoop_apply_segment
     (g : OrderFourAffineMappingTorusDeck A.periods) (t : unitInterval) :
     letI := orderFourAffineMappingTorusDeckAction A.periods
-    letI := A.orderFourActualEllipticBoundaryAction
-    A.orderFourActualEllipticBoundaryDeckStraightCentralLoop g t =
+    letI := A.ellipticFourBoundaryAction
+    A.ellipticFourBoundaryDeckStraightCentralLoop g t =
       A.starToCentral 2
         (A.orderFourCollarRadialMappingTorusHomeomorph.symm
-          (A.orderFourActualEllipticBoundaryBase.1,
+          (A.ellipticFourBoundaryBase.1,
             orderFourAffineMappingTorusLiftProjection A.periods
-              (Path.segment A.orderFourActualEllipticBoundaryBase.2
-                (g • A.orderFourActualEllipticBoundaryBase.2) t))) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
-  simpa [orderFourActualEllipticBoundaryDeckStraightLift] using
-    A.orderFourActualEllipticBoundaryDeckStraightCentralLoop_apply g t
+              (Path.segment A.ellipticFourBoundaryBase.2
+                (g • A.ellipticFourBoundaryBase.2) t))) := by
+  let _ := A.ellipticFourBoundaryAction
+  simpa [ellipticFourBoundaryDeckStraightLift] using
+    A.ellipticFourBoundaryDeckStraightCentralLoop_apply g t
 
 /-- The prescribed van Kampen connector, pulled back through the central-piece chart. -/
-public noncomputable def orderThreeActualCentralGeometricConnector :
-    Path A.centralAffineBase A.orderThreeActualEllipticCentralBase := by
+public noncomputable def ellipticThreeCentralGeometricConnector :
+    Path A.centralAffineBase A.ellipticThreeCentralBase := by
   let H := A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
   let c := A.actualVanKampenFourPieceCover.connectorInCore
     A.actualVanKampenFourPieceCover.ellipticThreeConnector
@@ -166,18 +166,18 @@ public noncomputable def orderThreeActualCentralGeometricConnector :
           A.actualVanKampenFourPieceCover.core) := by
       rw [A.centralAffineBase_eq_actualCuspCentralBase]
       exact A.centralToSectionSevenEulerPieceHomeomorph_actualCuspOverlapToCentral
-        A.actualCuspOverlapBase
+        A.cuspOverlapBase
     apply H.injective
     exact (H.apply_symm_apply _).trans hcore.symm
   have ht : H.symm (⟨A.actualVanKampenFourPieceCover.ellipticThreePoint,
       A.actualVanKampenFourPieceCover.ellipticThreePoint_mem.1⟩ :
         A.actualVanKampenFourPieceCover.core) =
-      A.orderThreeActualEllipticCentralBase := by
-    have hcore : H A.orderThreeActualEllipticCentralBase =
+      A.ellipticThreeCentralBase := by
+    have hcore : H A.ellipticThreeCentralBase =
         (⟨A.actualVanKampenFourPieceCover.ellipticThreePoint,
           A.actualVanKampenFourPieceCover.ellipticThreePoint_mem.1⟩ :
             A.actualVanKampenFourPieceCover.core) := by
-      rw [A.orderThreeActualEllipticCentralBase_eq_overlapCentralBase]
+      rw [A.ellipticThreeCentralBase_eq_overlapCentralBase]
       exact A.centralToSectionSevenEulerPiece_orderThreeActualOverlapToCentral
         ⟨A.actualVanKampenFourPieceCover.ellipticThreePoint,
           A.actualVanKampenFourPieceCover.ellipticThreePoint_mem⟩
@@ -186,8 +186,8 @@ public noncomputable def orderThreeActualCentralGeometricConnector :
   exact (c.map H.symm.continuous).cast hs.symm ht.symm
 
 /-- The prescribed order-four van Kampen connector, pulled back through the central chart. -/
-public noncomputable def orderFourActualCentralGeometricConnector :
-    Path A.centralAffineBase A.orderFourActualEllipticCentralBase := by
+public noncomputable def ellipticFourCentralGeometricConnector :
+    Path A.centralAffineBase A.ellipticFourCentralBase := by
   let H := A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
   let c := A.actualVanKampenFourPieceCover.connectorInCore
     A.actualVanKampenFourPieceCover.ellipticFourConnector
@@ -201,18 +201,18 @@ public noncomputable def orderFourActualCentralGeometricConnector :
           A.actualVanKampenFourPieceCover.core) := by
       rw [A.centralAffineBase_eq_actualCuspCentralBase]
       exact A.centralToSectionSevenEulerPieceHomeomorph_actualCuspOverlapToCentral
-        A.actualCuspOverlapBase
+        A.cuspOverlapBase
     apply H.injective
     exact (H.apply_symm_apply _).trans hcore.symm
   have ht : H.symm (⟨A.actualVanKampenFourPieceCover.ellipticFourPoint,
       A.actualVanKampenFourPieceCover.ellipticFourPoint_mem.1⟩ :
         A.actualVanKampenFourPieceCover.core) =
-      A.orderFourActualEllipticCentralBase := by
-    have hcore : H A.orderFourActualEllipticCentralBase =
+      A.ellipticFourCentralBase := by
+    have hcore : H A.ellipticFourCentralBase =
         (⟨A.actualVanKampenFourPieceCover.ellipticFourPoint,
           A.actualVanKampenFourPieceCover.ellipticFourPoint_mem.1⟩ :
             A.actualVanKampenFourPieceCover.core) := by
-      rw [A.orderFourActualEllipticCentralBase_eq_overlapCentralBase]
+      rw [A.ellipticFourCentralBase_eq_overlapCentralBase]
       exact A.centralToSectionSevenEulerPiece_orderFourActualOverlapToCentral
         ⟨A.actualVanKampenFourPieceCover.ellipticFourPoint,
           A.actualVanKampenFourPieceCover.ellipticFourPoint_mem⟩
@@ -223,81 +223,81 @@ public noncomputable def orderFourActualCentralGeometricConnector :
 public theorem centralToSectionSevenEulerPiece_orderThreeActualCentralGeometricConnector_apply
     (t : unitInterval) :
     A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
-        (A.orderThreeActualCentralGeometricConnector t) =
+        (A.ellipticThreeCentralGeometricConnector t) =
       A.actualVanKampenFourPieceCover.connectorInCore
         A.actualVanKampenFourPieceCover.ellipticThreeConnector
         A.actualVanKampenFourPieceCover.ellipticThreeConnector_mem
         A.actualVanKampenFourPieceCover.ellipticThreePoint_mem.1 t := by
-  unfold orderThreeActualCentralGeometricConnector
+  unfold ellipticThreeCentralGeometricConnector
   exact A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph.apply_symm_apply _
 
 public theorem centralToSectionSevenEulerPiece_orderFourActualCentralGeometricConnector_apply
     (t : unitInterval) :
     A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
-        (A.orderFourActualCentralGeometricConnector t) =
+        (A.ellipticFourCentralGeometricConnector t) =
       A.actualVanKampenFourPieceCover.connectorInCore
         A.actualVanKampenFourPieceCover.ellipticFourConnector
         A.actualVanKampenFourPieceCover.ellipticFourConnector_mem
         A.actualVanKampenFourPieceCover.ellipticFourPoint_mem.1 t := by
-  unfold orderFourActualCentralGeometricConnector
+  unfold ellipticFourCentralGeometricConnector
   exact A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph.apply_symm_apply _
 
 /-- The two remaining concrete path-class equalities for the order-three chart are sufficient. -/
 public theorem orderThreeCentralBoundaryExistentialStraightLoopIdentities_of_geometricConnector_loopClasses
     (hmeridian :
-      letI := A.orderThreeActualEllipticBoundaryAction
+      letI := A.ellipticThreeBoundaryAction
       Path.Homotopic.Quotient.mk
-          (A.orderThreeActualEllipticBoundaryDeckStraightCentralLoop
-            A.orderThreeActualEllipticBoundaryDeckData.meridian) =
+          (A.ellipticThreeBoundaryDeckStraightCentralLoop
+            A.ellipticThreeBoundaryDeckData.meridian) =
         FundamentalGroup.fundamentalGroupMulEquivOfPath
-          A.orderThreeActualCentralGeometricConnector A.centralAffineCorePiOneData.rhoOne)
+          A.ellipticThreeCentralGeometricConnector A.centralAffineCorePiOneData.rhoOne)
     (htranslation :
-      letI := A.orderThreeActualEllipticBoundaryAction
+      letI := A.ellipticThreeBoundaryAction
       Path.Homotopic.Quotient.mk
-          (A.orderThreeActualEllipticBoundaryDeckStraightCentralLoop
+          (A.ellipticThreeBoundaryDeckStraightCentralLoop
             (Additive.toMul
-              (A.orderThreeActualEllipticBoundaryDeckData.translation (-epsilon)))) =
+              (A.ellipticThreeBoundaryDeckData.translation (-epsilon)))) =
         FundamentalGroup.fundamentalGroupMulEquivOfPath
-          A.orderThreeActualCentralGeometricConnector
+          A.ellipticThreeCentralGeometricConnector
           (Additive.toMul (A.centralAffineCorePiOneData.translation (-epsilon)))) :
     A.OrderThreeCentralBoundaryExistentialStraightLoopIdentities := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderThreeActualEllipticBoundaryCover_simplyConnected
-  refine ⟨A.orderThreeActualCentralGeometricConnector, ?_, ?_⟩
-  · rw [A.orderThreeActualEllipticBoundaryDeckStraightCentralLoop_class]
+    A.ellipticThreeBoundaryCover_simplyConnected
+  refine ⟨A.ellipticThreeCentralGeometricConnector, ?_, ?_⟩
+  · rw [A.ellipticThreeBoundaryDeckStraightCentralLoop_class]
     exact hmeridian
-  · rw [A.orderThreeActualEllipticBoundaryDeckStraightCentralLoop_class]
+  · rw [A.ellipticThreeBoundaryDeckStraightCentralLoop_class]
     exact htranslation
 
 /-- The two remaining concrete path-class equalities for the order-four chart are sufficient. -/
 public theorem orderFourCentralBoundaryExistentialStraightLoopIdentities_of_geometricConnector_loopClasses
     (hmeridian :
-      letI := A.orderFourActualEllipticBoundaryAction
+      letI := A.ellipticFourBoundaryAction
       Path.Homotopic.Quotient.mk
-          (A.orderFourActualEllipticBoundaryDeckStraightCentralLoop
-            A.orderFourActualEllipticBoundaryDeckData.meridian) =
+          (A.ellipticFourBoundaryDeckStraightCentralLoop
+            A.ellipticFourBoundaryDeckData.meridian) =
         FundamentalGroup.fundamentalGroupMulEquivOfPath
-          A.orderFourActualCentralGeometricConnector A.centralAffineCorePiOneData.rhoTwo)
+          A.ellipticFourCentralGeometricConnector A.centralAffineCorePiOneData.rhoTwo)
     (htranslation :
-      letI := A.orderFourActualEllipticBoundaryAction
+      letI := A.ellipticFourBoundaryAction
       Path.Homotopic.Quotient.mk
-          (A.orderFourActualEllipticBoundaryDeckStraightCentralLoop
+          (A.ellipticFourBoundaryDeckStraightCentralLoop
             (Additive.toMul
-              (A.orderFourActualEllipticBoundaryDeckData.translation epsilon'))) =
+              (A.ellipticFourBoundaryDeckData.translation epsilon'))) =
         FundamentalGroup.fundamentalGroupMulEquivOfPath
-          A.orderFourActualCentralGeometricConnector
+          A.ellipticFourCentralGeometricConnector
           (Additive.toMul (A.centralAffineCorePiOneData.translation epsilon'))) :
     A.OrderFourCentralBoundaryExistentialStraightLoopIdentities := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderFourActualEllipticBoundaryCover_simplyConnected
-  refine ⟨A.orderFourActualCentralGeometricConnector, ?_, ?_⟩
-  · rw [A.orderFourActualEllipticBoundaryDeckStraightCentralLoop_class]
+    A.ellipticFourBoundaryCover_simplyConnected
+  refine ⟨A.ellipticFourCentralGeometricConnector, ?_, ?_⟩
+  · rw [A.ellipticFourBoundaryDeckStraightCentralLoop_class]
     exact hmeridian
-  · rw [A.orderFourActualEllipticBoundaryDeckStraightCentralLoop_class]
+  · rw [A.ellipticFourBoundaryDeckStraightCentralLoop_class]
     exact htranslation
 
 end SphereSixComplex.Geometry.PaperAnalyticData

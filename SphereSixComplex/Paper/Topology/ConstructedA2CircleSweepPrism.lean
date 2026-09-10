@@ -6,14 +6,14 @@ public import SphereSixComplex.Prerequisites.Topology.ClosedHomotopyPrism
 @[expose] public section
 noncomputable section
 open Set Topology Matrix CategoryTheory
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex
 open SphereSixComplex.Periods
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
@@ -58,12 +58,12 @@ public def constructedA2CircleSweepParameter (i : Fin 2) : ContinuousMap unitInt
 public theorem constructedA2CircleSweepParameter_zero (i : Fin 2) :
     constructedA2CircleSweepParameter i 0 = 1 := by
   fin_cases i <;> ext j <;> fin_cases j <;>
-    simp [constructedA2CircleSweepParameter, constructedA2CircleOnePhase, constructedCircleBallCell]
+    simp [constructedA2CircleSweepParameter, constructedA2CircleOnePhase, CircleCell.ballParam]
 
 public theorem constructedA2CircleSweepParameter_one (i : Fin 2) :
     constructedA2CircleSweepParameter i 1 = 1 := by
   fin_cases i <;> ext j <;> fin_cases j <;>
-    norm_num [constructedA2CircleSweepParameter, constructedA2CircleOnePhase, constructedCircleBallCell]
+    norm_num [constructedA2CircleSweepParameter, constructedA2CircleOnePhase, CircleCell.ballParam]
 
 public def constructedA2CircleSweepHomotopy
     (W : ActualPuncturedCuspCollarWitness N constructedModel) (i : Fin 2) :
@@ -117,6 +117,6 @@ public theorem constructedA2CircleSweepHomotopy_threeCell
   ext j
   fin_cases j <;>
     simp [constructedA2CircleSweepParameter, constructedA2CircleOnePhase,
-      constructedA2CircleTwoPhase, constructedCircleBallCell]
+      constructedA2CircleTwoPhase, CircleCell.ballParam]
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric

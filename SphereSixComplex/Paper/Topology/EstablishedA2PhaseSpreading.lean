@@ -15,7 +15,7 @@ It contains no quotient retraction, homology, Euler-characteristic, or global pa
 
 noncomputable section
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
 open SphereSixComplex.Periods
 open SphereSixComplex.Geometry.CuspFilling
@@ -538,4 +538,4 @@ public noncomputable def NormalizedPolarHoneycombConstructionData.toPolarHoneyco
   Q.toPolarHoneycombConstructionData.toPolarHoneycombData
 
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric

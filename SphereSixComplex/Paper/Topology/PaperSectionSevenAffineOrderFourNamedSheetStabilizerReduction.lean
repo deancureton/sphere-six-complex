@@ -23,25 +23,25 @@ open SphereSixComplex.TriangleGroup
 /-- At a marked-band point, every regular deck transformation carrying the named radial lift
 into the selected order-four collar fixes the distinguished order-four elliptic centre. -/
 public def OrderFourCollarDecksFixCenterAt
-    (A : PaperAnalyticData) (x : A.SectionSevenAffineMarkedBand) : Prop :=
+    (A : PaperAnalyticData) (x : A.affineMarkedBand) : Prop :=
   ∀ g : Delta,
     ‖(orderFourCayleyHomeomorph
       (fuchsianSourceAction g •
-        (A.sectionSevenAffineOrderFourRadialBaseLift
-          (A.sectionSevenAffineBandStripCoordinate x)).1) : ℂ)‖ <
+        (A.affineOrderFourRadialBaseLift
+          (A.affineBandStripCoordinate x)).1) : ℂ)‖ <
         A.starSeparation.orderFour.radius →
       fuchsianSourceAction g • fuchsianTwoFixedPoint = fuchsianTwoFixedPoint
 
 /-- The centre-fixing statement is exactly the assertion that every deck transformation
 entering the selected collar belongs to the embedded order-four factor. -/
 public theorem orderFourCollarDecksFixCenterAt_iff_mem_orderFourFactor
-    (A : PaperAnalyticData) (x : A.SectionSevenAffineMarkedBand) :
+    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
     A.OrderFourCollarDecksFixCenterAt x ↔
       ∀ g : Delta,
         ‖(orderFourCayleyHomeomorph
           (fuchsianSourceAction g •
-            (A.sectionSevenAffineOrderFourRadialBaseLift
-              (A.sectionSevenAffineBandStripCoordinate x)).1) : ℂ)‖ <
+            (A.affineOrderFourRadialBaseLift
+              (A.affineBandStripCoordinate x)).1) : ℂ)‖ <
             A.starSeparation.orderFour.radius →
           ∃ a : CyclicFour, g = Monoid.Coprod.inr a := by
   constructor
@@ -53,10 +53,10 @@ public theorem orderFourCollarDecksFixCenterAt_iff_mem_orderFourFactor
 /-- Pointwise, the old named-sheet Cayley bound is equivalent to the precise centre-fixing
 condition on every deck translate detected by the quotient overlap construction. -/
 public theorem namedOrderFourRadialBase_cayley_lt_iff_collarDecksFixCenterAt
-    (A : PaperAnalyticData) (x : A.SectionSevenAffineMarkedBand) :
+    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
     ‖(orderFourCayleyHomeomorph
-      (A.sectionSevenAffineOrderFourRadialBaseLift
-        (A.sectionSevenAffineBandStripCoordinate x)).1 : ℂ)‖ <
+      (A.affineOrderFourRadialBaseLift
+        (A.affineBandStripCoordinate x)).1 : ℂ)‖ <
         A.starSeparation.orderFour.radius ↔
       A.OrderFourCollarDecksFixCenterAt x := by
   constructor
@@ -70,11 +70,11 @@ public theorem namedOrderFourRadialBase_cayley_lt_iff_collarDecksFixCenterAt
 
 /-- Globally, the order-four named radial collar compatibility is equivalent to the assertion
 that every deck translate entering the selected collar fixes the order-four elliptic centre. -/
-public theorem sectionSevenAffineOrderFourNamedRadialCollarCompatibility_iff_collarDecksFixCenter
+public theorem affineOrderFourNamedRadialCollarCompatibility_iff_collarDecksFixCenter
     (A : PaperAnalyticData) :
-    A.SectionSevenAffineOrderFourNamedRadialCollarCompatibility ↔
-      ∀ x : A.SectionSevenAffineMarkedBand, A.OrderFourCollarDecksFixCenterAt x := by
-  rw [A.sectionSevenAffineOrderFourNamedRadialCollarCompatibility_iff]
+    A.AffineOrderFourNamedRadialCollarCompatibility ↔
+      ∀ x : A.affineMarkedBand, A.OrderFourCollarDecksFixCenterAt x := by
+  rw [A.affineOrderFourNamedRadialCollarCompatibility_iff]
   constructor
   · intro h x
     exact (A.namedOrderFourRadialBase_cayley_lt_iff_collarDecksFixCenterAt x).mp (h x)

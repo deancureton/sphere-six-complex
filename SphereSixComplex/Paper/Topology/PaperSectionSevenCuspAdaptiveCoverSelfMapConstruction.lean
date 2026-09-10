@@ -260,12 +260,12 @@ open SphereSixComplex.MappingTorusDegreeOneCoverComparison
 
 variable {A : PaperAnalyticData}
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 /-- An endpoint-fixed phase with the two exact band criteria supplies all four fields of the
 adaptive degree-one self-map package. -/
 public noncomputable def actualCuspAdaptiveCoverDegreeOneSelfMapOfPhase
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (r : let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
       C(unitInterval × G.Fiber, unitInterval))
@@ -297,7 +297,7 @@ public noncomputable def actualCuspAdaptiveCoverDegreeOneSelfMapOfPhase
       edge_pullback := circleMappingTorusReparametrization_edge_pullback
         G.clutching r hzero hone (actualCuspMappingTorusOrderThreeOpen R) hedge }
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

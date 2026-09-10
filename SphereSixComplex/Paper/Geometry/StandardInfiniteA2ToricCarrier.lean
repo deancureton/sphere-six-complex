@@ -26,7 +26,7 @@ open CategoryTheory Function Matrix Set Topology
 open scoped ContDiff Manifold
 open SphereSixComplex.Geometry.CuspCombinatorics
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+namespace SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 /-- The two affine triangles based at each lattice point. -/
 public abbrev ChartIndex := Bool × ToricLattice
@@ -733,4 +733,4 @@ public theorem t2Space : T2Space Carrier := by
   have he := (inclusion_eq_iff a b u v).mp (hau.trans hbv.symm)
   exact hUV (show (u, v) ∈ U ×ˢ V from ⟨hu, hv⟩) ⟨by simpa using he.1, he.2⟩
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+end SphereSixComplex.Geometry.InfiniteA2Toric.Construction

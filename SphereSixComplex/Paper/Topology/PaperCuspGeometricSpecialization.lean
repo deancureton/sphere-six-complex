@@ -10,7 +10,7 @@ open scoped ContinuousMap
 namespace SphereSixComplex
 open SphereSixComplex.CircleMappingTorusHomologyBases
 open SphereSixComplex.Geometry.CuspPeriodExpansion
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
+open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
@@ -307,7 +307,7 @@ public noncomputable def actualCuspFillingHomologyTwoEquiv :
   EstablishedStandardA2CuspSpecialization.cuspFillingTwoReadout A
 
 /-- The corresponding dimensionally correct realization of the paper's cusp collar. -/
-public noncomputable def actualCuspCollarRadialMappingTorusRealization :
+public noncomputable def cuspCollarRadialMappingTorusRealization :
     A.CuspCollarRadialMappingTorusRealization where
   radius := A.starCuspWitness.localWitness.radius
   radius_pos := A.starCuspWitness.localWitness.radius_pos
@@ -327,21 +327,21 @@ public noncomputable def cuspRawHomologyTwoEquiv :
   exact A.actualCuspRadialClutchingData.geometricHomologyTwoEquiv
 
 /-- The actual cusp collar bases normalized for the final Section 7 attachment. -/
-public noncomputable def actualCuspSectionSevenHomologyOneEquiv :
+public noncomputable def cuspSectionSevenHomologyOneEquiv :
     IntegralSingularHomology 1 (A.openEmbeddingStarData.collarSource 0) ≃+ (Fin 3 → ℤ) :=
   A.cuspRawHomologyOneEquiv.trans cuspSectionSevenOneCoordinateChange
 
-public noncomputable def actualCuspSectionSevenHomologyTwoEquiv :
+public noncomputable def cuspSectionSevenHomologyTwoEquiv :
     IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0) ≃+ (Fin 6 → ℤ) :=
   A.cuspRawHomologyTwoEquiv.trans cuspSectionSevenTwoCoordinateChange
 
 /-- Replace only the cusp fields of any local basis package by the controlled geometric bases. -/
 public noncomputable def withActualGeometricCuspBases
-    (B : A.SectionSevenCollarInteriorHomologyBases) :
-    A.SectionSevenCollarInteriorHomologyBases where
-  cuspCollarOne := A.actualCuspSectionSevenHomologyOneEquiv
+    (B : A.CollarInteriorHomologyBases) :
+    A.CollarInteriorHomologyBases where
+  cuspCollarOne := A.cuspSectionSevenHomologyOneEquiv
   ellipticInteriorOne := B.ellipticInteriorOne
-  cuspCollarTwo := A.actualCuspSectionSevenHomologyTwoEquiv
+  cuspCollarTwo := A.cuspSectionSevenHomologyTwoEquiv
   cuspFillingTwo := fun _ => A.actualCuspFillingHomologyTwoEquiv
   ellipticInteriorTwo := B.ellipticInteriorTwo
 
@@ -350,17 +350,17 @@ public noncomputable def withActualGeometricCuspBases
 The cusp collar's own degree-one and degree-two bases are already available geometrically, so the
 elliptic interior's are the only ones the package still has to be given.  `withActualGeometricCuspBases`
 says the same thing but needs a package to start from; this one does not. -/
-public noncomputable def sectionSevenCollarInteriorHomologyBasesOfEllipticInterior
+public noncomputable def collarInteriorHomologyBasesOfEllipticInterior
     (ellipticOne : IntegralSingularHomology 1
         ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4)) ≃+
       (Fin 1 → ℤ))
     (ellipticTwo : IntegralSingularHomology 2
         ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4)) ≃+
       (Fin 2 → ℤ)) :
-    A.SectionSevenCollarInteriorHomologyBases where
-  cuspCollarOne := A.actualCuspSectionSevenHomologyOneEquiv
+    A.CollarInteriorHomologyBases where
+  cuspCollarOne := A.cuspSectionSevenHomologyOneEquiv
   ellipticInteriorOne := ellipticOne
-  cuspCollarTwo := A.actualCuspSectionSevenHomologyTwoEquiv
+  cuspCollarTwo := A.cuspSectionSevenHomologyTwoEquiv
   cuspFillingTwo := fun _ => A.actualCuspFillingHomologyTwoEquiv
   ellipticInteriorTwo := ellipticTwo
 
@@ -373,15 +373,15 @@ public theorem withActualGeometricCuspBases_ofEllipticInterior
         ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4)) ≃+
       (Fin 2 → ℤ)) :
     A.withActualGeometricCuspBases
-        (A.sectionSevenCollarInteriorHomologyBasesOfEllipticInterior ellipticOne ellipticTwo) =
-      A.sectionSevenCollarInteriorHomologyBasesOfEllipticInterior ellipticOne ellipticTwo :=
+        (A.collarInteriorHomologyBasesOfEllipticInterior ellipticOne ellipticTwo) =
+      A.collarInteriorHomologyBasesOfEllipticInterior ellipticOne ellipticTwo :=
   rfl
 
 /-- The actual cusp inclusion has the degree-one and degree-two coordinates required by the
 final Section 7 attachment. -/
-public theorem actualCuspFillingInclusionCoordinates
-    (B : A.SectionSevenCollarInteriorHomologyBases) :
-    A.ActualCuspFillingInclusionCoordinates (A.withActualGeometricCuspBases B) where
+public theorem cuspFillingInclusionCoordinates
+    (B : A.CollarInteriorHomologyBases) :
+    A.CuspFillingInclusionCoordinates (A.withActualGeometricCuspBases B) where
   degreeOne x := by
     change actualLocalCuspFillingHomologyOneEquiv A.starCuspWitness
         A.cuspCentralFiberRetractionData

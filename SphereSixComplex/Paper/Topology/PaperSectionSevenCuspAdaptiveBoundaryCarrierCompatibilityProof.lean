@@ -21,12 +21,12 @@ namespace SphereSixComplex.Geometry.PaperAnalyticData
 
 variable {A : PaperAnalyticData}
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 /-- Oriented naturality for the selected full-fibre slice reconstructs the adaptive carrier
 equality on the complete Mayer--Vietoris boundary image. -/
 public theorem adaptiveBoundaryCarrierCompatibility_of_fullFibreOrientedBoundaryNaturality
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (h : ActualCuspWangFullFibreOrientedBoundaryNaturality R) :
     ActualCuspAdaptiveBoundaryCarrierCompatibility R := by
   let G := A.actualCuspRadialClutchingData
@@ -68,7 +68,7 @@ public theorem adaptiveBoundaryCarrierCompatibility_of_fullFibreOrientedBoundary
 /-- The adaptive boundary carrier statement is exactly the oriented full-fibre naturality
 square; the adaptive reparameterization introduces no additional residual. -/
 public theorem adaptiveBoundaryCarrierCompatibility_iff_fullFibreOrientedBoundaryNaturality
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     ActualCuspAdaptiveBoundaryCarrierCompatibility R ↔
       ActualCuspWangFullFibreOrientedBoundaryNaturality R :=
   ⟨fullFibreOrientedBoundaryNaturality_of_adaptiveCarrierCompatibility R,
@@ -77,13 +77,13 @@ public theorem adaptiveBoundaryCarrierCompatibility_iff_fullFibreOrientedBoundar
 /-- Equivalently, adaptive carrier compatibility consists of precisely the two remaining
 invariant-generator comparisons for the explicit full-fibre slice. -/
 public theorem adaptiveBoundaryCarrierCompatibility_iff_fullFibreInvariantResidual
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     ActualCuspAdaptiveBoundaryCarrierCompatibility R ↔
       ActualCuspWangFullFibreSliceInvariantResidual R := by
   rw [adaptiveBoundaryCarrierCompatibility_iff_fullFibreOrientedBoundaryNaturality,
     fullFibreOrientedBoundaryNaturality_iff_invariantResidual]
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

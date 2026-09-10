@@ -20,7 +20,7 @@ namespace SphereSixComplex.Geometry.CuspStraighteningRetraction
 
 open SphereSixComplex.Periods
 open CuspFilling CuspLocalPhaseAction CuspPeriodExpansion
-open StandardInfiniteA2ToricModel
+open InfiniteA2Toric
 
 /-- The action of compact phases on the positive part of a local toric carrier. -/
 public def compactPhaseOrbit (M : Model) (r : ℝ)
@@ -44,7 +44,7 @@ public theorem continuous_compactTorusEmbedding : Continuous compactTorusEmbeddi
 public theorem continuous_compactPhaseOrbit (M : Model) (r : ℝ)
     (positivePart : Set (LocalCarrier M r)) :
     Continuous (compactPhaseOrbit M r positivePart) := by
-  let J := StandardInfiniteA2ToricModel.Established.establishedContinuousTorusAction M
+  let J := InfiniteA2Toric.establishedContinuousTorusAction M
   have hg : Continuous (fun z : CompactTorus × positivePart ↦ compactTorusEmbedding z.1) :=
     continuous_compactTorusEmbedding.comp continuous_fst
   have hp : Continuous (fun z : CompactTorus × positivePart ↦ (z.2 : M.Carrier)) :=

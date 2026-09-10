@@ -7,14 +7,14 @@ public import SphereSixComplex.Paper.Topology.CuspFiniteFiberCoordinateTori
 @[expose] public section
 noncomputable section
 open Set Topology Matrix
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 open ComplexTorus CuspToricPhaseAction
 open SphereSixComplex.Periods CuspFilling CuspLocalPhaseAction CuspPuncturedCollarBridge
 open CuspPeriodExpansion CuspStraighteningRetraction CuspStraighteningAlgebra
 open CuspStraighteningExtension
-open CuspStraighteningHomeomorph StandardInfiniteA2ToricQuantitativeRegions
+open CuspStraighteningHomeomorph InfiniteA2Toric.QuantitativeRegions
 open CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
-open StandardInfiniteA2ToricModel.Construction
+open InfiniteA2Toric.Construction
 variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {r : ℝ}
 
@@ -320,4 +320,4 @@ theorem constructedCuspPositiveProjection_firstTorus
   rw [hz]
   exact constructedCuspPositiveProjection_firstTorus_real A a b
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric

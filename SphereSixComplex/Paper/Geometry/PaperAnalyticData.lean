@@ -33,8 +33,8 @@ public structure PaperAnalyticData where
 /-- Every analytic package in this development uses the explicitly constructed standard
 infinite `A₂` toric model. -/
 public abbrev PaperAnalyticData.toricModel (_A : PaperAnalyticData) :
-    StandardInfiniteA2ToricModel.Model :=
-  StandardInfiniteA2ToricModel.Construction.constructedModel
+    InfiniteA2Toric.Model :=
+  InfiniteA2Toric.Construction.constructedModel
 
 /-- The established modular, explicit affine-descent, cusp-normalization, and toric inputs supply
 one coherent analytic package. -/
@@ -94,7 +94,7 @@ public theorem exists_establishedPaperAnalyticData : Nonempty PaperAnalyticData 
 @[simp]
 public theorem PaperAnalyticData.toricModel_eq_constructed (A : PaperAnalyticData) :
     A.toricModel =
-      StandardInfiniteA2ToricModel.Construction.constructedModel := by
+      InfiniteA2Toric.Construction.constructedModel := by
   rfl
 
 namespace PaperAnalyticData

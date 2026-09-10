@@ -107,7 +107,7 @@ public theorem finiteCoverIntegralCechRowAugmentation_quasiIso
 /-- The Leray--Cech augmentation for a finite open cover.  In fact the proof only uses that the
 target consists of cover-small simplices: its presentation by cover members is degreewise
 surjective for every family of subsets. -/
-public noncomputable def establishedFiniteOpenCoverLerayCechComparison
+public noncomputable def finiteOpenCoverLerayCechComparison
     [Fintype iota] (U : iota → Set X)
     (_hOpen : ∀ i, IsOpen (U i)) (_hCover : ⋃ i, U i = Set.univ) :
     FiniteOpenCoverLerayCechComparison U := by

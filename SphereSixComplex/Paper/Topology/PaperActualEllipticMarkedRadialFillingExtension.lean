@@ -56,10 +56,10 @@ private theorem standardMultiplier_zmodVal_mul_angleMap
 
 /-- In canonical fixed radial coordinates, the order-three collar lift is the rescaled angular
 cover together with its original fixed vector coordinate. -/
-public theorem orderThreeActualCoverToCanonicalRadialHomeomorph_radialFillingLift
+public theorem ellipticThreeCoverToCanonicalRadialHomeomorph_radialFillingLift
     (q : OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :
-    A.orderThreeActualCoverToCanonicalRadialHomeomorph
-        (A.orderThreeActualEllipticRadialFillingLift q) =
+    A.ellipticThreeCoverToCanonicalRadialHomeomorph
+        (A.ellipticThreeRadialFillingLift q) =
       (⟨((angularCover (T := ComplexTwoSpace) 3
           A.starSeparation.orderThree.radius_lt_one.le q).1.1 : ℂ) /
             (A.starSeparation.orderThree.radius : ℂ), by
@@ -109,10 +109,10 @@ public theorem orderThreeActualCoverToCanonicalRadialHomeomorph_radialFillingLif
 
 /-- In canonical fixed radial coordinates, the order-four collar lift is the rescaled angular
 cover together with its original fixed vector coordinate. -/
-public theorem orderFourActualCoverToCanonicalRadialHomeomorph_radialFillingLift
+public theorem ellipticFourCoverToCanonicalRadialHomeomorph_radialFillingLift
     (q : OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :
-    A.orderFourActualCoverToCanonicalRadialHomeomorph
-        (A.orderFourActualEllipticRadialFillingLift q) =
+    A.ellipticFourCoverToCanonicalRadialHomeomorph
+        (A.ellipticFourRadialFillingLift q) =
       (⟨((angularCover (T := ComplexTwoSpace) 4
           A.starSeparation.orderFour.radius_lt_one.le q).1.1 : ℂ) /
             (A.starSeparation.orderFour.radius : ℂ), by
@@ -164,11 +164,11 @@ public theorem orderFourActualCoverToCanonicalRadialHomeomorph_radialFillingLift
 private theorem orderThreeActualEllipticBoundaryAction_snd
     (g : OrderThreeAffineMappingTorusDeck A.periods)
     (q : OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     (g • q).2.2 =
       affineCyclicBoundaryDeckTransform (orderThreeCentralFiberPresentationData A.periods)
-        (A.orderThreeActualToCentralBoundaryDeckEquiv g) q.2.2 := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+        (A.ellipticThreeToCentralBoundaryDeckEquiv g) q.2.2 := by
+  let _ := A.ellipticThreeBoundaryAction
   change periodVector _ g.left.toAdd +
         (affineEquiv (orderThreeDescendedAffineTorusAutomorphism A.periods).lift
           ((3 : ℂ)⁻¹ • periodVector _ epsilon) ^ g.right.toAdd) q.2.2 =
@@ -192,11 +192,11 @@ private theorem orderThreeActualEllipticBoundaryAction_snd
 private theorem orderFourActualEllipticBoundaryAction_snd
     (g : OrderFourAffineMappingTorusDeck A.periods)
     (q : OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     (g • q).2.2 =
       affineCyclicBoundaryDeckTransform (orderFourCentralFiberPresentationData A.periods)
-        (A.orderFourActualToCentralBoundaryDeckEquiv g) q.2.2 := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+        (A.ellipticFourToCentralBoundaryDeckEquiv g) q.2.2 := by
+  let _ := A.ellipticFourBoundaryAction
   change periodVector _ g.left.toAdd +
         (affineEquiv (orderFourDescendedAffineTorusAutomorphism A.periods).lift
           ((4 : ℂ)⁻¹ • periodVector _ (-epsilon')) ^ g.right.toAdd) q.2.2 =
@@ -219,30 +219,30 @@ private theorem orderFourActualEllipticBoundaryAction_snd
 
 /-- The actual order-three collar action and the transported filling action agree under the
 canonical radial lift. -/
-public theorem orderThreeActualEllipticRadialFillingLift_equivariant
+public theorem ellipticThreeRadialFillingLift_equivariant
     (g : OrderThreeAffineMappingTorusDeck A.periods)
     (q : OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :
-    letI := A.orderThreeActualEllipticBoundaryAction
-    letI := A.orderThreeActualRadialFillingDeckAction
-    A.orderThreeActualEllipticRadialFillingLift (g • q) =
-      A.orderThreeActualEllipticBoundaryDeckData.fillingDeckMap g •
-        A.orderThreeActualEllipticRadialFillingLift q := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
-  let _ := A.orderThreeActualRadialFillingDeckAction
-  apply A.orderThreeActualCoverToCanonicalRadialHomeomorph.injective
-  rw [A.orderThreeActualCoverToCanonicalRadialHomeomorph_radialFillingLift]
-  change _ = A.orderThreeActualCoverToCanonicalRadialHomeomorph
+    letI := A.ellipticThreeBoundaryAction
+    letI := A.ellipticThreeRadialFillingDeckAction
+    A.ellipticThreeRadialFillingLift (g • q) =
+      A.ellipticThreeBoundaryDeckData.fillingDeckMap g •
+        A.ellipticThreeRadialFillingLift q := by
+  let _ := A.ellipticThreeBoundaryAction
+  let _ := A.ellipticThreeRadialFillingDeckAction
+  apply A.ellipticThreeCoverToCanonicalRadialHomeomorph.injective
+  rw [A.ellipticThreeCoverToCanonicalRadialHomeomorph_radialFillingLift]
+  change _ = A.ellipticThreeCoverToCanonicalRadialHomeomorph
     (@SMul.smul _ _
-      (pullbackMulActionHomeomorph A.orderThreeActualUnitRadialFillingDeckAction
-        A.orderThreeActualCoverToCanonicalRadialHomeomorph).toSMul
-      (A.orderThreeActualEllipticBoundaryDeckData.fillingDeckMap g)
-      (A.orderThreeActualEllipticRadialFillingLift q))
+      (pullbackMulActionHomeomorph A.ellipticThreeUnitRadialFillingDeckAction
+        A.ellipticThreeCoverToCanonicalRadialHomeomorph).toSMul
+      (A.ellipticThreeBoundaryDeckData.fillingDeckMap g)
+      (A.ellipticThreeRadialFillingLift q))
   rw [pullbackMulActionHomeomorph_apply]
-  rw [A.orderThreeActualCoverToCanonicalRadialHomeomorph_radialFillingLift]
+  rw [A.ellipticThreeCoverToCanonicalRadialHomeomorph_radialFillingLift]
   apply Prod.ext
   · apply Subtype.ext
     let P := orderThreeCentralFiberPresentationData A.periods
-    let d := A.orderThreeActualToCentralBoundaryDeckEquiv g
+    let d := A.ellipticThreeToCentralBoundaryDeckEquiv g
     change
       ((angularCover (T := ComplexTwoSpace) 3
           A.starSeparation.orderThree.radius_lt_one.le
@@ -290,41 +290,41 @@ public theorem orderThreeActualEllipticRadialFillingLift_equivariant
     rw [← standardMultiplier_zmodVal_mul_angleMap]
     ring
   · let P := orderThreeCentralFiberPresentationData A.periods
-    let d := A.orderThreeActualToCentralBoundaryDeckEquiv g
+    let d := A.ellipticThreeToCentralBoundaryDeckEquiv g
     rw [A.orderThreeActualEllipticBoundaryAction_snd]
     change affineCyclicBoundaryDeckTransform P d q.2.2 =
       @SMul.smul _ _ (affineCyclicFillingDeckAction P).toSMul
-        (A.orderThreeActualToCanonicalFillingDeckEquiv
-          (A.orderThreeActualEllipticBoundaryDeckData.fillingDeckMap g)) q.2.2
-    rw [A.orderThreeActualToCanonicalFillingDeckEquiv_fillingDeckMap]
+        (A.ellipticThreeToCanonicalFillingDeckEquiv
+          (A.ellipticThreeBoundaryDeckData.fillingDeckMap g)) q.2.2
+    rw [A.ellipticThreeToCanonicalFillingDeckEquiv_fillingDeckMap]
     exact (affineCyclicFillingDeckMap_smul P d q.2.2).symm
 
 /-- The actual order-four collar action and the transported filling action agree under the
 canonical radial lift. -/
-public theorem orderFourActualEllipticRadialFillingLift_equivariant
+public theorem ellipticFourRadialFillingLift_equivariant
     (g : OrderFourAffineMappingTorusDeck A.periods)
     (q : OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :
-    letI := A.orderFourActualEllipticBoundaryAction
-    letI := A.orderFourActualRadialFillingDeckAction
-    A.orderFourActualEllipticRadialFillingLift (g • q) =
-      A.orderFourActualEllipticBoundaryDeckData.fillingDeckMap g •
-        A.orderFourActualEllipticRadialFillingLift q := by
-  let _ := A.orderFourActualEllipticBoundaryAction
-  let _ := A.orderFourActualRadialFillingDeckAction
-  apply A.orderFourActualCoverToCanonicalRadialHomeomorph.injective
-  rw [A.orderFourActualCoverToCanonicalRadialHomeomorph_radialFillingLift]
-  change _ = A.orderFourActualCoverToCanonicalRadialHomeomorph
+    letI := A.ellipticFourBoundaryAction
+    letI := A.ellipticFourRadialFillingDeckAction
+    A.ellipticFourRadialFillingLift (g • q) =
+      A.ellipticFourBoundaryDeckData.fillingDeckMap g •
+        A.ellipticFourRadialFillingLift q := by
+  let _ := A.ellipticFourBoundaryAction
+  let _ := A.ellipticFourRadialFillingDeckAction
+  apply A.ellipticFourCoverToCanonicalRadialHomeomorph.injective
+  rw [A.ellipticFourCoverToCanonicalRadialHomeomorph_radialFillingLift]
+  change _ = A.ellipticFourCoverToCanonicalRadialHomeomorph
     (@SMul.smul _ _
-      (pullbackMulActionHomeomorph A.orderFourActualUnitRadialFillingDeckAction
-        A.orderFourActualCoverToCanonicalRadialHomeomorph).toSMul
-      (A.orderFourActualEllipticBoundaryDeckData.fillingDeckMap g)
-      (A.orderFourActualEllipticRadialFillingLift q))
+      (pullbackMulActionHomeomorph A.ellipticFourUnitRadialFillingDeckAction
+        A.ellipticFourCoverToCanonicalRadialHomeomorph).toSMul
+      (A.ellipticFourBoundaryDeckData.fillingDeckMap g)
+      (A.ellipticFourRadialFillingLift q))
   rw [pullbackMulActionHomeomorph_apply]
-  rw [A.orderFourActualCoverToCanonicalRadialHomeomorph_radialFillingLift]
+  rw [A.ellipticFourCoverToCanonicalRadialHomeomorph_radialFillingLift]
   apply Prod.ext
   · apply Subtype.ext
     let P := orderFourCentralFiberPresentationData A.periods
-    let d := A.orderFourActualToCentralBoundaryDeckEquiv g
+    let d := A.ellipticFourToCentralBoundaryDeckEquiv g
     change
       ((angularCover (T := ComplexTwoSpace) 4
           A.starSeparation.orderFour.radius_lt_one.le
@@ -372,41 +372,41 @@ public theorem orderFourActualEllipticRadialFillingLift_equivariant
     rw [← standardMultiplier_zmodVal_mul_angleMap]
     ring
   · let P := orderFourCentralFiberPresentationData A.periods
-    let d := A.orderFourActualToCentralBoundaryDeckEquiv g
+    let d := A.ellipticFourToCentralBoundaryDeckEquiv g
     rw [A.orderFourActualEllipticBoundaryAction_snd]
     change affineCyclicBoundaryDeckTransform P d q.2.2 =
       @SMul.smul _ _ (affineCyclicFillingDeckAction P).toSMul
-        (A.orderFourActualToCanonicalFillingDeckEquiv
-          (A.orderFourActualEllipticBoundaryDeckData.fillingDeckMap g)) q.2.2
-    rw [A.orderFourActualToCanonicalFillingDeckEquiv_fillingDeckMap]
+        (A.ellipticFourToCanonicalFillingDeckEquiv
+          (A.ellipticFourBoundaryDeckData.fillingDeckMap g)) q.2.2
+    rw [A.ellipticFourToCanonicalFillingDeckEquiv_fillingDeckMap]
     exact (affineCyclicFillingDeckMap_smul P d q.2.2).symm
 
 /-- The explicit transported action supplies the order-three filling quotient data. -/
-public noncomputable def orderThreeActualEllipticFillingQuotientData :
+public noncomputable def ellipticThreeFillingQuotientData :
     A.OrderThreeActualEllipticFillingQuotientData where
-  fillingAction := A.orderThreeActualRadialFillingDeckAction
-  fillingQuotient := A.orderThreeActualEllipticFillingProjection_isQuotientCoveringMap
+  fillingAction := A.ellipticThreeRadialFillingDeckAction
+  fillingQuotient := A.ellipticThreeFillingProjection_isQuotientCoveringMap
 
 /-- The canonical order-three lift has the prescribed deck marking, in fact at every point of
 the collar cover. -/
-public noncomputable def orderThreeActualEllipticFillingMarkedDeckData :
+public noncomputable def ellipticThreeFillingMarkedDeckData :
     A.OrderThreeActualEllipticFillingMarkedDeckData where
   toOrderThreeActualEllipticFillingQuotientData :=
-    A.orderThreeActualEllipticFillingQuotientData
+    A.ellipticThreeFillingQuotientData
   equivariant_at_boundaryBase := fun g ↦
-    A.orderThreeActualEllipticRadialFillingLift_equivariant g
-      A.orderThreeActualEllipticBoundaryBase
+    A.ellipticThreeRadialFillingLift_equivariant g
+      A.ellipticThreeBoundaryBase
 
 /-- The explicit order-four radial lift and transported action give the complete marked-base
 filling extension. -/
-public noncomputable def orderFourActualEllipticFillingExtensionAtBase :
+public noncomputable def ellipticFourFillingExtensionAtBase :
     A.OrderFourActualEllipticFillingExtensionAtBase where
-  fillingAction := A.orderFourActualRadialFillingDeckAction
-  fillingQuotient := A.orderFourActualEllipticFillingProjection_isQuotientCoveringMap
-  lift := A.orderFourActualEllipticRadialFillingLift
-  commutes := A.orderFourActualEllipticRadialFillingLift_commutes
+  fillingAction := A.ellipticFourRadialFillingDeckAction
+  fillingQuotient := A.ellipticFourFillingProjection_isQuotientCoveringMap
+  lift := A.ellipticFourRadialFillingLift
+  commutes := A.ellipticFourRadialFillingLift_commutes
   equivariant_at_boundaryBase := fun g ↦
-    A.orderFourActualEllipticRadialFillingLift_equivariant g
-      A.orderFourActualEllipticBoundaryBase
+    A.ellipticFourRadialFillingLift_equivariant g
+      A.ellipticFourBoundaryBase
 
 end SphereSixComplex.Geometry.PaperAnalyticData

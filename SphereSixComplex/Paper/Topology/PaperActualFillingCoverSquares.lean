@@ -37,25 +37,25 @@ namespace Geometry.PaperAnalyticData
 variable (A : PaperAnalyticData)
 
 /-- The vector-bundle cover composed with the order-three affine filling quotient. -/
-public noncomputable def orderThreeActualFillingCoverProjection (r : ℝ) :
+public noncomputable def ellipticThreeFillingCoverProjection (r : ℝ) :
     C(ComplexDiscBall r × ComplexTwoSpace, A.OrderThreeVaryingFilling r) where
   toFun p := Quotient.mk _ (A.orderThreeFillingCoverMap r p)
   continuous_toFun := continuous_quot_mk.comp (A.orderThreeFillingCoverMap_continuous r)
 
 /-- The vector-bundle cover composed with the order-four affine filling quotient. -/
-public noncomputable def orderFourActualFillingCoverProjection (r : ℝ) :
+public noncomputable def ellipticFourFillingCoverProjection (r : ℝ) :
     C(ComplexDiscBall r × ComplexTwoSpace, A.OrderFourVaryingFilling r) where
   toFun p := Quotient.mk _ (A.orderFourFillingCoverMap r p)
   continuous_toFun := continuous_quot_mk.comp (A.orderFourFillingCoverMap_continuous r)
 
 /-- The actual order-three filling projection from the vector-bundle cover is onto. -/
-public theorem orderThreeActualFillingCoverProjection_surjective (r : ℝ) :
-    Function.Surjective (A.orderThreeActualFillingCoverProjection r) :=
+public theorem ellipticThreeFillingCoverProjection_surjective (r : ℝ) :
+    Function.Surjective (A.ellipticThreeFillingCoverProjection r) :=
   Quotient.mk_surjective.comp (A.orderThreeFillingCoverMap_surjective r)
 
 /-- The actual order-four filling projection from the vector-bundle cover is onto. -/
-public theorem orderFourActualFillingCoverProjection_surjective (r : ℝ) :
-    Function.Surjective (A.orderFourActualFillingCoverProjection r) :=
+public theorem ellipticFourFillingCoverProjection_surjective (r : ℝ) :
+    Function.Surjective (A.ellipticFourFillingCoverProjection r) :=
   Quotient.mk_surjective.comp (A.orderFourFillingCoverMap_surjective r)
 
 /-- The candidate total space of the actual order-three filling cover is simply connected. -/

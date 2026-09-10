@@ -27,7 +27,8 @@ Concrete precedents in the pinned Mathlib include `Homeomorph.toHomotopyEquiv` a
 
 The migrations cover the ten classical assumptions and their principal interfaces,
 Wang sections and splitting, general disc/Cayley coordinates, first Hurewicz and
-relative CW tools, cusp angular methods, and affine torsor descent. Methods stay in
+relative CW tools, cusp angular methods, affine torsor descent, the toric construction,
+affine and elliptic filling methods, and the classical homology interfaces. Methods stay in
 the namespace of their receiver so that dot notation remains available.
 Historical names elsewhere remain candidates for subsequent API migrations; this
 document does not certify that every declaration already follows these conventions.

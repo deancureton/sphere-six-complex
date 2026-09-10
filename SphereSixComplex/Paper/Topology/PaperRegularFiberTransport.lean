@@ -88,8 +88,8 @@ public theorem regularFixedFiberMap_homotopic
     map_zero_left := fun t ↦ by change A.regularFixedFiberPoint (p 0) t = _; rw [p.source]; rfl
     map_one_left := fun t ↦ by change A.regularFixedFiberPoint (p 1) t = _; rw [p.target]; rfl }⟩
 
-public theorem regularFixedFiberPoint_strip (L : A.SectionSevenAffineStripLift)
-    (z : sectionSevenAffineVerticalStrip) (t : AdditiveTorus A.duplicatedSectionSevenBandParameter) :
+public theorem regularFixedFiberPoint_strip (L : A.AffineStripLift)
+    (z : affineVerticalStrip) (t : AdditiveTorus A.duplicatedSectionSevenBandParameter) :
     A.regularFixedFiberPoint (L.lift z) t = A.stripLiftPoint L z t := rfl
 
 end SphereSixComplex.Geometry.PaperAnalyticData

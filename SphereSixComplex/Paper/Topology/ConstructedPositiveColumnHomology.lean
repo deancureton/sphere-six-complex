@@ -9,7 +9,7 @@ public import SphereSixComplex.Paper.Topology.ConstructedCuspPositivePhaseVanish
 noncomputable section
 open Set Topology
 open scoped ContinuousMap
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
 def intervalProductSliceEquiv {X : Type*} [TopologicalSpace X] {r : ℝ}
     (t : Set.Ioo (0 : ℝ) r) : ContinuousMap.HomotopyEquiv X (X × Set.Ioo (0 : ℝ) r) where
@@ -117,4 +117,4 @@ theorem constructedCuspHomologyTwoPositiveReadout_phaseSweep (A : PaperAnalyticD
   erw [constructedCuspPositiveProjection_phaseSweep_zero A.starCuspWitness k x]
   exact map_zero _
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric

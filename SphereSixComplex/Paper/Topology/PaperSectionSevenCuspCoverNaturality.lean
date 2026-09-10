@@ -20,16 +20,16 @@ open AlgebraicTopology CategoryTheory Set TopologicalSpace
 
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 
-open SectionSevenEllipticTwoDiscHomologyCoordinates
+open EllipticTwoDiscHomologyCoordinates
 
-variable {A : PaperAnalyticData} (D : A.SectionSevenEllipticTwoDiscCoverData)
+variable {A : PaperAnalyticData} (D : A.EllipticTwoDiscCoverData)
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 /-- The actual inclusion of the cusp collar into the cusp-free elliptic interior. -/
-public def cuspToEllipticInteriorMap (_D : A.SectionSevenEllipticTwoDiscCoverData) :
+public def cuspToEllipticInteriorMap (_D : A.EllipticTwoDiscCoverData) :
     TopCat.of (A.openEmbeddingStarData.collarSource 0) ⟶
-      TopCat.of A.SectionSevenEllipticInterior :=
+      TopCat.of A.ellipticInterior :=
   TopCat.ofHom ((IntegralMayerVietoris.interToLeft
       ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).stage (2 : Fin 4))
       ((A.openEmbeddingStarData.SectionSevenMayerVietorisCover).piece 3)).comp
@@ -81,7 +81,7 @@ intersection. -/
 public noncomputable def cuspPulledBackBoundary
     (x : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0)) :
     IntegralSingularHomology 1
-      (D.orderThreeSide ∩ D.orderFourSide : Set A.SectionSevenEllipticInterior) :=
+      (D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior) :=
   ConcreteCategory.hom
     (D.cuspOpenCoverHomologyComparison.boundary 1 ≫
       BinaryOpenCover.openIntersectionPullbackHomologyMap D.cuspToEllipticInteriorMap
@@ -95,7 +95,7 @@ public theorem cuspToEllipticInteriorMap_homology
     (k : ℕ) (x : IntegralSingularHomology k (A.openEmbeddingStarData.collarSource 0)) :
     integralSingularHomologyMap k D.cuspToEllipticInteriorMap.hom x =
       integralSingularHomologyEquiv k
-        (topologicalSubsetHomeomorphOfEqUniv (TopCat.of A.SectionSevenEllipticInterior)
+        (topologicalSubsetHomeomorphOfEqUniv (TopCat.of A.ellipticInterior)
           (D.orderThreeSide ∪ D.orderFourSide) D.sides_cover)
         (cuspToEllipticUnionHomology D k x) := by
   simp [cuspToEllipticInteriorMap, cuspToEllipticUnionHomology,
@@ -130,7 +130,7 @@ public theorem canonicalBoundary_cuspToEllipticUnionHomology
         (cuspToEllipticUnionHomology D 2 x) =
       integralSingularHomologyMap 2 D.cuspToEllipticInteriorMap.hom x := by
     change integralSingularHomologyEquiv 2
-        (topologicalSubsetHomeomorphOfEqUniv (TopCat.of A.SectionSevenEllipticInterior)
+        (topologicalSubsetHomeomorphOfEqUniv (TopCat.of A.ellipticInterior)
           (D.orderThreeSide ∪ D.orderFourSide) D.sides_cover)
         (cuspToEllipticUnionHomology D 2 x) = _
     exact (D.cuspToEllipticInteriorMap_homology 2 x).symm
@@ -170,7 +170,7 @@ elliptic sides. -/
 public theorem SectionSevenCuspPulledBackBoundaryBasisBridge.toMayerVietorisBasisBridge
     (N : A.EllipticBandHomologyAlignment D)
     (G : D.SectionSevenCuspPulledBackBoundaryBasisBridge N) :
-    A.SectionSevenCuspDegreeTwoMayerVietorisBasisBridge N where
+    A.CuspDegreeTwoMayerVietorisBasisBridge N where
   lowerBasis_factors i := by
     apply ((presentationTwo (D := D)).exact_inclusion_boundary _).mp
     rw [presentationTwo_boundary]
@@ -193,6 +193,6 @@ public theorem SectionSevenCuspPulledBackBoundaryBasisBridge.toMayerVietorisBasi
         (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) = _ at h
     exact h
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end SphereSixComplex.Geometry.PaperAnalyticData

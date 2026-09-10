@@ -39,11 +39,11 @@ public noncomputable def orderFourFillingRelationCayleyDiscLoop :
     Path
       (⟨A.orderFourFillingRelationCayleyBaseValue, by
         rw [A.orderFourFillingRelationCayleyBaseValue_norm]
-        exact A.orderFourActualEllipticBoundaryBase.1.2.2.trans
+        exact A.ellipticFourBoundaryBase.1.2.2.trans
           A.starSeparation.orderFour.radius_lt_one⟩ : ComplexUnitDisc)
       (⟨A.orderFourFillingRelationCayleyBaseValue, by
         rw [A.orderFourFillingRelationCayleyBaseValue_norm]
-        exact A.orderFourActualEllipticBoundaryBase.1.2.2.trans
+        exact A.ellipticFourBoundaryBase.1.2.2.trans
           A.starSeparation.orderFour.radius_lt_one⟩ : ComplexUnitDisc) where
   toFun t := ⟨(A.orderFourFillingRelationCayleyLoop t).1, by
     have hpoint : (A.orderFourFillingRelationCayleyLoop t).1 =
@@ -52,7 +52,7 @@ public noncomputable def orderFourFillingRelationCayleyDiscLoop :
         puncturedComplexIntegerCirclePoint, localDegreeCirclePoint]
     rw [hpoint]
     rw [localDegreeCirclePoint_norm, A.orderFourFillingRelationCayleyBaseValue_norm]
-    exact A.orderFourActualEllipticBoundaryBase.1.2.2.trans
+    exact A.ellipticFourBoundaryBase.1.2.2.trans
       A.starSeparation.orderFour.radius_lt_one⟩
   continuous_toFun := by
     apply Continuous.subtype_mk
@@ -70,13 +70,13 @@ public noncomputable def orderFourFillingRelationCayleyDiscLoop :
 
 /-- Add the fixed collar offset to the based principal-gauge loop. -/
 public noncomputable def orderFourPrincipalGaugeWithOffsetPath :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     Path
       (A.orderFourFillingRelationPrincipalGaugeLoop 0 +
-        Quotient.mk _ A.orderFourActualEllipticBoundaryBase.2.2)
+        Quotient.mk _ A.ellipticFourBoundaryBase.2.2)
       (A.orderFourFillingRelationPrincipalGaugeLoop 0 +
-        Quotient.mk _ A.orderFourActualEllipticBoundaryBase.2.2) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+        Quotient.mk _ A.ellipticFourBoundaryBase.2.2) := by
+  let _ := A.ellipticFourBoundaryAction
   exact
     { toFun := A.orderFourPrincipalGaugeWithOffsetMap
       continuous_toFun := A.orderFourPrincipalGaugeWithOffsetMap.continuous
@@ -84,20 +84,20 @@ public noncomputable def orderFourPrincipalGaugeWithOffsetPath :
       target' := by
         rw [orderFourPrincipalGaugeWithOffsetMap]
         exact congrArg
-          (fun q ↦ q + Quotient.mk _ A.orderFourActualEllipticBoundaryBase.2.2)
+          (fun q ↦ q + Quotient.mk _ A.ellipticFourBoundaryBase.2.2)
           A.orderFourFillingRelationPrincipalGaugeLoop.target }
 
 /-- The full regular filling loop has exactly the Cayley-disc and offset principal-gauge
 coordinates, including their subtype data. -/
 public theorem orderFourRegularLoop_cayleyGaugeProductCoordinate
     (t : unitInterval) :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     orderFourRealPeriodProductHomeomorph A.periods
         (regularFamilyInclusion A.periods
           (A.orderFourFillingRelationRegularLoop t)) =
       (A.orderFourFillingRelationCayleyDiscLoop t,
         A.orderFourPrincipalGaugeWithOffsetPath t) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   have hcoord := A.orderFourFillingRelationRegularLoop_localProductCoordinate t
   apply Prod.ext
   · apply Subtype.ext
@@ -107,8 +107,8 @@ public theorem orderFourRegularLoop_cayleyGaugeProductCoordinate
         (U := A.modular.modularParameter.toTriangleUniformization) :=
       sourceActionProperlyDiscontinuous_of_eq
         A.modular.modularParameter.toTriangleUniformization_sourceAction
-    let lift := A.orderFourActualEllipticBoundaryDeckStraightLift
-      A.orderFourActualEllipticBoundaryDeckData.fillingRelation t
+    let lift := A.ellipticFourBoundaryDeckStraightLift
+      A.ellipticFourBoundaryDeckData.fillingRelation t
     have hb : (regularTotalSpaceBase A.periods
         (A.orderFourCollarRegularRepresentativeMap lift)).1 =
         familyTotalSpaceBase A.periods
@@ -130,7 +130,7 @@ public theorem orderFourRegularLoop_cayleyGaugeProductCoordinate
         (regularFamilyInclusion A.periods
           (A.orderFourFillingRelationRegularLoop t))).2) =
       A.orderFourFillingRelationPrincipalGaugeLoop t +
-        Quotient.mk _ A.orderFourActualEllipticBoundaryBase.2.2
+        Quotient.mk _ A.ellipticFourBoundaryBase.2.2
     exact congrArg Prod.snd hcoord
 
 end SphereSixComplex.Geometry.PaperAnalyticData

@@ -28,11 +28,11 @@ variable (A : PaperAnalyticData)
 
 /-- The actual cusp overlap included into the core and transported along the specified connector
 to the base point of the four-piece cover. -/
-public noncomputable def actualCuspOverlapToCore :
+public noncomputable def cuspOverlapToCore :
     FundamentalGroup
         (A.actualVanKampenFourPieceCover.core ∩ A.actualVanKampenFourPieceCover.cusp :
           Set A.VanKampenSpace)
-        A.actualCuspOverlapBase →*
+        A.cuspOverlapBase →*
       FundamentalGroup A.actualVanKampenFourPieceCover.core
         ⟨A.vanKampenBase, A.actualVanKampenFourPieceCover.base_mem_core⟩ :=
   (FundamentalGroup.fundamentalGroupMulEquivOfPath
@@ -43,11 +43,11 @@ public noncomputable def actualCuspOverlapToCore :
     (FundamentalGroup.map
       (A.actualVanKampenFourPieceCover.overlapToCore
         A.actualVanKampenFourPieceCover.cusp)
-      A.actualCuspOverlapBase)
+      A.cuspOverlapBase)
 
 /-- The actual central-family identification with the core piece, based at the geometric cusp
 point and then transported along the specified connector to the van Kampen base. -/
-public noncomputable def actualCuspCentralToCoreEquiv :
+public noncomputable def cuspCentralToCoreEquiv :
     FundamentalGroup A.CentralFamily A.centralAffineBase ≃*
       FundamentalGroup A.actualVanKampenFourPieceCover.core
         ⟨A.vanKampenBase, A.actualVanKampenFourPieceCover.base_mem_core⟩ :=
@@ -56,7 +56,7 @@ public noncomputable def actualCuspCentralToCoreEquiv :
       (by
         rw [A.centralAffineBase_eq_actualCuspCentralBase]
         exact A.centralToSectionSevenEulerPieceHomeomorph_actualCuspOverlapToCentral
-          A.actualCuspOverlapBase)).trans
+          A.cuspOverlapBase)).trans
     (FundamentalGroup.fundamentalGroupMulEquivOfPath
       (A.actualVanKampenFourPieceCover.connectorInCore
         A.actualVanKampenFourPieceCover.cuspConnector
@@ -65,20 +65,20 @@ public noncomputable def actualCuspCentralToCoreEquiv :
 
 /-- The map induced by the literal cusp chart, followed by the actual central-to-core
 identification, is the overlap inclusion with its prescribed basepoint transport. -/
-public theorem actualCuspOverlapToCore_eq_central
+public theorem cuspOverlapToCore_eq_central
     (γ : FundamentalGroup
       (A.actualVanKampenFourPieceCover.core ∩
         A.actualVanKampenFourPieceCover.cusp : Set A.VanKampenSpace)
-      A.actualCuspOverlapBase) :
-    A.actualCuspOverlapToCore γ =
-      A.actualCuspCentralToCoreEquiv
-        (FundamentalGroup.mapOfEq A.actualCuspOverlapToCentral
+      A.cuspOverlapBase) :
+    A.cuspOverlapToCore γ =
+      A.cuspCentralToCoreEquiv
+        (FundamentalGroup.mapOfEq A.cuspOverlapToCentral
           A.centralAffineBase_eq_actualCuspCentralBase.symm γ) := by
   have hmap :
       (⟨A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph,
           A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph.continuous⟩ :
         C(A.CentralFamily, A.actualVanKampenFourPieceCover.core)).comp
-          A.actualCuspOverlapToCentral =
+          A.cuspOverlapToCentral =
         A.actualVanKampenFourPieceCover.overlapToCore
           A.actualVanKampenFourPieceCover.cusp := by
     apply ContinuousMap.ext
@@ -88,45 +88,45 @@ public theorem actualCuspOverlapToCore_eq_central
       A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
           A.centralAffineBase =
         A.actualVanKampenFourPieceCover.overlapToCore
-          A.actualVanKampenFourPieceCover.cusp A.actualCuspOverlapBase := by
+          A.actualVanKampenFourPieceCover.cusp A.cuspOverlapBase := by
     rw [A.centralAffineBase_eq_actualCuspCentralBase]
     exact A.centralToSectionSevenEulerPieceHomeomorph_actualCuspOverlapToCentral
-      A.actualCuspOverlapBase
-  have hcusp : A.actualCuspOverlapToCentral A.actualCuspOverlapBase =
+      A.cuspOverlapBase
+  have hcusp : A.cuspOverlapToCentral A.cuspOverlapBase =
       A.centralAffineBase :=
     A.centralAffineBase_eq_actualCuspCentralBase.symm
   have hcompbase :
       ((⟨A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph,
           A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph.continuous⟩ :
         C(A.CentralFamily, A.actualVanKampenFourPieceCover.core)).comp
-          A.actualCuspOverlapToCentral) A.actualCuspOverlapBase =
+          A.cuspOverlapToCentral) A.cuspOverlapBase =
         (A.actualVanKampenFourPieceCover.overlapToCore
-          A.actualVanKampenFourPieceCover.cusp) A.actualCuspOverlapBase :=
+          A.actualVanKampenFourPieceCover.cusp) A.cuspOverlapBase :=
     congrArg (fun k : C((A.actualVanKampenFourPieceCover.core ∩
       A.actualVanKampenFourPieceCover.cusp : Set A.VanKampenSpace),
-      A.actualVanKampenFourPieceCover.core) ↦ k A.actualCuspOverlapBase) hmap
+      A.actualVanKampenFourPieceCover.core) ↦ k A.cuspOverlapBase) hmap
   have hinner : ∀ δ,
       (TauCeti.FundamentalGroup.homeomorphMulEquivOfEq
         A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
         hcentral)
-          (FundamentalGroup.mapOfEq A.actualCuspOverlapToCentral
+          (FundamentalGroup.mapOfEq A.cuspOverlapToCentral
             hcusp δ) =
         FundamentalGroup.map
           (A.actualVanKampenFourPieceCover.overlapToCore
             A.actualVanKampenFourPieceCover.cusp)
-          A.actualCuspOverlapBase δ := by
+          A.cuspOverlapBase δ := by
     intro δ
     change FundamentalGroup.mapOfEq
         (⟨A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph,
           A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph.continuous⟩ :
             C(A.CentralFamily, A.actualVanKampenFourPieceCover.core)) hcentral
-          (FundamentalGroup.mapOfEq A.actualCuspOverlapToCentral hcusp δ) = _
+          (FundamentalGroup.mapOfEq A.cuspOverlapToCentral hcusp δ) = _
     calc
       _ = FundamentalGroup.mapOfEq
           ((⟨A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph,
               A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph.continuous⟩ :
             C(A.CentralFamily, A.actualVanKampenFourPieceCover.core)).comp
-              A.actualCuspOverlapToCentral)
+              A.cuspOverlapToCentral)
           hcompbase δ :=
         TauCeti.FundamentalGroup.mapOfEq_comp _ _ hcusp hcentral δ
       _ = FundamentalGroup.mapOfEq
@@ -136,21 +136,21 @@ public theorem actualCuspOverlapToCore_eq_central
       _ = FundamentalGroup.map
           (A.actualVanKampenFourPieceCover.overlapToCore
             A.actualVanKampenFourPieceCover.cusp)
-          A.actualCuspOverlapBase δ := by
+          A.cuspOverlapBase δ := by
         rw [TauCeti.FundamentalGroup.mapOfEq_rfl]
   have hhom :
       (TauCeti.FundamentalGroup.homeomorphMulEquivOfEq
         A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
         hcentral).toMonoidHom.comp
-          (FundamentalGroup.mapOfEq A.actualCuspOverlapToCentral
+          (FundamentalGroup.mapOfEq A.cuspOverlapToCentral
             hcusp) =
         FundamentalGroup.map
           (A.actualVanKampenFourPieceCover.overlapToCore
             A.actualVanKampenFourPieceCover.cusp)
-          A.actualCuspOverlapBase := by
+          A.cuspOverlapBase := by
     ext δ
     exact hinner δ
-  simp only [actualCuspOverlapToCore, actualCuspCentralToCoreEquiv]
+  simp only [cuspOverlapToCore, cuspCentralToCoreEquiv]
   rw [← hhom]
   rfl
 
@@ -158,88 +158,88 @@ public theorem actualCuspOverlapToCore_eq_central
 
 The equivalence is part of the marking data. In particular, it is not identified with the
 unrelated path-based equivalence chosen in the general van Kampen assembly. -/
-public structure ActualCuspCentralNaturality where
+public structure CuspCentralNaturality where
   centralToCore : FundamentalGroup A.CentralFamily A.centralAffineBase ≃*
     FundamentalGroup A.actualVanKampenFourPieceCover.core
       ⟨A.vanKampenBase, A.actualVanKampenFourPieceCover.base_mem_core⟩
   translation_naturality :
-    A.actualCuspOverlapToCore.toAdditive.comp
+    A.cuspOverlapToCore.toAdditive.comp
         (fundamentalGroupAddHomOfBaseEq
-          A.actualCuspChosenAffineFillingCover_boundaryBase_eq
-          A.actualCuspChosenAffineFillingCover.translation) =
+          A.cuspChosenAffineFillingCover_boundaryBase_eq
+          A.cuspChosenAffineFillingCover.translation) =
       centralToCore.toMonoidHom.toAdditive.comp A.centralAffineCorePiOneData.translation
   meridian_naturality :
-    A.actualCuspOverlapToCore
+    A.cuspOverlapToCore
         (fundamentalGroupElementOfBaseEq
-          A.actualCuspChosenAffineFillingCover_boundaryBase_eq
-          A.actualCuspChosenAffineFillingCover.meridian) =
+          A.cuspChosenAffineFillingCover_boundaryBase_eq
+          A.cuspChosenAffineFillingCover.meridian) =
       centralToCore
         (A.centralAffineCorePiOneData.rhoOne * A.centralAffineCorePiOneData.rhoTwo)
 
 /-- The central-to-core equivalence, viewed directly from the literal actual cusp base. -/
-public noncomputable def actualCuspToCoreEquiv :
-    FundamentalGroup A.CentralFamily A.actualCuspCentralBase ≃*
+public noncomputable def cuspToCoreEquiv :
+    FundamentalGroup A.CentralFamily A.cuspCentralBase ≃*
       FundamentalGroup A.actualVanKampenFourPieceCover.core
         ⟨A.vanKampenBase, A.actualVanKampenFourPieceCover.base_mem_core⟩ :=
-  A.actualCuspToCentralAffineBaseEquiv.trans A.actualCuspCentralToCoreEquiv
+  A.cuspToCentralAffineBaseEquiv.trans A.cuspCentralToCoreEquiv
 
 /-- The geometric core marking corrected by the appropriate inner cusp power. -/
 public noncomputable def geometricMarkedCentralToCoreEquiv :
     FundamentalGroup A.CentralFamily A.centralAffineBase ≃*
       FundamentalGroup A.actualVanKampenFourPieceCover.core
         ⟨A.vanKampenBase, A.actualVanKampenFourPieceCover.base_mem_core⟩ :=
-  A.actualCuspToCentralAffineBaseEquiv.symm.trans
-    (A.actualCuspCentralMarkingCorrection.trans A.actualCuspToCoreEquiv)
+  A.cuspToCentralAffineBaseEquiv.symm.trans
+    (A.cuspCentralMarkingCorrection.trans A.cuspToCoreEquiv)
 
 /-- Evaluation of the corrected geometric marking on a class transported from the literal
 actual cusp base. -/
 public theorem geometricMarkedCentralToCoreEquiv_apply_actualCusp
-    (gamma : FundamentalGroup A.CentralFamily A.actualCuspCentralBase) :
+    (gamma : FundamentalGroup A.CentralFamily A.cuspCentralBase) :
     A.geometricMarkedCentralToCoreEquiv
-        (A.actualCuspToCentralAffineBaseEquiv gamma) =
-      A.actualCuspToCoreEquiv
-        (A.actualCuspCentralMarkingCorrection gamma) := by
+        (A.cuspToCentralAffineBaseEquiv gamma) =
+      A.cuspToCoreEquiv
+        (A.cuspCentralMarkingCorrection gamma) := by
   unfold geometricMarkedCentralToCoreEquiv
-  change A.actualCuspToCoreEquiv
-      (A.actualCuspCentralMarkingCorrection
-        (A.actualCuspToCentralAffineBaseEquiv.symm
-          (A.actualCuspToCentralAffineBaseEquiv gamma))) = _
-  rw [A.actualCuspToCentralAffineBaseEquiv.symm_apply_apply]
+  change A.cuspToCoreEquiv
+      (A.cuspCentralMarkingCorrection
+        (A.cuspToCentralAffineBaseEquiv.symm
+          (A.cuspToCentralAffineBaseEquiv gamma))) = _
+  rw [A.cuspToCentralAffineBaseEquiv.symm_apply_apply]
 
 /-- Monoid-hom form of the corrected geometric marking evaluation lemma. -/
 public theorem geometricMarkedCentralToCoreEquiv_toMonoidHom_apply_actualCusp
-    (gamma : FundamentalGroup A.CentralFamily A.actualCuspCentralBase) :
+    (gamma : FundamentalGroup A.CentralFamily A.cuspCentralBase) :
     A.geometricMarkedCentralToCoreEquiv.toMonoidHom
-        (A.actualCuspToCentralAffineBaseEquiv gamma) =
-      A.actualCuspToCoreEquiv
-        (A.actualCuspCentralMarkingCorrection gamma) := by
+        (A.cuspToCentralAffineBaseEquiv gamma) =
+      A.cuspToCoreEquiv
+        (A.cuspCentralMarkingCorrection gamma) := by
   exact A.geometricMarkedCentralToCoreEquiv_apply_actualCusp gamma
 
 /-- The literal cusp chart followed by the core inclusion is compatible with the direct
 actual-cusp-to-core equivalence. -/
-public theorem actualCuspOverlapToCore_eq_fromActual
+public theorem cuspOverlapToCore_eq_fromActual
     (gamma : FundamentalGroup
       (A.actualVanKampenFourPieceCover.core ∩
         A.actualVanKampenFourPieceCover.cusp : Set A.VanKampenSpace)
-      A.actualCuspOverlapBase) :
-    A.actualCuspOverlapToCore gamma =
-      A.actualCuspToCoreEquiv (A.actualCuspOverlapToCentralPiOne gamma) := by
-  rw [A.actualCuspOverlapToCore_eq_central]
-  unfold actualCuspToCoreEquiv actualCuspToCentralAffineBaseEquiv
-    actualCuspOverlapToCentralPiOne
-  change A.actualCuspCentralToCoreEquiv
-      (FundamentalGroup.mapOfEq A.actualCuspOverlapToCentral _ gamma) =
-    A.actualCuspCentralToCoreEquiv
+      A.cuspOverlapBase) :
+    A.cuspOverlapToCore gamma =
+      A.cuspToCoreEquiv (A.cuspOverlapToCentralPiOne gamma) := by
+  rw [A.cuspOverlapToCore_eq_central]
+  unfold cuspToCoreEquiv cuspToCentralAffineBaseEquiv
+    cuspOverlapToCentralPiOne
+  change A.cuspCentralToCoreEquiv
+      (FundamentalGroup.mapOfEq A.cuspOverlapToCentral _ gamma) =
+    A.cuspCentralToCoreEquiv
       (SphereSixComplex.Topology.fundamentalGroupMulEquivOfEq
         A.centralAffineBase_eq_actualCuspCentralBase.symm
-        (FundamentalGroup.map A.actualCuspOverlapToCentral
-          A.actualCuspOverlapBase gamma))
+        (FundamentalGroup.map A.cuspOverlapToCentral
+          A.cuspOverlapBase gamma))
   congr 1
 
 /-- Marked cusp-to-central naturality constructed from the literal cusp loops, geometric finite
 meridians, and their proved common peripheral conjugator. -/
-public noncomputable def actualCuspCentralNaturality :
-    A.ActualCuspCentralNaturality := by
+public noncomputable def cuspCentralNaturality :
+    A.CuspCentralNaturality := by
   refine {
     centralToCore := A.geometricMarkedCentralToCoreEquiv
     translation_naturality := ?_
@@ -251,45 +251,45 @@ public noncomputable def actualCuspCentralNaturality :
     simp only [AddMonoidHom.comp_apply, MonoidHom.coe_toAdditive,
       Function.comp_apply, toMul_ofMul]
     rw [fundamentalGroupAddHomOfBaseEq_apply, toMul_ofMul]
-    rw [A.actualCuspOverlapToCore_eq_fromActual]
-    rw [A.actualCuspOverlapToCentralPiOne_translation]
+    rw [A.cuspOverlapToCore_eq_fromActual]
+    rw [A.cuspOverlapToCentralPiOne_translation]
     rw [A.centralAffineCorePiOneData_translation]
     rw [A.geometricMarkedCentralToCoreEquiv_toMonoidHom_apply_actualCusp]
-    rw [A.actualCuspCentralMarkingCorrection_translation]
-  · rw [A.actualCuspOverlapToCore_eq_fromActual]
-    rw [A.actualCuspOverlapToCentralPiOne_meridian]
+    rw [A.cuspCentralMarkingCorrection_translation]
+  · rw [A.cuspOverlapToCore_eq_fromActual]
+    rw [A.cuspOverlapToCentralPiOne_meridian]
     rw [A.centralAffineCorePiOneData_rhoOne,
       A.centralAffineCorePiOneData_rhoTwo, ← map_mul]
-    rw [← A.actualCuspCentralMeridian_eq_geometricRhoProduct]
+    rw [← A.cuspCentralMeridian_eq_geometricRhoProduct]
     rw [A.geometricMarkedCentralToCoreEquiv_apply_actualCusp]
-    rw [A.actualCuspCentralMarkingCorrection_meridian]
+    rw [A.cuspCentralMarkingCorrection_meridian]
 
-namespace ActualCuspCentralNaturality
+namespace CuspCentralNaturality
 
 variable {A : PaperAnalyticData}
 
 /-- Pointwise form of marked translation naturality, in multiplicative notation. -/
-public theorem translation_core (N : A.ActualCuspCentralNaturality) (a : Lattice) :
-    A.actualCuspOverlapToCore
+public theorem translation_core (N : A.CuspCentralNaturality) (a : Lattice) :
+    A.cuspOverlapToCore
         (Additive.toMul
           (fundamentalGroupAddHomOfBaseEq
-            A.actualCuspChosenAffineFillingCover_boundaryBase_eq
-            A.actualCuspChosenAffineFillingCover.translation a)) =
+            A.cuspChosenAffineFillingCover_boundaryBase_eq
+            A.cuspChosenAffineFillingCover.translation a)) =
       N.centralToCore (Additive.toMul (A.centralAffineCorePiOneData.translation a)) := by
   exact congrArg Additive.toMul (DFunLike.congr_fun N.translation_naturality a)
 
 /-- Pointwise form of marked cusp-meridian naturality. -/
-public theorem meridian_core (N : A.ActualCuspCentralNaturality) :
-    A.actualCuspOverlapToCore
+public theorem meridian_core (N : A.CuspCentralNaturality) :
+    A.cuspOverlapToCore
         (fundamentalGroupElementOfBaseEq
-          A.actualCuspChosenAffineFillingCover_boundaryBase_eq
-          A.actualCuspChosenAffineFillingCover.meridian) =
+          A.cuspChosenAffineFillingCover_boundaryBase_eq
+          A.cuspChosenAffineFillingCover.meridian) =
       N.centralToCore A.centralAffineCorePiOneData.rhoOne *
         N.centralToCore A.centralAffineCorePiOneData.rhoTwo := by
   rw [← map_mul]
   exact N.meridian_naturality
 
-end ActualCuspCentralNaturality
+end CuspCentralNaturality
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

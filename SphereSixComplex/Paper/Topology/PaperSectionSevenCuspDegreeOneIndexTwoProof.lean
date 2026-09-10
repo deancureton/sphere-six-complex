@@ -22,8 +22,8 @@ open AlgebraicTopology
 
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 
-open SectionSevenEllipticInteriorMarkedCycleData
-open SectionSevenEllipticTwoDiscCoverData
+open EllipticInteriorMarkedCycleData
+open EllipticTwoDiscCoverData
 
 variable {A : PaperAnalyticData}
 
@@ -31,7 +31,7 @@ namespace EstablishedSectionSevenCuspTopology
 
 /-- The geometric full-iterate relation left by the degree-one cusp calculation. -/
 public def ActualCuspDegreeOneIndexTwoFullIterateRelation
-    (R : A.SectionSevenAffineRadialCompletionInput) : Prop :=
+    (R : A.AffineRadialCompletionInput) : Prop :=
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   (12 : ℤ) •
@@ -44,7 +44,7 @@ public def ActualCuspDegreeOneIndexTwoFullIterateRelation
 
 /-- The full-iterate relation is exactly equivalent to the remaining scalar equality. -/
 public theorem actualCuspDegreeOneIndexTwo_iff_fullIterateRelation
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     (let G := A.actualCuspRadialClutchingData
      let _ := G.fiberTopology
      ((R.twoDiscCover.ellipticInteriorDegreeOneCoordinateHom R.homologyAlignment).comp
@@ -68,7 +68,7 @@ public theorem actualCuspDegreeOneIndexTwo_iff_fullIterateRelation
         (Pi.single (0 : Fin 3) 1))
   have hx₀ : f x₀ = 12 := by
     let hTop := canonicalCuspFiberBandTopologicalCompatibility R
-    simpa [f, x₀, SectionSevenEllipticTwoDiscCoverData.ellipticInteriorDegreeOneCoordinateHom,
+    simpa [f, x₀, EllipticTwoDiscCoverData.ellipticInteriorDegreeOneCoordinateHom,
       coordinateAfterAddEquiv_apply] using
         congrFun (affineActualCuspDegreeOneFiberBasis_scalarValues R hTop) 0
   constructor

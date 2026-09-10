@@ -120,7 +120,7 @@ orientation. -/
 public noncomputable def paperOrderThreeActualBoundaryToUniversalDeck :
     OrderThreeAffineMappingTorusDeck A.periods →* paperCentralFreeAffineDeck :=
   A.paperOrderThreeCentralBoundaryToUniversalDeck.comp
-    A.orderThreeActualToCentralBoundaryDeckEquiv.toMonoidHom
+    A.ellipticThreeToCentralBoundaryDeckEquiv.toMonoidHom
 
 @[simp]
 public theorem paperOrderThreeActualBoundaryToUniversalDeck_translation (a : Lattice) :
@@ -131,10 +131,10 @@ public theorem paperOrderThreeActualBoundaryToUniversalDeck_translation (a : Lat
         (freeAffineTranslation (M := paperCentralFreeMonodromy) (-a)) := by
   rw [paperOrderThreeActualBoundaryToUniversalDeck, MonoidHom.comp_apply]
   change A.paperOrderThreeCentralBoundaryToUniversalDeck
-      (A.orderThreeActualToCentralBoundaryDeckEquiv
+      (A.ellipticThreeToCentralBoundaryDeckEquiv
         (Additive.toMul (affineTorusMappingTorusDeckTranslation
           (orderThreeDescendedAffineTorusAutomorphism A.periods) a))) = _
-  rw [A.orderThreeActualToCentralBoundaryDeckEquiv_translation,
+  rw [A.ellipticThreeToCentralBoundaryDeckEquiv_translation,
     A.paperOrderThreeCentralBoundaryToUniversalDeck_translation]
 
 @[simp]
@@ -145,35 +145,35 @@ public theorem paperOrderThreeActualBoundaryToUniversalDeck_positive_meridian :
       freeAffineLift (M := paperCentralFreeMonodromy) firstMeridian := by
   rw [paperOrderThreeActualBoundaryToUniversalDeck, MonoidHom.comp_apply]
   change A.paperOrderThreeCentralBoundaryToUniversalDeck
-      (A.orderThreeActualToCentralBoundaryDeckEquiv
+      (A.ellipticThreeToCentralBoundaryDeckEquiv
         (affineTorusMappingTorusDeckMeridian
           (orderThreeDescendedAffineTorusAutomorphism A.periods))) = _
-  rw [A.orderThreeActualToCentralBoundaryDeckEquiv_meridian,
+  rw [A.ellipticThreeToCentralBoundaryDeckEquiv_meridian,
     A.paperOrderThreeCentralBoundaryToUniversalDeck_meridian]
 
 @[simp]
 public theorem paperOrderThreeActualBoundaryToUniversalDeck_physical_meridian :
     A.paperOrderThreeActualBoundaryToUniversalDeck
-        A.orderThreeActualEllipticBoundaryDeckData.meridian =
+        A.ellipticThreeBoundaryDeckData.meridian =
       (freeAffineLift (M := paperCentralFreeMonodromy) firstMeridian)⁻¹ := by
-  rw [orderThreeActualEllipticBoundaryDeckData, map_inv,
+  rw [ellipticThreeBoundaryDeckData, map_inv,
     A.paperOrderThreeActualBoundaryToUniversalDeck_positive_meridian]
 
 /-- The constant-path point of the based-path model underlying the chosen global affine cover. -/
 public noncomputable def centralAffineUniversalCoverBasepoint :
     A.centralAffineUniversalCover.Cover := by
-  change TauCeti.UniversalCover A.actualCuspCentralBase
-  exact (TauCeti.UniversalCover.basepointLift A.actualCuspCentralBase).1
+  change TauCeti.UniversalCover A.cuspCentralBase
+  exact (TauCeti.UniversalCover.basepointLift A.cuspCentralBase).1
 
 public theorem centralAffineUniversalCoverBasepoint_projects :
     let D := A.centralAffineUniversalCover
     letI := D.topology
     letI := D.action
-    D.data.projection A.centralAffineUniversalCoverBasepoint = A.actualCuspCentralBase := by
+    D.data.projection A.centralAffineUniversalCoverBasepoint = A.cuspCentralBase := by
   change TauCeti.UniversalCover.proj
-      (TauCeti.UniversalCover.basepointLift A.actualCuspCentralBase).1 =
-    A.actualCuspCentralBase
-  exact TauCeti.UniversalCover.proj_basepointLift A.actualCuspCentralBase
+      (TauCeti.UniversalCover.basepointLift A.cuspCentralBase).1 =
+    A.cuspCentralBase
+  exact TauCeti.UniversalCover.proj_basepointLift A.cuspCentralBase
 
 /-- At the constant-path lift, the quotient-cover equivalence sends a loop represented by the
 affine presentation element `d` to `op d⁻¹`.  This is the source of the translation sign in
@@ -202,96 +202,96 @@ public theorem centralAffineUniversalCoverBasepoint_fundamentalGroupEquiv
   let _ : SimplyConnectedSpace D.Cover := D.data.simplyConnected
   apply (D.data.quotientCovering.fundamentalGroupToMulOpposite_apply_eq_Iff).mpr
   change (paperPuncturedGlobalFamilyAffinePresentation A d⁻¹) •
-      (TauCeti.UniversalCover.basepointLift A.actualCuspCentralBase).1 =
-    ((TauCeti.UniversalCover.isCoveringMap A.actualCuspCentralBase).monodromy
+      (TauCeti.UniversalCover.basepointLift A.cuspCentralBase).1 =
+    ((TauCeti.UniversalCover.isCoveringMap A.cuspCentralBase).monodromy
       (paperPuncturedGlobalFamilyAffinePresentation A d)
-      (TauCeti.UniversalCover.basepointLift A.actualCuspCentralBase) :
-        TauCeti.UniversalCover A.actualCuspCentralBase)
+      (TauCeti.UniversalCover.basepointLift A.cuspCentralBase) :
+        TauCeti.UniversalCover A.cuspCentralBase)
   rw [TauCeti.UniversalCover.monodromy_basepointLift, map_inv]
 
 /-- Exact point-set residual for the order-three collar.  The lift must cover the literal
 overlap chart and intertwine the explicit local action with the correctly oriented global affine
 deck action. -/
 public def OrderThreeCentralBoundaryCoverComparison : Prop :=
-  letI := A.orderThreeActualEllipticBoundaryAction
+  letI := A.ellipticThreeBoundaryAction
   let D := A.centralAffineUniversalCover
   letI := D.topology
   letI := D.action
   ∃ C : QuotientCoverMapData
       (G := OrderThreeAffineMappingTorusDeck A.periods)
       (H := paperCentralFreeAffineDeck)
-      A.orderThreeActualEllipticBoundaryProjection D.data.projection,
+      A.ellipticThreeBoundaryProjection D.data.projection,
     C.deckMap = A.paperOrderThreeActualBoundaryToUniversalDeck ∧
-      C.baseMap = A.orderThreeActualOverlapToCentral
+      C.baseMap = A.ellipticThreeOverlapToCentral
 
 /-- The point-set comparison and the canonical lift of the same base map induce deck pairs that
 differ by one common conjugator. -/
 public theorem OrderThreeCentralBoundaryCoverComparison.canonicalDeckPair
     (h : A.OrderThreeCentralBoundaryCoverComparison) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     let D := A.centralAffineUniversalCover
     letI := D.topology
     letI := D.action
     letI : SimplyConnectedSpace
         (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-      A.orderThreeActualEllipticBoundaryCover_simplyConnected
-    let C := A.orderThreeActualCentralCoverComparison
+      A.ellipticThreeBoundaryCover_simplyConnected
+    let C := A.ellipticThreeCentralCoverComparison
     SimultaneouslyConjugate
-      (C.deckMap A.orderThreeActualEllipticBoundaryDeckData.meridian,
+      (C.deckMap A.ellipticThreeBoundaryDeckData.meridian,
         C.deckMap (Additive.toMul
-          (A.orderThreeActualEllipticBoundaryDeckData.translation (-epsilon))))
+          (A.ellipticThreeBoundaryDeckData.translation (-epsilon))))
       ((freeAffineLift (M := paperCentralFreeMonodromy) firstMeridian)⁻¹,
         Additive.toMul (freeAffineTranslation (M := paperCentralFreeMonodromy) epsilon)) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderThreeActualEllipticBoundaryCover_simplyConnected
-  let C := A.orderThreeActualCentralCoverComparison
+    A.ellipticThreeBoundaryCover_simplyConnected
+  let C := A.ellipticThreeCentralCoverComparison
   change ∃ E : QuotientCoverMapData
       (G := OrderThreeAffineMappingTorusDeck A.periods)
       (H := paperCentralFreeAffineDeck)
-      A.orderThreeActualEllipticBoundaryProjection D.data.projection,
+      A.ellipticThreeBoundaryProjection D.data.projection,
     E.deckMap = A.paperOrderThreeActualBoundaryToUniversalDeck ∧
-      E.baseMap = A.orderThreeActualOverlapToCentral at h
+      E.baseMap = A.ellipticThreeOverlapToCentral at h
   obtain ⟨E, hdeck, hbase⟩ := h
   obtain ⟨c, hmeridian, htranslation⟩ :=
     E.exists_deckPair_eq_conj_of_baseMap_eq D.data.quotientCovering C (hbase.trans rfl.symm)
-      A.orderThreeActualEllipticBoundaryBase
-      A.orderThreeActualEllipticBoundaryDeckData.meridian
+      A.ellipticThreeBoundaryBase
+      A.ellipticThreeBoundaryDeckData.meridian
       (Additive.toMul
-        (A.orderThreeActualEllipticBoundaryDeckData.translation (-epsilon)))
+        (A.ellipticThreeBoundaryDeckData.translation (-epsilon)))
   refine ⟨c, ?_, ?_⟩
   · rw [hdeck] at hmeridian
     simpa only [A.paperOrderThreeActualBoundaryToUniversalDeck_physical_meridian] using hmeridian
   · rw [hdeck] at htranslation
-    simpa only [orderThreeActualEllipticBoundaryDeckData,
+    simpa only [ellipticThreeBoundaryDeckData,
       A.paperOrderThreeActualBoundaryToUniversalDeck_translation, neg_neg] using htranslation
 
 /-- The deck labels of the two central marked loops at the lift selected by the canonical collar
 comparison. -/
 public noncomputable def orderThreeCentralUniversalDeckMarkedPair :
     paperCentralFreeAffineDeck × paperCentralFreeAffineDeck := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
   let _ : SimplyConnectedSpace D.Cover := D.data.simplyConnected
-  let C := A.orderThreeActualCentralCoverComparison
+  let C := A.ellipticThreeCentralCoverComparison
   exact
     (MulOpposite.unop
         (D.data.quotientCovering.fundamentalGroupEquiv
-          ⟨C.lift A.orderThreeActualEllipticBoundaryBase, rfl⟩
+          ⟨C.lift A.ellipticThreeBoundaryBase, rfl⟩
           (fundamentalGroupElementOfBaseEq
-            (C.commutes A.orderThreeActualEllipticBoundaryBase)
+            (C.commutes A.ellipticThreeBoundaryBase)
             A.orderThreeCentralMeridianAtOverlap)),
       MulOpposite.unop
         (D.data.quotientCovering.fundamentalGroupEquiv
-          ⟨C.lift A.orderThreeActualEllipticBoundaryBase, rfl⟩
+          ⟨C.lift A.ellipticThreeBoundaryBase, rfl⟩
           (fundamentalGroupElementOfBaseEq
-            (C.commutes A.orderThreeActualEllipticBoundaryBase)
+            (C.commutes A.ellipticThreeBoundaryBase)
             A.orderThreeCentralTranslationAtOverlap)))
 
 /-- The remaining marking-side statement after the point-set collar lift has been isolated.  It
@@ -308,26 +308,26 @@ public theorem OrderThreeCentralBoundaryCoverComparison.toDeckCompatibility
     (hcover : A.OrderThreeCentralBoundaryCoverComparison)
     (hmark : A.OrderThreeCentralUniversalDeckMarkingCompatibility) :
     A.OrderThreeCentralCoverDeckCompatibility := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
   let _ : SimplyConnectedSpace D.Cover := D.data.simplyConnected
-  let C := A.orderThreeActualCentralCoverComparison
+  let C := A.ellipticThreeCentralCoverComparison
   have hcanonical := hcover.canonicalDeckPair A
   change SimultaneouslyConjugate A.orderThreeCentralUniversalDeckMarkedPair
     ((freeAffineLift (M := paperCentralFreeMonodromy) firstMeridian)⁻¹,
       Additive.toMul (freeAffineTranslation (M := paperCentralFreeMonodromy) epsilon)) at hmark
   change SimultaneouslyConjugate
-    (C.deckMap A.orderThreeActualEllipticBoundaryDeckData.meridian,
+    (C.deckMap A.ellipticThreeBoundaryDeckData.meridian,
       C.deckMap (Additive.toMul
-        (A.orderThreeActualEllipticBoundaryDeckData.translation (-epsilon))))
+        (A.ellipticThreeBoundaryDeckData.translation (-epsilon))))
     ((freeAffineLift (M := paperCentralFreeMonodromy) firstMeridian)⁻¹,
       Additive.toMul (freeAffineTranslation (M := paperCentralFreeMonodromy) epsilon)) at hcanonical
   change SimultaneouslyConjugate A.orderThreeCentralUniversalDeckMarkedPair
-    (C.deckMap A.orderThreeActualEllipticBoundaryDeckData.meridian,
+    (C.deckMap A.ellipticThreeBoundaryDeckData.meridian,
       C.deckMap (Additive.toMul
-        (A.orderThreeActualEllipticBoundaryDeckData.translation (-epsilon))))
+        (A.ellipticThreeBoundaryDeckData.translation (-epsilon))))
   exact hmark.trans hcanonical.symm
 
 /-- Hence the two exact residuals also imply the equivalent marked-loop statement. -/

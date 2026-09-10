@@ -25,7 +25,7 @@ open SphereSixComplex.Geometry.CuspRadialClutchingConstruction
 
 variable {A : PaperAnalyticData}
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 private theorem openRadialIntervalProdHomotopyEquiv_apply_snd_completion
     {X : Type} [TopologicalSpace X] {r : ℝ} (hr : 0 < r)
@@ -89,7 +89,7 @@ private def circleMappingTorusRealFibreSliceHomotopyCompletion
     simpa using realMappingTorusHomeomorph_mk_zero phi x
 
 private theorem actualCuspWangFibreSlice_to_mappingTorus_completion
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     G.totalHomotopyEquiv.toFun.comp
@@ -115,7 +115,7 @@ private theorem actualCuspWangFibreSlice_to_mappingTorus_completion
 /-- The selected full-fibre slice, followed by the cusp map, is literally the inclusion of its
 transport to the elliptic band. -/
 public theorem cuspMap_actualCuspWangFibreSlice_eq_bandInclusion
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     R.twoDiscCover.cuspToEllipticInteriorMap.hom.comp
@@ -124,8 +124,8 @@ public theorem cuspMap_actualCuspWangFibreSlice_eq_bandInclusion
           (actualCuspWangFibreToCuspCoverIntersectionMap (A := A) R)) =
       ((⟨Subtype.val, continuous_subtype_val⟩ :
           C((R.twoDiscCover.orderThreeSide ∩ R.twoDiscCover.orderFourSide :
-              Set A.SectionSevenEllipticInterior),
-            A.SectionSevenEllipticInterior)).comp
+              Set A.ellipticInterior),
+            A.ellipticInterior)).comp
         (actualCuspWangFibreToBandMap (A := A) R)) := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
@@ -136,15 +136,15 @@ public theorem cuspMap_actualCuspWangFibreSlice_eq_bandInclusion
 /-- The oriented low-overlap fibre and the explicit middle-height full-fibre slice define
 homotopic maps into the elliptic interior. -/
 public theorem actualCuspMappingTorusLowOverlapFiberToEllipticInteriorMap_homotopic_wangSlice
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     ContinuousMap.Homotopic
       R.twoDiscCover.actualCuspMappingTorusLowOverlapFiberToEllipticInteriorMap
       ((⟨Subtype.val, continuous_subtype_val⟩ :
           C((R.twoDiscCover.orderThreeSide ∩ R.twoDiscCover.orderFourSide :
-              Set A.SectionSevenEllipticInterior),
-            A.SectionSevenEllipticInterior)).comp
+              Set A.ellipticInterior),
+            A.ellipticInterior)).comp
         (actualCuspWangFibreToBandMap (A := A) R)) := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
@@ -188,15 +188,15 @@ public theorem actualCuspMappingTorusLowOverlapFiberToEllipticInteriorMap_homoto
 /-- The actual mapping-torus fibre is homotopic to the explicit full-fibre slice transported
 into the elliptic band. -/
 public theorem actualCuspMappingTorusFiberToEllipticInteriorMap_homotopic_wangSlice
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     ContinuousMap.Homotopic
       R.twoDiscCover.actualCuspMappingTorusFiberToEllipticInteriorMap
       ((⟨Subtype.val, continuous_subtype_val⟩ :
           C((R.twoDiscCover.orderThreeSide ∩ R.twoDiscCover.orderFourSide :
-              Set A.SectionSevenEllipticInterior),
-            A.SectionSevenEllipticInterior)).comp
+              Set A.ellipticInterior),
+            A.ellipticInterior)).comp
         (actualCuspWangFibreToBandMap (A := A) R)) := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
@@ -207,7 +207,7 @@ public theorem actualCuspMappingTorusFiberToEllipticInteriorMap_homotopic_wangSl
 /-- The actual radial cusp model satisfies the canonical cusp fibre-to-band topological
 compatibility without an additional marked-coordinate hypothesis. -/
 public theorem canonicalCuspFiberBandTopologicalCompatibility
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     R.twoDiscCover.CanonicalCuspFiberBandTopologicalCompatibility := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
@@ -215,7 +215,7 @@ public theorem canonicalCuspFiberBandTopologicalCompatibility
     (actualCuspMappingTorusFiberToEllipticInteriorMap_homotopic_wangSlice R).trans
       (actualCuspWangFibreToEllipticInteriorMap_homotopic_fixed_canonical R)
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

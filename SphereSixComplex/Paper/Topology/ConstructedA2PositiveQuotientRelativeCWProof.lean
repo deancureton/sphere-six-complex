@@ -22,14 +22,14 @@ noncomputable section
 
 open Function Metric Set Topology
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
 open SphereSixComplex.Periods
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 /-- The orbit quotient of the constructed positive part at the quantitative cusp radius. -/
 public abbrev ConstructedA2PositiveQuotient
@@ -291,7 +291,7 @@ public theorem constructedA2PositiveQuotientRelativeCW_of_attachments
     Nonempty (ConstructedA2PositiveQuotientRelativeCW W) :=
   h.map ConstructedA2PositiveQuotientCWAttachmentData.toRelativeCW
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric
 
 end
 

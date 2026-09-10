@@ -27,7 +27,7 @@ namespace Geometry.CuspPuncturedCollarBridge
 
 open SphereSixComplex.CircleMappingTorusHomologyBases
 open SphereSixComplex.Geometry.CuspPeriodExpansion
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
+open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup

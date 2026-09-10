@@ -31,85 +31,85 @@ namespace SphereSixComplex.Geometry.PaperAnalyticData
 variable (A : PaperAnalyticData)
 
 /-- The fixed affine split used by the remaining Section 7 argument. -/
-public noncomputable def sectionSevenActualAffineSplit :
-    A.SectionSevenCentralHeightSplit :=
-  A.sectionSevenAffineCentralHeightSplit A.sectionSevenAffineCentralSeparation
+public noncomputable def actualAffineHeightSplit :
+    A.CentralHeightSplit :=
+  A.affineCentralHeightSplit A.affineCentralSeparation
 
 /-- The exact remaining geometric input.  The central band field is absent because it is already
 supplied by the established product trivialization over the affine strip. -/
-public structure SectionSevenAffineRadialCompletionInput where
+public structure AffineRadialCompletionInput where
   orderThreeHomotopyEquivalence :
-    IsHomotopyEquivalenceInclusion A.sectionSevenActualAffineSplit.orderThreeFillingSubspace
+    IsHomotopyEquivalenceInclusion A.actualAffineHeightSplit.orderThreeFillingSubspace
   orderFourHomotopyEquivalence :
-    IsHomotopyEquivalenceInclusion A.sectionSevenActualAffineSplit.orderFourFillingSubspace
+    IsHomotopyEquivalenceInclusion A.actualAffineHeightSplit.orderFourFillingSubspace
   orderThree_inclusion_compatibility :
-    (((A.sectionSevenOrderThreeFillingImageHomotopyEquiv.toFun.comp
+    (((A.orderThreeFillingImageHomotopyEquiv.toFun.comp
       (orderThreeHomotopyEquivalence.toHomotopyEquiv.trans
-        (nestedSubtypeHomeomorph A.sectionSevenActualAffineSplit.allocation.orderThreeSide
-          A.sectionSevenOrderThreeFillingImage
-          A.sectionSevenActualAffineSplit.orderThreeFillingImage_subset_side).toHomotopyEquiv).toFun).comp
+        (nestedSubtypeHomeomorph A.actualAffineHeightSplit.allocation.orderThreeSide
+          A.orderThreeFillingImage
+          A.actualAffineHeightSplit.orderThreeFillingImage_subset_side).toHomotopyEquiv).toFun).comp
         (IntegralMayerVietoris.interToLeft
-          A.sectionSevenActualAffineSplit.allocation.orderThreeSide
-          A.sectionSevenActualAffineSplit.allocation.orderFourSide))).Homotopic
+          A.actualAffineHeightSplit.allocation.orderThreeSide
+          A.actualAffineHeightSplit.allocation.orderFourSide))).Homotopic
       ((RadialEllipticActionData.centralFiberCoverProjection
           (orderThreeRadialActionData A.periods)).comp
         ⟨A.duplicatedSectionSevenBandToOrderThreeCoverSource,
           A.duplicatedSectionSevenBandToOrderThreeCoverSource.continuous⟩ |>.comp
-            (A.sectionSevenActualAffineSplit.sidesIntersectionHomeomorph.toHomotopyEquiv.trans
-              (A.sectionSevenAffineCentralBandHomotopyEquiv
-                A.sectionSevenAffineCentralSeparation)).toFun)
+            (A.actualAffineHeightSplit.sidesIntersectionHomeomorph.toHomotopyEquiv.trans
+              (A.affineCentralBandHomotopyEquiv
+                A.affineCentralSeparation)).toFun)
   orderFour_inclusion_compatibility :
-    (((A.sectionSevenOrderFourFillingImageHomotopyEquiv.toFun.comp
+    (((A.orderFourFillingImageHomotopyEquiv.toFun.comp
       (orderFourHomotopyEquivalence.toHomotopyEquiv.trans
-        (nestedSubtypeHomeomorph A.sectionSevenActualAffineSplit.allocation.orderFourSide
-          A.sectionSevenOrderFourFillingImage
-          A.sectionSevenActualAffineSplit.orderFourFillingImage_subset_side).toHomotopyEquiv).toFun).comp
+        (nestedSubtypeHomeomorph A.actualAffineHeightSplit.allocation.orderFourSide
+          A.orderFourFillingImage
+          A.actualAffineHeightSplit.orderFourFillingImage_subset_side).toHomotopyEquiv).toFun).comp
         (IntegralMayerVietoris.interToRight
-          A.sectionSevenActualAffineSplit.allocation.orderThreeSide
-          A.sectionSevenActualAffineSplit.allocation.orderFourSide))).Homotopic
+          A.actualAffineHeightSplit.allocation.orderThreeSide
+          A.actualAffineHeightSplit.allocation.orderFourSide))).Homotopic
       ((RadialEllipticActionData.centralFiberCoverProjection
           (orderFourRadialActionData A.periods)).comp
         ⟨A.duplicatedSectionSevenBandToOrderFourCoverSource,
           A.duplicatedSectionSevenBandToOrderFourCoverSource.continuous⟩ |>.comp
-            (A.sectionSevenActualAffineSplit.sidesIntersectionHomeomorph.toHomotopyEquiv.trans
-              (A.sectionSevenAffineCentralBandHomotopyEquiv
-                A.sectionSevenAffineCentralSeparation)).toFun)
+            (A.actualAffineHeightSplit.sidesIntersectionHomeomorph.toHomotopyEquiv.trans
+              (A.affineCentralBandHomotopyEquiv
+                A.affineCentralSeparation)).toFun)
 
-namespace SectionSevenAffineRadialCompletionInput
+namespace AffineRadialCompletionInput
 
 variable {A : PaperAnalyticData}
 
 /-- Assemble the actual affine radial input from the four remaining geometric facts. -/
 public noncomputable def toRadialInput
-    (R : A.SectionSevenAffineRadialCompletionInput) :
-    A.sectionSevenActualAffineSplit.RadialInput where
+    (R : A.AffineRadialCompletionInput) :
+    A.actualAffineHeightSplit.RadialInput where
   orderThreeHomotopyEquivalence := R.orderThreeHomotopyEquivalence
   orderFourHomotopyEquivalence := R.orderFourHomotopyEquivalence
   bandHomotopyEquiv :=
-    A.sectionSevenAffineCentralBandHomotopyEquiv A.sectionSevenAffineCentralSeparation
+    A.affineCentralBandHomotopyEquiv A.affineCentralSeparation
   orderThree_inclusion_compatibility := R.orderThree_inclusion_compatibility
   orderFour_inclusion_compatibility := R.orderFour_inclusion_compatibility
 
-end SectionSevenAffineRadialCompletionInput
+end AffineRadialCompletionInput
 
 variable {A : PaperAnalyticData}
 
 /-- The concrete two-disc cover determined by the completed affine radial geometry. -/
-public noncomputable def SectionSevenAffineRadialCompletionInput.twoDiscCover
-    (R : A.SectionSevenAffineRadialCompletionInput) :
-    A.SectionSevenEllipticTwoDiscCoverData :=
+public noncomputable def AffineRadialCompletionInput.twoDiscCover
+    (R : A.AffineRadialCompletionInput) :
+    A.EllipticTwoDiscCoverData :=
   R.toRadialInput.toRadialRealization.toSectionSevenEllipticTwoDiscCoverData
 
 /-- The canonical band homology alignment for the completed affine radial geometry. -/
-public theorem SectionSevenAffineRadialCompletionInput.homologyAlignment
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+public theorem AffineRadialCompletionInput.homologyAlignment
+    (R : A.AffineRadialCompletionInput) :
     A.EllipticBandHomologyAlignment R.twoDiscCover :=
   R.toRadialInput.bandHomologyAlignment
 
 /-- The exact three marked-coordinate comparisons remaining after the affine radial geometry has
 been completed: one connecting square and two inclusion-coordinate identities. -/
-public structure SectionSevenAffineMarkedCompletionInput
-    (R : A.SectionSevenAffineRadialCompletionInput) : Prop where
+public structure AffineMarkedCompletionInput
+    (R : A.AffineRadialCompletionInput) : Prop where
   connectingNaturality :
     R.twoDiscCover.CuspMarkedConnectingNaturality R.homologyAlignment
   inclusionNaturality :
@@ -119,14 +119,14 @@ public structure SectionSevenAffineMarkedCompletionInput
         (R.twoDiscCover.sectionSevenCuspMarkedBoundaryComparison_of_connectingNaturality
           R.homologyAlignment connectingNaturality))
 
-namespace SectionSevenAffineMarkedCompletionInput
+namespace AffineMarkedCompletionInput
 
-variable {R : A.SectionSevenAffineRadialCompletionInput}
+variable {R : A.AffineRadialCompletionInput}
 
 /-- The affine completion package supplies the production positive-degree assembly. -/
 public noncomputable def positiveDegreeHomologyAssembly
-    (C : A.SectionSevenAffineMarkedCompletionInput R) :
-    A.SectionSevenPositiveDegreeHomologyAssembly := by
+    (C : A.AffineMarkedCompletionInput R) :
+    A.PositiveDegreeHomologyAssembly := by
   let boundary :=
     R.twoDiscCover.sectionSevenCuspMarkedBoundaryComparison_of_connectingNaturality
       R.homologyAlignment C.connectingNaturality
@@ -135,6 +135,6 @@ public noncomputable def positiveDegreeHomologyAssembly
       inclusion := C.inclusionNaturality }
   exact marked.positiveDegreeHomologyAssembly
 
-end SectionSevenAffineMarkedCompletionInput
+end AffineMarkedCompletionInput
 
 end SphereSixComplex.Geometry.PaperAnalyticData

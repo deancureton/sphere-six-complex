@@ -32,24 +32,24 @@ open SphereSixComplex.Geometry.TorusFamily
 
 variable {A : PaperAnalyticData}
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 private theorem actualCuspWangFibreToBand_centralFamily_completion
-    (hmark : A.sectionSevenAffineNamedStripLift.lift
-      A.sectionSevenAffineActualCuspCrossingPoint =
-        A.cuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (hmark : A.affineNamedStripLift.lift
+      A.affineActualCuspCrossingPoint =
+        A.cuspAngularRegularBasePoint A.affineActualCuspCrossingTime)
+    (R : A.AffineRadialCompletionInput)
     (y : let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
       G.Fiber) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     let b := actualCuspWangFibreToBandMap (A := A) R y
-    let c := A.sectionSevenActualAffineSplit.sidesIntersectionHomeomorph b
-    A.sectionSevenAffineCentralBandToCentralFamily
-        A.sectionSevenAffineCentralSeparation c =
-      A.stripLiftPoint A.sectionSevenAffineNamedStripLift
-        A.sectionSevenAffineActualCuspCrossingPoint
+    let c := A.actualAffineHeightSplit.sidesIntersectionHomeomorph b
+    A.affineCentralBandToCentralFamily
+        A.affineCentralSeparation c =
+      A.stripLiftPoint A.affineNamedStripLift
+        A.affineActualCuspCrossingPoint
         (fullRankAdditiveTorusHomeomorph
           G.fiberParameter A.duplicatedSectionSevenBandParameter
           G.fiberFullRank A.duplicatedSectionSevenBandFullRank
@@ -57,29 +57,29 @@ private theorem actualCuspWangFibreToBand_centralFamily_completion
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   let b :
-      (A.sectionSevenActualAffineSplit.allocation.orderThreeSide ∩
-        A.sectionSevenActualAffineSplit.allocation.orderFourSide :
-        Set A.SectionSevenEllipticInterior) :=
+      (A.actualAffineHeightSplit.allocation.orderThreeSide ∩
+        A.actualAffineHeightSplit.allocation.orderFourSide :
+        Set A.ellipticInterior) :=
     actualCuspWangFibreToBandMap (A := A) R y
   let c : centralHeightBand
-      (A.sectionSevenAffineCentralHeightSplit
-        A.sectionSevenAffineCentralSeparation).height
-      (A.sectionSevenAffineCentralHeightSplit
-        A.sectionSevenAffineCentralSeparation).lower
-      (A.sectionSevenAffineCentralHeightSplit
-        A.sectionSevenAffineCentralSeparation).upper :=
-    A.sectionSevenActualAffineSplit.sidesIntersectionHomeomorph b
+      (A.affineCentralHeightSplit
+        A.affineCentralSeparation).height
+      (A.affineCentralHeightSplit
+        A.affineCentralSeparation).lower
+      (A.affineCentralHeightSplit
+        A.affineCentralSeparation).upper :=
+    A.actualAffineHeightSplit.sidesIntersectionHomeomorph b
   dsimp only
   have hcentral :
-      A.sectionSevenAffineCentralBandToCentralFamily
-          A.sectionSevenAffineCentralSeparation c =
+      A.affineCentralBandToCentralFamily
+          A.affineCentralSeparation c =
         A.starToCentral 0
           ((actualCuspWangFibreToCuspCoverIntersectionMap (A := A) R y).1) := by
     apply A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph.injective
     apply Subtype.ext
     change
       (A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
-        (A.sectionSevenEllipticCentralImageHomeomorph _)).1 =
+        (A.ellipticCentralImageHomeomorph _)).1 =
       (A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
         (A.starToCentral 0 _)).1
     rw [A.centralToSectionSevenEulerPiece_centralImage]
@@ -119,8 +119,8 @@ private theorem actualCuspWangFibreToBand_centralFamily_completion
           G.fiberFullRank A.duplicatedSectionSevenBandFullRank
           (G.fiberHomeomorph y) =
         Quotient.mk _ (A.regularMovingToFixed
-          (A.sectionSevenAffineNamedStripLift.lift
-            A.sectionSevenAffineActualCuspCrossingPoint) zeta) := by
+          (A.affineNamedStripLift.lift
+            A.affineActualCuspCrossingPoint) zeta) := by
     change fullRankAdditiveTorusHomeomorph
         G.fiberParameter A.duplicatedSectionSevenBandParameter
         G.fiberFullRank A.duplicatedSectionSevenBandFullRank y = _
@@ -129,8 +129,8 @@ private theorem actualCuspWangFibreToBand_centralFamily_completion
         (A.duplicatedSectionSevenBandFullRank.realEquiv
           (G.fiberFullRank.realEquiv.symm w)) =
       Quotient.mk _ (A.regularMovingToFixed
-        (A.sectionSevenAffineNamedStripLift.lift
-          A.sectionSevenAffineActualCuspCrossingPoint) zeta)
+        (A.affineNamedStripLift.lift
+          A.affineActualCuspCrossingPoint) zeta)
     apply congrArg (Quotient.mk _)
     rw [hmark]
     change A.duplicatedSectionSevenBandFullRank.realEquiv
@@ -138,7 +138,7 @@ private theorem actualCuspWangFibreToBand_centralFamily_completion
       (movingToFixedCover A.periods
         A.modular.modularParameter.toTriangleUniformization.zOne
         (A.cuspAngularRegularBasePoint
-          A.sectionSevenAffineActualCuspCrossingTime, zeta)).2
+          A.affineActualCuspCrossingTime, zeta)).2
     calc
       _ = A.duplicatedSectionSevenBandFullRank.realEquiv
           (G.fiberFullRank.realEquiv.symm
@@ -161,17 +161,17 @@ private theorem actualCuspWangFibreToBand_centralFamily_completion
     A.centralQuotientProjection
       (projection (regularParameterMap A.periods)
         (A.cuspAngularRegularBasePoint
-          A.sectionSevenAffineActualCuspCrossingTime, zeta))
+          A.affineActualCuspCrossingTime, zeta))
   rw [puncturedLocalCuspQuotientMap_additiveCuspBoundaryProjection]
   rw [additiveCuspCoverToGlobal_eq_quotientProjections]
   rfl
 
 /-- The actual middle-height cusp slice has exactly the canonical marked band coordinate. -/
 public theorem actualCuspWangFibreToBandMap_coordinate
-    (hmark : A.sectionSevenAffineNamedStripLift.lift
-      A.sectionSevenAffineActualCuspCrossingPoint =
-        A.cuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (hmark : A.affineNamedStripLift.lift
+      A.affineActualCuspCrossingPoint =
+        A.cuspAngularRegularBasePoint A.affineActualCuspCrossingTime)
+    (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     R.twoDiscCover.bandHomotopyEquiv.toFun.comp
@@ -183,43 +183,43 @@ public theorem actualCuspWangFibreToBandMap_coordinate
   apply ContinuousMap.ext
   intro y
   let b :
-      (A.sectionSevenActualAffineSplit.allocation.orderThreeSide ∩
-        A.sectionSevenActualAffineSplit.allocation.orderFourSide :
-          Set A.SectionSevenEllipticInterior) :=
+      (A.actualAffineHeightSplit.allocation.orderThreeSide ∩
+        A.actualAffineHeightSplit.allocation.orderFourSide :
+          Set A.ellipticInterior) :=
     (actualCuspWangFibreToBandMap (A := A) R) y
   let c : centralHeightBand
-      (A.sectionSevenAffineCentralHeightSplit A.sectionSevenAffineCentralSeparation).height
-      (A.sectionSevenAffineCentralHeightSplit A.sectionSevenAffineCentralSeparation).lower
-      (A.sectionSevenAffineCentralHeightSplit A.sectionSevenAffineCentralSeparation).upper :=
-    A.sectionSevenActualAffineSplit.sidesIntersectionHomeomorph b
+      (A.affineCentralHeightSplit A.affineCentralSeparation).height
+      (A.affineCentralHeightSplit A.affineCentralSeparation).lower
+      (A.affineCentralHeightSplit A.affineCentralSeparation).upper :=
+    A.actualAffineHeightSplit.sidesIntersectionHomeomorph b
   change
-    (A.sectionSevenAffineCentralBandMarkedProductHomeomorph
-      A.sectionSevenAffineCentralSeparation c).2 =
+    (A.affineCentralBandMarkedProductHomeomorph
+      A.affineCentralSeparation c).2 =
     fullRankAdditiveTorusHomeomorph
       G.fiberParameter A.duplicatedSectionSevenBandParameter
       G.fiberFullRank A.duplicatedSectionSevenBandFullRank
       (G.fiberHomeomorph y)
   refine congrArg Prod.snd
-    (?_ : A.sectionSevenAffineCentralBandMarkedProductHomeomorph
-      A.sectionSevenAffineCentralSeparation c =
-      (A.sectionSevenAffineActualCuspCrossingPoint,
+    (?_ : A.affineCentralBandMarkedProductHomeomorph
+      A.affineCentralSeparation c =
+      (A.affineActualCuspCrossingPoint,
         fullRankAdditiveTorusHomeomorph
           G.fiberParameter A.duplicatedSectionSevenBandParameter
           G.fiberFullRank A.duplicatedSectionSevenBandFullRank
           (G.fiberHomeomorph y)))
-  apply (A.sectionSevenAffineCentralBandMarkedProductHomeomorph
-    A.sectionSevenAffineCentralSeparation).symm.injective
+  apply (A.affineCentralBandMarkedProductHomeomorph
+    A.affineCentralSeparation).symm.injective
   rw [Homeomorph.symm_apply_apply]
-  apply A.sectionSevenAffineCentralBandToCentralFamily_injective
-  rw [A.sectionSevenAffineCentralBandMarkedProductHomeomorph_symm_toCentralFamily]
+  apply A.affineCentralBandToCentralFamily_injective
+  rw [A.affineCentralBandMarkedProductHomeomorph_symm_toCentralFamily]
   exact actualCuspWangFibreToBand_centralFamily_completion hmark R y
 
 /-- The explicit middle-height cusp slice and the canonical fibre-to-band map are homotopic. -/
 public theorem actualCuspWangFibreToBandMap_homotopic_canonical
-    (hmark : A.sectionSevenAffineNamedStripLift.lift
-      A.sectionSevenAffineActualCuspCrossingPoint =
-        A.cuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (hmark : A.affineNamedStripLift.lift
+      A.affineActualCuspCrossingPoint =
+        A.cuspAngularRegularBasePoint A.affineActualCuspCrossingTime)
+    (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     ContinuousMap.Homotopic (actualCuspWangFibreToBandMap (A := A) R)
@@ -243,17 +243,17 @@ public theorem actualCuspWangFibreToBandMap_homotopic_canonical
 /-- After inclusion into the elliptic interior, the explicit middle-height cusp slice is
 homotopic to the canonical cusp fibre map. -/
 public theorem actualCuspWangFibreToEllipticInteriorMap_homotopic_canonical
-    (hmark : A.sectionSevenAffineNamedStripLift.lift
-      A.sectionSevenAffineActualCuspCrossingPoint =
-        A.cuspAngularRegularBasePoint A.sectionSevenAffineActualCuspCrossingTime)
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (hmark : A.affineNamedStripLift.lift
+      A.affineActualCuspCrossingPoint =
+        A.cuspAngularRegularBasePoint A.affineActualCuspCrossingTime)
+    (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     ContinuousMap.Homotopic
       ((⟨Subtype.val, continuous_subtype_val⟩ :
           C((R.twoDiscCover.orderThreeSide ∩ R.twoDiscCover.orderFourSide :
-              Set A.SectionSevenEllipticInterior),
-            A.SectionSevenEllipticInterior)).comp
+              Set A.ellipticInterior),
+            A.ellipticInterior)).comp
         (actualCuspWangFibreToBandMap (A := A) R))
       R.twoDiscCover.canonicalCuspFiberToEllipticInteriorMap := by
   let G := A.actualCuspRadialClutchingData
@@ -261,10 +261,10 @@ public theorem actualCuspWangFibreToEllipticInteriorMap_homotopic_canonical
   exact ContinuousMap.Homotopic.comp
     (.refl (⟨Subtype.val, continuous_subtype_val⟩ :
       C((R.twoDiscCover.orderThreeSide ∩ R.twoDiscCover.orderFourSide :
-          Set A.SectionSevenEllipticInterior), A.SectionSevenEllipticInterior)))
+          Set A.ellipticInterior), A.ellipticInterior)))
     (actualCuspWangFibreToBandMap_homotopic_canonical hmark R)
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

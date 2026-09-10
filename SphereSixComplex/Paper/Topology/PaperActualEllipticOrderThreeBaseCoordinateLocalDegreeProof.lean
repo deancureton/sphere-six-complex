@@ -104,7 +104,7 @@ public theorem exists_orderThreeCayleyRegularCoordinate_cubicUnit :
 applying the cubic local chart function to its explicit one-turn Cayley loop. -/
 public theorem orderThreeFillingRelation_baseCoordinate_eq_chartFunction
     (t : unitInterval) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     (A.centralFamilyCoordinate
       (((A.orderThreeFillingRelationRegularLoop.map
         A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
@@ -112,23 +112,23 @@ public theorem orderThreeFillingRelation_baseCoordinate_eq_chartFunction
           A.orderThreeCollarRegularRepresentative_base_projects.symm) t)).1 =
       ellipticChartFunction A.modular.sourceCoordinate.coordinate
         fuchsianOneFixedPoint (A.orderThreeFillingRelationCayleyLoop t).1 := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   change (A.centralFamilyCoordinate
     (A.centralQuotientProjection (A.orderThreeFillingRelationRegularLoop t))).1 = _
   rw [A.centralFamilyCoordinate_centralQuotientProjection]
   change A.modular.sourceCoordinate.coordinate
       (regularTotalSpaceBase A.periods
         (A.orderThreeCollarRegularRepresentativeMap
-          (A.orderThreeActualEllipticBoundaryDeckStraightLift
-            A.orderThreeActualEllipticBoundaryDeckData.fillingRelation t))).1 = _
+          (A.ellipticThreeBoundaryDeckStraightLift
+            A.ellipticThreeBoundaryDeckData.fillingRelation t))).1 = _
   let _ := A.totalSpaceCharts
   let hproper : SourceActionProperlyDiscontinuous
       (U := A.modular.modularParameter.toTriangleUniformization) :=
     sourceActionProperlyDiscontinuous_of_eq
       A.modular.modularParameter.toTriangleUniformization_sourceAction
   let lift :=
-    A.orderThreeActualEllipticBoundaryDeckStraightLift
-      A.orderThreeActualEllipticBoundaryDeckData.fillingRelation t
+    A.ellipticThreeBoundaryDeckStraightLift
+      A.ellipticThreeBoundaryDeckData.fillingRelation t
   let q :=
     orderThreePuncturedCollarGaugeEquiv A.periods
       A.starSeparation.orderThree.radius

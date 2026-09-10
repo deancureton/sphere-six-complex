@@ -107,7 +107,7 @@ public theorem finiteBouquetMappingTorus_integralHomologyFiniteSix
     (M : FourTorusHomologicalModel F) (φ : ι → F ≃ₜ F)
     [PathConnectedSpace (FiniteBouquetMappingTorus φ)] :
     IntegralHomologyFiniteSix (FiniteBouquetMappingTorus φ) where
-  finiteHomology k := by
+  finite_homology k := by
     cases k with
     | zero =>
         let _ : Module.Finite ℤ ℤ := inferInstance
@@ -119,7 +119,7 @@ public theorem finiteBouquetMappingTorus_integralHomologyFiniteSix
           M.finiteHomology (k + 1)
         let _ : Module.Finite ℤ (IntegralSingularHomology k F) := M.finiteHomology k
         exact finite_homology_succ_finiteBouquetMappingTorus φ k
-  homologyAboveDimension k hk := by
+  subsingleton_homology_of_six_lt k hk := by
     obtain ⟨j, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (by omega : k ≠ 0)
     exact subsingleton_homology_succ_finiteBouquetMappingTorus_of_wang φ j
       (M.subsingleton_homology_of_four_lt (j + 1) (by omega))
@@ -137,11 +137,11 @@ public theorem finiteBouquetMappingTorus_integralHomologyFiniteSix_of_homotopyEq
   constructor
   · intro k
     let _ : Module.Finite ℤ
-        (IntegralSingularHomology k (FiniteBouquetMappingTorus φ)) := hT.finiteHomology k
+        (IntegralSingularHomology k (FiniteBouquetMappingTorus φ)) := hT.finite_homology k
     exact Module.Finite.equiv
       (integralSingularHomologyEquivOfHomotopyEquiv k e).symm.toIntLinearEquiv
   · intro k hk
-    let h := hT.homologyAboveDimension k hk
+    let h := hT.subsingleton_homology_of_six_lt k hk
     let eH := integralSingularHomologyEquivOfHomotopyEquiv k e
     exact ⟨fun x y ↦ eH.injective (@Subsingleton.elim _ h _ _)⟩
 

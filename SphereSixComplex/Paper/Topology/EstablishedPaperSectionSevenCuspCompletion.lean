@@ -19,29 +19,29 @@ namespace SphereSixComplex.Geometry.PaperAnalyticData
 namespace EstablishedSectionSevenCuspTopology
 
 public structure ActualCuspFiberEllipticMarkedCoordinateResidual
-    {A : PaperAnalyticData} (R : A.SectionSevenAffineRadialCompletionInput) : Prop where
+    {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput) : Prop where
   degreeTwoIndexFive :
     A.cuspEllipticFiberCoordinate R (correctedCuspDegreeTwoSplitting R)
       (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) = 1
 
 public theorem establishedActualCuspFiberEllipticMarkedCoordinateResidual
-    {A : PaperAnalyticData} (R : A.SectionSevenAffineRadialCompletionInput) :
+    {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput) :
     ActualCuspFiberEllipticMarkedCoordinateResidual R :=
   ⟨A.cuspEllipticFiberCoordinate_rawFive R (correctedCuspDegreeTwoSplitting R)⟩
 
 public def correctedPositiveDegreeAssembly_of_residual
-    {A : PaperAnalyticData} (R : A.SectionSevenAffineRadialCompletionInput)
+    {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput)
     (C : ActualCuspFiberEllipticMarkedCoordinateResidual R) :
-    A.SectionSevenPositiveDegreeHomologyAssembly :=
+    A.PositiveDegreeHomologyAssembly :=
   correctedPositiveDegreeHomologyAssembly R.homologyAlignment.actualHomologyCoordinates
     (correctedCuspDegreeTwoSplitting R)
-    (cuspDegreeOneUnionCoordinates_of_fullIterate R (A.actualCuspDegreeOneFullIterateRelation_proved R))
+    (cuspDegreeOneUnionCoordinates_of_fullIterate R (A.cuspDegreeOneFullIterateRelation_proved R))
     (fun x ↦ congrFun (correctedCuspHomologyTwoCoordinates_of_rawFive R C.degreeTwoIndexFive x) 0)
     (correctedCuspDegreeTwoSplitting_boundary R)
 
 public def correctedPositiveDegreeAssembly
-    {A : PaperAnalyticData} (R : A.SectionSevenAffineRadialCompletionInput) :
-    A.SectionSevenPositiveDegreeHomologyAssembly :=
+    {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput) :
+    A.PositiveDegreeHomologyAssembly :=
   correctedPositiveDegreeAssembly_of_residual R
     (establishedActualCuspFiberEllipticMarkedCoordinateResidual R)
 

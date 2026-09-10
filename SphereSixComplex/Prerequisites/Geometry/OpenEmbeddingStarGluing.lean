@@ -171,12 +171,12 @@ variable (B : A.BiholomorphicData)
 
 /-- Common-source biholomorphic collars supply the analytic data for the canonical star gluing. -/
 public noncomputable def toBiholomorphicFourPieceStarData :
-    Geometry.EstablishedBiholomorphicStarGluing.BiholomorphicFourPieceStarData
+    BiholomorphicStarGluing.BiholomorphicFourPieceStarData
       A.toFourPieceStarGluingData where
   centralCharts := B.centralCharts
   fillingCharts := B.fillingCharts
-  centralManifold := B.centralManifold
-  fillingManifold := B.fillingManifold
+  isManifold_central := B.centralManifold
+  isManifold_filling := B.fillingManifold
   collar := B.collar
   collar_source := B.collar_source
   collar_target := B.collar_target

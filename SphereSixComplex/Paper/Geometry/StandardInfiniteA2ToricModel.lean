@@ -23,7 +23,7 @@ open Matrix
 open SphereSixComplex.Geometry.CuspCombinatorics
 open SphereSixComplex.Geometry.CuspFilling
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
 /-- The rank-three lattice used by the cone fan. -/
 public abbrev FanLattice := Fin 3 → ℤ
@@ -385,4 +385,4 @@ public theorem torusEmbedding_holomorphic (M : Model) :
 
 end Model
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
+end SphereSixComplex.Geometry.InfiniteA2Toric

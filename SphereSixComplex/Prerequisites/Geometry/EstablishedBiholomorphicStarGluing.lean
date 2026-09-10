@@ -14,7 +14,7 @@ pieces.  This module states that formula-independent theorem for the four-piece 
 
 open scoped ContDiff Manifold
 
-namespace SphereSixComplex.Geometry.EstablishedBiholomorphicStarGluing
+namespace SphereSixComplex.BiholomorphicStarGluing
 
 noncomputable section
 
@@ -22,10 +22,10 @@ noncomputable section
 public structure BiholomorphicFourPieceStarData (A : FourPieceStarGluingData) where
   centralCharts : ChartedSpace ComplexModel A.central
   fillingCharts : ∀ i, ChartedSpace ComplexModel (A.filling i)
-  centralManifold :
+  isManifold_central :
     letI := centralCharts
     IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞ A.central
-  fillingManifold :
+  isManifold_filling :
     letI (i : Fin 3) := fillingCharts i
     ∀ i, IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞ (A.filling i)
   /-- The analytic extension of each collar homeomorphism to an open partial diffeomorphism of
@@ -85,14 +85,14 @@ namespace BiholomorphicFourPieceStarData
 variable {A : FourPieceStarGluingData} (C : BiholomorphicFourPieceStarData A)
 
 /-- Each of the four pieces is a complex manifold in its own atlas. -/
-public theorem pieceManifold (hcollar : ∀ i, Nonempty (A.centralCollar i)) :
+public theorem isManifold_piece (hcollar : ∀ i, Nonempty (A.centralCollar i)) :
     letI := A.nonemptyPieceOfCollars hcollar
     letI := C.complexCharts
     ∀ i, IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞ (A.glueData.U i) := by
   intro i
   cases i with
-  | none => exact C.centralManifold
-  | some k => exact C.fillingManifold k
+  | none => exact C.isManifold_central
+  | some k => exact C.isManifold_filling k
 
 end BiholomorphicFourPieceStarData
 
@@ -103,7 +103,7 @@ six transitions between distinct pieces, and each of those is identified here wi
 collar data: a central-to-filling transition is the given partial diffeomorphism, a
 filling-to-central transition is its inverse, and a transition between two distinct fillings has
 empty source because the attaching collars are disjoint. -/
-public theorem establishedFourPieceBiholomorphicGluingAtlasCompatible
+public theorem BiholomorphicFourPieceStarData.gluing_atlas_compatible
     (A : FourPieceStarGluingData)
     (hcollar : ∀ i, Nonempty (A.centralCollar i))
     (C : BiholomorphicFourPieceStarData A) :
@@ -114,7 +114,7 @@ public theorem establishedFourPieceBiholomorphicGluingAtlasCompatible
   letI (i : Fin 3) := C.fillingCharts i
   letI := A.nonemptyPieceOfCollars hcollar
   letI := C.complexCharts
-  letI := C.pieceManifold hcollar
+  letI := C.isManifold_piece hcollar
   refine gluingAtlasCompatible_of_crossPiece A.glueData ?_
   refine crossPieceGluingCompatible_of_pieceTransition_contMDiffOn A.glueData ?_
   intro i j hij
@@ -179,4 +179,4 @@ public theorem establishedFourPieceBiholomorphicGluingAtlasCompatible
 
 end
 
-end SphereSixComplex.Geometry.EstablishedBiholomorphicStarGluing
+end SphereSixComplex.BiholomorphicStarGluing

@@ -65,7 +65,7 @@ public theorem one_third_lt_actualCuspReciprocalProduct_re
 
 /-- On the selected cusp collar, a parameter in the left-facing `45°` sector has normalized
 reciprocal height below `2/3`. -/
-public theorem actualCuspReciprocalProduct_re_lt_two_thirds
+public theorem cuspReciprocalProduct_re_lt_two_thirds
     (q : ℂ) (hq : ‖q‖ < A.actualPuncturedCuspWitness.localWitness.radius)
     (hqre : q.re < 0) (hqsector : |q.im| ≤ -q.re) :
     (q * A.actualNormalizedModularJUniformization.cusp.cuspUnit q)⁻¹.re <

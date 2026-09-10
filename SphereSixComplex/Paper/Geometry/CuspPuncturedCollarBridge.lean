@@ -33,9 +33,9 @@ open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspPhaseEstimates
 open SphereSixComplex.Geometry.CuspToricPhaseAction
 open SphereSixComplex.Geometry.GlobalTorusFamily
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricQuantitativeRegions
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricQuantitativeRegions.BoundedPolydiscRegions
+open SphereSixComplex.Geometry.InfiniteA2Toric
+open SphereSixComplex.Geometry.InfiniteA2Toric.QuantitativeRegions
+open SphereSixComplex.Geometry.InfiniteA2Toric.QuantitativeRegions.BoundedPolydiscRegions
 open SphereSixComplex.Geometry.EstablishedFuchsianCuspNeighborhood
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 
@@ -578,8 +578,8 @@ public theorem localCarrierInclusion_psiMap
     (((CuspPhaseEstimates.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
       N M R hR hRradius).psiMap lambda (localCarrierInclusion M hrR p) :
         LocalCarrier M R) : M.Carrier)
-  rw [CuspLocalPhaseAction.ExactLocalHolomorphicPhaseCoefficients.psiMap_coe,
-    CuspLocalPhaseAction.ExactLocalHolomorphicPhaseCoefficients.psiMap_coe]
+  rw [CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients.psiMap_coe,
+    CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients.psiMap_coe]
   rfl
 
 /-- Freeness and compact-overlap estimates restrict from a cusp disc to any smaller positive
@@ -840,7 +840,7 @@ public theorem localCuspExponentialPoint_period_equivariant
               (fun i ↦ (lambda i : ℂ)) + zeta) s hsr := by
   dsimp only
   apply Subtype.ext
-  rw [CuspLocalPhaseAction.ExactLocalHolomorphicPhaseCoefficients.psiMap_coe]
+  rw [CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients.psiMap_coe]
   rw [localCuspExponentialPoint_coe, localCuspExponentialPoint_coe]
   rw [CuspToricPhaseAction.ToricModel.phaseAction_apply, M.fanShear_torus,
     M.torusAction_torus]
@@ -1426,7 +1426,7 @@ public noncomputable def puncturedPsiMap
       N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le).psiMap
         lambda p.1,
     by
-      rw [CuspLocalPhaseAction.ExactLocalHolomorphicPhaseCoefficients.psiMap_preserves_t]
+      rw [CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients.psiMap_preserves_t]
       exact p.2⟩
 
 /-- The prequotient map is invariant under the actual phase-corrected parameter-lattice
@@ -1487,10 +1487,10 @@ public theorem puncturedLocalCuspPrequotientMap_psiMap
   smul lambda p := puncturedPsiMap W (Multiplicative.toAdd lambda) p
   one_smul p := by
     apply Subtype.ext
-    exact CuspLocalPhaseAction.ExactLocalHolomorphicPhaseCoefficients.psiMap_zero _ _
+    exact CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients.psiMap_zero _ _
   mul_smul lambda mu p := by
     apply Subtype.ext
-    exact CuspLocalPhaseAction.ExactLocalHolomorphicPhaseCoefficients.psiMap_add
+    exact CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients.psiMap_add
       _ (Multiplicative.toAdd lambda) (Multiplicative.toAdd mu) p.1
 
 /-- The orbit relation of the phase-corrected action on the punctured local carrier. -/
@@ -1522,9 +1522,9 @@ fibre. -/
       N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le).psiMap
         (Multiplicative.toAdd lambda) p
   one_smul p :=
-    CuspLocalPhaseAction.ExactLocalHolomorphicPhaseCoefficients.psiMap_zero _ p
+    CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients.psiMap_zero _ p
   mul_smul lambda mu p :=
-    CuspLocalPhaseAction.ExactLocalHolomorphicPhaseCoefficients.psiMap_add _
+    CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients.psiMap_add _
       (Multiplicative.toAdd lambda) (Multiplicative.toAdd mu) p
 
 public noncomputable def actualLocalPsiOrbitRel

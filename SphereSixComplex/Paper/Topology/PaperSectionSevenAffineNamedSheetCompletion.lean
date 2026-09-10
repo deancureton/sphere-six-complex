@@ -43,15 +43,15 @@ open SphereSixComplex.Geometry.EllipticLinearCollarGlobalDescent
 /-- If a deck translate and the named order-three radial lift both enter the selected collar,
 collar separation forces that deck element into the order-three elliptic stabilizer. -/
 public theorem fixes_fuchsianOne_of_named_and_deck_cayley_lt
-    (A : PaperAnalyticData) (x : A.SectionSevenAffineMarkedBand) (g : Delta)
+    (A : PaperAnalyticData) (x : A.affineMarkedBand) (g : Delta)
     (hdeck : ‖(orderThreeCayleyHomeomorph
       (fuchsianSourceAction g •
-        (A.sectionSevenAffineOrderThreeRadialBaseLift
-          (A.sectionSevenAffineBandStripCoordinate x)).1) : ℂ)‖ <
+        (A.affineOrderThreeRadialBaseLift
+          (A.affineBandStripCoordinate x)).1) : ℂ)‖ <
         A.starSeparation.orderThree.radius)
     (hnamed : ‖(orderThreeCayleyHomeomorph
-      (A.sectionSevenAffineOrderThreeRadialBaseLift
-        (A.sectionSevenAffineBandStripCoordinate x)).1 : ℂ)‖ <
+      (A.affineOrderThreeRadialBaseLift
+        (A.affineBandStripCoordinate x)).1 : ℂ)‖ <
         A.starSeparation.orderThree.radius) :
     fuchsianSourceAction g • fuchsianOneFixedPoint = fuchsianOneFixedPoint := by
   apply (establishedFuchsianOneStabilizerExact g).mpr
@@ -62,25 +62,25 @@ public theorem fixes_fuchsianOne_of_named_and_deck_cayley_lt
   rw [OrderThreeLinearCollarSourceData.eq_def] at D
   exact D.2
     (fuchsianSourceAction g •
-      (A.sectionSevenAffineOrderThreeRadialBaseLift
-        (A.sectionSevenAffineBandStripCoordinate x)).1)
-    (A.sectionSevenAffineOrderThreeRadialBaseLift
-      (A.sectionSevenAffineBandStripCoordinate x)).1
+      (A.affineOrderThreeRadialBaseLift
+        (A.affineBandStripCoordinate x)).1)
+    (A.affineOrderThreeRadialBaseLift
+      (A.affineBandStripCoordinate x)).1
     hdeck hnamed g (by rw [hsource])
 
 /-- For a deck element already carrying the named order-three lift into the collar, fixing the
 elliptic centre is equivalent to the named lift itself satisfying the collar bound. -/
 public theorem fixes_fuchsianOne_iff_namedOrderThreeRadialBase_cayley_lt
-    (A : PaperAnalyticData) (x : A.SectionSevenAffineMarkedBand) (g : Delta)
+    (A : PaperAnalyticData) (x : A.affineMarkedBand) (g : Delta)
     (hdeck : ‖(orderThreeCayleyHomeomorph
       (fuchsianSourceAction g •
-        (A.sectionSevenAffineOrderThreeRadialBaseLift
-          (A.sectionSevenAffineBandStripCoordinate x)).1) : ℂ)‖ <
+        (A.affineOrderThreeRadialBaseLift
+          (A.affineBandStripCoordinate x)).1) : ℂ)‖ <
         A.starSeparation.orderThree.radius) :
     fuchsianSourceAction g • fuchsianOneFixedPoint = fuchsianOneFixedPoint ↔
       ‖(orderThreeCayleyHomeomorph
-        (A.sectionSevenAffineOrderThreeRadialBaseLift
-          (A.sectionSevenAffineBandStripCoordinate x)).1 : ℂ)‖ <
+        (A.affineOrderThreeRadialBaseLift
+          (A.affineBandStripCoordinate x)).1 : ℂ)‖ <
         A.starSeparation.orderThree.radius := by
   constructor
   · intro hfix
@@ -91,17 +91,17 @@ public theorem fixes_fuchsianOne_iff_namedOrderThreeRadialBase_cayley_lt
 /-- Pointwise, existence of an extracted order-three deck element in the elliptic stabilizer is
 exactly the named-sheet Cayley bound. -/
 public theorem exists_orderThree_stabilizingDeck_iff_namedCayley_lt
-    (A : PaperAnalyticData) (x : A.SectionSevenAffineMarkedBand) :
+    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
     (∃ g : Delta,
       ‖(orderThreeCayleyHomeomorph
         (fuchsianSourceAction g •
-          (A.sectionSevenAffineOrderThreeRadialBaseLift
-            (A.sectionSevenAffineBandStripCoordinate x)).1) : ℂ)‖ <
+          (A.affineOrderThreeRadialBaseLift
+            (A.affineBandStripCoordinate x)).1) : ℂ)‖ <
           A.starSeparation.orderThree.radius ∧
         fuchsianSourceAction g • fuchsianOneFixedPoint = fuchsianOneFixedPoint) ↔
       ‖(orderThreeCayleyHomeomorph
-        (A.sectionSevenAffineOrderThreeRadialBaseLift
-          (A.sectionSevenAffineBandStripCoordinate x)).1 : ℂ)‖ <
+        (A.affineOrderThreeRadialBaseLift
+          (A.affineBandStripCoordinate x)).1 : ℂ)‖ <
         A.starSeparation.orderThree.radius := by
   constructor
   · rintro ⟨g, hdeck, hfix⟩
@@ -115,17 +115,17 @@ public theorem exists_orderThree_stabilizingDeck_iff_namedCayley_lt
 /-- The analogous order-four stabilizing-deck condition, written without an auxiliary
 predicate, is exactly the order-four named Cayley bound. -/
 public theorem exists_orderFour_stabilizingDeck_iff_namedCayley_lt
-    (A : PaperAnalyticData) (x : A.SectionSevenAffineMarkedBand) :
+    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
     (∃ g : Delta,
       ‖(orderFourCayleyHomeomorph
         (fuchsianSourceAction g •
-          (A.sectionSevenAffineOrderFourRadialBaseLift
-            (A.sectionSevenAffineBandStripCoordinate x)).1) : ℂ)‖ <
+          (A.affineOrderFourRadialBaseLift
+            (A.affineBandStripCoordinate x)).1) : ℂ)‖ <
           A.starSeparation.orderFour.radius ∧
         fuchsianSourceAction g • fuchsianTwoFixedPoint = fuchsianTwoFixedPoint) ↔
       ‖(orderFourCayleyHomeomorph
-        (A.sectionSevenAffineOrderFourRadialBaseLift
-          (A.sectionSevenAffineBandStripCoordinate x)).1 : ℂ)‖ <
+        (A.affineOrderFourRadialBaseLift
+          (A.affineBandStripCoordinate x)).1 : ℂ)‖ <
         A.starSeparation.orderFour.radius := by
   constructor
   · rintro ⟨g, hdeck, hfix⟩
@@ -141,29 +141,29 @@ public theorem exists_orderFour_stabilizingDeck_iff_namedCayley_lt
 Cayley bounds. -/
 public theorem affineNamedSheetStabilizingDecks_iff_cayleyBounds
     (A : PaperAnalyticData) :
-    ((∀ x : A.SectionSevenAffineMarkedBand, ∃ g : Delta,
+    ((∀ x : A.affineMarkedBand, ∃ g : Delta,
         ‖(orderThreeCayleyHomeomorph
           (fuchsianSourceAction g •
-            (A.sectionSevenAffineOrderThreeRadialBaseLift
-              (A.sectionSevenAffineBandStripCoordinate x)).1) : ℂ)‖ <
+            (A.affineOrderThreeRadialBaseLift
+              (A.affineBandStripCoordinate x)).1) : ℂ)‖ <
             A.starSeparation.orderThree.radius ∧
           fuchsianSourceAction g • fuchsianOneFixedPoint = fuchsianOneFixedPoint) ∧
-      (∀ x : A.SectionSevenAffineMarkedBand, ∃ g : Delta,
+      (∀ x : A.affineMarkedBand, ∃ g : Delta,
         ‖(orderFourCayleyHomeomorph
           (fuchsianSourceAction g •
-            (A.sectionSevenAffineOrderFourRadialBaseLift
-              (A.sectionSevenAffineBandStripCoordinate x)).1) : ℂ)‖ <
+            (A.affineOrderFourRadialBaseLift
+              (A.affineBandStripCoordinate x)).1) : ℂ)‖ <
             A.starSeparation.orderFour.radius ∧
           fuchsianSourceAction g • fuchsianTwoFixedPoint = fuchsianTwoFixedPoint)) ↔
-      ((∀ x : A.SectionSevenAffineMarkedBand,
+      ((∀ x : A.affineMarkedBand,
         ‖(orderThreeCayleyHomeomorph
-          (A.sectionSevenAffineOrderThreeRadialBaseLift
-            (A.sectionSevenAffineBandStripCoordinate x)).1 : ℂ)‖ <
+          (A.affineOrderThreeRadialBaseLift
+            (A.affineBandStripCoordinate x)).1 : ℂ)‖ <
           A.starSeparation.orderThree.radius) ∧
-       (∀ x : A.SectionSevenAffineMarkedBand,
+       (∀ x : A.affineMarkedBand,
         ‖(orderFourCayleyHomeomorph
-          (A.sectionSevenAffineOrderFourRadialBaseLift
-            (A.sectionSevenAffineBandStripCoordinate x)).1 : ℂ)‖ <
+          (A.affineOrderFourRadialBaseLift
+            (A.affineBandStripCoordinate x)).1 : ℂ)‖ <
           A.starSeparation.orderFour.radius)) := by
   constructor
   · rintro ⟨h₃, h₄⟩
@@ -177,34 +177,34 @@ public theorem affineNamedSheetStabilizingDecks_iff_cayleyBounds
 and hence the complete marked affine-band compatibility. -/
 public theorem markedBandHomotopies_of_affineNamedSheetStabilizingDecks
     (A : PaperAnalyticData)
-    (h₃ : ∀ x : A.SectionSevenAffineMarkedBand, ∃ g : Delta,
+    (h₃ : ∀ x : A.affineMarkedBand, ∃ g : Delta,
       ‖(orderThreeCayleyHomeomorph
         (fuchsianSourceAction g •
-          (A.sectionSevenAffineOrderThreeRadialBaseLift
-            (A.sectionSevenAffineBandStripCoordinate x)).1) : ℂ)‖ <
+          (A.affineOrderThreeRadialBaseLift
+            (A.affineBandStripCoordinate x)).1) : ℂ)‖ <
           A.starSeparation.orderThree.radius ∧
         fuchsianSourceAction g • fuchsianOneFixedPoint = fuchsianOneFixedPoint)
-    (h₄ : ∀ x : A.SectionSevenAffineMarkedBand, ∃ g : Delta,
+    (h₄ : ∀ x : A.affineMarkedBand, ∃ g : Delta,
       ‖(orderFourCayleyHomeomorph
         (fuchsianSourceAction g •
-          (A.sectionSevenAffineOrderFourRadialBaseLift
-            (A.sectionSevenAffineBandStripCoordinate x)).1) : ℂ)‖ <
+          (A.affineOrderFourRadialBaseLift
+            (A.affineBandStripCoordinate x)).1) : ℂ)‖ <
           A.starSeparation.orderFour.radius ∧
         fuchsianSourceAction g • fuchsianTwoFixedPoint = fuchsianTwoFixedPoint) :
-    A.SectionSevenAffineOverlapBandCompatibility := by
+    A.AffineOverlapBandCompatibility := by
   have hbounds := (A.affineNamedSheetStabilizingDecks_iff_cayleyBounds).mp ⟨h₃, h₄⟩
-  let C₄ : A.SectionSevenAffineOrderFourNamedRadialCollarCompatibility :=
-    (A.sectionSevenAffineOrderFourNamedRadialCollarCompatibility_iff).mpr hbounds.2
+  let C₄ : A.AffineOrderFourNamedRadialCollarCompatibility :=
+    (A.affineOrderFourNamedRadialCollarCompatibility_iff).mpr hbounds.2
   apply markedBandHomotopies_of_pinnedLiftEndpointGaugeFormulas
-    A A.sectionSevenAffineNamedStripLift
-      A.sectionSevenAffineNamedStripLift_apply_midpoint
-      A.sectionSevenAffineOrderThreeEndpointGauge
-      A.sectionSevenAffineOrderFourEndpointGauge
+    A A.affineNamedStripLift
+      A.affineNamedStripLift_apply_midpoint
+      A.affineOrderThreeEndpointGauge
+      A.affineOrderFourEndpointGauge
   constructor
-  · exact A.sectionSevenAffineOrderThreeEndpointGaugeFormula
-      (A.sectionSevenAffineOrderThreeEndpointRealPeriodIdentity hbounds.1)
-  · exact A.sectionSevenAffineOrderFourEndpointGaugeFormula
-      (A.sectionSevenAffineOrderFourEndpointRealPeriodIdentity C₄)
+  · exact A.affineOrderThreeEndpointGauge_formula
+      (A.affineOrderThreeEndpointRealPeriodIdentity hbounds.1)
+  · exact A.affineOrderFourEndpointGauge_formula
+      (A.affineOrderFourEndpointRealPeriodIdentity C₄)
 
 end PaperAnalyticData
 

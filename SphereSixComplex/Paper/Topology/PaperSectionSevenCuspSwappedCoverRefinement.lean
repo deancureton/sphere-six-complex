@@ -21,23 +21,23 @@ open scoped ContinuousMap
 
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 
-open SectionSevenEllipticInteriorMarkedCycleData
+open EllipticInteriorMarkedCycleData
 open SphereSixComplex.Topology.CanonicalProductWangBoundaryNaturality
 
 variable {A : PaperAnalyticData}
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 /-- The cusp cover in the order dictated by the actual vertex/edge refinement. -/
 public theorem actualCuspSwappedOpenCover
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     R.twoDiscCover.cuspOrderFourOpen ⊔ R.twoDiscCover.cuspOrderThreeOpen = ⊤ := by
   rw [sup_comm]
   exact R.twoDiscCover.cuspOpenCover
 
 /-- Canonical Mayer--Vietoris comparison for the cusp collar in corrected order. -/
 public noncomputable def actualCuspSwappedOpenCoverHomologyComparison
-    (R : A.SectionSevenAffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) :
     SphereSixComplex.BinaryOpenCover.OpenCoverHomologyComparison
       R.twoDiscCover.cuspOrderFourOpen R.twoDiscCover.cuspOrderThreeOpen :=
   SphereSixComplex.BinaryOpenCover.openCoverHomologyComparisonOfCover
@@ -45,7 +45,7 @@ public noncomputable def actualCuspSwappedOpenCoverHomologyComparison
 
 /-- Swapping the corrected cusp cover back to its marked order negates its boundary. -/
 public theorem actualCuspSwappedOpenCover_boundary_swap
-    (R : A.SectionSevenAffineRadialCompletionInput) (n : ℕ) :
+    (R : A.AffineRadialCompletionInput) (n : ℕ) :
     (actualCuspSwappedOpenCoverHomologyComparison R).boundary n ≫
         SphereSixComplex.BinaryOpenCover.openIntersectionSwapHomologyMap
           R.twoDiscCover.cuspOrderFourOpen R.twoDiscCover.cuspOrderThreeOpen n =
@@ -56,7 +56,7 @@ public theorem actualCuspSwappedOpenCover_boundary_swap
 /-- The correctly oriented refinement datum.  No existence is asserted here: proving these two
 global inclusions is precisely the remaining cover geometry. -/
 public structure ActualCuspSwappedCoverRefinement
-    (R : A.SectionSevenAffineRadialCompletionInput) : Prop where
+    (R : A.AffineRadialCompletionInput) : Prop where
   vertex_le :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
@@ -68,7 +68,7 @@ public structure ActualCuspSwappedCoverRefinement
 
 /-- The corrected refinement is canonically natural before the target-cover swap. -/
 public theorem actualCuspSwappedRefinement_boundary_naturality
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (C : ActualCuspSwappedCoverRefinement R) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
@@ -103,7 +103,7 @@ public theorem actualCuspSwappedRefinement_boundary_naturality
 /-- After returning the target overlap to marked order, the corrected refinement acquires the
 expected minus sign. -/
 public theorem actualCuspSwappedRefinement_boundary_swap_naturality
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (C : ActualCuspSwappedCoverRefinement R) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
@@ -131,7 +131,7 @@ public theorem actualCuspSwappedRefinement_boundary_swap_naturality
 /-- The overlap map induced by the corrected refinement, before compensating for the
 Mayer--Vietoris sign of the cover swap. -/
 public noncomputable def actualCuspSwappedRefinementRawOverlapTransport
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (C : ActualCuspSwappedCoverRefinement R) :
     ActualCuspVertexEdgeOverlapHomologyOne A →+
       CuspCoverIntersectionHomologyOne R := by
@@ -151,7 +151,7 @@ public noncomputable def actualCuspSwappedRefinementRawOverlapTransport
 
 /-- The signed overlap transport in the marked order. -/
 public noncomputable def actualCuspSwappedRefinementOverlapTransport
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (C : ActualCuspSwappedCoverRefinement R) :
     ActualCuspVertexEdgeOverlapHomologyOne A →+
       CuspCoverIntersectionHomologyOne R :=
@@ -187,7 +187,7 @@ private theorem swappedMappingTorusOpensUnionHomologyIso_hom_apply
 /-- The unsigned corrected overlap map intertwines the connecting morphisms with one minus
 sign, exactly as dictated by swapping the target cover. -/
 public theorem actualCuspSwappedRefinementRaw_connectingNaturality
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (C : ActualCuspSwappedCoverRefinement R) :
     (actualCuspSwappedRefinementRawOverlapTransport R C).comp
         (actualCuspVertexEdgeCoverConnectingHom A) =
@@ -289,7 +289,7 @@ public theorem actualCuspSwappedRefinementRaw_connectingNaturality
 /-- Negating the raw transport cancels the cover-swap sign and gives the marked-order connecting
 naturality required by the two-leg reduction. -/
 public theorem actualCuspSwappedRefinement_connectingNaturality
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (C : ActualCuspSwappedCoverRefinement R) :
     ActualCuspTwoLegConnectingNaturality R
       (actualCuspSwappedRefinementOverlapTransport R C) := by
@@ -304,7 +304,7 @@ public theorem actualCuspSwappedRefinement_connectingNaturality
 /-- A correctly oriented refinement together with the one remaining marked-overlap equality
 proves the pulled-back invariant-basis calculation. -/
 public theorem cuspPulledBackMarkedInvariantBasisData_of_swappedCoverRefinement
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (C : ActualCuspSwappedCoverRefinement R)
     (hmarked : ActualCuspTwoLegMarkedOverlapNaturality R
       (actualCuspSwappedRefinementOverlapTransport R C)) :
@@ -313,7 +313,7 @@ public theorem cuspPulledBackMarkedInvariantBasisData_of_swappedCoverRefinement
     (actualCuspSwappedRefinementOverlapTransport R C)
   exact ⟨actualCuspSwappedRefinement_connectingNaturality R C, hmarked⟩
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

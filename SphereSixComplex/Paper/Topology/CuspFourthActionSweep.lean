@@ -14,44 +14,44 @@ open SphereSixComplex.Topology SphereSixComplex.StandardTorusHomology
 open GlobalTorusFamily CuspPuncturedCollarBridge CuspRadialClutchingConstruction
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open ComplexTorus TorusFamily CuspPeriodExpansion
-open SectionSevenEllipticTwoDiscCoverData CircleProductIdentityMappingTorus
+open EllipticTwoDiscCoverData CircleProductIdentityMappingTorus
 open StandardCircleHomologyLiftDegree Hurewicz.Chains
 
-public def actualCuspChosenFourthSweep (A : PaperAnalyticData) :
+public def cuspChosenFourthSweep (A : PaperAnalyticData) :
     C(UnitAddCircle × StdTorus 1, A.openEmbeddingStarData.collarSource 0) :=
   A.cuspFixedCircleSweepAnchors (cuspFourthFixedCircle (cuspBasePoint A.cuspCoordinate
-    (markedCuspParameter A.starCuspWitness))) A.actualCuspChosenAnchor
+    (markedCuspParameter A.starCuspWitness))) A.cuspChosenAnchor
 
 public theorem cuspFourthSweep_homotopic_chosen (A : PaperAnalyticData) :
-    (cuspFourthSweep A).Homotopic A.actualCuspChosenFourthSweep :=
+    (cuspFourthSweep A).Homotopic A.cuspChosenFourthSweep :=
   A.cuspFixedCircleSweep_homotopic_anchor _ _
 
-public theorem actualCuspChosenFourthSweep_central_real (A : PaperAnalyticData)
+public theorem cuspChosenFourthSweep_central_real (A : PaperAnalyticData)
     (r : ℝ) (t : UnitAddCircle) :
-    A.starToCentral 0 (A.actualCuspChosenFourthSweep ((r : UnitAddCircle), fun _ ↦ t)) =
+    A.starToCentral 0 (A.cuspChosenFourthSweep ((r : UnitAddCircle), fun _ ↦ t)) =
       regularPeriodCircleInGlobal A.periods (Pi.single 3 1)
-        (t, A.actualCuspChosenPositiveRegularBase r) := by
+        (t, A.cuspChosenPositiveRegularBase r) := by
   change A.starToCentral 0 (A.cuspFixedCircleSweepAnchors _ _ _) = _
   rw [cuspFixedCircleSweepAnchors_real]
-  have hs : cuspParameterOfPolar ‖cuspQ A.actualCuspBoundaryCoverBase.1.2‖
-      (r + A.actualCuspBoundaryCoverBase.1.2.re) = A.actualCuspBoundaryCoverBase.1.2 + r := by
+  have hs : cuspParameterOfPolar ‖cuspQ A.cuspBoundaryCoverBase.1.2‖
+      (r + A.cuspBoundaryCoverBase.1.2.re) = A.cuspBoundaryCoverBase.1.2 + r := by
     calc
-      _ = cuspParameterOfPolar ‖cuspQ A.actualCuspBoundaryCoverBase.1.2‖
-          A.actualCuspBoundaryCoverBase.1.2.re + r := by
+      _ = cuspParameterOfPolar ‖cuspQ A.cuspBoundaryCoverBase.1.2‖
+          A.cuspBoundaryCoverBase.1.2.re + r := by
         simp only [cuspParameterOfPolar_eq, Complex.ofReal_add]
         ring
       _ = _ := by rw [cuspParameterOfPolar_norm_cuspQ]
   change A.starToCentral 0 (actualCuspFullFibreSlice
-    (cuspParameterOfPolar ‖cuspQ A.actualCuspBoundaryCoverBase.1.2‖
-      (r + A.actualCuspBoundaryCoverBase.1.2.re)) _ _) = _
-  erw [actualCuspFullFibreSlice_coordinateCircle_central A 3]
+    (cuspParameterOfPolar ‖cuspQ A.cuspBoundaryCoverBase.1.2‖
+      (r + A.cuspBoundaryCoverBase.1.2.re)) _ _) = _
+  erw [cuspFullFibreSlice_coordinateCircle_central A 3]
   apply congrArg (fun b ↦ regularPeriodCircleInGlobal A.periods (Pi.single 3 1) (t, b))
   apply Subtype.ext
   exact congrArg A.cuspCoordinate.lift hs
 
-public def actualCuspChosenZeroCircle (A : PaperAnalyticData) : C(StdTorus 1,A.CentralFamily) :=
+public def cuspChosenZeroCircle (A : PaperAnalyticData) : C(StdTorus 1,A.CentralFamily) :=
   (⟨A.starToCentral 0,(A.starToCentral_isOpenEmbedding 0).continuous⟩ : C(_, _)).comp
-    (A.actualCuspChosenFourthSweep.comp
+    (A.cuspChosenFourthSweep.comp
       ⟨fun z ↦ (z 0,0), (continuous_apply 0).prodMk continuous_const⟩)
 
 public theorem centralFourthTranslation_regular_zero (A : PaperAnalyticData)
@@ -73,23 +73,23 @@ public theorem centralFourthTranslation_regular_zero (A : PaperAnalyticData)
   rw [regularPeriodCircle_real, zero_smul, add_zero]
   rfl
 
-public theorem actualCuspChosenFourthSweep_action (A : PaperAnalyticData)
+public theorem cuspChosenFourthSweep_action (A : PaperAnalyticData)
     (u t : UnitAddCircle) :
-    A.centralFourthTranslation (t,A.actualCuspChosenZeroCircle (fun _ ↦ u)) =
-      A.starToCentral 0 (A.actualCuspChosenFourthSweep (u,fun _ ↦ t)) := by
+    A.centralFourthTranslation (t,A.cuspChosenZeroCircle (fun _ ↦ u)) =
+      A.starToCentral 0 (A.cuspChosenFourthSweep (u,fun _ ↦ t)) := by
   obtain ⟨r,rfl⟩ := QuotientAddGroup.mk_surjective u
   change A.centralFourthTranslation
-    (t,A.starToCentral 0 (A.actualCuspChosenFourthSweep ((r : UnitAddCircle),0))) = _
+    (t,A.starToCentral 0 (A.cuspChosenFourthSweep ((r : UnitAddCircle),0))) = _
   rw [show (0 : StdTorus 1) = (fun _ ↦ (0 : UnitAddCircle)) from rfl,
-    actualCuspChosenFourthSweep_central_real, actualCuspChosenFourthSweep_central_real]
+    cuspChosenFourthSweep_central_real, cuspChosenFourthSweep_central_real]
   exact A.centralFourthTranslation_regular_zero t _
 
-public theorem actualCuspChosenZeroCircle_negative (A : PaperAnalyticData) (t : unitInterval) :
-    A.actualCuspChosenZeroCircle (fun _ ↦ ((-(t : ℝ) : ℝ) : UnitAddCircle)) =
+public theorem cuspChosenZeroCircle_negative (A : PaperAnalyticData) (t : unitInterval) :
+    A.cuspChosenZeroCircle (fun _ ↦ ((-(t : ℝ) : ℝ) : UnitAddCircle)) =
       A.cuspAngularZeroSectionLoop t := by
-  change A.starToCentral 0 (A.actualCuspChosenFourthSweep
+  change A.starToCentral 0 (A.cuspChosenFourthSweep
     (((-(t : ℝ) : ℝ) : UnitAddCircle),fun _ ↦ 0)) = _
-  rw [actualCuspChosenFourthSweep_central_real,
+  rw [cuspChosenFourthSweep_central_real,
     cuspAngularZeroSectionLoop_apply]
   change Quotient.mk _ (regularPeriodCircle _ _ ((0 : ℝ),_)) = _
   rw [regularPeriodCircle_real]
@@ -98,8 +98,8 @@ public theorem actualCuspChosenZeroCircle_negative (A : PaperAnalyticData) (t : 
   congr 2
   apply Prod.ext
   · apply Subtype.ext
-    change A.cuspCoordinate.lift (A.actualCuspBoundaryCoverBase.1.2 + ↑(-(t : ℝ))) =
-      A.cuspCoordinate.lift (A.actualCuspBoundaryCoverBase.1.2 - ↑(t : ℝ))
+    change A.cuspCoordinate.lift (A.cuspBoundaryCoverBase.1.2 + ↑(-(t : ℝ))) =
+      A.cuspCoordinate.lift (A.cuspBoundaryCoverBase.1.2 - ↑(t : ℝ))
     simp only [Complex.ofReal_neg, sub_eq_add_neg]
   · rfl
 
@@ -108,23 +108,23 @@ public theorem loopHomologyClass_symm_eq_neg {X : Type} [TopologicalSpace X]
   change hurewiczPi1 x (Additive.ofMul (show FundamentalGroup X x from Path.Homotopic.Quotient.mk p)⁻¹) = _
   exact map_inv (hurewiczPi1 x) (show FundamentalGroup X x from Path.Homotopic.Quotient.mk p)
 
-public theorem actualCuspChosenZeroCircle_homology (A : PaperAnalyticData) :
-    integralSingularHomologyMap 1 A.actualCuspChosenZeroCircle standardCircleHomologyGenerator =
+public theorem cuspChosenZeroCircle_homology (A : PaperAnalyticData) :
+    integralSingularHomologyMap 1 A.cuspChosenZeroCircle standardCircleHomologyGenerator =
       -loopHomologyClass A.cuspAngularZeroSectionLoop := by
   have h : loopHomologyClass
-      (standardCirclePositiveLoop.symm.map A.actualCuspChosenZeroCircle.continuous) =
+      (standardCirclePositiveLoop.symm.map A.cuspChosenZeroCircle.continuous) =
       loopHomologyClass A.cuspAngularZeroSectionLoop := by
     apply loopHomologyClass_eq_of_pointwise
     intro t
-    change A.actualCuspChosenZeroCircle (fun _ ↦
+    change A.cuspChosenZeroCircle (fun _ ↦
       ((((1 : ℝ) - (t : ℝ)) * ((1 : ℤ) : ℝ) : ℝ) : UnitAddCircle)) = _
     rw [Int.cast_one, mul_one, show (((1 : ℝ) - (t : ℝ) : ℝ) : UnitAddCircle) =
         ((-(t : ℝ) : ℝ) : UnitAddCircle) by
       rw [AddCircle.coe_sub, AddCircle.coe_period, zero_sub, AddCircle.coe_neg]]
-    exact A.actualCuspChosenZeroCircle_negative t
+    exact A.cuspChosenZeroCircle_negative t
   rw [← integralSingularHomologyMap_loopHomologyClass, loopHomologyClass_symm_eq_neg,
     map_neg] at h
-  change integralSingularHomologyMap 1 A.actualCuspChosenZeroCircle
+  change integralSingularHomologyMap 1 A.cuspChosenZeroCircle
     (loopHomologyClass standardCirclePositiveLoop) = _
   exact neg_eq_iff_eq_neg.mp h
 
@@ -132,23 +132,23 @@ public theorem cuspAngularCentralLoop_homology_zero (A : PaperAnalyticData) :
     loopHomologyClass A.cuspAngularCentralLoop =
       loopHomologyClass A.cuspAngularZeroSectionLoop := by
   have h := A.cuspAngularCentralLoop_class_eq_zeroSectionWhisker
-  have he := congrArg (fun p ↦ hurewiczPi1 A.actualCuspCentralBase (Additive.ofMul p)) h
+  have he := congrArg (fun p ↦ hurewiczPi1 A.cuspCentralBase (Additive.ofMul p)) h
   change loopHomologyClass A.cuspAngularCentralLoop = _ at he
   exact he.trans (loopHomologyClass_whisker _ _)
 
-public def actualCuspChosenZeroCircleInterior (A : PaperAnalyticData) :
-    C(StdTorus 1,A.SectionSevenEllipticInterior) :=
-  A.fourthTranslationCentralInclusion.comp A.actualCuspChosenZeroCircle
+public def cuspChosenZeroCircleInterior (A : PaperAnalyticData) :
+    C(StdTorus 1,A.ellipticInterior) :=
+  A.fourthTranslationCentralInclusion.comp A.cuspChosenZeroCircle
 
-public theorem actualCuspChosenZeroCircleInterior_homology (A : PaperAnalyticData)
-    (D : A.SectionSevenEllipticTwoDiscCoverData) :
-    integralSingularHomologyMap 1 A.actualCuspChosenZeroCircleInterior
+public theorem cuspChosenZeroCircleInterior_homology (A : PaperAnalyticData)
+    (D : A.EllipticTwoDiscCoverData) :
+    integralSingularHomologyMap 1 A.cuspChosenZeroCircleInterior
       standardCircleHomologyGenerator =
-    -integralSingularHomologyMap 1 A.actualCuspOverlapToEllipticInterior
-      (hurewiczFunction A.actualCuspOverlapBase A.actualCuspAffineBridgeMeridian) := by
-  rw [actualCuspChosenZeroCircleInterior, ← integralSingularHomologyMap_comp_wang,
-    actualCuspChosenZeroCircle_homology, map_neg,
-    A.actualCuspBridgeMeridian_homology_image D,
+    -integralSingularHomologyMap 1 A.cuspOverlapToEllipticInterior
+      (hurewiczFunction A.cuspOverlapBase A.cuspAffineBridgeMeridian) := by
+  rw [cuspChosenZeroCircleInterior, ← integralSingularHomologyMap_comp_wang,
+    cuspChosenZeroCircle_homology, map_neg,
+    A.cuspBridgeMeridian_homology_image D,
     ← A.cuspAngularCentralLoop_homology_zero]
   congr 1
   erw [integralSingularHomologyMap_loopHomologyClass,
@@ -157,59 +157,59 @@ public theorem actualCuspChosenZeroCircleInterior_homology (A : PaperAnalyticDat
   intro t
   apply Subtype.ext
   change (A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
-    (A.actualCuspOverlapToCentral (A.cuspAngularProjectedLoop t))).val = _
+    (A.cuspOverlapToCentral (A.cuspAngularProjectedLoop t))).val = _
   erw [A.centralToSectionSevenEulerPieceHomeomorph_actualCuspOverlapToCentral]
   rfl
 
-public theorem actualCuspChosenFourthSweep_action_interior (A : PaperAnalyticData)
-    (D : A.SectionSevenEllipticTwoDiscCoverData) (p : UnitAddCircle × StdTorus 1) :
-    A.ellipticFourthTranslation (p.1,A.actualCuspChosenZeroCircleInterior p.2) =
+public theorem cuspChosenFourthSweep_action_interior (A : PaperAnalyticData)
+    (D : A.EllipticTwoDiscCoverData) (p : UnitAddCircle × StdTorus 1) :
+    A.ellipticFourthTranslation (p.1,A.cuspChosenZeroCircleInterior p.2) =
       D.cuspToEllipticInteriorMap.hom
-        (A.actualCuspChosenFourthSweep (p.2 0,fun _ ↦ p.1)) := by
+        (A.cuspChosenFourthSweep (p.2 0,fun _ ↦ p.1)) := by
   change A.ellipticFourthTranslation
-    (p.1,A.fourthTranslationCentralInclusion (A.actualCuspChosenZeroCircle p.2)) = _
+    (p.1,A.fourthTranslationCentralInclusion (A.cuspChosenZeroCircle p.2)) = _
   rw [ellipticFourthTranslation_central]
   have hp : p.2 = (fun _ ↦ p.2 0) := by ext i; fin_cases i; rfl
-  rw [hp, actualCuspChosenFourthSweep_action]
+  rw [hp, cuspChosenFourthSweep_action]
   rfl
 
-public theorem actualCuspChosenFourthSweep_homology (A : PaperAnalyticData) :
-    integralSingularHomologyMap 2 A.actualCuspChosenFourthSweep
+public theorem cuspChosenFourthSweep_homology (A : PaperAnalyticData) :
+    integralSingularHomologyMap 2 A.cuspChosenFourthSweep
       PositiveCircleCross.positiveCircleProductGenerator =
       A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1) := by
   rw [← A.cuspFourthSweepClass_eq_rawFive]
-  change integralSingularHomologyMap 2 A.actualCuspChosenFourthSweep _ =
+  change integralSingularHomologyMap 2 A.cuspChosenFourthSweep _ =
     integralSingularHomologyMap 2 (cuspFourthSweep A) _
   have h := SphereSixComplex.integralSingularHomologyMap_eq_of_homotopic
     A.cuspFourthSweep_homotopic_chosen 2
   exact (congrArg (fun f ↦ f.hom PositiveCircleCross.positiveCircleProductGenerator) h).symm
 
 public theorem ellipticFourthHomologySweep_cusp (A : PaperAnalyticData)
-    (D : A.SectionSevenEllipticTwoDiscCoverData) :
+    (D : A.EllipticTwoDiscCoverData) :
     A.ellipticFourthHomologySweep
-      (-integralSingularHomologyMap 1 A.actualCuspOverlapToEllipticInterior
-        (hurewiczFunction A.actualCuspOverlapBase A.actualCuspAffineBridgeMeridian)) =
+      (-integralSingularHomologyMap 1 A.cuspOverlapToEllipticInterior
+        (hurewiczFunction A.cuspOverlapBase A.cuspAffineBridgeMeridian)) =
       -integralSingularHomologyMap 2 D.cuspToEllipticInteriorMap.hom
         (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) := by
-  rw [← A.actualCuspChosenZeroCircleInterior_homology D]
+  rw [← A.cuspChosenZeroCircleInterior_homology D]
   change integralSingularHomologyMap 2 A.ellipticFourthTranslation
     (normalizedCircleCross 1 (integralSingularHomologyMap 1
-      A.actualCuspChosenZeroCircleInterior standardCircleHomologyGenerator)) = _
+      A.cuspChosenZeroCircleInterior standardCircleHomologyGenerator)) = _
   rw [← positiveCircleCross_eq_normalized]
   change integralSingularHomologyMap 2 A.ellipticFourthTranslation
     (integralSingularHomologyMap 2
-      (PositiveCircleCross.circleProductMap A.actualCuspChosenZeroCircleInterior)
+      (PositiveCircleCross.circleProductMap A.cuspChosenZeroCircleInterior)
       PositiveCircleCross.positiveCircleProductGenerator) = _
   rw [integralSingularHomologyMap_comp_wang]
   have he : A.ellipticFourthTranslation.comp
-      (PositiveCircleCross.circleProductMap A.actualCuspChosenZeroCircleInterior) =
-      D.cuspToEllipticInteriorMap.hom.comp (A.actualCuspChosenFourthSweep.comp
+      (PositiveCircleCross.circleProductMap A.cuspChosenZeroCircleInterior) =
+      D.cuspToEllipticInteriorMap.hom.comp (A.cuspChosenFourthSweep.comp
         PositiveCircleCross.positiveCircleProductSwap) := by
     ext1 p
-    exact A.actualCuspChosenFourthSweep_action_interior D p
+    exact A.cuspChosenFourthSweep_action_interior D p
   rw [he, ← integralSingularHomologyMap_comp_wang,
     ← integralSingularHomologyMap_comp_wang,
     PositiveCircleCross.positiveCircleProductSwap_generator,
-    map_neg, map_neg, actualCuspChosenFourthSweep_homology]
+    map_neg, map_neg, cuspChosenFourthSweep_homology]
 
 end SphereSixComplex.Geometry.PaperAnalyticData

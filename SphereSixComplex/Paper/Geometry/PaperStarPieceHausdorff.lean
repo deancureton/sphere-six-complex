@@ -20,7 +20,7 @@ open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 open TorusFamily AnalyticTorusFamily GlobalTorusFamily ComplexTorus
 open EllipticVaryingFamilyQuotient
 open CuspPuncturedCollarBridge CuspPhaseEstimates CuspPeriodExpansion
-open CuspFilling CuspLocalPhaseAction StandardInfiniteA2ToricModel
+open CuspFilling CuspLocalPhaseAction InfiniteA2Toric
 
 noncomputable section
 

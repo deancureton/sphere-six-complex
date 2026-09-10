@@ -18,7 +18,7 @@ namespace SphereSixComplex.Geometry.CuspStraighteningRetraction
 
 open SphereSixComplex.Periods
 open CuspFilling CuspLocalPhaseAction CuspPeriodExpansion CuspToricPhaseAction
-open StandardInfiniteA2ToricModel
+open InfiniteA2Toric
 
 public theorem denseTorusShear_mul (lambda : ParameterLattice) (x y : DenseTorus) :
     denseTorusShear lambda (x * y) =

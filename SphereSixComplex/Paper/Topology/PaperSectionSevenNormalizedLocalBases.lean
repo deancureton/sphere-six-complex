@@ -16,16 +16,16 @@ noncomputable section
 
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 
-variable {A : PaperAnalyticData} {D : A.SectionSevenEllipticTwoDiscCoverData}
+variable {A : PaperAnalyticData} {D : A.EllipticTwoDiscCoverData}
 
 /-- The radial cusp model, corrected two-disc coordinates, and a swept-cycle section supply the
 four local bases with a geometrically normalized elliptic degree-two coordinate. -/
-public noncomputable def sectionSevenNormalizedCollarInteriorHomologyBases
+public noncomputable def normalizedCollarInteriorHomologyBases
     (R : A.CuspCollarRadialMappingTorusRealization)
-    (B : A.SectionSevenEllipticTwoDiscHomologyCoordinates D)
+    (B : A.EllipticTwoDiscHomologyCoordinates D)
     (S : WangHomologyPresentation.NormalizedSplitting
-      (SectionSevenEllipticTwoDiscHomologyCoordinates.presentationTwo (D := D))) :
-    A.SectionSevenCollarInteriorHomologyBases where
+      (EllipticTwoDiscHomologyCoordinates.presentationTwo (D := D))) :
+    A.CollarInteriorHomologyBases where
   cuspCollarOne := R.homologyOneEquiv
   ellipticInteriorOne := B.normalizedEllipticInteriorHomologyOneEquiv
   cuspCollarTwo := R.homologyTwoEquiv

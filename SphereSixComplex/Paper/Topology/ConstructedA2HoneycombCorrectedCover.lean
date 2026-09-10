@@ -6,8 +6,8 @@ public import SphereSixComplex.Paper.Topology.ConstructedA2HoneycombCorrectedQuo
 noncomputable section
 open Set Topology
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 open SphereSixComplex.Geometry.CuspCombinatorics
 
 public theorem iUnion_constructedA2CorrectedPlaneCell :
@@ -117,4 +117,4 @@ public def constructedA2CorrectedHoneycombHomeomorph {r : ℝ} (hr : 0 < r) :
     (Fin 2 → ℝ) ≃ₜ constructedPositiveCentralFiber r :=
   (constructedA2CorrectedHoneycombCellData hr).honeycomb
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric

@@ -77,180 +77,180 @@ public theorem orderFourCollarInverseRepresentative_cayley
 
 public theorem orderThreeFillingRelationStraightLift_angle
     (t : unitInterval) :
-    letI := A.orderThreeActualEllipticBoundaryAction
-    (A.orderThreeActualEllipticBoundaryDeckStraightLift
-      A.orderThreeActualEllipticBoundaryDeckData.fillingRelation t).2.1 =
-        A.orderThreeActualEllipticBoundaryBase.2.1 + 3 * (t : ℝ) := by
+    letI := A.ellipticThreeBoundaryAction
+    (A.ellipticThreeBoundaryDeckStraightLift
+      A.ellipticThreeBoundaryDeckData.fillingRelation t).2.1 =
+        A.ellipticThreeBoundaryBase.2.1 + 3 * (t : ℝ) := by
   let _ := orderThreeAffineMappingTorusDeckAction A.periods
-  let _ := A.orderThreeActualEllipticBoundaryAction
-  have h : A.orderThreeActualEllipticBoundaryDeckData.fillingRelation •
-      A.orderThreeActualEllipticBoundaryBase.2 =
-        (A.orderThreeActualEllipticBoundaryBase.2.1 + 3,
-          A.orderThreeActualEllipticBoundaryBase.2.2) := by
-    change (A.orderThreeActualEllipticBoundaryDeckData.fillingRelation •
-      A.orderThreeActualEllipticBoundaryBase).2 = _
-    rw [A.orderThreeActualFillingRelation_boundary_smul]
-  simp [orderThreeActualEllipticBoundaryDeckStraightLift, h,
+  let _ := A.ellipticThreeBoundaryAction
+  have h : A.ellipticThreeBoundaryDeckData.fillingRelation •
+      A.ellipticThreeBoundaryBase.2 =
+        (A.ellipticThreeBoundaryBase.2.1 + 3,
+          A.ellipticThreeBoundaryBase.2.2) := by
+    change (A.ellipticThreeBoundaryDeckData.fillingRelation •
+      A.ellipticThreeBoundaryBase).2 = _
+    rw [A.ellipticThreeFillingRelation_boundary_smul]
+  simp [ellipticThreeBoundaryDeckStraightLift, h,
     AffineMap.lineMap_apply]
   ring
 
 public theorem orderFourFillingRelationStraightLift_angle
     (t : unitInterval) :
-    letI := A.orderFourActualEllipticBoundaryAction
-    (A.orderFourActualEllipticBoundaryDeckStraightLift
-      A.orderFourActualEllipticBoundaryDeckData.fillingRelation t).2.1 =
-        A.orderFourActualEllipticBoundaryBase.2.1 + 4 * (t : ℝ) := by
+    letI := A.ellipticFourBoundaryAction
+    (A.ellipticFourBoundaryDeckStraightLift
+      A.ellipticFourBoundaryDeckData.fillingRelation t).2.1 =
+        A.ellipticFourBoundaryBase.2.1 + 4 * (t : ℝ) := by
   let _ := orderFourAffineMappingTorusDeckAction A.periods
-  let _ := A.orderFourActualEllipticBoundaryAction
-  have h : A.orderFourActualEllipticBoundaryDeckData.fillingRelation •
-      A.orderFourActualEllipticBoundaryBase.2 =
-        (A.orderFourActualEllipticBoundaryBase.2.1 + 4,
-          A.orderFourActualEllipticBoundaryBase.2.2) := by
-    change (A.orderFourActualEllipticBoundaryDeckData.fillingRelation •
-      A.orderFourActualEllipticBoundaryBase).2 = _
-    rw [A.orderFourActualFillingRelation_boundary_smul]
-  simp [orderFourActualEllipticBoundaryDeckStraightLift, h,
+  let _ := A.ellipticFourBoundaryAction
+  have h : A.ellipticFourBoundaryDeckData.fillingRelation •
+      A.ellipticFourBoundaryBase.2 =
+        (A.ellipticFourBoundaryBase.2.1 + 4,
+          A.ellipticFourBoundaryBase.2.2) := by
+    change (A.ellipticFourBoundaryDeckData.fillingRelation •
+      A.ellipticFourBoundaryBase).2 = _
+    rw [A.ellipticFourFillingRelation_boundary_smul]
+  simp [ellipticFourBoundaryDeckStraightLift, h,
     AffineMap.lineMap_apply]
   ring
 
 public theorem orderThreeFillingRelationInverseRepresentative_cayley
     (t : unitInterval) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     ((orderThreeCayleyHomeomorph
       (familyTotalSpaceBase A.periods
         (A.orderThreeCollarInverseRepresentative
-          (A.orderThreeActualEllipticBoundaryDeckStraightLift
-            A.orderThreeActualEllipticBoundaryDeckData.fillingRelation t)).1) :
+          (A.ellipticThreeBoundaryDeckStraightLift
+            A.ellipticThreeBoundaryDeckData.fillingRelation t)).1) :
           ComplexUnitDisc) : ℂ) =
-      ((A.orderThreeActualEllipticBoundaryBase.1 : ℝ) : ℂ) *
+      ((A.ellipticThreeBoundaryBase.1 : ℝ) : ℂ) *
         ((angleMap 3
-          (A.orderThreeActualEllipticBoundaryBase.2.1 + 3 * (t : ℝ)) : Circle) : ℂ) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+          (A.ellipticThreeBoundaryBase.2.1 + 3 * (t : ℝ)) : Circle) : ℂ) := by
+  let _ := A.ellipticThreeBoundaryAction
   rw [A.orderThreeCollarInverseRepresentative_cayley]
   rw [A.orderThreeFillingRelationStraightLift_angle]
   rfl
 
 public theorem orderFourFillingRelationInverseRepresentative_cayley
     (t : unitInterval) :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     ((orderFourCayleyHomeomorph
       (familyTotalSpaceBase A.periods
         (A.orderFourCollarInverseRepresentative
-          (A.orderFourActualEllipticBoundaryDeckStraightLift
-            A.orderFourActualEllipticBoundaryDeckData.fillingRelation t)).1) :
+          (A.ellipticFourBoundaryDeckStraightLift
+            A.ellipticFourBoundaryDeckData.fillingRelation t)).1) :
           ComplexUnitDisc) : ℂ) =
-      ((A.orderFourActualEllipticBoundaryBase.1 : ℝ) : ℂ) *
+      ((A.ellipticFourBoundaryBase.1 : ℝ) : ℂ) *
         ((angleMap 4
-          (A.orderFourActualEllipticBoundaryBase.2.1 + 4 * (t : ℝ)) : Circle) : ℂ) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+          (A.ellipticFourBoundaryBase.2.1 + 4 * (t : ℝ)) : Circle) : ℂ) := by
+  let _ := A.ellipticFourBoundaryAction
   rw [A.orderFourCollarInverseRepresentative_cayley]
   rw [A.orderFourFillingRelationStraightLift_angle]
   rfl
 
 public theorem orderThreeFillingRelationInverseRepresentative_cayley_fullTurn
     (t : unitInterval) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     ((orderThreeCayleyHomeomorph
       (familyTotalSpaceBase A.periods
         (A.orderThreeCollarInverseRepresentative
-          (A.orderThreeActualEllipticBoundaryDeckStraightLift
-            A.orderThreeActualEllipticBoundaryDeckData.fillingRelation t)).1) :
+          (A.ellipticThreeBoundaryDeckStraightLift
+            A.ellipticThreeBoundaryDeckData.fillingRelation t)).1) :
           ComplexUnitDisc) : ℂ) =
-      (((A.orderThreeActualEllipticBoundaryBase.1 : ℝ) : ℂ) *
-          ((angleMap 3 A.orderThreeActualEllipticBoundaryBase.2.1 : Circle) : ℂ)) *
+      (((A.ellipticThreeBoundaryBase.1 : ℝ) : ℂ) *
+          ((angleMap 3 A.ellipticThreeBoundaryBase.2.1 : Circle) : ℂ)) *
         ((Circle.exp (2 * Real.pi * (t : ℝ)) : Circle) : ℂ) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   rw [A.orderThreeFillingRelationInverseRepresentative_cayley]
   have h := congrArg (fun z : Circle => (z : ℂ))
     (angleMap_three_linear_fullTurn
-      A.orderThreeActualEllipticBoundaryBase.2.1 (t : ℝ))
+      A.ellipticThreeBoundaryBase.2.1 (t : ℝ))
   rw [h, Circle.coe_mul]
   ring
 
 public theorem orderFourFillingRelationInverseRepresentative_cayley_fullTurn
     (t : unitInterval) :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     ((orderFourCayleyHomeomorph
       (familyTotalSpaceBase A.periods
         (A.orderFourCollarInverseRepresentative
-          (A.orderFourActualEllipticBoundaryDeckStraightLift
-            A.orderFourActualEllipticBoundaryDeckData.fillingRelation t)).1) :
+          (A.ellipticFourBoundaryDeckStraightLift
+            A.ellipticFourBoundaryDeckData.fillingRelation t)).1) :
           ComplexUnitDisc) : ℂ) =
-      (((A.orderFourActualEllipticBoundaryBase.1 : ℝ) : ℂ) *
-          ((angleMap 4 A.orderFourActualEllipticBoundaryBase.2.1 : Circle) : ℂ)) *
+      (((A.ellipticFourBoundaryBase.1 : ℝ) : ℂ) *
+          ((angleMap 4 A.ellipticFourBoundaryBase.2.1 : Circle) : ℂ)) *
         ((Circle.exp (2 * Real.pi * (t : ℝ)) : Circle) : ℂ) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   rw [A.orderFourFillingRelationInverseRepresentative_cayley]
   have h := congrArg (fun z : Circle => (z : ℂ))
     (angleMap_four_linear_fullTurn
-      A.orderFourActualEllipticBoundaryBase.2.1 (t : ℝ))
+      A.ellipticFourBoundaryBase.2.1 (t : ℝ))
   rw [h, Circle.coe_mul]
   ring
 
 public noncomputable def orderThreeFillingRelationCayleyLogLift :
     C(unitInterval, ℂ) where
-  toFun t := (Real.log (A.orderThreeActualEllipticBoundaryBase.1 : ℝ) : ℂ) +
+  toFun t := (Real.log (A.ellipticThreeBoundaryBase.1 : ℝ) : ℂ) +
     (((2 * Real.pi / 3) *
-      (A.orderThreeActualEllipticBoundaryBase.2.1 + 3 * (t : ℝ)) : ℝ) : ℂ) *
+      (A.ellipticThreeBoundaryBase.2.1 + 3 * (t : ℝ)) : ℝ) : ℂ) *
       Complex.I
   continuous_toFun := by fun_prop
 
 public noncomputable def orderFourFillingRelationCayleyLogLift :
     C(unitInterval, ℂ) where
-  toFun t := (Real.log (A.orderFourActualEllipticBoundaryBase.1 : ℝ) : ℂ) +
+  toFun t := (Real.log (A.ellipticFourBoundaryBase.1 : ℝ) : ℂ) +
     (((2 * Real.pi / 4) *
-      (A.orderFourActualEllipticBoundaryBase.2.1 + 4 * (t : ℝ)) : ℝ) : ℂ) *
+      (A.ellipticFourBoundaryBase.2.1 + 4 * (t : ℝ)) : ℝ) : ℂ) *
       Complex.I
   continuous_toFun := by fun_prop
 
 public theorem orderThreeFillingRelationCayleyLogLift_exp
     (t : unitInterval) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     Complex.exp (A.orderThreeFillingRelationCayleyLogLift t) =
       ((orderThreeCayleyHomeomorph
         (familyTotalSpaceBase A.periods
           (A.orderThreeCollarInverseRepresentative
-            (A.orderThreeActualEllipticBoundaryDeckStraightLift
-              A.orderThreeActualEllipticBoundaryDeckData.fillingRelation t)).1) :
+            (A.ellipticThreeBoundaryDeckStraightLift
+              A.ellipticThreeBoundaryDeckData.fillingRelation t)).1) :
             ComplexUnitDisc) : ℂ) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   rw [A.orderThreeFillingRelationInverseRepresentative_cayley]
   change Complex.exp
-      ((Real.log (A.orderThreeActualEllipticBoundaryBase.1 : ℝ) : ℂ) +
+      ((Real.log (A.ellipticThreeBoundaryBase.1 : ℝ) : ℂ) +
         (((2 * Real.pi / 3) *
-          (A.orderThreeActualEllipticBoundaryBase.2.1 + 3 * (t : ℝ)) : ℝ) : ℂ) *
+          (A.ellipticThreeBoundaryBase.2.1 + 3 * (t : ℝ)) : ℝ) : ℂ) *
           Complex.I) = _
   rw [angleMap_coe, Complex.exp_add]
   rw [show Complex.exp
-      (Real.log (A.orderThreeActualEllipticBoundaryBase.1 : ℝ) : ℂ) =
-        ((A.orderThreeActualEllipticBoundaryBase.1 : ℝ) : ℂ) by
+      (Real.log (A.ellipticThreeBoundaryBase.1 : ℝ) : ℂ) =
+        ((A.ellipticThreeBoundaryBase.1 : ℝ) : ℂ) by
     rw [← Complex.ofReal_exp,
-      Real.exp_log A.orderThreeActualEllipticBoundaryBase.1.2.1]]
+      Real.exp_log A.ellipticThreeBoundaryBase.1.2.1]]
   rfl
 
 public theorem orderFourFillingRelationCayleyLogLift_exp
     (t : unitInterval) :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     Complex.exp (A.orderFourFillingRelationCayleyLogLift t) =
       ((orderFourCayleyHomeomorph
         (familyTotalSpaceBase A.periods
           (A.orderFourCollarInverseRepresentative
-            (A.orderFourActualEllipticBoundaryDeckStraightLift
-              A.orderFourActualEllipticBoundaryDeckData.fillingRelation t)).1) :
+            (A.ellipticFourBoundaryDeckStraightLift
+              A.ellipticFourBoundaryDeckData.fillingRelation t)).1) :
             ComplexUnitDisc) : ℂ) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   rw [A.orderFourFillingRelationInverseRepresentative_cayley]
   change Complex.exp
-      ((Real.log (A.orderFourActualEllipticBoundaryBase.1 : ℝ) : ℂ) +
+      ((Real.log (A.ellipticFourBoundaryBase.1 : ℝ) : ℂ) +
         (((2 * Real.pi / 4) *
-          (A.orderFourActualEllipticBoundaryBase.2.1 + 4 * (t : ℝ)) : ℝ) : ℂ) *
+          (A.ellipticFourBoundaryBase.2.1 + 4 * (t : ℝ)) : ℝ) : ℂ) *
           Complex.I) = _
   rw [angleMap_coe, Complex.exp_add]
   rw [show Complex.exp
-      (Real.log (A.orderFourActualEllipticBoundaryBase.1 : ℝ) : ℂ) =
-        ((A.orderFourActualEllipticBoundaryBase.1 : ℝ) : ℂ) by
+      (Real.log (A.ellipticFourBoundaryBase.1 : ℝ) : ℂ) =
+        ((A.ellipticFourBoundaryBase.1 : ℝ) : ℂ) by
     rw [← Complex.ofReal_exp,
-      Real.exp_log A.orderFourActualEllipticBoundaryBase.1.2.1]]
+      Real.exp_log A.ellipticFourBoundaryBase.1.2.1]]
   rfl
 
 public theorem orderThreeFillingRelationCayleyLogLift_endpoint :
@@ -285,8 +285,8 @@ public noncomputable def orderThreeFillingRelationPrincipalGaugeCoverLift
     (t : unitInterval) : ComplexTwoSpace :=
   let z := familyTotalSpaceBase A.periods
     (A.orderThreeCollarInverseRepresentative
-      (A.orderThreeActualEllipticBoundaryDeckStraightLift
-        A.orderThreeActualEllipticBoundaryDeckData.fillingRelation t)).1
+      (A.ellipticThreeBoundaryDeckStraightLift
+        A.ellipticThreeBoundaryDeckData.fillingRelation t)).1
   (movingToFixedCover A.periods
     A.modular.modularParameter.toTriangleUniformization.zOne
     (z, logarithmicGaugeScalar (A.orderThreeFillingRelationCayleyLogLift t) •
@@ -296,8 +296,8 @@ public noncomputable def orderFourFillingRelationPrincipalGaugeCoverLift
     (t : unitInterval) : ComplexTwoSpace :=
   let z := familyTotalSpaceBase A.periods
     (A.orderFourCollarInverseRepresentative
-      (A.orderFourActualEllipticBoundaryDeckStraightLift
-        A.orderFourActualEllipticBoundaryDeckData.fillingRelation t)).1
+      (A.ellipticFourBoundaryDeckStraightLift
+        A.ellipticFourBoundaryDeckData.fillingRelation t)).1
   (movingToFixedCover A.periods
     A.modular.modularParameter.toTriangleUniformization.zTwo
     (z, logarithmicGaugeScalar (A.orderFourFillingRelationCayleyLogLift t) •
@@ -305,31 +305,31 @@ public noncomputable def orderFourFillingRelationPrincipalGaugeCoverLift
 
 public theorem orderThreeFillingRelationPrincipalGaugeCoverLift_projects
     (t : unitInterval) :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     let z := familyTotalSpaceBase A.periods
       (A.orderThreeCollarInverseRepresentative
-        (A.orderThreeActualEllipticBoundaryDeckStraightLift
-          A.orderThreeActualEllipticBoundaryDeckData.fillingRelation t)).1
+        (A.ellipticThreeBoundaryDeckStraightLift
+          A.ellipticThreeBoundaryDeckData.fillingRelation t)).1
     torusProjection
         (parameterMap A.periods
           A.modular.modularParameter.toTriangleUniformization.zOne).1
         (A.orderThreeFillingRelationPrincipalGaugeCoverLift t) =
       A.orderThreePrincipalRealPeriodGauge z := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let z := familyTotalSpaceBase A.periods
     (A.orderThreeCollarInverseRepresentative
-      (A.orderThreeActualEllipticBoundaryDeckStraightLift
-        A.orderThreeActualEllipticBoundaryDeckData.fillingRelation t)).1
+      (A.ellipticThreeBoundaryDeckStraightLift
+        A.ellipticThreeBoundaryDeckData.fillingRelation t)).1
   let w := orderThreeCayleyHomeomorph z
   have hw : (w : ℂ) ≠ 0 := by
     rw [show (w : ℂ) =
-        ((A.orderThreeActualEllipticBoundaryBase.1 : ℝ) : ℂ) *
+        ((A.ellipticThreeBoundaryBase.1 : ℝ) : ℂ) *
           ((angleMap 3
-            (A.orderThreeActualEllipticBoundaryBase.2.1 + 3 * (t : ℝ)) : Circle) : ℂ) by
+            (A.ellipticThreeBoundaryBase.2.1 + 3 * (t : ℝ)) : Circle) : ℂ) by
       exact A.orderThreeFillingRelationInverseRepresentative_cayley t]
     exact mul_ne_zero
       (Complex.ofReal_ne_zero.mpr
-        (ne_of_gt A.orderThreeActualEllipticBoundaryBase.1.2.1))
+        (ne_of_gt A.ellipticThreeBoundaryBase.1.2.1))
       (Circle.coe_ne_zero _)
   have hexp : Complex.exp (Complex.log w) =
       Complex.exp (A.orderThreeFillingRelationCayleyLogLift t) := by
@@ -384,31 +384,31 @@ public theorem orderThreeFillingRelationPrincipalGaugeCoverLift_projects
 
 public theorem orderFourFillingRelationPrincipalGaugeCoverLift_projects
     (t : unitInterval) :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     let z := familyTotalSpaceBase A.periods
       (A.orderFourCollarInverseRepresentative
-        (A.orderFourActualEllipticBoundaryDeckStraightLift
-          A.orderFourActualEllipticBoundaryDeckData.fillingRelation t)).1
+        (A.ellipticFourBoundaryDeckStraightLift
+          A.ellipticFourBoundaryDeckData.fillingRelation t)).1
     torusProjection
         (parameterMap A.periods
           A.modular.modularParameter.toTriangleUniformization.zTwo).1
         (A.orderFourFillingRelationPrincipalGaugeCoverLift t) =
       A.orderFourPrincipalRealPeriodGauge z := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let z := familyTotalSpaceBase A.periods
     (A.orderFourCollarInverseRepresentative
-      (A.orderFourActualEllipticBoundaryDeckStraightLift
-        A.orderFourActualEllipticBoundaryDeckData.fillingRelation t)).1
+      (A.ellipticFourBoundaryDeckStraightLift
+        A.ellipticFourBoundaryDeckData.fillingRelation t)).1
   let w := orderFourCayleyHomeomorph z
   have hw : (w : ℂ) ≠ 0 := by
     rw [show (w : ℂ) =
-        ((A.orderFourActualEllipticBoundaryBase.1 : ℝ) : ℂ) *
+        ((A.ellipticFourBoundaryBase.1 : ℝ) : ℂ) *
           ((angleMap 4
-            (A.orderFourActualEllipticBoundaryBase.2.1 + 4 * (t : ℝ)) : Circle) : ℂ) by
+            (A.ellipticFourBoundaryBase.2.1 + 4 * (t : ℝ)) : Circle) : ℂ) by
       exact A.orderFourFillingRelationInverseRepresentative_cayley t]
     exact mul_ne_zero
       (Complex.ofReal_ne_zero.mpr
-        (ne_of_gt A.orderFourActualEllipticBoundaryBase.1.2.1))
+        (ne_of_gt A.ellipticFourBoundaryBase.1.2.1))
       (Circle.coe_ne_zero _)
   have hexp : Complex.exp (Complex.log w) =
       Complex.exp (A.orderFourFillingRelationCayleyLogLift t) := by
@@ -462,55 +462,55 @@ public theorem orderFourFillingRelationPrincipalGaugeCoverLift_projects
   exact hcoord.symm
 
 public theorem orderThreeFillingRelationInverseRepresentative_endpoint :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     A.orderThreeCollarInverseRepresentative
-        (A.orderThreeActualEllipticBoundaryDeckStraightLift
-          A.orderThreeActualEllipticBoundaryDeckData.fillingRelation 1) =
+        (A.ellipticThreeBoundaryDeckStraightLift
+          A.ellipticThreeBoundaryDeckData.fillingRelation 1) =
       A.orderThreeCollarInverseRepresentative
-        (A.orderThreeActualEllipticBoundaryDeckStraightLift
-          A.orderThreeActualEllipticBoundaryDeckData.fillingRelation 0) := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
-  rw [(A.orderThreeActualEllipticBoundaryDeckStraightLift
-    A.orderThreeActualEllipticBoundaryDeckData.fillingRelation).target]
-  rw [(A.orderThreeActualEllipticBoundaryDeckStraightLift
-    A.orderThreeActualEllipticBoundaryDeckData.fillingRelation).source]
-  rw [A.orderThreeActualFillingRelation_boundary_smul]
+        (A.ellipticThreeBoundaryDeckStraightLift
+          A.ellipticThreeBoundaryDeckData.fillingRelation 0) := by
+  let _ := A.ellipticThreeBoundaryAction
+  rw [(A.ellipticThreeBoundaryDeckStraightLift
+    A.ellipticThreeBoundaryDeckData.fillingRelation).target]
+  rw [(A.ellipticThreeBoundaryDeckStraightLift
+    A.ellipticThreeBoundaryDeckData.fillingRelation).source]
+  rw [A.ellipticThreeFillingRelation_boundary_smul]
   exact A.orderThreeCollarInverseRepresentative_fullTurn
-    A.orderThreeActualEllipticBoundaryBase
+    A.ellipticThreeBoundaryBase
 
 public theorem orderFourFillingRelationInverseRepresentative_endpoint :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     A.orderFourCollarInverseRepresentative
-        (A.orderFourActualEllipticBoundaryDeckStraightLift
-          A.orderFourActualEllipticBoundaryDeckData.fillingRelation 1) =
+        (A.ellipticFourBoundaryDeckStraightLift
+          A.ellipticFourBoundaryDeckData.fillingRelation 1) =
       A.orderFourCollarInverseRepresentative
-        (A.orderFourActualEllipticBoundaryDeckStraightLift
-          A.orderFourActualEllipticBoundaryDeckData.fillingRelation 0) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
-  rw [(A.orderFourActualEllipticBoundaryDeckStraightLift
-    A.orderFourActualEllipticBoundaryDeckData.fillingRelation).target]
-  rw [(A.orderFourActualEllipticBoundaryDeckStraightLift
-    A.orderFourActualEllipticBoundaryDeckData.fillingRelation).source]
-  rw [A.orderFourActualFillingRelation_boundary_smul]
+        (A.ellipticFourBoundaryDeckStraightLift
+          A.ellipticFourBoundaryDeckData.fillingRelation 0) := by
+  let _ := A.ellipticFourBoundaryAction
+  rw [(A.ellipticFourBoundaryDeckStraightLift
+    A.ellipticFourBoundaryDeckData.fillingRelation).target]
+  rw [(A.ellipticFourBoundaryDeckStraightLift
+    A.ellipticFourBoundaryDeckData.fillingRelation).source]
+  rw [A.ellipticFourFillingRelation_boundary_smul]
   exact A.orderFourCollarInverseRepresentative_fullTurn
-    A.orderFourActualEllipticBoundaryBase
+    A.ellipticFourBoundaryBase
 
 public theorem orderThreeFillingRelationPrincipalGaugeCoverLift_endpoint :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     A.orderThreeFillingRelationPrincipalGaugeCoverLift 1 =
       periodVector
           (parameterMap A.periods
             A.modular.modularParameter.toTriangleUniformization.zOne).1 epsilon +
         A.orderThreeFillingRelationPrincipalGaugeCoverLift 0 := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let z₀ := familyTotalSpaceBase A.periods
     (A.orderThreeCollarInverseRepresentative
-      (A.orderThreeActualEllipticBoundaryDeckStraightLift
-        A.orderThreeActualEllipticBoundaryDeckData.fillingRelation 0)).1
+      (A.ellipticThreeBoundaryDeckStraightLift
+        A.ellipticThreeBoundaryDeckData.fillingRelation 0)).1
   let z₁ := familyTotalSpaceBase A.periods
     (A.orderThreeCollarInverseRepresentative
-      (A.orderThreeActualEllipticBoundaryDeckStraightLift
-        A.orderThreeActualEllipticBoundaryDeckData.fillingRelation 1)).1
+      (A.ellipticThreeBoundaryDeckStraightLift
+        A.ellipticThreeBoundaryDeckData.fillingRelation 1)).1
   have hz : z₁ = z₀ := congrArg
     (fun q => familyTotalSpaceBase A.periods q.1)
     A.orderThreeFillingRelationInverseRepresentative_endpoint
@@ -550,21 +550,21 @@ public theorem orderThreeFillingRelationPrincipalGaugeCoverLift_endpoint :
           periodVector (parameterMap A.periods z₀).1 epsilon))
 
 public theorem orderFourFillingRelationPrincipalGaugeCoverLift_endpoint :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     A.orderFourFillingRelationPrincipalGaugeCoverLift 1 =
       periodVector
           (parameterMap A.periods
             A.modular.modularParameter.toTriangleUniformization.zTwo).1 (-epsilon') +
         A.orderFourFillingRelationPrincipalGaugeCoverLift 0 := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let z₀ := familyTotalSpaceBase A.periods
     (A.orderFourCollarInverseRepresentative
-      (A.orderFourActualEllipticBoundaryDeckStraightLift
-        A.orderFourActualEllipticBoundaryDeckData.fillingRelation 0)).1
+      (A.ellipticFourBoundaryDeckStraightLift
+        A.ellipticFourBoundaryDeckData.fillingRelation 0)).1
   let z₁ := familyTotalSpaceBase A.periods
     (A.orderFourCollarInverseRepresentative
-      (A.orderFourActualEllipticBoundaryDeckStraightLift
-        A.orderFourActualEllipticBoundaryDeckData.fillingRelation 1)).1
+      (A.ellipticFourBoundaryDeckStraightLift
+        A.ellipticFourBoundaryDeckData.fillingRelation 1)).1
   have hz : z₁ = z₀ := congrArg
     (fun q => familyTotalSpaceBase A.periods q.1)
     A.orderFourFillingRelationInverseRepresentative_endpoint
@@ -604,23 +604,23 @@ public theorem orderFourFillingRelationPrincipalGaugeCoverLift_endpoint :
           periodVector (parameterMap A.periods z₀).1 (-epsilon')))
 
 public noncomputable def orderThreeFillingRelationPrincipalGaugeCoverLiftMap :
-    letI := A.orderThreeActualEllipticBoundaryAction
+    letI := A.ellipticThreeBoundaryAction
     C(unitInterval, ComplexTwoSpace) where
   toFun := A.orderThreeFillingRelationPrincipalGaugeCoverLift
   continuous_toFun := by
-    let _ := A.orderThreeActualEllipticBoundaryAction
+    let _ := A.ellipticThreeBoundaryAction
     unfold orderThreeFillingRelationPrincipalGaugeCoverLift
     let z : unitInterval → UpperHalfPlane := fun t =>
       familyTotalSpaceBase A.periods
         (A.orderThreeCollarInverseRepresentative
-          (A.orderThreeActualEllipticBoundaryDeckStraightLift
-            A.orderThreeActualEllipticBoundaryDeckData.fillingRelation t)).1
+          (A.ellipticThreeBoundaryDeckStraightLift
+            A.ellipticThreeBoundaryDeckData.fillingRelation t)).1
     have hz : Continuous z :=
       familyTotalSpaceBase_continuous A.periods |>.comp
         (continuous_subtype_val.comp
           (A.orderThreeCollarInverseRepresentativeMap.continuous.comp
-            (A.orderThreeActualEllipticBoundaryDeckStraightLift
-              A.orderThreeActualEllipticBoundaryDeckData.fillingRelation).continuous))
+            (A.ellipticThreeBoundaryDeckStraightLift
+              A.ellipticThreeBoundaryDeckData.fillingRelation).continuous))
     have hv : Continuous (fun t =>
         logarithmicGaugeScalar (A.orderThreeFillingRelationCayleyLogLift t) •
           periodVector (parameterMap A.periods (z t)).1 epsilon) := by
@@ -652,23 +652,23 @@ public noncomputable def orderThreeFillingRelationPrincipalGaugeCoverLiftMap :
           (hz.prodMk hv))
 
 public noncomputable def orderFourFillingRelationPrincipalGaugeCoverLiftMap :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     C(unitInterval, ComplexTwoSpace) where
   toFun := A.orderFourFillingRelationPrincipalGaugeCoverLift
   continuous_toFun := by
-    let _ := A.orderFourActualEllipticBoundaryAction
+    let _ := A.ellipticFourBoundaryAction
     unfold orderFourFillingRelationPrincipalGaugeCoverLift
     let z : unitInterval → UpperHalfPlane := fun t =>
       familyTotalSpaceBase A.periods
         (A.orderFourCollarInverseRepresentative
-          (A.orderFourActualEllipticBoundaryDeckStraightLift
-            A.orderFourActualEllipticBoundaryDeckData.fillingRelation t)).1
+          (A.ellipticFourBoundaryDeckStraightLift
+            A.ellipticFourBoundaryDeckData.fillingRelation t)).1
     have hz : Continuous z :=
       familyTotalSpaceBase_continuous A.periods |>.comp
         (continuous_subtype_val.comp
           (A.orderFourCollarInverseRepresentativeMap.continuous.comp
-            (A.orderFourActualEllipticBoundaryDeckStraightLift
-              A.orderFourActualEllipticBoundaryDeckData.fillingRelation).continuous))
+            (A.ellipticFourBoundaryDeckStraightLift
+              A.ellipticFourBoundaryDeckData.fillingRelation).continuous))
     have hv : Continuous (fun t =>
         logarithmicGaugeScalar (A.orderFourFillingRelationCayleyLogLift t) •
           periodVector (parameterMap A.periods (z t)).1 (-epsilon')) := by

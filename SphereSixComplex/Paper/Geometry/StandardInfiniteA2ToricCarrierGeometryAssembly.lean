@@ -29,7 +29,7 @@ open scoped ContDiff Manifold
 open SphereSixComplex.Geometry.CuspCombinatorics
 open SphereSixComplex.Geometry.CuspFilling
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+namespace SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 /-- Assemble the exact public toric-model interface from the constructed carrier. -/
 public noncomputable def constructedModel : Model where
@@ -76,13 +76,13 @@ public noncomputable def constructedModel : Model where
   fanShear_chart := fun lambda upper v ↦ carrierFanShear_chart lambda (upper, v)
   fanShear_component := carrierFanShear_component_exact
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+end SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
 /-- The explicit standard toric model for the countable smooth fan obtained by coning the `A₂`
 triangulation at height one. -/
 public theorem model : Nonempty Model :=
   ⟨Construction.constructedModel⟩
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric

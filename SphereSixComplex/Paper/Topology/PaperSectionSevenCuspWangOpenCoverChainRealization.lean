@@ -21,11 +21,11 @@ open scoped ContinuousMap
 
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 
-open SectionSevenEllipticTwoDiscHomologyCoordinates
+open EllipticTwoDiscHomologyCoordinates
 
-variable {A : PaperAnalyticData} (D : A.SectionSevenEllipticTwoDiscCoverData)
+variable {A : PaperAnalyticData} (D : A.EllipticTwoDiscCoverData)
 
-namespace SectionSevenEllipticTwoDiscCoverData
+namespace EllipticTwoDiscCoverData
 
 /-- The map on first homology induced by transport from the pulled-back intersection to the
 actual elliptic band. -/
@@ -34,7 +34,7 @@ public noncomputable def cuspCoverIntersectionToEllipticBandHomologyOne :
         ((Opens.toTopCat (TopCat.of (A.openEmbeddingStarData.collarSource 0))).obj
           (D.cuspOrderThreeOpen ⊓ D.cuspOrderFourOpen)) →+
       IntegralSingularHomology 1
-        (D.orderThreeSide ∩ D.orderFourSide : Set A.SectionSevenEllipticInterior) :=
+        (D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior) :=
   ConcreteCategory.hom
     (BinaryOpenCover.openIntersectionPullbackHomologyMap D.cuspToEllipticInteriorMap
         (orderThreeOpen D) (orderFourOpen D) 1 ≫
@@ -108,6 +108,6 @@ public theorem canonicalBoundary_cuspToElliptic_eq_wangBoundary
 
 end ActualCuspWangOpenCoverChainRealization
 
-end SectionSevenEllipticTwoDiscCoverData
+end EllipticTwoDiscCoverData
 
 end SphereSixComplex.Geometry.PaperAnalyticData

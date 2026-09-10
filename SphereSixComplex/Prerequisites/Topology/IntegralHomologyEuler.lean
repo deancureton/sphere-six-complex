@@ -25,20 +25,20 @@ characteristic. -/
 public structure IntegralHomologyFiniteSix
     (X : Type) [TopologicalSpace X] : Prop where
   /-- Every integral homology group is finitely generated. -/
-  finiteHomology : ∀ k, Module.Finite ℤ (IntegralSingularHomology k X)
+  finite_homology : ∀ k, Module.Finite ℤ (IntegralSingularHomology k X)
   /-- Homology vanishes above degree six. -/
-  homologyAboveDimension : ∀ k, 6 < k → Subsingleton (IntegralSingularHomology k X)
+  subsingleton_homology_of_six_lt : ∀ k, 6 < k → Subsingleton (IntegralSingularHomology k X)
 
 namespace IntegralHomologyFiniteSix
 
 /-- Homological finiteness and the dimension bound transport through a homeomorphism. -/
 public theorem homeomorph {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (hX : IntegralHomologyFiniteSix X) (e : X ≃ₜ Y) : IntegralHomologyFiniteSix Y where
-  finiteHomology k := by
-    let _ : Module.Finite ℤ (IntegralSingularHomology k X) := hX.finiteHomology k
+  finite_homology k := by
+    let _ : Module.Finite ℤ (IntegralSingularHomology k X) := hX.finite_homology k
     exact Module.Finite.equiv (integralSingularHomologyEquiv k e).toIntLinearEquiv
-  homologyAboveDimension k hk := by
-    let h := hX.homologyAboveDimension k hk
+  subsingleton_homology_of_six_lt k hk := by
+    let h := hX.subsingleton_homology_of_six_lt k hk
     let eH := integralSingularHomologyEquiv k e
     exact ⟨fun x y ↦ eH.symm.injective (@Subsingleton.elim _ h _ _)⟩
 
@@ -48,26 +48,26 @@ end IntegralHomologyFiniteSix
 public structure IntegralHomologyFiniteSeven
     (X : Type) [TopologicalSpace X] : Prop where
   /-- Every integral homology group is finitely generated. -/
-  finiteHomology : ∀ k, Module.Finite ℤ (IntegralSingularHomology k X)
+  finite_homology : ∀ k, Module.Finite ℤ (IntegralSingularHomology k X)
   /-- Homology vanishes above degree seven. -/
-  homologyAboveDimension : ∀ k, 7 < k → Subsingleton (IntegralSingularHomology k X)
+  subsingleton_homology_of_seven_lt : ∀ k, 7 < k → Subsingleton (IntegralSingularHomology k X)
 
 namespace IntegralHomologyFiniteSeven
 
 /-- A six-dimensional finiteness package is also a seven-dimensional one. -/
-public theorem ofFiniteSix {X : Type} [TopologicalSpace X]
+public theorem of_six {X : Type} [TopologicalSpace X]
     (hX : IntegralHomologyFiniteSix X) : IntegralHomologyFiniteSeven X where
-  finiteHomology := hX.finiteHomology
-  homologyAboveDimension k hk := hX.homologyAboveDimension k (by omega)
+  finite_homology := hX.finite_homology
+  subsingleton_homology_of_seven_lt k hk := hX.subsingleton_homology_of_six_lt k (by omega)
 
 /-- Seven-dimensional homological finiteness transports through a homeomorphism. -/
 public theorem homeomorph {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (hX : IntegralHomologyFiniteSeven X) (e : X ≃ₜ Y) : IntegralHomologyFiniteSeven Y where
-  finiteHomology k := by
-    let _ : Module.Finite ℤ (IntegralSingularHomology k X) := hX.finiteHomology k
+  finite_homology k := by
+    let _ : Module.Finite ℤ (IntegralSingularHomology k X) := hX.finite_homology k
     exact Module.Finite.equiv (integralSingularHomologyEquiv k e).toIntLinearEquiv
-  homologyAboveDimension k hk := by
-    let h := hX.homologyAboveDimension k hk
+  subsingleton_homology_of_seven_lt k hk := by
+    let h := hX.subsingleton_homology_of_seven_lt k hk
     let eH := integralSingularHomologyEquiv k e
     exact ⟨fun x y ↦ eH.symm.injective (@Subsingleton.elim _ h _ _)⟩
 
@@ -107,7 +107,7 @@ public theorem integralHomologyEulerCharacteristicSeven_eq_six_of_finiteSix
     {X : Type} [TopologicalSpace X] (hX : IntegralHomologyFiniteSix X) :
     integralHomologyEulerCharacteristicSeven X =
       integralHomologyEulerCharacteristicSix X := by
-  let _ := hX.homologyAboveDimension 7 (by omega)
+  let _ := hX.subsingleton_homology_of_six_lt 7 (by omega)
   unfold integralHomologyEulerCharacteristicSeven
   simp only [Module.finrank_zero_of_subsingleton, Nat.cast_zero, sub_zero]
 

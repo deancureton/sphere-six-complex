@@ -14,7 +14,7 @@ open ComplexTorus TorusFamily CuspPeriodExpansion
 open SphereSixComplex.Topology.FixedTopologicalCircleWangBoundary
 open SphereSixComplex.Topology.CircleProductIdentityMappingTorus
 open SphereSixComplex.CyclicAngularFundamentalDomain
-open SectionSevenEllipticTwoDiscCoverData
+open EllipticTwoDiscCoverData
 
 public def cuspFixedCircleSweepAnchors (A : PaperAnalyticData)
     (c : FixedTopologicalCircle (cuspFiberClutching (cuspBasePoint A.cuspCoordinate

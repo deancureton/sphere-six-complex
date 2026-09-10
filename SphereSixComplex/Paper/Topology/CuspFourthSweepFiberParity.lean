@@ -18,11 +18,11 @@ noncomputable section
 open AlgebraicTopology
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 open SphereSixComplex.Topology
-open SectionSevenEllipticTwoDiscCoverData SectionSevenEllipticTwoDiscHomologyCoordinates
-open SectionSevenEllipticInteriorMarkedCycleData
+open EllipticTwoDiscCoverData EllipticTwoDiscHomologyCoordinates
+open EllipticInteriorMarkedCycleData
 
 public def cuspEllipticFiberCoordinate (A : PaperAnalyticData)
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (S : WangHomologyPresentation.NormalizedSplitting (presentationTwo (D := R.twoDiscCover))) :
     IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0) →+ ℤ :=
   (coordinateAfterAddEquiv
@@ -30,7 +30,7 @@ public def cuspEllipticFiberCoordinate (A : PaperAnalyticData)
       0).comp (integralSingularHomologyMap 2 R.twoDiscCover.cuspToEllipticInteriorMap.hom)
 
 public theorem cuspEllipticFiberCoordinate_raw_fiber (A : PaperAnalyticData)
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (S : WangHomologyPresentation.NormalizedSplitting (presentationTwo (D := R.twoDiscCover)))
     (i : Fin 4) :
     A.cuspEllipticFiberCoordinate R S
@@ -52,7 +52,7 @@ public theorem cuspEllipticFiberCoordinate_raw_fiber (A : PaperAnalyticData)
     (canonicalCuspFiberBandTopologicalCompatibility R)) i
 
 public theorem cuspEllipticFiberCoordinate_wang_kernel (A : PaperAnalyticData)
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (S : WangHomologyPresentation.NormalizedSplitting (presentationTwo (D := R.twoDiscCover)))
     (x : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0))
     (hx : actualCuspWangBoundaryHom A x = 0) :
@@ -112,7 +112,7 @@ public theorem cuspRawFive_sub_fourthSweep_wang_zero (A : PaperAnalyticData) :
   fin_cases i <;> rfl
 
 public theorem cuspRawFive_sub_fourthSweep_fiber_coordinate (A : PaperAnalyticData)
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (S : WangHomologyPresentation.NormalizedSplitting (presentationTwo (D := R.twoDiscCover))) :
     A.cuspEllipticFiberCoordinate R S
         (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) -
@@ -128,7 +128,7 @@ public theorem cuspRawFive_sub_fourthSweep_fiber_coordinate (A : PaperAnalyticDa
     A.cuspRawFive_sub_fourthSweep_wang_zero
 
 public theorem cuspRawFive_sub_fourthSweep_fiber_coordinate_even (A : PaperAnalyticData)
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (S : WangHomologyPresentation.NormalizedSplitting (presentationTwo (D := R.twoDiscCover))) :
     Even (A.cuspEllipticFiberCoordinate R S
         (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) -
@@ -143,7 +143,7 @@ public theorem cuspRawFive_sub_fourthSweep_fiber_coordinate_even (A : PaperAnaly
   ring
 
 public theorem cuspRawFive_fiber_coordinate_odd_of_fourthSweep (A : PaperAnalyticData)
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (S : WangHomologyPresentation.NormalizedSplitting (presentationTwo (D := R.twoDiscCover)))
     (hs : Odd (A.cuspEllipticFiberCoordinate R S A.cuspFourthSweepClass)) :
     Odd (A.cuspEllipticFiberCoordinate R S
@@ -153,7 +153,7 @@ public theorem cuspRawFive_fiber_coordinate_odd_of_fourthSweep (A : PaperAnalyti
   exact ⟨k + m, by omega⟩
 
 public theorem exists_cuspBoundaryKernel_fiberCoordinate_one_of_fourthSweep_odd
-    (A : PaperAnalyticData) (R : A.SectionSevenAffineRadialCompletionInput)
+    (A : PaperAnalyticData) (R : A.AffineRadialCompletionInput)
     (S : WangHomologyPresentation.NormalizedSplitting (presentationTwo (D := R.twoDiscCover)))
     (hs : Odd (A.cuspEllipticFiberCoordinate R S A.cuspFourthSweepClass)) :
     ∃ x, R.twoDiscCover.cuspPulledBackBoundaryHom x = 0 ∧
@@ -179,7 +179,7 @@ public theorem exists_cuspBoundaryKernel_fiberCoordinate_one_of_fourthSweep_odd
     omega
 
 public theorem cuspRawFive_fiber_coordinate_normalization (A : PaperAnalyticData)
-    (R : A.SectionSevenAffineRadialCompletionInput)
+    (R : A.AffineRadialCompletionInput)
     (S : WangHomologyPresentation.NormalizedSplitting (presentationTwo (D := R.twoDiscCover))) :
     A.cuspEllipticFiberCoordinate R S
         (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) =

@@ -436,7 +436,7 @@ open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPhaseEstimates
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel
+open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
 
 variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}

@@ -9,12 +9,12 @@ noncomputable section
 
 open Filter Function Set Topology
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricQuantitativeRegions
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
+open SphereSixComplex.Geometry.InfiniteA2Toric.QuantitativeRegions
 
 private def baseApproachRawCoordinates (s a : ℝ) : RawCoordinates :=
   ![(s : ℂ), (a : ℂ), 1]
@@ -235,6 +235,6 @@ public theorem constructedA2ProperMomentCoordinate_isEmpty {r : ℝ}
     have hpoint := congrArg Subtype.val hcentral
     exact baseCentralPoint_zero_ne_half hr hpoint⟩
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric
 
 end

@@ -10,7 +10,7 @@ noncomputable section
 open Function Set Topology WithLp
 open scoped ContDiff Manifold
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+namespace SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 public def positiveQuadrantHomeomorph : EuclideanQuadrant 3 ≃ₜ PositiveOrthant where
   toFun u := ⟨fun i ↦ u.1 i, u.2⟩
@@ -174,4 +174,4 @@ public theorem positiveQuadrant_boundary :
     · exact (ne_of_gt (hp 1)) h
     · exact (ne_of_gt (hp 2)) h
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+end SphereSixComplex.Geometry.InfiniteA2Toric.Construction

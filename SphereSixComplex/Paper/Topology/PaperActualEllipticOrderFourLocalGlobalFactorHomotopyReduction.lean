@@ -43,19 +43,19 @@ open SphereSixComplex.Geometry.ComplexTorus
 
 variable (A : PaperAnalyticData)
 
-public theorem orderFourActualEllipticCentralBase_eq_offsetGaugeRealization :
-    letI := A.orderFourActualEllipticBoundaryAction
-    A.orderFourActualEllipticCentralBase =
+public theorem ellipticFourCentralBase_eq_offsetGaugeRealization :
+    letI := A.ellipticFourBoundaryAction
+    A.ellipticFourCentralBase =
       A.orderFourPuncturedProductCentralRealizationMap
         (A.orderFourCayleyPuncturedBasepoint,
           A.orderFourFillingRelationPrincipalGaugeLoop 0 +
-            Quotient.mk _ A.orderFourActualEllipticBoundaryBase.2.2) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+            Quotient.mk _ A.ellipticFourBoundaryBase.2.2) := by
+  let _ := A.ellipticFourBoundaryAction
   let x := A.orderFourCayleyPuncturedBasepoint
   let y := A.orderFourFillingRelationPrincipalGaugeLoop 0 +
-    Quotient.mk _ A.orderFourActualEllipticBoundaryBase.2.2
+    Quotient.mk _ A.ellipticFourBoundaryBase.2.2
   have hregular : A.orderFourCollarRegularRepresentativeMap
-      A.orderFourActualEllipticBoundaryBase =
+      A.ellipticFourBoundaryBase =
         A.orderFourPuncturedProductRegularRealizationMap (x, y) := by
     exact A.orderFourFillingRelationRegularLoop.source.symm |>.trans
       ((A.orderFourRegularLoop_eq_puncturedProductRealization 0).symm.trans
@@ -68,11 +68,11 @@ public theorem orderFourActualEllipticCentralBase_eq_offsetGaugeRealization :
 /-- The classified straight period, translated by the collar offset so that it remains based
 at the actual elliptic point. -/
 public noncomputable def orderFourCentralActualBasedStraightFiberPath :
-    letI := A.orderFourActualEllipticBoundaryAction
-    Path A.orderFourActualEllipticCentralBase A.orderFourActualEllipticCentralBase := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
+    Path A.ellipticFourCentralBase A.ellipticFourCentralBase := by
+  let _ := A.ellipticFourBoundaryAction
   let x := A.orderFourCayleyPuncturedBasepoint
-  let offset : A.orderFourTorus := Quotient.mk _ A.orderFourActualEllipticBoundaryBase.2.2
+  let offset : A.orderFourTorus := Quotient.mk _ A.ellipticFourBoundaryBase.2.2
   let g : C(A.orderFourTorus, A.CentralFamily) :=
     { toFun := fun q ↦ A.orderFourPuncturedProductCentralRealizationMap (x, q + offset)
       continuous_toFun := A.orderFourPuncturedProductCentralRealizationMap.continuous.comp
@@ -83,19 +83,19 @@ public noncomputable def orderFourCentralActualBasedStraightFiberPath :
     (A.orderFourFillingRelationPrincipalGaugeCoverLift 0)
   have hqbase : qbase = A.orderFourFillingRelationPrincipalGaugeLoop 0 := by
     rfl
-  have hbase : A.orderFourActualEllipticCentralBase =
+  have hbase : A.ellipticFourCentralBase =
       g qbase :=
-    (orderFourActualEllipticCentralBase_eq_offsetGaugeRealization A).trans
+    (ellipticFourCentralBase_eq_offsetGaugeRealization A).trans
       (congrArg g hqbase).symm
   exact (A.orderFourPrincipalGaugeStraightLoop.map g.continuous).cast hbase hbase
 
 /-- Straightening can be performed after translating by the fixed collar offset, hence with
 the actual elliptic basepoint fixed throughout. -/
 public theorem orderFourCentralFiberFactor_homotopic_actualBasedStraight :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     Nonempty (Path.Homotopy A.orderFourCentralFiberFactor
       A.orderFourCentralActualBasedStraightFiberPath) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   have hclass := A.orderFourFillingRelationPrincipalGaugeLoop_class_eq_straight
   change Path.Homotopic.Quotient.mk A.orderFourFillingRelationPrincipalGaugeLoop =
     Path.Homotopic.Quotient.mk A.orderFourPrincipalGaugeStraightLoop at hclass
@@ -103,14 +103,14 @@ public theorem orderFourCentralFiberFactor_homotopic_actualBasedStraight :
     A.orderFourFillingRelationPrincipalGaugeLoop
       A.orderFourPrincipalGaugeStraightLoop) with ⟨Htorus⟩
   let x := A.orderFourCayleyPuncturedBasepoint
-  let offset : A.orderFourTorus := Quotient.mk _ A.orderFourActualEllipticBoundaryBase.2.2
+  let offset : A.orderFourTorus := Quotient.mk _ A.ellipticFourBoundaryBase.2.2
   let g : C(A.orderFourTorus, A.CentralFamily) :=
     { toFun := fun q ↦ A.orderFourPuncturedProductCentralRealizationMap (x, q + offset)
       continuous_toFun := A.orderFourPuncturedProductCentralRealizationMap.continuous.comp
         (continuous_const.prodMk (continuous_id.add continuous_const)) }
-  have hbase : A.orderFourActualEllipticCentralBase =
+  have hbase : A.ellipticFourCentralBase =
       g (A.orderFourFillingRelationPrincipalGaugeLoop 0) :=
-    orderFourActualEllipticCentralBase_eq_offsetGaugeRealization A
+    ellipticFourCentralBase_eq_offsetGaugeRealization A
   let Hmapped := (Htorus.map g).pathCast hbase hbase
   have hsource :
       (A.orderFourFillingRelationPrincipalGaugeLoop.map g.continuous).cast hbase hbase =
@@ -127,23 +127,23 @@ public theorem orderFourCentralFiberFactor_homotopic_actualBasedStraight :
   exact ⟨Hmapped.cast hsource htarget⟩
 
 /-- The literal cusp period carrying the corrected negative-epsilon-prime label. -/
-public noncomputable def orderFourActualCuspCorrectedNegEpsilonPrimePeriodPath :
-    Path A.actualCuspCentralBase A.actualCuspCentralBase :=
-  A.actualCuspCentralPeriodLoop
+public noncomputable def ellipticFourCuspCorrectedNegEpsilonPrimePeriodPath :
+    Path A.cuspCentralBase A.cuspCentralBase :=
+  A.cuspCentralPeriodLoop
     (rhoLambda ((g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent) (-epsilon'))
 
-public theorem orderFourActualCuspCorrectedNegEpsilonPrimePeriodPath_class :
-    Path.Homotopic.Quotient.mk A.orderFourActualCuspCorrectedNegEpsilonPrimePeriodPath =
+public theorem ellipticFourCuspCorrectedNegEpsilonPrimePeriodPath_class :
+    Path.Homotopic.Quotient.mk A.ellipticFourCuspCorrectedNegEpsilonPrimePeriodPath =
       Additive.toMul (A.correctedActualCuspCentralTranslation (-epsilon')) := by
-  unfold orderFourActualCuspCorrectedNegEpsilonPrimePeriodPath
+  unfold ellipticFourCuspCorrectedNegEpsilonPrimePeriodPath
     correctedActualCuspCentralTranslation
-  rw [← A.actualCuspCentralTranslation_eq_periodLoop]
+  rw [← A.cuspCentralTranslation_eq_periodLoop]
   rfl
 
 /-- The corrected order-four period displayed at the final affine basepoint. -/
 public noncomputable def orderFourCentralAffineCorrectedNegEpsilonPrimePeriodPath :
     Path A.centralAffineBase A.centralAffineBase :=
-  A.orderFourActualCuspCorrectedNegEpsilonPrimePeriodPath.cast
+  A.ellipticFourCuspCorrectedNegEpsilonPrimePeriodPath.cast
     A.centralAffineBase_eq_actualCuspCentralBase
     A.centralAffineBase_eq_actualCuspCentralBase
 
@@ -153,26 +153,26 @@ public theorem orderFourCentralAffineCorrectedNegEpsilonPrimePeriodPath_class :
       Additive.toMul (A.centralAffineCorePiOneData.translation (-epsilon')) := by
   unfold orderFourCentralAffineCorrectedNegEpsilonPrimePeriodPath
   rw [Path.Homotopic.Quotient.mk_cast]
-  rw [A.orderFourActualCuspCorrectedNegEpsilonPrimePeriodPath_class]
+  rw [A.ellipticFourCuspCorrectedNegEpsilonPrimePeriodPath_class]
   rw [A.centralAffineCorePiOneData_translation]
-  unfold actualCuspToCentralAffineBaseEquiv
+  unfold cuspToCentralAffineBaseEquiv
   rw [SphereSixComplex.Topology.fundamentalGroupMulEquivOfEq_apply]
 
 /-- A concrete corrected representative of the complete order-four relator at the cusp. -/
-public noncomputable def orderFourActualCuspCorrectedGeometricRelatorPath :
-    Path A.actualCuspCentralBase A.actualCuspCentralBase :=
-  A.orderFourActualCuspCorrectedNegEpsilonPrimePeriodPath.trans
-    A.orderFourActualCuspZeroSectionQuadruplePath
+public noncomputable def ellipticFourCuspCorrectedGeometricRelatorPath :
+    Path A.cuspCentralBase A.cuspCentralBase :=
+  A.ellipticFourCuspCorrectedNegEpsilonPrimePeriodPath.trans
+    A.ellipticFourCuspZeroSectionQuadruplePath
 
-public theorem orderFourActualCuspCorrectedGeometricRelatorPath_class :
-    A.actualCuspToCentralAffineBaseEquiv
-        (Path.Homotopic.Quotient.mk A.orderFourActualCuspCorrectedGeometricRelatorPath) =
+public theorem ellipticFourCuspCorrectedGeometricRelatorPath_class :
+    A.cuspToCentralAffineBaseEquiv
+        (Path.Homotopic.Quotient.mk A.ellipticFourCuspCorrectedGeometricRelatorPath) =
       A.orderFourCentralExpectedRelator := by
-  rw [orderFourActualCuspCorrectedGeometricRelatorPath,
+  rw [ellipticFourCuspCorrectedGeometricRelatorPath,
     Path.Homotopic.Quotient.mk_trans,
-    A.orderFourActualCuspCorrectedNegEpsilonPrimePeriodPath_class,
-    A.orderFourActualCuspZeroSectionQuadruplePath_class]
-  change A.actualCuspToCentralAffineBaseEquiv
+    A.ellipticFourCuspCorrectedNegEpsilonPrimePeriodPath_class,
+    A.ellipticFourCuspZeroSectionQuadruplePath_class]
+  change A.cuspToCentralAffineBaseEquiv
       (A.geometricCentralRhoTwo ^ 4 *
         Additive.toMul (A.correctedActualCuspCentralTranslation (-epsilon'))) = _
   unfold orderFourCentralExpectedRelator
@@ -180,9 +180,9 @@ public theorem orderFourActualCuspCorrectedGeometricRelatorPath_class :
   have ht := A.centralAffineCorePiOneData_translation epsilon'
   congr 1
   calc
-    A.actualCuspToCentralAffineBaseEquiv
+    A.cuspToCentralAffineBaseEquiv
           (Additive.toMul (A.correctedActualCuspCentralTranslation (-epsilon'))) =
-        (A.actualCuspToCentralAffineBaseEquiv
+        (A.cuspToCentralAffineBaseEquiv
           (Additive.toMul (A.correctedActualCuspCentralTranslation epsilon')))⁻¹ := by
             rw [map_neg, toMul_neg, map_inv]
     _ = (Additive.toMul
@@ -192,7 +192,7 @@ public theorem orderFourActualCuspCorrectedGeometricRelatorPath_class :
 /-- The corrected order-four relator displayed at the final affine basepoint. -/
 public noncomputable def orderFourCentralAffineCorrectedGeometricRelatorPath :
     Path A.centralAffineBase A.centralAffineBase :=
-  A.orderFourActualCuspCorrectedGeometricRelatorPath.cast
+  A.ellipticFourCuspCorrectedGeometricRelatorPath.cast
     A.centralAffineBase_eq_actualCuspCentralBase
     A.centralAffineBase_eq_actualCuspCentralBase
 
@@ -201,7 +201,7 @@ public theorem orderFourCentralAffineCorrectedGeometricRelatorPath_eq_trans :
       A.orderFourCentralAffineCorrectedNegEpsilonPrimePeriodPath.trans
         A.orderFourCentralAffineZeroSectionQuadruplePath := by
   unfold orderFourCentralAffineCorrectedGeometricRelatorPath
-    orderFourActualCuspCorrectedGeometricRelatorPath
+    ellipticFourCuspCorrectedGeometricRelatorPath
     orderFourCentralAffineCorrectedNegEpsilonPrimePeriodPath
     orderFourCentralAffineZeroSectionQuadruplePath
   rw [Path.cast_trans]
@@ -211,8 +211,8 @@ public theorem orderFourCentralAffineCorrectedGeometricRelatorPath_class :
       A.orderFourCentralExpectedRelator := by
   unfold orderFourCentralAffineCorrectedGeometricRelatorPath
   rw [Path.Homotopic.Quotient.mk_cast]
-  rw [← A.orderFourActualCuspCorrectedGeometricRelatorPath_class]
-  unfold actualCuspToCentralAffineBaseEquiv
+  rw [← A.ellipticFourCuspCorrectedGeometricRelatorPath_class]
+  unfold cuspToCentralAffineBaseEquiv
   rw [SphereSixComplex.Topology.fundamentalGroupMulEquivOfEq_apply]
 
 /-- The path traced by the source endpoint of the completed base-factor homotopy. -/
@@ -220,7 +220,7 @@ public def orderFourCentralBaseComparisonTracePath
     (Hbase : ContinuousMap.Homotopy
       A.orderFourCentralBaseFactor.toContinuousMap
       A.orderFourCentralAffineZeroSectionQuadruplePath.toContinuousMap) :
-    Path A.orderFourActualEllipticCentralBase A.centralAffineBase :=
+    Path A.ellipticFourCentralBase A.centralAffineBase :=
   (Hbase.evalAt 0).cast A.orderFourCentralBaseFactor.source.symm
     A.orderFourCentralAffineZeroSectionQuadruplePath.source.symm
 
@@ -236,7 +236,7 @@ public def orderFourCentralTraceTransportedStraightPeriodPath
 /-- The one remaining geometric identity: transport of the classified local straight period
 along the already constructed base trace has the corrected global period class. -/
 public def OrderFourCorrectedPeriodTransportIdentity : Prop :=
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   ∃ Hbase : ContinuousMap.Homotopy
       A.orderFourCentralBaseFactor.toContinuousMap
       A.orderFourCentralAffineZeroSectionQuadruplePath.toContinuousMap,
@@ -249,7 +249,7 @@ public def OrderFourCorrectedPeriodTransportIdentity : Prop :=
 /-- The remaining point-set requirement is a global fibre comparison synchronized with the
 already constructed base comparison. -/
 public def OrderFourLocalGlobalFactorPointSetComparison : Prop :=
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   ∃ Hfiber : ContinuousMap.Homotopy
       A.orderFourCentralFiberFactor.toContinuousMap
       A.orderFourCentralAffineCorrectedNegEpsilonPrimePeriodPath.toContinuousMap,
@@ -263,15 +263,15 @@ public def OrderFourLocalGlobalFactorPointSetComparison : Prop :=
 public theorem OrderFourCorrectedPeriodTransportIdentity.toLocalGlobalFactorPointSetComparison
     (h : A.OrderFourCorrectedPeriodTransportIdentity) :
     A.OrderFourLocalGlobalFactorPointSetComparison := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   rcases h with ⟨Hbase, hbaseTrace, hperiod⟩
   rcases A.orderFourCentralFiberFactor_homotopic_actualBasedStraight with ⟨HlocalPath⟩
   let p := A.orderFourCentralActualBasedStraightFiberPath
   let w := A.orderFourCentralBaseComparisonTracePath Hbase
   let transported := A.orderFourCentralTraceTransportedStraightPeriodPath Hbase
   have hpad : Nonempty (Path.Homotopy p
-      ((Path.refl A.orderFourActualEllipticCentralBase).trans
-        (p.trans (Path.refl A.orderFourActualEllipticCentralBase)))) := by
+      ((Path.refl A.ellipticFourCentralBase).trans
+        (p.trans (Path.refl A.ellipticFourCentralBase)))) := by
     apply Path.Homotopic.Quotient.exact
     simp
   rcases hpad with ⟨HpadPath⟩
@@ -346,12 +346,12 @@ public theorem OrderFourCorrectedPeriodTransportIdentity.toLocalGlobalFactorPoin
 
 public theorem OrderFourLocalGlobalFactorPointSetComparison.assemble
     (h : A.OrderFourLocalGlobalFactorPointSetComparison) :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     ∃ H : ContinuousMap.Homotopy
         A.orderFourCentralFiberThenBaseLoop.toContinuousMap
         A.orderFourCentralAffineCorrectedGeometricRelatorPath.toContinuousMap,
       ∀ s : unitInterval, H (s, 0) = H (s, 1) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   rcases h with ⟨Hfiber, Hbase, hjoin, htrace⟩
   let Hfactors := freeLoopHomotopyHcomp Hfiber Hbase hjoin
   have hsource :
@@ -375,12 +375,12 @@ normal-closure reduction. -/
 public theorem OrderFourLocalGlobalFactorPointSetComparison.toRegularLoopChartIdentity
     (h : A.OrderFourLocalGlobalFactorPointSetComparison) :
     A.OrderFourActualEllipticRegularLoopChartIdentity := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   rcases A.orderFourProjectedRegularLoop_freeHomotopy_fiberThenBase_with_trace with
     ⟨Hsplit, hsplitTrace⟩
   rcases h.assemble A with ⟨Hglobal, hglobalTrace⟩
   let H := Hsplit.trans Hglobal
-  apply A.orderFourActualEllipticRegularLoopChartIdentity_of_freeHomotopy
+  apply A.ellipticFourRegularLoopChartIdentity_of_freeHomotopy
     A.orderFourCentralAffineCorrectedGeometricRelatorPath
     A.orderFourCentralAffineCorrectedGeometricRelatorPath_class H
   apply Path.ext
@@ -394,12 +394,12 @@ public theorem OrderFourLocalGlobalFactorPointSetComparison.toRegularLoopChartId
 normal-closure residual. -/
 public theorem OrderFourLocalGlobalFactorPointSetComparison.relator_mem_normalClosure
     (h : A.OrderFourLocalGlobalFactorPointSetComparison) :
-    (A.coreDataOf A.actualCuspCentralNaturality).rhoTwo ^ 4 *
+    (A.coreDataOf A.cuspCentralNaturality).rhoTwo ^ 4 *
         (Additive.toMul
-          ((A.coreDataOf A.actualCuspCentralNaturality).translation epsilon'))⁻¹ ∈
+          ((A.coreDataOf A.cuspCentralNaturality).translation epsilon'))⁻¹ ∈
       Subgroup.normalClosure
-        {A.actualEllipticFourOverlapToCore
-          A.orderFourActualEllipticCanonicalRelator} := by
+        {A.ellipticFourOverlapToCore
+          A.ellipticFourCanonicalRelator} := by
   exact (h.toRegularLoopChartIdentity A).toWholeFillingRelatorChartIdentity A
     |>.relator_mem_normalClosure A
 
@@ -407,12 +407,12 @@ public theorem OrderFourLocalGlobalFactorPointSetComparison.relator_mem_normalCl
 order-four normal-closure statement. -/
 public theorem OrderFourCorrectedPeriodTransportIdentity.relator_mem_normalClosure
     (h : A.OrderFourCorrectedPeriodTransportIdentity) :
-    (A.coreDataOf A.actualCuspCentralNaturality).rhoTwo ^ 4 *
+    (A.coreDataOf A.cuspCentralNaturality).rhoTwo ^ 4 *
         (Additive.toMul
-          ((A.coreDataOf A.actualCuspCentralNaturality).translation epsilon'))⁻¹ ∈
+          ((A.coreDataOf A.cuspCentralNaturality).translation epsilon'))⁻¹ ∈
       Subgroup.normalClosure
-        {A.actualEllipticFourOverlapToCore
-          A.orderFourActualEllipticCanonicalRelator} := by
+        {A.ellipticFourOverlapToCore
+          A.ellipticFourCanonicalRelator} := by
   exact (h.toLocalGlobalFactorPointSetComparison A).relator_mem_normalClosure A
 
 end SphereSixComplex.Geometry.PaperAnalyticData

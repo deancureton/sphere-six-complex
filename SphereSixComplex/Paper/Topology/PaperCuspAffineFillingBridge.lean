@@ -24,51 +24,51 @@ open SphereSixComplex.Topology.PaperVanKampenFourPieceCover
 variable (A : PaperAnalyticData)
 
 /-- The central affine presentation transported through the marked cusp naturality equivalence. -/
-public noncomputable def actualCuspAffineCoreData :
+public noncomputable def cuspAffineCoreData :
     AffineTorusCorePiOneData
       (FundamentalGroup A.actualVanKampenFourPieceCover.core
         ⟨A.vanKampenBase, A.actualVanKampenFourPieceCover.base_mem_core⟩)
       Lattice paperMonodromyOne paperMonodromyTwo :=
   A.centralAffineCorePiOneData.mapSurjective
-    A.actualCuspCentralNaturality.centralToCore.toMonoidHom
-    A.actualCuspCentralNaturality.centralToCore.surjective
+    A.cuspCentralNaturality.centralToCore.toMonoidHom
+    A.cuspCentralNaturality.centralToCore.surjective
 
 /-- The chosen cusp translation, transported to the prescribed overlap base point. -/
-public noncomputable def actualCuspAffineBridgeTranslation :
+public noncomputable def cuspAffineBridgeTranslation :
     Lattice →+ Additive
       (FundamentalGroup
         (A.actualVanKampenFourPieceCover.core ∩ A.actualVanKampenFourPieceCover.cusp :
           Set A.VanKampenSpace)
-        A.actualCuspOverlapBase) :=
+        A.cuspOverlapBase) :=
   fundamentalGroupAddHomOfBaseEq
-    A.actualCuspChosenAffineFillingCover_boundaryBase_eq
-    A.actualCuspChosenAffineFillingCover.translation
+    A.cuspChosenAffineFillingCover_boundaryBase_eq
+    A.cuspChosenAffineFillingCover.translation
 
 /-- The chosen cusp meridian, transported to the prescribed overlap base point. -/
-public noncomputable def actualCuspAffineBridgeMeridian :
+public noncomputable def cuspAffineBridgeMeridian :
     FundamentalGroup
       (A.actualVanKampenFourPieceCover.core ∩ A.actualVanKampenFourPieceCover.cusp :
         Set A.VanKampenSpace)
-      A.actualCuspOverlapBase :=
+      A.cuspOverlapBase :=
   fundamentalGroupElementOfBaseEq
-    A.actualCuspChosenAffineFillingCover_boundaryBase_eq
-    A.actualCuspChosenAffineFillingCover.meridian
+    A.cuspChosenAffineFillingCover_boundaryBase_eq
+    A.cuspChosenAffineFillingCover.meridian
 
 /-- The actual cusp overlap inclusion is onto on fundamental groups. -/
-public theorem actualCuspOverlapFundamentalGroupMap_surjective :
+public theorem cuspOverlapFundamentalGroupMap_surjective :
     Function.Surjective
       A.actualVanKampenFourPieceCover.cuspOverlapFundamentalGroupMap := by
-  rw [← A.actualCuspChosenAffineFillingCover_map_eq]
+  rw [← A.cuspChosenAffineFillingCover_map_eq]
   exact fundamentalGroupHomOfBaseEq_surjective
-    A.actualCuspChosenAffineFillingCover_boundaryBase_eq
-    A.actualCuspChosenAffineFillingCover_fillingBase_eq
-    A.actualCuspChosenAffineFillingCover.fundamentalGroupMap
-    A.actualCuspChosenAffineFillingCover.fundamentalGroupMap_surjective
+    A.cuspChosenAffineFillingCover_boundaryBase_eq
+    A.cuspChosenAffineFillingCover_fillingBase_eq
+    A.cuspChosenAffineFillingCover.fundamentalGroupMap
+    A.cuspChosenAffineFillingCover.fundamentalGroupMap_surjective
 
 /-- The actual overlap-to-core map gives the cusp square required by the affine star bridge. -/
-public theorem actualCuspAffineBridge_cuspSquare :
+public theorem cuspAffineBridge_cuspSquare :
     A.actualVanKampenFourPieceCover.coreFundamentalGroupMap.comp
-        A.actualCuspOverlapToCore =
+        A.cuspOverlapToCore =
       A.actualVanKampenFourPieceCover.cuspFundamentalGroupMap.comp
         A.actualVanKampenFourPieceCover.cuspOverlapFundamentalGroupMap := by
   ext γ
@@ -82,7 +82,7 @@ public theorem actualCuspAffineBridge_cuspSquare :
     (FundamentalGroup.map
       (A.actualVanKampenFourPieceCover.overlapToCore
         A.actualVanKampenFourPieceCover.cusp)
-      A.actualCuspOverlapBase γ)
+      A.cuspOverlapBase γ)
   have hpath :
       connCore.symm.map
           (CoveringSpace.subsetInclusion A.actualVanKampenFourPieceCover.core).continuous =
@@ -105,12 +105,12 @@ public theorem actualCuspAffineBridge_cuspSquare :
           (FundamentalGroup.map
             (A.actualVanKampenFourPieceCover.overlapToCore
               A.actualVanKampenFourPieceCover.cusp)
-            A.actualCuspOverlapBase γ) =
+            A.cuspOverlapBase γ) =
         FundamentalGroup.map
           ((CoveringSpace.subsetInclusion A.actualVanKampenFourPieceCover.core).comp
             (A.actualVanKampenFourPieceCover.overlapToCore
               A.actualVanKampenFourPieceCover.cusp))
-          A.actualCuspOverlapBase γ :=
+          A.cuspOverlapBase γ :=
     CoveringSpace.map_map _ _ _ _
   have h2 :
       FundamentalGroup.map
@@ -119,35 +119,35 @@ public theorem actualCuspAffineBridge_cuspSquare :
             A.actualVanKampenFourPieceCover.cuspPoint_mem.2⟩
           (FundamentalGroup.map
             A.actualVanKampenFourPieceCover.cuspOverlapToPiece
-            A.actualCuspOverlapBase γ) =
+            A.cuspOverlapBase γ) =
         FundamentalGroup.map
           ((CoveringSpace.subsetInclusion A.actualVanKampenFourPieceCover.cusp).comp
             A.actualVanKampenFourPieceCover.cuspOverlapToPiece)
-          A.actualCuspOverlapBase γ :=
+          A.cuspOverlapBase γ :=
     CoveringSpace.map_map _ _ _ _
   apply Eq.trans h1
   apply Eq.trans ?_ h2.symm
   rfl
 
 /-- Every marked cusp translation maps to the corresponding transported core translation. -/
-public theorem actualCuspAffineBridge_translation_core (a : Lattice) :
-    A.actualCuspOverlapToCore
-        (Additive.toMul (A.actualCuspAffineBridgeTranslation a)) =
-      Additive.toMul (A.actualCuspAffineCoreData.translation a) := by
-  exact A.actualCuspCentralNaturality.translation_core a
+public theorem cuspAffineBridge_translation_core (a : Lattice) :
+    A.cuspOverlapToCore
+        (Additive.toMul (A.cuspAffineBridgeTranslation a)) =
+      Additive.toMul (A.cuspAffineCoreData.translation a) := by
+  exact A.cuspCentralNaturality.translation_core a
 
 /-- At cusp twist zero, the marked cusp meridian maps to the product of the two core meridians. -/
-public theorem actualCuspAffineBridge_meridian_core :
-    A.actualCuspOverlapToCore A.actualCuspAffineBridgeMeridian =
-      A.actualCuspAffineCoreData.rhoOne * A.actualCuspAffineCoreData.rhoTwo *
-        (Additive.toMul (A.actualCuspAffineCoreData.translation 0))⁻¹ := by
-  apply Eq.trans A.actualCuspCentralNaturality.meridian_core
+public theorem cuspAffineBridge_meridian_core :
+    A.cuspOverlapToCore A.cuspAffineBridgeMeridian =
+      A.cuspAffineCoreData.rhoOne * A.cuspAffineCoreData.rhoTwo *
+        (Additive.toMul (A.cuspAffineCoreData.translation 0))⁻¹ := by
+  apply Eq.trans A.cuspCentralNaturality.meridian_core
   change
-    A.actualCuspCentralNaturality.centralToCore A.centralAffineCorePiOneData.rhoOne *
-      A.actualCuspCentralNaturality.centralToCore A.centralAffineCorePiOneData.rhoTwo =
-    A.actualCuspCentralNaturality.centralToCore A.centralAffineCorePiOneData.rhoOne *
-      A.actualCuspCentralNaturality.centralToCore A.centralAffineCorePiOneData.rhoTwo *
-      (A.actualCuspCentralNaturality.centralToCore
+    A.cuspCentralNaturality.centralToCore A.centralAffineCorePiOneData.rhoOne *
+      A.cuspCentralNaturality.centralToCore A.centralAffineCorePiOneData.rhoTwo =
+    A.cuspCentralNaturality.centralToCore A.centralAffineCorePiOneData.rhoOne *
+      A.cuspCentralNaturality.centralToCore A.centralAffineCorePiOneData.rhoTwo *
+      (A.cuspCentralNaturality.centralToCore
         (Additive.toMul (A.centralAffineCorePiOneData.translation 0)))⁻¹
   have hz : Additive.toMul (A.centralAffineCorePiOneData.translation 0) = 1 := by
     rw [map_zero]
@@ -155,84 +155,84 @@ public theorem actualCuspAffineBridge_meridian_core :
   rw [hz, map_one, inv_one, mul_one]
 
 /-- The actual cusp filling kills the marked angular meridian. -/
-public theorem actualCuspAffineBridge_meridian_killed :
+public theorem cuspAffineBridge_meridian_killed :
     A.actualVanKampenFourPieceCover.cuspOverlapFundamentalGroupMap
-        A.actualCuspAffineBridgeMeridian = 1 := by
-  rw [← A.actualCuspChosenAffineFillingCover_map_eq]
+        A.cuspAffineBridgeMeridian = 1 := by
+  rw [← A.cuspChosenAffineFillingCover_map_eq]
   change fundamentalGroupHomOfBaseEq
-      A.actualCuspChosenAffineFillingCover_boundaryBase_eq
-      A.actualCuspChosenAffineFillingCover_fillingBase_eq
-      A.actualCuspChosenAffineFillingCover.fundamentalGroupMap
+      A.cuspChosenAffineFillingCover_boundaryBase_eq
+      A.cuspChosenAffineFillingCover_fillingBase_eq
+      A.cuspChosenAffineFillingCover.fundamentalGroupMap
       (fundamentalGroupElementOfBaseEq
-        A.actualCuspChosenAffineFillingCover_boundaryBase_eq
-        A.actualCuspChosenAffineFillingCover.meridian) = 1
+        A.cuspChosenAffineFillingCover_boundaryBase_eq
+        A.cuspChosenAffineFillingCover.meridian) = 1
   rw [fundamentalGroupHomOfBaseEq_apply,
-    A.actualCuspChosenAffineFillingCover.fundamentalGroupMap_meridian]
+    A.cuspChosenAffineFillingCover.fundamentalGroupMap_meridian]
   exact fundamentalGroupElementOfBaseEq_one _
 
 /-- The actual cusp filling kills every marked translation in the paper's toric sublattice. -/
-public theorem actualCuspAffineBridge_toric_killed (a : Lattice)
+public theorem cuspAffineBridge_toric_killed (a : Lattice)
     (ha : a ∈ paperToricSubgroup) :
     A.actualVanKampenFourPieceCover.cuspOverlapFundamentalGroupMap
-        (Additive.toMul (A.actualCuspAffineBridgeTranslation a)) = 1 := by
+        (Additive.toMul (A.cuspAffineBridgeTranslation a)) = 1 := by
   obtain ⟨k, hk⟩ := paperCuspVanishing_onto a ha
-  rw [← hk, ← A.actualCuspChosenAffineFillingCover_map_eq]
-  unfold actualCuspAffineBridgeTranslation
+  rw [← hk, ← A.cuspChosenAffineFillingCover_map_eq]
+  unfold cuspAffineBridgeTranslation
   have hinput :
       Additive.toMul
           ((fundamentalGroupAddHomOfBaseEq
-            A.actualCuspChosenAffineFillingCover_boundaryBase_eq
-            A.actualCuspChosenAffineFillingCover.translation)
+            A.cuspChosenAffineFillingCover_boundaryBase_eq
+            A.cuspChosenAffineFillingCover.translation)
               (paperCuspVanishing k)) =
         fundamentalGroupElementOfBaseEq
-          A.actualCuspChosenAffineFillingCover_boundaryBase_eq
+          A.cuspChosenAffineFillingCover_boundaryBase_eq
           (Additive.toMul
-            (A.actualCuspChosenAffineFillingCover.translation
+            (A.cuspChosenAffineFillingCover.translation
               (paperCuspVanishing k))) := by
     change Additive.toMul
         ((fundamentalGroupAddHomOfBaseEq
-          A.actualCuspChosenAffineFillingCover_boundaryBase_eq
-          A.actualCuspChosenAffineFillingCover.translation)
+          A.cuspChosenAffineFillingCover_boundaryBase_eq
+          A.cuspChosenAffineFillingCover.translation)
             (paperCuspVanishing k)) =
       Additive.toMul
         (Additive.ofMul
           (fundamentalGroupElementOfBaseEq
-            A.actualCuspChosenAffineFillingCover_boundaryBase_eq
+            A.cuspChosenAffineFillingCover_boundaryBase_eq
             (Additive.toMul
-              (A.actualCuspChosenAffineFillingCover.translation
+              (A.cuspChosenAffineFillingCover.translation
                 (paperCuspVanishing k)))))
     exact congrArg Additive.toMul
       (fundamentalGroupAddHomOfBaseEq_apply
-        A.actualCuspChosenAffineFillingCover_boundaryBase_eq
-        A.actualCuspChosenAffineFillingCover.translation
+        A.cuspChosenAffineFillingCover_boundaryBase_eq
+        A.cuspChosenAffineFillingCover.translation
         (paperCuspVanishing k))
   have htransport :=
     fundamentalGroupHomOfBaseEq_apply
-      A.actualCuspChosenAffineFillingCover_boundaryBase_eq
-      A.actualCuspChosenAffineFillingCover_fillingBase_eq
-      A.actualCuspChosenAffineFillingCover.fundamentalGroupMap
+      A.cuspChosenAffineFillingCover_boundaryBase_eq
+      A.cuspChosenAffineFillingCover_fillingBase_eq
+      A.cuspChosenAffineFillingCover.fundamentalGroupMap
       (Additive.toMul
-        (A.actualCuspChosenAffineFillingCover.translation
+        (A.cuspChosenAffineFillingCover.translation
           (paperCuspVanishing k)))
   exact (congrArg
     (fundamentalGroupHomOfBaseEq
-      A.actualCuspChosenAffineFillingCover_boundaryBase_eq
-      A.actualCuspChosenAffineFillingCover_fillingBase_eq
-      A.actualCuspChosenAffineFillingCover.fundamentalGroupMap) hinput).trans <|
+      A.cuspChosenAffineFillingCover_boundaryBase_eq
+      A.cuspChosenAffineFillingCover_fillingBase_eq
+      A.cuspChosenAffineFillingCover.fundamentalGroupMap) hinput).trans <|
     htransport.trans <| by
       change fundamentalGroupElementOfBaseEq
-        A.actualCuspChosenAffineFillingCover_fillingBase_eq
-        (A.actualCuspChosenAffineFillingCover.fundamentalGroupMap
+        A.cuspChosenAffineFillingCover_fillingBase_eq
+        (A.cuspChosenAffineFillingCover.fundamentalGroupMap
           (Additive.toMul
-            (A.actualCuspChosenAffineFillingCover.translation
-              (A.actualCuspChosenAffineFillingCover.vanishing k)))) = 1
-      rw [A.actualCuspChosenAffineFillingCover.fundamentalGroupMap_vanishing]
+            (A.cuspChosenAffineFillingCover.translation
+              (A.cuspChosenAffineFillingCover.vanishing k)))) = 1
+      rw [A.cuspChosenAffineFillingCover.fundamentalGroupMap_vanishing]
       exact fundamentalGroupElementOfBaseEq_one _
 
 /-- The chosen cusp vanishing map reaches every vector in the paper's toric sublattice. -/
-public theorem actualCuspAffineBridge_vanishing_onto (a : Lattice)
+public theorem cuspAffineBridge_vanishing_onto (a : Lattice)
     (ha : a ∈ paperToricSubgroup) :
-    ∃ k, A.actualCuspChosenAffineFillingCover.vanishing k = a := by
+    ∃ k, A.cuspChosenAffineFillingCover.vanishing k = a := by
   obtain ⟨k, hk⟩ := paperCuspVanishing_onto a ha
   refine ⟨k, ?_⟩
   change paperCuspVanishing k = a

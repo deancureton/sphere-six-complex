@@ -15,7 +15,7 @@ equations prove phase-fiber preservation without any separate stabilizer calcula
 
 noncomputable section
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
 open SphereSixComplex.Periods
 open SphereSixComplex.Geometry.CuspFilling
@@ -183,4 +183,4 @@ public theorem normalizedPolarHoneycombPhaseGeometry_of_ambient
       PolarPhaseGeometricCore M r Q.toPolarHoneycombData} := by
   exact h.map fun G ↦ ⟨G.construction, G.ambientRetraction.toPolarPhaseGeometricCore⟩
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric

@@ -31,20 +31,20 @@ duality.  The remaining fields are finite generation and the dimension bound. -/
 public structure IntegralPoincareUCTData
     (d : ℕ) (X : Type) [TopologicalSpace X] where
   /-- The top-dimensional Poincare/UCT evaluation pairing. -/
-  topHomologyEquivDualZero :
+  topEquivDualZero :
     IntegralSingularHomology d X ≃+ (IntegralSingularHomology 0 X →+ ℤ)
   /-- The complementary-degree pairing when the UCT `Ext` term vanishes. -/
-  complementaryHomologyEquivDualOfPreviousFree : ∀ (k : Fin (d + 1)), 0 < k.1 →
+  complementEquivDual : ∀ (k : Fin (d + 1)), 0 < k.1 →
     Module.Free ℤ (IntegralSingularHomology (k.1 - 1) X) →
       IntegralSingularHomology (d - k.1) X ≃+
         (IntegralSingularHomology k.1 X →+ ℤ)
   /-- Compact smooth manifolds have finitely generated integral homology. -/
-  finiteHomology : ∀ k, Module.Finite ℤ (IntegralSingularHomology k X)
+  finite_homology : ∀ k, Module.Finite ℤ (IntegralSingularHomology k X)
   /-- Homology vanishes above the real dimension. -/
-  homologyAboveDimension : ∀ k, d < k → Subsingleton (IntegralSingularHomology k X)
+  subsingleton_homology_of_lt : ∀ k, d < k → Subsingleton (IntegralSingularHomology k X)
 
 /-- The dimension-six specialization used by the Section 7 calculation. -/
-public abbrev ClosedOrientedSixManifoldHomologyTheory
+public abbrev IntegralPoincareUCTData.Six
     (X : Type) [TopologicalSpace X] := IntegralPoincareUCTData 6 X
 
 /-- The alternating integral-homology rank sum through real dimension six. -/
@@ -58,7 +58,7 @@ public noncomputable def integralHomologyEulerCharacteristicSix
   (Module.finrank ℤ (IntegralSingularHomology 5 X) : ℤ) +
   (Module.finrank ℤ (IntegralSingularHomology 6 X) : ℤ)
 
-namespace ClosedOrientedSixManifoldHomologyTheory
+namespace IntegralPoincareUCTData.Six
 
 variable {X : Type} [TopologicalSpace X]
 
@@ -105,7 +105,7 @@ private theorem isTorsionFree_of_injective_to_intDual
   let _ : Module.IsTorsionFree ℤ (H →+ ℤ) := intDual_isTorsionFree
   exact Function.Injective.moduleIsTorsionFree f hf (fun n x ↦ map_zsmul f n x)
 
-public theorem homologyFive_subsingleton (T : ClosedOrientedSixManifoldHomologyTheory X)
+public theorem subsingleton_homology_five (T : Six X)
     (hZero : IntegralSingularHomology 0 X ≃+ ℤ)
     (hOne : Subsingleton (IntegralSingularHomology 1 X)) :
     Subsingleton (IntegralSingularHomology 5 X) := by
@@ -114,9 +114,9 @@ public theorem homologyFive_subsingleton (T : ClosedOrientedSixManifoldHomologyT
   have hDual : Subsingleton (IntegralSingularHomology 1 X →+ ℤ) :=
     hom_subsingleton_of_domain_subsingleton hOne
   exact subsingleton_of_addEquiv_to_subsingleton
-    (T.complementaryHomologyEquivDualOfPreviousFree 1 (by norm_num) hFreeZero) hDual
+    (T.complementEquivDual 1 (by norm_num) hFreeZero) hDual
 
-public theorem homologyFour_subsingleton (T : ClosedOrientedSixManifoldHomologyTheory X)
+public theorem subsingleton_homology_four (T : Six X)
     (hOne : Subsingleton (IntegralSingularHomology 1 X))
     (hTwo : Subsingleton (IntegralSingularHomology 2 X)) :
     Subsingleton (IntegralSingularHomology 4 X) := by
@@ -125,19 +125,19 @@ public theorem homologyFour_subsingleton (T : ClosedOrientedSixManifoldHomologyT
   have hDual : Subsingleton (IntegralSingularHomology 2 X →+ ℤ) :=
     hom_subsingleton_of_domain_subsingleton hTwo
   exact subsingleton_of_addEquiv_to_subsingleton
-    (T.complementaryHomologyEquivDualOfPreviousFree 2 (by norm_num) hFreeOne) hDual
+    (T.complementEquivDual 2 (by norm_num) hFreeOne) hDual
 
-public theorem homologyThree_isTorsionFree
-    (T : ClosedOrientedSixManifoldHomologyTheory X)
+public theorem isTorsionFree_homology_three
+    (T : Six X)
     (hTwo : Subsingleton (IntegralSingularHomology 2 X)) :
     Module.IsTorsionFree ℤ (IntegralSingularHomology 3 X) := by
   let hFreeTwo : Module.Free ℤ (IntegralSingularHomology 2 X) :=
     moduleFree_of_subsingleton hTwo
-  let e := T.complementaryHomologyEquivDualOfPreviousFree 3 (by norm_num) hFreeTwo
+  let e := T.complementEquivDual 3 (by norm_num) hFreeTwo
   exact isTorsionFree_of_injective_to_intDual e.toAddMonoidHom e.injective
 
-public noncomputable def homologySixEquivInteger
-    (T : ClosedOrientedSixManifoldHomologyTheory X)
+public noncomputable def homologySixEquivInt
+    (T : Six X)
     (hZero : IntegralSingularHomology 0 X ≃+ ℤ) :
     IntegralSingularHomology 6 X ≃+ ℤ := by
   let precomp : (IntegralSingularHomology 0 X →+ ℤ) ≃+ (ℤ →+ ℤ) := {
@@ -158,7 +158,7 @@ public noncomputable def homologySixEquivInteger
       change n * 1 = n
       exact mul_one n
     map_add' := by simp }
-  exact T.topHomologyEquivDualZero.trans (precomp.trans evalOne)
+  exact T.topEquivDualZero.trans (precomp.trans evalOne)
 
 private theorem finrank_zero_of_subsingleton_finite {G : Type} [AddCommGroup G]
     (hFinite : Module.Finite ℤ G) (hG : Subsingleton G) : Module.finrank ℤ G = 0 := by
@@ -172,36 +172,36 @@ private theorem finrank_one_of_addEquiv_integer {G : Type} [AddCommGroup G]
   rw [e.toIntLinearEquiv.finrank_eq]
   simp
 
-public theorem homologyThree_subsingleton_of_eulerCharacteristic
-    (T : ClosedOrientedSixManifoldHomologyTheory X)
+public theorem subsingleton_homology_three_of_eulerCharacteristic
+    (T : Six X)
     (hZero : IntegralSingularHomology 0 X ≃+ ℤ)
     (hOne : Subsingleton (IntegralSingularHomology 1 X))
     (hTwo : Subsingleton (IntegralSingularHomology 2 X))
     (hEuler : integralHomologyEulerCharacteristicSix X = 2) :
     Subsingleton (IntegralSingularHomology 3 X) := by
-  have hFive := T.homologyFive_subsingleton hZero hOne
-  have hFour := T.homologyFour_subsingleton hOne hTwo
-  let hSix := T.homologySixEquivInteger hZero
+  have hFive := subsingleton_homology_five T hZero hOne
+  have hFour := subsingleton_homology_four T hOne hTwo
+  let hSix := homologySixEquivInt T hZero
   have h0rank : Module.finrank ℤ (IntegralSingularHomology 0 X) = 1 :=
     finrank_one_of_addEquiv_integer hZero
   have h1rank : Module.finrank ℤ (IntegralSingularHomology 1 X) = 0 :=
-    finrank_zero_of_subsingleton_finite (T.finiteHomology 1) hOne
+    finrank_zero_of_subsingleton_finite (T.finite_homology 1) hOne
   have h2rank : Module.finrank ℤ (IntegralSingularHomology 2 X) = 0 :=
-    finrank_zero_of_subsingleton_finite (T.finiteHomology 2) hTwo
+    finrank_zero_of_subsingleton_finite (T.finite_homology 2) hTwo
   have h4rank : Module.finrank ℤ (IntegralSingularHomology 4 X) = 0 :=
-    finrank_zero_of_subsingleton_finite (T.finiteHomology 4) hFour
+    finrank_zero_of_subsingleton_finite (T.finite_homology 4) hFour
   have h5rank : Module.finrank ℤ (IntegralSingularHomology 5 X) = 0 :=
-    finrank_zero_of_subsingleton_finite (T.finiteHomology 5) hFive
+    finrank_zero_of_subsingleton_finite (T.finite_homology 5) hFive
   have h6rank : Module.finrank ℤ (IntegralSingularHomology 6 X) = 1 :=
     finrank_one_of_addEquiv_integer hSix
   have h3rank : Module.finrank ℤ (IntegralSingularHomology 3 X) = 0 := by
     unfold integralHomologyEulerCharacteristicSix at hEuler
     omega
-  let _ : Module.Finite ℤ (IntegralSingularHomology 3 X) := T.finiteHomology 3
+  let _ : Module.Finite ℤ (IntegralSingularHomology 3 X) := T.finite_homology 3
   let _ : Module.IsTorsionFree ℤ (IntegralSingularHomology 3 X) :=
-    T.homologyThree_isTorsionFree hTwo
+    isTorsionFree_homology_three T hTwo
   exact Module.finrank_zero_iff.mp h3rank
 
-end ClosedOrientedSixManifoldHomologyTheory
+end IntegralPoincareUCTData.Six
 
 end SphereSixComplex

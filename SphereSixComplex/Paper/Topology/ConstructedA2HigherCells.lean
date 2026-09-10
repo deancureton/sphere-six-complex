@@ -9,9 +9,9 @@ public import SphereSixComplex.Paper.Topology.ConstructedA2PhaseBallBoundary
 noncomputable section
 open Function Set Topology Matrix Real
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
-open SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Construction
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 open SphereSixComplex.Periods
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
@@ -65,17 +65,17 @@ public theorem constructedA2CorrectedPhaseOrbit_ball_formula
     (x : Metric.ball (0 : Fin (2 + n) → ℝ) 1) :
     constructedA2CorrectedPhaseOrbit W n phase x.1 =
       (constructedA2CorrectedSingletonProductHomeomorph W
-        ((constructedBallSplitHomeomorph 2 n x).1,
-          phase (constructedBallSplitHomeomorph 2 n x).2.1)).1 := by
+        ((SupNormBall.prodHomeomorph 2 n x).1,
+          phase (SupNormBall.prodHomeomorph 2 n x).2.1)).1 := by
   change constructedA2EffectivePhaseCentralOrbit W
     (constructedA2ActualBoundaryGauge (N := N)
-      (constructedA2CorrectedHexagonHomeomorph 0 (constructedBallSplitHomeomorph 2 n x).1.1) *
-        phase (constructedBallSplitHomeomorph 2 n x).2.1)
+      (constructedA2CorrectedHexagonHomeomorph 0 (SupNormBall.prodHomeomorph 2 n x).1.1) *
+        phase (SupNormBall.prodHomeomorph 2 n x).2.1)
     (constructedA2CorrectedPositiveHexagonMap W.localWitness.radius_pos 0
-      (constructedBallSplitHomeomorph 2 n x).1.1) = _
+      (SupNormBall.prodHomeomorph 2 n x).1.1) = _
   rw [constructedA2CorrectedPositiveHexagonMap_of_mem_closedBall
     W.localWitness.radius_pos 0 _
-      (Metric.ball_subset_closedBall (constructedBallSplitHomeomorph 2 n x).1.property)]
+      (Metric.ball_subset_closedBall (SupNormBall.prodHomeomorph 2 n x).1.property)]
   rfl
 
 public theorem constructedA2CorrectedPhaseOrbit_isEmbedding
@@ -90,41 +90,41 @@ public theorem constructedA2CorrectedPhaseOrbit_isEmbedding
   have heq : (Metric.ball (0 : Fin (2 + n) → ℝ) 1).domRestrict
       (constructedA2CorrectedPhaseOrbit W n phase) =
       Subtype.val ∘ (constructedA2CorrectedSingletonProductHomeomorph W) ∘
-        f ∘ (constructedBallSplitHomeomorph 2 n) := by
+        f ∘ (SupNormBall.prodHomeomorph 2 n) := by
     funext x
     exact constructedA2CorrectedPhaseOrbit_ball_formula W n phase x
   rw [heq]
   exact IsEmbedding.subtypeVal.comp
     ((constructedA2CorrectedSingletonProductHomeomorph W).isEmbedding.comp
-      (hf.comp (constructedBallSplitHomeomorph 2 n).isEmbedding))
+      (hf.comp (SupNormBall.prodHomeomorph 2 n).isEmbedding))
 
 public def constructedA2CircleOnePhase (i : Fin 2) (x : Fin 1 → ℝ) : Fin 2 → Circle :=
-  if i = 0 then ![constructedCircleBallCell x, 1] else ![1, constructedCircleBallCell x]
+  if i = 0 then ![CircleCell.ballParam x, 1] else ![1, CircleCell.ballParam x]
 
 public def constructedA2CircleTwoPhase (x : Fin 2 → ℝ) : Fin 2 → Circle :=
-  fun j ↦ constructedCircleCell (x j)
+  fun j ↦ CircleCell.param (x j)
 
 public theorem constructedA2CircleOnePhase_isEmbedding (i : Fin 2) :
     IsEmbedding ((Metric.ball (0 : Fin 1 → ℝ) 1).domRestrict (constructedA2CircleOnePhase i)) := by
   fin_cases i
   · exact (Homeomorph.finTwoArrow (X := Circle)).symm.isEmbedding.comp
-      ((isEmbedding_prodMkLeft (1 : Circle)).comp constructedCircleBallCell_isEmbedding)
+      ((isEmbedding_prodMkLeft (1 : Circle)).comp CircleCell.isEmbedding_ballParam)
   · exact (Homeomorph.finTwoArrow (X := Circle)).symm.isEmbedding.comp
-      ((isEmbedding_prodMkRight (1 : Circle)).comp constructedCircleBallCell_isEmbedding)
+      ((isEmbedding_prodMkRight (1 : Circle)).comp CircleCell.isEmbedding_ballParam)
 
 public theorem constructedA2CircleTwoPhase_isEmbedding :
     IsEmbedding ((Metric.ball (0 : Fin 2 → ℝ) 1).domRestrict constructedA2CircleTwoPhase) := by
   have heq : (Metric.ball (0 : Fin 2 → ℝ) 1).domRestrict constructedA2CircleTwoPhase =
       (Homeomorph.finTwoArrow (X := Circle)).symm ∘
-        Prod.map ((Metric.ball (0 : Fin 1 → ℝ) 1).domRestrict constructedCircleBallCell)
-          ((Metric.ball (0 : Fin 1 → ℝ) 1).domRestrict constructedCircleBallCell) ∘
-        (constructedBallSplitHomeomorph 1 1) := by
+        Prod.map ((Metric.ball (0 : Fin 1 → ℝ) 1).domRestrict CircleCell.ballParam)
+          ((Metric.ball (0 : Fin 1 → ℝ) 1).domRestrict CircleCell.ballParam) ∘
+        (SupNormBall.prodHomeomorph 1 1) := by
     funext x j
     fin_cases j <;> rfl
   rw [heq]
   exact (Homeomorph.finTwoArrow (X := Circle)).symm.isEmbedding.comp
-    ((constructedCircleBallCell_isEmbedding.prodMap constructedCircleBallCell_isEmbedding).comp
-      (constructedBallSplitHomeomorph 1 1).isEmbedding)
+    ((CircleCell.isEmbedding_ballParam.prodMap CircleCell.isEmbedding_ballParam).comp
+      (SupNormBall.prodHomeomorph 1 1).isEmbedding)
 
 public def constructedA2CorrectedThreeOrbit
     (W : ActualPuncturedCuspCollarWitness N constructedModel) (i : Fin 2) :
@@ -204,11 +204,11 @@ public theorem constructedA2CorrectedPhaseOrbit_continuousOn
 
 public theorem constructedA2CircleOnePhase_continuous (i : Fin 2) :
     Continuous (constructedA2CircleOnePhase i) := by
-  have h : Continuous constructedCircleBallCell := constructedCircleCell_continuous.comp (continuous_apply 0)
+  have h : Continuous CircleCell.ballParam := CircleCell.continuous_param.comp (continuous_apply 0)
   fin_cases i <;> unfold constructedA2CircleOnePhase <;> dsimp <;> fun_prop
 
 public theorem constructedA2CircleTwoPhase_continuous : Continuous constructedA2CircleTwoPhase := by
-  exact continuous_pi fun j ↦ constructedCircleCell_continuous.comp (continuous_apply j)
+  exact continuous_pi fun j ↦ CircleCell.continuous_param.comp (continuous_apply j)
 
 public theorem constructedA2CorrectedThreeOrbit_continuousOn
     (W : ActualPuncturedCuspCollarWitness N constructedModel) (i : Fin 2) :
@@ -224,7 +224,7 @@ public theorem constructedSplit_mem_ball (m n : ℕ) (x : Fin (m + n) → ℝ) :
     x ∈ Metric.ball 0 1 ↔
       (Fin.appendHomeomorph (X := ℝ) m n).symm x ∈
         (Metric.ball (0 : Fin m → ℝ) 1) ×ˢ (Metric.ball (0 : Fin n → ℝ) 1) := by
-  have h := constructedAppend_mem_ball m n ((Fin.appendHomeomorph (X := ℝ) m n).symm x)
+  have h := SupNormBall.append_mem_ball_iff m n ((Fin.appendHomeomorph (X := ℝ) m n).symm x)
   change (Fin.appendHomeomorph (X := ℝ) m n) ((Fin.appendHomeomorph (X := ℝ) m n).symm x) ∈
     Metric.ball 0 1 ↔ _ at h
   rw [(Fin.appendHomeomorph (X := ℝ) m n).apply_symm_apply] at h
@@ -266,8 +266,8 @@ public theorem constructedA2CircleOnePhase_boundary (i : Fin 2) (x : Fin 1 → �
     rcases abs_eq (by norm_num : (0 : ℝ) ≤ 1) |>.mp hn with h | h
     · exact Or.inr h
     · exact Or.inl h
-  have hcell : constructedCircleBallCell x = 1 := by
-    rcases hx' with h | h <;> simp [constructedCircleBallCell, h]
+  have hcell : CircleCell.ballParam x = 1 := by
+    rcases hx' with h | h <;> simp [CircleCell.ballParam, h]
   fin_cases i <;> ext j <;> fin_cases j <;> simp [constructedA2CircleOnePhase, hcell]
 
 public def constructedA2CorrectedTwoSkeleton
@@ -292,7 +292,7 @@ public theorem constructedA2CorrectedThreeOrbit_mapsTo_twoSkeleton
     rfl
 
 public theorem constructedCircleCell_eq_one_of_abs_eq {t : ℝ} (ht : |t| = 1) :
-    constructedCircleCell t = 1 := by
+    CircleCell.param t = 1 := by
   rcases (abs_eq (by norm_num : (0 : ℝ) ≤ 1)).mp ht with h | h <;> simp [h]
 
 public theorem constructedA2CircleTwoPhase_boundary (x : Fin 2 → ℝ)
@@ -319,14 +319,14 @@ public theorem constructedA2CircleTwoPhase_boundary (x : Fin 2 → ℝ)
     · have hc := constructedCircleCell_eq_one_of_abs_eq h
       funext j
       fin_cases j <;> simp [constructedA2CircleTwoPhase, constructedA2CircleOnePhase,
-        constructedCircleBallCell, hc]
+        CircleCell.ballParam, hc]
   · refine ⟨0, fun _ ↦ x 0, ?_, ?_⟩
     · have hb : |x 0| ≤ 1 := hle 0
       simpa [Metric.mem_closedBall, dist_zero_right, Pi.norm_def] using hb
     · have hc := constructedCircleCell_eq_one_of_abs_eq h
       funext j
       fin_cases j <;> simp [constructedA2CircleTwoPhase, constructedA2CircleOnePhase,
-        constructedCircleBallCell, hc]
+        CircleCell.ballParam, hc]
 
 public def constructedA2CorrectedThreeSkeleton
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
@@ -439,6 +439,6 @@ public theorem constructedA2CorrectedFourCell_continuousOn_symm
     ContinuousOn (constructedA2CorrectedFourCell W).symm (constructedA2CorrectedFourCell W).target :=
   constructedA2CorrectedPhaseCell_continuousOn_symm W 2 _ constructedA2CircleTwoPhase_isEmbedding
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric
 
 end

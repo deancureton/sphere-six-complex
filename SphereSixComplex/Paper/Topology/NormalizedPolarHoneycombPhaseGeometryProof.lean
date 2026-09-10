@@ -19,7 +19,7 @@ noncomputable section
 open Set
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
 open SphereSixComplex
 open SphereSixComplex.Periods
@@ -175,7 +175,7 @@ public theorem normalizedPolarHoneycombPhaseGeometry_of_ambientZeroGeometry
       PolarPhaseGeometricCore M r Q.toPolarHoneycombData} :=
   h.map NormalizedPolarHoneycombAmbientZeroGeometry.toPhaseGeometry
 
-end SphereSixComplex.Geometry.StandardInfiniteA2ToricModel.Established
+end SphereSixComplex.Geometry.InfiniteA2Toric
 
 end
 

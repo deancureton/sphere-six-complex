@@ -45,25 +45,25 @@ variable (A : PaperAnalyticData)
 /-- The two central marked loops are represented by the canonical affine presentation after
 transport along one common path to the order-three overlap base. -/
 public def OrderThreeCentralAffineBasedMarkingCoherence : Prop :=
-  letI := A.orderThreeActualEllipticBoundaryAction
+  letI := A.ellipticThreeBoundaryAction
   let D := A.centralAffineUniversalCover
   letI := D.topology
   letI := D.action
-  let C := A.orderThreeActualCentralCoverComparison
-  ∃ β : Path A.actualCuspCentralBase A.orderThreeActualEllipticCentralBase,
+  let C := A.ellipticThreeCentralCoverComparison
+  ∃ β : Path A.cuspCentralBase A.ellipticThreeCentralBase,
     fundamentalGroupElementOfBaseEq
-        (C.commutes A.orderThreeActualEllipticBoundaryBase)
+        (C.commutes A.ellipticThreeBoundaryBase)
         A.orderThreeCentralMeridianAtOverlap =
       fundamentalGroupElementOfBaseEq
-        (C.commutes A.orderThreeActualEllipticBoundaryBase)
+        (C.commutes A.ellipticThreeBoundaryBase)
         (FundamentalGroup.fundamentalGroupMulEquivOfPath β
           (paperPuncturedGlobalFamilyAffinePresentation A
             (freeAffineLift (M := paperCentralFreeMonodromy) firstMeridian))) ∧
     fundamentalGroupElementOfBaseEq
-        (C.commutes A.orderThreeActualEllipticBoundaryBase)
+        (C.commutes A.ellipticThreeBoundaryBase)
         A.orderThreeCentralTranslationAtOverlap =
       fundamentalGroupElementOfBaseEq
-        (C.commutes A.orderThreeActualEllipticBoundaryBase)
+        (C.commutes A.ellipticThreeBoundaryBase)
         (FundamentalGroup.fundamentalGroupMulEquivOfPath β
           (paperPuncturedGlobalFamilyAffinePresentation A
             (Additive.toMul
@@ -74,32 +74,32 @@ common conjugator. -/
 public theorem OrderThreeCentralAffineBasedMarkingCoherence.toUniversalDeckCompatibility
     (h : A.OrderThreeCentralAffineBasedMarkingCoherence) :
     A.OrderThreeCentralUniversalDeckMarkingCompatibility := by
-  let _ := A.orderThreeActualEllipticBoundaryAction
+  let _ := A.ellipticThreeBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
   let _ : SimplyConnectedSpace D.Cover := D.data.simplyConnected
-  let C := A.orderThreeActualCentralCoverComparison
-  change ∃ β : Path A.actualCuspCentralBase A.orderThreeActualEllipticCentralBase,
+  let C := A.ellipticThreeCentralCoverComparison
+  change ∃ β : Path A.cuspCentralBase A.ellipticThreeCentralBase,
       _ ∧ _ at h
   obtain ⟨β, hmeridian, htranslation⟩ := h
-  let m : FundamentalGroup A.CentralFamily A.orderThreeActualEllipticCentralBase :=
+  let m : FundamentalGroup A.CentralFamily A.ellipticThreeCentralBase :=
     FundamentalGroup.fundamentalGroupMulEquivOfPath β
       (paperPuncturedGlobalFamilyAffinePresentation A
         (freeAffineLift (M := paperCentralFreeMonodromy) firstMeridian))
-  let t : FundamentalGroup A.CentralFamily A.orderThreeActualEllipticCentralBase :=
+  let t : FundamentalGroup A.CentralFamily A.ellipticThreeCentralBase :=
     FundamentalGroup.fundamentalGroupMulEquivOfPath β
       (paperPuncturedGlobalFamilyAffinePresentation A
         (Additive.toMul
           (freeAffineTranslation (M := paperCentralFreeMonodromy) (-epsilon))))
-  let hbase : A.orderThreeActualEllipticCentralBase =
-      D.data.projection (C.lift A.orderThreeActualEllipticBoundaryBase) :=
-    C.commutes A.orderThreeActualEllipticBoundaryBase
-  let ePath : D.data.projection ⁻¹' {A.orderThreeActualEllipticCentralBase} :=
+  let hbase : A.ellipticThreeCentralBase =
+      D.data.projection (C.lift A.ellipticThreeBoundaryBase) :=
+    C.commutes A.ellipticThreeBoundaryBase
+  let ePath : D.data.projection ⁻¹' {A.ellipticThreeCentralBase} :=
     ⟨A.orderThreeCentralAffineUniversalCoverPointOfPath β,
       A.orderThreeCentralAffineUniversalCoverPointOfPath_projects β⟩
-  let eCollar : D.data.projection ⁻¹' {A.orderThreeActualEllipticCentralBase} :=
-    ⟨C.lift A.orderThreeActualEllipticBoundaryBase, hbase.symm⟩
+  let eCollar : D.data.projection ⁻¹' {A.ellipticThreeCentralBase} :=
+    ⟨C.lift A.ellipticThreeBoundaryBase, hbase.symm⟩
   let c := D.data.quotientCovering.fiberEquivGroup ePath eCollar
   have he : eCollar.1 = c • ePath.1 := by
     exact (D.data.quotientCovering.fiberEquivGroup_smul_self
@@ -132,14 +132,14 @@ public theorem OrderThreeCentralAffineBasedMarkingCoherence.toUniversalDeckCompa
   have hmeridianBase' :
       MulOpposite.unop
           (D.data.quotientCovering.fundamentalGroupEquiv
-            ⟨C.lift A.orderThreeActualEllipticBoundaryBase, rfl⟩
+            ⟨C.lift A.ellipticThreeBoundaryBase, rfl⟩
             (fundamentalGroupElementOfBaseEq hbase m)) =
         MulOpposite.unop (D.data.quotientCovering.fundamentalGroupEquiv eCollar m) := by
     exact congrArg MulOpposite.unop hmeridianBase
   have htranslationBase' :
       MulOpposite.unop
           (D.data.quotientCovering.fundamentalGroupEquiv
-            ⟨C.lift A.orderThreeActualEllipticBoundaryBase, rfl⟩
+            ⟨C.lift A.ellipticThreeBoundaryBase, rfl⟩
             (fundamentalGroupElementOfBaseEq hbase t)) =
         MulOpposite.unop (D.data.quotientCovering.fundamentalGroupEquiv eCollar t) := by
     exact congrArg MulOpposite.unop htranslationBase
@@ -149,14 +149,14 @@ public theorem OrderThreeCentralAffineBasedMarkingCoherence.toUniversalDeckCompa
     apply Prod.ext
     · change MulOpposite.unop
           (D.data.quotientCovering.fundamentalGroupEquiv
-            ⟨C.lift A.orderThreeActualEllipticBoundaryBase, rfl⟩
+            ⟨C.lift A.ellipticThreeBoundaryBase, rfl⟩
             (fundamentalGroupElementOfBaseEq hbase
               A.orderThreeCentralMeridianAtOverlap)) = _
       rw [hmeridian']
       exact hmeridianBase'
     · change MulOpposite.unop
           (D.data.quotientCovering.fundamentalGroupEquiv
-            ⟨C.lift A.orderThreeActualEllipticBoundaryBase, rfl⟩
+            ⟨C.lift A.ellipticThreeBoundaryBase, rfl⟩
             (fundamentalGroupElementOfBaseEq hbase
               A.orderThreeCentralTranslationAtOverlap)) = _
       rw [htranslation']
@@ -186,52 +186,52 @@ public theorem OrderThreeCentralAffineBasedMarkingCoherence.toMarkedLoopCompatib
 /-- The narrow order-four analogue of the based marking calculation.  It asks for one path and
 one lift at which the two transported central generators have the physical deck labels. -/
 public def OrderFourCentralAffineBasedDeckMarkingCoherence : Prop :=
-  letI := A.orderFourActualEllipticBoundaryAction
+  letI := A.ellipticFourBoundaryAction
   let D := A.centralAffineUniversalCover
   letI := D.topology
   letI := D.action
   letI : SimplyConnectedSpace D.Cover := D.data.simplyConnected
-  let C := A.orderFourActualCentralCoverComparison
-  ∃ β : Path A.centralAffineBase A.orderFourActualEllipticCentralBase,
-    ∃ e : D.data.projection ⁻¹' {A.orderFourActualEllipticCentralBase},
+  let C := A.ellipticFourCentralCoverComparison
+  ∃ β : Path A.centralAffineBase A.ellipticFourCentralBase,
+    ∃ e : D.data.projection ⁻¹' {A.ellipticFourCentralBase},
       MulOpposite.unop
           (D.data.quotientCovering.fundamentalGroupEquiv e
             (FundamentalGroup.fundamentalGroupMulEquivOfPath β
               A.centralAffineCorePiOneData.rhoTwo)) =
-        C.deckMap A.orderFourActualEllipticBoundaryDeckData.meridian ∧
+        C.deckMap A.ellipticFourBoundaryDeckData.meridian ∧
       MulOpposite.unop
           (D.data.quotientCovering.fundamentalGroupEquiv e
             (FundamentalGroup.fundamentalGroupMulEquivOfPath β
               (Additive.toMul (A.centralAffineCorePiOneData.translation epsilon')))) =
         C.deckMap
           (Additive.toMul
-            (A.orderFourActualEllipticBoundaryDeckData.translation epsilon'))
+            (A.ellipticFourBoundaryDeckData.translation epsilon'))
 
 /-- The existential order-four based marking calculation implies the connector-invariant deck
 comparison, independently of the arbitrary path used in the production definition. -/
 public theorem OrderFourCentralAffineBasedDeckMarkingCoherence.toDeckCompatibility
     (h : A.OrderFourCentralAffineBasedDeckMarkingCoherence) :
     A.OrderFourCentralCoverDeckCompatibility := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
   let _ : SimplyConnectedSpace D.Cover := D.data.simplyConnected
-  let C := A.orderFourActualCentralCoverComparison
-  change ∃ β : Path A.centralAffineBase A.orderFourActualEllipticCentralBase,
-      ∃ e : D.data.projection ⁻¹' {A.orderFourActualEllipticCentralBase}, _ ∧ _ at h
+  let C := A.ellipticFourCentralCoverComparison
+  change ∃ β : Path A.centralAffineBase A.ellipticFourCentralBase,
+      ∃ e : D.data.projection ⁻¹' {A.ellipticFourCentralBase}, _ ∧ _ at h
   obtain ⟨β, e, hmeridian, htranslation⟩ := h
-  let m : FundamentalGroup A.CentralFamily A.orderFourActualEllipticCentralBase :=
+  let m : FundamentalGroup A.CentralFamily A.ellipticFourCentralBase :=
     FundamentalGroup.fundamentalGroupMulEquivOfPath β
       A.centralAffineCorePiOneData.rhoTwo
-  let t : FundamentalGroup A.CentralFamily A.orderFourActualEllipticCentralBase :=
+  let t : FundamentalGroup A.CentralFamily A.ellipticFourCentralBase :=
     FundamentalGroup.fundamentalGroupMulEquivOfPath β
       (Additive.toMul (A.centralAffineCorePiOneData.translation epsilon'))
-  let hbase : A.orderFourActualEllipticCentralBase =
-      D.data.projection (C.lift A.orderFourActualEllipticBoundaryBase) :=
-    C.commutes A.orderFourActualEllipticBoundaryBase
-  let eCollar : D.data.projection ⁻¹' {A.orderFourActualEllipticCentralBase} :=
-    ⟨C.lift A.orderFourActualEllipticBoundaryBase, hbase.symm⟩
+  let hbase : A.ellipticFourCentralBase =
+      D.data.projection (C.lift A.ellipticFourBoundaryBase) :=
+    C.commutes A.ellipticFourBoundaryBase
+  let eCollar : D.data.projection ⁻¹' {A.ellipticFourCentralBase} :=
+    ⟨C.lift A.ellipticFourBoundaryBase, hbase.symm⟩
   let c := D.data.quotientCovering.fiberEquivGroup e eCollar
   have he : eCollar.1 = c • e.1 := by
     exact (D.data.quotientCovering.fiberEquivGroup_smul_self e (e' := eCollar)).symm
@@ -246,13 +246,13 @@ public theorem OrderFourCentralAffineBasedDeckMarkingCoherence.toDeckCompatibili
   have hcombined := hpathDeck.trans hlift
   have hmeridian' :
       MulOpposite.unop (D.data.quotientCovering.fundamentalGroupEquiv e m) =
-        C.deckMap A.orderFourActualEllipticBoundaryDeckData.meridian := by
+        C.deckMap A.ellipticFourBoundaryDeckData.meridian := by
     exact hmeridian
   have htranslation' :
       MulOpposite.unop (D.data.quotientCovering.fundamentalGroupEquiv e t) =
         C.deckMap
           (Additive.toMul
-            (A.orderFourActualEllipticBoundaryDeckData.translation epsilon')) := by
+            (A.ellipticFourBoundaryDeckData.translation epsilon')) := by
     exact htranslation
   rw [hmeridian', htranslation'] at hcombined
   have hmeridianBase := quotientCoverFundamentalGroupEquiv_of_base_eq
@@ -262,12 +262,12 @@ public theorem OrderFourCentralAffineBasedDeckMarkingCoherence.toDeckCompatibili
   have hleft :
       (MulOpposite.unop
           (D.data.quotientCovering.fundamentalGroupEquiv
-            ⟨C.lift A.orderFourActualEllipticBoundaryBase, rfl⟩
+            ⟨C.lift A.ellipticFourBoundaryBase, rfl⟩
             (fundamentalGroupElementOfBaseEq hbase
               A.orderFourCentralMeridianAtOverlap)),
         MulOpposite.unop
           (D.data.quotientCovering.fundamentalGroupEquiv
-            ⟨C.lift A.orderFourActualEllipticBoundaryBase, rfl⟩
+            ⟨C.lift A.ellipticFourBoundaryBase, rfl⟩
             (fundamentalGroupElementOfBaseEq hbase
               A.orderFourCentralTranslationAtOverlap))) =
       (MulOpposite.unop
@@ -282,18 +282,18 @@ public theorem OrderFourCentralAffineBasedDeckMarkingCoherence.toDeckCompatibili
   have hresult : SimultaneouslyConjugate
       (MulOpposite.unop
           (D.data.quotientCovering.fundamentalGroupEquiv
-            ⟨C.lift A.orderFourActualEllipticBoundaryBase, rfl⟩
+            ⟨C.lift A.ellipticFourBoundaryBase, rfl⟩
             (fundamentalGroupElementOfBaseEq hbase
               A.orderFourCentralMeridianAtOverlap)),
         MulOpposite.unop
           (D.data.quotientCovering.fundamentalGroupEquiv
-            ⟨C.lift A.orderFourActualEllipticBoundaryBase, rfl⟩
+            ⟨C.lift A.ellipticFourBoundaryBase, rfl⟩
             (fundamentalGroupElementOfBaseEq hbase
               A.orderFourCentralTranslationAtOverlap)))
-      (C.deckMap A.orderFourActualEllipticBoundaryDeckData.meridian,
+      (C.deckMap A.ellipticFourBoundaryDeckData.meridian,
         C.deckMap
           (Additive.toMul
-            (A.orderFourActualEllipticBoundaryDeckData.translation epsilon'))) := by
+            (A.ellipticFourBoundaryDeckData.translation epsilon'))) := by
     rw [hleft]
     exact hcombined
   exact hresult

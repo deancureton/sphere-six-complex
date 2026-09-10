@@ -29,7 +29,7 @@ open SphereSixComplex.Geometry.ComplexTorus
 variable (A : PaperAnalyticData)
 
 /-- The exact order-four overlap chart into the punctured central family. -/
-public noncomputable def orderFourActualOverlapToCentral :
+public noncomputable def ellipticFourOverlapToCentral :
     C((A.actualVanKampenFourPieceCover.core ∩
         A.actualVanKampenFourPieceCover.ellipticFour : Set A.VanKampenSpace),
       A.CentralFamily) where
@@ -43,14 +43,14 @@ public theorem centralToSectionSevenEulerPiece_orderFourActualOverlapToCentral
     (x : (A.actualVanKampenFourPieceCover.core ∩
       A.actualVanKampenFourPieceCover.ellipticFour : Set A.VanKampenSpace)) :
     A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
-        (A.orderFourActualOverlapToCentral x) =
+        (A.ellipticFourOverlapToCentral x) =
       A.actualVanKampenFourPieceCover.overlapToCore
         A.actualVanKampenFourPieceCover.ellipticFour x := by
   apply Subtype.ext
   let q := A.orderFourCollarToActualOverlapHomeomorph.symm x
   calc
     (A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
-        (A.orderFourActualOverlapToCentral x)).1 =
+        (A.ellipticFourOverlapToCentral x)).1 =
         A.openEmbeddingStarData.collarSourceToGlued 2 q :=
       A.centralToSectionSevenEulerPiece_starToCentral 2 q
     _ = x.1 := by
@@ -59,15 +59,15 @@ public theorem centralToSectionSevenEulerPiece_orderFourActualOverlapToCentral
         (A.orderFourCollarToActualOverlapHomeomorph.apply_symm_apply x)
 
 /-- The literal order-four overlap base viewed in the central family. -/
-public noncomputable def orderFourActualOverlapCentralBase : A.CentralFamily :=
-  A.orderFourActualOverlapToCentral
+public noncomputable def ellipticFourOverlapCentralBase : A.CentralFamily :=
+  A.ellipticFourOverlapToCentral
     ⟨A.actualVanKampenFourPieceCover.ellipticFourPoint,
       A.actualVanKampenFourPieceCover.ellipticFourPoint_mem⟩
 
 /-- The central-family homeomorphism, followed by the order-four connector, gives an
 equivalence from the literal central overlap base to the van Kampen core base. -/
-public noncomputable def orderFourActualCentralToCoreEquiv :
-    FundamentalGroup A.CentralFamily A.orderFourActualOverlapCentralBase ≃*
+public noncomputable def ellipticFourCentralToCoreEquiv :
+    FundamentalGroup A.CentralFamily A.ellipticFourOverlapCentralBase ≃*
       FundamentalGroup A.actualVanKampenFourPieceCover.core
         ⟨A.vanKampenBase, A.actualVanKampenFourPieceCover.base_mem_core⟩ :=
   (TauCeti.FundamentalGroup.homeomorphMulEquivOfEq
@@ -83,20 +83,20 @@ public noncomputable def orderFourActualCentralToCoreEquiv :
 
 /-- The literal central chart followed by the geometric central-to-core equivalence is exactly
 the actual overlap inclusion with its prescribed order-four connector. -/
-public theorem actualEllipticFourOverlapToCore_eq_central
+public theorem ellipticFourOverlapToCore_eq_central
     (gamma : FundamentalGroup
       (A.actualVanKampenFourPieceCover.core ∩
         A.actualVanKampenFourPieceCover.ellipticFour : Set A.VanKampenSpace)
       ⟨A.actualVanKampenFourPieceCover.ellipticFourPoint,
         A.actualVanKampenFourPieceCover.ellipticFourPoint_mem⟩) :
-    A.actualEllipticFourOverlapToCore gamma =
-      A.orderFourActualCentralToCoreEquiv
-        (FundamentalGroup.mapOfEq A.orderFourActualOverlapToCentral rfl gamma) := by
+    A.ellipticFourOverlapToCore gamma =
+      A.ellipticFourCentralToCoreEquiv
+        (FundamentalGroup.mapOfEq A.ellipticFourOverlapToCentral rfl gamma) := by
   have hmap :
       (⟨A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph,
           A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph.continuous⟩ :
         C(A.CentralFamily, A.actualVanKampenFourPieceCover.core)).comp
-          A.orderFourActualOverlapToCentral =
+          A.ellipticFourOverlapToCentral =
         A.actualVanKampenFourPieceCover.overlapToCore
           A.actualVanKampenFourPieceCover.ellipticFour := by
     apply ContinuousMap.ext
@@ -104,7 +104,7 @@ public theorem actualEllipticFourOverlapToCore_eq_central
     exact A.centralToSectionSevenEulerPiece_orderFourActualOverlapToCentral x
   have hcentral :
       A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
-          A.orderFourActualOverlapCentralBase =
+          A.ellipticFourOverlapCentralBase =
         A.actualVanKampenFourPieceCover.overlapToCore
           A.actualVanKampenFourPieceCover.ellipticFour
           ⟨A.actualVanKampenFourPieceCover.ellipticFourPoint,
@@ -119,7 +119,7 @@ public theorem actualEllipticFourOverlapToCore_eq_central
   have hinner : ∀ delta,
       (TauCeti.FundamentalGroup.homeomorphMulEquivOfEq
         A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph hcentral)
-          (FundamentalGroup.mapOfEq A.orderFourActualOverlapToCentral rfl delta) =
+          (FundamentalGroup.mapOfEq A.ellipticFourOverlapToCentral rfl delta) =
         FundamentalGroup.map
           (A.actualVanKampenFourPieceCover.overlapToCore
             A.actualVanKampenFourPieceCover.ellipticFour)
@@ -130,13 +130,13 @@ public theorem actualEllipticFourOverlapToCore_eq_central
         (⟨A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph,
           A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph.continuous⟩ :
             C(A.CentralFamily, A.actualVanKampenFourPieceCover.core)) hcentral
-          (FundamentalGroup.mapOfEq A.orderFourActualOverlapToCentral rfl delta) = _
+          (FundamentalGroup.mapOfEq A.ellipticFourOverlapToCentral rfl delta) = _
     calc
       _ = FundamentalGroup.mapOfEq
           ((⟨A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph,
               A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph.continuous⟩ :
             C(A.CentralFamily, A.actualVanKampenFourPieceCover.core)).comp
-              A.orderFourActualOverlapToCentral)
+              A.ellipticFourOverlapToCentral)
           hcompbase delta :=
         TauCeti.FundamentalGroup.mapOfEq_comp _ _ rfl hcentral delta
       _ = FundamentalGroup.mapOfEq
@@ -153,7 +153,7 @@ public theorem actualEllipticFourOverlapToCore_eq_central
       (TauCeti.FundamentalGroup.homeomorphMulEquivOfEq
         A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
         hcentral).toMonoidHom.comp
-          (FundamentalGroup.mapOfEq A.orderFourActualOverlapToCentral rfl) =
+          (FundamentalGroup.mapOfEq A.ellipticFourOverlapToCentral rfl) =
         FundamentalGroup.map
           (A.actualVanKampenFourPieceCover.overlapToCore
             A.actualVanKampenFourPieceCover.ellipticFour)
@@ -161,15 +161,15 @@ public theorem actualEllipticFourOverlapToCore_eq_central
             A.actualVanKampenFourPieceCover.ellipticFourPoint_mem⟩ := by
     ext delta
     exact hinner delta
-  simp only [actualEllipticFourOverlapToCore, orderFourActualCentralToCoreEquiv]
+  simp only [ellipticFourOverlapToCore, ellipticFourCentralToCoreEquiv]
   rw [← hhom]
   rfl
 
 /-- The central-family point under the chosen lift of the order-four overlap base. -/
-public noncomputable def orderFourActualEllipticCentralBase : A.CentralFamily :=
-  A.orderFourActualOverlapToCentral
-    (A.orderFourActualEllipticBoundaryProjection
-      A.orderFourActualEllipticBoundaryBase)
+public noncomputable def ellipticFourCentralBase : A.CentralFamily :=
+  A.ellipticFourOverlapToCentral
+    (A.ellipticFourBoundaryProjection
+      A.ellipticFourBoundaryBase)
 
 /-- A lift of the order-four overlap base to the selected global affine universal cover. -/
 public noncomputable def orderFourCentralAffineUniversalCoverPoint :
@@ -178,39 +178,39 @@ public noncomputable def orderFourCentralAffineUniversalCoverPoint :
   let _ := D.topology
   let _ := D.action
   exact Classical.choose
-    (D.data.quotientCovering.surjective A.orderFourActualEllipticCentralBase)
+    (D.data.quotientCovering.surjective A.ellipticFourCentralBase)
 
 public theorem orderFourCentralAffineUniversalCoverPoint_projects :
     let D := A.centralAffineUniversalCover
     letI := D.topology
     letI := D.action
     D.data.projection A.orderFourCentralAffineUniversalCoverPoint =
-      A.orderFourActualEllipticCentralBase := by
+      A.ellipticFourCentralBase := by
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
   exact Classical.choose_spec
-    (D.data.quotientCovering.surjective A.orderFourActualEllipticCentralBase)
+    (D.data.quotientCovering.surjective A.ellipticFourCentralBase)
 
 /-- The canonical comparison from the explicit radial overlap cover to the selected global
 affine universal cover.  Its lift and deck homomorphism are derived from the literal overlap
 chart by the covering-space lifting property. -/
-public noncomputable def orderFourActualCentralCoverComparison :
-    letI := A.orderFourActualEllipticBoundaryAction
+public noncomputable def ellipticFourCentralCoverComparison :
+    letI := A.ellipticFourBoundaryAction
     let D := A.centralAffineUniversalCover
     letI := D.topology
     letI := D.action
     QuotientCoverMapData
       (G := OrderFourAffineMappingTorusDeck A.periods)
       (H := paperCentralFreeAffineDeck)
-      A.orderFourActualEllipticBoundaryProjection D.data.projection := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+      A.ellipticFourBoundaryProjection D.data.projection := by
+  let _ := A.ellipticFourBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderFourActualEllipticBoundaryCover_simplyConnected
+    A.ellipticFourBoundaryCover_simplyConnected
   let _ : LocallyPathConnectedSpace
       (OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :=
     let _ : LocallyPathConnectedSpace
@@ -219,64 +219,64 @@ public noncomputable def orderFourActualCentralCoverComparison :
     inferInstance
   let _ : SimplyConnectedSpace D.Cover := D.data.simplyConnected
   exact quotientCoverMapDataOfBaseMap
-    A.orderFourActualEllipticBoundaryProjection_isQuotientCoveringMap
-    D.data.quotientCovering A.orderFourActualOverlapToCentral
-    A.orderFourActualEllipticBoundaryBase
+    A.ellipticFourBoundaryProjection_isQuotientCoveringMap
+    D.data.quotientCovering A.ellipticFourOverlapToCentral
+    A.ellipticFourBoundaryBase
     A.orderFourCentralAffineUniversalCoverPoint
     A.orderFourCentralAffineUniversalCoverPoint_projects
 
 /-- The induced comparison computes the image of every physical deck loop in the central
 universal cover. -/
-public theorem orderFourActualCentralCoverComparison_ofDeck
+public theorem ellipticFourCentralCoverComparison_ofDeck
     (g : OrderFourAffineMappingTorusDeck A.periods) :
-    letI := A.orderFourActualEllipticBoundaryAction
+    letI := A.ellipticFourBoundaryAction
     let D := A.centralAffineUniversalCover
     letI := D.topology
     letI := D.action
     letI : SimplyConnectedSpace
         (OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :=
-      A.orderFourActualEllipticBoundaryCover_simplyConnected
+      A.ellipticFourBoundaryCover_simplyConnected
     letI : SimplyConnectedSpace D.Cover := D.data.simplyConnected
-    let C := A.orderFourActualCentralCoverComparison
+    let C := A.ellipticFourCentralCoverComparison
     D.data.quotientCovering.fundamentalGroupEquiv
-        ⟨C.lift A.orderFourActualEllipticBoundaryBase, rfl⟩
+        ⟨C.lift A.ellipticFourBoundaryBase, rfl⟩
         (FundamentalGroup.mapOfEq C.baseMap
-          (C.commutes A.orderFourActualEllipticBoundaryBase)
-          (ofDeck A.orderFourActualEllipticBoundaryProjection_isQuotientCoveringMap
-            A.orderFourActualEllipticBoundaryBase g)) =
+          (C.commutes A.ellipticFourBoundaryBase)
+          (ofDeck A.ellipticFourBoundaryProjection_isQuotientCoveringMap
+            A.ellipticFourBoundaryBase g)) =
       MulOpposite.op (C.deckMap g) := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderFourActualEllipticBoundaryCover_simplyConnected
+    A.ellipticFourBoundaryCover_simplyConnected
   let _ : SimplyConnectedSpace D.Cover := D.data.simplyConnected
-  let C := A.orderFourActualCentralCoverComparison
+  let C := A.ellipticFourCentralCoverComparison
   simpa using
-    (establishedQuotientCoverFundamentalGroupNaturality
-      A.orderFourActualEllipticBoundaryProjection_isQuotientCoveringMap
-      D.data.quotientCovering C A.orderFourActualEllipticBoundaryBase
-      (ofDeck A.orderFourActualEllipticBoundaryProjection_isQuotientCoveringMap
-        A.orderFourActualEllipticBoundaryBase g)).symm
+    (QuotientCoverMapData.fundamentalGroupEquiv_natural
+      A.ellipticFourBoundaryProjection_isQuotientCoveringMap
+      D.data.quotientCovering C A.ellipticFourBoundaryBase
+      (ofDeck A.ellipticFourBoundaryProjection_isQuotientCoveringMap
+        A.ellipticFourBoundaryBase g)).symm
 
 /-- A common path from the displayed affine base to the order-four overlap base in the central
 family. -/
 public noncomputable def orderFourCentralBaseWhisker :
-    Path A.centralAffineBase A.orderFourActualEllipticCentralBase := by
+    Path A.centralAffineBase A.ellipticFourCentralBase := by
   let _ : PathConnectedSpace A.CentralFamily := A.starCentral_pathConnected
   exact PathConnectedSpace.somePath _ _
 
 /-- The central marked meridian transported to the order-four overlap base. -/
 public noncomputable def orderFourCentralMeridianAtOverlap :
-    FundamentalGroup A.CentralFamily A.orderFourActualEllipticCentralBase :=
+    FundamentalGroup A.CentralFamily A.ellipticFourCentralBase :=
   FundamentalGroup.fundamentalGroupMulEquivOfPath A.orderFourCentralBaseWhisker
     A.centralAffineCorePiOneData.rhoTwo
 
 /-- The central marked twist translation transported along the same path. -/
 public noncomputable def orderFourCentralTranslationAtOverlap :
-    FundamentalGroup A.CentralFamily A.orderFourActualEllipticCentralBase :=
+    FundamentalGroup A.CentralFamily A.ellipticFourCentralBase :=
   FundamentalGroup.fundamentalGroupMulEquivOfPath A.orderFourCentralBaseWhisker
     (Additive.toMul (A.centralAffineCorePiOneData.translation epsilon'))
 
@@ -285,221 +285,221 @@ the two physical deck loops to the two marked central loops up to one common cha
 Unlike the final core statement, this involves neither the van Kampen connector nor the cusp
 marking correction. -/
 public def OrderFourCentralMarkedLoopCompatibility : Prop :=
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderFourActualEllipticBoundaryCover_simplyConnected
-  let C := A.orderFourActualCentralCoverComparison
+    A.ellipticFourBoundaryCover_simplyConnected
+  let C := A.ellipticFourCentralCoverComparison
   SimultaneouslyConjugate
     (fundamentalGroupElementOfBaseEq
-        (C.commutes A.orderFourActualEllipticBoundaryBase)
+        (C.commutes A.ellipticFourBoundaryBase)
         A.orderFourCentralMeridianAtOverlap,
       fundamentalGroupElementOfBaseEq
-        (C.commutes A.orderFourActualEllipticBoundaryBase)
+        (C.commutes A.ellipticFourBoundaryBase)
         A.orderFourCentralTranslationAtOverlap)
     (FundamentalGroup.mapOfEq C.baseMap
-        (C.commutes A.orderFourActualEllipticBoundaryBase)
-        (ofDeck A.orderFourActualEllipticBoundaryProjection_isQuotientCoveringMap
-          A.orderFourActualEllipticBoundaryBase
-          A.orderFourActualEllipticBoundaryDeckData.meridian),
+        (C.commutes A.ellipticFourBoundaryBase)
+        (ofDeck A.ellipticFourBoundaryProjection_isQuotientCoveringMap
+          A.ellipticFourBoundaryBase
+          A.ellipticFourBoundaryDeckData.meridian),
       FundamentalGroup.mapOfEq C.baseMap
-        (C.commutes A.orderFourActualEllipticBoundaryBase)
-        (ofDeck A.orderFourActualEllipticBoundaryProjection_isQuotientCoveringMap
-          A.orderFourActualEllipticBoundaryBase
+        (C.commutes A.ellipticFourBoundaryBase)
+        (ofDeck A.ellipticFourBoundaryProjection_isQuotientCoveringMap
+          A.ellipticFourBoundaryBase
           (Additive.toMul
-            (A.orderFourActualEllipticBoundaryDeckData.translation epsilon'))))
+            (A.ellipticFourBoundaryDeckData.translation epsilon'))))
 
 /-- The remaining local geometric computation for the order-four collar.  It says that the
 lift-induced images of the two physical generators and the two marked central loops differ by
 one deck transformation.  The simultaneous conjugacy is necessary: both the lift above the
 overlap base and the path from the displayed central base are chosen independently. -/
 public def OrderFourCentralCoverDeckCompatibility : Prop :=
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
   let _ : SimplyConnectedSpace D.Cover := D.data.simplyConnected
-  let C := A.orderFourActualCentralCoverComparison
+  let C := A.ellipticFourCentralCoverComparison
   SimultaneouslyConjugate
     (MulOpposite.unop
         (D.data.quotientCovering.fundamentalGroupEquiv
-          ⟨C.lift A.orderFourActualEllipticBoundaryBase, rfl⟩
+          ⟨C.lift A.ellipticFourBoundaryBase, rfl⟩
           (fundamentalGroupElementOfBaseEq
-            (C.commutes A.orderFourActualEllipticBoundaryBase)
+            (C.commutes A.ellipticFourBoundaryBase)
             A.orderFourCentralMeridianAtOverlap)),
       MulOpposite.unop
         (D.data.quotientCovering.fundamentalGroupEquiv
-          ⟨C.lift A.orderFourActualEllipticBoundaryBase, rfl⟩
+          ⟨C.lift A.ellipticFourBoundaryBase, rfl⟩
           (fundamentalGroupElementOfBaseEq
-            (C.commutes A.orderFourActualEllipticBoundaryBase)
+            (C.commutes A.ellipticFourBoundaryBase)
             A.orderFourCentralTranslationAtOverlap)))
-    (C.deckMap A.orderFourActualEllipticBoundaryDeckData.meridian,
+    (C.deckMap A.ellipticFourBoundaryDeckData.meridian,
       C.deckMap
         (Additive.toMul
-          (A.orderFourActualEllipticBoundaryDeckData.translation epsilon')))
+          (A.ellipticFourBoundaryDeckData.translation epsilon')))
 
 /-- The local loop comparison implies the deck-group comparison by quotient-cover monodromy. -/
 public theorem OrderFourCentralMarkedLoopCompatibility.toDeckCompatibility
     (H : A.OrderFourCentralMarkedLoopCompatibility) :
     A.OrderFourCentralCoverDeckCompatibility := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderFourActualEllipticBoundaryCover_simplyConnected
+    A.ellipticFourBoundaryCover_simplyConnected
   let _ : SimplyConnectedSpace D.Cover := D.data.simplyConnected
-  let C := A.orderFourActualCentralCoverComparison
+  let C := A.ellipticFourCentralCoverComparison
   let E := D.data.quotientCovering.fundamentalGroupEquiv
-    ⟨C.lift A.orderFourActualEllipticBoundaryBase, rfl⟩
+    ⟨C.lift A.ellipticFourBoundaryBase, rfl⟩
   change SimultaneouslyConjugate
     (fundamentalGroupElementOfBaseEq
-        (C.commutes A.orderFourActualEllipticBoundaryBase)
+        (C.commutes A.ellipticFourBoundaryBase)
         A.orderFourCentralMeridianAtOverlap,
       fundamentalGroupElementOfBaseEq
-        (C.commutes A.orderFourActualEllipticBoundaryBase)
+        (C.commutes A.ellipticFourBoundaryBase)
         A.orderFourCentralTranslationAtOverlap)
     (FundamentalGroup.mapOfEq C.baseMap
-        (C.commutes A.orderFourActualEllipticBoundaryBase)
-        (ofDeck A.orderFourActualEllipticBoundaryProjection_isQuotientCoveringMap
-          A.orderFourActualEllipticBoundaryBase
-          A.orderFourActualEllipticBoundaryDeckData.meridian),
+        (C.commutes A.ellipticFourBoundaryBase)
+        (ofDeck A.ellipticFourBoundaryProjection_isQuotientCoveringMap
+          A.ellipticFourBoundaryBase
+          A.ellipticFourBoundaryDeckData.meridian),
       FundamentalGroup.mapOfEq C.baseMap
-        (C.commutes A.orderFourActualEllipticBoundaryBase)
-        (ofDeck A.orderFourActualEllipticBoundaryProjection_isQuotientCoveringMap
-          A.orderFourActualEllipticBoundaryBase
+        (C.commutes A.ellipticFourBoundaryBase)
+        (ofDeck A.ellipticFourBoundaryProjection_isQuotientCoveringMap
+          A.ellipticFourBoundaryBase
           (Additive.toMul
-            (A.orderFourActualEllipticBoundaryDeckData.translation epsilon')))) at H
+            (A.ellipticFourBoundaryDeckData.translation epsilon')))) at H
   have h := H.map E.toMonoidHom
   change SimultaneouslyConjugate
     (E (fundamentalGroupElementOfBaseEq
-        (C.commutes A.orderFourActualEllipticBoundaryBase)
+        (C.commutes A.ellipticFourBoundaryBase)
         A.orderFourCentralMeridianAtOverlap),
       E (fundamentalGroupElementOfBaseEq
-        (C.commutes A.orderFourActualEllipticBoundaryBase)
+        (C.commutes A.ellipticFourBoundaryBase)
         A.orderFourCentralTranslationAtOverlap))
     (E (FundamentalGroup.mapOfEq C.baseMap
-        (C.commutes A.orderFourActualEllipticBoundaryBase)
-        (ofDeck A.orderFourActualEllipticBoundaryProjection_isQuotientCoveringMap
-          A.orderFourActualEllipticBoundaryBase
-          A.orderFourActualEllipticBoundaryDeckData.meridian)),
+        (C.commutes A.ellipticFourBoundaryBase)
+        (ofDeck A.ellipticFourBoundaryProjection_isQuotientCoveringMap
+          A.ellipticFourBoundaryBase
+          A.ellipticFourBoundaryDeckData.meridian)),
       E (FundamentalGroup.mapOfEq C.baseMap
-        (C.commutes A.orderFourActualEllipticBoundaryBase)
-        (ofDeck A.orderFourActualEllipticBoundaryProjection_isQuotientCoveringMap
-          A.orderFourActualEllipticBoundaryBase
+        (C.commutes A.ellipticFourBoundaryBase)
+        (ofDeck A.ellipticFourBoundaryProjection_isQuotientCoveringMap
+          A.ellipticFourBoundaryBase
           (Additive.toMul
-            (A.orderFourActualEllipticBoundaryDeckData.translation epsilon'))))) at h
+            (A.ellipticFourBoundaryDeckData.translation epsilon'))))) at h
   have hmeridian :
       E (FundamentalGroup.mapOfEq C.baseMap
-        (C.commutes A.orderFourActualEllipticBoundaryBase)
-        (ofDeck A.orderFourActualEllipticBoundaryProjection_isQuotientCoveringMap
-          A.orderFourActualEllipticBoundaryBase
-          A.orderFourActualEllipticBoundaryDeckData.meridian)) =
+        (C.commutes A.ellipticFourBoundaryBase)
+        (ofDeck A.ellipticFourBoundaryProjection_isQuotientCoveringMap
+          A.ellipticFourBoundaryBase
+          A.ellipticFourBoundaryDeckData.meridian)) =
         MulOpposite.op
-          (C.deckMap A.orderFourActualEllipticBoundaryDeckData.meridian) := by
-    exact A.orderFourActualCentralCoverComparison_ofDeck _
+          (C.deckMap A.ellipticFourBoundaryDeckData.meridian) := by
+    exact A.ellipticFourCentralCoverComparison_ofDeck _
   have htranslation :
       E (FundamentalGroup.mapOfEq C.baseMap
-        (C.commutes A.orderFourActualEllipticBoundaryBase)
-        (ofDeck A.orderFourActualEllipticBoundaryProjection_isQuotientCoveringMap
-          A.orderFourActualEllipticBoundaryBase
+        (C.commutes A.ellipticFourBoundaryBase)
+        (ofDeck A.ellipticFourBoundaryProjection_isQuotientCoveringMap
+          A.ellipticFourBoundaryBase
           (Additive.toMul
-            (A.orderFourActualEllipticBoundaryDeckData.translation epsilon')))) =
+            (A.ellipticFourBoundaryDeckData.translation epsilon')))) =
         MulOpposite.op
           (C.deckMap (Additive.toMul
-            (A.orderFourActualEllipticBoundaryDeckData.translation epsilon'))) := by
-    exact A.orderFourActualCentralCoverComparison_ofDeck _
+            (A.ellipticFourBoundaryDeckData.translation epsilon'))) := by
+    exact A.ellipticFourCentralCoverComparison_ofDeck _
   rw [hmeridian, htranslation] at h
   have h := h.unop
   change SimultaneouslyConjugate
     (MulOpposite.unop
         (E (fundamentalGroupElementOfBaseEq
-          (C.commutes A.orderFourActualEllipticBoundaryBase)
+          (C.commutes A.ellipticFourBoundaryBase)
           A.orderFourCentralMeridianAtOverlap)),
       MulOpposite.unop
         (E (fundamentalGroupElementOfBaseEq
-          (C.commutes A.orderFourActualEllipticBoundaryBase)
+          (C.commutes A.ellipticFourBoundaryBase)
           A.orderFourCentralTranslationAtOverlap)))
-    (C.deckMap A.orderFourActualEllipticBoundaryDeckData.meridian,
+    (C.deckMap A.ellipticFourBoundaryDeckData.meridian,
       C.deckMap
         (Additive.toMul
-          (A.orderFourActualEllipticBoundaryDeckData.translation epsilon')))
+          (A.ellipticFourBoundaryDeckData.translation epsilon')))
   simpa only [MulOpposite.unop_op] using h
 
 /-- Conversely, the deck comparison contains exactly the local marked-loop statement. -/
 public theorem OrderFourCentralCoverDeckCompatibility.toMarkedLoopCompatibility
     (H : A.OrderFourCentralCoverDeckCompatibility) :
     A.OrderFourCentralMarkedLoopCompatibility := by
-  let _ := A.orderFourActualEllipticBoundaryAction
+  let _ := A.ellipticFourBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
   let _ := D.action
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :=
-    A.orderFourActualEllipticBoundaryCover_simplyConnected
+    A.ellipticFourBoundaryCover_simplyConnected
   let _ : SimplyConnectedSpace D.Cover := D.data.simplyConnected
-  let C := A.orderFourActualCentralCoverComparison
+  let C := A.ellipticFourCentralCoverComparison
   let E := D.data.quotientCovering.fundamentalGroupEquiv
-    ⟨C.lift A.orderFourActualEllipticBoundaryBase, rfl⟩
+    ⟨C.lift A.ellipticFourBoundaryBase, rfl⟩
   change SimultaneouslyConjugate
     (MulOpposite.unop
         (E (fundamentalGroupElementOfBaseEq
-          (C.commutes A.orderFourActualEllipticBoundaryBase)
+          (C.commutes A.ellipticFourBoundaryBase)
           A.orderFourCentralMeridianAtOverlap)),
       MulOpposite.unop
         (E (fundamentalGroupElementOfBaseEq
-          (C.commutes A.orderFourActualEllipticBoundaryBase)
+          (C.commutes A.ellipticFourBoundaryBase)
           A.orderFourCentralTranslationAtOverlap)))
-    (C.deckMap A.orderFourActualEllipticBoundaryDeckData.meridian,
+    (C.deckMap A.ellipticFourBoundaryDeckData.meridian,
       C.deckMap
         (Additive.toMul
-          (A.orderFourActualEllipticBoundaryDeckData.translation epsilon'))) at H
+          (A.ellipticFourBoundaryDeckData.translation epsilon'))) at H
   have h := H.op
   simp only [MulOpposite.op_unop] at h
   have hmeridian :
       E (FundamentalGroup.mapOfEq C.baseMap
-        (C.commutes A.orderFourActualEllipticBoundaryBase)
-        (ofDeck A.orderFourActualEllipticBoundaryProjection_isQuotientCoveringMap
-          A.orderFourActualEllipticBoundaryBase
-          A.orderFourActualEllipticBoundaryDeckData.meridian)) =
+        (C.commutes A.ellipticFourBoundaryBase)
+        (ofDeck A.ellipticFourBoundaryProjection_isQuotientCoveringMap
+          A.ellipticFourBoundaryBase
+          A.ellipticFourBoundaryDeckData.meridian)) =
         MulOpposite.op
-          (C.deckMap A.orderFourActualEllipticBoundaryDeckData.meridian) := by
-    exact A.orderFourActualCentralCoverComparison_ofDeck _
+          (C.deckMap A.ellipticFourBoundaryDeckData.meridian) := by
+    exact A.ellipticFourCentralCoverComparison_ofDeck _
   have htranslation :
       E (FundamentalGroup.mapOfEq C.baseMap
-        (C.commutes A.orderFourActualEllipticBoundaryBase)
-        (ofDeck A.orderFourActualEllipticBoundaryProjection_isQuotientCoveringMap
-          A.orderFourActualEllipticBoundaryBase
+        (C.commutes A.ellipticFourBoundaryBase)
+        (ofDeck A.ellipticFourBoundaryProjection_isQuotientCoveringMap
+          A.ellipticFourBoundaryBase
           (Additive.toMul
-            (A.orderFourActualEllipticBoundaryDeckData.translation epsilon')))) =
+            (A.ellipticFourBoundaryDeckData.translation epsilon')))) =
         MulOpposite.op
           (C.deckMap (Additive.toMul
-            (A.orderFourActualEllipticBoundaryDeckData.translation epsilon'))) := by
-    exact A.orderFourActualCentralCoverComparison_ofDeck _
+            (A.ellipticFourBoundaryDeckData.translation epsilon'))) := by
+    exact A.ellipticFourCentralCoverComparison_ofDeck _
   rw [← hmeridian, ← htranslation] at h
   have hlocal :=
     (simultaneouslyConjugate_map_equiv_iff E
       (fundamentalGroupElementOfBaseEq
-          (C.commutes A.orderFourActualEllipticBoundaryBase)
+          (C.commutes A.ellipticFourBoundaryBase)
           A.orderFourCentralMeridianAtOverlap,
         fundamentalGroupElementOfBaseEq
-          (C.commutes A.orderFourActualEllipticBoundaryBase)
+          (C.commutes A.ellipticFourBoundaryBase)
           A.orderFourCentralTranslationAtOverlap)
       (FundamentalGroup.mapOfEq C.baseMap
-          (C.commutes A.orderFourActualEllipticBoundaryBase)
-          (ofDeck A.orderFourActualEllipticBoundaryProjection_isQuotientCoveringMap
-            A.orderFourActualEllipticBoundaryBase
-            A.orderFourActualEllipticBoundaryDeckData.meridian),
+          (C.commutes A.ellipticFourBoundaryBase)
+          (ofDeck A.ellipticFourBoundaryProjection_isQuotientCoveringMap
+            A.ellipticFourBoundaryBase
+            A.ellipticFourBoundaryDeckData.meridian),
         FundamentalGroup.mapOfEq C.baseMap
-          (C.commutes A.orderFourActualEllipticBoundaryBase)
-          (ofDeck A.orderFourActualEllipticBoundaryProjection_isQuotientCoveringMap
-            A.orderFourActualEllipticBoundaryBase
+          (C.commutes A.ellipticFourBoundaryBase)
+          (ofDeck A.ellipticFourBoundaryProjection_isQuotientCoveringMap
+            A.ellipticFourBoundaryBase
             (Additive.toMul
-              (A.orderFourActualEllipticBoundaryDeckData.translation epsilon'))))).mp h
+              (A.ellipticFourBoundaryDeckData.translation epsilon'))))).mp h
   exact hlocal
 
 public theorem orderFourCentralMarkedLoopCompatibility_iff_deckCompatibility :
@@ -510,7 +510,7 @@ public theorem orderFourCentralMarkedLoopCompatibility_iff_deckCompatibility :
 /-- The central order-four meridian and twist translation, before applying the chosen
 central-to-core marking. -/
 public noncomputable def orderFourCentralMarkedPair
-    (_N : A.ActualCuspCentralNaturality) :
+    (_N : A.CuspCentralNaturality) :
     FundamentalGroup A.CentralFamily A.centralAffineBase ×
       FundamentalGroup A.CentralFamily A.centralAffineBase :=
   (A.centralAffineCorePiOneData.rhoTwo,
@@ -519,17 +519,17 @@ public noncomputable def orderFourCentralMarkedPair
 /-- The physical order-four deck meridian and twist translation, pulled back from the core
 through the same central marking. -/
 public noncomputable def orderFourPhysicalMarkedPairInCentral
-    (N : A.ActualCuspCentralNaturality) :
+    (N : A.CuspCentralNaturality) :
     FundamentalGroup A.CentralFamily A.centralAffineBase ×
       FundamentalGroup A.CentralFamily A.centralAffineBase :=
-  (N.centralToCore.symm A.orderFourActualEllipticPhysicalMeridianToCore,
+  (N.centralToCore.symm A.ellipticFourPhysicalMeridianToCore,
     N.centralToCore.symm
-      (Additive.toMul (A.orderFourActualEllipticPhysicalTranslationToCore epsilon')))
+      (Additive.toMul (A.ellipticFourPhysicalTranslationToCore epsilon')))
 
 /-- The connector-invariant geometric residual: the two ordered peripheral pairs lie in the
 same diagonal inner-conjugacy orbit in the central fundamental group. -/
 public def OrderFourCentralPairOrbitComparison
-    (N : A.ActualCuspCentralNaturality) : Prop :=
+    (N : A.CuspCentralNaturality) : Prop :=
   SimultaneouslyConjugate
     (A.orderFourCentralMarkedPair N)
     (A.orderFourPhysicalMarkedPairInCentral N)
@@ -537,7 +537,7 @@ public def OrderFourCentralPairOrbitComparison
 /-- The connector-invariant central comparison gives the common gauge required by the relator
 calculation. -/
 public theorem OrderFourCentralPairOrbitComparison.toCommonGaugeComparison
-    {N : A.ActualCuspCentralNaturality}
+    {N : A.CuspCentralNaturality}
     (h : A.OrderFourCentralPairOrbitComparison N) :
     A.OrderFourCommonGaugeComparison N := by
   obtain ⟨c, hmeridian, htranslation⟩ := h
@@ -555,7 +555,7 @@ public theorem OrderFourCentralPairOrbitComparison.toCommonGaugeComparison
 Thus the orbit statement is the exact connector-independent content still missing from the
 geometric construction. -/
 public theorem OrderFourCommonGaugeComparison.toCentralPairOrbitComparison
-    {N : A.ActualCuspCentralNaturality}
+    {N : A.CuspCentralNaturality}
     (h : A.OrderFourCommonGaugeComparison N) :
     A.OrderFourCentralPairOrbitComparison N := by
   obtain ⟨c, hmeridian, htranslation⟩ := h
@@ -570,7 +570,7 @@ public theorem OrderFourCommonGaugeComparison.toCentralPairOrbitComparison
       congrArg N.centralToCore.symm htranslation
 
 public theorem orderFourCentralPairOrbitComparison_iff_commonGaugeComparison
-    (N : A.ActualCuspCentralNaturality) :
+    (N : A.CuspCentralNaturality) :
     A.OrderFourCentralPairOrbitComparison N ↔ A.OrderFourCommonGaugeComparison N := by
   exact ⟨fun h ↦ OrderFourCentralPairOrbitComparison.toCommonGaugeComparison A h,
     fun h ↦ OrderFourCommonGaugeComparison.toCentralPairOrbitComparison A h⟩
@@ -578,7 +578,7 @@ public theorem orderFourCentralPairOrbitComparison_iff_commonGaugeComparison
 /-- An exact based identification of the two central pairs is sufficient; the orbit comparison
 then uses the identity gauge. -/
 public theorem orderFourCentralPairOrbitComparison_of_eq
-    (N : A.ActualCuspCentralNaturality)
+    (N : A.CuspCentralNaturality)
     (h : A.orderFourCentralMarkedPair N = A.orderFourPhysicalMarkedPairInCentral N) :
     A.OrderFourCentralPairOrbitComparison N := by
   unfold OrderFourCentralPairOrbitComparison

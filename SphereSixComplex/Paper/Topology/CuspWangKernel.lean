@@ -6,11 +6,11 @@ import all SphereSixComplex.Paper.Topology.PaperSectionSevenCuspWangFullFibreSli
 @[expose] public section
 noncomputable section
 open AlgebraicTopology CategoryTheory Set
-namespace SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenEllipticTwoDiscCoverData
+namespace SphereSixComplex.Geometry.PaperAnalyticData.EllipticTwoDiscCoverData
 open SphereSixComplex.Topology
-open SectionSevenEllipticTwoDiscHomologyCoordinates
+open EllipticTwoDiscHomologyCoordinates
 public theorem cuspWangKernel_mem_intersectionImage
-    {A : PaperAnalyticData} (R : A.SectionSevenAffineRadialCompletionInput)
+    {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput)
     (x : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0))
     (hb : actualCuspWangBoundaryHom A x = 0) :
     ∃ w, integralSingularHomologyMap 2
@@ -66,7 +66,7 @@ public theorem cuspWangKernel_mem_intersectionImage
     _ = y := hz
 
 public theorem cuspPulledBackBoundary_eq_zero_of_wang_zero
-    {A : PaperAnalyticData} (R : A.SectionSevenAffineRadialCompletionInput)
+    {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput)
     (x : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0))
     (hx : actualCuspWangBoundaryHom A x = 0) :
     R.twoDiscCover.cuspPulledBackBoundaryHom x = 0 := by
@@ -75,7 +75,7 @@ public theorem cuspPulledBackBoundary_eq_zero_of_wang_zero
     cuspOpenCoverConnectingHom_eq_zero_of_intersection_image R x w hw, map_zero]
 
 public theorem cuspPulledBackBoundary_eq_of_wang_eq
-    {A : PaperAnalyticData} (R : A.SectionSevenAffineRadialCompletionInput)
+    {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput)
     (x y : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0))
     (hxy : actualCuspWangBoundaryHom A x = actualCuspWangBoundaryHom A y) :
     R.twoDiscCover.cuspPulledBackBoundaryHom x = R.twoDiscCover.cuspPulledBackBoundaryHom y := by
@@ -84,6 +84,6 @@ public theorem cuspPulledBackBoundary_eq_of_wang_eq
   rw [map_sub] at h
   exact sub_eq_zero.mp h
 
-end SphereSixComplex.Geometry.PaperAnalyticData.SectionSevenEllipticTwoDiscCoverData
+end SphereSixComplex.Geometry.PaperAnalyticData.EllipticTwoDiscCoverData
 end
 end
