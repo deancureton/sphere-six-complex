@@ -21,12 +21,9 @@ Do not edit it by hand; run ./scripts/update-axiom-catalog.sh --write.
 
 # Constants in the current final-theorem trust closure.
 #
-# In addition to Lean's three standard logical axioms, the closure contains retained
-# source-independent classical blackboxes and transitional construction-specific axioms.
-# The cellular, Poincare-duality, UCT, and smooth-triangulation assumptions have general statements;
-# analytic descent is now proved from mathlib. Every
-# declaration in a transitional section remains a proof obligation; renaming or moving one does
-# not eliminate it.
+# Lean's three standard logical axioms and ten general classical results.
+# Exact contracts and sources are reviewed in TRUST-BOUNDARY.md.
+# No construction-specific axioms remain.
 
 # Lean's standard logical axioms.
 axiom propext : ∀ {a b : Prop}, (a ↔ b) → a = b
@@ -65,7 +62,7 @@ axiom SphereSixComplex.compactCOneManifoldFiniteCWModelAtDimension : (E X : Type
                   CompactSpace X → SphereSixComplex.FiniteCWModelOfDimension (Module.finrank ℝ E) X
 axiom SphereSixComplex.integralCWCellularHomologyFoundation : SphereSixComplex.IntegralCWCellularHomologyFoundation
 
-# Retained general geometric topology; source statements are reviewed in AXIOM-ELIMINATION-PLAN.md.
+# Retained general geometric topology; source statements are reviewed in TRUST-BOUNDARY.md.
 axiom SphereSixComplex.EstablishedGeneralTopology.isHomotopyEquivalenceInclusion_of_relativeCWComplex_of_bijective_homotopyGroups.{u_1} : ∀
   {B : Type u_1} [inst : TopologicalSpace B] (D : Set B) (b : B) (hb : b ∈ D),
   PathConnectedSpace B →
@@ -91,10 +88,4 @@ axiom SphereSixComplex.establishedSecondCountableCOneManifoldWithCornersRelative
           [inst_3 : ChartedSpace (EuclideanQuadrant n) X] →
             [IsManifold (modelWithCornersEuclideanQuadrant n) 1 X] →
               Topology.RelCWComplex Set.univ (ModelWithCorners.boundary X)
-
-# Transitional paper-specific degree-two specialization; still a proof obligation.
-axiom SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization.establishedFiniteFiberDegreeTwoSpecializationMatrix : ∀
-  (A : SphereSixComplex.Geometry.PaperAnalyticData),
-  SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization.FiniteFiberDegreeTwoSpecializationMatrix
-    A
 END GENERATED AXIOM CATALOG -/

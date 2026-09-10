@@ -2,7 +2,7 @@
 # Its retained foundations are cellular homology, Poincare duality, integral UCT, and smooth
 # triangulation, Brown collaring, relative triangulation, and relative Whitehead.
 # Analytic descent is now proved from mathlib.
-# Every construction-specific entry remains a proof obligation.
+# No construction-specific axioms remain; see TRUST-BOUNDARY.md for the exact contracts.
 
 Classical.choice
 Quot.sound
@@ -12,10 +12,7 @@ SphereSixComplex.classicalIntegralSingularCohomologyUCT
 SphereSixComplex.compactCOneManifoldFiniteCWModelAtDimension
 SphereSixComplex.integralCWCellularHomologyFoundation
 
-# Retained general geometric topology; source statements are reviewed in AXIOM-ELIMINATION-PLAN.md.
+# Retained general geometric topology; source statements are reviewed in TRUST-BOUNDARY.md.
 SphereSixComplex.EstablishedGeneralTopology.isHomotopyEquivalenceInclusion_of_relativeCWComplex_of_bijective_homotopyGroups
 SphereSixComplex.classicalBrownCollaring
 SphereSixComplex.establishedSecondCountableCOneManifoldWithCornersRelativeCW
-
-# Transitional paper-specific degree-two specialization; still a proof obligation.
-SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization.establishedFiniteFiberDegreeTwoSpecializationMatrix

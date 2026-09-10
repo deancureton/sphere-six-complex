@@ -19,11 +19,14 @@ a standard theorem in its usual generality, is independently auditable without u
 paper, and replaces a genuinely infeasible foundational development.  A specialized corollary,
 even when mathematically true, is never an admissible blackbox.
 
-The phase-geometry axiom has been replaced in source by a proved constructed-model package.
+The phase-geometry axiom has been replaced by a proved constructed-model package.
 Its classical dependencies add Brown collaring and activate the existing relative triangulation
-and relative Whitehead theorems. The computed final closure is ten classical inputs and one
-transitional dependency. The finite-fibre specialization declaration remains a proof obligation;
-its current marking must be corrected to agree with the proved deck coordinates.
+and relative Whitehead theorems. The final finite-fibre specialization assumption has also been
+replaced by a theorem: actual torus columns prove an integral isomorphism, its inverse supplies
+the target filling coordinates, and the degree-two Wang section lies in the specialization kernel.
+The source fibre coordinates remain canonical. The retained boundary and its exact contracts are
+reviewed in [TRUST-BOUNDARY.md](TRUST-BOUNDARY.md); the later checkpoint notes record the reduction
+history, including assumptions that were present at those earlier stages.
 The analytic correction is proved, the cellular input has been strengthened in place, the former combined manifold-homology package
 is now derived from general Poincare duality, UCT, and smooth triangulation, and the analytic
 correction is derived from the proved Cauchy–Green/Cousin theorem. Adding files,
@@ -918,3 +921,36 @@ only the two declared challenge placeholders, unchanged exact final/construction
 closures (14/11), and Comparator acceptance with Lean's default kernel. The isomorphism itself
 uses only Lean's three axioms, cellular homology, Brown collaring, triangulation with corners,
 and relative Whitehead.
+
+
+## Final specialization boundary removal
+
+The last specialized declaration is now a theorem. Write `f` for the actual specialization map
+in the old filling coordinates, `i` for the Wang coinvariant inclusion, and `c` for the canonical
+source coinvariant coordinates. The torus-column proof shows that `e = f ∘ i` is an integral
+isomorphism. The new target coordinate change is `c ∘ e⁻¹`, so specialization sends the canonical
+fibre generators to the standard basis without asserting an identity in the old cellular basis.
+
+The actual degree-two Wang section is corrected to `S - i ∘ e⁻¹ ∘ f ∘ S`. Its specialization is
+zero. The generic definition uses this correction whenever `f ∘ i` is bijective; the constructed
+cusp satisfies that condition by the independent column theorem. The canonical source fibre
+coordinates and the two invariant boundary coordinates are unchanged. Consequently the elliptic
+fibre coefficients and the actual fourth-sweep comparison retain their original meanings.
+
+Both final local basis constructors use the corrected filling readout, and the corrected
+homology assembly propagates it. The fourth sweep is normalized using its proved filling-zero
+and Wang-boundary equations. The headline theorem and Comparator challenge statements are
+unchanged. There are no additional hypotheses, new axioms, or placeholders in this integration.
+
+[TRUST-BOUNDARY.md](TRUST-BOUNDARY.md) records the review of every retained classical declaration,
+including the characteristic-map and naturality fields of cellular homology and primary-source
+checks for Brown collaring and triangulation with corners. The preceding checkpoint entries are
+historical; their transitional assumptions are no longer axioms in the source.
+
+Final checkpoint gates passed: full `lake build` (10,219 jobs), all 1,190 library modules
+reachable, and only the two declared Comparator challenge placeholders. The exact final closure
+is Lean's three logical axioms plus the ten reviewed classical results (13 total); the construction
+closure is Lean's three plus seven of those results (10 total). The catalog and Comparator lists
+were regenerated, the strict audit passed, and Comparator accepted the solution using Lean's
+default kernel. The source inventory contains exactly the ten retained classical axioms, with
+none outside the final import cone. No specialized axiom remains in the formalization.

@@ -183,6 +183,31 @@ public theorem geometricSectionInMapKernel_map_eq_coinvariant
   rw [hi, hs, add_zero]
   rfl
 
+/-- Normalize against the actual fiber map when it is invertible. -/
+public noncomputable def geometricSectionInMapKernelIfBijective
+    {HighRelations High Total LowRelations Low L : Type*}
+    [AddCommGroup HighRelations] [AddCommGroup High] [AddCommGroup Total]
+    [AddCommGroup LowRelations] [AddCommGroup Low] [AddCommGroup L]
+    (P : WangHomologyPresentation HighRelations High Total LowRelations Low)
+    (S : P.GeometricSection) (c : P.Coinvariants ≃ₗ[ℤ] L) (f : Total →ₗ[ℤ] L) :
+    P.GeometricSection := by
+  classical
+  exact if h : Function.Bijective (f.comp P.coinvariantsToTotal) then
+    geometricSectionInMapKernel P S (LinearEquiv.ofBijective (f.comp P.coinvariantsToTotal) h) f
+  else geometricSectionInMapKernel P S c f
+
+public theorem geometricSectionInMapKernelIfBijective_of_bijective
+    {HighRelations High Total LowRelations Low L : Type*}
+    [AddCommGroup HighRelations] [AddCommGroup High] [AddCommGroup Total]
+    [AddCommGroup LowRelations] [AddCommGroup Low] [AddCommGroup L]
+    (P : WangHomologyPresentation HighRelations High Total LowRelations Low)
+    (S : P.GeometricSection) (c : P.Coinvariants ≃ₗ[ℤ] L) (f : Total →ₗ[ℤ] L)
+    (h : Function.Bijective (f.comp P.coinvariantsToTotal)) :
+    geometricSectionInMapKernelIfBijective P S c f =
+      geometricSectionInMapKernel P S (LinearEquiv.ofBijective (f.comp P.coinvariantsToTotal) h) f :=
+  dite_eq_left h
+
+
 /-- The projective Wang sections for an unnormalized clutching datum. -/
 public noncomputable def geometricWangSections :
     let _ := G.fiberTopology
@@ -223,8 +248,8 @@ variable {E : EstablishedFuchsianModularParameter} {D : FuchsianPeriodLocalData 
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
   {W : ActualPuncturedCuspCollarWitness N M} [HasCuspPhaseSpreading W] (G : ActualCuspRadialClutchingData W)
 
-/-- Wang sections normalized so that their suspension summands lie in the kernel of the radial
-specialization map. -/
+/-- Wang sections corrected by the radial specialization; degree two uses its actual restriction
+to the fiber whenever that restriction is bijective. -/
 @[irreducible] public noncomputable def geometricWangSections :
     let _ := G.fiberTopology
     CuspGeometricWangSections G.monodromyCoordinates := by
@@ -237,10 +262,54 @@ specialization map. -/
         (circleMappingTorusHOnePresentation G.clutching) S.degreeOne
         (UnnormalizedCuspRadialClutchingData.degreeOneCoinvariantsEquiv U)
         (UnnormalizedCuspRadialClutchingData.specializationHomologyOneMap U)
-      degreeTwo := UnnormalizedCuspRadialClutchingData.geometricSectionInMapKernel
+      degreeTwo := UnnormalizedCuspRadialClutchingData.geometricSectionInMapKernelIfBijective
         (circleMappingTorusHTwoPresentation G.clutching) S.degreeTwo
         (UnnormalizedCuspRadialClutchingData.degreeTwoCoinvariantsEquiv U)
         (UnnormalizedCuspRadialClutchingData.specializationHomologyTwoMap U) }
+
+public theorem geometricWangSections_degreeTwo_of_bijective
+    (h : let _ := G.fiberTopology
+      Function.Bijective (G.specializationHomologyTwoMap.comp
+        (circleMappingTorusHTwoPresentation G.clutching).coinvariantsToTotal)) :
+    let _ := G.fiberTopology
+    G.geometricWangSections.degreeTwo =
+      UnnormalizedCuspRadialClutchingData.geometricSectionInMapKernel
+        (circleMappingTorusHTwoPresentation G.clutching)
+        (EstablishedCircleMappingTorusGeometricSections.sections G.monodromyCoordinates).degreeTwo
+        (LinearEquiv.ofBijective (G.specializationHomologyTwoMap.comp
+          (circleMappingTorusHTwoPresentation G.clutching).coinvariantsToTotal) h)
+        G.specializationHomologyTwoMap := by
+  let _ := G.fiberTopology
+  unfold geometricWangSections
+  exact UnnormalizedCuspRadialClutchingData.geometricSectionInMapKernelIfBijective_of_bijective
+    _ _ _ _ h
+
+public theorem geometricWangSections_degreeTwo_first
+    (h : let _ := G.fiberTopology
+      Function.Bijective (G.specializationHomologyTwoMap.comp
+        (circleMappingTorusHTwoPresentation G.clutching).coinvariantsToTotal))
+    (x : let _ := G.fiberTopology
+      IntegralSingularHomology 2 (CircleMappingTorus G.clutching)) (i : Fin 4) :
+    let _ := G.fiberTopology
+    G.geometricWangSections.circleMappingTorusHTwoLinearEquiv x (Fin.castAdd 2 i) =
+      G.degreeTwoCoinvariantsEquiv
+        ((LinearEquiv.ofBijective (G.specializationHomologyTwoMap.comp
+          (circleMappingTorusHTwoPresentation G.clutching).coinvariantsToTotal) h).symm
+            (G.specializationHomologyTwoMap x)) i := by
+  let _ := G.fiberTopology
+  let P := circleMappingTorusHTwoPresentation G.clutching
+  let S := EstablishedCircleMappingTorusGeometricSections.sections G.monodromyCoordinates
+  let e := LinearEquiv.ofBijective (G.specializationHomologyTwoMap.comp P.coinvariantsToTotal) h
+  have he := UnnormalizedCuspRadialClutchingData.geometricSectionInMapKernel_map_eq_coinvariant
+    P S.degreeTwo e G.specializationHomologyTwoMap rfl x
+  rw [← G.geometricWangSections_degreeTwo_of_bijective h] at he
+  have hc : G.degreeTwoCoinvariantsEquiv
+      ((P.totalLinearEquivCoinvariantsProdInvariantsOfSection
+        G.geometricWangSections.degreeTwo x).1) =
+      G.degreeTwoCoinvariantsEquiv (e.symm (G.specializationHomologyTwoMap x)) := by
+    rw [he, e.symm_apply_apply]
+  fin_cases i <;> exact congrFun hc _
+
 
 /-- The specialization-normalized degree-one Wang coordinates for an actual clutching datum. -/
 public noncomputable def geometricHomologyOneEquiv :
@@ -351,7 +420,8 @@ public def degreeTwoFiberProjection : (Fin 6 → ℤ) →+ (Fin 4 → ℤ) where
 /-- The remaining cellular naturality input, stated as two equalities of homomorphisms in the
 explicit finite bases.  The radial coordinates are the constructed additive-period coordinates,
 not an arbitrary clutching datum. -/
-public structure FiniteBasisNaturality (A : PaperAnalyticData) : Prop where
+public structure FiniteBasisNaturality (A : PaperAnalyticData)
+    (K : (Fin 4 → ℤ) ≃+ (Fin 4 → ℤ) := AddEquiv.refl _) : Prop where
   degreeOne :
     (actualLocalCuspFillingHomologyOneEquiv A.starCuspWitness
       A.cuspCentralFiberRetractionData).toAddMonoidHom.comp
@@ -363,8 +433,8 @@ public structure FiniteBasisNaturality (A : PaperAnalyticData) : Prop where
           A.starCuspWitness
       degreeOneFiberProjection.comp G.geometricHomologyOneEquiv.toAddMonoidHom
   degreeTwo :
-    (actualLocalCuspFillingHomologyTwoEquiv A.starCuspWitness
-      A.cuspCentralFiberRetractionData).toAddMonoidHom.comp
+    ((actualLocalCuspFillingHomologyTwoEquiv A.starCuspWitness
+      A.cuspCentralFiberRetractionData).trans K).toAddMonoidHom.comp
         (integralSingularHomologyMap 2
           ⟨puncturedLocalCuspToFilling A.starCuspWitness,
             puncturedLocalCuspToFilling_continuous A.starCuspWitness⟩) =
@@ -376,7 +446,8 @@ public structure FiniteBasisNaturality (A : PaperAnalyticData) : Prop where
 /-- The exact remaining geometric calculation, reduced to the integer matrix entries on the
 standard Wang generators.  Unlike `FiniteBasisNaturality`, this asks only for thirty scalar
 equalities: `3 × 2` in degree one and `6 × 4` in degree two. -/
-public structure FiniteGeneratorSpecializationMatrix (A : PaperAnalyticData) : Prop where
+public structure FiniteGeneratorSpecializationMatrix (A : PaperAnalyticData)
+    (K : (Fin 4 → ℤ) ≃+ (Fin 4 → ℤ) := AddEquiv.refl _) : Prop where
   degreeOne (j : Fin 3) (i : Fin 2) :
     actualLocalCuspFillingHomologyOneEquiv A.starCuspWitness
         A.cuspCentralFiberRetractionData
@@ -387,19 +458,18 @@ public structure FiniteGeneratorSpecializationMatrix (A : PaperAnalyticData) : P
               A.starCuspWitness).geometricHomologyOneEquiv.symm (Pi.single j 1))) i =
       (Pi.single j 1 : Fin 3 → ℤ) (Fin.castAdd 1 i)
   degreeTwo (j : Fin 6) (i : Fin 4) :
-    actualLocalCuspFillingHomologyTwoEquiv A.starCuspWitness
+    K (actualLocalCuspFillingHomologyTwoEquiv A.starCuspWitness
         A.cuspCentralFiberRetractionData
         (integralSingularHomologyMap 2
           ⟨puncturedLocalCuspToFilling A.starCuspWitness,
             puncturedLocalCuspToFilling_continuous A.starCuspWitness⟩
           ((SphereSixComplex.Geometry.CuspRadialClutchingConstruction.actualCuspRadialClutchingData
-              A.starCuspWitness).geometricHomologyTwoEquiv.symm (Pi.single j 1))) i =
+              A.starCuspWitness).geometricHomologyTwoEquiv.symm (Pi.single j 1)))) i =
       (Pi.single j 1 : Fin 6 → ℤ) (Fin.castAdd 2 i)
 
-/-- The residual cellular calculation on the fibre-coinvariant generators.  The Wang suspension
-generators are excluded: the chosen sections lie in the kernel of radial specialization by
-construction. -/
-public structure FiniteFiberGeneratorSpecializationMatrix (A : PaperAnalyticData) : Prop where
+/-- Fibre-coinvariant generator equations in the selected target coordinates. -/
+public structure FiniteFiberGeneratorSpecializationMatrix (A : PaperAnalyticData)
+    (K : (Fin 4 → ℤ) ≃+ (Fin 4 → ℤ) := AddEquiv.refl _) : Prop where
   degreeOne (j i : Fin 2) :
     let G :=
       SphereSixComplex.Geometry.CuspRadialClutchingConstruction.actualCuspRadialClutchingData
@@ -414,9 +484,9 @@ public structure FiniteFiberGeneratorSpecializationMatrix (A : PaperAnalyticData
       SphereSixComplex.Geometry.CuspRadialClutchingConstruction.actualCuspRadialClutchingData
         A.starCuspWitness
     let _ := G.fiberTopology
-    G.specializationHomologyTwoMap
+    K (G.specializationHomologyTwoMap
         ((circleMappingTorusHTwoPresentation G.clutching).coinvariantsToTotal
-          (G.degreeTwoCoinvariantsEquiv.symm (Pi.single j 1))) i =
+          (G.degreeTwoCoinvariantsEquiv.symm (Pi.single j 1)))) i =
       (Pi.single j 1 : Fin 4 → ℤ) i
 
 end Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization

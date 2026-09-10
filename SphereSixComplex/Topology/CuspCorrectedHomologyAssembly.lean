@@ -56,14 +56,13 @@ public theorem correctedCuspFillingInclusionCoordinates (A : PaperAnalyticData)
     A.ActualCuspFillingInclusionCoordinates (correctedCuspLocalBases B) where
   degreeOne x := (A.actualCuspFillingInclusionCoordinates B).degreeOne x
   degreeTwo x := by
-    change actualLocalCuspFillingHomologyTwoEquiv A.starCuspWitness
-        A.cuspCentralFiberRetractionData
+    change A.actualCuspFillingHomologyTwoEquiv
           (integralSingularHomologyMap 2
             ⟨puncturedLocalCuspToFilling A.starCuspWitness,
               puncturedLocalCuspToFilling_continuous A.starCuspWitness⟩ x) = _
-    rw [EstablishedStandardA2CuspSpecialization.degreeTwo A x]
-    exact cuspCorrectedSectionSevenTwoCoordinateChange_specialization
-      (A.actualCuspRawHomologyTwoEquiv x)
+    exact (EstablishedStandardA2CuspSpecialization.degreeTwo A x).trans
+      (cuspCorrectedSectionSevenTwoCoordinateChange_specialization
+        (A.actualCuspRawHomologyTwoEquiv x))
 
 public def correctedNormalizedLocalBases {A : PaperAnalyticData}
     {D : A.SectionSevenEllipticTwoDiscCoverData}

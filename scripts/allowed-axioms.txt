@@ -1,11 +1,8 @@
 # Constants in the current final-theorem trust closure.
 #
-# In addition to Lean's three standard logical axioms, the closure contains retained
-# source-independent classical blackboxes and transitional construction-specific axioms.
-# The cellular, Poincare-duality, UCT, and smooth-triangulation assumptions have general statements;
-# analytic descent is now proved from mathlib. Every
-# declaration in a transitional section remains a proof obligation; renaming or moving one does
-# not eliminate it.
+# Lean's three standard logical axioms and ten general classical results.
+# Exact contracts and sources are reviewed in TRUST-BOUNDARY.md.
+# No construction-specific axioms remain.
 
 # Lean's standard logical axioms.
 propext
@@ -23,10 +20,7 @@ SphereSixComplex.classicalIntegralSingularCohomologyUCT
 SphereSixComplex.compactCOneManifoldFiniteCWModelAtDimension
 SphereSixComplex.integralCWCellularHomologyFoundation
 
-# Retained general geometric topology; source statements are reviewed in AXIOM-ELIMINATION-PLAN.md.
+# Retained general geometric topology; source statements are reviewed in TRUST-BOUNDARY.md.
 SphereSixComplex.EstablishedGeneralTopology.isHomotopyEquivalenceInclusion_of_relativeCWComplex_of_bijective_homotopyGroups
 SphereSixComplex.classicalBrownCollaring
 SphereSixComplex.establishedSecondCountableCOneManifoldWithCornersRelativeCW
-
-# Transitional paper-specific degree-two specialization; still a proof obligation.
-SphereSixComplex.Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization.establishedFiniteFiberDegreeTwoSpecializationMatrix

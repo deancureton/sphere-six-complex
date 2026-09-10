@@ -11,9 +11,10 @@ to both Comparator environments and catalogs every exact assumption. Nothing imp
 
 ## Status
 
-The headline theorem is source-sorry-free. Paper-specific and classical results not yet available
-in Mathlib are explicit axioms, documented and checked by the allowlists in `scripts/`. The two
-`sorry`s in `Challenge.lean` are the trusted Comparator challenge boundary.
+The headline theorem is source-sorry-free. Its trust boundary consists of Lean's three standard
+logical axioms and ten general classical results, documented in [TRUST-BOUNDARY.md](TRUST-BOUNDARY.md)
+and checked by the allowlists in `scripts/`. No paper-specific axioms remain. The two `sorry`s
+in `Challenge.lean` are Comparator challenge declarations and are not imported by the solution.
 
 The former cusp boundary assumption had the two invariant coordinates reversed. It has been
 deleted: the actual boundary is proved to be raw coordinate four, the elliptic splitting is
@@ -21,12 +22,13 @@ normalized by that class, and the final assembly uses the corrected signed cusp 
 explicit fourth-period sweep is also proved equal to normalized raw five. The old conditional
 comparison and its refutation remain as diagnostics.
 
-One transitional assumption remains: degree-two finite-fibre specialization. Degree one is
-proved in canonical deck coordinates, with an explicit change from the old cellular coordinates.
-Degree two still requires the geometric generator comparison. This is not part of the proposed final trust
-boundary. Higher toric incidence and the cusp elliptic coordinate relations are proved. Comparator checks
-the declared assumptions; its acceptance alone does not verify those assumptions mathematically.
-The ten classical signatures and their sources are reviewed in `AXIOM-ELIMINATION-PLAN.md`.
+Finite-fibre specialization is proved in both degrees. In degree two, the actual mixed torus
+columns and the positive projection prove an integral isomorphism. Its inverse defines the
+target filling coordinates, and the Wang section is normalized in the specialization kernel.
+The canonical source fibre markings used by the elliptic attachment are preserved. Higher toric
+incidence and the cusp elliptic coordinate relations are also proved. Comparator checks the
+declared assumptions; its acceptance alone does not prove those assumptions mathematically.
+The reduction history is recorded in `AXIOM-ELIMINATION-PLAN.md`.
 
 ## Build
 
