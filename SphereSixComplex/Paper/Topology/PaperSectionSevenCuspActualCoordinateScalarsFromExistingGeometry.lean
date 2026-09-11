@@ -1,8 +1,7 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineCuspFiberPeriodMarking
-public import
-  SphereSixComplex.Paper.Topology.PaperSectionSevenCuspEllipticMarkedCoordinateFromExistingGeometry
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspEllipticMarkedCoordinateFromExistingGeometry
 
 /-!
 # Actual cusp coordinate scalars from the existing geometry

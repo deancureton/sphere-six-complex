@@ -158,28 +158,6 @@ public theorem continuous_straighteningPhase
   change ↑(hunit p).unit = Complex.exp (straighteningExponent W p i)
   exact (hunit p).unit_spec
 
-/-- The point-level straightening is continuous away from the central fibre. -/
-public theorem continuous_puncturedPointStraightening
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
-    (W : ActualPuncturedCuspCollarWitness N M) :
-    Continuous (puncturedPointStraightening W) := by
-  let _ := denseTorusCharts
-  apply Continuous.subtype_mk
-  apply Continuous.subtype_mk
-  have hphase : Continuous (fun p : PuncturedLocalCarrier W ↦
-      phaseEmbedding (straighteningPhase W p)) := by
-    apply continuous_pi
-    intro i
-    fin_cases i
-    · change Continuous (fun p : PuncturedLocalCarrier W ↦ straighteningPhase W p 0)
-      exact (continuous_apply 0).comp (continuous_straighteningPhase W)
-    · change Continuous (fun p : PuncturedLocalCarrier W ↦ straighteningPhase W p 1)
-      exact (continuous_apply 1).comp (continuous_straighteningPhase W)
-    · change Continuous (fun _ : PuncturedLocalCarrier W ↦ (1 : ℂˣ))
-      exact continuous_const
-  exact M.torusEmbedding_holomorphic.continuous.comp
-    (hphase.mul (puncturedTorusCoordinates W).continuous)
 
 /-- Under an actual deck transformation, `B_t⁻¹y` translates by the lattice parameter. -/
 public theorem straighteningRealParameter_psiMap

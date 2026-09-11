@@ -30,19 +30,9 @@ public theorem matrixDifference_apply (M : Matrix (Fin 4) (Fin 4) ℤ) (x : Latt
     matrixDifference M x = M *ᵥ x - x := by
   rfl
 
-public abbrev tOneDifference := matrixDifference T₁
-public abbrev tTwoDifference := matrixDifference T₂
 public abbrev mZeroDifference := matrixDifference M₀
 
-public theorem mem_ker_tOneDifference_iff (x : Lattice) :
-    x ∈ LinearMap.ker tOneDifference ↔
-      x 1 = 2 * x 2 ∧ x 3 = 3 * x 2 := by
-  rw [LinearMap.mem_ker, matrixDifference_apply, sub_eq_zero, T₁_fixed_iff]
 
-public theorem mem_ker_tTwoDifference_iff (x : Lattice) :
-    x ∈ LinearMap.ker tTwoDifference ↔
-      x 2 = x 1 ∧ x 3 = 2 * x 1 := by
-  rw [LinearMap.mem_ker, matrixDifference_apply, sub_eq_zero, T₂_fixed_iff]
 
 public theorem mem_ker_mZeroDifference_iff (x : Lattice) :
     x ∈ LinearMap.ker mZeroDifference ↔ x 0 = 0 ∧ x 1 = 0 := by
@@ -59,10 +49,6 @@ public def tailCoordinateSubmodule : Submodule ℤ Lattice where
     rintro n x ⟨hx0, hx1⟩
     simp [hx0, hx1]
 
-public theorem ker_mZeroDifference :
-    LinearMap.ker mZeroDifference = tailCoordinateSubmodule := by
-  ext x
-  exact mem_ker_mZeroDifference_iff x
 
 public theorem range_mZeroDifference :
     LinearMap.range mZeroDifference = tailCoordinateSubmodule := by

@@ -326,15 +326,6 @@ private theorem orbitAssembledScalar_mdifferentiableAt_of_complex_patch
   rw [Function.comp_apply, UpperHalfPlane.ofComplex_apply_of_im_pos huH]
   exact heq huU
 
-theorem orbitAssembledScalar_mdifferentiableAt_of_mem_rightDouble
-    (S : ChamberCaratheodorySeed sourceBoundedChamber)
-    (hconsistent : SourceFundamentalScalarConsistent S) {z : UpperHalfPlane}
-    (hz : (z : ℂ) ∈ sourceRightDouble) :
-    MDiffAt (fun w : UpperHalfPlane ↦ orbitAssembledScalar S (w : ℂ)) z :=
-  orbitAssembledScalar_mdifferentiableAt_of_complex_patch S sourceRightDouble
-    (sourceScalarRightDoubleMap S) sourceRightDouble_isOpen
-    (sourceScalarRightDoubleMap_differentiableOn S)
-    (orbitAssembledScalar_eq_rightDouble_of_mem S hconsistent) hz
 
 theorem orbitAssembledScalar_mdifferentiableAt_of_mem_leftDouble
     (S : ChamberCaratheodorySeed sourceBoundedChamber)

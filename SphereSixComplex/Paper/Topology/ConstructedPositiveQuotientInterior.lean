@@ -88,9 +88,5 @@ public def constructedPositiveQuotientInteriorHomotopyEquiv
   let w := Classical.choice (c.nonempty_pushWeight (constructedPositiveDeck_orbitCore_isClosed W))
   exact c.interiorHomotopyEquiv w
 
-public theorem constructedPositiveQuotientInteriorHomotopyEquiv_inv
-    (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    (x : ↥((constructedA2PositiveQuotientCore W)ᶜ)) :
-    (constructedPositiveQuotientInteriorHomotopyEquiv W).invFun x = x.1 := rfl
 
 end SphereSixComplex.Geometry.InfiniteA2Toric

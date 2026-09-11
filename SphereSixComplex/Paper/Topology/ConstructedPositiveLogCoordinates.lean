@@ -94,9 +94,6 @@ theorem positiveLogPeriodCoordinate_deck (W : ActualPuncturedCuspCollarWitness N
     Matrix.one_mulVec, CuspFillingRadialCompactness.realFanShearInverse_add,
     CuspFillingRadialCompactness.realFanShearInverse_shearVector]
 
-theorem positiveLogPeriodCoordinate_continuous (W : ActualPuncturedCuspCollarWitness N M) :
-    Continuous (positiveLogPeriodCoordinate W) :=
-  continuous_inverseStraighteningRealParameter W
 
 open InfiniteA2Toric.Construction
 

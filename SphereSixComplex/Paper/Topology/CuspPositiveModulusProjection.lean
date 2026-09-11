@@ -46,13 +46,6 @@ public def frozenPositiveModulusProjection
   · apply Continuous.quotient_lift
     exact continuous_quot_mk.comp P.modulus.continuous
 
-public theorem frozenPositiveModulusProjection_mk
-    (P : PolarHoneycombData M r) (L : PolarPhaseDeckLift N M r P)
-    (hmod : ∀ k p, P.modulus (compactPhaseOrbit M r P.positivePart (k, p)) = p)
-    (x : localCarrier M r) :
-    let _ := P.positiveDeckAction
-    frozenPositiveModulusProjection P L hmod (Quotient.mk _ x) =
-      Quotient.mk _ (P.modulus x) := rfl
 
 public def actualPositiveModulusProjection
     (W : ActualPuncturedCuspCollarWitness N M)
@@ -65,23 +58,6 @@ public def actualPositiveModulusProjection
   exact (frozenPositiveModulusProjection P L hmod).comp
     (quotientStraighteningHomeomorph W : C(_, _))
 
-public theorem actualPositiveModulusProjection_central_phase
-    (W : ActualPuncturedCuspCollarWitness N M)
-    (P : PolarHoneycombData M W.localWitness.radius)
-    (L : PolarPhaseDeckLift N M W.localWitness.radius P)
-    (hmod : ∀ k p, P.modulus (compactPhaseOrbit M W.localWitness.radius P.positivePart (k, p)) = p)
-    (k : CompactTorus) (p : P.positivePart) (hp : M.t p.1.1 = 0) :
-    let _ := P.positiveDeckAction
-    actualPositiveModulusProjection W P L hmod
-      (Quotient.mk _ (compactPhaseOrbit M W.localWitness.radius P.positivePart (k, p))) =
-      Quotient.mk _ p := by
-  let _ := P.positiveDeckAction
-  change Quotient.mk _ (P.modulus
-    (CuspStraighteningExtension.pointStraightening W
-      (compactPhaseOrbit M W.localWitness.radius P.positivePart (k, p)))) = _
-  rw [CuspStraighteningExtension.pointStraightening_of_t_eq_zero W _ ?_, hmod]
-  change M.t (M.torusAction (compactTorusEmbedding k) p.1.1) = 0
-  rw [M.t_torusAction, hp, mul_zero]
 
 public theorem polarModulus_compactPhase
     (P : PolarHoneycombData M r)

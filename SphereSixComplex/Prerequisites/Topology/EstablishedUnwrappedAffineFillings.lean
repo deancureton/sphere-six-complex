@@ -281,11 +281,6 @@ public def toCyclicAffineFillingCoverModel
   deckMap_surjective := D.fillingDeckMap_surjective
   deckMap_kernel := D.fillingDeckMap_kernel
 
-/-- The standard cyclic filling computation applied to an unwrapped affine cover square. -/
-public noncomputable def fundamentalGroupData
-    (U : UnwrappedCyclicAffineFillingCover m Λ G E E' B N D) :
-    CyclicAffineFillingPiOneData U.toCyclicAffineFillingCoverModel :=
-  cyclicAffineFillingPiOneData U.toCyclicAffineFillingCoverModel
 
 end UnwrappedCyclicAffineFillingCover
 
@@ -343,111 +338,18 @@ public theorem fillingDeckMap_kernel (D : UnwrappedToricBoundaryDeckData Λ K G)
           {D.meridian}) := by
   exact QuotientGroup.ker_mk' (N := D.fillingKernel)
 
-/-- Every specified vanishing translation is trivial in the toric filling deck group. -/
-@[simp]
-public theorem fillingDeckMap_vanishing
-    (D : UnwrappedToricBoundaryDeckData Λ K G) (k : K) :
-    D.fillingDeckMap (Additive.toMul (D.translation (D.vanishing k))) = 1 := by
-  change Additive.toMul (D.translation (D.vanishing k)) ∈ D.fillingDeckMap.ker
-  rw [D.fillingDeckMap_kernel]
-  apply Subgroup.subset_normalClosure
-  exact Or.inl ⟨k, rfl⟩
 
-/-- The cusp meridian is trivial in the toric filling deck group. -/
-@[simp]
-public theorem fillingDeckMap_meridian (D : UnwrappedToricBoundaryDeckData Λ K G) :
-    D.fillingDeckMap D.meridian = 1 := by
-  change D.meridian ∈ D.fillingDeckMap.ker
-  rw [D.fillingDeckMap_kernel]
-  apply Subgroup.subset_normalClosure
-  exact Or.inr (Set.mem_singleton D.meridian)
 
 end UnwrappedToricBoundaryDeckData
 
 /-! ### The canonical toric boundary deck group -/
 
-/-- The canonical deck group of an unwrapped toric cusp boundary. -/
-public abbrev CanonicalToricBoundaryDeck (Λ : Type*) [AddCommGroup Λ] :=
-  Multiplicative Λ × Multiplicative ℤ
 
-/-- The canonical translation embedding in an unwrapped toric boundary deck group. -/
-public def canonicalToricTranslation {Λ : Type*} [AddCommGroup Λ] :
-    Λ →+ Additive (CanonicalToricBoundaryDeck Λ) where
-  toFun a := Additive.ofMul (Multiplicative.ofAdd a, 1)
-  map_zero' := by
-    apply Additive.toMul.injective
-    ext <;> simp
-  map_add' a b := by
-    apply Additive.toMul.injective
-    ext <;> simp
 
-/-- The positive angular meridian in the canonical unwrapped toric boundary deck group. -/
-public def canonicalToricMeridian {Λ : Type*} [AddCommGroup Λ] :
-    CanonicalToricBoundaryDeck Λ :=
-  (1, Multiplicative.ofAdd 1)
 
-/-- Canonical toric translations embed faithfully. -/
-public theorem canonicalToricTranslation_injective
-    {Λ : Type*} [AddCommGroup Λ] :
-    Function.Injective (canonicalToricTranslation (Λ := Λ)) := by
-  intro a b h
-  have h' := congrArg Prod.fst (congrArg Additive.toMul h)
-  change Multiplicative.ofAdd a = Multiplicative.ofAdd b at h'
-  exact Multiplicative.ofAdd.injective h'
 
-/-- The angular meridian commutes with every toric translation. -/
-public theorem canonicalToricMeridian_commutes
-    {Λ : Type*} [AddCommGroup Λ] (a : Λ) :
-    Commute (canonicalToricMeridian (Λ := Λ))
-      (Additive.toMul (canonicalToricTranslation a)) := by
-  simp [canonicalToricMeridian, canonicalToricTranslation, Commute]
 
-/-- Translations and the positive meridian generate the canonical unwrapped toric deck group. -/
-public theorem canonicalToric_generators_generate
-    {Λ : Type*} [AddCommGroup Λ] :
-    Subgroup.closure
-      (Set.range (fun a ↦ Additive.toMul (canonicalToricTranslation a)) ∪
-        {canonicalToricMeridian (Λ := Λ)}) = ⊤ := by
-  apply top_unique
-  intro d _
-  have hleft :
-      (d.1, 1) ∈
-        Subgroup.closure
-          (Set.range (fun a ↦ Additive.toMul (canonicalToricTranslation a)) ∪
-            {canonicalToricMeridian (Λ := Λ)}) :=
-    Subgroup.subset_closure (Or.inl ⟨d.1.toAdd, rfl⟩)
-  have hmeridian :
-      canonicalToricMeridian (Λ := Λ) ∈
-        Subgroup.closure
-          (Set.range (fun a ↦ Additive.toMul (canonicalToricTranslation a)) ∪
-            {canonicalToricMeridian (Λ := Λ)}) :=
-    Subgroup.subset_closure
-      (Or.inr (Set.mem_singleton (canonicalToricMeridian (Λ := Λ))))
-  have hright :
-      (1, d.2) ∈
-        Subgroup.closure
-          (Set.range (fun a ↦ Additive.toMul (canonicalToricTranslation a)) ∪
-            {canonicalToricMeridian (Λ := Λ)}) := by
-    rw [show (1, d.2) = (canonicalToricMeridian (Λ := Λ)) ^ d.2.toAdd by
-      change (1, d.2) =
-        ((1, Multiplicative.ofAdd 1) : CanonicalToricBoundaryDeck Λ) ^ d.2.toAdd
-      ext
-      · simp
-      · apply Multiplicative.toAdd.injective
-        simp]
-    exact Subgroup.zpow_mem _ hmeridian d.2.toAdd
-  rw [show d = (d.1, 1) * (1, d.2) by ext <;> simp]
-  exact Subgroup.mul_mem _ hleft hright
 
-/-- Canonical algebraic data for an unwrapped toric cusp collar. -/
-public def canonicalToricBoundaryDeckData
-    {Λ K : Type*} [AddCommGroup Λ] [AddCommGroup K] (vanishing : K →+ Λ) :
-    UnwrappedToricBoundaryDeckData Λ K (CanonicalToricBoundaryDeck Λ) where
-  translation := canonicalToricTranslation
-  translation_injective := canonicalToricTranslation_injective
-  meridian := canonicalToricMeridian
-  vanishing := vanishing
-  generators_generate := canonicalToric_generators_generate
 
 /-- A simply connected unwrapped cover square for a toric cusp filling. -/
 public structure UnwrappedToricFillingCover

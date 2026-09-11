@@ -48,28 +48,6 @@ public def cuspToricCellularChainComplex : ChainComplex AddCommGrpCat ℕ :=
       apply AddCommGrpCat.hom_ext
       exact cuspToricCellularBoundary_comp n)
 
-/-- The explicit cusp cellular model has first homology `ℤ²`. -/
-public noncomputable def cuspToricCellularChainComplex_homologyOneEquiv :
-    cuspToricCellularChainComplex.homology 1 ≃+ (Fin 2 → ℤ) := by
-  let S := cuspToricCellularChainComplex.sc' 2 1 0
-  have hf : S.f = 0 := by rfl
-  have hrange : AddMonoidHom.range S.abToCycles = ⊥ := by
-    rw [AddMonoidHom.range_eq_bot_iff]
-    apply AddMonoidHom.ext
-    intro x
-    apply Subtype.ext
-    change S.f x = 0
-    rw [hf]
-    rfl
-  exact
-    ((ShortComplex.homologyMapIso
-      (cuspToricCellularChainComplex.isoSc' 2 1 0
-        ((ComplexShape.down ℕ).prev_eq' (ComplexShape.down_mk 2 1 (by omega)))
-        ((ComplexShape.down ℕ).next_eq' (ComplexShape.down_mk 1 0 (by omega))))).trans
-      S.abHomologyIso).addCommGroupIsoToAddEquiv.trans
-      (QuotientAddGroup.quotientAddEquivOfEq hrange) |>.trans
-      QuotientAddGroup.quotientBot |>.trans
-      cuspToricCellularDegreeOneEquiv
 
 /-- The explicit cusp cellular model has second homology `ℤ⁴`. -/
 public noncomputable def cuspToricCellularChainComplex_homologyTwoEquiv :
@@ -86,35 +64,7 @@ public noncomputable def cuspToricCellularChainComplex_homologyTwoEquiv :
       h.left.homologyIso).addCommGroupIsoToAddEquiv.trans
       cuspToricCellularDegreeTwoEquiv
 
-/-- The explicit cusp cellular model has third homology `ℤ²`. -/
-public noncomputable def cuspToricCellularChainComplex_homologyThreeEquiv :
-    cuspToricCellularChainComplex.homology 3 ≃+ (Fin 2 → ℤ) := by
-  let S := cuspToricCellularChainComplex.sc' 4 3 2
-  have hf : S.f = 0 := by rfl
-  have hg : S.g = 0 := by rfl
-  let h := ShortComplex.HomologyData.ofZeros S hf hg
-  exact
-    ((ShortComplex.homologyMapIso
-      (cuspToricCellularChainComplex.isoSc' 4 3 2
-        ((ComplexShape.down ℕ).prev_eq' (ComplexShape.down_mk 4 3 (by omega)))
-        ((ComplexShape.down ℕ).next_eq' (ComplexShape.down_mk 3 2 (by omega))))).trans
-      h.left.homologyIso).addCommGroupIsoToAddEquiv.trans
-      cuspToricCellularDegreeThreeEquiv
 
-/-- The explicit cusp cellular model has fourth homology `ℤ`. -/
-public noncomputable def cuspToricCellularChainComplex_homologyFourEquiv :
-    cuspToricCellularChainComplex.homology 4 ≃+ ℤ := by
-  let S := cuspToricCellularChainComplex.sc' 5 4 3
-  have hf : S.f = 0 := by rfl
-  have hg : S.g = 0 := by rfl
-  let h := ShortComplex.HomologyData.ofZeros S hf hg
-  exact
-    ((ShortComplex.homologyMapIso
-      (cuspToricCellularChainComplex.isoSc' 5 4 3
-        ((ComplexShape.down ℕ).prev_eq' (ComplexShape.down_mk 5 4 (by omega)))
-        ((ComplexShape.down ℕ).next_eq' (ComplexShape.down_mk 4 3 (by omega))))).trans
-      h.left.homologyIso).addCommGroupIsoToAddEquiv.trans
-      cuspToricCellularDegreeFourEquiv
 
 public theorem cuspWCellIndexFinite (n : ℕ) : Finite (CuspWCellIndex n) := by
   rcases n with (_ | _ | _ | _ | _ | n)
@@ -193,12 +143,6 @@ public noncomputable def integralSingularHomologyEquiv
     ((asIso (cuspToricCellularChainComplex.homologyMap I.chainIso.hom n)).symm
       |>.addCommGroupIsoToAddEquiv)
 
-/-- The labelled incidence formulas compute the carrier's first singular homology as `ℤ²`. -/
-public noncomputable def integralSingularHomologyOneEquiv
-    (I : StandardA2ToricCellularIncidenceData e M) :
-    IntegralSingularHomology 1 Y ≃+ (Fin 2 → ℤ) :=
-  (I.integralSingularHomologyEquiv 1).trans
-    cuspToricCellularChainComplex_homologyOneEquiv
 
 /-- The labelled incidence formulas compute the carrier's second singular homology as `ℤ⁴`. -/
 public noncomputable def integralSingularHomologyTwoEquiv
@@ -207,19 +151,7 @@ public noncomputable def integralSingularHomologyTwoEquiv
   (I.integralSingularHomologyEquiv 2).trans
     cuspToricCellularChainComplex_homologyTwoEquiv
 
-/-- The labelled incidence formulas compute the carrier's third singular homology as `ℤ²`. -/
-public noncomputable def integralSingularHomologyThreeEquiv
-    (I : StandardA2ToricCellularIncidenceData e M) :
-    IntegralSingularHomology 3 Y ≃+ (Fin 2 → ℤ) :=
-  (I.integralSingularHomologyEquiv 3).trans
-    cuspToricCellularChainComplex_homologyThreeEquiv
 
-/-- The labelled incidence formulas compute the carrier's fourth singular homology as `ℤ`. -/
-public noncomputable def integralSingularHomologyFourEquiv
-    (I : StandardA2ToricCellularIncidenceData e M) :
-    IntegralSingularHomology 4 Y ≃+ ℤ :=
-  (I.integralSingularHomologyEquiv 4).trans
-    cuspToricCellularChainComplex_homologyFourEquiv
 
 end StandardA2ToricCellularIncidenceData
 
@@ -247,14 +179,6 @@ public abbrev CellularIncidenceData
   let _ := D.cwComplex
   StandardA2ToricCellularIncidenceData D.cellEquiv D.establishedIntegralCellularChainModel
 
-/-- Conditional on the exact attaching incidences, the CW carrier has first homology `ℤ²`. -/
-public noncomputable def carrierIntegralSingularHomologyOneEquiv
-    (D : StandardA2ToricCentralFiberCWDecomposition X) (I : D.CellularIncidenceData) :
-    let _ := D.topology
-    IntegralSingularHomology 1 D.Carrier ≃+ (Fin 2 → ℤ) := by
-  letI := D.topology
-  letI := D.cwComplex
-  exact I.integralSingularHomologyOneEquiv
 
 /-- Conditional on the exact attaching incidences, the CW carrier has second homology `ℤ⁴`. -/
 public noncomputable def carrierIntegralSingularHomologyTwoEquiv
@@ -265,23 +189,7 @@ public noncomputable def carrierIntegralSingularHomologyTwoEquiv
   letI := D.cwComplex
   exact I.integralSingularHomologyTwoEquiv
 
-/-- Conditional on the exact attaching incidences, the CW carrier has third homology `ℤ²`. -/
-public noncomputable def carrierIntegralSingularHomologyThreeEquiv
-    (D : StandardA2ToricCentralFiberCWDecomposition X) (I : D.CellularIncidenceData) :
-    let _ := D.topology
-    IntegralSingularHomology 3 D.Carrier ≃+ (Fin 2 → ℤ) := by
-  letI := D.topology
-  letI := D.cwComplex
-  exact I.integralSingularHomologyThreeEquiv
 
-/-- Conditional on the exact attaching incidences, the CW carrier has fourth homology `ℤ`. -/
-public noncomputable def carrierIntegralSingularHomologyFourEquiv
-    (D : StandardA2ToricCentralFiberCWDecomposition X) (I : D.CellularIncidenceData) :
-    let _ := D.topology
-    IntegralSingularHomology 4 D.Carrier ≃+ ℤ := by
-  letI := D.topology
-  letI := D.cwComplex
-  exact I.integralSingularHomologyFourEquiv
 
 end StandardA2ToricCentralFiberCWDecomposition
 

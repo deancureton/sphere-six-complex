@@ -217,33 +217,7 @@ public abbrev constructedPositiveCentralFiber (r : ℝ) :=
   {q : constructedLocalPositivePart r |
     constructedModel.t (q : localCarrier constructedModel r) = 0}
 
-/-- The radius-independent global positive central fibre. -/
-public abbrev constructedGlobalPositiveCentralFiber :=
-  {x : carrierPositivePart | carrierHeight x = 0}
 
-/-- For positive radius, the local positive central fibre is exactly the global positive central
-fibre; the local height bound is automatic at height zero. -/
-public def constructedPositiveCentralFiberHomeomorph (r : ℝ) (hr : 0 < r) :
-    constructedPositiveCentralFiber r ≃ₜ constructedGlobalPositiveCentralFiber where
-  toFun q :=
-    ⟨⟨q.1.1.1, (mem_constructedLocalPositivePart_iff r q.1).mp q.1.property⟩,
-      q.property⟩
-  invFun x := by
-    let p : localCarrier constructedModel r :=
-      ⟨(show constructedModel.Carrier from x.1.1), by
-      change carrierHeight x.1.1 ∈ Metric.ball 0 r
-      rw [x.property]
-      exact Metric.mem_ball_self hr⟩
-    exact ⟨⟨p, (mem_constructedLocalPositivePart_iff r p).mpr x.1.property⟩,
-      x.property⟩
-  left_inv _ := rfl
-  right_inv _ := rfl
-  continuous_toFun := by fun_prop
-  continuous_invFun := by
-    apply Continuous.subtype_mk
-    apply Continuous.subtype_mk
-    apply Continuous.subtype_mk
-    fun_prop
 
 /-- The positive cell cut out by one ray component of the central toric fibre. -/
 public def constructedPositiveCentralCell (r : ℝ) (v : ToricLattice) :
@@ -316,66 +290,8 @@ public theorem chart_eq_chartAtCentralRay_of_vertex
   all_goals simp [sub_eq_add_neg]
   all_goals abel
 
-/-- Only six affine charts contain a prescribed central ray. -/
-public theorem chartsContainingCentralRay_finite (v : ToricLattice) :
-    {a : ChartIndex | v ∈ Set.range (a2Triangle a.1 a.2)}.Finite := by
-  apply (Set.finite_range (chartAtCentralRay v)).subset
-  intro a ha
-  obtain ⟨i, hi⟩ := ha
-  exact ⟨(a.1, i), (chart_eq_chartAtCentralRay_of_vertex v a i hi).symm⟩
 
-/-- A closed unit affine toric polydisc is compact. -/
-public theorem unitPolydisc_isCompact (a : ChartIndex) :
-    IsCompact (unitPolydisc a) := by
-  let _ := chartedSpace
-  let K : Set RawCoordinates := {z | ∀ i, ‖z i‖ ≤ 1}
-  have hK : IsCompact K := by
-    have hprod : IsCompact
-        {z : RawCoordinates | ∀ i, z i ∈ Metric.closedBall (0 : ℂ) 1} :=
-      isCompact_pi_infinite fun _ ↦ isCompact_closedBall (0 : ℂ) 1
-    simpa only [K, Metric.mem_closedBall, dist_zero_right] using hprod
-  have heq : unitPolydisc a = inclusion a '' K := by
-    ext p
-    constructor
-    · rintro ⟨hp, hbound⟩
-      rw [toricChart_source] at hp
-      obtain ⟨z, rfl⟩ := hp
-      refine ⟨z, ?_, rfl⟩
-      intro i
-      rw [toricChart_inclusion] at hbound
-      exact hbound i
-    · rintro ⟨z, hz, rfl⟩
-      refine ⟨?_, ?_⟩
-      · rw [toricChart_source]
-        exact Set.mem_range_self z
-      · intro i
-        rw [toricChart_inclusion]
-        exact hz i
-  rw [heq]
-  exact hK.image (inclusion_isOpenEmbedding a).continuous
 
-/-- Each ray component is compact, being covered by the six compact affine polydiscs in its
-star. -/
-public theorem carrierCentralComponent_isCompact (v : ToricLattice) :
-    IsCompact (carrierCentralComponent v) := by
-  let _ := chartedSpace
-  let S : Set ChartIndex := {a | v ∈ Set.range (a2Triangle a.1 a.2)}
-  have hS : S.Finite := chartsContainingCentralRay_finite v
-  have hcompact : IsCompact (⋃ a ∈ S, unitPolydisc a) :=
-    hS.isCompact_biUnion fun a _ ↦ unitPolydisc_isCompact a
-  apply hcompact.of_isClosed_subset (carrierCentralComponent_isClosed v)
-  intro p hp
-  have ht : carrierHeight p = 0 := by
-    change p ∈ carrierHeight ⁻¹' {0}
-    rw [carrierCentralFiber_eq_iUnion]
-    exact Set.mem_iUnion.mpr ⟨v, hp⟩
-  obtain ⟨a, ha⟩ := carrierCentralFiber_unitPolydisc_cover p ht
-  have hchart : p ∈ (toricChart a).source := ha.1
-  have hav : a ∈ S := by
-    by_contra hnot
-    exact Set.disjoint_left.mp
-      (otherCarrierCentralComponent_disjoint_chart a v hnot) hp hchart
-  exact Set.mem_iUnion₂.mpr ⟨a, hav, ha⟩
 
 namespace LocallyFiniteClosedCover
 
@@ -966,55 +882,7 @@ public theorem toConstructionData_invariantModulus
     CompactPhaseInvariantModulus T.toConstructionData := by
   exact constructedLocalModulus_compactPhase r
 
-/-- The reduced topological residue implies the full normalized phase geometry. -/
-public def toPhaseGeometry
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D} {r : ℝ}
-    (T : ConstructedPolarHoneycombTopologicalData N r) :
-    {Q : NormalizedPolarHoneycombConstructionData N constructedModel r //
-      PolarPhaseGeometricCore constructedModel r Q.toPolarHoneycombData} :=
-  ⟨T.toConstructionData,
-    polarPhaseGeometricCore_of_invariantModulus_only T.toConstructionData
-      T.toConstructionData_invariantModulus⟩
 
 end ConstructedPolarHoneycombTopologicalData
-
-namespace ConstructedPolarHoneycombResidualData
-
-/-- The three-field geometric residue implies the full normalized phase geometry. -/
-public def toPhaseGeometry
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D}
-    {W : ActualPuncturedCuspCollarWitness N constructedModel}
-    (T : ConstructedPolarHoneycombResidualData W) :
-    {Q : NormalizedPolarHoneycombConstructionData N constructedModel
-        W.localWitness.radius //
-      PolarPhaseGeometricCore constructedModel W.localWitness.radius
-        Q.toPolarHoneycombData} :=
-  T.toTopologicalData.toPhaseGeometry
-
-end ConstructedPolarHoneycombResidualData
-
-/-- The three remaining topological fields suffice at the actual quantitative cusp radius. -/
-public theorem normalizedPolarHoneycombPhaseGeometry_of_constructedResidual
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D}
-    (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    (h : Nonempty (ConstructedPolarHoneycombResidualData W)) :
-    Nonempty {Q : NormalizedPolarHoneycombConstructionData N constructedModel
-        W.localWitness.radius //
-      PolarPhaseGeometricCore constructedModel W.localWitness.radius
-        Q.toPolarHoneycombData} :=
-  h.map ConstructedPolarHoneycombResidualData.toPhaseGeometry
-
-/-- A construction of the five remaining topological fields replaces the broad phase axiom for
-the explicit model. -/
-public theorem normalizedPolarHoneycombPhaseGeometry_of_constructedTopology
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    (N : NormalizedFuchsianCuspCoordinate E D) (r : ℝ)
-    (h : Nonempty (ConstructedPolarHoneycombTopologicalData N r)) :
-    Nonempty {Q : NormalizedPolarHoneycombConstructionData N constructedModel r //
-      PolarPhaseGeometricCore constructedModel r Q.toPolarHoneycombData} :=
-  h.map ConstructedPolarHoneycombTopologicalData.toPhaseGeometry
 
 end SphereSixComplex.Geometry.InfiniteA2Toric

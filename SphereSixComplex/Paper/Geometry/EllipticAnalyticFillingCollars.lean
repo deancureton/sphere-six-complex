@@ -840,53 +840,7 @@ public theorem orderFourAffinePuncturedQuotient_nonempty
     exact ⟨half_pos P.radius_pos, half_lt_self P.radius_pos⟩
   exact ⟨Quotient.mk _ ⟨q, hq⟩⟩
 
-public noncomputable def orderThreeFillingCollarPartialDiffeomorphProduct
-    (P : A.OrderThreeFillingPiece) :
-    letI := A.totalSpaceCharts
-    letI := A.orderThreeAffinePuncturedQuotientCharts P.radius
-    letI := A.centralFamilyProductCharts
-    letI := A.orderThreeFillingSourceCharts P.radius
-    letI := A.orderThreeFillingAction P.radius
-    letI := A.orderThreeFillingProductCharts P.radius
-    PartialDiffeomorph globalDeckTotalModel globalDeckTotalModel
-      A.CentralFamily (A.OrderThreeVaryingFilling P.radius) ∞ := by
-  let _ := A.totalSpaceCharts
-  let _ := A.orderThreeAffinePuncturedQuotientCharts P.radius
-  let _ := A.centralFamilyProductCharts
-  let _ := A.orderThreeFillingSourceCharts P.radius
-  let _ := A.orderThreeFillingAction P.radius
-  let _ := A.orderThreeFillingProductCharts P.radius
-  let _ : Nonempty (A.OrderThreeAffinePuncturedQuotient P.radius) :=
-    A.orderThreeAffinePuncturedQuotient_nonempty P
-  exact partialDiffeomorphBetweenOpenEmbeddings
-    (A.orderThreePuncturedCollarToCentralFamily_isOpenEmbedding P.sourceData)
-    (A.orderThreePuncturedCollarToCentralFamily_isLocalDiffeomorph P.sourceData)
-    (A.orderThreePuncturedCollarToFilling_isOpenEmbedding P.radius)
-    (A.orderThreePuncturedCollarToFilling_isLocalDiffeomorph P.radius)
 
-public noncomputable def orderFourFillingCollarPartialDiffeomorphProduct
-    (P : A.OrderFourFillingPiece) :
-    letI := A.totalSpaceCharts
-    letI := A.orderFourAffinePuncturedQuotientCharts P.radius
-    letI := A.centralFamilyProductCharts
-    letI := A.orderFourFillingSourceCharts P.radius
-    letI := A.orderFourFillingAction P.radius
-    letI := A.orderFourFillingProductCharts P.radius
-    PartialDiffeomorph globalDeckTotalModel globalDeckTotalModel
-      A.CentralFamily (A.OrderFourVaryingFilling P.radius) ∞ := by
-  let _ := A.totalSpaceCharts
-  let _ := A.orderFourAffinePuncturedQuotientCharts P.radius
-  let _ := A.centralFamilyProductCharts
-  let _ := A.orderFourFillingSourceCharts P.radius
-  let _ := A.orderFourFillingAction P.radius
-  let _ := A.orderFourFillingProductCharts P.radius
-  let _ : Nonempty (A.OrderFourAffinePuncturedQuotient P.radius) :=
-    A.orderFourAffinePuncturedQuotient_nonempty P
-  exact partialDiffeomorphBetweenOpenEmbeddings
-    (A.orderFourPuncturedCollarToCentralFamily_isOpenEmbedding P.sourceData)
-    (A.orderFourPuncturedCollarToCentralFamily_isLocalDiffeomorph P.sourceData)
-    (A.orderFourPuncturedCollarToFilling_isOpenEmbedding P.radius)
-    (A.orderFourPuncturedCollarToFilling_isLocalDiffeomorph P.radius)
 
 public theorem centralFamilyProduct_isManifold :
     letI := A.centralFamilyProductCharts

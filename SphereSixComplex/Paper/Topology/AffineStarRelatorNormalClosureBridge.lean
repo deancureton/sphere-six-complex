@@ -1,6 +1,7 @@
 module
 
-public import SphereSixComplex.Paper.Topology.EstablishedAffineStarBridge
+public import SphereSixComplex.Paper.Topology.AffineVanKampenTransport
+public import SphereSixComplex.Paper.Topology.EstablishedBasedVanKampen
 
 /-!
 # Connector-invariant affine star filling bridge

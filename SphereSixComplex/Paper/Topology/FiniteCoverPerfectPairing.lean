@@ -93,220 +93,24 @@ public def toDegreeTwoPullbackRealization
 
 end FiniteCoverDegreeTwoPullbackBasis
 
-namespace DegreeTwoPullbackRealization
-
-variable {E X : Type} [TopologicalSpace E] [TopologicalSpace X]
-  {projection : C(E, X)} {sourceBasis : IntegralSingularHomology 2 E ≃+ DegreeTwoLattice}
-  {r : ℕ} {pullbackBasis : Fin r → DegreeTwoLattice}
-
-/-- Recover the cohomological perfect-pairing package from explicit quotient homology
-coordinates. -/
-public noncomputable def toFiniteCoverDegreeTwoPullbackBasis
-    (R : DegreeTwoPullbackRealization projection sourceBasis pullbackBasis) :
-    FiniteCoverDegreeTwoPullbackBasis projection sourceBasis pullbackBasis := by
-  let b : Module.Basis (Fin r) ℤ (IntegralSingularHomology 2 X) :=
-    Module.Basis.ofEquivFun R.quotientBasis.toIntLinearEquiv
-  refine
-    { quotientDualBasis := b.dualBasis
-      reflexive := ⟨b.eval_injective, ?_⟩
-      pullback_apply := ?_ }
-  · rw [← LinearMap.range_eq_top]
-    exact b.eval_range
-  · intro i x
-    rw [Module.Basis.dualBasis_apply, Module.Basis.ofEquivFun_repr_apply]
-    exact congrFun (R.projection_conjugacy_apply x) i
-
-end DegreeTwoPullbackRealization
-
 variable {m : ℕ} [NeZero m] {p : SphereSixComplex.Periods.Parameters}
   {D : RadialEllipticActionData m (AdditiveTorus p)}
 
-/-- Exposed form of the existing general affine cyclic quotient presentation equivalence. -/
-public noncomputable def affineCyclicHOnePresentationEquiv
-    (P : AffineCyclicCentralFiberPresentationData m p D) :
-    IntegralSingularHomology 1 D.reducedCentralFiber ≃ₗ[ℤ]
-      CyclicCoinvariants.Presentation P.latticeDifference P.twist (m : ℤ) :=
-  _root_.SphereSixComplex.AffineCyclicQuotientHomology.reducedCentralFiberHOneEquivPresentation P
 
-/-- Naturality of the standard abelianized covering-group presentation.
 
-The existing general theorem exposes the abstract presentation equivalence but not its value on
-the covering projection.  Mathlib has neither the required fundamental-group presentation for a
-free affine cyclic quotient nor a natural `H₁ = pi₁^ab` comparison, so this is the smallest
-general functorial boundary. -/
-public theorem establishedAffineCyclicHOnePresentation_projection
-    (P : AffineCyclicCentralFiberPresentationData m p D) (x : Lattice) :
-    affineCyclicHOnePresentationEquiv P
-        (integralSingularHomologyMap 1
-          (RadialEllipticActionData.centralFiberCoverProjection D)
-          ((affineCyclicCentralFiberCoverSourceHomologyBasis P).degreeOne.symm x)) =
-      latticeToMultipleFiberHOnePresentation
-        P.latticeDifference P.twist (m : ℤ) x := by
-  simpa only [affineCyclicHOnePresentationEquiv,
-    affineCyclicCentralFiberCoverSourceHomologyBasis,
-    latticeToMultipleFiberHOnePresentation,
-    _root_.SphereSixComplex.AffineCyclicQuotientHomology.centralFiberCoverSourceDegreeOneBasis,
-    _root_.SphereSixComplex.AffineCyclicQuotientHomology.latticeProjection] using
-    _root_.SphereSixComplex.AffineCyclicQuotientHomology.reducedCentralFiberHOneEquivPresentation_projection P x
 
-/-- Exposed order-three presentation coordinates. -/
-public noncomputable def orderOnePresentationEquivIntSquared :
-    OrderOneSelectedPresentation ≃ₗ[ℤ] IntSquared :=
-  (Submodule.quotEquivOfEq _ _ range_orderOneRelationMap_eq_ker).trans
-    (orderOnePresentationCoordinates.quotKerEquivOfSurjective
-      orderOnePresentationCoordinates_surjective)
 
-/-- Exposed order-four presentation coordinates. -/
-public noncomputable def orderTwoPresentationEquivIntSquared :
-    OrderTwoSelectedPresentation ≃ₗ[ℤ] IntSquared :=
-  (Submodule.quotEquivOfEq _ _ range_orderTwoRelationMap_eq_ker).trans
-    (orderTwoPresentationCoordinates.quotKerEquivOfSurjective
-      orderTwoPresentationCoordinates_surjective)
 
-public theorem orderOnePresentationEquiv_lattice (x : Lattice) :
-    orderOnePresentationEquivIntSquared
-        (latticeToMultipleFiberHOnePresentation orderOneDifference v₁ 3 x) =
-      orderOneLatticeProjectionCoordinates x := by
-  change orderOnePresentationCoordinates (Submodule.Quotient.mk x, 0) = _
-  funext i
-  fin_cases i <;>
-    simp [orderOnePresentationCoordinates, orderOneLatticeProjectionCoordinates,
-      orderOneCoinvariantsEquivIntSquared_mk, orderOneCoordinates, psiOne]
-
-public theorem orderTwoPresentationEquiv_lattice (x : Lattice) :
-    orderTwoPresentationEquivIntSquared
-        (latticeToMultipleFiberHOnePresentation orderTwoDifference v₂ 4 x) =
-      orderTwoLatticeProjectionCoordinates x := by
-  change orderTwoPresentationCoordinates (Submodule.Quotient.mk x, 0) = _
-  funext i
-  fin_cases i <;>
-    simp [orderTwoPresentationCoordinates, orderTwoLatticeProjectionCoordinates,
-      orderTwoCoinvariantsEquivIntSquared_mk, orderTwoCoordinates, psiTwo]
 
 variable {U : Periods.TriangleUniformization} (F : Periods.PeriodFunctions U)
 
-/-- The selected order-three presentation equivalence, with the actual presentation data left
-in its functorial form. -/
-public noncomputable def orderThreePresentationCoordinateEquiv :
-    CyclicCoinvariants.Presentation
-        (orderThreeCentralFiberPresentationData F).latticeDifference
-        (orderThreeCentralFiberPresentationData F).twist 3 ≃ₗ[ℤ] IntSquared := by
-  change CyclicCoinvariants.Presentation orderOneDifference epsilon 3 ≃ₗ[ℤ] IntSquared
-  have hRange :
-      LinearMap.range (CyclicCoinvariants.relationMap orderOneDifference epsilon 3) =
-        LinearMap.ker orderOnePresentationCoordinates := by
-    simpa [TwistObstruction.v₁] using range_orderOneRelationMap_eq_ker
-  exact (Submodule.quotEquivOfEq _ _ hRange).trans
-    (orderOnePresentationCoordinates.quotKerEquivOfSurjective
-      orderOnePresentationCoordinates_surjective)
 
-/-- The selected order-four presentation equivalence, with the actual presentation data left in
-its functorial form. -/
-public noncomputable def orderFourPresentationCoordinateEquiv :
-    CyclicCoinvariants.Presentation
-        (orderFourCentralFiberPresentationData F).latticeDifference
-        (orderFourCentralFiberPresentationData F).twist 4 ≃ₗ[ℤ] IntSquared := by
-  change CyclicCoinvariants.Presentation orderTwoDifference (-epsilon') 4 ≃ₗ[ℤ] IntSquared
-  have hRange :
-      LinearMap.range (CyclicCoinvariants.relationMap orderTwoDifference (-epsilon') 4) =
-        LinearMap.ker orderTwoPresentationCoordinates := by
-    simpa [TwistObstruction.v₂] using range_orderTwoRelationMap_eq_ker
-  exact (Submodule.quotEquivOfEq _ _ hRange).trans
-    (orderTwoPresentationCoordinates.quotKerEquivOfSurjective
-      orderTwoPresentationCoordinates_surjective)
 
-/-- H₁ basis obtained functorially from the general affine cyclic quotient theorem. -/
-public noncomputable def orderThreeHOneBasis :
-    IntegralSingularHomology 1 (orderThreeReducedCentralFiber F) ≃+ IntSquared :=
-  ((affineCyclicHOnePresentationEquiv
-    (orderThreeCentralFiberPresentationData F)).trans
-      (orderThreePresentationCoordinateEquiv F)).toAddEquiv
 
-public noncomputable def orderFourHOneBasis :
-    IntegralSingularHomology 1 (orderFourReducedCentralFiber F) ≃+ IntSquared :=
-  ((affineCyclicHOnePresentationEquiv
-    (orderFourCentralFiberPresentationData F)).trans
-      (orderFourPresentationCoordinateEquiv F)).toAddEquiv
 
-public theorem orderThreePresentationCoordinateEquiv_lattice (x : Lattice) :
-    orderThreePresentationCoordinateEquiv F
-        (latticeToMultipleFiberHOnePresentation
-          (orderThreeCentralFiberPresentationData F).latticeDifference
-          (orderThreeCentralFiberPresentationData F).twist 3 x) =
-      orderOneLatticeProjectionCoordinates x := by
-  change orderOnePresentationCoordinates (Submodule.Quotient.mk x, 0) = _
-  funext i
-  fin_cases i <;>
-    simp [orderOnePresentationCoordinates, orderOneLatticeProjectionCoordinates,
-      orderOneCoinvariantsEquivIntSquared_mk, orderOneCoordinates, psiOne]
 
-public theorem orderFourPresentationCoordinateEquiv_lattice (x : Lattice) :
-    orderFourPresentationCoordinateEquiv F
-        (latticeToMultipleFiberHOnePresentation
-          (orderFourCentralFiberPresentationData F).latticeDifference
-          (orderFourCentralFiberPresentationData F).twist 4 x) =
-      orderTwoLatticeProjectionCoordinates x := by
-  change orderTwoPresentationCoordinates (Submodule.Quotient.mk x, 0) = _
-  funext i
-  fin_cases i <;>
-    simp [orderTwoPresentationCoordinates, orderTwoLatticeProjectionCoordinates,
-      orderTwoCoinvariantsEquivIntSquared_mk, orderTwoCoordinates, psiTwo]
 
-/-- Naturality now gives the actual order-three covering coordinates unconditionally. -/
-public theorem orderThreeHOneBasis_projection (x : Lattice) :
-    orderThreeHOneBasis F
-        (integralSingularHomologyMap 1
-          (RadialEllipticActionData.centralFiberCoverProjection
-            (orderThreeRadialActionData F))
-          ((affineCyclicCentralFiberCoverSourceHomologyBasis
-            (orderThreeCentralFiberPresentationData F)).degreeOne.symm x)) =
-      orderOneLatticeProjectionCoordinates x := by
-  have h := establishedAffineCyclicHOnePresentation_projection
-    (orderThreeCentralFiberPresentationData F) x
-  have hcoord := congrArg
-    (fun y ↦ orderThreePresentationCoordinateEquiv F y) h
-  calc
-    _ = orderThreePresentationCoordinateEquiv F
-        (latticeToMultipleFiberHOnePresentation
-          (orderThreeCentralFiberPresentationData F).latticeDifference
-          (orderThreeCentralFiberPresentationData F).twist 3 x) := by
-      change orderThreePresentationCoordinateEquiv F
-        (affineCyclicHOnePresentationEquiv (orderThreeCentralFiberPresentationData F)
-          (integralSingularHomologyMap 1
-            (RadialEllipticActionData.centralFiberCoverProjection
-              (orderThreeRadialActionData F))
-            ((affineCyclicCentralFiberCoverSourceHomologyBasis
-              (orderThreeCentralFiberPresentationData F)).degreeOne.symm x))) = _
-      exact hcoord
-    _ = _ := orderThreePresentationCoordinateEquiv_lattice F x
 
-/-- Naturality now gives the actual order-four covering coordinates unconditionally. -/
-public theorem orderFourHOneBasis_projection (x : Lattice) :
-    orderFourHOneBasis F
-        (integralSingularHomologyMap 1
-          (RadialEllipticActionData.centralFiberCoverProjection
-            (orderFourRadialActionData F))
-          ((affineCyclicCentralFiberCoverSourceHomologyBasis
-            (orderFourCentralFiberPresentationData F)).degreeOne.symm x)) =
-      orderTwoLatticeProjectionCoordinates x := by
-  have h := establishedAffineCyclicHOnePresentation_projection
-    (orderFourCentralFiberPresentationData F) x
-  have hcoord := congrArg
-    (fun y ↦ orderFourPresentationCoordinateEquiv F y) h
-  calc
-    _ = orderFourPresentationCoordinateEquiv F
-        (latticeToMultipleFiberHOnePresentation
-          (orderFourCentralFiberPresentationData F).latticeDifference
-          (orderFourCentralFiberPresentationData F).twist 4 x) := by
-      change orderFourPresentationCoordinateEquiv F
-        (affineCyclicHOnePresentationEquiv (orderFourCentralFiberPresentationData F)
-          (integralSingularHomologyMap 1
-            (RadialEllipticActionData.centralFiberCoverProjection
-              (orderFourRadialActionData F))
-            ((affineCyclicCentralFiberCoverSourceHomologyBasis
-              (orderFourCentralFiberPresentationData F)).degreeOne.symm x))) = _
-      exact hcoord
-    _ = _ := orderFourPresentationCoordinateEquiv_lattice F x
 
 /-- Exact actual cohomological inputs for the two elliptic finite covers. -/
 public structure EllipticDegreeTwoPullbackBases where
@@ -321,14 +125,6 @@ public structure EllipticDegreeTwoPullbackBases where
 
 namespace EllipticDegreeTwoPullbackBases
 
-/-- Package the two exact quotient homology realizations as the corresponding perfect-pairing
-data. -/
-public noncomputable def ofRealizations
-    (orderThree : OrderThreeReducedCentralFiberDegreeTwoRealization F)
-    (orderFour : OrderFourReducedCentralFiberDegreeTwoRealization F) :
-    EllipticDegreeTwoPullbackBases F where
-  orderThree := DegreeTwoPullbackRealization.toFiniteCoverDegreeTwoPullbackBasis orderThree
-  orderFour := DegreeTwoPullbackRealization.toFiniteCoverDegreeTwoPullbackBasis orderFour
 
 /-- Instantiate both actual degree-two realizations from the generic perfect-pairing theorem. -/
 public def orderThreeRealization (P : EllipticDegreeTwoPullbackBases F) :
@@ -948,16 +744,6 @@ public theorem establishedEllipticDegreeTwoPullbackBases
           D.orderFourTorsionFree
         pullback_apply := D.orderFourPullback_apply }
 
-/-- Proposition 7.14 for the two actual elliptic central fibres: their integral degree-two
-homology has the displayed bases, and the two covering maps have the computed pullback
-coordinates. -/
-public theorem establishedEllipticDegreeTwoPullbackRealizations
-    (hBasis : Nonempty (EllipticDegreeTwoHomologyBasisFiniteData F)) :
-    Nonempty
-      (OrderThreeReducedCentralFiberDegreeTwoRealization F ×
-        OrderFourReducedCentralFiberDegreeTwoRealization F) := by
-  obtain ⟨P⟩ := establishedEllipticDegreeTwoPullbackBases F hBasis
-  exact ⟨P.orderThreeRealization F, P.orderFourRealization F⟩
 
 /-- A coherent choice of the two degree-two perfect-pairing realizations from Proposition
 7.14. -/

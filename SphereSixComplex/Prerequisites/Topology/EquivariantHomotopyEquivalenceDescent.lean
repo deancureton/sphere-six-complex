@@ -28,45 +28,7 @@ universe u v
 variable {G : Type*} [Group G]
 variable {X : Type u} {Y : Type v} [TopologicalSpace X] [TopologicalSpace Y]
 
-/-- The componentwise product of two explicitly supplied actions. -/
-@[instance_reducible] public def explicitProductAction
-    {Z : Type*} [TopologicalSpace Z]
-    (leftAction : MulAction G X) (rightAction : MulAction G Z) :
-    MulAction G (X × Z) where
-  smul g p := (actionMap leftAction g p.1, actionMap rightAction g p.2)
-  one_smul p := by
-    let _ := leftAction
-    let _ := rightAction
-    apply Prod.ext
-    · change (1 : G) • p.1 = p.1
-      exact one_smul G p.1
-    · change (1 : G) • p.2 = p.2
-      exact one_smul G p.2
-  mul_smul g h p := by
-    let _ := leftAction
-    let _ := rightAction
-    apply Prod.ext
-    · change (g * h) • p.1 = g • h • p.1
-      exact mul_smul g h p.1
-    · change (g * h) • p.2 = g • h • p.2
-      exact mul_smul g h p.2
 
-/-- Componentwise continuity supplies continuity of the explicit product action. -/
-public theorem explicitProductAction_continuous
-    {Z : Type*} [TopologicalSpace Z]
-    (leftAction : MulAction G X) (rightAction : MulAction G Z)
-    (leftContinuous : letI := leftAction; ContinuousConstSMul G X)
-    (rightContinuous : letI := rightAction; ContinuousConstSMul G Z) :
-    letI := explicitProductAction leftAction rightAction
-    ContinuousConstSMul G (X × Z) := by
-  let _ := leftAction
-  let _ := rightAction
-  let _ : ContinuousConstSMul G X := leftContinuous
-  let _ : ContinuousConstSMul G Z := rightContinuous
-  let _ := explicitProductAction leftAction rightAction
-  exact ⟨fun g ↦
-    ((continuous_const_smul g).comp continuous_fst).prodMk
-      ((continuous_const_smul g).comp continuous_snd)⟩
 
 /-- A homotopy equivalence together with enough equivariance to descend the maps and the chosen
 homotopies to orbit quotients. -/
@@ -94,78 +56,6 @@ namespace EquivariantHomotopyEquivData
 variable {sourceAction : MulAction G X} {targetAction : MulAction G Y}
     (E : EquivariantHomotopyEquivData sourceAction targetAction)
 
-/-- Taking the product with an unchanged equivariant fibre preserves all the data needed for
-quotient descent.  The resulting quotient is kept intact; no claim that it is a product of the
-base quotient with the fibre is made. -/
-public def prodRightId
-    {Z : Type*} [TopologicalSpace Z] (fiberAction : MulAction G Z) :
-    EquivariantHomotopyEquivData
-      (explicitProductAction sourceAction fiberAction)
-      (explicitProductAction targetAction fiberAction) where
-  toFun :=
-    { toFun := fun p ↦ (E.toFun p.1, p.2)
-      continuous_toFun := (E.toFun.continuous.comp continuous_fst).prodMk continuous_snd }
-  invFun :=
-    { toFun := fun p ↦ (E.invFun p.1, p.2)
-      continuous_toFun := (E.invFun.continuous.comp continuous_fst).prodMk continuous_snd }
-  toFun_equivariant g p := by
-    change (E.toFun (actionMap sourceAction g p.1), actionMap fiberAction g p.2) =
-      (actionMap targetAction g (E.toFun p.1), actionMap fiberAction g p.2)
-    apply Prod.ext
-    · exact E.toFun_equivariant g p.1
-    · rfl
-  invFun_equivariant g p := by
-    change (E.invFun (actionMap targetAction g p.1), actionMap fiberAction g p.2) =
-      (actionMap sourceAction g (E.invFun p.1), actionMap fiberAction g p.2)
-    apply Prod.ext
-    · exact E.invFun_equivariant g p.1
-    · rfl
-  leftInvHomotopy :=
-    { toFun := fun z ↦ (E.leftInvHomotopy (z.1, z.2.1), z.2.2)
-      continuous_toFun :=
-        (E.leftInvHomotopy.continuous.comp
-          (continuous_fst.prodMk (continuous_fst.comp continuous_snd))).prodMk
-            (continuous_snd.comp continuous_snd)
-      map_zero_left := fun p ↦ by
-        apply Prod.ext
-        · exact E.leftInvHomotopy.map_zero_left p.1
-        · rfl
-      map_one_left := fun p ↦ by
-        apply Prod.ext
-        · exact E.leftInvHomotopy.map_one_left p.1
-        · rfl }
-  rightInvHomotopy :=
-    { toFun := fun z ↦ (E.rightInvHomotopy (z.1, z.2.1), z.2.2)
-      continuous_toFun :=
-        (E.rightInvHomotopy.continuous.comp
-          (continuous_fst.prodMk (continuous_fst.comp continuous_snd))).prodMk
-            (continuous_snd.comp continuous_snd)
-      map_zero_left := fun p ↦ by
-        apply Prod.ext
-        · exact E.rightInvHomotopy.map_zero_left p.1
-        · rfl
-      map_one_left := fun p ↦ by
-        apply Prod.ext
-        · exact E.rightInvHomotopy.map_one_left p.1
-        · rfl }
-  leftInvHomotopy_equivariant g t p := by
-    change
-      (E.leftInvHomotopy (t, actionMap sourceAction g p.1),
-          actionMap fiberAction g p.2) =
-        (actionMap sourceAction g (E.leftInvHomotopy (t, p.1)),
-          actionMap fiberAction g p.2)
-    apply Prod.ext
-    · exact E.leftInvHomotopy_equivariant g t p.1
-    · rfl
-  rightInvHomotopy_equivariant g t p := by
-    change
-      (E.rightInvHomotopy (t, actionMap targetAction g p.1),
-          actionMap fiberAction g p.2) =
-        (actionMap targetAction g (E.rightInvHomotopy (t, p.1)),
-          actionMap fiberAction g p.2)
-    apply Prod.ext
-    · exact E.rightInvHomotopy_equivariant g t p.1
-    · rfl
 
 /-- The forward equivariant map descended to orbit quotients. -/
 public def quotientToFun :
@@ -193,15 +83,7 @@ public def quotientInvFun :
   continuous_toFun :=
     continuous_quot_lift _ (continuous_quot_mk.comp E.invFun.continuous)
 
-@[simp]
-public theorem quotientToFun_mk (x : X) :
-    E.quotientToFun (Quotient.mk _ x) = Quotient.mk _ (E.toFun x) :=
-  rfl
 
-@[simp]
-public theorem quotientInvFun_mk (y : Y) :
-    E.quotientInvFun (Quotient.mk _ y) = Quotient.mk _ (E.invFun y) :=
-  rfl
 
 /-- The underlying function of the descended left-inverse homotopy. -/
 public def quotientLeftInvHomotopyToFun :
@@ -299,13 +181,6 @@ public def quotientHomotopyEquiv
   left_inv := ⟨E.quotientLeftInvHomotopy sourceContinuous⟩
   right_inv := ⟨E.quotientRightInvHomotopy targetContinuous⟩
 
-/-- Map-level form of equivariant descent, suitable for an overlap inclusion in a pushout. -/
-public theorem quotientToFun_isHomotopyEquivalence
-    (sourceContinuous : letI := sourceAction; ContinuousConstSMul G X)
-    (targetContinuous : letI := targetAction; ContinuousConstSMul G Y) :
-    IsHomotopyEquivalence E.quotientToFun := by
-  refine ⟨E.quotientHomotopyEquiv sourceContinuous targetContinuous, ?_⟩
-  rfl
 
 /-- Homeomorphic models of an equivariant orbit-quotient map transfer its homotopy equivalence
 to the literal geometric map. -/

@@ -4,8 +4,13 @@ public import SphereSixComplex.Prerequisites.Topology.BoundarySevenCechOrderedSo
 public import SphereSixComplex.Prerequisites.Topology.BoundarySevenCechOrderedTarget
 public import SphereSixComplex.Prerequisites.Topology.BoundarySevenCechOrderedLocalComparison
 public import SphereSixComplex.Prerequisites.Topology.BoundarySevenCechComparisonAssemblyProof
-public import SphereSixComplex.Prerequisites.Topology.BoundarySevenDegreeTransportProof
-public import SphereSixComplex.Prerequisites.Topology.DiskSevenRelativeHomologyModTwo
+public import SphereSixComplex.Prerequisites.Topology.BoundarySevenProperFaceDegreeTransportProof
+public import SphereSixComplex.Prerequisites.Topology.SingularExcisionOpenCover
+public import Mathlib.Algebra.Homology.HomologySequenceLemmas
+public import SphereSixComplex.Prerequisites.Topology.HomotopySphereHomology
+public import SphereSixComplex.Prerequisites.Topology.RelativeSingularHomology
+public import Mathlib.Algebra.Category.Grp.AB
+public import Mathlib.Data.ZMod.QuotientGroup
 
 /-!
 # The boundary-seven Cech total comparison
@@ -271,45 +276,10 @@ public theorem BoundarySeven.quasiIso_integral_comparison :
   boundarySeven_integralComparison_of_faceCechTotalMap_quasiIso
     boundarySevenFaceCechTotalMap_quasiIso
 
-/-- The completed canonical boundary comparison supplies the full degree theory of the standard
-six-sphere. -/
-public theorem SixSphere.nonempty_degreeTheory :
-    Nonempty OrientedMarkedSmoothHomotopySixSphere.SixSphereDegreeTheory :=
-  sixSphereDegreeTheory_of_boundarySevenComparison
-    BoundarySeven.quasiIso_integral_comparison
 
-/-- The low-degree integral comparison used by the disk-cover and Kervaire branches. -/
-public theorem BoundarySeven.low_integral_comparison :
-    BoundarySevenLowIntegralComparison :=
-  boundarySevenLowIntegralComparison_of_quasiIso
-    BoundarySeven.quasiIso_integral_comparison
 
-/-- The four local disk-cover relative vanishings follow from the now-unconditional boundary
-comparison. -/
-public theorem DiskSeven.cover_local_relative_low_acyclic :
-    DiskSevenCoverLocalRelativeLowAcyclic :=
-  diskSevenCoverLocalRelativeLowAcyclic_of_boundaryLowComparison
-    BoundarySeven.low_integral_comparison
 
-/-- Hence the explicit cover-small relative disk complex is acyclic in degrees three and four. -/
-public theorem DiskSeven.coverSmall_relative_low_acyclic :
-    DiskSevenCoverSmallRelativeLowAcyclic :=
-  diskSevenCoverSmallRelativeLowAcyclic_of_localAcyclic
-    DiskSeven.cover_local_relative_low_acyclic
 
-/-- The required middle mod-two homology of the standard six-sphere vanishes. -/
-public theorem SixSphere.isZero_modTwoHomology_three :
-    IsZero (((singularHomologyFunctor AddCommGrpCat 3).obj
-      (AddCommGrpCat.of (ZMod 2))).obj (TopCat.of SixSphere)) :=
-  sixSphere_modTwoHomology_three_isZero_of_coverSmallRelative
-    DiskSeven.coverSmall_relative_low_acyclic
 
-/-- The same mod-two vanishing holds for every marked smooth homotopy six-sphere. -/
-public theorem OrientedMarkedSmoothHomotopySixSphere.isZero_modTwoHomology_three
-    (S : OrientedMarkedSmoothHomotopySixSphere) :
-    IsZero (((singularHomologyFunctor AddCommGrpCat 3).obj
-      (AddCommGrpCat.of (ZMod 2))).obj (TopCat.of S.carrier)) :=
-  markedHomotopySixSphere_modTwoHomology_three_isZero_of_coverSmallRelative
-    DiskSeven.coverSmall_relative_low_acyclic S
 
 end SphereSixComplex

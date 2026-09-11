@@ -128,81 +128,7 @@ private theorem one_le_normSq_at_one_of_sameQuadrant
       rw [abs_of_nonpos hcr] at hone
       nlinarith
 
-private theorem one_le_sq_sub_sqrtTwo_mul_add_sq_of_opposite_signs
-    {c d : ℝ} (hopp : (0 ≤ c ∧ d ≤ 0) ∨ (c ≤ 0 ∧ 0 ≤ d))
-    (hc : 1 ≤ |c| ∨ c = 0) (hd : 1 ≤ |d| ∨ d = 0)
-    (hpos : 0 < c ^ 2 - Real.sqrt 2 * c * d + d ^ 2) :
-    1 ≤ c ^ 2 - Real.sqrt 2 * c * d + d ^ 2 := by
-  have hsqrt : 0 ≤ Real.sqrt 2 := Real.sqrt_nonneg 2
-  rcases hopp with ⟨hc0, hd0⟩ | ⟨hc0, hd0⟩
-  · have hcross : Real.sqrt 2 * c * d ≤ 0 :=
-      mul_nonpos_of_nonneg_of_nonpos (mul_nonneg hsqrt hc0) hd0
-    rcases hc with hcabs | rfl
-    · rw [abs_of_nonneg hc0] at hcabs
-      nlinarith [sq_nonneg d]
-    · rcases hd with hdabs | rfl
-      · rw [abs_of_nonpos hd0] at hdabs
-        nlinarith
-      · norm_num at hpos
-  · have hcross : Real.sqrt 2 * c * d ≤ 0 :=
-      mul_nonpos_of_nonpos_of_nonneg (mul_nonpos_of_nonneg_of_nonpos hsqrt hc0) hd0
-    rcases hc with hcabs | rfl
-    · rw [abs_of_nonpos hc0] at hcabs
-      nlinarith [sq_nonneg d]
-    · rcases hd with hdabs | rfl
-      · rw [abs_of_nonneg hd0] at hdabs
-        nlinarith
-      · norm_num at hpos
 
-private theorem one_le_normSq_at_two_of_oppositeQuadrant
-    {c d : QuadraticInteger} (hcd : OppositeQuadrantRow c d)
-    (hpos : 0 < Complex.normSq
-      (positiveEmbedding c * (fuchsianTwoFixedPoint : ℂ) + positiveEmbedding d)) :
-    1 ≤ Complex.normSq
-      (positiveEmbedding c * (fuchsianTwoFixedPoint : ℂ) + positiveEmbedding d) := by
-  let cr := positiveEmbedding c
-  let dr := positiveEmbedding d
-  have hgeneric (a b : ℝ) : Complex.normSq
-      ((a : ℂ) * (fuchsianTwoFixedPoint : ℂ) + (b : ℂ)) =
-        a ^ 2 - Real.sqrt 2 * a * b + b ^ 2 := by
-    norm_num [fuchsianTwoFixedPoint, Complex.normSq_apply,
-      Complex.mul_re, Complex.mul_im]
-    have hsqrt : (Real.sqrt 2) ^ 2 = 2 := Real.sq_sqrt (by norm_num)
-    ring_nf
-    rw [hsqrt]
-    ring
-  have hformula : Complex.normSq
-      (positiveEmbedding c * (fuchsianTwoFixedPoint : ℂ) + positiveEmbedding d) =
-        cr ^ 2 - Real.sqrt 2 * cr * dr + dr ^ 2 := by
-    exact hgeneric (positiveEmbedding c) (positiveEmbedding d)
-  rw [hformula] at hpos ⊢
-  have hcr : 1 ≤ |cr| ∨ cr = 0 := by
-    by_cases hc0 : cr = 0
-    · exact Or.inr hc0
-    rcases hcd with ⟨hc, _⟩ | ⟨hc, _⟩
-    · exact Or.inl (one_le_abs_positiveEmbedding_of_coeffNonnegative hc hc0)
-    · exact Or.inl (one_le_abs_positiveEmbedding_of_coeffNonpositive hc hc0)
-  have hdr : 1 ≤ |dr| ∨ dr = 0 := by
-    by_cases hd0 : dr = 0
-    · exact Or.inr hd0
-    rcases hcd with ⟨_, hd⟩ | ⟨_, hd⟩
-    · exact Or.inl (one_le_abs_positiveEmbedding_of_coeffNonpositive hd hd0)
-    · exact Or.inl (one_le_abs_positiveEmbedding_of_coeffNonnegative hd hd0)
-  have hoppsign : (0 ≤ cr ∧ dr ≤ 0) ∨ (cr ≤ 0 ∧ 0 ≤ dr) := by
-    rcases hcd with ⟨hc, hd⟩ | ⟨hc, hd⟩
-    · left
-      exact ⟨add_nonneg (by exact_mod_cast hc.1)
-          (mul_nonneg (by exact_mod_cast hc.2) (Real.sqrt_nonneg 2)),
-        add_nonpos (by exact_mod_cast hd.1)
-          (mul_nonpos_of_nonpos_of_nonneg (by exact_mod_cast hd.2)
-            (Real.sqrt_nonneg 2))⟩
-    · right
-      exact ⟨add_nonpos (by exact_mod_cast hc.1)
-          (mul_nonpos_of_nonpos_of_nonneg (by exact_mod_cast hc.2)
-            (Real.sqrt_nonneg 2)),
-        add_nonneg (by exact_mod_cast hd.1)
-          (mul_nonneg (by exact_mod_cast hd.2) (Real.sqrt_nonneg 2))⟩
-  exact one_le_sq_sub_sqrtTwo_mul_add_sq_of_opposite_signs hoppsign hcr hdr hpos
 
 private theorem neWord_ends_true_height_le {i : Bool}
     (w : Monoid.CoprodI.NeWord DeltaFactor i true) :
@@ -229,30 +155,6 @@ private theorem neWord_ends_true_height_le {i : Bool}
   exact (div_le_iff₀ hdenpos).2 (by
     nlinarith [fuchsianOneFixedPoint.im_pos])
 
-private theorem neWord_ends_false_height_le {i : Bool}
-    (w : Monoid.CoprodI.NeWord DeltaFactor i false) :
-    (fuchsianSourceAction (indexedToDelta w.prod) • fuchsianTwoFixedPoint).im ≤
-      fuchsianTwoFixedPoint.im := by
-  let g : Delta := indexedToDelta w.prod
-  have hnormal : deltaNormalForm g = w.toWord :=
-    deltaNormalForm_indexedToDelta_prod w
-  have hrow : OppositeQuadrantRow (deltaBottomRow g).1 (deltaBottomRow g).2 := by
-    change OppositeQuadrantRow
-      (wordMatrix (deltaNormalForm g) 1 0) (wordMatrix (deltaNormalForm g) 1 1)
-    rw [hnormal, ← neWordMatrix_eq_wordMatrix]
-    have hrows := neWordMatrix_rowsForFactor w
-    change MatrixRowsOppositeQuadrant (neWordMatrix w) at hrows
-    exact hrows 1
-  have hdenpos : 0 < Complex.normSq
-      (positiveEmbedding (deltaBottomRow g).1 * (fuchsianTwoFixedPoint : ℂ) +
-        positiveEmbedding (deltaBottomRow g).2) := by
-    simpa [bottomRowDenominatorNormSq] using
-      bottomRowDenominatorNormSq_deltaBottomRow_pos g fuchsianTwoFixedPoint
-  have hden := one_le_normSq_at_two_of_oppositeQuadrant hrow hdenpos
-  rw [show indexedToDelta w.prod = g by rfl,
-    fuchsianSourceAction_im_eq_div_wordBottomNormSq]
-  exact (div_le_iff₀ hdenpos).2 (by
-    nlinarith [fuchsianTwoFixedPoint.im_pos])
 
 private theorem indexedToDelta_neWord_eq_of_normalForm
     {i j : Bool} {g : Delta} {w : Monoid.CoprodI.NeWord DeltaFactor i j}
@@ -309,53 +211,6 @@ private theorem fuchsianOneFixedPoint_orbitHeightMaximal :
             map_mul fuchsianSourceAction, mul_smul, hfix]
           exact neWord_ends_true_height_le p
 
-private theorem fuchsianTwoFixedPoint_orbitHeightMaximal :
-    IsOrbitHeightMaximal fuchsianTwoFixedPoint := by
-  intro g
-  by_cases hgempty : deltaNormalForm g = Monoid.CoprodI.Word.empty
-  · have hg : g = 1 := by
-      calc
-        g = indexedToDelta (deltaNormalForm g).prod :=
-          (indexedToDelta_deltaNormalForm_prod g).symm
-        _ = 1 := by rw [hgempty]; simp
-    simp [hg]
-  · obtain ⟨i, j, w, hw⟩ := Monoid.CoprodI.NeWord.of_word (deltaNormalForm g) hgempty
-    have hg : indexedToDelta w.prod = g := indexedToDelta_neWord_eq_of_normalForm hw
-    cases j with
-    | false =>
-        rw [← hg]
-        exact neWord_ends_false_height_le w
-    | true =>
-        rcases BinaryIndexedCoprod.NeWord.singleton_or_init_last w with
-          hsingle | ⟨k, p, hk, hprod, hlen⟩
-        · have hlast : w.last ≠ 1 := BinaryIndexedCoprod.NeWord.last_ne_one w
-          have hfix0 : fuchsianSourceAction
-              (Monoid.Coprod.inr (show CyclicFour from w.last)) •
-              fuchsianTwoFixedPoint = fuchsianTwoFixedPoint :=
-            (FreeProductTorsion.fuchsianSourceAction_inr_fixed_iff
-              (show CyclicFour from w.last) hlast fuchsianTwoFixedPoint).2 rfl
-          have hfix : fuchsianSourceAction
-              (indexedToDelta (Monoid.CoprodI.of w.last)) •
-              fuchsianTwoFixedPoint = fuchsianTwoFixedPoint := by
-            rw [indexedToDelta_of_true]
-            exact hfix0
-          rw [← hg, hsingle.2.1, hfix]
-        · have hkfalse : k = false := by cases k <;> simp_all
-          subst k
-          have hlast : w.last ≠ 1 := BinaryIndexedCoprod.NeWord.last_ne_one w
-          have hfix0 : fuchsianSourceAction
-              (Monoid.Coprod.inr (show CyclicFour from w.last)) •
-              fuchsianTwoFixedPoint = fuchsianTwoFixedPoint :=
-            (FreeProductTorsion.fuchsianSourceAction_inr_fixed_iff
-              (show CyclicFour from w.last) hlast fuchsianTwoFixedPoint).2 rfl
-          have hfix : fuchsianSourceAction
-              (indexedToDelta (Monoid.CoprodI.of w.last)) •
-              fuchsianTwoFixedPoint = fuchsianTwoFixedPoint := by
-            rw [indexedToDelta_of_true]
-            exact hfix0
-          rw [← hg, hprod, map_mul indexedToDelta,
-            map_mul fuchsianSourceAction, mul_smul, hfix]
-          exact neWord_ends_false_height_le p
 
 /-- An exact Fuchsian quotient coordinate has no zero in the standard cusp region. -/
 public theorem ExactFuchsianOrbifoldCoordinate.coordinate_ne_zero_on_cusp
@@ -378,27 +233,6 @@ public theorem ExactFuchsianOrbifoldCoordinate.coordinate_ne_zero_on_cusp
   change z.im ≤ Real.sqrt 3 / 2 at hheight
   linarith
 
-/-- An exact Fuchsian quotient coordinate never takes the order-four branch value in the
-standard cusp region. -/
-public theorem ExactFuchsianOrbifoldCoordinate.coordinate_ne_one_on_cusp
-    (C : ExactFuchsianOrbifoldCoordinate) (z : UpperHalfPlane)
-    (hz : z ∈ fuchsianCuspRegion) :
-    C.coordinate z ≠ 1 := by
-  intro hone
-  have hcoord : C.coordinate z = C.coordinate fuchsianTwoFixedPoint := by
-    rw [hone, C.coordinate_at_two]
-  obtain ⟨g, hg⟩ := (C.coordinate_eq_iff_orbit z fuchsianTwoFixedPoint).1 hcoord
-  have hzorb : z = fuchsianSourceAction g⁻¹ • fuchsianTwoFixedPoint := by
-    calc
-      z = fuchsianSourceAction g⁻¹ • (fuchsianSourceAction g • z) := by simp
-      _ = fuchsianSourceAction g⁻¹ • fuchsianTwoFixedPoint := congrArg _ hg
-  have hheight := fuchsianTwoFixedPoint_orbitHeightMaximal g⁻¹
-  rw [← hzorb] at hheight
-  have hsqrt : Real.sqrt 2 < 2 := by
-    nlinarith [Real.sq_sqrt (by norm_num : (0 : ℝ) ≤ 2), Real.sqrt_nonneg 2]
-  change 1 ≤ z.im at hz
-  change z.im ≤ Real.sqrt 2 / 2 at hheight
-  linarith
 
 private theorem fuchsianSourceCuspQ_tendsto_zero :
     Tendsto fuchsianSourceCuspQ upperHalfPlaneAtInfinity (nhds 0) := by

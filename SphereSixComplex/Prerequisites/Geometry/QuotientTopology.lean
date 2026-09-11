@@ -40,44 +40,12 @@ public theorem quotientProjection_isOpenQuotientMap :
   simpa only [quotientProjection] using
     (MulAction.isOpenQuotientMap_quotientMk (Γ := G) (T := M))
 
-/-- The orbit projection is a quotient map. -/
-public theorem quotientProjection_isQuotientMap :
-    IsQuotientMap (quotientProjection (M := M) (G := G)) :=
-  quotientProjection_isOpenQuotientMap.isQuotientMap
 
-/-- The orbit projection is continuous. -/
-public theorem quotientProjection_continuous :
-    Continuous (quotientProjection (M := M) (G := G)) :=
-  quotientProjection_isOpenQuotientMap.continuous
 
-/-- The orbit projection is open. -/
-public theorem quotientProjection_isOpenMap :
-    IsOpenMap (quotientProjection (M := M) (G := G)) :=
-  quotientProjection_isOpenQuotientMap.isOpenMap
 
 end OpenProjection
 
 /-! ## Covering-space consequences -/
-
-section Covering
-
-variable {M G : Type*} [TopologicalSpace M] [Group G] [MulAction G M]
-  [ProperlyDiscontinuousSMul G M] [ContinuousConstSMul G M] [IsCancelSMul G M]
-  [T2Space M] [LocallyCompactSpace M]
-
-/-- A free properly discontinuous orbit projection is a quotient covering map. -/
-public theorem quotientProjection_isQuotientCoveringMap :
-    IsQuotientCoveringMap (quotientProjection (M := M) (G := G)) G := by
-  simpa only [quotientProjection] using
-    (isQuotientCoveringMap_quotientMk_of_properlyDiscontinuousSMul
-      (G := G) (E := M))
-
-/-- In particular, a free properly discontinuous orbit projection is a covering map. -/
-public theorem quotientProjection_isCoveringMap :
-    IsCoveringMap (quotientProjection (M := M) (G := G)) :=
-  quotientProjection_isQuotientCoveringMap.isCoveringMap
-
-end Covering
 
 /-! ## Separation, compactness, and countability -/
 

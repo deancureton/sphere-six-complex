@@ -226,49 +226,10 @@ public theorem periodTransport_gTwo (x : PeriodDomain) :
   have hz := DFunLike.congr_fun hcomp v
   simpa [hx, R, v] using hz
 
-private theorem periodTransport_one_restrictScalars : (∀ x : PeriodDomain, ∃ R : ComplexTwoSpace ≃ₗ[ℂ] ComplexTwoSpace,
-    periodTransport 1 x = R.restrictScalars ℝ) := by
-  intro x
-  refine ⟨1, ?_⟩
-  rw [periodTransport_one]
-  apply LinearEquiv.ext
-  intro z
-  rfl
 
-private theorem periodTransport_mul_restrictScalars {g h : Delta}
-    (hg : (∀ x : PeriodDomain, ∃ R : ComplexTwoSpace ≃ₗ[ℂ] ComplexTwoSpace,
-    periodTransport g x = R.restrictScalars ℝ)) (hh : (∀ x : PeriodDomain, ∃ R : ComplexTwoSpace ≃ₗ[ℂ] ComplexTwoSpace,
-    periodTransport h x = R.restrictScalars ℝ)) :
-    (∀ x : PeriodDomain, ∃ R : ComplexTwoSpace ≃ₗ[ℂ] ComplexTwoSpace,
-    periodTransport (g * h) x = R.restrictScalars ℝ) := by
-  intro x
-  obtain ⟨Rg, hRg⟩ := hg (rhoParameters h x)
-  obtain ⟨Rh, hRh⟩ := hh x
-  refine ⟨Rg * Rh, ?_⟩
-  rw [periodTransport_mul, hRg, hRh]
-  apply LinearEquiv.ext
-  intro z
-  rfl
 
-private theorem periodTransport_pow_restrictScalars {g : Delta} (hg : (∀ x : PeriodDomain, ∃ R : ComplexTwoSpace ≃ₗ[ℂ] ComplexTwoSpace,
-    periodTransport g x = R.restrictScalars ℝ))
-    (n : ℕ) : (∀ x : PeriodDomain, ∃ R : ComplexTwoSpace ≃ₗ[ℂ] ComplexTwoSpace,
-    periodTransport (g ^ n) x = R.restrictScalars ℝ) := by
-  induction n with
-  | zero => simpa using periodTransport_one_restrictScalars
-  | succ n ih =>
-      rw [pow_succ]
-      exact periodTransport_mul_restrictScalars ih hg
 
-private theorem periodTransport_gOne_restrictScalars : (∀ x : PeriodDomain, ∃ R : ComplexTwoSpace ≃ₗ[ℂ] ComplexTwoSpace,
-    periodTransport g₁ x = R.restrictScalars ℝ) := by
-  intro x
-  exact ⟨rightOneLinearEquiv x.1 x.tau_ne_zero, periodTransport_gOne x⟩
 
-private theorem periodTransport_gTwo_restrictScalars : (∀ x : PeriodDomain, ∃ R : ComplexTwoSpace ≃ₗ[ℂ] ComplexTwoSpace,
-    periodTransport g₂ x = R.restrictScalars ℝ) := by
-  intro x
-  exact ⟨rightTwoLinearEquiv x.1 x.tau_ne_zero, periodTransport_gTwo x⟩
 
 /-- Equivariance of a map into the period domain under one triangle-group element. -/
 @[expose] public def ParameterEquivariant {U : TriangleUniformization} (F : PeriodFunctions U)
@@ -370,19 +331,6 @@ public theorem inr_exists_gTwo_pow (a : CyclicFour) :
         rw [(Monoid.Coprod.inr : CyclicFour →* Delta).map_mul]
       _ = _ := (mul_assoc _ _ _).symm
 
-/-- Canonical fibre transport is complex linear for every triangle-group element. -/
-public theorem periodTransport_isComplexLinear (g : Delta) : (∀ x : PeriodDomain, ∃ R : ComplexTwoSpace ≃ₗ[ℂ] ComplexTwoSpace,
-    periodTransport g x = R.restrictScalars ℝ) := by
-  induction g using Monoid.Coprod.induction_on with
-  | inl a =>
-      obtain ⟨n, hn⟩ := inl_exists_gOne_pow a
-      rw [hn]
-      exact periodTransport_pow_restrictScalars periodTransport_gOne_restrictScalars n
-  | inr a =>
-      obtain ⟨n, hn⟩ := inr_exists_gTwo_pow a
-      rw [hn]
-      exact periodTransport_pow_restrictScalars periodTransport_gTwo_restrictScalars n
-  | mul g h hg hh => exact periodTransport_mul_restrictScalars hg hh
 
 /-- The period map is equivariant under every element of the triangle group. -/
 public theorem parameterMap_equivariant {U : TriangleUniformization} (F : PeriodFunctions U)
@@ -456,41 +404,9 @@ public theorem deckMap_mul (g h : Delta) (p : UpperHalfPlane × ComplexTwoSpace)
         (periodTransport h (parameterMap F p.1) p.2)
     rw [parameterMap_equivariant F h, periodTransport_mul, LinearEquiv.mul_apply]
 
-/-- Every lifted deck map is an equivalence, with inverse indexed by the inverse group element. -/
-@[expose] public noncomputable def deckEquiv (g : Delta) :
-    Equiv.Perm (UpperHalfPlane × ComplexTwoSpace) where
-  toFun := deckMap F g
-  invFun := deckMap F g⁻¹
-  left_inv p := by
-    rw [← deckMap_mul, inv_mul_cancel, deckMap_one]
-  right_inv p := by
-    rw [← deckMap_mul, mul_inv_cancel, deckMap_one]
 
-@[simp]
-public theorem deckEquiv_apply (g : Delta) (p : UpperHalfPlane × ComplexTwoSpace) :
-    deckEquiv F g p = deckMap F g p :=
-  rfl
 
-/-- The full triangle group acts on the analytic vector-bundle cover. -/
-@[expose] public noncomputable def deckRepresentation :
-    Delta →* Equiv.Perm (UpperHalfPlane × ComplexTwoSpace) where
-  toFun := deckEquiv F
-  map_one' := by
-    apply Equiv.ext
-    intro p
-    change deckMap F 1 p = p
-    exact deckMap_one F p
-  map_mul' g h := by
-    apply Equiv.ext
-    intro p
-    change deckMap F (g * h) p = deckMap F g (deckMap F h p)
-    exact deckMap_mul F g h p
 
-@[expose, instance_reducible] public noncomputable def deckAction :
-    MulAction Delta (UpperHalfPlane × ComplexTwoSpace) where
-  smul := deckMap F
-  one_smul := deckMap_one F
-  mul_smul := deckMap_mul F
 
 /-- Monodromy transports a family-period group element by its integral coefficient. -/
 @[expose] public def transportFamilyPeriod (g : Delta)
@@ -550,18 +466,7 @@ public theorem familyDeckMap_mul (g h : Delta) (x : TotalSpace (parameterMap F))
   induction x using Quotient.inductionOn with
   | _ p => simp [familyDeckMap_mk, deckMap_mul]
 
-/-- The triangle group acts on the actual varying-lattice quotient. -/
-@[expose, instance_reducible] public noncomputable def familyDeckAction :
-    MulAction Delta (TotalSpace (parameterMap F)) where
-  smul := familyDeckMap F
-  one_smul := familyDeckMap_one F
-  mul_smul := familyDeckMap_mul F
 
-/-- The unexcised quotient of the analytic torus family by the full triangle-group deck action.
-The paper's family uses `PuncturedGlobalFamily`, which removes the elliptic orbits first. -/
-public abbrev UnexcisedGlobalFamily :=
-  letI := familyDeckAction F
-  OrbitQuotient (M := TotalSpace (parameterMap F)) (G := Delta)
 
 /-- The lifted deck map on the regular analytic vector-bundle cover. -/
 @[expose] public noncomputable def regularDeckMap (g : Delta)

@@ -78,11 +78,5 @@ public theorem cylinderRelativeContraction_projection {X : Type} [TopologicalSpa
     (f := cylinderIdentityPair A) (g := cylinderBottomPair A)
     (cylinderLowerSideHomotopy A) (cylinderVerticalHomotopy X) (by ext x <;> rfl) p q
 
-public theorem cylinderRelativePrism_surjective {X : Type} [TopologicalSpace X]
-    (A : Set X) (n : ℕ) :
-    Function.Surjective (contractingPrismClass (cylinderRelativeTriple A)
-      (cylinderRelativeContraction A) n) :=
-  contractingPrismClass_surjective (cylinderRelativeTriple A)
-    (cylinderRelativeTriple_shortExact A) (cylinderRelativeContraction A) n
 
 end SphereSixComplex

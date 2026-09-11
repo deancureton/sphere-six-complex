@@ -246,12 +246,5 @@ public theorem exists_exactFuchsianEisensteinSixRoot
   simpa only [Q, U, UpperHalfPlane.ofComplex_apply,
     ambientLiftedEisensteinSix] using hzprod
 
-/-- Existential form of `exists_exactFuchsianEisensteinSixRoot`. -/
-public theorem exists_globalEisensteinSixRoot
-    (E : NormalizedFuchsianModularParameter) :
-    ∃ s : UpperHalfPlane → ℂ,
-      MDiff s ∧ ∀ z, s z ^ 2 = liftedEisensteinSix E z := by
-  obtain ⟨S⟩ := exists_exactFuchsianEisensteinSixRoot E
-  exact ⟨S.root, S.root_holomorphic, S.root_sq⟩
 
 end SphereSixComplex.Periods

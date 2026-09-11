@@ -124,12 +124,6 @@ public theorem realL1_fractionalPartVector_le_two (x : Fin 2 → ℝ) :
       simp [effectiveFanDisplacement, realFanShearInverse, Matrix.mulVec, dotProduct,
         Fin.sum_univ_two] <;> ring
 
-@[simp]
-public theorem effectiveFanDisplacementLinearMap_apply
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    (N : NormalizedFuchsianCuspCoordinate E D) (q : ℂ) (d : Fin 2 → ℝ) :
-    effectiveFanDisplacementLinearMap N q d = effectiveFanDisplacement N q d :=
-  rfl
 
 public theorem phaseLog_mulVec_real_le
     {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
@@ -709,18 +703,6 @@ public theorem actualLocalCuspFillingRadiusSublevel_isCompact
     phaseCorrectedQuotientRadius C y ≤ a}
   exact phaseCorrectedQuotientRadiusSublevel_isCompact C H a ha har
 
-/-- The concrete two-chart bounded-orbit theorem implies compactness of actual cusp-filling
-radial sublevels. -/
-public theorem actualLocalCuspFillingRadiusSublevel_isCompact_of_twoChartRepresentatives
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
-    (W : ActualPuncturedCuspCollarWitness N M)
-    (H : ActualA2TwoChartRadialSublevelRepresentatives W)
-    (a : ℝ) (ha : 0 ≤ a) (har : a < W.localWitness.radius) :
-    IsCompact {y : ActualLocalCuspFilling W |
-      actualLocalCuspFillingRadius W y ≤ a} := by
-  apply actualLocalCuspFillingRadiusSublevel_isCompact W _ a ha har
-  exact radialSublevelCocompactness_of_twoChartRepresentatives _ H
 
 end
 

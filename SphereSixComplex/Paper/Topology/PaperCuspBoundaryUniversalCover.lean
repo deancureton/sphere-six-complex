@@ -58,14 +58,6 @@ public theorem paperCuspMonodromy_apply (v : Lattice) :
     paperCuspMonodromy v = M₀ *ᵥ v := by
   exact m₀_apply v
 
-/-- Conjugating a boundary translation by the angular meridian applies `M₀`. -/
-public theorem paperCuspBoundaryMeridian_conjugate (v : Lattice) :
-    paperCuspBoundaryMeridian *
-          Additive.toMul (paperCuspBoundaryTranslation v) *
-        paperCuspBoundaryMeridian⁻¹ =
-      Additive.toMul (paperCuspBoundaryTranslation (M₀ *ᵥ v)) := by
-  rw [← paperCuspMonodromy_apply]
-  exact canonicalCyclicAffine_conjugate paperCuspMonodromy v
 
 end Topology
 
@@ -157,23 +149,7 @@ public theorem cuspBoundaryAngularTranslate_add
     push_cast
     ring
 
-/-- The rank-four translation lattice acts on the normalized additive cusp cover. -/
-@[instance_reducible] public noncomputable def cuspBoundaryLatticeAction
-    (W : ActualPuncturedCuspCollarWitness N M) :
-    MulAction (Multiplicative Lattice)
-      (additiveCuspRadiusCover W.localWitness.radius) where
-  smul v p := cuspBoundaryLatticeTranslate W v.toAdd p
-  one_smul := cuspBoundaryLatticeTranslate_zero W
-  mul_smul v w p := cuspBoundaryLatticeTranslate_add W v.toAdd w.toAdd p
 
-/-- The angular logarithm lattice acts on the normalized additive cusp cover. -/
-@[instance_reducible] public noncomputable def cuspBoundaryAngularAction
-    (W : ActualPuncturedCuspCollarWitness N M) :
-    MulAction (Multiplicative ℤ)
-      (additiveCuspRadiusCover W.localWitness.radius) where
-  smul k p := cuspBoundaryAngularTranslate W k.toAdd p
-  one_smul := cuspBoundaryAngularTranslate_zero W
-  mul_smul k l p := cuspBoundaryAngularTranslate_add W k.toAdd l.toAdd p
 
 /-- One positive angular turn conjugates a lattice translation by the parabolic monodromy. -/
 public theorem cuspBoundaryAngularTranslate_one_latticeTranslate

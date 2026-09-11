@@ -40,13 +40,6 @@ public noncomputable def compactCoverData_of_endControl
     (actualA2TwoChartRadialSublevelRepresentatives P.starCuspWitness)
     P.thresholdedCentralEndCoverData
 
-/-- Conditional compactness of the completed four-piece star. -/
-public theorem starGluedCompact_of_endControl
-    (hcusp : ActualA2TwoChartRadialSublevelRepresentatives P.starCuspWitness)
-    (hcentral : P.ThresholdedCentralEndCoverData) :
-    CompactSpace
-      (GluedSpace P.openEmbeddingStarData.toFourPieceStarGluingData.glueData) :=
-  (P.compactCoverData_of_endControl hcusp hcentral).compactSpace
 
 /-- The completed four-piece star is compact. -/
 public theorem starGluedCompact :
@@ -54,32 +47,7 @@ public theorem starGluedCompact :
       (GluedSpace P.openEmbeddingStarData.toFourPieceStarGluingData.glueData) :=
   P.compactCoverData.compactSpace
 
-/-- The two end-control obligations and the proved closed collar pairs provide the exact
-topological completion data consumed downstream by the paper assembly. -/
-public noncomputable def compactHausdorffGluingData_of_endControl
-    (hcusp : ActualA2TwoChartRadialSublevelRepresentatives P.starCuspWitness)
-    (hcentral : P.ThresholdedCentralEndCoverData) :
-    CompactHausdorffGluingData P.openEmbeddingStarData.toFourPieceStarGluingData.glueData := by
-  let _ : T2Space P.openEmbeddingStarData.central := by
-    change T2Space P.CentralFamily
-    exact P.centralFamily_t2
-  let _ (i : Fin 3) : T2Space (P.openEmbeddingStarData.filling i) := by
-    change T2Space (P.StarFilling i)
-    exact P.starFilling_t2 i
-  exact (P.compactCoverData_of_endControl hcusp hcentral).toCompactHausdorffGluingData
-    P.closedCollarPairData.relComponent_isClosed
 
-/-- Exact Hausdorff and compact completion data for the actual paper star. -/
-@[expose] public noncomputable def compactHausdorffGluingData :
-    CompactHausdorffGluingData P.openEmbeddingStarData.toFourPieceStarGluingData.glueData := by
-  let _ : T2Space P.openEmbeddingStarData.central := by
-    change T2Space P.CentralFamily
-    exact P.centralFamily_t2
-  let _ (i : Fin 3) : T2Space (P.openEmbeddingStarData.filling i) := by
-    change T2Space (P.StarFilling i)
-    exact P.starFilling_t2 i
-  exact P.compactCoverData.toCompactHausdorffGluingData
-    P.closedCollarPairData.relComponent_isClosed
 
 end PaperAnalyticData
 

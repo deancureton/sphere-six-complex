@@ -25,20 +25,7 @@ public theorem paths_homotopic_of_range_in_embedded_contractible
       Subtype.ext q.source, Subtype.ext q.target⟩
   exact (SimplyConnectedSpace.paths_homotopic p' q').map ⟨Subtype.val, continuous_subtype_val⟩
 
-public def hexagonBoundaryPath {X : Type} [TopologicalSpace X] {x y : X}
-    (a b c : Path x y) : Path x x :=
-  ((((a.trans b.symm).trans c).trans a.symm).trans b).trans c.symm
 
-public theorem hexagonBoundaryPath_homology_zero {X : Type} [TopologicalSpace X] {x y : X}
-    (a b c : Path x y) : loopHomologyClass (hexagonBoundaryPath a b c) = 0 := by
-  apply (AddCommGrpCat.mono_iff_injective ((integralChains X).homologyι 1)).mp
-    (inferInstance : Mono ((integralChains X).homologyι 1))
-  calc
-    _ = pathOpchainClass (hexagonBoundaryPath a b c) := homologyι_loopHomologyClass _
-    _ = 0 := by
-      simp only [hexagonBoundaryPath, pathOpchainClass_trans, pathOpchainClass_symm]
-      abel
-    _ = _ := ((integralChains X).homologyι 1).hom.map_zero.symm
 
 public theorem pairedHexagonBoundaryPath_homology_zero
     {X : Type} [TopologicalSpace X] {x y : X}

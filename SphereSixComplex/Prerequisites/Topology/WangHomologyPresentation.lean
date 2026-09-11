@@ -53,13 +53,7 @@ public def finiteBouquetMappingTorusWangPresentation (φ : ι → F ≃ₜ F) (k
     exact_inclusion_boundary := W.exact_inclusion_boundary
     exact_boundary_lowDifference := W.exact_boundary_lowDifference }
 
-/-- The degree-one homology presentation, using the induced maps on `H₁` and `H₀`. -/
-public abbrev finiteBouquetMappingTorusHOnePresentation (φ : ι → F ≃ₜ F) :=
-  finiteBouquetMappingTorusWangPresentation φ 0
 
-/-- The degree-two homology presentation, using the induced maps on `H₂` and `H₁`. -/
-public abbrev finiteBouquetMappingTorusHTwoPresentation (φ : ι → F ≃ₜ F) :=
-  finiteBouquetMappingTorusWangPresentation φ 1
 
 end FiniteBouquet
 

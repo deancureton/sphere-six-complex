@@ -57,9 +57,5 @@ public def cylinderTopFacePairMap {X : Type} [TopologicalSpace X] (A : Set X) :
 public def cylinderTopFaceRelativeChains {X : Type} [TopologicalSpace X] (A : Set X) :=
   cwRelativeIntegralSingularChainMapOfPair (cylinderTopFacePairMap A)
 
-public theorem cylinderTopFace_mem_lowerSide_iff {X : Type} [TopologicalSpace X]
-    (A : Set X) (x : X) : (cylinderTopFaceMap A x).1 ∈ cylinderLowerSide A ↔ x ∈ A := by
-  change (1 : unitInterval) = 0 ∨ x ∈ A ↔ x ∈ A
-  simp
 
 end SphereSixComplex

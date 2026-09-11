@@ -59,20 +59,7 @@ public def orderThreeInvariantsEquivInt : orderThreePresentation.invariants ≃�
       orderThreeThreeTorusClutching_homologyOne)).trans
     orderThreeInvariantEquivInt
 
-@[simp]
-public theorem orderThreeCoinvariantsEquivInt_mk
-    (x : IntegralSingularHomology 2 (StdTorus 3)) :
-    orderThreeCoinvariantsEquivInt (Submodule.Quotient.mk x) =
-      standardThreeTorusHomologyTwo x 0 := by
-  unfold orderThreeCoinvariantsEquivInt
-  change orderThreeDegreeTwoCoinvariantsEquivInt
-    (Submodule.Quotient.mk (standardThreeTorusHomologyTwo x)) = _
-  rw [orderThreeDegreeTwoCoinvariantsEquivInt_mk]
 
-@[simp]
-public theorem orderThreeInvariantsEquivInt_apply (x : orderThreePresentation.invariants) :
-    orderThreeInvariantsEquivInt x = standardThreeTorusHomologyOne x.1 2 :=
-  rfl
 
 /-- The upper coinvariant of the order-four Wang sequence, in its positive integral coordinate. -/
 public noncomputable def orderFourCoinvariantsEquivInt :
@@ -99,20 +86,7 @@ public def orderFourInvariantsEquivInt : orderFourPresentation.invariants ≃ₗ
       orderFourThreeTorusClutching_homologyOne)).trans
     orderFourInvariantEquivInt
 
-@[simp]
-public theorem orderFourCoinvariantsEquivInt_mk
-    (x : IntegralSingularHomology 2 (StdTorus 3)) :
-    orderFourCoinvariantsEquivInt (Submodule.Quotient.mk x) =
-      standardThreeTorusHomologyTwo x 0 := by
-  unfold orderFourCoinvariantsEquivInt
-  change orderFourDegreeTwoCoinvariantsEquivInt
-    (Submodule.Quotient.mk (standardThreeTorusHomologyTwo x)) = _
-  rw [orderFourDegreeTwoCoinvariantsEquivInt_mk]
 
-@[simp]
-public theorem orderFourInvariantsEquivInt_apply (x : orderFourPresentation.invariants) :
-    orderFourInvariantsEquivInt x = standardThreeTorusHomologyOne x.1 2 :=
-  rfl
 
 /-- Negation as an integral linear equivalence. -/
 public def intNegLinearEquiv : ℤ ≃ₗ[ℤ] ℤ where
@@ -169,13 +143,6 @@ public noncomputable def orderThreeNegatedTotalAddEquiv
   rankOneTotalAddEquiv orderThreePresentation orderThreeCoinvariantsEquivInt
     orderThreeNegatedInvariantsEquivInt s hs
 
-@[simp]
-public theorem orderThreeTotalAddEquiv_section
-    (s : IntegralSingularHomology 2 (CircleMappingTorus orderThreeThreeTorusClutching))
-    (hs : orderThreeInvariantsEquivInt (orderThreePresentation.totalToInvariants s) = 1) :
-    orderThreeTotalAddEquiv s hs s = ![1, 0] :=
-  rankOneTotalAddEquiv_apply_generator orderThreePresentation orderThreeCoinvariantsEquivInt
-    orderThreeInvariantsEquivInt s hs
 
 @[simp]
 public theorem orderFourTotalAddEquiv_section
@@ -194,37 +161,6 @@ public theorem orderThreeNegatedTotalAddEquiv_section
   rankOneTotalAddEquiv_apply_generator orderThreePresentation orderThreeCoinvariantsEquivInt
     orderThreeNegatedInvariantsEquivInt s hs
 
-@[simp]
-public theorem orderThreeTotalAddEquiv_fiberCoordinateZero
-    (s : IntegralSingularHomology 2 (CircleMappingTorus orderThreeThreeTorusClutching))
-    (hs : orderThreeInvariantsEquivInt (orderThreePresentation.totalToInvariants s) = 1) :
-    orderThreeTotalAddEquiv s hs
-        (orderThreePresentation.inclusion
-          (standardThreeTorusHomologyTwo.symm (Pi.single 0 1))) =
-      ![0, 1] := by
-  rw [show orderThreePresentation.inclusion
-      (standardThreeTorusHomologyTwo.symm (Pi.single 0 1)) =
-      orderThreePresentation.coinvariantsToTotal
-        (Submodule.Quotient.mk
-          (standardThreeTorusHomologyTwo.symm (Pi.single 0 1))) by rfl]
-  change (rankOneTotalAddEquiv orderThreePresentation orderThreeCoinvariantsEquivInt
-    orderThreeInvariantsEquivInt s hs)
-      (orderThreePresentation.coinvariantsToTotal
-        (Submodule.Quotient.mk
-          (standardThreeTorusHomologyTwo.symm (Pi.single 0 1)))) = ![0, 1]
-  rw [rankOneTotalAddEquiv_coinvariantsToTotal]
-  funext i
-  fin_cases i
-  · rfl
-  · change orderThreeCoinvariantsEquivInt
-      (Submodule.Quotient.mk (standardThreeTorusHomologyTwo.symm (Pi.single 0 1))) = 1
-    unfold orderThreeCoinvariantsEquivInt
-    change orderThreeDegreeTwoCoinvariantsEquivInt
-      (Submodule.Quotient.mk (standardThreeTorusHomologyTwo
-        (standardThreeTorusHomologyTwo.symm (Pi.single 0 1)))) = 1
-    rw [standardThreeTorusHomologyTwo.apply_symm_apply,
-      orderThreeDegreeTwoCoinvariantsEquivInt_mk]
-    rfl
 
 @[simp]
 public theorem orderThreeNegatedTotalAddEquiv_fiberCoordinateZero

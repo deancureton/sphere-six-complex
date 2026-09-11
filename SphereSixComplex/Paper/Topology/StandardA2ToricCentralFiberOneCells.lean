@@ -751,12 +751,6 @@ private def constructedCentralChartOrigin
     rw [carrierHeight_inclusion, Metric.mem_ball, dist_zero_right]
     simpa [rawHeight] using W.localWitness.radius_pos⟩
 
-private theorem constructedCentralChartOrigin_height
-    (W : ActualPuncturedCuspCollarWitness N constructedModel) (a : ChartIndex) :
-    constructedModel.t (constructedCentralChartOrigin W a) = 0 := by
-  change carrierHeight (inclusion a 0) = 0
-  rw [carrierHeight_inclusion]
-  simp [rawHeight]
 
 private theorem constructedCentralChartOrigin_smul_coe
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
@@ -975,27 +969,7 @@ private theorem centralEdgeOrbitOf_injOn_closedBall
       exact centralEdgeOrbitOf_endpoints_ne W F hF upperV hneg hpos hxy
     · exact hyNeg.symm
 
-private def centralEdgeClosedBallMapOf
-    (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    (F : (Fin 1 → ℝ) → Carrier) (hF : ∀ x, carrierHeight (F x) = 0) :
-    {x : Fin 1 → ℝ // x ∈ Metric.closedBall 0 1} →
-      ActualLocalCuspCentralOrbitQuotient W :=
-  fun x ↦ centralEdgeOrbitOf W F hF x
 
-private theorem centralEdgeClosedBallMapOf_isClosedEmbedding
-    (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    (F : (Fin 1 → ℝ) → Carrier) (hF : ∀ x, carrierHeight (F x) = 0)
-    (hcontinuous : Continuous (centralEdgeOrbitOf W F hF))
-    (hinj : Set.InjOn (centralEdgeOrbitOf W F hF) (Metric.closedBall 0 1)) :
-    Topology.IsClosedEmbedding (centralEdgeClosedBallMapOf W F hF) := by
-  let _ : T2Space (ActualLocalCuspFilling W) :=
-    SphereSixComplex.Geometry.PaperAnalyticData.actualLocalCuspFilling_t2 W
-  let _ : T2Space (ActualLocalCuspCentralOrbitQuotient W) :=
-    (actualLocalCuspCentralOrbitMap_isEmbedding W).t2Space
-  apply (hcontinuous.comp continuous_subtype_val).isClosedEmbedding
-  intro x y hxy
-  apply Subtype.ext
-  exact hinj x.property y.property hxy
 
 private theorem centralOrbitPartialEquiv_continuousOn_symm
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
@@ -2171,12 +2145,6 @@ private theorem centralPhaseDiskCayley_re_pos
   rw [hre]
   exact div_pos (sub_pos.mpr hnormSq) hden
 
-private theorem norm_eq_one_of_mem_closedBall_not_ball
-    {x : Fin 2 → ℝ} (hx : x ∈ Metric.closedBall 0 1)
-    (hxb : x ∉ Metric.ball 0 1) : ‖x‖ = 1 := by
-  rw [Metric.mem_closedBall, dist_zero_right] at hx
-  rw [Metric.mem_ball, dist_zero_right] at hxb
-  exact le_antisymm hx (le_of_not_gt hxb)
 
 private theorem centralPhaseDiskCayley_re_eq_zero_of_norm_eq_one
     (x : Fin 2 → ℝ) (hxnorm : ‖x‖ = 1)
@@ -2199,31 +2167,6 @@ private theorem centralPhaseDiskCayley_re_eq_zero_of_norm_eq_one
     Complex.sub_re, Complex.sub_im]
   nlinarith
 
-private theorem centralPhaseDiskUpperCayley_re_pos
-    {x : Fin 2 → ℝ} (hx : x ∈ Metric.ball 0 1) :
-    0 < ((1 - centralPhaseDiskComplex x) /
-      (1 + centralPhaseDiskComplex x)).re := by
-  let z := centralPhaseDiskComplex x
-  have hnorm : ‖z‖ < 1 := centralPhaseDiskComplex_norm_lt_one hx
-  have hplus : (1 : ℂ) + z ≠ 0 := by
-    intro h
-    have hz : z = -1 := eq_neg_of_add_eq_zero_right h
-    rw [hz] at hnorm
-    norm_num at hnorm
-  have hnormSq : Complex.normSq z < 1 := by
-    rw [← Complex.sq_norm]
-    nlinarith [norm_nonneg z]
-  have hden : 0 < Complex.normSq (1 + z) := Complex.normSq_pos.mpr hplus
-  have hre : ((1 - z) / (1 + z)).re =
-      (1 - Complex.normSq z) / Complex.normSq (1 + z) := by
-    rw [Complex.div_re]
-    field_simp [ne_of_gt hden]
-    rw [Complex.normSq_apply]
-    simp only [Complex.add_re, Complex.one_re, Complex.add_im, Complex.one_im,
-      Complex.sub_re, Complex.sub_im]
-    ring
-  rw [hre]
-  exact div_pos (sub_pos.mpr hnormSq) hden
 
 private theorem centralPhaseDiskUpperCayley_re_eq_zero_of_norm_eq_one
     (x : Fin 2 → ℝ) (hxnorm : ‖x‖ = 1)
@@ -2274,53 +2217,7 @@ private theorem centralPhaseDiskUpperCoordinate_eq_im_sq_of_norm_eq_one
   · simp [pow_two, Complex.mul_re, hc]
   · simp [pow_two, Complex.mul_im, hc]
 
-private theorem centralPhaseDiskLowerCoordinate_ne_of_norm_eq_one_of_mem_ball
-    (x y : Fin 2 → ℝ) (hxnorm : ‖x‖ = 1)
-    (hxminus : (1 : ℂ) - centralPhaseDiskComplex x ≠ 0)
-    (hy : y ∈ Metric.ball 0 1) :
-    centralPhaseDiskLowerCoordinate x ≠ centralPhaseDiskLowerCoordinate y := by
-  intro hxy
-  let cx := (1 + centralPhaseDiskComplex x) / (1 - centralPhaseDiskComplex x)
-  let cy := (1 + centralPhaseDiskComplex y) / (1 - centralPhaseDiskComplex y)
-  have hsq : cx ^ 2 = cy ^ 2 := by
-    simpa [centralPhaseDiskLowerCoordinate, cx, cy] using neg_inj.mp hxy
-  have hfac : (cx - cy) * (cx + cy) = 0 := by
-    calc
-      (cx - cy) * (cx + cy) = cx ^ 2 - cy ^ 2 := by ring
-      _ = 0 := sub_eq_zero.mpr hsq
-  have hcx : cx.re = 0 :=
-    centralPhaseDiskCayley_re_eq_zero_of_norm_eq_one x hxnorm hxminus
-  have hcy : 0 < cy.re := centralPhaseDiskCayley_re_pos hy
-  rcases mul_eq_zero.mp hfac with hsame | hopp
-  · have hre := congrArg Complex.re (sub_eq_zero.mp hsame)
-    linarith
-  · have hre := congrArg Complex.re (eq_neg_of_add_eq_zero_left hopp)
-    have hre' : cx.re = -cy.re := by simpa using hre
-    linarith
 
-private theorem centralPhaseDiskUpperCoordinate_ne_of_norm_eq_one_of_mem_ball
-    (x y : Fin 2 → ℝ) (hxnorm : ‖x‖ = 1)
-    (hxplus : (1 : ℂ) + centralPhaseDiskComplex x ≠ 0)
-    (hy : y ∈ Metric.ball 0 1) :
-    centralPhaseDiskUpperCoordinate x ≠ centralPhaseDiskUpperCoordinate y := by
-  intro hxy
-  let cx := (1 - centralPhaseDiskComplex x) / (1 + centralPhaseDiskComplex x)
-  let cy := (1 - centralPhaseDiskComplex y) / (1 + centralPhaseDiskComplex y)
-  have hsq : cx ^ 2 = cy ^ 2 := by
-    simpa [centralPhaseDiskUpperCoordinate, cx, cy] using neg_inj.mp hxy
-  have hfac : (cx - cy) * (cx + cy) = 0 := by
-    calc
-      (cx - cy) * (cx + cy) = cx ^ 2 - cy ^ 2 := by ring
-      _ = 0 := sub_eq_zero.mpr hsq
-  have hcx : cx.re = 0 :=
-    centralPhaseDiskUpperCayley_re_eq_zero_of_norm_eq_one x hxnorm hxplus
-  have hcy : 0 < cy.re := centralPhaseDiskUpperCayley_re_pos hy
-  rcases mul_eq_zero.mp hfac with hsame | hopp
-  · have hre := congrArg Complex.re (sub_eq_zero.mp hsame)
-    linarith
-  · have hre := congrArg Complex.re (eq_neg_of_add_eq_zero_left hopp)
-    have hre' : cx.re = -cy.re := by simpa using hre
-    linarith
 
 private theorem centralPhaseDiskCayley_injectiveOn :
     Set.InjOn
@@ -2424,53 +2321,6 @@ public theorem constructedCentralPhaseFaceZeroCarrier_injOn :
       apply inv_injective
       rwa [← hxrec.2, ← hyrec.2]
 
-private theorem constructedCentralPhaseFaceZeroCarrier_ne_of_mem_boundary
-    (x y : Fin 2 → ℝ) (hx : x ∈ Metric.closedBall 0 1)
-    (hxb : x ∉ Metric.ball 0 1) (hy : y ∈ Metric.ball 0 1) :
-    constructedCentralPhaseFaceZeroCarrier x ≠
-      constructedCentralPhaseFaceZeroCarrier y := by
-  have hxnorm := norm_eq_one_of_mem_closedBall_not_ball hx hxb
-  by_cases hx0 : x 0 ≤ 0
-  · have hxminus := centralPhaseDisk_one_sub_ne_zero_of_nonpos x hx0
-    have hLowerNe :=
-      centralPhaseDiskLowerCoordinate_ne_of_norm_eq_one_of_mem_ball
-        x y hxnorm hxminus hy
-    by_cases hy0 : y 0 ≤ 0
-    · intro hxy
-      simp only [constructedCentralPhaseFaceZeroCarrier, hx0, hy0] at hxy
-      apply hLowerNe
-      have hraw := (inclusion_isOpenEmbedding (false, 0)).injective hxy
-      have hcoord := congrFun hraw 0
-      simpa [lowerAxisZero] using hcoord
-    · intro hxy
-      simp only [constructedCentralPhaseFaceZeroCarrier, hx0, hy0] at hxy
-      have he := (inclusion_lowerAxisZero_eq_upperAxisTwo_iff 0 _ _).mp hxy
-      have hxplus : (1 : ℂ) + centralPhaseDiskComplex x ≠ 0 := by
-        intro hplus
-        apply he.1
-        simp [centralPhaseDiskLowerCoordinate, hplus]
-      have hxrec := centralPhaseDisk_coordinates_reciprocal x hxplus hxminus
-      exact centralPhaseDiskUpperCoordinate_ne_of_norm_eq_one_of_mem_ball
-        x y hxnorm hxplus hy (hxrec.2.trans he.2.symm)
-  · have hxplus := centralPhaseDisk_one_add_ne_zero_of_nonneg x
-      (le_of_lt (lt_of_not_ge hx0))
-    have hUpperNe :=
-      centralPhaseDiskUpperCoordinate_ne_of_norm_eq_one_of_mem_ball
-        x y hxnorm hxplus hy
-    by_cases hy0 : y 0 ≤ 0
-    · intro hxy
-      simp only [constructedCentralPhaseFaceZeroCarrier, hx0, hy0] at hxy
-      have he := (inclusion_lowerAxisZero_eq_upperAxisTwo_iff 0 _ _).mp hxy.symm
-      have hyrec := centralPhaseDisk_coordinates_reciprocal y
-        (centralPhaseDisk_one_add_ne_zero_of_ball hy)
-        (centralPhaseDisk_one_sub_ne_zero_of_ball hy)
-      exact hUpperNe (he.2.trans hyrec.2.symm)
-    · intro hxy
-      simp only [constructedCentralPhaseFaceZeroCarrier, hx0, hy0] at hxy
-      apply hUpperNe
-      have hraw := (inclusion_isOpenEmbedding (true, 0)).injective hxy
-      have hcoord := congrFun hraw 2
-      simpa [upperAxisTwo] using hcoord
 
 private theorem finOne_mem_closedBall_of_bounds (x : Fin 1 → ℝ)
     (hlower : -1 ≤ x 0) (hupper : x 0 ≤ 1) :
@@ -2730,24 +2580,6 @@ public theorem constructedCentralPhaseFaceZeroOrbit_continuousOn_closedBall
     (constructedCentralPhaseFaceZeroPoint_continuousOn_closedBall W)
       (fun _ _ ↦ Set.mem_univ _)
 
-public theorem constructedCentralPhaseFaceZeroOrbit_mapsTo_edgeZero
-    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
-    MapsTo (constructedCentralPhaseFaceZeroOrbit W) (Metric.sphere 0 1)
-      (constructedCentralEdgeZeroOrbit W '' Metric.closedBall 0 1) := by
-  intro x hx
-  obtain ⟨t, ht, hcarrier⟩ :=
-    constructedCentralPhaseFaceZeroCarrier_boundary_mem_edgeZero x hx
-  refine ⟨t, ht, ?_⟩
-  let _ := actualLocalCuspQuotientAction W
-  let S := actualLocalCuspCentralSubMulAction W
-  let _ : MulAction (Multiplicative ParameterLattice) S := inferInstance
-  change Quotient.mk _ (constructedCentralEdgeZeroPoint W t) =
-    Quotient.mk _ (constructedCentralPhaseFaceZeroPoint W x)
-  apply congrArg (Quotient.mk (MulAction.orbitRel
-    (Multiplicative ParameterLattice) S))
-  apply Subtype.ext
-  apply Subtype.ext
-  exact hcarrier
 
 public def constructedCentralOneSkeleton
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
@@ -2755,19 +2587,6 @@ public def constructedCentralOneSkeleton
   (⋃ i : Fin 2, constructedCentralZeroCell W i '' Metric.closedBall 0 1) ∪
     (⋃ i : Fin 3, constructedCentralOneCell W i '' Metric.closedBall 0 1)
 
-public theorem constructedCentralPhaseFaceZeroOrbit_mapsTo_oneSkeleton
-    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
-    MapsTo (constructedCentralPhaseFaceZeroOrbit W) (Metric.sphere 0 1)
-      (constructedCentralOneSkeleton W) := by
-  intro x hx
-  have hedge := constructedCentralPhaseFaceZeroOrbit_mapsTo_edgeZero W hx
-  apply Or.inr
-  refine Set.mem_iUnion.mpr ⟨0, ?_⟩
-  obtain ⟨t, ht, heq⟩ := hedge
-  refine ⟨t, ht, ?_⟩
-  change constructedCentralEdgeZeroOrbit W t =
-    constructedCentralPhaseFaceZeroOrbit W x
-  exact heq
 
 public theorem constructedCentralPhaseFaceZeroOrbit_injOn
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
@@ -2791,185 +2610,9 @@ public theorem constructedCentralPhaseFaceZeroOrbit_injOn
       (constructedCentralPhaseFaceZeroCarrier_componentSupport y hy) hrel
   exact constructedCentralPhaseFaceZeroCarrier_injOn hx hy hcoe
 
-private theorem constructedCentralPhaseFaceZeroOrbit_ne_of_mem_boundary
-    (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    (x : Fin 2 → ℝ) (hx : x ∈ Metric.closedBall 0 1)
-    (hxb : x ∉ Metric.ball 0 1) (y : Fin 2 → ℝ)
-    (hy : y ∈ Metric.ball 0 1) :
-    constructedCentralPhaseFaceZeroOrbit W x ≠
-      constructedCentralPhaseFaceZeroOrbit W y := by
-  intro hxy
-  let _ := actualLocalCuspQuotientAction W
-  let S := actualLocalCuspCentralSubMulAction W
-  let _ : MulAction (Multiplicative ParameterLattice) S := inferInstance
-  have hrel : MulAction.orbitRel (Multiplicative ParameterLattice) S
-      (constructedCentralPhaseFaceZeroPoint W x)
-      (constructedCentralPhaseFaceZeroPoint W y) :=
-    @Quotient.exact S (MulAction.orbitRel (Multiplicative ParameterLattice) S)
-      (constructedCentralPhaseFaceZeroPoint W x)
-      (constructedCentralPhaseFaceZeroPoint W y) hxy
-  have hySupport := constructedCentralPhaseFaceZeroCarrier_componentSupport y hy
-  have hcard : ({e₁, e₂} : Set ToricLattice).ncard = 2 := by
-    rw [Set.ncard_insert_of_notMem]
-    · simp
-    · simp [e₁, e₂]
-  by_cases hx0 : x 0 ≤ 0
-  · by_cases hxcoord : centralPhaseDiskLowerCoordinate x = 0
-    · have hn := centralOrbitRel_componentSupport_ncard_eq W
-          (constructedCentralPhaseFaceZeroPoint W x)
-          (constructedCentralPhaseFaceZeroPoint W y) hrel
-      change (componentSupport constructedModel
-          (constructedCentralPhaseFaceZeroCarrier x)).ncard =
-        (componentSupport constructedModel
-          (constructedCentralPhaseFaceZeroCarrier y)).ncard at hn
-      have hxcarrier : constructedCentralPhaseFaceZeroCarrier x =
-          inclusion (false, 0) 0 := by
-        simp only [constructedCentralPhaseFaceZeroCarrier, hx0, ↓reduceIte, hxcoord]
-        congr 1
-        funext i
-        fin_cases i <;> simp [lowerAxisZero]
-      rw [hxcarrier, carrierOrigin_componentSupport_ncard, hySupport, hcard] at hn
-      omega
-    · have hxSupport :
-          componentSupport constructedModel
-              (constructedCentralPhaseFaceZeroCarrier x) =
-            ({e₁, e₂} : Set ToricLattice) := by
-        simp only [constructedCentralPhaseFaceZeroCarrier, hx0]
-        ext v
-        change inclusion (false, 0)
-            (lowerAxisZero (centralPhaseDiskLowerCoordinate x)) ∈
-              carrierCentralComponent v ↔ v ∈ {e₁, e₂}
-        rw [lowerAxisZero_component_iff _ hxcoord]
-        simp
-      have hcoe := centralOrbitRel_coe_eq_of_same_componentSupport W
-        ({e₁, e₂} : Set ToricLattice) ((Set.finite_singleton e₂).insert e₁)
-        ⟨e₁, by simp⟩
-        (constructedCentralPhaseFaceZeroPoint W x)
-        (constructedCentralPhaseFaceZeroPoint W y) hxSupport hySupport hrel
-      exact constructedCentralPhaseFaceZeroCarrier_ne_of_mem_boundary
-        x y hx hxb hy hcoe
-  · by_cases hxcoord : centralPhaseDiskUpperCoordinate x = 0
-    · have hn := centralOrbitRel_componentSupport_ncard_eq W
-          (constructedCentralPhaseFaceZeroPoint W x)
-          (constructedCentralPhaseFaceZeroPoint W y) hrel
-      change (componentSupport constructedModel
-          (constructedCentralPhaseFaceZeroCarrier x)).ncard =
-        (componentSupport constructedModel
-          (constructedCentralPhaseFaceZeroCarrier y)).ncard at hn
-      have hxcarrier : constructedCentralPhaseFaceZeroCarrier x =
-          inclusion (true, 0) 0 := by
-        simp only [constructedCentralPhaseFaceZeroCarrier, hx0, ↓reduceIte, hxcoord]
-        congr 1
-        funext i
-        fin_cases i <;> simp [upperAxisTwo]
-      rw [hxcarrier, carrierOrigin_componentSupport_ncard, hySupport, hcard] at hn
-      omega
-    · have hxSupport :
-          componentSupport constructedModel
-              (constructedCentralPhaseFaceZeroCarrier x) =
-            ({e₁, e₂} : Set ToricLattice) := by
-        simp only [constructedCentralPhaseFaceZeroCarrier, hx0]
-        ext v
-        change inclusion (true, 0)
-            (upperAxisTwo (centralPhaseDiskUpperCoordinate x)) ∈
-              carrierCentralComponent v ↔ v ∈ {e₁, e₂}
-        rw [upperAxisTwo_component_iff _ hxcoord]
-        simp
-      have hcoe := centralOrbitRel_coe_eq_of_same_componentSupport W
-        ({e₁, e₂} : Set ToricLattice) ((Set.finite_singleton e₂).insert e₁)
-        ⟨e₁, by simp⟩
-        (constructedCentralPhaseFaceZeroPoint W x)
-        (constructedCentralPhaseFaceZeroPoint W y) hxSupport hySupport hrel
-      exact constructedCentralPhaseFaceZeroCarrier_ne_of_mem_boundary
-        x y hx hxb hy hcoe
 
-private theorem isEmbedding_restrict_of_compact_boundary_separation
-    {X Y : Type*} [TopologicalSpace X] [T2Space X]
-    [TopologicalSpace Y] [T2Space Y]
-    (f : X → Y) (s K : Set X) (hK : IsCompact K) (hsK : s ⊆ K)
-    (hf : ContinuousOn f K) (hinj : Set.InjOn f s)
-    (hboundary : Disjoint (f '' (K \ s)) (f '' s)) :
-    Topology.IsEmbedding (s.domRestrict f) := by
-  let t : Set Y := f '' s
-  let g : s → t := Set.codRestrict (s.domRestrict f) t (fun x ↦ ⟨x, x.2, rfl⟩)
-  have hfs : Continuous (s.domRestrict f) :=
-    continuousOn_iff_continuous_domRestrict.mp (hf.mono hsK)
-  have hgcont : Continuous g := hfs.codRestrict _
-  have hginj : Function.Injective g := by
-    intro x y hxy
-    apply Subtype.ext
-    apply hinj x.2 y.2
-    exact congrArg Subtype.val hxy
-  have hgclosed : IsClosedMap g := by
-    intro A hA
-    let L : Set X := closure (Subtype.val '' A)
-    have hKclosed : IsClosed K := hK.isClosed
-    have hvalAK : Subtype.val '' A ⊆ K := by
-      rintro x ⟨a, ha, rfl⟩
-      exact hsK a.2
-    have hLK : L ⊆ K := closure_minimal hvalAK hKclosed
-    have hLcompact : IsCompact L :=
-      hK.of_isClosed_subset isClosed_closure hLK
-    have hfL : ContinuousOn f L := hf.mono hLK
-    have hfLclosed : IsClosed (f '' L) :=
-      (hLcompact.image_of_continuousOn hfL).isClosed
-    apply isClosed_induced_iff.mpr
-    refine ⟨f '' L, hfLclosed, ?_⟩
-    ext z
-    constructor
-    · rintro ⟨x, hxL, hfx⟩
-      have hxs : x ∈ s := by
-        by_contra hxs
-        have hxBoundary : f x ∈ f '' (K \ s) := ⟨x, ⟨hLK hxL, hxs⟩, rfl⟩
-        have hzInterior : f x ∈ f '' s := by
-          rw [hfx]
-          exact z.2
-        exact Set.disjoint_left.mp hboundary hxBoundary hzInterior
-      have hxClosure : (⟨x, hxs⟩ : s) ∈ closure A :=
-        closure_subtype.mpr hxL
-      rw [hA.closure_eq] at hxClosure
-      refine ⟨⟨x, hxs⟩, hxClosure, ?_⟩
-      apply Subtype.ext
-      exact hfx
-    · rintro ⟨x, hxA, rfl⟩
-      refine ⟨x, subset_closure ⟨x, hxA, rfl⟩, rfl⟩
-  have hg : Topology.IsEmbedding g :=
-    (Topology.IsClosedEmbedding.of_continuous_injective_isClosedMap
-      hgcont hginj hgclosed).isEmbedding
-  have hcomp := Topology.IsEmbedding.subtypeVal.comp hg
-  change Topology.IsEmbedding (fun x : s ↦ f x)
-  convert hcomp using 1
-  funext x
-  rfl
 
-private theorem constructedCentralPhaseFaceZeroOrbit_boundary_disjoint
-    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
-    Disjoint
-      (constructedCentralPhaseFaceZeroOrbit W ''
-        (Metric.closedBall 0 1 \ Metric.ball 0 1))
-      (constructedCentralPhaseFaceZeroOrbit W '' Metric.ball 0 1) := by
-  rw [Set.disjoint_left]
-  intro z
-  rintro ⟨x, ⟨hx, hxb⟩, rfl⟩ ⟨y, hy, hxy⟩
-  exact constructedCentralPhaseFaceZeroOrbit_ne_of_mem_boundary
-    W x hx hxb y hy hxy.symm
 
-public theorem constructedCentralPhaseFaceZeroOrbit_isEmbedding
-    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
-    Topology.IsEmbedding
-      ((Metric.ball (0 : Fin 2 → ℝ) 1).domRestrict
-        (constructedCentralPhaseFaceZeroOrbit W)) := by
-  let _ : T2Space (ActualLocalCuspFilling W) :=
-    SphereSixComplex.Geometry.PaperAnalyticData.actualLocalCuspFilling_t2 W
-  let _ : T2Space (ActualLocalCuspCentralOrbitQuotient W) :=
-    (actualLocalCuspCentralOrbitMap_isEmbedding W).t2Space
-  exact isEmbedding_restrict_of_compact_boundary_separation
-    (constructedCentralPhaseFaceZeroOrbit W)
-    (Metric.ball 0 1) (Metric.closedBall 0 1) (isCompact_closedBall 0 1)
-    Metric.ball_subset_closedBall
-    (constructedCentralPhaseFaceZeroOrbit_continuousOn_closedBall W)
-    (constructedCentralPhaseFaceZeroOrbit_injOn W)
-    (constructedCentralPhaseFaceZeroOrbit_boundary_disjoint W)
 
 /-- The first genuine two-dimensional phase characteristic map. -/
 public def constructedCentralPhaseTwoCellZero
@@ -2978,44 +2621,13 @@ public def constructedCentralPhaseTwoCellZero
   Set.InjOn.toPartialEquiv (constructedCentralPhaseFaceZeroOrbit W) (Metric.ball 0 1)
     (constructedCentralPhaseFaceZeroOrbit_injOn W)
 
-public theorem constructedCentralPhaseTwoCellZero_source_eq
-    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
-    (constructedCentralPhaseTwoCellZero W).source = Metric.ball 0 1 := rfl
 
 public theorem constructedCentralPhaseTwoCellZero_continuousOn
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     ContinuousOn (constructedCentralPhaseTwoCellZero W) (Metric.closedBall 0 1) :=
   constructedCentralPhaseFaceZeroOrbit_continuousOn_closedBall W
 
-public theorem constructedCentralPhaseTwoCellZero_continuousOn_symm
-    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
-    ContinuousOn (constructedCentralPhaseTwoCellZero W).symm
-      (constructedCentralPhaseTwoCellZero W).target := by
-  let e := constructedCentralPhaseTwoCellZero W
-  let lift : e.target → Metric.ball (0 : Fin 2 → ℝ) 1 :=
-    fun q ↦ ⟨e.symm q, e.map_target q.2⟩
-  have hlift : Continuous lift := by
-    apply (constructedCentralPhaseFaceZeroOrbit_isEmbedding W).continuous_iff.mpr
-    have heq :
-        (Metric.ball (0 : Fin 2 → ℝ) 1).domRestrict
-            (constructedCentralPhaseFaceZeroOrbit W) ∘ lift =
-          (Subtype.val : e.target → ActualLocalCuspCentralOrbitQuotient W) := by
-      funext q
-      exact e.right_inv q.2
-    rw [heq]
-    exact continuous_subtype_val
-  rw [continuousOn_iff_continuous_domRestrict]
-  change Continuous (fun q : e.target ↦ (lift q : Fin 2 → ℝ))
-  exact continuous_subtype_val.comp hlift
 
-public theorem constructedCentralPhaseTwoCellZero_mapsTo_oneSkeleton
-    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
-    MapsTo (constructedCentralPhaseTwoCellZero W) (Metric.sphere 0 1)
-      (constructedCentralOneSkeleton W) := by
-  intro x hx
-  change constructedCentralPhaseFaceZeroOrbit W x ∈
-    constructedCentralOneSkeleton W
-  exact constructedCentralPhaseFaceZeroOrbit_mapsTo_oneSkeleton W hx
 end SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 
 end

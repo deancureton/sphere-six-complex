@@ -200,26 +200,8 @@ public noncomputable def paperPuncturedGlobalFamilyAffineCorePiOneData
     exact A.geometricCentralRhoTwo_conjugates_correctedTranslation a
   generators_generate := A.cuspGeometricCorePiOneData.generators_generate
 
-@[simp]
-public theorem paperPuncturedGlobalFamilyAffineCorePiOneData_translation
-    (A : PaperAnalyticData) :
-    (paperPuncturedGlobalFamilyAffineCorePiOneData A).translation =
-      A.correctedActualCuspCentralTranslation := by
-  rfl
 
-@[simp]
-public theorem paperPuncturedGlobalFamilyAffineCorePiOneData_rhoOne
-    (A : PaperAnalyticData) :
-    (paperPuncturedGlobalFamilyAffineCorePiOneData A).rhoOne =
-      A.geometricCentralRhoOne := by
-  rfl
 
-@[simp]
-public theorem paperPuncturedGlobalFamilyAffineCorePiOneData_rhoTwo
-    (A : PaperAnalyticData) :
-    (paperPuncturedGlobalFamilyAffineCorePiOneData A).rhoTwo =
-      A.geometricCentralRhoTwo := by
-  rfl
 
 private theorem regularFamilyTranslationAtZero_injective
     (A : PaperAnalyticData) :

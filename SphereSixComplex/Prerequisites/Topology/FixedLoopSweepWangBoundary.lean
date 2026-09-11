@@ -116,20 +116,6 @@ public noncomputable def fixedLoopSweepClass
     positiveCircleProductGenerator
 
 
-private theorem opensIntersectionHomologyIso_hom_apply
-    {X : TopCat} (U V : Opens X) (n : ℕ)
-    (x : IntegralSingularHomology n ((U : Set X) ∩ (V : Set X) : Set X)) :
-    ConcreteCategory.hom
-        (BinaryOpenCover.opensIntersectionHomologyIso U V n).hom x = x := by
-  have hhom :
-      (TopCat.isoOfHomeo (BinaryOpenCover.opensIntersectionHomeomorph U V)).hom =
-        𝟙 (TopCat.of ((U : Set X) ∩ (V : Set X) : Set X)) := by
-    ext y
-    rfl
-  have hmap := congrArg (BinaryOpenCover.integralHomologyFunctor n).map hhom
-  rw [(BinaryOpenCover.integralHomologyFunctor n).map_id] at hmap
-  have hfun := congrArg ConcreteCategory.hom hmap
-  exact DFunLike.congr_fun hfun x
 
 private theorem opensIntersectionHomologyIso_inv_apply
     {X : TopCat} (U V : Opens X) (n : ℕ)
@@ -410,31 +396,7 @@ public theorem fixedLoopCylinderBoundary_pullback_naturality
     (fixedLoopCylinderPullbackOpenCover phi c)
     (coverOpen (fun _ : Unit ↦ phi))
 
-public theorem fixedLoopCylinderPullbackHomologyComparison_heq
-    {G : Type} [TopologicalSpace G]
-    (phi : G ≃ₜ G) (c : FixedTopologicalCircle phi) :
-    HEq (fixedLoopCylinderPullbackHomologyComparison phi c)
-      (coverHomologyComparison
-        (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1))) := by
-  simp only [fixedLoopCylinderPullbackHomologyComparison]
-  unfold coverHomologyComparison
-  congr
-  · exact fixedLoopCylinderTopCatMap_vertexOpen phi c
-  · exact fixedLoopCylinderTopCatMap_edgeOpen phi c
-  · exact proof_irrel_heq _ _
 
-public theorem fixedLoopCylinderPullbackBoundary_heq
-    {G : Type} [TopologicalSpace G]
-    (phi : G ≃ₜ G) (c : FixedTopologicalCircle phi) (n : ℕ) :
-    HEq ((fixedLoopCylinderPullbackHomologyComparison phi c).boundary n)
-      ((coverHomologyComparison
-        (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1))).boundary n) := by
-  unfold fixedLoopCylinderPullbackHomologyComparison coverHomologyComparison
-  congr
-  all_goals first
-    | exact fixedLoopCylinderTopCatMap_vertexOpen phi c
-    | exact fixedLoopCylinderTopCatMap_edgeOpen phi c
-    | exact proof_irrel_heq _ _
 
 public theorem identityMappingTorusBoundary_positiveCircleProductGenerator :
     (circleMappingTorusWangPresentationOfCover
@@ -696,32 +658,6 @@ public theorem fixedLoopCylinderOverlapMap_highPt_homology
       rw [fixedLoopCylinderOverlapMap_highPt]
     _ = _ := hright
 
-public theorem fixedLoopCylinderPullbackOverlap_membership_fun
-    {G : Type} [TopologicalSpace G]
-    (phi : G ≃ₜ G) (c : FixedTopologicalCircle phi) :
-    (fun z : CircleMappingTorus (Homeomorph.refl (StdTorus 1)) ↦
-      z ∈
-        (Opens.map (fixedLoopCylinderTopCatMap phi c)).obj
-            (coverVertexOpen (fun _ : Unit ↦ phi)) ⊓
-          (Opens.map (fixedLoopCylinderTopCatMap phi c)).obj
-            (coverEdgeOpen (fun _ : Unit ↦ phi))) =
-      fun z ↦ z ∈
-        (vertexPiece (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1)) ∩
-          edgePiece (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1))) := by
-  funext z
-  apply propext
-  change
-    (fixedLoopCylinderMappingTorusMap phi c z ∈
-        vertexPiece (fun _ : Unit ↦ phi) ∧
-      fixedLoopCylinderMappingTorusMap phi c z ∈
-        edgePiece (fun _ : Unit ↦ phi)) ↔
-      z ∈ vertexPiece
-          (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1)) ∧
-        z ∈ edgePiece
-          (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1))
-  exact and_congr
-    (fixedLoopCylinderMappingTorusMap_mem_vertexPiece_iff phi c z)
-    (fixedLoopCylinderMappingTorusMap_mem_edgePiece_iff phi c z)
 
 public def fixedLoopCylinderSourceOverlapToPullback
     {G : Type} [TopologicalSpace G]
@@ -741,15 +677,6 @@ public def fixedLoopCylinderSourceOverlapToPullback
         (fixedLoopCylinderMappingTorusMap_mem_edgePiece_iff phi c z).2 z.2.2⟩⟩
       continuous_toFun := continuous_subtype_val.subtype_mk _ }
 
-public theorem fixedLoopCylinderSourceOverlapToPullback_eq_refinement
-    {G : Type} [TopologicalSpace G]
-    (phi : G ≃ₜ G) (c : FixedTopologicalCircle phi) :
-    fixedLoopCylinderSourceOverlapToPullback phi c =
-      BinaryOpenCover.openIntersectionRefinementMap
-        (le_of_eq (fixedLoopCylinderTopCatMap_vertexOpen phi c).symm)
-        (le_of_eq (fixedLoopCylinderTopCatMap_edgeOpen phi c).symm) := by
-  ext z
-  rfl
 
 public theorem fixedLoopCylinderLegacyOverlap_comp_refinement
     {G : Type} [TopologicalSpace G]
@@ -1074,58 +1001,7 @@ public theorem fixedLoopCylinderLegacyBoundary_naturality
   have hfun := congrArg ConcreteCategory.hom hcat
   exact DFunLike.congr_fun hfun x
 
-public theorem fixedLoopCylinderBoundary_refinement_pullback_naturality
-    {G : Type} [TopologicalSpace G]
-    (phi : G ≃ₜ G) (c : FixedTopologicalCircle phi) (n : ℕ) :
-    (coverHomologyComparison
-          (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1))).boundary n ≫
-        BinaryOpenCover.openIntersectionRefinementHomologyMap
-          (le_of_eq (fixedLoopCylinderTopCatMap_vertexOpen phi c).symm)
-          (le_of_eq (fixedLoopCylinderTopCatMap_edgeOpen phi c).symm) n ≫
-        BinaryOpenCover.openIntersectionPullbackHomologyMap
-          (fixedLoopCylinderTopCatMap phi c)
-          (coverVertexOpen (fun _ : Unit ↦ phi))
-          (coverEdgeOpen (fun _ : Unit ↦ phi)) n =
-      (BinaryOpenCover.integralHomologyFunctor (n + 1)).map
-          (fixedLoopCylinderTopCatMap phi c) ≫
-        (coverHomologyComparison
-          (fun _ : Unit ↦ phi)).boundary n := by
-  rw [← Category.assoc, fixedLoopCylinderSourceBoundary_toPullback]
-  exact fixedLoopCylinderBoundary_pullback_naturality phi c n
 
-public theorem fixedLoopCylinderPullbackIntersection_lowPt_homology
-    {G : Type} [TopologicalSpace G]
-    (phi : G ≃ₜ G) (c : FixedTopologicalCircle phi) (n : ℕ)
-    (x : IntegralSingularHomology n (StdTorus 1)) :
-    ConcreteCategory.hom
-        ((BinaryOpenCover.integralHomologyFunctor n).map
-            (fixedLoopCylinderSourceOverlapToPullback phi c) ≫
-          BinaryOpenCover.openIntersectionPullbackHomologyMap
-            (fixedLoopCylinderTopCatMap phi c)
-            (coverVertexOpen (fun _ : Unit ↦ phi))
-            (coverEdgeOpen (fun _ : Unit ↦ phi)) n)
-        (integralSingularHomologyMap n
-          (overlapPt
-            (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1))
-            uQuarter_mem_overlapBand ()) x) =
-      integralSingularHomologyMap n
-        (overlapPt (fun _ : Unit ↦ phi)
-          uQuarter_mem_overlapBand ())
-        (integralSingularHomologyMap n c.1 x) := by
-  have hcat := fixedLoopCylinderSourceOverlapToPullback_homology phi c n
-  have hfun := congrArg ConcreteCategory.hom hcat
-  have happ := DFunLike.congr_fun hfun
-    (integralSingularHomologyMap n
-      (overlapPt
-        (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1))
-        uQuarter_mem_overlapBand ()) x)
-  change _ = integralSingularHomologyMap n (fixedLoopCylinderOverlapMap phi c)
-      (integralSingularHomologyMap n
-        (overlapPt
-          (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1))
-          uQuarter_mem_overlapBand ()) x) at happ
-  rw [fixedLoopCylinderOverlapMap_lowPt_homology] at happ
-  exact happ
 
 /-- The Wang boundary of the torus swept out by a pointwise-fixed loop is the homology class of
 that loop, with the sign fixed by the positive base-circle convention. -/

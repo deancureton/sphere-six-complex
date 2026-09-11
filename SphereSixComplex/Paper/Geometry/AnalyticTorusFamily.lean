@@ -20,110 +20,16 @@ public noncomputable section
 
 variable {U : TriangleUniformization} (F : PeriodFunctions U)
 
-/-- Coordinate model for the three complex period parameters. -/
-public abbrev ParameterCoordinates := Fin 3 → ℂ
 
-/-- Coordinates on the period domain. -/
-@[expose] public def periodDomainCoordinates (x : PeriodDomain) : ParameterCoordinates :=
-  ![x.1.tau, x.1.mu, x.1.beta]
 
-/-- The period domain carries the topology induced by its three complex coordinates. -/
-public noncomputable instance : TopologicalSpace PeriodDomain :=
-  TopologicalSpace.induced periodDomainCoordinates inferInstance
 
-/-- Period-domain coordinates are injective. -/
-public theorem periodDomainCoordinates_injective : Function.Injective periodDomainCoordinates := by
-  intro x y h
-  apply Subtype.ext
-  cases x with
-  | mk x hx =>
-    cases y with
-    | mk y hy =>
-      cases x with
-      | mk xt xm xb =>
-        cases y with
-        | mk yt ym yb =>
-          rw [Parameters.mk.injEq]
-          exact ⟨by simpa [periodDomainCoordinates] using congrFun h (0 : Fin 3),
-            by simpa [periodDomainCoordinates] using congrFun h (1 : Fin 3),
-            by simpa [periodDomainCoordinates] using congrFun h (2 : Fin 3)⟩
 
-/-- Reconstruct parameters from their three coordinates. -/
-@[expose] public def parametersOfCoordinates (v : ParameterCoordinates) : Parameters where
-  tau := v 0
-  mu := v 1
-  beta := v 2
 
-/-- Coordinate form of the two strict setup inequalities. -/
-public theorem setupInequalities_parametersOfCoordinates_iff (v : ParameterCoordinates) :
-    SetupInequalities (parametersOfCoordinates v) ↔
-      0 < (v 0).im ∧ (v 2).im * (v 0).im - 6 * (v 1).im ^ 2 < 0 := by
-  constructor
-  · intro h
-    refine ⟨h.tau_im_pos, ?_⟩
-    have htpos : 0 < (v 0).im := by
-      simpa [parametersOfCoordinates] using h.tau_im_pos
-    have ht : (v 0).im ≠ 0 := ne_of_gt htpos
-    have heq : (v 2).im - 6 * (v 1).im ^ 2 / (v 0).im =
-        ((v 2).im * (v 0).im - 6 * (v 1).im ^ 2) / (v 0).im := by
-      field_simp [ht]
-    have hsch := h.schur_im_neg
-    change (v 2).im - 6 * (v 1).im ^ 2 / (v 0).im < 0 at hsch
-    rw [heq] at hsch
-    simpa using (div_lt_iff₀ htpos).mp hsch
-  · rintro ⟨ht, hs⟩
-    refine ⟨ht, ?_⟩
-    have ht0 : (v 0).im ≠ 0 := ne_of_gt ht
-    change (v 2).im - 6 * (v 1).im ^ 2 / (v 0).im < 0
-    rw [show (v 2).im - 6 * (v 1).im ^ 2 / (v 0).im =
-      ((v 2).im * (v 0).im - 6 * (v 1).im ^ 2) / (v 0).im by
-        field_simp [ht0]]
-    exact (div_lt_iff₀ ht).mpr (by simpa using hs)
 
-/-- The image of period-domain coordinates is open. -/
-public theorem isOpen_range_periodDomainCoordinates :
-    IsOpen (Set.range periodDomainCoordinates) := by
-  have ht : Continuous fun v : ParameterCoordinates ↦ (v 0).im :=
-    Complex.continuous_im.comp (continuous_apply 0)
-  have hm : Continuous fun v : ParameterCoordinates ↦ (v 1).im :=
-    Complex.continuous_im.comp (continuous_apply 1)
-  have hb : Continuous fun v : ParameterCoordinates ↦ (v 2).im :=
-    Complex.continuous_im.comp (continuous_apply 2)
-  have hopen : IsOpen {v : ParameterCoordinates |
-      0 < (v 0).im ∧ (v 2).im * (v 0).im - 6 * (v 1).im ^ 2 < 0} :=
-    (isOpen_lt continuous_const ht).inter
-      (isOpen_lt (hb.mul ht |>.sub (continuous_const.mul (hm.pow 2))) continuous_const)
-  convert hopen using 1
-  ext v
-  constructor
-  · rintro ⟨x, rfl⟩
-    exact (setupInequalities_parametersOfCoordinates_iff (periodDomainCoordinates x)).mp <| by
-      simpa [parametersOfCoordinates, periodDomainCoordinates] using x.2
-  · intro hv
-    have hs : SetupInequalities (parametersOfCoordinates v) :=
-      (setupInequalities_parametersOfCoordinates_iff v).mpr hv
-    refine ⟨⟨parametersOfCoordinates v, hs⟩, ?_⟩
-    funext i
-    fin_cases i <;> rfl
 
-/-- Period-domain coordinates form an open embedding. -/
-public theorem periodDomainCoordinates_isOpenEmbedding :
-    IsOpenEmbedding periodDomainCoordinates where
-  eq_induced := rfl
-  injective := periodDomainCoordinates_injective
-  isOpen_range := isOpen_range_periodDomainCoordinates
 
-/-- A concrete point witnesses nonemptiness of the period domain. -/
-public instance : Nonempty PeriodDomain :=
-  ⟨⟨⟨Complex.I, 0, -Complex.I⟩, by
-    constructor <;> norm_num⟩⟩
 
-/-- Complex manifold structure on the open period domain. -/
-public noncomputable instance : ChartedSpace ParameterCoordinates PeriodDomain :=
-  periodDomainCoordinates_isOpenEmbedding.singletonChartedSpace
 
-public instance : IsManifold (modelWithCornersSelf ℂ ParameterCoordinates) ω PeriodDomain :=
-  periodDomainCoordinates_isOpenEmbedding.isManifold_singleton
 
 /-- The period-domain point determined by the three analytic period functions. -/
 @[expose] public def parameterMap (z : UpperHalfPlane) : PeriodDomain :=
@@ -134,15 +40,6 @@ public theorem parameterMap_val (z : UpperHalfPlane) :
     (parameterMap F z).1 = periodValues F.tau F.mu F.beta z :=
   rfl
 
-/-- The analytic parameter map is continuous in period coordinates. -/
-public theorem parameterMap_continuous : Continuous (parameterMap F) := by
-  rw [continuous_induced_rng]
-  apply continuous_pi
-  intro i
-  fin_cases i
-  · exact UpperHalfPlane.continuous_coe.comp F.tau_holomorphic.continuous
-  · exact F.mu_holomorphic.continuous
-  · exact F.beta_holomorphic.continuous
 
 /-- A holomorphic scalar-valued function on the upper half-plane is complex smooth of every
 finite or infinite order. -/
@@ -175,26 +72,7 @@ public theorem beta_contMDiff (n : WithTop ℕ∞) :
     ContMDiff (modelWithCornersSelf ℂ ℂ) (modelWithCornersSelf ℂ ℂ) n F.beta :=
   contMDiff_of_mdifferentiable F.beta_holomorphic n
 
-/-- The three coordinate functions of the analytic parameter map are complex smooth. -/
-public theorem parameterMap_coordinates_contMDiff (n : WithTop ℕ∞) :
-    ContMDiff (modelWithCornersSelf ℂ ℂ)
-      (modelWithCornersSelf ℂ ParameterCoordinates) n
-      (periodDomainCoordinates ∘ parameterMap F) := by
-  rw [contMDiff_pi_space]
-  intro i
-  fin_cases i
-  · exact tau_contMDiff F n
-  · exact mu_contMDiff F n
-  · exact beta_contMDiff F n
 
-/-- The analytic parameter map is a complex-smooth map into the open period domain. -/
-public theorem parameterMap_contMDiff (n : WithTop ℕ∞) :
-    ContMDiff (modelWithCornersSelf ℂ ℂ)
-      (modelWithCornersSelf ℂ ParameterCoordinates) n (parameterMap F) := by
-  intro z
-  rw [contMDiffAt_iff_target]
-  refine ⟨parameterMap_continuous F |>.continuousAt, ?_⟩
-  simpa [Function.comp_def] using (parameterMap_coordinates_contMDiff F n).contMDiffAt
 
 /-- Every integral period section of the analytic family is holomorphic, hence complex smooth of
 every order. -/

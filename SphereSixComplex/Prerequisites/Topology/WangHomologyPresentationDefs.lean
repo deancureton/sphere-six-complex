@@ -116,14 +116,6 @@ public theorem exact_coinvariantsToTotal_totalToInvariants :
     rw [coinvariantsToTotal, Submodule.liftQ_apply]
     exact P.boundary_inclusion z
 
-/-- The canonical short exact sequence extracted from four consecutive Wang maps. -/
-public theorem shortExact_coinvariants_total_invariants :
-    Function.Injective P.coinvariantsToTotal ∧
-      Function.Exact P.coinvariantsToTotal P.totalToInvariants ∧
-      Function.Surjective P.totalToInvariants :=
-  ⟨P.coinvariantsToTotal_injective,
-    P.exact_coinvariantsToTotal_totalToInvariants,
-    P.totalToInvariants_surjective⟩
 
 end WangHomologyPresentation
 
@@ -174,11 +166,6 @@ public def finiteBouquetMonodromyDifference (φ : ι → F ≃ₜ F) (k : ℕ) :
     intro i _
     abel
 
-/-- Sum the edge-indexed copies of an additive group into the vertex copy. -/
-public def finiteBouquetSum (G : Type w) [AddCommGroup G] : (ι → G) →+ G where
-  toFun x := ∑ i, x i
-  map_zero' := by simp
-  map_add' x y := Finset.sum_add_distrib
 
 /-- The exact data in the Wang sequence for the explicit finite-bouquet mapping torus. -/
 public structure FiniteBouquetMappingTorusWangSequence (φ : ι → F ≃ₜ F) (k : ℕ) where

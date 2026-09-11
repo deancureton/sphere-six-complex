@@ -104,13 +104,6 @@ theorem discToHalfPlaneAt_halfPlaneToDiscAt (a z : UpperHalfPlane) :
   field_simp [hza, haa]
   ring
 
-private theorem coe_ofComplex_discToHalfPlaneAt (a : UpperHalfPlane) {ζ : ℂ}
-    (hζ : ‖ζ‖ < 1) :
-    ((UpperHalfPlane.ofComplex (discToHalfPlaneAt a ζ) : UpperHalfPlane) : ℂ) =
-      discToHalfPlaneAt a ζ := by
-  let q : UpperHalfPlane :=
-    ⟨discToHalfPlaneAt a ζ, discToHalfPlaneAt_im_pos a hζ⟩
-  rw [UpperHalfPlane.ofComplex_apply_of_im_pos (discToHalfPlaneAt_im_pos a hζ)]
 
 private theorem discToHalfPlaneAt_analyticAt (a : UpperHalfPlane) {ζ : ℂ}
     (hζ : ‖ζ‖ < 1) : AnalyticAt ℂ (discToHalfPlaneAt a) ζ := by

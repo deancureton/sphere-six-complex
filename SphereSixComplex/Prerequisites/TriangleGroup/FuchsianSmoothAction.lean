@@ -92,31 +92,6 @@ public theorem fuchsianSourceAction_contMDiff (g : Delta) (n : WithTop ℕ∞) :
       rw [map_mul]
       exact contMDiffPerm_mul hx hy
 
-/-- The source-side fields of a triangle uniformization, separated from any choice of invariant
-holomorphic coordinate. -/
-public structure SmoothTriangleSource where
-  sourceAction : Delta →* Equiv.Perm UpperHalfPlane
-  sourceAction_contMDiff : ∀ g (n : WithTop ℕ∞),
-    ContMDiff (modelWithCornersSelf ℂ ℂ) (modelWithCornersSelf ℂ ℂ) n
-      (fun z : UpperHalfPlane ↦ sourceAction g • z)
-  zOne : UpperHalfPlane
-  zTwo : UpperHalfPlane
-  zOne_fixed : sourceAction g₁ • zOne = zOne
-  zTwo_fixed : sourceAction g₂ • zTwo = zTwo
-  cuspRegion : Set UpperHalfPlane
-  cuspRegion_nonempty : cuspRegion.Nonempty
-  cuspRegion_invariant : ∀ z, sourceAction g₀ • z ∈ cuspRegion ↔ z ∈ cuspRegion
 
-/-- The explicit Fuchsian source geometry, without an asserted invariant coordinate. -/
-@[expose] public noncomputable def explicitFuchsianTriangleSource : SmoothTriangleSource where
-  sourceAction := fuchsianSourceAction
-  sourceAction_contMDiff := fuchsianSourceAction_contMDiff
-  zOne := fuchsianOneFixedPoint
-  zTwo := fuchsianTwoFixedPoint
-  zOne_fixed := fuchsianOneFixedPoint_fixed
-  zTwo_fixed := fuchsianTwoFixedPoint_fixed
-  cuspRegion := fuchsianCuspRegion
-  cuspRegion_nonempty := fuchsianCuspRegion_nonempty
-  cuspRegion_invariant := fuchsianCuspRegion_invariant
 
 end SphereSixComplex.TriangleGroup

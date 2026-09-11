@@ -62,40 +62,8 @@ public theorem fuchsian_fixed_regular_eq_one
   exact BinaryIndexedCoprod.finiteOrder_fixed_regular_eq_one hz
     (fuchsian_fixed_isOfFinOrder hproper hfixed) hfixed
 
-/-- The upper half-plane with the two explicit Fuchsian elliptic orbits removed. -/
-public abbrev FuchsianRegularBase :=
-  {z : UpperHalfPlane // FreeProductTorsion.IsFuchsianRegularPoint z}
 
-public theorem isFuchsianRegularPoint_smul (h : Delta) {z : UpperHalfPlane}
-    (hz : FreeProductTorsion.IsFuchsianRegularPoint z) :
-    FreeProductTorsion.IsFuchsianRegularPoint (fuchsianSourceAction h • z) := by
-  intro g
-  simpa only [← mul_smul, ← map_mul] using hz (g * h)
 
-/-- The explicit Fuchsian action restricted to its regular locus. -/
-@[expose, instance_reducible] public noncomputable def fuchsianRegularMulAction :
-    MulAction Delta FuchsianRegularBase where
-  smul g z := ⟨fuchsianSourceAction g • z.1, isFuchsianRegularPoint_smul g z.2⟩
-  one_smul z := by
-    apply Subtype.ext
-    change fuchsianSourceAction 1 • z.1 = z.1
-    simp
-  mul_smul g h z := by
-    apply Subtype.ext
-    change fuchsianSourceAction (g * h) • z.1 =
-      fuchsianSourceAction g • (fuchsianSourceAction h • z.1)
-    rw [map_mul, mul_smul]
 
-/-- In standard typeclass form, the explicit Fuchsian action is free on the regular locus. -/
-public theorem fuchsianRegular_isCancelSMul
-    (hproper : letI := fuchsianSourceMulAction
-      ProperlyDiscontinuousSMul Delta UpperHalfPlane) :
-    letI := fuchsianRegularMulAction
-    IsCancelSMul Delta FuchsianRegularBase := by
-  let _ := fuchsianRegularMulAction
-  rw [isCancelSMul_iff_eq_one_of_smul_eq]
-  intro g z hfixed
-  apply fuchsian_fixed_regular_eq_one hproper z.2
-  exact congrArg Subtype.val hfixed
 
 end SphereSixComplex.TriangleGroup.FuchsianProperFreeness

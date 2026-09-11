@@ -429,17 +429,6 @@ public theorem ellipticFour_relator_mem_normalClosure_of_relator_eq
   exact conjugate_mem_normalClosure_singleton c
     (A.ellipticFourOverlapToCore A.ellipticFourCanonicalRelator)
 
-/-- The residual is reduced to exactly one whole-loop chart identity for each elliptic collar. -/
-public theorem ellipticRelatorMembership_of_wholeFillingRelatorChartIdentities
-    (hThree : (∃ β : Path A.centralAffineBase A.ellipticThreeOverlapCentralBase,
-    A.ellipticThreeCanonicalRelatorInCentral =
-      FundamentalGroup.fundamentalGroupMulEquivOfPath β A.orderThreeCentralExpectedRelator))
-    (hFour : (∃ β : Path A.centralAffineBase A.ellipticFourOverlapCentralBase,
-    A.ellipticFourCanonicalRelatorInCentral =
-      FundamentalGroup.fundamentalGroupMulEquivOfPath β A.orderFourCentralExpectedRelator)) :
-    A.EllipticRelatorMembership A.cuspCentralNaturality where
-  orderThree := A.ellipticThree_relator_mem_normalClosure_of_relator_eq hThree
-  orderFour := A.ellipticFour_relator_mem_normalClosure_of_relator_eq hFour
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

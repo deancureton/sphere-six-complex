@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderFourFiberComparisonProof
+public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderFourZeroSectionComparisonProof
 public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderThreeLocalGlobalFactorHomotopyReduction
 
 @[expose] public section
@@ -126,16 +126,6 @@ public noncomputable def orderFourCentralAffineCorrectedNegEpsilonPrimePeriodPat
     A.centralAffineBase_eq_cuspCentralBase
     A.centralAffineBase_eq_cuspCentralBase
 
-public theorem orderFourCentralAffineCorrectedNegEpsilonPrimePeriodPath_class :
-    Path.Homotopic.Quotient.mk
-        A.orderFourCentralAffineCorrectedNegEpsilonPrimePeriodPath =
-      Additive.toMul (A.centralAffineCorePiOneData.translation (-epsilon')) := by
-  unfold orderFourCentralAffineCorrectedNegEpsilonPrimePeriodPath
-  rw [Path.Homotopic.Quotient.mk_cast]
-  rw [A.ellipticFourCuspCorrectedNegEpsilonPrimePeriodPath_class]
-  rw [A.centralAffineCorePiOneData_translation]
-  unfold cuspToCentralAffineBaseEquiv
-  rw [SphereSixComplex.Topology.fundamentalGroupMulEquivOfEq_apply]
 
 /-- A concrete corrected representative of the complete order-four relator at the cusp. -/
 public noncomputable def ellipticFourCuspCorrectedGeometricRelatorPath :

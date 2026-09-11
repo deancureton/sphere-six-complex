@@ -331,39 +331,6 @@ open SphereSixComplex.Topology
 
 variable (A : PaperAnalyticData)
 
-/-- The actual order-three Cayley base circle is freely homotopic to the marked positive
-three-turn zero circle. -/
-public theorem ellipticThreeCayleyBaseCoordinate_tripleHomotopy :
-    Nonempty (ContinuousMap.Homotopy
-      (twoPunctureComplementOneMap.comp
-        (A.orderThreeCayleyChartCircleMap
-          A.orderThreeFillingRelationCayleyBaseValue
-          (norm_pos_iff.mpr A.orderThreeFillingRelationCayleyBaseValue_ne_zero)
-          (by
-            rw [A.orderThreeFillingRelationCayleyBaseValue_norm]
-            exact A.ellipticThreeBoundaryBase.1.2.2)))
-      twicePuncturedCounterclockwiseZeroTriple.toContinuousMap) := by
-  obtain ⟨u, a, ha, hune, hbound, H⟩ :=
-    A.exists_orderThreeActualCayleyBaseCoordinate_threeTurnHomotopy
-  rcases H with ⟨H⟩
-  let d : ℂ := a ^ 3 * u 0
-  have hd : d ≠ 0 :=
-    mul_ne_zero (pow_ne_zero 3 ha) (hune 0 (by simp))
-  have hd1 : ‖d‖ < 1 := by
-    dsimp [d]
-    rw [norm_mul, norm_pow]
-    simpa using hbound 0 (by simp)
-  let Hlocal := twoPunctureComplementOneHomotopyMap H
-  have hfrozen :
-      twoPunctureComplementOneMap.comp
-          (frozenLocalDegreeCircleTwoPunctures
-            u 3 a 1 ha hune hbound) =
-        twicePuncturedPositiveTripleCircle d hd hd1 := by
-    simpa [d] using
-      frozenLocalDegreeCircleTwoPunctures_map_eq_positiveTriple
-        u a ha hune hbound
-  exact ⟨(Hlocal.cast rfl hfrozen).trans
-    (positiveTripleCoefficientHomotopy d hd hd1)⟩
 
 /-- The affine base coordinate of the projected complete order-three filling loop. -/
 public noncomputable def orderThreeFillingRelationBaseCoordinateMap :
@@ -396,19 +363,6 @@ public theorem orderThreeFillingRelationBaseCoordinateMap_eq_cayley :
     orderThreeFillingRelationCayleyLoop, puncturedComplexIntegerCircle,
     puncturedComplexIntegerCirclePoint] using h
 
-/-- The projected order-three filling relation is freely homotopic to a loop representing the
-cube of the inverse marked clockwise zero meridian. -/
-public theorem orderThreeFillingRelation_baseCoordinate_freeHomotopy_zeroMeridianCube :
-    ∃ gamma : Path twicePuncturedComplexBasepoint twicePuncturedComplexBasepoint,
-      Path.Homotopic.Quotient.mk gamma =
-        TwicePuncturedComplex.zeroMeridianClass⁻¹ ^ 3 ∧
-      Nonempty (ContinuousMap.Homotopy
-        A.orderThreeFillingRelationBaseCoordinateMap
-        gamma.toContinuousMap) := by
-  refine ⟨twicePuncturedCounterclockwiseZeroTriple,
-    twicePuncturedCounterclockwiseZeroTriple_class, ?_⟩
-  rcases A.ellipticThreeCayleyBaseCoordinate_tripleHomotopy with ⟨H⟩
-  exact ⟨H.cast A.orderThreeFillingRelationBaseCoordinateMap_eq_cayley.symm rfl⟩
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

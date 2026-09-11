@@ -40,17 +40,7 @@ public structure FullVanKampenRelations (G : Type*) [Group G]
 /-- The obstruction integer `p=12ℓ₀-4ℓ₁-3ℓ₂`. -/
 public def paperObstruction (ℓ₀ ℓ₁ ℓ₂ : ℤ) : ℤ := 12 * ℓ₀ - 4 * ℓ₁ - 3 * ℓ₂
 
-/-- The relation matrix in the ordered exponent basis `(x,c)`.  Its rows encode
-`x^3=c^ℓ₁` and, after eliminating `y`, `x^4=c^(4ℓ₀-ℓ₂)`. -/
-public def paperRelationMatrix (ℓ₀ ℓ₁ ℓ₂ : ℤ) : Matrix (Fin 2) (Fin 2) ℤ :=
-  !![3, -ℓ₁;
-     4, ℓ₂ - 4 * ℓ₀]
 
-@[simp]
-public theorem paperRelationMatrix_det (ℓ₀ ℓ₁ ℓ₂ : ℤ) :
-    (paperRelationMatrix ℓ₀ ℓ₁ ℓ₂).det = -paperObstruction ℓ₀ ℓ₁ ℓ₂ := by
-  simp [paperRelationMatrix, paperObstruction, Matrix.det_fin_two]
-  ring
 
 /-- Linear combinations of the rows of the paper's relation matrix. -/
 public def paperRelationMap (ℓ₀ ℓ₁ ℓ₂ : ℤ) : (Fin 2 → ℤ) →+ (Fin 2 → ℤ) :=
@@ -61,11 +51,6 @@ public def paperRelationMap (ℓ₀ ℓ₁ ℓ₂ : ℤ) : (Fin 2 → ℤ) →+ 
       ext i
       fin_cases i <;> simp <;> ring }
 
-public theorem paperRelationMap_eq_transpose_mulVec (ℓ₀ ℓ₁ ℓ₂ : ℤ) (a : Fin 2 → ℤ) :
-    paperRelationMap ℓ₀ ℓ₁ ℓ₂ a = (paperRelationMatrix ℓ₀ ℓ₁ ℓ₂).transpose.mulVec a := by
-  funext i
-  fin_cases i <;>
-    simp [paperRelationMap, paperRelationMatrix, Matrix.mulVec, dotProduct, Fin.sum_univ_succ]
 
 /-- The primitive quotient coordinate after the Smith operations in the proof of Theorem 7.17. -/
 public def paperCyclicClassifier (ℓ₀ ℓ₁ ℓ₂ : ℤ) :
@@ -125,11 +110,6 @@ row lattice of `paperRelationMatrix`. -/
 public abbrev PaperAdditivePresentation (ℓ₀ ℓ₁ ℓ₂ : ℤ) :=
   (Fin 2 → ℤ) ⧸ (paperCyclicClassifier ℓ₀ ℓ₁ ℓ₂).ker
 
-public theorem paperRelation_zero (ℓ₀ ℓ₁ ℓ₂ : ℤ) (a : Fin 2 → ℤ) :
-    (QuotientAddGroup.mk (paperRelationMap ℓ₀ ℓ₁ ℓ₂ a) :
-      PaperAdditivePresentation ℓ₀ ℓ₁ ℓ₂) = 0 := by
-  rw [QuotientAddGroup.eq_zero_iff, ← paperRelation_range_eq_kernel]
-  exact ⟨a, rfl⟩
 
 /-- The multiplicative form of the paper's presented fundamental group. -/
 public abbrev PaperPresentedGroup (ℓ₀ ℓ₁ ℓ₂ : ℤ) :=
@@ -160,46 +140,9 @@ public def paperXAdd (ℓ₀ ℓ₁ ℓ₂ : ℤ) : PaperAdditivePresentation �
 public def paperYAdd (ℓ₀ ℓ₁ ℓ₂ : ℤ) : PaperAdditivePresentation ℓ₀ ℓ₁ ℓ₂ :=
   ℓ₀ • paperCAdd ℓ₀ ℓ₁ ℓ₂ - paperXAdd ℓ₀ ℓ₁ ℓ₂
 
-@[simp]
-public theorem paper_xy_relation_add (ℓ₀ ℓ₁ ℓ₂ : ℤ) :
-    paperXAdd ℓ₀ ℓ₁ ℓ₂ + paperYAdd ℓ₀ ℓ₁ ℓ₂ = ℓ₀ • paperCAdd ℓ₀ ℓ₁ ℓ₂ := by
-  simp [paperYAdd]
 
-public theorem paper_x_cube_relation_add (ℓ₀ ℓ₁ ℓ₂ : ℤ) :
-    (3 : ℤ) • paperXAdd ℓ₀ ℓ₁ ℓ₂ = ℓ₁ • paperCAdd ℓ₀ ℓ₁ ℓ₂ := by
-  let q := QuotientAddGroup.mk' (paperCyclicClassifier ℓ₀ ℓ₁ ℓ₂).ker
-  have h := paperRelation_zero ℓ₀ ℓ₁ ℓ₂ ![1, 0]
-  change q (paperRelationMap ℓ₀ ℓ₁ ℓ₂ ![1, 0]) = 0 at h
-  change (3 : ℤ) • q ![1, 0] = ℓ₁ • q ![0, 1]
-  rw [← q.map_zsmul, ← q.map_zsmul, ← sub_eq_zero, ← q.map_sub]
-  convert h using 1
-  apply congrArg q
-  funext i
-  fin_cases i <;> simp [paperRelationMap]
 
-public theorem paper_x_fourth_relation_add (ℓ₀ ℓ₁ ℓ₂ : ℤ) :
-    (4 : ℤ) • paperXAdd ℓ₀ ℓ₁ ℓ₂ = (4 * ℓ₀ - ℓ₂) • paperCAdd ℓ₀ ℓ₁ ℓ₂ := by
-  let q := QuotientAddGroup.mk' (paperCyclicClassifier ℓ₀ ℓ₁ ℓ₂).ker
-  have h := paperRelation_zero ℓ₀ ℓ₁ ℓ₂ ![0, 1]
-  change q (paperRelationMap ℓ₀ ℓ₁ ℓ₂ ![0, 1]) = 0 at h
-  change (4 : ℤ) • q ![1, 0] = (4 * ℓ₀ - ℓ₂) • q ![0, 1]
-  rw [← q.map_zsmul, ← q.map_zsmul, ← sub_eq_zero, ← q.map_sub]
-  convert h using 1
-  apply congrArg q
-  funext i
-  fin_cases i <;> simp [paperRelationMap]
 
-public theorem paper_y_fourth_relation_add (ℓ₀ ℓ₁ ℓ₂ : ℤ) :
-    (4 : ℤ) • paperYAdd ℓ₀ ℓ₁ ℓ₂ = ℓ₂ • paperCAdd ℓ₀ ℓ₁ ℓ₂ := by
-  calc
-    (4 : ℤ) • paperYAdd ℓ₀ ℓ₁ ℓ₂ =
-        (4 * ℓ₀) • paperCAdd ℓ₀ ℓ₁ ℓ₂ - (4 : ℤ) • paperXAdd ℓ₀ ℓ₁ ℓ₂ := by
-      unfold paperYAdd
-      module
-    _ = (4 * ℓ₀) • paperCAdd ℓ₀ ℓ₁ ℓ₂ -
-        (4 * ℓ₀ - ℓ₂) • paperCAdd ℓ₀ ℓ₁ ℓ₂ := by
-      rw [paper_x_fourth_relation_add]
-    _ = ℓ₂ • paperCAdd ℓ₀ ℓ₁ ℓ₂ := by module
 
 /-- The complete original three-generator relations, before eliminating `y`. -/
 public structure SatisfiesPaperRelations (G : Type*) [Group G] (ℓ₀ ℓ₁ ℓ₂ : ℤ) where
@@ -211,16 +154,6 @@ public structure SatisfiesPaperRelations (G : Type*) [Group G] (ℓ₀ ℓ₁ �
   x_cube : x ^ (3 : ℤ) = c ^ ℓ₁
   y_fourth : y ^ (4 : ℤ) = c ^ ℓ₂
 
-/-- The concrete quotient carries exactly the three displayed relations. -/
-public def paperPresentedGroupRelations (ℓ₀ ℓ₁ ℓ₂ : ℤ) :
-    SatisfiesPaperRelations (PaperPresentedGroup ℓ₀ ℓ₁ ℓ₂) ℓ₀ ℓ₁ ℓ₂ where
-  c := Multiplicative.ofAdd (paperCAdd ℓ₀ ℓ₁ ℓ₂)
-  x := Multiplicative.ofAdd (paperXAdd ℓ₀ ℓ₁ ℓ₂)
-  y := Multiplicative.ofAdd (paperYAdd ℓ₀ ℓ₁ ℓ₂)
-  central_c _ := mul_comm _ _
-  xy := paper_xy_relation_add ℓ₀ ℓ₁ ℓ₂
-  x_cube := paper_x_cube_relation_add ℓ₀ ℓ₁ ℓ₂
-  y_fourth := paper_y_fourth_relation_add ℓ₀ ℓ₁ ℓ₂
 
 /-- The relation `xy=c^ℓ₀`, together with centrality of `c`, forces `x` and `y` to commute. -/
 public theorem SatisfiesPaperRelations.commute_xy {G : Type*} [Group G]
@@ -427,9 +360,6 @@ public theorem HasVanKampenData.exists_fundamentalGroup_equiv
   obtain ⟨x₀, r, hg, hn⟩ := h
   exact ⟨x₀, ⟨(paperCanonicalEquiv r hg hn).symm⟩⟩
 
-@[simp]
-public theorem chosen_paperObstruction : paperObstruction 0 1 (-1) = -1 := by
-  norm_num [paperObstruction]
 
 /-- The chosen presentation is the trivial group. -/
 public theorem chosenPaperPresentedGroup_subsingleton :
@@ -440,15 +370,6 @@ public theorem chosenPaperPresentedGroup_subsingleton :
   have h : Subsingleton (Multiplicative (ZMod 1)) := inferInstance
   exact @Subsingleton.elim _ (by simpa [paperObstruction] using h) _ _
 
-/-- For the chosen twists, the presented group is the cyclic obstruction group. -/
-public noncomputable def chosenPaperPresentedGroupEquivObstruction :
-    PaperPresentedGroup 0 1 (-1) ≃* Multiplicative TwistObstruction.ObstructionGroup := by
-  let hmod : (paperObstruction 0 1 (-1)).natAbs = TwistObstruction.p.natAbs := by
-    calc
-      (paperObstruction 0 1 (-1)).natAbs = 1 := by norm_num [paperObstruction]
-      _ = TwistObstruction.p.natAbs := TwistObstruction.natAbs_p.symm
-  exact (paperPresentedGroupEquiv 0 1 (-1)).trans
-    (AddEquiv.toMultiplicative (ZMod.ringEquivCongr hmod).toAddEquiv)
 
 /-- At the selected twists the fundamental group is trivial, so a path-connected space is
 simply connected. -/

@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineCuspFiberPeriodMarking
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenCanonicalCuspWangBoundaryNaturalityProof
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspWangOpenCoverChainRealizationEstablished
 
 /-!
 # Finite reduction of the marked cusp connecting square
@@ -24,18 +24,6 @@ open SphereSixComplex.CircleMappingTorusHomologyBases
 
 namespace EllipticTwoDiscCoverData
 
-/-- The marked Wang composite is the last raw degree-two coordinate. -/
-public theorem actualCuspMarkedWangComposite_eq_rawCoordinateFive
-    (A : PaperAnalyticData) :
-    (actualCuspFiberFourthCoordinateHom A).comp (actualCuspWangBoundaryHom A) =
-      coordinateAfterAddEquiv A.cuspRawHomologyTwoEquiv 5 := by
-  apply AddMonoidHom.ext
-  intro x
-  let _ := A.actualCuspRadialClutchingData.fiberTopology
-  change A.actualCuspRadialClutchingData.monodromyCoordinates.degreeOne
-      (actualCuspWangBoundaryHom A x) 3 = A.cuspRawHomologyTwoEquiv x 5
-  rw [actualCuspWangBoundaryHom_rawCoordinates]
-  rfl
 
 /-- The pulled-back marked boundary vanishes on the four non-invariant raw basis vectors. -/
 public theorem cuspPulledBackMarkedBoundary_rawBasis_castAdd_eq_zero
@@ -54,40 +42,6 @@ public theorem cuspPulledBackMarkedBoundary_rawBasis_castAdd_eq_zero
   rw [cuspOpenCoverConnectingHom_rawBasis_castAdd_eq_zero]
   simp
 
-/-- The two invariant-basis evaluations imply the complete marked connecting square. -/
-public theorem cuspMarkedConnectingNaturality_of_invariantBasisData
-    {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput)
-    (h : ((R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
-        (R.twoDiscCover.cuspPulledBackBoundaryHom
-          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) = 0 ∧
-      (R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
-        (R.twoDiscCover.cuspPulledBackBoundaryHom
-          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) = 1)) :
-    (R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment).comp
-        R.twoDiscCover.cuspPulledBackBoundaryHom =
-      (EllipticTwoDiscCoverData.actualCuspFiberFourthCoordinateHom A).comp
-        (EllipticTwoDiscCoverData.actualCuspWangBoundaryHom A) := by
-  rw [actualCuspMarkedWangComposite_eq_rawCoordinateFive]
-  apply SphereSixComplex.addMonoidHom_ext_of_equiv_pi_single_one
-    A.cuspRawHomologyTwoEquiv
-  intro i
-  change (R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
-      (R.twoDiscCover.cuspPulledBackBoundaryHom
-        (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1))) =
-    coordinateAfterAddEquiv A.cuspRawHomologyTwoEquiv 5
-      (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1))
-  by_cases hi : i.val < 4
-  · let j : Fin 4 := ⟨i.val, hi⟩
-    have hij : Fin.castAdd 2 j = i := Fin.ext rfl
-    rw [← hij, cuspPulledBackMarkedBoundary_rawBasis_castAdd_eq_zero]
-    rw [coordinateAfterAddEquiv_apply, AddEquiv.apply_symm_apply]
-    rw [Pi.single_eq_of_ne (by omega : (5 : Fin 6) ≠ Fin.castAdd 2 j)]
-  · have hi45 : i = 4 ∨ i = 5 := by omega
-    rcases hi45 with rfl | rfl
-    · rw [h.1]
-      simp [coordinateAfterAddEquiv_apply]
-    · rw [h.2]
-      simp [coordinateAfterAddEquiv_apply]
 
 end EllipticTwoDiscCoverData
 

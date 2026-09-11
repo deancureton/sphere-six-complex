@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Paper.Topology.CuspFiberSpecializationGeometricObligations
+public import SphereSixComplex.Paper.Topology.CuspFiberSpecializationHOneSurjectivity
 public import SphereSixComplex.Prerequisites.Topology.RankOneWangHomologySplitting
 
 /-!

@@ -195,21 +195,6 @@ public noncomputable def orderThreeZeroSectionTriplePath :
   twicePuncturedCounterclockwiseZeroTriple.map
     A.markedBaseToCentralZeroSection.continuous
 
-/-- The cubic base homotopy lifts literally through the global zero section. -/
-public theorem orderThreeZeroSectionBase_tripleHomotopy :
-    Nonempty (ContinuousMap.Homotopy A.orderThreeZeroSectionBaseMap
-      A.orderThreeZeroSectionTriplePath.toContinuousMap) := by
-  rcases A.ellipticThreeCayleyBaseCoordinate_tripleHomotopy with ⟨H⟩
-  let H' := H.cast A.orderThreeFillingRelationBaseCoordinateMap_eq_cayley.symm rfl
-  exact ⟨{
-    toFun := fun st ↦ A.markedBaseToCentralZeroSection (H' st)
-    continuous_toFun := A.markedBaseToCentralZeroSection.continuous.comp H'.continuous
-    map_zero_left := by
-      intro t
-      exact congrArg A.markedBaseToCentralZeroSection (H'.map_zero_left t)
-    map_one_left := by
-      intro t
-      exact congrArg A.markedBaseToCentralZeroSection (H'.map_one_left t) }⟩
 
 /-- The lifted cubic base homotopy is a genuine free-loop homotopy: its two endpoint traces
 agree throughout. -/

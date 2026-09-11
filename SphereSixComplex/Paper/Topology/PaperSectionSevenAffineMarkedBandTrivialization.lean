@@ -77,25 +77,6 @@ public structure AffineStripLift where
   lift_coordinate : ∀ z : affineVerticalStrip,
     (A.regularCoordinate (lift z) : ℂ) = (z : ℂ)
 
-/-- The convex affine strip really does lift through the regular-coordinate covering. -/
-public theorem affineStripLift_nonempty :
-    Nonempty A.AffineStripLift := by
-  let _ : LocallyPathConnectedSpace affineVerticalStrip :=
-    affineVerticalStrip_isOpen.locallyPathConnectedSpace
-  let _ : ContractibleSpace affineVerticalStrip :=
-    affineVerticalStrip_contractibleSpace
-  let _ : SimplyConnectedSpace affineVerticalStrip :=
-    SimplyConnectedSpace.ofContractible _
-  let f : C(affineVerticalStrip, regularCoordinateBase) :=
-    ⟨fun z ↦ ⟨z.1, affineVerticalStrip_subset z.2⟩,
-      continuous_subtype_val.subtype_mk _⟩
-  let a₀ : affineVerticalStrip :=
-    ⟨affineVerticalStrip_nonempty.some,
-      affineVerticalStrip_nonempty.some_mem⟩
-  obtain ⟨e₀, he₀⟩ := A.regularCoordinate_surjective (f a₀)
-  obtain ⟨L, hL, -⟩ :=
-    A.regularCoordinate_isCoveringMap'.existsUnique_continuousMap_lifts f a₀ e₀ he₀
-  exact ⟨⟨L, fun z ↦ congrArg Subtype.val (congrFun hL.2 z)⟩⟩
 
 /-- A continuous section of a local homeomorphism, taken along an open injection, is itself an
 open map.  This is the reason a lifted strip is an honest sheet of the regular covering. -/
@@ -181,11 +162,6 @@ public theorem lift_isOpenMap (L : A.AffineStripLift) :
   rw [L.lift_comp_coordinate]
   exact stripInclusion_isOpenMap
 
-public theorem lift_injective (L : A.AffineStripLift) :
-    Function.Injective L.lift := by
-  intro z w h
-  apply Subtype.ext
-  rw [← L.lift_coordinate z, ← L.lift_coordinate w, h]
 
 end AffineStripLift
 
@@ -298,11 +274,6 @@ public def stripLiftPoint (L : A.AffineStripLift)
     (t : AdditiveTorus A.duplicatedSectionSevenBandParameter) : A.CentralFamily :=
   Quotient.liftOn t (A.stripLiftCover L z) (A.stripLiftCover_respects L z)
 
-@[simp]
-public theorem stripLiftPoint_mk (L : A.AffineStripLift)
-    (z : affineVerticalStrip) (v : ComplexTwoSpace) :
-    A.stripLiftPoint L z (Quotient.mk _ v) = A.stripLiftCover L z v :=
-  rfl
 
 @[simp]
 public theorem centralFamilyCoordinate_stripLiftCover (L : A.AffineStripLift)
@@ -559,12 +530,6 @@ public noncomputable def stripLiftHomeomorph (L : A.AffineStripLift) :
   (A.stripLiftMap_isOpenEmbedding L).isEmbedding.toHomeomorph.trans
     (Homeomorph.setCongr (A.range_stripLiftMap L))
 
-@[simp]
-public theorem stripLiftHomeomorph_coe (L : A.AffineStripLift)
-    (p : affineVerticalStrip ×
-      AdditiveTorus A.duplicatedSectionSevenBandParameter) :
-    (A.stripLiftHomeomorph L p : A.CentralFamily) = A.stripLiftMap L p :=
-  rfl
 
 /-- The open height band, as a subspace of the central image. -/
 public noncomputable def centralHeightBandHomeomorph
@@ -586,15 +551,6 @@ public noncomputable def affineCentralBandToCentralFamily
   fun x ↦ A.ellipticCentralImageHomeomorph
     ((A.affineCentralHeightSplit S).bandToCentralImage x)
 
-public theorem affineCentralBandToCentralFamily_injective
-    (S : A.AffineCentralSeparation) :
-    Function.Injective (A.affineCentralBandToCentralFamily S) := by
-  intro x y h
-  have h' := A.ellipticCentralImageHomeomorph.injective h
-  have hval : (x : A.ellipticInterior) = (y : A.ellipticInterior) :=
-    congrArg (Subtype.val :
-      A.ellipticCentralImage → A.ellipticInterior) h'
-  exact Subtype.ext hval
 
 /-- The affine central band identified with the marked product, relative to a lifted strip. -/
 public noncomputable def affineCentralBandProductHomeomorphOfLift
@@ -635,80 +591,7 @@ public theorem stripLiftPoint_regularMovingToFixed (L : A.AffineStripLift)
   show A.stripLiftCover L z (A.regularMovingToFixed (L.lift z) w) = _
   rw [stripLiftCover, A.regularFixedToMoving_regularMovingToFixed]
 
-/-- The marked product trivialization of the affine central band.  Unlike the unmarked statement
-it pins both coordinates of the product homeomorphism: the base coordinate is the affine central
-coordinate, and, relative to any continuous lift of the strip through the regular-coordinate
-covering, the fibre coordinate is exactly the canonical real-period coordinate of the central
-four-torus, the coordinate the finite central-fibre covers are applied to. -/
-public def AffineCentralBandMarkedTrivialization
-    (S : A.AffineCentralSeparation) : Prop :=
-  ∀ L : A.AffineStripLift,
-    ∃ e : centralHeightBand
-        (A.affineCentralHeightSplit S).height
-        (A.affineCentralHeightSplit S).lower
-        (A.affineCentralHeightSplit S).upper ≃ₜ
-      affineVerticalStrip ×
-        AdditiveTorus A.duplicatedSectionSevenBandParameter,
-      (∀ x, (e x).1 = A.affineCentralBandProjection S x) ∧
-      (∀ p, A.affineCentralBandToCentralFamily S (e.symm p) =
-        A.stripLiftPoint L p.1 p.2)
 
-/-- The actual central torus family over the convex affine strip is a marked product: the
-real-period coordinates trivialize the varying lattice upstairs and the lifted simply connected
-strip is an honest sheet of the regular-coordinate covering, so their assembly descends to a
-global product homeomorphism with the canonical fibre coordinate. -/
-public theorem affineCentralBandMarkedTrivialization
-    (S : A.AffineCentralSeparation) :
-    A.AffineCentralBandMarkedTrivialization S := by
-  intro L
-  refine ⟨(A.affineCentralBandProductHomeomorphOfLift S L).symm, ?_, ?_⟩
-  · intro x
-    have hkey := A.affineCentralBandProductHomeomorphOfLift_toCentralFamily S L
-      ((A.affineCentralBandProductHomeomorphOfLift S L).symm x)
-    rw [Homeomorph.apply_symm_apply] at hkey
-    have hcoord := congrArg A.centralFamilyCoordinate hkey
-    rw [A.centralFamilyCoordinate_stripLiftPoint] at hcoord
-    apply Subtype.ext
-    exact (congrArg (Subtype.val : regularCoordinateBase → ℂ) hcoord).symm
-  · intro p
-    rw [Homeomorph.symm_symm]
-    exact A.affineCentralBandProductHomeomorphOfLift_toCentralFamily S L p
-
-variable {A}
-
-/-- Relative to a lifted strip the marking determines the trivialization completely: the fibre
-coordinate is not left free. -/
-public theorem affineCentralBandMarkedTrivialization_unique
-    {S : A.AffineCentralSeparation} (L : A.AffineStripLift)
-    {e e' : centralHeightBand
-        (A.affineCentralHeightSplit S).height
-        (A.affineCentralHeightSplit S).lower
-        (A.affineCentralHeightSplit S).upper ≃ₜ
-      affineVerticalStrip ×
-        AdditiveTorus A.duplicatedSectionSevenBandParameter}
-    (he : ∀ p, A.affineCentralBandToCentralFamily S (e.symm p) =
-      A.stripLiftPoint L p.1 p.2)
-    (he' : ∀ p, A.affineCentralBandToCentralFamily S (e'.symm p) =
-      A.stripLiftPoint L p.1 p.2) :
-    e = e' := by
-  have hsymm : ⇑e.symm = ⇑e'.symm := by
-    funext p
-    exact A.affineCentralBandToCentralFamily_injective S ((he p).trans (he' p).symm)
-  apply Homeomorph.ext
-  intro x
-  have h1 : e.symm (e x) = e'.symm (e x) := congrFun hsymm (e x)
-  rw [e.symm_apply_apply] at h1
-  calc e x = e' (e'.symm (e x)) := (e'.apply_symm_apply _).symm
-    _ = e' x := by rw [← h1]
-
-/-- The marked trivialization implies the previously axiomatized unmarked one. -/
-public theorem AffineCentralBandMarkedTrivialization.toProductTrivialization
-    {S : A.AffineCentralSeparation}
-    (M : A.AffineCentralBandMarkedTrivialization S) :
-    A.AffineCentralBandProductTrivialization S := by
-  obtain ⟨L⟩ := A.affineStripLift_nonempty
-  obtain ⟨e, hbase, -⟩ := M L
-  exact ⟨e, hbase⟩
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

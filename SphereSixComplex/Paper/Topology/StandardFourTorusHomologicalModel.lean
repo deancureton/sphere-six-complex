@@ -26,9 +26,6 @@ public theorem additiveTorus_integralHomologyFiniteSix (p : Parameters) (h : Ful
     IntegralHomologyFiniteSix (AdditiveTorus p) :=
   (additiveTorusFourTorusHomologicalModel p h).integralHomologyFiniteSix
 
-public theorem additiveTorus_subsingleton_homology_five (p : Parameters) (h : FullRank p) :
-    Subsingleton (IntegralSingularHomology 5 (AdditiveTorus p)) :=
-  (additiveTorusFourTorusHomologicalModel p h).subsingleton_homology_five
 
 public theorem additiveTorus_subsingleton_homology_six (p : Parameters) (h : FullRank p) :
     Subsingleton (IntegralSingularHomology 6 (AdditiveTorus p)) :=

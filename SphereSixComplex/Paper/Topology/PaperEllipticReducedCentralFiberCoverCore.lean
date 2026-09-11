@@ -121,53 +121,7 @@ public theorem centralFiberCoverProjection_isCovering
   ext
   rfl
 
-/-- A fibre of the restricted central projection is canonically a fibre of the full orbit
-projection. -/
-public def centralFiberCoverFiberEquivFullFiber
-    (x : D.reducedCentralFiber) :
-    {y : CentralFiberCoverSource D // centralFiberCoverProjection D y = x} ≃
-      {p : D.Product // Quotient.mk (orbitRelOf D.actionData.diagonalAction) p = x.1} where
-  toFun y := ⟨y.1.1, congrArg Subtype.val y.2⟩
-  invFun p := ⟨⟨p.1, by rw [p.2]; exact x.2⟩, by
-    apply Subtype.ext
-    exact p.2⟩
-  left_inv _ := rfl
-  right_inv _ := rfl
 
-/-- Every fibre of the reduced central projection has exactly `m` points. -/
-public theorem centralFiberCoverProjection_fiberCardinality
-    (hfree : letI := D.actionData.diagonalAction
-      IsCancelSMul (FiniteCyclic m) D.Product)
-    (x : D.reducedCentralFiber) :
-    Nat.card {y : CentralFiberCoverSource D // centralFiberCoverProjection D y = x} = m := by
-  let action := D.actionData.diagonalAction
-  let _ := action
-  let _ : IsCancelSMul (FiniteCyclic m) D.Product := hfree
-  let _ : ContinuousConstSMul (FiniteCyclic m) D.Product :=
-    ⟨D.representation_continuous⟩
-  let _ : ProperlyDiscontinuousSMul (FiniteCyclic m) D.Product := inferInstance
-  let hq : IsQuotientCoveringMap
-      (Quotient.mk (MulAction.orbitRel (FiniteCyclic m) D.Product)) (FiniteCyclic m) :=
-    isQuotientCoveringMap_quotientMk_of_properlyDiscontinuousSMul
-  have hq' : IsQuotientCoveringMap
-      (Quotient.mk (orbitRelOf D.actionData.diagonalAction) : D.Product → D.FillingQuotient)
-      (FiniteCyclic m) := by
-    change IsQuotientCoveringMap
-      (Quotient.mk (MulAction.orbitRel (FiniteCyclic m) D.Product)) (FiniteCyclic m)
-    exact hq
-  have hx := x.2
-  simp only [PaperEllipticFillingRadialRetraction.RadialEllipticActionData.reducedCentralFiber]
-    at hx
-  obtain ⟨p, _hp, hpx⟩ := hx
-  let pFiber : {q : D.Product //
-      Quotient.mk (orbitRelOf D.actionData.diagonalAction) q = x.1} := ⟨p, hpx⟩
-  calc
-    Nat.card {y : CentralFiberCoverSource D // centralFiberCoverProjection D y = x} =
-        Nat.card {q : D.Product //
-          Quotient.mk (orbitRelOf D.actionData.diagonalAction) q = x.1} :=
-      Nat.card_congr (centralFiberCoverFiberEquivFullFiber D x)
-    _ = Nat.card (FiniteCyclic m) := Nat.card_congr (hq'.fiberEquivGroup pFiber)
-    _ = m := finiteCyclic_card m
 
 end RadialEllipticActionData
 

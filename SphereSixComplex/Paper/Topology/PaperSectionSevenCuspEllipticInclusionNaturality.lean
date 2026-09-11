@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenPositiveDegreeCuspReduction
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspPullbackWangComparison
 
 /-!
 # Marked naturality for the cusp-to-elliptic inclusion
@@ -32,36 +32,8 @@ public noncomputable def ellipticInteriorDegreeOneCoordinateHom
   coordinateAfterAddEquiv
     N.actualHomologyCoordinates.normalizedEllipticInteriorHomologyOneEquiv 0
 
-/-- The boundary formula selected by the marked cusp comparison. -/
-public theorem cuspBoundaryCoordinateFormula
-    (N : A.EllipticBandHomologyAlignment D)
-    (G : D.SectionSevenCuspPulledBackBoundaryBasisBridge N) :
-    ∀ x : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0),
-      N.actualHomologyCoordinates.degreeTwoInvariantEquiv
-          ((presentationTwo (D := D)).totalToInvariants
-            (cuspToEllipticUnionHomology D 2 x)) =
-        A.cuspRawHomologyTwoEquiv x 5 :=
-  degreeTwoCuspBoundaryCoordinates_of_basis N
-    (fun i ↦
-      (SectionSevenCuspPulledBackBoundaryBasisBridge.mayerVietorisBridge N G).boundaryCoordinates
-        N i)
 
-/-- The degree-two splitting normalized by the positive cusp suspension class. -/
-public noncomputable def cuspNormalizedDegreeTwoSplitting
-    (N : A.EllipticBandHomologyAlignment D)
-    (G : D.SectionSevenCuspPulledBackBoundaryBasisBridge N) :
-    WangHomologyPresentation.NormalizedSplitting (presentationTwo (D := D)) :=
-  N.actualHomologyCoordinates.degreeTwoCuspE5SplittingOfCoordinates
-    (D.cuspBoundaryCoordinateFormula N G)
 
-/-- The marked fibre coordinate on degree-two homology of the actual elliptic interior. -/
-public noncomputable def ellipticInteriorDegreeTwoFiberCoordinateHom
-    (N : A.EllipticBandHomologyAlignment D)
-    (G : D.SectionSevenCuspPulledBackBoundaryBasisBridge N) :
-    IntegralSingularHomology 2 A.ellipticInterior →+ ℤ :=
-  coordinateAfterAddEquiv
-    (N.actualHomologyCoordinates.normalizedEllipticInteriorHomologyTwoEquiv
-      (D.cuspNormalizedDegreeTwoSplitting N G)) 0
 
 /-- Pulling the actual elliptic degree-one coordinate back along the cusp inclusion gives the
 literal-union coordinate already used by the Mayer--Vietoris calculation. -/
@@ -80,135 +52,7 @@ public theorem ellipticInteriorDegreeOneCoordinateHom_cuspToEllipticInteriorMap
   rw [e.symm_apply_apply]
   rfl
 
-/-- The analogous equality for the normalized degree-two fibre coordinate. -/
-public theorem ellipticInteriorDegreeTwoFiberCoordinateHom_cuspToEllipticInteriorMap
-    (N : A.EllipticBandHomologyAlignment D)
-    (G : D.SectionSevenCuspPulledBackBoundaryBasisBridge N)
-    (x : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0)) :
-    D.ellipticInteriorDegreeTwoFiberCoordinateHom N G
-        (integralSingularHomologyMap 2 D.cuspToEllipticInteriorMap.hom x) =
-      cuspDegreeTwoFiberCoordinateHom N (D.cuspBoundaryCoordinateFormula N G) x := by
-  rw [D.cuspToEllipticInteriorMap_homology]
-  let e := integralSingularHomologyEquiv 2
-    (topologicalSubsetHomeomorphOfEqUniv (TopCat.of A.ellipticInterior)
-      (D.orderThreeSide ∪ D.orderFourSide) D.sides_cover)
-  change (N.actualHomologyCoordinates.normalizedUnionHomologyTwoEquiv
-      (D.cuspNormalizedDegreeTwoSplitting N G))
-        (e.symm (e (cuspToEllipticUnionHomology D 2 x))) 0 = _
-  rw [e.symm_apply_apply]
-  rfl
 
-/-- Naturality of the two marked coordinates for the actual collar-to-elliptic-interior map. -/
-public structure SectionSevenCuspEllipticInclusionNaturality
-    (N : A.EllipticBandHomologyAlignment D)
-    (G : D.SectionSevenCuspPulledBackBoundaryBasisBridge N) : Prop where
-  degreeOne :
-    (D.ellipticInteriorDegreeOneCoordinateHom N).comp
-        (integralSingularHomologyMap 1 D.cuspToEllipticInteriorMap.hom) =
-      actualCuspEllipticDegreeOneCoordinateAfterAddEquiv A.cuspRawHomologyOneEquiv
-  degreeTwoFiber :
-    (D.ellipticInteriorDegreeTwoFiberCoordinateHom N G).comp
-        (integralSingularHomologyMap 2 D.cuspToEllipticInteriorMap.hom) =
-      actualCuspEllipticDegreeTwoFiberCoordinateAfterAddEquiv
-        A.cuspRawHomologyTwoEquiv
-
-namespace SectionSevenCuspEllipticInclusionNaturality
-
-variable {D : A.EllipticTwoDiscCoverData}
-  {N : A.EllipticBandHomologyAlignment D}
-  {G : D.SectionSevenCuspPulledBackBoundaryBasisBridge N}
-
-/-- Actual-map naturality supplies the two inclusion identities used by the positive-degree
-assembly. -/
-public theorem toCoordinateComparison
-    (C : D.SectionSevenCuspEllipticInclusionNaturality N G) :
-    A.PositiveDegreeCuspCoordinateComparison N G where
-  degreeOneCoordinateHom := by
-    calc
-      cuspDegreeOneCoordinateHom N =
-          (D.ellipticInteriorDegreeOneCoordinateHom N).comp
-            (integralSingularHomologyMap 1 D.cuspToEllipticInteriorMap.hom) := by
-        ext x
-        exact (D.ellipticInteriorDegreeOneCoordinateHom_cuspToEllipticInteriorMap N x).symm
-      _ = actualCuspEllipticDegreeOneCoordinateAfterAddEquiv
-          A.cuspRawHomologyOneEquiv := C.degreeOne
-  degreeTwoFiberCoordinateHom := by
-    calc
-      cuspDegreeTwoFiberCoordinateHom N (D.cuspBoundaryCoordinateFormula N G) =
-          (D.ellipticInteriorDegreeTwoFiberCoordinateHom N G).comp
-            (integralSingularHomologyMap 2 D.cuspToEllipticInteriorMap.hom) := by
-        ext x
-        exact
-          (D.ellipticInteriorDegreeTwoFiberCoordinateHom_cuspToEllipticInteriorMap N G x).symm
-      _ = actualCuspEllipticDegreeTwoFiberCoordinateAfterAddEquiv
-          A.cuspRawHomologyTwoEquiv := C.degreeTwoFiber
-
-end SectionSevenCuspEllipticInclusionNaturality
-
-namespace PositiveDegreeCuspCoordinateComparison
-
-variable {D : A.EllipticTwoDiscCoverData}
-  {N : A.EllipticBandHomologyAlignment D}
-  {G : D.SectionSevenCuspPulledBackBoundaryBasisBridge N}
-
-/-- The literal-union coordinate identities imply naturality for the actual inclusion map. -/
-public theorem toCuspEllipticInclusionNaturality
-    (C : A.PositiveDegreeCuspCoordinateComparison N G) :
-    D.SectionSevenCuspEllipticInclusionNaturality N G where
-  degreeOne := by
-    calc
-      (D.ellipticInteriorDegreeOneCoordinateHom N).comp
-          (integralSingularHomologyMap 1 D.cuspToEllipticInteriorMap.hom) =
-        cuspDegreeOneCoordinateHom N := by
-          ext x
-          exact D.ellipticInteriorDegreeOneCoordinateHom_cuspToEllipticInteriorMap N x
-      _ = actualCuspEllipticDegreeOneCoordinateAfterAddEquiv
-          A.cuspRawHomologyOneEquiv :=
-        C.degreeOneCoordinateHom
-  degreeTwoFiber := by
-    calc
-      (D.ellipticInteriorDegreeTwoFiberCoordinateHom N G).comp
-          (integralSingularHomologyMap 2 D.cuspToEllipticInteriorMap.hom) =
-        cuspDegreeTwoFiberCoordinateHom N (D.cuspBoundaryCoordinateFormula N G) := by
-          ext x
-          exact D.ellipticInteriorDegreeTwoFiberCoordinateHom_cuspToEllipticInteriorMap N G x
-      _ = actualCuspEllipticDegreeTwoFiberCoordinateAfterAddEquiv
-          A.cuspRawHomologyTwoEquiv :=
-        C.degreeTwoFiberCoordinateHom
-
-end PositiveDegreeCuspCoordinateComparison
-
-/-- The two residual coordinate identities are exactly the marked naturality squares for the
-actual cusp-to-elliptic-interior inclusion. -/
-public theorem sectionSevenPositiveDegreeCuspCoordinateComparison_iff_inclusionNaturality
-    (N : A.EllipticBandHomologyAlignment D)
-    (G : D.SectionSevenCuspPulledBackBoundaryBasisBridge N) :
-    A.PositiveDegreeCuspCoordinateComparison N G ↔
-      D.SectionSevenCuspEllipticInclusionNaturality N G :=
-  ⟨PositiveDegreeCuspCoordinateComparison.toCuspEllipticInclusionNaturality,
-    SectionSevenCuspEllipticInclusionNaturality.toCoordinateComparison⟩
-
-/-- The remaining positive-degree input stated entirely for actual maps: the marked Wang
-boundary square and the two marked squares for the cusp-to-elliptic-interior inclusion. -/
-public structure SectionSevenPositiveDegreeActualMapInput
-    (N : A.EllipticBandHomologyAlignment D) : Prop where
-  boundary : D.cuspPulledBackBoundaryCoordinateHom N =
-      EllipticTwoDiscCoverData.actualCuspSecondWangBoundaryCoordinateHom A
-  inclusion : D.SectionSevenCuspEllipticInclusionNaturality N
-    (EllipticTwoDiscCoverData.boundaryBasisBridge_of_coordinate_eq N boundary)
-
-namespace SectionSevenPositiveDegreeActualMapInput
-
-variable {D : A.EllipticTwoDiscCoverData}
-  {N : A.EllipticBandHomologyAlignment D}
-
-/-- The three actual-map naturality squares supply the production positive-degree assembly. -/
-public noncomputable def positiveDegreeHomologyAssembly
-    (C : D.SectionSevenPositiveDegreeActualMapInput N) :
-    A.PositiveDegreeHomologyAssembly :=
-  C.inclusion.toCoordinateComparison.toCuspBasisInput.positiveDegreeHomologyAssembly
-
-end SectionSevenPositiveDegreeActualMapInput
 
 end EllipticTwoDiscCoverData
 

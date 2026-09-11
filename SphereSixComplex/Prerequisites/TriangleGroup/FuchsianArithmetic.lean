@@ -150,24 +150,6 @@ public theorem positive_bottomRow_bounded_of_normSq_le (z : UpperHalfPlane)
         _ ≤ |a * z.re + b| + |a * z.re| := abs_sub _ _
     exact hb.trans (add_le_add hreabs hmul)
 
-/-- A uniform conjugate bound turns a Möbius-denominator sublevel into a finite set of
-quadratic-integer bottom rows. -/
-public theorem finite_bottomRows_of_normSq_le_of_conjugate_bounded
-    (z : UpperHalfPlane) (B S : ℝ) :
-    Set.Finite {p : QuadraticInteger × QuadraticInteger |
-      Complex.normSq
-          (positiveEmbedding p.1 * (z : ℂ) + positiveEmbedding p.2) ≤ B ∧
-        |conjugateEmbedding p.1| ≤ S ∧ |conjugateEmbedding p.2| ≤ S} := by
-  let C := (B + 1) / z.im
-  let D := B + 1 + C * |z.re|
-  apply (finite_bottomRows_of_embeddings_bounded (max C D) S).subset
-  intro p hp
-  have hpositive := positive_bottomRow_bounded_of_normSq_le z hp.1
-  change
-    (|positiveEmbedding p.1| ≤ max C D ∧ |conjugateEmbedding p.1| ≤ S) ∧
-      |positiveEmbedding p.2| ≤ max C D ∧ |conjugateEmbedding p.2| ≤ S
-  exact ⟨⟨hpositive.1.trans (le_max_left C D), hp.2.1⟩,
-    hpositive.2.trans (le_max_right C D), hp.2.2⟩
 
 /-- The same discreteness statement, entrywise, for two-by-two matrices. -/
 public theorem finite_matrices_of_embeddings_bounded (R S : ℝ) :
@@ -297,31 +279,12 @@ public theorem quadraticProjectiveRepresentation_inr_generator :
       (Monoid.Coprod.inr (Multiplicative.ofAdd 1)) = quadraticTwoPSL := by
   simp [quadraticProjectiveRepresentation]
 
-/-- Exact quadratic-integer coefficients of every positive cusp power. -/
-public theorem quadraticProduct_pow (n : ℕ) :
-    quadraticProduct ^ n = !![1, n * (1 + Zsqrtd.sqrtd); 0, 1] := by
-  induction n with
-  | zero =>
-      apply Matrix.ext
-      intro i j
-      apply Zsqrtd.ext <;> fin_cases i <;> fin_cases j <;> norm_num
-  | succ n ih =>
-      rw [pow_succ, ih]
-      apply Matrix.ext
-      intro i j
-      apply Zsqrtd.ext <;> fin_cases i <;> fin_cases j <;>
-        norm_num [quadraticProduct, Matrix.mul_apply, Fin.sum_univ_succ]
-        <;> ring
 
 /-- Apply the distinguished real embedding entrywise. -/
 @[expose] public noncomputable def positiveMatrix
     (M : Matrix (Fin 2) (Fin 2) QuadraticInteger) : Matrix (Fin 2) (Fin 2) ℝ :=
   M.map positiveEmbedding
 
-/-- Apply the conjugate real embedding entrywise. -/
-@[expose] public noncomputable def conjugateMatrix
-    (M : Matrix (Fin 2) (Fin 2) QuadraticInteger) : Matrix (Fin 2) (Fin 2) ℝ :=
-  M.map conjugateEmbedding
 
 public theorem positiveMatrix_quadraticOne :
     positiveMatrix quadraticOne =
@@ -339,31 +302,7 @@ public theorem positiveMatrix_quadraticTwo :
     norm_num [positiveMatrix, quadraticTwo,
       SphereSixComplex.TriangleGroup.fuchsianTwoSL, positiveEmbedding]
 
-public theorem positiveMatrix_quadraticProduct :
-    positiveMatrix quadraticProduct =
-      (SphereSixComplex.TriangleGroup.fuchsianProductSL : Matrix (Fin 2) (Fin 2) ℝ) := by
-  ext i j
-  fin_cases i <;> fin_cases j <;>
-    norm_num [positiveMatrix, quadraticProduct,
-      SphereSixComplex.TriangleGroup.fuchsianProductSL, positiveEmbedding]
 
-/-- Under conjugation, the cusp width becomes `1 - √2`; it is still a nontrivial parabolic
-translation, so conjugate-entry boundedness requires a genuine word estimate. -/
-public theorem conjugateMatrix_quadraticProduct :
-    conjugateMatrix quadraticProduct = !![1, 1 - Real.sqrt 2; 0, 1] := by
-  ext i j
-  fin_cases i <;> fin_cases j <;>
-    norm_num [conjugateMatrix, quadraticProduct, conjugateEmbedding]
-  all_goals ring
 
-/-- The conjugate cusp coefficients grow linearly as `n(1 - √2)`. -/
-public theorem conjugateMatrix_quadraticProduct_pow (n : ℕ) :
-    conjugateMatrix (quadraticProduct ^ n) =
-      !![1, n * (1 - Real.sqrt 2); 0, 1] := by
-  rw [quadraticProduct_pow]
-  ext i j
-  fin_cases i <;> fin_cases j <;>
-    norm_num [conjugateMatrix, conjugateEmbedding]
-  all_goals ring
 
 end SphereSixComplex.TriangleGroup.FuchsianArithmetic

@@ -45,12 +45,5 @@ public theorem coverSmallEventuallySmall_of_refinement {ι κ : Type} (X : TopCa
   have he := congrArg (fun f ↦ f.f n) (coverSmallRefinementChains_comp_inclusion X U V r h)
   exact (ConcreteCategory.congr_hom he y).trans hy
 
-public theorem coverSmallChainApproximation_of_open_refinement {ι κ : Type} (X : TopCat)
-    (U : ι → Set X) (V : κ → Set X) (r : ι → κ) (h : ∀ i, U i ⊆ V (r i))
-    (hUopen : ∀ i, IsOpen (U i)) (hUcover : ⋃ i, U i = Set.univ) :
-    CoverSmallChainApproximation X V :=
-  coverSmallChainApproximation_of_eventuallySmall X V
-    (coverSmallEventuallySmall_of_refinement X U V r h
-      (coverSmallAffineSubdivisionEventuallySmall_of_openCover X U hUopen hUcover))
 
 end SphereSixComplex

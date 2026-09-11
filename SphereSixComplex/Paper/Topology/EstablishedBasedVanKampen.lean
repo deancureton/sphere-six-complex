@@ -1,6 +1,7 @@
 module
 
-public import SphereSixComplex.Paper.Topology.ConcreteVanKampen
+public import Mathlib.AlgebraicTopology.FundamentalGroupoid.VanKampen
+public import SphereSixComplex.Paper.Topology.VanKampenGeometry
 public import SphereSixComplex.Prerequisites.Topology.FundamentalGroupCoverLifting
 
 /-!
@@ -173,10 +174,6 @@ public def piece (D : PaperVanKampenFourPieceCover base) : Fin 4 → Set Y
   | 2 => D.ellipticThree
   | 3 => D.ellipticFour
 
-public theorem isOpen_piece (D : PaperVanKampenFourPieceCover base) (i : Fin 4) :
-    IsOpen (D.piece i) := by
-  fin_cases i
-  exacts [D.core_isOpen, D.cusp_isOpen, D.ellipticThree_isOpen, D.ellipticFour_isOpen]
 
 public theorem piece_covers (D : PaperVanKampenFourPieceCover base) (y : Y) :
     ∃ i, D.piece i ∈ nhds y := by

@@ -53,38 +53,5 @@ public theorem AffineRadialCompletionInput.homologyAlignment
     A.EllipticBandHomologyAlignment R.twoDiscCover :=
   R.bandHomologyAlignment
 
-/-- The exact three marked-coordinate comparisons remaining after the affine radial geometry has
-been completed: one connecting square and two inclusion-coordinate identities. -/
-public structure AffineMarkedCompletionInput
-    (R : A.AffineRadialCompletionInput) : Prop where
-  connectingNaturality :
-    (R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment).comp
-        R.twoDiscCover.cuspPulledBackBoundaryHom =
-      (EllipticTwoDiscCoverData.actualCuspFiberFourthCoordinateHom A).comp
-        (EllipticTwoDiscCoverData.actualCuspWangBoundaryHom A)
-  inclusionNaturality :
-    R.twoDiscCover.SectionSevenCuspEllipticInclusionNaturality R.homologyAlignment
-      (EllipticTwoDiscCoverData.boundaryBasisBridge_of_coordinate_eq
-        R.homologyAlignment
-        (R.twoDiscCover.boundaryCoordinate_eq_of_connecting_eq
-          R.homologyAlignment connectingNaturality))
-
-namespace AffineMarkedCompletionInput
-
-variable {R : A.AffineRadialCompletionInput}
-
-/-- The affine completion package supplies the production positive-degree assembly. -/
-public noncomputable def positiveDegreeHomologyAssembly
-    (C : A.AffineMarkedCompletionInput R) :
-    A.PositiveDegreeHomologyAssembly := by
-  let boundary :=
-    R.twoDiscCover.boundaryCoordinate_eq_of_connecting_eq
-      R.homologyAlignment C.connectingNaturality
-  let marked : R.twoDiscCover.SectionSevenPositiveDegreeActualMapInput R.homologyAlignment :=
-    { boundary := boundary
-      inclusion := C.inclusionNaturality }
-  exact marked.positiveDegreeHomologyAssembly
-
-end AffineMarkedCompletionInput
 
 end SphereSixComplex.Geometry.PaperAnalyticData

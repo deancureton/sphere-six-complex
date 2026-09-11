@@ -59,20 +59,7 @@ public def puncturedComplexFundamentalGroupEquiv (a : ℂ) (ha : a ≠ 0) :
   Complex.isAddQuotientCoveringMap_exp.fundamentalGroupEquiv
     (complexExpFiberPoint a ha)
 
-/-- The exponential-cover deck value (winding datum) of a based loop in `ℂ \ {0}`. -/
-public def puncturedComplexLoopDeckValue {a : PuncturedComplex}
-    (L : Path a a) : (Multiplicative complexExpDeckGroup)ᵐᵒᵖ :=
-  puncturedComplexFundamentalGroupEquiv a.1 a.2
-    (Path.Homotopic.Quotient.mk L)
 
-/-- Equality of exponential-cover deck values is exactly equality of based loop classes. -/
-public theorem puncturedComplex_loopClass_eq_iff_deckValue_eq
-    {a : PuncturedComplex} (L₁ L₂ : Path a a) :
-    Path.Homotopic.Quotient.mk L₁ = Path.Homotopic.Quotient.mk L₂ ↔
-      puncturedComplexLoopDeckValue L₁ = puncturedComplexLoopDeckValue L₂ := by
-  constructor
-  · exact fun h ↦ congrArg (puncturedComplexFundamentalGroupEquiv a.1 a.2) h
-  · exact fun h ↦ (puncturedComplexFundamentalGroupEquiv a.1 a.2).injective h
 
 /-- The point making `n` counterclockwise turns around zero from a nonzero starting value `a`.
 Negative `n` gives clockwise turns. -/

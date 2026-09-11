@@ -735,16 +735,6 @@ public opaque positiveBoundaryCalibration : PositiveBoundaryCalibration := by
   · rw [generatedBoundary_positive, generatedOverlapClass_intersectionIso]
     rfl
 
-/-- The generated connecting morphism sends the calibrated positive class to `low - high`. -/
-public theorem positiveBoundaryCalibration_generated :
-    ConcreteCategory.hom (generatedBoundary pointVertexOpen pointEdgeOpen 0)
-        positiveBoundaryCalibration.source =
-      zeroChainHomologyClass
-        (coverChainShortComplex pointVertexOpen pointEdgeOpen).X₁
-        ((intersectionForwardChain pointVertexOpen pointEdgeOpen).f 0
-          (pointChain positiveBoundaryCalibration.low -
-            pointChain positiveBoundaryCalibration.high)) :=
-  positiveBoundaryCalibration.generated_boundary
 
 /-- The calibrated generated source is the actual positive cylinder loop class after the
 canonical union comparison. -/

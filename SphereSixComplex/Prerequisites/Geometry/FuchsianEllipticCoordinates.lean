@@ -220,57 +220,13 @@ public theorem orderFourDiscRotation_fixed_iff
   · exact ComplexUnitDisc.rotation_pow_eq_self_iff orderFourMultiplier norm_orderFourMultiplier 3
       orderFourMultiplier_cube_ne_one w
 
-/-- Order-three Cayley coordinate with codomain the open unit disc. -/
-@[expose] public noncomputable def orderThreeDiscCoordinate
-    (z : UpperHalfPlane) : ComplexUnitDisc :=
-  ⟨orderThreeCayley z, norm_orderThreeCayley_lt_one z⟩
 
-/-- Order-four Cayley coordinate with codomain the open unit disc. -/
-@[expose] public noncomputable def orderFourDiscCoordinate
-    (z : UpperHalfPlane) : ComplexUnitDisc :=
-  ⟨orderFourCayley z, norm_orderFourCayley_lt_one z⟩
 
-/-- Local cyclic representation at the order-three elliptic point. -/
-@[expose] public noncomputable def orderThreeDiscRepresentation :
-    FiniteCyclic 3 →* Equiv.Perm ComplexUnitDisc :=
-  cyclicRepresentation 3 orderThreeDiscRotation orderThreeDiscRotation_pow
 
-/-- Local cyclic representation at the order-four elliptic point. -/
-@[expose] public noncomputable def orderFourDiscRepresentation :
-    FiniteCyclic 4 →* Equiv.Perm ComplexUnitDisc :=
-  cyclicRepresentation 4 orderFourDiscRotation orderFourDiscRotation_pow
 
-@[simp]
-public theorem orderThreeDiscRepresentation_generator :
-    orderThreeDiscRepresentation (cyclicGenerator 3) = orderThreeDiscRotation :=
-  cyclicRepresentation_generator 3 orderThreeDiscRotation orderThreeDiscRotation_pow
 
-@[simp]
-public theorem orderFourDiscRepresentation_generator :
-    orderFourDiscRepresentation (cyclicGenerator 4) = orderFourDiscRotation :=
-  cyclicRepresentation_generator 4 orderFourDiscRotation orderFourDiscRotation_pow
 
-/-- The order-three Cayley coordinate intertwines the Fuchsian stabilizer generator with the
-local cyclic disc representation. -/
-public theorem orderThreeDiscCoordinate_equivariant (z : UpperHalfPlane) :
-    orderThreeDiscRepresentation (cyclicGenerator 3) (orderThreeDiscCoordinate z) =
-      orderThreeDiscCoordinate (fuchsianSourceAction g₁ • z) := by
-  apply Subtype.ext
-  rw [orderThreeDiscRepresentation_generator]
-  change orderThreeMultiplier * orderThreeCayley z =
-    orderThreeCayley (fuchsianSourceAction g₁ • z)
-  exact (orderThreeCayley_generator z).symm
 
-/-- The order-four Cayley coordinate intertwines the Fuchsian stabilizer generator with the
-local cyclic disc representation. -/
-public theorem orderFourDiscCoordinate_equivariant (z : UpperHalfPlane) :
-    orderFourDiscRepresentation (cyclicGenerator 4) (orderFourDiscCoordinate z) =
-      orderFourDiscCoordinate (fuchsianSourceAction g₂ • z) := by
-  apply Subtype.ext
-  rw [orderFourDiscRepresentation_generator]
-  change orderFourMultiplier * orderFourCayley z =
-    orderFourCayley (fuchsianSourceAction g₂ • z)
-  exact (orderFourCayley_generator z).symm
 
 end
 

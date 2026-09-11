@@ -31,9 +31,6 @@ public def a2Barycentric
       y 0 - (v 0 : ℝ),
       y 1 - (v 1 : ℝ)]
 
-public theorem a2Barycentric_sum (upper : Bool) (v : ToricLattice) (y : Fin 2 → ℝ) :
-    ∑ i, a2Barycentric upper v y i = 1 := by
-  cases upper <;> simp [a2Barycentric, Fin.sum_univ_succ]
 
 /-- The two standard integral `A₂` triangles tile the real affine plane. -/
 public theorem exists_a2Barycentric_nonneg (y : Fin 2 → ℝ) :

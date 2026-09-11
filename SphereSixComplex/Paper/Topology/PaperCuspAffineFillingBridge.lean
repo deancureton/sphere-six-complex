@@ -1,6 +1,7 @@
 module
 
-public import SphereSixComplex.Paper.Topology.EstablishedAffineStarBridge
+public import SphereSixComplex.Paper.Topology.AffineVanKampenTransport
+public import SphereSixComplex.Paper.Topology.EstablishedBasedVanKampen
 public import SphereSixComplex.Paper.Topology.PaperCuspCentralNaturality
 
 /-!
@@ -23,15 +24,6 @@ open SphereSixComplex.Topology.PaperVanKampenFourPieceCover
 
 variable (A : PaperAnalyticData)
 
-/-- The central affine presentation transported through the marked cusp naturality equivalence. -/
-public noncomputable def cuspAffineCoreData :
-    AffineTorusCorePiOneData
-      (FundamentalGroup A.actualVanKampenFourPieceCover.core
-        ⟨A.vanKampenBase, A.actualVanKampenFourPieceCover.base_mem_core⟩)
-      Lattice paperMonodromyOne paperMonodromyTwo :=
-  A.centralAffineCorePiOneData.mapSurjective
-    A.cuspCentralNaturality.centralToCore.toMonoidHom
-    A.cuspCentralNaturality.centralToCore.surjective
 
 /-- The chosen cusp translation, transported to the prescribed overlap base point. -/
 public noncomputable def cuspAffineBridgeTranslation :
@@ -129,30 +121,7 @@ public theorem cuspAffineBridge_cuspSquare :
   apply Eq.trans ?_ h2.symm
   rfl
 
-/-- Every marked cusp translation maps to the corresponding transported core translation. -/
-public theorem cuspAffineBridge_translation_core (a : Lattice) :
-    A.cuspOverlapToCore
-        (Additive.toMul (A.cuspAffineBridgeTranslation a)) =
-      Additive.toMul (A.cuspAffineCoreData.translation a) := by
-  exact A.cuspCentralNaturality.translation_core a
 
-/-- At cusp twist zero, the marked cusp meridian maps to the product of the two core meridians. -/
-public theorem cuspAffineBridge_meridian_core :
-    A.cuspOverlapToCore A.cuspAffineBridgeMeridian =
-      A.cuspAffineCoreData.rhoOne * A.cuspAffineCoreData.rhoTwo *
-        (Additive.toMul (A.cuspAffineCoreData.translation 0))⁻¹ := by
-  apply Eq.trans A.cuspCentralNaturality.meridian_core
-  change
-    A.cuspCentralNaturality.centralToCore A.centralAffineCorePiOneData.rhoOne *
-      A.cuspCentralNaturality.centralToCore A.centralAffineCorePiOneData.rhoTwo =
-    A.cuspCentralNaturality.centralToCore A.centralAffineCorePiOneData.rhoOne *
-      A.cuspCentralNaturality.centralToCore A.centralAffineCorePiOneData.rhoTwo *
-      (A.cuspCentralNaturality.centralToCore
-        (Additive.toMul (A.centralAffineCorePiOneData.translation 0)))⁻¹
-  have hz : Additive.toMul (A.centralAffineCorePiOneData.translation 0) = 1 := by
-    rw [map_zero]
-    rfl
-  rw [hz, map_one, inv_one, mul_one]
 
 /-- The actual cusp filling kills the marked angular meridian. -/
 public theorem cuspAffineBridge_meridian_killed :
@@ -229,14 +198,6 @@ public theorem cuspAffineBridge_toric_killed (a : Lattice)
       rw [A.cuspChosenAffineFillingCover.fundamentalGroupMap_vanishing]
       exact fundamentalGroupElementOfBaseEq_one _
 
-/-- The chosen cusp vanishing map reaches every vector in the paper's toric sublattice. -/
-public theorem cuspAffineBridge_vanishing_onto (a : Lattice)
-    (ha : a ∈ paperToricSubgroup) :
-    ∃ k, A.cuspChosenAffineFillingCover.vanishing k = a := by
-  obtain ⟨k, hk⟩ := paperCuspVanishing_onto a ha
-  refine ⟨k, ?_⟩
-  change paperCuspVanishing k = a
-  exact hk
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

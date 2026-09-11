@@ -59,57 +59,20 @@ public theorem orderFourClutchingAddEquiv_pow :
     orderFourClutchingAddEquiv.toHomeomorph ^ 4 = 1 :=
   orderFourThreeTorusClutching_pow
 
-private def coordinateCircleZero : C(StdTorus 1, StdTorus 3) where
-  toFun x := ![x 0, 0, 0]
-  continuous_toFun := by fun_prop
 
-private def coordinateCircleOne : C(StdTorus 1, StdTorus 3) where
-  toFun x := ![0, x 0, 0]
-  continuous_toFun := by fun_prop
 
 private def coordinateCircleTwo : C(StdTorus 1, StdTorus 3) where
   toFun x := ![0, 0, x 0]
   continuous_toFun := by fun_prop
 
-private theorem standardThreeTorusCoordinateCircle_zero :
-    standardThreeTorusCoordinateCircle 0 = coordinateCircleZero := by
-  ext x j
-  fin_cases j <;> rfl
 
-private theorem standardThreeTorusCoordinateCircle_one :
-    standardThreeTorusCoordinateCircle 1 = coordinateCircleOne := by
-  ext x j
-  fin_cases j <;> rfl
 
 private theorem standardThreeTorusCoordinateCircle_two :
     standardThreeTorusCoordinateCircle 2 = coordinateCircleTwo := by
   ext x j
   fin_cases j <;> rfl
 
-public theorem orderThreeOrbitNorm_coordinateOne :
-    (∑ i ∈ Finset.range 3, ((loopAction orderThreeClutchingAddEquiv) ^ i)
-      (standardThreeTorusCoordinateCircle 1)) =
-        standardThreeTorusCoordinateCircle 2 := by
-  rw [standardThreeTorusCoordinateCircle_one,
-    standardThreeTorusCoordinateCircle_two]
-  ext x j
-  fin_cases j <;>
-    simp [Finset.sum_range_succ, loopAction, orderThreeClutchingAddEquiv,
-      orderThreeThreeTorusClutching, coordinateCircleOne, coordinateCircleTwo,
-      pow_succ]
 
-public theorem orderFourOrbitNorm_coordinateZero :
-    (∑ i ∈ Finset.range 4, ((loopAction orderFourClutchingAddEquiv) ^ i)
-      (standardThreeTorusCoordinateCircle 0)) =
-        2 • standardThreeTorusCoordinateCircle 2 := by
-  rw [standardThreeTorusCoordinateCircle_zero,
-    standardThreeTorusCoordinateCircle_two]
-  ext x j
-  fin_cases j <;>
-    simp [Finset.sum_range_succ, loopAction, orderFourClutchingAddEquiv,
-      orderFourThreeTorusClutching, coordinateCircleZero, coordinateCircleTwo,
-      pow_succ]
-  all_goals abel
 
 public def orderThreeFixedCoordinateTwo : fixedLoops orderThreeClutchingAddEquiv :=
   ⟨standardThreeTorusCoordinateCircle 2, by
@@ -129,21 +92,7 @@ public def orderFourFixedCoordinateTwo : fixedLoops orderFourClutchingAddEquiv :
         orderFourThreeTorusClutching, standardThreeTorusCoordinateCircle_two,
         coordinateCircleTwo]⟩
 
-public theorem orderThreeOrbitNorm_eq_fixedCoordinateTwo
-    : orbitNorm 3 orderThreeClutchingAddEquiv orderThreeClutchingAddEquiv_pow
-        (standardThreeTorusCoordinateCircle 1) =
-      orderThreeFixedCoordinateTwo := by
-  apply Subtype.ext
-  rw [orbitNorm_value, orderThreeOrbitNorm_coordinateOne]
-  rfl
 
-public theorem orderFourOrbitNorm_eq_two_fixedCoordinateTwo
-    : orbitNorm 4 orderFourClutchingAddEquiv orderFourClutchingAddEquiv_pow
-        (standardThreeTorusCoordinateCircle 0) =
-      2 • orderFourFixedCoordinateTwo := by
-  apply Subtype.ext
-  rw [orbitNorm_value, orderFourOrbitNorm_coordinateZero]
-  rfl
 
 end SphereSixComplex.Topology.EllipticThreeTorusAdditiveOrbitSweep
 

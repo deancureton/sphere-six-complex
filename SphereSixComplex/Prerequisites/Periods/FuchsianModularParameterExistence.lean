@@ -74,20 +74,6 @@ public structure HasExactHolomorphicBranchAt (f : UpperHalfPlane → ℂ)
 @[expose] public noncomputable def fuchsianSourceCuspQ (z : UpperHalfPlane) : ℂ :=
   Complex.exp (2 * Real.pi * Complex.I * (z : ℂ) / sourceCuspWidth)
 
-/-- The canonical source cusp parameter is invariant under the parabolic generator. -/
-public theorem fuchsianSourceCuspQ_invariant (z : UpperHalfPlane) :
-    fuchsianSourceCuspQ (fuchsianSourceAction g₀ • z) = fuchsianSourceCuspQ z := by
-  change fuchsianSourceCuspQ ((fuchsianSourceAction g₀) z) = fuchsianSourceCuspQ z
-  rw [fuchsianSourceCuspQ, fuchsianSourceCuspQ, sourceCusp_translation]
-  have hw : (sourceCuspWidth : ℂ) ≠ 0 := by
-    exact_mod_cast sourceCuspWidth_pos.ne'
-  have harg :
-      2 * Real.pi * Complex.I * ((z : ℂ) - sourceCuspWidth) / sourceCuspWidth =
-        2 * Real.pi * Complex.I * (z : ℂ) / sourceCuspWidth -
-          2 * Real.pi * Complex.I := by
-    field_simp [hw]
-  rw [harg]
-  exact Complex.exp_periodic.sub_eq _
 
 /-- Exact simple-cusp behavior of the reciprocal quotient coordinate.  The unit is a holomorphic
 function of the completed cusp parameter and remains nonzero at the added point. -/
@@ -293,14 +279,7 @@ the rest of the period construction. -/
   transform_one := L.monodromy_one
   transform_two := L.monodromy_two
 
-@[simp]
-public theorem toFuchsianModularParameter_tau :
-    L.toFuchsianModularParameter.tau = L.tau :=
-  rfl
 
-/-- The lift is equivariant for the whole free product, not just its two generators. -/
-public theorem equivariant (g : Delta) : FuchsianTauEquivariant L.tau g :=
-  L.toFuchsianModularParameter.equivariant g
 
 /-- The order-three value is forced by equivariance and the source fixed point. -/
 public theorem tau_at_fuchsianOneFixedPoint :
@@ -322,32 +301,9 @@ public theorem tau_at_fuchsianTwoFixedPoint :
       (L.monodromy_two fuchsianTwoFixedPoint).symm
     _ = L.tau fuchsianTwoFixedPoint := congrArg L.tau fuchsianTwoFixedPoint_fixed
 
-/-- The square of the order-four source stabilizer is killed by the modular lift.  This is the
-local degree-two branching forced by the `(4 → 2)` orbifold monodromy. -/
-public theorem tau_invariant_under_two_square (z : UpperHalfPlane) :
-    L.tau (fuchsianSourceAction (g₂ ^ 2) • z) = L.tau z := by
-  rw [map_pow, pow_two, mul_smul, L.monodromy_two, L.monodromy_two]
-  change targetTwoPerm (targetTwoPerm (L.tau z)) = L.tau z
-  apply UpperHalfPlane.coe_injective
-  rw [targetTwoPerm_apply, targetTwoPerm_apply]
-  field_simp [(L.tau z).ne_zero]
 
-/-- The inverse product generator gives the normalized cusp translation. -/
-public theorem tau_transform_cusp (z : UpperHalfPlane) :
-    ((L.tau (fuchsianSourceAction g₀ • z) : UpperHalfPlane) : ℂ) = L.tau z - 1 := by
-  have h := congrArg (fun w : UpperHalfPlane ↦ (w : ℂ)) (L.equivariant g₀ z)
-  exact h.trans (rhoTauReal_g₀_smul (L.tau z))
 
-/-- The exponential cusp parameter associated to the normalized lift. -/
-@[expose] public def cuspQ (z : UpperHalfPlane) : ℂ :=
-  Function.Periodic.qParam 1 (L.tau z)
 
-/-- The normalized cusp parameter descends through the parabolic source action. -/
-public theorem cuspQ_invariant (z : UpperHalfPlane) :
-    L.cuspQ (fuchsianSourceAction g₀ • z) = L.cuspQ z := by
-  rw [cuspQ, cuspQ, L.tau_transform_cusp]
-  simpa [Function.Periodic.qParam, mul_sub] using
-    Complex.exp_periodic.sub_eq (2 * Real.pi * Complex.I * (L.tau z : ℂ))
 
 /-- The coordinate induced from the constructed lift is the prescribed quotient coordinate. -/
 public theorem induced_coordinate_eq (z : UpperHalfPlane) :
@@ -356,15 +312,6 @@ public theorem induced_coordinate_eq (z : UpperHalfPlane) :
   rw [L.modularJ_equation]
   ring
 
-/-- The lift satisfies all local orbifold compatibility conditions, including the cusp law. -/
-public theorem isLocallyOrbifoldCompatible : IsLocallyOrbifoldCompatible L.tau where
-  mapOneFixedPoint := by
-    rw [commonOneFixedPoint, L.tau_at_fuchsianOneFixedPoint,
-      fuchsianOneFixedPoint_eq_ellipticThreeParameter]
-  mapTwoFixedPoint := L.tau_at_fuchsianTwoFixedPoint
-  equivariantOne := L.monodromy_one
-  equivariantTwo := L.monodromy_two
-  equivariantCusp := L.equivariant g₀
 
 /-- A solution of the normalized modular-lifting obligation is sufficient for the
 `FuchsianModularParameter` existence statement, with both elliptic normalizations certified. -/

@@ -68,16 +68,6 @@ public theorem centralFamilyCoordinate_continuous :
   exact A.regularCoordinate_isLocalHomeomorph.continuous.comp
     (regularTotalSpaceBase_continuous A.periods)
 
-public theorem centralFamilyCoordinate_surjective :
-    Function.Surjective A.centralFamilyCoordinate := by
-  intro z
-  obtain ⟨u, hu⟩ := A.regularCoordinate_surjective z
-  let q : RegularTotalSpace A.periods :=
-    projection (regularParameterMap A.periods) (u, 0)
-  refine ⟨A.centralQuotientProjection q, ?_⟩
-  rw [A.centralFamilyCoordinate_centralQuotientProjection]
-  change A.regularCoordinate u = z
-  exact hu
 
 public theorem centralPiece_subset_ellipticInterior :
     A.starCover.piece 0 ⊆

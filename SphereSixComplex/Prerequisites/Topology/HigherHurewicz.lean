@@ -30,12 +30,6 @@ public def postcomposeGenLoop
     {x : X} (f : C(X, Y)) (p : Ω^ N X x) : Ω^ N Y (f x) :=
   ⟨f.comp p.1, fun y hy ↦ congrArg f (p.property y hy)⟩
 
-@[simp]
-public theorem postcomposeGenLoop_apply
-    {N X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
-    {x : X} (f : C(X, Y)) (p : Ω^ N X x) (y : I^N) :
-    postcomposeGenLoop f p y = f (p y) :=
-  rfl
 
 /-- A continuous map induces a map on cubical homotopy groups by postcomposition. -/
 public def homotopyGroupMap
@@ -44,12 +38,6 @@ public def homotopyGroupMap
   Quotient.map (postcomposeGenLoop f) fun _ _ h ↦
     h.comp_continuousMap f
 
-@[simp]
-public theorem homotopyGroupMap_mk
-    {N X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
-    (f : C(X, Y)) (x : X) (p : Ω^ N X x) :
-    homotopyGroupMap f x ⟦p⟧ = ⟦postcomposeGenLoop f p⟧ :=
-  rfl
 
 /-- The construction contract for the classical natural higher Hurewicz homomorphism. -/
 public structure Hurewicz.Map where

@@ -68,11 +68,5 @@ public theorem contractingPrismClass_eq_inverse_boundary :
   simp only [contractingPrismClass_boundary, Category.assoc, IsIso.inv_hom_id,
     Category.comp_id]
 
-include hS in
-public theorem contractingPrismClass_surjective :
-    Function.Surjective (contractingPrismClass S H n) := by
-  let := contractingPrism_boundary_isIso S hS H n
-  rw [contractingPrismClass_eq_inverse_boundary S hS H n]
-  exact (AddCommGrpCat.epi_iff_surjective _).mp inferInstance
 
 end SphereSixComplex

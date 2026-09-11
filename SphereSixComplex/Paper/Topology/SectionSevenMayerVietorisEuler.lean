@@ -94,22 +94,6 @@ public theorem integralMayerVietorisEulerAdditivitySix_of_topDegreeVanishing
   · rw [hEuler, hTopRank]
     simp
 
-/-- A structure-valued form of the sound open-cover specialization. -/
-public theorem establishedIntegralMayerVietorisEulerAdditivitySeven_structured
-    {X : Type} [TopologicalSpace X] (U V : Set X)
-    (hUOpen : IsOpen U) (hVOpen : IsOpen V)
-    (hUFinite : IntegralHomologyFiniteSix U)
-    (hVFinite : IntegralHomologyFiniteSix V)
-    (hInterFinite : IntegralHomologyFiniteSix (U ∩ V : Set X)) :
-    IntegralHomologyFiniteSeven (U ∪ V : Set X) ∧
-      integralHomologyEulerCharacteristicSeven (U ∪ V : Set X) =
-        integralHomologyEulerCharacteristicSix U +
-        integralHomologyEulerCharacteristicSix V -
-        integralHomologyEulerCharacteristicSix (U ∩ V : Set X) :=
-  integralMayerVietorisEulerAdditivitySeven_of_finiteSix U V
-    hUFinite hVFinite hInterFinite
-    (IntegralMayerVietoris.exact_sequence_of_isOpen U V hUOpen hVOpen)
-    (IntegralMayerVietoris.sumMap_zero_surjective U V hUOpen hVOpen)
 
 /-- The asymmetric form used to adjoin successive six-dimensional pieces to a partial union that
 may already carry degree-seven homology. -/
@@ -195,127 +179,6 @@ public noncomputable def sectionSevenLocalEulerExpression : ℤ :=
   integralHomologyEulerCharacteristicSix (A.collarSource 1) -
   integralHomologyEulerCharacteristicSix (A.collarSource 2)
 
-/-- Degree-six derivation with explicit top-degree vanishing at every partial union.  The theorem
-`integralHomologyEulerCharacteristicSeven_eq_localExpression` avoids those intermediate
-hypotheses by retaining degree-seven homology until the completed space. -/
-public theorem integralHomologyEulerCharacteristicSix_eq_localExpression
-    (hCentralFinite : IntegralHomologyFiniteSix A.central)
-    (hFillingFinite : ∀ i, IntegralHomologyFiniteSix (A.filling i))
-    (hCollarFinite : ∀ i, IntegralHomologyFiniteSix (A.collarSource i))
-    (hTop : A.SectionSevenStageTopDegreeVanishing) :
-    integralHomologyEulerCharacteristicSix
-        (GluedSpace A.toFourPieceStarGluingData.glueData) =
-      A.sectionSevenLocalEulerExpression := by
-  let C := A.sectionSevenEulerCover
-  let eCentralStage : A.central ≃ₜ C.stage 0 := by
-    simpa only [C] using A.centralToSectionSevenEulerStageZeroHomeomorph
-  let ePiece (i : Fin 3) : A.filling i ≃ₜ C.piece i.succ := by
-    simpa only [C] using A.fillingToSectionSevenEulerPieceHomeomorph i
-  let eOverlap (i : Fin 3) : A.collarSource i ≃ₜ
-      (C.stage i.castSucc ∩ C.piece i.succ : Set
-        (GluedSpace A.toFourPieceStarGluingData.glueData)) := by
-    simpa only [C] using A.collarToMayerVietorisOverlapHomeomorph i
-  let eNext (i : Fin 3) :
-      (C.stage i.castSucc ∪ C.piece i.succ : Set
-        (GluedSpace A.toFourPieceStarGluingData.glueData)) ≃ₜ C.stage i.succ := by
-    simpa only [C] using A.sectionSevenEulerStageNextHomeomorph i
-  let eLast : C.stage (3 : Fin 4) ≃ₜ
-      GluedSpace A.toFourPieceStarGluingData.glueData := by
-    simpa only [C] using A.sectionSevenEulerStageLastHomeomorph
-  have hPieceZero : IntegralHomologyFiniteSix (C.piece 0) :=
-    hCentralFinite.homeomorph A.centralToSectionSevenEulerPieceHomeomorph
-  have hPiece : ∀ (i : Fin 3), IntegralHomologyFiniteSix (C.piece i.succ) := fun i ↦
-    (hFillingFinite i).homeomorph (ePiece i)
-  have hOverlap : ∀ (i : Fin 3), IntegralHomologyFiniteSix
-      (C.stage i.castSucc ∩ C.piece i.succ : Set
-        (GluedSpace A.toFourPieceStarGluingData.glueData)) := fun i ↦
-    (hCollarFinite i).homeomorph (eOverlap i)
-  have hStageZero : IntegralHomologyFiniteSix (C.stage (0 : Fin 4)) :=
-    hCentralFinite.homeomorph eCentralStage
-  obtain ⟨hUnionZero, hAddZero⟩ :=
-    integralMayerVietorisEulerAdditivitySix_of_topDegreeVanishing
-      (C.stage (0 : Fin 4)) (C.piece 1)
-      (C.isOpen_stage 0) (C.isOpen_piece 1) hStageZero (hPiece 0) (hOverlap 0) (hTop 0)
-  have hStageOne : IntegralHomologyFiniteSix (C.stage (1 : Fin 4)) :=
-    hUnionZero.homeomorph (eNext 0)
-  have hAddZero' :
-      integralHomologyEulerCharacteristicSix (C.stage (1 : Fin 4)) =
-        integralHomologyEulerCharacteristicSix (C.stage (0 : Fin 4)) +
-        integralHomologyEulerCharacteristicSix (C.piece 1) -
-        integralHomologyEulerCharacteristicSix (C.stage (0 : Fin 4) ∩ C.piece 1 :
-          Set (GluedSpace A.toFourPieceStarGluingData.glueData)) := by
-    simpa using
-      (integralHomologyEulerCharacteristicSix_homeomorph (eNext 0)).symm.trans hAddZero
-  obtain ⟨hUnionOne, hAddOne⟩ :=
-    integralMayerVietorisEulerAdditivitySix_of_topDegreeVanishing
-      (C.stage (1 : Fin 4)) (C.piece 2)
-      (C.isOpen_stage 1) (C.isOpen_piece 2) hStageOne (hPiece 1) (hOverlap 1) (hTop 1)
-  have hStageTwo : IntegralHomologyFiniteSix (C.stage (2 : Fin 4)) :=
-    hUnionOne.homeomorph (eNext 1)
-  have hAddOne' :
-      integralHomologyEulerCharacteristicSix (C.stage (2 : Fin 4)) =
-        integralHomologyEulerCharacteristicSix (C.stage (1 : Fin 4)) +
-        integralHomologyEulerCharacteristicSix (C.piece 2) -
-        integralHomologyEulerCharacteristicSix (C.stage (1 : Fin 4) ∩ C.piece 2 :
-          Set (GluedSpace A.toFourPieceStarGluingData.glueData)) := by
-    simpa using
-      (integralHomologyEulerCharacteristicSix_homeomorph (eNext 1)).symm.trans hAddOne
-  obtain ⟨-, hAddTwo⟩ :=
-    integralMayerVietorisEulerAdditivitySix_of_topDegreeVanishing
-      (C.stage (2 : Fin 4)) (C.piece 3)
-      (C.isOpen_stage 2) (C.isOpen_piece 3) hStageTwo (hPiece 2) (hOverlap 2) (hTop 2)
-  have hAddTwo' :
-      integralHomologyEulerCharacteristicSix (C.stage (3 : Fin 4)) =
-        integralHomologyEulerCharacteristicSix (C.stage (2 : Fin 4)) +
-        integralHomologyEulerCharacteristicSix (C.piece 3) -
-        integralHomologyEulerCharacteristicSix (C.stage (2 : Fin 4) ∩ C.piece 3 :
-          Set (GluedSpace A.toFourPieceStarGluingData.glueData)) := by
-    simpa using
-      (integralHomologyEulerCharacteristicSix_homeomorph (eNext 2)).symm.trans hAddTwo
-  have hCentralEuler : integralHomologyEulerCharacteristicSix (C.stage (0 : Fin 4)) =
-      integralHomologyEulerCharacteristicSix A.central := by
-    exact (integralHomologyEulerCharacteristicSix_homeomorph eCentralStage).symm
-  have hPieceEuler : ∀ (i : Fin 3),
-      integralHomologyEulerCharacteristicSix (C.piece i.succ) =
-        integralHomologyEulerCharacteristicSix (A.filling i) := fun i ↦
-    (integralHomologyEulerCharacteristicSix_homeomorph (ePiece i)).symm
-  have hOverlapEuler : ∀ (i : Fin 3),
-      integralHomologyEulerCharacteristicSix
-          (C.stage i.castSucc ∩ C.piece i.succ : Set
-            (GluedSpace A.toFourPieceStarGluingData.glueData)) =
-        integralHomologyEulerCharacteristicSix (A.collarSource i) := fun i ↦
-    (integralHomologyEulerCharacteristicSix_homeomorph (eOverlap i)).symm
-  rw [← integralHomologyEulerCharacteristicSix_homeomorph eLast]
-  rw [hAddTwo', hAddOne', hAddZero']
-  rw [hCentralEuler]
-  have hPieceEuler0 : integralHomologyEulerCharacteristicSix (C.piece 1) =
-      integralHomologyEulerCharacteristicSix (A.filling 0) := by
-    simpa using hPieceEuler 0
-  have hPieceEuler1 : integralHomologyEulerCharacteristicSix (C.piece 2) =
-      integralHomologyEulerCharacteristicSix (A.filling 1) := by
-    simpa using hPieceEuler 1
-  have hPieceEuler2 : integralHomologyEulerCharacteristicSix (C.piece 3) =
-      integralHomologyEulerCharacteristicSix (A.filling 2) := by
-    simpa using hPieceEuler 2
-  have hOverlapEuler0 :
-      integralHomologyEulerCharacteristicSix (C.stage 0 ∩ C.piece 1 : Set
-        (GluedSpace A.toFourPieceStarGluingData.glueData)) =
-      integralHomologyEulerCharacteristicSix (A.collarSource 0) := by
-    simpa using hOverlapEuler 0
-  have hOverlapEuler1 :
-      integralHomologyEulerCharacteristicSix (C.stage 1 ∩ C.piece 2 : Set
-        (GluedSpace A.toFourPieceStarGluingData.glueData)) =
-      integralHomologyEulerCharacteristicSix (A.collarSource 1) := by
-    simpa using hOverlapEuler 1
-  have hOverlapEuler2 :
-      integralHomologyEulerCharacteristicSix (C.stage 2 ∩ C.piece 3 : Set
-        (GluedSpace A.toFourPieceStarGluingData.glueData)) =
-      integralHomologyEulerCharacteristicSix (A.collarSource 2) := by
-    simpa using hOverlapEuler 2
-  rw [hPieceEuler0, hPieceEuler1, hPieceEuler2,
-    hOverlapEuler0, hOverlapEuler1, hOverlapEuler2]
-  unfold sectionSevenLocalEulerExpression
-  ring
 
 /-- The sound Mayer--Vietoris iteration retains possible degree-seven homology throughout the
 three partial unions. -/
@@ -469,19 +332,6 @@ public theorem integralHomologyEulerCharacteristicSix_eq_localExpression_of_homo
   exact A.integralHomologyEulerCharacteristicSeven_eq_localExpression
     hCentralFinite hFillingFinite hCollarFinite
 
-/-- Compatibility corollary through explicit top-degree vanishing at every partial union.  The
-final endpoint below uses
-`integralHomologyEulerCharacteristicSix_eq_localExpression_of_homologyTheory`. -/
-public theorem integralHomologyEulerCharacteristicSix_eq_two_of_localCalculation
-    (hCentralFinite : IntegralHomologyFiniteSix A.central)
-    (hFillingFinite : ∀ i, IntegralHomologyFiniteSix (A.filling i))
-    (hCollarFinite : ∀ i, IntegralHomologyFiniteSix (A.collarSource i))
-    (hTop : A.SectionSevenStageTopDegreeVanishing)
-    (hLocal : A.sectionSevenLocalEulerExpression = 2) :
-    integralHomologyEulerCharacteristicSix
-        (GluedSpace A.toFourPieceStarGluingData.glueData) = 2 := by
-  rw [A.integralHomologyEulerCharacteristicSix_eq_localExpression
-    hCentralFinite hFillingFinite hCollarFinite hTop, hLocal]
 
 namespace SectionSevenMayerVietorisHomologyAssembly
 

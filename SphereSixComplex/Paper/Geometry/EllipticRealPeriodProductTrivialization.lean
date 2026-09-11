@@ -177,13 +177,6 @@ public theorem fixedToMovingCover_movingToFixedCover (z₀ : UpperHalfPlane)
   · rfl
   · simp [movingToFixedCover, fixedToMovingCover, periodCoordinates]
 
-/-- Algebraic product equivalence of the moving vector cover with the fixed vector product. -/
-@[expose] public def realPeriodCoverEquiv (z₀ : UpperHalfPlane) :
-    (UpperHalfPlane × ComplexTwoSpace) ≃ (UpperHalfPlane × ComplexTwoSpace) where
-  toFun := movingToFixedCover F z₀
-  invFun := fixedToMovingCover F z₀
-  left_inv := fixedToMovingCover_movingToFixedCover F z₀
-  right_inv := movingToFixedCover_fixedToMovingCover F z₀
 
 /-- The fixed-to-moving direction is jointly continuous using the existing forward period-map
 continuity theorem. -/
@@ -207,12 +200,6 @@ public theorem movingToFixedCover_continuous (z₀ : UpperHalfPlane) :
     ((fullRankDomain (parameterMap F z₀)).realEquiv.continuous.comp
       (periodCoordinates_parameterMap_continuous F))
 
-/-- The canonical real-period change of coordinates is a homeomorphism of vector covers. -/
-@[expose] public def realPeriodCoverHomeomorph (z₀ : UpperHalfPlane) :
-    (UpperHalfPlane × ComplexTwoSpace) ≃ₜ (UpperHalfPlane × ComplexTwoSpace) where
-  toEquiv := realPeriodCoverEquiv F z₀
-  continuous_toFun := movingToFixedCover_continuous F z₀
-  continuous_invFun := fixedToMovingCover_continuous F z₀
 
 /-- Moving integer-period translations become the same integer-period translations in the fixed
 basis. -/
@@ -296,19 +283,7 @@ public theorem fixedToMovingCover_orbitRel (z₀ : UpperHalfPlane)
     TotalSpace (fixedParameterMap F z₀) → TotalSpace (parameterMap F) :=
   Quotient.map (fixedToMovingCover F z₀) (fixedToMovingCover_orbitRel F z₀)
 
-@[simp]
-public theorem movingToFixedFamily_mk (z₀ : UpperHalfPlane)
-    (p : UpperHalfPlane × ComplexTwoSpace) :
-    movingToFixedFamily F z₀ (Quotient.mk _ p) =
-      Quotient.mk _ (movingToFixedCover F z₀ p) :=
-  rfl
 
-@[simp]
-public theorem fixedToMovingFamily_mk (z₀ : UpperHalfPlane)
-    (p : UpperHalfPlane × ComplexTwoSpace) :
-    fixedToMovingFamily F z₀ (Quotient.mk _ p) =
-      Quotient.mk _ (fixedToMovingCover F z₀ p) :=
-  rfl
 
 /-- The varying-lattice torus family is canonically homeomorphic to its constant real-period
 model. -/
@@ -376,16 +351,7 @@ public theorem fixedProductToFamily_respects (z₀ z : UpperHalfPlane)
   fun p ↦ Quotient.lift (fun v ↦ Quotient.mk _ (p.1, v))
     (fixedProductToFamily_respects F z₀ p.1) p.2
 
-@[simp]
-public theorem fixedFamilyToProduct_mk (z₀ : UpperHalfPlane)
-    (p : UpperHalfPlane × ComplexTwoSpace) :
-    fixedFamilyToProduct F z₀ (Quotient.mk _ p) = (p.1, Quotient.mk _ p.2) :=
-  rfl
 
-@[simp]
-public theorem fixedProductToFamily_mk (z₀ z : UpperHalfPlane) (v : ComplexTwoSpace) :
-    fixedProductToFamily F z₀ (z, Quotient.mk _ v) = Quotient.mk _ (z, v) :=
-  rfl
 
 public theorem fixedFamilyToProduct_continuous (z₀ : UpperHalfPlane) :
     Continuous (fixedFamilyToProduct F z₀) :=

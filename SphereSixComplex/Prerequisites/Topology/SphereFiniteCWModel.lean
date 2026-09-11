@@ -149,11 +149,6 @@ private theorem topCellCharacteristic_continuousOn :
     · right
       simp [topCellCharacteristic, topCellValue, hyBall]
 
-private theorem topCellCharacteristic_image_ball :
-    topCellCharacteristic '' Metric.ball (0 : SixVector) 1 =
-      topCellCharacteristic.target := by
-  rw [← topCellCharacteristic_source]
-  exact topCellCharacteristic.image_source_eq_target
 
 private def boundaryPoint : SixVector := fun _ ↦ 1
 
@@ -377,12 +372,6 @@ public noncomputable def sixSphereFiniteCWComplex :
     Topology.CWComplex (Set.univ : Set SixSphereFiniteCWCarrier) :=
   sixSphereFiniteCWModel.complex
 
-/-- The explicit CW structure on the model carrier is finite. -/
-public theorem sixSphereFiniteCWComplex_finite :
-    letI : Topology.CWComplex (Set.univ : Set SixSphereFiniteCWCarrier) :=
-      sixSphereFiniteCWComplex
-    Topology.CWComplex.Finite (Set.univ : Set SixSphereFiniteCWCarrier) :=
-  sixSphereFiniteCWModel.finite
 
 /-- The standard identification of the finite CW model with the standard six-sphere. -/
 public noncomputable opaque sixSphereFiniteCWHomeomorph :

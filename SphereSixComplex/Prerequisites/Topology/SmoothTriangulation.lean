@@ -1,7 +1,8 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.CellularChainModel
-public import SphereSixComplex.Prerequisites.Topology.FiniteCWModel
+public import Mathlib.Topology.CWComplex.Classical.Finite
+public import Mathlib.Topology.Homotopy.Equiv
 public import SphereSixComplex.Prerequisites.Topology.SmoothAtlasOrientation
 
 /-!
@@ -49,15 +50,6 @@ namespace CWType.FiniteModelOfDimension
 
 variable {d : ℕ} {X : Type} [TopologicalSpace X]
 
-/-- Forget the dimension bound on a finite CW model. -/
-public noncomputable def toFiniteModel (M : CWType.FiniteModelOfDimension d X) :
-    CWType.FiniteModel X where
-  Carrier := M.Carrier
-  topology := M.topology
-  t2 := M.t2
-  homotopyEquiv := M.homotopyEquiv
-  cwComplex := M.cwComplex
-  finite := M.finite
 
 /-- Integral homology of a space with a finite CW model is finitely generated in every degree. -/
 public theorem finite_homology (M : CWType.FiniteModelOfDimension d X) (k : ℕ) :

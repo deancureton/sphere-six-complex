@@ -1,6 +1,9 @@
 module
 
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspCycleDecompositionReduction
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineCompletionReduction
+public import SphereSixComplex.Paper.Geometry.CuspCollarPairProperness
+public import SphereSixComplex.Paper.Geometry.EllipticRealPeriodProductTrivialization
+public import SphereSixComplex.Paper.Topology.PaperCuspBoundaryUniversalCover
 
 /-!
 # Mapping-torus model for the cusp-to-elliptic inclusion
@@ -95,134 +98,8 @@ public theorem actualCuspRawHomologyTwoEquiv_apply_mappingTorus (A : PaperAnalyt
         (integralSingularHomologyMap 2 G.totalHomotopyEquiv.toFun x) := by
   rfl
 
-/-- Postcomposing induced singular-homology maps with any additive coordinate preserves
-homotopy invariance. -/
-public theorem coordinate_comp_integralSingularHomologyMap_eq_of_homotopic
-    {X Y : Type} {M : Type*} [TopologicalSpace X] [TopologicalSpace Y] [AddMonoid M]
-    {f g : C(X, Y)} (h : f.Homotopic g) (k : ℕ)
-    (coordinate : IntegralSingularHomology k Y →+ M) :
-    coordinate.comp (integralSingularHomologyMap k f) =
-      coordinate.comp (integralSingularHomologyMap k g) := by
-  apply AddMonoidHom.ext
-  intro x
-  apply congrArg coordinate
-  change ConcreteCategory.hom
-      (((singularHomologyFunctor AddCommGrpCat k).obj (AddCommGrpCat.of ℤ)).map
-        (TopCat.ofHom f)) x =
-    ConcreteCategory.hom
-      (((singularHomologyFunctor AddCommGrpCat k).obj (AddCommGrpCat.of ℤ)).map
-        (TopCat.ofHom g)) x
-  rw [integralSingularHomologyMap_eq_of_homotopic h k]
 
-/-- The exact remaining calculation on the radial mapping-torus model.  The model inclusion must
-send the meridian to the first elliptic-interior coordinate and the first invariant suspension
-class to the normalized elliptic fibre coordinate. -/
-public structure CuspEllipticMappingTorusCoordinateComparison
-    (N : A.EllipticBandHomologyAlignment D)
-    (G₀ : D.SectionSevenCuspPulledBackBoundaryBasisBridge N) : Prop where
-  degreeOne :
-    (D.ellipticInteriorDegreeOneCoordinateHom N).comp
-        (integralSingularHomologyMap 1 D.cuspMappingTorusToEllipticInteriorMap) =
-      let G := A.actualCuspRadialClutchingData
-      let _ := G.fiberTopology
-      actualCuspEllipticDegreeOneCoordinateAfterAddEquiv
-        G.geometricWangSections.circleMappingTorusHOneAddEquiv
-  degreeTwoFiber :
-    (D.ellipticInteriorDegreeTwoFiberCoordinateHom N G₀).comp
-        (integralSingularHomologyMap 2 D.cuspMappingTorusToEllipticInteriorMap) =
-      let G := A.actualCuspRadialClutchingData
-      let _ := G.fiberTopology
-      actualCuspEllipticDegreeTwoFiberCoordinateAfterAddEquiv
-        G.geometricWangSections.circleMappingTorusHTwoAddEquiv
 
-/-- A geometric route to the two mapping-torus coordinate calculations.  A reference map has
-explicit marked coordinates, and the actual mapping-torus model is homotopic to it. -/
-public structure CuspEllipticMappingTorusGeometricComparison
-    (N : A.EllipticBandHomologyAlignment D)
-    (G₀ : D.SectionSevenCuspPulledBackBoundaryBasisBridge N) where
-  referenceMap :
-    let G := A.actualCuspRadialClutchingData
-    let _ := G.fiberTopology
-    C(CircleMappingTorus G.clutching, A.ellipticInterior)
-  modelHomotopy :
-    let G := A.actualCuspRadialClutchingData
-    let _ := G.fiberTopology
-    D.cuspMappingTorusToEllipticInteriorMap.Homotopic referenceMap
-  referenceDegreeOne :
-    (D.ellipticInteriorDegreeOneCoordinateHom N).comp
-        (integralSingularHomologyMap 1 referenceMap) =
-      let G := A.actualCuspRadialClutchingData
-      let _ := G.fiberTopology
-      actualCuspEllipticDegreeOneCoordinateAfterAddEquiv
-        G.geometricWangSections.circleMappingTorusHOneAddEquiv
-  referenceDegreeTwoFiber :
-    (D.ellipticInteriorDegreeTwoFiberCoordinateHom N G₀).comp
-        (integralSingularHomologyMap 2 referenceMap) =
-      let G := A.actualCuspRadialClutchingData
-      let _ := G.fiberTopology
-      actualCuspEllipticDegreeTwoFiberCoordinateAfterAddEquiv
-        G.geometricWangSections.circleMappingTorusHTwoAddEquiv
-
-namespace CuspEllipticMappingTorusGeometricComparison
-
-variable {D : A.EllipticTwoDiscCoverData}
-variable {N : A.EllipticBandHomologyAlignment D}
-variable {G₀ : D.SectionSevenCuspPulledBackBoundaryBasisBridge N}
-
-/-- Homotopy invariance transports the marked reference-map calculation to the actual model. -/
-public theorem coordinateComparison
-    (C : D.CuspEllipticMappingTorusGeometricComparison N G₀) :
-    D.CuspEllipticMappingTorusCoordinateComparison N G₀ where
-  degreeOne := by
-    rw [coordinate_comp_integralSingularHomologyMap_eq_of_homotopic C.modelHomotopy]
-    exact C.referenceDegreeOne
-  degreeTwoFiber := by
-    rw [coordinate_comp_integralSingularHomologyMap_eq_of_homotopic C.modelHomotopy]
-    exact C.referenceDegreeTwoFiber
-
-end CuspEllipticMappingTorusGeometricComparison
-
-namespace CuspEllipticMappingTorusCoordinateComparison
-
-variable {D : A.EllipticTwoDiscCoverData}
-variable {N : A.EllipticBandHomologyAlignment D}
-variable {G₀ : D.SectionSevenCuspPulledBackBoundaryBasisBridge N}
-
-/-- The two mapping-torus coordinate calculations imply the two actual inclusion-naturality
-squares. -/
-public theorem inclusionNaturality
-    (C : D.CuspEllipticMappingTorusCoordinateComparison N G₀) :
-    D.SectionSevenCuspEllipticInclusionNaturality N G₀ where
-  degreeOne := by
-    apply AddMonoidHom.ext
-    intro x
-    change D.ellipticInteriorDegreeOneCoordinateHom N
-      (integralSingularHomologyMap 1 D.cuspToEllipticInteriorMap.hom x) = _
-    rw [D.cuspToEllipticInteriorMap_homology_mappingTorusModel 1 x]
-    have hx := DFunLike.congr_fun C.degreeOne
-      (integralSingularHomologyMap 1
-        A.actualCuspRadialClutchingData.totalHomotopyEquiv.toFun x)
-    change _ = cuspEllipticDegreeOneRawCoordinate
-      (A.cuspRawHomologyOneEquiv x)
-    rw [actualCuspRawHomologyOneEquiv_apply_mappingTorus]
-    change _ = cuspEllipticDegreeOneRawCoordinate _ at hx
-    exact hx
-  degreeTwoFiber := by
-    apply AddMonoidHom.ext
-    intro x
-    change D.ellipticInteriorDegreeTwoFiberCoordinateHom N G₀
-      (integralSingularHomologyMap 2 D.cuspToEllipticInteriorMap.hom x) = _
-    rw [D.cuspToEllipticInteriorMap_homology_mappingTorusModel 2 x]
-    have hx := DFunLike.congr_fun C.degreeTwoFiber
-      (integralSingularHomologyMap 2
-        A.actualCuspRadialClutchingData.totalHomotopyEquiv.toFun x)
-    change _ = cuspEllipticDegreeTwoFiberRawCoordinate
-      (A.cuspRawHomologyTwoEquiv x)
-    rw [actualCuspRawHomologyTwoEquiv_apply_mappingTorus]
-    change _ = cuspEllipticDegreeTwoFiberRawCoordinate _ at hx
-    exact hx
-
-end CuspEllipticMappingTorusCoordinateComparison
 
 end EllipticTwoDiscCoverData
 

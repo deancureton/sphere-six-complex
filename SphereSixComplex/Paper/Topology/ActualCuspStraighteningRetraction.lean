@@ -75,20 +75,6 @@ public def frozenLocalCuspAction
   mul_smul g h p := frozenLocalPsiMap_add N M r
     (Multiplicative.toAdd g) (Multiplicative.toAdd h) p
 
-/-- Every fixed frozen deck transformation is continuous. -/
-public theorem frozenLocalCuspContinuousConstSMul
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) (r : ℝ) :
-    letI := frozenLocalCuspAction N M r
-    ContinuousConstSMul (Multiplicative ParameterLattice) (localCarrier M r) := by
-  let _ := frozenLocalCuspAction N M r
-  constructor
-  intro g
-  apply Continuous.subtype_mk
-  exact (M.torusAction_holomorphic
-      (phaseEmbedding (N.phaseCoefficient (Multiplicative.toAdd g) 0))).continuous.comp
-    ((M.fanShear_holomorphic (Multiplicative.toAdd g)).continuous.comp
-      continuous_subtype_val)
 
 /-- Straightening conjugates the actual local deck maps to the frozen deck maps. -/
 public theorem pointStraightening_actualPsiMap
@@ -153,32 +139,6 @@ public noncomputable abbrev FrozenLocalCuspFilling
     (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) (r : ℝ) :=
   Quotient (frozenLocalCuspOrbitRel N M r)
 
-/-- Straightening respects the actual and frozen orbit relations. -/
-public theorem pointStraightening_respects_orbitRel
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
-    (W : ActualPuncturedCuspCollarWitness N M) {a b : localCarrier M W.localWitness.radius}
-    (hab : actualLocalPsiOrbitRel W a b) :
-    frozenLocalCuspOrbitRel N M W.localWitness.radius
-      (pointStraightening W a) (pointStraightening W b) := by
-  let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
-    W.localWitness.radius_pos W.localWitness.radius_le
-  let _ := actualLocalCuspQuotientAction W
-  change MulAction.orbitRel (Multiplicative ParameterLattice)
-    (localCarrier M W.localWitness.radius) a b at hab
-  rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff] at hab
-  obtain ⟨g, hg⟩ := hab
-  have hg' : C.psiMap (Multiplicative.toAdd g) b = a :=
-    (C.psiMap_eq_generic _ _).trans hg
-  let _ := frozenLocalCuspAction N M W.localWitness.radius
-  change MulAction.orbitRel (Multiplicative ParameterLattice)
-    (localCarrier M W.localWitness.radius)
-      (pointStraightening W a) (pointStraightening W b)
-  rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff]
-  refine ⟨g, ?_⟩
-  change frozenLocalPsiMap N M W.localWitness.radius
-    (Multiplicative.toAdd g) (pointStraightening W b) = pointStraightening W a
-  rw [← pointStraightening_actualPsiMap W (Multiplicative.toAdd g) b, hg']
 
 /-- Unstraightening respects the frozen and actual orbit relations. -/
 public theorem actualPsiMap_pointUnstraightening

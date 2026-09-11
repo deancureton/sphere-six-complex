@@ -35,43 +35,9 @@ variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E
 
 namespace CuspFiberSpecializationNormalization
 
-/-- The logarithmic angular coordinate upstairs, reduced modulo integral translation. -/
-private def additiveCuspAngularCircleMap
-    (W : ActualPuncturedCuspCollarWitness N M) :
-    C(additiveCuspRadiusCover W.localWitness.radius, UnitAddCircle) where
-  toFun p := ((p.1.2.re : ℝ) : UnitAddCircle)
-  continuous_toFun :=
-    (AddCircle.continuous_mk' 1).comp
-      (Complex.continuous_re.comp (continuous_snd.comp continuous_subtype_val))
 
-private theorem additiveCuspAngularCircleMap_factors
-    (W : ActualPuncturedCuspCollarWitness N M) :
-    Function.FactorsThrough (additiveCuspAngularCircleMap W)
-      (additiveCuspBoundaryProjection W) := by
-  intro p q hpq
-  obtain ⟨k, hk, _⟩ := additiveCuspBoundaryProjection_eq_period_data W p q hpq
-  apply (StandardTorusHomology.unitAddCircle_eq_iff _ _).2
-  refine ⟨-k, ?_⟩
-  have hre := congrArg Complex.re hk
-  norm_num at hre ⊢
-  linarith
 
-/-- The angular circle coordinate on the punctured cusp collar. -/
-private noncomputable def cuspBoundaryAngularCircleMap
-    (W : ActualPuncturedCuspCollarWitness N M) :
-    C(PuncturedLocalCuspQuotient W, UnitAddCircle) :=
-  (additiveCuspBoundaryProjection_isQuotientMap W).lift
-    (additiveCuspAngularCircleMap W) (additiveCuspAngularCircleMap_factors W)
 
-@[simp]
-private theorem cuspBoundaryAngularCircleMap_projection
-    (W : ActualPuncturedCuspCollarWitness N M)
-    (p : additiveCuspRadiusCover W.localWitness.radius) :
-    cuspBoundaryAngularCircleMap W (additiveCuspBoundaryProjection W p) =
-      ((p.1.2.re : ℝ) : UnitAddCircle) := by
-  exact ContinuousMap.congr_fun
-    ((additiveCuspBoundaryProjection_isQuotientMap W).lift_comp
-      (additiveCuspAngularCircleMap W) (additiveCuspAngularCircleMap_factors W)) p
 
 private theorem markedFiberToPuncturedCuspForAngularComparison_projection
     (G : ActualCuspRadialClutchingData W)
@@ -90,18 +56,6 @@ private theorem markedFiberToPuncturedCuspForAngularComparison_projection
     y (G.fiberHomeomorph y).out hy]
   rfl
 
-/-- On the literal marked period fibre the descended angular circle coordinate is constant. -/
-private theorem cuspBoundaryAngularCircleMap_comp_markedFiber
-    (G : ActualCuspRadialClutchingData W) :
-    let _ := G.fiberTopology
-    (cuspBoundaryAngularCircleMap W).comp
-        (markedFiberToPuncturedCuspForAngularComparison G) =
-      ContinuousMap.const G.Fiber ((G.markingParameter.re : ℝ) : UnitAddCircle) := by
-  let _ := G.fiberTopology
-  ext y
-  rw [ContinuousMap.comp_apply, markedFiberToPuncturedCuspForAngularComparison_projection]
-  rw [cuspBoundaryAngularCircleMap_projection]
-  rfl
 
 private theorem integralSingularHomologyMap_const_eq_zero
     {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] [PathConnectedSpace X]
@@ -120,23 +74,6 @@ private theorem integralSingularHomologyMap_const_eq_zero
   exact Chains.loopHomologyClass_refl
     ((ContinuousMap.const X y) b)
 
-/-- The circle-valued angular coordinate kills degree-one homology carried by the marked
-fibre. -/
-private theorem cuspBoundaryAngularCircleMap_markedFiber_homology_eq_zero
-    (G : ActualCuspRadialClutchingData W)
-    (x : let _ := G.fiberTopology; IntegralSingularHomology 1 G.Fiber) :
-    let _ := G.fiberTopology
-    integralSingularHomologyMap 1 (cuspBoundaryAngularCircleMap W)
-        (integralSingularHomologyMap 1
-          (markedFiberToPuncturedCuspForAngularComparison G) x) = 0 := by
-  let _ := G.fiberTopology
-  let _ : PathConnectedSpace (AdditiveTorus G.fiberParameter) :=
-    CuspRadialClutchingConstruction.additiveTorus_pathConnected G.fiberParameter
-  let _ : PathConnectedSpace G.Fiber :=
-    G.fiberHomeomorph.symm.surjective.pathConnectedSpace G.fiberHomeomorph.symm.continuous
-  rw [integralSingularHomologyMap_comp_wang]
-  rw [cuspBoundaryAngularCircleMap_comp_markedFiber]
-  exact integralSingularHomologyMap_const_eq_zero _ x
 
 /-- The angular coordinate based at a selected point of the additive universal cover. -/
 private def additiveCuspBasedAngularCircleMap
@@ -241,22 +178,6 @@ private noncomputable def cuspBoundaryAngularCoverMapData
         simp
         ring }
 
-private theorem unitCircleWinding_firstHurewicz
-    (a : FundamentalGroup UnitAddCircle 0) :
-    StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
-        ((abelianizationComparison
-          UnitAddCircle 0).equiv
-          (Additive.ofMul (Abelianization.of a))) =
-      (StandardCircleHomologyLiftDegree.unitCircleFundamentalGroupEquiv a).toAdd := by
-  obtain ⟨p, rfl⟩ := Path.Homotopic.Quotient.mk_surjective a
-  change StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
-      ((abelianizationComparison
-        UnitAddCircle 0).equiv
-        (loopClass p)) = _
-  rw [(abelianizationComparison
-    UnitAddCircle 0).equiv_loopClass]
-  rw [StandardCircleHomologyLiftDegree.unitCircleHomologyWinding_loop]
-  rw [StandardCircleHomologyLiftDegree.basedLoopWinding_loop]
 
 private theorem cuspBoundaryBasedAngularCircleMap_fundamentalGroup
     (W : ActualPuncturedCuspCollarWitness N M)

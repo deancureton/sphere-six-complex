@@ -95,15 +95,6 @@ public def cwCharacteristicCylinderRelativeIso (n : ℕ) :
       exact (cwCharacteristicCylinderHomeomorph n).apply_symm_apply p
     rw [h, cwIntegralSingularChainMapObj_id, Category.id_comp, Category.comp_id]
 
-public def cwCharacteristicBallPrismClass (n : ℕ) :=
-  cylinderTopPrismClass (cwBallBoundarySet (n + 1)) n ≫
-    homologyMap (cwCharacteristicCylinderRelativeIso (n + 1)).hom (n + 2)
 
-public theorem cwCharacteristicBallPrismClass_surjective (n : ℕ) :
-    Function.Surjective (cwCharacteristicBallPrismClass n) := by
-  let e := cwCharacteristicCylinderRelativeIso (n + 1)
-  have h : Function.Surjective (homologyMap e.hom (n + 2)) :=
-    (AddCommGrpCat.epi_iff_surjective _).mp inferInstance
-  exact h.comp (cylinderTopPrismClass_surjective (cwBallBoundarySet (n + 1)) n)
 
 end SphereSixComplex

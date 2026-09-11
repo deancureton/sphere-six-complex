@@ -110,10 +110,6 @@ public theorem toTriangleUniformization_sourceAction :
     P.toTriangleUniformization.sourceAction = fuchsianSourceAction :=
   rfl
 
-@[simp]
-public theorem toTriangleUniformization_coordinate (z : UpperHalfPlane) :
-    P.toTriangleUniformization.coordinate z = normalizedJ (P.tau z) / 1728 :=
-  rfl
 
 end FuchsianModularParameter
 

@@ -58,84 +58,9 @@ public theorem localDegreeRadialPoint_mem_closedBall (a : ℂ)
       linarith [p.1.property.1])
   · linarith [p.1.property.2]
 
-/-- The image circle supplied by an exact factorization. -/
-public def factorizedLocalDegreeCircle
-    (u : ℂ → ℂ) (n : ℕ) (a : ℂ) (ha : a ≠ 0)
-    (hu : ContinuousOn u (closedBall (0 : ℂ) ‖a‖))
-    (hune : ∀ z ∈ closedBall (0 : ℂ) ‖a‖, u z ≠ 0) :
-    C(unitInterval, PuncturedComplex) where
-  toFun t :=
-    ⟨localDegreeCirclePoint a t ^ n * u (localDegreeCirclePoint a t),
-      mul_ne_zero (pow_ne_zero n (localDegreeCirclePoint_ne_zero ha t))
-        (hune _ (by
-          rw [mem_closedBall, dist_zero_right, localDegreeCirclePoint_norm]))⟩
-  continuous_toFun := by
-    apply Continuous.subtype_mk
-    apply (localDegreeCirclePoint_continuous a).pow n |>.mul
-    exact hu.comp_continuous (localDegreeCirclePoint_continuous a)
-      (fun t => by
-        rw [mem_closedBall, dist_zero_right, localDegreeCirclePoint_norm])
 
-/-- The same power circle with the unit frozen at the centre. -/
-public def frozenLocalDegreeCircle
-    (u : ℂ → ℂ) (n : ℕ) (a : ℂ) (ha : a ≠ 0)
-    (hune : ∀ z ∈ closedBall (0 : ℂ) ‖a‖, u z ≠ 0) :
-    C(unitInterval, PuncturedComplex) where
-  toFun t :=
-    ⟨localDegreeCirclePoint a t ^ n * u 0,
-      mul_ne_zero (pow_ne_zero n (localDegreeCirclePoint_ne_zero ha t))
-        (hune 0 (by simp))⟩
-  continuous_toFun := by
-    apply Continuous.subtype_mk
-    exact (localDegreeCirclePoint_continuous a).pow n |>.mul continuous_const
 
-/-- A nonvanishing unit does not change the free homotopy class contributed by the power term. -/
-public def exactLocalFactorizationCircleHomotopy
-    (u : ℂ → ℂ) (n : ℕ) (a : ℂ) (ha : a ≠ 0)
-    (hu : ContinuousOn u (closedBall (0 : ℂ) ‖a‖))
-    (hune : ∀ z ∈ closedBall (0 : ℂ) ‖a‖, u z ≠ 0) :
-    ContinuousMap.Homotopy
-      (factorizedLocalDegreeCircle u n a ha hu hune)
-      (frozenLocalDegreeCircle u n a ha hune) where
-  toFun p :=
-    ⟨localDegreeCirclePoint a p.2 ^ n * u (localDegreeRadialPoint a p),
-      mul_ne_zero (pow_ne_zero n (localDegreeCirclePoint_ne_zero ha p.2))
-        (hune _ (localDegreeRadialPoint_mem_closedBall a p))⟩
-  continuous_toFun := by
-    apply Continuous.subtype_mk
-    apply ((localDegreeCirclePoint_continuous a).comp continuous_snd).pow n |>.mul
-    exact hu.comp_continuous (localDegreeRadialPoint_continuous a)
-      (localDegreeRadialPoint_mem_closedBall a)
-  map_zero_left t := by
-    apply Subtype.ext
-    simp [factorizedLocalDegreeCircle, localDegreeRadialPoint]
-  map_one_left t := by
-    apply Subtype.ext
-    simp [frozenLocalDegreeCircle, localDegreeRadialPoint]
 
-/-- Freezing the unit produces the standard n-turn punctured-plane circle. -/
-public theorem frozenLocalDegreeCircle_eq_integerCircle
-    (u : ℂ → ℂ) (n : ℕ) (a : ℂ) (ha : a ≠ 0)
-    (hune : ∀ z ∈ closedBall (0 : ℂ) ‖a‖, u z ≠ 0) :
-    frozenLocalDegreeCircle u n a ha hune =
-      (puncturedComplexIntegerCircle
-        (a ^ n * u 0)
-        (mul_ne_zero (pow_ne_zero n ha) (hune 0 (by simp)))
-        (n : ℤ)).toContinuousMap := by
-  ext t
-  change localDegreeCirclePoint a t ^ n * u 0 =
-    (a ^ n * u 0) * Complex.exp
-      ((2 * Real.pi * ((n : ℤ) : ℝ) * (t : ℝ) : ℂ) * Complex.I)
-  have hexp :
-      Complex.exp (((2 * Real.pi * (t : ℝ) : ℂ) * Complex.I)) ^ n =
-        Complex.exp
-          ((2 * Real.pi * ((n : ℤ) : ℝ) * (t : ℝ) : ℂ) * Complex.I) := by
-    rw [← Complex.exp_nat_mul]
-    congr 1
-    push_cast
-    ring
-  rw [localDegreeCirclePoint, mul_pow, hexp]
-  ring
 
 /-- The complex plane with zero and a second marked value removed. -/
 public abbrev TwoPunctureComplement (b : ℂ) :=

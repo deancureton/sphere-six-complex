@@ -259,70 +259,9 @@ private noncomputable def partialDiffeomorphOfLocalCovers
   ⟨{p | p.1.1 ∈ normalizedCuspRegion N W.localWitness.radius},
     W.region_open.preimage (continuous_subtype_val.comp continuous_fst)⟩
 
-/-- Standard complex coordinates on the normalized regular bundle region. -/
-public def regularCuspBundleCoordinates
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
-    (W : ActualPuncturedCuspCollarWitness N M) :
-    RegularCuspBundleRegion W → ModelProd ℂ ComplexTwoSpace :=
-  fun p ↦ ((p.1.1.1 : ℂ), p.1.2)
 
-public theorem regularCuspBundleCoordinates_isOpenEmbedding
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
-    (W : ActualPuncturedCuspCollarWitness N M) :
-    IsOpenEmbedding (regularCuspBundleCoordinates W) := by
-  let hproper : SourceActionProperlyDiscontinuous :=
-    sourceActionProperlyDiscontinuous_of_eq
-      E.modularParameter.toTriangleUniformization_sourceAction
-  have hregular : IsOpenEmbedding
-      (fun z : RegularBase (U := E.modularParameter.toTriangleUniformization) ↦ (z.1 : ℂ)) := by
-    have hsub : IsOpenEmbedding
-        (Subtype.val : RegularBase (U := E.modularParameter.toTriangleUniformization) →
-          UpperHalfPlane) :=
-      (isOpen_isRegularBasePoint hproper).isOpenEmbedding_subtypeVal
-    convert UpperHalfPlane.isOpenEmbedding_coe.comp hsub using 1
-    funext z
-    rfl
-  let productCoordinates :
-      RegularBase (U := E.modularParameter.toTriangleUniformization) × ComplexTwoSpace →
-        ModelProd ℂ ComplexTwoSpace :=
-    fun p ↦ ((p.1.1 : ℂ), p.2)
-  have hproduct : IsOpenEmbedding productCoordinates := by
-    have hproduct' : IsOpenEmbedding
-        (fun p : RegularBase (U := E.modularParameter.toTriangleUniformization) ×
-            ComplexTwoSpace ↦ ((p.1.1 : ℂ), p.2)) :=
-      hregular.prodMap Topology.IsOpenEmbedding.id
-    simpa only [ModelProd, instTopologicalSpaceModelProd] using hproduct'
-  have hregion : IsOpenEmbedding
-      (Subtype.val : RegularCuspBundleRegion W →
-        RegularBase (U := E.modularParameter.toTriangleUniformization) × ComplexTwoSpace) :=
-    (regularCuspBundleOpen W).isOpen.isOpenEmbedding_subtypeVal
-  convert hproduct.comp hregion using 1
-  funext p
-  rfl
 
-public theorem additiveCuspRadiusCover_nonempty (r : ℝ) (hr : 0 < r) :
-    Nonempty (additiveCuspRadiusCover r) := by
-  let u : ℂˣ := Units.mk0 (r / 2 : ℂ) (by
-    exact_mod_cast (div_ne_zero (ne_of_gt hr) (by norm_num : (2 : ℝ) ≠ 0)))
-  let x : DenseTorus := ![1, 1, u]
-  obtain ⟨p, hp⟩ := denseCuspExponentialCover_isQuotientMap.surjective x
-  refine ⟨⟨p, ?_⟩⟩
-  change ‖(((denseCuspExponentialCover p 2 : ℂˣ) : ℂ))‖ < r
-  rw [hp]
-  change ‖(r / 2 : ℂ)‖ < r
-  rw [norm_div, Complex.norm_real]
-  norm_num [Real.norm_eq_abs, abs_of_pos hr]
-  exact hr
 
-public theorem regularCuspBundleRegion_nonempty
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
-    (W : ActualPuncturedCuspCollarWitness N M) :
-    Nonempty (RegularCuspBundleRegion W) :=
-  (additiveCuspBundleHomeomorph W).toEquiv.nonempty_congr.mp
-    (additiveCuspRadiusCover_nonempty W.localWitness.radius W.localWitness.radius_pos)
 
 /-- Product charts inherited from the ambient regular vector bundle. -/
 @[expose, instance_reducible]

@@ -120,25 +120,7 @@ public theorem mappingCylinderFreeBottomTime_zero (t : unitInterval) :
   simp [mappingCylinderFreeBottomTime, mappingCylinderFreeEffectiveTime,
     mappingCylinderFreeDistance, t.2.2]
 
-@[simp]
-public theorem mappingCylinderFreeVerticalTime_zero (t : unitInterval) :
-    mappingCylinderFreeVerticalTime 0 t = 0 := by
-  apply Subtype.ext
-  simp [mappingCylinderFreeVerticalTime, mappingCylinderFreeEffectiveTime,
-    mappingCylinderFreeDistance, t.2.2]
 
-@[simp]
-public theorem mappingCylinderFreeBottomTime_one (s : unitInterval) :
-    mappingCylinderFreeBottomTime s 1 = 1 := by
-  apply Subtype.ext
-  simp only [mappingCylinderFreeBottomTime]
-  rw [show mappingCylinderFreeDistance (1 : unitInterval) = 0 by
-    norm_num [mappingCylinderFreeDistance]]
-  change 1 - max (0 - mappingCylinderFreeEffectiveTime s 1) 0 = (1 : ℝ)
-  have h : 0 - mappingCylinderFreeEffectiveTime s 1 ≤ 0 := by
-    linarith [mappingCylinderFreeEffectiveTime_nonneg s 1]
-  rw [max_eq_right h]
-  norm_num
 
 @[simp]
 public theorem mappingCylinderFreeVerticalTime_one (s : unitInterval) :
@@ -159,11 +141,6 @@ public theorem mappingCylinderFreeBottomTime_right_zero (s : unitInterval) :
   apply Subtype.ext
   simp [mappingCylinderFreeBottomTime, mappingCylinderFreeDistance]
 
-@[simp]
-public theorem mappingCylinderFreeVerticalTime_right_zero (s : unitInterval) :
-    mappingCylinderFreeVerticalTime s 0 = 0 := by
-  apply Subtype.ext
-  simp [mappingCylinderFreeVerticalTime, mappingCylinderFreeDistance]
 
 public theorem mappingCylinderFreeBottomTime_eq_one_of_effective_eq_distance
     {s t : unitInterval}

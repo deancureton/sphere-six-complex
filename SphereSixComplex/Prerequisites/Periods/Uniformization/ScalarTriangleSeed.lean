@@ -18,9 +18,6 @@ the sign is determined by the cyclic order of the two finite marked boundary poi
 
 def signedHalfPlane (d : ℝ) : Set ℂ := {w | 0 < d * w.im}
 
-theorem signedHalfPlane_isOpen (d : ℝ) : IsOpen (signedHalfPlane d) := by
-  exact isOpen_lt continuous_const
-    (continuous_const.mul Complex.continuous_im)
 
 /-- A real affine coordinate identifies the upper half-plane with the half-plane selected by a
 nonzero real sign `d`. -/
@@ -53,10 +50,6 @@ noncomputable def upperHalfPlaneSignedAffineEquiv (a d : ℝ) (hd : d ≠ 0) :
     field_simp [show (d : ℂ) ≠ 0 by exact_mod_cast hd]
     ring
 
-@[simp] theorem coe_upperHalfPlaneSignedAffineEquiv_apply
-    (a d : ℝ) (hd : d ≠ 0) (w : UpperHalfPlane) :
-    (upperHalfPlaneSignedAffineEquiv a d hd w : ℂ) =
-      ((w : ℂ) - (a : ℂ)) / (d : ℂ) := rfl
 
 /-- Difference of the finite Cayley coordinates used to normalize them to `0` and `1`. -/
 def scalarTriangleDenominator (pole first second : Circle) : ℝ :=
@@ -191,11 +184,6 @@ theorem chamberClosureDiscInverse_apply_of_mem {Ω : Set ℂ}
     chamberClosureDiscInverse S q = (S.closureEquiv.symm ⟨q, hq⟩ : ℂ) := by
   simp only [chamberClosureDiscInverse, dif_pos hq]
 
-theorem chamberClosureDiscInverse_mem_closedBall {Ω : Set ℂ}
-    (S : ChamberCaratheodorySeed Ω) {q : ℂ} (hq : q ∈ closure Ω) :
-    chamberClosureDiscInverse S q ∈ closedBall (0 : ℂ) 1 := by
-  rw [chamberClosureDiscInverse_apply_of_mem S hq]
-  exact (S.closureEquiv.symm ⟨q, hq⟩).2
 
 theorem chamberClosureDiscInverse_continuousOn {Ω : Set ℂ}
     (S : ChamberCaratheodorySeed Ω) :

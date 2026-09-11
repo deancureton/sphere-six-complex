@@ -105,27 +105,7 @@ public theorem orderFourFillingRelationCayleyLoop_apply (t : unitInterval) :
     A.orderFourFillingRelationCayleyBaseValue_ne_zero 1 t).1
   simp [puncturedComplexIntegerCirclePoint, orderFourFillingRelationCayleyBaseValue]
 
-/-- The base-coordinate loop of the order-three complete relation has winding number one. -/
-public theorem orderThreeFillingRelationCayleyLoop_classification :
-    puncturedComplexFundamentalGroupEquiv
-        A.orderThreeFillingRelationCayleyBaseValue
-        A.orderThreeFillingRelationCayleyBaseValue_ne_zero
-        (Path.Homotopic.Quotient.mk A.orderThreeFillingRelationCayleyLoop) =
-      MulOpposite.op (Multiplicative.ofAdd (complexExpDeckMultiple 1)) := by
-  exact puncturedComplexFundamentalGroupEquiv_integerCircle
-    A.orderThreeFillingRelationCayleyBaseValue
-    A.orderThreeFillingRelationCayleyBaseValue_ne_zero 1
 
-/-- The base-coordinate loop of the order-four complete relation has winding number one. -/
-public theorem orderFourFillingRelationCayleyLoop_classification :
-    puncturedComplexFundamentalGroupEquiv
-        A.orderFourFillingRelationCayleyBaseValue
-        A.orderFourFillingRelationCayleyBaseValue_ne_zero
-        (Path.Homotopic.Quotient.mk A.orderFourFillingRelationCayleyLoop) =
-      MulOpposite.op (Multiplicative.ofAdd (complexExpDeckMultiple 1)) := by
-  exact puncturedComplexFundamentalGroupEquiv_integerCircle
-    A.orderFourFillingRelationCayleyBaseValue
-    A.orderFourFillingRelationCayleyBaseValue_ne_zero 1
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

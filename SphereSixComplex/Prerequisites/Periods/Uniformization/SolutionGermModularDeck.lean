@@ -61,9 +61,6 @@ def modularDeckEtalePoint (g : Delta) (p : modularSolutionEtaleSet C U) :
     (holomorphicPresheaf ℂ).EtaleSpace :=
   HolomorphicPresheaf.germPoint (modularTransformRepresentative g p) p.1.base
 
-@[simp]
-theorem modularDeckEtalePoint_base (g : Delta) (p : modularSolutionEtaleSet C U) :
-    (modularDeckEtalePoint g p).base = p.1.base := rfl
 
 theorem modularDeckEtalePoint_repFun_eventuallyEq (g : Delta)
     (p : modularSolutionEtaleSet C U) :

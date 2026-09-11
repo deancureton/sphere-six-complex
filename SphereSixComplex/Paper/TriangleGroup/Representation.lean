@@ -18,90 +18,25 @@ namespace SphereSixComplex.TriangleGroup
 
 open LatticeData
 
-public noncomputable def t₁ : Lattice ≃ₗ[ℤ] Lattice :=
-  T₁.toLinearEquiv' (Matrix.invertibleOfIsUnitDet T₁ (by simp [T₁_det]))
 
-public noncomputable def t₂ : Lattice ≃ₗ[ℤ] Lattice :=
-  T₂.toLinearEquiv' (Matrix.invertibleOfIsUnitDet T₂ (by simp [T₂_det]))
 
-public noncomputable def t₀ : Lattice ≃ₗ[ℤ] Lattice :=
-  (t₁ * t₂)⁻¹
 
-@[simp]
-public theorem t₁_apply (x : Lattice) : t₁ x = T₁ *ᵥ x := by
-  change Matrix.toLin' T₁ x = _
-  rfl
 
-@[simp]
-public theorem t₂_apply (x : Lattice) : t₂ x = T₂ *ᵥ x := by
-  change Matrix.toLin' T₂ x = _
-  rfl
 
-@[simp]
-public theorem t₀_apply (x : Lattice) : t₀ x = T₀ *ᵥ x := by
-  apply (t₁ * t₂).injective
-  have hleft : (t₁ * t₂) (t₀ x) = x := by simp [t₀]
-  rw [hleft]
-  rw [LinearEquiv.mul_apply, t₁_apply, t₂_apply]
-  rw [Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]
-  have h := congrArg (fun M : Matrix (Fin 4) (Fin 4) ℤ ↦ M *ᵥ x) T₁_mul_T₂_mul_T₀
-  simpa using h.symm
 
-public theorem t₁_pow_three : t₁ ^ 3 = 1 := by
-  apply LinearEquiv.ext
-  intro x
-  change T₁ *ᵥ (T₁ *ᵥ (T₁ *ᵥ x)) = x
-  rw [Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]
-  have h := congrArg (fun M : Matrix (Fin 4) (Fin 4) ℤ ↦ M *ᵥ x) T₁_pow_three
-  simpa [pow_succ] using h
 
-public theorem t₂_pow_four : t₂ ^ 4 = 1 := by
-  apply LinearEquiv.ext
-  intro x
-  change T₂ *ᵥ (T₂ *ᵥ (T₂ *ᵥ (T₂ *ᵥ x))) = x
-  rw [Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]
-  have h := congrArg (fun M : Matrix (Fin 4) (Fin 4) ℤ ↦ M *ᵥ x) T₂_pow_four
-  simpa [pow_succ] using h
 
-public theorem t₁_mul_t₂_mul_t₀ : t₁ * t₂ * t₀ = 1 := by
-  simp [t₀]
 
-public noncomputable def rhoV : Delta →* (Lattice ≃ₗ[ℤ] Lattice) :=
-  Monoid.Coprod.lift (cyclicRepresentation 3 t₁ t₁_pow_three)
-    (cyclicRepresentation 4 t₂ t₂_pow_four)
 
-@[simp]
-public theorem rhoV_g₁ : rhoV g₁ = t₁ := by
-  simp [rhoV, g₁]
 
-@[simp]
-public theorem rhoV_g₂ : rhoV g₂ = t₂ := by
-  simp [rhoV, g₂]
 
-@[simp]
-public theorem rhoV_g₀ : rhoV g₀ = t₀ := by
-  rw [g₀, map_inv, map_mul, rhoV_g₁, rhoV_g₂]
-  exact inv_eq_of_mul_eq_one_right t₁_mul_t₂_mul_t₀
 
-@[simp]
-public theorem rhoV_g₁_apply (x : Lattice) : rhoV g₁ x = T₁ *ᵥ x := by
-  simp
 
-@[simp]
-public theorem rhoV_g₂_apply (x : Lattice) : rhoV g₂ x = T₂ *ᵥ x := by
-  simp
 
-@[simp]
-public theorem rhoV_g₀_apply (x : Lattice) : rhoV g₀ x = T₀ *ᵥ x := by
-  simp
 
-public theorem rhoV_g1 : rhoV g₁ = t₁ := rhoV_g₁
 
-public theorem rhoV_g2 : rhoV g₂ = t₂ := rhoV_g₂
 
-public theorem rhoV_g0 : rhoV g₀ = t₀ := rhoV_g₀
 
-public theorem rhoV_g0_apply (x : Lattice) : rhoV g₀ x = T₀ *ᵥ x := rhoV_g₀_apply x
 
 public abbrev DualLattice := LatticeData.Lattice
 
@@ -206,16 +141,10 @@ public theorem rhoLambda_g₂_apply (x : DualLattice) : rhoLambda g₂ x = A₂ 
 public theorem rhoLambda_g₀_apply (x : DualLattice) : rhoLambda g₀ x = M₀ *ᵥ x := by
   simp
 
-public theorem rhoLambda_relation : rhoLambda (g₁ * g₂ * g₀) = 1 := by
-  rw [g₁_mul_g₂_mul_g₀, map_one]
 
-public theorem rhoLambda_g1 : rhoLambda g₁ = a₁ := rhoLambda_g₁
 
-public theorem rhoLambda_g2 : rhoLambda g₂ = a₂ := rhoLambda_g₂
 
 public theorem rhoLambda_g0 : rhoLambda g₀ = m₀ := rhoLambda_g₀
 
-public theorem rhoLambda_g0_apply (x : DualLattice) : rhoLambda g₀ x = M₀ *ᵥ x :=
-  rhoLambda_g₀_apply x
 
 end SphereSixComplex.TriangleGroup

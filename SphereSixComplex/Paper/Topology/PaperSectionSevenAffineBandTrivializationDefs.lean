@@ -54,47 +54,11 @@ public def CentralHeightSplit.bandToCentralImage
     rcases x.2 with ⟨y, _, hy⟩
     exact hy ▸ y.2⟩
 
-public theorem CentralHeightSplit.bandToCentralImage_continuous
-    (S : A.CentralHeightSplit) :
-    Continuous S.bandToCentralImage :=
-  continuous_subtype_val.subtype_mk _
 
 variable (A)
 
-/-- The concrete central band projected to its affine vertical-strip coordinate. -/
-public noncomputable def affineCentralBandProjection
-    (S : A.AffineCentralSeparation) :
-    centralHeightBand
-        (A.affineCentralHeightSplit S).height
-        (A.affineCentralHeightSplit S).lower
-        (A.affineCentralHeightSplit S).upper →
-      affineVerticalStrip :=
-  fun x ↦ ⟨(A.ellipticCentralCoordinate
-    ((A.affineCentralHeightSplit S).bandToCentralImage x)).1, by
-      rcases x.2 with ⟨y, hy, hxy⟩
-      change (1 / 3 : ℝ) < (A.ellipticCentralCoordinate y).1.re ∧
-        (A.ellipticCentralCoordinate y).1.re < 2 / 3 at hy
-      have hcentral :
-          (A.affineCentralHeightSplit S).bandToCentralImage x = y := by
-        apply Subtype.ext
-        exact hxy.symm
-      simpa only [affineVerticalStrip, Set.mem_ofPred_eq, hcentral] using hy⟩
 
-public theorem affineCentralBandProjection_continuous
-    (S : A.AffineCentralSeparation) :
-    Continuous (A.affineCentralBandProjection S) := by
-  exact (continuous_subtype_val.comp
-    (A.ellipticCentralCoordinate_continuous.comp
-      (A.affineCentralHeightSplit S).bandToCentralImage_continuous)).subtype_mk _
 
-/-- The exact standard bundle-theoretic input still needed for the affine band.  It asserts that
-the actual central family, restricted to the explicit convex strip, is a product with the fixed
-order-three additive four-torus. -/
-public def AffineCentralBandProductTrivialization
-    (S : A.AffineCentralSeparation) : Prop :=
-  IsHomeomorphicTrivialFiberBundle
-    (AdditiveTorus A.duplicatedSectionSevenBandParameter)
-    (A.affineCentralBandProjection S)
 
 /-- A product decomposition over a contractible base is a homotopy equivalence onto the fibre.
 

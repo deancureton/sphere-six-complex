@@ -109,18 +109,6 @@ public theorem fiberTransfer_base (q : RegularTotalSpace A.periods) :
     · rfl
     · exact (fullRankDomain (regularParameterMap A.periods p.1)).realEquiv.apply_symm_apply p.2
 
-@[simp]
-public theorem fiberTransfer_fiberTransfer
-    (w₁ w₂ : RegularBase (U := A.modular.modularParameter.toTriangleUniformization))
-    (q : RegularTotalSpace A.periods) :
-    A.fiberTransfer w₂ (A.fiberTransfer w₁ q) = A.fiberTransfer w₂ q := by
-  induction q using Quotient.inductionOn with
-  | _ p =>
-    apply congrArg (Quotient.mk _)
-    apply Prod.ext
-    · rfl
-    · exact congrArg (fullRankDomain (regularParameterMap A.periods w₂)).realEquiv
-        ((fullRankDomain (regularParameterMap A.periods w₁)).realEquiv.symm_apply_apply _)
 
 /-- The period transport of a vector written in real period coordinates. -/
 public theorem periodTransport_realEquiv (g : Delta) (x : PeriodDomain) (c : RealPeriods) :

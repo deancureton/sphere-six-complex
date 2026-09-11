@@ -16,15 +16,6 @@ noncomputable section
 open AlgebraicTopology
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
-
-open Geometry Geometry.ComplexTorus Geometry.EllipticFamilySpecialization
-open LatticeData Periods
-open PaperEllipticFillingRadialRetraction
-open PaperEllipticReducedCentralFiberCoverModels
-
-end SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
-
 namespace SphereSixComplex.AffineCyclicQuotientHomology
 open SphereSixComplex SphereSixComplex.Topology
 open SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
@@ -163,15 +154,6 @@ public def projectedStraightPeriodLoop
   (additiveTorusStraightPeriodLoop (p := p) x).map
     (reducedCentralFiberTorusProjection (D := D)).continuous
 
-/-- Pointwise, `projectedStraightPeriodLoop` is the canonical `ℂ²` projection applied to
-the literal straight segment from zero to the labelled period. -/
-public theorem projectedStraightPeriodLoop_apply
-    (P : AffineCyclicCentralFiberPresentationData m p D) (x : Lattice)
-    (t : unitInterval) :
-    projectedStraightPeriodLoop P x t =
-      complexTwoReducedCentralFiberProjection (D := D)
-        (Path.segment (0 : ComplexTwoSpace) (periodVector p x) t) :=
-  rfl
 
 /-- The homology class of a projected straight period loop is the image of its torus loop
 class. -/
@@ -208,10 +190,3 @@ public theorem projectedStraightPeriodLoop_homologyClass_eq_coverProjectionLatti
     ((EstablishedTorusHomology.additiveTorusHomologyBasis p P.fullRank).degreeOne.symm x)).symm
 
 end SphereSixComplex.AffineCyclicQuotientHomology
-
-namespace SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
-open Geometry Geometry.ComplexTorus Geometry.EllipticFamilySpecialization
-open LatticeData Periods
-open PaperEllipticFillingRadialRetraction
-open PaperEllipticReducedCentralFiberCoverModels
-end SphereSixComplex.Topology.PaperMultipleFiberHOneTopology

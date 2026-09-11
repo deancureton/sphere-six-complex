@@ -101,10 +101,6 @@ public theorem quotientRetract_fixed (q : D.OrbitQuotient) (hq : q ∈ D.quotien
   obtain ⟨x, hx, rfl⟩ := hq
   exact congrArg (Quotient.mk _) (D.retract_fixed x hx)
 
-public theorem quotientHomotopy_fixed (s : unitInterval) (q : D.OrbitQuotient)
-    (hq : q ∈ D.quotientCore) : D.quotientHomotopy (s, q) = q := by
-  obtain ⟨x, hx, rfl⟩ := hq
-  exact congrArg (Quotient.mk _) (D.homotopy_fixed s x hx)
 
 end EquivariantStrongDeformationRetraction
 

@@ -70,12 +70,6 @@ public theorem centerPoint_re_upper (z : UpperHalfPlane) :
 public theorem centerPoint_im (z : UpperHalfPlane) : (centerPoint z).im = z.im := by
   exact product_zpow_im (centerExponent z) z
 
-/-- Every point has an explicitly chosen translate in the centered cusp strip. -/
-public theorem exists_product_zpow_mem_centered_strip (z : UpperHalfPlane) :
-    ∃ n : ℤ,
-      -cuspWidth / 2 ≤ (fuchsianSourceAction ((g₁ * g₂) ^ n) • z).re ∧
-        (fuchsianSourceAction ((g₁ * g₂) ^ n) • z).re < cuspWidth / 2 :=
-  ⟨centerExponent z, centerPoint_re_lower z, centerPoint_re_upper z⟩
 
 /-- The order-three side pairing divides imaginary height by the squared norm. -/
 public theorem gOne_im_eq_div_normSq (z : UpperHalfPlane) :
@@ -101,69 +95,12 @@ public theorem gOne_strictly_increases_im_of_normSq_lt_one (z : UpperHalfPlane)
 @[expose] public noncomputable def coarseFordRegion : Set UpperHalfPlane :=
   {z | -cuspWidth / 2 ≤ z.re ∧ z.re < cuspWidth / 2 ∧ 1 ≤ Complex.normSq (z : ℂ)}
 
-/-- First center at the cusp, then cross the unit circle if that side is violated, and center
-again. -/
-@[expose] public noncomputable def reductionStep (z : UpperHalfPlane) : UpperHalfPlane :=
-  if Complex.normSq (centerPoint z : ℂ) < 1 then
-    centerPoint (fuchsianSourceAction g₁ • centerPoint z)
-  else
-    centerPoint z
 
-public theorem reductionStep_re_lower (z : UpperHalfPlane) :
-    -cuspWidth / 2 ≤ (reductionStep z).re := by
-  unfold reductionStep
-  split <;> apply centerPoint_re_lower
 
-public theorem reductionStep_re_upper (z : UpperHalfPlane) :
-    (reductionStep z).re < cuspWidth / 2 := by
-  unfold reductionStep
-  split <;> apply centerPoint_re_upper
 
-/-- Every reduction step is given by an explicit word in the two source generators. -/
-public theorem exists_smul_eq_reductionStep (z : UpperHalfPlane) :
-    ∃ g : Delta, fuchsianSourceAction g • z = reductionStep z := by
-  by_cases hcircle : Complex.normSq (centerPoint z : ℂ) < 1
-  · refine ⟨(g₁ * g₂) ^ centerExponent
-        (fuchsianSourceAction g₁ • centerPoint z) * g₁ *
-          (g₁ * g₂) ^ centerExponent z, ?_⟩
-    rw [reductionStep, if_pos hcircle]
-    simp only [map_mul, mul_smul, centerPoint]
-  · refine ⟨(g₁ * g₂) ^ centerExponent z, ?_⟩
-    rw [reductionStep, if_neg hcircle]
-    rfl
 
-/-- Every finite run of the reduction algorithm stays in the original group orbit. -/
-public theorem exists_smul_eq_reductionStep_iterate (n : ℕ) (z : UpperHalfPlane) :
-    ∃ g : Delta, fuchsianSourceAction g • z = reductionStep^[n] z := by
-  induction n with
-  | zero =>
-      exact ⟨1, by simp⟩
-  | succ n ih =>
-      obtain ⟨g, hg⟩ := ih
-      obtain ⟨h, hh⟩ := exists_smul_eq_reductionStep (reductionStep^[n] z)
-      refine ⟨h * g, ?_⟩
-      rw [map_mul, mul_smul, hg, hh]
-      rw [Function.iterate_succ_apply']
 
-/-- One deterministic step either reaches the coarse Ford region or strictly raises height. -/
-public theorem reductionStep_mem_or_im_lt (z : UpperHalfPlane) :
-    reductionStep z ∈ coarseFordRegion ∨ z.im < (reductionStep z).im := by
-  by_cases hcircle : Complex.normSq (centerPoint z : ℂ) < 1
-  · right
-    rw [reductionStep, if_pos hcircle, centerPoint_im]
-    rw [← centerPoint_im z]
-    exact gOne_strictly_increases_im_of_normSq_lt_one (centerPoint z) hcircle
-  · left
-    rw [reductionStep, if_neg hcircle]
-    exact ⟨centerPoint_re_lower z, centerPoint_re_upper z, le_of_not_gt hcircle⟩
 
-/-- Until the reduction reaches the coarse Ford region, each iteration strictly raises height. -/
-public theorem reductionStep_iterate_im_lt_of_not_mem (n : ℕ) (z : UpperHalfPlane)
-    (hn : reductionStep^[n + 1] z ∉ coarseFordRegion) :
-    (reductionStep^[n] z).im < (reductionStep^[n + 1] z).im := by
-  rcases reductionStep_mem_or_im_lt (reductionStep^[n] z) with hmem | hlt
-  · exact (hn (by simpa [Function.iterate_succ_apply'] using hmem)).elim
-  · simpa [Function.iterate_succ_apply'] using hlt
 
 /-- A point has maximal height in its orbit when no group element raises its imaginary part. -/
 @[expose] public def IsOrbitHeightMaximal (z : UpperHalfPlane) : Prop :=
@@ -195,17 +132,5 @@ public theorem IsOrbitHeightMaximal.exists_mem_coarseFordRegion {z : UpperHalfPl
   refine ⟨centerExponent z, centerPoint_re_lower z, centerPoint_re_upper z, ?_⟩
   exact (hz.product_zpow (centerExponent z)).normSq_ge_one
 
-/-- The explicit missing termination statement suffices to put every orbit in the coarse Ford
-region.  Its premise is the arithmetic maximal-denominator lemma still needed for this action. -/
-public theorem exists_smul_mem_coarseFordRegion
-    (height_maximal : ∀ z : UpperHalfPlane,
-      ∃ g : Delta, IsOrbitHeightMaximal (fuchsianSourceAction g • z))
-    (z : UpperHalfPlane) :
-    ∃ g : Delta, fuchsianSourceAction g • z ∈ coarseFordRegion := by
-  obtain ⟨g, hg⟩ := height_maximal z
-  obtain ⟨n, hn⟩ := hg.exists_mem_coarseFordRegion
-  refine ⟨(g₁ * g₂) ^ n * g, ?_⟩
-  rw [map_mul, mul_smul]
-  exact hn
 
 end SphereSixComplex.TriangleGroup.FuchsianTessellation

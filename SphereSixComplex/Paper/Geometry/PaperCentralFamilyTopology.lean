@@ -118,11 +118,6 @@ public theorem regularBase_secondCountable (U : TriangleUniformization) :
   exact TopologicalSpace.secondCountableTopology_induced
     (RegularBase (U := U)) UpperHalfPlane Subtype.val
 
-/-- The varying torus family over the regular base is connected. -/
-public theorem regularTotalSpace_connected (F : PeriodFunctions U) :
-    ConnectedSpace (RegularTotalSpace F) := by
-  let _ : ConnectedSpace (RegularBase (U := U)) := regularBase_connected U
-  infer_instance
 
 /-- The varying torus family over the regular base is path connected. -/
 public theorem regularTotalSpace_pathConnected (F : PeriodFunctions U) :

@@ -37,103 +37,8 @@ public noncomputable def orderFourPrincipalGaugeWithOffsetMap :
         Quotient.mk _ A.ellipticFourBoundaryBase.2.2
       continuous_toFun := by fun_prop }
 
-/-- Straight contraction of the fixed collar offset in the universal vector cover of the
-order-four torus fibre. -/
-public def orderFourPrincipalGaugeOffsetHomotopy :
-    letI := A.ellipticFourBoundaryAction
-    ContinuousMap.Homotopy A.orderFourPrincipalGaugeWithOffsetMap
-      A.orderFourFillingRelationPrincipalGaugeLoop.toContinuousMap := by
-  let _ := A.ellipticFourBoundaryAction
-  let p := (parameterMap A.periods
-    A.modular.modularParameter.toTriangleUniformization.zTwo).1
-  let v := A.ellipticFourBoundaryBase.2.2
-  exact
-    { toFun := fun st ↦ A.orderFourFillingRelationPrincipalGaugeLoop st.2 +
-        (Quotient.mk _
-          (((1 - (st.1 : ℝ) : ℝ) : ℂ) • v) : AdditiveTorus p)
-      continuous_toFun := by
-        exact (A.orderFourFillingRelationPrincipalGaugeLoop.continuous.comp
-          continuous_snd).add
-            ((continuous_quot_mk : Continuous (torusProjection p)).comp (by fun_prop))
-      map_zero_left := by
-        intro t
-        change A.orderFourFillingRelationPrincipalGaugeLoop t +
-            Quotient.mk _ (((1 - (0 : ℝ) : ℝ) : ℂ) • v) =
-          A.orderFourFillingRelationPrincipalGaugeLoop t + Quotient.mk _ v
-        simp
-      map_one_left := by
-        intro t
-        change A.orderFourFillingRelationPrincipalGaugeLoop t +
-            Quotient.mk _ (((1 - (1 : ℝ) : ℝ) : ℂ) • v) =
-          A.orderFourFillingRelationPrincipalGaugeLoop t
-        rw [show (((1 - (1 : ℝ) : ℝ) : ℂ) • v) = 0 by simp]
-        rw [additiveTorus_mk_zero p, add_zero] }
 
-/-- The base coordinate paired with the exact fixed-fibre coordinate from the local-product
-formula. -/
-public noncomputable def orderFourBaseGaugeProductMap :
-    letI := A.ellipticFourBoundaryAction
-    C(unitInterval,
-      TwicePuncturedComplex ×
-        AdditiveTorus
-          (parameterMap A.periods
-            A.modular.modularParameter.toTriangleUniformization.zTwo).1) := by
-  let _ := A.ellipticFourBoundaryAction
-  exact A.orderFourFillingRelationBaseCoordinateMap.prodMk
-    A.orderFourPrincipalGaugeWithOffsetMap
 
-/-- Removing the fixed fibre offset and applying the quartic base homotopy gives the complete
-coordinate pair: the positive one-meridian quadruple together with the principal gauge loop. -/
-public theorem orderFourBaseGaugeProduct_quadrupleGaugeHomotopy :
-    letI := A.ellipticFourBoundaryAction
-    Nonempty (ContinuousMap.Homotopy
-      A.orderFourBaseGaugeProductMap
-      (twicePuncturedCounterclockwiseOneQuadruple.toContinuousMap.prodMk
-        A.orderFourFillingRelationPrincipalGaugeLoop.toContinuousMap)) := by
-  let _ := A.ellipticFourBoundaryAction
-  rcases A.ellipticFourCayleyBaseCoordinate_quadrupleHomotopy with ⟨Hbase⟩
-  let Hbase' := Hbase.cast
-    A.orderFourFillingRelationBaseCoordinateMap_eq_cayley.symm rfl
-  let Hoffset := A.orderFourPrincipalGaugeOffsetHomotopy
-  let H₀ : ContinuousMap.Homotopy
-      A.orderFourBaseGaugeProductMap
-      (A.orderFourFillingRelationBaseCoordinateMap.prodMk
-        A.orderFourFillingRelationPrincipalGaugeLoop.toContinuousMap) :=
-    { toFun := fun st ↦
-        (A.orderFourFillingRelationBaseCoordinateMap st.2, Hoffset st)
-      continuous_toFun :=
-        (A.orderFourFillingRelationBaseCoordinateMap.continuous.comp continuous_snd).prodMk
-          Hoffset.continuous
-      map_zero_left := by
-        intro t
-        apply Prod.ext
-        · rfl
-        · exact Hoffset.map_zero_left t
-      map_one_left := by
-        intro t
-        apply Prod.ext
-        · rfl
-        · exact Hoffset.map_one_left t }
-  let H₁ : ContinuousMap.Homotopy
-      (A.orderFourFillingRelationBaseCoordinateMap.prodMk
-        A.orderFourFillingRelationPrincipalGaugeLoop.toContinuousMap)
-      (twicePuncturedCounterclockwiseOneQuadruple.toContinuousMap.prodMk
-        A.orderFourFillingRelationPrincipalGaugeLoop.toContinuousMap) :=
-    { toFun := fun st ↦
-        (Hbase' st, A.orderFourFillingRelationPrincipalGaugeLoop st.2)
-      continuous_toFun := Hbase'.continuous.prodMk
-        (A.orderFourFillingRelationPrincipalGaugeLoop.continuous.comp continuous_snd)
-      map_zero_left := by
-        intro t
-        apply Prod.ext
-        · exact Hbase'.map_zero_left t
-        · rfl
-      map_one_left := by
-        intro t
-        apply Prod.ext
-        · exact Hbase'.map_one_left t
-        · rfl }
-  exact ⟨H₀.trans H₁⟩
 
 /-- The zero-section lift of the actual order-four base-coordinate loop. -/
 public noncomputable def orderFourZeroSectionBaseMap :
@@ -147,21 +52,6 @@ public noncomputable def orderFourZeroSectionQuadruplePath :
   twicePuncturedCounterclockwiseOneQuadruple.map
     A.markedBaseToCentralZeroSection.continuous
 
-/-- The quartic base homotopy lifts literally through the global zero section. -/
-public theorem orderFourZeroSectionBase_quadrupleHomotopy :
-    Nonempty (ContinuousMap.Homotopy A.orderFourZeroSectionBaseMap
-      A.orderFourZeroSectionQuadruplePath.toContinuousMap) := by
-  rcases A.ellipticFourCayleyBaseCoordinate_quadrupleHomotopy with ⟨H⟩
-  let H' := H.cast A.orderFourFillingRelationBaseCoordinateMap_eq_cayley.symm rfl
-  exact ⟨{
-    toFun := fun st ↦ A.markedBaseToCentralZeroSection (H' st)
-    continuous_toFun := A.markedBaseToCentralZeroSection.continuous.comp H'.continuous
-    map_zero_left := by
-      intro t
-      exact congrArg A.markedBaseToCentralZeroSection (H'.map_zero_left t)
-    map_one_left := by
-      intro t
-      exact congrArg A.markedBaseToCentralZeroSection (H'.map_one_left t) }⟩
 
 /-- The lifted positive four-turn circle is the fourth power of the inverse marked central
 one-meridian. -/
@@ -284,71 +174,11 @@ public theorem orderFourFillingRelationPrincipalGaugeLoop_class_eq_straight :
     A.orderFourFillingRelationPrincipalGaugeDeck
     A.orderFourPrincipalGaugeStraightLiftPath).symm
 
-/-- The literal negative-epsilon-prime period loop over the chosen marked regular-base lift,
-projected to the central family and based at the marked zero-section point. -/
-public noncomputable def orderFourMarkedCentralNegEpsilonPrimePeriodPath :
-    Path (A.centralZeroSection A.markedPuncturedBasepoint)
-      (A.centralZeroSection A.markedPuncturedBasepoint) :=
-  ((regularFamilyPeriodLoop A.periods
-      (A.markedRegularBaseLift, (0 : ComplexTwoSpace)) (-epsilon')).map
-        (regularFamilyQuotientMap A.periods).continuous).cast
-    A.markedCentralBase_eq_lift A.markedCentralBase_eq_lift
 
-/-- The literal marked period path represents the marked translation with label
-negative epsilon prime. -/
-public theorem orderFourMarkedCentralNegEpsilonPrimePeriodPath_class :
-    Path.Homotopic.Quotient.mk A.orderFourMarkedCentralNegEpsilonPrimePeriodPath =
-      Additive.toMul (A.markedCentralTranslation (-epsilon')) := by
-  unfold markedCentralTranslation markedCentralBaseEquiv centralTranslationAtZero
-  simp only [AddMonoidHom.comp_apply, MonoidHom.coe_toAdditive,
-    Function.comp_apply, toMul_ofMul]
-  rw [regularFamilyTranslationAtZero_apply_eq_periodLoop]
-  rw [FundamentalGroup.map_apply, ← Path.Homotopic.Quotient.mk_map]
-  change Path.Homotopic.Quotient.mk A.orderFourMarkedCentralNegEpsilonPrimePeriodPath =
-    SphereSixComplex.Topology.fundamentalGroupMulEquivOfEq
-      A.markedCentralBase_eq_lift.symm
-      (Path.Homotopic.Quotient.mk
-        ((regularFamilyPeriodLoop A.periods
-          (A.markedRegularBaseLift, (0 : ComplexTwoSpace)) (-epsilon')).map
-            (regularFamilyQuotientMap A.periods).continuous))
-  rw [SphereSixComplex.Topology.fundamentalGroupMulEquivOfEq_apply]
-  unfold orderFourMarkedCentralNegEpsilonPrimePeriodPath
-  exact Path.Homotopic.Quotient.mk_cast _ _ _
 
-/-- Rebase the marked literal negative-epsilon-prime period path at the selected actual cusp
-point. -/
-public noncomputable def ellipticFourCuspMarkedNegEpsilonPrimePeriodPath :
-    Path A.cuspCentralBase A.cuspCentralBase :=
-  A.cuspMarkedCentralWhisker.symm.trans
-    (A.orderFourMarkedCentralNegEpsilonPrimePeriodPath.trans
-      A.cuspMarkedCentralWhisker)
 
-/-- The rebased literal period path represents the transported geometric translation. -/
-public theorem ellipticFourCuspMarkedNegEpsilonPrimePeriodPath_class :
-    Path.Homotopic.Quotient.mk A.ellipticFourCuspMarkedNegEpsilonPrimePeriodPath =
-      Additive.toMul (A.geometricCentralTranslation (-epsilon')) := by
-  have h := congrArg A.markedCentralToActualCuspEquiv
-    A.orderFourMarkedCentralNegEpsilonPrimePeriodPath_class
-  exact h
 
-/-- A literal global loop representing the geometric order-four meridian relator with its
-negative-epsilon-prime period contribution. -/
-public noncomputable def ellipticFourCuspGeometricRelatorPath :
-    Path A.cuspCentralBase A.cuspCentralBase :=
-  A.ellipticFourCuspMarkedNegEpsilonPrimePeriodPath.trans
-    A.ellipticFourCuspZeroSectionQuadruplePath
 
-/-- The explicit global representative has the expected order-four geometric product class. -/
-public theorem ellipticFourCuspGeometricRelatorPath_class :
-    Path.Homotopic.Quotient.mk A.ellipticFourCuspGeometricRelatorPath =
-      A.geometricCentralRhoTwo ^ 4 *
-        (Additive.toMul (A.geometricCentralTranslation epsilon'))⁻¹ := by
-  rw [ellipticFourCuspGeometricRelatorPath,
-    Path.Homotopic.Quotient.mk_trans,
-    A.ellipticFourCuspZeroSectionQuadruplePath_class,
-    A.ellipticFourCuspMarkedNegEpsilonPrimePeriodPath_class]
-  rw [map_neg, toMul_neg]
-  rfl
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

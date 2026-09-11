@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Paper.Topology.PaperOrderThreeExplicitBasedBoundaryCoverComparison
+public import SphereSixComplex.Paper.Topology.PaperOrderThreeCentralBoundaryCoverComparison
 
 /-!
 # Literal loops for the based order-three boundary comparison
@@ -112,117 +112,12 @@ public theorem ellipticThreeBoundaryDeckStraightLoop_class_eq_ofDeck
         (Path.Homotopic.Quotient.cast_heq _ _)).symm)
   simpa using congrArg Subtype.val hm.symm
 
-/-- The endpoint of a physical lattice-translation lift is the literal period translate of the
-selected affine coordinate. -/
-public theorem ellipticThreeBoundaryTranslation_endpoint (a : Lattice) :
-    letI := orderThreeAffineMappingTorusDeckAction A.periods
-    Additive.toMul (affineTorusMappingTorusDeckTranslation
-      (orderThreeDescendedAffineTorusAutomorphism A.periods) a) •
-        A.ellipticThreeBoundaryBase.2 =
-      (A.ellipticThreeBoundaryBase.2.1,
-        periodVector
-            (parameterMap A.periods
-              A.modular.modularParameter.toTriangleUniformization.zOne).1 a +
-          A.ellipticThreeBoundaryBase.2.2) := by
-  let _ := orderThreeAffineMappingTorusDeckAction A.periods
-  exact affineTorusMappingTorusDeckTranslation_smul _ _ _ _
 
-/-- The positive angular deck generator moves one turn in the negative real-cover direction and
-applies the order-three affine clutching lift. -/
-public theorem ellipticThreeBoundaryPositiveMeridian_endpoint :
-    letI := orderThreeAffineMappingTorusDeckAction A.periods
-    affineTorusMappingTorusDeckMeridian
-        (orderThreeDescendedAffineTorusAutomorphism A.periods) •
-        A.ellipticThreeBoundaryBase.2 =
-      (A.ellipticThreeBoundaryBase.2.1 - 1,
-        (orderThreeDescendedAffineTorusAutomorphism A.periods).lift
-            A.ellipticThreeBoundaryBase.2.2 +
-          (3 : ℂ)⁻¹ • periodVector
-            (parameterMap A.periods
-              A.modular.modularParameter.toTriangleUniformization.zOne).1 epsilon) := by
-  let _ := orderThreeAffineMappingTorusDeckAction A.periods
-  exact affineTorusMappingTorusDeckMeridian_smul _ _ _
 
-/-- The affine presentation sends a translation to the corresponding corrected literal cusp
-period loop. -/
-public theorem paperPuncturedGlobalFamilyAffinePresentation_translation_loop
-    (a : Lattice) :
-    paperPuncturedGlobalFamilyAffinePresentation A
-        (Additive.toMul
-          (freeAffineTranslation (M := paperCentralFreeMonodromy) a)) =
-      Path.Homotopic.Quotient.mk
-        (A.cuspCentralPeriodLoop
-          (rhoLambda ((g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent) a)) := by
-  unfold paperPuncturedGlobalFamilyAffinePresentation
-  rw [AffineTorusCorePiOneData.freeAffinePresentationHom_translation]
-  change Additive.toMul (A.cuspCentralTranslation
-    (rhoLambda ((g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent) a)) = _
-  rw [A.cuspCentralTranslation_eq_periodLoop]
 
-/-- The inverse first free meridian occurring in the order-three chart statement is the inverse
-geometric first meridian.  Together with the preceding positive-deck formula, this records the
-opposite-group sign convention explicitly. -/
-public theorem paperPuncturedGlobalFamilyAffinePresentation_firstMeridian_inv :
-    paperPuncturedGlobalFamilyAffinePresentation A
-        (freeAffineLift (M := paperCentralFreeMonodromy) firstMeridian)⁻¹ =
-      A.geometricCentralRhoOne⁻¹ := by
-  rw [map_inv]
-  unfold paperPuncturedGlobalFamilyAffinePresentation
-  rw [AffineTorusCorePiOneData.freeAffinePresentationHom_first,
-    paperPuncturedGlobalFamilyAffineCorePiOneData_rhoOne]
 
-/-- One fixed path used for both translation and meridian comparisons. -/
-public noncomputable def orderThreeCentralBoundaryChartPath :
-    Path A.cuspCentralBase A.ellipticThreeCentralBase := by
-  rw [← A.centralAffineBase_eq_cuspCentralBase]
-  exact A.orderThreeCentralBaseWhisker
 
-/-- The exact remaining coordinate calculation, expressed with concrete source and target
-loops.  The source loops are straight segments in the explicit radial universal cover; the
-target translation loops are literal global period loops, and the target angular loop is the
-inverse geometric first finite meridian. -/
-public def OrderThreeCentralBoundaryStraightLoopIdentities : Prop :=
-  letI := A.ellipticThreeBoundaryAction
-  letI : SimplyConnectedSpace
-      (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-    A.ellipticThreeBoundaryCover_simplyConnected
-  (∀ a : Lattice,
-    FundamentalGroup.mapOfEq A.ellipticThreeOverlapToCentral rfl
-        (Path.Homotopic.Quotient.mk
-          (A.ellipticThreeBoundaryDeckStraightLoop
-            (Additive.toMul (affineTorusMappingTorusDeckTranslation
-              (orderThreeDescendedAffineTorusAutomorphism A.periods) a)))) =
-      FundamentalGroup.fundamentalGroupMulEquivOfPath
-        A.orderThreeCentralBoundaryChartPath
-        (Path.Homotopic.Quotient.mk
-          (A.cuspCentralPeriodLoop
-            (rhoLambda ((g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent) a)))) ∧
-  FundamentalGroup.mapOfEq A.ellipticThreeOverlapToCentral rfl
-      (Path.Homotopic.Quotient.mk
-        (A.ellipticThreeBoundaryDeckStraightLoop
-          (affineTorusMappingTorusDeckMeridian
-            (orderThreeDescendedAffineTorusAutomorphism A.periods)))) =
-    FundamentalGroup.fundamentalGroupMulEquivOfPath
-      A.orderThreeCentralBoundaryChartPath A.geometricCentralRhoOne⁻¹
 
-/-- The concrete straight-loop identities imply the based chart identities. -/
-public theorem OrderThreeCentralBoundaryStraightLoopIdentities.toBasedChartIdentities
-    (h : A.OrderThreeCentralBoundaryStraightLoopIdentities) :
-    A.OrderThreeCentralBoundaryBasedChartIdentities := by
-  let _ := orderThreeAffineMappingTorusDeckAction A.periods
-  let _ := A.ellipticThreeBoundaryAction
-  let _ : SimplyConnectedSpace
-      (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-    A.ellipticThreeBoundaryCover_simplyConnected
-  change (∀ a : Lattice, _) ∧ _ at h
-  refine ⟨A.orderThreeCentralBoundaryChartPath, ?_, ?_⟩
-  · intro a
-    rw [← A.ellipticThreeBoundaryDeckStraightLoop_class_eq_ofDeck]
-    rw [A.paperPuncturedGlobalFamilyAffinePresentation_translation_loop]
-    exact h.1 a
-  · rw [← A.ellipticThreeBoundaryDeckStraightLoop_class_eq_ofDeck]
-    rw [A.paperPuncturedGlobalFamilyAffinePresentation_firstMeridian_inv]
-    exact h.2
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

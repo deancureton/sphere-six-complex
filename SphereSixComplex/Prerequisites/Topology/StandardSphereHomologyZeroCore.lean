@@ -37,24 +37,8 @@ public noncomputable def sixSphereHomeomorphTopCatSphereSix :
     ULift (Metric.sphere (0 : EuclideanSpace ℝ (Fin 7)) 1)
   exact Homeomorph.ulift.symm
 
-/-- Mathlib's categorical six-sphere is literally the boundary of its seven-disk. -/
-public theorem topCatSphereSix_eq_diskBoundarySeven :
-    TopCat.sphere 6 = TopCat.diskBoundary 7 :=
-  rfl
 
-/-- The concrete inclusion of the project's six-sphere into mathlib's seven-disk. -/
-public noncomputable def sixSphereDiskBoundaryInclusion :
-    TopCat.of SixSphere ⟶ TopCat.disk 7 :=
-  TopCat.ofHom
-      ⟨sixSphereHomeomorphTopCatSphereSix,
-        sixSphereHomeomorphTopCatSphereSix.continuous⟩ ≫
-    TopCat.diskBoundaryInclusion 7
 
-/-- The categorical six-sphere inherits path-connectedness from the project's concrete sphere. -/
-public theorem topCatSphereSix_pathConnectedSpace :
-    PathConnectedSpace (TopCat.sphere 6 : Type) := by
-  let _ : PathConnectedSpace SixSphere := sixSphere_pathConnectedSpace
-  exact pathConnectedSpace_of_homeomorph sixSphereHomeomorphTopCatSphereSix
 
 /-- The unconditional degree-zero integral singular homology calculation for the standard
 six-sphere. -/
@@ -64,35 +48,7 @@ public noncomputable def sixSphere_integralSingularHomology_zero_equiv_integer :
   exact (asIso ((TopCat.of SixSphere).singularHomology₀ε (AddCommGrpCat.of ℤ)))
     |>.addCommGroupIsoToAddEquiv
 
-/-- Mathlib's seven-disk is contractible, by convexity of the closed Euclidean ball. -/
-public theorem topCatDiskSeven_contractibleSpace :
-    ContractibleSpace (TopCat.disk 7 : Type) := by
-  change ContractibleSpace (ULift (Metric.closedBall (0 : EuclideanSpace ℝ (Fin 7)) 1))
-  let _ : ContractibleSpace (Metric.closedBall (0 : EuclideanSpace ℝ (Fin 7)) 1) :=
-    Metric.contractibleSpace_closedBall (by norm_num)
-  exact Homeomorph.ulift.contractibleSpace
 
-/-- Degree-zero integral singular homology of the seven-disk. -/
-public noncomputable def topCatDiskSeven_integralSingularHomology_zero_equiv_integer :
-    IntegralSingularHomology 0 (TopCat.disk 7 : Type) ≃+ ℤ := by
-  let _ : ContractibleSpace (TopCat.disk 7 : Type) := topCatDiskSeven_contractibleSpace
-  exact (asIso ((TopCat.disk 7).singularHomology₀ε (AddCommGrpCat.of ℤ)))
-    |>.addCommGroupIsoToAddEquiv
 
-/-- All positive-degree integral singular homology objects of the seven-disk vanish. -/
-public theorem topCatDiskSeven_integralSingularHomology_isZero
-    (k : ℕ) (hk : k ≠ 0) :
-    IsZero (((singularHomologyFunctor AddCommGrpCat k).obj (AddCommGrpCat.of ℤ)).obj
-      (TopCat.disk 7)) := by
-  let _ : ContractibleSpace (TopCat.disk 7 : Type) := topCatDiskSeven_contractibleSpace
-  obtain ⟨e⟩ := ContractibleSpace.hequiv_unit (TopCat.disk 7 : Type)
-  have hunit := AlgebraicTopology.isZero_singularHomologyFunctor_of_totallyDisconnectedSpace
-    AddCommGrpCat k (AddCommGrpCat.of ℤ) (TopCat.of Unit) hk
-  let _ : Subsingleton (IntegralSingularHomology k Unit) :=
-    AddCommGrpCat.subsingleton_of_isZero hunit
-  let he := integralSingularHomologyEquivOfHomotopyEquiv k e
-  let _ : Subsingleton (IntegralSingularHomology k (TopCat.disk 7 : Type)) :=
-    ⟨fun x y ↦ he.injective (Subsingleton.elim _ _)⟩
-  exact AddCommGrpCat.isZero_of_subsingleton _
 
 end SphereSixComplex

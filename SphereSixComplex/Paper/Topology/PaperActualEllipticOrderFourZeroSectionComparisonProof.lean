@@ -335,19 +335,6 @@ public theorem orderFourCentralBaseFactor_zeroFiberHomotopy_point_trace
   rw [A.orderFourFillingRelationCayleyPuncturedLoop.source,
     A.orderFourFillingRelationCayleyPuncturedLoop.target]
 
-/-- The local order-four base factor reaches the standard zero-section four-turn loop by
-the explicit fibre contraction followed by the global base homotopy. -/
-public theorem orderFourCentralBaseFactor_homotopy_zeroSectionQuadruple :
-    letI := A.ellipticFourBoundaryAction
-    Nonempty (ContinuousMap.Homotopy
-      A.orderFourCentralBaseFactor.toContinuousMap
-      A.orderFourZeroSectionQuadruplePath.toContinuousMap) := by
-  let _ := A.ellipticFourBoundaryAction
-  let Hzero := A.orderFourCentralBaseFactor_zeroFiberHomotopy
-  let Hzero' := Hzero.cast rfl
-    A.orderFourCentralZeroFiberBasePath_eq_zeroSectionBasePath
-  rcases A.orderFourZeroSectionBase_quadrupleHomotopy with ⟨Hfour⟩
-  exact ⟨Hzero'.trans Hfour⟩
 
 /-- The local order-four base factor reaches the standard zero-section four-turn loop through
 a genuine free homotopy. -/

@@ -22,10 +22,5 @@ public noncomputable def boundarySevenCechRowwiseGlobalization :
   totalization := firstQuadrantRowwiseTotalization
   rowIdentifications := boundarySevenCechAugmentationRowIdentifications
 
-/-- The boundary-seven rowwise globalization package exists without any additional
-homological-algebra or coherence hypotheses. -/
-public theorem boundarySevenCechRowwiseGlobalization_nonempty :
-    Nonempty BoundarySevenCechRowwiseGlobalization :=
-  ⟨boundarySevenCechRowwiseGlobalization⟩
 
 end SphereSixComplex

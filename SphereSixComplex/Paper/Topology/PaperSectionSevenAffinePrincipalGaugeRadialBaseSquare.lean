@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineRadialBaseLiftProjection
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffinePrincipalGaugeStripLiftComparison
 
 /-!
 # Base-coordinate square for the principal elliptic gauges

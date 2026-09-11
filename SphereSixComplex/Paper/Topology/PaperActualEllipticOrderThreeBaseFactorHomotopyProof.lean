@@ -233,20 +233,6 @@ public theorem orderThreeLocalZeroBaseCentralMap_eq_zeroSectionBaseMap :
       unfold localDegreeCirclePoint
       congr 2
 
-/-- Before the final change of basepoint, the local base factor is freely homotopic to the
-global zero-section triple by explicit zero-fibre contraction followed by the cubic base
-homotopy. -/
-public theorem orderThreeLocalOffsetBaseCentralPath_homotopy_zeroSectionTriple :
-    letI := A.ellipticThreeBoundaryAction
-    Nonempty (ContinuousMap.Homotopy
-      A.orderThreeLocalOffsetBaseCentralPath.toContinuousMap
-      A.orderThreeZeroSectionTriplePath.toContinuousMap) := by
-  let _ := A.ellipticThreeBoundaryAction
-  let Hzero := A.orderThreeLocalBaseFiberContractionHomotopy
-  let Hzero' := Hzero.cast rfl
-    A.orderThreeLocalZeroBaseCentralMap_eq_zeroSectionBaseMap
-  rcases A.orderThreeZeroSectionBase_tripleHomotopy with ⟨Htriple⟩
-  exact ⟨Hzero'.trans Htriple⟩
 
 /-- The local base factor reaches the globally based zero-section triple through one genuine
 free homotopy. -/

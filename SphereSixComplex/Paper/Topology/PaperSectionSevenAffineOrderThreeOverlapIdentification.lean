@@ -144,79 +144,7 @@ public theorem toCentralFamily_orderThreeAffineDiscLiftQuotientInclusion
   induction q using Quotient.inductionOn with
   | _ x => rfl
 
-/-- If the actual order-three star overlap is the affine disc region of the regular central
-family, then the order-three overlap quotient identification exists. -/
-public theorem orderThreeOverlapQuotientIdentification_nonempty_of_overlap_eq
-    {s r : ℝ} (hs : 0 < s) (hsr : s < r) (hr : r ≤ 2 / 3)
-    (hoverlap :
-      A.orderThreeFillingImage ∩ A.affineOrderThreeCentralRegion =
-        A.affineOrderThreeDiscRegion r) :
-    Nonempty A.AffineOrderThreeOverlapQuotientIdentification := by
-  refine ⟨{ normalizationRadius := s
-            affineDiscRadius := r
-            normalizationRadius_pos := hs
-            normalizationRadius_lt_disc := hsr
-            affineDiscRadius_le_halfPlane := hr
-            overlapModel := (Homeomorph.setCongr hoverlap).trans
-              (A.affineOrderThreeDiscRegionQuotientHomeomorph r)
-            commutes := ?_ }⟩
-  funext x
-  apply (A.orderThreeAffineHalfPlaneLiftQuotientToCentralFamily_isOpenEmbedding).injective
-  rw [Function.comp_apply, Function.comp_apply,
-    A.toCentralFamily_orderThreeAffineDiscLiftQuotientInclusion hr,
-    A.toCentralFamily_affineOrderThreeCentralRegionQuotientHomeomorph]
-  exact (A.toCentralFamily_affineOrderThreeDiscRegionQuotientHomeomorph r
-    (Homeomorph.setCongr hoverlap x)).symm
 
-/-- Any overlap quotient identification computes the central-family point of an overlap point. -/
-public theorem toCentralFamily_overlapModel
-    (Q : A.AffineOrderThreeOverlapQuotientIdentification)
-    (u : ↥(A.orderThreeFillingImage ∩
-      A.affineOrderThreeCentralRegion)) :
-    A.orderThreeAffineDiscLiftQuotientToCentralFamily Q.affineDiscRadius (Q.overlapModel u) =
-      A.ellipticCentralImageHomeomorph
-        ⟨u.1, A.mem_centralImage_of_mem_centralHeightLowerRegion
-          A.ellipticCentralHeight (2 / 3 : ℝ) u.2.2⟩ := by
-  have h := congrFun Q.commutes u
-  simp only [Function.comp_apply] at h
-  rw [← A.toCentralFamily_orderThreeAffineDiscLiftQuotientInclusion
-    Q.affineDiscRadius_le_halfPlane, ← h]
-  exact A.toCentralFamily_affineOrderThreeCentralRegionQuotientHomeomorph _
 
-/-- Conversely, an overlap quotient identification forces the actual order-three star overlap to
-be the affine disc region of its own radius.  The identification is therefore exactly equivalent
-to that set equality. -/
-public theorem overlap_eq_affineOrderThreeDiscRegion
-    (Q : A.AffineOrderThreeOverlapQuotientIdentification) :
-    A.orderThreeFillingImage ∩ A.affineOrderThreeCentralRegion =
-      A.affineOrderThreeDiscRegion Q.affineDiscRadius := by
-  ext x
-  constructor
-  · intro hx
-    have hmem := A.mem_centralImage_of_mem_centralHeightLowerRegion
-      A.ellipticCentralHeight (2 / 3 : ℝ) hx.2
-    refine ⟨⟨x, hmem⟩, ?_, rfl⟩
-    have hrange : A.orderThreeAffineDiscLiftQuotientToCentralFamily Q.affineDiscRadius
-        (Q.overlapModel ⟨x, hx⟩) ∈
-          Set.range (A.orderThreeAffineDiscLiftQuotientToCentralFamily Q.affineDiscRadius) :=
-      Set.mem_range_self _
-    rw [A.range_orderThreeAffineDiscLiftQuotientToCentralFamily,
-      A.toCentralFamily_overlapModel Q ⟨x, hx⟩] at hrange
-    exact hrange
-  · rintro ⟨y, hy, rfl⟩
-    have hrange : A.ellipticCentralImageHomeomorph y ∈
-        Set.range (A.orderThreeAffineDiscLiftQuotientToCentralFamily Q.affineDiscRadius) := by
-      rw [A.range_orderThreeAffineDiscLiftQuotientToCentralFamily]
-      exact hy
-    obtain ⟨q, hq⟩ := hrange
-    refine (Q.overlapModel.symm q).2 |>.imp ?_ ?_ <;> intro h <;>
-      · have hpoint : ((Q.overlapModel.symm q : ↥(A.orderThreeFillingImage ∩
-            A.affineOrderThreeCentralRegion)) : A.ellipticInterior) =
-            y.1 := by
-          have := A.toCentralFamily_overlapModel Q (Q.overlapModel.symm q)
-          rw [Q.overlapModel.apply_symm_apply, hq] at this
-          exact congrArg Subtype.val
-            (A.ellipticCentralImageHomeomorph.injective this.symm)
-        rwa [hpoint] at h
 
 end SphereSixComplex.Geometry.PaperAnalyticData

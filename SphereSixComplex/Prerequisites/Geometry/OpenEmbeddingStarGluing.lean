@@ -97,23 +97,8 @@ public theorem toFillingCollarHomeomorph_apply (i : Fin 3) (x : A.collarSource i
     intro i j hij
     exact Opens.coe_disjoint.mp (A.centralRange_disjoint hij)
 
-/-- A nonempty common collar source has nonempty images in both pieces. -/
-public theorem centralCollar_nonempty (i : Fin 3) [Nonempty (A.collarSource i)] :
-    Nonempty (A.centralCollar i) :=
-  ⟨A.centralCollarPoint i (Classical.arbitrary (A.collarSource i))⟩
 
-/-- A nonempty common collar source has a nonempty filling image. -/
-public theorem fillingCollar_nonempty (i : Fin 3) [Nonempty (A.collarSource i)] :
-    Nonempty (A.fillingCollar i) :=
-  ⟨A.fillingCollarPoint i (Classical.arbitrary (A.collarSource i))⟩
 
-/-- Nonempty common sources supply the nonempty-collar field used by `CompactComplexStar`. -/
-public theorem toFourPieceStarGluingData_nonemptyCentralCollar
-    [∀ i, Nonempty (A.collarSource i)] :
-    ∀ i, Nonempty (A.toFourPieceStarGluingData.centralCollar i) :=
-  fun i ↦ by
-    change Nonempty (A.centralCollar i)
-    exact A.centralCollar_nonempty i
 
 @[simp]
 public theorem collarEquiv_toCentral (i : Fin 3) (x : A.collarSource i) :

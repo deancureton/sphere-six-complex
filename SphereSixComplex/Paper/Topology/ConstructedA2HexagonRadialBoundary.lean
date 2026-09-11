@@ -34,13 +34,6 @@ public theorem constructedA2Hexagon_radial_to_square (z : ConstructedA2HexagonBo
   congr 1
   field_simp
 
-public theorem constructedA2Hexagon_radial_to_square_map :
-    puncturedPlaneToSquareBoundary.comp constructedA2HexagonBoundaryToPunctured =
-      (⟨constructedA2SquareBoundaryHexagonHomeomorph.symm,
-        constructedA2SquareBoundaryHexagonHomeomorph.symm.continuous⟩ : ContinuousMap _ _) := by
-  apply ContinuousMap.ext
-  intro z
-  exact constructedA2Hexagon_radial_to_square z
 
 end Geometry.InfiniteA2Toric
 end SphereSixComplex

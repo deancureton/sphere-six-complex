@@ -187,43 +187,6 @@ public noncomputable def orderThreeCayleyChartRadialHomotopy
     simp [orderThreeAlignedCayleyRadialPoint, localDegreeCirclePoint]
     ring
 
-/-- On some nonzero Cayley circle, the order-three affine coordinate is connected through
-nonzero values of norm less than one to its frozen-unit three-turn circle. -/
-public theorem exists_orderThreeCayleyBaseCoordinate_smallCircleHomotopy :
-    ∃ (u : ℂ → ℂ) (a : ℂ)
-      (ha : a ≠ 0)
-      (hu : ContinuousOn u (closedBall (0 : ℂ) ‖a‖))
-      (hune : ∀ z ∈ closedBall (0 : ℂ) ‖a‖, u z ≠ 0)
-      (hbound : ∀ z ∈ closedBall (0 : ℂ) ‖a‖,
-        ‖a‖ ^ 3 * ‖u z‖ < ‖(1 : ℂ)‖),
-      (∀ t : unitInterval,
-        ellipticChartFunction A.modular.sourceCoordinate.coordinate
-            fuchsianOneFixedPoint (localDegreeCirclePoint a t) =
-          (factorizedLocalDegreeCircleTwoPunctures
-            u 3 a 1 ha hu hune hbound t).1) ∧
-      Nonempty (ContinuousMap.Homotopy
-        (factorizedLocalDegreeCircleTwoPunctures
-          u 3 a 1 ha hu hune hbound)
-        (frozenLocalDegreeCircleTwoPunctures
-          u 3 a 1 ha hune hbound)) := by
-  obtain ⟨u, hu, hu0, hfactor⟩ :=
-    A.exists_orderThreeCayleyRegularCoordinate_cubicUnit
-  let G : ℂ → ℂ :=
-    ellipticChartFunction A.modular.sourceCoordinate.coordinate
-      fuchsianOneFixedPoint
-  obtain ⟨a, ha, huc, hune, hfac, hbound⟩ :=
-    exists_cubicFactorizationCircleData G u hu hu0 hfactor
-  have hbound' : ∀ z ∈ closedBall (0 : ℂ) ‖a‖,
-      ‖a‖ ^ 3 * ‖u z‖ < ‖(1 : ℂ)‖ := by
-    simpa using hbound
-  refine ⟨u, a, ha, huc, hune, hbound', ?_, ?_⟩
-  · intro t
-    change G (localDegreeCirclePoint a t) =
-      localDegreeCirclePoint a t ^ 3 * u (localDegreeCirclePoint a t)
-    exact hfac (localDegreeCirclePoint a t) (by
-      rw [mem_closedBall, dist_zero_right, localDegreeCirclePoint_norm])
-  · exact ⟨exactLocalFactorizationCircleHomotopyTwoPunctures
-      u 3 a 1 ha huc hune hbound'⟩
 
 /-- The small circle can be chosen as a positive radial rescaling of the actual Cayley circle. -/
 public theorem exists_orderThreeCayleyBaseCoordinate_alignedSmallCircleData :
@@ -261,75 +224,6 @@ public theorem exists_orderThreeCayleyBaseCoordinate_alignedSmallCircleData :
   · simpa [G, hanorm] using hfacb
   · simpa [hanorm] using hboundb
 
-/-- The actual complete Cayley base circle is freely homotopic in the twice-punctured affine
-line to a frozen-unit positive three-turn circle. -/
-public theorem exists_orderThreeActualCayleyBaseCoordinate_threeTurnHomotopy :
-    ∃ (u : ℂ → ℂ) (a : ℂ)
-      (ha : a ≠ 0)
-      (hune : ∀ z ∈ closedBall (0 : ℂ) ‖a‖, u z ≠ 0)
-      (hbound : ∀ z ∈ closedBall (0 : ℂ) ‖a‖,
-        ‖a‖ ^ 3 * ‖u z‖ < ‖(1 : ℂ)‖),
-      Nonempty (ContinuousMap.Homotopy
-        (A.orderThreeCayleyChartCircleMap
-          A.orderThreeFillingRelationCayleyBaseValue
-          (norm_pos_iff.mpr A.orderThreeFillingRelationCayleyBaseValue_ne_zero)
-          (by
-            rw [A.orderThreeFillingRelationCayleyBaseValue_norm]
-            exact A.ellipticThreeBoundaryBase.1.2.2))
-        (frozenLocalDegreeCircleTwoPunctures
-          u 3 a 1 ha hune hbound)) := by
-  obtain ⟨u, a, c, hc, hc1, haeq, hu, hune, hfac, hbound⟩ :=
-    A.exists_orderThreeCayleyBaseCoordinate_alignedSmallCircleData
-  subst a
-  let a : ℂ := (c : ℂ) * A.orderThreeFillingRelationCayleyBaseValue
-  have ha : a ≠ 0 := by
-    dsimp [a]
-    exact mul_ne_zero (ofReal_ne_zero.mpr hc.ne')
-      A.orderThreeFillingRelationCayleyBaseValue_ne_zero
-  have hbound' : ∀ z ∈ closedBall (0 : ℂ) ‖a‖,
-      ‖a‖ ^ 3 * ‖u z‖ < ‖(1 : ℂ)‖ := by
-    simpa [a] using hbound
-  have har : ‖a‖ < A.starSeparation.orderThree.radius := by
-    rw [norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hc]
-    exact (mul_lt_mul_of_pos_right hc1
-      (norm_pos_iff.mpr
-        A.orderThreeFillingRelationCayleyBaseValue_ne_zero)).trans (by
-          rw [A.orderThreeFillingRelationCayleyBaseValue_norm]
-          simpa using A.ellipticThreeBoundaryBase.1.2.2)
-  have hsmall :
-      A.orderThreeCayleyChartCircleMap a (norm_pos_iff.mpr ha) har =
-        factorizedLocalDegreeCircleTwoPunctures
-          u 3 a 1 ha hu hune hbound' := by
-    ext t
-    change ellipticChartFunction A.modular.sourceCoordinate.coordinate
-        fuchsianOneFixedPoint (localDegreeCirclePoint a t) =
-      localDegreeCirclePoint a t ^ 3 * u (localDegreeCirclePoint a t)
-    exact hfac _ (by
-      rw [mem_closedBall, dist_zero_right, localDegreeCirclePoint_norm])
-  let Hrad := A.orderThreeCayleyChartRadialHomotopy c hc hc1
-  have htarget :
-      A.orderThreeCayleyChartCircleMap
-          ((c : ℂ) * A.orderThreeFillingRelationCayleyBaseValue)
-          (by
-            rw [norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hc]
-            exact mul_pos hc
-              (norm_pos_iff.mpr
-                A.orderThreeFillingRelationCayleyBaseValue_ne_zero))
-          (by
-            rw [norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hc]
-            exact (mul_lt_mul_of_pos_right hc1
-              (norm_pos_iff.mpr
-                A.orderThreeFillingRelationCayleyBaseValue_ne_zero)).trans (by
-                  rw [A.orderThreeFillingRelationCayleyBaseValue_norm]
-                  simpa using A.ellipticThreeBoundaryBase.1.2.2)) =
-        factorizedLocalDegreeCircleTwoPunctures
-          u 3 a 1 ha hu hune hbound' := by
-    exact hsmall
-  let Hlocal :=
-    exactLocalFactorizationCircleHomotopyTwoPunctures
-      u 3 a 1 ha hu hune hbound'
-  refine ⟨u, a, ha, hune, hbound', ?_⟩
-  exact ⟨(Hrad.cast rfl htarget).trans Hlocal⟩
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

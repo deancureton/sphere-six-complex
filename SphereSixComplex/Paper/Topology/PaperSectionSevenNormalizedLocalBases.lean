@@ -1,7 +1,9 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperEllipticInteriorNormalizedSplitting
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenLocalHomologyBases
+public import SphereSixComplex.Paper.Topology.PaperCuspCollarRadialMappingTorus
+public import SphereSixComplex.Paper.Topology.PaperEllipticTwoDiscHomologyCoordinatesRealization
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenPositiveDegreeBases
 
 /-!
 # Normalized local bases for the final Section 7 attachment

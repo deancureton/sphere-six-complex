@@ -468,12 +468,6 @@ public theorem fixedFiberToFamily_injective (z : UpperHalfPlane) :
       change periodVector (parameterMap F z).1 g.coeff + r = q
       simpa only [family_smul_snd] using congrArg Prod.snd hg
 
-@[simp]
-public theorem familyTotalSpaceBase_fixedFiberToFamily
-    (z : UpperHalfPlane) (q : AdditiveTorus (parameterMap F z).1) :
-    familyTotalSpaceBase F (fixedFiberToFamily F z q) = z := by
-  induction q using Quotient.inductionOn with
-  | _ v => exact familyTotalSpaceBase_mk F (z, v)
 
 public theorem familyTotalSpaceBase_familyTranslationMap
     (s : UpperHalfPlane → ComplexTwoSpace)
@@ -734,150 +728,11 @@ public theorem orderFourAffineFamilyAction_free
     rw [← orderFour_generator_pow_smul F]
     rwa [← cyclic_eq_generator_pow g]
 
-public theorem orderThreeAffineFamilyAction_properlyDiscontinuous :
-    letI := orderThreeAffineFamilyAction F
-    ProperlyDiscontinuousSMul (FiniteCyclic 3) (TotalSpace (parameterMap F)) := by
-  let _ := orderThreeAffineFamilyAction F
-  infer_instance
 
-public theorem orderFourAffineFamilyAction_properlyDiscontinuous :
-    letI := orderFourAffineFamilyAction F
-    ProperlyDiscontinuousSMul (FiniteCyclic 4) (TotalSpace (parameterMap F)) := by
-  let _ := orderFourAffineFamilyAction F
-  infer_instance
 
-/-- The order-three quotient of the varying torus family is a complex manifold, provided with
-the canonical family manifold structure. -/
-public theorem orderThreeVaryingFamilyQuotient_isManifold
-    (hsource : U.sourceAction = fuchsianSourceAction)
-    [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    [IsManifold globalDeckTotalModel n (TotalSpace (parameterMap F))]
-    [T2Space (TotalSpace (parameterMap F))]
-    [LocallyCompactSpace (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
-      (projection (parameterMap F))) :
-    letI := orderThreeAffineFamilyAction F
-    letI := orderThreeAffineFamilyAction_free F hsource
-    letI := orderThreeAffineFamilyAction_properlyDiscontinuous F
-    letI : ContinuousConstSMul (FiniteCyclic 3) (TotalSpace (parameterMap F)) :=
-      ⟨fun g ↦ (orderThreeAffineFamilyRepresentation_contMDiff F hprojection g).continuous⟩
-    IsManifold globalDeckTotalModel n
-        (OrbitQuotient (M := TotalSpace (parameterMap F)) (G := FiniteCyclic 3)) ∧
-      IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
-        (quotientProjection (M := TotalSpace (parameterMap F)) (G := FiniteCyclic 3)) := by
-  let _ := orderThreeAffineFamilyAction F
-  let _ : IsCancelSMul (FiniteCyclic 3) (TotalSpace (parameterMap F)) :=
-    orderThreeAffineFamilyAction_free F hsource
-  let _ : ProperlyDiscontinuousSMul (FiniteCyclic 3) (TotalSpace (parameterMap F)) :=
-    orderThreeAffineFamilyAction_properlyDiscontinuous F
-  let _ : ContinuousConstSMul (FiniteCyclic 3) (TotalSpace (parameterMap F)) :=
-    ⟨fun g ↦ (orderThreeAffineFamilyRepresentation_contMDiff F hprojection g).continuous⟩
-  exact orbitQuotient_isManifold_and_projection_isLocalDiffeomorph_of_contMDiff_smul
-    globalDeckTotalModel n
-      (orderThreeAffineFamilyRepresentation_contMDiff F hprojection)
 
-/-- The analogous order-four finite quotient is a complex manifold with locally biholomorphic
-quotient projection. -/
-public theorem orderFourVaryingFamilyQuotient_isManifold
-    (hsource : U.sourceAction = fuchsianSourceAction)
-    [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    [IsManifold globalDeckTotalModel n (TotalSpace (parameterMap F))]
-    [T2Space (TotalSpace (parameterMap F))]
-    [LocallyCompactSpace (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
-      (projection (parameterMap F))) :
-    letI := orderFourAffineFamilyAction F
-    letI := orderFourAffineFamilyAction_free F hsource
-    letI := orderFourAffineFamilyAction_properlyDiscontinuous F
-    letI : ContinuousConstSMul (FiniteCyclic 4) (TotalSpace (parameterMap F)) :=
-      ⟨fun g ↦ (orderFourAffineFamilyRepresentation_contMDiff F hprojection g).continuous⟩
-    IsManifold globalDeckTotalModel n
-        (OrbitQuotient (M := TotalSpace (parameterMap F)) (G := FiniteCyclic 4)) ∧
-      IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
-        (quotientProjection (M := TotalSpace (parameterMap F)) (G := FiniteCyclic 4)) := by
-  let _ := orderFourAffineFamilyAction F
-  let _ : IsCancelSMul (FiniteCyclic 4) (TotalSpace (parameterMap F)) :=
-    orderFourAffineFamilyAction_free F hsource
-  let _ : ProperlyDiscontinuousSMul (FiniteCyclic 4) (TotalSpace (parameterMap F)) :=
-    orderFourAffineFamilyAction_properlyDiscontinuous F
-  let _ : ContinuousConstSMul (FiniteCyclic 4) (TotalSpace (parameterMap F)) :=
-    ⟨fun g ↦ (orderFourAffineFamilyRepresentation_contMDiff F hprojection g).continuous⟩
-  exact orbitQuotient_isManifold_and_projection_isLocalDiffeomorph_of_contMDiff_smul
-    globalDeckTotalModel n
-      (orderFourAffineFamilyRepresentation_contMDiff F hprojection)
 
-/-- Unconditional complex-manifold construction of the direct order-three varying-family
-quotient.  The only geometric identification is that the source action is the explicit Fuchsian
-one. -/
-public theorem orderThreeVaryingFamilyQuotient_isManifold_actual
-    (hsource : U.sourceAction = fuchsianSourceAction) :
-    letI := familyIsCancelSMul (parameterMap F)
-    letI := familyContinuousConstSMul (parameterMap F)
-      fun a ↦ (periodSection_contMDiff F a ω).continuous
-    letI := familyProperlyDiscontinuousSMul (parameterMap F)
-      (compactlyUniformPeriods_of_compactUniformLowerBound (parameterMap F)
-        (parameterMap_compactUniformLowerBound F))
-    letI : IsManifold globalDeckTotalModel ω (TotalSpace (parameterMap F)) :=
-      (totalSpace_isManifold_and_projection_isLocalDiffeomorph F ω).1
-    letI : LocallyCompactSpace (TotalSpace (parameterMap F)) :=
-      Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
-    letI := orderThreeAffineFamilyAction F
-    letI := orderThreeAffineFamilyAction_free F hsource
-    letI := orderThreeAffineFamilyAction_properlyDiscontinuous F
-    letI : ContinuousConstSMul (FiniteCyclic 3) (TotalSpace (parameterMap F)) :=
-      ⟨fun g ↦ (orderThreeAffineFamilyRepresentation_contMDiff F
-        (totalSpace_isManifold_and_projection_isLocalDiffeomorph F ω).2 g).continuous⟩
-    IsManifold globalDeckTotalModel ω
-        (OrbitQuotient (M := TotalSpace (parameterMap F)) (G := FiniteCyclic 3)) ∧
-      IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
-        (quotientProjection (M := TotalSpace (parameterMap F)) (G := FiniteCyclic 3)) := by
-  let _ := familyIsCancelSMul (parameterMap F)
-  let _ := familyContinuousConstSMul (parameterMap F)
-    fun a ↦ (periodSection_contMDiff F a ω).continuous
-  let _ := familyProperlyDiscontinuousSMul (parameterMap F)
-    (compactlyUniformPeriods_of_compactUniformLowerBound (parameterMap F)
-      (parameterMap_compactUniformLowerBound F))
-  have htotal := totalSpace_isManifold_and_projection_isLocalDiffeomorph F ω
-  let _ : IsManifold globalDeckTotalModel ω (TotalSpace (parameterMap F)) := htotal.1
-  let _ : LocallyCompactSpace (TotalSpace (parameterMap F)) :=
-    Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
-  exact orderThreeVaryingFamilyQuotient_isManifold F hsource htotal.2
 
-/-- Unconditional complex-manifold construction of the direct order-four varying-family
-quotient. -/
-public theorem orderFourVaryingFamilyQuotient_isManifold_actual
-    (hsource : U.sourceAction = fuchsianSourceAction) :
-    letI := familyIsCancelSMul (parameterMap F)
-    letI := familyContinuousConstSMul (parameterMap F)
-      fun a ↦ (periodSection_contMDiff F a ω).continuous
-    letI := familyProperlyDiscontinuousSMul (parameterMap F)
-      (compactlyUniformPeriods_of_compactUniformLowerBound (parameterMap F)
-        (parameterMap_compactUniformLowerBound F))
-    letI : IsManifold globalDeckTotalModel ω (TotalSpace (parameterMap F)) :=
-      (totalSpace_isManifold_and_projection_isLocalDiffeomorph F ω).1
-    letI : LocallyCompactSpace (TotalSpace (parameterMap F)) :=
-      Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
-    letI := orderFourAffineFamilyAction F
-    letI := orderFourAffineFamilyAction_free F hsource
-    letI := orderFourAffineFamilyAction_properlyDiscontinuous F
-    letI : ContinuousConstSMul (FiniteCyclic 4) (TotalSpace (parameterMap F)) :=
-      ⟨fun g ↦ (orderFourAffineFamilyRepresentation_contMDiff F
-        (totalSpace_isManifold_and_projection_isLocalDiffeomorph F ω).2 g).continuous⟩
-    IsManifold globalDeckTotalModel ω
-        (OrbitQuotient (M := TotalSpace (parameterMap F)) (G := FiniteCyclic 4)) ∧
-      IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel ω
-        (quotientProjection (M := TotalSpace (parameterMap F)) (G := FiniteCyclic 4)) := by
-  let _ := familyIsCancelSMul (parameterMap F)
-  let _ := familyContinuousConstSMul (parameterMap F)
-    fun a ↦ (periodSection_contMDiff F a ω).continuous
-  let _ := familyProperlyDiscontinuousSMul (parameterMap F)
-    (compactlyUniformPeriods_of_compactUniformLowerBound (parameterMap F)
-      (parameterMap_compactUniformLowerBound F))
-  have htotal := totalSpace_isManifold_and_projection_isLocalDiffeomorph F ω
-  let _ : IsManifold globalDeckTotalModel ω (TotalSpace (parameterMap F)) := htotal.1
-  let _ : LocallyCompactSpace (TotalSpace (parameterMap F)) :=
-    Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
-  exact orderFourVaryingFamilyQuotient_isManifold F hsource htotal.2
 
 public theorem familyTotalSpaceBase_continuous :
     Continuous (familyTotalSpaceBase F) :=
@@ -1001,302 +856,30 @@ public theorem orderFourPuncturedFamilyCollar_invariant
   simp only [orderFourPuncturedFamilyCollar.eq_def, Set.mem_ofPred_eq,
     orderFourFamilyRadius_representation F hsource]
 
-/-- The image of the punctured order-three collar in its direct finite quotient. -/
-@[expose] public noncomputable def orderThreePuncturedCollarQuotientRegion (r : ℝ) :
-    letI := orderThreeAffineFamilyAction F
-    Set (OrbitQuotient (M := TotalSpace (parameterMap F)) (G := FiniteCyclic 3)) := by
-  let _ := orderThreeAffineFamilyAction F
-  exact quotientProjection (M := TotalSpace (parameterMap F)) (G := FiniteCyclic 3) ''
-    orderThreePuncturedFamilyCollar F r
 
-/-- The image of the punctured order-four collar in its direct finite quotient. -/
-@[expose] public noncomputable def orderFourPuncturedCollarQuotientRegion (r : ℝ) :
-    letI := orderFourAffineFamilyAction F
-    Set (OrbitQuotient (M := TotalSpace (parameterMap F)) (G := FiniteCyclic 4)) := by
-  let _ := orderFourAffineFamilyAction F
-  exact quotientProjection (M := TotalSpace (parameterMap F)) (G := FiniteCyclic 4) ''
-    orderFourPuncturedFamilyCollar F r
 
-public theorem orderThreePuncturedCollarQuotientRegion_isOpen
-    (r : ℝ)
-    (hcontinuous : letI := orderThreeAffineFamilyAction F
-      ContinuousConstSMul (FiniteCyclic 3) (TotalSpace (parameterMap F))) :
-    letI := orderThreeAffineFamilyAction F
-    IsOpen (orderThreePuncturedCollarQuotientRegion F r) := by
-  let _ := orderThreeAffineFamilyAction F
-  let _ : ContinuousConstSMul (FiniteCyclic 3) (TotalSpace (parameterMap F)) := hcontinuous
-  exact isOpenMap_quotient_mk'_mul _ (orderThreePuncturedFamilyCollar_isOpen F r)
 
-public theorem orderFourPuncturedCollarQuotientRegion_isOpen
-    (r : ℝ)
-    (hcontinuous : letI := orderFourAffineFamilyAction F
-      ContinuousConstSMul (FiniteCyclic 4) (TotalSpace (parameterMap F))) :
-    letI := orderFourAffineFamilyAction F
-    IsOpen (orderFourPuncturedCollarQuotientRegion F r) := by
-  let _ := orderFourAffineFamilyAction F
-  let _ : ContinuousConstSMul (FiniteCyclic 4) (TotalSpace (parameterMap F)) := hcontinuous
-  exact isOpenMap_quotient_mk'_mul _ (orderFourPuncturedFamilyCollar_isOpen F r)
 
-/-- The open quotient region has precisely the punctured order-three collar as its preimage. -/
-public theorem orderThreePuncturedCollarQuotientRegion_preimage
-    (hsource : U.sourceAction = fuchsianSourceAction) (r : ℝ) :
-    letI := orderThreeAffineFamilyAction F
-    quotientProjection (M := TotalSpace (parameterMap F)) (G := FiniteCyclic 3) ⁻¹'
-        orderThreePuncturedCollarQuotientRegion F r =
-      orderThreePuncturedFamilyCollar F r := by
-  let _ := orderThreeAffineFamilyAction F
-  ext q
-  constructor
-  · rintro ⟨x, hx, heq⟩
-    change Quotient.mk _ x = Quotient.mk _ q at heq
-    rw [Quotient.eq, MulAction.orbitRel_apply, MulAction.mem_orbit_iff] at heq
-    obtain ⟨g, hg⟩ := heq
-    apply (orderThreePuncturedFamilyCollar_invariant F hsource r g q).mp
-    change orderThreeAffineFamilyRepresentation F g q = x at hg
-    rw [hg]
-    exact hx
-  · intro hq
-    exact ⟨q, hq, rfl⟩
 
-/-- The open quotient region has precisely the punctured order-four collar as its preimage. -/
-public theorem orderFourPuncturedCollarQuotientRegion_preimage
-    (hsource : U.sourceAction = fuchsianSourceAction) (r : ℝ) :
-    letI := orderFourAffineFamilyAction F
-    quotientProjection (M := TotalSpace (parameterMap F)) (G := FiniteCyclic 4) ⁻¹'
-        orderFourPuncturedCollarQuotientRegion F r =
-      orderFourPuncturedFamilyCollar F r := by
-  let _ := orderFourAffineFamilyAction F
-  ext q
-  constructor
-  · rintro ⟨x, hx, heq⟩
-    change Quotient.mk _ x = Quotient.mk _ q at heq
-    rw [Quotient.eq, MulAction.orbitRel_apply, MulAction.mem_orbit_iff] at heq
-    obtain ⟨g, hg⟩ := heq
-    apply (orderFourPuncturedFamilyCollar_invariant F hsource r g q).mp
-    change orderFourAffineFamilyRepresentation F g q = x at hg
-    rw [hg]
-    exact hx
-  · intro hq
-    exact ⟨q, hq, rfl⟩
 
-/-- The honest affine action of the full free-product triangle group.  It is obtained by the
-universal property of `C₃ ∗ C₄`, not by modifying the existing linear deck action. -/
-@[expose] public noncomputable def affineGlobalFamilyRepresentation :
-    Delta →* Equiv.Perm (TotalSpace (parameterMap F)) :=
-  Monoid.Coprod.lift (orderThreeAffineFamilyRepresentation F)
-    (orderFourAffineFamilyRepresentation F)
 
-@[simp]
-public theorem affineGlobalFamilyRepresentation_inl (a : CyclicThree) :
-    affineGlobalFamilyRepresentation F (Monoid.Coprod.inl a) =
-      orderThreeAffineFamilyRepresentation F a :=
-  rfl
 
-@[simp]
-public theorem affineGlobalFamilyRepresentation_inr (a : CyclicFour) :
-    affineGlobalFamilyRepresentation F (Monoid.Coprod.inr a) =
-      orderFourAffineFamilyRepresentation F a :=
-  rfl
 
-public theorem affineGlobalFamilyRepresentation_contMDiff
-    [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    [IsManifold globalDeckTotalModel n (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
-      (projection (parameterMap F))) (g : Delta) :
-    ContMDiff globalDeckTotalModel globalDeckTotalModel n
-      (affineGlobalFamilyRepresentation F g) := by
-  induction g using Monoid.Coprod.induction_on with
-  | inl a =>
-      rw [affineGlobalFamilyRepresentation_inl]
-      exact orderThreeAffineFamilyRepresentation_contMDiff F hprojection a
-  | inr a =>
-      rw [affineGlobalFamilyRepresentation_inr]
-      exact orderFourAffineFamilyRepresentation_contMDiff F hprojection a
-  | mul g h hg hh =>
-      rw [map_mul]
-      exact hg.comp hh
 
-@[expose, instance_reducible] public noncomputable def affineGlobalFamilyAction :
-    MulAction Delta (TotalSpace (parameterMap F)) where
-  smul g q := affineGlobalFamilyRepresentation F g q
-  one_smul q := by
-    change affineGlobalFamilyRepresentation F 1 q = q
-    rw [map_one]
-    rfl
-  mul_smul g h q := by
-    change affineGlobalFamilyRepresentation F (g * h) q =
-      affineGlobalFamilyRepresentation F g (affineGlobalFamilyRepresentation F h q)
-    rw [map_mul]
-    rfl
 
-public theorem affineGlobalFamilyAction_continuousConstSmul
-    [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    [IsManifold globalDeckTotalModel n (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
-      (projection (parameterMap F))) :
-    letI := affineGlobalFamilyAction F
-    ContinuousConstSMul Delta (TotalSpace (parameterMap F)) := by
-  let _ := affineGlobalFamilyAction F
-  exact ⟨fun g ↦ (affineGlobalFamilyRepresentation_contMDiff F hprojection g).continuous⟩
 
-/-- The full affine varying-family quotient, distinct from the previously constructed linear
-deck quotient. -/
-public abbrev AffineGlobalFamilyQuotient :=
-  letI := affineGlobalFamilyAction F
-  OrbitQuotient (M := TotalSpace (parameterMap F)) (G := Delta)
 
-/-- The order-three finite quotient maps canonically to the full affine free-product quotient. -/
-@[expose] public noncomputable def orderThreeFiniteToAffineGlobalQuotient :
-    letI := orderThreeAffineFamilyAction F
-    OrbitQuotient (M := TotalSpace (parameterMap F)) (G := FiniteCyclic 3) →
-      AffineGlobalFamilyQuotient F := by
-  let _ := orderThreeAffineFamilyAction F
-  let _ := affineGlobalFamilyAction F
-  exact Quotient.map id fun q x h ↦ by
-    change MulAction.orbitRel (FiniteCyclic 3) (TotalSpace (parameterMap F)) q x at h
-    change MulAction.orbitRel Delta (TotalSpace (parameterMap F)) q x
-    rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff] at h ⊢
-    obtain ⟨a, ha⟩ := h
-    refine ⟨Monoid.Coprod.inl a, ?_⟩
-    change affineGlobalFamilyRepresentation F (Monoid.Coprod.inl a) x = q
-    rw [affineGlobalFamilyRepresentation_inl]
-    exact ha
 
-/-- The order-four finite quotient maps canonically to the full affine free-product quotient. -/
-@[expose] public noncomputable def orderFourFiniteToAffineGlobalQuotient :
-    letI := orderFourAffineFamilyAction F
-    OrbitQuotient (M := TotalSpace (parameterMap F)) (G := FiniteCyclic 4) →
-      AffineGlobalFamilyQuotient F := by
-  let _ := orderFourAffineFamilyAction F
-  let _ := affineGlobalFamilyAction F
-  exact Quotient.map id fun q x h ↦ by
-    change MulAction.orbitRel (FiniteCyclic 4) (TotalSpace (parameterMap F)) q x at h
-    change MulAction.orbitRel Delta (TotalSpace (parameterMap F)) q x
-    rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff] at h ⊢
-    obtain ⟨a, ha⟩ := h
-    refine ⟨Monoid.Coprod.inr a, ?_⟩
-    change affineGlobalFamilyRepresentation F (Monoid.Coprod.inr a) x = q
-    rw [affineGlobalFamilyRepresentation_inr]
-    exact ha
 
-@[simp]
-public theorem orderThreeFiniteToAffineGlobalQuotient_mk
-    (q : TotalSpace (parameterMap F)) :
-    letI := orderThreeAffineFamilyAction F
-    orderThreeFiniteToAffineGlobalQuotient F (Quotient.mk _ q) =
-      (letI := affineGlobalFamilyAction F; Quotient.mk _ q) :=
-  by
-    rw [orderThreeFiniteToAffineGlobalQuotient.eq_def]
-    rfl
 
-@[simp]
-public theorem orderFourFiniteToAffineGlobalQuotient_mk
-    (q : TotalSpace (parameterMap F)) :
-    letI := orderFourAffineFamilyAction F
-    orderFourFiniteToAffineGlobalQuotient F (Quotient.mk _ q) =
-      (letI := affineGlobalFamilyAction F; Quotient.mk _ q) :=
-  by
-    rw [orderFourFiniteToAffineGlobalQuotient.eq_def]
-    rfl
 
-/-- Exact remaining small-neighborhood theorem at the order-three point.  It says that two
-points of the punctured Cayley collar can be related by the full affine triangle action only by
-an element of the order-three factor. -/
-@[expose] public def OrderThreeAffineCollarOrbitSeparation (r : ℝ) : Prop :=
-  ∀ q ∈ orderThreePuncturedFamilyCollar F r,
-    ∀ x ∈ orderThreePuncturedFamilyCollar F r,
-      ∀ g : Delta, affineGlobalFamilyRepresentation F g x = q →
-        ∃ a : CyclicThree, g = Monoid.Coprod.inl a
 
-/-- Exact remaining small-neighborhood theorem at the order-four point. -/
-@[expose] public def OrderFourAffineCollarOrbitSeparation (r : ℝ) : Prop :=
-  ∀ q ∈ orderFourPuncturedFamilyCollar F r,
-    ∀ x ∈ orderFourPuncturedFamilyCollar F r,
-      ∀ g : Delta, affineGlobalFamilyRepresentation F g x = q →
-        ∃ a : CyclicFour, g = Monoid.Coprod.inr a
 
-/-- The exact remaining order-three geometric existence theorem: a positive punctured Cayley
-collar on which full affine orbits are separated by the order-three factor.  The general slice
-theorem `exists_open_stabilizer_slice` supplies the open-slice part once proper discontinuity and
-the central stabilizer calculation are installed. -/
-@[expose] public def OrderThreeSmallAffineCollarOrbitSeparation : Prop :=
-  ∃ r : ℝ, 0 < r ∧ r < 1 ∧ OrderThreeAffineCollarOrbitSeparation F r
 
-/-- The analogous exact order-four small-collar theorem. -/
-@[expose] public def OrderFourSmallAffineCollarOrbitSeparation : Prop :=
-  ∃ r : ℝ, 0 < r ∧ r < 1 ∧ OrderFourAffineCollarOrbitSeparation F r
 
-/-- Orbit separation is exactly enough to make the order-three collar inject into the full
-affine quotient. -/
-public theorem orderThreeFiniteToAffineGlobalQuotient_injOn_collar
-    (hsep : OrderThreeAffineCollarOrbitSeparation F r) :
-    letI := orderThreeAffineFamilyAction F
-    Set.InjOn (orderThreeFiniteToAffineGlobalQuotient F)
-      (orderThreePuncturedCollarQuotientRegion F r) := by
-  let _ := orderThreeAffineFamilyAction F
-  let _ := affineGlobalFamilyAction F
-  intro Q hQ R hR hQR
-  rcases hQ with ⟨q, hq, rfl⟩
-  rcases hR with ⟨x, hx, rfl⟩
-  change Quotient.mk _ q = Quotient.mk _ x at hQR
-  rw [Quotient.eq, MulAction.orbitRel_apply, MulAction.mem_orbit_iff] at hQR
-  obtain ⟨g, hg⟩ := hQR
-  obtain ⟨a, rfl⟩ := hsep q hq x hx g hg
-  apply Quotient.sound
-  change MulAction.orbitRel (FiniteCyclic 3) (TotalSpace (parameterMap F)) q x
-  rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff]
-  refine ⟨a, ?_⟩
-  change orderThreeAffineFamilyRepresentation F a x = q
-  change affineGlobalFamilyRepresentation F (Monoid.Coprod.inl a) x = q at hg
-  rw [affineGlobalFamilyRepresentation_inl] at hg
-  exact hg
 
-/-- Orbit separation is exactly enough to make the order-four collar inject into the full
-affine quotient. -/
-public theorem orderFourFiniteToAffineGlobalQuotient_injOn_collar
-    (hsep : OrderFourAffineCollarOrbitSeparation F r) :
-    letI := orderFourAffineFamilyAction F
-    Set.InjOn (orderFourFiniteToAffineGlobalQuotient F)
-      (orderFourPuncturedCollarQuotientRegion F r) := by
-  let _ := orderFourAffineFamilyAction F
-  let _ := affineGlobalFamilyAction F
-  intro Q hQ R hR hQR
-  rcases hQ with ⟨q, hq, rfl⟩
-  rcases hR with ⟨x, hx, rfl⟩
-  change Quotient.mk _ q = Quotient.mk _ x at hQR
-  rw [Quotient.eq, MulAction.orbitRel_apply, MulAction.mem_orbit_iff] at hQR
-  obtain ⟨g, hg⟩ := hQR
-  obtain ⟨a, rfl⟩ := hsep q hq x hx g hg
-  apply Quotient.sound
-  change MulAction.orbitRel (FiniteCyclic 4) (TotalSpace (parameterMap F)) q x
-  rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff]
-  refine ⟨a, ?_⟩
-  change orderFourAffineFamilyRepresentation F a x = q
-  change affineGlobalFamilyRepresentation F (Monoid.Coprod.inr a) x = q at hg
-  rw [affineGlobalFamilyRepresentation_inr] at hg
-  exact hg
 
-/-- A proved small-neighborhood theorem selects an actual positive order-three collar whose
-finite quotient injects into the affine global quotient. -/
-public theorem exists_orderThree_injective_affine_collar
-    (hsep : OrderThreeSmallAffineCollarOrbitSeparation F) :
-    ∃ r : ℝ, 0 < r ∧ r < 1 ∧
-      (letI := orderThreeAffineFamilyAction F;
-        Set.InjOn (orderThreeFiniteToAffineGlobalQuotient F)
-          (orderThreePuncturedCollarQuotientRegion F r)) := by
-  obtain ⟨r, hr, hr1, hsep⟩ := hsep
-  exact ⟨r, hr, hr1, orderThreeFiniteToAffineGlobalQuotient_injOn_collar F hsep⟩
 
-/-- A proved small-neighborhood theorem selects an actual positive order-four collar whose
-finite quotient injects into the affine global quotient. -/
-public theorem exists_orderFour_injective_affine_collar
-    (hsep : OrderFourSmallAffineCollarOrbitSeparation F) :
-    ∃ r : ℝ, 0 < r ∧ r < 1 ∧
-      (letI := orderFourAffineFamilyAction F;
-        Set.InjOn (orderFourFiniteToAffineGlobalQuotient F)
-          (orderFourPuncturedCollarQuotientRegion F r)) := by
-  obtain ⟨r, hr, hr1, hsep⟩ := hsep
-  exact ⟨r, hr, hr1, orderFourFiniteToAffineGlobalQuotient_injOn_collar F hsep⟩
 
 end
 

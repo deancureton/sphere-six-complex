@@ -68,14 +68,6 @@ public def cuspCoordinateFixedCircle (x : PeriodDomain) (i : Fin 4)
     FixedTopologicalCircle (cuspFiberClutching x) :=
   ⟨cuspCoordinateCircle x i, cuspCoordinateCircle_fixed x i hi⟩
 
-public theorem cuspCoordinateSweep_wang (x : PeriodDomain) (i : Fin 4)
-    (hi : rhoLambda g₀ (Pi.single i 1) = Pi.single i 1) :
-    (cuspMonodromyCoordinates x).degreeOne
-      ((circleMappingTorusWangPresentationOfCover (cuspFiberClutching x) 1).boundary
-        (fixedLoopSweepClass (cuspFiberClutching x) (cuspCoordinateFixedCircle x i hi))) =
-      Pi.single i 1 := by
-  rw [fixedLoopSweepClass_boundary]
-  exact cuspCoordinateCircle_homology x i
 
 end SphereSixComplex.Geometry.CuspRadialClutchingConstruction
 end

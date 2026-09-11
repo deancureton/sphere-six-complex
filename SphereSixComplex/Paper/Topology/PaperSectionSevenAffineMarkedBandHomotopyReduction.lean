@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineMarkedRetractionGeometry
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineMarkedBandSquares
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineOverlapInterleaving
 
 /-!
@@ -79,15 +79,6 @@ private theorem homotopic_to_inverse_comp_implies_forward_comp_homotopic
   exact (ContinuousMap.Homotopic.comp (.refl e.toFun) h).trans
     (ContinuousMap.Homotopic.comp e.right_inv (.refl p))
 
-/-- Conversely, a band-to-fibre homotopy can be lifted back to the side by the inverse of the
-same homotopy equivalence. -/
-private theorem forward_comp_homotopic_implies_homotopic_to_inverse_comp
-    {B X Y : Type*} [TopologicalSpace B] [TopologicalSpace X] [TopologicalSpace Y]
-    (e : X ≃ₕ Y) (j : C(B, X)) (p : C(B, Y))
-    (h : (e.toFun.comp j).Homotopic p) :
-    j.Homotopic (e.invFun.comp p) := by
-  exact (ContinuousMap.Homotopic.comp e.left_inv (.refl j)).symm.trans
-    (ContinuousMap.Homotopic.comp (.refl e.invFun) h)
 
 /-- The two exact side-level contractions imply the paper's residual marked-band assertion,
 with no additional topological assumptions. -/
@@ -110,26 +101,6 @@ public theorem markedBandHomotopies_of_sideContractions
         A.actualAffineHeightSplit.allocation.orderFourSide)
       (affineBandOrderFourMarkedProjection A) H.orderFour
 
-/-- The reduction is exact: the original residual marked-band package also recovers the two
-side-level marked contractions. -/
-public theorem sideContractions_of_markedBandHomotopies
-    (A : PaperAnalyticData) (H : A.AffineOverlapBandCompatibility) :
-    A.AffineMarkedBandSideContractions := by
-  refine { orderThree := ?_, orderFour := ?_ }
-  · rw [affineBandOrderThreeMarkedProjection_eq_coverMap A]
-    exact forward_comp_homotopic_implies_homotopic_to_inverse_comp
-      (affineOrderThreeSideToReducedFiberHomotopyEquiv A)
-      (IntegralMayerVietoris.interToLeft
-        A.actualAffineHeightSplit.allocation.orderThreeSide
-        A.actualAffineHeightSplit.allocation.orderFourSide)
-      (affineBandOrderThreeCoverMap A) H.orderThree
-  · rw [affineBandOrderFourMarkedProjection_eq_coverMap A]
-    exact forward_comp_homotopic_implies_homotopic_to_inverse_comp
-      (affineOrderFourSideToReducedFiberHomotopyEquiv A)
-      (IntegralMayerVietoris.interToRight
-        A.actualAffineHeightSplit.allocation.orderThreeSide
-        A.actualAffineHeightSplit.allocation.orderFourSide)
-      (affineBandOrderFourCoverMap A) H.orderFour
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

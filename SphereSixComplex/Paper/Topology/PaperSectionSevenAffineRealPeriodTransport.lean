@@ -80,12 +80,6 @@ public theorem orderFourRealPeriodProductHomeomorph_regularFlatTransport_snd
         (periodCoordinates (regularParameterMap A.periods p.1) p.2)
     simp [periodCoordinates]
 
-/-- The two remaining star-coordinate endpoint equations imply the original marked-band
-compatibility statement. -/
-public theorem markedBandHomotopies_of_starEndpointCompatibility
-    (A : PaperAnalyticData) (H : A.AffineMarkedStarEndpointCompatibility) :
-    A.AffineOverlapBandCompatibility :=
-  markedBandHomotopies_of_discEndpointCompatibility A H.toDiscEndpointCompatibility
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

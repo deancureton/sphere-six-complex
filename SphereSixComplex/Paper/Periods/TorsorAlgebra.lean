@@ -25,13 +25,7 @@ namespace SphereSixComplex.Periods
 @[expose] public def tauTwoStep (tau : ℂ) : ℂ :=
   -1 / tau
 
-/-- The order-three automorphy factor of the homogeneous `mu`-equation. -/
-@[expose] public def muAutomorphyOne (tau : ℂ) : ℂ :=
-  -tau
 
-/-- The order-four automorphy factor of the homogeneous `mu`-equation. -/
-@[expose] public def muAutomorphyTwo (tau : ℂ) : ℂ :=
-  tau
 
 /-- The affine order-three substitution occurring in the transformation law for `mu`. -/
 @[expose] public def muAffineOne (tau mu : ℂ) : ℂ :=
@@ -85,21 +79,7 @@ public theorem betaCocycleTwo_eq_sub (x : Parameters) :
   rw [transformTwo_beta]
   ring
 
-/-- The homogeneous automorphy factors multiply to one around the order-three orbit. -/
-public theorem muAutomorphyOne_cycle (tau : ℂ) (htau : tau ≠ 0) (htauOne : tau ≠ 1) :
-    muAutomorphyOne tau * muAutomorphyOne (tauOneStep tau) *
-      muAutomorphyOne (tauOneStep (tauOneStep tau)) = 1 := by
-  simp [muAutomorphyOne, tauOneStep]
-  field_simp [htau, htauOne]
-  ring
 
-/-- The homogeneous automorphy factors multiply to one around the order-four orbit. -/
-public theorem muAutomorphyTwo_cycle (tau : ℂ) (htau : tau ≠ 0) :
-    muAutomorphyTwo tau * muAutomorphyTwo (tauTwoStep tau) *
-        muAutomorphyTwo (tauTwoStep (tauTwoStep tau)) *
-      muAutomorphyTwo (tauTwoStep (tauTwoStep (tauTwoStep tau))) = 1 := by
-  simp [muAutomorphyTwo, tauTwoStep]
-  field_simp [htau]
 
 /-- The affine `mu` substitution closes after the three successive `tau` substitutions. -/
 public theorem muAffineOne_order_three (tau mu : ℂ) (htau : tau ≠ 0)
@@ -183,52 +163,5 @@ public theorem localBetaTwo_transform (x : Parameters) (htau : x.tau ≠ 0) :
   have hsum := betaCocycleTwo_cycle x htau
   simp only [localBetaTwo, hclose]
   linear_combination -hsum / 4
-
-namespace PeriodFunctions
-
-open SphereSixComplex.TriangleGroup
-
-variable {U : TriangleUniformization} (F : PeriodFunctions U)
-
-/-- The fixed-point value from `mu_at_zOne` agrees with the explicit local section. -/
-public theorem mu_at_zOne_eq_localMuOne :
-    F.mu U.zOne = localMuOne (F.tau U.zOne) := by
-  rw [F.mu_at_zOne, F.tau_at_zOne]
-  simp only [localMuOne]
-  change 1 / (1 + ((UpperHalfPlane.ρ : ℂ) + 1)) = (2 - ((UpperHalfPlane.ρ : ℂ) + 1)) / 3
-  have hrho := UpperHalfPlane.ρ_sq
-  have hden : 1 + ((UpperHalfPlane.ρ : ℂ) + 1) ≠ 0 := by
-    intro hzero
-    have him := congrArg Complex.im hzero
-    norm_num at him
-    exact UpperHalfPlane.ρ.im_pos.ne' him
-  field_simp [hden]
-  linear_combination hrho
-
-/-- The fixed-point value from `mu_at_zTwo` agrees with the explicit local section. -/
-public theorem mu_at_zTwo_eq_localMuTwo :
-    F.mu U.zTwo = localMuTwo (F.tau U.zTwo) := by
-  rw [F.mu_at_zTwo, F.tau_at_zTwo]
-  change Complex.I / (Complex.I - 1) = (1 - Complex.I) / 2
-  have hden : Complex.I - 1 ≠ 0 := by
-    intro hzero
-    have him := congrArg Complex.im hzero
-    norm_num at him
-  rw [div_eq_iff hden]
-  ring_nf
-  rw [pow_two, Complex.I_mul_I]
-  norm_num
-
-/-- The order-three `beta` cocycle vanishes at the elliptic fixed point. -/
-public theorem betaCocycleOne_at_zOne :
-    betaCocycleOne (periodValues F.tau F.mu F.beta U.zOne) = 0 := by
-  simpa [betaCocycleOne, periodValues] using F.beta_cocycle_at_zOne
-
-/-- The order-four `beta` cocycle vanishes at the elliptic fixed point. -/
-public theorem betaCocycleTwo_at_zTwo :
-    betaCocycleTwo (periodValues F.tau F.mu F.beta U.zTwo) = 0 := by
-  simpa [betaCocycleTwo, periodValues] using F.beta_cocycle_at_zTwo
-
-end PeriodFunctions
 
 end SphereSixComplex.Periods

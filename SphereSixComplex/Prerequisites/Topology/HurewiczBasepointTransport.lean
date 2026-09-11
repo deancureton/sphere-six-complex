@@ -38,13 +38,6 @@ public theorem hurewiczFunction_baseEq {X : Type} [TopologicalSpace X]
   subst y
   rfl
 
-public theorem hurewiczFunction_eq_abelianizationComparison {X : Type} [TopologicalSpace X]
-    [PathConnectedSpace X] (x : X) (g : FundamentalGroup X x) :
-    hurewiczFunction x g =
-      (Hurewicz.abelianizationComparison X x).equiv
-        (Additive.ofMul (Abelianization.of g)) := by
-  obtain ⟨p, rfl⟩ := Path.Homotopic.Quotient.mk_surjective g
-  exact ((Hurewicz.abelianizationComparison X x).equiv_loopClass p).symm
 
 end SphereSixComplex.Hurewicz.Chains
 end

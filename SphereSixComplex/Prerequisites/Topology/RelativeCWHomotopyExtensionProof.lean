@@ -242,18 +242,7 @@ public def discCylinderRetraction (n : ℕ) :
     exact (((continuous_discRetractFst n).comp hemb).subtype_mk _).prodMk
       (((continuous_discRetractSnd n).comp hemb).subtype_mk _)
 
-@[simp]
-public theorem discCylinderRetraction_fst_coe (n : ℕ)
-    (p : ↥(closedBall (0 : Fin n → ℝ) 1) × I) :
-    ((discCylinderRetraction n p).1 : Fin n → ℝ) =
-      discRetractFst n ((p.1 : Fin n → ℝ), p.2) :=
-  rfl
 
-@[simp]
-public theorem discCylinderRetraction_snd_coe (n : ℕ)
-    (p : ↥(closedBall (0 : Fin n → ℝ) 1) × I) :
-    ((discCylinderRetraction n p).2 : ℝ) = discRetractSnd n ((p.1 : Fin n → ℝ), p.2) :=
-  rfl
 
 /-- The retraction lands in the bottom-and-sides of the cylinder. -/
 public theorem discCylinderRetraction_mem_lShape (n : ℕ)
@@ -279,12 +268,6 @@ public theorem discCylinderRetraction_of_norm_one (n : ℕ)
     discCylinderRetraction n p = p :=
   discCylinderRetraction_fix n p (Or.inl hp)
 
-/-- Existence form of the disc-cylinder retraction. -/
-public theorem exists_discCylinderRetraction (n : ℕ) :
-    ∃ r : C((closedBall (0 : Fin n → ℝ) 1) × I, (closedBall (0 : Fin n → ℝ) 1) × I),
-      (∀ p, ‖((r p).1 : Fin n → ℝ)‖ = 1 ∨ ((r p).2 : ℝ) = 0) ∧
-      (∀ p, (‖((p.1 : Fin n → ℝ))‖ = 1 ∨ ((p.2 : ℝ)) = 0) → r p = p) :=
-  ⟨discCylinderRetraction n, discCylinderRetraction_mem_lShape n, discCylinderRetraction_fix n⟩
 
 /-! ## Continuity out of a product with a sum or a sigma type -/
 
@@ -313,74 +296,6 @@ public theorem continuous_prod_sigma {W Y : Type*} {ι : Type*} {F : ι → Type
 
 /-! ## Composing cylinder retractions along a filtration -/
 
-/-- **Cylinder retractions compose.**  If `I × X` retracts onto `{0} × X ∪ I × B` and, one step
-further down, `I × B` retracts onto `{0} × B ∪ I × A`, then `I × X` retracts onto
-`{0} × X ∪ I × A`.  This is the step that assembles the successive skeletal retractions in the
-proof that a relative CW pair is a cofibration. -/
-public theorem exists_cylinderRetraction_trans {X : Type u} [TopologicalSpace X] {A B : Set X}
-    (hAB : A ⊆ B) (hB : IsClosed B)
-    (r₁ : C(I × X, I × X))
-    (h₁mem : ∀ p : I × X, (r₁ p).1 = 0 ∨ (r₁ p).2 ∈ B)
-    (h₁fix : ∀ p : I × X, p.1 = 0 ∨ p.2 ∈ B → r₁ p = p)
-    (r₂ : C(I × ↥B, I × ↥B))
-    (h₂mem : ∀ q : I × ↥B, (r₂ q).1 = 0 ∨ ((r₂ q).2 : X) ∈ A)
-    (h₂fix : ∀ q : I × ↥B, q.1 = 0 ∨ ((q.2 : X)) ∈ A → r₂ q = q) :
-    ∃ r : C(I × X, I × X),
-      (∀ p : I × X, (r p).1 = 0 ∨ (r p).2 ∈ A) ∧
-      (∀ p : I × X, p.1 = 0 ∨ p.2 ∈ A → r p = p) := by
-  classical
-  set ι : I × ↥B → I × X := fun z ↦ (z.1, (z.2 : X)) with hι
-  have hιcont : Continuous ι := continuous_fst.prodMk (continuous_subtype_val.comp continuous_snd)
-  set G : I × X → I × X :=
-    fun q ↦ if hq : q.2 ∈ B then ι (r₂ (q.1, ⟨q.2, hq⟩)) else q with hG
-  have hGB : ∀ (q : I × X) (hq : q.2 ∈ B), G q = ι (r₂ (q.1, ⟨q.2, hq⟩)) := by
-    intro q hq
-    simp only [hG, hq, ↓reduceDIte]
-  have hGnotB : ∀ q : I × X, q.2 ∉ B → G q = q := by
-    intro q hq
-    simp only [hG, hq, ↓reduceDIte]
-  set S₀ : Set (I × X) := {q | q.1 = 0} with hS₀
-  set SB : Set (I × X) := {q | q.2 ∈ B} with hSB
-  have hGcontB : ContinuousOn G SB := by
-    rw [continuousOn_iff_continuous_domRestrict]
-    have hcont : Continuous fun q : SB ↦ ((q : I × X).1, (⟨(q : I × X).2, q.2⟩ : ↥B)) :=
-      (continuous_fst.comp continuous_subtype_val).prodMk
-        ((continuous_snd.comp continuous_subtype_val).subtype_mk _)
-    refine ((hιcont.comp r₂.continuous).comp hcont).congr ?_
-    intro q
-    exact (hGB (q : I × X) q.2).symm
-  have hGcont₀ : ContinuousOn G S₀ := by
-    rw [continuousOn_iff_continuous_domRestrict]
-    refine continuous_subtype_val.congr ?_
-    intro q
-    have hq0 : (q : I × X).1 = 0 := q.2
-    show ((q : I × X)) = G (q : I × X)
-    by_cases hq : (q : I × X).2 ∈ B
-    · rw [hGB _ hq, h₂fix _ (Or.inl hq0)]
-    · rw [hGnotB _ hq]
-  have hGcont : ContinuousOn G (S₀ ∪ SB) :=
-    hGcont₀.union_of_isClosed hGcontB (isClosed_singleton.preimage continuous_fst)
-      (hB.preimage continuous_snd)
-  have hmaps : ∀ p : I × X, r₁ p ∈ S₀ ∪ SB := by
-    intro p
-    rcases h₁mem p with hp | hp
-    · exact Or.inl hp
-    · exact Or.inr hp
-  refine ⟨⟨G ∘ r₁, hGcont.comp_continuous r₁.continuous hmaps⟩, ?_, ?_⟩
-  · intro p
-    show (G (r₁ p)).1 = 0 ∨ (G (r₁ p)).2 ∈ A
-    by_cases hp : (r₁ p).2 ∈ B
-    · rw [hGB _ hp]
-      exact h₂mem ((r₁ p).1, ⟨(r₁ p).2, hp⟩)
-    · rw [hGnotB _ hp]
-      exact Or.inl ((h₁mem p).resolve_right hp)
-  · intro p hp
-    have hpB : p.1 = 0 ∨ p.2 ∈ B := hp.imp id (fun h ↦ hAB h)
-    show G (r₁ p) = p
-    rw [h₁fix p hpB]
-    by_cases hq : p.2 ∈ B
-    · rw [hGB _ hq, h₂fix _ (hp.imp id id)]
-    · rw [hGnotB _ hq]
 
 /-! ## The weak topology of a relative CW complex -/
 
@@ -398,20 +313,11 @@ public def cellPoint (C A : Set X) [RelCWComplex C A] {n : ℕ} (j : RelCWComple
   ⟨RelCWComplex.map n j (y : Fin n → ℝ),
     RelCWComplex.closedCell_subset_complex n j ⟨(y : Fin n → ℝ), y.2, rfl⟩⟩
 
-@[simp]
-public theorem cellPoint_coe (C A : Set X) [RelCWComplex C A] {n : ℕ}
-    (j : RelCWComplex.cell C n) (y : ↥(closedBall (0 : Fin n → ℝ) 1)) :
-    (cellPoint C A j y : X) = RelCWComplex.map n j (y : Fin n → ℝ) :=
-  rfl
 
 /-- A point of the base, viewed as a point of the complex. -/
 public def basePoint (C A : Set X) [RelCWComplex C A] (a : ↥A) : ↥C :=
   ⟨(a : X), RelCWComplex.base_subset_complex a.2⟩
 
-@[simp]
-public theorem basePoint_coe (C A : Set X) [RelCWComplex C A] (a : ↥A) :
-    (basePoint C A a : X) = (a : X) :=
-  rfl
 
 public theorem continuous_cellPoint (C A : Set X) [RelCWComplex C A] {n : ℕ}
     (j : RelCWComplex.cell C n) : Continuous (cellPoint C A j) :=
@@ -499,19 +405,6 @@ public theorem isQuotientMap_cellModelProj [T2Space X] (C A : Set X) [RelCWCompl
     rw [← preimage_image_eq S Subtype.val_injective]
     exact himg.preimage continuous_subtype_val
 
-/-- **Continuity criterion out of a relative CW complex.**  A map is continuous as soon as its
-composites with the characteristic map of every cell and with the inclusion of the base are. -/
-public theorem continuous_of_continuous_cellPoint [T2Space X] (C A : Set X) [RelCWComplex C A]
-    {Y : Type*} [TopologicalSpace Y] {F : ↥C → Y}
-    (hcell : ∀ (n : ℕ) (j : RelCWComplex.cell C n), Continuous fun y ↦ F (cellPoint C A j y))
-    (hbase : Continuous fun a ↦ F (basePoint C A a)) : Continuous F := by
-  rw [(isQuotientMap_cellModelProj C A).continuous_iff]
-  refine continuous_sum_dom.mpr ⟨?_, hbase⟩
-  show Continuous fun z : (Σ i : (Σ n, RelCWComplex.cell C n),
-    ↥(closedBall (0 : Fin i.1 → ℝ) 1)) ↦ F (cellPoint C A z.1.2 z.2)
-  rw [continuous_sigma_iff]
-  intro i
-  exact hcell i.1 i.2
 
 /-- **Continuity criterion out of the cylinder over a relative CW complex.**  This is the product
 form of the weak topology: Whitehead's theorem that a quotient map stays a quotient map after
@@ -527,22 +420,6 @@ public theorem continuous_prod_of_continuous_cellPoint [T2Space X] (C A : Set X)
 
 /-! ### The absolute case -/
 
-/-- The continuity criterion for a complex which is the whole ambient space. -/
-public theorem continuous_of_continuousOn_closedCell [T2Space X] {A : Set X}
-    [RelCWComplex (univ : Set X) A] {Y : Type*} [TopologicalSpace Y] {F : X → Y}
-    (hcell : ∀ (n : ℕ) (j : RelCWComplex.cell (univ : Set X) n),
-      ContinuousOn F (RelCWComplex.closedCell n j))
-    (hbase : ContinuousOn F A) : Continuous F := by
-  have hF : Continuous fun x : ↥(univ : Set X) ↦ F (x : X) := by
-    refine continuous_of_continuous_cellPoint (univ : Set X) A ?_ ?_
-    · intro n j
-      exact (hcell n j).comp_continuous
-        ((RelCWComplex.continuousOn (C := (univ : Set X)) n j).domRestrict)
-        fun y ↦ ⟨(y : Fin n → ℝ), y.2, rfl⟩
-    · exact hbase.comp_continuous continuous_subtype_val fun a ↦ a.2
-  have hmk : Continuous fun x : X ↦ (⟨x, mem_univ x⟩ : ↥(univ : Set X)) :=
-    continuous_id.subtype_mk _
-  exact hF.comp hmk
 
 /-- The cylinder continuity criterion for a complex which is the whole ambient space. -/
 public theorem continuous_prod_of_continuousOn_closedCell [T2Space X] {A : Set X}

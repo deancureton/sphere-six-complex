@@ -141,11 +141,5 @@ public theorem cylinderTopFaceRelativeChains_quasiIso {X : Type} [TopologicalSpa
     (cwRelativeIntegralSingularChainMapOfPair (cylinderTopUpperPair A))
     (cwRelativeIntegralSingularChainMapOfPair (cylinderUpperBoundaryPair A))
 
-public theorem cylinderTopFaceRelativeChains_homology_surjective
-    {X : Type} [TopologicalSpace X] (A : Set X) (n : ℕ) :
-    Function.Surjective (HomologicalComplex.homologyMap
-      (cylinderTopFaceRelativeChains A) n) := by
-  let := cylinderTopFaceRelativeChains_quasiIso A
-  exact (AddCommGrpCat.epi_iff_surjective _).mp inferInstance
 
 end SphereSixComplex

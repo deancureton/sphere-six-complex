@@ -68,9 +68,6 @@ public theorem inverse_orderThree_thirdBasis_difference :
   ext i
   fin_cases i <;> norm_num [SphereSixComplex.alphaOneKernelGenerator]
 
-public theorem inverse_orderThree_fourthBasis_difference :
-    rhoLambda g₁⁻¹ ![0, 0, 0, 1] - ![0, 0, 0, 1] = 0 := by
-  rw [rhoLambda_fourthBasis, sub_self]
 
 end SphereSixComplex.TriangleGroup
 end

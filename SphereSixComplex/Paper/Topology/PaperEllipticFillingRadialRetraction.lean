@@ -119,13 +119,6 @@ public theorem retract_fixed (p : D.Product) (hp : p ∈ D.centralSlice) :
   subst w
   rfl
 
-public theorem homotopy_fixed (s : unitInterval) (p : D.Product)
-    (hp : p ∈ D.centralSlice) : D.homotopy (s, p) = p := by
-  rcases p with ⟨w, x⟩
-  change w = ComplexUnitDisc.center at hp
-  subst w
-  change (ComplexDisc.radialHomotopy (s, ComplexUnitDisc.center), x) = (ComplexUnitDisc.center, x)
-  rw [ComplexDisc.radialHomotopy_center]
 
 public theorem retract_equivariant (g : FiniteCyclic m) (p : D.Product) :
     D.retract (actionMap D.actionData.diagonalAction g p) =
@@ -240,12 +233,6 @@ public theorem quotientRetract_fixed (q : D.FillingQuotient)
   rw [D.quotientRetract_mk]
   exact congrArg (Quotient.mk _) (D.retract_fixed p hp)
 
-public theorem quotientHomotopy_fixed (s : unitInterval) (q : D.FillingQuotient)
-    (hq : q ∈ D.reducedCentralFiber) : D.quotientHomotopy (s, q) = q := by
-  obtain ⟨p, hp, rfl⟩ := hq
-  change D.quotientHomotopyToFun (s, Quotient.mk _ p) = Quotient.mk _ p
-  rw [D.quotientHomotopyToFun_mk]
-  exact congrArg (Quotient.mk _) (D.homotopy_fixed s p hp)
 
 /-- The quotient retraction with codomain restricted to the reduced central fibre. -/
 @[expose] public def centralRetraction :
@@ -271,23 +258,6 @@ public theorem quotientHomotopy_fixed (s : unitInterval) (q : D.FillingQuotient)
       ext q
       exact D.quotientRetract_fixed q q.property]
 
-/-- The descended retraction induces an isomorphism on integral singular homology. -/
-public theorem quotientRetract_isIntegralHomologyEquivalence (k : ℕ) :
-    IsIso (((singularHomologyFunctor AddCommGrpCat k).obj (AddCommGrpCat.of ℤ)).map
-      (TopCat.ofHom D.quotientHomotopyEquivCentralFiber.toFun)) := by
-  let F := (singularHomologyFunctor AddCommGrpCat k).obj (AddCommGrpCat.of ℤ)
-  let e := D.quotientHomotopyEquivCentralFiber
-  let i : F.obj (TopCat.of D.FillingQuotient) ≅
-      F.obj (TopCat.of D.reducedCentralFiber) :=
-    CategoryTheory.Iso.mk (F.map (TopCat.ofHom e.toFun))
-      (F.map (TopCat.ofHom e.invFun)) (by
-        rw [← F.map_comp, ← F.map_id]
-        exact TopCat.Homotopy.congr_homologyMap_singularChainComplexFunctor
-          e.left_inv.some (AddCommGrpCat.of ℤ) k) (by
-        rw [← F.map_comp, ← F.map_id]
-        exact TopCat.Homotopy.congr_homologyMap_singularChainComplexFunctor
-          e.right_inv.some (AddCommGrpCat.of ℤ) k)
-  exact i.isIso_hom
 
 end RadialEllipticActionData
 
@@ -319,53 +289,10 @@ public abbrev orderFourReducedCentralFiber
     {U : TriangleUniformization} (F : PeriodFunctions U) :=
   (orderFourRadialActionData F).reducedCentralFiber
 
-/-- Order-three fixed-product filling, homotopy equivalent to the reduced bielliptic fibre. -/
-@[expose] public def orderThreeFillingHomotopyEquivCentralFiber
-    {U : TriangleUniformization} (F : PeriodFunctions U) :
-    (orderThreeRadialActionData F).FillingQuotient ≃ₕ
-      orderThreeReducedCentralFiber F :=
-  (orderThreeRadialActionData F).quotientHomotopyEquivCentralFiber
 
-/-- Order-four fixed-product filling, homotopy equivalent to the reduced bielliptic fibre. -/
-@[expose] public def orderFourFillingHomotopyEquivCentralFiber
-    {U : TriangleUniformization} (F : PeriodFunctions U) :
-    (orderFourRadialActionData F).FillingQuotient ≃ₕ
-      orderFourReducedCentralFiber F :=
-  (orderFourRadialActionData F).quotientHomotopyEquivCentralFiber
 
-/-- Singular chains carry a space-level homotopy equivalence to a chain-homotopy equivalence. -/
-@[expose] public def integralSingularChainHomotopyEquiv
-    {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (e : X ≃ₕ Y) :
-    HomotopyEquiv (integralSingularChainComplex X)
-      (integralSingularChainComplex Y) where
-  hom := SphereSixComplex.integralSingularChainMap e.toFun
-  inv := SphereSixComplex.integralSingularChainMap e.invFun
-  homotopyHomInvId := by
-    let H : TopCat.Homotopy
-        (TopCat.ofHom e.toFun ≫ TopCat.ofHom e.invFun) (𝟙 (TopCat.of X)) :=
-      e.left_inv.some
-    simpa only [SphereSixComplex.integralSingularChainMap, Functor.map_comp] using
-      (TopCat.Homotopy.singularChainComplexFunctorObjMap H
-        (AddCommGrpCat.of ℤ)).trans (Homotopy.ofEq (by simp))
-  homotopyInvHomId := by
-    let H : TopCat.Homotopy
-        (TopCat.ofHom e.invFun ≫ TopCat.ofHom e.toFun) (𝟙 (TopCat.of Y)) :=
-      e.right_inv.some
-    simpa only [SphereSixComplex.integralSingularChainMap, Functor.map_comp] using
-      (TopCat.Homotopy.singularChainComplexFunctorObjMap H
-        (AddCommGrpCat.of ℤ)).trans (Homotopy.ofEq (by simp))
 
-/-- Chain-level realization of the order-three radial retraction. -/
-@[expose] public def orderThreeFillingSingularChainHomotopyEquiv
-    {U : TriangleUniformization} (F : PeriodFunctions U) :=
-  integralSingularChainHomotopyEquiv
-    (orderThreeFillingHomotopyEquivCentralFiber F)
 
-/-- Chain-level realization of the order-four radial retraction. -/
-@[expose] public def orderFourFillingSingularChainHomotopyEquiv
-    {U : TriangleUniformization} (F : PeriodFunctions U) :=
-  integralSingularChainHomotopyEquiv
-    (orderFourFillingHomotopyEquivCentralFiber F)
 
 /-- An exact pre-quotient equivariant identification with a radial fixed-product filling.  This is
 the topology input required to transport the radial retraction to a varying torus family. -/
@@ -412,9 +339,6 @@ central bielliptic fibre. -/
     e.SourceQuotient ≃ₕ D.reducedCentralFiber :=
   e.quotientHomeomorph.toHomotopyEquiv.trans D.quotientHomotopyEquivCentralFiber
 
-/-- Transported chain-homotopy equivalence on integral singular chains. -/
-@[expose] public def singularChainHomotopyEquiv :=
-  integralSingularChainHomotopyEquiv e.homotopyEquivCentralFiber
 
 end EquivariantRadialProductIdentification
 
@@ -523,17 +447,7 @@ identification. -/
     A.OrderFourVaryingFilling r ≃ₕ orderFourReducedCentralFiber A.periods :=
   e.homotopyEquivCentralFiber
 
-/-- Integral singular-chain realization of the transported order-three equivalence. -/
-@[expose] public def orderThreeVaryingFillingSingularChainHomotopyEquiv
-    (e : OrderThreeVaryingFillingProductIdentification A r) :=
-  integralSingularChainHomotopyEquiv
-    (orderThreeVaryingFillingHomotopyEquivCentralFiber A r e)
 
-/-- Integral singular-chain realization of the transported order-four equivalence. -/
-@[expose] public def orderFourVaryingFillingSingularChainHomotopyEquiv
-    (e : OrderFourVaryingFillingProductIdentification A r) :=
-  integralSingularChainHomotopyEquiv
-    (orderFourVaryingFillingHomotopyEquivCentralFiber A r e)
 
 /-- The action-correct order-three affine whole-filling chart yields the desired filling
 homotopy equivalence; the conclusion is derived, not stored in the chart. -/
@@ -550,17 +464,7 @@ homotopy equivalence; the conclusion is derived, not stored in the chart. -/
   orderFourVaryingFillingHomotopyEquivCentralFiber A r
     C.toVaryingFillingProductIdentification
 
-/-- Integral singular-chain realization derived from the order-three affine radial chart. -/
-@[expose] public def orderThreeVaryingFillingSingularChainHomotopyEquiv_of_affineRadialChart
-    (C : OrderThreeAffineRadialWholeFillingCompatibility A r) :=
-  integralSingularChainHomotopyEquiv
-    (orderThreeVaryingFillingHomotopyEquivCentralFiber_of_affineRadialChart A r C)
 
-/-- Integral singular-chain realization derived from the order-four affine radial chart. -/
-@[expose] public def orderFourVaryingFillingSingularChainHomotopyEquiv_of_affineRadialChart
-    (C : OrderFourAffineRadialWholeFillingCompatibility A r) :=
-  integralSingularChainHomotopyEquiv
-    (orderFourVaryingFillingHomotopyEquivCentralFiber_of_affineRadialChart A r C)
 
 end
 

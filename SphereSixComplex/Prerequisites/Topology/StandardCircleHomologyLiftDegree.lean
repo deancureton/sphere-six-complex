@@ -499,16 +499,6 @@ def unitCircleIntegerLoopLift (n : ℤ) : Path (0 : ℝ) (n : ℝ) where
   source' := by simp
   target' := by simp
 
-theorem unitCircleIntegerLoopLift_map (n : ℤ) :
-    ((unitCircleIntegerLoopLift n).map continuous_quotient_mk').cast
-        (show (0 : UnitAddCircle) = ((0 : ℝ) : UnitAddCircle) by rfl)
-        (show (0 : UnitAddCircle) = ((n : ℝ) : UnitAddCircle) by
-          symm
-          rw [AddCircle.coe_eq_zero_iff]
-          exact ⟨n, by simp⟩) =
-      unitCircleIntegerLoop n := by
-  apply Path.ext
-  rfl
 
 theorem unitCircleFundamentalGroupEquiv_integerLoop (n : ℤ) :
     unitCircleFundamentalGroupEquiv
@@ -664,27 +654,6 @@ theorem unitCirclePowerMap_positiveHomologyClass (n : ℤ) :
       apply congrArg loopHomologyClass
       simpa only using unitCircleIntegerLoop_one_map_power n
 
-theorem unitCircleMap_eq_power_of_additiveLift
-    (f : C(UnitAddCircle, UnitAddCircle)) (L : ℝ →+ ℝ) (n : ℤ)
-    (map_projection : ∀ r : ℝ, f (r : UnitAddCircle) = (L r : UnitAddCircle))
-    (map_one : L 1 = (n : ℝ)) :
-    f = unitCirclePowerMap n := by
-  apply ContinuousMap.ext
-  have heq : (fun r : ℝ ↦ f (r : UnitAddCircle)) =
-      fun r : ℝ ↦ unitCirclePowerMap n (r : UnitAddCircle) := by
-    apply Rat.denseRange_cast.equalizer
-    · exact f.continuous.comp (AddCircle.continuous_mk' 1)
-    · exact (unitCirclePowerMap n).continuous.comp (AddCircle.continuous_mk' 1)
-    · funext q
-      dsimp only [Function.comp_apply]
-      rw [map_projection]
-      change (L (q : ℝ) : UnitAddCircle) = n • ((q : ℝ) : UnitAddCircle)
-      rw [← AddCircle.coe_zsmul]
-      congr 1
-      simpa [map_one, Rat.smul_def, mul_comm] using map_rat_smul L q (1 : ℝ)
-  intro z
-  obtain ⟨r, rfl⟩ := QuotientAddGroup.mk_surjective z
-  exact congrFun heq r
 
 def stdTorusOneProjection (r : ℝ) : StandardTorusHomology.StdTorus 1 :=
   fun _ ↦ (r : UnitAddCircle)

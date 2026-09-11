@@ -39,13 +39,6 @@ public theorem cylinderRelativeOpenRefinement_iUnion {X : Type} (A : Set X) :
   · exact Set.mem_iUnion.mpr ⟨false, hp⟩
   · exact Set.mem_iUnion.mpr ⟨true, hp⟩
 
-public theorem cylinderRelativeSmallComparison_quasiIso {X : Type} [TopologicalSpace X]
-    (A : Set X) :
-    QuasiIso (coverSmallRelativeComparison (TopCat.of (cylinderBoundary A))
-      (cylinderRelativeCover A) true) :=
-  coverSmallRelativeComparison_quasiIso_of_open_refinement _ _ _
-    (cylinderRelativeOpenRefinement A) id (cylinderRelativeOpenRefinement_le A)
-    (cylinderRelativeOpenRefinement_isOpen A) (cylinderRelativeOpenRefinement_iUnion A)
 
 public def cylinderUpperRelativeExcisionMap {X : Type} [TopologicalSpace X] (A : Set X) :=
   singularSubsetRelativeExcisionMap (TopCat.of (cylinderBoundary A))

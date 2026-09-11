@@ -32,15 +32,6 @@ public theorem exists_complex_threefold_diffeomorphic_sixSphere :
   let := hπ
   exact ⟨X, SmoothSixSphere.nonempty_diffeomorph hH⟩
 
-/-- The construction already yields a complex atlas on the topological six-sphere. -/
-public theorem sixSphere_admits_topological_complex_structure :
-    AdmitsTopologicalComplexStructure SixSphere := by
-  obtain ⟨X, ⟨d⟩⟩ := exists_complex_threefold_diffeomorphic_sixSphere
-  let _ : TopologicalSpace X.Carrier := X.topology
-  let _ : ChartedSpace ComplexModel X.Carrier := X.charts
-  let _ : IsManifold 𝓘(ℂ, ComplexModel) ∞ X.Carrier := X.manifold
-  let _ : ChartedSpace RealModel X.Carrier := underlyingRealChartedSpace X.charts
-  exact admitsTopologicalComplexStructure_of_homeomorph d.toHomeomorph
 
 /-- A threefold satisfying the construction contract gives the standard six-sphere a complex
 structure. -/

@@ -102,15 +102,7 @@ public theorem ellipticMuTwo_transform (z : UpperHalfPlane) :
   rw [ellipticMuTwo, ellipticMuTwo, tau_transform_two_coe]
   exact localMuTwo_equivariant _ (E.modularParameter.tau z).ne_zero
 
-/-- The order-three local section has the forced fixed-point value. -/
-public theorem ellipticMuOne_at_fixedPoint :
-    ellipticMuOne E fuchsianOneFixedPoint = localMuOne ellipticThreeParameter := by
-  rw [ellipticMuOne, E.tau_at_one]
 
-/-- The order-four local section has the forced fixed-point value. -/
-public theorem ellipticMuTwo_at_fixedPoint :
-    ellipticMuTwo E fuchsianTwoFixedPoint = localMuTwo UpperHalfPlane.I := by
-  rw [ellipticMuTwo, E.tau_at_two]
 
 /-- The cusp section is holomorphic, invariant under the parabolic generator, and bounded on the
 distinguished cusp region. -/
@@ -422,66 +414,7 @@ public theorem gluedAdjustedMu_cusp_bounded (D : MuTorsorCechLocalData E)
   rw [gluedAdjustedMu_eq_infinity_on_cusp E D hcompat hz]
   exact hbound z hz
 
-/-- The first affine law forces the paper's order-three elliptic value. -/
-public theorem mu_at_fuchsianOneFixedPoint_of_transform
-    (mu : UpperHalfPlane → ℂ)
-    (hmu : ∀ z, mu (fuchsianSourceAction g₁ • z) =
-      (1 - mu z) / E.modularParameter.tau z) :
-    mu fuchsianOneFixedPoint = localMuOne ellipticThreeParameter := by
-  have h := hmu fuchsianOneFixedPoint
-  rw [fuchsianOneFixedPoint_fixed, E.tau_at_one] at h
-  have ht : (ellipticThreeParameter : ℂ) ≠ 0 := ellipticThreeParameter.ne_zero
-  have hden : 1 + (ellipticThreeParameter : ℂ) ≠ 0 := by
-    intro hzero
-    have him := congrArg Complex.im hzero
-    rw [Complex.add_im] at him
-    norm_num at him
-    exact ellipticThreeParameter.im_pos.ne' him
-  have hforced : mu fuchsianOneFixedPoint =
-      1 / (1 + (ellipticThreeParameter : ℂ)) := by
-    rw [eq_div_iff hden]
-    field_simp [ht] at h
-    linear_combination h
-  rw [hforced]
-  simp only [localMuOne, ellipticThreeParameter]
-  change 1 / (1 + ((UpperHalfPlane.ρ : ℂ) + 1)) =
-    (2 - ((UpperHalfPlane.ρ : ℂ) + 1)) / 3
-  have hrho := UpperHalfPlane.ρ_sq
-  have hdenrho : 1 + ((UpperHalfPlane.ρ : ℂ) + 1) ≠ 0 := by
-    simpa [ellipticThreeParameter] using hden
-  field_simp [hdenrho]
-  linear_combination hrho
 
-/-- The second affine law forces the paper's order-four elliptic value. -/
-public theorem mu_at_fuchsianTwoFixedPoint_of_transform
-    (mu : UpperHalfPlane → ℂ)
-    (hmu : ∀ z, mu (fuchsianSourceAction g₂ • z) =
-      1 + mu z / E.modularParameter.tau z) :
-    mu fuchsianTwoFixedPoint = localMuTwo UpperHalfPlane.I := by
-  have h := hmu fuchsianTwoFixedPoint
-  rw [fuchsianTwoFixedPoint_fixed, E.tau_at_two] at h
-  have ht : ((UpperHalfPlane.I : UpperHalfPlane) : ℂ) ≠ 0 := UpperHalfPlane.I.ne_zero
-  have ht1 : ((UpperHalfPlane.I : UpperHalfPlane) : ℂ) - 1 ≠ 0 := by
-    intro heq
-    have him := congrArg Complex.im heq
-    rw [Complex.sub_im] at him
-    norm_num at him
-  have hforced : mu fuchsianTwoFixedPoint =
-      ((UpperHalfPlane.I : UpperHalfPlane) : ℂ) /
-        (((UpperHalfPlane.I : UpperHalfPlane) : ℂ) - 1) := by
-    rw [eq_div_iff ht1]
-    field_simp [ht] at h
-    linear_combination h
-  rw [hforced]
-  change Complex.I / (Complex.I - 1) = (1 - Complex.I) / 2
-  have ht1I : Complex.I - 1 ≠ 0 := by
-    intro heq
-    have him := congrArg Complex.im heq
-    norm_num at him
-  rw [div_eq_iff ht1I]
-  ring_nf
-  rw [pow_two, Complex.I_mul_I]
-  norm_num
 
 /-- Exact local torsor descent plus classical `O(-1)` Cech exactness constructs the global
 holomorphic, equivariant, cusp-bounded `mu`. -/

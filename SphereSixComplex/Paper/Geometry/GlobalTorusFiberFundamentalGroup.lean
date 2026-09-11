@@ -65,12 +65,6 @@ public theorem regularFamilyQuotientMap_isQuotientCoveringMap
     regularFamilyDeckAction_continuousConstSMul F hproper
   exact isQuotientCoveringMap_quotientMk_of_properlyDiscontinuousSMul
 
-/-- A chosen path from a point of the regular torus family to its translate by a triangle-group
-element.  Its endpoints retain the deck transformation which the projected loop represents. -/
-public def regularDeckPath (x : RegularTotalSpace F) (g : Delta) :
-    Path x (regularFamilyDeckMap F g x) := by
-  let _ : PathConnectedSpace (RegularTotalSpace F) := regularTotalSpace_pathConnected F
-  exact PathConnectedSpace.somePath _ _
 
 /-- Deck translates have the same image in the outer triangle-group quotient. -/
 public theorem regularFamilyQuotientMap_deck
@@ -84,16 +78,7 @@ public theorem regularFamilyQuotientMap_deck
   rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff]
   exact ⟨g, rfl⟩
 
-/-- Projecting a path to its deck translate gives a based loop in the punctured global family. -/
-public def regularDeckLoop (x : RegularTotalSpace F) (g : Delta) :
-    Path (regularFamilyQuotientMap F x) (regularFamilyQuotientMap F x) :=
-  ((regularDeckPath F x g).map (regularFamilyQuotientMap F).continuous).cast rfl
-    (regularFamilyQuotientMap_deck F x g).symm
 
-/-- The fundamental-group element represented by the projected deck path. -/
-public def regularDeckMeridian (x : RegularTotalSpace F) (g : Delta) :
-    FundamentalGroup (PuncturedGlobalFamily F) (regularFamilyQuotientMap F x) :=
-  Path.Homotopic.Quotient.mk (regularDeckLoop F x g)
 
 /-- The complex torus over one point of the regular source base. -/
 public abbrev FiberTorus (b : RegularBase (U := U)) :=
@@ -124,11 +109,6 @@ public def fiberTorusToRegularTotalSpace (b : RegularBase (U := U)) :
       rw [ha]
       exact hg)
 
-@[simp]
-public theorem fiberTorusToRegularTotalSpace_mk
-    (b : RegularBase (U := U)) (z : ComplexTwoSpace) :
-    fiberTorusToRegularTotalSpace F b (Quotient.mk _ z) = Quotient.mk _ (b, z) :=
-  rfl
 
 /-- The fixed-fibre inclusion is continuous for the two quotient topologies. -/
 public theorem fiberTorusToRegularTotalSpace_continuous (b : RegularBase (U := U)) :
@@ -141,22 +121,7 @@ public def fiberTorusToRegularTotalSpaceContinuousMap
     (b : RegularBase (U := U)) : C(FiberTorus F b, RegularTotalSpace F) :=
   ⟨fiberTorusToRegularTotalSpace F b, fiberTorusToRegularTotalSpace_continuous F b⟩
 
-/-- Include a fixed torus fibre into the punctured global family, including the outer
-triangle-group quotient. -/
-public def fiberTorusToPuncturedGlobalFamily
-    (b : RegularBase (U := U)) : C(FiberTorus F b, PuncturedGlobalFamily F) := by
-  let _ := regularFamilyDeckAction F
-  exact
-    ⟨fun q => quotientProjection (M := RegularTotalSpace F) (G := Delta)
-        (fiberTorusToRegularTotalSpace F b q),
-      continuous_quot_mk.comp (fiberTorusToRegularTotalSpace_continuous F b)⟩
 
-@[simp]
-public theorem fiberTorusToPuncturedGlobalFamily_mk
-    (b : RegularBase (U := U)) (z : ComplexTwoSpace) :
-    fiberTorusToPuncturedGlobalFamily F b (Quotient.mk _ z) =
-      Quotient.mk _ (Quotient.mk _ (b, z)) :=
-  rfl
 
 /-- Full rank identifies integral coefficients with the actual period lattice in the selected
 fibre. -/
@@ -196,12 +161,6 @@ public def fiberPeriodGroupElement
     PeriodGroup (regularParameterMap F b).1 :=
   Multiplicative.ofAdd ((fiberPeriodLatticeEquiv F b) a)
 
-@[simp]
-public theorem fiberPeriodGroupElement_smul
-    (b : RegularBase (U := U)) (a : IntegerPeriods) (z : ComplexTwoSpace) :
-    fiberPeriodGroupElement F b a • z =
-      periodVector (regularParameterMap F b).1 a + z :=
-  rfl
 
 /-- The straight path in `ℂ²` from a chosen lift to its translate by an integral period. -/
 public noncomputable def fiberPeriodLiftPath
@@ -250,33 +209,10 @@ public noncomputable def fiberPeriodClass
 
 /-! ## Straightening paths in the labelled vector-bundle cover -/
 
-/-- Reparameterize a path so that it is completed on the first half of the interval and is
-constant on the second half. -/
-public def frontLoadedParameter (t : unitInterval) : unitInterval :=
-  ⟨min (2 * (t : ℝ)) 1, by
-    constructor
-    · exact le_min (mul_nonneg (by norm_num) t.2.1) zero_le_one
-    · exact min_le_right _ _⟩
 
-public theorem frontLoadedParameter_continuous : Continuous frontLoadedParameter := by
-  apply Continuous.subtype_mk
-  fun_prop
 
-@[simp]
-public theorem frontLoadedParameter_zero : frontLoadedParameter 0 = 0 := by
-  apply Subtype.ext
-  norm_num [frontLoadedParameter]
 
-@[simp]
-public theorem frontLoadedParameter_one : frontLoadedParameter 1 = 1 := by
-  apply Subtype.ext
-  norm_num [frontLoadedParameter]
 
-/-- The front-loaded reparameterization of a path in the labelled vector-bundle cover. -/
-public def frontLoadedRegularCoverPath
-    {p q : RegularBase (U := U) × ComplexTwoSpace} (P : Path p q) : Path p q :=
-  P.reparam frontLoadedParameter frontLoadedParameter_continuous
-    frontLoadedParameter_zero frontLoadedParameter_one
 
 /-- Retain only the base component of a path, along the zero section. -/
 public def regularCoverBaseZeroPath
@@ -285,99 +221,10 @@ public def regularCoverBaseZeroPath
     Path (b, (0 : ComplexTwoSpace)) (c, (0 : ComplexTwoSpace)) :=
   (P.map continuous_fst).map (continuous_id.prodMk continuous_const)
 
-/-- The straight vertical segment to the endpoint of a path in the vector-bundle cover. -/
-public def regularCoverEndpointVerticalPath
-    {b c : RegularBase (U := U)} {z : ComplexTwoSpace}
-    (_P : Path (b, (0 : ComplexTwoSpace)) (c, z)) :
-    Path (c, (0 : ComplexTwoSpace)) (c, z) :=
-  (Path.segment (0 : ComplexTwoSpace) z).map
-    (continuous_const.prodMk continuous_id)
 
-/-- The path obtained by first following the base along the zero section and then moving
-vertically in the endpoint fibre. -/
-public def regularCoverStraightenedPath
-    {b c : RegularBase (U := U)} {z : ComplexTwoSpace}
-    (P : Path (b, (0 : ComplexTwoSpace)) (c, z)) :
-    Path (b, (0 : ComplexTwoSpace)) (c, z) :=
-  (regularCoverBaseZeroPath P).trans (regularCoverEndpointVerticalPath P)
 
-public theorem regularCoverStraightenedPath_fst
-    {b c : RegularBase (U := U)} {z : ComplexTwoSpace}
-    (P : Path (b, (0 : ComplexTwoSpace)) (c, z)) (t : unitInterval) :
-    (regularCoverStraightenedPath P t).1 =
-      (frontLoadedRegularCoverPath P t).1 := by
-  rw [regularCoverStraightenedPath, Path.trans_apply]
-  split_ifs with ht
-  · change (P ⟨2 * (t : ℝ), by
-        constructor <;> nlinarith [t.2.1, t.2.2]⟩).1 =
-      (P (frontLoadedParameter t)).1
-    congr 2
-    apply Subtype.ext
-    simp only [frontLoadedParameter]
-    rw [min_eq_left]
-    nlinarith
-  · change c = (P (frontLoadedParameter t)).1
-    have hparam : frontLoadedParameter t = 1 := by
-      apply Subtype.ext
-      change min (2 * (t : ℝ)) 1 = 1
-      rw [min_eq_right]
-      nlinarith
-    rw [hparam]
-    exact congrArg Prod.fst P.target.symm
 
-/-- Any path in the labelled vector-bundle cover that starts on the zero section is homotopic
-relative endpoints to its base path on the zero section followed by one vertical segment. -/
-public def regularCoverPathHomotopyStraightened
-    {b c : RegularBase (U := U)} {z : ComplexTwoSpace}
-    (P : Path (b, (0 : ComplexTwoSpace)) (c, z)) :
-    Path.Homotopy (frontLoadedRegularCoverPath P) (regularCoverStraightenedPath P) where
-  toFun st :=
-    ((frontLoadedRegularCoverPath P st.2).1,
-      ((1 - (st.1 : ℝ) : ℝ) : ℂ) • (frontLoadedRegularCoverPath P st.2).2 +
-        (((st.1 : ℝ) : ℂ) • (regularCoverStraightenedPath P st.2).2))
-  continuous_toFun := by fun_prop
-  map_zero_left t := by simp
-  map_one_left t := by
-    apply Prod.ext
-    · exact (regularCoverStraightenedPath_fst P t).symm
-    · simp
-  prop' s t ht := by
-    rcases ht with rfl | ht
-    · apply Prod.ext
-      · rfl
-      · change (((1 - (s : ℝ) : ℝ) : ℂ) •
-            (frontLoadedRegularCoverPath P 0).2 +
-          ((s : ℝ) : ℂ) • (regularCoverStraightenedPath P 0).2) =
-            (frontLoadedRegularCoverPath P 0).2
-        rw [(frontLoadedRegularCoverPath P).source,
-          (regularCoverStraightenedPath P).source]
-        simp
-    · rw [Set.mem_singleton_iff] at ht
-      subst t
-      apply Prod.ext
-      · rfl
-      · change (((1 - (s : ℝ) : ℝ) : ℂ) •
-            (frontLoadedRegularCoverPath P 1).2 +
-          ((s : ℝ) : ℂ) • (regularCoverStraightenedPath P 1).2) =
-            (frontLoadedRegularCoverPath P 1).2
-        rw [(frontLoadedRegularCoverPath P).target,
-          (regularCoverStraightenedPath P).target]
-        change (((1 - (s : ℝ) : ℝ) : ℂ) • z + ((s : ℝ) : ℂ) • z) = z
-        rw [← add_smul]
-        have hs : (((1 - (s : ℝ) : ℝ) : ℂ) + ((s : ℝ) : ℂ)) = 1 := by
-          push_cast
-          ring
-        rw [hs, one_smul]
 
-/-- Hence the original path itself is homotopic relative endpoints to the straightened path. -/
-public theorem regularCoverPath_homotopic_straightened
-    {b c : RegularBase (U := U)} {z : ComplexTwoSpace}
-    (P : Path (b, (0 : ComplexTwoSpace)) (c, z)) :
-    Path.Homotopic P (regularCoverStraightenedPath P) :=
-  (show Path.Homotopic P (frontLoadedRegularCoverPath P) from
-    ⟨Path.Homotopy.reparam P frontLoadedParameter frontLoadedParameter_continuous
-      frontLoadedParameter_zero frontLoadedParameter_one⟩).trans
-    ⟨regularCoverPathHomotopyStraightened P⟩
 
 /-- A loop in the labelled vector-bundle cover based on its zero section contracts fibrewise to
 the loop obtained by forgetting its fibre coordinate. -/
@@ -464,12 +311,6 @@ public theorem fiberTorusTranslation_apply_eq_fiberPeriodClass
     fiberTorusTranslation F b z a = fiberPeriodClass F b z a :=
   fiberTorusFundamentalGroupEquiv_apply_eq_fiberPeriodClass F b z a
 
-/-- Before inclusion into the filled threefold, the four fibre translations give every element
-of the torus fundamental group. -/
-public theorem fiberTorusTranslation_bijective
-    (b : RegularBase (U := U)) (z : ComplexTwoSpace) :
-    Function.Bijective (fiberTorusTranslation F b z) :=
-  (fiberTorusFundamentalGroupEquiv F b z).bijective
 
 /-! ## Transporting a labelled period loop through the regular family -/
 
@@ -486,15 +327,7 @@ public def regularFamilyPeriodGroupElement (a : IntegerPeriods) :
   change Multiplicative IntegerPeriods
   exact Multiplicative.ofAdd a
 
-@[simp]
-public theorem regularFamilyPeriodGroupElement_coeff (a : IntegerPeriods) :
-    (regularFamilyPeriodGroupElement F a).coeff = a := rfl
 
-@[simp]
-public theorem regularFamilyPeriodGroupElement_smul
-    (p : RegularBase (U := U) × ComplexTwoSpace) (a : IntegerPeriods) :
-    regularFamilyPeriodGroupElement F a • p =
-      (p.1, periodVector (regularParameterMap F p.1).1 a + p.2) := rfl
 
 /-- The family-period quotient projection intertwines the lifted and descended triangle-group
 deck transformations. -/
@@ -728,33 +561,7 @@ public def regularFamilyDeckPathLoop
   (W.map (regularFamilyQuotientMap F).continuous).cast rfl
     (regularFamilyQuotientMap_deck F (regularFamilyCoverProjection F p) g).symm
 
-public theorem regularFamilyPeriodLoopHomotopyAlong_evalAt_zero
-    {p₀ p₁ : RegularBase (U := U) × ComplexTwoSpace}
-    (P : Path p₀ p₁) (a : IntegerPeriods) :
-    ((regularFamilyPeriodLoopHomotopyAlong F P a).evalAt 0).cast
-        (regularFamilyPeriodLoop F p₀ a).source.symm
-        (regularFamilyPeriodLoop F p₁ a).source.symm =
-      regularFamilyCoverWhisker F P := by
-  apply Path.ext
-  funext t
-  change regularFamilyCoverProjection F
-      ((P t).1, (0 : ℝ) • periodVector (regularParameterMap F (P t).1).1 a + (P t).2) =
-    regularFamilyCoverProjection F (P t)
-  simp
 
-public theorem regularFamilyPeriodLoopHomotopyAlong_evalAt_one
-    {p₀ p₁ : RegularBase (U := U) × ComplexTwoSpace}
-    (P : Path p₀ p₁) (a : IntegerPeriods) :
-    ((regularFamilyPeriodLoopHomotopyAlong F P a).evalAt 1).cast
-        (regularFamilyPeriodLoop F p₀ a).target.symm
-        (regularFamilyPeriodLoop F p₁ a).target.symm =
-      regularFamilyCoverWhisker F P := by
-  apply Path.ext
-  funext t
-  change regularFamilyCoverProjection F
-      ((P t).1, (1 : ℝ) • periodVector (regularParameterMap F (P t).1).1 a + (P t).2) =
-    regularFamilyCoverProjection F (P t)
-  simpa using regularFamilyProjection_period_smul F (P t) a
 
 /-- A globally labelled period loop is invariant under basepoint transport along a controlled
 path in the regular vector-bundle cover. -/

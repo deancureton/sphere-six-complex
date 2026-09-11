@@ -70,35 +70,9 @@ public theorem subsingleton_homology_stdTorus_of_lt (n k : ℕ) (h : n < k) :
   have hz : n.choose k = 0 := Nat.choose_eq_zero_of_lt h
   exact Fin.elim0 (hz ▸ i)
 
-/-- Homological finiteness through degree six for the standard four-torus. -/
-public theorem stdTorusFour_integralHomologyFiniteSix :
-    IntegralHomologyFiniteSix (StdTorus 4) where
-  finite_homology := finite_homology_stdTorus 4
-  subsingleton_homology_of_six_lt k hk :=
-    subsingleton_homology_stdTorus_of_lt 4 k (by omega)
 
-/-- The fifth integral homology of the standard four-torus vanishes. -/
-public theorem subsingleton_homology_five_stdTorusFour :
-    Subsingleton (IntegralSingularHomology 5 (StdTorus 4)) :=
-  subsingleton_homology_stdTorus_of_lt 4 5 (by omega)
 
-/-- The sixth integral homology of the standard four-torus vanishes. -/
-public theorem subsingleton_homology_six_stdTorusFour :
-    Subsingleton (IntegralSingularHomology 6 (StdTorus 4)) :=
-  subsingleton_homology_stdTorus_of_lt 4 6 (by omega)
 
-/-- The alternating integral homology rank sum of the standard four-torus is zero. -/
-public theorem stdTorusFour_euler_eq_zero :
-    integralHomologyEulerCharacteristicSix (StdTorus 4) = 0 := by
-  unfold integralHomologyEulerCharacteristicSix
-  rw [(stdTorusHomology 4 0).toIntLinearEquiv.finrank_eq,
-    (stdTorusHomology 4 1).toIntLinearEquiv.finrank_eq,
-    (stdTorusHomology 4 2).toIntLinearEquiv.finrank_eq,
-    (stdTorusHomology 4 3).toIntLinearEquiv.finrank_eq,
-    (stdTorusHomology 4 4).toIntLinearEquiv.finrank_eq,
-    (stdTorusHomology 4 5).toIntLinearEquiv.finrank_eq,
-    (stdTorusHomology 4 6).toIntLinearEquiv.finrank_eq]
-  norm_num [Nat.choose]
 
 end StandardTorusHomology
 
@@ -113,10 +87,6 @@ namespace FourTorusHomologicalModel
 
 variable {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
 
-/-- Transport the homological model across a homeomorphism. -/
-public noncomputable def homeomorph (M : FourTorusHomologicalModel X) (e : Y ≃ₜ X) :
-    FourTorusHomologicalModel Y where
-  homologyEquiv k := (integralSingularHomologyEquiv k e).trans (M.homologyEquiv k)
 
 /-- Every homology group in a four-torus homological model is finitely generated. -/
 public theorem finiteHomology (M : FourTorusHomologicalModel X) (k : ℕ) :

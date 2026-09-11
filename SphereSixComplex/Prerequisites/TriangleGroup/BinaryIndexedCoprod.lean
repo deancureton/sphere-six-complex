@@ -98,10 +98,6 @@ public theorem deltaToIndexed_comp_indexedToDelta :
 public theorem deltaIndexedEquiv_apply (g : Delta) : deltaIndexedEquiv g = deltaToIndexed g :=
   rfl
 
-@[simp]
-public theorem deltaIndexedEquiv_symm_apply (g : Monoid.CoprodI DeltaFactor) :
-    deltaIndexedEquiv.symm g = indexedToDelta g :=
-  rfl
 
 /-- The canonical reduced-word type for the binary triangle group. -/
 public abbrev DeltaNormalWord := Monoid.CoprodI.Word DeltaFactor
@@ -114,13 +110,6 @@ public theorem deltaNormalForm_prod (g : Delta) :
     (deltaNormalForm g).prod = deltaToIndexed g := by
   exact (Monoid.CoprodI.Word.equiv (M := DeltaFactor)).symm_apply_apply (deltaToIndexed g)
 
-public theorem indexed_cyclicallyReduced_not_isOfFinOrder {i j : Bool}
-    (w : Monoid.CoprodI.NeWord DeltaFactor i j) (hij : j ≠ i) :
-    ¬IsOfFinOrder (indexedToDelta w.prod) := by
-  rw [← deltaIndexedEquiv.injective.isOfFinOrder_iff]
-  change ¬IsOfFinOrder ((deltaToIndexed.comp indexedToDelta) w.prod)
-  rw [DFunLike.congr_fun deltaToIndexed_comp_indexedToDelta w.prod]
-  exact FreeProductTorsion.ReducedWord.cyclicallyReduced_not_isOfFinOrder w hij
 
 namespace NeWord
 

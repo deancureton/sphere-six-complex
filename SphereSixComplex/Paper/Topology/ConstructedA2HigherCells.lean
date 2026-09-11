@@ -136,17 +136,7 @@ public def constructedA2CorrectedFourOrbit
     (Fin 4 → ℝ) → ActualLocalCuspCentralOrbitQuotient W :=
   constructedA2CorrectedPhaseOrbit W 2 constructedA2CircleTwoPhase
 
-public theorem constructedA2CorrectedThreeOrbit_isEmbedding
-    (W : ActualPuncturedCuspCollarWitness N constructedModel) (i : Fin 2) :
-    IsEmbedding ((Metric.ball (0 : Fin 3 → ℝ) 1).domRestrict
-      (constructedA2CorrectedThreeOrbit W i)) :=
-  constructedA2CorrectedPhaseOrbit_isEmbedding W 1 _ (constructedA2CircleOnePhase_isEmbedding i)
 
-public theorem constructedA2CorrectedFourOrbit_isEmbedding
-    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
-    IsEmbedding ((Metric.ball (0 : Fin 4 → ℝ) 1).domRestrict
-      (constructedA2CorrectedFourOrbit W)) :=
-  constructedA2CorrectedPhaseOrbit_isEmbedding W 2 _ constructedA2CircleTwoPhase_isEmbedding
 
 public theorem constructedAppend_mem_closedBall (m n : ℕ) (x : (Fin m → ℝ) × (Fin n → ℝ)) :
     Fin.append x.1 x.2 ∈ Metric.closedBall 0 1 ↔

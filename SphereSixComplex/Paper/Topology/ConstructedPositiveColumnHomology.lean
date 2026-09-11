@@ -79,41 +79,12 @@ theorem constructedPositiveHomologyTwoReadout_firstTorus (A : PaperAnalyticData)
   rw [AddEquiv.symm_apply_apply]
   simp [standardTwoTorusHomologyGenerator]
 
-theorem constructedPositiveHomologyTwoReadout_firstGenerator (A : PaperAnalyticData) :
-    let G := actualCuspRadialClutchingData A.starCuspWitness
-    let _ := G.fiberTopology
-    constructedPositiveHomologyTwoReadout A
-      (integralSingularHomologyMap 2 (constructedCuspPositiveProjection A.starCuspWitness)
-        (integralSingularHomologyMap 2 G.markedFiberToCuspFilling
-          (G.degreeTwoFiberGenerator 0))) = 1 := by
-  dsimp only
-  rw [← A.cuspFiniteFiberTorusToFilling_homology 0]
-  exact constructedPositiveHomologyTwoReadout_firstTorus A
 
 def constructedCuspHomologyTwoPositiveReadout (A : PaperAnalyticData) :
     IntegralSingularHomology 2 (CuspPuncturedCollarBridge.ActualLocalCuspFilling A.starCuspWitness) →+ ℤ :=
   (constructedPositiveHomologyTwoReadout A).comp
     (integralSingularHomologyMap 2 (constructedCuspPositiveProjection A.starCuspWitness))
 
-theorem constructedCuspHomologyTwoPositiveReadout_firstGenerator (A : PaperAnalyticData) :
-    let G := actualCuspRadialClutchingData A.starCuspWitness
-    let _ := G.fiberTopology
-    constructedCuspHomologyTwoPositiveReadout A
-      (integralSingularHomologyMap 2 G.markedFiberToCuspFilling (G.degreeTwoFiberGenerator 0)) = 1 :=
-  constructedPositiveHomologyTwoReadout_firstGenerator A
 
-theorem constructedCuspHomologyTwoPositiveReadout_phaseSweep (A : PaperAnalyticData)
-    [T2Space (ActualLocalCuspCentralOrbitQuotient A.starCuspWitness)]
-    (k : C(UnitAddCircle, Fin 2 → Circle))
-    (x : IntegralSingularHomology 1 (ActualLocalCuspCentralOrbitQuotient A.starCuspWitness)) :
-    constructedCuspHomologyTwoPositiveReadout A
-      (integralSingularHomologyMap 2 (constructedCentralPhaseSweepMap A.starCuspWitness k)
-        (SphereSixComplex.Topology.CircleProductIdentityMappingTorus.normalizedCircleCross 1 x)) = 0 := by
-  change constructedPositiveHomologyTwoReadout A
-    (integralSingularHomologyMap 2 (constructedCuspPositiveProjection A.starCuspWitness)
-      (integralSingularHomologyMap 2 (constructedCentralPhaseSweepMap A.starCuspWitness k)
-        (SphereSixComplex.Topology.CircleProductIdentityMappingTorus.normalizedCircleCross 1 x))) = 0
-  erw [constructedCuspPositiveProjection_phaseSweep_zero A.starCuspWitness k x]
-  exact map_zero _
 
 end SphereSixComplex.Geometry.InfiniteA2Toric

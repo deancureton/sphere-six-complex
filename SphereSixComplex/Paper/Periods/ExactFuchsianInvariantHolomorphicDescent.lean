@@ -1,7 +1,8 @@
 module
 
-public import SphereSixComplex.Paper.Periods.ExactFuchsianGeneratorInvariantDescent
-public import SphereSixComplex.Prerequisites.Periods.BoundedRemovableSingularity
+public import SphereSixComplex.Prerequisites.Periods.Uniformization.EstablishedExactFuchsianOrbifoldCoordinate
+public import Mathlib.Topology.ContinuousMap.Basic
+public import Mathlib.Analysis.Complex.RemovableSingularity
 import all SphereSixComplex.Paper.Periods.ExactFuchsianRamification
 
 /-!
@@ -123,76 +124,8 @@ public theorem ExactFuchsianOrbifoldCoordinate.exists_regular_holomorphic_descen
   rw [hzq] at hd
   exact hd.differentiableWithinAt
 
-private theorem ExactFuchsianOrbifoldCoordinate.differentiableAt_descendInvariantContinuous_regular
-    (C : ExactFuchsianOrbifoldCoordinate) (f : UpperHalfPlane → ℂ)
-    (hf : MDiff f)
-    (hinvariant : ∀ g z, f (fuchsianSourceAction g • z) = f z)
-    (q : ℂ) (hq : q ∈ ({0, 1} : Set ℂ)ᶜ) :
-    DifferentiableAt ℂ (C.descendInvariantContinuous f hf.continuous hinvariant) q := by
-  obtain ⟨z, rfl⟩ := C.coordinate_isQuotientMap.surjective q
-  apply C.differentiableAt_of_mdifferentiableAt_comp_regular _ z _ hq
-  have he : (C.descendInvariantContinuous f hf.continuous hinvariant) ∘ C.coordinate = f :=
-    funext (C.descendInvariantContinuous_comp f hf.continuous hinvariant)
-  rw [he]
-  exact hf.mdifferentiableAt
 
-/-- An invariant holomorphic function on the source descends holomorphically through the exact
-Fuchsian quotient, including across both finite branch values. -/
-public theorem ExactFuchsianOrbifoldCoordinate.differentiable_descendInvariantContinuous
-    (C : ExactFuchsianOrbifoldCoordinate) (f : UpperHalfPlane → ℂ)
-    (hf : MDiff f)
-    (hinvariant : ∀ g z, f (fuchsianSourceAction g • z) = f z) :
-    Differentiable ℂ (C.descendInvariantContinuous f hf.continuous hinvariant) := by
-  let F : ℂ → ℂ := C.descendInvariantContinuous f hf.continuous hinvariant
-  have hFcontinuous : Continuous F :=
-    (C.descendInvariantContinuous f hf.continuous hinvariant).continuous
-  intro q
-  rcases eq_or_ne q 0 with rfl | hqZero
-  · have hanalytic : AnalyticAt ℂ F 0 := by
-      apply Complex.analyticAt_of_differentiable_on_punctured_nhds_of_continuousAt
-      · have hAwayOne : ({1} : Set ℂ)ᶜ ∈ nhdsWithin 0 ({0} : Set ℂ)ᶜ :=
-          mem_nhdsWithin_of_mem_nhds
-            (isOpen_compl_singleton.mem_nhds (by simp : (0 : ℂ) ∈ ({1} : Set ℂ)ᶜ))
-        filter_upwards [self_mem_nhdsWithin, hAwayOne] with w hwZero hwOne
-        apply C.differentiableAt_descendInvariantContinuous_regular f hf hinvariant
-        simpa only [mem_compl_iff, mem_insert_iff, mem_singleton_iff, not_or] using
-          ⟨hwZero, hwOne⟩
-      · exact hFcontinuous.continuousAt
-    exact hanalytic.differentiableAt
-  · rcases eq_or_ne q 1 with rfl | hqOne
-    · have hanalytic : AnalyticAt ℂ F 1 := by
-        apply Complex.analyticAt_of_differentiable_on_punctured_nhds_of_continuousAt
-        · have hAwayZero : ({0} : Set ℂ)ᶜ ∈ nhdsWithin 1 ({1} : Set ℂ)ᶜ :=
-            mem_nhdsWithin_of_mem_nhds
-              (isOpen_compl_singleton.mem_nhds (by simp : (1 : ℂ) ∈ ({0} : Set ℂ)ᶜ))
-          filter_upwards [self_mem_nhdsWithin, hAwayZero] with w hwOne hwZero
-          apply C.differentiableAt_descendInvariantContinuous_regular f hf hinvariant
-          simpa only [mem_compl_iff, mem_insert_iff, mem_singleton_iff, not_or] using
-            ⟨hwZero, hwOne⟩
-        · exact hFcontinuous.continuousAt
-      exact hanalytic.differentiableAt
-    · exact C.differentiableAt_descendInvariantContinuous_regular f hf hinvariant q (by
-        simpa only [mem_compl_iff, mem_insert_iff, mem_singleton_iff, not_or] using
-          ⟨hqZero, hqOne⟩)
 
-/-- Manifold spelling of holomorphic invariant descent. -/
-public theorem ExactFuchsianOrbifoldCoordinate.mdifferentiable_descendInvariantContinuous
-    (C : ExactFuchsianOrbifoldCoordinate) (f : UpperHalfPlane → ℂ)
-    (hf : MDiff f)
-    (hinvariant : ∀ g z, f (fuchsianSourceAction g • z) = f z) :
-    MDiff (C.descendInvariantContinuous f hf.continuous hinvariant) := by
-  rw [mdifferentiable_iff_differentiable]
-  exact C.differentiable_descendInvariantContinuous f hf hinvariant
 
-/-- For the explicit free-product source group, holomorphicity and invariance under the two
-finite generators already suffice for holomorphic descent. -/
-public theorem ExactFuchsianOrbifoldCoordinate.mdifferentiable_descendGeneratorInvariantContinuous
-    (C : ExactFuchsianOrbifoldCoordinate) (f : UpperHalfPlane → ℂ)
-    (hf : MDiff f)
-    (h₁ : SourceFunctionInvariant f g₁)
-    (h₂ : SourceFunctionInvariant f g₂) :
-    MDiff (C.descendGeneratorInvariantContinuous f hf.continuous h₁ h₂) :=
-  C.mdifferentiable_descendInvariantContinuous f hf
-    (sourceFunctionInvariant_all f h₁ h₂)
 
 end SphereSixComplex.Periods

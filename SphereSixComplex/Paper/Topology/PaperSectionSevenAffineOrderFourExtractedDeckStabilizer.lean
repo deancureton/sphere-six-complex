@@ -20,16 +20,6 @@ open SphereSixComplex.Geometry.EllipticCayleyHomeomorph
 open SphereSixComplex.Geometry.EllipticLinearCollarGlobalDescent
 open SphereSixComplex.TriangleGroup
 
-/-- The exact stabilizer condition on a deck element carrying the named radial lift into the
-selected order-four collar. -/
-public def IsOrderFourExtractedDeckStabilizer
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) (g : Delta) : Prop :=
-  (‖(orderFourCayleyHomeomorph
-      (fuchsianSourceAction g •
-        (A.affineOrderFourRadialBaseLift
-          (A.affineBandStripCoordinate x)).1) : ℂ)‖ <
-      A.starSeparation.orderFour.radius) ∧
-    ∃ a : CyclicFour, g = Monoid.Coprod.inr a
 
 /-- If both the named radial lift and its deck translate lie in the selected order-four collar,
 collar separation forces the deck element into the embedded `C₄` factor. -/
@@ -95,36 +85,7 @@ public theorem fixes_fuchsianTwo_iff_namedOrderFourRadialBase_cayley_lt
   rw [fuchsianTwoFixed_iff_mem_range_inr]
   exact A.mem_orderFourFactor_iff_namedOrderFourRadialBase_cayley_lt x g hdeck
 
-/-- The pointwise named-sheet Cayley bound is exactly the assertion that some extracted deck
-element carrying the named lift into the collar belongs to the order-four stabilizer. -/
-public theorem exists_orderFourExtractedDeckStabilizer_iff
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
-    (∃ g : Delta, A.IsOrderFourExtractedDeckStabilizer x g) ↔
-      ‖(orderFourCayleyHomeomorph
-        (A.affineOrderFourRadialBaseLift
-          (A.affineBandStripCoordinate x)).1 : ℂ)‖ <
-        A.starSeparation.orderFour.radius := by
-  constructor
-  · rintro ⟨g, hdeck, hfactor⟩
-    exact (A.mem_orderFourFactor_iff_namedOrderFourRadialBase_cayley_lt x g hdeck).mp hfactor
-  · intro hnamed
-    obtain ⟨g, hdeck⟩ := A.exists_regularDeck_namedOrderFourRadialBase_cayley_lt x
-    refine ⟨g, hdeck, ?_⟩
-    exact A.mem_orderFourFactor_of_named_and_deck_cayley_lt x g hdeck hnamed
 
-/-- Globally, the extracted-deck stabilizer statement is equivalent to the existing named radial
-collar compatibility predicate. -/
-public theorem affineOrderFourNamedRadialCollarCompatibility_iff_extractedDeck
-    (A : PaperAnalyticData) :
-    A.AffineOrderFourNamedRadialCollarCompatibility ↔
-      ∀ x : A.affineMarkedBand,
-        ∃ g : Delta, A.IsOrderFourExtractedDeckStabilizer x g := by
-  rw [A.affineOrderFourNamedRadialCollarCompatibility_iff]
-  constructor
-  · intro h x
-    exact (A.exists_orderFourExtractedDeckStabilizer_iff x).mpr (h x)
-  · intro h x
-    exact (A.exists_orderFourExtractedDeckStabilizer_iff x).mp (h x)
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

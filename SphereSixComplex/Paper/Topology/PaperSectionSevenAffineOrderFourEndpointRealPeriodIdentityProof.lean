@@ -147,30 +147,7 @@ public theorem regularTotalSpaceBase_namedDiscLiftPoint
   rw [A.regularTotalSpaceBase_regularFlatTransport]
   rfl
 
-/-- The explicit radial base lies in the chosen affine coordinate disc. -/
-public theorem regularCoordinate_namedOrderFourRadialBaseLift_norm_lt_markedRadius
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
-    ‖(A.regularCoordinate
-        (A.affineOrderFourRadialBaseLift
-          (A.affineBandStripCoordinate x))).1 - 1‖ <
-      A.affineOrderFourMarkedDiscRadius := by
-  have h := (A.affineOrderFourNamedDiscLiftPoint x).2
-  change ‖(A.regularCoordinate
-      (regularTotalSpaceBase A.periods
-        (A.affineOrderFourNamedDiscLiftPoint x).1)).1 - 1‖ <
-    A.affineOrderFourMarkedDiscRadius at h
-  rw [A.regularTotalSpaceBase_namedDiscLiftPoint x] at h
-  exact h
 
-/-- In particular, the quotient coordinate of the named radial base lies in the standard
-order-four affine disc of radius `1/3`. -/
-public theorem regularCoordinate_namedOrderFourRadialBaseLift_norm_lt_one_third
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
-    ‖(A.regularCoordinate
-        (A.affineOrderFourRadialBaseLift
-          (A.affineBandStripCoordinate x))).1 - 1‖ < 1 / 3 :=
-  (A.regularCoordinate_namedOrderFourRadialBaseLift_norm_lt_markedRadius x).trans_le
-    A.affineOrderFourMarkedDiscRadius_spec.2.1
 
 /-- Affine radial transport preserves the named order-four real-period coordinate. -/
 public theorem orderFourRealPeriod_namedDiscLiftPoint

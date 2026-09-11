@@ -26,52 +26,6 @@ namespace OpenEmbeddingStarData
 
 variable (A : OpenEmbeddingStarData)
 
-/-- Chain models for the seven spaces in a four-piece star: one central space, three filling
-spaces, and three collar spaces, together with the two attaching maps from every collar. -/
-public structure SevenSpaceChainModels where
-  /-- A chain model for the central space. -/
-  centralModel : ChainComplex AddCommGrpCat ℕ
-  /-- A chain model for each of the three filling spaces. -/
-  fillingModel : Fin 3 → ChainComplex AddCommGrpCat ℕ
-  /-- A chain model for each of the three common collar sources. -/
-  collarModel : Fin 3 → ChainComplex AddCommGrpCat ℕ
-  /-- The model map induced by attaching a collar to the central space. -/
-  collarToCentral : ∀ i, collarModel i ⟶ centralModel
-  /-- The model map induced by attaching a collar to its filling. -/
-  collarToFilling : ∀ i, collarModel i ⟶ fillingModel i
-  /-- The central model computes the singular chains of the actual central space. -/
-  centralRealization : HomotopyEquiv centralModel (integralSingularChainComplex A.central)
-  /-- Every filling model computes the singular chains of the corresponding actual filling. -/
-  fillingRealization : ∀ i,
-    HomotopyEquiv (fillingModel i) (integralSingularChainComplex (A.filling i))
-  /-- Every collar model computes the singular chains of the corresponding common source. -/
-  collarRealization : ∀ i,
-    HomotopyEquiv (collarModel i) (integralSingularChainComplex (A.collarSource i))
-  /-- The central attaching map is the exact map induced by the actual collar embedding. -/
-  collarToCentral_naturality : ∀ i,
-    collarToCentral i ≫ centralRealization.hom =
-      (collarRealization i).hom ≫ integralSingularChainMap (A.toCentral i).hom
-  /-- The filling attaching map is the exact map induced by the actual collar embedding. -/
-  collarToFilling_naturality : ∀ i,
-    collarToFilling i ≫ (fillingRealization i).hom =
-      (collarRealization i).hom ≫ integralSingularChainMap (A.toFilling i).hom
-
-namespace SevenSpaceChainModels
-
-/-- The exact seven-space diagram with unreduced singular chains at every vertex. -/
-public noncomputable def singularModels : A.SevenSpaceChainModels where
-  centralModel := integralSingularChainComplex A.central
-  fillingModel i := integralSingularChainComplex (A.filling i)
-  collarModel i := integralSingularChainComplex (A.collarSource i)
-  collarToCentral i := integralSingularChainMap (A.toCentral i).hom
-  collarToFilling i := integralSingularChainMap (A.toFilling i).hom
-  centralRealization := HomotopyEquiv.refl _
-  fillingRealization _ := HomotopyEquiv.refl _
-  collarRealization _ := HomotopyEquiv.refl _
-  collarToCentral_naturality _ := by simp
-  collarToFilling_naturality _ := by simp
-
-end SevenSpaceChainModels
 
 /-- At every Mayer--Vietoris stage, the new filling meets the preceding union only in its
 central collar.  Earlier fillings contribute no additional points to this overlap. -/
@@ -117,15 +71,5 @@ public noncomputable def collarToMayerVietorisOverlapHomeomorph (r : Fin 3) :
         (A.stage_inter_filling_eq_central_inter r).symm))
 
 end OpenEmbeddingStarData
-
-namespace Geometry.PaperAnalyticData
-
-variable (P : PaperAnalyticData)
-
-/-- The exact seven-space chain-model interface specialized to the analytic star in the paper. -/
-public abbrev SevenSpaceChainModels :=
-  P.openEmbeddingStarData.SevenSpaceChainModels
-
-end Geometry.PaperAnalyticData
 
 end SphereSixComplex

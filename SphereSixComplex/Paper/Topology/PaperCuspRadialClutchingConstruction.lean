@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperCuspGeometricSpecializationDefs
-public import SphereSixComplex.Paper.Geometry.CuspRealPeriodDeckCoordinates
+public import SphereSixComplex.Paper.Geometry.EllipticRealPeriodProductTrivialization
 
 /-!
 # The radial clutching datum of the actual cusp collar
@@ -65,9 +65,6 @@ public noncomputable def cuspFiberClutching (x : PeriodDomain) :
         change cuspFiberLift x (periodVector x.1 n) = periodVector x.1 (rhoLambda g₀ n)
         rw [cuspFiberLift_periodVector, rhoLambda_g₀_apply]))
 
-@[simp]
-public theorem cuspFiberClutching_mk (x : PeriodDomain) (z : ComplexTwoSpace) :
-    cuspFiberClutching x (Quotient.mk _ z) = Quotient.mk _ (cuspFiberLift x z) := rfl
 
 /-- The cusp clutching map as a descended affine automorphism with integral lattice map
 `rhoLambda g₀`, that is `M₀`. -/
@@ -298,8 +295,6 @@ variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E
 public noncomputable def cuspBasePoint (s : ℂ) : PeriodDomain :=
   parameterMap (assembledFuchsianPeriodFunctions E D) (N.lift s)
 
-public theorem cuspBasePoint_val (s : ℂ) :
-    (cuspBasePoint N s).1 = actualCuspCollarPeriodParameter N s := rfl
 
 public theorem cuspBasePoint_shift (s : ℂ) (hs : s ∈ cuspHalfPlane N.height) :
     cuspBasePoint N (s - 1) = rhoParameters g₀ (cuspBasePoint N s) := by
@@ -442,18 +437,8 @@ variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E
   {M : Model}
   (W : ActualPuncturedCuspCollarWitness N M) (s₀ : ℂ)
 
-public theorem mem_additiveCuspRadiusCover_iff (r : ℝ) (p : AdditiveCuspCover) :
-    p ∈ additiveCuspRadiusCover r ↔ ‖cuspQ p.2‖ < r := Iff.rfl
 
-public theorem collarFiberEquiv_eq_movingToFixed (s₀ s : ℂ) (zeta : ComplexTwoSpace) :
-    collarFiberEquiv N s₀ s zeta =
-      (movingToFixedCover (assembledFuchsianPeriodFunctions E D) (N.lift s₀)
-        (N.lift s, zeta)).2 := rfl
 
-public theorem collarFiberEquiv_symm_eq_fixedToMoving (s₀ s : ℂ) (w : ComplexTwoSpace) :
-    (collarFiberEquiv N s₀ s).symm w =
-      (fixedToMovingCover (assembledFuchsianPeriodFunctions E D) (N.lift s₀)
-        (N.lift s, w)).2 := rfl
 
 public theorem continuous_cuspQ : Continuous cuspQ :=
   Complex.continuous_exp.comp (continuous_const.mul continuous_id)
@@ -531,8 +516,6 @@ public theorem psiTranslate_fst (a : additiveCuspRadiusCover W.localWitness.radi
   rw [psiTranslate, periodVector_firstPeriodCoefficients]
   rfl
 
-public theorem psiTranslate_snd (a : additiveCuspRadiusCover W.localWitness.radius)
-    (lambda : ParameterLattice) : (psiTranslate W a lambda).1.2 = a.1.2 := rfl
 
 /-- The actual phase-corrected action reads, in additive coordinates, as translation by the
 corresponding first-block period. -/
@@ -570,9 +553,6 @@ public noncomputable def collarPeriodPointMap :
   fun a ↦ Quotient.mk _
     (additiveToPuncturedLocalHomeomorph M W.localWitness.radius (Quotient.mk _ a))
 
-public theorem collarPeriodPointMap_apply {s : ℂ}
-    (hs : ‖cuspQ s‖ < W.localWitness.radius) (zeta : ComplexTwoSpace) :
-    collarPeriodPointMap W ⟨(zeta, s), hs⟩ = actualCuspCollarPeriodPoint W hs zeta := rfl
 
 public theorem collarPeriodPointMap_isQuotientMap :
     IsQuotientMap (collarPeriodPointMap W) := by

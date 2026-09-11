@@ -69,19 +69,7 @@ public theorem abelianizationMulOppositeEquiv_symm_of {G : Type} [Group G] (g : 
   apply (abelianizationMulOppositeEquiv G).injective
   simp
 
-/-- The integer-linear additive form of `abelianizationMulOppositeEquiv`. -/
-public def additiveAbelianizationMulOppositeEquiv (G : Type) [Group G] :
-    Additive (Abelianization Gᵐᵒᵖ) ≃ₗ[ℤ] Additive (Abelianization G) :=
-  (abelianizationMulOppositeEquiv G).toAdditive.toIntLinearEquiv
 
-@[simp]
-public theorem additiveAbelianizationMulOppositeEquiv_of_op
-    {G : Type} [Group G] (g : G) :
-    additiveAbelianizationMulOppositeEquiv G
-        (Additive.ofMul (Abelianization.of (MulOpposite.op g))) =
-      Additive.ofMul (Abelianization.of g) :=
-  by
-    rfl
 
 /-- The classical first Hurewicz theorem in degree one. -/
 public def abelianizationComparison

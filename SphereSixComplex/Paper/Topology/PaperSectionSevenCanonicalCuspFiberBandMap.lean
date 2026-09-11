@@ -1,6 +1,9 @@
 module
 
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspClutchingCompatibility
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineCompletionReduction
+public import SphereSixComplex.Paper.Geometry.CuspCollarPairProperness
+public import SphereSixComplex.Paper.Geometry.EllipticRealPeriodProductTrivialization
+public import SphereSixComplex.Paper.Topology.PaperCuspBoundaryUniversalCover
 
 /-!
 # The canonical map from the cusp fibre to the elliptic band
@@ -148,24 +151,6 @@ public theorem canonicalCuspFiberBandPeriodMarking_of_orderThree
   rw [D.bandHomologyEquiv_canonicalCuspFiberToBandHomologyOne]
   exact h x
 
-/-- The canonical map, its unmarked Wang-boundary square, and naturality of the complete period
-marking construct the lower-level compatibility package. -/
-public noncomputable def sectionSevenCuspWangBandCompatibility_of_canonicalMap
-    (N : A.EllipticBandHomologyAlignment D)
-    (hBoundary : (D.canonicalCuspFiberToBandHomologyOne.comp (actualCuspWangBoundaryHom A) =
-                      D.cuspPulledBackBoundaryHom))
-    (hMarking : (N.actualHomologyCoordinates.bandOne.toAddMonoidHom.comp
-                       D.canonicalCuspFiberToBandHomologyOne =
-                     let G := A.actualCuspRadialClutchingData
-                     let _ := G.fiberTopology
-                     G.monodromyCoordinates.degreeOne.toAddMonoidHom)) :
-    D.SectionSevenCuspWangBandCompatibility N where
-  fiberToBandHomologyOne := D.canonicalCuspFiberToBandHomologyOne
-  boundary_naturality := hBoundary
-  marking_naturality := by
-    ext x
-    have hx := DFunLike.congr_fun hMarking x
-    exact congrFun hx 3
 
 end EllipticTwoDiscCoverData
 

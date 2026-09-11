@@ -36,34 +36,8 @@ public abbrev PaperAnalyticData.toricModel (_A : PaperAnalyticData) :
     InfiniteA2Toric.Model :=
   InfiniteA2Toric.Construction.constructedModel
 
-/-- The established modular, explicit affine-descent, cusp-normalization, and toric inputs supply
-one coherent analytic package. -/
-public theorem nonempty_paperAnalyticData_of_descentData
-    (E : NormalizedFuchsianModularParameter)
-    (F : ExactLiftedModularNegOneFrame E)
-    (Amu : (FuchsianAffineDescent.muDescentData E F).AnalyticDescentData)
-    (Abeta : FuchsianAffineDescent.BetaDescentData E F Amu) :
-    Nonempty PaperAnalyticData := by
-  obtain ⟨D⟩ := FuchsianAffineDescent.exists_fuchsianPeriodLocalData E F Amu Abeta
-  obtain ⟨N⟩ := FuchsianCuspNormalization.exists_normalizedFuchsianCuspCoordinate E D
-  exact ⟨⟨E, D, N⟩⟩
 
-/-- The standard analytic descent theorem supplies the dependent `mu` and `beta` certificates
-needed for the coherent paper package. -/
-public theorem nonempty_paperAnalyticData_of_frame
-    (E : NormalizedFuchsianModularParameter)
-    (F : ExactLiftedModularNegOneFrame E) :
-    Nonempty PaperAnalyticData :=
-  nonempty_paperAnalyticData_of_descentData E F
-    (FuchsianAffineDescent.muAnalyticDescentData E F)
-    (FuchsianAffineDescent.betaAnalyticDescentData E F)
 
-/-- The established modular parameter, modular frame, general analytic descent, cusp
-normalization, and toric model produce the coherent analytic package unconditionally. -/
-public theorem nonempty_paperAnalyticData : Nonempty PaperAnalyticData := by
-  obtain ⟨E⟩ := nonempty_normalizedFuchsianModularParameter
-  obtain ⟨F⟩ := nonempty_exactLiftedModularNegOneFrame E
-  exact nonempty_paperAnalyticData_of_frame E F
 
 /-- A coherent choice of the analytic data supplied by concrete affine-descent certificates. -/
 @[expose] public noncomputable def paperAnalyticData
@@ -91,11 +65,6 @@ public theorem nonempty_paperAnalyticData : Nonempty PaperAnalyticData := by
   let F := Classical.choice (nonempty_exactLiftedModularNegOneFrame E)
   paperAnalyticDataOfFrame E F
 
-@[simp]
-public theorem PaperAnalyticData.toricModel_eq_constructed (A : PaperAnalyticData) :
-    A.toricModel =
-      InfiniteA2Toric.Construction.constructedModel := by
-  rfl
 
 namespace PaperAnalyticData
 
@@ -119,37 +88,11 @@ public abbrev OrderFourTorus :=
   AdditiveTorus
     (parameterMap A.periods A.modular.modularParameter.toTriangleUniformization.zTwo).1
 
-/-- The paper's free affine order-three action on the disc times its actual fixed fibre. -/
-public noncomputable abbrev orderThreeActionData :
-    EllipticActionData 3 ComplexUnitDisc A.OrderThreeTorus :=
-  EllipticFixedPointCriterion.orderThreeActionData A.periods
 
-/-- The paper's free affine order-four action on the disc times its actual fixed fibre. -/
-public noncomputable abbrev orderFourActionData :
-    EllipticActionData 4 ComplexUnitDisc A.OrderFourTorus :=
-  EllipticFixedPointCriterion.orderFourActionData A.periods
 
-/-- The completed order-three local filling before it is attached to the global family. -/
-public abbrev OrderThreeFilling :=
-  letI := A.orderThreeActionData.diagonalAction
-  OrbitQuotient (M := ComplexUnitDisc × A.OrderThreeTorus) (G := FiniteCyclic 3)
 
-/-- The completed order-four local filling before it is attached to the global family. -/
-public abbrev OrderFourFilling :=
-  letI := A.orderFourActionData.diagonalAction
-  OrbitQuotient (M := ComplexUnitDisc × A.OrderFourTorus) (G := FiniteCyclic 4)
 
-/-- The selected order-three filling action is free. -/
-public theorem orderThreeAction_free :
-    letI := A.orderThreeActionData.diagonalAction
-    IsCancelSMul (FiniteCyclic 3) (ComplexUnitDisc × A.OrderThreeTorus) :=
-  EllipticFixedPointCriterion.orderThreeAction_free A.periods
 
-/-- The selected order-four filling action is free. -/
-public theorem orderFourAction_free :
-    letI := A.orderFourActionData.diagonalAction
-    IsCancelSMul (FiniteCyclic 4) (ComplexUnitDisc × A.OrderFourTorus) :=
-  EllipticFixedPointCriterion.orderFourAction_free A.periods
 
 end PaperAnalyticData
 

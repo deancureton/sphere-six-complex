@@ -68,16 +68,6 @@ public theorem orderFourCollarRegularRepresentative_coordinate
   rw [hqbase, ← A.orderFourCayleyRegularCoordinate_chartFunction,
     A.orderFourCollarInverseRepresentative_cayley]
 
-public theorem orderFourCollarRegularRepresentative_coordinate_fiber_independent
-    (r : OpenRadialInterval A.starSeparation.orderFour.radius) (θ : ℝ)
-    (v w : ComplexTwoSpace) :
-    A.centralFamilyCoordinate
-        (A.centralQuotientProjection (A.orderFourCollarRegularRepresentativeMap (r, θ, v))) =
-      A.centralFamilyCoordinate
-        (A.centralQuotientProjection (A.orderFourCollarRegularRepresentativeMap (r, θ, w))) := by
-  apply Subtype.ext
-  rw [A.orderFourCollarRegularRepresentative_coordinate,
-    A.orderFourCollarRegularRepresentative_coordinate]
 
 public theorem orderFourDeckStraightCentralLoop_projects_representative
     (g : OrderFourAffineMappingTorusDeck A.periods) (t : unitInterval) :
@@ -192,64 +182,6 @@ public theorem orderFourBoundaryBaseHom_fillingRelation
     SphereSixComplex.ofDeck_pow, SphereSixComplex.ofDeck_inv, map_mul, map_inv, map_pow,
     A.orderFourBoundaryBaseHom_translation, inv_one, one_mul]
 
-public theorem orderFourBoundaryMeridian_base_first_power :
-    letI := A.ellipticFourBoundaryAction
-    letI := A.ellipticFourBoundaryCover_simplyConnected
-    ∃ w : Path (A.centralFamilyCoordinate A.ellipticFourCentralBase)
-        twicePuncturedComplexBasepoint,
-      A.orderFourBoundaryBaseHom
-        (SphereSixComplex.ofDeck A.ellipticFourBoundaryProjection_isQuotientCoveringMap
-          A.ellipticFourBoundaryBase A.ellipticFourBoundaryDeckData.meridian) =
-        FundamentalGroup.fundamentalGroupMulEquivOfPath w.symm
-          TwicePuncturedComplex.oneMeridianClass⁻¹ := by
-  let _ := A.ellipticFourBoundaryAction
-  let _ := A.ellipticFourBoundaryCover_simplyConnected
-  let L := (A.ellipticFourBoundaryDeckStraightCentralLoop
-    A.ellipticFourBoundaryDeckData.fillingRelation).map
-      A.centralFamilyCoordinate_continuous
-  let gamma := twicePuncturedCounterclockwiseOneQuadruple
-  have hmap : A.orderFourFillingRelationBaseCoordinateMap = L.toContinuousMap := by
-    unfold orderFourFillingRelationBaseCoordinateMap
-    rw [A.orderFourFillingRelationRegularLoop_projects]
-    rfl
-  obtain ⟨Hraw, hrawTrace⟩ :=
-    A.orderFourActualCayleyBaseCoordinate_quadrupleHomotopy_with_trace
-  let H : ContinuousMap.Homotopy L.toContinuousMap gamma.toContinuousMap :=
-    Hraw.cast (A.orderFourFillingRelationBaseCoordinateMap_eq_cayley.symm.trans hmap) rfl
-  have htrace : (H.evalAt 0).cast L.source.symm gamma.source.symm =
-      (H.evalAt 1).cast L.target.symm gamma.target.symm := by
-    apply Path.ext
-    funext s
-    exact hrawTrace s
-  let w := (H.evalAt 0).cast L.source.symm gamma.source.symm
-  let E := FundamentalGroup.fundamentalGroupMulEquivOfPath w.symm
-  have hfree := SphereSixComplex.loopClass_eq_whiskered_of_freeHomotopy L gamma H htrace
-  have hp : Path.Homotopic.Quotient.mk L = E (Path.Homotopic.Quotient.mk gamma) := by
-    rw [hfree]
-    simp only [Path.Homotopic.Quotient.mk_trans, Path.Homotopic.Quotient.mk_symm]
-    change _ = (FundamentalGroup.fundamentalGroupMulEquivOfPath w.symm) _
-    unfold FundamentalGroup.fundamentalGroupMulEquivOfPath
-    simp only [CategoryTheory.Iso.conj_apply]
-    change (Path.Homotopic.Quotient.mk w).trans
-      ((Path.Homotopic.Quotient.mk gamma).trans (Path.Homotopic.Quotient.mk w).symm) =
-      (Path.Homotopic.Quotient.mk w.symm).symm.trans
-        ((Path.Homotopic.Quotient.mk gamma).trans (Path.Homotopic.Quotient.mk w.symm))
-    simp only [← Path.Homotopic.Quotient.mk_symm]
-    rw [Path.symm_symm]
-  have hpow : (A.orderFourBoundaryBaseHom
-      (SphereSixComplex.ofDeck A.ellipticFourBoundaryProjection_isQuotientCoveringMap
-        A.ellipticFourBoundaryBase A.ellipticFourBoundaryDeckData.meridian)) ^ 4 =
-      (E TwicePuncturedComplex.oneMeridianClass⁻¹) ^ 4 := by
-    rw [← A.orderFourBoundaryBaseHom_fillingRelation, A.orderFourBoundaryBaseHom_ofDeck]
-    change Path.Homotopic.Quotient.mk L = _
-    rw [hp, twicePuncturedCounterclockwiseOneQuadruple_class, map_pow]
-  refine ⟨w, ?_⟩
-  let F := (TwicePuncturedComplex.markedMeridianMulEquiv
-    TwicePuncturedComplex.markedMeridianHom_injective).symm
-  apply E.symm.injective
-  apply F.injective
-  apply pow_left_injective (by decide : (4 : ℕ) ≠ 0)
-  simpa only [← map_pow] using congrArg (fun x ↦ F (E.symm x)) hpow
 
 public theorem orderThreeCollarRegularRepresentative_coordinate
     (lift : OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :
@@ -280,16 +212,6 @@ public theorem orderThreeCollarRegularRepresentative_coordinate
   rw [hqbase, ← A.orderThreeCayleyRegularCoordinate_chartFunction,
     A.orderThreeCollarInverseRepresentative_cayley]
 
-public theorem orderThreeCollarRegularRepresentative_coordinate_fiber_independent
-    (r : OpenRadialInterval A.starSeparation.orderThree.radius) (θ : ℝ)
-    (v w : ComplexTwoSpace) :
-    A.centralFamilyCoordinate
-        (A.centralQuotientProjection (A.orderThreeCollarRegularRepresentativeMap (r, θ, v))) =
-      A.centralFamilyCoordinate
-        (A.centralQuotientProjection (A.orderThreeCollarRegularRepresentativeMap (r, θ, w))) := by
-  apply Subtype.ext
-  rw [A.orderThreeCollarRegularRepresentative_coordinate,
-    A.orderThreeCollarRegularRepresentative_coordinate]
 
 public theorem orderThreeDeckStraightCentralLoop_projects_representative
     (g : OrderThreeAffineMappingTorusDeck A.periods) (t : unitInterval) :
@@ -404,63 +326,5 @@ public theorem orderThreeBoundaryBaseHom_fillingRelation
     SphereSixComplex.ofDeck_pow, SphereSixComplex.ofDeck_inv, map_mul, map_inv, map_pow,
     A.orderThreeBoundaryBaseHom_translation, inv_one, one_mul]
 
-public theorem orderThreeBoundaryMeridian_base_first_power :
-    letI := A.ellipticThreeBoundaryAction
-    letI := A.ellipticThreeBoundaryCover_simplyConnected
-    ∃ w : Path (A.centralFamilyCoordinate A.ellipticThreeCentralBase)
-        twicePuncturedComplexBasepoint,
-      A.orderThreeBoundaryBaseHom
-        (SphereSixComplex.ofDeck A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
-          A.ellipticThreeBoundaryBase A.ellipticThreeBoundaryDeckData.meridian) =
-        FundamentalGroup.fundamentalGroupMulEquivOfPath w.symm
-          TwicePuncturedComplex.zeroMeridianClass⁻¹ := by
-  let _ := A.ellipticThreeBoundaryAction
-  let _ := A.ellipticThreeBoundaryCover_simplyConnected
-  let L := (A.ellipticThreeBoundaryDeckStraightCentralLoop
-    A.ellipticThreeBoundaryDeckData.fillingRelation).map
-      A.centralFamilyCoordinate_continuous
-  let gamma := twicePuncturedCounterclockwiseZeroTriple
-  have hmap : A.orderThreeFillingRelationBaseCoordinateMap = L.toContinuousMap := by
-    unfold orderThreeFillingRelationBaseCoordinateMap
-    rw [A.orderThreeFillingRelationRegularLoop_projects]
-    rfl
-  obtain ⟨Hraw, hrawTrace⟩ :=
-    A.orderThreeActualCayleyBaseCoordinate_tripleHomotopy_with_trace
-  let H : ContinuousMap.Homotopy L.toContinuousMap gamma.toContinuousMap :=
-    Hraw.cast (A.orderThreeFillingRelationBaseCoordinateMap_eq_cayley.symm.trans hmap) rfl
-  have htrace : (H.evalAt 0).cast L.source.symm gamma.source.symm =
-      (H.evalAt 1).cast L.target.symm gamma.target.symm := by
-    apply Path.ext
-    funext s
-    exact hrawTrace s
-  let w := (H.evalAt 0).cast L.source.symm gamma.source.symm
-  let E := FundamentalGroup.fundamentalGroupMulEquivOfPath w.symm
-  have hfree := SphereSixComplex.loopClass_eq_whiskered_of_freeHomotopy L gamma H htrace
-  have hp : Path.Homotopic.Quotient.mk L = E (Path.Homotopic.Quotient.mk gamma) := by
-    rw [hfree]
-    simp only [Path.Homotopic.Quotient.mk_trans, Path.Homotopic.Quotient.mk_symm]
-    change _ = (FundamentalGroup.fundamentalGroupMulEquivOfPath w.symm) _
-    unfold FundamentalGroup.fundamentalGroupMulEquivOfPath
-    simp only [CategoryTheory.Iso.conj_apply]
-    change (Path.Homotopic.Quotient.mk w).trans
-      ((Path.Homotopic.Quotient.mk gamma).trans (Path.Homotopic.Quotient.mk w).symm) =
-      (Path.Homotopic.Quotient.mk w.symm).symm.trans
-        ((Path.Homotopic.Quotient.mk gamma).trans (Path.Homotopic.Quotient.mk w.symm))
-    simp only [← Path.Homotopic.Quotient.mk_symm]
-    rw [Path.symm_symm]
-  have hpow : (A.orderThreeBoundaryBaseHom
-      (SphereSixComplex.ofDeck A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
-        A.ellipticThreeBoundaryBase A.ellipticThreeBoundaryDeckData.meridian)) ^ 3 =
-      (E TwicePuncturedComplex.zeroMeridianClass⁻¹) ^ 3 := by
-    rw [← A.orderThreeBoundaryBaseHom_fillingRelation, A.orderThreeBoundaryBaseHom_ofDeck]
-    change Path.Homotopic.Quotient.mk L = _
-    rw [hp, twicePuncturedCounterclockwiseZeroTriple_class, map_pow]
-  refine ⟨w, ?_⟩
-  let F := (TwicePuncturedComplex.markedMeridianMulEquiv
-    TwicePuncturedComplex.markedMeridianHom_injective).symm
-  apply E.symm.injective
-  apply F.injective
-  apply pow_left_injective (by decide : (3 : ℕ) ≠ 0)
-  simpa only [← map_pow] using congrArg (fun x ↦ F (E.symm x)) hpow
 
 end SphereSixComplex.Geometry.PaperAnalyticData

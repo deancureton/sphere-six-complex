@@ -1,6 +1,7 @@
 module
 
-public import SphereSixComplex.Paper.Geometry.EllipticComplexFilling
+public import SphereSixComplex.Paper.Geometry.CuspFilling
+public import SphereSixComplex.Paper.Geometry.EllipticFilling
 import all SphereSixComplex.Prerequisites.Geometry.ComplexUnitDisc
 public import SphereSixComplex.Prerequisites.Geometry.FuchsianEllipticCoordinates
 import all SphereSixComplex.Prerequisites.Geometry.FuchsianEllipticCoordinates
@@ -94,53 +95,7 @@ public theorem orderFourActionData_free (D : EllipticFiberData 4 Torus)
     IsCancelSMul (FiniteCyclic 4) (ComplexUnitDisc × Torus) :=
   neg_epsilonPrime_action_free D.orderFourActionData hv
 
-/-- The complex-filling theorem specializes to the explicit order-three Cayley base once the
-remaining affine torus action is holomorphic. -/
-public theorem orderThreeActionData_quotient_isManifold
-    {E H : Type*} [TopologicalSpace (ComplexUnitDisc × Torus)] [TopologicalSpace H]
-    [NormedAddCommGroup E] [NormedSpace ℂ E]
-    (I : ModelWithCorners ℂ E H)
-    [T2Space (ComplexUnitDisc × Torus)] [LocallyCompactSpace (ComplexUnitDisc × Torus)]
-    [ChartedSpace H (ComplexUnitDisc × Torus)]
-    [IsManifold I ω (ComplexUnitDisc × Torus)]
-    (D : EllipticFiberData 3 Torus) (hv : D.translationVector = epsilon)
-    (hholomorphic : ∀ g : FiniteCyclic 3,
-      ContMDiff I I ω (fun p : ComplexUnitDisc × Torus ↦
-        D.orderThreeActionData.representation g p)) :
-    let A := D.orderThreeActionData
-    letI := A.diagonalAction
-    let hf := quotient_isQuotientCoveringMap A (epsilon_action_free A hv)
-      (fun g ↦ (hholomorphic g).continuous)
-    letI : ChartedSpace H
-      (MulAction.orbitRel.Quotient (FiniteCyclic 3) (ComplexUnitDisc × Torus)) :=
-      hf.isCoveringMap.isLocalHomeomorph.chartedSpace hf.surjective
-    IsManifold I ω
-      (MulAction.orbitRel.Quotient (FiniteCyclic 3) (ComplexUnitDisc × Torus)) := by
-  exact epsilonQuotient_isManifold I D.orderThreeActionData hv hholomorphic
 
-/-- The complex-filling theorem specializes to the explicit order-four Cayley base once the
-remaining affine torus action is holomorphic. -/
-public theorem orderFourActionData_quotient_isManifold
-    {E H : Type*} [TopologicalSpace (ComplexUnitDisc × Torus)] [TopologicalSpace H]
-    [NormedAddCommGroup E] [NormedSpace ℂ E]
-    (I : ModelWithCorners ℂ E H)
-    [T2Space (ComplexUnitDisc × Torus)] [LocallyCompactSpace (ComplexUnitDisc × Torus)]
-    [ChartedSpace H (ComplexUnitDisc × Torus)]
-    [IsManifold I ω (ComplexUnitDisc × Torus)]
-    (D : EllipticFiberData 4 Torus) (hv : D.translationVector = -epsilon')
-    (hholomorphic : ∀ g : FiniteCyclic 4,
-      ContMDiff I I ω (fun p : ComplexUnitDisc × Torus ↦
-        D.orderFourActionData.representation g p)) :
-    let A := D.orderFourActionData
-    letI := A.diagonalAction
-    let hf := quotient_isQuotientCoveringMap A (neg_epsilonPrime_action_free A hv)
-      (fun g ↦ (hholomorphic g).continuous)
-    letI : ChartedSpace H
-      (MulAction.orbitRel.Quotient (FiniteCyclic 4) (ComplexUnitDisc × Torus)) :=
-      hf.isCoveringMap.isLocalHomeomorph.chartedSpace hf.surjective
-    IsManifold I ω
-      (MulAction.orbitRel.Quotient (FiniteCyclic 4) (ComplexUnitDisc × Torus)) := by
-  exact negEpsilonPrimeQuotient_isManifold I D.orderFourActionData hv hholomorphic
 
 end EllipticFiberData
 

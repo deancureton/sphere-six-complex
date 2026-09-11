@@ -210,31 +210,7 @@ public noncomputable def actualCuspCentralFiberCellModel
     CuspToricCellModel (R.quotientCentralFiber W) :=
   (establishedStandardA2ToricCentralFiberCWDecomposition W R).toCuspToricCellModel
 
-/-- Consequently the actual quotient central fibre has Euler characteristic two. -/
-public theorem actualCuspCentralFiber_euler_eq_two
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
-    (W : ActualPuncturedCuspCollarWitness N M)
-    (R : ActualLocalCuspCentralFiberRetractionData W) :
-    integralHomologyEulerCharacteristicSix (R.quotientCentralFiber W) = 2 :=
-  (actualCuspCentralFiberCellModel W R).euler_eq_two
 
 end Geometry.CuspPuncturedCollarBridge
-
-namespace Geometry.PaperAnalyticData
-
-open CuspPuncturedCollarBridge
-
-variable (A : PaperAnalyticData)
-
-/-- The actual cusp filling has Euler characteristic two once equipped with the independently
-constructed equivariant central-fibre retraction. -/
-public theorem cuspFilling_euler_eq_two
-    (R : ActualLocalCuspCentralFiberRetractionData A.starCuspWitness) :
-    integralHomologyEulerCharacteristicSix (A.openEmbeddingStarData.filling 0) = 2 :=
-  A.cuspFilling_euler_eq_of_centralFiberRetraction R
-    (actualCuspCentralFiber_euler_eq_two A.starCuspWitness R)
-
-end Geometry.PaperAnalyticData
 
 end SphereSixComplex

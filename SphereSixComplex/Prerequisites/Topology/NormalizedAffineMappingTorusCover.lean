@@ -28,13 +28,6 @@ public def normalizedAffineCoverToCircleMappingTorus
     (CyclicMappingTorus.normalizedAffineCyclicQuotientCircleMappingTorusHomeomorph phi hpow).continuous.comp
       continuous_quot_mk
 
-@[simp]
-public theorem normalizedAffineCoverToCircleMappingTorus_apply
-    (phi : F ≃ₜ F) (hpow : phi ^ m = 1) (x : UnitAddCircle × F) :
-    normalizedAffineCoverToCircleMappingTorus phi hpow x =
-      CyclicMappingTorus.normalizedAffineCyclicQuotientCircleMappingTorusHomeomorph phi hpow
-        (Quotient.mk (CyclicMappingTorus.normalizedAffineCyclicSetoid (m := m) phi) x) :=
-  rfl
 
 end SphereSixComplex.Topology.NormalizedAffineMappingTorusCover
 

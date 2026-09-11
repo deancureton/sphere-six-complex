@@ -208,11 +208,6 @@ public def identityMappingTorusMapOfLoop
     (continuous_eval.comp ((p.continuous.comp
       (continuous_fst.comp continuous_snd)).prodMk (continuous_snd.comp continuous_snd)))
 
-public theorem identityMappingTorusMapOfLoop_cylinder
-    {F X : Type} [TopologicalSpace F] [LocallyCompactSpace F] [TopologicalSpace X]
-    {c : C(F, X)} (p : Path c c) (t : unitInterval) (x : F) :
-    identityMappingTorusMapOfLoop p (torusPt (fun _ : Unit ↦ Homeomorph.refl F) () t x) =
-      p t x := rfl
 
 
 public theorem identityMappingTorusMapOfLoop_vertex

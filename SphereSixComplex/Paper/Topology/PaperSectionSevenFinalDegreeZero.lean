@@ -363,17 +363,6 @@ public theorem cuspAttachment_differenceMap_zero_coordinates
       integerPairToFinTwoAddEquiv, integerToFinOneAddEquiv,
       sectionSevenMayerVietorisFinalZeroHom] using congrArg Prod.snd hnormal
 
-/-- The actual final degree-zero Mayer--Vietoris difference map is injective; no chosen homology
-basis or compatibility square is an input. -/
-public theorem cuspAttachment_differenceMap_zero_injective :
-    Function.Injective
-      (IntegralMayerVietoris.differenceMap
-        ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4))
-        ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 3) 0) := by
-  let _ := A.ellipticInterior_pathConnected
-  let _ := A.cuspAttachmentPiece_pathConnected
-  let _ := A.cuspAttachmentOverlap_pathConnected
-  exact IntegralMayerVietoris.differenceMap_zero_injective _ _
 
 end Geometry.PaperAnalyticData
 

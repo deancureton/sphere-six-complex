@@ -324,10 +324,6 @@ public noncomputable def markedBaseToCentralZeroSection :
       C(TwicePuncturedComplex,
         PuncturedOrbifoldBase (U := A.paperTriangleUniformization)))
 
-@[simp]
-public theorem markedBaseToCentralZeroSection_basepoint :
-    A.markedBaseToCentralZeroSection twicePuncturedComplexBasepoint =
-      A.centralZeroSection A.markedPuncturedBasepoint := rfl
 
 /-- The common coordinate whisker, lifted along the zero section. -/
 public noncomputable def cuspCommonZeroSectionWhisker :
@@ -345,13 +341,6 @@ public noncomputable def cuspCommonZeroSectionLoop :
   A.cuspCommonCoordinateLoop.map
     A.markedBaseToCentralZeroSection.continuous
 
-public theorem cuspAngularZeroSectionLoop_eq_map :
-    A.cuspAngularZeroSectionLoop =
-      A.cuspAngularCoordinateLoop.map
-        A.markedBaseToCentralZeroSection.continuous := by
-  apply Path.ext
-  funext t
-  rfl
 
 /-- The zero-section lift of the common coordinate loop is its explicit whiskered form. -/
 public theorem cuspCommonZeroSectionLoop_class_eq_whisker :

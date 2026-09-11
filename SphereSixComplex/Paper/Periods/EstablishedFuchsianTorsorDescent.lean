@@ -554,12 +554,6 @@ by the Fuchsian construction. -/
   · intro z hz
     exact S.sectionInfinity_two z hz
 
-/-- Analytic orbifold affine-torsor descent supplies the two exact `mu` chart sections from the
-explicit modular frame, finite-cycle certificate, elliptic primitives, and cusp primitive. -/
-public theorem exists_muAffineCechSections
-    (A : (muDescentData E F).AnalyticDescentData) :
-    Nonempty (MuCechSections E F) :=
-  ⟨muAffineCechSectionsOfAnalyticDescentData E F A⟩
 
 /-- Combining the independent modular-frame theorem with affine local triviality gives exactly the
 `mu` local data consumed by the Cech splitting theorem. -/
@@ -1155,15 +1149,6 @@ public theorem hasLocalTrivializations
     Abeta
   exact ⟨Smu, ⟨Sbeta⟩⟩
 
-/-- A general affine-torsor local-triviality theorem, once supplied, completes the exact local
-period package. -/
-public theorem nonempty_periodLocalData_of_localTrivializations
-    (hdescent : ∀ F : ExactLiftedModularNegOneFrame E,
-      HasLocalTrivializations E F) :
-    Nonempty (FuchsianPeriodLocalData E) := by
-  obtain ⟨F⟩ := nonempty_exactLiftedModularNegOneFrame E
-  obtain ⟨Smu, ⟨Sbeta⟩⟩ := hdescent F
-  exact ⟨periodLocalDataOfSections E F Smu Sbeta⟩
 
 /-- One concrete modular frame and its two explicit analytic descent certificates construct the
 complete local period package used by the paper. -/
@@ -1176,34 +1161,8 @@ public theorem exists_fuchsianPeriodLocalData
     hasLocalTrivializations E F Amu Abeta
   exact ⟨periodLocalDataOfSections E F Smu Sbeta⟩
 
-/-- One concrete modular frame and its explicit analytic descent certificates therefore produce
-the paper's actual nondegenerate Fuchsian period functions. -/
-public theorem exists_periodFunctions
-    (F : ExactLiftedModularNegOneFrame E)
-    (Amu : (muDescentData E F).AnalyticDescentData)
-    (Abeta : BetaDescentData E F Amu) :
-    Nonempty (PeriodFunctions E.modularParameter.toTriangleUniformization) := by
-  obtain ⟨D⟩ := exists_fuchsianPeriodLocalData E F Amu Abeta
-  exact exists_assembledFuchsianPeriodFunctions E D
 
-/-- The two production analytic-descent certificates construct the complete local period data. -/
-public theorem nonempty_periodLocalData_of_analyticDescent
-    (F : ExactLiftedModularNegOneFrame E) :
-    Nonempty (FuchsianPeriodLocalData E) :=
-  exists_fuchsianPeriodLocalData E F
-    (muAnalyticDescentData E F)
-    (betaAnalyticDescentData E F)
 
-/-- A coherent production choice of the local period package. -/
-@[expose] public noncomputable def periodLocalData
-    (F : ExactLiftedModularNegOneFrame E) : FuchsianPeriodLocalData E :=
-  Classical.choice (nonempty_periodLocalData_of_analyticDescent E F)
 
-/-- The general analytic descent theorem and exact Fuchsian inputs produce nondegenerate period
-functions without any paper-specific existence assumption. -/
-public theorem exists_periodFunctions_of_generalDescent
-    (F : ExactLiftedModularNegOneFrame E) :
-    Nonempty (PeriodFunctions E.modularParameter.toTriangleUniformization) :=
-  exists_assembledFuchsianPeriodFunctions E (periodLocalData E F)
 
 end SphereSixComplex.Periods.FuchsianAffineDescent

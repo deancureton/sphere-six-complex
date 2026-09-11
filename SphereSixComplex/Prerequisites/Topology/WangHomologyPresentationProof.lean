@@ -143,10 +143,6 @@ cylinders.  The other leg carries no further information, being its negative. -/
 public def wangBoundary (bdry : T →+ (ι → H) × (ι → H)) : T →+ (ι → H) :=
   (AddMonoidHom.fst (ι → H) (ι → H)).comp bdry
 
-omit [Fintype ι] in
-@[simp]
-public theorem wangBoundary_apply (bdry : T →+ (ι → H) × (ι → H)) (y : T) :
-    wangBoundary bdry y = (bdry y).1 := rfl
 
 variable {incl : G →+ T} {S : G × (ι → G) →+ T} {bdry : T →+ (ι → H) × (ι → H)}
 
@@ -237,19 +233,6 @@ public theorem exact_wangBoundary_monodromyDifference
     rw [coverDifference_fst_of_eq_neg] at hfst
     exact neg_eq_zero.mp hfst
 
-/-- The full algebraic splice: a five-term Mayer--Vietoris segment of the shape produced by the
-two-set cover of a bouquet mapping torus contains a Wang exact sequence. -/
-public theorem wangExactness_of_mayerVietoris
-    (hS : ∀ p : G × (ι → G), S p = incl (p.1 + ∑ i, p.2 i))
-    (h₁ : Function.Exact (coverDifference ψ) S)
-    (h₂ : Function.Exact S bdry)
-    (h₃ : Function.Exact bdry (coverDifference χ)) :
-    Function.Exact (monodromyDifference ψ) incl ∧
-      Function.Exact incl (wangBoundary bdry) ∧
-      Function.Exact (wangBoundary bdry) (monodromyDifference χ) :=
-  ⟨exact_monodromyDifference_inclusion ψ hS h₁,
-    exact_inclusion_wangBoundary χ hS h₂ h₃,
-    exact_wangBoundary_monodromyDifference χ h₃⟩
 
 end WangFromMayerVietoris
 
@@ -706,26 +689,8 @@ public theorem bouquetMk_injOn_edgeBand (φ : ι → F ≃ₜ F) :
 
 /-! ### The fibre over the bouquet vertex -/
 
-public theorem finiteBouquetMappingTorusFiberInclusion_eq [TopologicalSpace ι] [Inhabited ι]
-    (φ : ι → F ≃ₜ F) (x : F) :
-    finiteBouquetMappingTorusFiberInclusion φ x = bouquetMk φ (default, 0, x) := rfl
 
-/-- The fibre over the bouquet vertex lies in the vertex piece of the cover. -/
-public theorem fiberInclusion_mem_vertexPiece [TopologicalSpace ι] [Inhabited ι]
-    (φ : ι → F ≃ₜ F) (x : F) :
-    finiteBouquetMappingTorusFiberInclusion φ x ∈ vertexPiece φ := by
-  rw [finiteBouquetMappingTorusFiberInclusion_eq, vertexPiece,
-    mem_bouquetPiece_mk_iff φ vertexBand_ends]
-  exact Or.inl (by norm_num)
 
-/-- The fibre over the bouquet vertex misses the edge piece. -/
-public theorem fiberInclusion_notMem_edgePiece [TopologicalSpace ι] [Inhabited ι]
-    (φ : ι → F ≃ₜ F) (x : F) :
-    finiteBouquetMappingTorusFiberInclusion φ x ∉ edgePiece φ := by
-  rw [finiteBouquetMappingTorusFiberInclusion_eq, edgePiece,
-    mem_bouquetPiece_mk_iff φ edgeBand_ends]
-  intro h
-  exact ne_zero_of_mem_edgeBand h rfl
 
 end Cover
 
@@ -961,13 +926,7 @@ public def vertexSlideFun (p : ι × unitInterval × F) (s : unitInterval) :
     · nlinarith
     · nlinarith⟩, p.2.2)
 
-@[simp]
-public theorem vertexSlideFun_fst (p : ι × unitInterval × F) (s : unitInterval) :
-    (vertexSlideFun p s).1 = p.1 := rfl
 
-@[simp]
-public theorem vertexSlideFun_snd_snd (p : ι × unitInterval × F) (s : unitInterval) :
-    (vertexSlideFun p s).2.2 = p.2.2 := rfl
 
 @[simp]
 public theorem vertexSlideFun_coe (p : ι × unitInterval × F) (s : unitInterval) :
@@ -1266,12 +1225,6 @@ public def subtypePreimageHomeo {X : Type} [TopologicalSpace X] {B W : Set X} (h
   continuous_toFun := (continuous_subtype_val.comp continuous_subtype_val).subtype_mk _
   continuous_invFun := (continuous_subtype_val.subtype_mk _).subtype_mk _
 
-public theorem subsetInclusion_comp_subtypePreimageHomeo {X : Type} [TopologicalSpace X]
-    {B W : Set X} (h : W ⊆ B) :
-    (subsetInclusion B).comp (subsetInclusion ((Subtype.val : ↥B → X) ⁻¹' W)) =
-      (subsetInclusion W).comp
-        ⟨subtypePreimageHomeo h, (subtypePreimageHomeo h).continuous⟩ :=
-  rfl
 
 /-- Integral singular homology is additive over a finite disjoint open cover: the sum of the
 inclusions of the members is an isomorphism. -/
@@ -1526,10 +1479,6 @@ public noncomputable def homeomorphOfIsQuotientMapOfInjective {A B : Type*} [Top
       rw [himg, ← hf.isCoinducing.isOpen_preimage, hinj.preimage_image]
       exact hU)
 
-@[simp]
-public theorem homeomorphOfIsQuotientMapOfInjective_apply {A B : Type*} [TopologicalSpace A]
-    [TopologicalSpace B] {f : A → B} (hf : IsQuotientMap f) (hinj : Function.Injective f)
-    (a : A) : homeomorphOfIsQuotientMapOfInjective hf hinj a = f a := rfl
 
 end InjectiveQuotient
 
@@ -1540,14 +1489,11 @@ section Band
 /-- The open band of cylinder parameters strictly between `a` and `b`. -/
 public def openBand (a b : ℝ) : Set unitInterval := {t | a < (t : ℝ) ∧ (t : ℝ) < b}
 
-public theorem mem_openBand {a b : ℝ} {t : unitInterval} :
-    t ∈ openBand a b ↔ a < (t : ℝ) ∧ (t : ℝ) < b := Iff.rfl
 
 public theorem isOpen_openBand (a b : ℝ) : IsOpen (openBand a b) :=
   (isOpen_lt continuous_const continuous_subtype_val).inter
     (isOpen_lt continuous_subtype_val continuous_const)
 
-public theorem edgeBand_eq_openBand : edgeBand = openBand (1 / 6) (5 / 6) := rfl
 
 /-- A convex combination of two points above `a` stays above `a`. -/
 public theorem lt_convexCombination {a t u s : ℝ} (ht : a < t) (hu : a < u)
@@ -1585,9 +1531,6 @@ public theorem slideVal_mem_unitInterval (t₀ s t : unitInterval) :
 public def slidePoint (t₀ s t : unitInterval) : unitInterval :=
   ⟨slideVal t₀ s t, slideVal_mem_unitInterval t₀ s t⟩
 
-@[simp]
-public theorem slidePoint_coe (t₀ s t : unitInterval) :
-    ((slidePoint t₀ s t : unitInterval) : ℝ) = slideVal t₀ s t := rfl
 
 public theorem slidePoint_zero (t₀ t : unitInterval) : slidePoint t₀ 0 t = t := by
   refine Subtype.ext ?_
@@ -1653,10 +1596,6 @@ public def fiberBandProdHomotopyEquiv {a b : ℝ} {t₀ : unitInterval} (h₀ : 
   left_inv := ⟨ContinuousMap.Homotopy.refl _⟩
   right_inv := ⟨(bandProdSlide h₀).symm⟩
 
-@[simp]
-public theorem fiberBandProdHomotopyEquiv_toFun {a b : ℝ} {t₀ : unitInterval}
-    (h₀ : t₀ ∈ openBand a b) (x : F) :
-    (fiberBandProdHomotopyEquiv h₀).toFun x = (⟨t₀, h₀⟩, x) := rfl
 
 end BandFiber
 
@@ -1715,10 +1654,6 @@ public def bandPt (φ : ι → F ≃ₜ F) {c : Set unitInterval} {s : unitInter
       (Continuous.subtype_mk
         (continuous_const.prodMk (continuous_const.prodMk continuous_id)) _)⟩
 
-@[simp]
-public theorem bandPt_apply (φ : ι → F ≃ₜ F) {c : Set unitInterval} {s : unitInterval}
-    (hs : s ∈ c) (i : ι) (x : F) :
-    bandPt φ hs i x = pieceMk φ c ⟨(i, s, x), hs⟩ := rfl
 
 /-- The part of a band of cylinders over the loop `i` and the sub-band `d`. -/
 public def bandComponent {c : Set unitInterval} (i : ι) (d : Set unitInterval) :
@@ -1887,7 +1822,6 @@ public theorem uThreeQuarters_mem_highBand : uThreeQuarters ∈ highBand := by
   · show (3 : ℝ) / 4 < 5 / 6
     norm_num
 
-public theorem uHalf_mem_edgeOpenBand : uHalf ∈ openBand (1 / 6) (5 / 6) := uHalf_mem_edgeBand
 
 /-- The overlap band of the two-set cover. -/
 public abbrev overlapBand : Set unitInterval := vertexBand ∩ edgeBand
@@ -2482,12 +2416,6 @@ public noncomputable def coverHomologyComparison (φ : ι → F ≃ₜ F) :
     BinaryOpenCover.OpenCoverHomologyComparison (coverVertexOpen φ) (coverEdgeOpen φ) :=
   BinaryOpenCover.openCoverHomologyComparisonOfCover (coverOpen φ)
 
-omit [Fintype ι] [Inhabited ι] [DiscreteTopology ι] in
-/-- The Mayer--Vietoris sequence of the vertex/edge open cover of the mapping torus. -/
-public theorem coverMayerVietoris (φ : ι → F ≃ₜ F) :
-    IntegralMayerVietoris.ExactSequence (vertexPiece φ) (edgePiece φ) :=
-  IntegralMayerVietoris.exact_sequence_of_isOpen (vertexPiece φ) (edgePiece φ)
-    (isOpen_vertexPiece φ) (isOpen_edgePiece φ)
 
 /-- The Mayer--Vietoris boundary of the vertex/edge open cover. -/
 @[irreducible] public noncomputable def coverBoundary (φ : ι → F ≃ₜ F) (k : ℕ) :
@@ -2561,77 +2489,13 @@ public noncomputable def finiteBouquetMappingTorusWangSequenceOfCover (φ : ι �
     (exact_wangSumMap_coverWangBoundary φ k)
     (exact_coverWangBoundary_coverDifference φ k)
 
-/-- The boundary of the constructed Wang sequence is the first leg of the Mayer--Vietoris boundary
-of the vertex/edge cover, read through the identification of the overlap with two loop-indexed
-copies of the fibre.  This pins the sign of the Wang boundary. -/
-@[simp]
-public theorem finiteBouquetMappingTorusWangSequenceOfCover_boundary (φ : ι → F ≃ₜ F) (k : ℕ) :
-    (finiteBouquetMappingTorusWangSequenceOfCover φ k).boundary =
-      wangBoundary (coverWangBoundary φ k) := rfl
 
-public theorem finiteBouquetMappingTorusWangSequenceOfCover_boundary_apply (φ : ι → F ≃ₜ F)
-    (k : ℕ) (z : IntegralSingularHomology (k + 1) (FiniteBouquetMappingTorus φ)) :
-    (finiteBouquetMappingTorusWangSequenceOfCover φ k).boundary z =
-      ((overlapEquiv φ k).symm
-        (coverBoundary φ k ((unionEquiv φ (k + 1)).symm z))).1 := rfl
 
-/-- The Wang exact sequence of a finite-bouquet mapping torus exists unconditionally. -/
-public theorem nonempty_finiteBouquetMappingTorusWangSequence (φ : ι → F ≃ₜ F) (k : ℕ) :
-    Nonempty (FiniteBouquetMappingTorusWangSequence φ k) :=
-  ⟨finiteBouquetMappingTorusWangSequenceOfCover φ k⟩
 
 end WangFromCover
 
 
 /-! ## Axiom-free replacements for the Wang presentations -/
-
-section Presentations
-
-variable {ι F : Type} [Fintype ι] [Inhabited ι] [TopologicalSpace ι] [DiscreteTopology ι]
-  [TopologicalSpace F]
-
-/-- The Wang presentation of a finite-bouquet mapping torus, carried by an arbitrary Wang
-sequence. -/
-public noncomputable def finiteBouquetMappingTorusWangPresentationOf (φ : ι → F ≃ₜ F) (k : ℕ)
-    (W : FiniteBouquetMappingTorusWangSequence φ k) :
-    WangHomologyPresentation
-      (ι → IntegralSingularHomology (k + 1) F)
-      (IntegralSingularHomology (k + 1) F)
-      (IntegralSingularHomology (k + 1) (FiniteBouquetMappingTorus φ))
-      (ι → IntegralSingularHomology k F)
-      (IntegralSingularHomology k F) where
-  highDifference := finiteBouquetMonodromyDifference φ (k + 1)
-  inclusion := integralSingularHomologyMap (k + 1)
-    (finiteBouquetMappingTorusFiberInclusion φ)
-  boundary := W.boundary
-  lowDifference := finiteBouquetMonodromyDifference φ k
-  exact_highDifference_inclusion := W.exact_highDifference_inclusion
-  exact_inclusion_boundary := W.exact_inclusion_boundary
-  exact_boundary_lowDifference := W.exact_boundary_lowDifference
-
-/-- The Wang presentation of a finite-bouquet mapping torus, from the Mayer--Vietoris sequence of
-its vertex/edge open cover.  This is an axiom-free replacement for
-`finiteBouquetMappingTorusWangPresentation`. -/
-public noncomputable def finiteBouquetMappingTorusWangPresentationOfCover (φ : ι → F ≃ₜ F)
-    (k : ℕ) :
-    WangHomologyPresentation
-      (ι → IntegralSingularHomology (k + 1) F)
-      (IntegralSingularHomology (k + 1) F)
-      (IntegralSingularHomology (k + 1) (FiniteBouquetMappingTorus φ))
-      (ι → IntegralSingularHomology k F)
-      (IntegralSingularHomology k F) :=
-  finiteBouquetMappingTorusWangPresentationOf φ k
-    (finiteBouquetMappingTorusWangSequenceOfCover φ k)
-
-/-- The boundary of the axiom-free presentation is the first leg of the Mayer--Vietoris boundary
-of the vertex/edge cover. -/
-@[simp]
-public theorem finiteBouquetMappingTorusWangPresentationOfCover_boundary (φ : ι → F ≃ₜ F)
-    (k : ℕ) :
-    (finiteBouquetMappingTorusWangPresentationOfCover φ k).boundary =
-      WangFromMayerVietoris.wangBoundary (coverWangBoundary φ k) := rfl
-
-end Presentations
 
 section CirclePresentation
 

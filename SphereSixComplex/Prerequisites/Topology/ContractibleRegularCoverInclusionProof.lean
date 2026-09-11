@@ -168,20 +168,6 @@ public theorem isEilenbergMacLaneSpaceOne_preimageRestrict
   isEilenbergMacLaneSpaceOne_of_contractibleSpace
     (isQuotientCoveringMap_preimageRestrict hp D) a
 
-/-- **The `K(G, 1)` half of `isHomotopyEquivalenceInclusion_of_contractible_regularCover`**: in
-the situation of that statement both the base `B` and the subspace `D` are `K(G, 1)` spaces for
-one and the same group `G`, based at the image of any point of `A`. -/
-public theorem isEilenbergMacLaneSpaceOne_of_contractible_regularCover
-    {G E B : Type*} [Group G] [TopologicalSpace E] [TopologicalSpace B]
-    [MulAction G E] (p : C(E, B)) (A : Set E) (D : Set B)
-    (hp : IsQuotientCoveringMap p G) (hpreimage : p ⁻¹' D = A)
-    (hE : ContractibleSpace E) (hA : ContractibleSpace A) (a : A) :
-    TauCeti.IsEilenbergMacLaneSpaceOne G B (p (a : E)) ∧
-      ∀ h : p (a : E) ∈ D,
-        TauCeti.IsEilenbergMacLaneSpaceOne G D ⟨p (a : E), h⟩ := by
-  subst hpreimage
-  refine ⟨isEilenbergMacLaneSpaceOne_of_contractibleSpace hp _, fun h => ?_⟩
-  exact isEilenbergMacLaneSpaceOne_preimageRestrict hp D a
 
 
 

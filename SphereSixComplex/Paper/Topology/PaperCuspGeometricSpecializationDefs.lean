@@ -88,27 +88,6 @@ public def IsActualCuspFiberPeriodCoordinate
         actualCuspCollarPeriodPoint W hs zeta ↔
       e y = additiveTorusProjection p zeta
 
-/-- The normalization leaves no freedom in the fibre coordinate.  In particular composing a
-normalized fibre coordinate with the hyperelliptic involution `-1` of the torus fibre destroys
-the normalization, which is exactly what the un-normalized structure failed to prevent. -/
-public theorem IsActualCuspFiberPeriodCoordinate.fiberCoordinate_unique
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
-    {W : ActualPuncturedCuspCollarWitness N M}
-    {F : Type} [TopologicalSpace F] {phi : F ≃ₜ F}
-    {total : PuncturedLocalCuspQuotient W ≃ₜ
-      OpenRadialInterval W.localWitness.radius × CircleMappingTorus phi}
-    {t : OpenRadialInterval W.localWitness.radius} {s : ℂ}
-    {hs : ‖cuspQ s‖ < W.localWitness.radius}
-    {p : SphereSixComplex.Periods.Parameters} {e e' : F ≃ₜ AdditiveTorus p}
-    (h : IsActualCuspFiberPeriodCoordinate total t hs p e)
-    (h' : IsActualCuspFiberPeriodCoordinate total t hs p e') :
-    e = e' := by
-  apply Homeomorph.ext
-  intro y
-  obtain ⟨zeta, hzeta⟩ := Quotient.exists_rep (e y)
-  have hy : e y = additiveTorusProjection p zeta := hzeta.symm
-  exact hy.trans ((h' y zeta).1 ((h y zeta).2 hy)).symm
 
 /-- A radial fundamental domain for the actual punctured local cusp quotient, including the
 identified `M₀` monodromy coordinates on its four-torus fibre, but with the fibre marking left

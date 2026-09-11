@@ -98,21 +98,6 @@ public theorem constructedA2NeighborTransition_zero_two_iff
       fin_cases k <;>
         simp [constructedA2CellLiftCoordinates, hp0, hq1, hpq]
 
-public theorem constructedA2CorrectedLaurentIdentity_neighbor_zero_two
-    (v : ToricLattice) (p q : ConstructedA2CellSquare) :
-    constructedA2CorrectedPlaneTile v 0 p =
-        constructedA2CorrectedPlaneTile (v + e₁) 2 q ↔
-      constructedA2CellLiftCoordinates 0 (fun k ↦ (p.1 k : ℂ)) ∈
-          monomialDomain
-            (transitionMatrix (constructedA2CellChart v 0)
-              (constructedA2CellChart (v + e₁) 2)) ∧
-        monomial
-            (transitionMatrix (constructedA2CellChart v 0)
-              (constructedA2CellChart (v + e₁) 2))
-            (constructedA2CellLiftCoordinates 0 (fun k ↦ (p.1 k : ℂ))) =
-          constructedA2CellLiftCoordinates 2 (fun k ↦ (q.1 k : ℂ)) :=
-  (constructedA2CorrectedPlaneTile_neighbor_zero_two_iff v p q).trans
-    (constructedA2NeighborTransition_zero_two_iff v p q).symm
 
 public theorem constructedA2NeighborChart_five_three (v : ToricLattice) :
     constructedA2CellChart v 5 = constructedA2CellChart (v + e₁) 3 := by
@@ -196,21 +181,6 @@ public theorem constructedA2NeighborTransition_five_three_iff
       fin_cases k <;>
         simp [constructedA2CellLiftCoordinates, hp1, hq0, hpq]
 
-public theorem constructedA2CorrectedLaurentIdentity_neighbor_five_three
-    (v : ToricLattice) (p q : ConstructedA2CellSquare) :
-    constructedA2CorrectedPlaneTile v 5 p =
-        constructedA2CorrectedPlaneTile (v + e₁) 3 q ↔
-      constructedA2CellLiftCoordinates 5 (fun k ↦ (p.1 k : ℂ)) ∈
-          monomialDomain
-            (transitionMatrix (constructedA2CellChart v 5)
-              (constructedA2CellChart (v + e₁) 3)) ∧
-        monomial
-            (transitionMatrix (constructedA2CellChart v 5)
-              (constructedA2CellChart (v + e₁) 3))
-            (constructedA2CellLiftCoordinates 5 (fun k ↦ (p.1 k : ℂ))) =
-          constructedA2CellLiftCoordinates 3 (fun k ↦ (q.1 k : ℂ)) :=
-  (constructedA2CorrectedPlaneTile_neighbor_five_three_iff v p q).trans
-    (constructedA2NeighborTransition_five_three_iff v p q).symm
 
 public theorem constructedA2CorrectedPlaneTile_neighbor_five_two_iff
     (v : ToricLattice) (p q : ConstructedA2CellSquare) :
@@ -314,21 +284,6 @@ public theorem constructedA2NeighborTransition_five_two_iff
         simp [monomial, constructedA2CellLiftCoordinates, Fin.prod_univ_succ,
           hp0, hp1, hq0, hq1]
 
-public theorem constructedA2CorrectedLaurentIdentity_neighbor_five_two
-    (v : ToricLattice) (p q : ConstructedA2CellSquare) :
-    constructedA2CorrectedPlaneTile v 5 p =
-        constructedA2CorrectedPlaneTile (v + e₁) 2 q ↔
-      constructedA2CellLiftCoordinates 5 (fun k ↦ (p.1 k : ℂ)) ∈
-          monomialDomain
-            (transitionMatrix (constructedA2CellChart v 5)
-              (constructedA2CellChart (v + e₁) 2)) ∧
-        monomial
-            (transitionMatrix (constructedA2CellChart v 5)
-              (constructedA2CellChart (v + e₁) 2))
-            (constructedA2CellLiftCoordinates 5 (fun k ↦ (p.1 k : ℂ))) =
-          constructedA2CellLiftCoordinates 2 (fun k ↦ (q.1 k : ℂ)) :=
-  (constructedA2CorrectedPlaneTile_neighbor_five_two_iff v p q).trans
-    (constructedA2NeighborTransition_five_two_iff v p q).symm
 
 public theorem constructedA2Neighbor_e1_chartIncidence
     (v : ToricLattice) (i j : Fin 6) (p q : ConstructedA2CellSquare)

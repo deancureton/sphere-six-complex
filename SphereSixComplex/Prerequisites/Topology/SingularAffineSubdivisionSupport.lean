@@ -30,17 +30,6 @@ public noncomputable def iteratedAffineCellSingularSimplex
   (X.toSSetObjEquiv _).symm
     ((X.toSSetObjEquiv _ x).comp (iteratedAffineCellMap n ancestry))
 
-@[simp]
-public theorem toSSetObjEquiv_iteratedAffineCellSingularSimplex_apply
-    (X : TopCat.{0}) (n : ℕ)
-    (x : (TopCat.toSSet.obj X).obj
-      (Opposite.op (SimplexCategory.mk n)))
-    (ancestry : List (TopAffineFlag n))
-    (w : stdSimplex ℝ (Fin (n + 1))) :
-    X.toSSetObjEquiv _
-        (iteratedAffineCellSingularSimplex X n x ancestry) w =
-      X.toSSetObjEquiv _ x (iteratedAffineCellMap n ancestry w) := by
-  rfl
 
 @[simp]
 public theorem iteratedAffineCellSingularSimplex_nil
@@ -253,17 +242,6 @@ public noncomputable def coverSmallIteratedAffineCellSimplex
   ⟨iteratedAffineCellSingularSimplex X n x ancestry,
     iteratedAffineCellSingularSimplex_mem_coverSmall X U n x ancestry hsmall⟩
 
-@[simp]
-public theorem coverSmallIteratedAffineCellSimplex_val
-    (n : ℕ)
-    (x : (TopCat.toSSet.obj X).obj
-      (Opposite.op (SimplexCategory.mk n)))
-    (ancestry : List (TopAffineFlag n))
-    (hsmall : ∃ i, X.toSSetObjEquiv _ x ''
-      Set.range (iteratedAffineCellMap n ancestry) ⊆ U i) :
-    (coverSmallIteratedAffineCellSimplex X U n x ancestry hsmall).1 =
-      iteratedAffineCellSingularSimplex X n x ancestry :=
-  rfl
 
 /-- The signed ancestry expansion, lifted generator by generator to cover-small chains. -/
 public noncomputable def coverSmallAffineAncestryLiftChain

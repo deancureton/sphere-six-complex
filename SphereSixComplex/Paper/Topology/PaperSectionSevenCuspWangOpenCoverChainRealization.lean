@@ -59,55 +59,6 @@ public theorem cuspPulledBackBoundaryHom_eq_comp :
   ext x
   rfl
 
-/-- A chain-level realization of the oriented Wang boundary in the explicit pulled-back cover.
-The first field realizes the mapping-torus fibre inside the cover intersection.  The second says
-that this geometric realization is the previously constructed period-marked band map.  The last
-field identifies the opaque established Wang boundary with the connecting morphism produced by
-`coverChainShortComplex`; it fixes the sign rather than merely asserting exactness. -/
-public structure ActualCuspWangOpenCoverChainRealization where
-  fiberToCuspCoverIntersectionMap :
-    let G := A.actualCuspRadialClutchingData
-    let _ := G.fiberTopology
-    C(G.Fiber,
-      (Opens.toTopCat (TopCat.of (A.openEmbeddingStarData.collarSource 0))).obj
-        (D.cuspOrderThreeOpen ⊓ D.cuspOrderFourOpen))
-  fiberToBand_homology :
-    let G := A.actualCuspRadialClutchingData
-    let _ := G.fiberTopology
-    D.canonicalCuspFiberToBandHomologyOne =
-      D.cuspCoverIntersectionToEllipticBandHomologyOne.comp
-        (integralSingularHomologyMap 1 fiberToCuspCoverIntersectionMap)
-  wangBoundary_eq_chainConnecting :
-    let G := A.actualCuspRadialClutchingData
-    let _ := G.fiberTopology
-    (integralSingularHomologyMap 1 fiberToCuspCoverIntersectionMap).comp
-        (actualCuspWangBoundaryHom A) =
-      D.cuspOpenCoverConnectingHom
-
-namespace ActualCuspWangOpenCoverChainRealization
-
-/-- The explicit chain realization implies the formerly axiomatized unmarked boundary square. -/
-public theorem canonicalWangBoundaryNaturality
-    (R : D.ActualCuspWangOpenCoverChainRealization) :
-    (D.canonicalCuspFiberToBandHomologyOne.comp (actualCuspWangBoundaryHom A) =
-         D.cuspPulledBackBoundaryHom) := by
-  let G := A.actualCuspRadialClutchingData
-  let _ := G.fiberTopology
-  rw [R.fiberToBand_homology,
-    AddMonoidHom.comp_assoc,
-    R.wangBoundary_eq_chainConnecting, ← D.cuspPulledBackBoundaryHom_eq_comp]
-
-/-- Naturality of the explicit short exact chain sequence under the cusp-to-elliptic cover map
-identifies the elliptic Mayer--Vietoris boundary with the transported Wang boundary. -/
-public theorem canonicalBoundary_cuspToElliptic_eq_wangBoundary
-    (R : D.ActualCuspWangOpenCoverChainRealization)
-    (x : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0)) :
-    canonicalBoundary D 1 (cuspToEllipticUnionHomology D 2 x) =
-      D.canonicalCuspFiberToBandHomologyOne (actualCuspWangBoundaryHom A x) := by
-  rw [D.canonicalBoundary_cuspToEllipticUnionHomology]
-  exact (DFunLike.congr_fun R.canonicalWangBoundaryNaturality x).symm
-
-end ActualCuspWangOpenCoverChainRealization
 
 end EllipticTwoDiscCoverData
 

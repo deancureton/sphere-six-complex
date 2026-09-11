@@ -59,21 +59,5 @@ public def constructedCentralCellularEdgePath
         (constructedCentralCellAtlas_edges_same_right W j 0)).trans
         (cwCellularEdgePath_right X (0 : Fin 3)).symm)⟩
 
-public theorem constructedCentralCellularEdgeLoop_relative_class
-    (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
-    (T : CellularHomology.IntegralComparison) (j k : Fin 3) :
-    let _ := (constructedCentralCellAtlas W).cwComplex
-    (T.normalized.cellBasis (ActualLocalCuspCentralOrbitQuotient W) 1).symm
-      ((HomologicalComplex.homologyMap (cwRelativeIntegralSingularChainProjection
-        (integralCWSkeletonInclusion (ActualLocalCuspCentralOrbitQuotient W) 1)) 1).hom
-        (loopHomologyClass ((constructedCentralCellularEdgePath W j).trans
-          (constructedCentralCellularEdgePath W k).symm))) =
-      Finsupp.single j 1 - Finsupp.single k 1 := by
-  let _ := (constructedCentralCellAtlas W).cwComplex
-  exact normalized_cellBasis_loop_edges T (ActualLocalCuspCentralOrbitQuotient W) j k
-    (constructedCentralCellAtlas_edges_same_left W j k)
-    (constructedCentralCellAtlas_edges_same_right W j k)
-    (constructedCentralCellularEdgePath W j) (constructedCentralCellularEdgePath W k) rfl rfl
 
 end SphereSixComplex.Geometry.CuspPuncturedCollarBridge

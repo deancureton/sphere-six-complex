@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspMeridianSourceHomologyCompletion
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspEllipticMappingTorusComparison
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspEllipticMarkedCoordinateFromExistingGeometry
 public import SphereSixComplex.Paper.Topology.PaperCuspFiniteFiberDegreeOneKilledSection
 public import SphereSixComplex.Paper.Topology.PaperCuspMarkedFiberAngularVanishingProof
@@ -106,42 +106,6 @@ public theorem cuspPositiveDegreeOneInvariantGenerator_coordinate
   let _ := G.fiberTopology
   exact (degreeOneWangInvariantEquivInteger G).apply_symm_apply 1
 
-/-- The selected positive section has base-circle winding one by its Wang normalization. -/
-public theorem cuspSelectedPositiveMeridianClass_baseCircle_winding_one
-    (A : PaperAnalyticData) :
-    let G := A.actualCuspRadialClutchingData
-    let _ := G.fiberTopology
-    StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
-        (integralSingularHomologyMap 1
-          (circleMappingTorusBaseCircleProjection G.clutching)
-          (cuspSelectedPositiveMeridianClass A)) = 1 := by
-  let G := A.actualCuspRadialClutchingData
-  let _ := G.fiberTopology
-  let _ : PathConnectedSpace (AdditiveTorus G.fiberParameter) :=
-    additiveTorus_pathConnected G.fiberParameter
-  let _ : PathConnectedSpace G.Fiber :=
-    G.fiberHomeomorph.symm.surjective.pathConnectedSpace
-      G.fiberHomeomorph.symm.continuous
-  change StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
-      (integralSingularHomologyMap 1
-        (circleMappingTorusBaseCircleProjection G.clutching)
-        (cuspSelectedPositiveMeridianClass A)) = 1
-  rw [SphereSixComplex.Topology.IdentityPointMappingTorusWindingBoundary.circleMappingTorusBaseCircle_winding_eq_wangBoundary]
-  change degreeOneWangInvariantEquivInteger G
-      ((circleMappingTorusHOnePresentation G.clutching).totalToInvariants
-        (cuspSelectedPositiveMeridianClass A)) = 1
-  change degreeOneWangInvariantEquivInteger G
-      ((circleMappingTorusHOnePresentation G.clutching).totalToInvariants
-        (G.geometricWangSections.degreeOne.lift
-          (cuspPositiveDegreeOneInvariantGenerator A))) = 1
-  have hright := DFunLike.congr_fun
-    G.geometricWangSections.degreeOne.right_inv
-    (cuspPositiveDegreeOneInvariantGenerator A)
-  change (circleMappingTorusHOnePresentation G.clutching).totalToInvariants
-      (G.geometricWangSections.degreeOne.lift
-        (cuspPositiveDegreeOneInvariantGenerator A)) =
-    cuspPositiveDegreeOneInvariantGenerator A at hright
-  rw [hright, cuspPositiveDegreeOneInvariantGenerator_coordinate]
 
 /-- The selected positive section class is exactly the third raw degree-one basis class. -/
 public theorem cuspSelectedPositiveMeridianClass_raw_coordinate
@@ -192,25 +156,6 @@ public theorem cuspRawDegreeOneThirdBasis_eq_selectedPositiveMeridianClass
   rw [G.geometricWangSections.circleMappingTorusHOneAddEquiv.apply_symm_apply]
   exact (cuspSelectedPositiveMeridianClass_raw_coordinate A).symm
 
-/-- The third raw degree-one basis class has canonical base-circle winding one. -/
-public theorem cuspRawDegreeOneThirdBasis_baseCircle_winding_one
-    (A : PaperAnalyticData) :
-    let G := A.actualCuspRadialClutchingData
-    let _ := G.fiberTopology
-    StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
-        (integralSingularHomologyMap 1
-          (circleMappingTorusBaseCircleProjection G.clutching)
-          (G.geometricWangSections.circleMappingTorusHOneAddEquiv.symm
-            (Pi.single (2 : Fin 3) 1))) = 1 := by
-  let G := A.actualCuspRadialClutchingData
-  let _ := G.fiberTopology
-  change StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
-      (integralSingularHomologyMap 1
-        (circleMappingTorusBaseCircleProjection G.clutching)
-        (G.geometricWangSections.circleMappingTorusHOneAddEquiv.symm
-          (Pi.single (2 : Fin 3) 1))) = 1
-  rw [cuspRawDegreeOneThirdBasis_eq_selectedPositiveMeridianClass]
-  exact cuspSelectedPositiveMeridianClass_baseCircle_winding_one A
 
 /-- The actual filling map is an isomorphism on the degree-one Wang coinvariants, without using
 the coordinate specialization matrix. -/
@@ -272,191 +217,9 @@ public theorem cuspSelectedPositiveMeridianClass_eq_neg_explicit_of_normalizatio
   · rw [map_neg,
       rawDegreeOneTotalSpecialization_cuspMappingTorusMeridianHomologyClass, neg_zero]
 
-/-- The marked source winding follows from three independent geometric normalizations: the
-selected section lies in the filling kernel, the explicit angular meridian has negative Wang
-orientation, and its negative has positive source winding. -/
-public theorem cuspSelectedPositiveMeridianClass_winding_one_of_explicit_normalizations
-    (A : PaperAnalyticData) (b : PuncturedLocalCuspQuotient A.starCuspWitness)
-    (hselected :
-      let G := A.actualCuspRadialClutchingData
-      let _ := G.fiberTopology
-      rawDegreeOneTotalSpecialization G (cuspSelectedPositiveMeridianClass A) = 0)
-    (hexplicit :
-      let G := A.actualCuspRadialClutchingData
-      let _ := G.fiberTopology
-      degreeOneWangInvariantEquivInteger G
-          ((circleMappingTorusHOnePresentation G.clutching).totalToInvariants
-            (-(cuspMappingTorusMeridianHomologyClass G b))) = 1)
-    (hwinding :
-      let G := A.actualCuspRadialClutchingData
-      let _ := G.fiberTopology
-      StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
-          (integralSingularHomologyMap 1 (A.cuspMeridianSourceCircleMap)
-            (-(cuspMappingTorusMeridianHomologyClass G b))) = 1) :
-    let G := A.actualCuspRadialClutchingData
-    let _ := G.fiberTopology
-    StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
-        (integralSingularHomologyMap 1 (A.cuspMeridianSourceCircleMap)
-          (cuspSelectedPositiveMeridianClass A)) = 1 := by
-  let G := A.actualCuspRadialClutchingData
-  let _ := G.fiberTopology
-  rw [cuspSelectedPositiveMeridianClass_eq_neg_explicit_of_normalizations
-    A b hselected hexplicit]
-  exact hwinding
 
-/-- A winding-one evaluation on the selected positive section is the sole missing scalar for the
-full source character: the resulting three raw basis values are `[12, 0, 1]`. -/
-public theorem cuspMeridianSourceCircleMap_rawBasisValues_of_selectedPositive_winding_one
-    (A : PaperAnalyticData)
-    (hmeridian :
-      let G := A.actualCuspRadialClutchingData
-      let _ := G.fiberTopology
-      StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
-          (integralSingularHomologyMap 1 (A.cuspMeridianSourceCircleMap)
-            (cuspSelectedPositiveMeridianClass A)) = 1) :
-    let G := A.actualCuspRadialClutchingData
-    let _ := G.fiberTopology
-    (fun i : Fin 3 ↦
-      StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
-        (integralSingularHomologyMap 1 (A.cuspMeridianSourceCircleMap)
-          (G.geometricWangSections.circleMappingTorusHOneAddEquiv.symm
-            (Pi.single i 1)))) = ![12, 0, 1] := by
-  let G := A.actualCuspRadialClutchingData
-  let _ := G.fiberTopology
-  funext i
-  fin_cases i
-  · let x := actualCuspFiberCoinvariantHomologyOneBasis A 0
-    have hClass :
-        G.geometricWangSections.circleMappingTorusHOneAddEquiv.symm
-            (Pi.single (0 : Fin 3) 1) =
-          integralSingularHomologyMap 1
-            (finiteBouquetMappingTorusFiberInclusion (fun _ : Unit ↦ G.clutching)) x := by
-      apply G.geometricWangSections.circleMappingTorusHOneAddEquiv.injective
-      rw [G.geometricWangSections.circleMappingTorusHOneAddEquiv.apply_symm_apply]
-      exact (actualCuspFiberCoinvariantHomologyOneBasis_inclusion A 0).symm
-    change StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
-        (integralSingularHomologyMap 1 (A.cuspMeridianSourceCircleMap)
-          (G.geometricWangSections.circleMappingTorusHOneAddEquiv.symm
-            (Pi.single (0 : Fin 3) 1))) = 12
-    rw [hClass]
-    dsimp [G, actualCuspFiberCoinvariantHomologyOneBasis,
-      Geometry.PaperAnalyticData.actualCuspRadialClutchingData,
-      _root_.SphereSixComplex.Geometry.CuspPuncturedCollarBridge.ActualPuncturedCuspCollarWitness.radialClutchingData,
-      CuspRadialClutchingConstruction.actualCuspRadialClutchingData] at x ⊢
-    change StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
-        (integralSingularHomologyMap 1
-          (_root_.SphereSixComplex.cuspMeridianSourceCircleMap
-            (cuspBasePoint A.cuspCoordinate (markedCuspParameter A.starCuspWitness)))
-          (integralSingularHomologyMap 1
-            (finiteBouquetMappingTorusFiberInclusion
-              (fun _ : Unit ↦ cuspFiberClutching
-                (cuspBasePoint A.cuspCoordinate (markedCuspParameter A.starCuspWitness)))) x)) = 12
-    rw [cuspMeridianSourceCircleMap_fiber_homology]
-    change 12 * G.monodromyCoordinates.degreeOne
-      (G.monodromyCoordinates.degreeOne.symm ![1, 0, 0, 0]) 0 = 12
-    rw [G.monodromyCoordinates.degreeOne.apply_symm_apply]
-    rfl
-  · let x := actualCuspFiberCoinvariantHomologyOneBasis A 1
-    have hClass :
-        G.geometricWangSections.circleMappingTorusHOneAddEquiv.symm
-            (Pi.single (1 : Fin 3) 1) =
-          integralSingularHomologyMap 1
-            (finiteBouquetMappingTorusFiberInclusion (fun _ : Unit ↦ G.clutching)) x := by
-      apply G.geometricWangSections.circleMappingTorusHOneAddEquiv.injective
-      rw [G.geometricWangSections.circleMappingTorusHOneAddEquiv.apply_symm_apply]
-      exact (actualCuspFiberCoinvariantHomologyOneBasis_inclusion A 1).symm
-    change StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
-        (integralSingularHomologyMap 1 (A.cuspMeridianSourceCircleMap)
-          (G.geometricWangSections.circleMappingTorusHOneAddEquiv.symm
-            (Pi.single (1 : Fin 3) 1))) = 0
-    rw [hClass]
-    dsimp [G, actualCuspFiberCoinvariantHomologyOneBasis,
-      Geometry.PaperAnalyticData.actualCuspRadialClutchingData,
-      _root_.SphereSixComplex.Geometry.CuspPuncturedCollarBridge.ActualPuncturedCuspCollarWitness.radialClutchingData,
-      CuspRadialClutchingConstruction.actualCuspRadialClutchingData] at x ⊢
-    change StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
-        (integralSingularHomologyMap 1
-          (_root_.SphereSixComplex.cuspMeridianSourceCircleMap
-            (cuspBasePoint A.cuspCoordinate (markedCuspParameter A.starCuspWitness)))
-          (integralSingularHomologyMap 1
-            (finiteBouquetMappingTorusFiberInclusion
-              (fun _ : Unit ↦ cuspFiberClutching
-                (cuspBasePoint A.cuspCoordinate (markedCuspParameter A.starCuspWitness)))) x)) = 0
-    rw [cuspMeridianSourceCircleMap_fiber_homology]
-    change 12 * G.monodromyCoordinates.degreeOne
-      (G.monodromyCoordinates.degreeOne.symm ![0, 1, 0, 0]) 0 = 0
-    rw [G.monodromyCoordinates.degreeOne.apply_symm_apply]
-    rfl
-  · change StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
-        (integralSingularHomologyMap 1 (A.cuspMeridianSourceCircleMap)
-          (G.geometricWangSections.circleMappingTorusHOneAddEquiv.symm
-            (Pi.single (2 : Fin 3) 1))) = 1
-    rw [cuspRawDegreeOneThirdBasis_eq_selectedPositiveMeridianClass]
-    exact hmeridian
 
-/-- The exact source homology identity follows from the single selected-section normalization. -/
-public theorem cuspMeridianSourceCircleMap_homology_coordinate_of_selectedPositive_winding_one
-    (A : PaperAnalyticData)
-    (hmeridian :
-      let G := A.actualCuspRadialClutchingData
-      let _ := G.fiberTopology
-      StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
-          (integralSingularHomologyMap 1 (A.cuspMeridianSourceCircleMap)
-            (cuspSelectedPositiveMeridianClass A)) = 1) :
-    let G := A.actualCuspRadialClutchingData
-    let _ := G.fiberTopology
-    actualCuspEllipticDegreeOneCoordinateAfterAddEquiv
-        G.geometricWangSections.circleMappingTorusHOneAddEquiv =
-      StandardCircleHomologyLiftDegree.unitCircleHomologyWinding.comp
-        (integralSingularHomologyMap 1 (A.cuspMeridianSourceCircleMap)) := by
-  let G := A.actualCuspRadialClutchingData
-  let _ := G.fiberTopology
-  apply addMonoidHom_ext_of_equiv_pi_single_one
-    G.geometricWangSections.circleMappingTorusHOneAddEquiv
-  intro i
-  have hvalues := congrFun
-    (cuspMeridianSourceCircleMap_rawBasisValues_of_selectedPositive_winding_one A hmeridian) i
-  change cuspEllipticDegreeOneRawCoordinate
-      (G.geometricWangSections.circleMappingTorusHOneAddEquiv
-        (G.geometricWangSections.circleMappingTorusHOneAddEquiv.symm
-          (Pi.single i 1))) = _
-  rw [G.geometricWangSections.circleMappingTorusHOneAddEquiv.apply_symm_apply]
-  rw [AddMonoidHom.comp_apply]
-  calc
-    cuspEllipticDegreeOneRawCoordinate (Pi.single i 1) = ![12, 0, 1] i := by
-      fin_cases i <;> simp [cuspEllipticDegreeOneRawCoordinate]
-    _ = StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
-        (integralSingularHomologyMap 1 (A.cuspMeridianSourceCircleMap)
-          (G.geometricWangSections.circleMappingTorusHOneAddEquiv.symm
-            (Pi.single i 1))) := hvalues.symm
 
-/-- Thus the full source-coordinate identity is equivalent to one concrete normalization: the
-explicit circle map has winding one on the selected positive Wang-section generator. -/
-public theorem cuspMeridianSourceCircleMap_homology_coordinate_iff_selectedPositive_winding_one
-    (A : PaperAnalyticData) :
-    let G := A.actualCuspRadialClutchingData
-    let _ := G.fiberTopology
-    (actualCuspEllipticDegreeOneCoordinateAfterAddEquiv
-          G.geometricWangSections.circleMappingTorusHOneAddEquiv =
-        StandardCircleHomologyLiftDegree.unitCircleHomologyWinding.comp
-          (integralSingularHomologyMap 1 (A.cuspMeridianSourceCircleMap))) ↔
-      StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
-          (integralSingularHomologyMap 1 (A.cuspMeridianSourceCircleMap)
-            (cuspSelectedPositiveMeridianClass A)) = 1 := by
-  let G := A.actualCuspRadialClutchingData
-  let _ := G.fiberTopology
-  constructor
-  · intro h
-    have hvalue := DFunLike.congr_fun h (cuspSelectedPositiveMeridianClass A)
-    change cuspEllipticDegreeOneRawCoordinate
-        (G.geometricWangSections.circleMappingTorusHOneAddEquiv
-          (cuspSelectedPositiveMeridianClass A)) =
-      StandardCircleHomologyLiftDegree.unitCircleHomologyWinding
-        (integralSingularHomologyMap 1 (A.cuspMeridianSourceCircleMap)
-          (cuspSelectedPositiveMeridianClass A)) at hvalue
-    rw [cuspSelectedPositiveMeridianClass_raw_coordinate] at hvalue
-    simpa [cuspEllipticDegreeOneRawCoordinate] using hvalue.symm
-  · exact cuspMeridianSourceCircleMap_homology_coordinate_of_selectedPositive_winding_one A
 
 end Geometry.PaperAnalyticData
 

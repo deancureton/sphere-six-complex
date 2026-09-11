@@ -999,26 +999,7 @@ theorem orbitAssembledScalar_differentiableOn
   exact h.congr (fun z hz ↦ by
     rw [Function.comp_apply, UpperHalfPlane.ofComplex_apply_of_im_pos hz])
 
-/-- The globally holomorphic orbit scalar itself supplies the local-patch interface used by the
-Tau Ceti continuation layer. -/
-noncomputable def orbitAssembledScalarLocalPatches
-    (S : ChamberCaratheodorySeed sourceBoundedChamber)
-    (hconsistent : SourceFundamentalScalarConsistent S) :
-    OrbitAssembledScalarLocalPatches S where
-  patch := fun _ ↦ orbitAssembledScalar S
-  patch_analyticAt := fun z ↦
-    ((orbitAssembledScalar_differentiableOn S hconsistent).analyticOnNhd
-      scalarUpperHalfPlane_isOpen z z.im_pos)
-  eventuallyEq := fun _ ↦ Filter.EventuallyEq.rfl
 
-/-- The removable-corner construction gives the original chamber seed a Tau Ceti continuation
-throughout the upper half-plane. -/
-theorem orbitAssembledScalar_seed_continuesInside
-    (S : ChamberCaratheodorySeed sourceBoundedChamber)
-    (hconsistent : SourceFundamentalScalarConsistent S) :
-    TauCeti.ContinuesInside (sourceScalarTriangleMap S) sourceUpperHalfPlaneSet
-      sourceScalarContinuationBase :=
-  (orbitAssembledScalarLocalPatches S hconsistent).seed_continuesInside hconsistent
 
 /-- Exact source-orbit data packaged for the automatic elliptic and cusp assembly. -/
 noncomputable def orbitAssembledScalarAutomaticSourceScalarCore

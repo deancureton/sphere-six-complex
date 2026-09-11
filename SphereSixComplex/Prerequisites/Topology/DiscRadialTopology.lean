@@ -40,11 +40,6 @@ public theorem radialHomotopy_one (w : ComplexUnitDisc) :
   apply Subtype.ext
   simp [radialHomotopy, ComplexUnitDisc.center]
 
-@[simp]
-public theorem radialHomotopy_center (s : unitInterval) :
-    radialHomotopy (s, ComplexUnitDisc.center) = ComplexUnitDisc.center := by
-  apply Subtype.ext
-  simp [radialHomotopy, ComplexUnitDisc.center]
 
 public theorem radialHomotopy_rotation_pow
     (lambda : ℂ) (hlambda : ‖lambda‖ = 1) (k : ℕ)

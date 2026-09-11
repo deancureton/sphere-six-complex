@@ -84,12 +84,6 @@ public theorem centralFiberRepresentation_eq_diagonal
     D.actionData.diagonalGenerator_pow_apply,
     rotation_pow_center D]
 
-public theorem centralFiberRepresentation_eq_diagonal_snd
-    (D : RadialEllipticActionData m T) (g : FiniteCyclic m) (x : T) :
-    centralFiberRepresentation D g x =
-      (D.actionData.representation g (D.actionData.center, x)).2 := by
-  have h := congrArg Prod.snd (centralFiberRepresentation_eq_diagonal D g x)
-  exact h.symm
 
 /-- Projection of the central torus onto the reduced central fibre. -/
 public noncomputable def centralFiberOrbitProjection
@@ -202,55 +196,13 @@ open TriangleGroup
 
 /-! ## The gamma-coordinate splitting -/
 
-/-- Head--tail coordinates split real period space into the `gamma` coordinate and its
-three-dimensional kernel direction. -/
-public noncomputable def gammaRealSplit :
-    RealPeriods ≃L[ℝ] ℝ × (Fin 3 → ℝ) :=
-  (Fin.consLinearEquiv ℝ (fun _ : Fin 4 ↦ ℝ)).symm.toContinuousLinearEquiv
 
-@[simp]
-public theorem gammaRealSplit_apply (u : RealPeriods) :
-    gammaRealSplit u = (u 0, Fin.tail u) :=
-  rfl
 
-/-- The real extension of `gamma` is literally the first period coordinate. -/
-public theorem gammaReal_eq_head (u : RealPeriods) :
-    gammaReal u = u 0 := by
-  rw [gammaReal, Fintype.linearCombination_apply]
-  simp [gamma, integralBasisVector, Fin.sum_univ_succ]
 
-/-- The analogous integral head--tail splitting of the period lattice. -/
-public def gammaLatticeSplit :
-    Lattice ≃ₗ[ℤ] ℤ × (Fin 3 → ℤ) :=
-  (Fin.consLinearEquiv ℤ (fun _ : Fin 4 ↦ ℤ)).symm
 
-@[simp]
-public theorem gammaLatticeSplit_apply (u : Lattice) :
-    gammaLatticeSplit u = (gamma u, Fin.tail u) :=
-  rfl
 
-/-- Gamma coordinates on a full-rank period torus. -/
-public noncomputable def additiveTorusGammaSplit (p : Parameters) (h : FullRank p) :
-    AdditiveTorus p ≃ₜ UnitAddCircle × StdTorus 3 :=
-  (additiveTorusStdHomeomorph p h).trans fourTorusSplit
 
-@[simp]
-public theorem additiveTorusGammaSplit_apply_projection
-    (p : Parameters) (h : FullRank p) (z : ComplexTwoSpace) :
-    additiveTorusGammaSplit p h (torusProjection p z) =
-      ((((h.realEquiv.symm z) 0 : ℝ) : UnitAddCircle),
-        fun i ↦ (((h.realEquiv.symm z) i.succ : ℝ) : UnitAddCircle)) :=
-  rfl
 
-/-- On a period-domain fibre, the first circle of the split is exactly `gammaCoordinate`
-modulo its integral periods. -/
-public theorem additiveTorusGammaSplit_fst_projection_periodDomain
-    (x : PeriodDomain) (z : ComplexTwoSpace) :
-    (additiveTorusGammaSplit x.1 (fullRankDomain x) (torusProjection x.1 z)).1 =
-      ((gammaCoordinate x z : ℝ) : UnitAddCircle) := by
-  change (((fullRankDomain x).realEquiv.symm z 0 : ℝ) : UnitAddCircle) =
-    ((gammaReal ((fullRankDomain x).realEquiv.symm z) : ℝ) : UnitAddCircle)
-  rw [gammaReal_eq_head]
 
 /-! ## The two explicit paper shears and three-torus clutching maps -/
 

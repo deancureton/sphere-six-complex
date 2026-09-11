@@ -29,42 +29,7 @@ public def CoverSmallChainQuasiIsomorphism
     {i : Type} (X : TopCat) (U : i → Set X) : Prop :=
   QuasiIso (coverSmallIntegralSingularChainInclusion X U)
 
-/-- A quasi-isomorphism from cover-small to full singular chains supplies the existing
-small-chain approximation interface. -/
-public theorem coverSmallChainApproximation_of_quasiIso
-    {i : Type} (X : TopCat) (U : i → Set X)
-    (h : CoverSmallChainQuasiIsomorphism X U) :
-    CoverSmallChainApproximation X U := by
-  letI : QuasiIso (coverSmallIntegralSingularChainInclusion X U) := h
-  letI projectiveInteger : Projective (AddCommGrpCat.of ℤ) := by
-    exact ((forget₂ (ModuleCat ℤ) AddCommGrpCat).asEquivalence.map_projective_iff
-      (ModuleCat.of ℤ ℤ)).mpr (by infer_instance)
-  letI projectiveSmall (n : ℕ) :
-      Projective ((coverSmallIntegralSingularChainComplex X U).X n) := by
-    change Projective
-      (∐ fun _ : (coverSmallSingularSubcomplex X U : SSet).obj
-          (Opposite.op (SimplexCategory.mk n)) ↦
-        AddCommGrpCat.of ℤ)
-    infer_instance
-  letI projectiveFull (n : ℕ) :
-      Projective ((integralSingularChainComplexObj X).X n) := by
-    change Projective
-      (∐ fun _ : (TopCat.toSSet.obj X).obj
-          (Opposite.op (SimplexCategory.mk n)) ↦ AddCommGrpCat.of ℤ)
-    infer_instance
-  exact (ChainComplex.quasiIso_iff_of_projective
-    (coverSmallIntegralSingularChainInclusion X U)).mp (by infer_instance)
 
-/-- The remaining homological small-chain statement for the concrete disk cover. -/
-public def DiskSevenSmallChainQuasiIsomorphism : Prop :=
-  CoverSmallChainQuasiIsomorphism (TopCat.disk.{0} 7) diskSevenExcisionCover
 
-/-- For the concrete disk cover, homological excision is enough to recover the stronger
-chain-homotopy-equivalence statement used downstream. -/
-public theorem diskSevenSmallChainApproximation_of_quasiIso
-    (h : DiskSevenSmallChainQuasiIsomorphism) :
-    DiskSevenSmallChainApproximation :=
-  coverSmallChainApproximation_of_quasiIso
-    (TopCat.disk.{0} 7) diskSevenExcisionCover h
 
 end SphereSixComplex

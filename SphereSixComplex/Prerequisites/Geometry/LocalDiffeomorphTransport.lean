@@ -124,43 +124,4 @@ end OfCompOpenEmbedding
 
 /-! ## The inclusion of an open subset -/
 
-section OpenSubtype
-
-variable {X : Type*} [TopologicalSpace X] [ChartedSpace H X]
-
-/-- The inclusion of an open subset, as a partial diffeomorphism onto its image. -/
-public noncomputable def openSubtypeValPartialDiffeomorph
-    (U : TopologicalSpace.Opens X) [Nonempty U] : PartialDiffeomorph I I U X ∞ := by
-  let f : U → X := Subtype.val
-  let hopen : IsOpenEmbedding f := U.2.isOpenEmbedding_subtypeVal
-  exact {
-    toPartialEquiv := (hopen.toOpenPartialHomeomorph f).toPartialEquiv
-    open_source := isOpen_univ
-    open_target := by
-      rw [hopen.toOpenPartialHomeomorph_target]
-      change IsOpen (Set.range (Subtype.val : U → X))
-      rw [Subtype.range_val]
-      exact U.2
-    contMDiffOn_toFun := contMDiff_subtype_val.contMDiffOn
-    contMDiffOn_invFun := by
-      intro y hy
-      apply (ContMDiffWithinAt.subtypeVal_comp_iff U _ _ y).mp
-      apply contMDiffAt_id.contMDiffWithinAt.congr
-      · intro z hz
-        exact IsOpenEmbedding.toOpenPartialHomeomorph_right_inv f hopen
-          (by rwa [hopen.toOpenPartialHomeomorph_target] at hz)
-      · exact IsOpenEmbedding.toOpenPartialHomeomorph_right_inv f hopen
-          (by rwa [hopen.toOpenPartialHomeomorph_target] at hy)
-  }
-
-/-- The inclusion of an open subset is a local diffeomorphism. -/
-public theorem openSubtypeVal_isLocalDiffeomorph (U : TopologicalSpace.Opens X) :
-    IsLocalDiffeomorph I I ∞ (Subtype.val : U → X) := by
-  intro x
-  let _ : Nonempty U := ⟨x⟩
-  exact (openSubtypeValPartialDiffeomorph (I := I) U).isLocalDiffeomorphAt I I ∞
-    (show x ∈ Set.univ from Set.mem_univ x)
-
-end OpenSubtype
-
 end SphereSixComplex

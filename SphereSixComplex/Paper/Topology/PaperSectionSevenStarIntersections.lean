@@ -57,20 +57,6 @@ public theorem range_collarSourceToGlued (i : Fin 3) :
     change D.toGlueData.ι none (A.toCentral i z) = D.toGlueData.ι none y.1
     rw [hz]
 
-/-- Every singleton intersection of the star cover is homeomorphic to its gluing piece. -/
-public noncomputable def singletonIntersectionHomeomorph (j : Fin 4) :
-    A.toFourPieceStarGluingData.glueData.U (sectionSevenFourPieceStarIndex j) ≃ₜ
-      finiteCoverIntersection
-        (sectionSevenStarOpenCover A.toFourPieceStarGluingData).piece {j} := by
-  let e :
-      A.toFourPieceStarGluingData.glueData.U (sectionSevenFourPieceStarIndex j) ≃ₜ
-        Set.range (A.toFourPieceStarGluingData.glueData.toGlueData.ι
-          (sectionSevenFourPieceStarIndex j)) :=
-    (A.toFourPieceStarGluingData.glueData.ι_isOpenEmbedding
-      (sectionSevenFourPieceStarIndex j)).isEmbedding.toHomeomorph
-  refine e.trans (Homeomorph.setCongr ?_)
-  ext x
-  simp [finiteCoverIntersection, sectionSevenStarOpenCover]
 
 /-- The central--filling intersection is homeomorphic to the exact common collar source used in
 the analytic gluing. -/
@@ -101,49 +87,7 @@ public theorem fillingPiece_inter_fillingPiece {i j : Fin 3} (hij : i ≠ j) :
     simpa [FourPieceStarGluingData.overlap, hij] using y.2
   · simp
 
-/-- Any finite cover intersection containing two distinct filling indices is empty. -/
-public theorem finiteCoverIntersection_eq_empty_of_two_fillings
-    (s : Finset (Fin 4)) {i j : Fin 3} (hi : i.succ ∈ s) (hj : j.succ ∈ s)
-    (hij : i ≠ j) :
-    finiteCoverIntersection
-      (sectionSevenStarOpenCover A.toFourPieceStarGluingData).piece s = ∅ := by
-  ext x
-  constructor
-  · intro hx
-    have hmem := (mem_finiteCoverIntersection_iff
-      (sectionSevenStarOpenCover A.toFourPieceStarGluingData).piece s x).mp hx
-    have hpair :
-        x ∈ (sectionSevenStarOpenCover A.toFourPieceStarGluingData).piece i.succ ∩
-          (sectionSevenStarOpenCover A.toFourPieceStarGluingData).piece j.succ :=
-      ⟨hmem i.succ hi, hmem j.succ hj⟩
-    rw [A.fillingPiece_inter_fillingPiece hij] at hpair
-    exact hpair
-  · simp
 
 end OpenEmbeddingStarData
-
-namespace Geometry.PaperAnalyticData
-
-variable (P : PaperAnalyticData)
-
-/-- The exact singular-intersection diagram for the concrete analytic four-piece star.  This is
-the canonical unreduced local model; reducing it to the finite Section 7 matrix requires the
-additional deformation-retract data isolated by the preceding homeomorphisms. -/
-public noncomputable def singularIntersectionChainModels :
-    SectionSevenStarIntersectionChainModels
-      P.openEmbeddingStarData.toFourPieceStarGluingData :=
-  SectionSevenStarIntersectionChainModels.singularIntersectionModels
-    P.openEmbeddingStarData.toFourPieceStarGluingData
-
-/-- The actual central--filling intersections are the cusp and elliptic common collar sources
-selected by the analytic construction. -/
-public noncomputable def centralFillingIntersectionHomeomorph (i : Fin 3) :
-    P.openEmbeddingStarData.collarSource i ≃ₜ
-      finiteCoverIntersection
-        (sectionSevenStarOpenCover
-          P.openEmbeddingStarData.toFourPieceStarGluingData).piece {0, i.succ} :=
-  P.openEmbeddingStarData.centralFillingIntersectionHomeomorph i
-
-end Geometry.PaperAnalyticData
 
 end SphereSixComplex

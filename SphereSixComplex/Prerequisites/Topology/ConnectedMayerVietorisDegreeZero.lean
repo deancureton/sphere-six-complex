@@ -70,13 +70,7 @@ public theorem pathConnectedIntegralHomologyZeroEquivInteger_naturality
   ConcreteCategory.congr_hom
     (TopCat.singularHomology₀ε_naturality (TopCat.ofHom f) (AddCommGrpCat.of ℤ)) x
 
-/-- The signed integer antidiagonal. -/
-public def integerAntidiagonal : ℤ →+ ℤ × ℤ :=
-  (AddMonoidHom.id ℤ).prod (-(AddMonoidHom.id ℤ))
 
-public theorem integerAntidiagonal_injective : Function.Injective integerAntidiagonal := by
-  intro x y h
-  exact congrArg Prod.fst h
 
 namespace IntegralMayerVietoris
 
@@ -100,21 +94,6 @@ public theorem differenceMap_zero_apply_normalForm
         (-(integralSingularHomologyMap 0 (interToRight A B)) x) = _
     rw [map_neg, pathConnectedIntegralHomologyZeroEquivInteger_naturality]
 
-/-- Homomorphism-level normal form for the actual degree-zero Mayer--Vietoris difference map. -/
-public theorem differenceMap_zero_normalForm :
-    ((pathConnectedIntegralHomologyZeroEquivInteger A).prodCongr
-      (pathConnectedIntegralHomologyZeroEquivInteger B)).toAddMonoidHom.comp
-        (differenceMap A B 0) =
-      integerAntidiagonal.comp
-        (pathConnectedIntegralHomologyZeroEquivInteger
-          (A ∩ B : Set X)).toAddMonoidHom := by
-  ext x
-  · exact pathConnectedIntegralHomologyZeroEquivInteger_naturality
-      (interToLeft A B) x
-  · change pathConnectedIntegralHomologyZeroEquivInteger B
-        (-(integralSingularHomologyMap 0 (interToRight A B)) x) = _
-    rw [map_neg, pathConnectedIntegralHomologyZeroEquivInteger_naturality]
-    rfl
 
 /-- In particular, the actual degree-zero difference map is injective. -/
 public theorem differenceMap_zero_injective : Function.Injective (differenceMap A B 0) := by

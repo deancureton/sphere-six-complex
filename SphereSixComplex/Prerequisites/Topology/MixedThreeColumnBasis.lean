@@ -36,10 +36,6 @@ public theorem signedMixedThreeColumnEquiv_apply (a b c : ℤˣ) (x : Fin 4 → 
   fin_cases i <;>
     simp [signedMixedThreeColumnEquiv, integerUnitDiagonalEquiv, mixedThreeColumnEquiv]
 
-public theorem signedMixedThreeColumnEquiv_first (a b c : ℤˣ) :
-    signedMixedThreeColumnEquiv a b c (Pi.single 0 1) = Pi.single 0 1 := by
-  ext i
-  fin_cases i <;> simp [signedMixedThreeColumnEquiv_apply]
 
 public theorem signedMixedThreeColumnEquiv_one (a b c : ℤˣ) :
     signedMixedThreeColumnEquiv a b c (Pi.single 1 1) = ![0, ↑a, 0, -↑c] := by

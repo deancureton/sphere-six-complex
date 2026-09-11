@@ -55,53 +55,7 @@ public theorem fundamentalGroupPair_simultaneouslyConjugate_of_paths
     change ip.inv ≫ b ≫ ip.hom = ic.inv ≫ (iq.inv ≫ b ≫ iq.hom) ≫ ic.hom
     simp [ic, Category.assoc]
 
-/-- For a fixed map, changing the target connector conjugates the images of any two loops by
-one common element. -/
-public theorem fundamentalGroupMappedPair_simultaneouslyConjugate_of_connectors
-    {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
-    (f : C(X, Y)) (x : X) {y : Y} (p q : Path (f x) y)
-    (a b : FundamentalGroup X x) :
-    SimultaneouslyConjugate
-      (FundamentalGroup.fundamentalGroupMulEquivOfPath p (FundamentalGroup.map f x a),
-        FundamentalGroup.fundamentalGroupMulEquivOfPath p (FundamentalGroup.map f x b))
-      (FundamentalGroup.fundamentalGroupMulEquivOfPath q (FundamentalGroup.map f x a),
-        FundamentalGroup.fundamentalGroupMulEquivOfPath q (FundamentalGroup.map f x b)) :=
-  fundamentalGroupPair_simultaneouslyConjugate_of_paths p q _ _
 
-/-- Changing the point selected over a quotient-cover basepoint conjugates the deck labels of
-any two loops by the single deck element relating the two selected points. -/
-public theorem quotientCoverFundamentalGroupPair_simultaneouslyConjugate_of_smul
-    {E X G : Type*} [TopologicalSpace E] [TopologicalSpace X]
-    [Group G] [MulAction G E] {p : C(E, X)}
-    (hp : IsQuotientCoveringMap p G) [SimplyConnectedSpace E]
-    {x : X} (e₁ e₂ : p ⁻¹' {x}) (c : G) (he : e₂.1 = c • e₁.1)
-    (a b : FundamentalGroup X x) :
-    SimultaneouslyConjugate
-      (MulOpposite.unop (hp.fundamentalGroupEquiv e₂ a),
-        MulOpposite.unop (hp.fundamentalGroupEquiv e₂ b))
-      (MulOpposite.unop (hp.fundamentalGroupEquiv e₁ a),
-        MulOpposite.unop (hp.fundamentalGroupEquiv e₁ b)) := by
-  refine ⟨c, ?_, ?_⟩
-  · change MulOpposite.unop (hp.fundamentalGroupToMulOpposite e₂ a) =
-      c * MulOpposite.unop (hp.fundamentalGroupToMulOpposite e₁ a) * c⁻¹
-    apply hp.isCancelSMul.right_cancel _ _ e₂.1
-    rw [hp.unop_fundamentalGroupToMulOpposite_smul]
-    rw [he, mul_smul, mul_smul, inv_smul_smul]
-    rw [hp.unop_fundamentalGroupToMulOpposite_smul]
-    have he' : e₂ = hp.toPermFiber x c e₁ := Subtype.ext he
-    rw [he']
-    exact congrArg Subtype.val
-      (hp.monodromy_toPermFiber (g := c) (e := e₁) (γ := a))
-  · change MulOpposite.unop (hp.fundamentalGroupToMulOpposite e₂ b) =
-      c * MulOpposite.unop (hp.fundamentalGroupToMulOpposite e₁ b) * c⁻¹
-    apply hp.isCancelSMul.right_cancel _ _ e₂.1
-    rw [hp.unop_fundamentalGroupToMulOpposite_smul]
-    rw [he, mul_smul, mul_smul, inv_smul_smul]
-    rw [hp.unop_fundamentalGroupToMulOpposite_smul]
-    have he' : e₂ = hp.toPermFiber x c e₁ := Subtype.ext he
-    rw [he']
-    exact congrArg Subtype.val
-      (hp.monodromy_toPermFiber (g := c) (e := e₁) (γ := b))
 
 end SphereSixComplex.Topology
 

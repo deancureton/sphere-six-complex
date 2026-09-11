@@ -462,27 +462,6 @@ public theorem affineFlagRelativeMeshContraction
   exact diam_range_affineParentContinuousMap_comp_affineFlag_le n n
     (fun i ↦ iteratedAffineCellMap n ancestry (stdSimplex.vertex i)) F
 
-/-- Every iterated affine cell satisfies the power-law diameter bound, with no relative-mesh
-hypothesis left to discharge. -/
-public theorem diam_range_iteratedAffineCellMap_le_pow_unconditional
-    (n : ℕ) (hn : 1 ≤ n) (ancestry : List (TopAffineFlag n)) :
-    Metric.diam (Set.range (iteratedAffineCellMap n ancestry)) ≤
-      barycentricContractionFactor n ^ ancestry.length :=
-  diam_range_iteratedAffineCellMap_le_pow n hn
-    (affineFlagRelativeMeshContraction n) ancestry
 
-/-- At a common sufficiently large ancestry depth, every iterated affine cell of a singular
-simplex is subordinate to a prescribed open cover. -/
-public theorem exists_iteratedAffineCell_depth_subordinate_unconditional
-    {ι : Type} (X : TopCat.{0}) (U : ι → Set X)
-    (hUopen : ∀ i, IsOpen (U i)) (hUcover : ⋃ i, U i = Set.univ)
-    (n : ℕ) (hn : 1 ≤ n)
-    (x : (TopCat.toSSet.obj X).obj
-      (Opposite.op (SimplexCategory.mk n))) :
-    ∃ m : ℕ, ∀ ancestry : List (TopAffineFlag n), ancestry.length = m →
-      ∃ i, X.toSSetObjEquiv _ x ''
-        Set.range (iteratedAffineCellMap n ancestry) ⊆ U i :=
-  exists_iteratedAffineCell_depth_subordinate X U hUopen hUcover n hn
-    (affineFlagRelativeMeshContraction n) x
 
 end SphereSixComplex

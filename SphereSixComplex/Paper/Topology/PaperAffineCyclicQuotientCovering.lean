@@ -7,9 +7,6 @@ public import SphereSixComplex.Prerequisites.Topology.QuotientCoveringMarkedLoop
 
 open Set Topology
 
-namespace SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
-end SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
-
 namespace SphereSixComplex.AffineCyclicQuotientHomology
 open SphereSixComplex SphereSixComplex.Topology
 open SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
@@ -116,90 +113,4 @@ public theorem projectedStraightPeriodLoop_fundamentalGroupEquiv
   rw [← projectedQuotientDeckPath_affineCyclicKernel_eq P hp x]
   exact affineCyclicKernelPath_fundamentalGroupEquiv P hp x
 
-variable {U : TriangleUniformization}
-
-public theorem orderThreeAffineCyclicFilling_isQuotientCoveringMap
-    (F : SphereSixComplex.Periods.PeriodFunctions U) :
-    let P := orderThreeCentralFiberPresentationData F
-    letI := affineCyclicFillingDeckAction P
-    IsQuotientCoveringMap
-      (complexTwoReducedCentralFiberProjection (D := orderThreeRadialActionData F))
-      (affineCyclicBoundaryDeckData P).FillingDeck := by
-  exact affineCyclicFilling_isQuotientCoveringMap
-    (orderThreeCentralFiberPresentationData F)
-    (orderThreeCentralFiberPresentationData_lift_continuous F)
-    (orderThreeCentralFiberPresentationData_lift_symm_continuous F)
-
-public theorem orderFourAffineCyclicFilling_isQuotientCoveringMap
-    (F : SphereSixComplex.Periods.PeriodFunctions U) :
-    let P := orderFourCentralFiberPresentationData F
-    letI := affineCyclicFillingDeckAction P
-    IsQuotientCoveringMap
-      (complexTwoReducedCentralFiberProjection (D := orderFourRadialActionData F))
-      (affineCyclicBoundaryDeckData P).FillingDeck := by
-  exact affineCyclicFilling_isQuotientCoveringMap
-    (orderFourCentralFiberPresentationData F)
-    (orderFourCentralFiberPresentationData_lift_continuous F)
-    (orderFourCentralFiberPresentationData_lift_symm_continuous F)
-
-public theorem orderThreeAffineCyclicKernelPath_fundamentalGroupEquiv
-    (F : SphereSixComplex.Periods.PeriodFunctions U) (x : Lattice) :
-    let P := orderThreeCentralFiberPresentationData F
-    letI := affineCyclicFillingDeckAction P
-    let hp := orderThreeAffineCyclicFilling_isQuotientCoveringMap F
-    hp.fundamentalGroupEquiv ⟨(0 : ComplexTwoSpace), rfl⟩
-        (SphereSixComplex.Geometry.pathLoopClass
-          (SphereSixComplex.Geometry.projectedQuotientDeckPath hp
-            (0 : ComplexTwoSpace) (affineCyclicKernelIncl P x)
-            (affineCyclicKernelPath P x))) =
-      MulOpposite.op (affineCyclicKernelIncl P x) := by
-  exact affineCyclicKernelPath_fundamentalGroupEquiv
-    (orderThreeCentralFiberPresentationData F)
-    (orderThreeAffineCyclicFilling_isQuotientCoveringMap F) x
-
-public theorem orderFourAffineCyclicKernelPath_fundamentalGroupEquiv
-    (F : SphereSixComplex.Periods.PeriodFunctions U) (x : Lattice) :
-    let P := orderFourCentralFiberPresentationData F
-    letI := affineCyclicFillingDeckAction P
-    let hp := orderFourAffineCyclicFilling_isQuotientCoveringMap F
-    hp.fundamentalGroupEquiv ⟨(0 : ComplexTwoSpace), rfl⟩
-        (SphereSixComplex.Geometry.pathLoopClass
-          (SphereSixComplex.Geometry.projectedQuotientDeckPath hp
-            (0 : ComplexTwoSpace) (affineCyclicKernelIncl P x)
-            (affineCyclicKernelPath P x))) =
-      MulOpposite.op (affineCyclicKernelIncl P x) := by
-  exact affineCyclicKernelPath_fundamentalGroupEquiv
-    (orderFourCentralFiberPresentationData F)
-    (orderFourAffineCyclicFilling_isQuotientCoveringMap F) x
-
-public theorem orderThreeProjectedStraightPeriodLoop_fundamentalGroupEquiv
-    (F : SphereSixComplex.Periods.PeriodFunctions U) (x : Lattice) :
-    let P := orderThreeCentralFiberPresentationData F
-    letI := affineCyclicFillingDeckAction P
-    let hp := orderThreeAffineCyclicFilling_isQuotientCoveringMap F
-    hp.fundamentalGroupEquiv ⟨(0 : ComplexTwoSpace), rfl⟩
-        (SphereSixComplex.Geometry.pathLoopClass
-          (projectedStraightPeriodLoop P x)) =
-      MulOpposite.op (affineCyclicKernelIncl P x) := by
-  exact projectedStraightPeriodLoop_fundamentalGroupEquiv
-    (orderThreeCentralFiberPresentationData F)
-    (orderThreeAffineCyclicFilling_isQuotientCoveringMap F) x
-
-public theorem orderFourProjectedStraightPeriodLoop_fundamentalGroupEquiv
-    (F : SphereSixComplex.Periods.PeriodFunctions U) (x : Lattice) :
-    let P := orderFourCentralFiberPresentationData F
-    letI := affineCyclicFillingDeckAction P
-    let hp := orderFourAffineCyclicFilling_isQuotientCoveringMap F
-    hp.fundamentalGroupEquiv ⟨(0 : ComplexTwoSpace), rfl⟩
-        (SphereSixComplex.Geometry.pathLoopClass
-          (projectedStraightPeriodLoop P x)) =
-      MulOpposite.op (affineCyclicKernelIncl P x) := by
-  exact projectedStraightPeriodLoop_fundamentalGroupEquiv
-    (orderFourCentralFiberPresentationData F)
-    (orderFourAffineCyclicFilling_isQuotientCoveringMap F) x
-
 end SphereSixComplex.AffineCyclicQuotientHomology
-
-namespace SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
-
-end SphereSixComplex.Topology.PaperMultipleFiberHOneTopology

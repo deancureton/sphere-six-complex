@@ -47,15 +47,7 @@ public noncomputable def ellipticFourFillingCoverProjection (r : ℝ) :
   toFun p := Quotient.mk _ (A.orderFourFillingCoverMap r p)
   continuous_toFun := continuous_quot_mk.comp (A.orderFourFillingCoverMap_continuous r)
 
-/-- The actual order-three filling projection from the vector-bundle cover is onto. -/
-public theorem ellipticThreeFillingCoverProjection_surjective (r : ℝ) :
-    Function.Surjective (A.ellipticThreeFillingCoverProjection r) :=
-  Quotient.mk_surjective.comp (A.orderThreeFillingCoverMap_surjective r)
 
-/-- The actual order-four filling projection from the vector-bundle cover is onto. -/
-public theorem ellipticFourFillingCoverProjection_surjective (r : ℝ) :
-    Function.Surjective (A.ellipticFourFillingCoverProjection r) :=
-  Quotient.mk_surjective.comp (A.orderFourFillingCoverMap_surjective r)
 
 /-- The candidate total space of the actual order-three filling cover is simply connected. -/
 public theorem orderThreeFillingCoverSource_simplyConnected

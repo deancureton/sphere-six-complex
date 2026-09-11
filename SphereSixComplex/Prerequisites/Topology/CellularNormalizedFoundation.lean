@@ -50,10 +50,6 @@ public theorem normalized_diskOrientation_zero (T : CellularHomology.IntegralCom
 public theorem normalized_diskOrientation_one (T : CellularHomology.IntegralComparison) :
     T.normalized.diskOrientation 1 = normalizedIntervalDiskOrientation T := rfl
 
-public theorem normalized_diskOrientation_two (T : CellularHomology.IntegralComparison) :
-    T.normalized.diskOrientation 2 = normalizedSquareDiskOrientation := rfl
 
-public theorem normalized_diskOrientation_add_three (T : CellularHomology.IntegralComparison)
-    (n : ℕ) : T.normalized.diskOrientation (n + 3) = T.diskOrientation (n + 3) := rfl
 
 end SphereSixComplex.CellularHomology.IntegralComparison

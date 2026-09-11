@@ -11,8 +11,6 @@ open SphereSixComplex.Geometry.ComplexTorus SphereSixComplex.Geometry.TorusFamil
 open SphereSixComplex.Geometry.AnalyticTorusFamily
 variable {U : TriangleUniformization} (F : PeriodFunctions U)
 
-local instance transportRegularBaseDeckAction : MulAction Delta (RegularBase (U := U)) :=
-  regularSourceMulAction U
 local instance transportRegularTotalDeckAction : MulAction Delta (RegularTotalSpace F) :=
   regularFamilyDeckAction F
 
@@ -107,30 +105,10 @@ public theorem regularPeriodCircleFamily_deck (n : IntegerPeriods)
   rw [he] at h
   exact h
 
-public def regularPeriodCirclePath (n : IntegerPeriods)
-    {b c : RegularBase (U := U)} (p : Path b c) :
-    Path (regularPeriodCircleFamily F n b) (regularPeriodCircleFamily F n c) :=
-  p.map (regularPeriodCircleFamily F n).continuous
 
-public theorem regularPeriodCirclePath_apply (n : IntegerPeriods)
-    {b c : RegularBase (U := U)} (p : Path b c) (u : unitInterval) (t : UnitAddCircle) :
-    regularPeriodCirclePath F n p u t = regularPeriodCircleInGlobal F n (t, p u) := rfl
 
-public theorem regularPeriodCirclePath_trans (n : IntegerPeriods)
-    {b c d : RegularBase (U := U)} (p : Path b c) (q : Path c d) :
-    regularPeriodCirclePath F n (p.trans q) =
-      (regularPeriodCirclePath F n p).trans (regularPeriodCirclePath F n q) :=
-  Path.map_trans p q (regularPeriodCircleFamily F n).continuous
 
-public def regularPeriodCirclePath_homotopy (n : IntegerPeriods)
-    {b c : RegularBase (U := U)} {p q : Path b c} (H : p.Homotopy q) :
-    (regularPeriodCirclePath F n p).Homotopy (regularPeriodCirclePath F n q) :=
-  H.map (regularPeriodCircleFamily F n)
 
-public def regularPeriodCircleDeckPath (n : IntegerPeriods)
-    (g : Delta) {b : RegularBase (U := U)} (p : Path b (regularSourceEquiv g b)) :
-    Path (regularPeriodCircleFamily F n b) (regularPeriodCircleFamily F (rhoLambda g⁻¹ n) b) :=
-  (regularPeriodCirclePath F n p).cast rfl (regularPeriodCircleFamily_deck F n g b).symm
 
 end SphereSixComplex.Geometry.GlobalTorusFamily
 end

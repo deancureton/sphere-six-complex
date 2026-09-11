@@ -35,10 +35,6 @@ public noncomputable def pieceOpenPartialHomeomorph (D : TopCat.GlueData.{w}) (i
     [Nonempty (D.U i)] : OpenPartialHomeomorph (D.U i) (GluedSpace D) :=
   (D.ι_isOpenEmbedding i).toOpenPartialHomeomorph (D.toGlueData.ι i)
 
-/-- Each piece is an open subspace of the glued space. -/
-public theorem piece_isOpenEmbedding (D : TopCat.GlueData.{w}) (i : D.J) :
-    IsOpenEmbedding (D.toGlueData.ι i) :=
-  D.ι_isOpenEmbedding i
 
 /-- A gluing over a countable index type is second countable when every piece is second
 countable. -/
@@ -57,20 +53,6 @@ public theorem secondCountableTopology_gluedSpace (D : TopCat.GlueData.{w}) [Cou
     obtain ⟨i, y, hy⟩ := D.ι_jointly_surjective x
     exact ⟨i, y, hy⟩
 
-/-- A gluing of finitely many compact pieces is compact. -/
-public theorem compactSpace_gluedSpace (D : TopCat.GlueData.{w}) [Finite D.J]
-    [∀ i, CompactSpace (D.U i)] : CompactSpace (GluedSpace D) := by
-  rw [← isCompact_univ_iff]
-  have huniv : (Set.univ : Set (GluedSpace D)) =
-      ⋃ i, Set.range (D.toGlueData.ι i) := by
-    ext x
-    simp only [mem_univ, mem_iUnion, mem_range, true_iff]
-    obtain ⟨i, y, hy⟩ := D.ι_jointly_surjective x
-    exact ⟨i, y, hy⟩
-  rw [huniv]
-  exact isCompact_iUnion fun i ↦ by
-    simpa only [image_univ] using
-      isCompact_univ.image (D.ι_isOpenEmbedding i).continuous
 
 /-- Connectivity of the graph whose vertices are pieces and whose edges are nonempty overlaps. -/
 public def GluingIntersectionGraphConnected (D : TopCat.GlueData.{w}) : Prop :=

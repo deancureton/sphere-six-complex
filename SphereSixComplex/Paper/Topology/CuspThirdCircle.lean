@@ -22,11 +22,6 @@ public def cuspThirdFixedCircle (x : PeriodDomain) :
     FixedTopologicalCircle (cuspFiberClutching x) :=
   cuspCoordinateFixedCircle x 2 cuspThirdCoordinate_fixed
 
-public theorem cuspThirdSweep_wang (x : PeriodDomain) :
-    (cuspMonodromyCoordinates x).degreeOne
-      ((circleMappingTorusWangPresentationOfCover (cuspFiberClutching x) 1).boundary
-        (fixedLoopSweepClass (cuspFiberClutching x) (cuspThirdFixedCircle x))) =
-      Pi.single 2 1 := cuspCoordinateSweep_wang x 2 cuspThirdCoordinate_fixed
 
 end SphereSixComplex.Geometry.CuspRadialClutchingConstruction
 end

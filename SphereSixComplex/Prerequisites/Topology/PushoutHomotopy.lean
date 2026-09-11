@@ -28,69 +28,9 @@ namespace TopCat
 
 variable {A X Y : TopCat.{u}}
 
-/-- The canonical map from the coproduct presentation to a topological pushout. -/
-public def coprodToPushout (i : A ⟶ X) (j : A ⟶ Y) :
-    X ⨿ Y ⟶ pushout i j :=
-  coprod.desc (pushout.inl i j) (pushout.inr i j)
 
-@[reassoc]
-public lemma coprod_inl_comp_coprodToPushout (i : A ⟶ X) (j : A ⟶ Y) :
-    coprod.inl ≫ coprodToPushout i j = pushout.inl i j :=
-  coprod.inl_desc _ _
 
-@[reassoc]
-public lemma coprod_inr_comp_coprodToPushout (i : A ⟶ X) (j : A ⟶ Y) :
-    coprod.inr ≫ coprodToPushout i j = pushout.inr i j :=
-  coprod.inr_desc _ _
 
-/-- The canonical map from the coproduct to a topological pushout is a quotient map. -/
-public lemma coprodToPushout_isQuotientMap (i : A ⟶ X) (j : A ⟶ Y) :
-    IsQuotientMap (coprodToPushout i j) := by
-  let q := coprodToPushout i j
-  let _ : EffectiveEpi q := ⟨⟨{
-    desc := fun {W} e h ↦ pushout.desc (coprod.inl ≫ e) (coprod.inr ≫ e) (by
-      apply h (i ≫ coprod.inl) (j ≫ coprod.inr)
-      rw [Category.assoc, Category.assoc]
-      dsimp [q]
-      rw [coprodToPushout, coprod.inl_desc, coprod.inr_desc, pushout.condition])
-    fac := fun {W} e h ↦ by
-      apply coprod.hom_ext
-      · rw [← Category.assoc]
-        calc
-          (coprod.inl ≫ q) ≫
-              pushout.desc (coprod.inl ≫ e) (coprod.inr ≫ e) _ =
-              pushout.inl i j ≫
-                pushout.desc (coprod.inl ≫ e) (coprod.inr ≫ e) _ := by
-            congr 1
-            exact coprod_inl_comp_coprodToPushout i j
-          _ = coprod.inl ≫ e := pushout.inl_desc _ _ _
-      · rw [← Category.assoc]
-        calc
-          (coprod.inr ≫ q) ≫
-              pushout.desc (coprod.inl ≫ e) (coprod.inr ≫ e) _ =
-              pushout.inr i j ≫
-                pushout.desc (coprod.inl ≫ e) (coprod.inr ≫ e) _ := by
-            congr 1
-            exact coprod_inr_comp_coprodToPushout i j
-          _ = coprod.inr ≫ e := pushout.inr_desc _ _ _
-    uniq := fun {W} e h m hm ↦ by
-      apply pushout.hom_ext
-      · calc
-          pushout.inl i j ≫ m = coprod.inl ≫ e := by
-            simpa only [← Category.assoc, q, coprodToPushout, coprod.inl_desc] using
-              congrArg (fun k ↦ coprod.inl ≫ k) hm
-          _ = pushout.inl i j ≫
-              pushout.desc (coprod.inl ≫ e) (coprod.inr ≫ e) _ :=
-            (pushout.inl_desc _ _ _).symm
-      · calc
-          pushout.inr i j ≫ m = coprod.inr ≫ e := by
-            simpa only [← Category.assoc, q, coprodToPushout, coprod.inr_desc] using
-              congrArg (fun k ↦ coprod.inr ≫ k) hm
-          _ = pushout.inr i j ≫
-              pushout.desc (coprod.inl ≫ e) (coprod.inr ≫ e) _ :=
-            (pushout.inr_desc _ _ _).symm
-  }⟩⟩
-  exact (TopCat.effectiveEpi_iff_isQuotientMap q).mp inferInstance
 
 /-- Explicit data exhibiting the domain of `i : A ⟶ X` as a strong deformation retract of
 `X`.  The homotopy runs from `retraction ≫ i` to the identity and fixes the image of `i`
@@ -227,19 +167,7 @@ public lemma pushoutInrHomotopyEquiv_apply (y : Y) :
     D.pushoutInrHomotopyEquiv j y = pushout.inr i j y :=
   rfl
 
-/-- Symmetric form: if the right leg is a strong deformation retract, the left coprojection is a
-homotopy equivalence. -/
-public def pushoutInlHomotopyEquiv (D' : StrongDeformationRetractData j) :
-    (X : Type u) ≃ₕ ((pushout i j : TopCat) : Type u) :=
-  (D'.pushoutInrHomotopyEquiv i).trans
-    (TopCat.homeoOfIso (pushoutSymmetry j i)).toHomotopyEquiv
 
-@[simp]
-public lemma pushoutInlHomotopyEquiv_apply
-    (D' : StrongDeformationRetractData j) (x : X) :
-    pushoutInlHomotopyEquiv (i := i) (j := j) D' x = pushout.inl i j x := by
-  change (pushoutSymmetry j i).hom (pushout.inr j i x) = pushout.inl i j x
-  exact CategoryTheory.congr_fun (inr_comp_pushoutSymmetry_hom j i) x
 
 end StrongDeformationRetractData
 

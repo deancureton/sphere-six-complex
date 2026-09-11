@@ -74,41 +74,7 @@ public theorem norm_cayleyInverse_lt_one (w : ℂ) (hw : 0 < w.re) :
     nlinarith
   nlinarith [norm_nonneg (w - 1), norm_nonneg (w + 1)]
 
-public theorem re_cayleyInverse_nonpos (w : ℂ) (hw : ‖w‖ ≤ 1) :
-    ((w - 1) / (w + 1)).re ≤ 0 := by
-  rw [Complex.div_re, ← add_div]
-  apply div_nonpos_of_nonpos_of_nonneg
-  · have hs : Complex.normSq w ≤ 1 := by
-      rw [Complex.normSq_eq_norm_sq]
-      nlinarith [norm_nonneg w]
-    simp only [Complex.normSq_apply] at hs
-    simp only [Complex.sub_re, Complex.sub_im, Complex.add_re, Complex.add_im,
-      Complex.one_re, Complex.one_im]
-    nlinarith
-  · exact Complex.normSq_nonneg _
 
-public theorem exists_centralPhaseDisk_of_norm_lt_one_re_nonpos
-    (z : ℂ) (hz : ‖z‖ < 1) (hzre : z.re ≤ 0) :
-    ∃ x : Fin 2 → ℝ, x ∈ Metric.ball 0 1 ∧ x 0 ≤ 0 ∧ centralPhaseDiskComplex x = z := by
-  obtain ⟨x, hx⟩ := centralPhaseDiskComplex_surjective z
-  refine ⟨x, ?_, ?_, hx⟩
-  · rw [Metric.mem_ball, dist_zero_right, ← norm_centralPhaseDiskComplex, hx]
-    exact hz
-  · by_cases hx0 : x = 0
-    · simp [hx0]
-    have hlinear : centralPhaseLinearComplex x ≠ 0 := by
-      intro h
-      apply hx0
-      funext i
-      fin_cases i
-      · simpa [centralPhaseLinearComplex] using congrArg Complex.re h
-      · simpa [centralPhaseLinearComplex] using congrArg Complex.im h
-    have hscale : 0 < ‖x‖ / ‖centralPhaseLinearComplex x‖ :=
-      div_pos (norm_pos_iff.mpr hx0) (norm_pos_iff.mpr hlinear)
-    have hre := congrArg Complex.re hx
-    simp [centralPhaseDiskComplex, hx0, centralPhaseLinearComplex, Complex.mul_re] at hre
-    simp only [centralPhaseLinearComplex] at hscale
-    nlinarith
 
 /-- Every point of the coordinate axis off its positive-real cut belongs to the existing
 open phase two-cell. -/

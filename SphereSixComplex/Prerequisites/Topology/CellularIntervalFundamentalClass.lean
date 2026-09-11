@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.CellularOrientationAudit
+public import SphereSixComplex.Prerequisites.Topology.CellularHomology
 public import Mathlib.Topology.Homotopy.TopCat.ZerothHomotopy
 
 @[expose] public section

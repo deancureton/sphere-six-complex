@@ -166,29 +166,6 @@ public theorem totalSpace_isManifold_and_projection_isLocalDiffeomorph
     (IB.prod (modelWithCornersSelf ℂ ComplexTwoSpace)) n
     (familyTranslation_contMDiff IB x n hperiod)
 
-/-- At order one the quotient projection of a compact-uniform holomorphic period family is
-locally holomorphic. -/
-public theorem totalSpace_isManifold_and_projection_mdifferentiable
-    [T2Space B] [LocallyCompactSpace B] [IsManifold IB 1 B]
-    (x : B → PeriodDomain)
-    (hperiod : ∀ a : IntegerPeriods,
-      ContMDiff IB (modelWithCornersSelf ℂ ComplexTwoSpace) 1
-        (fun b ↦ periodVector (x b).1 a))
-    (hproper : CompactlyUniformPeriods x) :
-    letI := familyIsCancelSMul x
-    letI := familyContinuousConstSMul x fun a ↦ (hperiod a).continuous
-    letI := familyProperlyDiscontinuousSMul x hproper
-    IsManifold (IB.prod (modelWithCornersSelf ℂ ComplexTwoSpace)) 1 (TotalSpace x) ∧
-      MDifferentiable (IB.prod (modelWithCornersSelf ℂ ComplexTwoSpace))
-        (IB.prod (modelWithCornersSelf ℂ ComplexTwoSpace)) (projection x) := by
-  let _ := familyIsCancelSMul x
-  let _ := familyContinuousConstSMul x fun a ↦ (hperiod a).continuous
-  let _ := familyProperlyDiscontinuousSMul x hproper
-  let _ : IsManifold (IB.prod (modelWithCornersSelf ℂ ComplexTwoSpace)) 1
-      (B × ComplexTwoSpace) := IsManifold.prod B ComplexTwoSpace
-  exact orbitQuotient_isManifold_and_projection_mdifferentiable_of_contMDiff_smul
-    (IB.prod (modelWithCornersSelf ℂ ComplexTwoSpace))
-    (familyTranslation_contMDiff IB x 1 hperiod)
 
 end Smooth
 

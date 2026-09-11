@@ -79,8 +79,6 @@ public theorem deltaEntry_inCoefficientCone (g : Delta) (i j : Fin 2) :
 public theorem deltaBottomRow_fst (g : Delta) :
     (deltaBottomRow g).1 = wordMatrix (deltaNormalForm g) 1 0 := rfl
 
-public theorem deltaBottomRow_snd (g : Delta) :
-    (deltaBottomRow g).2 = wordMatrix (deltaNormalForm g) 1 1 := rfl
 
 /-- An element with nonzero lower-left entry contracts imaginary heights above one. -/
 public theorem im_smul_le_one_div_im {g : Delta} (hc : (deltaBottomRow g).1 ≠ 0)
@@ -354,14 +352,6 @@ public theorem exists_orbit_height_bound (w : UpperHalfPlane) :
   rw [map_mul, mul_smul, map_inv] at hg
   rwa [inv_smul_smul] at hg
 
-/-- Away from a bounded height, every element with nonzero lower-left entry contracts. -/
-public theorem im_smul_le_max (g : Delta) (z : UpperHalfPlane) :
-    (fuchsianSourceAction g • z).im ≤ max z.im (1 / z.im) := by
-  by_cases hc : (deltaBottomRow g).1 = 0
-  · obtain ⟨B, _, hB⟩ := exists_isTranslationBy_of_bottomLeft_eq_zero hc
-    rw [hB.im z]
-    exact le_max_left _ _
-  · exact (im_smul_le_one_div_im hc z).trans (le_max_right _ _)
 
 /-- High points of the upper half-plane are regular for the explicit Fuchsian action. -/
 public theorem exists_regular_height (U : SphereSixComplex.Periods.TriangleUniformization)
@@ -730,10 +720,6 @@ public theorem exists_lift_height_bound (Y : ℝ) :
   rw [hshift, hvalue] at hbound
   linarith
 
-/-- The normalized lift is injective on its half-plane. -/
-public theorem lift_injOn : Set.InjOn N.lift (cuspHalfPlane N.height) := by
-  intro s hs s' hs' h
-  rw [← N.lift_tau s hs, ← N.lift_tau s' hs', h]
 
 public theorem lift_differentiableOn :
     DifferentiableOn ℂ (fun s ↦ ((N.lift s : UpperHalfPlane) : ℂ)) (cuspHalfPlane N.height) := by
@@ -741,8 +727,6 @@ public theorem lift_differentiableOn :
   change MDiff[cuspHalfPlane N.height] ((fun z : UpperHalfPlane ↦ (z : ℂ)) ∘ N.lift)
   exact UpperHalfPlane.mdifferentiable_coe.comp_mdifferentiableOn N.lift_holomorphic
 
-public theorem normalizedCuspRegion_eq (r : ℝ) :
-    normalizedCuspRegion N r = N.lift '' cuspSource N.height r := rfl
 
 /-- The normalized horodisc is open. -/
 public theorem normalizedCuspRegion_isOpen (r : ℝ) : IsOpen (normalizedCuspRegion N r) := by

@@ -56,13 +56,6 @@ private theorem sourceScalarRightDoubleMap_signed_nonneg_of_re_le
       hz.2.2.1 hz.2.2.2.1
     rw [him, mul_zero]
 
-private theorem sourceRight_mem_sourceOpen_of_mem_rightDouble_of_re_gt
-    {z : ℂ} (hz : z ∈ sourceRightDouble) (hre : 1 / 2 < z.re) :
-    sourceRight z ∈ sourceOpenChamber := by
-  have hr := sourceRightDouble_mapsTo hz
-  refine ⟨hr.1, ?_, hr.2.2.1, hr.2.2.2.1⟩
-  rw [sourceRight_re]
-  linarith
 
 private theorem sourceScalarRightDoubleMap_eq_conj_seed_of_re_gt
     (S : ChamberCaratheodorySeed sourceBoundedChamber) {z : ℂ}
@@ -137,14 +130,6 @@ theorem sourceScalarRightDoubleMap_injOn
         ⟨hrz, hrzle⟩ ⟨hrw, hrwle⟩ hseed
       simpa using congrArg sourceRight hrEq
 
-/-- The right-side extension is conformal, including all points of the reflected seam. -/
-theorem sourceScalarRightDoubleMap_conformalAt
-    (S : ChamberCaratheodorySeed sourceBoundedChamber) {z : ℂ}
-    (hz : z ∈ sourceRightDouble) :
-    ConformalAt (sourceScalarRightDoubleMap S) z :=
-  TauCeti.DifferentiableOn.conformalAt_of_isOpen_of_injOn
-    (sourceScalarRightDoubleMap_differentiableOn S) sourceRightDouble_isOpen
-    (sourceScalarRightDoubleMap_injOn S) hz
 
 
 end SphereSixComplex.Periods.SourceChamberTopology

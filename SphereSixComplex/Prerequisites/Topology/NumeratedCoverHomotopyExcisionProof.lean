@@ -45,187 +45,28 @@ namespace SphereSixComplex
 
 universe u
 
-namespace NumeratedCoverCounterexample
-
-open OpenUnionHomotopy
-
-/-- The left member of the counterexample cover. -/
-public def leftSet : Set ℝ := Set.Ioi 0
-
-/-- The right member of the counterexample cover. -/
-public def rightSet : Set ℝ := Set.univ
-
-public theorem mem_union (x : ℝ) : x ∈ leftSet ∪ rightSet := Or.inr (Set.mem_univ x)
-
-/-- A real number as a point of the union of the counterexample cover. -/
-public def pt (x : ℝ) : ↥(leftSet ∪ rightSet) := ⟨x, mem_union x⟩
-
-/-- The counterexample numeration: the clamping of the identity to the unit interval. -/
-public def weightFn : C(↥(leftSet ∪ rightSet), unitInterval) :=
-  ⟨fun x ↦ Set.projIcc 0 1 zero_le_one x.1,
-    continuous_projIcc.comp continuous_subtype_val⟩
-
-public theorem weightFn_apply (x : ↥(leftSet ∪ rightSet)) :
-    (weightFn x : ℝ) = max 0 (min 1 x.1) := rfl
-
-/-- The counterexample numeration of the cover `{Ioi 0, univ}` of `ℝ`. -/
-public def numeration : TwoSetNumeration leftSet rightSet where
-  weight := weightFn
-  weight_ne_zero_mem_left := by
-    intro x hx
-    by_contra hmem
-    apply hx
-    apply Subtype.ext
-    have hle : x.1 ≤ 0 := le_of_not_gt fun h ↦ hmem h
-    rw [weightFn_apply]
-    have : min (1 : ℝ) x.1 ≤ 0 := le_trans (min_le_right _ _) hle
-    simp [max_eq_left this]
-  weight_ne_one_mem_right := by
-    intro x _
-    exact Set.mem_univ _
-
-
 /-! ## A continuous probe of the double mapping cylinder -/
 
-/-- The overlap-to-right leg of the counterexample span. -/
-public abbrev spanRight : TopCat.of ↥(leftSet ∩ rightSet) ⟶ TopCat.of ↥rightSet :=
-  interToRight leftSet rightSet
 
-/-- The overlap-to-left leg of the counterexample span. -/
-public abbrev spanLeft : TopCat.of ↥(leftSet ∩ rightSet) ⟶ TopCat.of ↥leftSet :=
-  interToLeft leftSet rightSet
 
-public theorem pos_of_mem_inter (a : ↥(leftSet ∩ rightSet)) : 0 < (a : ℝ) := a.2.1
 
-public theorem pos_of_mem_left (a : ↥leftSet) : 0 < (a : ℝ) := a.2
 
-/-- On the cylinder branch the probe divides the cylinder coordinate by the base point. -/
-public def probeCylinder :
-    TopCat.of (↥(leftSet ∩ rightSet) × unitInterval) ⟶ TopCat.of ℝ :=
-  TopCat.ofHom ⟨fun p ↦ (p.2 : ℝ) / (p.1 : ℝ), by
-    refine Continuous.div (continuous_subtype_val.comp continuous_snd)
-      (continuous_subtype_val.comp continuous_fst) ?_
-    intro p
-    exact ne_of_gt (pos_of_mem_inter p.1)⟩
 
-/-- On the right branch the probe vanishes. -/
-public def probeBase : TopCat.of ↥rightSet ⟶ TopCat.of ℝ :=
-  TopCat.ofHom ⟨fun _ ↦ 0, continuous_const⟩
 
-/-- On the left branch the probe is the reciprocal. -/
-public def probeLeftEnd : TopCat.of ↥leftSet ⟶ TopCat.of ℝ :=
-  TopCat.ofHom ⟨fun u ↦ 1 / (u : ℝ), by
-    refine Continuous.div continuous_const continuous_subtype_val ?_
-    intro u
-    exact ne_of_gt (pos_of_mem_left u)⟩
 
-/-- The probe on the mapping cylinder of the overlap-to-right leg. -/
-public def probeMappingCylinder : TopCat.mappingCylinder spanRight ⟶ TopCat.of ℝ :=
-  pushout.desc probeCylinder probeBase (by
-    ext a
-    change ((0 : unitInterval) : ℝ) / (a : ℝ) = 0
-    simp)
 
-public theorem probeMappingCylinder_cylinder
-    (p : ↥(leftSet ∩ rightSet) × unitInterval) :
-    probeMappingCylinder (TopCat.mappingCylinderCylinder spanRight p) =
-      (p.2 : ℝ) / (p.1 : ℝ) := by
-  have h : TopCat.mappingCylinderCylinder spanRight ≫ probeMappingCylinder = probeCylinder :=
-    pushout.inl_desc _ _ _
-  exact CategoryTheory.congr_fun h p
 
-public theorem probeMappingCylinder_base (v : ↥rightSet) :
-    probeMappingCylinder (TopCat.mappingCylinderBase spanRight v) = 0 := by
-  have h : TopCat.mappingCylinderBase spanRight ≫ probeMappingCylinder = probeBase :=
-    pushout.inr_desc _ _ _
-  exact CategoryTheory.congr_fun h v
 
-/-- The probe on the double mapping cylinder of the counterexample span. -/
-public def probeDouble :
-    TopCat.doubleMappingCylinder spanRight spanLeft ⟶ TopCat.of ℝ :=
-  pushout.desc probeMappingCylinder probeLeftEnd (by
-    ext a
-    change probeMappingCylinder
-      (TopCat.mappingCylinderCylinder spanRight (a, 1)) = 1 / (a : ℝ)
-    rw [probeMappingCylinder_cylinder]
-    norm_num)
 
-public theorem probeDouble_left (m : TopCat.mappingCylinder spanRight) :
-    probeDouble (TopCat.doubleMappingCylinderLeft spanRight spanLeft m) =
-      probeMappingCylinder m := by
-  have h : TopCat.doubleMappingCylinderLeft spanRight spanLeft ≫ probeDouble =
-      probeMappingCylinder := pushout.inl_desc _ _ _
-  exact CategoryTheory.congr_fun h m
 
 
 /-! ## The prescribed section is not continuous -/
 
-public theorem weight_pt (t : ℝ) (h0 : 0 ≤ t) (h1 : t ≤ 1) :
-    ((numeration.weight (pt t) : unitInterval) : ℝ) = t := by
-  show max (0 : ℝ) (min 1 t) = t
-  rw [min_eq_right h1, max_eq_right h0]
 
-public theorem weight_pt_zero : numeration.weight (pt 0) = 0 := by
-  apply Subtype.ext
-  show max (0 : ℝ) (min 1 0) = 0
-  norm_num
 
-/-- At the endpoint the probe of the prescribed section vanishes. -/
-public theorem probe_inverse_zero (D : numeration.HomotopyExcisionData) :
-    probeDouble (D.inverse (pt 0)) = 0 := by
-  rw [D.inverse_zero (pt 0) weight_pt_zero, probeDouble_left, probeMappingCylinder_base]
 
-/-- Immediately to the right of the endpoint the probe of the prescribed section is `1`. -/
-public theorem probe_inverse_interior (D : numeration.HomotopyExcisionData)
-    (t : ℝ) (h0 : 0 < t) (h1 : t < 1) :
-    probeDouble (D.inverse (pt t)) = 1 := by
-  have hval := weight_pt t h0.le h1.le
-  have hz : numeration.weight (pt t) ≠ 0 := by
-    intro h
-    rw [h] at hval
-    exact h0.ne hval
-  have ho : numeration.weight (pt t) ≠ 1 := by
-    intro h
-    rw [h] at hval
-    exact h1.ne' hval
-  rw [D.inverse_interior (pt t) hz ho, probeDouble_left, probeMappingCylinder_cylinder]
-  show ((numeration.weight (pt t) : unitInterval) : ℝ) / t = 1
-  rw [hval, div_self h0.ne']
 
-/-- The interface `TwoSetNumeration.HomotopyExcisionData` is unsatisfiable for the numerated
-cover `{Ioi 0, univ}` of `ℝ`: the pointwise formulas prescribed for `inverse` do not define a
-continuous map. -/
-public theorem isEmpty_homotopyExcisionData :
-    IsEmpty numeration.HomotopyExcisionData := by
-  constructor
-  intro D
-  have hmk : Continuous fun t : ℝ ↦ pt t := continuous_id.subtype_mk _
-  have hcont : Continuous fun t : ℝ ↦ probeDouble (D.inverse (pt t)) :=
-    (TopCat.Hom.hom probeDouble).continuous.comp (D.inverse.continuous.comp hmk)
-  have hmem : Set.Iio (1 / 2 : ℝ) ∈ 𝓝 (probeDouble (D.inverse (pt 0))) := by
-    rw [probe_inverse_zero D]
-    exact Iio_mem_nhds (by norm_num)
-  have hev : ∀ᶠ t in 𝓝 (0 : ℝ), probeDouble (D.inverse (pt t)) < 1 / 2 :=
-    (hcont.continuousAt (x := (0 : ℝ))) hmem
-  have hlt : ∀ᶠ t in 𝓝 (0 : ℝ), t < 1 := by
-    filter_upwards [Iio_mem_nhds (show (0 : ℝ) < 1 by norm_num)] with t ht using ht
-  have hpos : ∀ᶠ t in 𝓝[>] (0 : ℝ), (0 : ℝ) < t := by
-    filter_upwards [self_mem_nhdsWithin] with t ht using ht
-  obtain ⟨t, ⟨hhalf, hone⟩, hzero⟩ :=
-    (((hev.filter_mono nhdsWithin_le_nhds).and
-      (hlt.filter_mono nhdsWithin_le_nhds)).and hpos).exists
-  rw [probe_inverse_interior D t hzero hone] at hhalf
-  norm_num at hhalf
 
-/-- The established axiom `numeratedTwoSetCoverHomotopyExcisionData` is false: no such data
-exists for the numerated cover `{Ioi 0, univ}` of `ℝ`. -/
-public theorem not_forall_twoSetNumeration_homotopyExcisionData :
-    ¬ ∀ (X : Type) [TopologicalSpace X] (U V : Set X)
-        (N : TwoSetNumeration U V), Nonempty N.HomotopyExcisionData := by
-  intro h
-  exact isEmpty_homotopyExcisionData.false (h ℝ leftSet rightSet numeration).some
-
-end NumeratedCoverCounterexample
 
 namespace ClosedCover
 
@@ -566,8 +407,6 @@ public def slideCylMap : TopCat.of (↥(U ∩ V) × unitInterval) ⟶
         (((N.continuous_weightInter.comp hb).prodMk continuous_fst.snd).prodMk
           continuous_snd)))⟩)
 
-public theorem slideCylMap_apply (a : ↥(U ∩ V)) (t τ : unitInterval) :
-    N.slideCylMap (a, t) τ = pointCyl U V a (slide (N.weightInter a) t τ) := rfl
 
 /-! #### The sliding homotopy on the right member -/
 

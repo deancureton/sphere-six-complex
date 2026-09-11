@@ -48,49 +48,10 @@ public theorem skeleton_eq_of_closedCell_eq [T2Space X]
       B.cellMap m i '' Metric.closedBall 0 1
   simp only [h]
 
-public def skeletalInclusion [T2Space X] (A : StandardA2ToricCentralFiberCellAtlas X) (n : ℕ) :
-    TopCat.of (A.skeletalSet n) ⟶ TopCat.of (A.skeletalSet (n + 1)) := by
-  let _ := A.cwComplex
-  exact integralCWSkeletonInclusion X n
 
-public def relativeChains [T2Space X] (A : StandardA2ToricCentralFiberCellAtlas X) (n : ℕ) :=
-  cwRelativeIntegralSingularChainComplex (A.skeletalInclusion n)
 
-public def relativeChainsIsoOfClosedCellEq [T2Space X]
-    (A B : StandardA2ToricCentralFiberCellAtlas X)
-    (h : ∀ n i, A.cellMap n i '' Metric.closedBall 0 1 =
-      B.cellMap n i '' Metric.closedBall 0 1) (n : ℕ) :
-    A.relativeChains n ≅ B.relativeChains n := by
-  let e₀ : TopCat.of (A.skeletalSet n) ≅ TopCat.of (B.skeletalSet n) :=
-    TopCat.isoOfHomeo (Homeomorph.setCongr (skeleton_eq_of_closedCell_eq A B h n))
-  let e₁ : TopCat.of (A.skeletalSet (n + 1)) ≅ TopCat.of (B.skeletalSet (n + 1)) :=
-    TopCat.isoOfHomeo (Homeomorph.setCongr (skeleton_eq_of_closedCell_eq A B h (n + 1)))
-  let F := (AlgebraicTopology.singularChainComplexFunctor AddCommGrpCat).obj (AddCommGrpCat.of ℤ)
-  apply CategoryTheory.Limits.cokernel.mapIso
-    (cwIntegralSingularChainMapObj (A.skeletalInclusion n))
-    (cwIntegralSingularChainMapObj (B.skeletalInclusion n))
-    (F.mapIso e₀) (F.mapIso e₁)
-  change F.map (A.skeletalInclusion n) ≫ F.map e₁.hom =
-    F.map e₀.hom ≫ F.map (B.skeletalInclusion n)
-  rw [← Functor.map_comp, ← Functor.map_comp]
-  congr 1
 
 end StandardA2ToricCentralFiberCellAtlas
 
-public theorem characteristicClass_has_integral_retraction
-    (T : CellularHomology.IntegralComparison)
-    (X : Type) [TopologicalSpace X] [T2Space X]
-    [Topology.CWComplex (Set.univ : Set X)] (n : ℕ)
-    (c : Topology.CWComplex.cell (Set.univ : Set X) n)
-    {G : Type} [AddCommGroup G] (e : integralCWRelativeCellObject X n ≃+ G) :
-    ∃ r : G →+ ℤ, r (e (ConcreteCategory.hom
-      ((cwRelativeIntegralSingularChainComplex (cwCharacteristicBoundaryInclusion n)).homologyMap
-        (integralCWCharacteristicPairMap X n c).relativeChainMap n)
-          ((T.diskOrientation n).symm 1))) = 1 := by
-  classical
-  refine ⟨(Finsupp.applyAddHom c).comp ((T.cellBasis X n).symm.toAddMonoidHom.comp
-    e.symm.toAddMonoidHom), ?_⟩
-  rw [← T.cellBasis_single]
-  simp
 
 end SphereSixComplex

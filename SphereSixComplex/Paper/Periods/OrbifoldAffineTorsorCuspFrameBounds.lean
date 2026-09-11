@@ -1,6 +1,7 @@
 module
 
-public import SphereSixComplex.Paper.Periods.OrbifoldAffineTorsorCechGluing
+public import SphereSixComplex.Paper.Periods.OrbifoldAffineTorsorCuspBoundedCousinCorrection
+public import SphereSixComplex.Prerequisites.Periods.EstablishedProjectiveLineCohomology
 public import SphereSixComplex.Paper.Periods.ExactFuchsianCuspBounds
 import SphereSixComplex.Prerequisites.TriangleGroup.FuchsianTessellation
 import all SphereSixComplex.Paper.Periods.Functions
@@ -162,71 +163,10 @@ public theorem frameInfinity_cusp_bounded
   · exact le_max_right B 0
   · exact heventually
 
-/-- An entire function of the reciprocal quotient coordinate is bounded on the distinguished
-cusp component. -/
-public theorem entire_inverseCoordinate_cusp_bounded
-    (P : OrbifoldAffineDescentData) (f : ℂ → ℂ) (hf : MDiff f) :
-    BoundedOn (fun z ↦ f ((P.quotient.coordinate z)⁻¹)) fuchsianCuspRegion := by
-  obtain ⟨B, hB, hqB⟩ := P.quotient.inverse_coordinate_bounded_on_cusp
-  let K : Set ℂ := Metric.closedBall 0 B
-  have hK : IsCompact K := isCompact_closedBall 0 B
-  obtain ⟨A, hA⟩ := hK.bddAbove_image (hf.continuous.continuousOn.norm)
-  unfold BoundedOn
-  refine ⟨max A 0, le_max_right A 0, ?_⟩
-  intro z hz
-  have hqK : (P.quotient.coordinate z)⁻¹ ∈ K := by
-    rw [Metric.mem_closedBall, dist_zero_right]
-    exact hqB z hz
-  exact (hA ⟨_, hqK, rfl⟩).trans (le_max_left A 0)
 
-private theorem boundedOn_mul
-    {f g : UpperHalfPlane → ℂ} {s : Set UpperHalfPlane}
-    (hf : BoundedOn f s) (hg : BoundedOn g s) :
-    BoundedOn (fun z ↦ f z * g z) s := by
-  unfold BoundedOn at hf hg ⊢
-  obtain ⟨B, hB, hf⟩ := hf
-  obtain ⟨C, hC, hg⟩ := hg
-  refine ⟨B * C, mul_nonneg hB hC, ?_⟩
-  intro z hz
-  rw [norm_mul]
-  exact mul_le_mul (hf z hz) (hg z hz) (norm_nonneg _) hB
 
-/-- Every entire infinity-chart coefficient times the infinity frame is bounded at the cusp. -/
-public theorem infinityCorrection_cusp_bounded
-    (P : OrbifoldAffineDescentData) (f : ℂ → ℂ) (hf : MDiff f) :
-    BoundedOn
-      (fun z ↦ f ((P.quotient.coordinate z)⁻¹) * P.frameInfinity z)
-      fuchsianCuspRegion :=
-  boundedOn_mul (P.entire_inverseCoordinate_cusp_bounded f hf)
-    P.frameInfinity_cusp_bounded
 
-/-- Once local analytic descent and the standard frame identification are supplied, all Cech
-gluing and cusp estimates are formal consequences. -/
-@[expose] public noncomputable def CechGluingData.ofAnalyticDescent
-    (P : OrbifoldAffineDescentData) (A : P.AnalyticDescentData)
-    (frame : HolomorphicAffineTorsorHOne.AcyclicProjectiveLineFrame)
-    (hframe : P.frameTransition = frame.transition) :
-    P.CechGluingData where
-  descent := A
-  frame := frame
-  frameTransition_eq := hframe
-  infinityCorrection_cusp_bounded := P.infinityCorrection_cusp_bounded
 
-/-- Analytic descent together with either standard acyclic transition function gives the
-original cusp-bounded correction. -/
-public theorem nonempty_cuspBoundedCorrection_of_analyticDescent
-    (P : OrbifoldAffineDescentData) (A : P.AnalyticDescentData)
-    (hframe :
-      P.frameTransition = HolomorphicAffineTorsorHOne.negOneTransition ∨
-      P.frameTransition = HolomorphicAffineTorsorHOne.zeroTransition) :
-    Nonempty P.CuspBoundedCorrection := by
-  rcases hframe with hnegOne | hzero
-  · exact P.nonempty_cuspBoundedCorrection_of_cechGluingData
-      (CechGluingData.ofAnalyticDescent P A
-        HolomorphicAffineTorsorHOne.AcyclicProjectiveLineFrame.negOne hnegOne)
-  · exact P.nonempty_cuspBoundedCorrection_of_cechGluingData
-      (CechGluingData.ofAnalyticDescent P A
-        HolomorphicAffineTorsorHOne.AcyclicProjectiveLineFrame.zero hzero)
 
 end OrbifoldAffineDescentData
 

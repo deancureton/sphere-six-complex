@@ -305,10 +305,5 @@ public theorem PrePeriodFunctions.exists_shiftedPeriodFunctions
       linarith [le_max_left M 0]
     exact lt_of_le_of_lt (sub_le_sub_right (hM z) c) hc
 
-/-- The generic compactness argument supplies the exact Theorem 3.4 existence statement. -/
-public theorem theorem3_4Existence_of_prePeriodFunctions_compactCore
-    {U : TriangleUniformization} (F : PrePeriodFunctions U) (K : QuotientCompactCore U) :
-    Nonempty (PeriodFunctions U) :=
-  F.exists_shiftedPeriodFunctions K
 
 end SphereSixComplex.Periods

@@ -1,6 +1,8 @@
 module
 
-public import SphereSixComplex.Paper.Topology.PaperOrderThreeCentralMarkingConnectorBridge
+public import SphereSixComplex.Prerequisites.Topology.FundamentalGroupConnectorConjugacy
+public import SphereSixComplex.Paper.Topology.PaperOrderThreeCentralBoundaryCoverComparison
+public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderFourCommonGaugeGeometry
 
 /-!
 # Connector coherence for the actual elliptic central charts
@@ -79,58 +81,10 @@ public theorem fundamentalGroupMulEquivOfPath_mapOfEq_eq_cast
   subst y
   simp
 
-/-- A group equivalence carries simultaneous inner conjugation of a pair to simultaneous inner
-conjugation by the image of the same element. -/
-public theorem mulEquiv_conjugatedPair_simultaneouslyConjugate
-    {G H : Type*} [Group G] [Group H] (e : G ≃* H) (c a b : G) :
-    SimultaneouslyConjugate
-      (e (c * a * c⁻¹), e (c * b * c⁻¹)) (e a, e b) := by
-  refine ⟨e c, ?_, ?_⟩ <;> simp
 
-/-- The categorical fundamental-group equivalence attached to a point equality is the same
-point transport as `fundamentalGroupElementOfBaseEq`. -/
-public theorem fundamentalGroupMulEquivOfEq_eq_elementOfBaseEq
-    {X : Type*} [TopologicalSpace X] {x y : X} (h : x = y)
-    (a : FundamentalGroup X x) :
-    fundamentalGroupMulEquivOfEq h a = fundamentalGroupElementOfBaseEq h a := by
-  subst y
-  rw [fundamentalGroupMulEquivOfEq_apply]
-  unfold fundamentalGroupElementOfBaseEq
-  simp
 
-/-- Two successive equality transports of a loop are transport along the composite equality. -/
-public theorem fundamentalGroupElementOfBaseEq_trans
-    {X : Type*} [TopologicalSpace X] {x y z : X} (h : x = y) (k : y = z)
-    (a : FundamentalGroup X x) :
-    fundamentalGroupElementOfBaseEq k (fundamentalGroupElementOfBaseEq h a) =
-      fundamentalGroupElementOfBaseEq (h.trans k) a := by
-  subst y
-  subst z
-  rfl
 
-/-- Equality transport after equality transport through the categorical equivalence is the
-single composite point transport. -/
-public theorem fundamentalGroupMulEquivOfEq_elementOfBaseEq_trans
-    {X : Type*} [TopologicalSpace X] {x y z : X} (h : x = y) (k : y = z)
-    (a : FundamentalGroup X x) :
-    fundamentalGroupMulEquivOfEq k (fundamentalGroupElementOfBaseEq h a) =
-      fundamentalGroupElementOfBaseEq (h.trans k) a := by
-  rw [fundamentalGroupMulEquivOfEq_eq_elementOfBaseEq,
-    fundamentalGroupElementOfBaseEq_trans]
 
-/-- Changing the target basepoint of an equality-adjusted fundamental-group map composes the
-two target equalities. -/
-public theorem fundamentalGroupMulEquivOfEq_mapOfEq_trans
-    {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
-    (f : C(X, Y)) {x : X} {y z : Y} (h : f x = y) (k : y = z)
-    (a : FundamentalGroup X x) :
-    fundamentalGroupMulEquivOfEq k (FundamentalGroup.mapOfEq f h a) =
-      FundamentalGroup.mapOfEq f (h.trans k) a := by
-  subst y
-  subst z
-  rw [fundamentalGroupMulEquivOfEq_eq_elementOfBaseEq]
-  unfold fundamentalGroupElementOfBaseEq
-  simp
 
 /-- Casting the endpoint of a path and then changing basepoint along it is equality transport of
 the original path-induced class. -/
@@ -269,149 +223,9 @@ public theorem cuspCentralNaturalityPair_simultaneouslyConjugate_orderThree
   exact (A.cuspCentralNaturalityPair_simultaneouslyConjugate_actualCusp a b).trans
     (A.cuspCentralToCorePair_simultaneouslyConjugate_orderThree a b)
 
-public theorem orderThreeCentralMeridianAtOverlap_eq_pathTransport :
-    A.orderThreeCentralMeridianAtOverlap =
-      FundamentalGroup.fundamentalGroupMulEquivOfPath A.orderThreeCentralBaseWhisker
-        A.centralAffineCorePiOneData.rhoOne := by
-  unfold orderThreeCentralMeridianAtOverlap
-  rfl
 
-public theorem orderThreeCentralTranslationAtOverlap_eq_pathTransport :
-    A.orderThreeCentralTranslationAtOverlap =
-      FundamentalGroup.fundamentalGroupMulEquivOfPath A.orderThreeCentralBaseWhisker
-        (Additive.toMul (A.centralAffineCorePiOneData.translation (-epsilon))) := by
-  unfold orderThreeCentralTranslationAtOverlap
-  rfl
 
-/-- The local order-three marked-loop comparison, transported through the literal overlap chart
-and its geometric connector, is the physical marked pair in the actual core. -/
-public theorem OrderThreeCentralMarkedLoopCompatibility.toActualCorePair
-    (H : A.OrderThreeCentralMarkedLoopCompatibility) :
-    let source := A.orderThreeCentralBaseWhisker.cast rfl
-      A.ellipticThreeCentralBase_eq_overlapCentralBase.symm
-    SimultaneouslyConjugate
-      (A.ellipticThreeCentralToCoreEquiv
-          (FundamentalGroup.fundamentalGroupMulEquivOfPath source
-            A.centralAffineCorePiOneData.rhoOne),
-        A.ellipticThreeCentralToCoreEquiv
-          (FundamentalGroup.fundamentalGroupMulEquivOfPath source
-            (Additive.toMul (A.centralAffineCorePiOneData.translation (-epsilon)))))
-      (A.ellipticThreePhysicalMeridianToCore,
-        Additive.toMul (A.ellipticThreePhysicalTranslationToCore (-epsilon))) := by
-  let _ := A.ellipticThreeBoundaryAction
-  let D := A.centralAffineUniversalCover
-  let _ := D.topology
-  let _ := D.action
-  let _ : SimplyConnectedSpace
-      (OpenRadialInterval A.starSeparation.orderThree.radius ×
-        (ℝ × SphereSixComplex.Geometry.ComplexTorus.ComplexTwoSpace)) :=
-    A.ellipticThreeBoundaryCover_simplyConnected
-  let C := A.ellipticThreeCentralCoverComparison
-  dsimp only [OrderThreeCentralMarkedLoopCompatibility] at H
-  let hbase := C.commutes A.ellipticThreeBoundaryBase
-  let hoverlap := A.ellipticThreeCentralBase_eq_overlapCentralBase
-  have hpoint : D.data.projection (C.lift A.ellipticThreeBoundaryBase) =
-      A.ellipticThreeOverlapCentralBase := by
-    calc
-      _ = C.baseMap
-          (A.ellipticThreeBoundaryProjection
-            A.ellipticThreeBoundaryBase) :=
-        (C.commutes A.ellipticThreeBoundaryBase).symm
-      _ = A.ellipticThreeCentralBase := rfl
-      _ = A.ellipticThreeOverlapCentralBase :=
-        A.ellipticThreeCentralBase_eq_overlapCentralBase
-  let E := fundamentalGroupMulEquivOfEq hpoint
-  let source := A.orderThreeCentralBaseWhisker.cast rfl hoverlap.symm
-  have hcomp : hbase.trans hpoint = hoverlap := Subsingleton.elim _ _
-  have hleftAny (a : FundamentalGroup A.CentralFamily A.centralAffineBase) :
-      E (fundamentalGroupElementOfBaseEq hbase
-          (FundamentalGroup.fundamentalGroupMulEquivOfPath
-            A.orderThreeCentralBaseWhisker a)) =
-        FundamentalGroup.fundamentalGroupMulEquivOfPath source a := by
-    have ht := fundamentalGroupMulEquivOfEq_elementOfBaseEq_trans hbase hpoint
-      (FundamentalGroup.fundamentalGroupMulEquivOfPath
-        A.orderThreeCentralBaseWhisker a)
-    rw [hcomp] at ht
-    exact ht.trans
-      (fundamentalGroupMulEquivOfPath_cast_right A.orderThreeCentralBaseWhisker
-        hoverlap.symm a).symm
-  rw [A.orderThreeCentralMeridianAtOverlap_eq_pathTransport,
-    A.orderThreeCentralTranslationAtOverlap_eq_pathTransport] at H
-  let meridianLoop :=
-    ofDeck A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
-      A.ellipticThreeBoundaryBase
-      A.ellipticThreeBoundaryDeckData.meridian
-  let translationLoop :=
-    ofDeck A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
-      A.ellipticThreeBoundaryBase
-      (Additive.toMul
-        (A.ellipticThreeBoundaryDeckData.translation (-epsilon)))
-  let boundaryEq := A.ellipticThreeCanonicalChosenCover_boundaryBase_eq
-  have htransportRightMeridian :
-      E (FundamentalGroup.mapOfEq C.baseMap hbase meridianLoop) =
-        FundamentalGroup.mapOfEq C.baseMap hoverlap meridianLoop := by
-    have ht := fundamentalGroupMulEquivOfEq_mapOfEq_trans C.baseMap hbase hpoint
-      meridianLoop
-    rw [hcomp] at ht
-    exact ht
-  have hrightMeridian :
-      E (FundamentalGroup.mapOfEq C.baseMap hbase meridianLoop) =
-        FundamentalGroup.mapOfEq A.ellipticThreeOverlapToCentral rfl
-          (fundamentalGroupElementOfBaseEq boundaryEq meridianLoop) := by
-    rw [htransportRightMeridian]
-    symm
-    exact mapOfEq_fundamentalGroupElementOfBaseEq boundaryEq
-      A.ellipticThreeOverlapToCentral hoverlap rfl meridianLoop
-  have htransportRightTranslation :
-      E (FundamentalGroup.mapOfEq C.baseMap hbase translationLoop) =
-        FundamentalGroup.mapOfEq C.baseMap hoverlap translationLoop := by
-    have ht := fundamentalGroupMulEquivOfEq_mapOfEq_trans C.baseMap hbase hpoint
-      translationLoop
-    rw [hcomp] at ht
-    exact ht
-  have hrightTranslation :
-      E (FundamentalGroup.mapOfEq C.baseMap hbase translationLoop) =
-        FundamentalGroup.mapOfEq A.ellipticThreeOverlapToCentral rfl
-          (fundamentalGroupElementOfBaseEq boundaryEq translationLoop) := by
-    rw [htransportRightTranslation]
-    symm
-    exact mapOfEq_fundamentalGroupElementOfBaseEq boundaryEq
-      A.ellipticThreeOverlapToCentral hoverlap rfl translationLoop
-  have hcoreMeridian :
-      A.ellipticThreeCentralToCoreEquiv
-          (E (FundamentalGroup.mapOfEq C.baseMap hbase meridianLoop)) =
-        A.ellipticThreePhysicalMeridianToCore := by
-    rw [hrightMeridian, ← A.ellipticThreeOverlapToCore_eq_central]
-    rfl
-  have hcoreTranslation :
-      A.ellipticThreeCentralToCoreEquiv
-          (E (FundamentalGroup.mapOfEq C.baseMap hbase translationLoop)) =
-        Additive.toMul
-          (A.ellipticThreePhysicalTranslationToCore (-epsilon)) := by
-    rw [hrightTranslation, ← A.ellipticThreeOverlapToCore_eq_central]
-    rfl
-  have h := H.map (E.trans A.ellipticThreeCentralToCoreEquiv).toMonoidHom
-  convert h using 1
-  · exact Prod.ext
-      (congrArg A.ellipticThreeCentralToCoreEquiv
-        (hleftAny A.centralAffineCorePiOneData.rhoOne)).symm
-      (congrArg A.ellipticThreeCentralToCoreEquiv
-        (hleftAny (Additive.toMul
-          (A.centralAffineCorePiOneData.translation (-epsilon))))).symm
-  · exact Prod.ext hcoreMeridian.symm hcoreTranslation.symm
 
-/-- Thus the local order-three marked-loop theorem supplies the exact common gauge for the
-constructed cusp naturality, with no coherence assumption on the arbitrary central whisker. -/
-public theorem OrderThreeCentralMarkedLoopCompatibility.toActualCommonGaugeComparison
-    (H : A.OrderThreeCentralMarkedLoopCompatibility) :
-    A.OrderThreeCommonGaugeComparison A.cuspCentralNaturality := by
-  have hcentral :=
-    A.cuspCentralNaturalityPair_simultaneouslyConjugate_orderThree
-      A.centralAffineCorePiOneData.rhoOne
-      (Additive.toMul (A.centralAffineCorePiOneData.translation (-epsilon)))
-  have hphysical := H.toActualCorePair A
-  have h := hcentral.trans hphysical
-  exact h
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

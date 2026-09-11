@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineOrderThreeEndpointRealPeriodIdentityProof
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineOrderFourNamedSheetStabilizerReduction
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineOrderFourExtractedDeckStabilizer
 
 /-!
 # Named-sheet completion of the affine marked-band homotopies

@@ -1,7 +1,6 @@
 module
 
-public import
-  SphereSixComplex.Paper.Topology.PaperSectionSevenCuspWangOpenCoverChainRealizationEstablished
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspWangOpenCoverChainRealizationEstablished
 public import SphereSixComplex.Paper.Topology.PaperRegularFiberTransport
 
 

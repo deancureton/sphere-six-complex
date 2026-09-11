@@ -218,9 +218,6 @@ public structure ThresholdedCentralEndCoverData where
         threshold i < P.starCollarRadius i z →
           P.regularCoordinate (regularTotalSpaceBase P.periods q) ∈ coordinateSubset
 
-/-- The exact remaining paper-specific central end-cover theorem, named without assuming it. -/
-@[expose] public def ThresholdedCentralEndCoverExistence : Prop :=
-  Nonempty P.ThresholdedCentralEndCoverData
 
 namespace ThresholdedCentralEndCoverData
 

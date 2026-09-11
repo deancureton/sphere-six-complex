@@ -25,13 +25,6 @@ namespace SphereSixComplex
 open Geometry.ComplexTorus Geometry.EllipticFamilySpecialization
 open SphereSixComplex.Periods
 
-/-- A product trivialization over a contractible base is homotopy equivalent to its fibre. -/
-public noncomputable def trivialProductHomotopyEquivFiber
-    {E B F : Type} [TopologicalSpace E] [TopologicalSpace B] [TopologicalSpace F]
-    (totalTrivialization : E ≃ₜ B × F) (baseContraction : B ≃ₕ Unit) : E ≃ₕ F :=
-  totalTrivialization.toHomotopyEquiv.trans
-    ((baseContraction.prodCongr (ContinuousMap.HomotopyEquiv.refl F)).trans
-      (Homeomorph.uniqueProd Unit F).toHomotopyEquiv)
 
 namespace Geometry.PaperAnalyticData
 

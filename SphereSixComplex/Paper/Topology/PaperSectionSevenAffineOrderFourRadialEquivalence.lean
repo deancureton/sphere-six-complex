@@ -362,21 +362,6 @@ public noncomputable def familyEquivOfBaseEquiv
     rw [carrierBasePoint_equivariant hCb g y, E.rightInvHomotopy_equivariant]
     exact A.regularFlatTransport_deck g (E.rightInvHomotopy (t, carrierBasePoint hCb y)).1 y.1
 
-@[simp]
-public theorem familyEquivOfBaseEquiv_toFun
-    (hsub : Cs.carrier ⊆ Cb.carrier)
-    (hCs : ∀ q, q ∈ Cs.carrier ↔
-      A.regularCoordinate (regularTotalSpaceBase A.periods q) ∈ small)
-    (hCb : ∀ q, q ∈ Cb.carrier ↔
-      A.regularCoordinate (regularTotalSpaceBase A.periods q) ∈ big)
-    (E : EquivariantHomotopyEquivData
-      (coveringRegionPreimageAction A.regularBaseDeckAction A.regularCoordinate
-        A.regularCoordinate_deck_invariant small)
-      (coveringRegionPreimageAction A.regularBaseDeckAction A.regularCoordinate
-        A.regularCoordinate_deck_invariant big))
-    (hE : ∀ e, (E.toFun e).1 = e.1) (q : Cs.carrier) :
-    (familyEquivOfBaseEquiv hsub hCs hCb E hE).toFun q = ⟨q.1, hsub q.2⟩ :=
-  rfl
 
 end FamilyTransport
 

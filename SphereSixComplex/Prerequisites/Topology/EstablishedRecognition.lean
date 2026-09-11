@@ -39,17 +39,6 @@ public theorem SmoothSimplyConnectedIntegralHomologySixSphere.nonempty_homotopyE
   exact homotopyEquivSixSphere_of_sphericalGenerator_of_classicalCWWhitehead
     sixSpherePositiveHomologyInputs hX.integralHomology hGenerator hCWX hWhitehead
 
-/-- **Smooth recognition of integral homology six-spheres.** Every smooth, closed, connected,
-simply connected integral homology six-sphere is diffeomorphic to the standard six-sphere. -/
-public theorem SmoothSimplyConnectedIntegralHomologySixSphere.isDiffeomorphic
-    {X : Type} [TopologicalSpace X] [T2Space X] [SecondCountableTopology X]
-    [ChartedSpace RealModel X] :
-    SmoothSixSphereRecognitionObligation X := by
-  intro hX
-  let _ : IsManifold 𝓘(ℝ, RealModel) ∞ X := hX.isManifold
-  let _ : CompactSpace X := hX.compact
-  exact SmoothSixSphere.poincare X
-    (SmoothSimplyConnectedIntegralHomologySixSphere.nonempty_homotopyEquiv hX)
 
 /-- Smale's generalized topological Poincare theorem in dimension six. -/
 public theorem SmoothSixSphere.topological_poincare :

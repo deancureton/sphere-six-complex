@@ -68,9 +68,6 @@ public noncomputable def cuspPulledBackBoundaryInvariantHom :
       D.cuspPulledBackBoundaryHom x + D.cuspPulledBackBoundaryHom y
     exact map_add D.cuspPulledBackBoundaryHom x y
 
-public theorem cuspPulledBackBoundaryInvariantHom_val (x) :
-    (D.cuspPulledBackBoundaryInvariantHom x).1 = D.cuspPulledBackBoundary x :=
-  rfl
 
 /-- The integer coordinate of the pulled-back boundary after the elliptic intersection has been
 oriented by the normalized two-disc computation. -/
@@ -104,53 +101,9 @@ public theorem cuspPulledBackBoundaryCoordinateHom_eq_cuspDegreeTwoBoundaryCoord
     canonicalBoundary D 1 (cuspToEllipticUnionHomology D 2 x)
   exact (D.canonicalBoundary_cuspToEllipticUnionHomology x).symm
 
-/-- The second invariant coordinate of the actual radial cusp Wang boundary. -/
-public noncomputable def actualCuspSecondWangBoundaryCoordinateHom (A : PaperAnalyticData) :
-    IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0) →+ ℤ := by
-  let G := A.actualCuspRadialClutchingData
-  letI := G.fiberTopology
-  let P := circleMappingTorusHTwoPresentation G.clutching
-  let totalEquiv := integralSingularHomologyEquivOfHomotopyEquiv 2 G.totalHomotopyEquiv
-  let invariantEquiv :=
-    (invariantsEquivOfConjugacy G.monodromyCoordinates.degreeOne.toIntLinearEquiv
-      (circleMonodromyDifference G.clutching 1).toIntLinearMap mZeroDifference
-      G.monodromyCoordinates.degreeOneDifference_conjugacy).trans
-        mZeroInvariantsEquivIntSquared
-  exact (coordinateAfterAddEquiv invariantEquiv.toAddEquiv 1).comp
-    (P.totalToInvariants.toAddMonoidHom.comp totalEquiv.toAddMonoidHom)
 
-/-- The last raw degree-two cusp coordinate is exactly the second invariant coordinate of the
-geometric Wang boundary. -/
-public theorem actualCuspSecondWangBoundaryCoordinateHom_eq_rawCoordinate (A : PaperAnalyticData) :
-    actualCuspSecondWangBoundaryCoordinateHom A =
-      coordinateAfterAddEquiv A.cuspRawHomologyTwoEquiv 5 := by
-  apply AddMonoidHom.ext
-  intro x
-  rfl
 
-/-- The actual Wang connecting class before restricting to monodromy invariants or taking a
-coordinate. -/
-public noncomputable def actualCuspWangBoundary
-    (A : PaperAnalyticData)
-    (x : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0)) :
-    let G := A.actualCuspRadialClutchingData
-    let _ := G.fiberTopology
-    IntegralSingularHomology 1 G.Fiber := by
-  let G := A.actualCuspRadialClutchingData
-  letI := G.fiberTopology
-  let P := circleMappingTorusHTwoPresentation G.clutching
-  exact P.boundary (integralSingularHomologyEquivOfHomotopyEquiv 2 G.totalHomotopyEquiv x)
 
-/-- The second invariant Wang coordinate is the fourth marked fibre coordinate of the actual
-Wang connecting class. -/
-public theorem actualCuspSecondWangBoundaryCoordinateHom_apply_eq_fiberCoordinate
-    (A : PaperAnalyticData)
-    (x : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0)) :
-    actualCuspSecondWangBoundaryCoordinateHom A x =
-      let G := A.actualCuspRadialClutchingData
-      let _ := G.fiberTopology
-      G.monodromyCoordinates.degreeOne (actualCuspWangBoundary A x) 3 := by
-  rfl
 
 /-- The elliptic invariant coordinate is the fourth marked coordinate of the boundary in the
 actual band overlap. -/
@@ -160,45 +113,6 @@ public theorem cuspPulledBackBoundaryCoordinateHom_apply_eq_bandCoordinate
     D.cuspPulledBackBoundaryCoordinateHom N x =
       N.actualHomologyCoordinates.bandOne (D.cuspPulledBackBoundary x) 3 := by
   rfl
-
-variable {D}
-
-/-- A comparison of the pulled-back cover boundary with the actual cusp Wang coordinate proves
-all five vanishing basis calculations and the positive final boundary calculation. -/
-public theorem boundaryBasisBridge_of_coordinate_eq
-    (N : A.EllipticBandHomologyAlignment D)
-    (G : D.cuspPulledBackBoundaryCoordinateHom N =
-      EllipticTwoDiscCoverData.actualCuspSecondWangBoundaryCoordinateHom A) :
-    D.SectionSevenCuspPulledBackBoundaryBasisBridge N where
-  lowerBoundary_zero i := by
-    have hInvariant : D.cuspPulledBackBoundaryInvariantHom
-        (A.cuspRawHomologyTwoEquiv.symm (Pi.single i.castSucc 1)) = 0 := by
-      apply N.actualHomologyCoordinates.degreeTwoInvariantEquiv.injective
-      rw [map_zero]
-      change D.cuspPulledBackBoundaryCoordinateHom N
-          (A.cuspRawHomologyTwoEquiv.symm (Pi.single i.castSucc 1)) = 0
-      rw [G,
-        actualCuspSecondWangBoundaryCoordinateHom_eq_rawCoordinate,
-        coordinateAfterAddEquiv_apply,
-        AddEquiv.apply_symm_apply]
-      rw [show (5 : Fin 6) = Fin.last 5 by rfl,
-        Pi.single_eq_of_ne (Fin.castSucc_ne_last i).symm]
-    exact congrArg Subtype.val hInvariant
-  e5_boundary := by
-    have hInvariant : D.cuspPulledBackBoundaryInvariantHom
-        (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) =
-          N.actualHomologyCoordinates.degreeTwoInvariantEquiv.symm 1 := by
-      apply N.actualHomologyCoordinates.degreeTwoInvariantEquiv.injective
-      change D.cuspPulledBackBoundaryCoordinateHom N
-          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) =
-        N.actualHomologyCoordinates.degreeTwoInvariantEquiv
-          (N.actualHomologyCoordinates.degreeTwoInvariantEquiv.symm 1)
-      rw [G,
-        actualCuspSecondWangBoundaryCoordinateHom_eq_rawCoordinate,
-        coordinateAfterAddEquiv_apply,
-        AddEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]
-      simp
-    exact congrArg Subtype.val hInvariant
 
 end EllipticTwoDiscCoverData
 

@@ -6,7 +6,10 @@ Authors: Paul Lezeau
 module
 
 public import SphereSixComplex.Prerequisites.Topology.BinaryOpenCoverCorestriction
-public import SphereSixComplex.Prerequisites.Topology.BinaryOpenCoverExcision
+public import SphereSixComplex.Prerequisites.Topology.BinaryOpenCoverChains
+public import Mathlib.Algebra.Category.Grp.EpiMono
+public import Mathlib.Algebra.Category.Grp.Zero
+public import Mathlib.Algebra.Homology.HomologySequenceLemmas
 public import Mathlib.Algebra.Homology.HomologySequence
 public import Mathlib.Algebra.Homology.ShortComplex.Ab
 
@@ -238,41 +241,10 @@ public noncomputable def OpenCoverHomologyComparison.toIntegralMayerVietorisData
 
 /-! ## Precise excision boundaries -/
 
-/-- Subdivision makes the generated-cover inclusion a homology isomorphism in every degree. -/
-public def IntegralGeneratedCoverExcisionStatement : Prop :=
-  ∀ (X : TopCat) (U V : Opens X), U ⊔ V = ⊤ → ∀ n : ℕ,
-    IsIso (HomologicalComplex.homologyMap (coverChainInclusion U V) n)
 
-/-- A subdivision certificate supplies generated-cover excision. -/
-public theorem integralGeneratedCoverExcisionStatement_of_subdivision
-    (h : BinaryOpenCoverSubdivisionStatement) :
-    IntegralGeneratedCoverExcisionStatement := by
-  intro X U V hcover n
-  obtain ⟨D⟩ := h X U V hcover
-  exact D.isIso_homologyMap n
 
-/-- The range-intersection comparison is an isomorphism in every degree. -/
-public def IntegralOpenIntersectionComparisonStatement : Prop :=
-  ∀ (X : TopCat) (U V : Opens X) (n : ℕ),
-    IsIso (HomologicalComplex.homologyMap (openIntersectionChainComparison U V) n)
 
-/-- The open-intersection comparison is independent of subdivision. -/
-public theorem integralOpenIntersectionComparisonStatement :
-    IntegralOpenIntersectionComparisonStatement := by
-  intro X U V n
-  infer_instance
 
-/-- The complete comparison needed to recover ordinary singular Mayer--Vietoris. -/
-public def IntegralOpenCoverComparisonStatement : Prop :=
-  ∀ (X : TopCat) (U V : Opens X), U ⊔ V = ⊤ →
-    Nonempty (OpenCoverHomologyComparison U V)
 
-/-- A comparison theorem supplies ordinary singular Mayer--Vietoris data. -/
-public theorem integralMayerVietorisData_of_comparison
-    (h : IntegralOpenCoverComparisonStatement) {X : TopCat}
-    (U V : Opens X) (hcover : U ⊔ V = ⊤) :
-    Nonempty (IntegralMayerVietorisData U V hcover) := by
-  obtain ⟨comparison⟩ := h X U V hcover
-  exact ⟨comparison.toIntegralMayerVietorisData hcover⟩
 
 end SphereSixComplex.BinaryOpenCover

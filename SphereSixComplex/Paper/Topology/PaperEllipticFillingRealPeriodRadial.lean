@@ -298,19 +298,7 @@ bielliptic fibre. -/
   orderFourVaryingFillingHomotopyEquivCentralFiber_of_affineRadialChart A
     A.starSeparation.orderFour.radius (orderFourSelectedAffineRadialCompatibility A)
 
-/-- Integral singular chains of the selected actual order-three filling and central fibre are
-chain-homotopy equivalent. -/
-@[expose] public def orderThreeSelectedFillingSingularChainHomotopyEquiv
-    (A : PaperAnalyticData) :=
-  orderThreeVaryingFillingSingularChainHomotopyEquiv_of_affineRadialChart A
-    A.starSeparation.orderThree.radius (orderThreeSelectedAffineRadialCompatibility A)
 
-/-- Integral singular chains of the selected actual order-four filling and central fibre are
-chain-homotopy equivalent. -/
-@[expose] public def orderFourSelectedFillingSingularChainHomotopyEquiv
-    (A : PaperAnalyticData) :=
-  orderFourVaryingFillingSingularChainHomotopyEquiv_of_affineRadialChart A
-    A.starSeparation.orderFour.radius (orderFourSelectedAffineRadialCompatibility A)
 
 end
 

@@ -148,24 +148,6 @@ theorem cauchyGreenInfinity_inv (f : ℂ → ℂ) {z : ℂ} (hz : z ≠ 0) :
         MeasureTheory.integral_sub_left_eq_self (fun w : ℂ ↦ w⁻¹ * f (z - w))
           MeasureTheory.MeasureSpace.volume z
 
-theorem analyticAt_cauchyGreenInfinity_zero {f : ℂ → ℂ}
-    (hf : Continuous f) (hfc : HasCompactSupport f) :
-    AnalyticAt ℂ (cauchyGreenInfinity f) 0 := by
-  obtain ⟨R, hR, hbound⟩ := hfc.isBounded.subset_ball_lt 0 (0 : ℂ)
-  have hs : ∀ w ∈ Function.support f, ‖w‖ ≤ R := by
-    intro w hw
-    exact (show ‖w‖ < R by simpa using hbound (subset_tsupport f hw)).le
-  exact analyticOnNhd_cauchyGreenInfinity hf hfc hR hs 0
-    (by simpa using inv_pos.mpr hR)
 
-theorem tendsto_cauchyGreen_cobounded {f : ℂ → ℂ}
-    (hf : Continuous f) (hfc : HasCompactSupport f) :
-    Tendsto (cauchyGreen f) (Bornology.cobounded ℂ) (𝓝 0) := by
-  have h := (analyticAt_cauchyGreenInfinity_zero hf hfc).continuousAt.tendsto.comp
-    (tendsto_inv₀_cobounded (α := ℂ))
-  simp only [cauchyGreenInfinity_zero] at h
-  apply h.congr'
-  filter_upwards [Bornology.eventually_ne_cobounded (0 : ℂ)] with z hz
-  exact cauchyGreenInfinity_inv f hz
 
 end SphereSixComplex.Analysis.CauchyGreen

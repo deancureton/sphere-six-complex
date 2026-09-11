@@ -1,6 +1,7 @@
 module
 
-public import SphereSixComplex.Paper.Topology.ConcreteVanKampen
+public import Mathlib.AlgebraicTopology.FundamentalGroupoid.VanKampen
+public import SphereSixComplex.Paper.Topology.VanKampenGeometry
 public import SphereSixComplex.Paper.Topology.PaperEllipticCollarFundamentalDomain
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenFinalDegreeZero
 
@@ -201,15 +202,6 @@ public noncomputable def actualVanKampenFourPieceCover :
   · rw [Set.disjoint_iff_inter_eq_empty]
     exact S.fillingPiece_inter_fillingPiece (i := 1) (j := 2) (by decide)
 
-/-- The fundamental groupoid of the actual glued space is the colimit of the four actual pieces
-and their pairwise intersections. -/
-public theorem actualPairwiseVanKampenCocone_isColimit :
-    let D := A.actualVanKampenFourPieceCover
-    Nonempty
-      (IsColimit
-        ((πₒ (TopCat.of A.VanKampenSpace)).mapCocone
-          (CategoryTheory.Pairwise.cocone D.opens))) := by
-  exact A.actualVanKampenFourPieceCover.pairwiseVanKampenCocone_isColimit
 
 end Geometry.PaperAnalyticData
 

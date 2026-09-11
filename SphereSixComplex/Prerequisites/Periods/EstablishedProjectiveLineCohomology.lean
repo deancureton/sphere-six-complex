@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Prerequisites.Periods.ProjectiveLineTorsors
+public import Mathlib.Algebra.Polynomial.Laurent
 public import Mathlib.Geometry.Manifold.Instances.Real
 import Mathlib.Analysis.Complex.RemovableSingularity
 
@@ -23,10 +23,6 @@ namespace SphereSixComplex.Periods
 public def HolomorphicOnPuncturedPlane (f : ℂ → ℂ) : Prop :=
   ∀ z, z ≠ 0 → MDiffAt f z
 
-/-- An entire function is holomorphic on the punctured plane. -/
-public theorem holomorphicOnPuncturedPlane_of_mdiff (f : ℂ → ℂ) (hf : MDiff f) :
-    HolomorphicOnPuncturedPlane f :=
-  fun z _ ↦ hf z
 
 /-! ## Bridge to the manifold spelling used in the project -/
 
@@ -472,45 +468,6 @@ public theorem exists_cech_coboundary_zero
   exact ⟨fZero, fInfinity, mdiff_complex_iff_differentiable.mpr hfZero,
     mdiff_complex_iff_differentiable.mpr hfInfinity, hsplit⟩
 
-/-- Two local `O(-1)` torsor sections with holomorphic overlap mismatch can be corrected by entire
-functions so that they agree in the zero-chart frame. -/
-public theorem exists_compatibleProjectiveLineNegOneAdjustments
-    (sZero sInfinity : ℂ → ℂ)
-    (hZero : HolomorphicOnPuncturedPlane sZero)
-    (hInfinity : HolomorphicOnPuncturedPlane sInfinity) :
-    ∃ fZero fInfinity : ℂ → ℂ,
-      MDiff fZero ∧ MDiff fInfinity ∧
-      ∀ z, z ≠ 0 →
-        sZero z - fZero z =
-          sInfinity z - z⁻¹ * fInfinity (z⁻¹) := by
-  have hc : HolomorphicOnPuncturedPlane (fun z ↦ sZero z - sInfinity z) := by
-    intro z hz
-    exact (hZero z hz).sub (hInfinity z hz)
-  obtain ⟨fZero, fInfinity, hfZero, hfInfinity, hsplit⟩ :=
-    exists_cech_coboundary_neg_one (fun z ↦ sZero z - sInfinity z) hc
-  refine ⟨fZero, fInfinity, hfZero, hfInfinity, ?_⟩
-  intro z hz
-  have h := hsplit z hz
-  linear_combination h
 
-/-- Two local structure-sheaf torsor sections with holomorphic overlap mismatch can be corrected
-to agree. -/
-public theorem exists_compatibleProjectiveLineZeroAdjustments
-    (sZero sInfinity : ℂ → ℂ)
-    (hZero : HolomorphicOnPuncturedPlane sZero)
-    (hInfinity : HolomorphicOnPuncturedPlane sInfinity) :
-    ∃ fZero fInfinity : ℂ → ℂ,
-      MDiff fZero ∧ MDiff fInfinity ∧
-      ∀ z, z ≠ 0 →
-        sZero z - fZero z = sInfinity z - fInfinity (z⁻¹) := by
-  have hc : HolomorphicOnPuncturedPlane (fun z ↦ sZero z - sInfinity z) := by
-    intro z hz
-    exact (hZero z hz).sub (hInfinity z hz)
-  obtain ⟨fZero, fInfinity, hfZero, hfInfinity, hsplit⟩ :=
-    exists_cech_coboundary_zero (fun z ↦ sZero z - sInfinity z) hc
-  refine ⟨fZero, fInfinity, hfZero, hfInfinity, ?_⟩
-  intro z hz
-  have h := hsplit z hz
-  linear_combination h
 
 end SphereSixComplex.Periods

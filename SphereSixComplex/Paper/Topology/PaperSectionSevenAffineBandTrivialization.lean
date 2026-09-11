@@ -27,16 +27,6 @@ open scoped ContinuousMap
 
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 
-/-- Standard quotient-bundle triviality over the convex affine strip.  The unconditional
-real-period product coordinates trivialize the varying lattice upstairs, while the unique lift of
-the simply connected strip through the regular-coordinate covering trivializes the descended
-quotient bundle.  Both ingredients are assembled into the marked trivialization, of which this is
-the forgetful consequence. -/
-public theorem affineCentralBandProductTrivialization
-    (A : PaperAnalyticData) (S : A.AffineCentralSeparation) :
-    A.AffineCentralBandProductTrivialization S :=
-  AffineCentralBandMarkedTrivialization.toProductTrivialization
-    (affineCentralBandMarkedTrivialization A S)
 
 open _root_.SphereSixComplex.Geometry.PaperAnalyticData
 
@@ -67,24 +57,6 @@ public noncomputable def affineCentralBandMarkedProductHomeomorph
   (A.affineCentralBandProductHomeomorphOfLift S
     A.affineNamedStripLift).symm
 
-/-- The named marked trivialization has the affine band projection as its base coordinate, so it
-is in particular a witness of the unmarked product-trivialization statement. -/
-public theorem affineCentralBandMarkedProductHomeomorph_fst
-    (S : A.AffineCentralSeparation)
-    (x : centralHeightBand
-      (A.affineCentralHeightSplit S).height
-      (A.affineCentralHeightSplit S).lower
-      (A.affineCentralHeightSplit S).upper) :
-    (A.affineCentralBandMarkedProductHomeomorph S x).1 =
-      A.affineCentralBandProjection S x := by
-  have hkey := A.affineCentralBandProductHomeomorphOfLift_toCentralFamily S
-    A.affineNamedStripLift
-    (A.affineCentralBandMarkedProductHomeomorph S x)
-  rw [affineCentralBandMarkedProductHomeomorph, Homeomorph.apply_symm_apply] at hkey
-  have hcoord := congrArg A.centralFamilyCoordinate hkey
-  rw [A.centralFamilyCoordinate_stripLiftPoint] at hcoord
-  apply Subtype.ext
-  exact (congrArg (Subtype.val : regularCoordinateBase → ℂ) hcoord).symm
 
 /-- The marking itself: the fibre coordinate of the named trivialization is the canonical
 real-period coordinate of the central four-torus along the named strip lift.  This is the

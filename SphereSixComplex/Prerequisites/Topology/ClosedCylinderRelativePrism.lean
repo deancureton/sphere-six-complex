@@ -129,44 +129,5 @@ public theorem cylinderTopPrismHomologyIso_map_pair
   apply cylinderRelativeContraction_sweep_relative
   exact closedCylinderRelativePrism_projection A F (n + 1) (n + 2)
 
-public theorem closedCylinderRelativePrism_naturality
-    [Mono (cylinderBaseInclusion A)]
-    {X' B' Y' : TopCat} (A' : Set X') {j' : B' ⟶ Y'}
-    [Mono (cylinderBaseInclusion A')]
-    (F' : CWTopologicalPairMap (cylinderBoundaryInclusion A') j')
-    (u : CWTopologicalPairMap (cylinderBaseInclusion A) (cylinderBaseInclusion A'))
-    (v : CWTopologicalPairMap j j')
-    (h : ∀ (t : unitInterval) (x : X), F'.right (t, u.right x) = v.right (F.right (t, x)))
-    (n : ℕ) :
-    homologyMap (cwRelativeIntegralSingularChainMapOfPair u) (n + 1) ≫
-        closedPrismHomology (closedCylinderRelativePrism A' F') n =
-      closedPrismHomology (closedCylinderRelativePrism A F) n ≫
-        homologyMap (cwRelativeIntegralSingularChainMapOfPair v) (n + 2) := by
-  apply closedPrismHomology_naturality
-  intro p q
-  let : Epi (cwRelativeIntegralSingularChainProjection (cylinderBaseInclusion A)) := by
-    change Epi (cokernel.π _)
-    infer_instance
-  apply (cancel_epi ((cwRelativeIntegralSingularChainProjection (cylinderBaseInclusion A)).f p)).mp
-  have hu := congrArg (fun f ↦ f.f p) (cwRelativeIntegralSingularChainProjection_natural u)
-  have hv := congrArg (fun f ↦ f.f q) (cwRelativeIntegralSingularChainProjection_natural v)
-  change (cwRelativeIntegralSingularChainProjection (cylinderBaseInclusion A)).f p ≫
-    (cwRelativeIntegralSingularChainMapOfPair u).f p =
-      (cwIntegralSingularChainMapObj u.right).f p ≫
-      (cwRelativeIntegralSingularChainProjection (cylinderBaseInclusion A')).f p at hu
-  change (cwRelativeIntegralSingularChainProjection j).f q ≫
-    (cwRelativeIntegralSingularChainMapOfPair v).f q =
-      (cwIntegralSingularChainMapObj v.right).f q ≫
-      (cwRelativeIntegralSingularChainProjection j').f q at hv
-  have ht := topologicalPrism_naturality (cylinderReversedSweep F.right)
-    (cylinderReversedSweep F'.right) u.right v.right (by
-      ext z
-      exact h (cylinderVerticalScale (TopCat.I.homeomorph z.2) 1) z.1)
-    (AddCommGrpCat.of ℤ) p q
-  change (cwIntegralSingularChainMapObj u.right).f p ≫ _ =
-    _ ≫ (cwIntegralSingularChainMapObj v.right).f q at ht
-  rw [← Category.assoc, hu, Category.assoc, closedCylinderRelativePrism_projection,
-    ← Category.assoc, ht, Category.assoc, ← hv]
-  rw [← Category.assoc, ← closedCylinderRelativePrism_projection, Category.assoc]
 
 end SphereSixComplex

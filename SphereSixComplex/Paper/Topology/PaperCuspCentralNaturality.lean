@@ -1,6 +1,8 @@
 module
 
-public import SphereSixComplex.Paper.Topology.PaperCuspCentralCoverComparison
+public import SphereSixComplex.Paper.Topology.PaperActualAffineCoreData
+public import SphereSixComplex.Paper.Topology.EstablishedEquivariantUniversalCover
+public import SphereSixComplex.Paper.Topology.PaperCuspBoundaryUniversalCover
 public import SphereSixComplex.Paper.Topology.PaperActualVanKampenNiceness
 
 /-!

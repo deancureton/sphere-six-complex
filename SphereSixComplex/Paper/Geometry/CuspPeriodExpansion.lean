@@ -270,24 +270,9 @@ public noncomputable def correctionMatrix (q : ℂ) : Matrix (Fin 2) (Fin 2) ℂ
   !![6 * N.muDescent.extension q, 0;
     N.bDescent.extension q, N.muDescent.extension q]
 
-@[simp]
-public theorem correctionMatrix_zero_zero (q : ℂ) :
-    N.correctionMatrix q 0 0 = 6 * N.muDescent.extension q :=
-  rfl
 
-@[simp]
-public theorem correctionMatrix_zero_one (q : ℂ) : N.correctionMatrix q 0 1 = 0 :=
-  rfl
 
-@[simp]
-public theorem correctionMatrix_one_zero (q : ℂ) :
-    N.correctionMatrix q 1 0 = N.bDescent.extension q :=
-  rfl
 
-@[simp]
-public theorem correctionMatrix_one_one (q : ℂ) :
-    N.correctionMatrix q 1 1 = N.muDescent.extension q :=
-  rfl
 
 /-- Every entry of the correction matrix is holomorphic on the cusp disc. -/
 public theorem correctionMatrix_entry_holomorphic (i j : Fin 2) :
@@ -299,17 +284,6 @@ public theorem correctionMatrix_entry_holomorphic (i j : Fin 2) :
   · exact N.bDescent.extension_holomorphic
   · exact N.muDescent.extension_holomorphic
 
-/-- Holomorphicity implies boundedness of each correction-matrix entry on every strictly smaller
-closed subdisc. -/
-public theorem correctionMatrix_entry_bounded_on_closedBall
-    (i j : Fin 2) {r : ℝ} (hr : r < cuspRadius N.height) :
-    Bornology.IsBounded
-      ((fun q ↦ N.correctionMatrix q i j) '' Metric.closedBall (0 : ℂ) r) := by
-  have hsubset : Metric.closedBall (0 : ℂ) r ⊆ Metric.ball 0 (cuspRadius N.height) := by
-    intro q hq
-    exact lt_of_le_of_lt hq hr
-  exact ((ProperSpace.isCompact_closedBall (0 : ℂ) r).image_of_continuousOn
-    ((N.correctionMatrix_entry_holomorphic i j).mono hsubset).continuousOn).isBounded
 
 /-- The complex form of the integral cusp shear. -/
 public def B₀Complex : Matrix (Fin 2) (Fin 2) ℂ :=
@@ -399,41 +373,8 @@ public theorem phaseCoefficient_holomorphicOn
       (N.correctionMatrix q).mulVec (fun j ↦ (lambda j : ℂ)) i)
   exact hexpMD.comp_mdifferentiableOn hargMD
 
-/-- Coherent local phase data on the cusp disc. -/
-public structure LocalHolomorphicPhaseCoefficients where
-  phase : CuspFilling.ParameterLattice → ℂ → Phase
-  phase_zero : ∀ q, phase 0 q = 1
-  phase_add : ∀ lambda mu q, phase (lambda + mu) q = phase lambda q * phase mu q
-  coefficient_holomorphicOn : ∀ lambda i,
-    MDiff[Metric.ball 0 (cuspRadius N.height)]
-      (fun q ↦ (phase lambda q i : ℂ))
 
-/-- The correction matrix produces the exact local phase package. -/
-public noncomputable def localHolomorphicPhaseCoefficients :
-    N.LocalHolomorphicPhaseCoefficients where
-  phase := N.phaseCoefficient
-  phase_zero := N.phaseCoefficient_zero
-  phase_add := N.phaseCoefficient_add
-  coefficient_holomorphicOn := N.phaseCoefficient_holomorphicOn
 
-/-- The bridge to the older global interface is valid only when the local coefficients happen to
-extend holomorphically to all of `ℂ`, together with the corresponding holomorphic toric twist.
-Neither global premise follows from bounded cusp descent. -/
-public noncomputable def toExactHolomorphicPhaseCoefficients
-    (M : InfiniteA2Toric.Model)
-    (global_holomorphic : ∀ lambda i,
-      Differentiable ℂ (fun q ↦ (N.phaseCoefficient lambda q i : ℂ)))
-    (twist_holomorphic : ∀ lambda,
-      ContMDiff (modelWithCornersSelf ℂ ComplexModel)
-        (modelWithCornersSelf ℂ ComplexModel) ∞
-        (fun p : M.Carrier ↦ CuspToricPhaseAction.ToricModel.phaseAction M
-          (N.phaseCoefficient lambda (M.t p)) p)) :
-    HolomorphicPhaseCoefficients M where
-  phase := N.phaseCoefficient
-  phase_zero := N.phaseCoefficient_zero
-  phase_add := N.phaseCoefficient_add
-  coefficient_holomorphic := global_holomorphic
-  twist_holomorphic := twist_holomorphic
 
 end NormalizedFuchsianCuspCoordinate
 

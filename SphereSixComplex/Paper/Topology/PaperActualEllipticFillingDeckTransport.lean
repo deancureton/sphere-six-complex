@@ -76,46 +76,9 @@ public theorem affineDeckIntegerMonodromy_eq_integerAffineMonodromy
       apply congrArg (D.latticeMap.toEquiv ^ (- (i : ℤ)))
       rfl
 
-/-- The mapping-torus deck presentation and the canonical cyclic-affine presentation use the
-same semidirect product, up to their separately packaged integer-power actions. -/
-public noncomputable def actualToCanonicalBoundaryDeckEquiv
-    {p : Parameters} (D : DescendedAffineTorusAutomorphism p) :
-    AffineTorusMappingTorusDeck D ≃*
-      CanonicalCyclicAffineBoundaryDeck D.latticeMap.toAddEquiv where
-  toFun d := ⟨d.left, d.right⟩
-  invFun d := ⟨d.left, d.right⟩
-  left_inv _ := rfl
-  right_inv _ := rfl
-  map_mul' d e := by
-    apply SemidirectProduct.ext
-    · change d.left *
-        affineDeckIntegerMonodromy D.latticeMap.toAddEquiv d.right e.left =
-          d.left * integerAffineMonodromy D.latticeMap.toAddEquiv d.right e.left
-      congr 1
-      exact congrArg (fun f ↦ f d.right e.left)
-        (affineDeckIntegerMonodromy_eq_integerAffineMonodromy D)
-    · rfl
 
-public noncomputable def actualToCanonicalBoundaryDeckEquivOfEq
-    {p : Parameters} (D E : DescendedAffineTorusAutomorphism p) (h : D = E) :
-    AffineTorusMappingTorusDeck D ≃*
-      CanonicalCyclicAffineBoundaryDeck E.latticeMap.toAddEquiv := by
-  subst E
-  exact actualToCanonicalBoundaryDeckEquiv D
 
-@[simp]
-public theorem actualToCanonicalBoundaryDeckEquiv_translation
-    {p : Parameters} (D : DescendedAffineTorusAutomorphism p) (a : Lattice) :
-    actualToCanonicalBoundaryDeckEquiv D
-        (Additive.toMul (affineTorusMappingTorusDeckTranslation D a)) =
-      Additive.toMul (canonicalCyclicAffineTranslation D.latticeMap.toAddEquiv a) := rfl
 
-@[simp]
-public theorem actualToCanonicalBoundaryDeckEquiv_meridian
-    {p : Parameters} (D : DescendedAffineTorusAutomorphism p) :
-    actualToCanonicalBoundaryDeckEquiv D
-        (affineTorusMappingTorusDeckMeridian D) =
-      canonicalCyclicAffineMeridian D.latticeMap.toAddEquiv := rfl
 
 private theorem inverse_meridian_negative_twist_relation
     {G : Type*} [Group G] (g t : G) (m : ℕ) (h : Commute g t) :
@@ -136,81 +99,7 @@ public theorem normalClosure_singleton_inv {G : Type*} [Group G] (g : G) :
       Subgroup.subset_normalClosure (Set.mem_singleton g⁻¹)
     simpa using Subgroup.inv_mem (Subgroup.normalClosure {g⁻¹}) hg
 
-/-- Under the canonical deck-group identification, the corrected actual order-three filling
-relation is the inverse of the positive-meridian canonical filling relation. -/
-public theorem ellipticThreeFillingRelation_map_eq_canonical_inv :
-    actualToCanonicalBoundaryDeckEquiv
-        (orderThreeDescendedAffineTorusAutomorphism A.periods)
-        A.ellipticThreeBoundaryDeckData.fillingRelation =
-      (affineCyclicBoundaryDeckData
-        (orderThreeCentralFiberPresentationData A.periods)).fillingRelation⁻¹ := by
-  let g := canonicalCyclicAffineMeridian
-    (orderThreeDescendedAffineTorusAutomorphism A.periods).latticeMap.toAddEquiv
-  let t := Additive.toMul (canonicalCyclicAffineTranslation
-    (orderThreeDescendedAffineTorusAutomorphism A.periods).latticeMap.toAddEquiv epsilon)
-  have hgt : Commute g t := by
-    have hfix : (orderThreeDescendedAffineTorusAutomorphism A.periods).latticeMap epsilon =
-        epsilon := by
-      exact affineLatticeMap_twist (orderThreeCentralFiberPresentationData A.periods)
-    have h := canonicalCyclicAffine_conjugate
-      (orderThreeDescendedAffineTorusAutomorphism A.periods).latticeMap.toAddEquiv epsilon
-    change g * t * g⁻¹ = Additive.toMul
-      (canonicalCyclicAffineTranslation
-        (orderThreeDescendedAffineTorusAutomorphism A.periods).latticeMap.toAddEquiv
-        ((orderThreeDescendedAffineTorusAutomorphism A.periods).latticeMap epsilon)) at h
-    rw [hfix] at h
-    rw [commute_iff_eq]
-    exact mul_inv_eq_iff_eq_mul.mp h
-  simp only [UnwrappedCyclicAffineBoundaryDeckData.fillingRelation,
-    ellipticThreeBoundaryDeckData, affineCyclicBoundaryDeckData,
-    orderThreeCentralFiberPresentationData, map_mul, map_pow, map_inv,
-    actualToCanonicalBoundaryDeckEquiv_translation,
-    actualToCanonicalBoundaryDeckEquiv_meridian]
-  change g⁻¹ ^ 3 *
-      (Additive.toMul (canonicalCyclicAffineTranslation
-        (orderThreeDescendedAffineTorusAutomorphism A.periods).latticeMap.toAddEquiv
-        (-epsilon)))⁻¹ =
-    (g ^ 3 * t⁻¹)⁻¹
-  rw [map_neg, toMul_neg]
-  exact inverse_meridian_negative_twist_relation g t 3 hgt
 
-/-- Under the canonical deck-group identification, the corrected actual order-four filling
-relation is the inverse of the positive-meridian canonical filling relation. -/
-public theorem ellipticFourFillingRelation_map_eq_canonical_inv :
-    actualToCanonicalBoundaryDeckEquiv
-        (orderFourDescendedAffineTorusAutomorphism A.periods)
-        A.ellipticFourBoundaryDeckData.fillingRelation =
-      (affineCyclicBoundaryDeckData
-        (orderFourCentralFiberPresentationData A.periods)).fillingRelation⁻¹ := by
-  let g := canonicalCyclicAffineMeridian
-    (orderFourDescendedAffineTorusAutomorphism A.periods).latticeMap.toAddEquiv
-  let t := Additive.toMul (canonicalCyclicAffineTranslation
-    (orderFourDescendedAffineTorusAutomorphism A.periods).latticeMap.toAddEquiv (-epsilon'))
-  have hgt : Commute g t := by
-    have hfix : (orderFourDescendedAffineTorusAutomorphism A.periods).latticeMap (-epsilon') =
-        -epsilon' := by
-      exact affineLatticeMap_twist (orderFourCentralFiberPresentationData A.periods)
-    have h := canonicalCyclicAffine_conjugate
-      (orderFourDescendedAffineTorusAutomorphism A.periods).latticeMap.toAddEquiv (-epsilon')
-    change g * t * g⁻¹ = Additive.toMul
-      (canonicalCyclicAffineTranslation
-        (orderFourDescendedAffineTorusAutomorphism A.periods).latticeMap.toAddEquiv
-        ((orderFourDescendedAffineTorusAutomorphism A.periods).latticeMap (-epsilon'))) at h
-    rw [hfix] at h
-    rw [commute_iff_eq]
-    exact mul_inv_eq_iff_eq_mul.mp h
-  simp only [UnwrappedCyclicAffineBoundaryDeckData.fillingRelation,
-    ellipticFourBoundaryDeckData, affineCyclicBoundaryDeckData,
-    orderFourCentralFiberPresentationData, map_mul, map_pow, map_inv,
-    actualToCanonicalBoundaryDeckEquiv_translation,
-    actualToCanonicalBoundaryDeckEquiv_meridian]
-  change g⁻¹ ^ 4 *
-      (Additive.toMul (canonicalCyclicAffineTranslation
-        (orderFourDescendedAffineTorusAutomorphism A.periods).latticeMap.toAddEquiv
-        epsilon'))⁻¹ =
-    (g ^ 4 * t⁻¹)⁻¹
-  rw [show epsilon' = -(-epsilon') by simp, map_neg, toMul_neg]
-  exact inverse_meridian_negative_twist_relation g t 4 hgt
 
 /-- The actual order-three boundary deck group identified directly with the central
 presentation's deck group. -/

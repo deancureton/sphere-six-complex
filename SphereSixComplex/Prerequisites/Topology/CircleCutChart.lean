@@ -15,12 +15,6 @@ public theorem circle_arg_lt_pi_of_ne_neg_one (c : Circle) (hc : c ≠ -1) :
   apply Circle.injective_arg
   simpa using h
 
-public theorem circle_neg_mem_slitPlane (c : Circle) (hc : c ≠ 1) :
-    ((-c : Circle) : ℂ) ∈ Complex.slitPlane := by
-  rw [Complex.mem_slitPlane_iff_arg]
-  refine ⟨(circle_arg_lt_pi_of_ne_neg_one (-c) ?_).ne, (-c).coe_ne_zero⟩
-  intro h
-  exact hc (neg_injective h)
 
 public def circleCutParameter (y : ℝ) : Circle := -Circle.exp (Real.pi * y)
 
@@ -62,23 +56,6 @@ public theorem circleCutParameter_argument (c : Circle) :
   unfold circleCutParameter circleCutArgument
   rw [mul_div_cancel₀ _ Real.pi_ne_zero, Circle.exp_arg, neg_neg]
 
-public def circleCutHomeomorph : Ioo (-1 : ℝ) 1 ≃ₜ {c : Circle // c ≠ 1} where
-  toFun y := ⟨circleCutParameter y.1, circleCutParameter_ne_one y.2⟩
-  invFun c := ⟨circleCutArgument c.1, circleCutArgument_mem_Ioo c.1 c.2⟩
-  left_inv y := Subtype.ext (circleCutArgument_parameter y.2)
-  right_inv c := Subtype.ext (circleCutParameter_argument c.1)
-  continuous_toFun := by
-    apply Continuous.subtype_mk
-    exact Circle.exp.continuous.comp (continuous_const.mul continuous_subtype_val) |>.neg
-  continuous_invFun := by
-    apply Continuous.subtype_mk
-    apply Continuous.div_const
-    apply continuous_iff_continuousAt.mpr
-    intro c
-    have hc : Continuous (fun x : {c : Circle // c ≠ 1} ↦ ((-x.1 : Circle) : ℂ)) :=
-      by fun_prop
-    exact (Complex.continuousAt_arg (circle_neg_mem_slitPlane c.1 c.2)).comp
-      (f := fun x : {c : Circle // c ≠ 1} ↦ ((-x.1 : Circle) : ℂ)) (x := c) hc.continuousAt
 
 public theorem circleCutParameter_injOn :
     Set.InjOn circleCutParameter (Ioo (-1 : ℝ) 1) := by

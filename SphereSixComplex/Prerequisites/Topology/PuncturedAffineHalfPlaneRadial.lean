@@ -33,16 +33,6 @@ namespace ComplexRadialDomain
 
 variable {X Y : Set ℂ} {radius : ℝ}
 
-/-- The positive radial interpolation factor. -/
-public theorem interpolateScale_pos
-    (D : ComplexRadialDomain X radius) (t : I) (x : X) :
-    0 < (t : ℝ) + (1 - (t : ℝ)) * radius * ‖x.1‖⁻¹ := by
-  have hnorm : 0 < ‖x.1‖⁻¹ := inv_pos.mpr (norm_pos_iff.mpr (D.nonzero x))
-  by_cases ht : (t : ℝ) = 0
-  · simp [ht, D.radius_pos, hnorm]
-  · exact add_pos_of_pos_of_nonneg
-      (lt_of_le_of_ne t.2.1 (Ne.symm ht))
-      (mul_nonneg (mul_nonneg (sub_nonneg.mpr t.2.2) D.radius_pos.le) hnorm.le)
 
 /-- Radial normalization from a radial domain to a smaller radial domain containing the same
 normalizing circle. -/
@@ -83,15 +73,6 @@ public theorem continuous_radialHomotopyFunction
     hx.norm.inv₀ (fun p ↦ (norm_pos_iff.mpr (D.nonzero p.2)).ne')
   exact (ht.add (((continuous_const.sub ht).mul continuous_const).mul hn)).smul hx
 
-@[simp]
-public theorem radialHomotopyFunction_zero
-    (D : ComplexRadialDomain X radius) (x : X) :
-    D.radialHomotopyFunction (0, x) = D.normalizeTo D x := by
-  apply Subtype.ext
-  change ((0 : ℝ) + (1 - (0 : ℝ)) * radius * ‖x.1‖⁻¹) • x.1 =
-    (radius * ‖x.1‖⁻¹) • x.1
-  congr 1
-  ring
 
 @[simp]
 public theorem radialHomotopyFunction_one
@@ -100,13 +81,6 @@ public theorem radialHomotopyFunction_one
   apply Subtype.ext
   simp [radialHomotopyFunction]
 
-/-- The normalization-to-identity radial homotopy. -/
-public def radialHomotopy (D : ComplexRadialDomain X radius) :
-    ContinuousMap.Homotopy (D.normalizeTo D) (ContinuousMap.id X) where
-  toFun := D.radialHomotopyFunction
-  continuous_toFun := D.continuous_radialHomotopyFunction
-  map_zero_left := D.radialHomotopyFunction_zero
-  map_one_left := D.radialHomotopyFunction_one
 
 /-- Nested radial domains containing the same normalizing circle are homotopy equivalent through
 the literal inclusion. -/
@@ -136,28 +110,7 @@ public def homotopyEquivOfSubset
         ring
       map_one_left := small.radialHomotopyFunction_one }⟩
 
-/-- The nested-subtype model of a subset is homeomorphic to the original subtype. -/
-public def nestedSubtypeHomeomorph (hXY : X ⊆ Y) :
-    (Subtype.val ⁻¹' X : Set Y) ≃ₜ X where
-  toFun x := ⟨x.1.1, x.2⟩
-  invFun x := ⟨⟨x.1, hXY x.2⟩, x.2⟩
-  left_inv _ := rfl
-  right_inv _ := rfl
-  continuous_toFun :=
-    (continuous_subtype_val.comp continuous_subtype_val).subtype_mk _
-  continuous_invFun := (continuous_subtype_val.subtype_mk _).subtype_mk _
 
-/-- The radial equivalence records the literal nested-subspace inclusion as its inverse. -/
-public theorem isHomotopyEquivalenceInclusionOfSubset
-    (small : ComplexRadialDomain X radius) (big : ComplexRadialDomain Y radius)
-    (hXY : X ⊆ Y) :
-    IsHomotopyEquivalenceInclusion (Subtype.val ⁻¹' X : Set Y) := by
-  let e : Y ≃ₕ (Subtype.val ⁻¹' X : Set Y) :=
-    (small.homotopyEquivOfSubset big hXY).trans
-      (nestedSubtypeHomeomorph hXY).symm.toHomotopyEquiv
-  refine ⟨e, ?_⟩
-  ext x
-  rfl
 
 end ComplexRadialDomain
 
@@ -243,18 +196,7 @@ public theorem puncturedComplexLeftHalfPlane_radial
         nlinarith [mul_nonneg ht0 (sub_nonneg.mpr (le_of_lt x.2.2)),
           mul_pos hweight (sub_pos.mpr hnormalized_lt)]
 
-/-- The literal inclusion of a sufficiently small punctured disc into the corresponding
-punctured left half-plane is a homotopy equivalence. -/
-public def puncturedComplexDiscHomotopyEquivLeftHalfPlane
-    {s r c : ℝ} (hs : 0 < s) (hsr : s < r) (hrc : r ≤ c) :
-    puncturedComplexLeftHalfPlane c ≃ₕ puncturedComplexDisc r :=
-  (puncturedComplexDisc_radial hs hsr).homotopyEquivOfSubset
-    (puncturedComplexLeftHalfPlane_radial hs (hsr.trans_le hrc))
-    (fun z hz ↦ ⟨hz.1, (Complex.re_le_norm z).trans_lt (hz.2.trans_le hrc)⟩)
 
-/-- The punctured disc centered at one. -/
-public def puncturedComplexDiscAtOne (r : ℝ) : Set ℂ :=
-  {z | z ≠ 1 ∧ ‖z - 1‖ < r}
 
 /-- The punctured right half-plane whose missing point is one. -/
 public def puncturedComplexRightHalfPlane (c : ℝ) : Set ℂ :=
@@ -289,41 +231,6 @@ public def puncturedComplexRightHalfPlaneHomeomorphLeft (c : ℝ) :
   continuous_invFun :=
     (continuous_const.sub continuous_subtype_val).subtype_mk _
 
-/-- The same reflection identifies discs centered at one with discs centered at zero. -/
-public def puncturedComplexDiscAtOneHomeomorphDisc (r : ℝ) :
-    puncturedComplexDiscAtOne r ≃ₜ puncturedComplexDisc r where
-  toFun z := ⟨1 - z.1, by
-    constructor
-    · intro h
-      apply z.2.1
-      exact (sub_eq_zero.mp h).symm
-    · convert z.2.2 using 1
-      rw [show 1 - z.1 = -(z.1 - 1) by ring, norm_neg]⟩
-  invFun z := ⟨1 - z.1, by
-    constructor
-    · intro h
-      apply z.2.1
-      exact sub_eq_self.mp h
-    · convert z.2.2 using 1
-      rw [show 1 - z.1 - 1 = -z.1 by ring, norm_neg]⟩
-  left_inv z := by
-    apply Subtype.ext
-    ring
-  right_inv z := by
-    apply Subtype.ext
-    ring
-  continuous_toFun :=
-    (continuous_const.sub continuous_subtype_val).subtype_mk _
-  continuous_invFun :=
-    (continuous_const.sub continuous_subtype_val).subtype_mk _
 
-/-- A punctured disc centered at one is homotopy equivalent to the containing punctured right
-half-plane, with the inverse induced by its literal inclusion. -/
-public def puncturedComplexDiscAtOneHomotopyEquivRightHalfPlane
-    {s r c : ℝ} (hs : 0 < s) (hsr : s < r) (hrc : r ≤ 1 - c) :
-    puncturedComplexRightHalfPlane c ≃ₕ puncturedComplexDiscAtOne r :=
-  (puncturedComplexRightHalfPlaneHomeomorphLeft c).toHomotopyEquiv.trans
-    ((puncturedComplexDiscHomotopyEquivLeftHalfPlane hs hsr hrc).trans
-      (puncturedComplexDiscAtOneHomeomorphDisc r).symm.toHomotopyEquiv)
 
 end SphereSixComplex

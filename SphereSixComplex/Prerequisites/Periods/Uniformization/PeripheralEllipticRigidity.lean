@@ -23,7 +23,6 @@ open scoped MatrixGroups
 namespace SphereSixComplex.Periods.PeripheralEllipticRigidity
 
 abbrev QSL := Matrix.SpecialLinearGroup (Fin 2) QuadraticInteger
-abbrev QPSL := Matrix.ProjectiveSpecialLinearGroup (Fin 2) QuadraticInteger
 
 private theorem projective_eq_trace_sq {A B : QSL}
     (h : (QuotientGroup.mk' (Subgroup.center QSL)) A =

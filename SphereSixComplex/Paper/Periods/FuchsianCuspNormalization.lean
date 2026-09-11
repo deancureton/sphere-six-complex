@@ -603,14 +603,6 @@ public theorem normalizedModularParameter_tau_translate
     (E.modularParameter.equivariant g₀ z)
   exact h.trans (rhoTauReal_g₀_smul (E.modularParameter.tau z))
 
-/-- The general parabolic theorem supplies a cusp inverse for the modular parameter retained by
-`EstablishedFuchsianModularParameter`. No additional source or target cusp axiom is required. -/
-public theorem nonempty_normalizedModularParameter_cuspLocalInverse
-    (E : NormalizedFuchsianModularParameter) :
-    Nonempty (ParabolicCuspLocalInverse sourceCuspWidth 1 1 E.modularParameter.tau) :=
-  nonempty_parabolicCuspLocalInverse sourceCuspWidth 1 1 sourceCuspWidth_pos zero_lt_one
-    E.modularParameter.tau E.modularParameter.tau_holomorphic
-      (normalizedModularParameter_tau_translate E)
 
 /-- The selected assembled period family has the same exact parabolic translation law, regardless
 of how its final nondegeneracy shift was selected. -/

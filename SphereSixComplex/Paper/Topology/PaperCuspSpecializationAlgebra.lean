@@ -23,7 +23,6 @@ open LatticeData
 open SphereSixComplex.LatticeWangAlgebra
 
 public abbrev ExteriorTwoLattice := Fin 6 → ℤ
-public abbrev ExteriorThreeLattice := Fin 4 → ℤ
 
 /-- The second exterior-power action of the cusp monodromy. -/
 public def mZeroExteriorTwoMatrix : Matrix (Fin 6) (Fin 6) ℤ :=
@@ -75,18 +74,6 @@ public theorem range_mZeroExteriorTwoDifference :
     funext i
     fin_cases i <;> simp [h0, h2, h3, h14]
 
-public theorem mem_ker_mZeroExteriorTwoDifference_iff (x : ExteriorTwoLattice) :
-    x ∈ LinearMap.ker mZeroExteriorTwoDifference ↔ x 0 = 0 ∧ x 1 + x 4 = 0 := by
-  rw [LinearMap.mem_ker, mZeroExteriorTwoDifference_apply]
-  constructor
-  · intro h
-    have h1 := congrFun h (1 : Fin 6)
-    have h5 := congrFun h (5 : Fin 6)
-    simp at h1 h5
-    omega
-  · rintro ⟨h0, h14⟩
-    funext i
-    fin_cases i <;> simp [h0, h14]
 
 /-- Coordinates `(gamma u, gamma delta, u w, gamma w - u delta)` on the degree-two
 coinvariants. -/
@@ -128,19 +115,8 @@ public theorem mZeroExteriorTwoProjection_surjective :
 public abbrev MZeroExteriorTwoCoinvariants :=
   ExteriorTwoLattice ⧸ LinearMap.range mZeroExteriorTwoDifference
 
-/-- The universal algebraic specialization that kills the cusp-monodromy differences. -/
-public def mZeroExteriorTwoSpecialization :
-    ExteriorTwoLattice →ₗ[ℤ] MZeroExteriorTwoCoinvariants :=
-  (LinearMap.range mZeroExteriorTwoDifference).mkQ
 
-public theorem mZeroExteriorTwoSpecialization_surjective :
-    Function.Surjective mZeroExteriorTwoSpecialization :=
-  Submodule.mkQ_surjective _
 
-public theorem ker_mZeroExteriorTwoSpecialization :
-    LinearMap.ker mZeroExteriorTwoSpecialization =
-      LinearMap.range mZeroExteriorTwoDifference :=
-  Submodule.ker_mkQ _
 
 /-- The second exterior-power coinvariants are free of rank four. -/
 public noncomputable def mZeroExteriorTwoCoinvariantsEquivIntFourth :
@@ -156,71 +132,16 @@ public theorem mZeroExteriorTwoCoinvariantsEquivIntFourth_mk (x : ExteriorTwoLat
       mZeroExteriorTwoProjection x := by
   rfl
 
-/-- Increasing triples `(012, 013, 023, 123)`. -/
-public def periodTripleFirst : Fin 4 → Fin 4 := ![0, 0, 0, 1]
-public def periodTripleSecond : Fin 4 → Fin 4 := ![1, 1, 2, 2]
-public def periodTripleThird : Fin 4 → Fin 4 := ![2, 3, 3, 3]
 
-/-- The third compound of a four-by-four matrix in increasing-triple coordinates. -/
-public def thirdCompoundMatrix
-    (M : Matrix (Fin 4) (Fin 4) ℤ) : Matrix (Fin 4) (Fin 4) ℤ :=
-  fun ij abc ↦
-    let i := periodTripleFirst ij
-    let j := periodTripleSecond ij
-    let k := periodTripleThird ij
-    let a := periodTripleFirst abc
-    let b := periodTripleSecond abc
-    let c := periodTripleThird abc
-    M i a * (M j b * M k c - M j c * M k b) -
-      M i b * (M j a * M k c - M j c * M k a) +
-      M i c * (M j a * M k b - M j b * M k a)
 
-public theorem thirdCompoundMatrix_mZero : thirdCompoundMatrix M₀ = M₀ := by
-  rw [SphereSixComplex.Periods.M₀_eq_explicit]
-  decide
 
-/-- The third exterior-power cusp differential. -/
-public def mZeroExteriorThreeDifference : ExteriorThreeLattice →ₗ[ℤ] ExteriorThreeLattice :=
-  (thirdCompoundMatrix M₀).mulVecLin - LinearMap.id
 
-public theorem mZeroExteriorThreeDifference_eq_mZeroDifference :
-    mZeroExteriorThreeDifference = mZeroDifference := by
-  rw [mZeroExteriorThreeDifference, mZeroDifference, matrixDifference,
-    thirdCompoundMatrix_mZero]
 
-public theorem range_mZeroExteriorThreeDifference :
-    LinearMap.range mZeroExteriorThreeDifference = tailCoordinateSubmodule := by
-  rw [mZeroExteriorThreeDifference_eq_mZeroDifference, range_mZeroDifference]
 
-public theorem mem_ker_mZeroExteriorThreeDifference_iff (x : ExteriorThreeLattice) :
-    x ∈ LinearMap.ker mZeroExteriorThreeDifference ↔ x 0 = 0 ∧ x 1 = 0 := by
-  rw [mZeroExteriorThreeDifference_eq_mZeroDifference,
-    mem_ker_mZeroDifference_iff]
 
-public abbrev MZeroExteriorThreeCoinvariants :=
-  ExteriorThreeLattice ⧸ LinearMap.range mZeroExteriorThreeDifference
 
-/-- The universal degree-three specialization quotient. -/
-public def mZeroExteriorThreeSpecialization :
-    ExteriorThreeLattice →ₗ[ℤ] MZeroExteriorThreeCoinvariants :=
-  (LinearMap.range mZeroExteriorThreeDifference).mkQ
 
-public theorem mZeroExteriorThreeSpecialization_surjective :
-    Function.Surjective mZeroExteriorThreeSpecialization :=
-  Submodule.mkQ_surjective _
 
-public theorem ker_mZeroExteriorThreeSpecialization :
-    LinearMap.ker mZeroExteriorThreeSpecialization =
-      LinearMap.range mZeroExteriorThreeDifference :=
-  Submodule.ker_mkQ _
 
-/-- The third exterior-power coinvariants are free of rank two, represented by `gamma u w` and
-`gamma u delta`. -/
-public noncomputable def mZeroExteriorThreeCoinvariantsEquivIntSquared :
-    MZeroExteriorThreeCoinvariants ≃ₗ[ℤ] (Fin 2 → ℤ) :=
-  (Submodule.quotEquivOfEq _ _
-      (range_mZeroExteriorThreeDifference.trans ker_headCoordinateProjection.symm)).trans
-    (headCoordinateProjection.quotKerEquivOfSurjective
-      headCoordinateProjection_surjective)
 
 end SphereSixComplex.Topology.PaperCuspSpecializationAlgebra

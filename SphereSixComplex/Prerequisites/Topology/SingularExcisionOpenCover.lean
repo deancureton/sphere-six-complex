@@ -37,45 +37,8 @@ public theorem coverSmallChainQuasiIsomorphism_of_openCover
   coverSmallChainQuasiIsomorphism_of_eventuallySmall X U
     (coverSmallAffineSubdivisionEventuallySmall_of_openCover X U hUopen hUcover)
 
-/-- Classical small-chain approximation: the inclusion of chains subordinate to an open cover is
-a chain-homotopy equivalence for integral singular chains. -/
-public theorem coverSmallChainApproximation_of_openCover
-    (hUopen : ∀ i, IsOpen (U i)) (hUcover : ⋃ i, U i = Set.univ) :
-    CoverSmallChainApproximation X U :=
-  coverSmallChainApproximation_of_eventuallySmall X U
-    (coverSmallAffineSubdivisionEventuallySmall_of_openCover X U hUopen hUcover)
 
-/-- An open cover supplies explicit smallification data by selecting
-`coverSmallChainHomotopyEquiv`, taking its inverse as `smallify`, and transporting its two
-homotopies along `coverSmallChainHomotopyEquiv_hom`, which identifies its forward map with the
-cover-small inclusion.  This is the converse of `CoverSmallChainRetractionData.toHomotopyEquiv`. -/
-public noncomputable def coverSmallChainRetractionData_of_openCover
-    (hUopen : ∀ i, IsOpen (U i)) (hUcover : ⋃ i, U i = Set.univ) :
-    CoverSmallChainRetractionData X U := by
-  let h := coverSmallChainApproximation_of_openCover X U hUopen hUcover
-  let e := coverSmallChainHomotopyEquiv X U h
-  refine
-    { smallify := e.inv
-      homotopyInclusionSmallify := ?_
-      homotopySmallifyInclusion := ?_ }
-  · rw [← coverSmallChainHomotopyEquiv_hom X U h]
-    exact e.homotopyHomInvId
-  · rw [← coverSmallChainHomotopyEquiv_hom X U h]
-    exact e.homotopyInvHomId
 
-/-- The concrete two-set cover of the seven-disk now satisfies the formerly missing small-chain
-approximation theorem unconditionally. -/
-public theorem diskSevenSmallChainApproximation :
-    DiskSevenSmallChainApproximation :=
-  coverSmallChainApproximation_of_openCover
-    (TopCat.disk.{0} 7) diskSevenExcisionCover diskSevenExcisionCover_isOpen
-      diskSevenExcisionCover_iUnion
 
-/-- Equivalently, the cover-small inclusion for the concrete disk cover is a quasi-isomorphism. -/
-public theorem diskSevenSmallChainQuasiIsomorphism :
-    DiskSevenSmallChainQuasiIsomorphism :=
-  coverSmallChainQuasiIsomorphism_of_openCover
-    (TopCat.disk.{0} 7) diskSevenExcisionCover diskSevenExcisionCover_isOpen
-      diskSevenExcisionCover_iUnion
 
 end SphereSixComplex

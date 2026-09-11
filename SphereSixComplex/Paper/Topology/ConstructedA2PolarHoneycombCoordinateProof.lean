@@ -1,6 +1,7 @@
 module
 
-public import SphereSixComplex.Paper.Topology.ConstructedA2PolarHoneycombPhaseGeometryCompletion
+public import SphereSixComplex.Paper.Topology.ConstructedA2PositivePartContractibilityProof
+public import SphereSixComplex.Paper.Topology.ConstructedA2HoneycombCorrectedCover
 
 /-!
 # Exact coordinate residue for the constructed A₂ polar honeycomb
@@ -26,13 +27,6 @@ open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 open SphereSixComplex.Geometry.CuspStraighteningRetraction
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
-/-- The global moment-coordinate homeomorphism still required for the constructed carrier. -/
-public abbrev ConstructedA2MomentCoordinateHomeomorph
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D}
-    (W : ActualPuncturedCuspCollarWitness N constructedModel) :=
-  constructedLocalPositivePart W.localWitness.radius ≃ₜ
-    constructedPositiveMomentRegion W.localWitness.radius
 
 /-- The relative CW structure still required on the constructed positive-deck quotient. -/
 public abbrev ConstructedA2PositiveQuotientRelativeCW
@@ -50,38 +44,7 @@ public abbrev ConstructedA2PositiveQuotientRelativeCW
         constructedModel.t
           (q : localCarrier constructedModel W.localWitness.radius) = 0})
 
-/-- The remaining coordinate package consists of moment coordinates and the quotient CW structure. -/
-public theorem constructedPolarHoneycombCoordinateData_nonempty_iff
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D}
-    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
-    Nonempty (ConstructedPolarHoneycombCoordinateData W) ↔
-      Nonempty (ConstructedA2MomentCoordinateHomeomorph W) ∧
-      Nonempty (ConstructedA2PositiveQuotientRelativeCW W) := by
-  constructor
-  · rintro ⟨C⟩
-    exact ⟨⟨C.momentHomeomorph⟩, ⟨C.quotientRelativeCW⟩⟩
-  · rintro ⟨⟨e⟩, ⟨hCW⟩⟩
-    exact ⟨{
-      momentHomeomorph := e
-      quotientRelativeCW := hCW
-    }⟩
 
-/-- The two remaining coordinate components give the specialized phase geometry used by the
-paper, without invoking the universal phase-geometry axiom. -/
-public theorem constructedNormalizedPolarHoneycombPhaseGeometry_of_coordinateComponents
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D}
-    (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    (hMoment : Nonempty (ConstructedA2MomentCoordinateHomeomorph W))
-    (hCW : Nonempty (ConstructedA2PositiveQuotientRelativeCW W)) :
-    Nonempty {Q : NormalizedPolarHoneycombConstructionData N constructedModel
-        W.localWitness.radius //
-      PolarPhaseGeometricCore constructedModel W.localWitness.radius
-        Q.toPolarHoneycombData} :=
-  constructedNormalizedPolarHoneycombPhaseGeometry W
-    ((constructedPolarHoneycombCoordinateData_nonempty_iff W).mpr
-      ⟨hMoment, hCW⟩)
 
 end SphereSixComplex.Geometry.InfiniteA2Toric
 

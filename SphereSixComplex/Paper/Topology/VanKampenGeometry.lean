@@ -67,107 +67,13 @@ public structure PaperVanKampenFourPieceCover
 
 /-! ## Named geometric generators -/
 
-/-- Names for the surviving central loop and the two elliptic meridians. -/
-public inductive PaperMeridianName where
-  | c
-  | x
-  | y
-  deriving DecidableEq
 
-/-- Based representatives of the loops `c`, `x`, and `y` in Theorem 7.17. -/
-public structure PaperMeridianLoops {Y : Type*} [TopologicalSpace Y] (base : Y) where
-  c : Path base base
-  x : Path base base
-  y : Path base base
-
-namespace PaperMeridianLoops
-
-variable {Y : Type*} [TopologicalSpace Y] {base : Y}
-
-/-- Select the path represented by a named meridian. -/
-public def path (L : PaperMeridianLoops base) : PaperMeridianName → Path base base
-  | .c => L.c
-  | .x => L.x
-  | .y => L.y
-
-/-- The fundamental-group class of a named geometric loop. -/
-public def generator (L : PaperMeridianLoops base) (g : PaperMeridianName) :
-    FundamentalGroup Y base :=
-  FundamentalGroup.fromPath (Path.Homotopic.Quotient.mk (L.path g))
-
-end PaperMeridianLoops
 
 /-! ## Relations supplied by the three fillings -/
 
-/-- The geometric relations before the paper eliminates the generator `y`.
-
-The cusp filling supplies centrality and `xy = c^ℓ₀`.  The order-three and order-four
-fillings supply the remaining two relations, retaining their coupled signs. -/
-public structure PaperMeridianRelations
-    {Y : Type*} [TopologicalSpace Y] {base : Y}
-    (L : PaperMeridianLoops base) (ℓ₀ ℓ₁ ℓ₂ : ℤ) : Prop where
-  central_c : ∀ g : FundamentalGroup Y base, Commute (L.generator .c) g
-  cusp : L.generator .x * L.generator .y = L.generator .c ^ ℓ₀
-  ellipticThree : L.generator .x ^ (3 : ℤ) = L.generator .c ^ ℓ₁
-  ellipticFour : L.generator .y ^ (4 : ℤ) = L.generator .c ^ ℓ₂
-
-namespace PaperMeridianRelations
-
-variable {Y : Type*} [TopologicalSpace Y] {base : Y}
-variable {L : PaperMeridianLoops base} {ℓ₀ ℓ₁ ℓ₂ : ℤ}
-
-/-- Forget geometric path representatives and retain the upstream algebraic relations. -/
-public def toSatisfiesPaperRelations (R : PaperMeridianRelations L ℓ₀ ℓ₁ ℓ₂) :
-    SatisfiesPaperRelations (FundamentalGroup Y base) ℓ₀ ℓ₁ ℓ₂ where
-  c := L.generator .c
-  x := L.generator .x
-  y := L.generator .y
-  central_c := R.central_c
-  xy := R.cusp
-  x_cube := R.ellipticThree
-  y_fourth := R.ellipticFour
-
-end PaperMeridianRelations
 
 /-! ## Complete geometric van Kampen data -/
 
-/-- The precise geometric refinement of the upstream `HasVanKampenData` contract.
-
-The last two fields isolate the exact output of space-level Seifert--van Kampen: the three named
-loops generate, and no relation remains beyond those already encoded by the paper's relation
-lattice. -/
-public structure PaperVanKampenGeometryData
-    {Y : Type*} [TopologicalSpace Y] (base : Y) (ℓ₀ ℓ₁ ℓ₂ : ℤ) where
-  cover : PaperVanKampenFourPieceCover base
-  loops : PaperMeridianLoops base
-  loops_mem_core (g : PaperMeridianName) (t) : loops.path g t ∈ cover.core
-  relations : PaperMeridianRelations loops ℓ₀ ℓ₁ ℓ₂
-  generators_generate : PaperGeneratorsGenerate relations.toSatisfiesPaperRelations
-  no_extra_relations : HasNoExtraPaperRelations relations.toSatisfiesPaperRelations
-
-namespace PaperVanKampenGeometryData
-
-variable {Y : Type*} [TopologicalSpace Y] {base : Y} {ℓ₀ ℓ₁ ℓ₂ : ℤ}
-
-/-- Forget the cover and path representatives, obtaining the upstream algebraic input. -/
-public theorem toHasVanKampenData (D : PaperVanKampenGeometryData base ℓ₀ ℓ₁ ℓ₂) :
-    HasVanKampenData Y ℓ₀ ℓ₁ ℓ₂ :=
-  ⟨base, D.relations.toSatisfiesPaperRelations, D.generators_generate,
-    D.no_extra_relations⟩
-
-/-- The geometric generators and relations identify the fundamental group at the chosen basepoint. -/
-public noncomputable def fundamentalGroupEquiv
-    (D : PaperVanKampenGeometryData base ℓ₀ ℓ₁ ℓ₂) :
-    FundamentalGroup Y base ≃* PaperPresentedGroup ℓ₀ ℓ₁ ℓ₂ :=
-  (paperCanonicalEquiv D.relations.toSatisfiesPaperRelations D.generators_generate
-    D.no_extra_relations).symm
-
-/-- The selected twists give a simply connected space. -/
-public theorem simplyConnectedSpace [PathConnectedSpace Y]
-    (D : PaperVanKampenGeometryData base 0 1 (-1)) : SimplyConnectedSpace Y :=
-  D.toHasVanKampenData.simplyConnectedSpace
-
-end PaperVanKampenGeometryData
 
 end
 

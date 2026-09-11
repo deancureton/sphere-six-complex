@@ -181,15 +181,6 @@ public noncomputable def cuspCentralPeriodLoop (a : Lattice) :
       A.cuspRegularRepresentative_projects.symm
       A.cuspRegularRepresentative_projects.symm
 
-/-- Endpoint-casting a loop realizes the elementary based transport of its fundamental-group
-class. -/
-public theorem pathLoopClass_cast_eq_elementOfBaseEq
-    {X : Type*} [TopologicalSpace X] {x y : X}
-    (L : Path x x) (h : x = y) :
-    pathLoopClass (L.cast h.symm h.symm) =
-      fundamentalGroupElementOfBaseEq h (pathLoopClass L) := by
-  subst y
-  rfl
 
 /-- The additive cusp chart sends the literal straight translation to the globally labelled
 period loop, point for point. -/
@@ -493,11 +484,6 @@ public theorem geometricCentralClockwiseOneDeck_pow_three :
   rw [geometricCentralClockwiseOneDeck, hrho]
   exact hpow
 
-/-- Finite-order form of the exact first geometric elliptic monodromy calculation. -/
-public theorem geometricCentralClockwiseOneDeck_isOfFinOrder :
-    IsOfFinOrder A.geometricCentralClockwiseOneDeck := by
-  apply isOfFinOrder_iff_pow_eq_one.mpr
-  exact ⟨3, by norm_num, A.geometricCentralClockwiseOneDeck_pow_three⟩
 
 /-- The actual second clockwise meridian likewise retains its exact trivial fourth deck power. -/
 public theorem geometricCentralClockwiseTwoDeck_pow_four :
@@ -521,11 +507,6 @@ public theorem geometricCentralClockwiseTwoDeck_pow_four :
   rw [geometricCentralClockwiseTwoDeck, hrho]
   exact hpow
 
-/-- Finite-order form of the exact second geometric elliptic monodromy calculation. -/
-public theorem geometricCentralClockwiseTwoDeck_isOfFinOrder :
-    IsOfFinOrder A.geometricCentralClockwiseTwoDeck := by
-  apply isOfFinOrder_iff_pow_eq_one.mpr
-  exact ⟨4, by norm_num, A.geometricCentralClockwiseTwoDeck_pow_four⟩
 
 /-- The first geometric meridian acts on actual cusp translations through its exact, retained
 outer deck label. -/
@@ -675,63 +656,6 @@ public theorem correctedActualCuspCentralTranslation_range_eq_actual :
       Additive.toMul (A.cuspCentralTranslation a)
     simp
 
-/-- The literal cusp meridian acts on the literal cusp translations by the prescribed
-parabolic lattice monodromy.  This is the paper's usual conjugation formula, written in
-Mathlib's reversed path-composition convention. -/
-public theorem cuspCentralMeridian_conjugates_translation (a : Lattice) :
-    A.cuspCentralMeridian⁻¹ *
-        Additive.toMul (A.cuspCentralTranslation a) *
-        A.cuspCentralMeridian =
-      Additive.toMul
-        (A.cuspCentralTranslation (rhoLambda g₀ a)) := by
-  rw [A.cuspCentralMeridian_eq_angularLoop,
-    A.cuspAngularCentralLoop_eq_actualRegularDeckLoop,
-    A.cuspCentralTranslation_eq_periodLoop,
-    A.cuspCentralTranslation_eq_periodLoop]
-  have h := regularFamilyDeckPathLoop_conjugates_period A.periods
-    (sourceActionProperlyDiscontinuous_of_eq
-      A.modular.modularParameter.toTriangleUniformization_sourceAction)
-    g₀ A.cuspRegularCoverPoint A.cuspRegularDeckPath a
-  have hbase :
-      regularFamilyQuotientMap A.periods
-          (regularFamilyCoverProjection A.periods
-            A.cuspRegularCoverPoint) =
-        A.cuspCentralBase :=
-    A.cuspRegularRepresentative_projects
-  change
-    (pathLoopClass
-        ((regularFamilyDeckPathLoop A.periods g₀
-          A.cuspRegularCoverPoint A.cuspRegularDeckPath).cast
-            hbase.symm hbase.symm))⁻¹ *
-        pathLoopClass
-          (((regularFamilyPeriodLoop A.periods
-            A.cuspRegularCoverPoint a).map
-              (regularFamilyQuotientMap A.periods).continuous).cast
-                hbase.symm hbase.symm) *
-        pathLoopClass
-          ((regularFamilyDeckPathLoop A.periods g₀
-            A.cuspRegularCoverPoint A.cuspRegularDeckPath).cast
-              hbase.symm hbase.symm) =
-      pathLoopClass
-        (((regularFamilyPeriodLoop A.periods A.cuspRegularCoverPoint
-          (rhoLambda g₀ a)).map
-            (regularFamilyQuotientMap A.periods).continuous).cast
-              hbase.symm hbase.symm)
-  rw [pathLoopClass_cast_eq_elementOfBaseEq
-      (regularFamilyDeckPathLoop A.periods g₀
-        A.cuspRegularCoverPoint A.cuspRegularDeckPath) hbase,
-    pathLoopClass_cast_eq_elementOfBaseEq
-      ((regularFamilyPeriodLoop A.periods
-        A.cuspRegularCoverPoint a).map
-          (regularFamilyQuotientMap A.periods).continuous) hbase,
-    pathLoopClass_cast_eq_elementOfBaseEq
-      ((regularFamilyPeriodLoop A.periods A.cuspRegularCoverPoint
-        (rhoLambda g₀ a)).map
-          (regularFamilyQuotientMap A.periods).continuous) hbase]
-  have htransport := congrArg
-    (fundamentalGroupElementOfBaseEq hbase) h
-  simpa only [fundamentalGroupElementOfBaseEq_mul,
-    fundamentalGroupElementOfBaseEq_inv] using htransport
 
 /-- Inner correction by the chosen cusp power.  It removes the common peripheral conjugator
 from the corrected translation marking while leaving the cusp meridian fixed. -/

@@ -6,7 +6,7 @@ compact complex threefold diffeomorphic to the standard smooth six-sphere.
 The Lean development separates reusable mathematics in `SphereSixComplex/Prerequisites/` from
 the construction in `SphereSixComplex/Paper/`. See [MODULE-LAYOUT.md](MODULE-LAYOUT.md) for the
 classification and entry points. The `blueprint/` directory tracks the
-paper-to-Lean dependency graph. `ChallengeDefs.lean`, `ChallengeAxioms.lean`, `Challenge.lean`,
+retained construction and its Lean dependencies. `ChallengeDefs.lean`, `ChallengeAxioms.lean`, `Challenge.lean`,
 `Solution.lean`, and `comparator.json` form the Comparator boundary. `ChallengeDefs` contains
 the Mathlib-only statement definitions; `ChallengeAxioms` exposes the audited established results
 to both Comparator environments and catalogs every exact assumption. Nothing imports `Challenge`.
@@ -21,8 +21,8 @@ in `Challenge.lean` are Comparator challenge declarations and are not imported b
 The former cusp boundary assumption had the two invariant coordinates reversed. It has been
 deleted: the actual boundary is proved to be raw coordinate four, the elliptic splitting is
 normalized by that class, and the final assembly uses the corrected signed cusp basis. The
-explicit fourth-period sweep is also proved equal to normalized raw five. The old conditional
-comparison and its refutation remain as diagnostics.
+explicit fourth-period sweep is also proved equal to normalized raw five. These corrected
+coordinates are used throughout the final assembly.
 
 Finite-fibre specialization is proved in both degrees. In degree two, the actual mixed torus
 columns and the positive projection prove an integral isomorphism. Its inverse defines the
@@ -31,6 +31,14 @@ The canonical source fibre markings used by the elliptic attachment are preserve
 incidence and the cusp elliptic coordinate relations are also proved. Comparator checks the
 declared assumptions; its acceptance alone does not prove those assumptions mathematically.
 The reduction history is recorded in `AXIOM-ELIMINATION-PLAN.md`.
+
+## Scope
+
+The retained development is rooted at the two statements in `comparator.json`:
+`sphere_six_admits_complex_structure` and `mathoverflow_1973`. Intermediate declarations are
+kept when needed by these proofs or by their Lean elaboration. Documentation follows the retained
+proofs; a Blueprint link or historical mention does not preserve an otherwise unused declaration.
+See [DEAD-CODE.md](DEAD-CODE.md) for the dependency analysis and pruning results.
 
 ## Build
 

@@ -42,6 +42,8 @@ namespace SphereSixComplex.Periods.ExactNormalizedModularJTau
 open SphereSixComplex.TriangleGroup
 open TauCeti
 
+
+
 local notation "SLZ" => MonoidHom.range
   (Matrix.SpecialLinearGroup.mapGL ℝ : SL(2, ℤ) →* GL (Fin 2) ℝ)
 
@@ -180,21 +182,7 @@ theorem fiberForm_eq_zero_iff (c : ℂ) (z : UpperHalfPlane) :
     field_simp [hΔ] at h
     linear_combination h
 
-/-- The exact orbit-sum valence statement needed from the TauCeti backport. -/
-def LevelOneValenceInput : Prop :=
-  ∀ {F : Type*} [FunLike F UpperHalfPlane ℂ] {k : ℤ}
-      [ModularFormClass F SLZ k]
-      (f : F), ((f : UpperHalfPlane → ℂ) ≠ 0) →
-    ((∑ᶠ q : TauCeti.ModularForm.NonEllipticOrbit,
-        TauCeti.ModularForm.orderOfVanishingOnOrbit f q.val : ℤ) : ℂ)
-      + 1 / 2 * ((orderOfVanishingAt (f : UpperHalfPlane → ℂ) UpperHalfPlane.I : ℤ) : ℂ)
-      + 1 / 3 * ((orderOfVanishingAt (f : UpperHalfPlane → ℂ) UpperHalfPlane.ρ : ℤ) : ℂ)
-      + qExpansionOrderAtCusp 1 (f : UpperHalfPlane → ℂ) = (k : ℂ) / 12
 
-/-- TauCeti's unconditional valence theorem supplies exactly the input used below. -/
-theorem levelOneValenceInput : LevelOneValenceInput := by
-  intro F instFunLike k instModularFormClass f hf
-  exact levelOneValenceFormula f hf
 
 /-- The weight-six Eisenstein series vanishes at the order-two elliptic point. -/
 theorem E₆_at_I : ModularForm.E₆ UpperHalfPlane.I = 0 := by

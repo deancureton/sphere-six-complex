@@ -307,18 +307,6 @@ theorem sourceLeft_coord_im (z : ℂ) :
   simp [Complex.div_im, Complex.normSq_apply]
   ring
 
-theorem sourceOpenChamber_subset_sourceLeftDouble :
-    sourceOpenChamber ⊆ sourceLeftDouble := by
-  rintro z ⟨hl, hr, hi, hn⟩
-  refine ⟨?_, hr, hi, hn, ?_⟩
-  · have hs := Real.sqrt_nonneg 2
-    linarith
-  · rw [sourceLeft_normSq]
-    rw [normSq_apply] at hn
-    have hs : 0 < Real.sqrt 2 := Real.sqrt_pos.2 (by norm_num)
-    have hs2 : (Real.sqrt 2) ^ 2 = 2 := Real.sq_sqrt (by norm_num)
-    have hsq : z.re ^ 2 < (Real.sqrt 2 + z.re) ^ 2 := by nlinarith
-    nlinarith
 
 private theorem semicircleHeight_neg_sqrt_two_half_reflection :
     semicircleHeight (-Real.sqrt 2 / 2) = Real.sqrt 2 / 2 := by
@@ -471,37 +459,7 @@ theorem sourceScalarLeftDoubleMap_reflection
 
 /-! ## Generator invariance from scalar side reflections -/
 
-/-- Scalar reflection identities across the right and circular sides imply `g₁`-invariance. -/
-theorem invariant_g1_of_scalar_side_reflections (F : ℂ → ℂ)
-    (hright : ∀ z : ℂ, F (sourceRight z) = (starRingEnd ℂ) (F z))
-    (hcircle : ∀ z : ℂ, F (sourceCircle z) = (starRingEnd ℂ) (F z))
-    (z : UpperHalfPlane) :
-    F (((fuchsianSourceAction g₁ • z : UpperHalfPlane) : ℂ)) = F (z : ℂ) := by
-  have hprod := congrArg ((↑) : UpperHalfPlane → ℂ) (sourceRight_sourceCircle z)
-  calc
-    F (((fuchsianSourceAction g₁ • z : UpperHalfPlane) : ℂ)) =
-        F (sourceRight (sourceCircle (z : ℂ))) :=
-      congrArg F hprod.symm
-    _ = (starRingEnd ℂ) (F (sourceCircle (z : ℂ))) := hright _
-    _ = (starRingEnd ℂ) ((starRingEnd ℂ) (F (z : ℂ))) :=
-      congrArg (starRingEnd ℂ) (hcircle _)
-    _ = F (z : ℂ) := starRingEnd_self_apply (R := ℂ) _
 
-/-- Scalar reflection identities across the circular and left sides imply `g₂`-invariance. -/
-theorem invariant_g2_of_scalar_side_reflections (F : ℂ → ℂ)
-    (hcircle : ∀ z : ℂ, F (sourceCircle z) = (starRingEnd ℂ) (F z))
-    (hleft : ∀ z : ℂ, F (sourceLeft z) = (starRingEnd ℂ) (F z))
-    (z : UpperHalfPlane) :
-    F (((fuchsianSourceAction g₂ • z : UpperHalfPlane) : ℂ)) = F (z : ℂ) := by
-  have hprod := congrArg ((↑) : UpperHalfPlane → ℂ) (sourceCircle_sourceLeft z)
-  calc
-    F (((fuchsianSourceAction g₂ • z : UpperHalfPlane) : ℂ)) =
-        F (sourceCircle (sourceLeft (z : ℂ))) :=
-      congrArg F hprod.symm
-    _ = (starRingEnd ℂ) (F (sourceLeft (z : ℂ))) := hcircle _
-    _ = (starRingEnd ℂ) ((starRingEnd ℂ) (F (z : ℂ))) :=
-      congrArg (starRingEnd ℂ) (hleft _)
-    _ = F (z : ℂ) := starRingEnd_self_apply (R := ℂ) _
 
 
 end SphereSixComplex.Periods.SourceChamberTopology

@@ -139,24 +139,6 @@ public theorem eq_inr_of_commute_g₂ (g : Delta) (h : Commute g g₂) :
   change deltaToIndexed g = deltaToIndexed (Monoid.Coprod.inr a)
   exact ha.trans (deltaToIndexed_inr a).symm
 
-/-- Exact centralizer membership criterion for the order-three generator. -/
-public theorem commute_g₁_iff_eq_inl (g : Delta) :
-    Commute g g₁ ↔ ∃ a : CyclicThree, g = Monoid.Coprod.inl a := by
-  constructor
-  · exact eq_inl_of_commute_g₁ g
-  · rintro ⟨a, rfl⟩
-    rw [SphereSixComplex.TriangleGroup.g₁.eq_def]
-    exact (Commute.all a (Multiplicative.ofAdd (1 : ZMod 3))).map
-      (Monoid.Coprod.inl : CyclicThree →* Delta)
 
-/-- Exact centralizer membership criterion for the order-four generator. -/
-public theorem commute_g₂_iff_eq_inr (g : Delta) :
-    Commute g g₂ ↔ ∃ a : CyclicFour, g = Monoid.Coprod.inr a := by
-  constructor
-  · exact eq_inr_of_commute_g₂ g
-  · rintro ⟨a, rfl⟩
-    rw [SphereSixComplex.TriangleGroup.g₂.eq_def]
-    exact (Commute.all a (Multiplicative.ofAdd (1 : ZMod 4))).map
-      (Monoid.Coprod.inr : CyclicFour →* Delta)
 
 end SphereSixComplex.TriangleGroup

@@ -118,78 +118,10 @@ theorem nonempty_normalizedLift_of_local_generator_germs
     Nonempty (NormalizedFuchsianModularJLift C.toFuchsianOrbifoldCoordinate) :=
   ⟨normalizedLiftOfLocalGeneratorGerms C tau htau hJ z₁ z₂ hone htwo⟩
 
-/-- The exact remaining marked-germ input after global modular-J lifting.  Both germs are based at
-the canonical elliptic source points, which is the form supplied by the marked chamber or local
-power-chart constructions. -/
-def MarkedNormalizedModularJGermLiftExistence : Prop :=
-  ∀ _J : ExactNormalizedModularJUniformization,
-    ∀ C : ExactFuchsianOrbifoldCoordinate,
-      ∃ tau : UpperHalfPlane → UpperHalfPlane,
-        MDiff tau ∧
-        (∀ z, normalizedJ (tau z) = 1728 * C.coordinate z) ∧
-        ((fun w : ℂ ↦
-            (tau (fuchsianSourceAction g₁ • UpperHalfPlane.ofComplex w) : ℂ))
-          =ᶠ[nhds (fuchsianOneFixedPoint : ℂ)]
-            (fun w : ℂ ↦
-              ((rhoTauReal g₁ • tau (UpperHalfPlane.ofComplex w) : UpperHalfPlane) : ℂ))) ∧
-        ((fun w : ℂ ↦
-            (tau (fuchsianSourceAction g₂ • UpperHalfPlane.ofComplex w) : ℂ))
-          =ᶠ[nhds (fuchsianTwoFixedPoint : ℂ)]
-            (fun w : ℂ ↦
-              ((rhoTauReal g₂ • tau (UpperHalfPlane.ofComplex w) : UpperHalfPlane) : ℂ)))
 
-/-- The third established axiom is reduced exactly to the two marked local generator germs. -/
-theorem normalizedFuchsianModularJLiftingExistence_of_markedGerms
-    (H : MarkedNormalizedModularJGermLiftExistence) :
-    NormalizedFuchsianModularJLiftingExistence := by
-  intro J C
-  obtain ⟨tau, htau, hJ, hone, htwo⟩ := H J C
-  exact nonempty_normalizedLift_of_local_generator_germs C tau htau hJ
-    fuchsianOneFixedPoint fuchsianTwoFixedPoint hone htwo
 
-/-- A global branch commuting with the three chamber reflections is an alternative single
-substitution for the final lifting theorem. -/
-def SideReflectedNormalizedModularJLiftExistence : Prop :=
-  ∀ _J : ExactNormalizedModularJUniformization,
-    ∀ C : ExactFuchsianOrbifoldCoordinate,
-      ∃ tau : UpperHalfPlane → UpperHalfPlane,
-        MDiff tau ∧
-        (∀ z, normalizedJ (tau z) = 1728 * C.coordinate z) ∧
-        (∀ z, tau (TriangleReflections.sourceRightUHP z) =
-          TriangleReflections.targetRightUHP (tau z)) ∧
-        (∀ z, tau (TriangleReflections.sourceCircleUHP z) =
-          TriangleReflections.targetCircleUHP (tau z)) ∧
-        (∀ z, tau (TriangleReflections.sourceLeftUHP z) =
-          TriangleReflections.targetLeftUHP (tau z))
 
-/-- Side-reflection compatibility is an even shorter sufficient input for the final lift. -/
-def normalizedLiftOfSideReflections
-    (C : ExactFuchsianOrbifoldCoordinate)
-    (tau : UpperHalfPlane → UpperHalfPlane)
-    (htau : MDiff tau)
-    (hJ : ∀ z, normalizedJ (tau z) = 1728 * C.coordinate z)
-    (hright : ∀ z, tau (TriangleReflections.sourceRightUHP z) =
-      TriangleReflections.targetRightUHP (tau z))
-    (hcircle : ∀ z, tau (TriangleReflections.sourceCircleUHP z) =
-      TriangleReflections.targetCircleUHP (tau z))
-    (hleft : ∀ z, tau (TriangleReflections.sourceLeftUHP z) =
-      TriangleReflections.targetLeftUHP (tau z)) :
-    NormalizedFuchsianModularJLift C.toFuchsianOrbifoldCoordinate where
-  tau := tau
-  tau_holomorphic := htau
-  modularJ_equation := hJ
-  monodromy_one := fun z ↦ Reflection.equivariantOne_of_side_reflections
-    tau hright hcircle z
-  monodromy_two := fun z ↦ Reflection.equivariantTwo_of_side_reflections
-    tau hcircle hleft z
 
-/-- Side-reflection compatibility directly discharges the third lifting obligation. -/
-theorem normalizedFuchsianModularJLiftingExistence_of_sideReflections
-    (H : SideReflectedNormalizedModularJLiftExistence) :
-    NormalizedFuchsianModularJLiftingExistence := by
-  intro J C
-  obtain ⟨tau, htau, hJ, hright, hcircle, hleft⟩ := H J C
-  exact ⟨normalizedLiftOfSideReflections C tau htau hJ hright hcircle hleft⟩
 
 
 end SphereSixComplex.Periods.NormalizedModularJMarkedMonodromy

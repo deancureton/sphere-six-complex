@@ -28,22 +28,12 @@ than only the homotopy-equivalence type of its source and target. -/
 public def IsHomotopyEquivalence (f : X → Y) : Prop :=
   ∃ e : X ≃ₕ Y, (e : X → Y) = f
 
-/-- A map satisfying `IsHomotopyEquivalence` is continuous. -/
-public theorem IsHomotopyEquivalence.continuous {f : X → Y}
-    (hf : IsHomotopyEquivalence f) : Continuous f := by
-  obtain ⟨e, rfl⟩ := hf
-  exact e.continuous
 
 /-- The identity function is a homotopy equivalence. -/
 public theorem isHomotopyEquivalence_id :
     IsHomotopyEquivalence (id : X → X) :=
   ⟨ContinuousMap.HomotopyEquiv.refl X, rfl⟩
 
-/-- The forward function of every bundled homotopy equivalence satisfies the map-level
-predicate. -/
-public theorem ContinuousMap.HomotopyEquiv.isHomotopyEquivalence (e : X ≃ₕ Y) :
-    IsHomotopyEquivalence (e : X → Y) :=
-  ⟨e, rfl⟩
 
 /-- Homotopy equivalences carried by specified maps are closed under function composition. -/
 public theorem IsHomotopyEquivalence.comp {f : X → Y} {g : Y → Z}

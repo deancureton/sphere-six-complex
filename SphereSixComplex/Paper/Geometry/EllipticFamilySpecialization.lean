@@ -469,27 +469,7 @@ public theorem orderFourActualAction_free
       (ComplexUnitDisc × AdditiveTorus (parameterMap F U.zTwo).1) := by
   exact EllipticFiberData.orderFourActionData_free (orderFourFiberData F hfixed) rfl
 
-/-- Smoothness of the actual descended first-generator deck transport follows from the local
-biholomorphism property of the varying-torus projection. -/
-public theorem familyDeckMap_gOne_contMDiff
-    (n : WithTop ℕ∞)
-    [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    [IsManifold globalDeckTotalModel n (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
-      (projection (parameterMap F))) :
-    ContMDiff globalDeckTotalModel globalDeckTotalModel n (familyDeckMap F g₁) :=
-  familyDeckMap_contMDiff_of_projection_isLocalDiffeomorph F n hprojection g₁
 
-/-- Smoothness of the actual descended second-generator deck transport follows from the same
-varying-family local-biholomorphism hypothesis. -/
-public theorem familyDeckMap_gTwo_contMDiff
-    (n : WithTop ℕ∞)
-    [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    [IsManifold globalDeckTotalModel n (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
-      (projection (parameterMap F))) :
-    ContMDiff globalDeckTotalModel globalDeckTotalModel n (familyDeckMap F g₂) :=
-  familyDeckMap_contMDiff_of_projection_isLocalDiffeomorph F n hprojection g₂
 
 end FixedFibres
 

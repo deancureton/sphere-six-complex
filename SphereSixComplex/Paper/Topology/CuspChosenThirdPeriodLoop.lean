@@ -34,13 +34,6 @@ public theorem cuspChosenPositiveRegularBase_one (A : PaperAnalyticData) :
       (inv_smul_smul g₀ (A.cuspChosenPositiveRegularBase 1)).symm
     _ = _ := congrArg (regularSourceEquiv g₀⁻¹) h
 
-public def cuspChosenPositiveRegularPath (A : PaperAnalyticData) :
-    Path (A.cuspChosenPositiveRegularBase 0)
-      (regularSourceEquiv g₀⁻¹ (A.cuspChosenPositiveRegularBase 0)) where
-  toFun t := A.cuspChosenPositiveRegularBase (t : ℝ)
-  continuous_toFun := A.cuspChosenPositiveRegularBase.continuous.comp continuous_subtype_val
-  source' := rfl
-  target' := A.cuspChosenPositiveRegularBase_one
 
 public def cuspChosenThirdPeriodFamily (A : PaperAnalyticData) :
     C(ℝ, C(StdTorus 1, A.CentralFamily)) :=

@@ -158,19 +158,7 @@ public theorem phaseSweepToFilling_zero
         actualLocalCuspCentralOrbitMap W (constructedCentralOneCell W 0 (fun _ ↦ r))) :=
   phaseSweepToFilling_of_carrier W 0 0 _ _ _ (phaseSweepCarrier_zero_period r t)
 
-public theorem phaseSweepToFilling_one
-    (W : ActualPuncturedCuspCollarWitness N constructedModel) (r t : ℝ) :
-    actualLocalCuspCentralOrbitMap W (phaseSweepOrbit W 1 ![r, 2 * t - 1]) =
-      cuspFillingPeriodCircle W 0 ((-t : UnitAddCircle),
-        actualLocalCuspCentralOrbitMap W (constructedCentralOneCell W 1 (fun _ ↦ r))) :=
-  phaseSweepToFilling_of_carrier W 1 0 _ _ _ (phaseSweepCarrier_one_period r t)
 
-public theorem phaseSweepToFilling_two
-    (W : ActualPuncturedCuspCollarWitness N constructedModel) (r t : ℝ) :
-    actualLocalCuspCentralOrbitMap W (phaseSweepOrbit W 2 ![r, 2 * t - 1]) =
-      cuspFillingPeriodCircle W 1 ((-t : UnitAddCircle),
-        actualLocalCuspCentralOrbitMap W (constructedCentralOneCell W 2 (fun _ ↦ r))) :=
-  phaseSweepToFilling_of_carrier W 2 1 _ _ _ (phaseSweepCarrier_two_period r t)
 
 public theorem phaseSweepToFilling_zero_fourth
     (W : ActualPuncturedCuspCollarWitness N constructedModel) (r t : ℝ) :
@@ -199,23 +187,7 @@ public theorem compactOrbit_eq_self_of_carrier
     fin_cases i <;> exact h
   fin_cases i <;> exact congrArg (Quotient.mk _) hp
 
-public theorem fillingPeriodCircle_edgeOne_fixed
-    (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    (y : Fin 1 → ℝ) (z : UnitAddCircle) :
-    cuspFillingPeriodCircle W 1 (z,
-      actualLocalCuspCentralOrbitMap W (constructedCentralOneCell W 1 y)) =
-      actualLocalCuspCentralOrbitMap W (constructedCentralOneCell W 1 y) := by
-  rw [cuspFillingPeriodCircle_centralOrbit,
-    compactOrbit_eq_self_of_carrier W 1 1 y z (fourthPhase_edgeOne_fixed z y)]
 
-public theorem fillingPeriodCircle_edgeTwo_fixed
-    (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    (y : Fin 1 → ℝ) (z : UnitAddCircle) :
-    cuspFillingPeriodCircle W 0 (z,
-      actualLocalCuspCentralOrbitMap W (constructedCentralOneCell W 2 y)) =
-      actualLocalCuspCentralOrbitMap W (constructedCentralOneCell W 2 y) := by
-  rw [cuspFillingPeriodCircle_centralOrbit,
-    compactOrbit_eq_self_of_carrier W 2 0 y z (thirdPhase_edgeTwo_fixed z y)]
 
 public def phaseSweepPeriod : Fin 3 → Fin 2 := ![0, 0, 1]
 
@@ -236,24 +208,6 @@ public theorem phaseSweepOrbit_period
   · exact phaseSweepOrbit_eq_compact_of_carrier W 2 1 _ _ _
       (phaseSweepCarrier_two_period r t)
 
-public theorem phaseSweepOrbit_time_zero
-    (W : ActualPuncturedCuspCollarWitness N constructedModel) (i : Fin 3) (r : ℝ) :
-    phaseSweepOrbit W i ![r, -1] = constructedCentralOneCell W i (fun _ ↦ r) := by
-  have h := phaseSweepOrbit_period W i r 0
-  have hz : cuspPeriodCompactCircle (phaseSweepPeriod i) (phaseSweepTime i 0) = 1 := by
-    ext j
-    simp [phaseSweepTime, cuspPeriodCompactCircle]
-  simpa only [mul_zero, zero_sub, hz, constructedA2CentralCompactOrbitMap_one] using h
 
-public theorem phaseSweepOrbit_time_one
-    (W : ActualPuncturedCuspCollarWitness N constructedModel) (i : Fin 3) (r : ℝ) :
-    phaseSweepOrbit W i ![r, 1] = constructedCentralOneCell W i (fun _ ↦ r) := by
-  have h := phaseSweepOrbit_period W i r 1
-  have hz : cuspPeriodCompactCircle (phaseSweepPeriod i) (phaseSweepTime i 1) = 1 := by
-    ext j
-    have h1 : ((1 : ℝ) : UnitAddCircle) = 0 := AddCircle.coe_period 1
-    simp [phaseSweepTime, cuspPeriodCompactCircle, h1]
-  simpa only [mul_one, show (2 : ℝ) - 1 = 1 by norm_num, hz,
-    constructedA2CentralCompactOrbitMap_one] using h
 
 end SphereSixComplex.Geometry.CuspPuncturedCollarBridge

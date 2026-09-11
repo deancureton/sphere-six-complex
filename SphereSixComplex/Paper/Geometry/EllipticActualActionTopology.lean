@@ -118,76 +118,13 @@ public theorem orderFourRepresentation_continuous (g : FiniteCyclic 4) :
     (orderFourActionData F).representation_generator]
   exact continuous_equiv_pow _ (orderFourDiagonalGenerator_continuous F) _
 
-/-- The open unit disc is connected. -/
-public noncomputable instance : ConnectedSpace ComplexUnitDisc := by
-  let S : Set ℂ := {z | ‖z‖ < 1}
-  change ConnectedSpace ↥S
-  apply isConnected_iff_connectedSpace.mp
-  have hS : S = Metric.ball (0 : ℂ) 1 := by
-    ext z
-    simp only [S, Set.mem_ofPred_eq, Metric.mem_ball, dist_zero_right]
-  rw [hS]
-  exact ⟨Metric.nonempty_ball.mpr zero_lt_one,
-    (convex_ball (0 : ℂ) 1).isPreconnected⟩
 
-/-- The open unit disc is second countable. -/
-public noncomputable instance : SecondCountableTopology ComplexUnitDisc := by
-  unfold ComplexUnitDisc
-  infer_instance
 
-/-- The order-three filling action as a continuous action. -/
-public theorem orderThreeContinuousConstSMul :
-    letI := (orderThreeActionData F).diagonalAction
-    ContinuousConstSMul (FiniteCyclic 3)
-      (ComplexUnitDisc × AdditiveTorus (parameterMap F U.zOne).1) := by
-  let _ := (orderThreeActionData F).diagonalAction
-  exact ⟨fun g ↦ orderThreeRepresentation_continuous F g⟩
 
-/-- The order-four filling action as a continuous action. -/
-public theorem orderFourContinuousConstSMul :
-    letI := (orderFourActionData F).diagonalAction
-    ContinuousConstSMul (FiniteCyclic 4)
-      (ComplexUnitDisc × AdditiveTorus (parameterMap F U.zTwo).1) := by
-  let _ := (orderFourActionData F).diagonalAction
-  exact ⟨fun g ↦ orderFourRepresentation_continuous F g⟩
 
-/-- The actual order-three filling quotient is connected. -/
-public theorem orderThreeFilling_connected :
-    letI := (orderThreeActionData F).diagonalAction
-    ConnectedSpace (OrbitQuotient
-      (M := ComplexUnitDisc × AdditiveTorus (parameterMap F U.zOne).1)
-      (G := FiniteCyclic 3)) := by
-  let _ := (orderThreeActionData F).diagonalAction
-  infer_instance
 
-/-- The actual order-four filling quotient is connected. -/
-public theorem orderFourFilling_connected :
-    letI := (orderFourActionData F).diagonalAction
-    ConnectedSpace (OrbitQuotient
-      (M := ComplexUnitDisc × AdditiveTorus (parameterMap F U.zTwo).1)
-      (G := FiniteCyclic 4)) := by
-  let _ := (orderFourActionData F).diagonalAction
-  infer_instance
 
-/-- The actual order-three filling quotient is second countable. -/
-public theorem orderThreeFilling_secondCountable :
-    letI := (orderThreeActionData F).diagonalAction
-    SecondCountableTopology (OrbitQuotient
-      (M := ComplexUnitDisc × AdditiveTorus (parameterMap F U.zOne).1)
-      (G := FiniteCyclic 3)) := by
-  let _ := (orderThreeActionData F).diagonalAction
-  let _ := orderThreeContinuousConstSMul F
-  exact ContinuousConstSMul.secondCountableTopology
 
-/-- The actual order-four filling quotient is second countable. -/
-public theorem orderFourFilling_secondCountable :
-    letI := (orderFourActionData F).diagonalAction
-    SecondCountableTopology (OrbitQuotient
-      (M := ComplexUnitDisc × AdditiveTorus (parameterMap F U.zTwo).1)
-      (G := FiniteCyclic 4)) := by
-  let _ := (orderFourActionData F).diagonalAction
-  let _ := orderFourContinuousConstSMul F
-  exact ContinuousConstSMul.secondCountableTopology
 
 end
 

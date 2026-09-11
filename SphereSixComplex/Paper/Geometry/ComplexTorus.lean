@@ -134,14 +134,6 @@ public instance isCancelSMul_multiplicative_addSubgroup (L : AddSubgroup Complex
     change (g.toAdd : ComplexTwoSpace) + z = (g'.toAdd : ComplexTwoSpace) + z at h
     exact add_right_cancel h
 
-/-- A period translation fixing one point is the identity translation. -/
-public theorem periodTranslation_fixed_iff (x : Parameters)
-    (g : Multiplicative (periodLattice x))
-    (z : ComplexTwoSpace) : g • z = z ↔ g = 1 := by
-  constructor
-  · exact isCancelSMul_iff_eq_one_of_smul_eq.mp inferInstance g z
-  · rintro rfl
-    exact one_smul _ _
 
 /-- Proper discontinuity of an additive action passes to its multiplicative wrapper. -/
 public theorem properlyDiscontinuousSMul_multiplicative_of_vadd
@@ -213,51 +205,9 @@ public theorem torus_compactSpace (x : Parameters) (h : FullRank x) :
   rw [← isCompact_univ_iff, ← hsurj]
   exact hC.image hf
 
-/-- Every period-lattice translation is complex smooth. -/
-public theorem periodTranslation_contMDiff (x : Parameters) (g : PeriodGroup x)
-    (n : WithTop ℕ∞) :
-    ContMDiff (modelWithCornersSelf ℂ ComplexTwoSpace)
-      (modelWithCornersSelf ℂ ComplexTwoSpace) n (fun z : ComplexTwoSpace ↦ g • z) := by
-  rw [contMDiff_iff_contDiff]
-  change ContDiff ℂ n (fun z : ComplexTwoSpace ↦ (g.toAdd : ComplexTwoSpace) + z)
-  exact contDiff_const.add contDiff_id
 
-/-- A full-rank period matrix defines a complex manifold quotient, and the quotient projection is
-a local diffeomorphism. -/
-public theorem torus_isManifold_and_projection_isLocalDiffeomorph
-    (x : Parameters) (h : FullRank x) (n : WithTop ℕ∞) :
-    letI := periodLattice_properlyDiscontinuousSMul h
-    IsManifold (modelWithCornersSelf ℂ ComplexTwoSpace) n (Torus x) ∧
-      IsLocalDiffeomorph (modelWithCornersSelf ℂ ComplexTwoSpace)
-        (modelWithCornersSelf ℂ ComplexTwoSpace) n (torusProjection x) := by
-  let _ : ProperlyDiscontinuousSMul (PeriodGroup x) ComplexTwoSpace :=
-    periodLattice_properlyDiscontinuousSMul h
-  exact orbitQuotient_isManifold_and_projection_isLocalDiffeomorph_of_contMDiff_smul
-    (modelWithCornersSelf ℂ ComplexTwoSpace) n fun g ↦ periodTranslation_contMDiff x g n
 
-/-- At order one, a full-rank period matrix defines a complex torus with locally holomorphic
-quotient projection. -/
-public theorem torus_isManifold_and_projection_mdifferentiable
-    (x : Parameters) (h : FullRank x) :
-    letI := periodLattice_properlyDiscontinuousSMul h
-    IsManifold (modelWithCornersSelf ℂ ComplexTwoSpace) 1 (Torus x) ∧
-      MDifferentiable (modelWithCornersSelf ℂ ComplexTwoSpace)
-        (modelWithCornersSelf ℂ ComplexTwoSpace) (torusProjection x) := by
-  let _ : ProperlyDiscontinuousSMul (PeriodGroup x) ComplexTwoSpace :=
-    periodLattice_properlyDiscontinuousSMul h
-  exact orbitQuotient_isManifold_and_projection_mdifferentiable_of_contMDiff_smul
-    (modelWithCornersSelf ℂ ComplexTwoSpace) fun g ↦ periodTranslation_contMDiff x g 1
 
-/-- The setup inequalities imply the complex-torus quotient conclusion. -/
-public theorem torus_of_setupInequalities
-    (x : Parameters) (h : SetupInequalities x) :
-    let hfull := FullRank.ofSetupInequalities x h
-    letI := periodLattice_properlyDiscontinuousSMul hfull
-    IsManifold (modelWithCornersSelf ℂ ComplexTwoSpace) 1 (Torus x) ∧
-      MDifferentiable (modelWithCornersSelf ℂ ComplexTwoSpace)
-        (modelWithCornersSelf ℂ ComplexTwoSpace) (torusProjection x) := by
-  exact torus_isManifold_and_projection_mdifferentiable x
-    (FullRank.ofSetupInequalities x h)
 
 end
 

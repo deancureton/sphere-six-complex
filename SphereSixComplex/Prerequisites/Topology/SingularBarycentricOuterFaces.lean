@@ -80,54 +80,10 @@ public theorem insertOmittedVertexLastEquiv_apply
       insertOmittedVertexLast pτ.1 pτ.2 :=
   rfl
 
-/-- The reindexing equivalence really records the omitted final vertex in its first
-coordinate. -/
-@[simp]
-public theorem insertOmittedVertexLastEquiv_symm_fst
-    (n : ℕ) (σ : Equiv.Perm (Fin (n + 2))) :
-    ((insertOmittedVertexLastEquiv n).symm σ).1 = σ (Fin.last (n + 1)) := by
-  let pτ := (insertOmittedVertexLastEquiv n).symm σ
-  have h := (insertOmittedVertexLastEquiv n).apply_symm_apply σ
-  change insertOmittedVertexLast pτ.1 pτ.2 = σ at h
-  have hlast := congrArg (fun e ↦ e (Fin.last (n + 1))) h
-  simpa only [insertOmittedVertexLast_apply_last] using hlast
 
-/-- The order of the complement obtained after recording the omitted final vertex. -/
-public noncomputable def permutationLastComplementOrder
-    (n : ℕ) (σ : Equiv.Perm (Fin (n + 2))) :
-    Equiv.Perm (Fin (n + 1)) :=
-  ((insertOmittedVertexLastEquiv n).symm σ).2
 
-@[simp]
-public theorem permutationLastComplementOrder_insert
-    {n : ℕ} (p : Fin (n + 2)) (τ : Equiv.Perm (Fin (n + 1))) :
-    permutationLastComplementOrder n (insertOmittedVertexLast p τ) = τ := by
-  change ((insertOmittedVertexLastEquiv n).symm
-    (insertOmittedVertexLastEquiv n (p, τ))).2 = τ
-  rw [(insertOmittedVertexLastEquiv n).symm_apply_apply]
 
-/-- Mathlib's rotate-and-`decomposeFin` parametrization and the order-preserving parametrization
-record the same omitted vertex. -/
-public theorem permutationLastDecomposition_fst_eq_orderPreserving
-    (n : ℕ) (σ : Equiv.Perm (Fin (n + 2))) :
-    (permutationLastDecomposition n σ).1 =
-      ((insertOmittedVertexLastEquiv n).symm σ).1 := by
-  rw [permutationLastDecomposition_fst,
-    insertOmittedVertexLastEquiv_symm_fst]
 
-/-- Exact compatibility of `decomposeFin` with order-preserving deletion: before its final
-vertex, `σ` is the monotone face inclusion applied to the induced complement ordering. -/
-public theorem permutationLastDecomposition_orderCompatibility
-    (n : ℕ) (σ : Equiv.Perm (Fin (n + 2))) (k : Fin (n + 1)) :
-    σ k.castSucc =
-      (permutationLastDecomposition n σ).1.succAbove
-        (permutationLastComplementOrder n σ k) := by
-  let pτ := (insertOmittedVertexLastEquiv n).symm σ
-  have h := (insertOmittedVertexLastEquiv n).apply_symm_apply σ
-  change insertOmittedVertexLast pτ.1 pτ.2 = σ at h
-  rw [← h, insertOmittedVertexLast_apply_castSucc,
-    permutationLastDecomposition_fst, insertOmittedVertexLast_apply_last,
-    permutationLastComplementOrder_insert]
 
 /-- `Fin.castSucc` identifies `Fin (n+1)` with all vertices except the last one. -/
 public def finCastSuccEquivNotLast (n : ℕ) :
@@ -206,18 +162,6 @@ public theorem outerFaceCoefficient_insertOmittedVertexLast {n : ℕ}
           ((-1 : ℤ) ^ p.val * permutationSignInteger τ) := by rw [mul_pow]
     _ = _ := by norm_num
 
-/-- The `decomposeFin` sign written using the order-preserving complement ordering. -/
-public theorem permutationLastDecomposition_signCompatibility
-    (n : ℕ) (σ : Equiv.Perm (Fin (n + 2))) :
-    permutationSignInteger σ =
-      (-1 : ℤ) ^ (n + 1 - (permutationLastDecomposition n σ).1.val) *
-        permutationSignInteger (permutationLastComplementOrder n σ) := by
-  let pτ := (insertOmittedVertexLastEquiv n).symm σ
-  have h := (insertOmittedVertexLastEquiv n).apply_symm_apply σ
-  change insertOmittedVertexLast pτ.1 pτ.2 = σ at h
-  rw [← h, permutationSignInteger_insertOmittedVertexLast,
-    permutationLastDecomposition_fst, insertOmittedVertexLast_apply_last,
-    permutationLastComplementOrder_insert]
 
 /-- Deleting the final (full-set) prefix of an inserted ordering is the subdivided face obtained
 by omitting `p`. -/
@@ -283,28 +227,7 @@ public theorem barycentricFundamentalBoundaryIdentity :
   barycentricFundamentalBoundaryIdentity_of_outerFaceIdentity
     barycentricOuterFaceIdentity
 
-/-- The unconditional natural barycentric subdivision chain morphism. -/
-public noncomputable def barycentricSubdivisionChainMapCanonical (X : SSet.{0}) :
-    X.chainComplex (AddCommGrpCat.of ℤ) ⟶
-      (SSet.sd.obj X).chainComplex (AddCommGrpCat.of ℤ) :=
-  barycentricSubdivisionChainMapOfOuterFaceIdentity
-    barycentricOuterFaceIdentity X
 
-@[simp]
-public theorem barycentricSubdivisionChainMapCanonical_f
-    (X : SSet.{0}) (n : ℕ) :
-    (barycentricSubdivisionChainMapCanonical X).f n =
-      barycentricSubdivisionComponent X n :=
-  rfl
 
-/-- Naturality of the unconditional barycentric subdivision chain morphism. -/
-public theorem barycentricSubdivisionChainMapCanonical_naturality
-    {X Y : SSet.{0}} (f : X ⟶ Y) :
-    SSet.chainComplexMap f (AddCommGrpCat.of ℤ) ≫
-        barycentricSubdivisionChainMapCanonical Y =
-      barycentricSubdivisionChainMapCanonical X ≫
-        SSet.chainComplexMap (SSet.sd.map f) (AddCommGrpCat.of ℤ) :=
-  barycentricSubdivisionChainMapOfOuterFaceIdentity_naturality
-    barycentricOuterFaceIdentity f
 
 end SphereSixComplex

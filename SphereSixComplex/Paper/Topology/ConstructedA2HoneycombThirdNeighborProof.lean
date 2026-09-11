@@ -164,23 +164,6 @@ public theorem constructedA2CorrectedLaurentIdentity_thirdNeighbor
   (constructedA2CorrectedPlaneTile_thirdNeighbor_iff v p q).trans
     (constructedA2ThirdNeighborTransition_iff v p q).symm
 
-public theorem constructedA2CorrectedLaurentIdentity_thirdNeighbor_reverse
-    (v : ToricLattice) (p q : ConstructedA2CellSquare) :
-    constructedA2CorrectedPlaneTile (v + (e₂ - e₁)) 5
-        q = constructedA2CorrectedPlaneTile v 2 p ↔
-      constructedA2CellLiftCoordinates 5 (fun k ↦ (q.1 k : ℂ)) ∈
-          monomialDomain
-            (transitionMatrix
-              (constructedA2CellChart (v + (e₂ - e₁)) 5)
-              (constructedA2CellChart v 2)) ∧
-        monomial
-            (transitionMatrix
-              (constructedA2CellChart (v + (e₂ - e₁)) 5)
-              (constructedA2CellChart v 2))
-            (constructedA2CellLiftCoordinates 5 (fun k ↦ (q.1 k : ℂ))) =
-          constructedA2CellLiftCoordinates 2 (fun k ↦ (p.1 k : ℂ)) := by
-  rw [eq_comm, constructedA2CorrectedLaurentIdentity_thirdNeighbor,
-    constructedA2LaurentTransition_comm]
 
 end SphereSixComplex.Geometry.InfiniteA2Toric
 

@@ -99,12 +99,5 @@ public theorem restrictedOrbitQuotientInclusion_isOpenEmbedding
     (restrictedOrbitQuotientInclusion_injective A S)
     (restrictedOrbitQuotientInclusion_isOpenMap A S hcontinuous)
 
-/-- The carrier quotient identified with its literal image in the ambient orbit quotient. -/
-public noncomputable def restrictedOrbitQuotientHomeomorphRange
-    (A : MulAction G X) (S : InvariantOpenCarrier A)
-    (hcontinuous : letI := A; ContinuousConstSMul G X) :
-    Quotient (restrictedOrbitRel A S) ≃ₜ
-      Set.range (restrictedOrbitQuotientInclusion A S) :=
-  (restrictedOrbitQuotientInclusion_isOpenEmbedding A S hcontinuous).isEmbedding.toHomeomorph
 
 end SphereSixComplex

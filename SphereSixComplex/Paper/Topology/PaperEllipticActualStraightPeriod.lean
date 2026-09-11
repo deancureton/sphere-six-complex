@@ -1,6 +1,6 @@
 module
 public import SphereSixComplex.Paper.Topology.PaperEllipticSynchronizedEnteringSheet
-public import SphereSixComplex.Paper.Topology.RegularFamilyPeriodPathClassTransport
+public import SphereSixComplex.Paper.Geometry.GlobalTorusFiberFundamentalGroup
 
 @[expose] public section
 noncomputable section

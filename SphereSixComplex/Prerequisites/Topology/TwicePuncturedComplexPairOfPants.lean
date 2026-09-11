@@ -342,13 +342,7 @@ theorem lollipopRadius_zero : lollipopRadius 0 = 0 := by
 theorem lollipopRadius_one : lollipopRadius 1 = 0 := by
   norm_num [lollipopRadius]
 
-theorem lollipopRadius_quarter :
-    lollipopRadius ⟨(1 / 4 : ℝ), by norm_num⟩ = 3 / 4 := by
-  norm_num [lollipopRadius]
 
-theorem lollipopRadius_threeQuarter :
-    lollipopRadius ⟨(3 / 4 : ℝ), by norm_num⟩ = 3 / 2 := by
-  norm_num [lollipopRadius]
 
 theorem lollipopAngle_eq_left (t : unitInterval) (ht : (t : ℝ) ≤ 1 / 2) :
     lollipopAngle t = -Real.pi / 2 := by

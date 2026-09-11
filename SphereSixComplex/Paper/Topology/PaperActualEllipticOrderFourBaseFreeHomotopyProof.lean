@@ -360,39 +360,6 @@ open SphereSixComplex.Topology
 
 variable (A : PaperAnalyticData)
 
-/-- The actual order-four Cayley base circle is freely homotopic to the marked positive
-four-turn circle about one. -/
-public theorem ellipticFourCayleyBaseCoordinate_quadrupleHomotopy :
-    Nonempty (ContinuousMap.Homotopy
-      (twoPunctureComplementNegOneMap.comp
-        (A.orderFourCayleyChartSubOneCircleMap
-          A.orderFourFillingRelationCayleyBaseValue
-          (norm_pos_iff.mpr A.orderFourFillingRelationCayleyBaseValue_ne_zero)
-          (by
-            rw [A.orderFourFillingRelationCayleyBaseValue_norm]
-            exact A.ellipticFourBoundaryBase.1.2.2)))
-      twicePuncturedCounterclockwiseOneQuadruple.toContinuousMap) := by
-  obtain ⟨u, a, ha, hune, hbound, H⟩ :=
-    A.exists_orderFourActualCayleyBaseCoordinate_fourTurnHomotopy
-  rcases H with ⟨H⟩
-  let d : ℂ := a ^ 4 * u 0
-  have hd : d ≠ 0 :=
-    mul_ne_zero (pow_ne_zero 4 ha) (hune 0 (by simp))
-  have hd1 : ‖d‖ < 1 := by
-    dsimp [d]
-    rw [norm_mul, norm_pow]
-    simpa using hbound 0 (by simp)
-  let Hlocal := twoPunctureComplementNegOneHomotopyMap H
-  have hfrozen :
-      twoPunctureComplementNegOneMap.comp
-          (frozenLocalDegreeCircleTwoPunctures
-            u 4 a (-1) ha hune hbound) =
-        twicePuncturedPositiveOneQuadrupleCircle d hd hd1 := by
-    simpa [d] using
-      frozenLocalDegreeCircleTwoPunctures_map_eq_positiveOneQuadruple
-        u a ha hune hbound
-  exact ⟨(Hlocal.cast rfl hfrozen).trans
-    (positiveOneQuadrupleCoefficientHomotopy d hd hd1)⟩
 
 /-- The affine base coordinate of the projected complete order-four filling loop. -/
 public noncomputable def orderFourFillingRelationBaseCoordinateMap :
@@ -425,19 +392,6 @@ public theorem orderFourFillingRelationBaseCoordinateMap_eq_cayley :
     orderFourFillingRelationCayleyLoop, puncturedComplexIntegerCircle,
     puncturedComplexIntegerCirclePoint] using h
 
-/-- The projected order-four filling relation is freely homotopic to a loop representing the
-fourth power of the inverse marked clockwise one meridian. -/
-public theorem orderFourFillingRelation_baseCoordinate_freeHomotopy_oneMeridianFourth :
-    ∃ gamma : Path twicePuncturedComplexBasepoint twicePuncturedComplexBasepoint,
-      Path.Homotopic.Quotient.mk gamma =
-        TwicePuncturedComplex.oneMeridianClass⁻¹ ^ 4 ∧
-      Nonempty (ContinuousMap.Homotopy
-        A.orderFourFillingRelationBaseCoordinateMap
-        gamma.toContinuousMap) := by
-  refine ⟨twicePuncturedCounterclockwiseOneQuadruple,
-    twicePuncturedCounterclockwiseOneQuadruple_class, ?_⟩
-  rcases A.ellipticFourCayleyBaseCoordinate_quadrupleHomotopy with ⟨H⟩
-  exact ⟨H.cast A.orderFourFillingRelationBaseCoordinateMap_eq_cayley.symm rfl⟩
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

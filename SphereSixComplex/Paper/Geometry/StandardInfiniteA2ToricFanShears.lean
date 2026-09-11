@@ -58,11 +58,6 @@ private theorem translateChartIndex_add
   congr 1
   abel
 
-private theorem translateChartIndex_neg
-    (lambda : ParameterLattice) (a : ChartIndex) :
-    translateChartIndex (-lambda) (translateChartIndex lambda a) = a := by
-  rw [translateChartIndex_add]
-  simp
 
 /-- Simultaneous translation of two fan cones does not change their Laurent transition matrix. -/
 public theorem transitionMatrix_translate
@@ -137,11 +132,6 @@ public noncomputable def carrierFanShearEquiv
     rw [← carrierFanShearFun_add]
     simpa using carrierFanShearFun_zero p
 
-@[simp]
-public theorem carrierFanShearEquiv_apply
-    (lambda : ParameterLattice) (p : Carrier) :
-    carrierFanShearEquiv lambda p = carrierFanShearFun lambda p :=
-  rfl
 
 /-- The integral fan translations form an additive family of carrier permutations. -/
 public noncomputable def carrierFanShear :

@@ -240,63 +240,7 @@ public theorem compactPhaseOrbit_prod_isQuotientMap
     (Function.Surjective.prodMap Function.surjective_id
       (compactPhaseOrbit_surjective M r P))
 
-private theorem positive_units_eq_of_norm_eq
-    (z w : ℂˣ)
-    (hz : 0 < ((z : ℂˣ) : ℂ).re ∧ ((z : ℂˣ) : ℂ).im = 0)
-    (hw : 0 < ((w : ℂˣ) : ℂ).re ∧ ((w : ℂˣ) : ℂ).im = 0)
-    (h : ‖((z : ℂˣ) : ℂ)‖ = ‖((w : ℂˣ) : ℂ)‖) :
-    z = w := by
-  have hzval : ((z : ℂˣ) : ℂ) = (((z : ℂˣ) : ℂ).re : ℂ) :=
-    Complex.ext rfl hz.2
-  have hwval : ((w : ℂˣ) : ℂ) = (((w : ℂˣ) : ℂ).re : ℂ) :=
-    Complex.ext rfl hw.2
-  apply Units.ext
-  rw [hzval, hwval, Complex.ofReal_inj]
-  rw [hzval, hwval, Complex.norm_real, Complex.norm_real,
-    Real.norm_eq_abs, Real.norm_eq_abs, abs_of_pos hz.1, abs_of_pos hw.1] at h
-  exact h
 
-private theorem positiveTwist_eq_normalized_of_basis_aux
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    (N : NormalizedFuchsianCuspCoordinate E D) {M : Model} {r : ℝ}
-    (P : PolarHoneycombData M r)
-    (hP : ∀ j i : Fin 2,
-      ‖((P.positiveTwist (Pi.single j 1) i.castSucc : ℂˣ) : ℂ)‖ =
-        ‖((phaseEmbedding (N.phaseCoefficient (Pi.single j 1) 0)
-          i.castSucc : ℂˣ) : ℂ)‖) :
-    P.positiveTwist = normalizedCuspPositiveTwist N := by
-  have hP' : ∀ j : Fin 2, P.positiveTwist (Pi.single j 1) =
-      normalizedCuspPositiveTwist N (Pi.single j 1) := by
-    intro j
-    funext i
-    fin_cases i
-    · exact positive_units_eq_of_norm_eq _ _
-        (P.positiveTwist_real (Pi.single j 1) 0)
-        (normalizedCuspPositiveTwist_real N (Pi.single j 1) 0)
-        ((hP j 0).trans (norm_normalizedCuspPositiveTwist N (Pi.single j 1) 0).symm)
-    · exact positive_units_eq_of_norm_eq _ _
-        (P.positiveTwist_real (Pi.single j 1) 1)
-        (normalizedCuspPositiveTwist_real N (Pi.single j 1) 1)
-        ((hP j 1).trans (norm_normalizedCuspPositiveTwist N (Pi.single j 1) 1).symm)
-    · change P.positiveTwist (Pi.single j 1) 2 =
-        normalizedCuspPositiveTwist N (Pi.single j 1) 2
-      rw [P.positiveTwist_last, normalizedCuspPositiveTwist_last]
-  let pTwist : ParameterLattice →+ Additive DenseTorus := {
-    toFun := fun lambda ↦ Additive.ofMul (P.positiveTwist lambda)
-    map_zero' := congrArg Additive.ofMul P.positiveTwist_zero
-    map_add' := fun lambda mu ↦ congrArg Additive.ofMul (P.positiveTwist_add lambda mu) }
-  let nTwist : ParameterLattice →+ Additive DenseTorus := {
-    toFun := fun lambda ↦ Additive.ofMul (normalizedCuspPositiveTwist N lambda)
-    map_zero' := congrArg Additive.ofMul (normalizedCuspPositiveTwist_zero N)
-    map_add' := fun lambda mu ↦
-      congrArg Additive.ofMul (normalizedCuspPositiveTwist_add N lambda mu) }
-  have hHom : pTwist = nTwist := by
-    apply AddMonoidHom.functions_ext'
-    intro j
-    apply AddMonoidHom.ext_int
-    exact congrArg Additive.ofMul (hP' j)
-  funext lambda
-  exact congrArg Additive.toMul (DFunLike.congr_fun hHom lambda)
 
 /-- The genuinely independent input for a polar honeycomb.  Positivity of the height on the
 positive part follows from the modulus identities, while contractibility of the central

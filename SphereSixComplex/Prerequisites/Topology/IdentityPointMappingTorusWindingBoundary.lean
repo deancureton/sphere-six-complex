@@ -182,18 +182,6 @@ public theorem identityPointMappingTorusPositiveGenerator_baseCircle_winding :
   rw [← positiveCylinderClass_eq_positiveGenerator]
   exact positiveCylinderClass_baseCircle_winding
 
-/-- Winding equals the canonical Wang coordinate on the point mapping torus. -/
-public theorem identityPointMappingTorus_winding_eq_wangBoundary
-    (z : IntegralSingularHomology 1
-      (CircleMappingTorus (Homeomorph.refl Unit))) :
-    unitCircleHomologyWinding
-        (integralSingularHomologyMap 1
-          (circleMappingTorusBaseCircleProjection (Homeomorph.refl Unit)) z) =
-      pathConnectedIntegralHomologyZeroEquivInteger Unit
-        ((circleMappingTorusWangPresentationOfCover
-          (Homeomorph.refl Unit) 0).boundary z) :=
-  identityPointMappingTorus_winding_eq_wangBoundary_of_positive
-    identityPointMappingTorusPositiveGenerator_baseCircle_winding z
 
 /-- Base-circle winding equals the canonical Wang coordinate for every path-connected fibre. -/
 public theorem circleMappingTorusBaseCircle_winding_eq_wangBoundary

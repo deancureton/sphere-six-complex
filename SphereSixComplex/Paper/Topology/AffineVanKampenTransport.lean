@@ -62,37 +62,6 @@ public def mapSurjective
 
 end AffineTorusCorePiOneData
 
-namespace AffineTorusStarFillingRelations
-
-variable {G H Λ : Type*} [Group G] [Group H] [AddCommGroup Λ]
-variable {monodromyOne monodromyTwo : Λ →+ Λ}
-variable {orderOne orderTwo : ℕ} {twistOne twistTwo cuspTwist : Λ}
-variable {toricSubgroup : AddSubgroup Λ}
-
-/-- Filling relations are preserved under a surjective quotient of the core group. -/
-public theorem mapSurjective
-    (C : AffineTorusCorePiOneData G Λ monodromyOne monodromyTwo)
-    (F : AffineTorusStarFillingRelations C orderOne orderTwo twistOne twistTwo
-      cuspTwist toricSubgroup)
-    (f : G →* H) (hf : Function.Surjective f) :
-    AffineTorusStarFillingRelations (C.mapSurjective f hf) orderOne orderTwo
-      twistOne twistTwo cuspTwist toricSubgroup where
-  elliptic_one := by
-    change (f C.rhoOne) ^ orderOne = f (Additive.toMul (C.translation twistOne))
-    simpa only [map_pow] using congrArg f F.elliptic_one
-  elliptic_two := by
-    change (f C.rhoTwo) ^ orderTwo = f (Additive.toMul (C.translation twistTwo))
-    simpa only [map_pow] using congrArg f F.elliptic_two
-  cusp := by
-    change f C.rhoOne * f C.rhoTwo =
-      f (Additive.toMul (C.translation cuspTwist))
-    simpa only [map_mul] using congrArg f F.cusp
-  toric_vanishes a ha := by
-    change f (Additive.toMul (C.translation a)) = 1
-    simpa only [map_one] using congrArg f (F.toric_vanishes a ha)
-
-end AffineTorusStarFillingRelations
-
 end SphereSixComplex
 
 end

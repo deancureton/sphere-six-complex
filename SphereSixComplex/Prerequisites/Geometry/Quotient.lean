@@ -377,11 +377,6 @@ public theorem quotientProjection_isLocalDiffeomorph
   rw [← heq]
   exact hlocal
 
-/-- For nonzero differentiability order, the quotient projection is manifold-differentiable. -/
-public theorem quotientProjection_mdifferentiable (hn : n ≠ 0)
-    (hsmul : ∀ g : G, ContMDiff I I n (fun x : M ↦ g • x)) :
-    MDifferentiable I I (quotientProjection (M := M) (G := G)) :=
-  (quotientProjection_isLocalDiffeomorph I n hsmul).mdifferentiable hn
 
 end Manifold
 
@@ -416,26 +411,7 @@ public theorem orbitQuotient_isManifold_and_projection_isLocalDiffeomorph_of_con
   orbitQuotient_isManifold_and_projection_isLocalDiffeomorph I n
     (quotientChartContDiff_of_contMDiff_smul I n hsmul) hsmul
 
-/-- At differentiability order one, the preceding theorem gives a complex-manifold quotient and a
-locally holomorphic quotient projection. -/
-public theorem orbitQuotient_isManifold_and_projection_mdifferentiable
-    [IsManifold I 1 M]
-    (hcharts : QuotientChartContDiff (M := M) (G := G) I 1)
-    (hsmul : ∀ g : G, ContMDiff I I 1 (fun x : M ↦ g • x)) :
-    IsManifold I 1 (OrbitQuotient (M := M) (G := G)) ∧
-      MDifferentiable I I (quotientProjection (M := M) (G := G)) := by
-  have h := orbitQuotient_isManifold_and_projection_isLocalDiffeomorph I 1 hcharts hsmul
-  refine ⟨h.1, ?_⟩
-  exact h.2.mdifferentiable one_ne_zero
 
-/-- At order one, a free properly discontinuous action by smooth translations gives a complex
-manifold quotient and a locally holomorphic quotient projection. -/
-public theorem orbitQuotient_isManifold_and_projection_mdifferentiable_of_contMDiff_smul
-    [IsManifold I 1 M] (hsmul : ∀ g : G, ContMDiff I I 1 (fun x : M ↦ g • x)) :
-    IsManifold I 1 (OrbitQuotient (M := M) (G := G)) ∧
-      MDifferentiable I I (quotientProjection (M := M) (G := G)) :=
-  orbitQuotient_isManifold_and_projection_mdifferentiable I
-    (quotientChartContDiff_of_contMDiff_smul I 1 hsmul) hsmul
 
 end Combined
 

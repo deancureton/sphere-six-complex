@@ -21,11 +21,8 @@ def sourceCircle (z : ℂ) : ℂ := (starRingEnd ℂ z)⁻¹
 
 def sourceLeft (z : ℂ) : ℂ := -Real.sqrt 2 - starRingEnd ℂ z
 
-def targetRight (z : ℂ) : ℂ := 1 - starRingEnd ℂ z
 
-def targetCircle (z : ℂ) : ℂ := (starRingEnd ℂ z)⁻¹
 
-def targetLeft (z : ℂ) : ℂ := -starRingEnd ℂ z
 
 @[simp] theorem sourceRight_im (z : ℂ) : (sourceRight z).im = z.im := by
   simp [sourceRight]
@@ -33,18 +30,12 @@ def targetLeft (z : ℂ) : ℂ := -starRingEnd ℂ z
 @[simp] theorem sourceLeft_im (z : ℂ) : (sourceLeft z).im = z.im := by
   simp [sourceLeft]
 
-@[simp] theorem targetRight_im (z : ℂ) : (targetRight z).im = z.im := by
-  simp [targetRight]
 
-@[simp] theorem targetLeft_im (z : ℂ) : (targetLeft z).im = z.im := by
-  simp [targetLeft]
 
 theorem sourceCircle_im (z : ℂ) : (sourceCircle z).im = z.im / normSq z := by
   rw [sourceCircle, inv_im]
   simp [normSq_conj]
 
-theorem targetCircle_im (z : ℂ) : (targetCircle z).im = z.im / normSq z :=
-  sourceCircle_im z
 
 def sourceRightUHP : Equiv.Perm UpperHalfPlane where
   toFun z := ⟨sourceRight z, by simpa using z.im_pos⟩
@@ -82,19 +73,14 @@ def sourceLeftUHP : Equiv.Perm UpperHalfPlane where
     apply UpperHalfPlane.coe_injective
     simp [sourceLeft]
 
-def targetRightUHP : Equiv.Perm UpperHalfPlane := sourceRightUHP
 
-def targetCircleUHP : Equiv.Perm UpperHalfPlane := sourceCircleUHP
 
-def targetLeftUHP : Equiv.Perm UpperHalfPlane where
-  toFun z := ⟨targetLeft z, by simpa using z.im_pos⟩
-  invFun z := ⟨targetLeft z, by simpa using z.im_pos⟩
-  left_inv z := by
-    apply UpperHalfPlane.coe_injective
-    simp [targetLeft]
-  right_inv z := by
-    apply UpperHalfPlane.coe_injective
-    simp [targetLeft]
+
+
+
+
+
+
 
 @[simp] theorem coe_sourceRightUHP (z : UpperHalfPlane) :
     (sourceRightUHP z : ℂ) = sourceRight z := rfl
@@ -104,15 +90,6 @@ def targetLeftUHP : Equiv.Perm UpperHalfPlane where
 
 @[simp] theorem coe_sourceLeftUHP (z : UpperHalfPlane) :
     (sourceLeftUHP z : ℂ) = sourceLeft z := rfl
-
-@[simp] theorem coe_targetRightUHP (z : UpperHalfPlane) :
-    (targetRightUHP z : ℂ) = targetRight z := rfl
-
-@[simp] theorem coe_targetCircleUHP (z : UpperHalfPlane) :
-    (targetCircleUHP z : ℂ) = targetCircle z := rfl
-
-@[simp] theorem coe_targetLeftUHP (z : UpperHalfPlane) :
-    (targetLeftUHP z : ℂ) = targetLeft z := rfl
 
 /-- The order-three source generator is the product of the right and circular reflections. -/
 theorem sourceRight_sourceCircle (z : UpperHalfPlane) :
@@ -141,24 +118,7 @@ theorem sourceCircle_sourceLeft (z : UpperHalfPlane) :
     -((Real.sqrt 2 : ℂ) + z) by ring, inv_neg]
   simp only [div_eq_mul_inv, neg_mul, one_mul, add_comm]
 
-/-- The modular order-three generator is the analogous product of target reflections. -/
-theorem targetRight_targetCircle (z : UpperHalfPlane) :
-    targetRightUHP (targetCircleUHP z) = rhoTauReal g₁ • z := by
-  apply UpperHalfPlane.coe_injective
-  rw [rhoTauReal_g1_smul]
-  change 1 - starRingEnd ℂ ((starRingEnd ℂ (z : ℂ))⁻¹) = ((z : ℂ) - 1) / z
-  rw [map_inv₀, starRingEnd_self_apply]
-  field_simp [z.ne_zero]
 
-/-- The modular order-two generator is the product of the circular and imaginary-axis
-reflections. -/
-theorem targetCircle_targetLeft (z : UpperHalfPlane) :
-    targetCircleUHP (targetLeftUHP z) = rhoTauReal g₂ • z := by
-  apply UpperHalfPlane.coe_injective
-  rw [rhoTauReal_g2_smul]
-  change (starRingEnd ℂ (-starRingEnd ℂ (z : ℂ)))⁻¹ = -1 / (z : ℂ)
-  rw [map_neg, starRingEnd_self_apply]
-  ring
 
 
 end SphereSixComplex.Periods.TriangleReflections

@@ -33,22 +33,6 @@ public noncomputable def frozenEffectiveFanDisplacement
   d + fun i ↦
     (NormalizedFuchsianCuspCoordinate.phaseLogMatrix N 0).mulVec (realFanShearInverse d) i / Real.log ‖q‖
 
-/-- The frozen displacement is real-linear. -/
-public noncomputable def frozenEffectiveFanDisplacementLinearMap
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    (N : NormalizedFuchsianCuspCoordinate E D) (q : ℂ) :
-    (Fin 2 → ℝ) →ₗ[ℝ] (Fin 2 → ℝ) where
-  toFun := frozenEffectiveFanDisplacement N q
-  map_add' x y := by
-    have hInv := realFanShearInverse_add x y
-    ext i
-    fin_cases i <;>
-      simp [frozenEffectiveFanDisplacement, hInv, Matrix.mulVec_add] <;> ring
-  map_smul' c x := by
-    have hInv := realFanShearInverse_smul c x
-    ext i
-    fin_cases i <;>
-      simp [frozenEffectiveFanDisplacement, hInv, Matrix.mulVec_smul] <;> ring
 
 /-- The actual displacement equivalence, exposed here so its underlying linear map can be used in
 the straightening algebra. -/
@@ -84,66 +68,7 @@ public theorem actualDisplacementEquiv_apply
     actualDisplacementEquiv W p hp d = effectiveFanDisplacement N (M.t p) d :=
   rfl
 
-/-- Rescaled position after the unique fibrewise linear change carrying the actual displacement
-matrix to its value with the correction frozen at zero. -/
-public noncomputable def straightenedRescaledPosition
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
-    (W : ActualPuncturedCuspCollarWitness N M)
-    (p : localCarrier M W.localWitness.radius) (hp : M.t p ≠ 0) : Fin 2 → ℝ :=
-  frozenEffectiveFanDisplacementLinearMap N (M.t p)
-    ((actualDisplacementEquiv W p hp).symm (rescaledPosition M p))
 
-/-- The straightened rescaled position conjugates the actual deck displacement to the frozen
-one. This is the algebraic assertion in Lemma 7.5(b), before reconstructing a toric point. -/
-public theorem straightenedRescaledPosition_psiMap
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
-    (W : ActualPuncturedCuspCollarWitness N M) (lambda : ParameterLattice)
-    (p : localCarrier M W.localWitness.radius) (hp : M.t p ≠ 0) :
-    let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
-      W.localWitness.radius_pos W.localWitness.radius_le
-    straightenedRescaledPosition W (C.psiMap lambda p)
-        (C.psiMap_preserves_t lambda p ▸ hp) =
-      straightenedRescaledPosition W p hp +
-        frozenEffectiveFanDisplacement N (M.t p)
-          (fun i ↦ (shearVector lambda i : ℝ)) := by
-  let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
-    W.localWitness.radius_pos W.localWitness.radius_le
-  let d : Fin 2 → ℝ := fun i ↦ (shearVector lambda i : ℝ)
-  have hp' : M.t (C.psiMap lambda p) ≠ 0 := by
-    rw [C.psiMap_preserves_t]
-    exact hp
-  let A := actualDisplacementEquiv W p hp
-  let A' := actualDisplacementEquiv W (C.psiMap lambda p) hp'
-  have hA : A' = A := by
-    apply LinearEquiv.ext
-    intro x
-    change effectiveFanDisplacementLinearMap N (M.t (C.psiMap lambda p)) x =
-      effectiveFanDisplacementLinearMap N (M.t p) x
-    rw [C.psiMap_preserves_t]
-  have hdisp :
-      rescaledPosition M (C.psiMap lambda p) =
-        rescaledPosition M p + effectiveFanDisplacement N (M.t p) d := by
-    have hsub :=
-      CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.rescaledPosition_psiMap_sub
-        N M W.localWitness.radius_lt_one C rfl lambda p hp
-    have heff := effectiveFanDisplacement_shearVector N (M.t p) lambda
-    calc
-      rescaledPosition M (C.psiMap lambda p) =
-          (rescaledPosition M (C.psiMap lambda p) - rescaledPosition M p) +
-            rescaledPosition M p := by abel
-      _ = effectiveFanDisplacement N (M.t p) d + rescaledPosition M p := by
-        rw [hsub, heff]
-      _ = rescaledPosition M p + effectiveFanDisplacement N (M.t p) d := add_comm _ _
-  change frozenEffectiveFanDisplacementLinearMap N (M.t (C.psiMap lambda p))
-      (A'.symm (rescaledPosition M (C.psiMap lambda p))) = _
-  rw [C.psiMap_preserves_t, hA, hdisp, map_add]
-  have hsymm : A.symm (effectiveFanDisplacement N (M.t p) d) = d := by
-    change A.symm (A d) = d
-    exact A.symm_apply_apply d
-  rw [hsymm, map_add]
-  rfl
 
 /-- The punctured part of the actual local cusp carrier. -/
 public abbrev PuncturedLocalCarrier
@@ -326,15 +251,6 @@ public noncomputable def puncturedActualInverseDisplacement
     (p : PuncturedLocalCarrier W) (x : Fin 2 → ℝ) : Fin 2 → ℝ :=
   (actualDisplacementMatrix N (M.t p.1))⁻¹ *ᵥ x
 
-/-- The explicit inverse displacement depends continuously on the punctured point and vector. -/
-public theorem continuous_puncturedActualInverseDisplacement
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
-    (W : ActualPuncturedCuspCollarWitness N M) :
-    Continuous (fun z : PuncturedLocalCarrier W × (Fin 2 → ℝ) ↦
-      puncturedActualInverseDisplacement W z.1 z.2) := by
-  exact ((continuous_actualDisplacementMatrix_inv W).comp continuous_fst).matrix_mulVec
-    continuous_snd
 
 /-- The explicit matrix inverse is a right inverse to the actual displacement. -/
 public theorem effectiveFanDisplacement_puncturedActualInverseDisplacement
@@ -420,39 +336,7 @@ public noncomputable def explicitPuncturedStraightenedPosition
   frozenDisplacementMatrix N (M.t p.1) *ᵥ
     puncturedActualInverseDisplacement W p (rescaledPosition M p.1)
 
-/-- The explicit straightened position is continuous throughout the punctured local carrier. -/
-public theorem continuous_explicitPuncturedStraightenedPosition
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
-    (W : ActualPuncturedCuspCollarWitness N M) :
-    Continuous (explicitPuncturedStraightenedPosition W) := by
-  have hinverse : Continuous (fun p : PuncturedLocalCarrier W ↦
-      puncturedActualInverseDisplacement W p (rescaledPosition M p.1)) :=
-    (continuous_actualDisplacementMatrix_inv W).matrix_mulVec
-      (continuous_puncturedRescaledPosition W)
-  exact (continuous_frozenDisplacementMatrix W).matrix_mulVec hinverse
 
-/-- The abstract and explicit punctured straightening formulas agree. -/
-public theorem straightenedRescaledPosition_eq_explicit
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
-    (W : ActualPuncturedCuspCollarWitness N M) (p : PuncturedLocalCarrier W) :
-    straightenedRescaledPosition W p.1 p.2 = explicitPuncturedStraightenedPosition W p := by
-  change frozenEffectiveFanDisplacement N (M.t p.1)
-      ((actualDisplacementEquiv W p.1 p.2).symm (rescaledPosition M p.1)) = _
-  rw [actualDisplacementEquiv_symm_apply, ← frozenDisplacementMatrix_mulVec]
-  rfl
 
-/-- The straightening formula used in the deck-conjugation theorem is continuous away from the
-central fibre. -/
-public theorem continuous_straightenedRescaledPosition
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
-    (W : ActualPuncturedCuspCollarWitness N M) :
-    Continuous (fun p : PuncturedLocalCarrier W ↦
-      straightenedRescaledPosition W p.1 p.2) := by
-  apply (continuous_explicitPuncturedStraightenedPosition W).congr
-  intro p
-  exact (straightenedRescaledPosition_eq_explicit W p).symm
 
 end SphereSixComplex.Geometry.CuspStraighteningAlgebra

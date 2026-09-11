@@ -333,25 +333,8 @@ public theorem actualPuncturedCuspWitness_cuspUnit_ne
     A.actualNormalizedModularJUniformization.cusp.cuspUnit q ≠ 0 :=
   (Classical.choose_spec A.exists_actualPuncturedCuspWitness_coordinate_exterior).cuspUnit_ne q hq
 
-public theorem actualPuncturedCuspWitness_cuspUnit_right_sector
-    (q : ℂ) (hq : ‖q‖ < A.actualPuncturedCuspWitness.localWitness.radius) :
-    |(A.actualNormalizedModularJUniformization.cusp.cuspUnit q).im| <
-      (A.actualNormalizedModularJUniformization.cusp.cuspUnit q).re :=
-  (Classical.choose_spec
-    A.exists_actualPuncturedCuspWitness_coordinate_exterior).cuspUnit_right_sector q hq
 
-public theorem actualPuncturedCuspWitness_cuspUnit_narrow_right_sector
-    (q : ℂ) (hq : ‖q‖ < A.actualPuncturedCuspWitness.localWitness.radius) :
-    100 * |(A.actualNormalizedModularJUniformization.cusp.cuspUnit q).im| <
-      (A.actualNormalizedModularJUniformization.cusp.cuspUnit q).re :=
-  (Classical.choose_spec
-    A.exists_actualPuncturedCuspWitness_coordinate_exterior).cuspUnit_narrow_right_sector q hq
 
-public theorem actualPuncturedCuspWitness_cuspProduct_norm_lt_half
-    (q : ℂ) (hq : ‖q‖ < A.actualPuncturedCuspWitness.localWitness.radius) :
-    ‖q * A.actualNormalizedModularJUniformization.cusp.cuspUnit q‖ < (1 / 2 : ℝ) :=
-  (Classical.choose_spec
-    A.exists_actualPuncturedCuspWitness_coordinate_exterior).cuspProduct_norm_lt_half q hq
 
 public theorem actualPuncturedCuspWitness_reciprocal_factorization
     (s : ℂ) (hs : s ∈ cuspHalfPlane A.cuspCoordinate.height)

@@ -108,17 +108,6 @@ public theorem nonempty_correction_of_hasCuspBoundedSection
     rw [heq]
     exact hcusp
 
-/-- The linear Cousin correction is exactly equivalent to the original global-section
-formulation; in particular its cusp boundedness condition is neither vacuous nor stronger. -/
-public theorem nonempty_cuspBoundedCorrection_iff
-    (P : OrbifoldAffineDescentData) :
-    Nonempty P.CuspBoundedCorrection ↔
-      P.HasCuspBoundedSection := by
-  constructor
-  · rintro ⟨C⟩
-    exact P.hasCuspBoundedSection_of_correction C
-  · intro hP
-    exact P.nonempty_correction_of_hasCuspBoundedSection hP
 
 end OrbifoldAffineDescentData
 

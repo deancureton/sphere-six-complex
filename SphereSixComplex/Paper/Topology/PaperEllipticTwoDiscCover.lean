@@ -144,12 +144,6 @@ private theorem integralSingularHomologyMap_homotopic
         (TopCat.ofHom g)) x
   rw [SphereSixComplex.integralSingularHomologyMap_eq_of_homotopic h k]
 
-private theorem homotopyEquiv_homology_apply
-    {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
-    (k : ℕ) (e : X ≃ₕ Y) (x : IntegralSingularHomology k X) :
-    integralSingularHomologyEquivOfHomotopyEquiv k e x =
-      integralSingularHomologyMap k e.toFun x :=
-  rfl
 
 /-- In the homotopy-equivalence coordinates of the two-disc model, the actual
 Mayer--Vietoris difference map is the pair of finite-cover projection maps, with the standard

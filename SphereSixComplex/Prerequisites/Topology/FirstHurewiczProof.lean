@@ -660,11 +660,6 @@ theorem edgeLoopCochain_pathChain {X : Type} [TopologicalSpace X] {b x y : X}
   rw [pathChain, edgeLoopCochain_simplex, simplexPath_pathSimplex]
   exact basedLoopClass_cast r _ _ _
 
-@[simp]
-theorem edgeLoopCochain_loop {X : Type} [TopologicalSpace X] {b : X}
-    (r : ∀ a : X, Path b a) (p : Path b b) :
-    edgeLoopCochain r (pathChain p) = loopClass p := by
-  rw [edgeLoopCochain_pathChain, basedLoopClass_loop]
 
 theorem edgeLoopCochain_boundaryTwo_simplex {X : Type} [TopologicalSpace X]
     {b : X} (r : ∀ a : X, Path b a) (s : SingularSimplex X 2) :

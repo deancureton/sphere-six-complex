@@ -1,7 +1,8 @@
 module
 
 public import SphereSixComplex.Prerequisites.TriangleGroup.FuchsianTriangleGeometry
-public import SphereSixComplex.Paper.Periods.FuchsianCompactCore
+public import SphereSixComplex.Paper.Periods.FuchsianUniformizationBridge
+public import SphereSixComplex.Prerequisites.Periods.FuchsianCompactGeometry
 
 noncomputable section
 
@@ -18,12 +19,5 @@ open Set SphereSixComplex.TriangleGroup.FuchsianTriangleCover
     obtain ⟨g, hg⟩ := exists_smul_mem_orientedFundamentalRegion z
     exact ⟨g, orientedFundamentalRegion_mem_cusp_or_compactCore hg⟩
 
-/-- The doubled chamber cover supplies the compact-core input without the false single-reflection-
-triangle cover premise. -/
-public theorem FuchsianPrePeriodData.theorem3_4Existence_of_orientedTriangleCover
-    (D : FuchsianPrePeriodData) :
-    Nonempty (PeriodFunctions D.toFuchsianModularParameter.toTriangleUniformization) :=
-  D.theorem3_4Existence
-    (orientedFuchsianQuotientCompactCore D.toFuchsianModularParameter)
 
 end SphereSixComplex.Periods

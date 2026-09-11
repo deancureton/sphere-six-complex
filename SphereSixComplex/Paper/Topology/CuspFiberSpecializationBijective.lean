@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Paper.Topology.CuspSpecializationBijectiveCoordinates
+public import SphereSixComplex.Paper.Topology.PaperCuspGeometricSpecializationTypes
 public import SphereSixComplex.Paper.Topology.CuspFiberSpecializationColumns
 public import SphereSixComplex.Prerequisites.Topology.PrimitiveFourColumnBasis
 public import SphereSixComplex.Paper.Topology.CuspMixedTorusIntegralColumns

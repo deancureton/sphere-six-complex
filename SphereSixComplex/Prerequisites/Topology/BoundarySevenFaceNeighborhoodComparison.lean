@@ -40,12 +40,6 @@ public theorem mem_boundarySevenFaceNeighborhoodIntersection_iff
   simp [boundarySevenFaceNeighborhoodIntersection,
     boundarySevenComparisonFaceNeighborhood]
 
-/-- Every finite intersection of the eight face neighborhoods is open. -/
-public theorem boundarySevenFaceNeighborhoodIntersection_isOpen (s : Finset (Fin 8)) :
-    IsOpen (boundarySevenFaceNeighborhoodIntersection s) := by
-  apply isOpen_biInter_finset
-  intro i _
-  exact boundarySevenComparisonFaceNeighborhood_isOpen i
 
 /-- All eight face neighborhoods have empty intersection. -/
 public theorem boundarySevenFaceNeighborhoodIntersection_univ_eq_empty :
@@ -113,20 +107,7 @@ public theorem boundarySevenComparisonMapLandsInAffineBoundary :
   intro j hj
   exact (Fin.succAbove_ne i j (Finset.mem_filter.mp hj).2).elim
 
-/-- Consequently, the eight explicit face neighborhoods cover the whole realization. -/
-public theorem boundarySevenComparisonFaceNeighborhood_iUnion_unconditional :
-    ⋃ i, boundarySevenComparisonFaceNeighborhood i = Set.univ :=
-  boundarySevenComparisonFaceNeighborhood_iUnion
-    boundarySevenComparisonMapLandsInAffineBoundary
 
-/-- With the global cover assertion discharged, the canonical integral comparison is
-unconditionally equivalent to the explicit face-neighborhood lift. -/
-public theorem boundarySeven_integralComparison_iff_faceNeighborhoodLift_unconditional :
-    SimplicialToSingularComparisonQuasiIsomorphism
-        (∂Δ[7] : SSet.{0}) (AddCommGrpCat.of ℤ) ↔
-      BoundarySevenFaceNeighborhoodLiftQuasiIsomorphism :=
-  boundarySeven_integralComparison_iff_faceNeighborhoodLift
-    boundarySevenComparisonMapLandsInAffineBoundary
 
 /-- The coproduct of the eight standard simplicial faces. -/
 public noncomputable abbrev boundarySevenSimplicialFacePresentationSource : SSet.{0} :=
@@ -155,13 +136,6 @@ public theorem boundarySevenSimplicialFacePresentation_app_surjective
   rw [boundarySevenSimplicialFacePresentation, Sigma.ι_desc]
   exact hy
 
-/-- The simplicial face presentation is an epimorphism. -/
-public instance boundarySevenSimplicialFacePresentation_epi :
-    Epi boundarySevenSimplicialFacePresentation := by
-  rw [NatTrans.epi_iff_epi_app]
-  intro n
-  rw [CategoryTheory.epi_iff_surjective]
-  exact boundarySevenSimplicialFacePresentation_app_surjective n
 
 /-- The coproduct of the singular simplicial sets of the eight face neighborhoods. -/
 public noncomputable abbrev boundarySevenFaceNeighborhoodPresentationSource : SSet.{0} :=
@@ -207,13 +181,6 @@ public theorem boundarySevenFaceNeighborhoodPresentation_app_surjective
   have happ := ConcreteCategory.congr_hom (congr_app hcat n) y
   exact happ.trans hy
 
-/-- The cover presentation is an epimorphism of simplicial sets. -/
-public instance boundarySevenFaceNeighborhoodPresentation_epi :
-    Epi boundarySevenFaceNeighborhoodPresentation := by
-  rw [NatTrans.epi_iff_epi_app]
-  intro n
-  rw [CategoryTheory.epi_iff_surjective]
-  exact boundarySevenFaceNeighborhoodPresentation_app_surjective n
 
 /-- Facewise, the realized simplicial unit maps the coproduct of standard faces to the
 coproduct of singular sets of the corresponding open neighborhoods. -/
@@ -307,32 +274,8 @@ public noncomputable def boundarySevenFaceNeighborhoodEvaluationExtraDegeneracy
     (boundarySevenFaceNeighborhoodPresentationEvaluationArrow n)
     (boundarySevenFaceNeighborhoodPresentationEvaluationSplitEpi n)
 
-/-- Apply the free abelian group functor to an evaluated augmented Čech nerve. -/
-public noncomputable abbrev boundarySevenFaceNeighborhoodFreeEvaluationCech
-    (n : SimplexCategoryᵒᵖ) : SimplicialObject.Augmented AddCommGrpCat :=
-  ((SimplicialObject.Augmented.whiskering (Type 0) AddCommGrpCat).obj
-    AddCommGrpCat.free).obj
-      (boundarySevenFaceNeighborhoodPresentationEvaluationArrow n).augmentedCechNerve
 
-/-- The free-abelian evaluated Čech nerve retains the extra degeneracy. -/
-public noncomputable def boundarySevenFaceNeighborhoodFreeEvaluationExtraDegeneracy
-    (n : SimplexCategoryᵒᵖ) :
-    SimplicialObject.Augmented.ExtraDegeneracy
-      (boundarySevenFaceNeighborhoodFreeEvaluationCech n) :=
-  (boundarySevenFaceNeighborhoodEvaluationExtraDegeneracy n).map AddCommGrpCat.free
 
-/-- Rowwise Čech exactness: in every singular degree, the alternating Čech complex is
-chain-homotopy equivalent to the free group on the cover-small simplices in that degree. -/
-public noncomputable def boundarySevenFaceNeighborhoodCechRowHomotopyEquiv
-    (n : SimplexCategoryᵒᵖ) :
-    HomotopyEquiv
-      (AlternatingFaceMapComplex.obj
-        (SimplicialObject.Augmented.drop.obj
-          (boundarySevenFaceNeighborhoodFreeEvaluationCech n)))
-      ((ChainComplex.single₀ AddCommGrpCat).obj
-        (SimplicialObject.Augmented.point.obj
-          (boundarySevenFaceNeighborhoodFreeEvaluationCech n))) :=
-  (boundarySevenFaceNeighborhoodFreeEvaluationExtraDegeneracy n).homotopyEquiv
 
 /-- The same evaluated Čech nerve with the coefficient functor actually used by integral
 simplicial chains: a coproduct of copies of `ℤ`. -/
@@ -364,16 +307,6 @@ public noncomputable def boundarySevenFaceNeighborhoodIntegralCechRowHomotopyEqu
           (boundarySevenFaceNeighborhoodIntegralEvaluationCech k))) :=
   (boundarySevenFaceNeighborhoodIntegralEvaluationExtraDegeneracy k).homotopyEquiv
 
-/-- The target of the integral row contraction is definitionally the degree-`k` group of the
-cover-small singular chain complex. -/
-public noncomputable def boundarySevenFaceNeighborhoodIntegralEvaluationPointIso
-    (k : ℕ) :
-    SimplicialObject.Augmented.point.obj
-        (boundarySevenFaceNeighborhoodIntegralEvaluationCech k) ≅
-      (coverSmallIntegralSingularChainComplex
-        (SSet.toTop.obj (∂Δ[7] : SSet.{0}))
-        boundarySevenComparisonFaceNeighborhood).X k :=
-  Iso.refl _
 
 /-- Equivalently, every horizontal integral Čech-row augmentation is a
 quasi-isomorphism. -/
@@ -423,44 +356,7 @@ public noncomputable def boundarySevenFaceNeighborhoodCechOuterAugmentation :
   AlternatingFaceMapComplex.ε.app
     boundarySevenFaceNeighborhoodAugmentedCechChains
 
-/-- Exact data still needed to turn rowwise Čech exactness and the local face contractions
-into the comparison theorem.  The first map is the local face/intersection comparison; the
-second is the totalized canonical Čech augmentation. -/
-public structure BoundarySevenFaceNeighborhoodCechTotalComparison where
-  boundaryToCech :
-    (∂Δ[7] : SSet.{0}).chainComplex (AddCommGrpCat.of ℤ) ⟶
-      boundarySevenFaceNeighborhoodCechTotal
-  augmentation :
-    boundarySevenFaceNeighborhoodCechTotal ⟶
-      coverSmallIntegralSingularChainComplex
-        (SSet.toTop.obj (∂Δ[7] : SSet.{0}))
-        boundarySevenComparisonFaceNeighborhood
-  fac : boundaryToCech ≫ augmentation =
-    simplicialToCoverSmallSingularChainMap
-      (∂Δ[7] : SSet.{0}) boundarySevenComparisonFaceNeighborhood
-      boundarySevenComparisonUnitLandsInFaceNeighborhoods
-  boundaryToCech_quasiIso : QuasiIso boundaryToCech
-  augmentation_quasiIso : QuasiIso augmentation
 
-/-- A Čech total comparison supplies the remaining face-neighborhood lift
-quasi-isomorphism. -/
-public theorem boundarySevenFaceNeighborhoodLiftQuasiIsomorphism_of_cechTotalComparison
-    (h : BoundarySevenFaceNeighborhoodCechTotalComparison) :
-    BoundarySevenFaceNeighborhoodLiftQuasiIsomorphism := by
-  unfold BoundarySevenFaceNeighborhoodLiftQuasiIsomorphism
-  rw [← h.fac]
-  let _ : QuasiIso h.boundaryToCech := h.boundaryToCech_quasiIso
-  let _ : QuasiIso h.augmentation := h.augmentation_quasiIso
-  infer_instance
 
-/-- The Čech total comparison also gives the original canonical integral comparison, since the
-global affine-boundary cover assertion was proved above. -/
-public theorem boundarySeven_integralComparison_of_cechTotalComparison
-    (h : BoundarySevenFaceNeighborhoodCechTotalComparison) :
-    SimplicialToSingularComparisonQuasiIsomorphism
-      (∂Δ[7] : SSet.{0}) (AddCommGrpCat.of ℤ) :=
-  boundarySeven_integralComparison_of_faceNeighborhoodLift
-    boundarySevenComparisonMapLandsInAffineBoundary
-    (boundarySevenFaceNeighborhoodLiftQuasiIsomorphism_of_cechTotalComparison h)
 
 end SphereSixComplex

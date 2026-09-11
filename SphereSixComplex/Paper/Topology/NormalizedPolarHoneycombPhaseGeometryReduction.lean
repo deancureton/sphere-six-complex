@@ -101,48 +101,7 @@ public theorem compactPhaseOrbit_fiberwise_iff_stabilizerMonotone_of_fundamental
     subst q
     exact hstabilizer s k l p hpq
 
-/-- On a positive fundamental domain, the geometric core is exactly the existence of a
-stabilizer-monotone equivariant retraction. -/
-public theorem polarPhaseGeometricCore_iff_exists_stabilizerMonotone
-    {M : Model} {r : ℝ} (P : PolarHoneycombData M r)
-    (hfundamental : CompactPhaseFundamentalDomain P) :
-    PolarPhaseGeometricCore M r P ↔
-      letI := P.positiveDeckAction
-      ∃ R : EquivariantStrongDeformationRetraction
-          (Multiplicative ParameterLattice) P.positivePart P.central,
-        CompactPhaseStabilizerMonotone P R := by
-  let _ := P.positiveDeckAction
-  constructor
-  · rintro ⟨R, hfiber⟩
-    exact ⟨R, (compactPhaseOrbit_fiberwise_iff_stabilizerMonotone_of_fundamentalDomain
-      P hfundamental R).mp hfiber⟩
-  · rintro ⟨R, hstabilizer⟩
-    exact ⟨R, (compactPhaseOrbit_fiberwise_iff_stabilizerMonotone_of_fundamentalDomain
-      P hfundamental R).mpr hstabilizer⟩
 
-/-- Once the modulus is phase-invariant, preservation of arbitrary phase-orbit fibers is
-equivalent to the same-point stabilizer condition. -/
-public theorem compactPhaseOrbit_fiberwise_iff_stabilizerMonotone
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
-    (Q : NormalizedPolarHoneycombConstructionData N M r)
-    (hmodulus : CompactPhaseInvariantModulus Q) :
-    let P := Q.toPolarHoneycombData
-    letI := P.positiveDeckAction
-    ∀ R : EquivariantStrongDeformationRetraction
-        (Multiplicative ParameterLattice) P.positivePart P.central,
-      (∀ s k p l q,
-        compactPhaseOrbit M r Q.positivePart (k, p) =
-            compactPhaseOrbit M r Q.positivePart (l, q) →
-          compactPhaseOrbit M r Q.positivePart (k, R.homotopy (s, p)) =
-            compactPhaseOrbit M r Q.positivePart (l, R.homotopy (s, q))) ↔
-        CompactPhaseStabilizerMonotone P R := by
-  dsimp only
-  let _ := Q.toPolarHoneycombData.positiveDeckAction
-  intro R
-  exact compactPhaseOrbit_fiberwise_iff_stabilizerMonotone_of_fundamentalDomain
-    Q.toPolarHoneycombData
-    (compactPhaseFundamentalDomain_of_invariantModulus Q hmodulus) R
 
 /-- A positive fundamental domain and stabilizer-monotone retraction imply the full phase
 geometric core. -/
@@ -163,69 +122,9 @@ public theorem polarPhaseGeometricCore_of_fundamentalDomain
   exact (compactPhaseOrbit_fiberwise_iff_stabilizerMonotone_of_fundamentalDomain
     P hfundamental R).mpr hstabilizer
 
-/-- Phase invariance of the modulus is a concrete sufficient condition for the fundamental
-domain hypothesis. -/
-public theorem polarPhaseGeometricCore_of_stabilizerMonotone
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
-    (Q : NormalizedPolarHoneycombConstructionData N M r)
-    (hmodulus : CompactPhaseInvariantModulus Q)
-    (hstabilizer :
-      let P := Q.toPolarHoneycombData
-      letI := P.positiveDeckAction
-      CompactPhaseStabilizerMonotone P P.positiveEquivariantStrongDeformationRetraction) :
-    PolarPhaseGeometricCore M r Q.toPolarHoneycombData :=
-  polarPhaseGeometricCore_of_fundamentalDomain Q
-    (compactPhaseFundamentalDomain_of_invariantModulus Q hmodulus) hstabilizer
 
-/-- A precise replacement input for the broad normalized phase-geometry axiom.  Its first field
-is the already narrowed polar-honeycomb construction; the last two are explicit point-set
-properties of the positive section and the canonical lifted retraction. -/
-public structure NormalizedPolarHoneycombExplicitPhaseGeometry
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) (r : ℝ) where
-  construction : NormalizedPolarHoneycombConstructionData N M r
-  positivePart_fundamentalDomain :
-    CompactPhaseFundamentalDomain construction.toPolarHoneycombData
-  positiveRetraction_stabilizerMonotone :
-    let P := construction.toPolarHoneycombData
-    letI := P.positiveDeckAction
-    CompactPhaseStabilizerMonotone P P.positiveEquivariantStrongDeformationRetraction
 
-/-- A phase-invariant modulus supplies the fundamental-domain field of the explicit residue. -/
-public noncomputable def NormalizedPolarHoneycombExplicitPhaseGeometry.ofInvariantModulus
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
-    (Q : NormalizedPolarHoneycombConstructionData N M r)
-    (hmodulus : CompactPhaseInvariantModulus Q)
-    (hstabilizer :
-      let P := Q.toPolarHoneycombData
-      letI := P.positiveDeckAction
-      CompactPhaseStabilizerMonotone P P.positiveEquivariantStrongDeformationRetraction) :
-    NormalizedPolarHoneycombExplicitPhaseGeometry N M r where
-  construction := Q
-  positivePart_fundamentalDomain :=
-    compactPhaseFundamentalDomain_of_invariantModulus Q hmodulus
-  positiveRetraction_stabilizerMonotone := hstabilizer
 
-/-- Explicit phase geometry supplies exactly the conclusion formerly taken as a single
-paper-specific black box. -/
-public noncomputable def NormalizedPolarHoneycombExplicitPhaseGeometry.toPhaseGeometry
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
-  (G : NormalizedPolarHoneycombExplicitPhaseGeometry N M r) :
-    {Q : NormalizedPolarHoneycombConstructionData N M r //
-      PolarPhaseGeometricCore M r Q.toPolarHoneycombData} :=
-  ⟨G.construction, polarPhaseGeometricCore_of_fundamentalDomain G.construction
-    G.positivePart_fundamentalDomain G.positiveRetraction_stabilizerMonotone⟩
 
-/-- Existence of the explicit residue implies the exact normalized phase-geometry statement. -/
-public theorem normalizedPolarHoneycombPhaseGeometry_of_explicit
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) (r : ℝ)
-    (h : Nonempty (NormalizedPolarHoneycombExplicitPhaseGeometry N M r)) :
-    Nonempty {Q : NormalizedPolarHoneycombConstructionData N M r //
-      PolarPhaseGeometricCore M r Q.toPolarHoneycombData} :=
-  h.map NormalizedPolarHoneycombExplicitPhaseGeometry.toPhaseGeometry
 
 end SphereSixComplex.Geometry.InfiniteA2Toric

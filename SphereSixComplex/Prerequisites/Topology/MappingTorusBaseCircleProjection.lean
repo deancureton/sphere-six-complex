@@ -44,11 +44,5 @@ public theorem circleMappingTorusBaseCircleProjection_cylinderProjection
       ((p.1 : ℝ) : UnitAddCircle) :=
   rfl
 
-@[simp]
-public theorem circleMappingTorusBaseCircleProjection_fiberInclusion
-    {F : Type} [TopologicalSpace F] (φ : F ≃ₜ F) (x : F) :
-    circleMappingTorusBaseCircleProjection φ
-        (finiteBouquetMappingTorusFiberInclusion (fun _ : Unit ↦ φ) x) = 0 :=
-  rfl
 
 end SphereSixComplex

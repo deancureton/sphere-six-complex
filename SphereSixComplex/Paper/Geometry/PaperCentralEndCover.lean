@@ -331,24 +331,6 @@ public theorem orderThree_path_deck_pow_three_of_coordinate_small
     g ^ 3 = h⁻¹ * (h * g ^ 3 * h⁻¹) * h := by group
     _ = 1 := by rw [hpow]; group
 
-/-- Finite-order wrapper around the exact order-three collar calculation. -/
-public theorem orderThree_path_deck_isOfFinOrder_of_coordinate_small
-    {R inner delta : ℝ} (hinnerR : inner < R)
-    (D : OrderThreeLinearCollarSourceData
-      (U := P.modular.modularParameter.toTriangleUniformization) R)
-    (hcoordinate : ∀ z : UpperHalfPlane,
-      ‖P.modular.sourceCoordinate.coordinate z‖ < delta →
-        ∃ k : Delta,
-          ‖(orderThreeCayleyHomeomorph
-            (fuchsianSourceAction k • z) : ℂ)‖ < inner)
-    (z : UpperHalfPlane) (g : Delta)
-    (Q : Path z (fuchsianSourceAction g • z))
-    (hQ : ∀ t, ‖P.modular.sourceCoordinate.coordinate (Q t)‖ < delta) :
-    IsOfFinOrder g := by
-  apply isOfFinOrder_iff_pow_eq_one.mpr
-  exact ⟨3, by norm_num,
-    P.orderThree_path_deck_pow_three_of_coordinate_small
-      hinnerR D hcoordinate z g Q hQ⟩
 
 /-- A path contained in a sufficiently small order-four affine neighborhood has deck monodromy
 whose fourth power is trivial. -/
@@ -436,24 +418,6 @@ public theorem orderFour_path_deck_pow_four_of_coordinate_small
     g ^ 4 = h⁻¹ * (h * g ^ 4 * h⁻¹) * h := by group
     _ = 1 := by rw [hpow]; group
 
-/-- Finite-order wrapper around the exact order-four collar calculation. -/
-public theorem orderFour_path_deck_isOfFinOrder_of_coordinate_small
-    {R inner delta : ℝ} (hinnerR : inner < R)
-    (D : OrderFourLinearCollarSourceData
-      (U := P.modular.modularParameter.toTriangleUniformization) R)
-    (hcoordinate : ∀ z : UpperHalfPlane,
-      ‖P.modular.sourceCoordinate.coordinate z - 1‖ < delta →
-        ∃ k : Delta,
-          ‖(orderFourCayleyHomeomorph
-            (fuchsianSourceAction k • z) : ℂ)‖ < inner)
-    (z : UpperHalfPlane) (g : Delta)
-    (Q : Path z (fuchsianSourceAction g • z))
-    (hQ : ∀ t, ‖P.modular.sourceCoordinate.coordinate (Q t) - 1‖ < delta) :
-    IsOfFinOrder g := by
-  apply isOfFinOrder_iff_pow_eq_one.mpr
-  exact ⟨4, by norm_num,
-    P.orderFour_path_deck_pow_four_of_coordinate_small
-      hinnerR D hcoordinate z g Q hQ⟩
 
 public theorem centralQuotientProjection_familyDeckMap
     (g : Delta) (q : RegularTotalSpace P.periods) :
@@ -761,11 +725,6 @@ public theorem starOuterRadius_pos (i : Fin 3) :
   · have hdisjoint := P.starToCentral_ranges_pairwise hji
     exact (Set.disjoint_left.mp hdisjoint ⟨w, rfl⟩ ⟨z, heq.symm⟩).elim
 
-/-- The paper's central quotient is covered outside a compact coordinate core by the three
-selected cusp and elliptic collars, with a strict inner threshold in each collar. -/
-public theorem thresholdedCentralEndCoverExistence :
-    P.ThresholdedCentralEndCoverExistence :=
-  ⟨P.thresholdedCentralEndCoverData⟩
 
 end PaperAnalyticData
 

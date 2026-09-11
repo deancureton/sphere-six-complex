@@ -38,25 +38,6 @@ public theorem localCuspPeriodLoop_cellularHomology
   ext i
   fin_cases i <;> simp
 
-public theorem localCuspFirstPeriodLoop_cellularHomology
-    (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
-    (s : ℂ) (hs : s ∈ cuspHalfPlane N.height)
-    (hsr : cuspQ s ∈ Metric.ball (0 : ℂ) W.localWitness.radius) :
-    loopHomologyClass (localCuspPeriodLoop W s hs hsr ![1,0]) =
-      -loopHomologyClass (constructedCellularLoopInFilling W 0 2) := by
-  rw [localCuspPeriodLoop_cellularHomology]
-  simp
 
-public theorem localCuspSecondPeriodLoop_cellularHomology
-    (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
-    (s : ℂ) (hs : s ∈ cuspHalfPlane N.height)
-    (hsr : cuspQ s ∈ Metric.ball (0 : ℂ) W.localWitness.radius) :
-    loopHomologyClass (localCuspPeriodLoop W s hs hsr ![0,1]) =
-      loopHomologyClass (constructedCellularLoopInFilling W 0 2) -
-      loopHomologyClass (constructedCellularLoopInFilling W 1 2) := by
-  rw [localCuspPeriodLoop_cellularHomology]
-  simp [sub_eq_add_neg]
 
 end SphereSixComplex.Geometry.CuspPuncturedCollarBridge

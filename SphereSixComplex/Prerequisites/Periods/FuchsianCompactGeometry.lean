@@ -22,22 +22,6 @@ open SphereSixComplex.TriangleGroup.FuchsianFundamentalDomain
 @[expose] public def fuchsianFundamentalCompactCore : Set UpperHalfPlane :=
   {z | |z.re| ≤ 1 ∧ 1 / 2 ≤ z.im ∧ z.im ≤ 1}
 
-public theorem fuchsianFundamentalCompactCore_isCompact :
-    IsCompact fuchsianFundamentalCompactCore := by
-  have hrect : IsCompact ((Set.Icc (-1 : ℝ) 1) ×ℂ Set.Icc (1 / 2 : ℝ) 1) :=
-    isCompact_Icc.reProdIm isCompact_Icc
-  rw [UpperHalfPlane.isEmbedding_coe.isCompact_iff]
-  convert hrect using 1
-  ext z
-  constructor
-  · rintro ⟨w, ⟨hwre, hwimLower, hwimUpper⟩, rfl⟩
-    exact ⟨⟨by simpa using (abs_le.mp hwre).1, by simpa using (abs_le.mp hwre).2⟩,
-      hwimLower, hwimUpper⟩
-  · rintro ⟨⟨hzreLower, hzreUpper⟩, hzimLower, hzimUpper⟩
-    have hzimPos : 0 < z.im := lt_of_lt_of_le (by norm_num) hzimLower
-    let w : UpperHalfPlane := ⟨z, hzimPos⟩
-    refine ⟨w, ?_, rfl⟩
-    exact ⟨abs_le.mpr ⟨hzreLower, hzreUpper⟩, hzimLower, hzimUpper⟩
 
 /-- Every point of the fundamental triangle is either in the standard cusp region or in the
 compact core. -/
@@ -63,9 +47,5 @@ public theorem fundamentalTriangle_mem_cusp_or_compactCore
       nlinarith [z.im_pos]
     exact ⟨abs_le.mpr ⟨hreLower, hreUpper⟩, himLower, le_of_not_ge hcusp⟩
 
-/-- The remaining covering statement for the explicit Fuchsian fundamental triangle. -/
-public def FuchsianFundamentalTriangleCovers : Prop :=
-  ∀ z : UpperHalfPlane, ∃ g : Delta,
-    fuchsianSourceAction g • z ∈ fundamentalTriangle
 
 end SphereSixComplex.Periods

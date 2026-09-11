@@ -149,23 +149,6 @@ public def orderFourCentralBaseFactor_zeroFiberHomotopy :
         rw [additiveTorus_mk_zero]
         rfl }
 
-/-- The base-factor contraction has the same moving-basepoint trace at both loop endpoints. -/
-public theorem orderFourCentralBaseFactor_zeroFiberHomotopy_trace :
-    letI := A.ellipticFourBoundaryAction
-    let H := A.orderFourCentralBaseFactor_zeroFiberHomotopy
-    (H.evalAt 0).cast A.orderFourCentralBaseFactor.source.symm
-        A.orderFourCentralZeroFiberBasePath.source.symm =
-      (H.evalAt 1).cast A.orderFourCentralBaseFactor.target.symm
-        A.orderFourCentralZeroFiberBasePath.target.symm := by
-  let _ := A.ellipticFourBoundaryAction
-  apply Path.ext
-  funext t
-  change A.orderFourPuncturedProductCentralRealizationMap
-      (A.orderFourFillingRelationCayleyPuncturedLoop 0, _) =
-    A.orderFourPuncturedProductCentralRealizationMap
-      (A.orderFourFillingRelationCayleyPuncturedLoop 1, _)
-  rw [A.orderFourFillingRelationCayleyPuncturedLoop.source,
-    A.orderFourFillingRelationCayleyPuncturedLoop.target]
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

@@ -132,21 +132,8 @@ public theorem orderFourDegreeTwo_fixed_iff (x : DegreeTwoLattice) :
         dotProduct, Fin.sum_univ_succ]
     all_goals ring
 
-/-- Coefficient of the oriented volume form in the wedge of two degree-two classes. -/
-public def degreeTwoIntersection (x y : DegreeTwoLattice) : ℤ :=
-  x 0 * y 5 - x 1 * y 4 + x 2 * y 3 + x 3 * y 2 - x 4 * y 1 + x 5 * y 0
 
-public theorem orderThree_invariant_gram :
-    degreeTwoIntersection gammaEpsilonOne gammaEpsilonOne = 0 ∧
-      degreeTwoIntersection gammaEpsilonOne qClass = 3 ∧
-      degreeTwoIntersection qClass qClass = 12 := by
-  norm_num [degreeTwoIntersection, gammaEpsilonOne, qClass]; decide
 
-public theorem orderFour_invariant_gram :
-    degreeTwoIntersection gammaEpsilonTwo gammaEpsilonTwo = 0 ∧
-      degreeTwoIntersection gammaEpsilonTwo qClass = 2 ∧
-      degreeTwoIntersection qClass qClass = 12 := by
-  norm_num [degreeTwoIntersection, gammaEpsilonTwo, qClass]; decide
 
 /-- The exterior-square action as an integral linear map. -/
 public def degreeTwoAction (M : Matrix (Fin 4) (Fin 4) ℤ) :
@@ -176,57 +163,7 @@ public theorem orderFour_combination_fixed (a b : ℤ) :
   rw [mem_degreeTwoInvariants_iff, orderFourDegreeTwo_fixed_iff]
   exact ⟨a, b, rfl⟩
 
-/-- Coordinates in the basis `(gamma ∧ epsilonOne, q)`. -/
-public noncomputable def orderThreeInvariantEquivIntSquared :
-    orderThreeDegreeTwoInvariants ≃ₗ[ℤ] IntSquared where
-  toFun x := ![x.1 1, x.1 3]
-  invFun c := ⟨c 0 • gammaEpsilonOne + c 1 • qClass,
-    orderThree_combination_fixed (c 0) (c 1)⟩
-  map_add' x y := by
-    funext i
-    fin_cases i <;> simp
-  map_smul' n x := by
-    funext i
-    fin_cases i <;> simp
-  left_inv x := by
-    apply Subtype.ext
-    have hxmem := x.2
-    rw [mem_degreeTwoInvariants_iff, orderThreeDegreeTwo_fixed_iff] at hxmem
-    obtain ⟨a, b, hx⟩ := hxmem
-    have hx1 := congrFun hx (1 : Fin 6)
-    have hx3 := congrFun hx (3 : Fin 6)
-    simp [gammaEpsilonOne, qClass] at hx1 hx3
-    change x.1 1 • gammaEpsilonOne + x.1 3 • qClass = x.1
-    rw [hx1, hx3, hx]
-  right_inv c := by
-    funext i
-    fin_cases i <;> simp [gammaEpsilonOne, qClass]
 
-/-- Coordinates in the basis `(gamma ∧ epsilonTwo, q)`. -/
-public noncomputable def orderFourInvariantEquivIntSquared :
-    orderFourDegreeTwoInvariants ≃ₗ[ℤ] IntSquared where
-  toFun x := ![x.1 0, x.1 3]
-  invFun c := ⟨c 0 • gammaEpsilonTwo + c 1 • qClass,
-    orderFour_combination_fixed (c 0) (c 1)⟩
-  map_add' x y := by
-    funext i
-    fin_cases i <;> simp
-  map_smul' n x := by
-    funext i
-    fin_cases i <;> simp
-  left_inv x := by
-    apply Subtype.ext
-    have hxmem := x.2
-    rw [mem_degreeTwoInvariants_iff, orderFourDegreeTwo_fixed_iff] at hxmem
-    obtain ⟨a, b, hx⟩ := hxmem
-    have hx0 := congrFun hx (0 : Fin 6)
-    have hx3 := congrFun hx (3 : Fin 6)
-    simp [gammaEpsilonTwo, qClass] at hx0 hx3
-    change x.1 0 • gammaEpsilonTwo + x.1 3 • qClass = x.1
-    rw [hx0, hx3, hx]
-  right_inv c := by
-    funext i
-    fin_cases i <;> simp [gammaEpsilonTwo, qClass]
 
 /-- The degree-two order-three candidate is the whole invariant lattice, hence has index one. -/
 public def orderThreeDegreeTwoPullbackCandidate :
@@ -244,34 +181,10 @@ public def orderFourDegreeTwoPullbackCandidate :
     Submodule ℤ orderFourDegreeTwoInvariants :=
   LinearMap.ker orderFourParity
 
-public theorem orderFourParity_surjective : Function.Surjective orderFourParity := by
-  intro z
-  obtain ⟨n, rfl⟩ := ZMod.intCast_surjective z
-  refine ⟨⟨n • gammaEpsilonTwo, ?_⟩, ?_⟩
-  · simpa using orderFour_combination_fixed n 0
-  · simp [orderFourParity, gammaEpsilonTwo]
 
-/-- The candidate cokernel at the order-four fibre is exactly cyclic of order two. -/
-public noncomputable def orderFourCandidateQuotientEquivZModTwo :
-    (orderFourDegreeTwoInvariants ⧸ orderFourDegreeTwoPullbackCandidate) ≃ₗ[ℤ] ZMod 2 :=
-  orderFourParity.quotKerEquivOfSurjective orderFourParity_surjective
 
-public def orderFourQInvariant : orderFourDegreeTwoInvariants :=
-  ⟨qClass, by simpa using orderFour_combination_fixed 0 1⟩
 
-/-- The class of `q` generates the index-two candidate cokernel. -/
-@[simp]
-public theorem orderFourCandidateQuotientEquivZModTwo_q :
-    orderFourCandidateQuotientEquivZModTwo
-        (Submodule.Quotient.mk orderFourQInvariant) = 1 := by
-  rfl
 
-public theorem orderFourQInvariant_not_mem_candidate :
-    orderFourQInvariant ∉ orderFourDegreeTwoPullbackCandidate := by
-  intro h
-  have hz := LinearMap.mem_ker.mp h
-  change (1 : ZMod 2) = 0 at hz
-  norm_num at hz
 
 /-- Membership in the index-two candidate is the parity condition printed in the source. -/
 public theorem mem_orderFourDegreeTwoPullbackCandidate_iff

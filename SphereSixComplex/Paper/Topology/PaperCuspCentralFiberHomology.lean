@@ -66,18 +66,6 @@ public theorem establishedStandardA2ToricCentralFiberCellularIncidence
     C.labelledCellBasis n (standardA2ToricCellularBoundary n x)
   exact T.boundary_eq n x
 
-/-- The actual quotient cusp central fibre has first integral homology `ℤ²`. -/
-public noncomputable def actualCuspCentralFiberHomologyOneEquiv
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
-    (W : ActualPuncturedCuspCollarWitness N M)
-    (R : ActualLocalCuspCentralFiberRetractionData W) :
-    IntegralSingularHomology 1 (R.quotientCentralFiber W) ≃+ (Fin 2 → ℤ) := by
-  let C := establishedStandardA2ToricCentralFiberCWDecomposition W R
-  letI := C.topology
-  exact (integralSingularHomologyEquivOfHomotopyEquiv 1 C.homotopyEquiv).trans
-    (C.carrierIntegralSingularHomologyOneEquiv
-      (establishedStandardA2ToricCentralFiberCellularIncidence W R))
 
 /-- The actual quotient cusp central fibre has second integral homology `ℤ⁴`. -/
 public noncomputable def actualCuspCentralFiberHomologyTwoEquiv
@@ -92,40 +80,8 @@ public noncomputable def actualCuspCentralFiberHomologyTwoEquiv
     (C.carrierIntegralSingularHomologyTwoEquiv
       (establishedStandardA2ToricCentralFiberCellularIncidence W R))
 
-/-- The actual quotient cusp central fibre has third integral homology `ℤ²`. -/
-public noncomputable def actualCuspCentralFiberHomologyThreeEquiv
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
-    (W : ActualPuncturedCuspCollarWitness N M)
-    (R : ActualLocalCuspCentralFiberRetractionData W) :
-    IntegralSingularHomology 3 (R.quotientCentralFiber W) ≃+ (Fin 2 → ℤ) := by
-  let C := establishedStandardA2ToricCentralFiberCWDecomposition W R
-  letI := C.topology
-  exact (integralSingularHomologyEquivOfHomotopyEquiv 3 C.homotopyEquiv).trans
-    (C.carrierIntegralSingularHomologyThreeEquiv
-      (establishedStandardA2ToricCentralFiberCellularIncidence W R))
 
-/-- The actual quotient cusp central fibre has fourth integral homology `ℤ`. -/
-public noncomputable def actualCuspCentralFiberHomologyFourEquiv
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
-    (W : ActualPuncturedCuspCollarWitness N M)
-    (R : ActualLocalCuspCentralFiberRetractionData W) :
-    IntegralSingularHomology 4 (R.quotientCentralFiber W) ≃+ ℤ := by
-  let C := establishedStandardA2ToricCentralFiberCWDecomposition W R
-  letI := C.topology
-  exact (integralSingularHomologyEquivOfHomotopyEquiv 4 C.homotopyEquiv).trans
-    (C.carrierIntegralSingularHomologyFourEquiv
-      (establishedStandardA2ToricCentralFiberCellularIncidence W R))
 
-/-- The actual local cusp filling has first integral homology `ℤ²`. -/
-public noncomputable def actualLocalCuspFillingCellularHomologyOneEquiv
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
-    (W : ActualPuncturedCuspCollarWitness N M)
-    (R : ActualLocalCuspCentralFiberRetractionData W) :
-    IntegralSingularHomology 1 (ActualLocalCuspFilling W) ≃+ (Fin 2 → ℤ) :=
-  (R.specializationHomologyEquiv W 1).trans (actualCuspCentralFiberHomologyOneEquiv W R)
 
 public noncomputable def actualLocalCuspFillingHomologyOneEquiv
     {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
@@ -135,15 +91,6 @@ public noncomputable def actualLocalCuspFillingHomologyOneEquiv
     IntegralSingularHomology 1 (ActualLocalCuspFilling W) ≃+ (Fin 2 → ℤ) :=
   actualCuspDeckHomologyOneEquiv W
 
-public noncomputable def actualCuspDeckCellularHomologyOneEquiv
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
-    (W : ActualPuncturedCuspCollarWitness N M)
-    (R : ActualLocalCuspCentralFiberRetractionData W) :
-    cuspToricCellularChainComplex.homology 1 ≃+ (Fin 2 → ℤ) :=
-  cuspToricCellularChainComplex_homologyOneEquiv.trans
-    ((actualLocalCuspFillingCellularHomologyOneEquiv W R).symm.trans
-      (actualCuspDeckHomologyOneEquiv W))
 
 /-- The actual local cusp filling has second integral homology `ℤ⁴`. -/
 public noncomputable def actualLocalCuspFillingHomologyTwoEquiv
@@ -154,23 +101,7 @@ public noncomputable def actualLocalCuspFillingHomologyTwoEquiv
     IntegralSingularHomology 2 (ActualLocalCuspFilling W) ≃+ (Fin 4 → ℤ) :=
   (R.specializationHomologyEquiv W 2).trans (actualCuspCentralFiberHomologyTwoEquiv W R)
 
-/-- The actual local cusp filling has third integral homology `ℤ²`. -/
-public noncomputable def actualLocalCuspFillingHomologyThreeEquiv
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
-    (W : ActualPuncturedCuspCollarWitness N M)
-    (R : ActualLocalCuspCentralFiberRetractionData W) :
-    IntegralSingularHomology 3 (ActualLocalCuspFilling W) ≃+ (Fin 2 → ℤ) :=
-  (R.specializationHomologyEquiv W 3).trans (actualCuspCentralFiberHomologyThreeEquiv W R)
 
-/-- The actual local cusp filling has fourth integral homology `ℤ`. -/
-public noncomputable def actualLocalCuspFillingHomologyFourEquiv
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
-    (W : ActualPuncturedCuspCollarWitness N M)
-    (R : ActualLocalCuspCentralFiberRetractionData W) :
-    IntegralSingularHomology 4 (ActualLocalCuspFilling W) ≃+ ℤ :=
-  (R.specializationHomologyEquiv W 4).trans (actualCuspCentralFiberHomologyFourEquiv W R)
 
 end Geometry.CuspPuncturedCollarBridge
 
@@ -195,19 +126,7 @@ public noncomputable def cuspFillingHomologyTwoEquiv
   change IntegralSingularHomology 2 (ActualLocalCuspFilling A.starCuspWitness) ≃+ _
   exact actualLocalCuspFillingHomologyTwoEquiv A.starCuspWitness R
 
-/-- The cusp filling selected in the paper's four-piece star has third integral homology `ℤ²`. -/
-public noncomputable def cuspFillingHomologyThreeEquiv
-    (R : ActualLocalCuspCentralFiberRetractionData A.starCuspWitness) :
-    IntegralSingularHomology 3 (A.openEmbeddingStarData.filling 0) ≃+ (Fin 2 → ℤ) := by
-  change IntegralSingularHomology 3 (ActualLocalCuspFilling A.starCuspWitness) ≃+ _
-  exact actualLocalCuspFillingHomologyThreeEquiv A.starCuspWitness R
 
-/-- The cusp filling selected in the paper's four-piece star has fourth integral homology `ℤ`. -/
-public noncomputable def cuspFillingHomologyFourEquiv
-    (R : ActualLocalCuspCentralFiberRetractionData A.starCuspWitness) :
-    IntegralSingularHomology 4 (A.openEmbeddingStarData.filling 0) ≃+ ℤ := by
-  change IntegralSingularHomology 4 (ActualLocalCuspFilling A.starCuspWitness) ≃+ ℤ
-  exact actualLocalCuspFillingHomologyFourEquiv A.starCuspWitness R
 
 end Geometry.PaperAnalyticData
 

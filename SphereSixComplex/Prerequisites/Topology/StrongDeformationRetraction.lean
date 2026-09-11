@@ -86,17 +86,6 @@ public theorem IsHomotopyEquivalenceInclusion.toHomotopyEquiv_invFun
     h.toHomotopyEquiv.invFun = topologicalSubsetInclusionMap A :=
   Classical.choose_spec h
 
-/-- Homotopy inverses of the same map are homotopic. -/
-public theorem homotopyEquiv_toFun_homotopic_of_invFun_eq
-    {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
-    (e f : X ≃ₕ Y) (h : e.invFun = f.invFun) :
-    e.toFun.Homotopic f.toFun := by
-  have h₁ : e.toFun.Homotopic (e.toFun.comp (f.invFun.comp f.toFun)) := by
-    exact (ContinuousMap.Homotopic.comp (.refl e.toFun) f.left_inv).symm
-  have h₂ : (e.toFun.comp (f.invFun.comp f.toFun)).Homotopic f.toFun := by
-    rw [← ContinuousMap.comp_assoc, ← h]
-    exact ContinuousMap.Homotopic.comp e.right_inv (.refl f.toFun)
-  exact h₁.trans h₂
 
 /-- A non-equivariant strong deformation retraction onto a subspace. -/
 public structure StrongDeformationRetraction (X : Type*) [TopologicalSpace X] (A : Set X) where
@@ -106,32 +95,7 @@ public structure StrongDeformationRetraction (X : Type*) [TopologicalSpace X] (A
   retract_fixed : ∀ x, x ∈ A → retract x = x
   homotopy_fixed : ∀ s x, x ∈ A → homotopy (s, x) = x
 
-/-- A strong deformation retraction gives a homotopy equivalence to the retract, whose inverse
-is the literal subspace inclusion. -/
-public def StrongDeformationRetraction.toHomotopyEquiv
-    {X : Type*} [TopologicalSpace X] {A : Set X}
-    (R : StrongDeformationRetraction X A) : X ≃ₕ A := by
-  let r : C(X, A) :=
-    { toFun := fun x ↦ ⟨R.retract x, R.retract_mem x⟩
-      continuous_toFun := R.retract.continuous.subtype_mk _ }
-  refine
-    { toFun := r
-      invFun := topologicalSubsetInclusionMap A
-      left_inv := ⟨R.homotopy.symm⟩
-      right_inv := ?_ }
-  have h : r.comp (topologicalSubsetInclusionMap A) = ContinuousMap.id A := by
-    ext a
-    exact R.retract_fixed a a.2
-  rw [h]
 
-/-- The selected inverse of a homotopy-equivalent inclusion agrees up to homotopy with every
-strong deformation retraction onto that subspace. -/
-public theorem IsHomotopyEquivalenceInclusion.toHomotopyEquiv_homotopic_retraction
-    {X : Type*} [TopologicalSpace X] {A : Set X}
-    (h : IsHomotopyEquivalenceInclusion A) (R : StrongDeformationRetraction X A) :
-    h.toHomotopyEquiv.toFun.Homotopic R.toHomotopyEquiv.toFun :=
-  homotopyEquiv_toFun_homotopic_of_invFun_eq _ _
-    h.toHomotopyEquiv_invFun
 
 /-! ## Interface translations -/
 
@@ -177,17 +141,7 @@ public def toStrongDeformationRetraction : SphereSixComplex.StrongDeformationRet
     congrArg i.hom (CategoryTheory.ConcreteCategory.congr_hom D.retract a)
   homotopy_fixed t := hS ▸ Set.forall_mem_range.2 fun a ↦ D.fixed (σ t) a
 
-/-- The retraction of `toStrongDeformationRetraction` is `i ∘ retraction`. -/
-@[simp]
-public theorem toStrongDeformationRetraction_retract_apply (x : X) :
-    (D.toStrongDeformationRetraction hS).retract x = i (D.retraction x) :=
-  rfl
 
-/-- The homotopy of `toStrongDeformationRetraction` is the homotopy of `D` run backwards. -/
-@[simp]
-public theorem toStrongDeformationRetraction_homotopy_apply (t : I) (x : X) :
-    (D.toStrongDeformationRetraction hS).homotopy (t, x) = D.homotopy (σ t, x) :=
-  rfl
 
 end TopCat.StrongDeformationRetractData
 
@@ -361,15 +315,6 @@ public theorem HasHomotopyExtensionProperty.nonempty_strongDeformationRetraction
   hHEP.homotopyExtensionProperty.nonempty_strongDeformationRetraction hEquiv.isHomotopyEquivalence
     Subtype.range_coe
 
-/-- Package the standard cofibration upgrade directly as a homotopy equivalence to the
-subspace, retaining the literal inclusion as inverse. -/
-public noncomputable def HasHomotopyExtensionProperty.homotopyEquiv
-    {X : Type*} [TopologicalSpace X] (A : Set X)
-    (hHEP : HasHomotopyExtensionProperty A)
-    (hEquiv : IsHomotopyEquivalenceInclusion A) : X ≃ₕ A :=
-  (Classical.choice
-    (HasHomotopyExtensionProperty.nonempty_strongDeformationRetraction
-      A hHEP hEquiv)).toHomotopyEquiv
 
 /-- A strong deformation retraction lifts uniquely through a regular quotient covering. The
 lift is equivariant under the deck group and retracts onto the full inverse image of the base

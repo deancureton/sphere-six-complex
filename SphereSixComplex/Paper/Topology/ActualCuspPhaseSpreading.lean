@@ -175,23 +175,6 @@ public noncomputable def actualLocalCuspCentralFiberRetractionData
     rw [← C.psiMap_eq_generic]
     exact (actualPsiMap_pointUnstraightening W _ _).symm
 
-/-- The established positive-part package selected at the radius of a cusp witness. -/
-public noncomputable def selectedPolarHoneycombData
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
-    (W : ActualPuncturedCuspCollarWitness N M) [HasCuspPhaseSpreading W] :
-    PolarHoneycombData M W.localWitness.radius :=
-  (cuspPhaseSpreadingData W).1
 
-/-- Once the explicit orbit-stratum compatibility is supplied, the selected paper cusp has the
-required central-fibre retraction datum. -/
-public noncomputable def paperCuspCentralFiberRetractionData
-    (A : PaperAnalyticData) [HasCuspPhaseSpreading A.starCuspWitness]
-    (F : FrozenLocalCuspPhaseSpreadingData A.cuspCoordinate A.toricModel
-      A.starCuspWitness.localWitness.radius
-      (selectedPolarHoneycombData A.starCuspWitness)) :
-    ActualLocalCuspCentralFiberRetractionData A.starCuspWitness :=
-  actualLocalCuspCentralFiberRetractionData A.starCuspWitness
-    (selectedPolarHoneycombData A.starCuspWitness) F
 
 end SphereSixComplex.Geometry.CuspStraighteningRetraction

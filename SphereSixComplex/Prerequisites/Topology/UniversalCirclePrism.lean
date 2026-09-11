@@ -143,12 +143,6 @@ private theorem universalCirclePrismClass_eq :
     erw [hl, Preadditive.neg_comp]
     rfl)
 
-public theorem universalCirclePrismClass_generates
-    (x : IntegralSingularHomology 2 (StdTorus 2)) :
-    ∃ n : ℤ, x = n • universalCirclePrismClass := by
-  refine ⟨-standardTwoTorusHomologyArea x, ?_⟩
-  rw [universalCirclePrismClass_eq, neg_smul, smul_neg, neg_neg]
-  exact standardTwoTorus_eq_area_smul_fundamentalClass x
 
 public theorem universalCirclePrismClass_primitive :
     ∃ r : IntegralSingularHomology 2 (StdTorus 2) →+ ℤ,
@@ -258,34 +252,6 @@ public theorem circleSweepPrism_eq_of_universal_sign
   rw [← integralSingularHomologyMap_comp_wang, ← integralSingularHomologyMap_comp_wang]
   rfl
 
-public theorem circleSweepPrism_eq_on_homology_of_universal_sign
-    (n : ℤ) (hn : universalCirclePrismClass = n • standardTwoTorusHomologyGenerator)
-    {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] [PathConnectedSpace X]
-    (sweep : C(UnitAddCircle × X, Y)) (x : IntegralSingularHomology 1 X) :
-    closedPrismHomology ((circleSweepHomotopy sweep).singularChainComplexFunctorObjMap
-      (AddCommGrpCat.of ℤ)) 0 x =
-    n • integralSingularHomologyMap 2 sweep (normalizedCircleCross 1 x) := by
-  let b : X := Classical.choice inferInstance
-  let H := Hurewicz.Chains.abelianizationComparison X b
-  obtain ⟨p, hp⟩ := Hurewicz.loopClass_surjective (H.equiv.symm x)
-  have hx : loopHomologyClass p = x := by
-    rw [← H.equiv_loopClass, hp, H.equiv.apply_symm_apply]
-  rw [← hx, ← pathCircleMap_homology p]
-  exact circleSweepPrism_eq_of_universal_sign n hn sweep (pathCircleMap p)
 
-public theorem exists_circleSweepPrism_uniform_sign :
-    ∃ n : ℤ, (n = 1 ∨ n = -1) ∧
-      ∀ {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] [PathConnectedSpace X]
-        (sweep : C(UnitAddCircle × X, Y)) (x : IntegralSingularHomology 1 X),
-      closedPrismHomology ((circleSweepHomotopy sweep).singularChainComplexFunctorObjMap
-        (AddCommGrpCat.of ℤ)) 0 x =
-      n • integralSingularHomologyMap 2 sweep (normalizedCircleCross 1 x) := by
-  rcases universalCirclePrismClass_eq_generator_or_neg_generator with h | h
-  · refine ⟨1, Or.inl rfl, ?_⟩
-    intro X Y _ _ _ sweep x
-    exact circleSweepPrism_eq_on_homology_of_universal_sign 1 (by simpa using h) sweep x
-  · refine ⟨-1, Or.inr rfl, ?_⟩
-    intro X Y _ _ _ sweep x
-    exact circleSweepPrism_eq_on_homology_of_universal_sign (-1) (by simpa using h) sweep x
 
 end SphereSixComplex

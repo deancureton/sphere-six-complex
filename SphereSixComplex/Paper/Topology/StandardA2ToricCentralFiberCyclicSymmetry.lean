@@ -33,13 +33,6 @@ public theorem a2CyclicLinear_zero : a2CyclicLinear 0 = 0 := by
   ext i
   fin_cases i <;> simp [a2CyclicLinear]
 
-public theorem a2CyclicLinear_add (v w : ToricLattice) :
-    a2CyclicLinear (v + w) = a2CyclicLinear v + a2CyclicLinear w := by
-  ext i
-  fin_cases i
-  · simp [a2CyclicLinear]
-    ring
-  · simp [a2CyclicLinear]
 
 @[simp]
 public theorem a2CyclicLinear_apply_three (v : ToricLattice) :
@@ -50,37 +43,11 @@ public theorem a2CyclicLinear_apply_three (v : ToricLattice) :
     ring
   · simp [a2CyclicLinear]
 
-/-- The order-three additive equivalence underlying the affine lattice rotation. -/
-public def a2CyclicLinearEquiv : ToricLattice ≃+ ToricLattice where
-  toFun := a2CyclicLinear
-  invFun := a2CyclicLinear ∘ a2CyclicLinear
-  left_inv v := a2CyclicLinear_apply_three v
-  right_inv v := a2CyclicLinear_apply_three v
-  map_add' := a2CyclicLinear_add
 
-/-- The affine rotation sending `0 → e₁ → e₂ → 0`. -/
-public def a2CyclicVertex (v : ToricLattice) : ToricLattice :=
-  a2CyclicLinear v + e₁
 
-@[simp]
-public theorem a2CyclicVertex_zero : a2CyclicVertex 0 = e₁ := by
-  simp [a2CyclicVertex]
 
-@[simp]
-public theorem a2CyclicVertex_e₁ : a2CyclicVertex e₁ = e₂ := by
-  ext i
-  fin_cases i <;> simp [a2CyclicVertex, a2CyclicLinear, e₁, e₂]
 
-@[simp]
-public theorem a2CyclicVertex_e₂ : a2CyclicVertex e₂ = 0 := by
-  ext i
-  fin_cases i <;> simp [a2CyclicVertex, a2CyclicLinear, e₁, e₂]
 
-@[simp]
-public theorem a2CyclicVertex_apply_three (v : ToricLattice) :
-    a2CyclicVertex (a2CyclicVertex (a2CyclicVertex v)) = v := by
-  ext i
-  fin_cases i <;> simp [a2CyclicVertex, a2CyclicLinear, e₁] <;> ring
 
 /-- Cyclic permutation of the coordinates of a lower affine triangle. -/
 public def a2CyclicRawLower (z : RawCoordinates) : RawCoordinates :=
@@ -133,41 +100,10 @@ public theorem a2CyclicChartIndex_apply_three (a : ChartIndex) :
       fin_cases i <;>
         simp [a2CyclicChartIndex, a2CyclicLinear, e₁] <;> ring
 
-/-- The lower triangles are rotated with the vertex permutation `0 → 1 → 2 → 0`. -/
-public theorem a2CyclicVertex_lowerTriangle (v : ToricLattice) (i : Fin 3) :
-    a2CyclicVertex (a2Triangle false v i) =
-      a2Triangle false (a2CyclicLinear v) (i + 1) := by
-  have hv0 : Matrix.vecHead v = v 0 := rfl
-  have hv1 : Matrix.vecHead (Matrix.vecTail v) = v 1 := rfl
-  fin_cases i <;>
-    ext j <;> fin_cases j <;>
-      simp [a2CyclicVertex, a2CyclicLinear, a2Triangle, e₁, e₂, hv0, hv1] <;> ring
 
-/-- The upper triangles are rotated with the opposite coordinate permutation. -/
-public theorem a2CyclicVertex_upperTriangle (v : ToricLattice) (i : Fin 3) :
-    a2CyclicVertex (a2Triangle true v i) =
-      a2Triangle true (a2CyclicLinear v - e₁) (i + 2) := by
-  have hv0 : Matrix.vecHead v = v 0 := rfl
-  have hv1 : Matrix.vecHead (Matrix.vecTail v) = v 1 := rfl
-  fin_cases i <;>
-    ext j <;> fin_cases j <;>
-      simp [a2CyclicVertex, a2CyclicLinear, a2Triangle, e₁, e₂, hv0, hv1] <;> ring
 
-/-- Height-one linearization of the affine lattice rotation. -/
-public def a2CyclicFan (v : FanLattice) : FanLattice :=
-  ![-v 0 - v 1 + v 2, v 0, v 2]
 
-@[simp]
-public theorem a2CyclicFan_apply_three (v : FanLattice) :
-    a2CyclicFan (a2CyclicFan (a2CyclicFan v)) = v := by
-  ext i
-  fin_cases i <;> simp [a2CyclicFan] <;> ring
 
-public theorem a2CyclicFan_heightOneRay (v : ToricLattice) :
-    a2CyclicFan (heightOneRay v) = heightOneRay (a2CyclicVertex v) := by
-  ext i
-  fin_cases i <;>
-    simp [a2CyclicFan, heightOneRay, a2CyclicVertex, a2CyclicLinear, e₁]
 
 public theorem a2CyclicRawLower_lowerAxisZero (z : ℂ) :
     a2CyclicRawLower (lowerAxisZero z) = singleAxis 1 z := by
@@ -207,31 +143,7 @@ public theorem a2CyclicChartIndex_sq_upper_zero :
   · ext i
     fin_cases i <;> simp [a2CyclicChartIndex, a2CyclicLinear, e₁, e₂]
 
-public theorem a2CyclicVertex_image_support_zero :
-    a2CyclicVertex '' ({e₁, e₂} : Set ToricLattice) = {0, e₂} := by
-  ext v
-  constructor
-  · rintro ⟨w, hw, rfl⟩
-    rcases hw with (rfl | rfl)
-    · simp
-    · simp
-  · intro hv
-    rcases hv with (rfl | rfl)
-    · exact ⟨e₂, by simp⟩
-    · exact ⟨e₁, by simp⟩
 
-public theorem a2CyclicVertex_image_support_one :
-    a2CyclicVertex '' ({0, e₂} : Set ToricLattice) = {0, e₁} := by
-  ext v
-  constructor
-  · rintro ⟨w, hw, rfl⟩
-    rcases hw with (rfl | rfl)
-    · simp
-    · simp
-  · intro hv
-    rcases hv with (rfl | rfl)
-    · exact ⟨e₂, by simp⟩
-    · exact ⟨0, by simp⟩
 
 public theorem a2CyclicRaw_transitionMatrix
     (a b : ChartIndex) (z : RawCoordinates) :

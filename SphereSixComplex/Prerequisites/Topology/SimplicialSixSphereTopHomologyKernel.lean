@@ -185,18 +185,6 @@ public noncomputable def standardSevenTopCyclesIsoInt :
   standardSevenNormalizedChainsXSevenIsoTopCycles.symm ≪≫
     standardSevenNormalizedChainsXSevenIsoInt
 
-/-- The normalized top cycles of the boundary of the seven-simplex form one infinite cyclic
-group. -/
-public theorem boundarySevenNormalizedTopCyclesOrientation :
-    BoundarySevenNormalizedTopCyclesOrientation :=
-  ⟨(boundarySevenTopCyclesIsoStandardSevenTopCycles ≪≫
-    standardSevenTopCyclesIsoInt).addCommGroupIsoToAddEquiv⟩
 
-/-- Therefore degree-six simplicial homology of the boundary of the seven-simplex is
-unconditionally infinite cyclic. -/
-public theorem boundarySevenSimplicialTopHomologyOrientation :
-    BoundarySevenSimplicialTopHomologyOrientation :=
-  boundarySevenSimplicialTopHomologyOrientation_of_normalizedCycles
-    boundarySevenNormalizedTopCyclesOrientation
 
 end SphereSixComplex

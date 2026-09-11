@@ -1,6 +1,7 @@
 module
 
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspWangOpenCoverChainRealizationGeometry
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspWangOpenCoverChainRealization
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineOverlapInterleaving
 
 /-!
 # A full-fibre slice in the pulled-back cusp cover
@@ -254,37 +255,7 @@ public noncomputable def actualCuspFullFiberIntersectionSlice
       actualCuspFullFiberSlice_mem_pulledBackIntersection (A := A) R t ht y⟩,
     (actualCuspFullFiberSlice (A := A) p.1.2 p.2).continuous.subtype_mk _⟩
 
-/-- The crossing slice induces a map on first integral homology of the pulled-back
-intersection. -/
-public noncomputable def actualCuspFullFiberIntersectionHomologyOne
-    (R : A.AffineRadialCompletionInput) (t : unitInterval)
-    (ht : ((A.cuspAngularCoordinateLoop t).1).re = 1 / 2) :
-    let G := A.actualCuspRadialClutchingData
-    let _ := G.fiberTopology
-    IntegralSingularHomology 1 G.Fiber →+
-      IntegralSingularHomology 1
-        ((Opens.toTopCat (TopCat.of (A.openEmbeddingStarData.collarSource 0))).obj
-          (R.twoDiscCover.cuspOrderThreeOpen ⊓ R.twoDiscCover.cuspOrderFourOpen)) := by
-  let G := A.actualCuspRadialClutchingData
-  letI := G.fiberTopology
-  exact integralSingularHomologyMap 1
-    (actualCuspFullFiberIntersectionSlice (A := A) R t ht)
 
-/-- Transport the induced full-fibre map from the pulled-back intersection to the actual
-elliptic band. -/
-public noncomputable def actualCuspFullFiberToBandHomologyOne
-    (R : A.AffineRadialCompletionInput) (t : unitInterval)
-    (ht : ((A.cuspAngularCoordinateLoop t).1).re = 1 / 2) :
-    let G := A.actualCuspRadialClutchingData
-    let _ := G.fiberTopology
-    IntegralSingularHomology 1 G.Fiber →+
-      IntegralSingularHomology 1
-        (R.twoDiscCover.orderThreeSide ∩ R.twoDiscCover.orderFourSide :
-          Set A.ellipticInterior) := by
-  let G := A.actualCuspRadialClutchingData
-  letI := G.fiberTopology
-  exact R.twoDiscCover.cuspCoverIntersectionToEllipticBandHomologyOne.comp
-    (actualCuspFullFiberIntersectionHomologyOne (A := A) R t ht)
 
 /-- A selected middle-height crossing of the actual angular cusp loop. -/
 public noncomputable def actualCuspFullFiberCrossingTime (A : PaperAnalyticData) :
@@ -310,65 +281,9 @@ public noncomputable def actualCuspWangFiberToCuspCoverIntersectionMap
     (actualCuspFullFiberCrossingTime A)
     (actualCuspFullFiberCrossingTime_spec A)
 
-/-- The first-homology map induced by the selected full-fibre intersection slice. -/
-public noncomputable def actualCuspWangFiberToCuspCoverIntersectionHomologyOne
-    (R : A.AffineRadialCompletionInput) :
-    let G := A.actualCuspRadialClutchingData
-    let _ := G.fiberTopology
-    IntegralSingularHomology 1 G.Fiber →+
-      IntegralSingularHomology 1
-        ((Opens.toTopCat (TopCat.of (A.openEmbeddingStarData.collarSource 0))).obj
-          (R.twoDiscCover.cuspOrderThreeOpen ⊓ R.twoDiscCover.cuspOrderFourOpen)) := by
-  let G := A.actualCuspRadialClutchingData
-  letI := G.fiberTopology
-  exact integralSingularHomologyMap 1
-    (actualCuspWangFiberToCuspCoverIntersectionMap (A := A) R)
 
-/-- The induced full-fibre map after transport to the actual elliptic band. -/
-public noncomputable def actualCuspWangFiberToBandHomologyOne
-    (R : A.AffineRadialCompletionInput) :
-    let G := A.actualCuspRadialClutchingData
-    let _ := G.fiberTopology
-    IntegralSingularHomology 1 G.Fiber →+
-      IntegralSingularHomology 1
-        (R.twoDiscCover.orderThreeSide ∩ R.twoDiscCover.orderFourSide :
-          Set A.ellipticInterior) := by
-  let G := A.actualCuspRadialClutchingData
-  letI := G.fiberTopology
-  exact R.twoDiscCover.cuspCoverIntersectionToEllipticBandHomologyOne.comp
-    (actualCuspWangFiberToCuspCoverIntersectionHomologyOne (A := A) R)
 
-/-- The full-fibre slice supplies the map field of the chain realization.  Consequently, the
-remaining inputs are exactly the period-marked band identification and the oriented Wang
-boundary comparison. -/
-public noncomputable def actualCuspWangOpenCoverChainRealization_of_fullFiberSlice
-    (R : A.AffineRadialCompletionInput)
-    (hBand : R.twoDiscCover.canonicalCuspFiberToBandHomologyOne =
-      actualCuspWangFiberToBandHomologyOne (A := A) R)
-    (hBoundary :
-      let G := A.actualCuspRadialClutchingData
-      let _ := G.fiberTopology
-      (actualCuspWangFiberToCuspCoverIntersectionHomologyOne (A := A) R).comp
-          (actualCuspWangBoundaryHom A) =
-        R.twoDiscCover.cuspOpenCoverConnectingHom) :
-    R.twoDiscCover.ActualCuspWangOpenCoverChainRealization where
-  fiberToCuspCoverIntersectionMap :=
-    actualCuspWangFiberToCuspCoverIntersectionMap (A := A) R
-  fiberToBand_homology := hBand
-  wangBoundary_eq_chainConnecting := hBoundary
 
-/-- The full-fibre slice induces a map on first integral singular homology of the actual cusp
-collar before any attempted corestriction to the pulled-back intersection. -/
-public noncomputable def actualCuspFullFiberSliceHomologyOne
-    (s : ℂ) (hs : ‖cuspQ s‖ < A.starCuspWitness.localWitness.radius) :
-    let G := A.actualCuspRadialClutchingData
-    let _ := G.fiberTopology
-    IntegralSingularHomology 1 G.Fiber →+
-      IntegralSingularHomology 1 (A.openEmbeddingStarData.collarSource 0) := by
-  let G := A.actualCuspRadialClutchingData
-  letI := G.fiberTopology
-  exact integralSingularHomologyMap 1
-    (actualCuspFullFiberSlice (A := A) s hs)
 
 end EllipticTwoDiscCoverData
 

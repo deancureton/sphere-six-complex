@@ -26,41 +26,6 @@ public theorem constructedCuspPositiveProjection_central_action
     exact actualPositiveModulusProjection_central_compact W _ _ _
       (constructedA2EffectivePhaseSection k) x.1 x.2
 
-public def constructedCentralPhaseSweepMap
-    (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
-    (k : C(UnitAddCircle, Fin 2 → Circle)) :
-    C(UnitAddCircle × ActualLocalCuspCentralOrbitQuotient W, ActualLocalCuspFilling W) := by
-  let F : C((Fin 2 → Circle) × ActualLocalCuspCentralOrbitQuotient W,
-      ActualLocalCuspCentralOrbitQuotient W) :=
-    ⟨fun p ↦ constructedA2CentralCompactOrbitMap W p.1 p.2,
-      constructedA2CentralCompactOrbitMap_continuous W⟩
-  let K : C(UnitAddCircle × ActualLocalCuspCentralOrbitQuotient W,
-      (Fin 2 → Circle) × ActualLocalCuspCentralOrbitQuotient W) :=
-    ⟨fun p ↦ (k p.1, p.2), (k.continuous.comp continuous_fst).prodMk continuous_snd⟩
-  exact (⟨actualLocalCuspCentralOrbitMap W,
-    (actualLocalCuspCentralOrbitMap_isEmbedding W).continuous⟩ : C(_, _)).comp (F.comp K)
 
-public theorem constructedCuspPositiveProjection_phaseSweep_zero
-    (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
-    (k : C(UnitAddCircle, Fin 2 → Circle))
-    (x : IntegralSingularHomology 1 (ActualLocalCuspCentralOrbitQuotient W)) :
-    let _ := (constructedCuspPolarData W).positiveDeckAction
-    integralSingularHomologyMap 2 (constructedCuspPositiveProjection W)
-      (integralSingularHomologyMap 2 (constructedCentralPhaseSweepMap W k)
-        (normalizedCircleCross 1 x)) = 0 := by
-  let _ := (constructedCuspPolarData W).positiveDeckAction
-  dsimp only
-  rw [integralSingularHomologyMap_comp_wang]
-  let f : C(ActualLocalCuspCentralOrbitQuotient W,
-      PolarHoneycombData.OrbitQuotient (constructedCuspPolarData W).positivePart) :=
-    (constructedCuspPositiveProjection W).comp
-      ⟨actualLocalCuspCentralOrbitMap W, (actualLocalCuspCentralOrbitMap_isEmbedding W).continuous⟩
-  have h : (constructedCuspPositiveProjection W).comp (constructedCentralPhaseSweepMap W k) =
-      f.comp productFiberProjection := by
-    ext p
-    exact constructedCuspPositiveProjection_central_action W (k p.1) p.2
-  rw [h, ← integralSingularHomologyMap_comp_wang, normalizedCircleCross_projection, map_zero]
 
 end SphereSixComplex.Geometry.CuspStraighteningRetraction

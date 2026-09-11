@@ -90,17 +90,6 @@ public theorem polarPhaseGeometricCore_of_invariantModulus_only
   polarPhaseGeometricCore_of_fundamentalDomain_only Q
     (compactPhaseFundamentalDomain_of_invariantModulus Q hmodulus)
 
-/-- The normalized phase-geometry axiom is reduced to construction data whose modulus is
-compact-phase invariant; stabilizer compatibility is automatic. -/
-public theorem normalizedPolarHoneycombPhaseGeometry_of_invariantModulus_only
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) (r : ℝ)
-    (h : Nonempty {Q : NormalizedPolarHoneycombConstructionData N M r //
-      CompactPhaseInvariantModulus Q}) :
-    Nonempty {Q : NormalizedPolarHoneycombConstructionData N M r //
-      PolarPhaseGeometricCore M r Q.toPolarHoneycombData} := by
-  exact h.map fun ⟨Q, hQ⟩ ↦
-    ⟨Q, polarPhaseGeometricCore_of_invariantModulus_only Q hQ⟩
 
 end SphereSixComplex.Geometry.InfiniteA2Toric
 

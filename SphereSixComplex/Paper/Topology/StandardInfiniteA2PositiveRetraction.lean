@@ -104,24 +104,7 @@ namespace PolarHoneycombData
 
 variable {M : Model} {r : ℝ} (P : PolarHoneycombData M r)
 
-public theorem positiveDeck_preserves_t (lambda : ParameterLattice) (q : P.positivePart) :
-    letI := P.positiveDeckAction
-    M.t (((Multiplicative.ofAdd lambda) • q : P.positivePart) : localCarrier M r) =
-      M.t (q : localCarrier M r) := by
-  let _ := P.positiveDeckAction
-  rw [P.positiveDeck_coe, M.t_torusAction, P.positiveTwist_last,
-    M.fanShear_preserves_t]
-  simp
 
-public theorem positiveDeck_mem_central_iff (lambda : ParameterLattice)
-    (q : P.positivePart) :
-    letI := P.positiveDeckAction
-    (Multiplicative.ofAdd lambda) • q ∈ P.central ↔ q ∈ P.central := by
-  let _ := P.positiveDeckAction
-  have hmem (x : P.positivePart) :
-      x ∈ P.central ↔ M.t (x : localCarrier M r) = 0 := by
-    exact Set.ext_iff.mp P.central_eq x
-  rw [hmem, hmem, P.positiveDeck_preserves_t]
 
 /-- The quotient-level strong deformation retraction obtained from Whitehead plus the collar
 homotopy-extension property. -/
@@ -158,4 +141,3 @@ public noncomputable def positiveEquivariantStrongDeformationRetraction :
 end PolarHoneycombData
 
 end SphereSixComplex.Geometry.InfiniteA2Toric
-

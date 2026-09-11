@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspBasisReduction
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenPositiveDegreeRealization
 
 /-!
 # Pulling the elliptic two-disc cover back to the cusp collar
@@ -146,47 +146,7 @@ public theorem canonicalBoundary_cuspToEllipticUnionHomology
       rfl
     _ = _ := DFunLike.congr_fun (congrArg ConcreteCategory.hom hn'.symm) x
 
-/-- The remaining degree-two comparison expressed solely in the homology of the pulled-back
-cusp cover.  The first five raw classes have zero pulled-back boundary and the final suspension
-class has the chosen positive boundary. -/
-public structure SectionSevenCuspPulledBackBoundaryBasisBridge
-    (N : A.EllipticBandHomologyAlignment D) : Prop where
-  lowerBoundary_zero : ∀ i : Fin 5,
-    D.cuspPulledBackBoundary
-        (A.cuspRawHomologyTwoEquiv.symm (Pi.single i.castSucc 1)) = 0
-  e5_boundary :
-    D.cuspPulledBackBoundary
-        (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) =
-      (N.actualHomologyCoordinates.degreeTwoInvariantEquiv.symm 1).1
 
-/-- Pullback-cover boundary calculations supply the geometric Mayer--Vietoris basis bridge.
-Exactness converts the five zero boundary computations into factorizations through the two
-elliptic sides. -/
-public theorem SectionSevenCuspPulledBackBoundaryBasisBridge.toMayerVietorisBasisBridge
-    (N : A.EllipticBandHomologyAlignment D)
-    (G : D.SectionSevenCuspPulledBackBoundaryBasisBridge N) :
-    A.CuspDegreeTwoMayerVietorisBasisBridge N where
-  lowerBasis_factors i := by
-    apply ((presentationTwo (D := D)).exact_inclusion_boundary _).mp
-    rw [presentationTwo_boundary]
-    have h := (D.canonicalBoundary_cuspToEllipticUnionHomology
-      (A.cuspRawHomologyTwoEquiv.symm (Pi.single i.castSucc 1))).trans
-        (G.lowerBoundary_zero i)
-    change canonicalBoundary D 1
-      (cuspToEllipticUnionHomology D 2
-        (A.cuspRawHomologyTwoEquiv.symm (Pi.single i.castSucc 1))) = 0 at h
-    exact h
-  e5_boundary := by
-    apply Subtype.ext
-    change canonicalBoundary D 1 (degreeTwoCuspE5Generator (A := A) (D := D)) = _
-    rw [degreeTwoCuspE5Generator]
-    have h := (D.canonicalBoundary_cuspToEllipticUnionHomology
-      (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))).trans
-        G.e5_boundary
-    change canonicalBoundary D 1
-      (cuspToEllipticUnionHomology D 2
-        (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) = _ at h
-    exact h
 
 end EllipticTwoDiscCoverData
 

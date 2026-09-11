@@ -416,20 +416,5 @@ public theorem boundarySevenOrderedTargetCechIso_hom_summand
   rw [boundarySevenOrderedTargetCechIso_hom,
     boundarySevenOrderedTargetCechMap, Sigma.ι_desc]
 
-/-- Projection formula stated directly for the public objectwise isomorphism. -/
-@[reassoc]
-public theorem boundarySevenOrderedTargetCechIso_hom_projection
-    {n : SimplexCategoryᵒᵖ} (a : BoundarySevenProperCechTuple n)
-    (i : Fin (n.unop.len + 1)) :
-    Sigma.ι (fun b : BoundarySevenProperCechTuple n =>
-        TopCat.toSSet.obj
-          (TopCat.of (boundarySevenFaceNeighborhoodIntersection b.1.support))) a ≫
-        (boundarySevenOrderedTargetCechIso n).hom ≫
-        boundarySevenTargetCechProjection n i =
-      TopCat.toSSet.map (boundarySevenTargetIntersectionToMember a i) ≫
-        Sigma.ι (fun j : Fin 8 => TopCat.toSSet.obj
-          (TopCat.of (boundarySevenComparisonFaceNeighborhood j))) (a.1 i) := by
-  rw [boundarySevenOrderedTargetCechIso_hom]
-  exact boundarySevenOrderedTargetCechMap_projection a i
 
 end SphereSixComplex

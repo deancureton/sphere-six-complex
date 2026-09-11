@@ -176,13 +176,6 @@ public def homotopyEquivOfHomotopic {P Q : Type u}
   right_inv :=
     (ContinuousMap.Homotopic.comp ⟨H.symm⟩ (.refl e.invFun)).trans e.right_inv
 
-@[simp]
-public theorem homotopyEquivOfHomotopic_apply {P Q : Type u}
-    [TopologicalSpace P] [TopologicalSpace Q]
-    (e : P ≃ₕ Q) {g : C(P, Q)}
-    (H : ContinuousMap.Homotopy e.toFun g) (p : P) :
-    homotopyEquivOfHomotopic e H p = g p :=
-  rfl
 
 /-- A function homotopic to a specified homotopy-equivalence map is itself a specified homotopy
 equivalence. -/
@@ -250,19 +243,6 @@ public theorem doubleMappingCylinderRightHomotopyEquiv_apply
       doubleMappingCylinderRight f g y :=
   D.pushoutInrHomotopyEquiv_apply g y
 
-/-- Any homotopy-equivalence comparison from the double mapping cylinder to the ordinary pushout
-which preserves the right branch transfers the desired map-level homotopy equivalence.  A collar
-stretching homeomorphism is one geometric way to supply such a comparison. -/
-public theorem pushoutInr_isHomotopyEquivalence_of_doubleComparison
-    (f : A ⟶ X) (g : A ⟶ Y)
-    (D : TopCat.StrongDeformationRetractData (mappingCylinderFree f))
-    (e : (doubleMappingCylinder f g : Type u) ≃ₕ
-      ((pushout f g : TopCat.{u}) : Type u))
-    (he : ∀ y : Y, e (doubleMappingCylinderRight f g y) = pushout.inr f g y) :
-    IsHomotopyEquivalence (pushout.inr f g).hom := by
-  refine ⟨(doubleMappingCylinderRightHomotopyEquiv f g D).trans e, ?_⟩
-  funext y
-  exact he y
 
 /-- Collapse a mapping cylinder back to its target. -/
 public def mappingCylinderCollapse (f : A ⟶ X) : mappingCylinder f ⟶ X :=
@@ -289,38 +269,9 @@ public theorem mappingCylinderFree_comp_collapse (f : A ⟶ X) :
   ext a
   rfl
 
-/-- The explicit collapse is the retraction occurring in the canonical mapping-cylinder
-homotopy equivalence. -/
-public theorem mappingCylinderCollapse_eq_pushoutRetraction (f : A ⟶ X) :
-    mappingCylinderCollapse f =
-      (cylinderZeroStrongDeformationRetract A).pushoutRetraction f := by
-  apply pushout.hom_ext
-  · change mappingCylinderCylinder f ≫ mappingCylinderCollapse f = _
-    rw [mappingCylinderCylinder_comp_collapse]
-    simpa only [cylinderZeroStrongDeformationRetract] using
-      ((cylinderZeroStrongDeformationRetract A).inl_pushoutRetraction f).symm
-  · change mappingCylinderBase f ≫ mappingCylinderCollapse f = _
-    rw [mappingCylinderBase_comp_collapse]
-    exact ((cylinderZeroStrongDeformationRetract A).inr_pushoutRetraction f).symm
 
-/-- Collapsing a mapping cylinder to its target is itself a homotopy equivalence. -/
-public def mappingCylinderCollapseHomotopyEquiv (f : A ⟶ X) :
-    (mappingCylinder f : Type u) ≃ₕ (X : Type u) :=
-  (mappingCylinderBaseHomotopyEquiv f).symm
 
-@[simp]
-public theorem mappingCylinderCollapseHomotopyEquiv_apply
-    (f : A ⟶ X) (p : mappingCylinder f) :
-    mappingCylinderCollapseHomotopyEquiv f p = mappingCylinderCollapse f p := by
-  change (cylinderZeroStrongDeformationRetract A).pushoutRetraction f p = _
-  rw [← mappingCylinderCollapse_eq_pushoutRetraction f]
 
-/-- Map-level version of the mapping-cylinder collapse equivalence. -/
-public theorem mappingCylinderCollapse_isHomotopyEquivalence (f : A ⟶ X) :
-    IsHomotopyEquivalence (mappingCylinderCollapse f).hom :=
-  ⟨mappingCylinderCollapseHomotopyEquiv f, by
-    funext p
-    exact mappingCylinderCollapseHomotopyEquiv_apply f p⟩
 
 /-- Map the mapping-cylinder branch into the ordinary pushout by collapsing its interval. -/
 public def mappingCylinderToPushout (f : A ⟶ X) (g : A ⟶ Y) :

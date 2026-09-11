@@ -118,27 +118,6 @@ public theorem actualCuspMappingTorusFiberToEllipticInteriorMap_homotopic_lowOve
       ⟨(torusPtHomotopy (fun _ : Unit ↦ G.clutching) () uQuarter).symm⟩)
 
 
-/-- The topological cusp--band square is equivalent to its oriented low-overlap form.  Thus the
-remaining comparison is exactly between the explicit overlap leg of the Wang cover and the
-canonical affine-band map. -/
-public theorem canonicalCuspFiberBandTopologicalCompatibility_iff_lowOverlap :
-    (let G := A.actualCuspRadialClutchingData
-       let _ := G.fiberTopology
-       ContinuousMap.Homotopic (actualCuspMappingTorusFiberToEllipticInteriorMap D)
-         (canonicalCuspFiberToEllipticInteriorMap D)) ↔
-      let G := A.actualCuspRadialClutchingData
-      let _ := G.fiberTopology
-      ContinuousMap.Homotopic
-        D.actualCuspMappingTorusLowOverlapFiberToEllipticInteriorMap
-        D.canonicalCuspFiberToEllipticInteriorMap := by
-  let G := A.actualCuspRadialClutchingData
-  let _ := G.fiberTopology
-
-  constructor
-  · intro h
-    exact D.actualCuspMappingTorusFiberToEllipticInteriorMap_homotopic_lowOverlap.symm.trans h
-  · intro h
-    exact D.actualCuspMappingTorusFiberToEllipticInteriorMap_homotopic_lowOverlap.trans h
 
 /-- The space-level compatibility induces the corresponding equality on singular homology. -/
 public theorem canonicalCuspFiberBand_homology_naturality

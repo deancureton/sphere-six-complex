@@ -172,13 +172,6 @@ theorem mem_centeredLinearExpChart_source (A z₀ : ℂ) (hA : A ≠ 0) :
   rw [mem_centeredLinearExpChart_source_iff]
   simp [Real.pi_pos]
 
-/-- No finite logarithm chart reaches the cusp value `0`. -/
-theorem zero_not_mem_centeredLinearExpChart_target (A z₀ : ℂ) (hA : A ≠ 0) :
-    0 ∉ (centeredLinearExpChart A z₀ hA).target := by
-  intro hzero
-  have hr := (centeredLinearExpChart A z₀ hA).right_inv hzero
-  rw [centeredLinearExpChart_apply] at hr
-  exact Complex.exp_ne_zero _ hr
 
 /-- A local logarithm chart for `z ↦ exp (2 π i z / width)`, centered at an arbitrary
 finite preimage `z₀`. -/
@@ -202,9 +195,6 @@ theorem mem_cuspExponentialLocalChart_source (width : ℝ) (z₀ : ℂ)
     (hwidth : width ≠ 0) : z₀ ∈ (cuspExponentialLocalChart width z₀ hwidth).source :=
   mem_centeredLinearExpChart_source _ _ _
 
-theorem zero_not_mem_cuspExponentialLocalChart_target (width : ℝ) (z₀ : ℂ)
-    (hwidth : width ≠ 0) : 0 ∉ (cuspExponentialLocalChart width z₀ hwidth).target :=
-  zero_not_mem_centeredLinearExpChart_target _ _ _
 
 /-- A useful geometric criterion for putting a set into the centered cusp-exponential chart. -/
 theorem subset_cuspExponentialLocalChart_source_of_abs_re_sub_lt
@@ -240,22 +230,6 @@ theorem subset_cuspExponentialLocalChart_source_of_re_mem_Ioo_Icc
   obtain ⟨hzl, hzr⟩ := hA z hz
   constructor <;> linarith
 
-/-- Closure-friendly version of the preceding strip criterion.  This is directly applicable to
-finite boundary preimages of the cusp chamber. -/
-theorem subset_cuspExponentialLocalChart_source_of_re_mem_Ioo_of_mem_closure
-    {A : Set ℂ} {width l r : ℝ} {z₀ : ℂ} (hwidth : 0 < width)
-    (hspan : r - l ≤ width / 2)
-    (hA : ∀ z ∈ A, l < z.re ∧ z.re < r)
-    (hz₀ : z₀ ∈ closure A) :
-    A ⊆ (cuspExponentialLocalChart width z₀ hwidth.ne').source := by
-  apply subset_cuspExponentialLocalChart_source_of_re_mem_Ioo_Icc hwidth hspan hA
-  have hclosed : IsClosed {z : ℂ | l ≤ z.re ∧ z.re ≤ r} :=
-    (isClosed_le continuous_const Complex.continuous_re).inter
-      (isClosed_le Complex.continuous_re continuous_const)
-  have hsub : A ⊆ {z : ℂ | l ≤ z.re ∧ z.re ≤ r} := by
-    intro z hz
-    exact ⟨(hA z hz).1.le, (hA z hz).2.le⟩
-  exact closure_minimal hsub hclosed hz₀
 
 /-- Every convex subset of a real normed space has preconnected approach regions at every point.
 Neither openness nor nonemptiness is needed. -/
@@ -402,64 +376,9 @@ theorem isPreconnected_boundary_fiber_of_isPreconnected_image_approach
   rw [himage, ← clusterSetOn_invFunOn_eq_boundary_fiber hUo hfd hfi hFc hFf ha]
   exact hcluster
 
-/-- A convex conformal image has preconnected boundary fibres. -/
-theorem isPreconnected_boundary_fiber_of_convex_image
-    (hUo : IsOpen U) (hUb : Bornology.IsBounded U)
-    (hfd : DifferentiableOn ℂ f U) (hfi : InjOn f U)
-    (hFc : ContinuousOn F (closure U)) (hFf : EqOn F f U)
-    (ha : a ∈ frontier (f '' U)) (hconv : Convex ℝ (f '' U)) :
-    IsPreconnected {z : frontier U | F z = a} :=
-  isPreconnected_boundary_fiber_of_isPreconnected_image_approach
-    hUo hUb hfd hfi hFc hFf ha (Convex.isPreconnectedApproachAt hconv a)
 
-/-- More generally, it is enough that an ambient homeomorphism straighten the conformal image to
-a convex set. -/
-theorem isPreconnected_boundary_fiber_of_homeomorph_image_convex
-    (hUo : IsOpen U) (hUb : Bornology.IsBounded U)
-    (hfd : DifferentiableOn ℂ f U) (hfi : InjOn f U)
-    (hFc : ContinuousOn F (closure U)) (hFf : EqOn F f U)
-    (ha : a ∈ frontier (f '' U)) (e : ℂ ≃ₜ ℂ)
-    (hconv : Convex ℝ (e '' (f '' U))) :
-    IsPreconnected {z : frontier U | F z = a} :=
-  isPreconnected_boundary_fiber_of_isPreconnected_image_approach
-    hUo hUb hfd hfi hFc hFf ha
-      (isPreconnectedApproachAt_of_homeomorph_image_convex a e hconv)
 
-/-- Boundary-fibre theorem in local-chart form.  The chart only has to identify the germ of the
-conformal image with a source-side set that can be straightened to a convex set. -/
-theorem isPreconnected_boundary_fiber_of_openPartialHomeomorph_germ
-    (hUo : IsOpen U) (hUb : Bornology.IsBounded U)
-    (hfd : DifferentiableOn ℂ f U) (hfi : InjOn f U)
-    (hFc : ContinuousOn F (closure U)) (hFf : EqOn F f U)
-    {A : Set ℂ} {z₀ : ℂ} (e : OpenPartialHomeomorph ℂ ℂ)
-    (hz₀ : z₀ ∈ e.source)
-    (hchart : f '' U ∩ e.target = e '' (A ∩ e.source))
-    (g : ℂ ≃ₜ ℂ) (hconv : Convex ℝ (g '' A))
-    (hboundary : e z₀ ∈ frontier (f '' U)) :
-    IsPreconnected {z : frontier U | F z = e z₀} :=
-  isPreconnected_boundary_fiber_of_isPreconnected_image_approach
-    hUo hUb hfd hfi hFc hFf hboundary
-      (isPreconnectedApproachAt_of_openPartialHomeomorph_homeomorph_image_convex
-        e hz₀ hchart g hconv)
 
-/-- Direct finite-point cusp-exponential boundary-fibre corollary.  Its only model-specific
-condition is that the (open) source chamber stays within the centered logarithm strip. -/
-theorem isPreconnected_boundary_fiber_of_cuspExponential_image
-    (hUo : IsOpen U) (hUb : Bornology.IsBounded U)
-    (hfd : DifferentiableOn ℂ f U) (hfi : InjOn f U)
-    (hFc : ContinuousOn F (closure U)) (hFf : EqOn F f U)
-    {A : Set ℂ} (width : ℝ) (z₀ : ℂ) (hwidth : width ≠ 0)
-    (himage : f '' U =
-      (fun z : ℂ ↦ Complex.exp (2 * Real.pi * Complex.I * z / width)) '' A)
-    (hA : A ⊆ (cuspExponentialLocalChart width z₀ hwidth).source)
-    (g : ℂ ≃ₜ ℂ) (hconv : Convex ℝ (g '' A))
-    (hboundary : Complex.exp (2 * Real.pi * Complex.I * z₀ / width) ∈ frontier (f '' U)) :
-    IsPreconnected
-      {z : frontier U | F z = Complex.exp (2 * Real.pi * Complex.I * z₀ / width)} := by
-  apply isPreconnected_boundary_fiber_of_isPreconnected_image_approach
-    hUo hUb hfd hfi hFc hFf hboundary
-  rw [himage]
-  exact isPreconnectedApproachAt_cuspExponential_image width z₀ hwidth hA g hconv
 
 /-- A local connected-approach basis at every image-boundary point makes every fibre of the
 boundary restriction preconnected. -/

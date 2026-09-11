@@ -131,20 +131,6 @@ public noncomputable def puncturedGlobalFamilyEquivariantUniversalCover_of_funda
       (twoMeridianOrbifoldMap g₁ g₂) integralOrbifoldPeriodMonodromy :=
   chosenEquivariantAffineUniversalCover_of_fundamentalGroupEquiv P.base P.identification
 
-/-- Exact residual statement: the equivariant universal-cover classification for the punctured
-global family follows from the affine fundamental-group identification above.  Conversely the
-only thing the classification is used for downstream is that identification, through
-`EquivariantAffineUniversalCover.fundamentalGroupCorePiOneData`. -/
-public theorem nonempty_chosenEquivariantAffineUniversalCover_of_fundamentalGroup
-    {U : TriangleUniformization} (F : PeriodFunctions U)
-    [PathConnectedSpace (PuncturedGlobalFamily F)]
-    [LocallyPathConnectedSpace (PuncturedGlobalFamily F)]
-    [TauCeti.SemilocallySimplyConnectedSpace (PuncturedGlobalFamily F)]
-    (P : PuncturedGlobalFamilyAffineFundamentalGroup F) :
-    Nonempty (ChosenEquivariantAffineUniversalCover IntegerPeriods Delta
-      (PuncturedGlobalFamily F) (twoMeridianOrbifoldMap g₁ g₂)
-      integralOrbifoldPeriodMonodromy) :=
-  ⟨puncturedGlobalFamilyEquivariantUniversalCover_of_fundamentalGroup F P⟩
 
 end Geometry.GlobalTorusFamily
 

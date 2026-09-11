@@ -20,16 +20,7 @@ open scoped ContinuousMap
 
 namespace SphereSixComplex
 
-/-- The integral singular chain complex of a space. -/
-public abbrev integralSingularChainComplex (X : Type) [TopologicalSpace X] :=
-  ((singularChainComplexFunctor AddCommGrpCat).obj (AddCommGrpCat.of ℤ)).obj (TopCat.of X)
 
-/-- The map of integral singular chain complexes induced by a continuous map. -/
-public noncomputable def integralSingularChainMap
-    {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (f : C(X, Y)) :
-    integralSingularChainComplex X ⟶ integralSingularChainComplex Y :=
-  ((singularChainComplexFunctor AddCommGrpCat).obj (AddCommGrpCat.of ℤ)).map
-    (TopCat.ofHom f)
 
 /-- The map on integral singular homology induced by a continuous map. -/
 public noncomputable def integralSingularHomologyMap
@@ -90,13 +81,6 @@ public theorem stage_last {X : Type} [TopologicalSpace X] (C : FourPieceOpenCove
   · rintro ⟨i, hx⟩
     exact ⟨i, Fin.le_last i, hx⟩
 
-/-- Transport a four-piece open cover through a homeomorphism. -/
-public def homeomorph {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
-    (C : FourPieceOpenCover X) (h : X ≃ₜ Y) : FourPieceOpenCover Y where
-  piece i := h '' C.piece i
-  isOpen_piece i := h.isOpenMap _ (C.isOpen_piece i)
-  covers := by
-    rw [← image_iUnion, C.covers, image_univ, h.surjective.range_eq]
 
 end FourPieceOpenCover
 
@@ -166,75 +150,13 @@ public def FourPieceMayerVietorisExactness
   ∀ r : Fin 3,
     IntegralMayerVietoris.ExactSequence (C.stage r.castSucc) (C.piece r.succ)
 
-/-- The remaining concrete homology computation for a four-piece cover: a comparison map to the
-standard sphere induces a quasi-isomorphism on integral singular chains. -/
-public def FourPieceHomologyComputation
-    {X : Type} [TopologicalSpace X] (_C : FourPieceOpenCover X) : Prop :=
-  ∃ comparison : integralSingularChainComplex X ⟶ integralSingularChainComplex SixSphere,
-    QuasiIso comparison
 
-/-- The full four-piece Mayer--Vietoris contract. Its two fields separate the unavailable
-excision/exactness theorem from the final finite algebraic computation. -/
-public def FourPieceMayerVietorisContract
-    {X : Type} [TopologicalSpace X] (C : FourPieceOpenCover X) : Prop :=
-  FourPieceMayerVietorisExactness C ∧ FourPieceHomologyComputation C
 
-/-- A quasi-isomorphism of integral singular chain complexes gives the desired degreewise integral
-homology equivalences. -/
-public theorem hasIntegralHomologyOfSixSphere_of_quasiIso
-    {X : Type} [TopologicalSpace X]
-    (comparison : integralSingularChainComplex X ⟶ integralSingularChainComplex SixSphere)
-    (h : QuasiIso comparison) :
-    HasIntegralHomologyOfSixSphere X := by
-  intro k
-  let _ : QuasiIso comparison := h
-  exact ⟨(isoOfQuasiIsoAt comparison k).addCommGroupIsoToAddEquiv⟩
 
-/-- The concrete four-piece computation yields the integral homology of the standard six-sphere. -/
-public theorem FourPieceHomologyComputation.hasIntegralHomologyOfSixSphere
-    {X : Type} [TopologicalSpace X] {C : FourPieceOpenCover X}
-    (h : FourPieceHomologyComputation C) : HasIntegralHomologyOfSixSphere X := by
-  obtain ⟨comparison, hcomparison⟩ := h
-  exact hasIntegralHomologyOfSixSphere_of_quasiIso comparison hcomparison
 
-/-- The full Mayer--Vietoris contract has the required homology-sphere output. -/
-public theorem FourPieceMayerVietorisContract.hasIntegralHomologyOfSixSphere
-    {X : Type} [TopologicalSpace X] {C : FourPieceOpenCover X}
-    (h : FourPieceMayerVietorisContract C) : HasIntegralHomologyOfSixSphere X :=
-  h.2.hasIntegralHomologyOfSixSphere
 
-/-- Exactness and the final quasi-isomorphism compose into the full four-piece contract. -/
-public theorem fourPieceMayerVietorisContract_of_quasiIso
-    {X : Type} [TopologicalSpace X] (C : FourPieceOpenCover X)
-    (hExact : FourPieceMayerVietorisExactness C)
-    (comparison : integralSingularChainComplex X ⟶ integralSingularChainComplex SixSphere)
-    (hcomparison : QuasiIso comparison) :
-    FourPieceMayerVietorisContract C :=
-  ⟨hExact, comparison, hcomparison⟩
 
-/-- The homology output of a four-piece computation transports through a homeomorphism. -/
-public theorem FourPieceMayerVietorisContract.hasIntegralHomologyOfSixSphere_homeomorph
-    {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] {C : FourPieceOpenCover X}
-    (hC : FourPieceMayerVietorisContract C) (h : X ≃ₜ Y) :
-    HasIntegralHomologyOfSixSphere Y :=
-  hC.hasIntegralHomologyOfSixSphere.homeomorph h
 
-/-- Combine a four-piece homology computation with the smooth compact connected manifold data. -/
-public theorem FourPieceMayerVietorisContract.smoothIntegralHomologySixSphere
-    {X : Type} [TopologicalSpace X] [ChartedSpace RealModel X]
-    {C : FourPieceOpenCover X} (hC : FourPieceMayerVietorisContract C)
-    (hM : CompactConnectedSmoothSixManifold X) : SmoothIntegralHomologySixSphere X where
-  toCompactConnectedSmoothSixManifold := hM
-  integralHomology := hC.hasIntegralHomologyOfSixSphere
 
-/-- A simply connected smooth four-piece computation supplies the full homology-sphere recognition
-input. -/
-public theorem FourPieceMayerVietorisContract.smoothSimplyConnectedIntegralHomologySixSphere
-    {X : Type} [TopologicalSpace X] [ChartedSpace RealModel X]
-    {C : FourPieceOpenCover X} (hC : FourPieceMayerVietorisContract C)
-    (hM : CompactConnectedSmoothSixManifold X) (hπ₁ : SimplyConnectedSpace X) :
-    SmoothSimplyConnectedIntegralHomologySixSphere X where
-  toSmoothIntegralHomologySixSphere := hC.smoothIntegralHomologySixSphere hM
-  simplyConnected := hπ₁
 
 end SphereSixComplex

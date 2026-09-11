@@ -22,29 +22,6 @@ namespace SphereSixComplex
 
 noncomputable section
 
-/-- A two-ended radial compactness criterion for the product of two maps. -/
-public theorem isProperMap_prod_of_compact_radial_traps
-    {S X Y : Type*} [TopologicalSpace S] [TopologicalSpace X] [TopologicalSpace Y]
-    [T2Space X] [T2Space Y] [CompactlyCoherentSpace (X × Y)]
-    (f : S → X) (g : S → Y) (rho : S → ℝ)
-    (hf : Continuous f) (hg : Continuous g)
-    (hband : ∀ a b : ℝ, IsCompact {s | a ≤ rho s ∧ rho s ≤ b})
-    (hleft : ∀ K : Set X, IsCompact K →
-      ∃ a : ℝ, ∀ s, f s ∈ K → a ≤ rho s)
-    (hright : ∀ K : Set Y, IsCompact K →
-      ∃ b : ℝ, ∀ s, g s ∈ K → rho s ≤ b) :
-    IsProperMap (fun s ↦ (f s, g s)) := by
-  rw [isProperMap_iff_isCompact_preimage]
-  refine ⟨hf.prodMk hg, ?_⟩
-  intro K hK
-  have hKx : IsCompact (Prod.fst '' K) := hK.image continuous_fst
-  have hKy : IsCompact (Prod.snd '' K) := hK.image continuous_snd
-  obtain ⟨a, ha⟩ := hleft _ hKx
-  obtain ⟨b, hb⟩ := hright _ hKy
-  apply (hband a b).of_isClosed_subset
-  · exact hK.isClosed.preimage (hf.prodMk hg)
-  · intro s hs
-    exact ⟨ha s ⟨_, hs, rfl⟩, hb s ⟨_, hs, rfl⟩⟩
 
 /-- Endpoint-aware form of the radial criterion.  Only positive lower bounds and upper bounds
 strictly below the outer radius need compact middle bands. -/
@@ -72,33 +49,7 @@ public theorem isProperMap_prod_of_twoEnded_radial_traps
   · intro s hs
     exact ⟨haK s ⟨_, hs, rfl⟩, hbK s ⟨_, hs, rfl⟩⟩
 
-/-- A continuous real-valued function on the left target supplies the compact lower trap. -/
-public theorem compact_lower_radial_trap_of_factorsThrough
-    {S X : Type*} [TopologicalSpace S] [TopologicalSpace X]
-    (f : S → X) (rho : S → ℝ) (R : X → ℝ) (hR : Continuous R)
-    (heq : ∀ s, rho s = R (f s)) :
-    ∀ K : Set X, IsCompact K → ∃ a : ℝ, ∀ s, f s ∈ K → a ≤ rho s := by
-  intro K hK
-  have hb : BddBelow (R '' K) := (hK.image hR).bddBelow
-  obtain ⟨a, ha⟩ := hb
-  refine ⟨a, ?_⟩
-  intro s hs
-  rw [heq]
-  exact ha ⟨f s, hs, rfl⟩
 
-/-- A continuous real-valued function on the right target supplies the compact upper trap. -/
-public theorem compact_upper_radial_trap_of_factorsThrough
-    {S Y : Type*} [TopologicalSpace S] [TopologicalSpace Y]
-    (g : S → Y) (rho : S → ℝ) (R : Y → ℝ) (hR : Continuous R)
-    (heq : ∀ s, rho s = R (g s)) :
-    ∀ K : Set Y, IsCompact K → ∃ b : ℝ, ∀ s, g s ∈ K → rho s ≤ b := by
-  intro K hK
-  have hb : BddAbove (R '' K) := (hK.image hR).bddAbove
-  obtain ⟨b, hb⟩ := hb
-  refine ⟨b, ?_⟩
-  intro s hs
-  rw [heq]
-  exact hb ⟨g s, hs, rfl⟩
 
 /-- If the target radius is everywhere below an outer radius, compact subsets admit an upper
 bound still strictly below that radius. -/
@@ -123,21 +74,6 @@ namespace OpenEmbeddingStarData
 
 variable (A : OpenEmbeddingStarData)
 
-/-- Radial traps make one paired collar map proper. -/
-public theorem collarPairMap_isProper_of_radialTraps
-    (i : Fin 3) [T2Space A.central] [T2Space (A.filling i)]
-    [CompactlyCoherentSpace (A.central × A.filling i)]
-    (rho : A.collarSource i → ℝ)
-    (hband : ∀ a b : ℝ, IsCompact {s | a ≤ rho s ∧ rho s ≤ b})
-    (hcentral : ∀ K : Set A.central, IsCompact K →
-      ∃ a : ℝ, ∀ s, A.toCentral i s ∈ K → a ≤ rho s)
-    (hfilling : ∀ K : Set (A.filling i), IsCompact K →
-      ∃ b : ℝ, ∀ s, A.toFilling i s ∈ K → rho s ≤ b) :
-    IsProperMap (A.collarPairMap i) := by
-  exact isProperMap_prod_of_compact_radial_traps
-    (A.toCentral i) (A.toFilling i) rho
-    (A.toCentral_isOpenEmbedding i).continuous
-    (A.toFilling_isOpenEmbedding i).continuous hband hcentral hfilling
 
 /-- Endpoint-aware radial traps make one paired collar map proper. -/
 public theorem collarPairMap_isProper_of_twoEndedRadialTraps
@@ -156,22 +92,6 @@ public theorem collarPairMap_isProper_of_twoEndedRadialTraps
     (A.toCentral_isOpenEmbedding i).continuous
     (A.toFilling_isOpenEmbedding i).continuous hband hcentral hfilling
 
-/-- Radial traps for all three collars supply the exact closed-pair datum used by the finite
-gluing criterion. -/
-public theorem closedCollarPairData_of_radialTraps
-    [T2Space A.central] [∀ i, T2Space (A.filling i)]
-    [∀ i, CompactlyCoherentSpace (A.central × A.filling i)]
-    (rho : ∀ i, A.collarSource i → ℝ)
-    (hband : ∀ i a b, IsCompact {s | a ≤ rho i s ∧ rho i s ≤ b})
-    (hcentral : ∀ i (K : Set A.central), IsCompact K →
-      ∃ a : ℝ, ∀ s, A.toCentral i s ∈ K → a ≤ rho i s)
-    (hfilling : ∀ i (K : Set (A.filling i)), IsCompact K →
-      ∃ b : ℝ, ∀ s, A.toFilling i s ∈ K → rho i s ≤ b) :
-    A.ClosedCollarPairData := by
-  apply A.closedCollarPairData_of_isProperMap
-  intro i
-  exact A.collarPairMap_isProper_of_radialTraps i (rho i)
-    (hband i) (hcentral i) (hfilling i)
 
 end OpenEmbeddingStarData
 
@@ -504,15 +424,6 @@ public theorem orderFourStarCollarRadiusBand_isCompact
     P.starSeparation.orderFour.radius a b ha hb
     P.starSeparation.orderFour.radius_lt_one
 
-/-- Compact subsets of every concrete filling give the upper radial trap automatically. -/
-public theorem starCollarRadius_compact_upperTrap (i : Fin 3) :
-    ∀ K : Set (P.StarFilling i), IsCompact K →
-      ∃ b : ℝ, ∀ s, P.starToFilling i s ∈ K → P.starCollarRadius i s ≤ b := by
-  apply compact_upper_radial_trap_of_factorsThrough
-    (P.starToFilling i) (P.starCollarRadius i) (P.starFillingRadius i)
-    (P.starFillingRadius_continuous i)
-  intro s
-  rfl
 
 /-- The filling-side upper trap can be chosen strictly below the selected outer radius. -/
 public theorem starCollarRadius_compact_upperTrap_lt (i : Fin 3) :

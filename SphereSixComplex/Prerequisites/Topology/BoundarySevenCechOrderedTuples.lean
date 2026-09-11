@@ -53,10 +53,6 @@ public theorem support_nonempty {n : SimplexCategoryᵒᵖ}
     a.1.support.Nonempty :=
   a.1.support_nonempty
 
-public theorem support_ssubset_univ {n : SimplexCategoryᵒᵖ}
-    (a : BoundarySevenProperCechTuple n) :
-    a.1.support ⊂ Finset.univ :=
-  Finset.ssubset_iff_subset_ne.mpr ⟨Finset.subset_univ _, a.2⟩
 
 public theorem support_compl_nonempty {n : SimplexCategoryᵒᵖ}
     (a : BoundarySevenProperCechTuple n) :

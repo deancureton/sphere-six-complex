@@ -153,16 +153,6 @@ public theorem deckMap_gTwo_contMDiff (n : WithTop ℕ∞) :
     (parameterMap F p.1).tau_ne_zero p.2 = _
   rw [rightTwoLinearEquiv_apply]
 
-/-- The lifted cusp deck transformation is smooth. -/
-public theorem deckMap_gZero_contMDiff (n : WithTop ℕ∞) :
-    ContMDiff globalDeckTotalModel globalDeckTotalModel n (deckMap F g₀) := by
-  have hbase : ContMDiff globalDeckTotalModel globalDeckBaseModel n
-      (fun p : UpperHalfPlane × ComplexTwoSpace ↦ U.sourceAction g₀ • p.1) :=
-    (U.sourceAction_contMDiff g₀ n).comp contMDiff_fst
-  apply hbase.prodMk
-  convert contMDiff_snd using 1
-  funext p
-  simp [periodTransport_gZero]
 
 private def DeckMapContMDiff (n : WithTop ℕ∞) (g : Delta) : Prop :=
   ContMDiff globalDeckTotalModel globalDeckTotalModel n (deckMap F g)

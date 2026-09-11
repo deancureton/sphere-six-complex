@@ -59,15 +59,7 @@ public theorem leftRel_to_orbitRel (x : Parameters) (z w : ComplexTwoSpace)
     (ComplexTwoSpace ⧸ periodLattice x) → AdditiveTorus x :=
   Quotient.map id (leftRel_to_orbitRel x)
 
-@[simp]
-public theorem toAddQuotient_mk (x : Parameters) (z : ComplexTwoSpace) :
-    toAddQuotient x (Quotient.mk _ z) = QuotientAddGroup.mk z :=
-  rfl
 
-@[simp]
-public theorem ofAddQuotient_mk (x : Parameters) (z : ComplexTwoSpace) :
-    ofAddQuotient x (QuotientAddGroup.mk z) = Quotient.mk _ z :=
-  rfl
 
 /-- The two quotient presentations are canonically homeomorphic. -/
 @[expose] public def homeomorphAddQuotient (x : Parameters) :
@@ -126,11 +118,6 @@ public noncomputable instance (x : Parameters) : ContinuousNeg (AdditiveTorus x)
 public noncomputable instance (x : Parameters) : IsTopologicalAddGroup (AdditiveTorus x) :=
   ⟨⟩
 
-/-- The orbit presentation inherits second countability from the standard quotient additive
-group. -/
-public noncomputable instance (x : Parameters) :
-    SecondCountableTopology (AdditiveTorus x) :=
-  (homeomorphAddQuotient x).secondCountableTopology
 
 end
 

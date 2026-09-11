@@ -53,9 +53,6 @@ public theorem twicePuncturedComplexRight_isOpen :
   exact isOpen_lt continuous_const
     (Complex.continuous_re.comp continuous_subtype_val)
 
-public theorem twicePuncturedComplexOverlap_isOpen :
-    IsOpen twicePuncturedComplexOverlap :=
-  twicePuncturedComplexLeft_isOpen.inter twicePuncturedComplexRight_isOpen
 
 /-- The two half-planes cover every point of the twice-punctured plane. -/
 public theorem twicePuncturedComplexLeft_union_right :

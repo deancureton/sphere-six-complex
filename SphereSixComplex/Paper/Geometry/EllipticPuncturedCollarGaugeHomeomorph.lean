@@ -37,37 +37,7 @@ noncomputable section
 
 variable {U : TriangleUniformization} (F : PeriodFunctions U)
 
-/-- Two holomorphic logarithm branches differ pointwise by an integral multiple of `2 * pi * I`
-on their overlap. -/
-public theorem exists_int_log_branch_difference
-    (B₁ B₂ : HolomorphicLogBranch) (w : ℂ)
-    (h₁ : w ∈ B₁.carrier) (h₂ : w ∈ B₂.carrier) :
-    ∃ k : ℤ, B₂.log w =
-      B₁.log w + ((2 : ℂ) * Real.pi * Complex.I) * k := by
-  have he : Complex.exp (B₂.log w) = Complex.exp (B₁.log w) := by
-    rw [B₂.exp_log w h₂, B₁.exp_log w h₁]
-  obtain ⟨k, hk⟩ := Complex.exp_eq_exp_iff_exists_int.mp he
-  refine ⟨k, ?_⟩
-  rw [hk]
-  ring
 
-/-- The torus-valued logarithmic gauge is independent of the chosen holomorphic branch at every
-point of an overlap. -/
-public theorem logarithmicGaugeMap_eq_of_branches
-    (cayley : UpperHalfPlane → ComplexUnitDisc) (v : Lattice)
-    (B₁ B₂ : HolomorphicLogBranch) (q : TotalSpace (parameterMap F))
-    (h₁ : (cayley (familyTotalSpaceBase F q) : ℂ) ∈ B₁.carrier)
-    (h₂ : (cayley (familyTotalSpaceBase F q) : ℂ) ∈ B₂.carrier) :
-    familyTranslationMap F
-        (logarithmicGaugeSection F cayley v (fun w => B₂.log w)) q =
-      familyTranslationMap F
-        (logarithmicGaugeSection F cayley v (fun w => B₁.log w)) q := by
-  induction q using Quotient.inductionOn with
-  | _ p =>
-    obtain ⟨k, hk⟩ := exists_int_log_branch_difference B₁ B₂
-      (cayley p.1) h₁ h₂
-    exact logarithmicGaugeMap_mk_eq_of_branch_change F cayley v
-      (fun w => B₁.log w) (fun w => B₂.log w) p.1 p.2 k hk
 
 /-- The global formula used to glue the local order-three gauges. -/
 @[expose] public noncomputable def orderThreePrincipalGaugeSection

@@ -229,10 +229,6 @@ private def piece : Fin 2 → Set TwicePuncturedComplex
   | 0 => twicePuncturedComplexLeft
   | 1 => twicePuncturedComplexRight
 
-private theorem piece_isOpen (i : Fin 2) : IsOpen (piece i) := by
-  fin_cases i
-  · exact twicePuncturedComplexLeft_isOpen
-  · exact twicePuncturedComplexRight_isOpen
 
 private theorem piece_covers (x : TwicePuncturedComplex) : ∃ i, piece i ∈ nhds x := by
   have hx : x ∈ twicePuncturedComplexLeft ∪ twicePuncturedComplexRight := by

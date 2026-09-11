@@ -202,17 +202,7 @@ public theorem constructedA2CorrectedLaurentIdentity_neighbor
   (constructedA2CorrectedPlaneTile_neighbor_iff v p q).trans
     (constructedA2NeighborTransition_iff v p q).symm
 
-public theorem constructedA2CorrectedPlaneCenter_e₁ (v : ToricLattice) :
-    constructedA2CorrectedPlaneCenter (v + e₁) - constructedA2CorrectedPlaneCenter v =
-      ![(2 / 3 : ℝ), -2 / 3] := by
-  ext k
-  fin_cases k <;> simp [constructedA2CorrectedPlaneCenter, e₁] <;> ring
 
-public theorem constructedA2CorrectedPlaneCenter_e₂ (v : ToricLattice) :
-    constructedA2CorrectedPlaneCenter (v + e₂) - constructedA2CorrectedPlaneCenter v =
-      ![(4 / 3 : ℝ), 2 / 3] := by
-  ext k
-  fin_cases k <;> simp [constructedA2CorrectedPlaneCenter, e₂] <;> ring
 
 public theorem constructedA2CorrectedPlaneTile_neighbor_e₂_iff
     (v : ToricLattice) (p q : ConstructedA2CellSquare) :

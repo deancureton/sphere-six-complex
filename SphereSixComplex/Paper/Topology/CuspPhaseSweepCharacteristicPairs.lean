@@ -58,35 +58,8 @@ public theorem phaseSweepCylinderPair_apply
   ext j
   fin_cases j <;> rfl
 
-public theorem phaseSweepCylinderPair_zero_filling
-    (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
-    (p : unitInterval × CWCharacteristicClosedBall 1) :
-    actualLocalCuspCentralOrbitMap W ((phaseSweepCylinderPair W 0).right p).1 =
-      cuspFillingPeriodCircle W 0 ((p.1 : ℝ),
-        actualLocalCuspCentralOrbitMap W
-          (constructedCentralOneCell W 0 (fun _ ↦ p.2.1 0))) := by
-  rw [phaseSweepCylinderPair_apply, phaseSweepToFilling_zero]
 
-public theorem phaseSweepCylinderPair_one_filling
-    (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
-    (p : unitInterval × CWCharacteristicClosedBall 1) :
-    actualLocalCuspCentralOrbitMap W ((phaseSweepCylinderPair W 1).right p).1 =
-      cuspFillingPeriodCircle W 0 ((-(p.1 : ℝ) : UnitAddCircle),
-        actualLocalCuspCentralOrbitMap W
-          (constructedCentralOneCell W 1 (fun _ ↦ p.2.1 0))) := by
-  rw [phaseSweepCylinderPair_apply, phaseSweepToFilling_one]
 
-public theorem phaseSweepCylinderPair_two_filling
-    (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
-    (p : unitInterval × CWCharacteristicClosedBall 1) :
-    actualLocalCuspCentralOrbitMap W ((phaseSweepCylinderPair W 2).right p).1 =
-      cuspFillingPeriodCircle W 1 ((-(p.1 : ℝ) : UnitAddCircle),
-        actualLocalCuspCentralOrbitMap W
-          (constructedCentralOneCell W 2 (fun _ ↦ p.2.1 0))) := by
-  rw [phaseSweepCylinderPair_apply, phaseSweepToFilling_two]
 
 public theorem phaseSweepCylinderPair_relativeChainMap
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
@@ -129,16 +102,6 @@ public theorem phaseSweepCylinderGenerator_image
   exact (T.cellBasis_single (ActualLocalCuspCentralOrbitQuotient W) 2
     (phaseSweepCellIndex i)).symm
 
-public theorem phaseSweepCylinderPair_endpoints
-    (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    [T2Space (ActualLocalCuspCentralOrbitQuotient W)] (i : Fin 3)
-    (b : CWCharacteristicClosedBall 1) :
-    (phaseSweepCylinderPair W i).right (0, b) =
-      (phaseSweepCylinderPair W i).right (1, b) := by
-  apply Subtype.ext
-  rw [phaseSweepCylinderPair_apply, phaseSweepCylinderPair_apply]
-  norm_num
-  rw [phaseSweepOrbit_time_zero, phaseSweepOrbit_time_one]
 
 public theorem phaseSweepOrientedPrism_images
     (T : CellularHomology.IntegralComparison) :

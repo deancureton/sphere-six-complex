@@ -176,21 +176,6 @@ private theorem canonical_inclusion_naturality (k : ℕ)
     circleProductIdentityMappingTorusHomeomorph_comp_productFiberInclusion]
   rfl
 
-public theorem canonicalProductFiberInclusion_injective (k : ℕ) :
-    Function.Injective
-      (integralSingularHomologyMap (k + 1) (productFiberInclusion (X := X))) := by
-  let P := circleMappingTorusWangPresentationOfCover (Homeomorph.refl X) k
-  have hhigh : P.highDifference = 0 :=
-    circleMonodromyDifference_refl (F := X) (k + 1)
-  have hPinclusion : Function.Injective P.inclusion := by
-    rw [injective_iff_map_eq_zero]
-    intro x hx
-    obtain ⟨y, hy⟩ := (P.exact_highDifference_inclusion x).mp hx
-    rw [hhigh] at hy
-    simpa using hy.symm
-  intro x y hxy
-  apply hPinclusion
-  rw [← canonical_inclusion_naturality k, ← canonical_inclusion_naturality k, hxy]
 
 public theorem canonicalProductWangBoundary_surjective (k : ℕ) :
     Function.Surjective (canonicalProductWangBoundary (X := X) k) := by
@@ -234,17 +219,6 @@ public theorem canonicalProductWang_exact (k : ℕ) :
         (canonical_inclusion_naturality k x).symm
       _ = eH z := congrArg eH hx
 
-/-- All exactness data of the canonical product Wang presentation. -/
-public theorem canonicalProductWangData (k : ℕ) :
-    Function.Injective
-        (integralSingularHomologyMap (k + 1) (productFiberInclusion (X := X))) ∧
-      Function.Exact
-        (integralSingularHomologyMap (k + 1) (productFiberInclusion (X := X)))
-        (canonicalProductWangBoundary (X := X) k) ∧
-      Function.Surjective (canonicalProductWangBoundary (X := X) k) :=
-  ⟨canonicalProductFiberInclusion_injective k,
-    canonicalProductWang_exact k,
-    canonicalProductWangBoundary_surjective k⟩
 
 end SphereSixComplex.Topology.CircleProductIdentityMappingTorus
 

@@ -36,22 +36,4 @@ public def correctedPositiveDegreeAssembly
 
 end EstablishedSectionSevenCuspTopology
 
-open EstablishedSectionSevenCuspTopology
-
-/-- The actual degree-one cusp attachment difference map is bijective. -/
-public theorem cuspAttachment_differenceMap_one_bijective
-    {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput) :
-    Function.Bijective (IntegralMayerVietoris.differenceMap
-      (A.openEmbeddingStarData.sectionSevenMayerVietorisCover.stage (2 : Fin 4))
-      (A.openEmbeddingStarData.sectionSevenMayerVietorisCover.piece 3) 1) :=
-  (correctedPositiveDegreeAssembly R).toSectionSevenMayerVietorisHomologyAssembly.finalDifferenceOne_bijective
-
-/-- The actual degree-two cusp attachment difference map is bijective. -/
-public theorem cuspAttachment_differenceMap_two_bijective
-    {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput) :
-    Function.Bijective (IntegralMayerVietoris.differenceMap
-      (A.openEmbeddingStarData.sectionSevenMayerVietorisCover.stage (2 : Fin 4))
-      (A.openEmbeddingStarData.sectionSevenMayerVietorisCover.piece 3) 2) :=
-  (correctedPositiveDegreeAssembly R).toSectionSevenMayerVietorisHomologyAssembly.finalDifferenceTwo_bijective
-
 end SphereSixComplex.Geometry.PaperAnalyticData

@@ -132,15 +132,6 @@ public theorem gluingAtlasCompatible_of_crossPiece
     exact transportedPieceCharts_samePiece_compatible D _ i hc hc'
   · exact hcross i j hij c c' hc hc'
 
-/-- Cross-piece compatibility therefore gives the manifold structure on the glued atlas. -/
-public theorem isManifold_gluedChartedSpace_of_crossPiece
-    (D : TopCat.GlueData.{w}) [Nonempty H] [∀ i, Nonempty (D.U i)]
-    [∀ i, ChartedSpace H (D.U i)] [∀ i, IsManifold I n (D.U i)]
-    (hcross : CrossPieceGluingCompatible D (contDiffGroupoid n I)) :
-    @IsManifold 𝕜 inferInstance E inferInstance inferInstance H inferInstance I n
-      (GluedSpace D) inferInstance (gluedChartedSpace D) :=
-  isManifold_gluedChartedSpace D
-    (gluingAtlasCompatible_of_crossPiece D hcross)
 
 /-! ## Piece transitions
 

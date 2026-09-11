@@ -37,17 +37,7 @@ public theorem orderFourPrincipalGauge_fourthTranslation (t : ℝ)
       fourthPeriodFamilyTranslation F t (orderFourPrincipalGaugeEquiv F q) :=
   familyTranslationMap_commute F _ _ q
 
-public theorem orderThreePrincipalGauge_symm_fourthTranslation (t : ℝ)
-    (q : TotalSpace (parameterMap F)) :
-    (orderThreePrincipalGaugeEquiv F).symm (fourthPeriodFamilyTranslation F t q) =
-      fourthPeriodFamilyTranslation F t ((orderThreePrincipalGaugeEquiv F).symm q) :=
-  familyTranslationMap_commute F _ _ q
 
-public theorem orderFourPrincipalGauge_symm_fourthTranslation (t : ℝ)
-    (q : TotalSpace (parameterMap F)) :
-    (orderFourPrincipalGaugeEquiv F).symm (fourthPeriodFamilyTranslation F t q) =
-      fourthPeriodFamilyTranslation F t ((orderFourPrincipalGaugeEquiv F).symm q) :=
-  familyTranslationMap_commute F _ _ q
 
 public theorem movingToFixedCover_fourthTranslation
     (b : UpperHalfPlane) (t : ℝ) (p : UpperHalfPlane × ComplexTwoSpace) :
@@ -89,4 +79,3 @@ public theorem orderFourRealPeriodProductHomeomorph_fourthTranslation (t : ℝ)
     exact additiveTorus_mk_add _ _ _
 
 end SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient
-

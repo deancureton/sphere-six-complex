@@ -79,16 +79,6 @@ public def constructedA2CircleSweepPrism
     (W : ActualPuncturedCuspCollarWitness N constructedModel) (i : Fin 2) :=
   (constructedA2CircleSweepHomotopy W i).singularChainComplexFunctorObjMap (AddCommGrpCat.of ℤ)
 
-public theorem constructedA2CircleSweepPrism_preserves_boundaries
-    (W : ActualPuncturedCuspCollarWitness N constructedModel) (i : Fin 2) (n : ℕ)
-    (z : (cwIntegralSingularChainComplexObj
-      (TopCat.of (ActualLocalCuspCentralOrbitQuotient W))).X n)
-    (hz : ∃ c, (cwIntegralSingularChainComplexObj
-      (TopCat.of (ActualLocalCuspCentralOrbitQuotient W))).d (n + 1) n c = z) :
-    ∃ b, (cwIntegralSingularChainComplexObj
-      (TopCat.of (ActualLocalCuspCentralOrbitQuotient W))).d (n + 2) (n + 1) b =
-        (constructedA2CircleSweepPrism W i).hom n (n + 1) z :=
-  closedHomotopyPrism_preserves_boundaries (constructedA2CircleSweepPrism W i) n z hz
 
 public theorem constructedA2CircleSweepHomotopy_positiveCell
     (W : ActualPuncturedCuspCollarWitness N constructedModel) (i : Fin 2)
@@ -102,22 +92,5 @@ public theorem constructedA2CircleSweepHomotopy_positiveCell
   congr 1
   exact mul_comm _ _
 
-public theorem constructedA2CircleSweepHomotopy_threeCell
-    (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    (t : unitInterval) (b : Fin 2 → ℝ) (s : ℝ) :
-    constructedA2CircleSweepHomotopy W 0
-      (t, constructedA2CorrectedThreeOrbit W 1 (Fin.append b ![s])) =
-      constructedA2CorrectedFourOrbit W (Fin.append b ![2 * (t : ℝ) - 1, s]) := by
-  change constructedA2CentralCompactOrbitMap W _ (constructedA2CorrectedThreeOrbit W 1 _) = _
-  unfold constructedA2CorrectedThreeOrbit constructedA2CorrectedFourOrbit
-  rw [constructedA2CorrectedPhaseOrbit_append, constructedA2CorrectedPhaseOrbit_append,
-    constructedA2CentralCompactOrbitMap_effectivePhase]
-  congr 1
-  rw [← mul_assoc, mul_comm _ (constructedA2ActualBoundaryGauge _), mul_assoc]
-  congr 1
-  ext j
-  fin_cases j <;>
-    simp [constructedA2CircleSweepParameter, constructedA2CircleOnePhase,
-      constructedA2CircleTwoPhase, CircleCell.ballParam]
 
 end SphereSixComplex.Geometry.InfiniteA2Toric

@@ -100,13 +100,6 @@ variable (D : FuchsianPrePeriodData)
   mu_cusp_bounded := D.mu_cusp_bounded
   beta_add_tau_cusp_bounded := D.beta_add_tau_cusp_bounded
 
-/-- The analytic period-function theorem is reduced to explicit equivariant `tau`, `mu`, `beta`
-data and a compact core for the concrete Fuchsian quotient. -/
-public theorem theorem3_4Existence (K : QuotientCompactCore
-    D.toFuchsianModularParameter.toTriangleUniformization) :
-    Nonempty (PeriodFunctions D.toFuchsianModularParameter.toTriangleUniformization) :=
-  show Nonempty (PeriodFunctions D.toFuchsianModularParameter.toTriangleUniformization) from
-    D.toPrePeriodFunctions.exists_shiftedPeriodFunctions K
 
 end FuchsianPrePeriodData
 

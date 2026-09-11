@@ -273,50 +273,7 @@ public noncomputable def orderThreePuncturedProductToCentralMap :
   exact q.comp (A.orderThreePuncturedProductToRegularMap.comp
     A.orderThreePuncturedProductCarrierMap)
 
-/-- Remove the constant collar offset without moving the Cayley coordinate. -/
-public def orderThreePuncturedProduct_offsetHomotopy :
-    letI := A.ellipticThreeBoundaryAction
-    ContinuousMap.Homotopy
-      ((A.orderThreeFillingRelationCayleyPuncturedLoop.prod
-        A.orderThreePrincipalGaugeWithOffsetPath).toContinuousMap)
-      ((A.orderThreeFillingRelationCayleyPuncturedLoop.prod
-        A.orderThreeFillingRelationPrincipalGaugeLoop).toContinuousMap) := by
-  let _ := A.ellipticThreeBoundaryAction
-  let H := A.orderThreePrincipalGaugeOffsetHomotopy
-  exact
-    { toFun := fun st ↦
-        (A.orderThreeFillingRelationCayleyPuncturedLoop st.2, H st)
-      continuous_toFun :=
-        (A.orderThreeFillingRelationCayleyPuncturedLoop.continuous.comp
-          continuous_snd).prodMk H.continuous
-      map_zero_left := by
-        intro t
-        apply Prod.ext
-        · rfl
-        · exact H.map_zero_left t
-      map_one_left := by
-        intro t
-        apply Prod.ext
-        · rfl
-        · exact H.map_one_left t }
 
-/-- In the punctured collar, the actual coordinate loop is freely homotopic to its fibre-first
-product splitting. -/
-public theorem orderThreePuncturedProduct_freeHomotopy_fiberThenBase :
-    letI := A.ellipticThreeBoundaryAction
-    Nonempty (ContinuousMap.Homotopy
-      ((A.orderThreeFillingRelationCayleyPuncturedLoop.prod
-        A.orderThreePrincipalGaugeWithOffsetPath).toContinuousMap)
-      ((((Path.refl A.orderThreeCayleyPuncturedBasepoint).prod
-          A.orderThreeFillingRelationPrincipalGaugeLoop).trans
-        (A.orderThreeFillingRelationCayleyPuncturedLoop.prod
-          (Path.refl (A.orderThreeFillingRelationPrincipalGaugeLoop 0)))).toContinuousMap)) := by
-  let _ := A.ellipticThreeBoundaryAction
-  rcases productLoop_homotopic_fiberThenBase
-      A.orderThreeFillingRelationCayleyPuncturedLoop
-      A.orderThreeFillingRelationPrincipalGaugeLoop with ⟨Hsplit⟩
-  exact ⟨A.orderThreePuncturedProduct_offsetHomotopy.trans
-    (pathHomotopyToFreeHomotopy Hsplit)⟩
 
 /-- Splitting before removing the collar offset is endpoint-relative and therefore preserves
 the endpoint-trace condition required by the final free-homotopy criterion. -/
@@ -355,20 +312,6 @@ public theorem orderThreePuncturedProductToCentralMap_apply_filling
             A.orderThreePrincipalGaugeWithOffsetPath t))) = _
   rw [A.orderThreeRegularLoop_eq_puncturedProductRealization]
 
-/-- The central realization of the local product splitting has an endpoint-relative homotopy
-from the actual projected filling loop before its harmless endpoint cast. -/
-public theorem orderThreeProjectedRegularLoop_homotopic_localFiberThenBase :
-    letI := A.ellipticThreeBoundaryAction
-    Nonempty (Path.Homotopy
-      ((A.orderThreeFillingRelationCayleyPuncturedLoop.prod
-        A.orderThreePrincipalGaugeWithOffsetPath).map
-          A.orderThreePuncturedProductToCentralMap.continuous)
-      (((((Path.refl A.orderThreeCayleyPuncturedBasepoint).prod
-          A.orderThreePrincipalGaugeWithOffsetPath).trans
-        (A.orderThreeFillingRelationCayleyPuncturedLoop.prod
-          (Path.refl (A.orderThreePrincipalGaugeWithOffsetPath 0)))).map
-            A.orderThreePuncturedProductToCentralMap.continuous))) :=
-  A.orderThreePuncturedProductWithOffset_homotopic_fiberThenBase
 
 public theorem ellipticThreeCentralBase_eq_puncturedProductBase :
     letI := A.ellipticThreeBoundaryAction

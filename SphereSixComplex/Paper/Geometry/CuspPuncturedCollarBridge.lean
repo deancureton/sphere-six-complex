@@ -217,14 +217,6 @@ public theorem denseCuspExponentialCover_isOpenQuotientMap :
     denseCuspExponentialCover_isQuotientMap.continuous,
     denseCuspExponentialCover_isOpenMap⟩
 
-/-- The quotient of additive normalized coordinates by the exact exponential-fibre relation is
-canonically homeomorphic to the dense torus. -/
-public noncomputable def additiveCuspQuotientHomeomorph :
-    Quotient (Setoid.ker denseCuspExponentialCover) ≃ₜ DenseTorus := by
-  let f : C(AdditiveCuspCover, DenseTorus) :=
-    ⟨denseCuspExponentialCover, denseCuspExponentialCover_isQuotientMap.continuous⟩
-  have hf : IsQuotientMap f := denseCuspExponentialCover_isQuotientMap
-  exact hf.homeomorph
 
 /-- The part of the dense torus lying over the punctured radius-`r` disc. -/
 public def denseTorusCuspRegion (r : ℝ) : Set DenseTorus :=
@@ -296,23 +288,8 @@ public noncomputable def additiveToPuncturedLocalHomeomorph (M : Model) (r : ℝ
       {p : localCarrier M r // M.t p ≠ 0} :=
   (additiveCuspRadiusQuotientHomeomorph r).trans (torusPuncturedLocalHomeomorph M r)
 
-@[simp]
-public theorem denseCuspExponential_apply_zero (zeta : ComplexTwoSpace) (s : ℂ) :
-    denseCuspExponential zeta s 0 =
-      NormalizedFuchsianCuspCoordinate.exponentialUnit
-        (2 * Real.pi * Complex.I * zeta 0) := rfl
 
-@[simp]
-public theorem denseCuspExponential_apply_one (zeta : ComplexTwoSpace) (s : ℂ) :
-    denseCuspExponential zeta s 1 =
-      NormalizedFuchsianCuspCoordinate.exponentialUnit
-        (2 * Real.pi * Complex.I * zeta 1) := rfl
 
-@[simp]
-public theorem denseCuspExponential_apply_two (zeta : ComplexTwoSpace) (s : ℂ) :
-    denseCuspExponential zeta s 2 =
-      NormalizedFuchsianCuspCoordinate.exponentialUnit
-        (2 * Real.pi * Complex.I * s) := rfl
 
 /-- The third exponential coordinate is exactly the normalized cusp parameter. -/
 public theorem denseCuspExponential_last (zeta : ComplexTwoSpace) (s : ℂ) :
@@ -663,19 +640,6 @@ public theorem lift_regular (W : ActualPuncturedCuspCollarWitness N M)
   apply W.region_regular
   exact ⟨s, ⟨hs, hq⟩, rfl⟩
 
-public theorem closure_region_regular (W : ActualPuncturedCuspCollarWitness N M) :
-    closure (normalizedCuspRegion N W.localWitness.radius) ⊆
-      {z | IsRegularBasePoint
-        (U := E.modularParameter.toTriangleUniformization) z} := by
-  have hsub : normalizedCuspRegion N W.localWitness.radius ⊆ ⋃ g : Delta,
-      (fun z : UpperHalfPlane ↦
-        E.modularParameter.toTriangleUniformization.sourceAction g • z) ''
-          normalizedCuspRegion N W.localWitness.radius := by
-    apply Set.subset_iUnion_of_subset (1 : Delta)
-    intro z hz
-    exact ⟨z, hz, by simp⟩
-  intro z hz
-  exact W.orbitClosure_region_regular (closure_mono hsub hz)
 
 end ActualPuncturedCuspCollarWitness
 
@@ -770,14 +734,6 @@ public def regularCuspFamilyRegion
   {x | (regularTotalSpaceBase (assembledFuchsianPeriodFunctions E D) x : UpperHalfPlane) ∈
     normalizedCuspRegion N W.localWitness.radius}
 
-public theorem regularCuspFamilyRegion_isOpen
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
-    (W : ActualPuncturedCuspCollarWitness N M) :
-    IsOpen (regularCuspFamilyRegion W) := by
-  exact W.region_open.preimage
-    (continuous_subtype_val.comp
-      (regularTotalSpaceBase_continuous (assembledFuchsianPeriodFunctions E D)))
 
 /-- The cusp collar inside the actual `PuncturedGlobalFamily`, defined as the image of the
 selected regular horodisc. -/
@@ -789,29 +745,6 @@ public def puncturedGlobalCuspCollar
   let _ := regularFamilyDeckAction (assembledFuchsianPeriodFunctions E D)
   quotientProjection '' regularCuspFamilyRegion W
 
-/-- The actual global cusp collar is open. -/
-public theorem puncturedGlobalCuspCollar_isOpen
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
-    (W : ActualPuncturedCuspCollarWitness N M) :
-    IsOpen (puncturedGlobalCuspCollar W) := by
-  let _ : MulAction Delta
-      (RegularTotalSpace (assembledFuchsianPeriodFunctions E D)) :=
-    regularFamilyDeckAction (assembledFuchsianPeriodFunctions E D)
-  let hproper : SourceActionProperlyDiscontinuous :=
-    sourceActionProperlyDiscontinuous_of_eq
-      E.modularParameter.toTriangleUniformization_sourceAction
-  let _ : ContinuousConstSMul Delta
-      (RegularTotalSpace (assembledFuchsianPeriodFunctions E D)) :=
-    regularFamilyDeckAction_continuousConstSMul
-      (assembledFuchsianPeriodFunctions E D) hproper
-  let q : RegularTotalSpace (assembledFuchsianPeriodFunctions E D) →
-      PuncturedGlobalFamily (assembledFuchsianPeriodFunctions E D) := quotientProjection
-  have hq : IsOpenMap q := by
-    dsimp only [q]
-    rw [quotientProjection.eq_def]
-    exact isOpenMap_quotient_mk'_mul
-  exact hq _ (regularCuspFamilyRegion_isOpen W)
 
 /-- The additive first-period translation is exactly the actual local cusp action under the
 explicit exponential map. -/
@@ -1502,34 +1435,7 @@ public noncomputable abbrev PuncturedLocalCuspQuotient
     (W : ActualPuncturedCuspCollarWitness N M) :=
   Quotient (puncturedPsiOrbitRel W)
 
-/-- The actual phase-corrected action on the full local toric cusp, including its central
-fibre. -/
-@[instance_reducible] public noncomputable def actualLocalPsiAction
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
-    (W : ActualPuncturedCuspCollarWitness N M) :
-    MulAction (Multiplicative ParameterLattice)
-      (localCarrier M W.localWitness.radius) where
-  smul lambda p :=
-    (NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
-      N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le).psiMap
-        (Multiplicative.toAdd lambda) p
-  one_smul p :=
-    CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients.psiMap_zero _ p
-  mul_smul lambda mu p :=
-    CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients.psiMap_add _
-      (Multiplicative.toAdd lambda) (Multiplicative.toAdd mu) p
 
-public noncomputable def actualLocalPsiOrbitRel
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
-    (W : ActualPuncturedCuspCollarWitness N M) :
-    Setoid (localCarrier M W.localWitness.radius) :=
-  let C :=
-    NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
-      N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
-  letI := C.toCuspActionData.psiAction
-  MulAction.orbitRel (Multiplicative ParameterLattice) _
 
 /-- The full actual local cusp filling at the common quantitative radius. -/
 public noncomputable abbrev ActualLocalCuspFilling
@@ -1672,12 +1578,6 @@ public def actualLocalCuspFillingCollar
     Set (ActualLocalCuspFilling W) :=
   Set.range (puncturedLocalCuspToFilling W)
 
-public theorem actualLocalCuspFillingCollar_isOpen
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
-    (W : ActualPuncturedCuspCollarWitness N M) :
-    IsOpen (actualLocalCuspFillingCollar W) :=
-  (puncturedLocalCuspToFilling_isOpenEmbedding W).isOpen_range
 
 /-- The quotient atlas on the full local cusp filling. -/
 @[instance_reducible]

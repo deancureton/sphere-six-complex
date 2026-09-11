@@ -31,19 +31,8 @@ public def fourthTranslationFourInclusion (A : PaperAnalyticData) :
   ⟨fun q ↦ (A.fourthTranslationFourChart.symm q).1,
     continuous_subtype_val.comp A.fourthTranslationFourChart.symm.continuous⟩
 
-public theorem fourthTranslationCentralInclusion_coe (A : PaperAnalyticData) (q : A.CentralFamily) :
-    (A.fourthTranslationCentralInclusion q).1 =
-      A.openEmbeddingStarData.toFourPieceStarGluingData.glueData.toGlueData.ι none q := rfl
 
-public theorem fourthTranslationThreeInclusion_coe (A : PaperAnalyticData)
-    (q : A.openEmbeddingStarData.filling 1) :
-    (A.fourthTranslationThreeInclusion q).1 =
-      A.openEmbeddingStarData.toFourPieceStarGluingData.glueData.toGlueData.ι (some 1) q := rfl
 
-public theorem fourthTranslationFourInclusion_coe (A : PaperAnalyticData)
-    (q : A.openEmbeddingStarData.filling 2) :
-    (A.fourthTranslationFourInclusion q).1 =
-      A.openEmbeddingStarData.toFourPieceStarGluingData.glueData.toGlueData.ι (some 2) q := rfl
 
 public theorem fourthTranslationThree_glue (A : PaperAnalyticData)
     (q : A.openEmbeddingStarData.collarSource 1) :
@@ -247,32 +236,6 @@ public theorem ellipticFourthTranslation_central (A : PaperAnalyticData)
       (z,A.ellipticCentralImageHomeomorph (A.ellipticCentralImageHomeomorph.symm q))) at h
   simpa only [Homeomorph.apply_symm_apply] using h
 
-public theorem ellipticFourthTranslation_three (A : PaperAnalyticData)
-    (z : UnitAddCircle) (q : A.openEmbeddingStarData.filling 1) :
-    A.ellipticFourthTranslation (z,A.fourthTranslationThreeInclusion q) =
-      A.fourthTranslationThreeInclusion (A.actualOrderThreeFourthTranslation (z,q)) := by
-  have h := ContinuousMap.liftCover_coe
-    (S := A.fourthTranslationPatchSet) (φ := A.fourthTranslationPatch)
-    (hφ := A.fourthTranslationPatch_compatible) (hS := A.fourthTranslationPatchSet_nhds)
-    (i := 1) ⟨(z,A.fourthTranslationThreeInclusion q),
-      (A.fourthTranslationThreeChart.symm q).property⟩
-  change A.ellipticFourthTranslation (z,A.fourthTranslationThreeInclusion q) =
-    A.fourthTranslationThreeInclusion (A.actualOrderThreeFourthTranslation
-      (z,A.fourthTranslationThreeChart (A.fourthTranslationThreeChart.symm q))) at h
-  simpa only [Homeomorph.apply_symm_apply] using h
 
-public theorem ellipticFourthTranslation_four (A : PaperAnalyticData)
-    (z : UnitAddCircle) (q : A.openEmbeddingStarData.filling 2) :
-    A.ellipticFourthTranslation (z,A.fourthTranslationFourInclusion q) =
-      A.fourthTranslationFourInclusion (A.actualOrderFourFourthTranslation (z,q)) := by
-  have h := ContinuousMap.liftCover_coe
-    (S := A.fourthTranslationPatchSet) (φ := A.fourthTranslationPatch)
-    (hφ := A.fourthTranslationPatch_compatible) (hS := A.fourthTranslationPatchSet_nhds)
-    (i := 2) ⟨(z,A.fourthTranslationFourInclusion q),
-      (A.fourthTranslationFourChart.symm q).property⟩
-  change A.ellipticFourthTranslation (z,A.fourthTranslationFourInclusion q) =
-    A.fourthTranslationFourInclusion (A.actualOrderFourFourthTranslation
-      (z,A.fourthTranslationFourChart (A.fourthTranslationFourChart.symm q))) at h
-  simpa only [Homeomorph.apply_symm_apply] using h
 
 end SphereSixComplex.Geometry.PaperAnalyticData

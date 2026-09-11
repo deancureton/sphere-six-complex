@@ -29,25 +29,6 @@ public def SimplicialRealizationUnitLandsInCoverSmall : Prop :=
   SSet.Subcomplex.range (sSetTopAdj.unit.app K) ≤
     coverSmallSingularSubcomplex (SSet.toTop.obj K) U
 
-/-- Elementwise form of cover-smallness: every canonical realized simplex factors through one
-member of the cover. -/
-public theorem simplicialRealizationUnitLandsInCoverSmall_iff :
-    SimplicialRealizationUnitLandsInCoverSmall K U ↔
-      ∀ (n : SimplexCategoryᵒᵖ) (x : K.obj n),
-        ∃ (j : iota)
-          (y : (TopCat.toSSet.obj (TopCat.of (U j))).obj n),
-          (TopCat.toSSet.map
-            (topologicalSubsetInclusion (SSet.toTop.obj K) (U j))).app n y =
-            (sSetTopAdj.unit.app K).app n x := by
-  constructor
-  · intro h n x
-    apply (mem_coverSmallSingularSubcomplex_iff_exists_preimage
-      (SSet.toTop.obj K) U _).mp
-    exact h n ⟨x, rfl⟩
-  · intro h n z hz
-    obtain ⟨x, rfl⟩ := hz
-    exact (mem_coverSmallSingularSubcomplex_iff_exists_preimage
-      (SSet.toTop.obj K) U _).mpr (h n x)
 
 /-- The adjunction unit lifted to the cover-small singular simplicial set. -/
 public noncomputable def simplicialToCoverSmallSingularSet
@@ -300,40 +281,7 @@ public theorem boundarySeven_integralComparison_of_faceNeighborhoodLift
       (∂Δ[7] : SSet.{0}) (AddCommGrpCat.of ℤ) :=
   (boundarySeven_integralComparison_iff_faceNeighborhoodLift hboundary).2 hlift
 
-/-- Any open cover for which the cover-small lift is a quasi-isomorphism supplies the requested
-canonical integral comparison for `∂Δ[7]`. -/
-public theorem boundarySeven_integralComparison_of_coverSmallLift
-    (U : iota → Set (SSet.toTop.obj (∂Δ[7] : SSet.{0})))
-    (hUopen : ∀ i, IsOpen (U i)) (hUcover : ⋃ i, U i = Set.univ)
-    (hsmall : SimplicialRealizationUnitLandsInCoverSmall
-      (∂Δ[7] : SSet.{0}) U)
-    (hlift : QuasiIso (simplicialToCoverSmallSingularChainMap
-      (∂Δ[7] : SSet.{0}) U hsmall)) :
-    SimplicialToSingularComparisonQuasiIsomorphism
-      (∂Δ[7] : SSet.{0}) (AddCommGrpCat.of ℤ) :=
-  (boundarySeven_integralComparison_iff_coverSmallLift
-    U hUopen hUcover hsmall).2 hlift
 
-/-- The exact remaining cover-level input for the integral boundary comparison: an open cover
-subordinate to all canonical simplicial simplices, on which the lifted comparison is a
-quasi-isomorphism. -/
-public def BoundarySevenIntegralCoverSmallComparison : Prop :=
-  ∃ (iota : Type)
-    (U : iota → Set (SSet.toTop.obj (∂Δ[7] : SSet.{0})))
-    (hsmall : SimplicialRealizationUnitLandsInCoverSmall
-      (∂Δ[7] : SSet.{0}) U),
-    (∀ i, IsOpen (U i)) ∧
-      ⋃ i, U i = Set.univ ∧
-      QuasiIso (simplicialToCoverSmallSingularChainMap
-        (∂Δ[7] : SSet.{0}) U hsmall)
 
-/-- The cover-level comparison input implies the requested canonical quasi-isomorphism. -/
-public theorem boundarySeven_integralComparison_of_coverSmallComparison
-    (h : BoundarySevenIntegralCoverSmallComparison) :
-    SimplicialToSingularComparisonQuasiIsomorphism
-      (∂Δ[7] : SSet.{0}) (AddCommGrpCat.of ℤ) := by
-  obtain ⟨iota, U, hsmall, hUopen, hUcover, hlift⟩ := h
-  exact boundarySeven_integralComparison_of_coverSmallLift
-    U hUopen hUcover hsmall hlift
 
 end SphereSixComplex

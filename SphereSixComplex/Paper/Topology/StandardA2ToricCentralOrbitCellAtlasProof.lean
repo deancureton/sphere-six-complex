@@ -233,9 +233,6 @@ public def constructedCentralPhaseTwoCellOne
   Set.InjOn.toPartialEquiv (constructedCentralPhaseFaceOneOrbit W) (Metric.ball 0 1)
     (constructedCentralPhaseFaceOneOrbit_injOn W)
 
-public theorem constructedCentralPhaseTwoCellOne_source_eq
-    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
-    (constructedCentralPhaseTwoCellOne W).source = Metric.ball 0 1 := rfl
 
 public theorem constructedCentralPhaseTwoCellOne_continuousOn
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
@@ -318,9 +315,6 @@ public def constructedCentralPhaseTwoCellTwo
   Set.InjOn.toPartialEquiv (constructedCentralPhaseFaceTwoOrbit W) (Metric.ball 0 1)
     (constructedCentralPhaseFaceTwoOrbit_injOn W)
 
-public theorem constructedCentralPhaseTwoCellTwo_source_eq
-    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
-    (constructedCentralPhaseTwoCellTwo W).source = Metric.ball 0 1 := rfl
 
 public theorem constructedCentralPhaseTwoCellTwo_continuousOn
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :

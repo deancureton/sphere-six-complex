@@ -6,9 +6,6 @@ import SphereSixComplex.Paper.Topology.AffineRealMappingTorusUniversalCover
 open Set Topology
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
-end SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
-
 namespace SphereSixComplex.AffineCyclicQuotientHomology
 open SphereSixComplex SphereSixComplex.Topology
 open SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
@@ -119,16 +116,6 @@ public theorem affineCyclicBoundaryTranslation_smul
     affineCyclicBoundaryDeckData, canonicalCyclicAffineBoundaryDeckData,
     canonicalCyclicAffineTranslation]
 
-public theorem affineCyclicBoundaryMeridian_smul
-    (P : AffineCyclicCentralFiberPresentationData m p D) (z : ComplexTwoSpace) :
-    letI := affineCyclicBoundaryDeckAction P
-    (affineCyclicBoundaryDeckData P).meridian • z =
-      affineEquiv P.affine.lift P.liftTranslation z := by
-  change affineCyclicBoundaryDeckTransform P
-    (affineCyclicBoundaryDeckData P).meridian z = _
-  simp [affineCyclicBoundaryDeckTransform,
-    affineCyclicBoundaryDeckData, canonicalCyclicAffineBoundaryDeckData,
-    canonicalCyclicAffineMeridian, periodVector_zero]
 
 public theorem affineCyclicBoundaryMeridian_pow_smul
     (P : AffineCyclicCentralFiberPresentationData m p D) (z : ComplexTwoSpace) :
@@ -770,17 +757,6 @@ public theorem complexTwoReducedCentralFiberProjection_eq_iff_exists_fillingDeck
   · rintro ⟨g, rfl⟩
     exact complexTwoReducedCentralFiberProjection_fillingDeck_smul P g w
 
-public theorem complexTwoReducedCentralFiberProjection_eq_iff_orbitRel
-    (P : AffineCyclicCentralFiberPresentationData m p D)
-    (z w : ComplexTwoSpace) :
-    letI := affineCyclicFillingDeckAction P
-    complexTwoReducedCentralFiberProjection (D := D) z =
-        complexTwoReducedCentralFiberProjection (D := D) w ↔
-      MulAction.orbitRel (affineCyclicBoundaryDeckData P).FillingDeck
-        ComplexTwoSpace z w := by
-  let _ := affineCyclicFillingDeckAction P
-  rw [complexTwoReducedCentralFiberProjection_eq_iff_exists_fillingDeck]
-  rfl
 
 public theorem affineCyclicFillingDeckAction_continuous
     (P : AffineCyclicCentralFiberPresentationData m p D)
@@ -826,26 +802,6 @@ public theorem orderFourCentralFiberPresentationData_lift_symm_continuous :
   exact LinearMap.continuous_of_finiteDimensional
     (periodTransport g₂ (parameterMap F U.zTwo)).symm.toLinearMap
 
-public theorem orderThreeAffineCyclicFillingDeckAction_continuous :
-    let P := orderThreeCentralFiberPresentationData F
-    letI := affineCyclicFillingDeckAction P
-    ContinuousConstSMul (affineCyclicBoundaryDeckData P).FillingDeck
-      ComplexTwoSpace := by
-  exact affineCyclicFillingDeckAction_continuous _
-    (orderThreeCentralFiberPresentationData_lift_continuous F)
-    (orderThreeCentralFiberPresentationData_lift_symm_continuous F)
 
-public theorem orderFourAffineCyclicFillingDeckAction_continuous :
-    let P := orderFourCentralFiberPresentationData F
-    letI := affineCyclicFillingDeckAction P
-    ContinuousConstSMul (affineCyclicBoundaryDeckData P).FillingDeck
-      ComplexTwoSpace := by
-  exact affineCyclicFillingDeckAction_continuous _
-    (orderFourCentralFiberPresentationData_lift_continuous F)
-    (orderFourCentralFiberPresentationData_lift_symm_continuous F)
 
 end SphereSixComplex.AffineCyclicQuotientHomology
-
-namespace SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
-
-end SphereSixComplex.Topology.PaperMultipleFiberHOneTopology

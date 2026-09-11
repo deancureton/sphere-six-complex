@@ -91,24 +91,7 @@ public theorem HasTopDimensionalSphericalGenerator.homology_comparison
   exact ⟨f, isIntegralHomologyEquivalence_of_sixSphere_zero_six
     hSphere hX f hZero hSix⟩
 
-/-- The identity map is a top-dimensional spherical generator for the standard sphere. -/
-public theorem sixSphere_hasTopDimensionalSphericalGenerator :
-    HasTopDimensionalSphericalGenerator SixSphere :=
-  ⟨ContinuousMap.id SixSphere, (isIntegralHomologyEquivalence_id SixSphere) 6⟩
 
-/-- Postcomposition with a homotopy equivalence preserves a top-dimensional generator. -/
-public theorem HasTopDimensionalSphericalGenerator.of_homotopyEquiv
-    {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
-    (h : HasTopDimensionalSphericalGenerator X) (e : X ≃ₕ Y) :
-    HasTopDimensionalSphericalGenerator Y := by
-  obtain ⟨f, hf⟩ := h
-  refine ⟨e.toFun.comp f, ?_⟩
-  let _ := hf
-  let _ := (homotopyEquiv_isIntegralHomologyEquivalence e) 6
-  change IsIso (((singularHomologyFunctor AddCommGrpCat 6).obj
-    (AddCommGrpCat.of ℤ)).map (TopCat.ofHom f ≫ TopCat.ofHom e.toFun))
-  rw [Functor.map_comp]
-  infer_instance
 
 /-- A concrete classical CW complex having the homotopy type of a space. -/
 public structure CWType.HomotopyModel (X : Type) [TopologicalSpace X] where
@@ -145,12 +128,6 @@ public theorem CWType.of_homotopyEquiv
     homotopyEquiv := ⟨e.trans hM⟩
   }⟩
 
-/-- Classical CW type is invariant under homotopy equivalence. -/
-public theorem CWType.iff_of_homotopyEquiv
-    {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (e : X ≃ₕ Y) :
-    HasCWType X ↔ HasCWType Y :=
-  ⟨CWType.of_homotopyEquiv e.symm,
-    CWType.of_homotopyEquiv e⟩
 
 /-- The explicit finite two-cell model gives the standard six-sphere classical CW type. -/
 public theorem SixSphere.hasCWType : HasCWType SixSphere := by

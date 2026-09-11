@@ -88,6 +88,7 @@ public theorem finrank_range_eq_zero_of_range_eq_bot {M N : Type*}
 public def toIntLinearMap {A B : AddCommGrpCat} (f : A ⟶ B) : A →ₗ[ℤ] B :=
   (ConcreteCategory.hom f).toIntLinearMap
 
+
 local notation "ℓ" => toIntLinearMap
 
 /-- In each degree, the rank of the chain group is the rank of the homology plus the ranks of the

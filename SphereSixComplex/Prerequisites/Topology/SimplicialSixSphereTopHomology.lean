@@ -1,6 +1,9 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.SixSphereDegreeComparison
+public import SphereSixComplex.Prerequisites.Topology.SimplicialSingularComparison
+public import SphereSixComplex.Prerequisites.Topology.SmoothRecognition
+public import Mathlib.Geometry.Manifold.Instances.Sphere
+public import Mathlib.Algebra.Group.Int.Units
 public import Mathlib.AlgebraicTopology.SimplicialSet.Homology.Nondegenerate
 
 /-!
@@ -24,11 +27,6 @@ public noncomputable abbrev boundarySevenNormalizedIntegralChains :
     ChainComplex AddCommGrpCat ℕ :=
   (∂Δ[7] : SSet.{0}).normalizedChainComplex (AddCommGrpCat.of ℤ)
 
-/-- The precise finite integer-matrix calculation left for top homology: the kernel of the
-normalized boundary map from the eight oriented facets is infinite cyclic. -/
-public def BoundarySevenNormalizedTopCyclesOrientation : Prop :=
-  Nonempty ((kernel (boundarySevenNormalizedIntegralChains.d 6 5) :
-    AddCommGrpCat) ≃+ ℤ)
 
 /-- The normalized complex has no incoming group in degree six. -/
 public theorem boundarySeven_normalizedChains_degreeSeven_isZero :
@@ -47,17 +45,5 @@ public noncomputable def boundarySeven_normalizedHomologySixIsoTopCycles :
   exact K.homologyIsoSc' 7 6 5 (by simp) (by simp) ≪≫
     (S.asIsoHomologyπ hf).symm ≪≫ S.cyclesIsoKernel
 
-/-- The finite normalized kernel calculation supplies the combinatorial top generator. -/
-public theorem boundarySevenSimplicialTopHomologyOrientation_of_normalizedCycles
-    (h : BoundarySevenNormalizedTopCyclesOrientation) :
-    BoundarySevenSimplicialTopHomologyOrientation := by
-  obtain ⟨orientation⟩ := h
-  let _ : QuasiIso ((∂Δ[7] : SSet.{0}).toNormalizedChainComplex
-      (AddCommGrpCat.of ℤ)) := inferInstance
-  let normalizationIso := isoOfQuasiIsoAt
-    ((∂Δ[7] : SSet.{0}).toNormalizedChainComplex (AddCommGrpCat.of ℤ)) 6
-  exact ⟨normalizationIso.addCommGroupIsoToAddEquiv.trans
-    (boundarySeven_normalizedHomologySixIsoTopCycles.addCommGroupIsoToAddEquiv.trans
-      orientation)⟩
 
 end SphereSixComplex

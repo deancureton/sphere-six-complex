@@ -137,12 +137,6 @@ public theorem starFilling_t2 (i : Fin 3) : T2Space (A.StarFilling i) := by
   · exact A.orderThreeFilling_t2 A.starSeparation.orderThree.radius
   · exact A.orderFourFilling_t2 A.starSeparation.orderFour.radius
 
-/-- Every piece of the concrete four-piece star is Hausdorff. -/
-public theorem starPiece_t2 (i : Option (Fin 3)) :
-    T2Space (A.openEmbeddingStarData.toFourPieceStarGluingData.glueData.U i) := by
-  cases i with
-  | none => exact A.centralFamily_t2
-  | some i => exact A.starFilling_t2 i
 
 end PaperAnalyticData
 

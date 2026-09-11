@@ -85,32 +85,8 @@ public theorem fundamentalGroupElementOfBaseEq_one
   subst b'
   rfl
 
-@[simp]
-public theorem fundamentalGroupElementOfBaseEq_mul
-    {B : Type*} [TopologicalSpace B] {b b' : B} (hb : b = b')
-    (g h : FundamentalGroup B b) :
-    fundamentalGroupElementOfBaseEq hb (g * h) =
-      fundamentalGroupElementOfBaseEq hb g * fundamentalGroupElementOfBaseEq hb h := by
-  subst b'
-  rfl
 
-@[simp]
-public theorem fundamentalGroupElementOfBaseEq_inv
-    {B : Type*} [TopologicalSpace B] {b b' : B} (hb : b = b')
-    (g : FundamentalGroup B b) :
-    fundamentalGroupElementOfBaseEq hb g⁻¹ =
-      (fundamentalGroupElementOfBaseEq hb g)⁻¹ := by
-  subst b'
-  rfl
 
-@[simp]
-public theorem fundamentalGroupElementOfBaseEq_pow
-    {B : Type*} [TopologicalSpace B] {b b' : B} (hb : b = b')
-    (g : FundamentalGroup B b) (k : ℕ) :
-    fundamentalGroupElementOfBaseEq hb (g ^ k) =
-      fundamentalGroupElementOfBaseEq hb g ^ k := by
-  subst b'
-  rfl
 
 @[simp]
 public theorem fundamentalGroupAddHomOfBaseEq_apply
@@ -223,44 +199,8 @@ public noncomputable def meridian
   letI := D.fillingAction
   exact D.fundamentalGroupData.meridian
 
-/-- The affine monodromy carried by the selected boundary cover. -/
-public noncomputable def monodromy
-    (D : ChosenCyclicAffineFillingCoverModel m Λ B N) :
-    Multiplicative (AddAut Λ) := by
-  letI := D.boundaryDeckGroup
-  letI := D.fillingDeckGroup
-  letI := D.boundaryCoverTopology
-  letI := D.fillingCoverTopology
-  letI := D.boundaryAction
-  letI := D.fillingAction
-  exact D.model.monodromy
 
-/-- In the selected boundary fundamental group, inverse-meridian conjugation realizes the
-selected affine monodromy. -/
-public theorem meridian_inv_conjugates_translation
-    (D : ChosenCyclicAffineFillingCoverModel m Λ B N) (a : Λ) :
-    D.meridian⁻¹ * Additive.toMul (D.translation a) * D.meridian =
-      Additive.toMul (D.translation (D.monodromy.toAdd a)) := by
-  let _ := D.boundaryDeckGroup
-  let _ := D.fillingDeckGroup
-  let _ := D.boundaryCoverTopology
-  let _ := D.fillingCoverTopology
-  let _ := D.boundaryAction
-  let _ := D.fillingAction
-  exact D.model.meridian_inv_conjugates_translation a
 
-/-- If the selected deck monodromy is a right inverse to a displayed lattice monodromy, then
-positive-meridian conjugation realizes the displayed monodromy on boundary fundamental-group
-translations. -/
-public theorem meridian_conjugates_translation_of_rightInverse
-    (D : ChosenCyclicAffineFillingCoverModel m Λ B N) (M : Λ →+ Λ)
-    (hinv : ∀ a, D.monodromy.toAdd (M a) = a) (a : Λ) :
-    D.meridian * Additive.toMul (D.translation a) * D.meridian⁻¹ =
-      Additive.toMul (D.translation (M a)) := by
-  have h := D.meridian_inv_conjugates_translation (M a)
-  rw [hinv] at h
-  rw [← h]
-  group
 
 /-- The lattice twist made by one full cyclic iterate. -/
 public noncomputable def twist

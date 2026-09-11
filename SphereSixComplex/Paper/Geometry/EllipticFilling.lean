@@ -74,16 +74,6 @@ public theorem diagonalGenerator_pow : D.diagonalGenerator ^ m = 1 := by
   rw [hpair, hr, hf]
   rfl
 
-public theorem diagonalGenerator_pow_ne_one {k : ℕ}
-    (hk : 0 < k) (hkm : k < m) :
-    D.diagonalGenerator ^ k ≠ 1 := by
-  intro h
-  have hp := congrArg (fun e : Equiv.Perm (Base × Torus) ↦ e (D.offCenter, 0)) h
-  have hfirst := congrArg Prod.fst hp
-  rw [D.diagonalGenerator_pow_apply] at hfirst
-  simp at hfirst
-  have := (D.rotation_fixed_iff k hk hkm D.offCenter).mp hfirst
-  exact D.offCenter_ne this
 
 @[expose] public noncomputable def representation :
     FiniteCyclic m →* Equiv.Perm (Base × Torus) :=
@@ -107,9 +97,6 @@ public theorem representation_generator :
     rw [map_mul]
     rfl
 
-public theorem smul_eq (g : FiniteCyclic m) (p : Base × Torus) :
-    letI := D.diagonalAction
-    g • p = D.representation g p := rfl
 
 public theorem generator_pow_smul (k : ℕ) (p : Base × Torus) :
     letI := D.diagonalAction
@@ -176,11 +163,6 @@ public theorem isCancelSMul_iff_character :
   · simpa only [D.diagonal_fixed_iff_divides hk hkm] using h k hk hkm
   · simpa only [D.diagonal_fixed_iff_divides hk hkm] using h k hk hkm
 
-public theorem properlyDiscontinuous [TopologicalSpace (Base × Torus)] :
-    letI := D.diagonalAction
-    ProperlyDiscontinuousSMul (FiniteCyclic m) (Base × Torus) := by
-  let _ := D.diagonalAction
-  infer_instance
 
 end EllipticActionData
 
@@ -216,52 +198,6 @@ public theorem neg_epsilonPrime_action_free {Base Torus : Type*} [AddCommGroup T
   rw [hv, gamma_neg_epsilon'] at hdiv
   omega
 
-/-- Mathlib currently constructs the quotient charted space for a free properly discontinuous
-action.  Smooth or holomorphic compatibility of these charts remains a separate geometric input. -/
-public theorem quotient_isQuotientCoveringMap
-    {m : ℕ} [NeZero m] {Base Torus : Type*} [AddCommGroup Torus]
-    [TopologicalSpace (Base × Torus)]
-    [T2Space (Base × Torus)] [LocallyCompactSpace (Base × Torus)]
-    (D : EllipticActionData m Base Torus)
-    (hfree : letI := D.diagonalAction
-      IsCancelSMul (FiniteCyclic m) (Base × Torus))
-    (hcontinuous : ∀ g : FiniteCyclic m,
-      Continuous (fun p : Base × Torus ↦ D.representation g p)) :
-    letI := D.diagonalAction
-    IsQuotientCoveringMap
-      (Quotient.mk (MulAction.orbitRel (FiniteCyclic m) (Base × Torus)))
-      (FiniteCyclic m) := by
-  let _ := D.diagonalAction
-  let _ : IsCancelSMul (FiniteCyclic m) (Base × Torus) := hfree
-  let _ : ContinuousConstSMul (FiniteCyclic m) (Base × Torus) :=
-    ⟨by
-      intro g
-      change Continuous (fun p : Base × Torus ↦ D.representation g p)
-      exact hcontinuous g⟩
-  let _ : ProperlyDiscontinuousSMul (FiniteCyclic m) (Base × Torus) := inferInstance
-  exact isQuotientCoveringMap_quotientMk_of_properlyDiscontinuousSMul
 
-public theorem quotient_chartedSpace
-    {m : ℕ} [NeZero m] {Base Torus H : Type*} [AddCommGroup Torus]
-    [TopologicalSpace (Base × Torus)] [TopologicalSpace H]
-    [T2Space (Base × Torus)] [LocallyCompactSpace (Base × Torus)]
-    [ChartedSpace H (Base × Torus)]
-    (D : EllipticActionData m Base Torus)
-    (hfree : letI := D.diagonalAction
-      IsCancelSMul (FiniteCyclic m) (Base × Torus))
-    (hcontinuous : ∀ g : FiniteCyclic m,
-      Continuous (fun p : Base × Torus ↦ D.representation g p)) :
-    letI := D.diagonalAction
-    Nonempty (ChartedSpace H
-      (MulAction.orbitRel.Quotient (FiniteCyclic m) (Base × Torus))) := by
-  let _ := D.diagonalAction
-  let _ : IsCancelSMul (FiniteCyclic m) (Base × Torus) := hfree
-  let _ : ContinuousConstSMul (FiniteCyclic m) (Base × Torus) :=
-    ⟨by
-      intro g
-      change Continuous (fun p : Base × Torus ↦ D.representation g p)
-      exact hcontinuous g⟩
-  let _ : ProperlyDiscontinuousSMul (FiniteCyclic m) (Base × Torus) := inferInstance
-  exact ⟨inferInstance⟩
 
 end SphereSixComplex.Geometry

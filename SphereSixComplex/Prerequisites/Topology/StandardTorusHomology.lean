@@ -699,16 +699,7 @@ public noncomputable def standardFourTorusCanonicalHomologyOne :
   AddEquiv.ofBijective standardFourTorusCoordinateHom
     ⟨standardFourTorusCoordinateHom_injective, standardFourTorusCoordinateHom_surjective⟩
 
-/-- Recalibrate the choice-based Wang basis to the coordinate-circle basis. -/
-public noncomputable def standardFourTorusCanonicalDegreeOneRecalibration :
-    (Fin 4 → ℤ) ≃+ (Fin 4 → ℤ) :=
-  (stdTorusHomologyOne 4).symm.trans standardFourTorusCanonicalHomologyOne
 
-public theorem standardFourTorusCanonicalDegreeOneRecalibration_apply
-    (x : IntegralSingularHomology 1 (StdTorus 4)) :
-    standardFourTorusCanonicalDegreeOneRecalibration (stdTorusHomologyOne 4 x) =
-      standardFourTorusCanonicalHomologyOne x := by
-  simp [standardFourTorusCanonicalDegreeOneRecalibration]
 
 private def standardRealCoordinateLine (j : Fin 4) : ℝ →+ RealPeriods where
   toFun r := Pi.single j r
@@ -1333,18 +1324,7 @@ public noncomputable def standardFourTorusCanonicalHomologyTwo :
     ⟨standardFourTorusCoordinateTwoTorusHom_injective,
       standardFourTorusCoordinateTwoTorusHom_surjective⟩
 
-/-- Recalibrate the choice-based Wang basis to the coordinate two-torus basis. -/
-public noncomputable def standardFourTorusCanonicalDegreeTwoRecalibration :
-    (Fin 6 → ℤ) ≃+ (Fin 6 → ℤ) :=
-  (stdTorusHomologyTwo 4).symm.trans standardFourTorusCanonicalHomologyTwo
 
-public theorem standardFourTorusCanonicalDegreeTwoRecalibration_apply
-    (x : IntegralSingularHomology 2 (StdTorus 4)) :
-    standardFourTorusCanonicalDegreeTwoRecalibration (stdTorusHomologyTwo 4 x) =
-      standardFourTorusCanonicalHomologyTwo x := by
-  change standardFourTorusCanonicalHomologyTwo
-      ((stdTorusHomologyTwo 4).symm (stdTorusHomologyTwo 4 x)) = _
-  rw [AddEquiv.symm_apply_apply]
 
 private theorem standardFourTorusCanonicalHomologyTwo_coordinate_naturality_of_degree
     (hdegree : StandardTwoTorusDeterminantDegree)

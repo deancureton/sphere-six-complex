@@ -1,7 +1,8 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.IntegralHomologyEuler
-public import SphereSixComplex.Prerequisites.Topology.FiniteCWModel
+public import Mathlib.Topology.CWComplex.Classical.Finite
+public import Mathlib.Topology.Homotopy.Equiv
 public import SphereSixComplex.Prerequisites.Topology.SectionSevenLocalEulerModelsProof
 
 @[expose] public section
@@ -103,23 +104,5 @@ public theorem homotopyEquiv {X Y : Type} [TopologicalSpace X] [TopologicalSpace
     exact ⟨fun x y ↦ eH.symm.injective (@Subsingleton.elim _ h _ _)⟩
 
 end IntegralHomologyFiniteSix
-
-namespace FiniteCWModelSix
-
-/-- Forget the dimension bound on a finite CW model. -/
-public noncomputable def toFiniteModel {X : Type} [TopologicalSpace X]
-    (M : FiniteCWModelSix X) : CWType.FiniteModel X where
-  Carrier := M.Carrier
-  topology := M.topology
-  t2 := M.t2
-  homotopyEquiv := M.homotopyEquiv
-  cwComplex := M.cwComplex
-  finite := M.finite
-
-@[simp]
-public theorem toFiniteModel_cellCount {X : Type} [TopologicalSpace X]
-    (M : FiniteCWModelSix X) (n : ℕ) : M.toFiniteModel.cellCount n = M.cellCount n := rfl
-
-end FiniteCWModelSix
 
 end SphereSixComplex

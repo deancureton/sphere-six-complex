@@ -93,10 +93,6 @@ noncomputable instance (n : ℕ) :
   dsimp only [firstQuadrantTotalDegreeFunctor]
   infer_instance
 
-@[simp]
-public theorem firstQuadrant_totalDegree_eq_add (pq : ℕ × ℕ) :
-    ComplexShape.π (ComplexShape.down ℕ) (ComplexShape.down ℕ)
-      (ComplexShape.down ℕ) pq = pq.1 + pq.2 := rfl
 
 /-- Evaluation of Mathlib's direct-sum total complex agrees with the explicit finite
 antidiagonal coproduct functor above. -/
@@ -216,60 +212,6 @@ public theorem quasiIso_middle_of_shortExact
   change IsIso φ.τ₂
   apply isIso_of_mono_of_epi
 
-/-- A map between two filtrations is a quasi-isomorphism at every finite stage if it is one on
-the initial subobject and on every successive quotient.  The isomorphisms `glue` allow adjacent
-short exact sequences to use merely isomorphic (rather than definitionally equal) models for a
-filtration stage. -/
-public theorem quasiIso_of_successive_shortExact_extensions
-    {C ι : Type*} [Category* C] [Abelian C] {c : ComplexShape ι}
-    (A B : ℕ → ShortComplex (HomologicalComplex C c))
-    (f : ∀ n, A n ⟶ B n)
-    (hA : ∀ n, (A n).ShortExact) (hB : ∀ n, (B n).ShortExact)
-    (hbase : QuasiIso (f 0).τ₁) (hgraded : ∀ n, QuasiIso (f n).τ₃)
-    (glue : ∀ n, Arrow.mk (f n).τ₂ ≅ Arrow.mk (f (n + 1)).τ₁) :
-    ∀ n, QuasiIso (f n).τ₂ := by
-  intro n
-  induction n with
-  | zero =>
-      exact quasiIso_middle_of_shortExact (f 0) (hA 0) (hB 0) hbase (hgraded 0)
-  | succ n ih =>
-      let _ : QuasiIso (f n).τ₂ := ih
-      have hleft : QuasiIso (f (n + 1)).τ₁ :=
-        quasiIso_of_arrow_mk_iso
-          (f n).τ₂ (f (n + 1)).τ₁ (glue n)
-      exact quasiIso_middle_of_shortExact (f (n + 1))
-        (hA (n + 1)) (hB (n + 1)) hleft (hgraded (n + 1))
 
-/-- The finite-filtration criterion specialized to first-quadrant direct-sum totals.  This is the
-formal endpoint consumed by a brutal-column filtration: one supplies short exact bicomplex
-layers, quasi-isomorphisms on the initial layer and the single-column quotients, and the canonical
-identifications between consecutive stages. -/
-public theorem firstQuadrantTotal_quasiIso_of_successive_extensions
-    (A B : ℕ → ShortComplex FirstQuadrantBicomplex)
-    (f : ∀ n, A n ⟶ B n)
-    (hA : ∀ n, (A n).ShortExact) (hB : ∀ n, (B n).ShortExact)
-    (hbase : QuasiIso
-      ((HomologicalComplex₂.totalFunctor AddCommGrpCat
-        (ComplexShape.down ℕ) (ComplexShape.down ℕ) (ComplexShape.down ℕ)).map
-          (f 0).τ₁))
-    (hgraded : ∀ n, QuasiIso
-      ((HomologicalComplex₂.totalFunctor AddCommGrpCat
-        (ComplexShape.down ℕ) (ComplexShape.down ℕ) (ComplexShape.down ℕ)).map
-          (f n).τ₃))
-    (glue : ∀ n, Arrow.mk (f n).τ₂ ≅ Arrow.mk (f (n + 1)).τ₁) :
-    ∀ n, QuasiIso
-      ((HomologicalComplex₂.totalFunctor AddCommGrpCat
-        (ComplexShape.down ℕ) (ComplexShape.down ℕ) (ComplexShape.down ℕ)).map
-          (f n).τ₂) := by
-  let T := HomologicalComplex₂.totalFunctor AddCommGrpCat
-    (ComplexShape.down ℕ) (ComplexShape.down ℕ) (ComplexShape.down ℕ)
-  apply quasiIso_of_successive_shortExact_extensions
-    (fun n => (A n).map T) (fun n => (B n).map T)
-    (fun n => T.mapShortComplex.map (f n))
-  · exact fun n => firstQuadrantTotal_shortExact (A n) (hA n)
-  · exact fun n => firstQuadrantTotal_shortExact (B n) (hB n)
-  · exact hbase
-  · exact hgraded
-  · exact fun n => T.mapArrow.mapIso (glue n)
 
 end SphereSixComplex

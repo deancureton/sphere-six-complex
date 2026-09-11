@@ -9,21 +9,21 @@ open Verso.Genre.Manual
 
 #doc (Manual) "Construction Spine" =>
 
-This chapter follows the condensed Setup and Theorem on the first two PDF pages. Later sections of the
-paper are consulted only when they are needed to prove one of these nodes.
+This chapter follows the construction used by the two Comparator endpoints. Its Lean links refer
+to retained declarations; auxiliary calculations and alternative proof routes are omitted.
 
 :::group "construction_spine"
 The minimal construction and recognition path.
 :::
 
-:::definition "lattice-monodromy-data" (parent := "construction_spine") (lean := "SphereSixComplex.LatticeData.T₁, SphereSixComplex.LatticeData.T₂, SphereSixComplex.LatticeData.T₀, SphereSixComplex.LatticeData.A₁, SphereSixComplex.LatticeData.A₂, SphereSixComplex.LatticeData.M₀")
+:::definition "lattice-monodromy-data" (parent := "construction_spine") (lean := "SphereSixComplex.LatticeData.T₁, SphereSixComplex.LatticeData.T₂, SphereSixComplex.LatticeData.A₁, SphereSixComplex.LatticeData.A₂, SphereSixComplex.LatticeData.M₀")
 The rank-four lattice carries explicit local monodromies of orders three, four, and infinite order at
 the cusp.
 :::
 
-:::theorem "monodromy-identities" (parent := "construction_spine") (lean := "SphereSixComplex.LatticeData.T₁_det, SphereSixComplex.LatticeData.T₂_det, SphereSixComplex.LatticeData.T₁_pow_three, SphereSixComplex.LatticeData.T₂_pow_four, SphereSixComplex.LatticeData.N_sq, SphereSixComplex.LatticeData.A₁_mul_A₂_mul_M₀")
-The displayed matrices are unimodular, the finite monodromies have exact orders three and four, and
-the nilpotent part $`N = T_0-I` satisfies $`N^2=0`.
+:::theorem "monodromy-identities" (parent := "construction_spine") (lean := "SphereSixComplex.LatticeData.T₁_det, SphereSixComplex.LatticeData.T₂_det, SphereSixComplex.LatticeData.T₁_pow_three, SphereSixComplex.LatticeData.T₂_pow_four, SphereSixComplex.LatticeData.A₁_mul_A₂_mul_M₀")
+The displayed matrices are unimodular, the finite monodromies satisfy $`T_1^3=I` and $`T_2^4=I`,
+and the nilpotent part $`N = T_0-I` satisfies $`N^2=0`.
 :::
 
 :::proof "monodromy-identities"
@@ -31,9 +31,8 @@ Expand the four-by-four matrices and check every integral entry. The Lean proof 
 does not use a native evaluator.
 :::
 
-:::theorem "triangle-representation" (parent := "construction_spine") (lean := "SphereSixComplex.TriangleGroup.rhoV, SphereSixComplex.TriangleGroup.rhoLambda, SphereSixComplex.TriangleGroup.rhoV_g₀, SphereSixComplex.TriangleGroup.rhoLambda_g₀")
-The free product $`(\mathbb Z/3)*(\mathbb Z/4)` acts on the rank-four lattice and its dual with the
-prescribed monodromies at the two elliptic points and the cusp.
+:::theorem "triangle-representation" (parent := "construction_spine") (lean := "SphereSixComplex.TriangleGroup.rhoLambda, SphereSixComplex.TriangleGroup.rhoLambda_g₀")
+The free product $`(\mathbb Z/3)*(\mathbb Z/4)` acts on the dual rank-four lattice with the prescribed monodromies. The cusp relation identifies the inverse product of the elliptic generators.
 :::
 
 :::theorem "modular-parameter-action" (parent := "triangle-representation") (lean := "SphereSixComplex.TriangleGroup.rhoTau, SphereSixComplex.TriangleGroup.rhoTauReal_g1_smul, SphereSixComplex.TriangleGroup.rhoTauReal_g2_smul, SphereSixComplex.TriangleGroup.rhoTauReal_g0_smul")
@@ -43,18 +42,11 @@ $`\tau \mapsto \tau-1` at the cusp.
 :::
 
 :::proof "triangle-representation"
-Descend the powers of $`T_1` and $`T_2` to the two cyclic factors, then use the coproduct universal
-property. The cusp relation identifies the inverse product with $`T_0`.
+Descend the dual monodromy powers to the two cyclic factors, then use the coproduct universal property. The cusp relation identifies their inverse product.
 :::
 
-:::theorem "invariant-polarization" (parent := "construction_spine") (lean := "SphereSixComplex.LatticeData.invariant_alternating_matrix_classification, SphereSixComplex.LatticeData.Q₀Matrix_T₁_invariant, SphereSixComplex.LatticeData.Q₀Matrix_T₂_invariant")
-Every integral alternating form invariant under both finite monodromies is an integral multiple of
-the displayed form $`Q_0`.
-:::
-
-:::theorem "dual-coinvariants" (parent := "construction_spine") (lean := "SphereSixComplex.LatticeData.dualCoinvariantRelations_eq_ker_gamma, SphereSixComplex.LatticeData.dualCoinvariantsEquivInt")
-The dual monodromy coinvariants form a free rank-one group detected by the invariant functional
-$`\gamma`.
+:::theorem "dual-coinvariants" (parent := "construction_spine") (lean := "SphereSixComplex.LatticeData.dualCoinvariantRelations_eq_ker_gamma")
+The dual monodromy relation lattice is exactly the kernel of the invariant functional $`\gamma`.
 :::
 
 :::theorem "atlas-transport" (parent := "construction_spine") (lean := "SphereSixComplex.isManifold_transportChartedSpace")
@@ -87,7 +79,7 @@ The Setup inequalities make the four period columns a real basis of $`\mathbb C^
 is preserved by the triangle-group action.
 :::
 
-:::theorem "period-functions" (parent := "construction_spine") (lean := "SphereSixComplex.Periods.FuchsianAffineDescent.exists_periodFunctions_of_generalDescent") (priority := "high")
+:::theorem "period-functions" (parent := "construction_spine") (lean := "SphereSixComplex.Periods.FuchsianAffineDescent.exists_fuchsianPeriodLocalData, SphereSixComplex.Periods.exists_assembledFuchsianPeriodFunctions") (priority := "high")
 There are holomorphic functions $`\tau,\mu,\beta` on the upper half-plane satisfying the transformation,
 cusp-growth, and nondegeneracy conditions listed in the Setup.
 :::
@@ -104,13 +96,7 @@ The normalized level-one modular function $`E_4^3/\Delta` is holomorphic on the 
 invariant under $`\mathrm{SL}_2(\mathbb Z)`.
 :::
 
-:::theorem "identity-source-obstruction" (parent := "period-functions") (lean := "SphereSixComplex.Periods.rhoTauReal_g2_smul_twice, SphereSixComplex.Periods.not_exists_tau_mu_for_rhoTauReal, SphereSixComplex.Periods.not_nonempty_canonicalMuBetaEquivariantData")
-The modular target upper half-plane cannot also serve as the source uniformizing upper half-plane.
-The modular image of the order-four generator acts with order two, while the affine $`\mu` law has
-genuine order four; identifying the two forces the impossible equation $`\tau=0`.
-:::
-
-:::theorem "fuchsian-source-action" (parent := "period-functions") (lean := "SphereSixComplex.TriangleGroup.orderOf_fuchsianOnePerm, SphereSixComplex.TriangleGroup.orderOf_fuchsianTwoPerm, SphereSixComplex.TriangleGroup.fuchsianOneFixedPoint_fixed, SphereSixComplex.TriangleGroup.fuchsianTwoFixedPoint_fixed, SphereSixComplex.TriangleGroup.fuchsianSourceAction_g₀_apply, SphereSixComplex.TriangleGroup.fuchsianCuspRegion_invariant, SphereSixComplex.TriangleGroup.fuchsianSourceAction_contMDiff, SphereSixComplex.TriangleGroup.explicitFuchsianTriangleSource")
+:::theorem "fuchsian-source-action" (parent := "period-functions") (lean := "SphereSixComplex.TriangleGroup.fuchsianOneFixedPoint_fixed, SphereSixComplex.TriangleGroup.fuchsianTwoFixedPoint_fixed, SphereSixComplex.TriangleGroup.fuchsianSourceAction_g₀_apply, SphereSixComplex.TriangleGroup.fuchsianCuspRegion_invariant, SphereSixComplex.TriangleGroup.fuchsianSourceAction_contMDiff")
 Explicit real special-linear matrices give the distinct source action of signature
 $`(3,4,\infty)`: its elliptic generators have exact projective orders three and four, while the
 cusp generator is a horizontal translation preserving the chosen horodisc. Every group element
@@ -122,37 +108,35 @@ The two real half-planes form ping-pong regions for the cyclic factors. Hence th
 projective source representation of their free product is faithful.
 :::
 
-:::theorem "fuchsian-fundamental-region" (parent := "fuchsian-source-action") (lean := "SphereSixComplex.TriangleGroup.FuchsianFundamentalDomain.fuchsianOneFixedPoint_mem_fundamentalTriangle, SphereSixComplex.TriangleGroup.FuchsianFundamentalDomain.fuchsianTwoFixedPoint_mem_fundamentalTriangle, SphereSixComplex.TriangleGroup.FuchsianFundamentalDomain.gOne_rightSide_normSq, SphereSixComplex.TriangleGroup.FuchsianFundamentalDomain.gTwo_leftSide_normSq, SphereSixComplex.TriangleGroup.FuchsianTriangleCover.orientedFundamentalRegion, SphereSixComplex.TriangleGroup.FuchsianTriangleCover.exists_smul_mem_orientedFundamentalRegion")
+:::theorem "fuchsian-fundamental-region" (parent := "fuchsian-source-action") (lean := "SphereSixComplex.TriangleGroup.FuchsianFundamentalDomain.fuchsianOneFixedPoint_mem_fundamentalTriangle, SphereSixComplex.TriangleGroup.FuchsianFundamentalDomain.fuchsianTwoFixedPoint_mem_fundamentalTriangle, SphereSixComplex.TriangleGroup.FuchsianTriangleCover.orientedFundamentalRegion, SphereSixComplex.TriangleGroup.FuchsianTriangleCover.exists_smul_mem_orientedFundamentalRegion")
 The explicit triangle is one reflection chamber. Since $`\Delta=C_3*C_4` is the
 orientation-preserving subgroup, its fundamental region is the union of two adjacent chambers.
 Every upper-half-plane point has a $`\Delta`-translate in this doubled region.
 :::
 
-:::theorem "fuchsian-reduction" (parent := "fuchsian-fundamental-region") (lean := "SphereSixComplex.TriangleGroup.FuchsianTessellation.product_zpow_apply, SphereSixComplex.TriangleGroup.FuchsianTessellation.exists_product_zpow_mem_centered_strip, SphereSixComplex.TriangleGroup.FuchsianTessellation.reductionStep_mem_or_im_lt, SphereSixComplex.TriangleGroup.FuchsianTessellation.exists_smul_mem_coarseFordRegion")
-Integral cusp powers center every point in a fixed strip. Outside the coarse Ford region, the
-order-three generator strictly raises height. An orbit-height maximum therefore supplies a
-translate in the region.
+:::theorem "fuchsian-reduction" (parent := "fuchsian-fundamental-region") (lean := "SphereSixComplex.TriangleGroup.FuchsianTessellation.product_zpow_apply")
+The product of the two Fuchsian generators acts by horizontal translation. Its integral powers give the explicit cusp translation formula used in reduction to the fundamental region.
 :::
 
-:::theorem "fuchsian-arithmetic" (parent := "fuchsian-reduction") (lean := "SphereSixComplex.TriangleGroup.FuchsianArithmetic.quadraticProjectiveRepresentation, SphereSixComplex.TriangleGroup.FuchsianArithmetic.quadraticProjectiveRepresentation_inl_generator, SphereSixComplex.TriangleGroup.FuchsianArithmetic.quadraticProjectiveRepresentation_inr_generator, SphereSixComplex.TriangleGroup.FuchsianArithmetic.positive_bottomRow_bounded_of_normSq_le, SphereSixComplex.TriangleGroup.FuchsianArithmetic.finite_bottomRows_of_normSq_le_of_conjugate_bounded")
+:::theorem "fuchsian-arithmetic" (parent := "fuchsian-reduction") (lean := "SphereSixComplex.TriangleGroup.FuchsianArithmetic.quadraticProjectiveRepresentation, SphereSixComplex.TriangleGroup.FuchsianArithmetic.quadraticProjectiveRepresentation_inl_generator, SphereSixComplex.TriangleGroup.FuchsianArithmetic.quadraticProjectiveRepresentation_inr_generator, SphereSixComplex.TriangleGroup.FuchsianArithmetic.positive_bottomRow_bounded_of_normSq_le")
 The Fuchsian generators lift to an explicit projective representation over $`\mathbb Z[\sqrt2]`.
 Paired real embeddings make bounded denominator sublevels finite once the conjugate bottom rows are
 uniformly bounded. The coefficient-cone invariant below supplies this bound.
 :::
 
-:::theorem "fuchsian-arithmetic-termination" (parent := "fuchsian-arithmetic") (lean := "SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination.wordMatrix_matrixInCoefficientCone, SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination.finite_wordBottomRows_of_normSq_le, SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination.exists_fuchsian_orbitHeightMaximal, SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination.exists_smul_mem_coarseFordRegion, SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination.fuchsianSourceAction_properlyDiscontinuous, SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination.sourceActionProperlyDiscontinuous_of_eq, SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination.fuchsianRegular_isCancelSMul")
+:::theorem "fuchsian-arithmetic-termination" (parent := "fuchsian-arithmetic") (lean := "SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination.wordMatrix_matrixInCoefficientCone, SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination.finite_wordBottomRows_of_normSq_le, SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination.exists_fuchsian_orbitHeightMaximal, SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination.fuchsianSourceAction_properlyDiscontinuous, SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination.sourceActionProperlyDiscontinuous_of_eq")
 Reduced words have entrywise conjugate norm bounded by the distinguished embedding. Consequently,
 denominator sublevels are finite, orbit heights attain maxima, every orbit meets the coarse Ford
 region, and the source action is properly discontinuous. The regular-locus action is free.
 :::
 
-:::theorem "fuchsian-compact-core" (parent := "fuchsian-fundamental-region") (lean := "SphereSixComplex.Periods.orientedFuchsianCompactCore_isCompact, SphereSixComplex.Periods.orientedFundamentalRegion_mem_cusp_or_compactCore, SphereSixComplex.Periods.orientedFuchsianQuotientCompactCore, SphereSixComplex.Periods.FuchsianPrePeriodData.theorem3_4Existence_of_orientedTriangleCover")
+:::theorem "fuchsian-compact-core" (parent := "fuchsian-fundamental-region") (lean := "SphereSixComplex.Periods.orientedFuchsianCompactCore_isCompact, SphereSixComplex.Periods.orientedFundamentalRegion_mem_cusp_or_compactCore, SphereSixComplex.Periods.orientedFuchsianQuotientCompactCore")
 The part of the doubled fundamental region below the standard horodisc lies in an explicit compact
 rectangle. This gives the compact quotient core required by the Schur argument and converts
 Fuchsian pre-period data into the full period family without a false single-chamber premise.
 :::
 
-:::theorem "fuchsian-uniformization-bridge" (parent := "period-functions") (lean := "SphereSixComplex.Periods.FuchsianModularParameter.equivariant, SphereSixComplex.Periods.FuchsianModularParameter.coordinate_invariant, SphereSixComplex.Periods.FuchsianModularParameter.toTriangleUniformization, SphereSixComplex.Periods.FuchsianPrePeriodData.toPrePeriodFunctions, SphereSixComplex.Periods.FuchsianPrePeriodData.theorem3_4Existence")
+:::theorem "fuchsian-uniformization-bridge" (parent := "period-functions") (lean := "SphereSixComplex.Periods.FuchsianModularParameter.equivariant, SphereSixComplex.Periods.FuchsianModularParameter.coordinate_invariant, SphereSixComplex.Periods.FuchsianModularParameter.toTriangleUniformization, SphereSixComplex.Periods.FuchsianPrePeriodData.toPrePeriodFunctions")
 The two generator laws for a holomorphic modular parameter extend to the full free product. Its
 normalized modular invariant supplies the quotient coordinate, and explicit additive period data
 plus a compact quotient core gives the nondegenerate period family.
@@ -165,12 +149,6 @@ ordinary covering away from the branch values, and a simple completed cusp. Thes
 the normalized modular parameter used by the period family.
 :::
 
-:::theorem "local-orbifold-compatibility" (parent := "period-functions") (lean := "SphereSixComplex.Periods.orderOf_targetOnePerm, SphereSixComplex.Periods.orderOf_targetTwoPerm, SphereSixComplex.Periods.explicitLocalOrbifoldActionData, SphereSixComplex.Periods.IsLocallyOrbifoldCompatible.invariant_under_two_square, SphereSixComplex.Periods.IsLocallyOrbifoldCompatible.cusp_value_translation")
-The order-three source and target actions agree, while the order-four source stabilizer maps to an
-order-two target stabilizer. The explicit source and target cusp widths give the local branching
-and translation conditions that the analytic modular parameter must satisfy.
-:::
-
 :::theorem "schur-compactness" (parent := "period-functions") (lean := "SphereSixComplex.Periods.PrePeriodFunctions.schurQuantity_invariant, SphereSixComplex.Periods.PrePeriodFunctions.schurQuantity_cusp_bounded_above, SphereSixComplex.Periods.PrePeriodFunctions.schurQuantity_bounded_above_of_compactCore, SphereSixComplex.Periods.PrePeriodFunctions.exists_shiftedPeriodFunctions")
 The Schur quantity is continuous and invariant under the full triangle group. Its cusp-growth law
 bounds it above on the distinguished horodisc; a compact core meeting every remaining orbit then
@@ -178,17 +156,14 @@ gives the global upper bound needed for the final imaginary shift of $`\beta`, p
 nondegenerate period family.
 :::
 
-:::theorem "period-torsor-algebra" (parent := "period-functions") (lean := "SphereSixComplex.Periods.muAutomorphyOne_cycle, SphereSixComplex.Periods.muAutomorphyTwo_cycle, SphereSixComplex.Periods.betaCocycleOne_cycle, SphereSixComplex.Periods.betaCocycleTwo_cycle, SphereSixComplex.Periods.localBetaOne_transform, SphereSixComplex.Periods.localBetaTwo_transform")
+:::theorem "period-torsor-algebra" (parent := "period-functions") (lean := "SphereSixComplex.Periods.betaCocycleOne_cycle, SphereSixComplex.Periods.betaCocycleTwo_cycle, SphereSixComplex.Periods.localBetaOne_transform, SphereSixComplex.Periods.localBetaTwo_transform")
 The homogeneous automorphy factors and affine substitutions close around the order-three and
 order-four orbits.  The inhomogeneous $`\beta` cocycles sum to zero, and weighted orbit sums give
 the explicit local primitives used to build the two analytic torsors.
 :::
 
-:::theorem "projective-line-cech-splitting" (parent := "period-functions") (lean := "SphereSixComplex.Periods.ProjectiveLineCech.cechDifferentialNegOne_surjective, SphereSixComplex.Periods.ProjectiveLineCech.cechDifferentialZero_surjective, SphereSixComplex.Periods.exists_cech_coboundary_neg_one, SphereSixComplex.Periods.exists_cech_coboundary_zero, SphereSixComplex.Periods.exists_compatibleProjectiveLineNegOneAdjustments, SphereSixComplex.Periods.exists_compatibleProjectiveLineZeroAdjustments")
-Every Laurent-polynomial overlap cocycle on the standard two-chart cover of the projective line is a
-Čech coboundary for both $`\mathcal O(-1)` and $`\mathcal O`. The same Laurent decomposition proves
-the analytic splittings for arbitrary holomorphic functions on $`\mathbb C^\times`; these are
-theorems rather than external inputs.
+:::theorem "projective-line-cech-splitting" (parent := "period-functions") (lean := "SphereSixComplex.Periods.exists_cech_coboundary_neg_one, SphereSixComplex.Periods.exists_cech_coboundary_zero")
+Holomorphic overlap cocycles on the standard two-chart cover of the projective line split for both $`\mathcal O(-1)` and $`\mathcal O`. These analytic Čech splittings are proved in Lean.
 :::
 
 :::theorem "fuchsian-modular-neg-one-frame" (parent := "projective-line-cech-splitting") (lean := "SphereSixComplex.Periods.AnalyticSquareRoot.exists_analyticOnNhd_sq_eq, SphereSixComplex.Periods.exists_exactFuchsianEisensteinSixRoot, SphereSixComplex.Periods.exists_exactFuchsianCuspFrameGerm, SphereSixComplex.Periods.ExactLiftedModularNegOneFrame, SphereSixComplex.Periods.nonempty_exactLiftedModularNegOneFrame, SphereSixComplex.Periods.FuchsianAffineDescent.liftedNegOneInfinityFrame, SphereSixComplex.Periods.FuchsianAffineDescent.cycleRelations")
@@ -197,7 +172,7 @@ two-chart frame for the pulled-back $`\mathcal O(-1)` bundle, including its elli
 factorization. The modular uniformization and frame constructions are proved results.
 :::
 
-:::theorem "fuchsian-mu-torsor-descent" (parent := "fuchsian-modular-neg-one-frame") (lean := "SphereSixComplex.Periods.OrbifoldAffineDescentData.HasAcyclicProjectiveLineFrame, SphereSixComplex.Periods.OrbifoldAffineDescentData.nonempty_analyticDescentData, SphereSixComplex.Periods.FuchsianAffineDescent.muDescentData, SphereSixComplex.Periods.FuchsianAffineDescent.muAnalyticDescentData, SphereSixComplex.Periods.MuTorsorCechLocalData, SphereSixComplex.Periods.FuchsianAffineDescent.exists_muAffineCechSections, SphereSixComplex.Periods.exists_compatibleAdjustedMuSections, SphereSixComplex.Periods.gluedAdjustedMu_holomorphic, SphereSixComplex.Periods.gluedAdjustedMu_transform_one, SphereSixComplex.Periods.gluedAdjustedMu_transform_two, SphereSixComplex.Periods.gluedAdjustedMu_cusp_bounded, SphereSixComplex.Periods.exists_globalFuchsianMu")
+:::theorem "fuchsian-mu-torsor-descent" (parent := "fuchsian-modular-neg-one-frame") (lean := "SphereSixComplex.Periods.OrbifoldAffineDescentData.HasAcyclicProjectiveLineFrame, SphereSixComplex.Periods.OrbifoldAffineDescentData.nonempty_analyticDescentData, SphereSixComplex.Periods.FuchsianAffineDescent.muDescentData, SphereSixComplex.Periods.FuchsianAffineDescent.muAnalyticDescentData, SphereSixComplex.Periods.MuTorsorCechLocalData, SphereSixComplex.Periods.exists_compatibleAdjustedMuSections, SphereSixComplex.Periods.gluedAdjustedMu_holomorphic, SphereSixComplex.Periods.gluedAdjustedMu_transform_one, SphereSixComplex.Periods.gluedAdjustedMu_transform_two, SphereSixComplex.Periods.gluedAdjustedMu_cusp_bounded, SphereSixComplex.Periods.exists_globalFuchsianMu")
 Exact local $`\mathcal O(-1)` torsor data on two invariant quotient charts glues to a global
 holomorphic $`\mu` with both affine generator laws and the required cusp bound. The analytic
 splitting, construction of `AnalyticDescentData`, Čech correction, and global gluing are all proved.
@@ -211,7 +186,7 @@ Applying the same general analytic theorem to the torsor determined by the selec
 constructs the dependent beta certificate; its overlap correction and global gluing are proved.
 :::
 
-:::theorem "fuchsian-period-assembly" (parent := "fuchsian-beta-torsor-descent") (lean := "SphereSixComplex.Periods.FuchsianPeriodLocalData, SphereSixComplex.Periods.assembledFuchsianPrePeriodData, SphereSixComplex.Periods.descendedFuchsianMu_transform_cusp, SphereSixComplex.Periods.descendedFuchsianBeta_transform_cusp, SphereSixComplex.Periods.FuchsianAffineDescent.exists_fuchsianPeriodLocalData, SphereSixComplex.Periods.FuchsianAffineDescent.exists_periodFunctions, SphereSixComplex.Periods.exists_assembledFuchsianPeriodFunctions, SphereSixComplex.Periods.assembledFuchsianPeriodFunctions")
+:::theorem "fuchsian-period-assembly" (parent := "fuchsian-beta-torsor-descent") (lean := "SphereSixComplex.Periods.FuchsianPeriodLocalData, SphereSixComplex.Periods.assembledFuchsianPrePeriodData, SphereSixComplex.Periods.descendedFuchsianMu_transform_cusp, SphereSixComplex.Periods.descendedFuchsianBeta_transform_cusp, SphereSixComplex.Periods.FuchsianAffineDescent.exists_fuchsianPeriodLocalData, SphereSixComplex.Periods.exists_assembledFuchsianPeriodFunctions, SphereSixComplex.Periods.assembledFuchsianPeriodFunctions")
 The two production torsor packages assemble with the established modular parameter into full
 pre-period data. The elliptic generator laws imply the parabolic $`\mu` and $`\beta` laws, and the
 doubled Fuchsian compact core supplies the Schur shift to an actual nondegenerate period family.
@@ -234,17 +209,11 @@ Use {uses "period-functions"}[the period functions] to prove that each period su
 that the monodromy action descends freely away from the elliptic fixed points.
 :::
 
-:::theorem "complex-torus-fibres" (parent := "torus-family") (lean := "SphereSixComplex.Geometry.ComplexTorus.torus_compactSpace, SphereSixComplex.Geometry.ComplexTorus.torus_of_setupInequalities")
-At each nondegenerate parameter, the four periods act freely and properly discontinuously by
-holomorphic translations on $`\mathbb C^2`, and the quotient is a compact complex two-manifold.
+:::theorem "complex-torus-fibres" (parent := "torus-family") (lean := "SphereSixComplex.Geometry.ComplexTorus.torus_compactSpace")
+The quotient of $`\mathbb C^2` by the full-rank period lattice is compact.
 :::
 
-:::theorem "torus-family-equivariance" (parent := "torus-family") (lean := "SphereSixComplex.Geometry.FamilyEquivariance.rhoGOneTorusHomeomorph, SphereSixComplex.Geometry.FamilyEquivariance.rhoGTwoTorusHomeomorph, SphereSixComplex.Geometry.FamilyEquivariance.rhoGZeroTorusHomeomorph, SphereSixComplex.Geometry.FamilyEquivariance.generatorOneTorusHomeomorph_isLocalDiffeomorph")
-The exact period-matrix identities descend to locally complex-diffeomorphic maps between the torus
-quotients over all three triangle-group generators.
-:::
-
-:::theorem "global-torus-family-action" (parent := "torus-family") (lean := "SphereSixComplex.Geometry.GlobalTorusFamily.periodTransport_isComplexLinear, SphereSixComplex.Geometry.GlobalTorusFamily.parameterMap_equivariant, SphereSixComplex.Geometry.GlobalTorusFamily.regularDeckMap_orbitRel_iff, SphereSixComplex.Geometry.GlobalTorusFamily.regularFamilyDeckMap_mul, SphereSixComplex.Geometry.GlobalTorusFamily.regularParameterMap_compactUniformLowerBound, SphereSixComplex.Geometry.GlobalTorusFamily.regularTotalSpace_isManifold_and_projection_isLocalDiffeomorph, SphereSixComplex.Geometry.GlobalTorusFamily.regularFamilyDeckMap_contMDiff, SphereSixComplex.Geometry.GlobalTorusFamily.regularFamilyDeckAction_isCancelSMul_of_fuchsian, SphereSixComplex.Geometry.GlobalTorusFamily.regularFamilyDeckAction_properlyDiscontinuous_of_source, SphereSixComplex.Geometry.GlobalTorusFamily.puncturedGlobalFamily_isManifold_and_projection_isLocalDiffeomorph, SphereSixComplex.Geometry.GlobalTorusFamily.fuchsianPuncturedGlobalFamily_isManifold_and_projection_isLocalDiffeomorph, SphereSixComplex.Geometry.GlobalTorusFamily.PuncturedGlobalFamily")
+:::theorem "global-torus-family-action" (parent := "torus-family") (lean := "SphereSixComplex.Geometry.GlobalTorusFamily.parameterMap_equivariant, SphereSixComplex.Geometry.GlobalTorusFamily.regularDeckMap_orbitRel_iff, SphereSixComplex.Geometry.GlobalTorusFamily.regularFamilyDeckMap_mul, SphereSixComplex.Geometry.GlobalTorusFamily.regularParameterMap_compactUniformLowerBound, SphereSixComplex.Geometry.GlobalTorusFamily.regularTotalSpace_isManifold_and_projection_isLocalDiffeomorph, SphereSixComplex.Geometry.GlobalTorusFamily.regularFamilyDeckMap_contMDiff, SphereSixComplex.Geometry.GlobalTorusFamily.regularFamilyDeckAction_isCancelSMul_of_fuchsian, SphereSixComplex.Geometry.GlobalTorusFamily.regularFamilyDeckAction_properlyDiscontinuous_of_source, SphereSixComplex.Geometry.GlobalTorusFamily.puncturedGlobalFamily_isManifold_and_projection_isLocalDiffeomorph, SphereSixComplex.Geometry.GlobalTorusFamily.fuchsianPuncturedGlobalFamily_isManifold_and_projection_isLocalDiffeomorph, SphereSixComplex.Geometry.GlobalTorusFamily.PuncturedGlobalFamily")
 Integral monodromy extends to complex-linear fibre transport for every triangle-group element.
 The resulting deck action respects the varying period lattice and defines the punctured global
 torus-family quotient before the three local fillings are attached. The regular lattice quotient
@@ -253,7 +222,7 @@ through both quotients, giving the punctured family a complex-threefold atlas wi
 biholomorphic projection.
 :::
 
-:::theorem "elliptic-orbit-freeness" (parent := "torus-family") (lean := "SphereSixComplex.TriangleGroup.BinaryIndexedCoprod.deltaIndexedEquiv, SphereSixComplex.TriangleGroup.BinaryIndexedCoprod.deltaNormalForm, SphereSixComplex.TriangleGroup.BinaryIndexedCoprod.finiteOrder_isConj_inl_or_inr, SphereSixComplex.TriangleGroup.BinaryIndexedCoprod.finiteOrder_fixed_regular_eq_one, SphereSixComplex.TriangleGroup.FreeProductTorsion.fuchsianSourceAction_inl_fixed_iff, SphereSixComplex.TriangleGroup.FreeProductTorsion.fuchsianSourceAction_inr_fixed_iff, SphereSixComplex.TriangleGroup.FuchsianProperFreeness.isOfFinOrder_of_fixed_of_properlyDiscontinuous, SphereSixComplex.TriangleGroup.FuchsianProperFreeness.fuchsian_fixed_regular_eq_one, SphereSixComplex.TriangleGroup.FuchsianProperFreeness.regularLiftedDeckAction_isCancelSMul_of_fuchsian, SphereSixComplex.TriangleGroup.FuchsianProperFreeness.regularLiftedDeckAction_properlyDiscontinuous_of_source")
+:::theorem "elliptic-orbit-freeness" (parent := "torus-family") (lean := "SphereSixComplex.TriangleGroup.BinaryIndexedCoprod.deltaIndexedEquiv, SphereSixComplex.TriangleGroup.BinaryIndexedCoprod.deltaNormalForm, SphereSixComplex.TriangleGroup.BinaryIndexedCoprod.finiteOrder_isConj_inl_or_inr, SphereSixComplex.TriangleGroup.BinaryIndexedCoprod.finiteOrder_fixed_regular_eq_one, SphereSixComplex.TriangleGroup.FreeProductTorsion.fuchsianSourceAction_inl_fixed_iff, SphereSixComplex.TriangleGroup.FreeProductTorsion.fuchsianSourceAction_inr_fixed_iff, SphereSixComplex.TriangleGroup.FuchsianProperFreeness.isOfFinOrder_of_fixed_of_properlyDiscontinuous, SphereSixComplex.TriangleGroup.FuchsianProperFreeness.fuchsian_fixed_regular_eq_one")
 Every nonidentity element of either cyclic factor fixes exactly its marked elliptic point, and its
 conjugates fix exactly the corresponding elliptic orbit. Removing those orbits eliminates all such
 stabilizers. An explicit equivalence with the indexed free product proves every nontrivial
@@ -277,7 +246,7 @@ therefore an open complex one-manifold, giving the correct regular base for the 
 Every lifted deck transformation restricts to a complex-smooth map over this base.
 :::
 
-:::theorem "analytic-torus-family" (parent := "torus-family") (lean := "SphereSixComplex.Geometry.AnalyticTorusFamily.parameterMap_contMDiff, SphereSixComplex.Geometry.AnalyticTorusFamily.periodSection_contMDiff, SphereSixComplex.Geometry.AnalyticTorusFamily.parameterMap_compactUniformLowerBound, SphereSixComplex.Geometry.AnalyticTorusFamily.totalSpace_isManifold_and_projection_isLocalDiffeomorph")
+:::theorem "analytic-torus-family" (parent := "torus-family") (lean := "SphereSixComplex.Geometry.AnalyticTorusFamily.periodSection_contMDiff, SphereSixComplex.Geometry.AnalyticTorusFamily.parameterMap_compactUniformLowerBound, SphereSixComplex.Geometry.AnalyticTorusFamily.totalSpace_isManifold_and_projection_isLocalDiffeomorph")
 The period domain is an open complex three-manifold, the analytic period map and every integral
 period section are complex smooth.  Pointwise full rank gives a uniform lower bound over compact
 base sets, hence a properly discontinuous quotient complex manifold with locally biholomorphic
@@ -289,12 +258,7 @@ The unipotent end admits the toric filling whose central fibre is the opposite-e
 degree-six del Pezzo surface.
 :::
 
-:::theorem "cusp-fan-combinatorics" (parent := "cusp-filling") (lean := "SphereSixComplex.Geometry.CuspCombinatorics.direction_sum_zero, SphereSixComplex.Geometry.CuspCombinatorics.direction_pair_det, SphereSixComplex.Geometry.CuspCombinatorics.hexagonRay_opposite, SphereSixComplex.Geometry.CuspCombinatorics.hexagonCone_det, SphereSixComplex.Geometry.InfiniteA2Toric.a2ConeMatrix_det, SphereSixComplex.Geometry.InfiniteA2Toric.Model.cone_unimodular")
-The three $`A_2` directions sum to zero and consecutive pairs form integral bases.  The six rays of
-the degree-six del Pezzo fan occur in opposite pairs, and every two-dimensional cone is unimodular.
-:::
-
-:::definition "standard-infinite-a2-toric-model" (parent := "cusp-fan-combinatorics") (lean := "SphereSixComplex.Geometry.InfiniteA2Toric.heightOneRay, SphereSixComplex.Geometry.InfiniteA2Toric.a2ConeMatrix, SphereSixComplex.Geometry.InfiniteA2Toric.denseTorusShear, SphereSixComplex.Geometry.InfiniteA2Toric.Model, SphereSixComplex.Geometry.InfiniteA2Toric.Model.variableTorusAction_holomorphic, SphereSixComplex.Geometry.InfiniteA2Toric.model")
+:::definition "standard-infinite-a2-toric-model" (parent := "cusp-filling") (lean := "SphereSixComplex.Geometry.InfiniteA2Toric.heightOneRay, SphereSixComplex.Geometry.InfiniteA2Toric.a2ConeMatrix, SphereSixComplex.Geometry.InfiniteA2Toric.denseTorusShear, SphereSixComplex.Geometry.InfiniteA2Toric.Model, SphereSixComplex.Geometry.InfiniteA2Toric.Model.variableTorusAction_holomorphic")
 The countable smooth fan over the height-one $`A_2` triangulation is constructed in Lean. Its model
 is a connected Hausdorff second-countable complex three-manifold with a dense torus, a height
 character, unimodular $`\mathbb C^3` charts with squarefree equation $`t=z_0z_1z_2`, ray components,
@@ -302,14 +266,14 @@ and integral fan shears. The torus action is jointly holomorphic in coefficientw
 subsets. The phase estimates and quotient constructions are proved separately from this model.
 :::
 
-:::theorem "toric-phase-correction" (parent := "standard-infinite-a2-toric-model") (lean := "SphereSixComplex.Geometry.CuspToricPhaseAction.phaseEmbedding, SphereSixComplex.Geometry.CuspToricPhaseAction.denseTorusShear_phase_commute, SphereSixComplex.Geometry.CuspToricPhaseAction.ToricModel.fanShear_phase_commute, SphereSixComplex.Geometry.CuspToricPhaseAction.HolomorphicPhaseCoefficients.psiMap_add, SphereSixComplex.Geometry.CuspToricPhaseAction.HolomorphicPhaseCoefficients.psiMap_holomorphic, SphereSixComplex.Geometry.CuspToricPhaseAction.HolomorphicPhaseCoefficients.properlyDiscontinuous")
+:::theorem "toric-phase-correction" (parent := "standard-infinite-a2-toric-model") (lean := "SphereSixComplex.Geometry.CuspToricPhaseAction.phaseEmbedding, SphereSixComplex.Geometry.CuspToricPhaseAction.denseTorusShear_phase_commute, SphereSixComplex.Geometry.CuspToricPhaseAction.ToricModel.fanShear_phase_commute")
 The two phase coordinates embed in the dense torus, preserve the height character, and commute
 with every integral fan shear. Exact holomorphic phase coefficients therefore produce the
 corrected lattice action and its holomorphic maps. The fixed-point and compact-overlap estimates
 from the cusp analysis remain explicit hypotheses for freeness and proper discontinuity.
 :::
 
-:::theorem "cusp-period-expansion" (parent := "toric-phase-correction") (lean := "SphereSixComplex.Geometry.CuspPeriodExpansion.nonempty_holomorphicCuspDescent, SphereSixComplex.Geometry.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.periodBlock_eq_smul_B₀_add_correction, SphereSixComplex.Geometry.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.phaseCoefficient_add, SphereSixComplex.Geometry.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.phaseCoefficient_holomorphicOn, SphereSixComplex.Geometry.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.localHolomorphicPhaseCoefficients")
+:::theorem "cusp-period-expansion" (parent := "toric-phase-correction") (lean := "SphereSixComplex.Geometry.CuspPeriodExpansion.nonempty_holomorphicCuspDescent, SphereSixComplex.Geometry.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.periodBlock_eq_smul_B₀_add_correction, SphereSixComplex.Geometry.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.phaseCoefficient_add, SphereSixComplex.Geometry.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.phaseCoefficient_holomorphicOn")
 On an exact normalized cusp lift, bounded periodic holomorphic coefficients descend through
 $`q=\exp(2\pi i s)` and extend over $`q=0`. This gives the local expansion
 $`Z(s)=sB_0+C(q)` and the holomorphic phase factors
@@ -318,7 +282,7 @@ $`c_\lambda(q)=\exp(2\pi i C(q)\lambda)`. The normalized lift is supplied by
 extension of the local coefficients is assumed.
 :::
 
-:::theorem "cusp-local-phase-action" (parent := "cusp-period-expansion") (lean := "SphereSixComplex.Geometry.CuspLocalPhaseAction.cuspNeighborhood, SphereSixComplex.Geometry.CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients.localPhaseTwist_holomorphic, SphereSixComplex.Geometry.CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients.psiMap_add, SphereSixComplex.Geometry.CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients.psiMap_holomorphic, SphereSixComplex.Geometry.CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients.quotient_isQuotientCoveringMap, SphereSixComplex.Geometry.CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients.quotient_isManifold, SphereSixComplex.Geometry.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.toLocalHolomorphicPhaseCoefficients")
+:::theorem "cusp-local-phase-action" (parent := "cusp-period-expansion") (lean := "SphereSixComplex.Geometry.CuspLocalPhaseAction.cuspNeighborhood, SphereSixComplex.Geometry.CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients.localPhaseTwist_holomorphic, SphereSixComplex.Geometry.CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients.psiMap_add, SphereSixComplex.Geometry.CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients.psiMap_holomorphic, SphereSixComplex.Geometry.CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients.quotient_isQuotientCoveringMap, SphereSixComplex.Geometry.CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients.quotient_isManifold")
 Restricting the toric model to the open cusp disc makes the local phase coefficients sufficient.
 Joint holomorphicity of the standard torus action proves the variable phase twist is holomorphic,
 so no entire extension is required. The corrected lattice quotient is a complex three-manifold
@@ -326,12 +290,7 @@ once the two fixed-point estimates and compact-overlap finiteness from the cusp 
 supplied on this restricted carrier.
 :::
 
-:::theorem "cyclic-cusp-quotient" (parent := "cusp-filling") (lean := "SphereSixComplex.Geometry.CyclicCuspQuotient.cuspTranslate_eq_fuchsian_gZero_zpow, SphereSixComplex.Geometry.CyclicCuspQuotient.cuspHorodisc_action_free, SphereSixComplex.Geometry.CyclicCuspQuotient.cuspHorodisc_action_properlyDiscontinuous, SphereSixComplex.Geometry.CyclicCuspQuotient.cuspHorodisc_quotient_isQuotientCoveringMap, SphereSixComplex.Geometry.CyclicCuspQuotient.cuspProduct_generator_agrees_with_familyDeckMap")
-The explicit parabolic source generator acts by integer translations of the invariant horodisc.
-This cyclic action and its product lift are free, properly discontinuous covering actions.
-:::
-
-:::theorem "cusp-action" (parent := "cusp-local-phase-action") (lean := "SphereSixComplex.Geometry.CuspFilling.shearMap_add, SphereSixComplex.Geometry.CuspFilling.CuspActionData.isCancelSMul, SphereSixComplex.Geometry.CuspFilling.CuspActionData.properlyDiscontinuous, SphereSixComplex.Geometry.CuspFilling.quotient_isQuotientCoveringMap, SphereSixComplex.Geometry.CuspFilling.cuspQuotient_isManifold, SphereSixComplex.Geometry.CuspFilling.cuspQuotient_projection_isLocalDiffeomorph")
+:::theorem "cusp-action" (parent := "cusp-local-phase-action") (lean := "SphereSixComplex.Geometry.CuspFilling.CuspActionData.isCancelSMul, SphereSixComplex.Geometry.CuspFilling.CuspActionData.properlyDiscontinuous, SphereSixComplex.Geometry.CuspFilling.quotient_isQuotientCoveringMap")
 The $`B_0` shear preserves the cusp height and translates both classes of $`A_2` triangles.  Given
 the phase estimates of Theorem 4.5, the corrected maps form a free, properly discontinuous lattice
 action.  Local sheets differ by analytic deck maps, so the covering quotient inherits a complex
@@ -343,40 +302,28 @@ Use {uses "torus-family"}[the torus family] and the unimodular cusp lattice map 
 {uses "monodromy-identities"}[the explicit nilpotent monodromy].
 :::
 
-:::theorem "elliptic-fillings" (parent := "construction_spine") (lean := "SphereSixComplex.Geometry.epsilon_action_free, SphereSixComplex.Geometry.neg_epsilonPrime_action_free, SphereSixComplex.Geometry.quotient_isQuotientCoveringMap, SphereSixComplex.Geometry.epsilonQuotient_isManifold, SphereSixComplex.Geometry.negEpsilonPrimeQuotient_isManifold") (priority := "high")
-The order-three and order-four ends admit free logarithmic-transform fillings with the twist vectors
-specified in the Setup.  When the local affine actions are analytic, both covering quotients inherit
-complex-manifold atlases.
+:::theorem "elliptic-fillings" (parent := "construction_spine") (lean := "SphereSixComplex.Geometry.epsilon_action_free, SphereSixComplex.Geometry.neg_epsilonPrime_action_free") (priority := "high")
+The selected order-three and order-four affine actions are free for the twist vectors in the Setup. Their varying-family quotients provide the elliptic filling pieces described below.
 :::
 
-:::theorem "elliptic-local-coordinates" (parent := "elliptic-fillings") (lean := "SphereSixComplex.UpperHalfPlane.norm_cayley_lt_one, SphereSixComplex.Geometry.EllipticLocalCoordinates.orderThreeCayley_generator, SphereSixComplex.Geometry.EllipticLocalCoordinates.orderFourCayley_generator, SphereSixComplex.UpperHalfPlane.cayleyHomeomorph, SphereSixComplex.Geometry.EllipticCayleyHomeomorph.orderThreeCayleyHomeomorph_generator, SphereSixComplex.Geometry.EllipticCayleyHomeomorph.orderFourCayleyHomeomorph_generator, SphereSixComplex.Geometry.EllipticLocalCoordinates.EllipticFiberData.orderThreeActionData_quotient_isManifold, SphereSixComplex.Geometry.EllipticLocalCoordinates.EllipticFiberData.orderFourActionData_quotient_isManifold")
+:::theorem "elliptic-local-coordinates" (parent := "elliptic-fillings") (lean := "SphereSixComplex.UpperHalfPlane.norm_cayley_lt_one, SphereSixComplex.Geometry.EllipticLocalCoordinates.orderThreeCayley_generator, SphereSixComplex.Geometry.EllipticLocalCoordinates.orderFourCayley_generator, SphereSixComplex.UpperHalfPlane.cayleyHomeomorph, SphereSixComplex.Geometry.EllipticCayleyHomeomorph.orderThreeCayleyHomeomorph_generator, SphereSixComplex.Geometry.EllipticCayleyHomeomorph.orderFourCayleyHomeomorph_generator")
 The explicit Cayley formulas give homeomorphisms from the upper half-plane to the unit disc and
 conjugate the source generators to rotations of orders three and four. The remaining affine fibre
 data then gives the free logarithmic-transform quotient manifolds.
 :::
 
-:::theorem "elliptic-local-trivialization" (parent := "elliptic-local-coordinates") (lean := "SphereSixComplex.Geometry.EllipticLocalTrivialization.cayleyDiffeomorph, SphereSixComplex.Geometry.EllipticLocalTrivialization.orderThreeCoverDiffeomorph, SphereSixComplex.Geometry.EllipticLocalTrivialization.orderFourCoverDiffeomorph, SphereSixComplex.Geometry.EllipticLocalTrivialization.orderThreeFamilyCayleyLocalDiffeomorph, SphereSixComplex.Geometry.EllipticLocalTrivialization.orderFourFamilyCayleyLocalDiffeomorph, SphereSixComplex.Geometry.EllipticLocalTrivialization.orderThreeChartDeckEquiv_pow, SphereSixComplex.Geometry.EllipticLocalTrivialization.orderFourChartDeckEquiv_pow, SphereSixComplex.Geometry.EllipticLocalTrivialization.orderThreeFamilyParam_generator_equivariant, SphereSixComplex.Geometry.EllipticLocalTrivialization.orderFourFamilyParam_generator_equivariant")
-The Cayley coordinate and the locally biholomorphic varying-lattice quotient give honest
-pointwise complex charts near both elliptic fibres, with exact cyclic generator formulas and
-descent to the family quotient. Compactness gives finite chart covers of the central fibres, but
-the filling must retain the varying lattice rather than replace it by a fixed torus.
+:::theorem "elliptic-local-trivialization" (parent := "elliptic-local-coordinates") (lean := "SphereSixComplex.Geometry.EllipticLocalTrivialization.cayleyDiffeomorph")
+The Cayley map gives a complex diffeomorphism from the upper half-plane to the unit disc.
 :::
 
-:::definition "elliptic-whole-fibre-compatibility" (parent := "elliptic-local-trivialization") (lean := "SphereSixComplex.Geometry.EllipticWholeFiberCompactCover.familyFiber_isCompact, SphereSixComplex.Geometry.EllipticWholeFiberCompactCover.exists_finite_orderThree_local_chart_cover, SphereSixComplex.Geometry.EllipticWholeFiberCompactCover.exists_finite_orderFour_local_chart_cover, SphereSixComplex.Geometry.EllipticWholeFiberCompactCover.orderThree_pointwise_maps_agree_on_central_fiber, SphereSixComplex.Geometry.EllipticWholeFiberCompactCover.orderFour_pointwise_maps_agree_on_central_fiber, SphereSixComplex.Geometry.EllipticWholeFiberCompactCover.orderThree_overlap_agreement_exact_obstruction, SphereSixComplex.Geometry.EllipticWholeFiberCompactCover.orderFour_overlap_agreement_exact_obstruction")
-The central torus fibres are compact and admit finite covers by the pointwise charts. Their maps
-agree on the central fibre, while agreement on a neighborhood is equivalent to the varying deck
-period lying in the fixed central lattice. Thus a fixed-torus product is only a conditional
-isotrivial model; the paper's required construction is the direct varying-family affine quotient.
-:::
-
-:::theorem "elliptic-family-specialization" (parent := "elliptic-local-trivialization") (lean := "SphereSixComplex.Geometry.EllipticFamilySpecialization.generatorOneAddEquiv_mk, SphereSixComplex.Geometry.EllipticFamilySpecialization.generatorTwoAddEquiv_mk, SphereSixComplex.Geometry.EllipticFamilySpecialization.orderThreeTranslation_torsion, SphereSixComplex.Geometry.EllipticFamilySpecialization.orderFourTranslation_torsion, SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderThreeFiberFixedPointCriterion, SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderFourFiberFixedPointCriterion, SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderThreeFiberData, SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderFourFiberData, SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderThreeAction_free, SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderFourAction_free")
+:::theorem "elliptic-family-specialization" (parent := "elliptic-local-coordinates") (lean := "SphereSixComplex.Geometry.EllipticFamilySpecialization.generatorOneAddEquiv_mk, SphereSixComplex.Geometry.EllipticFamilySpecialization.generatorTwoAddEquiv_mk, SphereSixComplex.Geometry.EllipticFamilySpecialization.orderThreeTranslation_torsion, SphereSixComplex.Geometry.EllipticFamilySpecialization.orderFourTranslation_torsion, SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderThreeFiberFixedPointCriterion, SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderFourFiberFixedPointCriterion, SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderThreeFiberData, SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderFourFiberData, SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderThreeAction_free, SphereSixComplex.Geometry.EllipticFixedPointCriterion.orderFourAction_free")
 The actual period-torus fibres carry the descended generator transports and the prescribed
 $`\varepsilon/3` and $`-\varepsilon'/4` translations. Their affine automorphisms have exact orders
 three and four. An invariant integral coordinate proves the two fixed-point divisibility criteria,
 so both actual local affine actions are unconditionally free.
 :::
 
-:::theorem "elliptic-varying-family-quotients" (parent := "elliptic-family-specialization") (lean := "SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient.orderThreeAffineFamilyAction_free, SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient.orderFourAffineFamilyAction_free, SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient.orderThreeVaryingFamilyQuotient_isManifold_actual, SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient.orderFourVaryingFamilyQuotient_isManifold_actual, SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient.affineGlobalFamilyRepresentation, SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient.affineGlobalFamilyRepresentation_contMDiff, SphereSixComplex.Geometry.EllipticAffineGlobalSeparation.affineGlobalFamilyAction_properlyDiscontinuous, SphereSixComplex.TriangleGroup.commute_gOne_of_fuchsianOneFixed, SphereSixComplex.TriangleGroup.FuchsianTwoFixedCommutation.commute_gTwo_of_fuchsianTwoFixedPoint_fixed, SphereSixComplex.TriangleGroup.eq_inl_of_commute_g₁, SphereSixComplex.TriangleGroup.eq_inr_of_commute_g₂, SphereSixComplex.TriangleGroup.fuchsianOneFixed_iff_mem_range_inl, SphereSixComplex.TriangleGroup.fuchsianTwoFixed_iff_mem_range_inr, SphereSixComplex.Geometry.EllipticAffineGlobalSeparation.orderThreeSmallAffineCollarOrbitSeparation, SphereSixComplex.Geometry.EllipticAffineGlobalSeparation.orderFourSmallAffineCollarOrbitSeparation, SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient.exists_orderThree_injective_affine_collar, SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient.exists_orderFour_injective_affine_collar")
+:::theorem "elliptic-varying-family-quotients" (parent := "elliptic-family-specialization") (lean := "SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient.orderThreeAffineFamilyAction_free, SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient.orderFourAffineFamilyAction_free, SphereSixComplex.TriangleGroup.commute_gOne_of_fuchsianOneFixed, SphereSixComplex.TriangleGroup.FuchsianTwoFixedCommutation.commute_gTwo_of_fuchsianTwoFixedPoint_fixed, SphereSixComplex.TriangleGroup.eq_inl_of_commute_g₁, SphereSixComplex.TriangleGroup.eq_inr_of_commute_g₂, SphereSixComplex.TriangleGroup.fuchsianOneFixed_iff_mem_range_inl, SphereSixComplex.TriangleGroup.fuchsianTwoFixed_iff_mem_range_inr")
 The actual varying torus family carries free analytic affine actions of orders three and four, so
 their finite quotients are complex three-manifolds with locally biholomorphic projections. The two
 actions extend by the free-product universal property to the honest affine $`\Delta` action; this
@@ -392,7 +339,7 @@ $`C_3` and $`C_4` factors, closing both collar separations without an external a
 Use {uses "torus-family"}[the torus family] and the invariant twist vectors fixed by $`A_1` and $`A_2`.
 :::
 
-:::theorem "compact-complex-threefold" (parent := "construction_spine") (lean := "SphereSixComplex.ComplexThreefold, SphereSixComplex.exists_simplyConnected_complexThreefold, SphereSixComplex.CompactComplexStar, SphereSixComplex.Geometry.nonempty_paperAnalyticData_of_descentData, SphereSixComplex.Geometry.PaperAnalyticData.compactComplexStar") (priority := "high")
+:::theorem "compact-complex-threefold" (parent := "construction_spine") (lean := "SphereSixComplex.ComplexThreefold, SphereSixComplex.exists_simplyConnected_complexThreefold, SphereSixComplex.CompactComplexStar, SphereSixComplex.Geometry.PaperAnalyticData.compactComplexStar") (priority := "high")
 The global family and the three fillings glue to a compact connected complex threefold $`X`.
 The analytic package, the actual star's van Kampen data, and the positive-degree homology assembly
 are constructed in Lean and combined by `exists_simplyConnected_complexThreefold`. No construction-specific axiom or
@@ -405,7 +352,7 @@ Glue {uses "cusp-filling"}[the cusp filling] and
 {uses "torus-family"}[torus family], and verify the resulting charts and transition maps.
 :::
 
-:::theorem "manifold-gluing" (parent := "compact-complex-threefold") (lean := "SphereSixComplex.CrossPieceGluingCompatible, SphereSixComplex.gluingAtlasCompatible_of_crossPiece, SphereSixComplex.pieceInclusion_contMDiff_of_crossPiece, SphereSixComplex.gluedChartedSpace, SphereSixComplex.isManifold_gluedChartedSpace, SphereSixComplex.secondCountableTopology_gluedSpace, SphereSixComplex.compactSpace_gluedSpace, SphereSixComplex.connectedSpace_gluedSpace, SphereSixComplex.BiholomorphicStarGluing.BiholomorphicFourPieceStarData.gluing_atlas_compatible, SphereSixComplex.ComplexThreefold.RealAtlas.isManifold, SphereSixComplex.CompactComplexStar.gluedSecondCountable")
+:::theorem "manifold-gluing" (parent := "compact-complex-threefold") (lean := "SphereSixComplex.CrossPieceGluingCompatible, SphereSixComplex.gluingAtlasCompatible_of_crossPiece, SphereSixComplex.gluedChartedSpace, SphereSixComplex.isManifold_gluedChartedSpace, SphereSixComplex.secondCountableTopology_gluedSpace, SphereSixComplex.connectedSpace_gluedSpace, SphereSixComplex.BiholomorphicStarGluing.BiholomorphicFourPieceStarData.gluing_atlas_compatible, SphereSixComplex.ComplexThreefold.RealAtlas.isManifold, SphereSixComplex.CompactComplexStar.gluedSecondCountable")
 Compatible atlases on the filling pieces transport to their topological gluing and make the glued
 space a manifold. A countable open gluing of second-countable pieces is second countable, and
 connected pieces with a connected overlap graph give a connected gluing. Restriction of a complex atlas to
@@ -438,17 +385,12 @@ Apply van Kampen to {uses "compact-complex-threefold"}[the glued threefold] and 
 presentation using the explicit lattice coinvariants.
 :::
 
-:::theorem "twist-obstruction" (parent := "fundamental-group") (lean := "SphereSixComplex.Topology.TwistObstruction.abs_p, SphereSixComplex.Topology.TwistObstruction.obstruction_group_eq_zero")
-For the chosen twist vectors the obstruction integer
-$`12\ell_0-4\ell_1-3\ell_2` has absolute value one, so its cyclic quotient is trivial.
-:::
-
 :::theorem "fundamental-group-recognition" (parent := "fundamental-group") (lean := "SphereSixComplex.Topology.HasVanKampenData.exists_fundamentalGroup_equiv, SphereSixComplex.Topology.HasVanKampenData.simplyConnectedSpace")
 Once van Kampen identifies the fundamental group with the obstruction group, the selected twists
 make it trivial and hence make the path-connected threefold simply connected.
 :::
 
-:::theorem "fundamental-group-presentation" (parent := "fundamental-group") (lean := "SphereSixComplex.Topology.PaperVanKampenFourPieceCover.pairwiseVanKampenCocone_isColimit, SphereSixComplex.Topology.PaperVanKampenGeometryData.toHasVanKampenData, SphereSixComplex.Topology.hasVanKampenData_of_fullRelations, SphereSixComplex.Topology.paperRelation_iff_classifier_zero, SphereSixComplex.Topology.paperPresentedGroupEquiv, SphereSixComplex.Topology.paperCanonicalEquiv, SphereSixComplex.Topology.HasVanKampenData.exists_fundamentalGroup_equiv, SphereSixComplex.Topology.HasVanKampenData.simplyConnectedSpace")
+:::theorem "fundamental-group-presentation" (parent := "fundamental-group") (lean := "SphereSixComplex.Topology.hasVanKampenData_of_fullRelations, SphereSixComplex.Topology.paperRelation_iff_classifier_zero, SphereSixComplex.Topology.paperPresentedGroupEquiv, SphereSixComplex.Topology.paperCanonicalEquiv, SphereSixComplex.Topology.HasVanKampenData.exists_fundamentalGroup_equiv, SphereSixComplex.Topology.HasVanKampenData.simplyConnectedSpace")
 The three van Kampen generators reduce to a two-generator integral presentation.  Its relation
 lattice is exactly the kernel of the cyclic classifier, so the quotient has order
 $`|12\ell_0-4\ell_1-3\ell_2|`.  Concrete generators satisfying the relations, generating the
@@ -466,7 +408,7 @@ charted space over a normed model is.  Consequently the core inclusion surjects 
 as soon as each filling's fundamental group is generated by its overlap with the core.
 :::
 
-:::theorem "local-fundamental-groups" (parent := "fundamental-group-presentation") (lean := "SphereSixComplex.QuotientCoverMapData.fundamentalGroupEquiv_natural, SphereSixComplex.toricFillingPiOneData, SphereSixComplex.cyclicAffineFillingPiOneData, SphereSixComplex.Geometry.PaperAnalyticData.vanKampenCorePiOneData, SphereSixComplex.Geometry.PaperAnalyticData.hasVanKampenData_of_overlapSurjective_of_relations")
+:::theorem "local-fundamental-groups" (parent := "fundamental-group-presentation") (lean := "SphereSixComplex.QuotientCoverMapData.fundamentalGroupEquiv_natural, SphereSixComplex.toricFillingPiOneData, SphereSixComplex.cyclicAffineFillingPiOneData")
 For a regular quotient cover with simply connected total space the fundamental group of the base
 is the opposite deck group, and an equivariant square induces the deck homomorphism, so the toric
 and cyclic filling computations are pure group theory about that homomorphism: surjectivity and
@@ -484,22 +426,19 @@ Compute the Mayer--Vietoris sequence of {uses "compact-complex-threefold"}[the s
 the integral specialization maps and their saturation.
 :::
 
-:::definition "homology-sphere-contract" (parent := "integral-homology") (lean := "SphereSixComplex.HasIntegralHomologyOfSixSphere, SphereSixComplex.SixSphereRecognitionInput")
-The recognition input records path connectedness, simple connectedness, and degreewise integral
-singular homology equivalence with the standard six-sphere.
+:::definition "homology-sphere-contract" (parent := "integral-homology") (lean := "SphereSixComplex.HasIntegralHomologyOfSixSphere")
+The homology condition is a degreewise additive equivalence between integral singular homology and that of the standard six-sphere. Simple connectedness is proved separately.
 :::
 
-:::definition "mayer-vietoris-contract" (parent := "integral-homology") (lean := "SphereSixComplex.BinaryOpenCover.integralOpenCoverComparisonStatement_of_binaryOpenCoverSubdivision, SphereSixComplex.IntegralMayerVietoris.exact_sequence_of_isOpen, SphereSixComplex.establishedFourPieceMayerVietorisExactness, SphereSixComplex.fourPieceMayerVietorisContract_of_homologyComputation, SphereSixComplex.FourPieceMayerVietorisExactness, SphereSixComplex.FourPieceHomologyComputation")
+:::definition "mayer-vietoris-contract" (parent := "integral-homology") (lean := "SphereSixComplex.IntegralMayerVietoris.exact_sequence_of_isOpen, SphereSixComplex.establishedFourPieceMayerVietorisExactness, SphereSixComplex.FourPieceMayerVietorisExactness")
 Binary open-cover exactness for integral singular homology is proved using chain corestriction,
 subdivision, excision, and the cover-small chain comparison. Applying it to the three successive
 unions in the four-piece cover gives the Mayer--Vietoris sequences used in the construction.
 The actual inclusion maps and their coordinate comparisons are computed separately.
 :::
 
-:::theorem "section-seven-integer-algebra" (parent := "integral-homology") (lean := "SphereSixComplex.Topology.PaperLemmaSevenThirteenAlgebra.range_orderOneRelationMap_eq_ker, SphereSixComplex.Topology.PaperLemmaSevenThirteenAlgebra.range_orderTwoRelationMap_eq_ker, SphereSixComplex.Topology.PaperCuspSpecializationAlgebra.mZeroExteriorTwoSpecialization_surjective, SphereSixComplex.Topology.PaperCuspSpecializationAlgebra.ker_mZeroExteriorTwoSpecialization, SphereSixComplex.Topology.PaperPropositionSevenFourteenDegreeTwoAlgebra.orderFourCandidateQuotientEquivZModTwo_q, SphereSixComplex.firstHomologyPresentation_exact, SphereSixComplex.alphaOne_kernel, SphereSixComplex.alphaTwoPresentation_exact, SphereSixComplex.chosenLerayDifferential_bijective, SphereSixComplex.hasIntegralHomologyOfSixSphere_of_sectionSevenRealizations")
-The integral presentation, specialization, and Leray differential matrices from Section 7 have the
-claimed kernels and images.  For the selected twists the final differential is an isomorphism; an
-explicit realization contract records the remaining passage from these matrices to singular homology.
+:::theorem "section-seven-integer-algebra" (parent := "integral-homology") (lean := "SphereSixComplex.Topology.PaperLemmaSevenThirteenAlgebra.range_orderOneRelationMap_eq_ker, SphereSixComplex.Topology.PaperLemmaSevenThirteenAlgebra.range_orderTwoRelationMap_eq_ker")
+The two integral relation maps in Lemma 7.13 have images equal to the kernels of their respective coordinate classifiers. These identities give the required exact integral presentations.
 :::
 
 :::definition "section-seven-paper-assembly" (parent := "integral-homology") (lean := "SphereSixComplex.Geometry.PaperAnalyticData.PositiveDegreeHomologyAssembly, SphereSixComplex.Geometry.PaperAnalyticData.PositiveDegreeHomologyAssembly.toSectionSevenMayerVietorisHomologyAssembly")
@@ -509,14 +448,14 @@ compatibility squares. Its fields describe the actual maps; none assumes the com
 homology.
 :::
 
-:::theorem "cusp-filling-homology" (parent := "section-seven-paper-assembly") (lean := "SphereSixComplex.CellularHomology.normalizedModel, SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberCWDecomposition, SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberCellularIncidence, SphereSixComplex.Geometry.PaperAnalyticData.cuspFillingHomologyOneEquiv, SphereSixComplex.Geometry.PaperAnalyticData.cuspFillingHomologyTwoEquiv, SphereSixComplex.Geometry.PaperAnalyticData.cuspFillingHomologyThreeEquiv, SphereSixComplex.Geometry.PaperAnalyticData.cuspFillingHomologyFourEquiv")
+:::theorem "cusp-filling-homology" (parent := "section-seven-paper-assembly") (lean := "SphereSixComplex.CellularHomology.normalizedModel, SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberCWDecomposition, SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberCellularIncidence, SphereSixComplex.Geometry.PaperAnalyticData.cuspFillingHomologyOneEquiv, SphereSixComplex.Geometry.PaperAnalyticData.cuspFillingHomologyTwoEquiv")
 The cusp filling has homology $`\mathbb Z^2,\mathbb Z^4,\mathbb Z^2,\mathbb Z` in degrees one
 through four. The standard $`A_2` CW decomposition and its incidence formula are proved. The
 retained general cellular-to-singular comparison transfers this cellular calculation to singular
 homology.
 :::
 
-:::theorem "elliptic-multiple-fibre-homology" (parent := "section-seven-paper-assembly") (lean := "SphereSixComplex.AffineCyclicQuotientHomology.reducedCentralFiberHOneEquivPresentation, SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.orderThreeReducedCentralFiberHOneEquivIntSquared, SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.orderFourReducedCentralFiberHOneEquivIntSquared, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderThreeFixedHOneBasis_projection, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderFourFixedHOneBasis_projection, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderThreeHOneNaturality, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderFourHOneNaturality, SphereSixComplex.Topology.FiniteCoverPerfectPairing.DegreeTwoPullbackRealization.toFiniteCoverDegreeTwoPullbackBasis, SphereSixComplex.Topology.FiniteCoverPerfectPairing.EllipticDegreeTwoPullbackBases.ofRealizations, SphereSixComplex.Topology.FiniteCoverPerfectPairing.establishedEllipticDegreeTwoPullbackRealizations, SphereSixComplex.Topology.FiniteCoverPerfectPairing.ellipticDegreeTwoPullbackBases, SphereSixComplex.Topology.FiniteCoverPerfectPairing.ellipticFiniteCoverHomologyRealization")
+:::theorem "elliptic-multiple-fibre-homology" (parent := "section-seven-paper-assembly") (lean := "SphereSixComplex.AffineCyclicQuotientHomology.reducedCentralFiberHOneEquivPresentation, SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.orderThreeReducedCentralFiberHOneEquivIntSquared, SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.orderFourReducedCentralFiberHOneEquivIntSquared, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderThreeFixedHOneBasis_projection, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderFourFixedHOneBasis_projection, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderThreeHOneNaturality, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderFourHOneNaturality, SphereSixComplex.Topology.FiniteCoverPerfectPairing.ellipticDegreeTwoPullbackBases, SphereSixComplex.Topology.FiniteCoverPerfectPairing.ellipticFiniteCoverHomologyRealization")
 The order-three and order-four reduced central fibres have explicit first-homology presentations,
 and the fixed bases satisfy the required covering-projection coordinate formulas. The affine
 cyclic-quotient abelianization and degree-one naturality statements are proved.
@@ -526,38 +465,10 @@ Together these give `ellipticFiniteCoverHomologyRealization` for the two covers,
 actual pullback calculation. No specialized finite-cover realization axiom is retained.
 :::
 
-:::theorem "section-seven-chain-model" (parent := "integral-homology") (lean := "SphereSixComplex.sectionSevenFirstBoundaryMatrix_det, SphereSixComplex.sectionSevenDegreeOneCellularComplex_homology_one_isZero, SphereSixComplex.sectionSevenDegreeOneCellularComplex_homology_two_isZero, SphereSixComplex.integralSingularHomology_one_subsingleton_of_sectionSevenCellularComparison")
-The first two paper relations and final attachment form an explicit unimodular boundary matrix.
-The resulting finite chain complex has zero homology in degrees one and two; a degreewise
-cellular-to-singular comparison transfers this calculation to singular homology.
-:::
-
-:::theorem "section-seven-leray-chain-model" (parent := "integral-homology") (lean := "SphereSixComplex.sectionSevenLerayBoundary_comp, SphereSixComplex.sectionSevenLerayChainModel_homology_one_isZero, SphereSixComplex.sectionSevenLerayChainModel_homology_two_isZero, SphereSixComplex.sectionSevenLerayChainModel_homology_three_isZero, SphereSixComplex.sectionSevenLerayChainModel_middle_homology_isZero, SphereSixComplex.sectionSevenLerayChainModel_homology_six_equiv")
-The three differentials computed in Section 7 define a finite integral chain complex with vanishing
-homology in degrees one through three and top homology $`\mathbb Z`. The fourth coefficient remains
-a parameter in this algebraic interface: when it is a unit, degrees four and five vanish as well.
-The completed manifold's homology is established using its actual maps and classical duality.
-:::
-
-:::theorem "section-seven-algebraic-duality" (parent := "integral-homology") (lean := "SphereSixComplex.sectionSevenOneFivePairingMatrix_bijective, SphereSixComplex.sectionSevenTwoFourPairingMatrix_bijective, SphereSixComplex.SectionSevenLerayAlgebraicDuality.top_eq_one_or_neg_one, SphereSixComplex.SectionSevenLerayAlgebraicDuality.sphere_shaped_model_homology, SphereSixComplex.sectionSevenDegreeComplementCompatible_iff, SphereSixComplex.exists_sectionSevenDegreeComplementCompatible_iff, SphereSixComplex.SectionSevenLerayAlgebraicDuality.chainSelfDualityIso, SphereSixComplex.SectionSevenLerayAlgebraicDuality.homologyDegreeComplementIso, SphereSixComplex.SectionSevenLerayAlgebraicDuality.reversed_sphere_shaped_model_homology")
-Explicit unimodular complementary-degree pairings reduce this algebraic duality calculation to a
-boundary-adjointness identity. That identity forces the fourth coefficient to be $`\pm1`, gives
-sphere-shaped homology, and yields a chain-complex self-duality isomorphism. This is a conditional
-algebraic comparison theorem; the retained manifold-level inputs are the general integral
-Poincaré-duality and universal-coefficient theorems.
-:::
-
-:::theorem "section-seven-coherent-realization" (parent := "integral-homology") (lean := "SphereSixComplex.SectionSevenLerayCoherentRealization, SphereSixComplex.SectionSevenLerayCoherentRealization.sectionSevenHomologyRealization, SphereSixComplex.establishedSixSphereSectionSevenHomology, SphereSixComplex.SectionSevenLerayCoherentRealization.hasIntegralHomologyOfSixSphere_established")
-The standard $`S^6` homology calculation is proved by Mayer--Vietoris. A
-`SectionSevenLerayCoherentRealization X` is a sufficient interface for transferring the finite
-Leray model to singular chains: it gives one chain map inducing isomorphisms in every degree.
-This alternative interface introduces no additional axiom into the final theorem.
-:::
-
-:::theorem "section-seven-top-degree-vanishing" (parent := "integral-homology") (lean := "SphereSixComplex.subsingleton_integralSingularHomology_of_isEmpty_cell, SphereSixComplex.FiniteCWModelSix.subsingleton_homology_of_cellCount_eq_zero, SphereSixComplex.FourTorusHomologicalModel.subsingleton_homology_five, SphereSixComplex.FourTorusHomologicalModel.subsingleton_homology_six, SphereSixComplex.subsingleton_homology_succ_finiteBouquetMappingTorus, SphereSixComplex.contractibleSpace_openInterval, SphereSixComplex.subsingleton_homology_prod_of_contractible, SphereSixComplex.subsingleton_homology_seven_union, SphereSixComplex.OpenEmbeddingStarData.sectionSevenStageTopDegreeVanishing_of_localFinite, SphereSixComplex.subsingleton_homology_six_of_radialMappingTorus, SphereSixComplex.Geometry.PaperAnalyticData.subsingleton_homology_six_cuspCollar, SphereSixComplex.Geometry.PaperAnalyticData.subsingleton_homology_six_actualCuspCollar, SphereSixComplex.Geometry.PaperAnalyticData.subsingleton_homology_six_orderThreeCollar, SphereSixComplex.Geometry.PaperAnalyticData.subsingleton_homology_six_orderFourCollar, SphereSixComplex.Geometry.PaperAnalyticData.subsingleton_homology_six_collarSource_of_cusp, SphereSixComplex.Geometry.PaperAnalyticData.stageTopDegreeVanishing_of_actualCuspCollar, SphereSixComplex.Geometry.PaperAnalyticData.stageTopDegreeVanishing")
+:::theorem "section-seven-top-degree-vanishing" (parent := "integral-homology") (lean := "SphereSixComplex.subsingleton_integralSingularHomology_of_isEmpty_cell, SphereSixComplex.FourTorusHomologicalModel.subsingleton_homology_five, SphereSixComplex.FourTorusHomologicalModel.subsingleton_homology_six, SphereSixComplex.subsingleton_homology_succ_finiteBouquetMappingTorus, SphereSixComplex.contractibleSpace_openInterval, SphereSixComplex.subsingleton_homology_prod_of_contractible, SphereSixComplex.subsingleton_homology_seven_union, SphereSixComplex.OpenEmbeddingStarData.sectionSevenStageTopDegreeVanishing_of_localFinite, SphereSixComplex.subsingleton_homology_six_of_radialMappingTorus, SphereSixComplex.Geometry.PaperAnalyticData.subsingleton_homology_six_actualCuspCollar, SphereSixComplex.Geometry.PaperAnalyticData.subsingleton_homology_six_orderThreeCollar, SphereSixComplex.Geometry.PaperAnalyticData.subsingleton_homology_six_orderFourCollar, SphereSixComplex.Geometry.PaperAnalyticData.subsingleton_homology_six_collarSource_of_cusp, SphereSixComplex.Geometry.PaperAnalyticData.stageTopDegreeVanishing_of_actualCuspCollar, SphereSixComplex.Geometry.PaperAnalyticData.stageTopDegreeVanishing")
 The Mayer--Vietoris comparison of the four pieces needs the three intermediate unions to have no
 seventh homology, which follows from the four pieces having none and the three collar sources
-having no sixth. `sectionSevenStageTopDegreeVanishing_actual` supplies that obligation for the
+having no sixth. `stageTopDegreeVanishing` supplies that obligation for the
 actual star, with no hypotheses left.
 
 The deduction is a dimension argument. A CW complex has no homology in a degree carrying no cells,
@@ -580,18 +491,11 @@ standard four-torus cell model, elliptic angular fundamental domains, and cusp r
 model, including its fibre identification, are proved in the development.
 :::
 
-
 :::theorem "smooth-recognition" (parent := "construction_spine") (lean := "SphereSixComplex.SmoothSixSphere.nonempty_diffeomorph, SphereSixComplex.exists_complex_threefold_diffeomorphic_sixSphere") (priority := "high")
 The underlying standard smooth manifold of $`X` is diffeomorphic to $`S^6`.
 :::
 
-:::definition "smooth-recognition-obligations" (parent := "smooth-recognition") (lean := "SphereSixComplex.HomologyToHomotopySixSphereObligation, SphereSixComplex.HomotopyToDiffeomorphismSixSphereObligation, SphereSixComplex.smoothSixSphereRecognition_of_obligations")
-The recognition step splits into the Whitehead--Hurewicz implication from a simply-connected
-integral homology sphere to a homotopy sphere, followed by the dimension-six smooth Poincaré
-classification.  Their composition gives the exact diffeomorphism required by the construction.
-:::
-
-:::theorem "established-smooth-recognition" (parent := "smooth-recognition") (lean := "SphereSixComplex.SixSphere.has_spherical_generator_of_homology, SphereSixComplex.SmoothSixManifold.hasCWType, SphereSixComplex.CWType.homological_whitehead_property, SphereSixComplex.SmoothSixSphere.poincare, SphereSixComplex.SmoothSimplyConnectedIntegralHomologySixSphere.nonempty_homotopyEquiv, SphereSixComplex.SmoothSimplyConnectedIntegralHomologySixSphere.isDiffeomorphic")
+:::theorem "established-smooth-recognition" (parent := "smooth-recognition") (lean := "SphereSixComplex.SixSphere.has_spherical_generator_of_homology, SphereSixComplex.SmoothSixManifold.hasCWType, SphereSixComplex.CWType.homological_whitehead_property, SphereSixComplex.SmoothSixSphere.poincare, SphereSixComplex.SmoothSimplyConnectedIntegralHomologySixSphere.nonempty_homotopyEquiv")
 The recognition argument uses the retained higher Hurewicz and homological Whitehead theorems,
 CW type obtained from the general finite-CW-model theorem for compact smooth manifolds, and smooth
 Poincaré classification in dimension six. The first three steps produce a homotopy sphere; the
@@ -605,36 +509,22 @@ proved degree-zero calculation and vanishing in the other degrees make it an int
 equivalence; simply connected homological Whitehead then makes that same map a homotopy equivalence.
 :::
 
-:::theorem "smooth-recognition-foundations" (parent := "smooth-recognition") (lean := "SphereSixComplex.SmoothSimplyConnectedIntegralHomologySixSphere.homotopyGroup_zero_subsingleton, SphereSixComplex.SmoothSimplyConnectedIntegralHomologySixSphere.homotopyGroup_one_subsingleton, SphereSixComplex.homotopyToDiffeomorphismSixSphere_iff_topologicalPoincare_and_noExotic, SphereSixComplex.smoothSixSphereRecognition_of_comparison_whitehead_and_classification")
-Simple connectivity kills the cubical zeroth and first homotopy groups. The remaining recognition
-chain factors exactly through the Hurewicz--Whitehead comparison, generalized topological Poincaré,
-and the dimension-six absence of exotic smooth spheres.
-:::
-
 :::proof "smooth-recognition"
 Combine {uses "fundamental-group"}[simple connectedness] and
 {uses "integral-homology"}[integral homology] to obtain a homotopy sphere, then use six-dimensional
 smooth homotopy-sphere recognition.
 :::
 
-:::theorem "standard-six-sphere" (parent := "smooth-recognition") (lean := "SphereSixComplex.sixSphere_isCompact, SphereSixComplex.sixSphere_isPathConnected, SphereSixComplex.sixSphere_isManifold")
-The target $`S^6` is compact, path-connected, and carries the standard smooth six-manifold atlas.
+:::theorem "standard-six-sphere" (parent := "smooth-recognition") (lean := "SphereSixComplex.sixSphere_isPathConnected")
+The standard six-sphere is path connected.
 :::
 
-:::theorem "standard-sphere-homology-zero" (parent := "standard-six-sphere") (lean := "SphereSixComplex.sixSphereHomeomorphTopCatSphereSix, SphereSixComplex.sixSphere_integralSingularHomology_zero_equiv_integer, SphereSixComplex.sixSphere_sectionSevenHomologyRealization_zero, SphereSixComplex.topCatDiskSeven_contractibleSpace, SphereSixComplex.topCatDiskSeven_integralSingularHomology_isZero")
-The standard sphere has degree-zero integral homology $`\mathbb Z`; it is the boundary of the
-contractible seven-disk, whose positive-degree integral homology vanishes.
+:::theorem "standard-sphere-homology-zero" (parent := "standard-six-sphere") (lean := "SphereSixComplex.sixSphereHomeomorphTopCatSphereSix, SphereSixComplex.sixSphere_integralSingularHomology_zero_equiv_integer")
+The concrete six-sphere is homeomorphic to the standard topological sphere, and its degree-zero integral homology is $`\mathbb Z`.
 :::
 
-:::theorem "standard-sphere-positive-homology" (parent := "standard-six-sphere") (lean := "SphereSixComplex.SixSpherePositiveHomologyInputs, SphereSixComplex.StandardSphereMayerVietorisInputs, SphereSixComplex.standardSphereMayerVietorisInputs, SphereSixComplex.sixSpherePositiveHomologyInputs, SphereSixComplex.SixSpherePositiveHomologyInputs.sectionSevenHomologyRealization, SphereSixComplex.establishedSixSphereSectionSevenHomology")
-The positive-degree integral homology of the standard six-sphere is derived from the two-puncture
-cover of each standard sphere: both punctured spheres are contractible by stereographic projection,
-and their intersection is homotopy equivalent to the sphere of one dimension lower. The
-Mayer--Vietoris boundary gives the suspension shifts $`H_{k+1}(S^{d+1})\cong H_k(S^d)` for
-$`k\ge 1`, the degree-zero augmentation normal form kills $`H_1(S^d)` for $`d\ge 2`, and the
-reduced degree-zero homology of the two-component intersection gives $`H_1(S^1)\cong\mathbb Z`.
-The binary open-cover Mayer--Vietoris theorem is proved in the development; the degree-zero
-comparison then assembles the full Section 7 realization.
+:::theorem "standard-sphere-positive-homology" (parent := "standard-six-sphere") (lean := "SphereSixComplex.SixSpherePositiveHomologyInputs, SphereSixComplex.sixSpherePositiveHomologyInputs")
+The standard six-sphere has integral homology $`\mathbb Z` in degree six and zero in every other positive degree. The retained construction proves both parts of this calculation.
 :::
 
 :::proof "standard-sphere-positive-homology"
@@ -642,38 +532,12 @@ Apply {uses "mayer-vietoris-contract"}[the binary open-cover Mayer--Vietoris seq
 complements of two antipodal points of $`S^{d+1}` and induct on the dimension from the circle.
 :::
 
-:::theorem "normalized-complex-structure" (parent := "smooth-recognition") (lean := "SphereSixComplex.NormalizedComplexStructure, SphereSixComplex.normalizedComplexStructure_of_diffeomorph, SphereSixComplex.sixSphere_has_normalizedComplexStructure")
-A diffeomorphism from the completed threefold transports its complex atlas to a normalized complex
-structure on the standard smooth six-sphere, and hence to the final `AdmitsComplexStructure` result.
+:::theorem "relative-disk-sphere-homology" (parent := "standard-six-sphere") (lean := "SphereSixComplex.relativeIntegralSingularShortComplex_shortExact")
+Relative integral singular chains are defined by a categorical cokernel. The inclusion and quotient maps form a short exact sequence of chain complexes.
 :::
 
-:::theorem "relative-disk-sphere-homology" (parent := "standard-six-sphere") (lean := "SphereSixComplex.relativeIntegralSingularShortComplex_shortExact, SphereSixComplex.relativeIntegralSingular_homology_exact_ambient, SphereSixComplex.relativeIntegralSingular_homology_exact_relative, SphereSixComplex.relativeIntegralSingular_homology_exact_subspace, SphereSixComplex.diskSevenSphereSix_relativeBoundaryIso")
-Relative singular chains are defined as a categorical cokernel and fit into the long exact
-homology sequence. For positive degrees, its boundary identifies $`H_{n+1}(D^7,S^6)` with
-$`H_n(S^6)`. This gives a relative-chain route to the sphere calculation, alongside the proved
-Mayer--Vietoris computation above.
-:::
-
-:::theorem "disk-boundary-collapse" (parent := "relative-disk-sphere-homology") (lean := "SphereSixComplex.diskBoundaryQuotientSevenMap_isQuotientMap, SphereSixComplex.diskBoundaryCollapseToOnePointContinuous, SphereSixComplex.diskBoundaryQuotientSevenHomeomorphSphereSeven, SphereSixComplex.diskBoundaryQuotientSevenSphereIso_basepoint, SphereSixComplex.reducedDiskBoundaryQuotientChainsIsoReducedSphereSevenChains, SphereSixComplex.diskSevenRelativeChainsToReducedSphereSevenChains")
-Collapsing the boundary of the seven-disk is homeomorphic to the standard seven-sphere, with the
-collapsed basepoint tracked through a reduced-chain isomorphism. The canonical relative-chain map
-is explicit. A homology-isomorphism proof for this particular map is an additional comparison
-problem, separate from the Mayer--Vietoris proof used for the standard sphere.
-:::
-
-:::theorem "singular-small-chain-excision" (parent := "disk-boundary-collapse") (lean := "SphereSixComplex.CoverSmallChainRetractionData.approximation, SphereSixComplex.coverSmallIntegralSingularHomologyIso, SphereSixComplex.coverSmallAffineSubdivisionEventuallySmall_of_openCover, SphereSixComplex.coverSmallChainQuasiIsomorphism_of_openCover, SphereSixComplex.coverSmallChainApproximation_of_openCover, SphereSixComplex.coverSmallChainRetractionData_of_openCover, SphereSixComplex.diskSevenExcisionCover_isOpen, SphereSixComplex.diskSevenExcisionCover_iUnion, SphereSixComplex.diskBoundaryToDiskSevenCoverSmallIntegralSingularChains_comp_inclusion, SphereSixComplex.DiskSevenSmallChainApproximation, SphereSixComplex.simplexSubdivisionLastVertex, SphereSixComplex.subdivisionLastVertex, SphereSixComplex.subdivisionLastVertexLiftChainMap_comp_inclusion, SphereSixComplex.barycentricOuterFaceIdentity, SphereSixComplex.barycentricSubdivisionChainMapCanonical, SphereSixComplex.standardSimplexZeroConeComponent_boundary_succ, SphereSixComplex.canonicalBarycentricLastVertexPrism_boundary, SphereSixComplex.barycentricLastVertexPrismDataCanonical, SphereSixComplex.barycentricSubdivisionLastVertexHomotopyCanonical")
-The cover-small singular subcomplex and its monomorphic inclusion into all singular chains are
-explicit. Retraction data yields a chain-homotopy equivalence and homology isomorphisms. For the
-seven-disk, the boundary factors through the small chains for an explicit open two-set cover. The
-global subdivision last-vertex map, induced chain map, and subcomplex lifts are constructed from
-Mathlib's left-Kan-extension API. Signed maximal-flag chains give the canonical natural barycentric
-subdivision chain map. A universal standard-simplex prism boundary identity now produces the actual
-Mathlib chain homotopy from last-vertex-after-subdivision to the identity. The prism is constructed
-recursively by the classical zero-vertex cone contraction in every degree. Affine mesh and
-Lebesgue-number control now prove eventual smallness for every open cover, hence
-the cover-small inclusion is a quasi-isomorphism and a chain-homotopy equivalence with explicit
-retraction data. The canonical relative-to-reduced comparison for $`(D^7,S^6)` is a separate
-comparison interface, not an additional trust-boundary assumption for the final theorem.
+:::theorem "singular-small-chain-excision" (parent := "relative-disk-sphere-homology") (lean := "SphereSixComplex.coverSmallAffineSubdivisionEventuallySmall_of_openCover, SphereSixComplex.coverSmallChainQuasiIsomorphism_of_openCover, SphereSixComplex.barycentricOuterFaceIdentity")
+Iterated affine subdivision makes each singular chain subordinate to any open cover. The resulting cover-small inclusion is a quasi-isomorphism. The barycentric outer-face identity provides the boundary calculation used by subdivision.
 :::
 
 :::theorem "sphere-stereographic-simple-connectivity" (parent := "standard-six-sphere") (lean := "SphereSixComplex.sixSphere_compl_singleton_simplyConnected, SphereSixComplex.sixSphere_simplyConnected_iff_loops_nullhomotopic")

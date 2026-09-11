@@ -49,10 +49,6 @@ public def cubicalSphereMk (N : Type*) : C(I^N, CubicalSphere N) where
   toFun := @Quotient.mk' _ (cubeBoundarySetoid N)
   continuous_toFun := continuous_quotient_mk'
 
-@[simp]
-public theorem cubicalSphereMk_apply (N : Type*) (a : I^N) :
-    cubicalSphereMk N a = @Quotient.mk' _ (cubeBoundarySetoid N) a :=
-  rfl
 
 public theorem cubicalSphereMk_eq_iff (N : Type*) (a b : I^N) :
     cubicalSphereMk N a = cubicalSphereMk N b ↔ CubeBoundaryRel N a b :=
@@ -81,54 +77,10 @@ public def genLoopToCubicalSphereMap
     · rfl
     · exact (p.property a hab.1).trans (p.property b hab.2).symm) p.1.continuous
 
-@[simp]
-public theorem genLoopToCubicalSphereMap_mk
-    {N X : Type*} [TopologicalSpace X] {x : X} (p : Ω^ N X x) (a : I^N) :
-    genLoopToCubicalSphereMap p (cubicalSphereMk N a) = p a :=
-  rfl
 
-@[simp]
-public theorem genLoopToCubicalSphereMap_comp_mk
-    {N X : Type*} [TopologicalSpace X] {x : X} (p : Ω^ N X x) :
-    (genLoopToCubicalSphereMap p).comp (cubicalSphereMk N) = p.1 := by
-  ext a
-  rfl
 
-@[simp]
-public theorem genLoopToCubicalSphereMap_basepoint
-    {N X : Type*} [Nonempty N] [TopologicalSpace X] {x : X} (p : Ω^ N X x) :
-    genLoopToCubicalSphereMap p (cubicalSphereBasepoint N) = x := by
-  exact p.property _ ⟨Classical.arbitrary N, Or.inl rfl⟩
 
-/-- Continuous maps out of the cubical sphere are determined by their composites with the cube
-quotient projection. -/
-public theorem ContinuousMap.eq_of_comp_cubicalSphereMk_eq
-    {N X : Type*} [TopologicalSpace X] {f g : C(CubicalSphere N, X)}
-    (h : f.comp (cubicalSphereMk N) = g.comp (cubicalSphereMk N)) : f = g := by
-  ext q
-  obtain ⟨a, rfl⟩ := Quotient.exists_rep q
-  have ha := DFunLike.congr_fun h a
-  exact ha
 
-/-- Based continuous maps out of the cubical sphere. -/
-public def CubicalSphereBasedMap
-    (N X : Type*) [Nonempty N] [TopologicalSpace X] (x : X) :=
-  {f : C(CubicalSphere N, X) // f (cubicalSphereBasepoint N) = x}
 
-/-- Generalized loops are exactly based continuous maps out of the cube-boundary quotient. -/
-public def genLoopEquivCubicalSphereBasedMap
-    (N X : Type*) [Nonempty N] [TopologicalSpace X] (x : X) :
-    Ω^ N X x ≃ CubicalSphereBasedMap N X x where
-  toFun p := ⟨genLoopToCubicalSphereMap p, genLoopToCubicalSphereMap_basepoint p⟩
-  invFun f := ⟨f.1.comp (cubicalSphereMk N), fun a ha ↦ by
-    rw [ContinuousMap.comp_apply, cubicalSphereMk_eq_basepoint_of_mem_boundary ha, f.2]⟩
-  left_inv p := by
-    ext a
-    rfl
-  right_inv f := by
-    apply Subtype.ext
-    apply ContinuousMap.eq_of_comp_cubicalSphereMk_eq
-    ext a
-    rfl
 
 end SphereSixComplex

@@ -62,14 +62,6 @@ public def orderFourFourthCircleTranslation :
   (orderFourRadialActionData F).circleTranslate (fourthPeriodCircle (parameterMap F U.zTwo))
     (orderFourFourthPeriodCircle_fixed F)
 
-public def orderThreeReducedFourthCircleTranslation :
-    C(UnitAddCircle × orderThreeReducedCentralFiber F, orderThreeReducedCentralFiber F) :=
-  (orderThreeRadialActionData F).reducedCircleTranslate (fourthPeriodCircle (parameterMap F U.zOne))
-    (orderThreeFourthPeriodCircle_fixed F)
 
-public def orderFourReducedFourthCircleTranslation :
-    C(UnitAddCircle × orderFourReducedCentralFiber F, orderFourReducedCentralFiber F) :=
-  (orderFourRadialActionData F).reducedCircleTranslate (fourthPeriodCircle (parameterMap F U.zTwo))
-    (orderFourFourthPeriodCircle_fixed F)
 
 end SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction

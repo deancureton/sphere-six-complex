@@ -117,13 +117,6 @@ public noncomputable def degreeTwoCoinvariantsEquiv :
     G.monodromyCoordinates.degreeTwoDifference_conjugacy).trans
       mZeroExteriorTwoCoinvariantsEquivIntFourth
 
-/-- The projective Wang sections for an unnormalized clutching datum. -/
-public noncomputable def geometricWangSections :
-    let _ := G.fiberTopology
-    CuspGeometricWangSections G.monodromyCoordinates := by
-  let _ := G.fiberTopology
-  exact _root_.SphereSixComplex.CircleMappingTorusHomologyBases.CuspMonodromyCoordinates.wangSections
-    G.monodromyCoordinates
 
 /-- Remove the contractible radial coordinate from the actual punctured cusp quotient. -/
 public noncomputable def totalHomotopyEquiv :
@@ -133,21 +126,7 @@ public noncomputable def totalHomotopyEquiv :
   exact G.totalHomeomorph.toHomotopyEquiv.trans
     (openRadialIntervalProdHomotopyEquiv W.localWitness.radius_pos)
 
-/-- The geometrically split raw degree-one Wang coordinates: two fibre coinvariants followed by
-the base circle. -/
-public noncomputable def geometricHomologyOneEquiv :
-    IntegralSingularHomology 1 (PuncturedLocalCuspQuotient W) ≃+ (Fin 3 → ℤ) := by
-  let _ := G.fiberTopology
-  exact (integralSingularHomologyEquivOfHomotopyEquiv 1 G.totalHomotopyEquiv).trans
-    G.geometricWangSections.circleMappingTorusHOneAddEquiv
 
-/-- The geometrically split raw degree-two Wang coordinates: four fibre coinvariants followed by
-the two invariant suspension classes. -/
-public noncomputable def geometricHomologyTwoEquiv :
-    IntegralSingularHomology 2 (PuncturedLocalCuspQuotient W) ≃+ (Fin 6 → ℤ) := by
-  let _ := G.fiberTopology
-  exact (integralSingularHomologyEquivOfHomotopyEquiv 2 G.totalHomotopyEquiv).trans
-    G.geometricWangSections.circleMappingTorusHTwoAddEquiv
 
 end UnnormalizedCuspRadialClutchingData
 
@@ -352,51 +331,7 @@ public structure FiniteBasisNaturality (A : PaperAnalyticData)
           A.starCuspWitness
       degreeTwoFiberProjection.comp G.geometricHomologyTwoEquiv.toAddMonoidHom
 
-/-- The exact remaining geometric calculation, reduced to the integer matrix entries on the
-standard Wang generators.  Unlike `FiniteBasisNaturality`, this asks only for thirty scalar
-equalities: `3 × 2` in degree one and `6 × 4` in degree two. -/
-public structure FiniteGeneratorSpecializationMatrix (A : PaperAnalyticData)
-    (K : (Fin 4 → ℤ) ≃+ (Fin 4 → ℤ) := AddEquiv.refl _) : Prop where
-  degreeOne (j : Fin 3) (i : Fin 2) :
-    actualLocalCuspFillingHomologyOneEquiv A.starCuspWitness
-        A.cuspCentralFiberRetractionData
-        (integralSingularHomologyMap 1
-          ⟨puncturedLocalCuspToFilling A.starCuspWitness,
-            puncturedLocalCuspToFilling_continuous A.starCuspWitness⟩
-          ((SphereSixComplex.Geometry.CuspRadialClutchingConstruction.actualCuspRadialClutchingData
-              A.starCuspWitness).geometricHomologyOneEquiv.symm (Pi.single j 1))) i =
-      (Pi.single j 1 : Fin 3 → ℤ) (Fin.castAdd 1 i)
-  degreeTwo (j : Fin 6) (i : Fin 4) :
-    K (actualLocalCuspFillingHomologyTwoEquiv A.starCuspWitness
-        A.cuspCentralFiberRetractionData
-        (integralSingularHomologyMap 2
-          ⟨puncturedLocalCuspToFilling A.starCuspWitness,
-            puncturedLocalCuspToFilling_continuous A.starCuspWitness⟩
-          ((SphereSixComplex.Geometry.CuspRadialClutchingConstruction.actualCuspRadialClutchingData
-              A.starCuspWitness).geometricHomologyTwoEquiv.symm (Pi.single j 1)))) i =
-      (Pi.single j 1 : Fin 6 → ℤ) (Fin.castAdd 2 i)
 
-/-- Fibre-coinvariant generator equations in the selected target coordinates. -/
-public structure FiniteFiberGeneratorSpecializationMatrix (A : PaperAnalyticData)
-    (K : (Fin 4 → ℤ) ≃+ (Fin 4 → ℤ) := AddEquiv.refl _) : Prop where
-  degreeOne (j i : Fin 2) :
-    let G :=
-      SphereSixComplex.Geometry.CuspRadialClutchingConstruction.actualCuspRadialClutchingData
-        A.starCuspWitness
-    let _ := G.fiberTopology
-    G.specializationHomologyOneMap
-        ((circleMappingTorusHOnePresentation G.clutching).coinvariantsToTotal
-          (G.degreeOneCoinvariantsEquiv.symm (Pi.single j 1))) i =
-      (Pi.single j 1 : Fin 2 → ℤ) i
-  degreeTwo (j i : Fin 4) :
-    let G :=
-      SphereSixComplex.Geometry.CuspRadialClutchingConstruction.actualCuspRadialClutchingData
-        A.starCuspWitness
-    let _ := G.fiberTopology
-    K (G.specializationHomologyTwoMap
-        ((circleMappingTorusHTwoPresentation G.clutching).coinvariantsToTotal
-          (G.degreeTwoCoinvariantsEquiv.symm (Pi.single j 1)))) i =
-      (Pi.single j 1 : Fin 4 → ℤ) i
 
 end Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization
 

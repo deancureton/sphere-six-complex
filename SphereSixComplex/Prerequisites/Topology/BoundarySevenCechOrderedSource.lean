@@ -381,16 +381,5 @@ public theorem boundarySevenOrderedSourceCechIso_hom
       boundarySevenOrderedSourceToCech n :=
   rfl
 
-@[reassoc]
-public theorem boundarySevenOrderedSourceCechIso_hom_comp_projection
-    {n : SimplexCategoryᵒᵖ} (a : BoundarySevenProperCechTuple n)
-    (i : Fin (n.unop.len + 1)) :
-    Sigma.ι (fun b : BoundarySevenProperCechTuple n ↦
-        boundarySevenOrderedSourceCommonFace b) a ≫
-        (boundarySevenOrderedSourceCechIso n).hom ≫
-        boundarySevenSourceCechProjection n i =
-      boundarySevenOrderedSourcePresentationLeg a i := by
-  rw [boundarySevenOrderedSourceCechIso_hom]
-  exact boundarySevenOrderedSourceToCech_comp_projection a i
 
 end SphereSixComplex

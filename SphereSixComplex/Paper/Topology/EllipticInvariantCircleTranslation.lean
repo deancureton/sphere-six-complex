@@ -56,19 +56,8 @@ public def circleTranslate : C(UnitAddCircle × D.FillingQuotient, D.FillingQuot
     apply isQuotientMap_quotient_mk'.continuous_lift_prod_right
     exact continuous_quot_mk.comp (D.circleTranslateProduct c).continuous
 
-public theorem circleTranslate_mk (z : UnitAddCircle) (p : D.Product) :
-    D.circleTranslate c hc (z,Quotient.mk _ p) = Quotient.mk _ (p.1,c z + p.2) := rfl
 
-public theorem circleTranslate_reduced (z : UnitAddCircle) (p : D.reducedCentralFiber) :
-    D.circleTranslate c hc (z,p.1) ∈ D.reducedCentralFiber := by
-  obtain ⟨q,hq,hp⟩ := p.2
-  rw [← hp, D.circleTranslate_mk]
-  exact ⟨(q.1,c z + q.2), hq, rfl⟩
 
-public def reducedCircleTranslate : C(UnitAddCircle × D.reducedCentralFiber, D.reducedCentralFiber) where
-  toFun z := ⟨D.circleTranslate c hc (z.1,z.2.1), D.circleTranslate_reduced c hc z.1 z.2⟩
-  continuous_toFun := ((D.circleTranslate c hc).continuous.comp
-    (continuous_fst.prodMk (continuous_subtype_val.comp continuous_snd))).subtype_mk _
 
 end RadialEllipticActionData
 end SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction

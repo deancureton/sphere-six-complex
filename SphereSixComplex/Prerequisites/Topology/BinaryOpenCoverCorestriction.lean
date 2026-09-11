@@ -46,18 +46,6 @@ public noncomputable instance singularOpenCorestrictionChainMap_isIso {X : TopCa
   dsimp [singularOpenCorestrictionChainMap]
   infer_instance
 
-/-- The homology map induced by corestriction to the open-image subcomplex. -/
-public noncomputable def singularOpenCorestrictionHomologyMap {X : TopCat}
-    (U : Opens X) (n : ℕ) :=
-  HomologicalComplex.homologyMap (singularOpenCorestrictionChainMap U) n
 
-/-- In every degree, open corestriction induces an isomorphism on integral homology. -/
-public noncomputable instance singularOpenCorestrictionHomologyMap_isIso {X : TopCat}
-    (U : Opens X) (n : ℕ) : IsIso (singularOpenCorestrictionHomologyMap U n) := by
-  dsimp [singularOpenCorestrictionHomologyMap]
-  change IsIso
-    ((HomologicalComplex.homologyFunctor AddCommGrpCat _ n).map
-      (singularOpenCorestrictionChainMap U))
-  infer_instance
 
 end SphereSixComplex.BinaryOpenCover

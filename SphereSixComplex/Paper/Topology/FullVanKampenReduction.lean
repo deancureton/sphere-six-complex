@@ -165,17 +165,8 @@ public def toSatisfiesPaperRelations : SatisfiesPaperRelations G 0 1 (-1) where
     rw [R.rhoTwo_eq_one, R.translationMul_epsilon_eq_one]
     simp
 
-@[simp]
-public theorem toSatisfiesPaperRelations_c_eq_one : R.toSatisfiesPaperRelations.c = 1 :=
-  R.translationMul_epsilon_eq_one
 
-@[simp]
-public theorem toSatisfiesPaperRelations_x_eq_one : R.toSatisfiesPaperRelations.x = 1 :=
-  R.rhoOne_eq_one
 
-@[simp]
-public theorem toSatisfiesPaperRelations_y_eq_one : R.toSatisfiesPaperRelations.y = 1 :=
-  R.rhoTwo_eq_one
 
 end FullVanKampenRelations
 

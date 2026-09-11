@@ -211,22 +211,6 @@ public theorem cuspCoverSquare_commutes
     rw [S.collarEquiv_symm_toFilling]
     rfl⟩
 
-/-- The filling projection transported to the glued cusp piece remains a quotient covering. -/
-public theorem cuspFillingProjectionToStar_isQuotientCoveringMap :
-    let C :=
-      CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
-        A.cuspCoordinate A.toricModel A.starCuspWitness.localWitness.radius
-          A.starCuspWitness.localWitness.radius_pos A.starCuspWitness.localWitness.radius_le
-    letI := C.toCuspActionData.psiAction
-    IsQuotientCoveringMap A.cuspFillingProjectionToStar
-      (Multiplicative ParameterLattice) := by
-  let C :=
-    CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
-      A.cuspCoordinate A.toricModel A.starCuspWitness.localWitness.radius
-        A.starCuspWitness.localWitness.radius_pos A.starCuspWitness.localWitness.radius_le
-  let _ := C.toCuspActionData.psiAction
-  exact (actualCuspFillingProjection_isQuotientCoveringMap A.starCuspWitness).homeomorph_comp
-    A.cuspFillingToStarPieceHomeomorph
 
 end Geometry.PaperAnalyticData
 
@@ -264,13 +248,6 @@ public theorem paperCuspResidualProjection_ker :
   ext a
   simp [paperCuspResidualProjection, paperToricSubgroup]
 
-/-- The lattice quotient left by the toric cusp filling is the two-dimensional parameter
-lattice used by the actual filling deck action. -/
-public noncomputable def paperCuspResidualQuotientEquiv :
-    Lattice ⧸ paperToricSubgroup ≃+ ParameterLattice :=
-  (QuotientAddGroup.quotientAddEquivOfEq paperCuspResidualProjection_ker.symm).trans
-    (QuotientAddGroup.quotientKerEquivOfSurjective paperCuspResidualProjection
-      paperCuspResidualProjection_surjective)
 
 end Topology
 

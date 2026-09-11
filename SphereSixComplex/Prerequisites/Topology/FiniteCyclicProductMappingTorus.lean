@@ -19,10 +19,6 @@ public def _root_.SphereSixComplex.StandardTorusHomology.fourTorusSplit :
   continuous_toFun := by fun_prop
   continuous_invFun := by fun_prop
 
-@[simp]
-public theorem _root_.SphereSixComplex.StandardTorusHomology.fourTorusSplit_apply (u : StdTorus 4) :
-    fourTorusSplit u = (u 0, Fin.tail u) :=
-  rfl
 
 /-! ## A normal affine cyclic quotient -/
 

@@ -1,6 +1,6 @@
 # Module layout
 
-The library has two layers. `Prerequisites/` contains classical mathematics and reusable
+The retained library has two layers. `Prerequisites/` contains classical mathematics and reusable
 infrastructure; `Paper/` contains the selected construction, its computations, and the final
 assembly. Both retain the subject subdirectories `Analysis`, `Geometry`, `Periods`, `Topology`,
 and `TriangleGroup` where applicable.
@@ -21,6 +21,11 @@ cell labels, or the construction's attaching maps belongs to the paper layer. A 
 calculation for a standard torus, sphere, or Fuchsian triangle belongs to the prerequisites even
 when its dimension or triangle orders are fixed.
 
+Declaration retention is rooted at `sphere_six_admits_complex_structure` and `mathoverflow_1973`,
+the two Comparator statements. The layers organize their surviving dependencies, including
+elaboration support; they are not a commitment to preserve every auxiliary result previously
+written for the project. Blueprint and historical documentation do not add mathematical roots.
+
 Mixed modules have been split at these interfaces. For example, the general torus homology,
 finite cyclic mapping-torus, equivariant retraction, cellular-boundary algebra, and compact
 complex-threefold homology results are independent modules. Their adapters to the selected
@@ -30,9 +35,9 @@ with their applications.
 ## Imports
 
 ```lean
-import SphereSixComplex.Prerequisites -- all reusable prerequisite modules
-import SphereSixComplex.Paper         -- all paper modules and their dependencies
-import SphereSixComplex               -- the complete development, as before
+import SphereSixComplex.Prerequisites -- retained reusable prerequisites
+import SphereSixComplex.Paper         -- retained paper modules and their dependencies
+import SphereSixComplex               -- the retained development
 ```
 
 For a smaller import, select an individual module, for example

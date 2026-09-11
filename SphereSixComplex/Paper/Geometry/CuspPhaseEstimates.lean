@@ -32,14 +32,7 @@ namespace CuspPhaseEstimates
 public def realParameter (lambda : ParameterLattice) : Fin 2 → ℝ :=
   fun i ↦ lambda i
 
-public theorem realParameter_zero : realParameter 0 = 0 := by
-  ext i
-  simp [realParameter]
 
-public theorem realParameter_add (lambda mu : ParameterLattice) :
-    realParameter (lambda + mu) = realParameter lambda + realParameter mu := by
-  ext i
-  simp [realParameter]
 
 /-- The elementary `ℓ¹` size of an integral cusp parameter. -/
 public def parameterL1 (lambda : ParameterLattice) : ℝ :=
@@ -90,11 +83,6 @@ open SphereSixComplex.Periods
 variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D)
 
-/-- The local action coefficients furnished by the actual cusp-period expansion. -/
-public noncomputable def actualLocalPhaseCoefficients (M : Model) :
-    CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients M (cuspRadius N.height) :=
-  toLocalHolomorphicPhaseCoefficients
-    N M
 
 /-- Restrict the actual cusp coefficients to any smaller positive disc. -/
 public noncomputable def restrictedActualLocalPhaseCoefficients
@@ -373,48 +361,6 @@ public theorem offCentral_fixedPoint_of_log_dominates
     lt_of_le_of_ne (parameterL1_nonneg lambda) hl1ne.symm
   exact (not_lt_of_ge htotal) (mul_lt_mul_of_pos_right hlog hl1)
 
-/-- After shrinking the cusp disc, the actual phase-corrected action is free.  The off-central
-part is the logarithmic estimate above; the central part uses only preservation of toric ray
-components. -/
-public theorem exists_shrunk_isFree
-    (M : Model) :
-    ∃ r : ℝ, ∃ hr : 0 < r, ∃ hradius : r ≤ cuspRadius N.height,
-      (restrictedActualLocalPhaseCoefficients N M r hr hradius).IsFree := by
-  let rho := cuspRadius N.height / 2
-  have hrho_pos : 0 < rho := div_pos (cuspRadius_pos N.height) (by norm_num)
-  have hrho_lt : rho < cuspRadius N.height := by
-    dsimp [rho]
-    linarith [cuspRadius_pos N.height]
-  obtain ⟨A, hA, hR⟩ := exists_phaseLogMatrix_bound N hrho_lt
-  let r := min rho (Real.exp (-(2 * A + 1)))
-  have hr_pos : 0 < r := lt_min hrho_pos (Real.exp_pos _)
-  have hradius : r ≤ cuspRadius N.height :=
-    (min_le_left _ _).trans (le_of_lt hrho_lt)
-  refine ⟨r, hr_pos, hradius, ?_⟩
-  let C := restrictedActualLocalPhaseCoefficients N M r hr_pos hradius
-  change C.IsFree
-  intro lambda p hfixed
-  by_cases ht : M.t p ≠ 0
-  ·
-    have hpball : ‖M.t p‖ < r := mem_ball_zero_iff.mp p.property
-    have hq : M.t p ∈ Metric.closedBall (0 : ℂ) rho := by
-      rw [mem_closedBall_zero_iff]
-      exact (le_of_lt hpball).trans (min_le_left _ _)
-    have hnorm_pos : 0 < ‖M.t p‖ := norm_pos_iff.mpr ht
-    have hnorm_exp : ‖M.t p‖ < Real.exp (-(2 * A + 1)) :=
-      hpball.trans_le (min_le_right _ _)
-    have hlog_lt := Real.strictMonoOn_log hnorm_pos (Real.exp_pos _) hnorm_exp
-    rw [Real.log_exp] at hlog_lt
-    have hlog_neg : Real.log ‖M.t p‖ < 0 := by linarith
-    have hdominates : 2 * A < |Real.log ‖M.t p‖| := by
-      rw [abs_of_neg hlog_neg]
-      linarith
-    exact offCentral_fixedPoint_of_log_dominates N M C rfl hR lambda p hq
-      hdominates ht hfixed
-  · have ht : M.t p = 0 := not_ne_iff.mp ht
-    exact
-      LocalHolomorphicPhaseCoefficients.central_fixedPointEstimate
-        C lambda p ht hfixed
 
 end CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
 
@@ -431,8 +377,6 @@ public def positionL1 (y : Fin 2 → ℝ) : ℝ :=
 public def latticeL1 (lambda : ParameterLattice) : ℝ :=
   |(lambda 0 : ℝ)| + |(lambda 1 : ℝ)|
 
-public theorem positionL1_nonneg (y : Fin 2 → ℝ) : 0 ≤ positionL1 y := by
-  exact add_nonneg (abs_nonneg _) (abs_nonneg _)
 
 public theorem positionL1_sub_le (y z : Fin 2 → ℝ) :
     positionL1 (y - z) ≤ positionL1 y + positionL1 z := by

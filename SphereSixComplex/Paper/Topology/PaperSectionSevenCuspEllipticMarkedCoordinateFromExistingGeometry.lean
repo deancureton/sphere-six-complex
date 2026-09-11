@@ -1,6 +1,8 @@
 module
 
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspEllipticMarkedCoordinateCalculationProof
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspEllipticMappingTorusComparison
+public import SphereSixComplex.Prerequisites.Topology.MayerVietoris
+public import Mathlib.Algebra.Category.Grp.EpiMono
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspFiberBandTopologicalSquare
 public import SphereSixComplex.Paper.Topology.PaperCuspGeometricSpecializationProof
 
@@ -233,35 +235,6 @@ public theorem canonicalCuspFiberToBand_degreeTwoPeriodMarking
   rw [hComposite]
   exact hNatural.trans (G.fiberMarkingCompatibilityTwo x)
 
-/-- The canonical fibre-to-band map preserves the complete degree-one period marking. -/
-public theorem canonicalCuspFiberToBand_degreeOnePeriodMarking
-    (x : let G := A.actualCuspRadialClutchingData
-      let _ := G.fiberTopology
-      IntegralSingularHomology 1 G.Fiber) :
-    let G := A.actualCuspRadialClutchingData
-    let _ := G.fiberTopology
-    (EstablishedTorusHomology.additiveTorusHomologyBasis
-      D.bandParameter D.bandFullRank).degreeOne
-        (D.canonicalCuspFiberToBandTorusHomologyOne x) =
-      G.monodromyCoordinates.degreeOne x := by
-  let G := A.actualCuspRadialClutchingData
-  let _ := G.fiberTopology
-  let y := integralSingularHomologyMap 1
-    ⟨G.fiberHomeomorph, G.fiberHomeomorph.continuous⟩ x
-  let e := fullRankAdditiveTorusHomeomorph
-    G.fiberParameter D.bandParameter G.fiberFullRank D.bandFullRank
-  have hNatural :=
-    (EstablishedTorusHomology.fullRankAdditiveTorusHomeomorph_naturality
-      G.fiberParameter D.bandParameter G.fiberFullRank D.bandFullRank).1 y
-  have hComposite :
-      D.canonicalCuspFiberToBandTorusHomologyOne x =
-        integralSingularHomologyMap 1 ⟨e, e.continuous⟩ y := by
-    change integralSingularHomologyMap 1
-        ⟨G.fiberHomeomorph.trans e, (G.fiberHomeomorph.trans e).continuous⟩ x = _
-    exact DFunLike.congr_fun (integralSingularHomologyMap_comp 1
-      ⟨G.fiberHomeomorph, G.fiberHomeomorph.continuous⟩ ⟨e, e.continuous⟩) x
-  rw [hComposite]
-  exact hNatural.trans (G.fiberMarkingCompatibility x)
 
 /-- A fibre class representing the `i`-th degree-one coinvariant basis vector in the geometric
 Wang coordinates. -/

@@ -28,12 +28,6 @@ universe u
 
 variable {G X : Type u} [Group G] [TopologicalSpace X]
 
-public theorem restrictedOrbitRel_eq_mulActionOrbitRel
-    (A : MulAction G X) (S : InvariantOpenCarrier A) :
-    restrictedOrbitRel A S =
-      letI := restrictedMulAction A S
-      MulAction.orbitRel G S.carrier := by
-  rfl
 
 public theorem restrictedIsCancelSMul
     (A : MulAction G X) (S : InvariantOpenCarrier A)
@@ -73,27 +67,7 @@ variable (A : PaperAnalyticData)
   ⟨{q | orderFourFamilyRadius A.periods q < r},
     isOpen_lt (orderFourFamilyRadius_continuous A.periods) continuous_const⟩
 
-@[expose] public noncomputable def orderThreeFillingCarrier (r : ℝ) :
-    InvariantOpenCarrier (orderThreeAffineFamilyAction A.periods) where
-  carrier := A.orderThreeFillingOpen r
-  isOpen_carrier := (A.orderThreeFillingOpen r).2
-  invariant g q hq := by
-    change orderThreeFamilyRadius A.periods
-      (orderThreeAffineFamilyRepresentation A.periods g q) < r
-    rw [orderThreeFamilyRadius_representation A.periods
-      A.modular.modularParameter.toTriangleUniformization_sourceAction]
-    exact hq
 
-@[expose] public noncomputable def orderFourFillingCarrier (r : ℝ) :
-    InvariantOpenCarrier (orderFourAffineFamilyAction A.periods) where
-  carrier := A.orderFourFillingOpen r
-  isOpen_carrier := (A.orderFourFillingOpen r).2
-  invariant g q hq := by
-    change orderFourFamilyRadius A.periods
-      (orderFourAffineFamilyRepresentation A.periods g q) < r
-    rw [orderFourFamilyRadius_representation A.periods
-      A.modular.modularParameter.toTriangleUniformization_sourceAction]
-    exact hq
 
 @[expose, instance_reducible]
 public noncomputable def orderThreeFillingAction (r : ℝ) :
@@ -824,37 +798,11 @@ public theorem exists_orderFourFillingPiece : Nonempty A.OrderFourFillingPiece :
       A.modular.modularParameter.toTriangleUniformization_sourceAction)
   exact ⟨⟨r, hr, hr1, D⟩⟩
 
-public theorem exists_orderThreeFillingPiece_below {R : ℝ} (hR : 0 < R) :
-    ∃ P : A.OrderThreeFillingPiece, P.radius < R := by
-  obtain ⟨P⟩ := A.exists_orderThreeFillingPiece
-  let r := min P.radius (R / 2)
-  have hr : 0 < r := lt_min P.radius_pos (half_pos hR)
-  have hrr : r ≤ P.radius := min_le_left _ _
-  have hrR : r < R := (min_le_right _ _).trans_lt (half_lt_self hR)
-  exact ⟨⟨r, hr, hrr.trans_lt P.radius_lt_one,
-    A.orderThreeLinearCollarSourceData_mono hrr P.sourceData⟩, hrR⟩
 
-public theorem exists_orderFourFillingPiece_below {R : ℝ} (hR : 0 < R) :
-    ∃ P : A.OrderFourFillingPiece, P.radius < R := by
-  obtain ⟨P⟩ := A.exists_orderFourFillingPiece
-  let r := min P.radius (R / 2)
-  have hr : 0 < r := lt_min P.radius_pos (half_pos hR)
-  have hrr : r ≤ P.radius := min_le_left _ _
-  have hrR : r < R := (min_le_right _ _).trans_lt (half_lt_self hR)
-  exact ⟨⟨r, hr, hrr.trans_lt P.radius_lt_one,
-    A.orderFourLinearCollarSourceData_mono hrr P.sourceData⟩, hrR⟩
 
-@[expose] public noncomputable def orderThreeFillingPiece : A.OrderThreeFillingPiece :=
-  Classical.choice A.exists_orderThreeFillingPiece
 
-@[expose] public noncomputable def orderFourFillingPiece : A.OrderFourFillingPiece :=
-  Classical.choice A.exists_orderFourFillingPiece
 
-public abbrev SelectedOrderThreeFilling :=
-  A.OrderThreeVaryingFilling A.orderThreeFillingPiece.radius
 
-public abbrev SelectedOrderFourFilling :=
-  A.OrderFourVaryingFilling A.orderFourFillingPiece.radius
 
 public abbrev ComplexDiscBall (r : ℝ) :=
   {w : ComplexUnitDisc // ‖(w : ℂ)‖ < r}
@@ -976,95 +924,23 @@ public theorem orderFourFilling_connected {r : ℝ} (hr : 0 < r) (hr1 : r < 1) :
   let _ := A.orderFourFillingAction r
   infer_instance
 
-public abbrev SelectedOrderThreePuncturedCollar :=
-  Quotient (restrictedOrbitRel (orderThreeAffineFamilyAction A.periods)
-    (orderThreeAffinePuncturedCarrier A.periods
-      A.modular.modularParameter.toTriangleUniformization_sourceAction
-      A.orderThreeFillingPiece.radius))
 
-public abbrev SelectedOrderFourPuncturedCollar :=
-  Quotient (restrictedOrbitRel (orderFourAffineFamilyAction A.periods)
-    (orderFourAffinePuncturedCarrier A.periods
-      A.modular.modularParameter.toTriangleUniformization_sourceAction
-      A.orderFourFillingPiece.radius))
 
-@[instance_reducible]
-public noncomputable def selectedOrderThreeFillingComplexCharts :
-    ChartedSpace ComplexModel A.SelectedOrderThreeFilling :=
-  A.orderThreeFillingComplexCharts A.orderThreeFillingPiece.radius
 
-@[instance_reducible]
-public noncomputable def selectedOrderFourFillingComplexCharts :
-    ChartedSpace ComplexModel A.SelectedOrderFourFilling :=
-  A.orderFourFillingComplexCharts A.orderFourFillingPiece.radius
 
-public noncomputable instance selectedOrderThreeFillingManifold :
-    @IsManifold ℂ inferInstance ComplexModel inferInstance inferInstance ComplexModel
-      inferInstance (modelWithCornersSelf ℂ ComplexModel) regularSmoothnessOrder
-      A.SelectedOrderThreeFilling inferInstance
-      A.selectedOrderThreeFillingComplexCharts :=
-  A.orderThreeFilling_isManifold A.orderThreeFillingPiece.radius
 
-public noncomputable instance selectedOrderFourFillingManifold :
-    @IsManifold ℂ inferInstance ComplexModel inferInstance inferInstance ComplexModel
-      inferInstance (modelWithCornersSelf ℂ ComplexModel) regularSmoothnessOrder
-      A.SelectedOrderFourFilling inferInstance
-      A.selectedOrderFourFillingComplexCharts :=
-  A.orderFourFilling_isManifold A.orderFourFillingPiece.radius
 
-public noncomputable instance selectedOrderThreeFillingConnected :
-    ConnectedSpace A.SelectedOrderThreeFilling :=
-  A.orderThreeFilling_connected A.orderThreeFillingPiece.radius_pos
-    A.orderThreeFillingPiece.radius_lt_one
 
-public noncomputable instance selectedOrderFourFillingConnected :
-    ConnectedSpace A.SelectedOrderFourFilling :=
-  A.orderFourFilling_connected A.orderFourFillingPiece.radius_pos
-    A.orderFourFillingPiece.radius_lt_one
 
-public noncomputable instance selectedOrderThreeFillingSecondCountable :
-    SecondCountableTopology A.SelectedOrderThreeFilling :=
-  A.orderThreeFilling_secondCountable A.orderThreeFillingPiece.radius
 
-public noncomputable instance selectedOrderFourFillingSecondCountable :
-    SecondCountableTopology A.SelectedOrderFourFilling :=
-  A.orderFourFilling_secondCountable A.orderFourFillingPiece.radius
 
-@[expose] public noncomputable def selectedOrderThreePuncturedCollarToFilling :
-    A.SelectedOrderThreePuncturedCollar → A.SelectedOrderThreeFilling :=
-  A.orderThreePuncturedCollarToFilling A.orderThreeFillingPiece.radius
 
-@[expose] public noncomputable def selectedOrderFourPuncturedCollarToFilling :
-    A.SelectedOrderFourPuncturedCollar → A.SelectedOrderFourFilling :=
-  A.orderFourPuncturedCollarToFilling A.orderFourFillingPiece.radius
 
-public theorem selectedOrderThreePuncturedCollarToFilling_isOpenEmbedding :
-    IsOpenEmbedding A.selectedOrderThreePuncturedCollarToFilling :=
-  A.orderThreePuncturedCollarToFilling_isOpenEmbedding
-    A.orderThreeFillingPiece.radius
 
-public theorem selectedOrderFourPuncturedCollarToFilling_isOpenEmbedding :
-    IsOpenEmbedding A.selectedOrderFourPuncturedCollarToFilling :=
-  A.orderFourPuncturedCollarToFilling_isOpenEmbedding
-    A.orderFourFillingPiece.radius
 
-@[expose] public noncomputable def selectedOrderThreePuncturedCollarToCentralFamily :
-    A.SelectedOrderThreePuncturedCollar → A.CentralFamily :=
-  A.orderThreePuncturedCollarToCentralFamily A.orderThreeFillingPiece.sourceData
 
-@[expose] public noncomputable def selectedOrderFourPuncturedCollarToCentralFamily :
-    A.SelectedOrderFourPuncturedCollar → A.CentralFamily :=
-  A.orderFourPuncturedCollarToCentralFamily A.orderFourFillingPiece.sourceData
 
-public theorem selectedOrderThreePuncturedCollarToCentralFamily_isOpenEmbedding :
-    IsOpenEmbedding A.selectedOrderThreePuncturedCollarToCentralFamily :=
-  A.orderThreePuncturedCollarToCentralFamily_isOpenEmbedding
-    A.orderThreeFillingPiece.sourceData
 
-public theorem selectedOrderFourPuncturedCollarToCentralFamily_isOpenEmbedding :
-    IsOpenEmbedding A.selectedOrderFourPuncturedCollarToCentralFamily :=
-  A.orderFourPuncturedCollarToCentralFamily_isOpenEmbedding
-    A.orderFourFillingPiece.sourceData
 
 end PaperAnalyticData
 

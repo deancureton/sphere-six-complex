@@ -41,22 +41,6 @@ public abbrev CoveringRegionPreimage (p : E → Z) (S : Set Z) :=
   one_smul e := Subtype.ext (one_smul G e.1)
   mul_smul g h e := Subtype.ext (mul_smul g h e.1)
 
-public theorem coveringRegionPreimageAction_continuous
-    (totalAction : MulAction G E) (p : E → Z)
-    (p_invariant : ∀ g e, p (actionMap totalAction g e) = p e)
-    (S : Set Z)
-    (totalContinuous : letI := totalAction; ContinuousConstSMul G E) :
-    letI := coveringRegionPreimageAction totalAction p p_invariant S
-    ContinuousConstSMul G (CoveringRegionPreimage p S) := by
-  let _ := totalAction
-  let _ : ContinuousConstSMul G E := totalContinuous
-  let _ := coveringRegionPreimageAction totalAction p p_invariant S
-  constructor
-  intro g
-  change Continuous (fun e : CoveringRegionPreimage p S ↦
-    (⟨actionMap totalAction g e.1, by rw [p_invariant]; exact e.2⟩ :
-      CoveringRegionPreimage p S))
-  exact ((continuous_const_smul g).comp continuous_subtype_val).subtype_mk _
 
 public def coveringRegionInclusion
     {small big : Set Z} (hsmall : small ⊆ big) : C(small, big) where

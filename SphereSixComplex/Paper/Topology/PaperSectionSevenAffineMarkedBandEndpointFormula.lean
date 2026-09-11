@@ -19,59 +19,6 @@ noncomputable section
 open Set Topology
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
-
-open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
-
-namespace RadialEllipticActionData
-
-variable {m : ℕ} [NeZero m] {T : Type} [TopologicalSpace T] [AddCommGroup T]
-
-/-- Inserting a point of the canonical central-fibre cover into the filling quotient gives the
-literal orbit class of the corresponding fixed-product point at the disc centre. -/
-public theorem centralInclusion_coverProjection_sourceHomeomorph_symm
-    (D : RadialEllipticActionData m T) (x : T) :
-    PaperEllipticFillingRadialRetraction.RadialEllipticActionData.centralInclusion D
-        (centralFiberCoverProjection D ((centralFiberCoverSourceHomeomorph D).symm x)) =
-      Quotient.mk _ (D.actionData.center, x) :=
-  rfl
-
-end RadialEllipticActionData
-
-end SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
-
-namespace SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
-
-namespace EquivariantRadialProductIdentification
-
-open SphereSixComplex.Geometry
-open SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
-
-variable {m : ℕ} [NeZero m] {X T : Type} [TopologicalSpace X] [TopologicalSpace T]
-    [AddCommGroup T] {sourceAction : MulAction (FiniteCyclic m) X}
-    {D : RadialEllipticActionData m T}
-
-/-- On an orbit representative, the transported radial retraction forgets exactly the disc
-coordinate and returns the canonical central-fibre cover class of the product-chart coordinate. -/
-public theorem centralRetraction_quotientHomeomorph_mk
-    (e : EquivariantRadialProductIdentification sourceAction D) (x : X) :
-    D.centralRetraction (e.quotientHomeomorph (Quotient.mk _ x)) =
-      RadialEllipticActionData.centralFiberCoverProjection D
-        ((RadialEllipticActionData.centralFiberCoverSourceHomeomorph D).symm
-          (e.toHomeomorph x).2) := by
-  apply Subtype.ext
-  rw [e.quotientHomeomorph_mk]
-  change D.quotientRetract (Quotient.mk _ (e.toHomeomorph x)) = _
-  rw [D.quotientRetract_mk]
-  apply congrArg (Quotient.mk _)
-  apply Prod.ext
-  · exact D.center_eq.symm
-  · rfl
-
-end EquivariantRadialProductIdentification
-
-end SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
-
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 
 open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
@@ -81,85 +28,11 @@ open SphereSixComplex.Geometry.GlobalTorusFamily
 
 variable {A : PaperAnalyticData}
 
-/-- The order-three marked band point, inserted into the fixed-product filling quotient before
-transport back to the actual varying filling. -/
-public noncomputable def affineOrderThreeMarkedFixedCentralPoint
-    (A : PaperAnalyticData) :
-    C((A.actualAffineHeightSplit.allocation.orderThreeSide ∩
-        A.actualAffineHeightSplit.allocation.orderFourSide :
-          Set A.ellipticInterior),
-      (orderThreeRadialActionData A.periods).FillingQuotient) :=
-  (orderThreeRadialActionData A.periods).centralInclusion.comp
-    (affineBandOrderThreeMarkedProjection A)
 
-/-- The order-four analogue of `affineOrderThreeMarkedFixedCentralPoint`. -/
-public noncomputable def affineOrderFourMarkedFixedCentralPoint
-    (A : PaperAnalyticData) :
-    C((A.actualAffineHeightSplit.allocation.orderThreeSide ∩
-        A.actualAffineHeightSplit.allocation.orderFourSide :
-          Set A.ellipticInterior),
-      (orderFourRadialActionData A.periods).FillingQuotient) :=
-  (orderFourRadialActionData A.periods).centralInclusion.comp
-    (affineBandOrderFourMarkedProjection A)
 
-/-- Pointwise, the order-three endpoint is the orbit class at the disc centre with the marked
-band fibre coordinate. -/
-public theorem affineOrderThreeMarkedFixedCentralPoint_apply
-    (A : PaperAnalyticData)
-    (x : (A.actualAffineHeightSplit.allocation.orderThreeSide ∩
-      A.actualAffineHeightSplit.allocation.orderFourSide :
-        Set A.ellipticInterior)) :
-    affineOrderThreeMarkedFixedCentralPoint A x =
-      Quotient.mk _ ((orderThreeRadialActionData A.periods).actionData.center,
-        affineBandFiberCoordinate A x) := by
-  exact RadialEllipticActionData.centralInclusion_coverProjection_sourceHomeomorph_symm
-    (orderThreeRadialActionData A.periods) (affineBandFiberCoordinate A x)
 
-/-- Pointwise, the order-four endpoint is the orbit class at its disc centre with the marked
-band coordinate transported to the order-four fixed torus. -/
-public theorem affineOrderFourMarkedFixedCentralPoint_apply
-    (A : PaperAnalyticData)
-    (x : (A.actualAffineHeightSplit.allocation.orderThreeSide ∩
-      A.actualAffineHeightSplit.allocation.orderFourSide :
-        Set A.ellipticInterior)) :
-    affineOrderFourMarkedFixedCentralPoint A x =
-      Quotient.mk _ ((orderFourRadialActionData A.periods).actionData.center,
-        A.duplicatedSectionSevenOrderThreeToOrderFourBandHomeomorph
-          (affineBandFiberCoordinate A x)) := by
-  exact RadialEllipticActionData.centralInclusion_coverProjection_sourceHomeomorph_symm
-    (orderFourRadialActionData A.periods)
-      (A.duplicatedSectionSevenOrderThreeToOrderFourBandHomeomorph
-        (affineBandFiberCoordinate A x))
 
-/-- Before transport through the open filling image, the inverse of the selected order-three
-radial equivalence is exactly the inverse product-quotient homeomorphism applied to the explicit
-fixed central point. -/
-public theorem orderThreeSelectedFilling_invFun_markedProjection
-    (A : PaperAnalyticData) :
-    (orderThreeSelectedFillingHomotopyEquivCentralFiber A).invFun.comp
-        (affineBandOrderThreeMarkedProjection A) =
-      (⟨(orderThreeSelectedAffineRadialCompatibility A).toVaryingFillingProductIdentification
-          |>.quotientHomeomorph.symm,
-        (orderThreeSelectedAffineRadialCompatibility A).toVaryingFillingProductIdentification
-          |>.quotientHomeomorph.symm.continuous⟩ :
-        C((orderThreeRadialActionData A.periods).FillingQuotient,
-          A.OrderThreeVaryingFilling A.starSeparation.orderThree.radius)).comp
-        (affineOrderThreeMarkedFixedCentralPoint A) := by
-  rfl
 
-/-- The analogous formula for the selected order-four filling equivalence. -/
-public theorem orderFourSelectedFilling_invFun_markedProjection
-    (A : PaperAnalyticData) :
-    (orderFourSelectedFillingHomotopyEquivCentralFiber A).invFun.comp
-        (affineBandOrderFourMarkedProjection A) =
-      (⟨(orderFourSelectedAffineRadialCompatibility A).toVaryingFillingProductIdentification
-          |>.quotientHomeomorph.symm,
-        (orderFourSelectedAffineRadialCompatibility A).toVaryingFillingProductIdentification
-          |>.quotientHomeomorph.symm.continuous⟩ :
-        C((orderFourRadialActionData A.periods).FillingQuotient,
-          A.OrderFourVaryingFilling A.starSeparation.orderFour.radius)).comp
-        (affineOrderFourMarkedFixedCentralPoint A) := by
-  rfl
 
 /-- The explicit order-three affine radial equivalence between an affine disc region and the
 whole order-three central half-plane region.  Unlike selecting a witness from the proposition
@@ -549,21 +422,7 @@ public noncomputable def affineOrderFourDiscOverlapEndpoint
     ((A.orderFourAffineDiscCentralHomotopyEquiv hr0 hr).invFun.comp
       A.affineBandToOrderFourCentralRegion)
 
-public theorem affineOrderThreeDiscOverlapEndpoint_toFilling
-    (A : PaperAnalyticData) :
-    (IntegralMayerVietoris.interToLeft A.orderThreeFillingImage
-      A.affineOrderThreeCentralRegion).comp
-        A.affineOrderThreeDiscOverlapEndpoint =
-      A.affineOrderThreeDiscFillingEndpoint := by
-  rfl
 
-public theorem affineOrderFourDiscOverlapEndpoint_toFilling
-    (A : PaperAnalyticData) :
-    (IntegralMayerVietoris.interToLeft A.orderFourFillingImage
-      A.affineOrderFourCentralRegion).comp
-        A.affineOrderFourDiscOverlapEndpoint =
-      A.affineOrderFourDiscFillingEndpoint := by
-  rfl
 
 /-- The explicit endpoint read in the selected order-three varying filling, with all gluing
 homeomorphisms removed. -/
@@ -590,76 +449,8 @@ public noncomputable def affineOrderFourStarEndpoint (A : PaperAnalyticData) :
       A.OrderFourVaryingFilling A.starSeparation.orderFour.radius)).comp
     A.affineOrderFourDiscOverlapEndpoint
 
-/-- The remaining coordinate calculation with the ambient glued-space homeomorphisms removed. -/
-public structure AffineMarkedStarEndpointCompatibility (A : PaperAnalyticData) where
-  orderThree :
-    (orderThreeSelectedFillingHomotopyEquivCentralFiber A).toFun.comp
-        A.affineOrderThreeStarEndpoint =
-      affineBandOrderThreeMarkedProjection A
-  orderFour :
-    (orderFourSelectedFillingHomotopyEquivCentralFiber A).toFun.comp
-        A.affineOrderFourStarEndpoint =
-      affineBandOrderFourMarkedProjection A
 
-/-- The exact remaining coordinate calculation after the band-wide affine radial inverse has
-been constructed: the filling radial retraction of each explicit disc endpoint must be the
-marked central-fibre projection. -/
-public structure AffineMarkedDiscEndpointCompatibility (A : PaperAnalyticData) where
-  orderThree :
-    (A.orderThreeFillingImageHomotopyEquiv.toFun.comp
-      (A.affineOrderThreeDiscFillingEndpoint)) =
-        affineBandOrderThreeMarkedProjection A
-  orderFour :
-    (A.orderFourFillingImageHomotopyEquiv.toFun.comp
-      (A.affineOrderFourDiscFillingEndpoint)) =
-        affineBandOrderFourMarkedProjection A
 
-/-- The star-coordinate equalities imply the filling-image endpoint equalities. -/
-public theorem AffineMarkedStarEndpointCompatibility.toDiscEndpointCompatibility
-    {A : PaperAnalyticData} (H : A.AffineMarkedStarEndpointCompatibility) :
-    A.AffineMarkedDiscEndpointCompatibility where
-  orderThree := by
-    apply ContinuousMap.ext
-    intro x
-    let u := A.affineOrderThreeDiscOverlapEndpoint x
-    have hfill : A.affineOrderThreeDiscFillingEndpoint x =
-        ⟨u.1, u.2.1⟩ := rfl
-    change (orderThreeSelectedFillingHomotopyEquivCentralFiber A).toFun
-        (A.orderThreePieceHomeomorph.symm
-          (A.orderThreeFillingImageToPiece
-            (A.affineOrderThreeDiscFillingEndpoint x))) = _
-    rw [hfill]
-    have hpiece :
-        (A.orderThreePieceHomeomorph.symm
-          (A.orderThreeFillingImageToPiece ⟨u.1, u.2.1⟩) :
-            A.OrderThreeVaryingFilling A.starSeparation.orderThree.radius) =
-          A.starToFilling 1 (A.orderThreeOverlapCollarHomeomorph u) :=
-      A.orderThreeFillingImageToPiece_symm_overlap u
-    rw [hpiece]
-    exact congrArg
-      (fun f : C(A.affineMarkedBand,
-        orderThreeReducedCentralFiber A.periods) ↦ f x) H.orderThree
-  orderFour := by
-    apply ContinuousMap.ext
-    intro x
-    let u := A.affineOrderFourDiscOverlapEndpoint x
-    have hfill : A.affineOrderFourDiscFillingEndpoint x =
-        ⟨u.1, u.2.1⟩ := rfl
-    change (orderFourSelectedFillingHomotopyEquivCentralFiber A).toFun
-        (A.orderFourPieceHomeomorph.symm
-          (A.orderFourFillingImageToPiece
-            (A.affineOrderFourDiscFillingEndpoint x))) = _
-    rw [hfill]
-    have hpiece :
-        (A.orderFourPieceHomeomorph.symm
-          (A.orderFourFillingImageToPiece ⟨u.1, u.2.1⟩) :
-            A.OrderFourVaryingFilling A.starSeparation.orderFour.radius) =
-          A.starToFilling 2 (A.orderFourOverlapCollarHomeomorph u) :=
-      A.orderFourFillingImageToPiece_symm_overlap u
-    rw [hpiece]
-    exact congrArg
-      (fun f : C(A.affineMarkedBand,
-        orderFourReducedCentralFiber A.periods) ↦ f x) H.orderFour
 
 /-- Include the order-three central region in its affine side. -/
 public def affineOrderThreeCentralRegionToSide (A : PaperAnalyticData) :
@@ -767,116 +558,9 @@ public theorem orderFourBandInclusion_homotopic_discFillingEndpoint
   rw [hleft, hright] at h
   exact h
 
-private theorem orderThreeSideInverse_markedProjection_formula
-    (A : PaperAnalyticData) :
-    (affineOrderThreeSideToReducedFiberHomotopyEquiv A).invFun.comp
-        (affineBandOrderThreeMarkedProjection A) =
-      (orderThreeOverlapIsHomotopyEquivalence_inclusion
-          A.orderThreeOverlapIsHomotopyEquivalence).toHomotopyEquiv.invFun.comp
-        ((nestedSubtypeHomeomorph
-          A.actualAffineHeightSplit.allocation.orderThreeSide
-          A.orderThreeFillingImage
-          A.actualAffineHeightSplit.orderThreeFillingImage_subset_side).toHomotopyEquiv
-          |>.invFun.comp
-            (A.orderThreeFillingImageHomotopyEquiv.invFun.comp
-              (affineBandOrderThreeMarkedProjection A))) := by
-  rfl
 
-private theorem orderFourSideInverse_markedProjection_formula
-    (A : PaperAnalyticData) :
-    (affineOrderFourSideToReducedFiberHomotopyEquiv A).invFun.comp
-        (affineBandOrderFourMarkedProjection A) =
-      (orderFourOverlapIsHomotopyEquivalence_inclusion
-          A.orderFourOverlapIsHomotopyEquivalence).toHomotopyEquiv.invFun.comp
-        ((nestedSubtypeHomeomorph
-          A.actualAffineHeightSplit.allocation.orderFourSide
-          A.orderFourFillingImage
-          A.actualAffineHeightSplit.orderFourFillingImage_subset_side).toHomotopyEquiv
-          |>.invFun.comp
-            (A.orderFourFillingImageHomotopyEquiv.invFun.comp
-              (affineBandOrderFourMarkedProjection A))) := by
-  rfl
 
-/-- The two explicit fixed-coordinate endpoint calculations are the only remaining input needed
-after the affine radial deformations: filling homotopy-inverse cancellation supplies the desired
-side contractions. -/
-public theorem AffineMarkedDiscEndpointCompatibility.toSideContractions
-    {A : PaperAnalyticData} (H : A.AffineMarkedDiscEndpointCompatibility) :
-    A.AffineMarkedBandSideContractions := by
-  refine { orderThree := ?_, orderFour := ?_ }
-  · let q := A.affineOrderThreeDiscFillingEndpoint
-    let g := A.orderThreeFillingImageHomotopyEquiv
-    let p := affineBandOrderThreeMarkedProjection A
-    have hfill := ContinuousMap.Homotopic.comp g.left_inv (.refl q)
-    have hcomp : g.toFun.comp q = p := H.orderThree
-    simp only [ContinuousMap.comp_assoc, hcomp] at hfill
-    have hside := ContinuousMap.Homotopic.comp
-      (.refl A.affineOrderThreeFillingImageToSide) hfill.symm
-    have hendpoint :
-        A.affineOrderThreeFillingImageToSide.comp (g.invFun.comp p) =
-          (affineOrderThreeSideToReducedFiberHomotopyEquiv A).invFun.comp p := by
-      dsimp [g, p]
-      have hraw :
-          A.affineOrderThreeFillingImageToSide.comp
-              (A.orderThreeFillingImageHomotopyEquiv.invFun.comp
-                (affineBandOrderThreeMarkedProjection A)) =
-            (orderThreeOverlapIsHomotopyEquivalence_inclusion
-                A.orderThreeOverlapIsHomotopyEquivalence).toHomotopyEquiv.invFun.comp
-              ((nestedSubtypeHomeomorph
-                A.actualAffineHeightSplit.allocation.orderThreeSide
-                A.orderThreeFillingImage
-                A.actualAffineHeightSplit.orderThreeFillingImage_subset_side)
-                |>.toHomotopyEquiv.invFun.comp
-                  (A.orderThreeFillingImageHomotopyEquiv.invFun.comp
-                    (affineBandOrderThreeMarkedProjection A))) := by
-        rw [(orderThreeOverlapIsHomotopyEquivalence_inclusion
-          A.orderThreeOverlapIsHomotopyEquivalence).toHomotopyEquiv_invFun]
-        ext x
-        rfl
-      exact hraw.trans (orderThreeSideInverse_markedProjection_formula A).symm
-    simp only [ContinuousMap.id_comp] at hside
-    rw [hendpoint] at hside
-    exact (A.orderThreeBandInclusion_homotopic_discFillingEndpoint).trans hside
-  · let q := A.affineOrderFourDiscFillingEndpoint
-    let g := A.orderFourFillingImageHomotopyEquiv
-    let p := affineBandOrderFourMarkedProjection A
-    have hfill := ContinuousMap.Homotopic.comp g.left_inv (.refl q)
-    have hcomp : g.toFun.comp q = p := H.orderFour
-    simp only [ContinuousMap.comp_assoc, hcomp] at hfill
-    have hside := ContinuousMap.Homotopic.comp
-      (.refl A.affineOrderFourFillingImageToSide) hfill.symm
-    have hendpoint :
-        A.affineOrderFourFillingImageToSide.comp (g.invFun.comp p) =
-          (affineOrderFourSideToReducedFiberHomotopyEquiv A).invFun.comp p := by
-      dsimp [g, p]
-      have hraw :
-          A.affineOrderFourFillingImageToSide.comp
-              (A.orderFourFillingImageHomotopyEquiv.invFun.comp
-                (affineBandOrderFourMarkedProjection A)) =
-            (orderFourOverlapIsHomotopyEquivalence_inclusion
-                A.orderFourOverlapIsHomotopyEquivalence).toHomotopyEquiv.invFun.comp
-              ((nestedSubtypeHomeomorph
-                A.actualAffineHeightSplit.allocation.orderFourSide
-                A.orderFourFillingImage
-                A.actualAffineHeightSplit.orderFourFillingImage_subset_side)
-                |>.toHomotopyEquiv.invFun.comp
-                  (A.orderFourFillingImageHomotopyEquiv.invFun.comp
-                    (affineBandOrderFourMarkedProjection A))) := by
-        rw [(orderFourOverlapIsHomotopyEquivalence_inclusion
-          A.orderFourOverlapIsHomotopyEquivalence).toHomotopyEquiv_invFun]
-        ext x
-        rfl
-      exact hraw.trans (orderFourSideInverse_markedProjection_formula A).symm
-    simp only [ContinuousMap.id_comp] at hside
-    rw [hendpoint] at hside
-    exact (A.orderFourBandInclusion_homotopic_discFillingEndpoint).trans hside
 
-/-- Thus the exact two fixed-coordinate endpoint equalities imply the original residual
-marked-band package. -/
-public theorem markedBandHomotopies_of_discEndpointCompatibility
-    (A : PaperAnalyticData) (H : A.AffineMarkedDiscEndpointCompatibility) :
-    A.AffineOverlapBandCompatibility :=
-  markedBandHomotopies_of_sideContractions A H.toSideContractions
 
 /-- The order-three inverse endpoint in the actual affine side is obtained by transporting the
 explicit fixed central point back through the selected varying-filling and open-image
@@ -912,57 +596,8 @@ public theorem affineOrderFourSideInverse_markedProjection
               (affineBandOrderFourMarkedProjection A))) := by
   rfl
 
-/-- Fully point-set form of the remaining geometry.  The two functions must glue the affine
-central-family transport to the cyclic filling contraction continuously across the star collar.
-The endpoint equalities are literal equalities of points in the corresponding affine side. -/
-public structure AffineMarkedBandGluedHomotopies (A : PaperAnalyticData) where
-  orderThreeToFun : unitInterval × A.affineMarkedBand →
-    A.actualAffineHeightSplit.allocation.orderThreeSide
-  orderThree_continuous : Continuous orderThreeToFun
-  orderThree_zero : ∀ x,
-    orderThreeToFun (0, x) =
-      IntegralMayerVietoris.interToLeft
-        A.actualAffineHeightSplit.allocation.orderThreeSide
-        A.actualAffineHeightSplit.allocation.orderFourSide x
-  orderThree_one : ∀ x,
-    orderThreeToFun (1, x) =
-      (affineOrderThreeSideToReducedFiberHomotopyEquiv A).invFun
-        (affineBandOrderThreeMarkedProjection A x)
-  orderFourToFun : unitInterval × A.affineMarkedBand →
-    A.actualAffineHeightSplit.allocation.orderFourSide
-  orderFour_continuous : Continuous orderFourToFun
-  orderFour_zero : ∀ x,
-    orderFourToFun (0, x) =
-      IntegralMayerVietoris.interToRight
-        A.actualAffineHeightSplit.allocation.orderThreeSide
-        A.actualAffineHeightSplit.allocation.orderFourSide x
-  orderFour_one : ∀ x,
-    orderFourToFun (1, x) =
-      (affineOrderFourSideToReducedFiberHomotopyEquiv A).invFun
-        (affineBandOrderFourMarkedProjection A x)
 
-/-- The explicit glued functions and their point-set endpoint formulas supply the exact
-side-contraction package of the preceding reduction. -/
-public theorem AffineMarkedBandGluedHomotopies.toSideContractions
-    {A : PaperAnalyticData} (H : A.AffineMarkedBandGluedHomotopies) :
-    A.AffineMarkedBandSideContractions where
-  orderThree := ⟨{
-    toFun := H.orderThreeToFun
-    continuous_toFun := H.orderThree_continuous
-    map_zero_left := H.orderThree_zero
-    map_one_left := H.orderThree_one }⟩
-  orderFour := ⟨{
-    toFun := H.orderFourToFun
-    continuous_toFun := H.orderFour_continuous
-    map_zero_left := H.orderFour_zero
-    map_one_left := H.orderFour_one }⟩
 
-/-- Consequently the fully point-set glued homotopies prove the original residual marked-band
-assertion. -/
-public theorem markedBandHomotopies_of_gluedHomotopies
-    (A : PaperAnalyticData) (H : A.AffineMarkedBandGluedHomotopies) :
-    A.AffineOverlapBandCompatibility :=
-  markedBandHomotopies_of_sideContractions A H.toSideContractions
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

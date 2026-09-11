@@ -116,31 +116,5 @@ public theorem phaseSweepHomologyTwoToRelativeEquiv_skeletal
     exact K.liftCycles_i _ _ _ _
   exact ConcreteCategory.congr_hom hc x
 
-public theorem phaseSweepHomologyTwoCellEquiv_of_skeletalClass
-    (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    [T2Space (ActualLocalCuspCentralOrbitQuotient W)]
-    (T : CellularHomology.IntegralComparison) :
-    let _ := (phaseSweepCellAtlas W).cwComplex
-    ∀ (x : (cwIntegralSingularChainComplexObj
-      (TopCat.of (IntegralCWSkeletonLT (ActualLocalCuspCentralOrbitQuotient W) 3))).homology 2)
-      (i : Fin 4),
-    (HomologicalComplex.homologyMap
-      (cwRelativeIntegralSingularChainProjection
-        (integralCWSkeletonInclusion (ActualLocalCuspCentralOrbitQuotient W) 2)) 2).hom x =
-        T.cellBasis (ActualLocalCuspCentralOrbitQuotient W) 2 (Finsupp.single i 1) →
-    phaseSweepHomologyTwoCellEquiv W T
-      ((HomologicalComplex.homologyMap
-        (cwIntegralSingularChainMapObj
-          (integralCWSkeletonToSpace (ActualLocalCuspCentralOrbitQuotient W) 3)) 2).hom x) =
-      Pi.single i 1 := by
-  let _ := (phaseSweepCellAtlas W).cwComplex
-  dsimp only
-  intro x i hx
-  funext j
-  change ((T.cellBasis (ActualLocalCuspCentralOrbitQuotient W) 2).symm
-    (phaseSweepHomologyTwoToRelativeEquiv W T _)) j = _
-  rw [phaseSweepHomologyTwoToRelativeEquiv_skeletal, hx, AddEquiv.symm_apply_apply]
-  change (Finsupp.single i (1 : ℤ) : Fin 4 →₀ ℤ) j = (Pi.single i (1 : ℤ) : Fin 4 → ℤ) j
-  simp only [Finsupp.single_apply, Pi.single_apply, eq_comm]
 
 end SphereSixComplex.Geometry.CuspPuncturedCollarBridge

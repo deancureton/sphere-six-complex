@@ -79,167 +79,18 @@ public theorem orderFour_enteringSheet_inverse_transports_epsilon'
   simpa only [map_mul, LinearEquiv.mul_apply] using
     (rhoLambda_epsilon'_eq_of_commute_g₂ (g * q) hcomm).symm
 
-/-- The order-four boundary monodromy is the monodromy of the second marked free meridian. -/
-public theorem paperOrderFourCentralMonodromy_second :
-    (paperCentralFreeMonodromy secondMeridian).toAdd =
-      (orderFourCentralFiberPresentationData A.periods).affine.latticeMap.toAddEquiv := by
-  rw [A.orderFourCentralFiberPresentationData_affine_eq]
-  apply AddEquiv.ext
-  intro a
-  simp [paperCentralFreeMonodromy, freeTwoMeridianMonodromy,
-    integralOrbifoldPeriodMonodromy, orderFourDescendedAffineTorusAutomorphism]
 
-/-- Integral powers of the second marked free meridian in the global affine deck group. -/
-public def paperOrderFourCentralAngularDeck :
-    Multiplicative ℤ →* PaperCentralFreeAffineDeck where
-  toFun n := freeAffineLift (M := paperCentralFreeMonodromy)
-    (secondMeridian ^ n.toAdd)
-  map_one' := by simp
-  map_mul' n k := by
-    change freeAffineLift (M := paperCentralFreeMonodromy)
-        (secondMeridian ^ (n.toAdd + k.toAdd)) =
-      freeAffineLift (M := paperCentralFreeMonodromy) (secondMeridian ^ n.toAdd) *
-        freeAffineLift (M := paperCentralFreeMonodromy) (secondMeridian ^ k.toAdd)
-    rw [zpow_add, map_mul]
 
-@[simp]
-public theorem paperOrderFourCentralAngularDeck_one :
-    paperOrderFourCentralAngularDeck (Multiplicative.ofAdd 1) =
-      freeAffineLift (M := paperCentralFreeMonodromy) secondMeridian := by
-  simp [paperOrderFourCentralAngularDeck]
 
-/-- Every power of the local order-four monodromy agrees with the corresponding power of the
-second global free-meridian monodromy. -/
-public theorem paperOrderFourCentralMonodromy_zpow
-    (n : Multiplicative ℤ) (a : Lattice) :
-    (paperCentralFreeMonodromy (secondMeridian ^ n.toAdd)).toAdd a =
-      (integerAffineMonodromy
-        (orderFourCentralFiberPresentationData A.periods).affine.latticeMap.toAddEquiv n
-        (Multiplicative.ofAdd a)).toAdd := by
-  rw [map_zpow]
-  change ((n.toAdd • (paperCentralFreeMonodromy secondMeridian).toAdd) a) =
-    (n.toAdd •
-      (orderFourCentralFiberPresentationData A.periods).affine.latticeMap.toAddEquiv) a
-  rw [A.paperOrderFourCentralMonodromy_second]
 
-/-- The order-four boundary deck homomorphism with the orientation forced by the based-path
-universal cover. -/
-public def paperOrderFourCentralBoundaryToUniversalDeck :
-    CanonicalCyclicAffineBoundaryDeck
-        (orderFourCentralFiberPresentationData A.periods).affine.latticeMap.toAddEquiv →*
-      PaperCentralFreeAffineDeck :=
-  SemidirectProduct.lift
-    ((freeAffineTranslation (M := paperCentralFreeMonodromy)).comp
-      (-AddMonoidHom.id Lattice)).toMultiplicative
-    paperOrderFourCentralAngularDeck (by
-      intro n
-      apply MonoidHom.ext
-      intro a
-      change Additive.toMul
-          (freeAffineTranslation (M := paperCentralFreeMonodromy)
-            (-((integerAffineMonodromy
-              (orderFourCentralFiberPresentationData A.periods).affine.latticeMap.toAddEquiv
-              n a).toAdd))) =
-        freeAffineLift (M := paperCentralFreeMonodromy) (secondMeridian ^ n.toAdd) *
-          Additive.toMul
-            (freeAffineTranslation (M := paperCentralFreeMonodromy) (-a.toAdd)) *
-          (freeAffineLift (M := paperCentralFreeMonodromy)
-            (secondMeridian ^ n.toAdd))⁻¹
-      rw [freeAffine_conjugate]
-      congr 2
-      rw [map_neg]
-      exact congrArg Neg.neg (A.paperOrderFourCentralMonodromy_zpow n a.toAdd).symm)
 
-@[simp]
-public theorem paperOrderFourCentralBoundaryToUniversalDeck_translation (a : Lattice) :
-    A.paperOrderFourCentralBoundaryToUniversalDeck
-        (Additive.toMul (canonicalCyclicAffineTranslation
-          (orderFourCentralFiberPresentationData A.periods).affine.latticeMap.toAddEquiv a)) =
-      Additive.toMul (freeAffineTranslation (M := paperCentralFreeMonodromy) (-a)) := by
-  change Additive.toMul
-      (freeAffineTranslation (M := paperCentralFreeMonodromy) (-a)) * 1 = _
-  simp
 
-@[simp]
-public theorem paperOrderFourCentralBoundaryToUniversalDeck_meridian :
-    A.paperOrderFourCentralBoundaryToUniversalDeck
-        (canonicalCyclicAffineMeridian
-          (orderFourCentralFiberPresentationData A.periods).affine.latticeMap.toAddEquiv) =
-      freeAffineLift (M := paperCentralFreeMonodromy) secondMeridian := by
-  change 1 * paperOrderFourCentralAngularDeck (Multiplicative.ofAdd 1) = _
-  rw [one_mul, paperOrderFourCentralAngularDeck_one]
 
-/-- The physical order-four mapping-torus deck group in based-path orientation. -/
-public noncomputable def paperOrderFourActualBoundaryToUniversalDeck :
-    OrderFourAffineMappingTorusDeck A.periods →* PaperCentralFreeAffineDeck :=
-  A.paperOrderFourCentralBoundaryToUniversalDeck.comp
-    A.ellipticFourToCentralBoundaryDeckEquiv.toMonoidHom
 
-@[simp]
-public theorem paperOrderFourActualBoundaryToUniversalDeck_translation (a : Lattice) :
-    A.paperOrderFourActualBoundaryToUniversalDeck
-        (Additive.toMul (affineTorusMappingTorusDeckTranslation
-          (orderFourDescendedAffineTorusAutomorphism A.periods) a)) =
-      Additive.toMul (freeAffineTranslation (M := paperCentralFreeMonodromy) (-a)) := by
-  rw [paperOrderFourActualBoundaryToUniversalDeck, MonoidHom.comp_apply]
-  change A.paperOrderFourCentralBoundaryToUniversalDeck
-      (A.ellipticFourToCentralBoundaryDeckEquiv
-        (Additive.toMul (affineTorusMappingTorusDeckTranslation
-          (orderFourDescendedAffineTorusAutomorphism A.periods) a))) = _
-  rw [A.ellipticFourToCentralBoundaryDeckEquiv_translation,
-    A.paperOrderFourCentralBoundaryToUniversalDeck_translation]
 
-@[simp]
-public theorem paperOrderFourActualBoundaryToUniversalDeck_positive_meridian :
-    A.paperOrderFourActualBoundaryToUniversalDeck
-        (affineTorusMappingTorusDeckMeridian
-          (orderFourDescendedAffineTorusAutomorphism A.periods)) =
-      freeAffineLift (M := paperCentralFreeMonodromy) secondMeridian := by
-  rw [paperOrderFourActualBoundaryToUniversalDeck, MonoidHom.comp_apply]
-  change A.paperOrderFourCentralBoundaryToUniversalDeck
-      (A.ellipticFourToCentralBoundaryDeckEquiv
-        (affineTorusMappingTorusDeckMeridian
-          (orderFourDescendedAffineTorusAutomorphism A.periods))) = _
-  rw [A.ellipticFourToCentralBoundaryDeckEquiv_meridian,
-    A.paperOrderFourCentralBoundaryToUniversalDeck_meridian]
 
-@[simp]
-public theorem paperOrderFourActualBoundaryToUniversalDeck_physical_meridian :
-    A.paperOrderFourActualBoundaryToUniversalDeck
-        A.ellipticFourBoundaryDeckData.meridian =
-      (freeAffineLift (M := paperCentralFreeMonodromy) secondMeridian)⁻¹ := by
-  rw [ellipticFourBoundaryDeckData, map_inv,
-    A.paperOrderFourActualBoundaryToUniversalDeck_positive_meridian]
 
-/-- The second marked free meridian commutes with the invariant order-four twist translation. -/
-public theorem paperOrderFourCentralDeck_second_commutes_epsilon' :
-    Commute
-      (freeAffineLift (M := paperCentralFreeMonodromy) secondMeridian)
-      (Additive.toMul
-        (freeAffineTranslation (M := paperCentralFreeMonodromy) epsilon')) := by
-  rw [commute_iff_eq]
-  have h := freeAffine_conjugate
-    (M := paperCentralFreeMonodromy) secondMeridian epsilon'
-  have hfixed :
-      (paperCentralFreeMonodromy secondMeridian).toAdd epsilon' = epsilon' := by
-    change rhoLambda (twoMeridianOrbifoldMap g₁ g₂ secondMeridian) epsilon' = epsilon'
-    rw [twoMeridianOrbifoldMap_second, rhoLambda_g₂_apply, A₂_epsilon']
-  rw [hfixed] at h
-  exact mul_inv_eq_iff_eq_mul.mp h
 
-/-- The complete order-four physical relation has the inverse classified central deck label. -/
-public theorem paperOrderFourActualBoundaryToUniversalDeck_fillingRelation :
-    A.paperOrderFourActualBoundaryToUniversalDeck
-        A.ellipticFourBoundaryDeckData.fillingRelation =
-      orderFourFillingRelationClassifiedCentralProductDeck⁻¹ := by
-  simp only [UnwrappedCyclicAffineBoundaryDeckData.fillingRelation,
-    ellipticFourBoundaryDeckData, map_mul, map_pow, map_inv]
-  rw [A.paperOrderFourActualBoundaryToUniversalDeck_positive_meridian]
-  rw [A.paperOrderFourActualBoundaryToUniversalDeck_translation]
-  rw [orderFourFillingRelationClassifiedCentralProductDeck]
-  simp only [map_neg, toMul_neg, inv_inv, mul_inv_rev, inv_pow]
-  simpa only [inv_inv, inv_pow] using
-    (paperOrderFourCentralDeck_second_commutes_epsilon'.inv_left.pow_left 4).eq
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

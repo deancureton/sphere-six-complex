@@ -241,48 +241,10 @@ public theorem fuchsianOnePerm_apply (z : UpperHalfPlane) :
   rw [← fuchsianSourceAction_g₁]
   exact fuchsianSourceAction_g₁_apply z
 
-public theorem fuchsianTwoPerm_apply (z : UpperHalfPlane) :
-    ((fuchsianTwoPerm z : UpperHalfPlane) : ℂ) = -1 / (z + Real.sqrt 2) := by
-  rw [← fuchsianSourceAction_g₂]
-  exact fuchsianSourceAction_g₂_apply z
 
-public theorem fuchsianOnePerm_ne_one : fuchsianOnePerm ≠ 1 := by
-  intro h
-  have hz := congrArg (fun e : Equiv.Perm UpperHalfPlane ↦ e UpperHalfPlane.I) h
-  have hc := congrArg (fun z : UpperHalfPlane ↦ (z : ℂ)) hz
-  rw [fuchsianOnePerm_apply] at hc
-  norm_num [UpperHalfPlane.I] at hc
-  have hr := congrArg Complex.re hc
-  norm_num at hr
 
-public theorem fuchsianTwoPerm_sq_ne_one : fuchsianTwoPerm ^ 2 ≠ 1 := by
-  intro h
-  have hz := congrArg (fun e : Equiv.Perm UpperHalfPlane ↦ e UpperHalfPlane.I) h
-  have hpow : fuchsianTwoPerm ^ 2 = fuchsianSLAction (fuchsianTwoSL ^ 2) := by
-    exact (map_pow _ _ _).symm
-  rw [hpow, fuchsianTwoSL_pow_two] at hz
-  have hc := congrArg (fun z : UpperHalfPlane ↦ (z : ℂ)) hz
-  change ((fuchsianTwoSquaredGL • UpperHalfPlane.I : UpperHalfPlane) : ℂ) =
-    UpperHalfPlane.I at hc
-  rw [UpperHalfPlane.coe_smul_of_det_pos] at hc
-  · simp [UpperHalfPlane.num, UpperHalfPlane.denom, UpperHalfPlane.I,
-      fuchsianTwoSquaredGL_matrix] at hc
-    have hden : Complex.I * (Real.sqrt 2 : ℂ) + 1 ≠ 0 := by
-      intro hzero
-      have him := congrArg Complex.im hzero
-      norm_num at him
-    field_simp [hden] at hc
-    have him := congrArg Complex.im hc
-    norm_num at him
-  · simp [fuchsianTwoSquaredGL.eq_def]
 
-public theorem orderOf_fuchsianOnePerm : orderOf fuchsianOnePerm = 3 :=
-  orderOf_eq_prime fuchsianOnePerm_pow_three fuchsianOnePerm_ne_one
 
-public theorem orderOf_fuchsianTwoPerm : orderOf fuchsianTwoPerm = 4 := by
-  have h := orderOf_eq_prime_pow (p := 2) (n := 1)
-    fuchsianTwoPerm_sq_ne_one fuchsianTwoPerm_pow_four
-  exact h
 
 /-- The order-three elliptic fixed point of the source action. -/
 @[expose] public noncomputable def fuchsianOneFixedPoint : UpperHalfPlane :=

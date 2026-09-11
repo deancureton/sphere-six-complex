@@ -54,21 +54,7 @@ public theorem singularSubsetRange_inter (X : TopCat) (U V : Set X) :
   ext z
   rfl
 
-public def singularSubsetCorestrictionChains (X : TopCat) (U : Set X) :=
-  BinaryOpenCover.integralSimplicialChains.map (singularSubsetCorestriction X U)
 
-public instance singularSubsetCorestrictionChains_isIso (X : TopCat) (U : Set X) :
-    IsIso (singularSubsetCorestrictionChains X U) := by
-  dsimp [singularSubsetCorestrictionChains]
-  infer_instance
 
-public theorem singularSubsetCorestriction_natural (X : TopCat) {U V : Set X} (h : U ⊆ V) :
-    TopCat.toSSet.map (TopCat.ofHom ⟨Set.inclusion h, continuous_inclusion h⟩) ≫
-      singularSubsetCorestriction X V =
-    singularSubsetCorestriction X U ≫
-      SSet.Subcomplex.homOfLE (singularSubsetRange_mono X h) := by
-  apply (cancel_mono (singularSubsetRange X V).ι).mp
-  simp only [Category.assoc, singularSubsetCorestriction]
-  rfl
 
 end SphereSixComplex

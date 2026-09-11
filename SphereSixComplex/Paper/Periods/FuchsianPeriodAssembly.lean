@@ -129,31 +129,10 @@ public theorem descendedFuchsianBeta_transform_cusp (z : UpperHalfPlane) :
   mu_cusp_bounded := (descendedFuchsianMu_spec E D.muLocal).2.2.2
   beta_add_tau_cusp_bounded := (descendedFuchsianBeta_spec E D).2.2.2
 
-@[simp]
-public theorem assembledFuchsianPrePeriodData_tau (z : UpperHalfPlane) :
-    (assembledFuchsianPrePeriodData E D).tau z = E.modularParameter.tau z :=
-  rfl
 
-@[simp]
-public theorem assembledFuchsianPrePeriodData_mu (z : UpperHalfPlane) :
-    (assembledFuchsianPrePeriodData E D).mu z = descendedFuchsianMu E D.muLocal z :=
-  rfl
 
-@[simp]
-public theorem assembledFuchsianPrePeriodData_beta (z : UpperHalfPlane) :
-    (assembledFuchsianPrePeriodData E D).beta z = descendedFuchsianBeta E D z :=
-  rfl
 
-public theorem assembledFuchsianPrePeriodData_mu_cusp_bounded :
-    BoundedOn (assembledFuchsianPrePeriodData E D).mu fuchsianCuspRegion :=
-  (assembledFuchsianPrePeriodData E D).mu_cusp_bounded
 
-public theorem assembledFuchsianPrePeriodData_beta_add_tau_cusp_bounded :
-    BoundedOn
-      (fun z ↦ (assembledFuchsianPrePeriodData E D).beta z +
-        (assembledFuchsianPrePeriodData E D).tau z)
-      fuchsianCuspRegion :=
-  (assembledFuchsianPrePeriodData E D).beta_add_tau_cusp_bounded
 
 /-- The exact local torsor data produces actual nondegenerate period functions for the explicit
 Fuchsian uniformization. -/
@@ -169,19 +148,5 @@ public theorem exists_assembledFuchsianPeriodFunctions :
     PeriodFunctions E.modularParameter.toTriangleUniformization := by
   exact Classical.choice (exists_assembledFuchsianPeriodFunctions E D)
 
-public theorem assembledFuchsianPeriodFunctions_fields :
-    MDiff (assembledFuchsianPeriodFunctions E D).tau ∧
-      MDiff (assembledFuchsianPeriodFunctions E D).mu ∧
-      MDiff (assembledFuchsianPeriodFunctions E D).beta ∧
-      BoundedOn (assembledFuchsianPeriodFunctions E D).mu fuchsianCuspRegion ∧
-      BoundedOn
-        (fun z ↦ (assembledFuchsianPeriodFunctions E D).beta z +
-          (assembledFuchsianPeriodFunctions E D).tau z)
-        fuchsianCuspRegion :=
-  ⟨(assembledFuchsianPeriodFunctions E D).tau_holomorphic,
-    (assembledFuchsianPeriodFunctions E D).mu_holomorphic,
-    (assembledFuchsianPeriodFunctions E D).beta_holomorphic,
-    (assembledFuchsianPeriodFunctions E D).mu_cusp_bounded,
-    (assembledFuchsianPeriodFunctions E D).beta_add_tau_cusp_bounded⟩
 
 end SphereSixComplex.Periods

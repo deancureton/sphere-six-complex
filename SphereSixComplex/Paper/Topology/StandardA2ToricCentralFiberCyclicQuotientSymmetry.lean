@@ -43,96 +43,13 @@ public theorem carrierHeight_a2CyclicCarrier (p : Carrier) :
   rw [a2CyclicCarrier_inclusion, carrierHeight_inclusion, carrierHeight_inclusion]
   exact rawHeight_a2CyclicRaw a.1 z
 
-public noncomputable def a2CyclicConstructedCarrier
-    (p : constructedModel.Carrier) : constructedModel.Carrier := by
-  change Carrier at p ⊢
-  exact a2CyclicCarrier p
 
-@[simp]
-public theorem constructedModel_t_a2CyclicConstructedCarrier
-    (p : constructedModel.Carrier) :
-    constructedModel.t (a2CyclicConstructedCarrier p) = constructedModel.t p := by
-  change carrierHeight (a2CyclicCarrier p) = carrierHeight p
-  exact carrierHeight_a2CyclicCarrier p
 
-public theorem a2CyclicConstructedCarrier_continuous :
-    Continuous a2CyclicConstructedCarrier := by
-  change Continuous a2CyclicCarrier
-  exact a2CyclicCarrier_continuous
 
-@[simp]
-public theorem a2CyclicConstructedCarrier_apply_three (p : constructedModel.Carrier) :
-    a2CyclicConstructedCarrier
-        (a2CyclicConstructedCarrier (a2CyclicConstructedCarrier p)) = p := by
-  change a2CyclicCarrier (a2CyclicCarrier (a2CyclicCarrier p)) = p
-  exact a2CyclicCarrier_apply_three p
 
-/-- The carrier rotation restricted to an arbitrary local cusp neighbourhood. -/
-public noncomputable def a2CyclicLocalCarrierHomeomorph (r : ℝ) :
-    localCarrier constructedModel r ≃ₜ localCarrier constructedModel r where
-  toFun p := ⟨a2CyclicConstructedCarrier p, by
-    change constructedModel.t (a2CyclicConstructedCarrier p) ∈ Metric.ball 0 r
-    rw [constructedModel_t_a2CyclicConstructedCarrier]
-    exact p.property⟩
-  invFun p := ⟨a2CyclicConstructedCarrier (a2CyclicConstructedCarrier p), by
-    change constructedModel.t
-      (a2CyclicConstructedCarrier (a2CyclicConstructedCarrier p)) ∈ Metric.ball 0 r
-    rw [constructedModel_t_a2CyclicConstructedCarrier,
-      constructedModel_t_a2CyclicConstructedCarrier]
-    exact p.property⟩
-  left_inv p := by
-    apply Subtype.ext
-    exact a2CyclicConstructedCarrier_apply_three p
-  right_inv p := by
-    apply Subtype.ext
-    exact a2CyclicConstructedCarrier_apply_three p
-  continuous_toFun :=
-    (a2CyclicConstructedCarrier_continuous.comp continuous_subtype_val).subtype_mk _
-  continuous_invFun :=
-    (a2CyclicConstructedCarrier_continuous.comp
-      (a2CyclicConstructedCarrier_continuous.comp continuous_subtype_val)).subtype_mk _
 
-@[simp]
-public theorem a2CyclicLocalCarrierHomeomorph_coe (r : ℝ)
-    (p : localCarrier constructedModel r) :
-    ((a2CyclicLocalCarrierHomeomorph r p : localCarrier constructedModel r) :
-      constructedModel.Carrier) = a2CyclicConstructedCarrier p :=
-  rfl
 
-@[simp]
-public theorem a2CyclicLocalCarrierHomeomorph_apply_three (r : ℝ)
-    (p : localCarrier constructedModel r) :
-    a2CyclicLocalCarrierHomeomorph r
-        (a2CyclicLocalCarrierHomeomorph r (a2CyclicLocalCarrierHomeomorph r p)) = p := by
-  apply Subtype.ext
-  exact a2CyclicConstructedCarrier_apply_three p
 
-/-- The local carrier rotation restricted to the height-zero fibre. -/
-public noncomputable def a2CyclicLocalCentralFiberHomeomorph (r : ℝ) :
-    {p : localCarrier constructedModel r // constructedModel.t p = 0} ≃ₜ
-      {p : localCarrier constructedModel r // constructedModel.t p = 0} where
-  toFun p := ⟨a2CyclicLocalCarrierHomeomorph r p, by
-    rw [a2CyclicLocalCarrierHomeomorph_coe,
-      constructedModel_t_a2CyclicConstructedCarrier]
-    exact p.property⟩
-  invFun p := ⟨(a2CyclicLocalCarrierHomeomorph r).symm p, by
-    change constructedModel.t
-      (a2CyclicConstructedCarrier (a2CyclicConstructedCarrier p)) = 0
-    rw [constructedModel_t_a2CyclicConstructedCarrier,
-      constructedModel_t_a2CyclicConstructedCarrier]
-    exact p.property⟩
-  left_inv p := by
-    apply Subtype.ext
-    exact (a2CyclicLocalCarrierHomeomorph r).symm_apply_apply p
-  right_inv p := by
-    apply Subtype.ext
-    exact (a2CyclicLocalCarrierHomeomorph r).apply_symm_apply p
-  continuous_toFun :=
-    ((a2CyclicLocalCarrierHomeomorph r).continuous.comp
-      continuous_subtype_val).subtype_mk _
-  continuous_invFun :=
-    ((a2CyclicLocalCarrierHomeomorph r).symm.continuous.comp
-      continuous_subtype_val).subtype_mk _
 
 @[simp]
 public theorem constructedCentralPhaseFaceOneCarrier_height (x : Fin 2 → ℝ) :
@@ -147,73 +64,13 @@ public theorem constructedCentralPhaseFaceTwoCarrier_height (x : Fin 2 → ℝ) 
     carrierHeight_a2CyclicCarrier, carrierHeight_a2CyclicCarrier,
     constructedCentralPhaseFaceZeroCarrier_height]
 
-/-- The parameter-lattice automorphism induced by cyclic rotation of fan translations. -/
-public noncomputable def a2CyclicParameter (lambda : ParameterLattice) : ParameterLattice :=
-  Classical.choose (shearVector_surjective (a2CyclicLinear (shearVector lambda)))
 
-@[simp]
-public theorem shearVector_a2CyclicParameter (lambda : ParameterLattice) :
-    shearVector (a2CyclicParameter lambda) = a2CyclicLinear (shearVector lambda) :=
-  Classical.choose_spec (shearVector_surjective (a2CyclicLinear (shearVector lambda)))
 
-@[simp]
-public theorem a2CyclicParameter_zero : a2CyclicParameter 0 = 0 := by
-  apply shearVector_injective
-  rw [shearVector_a2CyclicParameter]
-  simp [shearVector]
 
-public theorem a2CyclicParameter_add (lambda mu : ParameterLattice) :
-    a2CyclicParameter (lambda + mu) =
-      a2CyclicParameter lambda + a2CyclicParameter mu := by
-  apply shearVector_injective
-  rw [shearVector_a2CyclicParameter]
-  rw [show shearVector (a2CyclicParameter lambda + a2CyclicParameter mu) =
-      shearVector (a2CyclicParameter lambda) + shearVector (a2CyclicParameter mu) by
-    exact Matrix.mulVec_add _ _ _]
-  rw [shearVector_a2CyclicParameter, shearVector_a2CyclicParameter]
-  rw [show shearVector (lambda + mu) = shearVector lambda + shearVector mu by
-    exact Matrix.mulVec_add _ _ _]
-  rw [a2CyclicLinear_add]
 
-@[simp]
-public theorem a2CyclicParameter_apply_three (lambda : ParameterLattice) :
-    a2CyclicParameter (a2CyclicParameter (a2CyclicParameter lambda)) = lambda := by
-  apply shearVector_injective
-  rw [shearVector_a2CyclicParameter, shearVector_a2CyclicParameter,
-    shearVector_a2CyclicParameter, a2CyclicLinear_apply_three]
 
-/-- The order-three automorphism of deck parameters induced by fan rotation. -/
-public noncomputable def a2CyclicParameterEquiv : ParameterLattice ≃+ ParameterLattice where
-  toFun := a2CyclicParameter
-  invFun := a2CyclicParameter ∘ a2CyclicParameter
-  left_inv := a2CyclicParameter_apply_three
-  right_inv := a2CyclicParameter_apply_three
-  map_add' := a2CyclicParameter_add
 
-public theorem a2CyclicChartIndex_translate (lambda : ParameterLattice) (a : ChartIndex) :
-    a2CyclicChartIndex (translateChartIndex lambda a) =
-      translateChartIndex (a2CyclicParameter lambda) (a2CyclicChartIndex a) := by
-  rcases a with ⟨upper, v⟩
-  cases upper
-  · apply Prod.ext
-    · simp [a2CyclicChartIndex, translateChartIndex]
-    · simp [a2CyclicChartIndex, translateChartIndex, a2CyclicLinear_add]
-  · apply Prod.ext
-    · simp [a2CyclicChartIndex, translateChartIndex]
-    · simp only [a2CyclicChartIndex, translateChartIndex, ↓reduceIte,
-        shearVector_a2CyclicParameter, a2CyclicLinear_add]
-      abel
 
-/-- Cyclic rotation conjugates fan translation by the induced parameter automorphism. -/
-public theorem a2CyclicCarrier_carrierFanShearFun
-    (lambda : ParameterLattice) (p : Carrier) :
-    a2CyclicCarrier (carrierFanShearFun lambda p) =
-      carrierFanShearFun (a2CyclicParameter lambda) (a2CyclicCarrier p) := by
-  obtain ⟨a, z, rfl⟩ := inclusion_jointly_surjective p
-  rw [carrierFanShearFun_inclusion, a2CyclicCarrier_inclusion,
-    a2CyclicCarrier_inclusion, carrierFanShearFun_inclusion,
-    a2CyclicChartIndex_translate]
-  rfl
 
 /-- The dense-torus automorphism induced by the cyclic fan rotation. -/
 public def a2CyclicDenseTorus (g : DenseTorus) : DenseTorus :=
@@ -295,16 +152,6 @@ public theorem a2CyclicDenseTorus_phaseEmbedding (c : Phase) :
   funext i
   fin_cases i <;> simp [a2CyclicDenseTorus, a2CyclicPhase, phaseEmbedding]
 
-/-- Exact conjugacy of the combined phase and fan action before choosing analytic phase
-coefficients. -/
-public theorem a2CyclicCarrier_phaseAction_fanShear
-    (lambda : ParameterLattice) (c : Phase) (p : Carrier) :
-    a2CyclicCarrier
-        (carrierTorusActionFun (phaseEmbedding c) (carrierFanShearFun lambda p)) =
-      carrierTorusActionFun (phaseEmbedding (a2CyclicPhase c))
-        (carrierFanShearFun (a2CyclicParameter lambda) (a2CyclicCarrier p)) := by
-  rw [a2CyclicCarrier_carrierTorusActionFun,
-    a2CyclicDenseTorus_phaseEmbedding, a2CyclicCarrier_carrierFanShearFun]
 
 public def constructedCentralPhaseFaceOneLocal
     (W : ActualPuncturedCuspCollarWitness N constructedModel) (x : Fin 2 → ℝ) :

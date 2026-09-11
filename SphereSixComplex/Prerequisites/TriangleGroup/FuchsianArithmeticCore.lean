@@ -149,58 +149,7 @@ public theorem rowsOpposite_mul_quadraticTwo_cube
   | false, a => quadraticOne ^ (Multiplicative.toAdd a).val
   | true, a => quadraticTwo ^ (Multiplicative.toAdd a).val
 
-public theorem factorMatrix_false_rowsOpposite (a : DeltaFactor false) (ha : a ≠ 1) :
-    MatrixRowsOppositeQuadrant (factorMatrix false a) := by
-  let n := (Multiplicative.toAdd a).val
-  have hnlt : n < 3 := ZMod.val_lt _
-  have hnzero : n ≠ 0 := by
-    intro hn
-    apply ha
-    apply Multiplicative.toAdd.injective
-    apply ZMod.val_injective 3
-    change n = _
-    rw [hn]
-    rfl
-  have hn : n = 1 ∨ n = 2 := by omega
-  rcases hn with hn | hn
-  · intro i
-    fin_cases i <;>
-      norm_num [factorMatrix, n, hn, MatrixRowsOppositeQuadrant, OppositeQuadrantRow,
-        CoeffNonnegative, CoeffNonpositive, quadraticOne]
-  · intro i
-    fin_cases i <;>
-      norm_num [factorMatrix, n, hn, MatrixRowsOppositeQuadrant, OppositeQuadrantRow,
-        CoeffNonnegative, CoeffNonpositive, quadraticOne, pow_two,
-        Matrix.mul_apply, Fin.sum_univ_succ]
 
-public theorem factorMatrix_true_rowsSame (a : DeltaFactor true) (ha : a ≠ 1) :
-    MatrixRowsSameQuadrant (factorMatrix true a) := by
-  let n := (Multiplicative.toAdd a).val
-  have hnlt : n < 4 := ZMod.val_lt _
-  have hnzero : n ≠ 0 := by
-    intro hn
-    apply ha
-    apply Multiplicative.toAdd.injective
-    apply ZMod.val_injective 4
-    change n = _
-    rw [hn]
-    rfl
-  have hn : n = 1 ∨ n = 2 ∨ n = 3 := by omega
-  rcases hn with hn | hn | hn
-  · intro i
-    fin_cases i <;>
-      norm_num [factorMatrix, n, hn, MatrixRowsSameQuadrant, SameQuadrantRow,
-        CoeffNonnegative, CoeffNonpositive, quadraticTwo]
-  · intro i
-    fin_cases i <;>
-      norm_num [factorMatrix, n, hn, MatrixRowsSameQuadrant, SameQuadrantRow,
-        CoeffNonnegative, CoeffNonpositive, quadraticTwo, pow_two,
-        Matrix.mul_apply, Fin.sum_univ_succ]
-  · intro i
-    fin_cases i <;>
-      norm_num [factorMatrix, n, hn, MatrixRowsSameQuadrant, SameQuadrantRow,
-        CoeffNonnegative, CoeffNonpositive, quadraticTwo, pow_succ,
-        Matrix.mul_apply, Fin.sum_univ_succ]
 
 /-- The row-quadrant state after multiplying by a syllable from the indicated factor. -/
 @[expose] public def MatrixRowsForFactor
@@ -559,21 +508,8 @@ public theorem wordMatrix_matrixInCoefficientCone (w : Monoid.CoprodI.Word Delta
     rw [← hv, ← neWordMatrix_eq_wordMatrix]
     exact neWordMatrix_matrixInCoefficientCone v
 
-public theorem quadraticOne_matrixInCoefficientCone : MatrixInCoefficientCone quadraticOne := by
-  intro i j
-  fin_cases i <;> fin_cases j <;> norm_num [InCoefficientCone, quadraticOne]
 
-public theorem quadraticTwo_matrixInCoefficientCone : MatrixInCoefficientCone quadraticTwo := by
-  intro i j
-  fin_cases i <;> fin_cases j <;> norm_num [InCoefficientCone, quadraticTwo]
 
-public theorem quadraticProduct_pow_matrixInCoefficientCone (n : ℕ) :
-    MatrixInCoefficientCone (quadraticProduct ^ n) := by
-  rw [quadraticProduct_pow]
-  intro i j
-  fin_cases i <;> fin_cases j <;>
-    norm_num [InCoefficientCone]
-  all_goals positivity
 
 /-- The integral mixed coefficient controlling the two real norms of a bottom row. -/
 @[expose] public def mixedBottomCoefficient
@@ -615,36 +551,11 @@ public theorem conjugateBottomNormSq_le_positiveBottomNormSq
     conjugateBottomNormSq p ≤ positiveBottomNormSq p :=
   (conjugateBottomNormSq_le_positiveBottomNormSq_iff p).2 hp
 
-/-- The identity bottom row lies on the boundary of the arithmetic cone. -/
-public theorem mixedBottomCoefficient_zero_one :
-    mixedBottomCoefficient (0, 1) = 0 := by
-  norm_num [mixedBottomCoefficient]
 
-/-- The order-three generator's bottom row lies on the boundary of the arithmetic cone. -/
-public theorem mixedBottomCoefficient_quadraticOne :
-    mixedBottomCoefficient (quadraticOne 1 0, quadraticOne 1 1) = 0 := by
-  norm_num [mixedBottomCoefficient, quadraticOne]
 
-/-- The order-four generator's bottom row lies on the boundary of the arithmetic cone. -/
-public theorem mixedBottomCoefficient_quadraticTwo :
-    mixedBottomCoefficient (quadraticTwo 1 0, quadraticTwo 1 1) = 0 := by
-  norm_num [mixedBottomCoefficient, quadraticTwo]
 
-/-- Every positive cusp power has the identity bottom row and hence lies on the cone boundary. -/
-public theorem quadraticProduct_pow_bottomRow (n : ℕ) :
-    ((quadraticProduct ^ n) 1 0, (quadraticProduct ^ n) 1 1) = (0, 1) := by
-  rw [quadraticProduct_pow]
-  norm_num
 
-public theorem mixedBottomCoefficient_quadraticProduct_pow (n : ℕ) :
-    mixedBottomCoefficient ((quadraticProduct ^ n) 1 0, (quadraticProduct ^ n) 1 1) = 0 := by
-  rw [quadraticProduct_pow_bottomRow]
-  exact mixedBottomCoefficient_zero_one
 
-/-- Negating both entries does not change the arithmetic cone invariant. -/
-public theorem mixedBottomCoefficient_neg (p : QuadraticInteger × QuadraticInteger) :
-    mixedBottomCoefficient (-p.1, -p.2) = mixedBottomCoefficient p := by
-  simp [mixedBottomCoefficient]
 
 /-- Entrywise membership implies the bottom-row invariant used for termination. -/
 public theorem mixedBottomCoefficient_nonneg_of_matrixInCoefficientCone
@@ -807,11 +718,6 @@ public theorem exists_fuchsian_orbitHeightMaximal (z : UpperHalfPlane) :
     (bottomRowDenominatorNormSq_deltaBottomRow_pos (k * g) z)
     (bottomRowDenominatorNormSq_deltaBottomRow_pos g z)).2 hdenom
 
-/-- Unconditional orbit cover by the coarse Ford region. -/
-public theorem exists_smul_mem_coarseFordRegion (z : UpperHalfPlane) :
-    ∃ g : Delta, fuchsianSourceAction g • z ∈ FuchsianTessellation.coarseFordRegion :=
-  FuchsianTessellation.exists_smul_mem_coarseFordRegion
-    exists_fuchsian_orbitHeightMaximal z
 
 public theorem exists_uniform_abs_entry_bound_of_isCompact
     {S : Set SphereSixComplex.TriangleGroup.SL2R} (hS : IsCompact S) :
@@ -890,11 +796,5 @@ public theorem fuchsianSourceAction_properlyDiscontinuous :
   intro K L hK hL
   exact finite_fuchsianSourceAction_intersections_of_isCompact hK hL
 
-/-- Unconditional freeness of the explicit action on the regular Fuchsian locus. -/
-public theorem fuchsianRegular_isCancelSMul :
-    letI := FuchsianProperFreeness.fuchsianRegularMulAction
-    IsCancelSMul Delta FuchsianProperFreeness.FuchsianRegularBase :=
-  FuchsianProperFreeness.fuchsianRegular_isCancelSMul
-    fuchsianSourceAction_properlyDiscontinuous
 
 end SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination

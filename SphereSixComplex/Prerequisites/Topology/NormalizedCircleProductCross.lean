@@ -113,14 +113,6 @@ public theorem positiveCircleCross_eq_normalized
       normalizedCircleCross_boundary]
   · rw [positiveCircleCross_projection, normalizedCircleCross_projection]
 
-public theorem positiveCircleCross_add
-    {G : Type} [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
-    [PathConnectedSpace G] (c d : C(StdTorus 1, G)) :
-    positiveCircleCross (c + d) = positiveCircleCross c + positiveCircleCross d := by
-  rw [positiveCircleCross_eq_normalized, positiveCircleCross_eq_normalized,
-    positiveCircleCross_eq_normalized,
-    CyclicMappingTorus.CircleSweep.standardCircleHomologyClass_map_add,
-    map_add]
 
 public noncomputable def circleSweepClass
     {Y : Type} [TopologicalSpace Y]
@@ -129,18 +121,7 @@ public noncomputable def circleSweepClass
   integralSingularHomologyMap 2 sweep
     (normalizedCircleCross 1 (StandardCircleHomologyLiftDegree.loopHomologyClass p))
 
-public theorem circleSweepClass_trans
-    {Y : Type} [TopologicalSpace Y]
-    (sweep : C(UnitAddCircle × X, Y)) {x : X} (p q : Path x x) :
-    circleSweepClass sweep (p.trans q) = circleSweepClass sweep p + circleSweepClass sweep q := by
-  simp only [circleSweepClass, Hurewicz.Chains.loopHomologyClass_trans, map_add]
 
-public theorem circleSweepClass_homotopic
-    {Y : Type} [TopologicalSpace Y]
-    (sweep : C(UnitAddCircle × X, Y)) {x : X} {p q : Path x x}
-    (h : p.Homotopic q) : circleSweepClass sweep p = circleSweepClass sweep q := by
-  obtain ⟨H⟩ := h
-  rw [circleSweepClass, circleSweepClass, Hurewicz.Chains.loopHomologyClass_homotopic H]
 
 end SphereSixComplex.Topology.CircleProductIdentityMappingTorus
 
@@ -188,23 +169,6 @@ public theorem pathCircleMap_homology {x : X} (p : Path x x) :
     exact pathCircleMap_loop p t
   rw [← loopHomologyClass_cast _ hx.symm, hp]
 
-public theorem normalizedCircleCross_naturality
-    {Y : Type} [TopologicalSpace Y] [PathConnectedSpace X]
-    (f : C(X, Y)) (x : IntegralSingularHomology 1 X) :
-    integralSingularHomologyMap 2 (circleProductMap f) (normalizedCircleCross 1 x) =
-      normalizedCircleCross 1 (integralSingularHomologyMap 1 f x) := by
-  let b : X := Classical.choice inferInstance
-  let H := Hurewicz.Chains.abelianizationComparison X b
-  obtain ⟨p, hp⟩ := Hurewicz.loopClass_surjective (H.equiv.symm x)
-  have hx : loopHomologyClass p = x := by
-    rw [← H.equiv_loopClass, hp, H.equiv.apply_symm_apply]
-  rw [← hx, ← pathCircleMap_homology p, ← positiveCircleCross_eq_normalized]
-  rw [positiveCircleCross, integralSingularHomologyMap_comp_wang]
-  have hcomp : (circleProductMap f).comp (circleProductMap (pathCircleMap p)) =
-      circleProductMap (f.comp (pathCircleMap p)) := rfl
-  rw [hcomp]
-  change positiveCircleCross (f.comp (pathCircleMap p)) = _
-  rw [positiveCircleCross_eq_normalized, integralSingularHomologyMap_comp_wang]
 
 end SphereSixComplex.Topology.CircleProductIdentityMappingTorus
 end

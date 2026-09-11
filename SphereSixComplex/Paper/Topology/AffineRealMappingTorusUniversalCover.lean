@@ -69,43 +69,7 @@ public theorem affineTorusMappingTorusLiftProjection_eq_iff
   · rintro ⟨k, hfst, hsnd⟩
     exact ⟨k, Prod.ext hfst hsnd⟩
 
-/-- Period-lattice translations are deck transformations of the candidate lifted projection. -/
-public theorem affineTorusMappingTorusLiftProjection_period
-    (p : Parameters) (φ : AdditiveTorus p ≃ₜ AdditiveTorus p)
-    (t : ℝ) (z : ComplexTwoSpace) (n : IntegerPeriods) :
-  affineTorusMappingTorusLiftProjection p φ (t, periodVector p n + z) =
-      affineTorusMappingTorusLiftProjection p φ (t, z) := by
-  apply congrArg (realMappingTorusHomeomorph φ)
-  symm
-  apply Quotient.sound
-  refine ⟨0, ?_⟩
-  rw [mappingTorusShift_zero]
-  apply Prod.ext
-  · rfl
-  apply Quotient.sound
-  change MulAction.orbitRel (PeriodGroup p) ComplexTwoSpace
-    (periodVector p n + z) z
-  rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff]
-  refine ⟨Multiplicative.ofAdd
-    ⟨periodVector p n, ⟨n, rfl⟩⟩, rfl⟩
 
-/-- Any affine lift of the clutching homeomorphism gives the angular deck transformation on the
-candidate universal cover. -/
-public theorem affineTorusMappingTorusLiftProjection_generator
-    (p : Parameters) (φ : AdditiveTorus p ≃ₜ AdditiveTorus p)
-    (lift : ComplexTwoSpace ≃+ ComplexTwoSpace) (b : ComplexTwoSpace)
-    (hlift : ∀ z, φ (Quotient.mk _ z) = Quotient.mk _ (lift z + b))
-    (t : ℝ) (z : ComplexTwoSpace) :
-    affineTorusMappingTorusLiftProjection p φ (t - 1, lift z + b) =
-      affineTorusMappingTorusLiftProjection p φ (t, z) := by
-  apply congrArg (realMappingTorusHomeomorph φ)
-  symm
-  apply (realMappingTorusMk_eq_iff φ _ _).mpr
-  refine ⟨1, ?_⟩
-  rw [mappingTorusShift_apply]
-  apply Prod.ext
-  · norm_num
-  · simpa using (hlift z).symm
 
 /-- The affine lift intertwines every integral power of the clutching homeomorphism. -/
 public theorem affineTorusClutching_zpow_mk
@@ -781,57 +745,9 @@ public abbrev OrderFourAffineMappingTorusDeck :=
     (orderFourDescendedAffineTorusAutomorphism F)
     ((4 : ℂ)⁻¹ • periodVector (parameterMap F U.zTwo).1 (-epsilon'))
 
-/-- Exact fibres of the order-three affine mapping-torus projection. -/
-public theorem orderThreeAffineMappingTorusLiftProjection_eq_iff
-    (w w' : ℝ × ComplexTwoSpace) :
-    orderThreeAffineMappingTorusLiftProjection F w =
-        orderThreeAffineMappingTorusLiftProjection F w' ↔
-      ∃ k : ℤ, ∃ n : IntegerPeriods,
-        w'.1 = w.1 - k ∧
-          w'.2 = periodVector (parameterMap F U.zOne).1 n +
-            (Geometry.affineEquiv
-                (orderThreeDescendedAffineTorusAutomorphism F).lift
-                ((3 : ℂ)⁻¹ • periodVector (parameterMap F U.zOne).1 epsilon) ^ k) w.2 :=
-  affineTorusMappingTorusLiftProjection_eq_iff_affine_period _ _ _ _
-    (orderThreeAffineClutching_lift F) w w'
 
-/-- Exact fibres of the order-four affine mapping-torus projection. -/
-public theorem orderFourAffineMappingTorusLiftProjection_eq_iff
-    (w w' : ℝ × ComplexTwoSpace) :
-    orderFourAffineMappingTorusLiftProjection F w =
-        orderFourAffineMappingTorusLiftProjection F w' ↔
-      ∃ k : ℤ, ∃ n : IntegerPeriods,
-        w'.1 = w.1 - k ∧
-          w'.2 = periodVector (parameterMap F U.zTwo).1 n +
-            (Geometry.affineEquiv
-                (orderFourDescendedAffineTorusAutomorphism F).lift
-                ((4 : ℂ)⁻¹ • periodVector (parameterMap F U.zTwo).1 (-epsilon')) ^ k) w.2 :=
-  affineTorusMappingTorusLiftProjection_eq_iff_affine_period _ _ _ _
-    (orderFourAffineClutching_lift F) w w'
 
-/-- The fibres of the order-three universal-cover candidate are exactly the combined semidirect
-deck orbits. -/
-public theorem orderThreeAffineMappingTorusLiftProjection_eq_iff_orbitRel
-    (w w' : ℝ × ComplexTwoSpace) :
-    letI := orderThreeAffineMappingTorusDeckAction F
-    orderThreeAffineMappingTorusLiftProjection F w =
-        orderThreeAffineMappingTorusLiftProjection F w' ↔
-      MulAction.orbitRel (OrderThreeAffineMappingTorusDeck F)
-        (ℝ × ComplexTwoSpace) w w' :=
-  affineTorusMappingTorusLiftProjection_eq_iff_orbitRel _ _ _ _
-    (orderThreeAffineClutching_lift F) w w'
 
-/-- The fibres of the order-four universal-cover candidate are exactly the combined semidirect
-deck orbits. -/
-public theorem orderFourAffineMappingTorusLiftProjection_eq_iff_orbitRel
-    (w w' : ℝ × ComplexTwoSpace) :
-    letI := orderFourAffineMappingTorusDeckAction F
-    orderFourAffineMappingTorusLiftProjection F w =
-        orderFourAffineMappingTorusLiftProjection F w' ↔
-      MulAction.orbitRel (OrderFourAffineMappingTorusDeck F)
-        (ℝ × ComplexTwoSpace) w w' :=
-  affineTorusMappingTorusLiftProjection_eq_iff_orbitRel _ _ _ _
-    (orderFourAffineClutching_lift F) w w'
 
 /-- The order-three affine mapping-torus lift is its explicit regular semidirect quotient
 covering. -/
@@ -869,33 +785,10 @@ public theorem orderFourAffineMappingTorusLiftProjection_isQuotientCoveringMap :
   · exact LinearMap.continuous_of_finiteDimensional
       (periodTransport g₂ (parameterMap F U.zTwo)).symm.toLinearMap
 
-/-- The lifted order-three affine generator is a deck transformation of the explicit source
-map. -/
-public theorem orderThreeAffineMappingTorusLiftProjection_generator
-    (t : ℝ) (z : ComplexTwoSpace) :
-    orderThreeAffineMappingTorusLiftProjection F
-        (t - 1, (orderThreeDescendedAffineTorusAutomorphism F).lift z +
-          (3 : ℂ)⁻¹ • periodVector (parameterMap F U.zOne).1 epsilon) =
-      orderThreeAffineMappingTorusLiftProjection F (t, z) :=
-  affineTorusMappingTorusLiftProjection_generator _ _ _ _
-    (orderThreeAffineClutching_lift F) t z
 
-/-- The lifted order-four affine generator is a deck transformation of the explicit source map. -/
-public theorem orderFourAffineMappingTorusLiftProjection_generator
-    (t : ℝ) (z : ComplexTwoSpace) :
-    orderFourAffineMappingTorusLiftProjection F
-        (t - 1, (orderFourDescendedAffineTorusAutomorphism F).lift z +
-          (4 : ℂ)⁻¹ • periodVector (parameterMap F U.zTwo).1 (-epsilon')) =
-      orderFourAffineMappingTorusLiftProjection F (t, z) :=
-  affineTorusMappingTorusLiftProjection_generator _ _ _ _
-    (orderFourAffineClutching_lift F) t z
 
 end EllipticSpecializations
 
-/-- The source of the candidate affine-torus mapping-torus universal cover is simply connected. -/
-public theorem affineTorusMappingTorusLiftSource_simplyConnected :
-    SimplyConnectedSpace (ℝ × ComplexTwoSpace) := by
-  infer_instance
 
 
 end

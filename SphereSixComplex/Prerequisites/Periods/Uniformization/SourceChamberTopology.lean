@@ -131,76 +131,14 @@ theorem sourceOpenChamber_isSimplyConnected : IsSimplyConnected sourceOpenChambe
     verticalShear_image_sourceOpenChamber]
   exact flatOpenChamber_isSimplyConnected
 
-/-- The corresponding open reflection chamber for the level-one modular group. -/
-def targetOpenChamber : Set ℂ :=
-  {z | 0 < z.re ∧ z.re < 1 / 2 ∧ 0 < z.im ∧ 1 < normSq z}
 
-def targetFlatOpenChamber : Set ℂ :=
-  {z | 0 < z.re ∧ z.re < 1 / 2 ∧ 0 < z.im}
 
-theorem target_re_sq_lt_one {x : ℝ} (hl : 0 < x) (hr : x < 1 / 2) : x ^ 2 < 1 := by
-  nlinarith
 
-theorem target_semicircleHeight_sq {x : ℝ} (hl : 0 < x) (hr : x < 1 / 2) :
-    semicircleHeight x ^ 2 = 1 - x ^ 2 := by
-  have hx := target_re_sq_lt_one hl hr
-  rw [semicircleHeight, max_eq_right (by linarith), Real.sq_sqrt (by linarith)]
 
-theorem target_normSq_iff_height {z : ℂ} (hl : 0 < z.re) (hr : z.re < 1 / 2)
-    (hi : 0 < z.im) : 1 < normSq z ↔ semicircleHeight z.re < z.im := by
-  have hs0 : 0 ≤ semicircleHeight z.re := by
-    unfold semicircleHeight
-    positivity
-  have hs := target_semicircleHeight_sq hl hr
-  rw [normSq_apply]
-  constructor <;> intro h <;> nlinarith
 
-theorem verticalShear_image_targetOpenChamber :
-    verticalShear semicircleHeight continuous_semicircleHeight '' targetOpenChamber =
-      targetFlatOpenChamber := by
-  ext w
-  constructor
-  · rintro ⟨z, ⟨hl, hr, hi, hn⟩, rfl⟩
-    simp only [targetFlatOpenChamber, Set.mem_ofPred_eq, verticalShear_re, verticalShear_im]
-    exact ⟨hl, hr, sub_pos.mpr ((target_normSq_iff_height hl hr hi).mp hn)⟩
-  · rintro ⟨hl, hr, hi⟩
-    let z : ℂ := (verticalShear semicircleHeight continuous_semicircleHeight).symm w
-    refine ⟨z, ?_, (verticalShear semicircleHeight continuous_semicircleHeight).apply_symm_apply w⟩
-    have hzre : z.re = w.re := by simp [z, verticalShear]
-    have hzim : z.im = w.im + semicircleHeight w.re := by simp [z, verticalShear]
-    have hzpos : 0 < z.im := by
-      rw [hzim]
-      have : 0 ≤ semicircleHeight w.re := by unfold semicircleHeight; positivity
-      linarith
-    refine ⟨by simpa [hzre] using hl, by simpa [hzre] using hr, hzpos, ?_⟩
-    apply (target_normSq_iff_height (by simpa [hzre] using hl)
-      (by simpa [hzre] using hr) hzpos).mpr
-    rw [hzim, hzre]
-    linarith
 
-theorem targetFlatOpenChamber_convex : Convex ℝ targetFlatOpenChamber := by
-  rw [show targetFlatOpenChamber =
-      {z : ℂ | 0 < z.re} ∩
-        ({z : ℂ | z.re < 1 / 2} ∩ {z : ℂ | 0 < z.im}) by
-    ext z
-    simp [targetFlatOpenChamber]]
-  exact (convex_halfSpace_re_gt _).inter
-    ((convex_halfSpace_re_lt _).inter (convex_halfSpace_im_gt _))
 
-theorem targetFlatOpenChamber_nonempty : targetFlatOpenChamber.Nonempty := by
-  refine ⟨⟨1 / 4, 1⟩, ?_⟩
-  norm_num [targetFlatOpenChamber]
 
-theorem targetOpenChamber_isSimplyConnected : IsSimplyConnected targetOpenChamber := by
-  have hcontractible : ContractibleSpace targetFlatOpenChamber :=
-    targetFlatOpenChamber_convex.contractibleSpace targetFlatOpenChamber_nonempty
-  have hsimple : IsSimplyConnected targetFlatOpenChamber := by
-    letI := hcontractible
-    show SimplyConnectedSpace targetFlatOpenChamber
-    infer_instance
-  rw [← (verticalShear semicircleHeight continuous_semicircleHeight).isSimplyConnected_image,
-    verticalShear_image_targetOpenChamber]
-  exact hsimple
 
 /-! ## The bounded cusp-exponential model -/
 
@@ -278,9 +216,6 @@ theorem source_cuspExponential_injOn_closedStrip :
   have hs : 0 < Real.sqrt 2 := Real.sqrt_pos.2 (by norm_num)
   nlinarith
 
-theorem target_cuspExponential_injOn_closedStrip :
-    Set.InjOn (cuspExponential 1) {z : ℂ | 0 ≤ z.re ∧ z.re ≤ 1 / 2} := by
-  apply cuspExponential_injOn_re_interval <;> norm_num
 
 theorem sourceOpenChamber_isOpen : IsOpen sourceOpenChamber := by
   rw [show sourceOpenChamber =
@@ -294,29 +229,14 @@ theorem sourceOpenChamber_isOpen : IsOpen sourceOpenChamber := by
       ((isOpen_lt continuous_const Complex.continuous_im).inter
         (isOpen_lt continuous_const Complex.continuous_normSq)))
 
-theorem targetOpenChamber_isOpen : IsOpen targetOpenChamber := by
-  rw [show targetOpenChamber =
-      {z : ℂ | 0 < z.re} ∩
-        ({z : ℂ | z.re < 1 / 2} ∩
-          ({z : ℂ | 0 < z.im} ∩ {z : ℂ | 1 < normSq z})) by
-    ext z
-    simp [targetOpenChamber]]
-  exact (isOpen_lt continuous_const Complex.continuous_re).inter
-    ((isOpen_lt Complex.continuous_re continuous_const).inter
-      ((isOpen_lt continuous_const Complex.continuous_im).inter
-        (isOpen_lt continuous_const Complex.continuous_normSq)))
 
 def sourceBoundedChamber : Set ℂ :=
   cuspExponential (1 + Real.sqrt 2) '' sourceOpenChamber
 
-def targetBoundedChamber : Set ℂ :=
-  cuspExponential 1 '' targetOpenChamber
 
 theorem sourceBoundedChamber_isOpen : IsOpen sourceBoundedChamber := by
   exact (cuspExponential_isOpenMap _ (by positivity)) _ sourceOpenChamber_isOpen
 
-theorem targetBoundedChamber_isOpen : IsOpen targetBoundedChamber := by
-  exact (cuspExponential_isOpenMap _ one_ne_zero) _ targetOpenChamber_isOpen
 
 theorem source_cuspExponential_injOn :
     Set.InjOn (cuspExponential (1 + Real.sqrt 2)) sourceOpenChamber := by
@@ -324,11 +244,6 @@ theorem source_cuspExponential_injOn :
   rintro z ⟨hl, hr, -⟩
   exact ⟨hl.le, hr.le⟩
 
-theorem target_cuspExponential_injOn :
-    Set.InjOn (cuspExponential 1) targetOpenChamber := by
-  apply target_cuspExponential_injOn_closedStrip.mono
-  rintro z ⟨hl, hr, -⟩
-  exact ⟨hl.le, hr.le⟩
 
 theorem sourceBoundedChamber_isSimplyConnected :
     IsSimplyConnected sourceBoundedChamber := by
@@ -337,12 +252,6 @@ theorem sourceBoundedChamber_isSimplyConnected :
     (cuspExponential_differentiable _ (by positivity)).differentiableOn
     source_cuspExponential_injOn
 
-theorem targetBoundedChamber_isSimplyConnected :
-    IsSimplyConnected targetBoundedChamber := by
-  exact TauCeti.isSimplyConnected_image_of_differentiableOn_of_injOn
-    targetOpenChamber_isOpen targetOpenChamber_isSimplyConnected
-    (cuspExponential_differentiable _ one_ne_zero).differentiableOn
-    target_cuspExponential_injOn
 
 theorem norm_cuspExponential (width : ℝ) (hwidth : width ≠ 0) (z : ℂ) :
     ‖cuspExponential width z‖ = Real.exp (-2 * Real.pi * z.im / width) := by
@@ -356,17 +265,10 @@ theorem sourceBoundedChamber_subset_ball : sourceBoundedChamber ⊆ Metric.ball 
   simpa only [cuspExponential, Function.Periodic.qParam] using
     Function.Periodic.norm_qParam_lt_one hwidth hz.2.2.1
 
-theorem targetBoundedChamber_subset_ball : targetBoundedChamber ⊆ Metric.ball 0 1 := by
-  rintro w ⟨z, hz, rfl⟩
-  rw [Metric.mem_ball, dist_zero_right]
-  simpa only [cuspExponential, Function.Periodic.qParam] using
-    Function.Periodic.norm_qParam_lt_one one_pos hz.2.2.1
 
 theorem sourceBoundedChamber_isBounded : Bornology.IsBounded sourceBoundedChamber :=
   Metric.isBounded_ball.subset sourceBoundedChamber_subset_ball
 
-theorem targetBoundedChamber_isBounded : Bornology.IsBounded targetBoundedChamber :=
-  Metric.isBounded_ball.subset targetBoundedChamber_subset_ball
 
 
 end SphereSixComplex.Periods.SourceChamberTopology

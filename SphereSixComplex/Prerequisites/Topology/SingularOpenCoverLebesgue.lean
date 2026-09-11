@@ -39,27 +39,5 @@ public theorem singularSimplex_openCover_lebesgueNumber
       exact ⟨i, hi⟩)
   exact ⟨δ, hδ, fun w ↦ hLeb w (Set.mem_univ w)⟩
 
-/-- Any nonempty subset of the standard simplex whose diameter is smaller than a pulled-back
-Lebesgue number maps into one member of the original cover. -/
-public theorem singularSimplex_image_subset_cover_of_diam_lt
-    {ι : Type} (X : TopCat.{0}) (U : ι → Set X)
-    (hUopen : ∀ i, IsOpen (U i)) (hUcover : ⋃ i, U i = Set.univ)
-    (n : ℕ)
-    (x : (TopCat.toSSet.obj X).obj
-      (Opposite.op (SimplexCategory.mk n)))
-    {s : Set (stdSimplex ℝ (Fin (n + 1)))}
-    (hsne : s.Nonempty) (hsbounded : Bornology.IsBounded s) :
-    ∃ δ > 0, Metric.diam s < δ →
-      ∃ i, X.toSSetObjEquiv _ x '' s ⊆ U i := by
-  obtain ⟨δ, hδ, hLeb⟩ :=
-    singularSimplex_openCover_lebesgueNumber X U hUopen hUcover n x
-  refine ⟨δ, hδ, fun hdiam ↦ ?_⟩
-  obtain ⟨w, hw⟩ := hsne
-  obtain ⟨i, hi⟩ := hLeb w
-  refine ⟨i, ?_⟩
-  rintro _ ⟨y, hy, rfl⟩
-  apply hi
-  rw [Metric.mem_ball]
-  exact (Metric.dist_le_diam_of_mem hsbounded hy hw).trans_lt hdiam
 
 end SphereSixComplex

@@ -144,18 +144,14 @@ variable {G : Type*} [Group G]
 /-- The fourth standard basis vector belongs to the toric sublattice. -/
 public def tailBasis : Lattice := ![0, 0, 0, 1]
 
-@[simp]
-private theorem tailBasis_apply_zero : tailBasis 0 = 0 := rfl
 
-@[simp]
-private theorem tailBasis_apply_one : tailBasis 1 = 0 := rfl
 
 /-- The cusp filling kills the fourth standard basis translation. -/
 @[simp]
 public theorem translationMul_tailBasis_eq_one
     (R : FullVanKampenRelations G epsilon (-epsilon') 0) :
     R.translationMul tailBasis = 1 :=
-  R.toric_vanishes tailBasis (by simp) (by simp)
+  R.toric_vanishes tailBasis (by rfl) (by rfl)
 
 /-- The selected full relations kill every lattice translation. -/
 @[simp]

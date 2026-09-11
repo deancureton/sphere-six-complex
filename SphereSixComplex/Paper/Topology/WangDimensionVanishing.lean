@@ -1,6 +1,7 @@
 module
 
-public import SphereSixComplex.Paper.Topology.CellularDimensionVanishing
+public import SphereSixComplex.Prerequisites.Topology.CellularChainModel
+public import SphereSixComplex.Paper.Topology.CuspToricCellularHomologyBridge
 
 /-!
 # Vanishing homology of a mapping torus above its fibre's dimension
@@ -42,18 +43,6 @@ public theorem subsingleton_homology_succ_finiteBouquetMappingTorus
     rw [← hw, show w = 0 from Subsingleton.elim _ _, map_zero]
   exact ⟨fun x y => by rw [key x, key y]⟩
 
-/-- A mapping torus over a fibre carrying the standard `A₂` toric cell labelling has no sixth
-integral singular homology.  This is the shape of the remaining Section 7 collar obligation: the
-labelling stops at degree four, so the fibre contributes nothing in degrees five and six. -/
-public theorem subsingleton_homology_six_finiteBouquetMappingTorus_of_labelledA2Cells
-    [DiscreteTopology ι] [T2Space F]
-    [Topology.CWComplex (Set.univ : Set F)]
-    (e : ∀ n, Topology.CWComplex.cell (Set.univ : Set F) n ≃ CuspWCellIndex n)
-    (φ : ι → F ≃ₜ F) :
-    Subsingleton (IntegralSingularHomology 6 (FiniteBouquetMappingTorus φ)) :=
-  subsingleton_homology_succ_finiteBouquetMappingTorus φ 5
-    (subsingleton_integralSingularHomology_of_labelledA2Cells F e 6 (by omega))
-    (subsingleton_integralSingularHomology_of_labelledA2Cells F e 5 (by omega))
 
 end SphereSixComplex
 

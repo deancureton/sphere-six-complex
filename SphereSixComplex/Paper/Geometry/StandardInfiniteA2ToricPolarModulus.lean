@@ -113,14 +113,7 @@ public theorem carrierModulus_idempotent (x : Carrier) :
 public def carrierPositivePart : Set Carrier :=
   {x | carrierModulus x = x}
 
-public theorem carrierPositivePart_isClosed : IsClosed carrierPositivePart := by
-  let _ : T2Space Carrier := t2Space
-  exact isClosed_eq carrierModulus_continuous continuous_id
 
-@[simp]
-public theorem carrierModulus_mem_positivePart (x : Carrier) :
-    carrierModulus x ∈ carrierPositivePart :=
-  carrierModulus_idempotent x
 
 @[simp]
 public theorem inclusion_mem_carrierPositivePart_iff (a : ChartIndex) (z : RawCoordinates) :
@@ -284,11 +277,6 @@ public theorem constructedLocalModulus_continuous (r : ℝ) :
   rw [continuous_induced_rng]
   exact carrierModulus_continuous.comp continuous_subtype_val
 
-@[simp]
-public theorem constructedLocalModulus_coe (r : ℝ) (p : localCarrier constructedModel r) :
-    (show Carrier from (constructedLocalModulus r p).1) =
-      carrierModulus (show Carrier from p.1) :=
-  rfl
 
 @[simp]
 public theorem constructedLocalModulus_idempotent (r : ℝ)

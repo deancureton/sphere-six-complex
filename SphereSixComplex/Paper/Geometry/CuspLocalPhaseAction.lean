@@ -52,6 +52,7 @@ public def localFanShearEquiv (M : Model) (r : ℝ) (lambda : ParameterLattice) 
       M.t (Additive.toMul (M.fanShear lambda) p) ∈ Metric.ball 0 r
     rw [M.fanShear_preserves_t]
 
+
 @[simp]
 public theorem localFanShearEquiv_coe
     (M : Model) (r : ℝ) (lambda : ParameterLattice) (p : localCarrier M r) :
@@ -214,15 +215,6 @@ public theorem psiMap_holomorphic (lambda : ParameterLattice) :
 public def IsFree : Prop :=
   ∀ lambda (p : localCarrier M r), C.psiMap lambda p = p → lambda = 0
 
-/-- The explicit local map agrees with the composition of the two restricted actions. -/
-public theorem psiMap_eq_restrictedActions
-    (lambda : ParameterLattice) (p : localCarrier M r) :
-    C.psiMap lambda p =
-      localPhaseAction M r (C.phase lambda (localT M r p))
-        (Additive.toMul (localFanShear M r lambda) p) := by
-  apply Subtype.ext
-  simp [psiMap, localPhaseTwist, localT, localFanShear, localPhaseAction,
-    M.fanShear_preserves_t]
 
 /-- The local algebraic action data obtained from the restricted fan and phase actions. -/
 public def toCuspActionData :
@@ -305,24 +297,6 @@ public theorem quotient_isQuotientCoveringMap (F : C.IsFree)
   · intro K L hK hL
     simpa only [← C.psiMap_eq_generic] using H K L hK hL
 
-/-- The quotient of the local cusp carrier has the induced complex charted space. -/
-public theorem quotient_chartedSpace (F : C.IsFree)
-    (H : C.CompactOverlapEstimate) :
-    letI := C.toCuspActionData.psiAction
-    Nonempty (ChartedSpace ComplexModel
-      (MulAction.orbitRel.Quotient
-        (Multiplicative ParameterLattice) (localCarrier M r))) := by
-  let _ : LocallyCompactSpace M.Carrier :=
-    ChartedSpace.locallyCompactSpace ComplexModel M.Carrier
-  let _ : LocallyCompactSpace (localCarrier M r) :=
-    (cuspNeighborhood M r).isOpen.locallyCompactSpace
-  apply CuspFilling.quotient_chartedSpace C.toCuspActionData (C.isCancelSMul F)
-  · intro lambda
-    convert (C.psiMap_holomorphic lambda).continuous using 1
-    funext p
-    exact (C.psiMap_eq_generic lambda p).symm
-  · intro K L hK hL
-    simpa only [← C.psiMap_eq_generic] using H K L hK hL
 
 /-- The local cusp quotient is a complex manifold once the same two fixed-point estimates and
 compact-overlap estimate used in the global formulation are supplied on the restricted carrier. -/
@@ -357,28 +331,5 @@ public theorem quotient_isManifold (F : C.IsFree)
 end LocalHolomorphicPhaseCoefficients
 
 end CuspLocalPhaseAction
-
-open CuspLocalPhaseAction
-
-namespace CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
-
-open SphereSixComplex.Periods
-
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    (N : NormalizedFuchsianCuspCoordinate E D)
-
-/-- The Fuchsian cusp expansion supplies the complete local phase package.  Holomorphicity of the
-variable torus translation is derived from the standard jointly holomorphic toric action. -/
-public noncomputable def toLocalHolomorphicPhaseCoefficients
-    (M : Model) :
-    CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients M (cuspRadius N.height) where
-  radius_pos := cuspRadius_pos N.height
-  phase := N.phaseCoefficient
-  phase_zero := N.phaseCoefficient_zero
-  phase_add := N.phaseCoefficient_add
-  coefficient_holomorphicOn lambda i :=
-    mdifferentiableOn_iff_differentiableOn.mp (N.phaseCoefficient_holomorphicOn lambda i)
-
-end CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
 
 end SphereSixComplex.Geometry

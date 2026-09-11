@@ -107,64 +107,12 @@ public theorem orderFourDegreeTwoCoinvariantsEquivInt_mk (x : ThreeLattice) :
     orderFourDegreeTwoCoinvariantsEquivInt (Submodule.Quotient.mk x) = x 0 :=
   rfl
 
-public def orderThreeNormToInvariants :
-    ThreeLattice →ₗ[ℤ] LinearMap.ker orderThreeDegreeOneDifference :=
-  orderThreeDegreeOneNorm.codRestrict _ fun x ↦ by
-    apply LinearMap.mem_ker.mpr
-    rw [orderThreeDegreeOneDifference_apply, orderThreeDegreeOneNorm_apply]
-    funext i
-    fin_cases i <;> simp
 
-public def orderFourNormToInvariants :
-    ThreeLattice →ₗ[ℤ] LinearMap.ker orderFourDegreeOneDifference :=
-  orderFourDegreeOneNorm.codRestrict _ fun x ↦ by
-    apply LinearMap.mem_ker.mpr
-    rw [orderFourDegreeOneDifference_apply, orderFourDegreeOneNorm_apply]
-    funext i
-    fin_cases i <;> simp
 
-public def orderThreeCyclicNormData :
-    FiniteCyclicThreeTorusWangNaturality.CyclicNormData 3
-      orderThreeClutchingDegreeOneMatrix.mulVecLin where
-  toInvariants := orderThreeNormToInvariants
-  value x := by
-    change orderThreeDegreeOneNorm x = _
-    ext i
-    fin_cases i <;>
-      simp [orderThreeDegreeOneNorm, orderThreeClutchingDegreeOneMatrix,
-        dotProduct, Fin.sum_univ_succ, Matrix.vecHead, Matrix.vecTail,
-        Finset.sum_range_succ, pow_succ]
 
-public def orderFourCyclicNormData :
-    FiniteCyclicThreeTorusWangNaturality.CyclicNormData 4
-      orderFourClutchingDegreeOneMatrix.mulVecLin where
-  toInvariants := orderFourNormToInvariants
-  value x := by
-    change orderFourDegreeOneNorm x = _
-    ext i
-    fin_cases i <;>
-      simp [orderFourDegreeOneNorm, orderFourClutchingDegreeOneMatrix,
-        dotProduct, Fin.sum_univ_succ, Matrix.vecHead, Matrix.vecTail,
-        Finset.sum_range_succ, pow_succ]
 
-public def intProdIntEquivFinTwo : (ℤ × ℤ) ≃+ (Fin 2 → ℤ) where
-  toFun x := ![x.1, x.2]
-  invFun x := (x 0, x 1)
-  left_inv _ := rfl
-  right_inv x := by funext i; fin_cases i <;> rfl
-  map_add' x y := by funext i; fin_cases i <;> rfl
 
-public noncomputable def orderThreeEndpointsEquivFinTwo :
-    (LinearMap.ker orderThreeDegreeOneDifference ×
-      (ThreeLattice ⧸ LinearMap.range orderThreeDegreeTwoDifference)) ≃+ (Fin 2 → ℤ) :=
-  ((orderThreeInvariantEquivInt.toAddEquiv).prodCongr
-    orderThreeDegreeTwoCoinvariantsEquivInt.toAddEquiv).trans intProdIntEquivFinTwo
 
-public noncomputable def orderFourEndpointsEquivFinTwo :
-    (LinearMap.ker orderFourDegreeOneDifference ×
-      (ThreeLattice ⧸ LinearMap.range orderFourDegreeTwoDifference)) ≃+ (Fin 2 → ℤ) :=
-  ((orderFourInvariantEquivInt.toAddEquiv).prodCongr
-    orderFourDegreeTwoCoinvariantsEquivInt.toAddEquiv).trans intProdIntEquivFinTwo
 
 end SphereSixComplex.Topology.EllipticThreeTorusWangEndpointCoordinates
 

@@ -1,7 +1,9 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspMeridianSectionGeneratorCompletion
-public import SphereSixComplex.Paper.Topology.CuspFiniteFiberSpecializationMatrixProof
+public import SphereSixComplex.Paper.Topology.CuspFiniteFiberSpecializationGeometricReduction
+public import SphereSixComplex.Paper.Topology.PaperCuspGeometricSpecialization
+public import SphereSixComplex.Paper.Topology.PaperCuspGeometricSpecializationProof
 
 /-!
 # Specialization of the selected cusp meridian

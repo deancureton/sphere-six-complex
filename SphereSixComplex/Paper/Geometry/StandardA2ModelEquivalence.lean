@@ -86,13 +86,6 @@ public theorem transport_left_inverse (M N : Model) :
   rw [hr]
   exact (M.toricChart upper v).left_inv hp
 
-public def canonicalHomeomorph (M N : Model) : M.Carrier ≃ₜ N.Carrier where
-  toFun := transport M N
-  invFun := transport N M
-  left_inv := transport_left_inverse M N
-  right_inv := transport_left_inverse N M
-  continuous_toFun := transport_continuous M N
-  continuous_invFun := transport_continuous N M
 
 public theorem transport_mem_chart (M N : Model) (upper : Bool) (v : ToricLattice)
     {p : M.Carrier} (hp : p ∈ (M.toricChart upper v).source) :
@@ -132,29 +125,6 @@ public theorem transport_fanShear (M N : Model) (g : CuspFilling.ParameterLattic
   rintro q ⟨x, rfl⟩
   simp only [Function.comp_apply, M.fanShear_torus, transport_torus, N.fanShear_torus]
 
-public theorem transport_centralComponent_iff (M N : Model) (w : ToricLattice)
-    (p : M.Carrier) : transport M N p ∈ N.centralComponent w ↔ p ∈ M.centralComponent w := by
-  obtain ⟨upper, v, hp⟩ := M.toricChart_cover p
-  have hn := transport_mem_chart M N upper v hp
-  by_cases hw : w ∈ Set.range (a2Triangle upper v)
-  · obtain ⟨i, rfl⟩ := hw
-    rw [N.centralComponent_in_chart upper v i _ hn,
-      M.centralComponent_in_chart upper v i p hp, toricChart_transport M N upper v hp]
-  · constructor
-    · intro h
-      exact False.elim (Set.disjoint_left.mp
-        (N.otherCentralComponent_disjoint_chart upper v w hw) h hn)
-    · intro h
-      exact False.elim (Set.disjoint_left.mp
-        (M.otherCentralComponent_disjoint_chart upper v w hw) h hp)
 
-public def centralFiberHomeomorph (M N : Model) :
-    {p : M.Carrier // M.t p = 0} ≃ₜ {p : N.Carrier // N.t p = 0} where
-  toFun := fun p ↦ ⟨transport M N p.1, (transport_t M N p.1).trans p.2⟩
-  invFun := fun p ↦ ⟨transport N M p.1, (transport_t N M p.1).trans p.2⟩
-  left_inv := fun p ↦ Subtype.ext (transport_left_inverse M N p.1)
-  right_inv := fun p ↦ Subtype.ext (transport_left_inverse N M p.1)
-  continuous_toFun := ((transport_continuous M N).comp continuous_subtype_val).subtype_mk _
-  continuous_invFun := ((transport_continuous N M).comp continuous_subtype_val).subtype_mk _
 
 end SphereSixComplex.Geometry.InfiniteA2Toric.Model

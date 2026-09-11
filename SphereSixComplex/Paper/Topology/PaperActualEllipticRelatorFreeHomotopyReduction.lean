@@ -189,63 +189,6 @@ public theorem ellipticFourRegularLoopChartIdentity_of_freeHomotopy
   exact (fundamentalGroupMulEquivOfPath_cast_right
     w.symm hover.symm A.orderFourCentralExpectedRelator).symm
 
-/-- Free homotopies of the two complete local filling loops give both normal-closure
-memberships.  No relation between their moving-basepoint traces and the van Kampen connectors
-is required. -/
-public theorem ellipticRelatorMembership_of_regularLoopFreeHomotopies
-    (gammaThree : Path A.centralAffineBase A.centralAffineBase)
-    (hgammaThree :
-      Path.Homotopic.Quotient.mk gammaThree =
-        A.orderThreeCentralExpectedRelator.toPath)
-    (HThree : ContinuousMap.Homotopy
-      ((A.orderThreeFillingRelationRegularLoop.map
-        A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
-          A.orderThreeCollarRegularRepresentative_base_projects.symm
-          A.orderThreeCollarRegularRepresentative_base_projects.symm).toContinuousMap
-      gammaThree.toContinuousMap)
-    (htraceThree :
-      (HThree.evalAt 0).cast
-          ((A.orderThreeFillingRelationRegularLoop.map
-            A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
-              A.orderThreeCollarRegularRepresentative_base_projects.symm
-              A.orderThreeCollarRegularRepresentative_base_projects.symm).source.symm
-          gammaThree.source.symm =
-        (HThree.evalAt 1).cast
-          ((A.orderThreeFillingRelationRegularLoop.map
-            A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
-              A.orderThreeCollarRegularRepresentative_base_projects.symm
-              A.orderThreeCollarRegularRepresentative_base_projects.symm).target.symm
-          gammaThree.target.symm)
-    (gammaFour : Path A.centralAffineBase A.centralAffineBase)
-    (hgammaFour :
-      Path.Homotopic.Quotient.mk gammaFour =
-        A.orderFourCentralExpectedRelator.toPath)
-    (HFour : ContinuousMap.Homotopy
-      ((A.orderFourFillingRelationRegularLoop.map
-        A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
-          A.orderFourCollarRegularRepresentative_base_projects.symm
-          A.orderFourCollarRegularRepresentative_base_projects.symm).toContinuousMap
-      gammaFour.toContinuousMap)
-    (htraceFour :
-      (HFour.evalAt 0).cast
-          ((A.orderFourFillingRelationRegularLoop.map
-            A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
-              A.orderFourCollarRegularRepresentative_base_projects.symm
-              A.orderFourCollarRegularRepresentative_base_projects.symm).source.symm
-          gammaFour.source.symm =
-        (HFour.evalAt 1).cast
-          ((A.orderFourFillingRelationRegularLoop.map
-            A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
-              A.orderFourCollarRegularRepresentative_base_projects.symm
-              A.orderFourCollarRegularRepresentative_base_projects.symm).target.symm
-          gammaFour.target.symm) :
-    A.EllipticRelatorMembership
-      A.cuspCentralNaturality :=
-  A.ellipticRelatorMembership_of_regularLoopChartIdentities
-    (A.ellipticThreeRegularLoopChartIdentity_of_freeHomotopy
-      gammaThree hgammaThree HThree htraceThree)
-    (A.ellipticFourRegularLoopChartIdentity_of_freeHomotopy
-      gammaFour hgammaFour HFour htraceFour)
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

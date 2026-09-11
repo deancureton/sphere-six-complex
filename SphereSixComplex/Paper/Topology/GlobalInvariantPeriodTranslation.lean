@@ -10,7 +10,6 @@ open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open SphereSixComplex.TriangleGroup.FuchsianProperFreeness
 open ComplexTorus TorusFamily AnalyticTorusFamily
 variable {U : TriangleUniformization} (F : PeriodFunctions U)
-local instance : MulAction Delta (RegularBase (U := U)) := regularSourceMulAction U
 local instance : MulAction Delta (RegularTotalSpace F) := regularFamilyDeckAction F
 
 public def regularPeriodTranslationCover (n : IntegerPeriods) :

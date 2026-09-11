@@ -46,11 +46,6 @@ public noncomputable def actualCuspWangBoundaryHom (A : PaperAnalyticData) :
   exact P.boundary.comp
     (integralSingularHomologyEquivOfHomotopyEquiv 2 G.totalHomotopyEquiv).toAddMonoidHom
 
-public theorem actualCuspWangBoundaryHom_apply
-    (A : PaperAnalyticData)
-    (x : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0)) :
-    actualCuspWangBoundaryHom A x = actualCuspWangBoundary A x :=
-  rfl
 
 /-- The fourth marked coordinate on the actual elliptic band overlap. -/
 public noncomputable def ellipticBandFourthCoordinateHom
@@ -59,33 +54,7 @@ public noncomputable def ellipticBandFourthCoordinateHom
         (D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior) →+ ℤ :=
   coordinateAfterAddEquiv N.actualHomologyCoordinates.bandOne 3
 
-/-- The fourth marked coordinate on the fibre in the actual cusp Wang presentation. -/
-public noncomputable def actualCuspFiberFourthCoordinateHom (A : PaperAnalyticData) :
-    (let G := A.actualCuspRadialClutchingData
-      let _ := G.fiberTopology
-      IntegralSingularHomology 1 G.Fiber) →+ ℤ := by
-  let G := A.actualCuspRadialClutchingData
-  letI := G.fiberTopology
-  exact coordinateAfterAddEquiv G.monodromyCoordinates.degreeOne 3
 
-/-- The general marked connecting-morphism square supplies the exact Section 7 cusp boundary
-comparison. -/
-public theorem boundaryCoordinate_eq_of_connecting_eq
-    (N : A.EllipticBandHomologyAlignment D)
-    (h : (D.ellipticBandFourthCoordinateHom N).comp
-        D.cuspPulledBackBoundaryHom =
-      (EllipticTwoDiscCoverData.actualCuspFiberFourthCoordinateHom A).comp
-        (EllipticTwoDiscCoverData.actualCuspWangBoundaryHom A)) :
-    D.cuspPulledBackBoundaryCoordinateHom N =
-      EllipticTwoDiscCoverData.actualCuspSecondWangBoundaryCoordinateHom A := by
-  apply AddMonoidHom.ext
-  intro x
-  rw [D.cuspPulledBackBoundaryCoordinateHom_apply_eq_bandCoordinate,
-    actualCuspSecondWangBoundaryCoordinateHom_apply_eq_fiberCoordinate]
-  have hx := DFunLike.congr_fun h x
-  simpa [ellipticBandFourthCoordinateHom, actualCuspFiberFourthCoordinateHom,
-    coordinateAfterAddEquiv_apply, cuspPulledBackBoundaryHom_apply,
-    actualCuspWangBoundaryHom_apply] using hx
 
 
 end EllipticTwoDiscCoverData

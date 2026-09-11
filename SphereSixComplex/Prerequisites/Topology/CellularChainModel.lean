@@ -19,15 +19,6 @@ open CategoryTheory CategoryTheory.Limits
 
 namespace SphereSixComplex
 
-/-- The standard integral cellular chain complex of a CW complex, with one free generator for
-each open cell and a comparison map to singular chains. -/
-public structure IntegralCWCellularChainModel
-    (Y : Type) [TopologicalSpace Y] [Topology.CWComplex (Set.univ : Set Y)] where
-  chainComplex : ChainComplex AddCommGrpCat ℕ
-  cellBasis : ∀ n,
-    (Topology.CWComplex.cell (Set.univ : Set Y) n →₀ ℤ) ≃+ chainComplex.X n
-  comparison : chainComplex ⟶ integralSingularChainComplex Y
-  comparison_homology_isIso : ∀ n, IsIso (chainComplex.homologyMap comparison n)
 
 variable (Y : Type) [TopologicalSpace Y] [Topology.CWComplex (Set.univ : Set Y)]
 

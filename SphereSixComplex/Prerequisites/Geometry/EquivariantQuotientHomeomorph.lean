@@ -18,42 +18,8 @@ variable {G X Y : Type*} [Group G]
   [TopologicalSpace X] [TopologicalSpace Y]
   [MulAction G X] [MulAction G Y]
 
-/-- A homeomorphism between invariant open carriers which intertwines their restricted group
-actions. -/
-public structure EquivariantOpenHomeomorph
-    (S : SubMulAction G X) (T : SubMulAction G Y) where
-  toHomeomorph : S ≃ₜ T
-  isOpen_source : IsOpen (S : Set X)
-  isOpen_target : IsOpen (T : Set Y)
-  equivariant : ∀ (g : G) (x : S),
-    toHomeomorph (g • x) = g • toHomeomorph x
 
-/-- An equivariant homeomorphism of invariant open carriers descends to their orbit quotients. -/
-@[expose] public noncomputable def orbitQuotientHomeomorph
-    {S : SubMulAction G X} {T : SubMulAction G Y}
-    (e : EquivariantOpenHomeomorph S T) :
-    MulAction.orbitRel.Quotient G S ≃ₜ
-      MulAction.orbitRel.Quotient G T :=
-  Homeomorph.Quotient.congr e.toHomeomorph fun x y => by
-    rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff,
-      MulAction.orbitRel_apply, MulAction.mem_orbit_iff]
-    constructor
-    · rintro ⟨g, hg⟩
-      refine ⟨g, ?_⟩
-      rw [← e.equivariant]
-      exact congrArg e.toHomeomorph hg
-    · rintro ⟨g, hg⟩
-      refine ⟨g, e.toHomeomorph.injective ?_⟩
-      rw [e.equivariant]
-      exact hg
 
-@[simp]
-public theorem orbitQuotientHomeomorph_mk
-    {S : SubMulAction G X} {T : SubMulAction G Y}
-    (e : EquivariantOpenHomeomorph S T) (x : S) :
-    orbitQuotientHomeomorph e (Quotient.mk _ x) =
-      Quotient.mk _ (e.toHomeomorph x) :=
-  rfl
 
 /-- Evaluate an explicitly supplied action without installing it as a global instance. -/
 @[expose] public def actionMap (A : MulAction G X) (g : G) (x : X) : X :=
@@ -164,16 +130,5 @@ public theorem restrictedOrbitQuotientHomeomorph_mk
       Quotient.mk _ (e.toHomeomorph x) :=
   rfl
 
-omit [MulAction G X] [MulAction G Y] in
-@[simp]
-public theorem restrictedOrbitQuotientHomeomorph_symm_mk
-    {AX : MulAction G X} {AY : MulAction G Y}
-    {S : InvariantOpenCarrier AX} {T : InvariantOpenCarrier AY}
-    (e : EquivariantOpenHomeomorphOfActions AX AY S T) (y : T.carrier) :
-    (restrictedOrbitQuotientHomeomorph e).symm (Quotient.mk _ y) =
-      Quotient.mk _ (e.toHomeomorph.symm y) := by
-  apply (restrictedOrbitQuotientHomeomorph e).injective
-  rw [Homeomorph.apply_symm_apply, restrictedOrbitQuotientHomeomorph_mk,
-    e.toHomeomorph.apply_symm_apply]
 
 end SphereSixComplex.Geometry.EquivariantQuotientHomeomorph

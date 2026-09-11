@@ -58,8 +58,9 @@ chosen coordinates and their bijectivity. Arbitrary model families with reflexiv
 are not part of that certificate. The canonical affine band specializes one radial homotopy
 record; it does not copy the same four fields into a second record. The side inverses and
 marked compatibility homotopies are retained. Boundary comparisons display equalities of the
-actual homomorphisms. The conditional old marking and its refutations remain separate from
-the corrected production coordinates.
+actual homomorphisms. The production coordinates use raw four for the cusp boundary and
+normalized raw five for the fourth-period sweep. Alternative marking conventions must not be
+substituted into those equalities.
 
 ## Homotopies and cycles
 
@@ -72,6 +73,13 @@ Integral singular cycles use Mathlib's `cycles` object, `cyclesMap`, `iCycles`, 
 in every degree. The marked prism comparison still asserts equality of actual chain morphisms,
 not only equality of their homology classes. Quotient retractions specialize the existing
 `EquivariantStrongDeformationRetraction` instead of wrapping it in another record.
+
+## Retained surface
+
+Only the two Comparator endpoints determine the mathematical roots of the development.
+Intermediate APIs remain when their declarations or elaboration support those proofs. The
+Blueprint and examples describe this retained surface rather than adding preservation roots.
+Historical names in reduction notes are not promises of current APIs.
 
 ## Validation
 

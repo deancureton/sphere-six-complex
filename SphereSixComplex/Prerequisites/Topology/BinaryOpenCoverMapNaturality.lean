@@ -54,13 +54,6 @@ public theorem pullbackOpenSubcomplexMap_app_val {X Y : TopCat}
     (pullbackOpenSubcomplexMap_comp_inclusion f U)
   exact h
 
-@[reassoc]
-public theorem openPreimageMap_comp_corestriction {X Y : TopCat}
-    (f : X ⟶ Y) (U : Opens Y) :
-    TopCat.toSSet.map (openPreimageMap f U) ≫ singularOpenCorestriction U =
-      singularOpenCorestriction ((Opens.map f).obj U) ≫ pullbackOpenSubcomplexMap f U := by
-  rw [← cancel_mono (singularOpenSubcomplex U).ι]
-  simp [← Functor.map_comp, openPreimageMap_comp_inclusion]
 
 /-- The map on the intersection subcomplex of a pulled-back binary cover. -/
 public noncomputable def coverIntersectionPullbackMap {X Y : TopCat}

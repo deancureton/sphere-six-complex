@@ -286,27 +286,8 @@ public def onePointOpenCubeHomeomorphCubicalSphere
           exact (isOpenEmbedding_openCubeToUnitCube N).isOpenMap s hs).isEmbedding)
     (openCubeToCubicalSphere_range (N := N))
 
-@[simp]
-public theorem onePointOpenCubeHomeomorphCubicalSphere_apply_coe
-    (N : Type*) [Fintype N] [Nonempty N] (a : OpenCube N) :
-    onePointOpenCubeHomeomorphCubicalSphere N (a : OnePoint (OpenCube N)) =
-      openCubeToCubicalSphere a :=
-  rfl
 
-@[simp]
-public theorem onePointOpenCubeHomeomorphCubicalSphere_apply_infty
-    (N : Type*) [Fintype N] [Nonempty N] :
-    onePointOpenCubeHomeomorphCubicalSphere N (∞ : OnePoint (OpenCube N)) =
-      cubicalSphereBasepoint N :=
-  rfl
 
-@[simp]
-public theorem onePointOpenCubeHomeomorphCubicalSphere_symm_basepoint
-    (N : Type*) [Fintype N] [Nonempty N] :
-    (onePointOpenCubeHomeomorphCubicalSphere N).symm (cubicalSphereBasepoint N) =
-      (∞ : OnePoint (OpenCube N)) := by
-  apply (onePointOpenCubeHomeomorphCubicalSphere N).injective
-  simp
 
 /-- The comparison from the cubical `n`-sphere to the ordinary Euclidean unit sphere. -/
 public def cubicalSphereHomeomorphMetricSphere
@@ -318,11 +299,6 @@ public def cubicalSphereHomeomorphMetricSphere
       (onePointEquivSphereOfFinrankEq (ι := Fin (n + 1))
         (V := EuclideanSpace ℝ (Fin n)) (by simp)))
 
-/-- The point corresponding to infinity in the one-point compactification model of `S^n`. -/
-public def topCatSphereCompactificationPoint (n : ℕ) : TopCat.sphere n :=
-  Homeomorph.ulift.symm
-    (onePointEquivSphereOfFinrankEq (ι := Fin (n + 1))
-      (V := EuclideanSpace ℝ (Fin n)) (by simp) (∞ : OnePoint (EuclideanSpace ℝ (Fin n))))
 
 /-- The cubical boundary quotient is homeomorphic to Mathlib's `TopCat.sphere`. -/
 public def cubicalSphereHomeomorphTopCatSphere
@@ -330,19 +306,5 @@ public def cubicalSphereHomeomorphTopCatSphere
     CubicalSphere (Fin n) ≃ₜ TopCat.sphere n :=
   (cubicalSphereHomeomorphMetricSphere n).trans Homeomorph.ulift.symm
 
-@[simp]
-public theorem cubicalSphereHomeomorphTopCatSphere_basepoint
-    (n : ℕ) [NeZero n] :
-    cubicalSphereHomeomorphTopCatSphere n (cubicalSphereBasepoint (Fin n)) =
-      topCatSphereCompactificationPoint n := by
-  change Homeomorph.ulift.symm
-      (onePointEquivSphereOfFinrankEq (ι := Fin (n + 1))
-        (V := EuclideanSpace ℝ (Fin n)) (by simp)
-        ((openCubeHomeomorphEuclidean (Fin n)).onePointCongr
-          ((onePointOpenCubeHomeomorphCubicalSphere (Fin n)).symm
-            (cubicalSphereBasepoint (Fin n))))) =
-    topCatSphereCompactificationPoint n
-  rw [onePointOpenCubeHomeomorphCubicalSphere_symm_basepoint]
-  rfl
 
 end SphereSixComplex

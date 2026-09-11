@@ -197,43 +197,6 @@ public noncomputable def orderFourCayleyChartRadialHomotopy
     simp [orderFourAlignedCayleyRadialPoint, localDegreeCirclePoint]
     ring
 
-/-- On some nonzero Cayley circle, the order-four affine coordinate is connected through
-nonzero values of norm less than one to its frozen-unit four-turn circle. -/
-public theorem exists_orderFourCayleyBaseCoordinate_smallCircleHomotopy :
-    ∃ (u : ℂ → ℂ) (a : ℂ)
-      (ha : a ≠ 0)
-      (hu : ContinuousOn u (closedBall (0 : ℂ) ‖a‖))
-      (hune : ∀ z ∈ closedBall (0 : ℂ) ‖a‖, u z ≠ 0)
-      (hbound : ∀ z ∈ closedBall (0 : ℂ) ‖a‖,
-        ‖a‖ ^ 4 * ‖u z‖ < ‖(-1 : ℂ)‖),
-      (∀ t : unitInterval,
-        ellipticChartFunction A.modular.sourceCoordinate.coordinate
-            fuchsianTwoFixedPoint (localDegreeCirclePoint a t) - 1 =
-          (factorizedLocalDegreeCircleTwoPunctures
-            u 4 a (-1) ha hu hune hbound t).1) ∧
-      Nonempty (ContinuousMap.Homotopy
-        (factorizedLocalDegreeCircleTwoPunctures
-          u 4 a (-1) ha hu hune hbound)
-        (frozenLocalDegreeCircleTwoPunctures
-          u 4 a (-1) ha hune hbound)) := by
-  obtain ⟨u, hu, hu0, hfactor⟩ :=
-    A.exists_orderFourCayleyRegularCoordinate_quarticUnit
-  let G : ℂ → ℂ := fun z ↦
-    ellipticChartFunction A.modular.sourceCoordinate.coordinate
-      fuchsianTwoFixedPoint z - 1
-  obtain ⟨a, ha, huc, hune, hfac, hbound⟩ :=
-    exists_factorizationCircleData G u 4 (by norm_num) hu hu0 hfactor
-  have hbound' : ∀ z ∈ closedBall (0 : ℂ) ‖a‖,
-      ‖a‖ ^ 4 * ‖u z‖ < ‖(-1 : ℂ)‖ := by
-    simpa using hbound
-  refine ⟨u, a, ha, huc, hune, hbound', ?_, ?_⟩
-  · intro t
-    change G (localDegreeCirclePoint a t) =
-      localDegreeCirclePoint a t ^ 4 * u (localDegreeCirclePoint a t)
-    exact hfac (localDegreeCirclePoint a t) (by
-      rw [mem_closedBall, dist_zero_right, localDegreeCirclePoint_norm])
-  · exact ⟨exactLocalFactorizationCircleHomotopyTwoPunctures
-      u 4 a (-1) ha huc hune hbound'⟩
 
 /-- The small circle can be chosen as a positive radial rescaling of the actual Cayley circle. -/
 public theorem exists_orderFourCayleyBaseCoordinate_alignedSmallCircleData :
@@ -271,75 +234,6 @@ public theorem exists_orderFourCayleyBaseCoordinate_alignedSmallCircleData :
   · simpa [G, hanorm] using hfacb
   · simpa [hanorm] using hboundb
 
-/-- The actual complete Cayley base circle is freely homotopic in the twice-punctured affine
-line to a frozen-unit positive four-turn circle. -/
-public theorem exists_orderFourActualCayleyBaseCoordinate_fourTurnHomotopy :
-    ∃ (u : ℂ → ℂ) (a : ℂ)
-      (ha : a ≠ 0)
-      (hune : ∀ z ∈ closedBall (0 : ℂ) ‖a‖, u z ≠ 0)
-      (hbound : ∀ z ∈ closedBall (0 : ℂ) ‖a‖,
-        ‖a‖ ^ 4 * ‖u z‖ < ‖(-1 : ℂ)‖),
-      Nonempty (ContinuousMap.Homotopy
-        (A.orderFourCayleyChartSubOneCircleMap
-          A.orderFourFillingRelationCayleyBaseValue
-          (norm_pos_iff.mpr A.orderFourFillingRelationCayleyBaseValue_ne_zero)
-          (by
-            rw [A.orderFourFillingRelationCayleyBaseValue_norm]
-            exact A.ellipticFourBoundaryBase.1.2.2))
-        (frozenLocalDegreeCircleTwoPunctures
-          u 4 a (-1) ha hune hbound)) := by
-  obtain ⟨u, a, c, hc, hc1, haeq, hu, hune, hfac, hbound⟩ :=
-    A.exists_orderFourCayleyBaseCoordinate_alignedSmallCircleData
-  subst a
-  let a : ℂ := (c : ℂ) * A.orderFourFillingRelationCayleyBaseValue
-  have ha : a ≠ 0 := by
-    dsimp [a]
-    exact mul_ne_zero (ofReal_ne_zero.mpr hc.ne')
-      A.orderFourFillingRelationCayleyBaseValue_ne_zero
-  have hbound' : ∀ z ∈ closedBall (0 : ℂ) ‖a‖,
-      ‖a‖ ^ 4 * ‖u z‖ < ‖(-1 : ℂ)‖ := by
-    simpa [a] using hbound
-  have har : ‖a‖ < A.starSeparation.orderFour.radius := by
-    rw [norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hc]
-    exact (mul_lt_mul_of_pos_right hc1
-      (norm_pos_iff.mpr
-        A.orderFourFillingRelationCayleyBaseValue_ne_zero)).trans (by
-          rw [A.orderFourFillingRelationCayleyBaseValue_norm]
-          simpa using A.ellipticFourBoundaryBase.1.2.2)
-  have hsmall :
-      A.orderFourCayleyChartSubOneCircleMap a (norm_pos_iff.mpr ha) har =
-        factorizedLocalDegreeCircleTwoPunctures
-          u 4 a (-1) ha hu hune hbound' := by
-    ext t
-    change ellipticChartFunction A.modular.sourceCoordinate.coordinate
-        fuchsianTwoFixedPoint (localDegreeCirclePoint a t) - 1 =
-      localDegreeCirclePoint a t ^ 4 * u (localDegreeCirclePoint a t)
-    exact hfac _ (by
-      rw [mem_closedBall, dist_zero_right, localDegreeCirclePoint_norm])
-  let Hrad := A.orderFourCayleyChartRadialHomotopy c hc hc1
-  have htarget :
-      A.orderFourCayleyChartSubOneCircleMap
-          ((c : ℂ) * A.orderFourFillingRelationCayleyBaseValue)
-          (by
-            rw [norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hc]
-            exact mul_pos hc
-              (norm_pos_iff.mpr
-                A.orderFourFillingRelationCayleyBaseValue_ne_zero))
-          (by
-            rw [norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hc]
-            exact (mul_lt_mul_of_pos_right hc1
-              (norm_pos_iff.mpr
-                A.orderFourFillingRelationCayleyBaseValue_ne_zero)).trans (by
-                  rw [A.orderFourFillingRelationCayleyBaseValue_norm]
-                  simpa using A.ellipticFourBoundaryBase.1.2.2)) =
-        factorizedLocalDegreeCircleTwoPunctures
-          u 4 a (-1) ha hu hune hbound' := by
-    exact hsmall
-  let Hlocal :=
-    exactLocalFactorizationCircleHomotopyTwoPunctures
-      u 4 a (-1) ha hu hune hbound'
-  refine ⟨u, a, ha, hune, hbound', ?_⟩
-  exact ⟨(Hrad.cast rfl htarget).trans Hlocal⟩
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

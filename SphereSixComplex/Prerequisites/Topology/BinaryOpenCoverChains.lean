@@ -179,18 +179,7 @@ public noncomputable instance openIntersectionChainComparison_isIso {X : TopCat}
   dsimp [openIntersectionChainComparison]
   infer_instance
 
-public noncomputable instance openIntersectionHomologyComparison_isIso {X : TopCat}
-    (U V : Opens X) (n : ℕ) :
-    IsIso (HomologicalComplex.homologyMap (openIntersectionChainComparison U V) n) := by
-  change IsIso
-    ((HomologicalComplex.homologyFunctor AddCommGrpCat _ n).map
-      (openIntersectionChainComparison U V))
-  infer_instance
 
-/-- The two canonical chain maps compose to zero. -/
-public theorem coverChain_comp_eq_zero {X : TopCat} (U V : Opens X) :
-    (coverChainShortComplex U V).f ≫ (coverChainShortComplex U V).g = 0 :=
-  (coverChainShortComplex U V).zero
 
 /-- The chain-level meet--join sequence is exact. -/
 public theorem coverChainShortComplex_exact {X : TopCat} (U V : Opens X) :

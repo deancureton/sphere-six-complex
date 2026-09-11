@@ -74,15 +74,6 @@ public theorem stdSimplex_map_deleteZeroCoordinate
   · exact stdSimplex_map_apply_of_injective i.succAbove
       Fin.succAbove_right_injective _ j
 
-/-- Each individual realized face embeds in the realized boundary. -/
-public theorem boundarySevenRealizedFace_injective (i : Fin 8) :
-    Function.Injective (SSet.toTop.map (SSet.boundary.ι.{0} i)) := by
-  intro x y h
-  apply (SimplexCategory.toTopHomeo (SimplexCategory.mk 6)).injective
-  apply stdSimplex_map_injective i.succAbove Fin.succAbove_right_injective
-  simpa only [boundarySevenRealizationToStdSimplex_face] using
-    congrArg (fun z : (SSet.toTop.obj (∂Δ[7] : SSet.{0}) : Type) ↦
-      boundarySevenRealizationToStdSimplex z) h
 
 /-- The two standard parametrizations of a codimension-two face use the same ordered embedding
 of its six vertices. -/
@@ -241,13 +232,5 @@ public theorem boundarySevenRealizationHomeomorphSixSphere :
   boundarySevenRealizationHomeomorphSixSphere_of_injective
     boundarySevenRealizationToBoundary_injective
 
-/-- Consequently the boundary comparison package now requires only the chain-level
-simplicial-to-singular quasi-isomorphism. -/
-public theorem boundarySevenComparisonInputs_of_quasiIsomorphism
-    (R : AddCommGrpCat)
-    (hcomparison : SimplicialToSingularComparisonQuasiIsomorphism
-      (∂Δ[7] : SSet.{0}) R) :
-    BoundarySevenComparisonInputs R :=
-  ⟨hcomparison, boundarySevenRealizationHomeomorphSixSphere⟩
 
 end SphereSixComplex

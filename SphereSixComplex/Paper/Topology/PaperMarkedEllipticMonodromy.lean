@@ -87,23 +87,6 @@ public theorem fundamentalGroupToMulOpposite_pow_transport
   have hu := congrArg MulOpposite.unop hphiY
   simpa [phiY, gammaY] using hu
 
-/-- Finite deck order is invariant under transport of a loop to another basepoint of the same
-regular quotient cover. -/
-public theorem fundamentalGroupToMulOpposite_isOfFinOrder_transport
-    {E X G : Type*} [TopologicalSpace E] [TopologicalSpace X]
-    [Group G] [MulAction G E] {p : C(E, X)}
-    (hp : IsQuotientCoveringMap p G) {x y : X}
-    (W : Path x y) (ex : p ⁻¹' {x}) (ey : p ⁻¹' {y})
-    (gamma : FundamentalGroup X x)
-    (hfin : IsOfFinOrder
-      (MulOpposite.unop (hp.fundamentalGroupToMulOpposite ex gamma))) :
-    IsOfFinOrder (MulOpposite.unop
-      (hp.fundamentalGroupToMulOpposite ey
-        (FundamentalGroup.fundamentalGroupMulEquivOfPath W gamma))) := by
-  rw [isOfFinOrder_iff_pow_eq_one] at hfin ⊢
-  obtain ⟨n, hn, hpow⟩ := hfin
-  exact ⟨n, hn,
-    fundamentalGroupToMulOpposite_pow_transport hp W ex ey gamma n hpow⟩
 
 end SphereSixComplex
 
@@ -408,48 +391,14 @@ public theorem markedOneBaseDeck_pow_four :
   change ‖(A.regularCoordinate (QsmallCarrier t).1).1 - 1‖ < delta
   exact ht.trans hrdelta
 
-/-- Finite-order form of the exact order-three marked monodromy calculation. -/
-public theorem markedZeroBaseDeck_isOfFinOrder :
-    letI := A.regularBaseDeckAction
-    let hp := regularBaseQuotientMap_isQuotientCoveringMap
-      A.modular.modularParameter.toTriangleUniformization_sourceAction
-      (sourceActionProperlyDiscontinuous_of_eq
-        A.modular.modularParameter.toTriangleUniformization_sourceAction)
-    IsOfFinOrder (MulOpposite.unop
-      (hp.fundamentalGroupToMulOpposite
-        ⟨A.markedRegularBaseLift, A.markedRegularBaseLift_projects⟩
-        A.markedZeroBaseMeridianClass)) := by
-  apply isOfFinOrder_iff_pow_eq_one.mpr
-  exact ⟨3, by norm_num, A.markedZeroBaseDeck_pow_three⟩
 
-/-- Finite-order form of the exact order-four marked monodromy calculation. -/
-public theorem markedOneBaseDeck_isOfFinOrder :
-    letI := A.regularBaseDeckAction
-    let hp := regularBaseQuotientMap_isQuotientCoveringMap
-      A.modular.modularParameter.toTriangleUniformization_sourceAction
-      (sourceActionProperlyDiscontinuous_of_eq
-        A.modular.modularParameter.toTriangleUniformization_sourceAction)
-    IsOfFinOrder (MulOpposite.unop
-      (hp.fundamentalGroupToMulOpposite
-        ⟨A.markedRegularBaseLift, A.markedRegularBaseLift_projects⟩
-        A.markedOneBaseMeridianClass)) := by
-  apply isOfFinOrder_iff_pow_eq_one.mpr
-  exact ⟨4, by norm_num, A.markedOneBaseDeck_pow_four⟩
 
-public theorem markedBaseOuterDeckHom_zero_isOfFinOrder :
-    IsOfFinOrder (MulOpposite.unop
-      (A.markedBaseOuterDeckHom A.markedZeroBaseMeridianClass)) := by
-  exact A.markedZeroBaseDeck_isOfFinOrder
 
 public theorem markedBaseOuterDeckHom_zero_pow_three :
     (MulOpposite.unop
       (A.markedBaseOuterDeckHom A.markedZeroBaseMeridianClass)) ^ 3 = 1 := by
   exact A.markedZeroBaseDeck_pow_three
 
-public theorem markedBaseOuterDeckHom_one_isOfFinOrder :
-    IsOfFinOrder (MulOpposite.unop
-      (A.markedBaseOuterDeckHom A.markedOneBaseMeridianClass)) := by
-  exact A.markedOneBaseDeck_isOfFinOrder
 
 public theorem markedBaseOuterDeckHom_one_pow_four :
     (MulOpposite.unop
@@ -530,12 +479,6 @@ public theorem markedCentralOuterDeckHom_zeroSection
     A.modular.modularParameter.toTriangleUniformization_sourceAction hproper
     A.markedRegularBaseLift gammaLit
 
-public theorem markedCentralOuterDeckHom_zero_isOfFinOrder :
-    IsOfFinOrder (MulOpposite.unop
-      (A.markedCentralOuterDeckHom A.markedZeroCentralMeridianClass)) := by
-  rw [markedZeroCentralMeridianClass,
-    A.markedCentralOuterDeckHom_zeroSection]
-  exact A.markedBaseOuterDeckHom_zero_isOfFinOrder
 
 public theorem markedCentralOuterDeckHom_zero_pow_three :
     (MulOpposite.unop
@@ -544,12 +487,6 @@ public theorem markedCentralOuterDeckHom_zero_pow_three :
     A.markedCentralOuterDeckHom_zeroSection]
   exact A.markedBaseOuterDeckHom_zero_pow_three
 
-public theorem markedCentralOuterDeckHom_one_isOfFinOrder :
-    IsOfFinOrder (MulOpposite.unop
-      (A.markedCentralOuterDeckHom A.markedOneCentralMeridianClass)) := by
-  rw [markedOneCentralMeridianClass,
-    A.markedCentralOuterDeckHom_zeroSection]
-  exact A.markedBaseOuterDeckHom_one_isOfFinOrder
 
 public theorem markedCentralOuterDeckHom_one_pow_four :
     (MulOpposite.unop

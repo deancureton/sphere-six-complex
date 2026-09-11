@@ -76,12 +76,3 @@ public noncomputable def constructedModel : Model where
   fanShear_component := carrierFanShear_component_exact
 
 end SphereSixComplex.Geometry.InfiniteA2Toric.Construction
-
-namespace SphereSixComplex.Geometry.InfiniteA2Toric
-
-/-- The explicit standard toric model for the countable smooth fan obtained by coning the `A₂`
-triangulation at height one. -/
-public theorem model : Nonempty Model :=
-  ⟨Construction.constructedModel⟩
-
-end SphereSixComplex.Geometry.InfiniteA2Toric

@@ -27,14 +27,6 @@ open PaperMultipleFiberHOneTopology
 open PaperFiniteCyclicQuotientDegreeTwoComparison
 open TwistObstruction
 
-/-- The canonical map from the covering torus lattice to the abelian multiple-fibre
-presentation.  It sends a lattice class to the coinvariant factor and gives it meridian
-coordinate zero. -/
-public def latticeToMultipleFiberHOnePresentation
-    (D : Lattice →ₗ[ℤ] Lattice) (v : Lattice) (m : ℤ) :
-    Lattice →ₗ[ℤ] CyclicCoinvariants.Presentation D v m :=
-  (LinearMap.range (CyclicCoinvariants.relationMap D v m)).mkQ.comp
-    ((LinearMap.range D).mkQ.prod (0 : Lattice →ₗ[ℤ] ℤ))
 
 /-- Coordinates of the canonical order-three lattice-to-presentation map. -/
 public def orderOneLatticeProjectionCoordinates : Lattice →+ IntSquared where

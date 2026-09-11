@@ -74,11 +74,6 @@ public def cylinderLowerSideHomotopy {X : Type} [TopologicalSpace X] (A : Set X)
   map_zero_left p := by apply Subtype.ext; exact (cylinderVerticalHomotopy X).map_zero_left _
   map_one_left p := by apply Subtype.ext; exact (cylinderVerticalHomotopy X).map_one_left _
 
-public theorem cylinderLowerSideHomotopy_coe {X : Type} [TopologicalSpace X]
-    (A : Set X) (s : unitInterval) (p : cylinderLowerSide A) :
-    (cylinderLowerSideHomotopy A (s, p)).1 = cylinderVerticalHomotopy X (s, p.1) := rfl
 
-public abbrev cwCylinderLowerSide (n : ℕ) : Set (unitInterval × CWCharacteristicClosedBall n) :=
-  cylinderLowerSide {x | x.1 ∈ Metric.sphere (0 : Fin n → ℝ) 1}
 
 end SphereSixComplex

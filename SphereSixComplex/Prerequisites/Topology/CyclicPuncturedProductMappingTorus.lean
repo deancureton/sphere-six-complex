@@ -75,12 +75,6 @@ public theorem homeomorphOfQuotientMaps_apply {f : W → A} {g : W → B}
     homeomorphOfQuotientMaps hf hg hfibre (f w) = g w :=
   (hfibre _ _).mp (Function.surjInv_eq hf.surjective (f w))
 
-public theorem homeomorphOfQuotientMaps_symm_apply {f : W → A} {g : W → B}
-    (hf : IsQuotientMap f) (hg : IsQuotientMap g)
-    (hfibre : ∀ w w' : W, f w = f w' ↔ g w = g w') (w : W) :
-    (homeomorphOfQuotientMaps hf hg hfibre).symm (g w) = f w := by
-  rw [Homeomorph.symm_apply_eq]
-  exact (homeomorphOfQuotientMaps_apply hf hg hfibre w).symm
 
 end QuotientMaps
 
@@ -446,12 +440,6 @@ public def standardMultiplier (m : ℕ) : ℂ :=
 public theorem norm_standardMultiplier (m : ℕ) : ‖standardMultiplier m‖ = 1 :=
   Circle.norm_coe (Circle.exp (-(2 * π / m)))
 
-/-- The degenerate case: a trivial cyclic group has the standard multiplier `1`, so `hmul` is
-free for actions of `FiniteCyclic 1`. -/
-@[simp] public theorem standardMultiplier_one : standardMultiplier 1 = 1 := by
-  have h : Circle.exp (-(2 * π / ((1 : ℕ) : ℝ))) = 1 := by
-    rw [Nat.cast_one, div_one, Circle.exp_neg, Circle.exp_two_pi, inv_one]
-  exact congrArg (fun z : Circle => (z : ℂ)) h
 
 public theorem angleMap_coe (m : ℕ) (θ : ℝ) :
     ((angleMap m θ : Circle) : ℂ) = Complex.exp (((2 * π / m) * θ : ℝ) * Complex.I) := rfl
@@ -779,25 +767,6 @@ public def quotientHomeomorphRadialMappingTorusOfStandardMultiplier
       (angularQuotientMap_eq_iff A φ hr1 S hS hgen)).trans
     ((Homeomorph.refl (RadialInterval r)).prodCongr (realMappingTorusHomeomorph φ))
 
-public theorem quotientHomeomorphRadialMappingTorusOfStandardMultiplier_symm_apply
-    (hr1 : r ≤ 1) (S : InvariantOpenCarrier A)
-    (hS : S.carrier = puncturedProduct T r) (hgen : IsStandardGenerator A φ)
-    (hcont : ∀ g : FiniteCyclic m, Continuous (actionMap A g))
-    (w : RadialInterval r × ℝ × T) :
-    (quotientHomeomorphRadialMappingTorusOfStandardMultiplier
-        A φ hr1 S hS hgen hcont).symm
-        (((Homeomorph.refl (RadialInterval r)).prodCongr
-          (realMappingTorusHomeomorph φ)) (radialTorusMap φ w)) =
-      angularQuotientMap A hr1 S hS w := by
-  unfold quotientHomeomorphRadialMappingTorusOfStandardMultiplier
-  rw [Homeomorph.symm_apply_eq]
-  exact congrArg
-    ((Homeomorph.refl (RadialInterval r)).prodCongr
-      (realMappingTorusHomeomorph φ))
-    (homeomorphOfQuotientMaps_apply
-      (isQuotientMap_angularQuotientMap A hr1 S hS hcont)
-      (isQuotientMap_radialTorusMap (r := r) φ)
-      (angularQuotientMap_eq_iff A φ hr1 S hS hgen) w).symm
 
 end Main
 

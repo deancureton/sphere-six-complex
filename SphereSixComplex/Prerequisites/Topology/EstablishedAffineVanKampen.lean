@@ -24,76 +24,11 @@ namespace SphereSixComplex
 
 /-! ## Mapping-torus fundamental groups -/
 
-/-- The base point of a circle mapping torus induced by a point of its fibre. -/
-public def circleMappingTorusBase {F : Type} [TopologicalSpace F]
-    (φ : F ≃ₜ F) (x : F) : CircleMappingTorus φ :=
-  finiteBouquetMappingTorusFiberInclusion (fun _ : Unit ↦ φ) x
 
-/-- The homomorphism on fundamental groups induced by the mapping-torus fibre inclusion. -/
-public def circleMappingTorusFiberHom {F : Type} [TopologicalSpace F]
-    (φ : F ≃ₜ F) (x : F) :
-    FundamentalGroup F x →*
-      FundamentalGroup (CircleMappingTorus φ) (circleMappingTorusBase φ x) :=
-  FundamentalGroup.map (finiteBouquetMappingTorusFiberInclusion (fun _ : Unit ↦ φ)) x
 
-/-- Monodromy on the based fundamental group, including the required change of base point. -/
-public def mappingTorusMonodromyHom {F : Type} [TopologicalSpace F]
-    (φ : F ≃ₜ F) (x : F) (δ : Path (φ x) x) :
-    FundamentalGroup F x →* FundamentalGroup F x :=
-  (FundamentalGroup.fundamentalGroupMulEquivOfPath δ).toMonoidHom.comp
-    (FundamentalGroup.map ⟨φ, φ.continuous⟩ x)
 
-/-- The positively oriented cylinder edge in a circle mapping torus. -/
-public def circleMappingTorusEdgePath {F : Type} [TopologicalSpace F]
-    (φ : F ≃ₜ F) (x : F) :
-    Path (circleMappingTorusBase φ x) (circleMappingTorusBase φ (φ x)) where
-  toFun t :=
-    Quotient.mk (finiteBouquetMappingTorusSetoid (fun _ : Unit ↦ φ)) ((), (t, x))
-  continuous_toFun := continuous_quot_mk.comp
-    (continuous_const.prodMk (continuous_id.prodMk continuous_const))
-  source' := rfl
-  target' := by
-    apply Quotient.sound
-    apply Relation.EqvGen.rel
-    exact Or.inr (Or.inr ⟨by simp, by simp, rfl⟩)
 
-/-- The geometric mapping-torus meridian, closed by a chosen fibre connector. -/
-public def circleMappingTorusMeridian {F : Type} [TopologicalSpace F]
-    (φ : F ≃ₜ F) (x : F) (δ : Path (φ x) x) :
-    FundamentalGroup (CircleMappingTorus φ) (circleMappingTorusBase φ x) :=
-  FundamentalGroup.fromPath
-    (Path.Homotopic.Quotient.mk
-      ((circleMappingTorusEdgePath φ x).trans
-        (δ.map (finiteBouquetMappingTorusFiberInclusion (fun _ : Unit ↦ φ)).continuous)))
 
-/-- The universal fundamental-group presentation of a mapping torus.
-
-The distinguished element is the positively oriented base-circle meridian, closed using `δ`.
-The universal property records both generation and the absence of additional relations. -/
-public structure MappingTorusFundamentalGroupUP {F : Type} [TopologicalSpace F]
-    (φ : F ≃ₜ F) (x : F) (δ : Path (φ x) x) where
-  conjugate : ∀ a,
-    circleMappingTorusMeridian φ x δ * circleMappingTorusFiberHom φ x a *
-        (circleMappingTorusMeridian φ x δ)⁻¹ =
-      circleMappingTorusFiberHom φ x (mappingTorusMonodromyHom φ x δ a)
-  lift : ∀ {H : Type} [Group H]
-    (f : FundamentalGroup F x →* H) (t : H),
-    (∀ a, t * f a * t⁻¹ = f (mappingTorusMonodromyHom φ x δ a)) →
-      FundamentalGroup (CircleMappingTorus φ) (circleMappingTorusBase φ x) →* H
-  lift_fiber : ∀ {H : Type} [Group H]
-    (f : FundamentalGroup F x →* H) (t : H)
-    (h : ∀ a, t * f a * t⁻¹ = f (mappingTorusMonodromyHom φ x δ a)) (a),
-      lift f t h (circleMappingTorusFiberHom φ x a) = f a
-  lift_meridian : ∀ {H : Type} [Group H]
-    (f : FundamentalGroup F x →* H) (t : H)
-    (h : ∀ a, t * f a * t⁻¹ = f (mappingTorusMonodromyHom φ x δ a)),
-      lift f t h (circleMappingTorusMeridian φ x δ) = t
-  hom_ext : ∀ {H : Type} [Group H]
-    (f g : FundamentalGroup (CircleMappingTorus φ) (circleMappingTorusBase φ x) →* H),
-    (∀ a, f (circleMappingTorusFiberHom φ x a) =
-      g (circleMappingTorusFiberHom φ x a)) →
-    f (circleMappingTorusMeridian φ x δ) =
-      g (circleMappingTorusMeridian φ x δ) → f = g
 
 /-! ## Affine torus-family quotient covers -/
 
@@ -195,126 +130,9 @@ public theorem QuotientCoverMapData.fundamentalGroupEquiv_natural_of_lift_eq
   subst e'
   exact QuotientCoverMapData.fundamentalGroupEquiv_natural hp hq D e γ
 
-/-- A bijective equivariant deck comparison gives the corresponding equivalence of the two
-based fundamental groups. -/
-public noncomputable def quotientCoverFundamentalGroupEquiv
-    {E E' X X' G H : Type*}
-    [TopologicalSpace E] [TopologicalSpace E'] [TopologicalSpace X] [TopologicalSpace X']
-    [Group G] [Group H] [MulAction G E] [MulAction H E']
-    [SimplyConnectedSpace E] [SimplyConnectedSpace E']
-    {p : C(E, X)} {q : C(E', X')}
-    (hp : IsQuotientCoveringMap p G) (hq : IsQuotientCoveringMap q H)
-    (D : QuotientCoverMapData (G := G) (H := H) p q)
-    (hdeck : Function.Bijective D.deckMap) (e : E) :
-    FundamentalGroup X (p e) ≃* FundamentalGroup X' (q (D.lift e)) :=
-  (hp.fundamentalGroupEquiv ⟨e, rfl⟩).trans <|
-    (MulEquiv.op (MulEquiv.ofBijective D.deckMap hdeck)).trans <|
-      (hq.fundamentalGroupEquiv ⟨D.lift e, rfl⟩).symm
 
-/-- The fundamental-group equivalence obtained from a bijective equivariant cover comparison is
-exactly the map induced by the comparison on the quotient bases. -/
-public theorem quotientCoverFundamentalGroupEquiv_apply
-    {E E' X X' G H : Type*}
-    [TopologicalSpace E] [TopologicalSpace E'] [TopologicalSpace X] [TopologicalSpace X']
-    [Group G] [Group H] [MulAction G E] [MulAction H E']
-    [SimplyConnectedSpace E] [SimplyConnectedSpace E']
-    {p : C(E, X)} {q : C(E', X')}
-    (hp : IsQuotientCoveringMap p G) (hq : IsQuotientCoveringMap q H)
-    (D : QuotientCoverMapData (G := G) (H := H) p q)
-    (hdeck : Function.Bijective D.deckMap) (e : E)
-    (γ : FundamentalGroup X (p e)) :
-    quotientCoverFundamentalGroupEquiv hp hq D hdeck e γ =
-      FundamentalGroup.mapOfEq D.baseMap (D.commutes e) γ := by
-  have h := congrArg (hq.fundamentalGroupEquiv ⟨D.lift e, rfl⟩).symm
-    (QuotientCoverMapData.fundamentalGroupEquiv_natural hp hq D e γ)
-  simpa [quotientCoverFundamentalGroupEquiv] using h
 
-/-- A based map between the quotient bases of two simply connected regular covers has a
-canonical equivariant lift.  The deck homomorphism is obtained from the induced map on
-fundamental groups, so no independent generator-identification hypothesis is needed. -/
-public noncomputable def quotientCoverMapDataOfBaseMap
-    {E E' X X' G H : Type*}
-    [TopologicalSpace E] [TopologicalSpace E'] [TopologicalSpace X] [TopologicalSpace X']
-    [Group G] [Group H] [MulAction G E] [MulAction H E']
-    [SimplyConnectedSpace E] [SimplyConnectedSpace E']
-    [LocallyPathConnectedSpace E]
-    {p : C(E, X)} {q : C(E', X')}
-    (hp : IsQuotientCoveringMap p G) (hq : IsQuotientCoveringMap q H)
-    (baseMap : C(X, X')) (e : E) (e' : E')
-    (he : q e' = baseMap (p e)) : QuotientCoverMapData (G := G) (H := H) p q := by
-  let liftExists := hq.isCoveringMap.existsUnique_continuousMap_lifts
-    (baseMap.comp p) e e' he
-  let lift : C(E, E') := liftExists.choose
-  have lift_base : lift e = e' := liftExists.choose_spec.1.1
-  have lift_projects : q ∘ lift = baseMap.comp p := liftExists.choose_spec.1.2
-  have commutes : ∀ z, baseMap (p z) = q (lift z) := by
-    intro z
-    exact congrFun lift_projects z |>.symm
-  let deckMap : G →* H := MonoidHom.unop
-    ((hq.fundamentalGroupEquiv ⟨lift e, rfl⟩).toMonoidHom.comp
-      ((FundamentalGroup.mapOfEq baseMap (commutes e)).comp
-        (hp.fundamentalGroupEquiv ⟨e, rfl⟩).symm.toMonoidHom))
-  refine
-    { deckMap := deckMap
-      lift := lift
-      baseMap := baseMap
-      commutes := commutes
-      equivariant := ?_ }
-  intro g z
-  have hbase : lift (g • e) = deckMap g • lift e := by
-    let γ : FundamentalGroup X (p e) :=
-      (hp.fundamentalGroupEquiv ⟨e, rfl⟩).symm (MulOpposite.op g)
-    let δ : FundamentalGroup X' (q (lift e)) :=
-      FundamentalGroup.mapOfEq baseMap (commutes e) γ
-    have hsource : g • e = (hp.isCoveringMap.monodromy γ ⟨e, rfl⟩ : E) := by
-      have hγ : hp.fundamentalGroupEquiv ⟨e, rfl⟩ γ = MulOpposite.op g := by
-        exact (hp.fundamentalGroupEquiv ⟨e, rfl⟩).apply_symm_apply _
-      rw [show g = (hp.fundamentalGroupEquiv ⟨e, rfl⟩ γ).unop by
-        rw [hγ]
-        rfl]
-      exact hp.unop_fundamentalGroupToMulOpposite_smul
-    have htarget :
-        deckMap g • lift e =
-          (hq.isCoveringMap.monodromy δ ⟨lift e, rfl⟩ : E') := by
-      change (hq.fundamentalGroupEquiv ⟨lift e, rfl⟩ δ).unop • lift e = _
-      exact hq.unop_fundamentalGroupToMulOpposite_smul
-    calc
-      lift (g • e) =
-          lift (hp.isCoveringMap.monodromy γ ⟨e, rfl⟩ : E) :=
-        congrArg lift hsource
-      _ = (hq.isCoveringMap.monodromy δ ⟨lift e, rfl⟩ : E') :=
-        (monodromy_naturality hp.isCoveringMap hq.isCoveringMap lift baseMap commutes
-          e γ).symm
-      _ = deckMap g • lift e := htarget.symm
-  have hcomp :
-      q ∘ (fun w ↦ lift (g • w)) =
-        q ∘ (fun w ↦ deckMap g • lift w) := by
-    funext w
-    rw [Function.comp_apply, Function.comp_apply, ← commutes, hq.map_smul,
-      ← commutes, hp.map_smul]
-  have hlifts := hq.isCoveringMap.eq_of_comp_eq
-    (lift.continuous.comp (hp.continuous_const_smul g))
-    ((hq.continuous_const_smul (deckMap g)).comp lift.continuous)
-    hcomp e hbase
-  exact congrFun hlifts z
 
-/-- The canonical lift constructed from a based quotient map takes the selected source point to
-the selected target point. -/
-@[simp]
-public theorem quotientCoverMapDataOfBaseMap_lift_base
-    {E E' X X' G H : Type*}
-    [TopologicalSpace E] [TopologicalSpace E'] [TopologicalSpace X] [TopologicalSpace X']
-    [Group G] [Group H] [MulAction G E] [MulAction H E']
-    [SimplyConnectedSpace E] [SimplyConnectedSpace E']
-    [LocallyPathConnectedSpace E]
-    {p : C(E, X)} {q : C(E', X')}
-    (hp : IsQuotientCoveringMap p G) (hq : IsQuotientCoveringMap q H)
-    (baseMap : C(X, X')) (e : E) (e' : E')
-    (he : q e' = baseMap (p e)) :
-    (quotientCoverMapDataOfBaseMap hp hq baseMap e e' he).lift e = e' := by
-  exact Classical.choose_spec
-    (hq.isCoveringMap.existsUnique_continuousMap_lifts
-      (baseMap.comp p) e e' he) |>.1.1
 
 /-! ## Algebraic output of an affine torus core -/
 
@@ -348,48 +166,6 @@ public structure AffineTorusStarFillingRelations
   cusp : C.rhoOne * C.rhoTwo = Additive.toMul (C.translation cuspTwist)
   toric_vanishes : ∀ a ∈ toricSubgroup, Additive.toMul (C.translation a) = 1
 
-/-- A simply connected affine deck cover of a torus family.
-
-The deck group is an extension of `Γ` by the translation lattice `Λ`. The chosen lifts and
-cocycle retain the exact monodromy and twist information needed for finite-order relations. -/
-public structure AffineTorusFamilyQuotientCover
-    (Λ Γ Deck E X : Type*)
-    [AddCommGroup Λ] [Group Γ] [Group Deck]
-    [TopologicalSpace E] [TopologicalSpace X] [MulAction Deck E] where
-  projection : C(E, X)
-  quotientCovering : IsQuotientCoveringMap projection Deck
-  simplyConnected : SimplyConnectedSpace E
-  translation : Λ →+ Additive Deck
-  translation_injective : Function.Injective translation
-  baseProjection : Deck →* Γ
-  baseProjection_surjective : Function.Surjective baseProjection
-  baseProjection_ker : ∀ d,
-    baseProjection d = 1 ↔ ∃ a, Additive.toMul (translation a) = d
-  lift : Γ → Deck
-  lift_projects : ∀ g, baseProjection (lift g) = g
-  monodromy : Γ →* Multiplicative (AddAut Λ)
-  conjugate : ∀ g a,
-    lift g * Additive.toMul (translation a) * (lift g)⁻¹ =
-      Additive.toMul (translation ((monodromy g).toAdd a))
-  cocycle : Γ → Γ → Λ
-  lift_mul : ∀ g h,
-    lift g * lift h =
-      Additive.toMul (translation (cocycle g h)) * lift (g * h)
-
-namespace AffineTorusFamilyQuotientCover
-
-variable {Λ Γ Deck E X : Type*}
-variable [AddCommGroup Λ] [Group Γ] [Group Deck]
-variable [TopologicalSpace E] [TopologicalSpace X] [MulAction Deck E]
-
-/-- The deck-group description of the fundamental group of an affine torus-family quotient. -/
-public def fundamentalGroupEquiv
-    (D : AffineTorusFamilyQuotientCover Λ Γ Deck E X) (e : E) :
-    FundamentalGroup X (D.projection e) ≃* Deckᵐᵒᵖ := by
-  let _ : SimplyConnectedSpace E := D.simplyConnected
-  exact D.quotientCovering.fundamentalGroupEquiv ⟨e, rfl⟩
-
-end AffineTorusFamilyQuotientCover
 
 /-! ## Filling maps from quotient-cover squares -/
 
@@ -816,19 +592,6 @@ public noncomputable def toPiOneData : CyclicAffineFillingPiOneData D := by
       Set.image_singleton, ofDeck_mul, ofDeck_inv, ofDeck_pow]
     exact normalClosure_singleton_mul_comm _ _
 
-/-- In the boundary fundamental group, conjugation by the inverse meridian realizes the stored
-affine monodromy.  The inverse appears because the covering-space identification takes values in
-the opposite deck group. -/
-public theorem meridian_inv_conjugates_translation (a : Λ) :
-    D.toPiOneData.meridian⁻¹ * Additive.toMul (D.toPiOneData.translation a) *
-        D.toPiOneData.meridian =
-      Additive.toMul (D.toPiOneData.translation (D.monodromy.toAdd a)) := by
-  let _ : SimplyConnectedSpace E := D.boundarySimplyConnected
-  apply D.boundaryFundamentalGroupEquiv.injective
-  rw [map_mul, map_mul, map_inv, D.toPiOneData.meridian_deck,
-    D.toPiOneData.translation_deck, D.toPiOneData.translation_deck]
-  simpa only [MulOpposite.op_inv, MulOpposite.op_mul, mul_assoc] using
-    congrArg MulOpposite.op (D.deck_conjugate a)
 
 end CyclicAffineFillingCoverModel
 

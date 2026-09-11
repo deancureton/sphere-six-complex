@@ -268,29 +268,9 @@ public theorem cuspRawFive_pulled_back_boundary_zero {A : PaperAnalyticData}
   rw [h]
   exact cuspFourthSweep_pulled_back_boundary R _
 
-public theorem cuspIndexFiveBoundaryCoefficient_zero {A : PaperAnalyticData}
-    (R : A.AffineRadialCompletionInput) :
-    actualCuspIndexFiveBoundaryCoefficient R = 0 := by
-  rw [actualCuspIndexFiveBoundaryCoefficient, cuspRawFive_pulled_back_boundary_zero, map_zero]
-
-public theorem cuspIndexFiveBoundaryCoefficient_not_unit {A : PaperAnalyticData}
-    (R : A.AffineRadialCompletionInput) :
-    ¬ actualCuspIndexFiveBoundaryCoefficient R * actualCuspIndexFiveBoundaryCoefficient R = 1 := by
-  rw [cuspIndexFiveBoundaryCoefficient_zero]
-  norm_num
 
 
-public theorem not_cuspPulledBackMarkedInvariantBasisData {A : PaperAnalyticData}
-    (R : A.AffineRadialCompletionInput) :
-    ¬ ((R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
-        (R.twoDiscCover.cuspPulledBackBoundaryHom
-          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) = 0 ∧
-      (R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
-        (R.twoDiscCover.cuspPulledBackBoundaryHom
-          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) = 1) := by
-  intro h
-  exact cuspIndexFiveBoundaryCoefficient_not_unit R
-    (actualCuspIndexFiveBoundaryCoefficient_sq_eq_one_of_invariantBasisData R h)
+
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 end

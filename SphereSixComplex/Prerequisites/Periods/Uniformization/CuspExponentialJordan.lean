@@ -534,20 +534,6 @@ theorem sourceOpenChamber_eq_heightEpigraph :
     have hi : 0 < z.im := lt_of_le_of_lt hs0 hh
     exact ⟨hl, hr, hi, (source_normSq_iff_height hl hr hi).mpr hh⟩
 
-theorem targetOpenChamber_eq_heightEpigraph :
-    targetOpenChamber =
-      {z : ℂ | 0 < z.re ∧ z.re < 1 / 2 ∧ semicircleHeight z.re < z.im} := by
-  ext z
-  simp only [targetOpenChamber, mem_setOf_eq]
-  constructor
-  · rintro ⟨hl, hr, hi, hn⟩
-    exact ⟨hl, hr, (target_normSq_iff_height hl hr hi).mp hn⟩
-  · rintro ⟨hl, hr, hh⟩
-    have hs0 : 0 ≤ semicircleHeight z.re := by
-      unfold semicircleHeight
-      positivity
-    have hi : 0 < z.im := lt_of_le_of_lt hs0 hh
-    exact ⟨hl, hr, hi, (target_normSq_iff_height hl hr hi).mpr hh⟩
 
 private theorem re_add_im_mul_I (z : ℂ) :
     (z.re : ℂ) + (z.im : ℂ) * Complex.I = z := by
@@ -596,56 +582,8 @@ theorem sourceBoundedChamber_eq_cuspPolar_image :
     · simpa [y] using (cuspPolar_eq_cuspExponential _
         (ne_of_gt (by positivity : 0 < 1 + Real.sqrt 2)) _ x ht0).symm
 
-theorem targetBoundedChamber_eq_cuspPolar_image :
-    targetBoundedChamber =
-      cuspPolar 1 semicircleHeight '' openCuspRectangle 0 (1 / 2) := by
-  rw [targetBoundedChamber]
-  ext q
-  constructor
-  · rintro ⟨z, hz, rfl⟩
-    rw [targetOpenChamber_eq_heightEpigraph] at hz
-    let t : ℝ := Real.exp (-2 * Real.pi * (z.im - semicircleHeight z.re))
-    refine ⟨(z.re, t), ?_, ?_⟩
-    · refine ⟨⟨hz.1, hz.2.1⟩, Real.exp_pos _, ?_⟩
-      apply Real.exp_lt_one_iff.mpr
-      have hd : 0 < z.im - semicircleHeight z.re := sub_pos.mpr hz.2.2
-      have hpi : 0 < Real.pi := Real.pi_pos
-      nlinarith
-    · simpa [t, re_add_im_mul_I z] using
-        (cuspExponential_eq_cuspPolar 1 one_ne_zero semicircleHeight z.re z.im).symm
-  · rintro ⟨p, hp, rfl⟩
-    rcases p with ⟨x, t⟩
-    change (x ∈ Ioo 0 (1 / 2)) ∧ t ∈ Ioo 0 1 at hp
-    rcases hp with ⟨⟨hl, hr⟩, ht0, ht1⟩
-    let y : ℝ := semicircleHeight x - Real.log t / (2 * Real.pi)
-    refine ⟨(x : ℂ) + (y : ℂ) * Complex.I, ?_, ?_⟩
-    · rw [targetOpenChamber_eq_heightEpigraph]
-      simp only [mem_ofPred_eq, Complex.add_re, ofReal_re, Complex.mul_re, Complex.mul_im, ofReal_im,
-        I_re, I_im, mul_zero, zero_mul, sub_zero, add_zero, Complex.add_im, mul_one, zero_add]
-      refine ⟨hl, hr, ?_⟩
-      dsimp [y]
-      have hlog : Real.log t < 0 := Real.log_neg ht0 ht1
-      have hpi : 0 < 2 * Real.pi := mul_pos (by norm_num) Real.pi_pos
-      have : Real.log t / (2 * Real.pi) < 0 := div_neg_of_neg_of_pos hlog hpi
-      linarith
-    · simpa [y] using (cuspPolar_eq_cuspExponential 1 one_ne_zero
-        semicircleHeight x ht0).symm
 
-theorem closure_sourceBoundedChamber :
-    closure sourceBoundedChamber =
-      cuspPolar (1 + Real.sqrt 2) semicircleHeight ''
-        closedCuspRectangle (-Real.sqrt 2 / 2) (1 / 2) := by
-  rw [sourceBoundedChamber_eq_cuspPolar_image]
-  apply closure_cuspPolar_image
-  · have hs : 0 < Real.sqrt 2 := Real.sqrt_pos.2 (by norm_num)
-    nlinarith
-  · exact continuous_semicircleHeight
 
-theorem closure_targetBoundedChamber :
-    closure targetBoundedChamber =
-      cuspPolar 1 semicircleHeight '' closedCuspRectangle 0 (1 / 2) := by
-  rw [targetBoundedChamber_eq_cuspPolar_image]
-  exact closure_cuspPolar_image (by norm_num) continuous_semicircleHeight
 
 theorem frontier_sourceBoundedChamber_eq_cuspPolar_boundary :
     frontier sourceBoundedChamber =
@@ -661,14 +599,6 @@ theorem frontier_sourceBoundedChamber_eq_cuspPolar_boundary :
     exact sourceBoundedChamber_isOpen
   · exact source_cuspExponential_injOn_closedStrip
 
-theorem frontier_targetBoundedChamber_eq_cuspPolar_boundary :
-    frontier targetBoundedChamber =
-      cuspPolar 1 semicircleHeight '' cuspRectangleBoundary 0 (1 / 2) := by
-  rw [targetBoundedChamber_eq_cuspPolar_image]
-  apply frontier_cuspPolar_image one_ne_zero (by norm_num) continuous_semicircleHeight
-  · rw [← targetBoundedChamber_eq_cuspPolar_image]
-    exact targetBoundedChamber_isOpen
-  · exact target_cuspExponential_injOn_closedStrip
 
 theorem sourceBoundedChamber_frontier_isJordanCurve :
     TauCeti.IsJordanCurve (frontier sourceBoundedChamber) := by
@@ -680,11 +610,6 @@ theorem sourceBoundedChamber_frontier_isJordanCurve :
     nlinarith
   · exact source_cuspExponential_injOn_closedStrip
 
-theorem targetBoundedChamber_frontier_isJordanCurve :
-    TauCeti.IsJordanCurve (frontier targetBoundedChamber) := by
-  rw [frontier_targetBoundedChamber_eq_cuspPolar_boundary]
-  exact isJordanCurve_cuspPolar_boundary one_ne_zero semicircleHeight
-    continuous_semicircleHeight (by norm_num) target_cuspExponential_injOn_closedStrip
 
 theorem sourceOpenChamber_inter_cuspExponential_preimage_ball {epsilon : ℝ}
     (hepsilon : 0 < epsilon) :
@@ -706,23 +631,6 @@ theorem sourceOpenChamber_inter_cuspExponential_preimage_ball {epsilon : ℝ}
   rw [hball, max_lt_iff]
   tauto
 
-theorem targetOpenChamber_inter_cuspExponential_preimage_ball {epsilon : ℝ}
-    (hepsilon : 0 < epsilon) :
-    targetOpenChamber ∩ cuspExponential 1 ⁻¹' Metric.ball 0 epsilon =
-      openStripEpigraph 0 (1 / 2)
-        (fun x => max (semicircleHeight x) (cuspBallHeight 1 epsilon)) := by
-  ext z
-  rw [targetOpenChamber_eq_heightEpigraph]
-  change ((0 < z.re ∧ z.re < 1 / 2 ∧ semicircleHeight z.re < z.im) ∧
-      cuspExponential 1 z ∈ Metric.ball 0 epsilon) ↔
-    0 < z.re ∧ z.re < 1 / 2 ∧
-      max (semicircleHeight z.re) (cuspBallHeight 1 epsilon) < z.im
-  have hball : cuspExponential 1 z ∈ Metric.ball 0 epsilon ↔
-      cuspBallHeight 1 epsilon < z.im := by
-    rw [Metric.mem_ball, dist_zero_right]
-    exact norm_cuspExponential_lt_iff_height one_pos hepsilon z
-  rw [hball, max_lt_iff]
-  tauto
 
 theorem sourceBoundedChamber_inter_ball_isPreconnected {epsilon : ℝ}
     (hepsilon : 0 < epsilon) :
@@ -734,15 +642,6 @@ theorem sourceBoundedChamber_inter_ball_isPreconnected {epsilon : ℝ}
     exact continuous_semicircleHeight.max continuous_const
   · exact (cuspExponential_continuous _).continuousOn
 
-theorem targetBoundedChamber_inter_ball_isPreconnected {epsilon : ℝ}
-    (hepsilon : 0 < epsilon) :
-    IsPreconnected (targetBoundedChamber ∩ Metric.ball 0 epsilon) := by
-  rw [targetBoundedChamber, ← image_inter_preimage]
-  apply IsPreconnected.image (f := cuspExponential 1)
-  · rw [targetOpenChamber_inter_cuspExponential_preimage_ball hepsilon]
-    apply openStripEpigraph_isPreconnected
-    exact continuous_semicircleHeight.max continuous_const
-  · exact (cuspExponential_continuous _).continuousOn
 
 theorem sourceBoundedChamber_isPreconnectedApproachAt_zero :
     ∀ s ∈ 𝓝 (0 : ℂ), ∃ t ∈ 𝓝 (0 : ℂ),
@@ -752,13 +651,6 @@ theorem sourceBoundedChamber_isPreconnectedApproachAt_zero :
   exact ⟨Metric.ball 0 epsilon, Metric.ball_mem_nhds 0 hepsilon, hepsilons,
     sourceBoundedChamber_inter_ball_isPreconnected hepsilon⟩
 
-theorem targetBoundedChamber_isPreconnectedApproachAt_zero :
-    ∀ s ∈ 𝓝 (0 : ℂ), ∃ t ∈ 𝓝 (0 : ℂ),
-      t ⊆ s ∧ IsPreconnected (targetBoundedChamber ∩ t) := by
-  intro s hs
-  obtain ⟨epsilon, hepsilon, hepsilons⟩ := Metric.mem_nhds_iff.mp hs
-  exact ⟨Metric.ball 0 epsilon, Metric.ball_mem_nhds 0 hepsilon, hepsilons,
-    targetBoundedChamber_inter_ball_isPreconnected hepsilon⟩
 
 
 end SphereSixComplex.Periods.SourceChamberTopology

@@ -1,9 +1,7 @@
 module
 
-public import
-  SphereSixComplex.Paper.Topology.PaperSectionSevenCuspActualCoordinateScalarsFromExistingGeometry
-public import
-  SphereSixComplex.Paper.Topology.PaperSectionSevenCanonicalCuspFiberRadialHomotopyCompletion
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspActualCoordinateScalarsFromExistingGeometry
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenCanonicalCuspFiberRadialHomotopyCompletion
 
 /-!
 # The remaining positive cusp-meridian coordinate

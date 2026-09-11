@@ -74,24 +74,6 @@ public def cwCharacteristicSuspensionIso (n : ℕ) :
         (homologyFunctor AddCommGrpCat (ComplexShape.down ℕ) (n + 2)).mapIso
           (cwCharacteristicCylinderRelativeIso (n + 1))
 
-public theorem cwCharacteristicSuspensionIso_projection (n : ℕ) :
-    (cwRelativeIntegralSingularChainComplex (cwCharacteristicBoundaryInclusion (n + 1))).homologyπ
-        (n + 1) ≫ (cwCharacteristicSuspensionIso n).hom =
-      cyclesMap (cwNestedBoundaryRelativeIso (n + 1)).hom (n + 1) ≫
-        cwCharacteristicBallPrismClass n := by
-  dsimp only [cwCharacteristicSuspensionIso, Iso.trans_hom, Functor.mapIso_hom,
-    cwCharacteristicBallPrismClass]
-  change _ ≫ homologyMap _ _ ≫ (cylinderTopPrismHomologyIso _ _).hom ≫ homologyMap _ _ = _
-  erw [← Category.assoc, ← Category.assoc,
-    homologyπ_naturality (cwNestedBoundaryRelativeIso (n + 1)).hom (n + 1),
-    Category.assoc, Category.assoc]
-  have h := cylinderTopPrismHomologyIso_projection (cwBallBoundarySet (n + 1)) n
-  have hh := congrArg
-    (fun f => cyclesMap (cwNestedBoundaryRelativeIso (n + 1)).hom (n + 1) ≫ f ≫
-      homologyMap (cwCharacteristicCylinderRelativeIso (n + 1)).hom (n + 2)) h
-  change _ = _ at hh
-  erw [Category.assoc] at hh
-  exact hh
 
 public theorem intAddEquiv_apply_one_eq_one_or_neg_one (e : ℤ ≃+ ℤ) :
     e 1 = 1 ∨ e 1 = -1 := by
@@ -101,22 +83,5 @@ public theorem intAddEquiv_apply_one_eq_one_or_neg_one (e : ℤ ≃+ ℤ) :
     rw [mul_comm, ← he, e.apply_symm_apply]
   exact Int.eq_one_or_neg_one_of_mul_eq_one h
 
-public theorem cwIntervalSuspension_eq_square_or_neg_square
-    (T : CellularHomology.IntegralComparison) :
-    (cwCharacteristicSuspensionIso 0).hom (cwOrientedIntervalClass.hom 1) =
-        normalizedSquareDiskOrientation.symm 1 ∨
-      (cwCharacteristicSuspensionIso 0).hom (cwOrientedIntervalClass.hom 1) =
-        -(normalizedSquareDiskOrientation.symm 1) := by
-  let e : ℤ ≃+ ℤ := (normalizedIntervalDiskOrientation T).symm.trans
-    ((cwCharacteristicSuspensionIso 0).addCommGroupIsoToAddEquiv.trans normalizedSquareDiskOrientation)
-  have h := intAddEquiv_apply_one_eq_one_or_neg_one e
-  change normalizedSquareDiskOrientation
-      ((cwCharacteristicSuspensionIso 0).hom ((normalizedIntervalDiskOrientation T).symm 1)) = 1 ∨
-    normalizedSquareDiskOrientation
-      ((cwCharacteristicSuspensionIso 0).hom ((normalizedIntervalDiskOrientation T).symm 1)) = -1 at h
-  rw [normalizedIntervalDiskOrientation_symm_one] at h
-  rcases h with h | h
-  · exact Or.inl (normalizedSquareDiskOrientation.injective (by simpa using h))
-  · exact Or.inr (normalizedSquareDiskOrientation.injective (by simpa using h))
 
 end SphereSixComplex

@@ -192,11 +192,6 @@ unexcised family. -/
   (regularFamilyInclusion_isOpenEmbedding F hproper).toIsEmbedding.toHomeomorph.trans
     (Homeomorph.setCongr (regularFamilyInclusion_range F))
 
-@[simp]
-public theorem regularFamilyPartHomeomorph_apply
-    (hproper : SourceActionProperlyDiscontinuous (U := U)) (q : RegularTotalSpace F) :
-    (regularFamilyPartHomeomorph F hproper q).1 = regularFamilyInclusion F q :=
-  rfl
 
 public theorem regularFamilyInclusion_regularFamilyDeckMap
     (g : Delta) (q : RegularTotalSpace F) :
@@ -982,39 +977,7 @@ public theorem orderFourAffineCollarToPuncturedGlobalFamily_isOpenEmbedding_actu
   exact orderFourAffineCollarToPuncturedGlobalFamily_isOpenEmbedding
     F hprojection hproper hsource D hcontinuous
 
-public theorem exists_orderThreeAffineCollarOpenEmbedding
-    [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
-      (projection (parameterMap F)))
-    (hproper : SourceActionProperlyDiscontinuous (U := U))
-    (hsource : U.sourceAction = fuchsianSourceAction) :
-    ∃ r : ℝ, 0 < r ∧ r < 1 ∧
-      ∃ D : OrderThreeLinearCollarSourceData (U := U) r,
-        IsOpenEmbedding
-          (orderThreeAffineCollarToPuncturedGlobalFamily
-            F hprojection hproper hsource D) := by
-  obtain ⟨r, hr, hr1, D⟩ := exists_orderThreeLinearCollarSourceData
-    (U := U) hsource hproper
-  exact ⟨r, hr, hr1, D,
-    orderThreeAffineCollarToPuncturedGlobalFamily_isOpenEmbedding_actual
-      F hprojection hproper hsource D⟩
 
-public theorem exists_orderFourAffineCollarOpenEmbedding
-    [ChartedSpace (ModelProd ℂ ComplexTwoSpace) (TotalSpace (parameterMap F))]
-    (hprojection : IsLocalDiffeomorph globalDeckTotalModel globalDeckTotalModel n
-      (projection (parameterMap F)))
-    (hproper : SourceActionProperlyDiscontinuous (U := U))
-    (hsource : U.sourceAction = fuchsianSourceAction) :
-    ∃ r : ℝ, 0 < r ∧ r < 1 ∧
-      ∃ D : OrderFourLinearCollarSourceData (U := U) r,
-        IsOpenEmbedding
-          (orderFourAffineCollarToPuncturedGlobalFamily
-            F hprojection hproper hsource D) := by
-  obtain ⟨r, hr, hr1, D⟩ := exists_orderFourLinearCollarSourceData
-    (U := U) hsource hproper
-  exact ⟨r, hr, hr1, D,
-    orderFourAffineCollarToPuncturedGlobalFamily_isOpenEmbedding_actual
-      F hprojection hproper hsource D⟩
 
 end
 

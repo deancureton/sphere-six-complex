@@ -141,17 +141,7 @@ theorem AnalyticAt.deriv_ne_zero_of_exists_open_injOn
     simpa [g] using hg_eq
   exact hab_ne (hU_inj haU hbU hf_eq)
 
-/-- A complex-analytic, locally injective function has nonzero derivative. -/
-theorem AnalyticAt.deriv_ne_zero_of_isLocallyInjective
-    {f : ℂ → ℂ} {z : ℂ} (hf : AnalyticAt ℂ f z)
-    (hinj : IsLocallyInjective f) : deriv f z ≠ 0 :=
-  AnalyticAt.deriv_ne_zero_of_exists_open_injOn hf (hinj z)
 
-/-- A complex-analytic local homeomorphism has nonzero derivative. -/
-theorem AnalyticAt.deriv_ne_zero_of_isLocalHomeomorph
-    {f : ℂ → ℂ} {z : ℂ} (hf : AnalyticAt ℂ f z)
-    (hhomeo : IsLocalHomeomorph f) : deriv f z ≠ 0 :=
-  AnalyticAt.deriv_ne_zero_of_isLocallyInjective hf hhomeo.isLocallyInjective
 
 end AnalyticLocalHomeo
 
@@ -619,157 +609,9 @@ lemma ambientNormalizedTauDeriv_ne_zero_of_regular
     (ambientNormalizedTau_analyticAt E z)
     (ambientNormalizedTau_exists_open_injOn_of_regular E z hz0 hz1)
 
-/-- The modular lift is unramified at the order-three source point: both the source and target
-quotient coordinates have exact order three there. -/
-lemma ambientNormalizedTau_sub_analyticOrderAt_one
-    (E : NormalizedFuchsianModularParameter) :
-    analyticOrderAt
-      (fun w : ℂ ↦ ambientNormalizedTau E w -
-        ambientNormalizedTau E fuchsianOneFixedPoint)
-      fuchsianOneFixedPoint = (1 : ℕ∞) := by
-  obtain ⟨J⟩ := ExactNormalizedModularJUniformization.nonempty
-  let Cdiff : ℂ → ℂ := fun w ↦
-    E.sourceCoordinate.coordinate (UpperHalfPlane.ofComplex w)
-  let Jdiff : ℂ → ℂ := fun w ↦
-    normalizedModularJCoordinate (UpperHalfPlane.ofComplex w)
-  let t : ℂ → ℂ := ambientNormalizedTau E
-  have ht : AnalyticAt ℂ t fuchsianOneFixedPoint := by
-    simpa only [t] using ambientNormalizedTau_analyticAt E fuchsianOneFixedPoint
-  have ht_one : t fuchsianOneFixedPoint = (ellipticThreeParameter : ℂ) := by
-    simp only [t, ambientNormalizedTau, UpperHalfPlane.ofComplex_apply]
-    exact congrArg ((↑) : UpperHalfPlane → ℂ) E.tau_at_one
-  have hCorder : analyticOrderAt Cdiff fuchsianOneFixedPoint = (3 : ℕ∞) := by
-    simpa only [Cdiff, sub_zero, Nat.cast_ofNat] using
-      E.sourceCoordinate.branch_one.analyticOrderAt
-        E.sourceCoordinate.coordinate_holomorphic
-  have hJorder : analyticOrderAt Jdiff ellipticThreeParameter = (3 : ℕ∞) := by
-    simpa only [Jdiff, sub_zero, Nat.cast_ofNat] using
-      J.branch_three.analyticOrderAt normalizedModularJCoordinate_holomorphic
-  have hJanalytic : AnalyticAt ℂ Jdiff ellipticThreeParameter := by
-    exact MDifferentiable.analyticAt_comp_ofComplex
-      normalizedModularJCoordinate_holomorphic ellipticThreeParameter
-  have heq : Cdiff = Jdiff ∘ t := by
-    funext w
-    dsimp only [Cdiff, Jdiff, t, ambientNormalizedTau, Function.comp_apply]
-    rw [UpperHalfPlane.ofComplex_apply]
-    change E.sourceCoordinate.coordinate (UpperHalfPlane.ofComplex w) =
-      normalizedJ (E.modularParameter.tau (UpperHalfPlane.ofComplex w)) / 1728
-    rw [← E.induced_coordinate]
-    rfl
-  have hJanalytic_t : AnalyticAt ℂ Jdiff (t fuchsianOneFixedPoint) := by
-    rw [ht_one]
-    exact hJanalytic
-  have hcomp := hJanalytic_t.analyticOrderAt_comp ht
-  have hmul : (3 : ℕ∞) =
-      (3 : ℕ∞) * analyticOrderAt (fun w ↦ t w - t fuchsianOneFixedPoint)
-        fuchsianOneFixedPoint := by
-    calc
-      (3 : ℕ∞) = analyticOrderAt Cdiff fuchsianOneFixedPoint := hCorder.symm
-      _ = analyticOrderAt (Jdiff ∘ t) fuchsianOneFixedPoint := by rw [heq]
-      _ = analyticOrderAt Jdiff (t fuchsianOneFixedPoint) *
-          analyticOrderAt (fun w ↦ t w - t fuchsianOneFixedPoint)
-            fuchsianOneFixedPoint := hcomp
-      _ = (3 : ℕ∞) * analyticOrderAt (fun w ↦ t w - t fuchsianOneFixedPoint)
-            fuchsianOneFixedPoint := by rw [ht_one, hJorder]
-  have horder : analyticOrderAt (fun w ↦ t w - t fuchsianOneFixedPoint)
-      fuchsianOneFixedPoint = (1 : ℕ∞) := by
-    apply (ENat.mul_right_strictMono (a := (3 : ℕ∞)) (by norm_num) (by simp)).injective
-    calc
-      (3 : ℕ∞) * analyticOrderAt (fun w ↦ t w - t fuchsianOneFixedPoint)
-          fuchsianOneFixedPoint = (3 : ℕ∞) := hmul.symm
-      _ = (3 : ℕ∞) * (1 : ℕ∞) := by norm_num
-  simpa only [t] using horder
 
-/-- In particular the derivative of the modular lift is nonzero at the order-three point. -/
-lemma ambientNormalizedTauDeriv_ne_zero_at_one
-    (E : NormalizedFuchsianModularParameter) :
-    ambientNormalizedTauDeriv E fuchsianOneFixedPoint ≠ 0 := by
-  let g : ℂ → ℂ := fun w ↦ ambientNormalizedTau E w -
-    ambientNormalizedTau E fuchsianOneFixedPoint
-  have hg : AnalyticAt ℂ g fuchsianOneFixedPoint :=
-    (ambientNormalizedTau_analyticAt E fuchsianOneFixedPoint).sub (by fun_prop)
-  have horder : analyticOrderAt g fuchsianOneFixedPoint = (1 : ℕ∞) := by
-    simpa only [g] using ambientNormalizedTau_sub_analyticOrderAt_one E
-  have hdata := (analyticOrderAt_eq_nat_iff_iteratedDeriv_eq_zero hg).mp horder
-  simpa only [ambientNormalizedTauDeriv, g, iteratedDeriv_one, deriv_sub_const] using hdata.2
 
-/-- The modular lift has local degree two at the order-four source point: the source quotient has
-order four there, while the normalized modular quotient has order two at `I`. -/
-lemma ambientNormalizedTau_sub_analyticOrderAt_two
-    (E : NormalizedFuchsianModularParameter) :
-    analyticOrderAt
-      (fun w : ℂ ↦ ambientNormalizedTau E w -
-        ambientNormalizedTau E fuchsianTwoFixedPoint)
-      fuchsianTwoFixedPoint = (2 : ℕ∞) := by
-  obtain ⟨J⟩ := ExactNormalizedModularJUniformization.nonempty
-  let Cdiff : ℂ → ℂ := fun w ↦
-    E.sourceCoordinate.coordinate (UpperHalfPlane.ofComplex w) - 1
-  let Jdiff : ℂ → ℂ := fun w ↦
-    normalizedModularJCoordinate (UpperHalfPlane.ofComplex w) - 1
-  let t : ℂ → ℂ := ambientNormalizedTau E
-  have ht : AnalyticAt ℂ t fuchsianTwoFixedPoint := by
-    simpa only [t] using ambientNormalizedTau_analyticAt E fuchsianTwoFixedPoint
-  have ht_two : t fuchsianTwoFixedPoint = (UpperHalfPlane.I : ℂ) := by
-    simp only [t, ambientNormalizedTau, UpperHalfPlane.ofComplex_apply]
-    exact congrArg ((↑) : UpperHalfPlane → ℂ) E.tau_at_two
-  have hCorder : analyticOrderAt Cdiff fuchsianTwoFixedPoint = (4 : ℕ∞) := by
-    simpa only [Cdiff, Nat.cast_ofNat] using
-      E.sourceCoordinate.branch_two.analyticOrderAt
-        E.sourceCoordinate.coordinate_holomorphic
-  have hJorder : analyticOrderAt Jdiff UpperHalfPlane.I = (2 : ℕ∞) := by
-    simpa only [Jdiff, Nat.cast_ofNat] using
-      J.branch_two.analyticOrderAt normalizedModularJCoordinate_holomorphic
-  have hJanalytic : AnalyticAt ℂ Jdiff UpperHalfPlane.I := by
-    exact (MDifferentiable.analyticAt_comp_ofComplex
-      normalizedModularJCoordinate_holomorphic UpperHalfPlane.I).sub (by fun_prop)
-  have heq : Cdiff = Jdiff ∘ t := by
-    funext w
-    dsimp only [Cdiff, Jdiff, t, ambientNormalizedTau, Function.comp_apply]
-    rw [UpperHalfPlane.ofComplex_apply]
-    change E.sourceCoordinate.coordinate (UpperHalfPlane.ofComplex w) - 1 =
-      normalizedJ (E.modularParameter.tau (UpperHalfPlane.ofComplex w)) / 1728 - 1
-    rw [← E.induced_coordinate]
-    rfl
-  have hJanalytic_t : AnalyticAt ℂ Jdiff (t fuchsianTwoFixedPoint) := by
-    rw [ht_two]
-    exact hJanalytic
-  have hcomp := hJanalytic_t.analyticOrderAt_comp ht
-  have hmul : (4 : ℕ∞) =
-      (2 : ℕ∞) * analyticOrderAt (fun w ↦ t w - t fuchsianTwoFixedPoint)
-        fuchsianTwoFixedPoint := by
-    calc
-      (4 : ℕ∞) = analyticOrderAt Cdiff fuchsianTwoFixedPoint := hCorder.symm
-      _ = analyticOrderAt (Jdiff ∘ t) fuchsianTwoFixedPoint := by rw [heq]
-      _ = analyticOrderAt Jdiff (t fuchsianTwoFixedPoint) *
-          analyticOrderAt (fun w ↦ t w - t fuchsianTwoFixedPoint)
-            fuchsianTwoFixedPoint := hcomp
-      _ = (2 : ℕ∞) * analyticOrderAt (fun w ↦ t w - t fuchsianTwoFixedPoint)
-            fuchsianTwoFixedPoint := by rw [ht_two, hJorder]
-  have horder : analyticOrderAt (fun w ↦ t w - t fuchsianTwoFixedPoint)
-      fuchsianTwoFixedPoint = (2 : ℕ∞) := by
-    apply (ENat.mul_right_strictMono (a := (2 : ℕ∞)) (by norm_num) (by simp)).injective
-    calc
-      (2 : ℕ∞) * analyticOrderAt (fun w ↦ t w - t fuchsianTwoFixedPoint)
-          fuchsianTwoFixedPoint = (4 : ℕ∞) := hmul.symm
-      _ = (2 : ℕ∞) * (2 : ℕ∞) := by norm_num
-  simpa only [t] using horder
 
-/-- Consequently the derivative of the modular lift has a simple zero at the order-four point. -/
-lemma ambientNormalizedTauDeriv_analyticOrderAt_two
-    (E : NormalizedFuchsianModularParameter) :
-    analyticOrderAt (ambientNormalizedTauDeriv E) fuchsianTwoFixedPoint =
-      (1 : ℕ∞) := by
-  have ht := ambientNormalizedTau_analyticAt E fuchsianTwoFixedPoint
-  have hsum := ht.analyticOrderAt_deriv_add_one
-  have hsub := ambientNormalizedTau_sub_analyticOrderAt_two E
-  change analyticOrderAt (deriv (ambientNormalizedTau E)) fuchsianTwoFixedPoint =
-    (1 : ℕ∞)
-  rw [hsub] at hsum
-  exact (ENat.add_left_injective_of_ne_top (n := (1 : ℕ∞)) (by simp)) <| by
-    calc
-      analyticOrderAt (deriv (ambientNormalizedTau E)) fuchsianTwoFixedPoint + 1 =
-          (2 : ℕ∞) := hsum
-      _ = (1 : ℕ∞) + 1 := by norm_num
 
 /-- Over the source value zero, the modular lift has local degree one at every point of the
 elliptic orbit. -/
@@ -930,18 +772,6 @@ lemma ambientNormalizedTauDeriv_ne_zero_of_coordinate_ne_one
   · exact ambientNormalizedTauDeriv_ne_zero_of_coordinate_eq_zero E z hz0
   · exact ambientNormalizedTauDeriv_ne_zero_of_regular E z hz0 hz1
 
-/-- Exact zero locus of the derivative: precisely the order-four source elliptic orbit. -/
-lemma ambientNormalizedTauDeriv_eq_zero_iff
-    (E : NormalizedFuchsianModularParameter) (z : UpperHalfPlane) :
-    ambientNormalizedTauDeriv E z = 0 ↔ E.sourceCoordinate.coordinate z = 1 := by
-  constructor
-  · intro hd
-    by_contra hz1
-    exact ambientNormalizedTauDeriv_ne_zero_of_coordinate_ne_one E z hz1 hd
-  · intro hz1
-    apply apply_eq_zero_of_analyticOrderAt_ne_zero
-    rw [ambientNormalizedTauDeriv_analyticOrderAt_of_coordinate_eq_one E z hz1]
-    norm_num
 
 /-- Complete pointwise analytic-order classification of the derivative. -/
 lemma ambientNormalizedTauDeriv_analyticOrderAt

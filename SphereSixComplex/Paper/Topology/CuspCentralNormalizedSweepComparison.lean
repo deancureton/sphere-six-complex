@@ -101,24 +101,5 @@ public theorem constructedA2GraphPrism_normalized_of_sign
   rw [integralSingularHomologyMap_loopHomologyClass] at h
   exact h
 
-public theorem exists_constructedA2GraphPrism_uniform_sign :
-    ∃ n : ℤ, (n = 1 ∨ n = -1) ∧
-      ∀ (W : ActualPuncturedCuspCollarWitness N constructedModel)
-        [T2Space (ActualLocalCuspCentralOrbitQuotient W)] (i : Fin 2) (j k : Fin 3),
-      let _ := (constructedCentralCellAtlas W).cwComplex
-      integralSingularHomologyMap 2
-        ⟨actualLocalCuspCentralOrbitMap W, (actualLocalCuspCentralOrbitMap_isEmbedding W).continuous⟩
-        (closedPrismHomology (constructedA2CircleSweepPrism W i) 0
-          (loopHomologyClass (((constructedCentralCellularEdgePath W j).trans
-            (constructedCentralCellularEdgePath W k).symm).map continuous_subtype_val))) =
-        n • integralSingularHomologyMap 2 (cuspFillingPeriodCircle W i)
-          (normalizedCircleCross 1 (loopHomologyClass (constructedCellularLoopInFilling W j k))) := by
-  rcases universalCirclePrismClass_eq_generator_or_neg_generator with h | h
-  · refine ⟨1, Or.inl rfl, ?_⟩
-    intro W _ i j k
-    exact constructedA2GraphPrism_normalized_of_sign 1 (by simpa using h) W i j k
-  · refine ⟨-1, Or.inr rfl, ?_⟩
-    intro W _ i j k
-    exact constructedA2GraphPrism_normalized_of_sign (-1) (by simpa using h) W i j k
 
 end SphereSixComplex.Geometry.CuspPuncturedCollarBridge

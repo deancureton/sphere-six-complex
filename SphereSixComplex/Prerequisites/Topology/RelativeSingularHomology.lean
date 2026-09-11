@@ -75,74 +75,11 @@ public theorem relativeIntegralSingularShortComplex_shortExact
         exact Cofork.IsColimit.hom_ext
           (cokernelIsCokernel (integralSingularChainMapObj i)) w }
 
-/-- The connecting map from relative homology in degree `n+1` to subspace homology in degree `n`. -/
-public noncomputable def relativeIntegralSingularBoundary
-    {X Y : TopCat} (i : X ⟶ Y) [Mono i] (n : ℕ) :
-    (relativeIntegralSingularChainComplex i).homology (n + 1) ⟶
-      (integralSingularChainComplexObj X).homology n :=
-  (relativeIntegralSingularShortComplex_shortExact i).δ (n + 1) n
-    (ComplexShape.down_mk (n + 1) n (by omega))
 
-/-- Exactness at ambient homology: subspace homology maps to ambient homology and then relative
-homology. -/
-public theorem relativeIntegralSingular_homology_exact_ambient
-    {X Y : TopCat} (i : X ⟶ Y) [Mono i] (n : ℕ) :
-    (ShortComplex.mk
-      (HomologicalComplex.homologyMap (integralSingularChainMapObj i) n)
-      (HomologicalComplex.homologyMap (relativeIntegralSingularChainProjection i) n)
-      (by
-        rw [← HomologicalComplex.homologyMap_comp]
-        change HomologicalComplex.homologyMap
-          (integralSingularChainMapObj i ≫
-            cokernel.π (integralSingularChainMapObj i)) n = 0
-        rw [cokernel.condition, HomologicalComplex.homologyMap_zero])).Exact :=
-  (relativeIntegralSingularShortComplex_shortExact i).homology_exact₂ n
 
-/-- Exactness at relative homology: ambient homology maps to relative homology and then to the
-previous subspace degree. -/
-public theorem relativeIntegralSingular_homology_exact_relative
-    {X Y : TopCat} (i : X ⟶ Y) [Mono i] (n : ℕ) :
-    (ShortComplex.mk
-      (HomologicalComplex.homologyMap (relativeIntegralSingularChainProjection i) (n + 1))
-      (relativeIntegralSingularBoundary i n)
-      (by
-        exact (relativeIntegralSingularShortComplex_shortExact i).comp_δ
-          (n + 1) n (ComplexShape.down_mk (n + 1) n (by omega)))).Exact :=
-  (relativeIntegralSingularShortComplex_shortExact i).homology_exact₃
-    (n + 1) n (ComplexShape.down_mk (n + 1) n (by omega))
 
-/-- Exactness at subspace homology: the connecting map is followed by the map to ambient
-homology. -/
-public theorem relativeIntegralSingular_homology_exact_subspace
-    {X Y : TopCat} (i : X ⟶ Y) [Mono i] (n : ℕ) :
-    (ShortComplex.mk
-      (relativeIntegralSingularBoundary i n)
-      (HomologicalComplex.homologyMap (integralSingularChainMapObj i) n)
-      (by
-        exact (relativeIntegralSingularShortComplex_shortExact i).δ_comp
-          (n + 1) n (ComplexShape.down_mk (n + 1) n (by omega)))).Exact :=
-  (relativeIntegralSingularShortComplex_shortExact i).homology_exact₁
-    (n + 1) n (ComplexShape.down_mk (n + 1) n (by omega))
 
-/-- The relative integral singular chain complex of the pair `(D⁷,S⁶)`. -/
-public noncomputable abbrev diskSevenSphereSixRelativeIntegralSingularChainComplex :
-    ChainComplex AddCommGrpCat ℕ :=
-  relativeIntegralSingularChainComplex (TopCat.diskBoundaryInclusion 7)
 
-/-- The short exact sequence of chains for `S⁶ ⟶ D⁷ ⟶ (D⁷,S⁶)`. -/
-public theorem diskSevenSphereSix_relativeIntegralSingularShortComplex_shortExact :
-    (relativeIntegralSingularShortComplex (TopCat.diskBoundaryInclusion 7)).ShortExact :=
-  relativeIntegralSingularShortComplex_shortExact (TopCat.diskBoundaryInclusion 7)
 
-/-- In positive sphere degrees, the boundary map identifies relative homology of `(D⁷,S⁶)` with
-the preceding homology of `S⁶`, because both adjacent disk homology objects vanish. -/
-public noncomputable def diskSevenSphereSix_relativeBoundaryIso
-    (n : ℕ) (hn : n ≠ 0) :
-    diskSevenSphereSixRelativeIntegralSingularChainComplex.homology (n + 1) ≅
-      (integralSingularChainComplexObj (TopCat.diskBoundary 7)).homology n :=
-  diskSevenSphereSix_relativeIntegralSingularShortComplex_shortExact.δIso
-    (n + 1) n (ComplexShape.down_mk (n + 1) n (by omega))
-    (topCatDiskSeven_integralSingularHomology_isZero (n + 1) (by omega))
-    (topCatDiskSeven_integralSingularHomology_isZero n hn)
 
 end SphereSixComplex

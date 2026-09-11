@@ -2,7 +2,8 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.CollarProductVanishing
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenLocalEulerModelAssembly
-public import SphereSixComplex.Prerequisites.Topology.FiniteCWModelVanishing
+public import SphereSixComplex.Prerequisites.Topology.CellularChainModel
+public import SphereSixComplex.Prerequisites.Topology.FiniteCWModelSix
 public import SphereSixComplex.Paper.Topology.PaperEllipticCollarFundamentalDomain
 public import SphereSixComplex.Paper.Topology.WangDimensionVanishing
 

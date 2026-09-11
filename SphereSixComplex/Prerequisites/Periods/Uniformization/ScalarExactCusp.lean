@@ -31,6 +31,7 @@ open SphereSixComplex.TriangleGroup
 open SphereSixComplex.TriangleGroup.FuchsianFundamentalDomain
 open SphereSixComplex.Periods.TriangleReflections
 
+
 local notation "Iinfinity" => Filter.comap Complex.im Filter.atTop
 
 /-- Eventual statements at complex imaginary infinity can be made uniform above one height. -/
@@ -335,19 +336,6 @@ theorem fuchsianCoordinateReciprocal_eventually_differentiableAt
       UpperHalfPlane.ofComplex_apply_of_im_pos hw]
   exact hinv_diff.congr_of_eventuallyEq heq
 
-theorem fuchsianCoordinateReciprocal_eventually_ne_zero
-    (C : FuchsianOrbifoldCoordinate)
-    (hcoordinate_ne : ∀ᶠ z in upperHalfPlaneAtInfinity, C.coordinate z ≠ 0) :
-    ∀ᶠ z in Iinfinity, fuchsianCoordinateReciprocal C z ≠ 0 := by
-  have hcoordinate_ne' :
-      ∀ᶠ z in Iinfinity, C.coordinate (UpperHalfPlane.ofComplex z) ≠ 0 :=
-    UpperHalfPlane.tendsto_comap_im_ofComplex.eventually hcoordinate_ne
-  have him_pos : ∀ᶠ z in Iinfinity, 0 < z.im :=
-    preimage_mem_comap (Ioi_mem_atTop 0)
-  filter_upwards [hcoordinate_ne', him_pos] with z hzne hzim
-  rw [fuchsianCoordinateReciprocal, dif_pos hzim]
-  apply inv_ne_zero
-  simpa only [← UpperHalfPlane.ofComplex_apply_of_im_pos hzim] using hzne
 
 /-- Boundedness of the canonical reciprocal is enough to prove its full cusp decay once the
 global coordinate agrees with the scalar seed on the source chamber.  The value of the limit is
@@ -595,21 +583,6 @@ theorem nonempty_hasExactFuchsianCusp_of_canonical_reciprocal
     (fuchsianCoordinateReciprocal_eventually_differentiableAt C hcoordinate_ne)
     hr_zero hr_locallyInjective
 
-/-- Exact-cusp criterion phrased only in terms of decay, nonvanishing, and fibre separation of
-the canonical reciprocal. -/
-theorem nonempty_hasExactFuchsianCusp_of_reciprocal_zero_of_high_fibers
-    (C : FuchsianOrbifoldCoordinate)
-    (hr_zero : ZeroAtFilter Iinfinity (fuchsianCoordinateReciprocal C))
-    (hr_eventually_ne : ∀ᶠ z in Iinfinity, fuchsianCoordinateReciprocal C z ≠ 0)
-    (hr_high_fibres : ∃ A : ℝ, ∀ z w : ℂ,
-      A < z.im → A < w.im →
-        fuchsianCoordinateReciprocal C z = fuchsianCoordinateReciprocal C w →
-        Function.Periodic.qParam sourceCuspWidth z =
-          Function.Periodic.qParam sourceCuspWidth w) :
-    Nonempty (HasExactFuchsianCusp C) := by
-  apply nonempty_hasExactFuchsianCusp_of_canonical_reciprocal C hr_zero
-  exact scalarReciprocalCuspFunction_locallyInjective_of_high_fibers
-    hr_zero hr_eventually_ne hr_high_fibres
 
 /-! ## The high full-width Schwarz strip -/
 
@@ -637,45 +610,6 @@ theorem sourceScalarCuspStrip_convex : Convex ℝ sourceScalarCuspStrip := by
   exact (convex_halfSpace_re_gt _).inter
     ((convex_halfSpace_re_lt _).inter (convex_halfSpace_im_gt _))
 
-/-- Closing only the two vertical edges of the high strip gives points in its topological
-closure.  The strict height inequality is retained, as needed for cusp estimates. -/
-theorem mem_closure_sourceScalarCuspStrip {z : ℂ}
-    (hleft : -Real.sqrt 2 / 2 ≤ z.re)
-    (hright : z.re ≤ 1 + Real.sqrt 2 / 2)
-    (hhigh : 2 < z.im) :
-    z ∈ closure sourceScalarCuspStrip := by
-  let p : ℂ := 3 * Complex.I
-  have hsqrt : 0 < Real.sqrt 2 := Real.sqrt_pos.2 (by norm_num)
-  have hsegment : openSegment ℝ z p ⊆ sourceScalarCuspStrip := by
-    intro w hw
-    rw [openSegment_eq_image] at hw
-    obtain ⟨t, ht, rfl⟩ := hw
-    have hre : (((1 - t) • z + t • p : ℂ)).re = (1 - t) * z.re := by
-      simp [p]
-    have him : (((1 - t) • z + t • p : ℂ)).im =
-        (1 - t) * z.im + t * 3 := by
-      simp [p]
-    change -Real.sqrt 2 / 2 < (((1 - t) • z + t • p : ℂ)).re ∧
-      (((1 - t) • z + t • p : ℂ)).re < 1 + Real.sqrt 2 / 2 ∧
-      2 < (((1 - t) • z + t • p : ℂ)).im
-    rw [hre, him]
-    have hcoef_nonneg : 0 ≤ 1 - t := (sub_pos.mpr ht.2).le
-    have hcoef_pos : 0 < 1 - t := sub_pos.mpr ht.2
-    have hcoef_lt_one : 1 - t < 1 := by linarith [ht.1]
-    constructor
-    · have hmul := mul_le_mul_of_nonneg_left hleft hcoef_nonneg
-      have hstrict := mul_lt_mul_of_neg_right hcoef_lt_one (by nlinarith : -Real.sqrt 2 / 2 < 0)
-      nlinarith
-    constructor
-    · have hmul := mul_le_mul_of_nonneg_left hright hcoef_nonneg
-      have hstrict := mul_lt_mul_of_pos_right hcoef_lt_one (by nlinarith : 0 < 1 + Real.sqrt 2 / 2)
-      nlinarith
-    · have hzmul := mul_lt_mul_of_pos_left hhigh hcoef_pos
-      have ht_mul : t * 2 < t * 3 := mul_lt_mul_of_pos_left (by norm_num) ht.1
-      nlinarith
-  apply (closure_mono hsegment)
-  exact segment_subset_closure_openSegment
-    (left_mem_segment ℝ z p)
 
 /-- The same edge-closure statement while retaining any stricter lower height bound. -/
 theorem mem_closure_sourceScalarCuspStrip_inter_im_gt {z : ℂ}
@@ -1227,25 +1161,6 @@ theorem fuchsianCoordinateReciprocal_zeroAtFilter_of_seed
   exact fuchsianCoordinateReciprocal_boundedAtFilter_of_seed
     S C F hcoordinate hF hseed
 
-/-- Complete exact-cusp constructor from global scalar seed agreement and high-fibre separation. -/
-theorem nonempty_hasExactFuchsianCusp_of_seed_of_high_fibers
-    (S : ChamberCaratheodorySeed sourceBoundedChamber)
-    (C : FuchsianOrbifoldCoordinate) (F : ℂ → ℂ)
-    (hcoordinate : ∀ z : UpperHalfPlane, C.coordinate z = F (z : ℂ))
-    (hF : DifferentiableOn ℂ F {z : ℂ | 0 < z.im})
-    (hseed : EqOn F (sourceScalarTriangleMap S) sourceOpenChamber)
-    (hr_high_fibres : ∃ A : ℝ, ∀ z w : ℂ,
-      A < z.im → A < w.im →
-        fuchsianCoordinateReciprocal C z = fuchsianCoordinateReciprocal C w →
-        Function.Periodic.qParam sourceCuspWidth z =
-          Function.Periodic.qParam sourceCuspWidth w) :
-    Nonempty (HasExactFuchsianCusp C) := by
-  apply nonempty_hasExactFuchsianCusp_of_reciprocal_zero_of_high_fibers C
-    (fuchsianCoordinateReciprocal_zeroAtFilter_of_seed
-      S C F hcoordinate hF hseed)
-    (fuchsianCoordinateReciprocal_eventually_ne_zero_of_seed
-      S C F hcoordinate hF hseed)
-    hr_high_fibres
 
 /-- Consequently the global scalar is injective throughout the high full-period Schwarz strip. -/
 theorem globalScalar_injOn_cuspStrip

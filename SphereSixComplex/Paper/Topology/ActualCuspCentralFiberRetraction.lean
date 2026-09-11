@@ -119,13 +119,6 @@ public noncomputable def quotientCentralFiberInclusion :
   toFun := Subtype.val
   continuous_toFun := continuous_subtype_val
 
-public theorem quotientHomotopy_fixed (s : unitInterval) (q : ActualLocalCuspFilling W)
-    (hq : q ∈ quotientCentralFiber W R) : quotientHomotopy W R (s, q) = q := by
-  let _ := actualLocalCuspQuotientAction W
-  let _ : ContinuousConstSMul (Multiplicative ParameterLattice)
-      (localCarrier M W.localWitness.radius) := actualLocalPsiContinuousConstSMul W
-  exact EquivariantStrongDeformationRetraction.quotientHomotopy_fixed
-    R s q hq
 
 /-- The homotopy equivalence produced by the descended strong deformation retraction. -/
 public noncomputable def quotientCentralFiberHomotopyEquiv :
@@ -151,35 +144,10 @@ public noncomputable def specializationHomologyEquiv (k : ℕ) :
       IntegralSingularHomology k (quotientCentralFiber W R) :=
   integralSingularHomologyEquivOfHomotopyEquiv k (quotientCentralFiberHomotopyEquiv W R)
 
-/-- The specialization map on integral singular chains induced by the quotient retraction. -/
-public noncomputable def specializationChainMap :
-    integralSingularChainComplex (ActualLocalCuspFilling W) ⟶
-      integralSingularChainComplex (quotientCentralFiber W R) :=
-  integralSingularChainMap (quotientRetractToCentralFiber W R)
 
-/-- The specialization map on integral singular homology induced by the quotient retraction. -/
-public noncomputable def specializationHomologyMap (k : ℕ) :
-    IntegralSingularHomology k (ActualLocalCuspFilling W) →+
-      IntegralSingularHomology k (quotientCentralFiber W R) :=
-  integralSingularHomologyMap k (quotientRetractToCentralFiber W R)
 
-public theorem specializationHomologyMap_eq_equiv (k : ℕ) :
-    specializationHomologyMap W R k = (specializationHomologyEquiv W R k).toAddMonoidHom :=
-  rfl
 
-/-- Restriction of specialization along any supplied continuous fibre inclusion. -/
-public noncomputable def restrictedSpecializationChainMap
-    {F : Type} [TopologicalSpace F] (i : C(F, ActualLocalCuspFilling W)) :
-    integralSingularChainComplex F ⟶
-      integralSingularChainComplex (quotientCentralFiber W R) :=
-  integralSingularChainMap ((quotientRetractToCentralFiber W R).comp i)
 
-public theorem restrictedSpecializationChainMap_eq_comp
-    {F : Type} [TopologicalSpace F] (i : C(F, ActualLocalCuspFilling W)) :
-    restrictedSpecializationChainMap W R i =
-      integralSingularChainMap i ≫ specializationChainMap W R := by
-  simp [restrictedSpecializationChainMap, specializationChainMap,
-    integralSingularChainMap]
 
 end ActualLocalCuspCentralFiberRetractionData
 

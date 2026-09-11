@@ -56,42 +56,8 @@ public theorem constructedA2CellSquareProjection_eq_iff_monomial
   rw [constructedA2CellSquareProjection_eq_iff_chartChange, chartChange_source]
   rfl
 
-/-- The exact finite equality still needed after reducing carrier equality to explicit Laurent
-coordinates. -/
-public def ConstructedA2HoneycombLaurentFiniteIdentity : Prop :=
-  ∀ v w i j p q,
-    constructedA2PlaneTile v i p = constructedA2PlaneTile w j q ↔
-      constructedA2CellLiftCoordinates i (fun k ↦ (p.1 k : ℂ)) ∈
-          monomialDomain
-            (transitionMatrix (constructedA2CellChart v i) (constructedA2CellChart w j)) ∧
-        monomial (transitionMatrix (constructedA2CellChart v i) (constructedA2CellChart w j))
-            (constructedA2CellLiftCoordinates i (fun k ↦ (p.1 k : ℂ))) =
-          constructedA2CellLiftCoordinates j (fun k ↦ (q.1 k : ℂ))
 
-/-- The Laurent finite identity is precisely sufficient for the requested quotient residual. -/
-public theorem constructedA2HoneycombFiniteQuotientResidual_of_laurentFiniteIdentity
-    {r : ℝ} (hr : 0 < r) (H : ConstructedA2HoneycombLaurentFiniteIdentity) :
-    ConstructedA2HoneycombFiniteQuotientResidual r hr where
-  sameFibers := by
-    intro v w a b
-    rcases a with ⟨i, p⟩
-    rcases b with ⟨j, q⟩
-    change constructedA2PlaneTile v i p = constructedA2PlaneTile w j q ↔ _
-    rw [H v w i j p q]
-    exact (constructedA2CellSquareProjection_eq_iff_monomial hr v w i j p q).symm
 
-/-- There is no further quotient-topology obstruction: the residual exists exactly when the
-displayed Laurent finite identity holds. -/
-public theorem nonempty_constructedA2HoneycombFiniteQuotientResidual_iff
-    {r : ℝ} (hr : 0 < r) :
-    Nonempty (ConstructedA2HoneycombFiniteQuotientResidual r hr) ↔
-      ConstructedA2HoneycombLaurentFiniteIdentity := by
-  constructor
-  · rintro ⟨H⟩ v w i j p q
-    have h := H.sameFibers v w (i, p) (j, q)
-    change constructedA2PlaneTile v i p = constructedA2PlaneTile w j q ↔ _ at h
-    exact h.trans (constructedA2CellSquareProjection_eq_iff_monomial hr v w i j p q)
-  · exact fun H ↦ ⟨constructedA2HoneycombFiniteQuotientResidual_of_laurentFiniteIdentity hr H⟩
 
 end SphereSixComplex.Geometry.InfiniteA2Toric
 

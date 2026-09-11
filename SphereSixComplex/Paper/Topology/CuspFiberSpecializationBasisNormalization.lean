@@ -25,73 +25,8 @@ variable {HighRelations High Total LowRelations Low L C : Type*}
   [AddCommGroup HighRelations] [AddCommGroup High] [AddCommGroup Total]
   [AddCommGroup LowRelations] [AddCommGroup Low] [AddCommGroup L] [AddCommGroup C]
 
-/-- Target coordinates normalized by a bijective restriction to Wang coinvariants. -/
-public noncomputable def normalizedTargetCoordinates
-    (P : WangHomologyPresentation HighRelations High Total LowRelations Low)
-    (r : P.Coinvariants →ₗ[ℤ] L) (hr : Function.Bijective r)
-    (c : P.Coinvariants ≃ₗ[ℤ] C) : L ≃ₗ[ℤ] C :=
-  (LinearEquiv.ofBijective r hr).symm.trans c
 
-/-- In normalized target coordinates, restriction to Wang coinvariants is the chosen
-coinvariant coordinate equivalence. -/
-public theorem normalizedTargetCoordinates_comp
-    (P : WangHomologyPresentation HighRelations High Total LowRelations Low)
-    (r : P.Coinvariants →ₗ[ℤ] L) (hr : Function.Bijective r)
-    (c : P.Coinvariants ≃ₗ[ℤ] C) :
-    (normalizedTargetCoordinates P r hr c).toLinearMap.comp r = c.toLinearMap := by
-  apply LinearMap.ext
-  intro x
-  change c ((LinearEquiv.ofBijective r hr).symm (r x)) = c x
-  rw [LinearEquiv.ofBijective_symm_apply_apply]
 
-/-- If a surjective map out of a Wang total group has kernel exactly one chosen invariant
-section, then its restriction to coinvariants is bijective. -/
-public theorem coinvariantsRestriction_bijective_of_kernel_eq_section
-    (P : WangHomologyPresentation HighRelations High Total LowRelations Low)
-    (S : P.Section) (f : Total →ₗ[ℤ] L) (hf : Function.Surjective f)
-    (hker : LinearMap.ker f = LinearMap.range S.lift) :
-    Function.Bijective (f.comp P.coinvariantsToTotal) := by
-  constructor
-  · intro x y hxy
-    change f (P.coinvariantsToTotal x) = f (P.coinvariantsToTotal y) at hxy
-    have hdiff : f (P.coinvariantsToTotal (x - y)) = 0 := by
-      rw [map_sub, map_sub, hxy, sub_self]
-    have hix : P.coinvariantsToTotal (x - y) ∈ LinearMap.ker f :=
-      LinearMap.mem_ker.mpr hdiff
-    rw [hker] at hix
-    obtain ⟨z, hz⟩ := hix
-    have hz0 : z = 0 := by
-      have hp := congrArg P.totalToInvariants hz
-      rw [P.exact_coinvariantsToTotal_totalToInvariants.apply_apply_eq_zero] at hp
-      have hs := DFunLike.congr_fun S.right_inv z
-      simp only [LinearMap.coe_comp, Function.comp_apply, LinearMap.id_coe, id_eq] at hs
-      rw [hs] at hp
-      exact hp
-    have hxy0 : x - y = 0 := by
-      apply P.coinvariantsToTotal_injective
-      rw [← hz, hz0, map_zero]
-      exact (P.coinvariantsToTotal.map_zero).symm
-    exact sub_eq_zero.mp hxy0
-  · intro y
-    obtain ⟨t, ht⟩ := hf y
-    let z := P.totalToInvariants t
-    let t₀ := t - S.lift z
-    have ht₀ : P.totalToInvariants t₀ = 0 := by
-      change P.totalToInvariants (t - S.lift (P.totalToInvariants t)) = 0
-      rw [map_sub]
-      have hs := DFunLike.congr_fun S.right_inv (P.totalToInvariants t)
-      simp only [LinearMap.coe_comp, Function.comp_apply, LinearMap.id_coe, id_eq] at hs
-      rw [hs, sub_self]
-    obtain ⟨x, hx⟩ := (P.exact_coinvariantsToTotal_totalToInvariants t₀).mp ht₀
-    refine ⟨x, ?_⟩
-    change f (P.coinvariantsToTotal x) = y
-    rw [hx]
-    change f (t - S.lift z) = y
-    rw [map_sub, ht]
-    have hsKer : S.lift z ∈ LinearMap.ker f := by
-      rw [hker]
-      exact ⟨z, rfl⟩
-    rw [LinearMap.mem_ker.mp hsKer, sub_zero]
 
 /-- If total specialization is onto, kills a Wang section, and source coinvariants and target
 have the same finite free coordinates, then restriction to coinvariants is bijective. -/
@@ -171,18 +106,6 @@ public noncomputable def rawDegreeOneTotalSpecialization
       ⟨puncturedLocalCuspToFilling W, puncturedLocalCuspToFilling_continuous W⟩).comp
         e.symm.toAddMonoidHom).toIntLinearMap
 
-/-- The basis-free degree-two map from the radial mapping torus to the cusp filling. -/
-public noncomputable def rawDegreeTwoTotalSpecialization
-    (G : ActualCuspRadialClutchingData W) :
-    let _ := G.fiberTopology
-    IntegralSingularHomology 2 (CircleMappingTorus G.clutching) →ₗ[ℤ]
-      IntegralSingularHomology 2 (ActualLocalCuspFilling W) := by
-  let _ := G.fiberTopology
-  let e := integralSingularHomologyEquivOfHomotopyEquiv 2
-    G.toUnnormalizedCuspRadialClutchingData.totalHomotopyEquiv
-  exact ((integralSingularHomologyMap 2
-      ⟨puncturedLocalCuspToFilling W, puncturedLocalCuspToFilling_continuous W⟩).comp
-        e.symm.toAddMonoidHom).toIntLinearMap
 
 /-- The basis-free degree-one map from Wang coinvariants to the cusp filling. -/
 public noncomputable def rawDegreeOneFiberSpecialization
@@ -194,296 +117,24 @@ public noncomputable def rawDegreeOneFiberSpecialization
   exact (rawDegreeOneTotalSpecialization G).comp
     (circleMappingTorusHOnePresentation G.clutching).coinvariantsToTotal
 
-/-- The basis-free degree-two map from Wang coinvariants to the cusp filling. -/
-public noncomputable def rawDegreeTwoFiberSpecialization
-    (G : ActualCuspRadialClutchingData W) :
-    let _ := G.fiberTopology
-    (circleMappingTorusHTwoPresentation G.clutching).Coinvariants →ₗ[ℤ]
-      IntegralSingularHomology 2 (ActualLocalCuspFilling W) := by
-  let _ := G.fiberTopology
-  exact (rawDegreeTwoTotalSpecialization G).comp
-    (circleMappingTorusHTwoPresentation G.clutching).coinvariantsToTotal
 
-/-- The basis-free geometric content of the former twenty-entry specialization matrix. -/
-public structure FiberCoinvariantSpecializationIsomorphisms
-    (G : ActualCuspRadialClutchingData W) : Prop where
-  degreeOne : Function.Bijective (rawDegreeOneFiberSpecialization G)
-  degreeTwo : Function.Bijective (rawDegreeTwoFiberSpecialization G)
 
-/-- Exactness formulation of the geometric specialization calculation: filling kills exactly
-the invariant Wang section and no fibre-coinvariant class. -/
-public structure TotalSpecializationExactness
-    (G : ActualCuspRadialClutchingData W) : Prop where
-  degreeOne_surjective : Function.Surjective (rawDegreeOneTotalSpecialization G)
-  degreeOne_kernel :
-    let _ := G.fiberTopology
-    LinearMap.ker (rawDegreeOneTotalSpecialization G) =
-      LinearMap.range
-        (_root_.SphereSixComplex.CircleMappingTorusHomologyBases.CuspMonodromyCoordinates.wangSections
-          G.monodromyCoordinates).degreeOne.lift
-  degreeTwo_surjective : Function.Surjective (rawDegreeTwoTotalSpecialization G)
-  degreeTwo_kernel :
-    let _ := G.fiberTopology
-    LinearMap.ker (rawDegreeTwoTotalSpecialization G) =
-      LinearMap.range
-      (_root_.SphereSixComplex.CircleMappingTorusHomologyBases.CuspMonodromyCoordinates.wangSections
-          G.monodromyCoordinates).degreeTwo.lift
 
-/-- A weaker and more geometric criterion: total specialization is onto and specified geometric
-Wang sections vanish. Equal finite-free ranks then force the fibre restrictions to be
-isomorphisms. -/
-public structure TotalSpecializationSurjectivityAndSectionVanishing
-    (G : ActualCuspRadialClutchingData W) : Prop where
-  degreeOne_surjective : Function.Surjective (rawDegreeOneTotalSpecialization G)
-  degreeOne_section :
-    let _ := G.fiberTopology
-    ∃ S : (circleMappingTorusHOnePresentation G.clutching).Section,
-      (rawDegreeOneTotalSpecialization G).comp S.lift = 0
-  degreeTwo_surjective : Function.Surjective (rawDegreeTwoTotalSpecialization G)
-  degreeTwo_section :
-    let _ := G.fiberTopology
-    ∃ S : (circleMappingTorusHTwoPresentation G.clutching).Section,
-      (rawDegreeTwoTotalSpecialization G).comp S.lift = 0
 
-/-- Exactness of total specialization implies the two basis-free fibre specialization
-isomorphisms. -/
-public theorem fiberCoinvariantSpecializationIsomorphisms_of_totalExactness
-    (G : ActualCuspRadialClutchingData W) (h : TotalSpecializationExactness G) :
-    FiberCoinvariantSpecializationIsomorphisms G := by
-  let _ := G.fiberTopology
-  exact {
-    degreeOne := WangHomologyPresentation.coinvariantsRestriction_bijective_of_kernel_eq_section
-      (circleMappingTorusHOnePresentation G.clutching)
-      (_root_.SphereSixComplex.CircleMappingTorusHomologyBases.CuspMonodromyCoordinates.wangSections
-        G.monodromyCoordinates).degreeOne
-      (rawDegreeOneTotalSpecialization G) h.degreeOne_surjective h.degreeOne_kernel
-    degreeTwo := WangHomologyPresentation.coinvariantsRestriction_bijective_of_kernel_eq_section
-      (circleMappingTorusHTwoPresentation G.clutching)
-      (_root_.SphereSixComplex.CircleMappingTorusHomologyBases.CuspMonodromyCoordinates.wangSections
-        G.monodromyCoordinates).degreeTwo
-      (rawDegreeTwoTotalSpecialization G) h.degreeTwo_surjective h.degreeTwo_kernel
-  }
 
-/-- Surjectivity plus vanishing of the invariant Wang sections proves both basis-free
-specialization isomorphisms. -/
-public theorem fiberCoinvariantSpecializationIsomorphisms_of_surjective_of_section_eq_zero
-    (G : ActualCuspRadialClutchingData W)
-    (h : TotalSpecializationSurjectivityAndSectionVanishing G)
-    (cOne : IntegralSingularHomology 1 (ActualLocalCuspFilling W) ≃ₗ[ℤ] (Fin 2 → ℤ))
-    (cTwo : IntegralSingularHomology 2 (ActualLocalCuspFilling W) ≃ₗ[ℤ] (Fin 4 → ℤ)) :
-    FiberCoinvariantSpecializationIsomorphisms G := by
-  let _ := G.fiberTopology
-  obtain ⟨SOne, hSOne⟩ := h.degreeOne_section
-  obtain ⟨STwo, hSTwo⟩ := h.degreeTwo_section
-  exact {
-    degreeOne :=
-      WangHomologyPresentation.coinvariantsRestriction_bijective_of_surjective_of_section_eq_zero
-        (circleMappingTorusHOnePresentation G.clutching)
-        SOne
-        (rawDegreeOneTotalSpecialization G) h.degreeOne_surjective hSOne
-        G.degreeOneCoinvariantsEquiv cOne
-    degreeTwo :=
-      WangHomologyPresentation.coinvariantsRestriction_bijective_of_surjective_of_section_eq_zero
-        (circleMappingTorusHTwoPresentation G.clutching)
-        STwo
-        (rawDegreeTwoTotalSpecialization G) h.degreeTwo_surjective hSTwo
-        G.degreeTwoCoinvariantsEquiv cTwo
-  }
 
-/-- Degree-one filling coordinates normalized by the fibre specialization isomorphism. -/
-public noncomputable def normalizedCuspFillingHomologyOneEquiv
-    (G : ActualCuspRadialClutchingData W)
-    (h : FiberCoinvariantSpecializationIsomorphisms G) :
-    IntegralSingularHomology 1 (ActualLocalCuspFilling W) ≃+ (Fin 2 → ℤ) := by
-  let _ := G.fiberTopology
-  let P := circleMappingTorusHOnePresentation G.clutching
-  exact (WangHomologyPresentation.normalizedTargetCoordinates P
-    (rawDegreeOneFiberSpecialization G) h.degreeOne G.degreeOneCoinvariantsEquiv).toAddEquiv
 
-/-- Degree-two filling coordinates normalized by the fibre specialization isomorphism. -/
-public noncomputable def normalizedCuspFillingHomologyTwoEquiv
-    (G : ActualCuspRadialClutchingData W)
-    (h : FiberCoinvariantSpecializationIsomorphisms G) :
-    IntegralSingularHomology 2 (ActualLocalCuspFilling W) ≃+ (Fin 4 → ℤ) := by
-  let _ := G.fiberTopology
-  let P := circleMappingTorusHTwoPresentation G.clutching
-  exact (WangHomologyPresentation.normalizedTargetCoordinates P
-    (rawDegreeTwoFiberSpecialization G) h.degreeTwo G.degreeTwoCoinvariantsEquiv).toAddEquiv
 
-/-- Degree-one specialization written in its normalized target coordinates. -/
-public noncomputable def normalizedDegreeOneTotalSpecialization
-    (G : ActualCuspRadialClutchingData W)
-    (h : FiberCoinvariantSpecializationIsomorphisms G) :
-    let _ := G.fiberTopology
-    IntegralSingularHomology 1 (CircleMappingTorus G.clutching) →ₗ[ℤ] (Fin 2 → ℤ) := by
-  let _ := G.fiberTopology
-  exact (normalizedCuspFillingHomologyOneEquiv G h).toIntLinearEquiv.toLinearMap.comp
-    (rawDegreeOneTotalSpecialization G)
 
-/-- Degree-two specialization written in its normalized target coordinates. -/
-public noncomputable def normalizedDegreeTwoTotalSpecialization
-    (G : ActualCuspRadialClutchingData W)
-    (h : FiberCoinvariantSpecializationIsomorphisms G) :
-    let _ := G.fiberTopology
-    IntegralSingularHomology 2 (CircleMappingTorus G.clutching) →ₗ[ℤ] (Fin 4 → ℤ) := by
-  let _ := G.fiberTopology
-  exact (normalizedCuspFillingHomologyTwoEquiv G h).toIntLinearEquiv.toLinearMap.comp
-    (rawDegreeTwoTotalSpecialization G)
 
-/-- The normalized degree-one coordinates identify the raw fibre specialization with the
-chosen coinvariant coordinates. -/
-public theorem normalizedCuspFillingHomologyOneEquiv_rawFiberSpecialization
-    (G : ActualCuspRadialClutchingData W)
-    (h : FiberCoinvariantSpecializationIsomorphisms G) (x :
-      let _ := G.fiberTopology
-      (circleMappingTorusHOnePresentation G.clutching).Coinvariants) :
-    normalizedCuspFillingHomologyOneEquiv G h (rawDegreeOneFiberSpecialization G x) =
-      G.degreeOneCoinvariantsEquiv x := by
-  let _ := G.fiberTopology
-  let P := circleMappingTorusHOnePresentation G.clutching
-  exact DFunLike.congr_fun
-    (WangHomologyPresentation.normalizedTargetCoordinates_comp
-      P (rawDegreeOneFiberSpecialization G) h.degreeOne G.degreeOneCoinvariantsEquiv) x
 
-/-- The normalized degree-two coordinates identify the raw fibre specialization with the
-chosen coinvariant coordinates. -/
-public theorem normalizedCuspFillingHomologyTwoEquiv_rawFiberSpecialization
-    (G : ActualCuspRadialClutchingData W)
-    (h : FiberCoinvariantSpecializationIsomorphisms G) (x :
-      let _ := G.fiberTopology
-      (circleMappingTorusHTwoPresentation G.clutching).Coinvariants) :
-    normalizedCuspFillingHomologyTwoEquiv G h (rawDegreeTwoFiberSpecialization G x) =
-      G.degreeTwoCoinvariantsEquiv x := by
-  let _ := G.fiberTopology
-  let P := circleMappingTorusHTwoPresentation G.clutching
-  exact DFunLike.congr_fun
-    (WangHomologyPresentation.normalizedTargetCoordinates_comp
-      P (rawDegreeTwoFiberSpecialization G) h.degreeTwo G.degreeTwoCoinvariantsEquiv) x
 
-/-- Normalized degree-one specialization restricts to the standard coinvariant coordinates. -/
-public theorem normalizedDegreeOneTotalSpecialization_comp_coinvariantsToTotal
-    (G : ActualCuspRadialClutchingData W)
-    (h : FiberCoinvariantSpecializationIsomorphisms G) :
-    let _ := G.fiberTopology
-    (normalizedDegreeOneTotalSpecialization G h).comp
-        (circleMappingTorusHOnePresentation G.clutching).coinvariantsToTotal =
-      G.degreeOneCoinvariantsEquiv.toLinearMap := by
-  let _ := G.fiberTopology
-  apply LinearMap.ext
-  intro x
-  change normalizedCuspFillingHomologyOneEquiv G h
-      (rawDegreeOneFiberSpecialization G x) = G.degreeOneCoinvariantsEquiv x
-  exact normalizedCuspFillingHomologyOneEquiv_rawFiberSpecialization G h x
 
-/-- Normalized degree-two specialization restricts to the standard coinvariant coordinates. -/
-public theorem normalizedDegreeTwoTotalSpecialization_comp_coinvariantsToTotal
-    (G : ActualCuspRadialClutchingData W)
-    (h : FiberCoinvariantSpecializationIsomorphisms G) :
-    let _ := G.fiberTopology
-    (normalizedDegreeTwoTotalSpecialization G h).comp
-        (circleMappingTorusHTwoPresentation G.clutching).coinvariantsToTotal =
-      G.degreeTwoCoinvariantsEquiv.toLinearMap := by
-  let _ := G.fiberTopology
-  apply LinearMap.ext
-  intro x
-  change normalizedCuspFillingHomologyTwoEquiv G h
-      (rawDegreeTwoFiberSpecialization G x) = G.degreeTwoCoinvariantsEquiv x
-  exact normalizedCuspFillingHomologyTwoEquiv_rawFiberSpecialization G h x
 
-/-- Wang sections normalized intrinsically by the basis-free filling specialization. -/
-public noncomputable def normalizedGeometricWangSections
-    (G : ActualCuspRadialClutchingData W)
-    (h : FiberCoinvariantSpecializationIsomorphisms G) :
-    let _ := G.fiberTopology
-    CuspGeometricWangSections G.monodromyCoordinates := by
-  let _ := G.fiberTopology
-  let S := _root_.SphereSixComplex.CircleMappingTorusHomologyBases.CuspMonodromyCoordinates.wangSections G.monodromyCoordinates
-  exact {
-    degreeOne := WangHomologyPresentation.correctedSection
-      (circleMappingTorusHOnePresentation G.clutching) S.degreeOne
-      G.degreeOneCoinvariantsEquiv (normalizedDegreeOneTotalSpecialization G h)
-    degreeTwo := WangHomologyPresentation.correctedSection
-      (circleMappingTorusHTwoPresentation G.clutching) S.degreeTwo
-      G.degreeTwoCoinvariantsEquiv (normalizedDegreeTwoTotalSpecialization G h)
-  }
 
-/-- In the intrinsically normalized Wang splitting, degree-one specialization is projection to
-the first two coordinates. -/
-public theorem normalizedDegreeOneTotalSpecialization_eq_projection
-    (G : ActualCuspRadialClutchingData W)
-    (h : FiberCoinvariantSpecializationIsomorphisms G) :
-    let _ := G.fiberTopology
-    (normalizedDegreeOneTotalSpecialization G h).toAddMonoidHom =
-      EstablishedStandardA2CuspSpecialization.degreeOneFiberProjection.comp
-          (normalizedGeometricWangSections G h).circleMappingTorusHOneAddEquiv.toAddMonoidHom := by
-  let _ := G.fiberTopology
-  let P := circleMappingTorusHOnePresentation G.clutching
-  let S := _root_.SphereSixComplex.CircleMappingTorusHomologyBases.CuspMonodromyCoordinates.wangSections G.monodromyCoordinates
-  let c := G.degreeOneCoinvariantsEquiv
-  let f := normalizedDegreeOneTotalSpecialization G h
-  apply AddMonoidHom.ext
-  intro x
-  have hx := WangHomologyPresentation.map_eq_correctedSection_coinvariant
-    P S.degreeOne c f
-      (normalizedDegreeOneTotalSpecialization_comp_coinvariantsToTotal G h) x
-  change f x = _
-  rw [hx]
-  unfold normalizedGeometricWangSections
-  change c _ = EstablishedStandardA2CuspSpecialization.degreeOneFiberProjection
-      (CircleMappingTorusHomologyBases.finTwoProdIntLinearEquiv (c _, _))
-  funext i
-  fin_cases i <;> rfl
 
-/-- In the intrinsically normalized Wang splitting, degree-two specialization is projection to
-the first four coordinates. -/
-public theorem normalizedDegreeTwoTotalSpecialization_eq_projection
-    (G : ActualCuspRadialClutchingData W)
-    (h : FiberCoinvariantSpecializationIsomorphisms G) :
-    let _ := G.fiberTopology
-    (normalizedDegreeTwoTotalSpecialization G h).toAddMonoidHom =
-      EstablishedStandardA2CuspSpecialization.degreeTwoFiberProjection.comp
-          (normalizedGeometricWangSections G h).circleMappingTorusHTwoAddEquiv.toAddMonoidHom := by
-  let _ := G.fiberTopology
-  let P := circleMappingTorusHTwoPresentation G.clutching
-  let S := _root_.SphereSixComplex.CircleMappingTorusHomologyBases.CuspMonodromyCoordinates.wangSections G.monodromyCoordinates
-  let c := G.degreeTwoCoinvariantsEquiv
-  let f := normalizedDegreeTwoTotalSpecialization G h
-  apply AddMonoidHom.ext
-  intro x
-  have hx := WangHomologyPresentation.map_eq_correctedSection_coinvariant
-    P S.degreeTwo c f
-      (normalizedDegreeTwoTotalSpecialization_comp_coinvariantsToTotal G h) x
-  change f x = _
-  rw [hx]
-  unfold normalizedGeometricWangSections
-  change c _ = EstablishedStandardA2CuspSpecialization.degreeTwoFiberProjection
-      (CircleMappingTorusHomologyBases.finFourProdFinTwoLinearEquiv (c _, _))
-  funext i
-  fin_cases i <;> rfl
 
-/-- Every degree-one generator has the identity matrix in the normalized coordinates. -/
-public theorem normalizedDegreeOneFiberGeneratorSpecialization
-    (G : ActualCuspRadialClutchingData W)
-    (h : FiberCoinvariantSpecializationIsomorphisms G) (j i : Fin 2) :
-    normalizedCuspFillingHomologyOneEquiv G h
-        (rawDegreeOneFiberSpecialization G
-          (G.degreeOneCoinvariantsEquiv.symm (Pi.single j 1))) i =
-      (Pi.single j 1 : Fin 2 → ℤ) i := by
-  simpa using congrFun
-    (normalizedCuspFillingHomologyOneEquiv_rawFiberSpecialization G h
-      (G.degreeOneCoinvariantsEquiv.symm (Pi.single j 1))) i
 
-/-- Every degree-two generator has the identity matrix in the normalized coordinates. -/
-public theorem normalizedDegreeTwoFiberGeneratorSpecialization
-    (G : ActualCuspRadialClutchingData W)
-    (h : FiberCoinvariantSpecializationIsomorphisms G) (j i : Fin 4) :
-    normalizedCuspFillingHomologyTwoEquiv G h
-        (rawDegreeTwoFiberSpecialization G
-          (G.degreeTwoCoinvariantsEquiv.symm (Pi.single j 1))) i =
-      (Pi.single j 1 : Fin 4 → ℤ) i := by
-  simpa using congrFun
-    (normalizedCuspFillingHomologyTwoEquiv_rawFiberSpecialization G h
-      (G.degreeTwoCoinvariantsEquiv.symm (Pi.single j 1))) i
 
 end Geometry.CuspPuncturedCollarBridge.CuspFiberSpecializationNormalization
 

@@ -30,9 +30,6 @@ noncomputable section
 /-- Second coordinate in the ordered list `(01, 02, 03, 12, 13, 23)`. -/
 @[expose] public def periodPairSecond : Fin 6 → Fin 4 := ![1, 2, 3, 2, 3, 3]
 
-public theorem periodPairFirst_lt_second (i : Fin 6) :
-    periodPairFirst i < periodPairSecond i := by
-  fin_cases i <;> decide
 
 /-- The second compound of a four-by-four matrix in coordinates `(01, 02, 03, 12, 13, 23)`. -/
 @[expose] public def secondCompoundMatrix
@@ -66,17 +63,7 @@ public theorem integralMatrix_rhoLambda_gTwo :
   rw [LinearMap.toMatrix'_apply]
   convert congrFun (rhoLambda_g₂_apply (Pi.single j 1)) i using 1 <;> simp
 
-/-- The degree-two order-three action is the second compound of the source matrix `A₁`. -/
-public theorem exteriorSquareMatrix_rhoLambda_gOne :
-    exteriorSquareMatrix (rhoLambda g₁) =
-      secondCompoundMatrix A₁ := by
-  rw [exteriorSquareMatrix, integralMatrix_rhoLambda_gOne]
 
-/-- The degree-two order-four action is the second compound of the source matrix `A₂`. -/
-public theorem exteriorSquareMatrix_rhoLambda_gTwo :
-    exteriorSquareMatrix (rhoLambda g₂) =
-      secondCompoundMatrix A₂ := by
-  rw [exteriorSquareMatrix, integralMatrix_rhoLambda_gTwo]
 
 /-- An affine automorphism of a period torus together with its actual lift and integral lattice
 automorphism. -/
@@ -352,49 +339,9 @@ variable {U : TriangleUniformization} (F : PeriodFunctions U)
   EstablishedTorusHomology.additiveTorusHomologyBasis _
     (fullRankDomain (parameterMap F U.zTwo))
 
-/-- In the standard degree-one basis, the order-three affine generator acts by the actual
-integral monodromy `rhoLambda g₁`. -/
-public theorem orderThreeFiberGenerator_homology_degreeOne (x) :
-    (orderThreeTorusHomologyBasis F).degreeOne
-        (integralSingularHomologyMap 1
-          (orderThreeDescendedAffineTorusAutomorphism F).map x) =
-      rhoLambda g₁ ((orderThreeTorusHomologyBasis F).degreeOne x) :=
-  (EstablishedTorusHomology.additiveTorusHomologyBasis_naturality _
-    (fullRankDomain (parameterMap F U.zOne))
-    (orderThreeDescendedAffineTorusAutomorphism F)).1 x
 
-/-- In degree two, the order-three affine generator acts by the second compound matrix of its
-actual integral monodromy. -/
-public theorem orderThreeFiberGenerator_homology_degreeTwo (x) :
-    (orderThreeTorusHomologyBasis F).degreeTwo
-        (integralSingularHomologyMap 2
-          (orderThreeDescendedAffineTorusAutomorphism F).map x) =
-      exteriorSquareMap (rhoLambda g₁) ((orderThreeTorusHomologyBasis F).degreeTwo x) :=
-  (EstablishedTorusHomology.additiveTorusHomologyBasis_naturality _
-    (fullRankDomain (parameterMap F U.zOne))
-    (orderThreeDescendedAffineTorusAutomorphism F)).2 x
 
-/-- In the standard degree-one basis, the order-four affine generator acts by the actual
-integral monodromy `rhoLambda g₂`. -/
-public theorem orderFourFiberGenerator_homology_degreeOne (x) :
-    (orderFourTorusHomologyBasis F).degreeOne
-        (integralSingularHomologyMap 1
-          (orderFourDescendedAffineTorusAutomorphism F).map x) =
-      rhoLambda g₂ ((orderFourTorusHomologyBasis F).degreeOne x) :=
-  (EstablishedTorusHomology.additiveTorusHomologyBasis_naturality _
-    (fullRankDomain (parameterMap F U.zTwo))
-    (orderFourDescendedAffineTorusAutomorphism F)).1 x
 
-/-- In degree two, the order-four affine generator acts by the second compound matrix of its
-actual integral monodromy. -/
-public theorem orderFourFiberGenerator_homology_degreeTwo (x) :
-    (orderFourTorusHomologyBasis F).degreeTwo
-        (integralSingularHomologyMap 2
-          (orderFourDescendedAffineTorusAutomorphism F).map x) =
-      exteriorSquareMap (rhoLambda g₂) ((orderFourTorusHomologyBasis F).degreeTwo x) :=
-  (EstablishedTorusHomology.additiveTorusHomologyBasis_naturality _
-    (fullRankDomain (parameterMap F U.zTwo))
-    (orderFourDescendedAffineTorusAutomorphism F)).2 x
 
 end Geometry.EllipticFamilySpecialization
 

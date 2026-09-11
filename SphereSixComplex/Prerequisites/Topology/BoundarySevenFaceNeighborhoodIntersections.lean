@@ -125,16 +125,6 @@ public theorem standardBoundarySevenFaceNeighborhoodIntersectionProjection_mem_f
   exact standardBoundarySevenFaceNeighborhoodIntersectionProjection_apply_of_mem
     s hsne hs w hi
 
-/-- The simultaneous projection also remains in the open intersection. -/
-public theorem standardBoundarySevenFaceNeighborhoodIntersectionProjection_mem
-    (s : Finset (Fin 8)) (hsne : s.Nonempty) (hs : s ≠ Finset.univ)
-    (w : standardBoundarySevenFaceNeighborhoodIntersection s) :
-    standardBoundarySevenFaceNeighborhoodIntersectionProjection s hsne hs w ∈
-      standardBoundarySevenFaceNeighborhoodIntersection s := by
-  intro i hi
-  rw [standardBoundarySevenFaceNeighborhoodIntersectionProjection_apply_of_mem
-    s hsne hs w hi]
-  norm_num
 
 /-- The simultaneous normalization varies continuously. -/
 public theorem continuous_standardBoundarySevenFaceNeighborhoodIntersectionProjection
@@ -348,28 +338,6 @@ public theorem standardBoundarySevenFaceNeighborhoodIntersectionRetraction_comp_
   apply Subtype.ext
   exact standardBoundarySevenFaceNeighborhoodIntersectionProjection_face s hsne hs w
 
-/-- The deformation fixes the affine face pointwise at every time. -/
-public theorem standardBoundarySevenFaceNeighborhoodIntersectionHomotopyPoint_fixed
-    (s : Finset (Fin 8)) (hsne : s.Nonempty) (hs : s ≠ Finset.univ)
-    (t : unitInterval) (w : standardBoundarySevenAffineFace s) :
-    standardBoundarySevenFaceNeighborhoodIntersectionHomotopyPoint s hsne hs
-        (t, standardBoundarySevenAffineFaceInclusion s w) =
-      standardBoundarySevenAffineFaceInclusion s w := by
-  apply Subtype.ext
-  apply Subtype.ext
-  apply stdSimplex.ext
-  funext k
-  have hp := standardBoundarySevenFaceNeighborhoodIntersectionProjection_face
-    s hsne hs w
-  have hpk :
-      (standardBoundarySevenFaceNeighborhoodIntersectionProjection s hsne hs
-        (standardBoundarySevenAffineFaceInclusion s w)).1 k = w.1.1 k := by
-    rw [hp]
-  change (1 - (t : ℝ)) * w.1.1 k + (t : ℝ) *
-      (standardBoundarySevenFaceNeighborhoodIntersectionProjection s hsne hs
-        (standardBoundarySevenAffineFaceInclusion s w)).1 k = w.1.1 k
-  rw [hpk]
-  ring
 
 /-- A nonempty proper intersection is homotopy equivalent to its common affine face.  The
 forward map is the literal face inclusion and the inverse is simultaneous normalization. -/
@@ -535,21 +503,9 @@ public theorem standardBoundarySevenFaceNeighborhoodIntersection_contractibleSpa
   exact (standardBoundarySevenAffineFaceIntersectionHomotopyEquiv
     s hsne hs).symm.contractibleSpace
 
-/-- Hence every nonempty proper standard intersection is path connected. -/
-public theorem standardBoundarySevenFaceNeighborhoodIntersection_pathConnectedSpace
-    (s : Finset (Fin 8)) (hsne : s.Nonempty) (hs : s ≠ Finset.univ) :
-    PathConnectedSpace (standardBoundarySevenFaceNeighborhoodIntersection s) := by
-  let _ : ContractibleSpace
-      (standardBoundarySevenFaceNeighborhoodIntersection s) :=
-    standardBoundarySevenFaceNeighborhoodIntersection_contractibleSpace s hsne hs
-  infer_instance
 
 /-! ## Transport to the geometric realization -/
 
-/-- The common affine face inside the geometric realization. -/
-public def boundarySevenAffineFaceIntersection (s : Finset (Fin 8)) :
-    Set (SSet.toTop.obj (∂Δ[7] : SSet.{0})) :=
-  {x | ∀ i ∈ s, boundarySevenComparisonToStdSimplex x i = 0}
 
 /-- The canonical barycentric homeomorphism restricted to an intersection of face
 neighbourhoods. -/
@@ -565,180 +521,19 @@ public noncomputable def boundarySevenFaceNeighborhoodIntersectionHomeomorphStan
           stdSimplex ℝ (Fin 8)) i < (1 : ℝ) / 8
     rw [boundarySevenRealizationHomeomorphStandardBoundary_apply_val]
 
-/-- The canonical barycentric homeomorphism restricted to the common affine face. -/
-public noncomputable def boundarySevenAffineFaceIntersectionHomeomorphStandard
-    (s : Finset (Fin 8)) :
-    boundarySevenAffineFaceIntersection s ≃ₜ standardBoundarySevenAffineFace s :=
-  boundarySevenRealizationHomeomorphStandardBoundary.subtype fun x ↦ by
-    change (∀ i ∈ s, boundarySevenComparisonToStdSimplex x i = 0) ↔
-      ∀ i ∈ s,
-        (boundarySevenRealizationHomeomorphStandardBoundary x :
-          stdSimplex ℝ (Fin 8)) i = 0
-    rw [boundarySevenRealizationHomeomorphStandardBoundary_apply_val]
 
-/-- Every nonempty proper realized intersection is homotopy equivalent to its literal common
-affine face. -/
-public noncomputable def boundarySevenAffineFaceIntersectionHomotopyEquiv
-    (s : Finset (Fin 8)) (hsne : s.Nonempty) (hs : s ≠ Finset.univ) :
-    boundarySevenAffineFaceIntersection s ≃ₕ
-      boundarySevenFaceNeighborhoodIntersection s :=
-  (boundarySevenAffineFaceIntersectionHomeomorphStandard s).toHomotopyEquiv |>.trans
-    (standardBoundarySevenAffineFaceIntersectionHomotopyEquiv s hsne hs) |>.trans
-      (boundarySevenFaceNeighborhoodIntersectionHomeomorphStandard s).symm.toHomotopyEquiv
 
-/-- The forward map of the transported equivalence is the literal inclusion of the common face
-in the neighbourhood intersection. -/
-public theorem boundarySevenAffineFaceIntersectionHomotopyEquiv_apply
-    (s : Finset (Fin 8)) (hsne : s.Nonempty) (hs : s ≠ Finset.univ)
-    (x : boundarySevenAffineFaceIntersection s) :
-    (boundarySevenAffineFaceIntersectionHomotopyEquiv s hsne hs x).1 = x.1 := by
-  change (boundarySevenRealizationHomeomorphStandardBoundary).symm
-      (boundarySevenRealizationHomeomorphStandardBoundary x.1) = x.1
-  exact Homeomorph.symm_apply_apply _ _
 
-/-- Literal inclusion of the realized common affine face into the neighbourhood intersection. -/
-public noncomputable def boundarySevenAffineFaceIntersectionInclusion
-    (s : Finset (Fin 8)) :
-    C(boundarySevenAffineFaceIntersection s,
-      boundarySevenFaceNeighborhoodIntersection s) := by
-  refine ⟨fun x ↦ ⟨x.1, ?_⟩, continuous_subtype_val.subtype_mk _⟩
-  rw [mem_boundarySevenFaceNeighborhoodIntersection_iff]
-  intro i hi
-  rw [x.2 i hi]
-  norm_num
 
-/-- The inverse of the realized face/intersection homotopy equivalence is the simultaneous
-normalization retraction. -/
-public noncomputable def boundarySevenFaceNeighborhoodIntersectionRetraction
-    (s : Finset (Fin 8)) (hsne : s.Nonempty) (hs : s ≠ Finset.univ) :
-    C(boundarySevenFaceNeighborhoodIntersection s,
-      boundarySevenAffineFaceIntersection s) :=
-  (boundarySevenAffineFaceIntersectionHomotopyEquiv s hsne hs).invFun
 
-/-- The forward map used in the realized equivalence is exactly the literal inclusion. -/
-public theorem boundarySevenAffineFaceIntersectionHomotopyEquiv_toFun
-    (s : Finset (Fin 8)) (hsne : s.Nonempty) (hs : s ≠ Finset.univ) :
-    (boundarySevenAffineFaceIntersectionHomotopyEquiv s hsne hs).toFun =
-      boundarySevenAffineFaceIntersectionInclusion s := by
-  apply ContinuousMap.ext
-  intro x
-  apply Subtype.ext
-  exact boundarySevenAffineFaceIntersectionHomotopyEquiv_apply s hsne hs x
 
-/-- The realized simultaneous normalization is a strict left inverse to face inclusion. -/
-public theorem boundarySevenFaceNeighborhoodIntersectionRetraction_comp_inclusion
-    (s : Finset (Fin 8)) (hsne : s.Nonempty) (hs : s ≠ Finset.univ) :
-    (boundarySevenFaceNeighborhoodIntersectionRetraction s hsne hs).comp
-        (boundarySevenAffineFaceIntersectionInclusion s) =
-      ContinuousMap.id _ := by
-  apply ContinuousMap.ext
-  intro x
-  change (boundarySevenAffineFaceIntersectionHomeomorphStandard s).symm
-      ((standardBoundarySevenFaceNeighborhoodIntersectionRetraction s hsne hs)
-        ((boundarySevenFaceNeighborhoodIntersectionHomeomorphStandard s)
-          (boundarySevenAffineFaceIntersectionInclusion s x))) = x
-  apply (boundarySevenAffineFaceIntersectionHomeomorphStandard s).injective
-  rw [Homeomorph.apply_symm_apply]
-  exact ContinuousMap.congr_fun
-    (standardBoundarySevenFaceNeighborhoodIntersectionRetraction_comp_inclusion
-      s hsne hs) ((boundarySevenAffineFaceIntersectionHomeomorphStandard s) x)
 
-/-- The affine homotopy transported explicitly to the geometric realization. -/
-public noncomputable def boundarySevenFaceNeighborhoodIntersectionHomotopyPoint
-    (s : Finset (Fin 8)) (hsne : s.Nonempty) (hs : s ≠ Finset.univ)
-    (q : unitInterval × boundarySevenFaceNeighborhoodIntersection s) :
-    boundarySevenFaceNeighborhoodIntersection s :=
-  (boundarySevenFaceNeighborhoodIntersectionHomeomorphStandard s).symm
-    (standardBoundarySevenFaceNeighborhoodIntersectionHomotopyPoint s hsne hs
-      (q.1, boundarySevenFaceNeighborhoodIntersectionHomeomorphStandard s q.2))
 
-/-- The transported affine homotopy is continuous. -/
-public theorem continuous_boundarySevenFaceNeighborhoodIntersectionHomotopyPoint
-    (s : Finset (Fin 8)) (hsne : s.Nonempty) (hs : s ≠ Finset.univ) :
-    Continuous (boundarySevenFaceNeighborhoodIntersectionHomotopyPoint s hsne hs) := by
-  exact (boundarySevenFaceNeighborhoodIntersectionHomeomorphStandard s).symm.continuous.comp
-    ((continuous_standardBoundarySevenFaceNeighborhoodIntersectionHomotopyPoint
-      s hsne hs).comp
-        (continuous_fst.prodMk
-          ((boundarySevenFaceNeighborhoodIntersectionHomeomorphStandard s).continuous.comp
-            continuous_snd)))
 
-@[simp]
-public theorem boundarySevenFaceNeighborhoodIntersectionHomotopyPoint_zero
-    (s : Finset (Fin 8)) (hsne : s.Nonempty) (hs : s ≠ Finset.univ)
-    (x : boundarySevenFaceNeighborhoodIntersection s) :
-    boundarySevenFaceNeighborhoodIntersectionHomotopyPoint s hsne hs (0, x) = x := by
-  change (boundarySevenFaceNeighborhoodIntersectionHomeomorphStandard s).symm
-      (standardBoundarySevenFaceNeighborhoodIntersectionHomotopyPoint s hsne hs
-        (0, boundarySevenFaceNeighborhoodIntersectionHomeomorphStandard s x)) = x
-  rw [standardBoundarySevenFaceNeighborhoodIntersectionHomotopyPoint_zero,
-    Homeomorph.symm_apply_apply]
 
-@[simp]
-public theorem boundarySevenFaceNeighborhoodIntersectionHomotopyPoint_one
-    (s : Finset (Fin 8)) (hsne : s.Nonempty) (hs : s ≠ Finset.univ)
-    (x : boundarySevenFaceNeighborhoodIntersection s) :
-    boundarySevenFaceNeighborhoodIntersectionHomotopyPoint s hsne hs (1, x) =
-      boundarySevenAffineFaceIntersectionInclusion s
-        (boundarySevenFaceNeighborhoodIntersectionRetraction s hsne hs x) := by
-  change (boundarySevenFaceNeighborhoodIntersectionHomeomorphStandard s).symm
-      (standardBoundarySevenFaceNeighborhoodIntersectionHomotopyPoint s hsne hs
-        (1, boundarySevenFaceNeighborhoodIntersectionHomeomorphStandard s x)) =
-    boundarySevenAffineFaceIntersectionInclusion s
-      (boundarySevenFaceNeighborhoodIntersectionRetraction s hsne hs x)
-  apply (boundarySevenFaceNeighborhoodIntersectionHomeomorphStandard s).injective
-  rw [Homeomorph.apply_symm_apply]
-  rw [standardBoundarySevenFaceNeighborhoodIntersectionHomotopyPoint_one]
-  apply Subtype.ext
-  have hr := Homeomorph.apply_symm_apply
-    (boundarySevenAffineFaceIntersectionHomeomorphStandard s)
-    ((standardBoundarySevenFaceNeighborhoodIntersectionRetraction s hsne hs)
-      (boundarySevenFaceNeighborhoodIntersectionHomeomorphStandard s x))
-  exact (congrArg Subtype.val hr).symm
 
-/-- The transported homotopy from the identity to inclusion after normalization. -/
-public noncomputable def boundarySevenFaceNeighborhoodIntersectionHomotopy
-    (s : Finset (Fin 8)) (hsne : s.Nonempty) (hs : s ≠ Finset.univ) :
-    ContinuousMap.Homotopy (ContinuousMap.id _)
-      ((boundarySevenAffineFaceIntersectionInclusion s).comp
-        (boundarySevenFaceNeighborhoodIntersectionRetraction s hsne hs)) where
-  toFun := boundarySevenFaceNeighborhoodIntersectionHomotopyPoint s hsne hs
-  continuous_toFun :=
-    continuous_boundarySevenFaceNeighborhoodIntersectionHomotopyPoint s hsne hs
-  map_zero_left := boundarySevenFaceNeighborhoodIntersectionHomotopyPoint_zero s hsne hs
-  map_one_left := boundarySevenFaceNeighborhoodIntersectionHomotopyPoint_one s hsne hs
 
-/-- The transported deformation fixes the common affine face pointwise. -/
-public theorem boundarySevenFaceNeighborhoodIntersectionHomotopyPoint_fixed
-    (s : Finset (Fin 8)) (hsne : s.Nonempty) (hs : s ≠ Finset.univ)
-    (t : unitInterval) (x : boundarySevenAffineFaceIntersection s) :
-    boundarySevenFaceNeighborhoodIntersectionHomotopyPoint s hsne hs
-        (t, boundarySevenAffineFaceIntersectionInclusion s x) =
-      boundarySevenAffineFaceIntersectionInclusion s x := by
-  change (boundarySevenFaceNeighborhoodIntersectionHomeomorphStandard s).symm
-      (standardBoundarySevenFaceNeighborhoodIntersectionHomotopyPoint s hsne hs
-        (t, boundarySevenFaceNeighborhoodIntersectionHomeomorphStandard s
-          (boundarySevenAffineFaceIntersectionInclusion s x))) =
-    boundarySevenAffineFaceIntersectionInclusion s x
-  apply (boundarySevenFaceNeighborhoodIntersectionHomeomorphStandard s).injective
-  rw [Homeomorph.apply_symm_apply]
-  change standardBoundarySevenFaceNeighborhoodIntersectionHomotopyPoint s hsne hs
-      (t, standardBoundarySevenAffineFaceInclusion s
-        (boundarySevenAffineFaceIntersectionHomeomorphStandard s x)) =
-    standardBoundarySevenAffineFaceInclusion s
-      (boundarySevenAffineFaceIntersectionHomeomorphStandard s x)
-  exact standardBoundarySevenFaceNeighborhoodIntersectionHomotopyPoint_fixed
-    s hsne hs t _
 
-/-- The reverse affine homotopy is the deformation from inclusion after simultaneous
-normalization to the identity on the realized intersection. -/
-public noncomputable def boundarySevenFaceNeighborhoodIntersectionDeformation
-    (s : Finset (Fin 8)) (hsne : s.Nonempty) (hs : s ≠ Finset.univ) :
-    ContinuousMap.Homotopy
-      ((boundarySevenAffineFaceIntersectionInclusion s).comp
-        (boundarySevenFaceNeighborhoodIntersectionRetraction s hsne hs))
-      (ContinuousMap.id _) :=
-  (boundarySevenFaceNeighborhoodIntersectionHomotopy s hsne hs).symm
 
 /-- Every nonempty proper intersection of the actual face-neighbourhood cover is contractible. -/
 public theorem boundarySevenFaceNeighborhoodIntersection_contractibleSpace
@@ -749,12 +544,5 @@ public theorem boundarySevenFaceNeighborhoodIntersection_contractibleSpace
     standardBoundarySevenFaceNeighborhoodIntersection_contractibleSpace s hsne hs
   exact (boundarySevenFaceNeighborhoodIntersectionHomeomorphStandard s).contractibleSpace
 
-/-- Every nonempty proper intersection of the actual cover is path connected. -/
-public theorem boundarySevenFaceNeighborhoodIntersection_pathConnectedSpace
-    (s : Finset (Fin 8)) (hsne : s.Nonempty) (hs : s ≠ Finset.univ) :
-    PathConnectedSpace (boundarySevenFaceNeighborhoodIntersection s) := by
-  let _ : ContractibleSpace (boundarySevenFaceNeighborhoodIntersection s) :=
-    boundarySevenFaceNeighborhoodIntersection_contractibleSpace s hsne hs
-  infer_instance
 
 end SphereSixComplex

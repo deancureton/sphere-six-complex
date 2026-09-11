@@ -108,11 +108,7 @@ def sourceCircleCayleyChartBase : OpenPartialHomeomorph ℂ ℂ where
     change ContinuousWithinAt (fun u : ℂ => boundaryCayleyInv 1 (-u)) ({I} : Set ℂ)ᶜ w
     exact hd.continuousAt.continuousWithinAt
 
-@[simp] theorem sourceCircleCayleyChartBase_apply (z : ℂ) :
-    sourceCircleCayleyChartBase z = sourceCircleCayley z := rfl
 
-@[simp] theorem sourceCircleCayleyChartBase_symm_apply (w : ℂ) :
-    sourceCircleCayleyChartBase.symm w = sourceCircleCayleyInv w := rfl
 
 theorem sourceCircleCayley_im (z : ℂ) :
     (sourceCircleCayley z).im =
@@ -191,13 +187,6 @@ theorem sourceCircleDouble_mapsTo : MapsTo sourceCircle sourceCircleDouble sourc
   · simpa [div_eq_mul_inv] using (div_lt_div_iff_of_pos_right hn).2 hl
   · simpa [div_eq_mul_inv] using (div_lt_div_iff_of_pos_right hn).2 hr
 
-theorem sourceOpenChamber_subset_sourceCircleDouble :
-    sourceOpenChamber ⊆ sourceCircleDouble := by
-  rintro z ⟨hl, hr, hi, hn⟩
-  refine ⟨hi, hl, hr, ?_, ?_⟩
-  · have hs : 0 < Real.sqrt 2 := Real.sqrt_pos.2 (by norm_num)
-    nlinarith
-  · nlinarith
 
 /-- The Cayley chart restricted exactly to the reflection-symmetric circular double. -/
 def sourceCircleCayleyChart : OpenPartialHomeomorph ℂ ℂ :=
@@ -206,8 +195,6 @@ def sourceCircleCayleyChart : OpenPartialHomeomorph ℂ ℂ :=
 @[simp] theorem sourceCircleCayleyChart_apply (z : ℂ) :
     sourceCircleCayleyChart z = sourceCircleCayley z := rfl
 
-@[simp] theorem sourceCircleCayleyChart_symm_apply (w : ℂ) :
-    sourceCircleCayleyChart.symm w = sourceCircleCayleyInv w := rfl
 
 theorem sourceCircleCayleyChart_source :
     sourceCircleCayleyChart.source = sourceCircleDouble := by
@@ -439,25 +426,6 @@ theorem sourceScalarCircleDoubleMap_differentiableOn
     simpa [sourceScalarTargetLineChart] using
       sourceScalarTriangleMap_circleLine S z hz hcoord
 
-theorem sourceScalarCircleDoubleMap_eq_seed
-    (S : ChamberCaratheodorySeed sourceBoundedChamber) :
-    EqOn (sourceScalarCircleDoubleMap S) (sourceScalarTriangleMap S) sourceOpenChamber := by
-  intro z hz
-  apply TauCeti.chartedSchwarzReflection_of_coord_im_nonneg
-    sourceCircleCayleyChart sourceScalarTargetLineChart (sourceScalarTriangleMap S)
-  · intro w hw
-    simp [sourceScalarTargetLineChart]
-  · rw [sourceCircleCayleyChart_source]
-    exact sourceOpenChamber_subset_sourceCircleDouble hz
-  · rw [sourceCircleCayleyChart_apply, sourceCircleCayley_im]
-    have hz1 : z ≠ 1 := by
-      have hi : 0 < z.im := hz.2.2.1
-      intro h
-      subst z
-      norm_num at hi
-    have hden : 0 < normSq (1 - z) :=
-      Complex.normSq_pos.mpr (sub_ne_zero.mpr hz1.symm)
-    exact (div_nonneg_iff.mpr (Or.inl ⟨by linarith [hz.2.2.2], hden.le⟩))
 
 theorem sourceScalarCircleDoubleMap_reflection
     (S : ChamberCaratheodorySeed sourceBoundedChamber) {z : ℂ}

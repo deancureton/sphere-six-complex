@@ -275,35 +275,7 @@ public noncomputable def cuspAngularZeroLogLift :
   source' := A.cuspAngularZeroLogLiftPoint_zero
   target' := A.cuspAngularZeroLogLiftPoint_one
 
-public theorem cuspAngularZeroLogLift_map_exp :
-    ((A.cuspAngularZeroLogLift.map
-        complexExpCoverContinuousMap.continuous).cast
-      (complexExpCoverContinuousMap_log
-        A.cuspAngularZeroPuncturedBasepoint.1
-        A.cuspAngularZeroPuncturedBasepoint.2).symm
-      (complexExpCoverContinuousMap_log_add_deck
-        A.cuspAngularZeroPuncturedBasepoint.1
-        A.cuspAngularZeroPuncturedBasepoint.2 1).symm) =
-      A.cuspAngularZeroPuncturedLoop := by
-  apply Path.ext
-  funext t
-  apply Subtype.ext
-  exact A.cuspAngularZeroLogLiftPoint_exp t
 
-/-- Relative to the finite plane, the actual selected cusp meridian is exactly the `+1`
-integer-circle class. -/
-public theorem cuspAngularZero_loopClass_eq_integerCircle :
-    Path.Homotopic.Quotient.mk A.cuspAngularZeroPuncturedLoop =
-      Path.Homotopic.Quotient.mk
-        (puncturedComplexIntegerCircle
-          A.cuspAngularZeroPuncturedBasepoint.1
-          A.cuspAngularZeroPuncturedBasepoint.2 1) := by
-  exact puncturedComplex_loopClass_eq_integerCircle_of_lift
-    A.cuspAngularZeroPuncturedBasepoint.1
-    A.cuspAngularZeroPuncturedBasepoint.2 1
-    A.cuspAngularZeroPuncturedLoop
-    A.cuspAngularZeroLogLift
-    A.cuspAngularZeroLogLift_map_exp
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

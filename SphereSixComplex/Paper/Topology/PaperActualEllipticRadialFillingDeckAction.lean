@@ -71,153 +71,19 @@ public theorem isQuotientCoveringMap_compMulEquiv
     apply e.injective
     simpa using hdisj (e g) hg
 
-@[instance_reducible]
-public noncomputable def ellipticThreeCentralFillingDeckAction :
-    MulAction A.ellipticThreeBoundaryDeckData.FillingDeck ComplexTwoSpace := by
-  let P := orderThreeCentralFiberPresentationData A.periods
-  let actionH := affineCyclicFillingDeckAction P
-  let _ := actionH
-  exact MulAction.compHom ComplexTwoSpace
-    A.ellipticThreeToCanonicalFillingDeckEquiv.toMonoidHom
 
-public theorem ellipticThreeCentralFilling_isQuotientCoveringMap :
-    letI := A.ellipticThreeCentralFillingDeckAction
-    IsQuotientCoveringMap
-      (complexTwoReducedCentralFiberProjection
-        (D := orderThreeRadialActionData A.periods))
-      A.ellipticThreeBoundaryDeckData.FillingDeck := by
-  let P := orderThreeCentralFiberPresentationData A.periods
-  let actionH := affineCyclicFillingDeckAction P
-  exact isQuotientCoveringMap_compMulEquiv actionH
-    A.ellipticThreeToCanonicalFillingDeckEquiv _
-    (orderThreeAffineCyclicFilling_isQuotientCoveringMap A.periods)
 
-@[instance_reducible]
-public noncomputable def ellipticFourCentralFillingDeckAction :
-    MulAction A.ellipticFourBoundaryDeckData.FillingDeck ComplexTwoSpace := by
-  let P := orderFourCentralFiberPresentationData A.periods
-  let actionH := affineCyclicFillingDeckAction P
-  let _ := actionH
-  exact MulAction.compHom ComplexTwoSpace
-    A.ellipticFourToCanonicalFillingDeckEquiv.toMonoidHom
 
-public theorem ellipticFourCentralFilling_isQuotientCoveringMap :
-    letI := A.ellipticFourCentralFillingDeckAction
-    IsQuotientCoveringMap
-      (complexTwoReducedCentralFiberProjection
-        (D := orderFourRadialActionData A.periods))
-      A.ellipticFourBoundaryDeckData.FillingDeck := by
-  let P := orderFourCentralFiberPresentationData A.periods
-  let actionH := affineCyclicFillingDeckAction P
-  exact isQuotientCoveringMap_compMulEquiv actionH
-    A.ellipticFourToCanonicalFillingDeckEquiv _
-    (orderFourAffineCyclicFilling_isQuotientCoveringMap A.periods)
 
-public noncomputable def ellipticThreeFillingDegree :
-    A.ellipticThreeBoundaryDeckData.FillingDeck →* FiniteCyclic 3 :=
-  (canonicalAffineCyclicFillingExtension
-    (orderThreeCentralFiberPresentationData A.periods)).proj.comp
-      A.ellipticThreeToCanonicalFillingDeckEquiv.toMonoidHom
 
-public noncomputable def ellipticFourFillingDegree :
-    A.ellipticFourBoundaryDeckData.FillingDeck →* FiniteCyclic 4 :=
-  (canonicalAffineCyclicFillingExtension
-    (orderFourCentralFiberPresentationData A.periods)).proj.comp
-      A.ellipticFourToCanonicalFillingDeckEquiv.toMonoidHom
 
-public noncomputable def ellipticThreeDiscRepresentation :
-    A.ellipticThreeBoundaryDeckData.FillingDeck →* Equiv.Perm ComplexUnitDisc :=
-  (cyclicRepresentation 3 orderThreeDiscRotation orderThreeDiscRotation_pow).comp
-    A.ellipticThreeFillingDegree
 
-public noncomputable def ellipticFourDiscRepresentation :
-    A.ellipticFourBoundaryDeckData.FillingDeck →* Equiv.Perm ComplexUnitDisc :=
-  (cyclicRepresentation 4 orderFourDiscRotation orderFourDiscRotation_pow).comp
-    A.ellipticFourFillingDegree
 
-public theorem ellipticThreeDiscRepresentation_norm
-    (g : A.ellipticThreeBoundaryDeckData.FillingDeck) (u : ComplexUnitDisc) :
-    ‖((A.ellipticThreeDiscRepresentation g u : ComplexUnitDisc) : ℂ)‖ = ‖(u : ℂ)‖ := by
-  rw [ellipticThreeDiscRepresentation, MonoidHom.comp_apply,
-    cyclic_eq_generator_pow (A.ellipticThreeFillingDegree g), map_pow,
-    show cyclicGenerator 3 = Multiplicative.ofAdd 1 from rfl,
-    cyclicRepresentation_generator]
-  change ‖(((orderThreeDiscRotation ^
-    (Multiplicative.toAdd (A.ellipticThreeFillingDegree g)).val) u :
-      ComplexUnitDisc) : ℂ)‖ = _
-  rw [show orderThreeDiscRotation =
-      ComplexUnitDisc.rotation orderThreeMultiplier norm_orderThreeMultiplier from rfl,
-    ComplexUnitDisc.coe_rotation_pow_apply, norm_mul, norm_pow,
-    norm_orderThreeMultiplier, one_pow, one_mul]
 
-public theorem ellipticFourDiscRepresentation_norm
-    (g : A.ellipticFourBoundaryDeckData.FillingDeck) (u : ComplexUnitDisc) :
-    ‖((A.ellipticFourDiscRepresentation g u : ComplexUnitDisc) : ℂ)‖ = ‖(u : ℂ)‖ := by
-  rw [ellipticFourDiscRepresentation, MonoidHom.comp_apply,
-    cyclic_eq_generator_pow (A.ellipticFourFillingDegree g), map_pow,
-    show cyclicGenerator 4 = Multiplicative.ofAdd 1 from rfl,
-    cyclicRepresentation_generator]
-  change ‖(((orderFourDiscRotation ^
-    (Multiplicative.toAdd (A.ellipticFourFillingDegree g)).val) u :
-      ComplexUnitDisc) : ℂ)‖ = _
-  rw [show orderFourDiscRotation =
-      ComplexUnitDisc.rotation orderFourMultiplier norm_orderFourMultiplier from rfl,
-    ComplexUnitDisc.coe_rotation_pow_apply, norm_mul, norm_pow,
-    norm_orderFourMultiplier, one_pow, one_mul]
 
-@[instance_reducible]
-public noncomputable def ellipticThreeDiscBallAction :
-    MulAction A.ellipticThreeBoundaryDeckData.FillingDeck
-      (ComplexDiscBall A.starSeparation.orderThree.radius) where
-  smul g u := ⟨A.ellipticThreeDiscRepresentation g u.1, by
-    rw [A.ellipticThreeDiscRepresentation_norm]
-    exact u.2⟩
-  one_smul u := by
-    apply Subtype.ext
-    change A.ellipticThreeDiscRepresentation 1 u.1 = u.1
-    rw [map_one]
-    rfl
-  mul_smul g h u := by
-    apply Subtype.ext
-    change A.ellipticThreeDiscRepresentation (g * h) u.1 =
-      A.ellipticThreeDiscRepresentation g (A.ellipticThreeDiscRepresentation h u.1)
-    rw [map_mul]
-    rfl
 
-@[instance_reducible]
-public noncomputable def ellipticFourDiscBallAction :
-    MulAction A.ellipticFourBoundaryDeckData.FillingDeck
-      (ComplexDiscBall A.starSeparation.orderFour.radius) where
-  smul g u := ⟨A.ellipticFourDiscRepresentation g u.1, by
-    rw [A.ellipticFourDiscRepresentation_norm]
-    exact u.2⟩
-  one_smul u := by
-    apply Subtype.ext
-    change A.ellipticFourDiscRepresentation 1 u.1 = u.1
-    rw [map_one]
-    rfl
-  mul_smul g h u := by
-    apply Subtype.ext
-    change A.ellipticFourDiscRepresentation (g * h) u.1 =
-      A.ellipticFourDiscRepresentation g (A.ellipticFourDiscRepresentation h u.1)
-    rw [map_mul]
-    rfl
 
-@[instance_reducible]
-public noncomputable def ellipticThreeFixedRadialFillingDeckAction :
-    MulAction A.ellipticThreeBoundaryDeckData.FillingDeck
-      (ComplexDiscBall A.starSeparation.orderThree.radius × ComplexTwoSpace) := by
-  let _ := A.ellipticThreeDiscBallAction
-  let _ := A.ellipticThreeCentralFillingDeckAction
-  infer_instance
 
-@[instance_reducible]
-public noncomputable def ellipticFourFixedRadialFillingDeckAction :
-    MulAction A.ellipticFourBoundaryDeckData.FillingDeck
-      (ComplexDiscBall A.starSeparation.orderFour.radius × ComplexTwoSpace) := by
-  let _ := A.ellipticFourDiscBallAction
-  let _ := A.ellipticFourCentralFillingDeckAction
-  infer_instance
 
 @[instance_reducible]
 public noncomputable def ellipticThreeUnitRadialFillingDeckAction :

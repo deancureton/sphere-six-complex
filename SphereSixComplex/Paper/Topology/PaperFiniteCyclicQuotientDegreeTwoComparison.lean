@@ -53,23 +53,6 @@ public structure DegreeTwoPullbackRealization
     quotientBasis (integralSingularHomologyMap 2 projection x) =
       degreeTwoEvaluationMap pullbackBasis (sourceBasis x)
 
-namespace DegreeTwoPullbackRealization
-
-variable {E X : Type} [TopologicalSpace E] [TopologicalSpace X]
-  {projection : C(E, X)} {sourceBasis : IntegralSingularHomology 2 E ≃+ DegreeTwoLattice}
-  {r : ℕ} {pullbackBasis : Fin r → DegreeTwoLattice}
-
-/-- Conjugating the covering projection by the selected bases gives evaluation. -/
-public theorem projection_conjugacy_apply
-    (R : DegreeTwoPullbackRealization projection sourceBasis pullbackBasis)
-    (x : DegreeTwoLattice) :
-    R.quotientBasis
-        (integralSingularHomologyMap 2 projection (sourceBasis.symm x)) =
-      degreeTwoEvaluationMap pullbackBasis x := by
-  simpa using R.projection_coordinates (sourceBasis.symm x)
-
-end DegreeTwoPullbackRealization
-
 /-- The two order-three pullback classes used in the paper's degree-two matrix. -/
 public def orderThreePullbackInvariantZero : orderThreeDegreeTwoInvariants :=
   ⟨1 • gammaEpsilonOne + 0 • qClass, orderThree_combination_fixed 1 0⟩

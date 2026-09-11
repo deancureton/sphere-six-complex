@@ -62,12 +62,6 @@ public def pointMappingTorusProjection (phi : F ≃ₜ F) :
       (continuous_const.prodMk
         ((continuous_fst.comp continuous_snd).prodMk continuous_const)))
 
-@[simp]
-public theorem pointMappingTorusProjection_cylinderProjection (phi : F ≃ₜ F)
-    (p : unitInterval × F) :
-    pointMappingTorusProjection phi (circleMappingTorusCylinderProjection phi p) =
-      circleMappingTorusCylinderProjection (Homeomorph.refl Unit) (p.1, ()) :=
-  rfl
 
 /-- After projecting the point mapping torus to its base circle, the point projection is the
 original base-circle projection. -/
@@ -80,16 +74,6 @@ public theorem pointMappingTorusProjection_baseCircle (phi : F ≃ₜ F) :
   induction z using Quotient.inductionOn with
   | _ p => rfl
 
-/-- The point projection maps the marked source fibre to the marked point fibre. -/
-public theorem pointMappingTorusProjection_fiberInclusion (phi : F ≃ₜ F) :
-    (pointMappingTorusProjection phi).comp
-        (finiteBouquetMappingTorusFiberInclusion (fun _ : Unit ↦ phi)) =
-      (finiteBouquetMappingTorusFiberInclusion
-        (fun _ : Unit ↦ Homeomorph.refl Unit)).comp
-          (ContinuousMap.const F ()) := by
-  apply ContinuousMap.ext
-  intro x
-  rfl
 
 /-- The point projection pulls the target vertex member back to the source vertex member. -/
 public theorem pointMappingTorusProjection_vertexOpen (phi : F ≃ₜ F) :
@@ -141,18 +125,6 @@ public noncomputable def pointMappingTorusProjectionIntersectionHomologyMap
     (mappingTorusVertexOpen (Homeomorph.refl Unit))
     (mappingTorusEdgeOpen (Homeomorph.refl Unit)) n
 
-/-- Transporting the canonical binary-cover comparison along equalities of both ordered opens
-recovers the canonical comparison for the transported cover. -/
-public theorem openCoverHomologyComparisonOfCover_transport
-    {X : TopCat} {U V U' V' : Opens X} (hU : U = U') (hV : V = V')
-    (hcover : U ⊔ V = ⊤) (hcover' : U' ⊔ V' = ⊤) :
-    (by
-      rw [← hU, ← hV]
-      exact openCoverHomologyComparisonOfCover hcover) =
-      openCoverHomologyComparisonOfCover hcover' := by
-  subst U'
-  subst V'
-  rfl
 
 /-- Pullback naturality, with its source cover transported along equalities to a named ordered
 cover. -/
@@ -175,30 +147,7 @@ public theorem openCoverHomologyComparisonOfCover_boundary_pullback_transport
     (openCoverHomologyComparisonOfCover_pullbackNaturality f U V
       (pullback_open_cover f U V htarget) htarget) n
 
-/-- The pullback comparison, transported to the literal standard source cover. -/
-public noncomputable def pointMappingTorusProjectionPullbackComparison (phi : F ≃ₜ F) :
-    OpenCoverHomologyComparison (mappingTorusVertexOpen phi) (mappingTorusEdgeOpen phi) := by
-  rw [← pointMappingTorusProjection_vertexOpen phi,
-    ← pointMappingTorusProjection_edgeOpen phi]
-  exact openCoverHomologyComparisonOfCover
-    (pullback_open_cover (TopCat.ofHom (pointMappingTorusProjection phi))
-      (mappingTorusVertexOpen (Homeomorph.refl Unit))
-      (mappingTorusEdgeOpen (Homeomorph.refl Unit))
-      (mappingTorusOpenCover (Homeomorph.refl Unit)))
 
-/-- Transporting the canonical pullback comparison does not change the canonical source
-comparison. -/
-public theorem pointMappingTorusProjectionPullbackComparison_eq (phi : F ≃ₜ F) :
-    pointMappingTorusProjectionPullbackComparison phi =
-      mappingTorusOpenCoverHomologyComparison phi := by
-  exact openCoverHomologyComparisonOfCover_transport
-    (pointMappingTorusProjection_vertexOpen phi)
-    (pointMappingTorusProjection_edgeOpen phi)
-    (pullback_open_cover (TopCat.ofHom (pointMappingTorusProjection phi))
-      (mappingTorusVertexOpen (Homeomorph.refl Unit))
-      (mappingTorusEdgeOpen (Homeomorph.refl Unit))
-      (mappingTorusOpenCover (Homeomorph.refl Unit)))
-    (mappingTorusOpenCover phi)
 
 /-- Naturality of the canonical vertex--edge boundary under the projection to the point mapping
 torus. -/

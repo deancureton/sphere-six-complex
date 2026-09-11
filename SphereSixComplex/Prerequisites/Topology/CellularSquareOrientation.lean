@@ -109,18 +109,6 @@ public def normalizedSquareDiskOrientation :
     (cwCharacteristicBoundaryInclusion 2) 1)).addCommGroupIsoToAddEquiv.trans
       cwSquareBoundaryHomologyWinding
 
-public theorem normalizedSquareDiskOrientation_apply
-    (x : (cwRelativeIntegralSingularChainComplex
-      (cwCharacteristicBoundaryInclusion 2)).homology 2) :
-    normalizedSquareDiskOrientation x = cwSquareBoundaryHomologyWinding
-      ((cwRelativeIntegralSingularBoundary (cwCharacteristicBoundaryInclusion 2) 1).hom x) := rfl
 
-public theorem normalizedSquareDiskOrientation_boundary_one :
-    (cwRelativeIntegralSingularBoundary (cwCharacteristicBoundaryInclusion 2) 1).hom
-        (normalizedSquareDiskOrientation.symm 1) =
-      StandardCircleHomologyLiftDegree.loopHomologyClass cwSquareBoundaryPositiveLoop := by
-  apply cwSquareBoundaryHomologyWinding.injective
-  rw [← normalizedSquareDiskOrientation_apply, AddEquiv.apply_symm_apply,
-    cwSquareBoundaryHomologyWinding_positiveLoop]
 
 end SphereSixComplex

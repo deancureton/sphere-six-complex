@@ -47,10 +47,6 @@ public theorem gluedT2_of_cuspProper
     exact A.starFilling_t2 i
   exact (A.closedCollarPairData_of_cuspProper hcusp).t2Space
 
-/-- All three concrete collar-pair images are closed. -/
-public theorem closedCollarPairData :
-    A.openEmbeddingStarData.ClosedCollarPairData :=
-  A.closedCollarPairData_of_cuspProper A.cuspCollarPairMap_isProper
 
 /-- The concrete completed four-piece star is Hausdorff. -/
 public theorem starGluedT2 :

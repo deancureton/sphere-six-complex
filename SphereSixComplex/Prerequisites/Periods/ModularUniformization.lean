@@ -62,51 +62,6 @@ public structure TriangleUniformization where
   cuspRegion_nonempty : cuspRegion.Nonempty
   cuspRegion_invariant : ∀ z, sourceAction g₀ • z ∈ cuspRegion ↔ z ∈ cuspRegion
 
-/-- The identity-source modular model. This is a useful diagnostic instance of
-`TriangleUniformization`, but it is not the paper's source uniformization: the source triangle
-upper half-plane has a genuine order-four action. `CanonicalObstruction.lean` proves that this
-instance admits no compatible `mu` transformation laws. -/
-public noncomputable def canonicalTriangleUniformization : TriangleUniformization where
-  sourceAction := (MulAction.toPermHom (GL (Fin 2) ℝ) UpperHalfPlane).comp rhoTauReal
-  sourceAction_contMDiff g n := by
-    apply UpperHalfPlane.contMDiff_smul
-    simp [rhoTauReal, modularToReal]
-  coordinate z := normalizedJ z / 1728
-  coordinate_holomorphic :=
-    normalizedJ_mdifferentiable.div mdifferentiable_const (by norm_num)
-  coordinate_invariant g z := by
-    change normalizedJ (rhoTauReal g • z) / 1728 = normalizedJ z / 1728
-    rw [show rhoTauReal g = Matrix.SpecialLinearGroup.mapGL ℝ (rhoTau g) by
-      simp [rhoTauReal, modularToReal]]
-    rw [normalizedJ_modular_invariant]
-  zOne := ellipticThreeParameter
-  zTwo := UpperHalfPlane.I
-  zOne_fixed := by
-    change rhoTauReal g₁ • ellipticThreeParameter = ellipticThreeParameter
-    apply UpperHalfPlane.coe_injective
-    rw [rhoTauReal_g1_smul]
-    have hz : (ellipticThreeParameter : ℂ) ≠ 0 := ellipticThreeParameter.ne_zero
-    field_simp [hz]
-    rw [show (ellipticThreeParameter : ℂ) = UpperHalfPlane.ρ + 1 by rfl]
-    rw [show ((UpperHalfPlane.ρ : ℂ) + 1) ^ 2 =
-        (UpperHalfPlane.ρ : ℂ) ^ 2 + 2 * UpperHalfPlane.ρ + 1 by ring]
-    rw [UpperHalfPlane.ρ_sq]
-    ring
-  zTwo_fixed := by
-    change rhoTauReal g₂ • UpperHalfPlane.I = UpperHalfPlane.I
-    apply UpperHalfPlane.coe_injective
-    rw [rhoTauReal_g2_smul]
-    norm_num [UpperHalfPlane.I]
-  cuspRegion := {z | 1 ≤ z.im}
-  cuspRegion_nonempty := by
-    refine ⟨UpperHalfPlane.I, ?_⟩
-    norm_num [UpperHalfPlane.I]
-  cuspRegion_invariant z := by
-    change 1 ≤ (rhoTauReal g₀ • z).im ↔ 1 ≤ z.im
-    rw [rhoTauReal_g₀]
-    have h := congrArg Complex.im (rhoTauReal_g0_smul z)
-    norm_num at h
-    rw [h]
 
 public def BoundedOn (f : UpperHalfPlane → ℂ) (s : Set UpperHalfPlane) : Prop :=
   ∃ C : ℝ, 0 ≤ C ∧ ∀ z ∈ s, ‖f z‖ ≤ C

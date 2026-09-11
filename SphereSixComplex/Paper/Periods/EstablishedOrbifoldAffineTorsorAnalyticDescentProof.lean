@@ -52,57 +52,9 @@ public theorem affineCusp_sub (z : UpperHalfPlane) (u v : ℂ) :
   have h := P.cuspNormalize_sub z u v
   linear_combination h - hsub
 
-/-- The order-three multipliers multiply to one around an elliptic orbit. -/
-public theorem linearOne_cycle (z : UpperHalfPlane) :
-    P.linearOne (fuchsianSourceAction (g₁ ^ 2) • z) *
-        P.linearOne (fuchsianSourceAction g₁ • z) * P.linearOne z = 1 := by
-  have hu := P.affineOne_cycle z 1
-  have hv := P.affineOne_cycle z 0
-  have h1 := P.affineOne_sub (fuchsianSourceAction (g₁ ^ 2) • z)
-    (P.affineOne (fuchsianSourceAction g₁ • z) (P.affineOne z 1))
-    (P.affineOne (fuchsianSourceAction g₁ • z) (P.affineOne z 0))
-  have h2 := P.affineOne_sub (fuchsianSourceAction g₁ • z)
-    (P.affineOne z 1) (P.affineOne z 0)
-  have h3 := P.affineOne_sub z 1 0
-  rw [hu, hv] at h1
-  rw [h2, h3] at h1
-  linear_combination -h1
 
-/-- The order-four multipliers multiply to one around an elliptic orbit. -/
-public theorem linearTwo_cycle (z : UpperHalfPlane) :
-    P.linearTwo (fuchsianSourceAction (g₂ ^ 3) • z) *
-        P.linearTwo (fuchsianSourceAction (g₂ ^ 2) • z) *
-      P.linearTwo (fuchsianSourceAction g₂ • z) * P.linearTwo z = 1 := by
-  have hu := P.affineTwo_cycle z 1
-  have hv := P.affineTwo_cycle z 0
-  have h1 := P.affineTwo_sub (fuchsianSourceAction (g₂ ^ 3) • z)
-    (P.affineTwo (fuchsianSourceAction (g₂ ^ 2) • z)
-      (P.affineTwo (fuchsianSourceAction g₂ • z) (P.affineTwo z 1)))
-    (P.affineTwo (fuchsianSourceAction (g₂ ^ 2) • z)
-      (P.affineTwo (fuchsianSourceAction g₂ • z) (P.affineTwo z 0)))
-  have h2 := P.affineTwo_sub (fuchsianSourceAction (g₂ ^ 2) • z)
-    (P.affineTwo (fuchsianSourceAction g₂ • z) (P.affineTwo z 1))
-    (P.affineTwo (fuchsianSourceAction g₂ • z) (P.affineTwo z 0))
-  have h3 := P.affineTwo_sub (fuchsianSourceAction g₂ • z)
-    (P.affineTwo z 1) (P.affineTwo z 0)
-  have h4 := P.affineTwo_sub z 1 0
-  rw [hu, hv] at h1
-  rw [h2, h3, h4] at h1
-  linear_combination -h1
 
-/-- Neither multiplier ever vanishes. -/
-public theorem linearOne_ne_zero (z : UpperHalfPlane) : P.linearOne z ≠ 0 := by
-  intro h
-  have hcycle := P.linearOne_cycle z
-  rw [h, mul_zero] at hcycle
-  exact zero_ne_one hcycle
 
-/-- Neither multiplier ever vanishes. -/
-public theorem linearTwo_ne_zero (z : UpperHalfPlane) : P.linearTwo z ≠ 0 := by
-  intro h
-  have hcycle := P.linearTwo_cycle z
-  rw [h, mul_zero] at hcycle
-  exact zero_ne_one hcycle
 
 /-- The multiplier system is trivial on the parabolic generator. -/
 public theorem linearOne_mul_linearTwo_cusp (z : UpperHalfPlane) :
@@ -119,12 +71,6 @@ public theorem linearOne_mul_linearTwo_cusp (z : UpperHalfPlane) :
   rw [h2, h3] at h1
   linear_combination -h1
 
-/-- Consequently the finite-chart homogeneous frame is invariant under the cusp translation. -/
-public theorem frameZero_cusp_invariant (z : UpperHalfPlane) :
-    P.frameZero (fuchsianSourceAction (g₁ * g₂) • z) = P.frameZero z := by
-  rw [map_mul, mul_smul, P.frameZero_one, P.frameZero_two]
-  have h := P.linearOne_mul_linearTwo_cusp z
-  linear_combination P.frameZero z * h
 
 /-- The classical Cartan--B conclusion for one affine-torsor descent problem: a single global
 holomorphic section of the affine torsor over the upper half-plane, equivariant for the two

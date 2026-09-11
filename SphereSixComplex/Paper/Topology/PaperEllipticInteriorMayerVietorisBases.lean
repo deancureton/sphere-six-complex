@@ -317,10 +317,6 @@ theorem differenceTwo_linear_comm :
   intro x
   exact B.differenceTwo x
 
-theorem exactSequence :
-    IntegralMayerVietoris.ExactSequence D.orderThreeSide D.orderFourSide :=
-  IntegralMayerVietoris.exact_sequence_of_isOpen D.orderThreeSide D.orderFourSide
-    D.orderThreeSide_isOpen D.orderFourSide_isOpen
 
 noncomputable def presentationOne :
     WangHomologyPresentation
@@ -372,53 +368,13 @@ noncomputable def presentationTwo :
       exact_inclusion_boundary := (h 1).1
       exact_boundary_lowDifference := (h 1).2.1 }
 
-/-- The degree-one presentation uses the canonical open-cover connecting map. -/
-public theorem presentationOne_boundary :
-    (presentationOne (D := D)).boundary = canonicalBoundary D 0 := by
-  rfl
 
 /-- The degree-two presentation uses the canonical open-cover connecting map. -/
 public theorem presentationTwo_boundary :
     (presentationTwo (D := D)).boundary = canonicalBoundary D 1 := by
   rfl
 
-/-- The two-disc coordinate calculation constructs `H₁(X°; ℤ) ≅ ℤ`. -/
-public noncomputable def ellipticInteriorHomologyOneEquiv :
-    IntegralSingularHomology 1 A.ellipticInterior ≃+ (Fin 1 → ℤ) := by
-  let P := presentationOne (D := D)
-  let coinvariants :=
-    (cokernelEquivOfComm B.bandOne.toIntLinearEquiv B.sidesOne.toIntLinearEquiv
-      P.highDifference.toIntLinearMap ellipticActualHOneLinear
-        B.differenceOne_linear_comm).trans
-      ellipticActualHOneCokernelEquivInt
-  let invariants := kernelEquivFinZeroOfInjective P.lowDifference.toIntLinearMap
-    B.differenceZero_injective
-  let eUnion := (P.linearEquivOfCoordinates coinvariants invariants).trans
-    intProdFinZeroEquivFinOne
-  let eTop := integralSingularHomologyEquiv 1
-    (topologicalSubsetHomeomorphOfEqUniv (TopCat.of A.ellipticInterior)
-      (D.orderThreeSide ∪ D.orderFourSide) D.sides_cover)
-  exact (eTop.symm.toIntLinearEquiv.trans eUnion).toAddEquiv
 
-/-- The two-disc coordinate calculation constructs `H₂(X°; ℤ) ≅ ℤ²`. -/
-public noncomputable def ellipticInteriorHomologyTwoEquiv :
-    IntegralSingularHomology 2 A.ellipticInterior ≃+ (Fin 2 → ℤ) := by
-  let P := presentationTwo (D := D)
-  let coinvariants :=
-    (cokernelEquivOfComm B.bandTwo.toIntLinearEquiv B.sidesTwo.toIntLinearEquiv
-      P.highDifference.toIntLinearMap alphaTwoLinear B.differenceTwo_linear_comm).trans
-      alphaTwoCokernelEquivInt
-  let invariants :=
-    (kernelEquivOfComm B.bandOne.toIntLinearEquiv B.sidesOne.toIntLinearEquiv
-      P.lowDifference.toIntLinearMap ellipticActualHOneLinear
-        B.differenceOne_linear_comm).trans
-      ellipticActualHOneKernelEquivInt
-  let eUnion := (P.linearEquivOfCoordinates coinvariants invariants).trans
-    intProdEquivFinTwo
-  let eTop := integralSingularHomologyEquiv 2
-    (topologicalSubsetHomeomorphOfEqUniv (TopCat.of A.ellipticInterior)
-      (D.orderThreeSide ∪ D.orderFourSide) D.sides_cover)
-  exact (eTop.symm.toIntLinearEquiv.trans eUnion).toAddEquiv
 
 end EllipticTwoDiscHomologyCoordinates
 

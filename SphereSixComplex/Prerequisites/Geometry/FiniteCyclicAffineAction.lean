@@ -67,8 +67,5 @@ public theorem cyclicGenerator_pow_ne_one {m k : ℕ}
   apply hk0
   simpa [cyclicGenerator] using h'
 
-public theorem finiteCyclic_card (m : ℕ) [NeZero m] :
-    Nat.card (FiniteCyclic m) = m := by
-  simp [FiniteCyclic]
 
 end SphereSixComplex.Geometry

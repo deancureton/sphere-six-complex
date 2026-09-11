@@ -46,41 +46,7 @@ public theorem angularCover_fullTurn {T : Type} [TopologicalSpace T]
       exact ⟨1, by norm_num⟩
     · rfl
 
-/-- A full order-three angular turn is invisible to the actual radial filling lift. -/
-public theorem ellipticThreeRadialFillingLift_fullTurn
-    (q : OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :
-    A.ellipticThreeRadialFillingLift (q.1, q.2.1 + 3, q.2.2) =
-      A.ellipticThreeRadialFillingLift q := by
-  let f : puncturedProduct ComplexTwoSpace A.starSeparation.orderThree.radius →
-      ComplexDiscBall A.starSeparation.orderThree.radius × ComplexTwoSpace := fun u =>
-    (⟨u.1.1, u.2.2⟩,
-      (fixedToMovingCover A.periods
-        A.modular.modularParameter.toTriangleUniformization.zOne
-        (orderThreeCayleyHomeomorph.symm u.1.1, u.1.2)).2)
-  change f (angularCover (T := ComplexTwoSpace) 3
-      A.starSeparation.orderThree.radius_lt_one.le (q.1, q.2.1 + 3, q.2.2)) =
-    f (angularCover (T := ComplexTwoSpace) 3
-      A.starSeparation.orderThree.radius_lt_one.le q)
-  exact congrArg f (angularCover_fullTurn 3
-    A.starSeparation.orderThree.radius_lt_one.le q)
 
-/-- A full order-four angular turn is invisible to the actual radial filling lift. -/
-public theorem ellipticFourRadialFillingLift_fullTurn
-    (q : OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :
-    A.ellipticFourRadialFillingLift (q.1, q.2.1 + 4, q.2.2) =
-      A.ellipticFourRadialFillingLift q := by
-  let f : puncturedProduct ComplexTwoSpace A.starSeparation.orderFour.radius →
-      ComplexDiscBall A.starSeparation.orderFour.radius × ComplexTwoSpace := fun u =>
-    (⟨u.1.1, u.2.2⟩,
-      (fixedToMovingCover A.periods
-        A.modular.modularParameter.toTriangleUniformization.zTwo
-        (orderFourCayleyHomeomorph.symm u.1.1, u.1.2)).2)
-  change f (angularCover (T := ComplexTwoSpace) 4
-      A.starSeparation.orderFour.radius_lt_one.le (q.1, q.2.1 + 4, q.2.2)) =
-    f (angularCover (T := ComplexTwoSpace) 4
-      A.starSeparation.orderFour.radius_lt_one.le q)
-  exact congrArg f (angularCover_fullTurn 4
-    A.starSeparation.orderFour.radius_lt_one.le q)
 
 private theorem orderThreeAffineEquiv_inv_three (z : ComplexTwoSpace) :
     (affineEquiv (orderThreeDescendedAffineTorusAutomorphism A.periods).lift
@@ -180,80 +146,6 @@ private theorem orderThreeInverseMeridian_cube_smul (w : ℝ × ComplexTwoSpace)
       zpow_add, zpow_add, zpow_neg_one]
     rfl
 
-/-- The legacy order-three positive-twist relation translates the vector coordinate by minus
-twice the marked period. -/
-public theorem orderThreeLegacyPositiveTwistFillingRelation_boundary_smul
-    (q : OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :
-    letI := A.ellipticThreeBoundaryAction
-    ((affineTorusMappingTorusDeckMeridian
-        (orderThreeDescendedAffineTorusAutomorphism A.periods))⁻¹ ^ 3 *
-      (Additive.toMul ((affineTorusMappingTorusDeckTranslation
-        (orderThreeDescendedAffineTorusAutomorphism A.periods)) epsilon))⁻¹) • q =
-      (q.1, q.2.1 + 3, periodVector
-        (parameterMap A.periods
-          A.modular.modularParameter.toTriangleUniformization.zOne).1 (-2 • epsilon) + q.2.2) := by
-  let _ := A.ellipticThreeBoundaryAction
-  let _ := orderThreeAffineMappingTorusDeckAction A.periods
-  change (q.1,
-    (((affineTorusMappingTorusDeckMeridian
-        (orderThreeDescendedAffineTorusAutomorphism A.periods))⁻¹ ^ 3) *
-      (Additive.toMul
-        ((affineTorusMappingTorusDeckTranslation
-          (orderThreeDescendedAffineTorusAutomorphism A.periods)) epsilon))⁻¹) • q.2) = _
-  rw [mul_smul]
-  have htrans :
-      (Additive.toMul
-        ((affineTorusMappingTorusDeckTranslation
-          (orderThreeDescendedAffineTorusAutomorphism A.periods)) epsilon))⁻¹ =
-      Additive.toMul
-        ((affineTorusMappingTorusDeckTranslation
-          (orderThreeDescendedAffineTorusAutomorphism A.periods)) (-epsilon)) := by
-    rw [map_neg]
-    rfl
-  rw [htrans, affineTorusMappingTorusDeckTranslation_smul]
-  simp only [pow_succ, pow_zero, one_mul, mul_smul]
-  rw [orderThreeInverseMeridian_smul,
-    orderThreeInverseMeridian_smul, orderThreeInverseMeridian_smul]
-  let E := affineEquiv (orderThreeDescendedAffineTorusAutomorphism A.periods).lift
-    ((3 : ℂ)⁻¹ • periodVector
-      (parameterMap A.periods
-        A.modular.modularParameter.toTriangleUniformization.zOne).1 epsilon)
-  change (q.1, ((q.2.1 + 1) + 1) + 1,
-      E.symm (E.symm (E.symm (periodVector
-        (parameterMap A.periods
-          A.modular.modularParameter.toTriangleUniformization.zOne).1 (-epsilon) + q.2.2)))) = _
-  rw [show E.symm (E.symm (E.symm (periodVector
-      (parameterMap A.periods
-        A.modular.modularParameter.toTriangleUniformization.zOne).1 (-epsilon) + q.2.2))) =
-      (E ^ (-3 : ℤ)) (periodVector
-        (parameterMap A.periods
-          A.modular.modularParameter.toTriangleUniformization.zOne).1 (-epsilon) + q.2.2) by
-    change (E⁻¹ * E⁻¹ * E⁻¹) _ = (E ^ (-3 : ℤ)) _
-    rw [show (-3 : ℤ) = -1 + -1 + -1 by norm_num,
-      zpow_add, zpow_add, zpow_neg_one]]
-  rw [orderThreeAffineEquiv_inv_three]
-  apply Prod.ext
-  · rfl
-  · apply Prod.ext
-    · ring
-    · dsimp only
-      rw [show periodVector
-      (parameterMap A.periods
-        A.modular.modularParameter.toTriangleUniformization.zOne).1 (-epsilon) =
-      -periodVector
-        (parameterMap A.periods
-          A.modular.modularParameter.toTriangleUniformization.zOne).1 epsilon by
-        change periodHom _ (-epsilon) = -periodHom _ epsilon
-        simp]
-      rw [show periodVector
-      (parameterMap A.periods
-        A.modular.modularParameter.toTriangleUniformization.zOne).1 (-2 • epsilon) =
-      -(2 : ℤ) • periodVector
-        (parameterMap A.periods
-          A.modular.modularParameter.toTriangleUniformization.zOne).1 epsilon by
-        change periodHom _ (-2 • epsilon) = -(2 : ℤ) • periodHom _ epsilon
-        exact map_zsmul (periodHom _) (-2) epsilon]
-      abel
 
 /-- The corrected actual order-three filling relation acts by one full angular turn and fixes the
 vector coordinate. -/
@@ -286,16 +178,6 @@ public theorem ellipticThreeFillingRelation_boundary_smul
     · change periodHom _ epsilon + q.2.2 - periodHom _ epsilon = q.2.2
       abel
 
-/-- The corrected actual order-three filling relation is killed by the radial filling lift. -/
-public theorem ellipticThreeFillingRelation_radialLift
-    (q : OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :
-    letI := A.ellipticThreeBoundaryAction
-    A.ellipticThreeRadialFillingLift
-        (A.ellipticThreeBoundaryDeckData.fillingRelation • q) =
-      A.ellipticThreeRadialFillingLift q := by
-  let _ := A.ellipticThreeBoundaryAction
-  rw [A.ellipticThreeFillingRelation_boundary_smul]
-  exact A.ellipticThreeRadialFillingLift_fullTurn q
 
 
 private theorem orderFourAffineEquiv_inv_four (z : ComplexTwoSpace) :
@@ -394,55 +276,6 @@ private theorem orderFourInverseMeridian_fourth_smul (w : ℝ × ComplexTwoSpace
       zpow_add, zpow_add, zpow_add, zpow_neg_one]
     rfl
 
-/-- The legacy order-four negative-twist relation translates the vector coordinate by twice the
-marked period. -/
-public theorem orderFourLegacyNegativeTwistFillingRelation_boundary_smul
-    (q : OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :
-    letI := A.ellipticFourBoundaryAction
-    ((affineTorusMappingTorusDeckMeridian
-        (orderFourDescendedAffineTorusAutomorphism A.periods))⁻¹ ^ 4 *
-      (Additive.toMul ((affineTorusMappingTorusDeckTranslation
-        (orderFourDescendedAffineTorusAutomorphism A.periods)) (-epsilon')))⁻¹) • q =
-      (q.1, q.2.1 + 4, periodVector
-        (parameterMap A.periods
-          A.modular.modularParameter.toTriangleUniformization.zTwo).1 (2 • epsilon') + q.2.2) := by
-  let _ := A.ellipticFourBoundaryAction
-  let _ := orderFourAffineMappingTorusDeckAction A.periods
-  change (q.1,
-    (((affineTorusMappingTorusDeckMeridian
-        (orderFourDescendedAffineTorusAutomorphism A.periods))⁻¹ ^ 4) *
-      (Additive.toMul ((affineTorusMappingTorusDeckTranslation
-        (orderFourDescendedAffineTorusAutomorphism A.periods)) (-epsilon')))⁻¹) • q.2) = _
-  rw [mul_smul]
-  have htrans :
-      (Additive.toMul ((affineTorusMappingTorusDeckTranslation
-        (orderFourDescendedAffineTorusAutomorphism A.periods)) (-epsilon')))⁻¹ =
-      Additive.toMul ((affineTorusMappingTorusDeckTranslation
-        (orderFourDescendedAffineTorusAutomorphism A.periods)) epsilon') := by
-    rw [map_neg, toMul_neg, inv_inv]
-  rw [htrans, affineTorusMappingTorusDeckTranslation_smul,
-    orderFourInverseMeridian_fourth_smul, orderFourAffineEquiv_inv_four]
-  apply Prod.ext
-  · rfl
-  · apply Prod.ext
-    · ring
-    · dsimp only
-      rw [show periodVector
-          (parameterMap A.periods
-            A.modular.modularParameter.toTriangleUniformization.zTwo).1 (-epsilon') =
-          -periodVector
-            (parameterMap A.periods
-              A.modular.modularParameter.toTriangleUniformization.zTwo).1 epsilon' by
-        change periodHom _ (-epsilon') = -periodHom _ epsilon'
-        simp]
-      rw [show periodVector
-          (parameterMap A.periods
-            A.modular.modularParameter.toTriangleUniformization.zTwo).1 (2 • epsilon') =
-          (2 : ℤ) • periodVector
-            (parameterMap A.periods
-              A.modular.modularParameter.toTriangleUniformization.zTwo).1 epsilon' by
-        exact map_zsmul (periodHom _) 2 epsilon']
-      abel
 
 /-- The corrected actual order-four filling relation acts by one full angular turn and fixes the
 vector coordinate. -/
@@ -475,56 +308,10 @@ public theorem ellipticFourFillingRelation_boundary_smul
     · change periodHom _ (-epsilon') + q.2.2 - periodHom _ (-epsilon') = q.2.2
       abel
 
-/-- The corrected actual order-four filling relation is killed by the radial filling lift. -/
-public theorem ellipticFourFillingRelation_radialLift
-    (q : OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :
-    letI := A.ellipticFourBoundaryAction
-    A.ellipticFourRadialFillingLift
-        (A.ellipticFourBoundaryDeckData.fillingRelation • q) =
-      A.ellipticFourRadialFillingLift q := by
-  let _ := A.ellipticFourBoundaryAction
-  rw [A.ellipticFourFillingRelation_boundary_smul]
-  exact A.ellipticFourRadialFillingLift_fullTurn q
 
 
-public theorem orderThreeLegacyFillingRelation_latticeTranslation_ne_zero :
-    (-2 • epsilon : Lattice) ≠ 0 := by
-  intro h
-  have h' := congrFun h 0
-  norm_num [epsilon] at h'
 
-public theorem orderFourLegacyFillingRelation_latticeTranslation_ne_zero :
-    (2 • epsilon' : Lattice) ≠ 0 := by
-  intro h
-  have h' := congrFun h 0
-  norm_num [epsilon'] at h'
 
-/-- The residual order-three vector translation is genuinely nonzero in the actual period
-coordinates. -/
-public theorem orderThreeLegacyFillingRelation_vectorTranslation_ne_zero :
-    periodVector
-      (parameterMap A.periods
-        A.modular.modularParameter.toTriangleUniformization.zOne).1 (-2 • epsilon) ≠ 0 := by
-  let P := SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.orderThreeCentralFiberPresentationData
-    A.periods
-  intro h
-  apply orderThreeLegacyFillingRelation_latticeTranslation_ne_zero
-  apply (periodHom_injective P.fullRank)
-  change periodVector _ (-2 • epsilon) = periodVector _ 0
-  simpa only [periodVector_zero] using h
 
-/-- The residual order-four vector translation is genuinely nonzero in the actual period
-coordinates. -/
-public theorem orderFourLegacyFillingRelation_vectorTranslation_ne_zero :
-    periodVector
-      (parameterMap A.periods
-        A.modular.modularParameter.toTriangleUniformization.zTwo).1 (2 • epsilon') ≠ 0 := by
-  let P := SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.orderFourCentralFiberPresentationData
-    A.periods
-  intro h
-  apply orderFourLegacyFillingRelation_latticeTranslation_ne_zero
-  apply (periodHom_injective P.fullRank)
-  change periodVector _ (2 • epsilon') = periodVector _ 0
-  simpa only [periodVector_zero] using h
 
 end SphereSixComplex.Geometry.PaperAnalyticData

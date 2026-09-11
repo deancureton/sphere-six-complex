@@ -560,79 +560,7 @@ open SphereSixComplex.Periods
 
 variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
 
-/-- The actual phase coefficients admit a quantitative toric-region cover after shrinking the
-cusp disc. -/
-public theorem exists_actual_quantitativeToricRegionCover
-    (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) :
-    ∃ r : ℝ, ∃ hr : 0 < r, ∃ hradius : r ≤ cuspRadius N.height,
-      Nonempty (QuantitativeToricRegionCover
-        (NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
-          N M r hr hradius)) := by
-  let rho := cuspRadius N.height / 2
-  have hrho_pos : 0 < rho := div_pos (cuspRadius_pos N.height) (by norm_num)
-  have hrho_lt : rho < cuspRadius N.height := by
-    dsimp [rho]
-    linarith [cuspRadius_pos N.height]
-  obtain ⟨A, hA, hR⟩ :=
-    NormalizedFuchsianCuspCoordinate.exists_phaseLogMatrix_bound
-      N hrho_lt
-  let r := min rho (Real.exp (-(4 * A + 1)))
-  have hr : 0 < r := lt_min hrho_pos (Real.exp_pos _)
-  have hradius : r ≤ cuspRadius N.height :=
-    (min_le_left _ _).trans (le_of_lt hrho_lt)
-  have hrexp_lt : Real.exp (-(4 * A + 1)) < 1 := by
-    apply Real.exp_lt_one_iff.mpr
-    linarith
-  have hrone : r < 1 := (min_le_right _ _).trans_lt hrexp_lt
-  let C :=
-    NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
-      N M r hr hradius
-  have hentry : ∀ (p : localCarrier M r), M.t p ≠ 0 → ∀ lambda i,
-      |(NormalizedFuchsianCuspCoordinate.phaseLogMatrix
-        N (M.t p)).mulVec
-          (realParameter
-            lambda) i| ≤ A * latticeL1 lambda := by
-    intro p _hp lambda i
-    have hpball : ‖M.t p‖ < r := mem_ball_zero_iff.mp p.property
-    have hq : M.t p ∈ Metric.closedBall (0 : ℂ) rho := by
-      rw [mem_closedBall_zero_iff]
-      exact (le_of_lt hpball).trans (min_le_left _ _)
-    simpa only [latticeL1,
-      parameterL1] using
-        NormalizedFuchsianCuspCoordinate.phaseLog_mulVec_le
-          N (hR (M.t p) hq) lambda i
-  have hlog : ∀ (p : localCarrier M r), M.t p ≠ 0 →
-      4 * A ≤ |Real.log ‖M.t p‖| := by
-    intro p hp
-    have hpball : ‖M.t p‖ < r := mem_ball_zero_iff.mp p.property
-    have hnorm_pos : 0 < ‖M.t p‖ := norm_pos_iff.mpr hp
-    have hnorm_exp : ‖M.t p‖ < Real.exp (-(4 * A + 1)) :=
-      hpball.trans_le (min_le_right _ _)
-    have hlog_lt := Real.strictMonoOn_log hnorm_pos (Real.exp_pos _) hnorm_exp
-    rw [Real.log_exp] at hlog_lt
-    have hlog_neg : Real.log ‖M.t p‖ < 0 := by
-      linarith
-    rw [abs_of_neg hlog_neg]
-    linarith
-  have hdisplacement : ∃ c : ℝ, 0 < c ∧ ∀ lambda (p : localCarrier M r),
-      M.t p ≠ 0 →
-        c * latticeL1 lambda ≤
-          positionL1 (rescaledPosition M (C.psiMap lambda p) - rescaledPosition M p) := by
-    refine ⟨1 / 2, by norm_num, ?_⟩
-    exact CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.rescaledPosition_displacement_lower
-      N M hrone C rfl hentry hlog
-  exact ⟨r, hr, hradius,
-    ⟨(standardBoundedPolydiscRegions M r hr hrone).toQuantitativeToricRegionCover
-      C hdisplacement⟩⟩
 
-/-- The resulting actual phase-corrected action satisfies the compact-overlap estimate. -/
-public theorem exists_actual_compactOverlapEstimate
-    (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) :
-    ∃ r : ℝ, ∃ hr : 0 < r, ∃ hradius : r ≤ cuspRadius N.height,
-      (NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
-        N M r hr hradius).CompactOverlapEstimate := by
-  obtain ⟨r, hr, hradius, ⟨Q⟩⟩ := exists_actual_quantitativeToricRegionCover N M
-  exact ⟨r, hr, hradius, Q.compactOverlapEstimate⟩
 
 /-- A single shrunk cusp radius carrying both estimates required by the local quotient. -/
 public structure ActualLocalCuspQuotientWitness
@@ -760,17 +688,6 @@ public theorem quotient_isQuotientCoveringMap
   exact CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients.quotient_isQuotientCoveringMap
     _ W.fixedPoint W.compactOverlap
 
-public theorem quotient_chartedSpace
-    (W : ActualLocalCuspQuotientWitness N M) :
-    let C :=
-      NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
-        N M W.radius W.radius_pos W.radius_le
-    letI := C.toCuspActionData.psiAction
-    Nonempty (ChartedSpace ComplexModel
-      (MulAction.orbitRel.Quotient
-        (Multiplicative ParameterLattice) (localCarrier M W.radius))) := by
-  exact CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients.quotient_chartedSpace
-    _ W.fixedPoint W.compactOverlap
 
 public theorem quotient_isManifold
     (W : ActualLocalCuspQuotientWitness N M) :
@@ -793,13 +710,6 @@ public theorem quotient_isManifold
 end ActualLocalCuspQuotientWitness
 
 
-/-- The established standard infinite `A₂` model therefore carries the complete local cusp
-quotient witness at one shrunk radius. -/
-public theorem exists_model_with_actualLocalCuspQuotientWitness
-    (N : NormalizedFuchsianCuspCoordinate E D) :
-    ∃ M : Model, Nonempty (ActualLocalCuspQuotientWitness N M) := by
-  obtain ⟨M⟩ := InfiniteA2Toric.model
-  exact ⟨M, exists_actualLocalCuspQuotientWitness N M⟩
 
 
 end BoundedPolydiscRegions

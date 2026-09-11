@@ -112,15 +112,6 @@ public theorem isHomotopyEquivalence_middle_of_interleaving (f : C(X, Y)) (g : C
     exact h1.symm.trans h2
   exact ⟨⟨g, q, hqG, ((ContinuousMap.Homotopic.refl g).comp hqp).trans hGp⟩, rfl⟩
 
-/-- In an interleaved chain `X → Y → Z → W` whose long composites are homotopy equivalences,
-the first map is a homotopy equivalence. -/
-public theorem isHomotopyEquivalence_first_of_interleaving (f : C(X, Y)) (g : C(Y, Z))
-    (h : C(Z, W))
-    (hgf : IsHomotopyEquivalence ((g.comp f : C(X, Z)) : X → Z))
-    (hhg : IsHomotopyEquivalence ((h.comp g : C(Y, W)) : Y → W)) :
-    IsHomotopyEquivalence (f : X → Y) :=
-  isHomotopyEquivalence_of_comp_left hgf
-    (isHomotopyEquivalence_middle_of_interleaving f g h hgf hhg)
 
 /-- In an interleaved chain `X → Y → Z → W` whose long composites are homotopy equivalences,
 the last map is a homotopy equivalence. -/

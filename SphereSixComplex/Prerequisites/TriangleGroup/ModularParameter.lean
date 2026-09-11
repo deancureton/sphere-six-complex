@@ -163,14 +163,9 @@ public theorem rhoTauReal_g₀_smul (z : UpperHalfPlane) :
     ring
   · simp [rhoTauReal_g₀, modularToReal]
 
-public theorem rhoTau_relation : rhoTau (g₁ * g₂ * g₀) = 1 := by
-  rw [g₁_mul_g₂_mul_g₀, map_one]
 
-public theorem rhoTau_g1 : rhoTau g₁ = modularOne := rhoTau_g₁
 
-public theorem rhoTau_g2 : rhoTau g₂ = modularTwo := rhoTau_g₂
 
-public theorem rhoTau_g0 : rhoTau g₀ = modularCusp := rhoTau_g₀
 
 public theorem rhoTauReal_g1_smul (z : UpperHalfPlane) :
     ((rhoTauReal g₁ • z : UpperHalfPlane) : ℂ) = (z - 1) / z :=

@@ -1,6 +1,7 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.OrientedSmoothHomotopySphere
+public import SphereSixComplex.Prerequisites.Topology.SmoothRecognition
+public import Mathlib.Geometry.Manifold.Instances.Sphere
 
 /-!
 # Homology transport for marked homotopy six-spheres
@@ -37,34 +38,7 @@ public noncomputable def singularHomologyIsoOfHomotopyEquiv
     exact TopCat.Homotopy.congr_homologyMap_singularChainComplexFunctor
       e.right_inv.some R k)
 
-/-- Vanishing of a singular-homology group transports backward across a homotopy equivalence. -/
-public theorem singularHomology_isZero_of_homotopyEquiv
-    {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
-    (R : AddCommGrpCat) (k : ℕ) (e : X ≃ₕ Y)
-    (hY : IsZero (((singularHomologyFunctor AddCommGrpCat k).obj R).obj (TopCat.of Y))) :
-    IsZero (((singularHomologyFunctor AddCommGrpCat k).obj R).obj (TopCat.of X)) :=
-  hY.of_iso (singularHomologyIsoOfHomotopyEquiv R k e)
 
-/-- For a marked smooth homotopy six-sphere, every coefficientwise homology-vanishing theorem for
-the standard sphere immediately transports to its carrier. -/
-public theorem OrientedMarkedSmoothHomotopySixSphere.singularHomology_isZero_of_standard
-    (S : OrientedMarkedSmoothHomotopySixSphere) (R : AddCommGrpCat) (k : ℕ)
-    (hstandard :
-      IsZero (((singularHomologyFunctor AddCommGrpCat k).obj R).obj
-        (TopCat.of SixSphere))) :
-    IsZero (((singularHomologyFunctor AddCommGrpCat k).obj R).obj
-      (TopCat.of S.carrier)) :=
-  singularHomology_isZero_of_homotopyEquiv R k S.marking hstandard
 
-/-- The exact middle-dimensional mod-two input for the Kervaire argument on all marked homotopy
-six-spheres follows from the single standard-sphere calculation. -/
-public theorem markedHomotopySixSphere_modTwoHomology_three_isZero_of_standard
-    (hstandard :
-      IsZero (((singularHomologyFunctor AddCommGrpCat 3).obj
-        (AddCommGrpCat.of (ZMod 2))).obj (TopCat.of SixSphere)))
-    (S : OrientedMarkedSmoothHomotopySixSphere) :
-    IsZero (((singularHomologyFunctor AddCommGrpCat 3).obj
-      (AddCommGrpCat.of (ZMod 2))).obj (TopCat.of S.carrier)) :=
-  S.singularHomology_isZero_of_standard (AddCommGrpCat.of (ZMod 2)) 3 hstandard
 
 end SphereSixComplex

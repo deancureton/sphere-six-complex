@@ -2,7 +2,7 @@ module
 
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenMayerVietoris
 public import SphereSixComplex.Paper.Topology.SectionSevenChainModel
-public import SphereSixComplex.Paper.Topology.SectionSevenMayerVietorisGradedAlgebra
+public import SphereSixComplex.Paper.Topology.HomologyComputation
 
 /-!
 # Homology-level Mayer--Vietoris assembly for Section 7
@@ -101,70 +101,11 @@ public theorem sectionSevenMayerVietorisFinalTwoHom_bijective :
     simp [sectionSevenMayerVietorisFinalTwoHom, Matrix.mulVec_mulVec,
       sectionSevenMayerVietorisFinalTwo_right_inverse]
 
-/-- The degree-two matrix before fixing the two marked invariant-boundary coefficients.  In the
-Section 7 source basis the unresolved marked row is `[a,b]`; all other entries come from the
-elliptic fibre coordinate and the cusp specialization. -/
-public def sectionSevenMayerVietorisMarkedTwoMatrix (a b : ℤ) :
-    Matrix (Fin 6) (Fin 6) ℤ :=
-  !![1, 0, 0, -12, -2, 0;
-     a, b, 0,   0,  0, 0;
-     0, 0, 1,   0,  0, 0;
-     0, 0, 0,   1,  0, 0;
-     0, 0, 0,   0,  1, 0;
-     0, 0, 0,   0,  0, -1]
 
-/-- The source-stated matrix is the positively oriented member of the marked family. -/
-public theorem sectionSevenMayerVietorisFinalTwoMatrix_eq_marked :
-    sectionSevenMayerVietorisFinalTwoMatrix =
-      sectionSevenMayerVietorisMarkedTwoMatrix 0 1 := rfl
 
-/-- An integral inverse when the second marked coefficient is a unit.  Over `ℤ`, writing the
-unit condition as `b * b = 1` avoids choosing its sign. -/
-public def sectionSevenMayerVietorisMarkedTwoInverse (a b : ℤ) :
-    Matrix (Fin 6) (Fin 6) ℤ :=
-  !![1,      0, 0,       12,      2, 0;
-     -b * a, b, 0, -12 * b * a, -2 * b * a, 0;
-     0,      0, 1,        0,      0, 0;
-     0,      0, 0,        1,      0, 0;
-     0,      0, 0,        0,      1, 0;
-     0,      0, 0,        0,      0, -1]
 
-public theorem sectionSevenMayerVietorisMarkedTwo_left_inverse
-    (a b : ℤ) (hb : b * b = 1) :
-    sectionSevenMayerVietorisMarkedTwoInverse a b *
-        sectionSevenMayerVietorisMarkedTwoMatrix a b = 1 := by
-  ext i j
-  fin_cases i <;> fin_cases j <;>
-    simp [sectionSevenMayerVietorisMarkedTwoInverse,
-      sectionSevenMayerVietorisMarkedTwoMatrix, Matrix.mul_apply, Fin.sum_univ_succ, hb] <;>
-    ring_nf
 
-public theorem sectionSevenMayerVietorisMarkedTwo_right_inverse
-    (a b : ℤ) (hb : b * b = 1) :
-    sectionSevenMayerVietorisMarkedTwoMatrix a b *
-        sectionSevenMayerVietorisMarkedTwoInverse a b = 1 := by
-  have hb' : b ^ 2 = 1 := by simpa [pow_two] using hb
-  ext i j
-  fin_cases i <;> fin_cases j <;>
-    simp [sectionSevenMayerVietorisMarkedTwoInverse,
-      sectionSevenMayerVietorisMarkedTwoMatrix, Matrix.mul_apply, Fin.sum_univ_succ, hb] <;>
-    ring_nf <;> simp [hb']
 
-/-- The exact index-four value is irrelevant: bijectivity only needs the index-five marked
-coefficient to be a unit, with either orientation. -/
-public theorem sectionSevenMayerVietorisMarkedTwoHom_bijective
-    (a b : ℤ) (hb : b * b = 1) :
-    Function.Bijective
-      (Matrix.mulVecLin (sectionSevenMayerVietorisMarkedTwoMatrix a b)).toAddHom := by
-  constructor
-  · intro x y h
-    have h' := congrArg (sectionSevenMayerVietorisMarkedTwoInverse a b).mulVec h
-    simpa [Matrix.mulVec_mulVec,
-      sectionSevenMayerVietorisMarkedTwo_left_inverse a b hb] using h'
-  · intro y
-    refine ⟨(sectionSevenMayerVietorisMarkedTwoInverse a b).mulVec y, ?_⟩
-    simp [Matrix.mulVec_mulVec,
-      sectionSevenMayerVietorisMarkedTwo_right_inverse a b hb]
 
 /-- The connected degree-zero difference map. -/
 public def sectionSevenMayerVietorisFinalZeroHom : (Fin 1 → ℤ) →+ (Fin 2 → ℤ) where
@@ -336,25 +277,7 @@ private theorem unionHomology_subsingleton_of_exact
   obtain ⟨w, rfl⟩ := hzRange
   exact hsumZero w
 
-public theorem finalUnionHomologyOne_subsingleton
-    (H : A.SectionSevenMayerVietorisHomologyAssembly) :
-    Subsingleton (IntegralSingularHomology 1
-      ((sectionSevenMayerVietorisCover A).stage (2 : Fin 4) ∪
-        (sectionSevenMayerVietorisCover A).piece 3 :
-          Set (SectionSevenMayerVietorisSpace A))) :=
-  unionHomology_subsingleton_of_exact _ _
-    (establishedFourPieceMayerVietorisExactness (sectionSevenMayerVietorisCover A) 2) 0
-    H.finalDifferenceOne_bijective.surjective H.finalDifferenceZero_injective
 
-public theorem finalUnionHomologyTwo_subsingleton
-    (H : A.SectionSevenMayerVietorisHomologyAssembly) :
-    Subsingleton (IntegralSingularHomology 2
-      ((sectionSevenMayerVietorisCover A).stage (2 : Fin 4) ∪
-        (sectionSevenMayerVietorisCover A).piece 3 :
-          Set (SectionSevenMayerVietorisSpace A))) :=
-  unionHomology_subsingleton_of_exact _ _
-    (establishedFourPieceMayerVietorisExactness (sectionSevenMayerVietorisCover A) 2) 1
-    H.finalDifferenceTwo_bijective.surjective H.finalDifferenceOne_bijective.injective
 
 public theorem final_union_eq_univ :
     (sectionSevenMayerVietorisCover A).stage (2 : Fin 4) ∪

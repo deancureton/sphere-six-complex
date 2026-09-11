@@ -61,27 +61,7 @@ public structure PositiveDegreeHomologyAssembly where
 
 namespace PositiveDegreeHomologyAssembly
 
-/-- The actual degree-one attachment map in the chosen integral coordinates. -/
-public theorem differenceMap_one_coordinates (H : A.PositiveDegreeHomologyAssembly) :
-    H.finalOneTarget.toAddMonoidHom.comp
-        (IntegralMayerVietoris.differenceMap
-          (A.openEmbeddingStarData.sectionSevenMayerVietorisCover.stage (2 : Fin 4))
-          (A.openEmbeddingStarData.sectionSevenMayerVietorisCover.piece 3) 1) =
-      sectionSevenFirstBoundaryHom.comp H.finalOneSource.toAddMonoidHom := by
-  apply AddMonoidHom.ext
-  intro x
-  exact H.finalOne_comm x
 
-/-- The actual degree-two attachment map in the chosen integral coordinates. -/
-public theorem differenceMap_two_coordinates (H : A.PositiveDegreeHomologyAssembly) :
-    H.finalTwoTarget.toAddMonoidHom.comp
-        (IntegralMayerVietoris.differenceMap
-          (A.openEmbeddingStarData.sectionSevenMayerVietorisCover.stage (2 : Fin 4))
-          (A.openEmbeddingStarData.sectionSevenMayerVietorisCover.piece 3) 2) =
-      sectionSevenMayerVietorisFinalTwoHom.comp H.finalTwoSource.toAddMonoidHom := by
-  apply AddMonoidHom.ext
-  intro x
-  exact H.finalTwo_comm x
 
 /-- Insert the proved canonical degree-zero bases and compatibility square. -/
 public noncomputable def toSectionSevenMayerVietorisHomologyAssembly

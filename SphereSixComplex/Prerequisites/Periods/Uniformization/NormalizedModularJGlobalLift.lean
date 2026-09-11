@@ -55,18 +55,6 @@ theorem exists_global_lift
     exists_global_lift_extending_local J C fuchsianOneFixedPoint f₀ hf₀ hP₀
   exact ⟨τ, hτ, hEq⟩
 
-/-- The same lift satisfies the unscaled modular-J equation used by
-`NormalizedFuchsianModularJLift`. -/
-theorem exists_global_normalizedJ_lift
-    (J : ExactNormalizedModularJUniformization)
-    (C : ExactFuchsianOrbifoldCoordinate) :
-    ∃ τ : UpperHalfPlane → UpperHalfPlane,
-      MDiff τ ∧ ∀ z, normalizedJ (τ z) = 1728 * C.coordinate z := by
-  obtain ⟨τ, hτ, hEq⟩ := exists_global_lift J C
-  refine ⟨τ, hτ, fun z ↦ ?_⟩
-  have h := hEq z
-  rw [normalizedModularJCoordinate] at h
-  linear_combination 1728 * h
 
 
 end SphereSixComplex.Periods.NormalizedModularJGlobalLift

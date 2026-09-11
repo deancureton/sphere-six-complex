@@ -80,14 +80,6 @@ public theorem coverChainInclusion_quasiIso_of_sup_eq_top {X : TopCat}
   rw [coverSmallSingularSubcomplex_binaryCoverFamily U V] at h
   exact h
 
-/-- In every degree, the generated binary-cover inclusion induces a homology isomorphism. -/
-public theorem coverChainInclusion_isIso_homologyMap_of_sup_eq_top {X : TopCat}
-    (U V : Opens X) (hcover : U ⊔ V = ⊤) (n : ℕ) :
-    IsIso (HomologicalComplex.homologyMap (coverChainInclusion U V) n) := by
-  let _ : QuasiIso (coverChainInclusion U V) :=
-    coverChainInclusion_quasiIso_of_sup_eq_top U V hcover
-  rw [← quasiIsoAt_iff_isIso_homologyMap]
-  infer_instance
 
 /-! ## Chains of an open subset and their image subcomplex -/
 
@@ -138,11 +130,6 @@ theorem singularOpenCorestrictionChainMap_naturality
   exact singularOpenCorestrictionChainMap (U ⊓ V) ≫
     openIntersectionChainComparison U V
 
-/-- Explicit form of the forward intersection comparison. -/
-public theorem intersectionForwardChain_eq {X : TopCat} (U V : Opens X) :
-    intersectionForwardChain U V =
-      singularOpenCorestrictionChainMap (U ⊓ V) ≫
-        openIntersectionChainComparison U V := rfl
 
 private noncomputable def openIntersectionPullbackChainMap {X Y : TopCat}
     (f : X ⟶ Y) (U V : Opens Y) :
@@ -388,41 +375,7 @@ public instance homologyFunctor_preservesBinaryBiproducts (n : ℕ) :
       (integralHomologyFunctor n).obj ((Opens.toTopCat X).obj (U ⊓ V)) :=
   (homologyFunctor n).mapIso (asIso (intersectionForwardChain U V)).symm
 
-/-- The inverse of the intersection comparison is induced by its forward chain map. -/
-public theorem intersectionHomologyIso_inv {X : TopCat}
-    (U V : Opens X) (n : ℕ) :
-    (intersectionHomologyIso U V n).inv =
-      HomologicalComplex.homologyMap (intersectionForwardChain U V) n := rfl
 
-/-- Naturality of the generated-to-ordinary intersection comparison with respect to a
-commuting chain-level square. -/
-public theorem intersectionHomologyIso_naturality {X : TopCat}
-    {U V U' V' : Opens X}
-    (f : (Opens.toTopCat X).obj (U ⊓ V) ⟶
-      (Opens.toTopCat X).obj (U' ⊓ V'))
-    (b : (coverChainShortComplex U V).X₁ ⟶ (coverChainShortComplex U' V').X₁)
-    (h : intersectionForwardChain U V ≫ b =
-      integralSimplicialChains.map (TopCat.toSSet.map f) ≫
-        intersectionForwardChain U' V') (n : ℕ) :
-    HomologicalComplex.homologyMap b n ≫ (intersectionHomologyIso U' V' n).hom =
-      (intersectionHomologyIso U V n).hom ≫
-        (integralHomologyFunctor n).map f := by
-  have hn :
-      (intersectionHomologyIso U V n).inv ≫
-          HomologicalComplex.homologyMap b n =
-        (integralHomologyFunctor n).map f ≫
-          (intersectionHomologyIso U' V' n).inv := by
-    change
-      HomologicalComplex.homologyMap (intersectionForwardChain U V) n ≫
-          HomologicalComplex.homologyMap b n =
-        HomologicalComplex.homologyMap
-            (integralSimplicialChains.map (TopCat.toSSet.map f)) n ≫
-          HomologicalComplex.homologyMap (intersectionForwardChain U' V') n
-    rw [← HomologicalComplex.homologyMap_comp,
-      ← HomologicalComplex.homologyMap_comp, h]
-  apply (cancel_epi (intersectionHomologyIso U V n).inv).mp
-  rw [← Category.assoc, hn]
-  simp
 
 /-- The generated middle term has the biproduct of the actual open-set homologies. -/
 @[expose] public noncomputable def biprodHomologyIso {X : TopCat}
@@ -446,11 +399,6 @@ isomorphism. -/
   let e := asIso (HomologicalComplex.homologyMap (coverChainInclusion U V) n)
   exact e
 
-/-- A subdivision certificate is one way to obtain the generated-union homology isomorphism. -/
-noncomputable def unionHomologyIso {X : TopCat} {U V : Opens X}
-    (D : CoverSubdivisionData U V) (n : ℕ) :
-    generatedUnionHomology U V n ≅ (integralHomologyFunctor n).obj X :=
-  unionHomologyIsoOfQuasiIso D.coverChainInclusion_quasiIso n
 
 /-- An actual open cover supplies the generated-union homology isomorphism without a separate
 subdivision certificate. -/
@@ -676,11 +624,6 @@ cover-generated chains. -/
       homology_openMVFromBiprodChain]
     exact homology_openMVFromBiprodChain_raw_naturality U V n
 
-/-- A subdivision certificate is one way to obtain the canonical open-cover comparison. -/
-noncomputable def openCoverHomologyComparisonOfSubdivision
-    {X : TopCat} {U V : Opens X} (D : CoverSubdivisionData U V) :
-    OpenCoverHomologyComparison U V :=
-  openCoverHomologyComparisonOfQuasiIso D.coverChainInclusion_quasiIso
 
 /-- The canonical homology comparison for two open subsets which cover their ambient space. -/
 @[expose] public noncomputable def openCoverHomologyComparisonOfCover
@@ -816,18 +759,6 @@ public theorem openCoverHomologyComparisonOfCover_pullbackNaturality
   union n := unionHomologyIsoOfCover_hom_pullback_naturality
     f U V hsource htarget n
 
-/-- Every binary open cover admits the complete ordinary singular-homology comparison. -/
-public theorem integralOpenCoverComparisonStatement :
-    IntegralOpenCoverComparisonStatement := by
-  intro X U V hcover
-  exact ⟨openCoverHomologyComparisonOfCover hcover⟩
 
-/-- Binary-cover subdivision implies the complete ordinary open-cover comparison. -/
-public theorem integralOpenCoverComparisonStatement_of_binaryOpenCoverSubdivision
-    (h : BinaryOpenCoverSubdivisionStatement) :
-    IntegralOpenCoverComparisonStatement := by
-  intro X U V hcover
-  obtain ⟨D⟩ := h X U V hcover
-  exact ⟨openCoverHomologyComparisonOfSubdivision D⟩
 
 end SphereSixComplex.BinaryOpenCover

@@ -24,6 +24,10 @@ public structure Parameters where
 @[expose] public def periodBlock (x : Parameters) : Matrix (Fin 2) (Fin 2) ℂ :=
   !![6 * x.mu, x.tau; x.beta, x.mu]
 
+
+
+
+
 @[simp] public theorem periodBlock_zero_zero (x : Parameters) :
     periodBlock x 0 0 = 6 * x.mu := rfl
 

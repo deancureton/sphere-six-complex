@@ -144,31 +144,7 @@ public theorem regularTotalSpaceBase_namedOrderThreeDiscLiftPoint
   rw [A.regularTotalSpaceBase_fiberTransfer]
   rfl
 
-/-- The normalized modular coordinate of the named radial base lies in the selected affine
-disc. -/
-public theorem regularCoordinate_namedOrderThreeRadialBaseLift_norm_lt_markedRadius
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
-    ‖(A.regularCoordinate
-        (A.affineOrderThreeRadialBaseLift
-          (A.affineBandStripCoordinate x))).1‖ <
-      A.affineOrderThreeMarkedDiscRadius := by
-  have h := (A.affineOrderThreeNamedDiscLiftPoint x).2
-  change ‖(A.regularCoordinate
-      (regularTotalSpaceBase A.periods
-        (A.affineOrderThreeNamedDiscLiftPoint x).1)).1‖ <
-    A.affineOrderThreeMarkedDiscRadius at h
-  rw [A.regularTotalSpaceBase_namedOrderThreeDiscLiftPoint x] at h
-  exact h
 
-/-- In particular the named radial base has normalized modular coordinate of norm below
-`1/3`. -/
-public theorem regularCoordinate_namedOrderThreeRadialBaseLift_norm_lt_one_third
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
-    ‖(A.regularCoordinate
-        (A.affineOrderThreeRadialBaseLift
-          (A.affineBandStripCoordinate x))).1‖ < 1 / 3 :=
-  (A.regularCoordinate_namedOrderThreeRadialBaseLift_norm_lt_markedRadius x).trans_le
-    A.affineOrderThreeMarkedDiscRadius_spec.2.1
 
 /-- Order-three affine radial transport preserves the named real-period coordinate. -/
 public theorem orderThreeRealPeriod_namedDiscLiftPoint
@@ -306,35 +282,6 @@ public theorem orderThreeFamilyRadius_namedCollarTotalPoint_pos
   simp only [Set.mem_compl_iff, Set.mem_insert_iff, Set.mem_singleton_iff, not_or] at hmem
   exact hmem.1 (hfixed ▸ A.modular.sourceCoordinate.coordinate_at_one)
 
-/-- Membership of the named inverse-gauged representative in the selected collar is equivalent
-to the single sheet-sensitive Cayley inequality. -/
-public theorem affineOrderThreeNamedCollarTotalPoint_mem_iff
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
-    A.affineOrderThreeNamedCollarTotalPoint x ∈
-        orderThreePuncturedFamilyCollar A.periods
-          A.starSeparation.orderThree.radius ↔
-      ‖(orderThreeCayleyHomeomorph
-        (A.affineOrderThreeRadialBaseLift
-          (A.affineBandStripCoordinate x)).1 : ℂ)‖ <
-        A.starSeparation.orderThree.radius := by
-  constructor
-  · intro hx
-    change 0 < orderThreeFamilyRadius A.periods
-        (A.affineOrderThreeNamedCollarTotalPoint x) ∧
-      orderThreeFamilyRadius A.periods
-        (A.affineOrderThreeNamedCollarTotalPoint x) <
-          A.starSeparation.orderThree.radius at hx
-    rw [A.orderThreeFamilyRadius_namedCollarTotalPoint x] at hx
-    exact hx.2
-  · intro hx
-    change 0 < orderThreeFamilyRadius A.periods
-        (A.affineOrderThreeNamedCollarTotalPoint x) ∧
-      orderThreeFamilyRadius A.periods
-        (A.affineOrderThreeNamedCollarTotalPoint x) <
-          A.starSeparation.orderThree.radius
-    exact ⟨A.orderThreeFamilyRadius_namedCollarTotalPoint_pos x, by
-      rw [A.orderThreeFamilyRadius_namedCollarTotalPoint x]
-      exact hx⟩
 
 /-- The established overlap inclusion supplies the selected Cayley bound after some regular
 deck translation of the named radial base. -/

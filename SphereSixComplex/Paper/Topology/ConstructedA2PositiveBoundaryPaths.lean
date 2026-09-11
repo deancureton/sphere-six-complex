@@ -196,54 +196,6 @@ public def constructedA2ActualHexagonSidePath
   source' := constructedA2CorrectedPlaneCellOrbit_side_zero W i
   target' := constructedA2CorrectedPlaneCellOrbit_side_one W i
 
-public theorem constructedCentralEdgePaths_homotopic
-    (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    [T2Space (ActualLocalCuspCentralOrbitQuotient W)] (i : Fin 3)
-    {x y : ActualLocalCuspCentralOrbitQuotient W} (p q : Path x y)
-    (hp : ∀ t, p t ∈ constructedCentralOneCell W i '' Metric.closedBall 0 1)
-    (hq : ∀ t, q t ∈ constructedCentralOneCell W i '' Metric.closedBall 0 1) :
-    p.Homotopic q := by
-  let Z := Metric.closedBall (0 : Fin 1 → ℝ) 1
-  let _ : ContractibleSpace Z :=
-    (convex_closedBall (0 : Fin 1 → ℝ) 1).contractibleSpace ⟨0, by simp⟩
-  let f : Z → ActualLocalCuspCentralOrbitQuotient W := fun z ↦ constructedCentralOneCell W i z.1
-  have hf : Continuous f := (constructedCentralOneCell_continuousOn W i).domRestrict
-  apply SphereSixComplex.paths_homotopic_of_range_in_embedded_contractible f
-    (hf.isClosedEmbedding (by
-      intro x y h
-      apply Subtype.ext
-      fin_cases i
-      · exact constructedCentralEdgeZeroOrbit_injOn_closedBall W x.2 y.2 h
-      · exact constructedCentralEdgeOneOrbit_injOn_closedBall W x.2 y.2 h
-      · exact constructedCentralEdgeTwoOrbit_injOn_closedBall W x.2 y.2 h)).isEmbedding p q
-  · intro t
-    obtain ⟨z, hz, he⟩ := hp t
-    exact ⟨⟨z, hz⟩, he⟩
-  · intro t
-    obtain ⟨z, hz, he⟩ := hq t
-    exact ⟨⟨z, hz⟩, he⟩
 
-public theorem constructedA2ActualHexagonSidePath_opposite_homotopic
-    (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    [T2Space (ActualLocalCuspCentralOrbitQuotient W)] :
-    (constructedA2ActualHexagonSidePath W 0).Homotopic
-      (constructedA2ActualHexagonSidePath W 3).symm ∧
-    (constructedA2ActualHexagonSidePath W 1).symm.Homotopic
-      (constructedA2ActualHexagonSidePath W 4) ∧
-    (constructedA2ActualHexagonSidePath W 2).Homotopic
-      (constructedA2ActualHexagonSidePath W 5).symm := by
-  refine ⟨?_, ?_, ?_⟩
-  · apply constructedCentralEdgePaths_homotopic W 1
-    · exact constructedA2CorrectedPlaneCellOrbit_side_mem_edge W 0
-    · intro t
-      exact constructedA2CorrectedPlaneCellOrbit_side_mem_edge W 3 (unitInterval.symm t)
-  · apply constructedCentralEdgePaths_homotopic W 0
-    · intro t
-      exact constructedA2CorrectedPlaneCellOrbit_side_mem_edge W 1 (unitInterval.symm t)
-    · exact constructedA2CorrectedPlaneCellOrbit_side_mem_edge W 4
-  · apply constructedCentralEdgePaths_homotopic W 2
-    · exact constructedA2CorrectedPlaneCellOrbit_side_mem_edge W 2
-    · intro t
-      exact constructedA2CorrectedPlaneCellOrbit_side_mem_edge W 5 (unitInterval.symm t)
 
 end SphereSixComplex.Geometry.InfiniteA2Toric

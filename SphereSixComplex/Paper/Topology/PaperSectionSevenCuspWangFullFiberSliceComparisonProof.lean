@@ -92,27 +92,8 @@ public theorem actualCuspWangBoundaryRawBasisCoordinates_castAdd (i : Fin 4) :
     actualCuspWangBoundaryRawBasisCoordinates (Fin.castAdd 2 i) = 0 := by
   fin_cases i <;> simp [actualCuspWangBoundaryRawBasisCoordinates]
 
-@[simp]
-public theorem actualCuspWangBoundaryRawBasisCoordinates_four :
-    actualCuspWangBoundaryRawBasisCoordinates (4 : Fin 6) = ![0, 0, 1, 0] := by
-  rfl
 
-@[simp]
-public theorem actualCuspWangBoundaryRawBasisCoordinates_five :
-    actualCuspWangBoundaryRawBasisCoordinates (5 : Fin 6) = ![0, 0, 0, 1] := by
-  rfl
 
-/-- The explicit value occurring for the first four raw basis vectors maps to zero in the
-cover intersection. -/
-public theorem actualCuspWangFiberToCuspCoverIntersectionHomologyOne_rawZero
-    {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput) :
-    let G := A.actualCuspRadialClutchingData
-    let _ := G.fiberTopology
-    actualCuspWangFiberToCuspCoverIntersectionHomologyOne (A := A) R
-        (G.monodromyCoordinates.degreeOne.symm 0) = 0 := by
-  dsimp
-  let _ := A.actualCuspRadialClutchingData.fiberTopology
-  simp only [map_zero]
 
 private theorem openRadialIntervalProdHomotopyEquiv_apply_snd
     {X : Type} [TopologicalSpace X] {r : ℝ} (hr : 0 < r)
@@ -320,91 +301,9 @@ public theorem cuspOpenCoverConnectingHom_rawBasis_castAdd_eq_zero
   obtain ⟨w, hw⟩ := actualCuspRawCastAdd_mem_cuspCoverIntersectionImage R i
   exact cuspOpenCoverConnectingHom_eq_zero_of_intersection_image R _ w hw
 
-/-- The remaining comparison after evaluating the Wang boundary on all six raw basis vectors.
-It involves only the explicit full-fibre images of two invariant generators and four zeros. -/
-public def ActualCuspWangFullFiberSliceExplicitFiniteResidual
-    {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput) : Prop :=
-  let G := A.actualCuspRadialClutchingData
-  let _ := G.fiberTopology
-  (∀ i : Fin 4,
-    R.twoDiscCover.cuspOpenCoverConnectingHom
-        (A.cuspRawHomologyTwoEquiv.symm (Pi.single (Fin.castAdd 2 i) 1)) = 0) ∧
-    actualCuspWangFiberToCuspCoverIntersectionHomologyOne (A := A) R
-        (G.monodromyCoordinates.degreeOne.symm
-          ![0, 0, 1, 0]) =
-      R.twoDiscCover.cuspOpenCoverConnectingHom
-        (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) ∧
-    actualCuspWangFiberToCuspCoverIntersectionHomologyOne (A := A) R
-        (G.monodromyCoordinates.degreeOne.symm
-          ![0, 0, 0, 1]) =
-      R.twoDiscCover.cuspOpenCoverConnectingHom
-        (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))
 
-/-- After exactness kills the four zero-boundary basis vectors, only the two invariant
-degree-two generators remain to be compared with the cover boundary. -/
-public def ActualCuspWangFullFiberSliceInvariantResidual
-    {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput) : Prop :=
-  let G := A.actualCuspRadialClutchingData
-  let _ := G.fiberTopology
-  actualCuspWangFiberToCuspCoverIntersectionHomologyOne (A := A) R
-      (G.monodromyCoordinates.degreeOne.symm ![0, 0, 1, 0]) =
-    R.twoDiscCover.cuspOpenCoverConnectingHom
-      (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) ∧
-  actualCuspWangFiberToCuspCoverIntersectionHomologyOne (A := A) R
-      (G.monodromyCoordinates.degreeOne.symm ![0, 0, 0, 1]) =
-    R.twoDiscCover.cuspOpenCoverConnectingHom
-      (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))
 
-/-- The former six-equation residual is equivalent to the strictly smaller pair of invariant
-generator comparisons. -/
-public theorem explicitFiniteResidual_iff_invariantResidual
-    {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput) :
-    ActualCuspWangFullFiberSliceExplicitFiniteResidual R ↔
-      ActualCuspWangFullFiberSliceInvariantResidual R := by
-  dsimp [ActualCuspWangFullFiberSliceExplicitFiniteResidual,
-    ActualCuspWangFullFiberSliceInvariantResidual]
-  constructor
-  · rintro ⟨_, hfour, hfive⟩
-    exact ⟨hfour, hfive⟩
-  · rintro ⟨hfour, hfive⟩
-    exact ⟨cuspOpenCoverConnectingHom_rawBasis_castAdd_eq_zero R, hfour, hfive⟩
 
-/-- The original six basis comparisons are equivalent to the finite residual in which the Wang
-boundary has been completely evaluated. -/
-public theorem wangBoundaryBasisComparison_iff_explicitFiniteResidual
-    {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput) :
-    (let G := A.actualCuspRadialClutchingData
-     let _ := G.fiberTopology
-     ∀ i : Fin 6,
-       ((actualCuspWangFiberToCuspCoverIntersectionHomologyOne (A := A) R).comp
-           (actualCuspWangBoundaryHom A))
-             (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1)) =
-         R.twoDiscCover.cuspOpenCoverConnectingHom
-           (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1))) ↔
-      ActualCuspWangFullFiberSliceExplicitFiniteResidual R := by
-  dsimp [ActualCuspWangFullFiberSliceExplicitFiniteResidual]
-  let _ := A.actualCuspRadialClutchingData.fiberTopology
-  simp only [actualCuspWangBoundaryHom_rawBasis]
-  constructor
-  · intro h
-    refine ⟨?_, ?_, ?_⟩
-    · intro i
-      have hi := (h (Fin.castAdd 2 i)).symm
-      rw [actualCuspWangBoundaryRawBasisCoordinates_castAdd] at hi
-      exact hi.trans
-        (actualCuspWangFiberToCuspCoverIntersectionHomologyOne_rawZero R)
-    · simpa only [actualCuspWangBoundaryRawBasisCoordinates_four] using h 4
-    · simpa only [actualCuspWangBoundaryRawBasisCoordinates_five] using h 5
-  · rintro ⟨hzero, hfour, hfive⟩ i
-    by_cases hi : i.val < 4
-    · let j : Fin 4 := ⟨i.val, hi⟩
-      have hij : Fin.castAdd 2 j = i := Fin.ext rfl
-      rw [← hij, actualCuspWangBoundaryRawBasisCoordinates_castAdd,
-        actualCuspWangFiberToCuspCoverIntersectionHomologyOne_rawZero, hzero j]
-    · have hi45 : i = 4 ∨ i = 5 := by omega
-      rcases hi45 with rfl | rfl
-      · exact hfour
-      · exact hfive
 
 end EllipticTwoDiscCoverData
 

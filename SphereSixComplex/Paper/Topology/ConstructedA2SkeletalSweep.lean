@@ -67,15 +67,5 @@ public def constructedA2TwoSkeletalSweep
     (show constructedA2CorrectedTwoSkeleton W ⊆ constructedA2CorrectedThreeSkeleton W from
       fun _ hx ↦ Or.inl hx) (constructedA2CircleSweep_two_to_three W i)
 
-public theorem constructedA2OneSkeletalSweep_hexagon_zero
-    (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    [T2Space (ActualLocalCuspCentralOrbitQuotient W)] (i : Fin 2) :
-    closedPrismHomology ((constructedA2OneSkeletalSweep W i).singularChainComplexFunctorObjMap
-      (AddCommGrpCat.of ℤ)) 0
-      (SphereSixComplex.StandardCircleHomologyLiftDegree.loopHomologyClass
-        (constructedA2OneSkeletonHexagonLoop W)) = 0 := by
-  rw [constructedA2OneSkeletonHexagonLoop_homology_zero]
-  exact (closedPrismHomology ((constructedA2OneSkeletalSweep W i).singularChainComplexFunctorObjMap
-    (AddCommGrpCat.of ℤ)) 0).hom.map_zero
 
 end SphereSixComplex.Geometry.InfiniteA2Toric

@@ -19,9 +19,6 @@ public theorem constructedA2HexagonGauge_continuous :
     Continuous constructedA2HexagonGauge :=
   continuous_norm.max ((continuous_apply 0).sub (continuous_apply 1)).abs
 
-public theorem constructedA2HexagonGauge_nonneg (x : Fin 2 → ℝ) :
-    0 ≤ constructedA2HexagonGauge x :=
-  le_max_of_le_left (norm_nonneg x)
 
 public theorem norm_le_constructedA2HexagonGauge (x : Fin 2 → ℝ) :
     ‖x‖ ≤ constructedA2HexagonGauge x :=
@@ -178,14 +175,6 @@ public theorem constructedA2HexagonToSquareRadial_continuous :
       constructedA2HexagonGauge_continuous.continuousAt).div
         continuous_norm.continuousAt (norm_ne_zero_iff.mpr hy)).smul continuousAt_id
 
-public noncomputable def constructedA2SquareHexagonHomeomorph :
-    (Fin 2 → ℝ) ≃ₜ (Fin 2 → ℝ) where
-  toFun := constructedA2SquareToHexagonRadial
-  invFun := constructedA2HexagonToSquareRadial
-  left_inv := constructedA2HexagonToSquareRadial_squareToHexagonRadial
-  right_inv := constructedA2SquareToHexagonRadial_hexagonToSquareRadial
-  continuous_toFun := constructedA2SquareToHexagonRadial_continuous
-  continuous_invFun := constructedA2HexagonToSquareRadial_continuous
 
 public def constructedA2CorrectedOpenHexagon (v : ToricLattice) : Set (Fin 2 → ℝ) :=
   {x | constructedA2HexagonGauge
@@ -195,11 +184,6 @@ public def constructedA2CorrectedClosedHexagon (v : ToricLattice) : Set (Fin 2 �
   {x | constructedA2HexagonGauge
     (x - constructedA2CorrectedPlaneCenter v) ≤ 2 / 3}
 
-public theorem constructedA2CorrectedOpenHexagon_isOpen (v : ToricLattice) :
-    IsOpen (constructedA2CorrectedOpenHexagon v) :=
-  isOpen_lt
-    (constructedA2HexagonGauge_continuous.comp (continuous_id.sub continuous_const))
-    continuous_const
 
 public theorem constructedA2CorrectedClosedHexagon_eq_planeCell (v : ToricLattice) :
     constructedA2CorrectedClosedHexagon v = constructedA2CorrectedPlaneCell v := by
@@ -307,53 +291,8 @@ public theorem constructedA2CorrectedHexagonHomeomorph_mem_closed_iff
     constructedA2HexagonGauge_squareToHexagonRadial, dist_zero_right]
   constructor <;> intro h <;> norm_num at h ⊢ <;> linarith
 
-public theorem constructedA2CorrectedHexagonHomeomorph_image_ball
-    (v : ToricLattice) :
-    constructedA2CorrectedHexagonHomeomorph v '' Metric.ball 0 1 =
-      constructedA2CorrectedOpenHexagon v := by
-  ext y
-  constructor
-  · rintro ⟨x, hx, rfl⟩
-    exact (constructedA2CorrectedHexagonHomeomorph_mem_open_iff v x).mpr hx
-  · intro hy
-    refine ⟨(constructedA2CorrectedHexagonHomeomorph v).symm y, ?_,
-      (constructedA2CorrectedHexagonHomeomorph v).apply_symm_apply y⟩
-    apply (constructedA2CorrectedHexagonHomeomorph_mem_open_iff v _).mp
-    rw [(constructedA2CorrectedHexagonHomeomorph v).apply_symm_apply]
-    exact hy
 
-public theorem constructedA2CorrectedHexagonHomeomorph_image_closedBall
-    (v : ToricLattice) :
-    constructedA2CorrectedHexagonHomeomorph v '' Metric.closedBall 0 1 =
-      constructedA2CorrectedPlaneCell v := by
-  ext y
-  constructor
-  · rintro ⟨x, hx, rfl⟩
-    exact (constructedA2CorrectedHexagonHomeomorph_mem_closed_iff v x).mpr hx
-  · intro hy
-    refine ⟨(constructedA2CorrectedHexagonHomeomorph v).symm y, ?_,
-      (constructedA2CorrectedHexagonHomeomorph v).apply_symm_apply y⟩
-    apply (constructedA2CorrectedHexagonHomeomorph_mem_closed_iff v _).mp
-    rw [(constructedA2CorrectedHexagonHomeomorph v).apply_symm_apply]
-    exact hy
 
-public theorem constructedA2CorrectedHexagonHomeomorph_mapsTo_sphere_boundary
-    (v : ToricLattice) :
-    MapsTo (constructedA2CorrectedHexagonHomeomorph v) (Metric.sphere 0 1)
-      {x | constructedA2HexagonGauge
-        (x - constructedA2CorrectedPlaneCenter v) = 2 / 3} := by
-  intro x hx
-  rw [Metric.mem_sphere, dist_zero_right] at hx
-  change constructedA2HexagonGauge
-      (constructedA2CorrectedPlaneCenter v +
-        constructedA2SquareToHexagonRadial x -
-          constructedA2CorrectedPlaneCenter v) = 2 / 3
-  rw [show constructedA2CorrectedPlaneCenter v +
-        constructedA2SquareToHexagonRadial x -
-        constructedA2CorrectedPlaneCenter v =
-      constructedA2SquareToHexagonRadial x by abel,
-    constructedA2HexagonGauge_squareToHexagonRadial, hx]
-  norm_num
 
 end SphereSixComplex.Geometry.InfiniteA2Toric
 

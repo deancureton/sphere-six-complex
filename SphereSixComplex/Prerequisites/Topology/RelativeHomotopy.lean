@@ -29,10 +29,6 @@ variable {A X : Type u} [TopologicalSpace A] [TopologicalSpace X]
 public def unitIntervalProdMap (i : C(A, X)) : C(unitInterval × A, unitInterval × X) :=
   ⟨fun p ↦ (p.1, i p.2), continuous_fst.prodMk (i.continuous.comp continuous_snd)⟩
 
-@[simp]
-public theorem unitIntervalProdMap_apply (i : C(A, X)) (p : unitInterval × A) :
-    unitIntervalProdMap i p = (p.1, i p.2) :=
-  rfl
 
 /-- The homotopy-extension property is stable under taking a product with the compact unit
 interval.  The proof curries the interval variable into the compact-open mapping space, invokes
@@ -89,11 +85,6 @@ public def cylinderSlice {Y : Type u} [TopologicalSpace Y]
     (f : C(unitInterval × X, Y)) (t : unitInterval) : C(X, Y) :=
   f.comp ⟨fun x ↦ (t, x), continuous_const.prodMk continuous_id⟩
 
-@[simp]
-public theorem cylinderSlice_apply {Y : Type u} [TopologicalSpace Y]
-    (f : C(unitInterval × X, Y)) (t : unitInterval) (x : X) :
-    cylinderSlice f t x = f (t, x) :=
-  rfl
 
 namespace ContinuousMap.Homotopy
 
@@ -109,11 +100,6 @@ public def cylinderSide (F : ContinuousMap.Homotopy f₀ f₁) (t : unitInterval
   map_zero_left x := F.map_zero_left (t, x)
   map_one_left x := F.map_one_left (t, x)
 
-@[simp]
-public theorem cylinderSide_apply (F : ContinuousMap.Homotopy f₀ f₁)
-    (t u : unitInterval) (x : X) :
-    ContinuousMap.Homotopy.cylinderSide F t (u, x) = F (u, (t, x)) :=
-  rfl
 
 end ContinuousMap.Homotopy
 
@@ -125,11 +111,6 @@ public def cylinderMapHomotopy {Y : Type u} [TopologicalSpace Y]
   map_zero_left _ := rfl
   map_one_left _ := rfl
 
-@[simp]
-public theorem cylinderMapHomotopy_apply {Y : Type u} [TopologicalSpace Y]
-    (f : C(unitInterval × X, Y)) (p : unitInterval × X) :
-    cylinderMapHomotopy f p = f p :=
-  rfl
 
 /-! ## The rectangular relative-homotopy construction -/
 
@@ -191,9 +172,6 @@ variable {i : C(A, X)} (D : DeformationRetractData i)
 /-- The idempotent self-map obtained by retracting and including again. -/
 public abbrev retractMap : C(X, X) := i.comp D.retraction
 
-@[simp]
-public theorem retractMap_apply (x : X) : D.retractMap x = i (D.retraction x) :=
-  rfl
 
 @[simp]
 public theorem retractMap_inclusion (a : A) : D.retractMap (i a) = i a := by
@@ -255,10 +233,6 @@ public theorem rectangularBase_inclusion (t : unitInterval) (a : A) :
 public def inclusionCylinderConstant : C(unitInterval × A, X) :=
   i.comp ContinuousMap.snd
 
-@[simp]
-public theorem inclusionCylinderConstant_apply (p : unitInterval × A) :
-    inclusionCylinderConstant (i := i) p = i p.2 :=
-  rfl
 
 /-- The central rectangle used to make a deformation homotopy relative to the included
 subspace.  At rectangle time zero it is the restriction of `rectangularBase`; at rectangle time

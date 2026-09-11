@@ -142,12 +142,6 @@ public noncomputable def puncturedGlobalBaseProjection :
       _ = regularTotalSpaceBase F x := congrArg (regularTotalSpaceBase F) hg
   · exact continuous_quot_map _ (regularTotalSpaceBase_continuous F)
 
-@[simp]
-public theorem puncturedGlobalBaseProjection_zeroSection
-    (q : PuncturedOrbifoldBase (U := U)) :
-    puncturedGlobalBaseProjection F (puncturedGlobalZeroSection F q) = q := by
-  induction q using Quotient.inductionOn with
-  | _ b => rfl
 
 end SphereSixComplex.Geometry.GlobalTorusFamily
 
@@ -377,6 +371,8 @@ public noncomputable def markedOneCentralMeridianClass :
     FundamentalGroup A.CentralFamily
       (A.centralZeroSection A.markedPuncturedBasepoint) :=
   A.centralZeroSectionFundamentalGroupMap A.markedOneBaseMeridianClass
+
+
 
 @[simp]
 public theorem centralZeroSectionFundamentalGroupMap_zero :

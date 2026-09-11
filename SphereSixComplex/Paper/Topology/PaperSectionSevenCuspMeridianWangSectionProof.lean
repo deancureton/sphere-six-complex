@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspAngularCentralLoopHomology
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspWangFullFiberSlice
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspSelectedMeridianSpecializationProof
 
 @[expose] public section

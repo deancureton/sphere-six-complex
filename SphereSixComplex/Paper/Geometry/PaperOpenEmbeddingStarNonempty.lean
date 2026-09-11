@@ -88,11 +88,6 @@ public theorem openEmbeddingStarData_centralCollar_nonempty :
   exact ⟨A.openEmbeddingStarData.centralCollarPoint i
     (A.openEmbeddingStarData_collarSource_nonempty i).some⟩
 
-/-- All three filling collar images in the packaged star are nonempty. -/
-public theorem openEmbeddingStarData_fillingCollar_nonempty :
-    ∀ i, Nonempty (A.openEmbeddingStarData.fillingCollar i) := fun i ↦ by
-  exact ⟨A.openEmbeddingStarData.fillingCollarPoint i
-    (A.openEmbeddingStarData_collarSource_nonempty i).some⟩
 
 /-- The concrete four-piece gluing datum satisfies its central-collar nonemptiness premise. -/
 public theorem fourPieceStarGluingData_nonemptyCentralCollar :
@@ -102,26 +97,9 @@ public theorem fourPieceStarGluingData_nonemptyCentralCollar :
 
 end PaperAnalyticData
 
-/-- The three collar sources for supplied paper analytic data are nonempty. -/
-public theorem paperStarCollarSourceType_nonempty (A : PaperAnalyticData) :
-    ∀ i, Nonempty (A.StarCollarSource i) :=
-  A.starCollarSourceType_nonempty
 
-/-- The central collars of a supplied paper open-embedding star are nonempty. -/
-public theorem paperOpenEmbeddingStarData_centralCollar_nonempty (A : PaperAnalyticData) :
-    ∀ i, Nonempty (A.openEmbeddingStarData.centralCollar i) :=
-  A.openEmbeddingStarData_centralCollar_nonempty
 
-/-- The filling collars of a supplied paper open-embedding star are nonempty. -/
-public theorem paperOpenEmbeddingStarData_fillingCollar_nonempty (A : PaperAnalyticData) :
-    ∀ i, Nonempty (A.openEmbeddingStarData.fillingCollar i) :=
-  A.openEmbeddingStarData_fillingCollar_nonempty
 
-/-- A supplied paper four-piece gluing datum has nonempty central collars. -/
-public theorem paperFourPieceStarGluingData_nonemptyCentralCollar (A : PaperAnalyticData) :
-    ∀ i, Nonempty
-      (A.openEmbeddingStarData.toFourPieceStarGluingData.centralCollar i) :=
-  A.fourPieceStarGluingData_nonemptyCentralCollar
 
 end
 

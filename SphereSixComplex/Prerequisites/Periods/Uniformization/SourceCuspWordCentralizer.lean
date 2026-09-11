@@ -423,12 +423,6 @@ theorem eq_zpow_product_of_deltaBottomRow_fst_eq_zero
         hgindexed, hvprod, indexedCuspBackward_eq_inv, _root_.zpow_neg, zpow_natCast,
         _root_.inv_pow]
 
-/-- The zero-bottom-left form of the cusp centralizer theorem, packaged in the predicate used by
-the existing polygon-side proof. -/
-theorem sourceCuspCentralizerExact_of_bottomLeft
-    (g : Delta) (hc : (deltaBottomRow g).1 = 0) :
-    ∃ n : ℤ, g = (g₁ * g₂) ^ n :=
-  eq_zpow_product_of_deltaBottomRow_fst_eq_zero g hc
 
 
 end SphereSixComplex.Periods.SourceChamberTopology

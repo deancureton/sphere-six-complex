@@ -304,10 +304,6 @@ public theorem constructedA2PositiveBoundaryReverseSweep_homology_zero
     HomologicalComplex.homologyMap_id, Category.comp_id] at hn
   exact hn.symm
 
-public def constructedA2PositiveNestedAttachingMap
-    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
-    TopCat.of (cwBallBoundarySet 2) ⟶ TopCat.of (constructedCentralOneSkeleton W) :=
-  cwBallBoundaryToSphere 2 ≫ TopCat.ofHom (constructedA2PositiveAttachingMap W)
 
 public def constructedA2PositiveNestedBoundaryReverseSweep
     (W : ActualPuncturedCuspCollarWitness N constructedModel) (i : Fin 2) :=

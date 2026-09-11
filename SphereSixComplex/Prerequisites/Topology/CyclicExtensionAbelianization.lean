@@ -157,8 +157,6 @@ public def differenceSubgroup : Subgroup G where
     rintro a ⟨p, rfl⟩
     exact ⟨-p, by rw [map_neg, E.incl_neg]⟩
 
-public theorem mem_differenceSubgroup {x : G} :
-    x ∈ E.differenceSubgroup ↔ ∃ w : Λ, E.incl (E.difference w) = x := Iff.rfl
 
 /-- The commutator subgroup of `G` lands in `(act - 1) Λ`: modulo that image the lift commutes with
 the kernel, and the kernel is abelian. -/
@@ -225,90 +223,11 @@ public theorem kernelToAbelianization_difference (x : Λ) :
   rw [kernelToAbelianization_apply, E.difference_apply, E.incl_sub, map_mul, map_inv, hact]
   simp
 
-/-- The comparison map from the multiple-fibre presentation to the abelianization of `G`. -/
-public def toAbelianization :
-    CyclicCoinvariants.Presentation E.difference E.twist (m : ℤ) →ₗ[ℤ]
-      Additive (Abelianization G) :=
-  CyclicCoinvariants.lift E.difference E.twist (m : ℤ) E.kernelToAbelianization
-    E.kernelToAbelianization_difference (Additive.ofMul (Abelianization.of E.gen)) (by
-      rw [kernelToAbelianization_apply, ← ofMul_zpow, ← map_zpow, zpow_natCast, E.gen_pow])
 
-@[simp] public theorem toAbelianization_mk (l : Λ) (k : ℤ) :
-    E.toAbelianization (Submodule.Quotient.mk (Submodule.Quotient.mk l, k)) =
-      Additive.ofMul (Abelianization.of (E.incl l) * Abelianization.of E.gen ^ k) := by
-  rw [toAbelianization, CyclicCoinvariants.lift_mk, kernelToAbelianization_apply, ← ofMul_zpow,
-    ← ofMul_mul]
 
-public theorem toAbelianization_surjective : Function.Surjective E.toAbelianization := by
-  intro y
-  obtain ⟨x, hx⟩ := Quot.exists_rep (Additive.toMul y)
-  obtain ⟨k, l, rfl⟩ := E.exists_zpow_mul_incl x
-  refine ⟨Submodule.Quotient.mk (Submodule.Quotient.mk l, k), ?_⟩
-  rw [toAbelianization_mk]
-  have hval : Abelianization.of (E.gen ^ k * E.incl l) = Additive.toMul y := hx
-  rw [map_mul, map_zpow, mul_comm] at hval
-  rw [hval]
-  rfl
 
-public theorem toAbelianization_injective : Function.Injective E.toAbelianization := by
-  have key : ∀ y, E.toAbelianization y = 0 → y = 0 := by
-    intro y hy
-    obtain ⟨⟨lq, k⟩, rfl⟩ := Submodule.Quotient.mk_surjective _ y
-    obtain ⟨l, rfl⟩ := Submodule.Quotient.mk_surjective _ lq
-    rw [toAbelianization_mk] at hy
-    have h1 : Abelianization.of (E.incl l * E.gen ^ k) = 1 := by
-      rw [map_mul, map_zpow]
-      exact hy
-    have h2 : E.incl l * E.gen ^ k ∈ commutator G := by
-      rw [← Abelianization.ker_of, MonoidHom.mem_ker]
-      exact h1
-    obtain ⟨μ, hμ⟩ := E.commutator_le_differenceSubgroup h2
-    have hprojl : E.proj (E.incl l) = 1 := (E.proj_eq_one_iff _).mpr ⟨l, rfl⟩
-    have hprojd : E.proj (E.incl (E.difference μ)) = 1 :=
-      (E.proj_eq_one_iff _).mpr ⟨E.difference μ, rfl⟩
-    have hgk : E.proj (E.gen ^ k) = 1 := by
-      have hcong := congrArg E.proj hμ
-      rw [hprojd, map_mul, hprojl, one_mul] at hcong
-      exact hcong.symm
-    have hzero : ((k : ℤ) : ZMod m) = 0 := by
-      rw [map_zpow, E.proj_gen, ← ofAdd_zsmul, zsmul_eq_mul, mul_one] at hgk
-      exact hgk
-    obtain ⟨j, rfl⟩ := (ZMod.intCast_zmod_eq_zero_iff_dvd k m).mp hzero
-    have hgpow : E.gen ^ ((m : ℤ) * j) = E.incl (j • E.twist) := by
-      rw [zpow_mul, zpow_natCast, E.gen_pow, E.incl_zsmul]
-    have heq : E.difference μ = l + j • E.twist := by
-      apply E.incl_injective
-      rw [E.incl_add, ← hgpow, hμ]
-    rw [Submodule.Quotient.mk_eq_zero]
-    refine ⟨j, ?_⟩
-    have hmk : (Submodule.Quotient.mk l : Λ ⧸ LinearMap.range E.difference) =
-        -(j • Submodule.Quotient.mk E.twist) := by
-      have : (Submodule.Quotient.mk (E.difference μ) :
-          Λ ⧸ LinearMap.range E.difference) = 0 :=
-        (Submodule.Quotient.mk_eq_zero _).mpr ⟨μ, rfl⟩
-      rw [heq] at this
-      rw [Submodule.Quotient.mk_add, Submodule.Quotient.mk_smul] at this
-      linear_combination (norm := abel) this
-    rw [CyclicCoinvariants.relationMap]
-    simp only [LinearMap.coe_mk, AddHom.coe_mk, Prod.smul_mk, smul_neg, Prod.mk.injEq]
-    exact ⟨by rw [hmk], by rw [smul_eq_mul, mul_comm]⟩
-  intro a b hab
-  have hsub : E.toAbelianization (a - b) = 0 := by rw [map_sub, hab, sub_self]
-  exact sub_eq_zero.mp (key _ hsub)
 
-/-- **The abelianization of a cyclic extension.**  If `1 → Λ → G → ZMod m → 1` with `Λ` abelian,
-`gen` lifting the standard generator, `act` conjugation by `gen` and `twist = gen ^ m`, then the
-abelianization of `G` is the multiple-fibre presentation of `act - 1` at `twist` and `m`. -/
-public noncomputable def abelianizationEquiv :
-    CyclicCoinvariants.Presentation E.difference E.twist (m : ℤ) ≃ₗ[ℤ]
-      Additive (Abelianization G) :=
-  LinearEquiv.ofBijective E.toAbelianization
-    ⟨E.toAbelianization_injective, E.toAbelianization_surjective⟩
 
-@[simp] public theorem abelianizationEquiv_mk (l : Λ) (k : ℤ) :
-    E.abelianizationEquiv (Submodule.Quotient.mk (Submodule.Quotient.mk l, k)) =
-      Additive.ofMul (Abelianization.of (E.incl l) * Abelianization.of E.gen ^ k) :=
-  E.toAbelianization_mk l k
 
 end Data
 

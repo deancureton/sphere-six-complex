@@ -165,46 +165,5 @@ public theorem integral_module_finite_of_exact {M N P : Type*}
       exact (h y).mpr hy
   · exact LinearMap.surjective_rangeRestrict g
 
-/-- The alternating integral finranks in a finite exact sequence sum to zero. -/
-public theorem integral_sum_neg_one_pow_finrank_eq_zero_of_exact {n : Nat}
-    (V : Fin (n + 2) → Type*)
-    [∀ i, AddCommGroup (V i)] [∀ i, Module Int (V i)] [∀ i, Module.Finite Int (V i)]
-    (f : (i : Fin (n + 1)) → V i.castSucc →ₗ[Int] V i.succ)
-    (inj : Function.Injective (f 0))
-    (h_exact : ∀ i : Fin n, Function.Exact (f i.castSucc) (f i.succ))
-    (surj : Function.Surjective (f (Fin.last _))) :
-    ∑ i, (-1) ^ i.val * (Module.finrank Int (V i) : Int) = 0 := by
-  let d : Fin (n + 2) → Int := fun i ↦ (Module.finrank Int (V i) : Int)
-  let r : Fin (n + 1) → Int := fun i ↦
-    (Module.finrank Int (f i).range : Int)
-  change ∑ i, (-1) ^ i.val * d i = 0
-  simp_rw [← smul_eq_mul]
-  refine Fin.sum_neg_one_pow_eq_zero d r ?_ (fun i ↦ ?_) ?_
-  · dsimp only [d, r]
-    have hModule := int_finrank_eq_of_module_structures
-      (AddCommGroup.toIntModule (f 0).range) (f 0).range.module
-    exact_mod_cast (hModule.trans (LinearMap.finrank_range_of_inj inj)).symm
-  · have hrn := integral_finrank_range_add_finrank_ker (f i.succ)
-    have hker : Module.finrank Int (f i.succ).ker =
-        Module.finrank Int (f i.castSucc).range :=
-      congrArg (fun S : Submodule Int (V i.succ.castSucc) ↦ Module.finrank Int S)
-        (h_exact i).linearMap_ker_eq
-    dsimp only [d, r]
-    omega
-  · have hrange := LinearMap.range_eq_top.mpr surj
-    have hExplicit :
-        @Module.finrank Int (f (Fin.last n)).range _ _ (f (Fin.last n)).range.module =
-          Module.finrank Int (V (Fin.last (n + 1))) := by
-      have h := congrArg
-        (fun S : Submodule Int (V (Fin.last n).succ) ↦
-          @Module.finrank Int S _ _ S.module) hrange
-      simpa only [finrank_top, Fin.succ_last] using h
-    have hfinrank : Module.finrank Int (f (Fin.last n)).range =
-        Module.finrank Int (V (Fin.last (n + 1))) :=
-      (int_finrank_eq_of_module_structures
-        (AddCommGroup.toIntModule (f (Fin.last n)).range)
-        (f (Fin.last n)).range.module).trans hExplicit
-    dsimp only [d, r]
-    exact_mod_cast hfinrank.symm
 
 end SphereSixComplex

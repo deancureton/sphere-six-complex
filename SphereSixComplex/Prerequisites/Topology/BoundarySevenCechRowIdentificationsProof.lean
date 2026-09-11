@@ -257,25 +257,8 @@ noncomputable def boundarySevenFaceNeighborhoodWideCospanEvaluationIso
       intro X Y f
       cases f <;> rfl)
 
-@[simp]
-private theorem boundarySevenFaceNeighborhoodWideCospanEvaluationIso_hom_app
-    (p q : ℕ) (x : WidePullbackShape (Fin (p + 1))) :
-    (boundarySevenFaceNeighborhoodWideCospanEvaluationIso p q).hom.app x =
-      eqToHom (by cases x <;> rfl) := by
-  cases x <;> rfl
 
-@[simp]
-private theorem boundarySevenFaceNeighborhoodWideCospanEvaluationIso_hom_app_some
-    (p q : ℕ) (i : Fin (p + 1)) :
-    (boundarySevenFaceNeighborhoodWideCospanEvaluationIso p q).hom.app (some i) =
-      𝟙 _ := by
-  rfl
 
-@[simp]
-private theorem boundarySevenFaceNeighborhoodWideCospanEvaluationIso_hom_app_none
-    (p q : ℕ) :
-    (boundarySevenFaceNeighborhoodWideCospanEvaluationIso p q).hom.app none = 𝟙 _ := by
-  rfl
 
 noncomputable def boundarySevenFaceNeighborhoodCechEvaluationIso
     (p q : ℕ) :
@@ -400,15 +383,6 @@ private theorem boundarySevenFaceNeighborhoodEvaluation_map_base_comp_diagramIso
               boundarySevenFaceNeighborhoodPresentationArrow.hom)) := by
   rfl
 
-private noncomputable def boundarySevenFaceNeighborhoodCechRowXIso
-    (q p : ℕ) :
-    (firstQuadrantHorizontalRow
-        boundarySevenFaceNeighborhoodCechBicomplex q).X p ≅
-      (AlternatingFaceMapComplex.obj
-        (SimplicialObject.Augmented.drop.obj
-          (boundarySevenFaceNeighborhoodIntegralEvaluationCech q))).X p :=
-  (sigmaConst.obj (AddCommGrpCat.of ℤ)).mapIso
-    (boundarySevenFaceNeighborhoodCechEvaluationIso p q)
 
 private theorem boundarySevenFaceNeighborhoodCechEvaluationIso_naturality
     (q : ℕ) {a b : SimplexCategoryᵒᵖ} (f : a ⟶ b) :

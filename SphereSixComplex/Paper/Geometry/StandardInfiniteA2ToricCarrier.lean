@@ -5,7 +5,7 @@ Authors: Dean Cureton
 -/
 module
 
-public import SphereSixComplex.Paper.Geometry.A2ConeUnimodularity
+public import SphereSixComplex.Paper.Geometry.StandardInfiniteA2ToricModel
 public import SphereSixComplex.Prerequisites.Geometry.AtlasTransport
 public import SphereSixComplex.Prerequisites.Geometry.GluingCompatibility
 
@@ -214,10 +214,6 @@ public theorem overlap_isOpen (A B : Matrix (Fin 3) (Fin 3) ℤ) : IsOpen (overl
   (monomial_contDiffOn A 0).continuousOn.isOpen_inter_preimage
     (monomialDomain_isOpen A) (monomialDomain_isOpen B)
 
-public theorem coordinateTorus_subset_overlap (A B : Matrix (Fin 3) (Fin 3) ℤ) :
-    coordinateTorus ⊆ overlap A B := fun _ hz ↦
-  ⟨coordinateTorus_subset_monomialDomain A hz,
-    coordinateTorus_subset_monomialDomain B (monomial_mapsTo_coordinateTorus A hz)⟩
 
 public theorem overlap_eq_monomialDomain {A B : Matrix (Fin 3) (Fin 3) ℤ}
     (hA : HeightOne A) (hBA : B * A = 1) :

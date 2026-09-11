@@ -92,18 +92,5 @@ public theorem normalizedIntervalDiskOrientation_symm_one
   rw [AddEquiv.apply_symm_apply]
   exact (ConcreteCategory.congr_hom cwOrientedIntervalClass_evaluation 1).symm
 
-public theorem normalizedIntervalDiskOrientation_boundary
-    (T : CellularHomology.IntegralComparison) :
-    (cwRelativeIntegralSingularBoundary (cwCharacteristicBoundaryInclusion 1) 0).hom
-      ((normalizedIntervalDiskOrientation T).symm 1) =
-        (cwIntegralPointClass (TopCat.of (CWCharacteristicBoundarySphere 1))
-          cwBoundaryOneRight).hom 1 -
-        (cwIntegralPointClass (TopCat.of (CWCharacteristicBoundarySphere 1))
-          cwBoundaryOneLeft).hom 1 := by
-  rw [normalizedIntervalDiskOrientation_symm_one]
-  exact ConcreteCategory.congr_hom
-    (cwRelativePathClass_boundary_pointClasses (cwCharacteristicBoundaryInclusion 1)
-      cwOrientedIntervalPath cwBoundaryOneLeft cwBoundaryOneRight
-      cwOrientedIntervalPath_left cwOrientedIntervalPath_right) 1
 
 end SphereSixComplex

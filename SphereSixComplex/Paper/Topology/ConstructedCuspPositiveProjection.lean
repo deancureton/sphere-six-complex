@@ -41,13 +41,5 @@ public def constructedCuspPositiveProjection
   actualPositiveModulusProjection W (constructedCuspPolarData W)
     (constructedCuspPolarDeckLift W) (constructedCuspPolar_modulus_phase W)
 
-public theorem constructedCuspPositiveProjection_central_phase
-    (W : ActualPuncturedCuspCollarWitness N constructedModel) (k : CompactTorus)
-    (p : (constructedCuspPolarData W).positivePart) (hp : constructedModel.t p.1.1 = 0) :
-    let _ := (constructedCuspPolarData W).positiveDeckAction
-    constructedCuspPositiveProjection W
-      (Quotient.mk _ (compactPhaseOrbit constructedModel W.localWitness.radius
-        (constructedCuspPolarData W).positivePart (k, p))) = Quotient.mk _ p :=
-  actualPositiveModulusProjection_central_phase W _ _ _ k p hp
 
 end SphereSixComplex.Geometry.CuspStraighteningRetraction

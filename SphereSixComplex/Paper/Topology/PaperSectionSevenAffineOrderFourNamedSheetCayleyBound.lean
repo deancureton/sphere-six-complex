@@ -134,25 +134,6 @@ public theorem namedOrderFourRadialBase_cayley_lt_of_deck_cayley_norm_eq
   rw [hnorm] at hsmall
   exact hsmall
 
-/-- Identity-sheet normalization implies the required Cayley-norm equality, hence the bound. -/
-public theorem namedOrderFourRadialBase_cayley_lt_of_deck_fixed
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) (g : Delta)
-    (hsmall : ‖(orderFourCayleyHomeomorph
-      (fuchsianSourceAction g •
-        (A.affineOrderFourRadialBaseLift
-          (A.affineBandStripCoordinate x)).1) : ℂ)‖ <
-        A.starSeparation.orderFour.radius)
-    (hfixed : fuchsianSourceAction g •
-        (A.affineOrderFourRadialBaseLift
-          (A.affineBandStripCoordinate x)).1 =
-      (A.affineOrderFourRadialBaseLift
-        (A.affineBandStripCoordinate x)).1) :
-    ‖(orderFourCayleyHomeomorph
-      (A.affineOrderFourRadialBaseLift
-        (A.affineBandStripCoordinate x)).1 : ℂ)‖ <
-      A.starSeparation.orderFour.radius := by
-  apply A.namedOrderFourRadialBase_cayley_lt_of_deck_cayley_norm_eq x g hsmall
-  rw [hfixed]
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

@@ -447,26 +447,6 @@ public theorem boundarySevenRealizationIdentifiesStandardSimplexBoundary_iff_inj
     intro x
     rfl
 
-/-- Equivalently, the remaining injectivity assertion says that geometric realization sends the
-monomorphism from the simplicial boundary into the representable seven-simplex to an injective
-continuous map. -/
-public theorem boundarySevenRealizationToBoundary_injective_iff_realizedInclusion :
-    Function.Injective boundarySevenRealizationToBoundary ↔
-      Function.Injective (SSet.toTop.map
-        (SSet.boundary 7 : SSet.Subcomplex (Δ[7] : SSet.{0})).ι) := by
-  constructor
-  · intro h x y hxy
-    apply h
-    apply Subtype.ext
-    rw [boundarySevenRealizationToBoundary_val,
-      boundarySevenRealizationToBoundary_val]
-    exact congr_arg (SimplexCategory.toTopHomeo (SimplexCategory.mk 7)) hxy
-  · intro h x y hxy
-    apply h
-    apply (SimplexCategory.toTopHomeo (SimplexCategory.mk 7)).injective
-    change boundarySevenRealizationToStdSimplex x =
-      boundarySevenRealizationToStdSimplex y
-    exact congr_arg Subtype.val hxy
 
 /-- Once the realization functor's face-colimit is identified with the ordinary closed face
 cover, the desired realization/sphere homeomorphism follows from the concrete affine geometry
@@ -486,13 +466,5 @@ public theorem boundarySevenRealizationHomeomorphSixSphere_of_injective
   boundarySevenRealizationHomeomorphSixSphere_of_identifiesBoundary
     (boundarySevenRealizationIdentifiesStandardSimplexBoundary_iff_injective.mpr hinj)
 
-/-- Therefore it is enough to supply the currently absent theorem that realization preserves
-injectivity for this simplicial subcomplex inclusion. -/
-public theorem boundarySevenRealizationHomeomorphSixSphere_of_realizedInclusion_injective
-    (hinj : Function.Injective (SSet.toTop.map
-      (SSet.boundary 7 : SSet.Subcomplex (Δ[7] : SSet.{0})).ι)) :
-    BoundarySevenRealizationHomeomorphSixSphere :=
-  boundarySevenRealizationHomeomorphSixSphere_of_injective
-    (boundarySevenRealizationToBoundary_injective_iff_realizedInclusion.mpr hinj)
 
 end SphereSixComplex

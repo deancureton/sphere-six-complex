@@ -3,7 +3,18 @@ module
 public import SphereSixComplex.Prerequisites.Topology.FirstQuadrantSingleColumnTotal
 public import SphereSixComplex.Prerequisites.Topology.BoundarySevenFaceNeighborhoodIntersections
 public import SphereSixComplex.Prerequisites.Topology.BoundarySevenFaceNeighborhoodLocalComparison
-public import SphereSixComplex.Prerequisites.Topology.SixSphereLowIntegralHomology
+public import SphereSixComplex.Prerequisites.Topology.BoundarySevenRealizationInjective
+public import SphereSixComplex.Prerequisites.Topology.SingularExcision
+public import SphereSixComplex.Prerequisites.Topology.CollarHomotopyExtension
+public import SphereSixComplex.Prerequisites.Topology.SingularExcisionOpenCover
+public import Mathlib.Algebra.Homology.HomologySequenceLemmas
+public import Mathlib.AlgebraicTopology.SimplicialSet.SubcomplexColimits
+public import Mathlib.CategoryTheory.Abelian.CommSq
+public import Mathlib.CategoryTheory.Adjunction.Limits
+public import Mathlib.CategoryTheory.Limits.Preserves.SigmaConst
+public import Mathlib.CategoryTheory.Limits.Shapes.Pullback.Pasting
+public import Mathlib.Algebra.Homology.HomologicalComplexBiprod
+public import Mathlib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 
 /-!
 # Global Cech comparison for the boundary of the seven-simplex
@@ -161,44 +172,7 @@ public theorem boundarySevenSimplicialFaceIntegralCechRowAugmentation_quasiIso
       (boundarySevenSimplicialFaceIntegralEvaluationCech k)) :=
   (boundarySevenSimplicialFaceIntegralCechRowHomotopyEquiv k).quasiIso_hom
 
-/-- The map of the two degree-zero Cech presentation objects is literally the finite coproduct
-of the eight canonical local face comparisons. -/
-public theorem boundarySevenFacePresentationSourceMap_eq_sigmaMap :
-    boundarySevenFacePresentationSourceMap =
-      CategoryTheory.Limits.Sigma.map
-        (fun i : Fin 8 ↦ boundarySevenFaceNeighborhoodLocalComparisonSSetMap i) := by
-  apply Sigma.hom_ext
-  intro i
-  rw [boundarySevenFacePresentationSourceMap_iota,
-    CategoryTheory.Limits.Sigma.ι_map]
-  rfl
 
-/-- Consequently the canonical map on the degree-zero Cech presentation objects induces a
-quasi-isomorphism on integral chains.  This is the first graded piece of the vertical-column
-filtration of the Cech total map. -/
-public theorem boundarySevenFacePresentationSourceIntegralChainMap_quasiIso :
-    QuasiIso (SSet.chainComplexMap boundarySevenFacePresentationSourceMap
-      (AddCommGrpCat.of ℤ)) := by
-  let F := (SSet.chainComplexFunctor AddCommGrpCat).obj (AddCommGrpCat.of ℤ)
-  let K : Fin 8 → SSet.{0} := fun _ ↦ (Δ[6] : SSet.{0})
-  let L : Fin 8 → SSet.{0} := fun i ↦
-    TopCat.toSSet.obj (TopCat.of (boundarySevenComparisonFaceNeighborhood i))
-  let f : ∀ i, K i ⟶ L i :=
-    fun i ↦ boundarySevenFaceNeighborhoodLocalComparisonSSetMap i
-  letI : PreservesColimitsOfShape (Discrete (Fin 8)) F := by
-    apply HomologicalComplex.preservesColimitsOfShape_of_eval
-    intro n
-    change PreservesColimitsOfShape (Discrete (Fin 8))
-      ((evaluation SimplexCategoryᵒᵖ Type).obj
-        (Opposite.op (SimplexCategory.mk n)) ⋙
-          sigmaConst.obj (AddCommGrpCat.of ℤ))
-    infer_instance
-  have hf : ∀ i, QuasiIso (F.map (f i)) := by
-    intro i
-    exact boundarySevenFaceNeighborhoodLocalIntegralComparison_quasiIso i
-  have h := quasiIso_map_finite_coproduct F K L f hf
-  rw [boundarySevenFacePresentationSourceMap_eq_sigmaMap]
-  exact h
 
 /-- The augmented Cech nerve of the simplicial face presentation. -/
 public noncomputable def boundarySevenSimplicialFaceAugmentedCechNerve :
@@ -396,71 +370,9 @@ public theorem boundarySevenFaceCechTotalMap_comp_augmentation :
 
 /-! ## Exact low-degree assembly endpoint -/
 
-/-- The remaining input for the low-degree global comparison, after the canonical Cech maps
-and their strict augmentation square have been constructed above.  The lift is the output of
-totalizing a contraction of the simplicial face-presentation resolution; the other four fields
-are precisely the degree-two and degree-three conclusions of the rowwise-to-total argument. -/
-public structure BoundarySevenCechLowAssemblyInput where
-  sourceLift :
-    (∂Δ[7] : SSet.{0}).chainComplex (AddCommGrpCat.of ℤ) ⟶
-      boundarySevenSimplicialFaceCechTotal
-  sourceLift_fac :
-    sourceLift ≫ boundarySevenSimplicialFaceCechTotalAugmentation = 𝟙 _
-  sourceLift_quasiIsoAt_two : QuasiIsoAt sourceLift 2
-  sourceLift_quasiIsoAt_three : QuasiIsoAt sourceLift 3
-  cechMap_quasiIsoAt_two : QuasiIsoAt boundarySevenFaceCechTotalMap 2
-  cechMap_quasiIsoAt_three : QuasiIsoAt boundarySevenFaceCechTotalMap 3
-  augmentation_quasiIsoAt_two :
-    QuasiIsoAt boundarySevenFaceNeighborhoodCechTotalAugmentation 2
-  augmentation_quasiIsoAt_three :
-    QuasiIsoAt boundarySevenFaceNeighborhoodCechTotalAugmentation 3
 
-/-- The canonical map from boundary chains to the neighbourhood Cech total obtained from a
-contracting lift of the simplicial face resolution. -/
-public noncomputable def boundarySevenBoundaryToFaceNeighborhoodCechTotal
-    (h : BoundarySevenCechLowAssemblyInput) :
-    (∂Δ[7] : SSet.{0}).chainComplex (AddCommGrpCat.of ℤ) ⟶
-      boundarySevenFaceNeighborhoodCechTotal :=
-  h.sourceLift ≫ boundarySevenFaceCechTotalMap
 
-/-- The constructed boundary-to-Cech map has exactly the required canonical composite. -/
-public theorem boundarySevenBoundaryToFaceNeighborhoodCechTotal_fac
-    (h : BoundarySevenCechLowAssemblyInput) :
-    boundarySevenBoundaryToFaceNeighborhoodCechTotal h ≫
-        boundarySevenFaceNeighborhoodCechTotalAugmentation =
-      simplicialToCoverSmallSingularChainMap
-        (∂Δ[7] : SSet.{0}) boundarySevenComparisonFaceNeighborhood
-        boundarySevenComparisonUnitLandsInFaceNeighborhoods := by
-  unfold boundarySevenBoundaryToFaceNeighborhoodCechTotal
-  rw [Category.assoc, boundarySevenFaceCechTotalMap_comp_augmentation]
-  rw [← Category.assoc, h.sourceLift_fac, Category.id_comp]
 
-/-- The exact low-degree Cech package consumed by the six-sphere homology reduction. -/
-public noncomputable def boundarySevenFaceNeighborhoodCechLowComparison_of_assembly
-    (h : BoundarySevenCechLowAssemblyInput) :
-    BoundarySevenFaceNeighborhoodCechLowComparison where
-  boundaryToCech := boundarySevenBoundaryToFaceNeighborhoodCechTotal h
-  augmentation := boundarySevenFaceNeighborhoodCechTotalAugmentation
-  fac := boundarySevenBoundaryToFaceNeighborhoodCechTotal_fac h
-  boundaryToCech_quasiIsoAt_two :=
-    quasiIsoAt_comp h.sourceLift boundarySevenFaceCechTotalMap 2
-      (hφ := h.sourceLift_quasiIsoAt_two)
-      (hφ' := h.cechMap_quasiIsoAt_two)
-  boundaryToCech_quasiIsoAt_three :=
-    quasiIsoAt_comp h.sourceLift boundarySevenFaceCechTotalMap 3
-      (hφ := h.sourceLift_quasiIsoAt_three)
-      (hφ' := h.cechMap_quasiIsoAt_three)
-  augmentation_quasiIsoAt_two := h.augmentation_quasiIsoAt_two
-  augmentation_quasiIsoAt_three := h.augmentation_quasiIsoAt_three
 
-/-- Consequently the remaining low-degree Cech assembly input is sufficient for both desired
-six-sphere homology vanishings and the disk-cover local acyclicity package. -/
-public theorem sixSphere_lowHomology_and_diskLocalAcyclic_of_cechAssembly
-    (h : BoundarySevenCechLowAssemblyInput) :
-    (IsZero ((integralSingularChainComplexObj (TopCat.sphere.{0} 6)).homology 2) ∧
-      IsZero ((integralSingularChainComplexObj (TopCat.sphere.{0} 6)).homology 3)) ∧
-      DiskSevenCoverLocalRelativeLowAcyclic :=
-  sixSphere_lowHomology_and_diskLocalAcyclic_of_cechLow
-    (boundarySevenFaceNeighborhoodCechLowComparison_of_assembly h)
 
 end SphereSixComplex

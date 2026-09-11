@@ -207,13 +207,6 @@ public theorem coverSmallChainQuasiIsomorphism_of_eventuallySmall
   · exact affineSingularSubdivisionIterateHomotopy X
   · exact h
 
-/-- The same geometric input supplies the stronger chain-homotopy approximation interface via
-projectivity of integral singular chain groups. -/
-public theorem coverSmallChainApproximation_of_eventuallySmall
-    (h : CoverSmallAffineSubdivisionEventuallySmall X U) :
-    CoverSmallChainApproximation X U :=
-  coverSmallChainApproximation_of_quasiIso X U
-    (coverSmallChainQuasiIsomorphism_of_eventuallySmall X U h)
 
 end Singular
 

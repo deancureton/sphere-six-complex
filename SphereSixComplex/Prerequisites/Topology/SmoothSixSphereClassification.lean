@@ -142,38 +142,6 @@ public theorem markedSmoothSixSphereClassesTrivial_of_smoothPoincareSixStandardM
   obtain ⟨dY⟩ := hSmooth Y.Carrier ⟨eY.toHomotopyEquiv⟩
   exact ⟨dX.trans dY.symm⟩
 
-/-- A relation that an eventual geometric theory may instantiate by smooth h-cobordism. -/
-public structure SmoothHCobordismRelation where
-  setoid : Setoid MarkedSmoothSixSphere
-
-namespace SmoothHCobordismRelation
-
-/-- The quotient type of proposed h-cobordism classes. -/
-public abbrev Class (H : SmoothHCobordismRelation) := Quotient H.setoid
-
-/-- The h-cobordism theorem in the exact relational form used for smooth six-spheres. -/
-public def HCobordismTheoremSix (H : SmoothHCobordismRelation) : Prop :=
-  ∀ {X Y : MarkedSmoothSixSphere}, H.setoid.r X Y → X.Diffeomorphic Y
-
-/-- The required set-level form of the computation `Theta_6 = 0`. -/
-public def ThetaSixVanishes (H : SmoothHCobordismRelation) : Prop :=
-  Subsingleton H.Class
-
-/-- H-cobordism classification and `Theta_6 = 0` collapse diffeomorphism classes. -/
-public theorem diffeomorphismClassesTrivial (H : SmoothHCobordismRelation)
-    (hCobordism : H.HCobordismTheoremSix) (hTheta : H.ThetaSixVanishes) :
-    MarkedSmoothSixSphere.DiffeomorphismClassesTrivial := by
-  constructor
-  intro a b
-  refine Quotient.inductionOn₂ a b ?_
-  intro X Y
-  apply Quotient.sound
-  apply hCobordism
-  apply Quotient.exact
-  exact @Subsingleton.elim H.Class hTheta
-    (Quotient.mk H.setoid X) (Quotient.mk H.setoid Y)
-
-end SmoothHCobordismRelation
 
 /-- Triviality of smooth-structure classes supplies the fixed-space no-exotic-sphere obligation. -/
 public theorem homeomorphismToDiffeomorphismSixSphere_of_classes_trivial
@@ -198,16 +166,5 @@ public theorem smoothPoincareSixStandardModel_of_classicalStages
   exact homeomorphismToDiffeomorphismSixSphere_of_classes_trivial hClasses
     inferInstance (hSmale M hHomotopy)
 
-/-- The three classical inputs imply the fixed-space smooth-recognition obligation. -/
-public theorem homotopyToDiffeomorphismSixSphere_of_classicalStages
-    (hSmale : GeneralizedTopologicalPoincareSix)
-    (H : SmoothHCobordismRelation) (hCobordism : H.HCobordismTheoremSix)
-    (hTheta : H.ThetaSixVanishes)
-    {X : Type} [TopologicalSpace X] [ChartedSpace RealModel X]
-    [T2Space X] [SecondCountableTopology X] [CompactSpace X] :
-    HomotopyToDiffeomorphismSixSphereObligation X := by
-  intro hManifold hHomotopy
-  exact smoothPoincareSixStandardModel_of_classicalStages hSmale
-    (H.diffeomorphismClassesTrivial hCobordism hTheta) X hHomotopy
 
 end SphereSixComplex
