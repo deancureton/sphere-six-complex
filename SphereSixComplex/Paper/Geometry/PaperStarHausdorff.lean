@@ -3,7 +3,6 @@ module
 public import SphereSixComplex.Paper.Geometry.CuspCollarPairProperness
 public import SphereSixComplex.Paper.Geometry.PaperEllipticCentralEscape
 public import SphereSixComplex.Prerequisites.Geometry.PaperStarClosedRelationReduction
-public import SphereSixComplex.Paper.Geometry.PaperStarPieceHausdorff
 
 /-!
 # Hausdorffness of the concrete four-piece star

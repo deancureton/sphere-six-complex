@@ -1,7 +1,6 @@
 module
 public import SphereSixComplex.Paper.Topology.CuspNormalizedCylinderBoundary
 public import SphereSixComplex.Paper.Topology.IntegerPeriodCircle
-public import SphereSixComplex.Paper.Topology.PaperCuspFourthPeriodInvariance
 
 @[expose] public section
 noncomputable section

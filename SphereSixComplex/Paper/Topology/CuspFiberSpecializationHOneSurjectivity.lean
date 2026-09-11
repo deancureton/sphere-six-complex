@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.CuspFiberSpecializationBasisNormalization
-public import SphereSixComplex.Prerequisites.Topology.EstablishedFirstHurewicz
 public import SphereSixComplex.Paper.Topology.PaperCuspUnwrappedFillingCover
 
 @[expose] public section

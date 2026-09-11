@@ -1,6 +1,5 @@
 module
 public import SphereSixComplex.Paper.Topology.CuspNormalizedRegularPaths
-public import Mathlib.Topology.Homotopy.Lifting
 
 @[expose] public section
 noncomputable section

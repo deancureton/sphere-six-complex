@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.RealMappingTorusCover
-public import SphereSixComplex.Paper.Topology.PaperEllipticCollarFundamentalDomainProof
 public import SphereSixComplex.Paper.Topology.PaperCollarMappingTorusAdapters
 public import Mathlib.GroupTheory.SemidirectProduct
 

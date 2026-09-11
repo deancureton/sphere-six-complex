@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.SingularExcisionRefinement
-public import SphereSixComplex.Prerequisites.Topology.RelativeSingularHomology
 public import Mathlib.Algebra.Homology.HomologySequenceLemmas
 
 @[expose] public section

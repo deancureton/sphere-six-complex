@@ -1,6 +1,5 @@
 module
 public import SphereSixComplex.Paper.Topology.PaperCuspGeometricSpecializationTypes
-public import SphereSixComplex.Paper.Topology.CuspFiniteFiberCoordinateCircles
 public import SphereSixComplex.Paper.Topology.CuspFiberSpecializationBijective
 
 @[expose] public section

@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.EstablishedMappingTorusFundamentalGroupCore
-public import SphereSixComplex.Prerequisites.Topology.MayerVietoris
 
 @[expose] public section
 

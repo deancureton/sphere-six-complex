@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Paper.Topology.PaperActualAffineCoreData
 public import SphereSixComplex.Paper.Topology.PaperCuspCentralDeckComparison
-public import SphereSixComplex.Paper.Topology.PaperCuspChosenAffineFilling
 
 /-!
 # The actual cusp-to-central universal-cover comparison

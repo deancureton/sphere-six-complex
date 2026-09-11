@@ -2,9 +2,6 @@ module
 
 public import SphereSixComplex.Paper.Topology.ConcreteVanKampen
 public import SphereSixComplex.Prerequisites.Topology.FundamentalGroupCoverLifting
-public import TauCeti.AlgebraicTopology.UniversalCover.Classification.Existence
-public import TauCeti.AlgebraicTopology.UniversalCover.Classification.RecoveredSubgroup
-public import TauCeti.AlgebraicTopology.UniversalCover.Classification.Pointed
 
 /-!
 # Based generator extraction from groupoid van Kampen

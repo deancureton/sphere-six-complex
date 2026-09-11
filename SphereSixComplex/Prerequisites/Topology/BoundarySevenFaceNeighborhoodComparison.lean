@@ -4,7 +4,6 @@ public import SphereSixComplex.Prerequisites.Topology.SimplicialSingularComparis
 public import Mathlib.Algebra.Category.Grp.Adjunctions
 public import Mathlib.Algebra.Homology.TotalComplex
 public import Mathlib.AlgebraicTopology.CechNerve
-public import Mathlib.AlgebraicTopology.ExtraDegeneracy
 
 /-!
 # The face-neighborhood Čech reduction for `∂Δ[7]`

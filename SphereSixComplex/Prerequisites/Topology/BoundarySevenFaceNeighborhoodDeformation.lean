@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.BoundarySevenRealizationInjective
 public import SphereSixComplex.Prerequisites.Topology.BoundarySevenFaceNeighborhoodComparison
-public import SphereSixComplex.Prerequisites.Topology.HomotopySphereHomology
 
 /-!
 # Deformation of a boundary-face neighbourhood onto its face

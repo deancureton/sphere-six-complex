@@ -1,6 +1,5 @@
 module
 public import SphereSixComplex.Paper.Topology.CuspFourthCircle
-public import SphereSixComplex.Paper.Geometry.GlobalTorusFamily
 public import SphereSixComplex.Paper.Topology.EllipticInvariantCircleTranslation
 import all SphereSixComplex.Paper.Periods.Matrix
 

@@ -1,8 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperCuspGeometricSpecializationDefs
-public import SphereSixComplex.Paper.Topology.PaperEllipticCollarFundamentalDomain
-public import SphereSixComplex.Prerequisites.Topology.ConnectedMayerVietorisDegreeZero
 public import SphereSixComplex.Paper.Geometry.CuspRealPeriodDeckCoordinates
 
 /-!

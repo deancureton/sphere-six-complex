@@ -1,8 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperCuspFiniteFiberDegreeOneKilledSection
-public import SphereSixComplex.Paper.Topology.PaperCuspRadialClutchingConstruction
-public import SphereSixComplex.Paper.Topology.CuspFiniteFiberSpecializationGeometricReduction
 
 /-!
 # Angular vanishing on the marked cusp fibre

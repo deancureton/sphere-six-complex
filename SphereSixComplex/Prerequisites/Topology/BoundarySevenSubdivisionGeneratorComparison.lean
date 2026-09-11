@@ -1,9 +1,7 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.BoundarySevenReflectionDegreeFromSubdivision
-public import SphereSixComplex.Prerequisites.Topology.SimplicialSixSphereTopHomologyKernel
 public import SphereSixComplex.Prerequisites.Topology.SingularSubdivisionIteration
-public import SphereSixComplex.Prerequisites.Topology.SimplicialSingularComparison
 
 /-!
 # The boundary-seven generator and barycentric subdivision

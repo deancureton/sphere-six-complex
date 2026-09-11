@@ -1,8 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenEllipticBaseCoordinate
-public import Mathlib.Analysis.Complex.Convex
-public import Mathlib.Analysis.Convex.Contractible
 public import Mathlib.Topology.FiberBundle.IsHomeomorphicTrivialBundle
 
 /-!

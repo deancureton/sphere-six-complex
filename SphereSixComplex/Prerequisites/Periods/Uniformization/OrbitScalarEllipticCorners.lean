@@ -4,9 +4,7 @@ public import SphereSixComplex.Prerequisites.Periods.Uniformization.OrbitScalarR
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.OrbitScalarRegularLocal
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.ScalarMonodromyExactAssembly
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.ScalarMonodromyExactAssembly
-public import SphereSixComplex.Prerequisites.Geometry.FuchsianEllipticCoordinates
 import all SphereSixComplex.Prerequisites.Geometry.FuchsianEllipticCoordinates
-public import SphereSixComplex.Prerequisites.Geometry.ProperlyDiscontinuousSlice
 import all SphereSixComplex.Prerequisites.Geometry.ProperlyDiscontinuousSlice
 public import Mathlib.Analysis.Complex.RemovableSingularity
 import all Mathlib.Analysis.Complex.RemovableSingularity

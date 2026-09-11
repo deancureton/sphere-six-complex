@@ -1,6 +1,5 @@
 module
 
-public import SphereSixComplex.Paper.Geometry.PaperOpenEmbeddingStarNonempty
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineOrderFourNamedSheetStabilizerReduction
 
 /-!

@@ -5,7 +5,6 @@ public import SphereSixComplex.Prerequisites.Topology.BoundarySevenCechOrderedTa
 public import SphereSixComplex.Prerequisites.Topology.BoundarySevenCechOrderedLocalComparison
 public import SphereSixComplex.Prerequisites.Topology.BoundarySevenCechComparisonAssemblyProof
 public import SphereSixComplex.Prerequisites.Topology.BoundarySevenDegreeTransportProof
-public import SphereSixComplex.Prerequisites.Topology.DiskSevenRelativeHomologyLowAcyclic
 public import SphereSixComplex.Prerequisites.Topology.DiskSevenRelativeHomologyModTwo
 
 /-!

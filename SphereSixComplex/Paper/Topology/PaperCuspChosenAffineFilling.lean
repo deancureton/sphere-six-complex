@@ -3,7 +3,6 @@ module
 public import SphereSixComplex.Prerequisites.Topology.EstablishedChosenAffineFillings
 public import SphereSixComplex.Paper.Topology.EstablishedBasedVanKampen
 public import SphereSixComplex.Paper.Topology.PaperActualVanKampenCover
-public import SphereSixComplex.Paper.Topology.PaperCuspActualAffineFillingCoverSquare
 public import SphereSixComplex.Paper.Topology.PaperCuspUnwrappedFillingCover
 
 /-!

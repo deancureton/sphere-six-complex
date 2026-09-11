@@ -4,7 +4,6 @@ public import SphereSixComplex.Prerequisites.Periods.Uniformization.GlobalModula
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.GlobalModularDeckComparison
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.FiniteCornerReflection
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.FiniteCornerReflection
-public import SphereSixComplex.Prerequisites.Periods.FuchsianModularParameter
 import all SphereSixComplex.Prerequisites.Periods.FuchsianModularParameter
 
 @[expose] public section

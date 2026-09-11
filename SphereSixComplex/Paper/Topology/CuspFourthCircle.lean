@@ -1,7 +1,6 @@
 module
 public import SphereSixComplex.Paper.Topology.PaperCuspFourthPeriodInvariance
 public import SphereSixComplex.Paper.Topology.CuspInvariantCoordinateCircle
-public import SphereSixComplex.Prerequisites.Topology.FixedLoopSweepWangBoundary
 /-! The fourth period circle is fixed pointwise by the actual cusp clutching map. Its swept torus has Wang boundary equal to the fourth lattice basis vector. -/
 
 @[expose] public section

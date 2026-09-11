@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperActualCuspCentralLoopRelation
-public import SphereSixComplex.Paper.Topology.PaperActualCuspCoordinateWinding
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineMarkedBandTrivialization
 
 /-!

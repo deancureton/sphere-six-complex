@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Geometry.PaperOpenEmbeddingStar
-public import SphereSixComplex.Prerequisites.Topology.IntervalClutchingQuotientCore
 public import SphereSixComplex.Paper.Topology.PaperEllipticTorusHomologyBasis
 public import SphereSixComplex.Prerequisites.Topology.WangHomologyPresentation
 

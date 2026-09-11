@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.TriangleGroup.FuchsianArithmeticCore
-public import SphereSixComplex.Prerequisites.TriangleGroup.FuchsianPingPong
 
 /-!
 # Commutation forced by the order-four fixed point

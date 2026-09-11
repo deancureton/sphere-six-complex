@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.ConstructedPositivePeriodCoordinates
-public import Mathlib.Analysis.Convex.Contractible
 public import SphereSixComplex.Paper.Topology.ConstructedCuspPositivePhaseVanishing
 
 @[expose] public section

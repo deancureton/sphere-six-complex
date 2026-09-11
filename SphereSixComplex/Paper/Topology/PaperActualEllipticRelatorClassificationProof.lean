@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperEllipticPrincipalGaugeWindingProof
-public import SphereSixComplex.Paper.Topology.PaperActualEllipticRelatorNormalClosureTypes
 
 /-!
 # Classification of the principal-gauge winding in the elliptic filling relations

@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspWangOpenCoverChainRealizationEstablished
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspWangOpenCoverChainRealization
 
 /-!
 # Finite reduction of the canonical cusp Wang boundary square

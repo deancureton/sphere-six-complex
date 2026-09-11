@@ -1,11 +1,9 @@
 module
 
 public import SphereSixComplex.Paper.Geometry.StandardInfiniteA2ToricQuantitativeRegions
-public import SphereSixComplex.Paper.Geometry.GlobalDeckSmoothness
 public import SphereSixComplex.Paper.Geometry.EstablishedFuchsianCuspNeighborhood
 public import SphereSixComplex.Paper.Geometry.RegularTorusFamily
 public import SphereSixComplex.Paper.Geometry.FuchsianRegularTorusFamily
-public import Mathlib.Analysis.Complex.CoveringMap
 
 /-!
 # The punctured cusp collar and the global torus family

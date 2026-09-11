@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.SingularExcision
 public import SphereSixComplex.Prerequisites.Topology.CollarHomotopyExtension
-public import Mathlib.Analysis.Normed.Module.Connected
 
 /-!
 # Geometry of the concrete two-member cover of the seven-disk

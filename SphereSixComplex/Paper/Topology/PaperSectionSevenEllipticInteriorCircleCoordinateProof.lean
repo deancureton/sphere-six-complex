@@ -3,10 +3,7 @@ module
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspMeridianDegreeOneProof
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspDegreeOneIndexTwoProof
 public import SphereSixComplex.Paper.Geometry.EllipticAffineCuspObstruction
-public import SphereSixComplex.Paper.Topology.PaperAffineCyclicReducedFiberMappingTorus
-public import SphereSixComplex.Prerequisites.Topology.TwicePuncturedComplexMarkedMeridians
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenEllipticBaseCoordinate
-public import Mathlib.Analysis.SpecialFunctions.Complex.Circle
 
 @[expose] public section
 

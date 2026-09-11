@@ -1,9 +1,7 @@
 module
 
 public import SphereSixComplex.Paper.Topology.CircleMappingTorusHomologyBases
-public import SphereSixComplex.Paper.Topology.PaperCollarMappingTorusAdapters
 public import SphereSixComplex.Paper.Topology.PaperEllipticCollarFundamentalDomain
-public import Mathlib.Analysis.Convex.Contractible
 
 /-!
 # The radial mapping-torus model of the cusp collar

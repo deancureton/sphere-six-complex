@@ -1,6 +1,5 @@
 module
 public import SphereSixComplex.Paper.Topology.CuspChosenThirdPeriodLoop
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineNormalizedStripLift
 public import SphereSixComplex.Paper.Topology.CuspThirdPeripheralInvariance
 
 @[expose] public section

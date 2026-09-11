@@ -3,7 +3,6 @@ module
 public import SphereSixComplex.Paper.Topology.ConcreteVanKampen
 public import SphereSixComplex.Paper.Topology.PaperEllipticCollarFundamentalDomain
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenFinalDegreeZero
-public import Mathlib.Analysis.Convex.PathConnected
 
 /-!
 # The actual four-piece van Kampen cover

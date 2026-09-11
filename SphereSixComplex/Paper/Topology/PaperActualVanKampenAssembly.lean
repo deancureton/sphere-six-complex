@@ -1,9 +1,7 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperActualVanKampenNiceness
-public import SphereSixComplex.Paper.Topology.PaperVanKampenAlgebraAdapter
 public import SphereSixComplex.Paper.Topology.PaperActualAffineCoreData
-public import TauCeti.AlgebraicTopology.FundamentalGroup.Homeomorph
 
 /-!
 # The van Kampen datum for the actual analytic star

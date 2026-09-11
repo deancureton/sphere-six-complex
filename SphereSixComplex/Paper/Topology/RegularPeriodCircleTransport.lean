@@ -1,6 +1,5 @@
 module
 public import SphereSixComplex.Paper.Topology.GlobalInvariantPeriodCircle
-public import SphereSixComplex.Prerequisites.Topology.NormalizedCircleProductCross
 @[expose] public section
 noncomputable section
 open Set Topology

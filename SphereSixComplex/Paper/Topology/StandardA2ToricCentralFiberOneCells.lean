@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.StandardA2ToricCentralFiberZeroCells
-public import SphereSixComplex.Paper.Geometry.CuspPhaseEstimates
 public import SphereSixComplex.Paper.Geometry.PaperStarPieceHausdorff
 
 /-!

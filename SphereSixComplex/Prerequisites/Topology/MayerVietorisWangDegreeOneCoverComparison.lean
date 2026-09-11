@@ -1,6 +1,5 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.BinaryOpenCoverMapNaturality
 public import SphereSixComplex.Prerequisites.Topology.CanonicalProductWangBoundaryNaturality
 
 /-!

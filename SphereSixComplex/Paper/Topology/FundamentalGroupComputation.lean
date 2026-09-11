@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Paper.Topology.TwistObstruction
 public import SphereSixComplex.Prerequisites.Topology.FundamentalGroupSimplyConnected
-public import Mathlib.LinearAlgebra.Matrix.Notation
 
 /-!
 # The fundamental-group presentation in Section 7

@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderFourBaseFreeHomotopyProof
 public import SphereSixComplex.Paper.Topology.PaperActualEllipticCentralCoverProductLiftComparison
-public import SphereSixComplex.Paper.Topology.PaperGeometricCentralPeripheral
 
 @[expose] public section
 

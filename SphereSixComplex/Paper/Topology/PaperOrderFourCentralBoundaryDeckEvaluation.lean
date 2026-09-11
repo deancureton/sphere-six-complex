@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperActualEllipticCentralCoverProductLiftComparison
-public import SphereSixComplex.Prerequisites.TriangleGroup.FreeProductCentralizers
 import all SphereSixComplex.Paper.TriangleGroup.Representation
 
 /-!

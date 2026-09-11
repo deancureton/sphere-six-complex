@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.OrientedSmoothHomotopySphere
-public import Mathlib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 
 /-!
 # Homology transport for marked homotopy six-spheres

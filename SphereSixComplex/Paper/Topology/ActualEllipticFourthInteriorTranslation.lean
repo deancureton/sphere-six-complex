@@ -1,7 +1,6 @@
 module
 public import SphereSixComplex.Paper.Topology.ActualEllipticFourthCollarCompatibility
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenEllipticBaseCoordinate
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenStarIntersections
 
 @[expose] public section
 noncomputable section

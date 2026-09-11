@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.CuspPhaseSweepCharacteristicPairs
-public import SphereSixComplex.Paper.Topology.ConstructedA2CompactActionFiltration
 public import SphereSixComplex.Prerequisites.Topology.RelativeSingularHomotopy
 
 @[expose] public section

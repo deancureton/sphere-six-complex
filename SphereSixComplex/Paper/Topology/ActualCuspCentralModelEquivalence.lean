@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Paper.Geometry.StandardA2ModelEquivalence
 public import SphereSixComplex.Paper.Topology.PaperCuspCentralFiberCWConstruction
-public import Mathlib.Topology.Homeomorph.Quotient
 
 @[expose] public section
 noncomputable section

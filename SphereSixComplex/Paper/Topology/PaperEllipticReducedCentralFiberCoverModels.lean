@@ -1,6 +1,5 @@
 module
 
-public import SphereSixComplex.Paper.Topology.PaperEllipticReducedCentralFiberCoverCore
 public import SphereSixComplex.Paper.Topology.SectionSevenLocalEulerModels
 
 /-!

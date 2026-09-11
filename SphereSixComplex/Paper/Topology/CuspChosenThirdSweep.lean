@@ -1,7 +1,6 @@
 module
 public import SphereSixComplex.Paper.Topology.CuspSweepAnchorHomotopy
 public import SphereSixComplex.Paper.Topology.CuspCoordinateCircleTransport
-public import SphereSixComplex.Paper.Topology.PaperGeometricCentralMonodromy
 
 @[expose] public section
 noncomputable section

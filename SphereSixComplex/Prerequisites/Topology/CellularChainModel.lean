@@ -1,9 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.CellularHomologyNormalizedModel
-public import Mathlib.Topology.CWComplex.Classical.Finite
-public import Mathlib.Algebra.Category.Grp.EpiMono
-public import Mathlib.Algebra.Category.Grp.Zero
 public import Mathlib.RingTheory.Finiteness.Basic
 
 /-!

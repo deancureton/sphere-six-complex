@@ -1,6 +1,5 @@
 module
 
-public import SphereSixComplex.Paper.Geometry.CompactTorusFamilyOverBase
 public import SphereSixComplex.Paper.Geometry.PaperEllipticCentralEscape
 public import SphereSixComplex.Paper.Geometry.PaperFillingCompactCores
 

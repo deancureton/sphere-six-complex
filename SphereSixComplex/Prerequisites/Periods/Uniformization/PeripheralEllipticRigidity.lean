@@ -1,6 +1,5 @@
 module
 
-public import SphereSixComplex.Prerequisites.TriangleGroup.BinaryIndexedCoprod
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.SourceFundamentalPairingClassification
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.SourceFundamentalPairingClassification
 

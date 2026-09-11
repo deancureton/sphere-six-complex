@@ -1,6 +1,5 @@
 module
 
-public import SphereSixComplex.Paper.Topology.CuspFiberSpecializationHOneSurjectivity
 public import SphereSixComplex.Paper.Topology.PaperCuspMarkedFiberAngularVanishingProof
 
 @[expose] public section

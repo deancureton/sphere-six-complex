@@ -2,8 +2,6 @@ module
 
 public import SphereSixComplex.Paper.Topology.PaperActualCollarMappingTorusEuler
 public import SphereSixComplex.Paper.Topology.PaperCentralFamilyMayerVietorisEuler
-public import SphereSixComplex.Paper.Topology.PaperCuspCentralFiberCWModel
-public import SphereSixComplex.Paper.Topology.PaperCuspPhaseSpreading
 
 /-!
 # Assembly of the actual Section 7 local Euler models

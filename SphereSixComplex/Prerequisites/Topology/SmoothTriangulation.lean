@@ -3,7 +3,6 @@ module
 public import SphereSixComplex.Prerequisites.Topology.CellularChainModel
 public import SphereSixComplex.Prerequisites.Topology.FiniteCWModel
 public import SphereSixComplex.Prerequisites.Topology.SmoothAtlasOrientation
-public import SphereSixComplex.Prerequisites.Topology.SmoothRecognition
 
 /-!
 # Dimension-controlled smooth triangulation

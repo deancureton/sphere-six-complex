@@ -3,7 +3,6 @@ module
 public import SphereSixComplex.Prerequisites.Topology.EstablishedNumeratedOpenCoverHomotopyExcision
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineCompletionReduction
 public import SphereSixComplex.Prerequisites.Topology.ProductTrivializationHomotopyEquivalence
-public import SphereSixComplex.Prerequisites.Topology.PuncturedAffineHalfPlaneRadial
 
 /-!
 # Homotopy equivalences for the affine elliptic sides

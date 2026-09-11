@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.FiniteCoverCechDefs
-public import Mathlib.AlgebraicTopology.ExtraDegeneracy
 
 /-!
 # Row contractions for the finite-cover Cech resolution

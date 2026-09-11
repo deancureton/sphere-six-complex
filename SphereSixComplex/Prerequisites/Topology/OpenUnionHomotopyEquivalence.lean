@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.MappingCylinderGluing
 public import SphereSixComplex.Prerequisites.Topology.MappingCylinderHomotopyExtension
-public import SphereSixComplex.Prerequisites.Topology.RelativeHomotopy
 public import Mathlib.Topology.ContinuousOn
 public import Mathlib.Topology.PartitionOfUnity
 

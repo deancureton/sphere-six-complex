@@ -5,8 +5,6 @@ public import SphereSixComplex.Paper.Geometry.FuchsianRegularTorusFamily
 public import SphereSixComplex.Paper.Geometry.ComplexModelRechart
 public import SphereSixComplex.Prerequisites.Geometry.EllipticCayleyHomeomorph
 public import Mathlib.Analysis.Normed.Module.Ball.Homeomorph
-public import Mathlib.Analysis.Normed.Module.Connected
-public import Mathlib.LinearAlgebra.Complex.FiniteDimensional
 public import Mathlib.SetTheory.Cardinal.Free
 public import Mathlib.Topology.Bases
 

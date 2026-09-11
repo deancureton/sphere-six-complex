@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Prerequisites.Geometry.FourPieceStarGluing
 public import SphereSixComplex.Paper.Topology.EstablishedLerayCoverComparison
-public import Mathlib.Algebra.Homology.TotalComplexSymmetry
 
 /-!
 # Local intersection models for the Section 7 star cover

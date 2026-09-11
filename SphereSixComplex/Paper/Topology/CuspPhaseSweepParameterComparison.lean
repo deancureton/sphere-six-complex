@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.CuspPhaseSweepAtlas
-public import SphereSixComplex.Paper.Topology.ConstructedA2CircleSweepPrism
 
 @[expose] public section
 

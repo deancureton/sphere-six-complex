@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Geometry.StandardInfiniteA2ToricPolarModulus
-public import Mathlib.Geometry.Manifold.Instances.Real
 
 @[expose] public section
 

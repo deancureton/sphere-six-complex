@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineMarkedBandSquares
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineBandTrivialization
 
 /-!
 # Marking the affine central-band fibre coordinate

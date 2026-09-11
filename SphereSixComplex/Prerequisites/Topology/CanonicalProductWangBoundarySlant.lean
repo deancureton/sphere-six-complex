@@ -2,8 +2,6 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.NormalizedCoverCrossLowOverlapCalculationProof
 public import SphereSixComplex.Prerequisites.Topology.StandardThreeTorusProductWangBoundary
-public import SphereSixComplex.Prerequisites.Topology.StandardThreeTorusProductDegreeTwoCoordinates
-public import SphereSixComplex.Prerequisites.Topology.StandardThreeTorusDegreeOneCoordinates
 
 /-!
 # The circle-slant formula for the product Wang boundary

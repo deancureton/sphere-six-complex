@@ -1,7 +1,5 @@
 module
 
-public import SphereSixComplex.Paper.Topology.ConstructedNormalizedPolarHoneycombReduction
-public import SphereSixComplex.Paper.Topology.ConstructedA2HoneycombCorrectedHexagonalCell
 public import SphereSixComplex.Paper.Topology.ConstructedA2HoneycombCorrectedActualQuotientCell
 
 @[expose] public section

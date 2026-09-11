@@ -3,7 +3,6 @@ module
 public import SphereSixComplex.Paper.Topology.CuspFourthFiberUnit
 public import SphereSixComplex.Paper.Topology.CuspCorrectedHomologyAssembly
 public import SphereSixComplex.Paper.Topology.CuspCorrectedDegreeOneCoordinates
-public import SphereSixComplex.Paper.Topology.CuspTranslationHomologyComparison
 
 /-!
 # Cusp completion with the corrected invariant marking

@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Paper.Topology.EstablishedEquivariantUniversalCoverProof
 public import SphereSixComplex.Paper.Geometry.FuchsianPuncturedGlobalFamilyNiceness
-public import SphereSixComplex.Paper.Periods.FuchsianUniformizationBridge
 public import SphereSixComplex.Paper.Topology.PaperGeometricCentralCore
 public import SphereSixComplex.Prerequisites.Topology.TwicePuncturedComplexFreeFundamentalGroupProof
 import TauCeti.Topology.Homotopy.Covering

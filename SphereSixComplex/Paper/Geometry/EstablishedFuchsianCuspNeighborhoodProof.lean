@@ -2,8 +2,6 @@ module
 
 public import SphereSixComplex.Paper.Geometry.EstablishedFuchsianCuspNeighborhoodDefs
 public import SphereSixComplex.Paper.TriangleGroup.FuchsianArithmeticTermination
-public import SphereSixComplex.Paper.TriangleGroup.FuchsianTriangleCover
-public import Mathlib.Analysis.Complex.OpenMapping
 import all SphereSixComplex.Paper.Geometry.GlobalTorusFamily
 
 /-!

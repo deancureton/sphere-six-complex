@@ -1,6 +1,5 @@
 module
 
-public import SphereSixComplex.Paper.Topology.PaperEllipticReducedCentralFiberCoverModels
 public import SphereSixComplex.Paper.Topology.PaperPropositionSevenFourteenDegreeTwoAlgebra
 
 /-!

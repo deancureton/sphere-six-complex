@@ -1,7 +1,6 @@
 module
 public import SphereSixComplex.Paper.Topology.GlobalInvariantPeriodTranslation
 public import SphereSixComplex.Paper.Topology.ActualEllipticVaryingFourthTranslation
-public import SphereSixComplex.Paper.Geometry.PaperEllipticCentralEscape
 
 @[expose] public section
 noncomputable section

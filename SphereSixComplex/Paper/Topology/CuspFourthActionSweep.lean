@@ -2,7 +2,6 @@ module
 public import SphereSixComplex.Paper.Topology.EllipticFourthHomologySweep
 public import SphereSixComplex.Paper.Topology.CuspChosenThirdSweep
 public import SphereSixComplex.Paper.Topology.CuspFourthSweepNormalization
-public import SphereSixComplex.Prerequisites.Topology.PositiveCircleProductSwap
 public import SphereSixComplex.Paper.Topology.CuspFullIterateWangComparison
 
 @[expose] public section

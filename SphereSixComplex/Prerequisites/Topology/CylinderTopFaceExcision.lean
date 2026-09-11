@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.CylinderRelativeSmallChains
 public import SphereSixComplex.Prerequisites.Topology.CylinderTopRelativeEquivalence
-public import Mathlib.Algebra.Category.Grp.EpiMono
 
 @[expose] public section
 noncomputable section

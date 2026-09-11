@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.SixSphereCoordinateReflectionLinear
 public import SphereSixComplex.Prerequisites.Topology.SixSphereAntipodalReflectionDegree
-public import SphereSixComplex.Prerequisites.Topology.SixSphereTopHomologyComputed
 public import Mathlib.AlgebraicTopology.SimplicialSet.Subdivision
 public import Mathlib.GroupTheory.Perm.Sign
 

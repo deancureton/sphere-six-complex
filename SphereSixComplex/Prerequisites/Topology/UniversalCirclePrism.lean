@@ -2,9 +2,7 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.SingularPrismSimplex
 public import SphereSixComplex.Prerequisites.Topology.NormalizedCircleProductCross
-public import SphereSixComplex.Prerequisites.Topology.SingularPrismNaturality
 public import SphereSixComplex.Prerequisites.Topology.ClosedPrismHomology
-public import SphereSixComplex.Prerequisites.Topology.StandardTorusHomology
 import all SphereSixComplex.Prerequisites.Topology.StandardTorusHomology
 
 @[expose] public section

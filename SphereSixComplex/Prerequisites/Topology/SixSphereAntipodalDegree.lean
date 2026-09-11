@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.SimplicialSixSphereTopHomologyKernel
 public import SphereSixComplex.Prerequisites.Topology.BoundarySevenRealizationInjective
-public import SphereSixComplex.Prerequisites.Topology.SixSphereDegreeComparison
 public import Mathlib.GroupTheory.Perm.Fin
 
 /-!

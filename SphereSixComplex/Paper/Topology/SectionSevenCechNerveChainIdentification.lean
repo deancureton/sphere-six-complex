@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.SectionSevenPaperCoverIdentification
-public import Mathlib.CategoryTheory.Limits.Types.Coproducts
 
 /-!
 # Objectwise identification of the ordered and pullback Čech nerves

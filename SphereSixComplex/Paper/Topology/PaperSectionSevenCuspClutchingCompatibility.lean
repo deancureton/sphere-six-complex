@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineCompletionReduction
-public import SphereSixComplex.Paper.Topology.PaperEllipticInteriorCycleDecomposition
 public import SphereSixComplex.Paper.Topology.PaperCuspEllipticCoverCoordinates
 
 /-!

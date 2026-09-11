@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.SingularBarycentricOuterFaces
-public import Mathlib.AlgebraicTopology.SimplicialSet.TopAdj
 
 /-!
 # Affine realization of barycentric flags as singular simplices

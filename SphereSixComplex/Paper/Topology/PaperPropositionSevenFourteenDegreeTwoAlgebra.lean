@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Paper.Topology.PaperEllipticTorusHomologyBasis
 public import SphereSixComplex.Paper.Topology.PaperLemmaSevenThirteenAlgebra
-public import Mathlib.Data.ZMod.Basic
 
 /-!
 # Degree-two integral algebra at the two elliptic fibres

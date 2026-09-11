@@ -1,8 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperAffineCyclicQuotientCovering
-public import SphereSixComplex.Paper.Topology.PaperEllipticFillingRadialRetraction
-public import SphereSixComplex.Paper.TriangleGroup.Representation
 
 @[expose] public section
 

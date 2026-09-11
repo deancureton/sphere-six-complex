@@ -1,11 +1,9 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.KervaireMilnorSix
 public import SphereSixComplex.Prerequisites.Topology.HomotopySphereHomology
 public import SphereSixComplex.Prerequisites.Topology.FramedBordismSixReduction
 public import Mathlib.Algebra.Category.Grp.Zero
 public import Mathlib.Algebra.Module.MinimalAxioms
-public import Mathlib.LinearAlgebra.Basis.Basic
 public import Mathlib.LinearAlgebra.QuadraticForm.Basic
 
 /-!

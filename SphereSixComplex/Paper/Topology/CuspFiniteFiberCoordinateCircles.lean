@@ -2,7 +2,6 @@ module
 public import SphereSixComplex.Paper.Topology.CuspFiniteFiberSpecializationGeometricReduction
 public import SphereSixComplex.Paper.Topology.IntegerPeriodCircle
 public import SphereSixComplex.Paper.Topology.CuspPeriodLoopDeckComparison
-public import SphereSixComplex.Paper.Topology.CuspDeckHomologyOne
 
 @[expose] public section
 noncomputable section

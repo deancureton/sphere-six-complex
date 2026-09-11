@@ -3,7 +3,6 @@ module
 public import SphereSixComplex.Paper.Topology.CuspPhaseSweepEdgeEvaluation
 public import SphereSixComplex.Paper.Topology.CuspMixedTorusCellularSweeps
 public import SphereSixComplex.Paper.Topology.CuspPhaseSweepFillingCoordinates
-public import SphereSixComplex.Paper.Topology.PhaseSweepSkeletalHomology
 public import SphereSixComplex.Paper.Topology.CuspPhaseSweepGraphCoordinates
 public import SphereSixComplex.Paper.Topology.CuspCentralNormalizedSweepComparison
 

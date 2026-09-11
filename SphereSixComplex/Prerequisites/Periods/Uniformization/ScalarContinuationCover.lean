@@ -4,7 +4,6 @@ public import SphereSixComplex.Prerequisites.Periods.Uniformization.ScalarCircle
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.ScalarCircleReflection
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.ScalarFundamentalFibers
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.ScalarFundamentalFibers
-public import SphereSixComplex.Prerequisites.Periods.Uniformization.ScalarSeedInjective
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.ScalarSeedInjective
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.ScalarRightReflectionInjective
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.ScalarRightReflectionInjective

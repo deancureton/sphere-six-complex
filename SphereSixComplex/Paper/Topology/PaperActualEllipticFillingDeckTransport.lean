@@ -2,8 +2,6 @@ module
 
 public import SphereSixComplex.Paper.Topology.PaperEllipticFillingDeckSignAudit
 public import SphereSixComplex.Paper.Topology.PaperEllipticFillingRealPeriodCoverTransport
-public import SphereSixComplex.Paper.Topology.PaperAffineCyclicQuotientCovering
-public import SphereSixComplex.Paper.Topology.PaperMultipleFiberAffineDeckAction
 
 @[expose] public section
 

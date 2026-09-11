@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineBandTrivialization
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenEllipticBandHomologyAlignment
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenPositiveDegreeCuspReduction
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspWangNaturalityInterface
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspEllipticInclusionNaturality
 

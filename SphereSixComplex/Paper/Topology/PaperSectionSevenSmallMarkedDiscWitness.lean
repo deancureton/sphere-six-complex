@@ -1,6 +1,5 @@
 module
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineOverlapInterleaving
-public import SphereSixComplex.Paper.Geometry.PaperCentralEndCover
 
 @[expose] public section
 noncomputable section

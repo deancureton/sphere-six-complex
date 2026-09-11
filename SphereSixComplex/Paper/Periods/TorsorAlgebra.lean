@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Periods.Functions
-public import SphereSixComplex.Paper.Periods.Transformations
 import all SphereSixComplex.Paper.Periods.Matrix
 
 /-!

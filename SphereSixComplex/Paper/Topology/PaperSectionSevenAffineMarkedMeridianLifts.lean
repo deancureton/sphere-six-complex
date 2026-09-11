@@ -1,8 +1,6 @@
 module
 
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineStripMidpoint
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineGlobalEnteringSheets
-public import SphereSixComplex.Paper.Topology.PaperEllipticOuterDeckCoordinateNaturality
 
 @[expose] public section
 noncomputable section

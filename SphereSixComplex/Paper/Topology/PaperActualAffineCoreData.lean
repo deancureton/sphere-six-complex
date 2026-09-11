@@ -1,9 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.EstablishedEquivariantUniversalCover
-public import SphereSixComplex.Paper.Topology.PaperVanKampenAlgebraAdapter
-public import SphereSixComplex.Paper.Topology.PaperActualCuspCentralBaseMap
-public import SphereSixComplex.Paper.Topology.PaperGeometricCentralCore
 
 /-!
 # The affine fundamental-group data of the paper's central family

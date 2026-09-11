@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.TwicePuncturedComplexMarkedMeridians
-public import Mathlib.Analysis.SpecialFunctions.Complex.CircleMap
 
 /-!
 # The marked pair-of-pants relation in the twice-punctured plane

@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.OrientedSmoothHomotopySphere
 public import Mathlib.Algebra.Group.Int.Units
-public import Mathlib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 
 /-!
 # Degree from top integral homology

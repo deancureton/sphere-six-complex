@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperOrderThreeCentralMarkingConnectorBridge
-public import SphereSixComplex.Paper.Topology.EstablishedBasedVanKampen
 
 /-!
 # Connector coherence for the actual elliptic central charts

@@ -2,8 +2,6 @@ module
 
 public import SphereSixComplex.Paper.Topology.EllipticDegreeTwoCoinvariants
 public import SphereSixComplex.Paper.Topology.FiniteCoverPerfectPairing
-public import SphereSixComplex.Paper.Topology.PaperEllipticReducedCentralFiberCoverCore
-public import SphereSixComplex.Paper.Topology.PaperEllipticTorusHomologyBasis
 
 /-!
 # Elliptic degree-two bases from mapping-torus projection coordinates

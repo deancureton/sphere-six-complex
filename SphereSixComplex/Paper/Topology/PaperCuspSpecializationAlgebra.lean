@@ -1,6 +1,5 @@
 module
 
-public import SphereSixComplex.Paper.Periods.Matrix
 public import SphereSixComplex.Paper.Topology.LatticeWangAlgebra
 public import SphereSixComplex.Paper.Topology.PaperEllipticTorusHomologyBasis
 

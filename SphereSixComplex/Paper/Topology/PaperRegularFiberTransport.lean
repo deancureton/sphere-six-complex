@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineMarkedBandTrivialization
-public import SphereSixComplex.Paper.Geometry.PaperCentralFamilyTopology
 
 @[expose] public section
 noncomputable section

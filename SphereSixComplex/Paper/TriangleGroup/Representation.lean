@@ -3,8 +3,6 @@ module
 public import SphereSixComplex.Paper.LatticeData
 public import SphereSixComplex.Prerequisites.TriangleGroup.SourceGroup
 import all SphereSixComplex.Prerequisites.TriangleGroup.SourceGroup
-public import Mathlib.Data.ZMod.Basic
-public import Mathlib.GroupTheory.Coprod.Basic
 public import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
 
 /-!

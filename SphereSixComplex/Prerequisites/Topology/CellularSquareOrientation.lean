@@ -3,7 +3,6 @@ module
 public import SphereSixComplex.Prerequisites.Topology.CellularSquareBoundary
 public import SphereSixComplex.Prerequisites.Topology.StandardTorusHomology
 public import SphereSixComplex.Prerequisites.Topology.StandardSpherePositiveHomology
-public import Mathlib.Analysis.Convex.Contractible
 public import Mathlib.Analysis.SpecialFunctions.Complex.Circle
 
 @[expose] public section

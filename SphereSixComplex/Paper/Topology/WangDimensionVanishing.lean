@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.CellularDimensionVanishing
-public import SphereSixComplex.Prerequisites.Topology.WangHomologyPresentation
 
 /-!
 # Vanishing homology of a mapping torus above its fibre's dimension

@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.MappingTorusBaseCircleProjection
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspMeridianProjectionNaturality
-public import SphereSixComplex.Prerequisites.Topology.StandardCircleHomologyLiftDegree
 
 /-!
 # The exact geometric residue in the cusp meridian projection comparison

@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.StandardSimplexSimplicialSingularComparisonGeneral
-public import Mathlib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 
 /-!
 # Singular chains of maps between contractible spaces

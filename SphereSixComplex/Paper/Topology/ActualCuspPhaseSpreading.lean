@@ -2,8 +2,6 @@ module
 
 public import SphereSixComplex.Paper.Topology.ToricPhaseSpreading
 public import SphereSixComplex.Paper.Topology.HasCuspPhaseSpreading
-public import SphereSixComplex.Paper.Topology.ActualCuspStraighteningRetraction
-public import SphereSixComplex.Paper.Geometry.PaperOpenEmbeddingStar
 
 /-!
 # Toric phase spreading for the straightened cusp

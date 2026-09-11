@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Geometry.EllipticRealPeriodProductTrivialization
-public import SphereSixComplex.Paper.Geometry.GlobalDeckSmoothness
 
 /-!
 # Cusp deck transport in real-period coordinates

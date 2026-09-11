@@ -3,7 +3,6 @@ module
 public import SphereSixComplex.Paper.Topology.EstablishedMayerVietoris
 public import SphereSixComplex.Paper.Topology.EstablishedSphereHomology
 public import SphereSixComplex.Prerequisites.Topology.OpenCoverSmallification
-public import SphereSixComplex.Prerequisites.Topology.SingularStandardSimplexCone
 
 /-!
 # Reduction of the Section 7 realization obligation

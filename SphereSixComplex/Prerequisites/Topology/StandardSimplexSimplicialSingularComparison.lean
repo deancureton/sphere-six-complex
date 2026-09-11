@@ -1,9 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.SimplicialSingularComparison
-public import SphereSixComplex.Prerequisites.Topology.HomotopySphereHomology
-public import Mathlib.AlgebraicTopology.ExtraDegeneracy
-public import Mathlib.AlgebraicTopology.SingularHomology.HomologyZero
 public import Mathlib.Analysis.Convex.Contractible
 public import Mathlib.Algebra.Homology.SingleHomology
 

@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.IntegralMayerVietorisEuler
-public import SphereSixComplex.Prerequisites.Topology.MayerVietorisDegreeZeroBridge
 public import SphereSixComplex.Prerequisites.Topology.ComplexThreefoldHomology
 public import SphereSixComplex.Paper.Topology.SectionSevenMayerVietorisHomologyAssembly
 

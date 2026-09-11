@@ -1,6 +1,5 @@
 module
 public import SphereSixComplex.Paper.Topology.CuspFixedCircleSweep
-public import Mathlib.Analysis.Convex.PathConnected
 
 @[expose] public section
 noncomputable section

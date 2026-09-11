@@ -1,5 +1,4 @@
 module
-public import SphereSixComplex.Paper.Topology.PaperEllipticOuterDeckCoordinateNaturality
 public import SphereSixComplex.Paper.Topology.PaperEllipticSynchronizedBaseMarking
 public import SphereSixComplex.Paper.Topology.PaperEllipticBoundaryMeridianEndpoint
 

@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Paper.Geometry.CuspPuncturedCollarBridge
 public import SphereSixComplex.Paper.Geometry.PaperCentralFamilyTopology
-public import SphereSixComplex.Prerequisites.Geometry.LocalDiffeomorphTransport
 import all Mathlib.Geometry.Manifold.LocalDiffeomorph
 
 /-!

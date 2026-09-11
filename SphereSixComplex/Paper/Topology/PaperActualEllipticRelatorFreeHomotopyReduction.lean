@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperActualEllipticRelatorChartIdentityProof
-public import SphereSixComplex.Paper.Topology.PaperActualCuspCentralLoopRelation
 
 /-!
 # Free-loop reduction of the actual elliptic relators

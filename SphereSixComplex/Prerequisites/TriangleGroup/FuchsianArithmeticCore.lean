@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.TriangleGroup.FuchsianArithmetic
-public import SphereSixComplex.Prerequisites.TriangleGroup.BinaryIndexedCoprod
 public import SphereSixComplex.Prerequisites.TriangleGroup.FuchsianProperActionCore
 public import Mathlib.Analysis.Complex.UpperHalfPlane.ProperAction
 

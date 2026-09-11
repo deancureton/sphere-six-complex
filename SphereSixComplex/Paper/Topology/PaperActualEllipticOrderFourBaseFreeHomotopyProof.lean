@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderFourSmallCircleHomotopyProof
-public import SphereSixComplex.Prerequisites.Topology.TwicePuncturedComplexFundamentalGroupGeneration
 
 @[expose] public section
 

@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperCuspFiniteFiberDegreeTwoKilledSection
-public import SphereSixComplex.Paper.Topology.PaperEllipticTorusHomologyBasis
 
 /-!
 # Explicit coordinate tori for the degree-two cusp specialization

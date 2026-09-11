@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.ScalarFundamentalConsistency
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.ScalarFundamentalConsistency
-public import SphereSixComplex.Prerequisites.TriangleGroup.FuchsianSmoothAction
 import all SphereSixComplex.Prerequisites.TriangleGroup.FuchsianSmoothAction
 
 @[expose] public section

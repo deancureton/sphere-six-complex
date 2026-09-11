@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Geometry.EllipticPuncturedCollarGaugeHomeomorph
-public import SphereSixComplex.Paper.Geometry.EllipticLocalTrivialization
 import all SphereSixComplex.Prerequisites.Geometry.Quotient
 import all SphereSixComplex.Paper.Geometry.TorusFamily
 

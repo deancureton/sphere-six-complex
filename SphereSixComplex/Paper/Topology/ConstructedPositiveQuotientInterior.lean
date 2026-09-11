@@ -1,6 +1,5 @@
 module
 public import SphereSixComplex.Prerequisites.Topology.LocalHalfSpaceCoveringCollars
-public import SphereSixComplex.Prerequisites.Geometry.QuotientTopology
 public import SphereSixComplex.Paper.Topology.ConstructedA2PositiveLocalCollars
 public import SphereSixComplex.Paper.Topology.ConstructedA2PositiveQuotientRelativeCWProof
 

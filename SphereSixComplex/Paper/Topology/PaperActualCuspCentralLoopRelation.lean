@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperActualCuspBaseRelation
-public import Mathlib.AlgebraicTopology.FundamentalGroupoid.InducedMaps
 
 /-!
 # The actual cusp loop in the central family

@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Geometry.GlobalDeckSmoothness
-public import SphereSixComplex.Prerequisites.Geometry.Quotient
 import all SphereSixComplex.Paper.Geometry.TorusFamily
 
 /-!

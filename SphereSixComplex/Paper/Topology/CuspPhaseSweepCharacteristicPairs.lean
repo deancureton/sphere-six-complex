@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.CuspPhaseSweepParameterComparison
-public import SphereSixComplex.Prerequisites.Topology.CylinderTopPrismGenerators
 public import SphereSixComplex.Prerequisites.Topology.OrientedIntervalCylinderPrism
 
 @[expose] public section

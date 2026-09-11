@@ -1,8 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspMeridianProjectionNaturality
-public import SphereSixComplex.Prerequisites.Topology.StandardCircleHomologyLiftDegree
-public import SphereSixComplex.Paper.Topology.PaperCuspGeometricSpecialization
 
 /-!
 # A circle map carrying the full cusp source character

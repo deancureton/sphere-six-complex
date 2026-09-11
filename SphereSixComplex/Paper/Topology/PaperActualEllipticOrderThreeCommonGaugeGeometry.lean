@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderThreeRelatorComparison
 public import SphereSixComplex.Prerequisites.Topology.GroupPairConjugacy
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineOverlapInterleaving
 
 /-!
 # The invariant order-three common-gauge comparison

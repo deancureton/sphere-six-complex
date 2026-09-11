@@ -1,6 +1,5 @@
 module
 public import SphereSixComplex.Prerequisites.Topology.FixedLoopSweepWangBoundary
-public import SphereSixComplex.Prerequisites.Topology.BinaryOpenCoverOrientedRefinementNaturality
 /-!
 The Wang boundary is the low-quarter fibre class minus the high-quarter fibre class.
 Naturality transports this formula through any map preserving the two covers.

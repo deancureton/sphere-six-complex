@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.BoundarySevenProperFaceDegreeTransportProof
-public import SphereSixComplex.Prerequisites.Topology.SixSphereAntipodalReflectionDegree
 
 /-!
 # Unconditional boundary-seven generator transport

@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderThreeCorrectedFiberRepresentativeProof
-public import SphereSixComplex.Paper.Topology.PaperActualEllipticStraightLoopGeometricConnectorReduction
 
 /-!
 # Point-set reduction for the order-three translation loop

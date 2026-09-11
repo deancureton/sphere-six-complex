@@ -1,6 +1,5 @@
 module
 
-public import SphereSixComplex.Paper.Geometry.CuspAnalyticFillingCollar
 public import SphereSixComplex.Paper.Topology.PaperActualFillingCoverSquares
 public import SphereSixComplex.Paper.Topology.PaperVanKampenAlgebraAdapter
 

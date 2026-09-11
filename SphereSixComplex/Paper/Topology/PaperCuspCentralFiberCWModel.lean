@@ -1,11 +1,9 @@
 module
 
-public import SphereSixComplex.Paper.Topology.PaperCuspCentralFiberCWTypes
 public import SphereSixComplex.Paper.Topology.ConstructedA2CellAtlas
 public import SphereSixComplex.Paper.Topology.ActualCuspCentralModelEquivalence
 public import SphereSixComplex.Paper.Topology.ConstructedA2HigherIncidenceProof
 public import SphereSixComplex.Paper.Topology.ConstructedA2DegreeTwoIncidence
-public import SphereSixComplex.Paper.Topology.ConstructedA2EdgeIncidence
 public import SphereSixComplex.Paper.Topology.ToricCellAtlasIncidenceTransport
 
 @[expose] public section

@@ -1,6 +1,5 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.BinaryOpenCoverAssembly
 public import SphereSixComplex.Prerequisites.Topology.FiniteCyclicMappingTorusWangNaturality
 
 /-!

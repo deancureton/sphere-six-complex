@@ -6,7 +6,6 @@ Authors: Paul Lezeau
 module
 
 public import SphereSixComplex.Prerequisites.Geometry.GluingCompatibility
-public import Mathlib.Geometry.Manifold.ContMDiff.Atlas
 public import Mathlib.Geometry.Manifold.MFDeriv.Basic
 
 /-!

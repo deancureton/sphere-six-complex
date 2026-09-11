@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Paper.Geometry.PaperSectionSevenHomology
 public import SphereSixComplex.Paper.Topology.PaperActualVanKampenCover
-public import SphereSixComplex.Prerequisites.Topology.ManifoldLocallyContractible
 public import SphereSixComplex.Paper.Topology.EstablishedBasedVanKampen
 
 /-!

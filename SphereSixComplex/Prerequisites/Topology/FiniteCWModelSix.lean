@@ -1,6 +1,5 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.CellularChainModel
 public import SphereSixComplex.Prerequisites.Topology.IntegralHomologyEuler
 public import SphereSixComplex.Prerequisites.Topology.FiniteCWModel
 public import SphereSixComplex.Prerequisites.Topology.SectionSevenLocalEulerModelsProof

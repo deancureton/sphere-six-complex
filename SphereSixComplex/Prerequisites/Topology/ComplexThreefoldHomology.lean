@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.EstablishedCompactSmoothOrientedManifoldHomology
 public import SphereSixComplex.Prerequisites.Topology.SixSphereHomology
-public import SphereSixComplex.Prerequisites.Topology.StandardSphereHomologyZeroCore
 public import Mathlib.AlgebraicTopology.SingularHomology.HomologyZero
 
 @[expose] public section

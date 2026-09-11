@@ -1,6 +1,5 @@
 module
 
-public import SphereSixComplex.Paper.Geometry.CompactTorusFamilyOverBase
 public import SphereSixComplex.Paper.Geometry.CuspCollarPairProperness
 public import SphereSixComplex.Prerequisites.Geometry.StarCompactCover
 

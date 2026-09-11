@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperAffineCyclicReducedFiberMappingTorus
-public import SphereSixComplex.Prerequisites.Topology.StandardTorusHomology
 public import SphereSixComplex.Prerequisites.Topology.StandardThreeTorusProductDegreeTwoCoordinates
 
 /-!

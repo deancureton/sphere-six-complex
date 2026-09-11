@@ -1,7 +1,6 @@
 module
 public import SphereSixComplex.Paper.Topology.CuspFillingPhaseCircle
 public import SphereSixComplex.Prerequisites.Topology.PositiveCircleProductSwap
-public import SphereSixComplex.Prerequisites.Topology.NormalizedCircleProductCross
 import all SphereSixComplex.Paper.Periods.Matrix
 
 @[expose] public section

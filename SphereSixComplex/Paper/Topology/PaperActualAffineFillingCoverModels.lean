@@ -1,14 +1,7 @@
 module
 
-public import SphereSixComplex.Paper.Topology.EstablishedAffineStarBridge
-public import SphereSixComplex.Prerequisites.Topology.EstablishedChosenAffineFillings
-public import SphereSixComplex.Paper.Topology.PaperActualAffineCoreData
 public import SphereSixComplex.Paper.Topology.PaperActualAffineFillingCoverModelsDefs
-public import SphereSixComplex.Paper.Topology.PaperActualAffineFillingCoverModelsProof
 public import SphereSixComplex.Paper.Topology.PaperActualEllipticRelatorNormalClosure
-public import SphereSixComplex.Paper.Topology.PaperActualVanKampenCover
-public import SphereSixComplex.Paper.Topology.PaperActualVanKampenNiceness
-public import SphereSixComplex.Paper.Topology.PaperVanKampenAlgebraAdapter
 
 /-!
 # Actual affine filling-cover models for the paper star

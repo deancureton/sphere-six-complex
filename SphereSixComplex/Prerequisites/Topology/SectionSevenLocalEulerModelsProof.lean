@@ -3,8 +3,6 @@ module
 public import SphereSixComplex.Prerequisites.Topology.CellularChainModel
 public import SphereSixComplex.Prerequisites.Topology.FiniteExactSequenceEuler
 public import SphereSixComplex.Prerequisites.Topology.IntegralPoincareUCT
-public import SphereSixComplex.Prerequisites.Topology.SmoothRecognition
-public import Mathlib.Algebra.Homology.ShortComplex.Ab
 public import Mathlib.LinearAlgebra.Dimension.RankNullity
 
 /-!

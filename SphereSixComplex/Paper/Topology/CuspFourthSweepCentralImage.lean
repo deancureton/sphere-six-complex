@@ -2,7 +2,6 @@ module
 public import SphereSixComplex.Paper.Topology.CuspFourthCircle
 public import SphereSixComplex.Paper.Topology.CuspFixedCircleSweep
 public import SphereSixComplex.Paper.Topology.CentralInvariantCircleBoundary
-public import SphereSixComplex.Paper.Topology.CuspWangKernel
 /-! The actual fourth-period cusp sweep factors through the global invariant circle action and has zero elliptic Mayer–Vietoris boundary. Raw index five has the same Wang class. This refutes the current marked invariant-basis residual, whose index-five coefficient is asserted to be one; the paper assigns the nonzero boundary to the third-period sweep instead. -/
 
 @[expose] public section

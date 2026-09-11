@@ -5,11 +5,9 @@ Authors: Paul Lezeau
 -/
 module
 
-public import SphereSixComplex.Prerequisites.Topology.BinaryOpenCoverMayerVietoris
 public import SphereSixComplex.Prerequisites.Topology.BinaryOpenCoverMapNaturality
 public import SphereSixComplex.Prerequisites.Topology.SingularExcisionOpenCover
 public import Mathlib.Algebra.Homology.HomologicalComplexBiprod
-public import Mathlib.AlgebraicTopology.SimplicialSet.TopAdj
 
 /-!
 # Assembly of the ordinary open-cover Mayer--Vietoris comparison

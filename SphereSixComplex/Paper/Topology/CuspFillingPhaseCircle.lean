@@ -3,7 +3,6 @@ public import SphereSixComplex.Paper.Topology.CuspFiniteFiberCoordinateTori
 public import SphereSixComplex.Paper.Topology.LocalToricCircleSweep
 public import SphereSixComplex.Prerequisites.Topology.UnitCircleExponential
 public import SphereSixComplex.Paper.Topology.PaperCuspActualAffineFillingCoverSquare
-public import SphereSixComplex.Paper.Topology.ActualCuspCentralModelEquivalence
 
 @[expose] public section
 noncomputable section

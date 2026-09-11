@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.SimplicialSixSphereTopHomology
-public import Mathlib.AlgebraicTopology.ExtraDegeneracy
 public import Mathlib.Algebra.Homology.SingleHomology
 
 /-!

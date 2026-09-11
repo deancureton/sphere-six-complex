@@ -1,6 +1,5 @@
 module
 
-public import SphereSixComplex.Paper.Geometry.FuchsianRegularTorusFamily
 public import SphereSixComplex.Paper.Geometry.PaperCentralFamilyTopology
 public import SphereSixComplex.Prerequisites.Topology.ManifoldLocallyContractible
 

@@ -1,11 +1,8 @@
 module
 
 public import SphereSixComplex.Paper.Geometry.PaperLocalCuspFillingConnected
-public import SphereSixComplex.Paper.Geometry.PaperOpenEmbeddingStarNonempty
-public import SphereSixComplex.Paper.Geometry.PaperStarComplexStructures
 public import SphereSixComplex.Prerequisites.Topology.ConnectedMayerVietorisDegreeZero
 public import SphereSixComplex.Paper.Topology.SectionSevenMayerVietorisEuler
-public import SphereSixComplex.Paper.Topology.SectionSevenMayerVietorisHomologyAssembly
 public import Mathlib.Analysis.Convex.Basic
 public import Mathlib.Analysis.SpecialFunctions.Log.Basic
 

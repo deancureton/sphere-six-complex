@@ -1,8 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.CuspPhaseCentralCompatibility
-public import SphereSixComplex.Paper.Topology.StandardA2ToricBoundaryFaceCoverage
-public import SphereSixComplex.Paper.Topology.StandardA2PhaseCellDisjointness
 
 @[expose] public section
 noncomputable section

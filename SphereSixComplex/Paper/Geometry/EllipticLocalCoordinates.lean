@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Geometry.EllipticComplexFilling
-public import SphereSixComplex.Prerequisites.Geometry.ComplexUnitDisc
 import all SphereSixComplex.Prerequisites.Geometry.ComplexUnitDisc
 public import SphereSixComplex.Prerequisites.Geometry.FuchsianEllipticCoordinates
 import all SphereSixComplex.Prerequisites.Geometry.FuchsianEllipticCoordinates

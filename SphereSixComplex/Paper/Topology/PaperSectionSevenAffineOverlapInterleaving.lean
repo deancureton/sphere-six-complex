@@ -6,7 +6,6 @@ public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineOrderThreeO
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineOrderThreeRadialEquivalence
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineOrderFourOverlapIdentification
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineOrderFourRadialEquivalence
-public import SphereSixComplex.Paper.Geometry.PaperCentralEndCover
 
 /-!
 # Interleaving the star collars with the affine discs

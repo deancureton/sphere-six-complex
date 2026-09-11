@@ -1,8 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.SingularAffineSubdivisionSmall
-public import SphereSixComplex.Prerequisites.Topology.SmoothRecognition
-public import Mathlib.AlgebraicTopology.SingularHomology.HomologyZero
 public import Mathlib.Analysis.Convex.Contractible
 public import Mathlib.Algebra.Homology.ShortComplex.Ab
 

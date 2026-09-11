@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineRealPeriodTransport
-public import SphereSixComplex.Paper.Geometry.AdditiveTorusTopology
 
 /-!
 # Finite-orbit invariance of the marked elliptic real-period coordinate

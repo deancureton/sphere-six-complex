@@ -1,10 +1,8 @@
 module
 
-public import SphereSixComplex.Paper.Topology.EstablishedMayerVietoris
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenMayerVietoris
 public import SphereSixComplex.Paper.Topology.SectionSevenChainModel
 public import SphereSixComplex.Paper.Topology.SectionSevenMayerVietorisGradedAlgebra
-public import SphereSixComplex.Prerequisites.Topology.SingularExcision
 
 /-!
 # Homology-level Mayer--Vietoris assembly for Section 7

@@ -5,7 +5,6 @@ Authors: Dean Cureton
 -/
 module
 
-public import SphereSixComplex.Paper.Geometry.StandardInfiniteA2ToricCentralComponents
 public import SphereSixComplex.Paper.Geometry.StandardInfiniteA2ToricClosedPolydisc
 public import SphereSixComplex.Paper.Geometry.StandardInfiniteA2ToricFanShears
 public import SphereSixComplex.Paper.Geometry.StandardInfiniteA2ToricResidualAnalytic

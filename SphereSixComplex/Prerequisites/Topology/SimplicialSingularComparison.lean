@@ -4,7 +4,6 @@ public import SphereSixComplex.Prerequisites.Topology.HomotopySphereHomology
 public import SphereSixComplex.Prerequisites.Topology.SimplicialSixSphereHomology
 public import SphereSixComplex.Prerequisites.Topology.SingularHomologyModTwo
 public import Mathlib.Algebra.Homology.QuasiIso
-public import Mathlib.AlgebraicTopology.SimplicialSet.TopAdj
 
 /-!
 # The canonical simplicial-to-singular comparison

@@ -2,8 +2,6 @@ module
 
 public import SphereSixComplex.Paper.Topology.AffineStarRelatorNormalClosureBridge
 public import SphereSixComplex.Paper.Topology.PaperActualEllipticCanonicalFiniteMarking
-public import SphereSixComplex.Paper.Topology.PaperActualVanKampenNiceness
-public import SphereSixComplex.Paper.Topology.PaperVanKampenAlgebraAdapter
 
 /-!
 # Connector-invariant elliptic relators for the actual paper star

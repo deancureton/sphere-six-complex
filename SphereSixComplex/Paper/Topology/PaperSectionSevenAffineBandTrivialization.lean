@@ -1,6 +1,5 @@
 module
 
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineBandTrivializationDefs
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineActualCuspStripLift
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineNormalizedStripLift
 

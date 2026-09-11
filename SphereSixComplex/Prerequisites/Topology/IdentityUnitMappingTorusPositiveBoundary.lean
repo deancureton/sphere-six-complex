@@ -1,10 +1,8 @@
 module
 
 public import Mathlib.Topology.Subpath
-public import SphereSixComplex.Prerequisites.Topology.BinaryOpenCoverAssembly
 public import SphereSixComplex.Prerequisites.Topology.FirstHurewiczProof
 public import SphereSixComplex.Prerequisites.Topology.MappingTorusBaseCircleWangBoundaryNaturality
-public import Mathlib.Algebra.Homology.ConcreteCategory
 
 /-!
 # The positive degree-zero boundary of the identity mapping torus of a point

@@ -1,6 +1,5 @@
 module
 public import SphereSixComplex.Paper.Topology.CuspFiniteFiberSpecializationGeometricReduction
-public import SphereSixComplex.Paper.Topology.PaperEllipticTorusHomologyBasisProof
 
 @[expose] public section
 noncomputable section

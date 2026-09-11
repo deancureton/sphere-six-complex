@@ -1,7 +1,5 @@
 module
 
-public import SphereSixComplex.Paper.Periods.EstablishedFuchsianTorsorDescent
-public import SphereSixComplex.Paper.Periods.FuchsianCuspNormalization
 public import SphereSixComplex.Paper.Topology.StandardInfiniteA2PolarPhaseDeck
 
 /-!

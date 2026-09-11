@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.EquivariantHomotopyEquivalenceDescent
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineSideHomotopyEquivalence
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineRegularBaseDeckCover
 public import SphereSixComplex.Prerequisites.Topology.RestrictedOrbitQuotientOpenEmbedding
 
 /-!

@@ -1,9 +1,6 @@
 module
 
-public import SphereSixComplex.Paper.Geometry.PaperBiholomorphicStar
-public import SphereSixComplex.Paper.Geometry.PaperOpenEmbeddingStarNonempty
 public import SphereSixComplex.Paper.Geometry.PaperStarHausdorff
-public import SphereSixComplex.Paper.Geometry.PaperStarPieceTopology
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineSideHomotopyEquivalence
 
 /-!

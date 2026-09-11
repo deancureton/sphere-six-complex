@@ -2,8 +2,6 @@ module
 
 public import SphereSixComplex.Paper.Periods.Invariant
 public import SphereSixComplex.Prerequisites.Periods.ModularUniformization
-public import Mathlib.NumberTheory.ModularForms.LevelOne.GradedRing
-public import Mathlib.NumberTheory.ModularForms.Discriminant
 import all SphereSixComplex.Prerequisites.Periods.ModularUniformization
 import all SphereSixComplex.Paper.Periods.Matrix
 import Mathlib.Geometry.Manifold.Notation

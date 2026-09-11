@@ -1,9 +1,5 @@
 module
 
-public import SphereSixComplex.Paper.Topology.StandardA2ToricCentralFiberZeroCells
-public import SphereSixComplex.Paper.Topology.StandardA2ToricCentralFiberOneCells
-public import SphereSixComplex.Paper.Topology.StandardA2ToricCentralFiberCyclicSymmetry
-public import SphereSixComplex.Paper.Topology.StandardA2ToricCentralFiberCyclicQuotientSymmetry
 public import SphereSixComplex.Paper.Topology.StandardA2ToricCentralFiberCyclicCorrectionMatrixAudit
 public import SphereSixComplex.Paper.Topology.PaperCuspCentralFiberCWModel
 

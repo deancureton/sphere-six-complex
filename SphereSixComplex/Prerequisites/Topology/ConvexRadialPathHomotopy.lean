@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.HexagonBoundaryPathHomology
-public import Mathlib.Analysis.Convex.Contractible
 public import Mathlib.Analysis.Convex.PathConnected
 
 @[expose] public section

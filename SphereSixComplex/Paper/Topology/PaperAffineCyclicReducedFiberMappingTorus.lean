@@ -4,8 +4,6 @@ public import SphereSixComplex.Prerequisites.Topology.FiniteCyclicProductMapping
 public import SphereSixComplex.Paper.Topology.PaperEllipticReducedCentralFiberCoverCore
 public import SphereSixComplex.Paper.Topology.PaperEllipticCollarFundamentalDomainProof
 public import SphereSixComplex.Paper.Topology.PaperEllipticTorusHomologyBasisProof
-public import SphereSixComplex.Paper.Geometry.EllipticFixedPointCriterion
-public import Mathlib.Topology.Constructions
 
 /-!
 # Affine cyclic reduced fibres as mapping-torus candidates

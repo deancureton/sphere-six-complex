@@ -4,7 +4,6 @@ public import SphereSixComplex.Prerequisites.Topology.WangHomologyPresentationPr
 public import SphereSixComplex.Prerequisites.Topology.ConnectedMayerVietorisDegreeZero
 public import SphereSixComplex.Prerequisites.Topology.StandardCircleHomologyLiftDegree
 public import SphereSixComplex.Prerequisites.Geometry.IntegerRealPeriodCoordinates
-public import Mathlib.Topology.Instances.AddCircle.Real
 
 /-!
 # The standard integral homology bases of a full-rank period torus

@@ -1,8 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.EllipticThreeTorusExplicitOrbitSweepHomology
-public import SphereSixComplex.Prerequisites.Topology.FixedLoopSweepAdditivityReduction
-public import SphereSixComplex.Prerequisites.Topology.NormalizedCoverCrossLowOverlapCalculationProof
 
 /-!
 # Specialized normalized-cover sweeps for the elliptic clutchings

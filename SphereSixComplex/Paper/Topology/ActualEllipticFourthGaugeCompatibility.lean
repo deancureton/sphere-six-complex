@@ -1,7 +1,5 @@
 module
 public import SphereSixComplex.Paper.Topology.ActualEllipticFourthCircleTranslation
-public import SphereSixComplex.Paper.Geometry.EllipticPuncturedCollarGaugeHomeomorph
-public import SphereSixComplex.Paper.Geometry.EllipticRealPeriodProductTrivialization
 
 @[expose] public section
 noncomputable section

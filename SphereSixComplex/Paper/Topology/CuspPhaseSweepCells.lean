@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.CuspPhaseSweepCharacteristic
-public import SphereSixComplex.Paper.Topology.StandardA2PhaseCellRegularity
 
 @[expose] public section
 noncomputable section

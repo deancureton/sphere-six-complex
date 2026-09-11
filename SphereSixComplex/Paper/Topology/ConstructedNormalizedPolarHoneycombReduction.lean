@@ -7,7 +7,6 @@ module
 
 public import SphereSixComplex.Paper.Geometry.StandardInfiniteA2ToricPolarModulus
 public import SphereSixComplex.Prerequisites.Geometry.QuotientTopology
-public import SphereSixComplex.Paper.Topology.ActualCuspStraighteningRetraction
 public import SphereSixComplex.Paper.Topology.NormalizedPolarHoneycombAmbientPhaseHomotopy
 public import SphereSixComplex.Paper.Topology.NormalizedPolarHoneycombStabilizerMonotonicityProof
 

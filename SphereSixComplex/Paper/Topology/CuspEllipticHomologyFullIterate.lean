@@ -1,6 +1,5 @@
 module
 public import SphereSixComplex.Paper.Topology.CuspEllipticInteriorRelators
-public import SphereSixComplex.Prerequisites.Topology.HurewiczBasepointTransport
 
 @[expose] public section
 noncomputable section

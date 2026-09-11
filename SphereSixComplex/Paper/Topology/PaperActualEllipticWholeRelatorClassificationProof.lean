@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperActualEllipticRelatorClassificationProof
-public import SphereSixComplex.Prerequisites.Topology.PuncturedComplexFundamentalGroup
 
 /-!
 # Local coordinate classification of the complete elliptic filling relations

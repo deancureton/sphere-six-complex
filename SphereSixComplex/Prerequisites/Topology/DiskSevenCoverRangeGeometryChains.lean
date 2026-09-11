@@ -3,7 +3,6 @@ module
 public import SphereSixComplex.Prerequisites.Topology.DiskSevenCoverGeometry
 public import SphereSixComplex.Prerequisites.Topology.DiskSevenRelativeHomologyLowAcyclic
 public import Mathlib.Algebra.Homology.HomologicalComplexBiprod
-public import Mathlib.AlgebraicTopology.SingularHomology.HomologyZero
 public import Mathlib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 
 /-!

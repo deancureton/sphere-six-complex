@@ -3,8 +3,6 @@ module
 public import SphereSixComplex.Paper.Topology.EllipticCentralCoverSourceGammaCoordinates
 public import SphereSixComplex.Paper.Topology.EllipticCentralProjectionMappingTorusSquare
 public import SphereSixComplex.Paper.Topology.EllipticSpecializedNormalizedCoverSweep
-public import SphereSixComplex.Paper.Topology.EllipticThreeTorusAdditiveOrbitSweep
-public import SphereSixComplex.Paper.Topology.EllipticThreeTorusRankOneMappingTorusCoordinates
 public import SphereSixComplex.Paper.Topology.FiniteCoverPerfectPairing
 
 /-!

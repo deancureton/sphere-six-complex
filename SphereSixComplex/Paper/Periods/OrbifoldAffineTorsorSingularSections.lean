@@ -1,8 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Periods.OrbifoldAffineTorsorTransport
-public import SphereSixComplex.Prerequisites.Geometry.ProperlyDiscontinuousSlice
-public import SphereSixComplex.Prerequisites.TriangleGroup.EstablishedFuchsianEllipticStabilizers
 import all SphereSixComplex.Paper.TriangleGroup.Representation
 
 @[expose] public section

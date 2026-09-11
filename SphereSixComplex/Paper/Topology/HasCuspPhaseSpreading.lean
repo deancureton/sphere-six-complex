@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.EstablishedA2PhaseSpreading
-public import SphereSixComplex.Paper.Geometry.CuspPuncturedCollarBridge
 
 @[expose] public section
 

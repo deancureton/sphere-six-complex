@@ -3,7 +3,6 @@ module
 public import SphereSixComplex.Paper.Geometry.PaperGluingInstantiation
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenHomologyAssembly
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenLocalEulerModelAssembly
-public import SphereSixComplex.Paper.Topology.SectionSevenMayerVietorisEuler
 public import SphereSixComplex.Paper.Topology.SectionSevenLocalEulerModels
 
 /-!

@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.SectionSevenLocalEulerModels
-public import SphereSixComplex.Prerequisites.Topology.CellularChainModel
 public import SphereSixComplex.Paper.Topology.PaperCuspCentralFiberCWConstruction
 public import SphereSixComplex.Paper.Geometry.PaperStarPieceHausdorff
 

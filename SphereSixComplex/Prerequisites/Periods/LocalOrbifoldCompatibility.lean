@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Prerequisites.TriangleGroup.FuchsianAction
 public import SphereSixComplex.Prerequisites.TriangleGroup.ModularParameter
-public import Mathlib.GroupTheory.OrderOfElement
 
 /-!
 # Local orbifold compatibility of the source and target actions

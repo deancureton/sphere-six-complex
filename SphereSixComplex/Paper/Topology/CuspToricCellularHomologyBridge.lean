@@ -1,6 +1,5 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.CellularChainModel
 public import SphereSixComplex.Paper.Topology.CuspToricCellularAlgebra
 public import Mathlib.Algebra.Homology.ShortComplex.Ab
 

@@ -1,9 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Geometry.EllipticWholeFiberCompactCover
-public import SphereSixComplex.Paper.Geometry.GlobalDeckSmoothness
-public import SphereSixComplex.Paper.Geometry.GlobalDeckQuotient
-public import SphereSixComplex.Prerequisites.Geometry.EllipticCayleyHomeomorph
 public import SphereSixComplex.Prerequisites.Geometry.ProperlyDiscontinuousSlice
 public import SphereSixComplex.Prerequisites.TriangleGroup.FreeProductTorsion
 public import Mathlib.Geometry.Manifold.Algebra.SMul

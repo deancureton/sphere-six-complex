@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderThreeBaseFactorHomotopyProof
-public import SphereSixComplex.Prerequisites.TriangleGroup.FreeProductCentralizers
 import all SphereSixComplex.Paper.TriangleGroup.Representation
 
 @[expose] public section

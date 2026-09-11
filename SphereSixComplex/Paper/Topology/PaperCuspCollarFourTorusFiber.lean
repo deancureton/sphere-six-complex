@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.EllipticCollarTopDegreeVanishing
-public import SphereSixComplex.Paper.Topology.PaperCuspGeometricSpecialization
 
 /-!
 # The cusp collar's four-torus fibre

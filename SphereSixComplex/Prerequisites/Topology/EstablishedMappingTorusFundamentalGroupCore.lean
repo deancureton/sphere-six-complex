@@ -1,6 +1,5 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.EstablishedAffineVanKampen
 public import SphereSixComplex.Prerequisites.Topology.MappingTorusHNNComparisonProof
 public import Mathlib.AlgebraicTopology.FundamentalGroupoid.InducedMaps
 public import Mathlib.GroupTheory.HNNExtension

@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspMeridianSourceCircleMapCompletion
-public import SphereSixComplex.Paper.Topology.PaperEllipticTorusHomologyBasisProof
 
 /-!
 # Homology evaluations of the explicit cusp source circle map

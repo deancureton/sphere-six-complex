@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Prerequisites.TriangleGroup.FuchsianAction
 public import Mathlib.GroupTheory.CoprodI
-public import Mathlib.GroupTheory.OrderOfElement
 import all SphereSixComplex.Prerequisites.TriangleGroup.SourceGroup
 
 /-!

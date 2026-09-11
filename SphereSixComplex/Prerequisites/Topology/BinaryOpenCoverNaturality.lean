@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.BinaryOpenCoverMayerVietoris
-public import Mathlib.Algebra.Homology.HomologySequenceLemmas
 
 /-!
 # Naturality of the binary open-cover boundary

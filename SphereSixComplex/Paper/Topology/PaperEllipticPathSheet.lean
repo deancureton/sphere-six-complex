@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Geometry.PaperCentralEndCover
-public import SphereSixComplex.Prerequisites.TriangleGroup.FreeProductTorsion
 import all SphereSixComplex.Paper.TriangleGroup.Representation
 
 @[expose] public section

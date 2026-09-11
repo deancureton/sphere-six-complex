@@ -4,9 +4,7 @@ public import SphereSixComplex.Prerequisites.Topology.HomogeneousCovering
 import all SphereSixComplex.Prerequisites.Topology.HomogeneousCovering
 public import SphereSixComplex.Prerequisites.Periods.FuchsianModularParameterExistence
 import all SphereSixComplex.Prerequisites.Periods.FuchsianModularParameterExistence
-public import SphereSixComplex.Prerequisites.TriangleGroup.FuchsianSmoothAction
 import all SphereSixComplex.Prerequisites.TriangleGroup.FuchsianSmoothAction
-public import Mathlib.Geometry.Manifold.Notation
 import all Mathlib.Geometry.Manifold.Notation
 
 @[expose] public section

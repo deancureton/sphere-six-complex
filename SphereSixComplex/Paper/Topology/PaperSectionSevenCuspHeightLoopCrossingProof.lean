@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspAdaptiveCoverInvariantBasisProof
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspSwappedCoverGeometryProof
 
 /-!
 # Threshold crossings of the actual cusp height loop

@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.WangSectionCorrection
-public import SphereSixComplex.Paper.Topology.PaperCuspGeometricSpecializationDefs
 public import SphereSixComplex.Paper.Topology.ConstructedA2PhaseSpreadingCompletion
 public import SphereSixComplex.Paper.Topology.PaperCuspRadialClutchingConstruction
 

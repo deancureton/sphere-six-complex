@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.SingularBarycentricOuterFaces
-public import Mathlib.Algebra.Homology.Homotopy
 
 /-!
 # The prism identity for barycentric subdivision

@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.EstablishedAffineVanKampen
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenFinalDegreeZero
-public import Mathlib.Analysis.Convex.Contractible
 
 /-!
 # Candidate universal covers of the actual filling pieces

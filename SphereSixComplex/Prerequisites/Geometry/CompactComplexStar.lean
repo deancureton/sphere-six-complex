@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Geometry.ComplexThreefoldGluing
-public import SphereSixComplex.Prerequisites.Geometry.FourPieceStarGluing
 public import SphereSixComplex.Prerequisites.Geometry.EstablishedBiholomorphicStarGluing
 
 /-!

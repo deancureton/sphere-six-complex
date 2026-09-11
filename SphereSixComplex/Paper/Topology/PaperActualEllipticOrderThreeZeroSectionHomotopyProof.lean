@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderThreePrincipalGaugeHomotopyProof
-public import SphereSixComplex.Paper.Topology.PaperGeometricCentralPeripheral
 
 @[expose] public section
 

@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderFourProjectedFactorizationProof
-public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderFourGeometricRelatorRepresentativeProof
 
 @[expose] public section
 

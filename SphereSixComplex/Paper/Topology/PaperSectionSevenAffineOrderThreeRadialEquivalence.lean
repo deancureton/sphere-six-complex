@@ -1,6 +1,5 @@
 module
 
-public import SphereSixComplex.Paper.Geometry.EllipticRealPeriodProductTrivialization
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineRegularBaseRadialEquivalence
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineRegularLiftCarriers
 

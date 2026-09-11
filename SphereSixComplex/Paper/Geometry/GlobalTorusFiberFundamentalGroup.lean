@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Paper.Geometry.PaperCentralFamilyTopology
 public import SphereSixComplex.Prerequisites.Geometry.QuotientDeckFundamentalGroup
-public import Mathlib.Topology.Homotopy.Lifting
 public import Mathlib.AlgebraicTopology.FundamentalGroupoid.InducedMaps
 
 /-!

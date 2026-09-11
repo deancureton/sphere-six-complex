@@ -1,6 +1,5 @@
 module
 
-public import SphereSixComplex.Paper.Topology.PaperActualAffineFillingCoverModelsProof
 public import SphereSixComplex.Paper.Topology.PaperActualEllipticStraightLoopGeometricConnectorReduction
 
 /-!

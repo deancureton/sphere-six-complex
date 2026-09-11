@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.SixSphereHomology
 public import SphereSixComplex.Prerequisites.Topology.HurewiczWhiteheadStages
-public import SphereSixComplex.Prerequisites.Topology.SmoothRecognition
 
 /-!
 # The Hurewicz--Whitehead recognition step, reduced to its classical inputs

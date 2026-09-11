@@ -1,5 +1,4 @@
 module
-public import SphereSixComplex.Paper.Topology.StandardInfiniteA2PolarPhaseDeck
 public import SphereSixComplex.Paper.Topology.NormalizedPolarHoneycombAmbientPhaseHomotopy
 
 @[expose] public section

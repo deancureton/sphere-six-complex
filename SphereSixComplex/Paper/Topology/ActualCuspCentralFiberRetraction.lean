@@ -3,7 +3,6 @@ module
 public import SphereSixComplex.Paper.Geometry.CuspPuncturedCollarBridge
 public import SphereSixComplex.Prerequisites.Topology.EquivariantStrongDeformationRetraction
 public import SphereSixComplex.Prerequisites.Topology.MayerVietoris
-public import Mathlib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 
 /-!
 # Equivariant descent for the cusp-filling retraction

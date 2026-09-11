@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.SingularAffineSubdivision
-public import SphereSixComplex.Prerequisites.Topology.SingularExcision
 
 /-!
 # Affine subdivision on cover-small singular chains

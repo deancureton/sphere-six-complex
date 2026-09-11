@@ -1,6 +1,5 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.StrongDeformationRetraction
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineMarkedProjectionSquaresProof
 
 /-!

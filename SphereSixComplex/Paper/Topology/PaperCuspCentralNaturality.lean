@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Paper.Topology.PaperCuspCentralCoverComparison
 public import SphereSixComplex.Paper.Topology.PaperActualVanKampenNiceness
-public import TauCeti.AlgebraicTopology.FundamentalGroup.Homeomorph
 
 /-!
 # Marked cusp naturality in the actual affine core

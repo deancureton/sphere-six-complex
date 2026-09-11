@@ -1,6 +1,5 @@
 module
 
-public import SphereSixComplex.Paper.Topology.PaperCuspGeometricSpecialization
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenNormalizedLocalBases
 
 /-!

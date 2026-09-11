@@ -1,6 +1,5 @@
 module
 public import SphereSixComplex.Paper.Topology.CuspNormalizedPathHomotopy
-public import SphereSixComplex.Paper.Topology.CuspThirdPeripheralInvariance
 public import SphereSixComplex.Prerequisites.Topology.CircleSweepWhiskerHomotopy
 
 @[expose] public section

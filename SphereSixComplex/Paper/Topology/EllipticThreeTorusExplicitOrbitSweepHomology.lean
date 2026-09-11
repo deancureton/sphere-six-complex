@@ -1,6 +1,5 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.CanonicalProductWangBoundaryNaturality
 public import SphereSixComplex.Paper.Topology.EllipticThreeTorusAdditiveOrbitSweep
 public import SphereSixComplex.Paper.Topology.EllipticThreeTorusRankOneMappingTorusCoordinates
 

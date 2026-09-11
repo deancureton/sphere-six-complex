@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Paper.Geometry.GlobalDeckQuotient
 public import SphereSixComplex.Prerequisites.TriangleGroup.FuchsianProperActionCore
-public import Mathlib.Topology.Algebra.ConstMulAction
 import all SphereSixComplex.Paper.Geometry.GlobalDeckQuotient
 import all SphereSixComplex.Paper.Geometry.GlobalTorusFamily
 import all SphereSixComplex.Prerequisites.TriangleGroup.FreeProductTorsion

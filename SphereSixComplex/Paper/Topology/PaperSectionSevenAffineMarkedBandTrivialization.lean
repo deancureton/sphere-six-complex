@@ -1,10 +1,7 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineBandTrivializationDefs
-public import SphereSixComplex.Paper.Geometry.EllipticRealPeriodProductTrivialization
 public import SphereSixComplex.Paper.Geometry.PaperCentralEndCover
-public import Mathlib.Topology.Algebra.ConstMulAction
-public import Mathlib.Topology.Homotopy.Lifting
 
 /-!
 # The marked product trivialization of the affine central band

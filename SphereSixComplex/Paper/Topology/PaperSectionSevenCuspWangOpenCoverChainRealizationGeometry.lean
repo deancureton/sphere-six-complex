@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspWangOpenCoverChainRealization
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineActualCuspStripLift
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineOverlapInterleaving
 
 /-!

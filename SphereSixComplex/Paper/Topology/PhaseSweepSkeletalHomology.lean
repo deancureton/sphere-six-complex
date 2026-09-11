@@ -2,8 +2,6 @@ module
 public import SphereSixComplex.Paper.Topology.RechartSkeletalComparison
 public import SphereSixComplex.Prerequisites.Topology.CellularSkeletalComparison
 public import SphereSixComplex.Paper.Topology.CuspPhaseSweepAtlas
-public import SphereSixComplex.Paper.Topology.ConstructedA2DegreeTwoIncidence
-public import SphereSixComplex.Paper.Topology.ConstructedA2HigherIncidenceProof
 
 @[expose] public section
 noncomputable section

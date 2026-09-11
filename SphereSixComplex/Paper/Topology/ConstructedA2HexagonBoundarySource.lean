@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.ConstructedA2PositiveBoundaryCellular
-public import SphereSixComplex.Prerequisites.Topology.CellularSquareOrientation
 
 @[expose] public section
 noncomputable section

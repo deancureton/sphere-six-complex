@@ -1,8 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.ConstructedA2CentralCompactAction
-public import SphereSixComplex.Paper.Topology.StandardA2PhaseCellDisjointness
-public import SphereSixComplex.Paper.Topology.ActualCuspCentralModelEquivalence
 
 @[expose] public section
 noncomputable section

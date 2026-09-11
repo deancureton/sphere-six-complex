@@ -4,7 +4,6 @@ public import SphereSixComplex.Prerequisites.Topology.CollarProductVanishing
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenLocalEulerModelAssembly
 public import SphereSixComplex.Prerequisites.Topology.FiniteCWModelVanishing
 public import SphereSixComplex.Paper.Topology.PaperEllipticCollarFundamentalDomain
-public import SphereSixComplex.Paper.Topology.SectionSevenStageTopDegree
 public import SphereSixComplex.Paper.Topology.WangDimensionVanishing
 
 /-!

@@ -1,7 +1,6 @@
 module
 public import SphereSixComplex.Paper.Topology.AffinePeripheralAbelianization
 public import SphereSixComplex.Paper.Topology.PaperEllipticSynchronizedPeriodTransport
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenEllipticTwoDiscCoverRealization
 
 @[expose] public section
 noncomputable section

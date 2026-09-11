@@ -1,7 +1,5 @@
 module
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineNormalizedStripLift
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineMarkedBandEndpointFormula
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineRegularBaseRadialEquivalence
 public import SphereSixComplex.Paper.Topology.PaperEllipticPathSheet
 /-!
 # Identity-collar bounds for the normalized affine strip

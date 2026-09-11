@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Paper.Geometry.GlobalTorusFiberFundamentalGroup
 public import SphereSixComplex.Paper.Geometry.PaperMarkedPuncturedBase
-public import SphereSixComplex.Prerequisites.Topology.EstablishedAffineVanKampen
 
 /-!
 # Geometric generation of the central-family fundamental group

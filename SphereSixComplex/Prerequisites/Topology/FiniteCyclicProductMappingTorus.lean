@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.CyclicPuncturedProductMappingTorus
 public import SphereSixComplex.Prerequisites.Topology.StandardTorusHomology
-public import Mathlib.Topology.Constructions
 
 @[expose] public section
 noncomputable section

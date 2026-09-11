@@ -2,14 +2,10 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.FiniteCWModelSix
 
-public import SphereSixComplex.Prerequisites.Topology.CellularChainModel
 public import SphereSixComplex.Paper.Topology.EllipticReducedFiberMappingTorusHomology
 public import SphereSixComplex.Prerequisites.Topology.FiniteBouquetMappingTorusEuler
-public import SphereSixComplex.Prerequisites.Topology.FiniteCWModel
 public import SphereSixComplex.Paper.Topology.SectionSevenLocalEulerCalculation
-public import SphereSixComplex.Prerequisites.Topology.SectionSevenLocalEulerModelsProof
 public import SphereSixComplex.Paper.Topology.StandardFourTorusHomologicalModel
-public import Mathlib.Topology.CWComplex.Classical.Finite
 
 /-!
 # Finite CW models for the Section 7 local Euler calculation
