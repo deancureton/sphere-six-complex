@@ -29,7 +29,7 @@ public noncomputable def establishedStandardA2ToricCentralOrbitCellAtlas
     StandardA2ToricCentralFiberCellAtlas (ActualLocalCuspCentralOrbitQuotient W) := by
   let W₀ := Classical.choice
     (SphereSixComplex.Geometry.InfiniteA2Toric.QuantitativeRegions.BoundedPolydiscRegions.exists_actualLocalCuspQuotientWitness
-      N Construction.constructedModel Construction.constructedModel.toTorusActionPreservesComponents)
+      N Construction.constructedModel)
   let W₁ := Classical.choice (exists_actualPuncturedCuspCollarWitness W₀)
   exact (constructedCentralCellAtlas W₁).transport (centralOrbitModelHomeomorph W₁ W)
 
@@ -66,7 +66,7 @@ public theorem establishedStandardA2ToricCentralFiberHigherIncidenceResidual
   let _ : T2Space (R.quotientCentralFiber W) := inferInstance
   let W₀ := Classical.choice
     (SphereSixComplex.Geometry.InfiniteA2Toric.QuantitativeRegions.BoundedPolydiscRegions.exists_actualLocalCuspQuotientWitness
-      N Construction.constructedModel Construction.constructedModel.toTorusActionPreservesComponents)
+      N Construction.constructedModel)
   let W₁ := Classical.choice (exists_actualPuncturedCuspCollarWitness W₀)
   let _ : T2Space (ActualLocalCuspCentralOrbitQuotient W) :=
     (actualLocalCuspCentralOrbitMap_isEmbedding W).t2Space
@@ -114,7 +114,7 @@ public theorem establishedStandardA2ToricCentralFiberIndependentIncidenceResidua
   let H := establishedStandardA2ToricCentralFiberHigherIncidenceResidual W R
   let W₀ := Classical.choice
     (SphereSixComplex.Geometry.InfiniteA2Toric.QuantitativeRegions.BoundedPolydiscRegions.exists_actualLocalCuspQuotientWitness
-      N Construction.constructedModel Construction.constructedModel.toTorusActionPreservesComponents)
+      N Construction.constructedModel)
   let W₁ := Classical.choice (exists_actualPuncturedCuspCollarWitness W₀)
   let _ : T2Space (ActualLocalCuspCentralOrbitQuotient W) :=
     (actualLocalCuspCentralOrbitMap_isEmbedding W).t2Space

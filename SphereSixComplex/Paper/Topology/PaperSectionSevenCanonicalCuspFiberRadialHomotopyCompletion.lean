@@ -208,7 +208,10 @@ public theorem actualCuspMappingTorusFiberToEllipticInteriorMap_homotopic_wangSl
 compatibility without an additional marked-coordinate hypothesis. -/
 public theorem canonicalCuspFiberBandTopologicalCompatibility
     (R : A.AffineRadialCompletionInput) :
-    R.twoDiscCover.CanonicalCuspFiberBandTopologicalCompatibility := by
+    (let G := A.actualCuspRadialClutchingData
+       let _ := G.fiberTopology
+       ContinuousMap.Homotopic (actualCuspMappingTorusFiberToEllipticInteriorMap R.twoDiscCover)
+         (canonicalCuspFiberToEllipticInteriorMap R.twoDiscCover)) := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   exact

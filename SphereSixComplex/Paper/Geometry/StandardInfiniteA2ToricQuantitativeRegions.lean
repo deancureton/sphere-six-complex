@@ -1,6 +1,7 @@
 module
 
-public import SphereSixComplex.Paper.Geometry.StandardInfiniteA2ToricComponentPreservation
+public import SphereSixComplex.Paper.Geometry.CuspPhaseEstimates
+public import SphereSixComplex.Paper.Geometry.StandardInfiniteA2ToricCarrierGeometryAssembly
 public import SphereSixComplex.Paper.Geometry.StandardInfiniteA2ToricBarycentricTiling
 
 /-!
@@ -658,7 +659,7 @@ public structure ActualLocalCuspQuotientWitness
 fixed-point estimate, so both conclusions are obtained at one radius. -/
 public theorem exists_actualLocalCuspQuotientWitness
     (N : NormalizedFuchsianCuspCoordinate E D) (M : Model)
-    (Q : TorusActionPreservesComponents M) :
+    :
     Nonempty (ActualLocalCuspQuotientWitness N M) := by
   let rho := cuspRadius N.height / 2
   have hrho_pos : 0 < rho := div_pos (cuspRadius_pos N.height) (by norm_num)
@@ -725,7 +726,7 @@ public theorem exists_actualLocalCuspQuotientWitness
     · have ht : M.t p = 0 := not_ne_iff.mp ht
       exact
         LocalHolomorphicPhaseCoefficients.central_fixedPointEstimate
-          C Q lambda p ht hfixed
+          C lambda p ht hfixed
   have hdisplacement : ∃ c : ℝ, 0 < c ∧ ∀ lambda (p : localCarrier M r),
       M.t p ≠ 0 →
         c * latticeL1 lambda ≤
@@ -797,9 +798,8 @@ quotient witness at one shrunk radius. -/
 public theorem exists_model_with_actualLocalCuspQuotientWitness
     (N : NormalizedFuchsianCuspCoordinate E D) :
     ∃ M : Model, Nonempty (ActualLocalCuspQuotientWitness N M) := by
-  obtain ⟨M, Q⟩ :=
-    InfiniteA2Toric.exists_model_and_torusActionPreservesComponents
-  exact ⟨M, exists_actualLocalCuspQuotientWitness N M Q⟩
+  obtain ⟨M⟩ := InfiniteA2Toric.model
+  exact ⟨M, exists_actualLocalCuspQuotientWitness N M⟩
 
 
 end BoundedPolydiscRegions

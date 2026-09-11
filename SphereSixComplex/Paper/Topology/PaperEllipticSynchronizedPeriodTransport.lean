@@ -16,7 +16,15 @@ open SphereSixComplex SphereSixComplex.Topology
 variable (A : PaperAnalyticData)
 
 public theorem orderFour_correctedPeriodTransportIdentity :
-    A.OrderFourCorrectedPeriodTransportIdentity := by
+    (let _ := A.ellipticFourBoundaryAction
+  ∃ Hbase : ContinuousMap.Homotopy
+      A.orderFourCentralBaseFactor.toContinuousMap
+      A.orderFourCentralAffineZeroSectionQuadruplePath.toContinuousMap,
+    (∀ s : unitInterval, Hbase (s, 0) = Hbase (s, 1)) ∧
+      Path.Homotopic.Quotient.mk
+          (A.orderFourCentralTraceTransportedStraightPeriodPath Hbase) =
+        Path.Homotopic.Quotient.mk
+          A.orderFourCentralAffineCorrectedNegEpsilonPrimePeriodPath) := by
   let _ := A.ellipticFourBoundaryAction
   let _ := regularFamilyDeckAction A.periods
   obtain ⟨H, hH⟩ := A.orderFourCentralBaseFactor_homotopy_globalZeroSectionQuadruple
@@ -108,16 +116,14 @@ public def orderThreeCentralTraceTransportedStraightPeriodPath
   let w := A.orderThreeCentralBaseComparisonTracePath H
   w.symm.trans (A.orderThreeCentralActualBasedStraightFiberPath.trans w)
 
-public def OrderThreeCorrectedPeriodTransportIdentity : Prop :=
-  let _ := A.ellipticThreeBoundaryAction
+
+public theorem orderThree_correctedPeriodTransportIdentity :
+    (let _ := A.ellipticThreeBoundaryAction
   ∃ H : ContinuousMap.Homotopy A.orderThreeLocalOffsetBaseCentralPath.toContinuousMap
       A.orderThreeCentralAffineZeroSectionTriplePath.toContinuousMap,
     (∀ s : unitInterval, H (s, 0) = H (s, 1)) ∧
     Path.Homotopic.Quotient.mk (A.orderThreeCentralTraceTransportedStraightPeriodPath H) =
-      Path.Homotopic.Quotient.mk A.orderThreeCentralAffineCorrectedEpsilonPeriodPath
-
-public theorem orderThree_correctedPeriodTransportIdentity :
-    A.OrderThreeCorrectedPeriodTransportIdentity := by
+      Path.Homotopic.Quotient.mk A.orderThreeCentralAffineCorrectedEpsilonPeriodPath) := by
   let _ := A.ellipticThreeBoundaryAction
   let _ := regularFamilyDeckAction A.periods
   obtain ⟨H, hH⟩ := A.orderThreeLocalOffsetBaseCentralPath_homotopy_globalZeroSectionTriple
@@ -202,9 +208,22 @@ public theorem orderThree_correctedPeriodTransportIdentity :
     exact hlocal
   exact hfinal
 
-public theorem OrderThreeCorrectedPeriodTransportIdentity.toLocalGlobalFactorPointSetComparison
-    (h : A.OrderThreeCorrectedPeriodTransportIdentity) :
-    A.OrderThreeLocalGlobalFactorPointSetComparison := by
+public theorem ellipticThree_exists_factorHomotopies_of_periodTransport
+    (h : (let _ := A.ellipticThreeBoundaryAction
+  ∃ H : ContinuousMap.Homotopy A.orderThreeLocalOffsetBaseCentralPath.toContinuousMap
+      A.orderThreeCentralAffineZeroSectionTriplePath.toContinuousMap,
+    (∀ s : unitInterval, H (s, 0) = H (s, 1)) ∧
+    Path.Homotopic.Quotient.mk (A.orderThreeCentralTraceTransportedStraightPeriodPath H) =
+      Path.Homotopic.Quotient.mk A.orderThreeCentralAffineCorrectedEpsilonPeriodPath)) :
+    (let _ := A.ellipticThreeBoundaryAction
+  ∃ Hfiber : ContinuousMap.Homotopy
+      A.orderThreeLocalOffsetFiberCentralPath.toContinuousMap
+      A.orderThreeCentralAffineCorrectedEpsilonPeriodPath.toContinuousMap,
+    ∃ Hbase : ContinuousMap.Homotopy
+      A.orderThreeLocalOffsetBaseCentralPath.toContinuousMap
+      A.orderThreeCentralAffineZeroSectionTriplePath.toContinuousMap,
+      (∀ s : unitInterval, Hfiber (s, 1) = Hbase (s, 0)) ∧
+      (∀ s : unitInterval, Hfiber (s, 0) = Hbase (s, 1))) := by
   let _ := A.ellipticThreeBoundaryAction
   rcases h with ⟨Hbase, hbaseTrace, hperiod⟩
   rcases A.orderThreeLocalOffsetFiberCentralPath_homotopic_actualBasedStraight with ⟨HlocalPath⟩
@@ -268,31 +287,52 @@ public theorem OrderThreeCorrectedPeriodTransportIdentity.toLocalGlobalFactorPoi
   let G := ((G₀.trans G₁).trans G₂).trans G₃
   refine ⟨F, G, ?_, ?_⟩
   · intro s
-    exact freeLoopHomotopyTrans_pointwise_eq
+    exact ContinuousMap.Homotopy.trans_apply_eq_of_apply_eq
       ((F₀.trans F₁).trans F₂) F₃ ((G₀.trans G₁).trans G₂) G₃ 1 0
-      (fun r ↦ freeLoopHomotopyTrans_pointwise_eq
+      (fun r ↦ ContinuousMap.Homotopy.trans_apply_eq_of_apply_eq
         (F₀.trans F₁) F₂ (G₀.trans G₁) G₂ 1 0
-        (fun q ↦ freeLoopHomotopyTrans_pointwise_eq F₀ F₁ G₀ G₁ 1 0
+        (fun q ↦ ContinuousMap.Homotopy.trans_apply_eq_of_apply_eq F₀ F₁ G₀ G₁ 1 0
           h₀join h₁join q)
         h₂join r)
       h₃join s
   · intro s
-    exact freeLoopHomotopyTrans_pointwise_eq
+    exact ContinuousMap.Homotopy.trans_apply_eq_of_apply_eq
       ((F₀.trans F₁).trans F₂) F₃ ((G₀.trans G₁).trans G₂) G₃ 0 1
-      (fun r ↦ freeLoopHomotopyTrans_pointwise_eq
+      (fun r ↦ ContinuousMap.Homotopy.trans_apply_eq_of_apply_eq
         (F₀.trans F₁) F₂ (G₀.trans G₁) G₂ 0 1
-        (fun q ↦ freeLoopHomotopyTrans_pointwise_eq F₀ F₁ G₀ G₁ 0 1
+        (fun q ↦ ContinuousMap.Homotopy.trans_apply_eq_of_apply_eq F₀ F₁ G₀ G₁ 0 1
           h₀trace h₁trace q)
         h₂trace r)
       h₃trace s
 
-public theorem OrderThreeLocalGlobalFactorPointSetComparison.toRegularLoopChartIdentity
-    (h : A.OrderThreeLocalGlobalFactorPointSetComparison) :
-    A.OrderThreeActualEllipticRegularLoopChartIdentity := by
+public theorem ellipticThree_exists_regularLoop_eq_of_factorHomotopies
+    (h : (let _ := A.ellipticThreeBoundaryAction
+  ∃ Hfiber : ContinuousMap.Homotopy
+      A.orderThreeLocalOffsetFiberCentralPath.toContinuousMap
+      A.orderThreeCentralAffineCorrectedEpsilonPeriodPath.toContinuousMap,
+    ∃ Hbase : ContinuousMap.Homotopy
+      A.orderThreeLocalOffsetBaseCentralPath.toContinuousMap
+      A.orderThreeCentralAffineZeroSectionTriplePath.toContinuousMap,
+      (∀ s : unitInterval, Hfiber (s, 1) = Hbase (s, 0)) ∧
+      (∀ s : unitInterval, Hfiber (s, 0) = Hbase (s, 1)))) :
+    (let _ := A.ellipticThreeBoundaryAction
+  let _ : SimplyConnectedSpace
+      (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
+    A.ellipticThreeBoundaryCover_simplyConnected
+  ∃ β : Path A.centralAffineBase A.ellipticThreeOverlapCentralBase,
+    fundamentalGroupElementOfBaseEq
+        A.ellipticThreeCentralBase_eq_overlapCentralBase
+        (Path.Homotopic.Quotient.mk
+          ((A.orderThreeFillingRelationRegularLoop.map
+            A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
+              A.orderThreeCollarRegularRepresentative_base_projects.symm
+              A.orderThreeCollarRegularRepresentative_base_projects.symm)) =
+      FundamentalGroup.fundamentalGroupMulEquivOfPath β
+        A.orderThreeCentralExpectedRelator) := by
   let _ := A.ellipticThreeBoundaryAction
   rcases A.orderThreeProjectedRegularLoop_freeHomotopy_localFiberThenBase_trace with
     ⟨Hsplit, hsplitTrace⟩
-  rcases h.assemble A with ⟨Hglobal, hglobalTrace⟩
+  rcases A.ellipticThree_exists_relatorHomotopy_of_factorHomotopies h with ⟨Hglobal, hglobalTrace⟩
   let H := Hsplit.trans Hglobal
   apply A.ellipticThreeRegularLoopChartIdentity_of_freeHomotopy
     A.orderThreeCentralAffineCorrectedGeometricRelatorPath
@@ -308,9 +348,12 @@ public theorem ellipticRelatorMembership_proved :
     Nonempty (A.EllipticRelatorMembership A.cuspCentralNaturality) := by
   constructor
   constructor
-  · exact (A.orderThree_correctedPeriodTransportIdentity.toLocalGlobalFactorPointSetComparison A
-      |>.toRegularLoopChartIdentity A |>.toWholeFillingRelatorChartIdentity A
-      |>.relator_mem_normalClosure A)
-  · exact A.orderFour_correctedPeriodTransportIdentity.relator_mem_normalClosure A
+  · exact A.ellipticThree_relator_mem_normalClosure_of_relator_eq
+      (A.ellipticThree_exists_relator_eq_of_regularLoop_eq
+        (A.ellipticThree_exists_regularLoop_eq_of_factorHomotopies
+          (A.ellipticThree_exists_factorHomotopies_of_periodTransport
+            A.orderThree_correctedPeriodTransportIdentity)))
+  · exact A.ellipticFour_relator_mem_normalClosure_of_periodTransport
+      A.orderFour_correctedPeriodTransportIdentity
 
 end SphereSixComplex.Geometry.PaperAnalyticData

@@ -285,7 +285,12 @@ public theorem actualCuspIndexFiveBoundaryCoefficient_sq_eq_one_of_split_carrier
 the converse deliberately does not recover either the index-four value or the positive sign. -/
 public theorem actualCuspIndexFiveBoundaryCoefficient_sq_eq_one_of_invariantBasisData
     (R : A.AffineRadialCompletionInput)
-    (h : CuspPulledBackMarkedInvariantBasisData R) :
+    (h : ((R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
+        (R.twoDiscCover.cuspPulledBackBoundaryHom
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) = 0 ∧
+      (R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
+        (R.twoDiscCover.cuspPulledBackBoundaryHom
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) = 1)) :
     actualCuspIndexFiveBoundaryCoefficient R *
         actualCuspIndexFiveBoundaryCoefficient R = 1 := by
   rw [actualCuspIndexFiveBoundaryCoefficient, h.2]

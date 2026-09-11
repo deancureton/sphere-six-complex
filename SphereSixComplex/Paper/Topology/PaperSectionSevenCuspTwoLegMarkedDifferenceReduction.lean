@@ -104,8 +104,10 @@ public theorem cuspMarkedConnectingNaturality_of_twoLegMarkedBoundaryDifference
     (R : A.AffineRadialCompletionInput)
     (C : ActualCuspOrientedCoverRefinement R)
     (h : ActualCuspTwoLegMarkedBoundaryDifferenceNaturality R C) :
-    R.twoDiscCover.CuspMarkedConnectingNaturality R.homologyAlignment := by
-  constructor
+    (R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment).comp
+        R.twoDiscCover.cuspPulledBackBoundaryHom =
+      (EllipticTwoDiscCoverData.actualCuspFiberFourthCoordinateHom A).comp
+        (EllipticTwoDiscCoverData.actualCuspWangBoundaryHom A) := by
   ext x
   rw [R.twoDiscCover.cuspPulledBackBoundaryHom_eq_comp]
   have hconnecting := DFunLike.congr_fun
@@ -120,10 +122,13 @@ entire Wang-boundary image. -/
 public theorem twoLegMarkedBoundaryDifference_of_cuspMarkedConnectingNaturality
     (R : A.AffineRadialCompletionInput)
     (C : ActualCuspOrientedCoverRefinement R)
-    (h : R.twoDiscCover.CuspMarkedConnectingNaturality R.homologyAlignment) :
+    (h : (R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment).comp
+        R.twoDiscCover.cuspPulledBackBoundaryHom =
+      (EllipticTwoDiscCoverData.actualCuspFiberFourthCoordinateHom A).comp
+        (EllipticTwoDiscCoverData.actualCuspWangBoundaryHom A)) :
     ActualCuspTwoLegMarkedBoundaryDifferenceNaturality R C := by
   intro x
-  have hsquare := DFunLike.congr_fun h.square x
+  have hsquare := DFunLike.congr_fun h x
   rw [R.twoDiscCover.cuspPulledBackBoundaryHom_eq_comp] at hsquare
   have hconnecting := DFunLike.congr_fun
     (actualCuspSignedRefinement_connectingNaturality R C) x
@@ -139,7 +144,10 @@ public theorem twoLegMarkedBoundaryDifference_iff_connectingNaturality
     (R : A.AffineRadialCompletionInput)
     (C : ActualCuspOrientedCoverRefinement R) :
     ActualCuspTwoLegMarkedBoundaryDifferenceNaturality R C ↔
-      R.twoDiscCover.CuspMarkedConnectingNaturality R.homologyAlignment :=
+      (R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment).comp
+        R.twoDiscCover.cuspPulledBackBoundaryHom =
+      (EllipticTwoDiscCoverData.actualCuspFiberFourthCoordinateHom A).comp
+        (EllipticTwoDiscCoverData.actualCuspWangBoundaryHom A) :=
   ⟨cuspMarkedConnectingNaturality_of_twoLegMarkedBoundaryDifference R C,
     twoLegMarkedBoundaryDifference_of_cuspMarkedConnectingNaturality R C⟩
 
@@ -148,7 +156,12 @@ provided the two pointwise cover inclusions constructing the oriented refinement
 public theorem cuspPulledBackMarkedInvariantBasisData_iff_twoLegMarkedBoundaryDifference
     (R : A.AffineRadialCompletionInput)
     (C : ActualCuspOrientedCoverRefinement R) :
-    CuspPulledBackMarkedInvariantBasisData R ↔
+    ((R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
+        (R.twoDiscCover.cuspPulledBackBoundaryHom
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) = 0 ∧
+      (R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
+        (R.twoDiscCover.cuspPulledBackBoundaryHom
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) = 1) ↔
       ActualCuspTwoLegMarkedBoundaryDifferenceNaturality R C := by
   rw [cuspPulledBackMarkedInvariantBasisData_iff_markedConnectingNaturality,
     twoLegMarkedBoundaryDifference_iff_connectingNaturality]

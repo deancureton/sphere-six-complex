@@ -114,7 +114,12 @@ public theorem actualCuspCanonicalSignedOverlap_markedBandDifference_iff
           (R.twoDiscCover.cuspCoverIntersectionToEllipticBandHomologyOne.comp
             (actualCuspCanonicalSignedOverlap R)) =
         actualCuspFiberFourthCoordinateHom A ↔
-      CuspPulledBackMarkedInvariantBasisData R := by
+      ((R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
+        (R.twoDiscCover.cuspPulledBackBoundaryHom
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) = 0 ∧
+      (R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
+        (R.twoDiscCover.cuspPulledBackBoundaryHom
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) = 1) := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   constructor
@@ -159,7 +164,12 @@ public theorem actualCuspCanonicalSignedOverlap_markedBandDifference_iff
 remaining marked geometric evaluations hold. -/
 public noncomputable def actualCuspWangSignedOverlapComparison_of_invariantBasisData
     (R : A.AffineRadialCompletionInput)
-    (h : CuspPulledBackMarkedInvariantBasisData R) :
+    (h : ((R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
+        (R.twoDiscCover.cuspPulledBackBoundaryHom
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) = 0 ∧
+      (R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
+        (R.twoDiscCover.cuspPulledBackBoundaryHom
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) = 1)) :
     ActualCuspWangSignedOverlapComparison R where
   signedOverlap := actualCuspCanonicalSignedOverlap R
   boundary := actualCuspCanonicalSignedOverlap_boundary R
@@ -172,7 +182,12 @@ is unconditional; no further Wang or Mayer--Vietoris naturality assumption remai
 public theorem nonempty_actualCuspWangSignedOverlapComparison_iff
     (R : A.AffineRadialCompletionInput) :
     Nonempty (ActualCuspWangSignedOverlapComparison R) ↔
-      CuspPulledBackMarkedInvariantBasisData R := by
+      ((R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
+        (R.twoDiscCover.cuspPulledBackBoundaryHom
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) = 0 ∧
+      (R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
+        (R.twoDiscCover.cuspPulledBackBoundaryHom
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) = 1) := by
   constructor
   · rintro ⟨C⟩
     exact C.invariantBasisData R

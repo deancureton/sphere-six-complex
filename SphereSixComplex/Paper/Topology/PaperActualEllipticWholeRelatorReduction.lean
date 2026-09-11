@@ -287,19 +287,7 @@ public theorem ellipticFourCanonicalRelatorInCentral_eq_fillingRelationStraightL
   unfold ellipticFourCanonicalRelatorInCentral
   rw [A.ellipticFourCanonicalRelator_eq_fillingRelationStraightLoop]
 
-/-- The remaining order-three geometry, with connector choice existentially quantified: one
-complete physical filling-relation loop is the transported expected affine relator. -/
-public def OrderThreeWholeFillingRelatorChartIdentity : Prop :=
-  ∃ β : Path A.centralAffineBase A.ellipticThreeOverlapCentralBase,
-    A.ellipticThreeCanonicalRelatorInCentral =
-      FundamentalGroup.fundamentalGroupMulEquivOfPath β A.orderThreeCentralExpectedRelator
 
-/-- The remaining order-four geometry, with connector choice existentially quantified: one
-complete physical filling-relation loop is the transported expected affine relator. -/
-public def OrderFourWholeFillingRelatorChartIdentity : Prop :=
-  ∃ β : Path A.centralAffineBase A.ellipticFourOverlapCentralBase,
-    A.ellipticFourCanonicalRelatorInCentral =
-      FundamentalGroup.fundamentalGroupMulEquivOfPath β A.orderFourCentralExpectedRelator
 
 public theorem ellipticThreeCanonicalRelatorInCentral_toCore :
     A.ellipticThreeCentralToCoreEquiv A.ellipticThreeCanonicalRelatorInCentral =
@@ -328,8 +316,10 @@ public theorem cuspCentralNaturality_centralToCore_orderFourCentralExpectedRelat
   rfl
 
 /-- The one order-three whole-loop identity gives a conjugacy in the actual core. -/
-public theorem OrderThreeWholeFillingRelatorChartIdentity.core_conjugacy
-    (h : A.OrderThreeWholeFillingRelatorChartIdentity) :
+public theorem ellipticThree_core_conjugacy_of_relator_eq
+    (h : (∃ β : Path A.centralAffineBase A.ellipticThreeOverlapCentralBase,
+    A.ellipticThreeCanonicalRelatorInCentral =
+      FundamentalGroup.fundamentalGroupMulEquivOfPath β A.orderThreeCentralExpectedRelator)) :
     ∃ c : FundamentalGroup A.actualVanKampenFourPieceCover.core
         ⟨A.vanKampenBase, A.actualVanKampenFourPieceCover.base_mem_core⟩,
       A.orderThreeCentralRelatorToCore A.cuspCentralNaturality =
@@ -366,8 +356,10 @@ public theorem OrderThreeWholeFillingRelatorChartIdentity.core_conjugacy
   exact A.ellipticThreeCanonicalRelatorInCentral_toCore
 
 /-- The one order-four whole-loop identity gives a conjugacy in the actual core. -/
-public theorem OrderFourWholeFillingRelatorChartIdentity.core_conjugacy
-    (h : A.OrderFourWholeFillingRelatorChartIdentity) :
+public theorem ellipticFour_core_conjugacy_of_relator_eq
+    (h : (∃ β : Path A.centralAffineBase A.ellipticFourOverlapCentralBase,
+    A.ellipticFourCanonicalRelatorInCentral =
+      FundamentalGroup.fundamentalGroupMulEquivOfPath β A.orderFourCentralExpectedRelator)) :
     ∃ c : FundamentalGroup A.actualVanKampenFourPieceCover.core
         ⟨A.vanKampenBase, A.actualVanKampenFourPieceCover.base_mem_core⟩,
       A.orderFourCentralRelatorToCore A.cuspCentralNaturality =
@@ -404,30 +396,34 @@ public theorem OrderFourWholeFillingRelatorChartIdentity.core_conjugacy
   exact A.ellipticFourCanonicalRelatorInCentral_toCore
 
 /-- The order-three whole-loop identity supplies exactly the order-three field of the residual. -/
-public theorem OrderThreeWholeFillingRelatorChartIdentity.relator_mem_normalClosure
-    (h : A.OrderThreeWholeFillingRelatorChartIdentity) :
+public theorem ellipticThree_relator_mem_normalClosure_of_relator_eq
+    (h : (∃ β : Path A.centralAffineBase A.ellipticThreeOverlapCentralBase,
+    A.ellipticThreeCanonicalRelatorInCentral =
+      FundamentalGroup.fundamentalGroupMulEquivOfPath β A.orderThreeCentralExpectedRelator)) :
     (A.coreDataOf A.cuspCentralNaturality).rhoOne ^ 3 *
         (Additive.toMul
           ((A.coreDataOf A.cuspCentralNaturality).translation (-epsilon)))⁻¹ ∈
       Subgroup.normalClosure
         {A.ellipticThreeOverlapToCore
           A.ellipticThreeCanonicalRelator} := by
-  obtain ⟨c, hc⟩ := h.core_conjugacy A
+  obtain ⟨c, hc⟩ := A.ellipticThree_core_conjugacy_of_relator_eq h
   change A.orderThreeCentralRelatorToCore A.cuspCentralNaturality ∈ _
   rw [hc]
   exact conjugate_mem_normalClosure_singleton c
     (A.ellipticThreeOverlapToCore A.ellipticThreeCanonicalRelator)
 
 /-- The order-four whole-loop identity supplies exactly the order-four field of the residual. -/
-public theorem OrderFourWholeFillingRelatorChartIdentity.relator_mem_normalClosure
-    (h : A.OrderFourWholeFillingRelatorChartIdentity) :
+public theorem ellipticFour_relator_mem_normalClosure_of_relator_eq
+    (h : (∃ β : Path A.centralAffineBase A.ellipticFourOverlapCentralBase,
+    A.ellipticFourCanonicalRelatorInCentral =
+      FundamentalGroup.fundamentalGroupMulEquivOfPath β A.orderFourCentralExpectedRelator)) :
     (A.coreDataOf A.cuspCentralNaturality).rhoTwo ^ 4 *
         (Additive.toMul
           ((A.coreDataOf A.cuspCentralNaturality).translation epsilon'))⁻¹ ∈
       Subgroup.normalClosure
         {A.ellipticFourOverlapToCore
           A.ellipticFourCanonicalRelator} := by
-  obtain ⟨c, hc⟩ := h.core_conjugacy A
+  obtain ⟨c, hc⟩ := A.ellipticFour_core_conjugacy_of_relator_eq h
   change A.orderFourCentralRelatorToCore A.cuspCentralNaturality ∈ _
   rw [hc]
   exact conjugate_mem_normalClosure_singleton c
@@ -435,11 +431,15 @@ public theorem OrderFourWholeFillingRelatorChartIdentity.relator_mem_normalClosu
 
 /-- The residual is reduced to exactly one whole-loop chart identity for each elliptic collar. -/
 public theorem ellipticRelatorMembership_of_wholeFillingRelatorChartIdentities
-    (hThree : A.OrderThreeWholeFillingRelatorChartIdentity)
-    (hFour : A.OrderFourWholeFillingRelatorChartIdentity) :
+    (hThree : (∃ β : Path A.centralAffineBase A.ellipticThreeOverlapCentralBase,
+    A.ellipticThreeCanonicalRelatorInCentral =
+      FundamentalGroup.fundamentalGroupMulEquivOfPath β A.orderThreeCentralExpectedRelator))
+    (hFour : (∃ β : Path A.centralAffineBase A.ellipticFourOverlapCentralBase,
+    A.ellipticFourCanonicalRelatorInCentral =
+      FundamentalGroup.fundamentalGroupMulEquivOfPath β A.orderFourCentralExpectedRelator)) :
     A.EllipticRelatorMembership A.cuspCentralNaturality where
-  orderThree := hThree.relator_mem_normalClosure A
-  orderFour := hFour.relator_mem_normalClosure A
+  orderThree := A.ellipticThree_relator_mem_normalClosure_of_relator_eq hThree
+  orderFour := A.ellipticFour_relator_mem_normalClosure_of_relator_eq hFour
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

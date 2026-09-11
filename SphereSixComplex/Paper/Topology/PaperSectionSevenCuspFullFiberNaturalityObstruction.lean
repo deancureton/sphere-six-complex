@@ -40,13 +40,18 @@ public theorem cuspPulledBackBoundary_coordinate_ne_fourthBasis
 
 public theorem not_canonicalCuspWangBoundaryNaturality
     (R : A.AffineRadialCompletionInput) :
-    ¬ R.twoDiscCover.CanonicalCuspWangBoundaryNaturality := by
+    ¬ (R.twoDiscCover.canonicalCuspFiberToBandHomologyOne.comp (actualCuspWangBoundaryHom A) =
+           R.twoDiscCover.cuspPulledBackBoundaryHom) := by
   intro h
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   let x := A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)
   let B := R.homologyAlignment.actualHomologyCoordinates
-  have hm : R.twoDiscCover.CanonicalCuspFiberBandPeriodMarking R.homologyAlignment :=
+  have hm : (R.homologyAlignment.actualHomologyCoordinates.bandOne.toAddMonoidHom.comp
+                   R.twoDiscCover.canonicalCuspFiberToBandHomologyOne =
+                 let G := A.actualCuspRadialClutchingData
+                 let _ := G.fiberTopology
+                 G.monodromyCoordinates.degreeOne.toAddMonoidHom) :=
     R.twoDiscCover.canonicalCuspFiberBandPeriodMarking_of_orderThree R.homologyAlignment
       (R.canonicalCuspFiberOrderThreePeriodMarking
         (cuspFiberPeriodMarkingCompatibility A))

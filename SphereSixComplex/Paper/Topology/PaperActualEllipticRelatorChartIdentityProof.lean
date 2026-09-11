@@ -23,10 +23,10 @@ open SphereSixComplex.Topology
 
 variable (A : PaperAnalyticData)
 
-/-- The exact order-three local-to-global chart identity, stated for the explicitly constructed
-regular-family filling loop. -/
-public def OrderThreeActualEllipticRegularLoopChartIdentity : Prop :=
-  let _ := A.ellipticThreeBoundaryAction
+
+
+public theorem ellipticThree_exists_relator_eq_of_regularLoop_eq
+    (H : (let _ := A.ellipticThreeBoundaryAction
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
     A.ellipticThreeBoundaryCover_simplyConnected
@@ -39,12 +39,69 @@ public def OrderThreeActualEllipticRegularLoopChartIdentity : Prop :=
               A.orderThreeCollarRegularRepresentative_base_projects.symm
               A.orderThreeCollarRegularRepresentative_base_projects.symm)) =
       FundamentalGroup.fundamentalGroupMulEquivOfPath β
-        A.orderThreeCentralExpectedRelator
+        A.orderThreeCentralExpectedRelator)) :
+    (∃ β : Path A.centralAffineBase A.ellipticThreeOverlapCentralBase,
+    A.ellipticThreeCanonicalRelatorInCentral =
+      FundamentalGroup.fundamentalGroupMulEquivOfPath β A.orderThreeCentralExpectedRelator) := by
+  let _ := A.ellipticThreeBoundaryAction
+  let _ : SimplyConnectedSpace
+      (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
+    A.ellipticThreeBoundaryCover_simplyConnected
+  obtain ⟨β, hβ⟩ := H
+  refine ⟨β, ?_⟩
+  rw [A.ellipticThreeCanonicalRelatorInCentral_eq_regularLoopProjection]
+  exact hβ
 
-/-- The exact order-four local-to-global chart identity, stated for the explicitly constructed
-regular-family filling loop. -/
-public def OrderFourActualEllipticRegularLoopChartIdentity : Prop :=
-  let _ := A.ellipticFourBoundaryAction
+public theorem ellipticThree_exists_regularLoop_eq_of_relator_eq
+    (H : (∃ β : Path A.centralAffineBase A.ellipticThreeOverlapCentralBase,
+    A.ellipticThreeCanonicalRelatorInCentral =
+      FundamentalGroup.fundamentalGroupMulEquivOfPath β A.orderThreeCentralExpectedRelator)) :
+    (let _ := A.ellipticThreeBoundaryAction
+  let _ : SimplyConnectedSpace
+      (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
+    A.ellipticThreeBoundaryCover_simplyConnected
+  ∃ β : Path A.centralAffineBase A.ellipticThreeOverlapCentralBase,
+    fundamentalGroupElementOfBaseEq
+        A.ellipticThreeCentralBase_eq_overlapCentralBase
+        (Path.Homotopic.Quotient.mk
+          ((A.orderThreeFillingRelationRegularLoop.map
+            A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
+              A.orderThreeCollarRegularRepresentative_base_projects.symm
+              A.orderThreeCollarRegularRepresentative_base_projects.symm)) =
+      FundamentalGroup.fundamentalGroupMulEquivOfPath β
+        A.orderThreeCentralExpectedRelator) := by
+  let _ := A.ellipticThreeBoundaryAction
+  let _ : SimplyConnectedSpace
+      (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
+    A.ellipticThreeBoundaryCover_simplyConnected
+  obtain ⟨β, hβ⟩ := H
+  refine ⟨β, ?_⟩
+  rw [← A.ellipticThreeCanonicalRelatorInCentral_eq_regularLoopProjection]
+  exact hβ
+
+public theorem ellipticThreeRegularLoopChartIdentity_iff_wholeFillingRelatorChartIdentity :
+    (let _ := A.ellipticThreeBoundaryAction
+  let _ : SimplyConnectedSpace
+      (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
+    A.ellipticThreeBoundaryCover_simplyConnected
+  ∃ β : Path A.centralAffineBase A.ellipticThreeOverlapCentralBase,
+    fundamentalGroupElementOfBaseEq
+        A.ellipticThreeCentralBase_eq_overlapCentralBase
+        (Path.Homotopic.Quotient.mk
+          ((A.orderThreeFillingRelationRegularLoop.map
+            A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
+              A.orderThreeCollarRegularRepresentative_base_projects.symm
+              A.orderThreeCollarRegularRepresentative_base_projects.symm)) =
+      FundamentalGroup.fundamentalGroupMulEquivOfPath β
+        A.orderThreeCentralExpectedRelator) ↔
+      (∃ β : Path A.centralAffineBase A.ellipticThreeOverlapCentralBase,
+    A.ellipticThreeCanonicalRelatorInCentral =
+      FundamentalGroup.fundamentalGroupMulEquivOfPath β A.orderThreeCentralExpectedRelator) :=
+  ⟨fun H ↦ A.ellipticThree_exists_relator_eq_of_regularLoop_eq H,
+    fun H ↦ A.ellipticThree_exists_regularLoop_eq_of_relator_eq H⟩
+
+public theorem ellipticFour_exists_relator_eq_of_regularLoop_eq
+    (H : (let _ := A.ellipticFourBoundaryAction
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :=
     A.ellipticFourBoundaryCover_simplyConnected
@@ -57,41 +114,10 @@ public def OrderFourActualEllipticRegularLoopChartIdentity : Prop :=
               A.orderFourCollarRegularRepresentative_base_projects.symm
               A.orderFourCollarRegularRepresentative_base_projects.symm)) =
       FundamentalGroup.fundamentalGroupMulEquivOfPath β
-        A.orderFourCentralExpectedRelator
-
-public theorem OrderThreeActualEllipticRegularLoopChartIdentity.toWholeFillingRelatorChartIdentity
-    (H : A.OrderThreeActualEllipticRegularLoopChartIdentity) :
-    A.OrderThreeWholeFillingRelatorChartIdentity := by
-  let _ := A.ellipticThreeBoundaryAction
-  let _ : SimplyConnectedSpace
-      (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-    A.ellipticThreeBoundaryCover_simplyConnected
-  obtain ⟨β, hβ⟩ := H
-  refine ⟨β, ?_⟩
-  rw [A.ellipticThreeCanonicalRelatorInCentral_eq_regularLoopProjection]
-  exact hβ
-
-public theorem OrderThreeWholeFillingRelatorChartIdentity.toRegularLoopChartIdentity
-    (H : A.OrderThreeWholeFillingRelatorChartIdentity) :
-    A.OrderThreeActualEllipticRegularLoopChartIdentity := by
-  let _ := A.ellipticThreeBoundaryAction
-  let _ : SimplyConnectedSpace
-      (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
-    A.ellipticThreeBoundaryCover_simplyConnected
-  obtain ⟨β, hβ⟩ := H
-  refine ⟨β, ?_⟩
-  rw [← A.ellipticThreeCanonicalRelatorInCentral_eq_regularLoopProjection]
-  exact hβ
-
-public theorem ellipticThreeRegularLoopChartIdentity_iff_wholeFillingRelatorChartIdentity :
-    A.OrderThreeActualEllipticRegularLoopChartIdentity ↔
-      A.OrderThreeWholeFillingRelatorChartIdentity :=
-  ⟨fun H ↦ H.toWholeFillingRelatorChartIdentity A,
-    fun H ↦ H.toRegularLoopChartIdentity A⟩
-
-public theorem OrderFourActualEllipticRegularLoopChartIdentity.toWholeFillingRelatorChartIdentity
-    (H : A.OrderFourActualEllipticRegularLoopChartIdentity) :
-    A.OrderFourWholeFillingRelatorChartIdentity := by
+        A.orderFourCentralExpectedRelator)) :
+    (∃ β : Path A.centralAffineBase A.ellipticFourOverlapCentralBase,
+    A.ellipticFourCanonicalRelatorInCentral =
+      FundamentalGroup.fundamentalGroupMulEquivOfPath β A.orderFourCentralExpectedRelator) := by
   let _ := A.ellipticFourBoundaryAction
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :=
@@ -101,9 +127,24 @@ public theorem OrderFourActualEllipticRegularLoopChartIdentity.toWholeFillingRel
   rw [A.ellipticFourCanonicalRelatorInCentral_eq_regularLoopProjection]
   exact hβ
 
-public theorem OrderFourWholeFillingRelatorChartIdentity.toRegularLoopChartIdentity
-    (H : A.OrderFourWholeFillingRelatorChartIdentity) :
-    A.OrderFourActualEllipticRegularLoopChartIdentity := by
+public theorem ellipticFour_exists_regularLoop_eq_of_relator_eq
+    (H : (∃ β : Path A.centralAffineBase A.ellipticFourOverlapCentralBase,
+    A.ellipticFourCanonicalRelatorInCentral =
+      FundamentalGroup.fundamentalGroupMulEquivOfPath β A.orderFourCentralExpectedRelator)) :
+    (let _ := A.ellipticFourBoundaryAction
+  let _ : SimplyConnectedSpace
+      (OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :=
+    A.ellipticFourBoundaryCover_simplyConnected
+  ∃ β : Path A.centralAffineBase A.ellipticFourOverlapCentralBase,
+    fundamentalGroupElementOfBaseEq
+        A.ellipticFourCentralBase_eq_overlapCentralBase
+        (Path.Homotopic.Quotient.mk
+          ((A.orderFourFillingRelationRegularLoop.map
+            A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
+              A.orderFourCollarRegularRepresentative_base_projects.symm
+              A.orderFourCollarRegularRepresentative_base_projects.symm)) =
+      FundamentalGroup.fundamentalGroupMulEquivOfPath β
+        A.orderFourCentralExpectedRelator) := by
   let _ := A.ellipticFourBoundaryAction
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :=
@@ -114,18 +155,59 @@ public theorem OrderFourWholeFillingRelatorChartIdentity.toRegularLoopChartIdent
   exact hβ
 
 public theorem ellipticFourRegularLoopChartIdentity_iff_wholeFillingRelatorChartIdentity :
-    A.OrderFourActualEllipticRegularLoopChartIdentity ↔
-      A.OrderFourWholeFillingRelatorChartIdentity :=
-  ⟨fun H ↦ H.toWholeFillingRelatorChartIdentity A,
-    fun H ↦ H.toRegularLoopChartIdentity A⟩
+    (let _ := A.ellipticFourBoundaryAction
+  let _ : SimplyConnectedSpace
+      (OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :=
+    A.ellipticFourBoundaryCover_simplyConnected
+  ∃ β : Path A.centralAffineBase A.ellipticFourOverlapCentralBase,
+    fundamentalGroupElementOfBaseEq
+        A.ellipticFourCentralBase_eq_overlapCentralBase
+        (Path.Homotopic.Quotient.mk
+          ((A.orderFourFillingRelationRegularLoop.map
+            A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
+              A.orderFourCollarRegularRepresentative_base_projects.symm
+              A.orderFourCollarRegularRepresentative_base_projects.symm)) =
+      FundamentalGroup.fundamentalGroupMulEquivOfPath β
+        A.orderFourCentralExpectedRelator) ↔
+      (∃ β : Path A.centralAffineBase A.ellipticFourOverlapCentralBase,
+    A.ellipticFourCanonicalRelatorInCentral =
+      FundamentalGroup.fundamentalGroupMulEquivOfPath β A.orderFourCentralExpectedRelator) :=
+  ⟨fun H ↦ A.ellipticFour_exists_relator_eq_of_regularLoop_eq H,
+    fun H ↦ A.ellipticFour_exists_regularLoop_eq_of_relator_eq H⟩
 
 public theorem ellipticRelatorMembership_of_regularLoopChartIdentities
-    (H3 : A.OrderThreeActualEllipticRegularLoopChartIdentity)
-    (H4 : A.OrderFourActualEllipticRegularLoopChartIdentity) :
+    (H3 : (let _ := A.ellipticThreeBoundaryAction
+  let _ : SimplyConnectedSpace
+      (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
+    A.ellipticThreeBoundaryCover_simplyConnected
+  ∃ β : Path A.centralAffineBase A.ellipticThreeOverlapCentralBase,
+    fundamentalGroupElementOfBaseEq
+        A.ellipticThreeCentralBase_eq_overlapCentralBase
+        (Path.Homotopic.Quotient.mk
+          ((A.orderThreeFillingRelationRegularLoop.map
+            A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
+              A.orderThreeCollarRegularRepresentative_base_projects.symm
+              A.orderThreeCollarRegularRepresentative_base_projects.symm)) =
+      FundamentalGroup.fundamentalGroupMulEquivOfPath β
+        A.orderThreeCentralExpectedRelator))
+    (H4 : (let _ := A.ellipticFourBoundaryAction
+  let _ : SimplyConnectedSpace
+      (OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :=
+    A.ellipticFourBoundaryCover_simplyConnected
+  ∃ β : Path A.centralAffineBase A.ellipticFourOverlapCentralBase,
+    fundamentalGroupElementOfBaseEq
+        A.ellipticFourCentralBase_eq_overlapCentralBase
+        (Path.Homotopic.Quotient.mk
+          ((A.orderFourFillingRelationRegularLoop.map
+            A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
+              A.orderFourCollarRegularRepresentative_base_projects.symm
+              A.orderFourCollarRegularRepresentative_base_projects.symm)) =
+      FundamentalGroup.fundamentalGroupMulEquivOfPath β
+        A.orderFourCentralExpectedRelator)) :
     A.EllipticRelatorMembership A.cuspCentralNaturality :=
   A.ellipticRelatorMembership_of_wholeFillingRelatorChartIdentities
-    (H3.toWholeFillingRelatorChartIdentity A)
-    (H4.toWholeFillingRelatorChartIdentity A)
+    (A.ellipticThree_exists_relator_eq_of_regularLoop_eq H3)
+    (A.ellipticFour_exists_relator_eq_of_regularLoop_eq H4)
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

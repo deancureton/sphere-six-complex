@@ -192,9 +192,10 @@ public theorem sectionSevenPositiveDegreeCuspCoordinateComparison_iff_inclusionN
 boundary square and the two marked squares for the cusp-to-elliptic-interior inclusion. -/
 public structure SectionSevenPositiveDegreeActualMapInput
     (N : A.EllipticBandHomologyAlignment D) : Prop where
-  boundary : D.SectionSevenCuspMarkedBoundaryComparison N
+  boundary : D.cuspPulledBackBoundaryCoordinateHom N =
+      EllipticTwoDiscCoverData.actualCuspSecondWangBoundaryCoordinateHom A
   inclusion : D.SectionSevenCuspEllipticInclusionNaturality N
-    (SectionSevenCuspMarkedBoundaryComparison.pulledBackBoundaryBasisBridge N boundary)
+    (EllipticTwoDiscCoverData.boundaryBasisBridge_of_coordinate_eq N boundary)
 
 namespace SectionSevenPositiveDegreeActualMapInput
 

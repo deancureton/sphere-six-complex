@@ -53,7 +53,20 @@ public theorem ellipticThreeRegularLoopChartIdentity_of_freeHomotopy
               A.orderThreeCollarRegularRepresentative_base_projects.symm
               A.orderThreeCollarRegularRepresentative_base_projects.symm).target.symm
           gamma.target.symm) :
-    A.OrderThreeActualEllipticRegularLoopChartIdentity := by
+    (let _ := A.ellipticThreeBoundaryAction
+  let _ : SimplyConnectedSpace
+      (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
+    A.ellipticThreeBoundaryCover_simplyConnected
+  ∃ β : Path A.centralAffineBase A.ellipticThreeOverlapCentralBase,
+    fundamentalGroupElementOfBaseEq
+        A.ellipticThreeCentralBase_eq_overlapCentralBase
+        (Path.Homotopic.Quotient.mk
+          ((A.orderThreeFillingRelationRegularLoop.map
+            A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
+              A.orderThreeCollarRegularRepresentative_base_projects.symm
+              A.orderThreeCollarRegularRepresentative_base_projects.symm)) =
+      FundamentalGroup.fundamentalGroupMulEquivOfPath β
+        A.orderThreeCentralExpectedRelator) := by
   let _ := A.ellipticThreeBoundaryAction
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius ×
@@ -121,7 +134,20 @@ public theorem ellipticFourRegularLoopChartIdentity_of_freeHomotopy
               A.orderFourCollarRegularRepresentative_base_projects.symm
               A.orderFourCollarRegularRepresentative_base_projects.symm).target.symm
           gamma.target.symm) :
-    A.OrderFourActualEllipticRegularLoopChartIdentity := by
+    (let _ := A.ellipticFourBoundaryAction
+  let _ : SimplyConnectedSpace
+      (OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :=
+    A.ellipticFourBoundaryCover_simplyConnected
+  ∃ β : Path A.centralAffineBase A.ellipticFourOverlapCentralBase,
+    fundamentalGroupElementOfBaseEq
+        A.ellipticFourCentralBase_eq_overlapCentralBase
+        (Path.Homotopic.Quotient.mk
+          ((A.orderFourFillingRelationRegularLoop.map
+            A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
+              A.orderFourCollarRegularRepresentative_base_projects.symm
+              A.orderFourCollarRegularRepresentative_base_projects.symm)) =
+      FundamentalGroup.fundamentalGroupMulEquivOfPath β
+        A.orderFourCentralExpectedRelator) := by
   let _ := A.ellipticFourBoundaryAction
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderFour.radius ×

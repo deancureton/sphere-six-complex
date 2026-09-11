@@ -32,7 +32,10 @@ public noncomputable def cuspPrismGeometryOfExistingFiberValues
     (R : A.AffineRadialCompletionInput)
     (G₀ : R.twoDiscCover.SectionSevenCuspPulledBackBoundaryBasisBridge
       R.homologyAlignment)
-    (hTop : R.twoDiscCover.CanonicalCuspFiberBandTopologicalCompatibility)
+    (hTop : (let G := A.actualCuspRadialClutchingData
+               let _ := G.fiberTopology
+               ContinuousMap.Homotopic (actualCuspMappingTorusFiberToEllipticInteriorMap R.twoDiscCover)
+                 (canonicalCuspFiberToEllipticInteriorMap R.twoDiscCover)))
     (M : R.twoDiscCover.CuspEllipticMappingTorusMeridianProjectionComparison
       R.homologyAlignment) :
     R.twoDiscCover.CuspEllipticMappingTorusPrismGeometricData R.homologyAlignment G₀ := by
@@ -64,11 +67,14 @@ public theorem actualCuspFiberEllipticMarkedCoordinateCalculation_of_existingGeo
     (R : A.AffineRadialCompletionInput)
     (G₀ : R.twoDiscCover.SectionSevenCuspPulledBackBoundaryBasisBridge
       R.homologyAlignment)
-    (hTop : R.twoDiscCover.CanonicalCuspFiberBandTopologicalCompatibility)
+    (hTop : (let G := A.actualCuspRadialClutchingData
+               let _ := G.fiberTopology
+               ContinuousMap.Homotopic (actualCuspMappingTorusFiberToEllipticInteriorMap R.twoDiscCover)
+                 (canonicalCuspFiberToEllipticInteriorMap R.twoDiscCover)))
     (M : R.twoDiscCover.CuspEllipticMappingTorusMeridianProjectionComparison
       R.homologyAlignment)
-    (I : R.twoDiscCover.NormalizedIndexFourPrismCoefficientCalculation
-      (cuspPrismGeometryOfExistingFiberValues R G₀ hTop M)) :
+    (I : ((R.homologyAlignment.actualHomologyCoordinates.normalizedEllipticInteriorHomologyTwoEquiv
+        (R.twoDiscCover.cuspNormalizedDegreeTwoSplitting R.homologyAlignment G₀)) (((cuspPrismGeometryOfExistingFiberValues R G₀ hTop M)).targetImageCycle 4).homologyClass 0 = 1)) :
     ActualCuspFiberEllipticMarkedCoordinateCalculation R G₀ := by
   let C := cuspPrismGeometryOfExistingFiberValues R G₀ hTop M
   let G := A.actualCuspRadialClutchingData

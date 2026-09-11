@@ -113,7 +113,8 @@ public theorem normalizedIndexFourPrismCoefficientCalculation_iff_sideLiftGenera
     (N : A.EllipticBandHomologyAlignment D)
     (G : D.SectionSevenCuspPulledBackBoundaryBasisBridge N)
     (C : D.CuspEllipticMappingTorusPrismGeometricData N G) :
-    D.NormalizedIndexFourPrismCoefficientCalculation C ↔
+    ((N.actualHomologyCoordinates.normalizedEllipticInteriorHomologyTwoEquiv
+        (D.cuspNormalizedDegreeTwoSplitting N G)) (C.targetImageCycle 4).homologyClass 0 = 1) ↔
       Submodule.Quotient.mk (D.indexFourSideLift N G) =
         N.actualHomologyCoordinates.degreeTwoCoinvariantEquiv.symm 1 := by
   have hCoordinate := D.indexFourFiberCoordinate_eq_sideLiftCoinvariantCoordinate N G
@@ -122,9 +123,8 @@ public theorem normalizedIndexFourPrismCoefficientCalculation_iff_sideLiftGenera
   · intro I
     apply N.actualHomologyCoordinates.degreeTwoCoinvariantEquiv.injective
     rw [LinearEquiv.apply_symm_apply]
-    exact hCoordinate.symm.trans (hPrism.symm.trans I.coefficient)
+    exact hCoordinate.symm.trans (hPrism.symm.trans I)
   · intro h
-    constructor
     calc
       _ = N.actualHomologyCoordinates.normalizedUnionHomologyTwoEquiv
           (D.cuspNormalizedDegreeTwoSplitting N G)

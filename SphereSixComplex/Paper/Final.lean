@@ -15,18 +15,14 @@ open scoped ContDiff Manifold
 
 namespace SphereSixComplex
 
-/-- The paper-specific construction target: the explicit torus family, three fillings, and their
-overlap maps provide the exact finite gluing data consumed by the assembly theorem. -/
-public theorem exists_paperGluingData : Nonempty PaperGluingData := by
-  exact exists_paperGluingData_from_sectionSeven
-
 /-- The glued threefold is simply connected and has the integral homology of the six-sphere. -/
 public theorem exists_simplyConnected_complexThreefold :
     ∃ X : ComplexThreefold, SimplyConnectedSpace X.Carrier ∧
       ∀ k : ℕ, Nonempty
         (IntegralSingularHomology k X.Carrier ≃+ IntegralSingularHomology k SixSphere) := by
-  obtain ⟨A⟩ := exists_paperGluingData
-  exact ⟨A.toComplexThreefold, A.simplyConnectedSpace, A.integralHomology⟩
+  let P := Geometry.chosenPaperAnalyticData
+  exact ⟨P.compactComplexStar.toComplexThreefold,
+    P.star_simplyConnectedSpace, P.star_nonempty_homologyEquiv_sixSphere⟩
 
 /-- The underlying real manifold of a compact complex threefold is diffeomorphic to standard S⁶. -/
 public theorem exists_complex_threefold_diffeomorphic_sixSphere :

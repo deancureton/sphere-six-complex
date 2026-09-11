@@ -42,8 +42,9 @@ public def CanonicalCuspWangBoundaryInvariantResidual
 public theorem canonicalCuspWangBoundaryNaturality_of_invariantResidual
     (R : A.AffineRadialCompletionInput)
     (h : CanonicalCuspWangBoundaryInvariantResidual R) :
-    R.twoDiscCover.CanonicalCuspWangBoundaryNaturality := by
-  rw [CanonicalCuspWangBoundaryNaturality]
+    (R.twoDiscCover.canonicalCuspFiberToBandHomologyOne.comp (actualCuspWangBoundaryHom A) =
+         R.twoDiscCover.cuspPulledBackBoundaryHom) := by
+
   apply SphereSixComplex.addMonoidHom_ext_of_equiv_pi_single_one
     A.cuspRawHomologyTwoEquiv
   intro i

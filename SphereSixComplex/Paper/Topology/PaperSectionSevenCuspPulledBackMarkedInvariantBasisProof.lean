@@ -49,9 +49,13 @@ public def ActualCuspAdaptiveMarkedBoundaryCarrierResidual
 public theorem cuspPulledBackMarkedInvariantBasisData_of_adaptiveMarkedBoundaryCarrierResidual
     (R : A.AffineRadialCompletionInput)
     (h : ActualCuspAdaptiveMarkedBoundaryCarrierResidual R) :
-    CuspPulledBackMarkedInvariantBasisData R := by
+    ((R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
+        (R.twoDiscCover.cuspPulledBackBoundaryHom
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) = 0 ∧
+      (R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
+        (R.twoDiscCover.cuspPulledBackBoundaryHom
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) = 1) := by
   apply (cuspPulledBackMarkedInvariantBasisData_iff_markedConnectingNaturality R).2
-  constructor
   apply AddMonoidHom.ext
   intro x
   let G := A.actualCuspRadialClutchingData
@@ -102,7 +106,12 @@ public theorem cuspPulledBackMarkedInvariantBasisData_of_adaptiveMarkedBoundaryC
 the complete boundary image. -/
 public theorem adaptiveMarkedBoundaryCarrierResidual_of_cuspPulledBackMarkedInvariantBasisData
     (R : A.AffineRadialCompletionInput)
-    (h : CuspPulledBackMarkedInvariantBasisData R) :
+    (h : ((R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
+        (R.twoDiscCover.cuspPulledBackBoundaryHom
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) = 0 ∧
+      (R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
+        (R.twoDiscCover.cuspPulledBackBoundaryHom
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) = 1)) :
     ActualCuspAdaptiveMarkedBoundaryCarrierResidual R := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
@@ -133,7 +142,7 @@ public theorem adaptiveMarkedBoundaryCarrierResidual_of_cuspPulledBackMarkedInva
       (circleMappingTorusHTwoPresentation G.clutching).boundary (e (e.symm y))
     rw [e.apply_symm_apply]
     exact hread
-  have hsquareApply := DFunLike.congr_fun hsquare.square (e.symm y)
+  have hsquareApply := DFunLike.congr_fun hsquare (e.symm y)
   simp only [AddMonoidHom.comp_apply] at hsquareApply ⊢
   calc
     R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment
@@ -156,7 +165,12 @@ public theorem adaptiveMarkedBoundaryCarrierResidual_of_cuspPulledBackMarkedInva
 boundary image. -/
 public theorem cuspPulledBackMarkedInvariantBasisData_iff_adaptiveMarkedBoundaryCarrierResidual
     (R : A.AffineRadialCompletionInput) :
-    CuspPulledBackMarkedInvariantBasisData R ↔
+    ((R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
+        (R.twoDiscCover.cuspPulledBackBoundaryHom
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) = 0 ∧
+      (R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
+        (R.twoDiscCover.cuspPulledBackBoundaryHom
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) = 1) ↔
       ActualCuspAdaptiveMarkedBoundaryCarrierResidual R :=
   ⟨adaptiveMarkedBoundaryCarrierResidual_of_cuspPulledBackMarkedInvariantBasisData R,
     cuspPulledBackMarkedInvariantBasisData_of_adaptiveMarkedBoundaryCarrierResidual R⟩

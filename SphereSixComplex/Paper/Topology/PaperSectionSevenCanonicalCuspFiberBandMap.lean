@@ -25,20 +25,16 @@ open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
 open SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
 
-/-- The monodromy coordinates selected by the radial cusp realization agree with the standard
-integral period basis under its recorded fibre homeomorphism. -/
-public def CuspFiberPeriodMarkingCompatibility (A : PaperAnalyticData) : Prop :=
-  let G := A.actualCuspRadialClutchingData
-  let _ := G.fiberTopology
-  ∀ x : IntegralSingularHomology 1 G.Fiber,
-    (EstablishedTorusHomology.additiveTorusHomologyBasis
-        G.fiberParameter G.fiberFullRank).degreeOne
-        (integralSingularHomologyMap 1 G.fiberHomeomorph x) =
-      G.monodromyCoordinates.degreeOne x
 
 /-- The chosen radial clutching coordinates carry their defining period marking. -/
 public theorem cuspFiberPeriodMarkingCompatibility (A : PaperAnalyticData) :
-    A.CuspFiberPeriodMarkingCompatibility :=
+    (let G := A.actualCuspRadialClutchingData
+       let _ := G.fiberTopology
+       ∀ x : IntegralSingularHomology 1 G.Fiber,
+         (EstablishedTorusHomology.additiveTorusHomologyBasis
+             G.fiberParameter G.fiberFullRank).degreeOne
+             (integralSingularHomologyMap 1 G.fiberHomeomorph x) =
+           G.monodromyCoordinates.degreeOne x) :=
   A.actualCuspRadialClutchingData.fiberMarkingCompatibility
 
 variable {A : PaperAnalyticData} (D : A.EllipticTwoDiscCoverData)
@@ -113,32 +109,8 @@ public theorem bandHomologyEquiv_canonicalCuspFiberToBandHomologyOne
   exact (integralSingularHomologyEquivOfHomotopyEquiv 1
     D.bandHomotopyEquiv).apply_symm_apply _
 
-/-- The genuine unmarked homology square still required between the canonical pulled-back-cover
-boundary and the Wang connecting morphism. -/
-public def CanonicalCuspWangBoundaryNaturality : Prop :=
-  D.canonicalCuspFiberToBandHomologyOne.comp (actualCuspWangBoundaryHom A) =
-    D.cuspPulledBackBoundaryHom
 
-/-- The complete period marking, before selecting the fourth coordinate, is natural for the
-canonical cusp-fibre-to-band map. -/
-public def CanonicalCuspFiberBandPeriodMarking
-    (N : A.EllipticBandHomologyAlignment D) : Prop :=
-  N.actualHomologyCoordinates.bandOne.toAddMonoidHom.comp
-      D.canonicalCuspFiberToBandHomologyOne =
-    let G := A.actualCuspRadialClutchingData
-    let _ := G.fiberTopology
-    G.monodromyCoordinates.degreeOne.toAddMonoidHom
 
-/-- The complete cusp marking agrees with the order-three period marking after the two actual
-fibre homeomorphisms.  This statement no longer mentions the chosen band trivialization. -/
-public def CanonicalCuspFiberOrderThreePeriodMarking : Prop :=
-  let G := A.actualCuspRadialClutchingData
-  let _ := G.fiberTopology
-  ∀ x : IntegralSingularHomology 1 G.Fiber,
-    (orderThreeCentralFiberCoverSourceHomologyBasis A.periods).degreeOne
-        (integralSingularHomologyMap 1 D.bandToOrderThreeCoverSource
-          (D.canonicalCuspFiberToBandTorusHomologyOne x)) =
-      G.monodromyCoordinates.degreeOne x
 
 theorem actualHomologyCoordinates_bandOne_apply
     (N : A.EllipticBandHomologyAlignment D)
@@ -152,8 +124,18 @@ theorem actualHomologyCoordinates_bandOne_apply
 actual band. -/
 public theorem canonicalCuspFiberBandPeriodMarking_of_orderThree
     (N : A.EllipticBandHomologyAlignment D)
-    (h : D.CanonicalCuspFiberOrderThreePeriodMarking) :
-    D.CanonicalCuspFiberBandPeriodMarking N := by
+    (h : (let G := A.actualCuspRadialClutchingData
+            let _ := G.fiberTopology
+            ∀ x : IntegralSingularHomology 1 G.Fiber,
+              (orderThreeCentralFiberCoverSourceHomologyBasis A.periods).degreeOne
+                  (integralSingularHomologyMap 1 D.bandToOrderThreeCoverSource
+                    (D.canonicalCuspFiberToBandTorusHomologyOne x)) =
+                G.monodromyCoordinates.degreeOne x)) :
+    (N.actualHomologyCoordinates.bandOne.toAddMonoidHom.comp
+           D.canonicalCuspFiberToBandHomologyOne =
+         let G := A.actualCuspRadialClutchingData
+         let _ := G.fiberTopology
+         G.monodromyCoordinates.degreeOne.toAddMonoidHom) := by
   apply AddMonoidHom.ext
   intro x
   let G := A.actualCuspRadialClutchingData
@@ -170,8 +152,13 @@ public theorem canonicalCuspFiberBandPeriodMarking_of_orderThree
 marking construct the lower-level compatibility package. -/
 public noncomputable def sectionSevenCuspWangBandCompatibility_of_canonicalMap
     (N : A.EllipticBandHomologyAlignment D)
-    (hBoundary : D.CanonicalCuspWangBoundaryNaturality)
-    (hMarking : D.CanonicalCuspFiberBandPeriodMarking N) :
+    (hBoundary : (D.canonicalCuspFiberToBandHomologyOne.comp (actualCuspWangBoundaryHom A) =
+                      D.cuspPulledBackBoundaryHom))
+    (hMarking : (N.actualHomologyCoordinates.bandOne.toAddMonoidHom.comp
+                       D.canonicalCuspFiberToBandHomologyOne =
+                     let G := A.actualCuspRadialClutchingData
+                     let _ := G.fiberTopology
+                     G.monodromyCoordinates.degreeOne.toAddMonoidHom)) :
     D.SectionSevenCuspWangBandCompatibility N where
   fiberToBandHomologyOne := D.canonicalCuspFiberToBandHomologyOne
   boundary_naturality := hBoundary

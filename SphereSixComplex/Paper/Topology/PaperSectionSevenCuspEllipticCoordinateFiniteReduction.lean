@@ -5,9 +5,8 @@ public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspPrismGeometri
 /-!
 # Reduction of the remaining cusp coordinates
 
-The trusted input is expressed as two naturality identities between coordinate homomorphisms.
-The previously trusted eight scalar evaluations are consequences, and conversely the old finite
-package reconstructs these two identities.
+This conditional old-marking route compares two coordinate homomorphisms. Eight scalar
+evaluations are consequences, and conversely the finite evaluations reconstruct the identities.
 -/
 
 @[expose] public section
@@ -24,15 +23,6 @@ open EllipticTwoDiscCoverData
 variable {A : PaperAnalyticData}
 
 namespace EstablishedSectionSevenCuspTopology
-
-/-- The two coordinate-homomorphism identities remaining in the cusp-to-elliptic comparison. -/
-public structure ActualCuspFiberEllipticFiniteCoordinateIdentities
-    (R : A.AffineRadialCompletionInput)
-    (G₀ : R.twoDiscCover.SectionSevenCuspPulledBackBoundaryBasisBridge
-      R.homologyAlignment) : Prop where
-  coordinateComparison :
-    R.twoDiscCover.CuspEllipticMappingTorusCoordinateComparison R.homologyAlignment
-      G₀
 
 /-- The remaining finite calculation: three meridian values, four vanishing fibre values, and
 the orientation of the first invariant-suspension class. -/
@@ -60,14 +50,13 @@ public structure ActualCuspFiberEllipticMarkedCoordinateCalculation
         (integralSingularHomologyMap 2 R.twoDiscCover.cuspToEllipticInteriorMap.hom
           (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) = 1
 
-namespace ActualCuspFiberEllipticFiniteCoordinateIdentities
 
 /-- The three marked degree-one evaluations follow from meridian naturality. -/
-public theorem degreeOne
+public theorem cuspCoordinateComparison_degreeOne_basis
     {R : A.AffineRadialCompletionInput}
     {G₀ : R.twoDiscCover.SectionSevenCuspPulledBackBoundaryBasisBridge
       R.homologyAlignment}
-    (C : ActualCuspFiberEllipticFiniteCoordinateIdentities R G₀) (i : Fin 3) :
+    (C : R.twoDiscCover.CuspEllipticMappingTorusCoordinateComparison R.homologyAlignment G₀) (i : Fin 3) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     ((R.twoDiscCover.ellipticInteriorDegreeOneCoordinateHom R.homologyAlignment).comp
@@ -76,7 +65,7 @@ public theorem degreeOne
       (G.geometricWangSections.circleMappingTorusHOneAddEquiv.symm (Pi.single i 1)) =
         cuspEllipticDegreeOneRawCoordinate (Pi.single i 1) := by
   let _ := A.actualCuspRadialClutchingData.fiberTopology
-  have hi := DFunLike.congr_fun C.coordinateComparison.degreeOne
+  have hi := DFunLike.congr_fun C.degreeOne
     (A.actualCuspRadialClutchingData.geometricWangSections.circleMappingTorusHOneAddEquiv.symm
       (Pi.single i 1))
   change _ = cuspEllipticDegreeOneRawCoordinate
@@ -87,11 +76,11 @@ public theorem degreeOne
   exact hi
 
 /-- The five non-boundary degree-two evaluations follow from fibre-coordinate naturality. -/
-public theorem degreeTwo
+public theorem cuspCoordinateComparison_degreeTwo_basis
     {R : A.AffineRadialCompletionInput}
     {G₀ : R.twoDiscCover.SectionSevenCuspPulledBackBoundaryBasisBridge
       R.homologyAlignment}
-    (C : ActualCuspFiberEllipticFiniteCoordinateIdentities R G₀)
+    (C : R.twoDiscCover.CuspEllipticMappingTorusCoordinateComparison R.homologyAlignment G₀)
     (i : Fin 6) (_hi5 : i ≠ 5) :
     R.twoDiscCover.ellipticInteriorDegreeTwoFiberCoordinateHom R.homologyAlignment
         G₀
@@ -100,7 +89,7 @@ public theorem degreeTwo
       cuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1) := by
   let _ := A.actualCuspRadialClutchingData.fiberTopology
   rw [← cuspMappingTorusToEllipticInteriorMap_basis (D := R.twoDiscCover) i]
-  have hi := DFunLike.congr_fun C.coordinateComparison.degreeTwoFiber
+  have hi := DFunLike.congr_fun C.degreeTwoFiber
     (A.actualCuspRadialClutchingData.geometricWangSections.circleMappingTorusHTwoAddEquiv.symm
       (Pi.single i 1))
   change _ = cuspEllipticDegreeTwoFiberRawCoordinate
@@ -113,7 +102,7 @@ public theorem degreeTwo
 /-- The finite coordinate package follows from the exact three residual geometric inputs: the
 degree-one coordinate homomorphism, vanishing on the four fibre-coinvariant basis classes, and
 normalization of the first invariant-suspension class. -/
-public theorem of_coordinateIdentities
+public theorem cuspCoordinateComparison_of_basisValues
     {R : A.AffineRadialCompletionInput}
     {G₀ : R.twoDiscCover.SectionSevenCuspPulledBackBoundaryBasisBridge
       R.homologyAlignment}
@@ -136,42 +125,40 @@ public theorem of_coordinateIdentities
           G₀
           (integralSingularHomologyMap 2 R.twoDiscCover.cuspToEllipticInteriorMap.hom
             (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) = 1) :
-    ActualCuspFiberEllipticFiniteCoordinateIdentities R G₀ where
-  coordinateComparison :=
-    { degreeOne := hOne
-      degreeTwoFiber := by
-        let G := A.actualCuspRadialClutchingData
-        let _ := G.fiberTopology
-        apply addMonoidHom_ext_of_equiv_pi_single_one
-          G.geometricWangSections.circleMappingTorusHTwoAddEquiv
-        intro i
-        rw [AddMonoidHom.comp_apply,
-          cuspMappingTorusToEllipticInteriorMap_basis (D := R.twoDiscCover) i]
-        change _ = cuspEllipticDegreeTwoFiberRawCoordinate
-          (G.geometricWangSections.circleMappingTorusHTwoAddEquiv
-            (G.geometricWangSections.circleMappingTorusHTwoAddEquiv.symm
-              (Pi.single i 1)))
-        rw [AddEquiv.apply_symm_apply]
-        by_cases hi4 : i = 4
-        · subst i
-          simpa [cuspEllipticDegreeTwoFiberRawCoordinate] using hFour
-        · by_cases hi5 : i = 5
-          · subst i
-            let E := R.homologyAlignment.actualHomologyCoordinates
-              |>.normalizedEllipticInteriorHomologyTwoEquiv
-                (R.twoDiscCover.cuspNormalizedDegreeTwoSplitting R.homologyAlignment
-                  G₀)
-            change
-              E (integralSingularHomologyMap 2
-                R.twoDiscCover.cuspToEllipticInteriorMap.hom
-                (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) 0 = 0
-            rw [← normalizedEllipticInteriorHomologyTwoEquiv_symm_single_one
-              (D := R.twoDiscCover) (N := R.homologyAlignment)
-              (G₀ := G₀), AddEquiv.apply_symm_apply]
-            simp
-          · exact hFiber i hi4 hi5 }
+    R.twoDiscCover.CuspEllipticMappingTorusCoordinateComparison R.homologyAlignment G₀ where
+  degreeOne := hOne
+  degreeTwoFiber := by
+    let G := A.actualCuspRadialClutchingData
+    let _ := G.fiberTopology
+    apply addMonoidHom_ext_of_equiv_pi_single_one
+      G.geometricWangSections.circleMappingTorusHTwoAddEquiv
+    intro i
+    rw [AddMonoidHom.comp_apply,
+      cuspMappingTorusToEllipticInteriorMap_basis (D := R.twoDiscCover) i]
+    change _ = cuspEllipticDegreeTwoFiberRawCoordinate
+      (G.geometricWangSections.circleMappingTorusHTwoAddEquiv
+        (G.geometricWangSections.circleMappingTorusHTwoAddEquiv.symm
+          (Pi.single i 1)))
+    rw [AddEquiv.apply_symm_apply]
+    by_cases hi4 : i = 4
+    · subst i
+      simpa [cuspEllipticDegreeTwoFiberRawCoordinate] using hFour
+    · by_cases hi5 : i = 5
+      · subst i
+        let E := R.homologyAlignment.actualHomologyCoordinates
+          |>.normalizedEllipticInteriorHomologyTwoEquiv
+            (R.twoDiscCover.cuspNormalizedDegreeTwoSplitting R.homologyAlignment
+              G₀)
+        change
+          E (integralSingularHomologyMap 2
+            R.twoDiscCover.cuspToEllipticInteriorMap.hom
+            (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) 0 = 0
+        rw [← normalizedEllipticInteriorHomologyTwoEquiv_symm_single_one
+          (D := R.twoDiscCover) (N := R.homologyAlignment)
+          (G₀ := G₀), AddEquiv.apply_symm_apply]
+        simp
+      · exact hFiber i hi4 hi5
 
-end ActualCuspFiberEllipticFiniteCoordinateIdentities
 
 /-- The eight marked evaluations are exactly equivalent to the complete coordinate comparison. -/
 public theorem markedCoordinateCalculation_iff_finiteCoordinateIdentities
@@ -179,10 +166,10 @@ public theorem markedCoordinateCalculation_iff_finiteCoordinateIdentities
     {G₀ : R.twoDiscCover.SectionSevenCuspPulledBackBoundaryBasisBridge
       R.homologyAlignment} :
     ActualCuspFiberEllipticMarkedCoordinateCalculation R G₀ ↔
-      ActualCuspFiberEllipticFiniteCoordinateIdentities R G₀ := by
+      R.twoDiscCover.CuspEllipticMappingTorusCoordinateComparison R.homologyAlignment G₀ := by
   constructor
   · intro C
-    apply ActualCuspFiberEllipticFiniteCoordinateIdentities.of_coordinateIdentities
+    apply cuspCoordinateComparison_of_basisValues
     · let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
       apply addMonoidHom_ext_of_equiv_pi_single_one
@@ -199,38 +186,22 @@ public theorem markedCoordinateCalculation_iff_finiteCoordinateIdentities
     · exact C.degreeTwoIndexFour
   · intro C
     exact {
-      degreeOne := C.degreeOne
+      degreeOne := cuspCoordinateComparison_degreeOne_basis C
       degreeTwoFiberCoinvariant := by
         intro i hi4 hi5
-        simpa [hi4] using C.degreeTwo i hi5
+        simpa [hi4] using cuspCoordinateComparison_degreeTwo_basis C i hi5
       degreeTwoIndexFour := by
         simpa [cuspEllipticDegreeTwoFiberRawCoordinate] using
-          C.degreeTwo 4 (by decide) }
+          cuspCoordinateComparison_degreeTwo_basis C 4 (by decide) }
 
-namespace ActualCuspFiberEllipticFiniteCoordinateIdentities
-
-/-- The three degree-one evaluations determine the complete coordinate homomorphism. -/
-public theorem degreeOneHom
-    {R : A.AffineRadialCompletionInput}
-    {G₀ : R.twoDiscCover.SectionSevenCuspPulledBackBoundaryBasisBridge
-      R.homologyAlignment}
-    (C : ActualCuspFiberEllipticFiniteCoordinateIdentities R G₀) :
-    (R.twoDiscCover.ellipticInteriorDegreeOneCoordinateHom R.homologyAlignment).comp
-        (integralSingularHomologyMap 1
-          R.twoDiscCover.cuspMappingTorusToEllipticInteriorMap) =
-      let G := A.actualCuspRadialClutchingData
-      let _ := G.fiberTopology
-      actualCuspEllipticDegreeOneCoordinateAfterAddEquiv
-        G.geometricWangSections.circleMappingTorusHOneAddEquiv :=
-  C.coordinateComparison.degreeOne
 
 /-- The four non-suspension degree-two evaluations are precisely fibre-coinvariant
 vanishing. -/
-public theorem degreeTwoFiberCoinvariantValues
+public theorem cuspCoordinateComparison_degreeTwo_fiberBasis
     {R : A.AffineRadialCompletionInput}
     {G₀ : R.twoDiscCover.SectionSevenCuspPulledBackBoundaryBasisBridge
       R.homologyAlignment}
-    (C : ActualCuspFiberEllipticFiniteCoordinateIdentities R G₀) :
+    (C : R.twoDiscCover.CuspEllipticMappingTorusCoordinateComparison R.homologyAlignment G₀) :
     ∀ i : Fin 6, i ≠ 4 → i ≠ 5 →
       R.twoDiscCover.ellipticInteriorDegreeTwoFiberCoordinateHom R.homologyAlignment
           G₀
@@ -238,23 +209,22 @@ public theorem degreeTwoFiberCoinvariantValues
             (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1))) =
         cuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1) := by
   intro i hi4 hi5
-  exact C.degreeTwo i hi5
+  exact cuspCoordinateComparison_degreeTwo_basis C i hi5
 
 /-- The remaining degree-two evaluation is exactly the normalization of the first invariant
 suspension class. -/
-public theorem degreeTwoIndexFour
+public theorem cuspCoordinateComparison_degreeTwo_indexFour
     {R : A.AffineRadialCompletionInput}
     {G₀ : R.twoDiscCover.SectionSevenCuspPulledBackBoundaryBasisBridge
       R.homologyAlignment}
-    (C : ActualCuspFiberEllipticFiniteCoordinateIdentities R G₀) :
+    (C : R.twoDiscCover.CuspEllipticMappingTorusCoordinateComparison R.homologyAlignment G₀) :
     R.twoDiscCover.ellipticInteriorDegreeTwoFiberCoordinateHom R.homologyAlignment
         G₀
         (integralSingularHomologyMap 2 R.twoDiscCover.cuspToEllipticInteriorMap.hom
           (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) = 1 := by
   simpa [cuspEllipticDegreeTwoFiberRawCoordinate] using
-    C.degreeTwo 4 (by decide)
+    cuspCoordinateComparison_degreeTwo_basis C 4 (by decide)
 
-end ActualCuspFiberEllipticFiniteCoordinateIdentities
 
 end EstablishedSectionSevenCuspTopology
 

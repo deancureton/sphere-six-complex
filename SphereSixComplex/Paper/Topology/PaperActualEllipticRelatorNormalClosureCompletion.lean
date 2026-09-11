@@ -227,7 +227,9 @@ public theorem orderThreeWholeFillingRelatorChartIdentity_of_pathClassIdentity_a
         FundamentalGroup.fundamentalGroupMulEquivOfPath beta
           (paperPuncturedGlobalFamilyAffinePresentation A
             orderThreeFillingRelationClassifiedCentralProductDeck)) :
-    A.OrderThreeWholeFillingRelatorChartIdentity := by
+    (∃ β : Path A.centralAffineBase A.ellipticThreeOverlapCentralBase,
+    A.ellipticThreeCanonicalRelatorInCentral =
+      FundamentalGroup.fundamentalGroupMulEquivOfPath β A.orderThreeCentralExpectedRelator) := by
   let _ := A.ellipticThreeBoundaryAction
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :=
@@ -278,7 +280,9 @@ public theorem orderFourWholeFillingRelatorChartIdentity_of_pathClassIdentity_at
         FundamentalGroup.fundamentalGroupMulEquivOfPath beta
           (paperPuncturedGlobalFamilyAffinePresentation A
             orderFourFillingRelationClassifiedCentralProductDeck)) :
-    A.OrderFourWholeFillingRelatorChartIdentity := by
+    (∃ β : Path A.centralAffineBase A.ellipticFourOverlapCentralBase,
+    A.ellipticFourCanonicalRelatorInCentral =
+      FundamentalGroup.fundamentalGroupMulEquivOfPath β A.orderFourCentralExpectedRelator) := by
   let _ := A.ellipticFourBoundaryAction
   let _ : SimplyConnectedSpace
       (OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :=

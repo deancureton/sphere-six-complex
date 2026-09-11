@@ -503,7 +503,9 @@ public theorem orderFourCentralCoverProductMonodromyEndpoint_iff_pathClassIdenti
 identity. -/
 public theorem OrderThreeActualEllipticCentralCoverProductLiftComparison.toWholeIdentity
     (h : A.OrderThreeActualEllipticCentralCoverProductLiftComparison) :
-    A.OrderThreeWholeFillingRelatorChartIdentity := by
+    (∃ β : Path A.centralAffineBase A.ellipticThreeOverlapCentralBase,
+    A.ellipticThreeCanonicalRelatorInCentral =
+      FundamentalGroup.fundamentalGroupMulEquivOfPath β A.orderThreeCentralExpectedRelator) := by
   let _ := A.ellipticThreeBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology
@@ -563,7 +565,9 @@ public theorem OrderThreeActualEllipticCentralCoverProductLiftComparison.toWhole
 /-- The order-four product-lift endpoint calculation implies its complete chart identity. -/
 public theorem OrderFourActualEllipticCentralCoverProductLiftComparison.toWholeIdentity
     (h : A.OrderFourActualEllipticCentralCoverProductLiftComparison) :
-    A.OrderFourWholeFillingRelatorChartIdentity := by
+    (∃ β : Path A.centralAffineBase A.ellipticFourOverlapCentralBase,
+    A.ellipticFourCanonicalRelatorInCentral =
+      FundamentalGroup.fundamentalGroupMulEquivOfPath β A.orderFourCentralExpectedRelator) := by
   let _ := A.ellipticFourBoundaryAction
   let D := A.centralAffineUniversalCover
   let _ := D.topology

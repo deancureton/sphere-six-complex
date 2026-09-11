@@ -59,12 +59,15 @@ been completed: one connecting square and two inclusion-coordinate identities. -
 public structure AffineMarkedCompletionInput
     (R : A.AffineRadialCompletionInput) : Prop where
   connectingNaturality :
-    R.twoDiscCover.CuspMarkedConnectingNaturality R.homologyAlignment
+    (R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment).comp
+        R.twoDiscCover.cuspPulledBackBoundaryHom =
+      (EllipticTwoDiscCoverData.actualCuspFiberFourthCoordinateHom A).comp
+        (EllipticTwoDiscCoverData.actualCuspWangBoundaryHom A)
   inclusionNaturality :
     R.twoDiscCover.SectionSevenCuspEllipticInclusionNaturality R.homologyAlignment
-      (SectionSevenCuspMarkedBoundaryComparison.pulledBackBoundaryBasisBridge
+      (EllipticTwoDiscCoverData.boundaryBasisBridge_of_coordinate_eq
         R.homologyAlignment
-        (R.twoDiscCover.sectionSevenCuspMarkedBoundaryComparison_of_connectingNaturality
+        (R.twoDiscCover.boundaryCoordinate_eq_of_connecting_eq
           R.homologyAlignment connectingNaturality))
 
 namespace AffineMarkedCompletionInput
@@ -76,7 +79,7 @@ public noncomputable def positiveDegreeHomologyAssembly
     (C : A.AffineMarkedCompletionInput R) :
     A.PositiveDegreeHomologyAssembly := by
   let boundary :=
-    R.twoDiscCover.sectionSevenCuspMarkedBoundaryComparison_of_connectingNaturality
+    R.twoDiscCover.boundaryCoordinate_eq_of_connecting_eq
       R.homologyAlignment C.connectingNaturality
   let marked : R.twoDiscCover.SectionSevenPositiveDegreeActualMapInput R.homologyAlignment :=
     { boundary := boundary

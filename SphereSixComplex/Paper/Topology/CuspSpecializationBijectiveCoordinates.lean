@@ -77,14 +77,11 @@ end CircleMappingTorusHomologyBases
 namespace Geometry.PaperAnalyticData
 open CuspPuncturedCollarBridge CircleMappingTorusHomologyBases
 
-def CuspFiberSpecializationTwoBijective (A : PaperAnalyticData) : Prop :=
-  let G := A.actualCuspRadialClutchingData
-  let _ := G.fiberTopology
-  Function.Bijective (G.specializationHomologyTwoMap.comp
-    (circleMappingTorusHTwoPresentation G.clutching).coinvariantsToTotal)
-
 def bijectiveCuspRawHomologyTwoEquiv (A : PaperAnalyticData)
-    (h : A.CuspFiberSpecializationTwoBijective) :
+    (h : (let G := A.actualCuspRadialClutchingData
+      let _ := G.fiberTopology
+      Function.Bijective (G.specializationHomologyTwoMap.comp
+        (circleMappingTorusHTwoPresentation G.clutching).coinvariantsToTotal))) :
     IntegralSingularHomology 2 (PuncturedLocalCuspQuotient A.starCuspWitness) ≃+ (Fin 6 → ℤ) := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
@@ -93,7 +90,10 @@ def bijectiveCuspRawHomologyTwoEquiv (A : PaperAnalyticData)
       G.specializationHomologyTwoMap h).toAddEquiv
 
 theorem bijectiveCuspRawHomologyTwoEquiv_last (A : PaperAnalyticData)
-    (h : A.CuspFiberSpecializationTwoBijective)
+    (h : (let G := A.actualCuspRadialClutchingData
+      let _ := G.fiberTopology
+      Function.Bijective (G.specializationHomologyTwoMap.comp
+        (circleMappingTorusHTwoPresentation G.clutching).coinvariantsToTotal)))
     (x : IntegralSingularHomology 2 (PuncturedLocalCuspQuotient A.starCuspWitness)) (i : Fin 2) :
     A.bijectiveCuspRawHomologyTwoEquiv h x (Fin.natAdd 4 i) =
       A.actualCuspRadialClutchingData.geometricHomologyTwoEquiv x (Fin.natAdd 4 i) := by
@@ -103,7 +103,10 @@ theorem bijectiveCuspRawHomologyTwoEquiv_last (A : PaperAnalyticData)
     G.specializationHomologyTwoMap h _ i
 
 theorem bijectiveCuspRawHomologyTwoEquiv_first (A : PaperAnalyticData)
-    (h : A.CuspFiberSpecializationTwoBijective)
+    (h : (let G := A.actualCuspRadialClutchingData
+      let _ := G.fiberTopology
+      Function.Bijective (G.specializationHomologyTwoMap.comp
+        (circleMappingTorusHTwoPresentation G.clutching).coinvariantsToTotal)))
     (x : IntegralSingularHomology 2 (PuncturedLocalCuspQuotient A.starCuspWitness)) (i : Fin 4) :
     A.bijectiveCuspRawHomologyTwoEquiv h x (Fin.castAdd 2 i) =
       actualLocalCuspFillingHomologyTwoEquiv A.starCuspWitness A.cuspCentralFiberRetractionData

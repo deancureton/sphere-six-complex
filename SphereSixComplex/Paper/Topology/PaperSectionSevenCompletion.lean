@@ -1,27 +1,45 @@
 module
 
-public import SphereSixComplex.Paper.Geometry.PaperGluingDataReduction
+public import SphereSixComplex.Paper.Geometry.PaperSectionSevenHomology
+public import SphereSixComplex.Paper.Topology.PaperActualAffineFillingCoverModels
+public import SphereSixComplex.Paper.Topology.PaperCuspCollarFourTorusFiber
 public import SphereSixComplex.Paper.Topology.EstablishedPaperSectionSevenAffineCompletion
 public import SphereSixComplex.Paper.Topology.EstablishedPaperSectionSevenCuspCompletion
 
 /-!
-# Completion of the Section 7 construction
+# Topology of the glued analytic threefold
 
-The established radial topology and cusp comparison feed the exact reduction to the positive
-degree Mayer--Vietoris calculation and hence to the paper's gluing data.
+The fundamental group and homology computations concern the same geometric glued carrier.
 -/
 
 @[expose] public section
-
 noncomputable section
 
-namespace SphereSixComplex
+namespace SphereSixComplex.Geometry.PaperAnalyticData
 
-/-- The paper's affine radial and cusp comparison theorems produce the complete gluing datum. -/
-public theorem exists_paperGluingData_from_sectionSeven : Nonempty PaperGluingData := by
-  let A := Geometry.chosenPaperAnalyticData
-  let R := A.affineRadialCompletionInput
-  exact Geometry.exists_paperGluingData_of_positiveDegreeAssembly
-    (Geometry.PaperAnalyticData.EstablishedSectionSevenCuspTopology.correctedPositiveDegreeAssembly R)
+variable (P : PaperAnalyticData)
 
-end SphereSixComplex
+/-- The selected filling twists kill the fundamental group of the actual glued star. -/
+public theorem star_simplyConnectedSpace :
+    SimplyConnectedSpace
+      (GluedSpace P.openEmbeddingStarData.toFourPieceStarGluingData.glueData) := by
+  let X := P.compactComplexStar.toComplexThreefold
+  let : ConnectedSpace P.VanKampenSpace := X.connected
+  let : ChartedSpace ComplexModel P.VanKampenSpace := X.charts
+  let : LocallyPathConnectedSpace P.VanKampenSpace :=
+    ChartedSpace.locallyPathConnectedSpace ComplexModel P.VanKampenSpace
+  let : PathConnectedSpace P.VanKampenSpace := PathConnectedSpace.of_locallyPathConnectedSpace
+  exact P.actualStarHasVanKampenData.simplyConnectedSpace
+
+/-- The Mayer--Vietoris calculation gives the integral homology of the six-sphere. -/
+public theorem star_nonempty_homologyEquiv_sixSphere :
+    ∀ k, Nonempty
+      (IntegralSingularHomology k
+        (GluedSpace P.openEmbeddingStarData.toFourPieceStarGluingData.glueData) ≃+
+      IntegralSingularHomology k SixSphere) := by
+  let R := P.affineRadialCompletionInput
+  exact P.star_nonempty_homologyEquiv_sixSphere_of_positiveDegree
+    (EstablishedSectionSevenCuspTopology.correctedPositiveDegreeAssembly R)
+    P.stageTopDegreeVanishing
+
+end SphereSixComplex.Geometry.PaperAnalyticData

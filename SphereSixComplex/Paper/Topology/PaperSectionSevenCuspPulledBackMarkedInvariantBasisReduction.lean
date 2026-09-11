@@ -68,8 +68,10 @@ namespace ActualCuspWangSignedOverlapComparison
 public theorem connectingNaturality
     (R : A.AffineRadialCompletionInput)
     (C : ActualCuspWangSignedOverlapComparison R) :
-    R.twoDiscCover.CuspMarkedConnectingNaturality R.homologyAlignment := by
-  constructor
+    (R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment).comp
+        R.twoDiscCover.cuspPulledBackBoundaryHom =
+      (EllipticTwoDiscCoverData.actualCuspFiberFourthCoordinateHom A).comp
+        (EllipticTwoDiscCoverData.actualCuspWangBoundaryHom A) := by
   rw [R.twoDiscCover.cuspPulledBackBoundaryHom_eq_comp, ← C.boundary]
   have h := congrArg (fun q ↦ q.comp (actualCuspWangBoundaryHom A))
     C.markedBandDifference
@@ -79,8 +81,13 @@ public theorem connectingNaturality
 public theorem invariantBasisData
     (R : A.AffineRadialCompletionInput)
     (C : ActualCuspWangSignedOverlapComparison R) :
-    CuspPulledBackMarkedInvariantBasisData R := by
-  have hSquare := (C.connectingNaturality R).square
+    ((R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
+        (R.twoDiscCover.cuspPulledBackBoundaryHom
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) = 0 ∧
+      (R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
+        (R.twoDiscCover.cuspPulledBackBoundaryHom
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) = 1) := by
+  have hSquare := C.connectingNaturality R
   rw [actualCuspMarkedWangComposite_eq_rawCoordinateFive] at hSquare
   constructor
   · have hFour := DFunLike.congr_fun hSquare

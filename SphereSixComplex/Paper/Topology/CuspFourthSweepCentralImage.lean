@@ -283,7 +283,12 @@ public theorem cuspIndexFiveBoundaryCoefficient_not_unit {A : PaperAnalyticData}
 
 public theorem not_cuspPulledBackMarkedInvariantBasisData {A : PaperAnalyticData}
     (R : A.AffineRadialCompletionInput) :
-    ¬ CuspPulledBackMarkedInvariantBasisData R := by
+    ¬ ((R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
+        (R.twoDiscCover.cuspPulledBackBoundaryHom
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) = 0 ∧
+      (R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
+        (R.twoDiscCover.cuspPulledBackBoundaryHom
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) = 1) := by
   intro h
   exact cuspIndexFiveBoundaryCoefficient_not_unit R
     (actualCuspIndexFiveBoundaryCoefficient_sq_eq_one_of_invariantBasisData R h)

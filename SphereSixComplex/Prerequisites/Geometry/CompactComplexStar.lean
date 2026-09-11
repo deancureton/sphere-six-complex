@@ -1,17 +1,14 @@
 module
 
 public import SphereSixComplex.Prerequisites.Geometry.ComplexThreefoldGluing
-public import SphereSixComplex.Paper.Topology.FundamentalGroupComputation
 public import SphereSixComplex.Prerequisites.Geometry.FourPieceStarGluing
 public import SphereSixComplex.Prerequisites.Geometry.EstablishedBiholomorphicStarGluing
-public import SphereSixComplex.Prerequisites.Geometry.EstablishedComplexToRealManifold
-public import SphereSixComplex.Paper.Topology.EstablishedMayerVietoris
 
 /-!
-# Exact gluing data for the completed paper threefold
+# Compact complex threefolds from a four-piece star
 
-The four-piece gluing gives a compact complex threefold. Its van Kampen presentation
-proves simple connectedness, and its integral homology is stated degree by degree.
+Only geometry and point-set topology enter this gluing datum. Fundamental-group and homology
+calculations can be stated independently on its glued carrier.
 -/
 
 open scoped ContDiff Manifold
@@ -20,26 +17,8 @@ namespace SphereSixComplex
 
 noncomputable section
 
-/-- Identify the central piece and three fillings with the four indices of the canonical cover. -/
-@[expose] public def fourPieceStarIndex : Fin 4 → Option (Fin 3) :=
-  Fin.cases none some
-
-/-- The canonical cover of a star gluing by the open images of its four pieces. -/
-@[expose] public noncomputable def FourPieceStarGluingData.openCover
-    (A : FourPieceStarGluingData) : FourPieceOpenCover (GluedSpace A.glueData) where
-  piece i := Set.range (A.glueData.toGlueData.ι (fourPieceStarIndex i))
-  isOpen_piece i := (A.glueData.ι_isOpenEmbedding (fourPieceStarIndex i)).isOpen_range
-  covers := by
-    ext x
-    simp only [Set.mem_iUnion, Set.mem_range, Set.mem_univ, iff_true]
-    obtain ⟨i, y, hy⟩ := A.glueData.ι_jointly_surjective x
-    cases i with
-    | none => exact ⟨0, y, hy⟩
-    | some i => exact ⟨i.succ, y, hy⟩
-
-/-- All data required to assemble the paper's four pieces into a compact complex threefold with
-the asserted fundamental group and integral homology. -/
-public structure PaperGluingData where
+/-- A compact Hausdorff complex threefold obtained by gluing a connected four-piece star. -/
+public structure CompactComplexStar where
   /-- The central family and three filling pieces, with their pairwise disjoint collar maps. -/
   star : FourPieceStarGluingData
   /-- Every piece is connected. -/
@@ -55,15 +34,10 @@ public structure PaperGluingData where
   gluedT2 : T2Space (GluedSpace star.glueData)
   /-- The completed glued space is compact. -/
   gluedCompact : CompactSpace (GluedSpace star.glueData)
-  /-- The selected filling twists give the required van Kampen presentation. -/
-  vanKampen : Topology.HasVanKampenData (GluedSpace star.glueData) 0 1 (-1)
-  /-- The integral Mayer--Vietoris calculation for the completed star. -/
-  integralHomology : ∀ k : ℕ, Nonempty
-    (IntegralSingularHomology k (GluedSpace star.glueData) ≃+ IntegralSingularHomology k SixSphere)
 
-namespace PaperGluingData
+namespace CompactComplexStar
 
-variable (A : PaperGluingData)
+variable (A : CompactComplexStar)
 
 /-- The canonical gluing diagram built from the central piece and three collars. -/
 public abbrev glueData : TopCat.GlueData := A.star.glueData
@@ -89,11 +63,6 @@ public theorem gluedSecondCountable : SecondCountableTopology (GluedSpace A.glue
   let _ (i : A.glueData.J) := A.pieceSecondCountable i
   exact secondCountableTopology_gluedSpace A.glueData
 
-/-- The standard open-cover Mayer--Vietoris theorem applies to all three stages of the paper's
-four-piece cover. -/
-public theorem mayerVietorisExactness : FourPieceMayerVietorisExactness A.star.openCover :=
-  establishedFourPieceMayerVietorisExactness A.star.openCover
-
 /-- The compatible piece atlases define a compact complex threefold. -/
 @[expose] public noncomputable def toComplexThreefold : ComplexThreefold := by
   letI : Finite A.glueData.J := by
@@ -110,18 +79,7 @@ public theorem mayerVietorisExactness : FourPieceMayerVietorisExactness A.star.o
   exact complexThreefoldOfGluing A.glueData A.complexCompatible A.gluedCompact
     (A.star.intersectionGraphConnected A.nonemptyCentralCollar)
 
-/-- The chosen twists kill the fundamental group of the glued threefold. -/
-public theorem simplyConnectedSpace : SimplyConnectedSpace (GluedSpace A.glueData) := by
-  let : ConnectedSpace (GluedSpace A.glueData) := A.toComplexThreefold.connected
-  let : ChartedSpace ComplexModel (GluedSpace A.glueData) := A.toComplexThreefold.charts
-  let : LocallyPathConnectedSpace (GluedSpace A.glueData) :=
-    ChartedSpace.locallyPathConnectedSpace ComplexModel (GluedSpace A.glueData)
-  let : PathConnectedSpace (GluedSpace A.glueData) :=
-    PathConnectedSpace.of_locallyPathConnectedSpace
-  exact A.vanKampen.simplyConnectedSpace
-
-end PaperGluingData
-
+end CompactComplexStar
 
 end
 

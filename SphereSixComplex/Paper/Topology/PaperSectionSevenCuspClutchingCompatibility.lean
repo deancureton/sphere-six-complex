@@ -54,24 +54,26 @@ variable {N : A.EllipticBandHomologyAlignment D}
 of the fibre markings. -/
 public theorem connectingNaturality
     (C : D.SectionSevenCuspWangBandCompatibility N) :
-    D.CuspMarkedConnectingNaturality N where
-  square := by
-    ext x
-    calc
-      D.ellipticBandFourthCoordinateHom N (D.cuspPulledBackBoundaryHom x) =
-          D.ellipticBandFourthCoordinateHom N
-            (C.fiberToBandHomologyOne (actualCuspWangBoundaryHom A x)) := by
-        exact congrArg (D.ellipticBandFourthCoordinateHom N)
-          (DFunLike.congr_fun C.boundary_naturality x).symm
-      _ = actualCuspFiberFourthCoordinateHom A (actualCuspWangBoundaryHom A x) := by
-        exact DFunLike.congr_fun C.marking_naturality _
+    (D.ellipticBandFourthCoordinateHom N).comp
+        D.cuspPulledBackBoundaryHom =
+      (EllipticTwoDiscCoverData.actualCuspFiberFourthCoordinateHom A).comp
+        (EllipticTwoDiscCoverData.actualCuspWangBoundaryHom A) := by
+  ext x
+  calc
+    D.ellipticBandFourthCoordinateHom N (D.cuspPulledBackBoundaryHom x) =
+        D.ellipticBandFourthCoordinateHom N
+          (C.fiberToBandHomologyOne (actualCuspWangBoundaryHom A x)) := by
+      exact congrArg (D.ellipticBandFourthCoordinateHom N)
+        (DFunLike.congr_fun C.boundary_naturality x).symm
+    _ = actualCuspFiberFourthCoordinateHom A (actualCuspWangBoundaryHom A x) := by
+      exact DFunLike.congr_fun C.marking_naturality _
 
 /-- The canonical pulled-back boundary basis bridge obtained from the unmarked comparison. -/
 public theorem pulledBackBoundaryBasisBridge
     (C : D.SectionSevenCuspWangBandCompatibility N) :
     D.SectionSevenCuspPulledBackBoundaryBasisBridge N :=
-  SectionSevenCuspMarkedBoundaryComparison.pulledBackBoundaryBasisBridge N
-    (D.sectionSevenCuspMarkedBoundaryComparison_of_connectingNaturality N
+  EllipticTwoDiscCoverData.boundaryBasisBridge_of_coordinate_eq N
+    (D.boundaryCoordinate_eq_of_connecting_eq N
       C.connectingNaturality)
 
 end SectionSevenCuspWangBandCompatibility

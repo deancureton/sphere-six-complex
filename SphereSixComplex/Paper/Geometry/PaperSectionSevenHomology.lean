@@ -80,40 +80,17 @@ public theorem star_hasIntegralHomologyOfSixSphere_of_localModels
   exact P.star_hasIntegralHomologyOfSixSphere H hCentral hFilling hCollar hTop
     M.sectionSevenLocalEulerExpression_eq_two
 
-/-- Once the actual Mayer--Vietoris map bases and van Kampen calculation are supplied, the
-geometric local models assemble directly into the paper's complete gluing package. -/
-@[expose] public noncomputable def toPaperGluingData_of_sectionSevenLocalModels
-    (vanKampen : Topology.HasVanKampenData
-      (GluedSpace P.openEmbeddingStarData.toFourPieceStarGluingData.glueData) 0 1 (-1))
-    (H : P.openEmbeddingStarData.SectionSevenMayerVietorisHomologyAssembly)
-    (M : P.LocalEulerModels)
-    (hTop : P.openEmbeddingStarData.SectionSevenStageTopDegreeVanishing) :
-    SphereSixComplex.PaperGluingData :=
-  P.toPaperGluingData vanKampen
-    (P.star_hasIntegralHomologyOfSixSphere_of_localModels H M hTop)
-
-/-- Assemble the paper gluing package while obtaining the final degree-zero Mayer--Vietoris data
-from the actual analytic star rather than from an input. -/
-public noncomputable def toPaperGluingData_of_positiveDegreeAndLocalModels
-    (vanKampen : Topology.HasVanKampenData
-      (GluedSpace P.openEmbeddingStarData.toFourPieceStarGluingData.glueData) 0 1 (-1))
-    (H : P.PositiveDegreeHomologyAssembly)
-    (M : P.LocalEulerModels)
-    (hTop : P.openEmbeddingStarData.SectionSevenStageTopDegreeVanishing) :
-    SphereSixComplex.PaperGluingData :=
-  P.toPaperGluingData_of_sectionSevenLocalModels vanKampen
-    H.toSectionSevenMayerVietorisHomologyAssembly M hTop
-
-/-- The completed local topology is inserted automatically; only the positive-degree
-Mayer--Vietoris calculation and van Kampen datum remain. -/
-public noncomputable def toPaperGluingData_of_positiveDegree
-    (vanKampen : Topology.HasVanKampenData
-      (GluedSpace P.openEmbeddingStarData.toFourPieceStarGluingData.glueData) 0 1 (-1))
+/-- The positive-degree map computation and the proved local models compute the actual
+integral homology of the glued analytic star. -/
+public theorem star_nonempty_homologyEquiv_sixSphere_of_positiveDegree
     (H : P.PositiveDegreeHomologyAssembly)
     (hTop : P.openEmbeddingStarData.SectionSevenStageTopDegreeVanishing) :
-    SphereSixComplex.PaperGluingData :=
-  P.toPaperGluingData_of_positiveDegreeAndLocalModels vanKampen H
-    P.localEulerModels hTop
+    ∀ k, Nonempty
+      (IntegralSingularHomology k
+        (GluedSpace P.openEmbeddingStarData.toFourPieceStarGluingData.glueData) ≃+
+      IntegralSingularHomology k SixSphere) :=
+  P.star_hasIntegralHomologyOfSixSphere_of_localModels
+    H.toSectionSevenMayerVietorisHomologyAssembly P.localEulerModels hTop
 
 end PaperAnalyticData
 

@@ -366,10 +366,39 @@ public theorem geometricHomologyOneEquiv_negDegreeOne
   exact circleMappingTorusHOneAddEquiv_negDegreeOne_castAdd G.monodromyCoordinates
     (integralSingularHomologyEquivOfHomotopyEquiv 1 G.totalHomotopyEquiv x) i
 
-/-- The false overbroad degree-one statement obtained by quantifying over every *un-normalized*
-clutching datum. -/
-public def StandardA2CuspSpecializationDegreeOneStatement : Prop :=
-  ∀ {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+
+/-- Some unnormalized marking fails the specialization equation for this fixed cusp. -/
+public theorem exists_unnormalized_degreeOne_specialization_ne
+    {W : ActualPuncturedCuspCollarWitness N M}
+    (R : ActualLocalCuspCentralFiberRetractionData W)
+    (G : UnnormalizedCuspRadialClutchingData W) :
+    ∃ G' : UnnormalizedCuspRadialClutchingData W,
+      ∃ x : IntegralSingularHomology 1 (PuncturedLocalCuspQuotient W),
+        actualLocalCuspFillingHomologyOneEquiv W R
+          (integralSingularHomologyMap 1
+            ⟨puncturedLocalCuspToFilling W, puncturedLocalCuspToFilling_continuous W⟩ x) ≠
+          (fun i ↦ G'.geometricHomologyOneEquiv x (Fin.castAdd 1 i)) := by
+  classical
+  by_contra h
+  push Not at h
+  set x := G.geometricHomologyOneEquiv.symm (fun _ ↦ 1) with hx
+  have hG := h G x
+  have hG' := h G.negDegreeOne x
+  rw [hG] at hG'
+  have hi := congrFun hG' (0 : Fin 2)
+  rw [geometricHomologyOneEquiv_negDegreeOne] at hi
+  have hval : G.geometricHomologyOneEquiv x (Fin.castAdd 1 (0 : Fin 2)) = 1 := by
+    rw [hx, AddEquiv.apply_symm_apply]
+  rw [hval] at hi
+  omega
+
+/-- The degree-one specialization equation is refuted by the sign ambiguity of the degree-one
+fibre marking. -/
+public theorem not_standardA2CuspSpecializationDegreeOneStatement
+    {W : ActualPuncturedCuspCollarWitness N M}
+    (R : ActualLocalCuspCentralFiberRetractionData W)
+    (G : UnnormalizedCuspRadialClutchingData W) :
+    ¬ (∀ {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W)
@@ -378,15 +407,7 @@ public def StandardA2CuspSpecializationDegreeOneStatement : Prop :=
       actualLocalCuspFillingHomologyOneEquiv W R
           (integralSingularHomologyMap 1
             ⟨puncturedLocalCuspToFilling W, puncturedLocalCuspToFilling_continuous W⟩ x) =
-        fun i ↦ G.geometricHomologyOneEquiv x (Fin.castAdd 1 i)
-
-/-- The degree-one specialization equation is refuted by the sign ambiguity of the degree-one
-fibre marking. -/
-public theorem not_standardA2CuspSpecializationDegreeOneStatement
-    {W : ActualPuncturedCuspCollarWitness N M}
-    (R : ActualLocalCuspCentralFiberRetractionData W)
-    (G : UnnormalizedCuspRadialClutchingData W) :
-    ¬ StandardA2CuspSpecializationDegreeOneStatement := by
+        fun i ↦ G.geometricHomologyOneEquiv x (Fin.castAdd 1 i)) := by
   intro h
   set x := G.geometricHomologyOneEquiv.symm (fun _ ↦ 1) with hx
   have hG := h W R G x
@@ -399,19 +420,31 @@ public theorem not_standardA2CuspSpecializationDegreeOneStatement
   rw [hval] at hi
   omega
 
-/-- The false overbroad degree-two statement obtained by quantifying over every *un-normalized*
-clutching datum. -/
-public def StandardA2CuspSpecializationDegreeTwoStatement : Prop :=
-  ∀ {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
-    (W : ActualPuncturedCuspCollarWitness N M)
+
+/-- Some unnormalized marking fails the specialization equation for this fixed cusp. -/
+public theorem exists_unnormalized_degreeTwo_specialization_ne
+    {W : ActualPuncturedCuspCollarWitness N M}
     (R : ActualLocalCuspCentralFiberRetractionData W)
-    (G : UnnormalizedCuspRadialClutchingData W)
-    (x : IntegralSingularHomology 2 (PuncturedLocalCuspQuotient W)),
-      actualLocalCuspFillingHomologyTwoEquiv W R
+    (G : UnnormalizedCuspRadialClutchingData W) :
+    ∃ G' : UnnormalizedCuspRadialClutchingData W,
+      ∃ x : IntegralSingularHomology 2 (PuncturedLocalCuspQuotient W),
+        actualLocalCuspFillingHomologyTwoEquiv W R
           (integralSingularHomologyMap 2
-            ⟨puncturedLocalCuspToFilling W, puncturedLocalCuspToFilling_continuous W⟩ x) =
-        fun i ↦ G.geometricHomologyTwoEquiv x (Fin.castAdd 2 i)
+            ⟨puncturedLocalCuspToFilling W, puncturedLocalCuspToFilling_continuous W⟩ x) ≠
+          (fun i ↦ G'.geometricHomologyTwoEquiv x (Fin.castAdd 2 i)) := by
+  classical
+  by_contra h
+  push Not at h
+  set x := G.geometricHomologyTwoEquiv.symm (fun _ ↦ 1) with hx
+  have hG := h G x
+  have hG' := h G.negDegreeTwo x
+  rw [hG] at hG'
+  have hi := congrFun hG' (0 : Fin 4)
+  rw [geometricHomologyTwoEquiv_negDegreeTwo] at hi
+  have hval : G.geometricHomologyTwoEquiv x (Fin.castAdd 2 (0 : Fin 4)) = 1 := by
+    rw [hx, AddEquiv.apply_symm_apply]
+  rw [hval] at hi
+  omega
 
 /-- The degree-two specialization equation is refuted by the sign ambiguity of the degree-two
 fibre marking: its left-hand side does not mention the clutching data, while its right-hand side
@@ -420,7 +453,16 @@ public theorem not_standardA2CuspSpecializationDegreeTwoStatement
     {W : ActualPuncturedCuspCollarWitness N M}
     (R : ActualLocalCuspCentralFiberRetractionData W)
     (G : UnnormalizedCuspRadialClutchingData W) :
-    ¬ StandardA2CuspSpecializationDegreeTwoStatement := by
+    ¬ (∀ {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M)
+    (R : ActualLocalCuspCentralFiberRetractionData W)
+    (G : UnnormalizedCuspRadialClutchingData W)
+    (x : IntegralSingularHomology 2 (PuncturedLocalCuspQuotient W)),
+      actualLocalCuspFillingHomologyTwoEquiv W R
+          (integralSingularHomologyMap 2
+            ⟨puncturedLocalCuspToFilling W, puncturedLocalCuspToFilling_continuous W⟩ x) =
+        fun i ↦ G.geometricHomologyTwoEquiv x (Fin.castAdd 2 i)) := by
   intro h
   set x := G.geometricHomologyTwoEquiv.symm (fun _ ↦ 1) with hx
   have hG := h W R G x
@@ -437,7 +479,16 @@ public theorem not_standardA2CuspSpecializationDegreeTwoStatement
 carrying a central-fibre retraction could carry an un-normalized radial clutching datum, hence
 none could carry a normalized one either. -/
 public theorem isEmpty_unnormalizedCuspRadialClutchingData_of_degreeOneStatement
-    (h : StandardA2CuspSpecializationDegreeOneStatement)
+    (h : (∀ {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M)
+    (R : ActualLocalCuspCentralFiberRetractionData W)
+    (G : UnnormalizedCuspRadialClutchingData W)
+    (x : IntegralSingularHomology 1 (PuncturedLocalCuspQuotient W)),
+      actualLocalCuspFillingHomologyOneEquiv W R
+          (integralSingularHomologyMap 1
+            ⟨puncturedLocalCuspToFilling W, puncturedLocalCuspToFilling_continuous W⟩ x) =
+        fun i ↦ G.geometricHomologyOneEquiv x (Fin.castAdd 1 i)))
     {W : ActualPuncturedCuspCollarWitness N M}
     (R : ActualLocalCuspCentralFiberRetractionData W) :
     IsEmpty (UnnormalizedCuspRadialClutchingData W) :=
@@ -446,7 +497,16 @@ public theorem isEmpty_unnormalizedCuspRadialClutchingData_of_degreeOneStatement
 /-- The degree-two counterpart of
 `isEmpty_unnormalizedCuspRadialClutchingData_of_degreeOneStatement`. -/
 public theorem isEmpty_unnormalizedCuspRadialClutchingData_of_degreeTwoStatement
-    (h : StandardA2CuspSpecializationDegreeTwoStatement)
+    (h : (∀ {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M)
+    (R : ActualLocalCuspCentralFiberRetractionData W)
+    (G : UnnormalizedCuspRadialClutchingData W)
+    (x : IntegralSingularHomology 2 (PuncturedLocalCuspQuotient W)),
+      actualLocalCuspFillingHomologyTwoEquiv W R
+          (integralSingularHomologyMap 2
+            ⟨puncturedLocalCuspToFilling W, puncturedLocalCuspToFilling_continuous W⟩ x) =
+        fun i ↦ G.geometricHomologyTwoEquiv x (Fin.castAdd 2 i)))
     {W : ActualPuncturedCuspCollarWitness N M}
     (R : ActualLocalCuspCentralFiberRetractionData W) :
     IsEmpty (UnnormalizedCuspRadialClutchingData W) :=

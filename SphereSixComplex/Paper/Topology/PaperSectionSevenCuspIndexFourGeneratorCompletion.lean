@@ -176,7 +176,8 @@ public theorem normalizedIndexFourPrismCoefficientCalculation_iff_total_orientat
     (N : A.EllipticBandHomologyAlignment D)
     (G : D.SectionSevenCuspPulledBackBoundaryBasisBridge N)
     (C : D.CuspEllipticMappingTorusPrismGeometricData N G) :
-    D.NormalizedIndexFourPrismCoefficientCalculation C ↔
+    ((N.actualHomologyCoordinates.normalizedEllipticInteriorHomologyTwoEquiv
+        (D.cuspNormalizedDegreeTwoSplitting N G)) (C.targetImageCycle 4).homologyClass 0 = 1) ↔
       cuspToEllipticUnionHomology D 2
           (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) =
         (presentationTwo (D := D)).coinvariantsToTotal
@@ -194,11 +195,14 @@ fourth raw cusp class. -/
 public theorem normalizedIndexFourPrismCoefficientCalculation_existingGeometry_iff_orientation
     (R : A.AffineRadialCompletionInput)
     (G : R.twoDiscCover.SectionSevenCuspPulledBackBoundaryBasisBridge R.homologyAlignment)
-    (hTop : R.twoDiscCover.CanonicalCuspFiberBandTopologicalCompatibility)
+    (hTop : (let G := A.actualCuspRadialClutchingData
+               let _ := G.fiberTopology
+               ContinuousMap.Homotopic (actualCuspMappingTorusFiberToEllipticInteriorMap R.twoDiscCover)
+                 (canonicalCuspFiberToEllipticInteriorMap R.twoDiscCover)))
     (M : R.twoDiscCover.CuspEllipticMappingTorusMeridianProjectionComparison
       R.homologyAlignment) :
-    R.twoDiscCover.NormalizedIndexFourPrismCoefficientCalculation
-          (cuspPrismGeometryOfExistingFiberValues R G hTop M) ↔
+    ((R.homologyAlignment.actualHomologyCoordinates.normalizedEllipticInteriorHomologyTwoEquiv
+        (R.twoDiscCover.cuspNormalizedDegreeTwoSplitting R.homologyAlignment G)) (((cuspPrismGeometryOfExistingFiberValues R G hTop M)).targetImageCycle 4).homologyClass 0 = 1) ↔
       cuspToEllipticUnionHomology R.twoDiscCover 2
           (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) =
         (presentationTwo (D := R.twoDiscCover)).coinvariantsToTotal
@@ -212,11 +216,14 @@ public theorem
     normalizedIndexFourPrismCoefficientCalculation_existingGeometry_iff_positive_side_lift
     (R : A.AffineRadialCompletionInput)
     (G : R.twoDiscCover.SectionSevenCuspPulledBackBoundaryBasisBridge R.homologyAlignment)
-    (hTop : R.twoDiscCover.CanonicalCuspFiberBandTopologicalCompatibility)
+    (hTop : (let G := A.actualCuspRadialClutchingData
+               let _ := G.fiberTopology
+               ContinuousMap.Homotopic (actualCuspMappingTorusFiberToEllipticInteriorMap R.twoDiscCover)
+                 (canonicalCuspFiberToEllipticInteriorMap R.twoDiscCover)))
     (M : R.twoDiscCover.CuspEllipticMappingTorusMeridianProjectionComparison
       R.homologyAlignment) :
-    R.twoDiscCover.NormalizedIndexFourPrismCoefficientCalculation
-          (cuspPrismGeometryOfExistingFiberValues R G hTop M) ↔
+    ((R.homologyAlignment.actualHomologyCoordinates.normalizedEllipticInteriorHomologyTwoEquiv
+        (R.twoDiscCover.cuspNormalizedDegreeTwoSplitting R.homologyAlignment G)) (((cuspPrismGeometryOfExistingFiberValues R G hTop M)).targetImageCycle 4).homologyClass 0 = 1) ↔
       ∃ y : IntegralSingularHomology 2 R.twoDiscCover.orderThreeSide ×
           IntegralSingularHomology 2 R.twoDiscCover.orderFourSide,
         (presentationTwo (D := R.twoDiscCover)).inclusion y =

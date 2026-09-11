@@ -308,7 +308,12 @@ public theorem cuspPulledBackMarkedInvariantBasisData_of_swappedCoverRefinement
     (C : ActualCuspSwappedCoverRefinement R)
     (hmarked : ActualCuspTwoLegMarkedOverlapNaturality R
       (actualCuspSwappedRefinementOverlapTransport R C)) :
-    CuspPulledBackMarkedInvariantBasisData R := by
+    ((R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
+        (R.twoDiscCover.cuspPulledBackBoundaryHom
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) = 0 ∧
+      (R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
+        (R.twoDiscCover.cuspPulledBackBoundaryHom
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) = 1) := by
   apply cuspPulledBackMarkedInvariantBasisData_of_twoLegCoverChainNaturality R
     (actualCuspSwappedRefinementOverlapTransport R C)
   exact ⟨actualCuspSwappedRefinement_connectingNaturality R C, hmarked⟩

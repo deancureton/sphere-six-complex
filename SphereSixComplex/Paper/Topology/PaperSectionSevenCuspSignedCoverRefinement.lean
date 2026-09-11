@@ -300,7 +300,12 @@ public theorem cuspPulledBackMarkedInvariantBasisData_of_signedCoverRefinement
     (R : A.AffineRadialCompletionInput)
     (C : ActualCuspOrientedCoverRefinement R)
     (hsign : ActualCuspOrientedCoverRefinementMarkedSign R C) :
-    CuspPulledBackMarkedInvariantBasisData R := by
+    ((R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
+        (R.twoDiscCover.cuspPulledBackBoundaryHom
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) = 0 ∧
+      (R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
+        (R.twoDiscCover.cuspPulledBackBoundaryHom
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) = 1) := by
   apply cuspPulledBackMarkedInvariantBasisData_of_twoLegCoverChainNaturality R
     (actualCuspSignedRefinementOverlapTransport R C)
   exact ⟨actualCuspSignedRefinement_connectingNaturality R C, hsign⟩

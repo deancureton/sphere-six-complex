@@ -96,8 +96,7 @@ public theorem orderFourCollarToRegular_base
 /-- The quantitative local cusp witness attached to the selected analytic package. -/
 @[expose] public noncomputable def actualLocalCuspWitness :
     ActualLocalCuspQuotientWitness A.cuspCoordinate A.toricModel :=
-  Classical.choice (exists_actualLocalCuspQuotientWitness A.cuspCoordinate A.toricModel
-    A.toricModel.toTorusActionPreservesComponents)
+  Classical.choice (exists_actualLocalCuspQuotientWitness A.cuspCoordinate A.toricModel)
 
 /-- The fixed exact modular uniformization used to control the paper cusp collar. -/
 @[expose] public noncomputable def actualNormalizedModularJUniformization

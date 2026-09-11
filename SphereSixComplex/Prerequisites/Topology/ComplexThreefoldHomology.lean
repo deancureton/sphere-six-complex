@@ -85,11 +85,8 @@ public theorem ComplexThreefold.nonempty_homologyEquiv_sixSphere
       · exact T.subsingleton_homology_of_lt k (by omega)
   let := hActual
   let := sixSpherePositiveHomologyInputs.otherDegrees k hk0 hk6
-  exact ⟨{
-    toFun := 0
-    invFun := 0
-    left_inv := fun _ => Subsingleton.elim _ _
-    right_inv := fun _ => Subsingleton.elim _ _
-    map_add' := fun _ _ => by simp }⟩
+  let : Unique (IntegralSingularHomology k X) := uniqueOfSubsingleton 0
+  let : Unique (IntegralSingularHomology k SixSphere) := uniqueOfSubsingleton 0
+  exact ⟨AddEquiv.ofUnique⟩
 
 end SphereSixComplex

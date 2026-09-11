@@ -161,58 +161,14 @@ public theorem cuspPulledBackBoundaryCoordinateHom_apply_eq_bandCoordinate
       N.actualHomologyCoordinates.bandOne (D.cuspPulledBackBoundary x) 3 := by
   rfl
 
-/-- The smallest geometric boundary interface exposed by the current Wang API: the canonical
-Mayer--Vietoris boundary and the Wang connecting class have the same fourth marked fibre
-coordinate.  The Wang theorem currently exposes its connecting map only on homology, so this is
-the strongest chain-comparison statement that can be formulated without choosing a chain-level
-model for that theorem. -/
-public structure SectionSevenCuspMarkedBoundaryComparison
-    (N : A.EllipticBandHomologyAlignment D) : Prop where
-  fourthCoordinate : ∀ x :
-      IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0),
-    N.actualHomologyCoordinates.bandOne (D.cuspPulledBackBoundary x) 3 =
-      let G := A.actualCuspRadialClutchingData
-      let _ := G.fiberTopology
-      G.monodromyCoordinates.degreeOne (actualCuspWangBoundary A x) 3
-
-/-- The one remaining geometric interface: the boundary of the elliptic cover pulled back to the
-actual radial cusp collar is the second invariant coordinate of its Wang boundary.  This is an
-equality of homomorphisms between the two exact-sequence constructions, rather than six unrelated
-basis assumptions. -/
-public structure SectionSevenCuspPulledBackWangBoundaryComparison
-    (N : A.EllipticBandHomologyAlignment D) : Prop where
-  boundaryCoordinateHom :
-    D.cuspPulledBackBoundaryCoordinateHom N =
-      actualCuspSecondWangBoundaryCoordinateHom A
-
-/-- Equality of the marked boundary coordinates is exactly the Wang comparison needed by the
-Section 7 basis calculation. -/
-public theorem SectionSevenCuspMarkedBoundaryComparison.toPulledBackWangBoundaryComparison
-    (N : A.EllipticBandHomologyAlignment D)
-    (G : D.SectionSevenCuspMarkedBoundaryComparison N) :
-    D.SectionSevenCuspPulledBackWangBoundaryComparison N where
-  boundaryCoordinateHom := by
-    apply AddMonoidHom.ext
-    intro x
-    rw [D.cuspPulledBackBoundaryCoordinateHom_apply_eq_bandCoordinate,
-      actualCuspSecondWangBoundaryCoordinateHom_apply_eq_fiberCoordinate]
-    exact G.fourthCoordinate x
-
-/-- Conversely, the bundled homomorphism comparison gives the marked boundary comparison. -/
-public theorem SectionSevenCuspPulledBackWangBoundaryComparison.toMarkedBoundaryComparison
-    (N : A.EllipticBandHomologyAlignment D)
-    (G : D.SectionSevenCuspPulledBackWangBoundaryComparison N) :
-    D.SectionSevenCuspMarkedBoundaryComparison N where
-  fourthCoordinate x := by
-    rw [← D.cuspPulledBackBoundaryCoordinateHom_apply_eq_bandCoordinate,
-      ← actualCuspSecondWangBoundaryCoordinateHom_apply_eq_fiberCoordinate,
-      G.boundaryCoordinateHom]
+variable {D}
 
 /-- A comparison of the pulled-back cover boundary with the actual cusp Wang coordinate proves
 all five vanishing basis calculations and the positive final boundary calculation. -/
-public theorem SectionSevenCuspPulledBackWangBoundaryComparison.toPulledBackBoundaryBasisBridge
+public theorem boundaryBasisBridge_of_coordinate_eq
     (N : A.EllipticBandHomologyAlignment D)
-    (G : D.SectionSevenCuspPulledBackWangBoundaryComparison N) :
+    (G : D.cuspPulledBackBoundaryCoordinateHom N =
+      EllipticTwoDiscCoverData.actualCuspSecondWangBoundaryCoordinateHom A) :
     D.SectionSevenCuspPulledBackBoundaryBasisBridge N where
   lowerBoundary_zero i := by
     have hInvariant : D.cuspPulledBackBoundaryInvariantHom
@@ -221,7 +177,7 @@ public theorem SectionSevenCuspPulledBackWangBoundaryComparison.toPulledBackBoun
       rw [map_zero]
       change D.cuspPulledBackBoundaryCoordinateHom N
           (A.cuspRawHomologyTwoEquiv.symm (Pi.single i.castSucc 1)) = 0
-      rw [G.boundaryCoordinateHom,
+      rw [G,
         actualCuspSecondWangBoundaryCoordinateHom_eq_rawCoordinate,
         coordinateAfterAddEquiv_apply,
         AddEquiv.apply_symm_apply]
@@ -237,7 +193,7 @@ public theorem SectionSevenCuspPulledBackWangBoundaryComparison.toPulledBackBoun
           (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) =
         N.actualHomologyCoordinates.degreeTwoInvariantEquiv
           (N.actualHomologyCoordinates.degreeTwoInvariantEquiv.symm 1)
-      rw [G.boundaryCoordinateHom,
+      rw [G,
         actualCuspSecondWangBoundaryCoordinateHom_eq_rawCoordinate,
         coordinateAfterAddEquiv_apply,
         AddEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]

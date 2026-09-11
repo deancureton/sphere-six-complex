@@ -78,8 +78,9 @@ public theorem normalizedIndexFourPrismCoefficientCalculation_of_cuspFiberCoordi
         (D.cuspNormalizedDegreeTwoSplitting N G₀)
         (cuspToEllipticUnionHomology D 2
           (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) 0 = 1) :
-    D.NormalizedIndexFourPrismCoefficientCalculation C :=
-  ⟨(indexFourPrismCoefficient_eq_cuspFiberCoordinate C).trans h⟩
+    ((N.actualHomologyCoordinates.normalizedEllipticInteriorHomologyTwoEquiv
+        (D.cuspNormalizedDegreeTwoSplitting N G₀)) (C.targetImageCycle 4).homologyClass 0 = 1) :=
+  (indexFourPrismCoefficient_eq_cuspFiberCoordinate C).trans h
 
 /-- The residual scalar in its geometric form: the marked elliptic-interior fibre coordinate of
 the included first invariant-suspension cusp class.  This is the same number as the normalized
@@ -108,7 +109,8 @@ public theorem normalizedIndexFourPrismCoefficientCalculation_of_actualCuspFiber
         G₀
         (integralSingularHomologyMap 2 R.twoDiscCover.cuspToEllipticInteriorMap.hom
           (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) = 1) :
-    R.twoDiscCover.NormalizedIndexFourPrismCoefficientCalculation C :=
+    ((R.homologyAlignment.actualHomologyCoordinates.normalizedEllipticInteriorHomologyTwoEquiv
+        (R.twoDiscCover.cuspNormalizedDegreeTwoSplitting R.homologyAlignment G₀)) (C.targetImageCycle 4).homologyClass 0 = 1) :=
   normalizedIndexFourPrismCoefficientCalculation_of_cuspFiberCoordinate C
     ((cuspFiberCoordinate_eq_ellipticInteriorDegreeTwoFiberCoordinateHom).trans h)
 

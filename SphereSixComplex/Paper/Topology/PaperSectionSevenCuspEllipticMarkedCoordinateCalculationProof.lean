@@ -48,7 +48,7 @@ public theorem actualCuspFiberEllipticMarkedCoordinateCalculation_of_inclusionNa
       R.homologyAlignment G₀) :
     ActualCuspFiberEllipticMarkedCoordinateCalculation R G₀ := by
   apply markedCoordinateCalculation_iff_finiteCoordinateIdentities.mpr
-  refine { coordinateComparison := { degreeOne := ?_, degreeTwoFiber := ?_ } }
+  refine { degreeOne := ?_, degreeTwoFiber := ?_ }
   · let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     apply addMonoidHom_ext_of_equiv_pi_single_one

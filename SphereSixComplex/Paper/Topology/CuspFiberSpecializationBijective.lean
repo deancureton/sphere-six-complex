@@ -17,11 +17,13 @@ theorem cuspFiberSpecializationTwoBijective_of_columns (A : PaperAnalyticData)
     (a b c : ℤˣ)
     (hc : ∀ j : Fin 3, e (A.cuspFiberSpecializationColumn j.succ) =
       signedMixedThreeColumnEquiv a b c (Pi.single j.succ 1)) :
-    A.CuspFiberSpecializationTwoBijective := by
+    (let G := A.actualCuspRadialClutchingData
+      let _ := G.fiberTopology
+      Function.Bijective (G.specializationHomologyTwoMap.comp
+        (circleMappingTorusHTwoPresentation G.clutching).coinvariantsToTotal)) := by
   obtain ⟨r, hr⟩ := exists_fourCoordinates_of_signed_mixed e A.cuspFiberSpecializationColumn
     (constructedCuspHomologyTwoPositiveReadout A) a b c hc
     A.cuspFiberSpecializationColumn_positive_zero A.cuspFiberSpecializationColumn_positive_one
-  unfold CuspFiberSpecializationTwoBijective
   rw [A.actualCuspRadialClutchingData_eq]
   let G := CuspRadialClutchingConstruction.actualCuspRadialClutchingData A.starCuspWitness
   let _ := G.fiberTopology
@@ -47,7 +49,10 @@ theorem cuspFiberSpecializationTwoBijective_of_columns (A : PaperAnalyticData)
   exact hr j
 
 theorem cuspFiberSpecializationTwoBijective (A : PaperAnalyticData)
-    (T : CellularHomology.IntegralComparison) : A.CuspFiberSpecializationTwoBijective := by
+    (T : CellularHomology.IntegralComparison) : (let G := A.actualCuspRadialClutchingData
+      let _ := G.fiberTopology
+      Function.Bijective (G.specializationHomologyTwoMap.comp
+        (circleMappingTorusHTwoPresentation G.clutching).coinvariantsToTotal)) := by
   let _ := actualLocalCuspFilling_t2 A.starCuspWitness
   let _ : T2Space (ActualLocalCuspCentralOrbitQuotient A.starCuspWitness) :=
     (actualLocalCuspCentralOrbitMap_isEmbedding A.starCuspWitness).t2Space

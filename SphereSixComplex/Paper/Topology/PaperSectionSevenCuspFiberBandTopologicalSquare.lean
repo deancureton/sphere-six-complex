@@ -117,19 +117,15 @@ public theorem actualCuspMappingTorusFiberToEllipticInteriorMap_homotopic_lowOve
       (.refl G.totalHomotopyEquiv.invFun)
       ⟨(torusPtHomotopy (fun _ : Unit ↦ G.clutching) () uQuarter).symm⟩)
 
-/-- The missing geometric compatibility: the period-marked fibre map is the restriction of the
-actual cusp-to-elliptic map to the fibre of the radial mapping torus, up to homotopy. -/
-public def CanonicalCuspFiberBandTopologicalCompatibility : Prop :=
-  let G := A.actualCuspRadialClutchingData
-  let _ := G.fiberTopology
-  ContinuousMap.Homotopic (actualCuspMappingTorusFiberToEllipticInteriorMap D)
-    (canonicalCuspFiberToEllipticInteriorMap D)
 
 /-- The topological cusp--band square is equivalent to its oriented low-overlap form.  Thus the
 remaining comparison is exactly between the explicit overlap leg of the Wang cover and the
 canonical affine-band map. -/
 public theorem canonicalCuspFiberBandTopologicalCompatibility_iff_lowOverlap :
-    D.CanonicalCuspFiberBandTopologicalCompatibility ↔
+    (let G := A.actualCuspRadialClutchingData
+       let _ := G.fiberTopology
+       ContinuousMap.Homotopic (actualCuspMappingTorusFiberToEllipticInteriorMap D)
+         (canonicalCuspFiberToEllipticInteriorMap D)) ↔
       let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
       ContinuousMap.Homotopic
@@ -137,7 +133,7 @@ public theorem canonicalCuspFiberBandTopologicalCompatibility_iff_lowOverlap :
         D.canonicalCuspFiberToEllipticInteriorMap := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
-  unfold CanonicalCuspFiberBandTopologicalCompatibility
+
   constructor
   · intro h
     exact D.actualCuspMappingTorusFiberToEllipticInteriorMap_homotopic_lowOverlap.symm.trans h
@@ -146,7 +142,10 @@ public theorem canonicalCuspFiberBandTopologicalCompatibility_iff_lowOverlap :
 
 /-- The space-level compatibility induces the corresponding equality on singular homology. -/
 public theorem canonicalCuspFiberBand_homology_naturality
-    (h : D.CanonicalCuspFiberBandTopologicalCompatibility) (k : ℕ) :
+    (h : (let G := A.actualCuspRadialClutchingData
+            let _ := G.fiberTopology
+            ContinuousMap.Homotopic (actualCuspMappingTorusFiberToEllipticInteriorMap D)
+              (canonicalCuspFiberToEllipticInteriorMap D))) (k : ℕ) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     integralSingularHomologyMap k (actualCuspMappingTorusFiberToEllipticInteriorMap D) =

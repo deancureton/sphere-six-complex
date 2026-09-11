@@ -63,8 +63,6 @@ public import SphereSixComplex.Paper.Geometry.PaperCentralFamilyTopology
 public import SphereSixComplex.Paper.Geometry.PaperCollarSeparation
 public import SphereSixComplex.Paper.Geometry.PaperEllipticCentralEscape
 public import SphereSixComplex.Paper.Geometry.PaperFillingCompactCores
-public import SphereSixComplex.Paper.Geometry.PaperGluingData
-public import SphereSixComplex.Paper.Geometry.PaperGluingDataReduction
 public import SphereSixComplex.Paper.Geometry.PaperGluingInstantiation
 public import SphereSixComplex.Paper.Geometry.PaperLocalCuspFillingConnected
 public import SphereSixComplex.Paper.Geometry.PaperMarkedPuncturedBase
@@ -89,7 +87,6 @@ public import SphereSixComplex.Paper.Geometry.StandardInfiniteA2ToricCarrierGeom
 public import SphereSixComplex.Paper.Geometry.StandardInfiniteA2ToricCarrierGeometryAssembly
 public import SphereSixComplex.Paper.Geometry.StandardInfiniteA2ToricCentralComponents
 public import SphereSixComplex.Paper.Geometry.StandardInfiniteA2ToricClosedPolydisc
-public import SphereSixComplex.Paper.Geometry.StandardInfiniteA2ToricComponentPreservation
 public import SphereSixComplex.Paper.Geometry.StandardInfiniteA2ToricFanShears
 public import SphereSixComplex.Paper.Geometry.StandardInfiniteA2ToricModel
 public import SphereSixComplex.Paper.Geometry.StandardInfiniteA2ToricPolarModulus

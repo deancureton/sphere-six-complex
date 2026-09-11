@@ -186,18 +186,16 @@ public theorem exists_upper_barycentric_perturbation_lower
     fin_cases i <;> simp [a2Barycentric] <;>
       linarith [hu0 0, hu0 1, hu1 0, hu1 1]
 
-/-- The quotient of a local toric degeneration by a fixed-point-free phase-corrected lattice
-action. -/
+/-- The orbit quotient of the phase-corrected lattice action. -/
 public noncomputable abbrev PhaseCorrectedToricQuotient
-    {M : Model} {r : ℝ} (C : LocalHolomorphicPhaseCoefficients M r)
-    (F : C.IsFree) :=
+    {M : Model} {r : ℝ} (C : LocalHolomorphicPhaseCoefficients M r) :=
   letI := C.toCuspActionData.psiAction
   MulAction.orbitRel.Quotient (Multiplicative ParameterLattice) (localCarrier M r)
 
 /-- The height radius descended to a phase-corrected toric quotient. -/
 @[expose] public noncomputable def phaseCorrectedQuotientRadius
-    {M : Model} {r : ℝ} (C : LocalHolomorphicPhaseCoefficients M r)
-    (F : C.IsFree) : PhaseCorrectedToricQuotient C F → ℝ := by
+    {M : Model} {r : ℝ} (C : LocalHolomorphicPhaseCoefficients M r) :
+    PhaseCorrectedToricQuotient C → ℝ := by
   let _ := C.toCuspActionData.psiAction
   exact Quotient.lift (fun p : localCarrier M r ↦ ‖M.t p‖) (by
     intro p q hpq
@@ -209,8 +207,8 @@ public noncomputable abbrev PhaseCorrectedToricQuotient
 @[simp]
 public theorem phaseCorrectedQuotientRadius_mk
     {M : Model} {r : ℝ} (C : LocalHolomorphicPhaseCoefficients M r)
-    (F : C.IsFree) (p : localCarrier M r) :
-    phaseCorrectedQuotientRadius C F (Quotient.mk _ p) = ‖M.t p‖ :=
+    (p : localCarrier M r) :
+    phaseCorrectedQuotientRadius C (Quotient.mk _ p) = ‖M.t p‖ :=
   rfl
 
 /-- Exact cocompactness datum for a polarized toric degeneration over every closed smaller
@@ -286,10 +284,10 @@ public theorem radialSublevelCocompactness_of_twoChartRepresentatives
 /-- A compact fundamental domain makes each closed radial sublevel of the quotient compact. -/
 public theorem phaseCorrectedQuotientRadiusSublevel_isCompact
     {M : Model} {r : ℝ} (C : LocalHolomorphicPhaseCoefficients M r)
-    (F : C.IsFree) (H : RadialSublevelCocompactness C)
+    (H : RadialSublevelCocompactness C)
     (a : ℝ) (ha : 0 ≤ a) (har : a < r) :
-    IsCompact {y : PhaseCorrectedToricQuotient C F |
-      phaseCorrectedQuotientRadius C F y ≤ a} := by
+    IsCompact {y : PhaseCorrectedToricQuotient C |
+      phaseCorrectedQuotientRadius C y ≤ a} := by
   let _ := C.toCuspActionData.psiAction
   obtain ⟨K, hK, hKsub, hcover⟩ := H.compact_fundamental_domain a ha har
   let R : Setoid (localCarrier M r) :=
@@ -312,7 +310,7 @@ public theorem phaseCorrectedQuotientRadiusSublevel_isCompact
       change C.toCuspActionData.psiMap lambda p = C.psiMap lambda p
       exact (C.psiMap_eq_generic lambda p).symm
     · rintro ⟨q, hq, hqp⟩
-      change phaseCorrectedQuotientRadius C F (Quotient.mk _ p) ≤ a
+      change phaseCorrectedQuotientRadius C (Quotient.mk _ p) ≤ a
       rw [← hqp, phaseCorrectedQuotientRadius_mk]
       exact hKsub hq
 
@@ -707,10 +705,9 @@ public theorem actualLocalCuspFillingRadiusSublevel_isCompact
     NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
       N M W.localWitness.radius
         W.localWitness.radius_pos W.localWitness.radius_le
-  let F := W.localWitness.fixedPoint
-  change IsCompact {y : PhaseCorrectedToricQuotient C F |
-    phaseCorrectedQuotientRadius C F y ≤ a}
-  exact phaseCorrectedQuotientRadiusSublevel_isCompact C F H a ha har
+  change IsCompact {y : PhaseCorrectedToricQuotient C |
+    phaseCorrectedQuotientRadius C y ≤ a}
+  exact phaseCorrectedQuotientRadiusSublevel_isCompact C H a ha har
 
 /-- The concrete two-chart bounded-orbit theorem implies compactness of actual cusp-filling
 radial sublevels. -/

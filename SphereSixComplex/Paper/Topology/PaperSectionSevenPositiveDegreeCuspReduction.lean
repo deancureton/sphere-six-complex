@@ -31,25 +31,6 @@ public theorem SectionSevenCuspPulledBackBoundaryBasisBridge.mayerVietorisBridge
   EllipticTwoDiscCoverData.SectionSevenCuspPulledBackBoundaryBasisBridge.toMayerVietorisBasisBridge
     D N G
 
-/-- The six pulled-back boundary calculations obtained from the single Wang-boundary map
-comparison. -/
-public theorem SectionSevenCuspPulledBackWangBoundaryComparison.pulledBackBoundaryBasisBridge
-    (N : A.EllipticBandHomologyAlignment D)
-    (G : D.SectionSevenCuspPulledBackWangBoundaryComparison N) :
-    D.SectionSevenCuspPulledBackBoundaryBasisBridge N :=
-  EllipticTwoDiscCoverData.SectionSevenCuspPulledBackWangBoundaryComparison.toPulledBackBoundaryBasisBridge
-    D N G
-
-/-- The pulled-back boundary basis obtained from the marked Wang-boundary comparison. -/
-public theorem SectionSevenCuspMarkedBoundaryComparison.pulledBackBoundaryBasisBridge
-    (N : A.EllipticBandHomologyAlignment D)
-    (G : D.SectionSevenCuspMarkedBoundaryComparison N) :
-    D.SectionSevenCuspPulledBackBoundaryBasisBridge N :=
-  EllipticTwoDiscCoverData.SectionSevenCuspPulledBackWangBoundaryComparison.toPulledBackBoundaryBasisBridge
-    D N
-      (EllipticTwoDiscCoverData.SectionSevenCuspMarkedBoundaryComparison.toPulledBackWangBoundaryComparison
-        D N G)
-
 /-- The exact eight scalar comparisons remaining after the six canonical cusp-cover boundary
 computations. -/
 public structure PositiveDegreeCuspBasisInput
@@ -181,9 +162,10 @@ public theorem positiveDegreeCuspBasisInput_iff_coordinateComparison
 residual scalar coordinates. -/
 public structure PositiveDegreeWangInput
     (N : A.EllipticBandHomologyAlignment D) : Prop where
-  boundary : D.SectionSevenCuspPulledBackWangBoundaryComparison N
+  boundary : D.cuspPulledBackBoundaryCoordinateHom N =
+      EllipticTwoDiscCoverData.actualCuspSecondWangBoundaryCoordinateHom A
   scalar : A.PositiveDegreeCuspBasisInput N
-    (SectionSevenCuspPulledBackWangBoundaryComparison.pulledBackBoundaryBasisBridge N boundary)
+    (EllipticTwoDiscCoverData.boundaryBasisBridge_of_coordinate_eq N boundary)
 
 namespace PositiveDegreeWangInput
 
@@ -201,9 +183,10 @@ end PositiveDegreeWangInput
 one boundary comparison and two inclusion-coordinate homomorphism identities. -/
 public structure PositiveDegreeMarkedCoordinateInput
     (N : A.EllipticBandHomologyAlignment D) : Prop where
-  boundary : D.SectionSevenCuspMarkedBoundaryComparison N
+  boundary : D.cuspPulledBackBoundaryCoordinateHom N =
+      EllipticTwoDiscCoverData.actualCuspSecondWangBoundaryCoordinateHom A
   inclusionCoordinates : A.PositiveDegreeCuspCoordinateComparison N
-    (SectionSevenCuspMarkedBoundaryComparison.pulledBackBoundaryBasisBridge N boundary)
+    (EllipticTwoDiscCoverData.boundaryBasisBridge_of_coordinate_eq N boundary)
 
 namespace PositiveDegreeMarkedCoordinateInput
 

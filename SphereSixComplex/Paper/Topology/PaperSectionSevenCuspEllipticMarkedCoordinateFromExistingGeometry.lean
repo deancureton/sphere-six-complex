@@ -405,7 +405,10 @@ public theorem actualCuspFiberCoinvariantHomologyTwoBasis_inclusion
 /-- Assuming exactly the space-level cusp-fibre-to-band square, the first two degree-one Wang
 basis classes map to the canonical marked band classes. -/
 public theorem actualCuspDegreeOneFiberBasis_eq_canonicalBand
-    (hTop : D.CanonicalCuspFiberBandTopologicalCompatibility) (i : Fin 2) :
+    (hTop : (let G := A.actualCuspRadialClutchingData
+               let _ := G.fiberTopology
+               ContinuousMap.Homotopic (actualCuspMappingTorusFiberToEllipticInteriorMap D)
+                 (canonicalCuspFiberToEllipticInteriorMap D))) (i : Fin 2) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     integralSingularHomologyMap 1 D.cuspMappingTorusToEllipticInteriorMap
@@ -435,7 +438,10 @@ public theorem actualCuspDegreeOneFiberBasis_eq_canonicalBand
 /-- Assuming the same space-level square, the first four degree-two Wang basis classes map to
 the canonical marked band classes. -/
 public theorem actualCuspDegreeTwoFiberBasis_eq_canonicalBand
-    (hTop : D.CanonicalCuspFiberBandTopologicalCompatibility) (i : Fin 4) :
+    (hTop : (let G := A.actualCuspRadialClutchingData
+               let _ := G.fiberTopology
+               ContinuousMap.Homotopic (actualCuspMappingTorusFiberToEllipticInteriorMap D)
+                 (canonicalCuspFiberToEllipticInteriorMap D))) (i : Fin 4) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     integralSingularHomologyMap 2 D.cuspMappingTorusToEllipticInteriorMap

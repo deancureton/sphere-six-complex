@@ -63,15 +63,11 @@ public noncomputable def ellipticOpenCoverHomologyComparison :
     BinaryOpenCover.OpenCoverHomologyComparison (orderThreeOpen D) (orderFourOpen D) :=
   BinaryOpenCover.openCoverHomologyComparisonOfCover (ellipticOpenCover D)
 
-/-- Compatibility required only between the canonical generated-cover comparisons for the
-actual cusp inclusion. -/
-public def CuspOpenCoverPullbackNaturality : Prop :=
-  D.cuspOpenCoverHomologyComparison.PullbackNaturality D.cuspToEllipticInteriorMap
-    (orderThreeOpen D) (orderFourOpen D) D.ellipticOpenCoverHomologyComparison
 
 /-- The canonical generated-cover comparisons satisfy the required pullback naturality. -/
 public theorem cuspOpenCoverPullbackNaturality :
-    D.CuspOpenCoverPullbackNaturality :=
+    (D.cuspOpenCoverHomologyComparison.PullbackNaturality D.cuspToEllipticInteriorMap
+         (orderThreeOpen D) (orderFourOpen D) D.ellipticOpenCoverHomologyComparison) :=
   BinaryOpenCover.openCoverHomologyComparisonOfCover_pullbackNaturality
     D.cuspToEllipticInteriorMap (orderThreeOpen D) (orderFourOpen D)
       D.cuspOpenCover (ellipticOpenCover D)

@@ -36,8 +36,12 @@ is `Nonempty` of an actual `Diffeomorph`.
 
 `ComplexThreefold` remains a bundle for existential quantification over a carrier, topology,
 and atlas. Its induced real smoothness is derived from the complex atlas. Generic gluing of
-such manifolds belongs to the prerequisite library. `PaperAnalyticData` retains coherent
-dependent choices of parameters, periods, and cusp coordinates.
+such manifolds belongs to the prerequisite library. `CompactComplexStar` contains only the
+geometric gluing inputs. Simple connectedness and degreewise homology are separate theorems
+about its actual glued carrier, rather than prerequisites to constructing the manifold.
+`PaperAnalyticData` retains coherent dependent choices of parameters, periods, and cusp
+coordinates. Atlas transport is stated for arbitrary source and target manifolds with the
+specified atlases; the six-sphere result is its paper-specific application.
 
 ## Cusp action and analytic descent
 
@@ -53,7 +57,21 @@ The Mayer–Vietoris calculation exposes equalities of the actual difference hom
 chosen coordinates and their bijectivity. Arbitrary model families with reflexive equivalences
 are not part of that certificate. The canonical affine band specializes one radial homotopy
 record; it does not copy the same four fields into a second record. The side inverses and
-marked compatibility homotopies are retained.
+marked compatibility homotopies are retained. Boundary comparisons display equalities of the
+actual homomorphisms. The conditional old marking and its refutations remain separate from
+the corrected production coordinates.
+
+## Homotopies and cycles
+
+The elliptic relator results display the connector path and fundamental-group equality.
+Synchronized factor homotopies retain both equations at the common moving basepoint.
+`ContinuousMap.Homotopy.hcompLoop` supplies their reusable concatenation in the prerequisite
+library; two unrelated homotopy-existence statements would lose the required synchronization.
+
+Integral singular cycles use Mathlib's `cycles` object, `cyclesMap`, `iCycles`, and `homologyπ`
+in every degree. The marked prism comparison still asserts equality of actual chain morphisms,
+not only equality of their homology classes. Quotient retractions specialize the existing
+`EquivariantStrongDeformationRetraction` instead of wrapping it in another record.
 
 ## Validation
 
@@ -61,4 +79,6 @@ The externally checked challenge and classical axiom declarations are preserved.
 placeholder and import-layer checks, recursive axiom audits, and Comparator kernel validation
 are separate gates. Intermediate API changes require mathematical review as well as elaboration:
 removing a redundant field, weakening an unnecessary hypothesis, and merely renaming a
-constant are different operations.
+constant are different operations. Review combines the compiled environment's predicate and
+small-structure inventory with inspection of fields, consumers, and mathematical dependencies;
+it does not infer correctness from a declaration's name or size.

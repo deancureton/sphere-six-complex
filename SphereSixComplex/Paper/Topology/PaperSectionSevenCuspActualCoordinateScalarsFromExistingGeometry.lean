@@ -363,7 +363,10 @@ public theorem affineCanonicalCuspFiberCoinvariantHomologyTwoBasis_scalarValues
 /-- Under the topological cusp--band square, the first two Wang fibre values are `[12, 0]`. -/
 public theorem affineActualCuspDegreeOneFiberBasis_scalarValues
     (R : A.AffineRadialCompletionInput)
-    (hTop : R.twoDiscCover.CanonicalCuspFiberBandTopologicalCompatibility) :
+    (hTop : (let G := A.actualCuspRadialClutchingData
+               let _ := G.fiberTopology
+               ContinuousMap.Homotopic (actualCuspMappingTorusFiberToEllipticInteriorMap R.twoDiscCover)
+                 (canonicalCuspFiberToEllipticInteriorMap R.twoDiscCover))) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     (fun i : Fin 2 ↦
@@ -382,7 +385,10 @@ public theorem affineActualCuspDegreeTwoFiberBasis_scalarValues
     (R : A.AffineRadialCompletionInput)
     (S : WangHomologyPresentation.NormalizedSplitting
       (presentationTwo (D := R.twoDiscCover)))
-    (hTop : R.twoDiscCover.CanonicalCuspFiberBandTopologicalCompatibility) :
+    (hTop : (let G := A.actualCuspRadialClutchingData
+               let _ := G.fiberTopology
+               ContinuousMap.Homotopic (actualCuspMappingTorusFiberToEllipticInteriorMap R.twoDiscCover)
+                 (canonicalCuspFiberToEllipticInteriorMap R.twoDiscCover))) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     (fun i : Fin 4 ↦

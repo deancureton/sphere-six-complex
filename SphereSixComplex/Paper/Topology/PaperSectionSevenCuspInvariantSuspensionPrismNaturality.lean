@@ -1,6 +1,7 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspMeridianProjectionNaturality
+public import SphereSixComplex.Prerequisites.Topology.IntegralSingularCycles
 
 /-!
 # Chain-level realization of the first cusp invariant suspension
@@ -19,65 +20,6 @@ open AlgebraicTopology CategoryTheory
 open scoped ContinuousMap
 
 namespace SphereSixComplex
-
-/-- An integral singular two-cycle represented as a map from the rank-one free abelian group. -/
-public structure DegreeTwoSingularCycle (X : Type) [TopologicalSpace X] where
-  chain : AddCommGrpCat.of ℤ ⟶ (integralSingularChainComplex X).X 2
-  boundary_zero : chain ≫ (integralSingularChainComplex X).d 2 1 = 0
-
-namespace DegreeTwoSingularCycle
-
-variable {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
-
-/-- Postcompose a singular two-cycle with the chain map induced by a continuous map. -/
-public noncomputable def map (c : DegreeTwoSingularCycle X) (f : C(X, Y)) :
-    DegreeTwoSingularCycle Y where
-  chain := c.chain ≫ (integralSingularChainMap f).f 2
-  boundary_zero := by
-    rw [Category.assoc, (integralSingularChainMap f).comm 2 1, ← Category.assoc,
-      c.boundary_zero]
-    simp
-
-/-- The homology-class morphism represented by a singular two-cycle. -/
-public noncomputable def homologyClassMorphism (c : DegreeTwoSingularCycle X) :
-    AddCommGrpCat.of ℤ ⟶ (integralSingularChainComplex X).homology 2 :=
-  (integralSingularChainComplex X).liftCycles c.chain 1 (by simp) c.boundary_zero ≫
-    (integralSingularChainComplex X).homologyπ 2
-
-/-- The homology class represented by a singular two-cycle. -/
-public noncomputable def homologyClass (c : DegreeTwoSingularCycle X) :
-    IntegralSingularHomology 2 X :=
-  ConcreteCategory.hom c.homologyClassMorphism 1
-
-/-- Chain maps commute with passage from an explicit cycle to its homology-class morphism. -/
-public theorem homologyClassMorphism_naturality
-    (c : DegreeTwoSingularCycle X) (f : C(X, Y)) :
-    c.homologyClassMorphism ≫
-        HomologicalComplex.homologyMap (integralSingularChainMap f) 2 =
-      (c.map f).homologyClassMorphism := by
-  unfold homologyClassMorphism map
-  rw [Category.assoc, HomologicalComplex.homologyπ_naturality, ← Category.assoc]
-  rw [HomologicalComplex.liftCycles_comp_cyclesMap]
-
-/-- The induced singular-homology map sends the class of a cycle to the class of its chain
-image. -/
-public theorem homologyClass_map (c : DegreeTwoSingularCycle X) (f : C(X, Y)) :
-    integralSingularHomologyMap 2 f c.homologyClass = (c.map f).homologyClass := by
-  have h := congrArg ConcreteCategory.hom (c.homologyClassMorphism_naturality f)
-  exact DFunLike.congr_fun h 1
-
-/-- Two cycles with the same underlying chain represent the same homology class. -/
-public theorem homologyClass_eq_of_chain_eq (c d : DegreeTwoSingularCycle X)
-    (h : c.chain = d.chain) : c.homologyClass = d.homologyClass := by
-  cases c with
-  | mk c hc =>
-    cases d with
-    | mk d hd =>
-      dsimp at h ⊢
-      subst d
-      rfl
-
-end DegreeTwoSingularCycle
 
 namespace Geometry.PaperAnalyticData
 
@@ -124,8 +66,8 @@ public structure CuspEllipticInvariantSuspensionPrismComparison
   sourceBasisCycle :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
-    Fin 6 → DegreeTwoSingularCycle (CircleMappingTorus G.clutching)
-  targetImageCycle : Fin 6 → DegreeTwoSingularCycle A.ellipticInterior
+    Fin 6 → IntegralSingularCycle 2 (CircleMappingTorus G.clutching)
+  targetImageCycle : Fin 6 → IntegralSingularCycle 2 A.ellipticInterior
   sourceBasisClass :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
@@ -165,8 +107,8 @@ public theorem referenceMap_on_basis
   let _ := G.fiberTopology
   change integralSingularHomologyMap 2 referenceMap
       (G.geometricWangSections.circleMappingTorusHTwoAddEquiv.symm (Pi.single i 1)) = _
-  rw [← P.sourceBasisClass i, DegreeTwoSingularCycle.homologyClass_map]
-  exact DegreeTwoSingularCycle.homologyClass_eq_of_chain_eq _ _ (P.chainImage i)
+  rw [← P.sourceBasisClass i, IntegralSingularCycle.homologyClass_map]
+  exact IntegralSingularCycle.homologyClass_eq_of_chain_eq _ _ (P.chainImage i)
 
 /-- The fourth source cycle is the first invariant-suspension prism, and its image has normalized
 elliptic fibre coordinate one. -/
@@ -228,8 +170,8 @@ public structure CuspEllipticMappingTorusPrismGeometricData
   sourceBasisCycle :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
-    Fin 6 → DegreeTwoSingularCycle (CircleMappingTorus G.clutching)
-  targetImageCycle : Fin 6 → DegreeTwoSingularCycle A.ellipticInterior
+    Fin 6 → IntegralSingularCycle 2 (CircleMappingTorus G.clutching)
+  targetImageCycle : Fin 6 → IntegralSingularCycle 2 A.ellipticInterior
   sourceBasisClass :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
@@ -250,28 +192,6 @@ public structure CuspEllipticMappingTorusPrismGeometricData
           (N.actualHomologyCoordinates.normalizedEllipticInteriorHomologyTwoEquiv
             (D.cuspNormalizedDegreeTwoSplitting N G₀)).symm (Pi.single (1 : Fin 2) 1)
 
-/-- The sole normalized prism calculation: the image of the fourth mapping-torus basis cycle is
-the first normalized elliptic-interior basis class. -/
-public structure NormalizedIndexFourPrismCalculation
-    {N : A.EllipticBandHomologyAlignment D}
-    {G₀ : D.SectionSevenCuspPulledBackBoundaryBasisBridge N}
-    (C : D.CuspEllipticMappingTorusPrismGeometricData N G₀) : Prop where
-  indexFourClass :
-    (C.targetImageCycle 4).homologyClass =
-      (N.actualHomologyCoordinates.normalizedEllipticInteriorHomologyTwoEquiv
-        (D.cuspNormalizedDegreeTwoSplitting N G₀)).symm (Pi.single (0 : Fin 2) 1)
-
-/-- The sole paper-specific scalar left by the prism comparison: with the geometric orientation,
-the fourth prism has coefficient one on the normalized elliptic fibre class. -/
-public structure NormalizedIndexFourPrismCoefficientCalculation
-    {N : A.EllipticBandHomologyAlignment D}
-    {G₀ : D.SectionSevenCuspPulledBackBoundaryBasisBridge N}
-    (C : D.CuspEllipticMappingTorusPrismGeometricData N G₀) : Prop where
-  coefficient :
-    (N.actualHomologyCoordinates.normalizedEllipticInteriorHomologyTwoEquiv
-      (D.cuspNormalizedDegreeTwoSplitting N G₀))
-        (C.targetImageCycle 4).homologyClass 0 = 1
-
 namespace CuspEllipticMappingTorusPrismGeometricData
 
 variable {D : A.EllipticTwoDiscCoverData}
@@ -291,8 +211,8 @@ public theorem referenceMap_on_basis
   let _ := G.fiberTopology
   change integralSingularHomologyMap 2 C.referenceMap
       (G.geometricWangSections.circleMappingTorusHTwoAddEquiv.symm (Pi.single i 1)) = _
-  rw [← C.sourceBasisClass i, DegreeTwoSingularCycle.homologyClass_map]
-  exact DegreeTwoSingularCycle.homologyClass_eq_of_chain_eq _ _ (C.chainImage i)
+  rw [← C.sourceBasisClass i, IntegralSingularCycle.homologyClass_map]
+  exact IntegralSingularCycle.homologyClass_eq_of_chain_eq _ _ (C.chainImage i)
 
 /-- The swept coordinate of the fourth target cycle vanishes.  This is forced by the cusp
 boundary formula, since the fourth raw Wang basis vector has fifth coordinate zero. -/
@@ -340,23 +260,27 @@ public theorem targetIndexFour_sweptCoordinate_zero
 the full normalized class identity. -/
 public theorem normalizedIndexFourPrismCalculation
     (C : D.CuspEllipticMappingTorusPrismGeometricData N G₀)
-    (I : D.NormalizedIndexFourPrismCoefficientCalculation C) :
-    D.NormalizedIndexFourPrismCalculation C := by
+    (I : ((N.actualHomologyCoordinates.normalizedEllipticInteriorHomologyTwoEquiv
+        (D.cuspNormalizedDegreeTwoSplitting N G₀)) (C.targetImageCycle 4).homologyClass 0 = 1)) :
+    ((C.targetImageCycle 4).homologyClass =
+      (N.actualHomologyCoordinates.normalizedEllipticInteriorHomologyTwoEquiv
+        (D.cuspNormalizedDegreeTwoSplitting N G₀)).symm (Pi.single (0 : Fin 2) 1)) := by
   let E := N.actualHomologyCoordinates.normalizedEllipticInteriorHomologyTwoEquiv
     (D.cuspNormalizedDegreeTwoSplitting N G₀)
-  constructor
   apply E.injective
   rw [E.apply_symm_apply]
   funext i
   fin_cases i
-  · simpa [E] using I.coefficient
+  · simpa [E] using I
   · simpa [E] using C.targetIndexFour_sweptCoordinate_zero
 
 /-- The structural comparison and the single normalized prism calculation recover the explicit
 cycle package used by homology naturality. -/
 public noncomputable def suspensionPrismComparison
     (C : D.CuspEllipticMappingTorusPrismGeometricData N G₀)
-    (I : D.NormalizedIndexFourPrismCalculation C) :
+    (I : ((C.targetImageCycle 4).homologyClass =
+      (N.actualHomologyCoordinates.normalizedEllipticInteriorHomologyTwoEquiv
+        (D.cuspNormalizedDegreeTwoSplitting N G₀)).symm (Pi.single (0 : Fin 2) 1))) :
     D.CuspEllipticInvariantSuspensionPrismComparison N G₀ C.referenceMap where
   sourceBasisCycle := C.sourceBasisCycle
   targetImageCycle := C.targetImageCycle
@@ -369,7 +293,7 @@ public noncomputable def suspensionPrismComparison
       cuspEllipticDegreeTwoFiberRawCoordinate (Pi.single i 1)
     by_cases hi : i = 4
     · subst i
-      rw [I.indexFourClass, E.apply_symm_apply]
+      rw [I, E.apply_symm_apply]
       simp [cuspEllipticDegreeTwoFiberRawCoordinate]
     · rw [C.targetComplementSweptClass i hi, map_add, map_zsmul, map_zsmul,
         E.apply_symm_apply, E.apply_symm_apply]
@@ -379,7 +303,8 @@ public noncomputable def suspensionPrismComparison
 prism calculation. -/
 public theorem coordinateComparison
     (C : D.CuspEllipticMappingTorusPrismGeometricData N G₀)
-    (I : D.NormalizedIndexFourPrismCoefficientCalculation C) :
+    (I : ((N.actualHomologyCoordinates.normalizedEllipticInteriorHomologyTwoEquiv
+        (D.cuspNormalizedDegreeTwoSplitting N G₀)) (C.targetImageCycle 4).homologyClass 0 = 1)) :
     D.CuspEllipticMappingTorusCoordinateComparison N G₀ :=
   { degreeOne := C.meridianProjection.degreeOne
     degreeTwoFiber := by

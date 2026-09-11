@@ -84,10 +84,23 @@ private theorem affineTwoDiscCover_degreeOneBasis
 marking for the canonical map into the affine elliptic band. -/
 public theorem AffineRadialCompletionInput.canonicalCuspFiberOrderThreePeriodMarking
     (R : A.AffineRadialCompletionInput)
-    (hCusp : A.CuspFiberPeriodMarkingCompatibility) :
-    R.twoDiscCover.CanonicalCuspFiberOrderThreePeriodMarking := by
+    (hCusp : (let G := A.actualCuspRadialClutchingData
+                let _ := G.fiberTopology
+                ∀ x : IntegralSingularHomology 1 G.Fiber,
+                  (EstablishedTorusHomology.additiveTorusHomologyBasis
+                      G.fiberParameter G.fiberFullRank).degreeOne
+                      (integralSingularHomologyMap 1 G.fiberHomeomorph x) =
+                    G.monodromyCoordinates.degreeOne x)) :
+    (let G := A.actualCuspRadialClutchingData
+       let _ := G.fiberTopology
+       ∀ x : IntegralSingularHomology 1 G.Fiber,
+         (orderThreeCentralFiberCoverSourceHomologyBasis A.periods).degreeOne
+             (integralSingularHomologyMap 1 R.twoDiscCover.bandToOrderThreeCoverSource
+               (R.twoDiscCover.canonicalCuspFiberToBandTorusHomologyOne x)) =
+           G.monodromyCoordinates.degreeOne x) := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
+  dsimp only
   intro x
   let y := actualCuspFiberToPeriodTorusHomologyOne A x
   let e := fullRankAdditiveTorusHomeomorph

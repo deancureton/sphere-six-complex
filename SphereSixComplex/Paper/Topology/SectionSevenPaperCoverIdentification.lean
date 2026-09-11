@@ -1518,11 +1518,10 @@ namespace SectionSevenPaperCoverIdentification
 
 /-- Assemble the strong conditional contraction, coherent local realizations, and canonical Cech
 nerve identification into the input required by the general Leray-cover comparison. -/
-public noncomputable def toLerayCechIdentification
+public noncomputable def homotopyEquiv
     {A : FourPieceStarGluingData} (h : SectionSevenPaperCoverIdentification A) :
-    SectionSevenLerayCechIdentification (GluedSpace A.glueData)
-      (sectionSevenStarOpenCover A) where
-  identification :=
+    HomotopyEquiv (sectionSevenLerayChainModel (-1))
+      (finiteCoverLerayCechTotal (sectionSevenStarOpenCover A).piece) :=
     h.transferredChainContraction.homotopyEquiv |>.trans
       (SectionSevenStarIntersectionChainModels.totalRealizationEquiv
         h.localModels) |>.trans

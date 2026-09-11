@@ -714,10 +714,10 @@ public theorem orderThreeLocalFiberThenBaseCentralPath_homotopy_zeroBased_with_t
     (A.orderThreeLocalSynchronizedFiberContractionHomotopy_endpoints s).1
   have htrace (s : unitInterval) : F (s, 0) = G (s, 1) :=
     (A.orderThreeLocalSynchronizedFiberContractionHomotopy_endpoints s).2
-  let H := freeLoopHomotopyHcomp F G hjoin
+  let H := F.hcompLoop G hjoin
   refine ⟨H.cast (congrArg Path.toContinuousMap
     A.orderThreeLocalFiberThenBaseCentralPath_eq_trans.symm) rfl, ?_⟩
-  exact freeLoopHomotopyHcomp_trace F G hjoin htrace
+  exact F.hcompLoop_trace G hjoin htrace
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

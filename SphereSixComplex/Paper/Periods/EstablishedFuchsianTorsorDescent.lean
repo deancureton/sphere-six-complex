@@ -600,12 +600,6 @@ public theorem exists_muAffineCechSections
   sectionInfinity_cusp_bounded := S.sectionInfinity_cusp_bounded
   infinity_frame_cusp_bounded := F.cusp_correction_bounded E
 
-/-- Exact affine local sections for the structure-sheaf `beta` torsor.  Unlike the modular frame
-above, this is not assumed as established input: it names the remaining application of general
-holomorphic affine-torsor local triviality. -/
-public structure BetaCechSections (mu : UpperHalfPlane → ℂ) where
-  data : BetaTorsorCechLocalData E mu
-
 @[expose] public def betaParameter
     (mu : UpperHalfPlane → ℂ) (z : UpperHalfPlane) : Parameters :=
   ⟨E.modularParameter.tau z, mu z, 0⟩
@@ -1059,10 +1053,10 @@ invoked. -/
 public theorem exists_betaAffineCechSections
     (F : ExactLiftedModularNegOneFrame E) (Dmu : MuTorsorCechLocalData E)
     (A : (betaDescentData E F Dmu).AnalyticDescentData) :
-    Nonempty (BetaCechSections E (descendedFuchsianMu E Dmu)) := by
+    Nonempty (BetaTorsorCechLocalData E (descendedFuchsianMu E Dmu)) := by
   obtain ⟨S⟩ := OrbifoldAffineDescentData.nonempty_twoChartSections
     (betaDescentData E F Dmu) A
-  refine ⟨⟨{
+  refine ⟨{
     zeroRegion := Set.univ
     infinityRegion := liftedInfinityRegion E
     zeroRegion_open := isOpen_univ
@@ -1084,7 +1078,7 @@ public theorem exists_betaAffineCechSections
     section_mismatch := ?_
     cusp_subset_infinity := fuchsianCuspRegion_subset_liftedInfinityRegion E F
     sectionInfinity_add_tau_cusp_bounded := S.sectionInfinity_normalized_cusp_bounded
-    infinity_coordinate_cusp_bounded := F.infinity_coordinate_cusp_bounded E }⟩⟩
+    infinity_coordinate_cusp_bounded := F.infinity_coordinate_cusp_bounded E }⟩
   · intro z _
     convert S.sectionZero_one z using 1
     simp [betaDescentData, betaAffineMapOne, betaParameter,
@@ -1112,17 +1106,17 @@ public theorem exists_betaAffineCechSections
 modular frame and the two affine local-triviality inputs. -/
 @[expose] public noncomputable def periodLocalDataOfSections
     (Smu : MuCechSections E F)
-    (Sbeta : BetaCechSections E
+    (Sbeta : BetaTorsorCechLocalData E
       (descendedFuchsianMu E (Smu.toLocalData E F))) :
     FuchsianPeriodLocalData E where
   muLocal := Smu.toLocalData E F
-  betaLocal := Sbeta.data
+  betaLocal := Sbeta
 
 /-- The exact affine local-triviality statement after the modular `O(-1)` frame and every finite
 cyclic consistency check have been supplied. -/
 @[expose] public def HasLocalTrivializations : Prop :=
   ∃ Smu : MuCechSections E F,
-    Nonempty (BetaCechSections E
+    Nonempty (BetaTorsorCechLocalData E
       (descendedFuchsianMu E (Smu.toLocalData E F)))
 
 /-- The single beta descent certificate needed after applying a chosen mu descent certificate. -/

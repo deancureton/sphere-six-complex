@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Paper.Geometry.PaperBiholomorphicStar
-public import SphereSixComplex.Paper.Geometry.PaperGluingData
+public import SphereSixComplex.Prerequisites.Geometry.CompactComplexStar
 public import SphereSixComplex.Paper.Geometry.PaperLocalCuspFillingConnected
 public import SphereSixComplex.Paper.Geometry.PaperOpenEmbeddingStarNonempty
 public import SphereSixComplex.Paper.Geometry.PaperStarCompactness
@@ -9,11 +9,9 @@ public import SphereSixComplex.Paper.Geometry.PaperStarHausdorff
 public import SphereSixComplex.Paper.Geometry.PaperStarPieceTopology
 
 /-!
-# Instantiating the paper gluing package
+# The compact complex star of the analytic family
 
-All geometric and point-set-topological fields of `PaperGluingData` are supplied by the actual
-analytic four-piece star. The constructor below leaves only the two global topology calculations
-as explicit inputs.
+The geometric gluing is constructed before its fundamental group and homology are computed.
 -/
 
 namespace SphereSixComplex.Geometry
@@ -24,14 +22,8 @@ namespace PaperAnalyticData
 
 variable (P : PaperAnalyticData)
 
-/-- Assemble the actual paper gluing once its van Kampen and Section 7 comparison calculations
-have been supplied. -/
-@[expose] public noncomputable def toPaperGluingData
-    (vanKampen : Topology.HasVanKampenData
-      (GluedSpace P.openEmbeddingStarData.toFourPieceStarGluingData.glueData) 0 1 (-1))
-    (integralHomology : HasIntegralHomologyOfSixSphere
-      (GluedSpace P.openEmbeddingStarData.toFourPieceStarGluingData.glueData)) :
-    SphereSixComplex.PaperGluingData where
+/-- The actual analytic four-piece star with its compact complex gluing geometry. -/
+@[expose] public noncomputable def compactComplexStar : CompactComplexStar where
   star := P.openEmbeddingStarData.toFourPieceStarGluingData
   connectedPiece := P.starPiece_connected
   nonemptyCentralCollar := P.fourPieceStarGluingData_nonemptyCentralCollar
@@ -39,8 +31,6 @@ have been supplied. -/
   pieceSecondCountable := P.starPiece_secondCountable
   gluedT2 := P.starGluedT2
   gluedCompact := P.starGluedCompact
-  vanKampen := vanKampen
-  integralHomology := integralHomology
 
 end PaperAnalyticData
 

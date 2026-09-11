@@ -107,7 +107,7 @@ public theorem fillingCollar_nonempty (i : Fin 3) [Nonempty (A.collarSource i)] 
     Nonempty (A.fillingCollar i) :=
   ⟨A.fillingCollarPoint i (Classical.arbitrary (A.collarSource i))⟩
 
-/-- Nonempty common sources supply the nonempty-collar field used by `PaperGluingData`. -/
+/-- Nonempty common sources supply the nonempty-collar field used by `CompactComplexStar`. -/
 public theorem toFourPieceStarGluingData_nonemptyCentralCollar
     [∀ i, Nonempty (A.collarSource i)] :
     ∀ i, Nonempty (A.toFourPieceStarGluingData.centralCollar i) :=

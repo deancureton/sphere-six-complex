@@ -224,24 +224,6 @@ public theorem translation_eq_zero_of_finite_forward_invariant
   change d i = 0
   omega
 
-/-- Standard orbit compatibility for the algebraic torus action.  This is the smallest toric
-orbit fact absent from `StandardInfiniteA2ToricModel.Model` that is needed for the central-fibre
-part of Theorem 4.5: multiplication by the dense torus preserves every ray orbit closure. -/
-public structure TorusActionPreservesComponents (M : Model) : Prop where
-  torusAction_component : ∀ g v p,
-    M.torusAction g p ∈ M.centralComponent v ↔ p ∈ M.centralComponent v
-
-namespace TorusActionPreservesComponents
-
-variable {M : Model}
-
-public theorem phaseAction_component (Q : TorusActionPreservesComponents M)
-    (c : Phase) (v : ToricLattice) (p : M.Carrier) :
-    CuspToricPhaseAction.ToricModel.phaseAction M c p ∈ M.centralComponent v ↔
-      p ∈ M.centralComponent v :=
-  TorusActionPreservesComponents.torusAction_component Q (phaseEmbedding c) v p
-
-end TorusActionPreservesComponents
 
 end CuspPhaseEstimates
 
@@ -253,7 +235,7 @@ variable {M : Model} {r : ℝ} (C : CuspLocalPhaseAction.LocalHolomorphicPhaseCo
 multiplication preserves ray components.  No analytic estimate is involved in this half of
 Step 1 of Theorem 4.5. -/
 public theorem central_fixedPointEstimate
-    (Q : TorusActionPreservesComponents M) (lambda : ParameterLattice)
+    (lambda : ParameterLattice)
     (p : localCarrier M r) (ht : M.t p = 0) (hfixed : C.psiMap lambda p = p) :
     lambda = 0 := by
   have hsupport : (componentSupport M (p : M.Carrier)).Nonempty :=
@@ -265,12 +247,14 @@ public theorem central_fixedPointEstimate
         M.centralComponent (v + shearVector lambda) := by
       rw [← M.fanShear_component lambda v]
       exact ⟨p, hv, rfl⟩
-    have hphase := (TorusActionPreservesComponents.phaseAction_component Q
-      (C.phase lambda (M.t p))
+    have hphase := (M.torusAction_centralComponent
+      (phaseEmbedding (C.phase lambda (M.t p)))
       (v + shearVector lambda)
       (Additive.toMul (M.fanShear lambda) (p : M.Carrier))).mpr hshear
     have hfixed' := congrArg Subtype.val hfixed
     rw [C.psiMap_coe] at hfixed'
+    change M.torusAction (phaseEmbedding (C.phase lambda (M.t p)))
+      (Additive.toMul (M.fanShear lambda) (p : M.Carrier)) = p at hfixed'
     rw [hfixed'] at hphase
     exact hphase
   have hshear_zero : shearVector lambda = 0 :=
@@ -393,7 +377,7 @@ public theorem offCentral_fixedPoint_of_log_dominates
 part is the logarithmic estimate above; the central part uses only preservation of toric ray
 components. -/
 public theorem exists_shrunk_isFree
-    (M : Model) (Q : TorusActionPreservesComponents M) :
+    (M : Model) :
     ∃ r : ℝ, ∃ hr : 0 < r, ∃ hradius : r ≤ cuspRadius N.height,
       (restrictedActualLocalPhaseCoefficients N M r hr hradius).IsFree := by
   let rho := cuspRadius N.height / 2
@@ -430,7 +414,7 @@ public theorem exists_shrunk_isFree
   · have ht : M.t p = 0 := not_ne_iff.mp ht
     exact
       LocalHolomorphicPhaseCoefficients.central_fixedPointEstimate
-        C Q lambda p ht hfixed
+        C lambda p ht hfixed
 
 end CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
 

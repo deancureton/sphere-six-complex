@@ -11,27 +11,7 @@ noncomputable section
 open Set Topology
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Topology
 
-/-- Vertical composition preserves any pointwise equality between two synchronized homotopies. -/
-public theorem freeLoopHomotopyTrans_pointwise_eq
-    {X : Type*} [TopologicalSpace X]
-    {f₀ f₁ f₂ g₀ g₁ g₂ : C(unitInterval, X)}
-    (F₀ : ContinuousMap.Homotopy f₀ f₁)
-    (F₁ : ContinuousMap.Homotopy f₁ f₂)
-    (G₀ : ContinuousMap.Homotopy g₀ g₁)
-    (G₁ : ContinuousMap.Homotopy g₁ g₂)
-    (x y : unitInterval)
-    (h₀ : ∀ s : unitInterval, F₀ (s, x) = G₀ (s, y))
-    (h₁ : ∀ s : unitInterval, F₁ (s, x) = G₁ (s, y))
-    (s : unitInterval) :
-    F₀.trans F₁ (s, x) = G₀.trans G₁ (s, y) := by
-  rw [ContinuousMap.Homotopy.trans_apply, ContinuousMap.Homotopy.trans_apply]
-  split_ifs
-  · exact h₀ _
-  · exact h₁ _
-
-end SphereSixComplex.Topology
 
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 
@@ -233,10 +213,10 @@ public def orderFourCentralTraceTransportedStraightPeriodPath
   let w := A.orderFourCentralBaseComparisonTracePath Hbase
   w.symm.trans (A.orderFourCentralActualBasedStraightFiberPath.trans w)
 
-/-- The one remaining geometric identity: transport of the classified local straight period
-along the already constructed base trace has the corrected global period class. -/
-public def OrderFourCorrectedPeriodTransportIdentity : Prop :=
-  let _ := A.ellipticFourBoundaryAction
+
+/-- The single transported-period class identity produces synchronized factor homotopies. -/
+public theorem ellipticFour_exists_factorHomotopies_of_periodTransport
+    (h : (let _ := A.ellipticFourBoundaryAction
   ∃ Hbase : ContinuousMap.Homotopy
       A.orderFourCentralBaseFactor.toContinuousMap
       A.orderFourCentralAffineZeroSectionQuadruplePath.toContinuousMap,
@@ -244,12 +224,8 @@ public def OrderFourCorrectedPeriodTransportIdentity : Prop :=
       Path.Homotopic.Quotient.mk
           (A.orderFourCentralTraceTransportedStraightPeriodPath Hbase) =
         Path.Homotopic.Quotient.mk
-          A.orderFourCentralAffineCorrectedNegEpsilonPrimePeriodPath
-
-/-- The remaining point-set requirement is a global fibre comparison synchronized with the
-already constructed base comparison. -/
-public def OrderFourLocalGlobalFactorPointSetComparison : Prop :=
-  let _ := A.ellipticFourBoundaryAction
+          A.orderFourCentralAffineCorrectedNegEpsilonPrimePeriodPath)) :
+    (let _ := A.ellipticFourBoundaryAction
   ∃ Hfiber : ContinuousMap.Homotopy
       A.orderFourCentralFiberFactor.toContinuousMap
       A.orderFourCentralAffineCorrectedNegEpsilonPrimePeriodPath.toContinuousMap,
@@ -257,12 +233,7 @@ public def OrderFourLocalGlobalFactorPointSetComparison : Prop :=
       A.orderFourCentralBaseFactor.toContinuousMap
       A.orderFourCentralAffineZeroSectionQuadruplePath.toContinuousMap,
       (∀ s : unitInterval, Hfiber (s, 1) = Hbase (s, 0)) ∧
-      (∀ s : unitInterval, Hfiber (s, 0) = Hbase (s, 1))
-
-/-- The single transported-period class identity produces synchronized factor homotopies. -/
-public theorem OrderFourCorrectedPeriodTransportIdentity.toLocalGlobalFactorPointSetComparison
-    (h : A.OrderFourCorrectedPeriodTransportIdentity) :
-    A.OrderFourLocalGlobalFactorPointSetComparison := by
+      (∀ s : unitInterval, Hfiber (s, 0) = Hbase (s, 1))) := by
   let _ := A.ellipticFourBoundaryAction
   rcases h with ⟨Hbase, hbaseTrace, hperiod⟩
   rcases A.orderFourCentralFiberFactor_homotopic_actualBasedStraight with ⟨HlocalPath⟩
@@ -326,26 +297,34 @@ public theorem OrderFourCorrectedPeriodTransportIdentity.toLocalGlobalFactorPoin
   let G := ((G₀.trans G₁).trans G₂).trans G₃
   refine ⟨F, G, ?_, ?_⟩
   · intro s
-    exact freeLoopHomotopyTrans_pointwise_eq
+    exact ContinuousMap.Homotopy.trans_apply_eq_of_apply_eq
       ((F₀.trans F₁).trans F₂) F₃ ((G₀.trans G₁).trans G₂) G₃ 1 0
-      (fun r ↦ freeLoopHomotopyTrans_pointwise_eq
+      (fun r ↦ ContinuousMap.Homotopy.trans_apply_eq_of_apply_eq
         (F₀.trans F₁) F₂ (G₀.trans G₁) G₂ 1 0
-        (fun q ↦ freeLoopHomotopyTrans_pointwise_eq F₀ F₁ G₀ G₁ 1 0
+        (fun q ↦ ContinuousMap.Homotopy.trans_apply_eq_of_apply_eq F₀ F₁ G₀ G₁ 1 0
           h₀join h₁join q)
         h₂join r)
       h₃join s
   · intro s
-    exact freeLoopHomotopyTrans_pointwise_eq
+    exact ContinuousMap.Homotopy.trans_apply_eq_of_apply_eq
       ((F₀.trans F₁).trans F₂) F₃ ((G₀.trans G₁).trans G₂) G₃ 0 1
-      (fun r ↦ freeLoopHomotopyTrans_pointwise_eq
+      (fun r ↦ ContinuousMap.Homotopy.trans_apply_eq_of_apply_eq
         (F₀.trans F₁) F₂ (G₀.trans G₁) G₂ 0 1
-        (fun q ↦ freeLoopHomotopyTrans_pointwise_eq F₀ F₁ G₀ G₁ 0 1
+        (fun q ↦ ContinuousMap.Homotopy.trans_apply_eq_of_apply_eq F₀ F₁ G₀ G₁ 0 1
           h₀trace h₁trace q)
         h₂trace r)
       h₃trace s
 
-public theorem OrderFourLocalGlobalFactorPointSetComparison.assemble
-    (h : A.OrderFourLocalGlobalFactorPointSetComparison) :
+public theorem ellipticFour_exists_relatorHomotopy_of_factorHomotopies
+    (h : (let _ := A.ellipticFourBoundaryAction
+  ∃ Hfiber : ContinuousMap.Homotopy
+      A.orderFourCentralFiberFactor.toContinuousMap
+      A.orderFourCentralAffineCorrectedNegEpsilonPrimePeriodPath.toContinuousMap,
+    ∃ Hbase : ContinuousMap.Homotopy
+      A.orderFourCentralBaseFactor.toContinuousMap
+      A.orderFourCentralAffineZeroSectionQuadruplePath.toContinuousMap,
+      (∀ s : unitInterval, Hfiber (s, 1) = Hbase (s, 0)) ∧
+      (∀ s : unitInterval, Hfiber (s, 0) = Hbase (s, 1)))) :
     letI := A.ellipticFourBoundaryAction
     ∃ H : ContinuousMap.Homotopy
         A.orderFourCentralFiberThenBaseLoop.toContinuousMap
@@ -353,7 +332,7 @@ public theorem OrderFourLocalGlobalFactorPointSetComparison.assemble
       ∀ s : unitInterval, H (s, 0) = H (s, 1) := by
   let _ := A.ellipticFourBoundaryAction
   rcases h with ⟨Hfiber, Hbase, hjoin, htrace⟩
-  let Hfactors := freeLoopHomotopyHcomp Hfiber Hbase hjoin
+  let Hfactors := Hfiber.hcompLoop Hbase hjoin
   have hsource :
       (A.orderFourCentralFiberFactor.trans
         A.orderFourCentralBaseFactor).toContinuousMap =
@@ -368,17 +347,38 @@ public theorem OrderFourLocalGlobalFactorPointSetComparison.assemble
   let H := Hfactors.cast hsource htarget
   refine ⟨H, fun s ↦ ?_⟩
   change Hfactors (s, 0) = Hfactors (s, 1)
-  exact freeLoopHomotopyHcomp_trace Hfiber Hbase hjoin htrace s
+  exact Hfiber.hcompLoop_trace Hbase hjoin htrace s
 
 /-- Synchronized factor homotopies supply the order-four chart identity required by the
 normal-closure reduction. -/
-public theorem OrderFourLocalGlobalFactorPointSetComparison.toRegularLoopChartIdentity
-    (h : A.OrderFourLocalGlobalFactorPointSetComparison) :
-    A.OrderFourActualEllipticRegularLoopChartIdentity := by
+public theorem ellipticFour_exists_regularLoop_eq_of_factorHomotopies
+    (h : (let _ := A.ellipticFourBoundaryAction
+  ∃ Hfiber : ContinuousMap.Homotopy
+      A.orderFourCentralFiberFactor.toContinuousMap
+      A.orderFourCentralAffineCorrectedNegEpsilonPrimePeriodPath.toContinuousMap,
+    ∃ Hbase : ContinuousMap.Homotopy
+      A.orderFourCentralBaseFactor.toContinuousMap
+      A.orderFourCentralAffineZeroSectionQuadruplePath.toContinuousMap,
+      (∀ s : unitInterval, Hfiber (s, 1) = Hbase (s, 0)) ∧
+      (∀ s : unitInterval, Hfiber (s, 0) = Hbase (s, 1)))) :
+    (let _ := A.ellipticFourBoundaryAction
+  let _ : SimplyConnectedSpace
+      (OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :=
+    A.ellipticFourBoundaryCover_simplyConnected
+  ∃ β : Path A.centralAffineBase A.ellipticFourOverlapCentralBase,
+    fundamentalGroupElementOfBaseEq
+        A.ellipticFourCentralBase_eq_overlapCentralBase
+        (Path.Homotopic.Quotient.mk
+          ((A.orderFourFillingRelationRegularLoop.map
+            A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
+              A.orderFourCollarRegularRepresentative_base_projects.symm
+              A.orderFourCollarRegularRepresentative_base_projects.symm)) =
+      FundamentalGroup.fundamentalGroupMulEquivOfPath β
+        A.orderFourCentralExpectedRelator) := by
   let _ := A.ellipticFourBoundaryAction
   rcases A.orderFourProjectedRegularLoop_freeHomotopy_fiberThenBase_with_trace with
     ⟨Hsplit, hsplitTrace⟩
-  rcases h.assemble A with ⟨Hglobal, hglobalTrace⟩
+  rcases A.ellipticFour_exists_relatorHomotopy_of_factorHomotopies h with ⟨Hglobal, hglobalTrace⟩
   let H := Hsplit.trans Hglobal
   apply A.ellipticFourRegularLoopChartIdentity_of_freeHomotopy
     A.orderFourCentralAffineCorrectedGeometricRelatorPath
@@ -392,28 +392,45 @@ public theorem OrderFourLocalGlobalFactorPointSetComparison.toRegularLoopChartId
 
 /-- The synchronized factor comparison supplies exactly the order-four field of the final
 normal-closure residual. -/
-public theorem OrderFourLocalGlobalFactorPointSetComparison.relator_mem_normalClosure
-    (h : A.OrderFourLocalGlobalFactorPointSetComparison) :
+public theorem ellipticFour_relator_mem_normalClosure_of_factorHomotopies
+    (h : (let _ := A.ellipticFourBoundaryAction
+  ∃ Hfiber : ContinuousMap.Homotopy
+      A.orderFourCentralFiberFactor.toContinuousMap
+      A.orderFourCentralAffineCorrectedNegEpsilonPrimePeriodPath.toContinuousMap,
+    ∃ Hbase : ContinuousMap.Homotopy
+      A.orderFourCentralBaseFactor.toContinuousMap
+      A.orderFourCentralAffineZeroSectionQuadruplePath.toContinuousMap,
+      (∀ s : unitInterval, Hfiber (s, 1) = Hbase (s, 0)) ∧
+      (∀ s : unitInterval, Hfiber (s, 0) = Hbase (s, 1)))) :
     (A.coreDataOf A.cuspCentralNaturality).rhoTwo ^ 4 *
         (Additive.toMul
           ((A.coreDataOf A.cuspCentralNaturality).translation epsilon'))⁻¹ ∈
       Subgroup.normalClosure
         {A.ellipticFourOverlapToCore
           A.ellipticFourCanonicalRelator} := by
-  exact (h.toRegularLoopChartIdentity A).toWholeFillingRelatorChartIdentity A
-    |>.relator_mem_normalClosure A
+  exact A.ellipticFour_relator_mem_normalClosure_of_relator_eq
+    (A.ellipticFour_exists_relator_eq_of_regularLoop_eq (A.ellipticFour_exists_regularLoop_eq_of_factorHomotopies h))
 
 /-- The corrected-period transport identity is the only input needed for the actual
 order-four normal-closure statement. -/
-public theorem OrderFourCorrectedPeriodTransportIdentity.relator_mem_normalClosure
-    (h : A.OrderFourCorrectedPeriodTransportIdentity) :
+public theorem ellipticFour_relator_mem_normalClosure_of_periodTransport
+    (h : (let _ := A.ellipticFourBoundaryAction
+  ∃ Hbase : ContinuousMap.Homotopy
+      A.orderFourCentralBaseFactor.toContinuousMap
+      A.orderFourCentralAffineZeroSectionQuadruplePath.toContinuousMap,
+    (∀ s : unitInterval, Hbase (s, 0) = Hbase (s, 1)) ∧
+      Path.Homotopic.Quotient.mk
+          (A.orderFourCentralTraceTransportedStraightPeriodPath Hbase) =
+        Path.Homotopic.Quotient.mk
+          A.orderFourCentralAffineCorrectedNegEpsilonPrimePeriodPath)) :
     (A.coreDataOf A.cuspCentralNaturality).rhoTwo ^ 4 *
         (Additive.toMul
           ((A.coreDataOf A.cuspCentralNaturality).translation epsilon'))⁻¹ ∈
       Subgroup.normalClosure
         {A.ellipticFourOverlapToCore
           A.ellipticFourCanonicalRelator} := by
-  exact (h.toLocalGlobalFactorPointSetComparison A).relator_mem_normalClosure A
+  exact A.ellipticFour_relator_mem_normalClosure_of_factorHomotopies
+    (A.ellipticFour_exists_factorHomotopies_of_periodTransport h)
 
 end SphereSixComplex.Geometry.PaperAnalyticData
 

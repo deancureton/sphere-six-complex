@@ -392,10 +392,10 @@ $`C_3` and $`C_4` factors, closing both collar separations without an external a
 Use {uses "torus-family"}[the torus family] and the invariant twist vectors fixed by $`A_1` and $`A_2`.
 :::
 
-:::theorem "compact-complex-threefold" (parent := "construction_spine") (lean := "SphereSixComplex.ComplexThreefold, SphereSixComplex.exists_simplyConnected_complexThreefold, SphereSixComplex.PaperGluingData, SphereSixComplex.Geometry.nonempty_paperAnalyticData_of_descentData, SphereSixComplex.Geometry.PaperAnalyticData.toPaperGluingData, SphereSixComplex.exists_paperGluingData") (priority := "high")
+:::theorem "compact-complex-threefold" (parent := "construction_spine") (lean := "SphereSixComplex.ComplexThreefold, SphereSixComplex.exists_simplyConnected_complexThreefold, SphereSixComplex.CompactComplexStar, SphereSixComplex.Geometry.nonempty_paperAnalyticData_of_descentData, SphereSixComplex.Geometry.PaperAnalyticData.compactComplexStar") (priority := "high")
 The global family and the three fillings glue to a compact connected complex threefold $`X`.
 The analytic package, the actual star's van Kampen data, and the positive-degree homology assembly
-are constructed in Lean and combined by `exists_paperGluingData`. No construction-specific axiom or
+are constructed in Lean and combined by `exists_simplyConnected_complexThreefold`. No construction-specific axiom or
 unfinished proof is required by this theorem.
 :::
 
@@ -405,7 +405,7 @@ Glue {uses "cusp-filling"}[the cusp filling] and
 {uses "torus-family"}[torus family], and verify the resulting charts and transition maps.
 :::
 
-:::theorem "manifold-gluing" (parent := "compact-complex-threefold") (lean := "SphereSixComplex.CrossPieceGluingCompatible, SphereSixComplex.gluingAtlasCompatible_of_crossPiece, SphereSixComplex.pieceInclusion_contMDiff_of_crossPiece, SphereSixComplex.gluedChartedSpace, SphereSixComplex.isManifold_gluedChartedSpace, SphereSixComplex.secondCountableTopology_gluedSpace, SphereSixComplex.compactSpace_gluedSpace, SphereSixComplex.connectedSpace_gluedSpace, SphereSixComplex.BiholomorphicStarGluing.BiholomorphicFourPieceStarData.gluing_atlas_compatible, SphereSixComplex.ComplexThreefold.RealAtlas.isManifold, SphereSixComplex.PaperGluingData.gluedSecondCountable")
+:::theorem "manifold-gluing" (parent := "compact-complex-threefold") (lean := "SphereSixComplex.CrossPieceGluingCompatible, SphereSixComplex.gluingAtlasCompatible_of_crossPiece, SphereSixComplex.pieceInclusion_contMDiff_of_crossPiece, SphereSixComplex.gluedChartedSpace, SphereSixComplex.isManifold_gluedChartedSpace, SphereSixComplex.secondCountableTopology_gluedSpace, SphereSixComplex.compactSpace_gluedSpace, SphereSixComplex.connectedSpace_gluedSpace, SphereSixComplex.BiholomorphicStarGluing.BiholomorphicFourPieceStarData.gluing_atlas_compatible, SphereSixComplex.ComplexThreefold.RealAtlas.isManifold, SphereSixComplex.CompactComplexStar.gluedSecondCountable")
 Compatible atlases on the filling pieces transport to their topological gluing and make the glued
 space a manifold. A countable open gluing of second-countable pieces is second countable, and
 connected pieces with a connected overlap graph give a connected gluing. Restriction of a complex atlas to
@@ -422,14 +422,14 @@ second-countable glued space defines a compact connected complex threefold. Smoo
 underlying real atlas follows by restriction of scalars.
 :::
 
-:::theorem "paper-threefold-assembly" (parent := "compact-complex-threefold") (lean := "SphereSixComplex.Geometry.PaperAnalyticData.toPaperGluingData, SphereSixComplex.PaperGluingData.toComplexThreefold, SphereSixComplex.SmoothSixSphere.nonempty_diffeomorph, SphereSixComplex.exists_simplyConnected_complexThreefold")
+:::theorem "paper-threefold-assembly" (parent := "compact-complex-threefold") (lean := "SphereSixComplex.Geometry.PaperAnalyticData.compactComplexStar, SphereSixComplex.CompactComplexStar.toComplexThreefold, SphereSixComplex.SmoothSixSphere.nonempty_diffeomorph, SphereSixComplex.exists_simplyConnected_complexThreefold")
 If that gluing carries the concrete van Kampen generators with no extra relations and the
 four-piece Mayer--Vietoris comparison, the glued threefold is simply connected and has
 degreewise integral homology isomorphic to that of the six-sphere. The recognition theorem
 takes these properties directly and concludes existence of a diffeomorphism.
 :::
 
-:::theorem "fundamental-group" (parent := "construction_spine") (lean := "SphereSixComplex.PaperGluingData.simplyConnectedSpace") (priority := "high")
+:::theorem "fundamental-group" (parent := "construction_spine") (lean := "SphereSixComplex.Geometry.PaperAnalyticData.star_simplyConnectedSpace") (priority := "high")
 For the twists $`(\ell_0,\ell_1,\ell_2)=(0,1,-1)`, the fundamental group of $`X` is trivial.
 :::
 
@@ -475,7 +475,7 @@ the surjection onto $`\pi_1(X)` reduces the van Kampen contract to collar surjec
 star filling relations. Both geometric statements are proved for the constructed star.
 :::
 
-:::theorem "integral-homology" (parent := "construction_spine") (lean := "SphereSixComplex.PaperGluingData.integralHomology") (priority := "high")
+:::theorem "integral-homology" (parent := "construction_spine") (lean := "SphereSixComplex.Geometry.PaperAnalyticData.star_nonempty_homologyEquiv_sixSphere") (priority := "high")
 The integral homology of $`X` is the integral homology of $`S^6`.
 :::
 

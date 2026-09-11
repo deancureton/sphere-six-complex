@@ -125,7 +125,7 @@ public noncomputable def actualLocalCuspCentralFiberRetractionData
     map_one_left _ := rfl
   }
   letI := actualLocalCuspQuotientAction W
-  refine ⟨{
+  refine {
     retract := retract
     homotopy := homotopy
     retract_mem := ?_
@@ -133,7 +133,7 @@ public noncomputable def actualLocalCuspCentralFiberRetractionData
     homotopy_fixed := ?_
     retract_equivariant := ?_
     homotopy_equivariant := ?_
-  }⟩
+  }
   · intro x
     change M.t (pointUnstraightening W (rfRetract (pointStraightening W x))) = 0
     have hcentral : M.t (rfRetract (pointStraightening W x)) = 0 := hRf_mem _

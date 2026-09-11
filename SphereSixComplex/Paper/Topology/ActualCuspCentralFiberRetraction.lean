@@ -67,13 +67,12 @@ public theorem actualLocalPsiContinuousConstSMul :
       (Multiplicative.toAdd lambda))
     exact (C.genericPsiMap_holomorphic _).continuous⟩
 
-/-- The exact prequotient datum still needed from the toric construction in Proposition 7.2. -/
-public structure ActualLocalCuspCentralFiberRetractionData where
-  toEquivariantSDR :
-    letI := actualLocalCuspQuotientAction W
-    EquivariantStrongDeformationRetraction
-      (Multiplicative ParameterLattice) (localCarrier M W.localWitness.radius)
-        (actualLocalCuspCentralFiber W)
+/-- An equivariant strong deformation retraction onto the actual central fiber. -/
+public abbrev ActualLocalCuspCentralFiberRetractionData :=
+  letI := actualLocalCuspQuotientAction W
+  EquivariantStrongDeformationRetraction
+    (Multiplicative ParameterLattice) (localCarrier M W.localWitness.radius)
+      (actualLocalCuspCentralFiber W)
 
 namespace ActualLocalCuspCentralFiberRetractionData
 
@@ -82,12 +81,12 @@ variable (R : ActualLocalCuspCentralFiberRetractionData W)
 /-- The central fibre after passage to the actual local cusp quotient. -/
 public noncomputable def quotientCentralFiber : Set (ActualLocalCuspFilling W) := by
   letI := actualLocalCuspQuotientAction W
-  exact R.toEquivariantSDR.quotientCore
+  exact EquivariantStrongDeformationRetraction.quotientCore R
 
 /-- The quotient retraction supplied conditionally by the prequotient toric retraction. -/
 public noncomputable def quotientRetract : C(ActualLocalCuspFilling W, ActualLocalCuspFilling W) := by
   letI := actualLocalCuspQuotientAction W
-  exact R.toEquivariantSDR.quotientRetract
+  exact EquivariantStrongDeformationRetraction.quotientRetract R
 
 /-- The quotient strong deformation homotopy supplied by the prequotient toric retraction. -/
 public noncomputable def quotientHomotopy :
@@ -95,19 +94,19 @@ public noncomputable def quotientHomotopy :
       (quotientRetract W R) := by
   letI := actualLocalCuspQuotientAction W
   letI := actualLocalPsiContinuousConstSMul W
-  exact R.toEquivariantSDR.quotientHomotopy
+  exact EquivariantStrongDeformationRetraction.quotientHomotopy R
 
 public theorem quotientRetract_mem (q : ActualLocalCuspFilling W) :
     quotientRetract W R q ∈ quotientCentralFiber W R := by
   let _ := actualLocalCuspQuotientAction W
   let _ : ContinuousConstSMul (Multiplicative ParameterLattice)
       (localCarrier M W.localWitness.radius) := actualLocalPsiContinuousConstSMul W
-  exact EquivariantStrongDeformationRetraction.quotientRetract_mem R.toEquivariantSDR q
+  exact EquivariantStrongDeformationRetraction.quotientRetract_mem R q
 
 public theorem quotientRetract_fixed (q : ActualLocalCuspFilling W)
     (hq : q ∈ quotientCentralFiber W R) : quotientRetract W R q = q := by
   let _ := actualLocalCuspQuotientAction W
-  exact EquivariantStrongDeformationRetraction.quotientRetract_fixed R.toEquivariantSDR q hq
+  exact EquivariantStrongDeformationRetraction.quotientRetract_fixed R q hq
 
 /-- The quotient retraction with its codomain restricted to the central fibre. -/
 public noncomputable def quotientRetractToCentralFiber :
@@ -127,7 +126,7 @@ public theorem quotientHomotopy_fixed (s : unitInterval) (q : ActualLocalCuspFil
   let _ : ContinuousConstSMul (Multiplicative ParameterLattice)
       (localCarrier M W.localWitness.radius) := actualLocalPsiContinuousConstSMul W
   exact EquivariantStrongDeformationRetraction.quotientHomotopy_fixed
-    R.toEquivariantSDR s q hq
+    R s q hq
 
 /-- The homotopy equivalence produced by the descended strong deformation retraction. -/
 public noncomputable def quotientCentralFiberHomotopyEquiv :

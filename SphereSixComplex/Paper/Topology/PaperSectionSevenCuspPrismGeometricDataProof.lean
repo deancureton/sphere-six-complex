@@ -27,37 +27,6 @@ open scoped ContinuousMap
 
 namespace SphereSixComplex
 
-/-- Every integral singular degree-two homology class is represented by an explicit cycle. -/
-public theorem exists_degreeTwoSingularCycle {X : Type} [TopologicalSpace X]
-    (x : IntegralSingularHomology 2 X) :
-    ∃ c : DegreeTwoSingularCycle X, c.homologyClass = x := by
-  classical
-  let K := integralSingularChainComplex X
-  obtain ⟨y, hy⟩ := (AddCommGrpCat.epi_iff_surjective (K.homologyπ 2)).1 inferInstance x
-  let p : K.X 2 := K.iCycles 2 y
-  have hp : K.d 2 1 p = 0 := by
-    have h := CategoryTheory.congr_fun (K.iCycles_d 2 1) y
-    simp only [CategoryTheory.comp_apply] at h
-    simpa using h
-  have hchain : (AddCommGrpCat.asHom p) ≫ K.d 2 1 = 0 := by
-    apply AddCommGrpCat.int_hom_ext
-    change K.d 2 1 ((AddCommGrpCat.asHom p) 1) = _
-    rw [AddCommGrpCat.asHom_hom_apply, one_zsmul]
-    simpa using hp
-  refine ⟨⟨AddCommGrpCat.asHom p, hchain⟩, ?_⟩
-  have hnext : (ComplexShape.down ℕ).next 2 = 1 := by simp
-  have hl : K.liftCycles (AddCommGrpCat.asHom p) 1 hnext hchain ≫ K.iCycles 2 =
-      AddCommGrpCat.asHom p := K.liftCycles_i _ _ _ _
-  have hly : ConcreteCategory.hom
-      (K.liftCycles (AddCommGrpCat.asHom p) 1 hnext hchain) 1 = y := by
-    apply (AddCommGrpCat.mono_iff_injective (K.iCycles 2)).1 inferInstance
-    have h := CategoryTheory.congr_fun hl 1
-    simp only [CategoryTheory.comp_apply] at h
-    rw [h, AddCommGrpCat.asHom_hom_apply, one_zsmul]
-  show ConcreteCategory.hom
-    (K.liftCycles (AddCommGrpCat.asHom p) 1 hnext hchain ≫ K.homologyπ 2) 1 = x
-  rw [CategoryTheory.comp_apply, hly, hy]
-
 /-- The identity map induces the identity on integral singular homology. -/
 public theorem integralSingularHomologyMap_id {X : Type} [TopologicalSpace X] (k : ℕ)
     (x : IntegralSingularHomology k X) :
@@ -146,10 +115,10 @@ public theorem cuspMappingTorusToEllipticInteriorMap_basis (i : Fin 6) :
 public noncomputable def cuspMappingTorusBasisCycle (A : PaperAnalyticData) (i : Fin 6) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
-    DegreeTwoSingularCycle (CircleMappingTorus G.clutching) := by
+    IntegralSingularCycle 2 (CircleMappingTorus G.clutching) := by
   let G := A.actualCuspRadialClutchingData
   letI := G.fiberTopology
-  exact (exists_degreeTwoSingularCycle
+  exact (IntegralSingularCycle.exists_representative
     (G.geometricWangSections.circleMappingTorusHTwoAddEquiv.symm (Pi.single i 1))).choose
 
 /-- The explicit cusp mapping-torus cycles do represent the geometric Wang basis. -/
@@ -160,7 +129,7 @@ public theorem cuspMappingTorusBasisCycle_homologyClass (A : PaperAnalyticData) 
       G.geometricWangSections.circleMappingTorusHTwoAddEquiv.symm (Pi.single i 1) := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
-  exact (exists_degreeTwoSingularCycle
+  exact (IntegralSingularCycle.exists_representative
     (G.geometricWangSections.circleMappingTorusHTwoAddEquiv.symm (Pi.single i 1))).choose_spec
 
 /-- The chain image of the `i`-th explicit basis cycle represents the image of the `i`-th raw
@@ -169,7 +138,7 @@ public theorem cuspMappingTorusBasisCycle_map_homologyClass (i : Fin 6) :
     ((A.cuspMappingTorusBasisCycle i).map D.cuspMappingTorusToEllipticInteriorMap).homologyClass =
       integralSingularHomologyMap 2 D.cuspToEllipticInteriorMap.hom
         (A.cuspRawHomologyTwoEquiv.symm (Pi.single i 1)) := by
-  rw [← DegreeTwoSingularCycle.homologyClass_map (A.cuspMappingTorusBasisCycle i)
+  rw [← IntegralSingularCycle.homologyClass_map (A.cuspMappingTorusBasisCycle i)
     D.cuspMappingTorusToEllipticInteriorMap, cuspMappingTorusBasisCycle_homologyClass A i]
   exact cuspMappingTorusToEllipticInteriorMap_basis i
 

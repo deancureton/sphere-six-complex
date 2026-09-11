@@ -845,9 +845,10 @@ public theorem liftQ_periodic (s : ℂ) (hs : s ∈ cuspHalfPlane N.height) :
   rw [hsplit, mul_sub, mul_one]
   exact Complex.exp_periodic.sub_eq _
 
-public theorem liftQ_bounded : NormBoundedOn (liftQ N) (cuspHalfPlane N.height) := by
-  refine ⟨1, zero_le_one, ?_⟩
-  intro s hs
+public theorem liftQ_bounded : Bornology.IsBounded (liftQ N '' cuspHalfPlane N.height) := by
+  apply isBounded_iff_forall_norm_le.mpr
+  refine ⟨1, ?_⟩
+  rintro _ ⟨s, hs, rfl⟩
   have hnorm : ‖liftQ N s‖ =
       Real.exp (-(2 * Real.pi * ((N.lift s).im / (1 + Real.sqrt 2)))) := norm_sourceQ _
   rw [hnorm]

@@ -51,10 +51,6 @@ public def cuspRadius (H : ℝ) : ℝ :=
 public theorem cuspRadius_pos (H : ℝ) : 0 < cuspRadius H := by
   exact Real.exp_pos _
 
-/-- Norm-boundedness for a complex-valued function on a subset of the complex plane. -/
-public def NormBoundedOn (f : ℂ → ℂ) (S : Set ℂ) : Prop :=
-  ∃ A : ℝ, 0 ≤ A ∧ ∀ s ∈ S, ‖f s‖ ≤ A
-
 /-- The exact result of descending a bounded periodic holomorphic function through `cuspQ`. -/
 public structure HolomorphicCuspDescent (H : ℝ) (f : ℂ → ℂ) where
   extension : ℂ → ℂ
@@ -73,7 +69,7 @@ public theorem nonempty_holomorphicCuspDescent
     (H : ℝ) (f : ℂ → ℂ)
     (holomorphic : DifferentiableOn ℂ f (cuspHalfPlane H))
     (periodic : ∀ s ∈ cuspHalfPlane H, f (s - 1) = f s)
-    (bounded : NormBoundedOn f (cuspHalfPlane H)) :
+    (bounded : Bornology.IsBounded (f '' cuspHalfPlane H)) :
     Nonempty (HolomorphicCuspDescent H f) := by
   classical
   let F : ℂ → ℂ := fun z ↦ if z ∈ cuspHalfPlane H then f z else 0
@@ -103,14 +99,14 @@ public theorem nonempty_holomorphicCuspDescent
     refine eventually_of_mem (preimage_mem_comap (Ioi_mem_atTop H)) ?_
     intro z hz
     exact hF_differentiableAt z hz
-  obtain ⟨A, _hA, hbound⟩ := bounded
+  obtain ⟨A, hbound⟩ := bounded.exists_norm_le
   have hF_bounded : BoundedAtFilter (comap Complex.im atTop) F := by
     rw [BoundedAtFilter, Asymptotics.isBigO_iff]
     refine ⟨A, eventually_of_mem (preimage_mem_comap (Ioi_mem_atTop H)) ?_⟩
     intro z hz
     simp only [Pi.one_apply, norm_one, mul_one]
     rw [hF_eq z hz]
-    exact hbound z hz
+    exact hbound (f z) ⟨z, hz, rfl⟩
   let e : ℂ → ℂ := Function.Periodic.cuspFunction (1 : ℝ) F
   have he_zero : DifferentiableAt ℂ e 0 := by
     dsimp only [e]
@@ -242,16 +238,22 @@ public theorem bAlong_periodic (s : ℂ) (hs : s ∈ cuspHalfPlane N.height) :
   ring
 
 public theorem muAlong_bounded :
-    NormBoundedOn N.muAlong (cuspHalfPlane N.height) := by
-  obtain ⟨A, hA, hbound⟩ :=
+    Bornology.IsBounded (N.muAlong '' cuspHalfPlane N.height) := by
+  obtain ⟨A, _, hbound⟩ :=
     (assembledFuchsianPeriodFunctions E D).mu_cusp_bounded
-  exact ⟨A, hA, fun s hs ↦ hbound (N.lift s) (N.lift_mem_cusp s hs)⟩
+  apply isBounded_iff_forall_norm_le.mpr
+  refine ⟨A, ?_⟩
+  rintro _ ⟨s, hs, rfl⟩
+  exact hbound (N.lift s) (N.lift_mem_cusp s hs)
 
 public theorem bAlong_bounded :
-    NormBoundedOn N.bAlong (cuspHalfPlane N.height) := by
-  obtain ⟨A, hA, hbound⟩ :=
+    Bornology.IsBounded (N.bAlong '' cuspHalfPlane N.height) := by
+  obtain ⟨A, _, hbound⟩ :=
     (assembledFuchsianPeriodFunctions E D).beta_add_tau_cusp_bounded
-  exact ⟨A, hA, fun s hs ↦ hbound (N.lift s) (N.lift_mem_cusp s hs)⟩
+  apply isBounded_iff_forall_norm_le.mpr
+  refine ⟨A, ?_⟩
+  rintro _ ⟨s, hs, rfl⟩
+  exact hbound (N.lift s) (N.lift_mem_cusp s hs)
 
 /-- The selected holomorphic extension of `μ` across the cusp point `q = 0`. -/
 public noncomputable def muDescent : HolomorphicCuspDescent N.height N.muAlong :=

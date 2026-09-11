@@ -226,12 +226,8 @@ public theorem periodTransport_gTwo (x : PeriodDomain) :
   have hz := DFunLike.congr_fun hcomp v
   simpa [hx, R, v] using hz
 
-/-- Pointwise complex linearity of canonical fibre transport. -/
-public def TransportIsComplexLinear (g : Delta) : Prop :=
-  ∀ x : PeriodDomain, ∃ R : ComplexTwoSpace ≃ₗ[ℂ] ComplexTwoSpace,
-    periodTransport g x = R.restrictScalars ℝ
-
-public theorem transportIsComplexLinear_one : TransportIsComplexLinear 1 := by
+private theorem periodTransport_one_restrictScalars : (∀ x : PeriodDomain, ∃ R : ComplexTwoSpace ≃ₗ[ℂ] ComplexTwoSpace,
+    periodTransport 1 x = R.restrictScalars ℝ) := by
   intro x
   refine ⟨1, ?_⟩
   rw [periodTransport_one]
@@ -239,9 +235,12 @@ public theorem transportIsComplexLinear_one : TransportIsComplexLinear 1 := by
   intro z
   rfl
 
-public theorem TransportIsComplexLinear.mul {g h : Delta}
-    (hg : TransportIsComplexLinear g) (hh : TransportIsComplexLinear h) :
-    TransportIsComplexLinear (g * h) := by
+private theorem periodTransport_mul_restrictScalars {g h : Delta}
+    (hg : (∀ x : PeriodDomain, ∃ R : ComplexTwoSpace ≃ₗ[ℂ] ComplexTwoSpace,
+    periodTransport g x = R.restrictScalars ℝ)) (hh : (∀ x : PeriodDomain, ∃ R : ComplexTwoSpace ≃ₗ[ℂ] ComplexTwoSpace,
+    periodTransport h x = R.restrictScalars ℝ)) :
+    (∀ x : PeriodDomain, ∃ R : ComplexTwoSpace ≃ₗ[ℂ] ComplexTwoSpace,
+    periodTransport (g * h) x = R.restrictScalars ℝ) := by
   intro x
   obtain ⟨Rg, hRg⟩ := hg (rhoParameters h x)
   obtain ⟨Rh, hRh⟩ := hh x
@@ -251,19 +250,23 @@ public theorem TransportIsComplexLinear.mul {g h : Delta}
   intro z
   rfl
 
-public theorem TransportIsComplexLinear.pow {g : Delta} (hg : TransportIsComplexLinear g)
-    (n : ℕ) : TransportIsComplexLinear (g ^ n) := by
+private theorem periodTransport_pow_restrictScalars {g : Delta} (hg : (∀ x : PeriodDomain, ∃ R : ComplexTwoSpace ≃ₗ[ℂ] ComplexTwoSpace,
+    periodTransport g x = R.restrictScalars ℝ))
+    (n : ℕ) : (∀ x : PeriodDomain, ∃ R : ComplexTwoSpace ≃ₗ[ℂ] ComplexTwoSpace,
+    periodTransport (g ^ n) x = R.restrictScalars ℝ) := by
   induction n with
-  | zero => simpa using transportIsComplexLinear_one
+  | zero => simpa using periodTransport_one_restrictScalars
   | succ n ih =>
       rw [pow_succ]
-      exact ih.mul hg
+      exact periodTransport_mul_restrictScalars ih hg
 
-public theorem transportIsComplexLinear_gOne : TransportIsComplexLinear g₁ := by
+private theorem periodTransport_gOne_restrictScalars : (∀ x : PeriodDomain, ∃ R : ComplexTwoSpace ≃ₗ[ℂ] ComplexTwoSpace,
+    periodTransport g₁ x = R.restrictScalars ℝ) := by
   intro x
   exact ⟨rightOneLinearEquiv x.1 x.tau_ne_zero, periodTransport_gOne x⟩
 
-public theorem transportIsComplexLinear_gTwo : TransportIsComplexLinear g₂ := by
+private theorem periodTransport_gTwo_restrictScalars : (∀ x : PeriodDomain, ∃ R : ComplexTwoSpace ≃ₗ[ℂ] ComplexTwoSpace,
+    periodTransport g₂ x = R.restrictScalars ℝ) := by
   intro x
   exact ⟨rightTwoLinearEquiv x.1 x.tau_ne_zero, periodTransport_gTwo x⟩
 
@@ -368,17 +371,18 @@ public theorem inr_exists_gTwo_pow (a : CyclicFour) :
       _ = _ := (mul_assoc _ _ _).symm
 
 /-- Canonical fibre transport is complex linear for every triangle-group element. -/
-public theorem periodTransport_isComplexLinear (g : Delta) : TransportIsComplexLinear g := by
+public theorem periodTransport_isComplexLinear (g : Delta) : (∀ x : PeriodDomain, ∃ R : ComplexTwoSpace ≃ₗ[ℂ] ComplexTwoSpace,
+    periodTransport g x = R.restrictScalars ℝ) := by
   induction g using Monoid.Coprod.induction_on with
   | inl a =>
       obtain ⟨n, hn⟩ := inl_exists_gOne_pow a
       rw [hn]
-      exact transportIsComplexLinear_gOne.pow n
+      exact periodTransport_pow_restrictScalars periodTransport_gOne_restrictScalars n
   | inr a =>
       obtain ⟨n, hn⟩ := inr_exists_gTwo_pow a
       rw [hn]
-      exact transportIsComplexLinear_gTwo.pow n
-  | mul g h hg hh => exact hg.mul hh
+      exact periodTransport_pow_restrictScalars periodTransport_gTwo_restrictScalars n
+  | mul g h hg hh => exact periodTransport_mul_restrictScalars hg hh
 
 /-- The period map is equivariant under every element of the triangle group. -/
 public theorem parameterMap_equivariant {U : TriangleUniformization} (F : PeriodFunctions U)

@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Paper.Topology.SectionSevenPaperCoverIdentification
-public import SphereSixComplex.Paper.Geometry.PaperGluingData
+public import SphereSixComplex.Prerequisites.Topology.FourPieceStarOpenCover
 
 /-!
 # A conditional Section 7 cover-to-homology bridge
@@ -9,7 +9,7 @@ public import SphereSixComplex.Paper.Geometry.PaperGluingData
 This file records what follows from the strong chain-level comparison isolated by
 `SectionSevenPaperCoverIdentification`.  Once local intersection models, the canonical
 Čech-nerve identification, and a transferred finite-complex contraction have been constructed,
-it packages them as the exact small-chain comparison required by `PaperGluingData` and derives
+it supplies an explicit small-chain comparison and derives
 the integral homology-sphere conclusion.
 
 That comparison is a sufficient criterion, not a claim made by Section 7 of the paper: the source
@@ -41,7 +41,7 @@ public noncomputable def toFourPieceSmallChainComparison
     (e : FiniteOpenCoverLerayCechComparison (sectionSevenStarOpenCover A).piece) :
     SectionSevenFourPieceSmallChainComparison
       (GluedSpace A.glueData) (sectionSevenStarOpenCover A) := by
-  let identification := h.toLerayCechIdentification.identification
+  let identification := h.homotopyEquiv
   refine
     { comparison := identification.hom ≫ e.augmentation
       quasiIso := ?_ }
@@ -54,8 +54,7 @@ public noncomputable def toFourPieceSmallChainComparison
   let _ : QuasiIso e.augmentation := e.quasiIso
   infer_instance
 
-/-- Version of the comparison with the cover written exactly as it occurs in the
-`PaperGluingData.homologyComparison` field. -/
+/-- The chain comparison with the canonical star cover. -/
 public noncomputable def toPaperGluingHomologyComparison
     {A : FourPieceStarGluingData} (h : SectionSevenPaperCoverIdentification A)
     (e : FiniteOpenCoverLerayCechComparison (sectionSevenStarOpenCover A).piece) :

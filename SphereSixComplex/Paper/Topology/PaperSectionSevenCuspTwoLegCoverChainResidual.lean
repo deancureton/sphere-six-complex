@@ -138,8 +138,10 @@ public theorem cuspMarkedConnectingNaturality_of_twoLegCoverChainNaturality
     (overlapTransport : ActualCuspVertexEdgeOverlapHomologyOne A →+
       CuspCoverIntersectionHomologyOne R)
     (h : ActualCuspTwoLegCoverChainNaturality R overlapTransport) :
-    R.twoDiscCover.CuspMarkedConnectingNaturality R.homologyAlignment := by
-  constructor
+    (R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment).comp
+        R.twoDiscCover.cuspPulledBackBoundaryHom =
+      (EllipticTwoDiscCoverData.actualCuspFiberFourthCoordinateHom A).comp
+        (EllipticTwoDiscCoverData.actualCuspWangBoundaryHom A) := by
   ext x
   calc
     R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment
@@ -174,9 +176,14 @@ public theorem cuspPulledBackMarkedInvariantBasisData_of_twoLegCoverChainNatural
     (overlapTransport : ActualCuspVertexEdgeOverlapHomologyOne A →+
       CuspCoverIntersectionHomologyOne R)
     (h : ActualCuspTwoLegCoverChainNaturality R overlapTransport) :
-    CuspPulledBackMarkedInvariantBasisData R := by
+    ((R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
+        (R.twoDiscCover.cuspPulledBackBoundaryHom
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) = 0 ∧
+      (R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
+        (R.twoDiscCover.cuspPulledBackBoundaryHom
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) = 1) := by
   have hSquare :=
-    (cuspMarkedConnectingNaturality_of_twoLegCoverChainNaturality R overlapTransport h).square
+    cuspMarkedConnectingNaturality_of_twoLegCoverChainNaturality R overlapTransport h
   rw [actualCuspMarkedWangComposite_eq_rawCoordinateFive] at hSquare
   constructor
   · have hFour := DFunLike.congr_fun hSquare
@@ -192,7 +199,12 @@ public theorem cuspPulledBackMarkedInvariantBasisData_of_canonicalTwoLegMarkedNa
     (R : A.AffineRadialCompletionInput)
     (h : ActualCuspTwoLegMarkedOverlapNaturality R
       (actualCuspCanonicalTwoLegTransport R)) :
-    CuspPulledBackMarkedInvariantBasisData R :=
+    ((R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
+        (R.twoDiscCover.cuspPulledBackBoundaryHom
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) = 0 ∧
+      (R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
+        (R.twoDiscCover.cuspPulledBackBoundaryHom
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) = 1) :=
   cuspPulledBackMarkedInvariantBasisData_of_twoLegCoverChainNaturality R
     (actualCuspCanonicalTwoLegTransport R)
     ⟨actualCuspCanonicalTwoLegTransport_connectingNaturality R, h⟩

@@ -23,17 +23,6 @@ open AlgebraicTopology
 
 namespace SphereSixComplex
 
-/-- Naturality of two connecting homomorphisms after applying marked target coordinates.  This is
-the coordinate-level consequence of the usual naturality square for connecting morphisms. -/
-public structure ConnectingCoordinateNaturality
-    {Source LeftTarget RightTarget Coordinate : Type*}
-    [AddCommGroup Source] [AddCommGroup LeftTarget] [AddCommGroup RightTarget]
-    [AddCommGroup Coordinate]
-    (leftBoundary : Source →+ LeftTarget) (rightBoundary : Source →+ RightTarget)
-    (leftCoordinate : LeftTarget →+ Coordinate)
-    (rightCoordinate : RightTarget →+ Coordinate) : Prop where
-  square : leftCoordinate.comp leftBoundary = rightCoordinate.comp rightBoundary
-
 namespace Geometry.PaperAnalyticData
 
 open EllipticTwoDiscHomologyCoordinates
@@ -79,35 +68,25 @@ public noncomputable def actualCuspFiberFourthCoordinateHom (A : PaperAnalyticDa
   letI := G.fiberTopology
   exact coordinateAfterAddEquiv G.monodromyCoordinates.degreeOne 3
 
-/-- The precise standard naturality input still absent from the current Wang API: the canonical
-boundary of the pulled-back cusp cover and the Wang connecting homomorphism commute after the
-fourth marked fibre coordinate is applied. -/
-public def CuspMarkedConnectingNaturality
-    (N : A.EllipticBandHomologyAlignment D) : Prop :=
-  ConnectingCoordinateNaturality D.cuspPulledBackBoundaryHom
-    (actualCuspWangBoundaryHom A) (D.ellipticBandFourthCoordinateHom N)
-      (actualCuspFiberFourthCoordinateHom A)
-
 /-- The general marked connecting-morphism square supplies the exact Section 7 cusp boundary
 comparison. -/
-public theorem sectionSevenCuspMarkedBoundaryComparison_of_connectingNaturality
+public theorem boundaryCoordinate_eq_of_connecting_eq
     (N : A.EllipticBandHomologyAlignment D)
-    (h : D.CuspMarkedConnectingNaturality N) :
-    D.SectionSevenCuspMarkedBoundaryComparison N where
-  fourthCoordinate x := by
-    have hx := DFunLike.congr_fun h.square x
-    simpa [ellipticBandFourthCoordinateHom, actualCuspFiberFourthCoordinateHom,
-      coordinateAfterAddEquiv_apply, cuspPulledBackBoundaryHom_apply,
-      actualCuspWangBoundaryHom_apply] using hx
+    (h : (D.ellipticBandFourthCoordinateHom N).comp
+        D.cuspPulledBackBoundaryHom =
+      (EllipticTwoDiscCoverData.actualCuspFiberFourthCoordinateHom A).comp
+        (EllipticTwoDiscCoverData.actualCuspWangBoundaryHom A)) :
+    D.cuspPulledBackBoundaryCoordinateHom N =
+      EllipticTwoDiscCoverData.actualCuspSecondWangBoundaryCoordinateHom A := by
+  apply AddMonoidHom.ext
+  intro x
+  rw [D.cuspPulledBackBoundaryCoordinateHom_apply_eq_bandCoordinate,
+    actualCuspSecondWangBoundaryCoordinateHom_apply_eq_fiberCoordinate]
+  have hx := DFunLike.congr_fun h x
+  simpa [ellipticBandFourthCoordinateHom, actualCuspFiberFourthCoordinateHom,
+    coordinateAfterAddEquiv_apply, cuspPulledBackBoundaryHom_apply,
+    actualCuspWangBoundaryHom_apply] using hx
 
-/-- Equivalently, the marked connecting-morphism square supplies the bundled homomorphism
-comparison used by the six basis calculations. -/
-public theorem sectionSevenCuspPulledBackWangBoundaryComparison_of_connectingNaturality
-    (N : A.EllipticBandHomologyAlignment D)
-    (h : D.CuspMarkedConnectingNaturality N) :
-    D.SectionSevenCuspPulledBackWangBoundaryComparison N :=
-  SectionSevenCuspMarkedBoundaryComparison.toPulledBackWangBoundaryComparison D N
-    (D.sectionSevenCuspMarkedBoundaryComparison_of_connectingNaturality N h)
 
 end EllipticTwoDiscCoverData
 

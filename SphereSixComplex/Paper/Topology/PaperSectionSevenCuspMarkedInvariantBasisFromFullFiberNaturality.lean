@@ -85,7 +85,8 @@ public theorem canonicalCuspWangBoundaryNaturality_of_fullFiberOrientedBoundaryN
         A.cuspAngularRegularBasePoint A.affineActualCuspCrossingTime)
     (R : A.AffineRadialCompletionInput)
     (h : ActualCuspWangFullFiberOrientedBoundaryNaturality R) :
-    R.twoDiscCover.CanonicalCuspWangBoundaryNaturality := by
+    (R.twoDiscCover.canonicalCuspFiberToBandHomologyOne.comp (actualCuspWangBoundaryHom A) =
+         R.twoDiscCover.cuspPulledBackBoundaryHom) := by
   let C := actualCuspWangFullFiberSliceComparison_of_orientedBoundaryNaturality R h
   let Z := actualCuspWangOpenCoverChainRealization_of_fullFiberSlice R
     (C.fiberToBand_homology hmark) C.wangBoundary_eq_chainConnecting
@@ -99,16 +100,26 @@ public theorem cuspPulledBackMarkedInvariantBasisData_of_fullFiberOrientedBounda
         A.cuspAngularRegularBasePoint A.affineActualCuspCrossingTime)
     (R : A.AffineRadialCompletionInput)
     (h : ActualCuspWangFullFiberOrientedBoundaryNaturality R) :
-    CuspPulledBackMarkedInvariantBasisData R := by
-  have hBoundary : R.twoDiscCover.CanonicalCuspWangBoundaryNaturality :=
+    ((R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
+        (R.twoDiscCover.cuspPulledBackBoundaryHom
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) = 0 ∧
+      (R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
+        (R.twoDiscCover.cuspPulledBackBoundaryHom
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) = 1) := by
+  have hBoundary : (R.twoDiscCover.canonicalCuspFiberToBandHomologyOne.comp (actualCuspWangBoundaryHom A) =
+                        R.twoDiscCover.cuspPulledBackBoundaryHom) :=
     canonicalCuspWangBoundaryNaturality_of_fullFiberOrientedBoundaryNaturality hmark R h
-  have hMarking : R.twoDiscCover.CanonicalCuspFiberBandPeriodMarking R.homologyAlignment :=
+  have hMarking : (R.homologyAlignment.actualHomologyCoordinates.bandOne.toAddMonoidHom.comp
+                         R.twoDiscCover.canonicalCuspFiberToBandHomologyOne =
+                       let G := A.actualCuspRadialClutchingData
+                       let _ := G.fiberTopology
+                       G.monodromyCoordinates.degreeOne.toAddMonoidHom) :=
     R.twoDiscCover.canonicalCuspFiberBandPeriodMarking_of_orderThree R.homologyAlignment
       (R.canonicalCuspFiberOrderThreePeriodMarking
         (cuspFiberPeriodMarkingCompatibility A))
   let C := R.twoDiscCover.sectionSevenCuspWangBandCompatibility_of_canonicalMap
     R.homologyAlignment hBoundary hMarking
-  have hSquare := C.connectingNaturality.square
+  have hSquare := C.connectingNaturality
   rw [actualCuspMarkedWangComposite_eq_rawCoordinateFive] at hSquare
   constructor
   · have hFour := DFunLike.congr_fun hSquare
@@ -126,7 +137,12 @@ public theorem cuspPulledBackMarkedInvariantBasisData_of_fullFiberInvariantResid
         A.cuspAngularRegularBasePoint A.affineActualCuspCrossingTime)
     (R : A.AffineRadialCompletionInput)
     (h : ActualCuspWangFullFiberSliceInvariantResidual R) :
-    CuspPulledBackMarkedInvariantBasisData R :=
+    ((R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
+        (R.twoDiscCover.cuspPulledBackBoundaryHom
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) = 0 ∧
+      (R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
+        (R.twoDiscCover.cuspPulledBackBoundaryHom
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) = 1) :=
   cuspPulledBackMarkedInvariantBasisData_of_fullFiberOrientedBoundaryNaturality hmark R
     ((fullFiberOrientedBoundaryNaturality_iff_invariantResidual R).mpr h)
 

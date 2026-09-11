@@ -192,7 +192,12 @@ public theorem cuspPulledBackMarkedInvariantBasisData_of_adaptiveCarrierCompatib
         A.cuspAngularRegularBasePoint A.affineActualCuspCrossingTime)
     (R : A.AffineRadialCompletionInput)
     (h : ActualCuspAdaptiveBoundaryCarrierCompatibility R) :
-    CuspPulledBackMarkedInvariantBasisData R :=
+    ((R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
+        (R.twoDiscCover.cuspPulledBackBoundaryHom
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) = 0 ∧
+      (R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
+        (R.twoDiscCover.cuspPulledBackBoundaryHom
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) = 1) :=
   cuspPulledBackMarkedInvariantBasisData_of_fullFiberOrientedBoundaryNaturality hmark R
     (fullFiberOrientedBoundaryNaturality_of_adaptiveCarrierCompatibility R h)
 

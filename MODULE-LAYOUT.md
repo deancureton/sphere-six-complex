@@ -40,7 +40,8 @@ For a smaller import, select an individual module, for example
 `SphereSixComplex.Paper.Final`.
 
 The initial folder separation preserved declaration names. Naming cleanup follows
-[NAMING.md](NAMING.md). Some prerequisite declarations still retain
+[NAMING.md](NAMING.md), and mathematical interfaces follow [API-DESIGN.md](API-DESIGN.md).
+Some prerequisite declarations still retain
 historical namespaces containing `Paper` or `SectionSeven`; these names do not express an import
 dependency. Module imports use the new paths. No compatibility copies of the old modules are
 kept.

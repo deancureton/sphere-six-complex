@@ -67,7 +67,11 @@ public theorem canonicalCuspFiberToBand_fourthCoordinate
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   have hMarking :
-      R.twoDiscCover.CanonicalCuspFiberBandPeriodMarking R.homologyAlignment :=
+      (R.homologyAlignment.actualHomologyCoordinates.bandOne.toAddMonoidHom.comp
+             R.twoDiscCover.canonicalCuspFiberToBandHomologyOne =
+           let G := A.actualCuspRadialClutchingData
+           let _ := G.fiberTopology
+           G.monodromyCoordinates.degreeOne.toAddMonoidHom) :=
     R.twoDiscCover.canonicalCuspFiberBandPeriodMarking_of_orderThree R.homologyAlignment
       (R.canonicalCuspFiberOrderThreePeriodMarking
         (cuspFiberPeriodMarkingCompatibility A))
@@ -86,7 +90,12 @@ coordinate, with the canonical Wang boundary. -/
 public theorem
     cuspPulledBackMarkedInvariantBasisData_iff_canonicalMarkedHeightPreimageBoundary
     (R : A.AffineRadialCompletionInput) :
-    CuspPulledBackMarkedInvariantBasisData R ↔
+    ((R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
+        (R.twoDiscCover.cuspPulledBackBoundaryHom
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) = 0 ∧
+      (R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
+        (R.twoDiscCover.cuspPulledBackBoundaryHom
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) = 1) ↔
       (R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment).comp
           R.twoDiscCover.cuspPulledBackBoundaryHom =
         (R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment).comp
@@ -95,10 +104,9 @@ public theorem
   rw [cuspPulledBackMarkedInvariantBasisData_iff_markedConnectingNaturality]
   constructor
   · intro h
-    rw [h.square, ← AddMonoidHom.comp_assoc,
+    rw [h, ← AddMonoidHom.comp_assoc,
       canonicalCuspFiberToBand_fourthCoordinate R]
   · intro h
-    constructor
     rw [h, ← AddMonoidHom.comp_assoc,
       canonicalCuspFiberToBand_fourthCoordinate R]
 
@@ -107,11 +115,17 @@ calculation.  The cover in this statement is the genuine height-preimage cover a
 does not assume either impossible fixed refinement. -/
 public theorem cuspPulledBackMarkedInvariantBasisData_of_canonicalHeightPreimageBoundary
     (R : A.AffineRadialCompletionInput)
-    (h : R.twoDiscCover.CanonicalCuspWangBoundaryNaturality) :
-    CuspPulledBackMarkedInvariantBasisData R := by
+    (h : (R.twoDiscCover.canonicalCuspFiberToBandHomologyOne.comp (actualCuspWangBoundaryHom A) =
+              R.twoDiscCover.cuspPulledBackBoundaryHom)) :
+    ((R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
+        (R.twoDiscCover.cuspPulledBackBoundaryHom
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) = 0 ∧
+      (R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
+        (R.twoDiscCover.cuspPulledBackBoundaryHom
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) = 1) := by
   apply
     (cuspPulledBackMarkedInvariantBasisData_iff_canonicalMarkedHeightPreimageBoundary R).2
-  rw [CanonicalCuspWangBoundaryNaturality] at h
+
   rw [h]
 
 end EllipticTwoDiscCoverData

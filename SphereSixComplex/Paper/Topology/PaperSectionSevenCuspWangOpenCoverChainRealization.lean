@@ -89,10 +89,11 @@ namespace ActualCuspWangOpenCoverChainRealization
 /-- The explicit chain realization implies the formerly axiomatized unmarked boundary square. -/
 public theorem canonicalWangBoundaryNaturality
     (R : D.ActualCuspWangOpenCoverChainRealization) :
-    D.CanonicalCuspWangBoundaryNaturality := by
+    (D.canonicalCuspFiberToBandHomologyOne.comp (actualCuspWangBoundaryHom A) =
+         D.cuspPulledBackBoundaryHom) := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
-  rw [CanonicalCuspWangBoundaryNaturality, R.fiberToBand_homology,
+  rw [R.fiberToBand_homology,
     AddMonoidHom.comp_assoc,
     R.wangBoundary_eq_chainConnecting, ← D.cuspPulledBackBoundaryHom_eq_comp]
 

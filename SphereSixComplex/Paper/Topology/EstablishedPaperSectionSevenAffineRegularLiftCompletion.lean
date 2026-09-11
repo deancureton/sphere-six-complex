@@ -50,35 +50,11 @@ public theorem affineMarkedRetractionInput_nonempty (A : PaperAnalyticData) :
           rw [affineBandOrderFourMarkedProjection_eq_coverMap]
           exact (affineRegularLiftMarkedBandHomotopies A).orderFour }
 
-/-- The normalized marked band squares supply the affine overlap compatibility. -/
-public theorem affineOverlapBandCompatibility (A : PaperAnalyticData) :
-    A.AffineOverlapBandCompatibility := by
-  let G := (affineMarkedRetractionInput_nonempty A).some
-  refine { orderThree := ?_, orderFour := ?_ }
-  · let h := orderThreeOverlapIsHomotopyEquivalence_inclusion
-      A.orderThreeOverlapIsHomotopyEquivalence
-    have hRetraction : h.toHomotopyEquiv.toFun.Homotopic G.orderThree.retraction.toFun :=
-      homotopyEquiv_toFun_homotopic_of_invFun_eq _ _
-        (h.toHomotopyEquiv_invFun.trans G.orderThree.invFun_eq.symm)
-    rw [affineOrderThreeBandToReducedFiber_eq_bandMapOfRetraction]
-    rw [← affineBandOrderThreeMarkedProjection_eq_coverMap A]
-    exact (affineOrderThreeBandMapOfRetraction_homotopic hRetraction).trans
-      G.orderThree.markedSquare
-  · let h := orderFourOverlapIsHomotopyEquivalence_inclusion
-      A.orderFourOverlapIsHomotopyEquivalence
-    have hRetraction : h.toHomotopyEquiv.toFun.Homotopic G.orderFour.retraction.toFun :=
-      homotopyEquiv_toFun_homotopic_of_invFun_eq _ _
-        (h.toHomotopyEquiv_invFun.trans G.orderFour.invFun_eq.symm)
-    rw [affineOrderFourBandToReducedFiber_eq_bandMapOfRetraction]
-    rw [← affineBandOrderFourMarkedProjection_eq_coverMap A]
-    exact (affineOrderFourBandMapOfRetraction_homotopic hRetraction).trans
-      G.orderFour.markedSquare
-
 /-- Collar shrinks give the overlap equivalences, and normalized radial bounds give the
 marked band homotopies. Together they supply the full affine completion. -/
 public theorem affineOverlapCompletionInput (A : PaperAnalyticData) :
     A.AffineOverlapCompletionInput :=
-  (affineOverlapBandCompatibility A).toOverlapCompletionInput
+  (affineRegularLiftMarkedBandHomotopies A).toOverlapCompletionInput
 
 /-- Exact drop-in replacement for the former broad radial-completion existence assumption. -/
 public theorem affineRadialCompletionInput_nonempty
