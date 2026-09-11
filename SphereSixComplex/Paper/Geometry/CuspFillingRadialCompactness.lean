@@ -191,20 +191,20 @@ action. -/
 public noncomputable abbrev PhaseCorrectedToricQuotient
     {M : Model} {r : ℝ} (C : LocalHolomorphicPhaseCoefficients M r)
     (F : C.IsFree) :=
-  letI := (C.toCuspActionData F).psiAction
+  letI := C.toCuspActionData.psiAction
   MulAction.orbitRel.Quotient (Multiplicative ParameterLattice) (localCarrier M r)
 
 /-- The height radius descended to a phase-corrected toric quotient. -/
 @[expose] public noncomputable def phaseCorrectedQuotientRadius
     {M : Model} {r : ℝ} (C : LocalHolomorphicPhaseCoefficients M r)
     (F : C.IsFree) : PhaseCorrectedToricQuotient C F → ℝ := by
-  let _ := (C.toCuspActionData F).psiAction
+  let _ := C.toCuspActionData.psiAction
   exact Quotient.lift (fun p : localCarrier M r ↦ ‖M.t p‖) (by
     intro p q hpq
     change MulAction.orbitRel (Multiplicative ParameterLattice) _ p q at hpq
     rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff] at hpq
     obtain ⟨lambda, rfl⟩ := hpq
-    exact congrArg norm ((C.toCuspActionData F).preserves_t lambda q))
+    exact congrArg norm (C.toCuspActionData.preserves_t lambda q))
 
 @[simp]
 public theorem phaseCorrectedQuotientRadius_mk
@@ -290,7 +290,7 @@ public theorem phaseCorrectedQuotientRadiusSublevel_isCompact
     (a : ℝ) (ha : 0 ≤ a) (har : a < r) :
     IsCompact {y : PhaseCorrectedToricQuotient C F |
       phaseCorrectedQuotientRadius C F y ≤ a} := by
-  let _ := (C.toCuspActionData F).psiAction
+  let _ := C.toCuspActionData.psiAction
   obtain ⟨K, hK, hKsub, hcover⟩ := H.compact_fundamental_domain a ha har
   let R : Setoid (localCarrier M r) :=
     MulAction.orbitRel (Multiplicative ParameterLattice) _
@@ -309,8 +309,8 @@ public theorem phaseCorrectedQuotientRadiusSublevel_isCompact
         (C.psiMap lambda p) p
       rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff]
       refine ⟨Multiplicative.ofAdd lambda, ?_⟩
-      change (C.toCuspActionData F).psiMap lambda p = C.psiMap lambda p
-      exact (C.psiMap_eq_generic F lambda p).symm
+      change C.toCuspActionData.psiMap lambda p = C.psiMap lambda p
+      exact (C.psiMap_eq_generic lambda p).symm
     · rintro ⟨q, hq, hqp⟩
       change phaseCorrectedQuotientRadius C F (Quotient.mk _ p) ≤ a
       rw [← hqp, phaseCorrectedQuotientRadius_mk]
@@ -559,7 +559,7 @@ public theorem actual_exists_twoChart_bounded_representative_of_eq_zero
   let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
     W.localWitness.radius_pos W.localWitness.radius_le
   let F := W.localWitness.fixedPoint
-  let _ := (C.toCuspActionData F).psiAction
+  let _ := C.toCuspActionData.psiAction
   let b := W.localWitness.radius / 2
   have hbpos : 0 < b := div_pos W.localWitness.radius_pos (by norm_num)
   have hbr : b < W.localWitness.radius := by
@@ -600,18 +600,18 @@ public theorem actual_exists_twoChart_bounded_representative_of_eq_zero
     (cuspNeighborhood M W.localWitness.radius).isOpen.locallyCompactSpace
   let _ : IsCancelSMul (Multiplicative ParameterLattice)
       (localCarrier M W.localWitness.radius) :=
-    (C.toCuspActionData F).action_free
+    C.isCancelSMul F
   let _ : ProperlyDiscontinuousSMul (Multiplicative ParameterLattice)
       (localCarrier M W.localWitness.radius) :=
-    C.properlyDiscontinuous F W.localWitness.compactOverlap
+    C.properlyDiscontinuous W.localWitness.compactOverlap
   let _ : ContinuousConstSMul (Multiplicative ParameterLattice)
       (localCarrier M W.localWitness.radius) := by
     constructor
     intro gamma
-    convert (C.genericPsiMap_holomorphic F
+    convert (C.genericPsiMap_holomorphic
       (Multiplicative.toAdd gamma)).continuous using 1
     funext q
-    exact (C.toCuspActionData F).psi_smul (Multiplicative.toAdd gamma) q
+    exact C.toCuspActionData.psi_smul (Multiplicative.toAdd gamma) q
   let _ : T2Space (Quotient R) := by infer_instance
   have hquotientCoreCompact : IsCompact quotientCore :=
     hK.image continuous_quot_mk
@@ -642,8 +642,8 @@ public theorem actual_exists_twoChart_bounded_representative_of_eq_zero
       (C.psiMap lambda q) q
     rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff]
     refine ⟨Multiplicative.ofAdd lambda, ?_⟩
-    change (C.toCuspActionData F).psiMap lambda q = C.psiMap lambda q
-    exact (C.psiMap_eq_generic F lambda q).symm
+    change C.toCuspActionData.psiMap lambda q = C.psiMap lambda q
+    exact (C.psiMap_eq_generic lambda q).symm
   have htorus : Dense {q : M.Carrier | M.t q ≠ 0} := by
     rw [← M.torus_range]
     exact M.torus_dense
@@ -671,7 +671,7 @@ public theorem actual_exists_twoChart_bounded_representative_of_eq_zero
   obtain ⟨gamma, hgamma⟩ := hrel
   let lambda := Multiplicative.toAdd gamma
   have hpsi : C.psiMap lambda p = q := by
-    rw [C.psiMap_eq_generic F]
+    rw [C.psiMap_eq_generic]
     change gamma • p = q
     exact hgamma
   change (q : M.Carrier) ∈ carrierCore at hqK

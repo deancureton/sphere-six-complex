@@ -271,12 +271,12 @@ public theorem orderFourCayleyRadiusBand_isCompact
         N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
     let _ : MulAction (Multiplicative ParameterLattice)
         (localCarrier M W.localWitness.radius) :=
-      (C.toCuspActionData W.localWitness.fixedPoint).psiAction
+      C.toCuspActionData.psiAction
     change MulAction.orbitRel (Multiplicative ParameterLattice) _ p q at hpq
     rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff] at hpq
     obtain ⟨gamma, rfl⟩ := hpq
     exact congrArg norm
-      ((C.toCuspActionData W.localWitness.fixedPoint).preserves_t gamma q))
+      (C.toCuspActionData.preserves_t gamma q))
 
 public theorem actualLocalCuspFillingRadius_continuous
     {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}

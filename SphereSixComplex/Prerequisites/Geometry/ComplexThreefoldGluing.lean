@@ -1,13 +1,13 @@
 module
 
-public import SphereSixComplex.Paper.Construction
+public import SphereSixComplex.Prerequisites.Geometry.ComplexThreefold
 public import SphereSixComplex.Prerequisites.Geometry.Gluing
 
 /-!
 # Complex threefolds obtained by gluing
 
-This file connects the generic topological gluing construction to the exact complex-threefold
-contract used by the main theorem.
+A finite connected gluing with a compatible complex atlas is a compact complex threefold
+when the glued space is compact, Hausdorff, and second countable.
 -/
 
 open scoped ContDiff Manifold
@@ -16,8 +16,7 @@ namespace SphereSixComplex
 
 noncomputable section
 
-/-- A finite connected gluing of compact complex pieces, with compatible complex and underlying
-real atlases, supplies the precise compact complex-threefold object used by the construction. -/
+/-- A compact connected gluing with compatible complex atlases is a complex threefold. -/
 @[expose] public noncomputable def complexThreefoldOfGluing (D : TopCat.GlueData)
     [Finite D.J] [Nonempty D.J] [∀ i, Nonempty (D.U i)]
     [∀ i, ConnectedSpace (D.U i)]
@@ -25,16 +24,12 @@ real atlases, supplies the precise compact complex-threefold object used by the 
     [T2Space (GluedSpace D)] [SecondCountableTopology (GluedSpace D)]
     (hcomplex : GluingAtlasCompatible
       (I := modelWithCornersSelf ℂ ComplexModel) (n := ∞) D)
-    (hreal : @IsManifold ℝ inferInstance RealModel inferInstance inferInstance RealModel
-      inferInstance (modelWithCornersSelf ℝ RealModel) ∞ (GluedSpace D) inferInstance
-      (underlyingRealChartedSpace (gluedChartedSpace D)))
     (hcompact : CompactSpace (GluedSpace D))
     (hconnected : GluingIntersectionGraphConnected D) : ComplexThreefold where
   Carrier := GluedSpace D
   topology := inferInstance
   charts := gluedChartedSpace D
   manifold := isManifold_gluedChartedSpace D hcomplex
-  realManifold := hreal
   compact := hcompact
   connected := connectedSpace_gluedSpace D hconnected
   t2 := inferInstance

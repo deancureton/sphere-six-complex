@@ -30,16 +30,16 @@ public theorem actualLocalCuspFilling_secondCountable
       N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
   let _ : MulAction (Multiplicative ParameterLattice)
       (localCarrier M W.localWitness.radius) :=
-    (C.toCuspActionData W.localWitness.fixedPoint).psiAction
+    C.toCuspActionData.psiAction
   let hdeck : ∀ gamma : Multiplicative ParameterLattice,
       ContMDiff (modelWithCornersSelf ℂ ComplexModel)
         (modelWithCornersSelf ℂ ComplexModel) ∞
         (fun p : localCarrier M W.localWitness.radius ↦ gamma • p) := by
     intro gamma
-    convert C.genericPsiMap_holomorphic W.localWitness.fixedPoint
+    convert C.genericPsiMap_holomorphic
       (Multiplicative.toAdd gamma) using 1
     funext p
-    exact (C.toCuspActionData W.localWitness.fixedPoint).psi_smul
+    exact C.toCuspActionData.psi_smul
       (Multiplicative.toAdd gamma) p
   let _ : ContinuousConstSMul (Multiplicative ParameterLattice)
       (localCarrier M W.localWitness.radius) :=

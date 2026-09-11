@@ -601,15 +601,10 @@ public noncomputable def restrictActualLocalCuspQuotientWitness
   phaseLog_dominates p hp :=
     W.phaseLog_dominates (localCarrierInclusion M hrW p) hp
   fixedPoint := by
-    constructor
-    · intro lambda p hp hfixed
-      apply W.fixedPoint.offCentral lambda (localCarrierInclusion M hrW p) hp
-      rw [← localCarrierInclusion_psiMap N M hr W.radius_pos hrW W.radius_le]
-      exact congrArg (localCarrierInclusion M hrW) hfixed
-    · intro lambda p hp hfixed
-      apply W.fixedPoint.central lambda (localCarrierInclusion M hrW p) hp
-      rw [← localCarrierInclusion_psiMap N M hr W.radius_pos hrW W.radius_le]
-      exact congrArg (localCarrierInclusion M hrW) hfixed
+    intro lambda p hfixed
+    apply W.fixedPoint lambda (localCarrierInclusion M hrW p)
+    rw [← localCarrierInclusion_psiMap N M hr W.radius_pos hrW W.radius_le]
+    exact congrArg (localCarrierInclusion M hrW) hfixed
   compactOverlap := by
     intro K L hK hL
     let i := localCarrierInclusion M hrW
@@ -1535,7 +1530,7 @@ public noncomputable def actualLocalPsiOrbitRel
   let C :=
     NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
       N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
-  letI := (C.toCuspActionData W.localWitness.fixedPoint).psiAction
+  letI := C.toCuspActionData.psiAction
   MulAction.orbitRel (Multiplicative ParameterLattice) _
 
 /-- The full actual local cusp filling at the common quantitative radius. -/
@@ -1546,7 +1541,7 @@ public noncomputable abbrev ActualLocalCuspFilling
   let C :=
     NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
       N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
-  letI := (C.toCuspActionData W.localWitness.fixedPoint).psiAction
+  letI := C.toCuspActionData.psiAction
   MulAction.orbitRel.Quotient (Multiplicative ParameterLattice)
     (localCarrier M W.localWitness.radius)
 
@@ -1569,14 +1564,14 @@ public noncomputable def puncturedLocalCuspToFilling
         N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
     let _ : MulAction (Multiplicative ParameterLattice)
         (localCarrier M W.localWitness.radius) :=
-      (C.toCuspActionData W.localWitness.fixedPoint).psiAction
+      C.toCuspActionData.psiAction
     change MulAction.orbitRel (Multiplicative ParameterLattice) _ p.1 q.1
     rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff]
     refine ⟨lambda, ?_⟩
     change puncturedPsiMap W (Multiplicative.toAdd lambda) q = p at hlambda
     rw [show lambda = Multiplicative.ofAdd (Multiplicative.toAdd lambda) from rfl,
-      (C.toCuspActionData W.localWitness.fixedPoint).psi_smul,
-      ← C.psiMap_eq_generic W.localWitness.fixedPoint]
+      C.toCuspActionData.psi_smul,
+      ← C.psiMap_eq_generic]
     exact congrArg Subtype.val hlambda)
 
 @[simp]
@@ -1612,19 +1607,19 @@ public theorem puncturedLocalCuspToFilling_injective
           N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
       let _ : MulAction (Multiplicative ParameterLattice)
           (localCarrier M W.localWitness.radius) :=
-        (C.toCuspActionData W.localWitness.fixedPoint).psiAction
+        C.toCuspActionData.psiAction
       change MulAction.orbitRel (Multiplicative ParameterLattice) _ p.1 q.1 at hrel
       rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff] at hrel
       obtain ⟨lambda, hlambda⟩ := hrel
       rw [show lambda = Multiplicative.ofAdd (Multiplicative.toAdd lambda) from rfl,
-        (C.toCuspActionData W.localWitness.fixedPoint).psi_smul] at hlambda
+        C.toCuspActionData.psi_smul] at hlambda
       let _ : MulAction (Multiplicative ParameterLattice)
           {p : localCarrier M W.localWitness.radius // M.t p ≠ 0} := puncturedPsiAction W
       change MulAction.orbitRel (Multiplicative ParameterLattice) _ p q
       rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff]
       refine ⟨lambda, ?_⟩
       apply Subtype.ext
-      exact (C.psiMap_eq_generic W.localWitness.fixedPoint _ _).trans hlambda
+      exact (C.psiMap_eq_generic _ _).trans hlambda
 
 public theorem puncturedLocalCuspToFilling_isOpenMap
     {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
@@ -1636,14 +1631,14 @@ public theorem puncturedLocalCuspToFilling_isOpenMap
       N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
   let _ : MulAction (Multiplicative ParameterLattice)
       (localCarrier M W.localWitness.radius) :=
-    (C.toCuspActionData W.localWitness.fixedPoint).psiAction
+    C.toCuspActionData.psiAction
   let _ : ContinuousConstSMul (Multiplicative ParameterLattice)
       (localCarrier M W.localWitness.radius) := ⟨by
     intro lambda
     rw [show lambda = Multiplicative.ofAdd (Multiplicative.toAdd lambda) from rfl]
-    change Continuous ((C.toCuspActionData W.localWitness.fixedPoint).psiMap
+    change Continuous (C.toCuspActionData.psiMap
       (Multiplicative.toAdd lambda))
-    exact (C.genericPsiMap_holomorphic W.localWitness.fixedPoint _).continuous⟩
+    exact (C.genericPsiMap_holomorphic _).continuous⟩
   let _ : Setoid (localCarrier M W.localWitness.radius) :=
     MulAction.orbitRel (Multiplicative ParameterLattice) _
   have ht : Continuous (fun p : localCarrier M W.localWitness.radius ↦ M.t p) :=
@@ -1698,7 +1693,7 @@ public noncomputable def actualLocalCuspFillingCharts
       N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
   let _ : MulAction (Multiplicative ParameterLattice)
       (localCarrier M W.localWitness.radius) :=
-    (C.toCuspActionData W.localWitness.fixedPoint).psiAction
+    C.toCuspActionData.psiAction
   let hf := W.localWitness.quotient_isQuotientCoveringMap
   exact hf.isCoveringMap.isLocalHomeomorph.chartedSpace hf.surjective
 
@@ -1726,7 +1721,7 @@ public theorem actualLocalCuspFilling_projection_isLocalDiffeomorph
       N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
   let _ : MulAction (Multiplicative ParameterLattice)
       (localCarrier M W.localWitness.radius) :=
-    (C.toCuspActionData W.localWitness.fixedPoint).psiAction
+    C.toCuspActionData.psiAction
   let _ : LocallyCompactSpace M.Carrier :=
     ChartedSpace.locallyCompactSpace ComplexModel M.Carrier
   let _ : LocallyCompactSpace (localCarrier M W.localWitness.radius) :=
@@ -1737,10 +1732,10 @@ public theorem actualLocalCuspFilling_projection_isLocalDiffeomorph
         (modelWithCornersSelf ℂ ComplexModel) (↑(⊤ : ℕ∞) : WithTop ℕ∞)
         (fun p : localCarrier M W.localWitness.radius ↦ gamma • p) := by
     intro gamma
-    convert C.genericPsiMap_holomorphic W.localWitness.fixedPoint
+    convert C.genericPsiMap_holomorphic
       (Multiplicative.toAdd gamma) using 1
     funext p
-    exact (C.toCuspActionData W.localWitness.fixedPoint).psi_smul
+    exact C.toCuspActionData.psi_smul
       (Multiplicative.toAdd gamma) p
   let _ : ContinuousConstSMul (Multiplicative ParameterLattice)
       (localCarrier M W.localWitness.radius) :=

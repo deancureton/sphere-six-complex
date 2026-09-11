@@ -186,11 +186,6 @@ public theorem beta_cocycle_at_zTwo (F : PeriodFunctions U) :
 
 end PeriodFunctions
 
-/-- The exact analytic existence assertion remaining from Theorem 3.4 for a fixed
-triangle-orbifold uniformization. -/
-public def Theorem3_4Existence (U : TriangleUniformization) : Prop :=
-  Nonempty (PeriodFunctions U)
-
 @[ext]
 public theorem Parameters.ext {x y : Parameters} (htau : x.tau = y.tau)
     (hmu : x.mu = y.mu) (hbeta : x.beta = y.beta) : x = y := by
@@ -381,13 +376,13 @@ public noncomputable def CanonicalMuBetaData.toPeriodFunctions
 /-- Solving the two remaining additive functional equations proves the canonical case of Theorem
 3.4. -/
 public theorem theorem3_4Existence_canonical_of_muBeta (D : CanonicalMuBetaData) :
-    Theorem3_4Existence canonicalTriangleUniformization :=
+    Nonempty (PeriodFunctions canonicalTriangleUniformization) :=
   ⟨D.toPeriodFunctions⟩
 
 /-- The pre-data form of the paper's torsor argument implies the canonical Theorem 3.4 existence
 statement after the final imaginary shift. -/
 public theorem theorem3_4Existence_canonical_of_preData (D : CanonicalMuBetaPreData) :
-    Theorem3_4Existence canonicalTriangleUniformization := by
+    Nonempty (PeriodFunctions canonicalTriangleUniformization) := by
   obtain ⟨E⟩ := D.exists_shiftedData
   exact theorem3_4Existence_canonical_of_muBeta E
 

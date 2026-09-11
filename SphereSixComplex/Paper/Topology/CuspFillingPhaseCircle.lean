@@ -61,8 +61,8 @@ public theorem localCuspPeriodCircle_equivariant
   let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
     N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
   change localPhaseActionEquiv M W.localWitness.radius (cuspPeriodPhaseCircle i z)
-    ((C.toCuspActionData W.localWitness.fixedPoint).psiMap (Multiplicative.toAdd g) p) =
-    (C.toCuspActionData W.localWitness.fixedPoint).psiMap (Multiplicative.toAdd g)
+    (C.toCuspActionData.psiMap (Multiplicative.toAdd g) p) =
+    C.toCuspActionData.psiMap (Multiplicative.toAdd g)
       (localPhaseActionEquiv M W.localWitness.radius (cuspPeriodPhaseCircle i z) p)
   rw [← C.psiMap_eq_generic, ← C.psiMap_eq_generic]
   exact localPhaseActionEquiv_psiMap C _ _ _

@@ -17,8 +17,8 @@ public def localHeightPreservingCircleAction (M : Model) (r : ℝ)
     change M.t (M.torusAction (g z.1) z.2) ∈ Metric.ball 0 r
     rw [M.t_torusAction, hg, Units.val_one, one_mul]
     exact z.2.property⟩
-  continuous_toFun := ((continuousTorusAction M).variable_action
-    (g.continuous.comp continuous_fst) (continuous_subtype_val.comp continuous_snd)).subtype_mk _
+  continuous_toFun := ((continuous_torusAction M).comp
+    ((g.continuous.comp continuous_fst).prodMk (continuous_subtype_val.comp continuous_snd))).subtype_mk _
 
 public theorem localHeightPreservingCircleSweep_zero (M : Model) (r : ℝ) (hr : 0 < r)
     (g : C(UnitAddCircle, DenseTorus)) (hg : ∀ z, g z 2 = 1)

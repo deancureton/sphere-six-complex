@@ -48,7 +48,7 @@ public def localCuspPeriodLift
     dsimp only at h
     rw [add_zero] at h
     erw [CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients.psiMap_eq_generic
-      _ W.localWitness.fixedPoint] at h
+      _] at h
     exact h.symm
 
 public def localCuspPeriodLoop

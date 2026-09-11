@@ -84,7 +84,7 @@ public theorem constructedA2ActualDeck_effectivePhase_carrier
     apply Subtype.ext
     rw [C.psiMap_coe, frozenLocalPsiMap_coe, p.property]
     rfl
-  change (((C.toCuspActionData W.localWitness.fixedPoint).psiMap lambda p.1).1 :
+  change ((C.toCuspActionData.psiMap lambda p.1).1 :
     constructedModel.Carrier) = _
   rw [← C.psiMap_eq_generic, hactual]
   exact (constructedA2FrozenDeck_effectivePhase_formula W.localWitness.radius lambda k

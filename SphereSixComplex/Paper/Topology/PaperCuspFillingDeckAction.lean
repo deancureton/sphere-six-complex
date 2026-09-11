@@ -40,7 +40,7 @@ variable {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
       (localCarrier M W.localWitness.radius) := by
   let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
     N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
-  let _ := (C.toCuspActionData W.localWitness.fixedPoint).psiAction
+  let _ := C.toCuspActionData.psiAction
   exact MulAction.compHom _ paperCuspFillingDeckEquiv.toMonoidHom
 
 @[simp]
@@ -51,7 +51,7 @@ public theorem paperCuspFillingDeck_smul_apply
     let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
       N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
     letI := paperCuspFillingDeckAction W
-    g • p = (C.toCuspActionData W.localWitness.fixedPoint).psiMap
+    g • p = C.toCuspActionData.psiMap
       (paperCuspFillingDeckEquiv g).toAdd p :=
   rfl
 
@@ -63,7 +63,7 @@ public theorem actualCuspFillingProjection_isQuotientCoveringMap_fillingDeck
       paperCuspBoundaryDeckData.FillingDeck := by
   let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
     N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
-  let _ := (C.toCuspActionData W.localWitness.fixedPoint).psiAction
+  let _ := C.toCuspActionData.psiAction
   have h := actualCuspFillingProjection_isQuotientCoveringMap W
   let _ := paperCuspFillingDeckAction W
   refine {
@@ -79,7 +79,7 @@ public theorem actualCuspFillingProjection_isQuotientCoveringMap_fillingDeck
       rw [MulAction.mem_orbit_iff]
       refine ⟨paperCuspFillingDeckEquiv.symm g, ?_⟩
       rw [paperCuspFillingDeck_smul_apply, MulEquiv.apply_symm_apply]
-      rw [← (C.toCuspActionData W.localWitness.fixedPoint).psi_smul]
+      rw [← C.toCuspActionData.psi_smul]
       exact hg
     · rw [MulAction.mem_orbit_iff]
       rintro ⟨g, hg⟩
@@ -88,7 +88,7 @@ public theorem actualCuspFillingProjection_isQuotientCoveringMap_fillingDeck
       change paperCuspFillingDeckEquiv g • b = a
       rw [show paperCuspFillingDeckEquiv g =
           Multiplicative.ofAdd (paperCuspFillingDeckEquiv g).toAdd from rfl]
-      rw [(C.toCuspActionData W.localWitness.fixedPoint).psi_smul]
+      rw [C.toCuspActionData.psi_smul]
       simpa only [paperCuspFillingDeck_smul_apply] using hg
   · intro p
     obtain ⟨U, hU, hdisjoint⟩ := h.disjoint p
@@ -104,7 +104,7 @@ public theorem actualCuspFillingProjection_isQuotientCoveringMap_fillingDeck
     change paperCuspFillingDeckEquiv g • x = y
     rw [show paperCuspFillingDeckEquiv g =
         Multiplicative.ofAdd (paperCuspFillingDeckEquiv g).toAdd from rfl]
-    rw [(C.toCuspActionData W.localWitness.fixedPoint).psi_smul]
+    rw [C.toCuspActionData.psi_smul]
     exact hxy
 
 /-- A rank-four period translation of the additive cover becomes the residual parameter-lattice
@@ -217,7 +217,7 @@ public theorem additiveCuspFillingLift_paperCuspBoundaryDeck_smul
     additiveCuspFillingLift_angularTranslate]
   exact (NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
     N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le).psiMap_eq_generic
-      W.localWitness.fixedPoint _ _
+      _ _
 
 end Geometry.CuspPuncturedCollarBridge
 

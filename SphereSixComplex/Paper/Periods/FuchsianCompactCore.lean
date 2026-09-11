@@ -27,7 +27,7 @@ by the Schur-bound argument. -/
 full nondegenerate period family. -/
 public theorem FuchsianPrePeriodData.theorem3_4Existence_of_triangleCover
     (D : FuchsianPrePeriodData) (hcover : FuchsianFundamentalTriangleCovers) :
-    Theorem3_4Existence D.toFuchsianModularParameter.toTriangleUniformization :=
+    Nonempty (PeriodFunctions D.toFuchsianModularParameter.toTriangleUniformization) :=
   D.theorem3_4Existence (fuchsianQuotientCompactCore D.toFuchsianModularParameter hcover)
 
 end SphereSixComplex.Periods

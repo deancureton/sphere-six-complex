@@ -10,7 +10,7 @@ run_cmd do
   let mut worklist : Array Name :=
     #[`SphereSixComplex.exists_paperGluingData_from_sectionSeven,
       `SphereSixComplex.Geometry.PaperAnalyticData.toPaperGluingData_of_positiveDegree,
-      `SphereSixComplex.exists_completedPaperThreefold_of_paperGluingData,
+      `SphereSixComplex.exists_simplyConnected_complexThreefold,
       `SphereSixComplex.Geometry.PaperAnalyticData.stageTopDegreeVanishing,
       `SphereSixComplex.Geometry.PaperAnalyticData.actualStarHasVanKampenData]
   let mut checked : Std.HashSet Name := {}

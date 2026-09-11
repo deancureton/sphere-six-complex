@@ -323,16 +323,14 @@ public theorem constructedA2PhaseCorrectedHexagonPoint_continuousOn
       (Metric.closedBall 0 1) := by
   rw [continuousOn_iff_continuous_domRestrict, continuous_induced_rng,
     continuous_induced_rng]
-  let J := continuousTorusAction constructedModel
-  apply J.variable_action
-  · exact continuous_compactTorusEmbedding.comp
-      ((constructedA2HoneycombCompactPhaseCorrection_continuous (N := N)).comp
-        ((constructedA2CorrectedHexagonHomeomorph 0).continuous.comp
-          continuous_subtype_val))
-  · have hp := (continuousOn_iff_continuous_domRestrict.mp
-      (constructedA2CorrectedPositiveHexagonMap_continuousOn
-        W.localWitness.radius_pos 0)).subtype_val.subtype_val.subtype_val
-    simpa only [constructedA2PositiveCentralPoint, Set.domRestrict_apply] using hp
+  have hg := continuous_compactTorusEmbedding.comp
+    ((constructedA2HoneycombCompactPhaseCorrection_continuous (N := N)).comp
+      ((constructedA2CorrectedHexagonHomeomorph 0).continuous.comp
+        (continuous_subtype_val (p := fun x : Fin 2 → ℝ ↦ x ∈ Metric.closedBall 0 1))))
+  have hp := (continuousOn_iff_continuous_domRestrict.mp
+    (constructedA2CorrectedPositiveHexagonMap_continuousOn
+      W.localWitness.radius_pos 0)).subtype_val.subtype_val.subtype_val
+  exact (continuous_torusAction constructedModel).comp (hg.prodMk hp)
 
 public theorem constructedA2PhaseCorrectedHexagonOrbit_continuousOn
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :

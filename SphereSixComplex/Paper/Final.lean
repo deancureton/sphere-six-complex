@@ -4,11 +4,11 @@ public import SphereSixComplex.Paper.Topology.PaperSectionSevenCompletion
 public import SphereSixComplex.Prerequisites.Topology.EstablishedRecognition
 
 /-!
-# Final construction and recognition
+# A complex structure on the standard six-sphere
 
-The paper-specific gluing is assembled before the two established smooth-recognition inputs are
-applied. Keeping this module downstream of `PaperAssembly` allows the existence proof to use the
-actual geometric and topological construction data.
+The four-piece construction produces a simply connected compact complex threefold whose
+integral homology agrees degreewise with that of the six-sphere. Smooth sphere recognition
+then gives a diffeomorphism, along which the complex atlas is transported.
 -/
 
 open scoped ContDiff Manifold
@@ -20,30 +20,21 @@ overlap maps provide the exact finite gluing data consumed by the assembly theor
 public theorem exists_paperGluingData : Nonempty PaperGluingData := by
   exact exists_paperGluingData_from_sectionSeven
 
-/-- The verified assembly map turns the paper's gluing data into a completed threefold. -/
-public theorem exists_completedPaperThreefold : Nonempty CompletedPaperThreefold :=
-  exists_completedPaperThreefold_of_paperGluingData exists_paperGluingData
+/-- The glued threefold is simply connected and has the integral homology of the six-sphere. -/
+public theorem exists_simplyConnected_complexThreefold :
+    ∃ X : ComplexThreefold, SimplyConnectedSpace X.Carrier ∧
+      ∀ k : ℕ, Nonempty
+        (IntegralSingularHomology k X.Carrier ≃+ IntegralSingularHomology k SixSphere) := by
+  obtain ⟨A⟩ := exists_paperGluingData
+  exact ⟨A.toComplexThreefold, A.simplyConnectedSpace, A.integralHomology⟩
 
-/-- The dimension-six smooth recognition step required for the completed paper threefold. -/
-public theorem completedPaperThreefold_smoothRecognition (C : CompletedPaperThreefold) :
-    letI := C.X.topology
-    letI := underlyingRealChartedSpace C.X.charts
-    SmoothSixSphereRecognitionObligation C.X.Carrier := by
-  let _ : TopologicalSpace C.X.Carrier := C.X.topology
-  let _ : ChartedSpace RealModel C.X.Carrier :=
-    underlyingRealChartedSpace C.X.charts
-  let _ : T2Space C.X.Carrier := C.X.t2
-  let _ : SecondCountableTopology C.X.Carrier := C.X.secondCountable
-  exact smoothSixSphereRecognition
-
-/-- The minimal construction-and-recognition theorem extracted from the source's two-page summary. -/
+/-- The underlying real manifold of a compact complex threefold is diffeomorphic to standard S⁶. -/
 public theorem exists_complex_threefold_diffeomorphic_sixSphere :
-    ∃ X : ComplexThreefold, DiffeomorphicToSixSphere X := by
-  obtain ⟨C⟩ := exists_completedPaperThreefold
-  refine ⟨C.X, ?_⟩
-  let _ : TopologicalSpace C.X.Carrier := C.X.topology
-  let _ : ChartedSpace RealModel C.X.Carrier := underlyingRealChartedSpace C.X.charts
-  exact completedPaperThreefold_smoothRecognition C C.smoothRecognitionInput
+    ∃ X : ComplexThreefold,
+      Nonempty (Diffeomorph 𝓘(ℝ, RealModel) 𝓘(ℝ, RealModel) X.Carrier SixSphere ∞) := by
+  obtain ⟨X, hπ, hH⟩ := exists_simplyConnected_complexThreefold
+  let := hπ
+  exact ⟨X, SmoothSixSphere.nonempty_diffeomorph hH⟩
 
 /-- The construction already yields a complex atlas on the topological six-sphere. -/
 public theorem sixSphere_admits_topological_complex_structure :

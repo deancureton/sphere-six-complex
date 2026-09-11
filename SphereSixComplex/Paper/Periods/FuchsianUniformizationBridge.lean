@@ -104,7 +104,7 @@ variable (D : FuchsianPrePeriodData)
 data and a compact core for the concrete Fuchsian quotient. -/
 public theorem theorem3_4Existence (K : QuotientCompactCore
     D.toFuchsianModularParameter.toTriangleUniformization) :
-    Theorem3_4Existence D.toFuchsianModularParameter.toTriangleUniformization :=
+    Nonempty (PeriodFunctions D.toFuchsianModularParameter.toTriangleUniformization) :=
   show Nonempty (PeriodFunctions D.toFuchsianModularParameter.toTriangleUniformization) from
     D.toPrePeriodFunctions.exists_shiftedPeriodFunctions K
 

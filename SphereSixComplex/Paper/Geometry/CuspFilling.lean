@@ -98,9 +98,7 @@ public theorem shearVector_surjective : Function.Surjective shearVector := by
   refine ⟨B₀Inv *ᵥ y, ?_⟩
   simp [shearVector, Matrix.mulVec_mulVec, B₀_mul_inv]
 
-/-- The toric and analytic data needed to realize the phase-corrected maps `Psi_lambda`.
-The two fixed-point fields are the conclusions of the two estimates in Theorem 4.5, Step 1;
-`compact_overlap_finite` is the chart estimate of Steps 2--3. -/
+/-- Algebraic data defining the phase-corrected lattice action. -/
 public structure CuspActionData (Y Phase : Type*) [CommGroup Phase] where
   t : Y → ℂ
   toricShear : ParameterLattice →+ Additive (Equiv.Perm Y)
@@ -114,12 +112,6 @@ public structure CuspActionData (Y Phase : Type*) [CommGroup Phase] where
   shear_phase_commute : ∀ lambda c p,
     Additive.toMul (toricShear lambda) (phaseAction c p) =
       phaseAction c (Additive.toMul (toricShear lambda) p)
-  fixed_off_central : ∀ lambda p, t p ≠ 0 →
-    phaseAction (phase lambda (t p)) (Additive.toMul (toricShear lambda) p) = p →
-      lambda = 0
-  fixed_central : ∀ lambda p, t p = 0 →
-    phaseAction (phase lambda (t p)) (Additive.toMul (toricShear lambda) p) = p →
-      lambda = 0
 
 namespace CuspActionData
 
@@ -203,7 +195,7 @@ public theorem centralFiber_invariant (lambda : Multiplicative ParameterLattice)
     D.t (lambda • p) = 0 ↔ D.t p = 0 := by
   rw [D.preserves_t]
 
-public theorem action_free :
+public theorem isCancelSMul (hfree : ∀ lambda p, D.psiMap lambda p = p → lambda = 0) :
     letI := D.psiAction
     IsCancelSMul (Multiplicative ParameterLattice) Y := by
   let _ := D.psiAction
@@ -212,9 +204,7 @@ public theorem action_free :
   apply Multiplicative.toAdd.injective
   change Multiplicative.toAdd lambda = 0
   change D.psiMap (Multiplicative.toAdd lambda) p = p at hp
-  by_cases ht : D.t p = 0
-  · exact D.fixed_central _ _ ht hp
-  · exact D.fixed_off_central _ _ ht hp
+  exact hfree _ _ hp
 
 public theorem properlyDiscontinuous [TopologicalSpace Y]
     (hcompact : ∀ K L : Set Y, IsCompact K → IsCompact L →
@@ -238,6 +228,7 @@ public theorem quotient_isQuotientCoveringMap
     {Y Phase : Type*} [CommGroup Phase] [TopologicalSpace Y]
     [T2Space Y] [LocallyCompactSpace Y]
     (D : CuspActionData Y Phase)
+    (hfree : letI := D.psiAction; IsCancelSMul (Multiplicative ParameterLattice) Y)
     (hcontinuous : ∀ lambda : ParameterLattice, Continuous (D.psiMap lambda))
     (hcompact : ∀ K L : Set Y, IsCompact K → IsCompact L →
       {lambda : ParameterLattice |
@@ -247,7 +238,7 @@ public theorem quotient_isQuotientCoveringMap
       (Quotient.mk (MulAction.orbitRel (Multiplicative ParameterLattice) Y))
       (Multiplicative ParameterLattice) := by
   let _ := D.psiAction
-  let _ : IsCancelSMul (Multiplicative ParameterLattice) Y := D.action_free
+  let _ : IsCancelSMul (Multiplicative ParameterLattice) Y := hfree
   let _ : ContinuousConstSMul (Multiplicative ParameterLattice) Y :=
     ⟨by
       intro lambda
@@ -262,6 +253,7 @@ public theorem quotient_chartedSpace
     {Y Phase H : Type*} [CommGroup Phase] [TopologicalSpace Y] [TopologicalSpace H]
     [T2Space Y] [LocallyCompactSpace Y] [ChartedSpace H Y]
     (D : CuspActionData Y Phase)
+    (hfree : letI := D.psiAction; IsCancelSMul (Multiplicative ParameterLattice) Y)
     (hcontinuous : ∀ lambda : ParameterLattice, Continuous (D.psiMap lambda))
     (hcompact : ∀ K L : Set Y, IsCompact K → IsCompact L →
       {lambda : ParameterLattice |
@@ -270,7 +262,7 @@ public theorem quotient_chartedSpace
     Nonempty (ChartedSpace H
       (MulAction.orbitRel.Quotient (Multiplicative ParameterLattice) Y)) := by
   let _ := D.psiAction
-  let _ : IsCancelSMul (Multiplicative ParameterLattice) Y := D.action_free
+  let _ : IsCancelSMul (Multiplicative ParameterLattice) Y := hfree
   let _ : ContinuousConstSMul (Multiplicative ParameterLattice) Y :=
     ⟨by
       intro lambda
@@ -627,12 +619,13 @@ public theorem cuspQuotient_isManifold
     (I : ModelWithCorners ℂ E H)
     [T2Space Y] [LocallyCompactSpace Y] [ChartedSpace H Y] [IsManifold I ω Y]
     (D : CuspActionData Y Phase)
+    (hfree : letI := D.psiAction; IsCancelSMul (Multiplicative ParameterLattice) Y)
     (hholomorphic : ∀ lambda : ParameterLattice, ContMDiff I I ω (D.psiMap lambda))
     (hcompact : ∀ K L : Set Y, IsCompact K → IsCompact L →
       {lambda : ParameterLattice |
         (D.psiMap lambda '' K ∩ L).Nonempty}.Finite) :
     letI := D.psiAction
-    let hf := quotient_isQuotientCoveringMap D
+    let hf := quotient_isQuotientCoveringMap D hfree
       (fun lambda ↦ (hholomorphic lambda).continuous) hcompact
     letI : ChartedSpace H
       (MulAction.orbitRel.Quotient (Multiplicative ParameterLattice) Y) :=
@@ -645,7 +638,7 @@ public theorem cuspQuotient_isManifold
       intro gamma
       change Continuous (D.psiMap (Multiplicative.toAdd gamma))
       exact (hholomorphic _).continuous⟩
-  let hf := quotient_isQuotientCoveringMap D
+  let hf := quotient_isQuotientCoveringMap D hfree
     (fun lambda ↦ (hholomorphic lambda).continuous) hcompact
   let _ : ChartedSpace H
       (MulAction.orbitRel.Quotient (Multiplicative ParameterLattice) Y) :=
@@ -662,12 +655,13 @@ public theorem cuspQuotient_projection_isLocalDiffeomorph
     (I : ModelWithCorners ℂ E H)
     [T2Space Y] [LocallyCompactSpace Y] [ChartedSpace H Y] [IsManifold I ω Y]
     (D : CuspActionData Y Phase)
+    (hfree : letI := D.psiAction; IsCancelSMul (Multiplicative ParameterLattice) Y)
     (hholomorphic : ∀ lambda : ParameterLattice, ContMDiff I I ω (D.psiMap lambda))
     (hcompact : ∀ K L : Set Y, IsCompact K → IsCompact L →
       {lambda : ParameterLattice |
         (D.psiMap lambda '' K ∩ L).Nonempty}.Finite) :
     letI := D.psiAction
-    let hf := quotient_isQuotientCoveringMap D
+    let hf := quotient_isQuotientCoveringMap D hfree
       (fun lambda ↦ (hholomorphic lambda).continuous) hcompact
     let hdeck : ∀ gamma : Multiplicative ParameterLattice,
         ContMDiff I I ω fun y : Y ↦ gamma • y := fun gamma ↦ by
@@ -689,7 +683,7 @@ public theorem cuspQuotient_projection_isLocalDiffeomorph
       intro gamma
       change Continuous (D.psiMap (Multiplicative.toAdd gamma))
       exact (hholomorphic _).continuous⟩
-  let hf := quotient_isQuotientCoveringMap D
+  let hf := quotient_isQuotientCoveringMap D hfree
     (fun lambda ↦ (hholomorphic lambda).continuous) hcompact
   let hdeck : ∀ gamma : Multiplicative ParameterLattice,
       ContMDiff I I ω fun y : Y ↦ gamma • y := fun gamma ↦ by
@@ -733,6 +727,7 @@ public theorem quotient_isManifold_zero
     (I : ModelWithCorners ℂ E H)
     [T2Space Y] [LocallyCompactSpace Y] [ChartedSpace H Y] [IsManifold I ω Y]
     (D : CuspActionData Y Phase)
+    (hfree : letI := D.psiAction; IsCancelSMul (Multiplicative ParameterLattice) Y)
     (hholomorphic : ∀ lambda : ParameterLattice, ContMDiff I I ω (D.psiMap lambda))
     (hcompact : ∀ K L : Set Y, IsCompact K → IsCompact L →
       {lambda : ParameterLattice |
@@ -740,13 +735,13 @@ public theorem quotient_isManifold_zero
     letI := D.psiAction
     letI : ChartedSpace H
       (MulAction.orbitRel.Quotient (Multiplicative ParameterLattice) Y) :=
-      (quotient_chartedSpace D (fun lambda ↦ (hholomorphic lambda).continuous) hcompact).some
+      (quotient_chartedSpace D hfree (fun lambda ↦ (hholomorphic lambda).continuous) hcompact).some
     IsManifold I 0
       (MulAction.orbitRel.Quotient (Multiplicative ParameterLattice) Y) := by
   let _ := D.psiAction
   let _ : ChartedSpace H
       (MulAction.orbitRel.Quotient (Multiplicative ParameterLattice) Y) :=
-    (quotient_chartedSpace D (fun lambda ↦ (hholomorphic lambda).continuous) hcompact).some
+    (quotient_chartedSpace D hfree (fun lambda ↦ (hholomorphic lambda).continuous) hcompact).some
   infer_instance
 
 /-- For the induced quotient atlas, the quotient projection is a `C⁰` local diffeomorphism.
@@ -757,6 +752,7 @@ public theorem quotient_projection_isLocalDiffeomorph_zero
     (I : ModelWithCorners ℂ E H)
     [T2Space Y] [LocallyCompactSpace Y] [ChartedSpace H Y] [IsManifold I ω Y]
     (D : CuspActionData Y Phase)
+    (hfree : letI := D.psiAction; IsCancelSMul (Multiplicative ParameterLattice) Y)
     (hholomorphic : ∀ lambda : ParameterLattice, ContMDiff I I ω (D.psiMap lambda))
     (hcompact : ∀ K L : Set Y, IsCompact K → IsCompact L →
       {lambda : ParameterLattice |
@@ -764,15 +760,15 @@ public theorem quotient_projection_isLocalDiffeomorph_zero
     letI := D.psiAction
     letI : ChartedSpace H
       (MulAction.orbitRel.Quotient (Multiplicative ParameterLattice) Y) :=
-      (quotient_chartedSpace D (fun lambda ↦ (hholomorphic lambda).continuous) hcompact).some
+      (quotient_chartedSpace D hfree (fun lambda ↦ (hholomorphic lambda).continuous) hcompact).some
     IsLocalDiffeomorph I I 0
       (Quotient.mk (MulAction.orbitRel (Multiplicative ParameterLattice) Y)) := by
   let _ := D.psiAction
   let _ : ChartedSpace H
       (MulAction.orbitRel.Quotient (Multiplicative ParameterLattice) Y) :=
-    (quotient_chartedSpace D (fun lambda ↦ (hholomorphic lambda).continuous) hcompact).some
+    (quotient_chartedSpace D hfree (fun lambda ↦ (hholomorphic lambda).continuous) hcompact).some
   apply isLocalDiffeomorph_zero_of_isLocalHomeomorph
-  exact (quotient_isQuotientCoveringMap D
+  exact (quotient_isQuotientCoveringMap D hfree
     (fun lambda ↦ (hholomorphic lambda).continuous) hcompact).isCoveringMap _ _
     |>.isLocalHomeomorph
 

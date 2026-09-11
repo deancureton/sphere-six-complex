@@ -303,26 +303,16 @@ public theorem CechPresentation.hasCuspBoundedSection
     D.gluedSection_two S.sectionZero S.sectionInfinity,
     D.gluedSection_sub_cusp_bounded S.sectionInfinity_holomorphic hcompat⟩
 
-/-- Local quotient-chart trivializations are the only remaining input after the proved
-projective-line Cech vanishing. -/
-@[expose] public noncomputable def CechPresentation.toCousinCechReduction
-    {P : OrbifoldAffineDescentData} (D : P.CechPresentation)
-    (frame : AcyclicProjectiveLineFrame)
-    (hframe : P.frameTransition = frame.transition) : P.CousinCechReduction where
-  frame := frame
-  torsor := D.projectiveLineTorsor frame
-  correctionOfSplitting := fun S ↦ Classical.choice
-    (P.nonempty_correction_of_hasCuspBoundedSection
-      (D.hasCuspBoundedSection frame hframe S))
-
 /-- The full cusp-bounded Cousin correction follows from genuinely local Cech data. -/
 public theorem nonempty_cuspBoundedCorrection_of_cechPresentation
     (P : OrbifoldAffineDescentData)
     (D : P.CechPresentation) (frame : AcyclicProjectiveLineFrame)
     (hframe : P.frameTransition = frame.transition) :
-    Nonempty P.CuspBoundedCorrection :=
-  P.nonempty_cuspBoundedCorrection_of_cechReduction
-    (D.toCousinCechReduction frame hframe)
+    Nonempty P.CuspBoundedCorrection := by
+  obtain ⟨S⟩ := (D.projectiveLineTorsor frame).nonempty_splitting_of_hOne_vanishes
+    frame.hOne_vanishes
+  exact P.nonempty_correction_of_hasCuspBoundedSection
+    (D.hasCuspBoundedSection frame hframe S)
 
 end OrbifoldAffineDescentData
 

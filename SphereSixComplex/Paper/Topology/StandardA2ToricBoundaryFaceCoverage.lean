@@ -405,7 +405,7 @@ public theorem exists_actualCentral_deck_translate_singleAxis
     exact ⟨g, rfl⟩
   · have hchart : translateChartIndex lambda a = (a.1, v) := by
       simp [translateChartIndex, hlambda]
-    change (((C.toCuspActionData W.localWitness.fixedPoint).psiMap lambda p.1).1 : Carrier) = _
+    change ((C.toCuspActionData.psiMap lambda p.1).1 : Carrier) = _
     rw [← C.psiMap_eq_generic, C.psiMap_coe]
     change carrierTorusActionFun c (carrierFanShearFun lambda (p.1.1 : Carrier)) = _
     rw [hp, carrierFanShearFun_inclusion, hchart, carrierTorusActionFun_inclusion]

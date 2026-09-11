@@ -35,8 +35,8 @@ public theorem evaluateCharacter_mul (m : FanLattice) (g x : DenseTorus) :
 In a unimodular affine chart the action is coordinatewise multiplication by the characters dual
 to the cone rays; that formula is jointly continuous, and it agrees with the action on the dense
 torus, hence on the whole chart source by density and separation. -/
-public theorem continuousTorusAction (M : Model) : ContinuousTorusAction M := by
-  constructor
+public theorem continuous_torusAction (M : Model) :
+    Continuous (fun z : DenseTorus × M.Carrier ↦ M.torusAction z.1 z.2) := by
   rw [continuous_iff_continuousAt]
   rintro ⟨g₀, p₀⟩
   obtain ⟨upper, v, hp₀⟩ := M.toricChart_cover p₀

@@ -409,8 +409,9 @@ public theorem exists_shrunk_isFree
   refine ⟨r, hr_pos, hradius, ?_⟩
   let C := restrictedActualLocalPhaseCoefficients N M r hr_pos hradius
   change C.IsFree
-  constructor
-  · intro lambda p ht hfixed
+  intro lambda p hfixed
+  by_cases ht : M.t p ≠ 0
+  ·
     have hpball : ‖M.t p‖ < r := mem_ball_zero_iff.mp p.property
     have hq : M.t p ∈ Metric.closedBall (0 : ℂ) rho := by
       rw [mem_closedBall_zero_iff]
@@ -426,7 +427,7 @@ public theorem exists_shrunk_isFree
       linarith
     exact offCentral_fixedPoint_of_log_dominates N M C rfl hR lambda p hq
       hdominates ht hfixed
-  · intro lambda p ht hfixed
+  · have ht : M.t p = 0 := not_ne_iff.mp ht
     exact
       LocalHolomorphicPhaseCoefficients.central_fixedPointEstimate
         C Q lambda p ht hfixed

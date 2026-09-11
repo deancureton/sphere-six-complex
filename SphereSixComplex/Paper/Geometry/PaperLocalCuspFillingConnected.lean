@@ -177,7 +177,7 @@ public theorem actualLocalCuspFilling_connected
       N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
   let _ : MulAction (Multiplicative ParameterLattice)
       (localCarrier M W.localWitness.radius) :=
-    (C.toCuspActionData W.localWitness.fixedPoint).psiAction
+    C.toCuspActionData.psiAction
   let _ : ConnectedSpace (localCarrier M W.localWitness.radius) :=
     localCarrier_connected M W.localWitness.radius_pos
   exact Quotient.mk_surjective.connectedSpace continuous_quot_mk

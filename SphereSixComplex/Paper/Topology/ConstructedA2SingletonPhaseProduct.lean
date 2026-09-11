@@ -48,11 +48,19 @@ public theorem constructedA2ClosedPhaseCellMap_continuous
   apply continuous_quotient_mk'.comp
   apply Continuous.subtype_mk
   apply Continuous.subtype_mk
-  let J := continuousTorusAction constructedModel
-  apply J.variable_action
-  · exact continuous_compactTorusEmbedding.comp
+  have hg : Continuous (fun p : ConstructedA2ClosedPhaseCell W.localWitness.radius ↦
+      compactTorusEmbedding (constructedA2EffectivePhaseSection p.2)) :=
+    continuous_compactTorusEmbedding.comp
       (constructedA2EffectivePhaseSection_continuous.comp continuous_snd)
-  · fun_prop
+  have hp : Continuous (fun p : ConstructedA2ClosedPhaseCell W.localWitness.radius ↦
+      (p.1.1.1.1.1 : constructedModel.Carrier)) := by fun_prop
+  simp only [constructedA2PositiveCentralPoint]
+  exact Continuous.comp
+    (f := fun p : ConstructedA2ClosedPhaseCell W.localWitness.radius ↦
+      (compactTorusEmbedding (constructedA2EffectivePhaseSection p.2),
+        (p.1.1.1.1.1 : constructedModel.Carrier)))
+    (g := fun z : DenseTorus × constructedModel.Carrier ↦ constructedModel.torusAction z.1 z.2)
+    (continuous_torusAction constructedModel) (hg.prodMk hp)
 
 public theorem constructedA2ClosedPhaseCellMap_isProperMap
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :

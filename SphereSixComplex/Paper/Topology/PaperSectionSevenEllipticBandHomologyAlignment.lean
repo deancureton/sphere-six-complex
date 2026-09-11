@@ -74,8 +74,10 @@ variable {A : PaperAnalyticData} {S : A.CentralHeightSplit}
 
 /-- The canonical period-coordinate identifications in a genuine height-split radial input
 induce the same integral period basis from both sides of its central band. -/
-public theorem CentralHeightSplit.RadialInput.bandHomologyAlignment
-    (R : S.RadialInput) :
+public theorem CentralHeightSplit.RadialHomotopyData.bandHomologyAlignment
+    {bandHomotopyEquiv : centralHeightBand S.height S.lower S.upper ≃ₕ
+      AdditiveTorus A.duplicatedSectionSevenBandParameter}
+    (R : S.RadialHomotopyData bandHomotopyEquiv) :
     A.EllipticBandHomologyAlignment
       R.toRadialRealization.toSectionSevenEllipticTwoDiscCoverData where
   degreeOne z := by
@@ -92,7 +94,7 @@ public theorem CentralHeightSplit.RadialInput.bandHomologyAlignment
           A.modular.modularParameter.toTriangleUniformization.zTwo).1
         (AnalyticTorusFamily.parameterMap A.periods
           A.modular.modularParameter.toTriangleUniformization.zTwo).2)).1 z
-    dsimp only [CentralHeightSplit.RadialInput.toRadialRealization,
+    dsimp only [CentralHeightSplit.RadialHomotopyData.toRadialRealization,
       EllipticCentralAllocation.RadialRealization.toSectionSevenEllipticTwoDiscCoverData,
       duplicatedSectionSevenBandToOrderThreeCoverSource,
       duplicatedSectionSevenBandToOrderFourCoverSource,
@@ -141,7 +143,7 @@ public theorem CentralHeightSplit.RadialInput.bandHomologyAlignment
           A.modular.modularParameter.toTriangleUniformization.zTwo).1
         (AnalyticTorusFamily.parameterMap A.periods
           A.modular.modularParameter.toTriangleUniformization.zTwo).2)).2 z
-    dsimp only [CentralHeightSplit.RadialInput.toRadialRealization,
+    dsimp only [CentralHeightSplit.RadialHomotopyData.toRadialRealization,
       EllipticCentralAllocation.RadialRealization.toSectionSevenEllipticTwoDiscCoverData,
       duplicatedSectionSevenBandToOrderThreeCoverSource,
       duplicatedSectionSevenBandToOrderFourCoverSource,

@@ -49,7 +49,7 @@ public def actualLocalCuspCentralFiber : Set (localCarrier M W.localWitness.radi
   let C :=
     NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
       N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
-  (C.toCuspActionData W.localWitness.fixedPoint).psiAction
+  C.toCuspActionData.psiAction
 
 /-- Continuity of the actual phase-corrected lattice action. -/
 public theorem actualLocalPsiContinuousConstSMul :
@@ -63,9 +63,9 @@ public theorem actualLocalPsiContinuousConstSMul :
   exact ⟨by
     intro lambda
     rw [show lambda = Multiplicative.ofAdd (Multiplicative.toAdd lambda) from rfl]
-    change Continuous ((C.toCuspActionData W.localWitness.fixedPoint).psiMap
+    change Continuous (C.toCuspActionData.psiMap
       (Multiplicative.toAdd lambda))
-    exact (C.genericPsiMap_holomorphic W.localWitness.fixedPoint _).continuous⟩
+    exact (C.genericPsiMap_holomorphic _).continuous⟩
 
 /-- The exact prequotient datum still needed from the toric construction in Proposition 7.2. -/
 public structure ActualLocalCuspCentralFiberRetractionData where

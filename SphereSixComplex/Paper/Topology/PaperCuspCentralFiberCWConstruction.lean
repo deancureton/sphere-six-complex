@@ -44,7 +44,7 @@ public noncomputable def actualLocalCuspCentralSubMulAction
   let C :=
     NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
       N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
-  change M.t ((C.toCuspActionData W.localWitness.fixedPoint).psiMap
+  change M.t (C.toCuspActionData.psiMap
     (Multiplicative.toAdd g) p : localCarrier M W.localWitness.radius) = 0
   rw [← C.psiMap_eq_generic, C.psiMap_preserves_t]
   exact hp

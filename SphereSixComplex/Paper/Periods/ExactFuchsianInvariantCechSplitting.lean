@@ -1,7 +1,8 @@
 module
 
 public import SphereSixComplex.Paper.Periods.ExactFuchsianInvariantHolomorphicDescent
-public import SphereSixComplex.Paper.Periods.HolomorphicAffineTorsorHOneSplitting
+public import SphereSixComplex.Paper.Periods.OrbifoldAffineTorsorCuspBoundedCousinCorrection
+public import SphereSixComplex.Prerequisites.Periods.ProjectiveLineAffineTorsor
 
 /-!
 # Cech splitting of invariant source cocycles

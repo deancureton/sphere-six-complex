@@ -38,3 +38,6 @@ Affine cyclic quotient homology has its own namespace, and project declarations 
 modules consistently use `fiber` spelling.
 Historical names elsewhere remain candidates for subsequent API migrations; this
 document does not certify that every declaration already follows these conventions.
+
+See [API-DESIGN.md](API-DESIGN.md) for the mathematical criteria governing abstraction and
+statement design; naming alone does not make an interface reviewable.

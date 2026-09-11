@@ -61,21 +61,32 @@ public structure PositiveDegreeHomologyAssembly where
 
 namespace PositiveDegreeHomologyAssembly
 
+/-- The actual degree-one attachment map in the chosen integral coordinates. -/
+public theorem differenceMap_one_coordinates (H : A.PositiveDegreeHomologyAssembly) :
+    H.finalOneTarget.toAddMonoidHom.comp
+        (IntegralMayerVietoris.differenceMap
+          (A.openEmbeddingStarData.sectionSevenMayerVietorisCover.stage (2 : Fin 4))
+          (A.openEmbeddingStarData.sectionSevenMayerVietorisCover.piece 3) 1) =
+      sectionSevenFirstBoundaryHom.comp H.finalOneSource.toAddMonoidHom := by
+  apply AddMonoidHom.ext
+  intro x
+  exact H.finalOne_comm x
+
+/-- The actual degree-two attachment map in the chosen integral coordinates. -/
+public theorem differenceMap_two_coordinates (H : A.PositiveDegreeHomologyAssembly) :
+    H.finalTwoTarget.toAddMonoidHom.comp
+        (IntegralMayerVietoris.differenceMap
+          (A.openEmbeddingStarData.sectionSevenMayerVietorisCover.stage (2 : Fin 4))
+          (A.openEmbeddingStarData.sectionSevenMayerVietorisCover.piece 3) 2) =
+      sectionSevenMayerVietorisFinalTwoHom.comp H.finalTwoSource.toAddMonoidHom := by
+  apply AddMonoidHom.ext
+  intro x
+  exact H.finalTwo_comm x
+
 /-- Insert the proved canonical degree-zero bases and compatibility square. -/
 public noncomputable def toSectionSevenMayerVietorisHomologyAssembly
     (H : A.PositiveDegreeHomologyAssembly) :
     A.openEmbeddingStarData.SectionSevenMayerVietorisHomologyAssembly where
-  pieceModel i k := AddCommGrpCat.of
-    (IntegralSingularHomology k
-      ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece i))
-  pieceEquiv _ _ := AddEquiv.refl _
-  collarModel i k := AddCommGrpCat.of
-    (IntegralSingularHomology k (A.openEmbeddingStarData.collarSource i))
-  collarEquiv _ _ := AddEquiv.refl _
-  stageModel r k := AddCommGrpCat.of
-    (IntegralSingularHomology k
-      ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage r.castSucc))
-  stageEquiv _ _ := AddEquiv.refl _
   finalZeroSource := A.cuspAttachmentOverlapHomologyZeroEquiv
   finalZeroTarget := A.cuspAttachmentSidesHomologyZeroEquiv
   finalZero_comm := A.cuspAttachment_differenceMap_zero_coordinates

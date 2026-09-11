@@ -1,6 +1,7 @@
 module
 
-public import SphereSixComplex.Paper.Geometry.PaperAssembly
+public import SphereSixComplex.Prerequisites.Geometry.ComplexThreefoldGluing
+public import SphereSixComplex.Paper.Topology.FundamentalGroupComputation
 public import SphereSixComplex.Prerequisites.Geometry.FourPieceStarGluing
 public import SphereSixComplex.Prerequisites.Geometry.EstablishedBiholomorphicStarGluing
 public import SphereSixComplex.Prerequisites.Geometry.EstablishedComplexToRealManifold
@@ -9,8 +10,8 @@ public import SphereSixComplex.Paper.Topology.EstablishedMayerVietoris
 /-!
 # Exact gluing data for the completed paper threefold
 
-This module packages every geometric and topological input consumed by `completedPaperThreefoldOfGluing`.
-It is the concrete construction target upstream of the final existence theorem.
+The four-piece gluing gives a compact complex threefold. Its van Kampen presentation
+proves simple connectedness, and its integral homology is stated degree by degree.
 -/
 
 open scoped ContDiff Manifold
@@ -57,7 +58,8 @@ public structure PaperGluingData where
   /-- The selected filling twists give the required van Kampen presentation. -/
   vanKampen : Topology.HasVanKampenData (GluedSpace star.glueData) 0 1 (-1)
   /-- The integral Mayer--Vietoris calculation for the completed star. -/
-  integralHomology : HasIntegralHomologyOfSixSphere (GluedSpace star.glueData)
+  integralHomology : ∀ k : ℕ, Nonempty
+    (IntegralSingularHomology k (GluedSpace star.glueData) ≃+ IntegralSingularHomology k SixSphere)
 
 namespace PaperGluingData
 
@@ -92,43 +94,34 @@ four-piece cover. -/
 public theorem mayerVietorisExactness : FourPieceMayerVietorisExactness A.star.openCover :=
   establishedFourPieceMayerVietorisExactness A.star.openCover
 
-/-- Restricting the glued complex atlas to real scalars supplies its smooth real
-six-manifold atlas. -/
-public theorem underlyingRealManifold :
-    letI := A.star.nonemptyPieceOfCollars A.nonemptyCentralCollar
-    letI := A.connectedPiece
-    letI := A.complexCharts
-    @IsManifold ℝ inferInstance RealModel inferInstance inferInstance RealModel inferInstance
-      (modelWithCornersSelf ℝ RealModel) ∞ (GluedSpace A.glueData) inferInstance
-      (underlyingRealChartedSpace (gluedChartedSpace A.glueData)) := by
-  let _ := A.star.nonemptyPieceOfCollars A.nonemptyCentralCollar
-  let _ := A.connectedPiece
-  let _ := A.complexCharts
-  exact ComplexThreefold.RealAtlas.isManifold
-    (gluedChartedSpace A.glueData) (isManifold_gluedChartedSpace A.glueData A.complexCompatible)
-
-/-- Exact assembly of packaged gluing data into the completed-threefold contract. -/
-@[expose] public noncomputable def toCompletedPaperThreefold : CompletedPaperThreefold := by
-  let _ : Finite A.glueData.J := by
+/-- The compatible piece atlases define a compact complex threefold. -/
+@[expose] public noncomputable def toComplexThreefold : ComplexThreefold := by
+  letI : Finite A.glueData.J := by
     change Finite (Option (Fin 3))
     infer_instance
-  let _ : Nonempty A.glueData.J := by
+  letI : Nonempty A.glueData.J := by
     change Nonempty (Option (Fin 3))
     infer_instance
-  let _ := A.star.nonemptyPieceOfCollars A.nonemptyCentralCollar
-  let _ := A.connectedPiece
-  let _ := A.complexCharts
-  let _ := A.gluedT2
-  let _ := A.gluedSecondCountable
-  exact completedPaperThreefoldOfGluing A.glueData A.complexCompatible A.underlyingRealManifold A.gluedCompact
-    (A.star.intersectionGraphConnected A.nonemptyCentralCollar) A.vanKampen A.integralHomology
+  letI := A.star.nonemptyPieceOfCollars A.nonemptyCentralCollar
+  letI := A.connectedPiece
+  letI := A.complexCharts
+  letI := A.gluedT2
+  letI := A.gluedSecondCountable
+  exact complexThreefoldOfGluing A.glueData A.complexCompatible A.gluedCompact
+    (A.star.intersectionGraphConnected A.nonemptyCentralCollar)
+
+/-- The chosen twists kill the fundamental group of the glued threefold. -/
+public theorem simplyConnectedSpace : SimplyConnectedSpace (GluedSpace A.glueData) := by
+  let : ConnectedSpace (GluedSpace A.glueData) := A.toComplexThreefold.connected
+  let : ChartedSpace ComplexModel (GluedSpace A.glueData) := A.toComplexThreefold.charts
+  let : LocallyPathConnectedSpace (GluedSpace A.glueData) :=
+    ChartedSpace.locallyPathConnectedSpace ComplexModel (GluedSpace A.glueData)
+  let : PathConnectedSpace (GluedSpace A.glueData) :=
+    PathConnectedSpace.of_locallyPathConnectedSpace
+  exact A.vanKampen.simplyConnectedSpace
 
 end PaperGluingData
 
-/-- Constructing the exact packaged gluing data suffices for the completed paper threefold. -/
-public theorem exists_completedPaperThreefold_of_paperGluingData
-    (h : Nonempty PaperGluingData) : Nonempty CompletedPaperThreefold :=
-  h.map PaperGluingData.toCompletedPaperThreefold
 
 end
 

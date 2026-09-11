@@ -197,26 +197,10 @@ public abbrev sectionSevenMayerVietorisCover :=
   sectionSevenMayerVietorisOpenCover A
 
 /-- Homology-level identifications for the final cusp attachment in the source-stated
-Mayer--Vietoris calculation.  The local and partial-stage families expose all comparison objects;
-the final three map squares are the only fields used to derive low-degree vanishing.  The paper's
+Mayer--Vietoris calculation. The three coordinate squares identify the actual difference maps
+and imply low-degree vanishing.  The paper's
 earlier `α₁` and `α₂` maps belong to a different two-set cover and are deliberately not stored here. -/
 public structure SectionSevenMayerVietorisHomologyAssembly where
-  /-- Degreewise models for the four actual open pieces. -/
-  pieceModel : Fin 4 → ℕ → AddCommGrpCat
-  /-- The chosen homology basis for every actual open piece. -/
-  pieceEquiv : ∀ i k,
-    IntegralSingularHomology k ((sectionSevenMayerVietorisCover A).piece i) ≃+
-      pieceModel i k
-  /-- Degreewise models for the three actual collar sources. -/
-  collarModel : Fin 3 → ℕ → AddCommGrpCat
-  /-- The chosen homology basis for every collar source. -/
-  collarEquiv : ∀ i k, IntegralSingularHomology k (A.collarSource i) ≃+ collarModel i k
-  /-- Degreewise models for the three proper prefix stages. -/
-  stageModel : Fin 3 → ℕ → AddCommGrpCat
-  /-- The chosen homology basis for every proper prefix stage. -/
-  stageEquiv : ∀ r k,
-    IntegralSingularHomology k
-      ((sectionSevenMayerVietorisCover A).stage r.castSucc) ≃+ stageModel r k
   /-- The degree-zero basis on the final overlap. -/
   finalZeroSource :
     IntegralSingularHomology 0

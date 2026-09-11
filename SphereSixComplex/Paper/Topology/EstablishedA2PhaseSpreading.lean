@@ -154,7 +154,7 @@ followed by projection away from the compact torus. -/
 public theorem compactPhaseOrbit_isProper
     (M : Model) (r : ℝ) (P : PolarHoneycombData M r) :
     IsProperMap (compactPhaseOrbit M r P.positivePart) := by
-  let J := continuousTorusAction M
+  let J := continuous_torusAction M
   let localAction : CompactTorus × localCarrier M r → localCarrier M r :=
     fun z ↦ ⟨M.torusAction (compactTorusEmbedding z.1) z.2, by
       change M.t (M.torusAction (compactTorusEmbedding z.1) z.2) ∈ Metric.ball 0 r
@@ -164,9 +164,8 @@ public theorem compactPhaseOrbit_isProper
       simpa only [dist_zero_right] using Metric.mem_ball.mp z.2.property⟩
   have hlocalAction : Continuous localAction := by
     rw [continuous_induced_rng]
-    exact J.variable_action
-      (continuous_compactTorusEmbedding.comp continuous_fst)
-      (continuous_subtype_val.comp continuous_snd)
+    exact J.comp ((continuous_compactTorusEmbedding.comp continuous_fst).prodMk
+      (continuous_subtype_val.comp continuous_snd))
   let localActionInv : CompactTorus × localCarrier M r → localCarrier M r :=
     fun z ↦ ⟨M.torusAction (compactTorusEmbedding z.1)⁻¹ z.2, by
       change M.t (M.torusAction (compactTorusEmbedding z.1)⁻¹ z.2) ∈ Metric.ball 0 r
@@ -178,10 +177,9 @@ public theorem compactPhaseOrbit_isProper
       simpa only [dist_zero_right] using Metric.mem_ball.mp z.2.property⟩
   have hlocalActionInv : Continuous localActionInv := by
     rw [continuous_induced_rng]
-    exact J.variable_action
-      (continuous_inv.comp
-        (continuous_compactTorusEmbedding.comp continuous_fst))
-      (continuous_subtype_val.comp continuous_snd)
+    exact J.comp ((continuous_inv.comp
+        (continuous_compactTorusEmbedding.comp continuous_fst)).prodMk
+      (continuous_subtype_val.comp continuous_snd))
   let actionHomeomorph : CompactTorus × localCarrier M r ≃ₜ
       CompactTorus × localCarrier M r := {
     toFun := fun z ↦ (z.1, localAction z)

@@ -7,6 +7,8 @@ public import SphereSixComplex.Prerequisites.Analysis.HolomorphicCocycle
 public import SphereSixComplex.Prerequisites.Analysis.NormalizedCocycle
 public import SphereSixComplex.Prerequisites.ComplexStructure
 public import SphereSixComplex.Prerequisites.Geometry.AtlasTransport
+public import SphereSixComplex.Prerequisites.Geometry.ComplexThreefold
+public import SphereSixComplex.Prerequisites.Geometry.ComplexThreefoldGluing
 public import SphereSixComplex.Prerequisites.Geometry.ClosedRelationGluing
 public import SphereSixComplex.Prerequisites.Geometry.ComplexUnitDisc
 public import SphereSixComplex.Prerequisites.Geometry.EllipticCayleyHomeomorph

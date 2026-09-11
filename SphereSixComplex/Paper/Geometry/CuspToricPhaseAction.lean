@@ -129,20 +129,13 @@ namespace HolomorphicPhaseCoefficients
 
 variable {M : Model} (C : HolomorphicPhaseCoefficients M)
 
-/-- The two fixed-point estimates isolated from the algebraic and holomorphic construction. -/
-public structure IsFree : Prop where
-  offCentral : ∀ lambda p, M.t p ≠ 0 →
-    ToricModel.phaseAction M (C.phase lambda (M.t p))
-        (Additive.toMul (M.fanShear lambda) p) = p →
-      lambda = 0
-  central : ∀ lambda p, M.t p = 0 →
-    ToricModel.phaseAction M (C.phase lambda (M.t p))
-        (Additive.toMul (M.fanShear lambda) p) = p →
-      lambda = 0
+/-- Every point has trivial stabilizer under the phase-corrected action. -/
+public def IsFree : Prop :=
+  ∀ lambda p, ToricModel.phaseAction M (C.phase lambda (M.t p))
+    (Additive.toMul (M.fanShear lambda) p) = p → lambda = 0
 
-/-- Instantiate the generic cusp-action package once the two paper-specific fixed-point
-estimates have been proved. -/
-public def toCuspActionData (F : C.IsFree) :
+/-- The algebraic cusp action defined by the phase coefficients. -/
+public def toCuspActionData :
     CuspActionData M.Carrier Phase where
   t := M.t
   toricShear := M.fanShear
@@ -153,8 +146,7 @@ public def toCuspActionData (F : C.IsFree) :
   shear_preserves_t := M.fanShear_preserves_t
   phase_preserves_t := ToricModel.phaseAction_preserves_t M
   shear_phase_commute := ToricModel.fanShear_phase_commute M
-  fixed_off_central := F.offCentral
-  fixed_central := F.central
+
 
 /-- The specialized phase-corrected map. -/
 public def psiMap (lambda : ParameterLattice) (p : M.Carrier) : M.Carrier :=
@@ -162,9 +154,9 @@ public def psiMap (lambda : ParameterLattice) (p : M.Carrier) : M.Carrier :=
     (Additive.toMul (M.fanShear lambda) p)
 
 @[simp]
-public theorem psiMap_eq_generic (F : C.IsFree)
+public theorem psiMap_eq_generic
     (lambda : ParameterLattice) (p : M.Carrier) :
-    C.psiMap lambda p = (C.toCuspActionData F).psiMap lambda p :=
+    C.psiMap lambda p = C.toCuspActionData.psiMap lambda p :=
   rfl
 
 /-- The phase-corrected maps form an additive action. -/
@@ -212,11 +204,18 @@ public def CompactOverlapEstimate : Prop :=
       (C.psiMap lambda '' K ∩ L).Nonempty}.Finite
 
 /-- A proved compact-overlap estimate supplies the generic proper-discontinuity conclusion. -/
-public theorem properlyDiscontinuous (F : C.IsFree)
+public theorem isCancelSMul (F : C.IsFree) :
+    letI := C.toCuspActionData.psiAction
+    IsCancelSMul (Multiplicative ParameterLattice) M.Carrier := by
+  apply C.toCuspActionData.isCancelSMul
+  intro lambda p hp
+  exact F lambda p hp
+
+public theorem properlyDiscontinuous
     (H : C.CompactOverlapEstimate) :
-    letI := (C.toCuspActionData F).psiAction
+    letI := C.toCuspActionData.psiAction
     ProperlyDiscontinuousSMul (Multiplicative ParameterLattice) M.Carrier := by
-  apply (C.toCuspActionData F).properlyDiscontinuous
+  apply C.toCuspActionData.properlyDiscontinuous
   intro K L hK hL
   change {lambda : ParameterLattice |
     (C.psiMap lambda '' K ∩ L).Nonempty}.Finite

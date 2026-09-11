@@ -2,7 +2,8 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.IntegralMayerVietorisEuler
 public import SphereSixComplex.Prerequisites.Topology.MayerVietorisDegreeZeroBridge
-public import SphereSixComplex.Paper.Topology.SectionSevenSixManifoldCompletion
+public import SphereSixComplex.Prerequisites.Topology.ComplexThreefoldHomology
+public import SphereSixComplex.Paper.Topology.SectionSevenMayerVietorisHomologyAssembly
 
 /-!
 # Euler characteristic of the Section 7 four-piece star
@@ -501,15 +502,18 @@ public theorem hasIntegralHomologyOfSixSphere_of_localEulerCalculation
     (hCollarFinite : ∀ i, IntegralHomologyFiniteSix (A.collarSource i))
     (_hTop : A.SectionSevenStageTopDegreeVanishing)
     (hLocal : A.sectionSevenLocalEulerExpression = 2) :
-    HasIntegralHomologyOfSixSphere (A.SectionSevenMayerVietorisSpace) :=
+    HasIntegralHomologyOfSixSphere (A.SectionSevenMayerVietorisSpace) := by
+  let := hManifold
+  let := hCompact
+  let := hConnected
   let T := ComplexThreefold.integralPoincareUCT
     (A.SectionSevenMayerVietorisSpace) hManifold hCompact
   have hEuler : integralHomologyEulerCharacteristicSix
       (A.SectionSevenMayerVietorisSpace) = 2 := by
     rw [A.integralHomologyEulerCharacteristicSix_eq_localExpression_of_homologyTheory
       T hCentralFinite hFillingFinite hCollarFinite, hLocal]
-  H.hasIntegralHomologyOfSixSphere_of_closedComplexThreefold
-    hManifold hCompact hConnected hEuler
+  exact ComplexThreefold.nonempty_homologyEquiv_sixSphere
+    (A.SectionSevenMayerVietorisSpace) H.homologyOne_subsingleton H.homologyTwo_subsingleton hEuler
 
 end SectionSevenMayerVietorisHomologyAssembly
 

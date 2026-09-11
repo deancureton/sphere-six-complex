@@ -593,7 +593,7 @@ public theorem pointUnstraightening_of_t_eq_zero
 public theorem continuous_pointUnstraightening
     {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
-    (J : ContinuousTorusAction M)
+    (J : Continuous (fun z : DenseTorus × M.Carrier ↦ M.torusAction z.1 z.2))
     (W : ActualPuncturedCuspCollarWitness N M) :
     Continuous (pointUnstraightening W) := by
   have hphase : Continuous
@@ -611,7 +611,7 @@ public theorem continuous_pointUnstraightening
   change Continuous (fun p : localCarrier M W.localWitness.radius ↦
     (⟨M.torusAction (phaseEmbedding (extendedInverseStraighteningPhase W p)) p, _⟩ :
       localCarrier M W.localWitness.radius))
-  exact (J.variable_action hphase continuous_subtype_val).subtype_mk _
+  exact (J.comp (hphase.prodMk continuous_subtype_val)).subtype_mk _
 
 /-- The reconstructed inverse point has the prescribed dense-torus coordinates. -/
 public theorem torusCoordinates_puncturedPointUnstraightening
@@ -891,7 +891,7 @@ continuity interface for the algebraic torus action. -/
 public noncomputable def pointStraighteningHomeomorph
     {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
-    (J : ContinuousTorusAction M)
+    (J : Continuous (fun z : DenseTorus × M.Carrier ↦ M.torusAction z.1 z.2))
     (W : ActualPuncturedCuspCollarWitness N M) :
     localCarrier M W.localWitness.radius ≃ₜ localCarrier M W.localWitness.radius where
   toFun := pointStraightening W

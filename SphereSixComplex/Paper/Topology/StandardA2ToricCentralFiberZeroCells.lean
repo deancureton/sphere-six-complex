@@ -86,7 +86,7 @@ public theorem constructedCentralOrigin_smul_coe
       N constructedModel W.localWitness.radius W.localWitness.radius_pos
         W.localWitness.radius_le
   let _ := actualLocalCuspQuotientAction W
-  change (((C.toCuspActionData W.localWitness.fixedPoint).psiMap
+  change ((C.toCuspActionData.psiMap
     (Multiplicative.toAdd g) (constructedCentralOrigin W upper) :
       localCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) = _
   rw [← C.psiMap_eq_generic, C.psiMap_coe]

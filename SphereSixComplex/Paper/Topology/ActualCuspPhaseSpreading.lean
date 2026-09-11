@@ -105,7 +105,7 @@ public noncomputable def actualLocalCuspCentralFiberRetractionData
       frozenLocalPsiMap N M W.localWitness.radius
         (Multiplicative.toAdd g) (rfHomotopy (s, x)) :=
     Rf.homotopy_equivariant g s x
-  let J := InfiniteA2Toric.continuousTorusAction M
+  let J := InfiniteA2Toric.continuous_torusAction M
   let H := pointStraighteningHomeomorph J W
   let retract : C(localCarrier M W.localWitness.radius,
       localCarrier M W.localWitness.radius) := {
@@ -155,26 +155,26 @@ public noncomputable def actualLocalCuspCentralFiberRetractionData
       N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
     change pointUnstraightening W
         (rfRetract (pointStraightening W
-          ((C.toCuspActionData W.localWitness.fixedPoint).psiMap
+          (C.toCuspActionData.psiMap
             (Multiplicative.toAdd g) x))) =
-      (C.toCuspActionData W.localWitness.fixedPoint).psiMap
+      C.toCuspActionData.psiMap
         (Multiplicative.toAdd g)
           (pointUnstraightening W (rfRetract (pointStraightening W x)))
     rw [pointStraightening_genericPsiMap W, hRf_retract]
-    rw [← C.psiMap_eq_generic W.localWitness.fixedPoint]
+    rw [← C.psiMap_eq_generic]
     exact (actualPsiMap_pointUnstraightening W _ _).symm
   · intro g s x
     let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
       N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
     change pointUnstraightening W
         (rfHomotopy (s, pointStraightening W
-          ((C.toCuspActionData W.localWitness.fixedPoint).psiMap
+          (C.toCuspActionData.psiMap
             (Multiplicative.toAdd g) x))) =
-      (C.toCuspActionData W.localWitness.fixedPoint).psiMap
+      C.toCuspActionData.psiMap
         (Multiplicative.toAdd g)
           (pointUnstraightening W (rfHomotopy (s, pointStraightening W x)))
     rw [pointStraightening_genericPsiMap W, hRf_homotopy]
-    rw [← C.psiMap_eq_generic W.localWitness.fixedPoint]
+    rw [← C.psiMap_eq_generic]
     exact (actualPsiMap_pointUnstraightening W _ _).symm
 
 /-- The established positive-part package selected at the radius of a cusp witness. -/

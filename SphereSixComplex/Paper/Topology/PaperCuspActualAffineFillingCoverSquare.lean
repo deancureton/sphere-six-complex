@@ -92,7 +92,7 @@ public theorem actualCuspFillingProjection_isQuotientCoveringMap
     let C :=
       NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
         N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
-    letI := (C.toCuspActionData W.localWitness.fixedPoint).psiAction
+    letI := C.toCuspActionData.psiAction
     IsQuotientCoveringMap (actualCuspFillingProjection W)
       (Multiplicative ParameterLattice) := by
   exact W.localWitness.quotient_isQuotientCoveringMap
@@ -218,14 +218,14 @@ public theorem cuspFillingProjectionToStar_isQuotientCoveringMap :
       CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
         A.cuspCoordinate A.toricModel A.starCuspWitness.localWitness.radius
           A.starCuspWitness.localWitness.radius_pos A.starCuspWitness.localWitness.radius_le
-    letI := (C.toCuspActionData A.starCuspWitness.localWitness.fixedPoint).psiAction
+    letI := C.toCuspActionData.psiAction
     IsQuotientCoveringMap A.cuspFillingProjectionToStar
       (Multiplicative ParameterLattice) := by
   let C :=
     CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
       A.cuspCoordinate A.toricModel A.starCuspWitness.localWitness.radius
         A.starCuspWitness.localWitness.radius_pos A.starCuspWitness.localWitness.radius_le
-  let _ := (C.toCuspActionData A.starCuspWitness.localWitness.fixedPoint).psiAction
+  let _ := C.toCuspActionData.psiAction
   exact (actualCuspFillingProjection_isQuotientCoveringMap A.starCuspWitness).homeomorph_comp
     A.cuspFillingToStarPieceHomeomorph
 

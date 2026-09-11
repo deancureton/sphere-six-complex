@@ -1,6 +1,8 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.EstablishedCompactSmoothOrientedManifoldHomology
+public import SphereSixComplex.Prerequisites.Topology.SixSphereHomology
+public import SphereSixComplex.Prerequisites.Topology.StandardSphereHomologyZeroCore
 public import Mathlib.AlgebraicTopology.SingularHomology.HomologyZero
 
 @[expose] public section
@@ -41,5 +43,53 @@ public noncomputable def connectedComplexManifoldHomologyZeroEquivInteger
   let _ : PathConnectedSpace X := PathConnectedSpace.of_locallyPathConnectedSpace
   exact (asIso ((TopCat.of X).singularHomology₀ε (AddCommGrpCat.of ℤ)))
     |>.addCommGroupIsoToAddEquiv
+
+/-- A compact connected complex threefold with vanishing first and second integral homology
+and Euler characteristic two has the integral homology of the six-sphere. -/
+public theorem ComplexThreefold.nonempty_homologyEquiv_sixSphere
+    (X : Type) [TopologicalSpace X] [ChartedSpace ComplexModel X]
+    [T2Space X] [SecondCountableTopology X]
+    [IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞ X]
+    [CompactSpace X] [ConnectedSpace X]
+    (hOne : Subsingleton (IntegralSingularHomology 1 X))
+    (hTwo : Subsingleton (IntegralSingularHomology 2 X))
+    (hEuler : integralHomologyEulerCharacteristicSix X = 2) :
+    ∀ k, Nonempty (IntegralSingularHomology k X ≃+ IntegralSingularHomology k SixSphere) := by
+  let T := ComplexThreefold.integralPoincareUCT X inferInstance inferInstance
+  let hZero := connectedComplexManifoldHomologyZeroEquivInteger X inferInstance
+  let hThree :=
+    IntegralPoincareUCTData.Six.subsingleton_homology_three_of_eulerCharacteristic T
+      hZero hOne hTwo hEuler
+  let hFour := IntegralPoincareUCTData.Six.subsingleton_homology_four T hOne hTwo
+  let hFive := IntegralPoincareUCTData.Six.subsingleton_homology_five T hZero hOne
+  let hSix := IntegralPoincareUCTData.Six.homologySixEquivInt T hZero
+  intro k
+  by_cases hk0 : k = 0
+  · subst k
+    exact ⟨hZero.trans sixSphere_integralSingularHomology_zero_equiv_integer.symm⟩
+  by_cases hk6 : k = 6
+  · subst k
+    exact ⟨hSix.trans (Classical.choice sixSpherePositiveHomologyInputs.degreeSix).symm⟩
+  have hActual : Subsingleton (IntegralSingularHomology k X) := by
+    rcases Nat.lt_trichotomy k 3 with hk | rfl | hk
+    · interval_cases k
+      · exact False.elim (hk0 rfl)
+      · exact hOne
+      · exact hTwo
+    · exact hThree
+    · rcases lt_or_ge k 7 with hk7 | hk7
+      · interval_cases k
+        · exact hFour
+        · exact hFive
+        · exact False.elim (hk6 rfl)
+      · exact T.subsingleton_homology_of_lt k (by omega)
+  let := hActual
+  let := sixSpherePositiveHomologyInputs.otherDegrees k hk0 hk6
+  exact ⟨{
+    toFun := 0
+    invFun := 0
+    left_inv := fun _ => Subsingleton.elim _ _
+    right_inv := fun _ => Subsingleton.elim _ _
+    map_add' := fun _ _ => by simp }⟩
 
 end SphereSixComplex

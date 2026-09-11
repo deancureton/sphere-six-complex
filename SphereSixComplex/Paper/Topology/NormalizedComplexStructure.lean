@@ -68,10 +68,10 @@ public theorem NormalizedComplexStructure.toAdmitsComplexStructure
 
 /-- Transporting the atlas of a complex threefold along a diffeomorphism to `S⁶` produces a
 complex structure whose real comparison map is literally the identity. -/
-public theorem normalizedComplexStructure_of_diffeomorphicToSixSphere
-    (X : ComplexThreefold) (hX : DiffeomorphicToSixSphere X) :
+public theorem normalizedComplexStructure_of_diffeomorph
+    (X : ComplexThreefold)
+    (d : Diffeomorph 𝓘(ℝ, RealModel) 𝓘(ℝ, RealModel) X.Carrier SixSphere ∞) :
     Nonempty (NormalizedComplexStructure SixSphere) := by
-  obtain ⟨d⟩ := hX
   let _ : TopologicalSpace X.Carrier := X.topology
   let _ : ChartedSpace ComplexModel X.Carrier := X.charts
   let cReal : ChartedSpace RealModel X.Carrier := underlyingRealChartedSpace X.charts
@@ -127,8 +127,8 @@ public theorem normalizedComplexStructure_of_diffeomorphicToSixSphere
 identity-normalized complex atlas. -/
 public theorem sixSphere_has_normalizedComplexStructure :
     Nonempty (NormalizedComplexStructure SixSphere) := by
-  obtain ⟨X, hX⟩ := exists_complex_threefold_diffeomorphic_sixSphere
-  exact normalizedComplexStructure_of_diffeomorphicToSixSphere X hX
+  obtain ⟨X, ⟨d⟩⟩ := exists_complex_threefold_diffeomorphic_sixSphere
+  exact normalizedComplexStructure_of_diffeomorph X d
 
 end
 

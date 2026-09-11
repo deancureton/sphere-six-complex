@@ -65,10 +65,18 @@ public theorem constructedA2CentralCompactMap_continuous
       constructedA2CentralCompactMap W p.1 p.2) := by
   apply Continuous.subtype_mk
   apply Continuous.subtype_mk
-  apply (continuousTorusAction constructedModel).variable_action
-  · exact continuous_compactTorusEmbedding.comp
+  have hg : Continuous (fun p : (Fin 2 → Circle) × actualLocalCuspCentralSubMulAction W ↦
+      compactTorusEmbedding (constructedA2EffectivePhaseSection p.1)) :=
+    continuous_compactTorusEmbedding.comp
       (constructedA2EffectivePhaseSection_continuous.comp continuous_fst)
-  · fun_prop
+  have hp : Continuous (fun p : (Fin 2 → Circle) × actualLocalCuspCentralSubMulAction W ↦
+      (p.2 : constructedModel.Carrier)) := by fun_prop
+  exact Continuous.comp
+    (f := fun p : (Fin 2 → Circle) × actualLocalCuspCentralSubMulAction W ↦
+      (compactTorusEmbedding (constructedA2EffectivePhaseSection p.1),
+        (p.2 : constructedModel.Carrier)))
+    (g := fun z : DenseTorus × constructedModel.Carrier ↦ constructedModel.torusAction z.1 z.2)
+    (continuous_torusAction constructedModel) (hg.prodMk hp)
 
 public theorem constructedA2CentralCompactOrbitMap_continuous
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :

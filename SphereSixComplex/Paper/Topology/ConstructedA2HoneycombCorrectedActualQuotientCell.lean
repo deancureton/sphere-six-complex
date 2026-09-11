@@ -213,7 +213,7 @@ public theorem constructedA2ActualCentral_parameter_eq_zero_of_singletonSupport
         W.localWitness.radius_le
   let lambda := Multiplicative.toAdd g
   have hphase := hcarrier
-  change (((C.toCuspActionData W.localWitness.fixedPoint).psiMap lambda
+  change ((C.toCuspActionData.psiMap lambda
     (q : localCarrier constructedModel W.localWitness.radius) :
       localCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) =
         ((p : localCarrier constructedModel W.localWitness.radius) :
@@ -278,7 +278,7 @@ public theorem constructedA2ActualCentralOrbitRel_coe_eq_of_singletonSupport
     NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
       N constructedModel W.localWitness.radius W.localWitness.radius_pos
         W.localWitness.radius_le
-  change (((C.toCuspActionData W.localWitness.fixedPoint).psiMap
+  change ((C.toCuspActionData.psiMap
     (Multiplicative.toAdd g) (q : localCarrier constructedModel W.localWitness.radius) :
       localCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) =
         ((p : localCarrier constructedModel W.localWitness.radius) :
@@ -336,7 +336,7 @@ public theorem constructedA2ActualCentralOrbitRel_componentSupport_ncard_eq
       N constructedModel W.localWitness.radius W.localWitness.radius_pos
         W.localWitness.radius_le
   let lambda := Multiplicative.toAdd g
-  change (((C.toCuspActionData W.localWitness.fixedPoint).psiMap lambda
+  change ((C.toCuspActionData.psiMap lambda
     (q : localCarrier constructedModel W.localWitness.radius) :
       localCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) =
         ((p : localCarrier constructedModel W.localWitness.radius) :

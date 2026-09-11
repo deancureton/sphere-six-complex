@@ -1,13 +1,11 @@
 module
 
-public import SphereSixComplex.Paper.Construction
 public import SphereSixComplex.Paper.Final
 public import SphereSixComplex.Paper.Geometry.A2ConeUnimodularity
 public import SphereSixComplex.Paper.Geometry.AdditiveTorusTopology
 public import SphereSixComplex.Paper.Geometry.AnalyticTorusFamily
 public import SphereSixComplex.Paper.Geometry.CompactTorusFamilyOverBase
 public import SphereSixComplex.Paper.Geometry.ComplexModelRechart
-public import SphereSixComplex.Paper.Geometry.ComplexThreefoldGluing
 public import SphereSixComplex.Paper.Geometry.ComplexTorus
 public import SphereSixComplex.Paper.Geometry.CuspAnalyticFillingCollar
 public import SphereSixComplex.Paper.Geometry.CuspCollarPairProperness
@@ -58,7 +56,6 @@ public import SphereSixComplex.Paper.Geometry.GlobalTorusFamily
 public import SphereSixComplex.Paper.Geometry.GlobalTorusFiberFundamentalGroup
 public import SphereSixComplex.Paper.Geometry.PaperAnalyticData
 public import SphereSixComplex.Paper.Geometry.PaperAnalyticFillingPieces
-public import SphereSixComplex.Paper.Geometry.PaperAssembly
 public import SphereSixComplex.Paper.Geometry.PaperBiholomorphicStar
 public import SphereSixComplex.Paper.Geometry.PaperCentralCompactCore
 public import SphereSixComplex.Paper.Geometry.PaperCentralEndCover
@@ -125,7 +122,6 @@ public import SphereSixComplex.Paper.Periods.FuchsianMuTorsor
 public import SphereSixComplex.Paper.Periods.FuchsianPeriodAssembly
 public import SphereSixComplex.Paper.Periods.FuchsianUniformizationBridge
 public import SphereSixComplex.Paper.Periods.Functions
-public import SphereSixComplex.Paper.Periods.HolomorphicAffineTorsorHOneSplitting
 public import SphereSixComplex.Paper.Periods.Invariant
 public import SphereSixComplex.Paper.Periods.Matrix
 public import SphereSixComplex.Paper.Periods.Nondegeneracy
@@ -349,7 +345,6 @@ public import SphereSixComplex.Paper.Topology.EstablishedPaperSectionSevenCuspCo
 public import SphereSixComplex.Paper.Topology.EstablishedSphereHomology
 public import SphereSixComplex.Paper.Topology.FiniteCoverPerfectPairing
 public import SphereSixComplex.Paper.Topology.FullVanKampenReduction
-public import SphereSixComplex.Paper.Topology.FundamentalGroup
 public import SphereSixComplex.Paper.Topology.FundamentalGroupComputation
 public import SphereSixComplex.Paper.Topology.GeometricWangSplitting
 public import SphereSixComplex.Paper.Topology.GlobalInvariantPeriodCircle
@@ -692,7 +687,6 @@ public import SphereSixComplex.Paper.Topology.SectionSevenMayerVietorisGradedAlg
 public import SphereSixComplex.Paper.Topology.SectionSevenMayerVietorisHomologyAssembly
 public import SphereSixComplex.Paper.Topology.SectionSevenNormalizedOrderedCech
 public import SphereSixComplex.Paper.Topology.SectionSevenPaperCoverIdentification
-public import SphereSixComplex.Paper.Topology.SectionSevenSixManifoldCompletion
 public import SphereSixComplex.Paper.Topology.SectionSevenStageTopDegree
 public import SphereSixComplex.Paper.Topology.SectionSevenTransferredChainContraction
 public import SphereSixComplex.Paper.Topology.SquareRadialCircleComparison

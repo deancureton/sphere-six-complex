@@ -18,32 +18,41 @@ open AlgebraicTopology
 namespace SphereSixComplex.Geometry.PaperAnalyticData
 namespace EstablishedSectionSevenCuspTopology
 
-public structure ActualCuspFiberEllipticMarkedCoordinateResidual
-    {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput) : Prop where
-  degreeTwoIndexFive :
-    A.cuspEllipticFiberCoordinate R (correctedCuspDegreeTwoSplitting R)
-      (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) = 1
-
-public theorem establishedActualCuspFiberEllipticMarkedCoordinateResidual
-    {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput) :
-    ActualCuspFiberEllipticMarkedCoordinateResidual R :=
-  ⟨A.cuspEllipticFiberCoordinate_rawFive R (correctedCuspDegreeTwoSplitting R)⟩
-
-public def correctedPositiveDegreeAssembly_of_residual
+public def correctedPositiveDegreeAssembly_of_rawFive
     {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput)
-    (C : ActualCuspFiberEllipticMarkedCoordinateResidual R) :
+    (hFive : A.cuspEllipticFiberCoordinate R (correctedCuspDegreeTwoSplitting R)
+      (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) = 1) :
     A.PositiveDegreeHomologyAssembly :=
   correctedPositiveDegreeHomologyAssembly R.homologyAlignment.actualHomologyCoordinates
     (correctedCuspDegreeTwoSplitting R)
     (cuspDegreeOneUnionCoordinates_of_fullIterate R (A.cuspDegreeOneFullIterateRelation_proved R))
-    (fun x ↦ congrFun (correctedCuspHomologyTwoCoordinates_of_rawFive R C.degreeTwoIndexFive x) 0)
+    (fun x ↦ congrFun (correctedCuspHomologyTwoCoordinates_of_rawFive R hFive x) 0)
     (correctedCuspDegreeTwoSplitting_boundary R)
 
 public def correctedPositiveDegreeAssembly
     {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput) :
     A.PositiveDegreeHomologyAssembly :=
-  correctedPositiveDegreeAssembly_of_residual R
-    (establishedActualCuspFiberEllipticMarkedCoordinateResidual R)
+  correctedPositiveDegreeAssembly_of_rawFive R
+    (A.cuspEllipticFiberCoordinate_rawFive R (correctedCuspDegreeTwoSplitting R))
 
 end EstablishedSectionSevenCuspTopology
+
+open EstablishedSectionSevenCuspTopology
+
+/-- The actual degree-one cusp attachment difference map is bijective. -/
+public theorem cuspAttachment_differenceMap_one_bijective
+    {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput) :
+    Function.Bijective (IntegralMayerVietoris.differenceMap
+      (A.openEmbeddingStarData.sectionSevenMayerVietorisCover.stage (2 : Fin 4))
+      (A.openEmbeddingStarData.sectionSevenMayerVietorisCover.piece 3) 1) :=
+  (correctedPositiveDegreeAssembly R).toSectionSevenMayerVietorisHomologyAssembly.finalDifferenceOne_bijective
+
+/-- The actual degree-two cusp attachment difference map is bijective. -/
+public theorem cuspAttachment_differenceMap_two_bijective
+    {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput) :
+    Function.Bijective (IntegralMayerVietoris.differenceMap
+      (A.openEmbeddingStarData.sectionSevenMayerVietorisCover.stage (2 : Fin 4))
+      (A.openEmbeddingStarData.sectionSevenMayerVietorisCover.piece 3) 2) :=
+  (correctedPositiveDegreeAssembly R).toSectionSevenMayerVietorisHomologyAssembly.finalDifferenceTwo_bijective
+
 end SphereSixComplex.Geometry.PaperAnalyticData

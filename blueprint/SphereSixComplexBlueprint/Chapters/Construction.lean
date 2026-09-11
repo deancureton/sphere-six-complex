@@ -87,7 +87,7 @@ The Setup inequalities make the four period columns a real basis of $`\mathbb C^
 is preserved by the triangle-group action.
 :::
 
-:::theorem "period-functions" (parent := "construction_spine") (lean := "SphereSixComplex.Periods.Theorem3_4Existence") (priority := "high")
+:::theorem "period-functions" (parent := "construction_spine") (lean := "SphereSixComplex.Periods.FuchsianAffineDescent.exists_periodFunctions_of_generalDescent") (priority := "high")
 There are holomorphic functions $`\tau,\mu,\beta` on the upper half-plane satisfying the transformation,
 cusp-growth, and nondegeneracy conditions listed in the Setup.
 :::
@@ -331,7 +331,7 @@ The explicit parabolic source generator acts by integer translations of the inva
 This cyclic action and its product lift are free, properly discontinuous covering actions.
 :::
 
-:::theorem "cusp-action" (parent := "cusp-local-phase-action") (lean := "SphereSixComplex.Geometry.CuspFilling.shearMap_add, SphereSixComplex.Geometry.CuspFilling.CuspActionData.action_free, SphereSixComplex.Geometry.CuspFilling.CuspActionData.properlyDiscontinuous, SphereSixComplex.Geometry.CuspFilling.quotient_isQuotientCoveringMap, SphereSixComplex.Geometry.CuspFilling.cuspQuotient_isManifold, SphereSixComplex.Geometry.CuspFilling.cuspQuotient_projection_isLocalDiffeomorph")
+:::theorem "cusp-action" (parent := "cusp-local-phase-action") (lean := "SphereSixComplex.Geometry.CuspFilling.shearMap_add, SphereSixComplex.Geometry.CuspFilling.CuspActionData.isCancelSMul, SphereSixComplex.Geometry.CuspFilling.CuspActionData.properlyDiscontinuous, SphereSixComplex.Geometry.CuspFilling.quotient_isQuotientCoveringMap, SphereSixComplex.Geometry.CuspFilling.cuspQuotient_isManifold, SphereSixComplex.Geometry.CuspFilling.cuspQuotient_projection_isLocalDiffeomorph")
 The $`B_0` shear preserves the cusp height and translates both classes of $`A_2` triangles.  Given
 the phase estimates of Theorem 4.5, the corrected maps form a free, properly discontinuous lattice
 action.  Local sheets differ by analytic deck maps, so the covering quotient inherits a complex
@@ -392,7 +392,7 @@ $`C_3` and $`C_4` factors, closing both collar separations without an external a
 Use {uses "torus-family"}[the torus family] and the invariant twist vectors fixed by $`A_1` and $`A_2`.
 :::
 
-:::theorem "compact-complex-threefold" (parent := "construction_spine") (lean := "SphereSixComplex.ComplexThreefold, SphereSixComplex.CompletedPaperThreefold, SphereSixComplex.PaperGluingData, SphereSixComplex.Geometry.nonempty_paperAnalyticData_of_descentData, SphereSixComplex.Geometry.PaperAnalyticData.toPaperGluingData, SphereSixComplex.exists_paperGluingData, SphereSixComplex.exists_completedPaperThreefold") (priority := "high")
+:::theorem "compact-complex-threefold" (parent := "construction_spine") (lean := "SphereSixComplex.ComplexThreefold, SphereSixComplex.exists_simplyConnected_complexThreefold, SphereSixComplex.PaperGluingData, SphereSixComplex.Geometry.nonempty_paperAnalyticData_of_descentData, SphereSixComplex.Geometry.PaperAnalyticData.toPaperGluingData, SphereSixComplex.exists_paperGluingData") (priority := "high")
 The global family and the three fillings glue to a compact connected complex threefold $`X`.
 The analytic package, the actual star's van Kampen data, and the positive-degree homology assembly
 are constructed in Lean and combined by `exists_paperGluingData`. No construction-specific axiom or
@@ -417,19 +417,19 @@ obligation, since the open punctured and filling pieces need not themselves be c
 :::
 
 :::definition "complex-threefold-from-gluing" (parent := "compact-complex-threefold") (lean := "SphereSixComplex.complexThreefoldOfGluing")
-A finite connected gluing of complex pieces with compatible complex and underlying real atlases,
-together with global compactness of the glued space, produces the exact compact connected
-`ComplexThreefold` contract used by the main theorem.
+A finite connected gluing with compatible complex atlases and a compact, Hausdorff,
+second-countable glued space defines a compact connected complex threefold. Smoothness of its
+underlying real atlas follows by restriction of scalars.
 :::
 
-:::theorem "paper-threefold-assembly" (parent := "compact-complex-threefold") (lean := "SphereSixComplex.Geometry.PaperAnalyticData.toPaperGluingData, SphereSixComplex.completedPaperThreefoldOfGluing, SphereSixComplex.smoothRecognitionInputOfGluing, SphereSixComplex.PaperGluingData.toCompletedPaperThreefold, SphereSixComplex.exists_completedPaperThreefold_of_paperGluingData")
+:::theorem "paper-threefold-assembly" (parent := "compact-complex-threefold") (lean := "SphereSixComplex.Geometry.PaperAnalyticData.toPaperGluingData, SphereSixComplex.PaperGluingData.toComplexThreefold, SphereSixComplex.SmoothSixSphere.nonempty_diffeomorph, SphereSixComplex.exists_simplyConnected_complexThreefold")
 If that gluing carries the concrete van Kampen generators with no extra relations and the
-four-piece Mayer--Vietoris comparison, it produces the exact `CompletedPaperThreefold` object and
-the simply connected integral-homology-sphere input for smooth recognition. `PaperGluingData`
-lists every required compactness, separation, atlas, overlap, van Kampen, and homology field.
+four-piece Mayer--Vietoris comparison, the glued threefold is simply connected and has
+degreewise integral homology isomorphic to that of the six-sphere. The recognition theorem
+takes these properties directly and concludes existence of a diffeomorphism.
 :::
 
-:::theorem "fundamental-group" (parent := "construction_spine") (lean := "SphereSixComplex.CompletedPaperThreefold.fundamentalGroup") (priority := "high")
+:::theorem "fundamental-group" (parent := "construction_spine") (lean := "SphereSixComplex.PaperGluingData.simplyConnectedSpace") (priority := "high")
 For the twists $`(\ell_0,\ell_1,\ell_2)=(0,1,-1)`, the fundamental group of $`X` is trivial.
 :::
 
@@ -443,12 +443,12 @@ For the chosen twist vectors the obstruction integer
 $`12\ell_0-4\ell_1-3\ell_2` has absolute value one, so its cyclic quotient is trivial.
 :::
 
-:::theorem "fundamental-group-recognition" (parent := "fundamental-group") (lean := "SphereSixComplex.Topology.HasPaperFundamentalGroup, SphereSixComplex.Topology.simplyConnectedSpace_of_hasPaperFundamentalGroup")
+:::theorem "fundamental-group-recognition" (parent := "fundamental-group") (lean := "SphereSixComplex.Topology.HasVanKampenData.exists_fundamentalGroup_equiv, SphereSixComplex.Topology.HasVanKampenData.simplyConnectedSpace")
 Once van Kampen identifies the fundamental group with the obstruction group, the selected twists
 make it trivial and hence make the path-connected threefold simply connected.
 :::
 
-:::theorem "fundamental-group-presentation" (parent := "fundamental-group") (lean := "SphereSixComplex.Topology.PaperVanKampenFourPieceCover.pairwiseVanKampenCocone_isColimit, SphereSixComplex.Topology.PaperVanKampenGeometryData.toHasVanKampenData, SphereSixComplex.Topology.hasVanKampenData_of_fullRelations, SphereSixComplex.Topology.paperRelation_iff_classifier_zero, SphereSixComplex.Topology.paperPresentedGroupEquiv, SphereSixComplex.Topology.paperCanonicalEquiv, SphereSixComplex.Topology.HasVanKampenData.hasVanKampenPresentation, SphereSixComplex.Topology.HasVanKampenPresentation.hasPaperFundamentalGroup")
+:::theorem "fundamental-group-presentation" (parent := "fundamental-group") (lean := "SphereSixComplex.Topology.PaperVanKampenFourPieceCover.pairwiseVanKampenCocone_isColimit, SphereSixComplex.Topology.PaperVanKampenGeometryData.toHasVanKampenData, SphereSixComplex.Topology.hasVanKampenData_of_fullRelations, SphereSixComplex.Topology.paperRelation_iff_classifier_zero, SphereSixComplex.Topology.paperPresentedGroupEquiv, SphereSixComplex.Topology.paperCanonicalEquiv, SphereSixComplex.Topology.HasVanKampenData.exists_fundamentalGroup_equiv, SphereSixComplex.Topology.HasVanKampenData.simplyConnectedSpace")
 The three van Kampen generators reduce to a two-generator integral presentation.  Its relation
 lattice is exactly the kernel of the cyclic classifier, so the quotient has order
 $`|12\ell_0-4\ell_1-3\ell_2|`.  Concrete generators satisfying the relations, generating the
@@ -475,7 +475,7 @@ the surjection onto $`\pi_1(X)` reduces the van Kampen contract to collar surjec
 star filling relations. Both geometric statements are proved for the constructed star.
 :::
 
-:::theorem "integral-homology" (parent := "construction_spine") (lean := "SphereSixComplex.CompletedPaperThreefold.integralHomology") (priority := "high")
+:::theorem "integral-homology" (parent := "construction_spine") (lean := "SphereSixComplex.PaperGluingData.integralHomology") (priority := "high")
 The integral homology of $`X` is the integral homology of $`S^6`.
 :::
 
@@ -516,7 +516,7 @@ retained general cellular-to-singular comparison transfers this cellular calcula
 homology.
 :::
 
-:::theorem "elliptic-multiple-fibre-homology" (parent := "section-seven-paper-assembly") (lean := "_root_.SphereSixComplex.AffineCyclicQuotientHomology.reducedCentralFiberHOneEquivPresentation, SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.orderThreeReducedCentralFiberHOneEquivIntSquared, SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.orderFourReducedCentralFiberHOneEquivIntSquared, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderThreeFixedHOneBasis_projection, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderFourFixedHOneBasis_projection, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderThreeHOneNaturality, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderFourHOneNaturality, SphereSixComplex.Topology.FiniteCoverPerfectPairing.DegreeTwoPullbackRealization.toFiniteCoverDegreeTwoPullbackBasis, SphereSixComplex.Topology.FiniteCoverPerfectPairing.EllipticDegreeTwoPullbackBases.ofRealizations, SphereSixComplex.Topology.FiniteCoverPerfectPairing.establishedEllipticDegreeTwoPullbackRealizations, SphereSixComplex.Topology.FiniteCoverPerfectPairing.ellipticDegreeTwoPullbackBases, SphereSixComplex.Topology.FiniteCoverPerfectPairing.ellipticFiniteCoverHomologyRealization")
+:::theorem "elliptic-multiple-fibre-homology" (parent := "section-seven-paper-assembly") (lean := "SphereSixComplex.AffineCyclicQuotientHomology.reducedCentralFiberHOneEquivPresentation, SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.orderThreeReducedCentralFiberHOneEquivIntSquared, SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.orderFourReducedCentralFiberHOneEquivIntSquared, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderThreeFixedHOneBasis_projection, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderFourFixedHOneBasis_projection, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderThreeHOneNaturality, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderFourHOneNaturality, SphereSixComplex.Topology.FiniteCoverPerfectPairing.DegreeTwoPullbackRealization.toFiniteCoverDegreeTwoPullbackBasis, SphereSixComplex.Topology.FiniteCoverPerfectPairing.EllipticDegreeTwoPullbackBases.ofRealizations, SphereSixComplex.Topology.FiniteCoverPerfectPairing.establishedEllipticDegreeTwoPullbackRealizations, SphereSixComplex.Topology.FiniteCoverPerfectPairing.ellipticDegreeTwoPullbackBases, SphereSixComplex.Topology.FiniteCoverPerfectPairing.ellipticFiniteCoverHomologyRealization")
 The order-three and order-four reduced central fibres have explicit first-homology presentations,
 and the fixed bases satisfy the required covering-projection coordinate formulas. The affine
 cyclic-quotient abelianization and degree-one naturality statements are proved.
@@ -581,7 +581,7 @@ model, including its fibre identification, are proved in the development.
 :::
 
 
-:::theorem "smooth-recognition" (parent := "construction_spine") (lean := "SphereSixComplex.completedPaperThreefold_smoothRecognition, SphereSixComplex.exists_complex_threefold_diffeomorphic_sixSphere") (priority := "high")
+:::theorem "smooth-recognition" (parent := "construction_spine") (lean := "SphereSixComplex.SmoothSixSphere.nonempty_diffeomorph, SphereSixComplex.exists_complex_threefold_diffeomorphic_sixSphere") (priority := "high")
 The underlying standard smooth manifold of $`X` is diffeomorphic to $`S^6`.
 :::
 
@@ -642,7 +642,7 @@ Apply {uses "mayer-vietoris-contract"}[the binary open-cover Mayer--Vietoris seq
 complements of two antipodal points of $`S^{d+1}` and induct on the dimension from the circle.
 :::
 
-:::theorem "normalized-complex-structure" (parent := "smooth-recognition") (lean := "SphereSixComplex.NormalizedComplexStructure, SphereSixComplex.normalizedComplexStructure_of_diffeomorphicToSixSphere, SphereSixComplex.sixSphere_has_normalizedComplexStructure")
+:::theorem "normalized-complex-structure" (parent := "smooth-recognition") (lean := "SphereSixComplex.NormalizedComplexStructure, SphereSixComplex.normalizedComplexStructure_of_diffeomorph, SphereSixComplex.sixSphere_has_normalizedComplexStructure")
 A diffeomorphism from the completed threefold transports its complex atlas to a normalized complex
 structure on the standard smooth six-sphere, and hence to the final `AdmitsComplexStructure` result.
 :::

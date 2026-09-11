@@ -155,16 +155,17 @@ public theorem toHasVanKampenData (D : PaperVanKampenGeometryData base ℓ₀ �
   ⟨base, D.relations.toSatisfiesPaperRelations, D.generators_generate,
     D.no_extra_relations⟩
 
-/-- Geometric van Kampen data therefore give the verified presentation equivalence. -/
-public theorem hasVanKampenPresentation
+/-- The geometric generators and relations identify the fundamental group at the chosen basepoint. -/
+public noncomputable def fundamentalGroupEquiv
     (D : PaperVanKampenGeometryData base ℓ₀ ℓ₁ ℓ₂) :
-    HasVanKampenPresentation Y ℓ₀ ℓ₁ ℓ₂ :=
-  D.toHasVanKampenData.hasVanKampenPresentation
+    FundamentalGroup Y base ≃* PaperPresentedGroup ℓ₀ ℓ₁ ℓ₂ :=
+  (paperCanonicalEquiv D.relations.toSatisfiesPaperRelations D.generators_generate
+    D.no_extra_relations).symm
 
-/-- At the paper's selected twists, the geometric data imply its fundamental-group contract. -/
-public theorem hasPaperFundamentalGroup
-    (D : PaperVanKampenGeometryData base 0 1 (-1)) : HasPaperFundamentalGroup Y :=
-  D.hasVanKampenPresentation.hasPaperFundamentalGroup
+/-- The selected twists give a simply connected space. -/
+public theorem simplyConnectedSpace [PathConnectedSpace Y]
+    (D : PaperVanKampenGeometryData base 0 1 (-1)) : SimplyConnectedSpace Y :=
+  D.toHasVanKampenData.simplyConnectedSpace
 
 end PaperVanKampenGeometryData
 

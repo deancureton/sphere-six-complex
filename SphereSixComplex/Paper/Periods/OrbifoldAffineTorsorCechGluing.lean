@@ -1,6 +1,7 @@
 module
 
-public import SphereSixComplex.Paper.Periods.HolomorphicAffineTorsorHOneSplitting
+public import SphereSixComplex.Paper.Periods.OrbifoldAffineTorsorCuspBoundedCousinCorrection
+public import SphereSixComplex.Prerequisites.Periods.ProjectiveLineAffineTorsor
 import all SphereSixComplex.Paper.Periods.Functions
 
 /-!
@@ -154,23 +155,13 @@ public theorem CechGluingData.hasCuspBoundedSection
   ⟨D.adjustedZero S, D.adjustedZero_holomorphic S, D.adjustedZero_one S,
     D.adjustedZero_two S, D.adjustedZero_sub_cusp_bounded S⟩
 
-/-- The comparison data give the abstract Cech reduction isolated in
-`HolomorphicAffineTorsorHOneSplitting`. -/
-@[expose] public noncomputable def CechGluingData.toCousinCechReduction
-    {P : OrbifoldAffineDescentData} (D : P.CechGluingData) :
-    P.CousinCechReduction where
-  frame := D.frame
-  torsor := D.projectiveLineTorsor
-  correctionOfSplitting := fun S ↦ Classical.choice
-    (P.nonempty_correction_of_hasCuspBoundedSection
-      (D.hasCuspBoundedSection S))
-
 /-- Exact Cech comparison data suffice for the original cusp-bounded Cousin correction. -/
 public theorem nonempty_cuspBoundedCorrection_of_cechGluingData
     (P : OrbifoldAffineDescentData) (D : P.CechGluingData) :
-    Nonempty P.CuspBoundedCorrection :=
-  P.nonempty_cuspBoundedCorrection_of_cechReduction
-    D.toCousinCechReduction
+    Nonempty P.CuspBoundedCorrection := by
+  obtain ⟨S⟩ := D.projectiveLineTorsor.nonempty_splitting_of_hOne_vanishes
+    D.frame.hOne_vanishes
+  exact P.nonempty_correction_of_hasCuspBoundedSection (D.hasCuspBoundedSection S)
 
 end OrbifoldAffineDescentData
 

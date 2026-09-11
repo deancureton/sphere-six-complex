@@ -22,7 +22,7 @@ open Set SphereSixComplex.TriangleGroup.FuchsianTriangleCover
 triangle cover premise. -/
 public theorem FuchsianPrePeriodData.theorem3_4Existence_of_orientedTriangleCover
     (D : FuchsianPrePeriodData) :
-    Theorem3_4Existence D.toFuchsianModularParameter.toTriangleUniformization :=
+    Nonempty (PeriodFunctions D.toFuchsianModularParameter.toTriangleUniformization) :=
   D.theorem3_4Existence
     (orientedFuchsianQuotientCompactCore D.toFuchsianModularParameter)
 

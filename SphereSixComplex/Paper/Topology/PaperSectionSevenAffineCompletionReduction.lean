@@ -35,62 +35,10 @@ public noncomputable def actualAffineHeightSplit :
     A.CentralHeightSplit :=
   A.affineCentralHeightSplit A.affineCentralSeparation
 
-/-- The exact remaining geometric input.  The central band field is absent because it is already
-supplied by the established product trivialization over the affine strip. -/
-public structure AffineRadialCompletionInput where
-  orderThreeHomotopyEquivalence :
-    IsHomotopyEquivalenceInclusion A.actualAffineHeightSplit.orderThreeFillingSubspace
-  orderFourHomotopyEquivalence :
-    IsHomotopyEquivalenceInclusion A.actualAffineHeightSplit.orderFourFillingSubspace
-  orderThree_inclusion_compatibility :
-    (((A.orderThreeFillingImageHomotopyEquiv.toFun.comp
-      (orderThreeHomotopyEquivalence.toHomotopyEquiv.trans
-        (nestedSubtypeHomeomorph A.actualAffineHeightSplit.allocation.orderThreeSide
-          A.orderThreeFillingImage
-          A.actualAffineHeightSplit.orderThreeFillingImage_subset_side).toHomotopyEquiv).toFun).comp
-        (IntegralMayerVietoris.interToLeft
-          A.actualAffineHeightSplit.allocation.orderThreeSide
-          A.actualAffineHeightSplit.allocation.orderFourSide))).Homotopic
-      ((RadialEllipticActionData.centralFiberCoverProjection
-          (orderThreeRadialActionData A.periods)).comp
-        ⟨A.duplicatedSectionSevenBandToOrderThreeCoverSource,
-          A.duplicatedSectionSevenBandToOrderThreeCoverSource.continuous⟩ |>.comp
-            (A.actualAffineHeightSplit.sidesIntersectionHomeomorph.toHomotopyEquiv.trans
-              (A.affineCentralBandHomotopyEquiv
-                A.affineCentralSeparation)).toFun)
-  orderFour_inclusion_compatibility :
-    (((A.orderFourFillingImageHomotopyEquiv.toFun.comp
-      (orderFourHomotopyEquivalence.toHomotopyEquiv.trans
-        (nestedSubtypeHomeomorph A.actualAffineHeightSplit.allocation.orderFourSide
-          A.orderFourFillingImage
-          A.actualAffineHeightSplit.orderFourFillingImage_subset_side).toHomotopyEquiv).toFun).comp
-        (IntegralMayerVietoris.interToRight
-          A.actualAffineHeightSplit.allocation.orderThreeSide
-          A.actualAffineHeightSplit.allocation.orderFourSide))).Homotopic
-      ((RadialEllipticActionData.centralFiberCoverProjection
-          (orderFourRadialActionData A.periods)).comp
-        ⟨A.duplicatedSectionSevenBandToOrderFourCoverSource,
-          A.duplicatedSectionSevenBandToOrderFourCoverSource.continuous⟩ |>.comp
-            (A.actualAffineHeightSplit.sidesIntersectionHomeomorph.toHomotopyEquiv.trans
-              (A.affineCentralBandHomotopyEquiv
-                A.affineCentralSeparation)).toFun)
-
-namespace AffineRadialCompletionInput
-
-variable {A : PaperAnalyticData}
-
-/-- Assemble the actual affine radial input from the four remaining geometric facts. -/
-public noncomputable def toRadialInput
-    (R : A.AffineRadialCompletionInput) :
-    A.actualAffineHeightSplit.RadialInput where
-  orderThreeHomotopyEquivalence := R.orderThreeHomotopyEquivalence
-  orderFourHomotopyEquivalence := R.orderFourHomotopyEquivalence
-  bandHomotopyEquiv :=
-    A.affineCentralBandHomotopyEquiv A.affineCentralSeparation
-  orderThree_inclusion_compatibility := R.orderThree_inclusion_compatibility
-  orderFour_inclusion_compatibility := R.orderFour_inclusion_compatibility
-
-end AffineRadialCompletionInput
+/-- The side equivalences and marked inclusion homotopies for the canonical affine band. -/
+public abbrev AffineRadialCompletionInput :=
+  A.actualAffineHeightSplit.RadialHomotopyData
+    (A.affineCentralBandHomotopyEquiv A.affineCentralSeparation)
 
 variable {A : PaperAnalyticData}
 
@@ -98,13 +46,13 @@ variable {A : PaperAnalyticData}
 public noncomputable def AffineRadialCompletionInput.twoDiscCover
     (R : A.AffineRadialCompletionInput) :
     A.EllipticTwoDiscCoverData :=
-  R.toRadialInput.toRadialRealization.toSectionSevenEllipticTwoDiscCoverData
+  R.toRadialRealization.toSectionSevenEllipticTwoDiscCoverData
 
 /-- The canonical band homology alignment for the completed affine radial geometry. -/
 public theorem AffineRadialCompletionInput.homologyAlignment
     (R : A.AffineRadialCompletionInput) :
     A.EllipticBandHomologyAlignment R.twoDiscCover :=
-  R.toRadialInput.bandHomologyAlignment
+  R.bandHomologyAlignment
 
 /-- The exact three marked-coordinate comparisons remaining after the affine radial geometry has
 been completed: one connecting square and two inclusion-coordinate identities. -/

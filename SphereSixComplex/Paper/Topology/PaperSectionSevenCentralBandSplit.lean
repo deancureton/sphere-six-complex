@@ -151,14 +151,13 @@ public theorem orderFourFillingImage_subset_side :
 
 /-- The remaining geometric input after replacing the duplicated allocation by a genuine band
 split.  The band parameter and its two cover-source identifications are canonical. -/
-public structure RadialInput where
+public structure RadialHomotopyData
+    (bandHomotopyEquiv : centralHeightBand S.height S.lower S.upper ≃ₕ
+      AdditiveTorus A.duplicatedSectionSevenBandParameter) where
   orderThreeHomotopyEquivalence :
     IsHomotopyEquivalenceInclusion S.orderThreeFillingSubspace
   orderFourHomotopyEquivalence :
     IsHomotopyEquivalenceInclusion S.orderFourFillingSubspace
-  bandHomotopyEquiv :
-    centralHeightBand S.height S.lower S.upper ≃ₕ
-      AdditiveTorus A.duplicatedSectionSevenBandParameter
   orderThree_inclusion_compatibility :
     (((A.orderThreeFillingImageHomotopyEquiv.toFun.comp
       (orderThreeHomotopyEquivalence.toHomotopyEquiv.trans
@@ -188,12 +187,14 @@ public structure RadialInput where
             (S.sidesIntersectionHomeomorph.toHomotopyEquiv.trans
               bandHomotopyEquiv).toFun)
 
-namespace RadialInput
+namespace RadialHomotopyData
 
 variable {S : A.CentralHeightSplit}
+  {bandHomotopyEquiv : centralHeightBand S.height S.lower S.upper ≃ₕ
+    AdditiveTorus A.duplicatedSectionSevenBandParameter}
 
 /-- Assemble all fields of the radial realization from the genuine central-band input. -/
-public noncomputable def toRadialRealization (R : S.RadialInput) :
+public noncomputable def toRadialRealization (R : S.RadialHomotopyData bandHomotopyEquiv) :
     S.allocation.RadialRealization where
   orderThreeLiftedContraction :=
     R.orderThreeHomotopyEquivalence.toHomotopyEquiv.trans
@@ -208,13 +209,13 @@ public noncomputable def toRadialRealization (R : S.RadialInput) :
   bandParameter := A.duplicatedSectionSevenBandParameter
   bandFullRank := A.duplicatedSectionSevenBandFullRank
   bandHomotopyEquiv :=
-    S.sidesIntersectionHomeomorph.toHomotopyEquiv.trans R.bandHomotopyEquiv
+    S.sidesIntersectionHomeomorph.toHomotopyEquiv.trans bandHomotopyEquiv
   bandToOrderThreeCoverSource := A.duplicatedSectionSevenBandToOrderThreeCoverSource
   bandToOrderFourCoverSource := A.duplicatedSectionSevenBandToOrderFourCoverSource
   orderThree_inclusion_compatibility := R.orderThree_inclusion_compatibility
   orderFour_inclusion_compatibility := R.orderFour_inclusion_compatibility
 
-end RadialInput
+end RadialHomotopyData
 
 end CentralHeightSplit
 

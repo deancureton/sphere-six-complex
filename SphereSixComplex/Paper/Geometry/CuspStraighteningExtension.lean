@@ -560,26 +560,6 @@ public theorem continuous_extendedStraighteningPhase
     exact continuousAt_extendedStraighteningPhase_of_mem_region W a p hp ha
   · exact continuousAt_extendedStraighteningPhase_of_t_ne_zero W p hp
 
-/-- The standard topological interface for the algebraic torus action.  This is deliberately
-separate from the paper-specific cusp data: the straightening argument needs joint continuity,
-not only continuity for each fixed torus element. -/
-public structure ContinuousTorusAction (M : Model) : Prop where
-  joint_continuous : Continuous
-    (fun z : DenseTorus × M.Carrier ↦ M.torusAction z.1 z.2)
-
-namespace ContinuousTorusAction
-
-variable {M : Model}
-
-/-- A continuously varying torus element acts continuously on a continuously varying point. -/
-public theorem variable_action (J : ContinuousTorusAction M) {X : Type*} [TopologicalSpace X]
-    {g : X → DenseTorus} {p : X → M.Carrier}
-    (hg : Continuous g) (hp : Continuous p) :
-    Continuous (fun x ↦ M.torusAction (g x) (p x)) :=
-  J.joint_continuous.comp (hg.prodMk hp)
-
-end ContinuousTorusAction
-
 /-- The point-level straightening on the entire local toric carrier.  At `t = 0` its multiplier
 is one, so this definition is literally the identity on the central fibre. -/
 public noncomputable def pointStraightening
@@ -646,13 +626,13 @@ continuity of the identity extension on the whole cusp carrier. -/
 public theorem continuous_pointStraightening
     {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
-    (J : ContinuousTorusAction M)
+    (J : Continuous (fun z : DenseTorus × M.Carrier ↦ M.torusAction z.1 z.2))
     (W : ActualPuncturedCuspCollarWitness N M) :
     Continuous (pointStraightening W) := by
   change Continuous (fun p : localCarrier M W.localWitness.radius ↦
     (⟨M.torusAction (phaseEmbedding (extendedStraighteningPhase W p)) p, _⟩ :
       localCarrier M W.localWitness.radius))
-  exact (J.variable_action (continuous_extendedStraighteningDenseTorusPhase W)
-    continuous_subtype_val).subtype_mk _
+  exact (J.comp ((continuous_extendedStraighteningDenseTorusPhase W).prodMk
+    continuous_subtype_val)).subtype_mk _
 
 end SphereSixComplex.Geometry.CuspStraighteningExtension

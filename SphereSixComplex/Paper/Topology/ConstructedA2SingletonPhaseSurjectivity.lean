@@ -35,7 +35,7 @@ public theorem constructedA2ActualCentral_support_smul
       N constructedModel W.localWitness.radius W.localWitness.radius_pos
         W.localWitness.radius_le
   change componentSupport constructedModel
-    (((C.toCuspActionData W.localWitness.fixedPoint).psiMap g.toAdd p.1).1) = _
+    ((C.toCuspActionData.psiMap g.toAdd p.1).1) = _
   rw [← C.psiMap_eq_generic, C.psiMap_coe]
   exact constructedA2ComponentSupport_phase_fanShear _ _ _
 

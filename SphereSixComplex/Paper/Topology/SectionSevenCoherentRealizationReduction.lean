@@ -52,56 +52,22 @@ public structure SectionSevenFourPieceSmallChainComparison
   /-- The paper-specific finite calculation proves this map is a quasi-isomorphism. -/
   quasiIso : QuasiIso comparison
 
-/-- A fully constructive, but stronger, form of the paper-specific comparison: an inverse chain
-map and the two chain homotopies.  This is the exact datum one may build from explicit collapse,
-specialization, and cellular maps.  The weaker `SectionSevenFourPieceSmallChainComparison` above
-is the minimal consequence needed by the homology calculation. -/
-public structure SectionSevenFourPieceSmallChainHomotopyData
-    (X : Type) [TopologicalSpace X] (C : FourPieceOpenCover X) where
-  /-- The finite-model comparison map. -/
-  comparison : sectionSevenLerayChainModel (-1) ⟶
-    coverSmallIntegralSingularChainComplex (TopCat.of X) C.piece
-  /-- A chain map back to the finite model. -/
-  inverse : coverSmallIntegralSingularChainComplex (TopCat.of X) C.piece ⟶
-    sectionSevenLerayChainModel (-1)
-  /-- Comparison followed by the inverse is homotopic to the identity. -/
-  homotopyComparisonInverse : Homotopy (comparison ≫ inverse)
-    (𝟙 (sectionSevenLerayChainModel (-1)))
-  /-- The inverse followed by comparison is homotopic to the identity. -/
-  homotopyInverseComparison : Homotopy (inverse ≫ comparison)
-    (𝟙 (coverSmallIntegralSingularChainComplex (TopCat.of X) C.piece))
-
-namespace SectionSevenFourPieceSmallChainHomotopyData
+namespace SectionSevenFourPieceSmallChainComparison
 
 variable {X : Type} [TopologicalSpace X] {C : FourPieceOpenCover X}
 
-/-- Package the explicit comparison maps and homotopies as a chain-homotopy equivalence. -/
-public noncomputable def toHomotopyEquiv
-    (h : SectionSevenFourPieceSmallChainHomotopyData X C) :
-    HomotopyEquiv (sectionSevenLerayChainModel (-1))
-      (coverSmallIntegralSingularChainComplex (TopCat.of X) C.piece) where
-  hom := h.comparison
-  inv := h.inverse
-  homotopyHomInvId := h.homotopyComparisonInverse
-  homotopyInvHomId := h.homotopyInverseComparison
-
-/-- Explicit comparison maps and homotopies imply the minimal small-chain comparison contract. -/
-public noncomputable def toSmallChainComparison
-    (h : SectionSevenFourPieceSmallChainHomotopyData X C) :
+/-- A chain homotopy equivalence gives a quasi-isomorphism to the small-chain complex. -/
+public noncomputable def ofHomotopyEquiv
+    (h : HomotopyEquiv (sectionSevenLerayChainModel (-1))
+      (coverSmallIntegralSingularChainComplex (TopCat.of X) C.piece)) :
     SectionSevenFourPieceSmallChainComparison X C where
-  comparison := h.comparison
+  comparison := h.hom
   quasiIso := by
     rw [quasiIso_iff]
     intro k
     rw [quasiIsoAt_iff_isIso_homologyMap]
-    change IsIso ((h.toHomotopyEquiv.toHomologyIso k).hom)
+    change IsIso ((h.toHomologyIso k).hom)
     infer_instance
-
-end SectionSevenFourPieceSmallChainHomotopyData
-
-namespace SectionSevenFourPieceSmallChainComparison
-
-variable {X : Type} [TopologicalSpace X] {C : FourPieceOpenCover X}
 
 /-- Compose the paper-specific small-chain comparison with an explicit general smallification
 homotopy equivalence to obtain the former coherent-realization contract. -/

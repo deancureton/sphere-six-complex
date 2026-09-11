@@ -308,7 +308,7 @@ public theorem PrePeriodFunctions.exists_shiftedPeriodFunctions
 /-- The generic compactness argument supplies the exact Theorem 3.4 existence statement. -/
 public theorem theorem3_4Existence_of_prePeriodFunctions_compactCore
     {U : TriangleUniformization} (F : PrePeriodFunctions U) (K : QuotientCompactCore U) :
-    Theorem3_4Existence U :=
+    Nonempty (PeriodFunctions U) :=
   F.exists_shiftedPeriodFunctions K
 
 end SphereSixComplex.Periods

@@ -76,12 +76,21 @@ public theorem SmoothHomotopySixSphere.isDiffeomorphic
     SmoothSixSphere.topological_poincare
     MarkedSmoothSixSphere.subsingleton_diffeomorphismClass X hX.homotopyEquiv
 
-/-- Smooth recognition from the homology-sphere and homotopy-sphere interfaces. -/
-public theorem smoothSixSphereRecognition
+/-- A compact simply connected smooth six-manifold with the integral homology of the sphere
+is diffeomorphic to the standard six-sphere. -/
+public theorem SmoothSixSphere.nonempty_diffeomorph
     {X : Type} [TopologicalSpace X] [T2Space X] [SecondCountableTopology X]
-    [ChartedSpace RealModel X] :
-    SmoothSixSphereRecognitionObligation X := by
-  intro hX
+    [ChartedSpace RealModel X] [IsManifold 𝓘(ℝ, RealModel) ∞ X]
+    [CompactSpace X] [SimplyConnectedSpace X]
+    (hhomology : ∀ k, Nonempty
+      (IntegralSingularHomology k X ≃+ IntegralSingularHomology k SixSphere)) :
+    Nonempty (Diffeomorph 𝓘(ℝ, RealModel) 𝓘(ℝ, RealModel) X SixSphere ∞) := by
+  have hX : SmoothSimplyConnectedIntegralHomologySixSphere X :=
+    { isManifold := inferInstance
+      compact := inferInstance
+      connected := inferInstance
+      integralHomology := hhomology
+      simplyConnected := inferInstance }
   exact SmoothHomotopySixSphere.isDiffeomorphic
     { toCompactConnectedSmoothSixManifold := hX.toCompactConnectedSmoothSixManifold
       homotopyEquiv := SmoothSimplyConnectedIntegralHomologySixSphere.nonempty_homotopyEquiv hX }

@@ -1,6 +1,7 @@
 module
 
-public import SphereSixComplex.Paper.Topology.FundamentalGroup
+public import SphereSixComplex.Paper.Topology.TwistObstruction
+public import SphereSixComplex.Prerequisites.Topology.FundamentalGroupSimplyConnected
 public import Mathlib.LinearAlgebra.Matrix.Notation
 
 /-!
@@ -419,15 +420,11 @@ public def HasVanKampenData (X : Type*) [TopologicalSpace X] (ℓ₀ ℓ₁ ℓ�
   ∃ x₀ : X, ∃ r : SatisfiesPaperRelations (FundamentalGroup X x₀) ℓ₀ ℓ₁ ℓ₂,
     PaperGeneratorsGenerate r ∧ HasNoExtraPaperRelations r
 
-/-- The compressed form of the van Kampen input: an equivalence with the verified presentation. -/
-public def HasVanKampenPresentation (X : Type*) [TopologicalSpace X] (ℓ₀ ℓ₁ ℓ₂ : ℤ) : Prop :=
-  ∃ x₀ : X, Nonempty (FundamentalGroup X x₀ ≃* PaperPresentedGroup ℓ₀ ℓ₁ ℓ₂)
-
-/-- Concrete generators, relations, generation, and no-extra-relations imply the compressed
-presentation contract. -/
-public theorem HasVanKampenData.hasVanKampenPresentation
+/-- The generators and relations identify the fundamental group with the presented group. -/
+public theorem HasVanKampenData.exists_fundamentalGroup_equiv
     {X : Type*} [TopologicalSpace X] {ℓ₀ ℓ₁ ℓ₂ : ℤ}
-    (h : HasVanKampenData X ℓ₀ ℓ₁ ℓ₂) : HasVanKampenPresentation X ℓ₀ ℓ₁ ℓ₂ := by
+    (h : HasVanKampenData X ℓ₀ ℓ₁ ℓ₂) :
+    ∃ x₀ : X, Nonempty (FundamentalGroup X x₀ ≃* PaperPresentedGroup ℓ₀ ℓ₁ ℓ₂) := by
   obtain ⟨x₀, r, hg, hn⟩ := h
   exact ⟨x₀, ⟨(paperCanonicalEquiv r hg hn).symm⟩⟩
 
@@ -444,8 +441,7 @@ public theorem chosenPaperPresentedGroup_subsingleton :
   have h : Subsingleton (Multiplicative (ZMod 1)) := inferInstance
   exact @Subsingleton.elim _ (by simpa [paperObstruction] using h) _ _
 
-/-- For the chosen twists, the cyclic target is definitionally the obstruction group already used by
-`HasPaperFundamentalGroup`. -/
+/-- For the chosen twists, the presented group is the cyclic obstruction group. -/
 public noncomputable def chosenPaperPresentedGroupEquivObstruction :
     PaperPresentedGroup 0 1 (-1) ≃* Multiplicative TwistObstruction.ObstructionGroup := by
   let hmod : (paperObstruction 0 1 (-1)).natAbs = TwistObstruction.p.natAbs := by
@@ -455,11 +451,15 @@ public noncomputable def chosenPaperPresentedGroupEquivObstruction :
   exact (paperPresentedGroupEquiv 0 1 (-1)).trans
     (AddEquiv.toMultiplicative (ZMod.ringEquivCongr hmod).toAddEquiv)
 
-/-- The verified presentation calculation supplies the existing paper fundamental-group contract. -/
-public theorem HasVanKampenPresentation.hasPaperFundamentalGroup
-    {X : Type*} [TopologicalSpace X] (h : HasVanKampenPresentation X 0 1 (-1)) :
-    HasPaperFundamentalGroup X := by
-  obtain ⟨x₀, ⟨e⟩⟩ := h
-  exact ⟨x₀, ⟨e.trans chosenPaperPresentedGroupEquivObstruction⟩⟩
+/-- At the selected twists the fundamental group is trivial, so a path-connected space is
+simply connected. -/
+public theorem HasVanKampenData.simplyConnectedSpace
+    {X : Type*} [TopologicalSpace X] [PathConnectedSpace X]
+    (h : HasVanKampenData X 0 1 (-1)) : SimplyConnectedSpace X := by
+  obtain ⟨x₀, ⟨e⟩⟩ := h.exists_fundamentalGroup_equiv
+  let := chosenPaperPresentedGroup_subsingleton
+  let : Subsingleton (FundamentalGroup X x₀) :=
+    ⟨fun a b ↦ e.injective (Subsingleton.elim _ _)⟩
+  exact simplyConnectedSpace_of_fundamentalGroup_subsingleton x₀
 
 end SphereSixComplex.Topology

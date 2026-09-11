@@ -706,8 +706,9 @@ public theorem exists_actualLocalCuspQuotientWitness
     rw [abs_of_neg hlog_neg]
     linarith
   have hfixed : C.IsFree := by
-    constructor
-    · intro lambda p ht hfixed
+    intro lambda p hfixed
+    by_cases ht : M.t p ≠ 0
+    ·
       have hpball : ‖M.t p‖ < r := mem_ball_zero_iff.mp p.property
       have hq : M.t p ∈ Metric.closedBall (0 : ℂ) rho := by
         rw [mem_closedBall_zero_iff]
@@ -721,7 +722,7 @@ public theorem exists_actualLocalCuspQuotientWitness
       exact
         NormalizedFuchsianCuspCoordinate.offCentral_fixedPoint_of_log_dominates
           N M C rfl hR lambda p hq hdominates ht hfixed
-    · intro lambda p ht hfixed
+    · have ht : M.t p = 0 := not_ne_iff.mp ht
       exact
         LocalHolomorphicPhaseCoefficients.central_fixedPointEstimate
           C Q lambda p ht hfixed
@@ -750,7 +751,7 @@ public theorem quotient_isQuotientCoveringMap
     let C :=
       NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
         N M W.radius W.radius_pos W.radius_le
-    letI := (C.toCuspActionData W.fixedPoint).psiAction
+    letI := C.toCuspActionData.psiAction
     IsQuotientCoveringMap
       (Quotient.mk (MulAction.orbitRel
         (Multiplicative ParameterLattice) (localCarrier M W.radius)))
@@ -763,7 +764,7 @@ public theorem quotient_chartedSpace
     let C :=
       NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
         N M W.radius W.radius_pos W.radius_le
-    letI := (C.toCuspActionData W.fixedPoint).psiAction
+    letI := C.toCuspActionData.psiAction
     Nonempty (ChartedSpace ComplexModel
       (MulAction.orbitRel.Quotient
         (Multiplicative ParameterLattice) (localCarrier M W.radius))) := by
@@ -775,7 +776,7 @@ public theorem quotient_isManifold
     let C :=
       NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
         N M W.radius W.radius_pos W.radius_le
-    letI := (C.toCuspActionData W.fixedPoint).psiAction
+    letI := C.toCuspActionData.psiAction
     let hf := C.quotient_isQuotientCoveringMap W.fixedPoint W.compactOverlap
     letI : ChartedSpace ComplexModel
       (MulAction.orbitRel.Quotient
