@@ -422,7 +422,7 @@ public import SphereSixComplex.Paper.Topology.PaperCuspBoundaryQuotientCovering
 public import SphereSixComplex.Paper.Topology.PaperCuspBoundaryUniversalCover
 public import SphereSixComplex.Paper.Topology.PaperCuspCentralFiberCWConstruction
 public import SphereSixComplex.Paper.Topology.PaperCuspCentralFiberCWModel
-public import SphereSixComplex.Paper.Topology.PaperCuspCentralFiberCWTypes
+public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.CentralFiber.CellularModel
 public import SphereSixComplex.Paper.Topology.PaperCuspCentralFiberHomology
 public import SphereSixComplex.Paper.Topology.PaperCuspCentralNaturality
 public import SphereSixComplex.Paper.Topology.PaperCuspChosenAffineFilling

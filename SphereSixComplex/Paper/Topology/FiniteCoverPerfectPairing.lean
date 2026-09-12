@@ -137,95 +137,6 @@ public def orderFourRealization (P : EllipticDegreeTwoPullbackBases F) :
 
 end EllipticDegreeTwoPullbackBases
 
-private theorem dualEval_bijective_of_finite_torsionFree
-    {X : Type} [TopologicalSpace X]
-    (hFinite : Module.Finite ℤ (IntegralSingularHomology 2 X))
-    (hTorsionFree : Module.IsTorsionFree ℤ (IntegralSingularHomology 2 X)) :
-    Function.Bijective (Module.Dual.eval ℤ (IntegralSingularHomology 2 X)) := by
-  let _ : Module.Finite ℤ (IntegralSingularHomology 2 X) := hFinite
-  let _ : Module.IsTorsionFree ℤ (IntegralSingularHomology 2 X) := hTorsionFree
-  let hFree : Module.Free ℤ (IntegralSingularHomology 2 X) :=
-    Module.free_of_finite_type_torsion_free'
-  let _ := hFree
-  let b := Module.Free.chooseBasis ℤ (IntegralSingularHomology 2 X)
-  exact ⟨b.eval_injective, LinearMap.range_eq_top.mp b.eval_range⟩
-
-/-- The remaining transfer input after finite generation has been obtained from the explicit
-affine finite-CW models.  It records only the two pulled-back dual bases and the torsion-freeness
-needed to turn finite generation into integral reflexivity. -/
-public structure EllipticDegreeTwoDualPullbackData where
-  orderThreeDualBasis : Module.Basis (Fin 2) ℤ
-    (Module.Dual ℤ (IntegralSingularHomology 2 (orderThreeReducedCentralFiber F)))
-  orderThreeTorsionFree :
-    Module.IsTorsionFree ℤ
-      (IntegralSingularHomology 2 (orderThreeReducedCentralFiber F))
-  orderThreePullback_apply : ∀ (i : Fin 2) (x : DegreeTwoLattice),
-    orderThreeDualBasis i
-        (integralSingularHomologyMap 2
-          (RadialEllipticActionData.centralFiberCoverProjection
-            (orderThreeRadialActionData F))
-          ((orderThreeCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm x)) =
-      degreeTwoEvaluation (orderThreePullbackBasis i) x
-  orderFourDualBasis : Module.Basis (Fin 2) ℤ
-    (Module.Dual ℤ (IntegralSingularHomology 2 (orderFourReducedCentralFiber F)))
-  orderFourTorsionFree :
-    Module.IsTorsionFree ℤ
-      (IntegralSingularHomology 2 (orderFourReducedCentralFiber F))
-  orderFourPullback_apply : ∀ (i : Fin 2) (x : DegreeTwoLattice),
-    orderFourDualBasis i
-        (integralSingularHomologyMap 2
-          (RadialEllipticActionData.centralFiberCoverProjection
-            (orderFourRadialActionData F))
-          ((orderFourCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm x)) =
-      degreeTwoEvaluation (orderFourPullbackBasis i) x
-
-/-- The finite residual transfer calculation.  Deck invariance determines the order-three
-pullback functional from its values in coordinates one and three, and the order-four pullback
-functional from its values in coordinates zero and three. -/
-public structure EllipticDegreeTwoDualPullbackFiniteData where
-  orderThreeDualBasis : Module.Basis (Fin 2) ℤ
-    (Module.Dual ℤ (IntegralSingularHomology 2 (orderThreeReducedCentralFiber F)))
-  orderThreeTorsionFree :
-    Module.IsTorsionFree ℤ
-      (IntegralSingularHomology 2 (orderThreeReducedCentralFiber F))
-  orderThreePullback_coordinateOne (i : Fin 2) :
-    orderThreeDualBasis i
-        (integralSingularHomologyMap 2
-          (RadialEllipticActionData.centralFiberCoverProjection
-            (orderThreeRadialActionData F))
-          ((orderThreeCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm
-            (Pi.single 1 1))) =
-      degreeTwoEvaluation (orderThreePullbackBasis i) (Pi.single 1 1)
-  orderThreePullback_coordinateThree (i : Fin 2) :
-    orderThreeDualBasis i
-        (integralSingularHomologyMap 2
-          (RadialEllipticActionData.centralFiberCoverProjection
-            (orderThreeRadialActionData F))
-          ((orderThreeCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm
-            (Pi.single 3 1))) =
-      degreeTwoEvaluation (orderThreePullbackBasis i) (Pi.single 3 1)
-  orderFourDualBasis : Module.Basis (Fin 2) ℤ
-    (Module.Dual ℤ (IntegralSingularHomology 2 (orderFourReducedCentralFiber F)))
-  orderFourTorsionFree :
-    Module.IsTorsionFree ℤ
-      (IntegralSingularHomology 2 (orderFourReducedCentralFiber F))
-  orderFourPullback_coordinateZero (i : Fin 2) :
-    orderFourDualBasis i
-        (integralSingularHomologyMap 2
-          (RadialEllipticActionData.centralFiberCoverProjection
-            (orderFourRadialActionData F))
-          ((orderFourCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm
-            (Pi.single 0 1))) =
-      degreeTwoEvaluation (orderFourPullbackBasis i) (Pi.single 0 1)
-  orderFourPullback_coordinateThree (i : Fin 2) :
-    orderFourDualBasis i
-        (integralSingularHomologyMap 2
-          (RadialEllipticActionData.centralFiberCoverProjection
-            (orderFourRadialActionData F))
-          ((orderFourCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm
-            (Pi.single 3 1))) =
-      degreeTwoEvaluation (orderFourPullbackBasis i) (Pi.single 3 1)
-
 /-- Pull a quotient covector back to the standard degree-two lattice coordinates. -/
 private noncomputable def degreeTwoDualPullbackAddHom
     {E X : Type} [TopologicalSpace E] [TopologicalSpace X]
@@ -575,152 +486,145 @@ public structure EllipticDegreeTwoHomologyBasisFiniteData where
   orderFourBasis_one :
     orderFourBasis 1 = orderFourProjectedDegreeTwoGenerator F 3
 
-/-- The exact finite residual transfer statement: the two computed pullback families are dual
-bases, their values are specified by eight scalar entries, and the quotient degree-two
-homology groups contain no torsion. -/
-public theorem establishedEllipticDegreeTwoDualPullbackFiniteData
-    (hBasis : Nonempty (EllipticDegreeTwoHomologyBasisFiniteData F)) :
-    Nonempty (EllipticDegreeTwoDualPullbackFiniteData F) := by
-  obtain ⟨D⟩ := hBasis
-  refine ⟨{
-    orderThreeDualBasis := D.orderThreeBasis.dualBasis
-    orderThreeTorsionFree := ?_
-    orderThreePullback_coordinateOne := ?_
-    orderThreePullback_coordinateThree := ?_
-    orderFourDualBasis := D.orderFourBasis.dualBasis
-    orderFourTorsionFree := ?_
-    orderFourPullback_coordinateZero := ?_
-    orderFourPullback_coordinateThree := ?_
-  }⟩
-  · let _ : Module.Free ℤ
-        (IntegralSingularHomology 2 (orderThreeReducedCentralFiber F)) :=
-      Module.Free.of_basis D.orderThreeBasis
-    infer_instance
-  · intro i
-    have h :
-        orderThreeProjectedDegreeTwoGenerator F 1 =
-          D.orderThreeBasis 0 - 2 • D.orderThreeBasis 1 := by
-      rw [D.orderThreeBasis_one, D.orderThreeBasis_zero]
-      abel
-    change D.orderThreeBasis.dualBasis i
-      (orderThreeProjectedDegreeTwoGenerator F 1) =
-        degreeTwoEvaluation (orderThreePullbackBasis i) (Pi.single 1 1)
-    rw [h, map_sub, map_nsmul, Module.Basis.dualBasis_apply_self,
-      Module.Basis.dualBasis_apply_self]
-    fin_cases i <;>
-      simp [degreeTwoEvaluation, orderThreePullbackBasis, orderThreePullbackClasses,
-        orderThreePullbackInvariantZero, orderThreePullbackInvariantOne,
-        gammaEpsilonOne, qClass]
-  · intro i
-    change D.orderThreeBasis.dualBasis i
-      (orderThreeProjectedDegreeTwoGenerator F 3) =
-        degreeTwoEvaluation (orderThreePullbackBasis i) (Pi.single 3 1)
-    rw [← D.orderThreeBasis_one, Module.Basis.dualBasis_apply_self]
-    fin_cases i <;>
-      simp [degreeTwoEvaluation, orderThreePullbackBasis, orderThreePullbackClasses,
-        orderThreePullbackInvariantZero, orderThreePullbackInvariantOne,
-        gammaEpsilonOne, qClass]
-  · let _ : Module.Free ℤ
-        (IntegralSingularHomology 2 (orderFourReducedCentralFiber F)) :=
-      Module.Free.of_basis D.orderFourBasis
-    infer_instance
-  · intro i
-    have h :
-        orderFourProjectedDegreeTwoGenerator F 0 =
-          2 • D.orderFourBasis 0 - 3 • D.orderFourBasis 1 := by
-      rw [D.orderFourBasis_one, D.orderFourBasis_zero_double]
-      abel
-    change D.orderFourBasis.dualBasis i
-      (orderFourProjectedDegreeTwoGenerator F 0) =
-        degreeTwoEvaluation (orderFourPullbackBasis i) (Pi.single 0 1)
-    rw [h, map_sub, map_nsmul, map_nsmul, Module.Basis.dualBasis_apply_self,
-      Module.Basis.dualBasis_apply_self]
-    fin_cases i <;>
-      simp [degreeTwoEvaluation, orderFourPullbackBasis, orderFourPullbackClasses,
-        orderFourPullbackInvariantZero, orderFourPullbackInvariantOne,
-        gammaEpsilonTwo, qClass]
-  · intro i
-    change D.orderFourBasis.dualBasis i
-      (orderFourProjectedDegreeTwoGenerator F 3) =
-        degreeTwoEvaluation (orderFourPullbackBasis i) (Pi.single 3 1)
-    rw [← D.orderFourBasis_one, Module.Basis.dualBasis_apply_self]
-    fin_cases i <;>
-      simp [degreeTwoEvaluation, orderFourPullbackBasis, orderFourPullbackClasses,
-        orderFourPullbackInvariantZero, orderFourPullbackInvariantOne,
-        gammaEpsilonTwo, qClass]
+namespace EllipticDegreeTwoHomologyBasisFiniteData
 
-/-- The exact residual transfer statement: the two computed pullback families are dual bases,
-and the quotient degree-two homology groups contain no torsion. -/
-public theorem establishedEllipticDegreeTwoDualPullbackData
-    (hBasis : Nonempty (EllipticDegreeTwoHomologyBasisFiniteData F)) :
-    Nonempty (EllipticDegreeTwoDualPullbackData F) := by
-  obtain ⟨D⟩ := establishedEllipticDegreeTwoDualPullbackFiniteData F hBasis
-  refine ⟨{
-    orderThreeDualBasis := D.orderThreeDualBasis
-    orderThreeTorsionFree := D.orderThreeTorsionFree
-    orderThreePullback_apply := ?_
-    orderFourDualBasis := D.orderFourDualBasis
-    orderFourTorsionFree := D.orderFourTorsionFree
-    orderFourPullback_apply := ?_
-  }⟩
-  · intro i x
-    let lhs := degreeTwoDualPullbackAddHom
-      (RadialEllipticActionData.centralFiberCoverProjection
-        (orderThreeRadialActionData F))
-      (orderThreeCentralFiberCoverSourceHomologyBasis F).degreeTwo
-      (D.orderThreeDualBasis i)
-    let rhs := degreeTwoEvaluationAddHom (orderThreePullbackBasis i)
-    have h : lhs = rhs := by
-      apply degreeTwoAddMonoidHom_ext_standardGenerators
-      intro j
-      apply orderThreeInvariantAddHom_generator lhs
-      · intro x
-        change D.orderThreeDualBasis i
-            (integralSingularHomologyMap 2
-              (RadialEllipticActionData.centralFiberCoverProjection
-                (orderThreeRadialActionData F))
-              ((orderThreeCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm
-                (exteriorSquareMap (rhoLambda g₁) x))) =
-          D.orderThreeDualBasis i
-            (integralSingularHomologyMap 2
-              (RadialEllipticActionData.centralFiberCoverProjection
-                (orderThreeRadialActionData F))
-              ((orderThreeCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm x))
-        exact congrArg (D.orderThreeDualBasis i)
-          (coverProjection_degreeTwo_invariant
-            (orderThreeCentralFiberPresentationData F) x)
-      · exact D.orderThreePullback_coordinateOne i
-      · exact D.orderThreePullback_coordinateThree i
-    exact DFunLike.congr_fun h x
-  · intro i x
-    let lhs := degreeTwoDualPullbackAddHom
-      (RadialEllipticActionData.centralFiberCoverProjection
-        (orderFourRadialActionData F))
-      (orderFourCentralFiberCoverSourceHomologyBasis F).degreeTwo
-      (D.orderFourDualBasis i)
-    let rhs := degreeTwoEvaluationAddHom (orderFourPullbackBasis i)
-    have h : lhs = rhs := by
-      apply degreeTwoAddMonoidHom_ext_standardGenerators
-      intro j
-      apply orderFourInvariantAddHom_generator lhs
-      · intro x
-        change D.orderFourDualBasis i
-            (integralSingularHomologyMap 2
-              (RadialEllipticActionData.centralFiberCoverProjection
-                (orderFourRadialActionData F))
-              ((orderFourCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm
-                (exteriorSquareMap (rhoLambda g₂) x))) =
-          D.orderFourDualBasis i
-            (integralSingularHomologyMap 2
-              (RadialEllipticActionData.centralFiberCoverProjection
-                (orderFourRadialActionData F))
-              ((orderFourCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm x))
-        exact congrArg (D.orderFourDualBasis i)
-          (coverProjection_degreeTwo_invariant
-            (orderFourCentralFiberPresentationData F) x)
-      · exact D.orderFourPullback_coordinateZero i
-      · exact D.orderFourPullback_coordinateThree i
-    exact DFunLike.congr_fun h x
+private theorem orderThreeBasis_dualBasis_projected_1
+    (D : EllipticDegreeTwoHomologyBasisFiniteData F) (i : Fin 2) :
+    D.orderThreeBasis.dualBasis i (orderThreeProjectedDegreeTwoGenerator F 1) =
+      degreeTwoEvaluation (orderThreePullbackBasis i) (Pi.single 1 1) := by
+  have h :
+      orderThreeProjectedDegreeTwoGenerator F 1 =
+        D.orderThreeBasis 0 - 2 • D.orderThreeBasis 1 := by
+    rw [D.orderThreeBasis_one, D.orderThreeBasis_zero]
+    abel
+  change D.orderThreeBasis.dualBasis i
+    (orderThreeProjectedDegreeTwoGenerator F 1) =
+      degreeTwoEvaluation (orderThreePullbackBasis i) (Pi.single 1 1)
+  rw [h, map_sub, map_nsmul, Module.Basis.dualBasis_apply_self,
+    Module.Basis.dualBasis_apply_self]
+  fin_cases i <;>
+    simp [degreeTwoEvaluation, orderThreePullbackBasis, orderThreePullbackClasses,
+      orderThreePullbackInvariantZero, orderThreePullbackInvariantOne,
+      gammaEpsilonOne, qClass]
+
+private theorem orderThreeBasis_dualBasis_projected_3
+    (D : EllipticDegreeTwoHomologyBasisFiniteData F) (i : Fin 2) :
+    D.orderThreeBasis.dualBasis i (orderThreeProjectedDegreeTwoGenerator F 3) =
+      degreeTwoEvaluation (orderThreePullbackBasis i) (Pi.single 3 1) := by
+  change D.orderThreeBasis.dualBasis i
+    (orderThreeProjectedDegreeTwoGenerator F 3) =
+      degreeTwoEvaluation (orderThreePullbackBasis i) (Pi.single 3 1)
+  rw [← D.orderThreeBasis_one, Module.Basis.dualBasis_apply_self]
+  fin_cases i <;>
+    simp [degreeTwoEvaluation, orderThreePullbackBasis, orderThreePullbackClasses,
+      orderThreePullbackInvariantZero, orderThreePullbackInvariantOne,
+      gammaEpsilonOne, qClass]
+
+private theorem orderFourBasis_dualBasis_projected_0
+    (D : EllipticDegreeTwoHomologyBasisFiniteData F) (i : Fin 2) :
+    D.orderFourBasis.dualBasis i (orderFourProjectedDegreeTwoGenerator F 0) =
+      degreeTwoEvaluation (orderFourPullbackBasis i) (Pi.single 0 1) := by
+  have h :
+      orderFourProjectedDegreeTwoGenerator F 0 =
+        2 • D.orderFourBasis 0 - 3 • D.orderFourBasis 1 := by
+    rw [D.orderFourBasis_one, D.orderFourBasis_zero_double]
+    abel
+  change D.orderFourBasis.dualBasis i
+    (orderFourProjectedDegreeTwoGenerator F 0) =
+      degreeTwoEvaluation (orderFourPullbackBasis i) (Pi.single 0 1)
+  rw [h, map_sub, map_nsmul, map_nsmul, Module.Basis.dualBasis_apply_self,
+    Module.Basis.dualBasis_apply_self]
+  fin_cases i <;>
+    simp [degreeTwoEvaluation, orderFourPullbackBasis, orderFourPullbackClasses,
+      orderFourPullbackInvariantZero, orderFourPullbackInvariantOne,
+      gammaEpsilonTwo, qClass]
+
+private theorem orderFourBasis_dualBasis_projected_3
+    (D : EllipticDegreeTwoHomologyBasisFiniteData F) (i : Fin 2) :
+    D.orderFourBasis.dualBasis i (orderFourProjectedDegreeTwoGenerator F 3) =
+      degreeTwoEvaluation (orderFourPullbackBasis i) (Pi.single 3 1) := by
+  change D.orderFourBasis.dualBasis i
+    (orderFourProjectedDegreeTwoGenerator F 3) =
+      degreeTwoEvaluation (orderFourPullbackBasis i) (Pi.single 3 1)
+  rw [← D.orderFourBasis_one, Module.Basis.dualBasis_apply_self]
+  fin_cases i <;>
+    simp [degreeTwoEvaluation, orderFourPullbackBasis, orderFourPullbackClasses,
+      orderFourPullbackInvariantZero, orderFourPullbackInvariantOne,
+      gammaEpsilonTwo, qClass]
+
+public theorem orderThreeBasis_dualBasis_pullback
+    (D : EllipticDegreeTwoHomologyBasisFiniteData F) (i : Fin 2) (x : DegreeTwoLattice) :
+    D.orderThreeBasis.dualBasis i
+        (integralSingularHomologyMap 2
+          (RadialEllipticActionData.centralFiberCoverProjection (orderThreeRadialActionData F))
+          ((orderThreeCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm x)) =
+      degreeTwoEvaluation (orderThreePullbackBasis i) x := by
+  let lhs := degreeTwoDualPullbackAddHom
+    (RadialEllipticActionData.centralFiberCoverProjection
+      (orderThreeRadialActionData F))
+    (orderThreeCentralFiberCoverSourceHomologyBasis F).degreeTwo
+    (D.orderThreeBasis.dualBasis i)
+  let rhs := degreeTwoEvaluationAddHom (orderThreePullbackBasis i)
+  have h : lhs = rhs := by
+    apply degreeTwoAddMonoidHom_ext_standardGenerators
+    intro j
+    apply orderThreeInvariantAddHom_generator lhs
+    · intro x
+      change D.orderThreeBasis.dualBasis i
+          (integralSingularHomologyMap 2
+            (RadialEllipticActionData.centralFiberCoverProjection
+              (orderThreeRadialActionData F))
+            ((orderThreeCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm
+              (exteriorSquareMap (rhoLambda g₁) x))) =
+        D.orderThreeBasis.dualBasis i
+          (integralSingularHomologyMap 2
+            (RadialEllipticActionData.centralFiberCoverProjection
+              (orderThreeRadialActionData F))
+            ((orderThreeCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm x))
+      exact congrArg (D.orderThreeBasis.dualBasis i)
+        (coverProjection_degreeTwo_invariant
+          (orderThreeCentralFiberPresentationData F) x)
+    · exact orderThreeBasis_dualBasis_projected_1 F D i
+    · exact orderThreeBasis_dualBasis_projected_3 F D i
+  exact DFunLike.congr_fun h x
+
+public theorem orderFourBasis_dualBasis_pullback
+    (D : EllipticDegreeTwoHomologyBasisFiniteData F) (i : Fin 2) (x : DegreeTwoLattice) :
+    D.orderFourBasis.dualBasis i
+        (integralSingularHomologyMap 2
+          (RadialEllipticActionData.centralFiberCoverProjection (orderFourRadialActionData F))
+          ((orderFourCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm x)) =
+      degreeTwoEvaluation (orderFourPullbackBasis i) x := by
+  let lhs := degreeTwoDualPullbackAddHom
+    (RadialEllipticActionData.centralFiberCoverProjection
+      (orderFourRadialActionData F))
+    (orderFourCentralFiberCoverSourceHomologyBasis F).degreeTwo
+    (D.orderFourBasis.dualBasis i)
+  let rhs := degreeTwoEvaluationAddHom (orderFourPullbackBasis i)
+  have h : lhs = rhs := by
+    apply degreeTwoAddMonoidHom_ext_standardGenerators
+    intro j
+    apply orderFourInvariantAddHom_generator lhs
+    · intro x
+      change D.orderFourBasis.dualBasis i
+          (integralSingularHomologyMap 2
+            (RadialEllipticActionData.centralFiberCoverProjection
+              (orderFourRadialActionData F))
+            ((orderFourCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm
+              (exteriorSquareMap (rhoLambda g₂) x))) =
+        D.orderFourBasis.dualBasis i
+          (integralSingularHomologyMap 2
+            (RadialEllipticActionData.centralFiberCoverProjection
+              (orderFourRadialActionData F))
+            ((orderFourCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm x))
+      exact congrArg (D.orderFourBasis.dualBasis i)
+        (coverProjection_degreeTwo_invariant
+          (orderFourCentralFiberPresentationData F) x)
+    · exact orderFourBasis_dualBasis_projected_0 F D i
+    · exact orderFourBasis_dualBasis_projected_3 F D i
+  exact DFunLike.congr_fun h x
+
+end EllipticDegreeTwoHomologyBasisFiniteData
 
 /-- The exact remaining cohomological input from Proposition 7.14: the displayed pullback
 classes are bases of the integral dual lattices of the two elliptic central fibres, and their
@@ -729,20 +633,17 @@ public theorem establishedEllipticDegreeTwoPullbackBases
     (hBasis : Nonempty (EllipticDegreeTwoHomologyBasisFiniteData F)) :
     Nonempty (EllipticDegreeTwoPullbackBases F) := by
   obtain ⟨B⟩ := hBasis
-  obtain ⟨D⟩ := establishedEllipticDegreeTwoDualPullbackData F ⟨B⟩
   refine ⟨{ orderThree := ?_, orderFour := ?_ }⟩
   · exact
-      { quotientDualBasis := D.orderThreeDualBasis
-        reflexive := dualEval_bijective_of_finite_torsionFree
-          (Module.Finite.of_basis B.orderThreeBasis)
-          D.orderThreeTorsionFree
-        pullback_apply := D.orderThreePullback_apply }
+      { quotientDualBasis := B.orderThreeBasis.dualBasis
+        reflexive := ⟨B.orderThreeBasis.eval_injective,
+          LinearMap.range_eq_top.mp B.orderThreeBasis.eval_range⟩
+        pullback_apply := B.orderThreeBasis_dualBasis_pullback }
   · exact
-      { quotientDualBasis := D.orderFourDualBasis
-        reflexive := dualEval_bijective_of_finite_torsionFree
-          (Module.Finite.of_basis B.orderFourBasis)
-          D.orderFourTorsionFree
-        pullback_apply := D.orderFourPullback_apply }
+      { quotientDualBasis := B.orderFourBasis.dualBasis
+        reflexive := ⟨B.orderFourBasis.eval_injective,
+          LinearMap.range_eq_top.mp B.orderFourBasis.eval_range⟩
+        pullback_apply := B.orderFourBasis_dualBasis_pullback }
 
 
 /-- A coherent choice of the two degree-two perfect-pairing realizations from Proposition

@@ -15,6 +15,8 @@ open CategoryTheory TopologicalSpace Topology
 
 namespace SphereSixComplex.Geometry.CuspFillingRadialCompactness
 
+open SphereSixComplex.Geometry.CuspPhaseEstimates
+
 open Set SphereSixComplex.Periods
 open CuspFilling CuspLocalPhaseAction CuspCollar
 open CuspPeriodExpansion InfiniteA2Toric
@@ -23,33 +25,6 @@ open CuspPeriodExpansion
 open CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
 
 noncomputable section
-
-/-- The `ℓ¹` size of a real two-vector. -/
-@[expose] public def realL1 (x : Fin 2 → ℝ) : ℝ :=
-  |x 0| + |x 1|
-
-public theorem realL1_nonneg (x : Fin 2 → ℝ) : 0 ≤ realL1 x :=
-  add_nonneg (abs_nonneg _) (abs_nonneg _)
-
-public theorem realL1_eq_zero_iff (x : Fin 2 → ℝ) : realL1 x = 0 ↔ x = 0 := by
-  constructor
-  · intro h
-    funext i
-    fin_cases i
-    · have hx : |x 0| = 0 := by
-        simp only [realL1] at h
-        nlinarith [abs_nonneg (x 0), abs_nonneg (x 1)]
-      simpa using abs_eq_zero.mp hx
-    · have hx : |x 1| = 0 := by
-        simp only [realL1] at h
-        nlinarith [abs_nonneg (x 0), abs_nonneg (x 1)]
-      simpa using abs_eq_zero.mp hx
-  · rintro rfl
-    simp [realL1]
-
-@[simp]
-public theorem realL1_neg (x : Fin 2 → ℝ) : realL1 (-x) = realL1 x := by
-  simp [realL1]
 
 /-- The real inverse of the integral fan shear `B₀`. -/
 @[expose] public def realFanShearInverse (d : Fin 2 → ℝ) : Fin 2 → ℝ :=
@@ -68,9 +43,9 @@ public theorem realFanShearInverse_smul (c : ℝ) (x : Fin 2 → ℝ) :
   fin_cases i <;> simp [realFanShearInverse]
 
 @[simp]
-public theorem realL1_realFanShearInverse (d : Fin 2 → ℝ) :
-    realL1 (realFanShearInverse d) = realL1 d := by
-  simp [realL1, realFanShearInverse, add_comm]
+public theorem positionL1_realFanShearInverse (d : Fin 2 → ℝ) :
+    positionL1 (realFanShearInverse d) = positionL1 d := by
+  simp [positionL1, realFanShearInverse, add_comm]
 
 /-- Coordinatewise integral floor of a real two-vector. -/
 public def floorVector (x : Fin 2 → ℝ) : ParameterLattice :=
@@ -89,13 +64,13 @@ public theorem fractionalPartVector_lt_one (x : Fin 2 → ℝ) (i : Fin 2) :
   change Int.fract (x i) < 1
   exact Int.fract_lt_one _
 
-public theorem realL1_fractionalPartVector_le_two (x : Fin 2 → ℝ) :
-    realL1 (fractionalPartVector x) ≤ 2 := by
+public theorem positionL1_fractionalPartVector_le_two (x : Fin 2 → ℝ) :
+    positionL1 (fractionalPartVector x) ≤ 2 := by
   have h0 := fractionalPartVector_nonneg x 0
   have h1 := fractionalPartVector_nonneg x 1
   have h0' := fractionalPartVector_lt_one x 0
   have h1' := fractionalPartVector_lt_one x 1
-  rw [realL1, abs_of_nonneg h0, abs_of_nonneg h1]
+  rw [positionL1, abs_of_nonneg h0, abs_of_nonneg h1]
   linarith
 
 /-- The phase-corrected real fan displacement at a nonzero height. -/
@@ -131,10 +106,10 @@ public theorem phaseLog_mulVec_real_le
     (hA : ∀ i j, |NormalizedFuchsianCuspCoordinate.phaseLogMatrix
       N q i j| ≤ A) (x : Fin 2 → ℝ) (i : Fin 2) :
     |(NormalizedFuchsianCuspCoordinate.phaseLogMatrix
-      N q).mulVec x i| ≤ A * realL1 x := by
+      N q).mulVec x i| ≤ A * positionL1 x := by
   let R :=
     NormalizedFuchsianCuspCoordinate.phaseLogMatrix N q
-  simp only [Matrix.mulVec, dotProduct, Fin.sum_univ_two, realL1]
+  simp only [Matrix.mulVec, dotProduct, Fin.sum_univ_two, positionL1]
   calc
     |R i 0 * x 0 + R i 1 * x 1| ≤ |R i 0 * x 0| + |R i 1 * x 1| :=
       abs_add_le _ _
@@ -337,7 +312,7 @@ public theorem actual_effectiveFanDisplacement_correction_coord_le
     (d : Fin 2 → ℝ) (i : Fin 2) :
     |(NormalizedFuchsianCuspCoordinate.phaseLogMatrix
       N (M.t p)).mulVec (realFanShearInverse d) i / Real.log ‖M.t p‖| ≤
-        (1 / 4 : ℝ) * realL1 d := by
+        (1 / 4 : ℝ) * positionL1 d := by
   have hnorm_pos : 0 < ‖M.t p‖ := norm_pos_iff.mpr hp
   have hnorm_lt : ‖M.t p‖ < 1 :=
     (mem_ball_zero_iff.mp p.property).trans W.localWitness.radius_lt_one
@@ -345,10 +320,10 @@ public theorem actual_effectiveFanDisplacement_correction_coord_le
     abs_pos.mpr (Real.log_ne_zero_of_pos_of_ne_one hnorm_pos (ne_of_lt hnorm_lt))
   have hvec := phaseLog_mulVec_real_le N
     (W.localWitness.phaseLogMatrix_entry_bound p) (realFanShearInverse d) i
-  rw [realL1_realFanShearInverse] at hvec
+  rw [positionL1_realFanShearInverse] at hvec
   rw [abs_div]
   apply (div_le_iff₀ habslog_pos).2
-  have hl1 := realL1_nonneg d
+  have hl1 := positionL1_nonneg d
   have hdom := W.localWitness.phaseLog_dominates p hp
   nlinarith [W.localWitness.phaseBound_nonneg]
 
@@ -358,14 +333,14 @@ public theorem actual_effectiveFanDisplacement_correction_l1_le
     (W : ActualPuncturedCuspCollarWitness N M)
     (p : localCarrier M W.localWitness.radius) (hp : M.t p ≠ 0)
     (d : Fin 2 → ℝ) :
-    realL1 (effectiveFanDisplacement N (M.t p) d - d) ≤
-      (1 / 2 : ℝ) * realL1 d := by
+    positionL1 (effectiveFanDisplacement N (M.t p) d - d) ≤
+      (1 / 2 : ℝ) * positionL1 d := by
   have h0 := actual_effectiveFanDisplacement_correction_coord_le W p hp d 0
   have h1 := actual_effectiveFanDisplacement_correction_coord_le W p hp d 1
-  simp only [realL1, effectiveFanDisplacement, Pi.sub_apply, Pi.add_apply, add_sub_cancel_left]
+  simp only [positionL1, effectiveFanDisplacement, Pi.sub_apply, Pi.add_apply, add_sub_cancel_left]
   calc
-    _ ≤ (1 / 4 : ℝ) * realL1 d + (1 / 4 : ℝ) * realL1 d := add_le_add h0 h1
-    _ = (1 / 2 : ℝ) * realL1 d := by ring
+    _ ≤ (1 / 4 : ℝ) * positionL1 d + (1 / 4 : ℝ) * positionL1 d := add_le_add h0 h1
+    _ = (1 / 2 : ℝ) * positionL1 d := by ring
 
 public noncomputable def actualEffectiveFanDisplacementEquiv
     {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
@@ -383,13 +358,13 @@ public noncomputable def actualEffectiveFanDisplacementEquiv
     have heq : effectiveFanDisplacement N (M.t p) d - d = -d := by
       change effectiveFanDisplacementLinearMap N (M.t p) d - d = -d
       rw [hzero, zero_sub]
-    have hl1eq : realL1 (effectiveFanDisplacement N (M.t p) d - d) = realL1 d := by
+    have hl1eq : positionL1 (effectiveFanDisplacement N (M.t p) d - d) = positionL1 d := by
       rw [heq]
-      simp [realL1]
-    have hd0 : realL1 d = 0 := by
+      simp [positionL1]
+    have hd0 : positionL1 d = 0 := by
       rw [hl1eq] at hbound
-      nlinarith [realL1_nonneg d]
-    have : d = 0 := (realL1_eq_zero_iff d).mp hd0
+      nlinarith [positionL1_nonneg d]
+    have : d = 0 := (positionL1_eq_zero_iff d).mp hd0
     exact sub_eq_zero.mp this)
 
 @[simp]
@@ -435,8 +410,8 @@ public theorem actual_exists_reduced_rescaledPosition
       abs_pos.mpr (Real.log_ne_zero_of_pos_of_ne_one hnorm_pos (ne_of_lt hnorm_lt))
     have hvec := phaseLog_mulVec_real_le N
       (W.localWitness.phaseLogMatrix_entry_bound p) (realFanShearInverse u) i
-    rw [realL1_realFanShearInverse] at hvec
-    have hul1 : realL1 u ≤ 2 := realL1_fractionalPartVector_le_two x
+    rw [positionL1_realFanShearInverse] at hvec
+    have hul1 : positionL1 u ≤ 2 := positionL1_fractionalPartVector_le_two x
     simp only [e, effectiveFanDisplacement, add_sub_cancel_left]
     change |(NormalizedFuchsianCuspCoordinate.phaseLogMatrix N (M.t p)).mulVec (realFanShearInverse u) i /
       Real.log ‖M.t p‖| ≤ _
@@ -445,7 +420,7 @@ public theorem actual_exists_reduced_rescaledPosition
     have hA := W.localWitness.phaseBound_nonneg
     rw [div_mul_cancel₀ _ (ne_of_gt habslog_pos)]
     calc
-      _ ≤ W.localWitness.phaseBound * realL1 u := hvec
+      _ ≤ W.localWitness.phaseBound * positionL1 u := hvec
       _ ≤ W.localWitness.phaseBound * 2 := mul_le_mul_of_nonneg_left hul1 hA
       _ = 2 * W.localWitness.phaseBound := by ring
   · have hdisp :=

@@ -3,17 +3,18 @@ public import SphereSixComplex.Paper.Topology.ToricCellAtlasRechart
 
 @[expose] public section
 noncomputable section
+open SphereSixComplex.Geometry.InfiniteA2Toric
 open Set Topology CategoryTheory CategoryTheory.Limits
-namespace SphereSixComplex.StandardA2ToricCentralFiberCellAtlas
+namespace SphereSixComplex.Geometry.InfiniteA2Toric.CentralFiber.CellAtlas
 variable {X : Type} [TopologicalSpace X] [T2Space X]
 
-public def skeletalComplex (A : StandardA2ToricCentralFiberCellAtlas X) :
+public def skeletalComplex (A : CentralFiber.CellAtlas X) :
     ChainComplex AddCommGrpCat ℕ := by
   let _ := A.cwComplex
   exact integralCWSkeletalChainComplex X (integralCWRelativeBoundary_comp_self X)
 
 public theorem cellularIdentity_of_closedCell_eq
-    (A B : StandardA2ToricCentralFiberCellAtlas X)
+    (A B : CentralFiber.CellAtlas X)
     (h : ∀ n i, A.cellMap n i '' Metric.closedBall 0 1 =
       B.cellMap n i '' Metric.closedBall 0 1) :
     @IsIntegralCWCellularMap X X _ _ A.cwComplex _ _ B.cwComplex
@@ -25,7 +26,7 @@ public theorem cellularIdentity_of_closedCell_eq
 
 public def rechartSkeletalChainMap
     (T : CellularHomology.IntegralComparison)
-    (A B : StandardA2ToricCentralFiberCellAtlas X)
+    (A B : CentralFiber.CellAtlas X)
     (h : ∀ n i, A.cellMap n i '' Metric.closedBall 0 1 =
       B.cellMap n i '' Metric.closedBall 0 1) :
     A.skeletalComplex ⟶ B.skeletalComplex :=
@@ -34,7 +35,7 @@ public def rechartSkeletalChainMap
 
 public theorem rechartSkeletalChainMap_comp
     (T : CellularHomology.IntegralComparison)
-    (A B C : StandardA2ToricCentralFiberCellAtlas X)
+    (A B C : CentralFiber.CellAtlas X)
     (hAB : ∀ n i, A.cellMap n i '' Metric.closedBall 0 1 =
       B.cellMap n i '' Metric.closedBall 0 1)
     (hBC : ∀ n i, B.cellMap n i '' Metric.closedBall 0 1 =
@@ -48,7 +49,7 @@ public theorem rechartSkeletalChainMap_comp
 
 public theorem rechartSkeletalChainMap_self
     (T : CellularHomology.IntegralComparison)
-    (A : StandardA2ToricCentralFiberCellAtlas X)
+    (A : CentralFiber.CellAtlas X)
     (h : ∀ n i, A.cellMap n i '' Metric.closedBall 0 1 =
       A.cellMap n i '' Metric.closedBall 0 1) :
     rechartSkeletalChainMap T A A h = 𝟙 A.skeletalComplex :=
@@ -56,7 +57,7 @@ public theorem rechartSkeletalChainMap_self
 
 public def rechartSkeletalChainIso
     (T : CellularHomology.IntegralComparison)
-    (A B : StandardA2ToricCentralFiberCellAtlas X)
+    (A B : CentralFiber.CellAtlas X)
     (h : ∀ n i, A.cellMap n i '' Metric.closedBall 0 1 =
       B.cellMap n i '' Metric.closedBall 0 1) :
     A.skeletalComplex ≅ B.skeletalComplex where
@@ -67,7 +68,7 @@ public def rechartSkeletalChainIso
 
 public theorem rechartSkeletal_d_zero
     (T : CellularHomology.IntegralComparison)
-    (A B : StandardA2ToricCentralFiberCellAtlas X)
+    (A B : CentralFiber.CellAtlas X)
     (h : ∀ n i, A.cellMap n i '' Metric.closedBall 0 1 =
       B.cellMap n i '' Metric.closedBall 0 1) (n m : ℕ)
     (hz : A.skeletalComplex.d n m = 0) : B.skeletalComplex.d n m = 0 := by
@@ -75,7 +76,7 @@ public theorem rechartSkeletal_d_zero
   apply (cancel_epi (e.hom.f n)).mp
   rw [comp_zero, e.hom.comm, hz, zero_comp]
 
-end SphereSixComplex.StandardA2ToricCentralFiberCellAtlas
+end SphereSixComplex.Geometry.InfiniteA2Toric.CentralFiber.CellAtlas
 
 namespace SphereSixComplex.CellularHomology.IntegralComparison
 

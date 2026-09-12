@@ -20,6 +20,8 @@ open scoped Topology
 
 namespace SphereSixComplex.Geometry.CuspStraightening
 
+open SphereSixComplex.Geometry.CuspPhaseEstimates
+
 open SphereSixComplex.Periods
 open CuspFilling CuspFillingRadialCompactness CuspLocalPhaseAction
 open CuspPeriodExpansion CuspCollar
@@ -63,7 +65,7 @@ public theorem frozenEffectiveFanDisplacement_correction_coord_le
     (p : localCarrier M W.localWitness.radius) (hp : M.t p ≠ 0)
     (d : Fin 2 → ℝ) (i : Fin 2) :
     |(NormalizedFuchsianCuspCoordinate.phaseLogMatrix N 0).mulVec (realFanShearInverse d) i / Real.log ‖M.t p‖| ≤
-      (1 / 4 : ℝ) * realL1 d := by
+      (1 / 4 : ℝ) * positionL1 d := by
   have hnorm_pos : 0 < ‖M.t p‖ := norm_pos_iff.mpr hp
   have hnorm_lt : ‖M.t p‖ < 1 :=
     (mem_ball_zero_iff.mp p.property).trans W.localWitness.radius_lt_one
@@ -71,11 +73,11 @@ public theorem frozenEffectiveFanDisplacement_correction_coord_le
     abs_pos.mpr (Real.log_ne_zero_of_pos_of_ne_one hnorm_pos (ne_of_lt hnorm_lt))
   have hvec := phaseLog_mulVec_real_le N
     (frozenPhaseLogMatrix_entry_bound W) (realFanShearInverse d) i
-  rw [realL1_realFanShearInverse] at hvec
+  rw [positionL1_realFanShearInverse] at hvec
   rw [abs_div]
   apply (div_le_iff₀ habslog_pos).2
   have hdom := W.localWitness.phaseLog_dominates p hp
-  nlinarith [realL1_nonneg d, W.localWitness.phaseBound_nonneg]
+  nlinarith [positionL1_nonneg d, W.localWitness.phaseBound_nonneg]
 
 /-- The frozen displacement differs from the identity by at most one half in `ℓ¹`. -/
 public theorem frozenEffectiveFanDisplacement_correction_l1_le
@@ -84,15 +86,15 @@ public theorem frozenEffectiveFanDisplacement_correction_l1_le
     (W : ActualPuncturedCuspCollarWitness N M)
     (p : localCarrier M W.localWitness.radius) (hp : M.t p ≠ 0)
     (d : Fin 2 → ℝ) :
-    realL1 (frozenEffectiveFanDisplacement N (M.t p) d - d) ≤
-      (1 / 2 : ℝ) * realL1 d := by
+    positionL1 (frozenEffectiveFanDisplacement N (M.t p) d - d) ≤
+      (1 / 2 : ℝ) * positionL1 d := by
   have h0 := frozenEffectiveFanDisplacement_correction_coord_le W p hp d 0
   have h1 := frozenEffectiveFanDisplacement_correction_coord_le W p hp d 1
-  simp only [realL1, frozenEffectiveFanDisplacement, Pi.sub_apply, Pi.add_apply,
+  simp only [positionL1, frozenEffectiveFanDisplacement, Pi.sub_apply, Pi.add_apply,
     add_sub_cancel_left]
   calc
-    _ ≤ (1 / 4 : ℝ) * realL1 d + (1 / 4 : ℝ) * realL1 d := add_le_add h0 h1
-    _ = (1 / 2 : ℝ) * realL1 d := by ring
+    _ ≤ (1 / 4 : ℝ) * positionL1 d + (1 / 4 : ℝ) * positionL1 d := add_le_add h0 h1
+    _ = (1 / 2 : ℝ) * positionL1 d := by ring
 
 /-- On the punctured collar, the frozen displacement matrix is nonsingular. -/
 public theorem frozenDisplacementMatrix_det_ne_zero
@@ -108,12 +110,12 @@ public theorem frozenDisplacementMatrix_det_ne_zero
     have hbound := frozenEffectiveFanDisplacement_correction_l1_le W p.1 p.2 d
     have heq : frozenEffectiveFanDisplacement N (M.t p.1) d - d = -d := by
       rw [← frozenDisplacementMatrix_mulVec, hzero, zero_sub]
-    have hl1eq : realL1 (frozenEffectiveFanDisplacement N (M.t p.1) d - d) =
-        realL1 d := by rw [heq, realL1_neg]
-    have hd0 : realL1 d = 0 := by
+    have hl1eq : positionL1 (frozenEffectiveFanDisplacement N (M.t p.1) d - d) =
+        positionL1 d := by rw [heq, positionL1_neg]
+    have hd0 : positionL1 d = 0 := by
       rw [hl1eq] at hbound
-      nlinarith [realL1_nonneg d]
-    exact sub_eq_zero.mp ((realL1_eq_zero_iff d).mp hd0)
+      nlinarith [positionL1_nonneg d]
+    exact sub_eq_zero.mp ((positionL1_eq_zero_iff d).mp hd0)
   exact isUnit_iff_ne_zero.mp
     ((frozenDisplacementMatrix N (M.t p.1)).isUnit_iff_isUnit_det.mp
       (Matrix.mulVec_injective_iff_isUnit.mp hinj))
@@ -143,18 +145,18 @@ public theorem frozenEffectiveFanDisplacement_puncturedFrozenInverseDisplacement
   · exact isUnit_iff_ne_zero.mpr (frozenDisplacementMatrix_det_ne_zero W p)
 
 /-- The inverse frozen displacement has operator norm at most two in coordinate `ℓ¹`. -/
-public theorem realL1_puncturedFrozenInverseDisplacement_le
+public theorem positionL1_puncturedFrozenInverseDisplacement_le
     {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (p : PuncturedLocalCarrier W) (y : Fin 2 → ℝ) :
-    realL1 (puncturedFrozenInverseDisplacement W p y) ≤ 2 * realL1 y := by
+    positionL1 (puncturedFrozenInverseDisplacement W p y) ≤ 2 * positionL1 y := by
   let d := puncturedFrozenInverseDisplacement W p y
   have hright : frozenEffectiveFanDisplacement N (M.t p.1) d = y :=
     frozenEffectiveFanDisplacement_puncturedFrozenInverseDisplacement W p y
   have hcorrection := frozenEffectiveFanDisplacement_correction_l1_le W p.1 p.2 d
-  have htriangle : realL1 d ≤
-      realL1 y + realL1 (frozenEffectiveFanDisplacement N (M.t p.1) d - d) := by
+  have htriangle : positionL1 d ≤
+      positionL1 y + positionL1 (frozenEffectiveFanDisplacement N (M.t p.1) d - d) := by
     let c := frozenEffectiveFanDisplacement N (M.t p.1) d - d
     have hd0 : d 0 = y 0 - c 0 := by
       dsimp only [c]
@@ -164,10 +166,10 @@ public theorem realL1_puncturedFrozenInverseDisplacement_le
       dsimp only [c]
       rw [← hright]
       simp
-    rw [realL1, realL1, realL1, hd0, hd1]
+    rw [positionL1, positionL1, positionL1, hd0, hd1]
     linarith [abs_sub (y 0) (c 0), abs_sub (y 1) (c 1)]
   dsimp only [d] at htriangle hcorrection ⊢
-  nlinarith [realL1_nonneg y]
+  nlinarith [positionL1_nonneg y]
 
 /-- The logarithmic modulus of the straightening multiplier is the difference of the actual and
 frozen phase-log matrices. -/
@@ -368,15 +370,15 @@ public theorem inverseStraighteningRealParameter_bounded_on_region
     let R := standardBoundedPolydiscRegions M W.localWitness.radius
       W.localWitness.radius_pos W.localWitness.radius_lt_one
     ∀ a, ∃ B : ℝ, ∀ p : PuncturedLocalCarrier W,
-      p.1 ∈ R.region a → realL1 (inverseStraighteningRealParameter W p) ≤ B := by
+      p.1 ∈ R.region a → positionL1 (inverseStraighteningRealParameter W p) ≤ B := by
   dsimp only
   let R := standardBoundedPolydiscRegions M W.localWitness.radius
     W.localWitness.radius_pos W.localWitness.radius_lt_one
   intro a
   obtain ⟨B, hB⟩ := R.position_bounded a
   refine ⟨2 * B, fun p hp ↦ ?_⟩
-  rw [inverseStraighteningRealParameter, realL1_realFanShearInverse]
-  exact (realL1_puncturedFrozenInverseDisplacement_le W p _).trans
+  rw [inverseStraighteningRealParameter, positionL1_realFanShearInverse]
+  exact (positionL1_puncturedFrozenInverseDisplacement_le W p _).trans
     (mul_le_mul_of_nonneg_left (hB p.1 hp p.2) (by norm_num))
 
 /-- The inverse exponent extended by zero on the central fibre. -/
@@ -451,8 +453,8 @@ public theorem continuousAt_extendedInverseStraighteningExponent_of_mem_region
     · simp
     · rw [Complex.norm_real, Real.norm_eq_abs]
       have hcoord : |inverseStraighteningRealParameter W ⟨p, hp⟩ j| ≤
-          realL1 (inverseStraighteningRealParameter W ⟨p, hp⟩) := by
-        fin_cases j <;> simp [realL1]
+          positionL1 (inverseStraighteningRealParameter W ⟨p, hp⟩) := by
+        fin_cases j <;> simp [positionL1]
       exact hcoord.trans ((hB ⟨p, hp⟩ hpregion).trans (le_abs_self B))
   have hdelta (i j : Fin 2) : Filter.Tendsto
       (fun p : localCarrier M W.localWitness.radius ↦

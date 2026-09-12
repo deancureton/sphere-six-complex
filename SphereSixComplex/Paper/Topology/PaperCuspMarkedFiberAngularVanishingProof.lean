@@ -366,8 +366,13 @@ private theorem cuspBoundaryBasedAngularCircleMap_markedFiber_homology_eq_zero
 /-- The actual marked cusp fibre has zero angular coordinate in degree-one homology. -/
 public theorem cuspAngularCoordinateVanishesOnMarkedFiber
     (G : ActualCuspRadialClutchingData W) (b : PuncturedLocalCuspQuotient W) :
-    CuspAngularCoordinateVanishesOnMarkedFiber G b := by
+    (let _ := G.fiberTopology
+      ∀ x : IntegralSingularHomology 1 G.Fiber,
+        cuspBoundaryAngularHomologyCoordinate W b
+          (integralSingularHomologyMap 1
+            (markedFiberToPuncturedCuspForAngularComparison G) x) = 0) := by
   let _ := G.fiberTopology
+  dsimp only
   intro x
   let _ := paperCuspBoundaryDeckAction W
   let _ := paperCuspFillingDeckAction W

@@ -71,8 +71,8 @@ end InfiniteA2Toric.QuantitativeRegions
 namespace CuspPhaseEstimates
 
 public theorem positionL1_real_shear (lambda : ParameterLattice) :
-    positionL1 (fun i ↦ (shearVector lambda i : ℝ)) = latticeL1 lambda := by
-  simpa only [positionL1, latticeL1,
+    positionL1 (fun i ↦ (shearVector lambda i : ℝ)) = parameterL1 lambda := by
+  simpa only [positionL1, parameterL1,
     parameterL1] using
     shearVector_parameterL1
       lambda
@@ -175,14 +175,14 @@ public theorem rescaledPosition_displacement_lower
       |(phaseLogMatrix
         N (M.t p)).mulVec
           (realParameter
-            lambda) i| ≤ A * latticeL1 lambda)
+            lambda) i| ≤ A * parameterL1 lambda)
     (hlog : ∀ (p : localCarrier M r), M.t p ≠ 0 →
       4 * A ≤ |Real.log ‖M.t p‖|) :
     ∀ lambda (p : localCarrier M r), M.t p ≠ 0 →
-      (1 / 2 : ℝ) * latticeL1 lambda ≤
+      (1 / 2 : ℝ) * parameterL1 lambda ≤
         positionL1 (rescaledPosition M (C.psiMap lambda p) - rescaledPosition M p) := by
   intro lambda p hp
-  have hl1 : 0 ≤ latticeL1 lambda := by
+  have hl1 : 0 ≤ parameterL1 lambda := by
     exact add_nonneg (abs_nonneg _) (abs_nonneg _)
   have hnorm_pos : 0 < ‖M.t p‖ := norm_pos_iff.mpr hp
   have hnorm_lt : ‖M.t p‖ < 1 := (mem_ball_zero_iff.mp p.property).trans hr
@@ -195,7 +195,7 @@ public theorem rescaledPosition_displacement_lower
         (realParameter
           lambda) i / Real.log ‖M.t p‖
   have hcorrection_i (i : Fin 2) :
-      |correction i| ≤ (1 / 4 : ℝ) * latticeL1 lambda := by
+      |correction i| ≤ (1 / 4 : ℝ) * parameterL1 lambda := by
     rw [show correction i =
       (phaseLogMatrix
         N (M.t p)).mulVec
@@ -206,7 +206,7 @@ public theorem rescaledPosition_displacement_lower
     have hentry := hR p hp lambda i
     have hlogA := hlog p hp
     nlinarith
-  have hcorrection : positionL1 correction ≤ (1 / 2 : ℝ) * latticeL1 lambda := by
+  have hcorrection : positionL1 correction ≤ (1 / 2 : ℝ) * parameterL1 lambda := by
     simp only [positionL1]
     linarith [hcorrection_i 0, hcorrection_i 1]
   have hposition := rescaledPosition_psiMap_sub N M hr C hphase lambda p hp
@@ -546,7 +546,7 @@ public def toQuantitativeToricRegionCover
     (C : CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients M r)
     (hdisplacement : ∃ c : ℝ, 0 < c ∧ ∀ lambda (p : localCarrier M r),
       M.t p ≠ 0 →
-        c * latticeL1 lambda ≤
+        c * parameterL1 lambda ≤
           positionL1 (rescaledPosition M (C.psiMap lambda p) - rescaledPosition M p)) :
     QuantitativeToricRegionCover C where
   region a := R.region a
@@ -612,13 +612,13 @@ public theorem exists_actualLocalCuspQuotientWitness
       |(NormalizedFuchsianCuspCoordinate.phaseLogMatrix
         N (M.t p)).mulVec
           (realParameter
-            lambda) i| ≤ A * latticeL1 lambda := by
+            lambda) i| ≤ A * parameterL1 lambda := by
     intro p _hp lambda i
     have hpball : ‖M.t p‖ < r := mem_ball_zero_iff.mp p.property
     have hq : M.t p ∈ Metric.closedBall (0 : ℂ) rho := by
       rw [mem_closedBall_zero_iff]
       exact (le_of_lt hpball).trans (min_le_left _ _)
-    simpa only [latticeL1,
+    simpa only [parameterL1,
       parameterL1] using
         NormalizedFuchsianCuspCoordinate.phaseLog_mulVec_le
           N (hR (M.t p) hq) lambda i
@@ -657,7 +657,7 @@ public theorem exists_actualLocalCuspQuotientWitness
           C lambda p ht hfixed
   have hdisplacement : ∃ c : ℝ, 0 < c ∧ ∀ lambda (p : localCarrier M r),
       M.t p ≠ 0 →
-        c * latticeL1 lambda ≤
+        c * parameterL1 lambda ≤
           positionL1 (rescaledPosition M (C.psiMap lambda p) - rescaledPosition M p) := by
     refine ⟨1 / 2, by norm_num, ?_⟩
     exact CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.rescaledPosition_displacement_lower

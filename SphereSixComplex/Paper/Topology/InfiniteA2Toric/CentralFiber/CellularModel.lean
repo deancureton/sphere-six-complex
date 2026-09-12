@@ -1,5 +1,7 @@
 module
 
+public import Mathlib.Algebra.BigOperators.Pi
+public import Mathlib.Data.Int.Cast.Lemmas
 public import SphereSixComplex.Paper.Topology.SectionSevenLocalEulerModels
 public import SphereSixComplex.Paper.Topology.PaperCuspCentralFiberCWConstruction
 public import SphereSixComplex.Paper.Geometry.PaperStarPieceHausdorff
@@ -20,10 +22,10 @@ noncomputable section
 open AlgebraicTopology CategoryTheory Set
 open scoped ContinuousMap
 
-namespace SphereSixComplex
+namespace SphereSixComplex.Geometry.InfiniteA2Toric.CentralFiber
 
 /-- Cell-orbit indices in a fundamental domain for the periodic `A₂` toric central fibre. -/
-public def CuspWCellIndex : ℕ → Type
+public def Cell : ℕ → Type
   | 0 => Fin 2
   | 1 => Fin 3
   | 2 => Fin 4
@@ -31,8 +33,8 @@ public def CuspWCellIndex : ℕ → Type
   | 4 => Fin 1
   | _ => Empty
 
-public theorem cuspWCellIndex_isEmpty (n : ℕ) (hn : 4 < n) :
-    IsEmpty (CuspWCellIndex n) := by
+public theorem isEmpty_cell (n : ℕ) (hn : 4 < n) :
+    IsEmpty (Cell n) := by
   rcases n with _ | n
   · omega
   rcases n with _ | n
@@ -46,35 +48,35 @@ public theorem cuspWCellIndex_isEmpty (n : ℕ) (hn : 4 < n) :
   change IsEmpty Empty
   infer_instance
 
-public theorem cuspWCellIndex_finite (n : ℕ) : Finite (CuspWCellIndex n) := by
+public theorem finite_cell (n : ℕ) : Finite (Cell n) := by
   rcases n with (_ | _ | _ | _ | _ | n)
-  · simpa [CuspWCellIndex] using (inferInstance : Finite (Fin 2))
-  · simpa [CuspWCellIndex] using (inferInstance : Finite (Fin 3))
-  · simpa [CuspWCellIndex] using (inferInstance : Finite (Fin 4))
-  · simpa [CuspWCellIndex] using (inferInstance : Finite (Fin 2))
-  · simpa [CuspWCellIndex] using (inferInstance : Finite (Fin 1))
-  · simpa [CuspWCellIndex] using (inferInstance : Finite Empty)
+  · simpa [Cell] using (inferInstance : Finite (Fin 2))
+  · simpa [Cell] using (inferInstance : Finite (Fin 3))
+  · simpa [Cell] using (inferInstance : Finite (Fin 4))
+  · simpa [Cell] using (inferInstance : Finite (Fin 2))
+  · simpa [Cell] using (inferInstance : Finite (Fin 1))
+  · simpa [Cell] using (inferInstance : Finite Empty)
 
-public theorem cuspWCellIndex_eventually_isEmpty :
-    ∀ᶠ n in Filter.atTop, IsEmpty (CuspWCellIndex n) := by
+public theorem eventually_isEmpty_cell :
+    ∀ᶠ n in Filter.atTop, IsEmpty (Cell n) := by
   rw [Filter.eventually_atTop]
-  exact ⟨5, fun n hn ↦ cuspWCellIndex_isEmpty n (by omega)⟩
+  exact ⟨5, fun n hn ↦ isEmpty_cell n (by omega)⟩
 
 /-- The oriented edge-incidence map in the standard toric cell coordinates. -/
-public def standardA2ToricCellularBoundaryOne : (Fin 3 → ℤ) →+ (Fin 2 → ℤ) where
+public def edgeBoundary : (Fin 3 → ℤ) →+ (Fin 2 → ℤ) where
   toFun x := ![-(x 0 + x 1 + x 2), x 0 + x 1 + x 2]
   map_zero' := by funext i; fin_cases i <;> simp
   map_add' := by intro x y; funext i; fin_cases i <;> simp <;> ring
 
 /-- The cellular boundary formula of the standard periodic `A₂` toric central fibre. -/
-public def standardA2ToricCellularBoundary :
-    (n : ℕ) → (CuspWCellIndex n.succ → ℤ) →+ (CuspWCellIndex n → ℤ)
-  | 0 => standardA2ToricCellularBoundaryOne
+public def boundary :
+    (n : ℕ) → (Cell n.succ → ℤ) →+ (Cell n → ℤ)
+  | 0 => edgeBoundary
   | _ + 1 => 0
 
 /-- A geometric CW realization whose cells are the orbit strata of the standard periodic `A₂`
 toric central fibre.  This structure contains no homology groups or Euler characteristic. -/
-public structure StandardA2ToricCentralFiberCWDecomposition
+public structure CWModel
     (X : Type) [TopologicalSpace X] where
   Carrier : Type
   topology : TopologicalSpace Carrier
@@ -87,15 +89,15 @@ public structure StandardA2ToricCentralFiberCWDecomposition
   finite : let _ := topology; let _ := cwComplex
     Topology.CWComplex.Finite (Set.univ : Set Carrier)
   cellEquiv : let _ := topology; let _ := cwComplex
-    ∀ n, Topology.CWComplex.cell (Set.univ : Set Carrier) n ≃ CuspWCellIndex n
+    ∀ n, Topology.CWComplex.cell (Set.univ : Set Carrier) n ≃ Cell n
 
-namespace StandardA2ToricCentralFiberCWDecomposition
+namespace CWModel
 
 variable {X : Type} [TopologicalSpace X]
 
 /-- The standard integral cellular chain model selected for the carrier. -/
 public noncomputable def integralCellularChainModel
-    (D : StandardA2ToricCentralFiberCWDecomposition X) :
+    (D : CWModel X) :
     let _ := D.topology
     let _ := D.cwComplex
     IntegralCWCellularHomologyModel D.Carrier := by
@@ -106,13 +108,13 @@ public noncomputable def integralCellularChainModel
 
 /-- The cellular basis in the standard orbit-cell coordinates. -/
 public noncomputable def labelledCellBasis
-    (D : StandardA2ToricCentralFiberCWDecomposition X) (n : ℕ) :
+    (D : CWModel X) (n : ℕ) :
     let _ := D.topology
     let _ := D.cwComplex
-    (CuspWCellIndex n → ℤ) ≃+ D.integralCellularChainModel.chainComplex.X n := by
+    (Cell n → ℤ) ≃+ D.integralCellularChainModel.chainComplex.X n := by
   letI := D.topology
   letI := D.cwComplex
-  letI : Finite (CuspWCellIndex n) := cuspWCellIndex_finite n
+  letI : Finite (Cell n) := finite_cell n
   letI : Finite (Topology.CWComplex.cell (Set.univ : Set D.Carrier) n) :=
     Finite.of_equiv _ (D.cellEquiv n).symm
   exact
@@ -121,7 +123,7 @@ public noncomputable def labelledCellBasis
 
 /-- Forget the exact orbit labels and retain a finite CW model supported below degree seven. -/
 public noncomputable def toFiniteCWModelSix
-    (D : StandardA2ToricCentralFiberCWDecomposition X) : FiniteCWModelSix X where
+    (D : CWModel X) : FiniteCWModelSix X where
   Carrier := D.Carrier
   topology := D.topology
   t2 := D.t2
@@ -132,12 +134,12 @@ public noncomputable def toFiniteCWModelSix
     let _ := D.topology
     let _ := D.cwComplex
     let e := D.cellEquiv n
-    let _ : IsEmpty (CuspWCellIndex n) := cuspWCellIndex_isEmpty n (by omega)
+    let _ : IsEmpty (Cell n) := isEmpty_cell n (by omega)
     exact Equiv.isEmpty e
 
 private theorem cellCount_eq_natCard
-    (D : StandardA2ToricCentralFiberCWDecomposition X) (n : ℕ) :
-    D.toFiniteCWModelSix.cellCount n = Nat.card (CuspWCellIndex n) := by
+    (D : CWModel X) (n : ℕ) :
+    D.toFiniteCWModelSix.cellCount n = Nat.card (Cell n) := by
   let _ := D.topology
   let _ := D.cwComplex
   let _ := D.finite
@@ -146,36 +148,36 @@ private theorem cellCount_eq_natCard
 
 /-- The standard periodic toric decomposition gives the exact cusp cell model. -/
 public noncomputable def toCuspToricCellModel
-    (D : StandardA2ToricCentralFiberCWDecomposition X) : CuspToricCellModel X where
+    (D : CWModel X) : CuspToricCellModel X where
   toFiniteCWModelSix := D.toFiniteCWModelSix
-  cellsZero := by rw [D.cellCount_eq_natCard]; simp [CuspWCellIndex]
-  cellsOne := by rw [D.cellCount_eq_natCard]; simp [CuspWCellIndex]
-  cellsTwo := by rw [D.cellCount_eq_natCard]; simp [CuspWCellIndex]
-  cellsThree := by rw [D.cellCount_eq_natCard]; simp [CuspWCellIndex]
-  cellsFour := by rw [D.cellCount_eq_natCard]; simp [CuspWCellIndex]
-  cellsFive := by rw [D.cellCount_eq_natCard]; simp [CuspWCellIndex]
-  cellsSix := by rw [D.cellCount_eq_natCard]; simp [CuspWCellIndex]
+  cellsZero := by rw [D.cellCount_eq_natCard]; simp [Cell]
+  cellsOne := by rw [D.cellCount_eq_natCard]; simp [Cell]
+  cellsTwo := by rw [D.cellCount_eq_natCard]; simp [Cell]
+  cellsThree := by rw [D.cellCount_eq_natCard]; simp [Cell]
+  cellsFour := by rw [D.cellCount_eq_natCard]; simp [Cell]
+  cellsFive := by rw [D.cellCount_eq_natCard]; simp [Cell]
+  cellsSix := by rw [D.cellCount_eq_natCard]; simp [Cell]
 
-end StandardA2ToricCentralFiberCWDecomposition
+end CWModel
 
 /-- A standard toric CW realization together with its exact attaching-incidence calculation.
 This is the single geometric-combinatorial input needed from the periodic `A₂` quotient. -/
-public structure StandardA2ToricCentralFiberCellularRealization
+public structure CellularModel
     (X : Type) [TopologicalSpace X] where
-  decomposition : StandardA2ToricCentralFiberCWDecomposition X
+  decomposition : CWModel X
   boundary_eq :
     let D := decomposition
     let _ := D.topology
     let _ := D.cwComplex
-    ∀ (n : ℕ) (x : CuspWCellIndex n.succ → ℤ),
+    ∀ (n : ℕ) (x : Cell n.succ → ℤ),
       D.integralCellularChainModel.chainComplex.d n.succ n (D.labelledCellBasis n.succ x) =
-        D.labelledCellBasis n (standardA2ToricCellularBoundary n x)
+        D.labelledCellBasis n (boundary n x)
 
 /-- The genuine cellular differential, transported into the labelled orbit-cell coordinates. -/
-public noncomputable def standardA2ToricCellularCoordinateBoundary
+public noncomputable def CWModel.coordinateBoundary
     {X : Type} [TopologicalSpace X]
-    (D : StandardA2ToricCentralFiberCWDecomposition X) (n : ℕ) :
-    (CuspWCellIndex n.succ → ℤ) →+ (CuspWCellIndex n → ℤ) := by
+    (D : CWModel X) (n : ℕ) :
+    (Cell n.succ → ℤ) →+ (Cell n → ℤ) := by
   letI := D.topology
   letI := D.cwComplex
   let d := ConcreteCategory.hom
@@ -187,48 +189,48 @@ public noncomputable def standardA2ToricCellularCoordinateBoundary
 stated directly on the actual quotient carrier.  The fields are precisely the hypotheses of
 Mathlib's finite-CW constructor; no CW structure, finiteness result, or homotopy equivalence is
 included. -/
-public structure StandardA2ToricCentralFiberCellAtlas
+public structure CellAtlas
     (X : Type) [TopologicalSpace X] where
-  cellMap : (n : ℕ) → CuspWCellIndex n → PartialEquiv (Fin n → ℝ) X
-  source_eq : ∀ (n : ℕ) (i : CuspWCellIndex n),
+  cellMap : (n : ℕ) → Cell n → PartialEquiv (Fin n → ℝ) X
+  source_eq : ∀ (n : ℕ) (i : Cell n),
     (cellMap n i).source = Metric.ball 0 1
-  continuousOn : ∀ (n : ℕ) (i : CuspWCellIndex n),
+  continuousOn : ∀ (n : ℕ) (i : Cell n),
     ContinuousOn (cellMap n i) (Metric.closedBall 0 1)
-  continuousOn_symm : ∀ (n : ℕ) (i : CuspWCellIndex n),
+  continuousOn_symm : ∀ (n : ℕ) (i : Cell n),
     ContinuousOn (cellMap n i).symm (cellMap n i).target
-  pairwiseDisjoint : (Set.univ : Set (Σ n, CuspWCellIndex n)).PairwiseDisjoint
+  pairwiseDisjoint : (Set.univ : Set (Σ n, Cell n)).PairwiseDisjoint
     (fun ni ↦ cellMap ni.1 ni.2 '' Metric.ball 0 1)
-  mapsTo : ∀ (n : ℕ) (i : CuspWCellIndex n),
+  mapsTo : ∀ (n : ℕ) (i : Cell n),
     MapsTo (cellMap n i) (Metric.sphere 0 1)
-      (⋃ (m < n) (j : CuspWCellIndex m), cellMap m j '' Metric.closedBall 0 1)
-  union_eq : (⋃ (n : ℕ), ⋃ (j : CuspWCellIndex n),
+      (⋃ (m < n) (j : Cell m), cellMap m j '' Metric.closedBall 0 1)
+  union_eq : (⋃ (n : ℕ), ⋃ (j : Cell n),
     cellMap n j '' Metric.closedBall 0 1) = Set.univ
 
-namespace StandardA2ToricCentralFiberCellAtlas
+namespace CellAtlas
 
 variable {X : Type} [TopologicalSpace X]
 
 /-- The CW structure constructed from the explicit characteristic-map atlas. -/
 @[instance_reducible]
-public noncomputable def cwComplex (A : StandardA2ToricCentralFiberCellAtlas X) :
+public noncomputable def cwComplex (A : CellAtlas X) :
     Topology.CWComplex (Set.univ : Set X) :=
-  Topology.CWComplex.mkFinite (Set.univ : Set X) CuspWCellIndex A.cellMap
-    cuspWCellIndex_eventually_isEmpty cuspWCellIndex_finite A.source_eq A.continuousOn
+  Topology.CWComplex.mkFinite (Set.univ : Set X) Cell A.cellMap
+    eventually_isEmpty_cell finite_cell A.source_eq A.continuousOn
       A.continuousOn_symm A.pairwiseDisjoint A.mapsTo A.union_eq
 
 /-- Mathlib's finite-CW constructor proves that the characteristic-map atlas is finite. -/
-public theorem finite (A : StandardA2ToricCentralFiberCellAtlas X) :
+public theorem finite (A : CellAtlas X) :
     let _ := A.cwComplex
     Topology.CWComplex.Finite (Set.univ : Set X) :=
-  Topology.CWComplex.finite_mkFinite (Set.univ : Set X) CuspWCellIndex A.cellMap
-    cuspWCellIndex_eventually_isEmpty cuspWCellIndex_finite A.source_eq A.continuousOn
+  Topology.CWComplex.finite_mkFinite (Set.univ : Set X) Cell A.cellMap
+    eventually_isEmpty_cell finite_cell A.source_eq A.continuousOn
       A.continuousOn_symm A.pairwiseDisjoint A.mapsTo A.union_eq
 
 /-- The atlas gives a decomposition on the original carrier, with the identity homotopy
 equivalence and definitionally labelled cells. -/
-public noncomputable def toCWDecomposition [T2Space X]
-    (A : StandardA2ToricCentralFiberCellAtlas X) :
-    StandardA2ToricCentralFiberCWDecomposition X where
+public noncomputable def toCWModel [T2Space X]
+    (A : CellAtlas X) :
+    CWModel X where
   Carrier := X
   topology := inferInstance
   t2 := inferInstance
@@ -239,8 +241,8 @@ public noncomputable def toCWDecomposition [T2Space X]
 
 /-- Transport a labelled characteristic-map atlas across a homeomorphism. -/
 public noncomputable def transport {Y : Type} [TopologicalSpace Y]
-    (A : StandardA2ToricCentralFiberCellAtlas X) (e : X ≃ₜ Y) :
-    StandardA2ToricCentralFiberCellAtlas Y where
+    (A : CellAtlas X) (e : X ≃ₜ Y) :
+    CellAtlas Y where
   cellMap n i := (A.cellMap n i).trans e.toEquiv.toPartialEquiv
   source_eq := by
     intro n i
@@ -299,34 +301,14 @@ public noncomputable def transport {Y : Type} [TopologicalSpace Y]
       obtain ⟨z, hz, hzEq⟩ := hj
       exact ⟨z, hz, congrArg e hzEq⟩
 
-end StandardA2ToricCentralFiberCellAtlas
+end CellAtlas
 
-private theorem addMonoidHom_ext_pi_single_one
-    {H : Type*} [AddCommGroup H] {n : ℕ} (f g : (Fin n → ℤ) →+ H)
-    (h : ∀ i, f (Pi.single i 1) = g (Pi.single i 1)) : f = g := by
-  apply AddMonoidHom.ext
-  intro x
-  apply Pi.single_induction (M := fun _ : Fin n ↦ ℤ) (p := fun z ↦ f z = g z) x
-  · simp
-  · intro a b ha hb
-    simpa using congrArg₂ (· + ·) ha hb
-  · intro i z
-    have hz : (Pi.single i z : Fin n → ℤ) =
-        z • (Pi.single i 1 : Fin n → ℤ) := by
-      ext j
-      classical
-      by_cases hji : j = i
-      · subst j
-        simp
-      · simp [hji]
-    rw [hz, map_zsmul, map_zsmul, h i]
-
-private theorem standardA2ToricCellularCoordinateBoundary_comp
+private theorem CWModel.coordinateBoundary_comp
     {X : Type} [TopologicalSpace X]
-    (D : StandardA2ToricCentralFiberCWDecomposition X) (n : ℕ)
-    (x : CuspWCellIndex (n + 2) → ℤ) :
-    standardA2ToricCellularCoordinateBoundary D n
-        (standardA2ToricCellularCoordinateBoundary D (n + 1) x) = 0 := by
+    (D : CWModel X) (n : ℕ)
+    (x : Cell (n + 2) → ℤ) :
+    D.coordinateBoundary n
+        (D.coordinateBoundary (n + 1) x) = 0 := by
   let _ := D.topology
   let _ := D.cwComplex
   change (D.labelledCellBasis n).symm
@@ -344,22 +326,23 @@ private theorem standardA2ToricCellularCoordinateBoundary_comp
   rw [h]
   simp
 
-namespace StandardA2ToricCentralFiberCWDecomposition
+namespace CWModel
 
 variable {X : Type} [TopologicalSpace X]
 
 /-- The first two rows determine the two-cell boundary, by the chain-complex identity. -/
 public theorem coordinateBoundary_one_eq_of_independent
-    (D : StandardA2ToricCentralFiberCWDecomposition X)
+    (D : CWModel X)
     (h0 : ∀ (j : Fin 3) (i : Fin 2),
-      standardA2ToricCellularCoordinateBoundary D 0 (Pi.single j 1 : Fin 3 → ℤ) i =
-        standardA2ToricCellularBoundary 0 (Pi.single j 1 : Fin 3 → ℤ) i)
+      D.coordinateBoundary 0 (Pi.single j 1 : Fin 3 → ℤ) i =
+        boundary 0 (Pi.single j 1 : Fin 3 → ℤ) i)
     (h1 : ∀ (j : Fin 4) (i : Fin 2),
-      standardA2ToricCellularCoordinateBoundary D 1 (Pi.single j 1 : Fin 4 → ℤ) i.castSucc =
-        standardA2ToricCellularBoundary 1 (Pi.single j 1 : Fin 4 → ℤ) i.castSucc) :
-    standardA2ToricCellularCoordinateBoundary D 1 = standardA2ToricCellularBoundary 1 := by
-  apply addMonoidHom_ext_pi_single_one (H := Fin 3 → ℤ)
+      D.coordinateBoundary 1 (Pi.single j 1 : Fin 4 → ℤ) i.castSucc =
+        boundary 1 (Pi.single j 1 : Fin 4 → ℤ) i.castSucc) :
+    D.coordinateBoundary 1 = boundary 1 := by
+  apply AddMonoidHom.functions_ext' (I := Fin 4) (Fin 3 → ℤ)
   intro j
+  apply AddMonoidHom.ext_int
   funext i
   let _ := D.topology
   let _ := D.cwComplex
@@ -367,71 +350,75 @@ public theorem coordinateBoundary_one_eq_of_independent
   rcases hi with rfl | rfl | rfl
   · exact h1 j 0
   · exact h1 j 1
-  · have hzero := standardA2ToricCellularCoordinateBoundary_comp D 0
+  · have hzero := CWModel.coordinateBoundary_comp D 0
         (Pi.single j 1 : Fin 4 → ℤ)
-    have hzero0 := congr_fun hzero (show CuspWCellIndex 0 from (0 : Fin 2))
+    have hzero0 := congr_fun hzero (show Cell 0 from (0 : Fin 2))
     have hboundaryZero :
-        standardA2ToricCellularCoordinateBoundary D 0 =
-          standardA2ToricCellularBoundary 0 := by
-      apply addMonoidHom_ext_pi_single_one
+        D.coordinateBoundary 0 =
+          boundary 0 := by
+      apply AddMonoidHom.functions_ext' (I := Fin 3) (Fin 2 → ℤ)
       intro k
+      apply AddMonoidHom.ext_int
       funext i
       exact h0 k i
     rw [hboundaryZero] at hzero0
     have h0 := h1 j 0
-    change standardA2ToricCellularCoordinateBoundary D 1
+    change D.coordinateBoundary 1
         (Pi.single j 1 : Fin 4 → ℤ)
-          (show CuspWCellIndex 1 from (0 : Fin 3)) = 0 at h0
+          (show Cell 1 from (0 : Fin 3)) = 0 at h0
     have h1 := h1 j 1
-    change standardA2ToricCellularCoordinateBoundary D 1
+    change D.coordinateBoundary 1
         (Pi.single j 1 : Fin 4 → ℤ)
-          (show CuspWCellIndex 1 from (1 : Fin 3)) = 0 at h1
-    change -(standardA2ToricCellularCoordinateBoundary D 1
-        (Pi.single j 1 : Fin 4 → ℤ) (show CuspWCellIndex 1 from (0 : Fin 3)) +
-      standardA2ToricCellularCoordinateBoundary D 1
-        (Pi.single j 1 : Fin 4 → ℤ) (show CuspWCellIndex 1 from (1 : Fin 3)) +
-      standardA2ToricCellularCoordinateBoundary D 1
-        (Pi.single j 1 : Fin 4 → ℤ) (show CuspWCellIndex 1 from (2 : Fin 3))) = 0
+          (show Cell 1 from (1 : Fin 3)) = 0 at h1
+    change -(D.coordinateBoundary 1
+        (Pi.single j 1 : Fin 4 → ℤ) (show Cell 1 from (0 : Fin 3)) +
+      D.coordinateBoundary 1
+        (Pi.single j 1 : Fin 4 → ℤ) (show Cell 1 from (1 : Fin 3)) +
+      D.coordinateBoundary 1
+        (Pi.single j 1 : Fin 4 → ℤ) (show Cell 1 from (2 : Fin 3))) = 0
       at hzero0
     rw [h0, h1] at hzero0
     simp at hzero0
-    change standardA2ToricCellularCoordinateBoundary D 1
-      (Pi.single j 1 : Fin 4 → ℤ) (show CuspWCellIndex 1 from (2 : Fin 3)) = 0
+    change D.coordinateBoundary 1
+      (Pi.single j 1 : Fin 4 → ℤ) (show Cell 1 from (2 : Fin 3)) = 0
     exact hzero0
 
 /-- The independent finite incidences determine every cellular differential. -/
 public theorem coordinateBoundary_eq_of_independent
-    (D : StandardA2ToricCentralFiberCWDecomposition X)
+    (D : CWModel X)
     (h0 : ∀ (j : Fin 3) (i : Fin 2),
-      standardA2ToricCellularCoordinateBoundary D 0 (Pi.single j 1 : Fin 3 → ℤ) i =
-        standardA2ToricCellularBoundary 0 (Pi.single j 1 : Fin 3 → ℤ) i)
+      D.coordinateBoundary 0 (Pi.single j 1 : Fin 3 → ℤ) i =
+        boundary 0 (Pi.single j 1 : Fin 3 → ℤ) i)
     (h1 : ∀ (j : Fin 4) (i : Fin 2),
-      standardA2ToricCellularCoordinateBoundary D 1 (Pi.single j 1 : Fin 4 → ℤ) i.castSucc =
-        standardA2ToricCellularBoundary 1 (Pi.single j 1 : Fin 4 → ℤ) i.castSucc)
+      D.coordinateBoundary 1 (Pi.single j 1 : Fin 4 → ℤ) i.castSucc =
+        boundary 1 (Pi.single j 1 : Fin 4 → ℤ) i.castSucc)
     (h2 : ∀ (j : Fin 2) (i : Fin 4),
-      standardA2ToricCellularCoordinateBoundary D 2 (Pi.single j 1 : Fin 2 → ℤ) i =
-        standardA2ToricCellularBoundary 2 (Pi.single j 1 : Fin 2 → ℤ) i)
+      D.coordinateBoundary 2 (Pi.single j 1 : Fin 2 → ℤ) i =
+        boundary 2 (Pi.single j 1 : Fin 2 → ℤ) i)
     (h3 : ∀ (j : Fin 1) (i : Fin 2),
-      standardA2ToricCellularCoordinateBoundary D 3 (Pi.single j 1 : Fin 1 → ℤ) i =
-        standardA2ToricCellularBoundary 3 (Pi.single j 1 : Fin 1 → ℤ) i)
+      D.coordinateBoundary 3 (Pi.single j 1 : Fin 1 → ℤ) i =
+        boundary 3 (Pi.single j 1 : Fin 1 → ℤ) i)
     (n : ℕ) :
-    standardA2ToricCellularCoordinateBoundary D n = standardA2ToricCellularBoundary n := by
+    D.coordinateBoundary n = boundary n := by
   rcases n with _ | _ | _ | _ | n
-  · apply addMonoidHom_ext_pi_single_one
+  · apply AddMonoidHom.functions_ext' (I := Fin 3) (Fin 2 → ℤ)
     intro j
+    apply AddMonoidHom.ext_int
     funext i
     exact h0 j i
   · exact D.coordinateBoundary_one_eq_of_independent h0 h1
-  · apply addMonoidHom_ext_pi_single_one
+  · apply AddMonoidHom.functions_ext' (I := Fin 2) (Fin 4 → ℤ)
     intro j
+    apply AddMonoidHom.ext_int
     funext i
     exact h2 j i
-  · apply addMonoidHom_ext_pi_single_one
+  · apply AddMonoidHom.functions_ext' (I := Fin 1) (Fin 2 → ℤ)
     intro j
+    apply AddMonoidHom.ext_int
     funext i
     exact h3 j i
-  · let _ : IsEmpty (CuspWCellIndex (n + 1 + 1 + 1 + 1).succ) :=
-        cuspWCellIndex_isEmpty _ (by omega)
+  · let _ : IsEmpty (Cell (n + 1 + 1 + 1 + 1).succ) :=
+        isEmpty_cell _ (by omega)
     apply AddMonoidHom.ext
     intro x
     have hx : x = 0 := by
@@ -439,11 +426,11 @@ public theorem coordinateBoundary_eq_of_independent
       exact isEmptyElim i
     rw [hx, map_zero, map_zero]
 
-public noncomputable def toCellularRealization
-    (D : StandardA2ToricCentralFiberCWDecomposition X)
-    (h : ∀ n, standardA2ToricCellularCoordinateBoundary D n =
-      standardA2ToricCellularBoundary n) :
-    StandardA2ToricCentralFiberCellularRealization X where
+public noncomputable def toCellularModel
+    (D : CWModel X)
+    (h : ∀ n, D.coordinateBoundary n =
+      boundary n) :
+    CellularModel X where
   decomposition := D
   boundary_eq := by
     dsimp only
@@ -452,10 +439,10 @@ public noncomputable def toCellularRealization
     let _ := D.cwComplex
     apply (D.labelledCellBasis n).symm.injective
     rw [AddEquiv.symm_apply_apply]
-    change standardA2ToricCellularCoordinateBoundary D n x =
-      standardA2ToricCellularBoundary n x
+    change D.coordinateBoundary n x =
+      boundary n x
     exact DFunLike.congr_fun (h n) x
 
-end StandardA2ToricCentralFiberCWDecomposition
+end CWModel
 
-end SphereSixComplex
+end SphereSixComplex.Geometry.InfiniteA2Toric.CentralFiber

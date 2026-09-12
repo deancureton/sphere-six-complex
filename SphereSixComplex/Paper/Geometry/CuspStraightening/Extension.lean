@@ -20,6 +20,8 @@ open scoped Topology
 
 namespace SphereSixComplex.Geometry.CuspStraightening
 
+open SphereSixComplex.Geometry.CuspPhaseEstimates
+
 open SphereSixComplex.Periods
 open CuspFilling CuspFillingRadialCompactness CuspLocalPhaseAction
 open CuspPeriodExpansion CuspCollar
@@ -291,18 +293,18 @@ public theorem puncturedPointStraightening_psiMap
         simp only [map_mul, mul_assoc]
 
 /-- The inverse displacement has operator norm at most two in the coordinate `ℓ¹` norm. -/
-public theorem realL1_puncturedActualInverseDisplacement_le
+public theorem positionL1_puncturedActualInverseDisplacement_le
     {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) (p : PuncturedLocalCarrier W)
     (y : Fin 2 → ℝ) :
-    realL1 (puncturedActualInverseDisplacement W p y) ≤ 2 * realL1 y := by
+    positionL1 (puncturedActualInverseDisplacement W p y) ≤ 2 * positionL1 y := by
   let d := puncturedActualInverseDisplacement W p y
   have hright : effectiveFanDisplacement N (M.t p.1) d = y :=
     effectiveFanDisplacement_puncturedActualInverseDisplacement W p y
   have hcorrection := actual_effectiveFanDisplacement_correction_l1_le W p.1 p.2 d
-  have htriangle : realL1 d ≤
-      realL1 y + realL1 (effectiveFanDisplacement N (M.t p.1) d - d) := by
+  have htriangle : positionL1 d ≤
+      positionL1 y + positionL1 (effectiveFanDisplacement N (M.t p.1) d - d) := by
     let c := effectiveFanDisplacement N (M.t p.1) d - d
     have hd0 : d 0 = y 0 - c 0 := by
       dsimp only [c]
@@ -312,10 +314,10 @@ public theorem realL1_puncturedActualInverseDisplacement_le
       dsimp only [c]
       rw [← hright]
       simp
-    rw [realL1, realL1, realL1, hd0, hd1]
+    rw [positionL1, positionL1, positionL1, hd0, hd1]
     linarith [abs_sub (y 0) (c 0), abs_sub (y 1) (c 1)]
   dsimp only [d] at htriangle hcorrection ⊢
-  nlinarith [realL1_nonneg y]
+  nlinarith [positionL1_nonneg y]
 
 /-- On every standard shrunken affine chart, the parameter `B_t⁻¹y` is uniformly bounded. -/
 public theorem straighteningRealParameter_bounded_on_region
@@ -325,15 +327,15 @@ public theorem straighteningRealParameter_bounded_on_region
     let R := standardBoundedPolydiscRegions M W.localWitness.radius
       W.localWitness.radius_pos W.localWitness.radius_lt_one
     ∀ a, ∃ B : ℝ, ∀ p : PuncturedLocalCarrier W,
-      p.1 ∈ R.region a → realL1 (straighteningRealParameter W p) ≤ B := by
+      p.1 ∈ R.region a → positionL1 (straighteningRealParameter W p) ≤ B := by
   dsimp only
   let R := standardBoundedPolydiscRegions M W.localWitness.radius
     W.localWitness.radius_pos W.localWitness.radius_lt_one
   intro a
   obtain ⟨B, hB⟩ := R.position_bounded a
   refine ⟨2 * B, fun p hp ↦ ?_⟩
-  rw [straighteningRealParameter, realL1_realFanShearInverse]
-  exact (realL1_puncturedActualInverseDisplacement_le W p _).trans
+  rw [straighteningRealParameter, positionL1_realFanShearInverse]
+  exact (positionL1_puncturedActualInverseDisplacement_le W p _).trans
     (mul_le_mul_of_nonneg_left (hB p.1 hp p.2) (by norm_num))
 
 /-- The straightening exponent extended by zero on the central fibre. -/
@@ -408,8 +410,8 @@ public theorem continuousAt_extendedStraighteningExponent_of_mem_region
     · simp
     · rw [Complex.norm_real, Real.norm_eq_abs]
       have hcoord : |straighteningRealParameter W ⟨p, hp⟩ j| ≤
-          realL1 (straighteningRealParameter W ⟨p, hp⟩) := by
-        fin_cases j <;> simp [realL1]
+          positionL1 (straighteningRealParameter W ⟨p, hp⟩) := by
+        fin_cases j <;> simp [positionL1]
       exact hcoord.trans ((hB ⟨p, hp⟩ hpregion).trans (le_abs_self B))
   have hdelta (i j : Fin 2) : Filter.Tendsto
       (fun p : localCarrier M W.localWitness.radius ↦

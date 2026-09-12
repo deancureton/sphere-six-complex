@@ -11,7 +11,15 @@ open CuspAttachment EllipticTwoDiscHomologyCoordinates
 
 public theorem cuspDegreeOneMappingTorusCoordinates_of_fullIterate
     {A : AnalyticData} (R : A.AffineRadialCompletionInput)
-    (h : ActualCuspDegreeOneIndexTwoFullIterateRelation R) :
+    (h : (let G := A.actualCuspRadialClutchingData
+      let _ := G.fiberTopology
+      (12 : ℤ) •
+          integralSingularHomologyMap 1 R.twoDiscCover.cuspMappingTorusToEllipticInteriorMap
+            (G.geometricWangSections.circleMappingTorusHOneAddEquiv.symm
+              (Pi.single (2 : Fin 3) 1)) =
+        integralSingularHomologyMap 1 R.twoDiscCover.cuspMappingTorusToEllipticInteriorMap
+          (G.geometricWangSections.circleMappingTorusHOneAddEquiv.symm
+            (Pi.single (0 : Fin 3) 1)))) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     (R.twoDiscCover.ellipticInteriorDegreeOneCoordinateHom R.homologyAlignment).comp
@@ -39,7 +47,15 @@ public theorem cuspDegreeOneMappingTorusCoordinates_of_fullIterate
 
 public theorem cuspDegreeOneUnionCoordinates_of_fullIterate
     {A : AnalyticData} (R : A.AffineRadialCompletionInput)
-    (h : ActualCuspDegreeOneIndexTwoFullIterateRelation R)
+    (h : (let G := A.actualCuspRadialClutchingData
+      let _ := G.fiberTopology
+      (12 : ℤ) •
+          integralSingularHomologyMap 1 R.twoDiscCover.cuspMappingTorusToEllipticInteriorMap
+            (G.geometricWangSections.circleMappingTorusHOneAddEquiv.symm
+              (Pi.single (2 : Fin 3) 1)) =
+        integralSingularHomologyMap 1 R.twoDiscCover.cuspMappingTorusToEllipticInteriorMap
+          (G.geometricWangSections.circleMappingTorusHOneAddEquiv.symm
+            (Pi.single (0 : Fin 3) 1))))
     (x : IntegralSingularHomology 1 (A.openEmbeddingStarData.collarSource 0)) :
     R.homologyAlignment.actualHomologyCoordinates.normalizedUnionHomologyOneEquiv
       (cuspToEllipticUnionHomology R.twoDiscCover 1 x) 0 =

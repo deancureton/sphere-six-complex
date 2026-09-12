@@ -19,6 +19,8 @@ noncomputable section
 open Set Metric Topology
 open scoped ContinuousMap
 
+open SphereSixComplex.Periods.ExactNormalizedModularJTau (exactNormalizedModularJUniformization)
+
 namespace SphereSixComplex.Topology
 
 /-- Forget the puncture at one. -/
@@ -45,22 +47,18 @@ variable (A : AnalyticData)
 public def cuspParameterBall : Set ℂ :=
   Metric.ball 0 A.starCuspWitness.localWitness.radius
 
-/-- The exact holomorphic unit in the selected reciprocal cusp factorization. -/
-public abbrev cuspFactorizationUnit : ℂ → ℂ :=
-  A.actualNormalizedModularJUniformization.cusp.cuspUnit
-
-public theorem cuspFactorizationUnit_continuousOn :
-    ContinuousOn A.cuspFactorizationUnit A.cuspParameterBall := by
+public theorem continuousOn_cuspUnit :
+    ContinuousOn exactNormalizedModularJUniformization.cusp.cuspUnit A.cuspParameterBall := by
   intro q hq
-  apply (A.actualNormalizedModularJUniformization.cusp
+  apply (exactNormalizedModularJUniformization.cusp
     |>.cuspUnit_holomorphic q ?_).continuousAt.continuousWithinAt
   rw [Metric.mem_ball, dist_zero_right]
   exact (show ‖q‖ < A.starCuspWitness.localWitness.radius by
     simpa [cuspParameterBall, Metric.mem_ball, dist_zero_right] using hq).trans_le
       A.actualPuncturedCuspWitness_radius_le_cuspUnitRadius
 
-public theorem cuspFactorizationUnit_zero_not_mem_image :
-    0 ∉ A.cuspFactorizationUnit '' A.cuspParameterBall := by
+public theorem zero_not_mem_cuspUnit_image :
+    0 ∉ exactNormalizedModularJUniformization.cusp.cuspUnit '' A.cuspParameterBall := by
   rintro ⟨q, hq, hzero⟩
   apply A.actualPuncturedCuspWitness_cuspUnit_ne q
     (by simpa [cuspParameterBall, Metric.mem_ball, dist_zero_right] using hq)
@@ -69,7 +67,7 @@ public theorem cuspFactorizationUnit_zero_not_mem_image :
 /-- A continuous logarithm of the exact unit on the entire selected parameter disc. -/
 public theorem exists_cuspFactorizationUnitLog :
     ∃ f : ℂ → ℂ, ContinuousOn f A.cuspParameterBall ∧
-      Set.EqOn (Complex.exp ∘ f) A.cuspFactorizationUnit
+      Set.EqOn (Complex.exp ∘ f) exactNormalizedModularJUniformization.cusp.cuspUnit
         A.cuspParameterBall := by
   let _ : ContractibleSpace A.cuspParameterBall :=
     (convex_ball (0 : ℂ) A.starCuspWitness.localWitness.radius).contractibleSpace
@@ -80,8 +78,8 @@ public theorem exists_cuspFactorizationUnitLog :
     change SimplyConnectedSpace A.cuspParameterBall
     infer_instance
   exact Complex.exists_continuousOn_eqOn_exp_comp hSimplyConnected Metric.isOpen_ball
-    A.cuspFactorizationUnit_continuousOn
-    A.cuspFactorizationUnit_zero_not_mem_image
+    A.continuousOn_cuspUnit
+    A.zero_not_mem_cuspUnit_image
 
 public noncomputable def cuspFactorizationUnitLog : ℂ → ℂ :=
   Classical.choose A.exists_cuspFactorizationUnitLog
@@ -93,7 +91,7 @@ public theorem cuspFactorizationUnitLog_continuousOn :
 public theorem cuspFactorizationUnitLog_exp
     {q : ℂ} (hq : q ∈ A.cuspParameterBall) :
     Complex.exp (A.cuspFactorizationUnitLog q) =
-      A.cuspFactorizationUnit q :=
+      exactNormalizedModularJUniformization.cusp.cuspUnit q :=
   (Classical.choose_spec A.exists_cuspFactorizationUnitLog).2 hq
 
 /-! ## The completed-cusp parameter along the actual angular loop -/
@@ -135,7 +133,7 @@ public theorem cuspAngularQPoint_one :
 public theorem cuspAngularCoordinateLoop_inv_apply (t : unitInterval) :
     ((A.cuspAngularCoordinateLoop t).1)⁻¹ =
       A.cuspAngularQPoint t *
-        A.cuspFactorizationUnit (A.cuspAngularQPoint t) := by
+        exactNormalizedModularJUniformization.cusp.cuspUnit (A.cuspAngularQPoint t) := by
   rw [A.cuspAngularCoordinateLoop_apply]
   apply A.actualPuncturedCuspWitness_reciprocal_factorization
   · apply mem_cuspHalfPlane_of_norm_cuspQ_lt

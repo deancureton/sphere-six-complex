@@ -39,6 +39,5 @@ public theorem star_nonempty_homologyEquiv_sixSphere :
   let R := P.affineRadialCompletionInput
   exact P.star_nonempty_homologyEquiv_sixSphere_of_positiveDegree
     (CuspAttachment.correctedPositiveDegreeAssembly R)
-    P.stageTopDegreeVanishing
 
 end SphereSixComplex.Geometry.AnalyticData

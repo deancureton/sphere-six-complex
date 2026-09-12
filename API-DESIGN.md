@@ -133,3 +133,11 @@ The fixed toric construction uses `InfiniteA2Toric.Construction`, with modules g
 geometric subject. General circle-cell parametrizations, sup-norm ball boundary lemmas, and
 homotopies obtained from loops belong to prerequisites. Continuity, embedding, and related
 lemmas use predicate-first names. Function reindexing uses Mathlib's `AddEquiv.arrowCongr`.
+
+`InfiniteA2Toric.CentralFiber` distinguishes `CellAtlas`, `CWModel`, and `CellularModel`.
+The CW model retains its chosen carrier, topology, labels, and homotopy equivalence; the
+cellular model additionally states its differential equation. Cusp-control properties implied
+by the retained narrow-sector inequality are derived lemmas. Dual pullback equations use the
+chosen primal bases directly, without intermediate copies of their dual bases. Euler truncation
+states the H7 vanishing hypothesis it uses, and cusp Wang relations display their integer
+coefficients and orientation alternatives explicitly.

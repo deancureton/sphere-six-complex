@@ -235,16 +235,6 @@ private theorem totalHomotopyEquiv_comp_markedFiberToPuncturedCuspForAngularComp
   rw [G.totalHomeomorph.apply_symm_apply]
   rfl
 
-/-- The sole geometric comparison needed by the factorization argument: the independent angular
-coordinate vanishes on every class carried by the marked fibre. -/
-public def CuspAngularCoordinateVanishesOnMarkedFiber
-    (G : ActualCuspRadialClutchingData W) (b : PuncturedLocalCuspQuotient W) : Prop :=
-  let _ := G.fiberTopology
-    ∀ x : IntegralSingularHomology 1 G.Fiber,
-    cuspBoundaryAngularHomologyCoordinate W b
-      (integralSingularHomologyMap 1
-        (markedFiberToPuncturedCuspForAngularComparison G) x) = 0
-
 private theorem markedFiberToPuncturedCusp_homologyOne_eq_coinvariants
     (G : ActualCuspRadialClutchingData W)
     (x : let _ := G.fiberTopology; IntegralSingularHomology 1 G.Fiber) :
@@ -273,7 +263,11 @@ private theorem markedFiberToPuncturedCusp_homologyOne_eq_coinvariants
 subgroup. -/
 public theorem cuspMappingTorusAngularHomologyCoordinate_comp_coinvariantsToTotal_eq_zero
     (G : ActualCuspRadialClutchingData W) (b : PuncturedLocalCuspQuotient W)
-    (h : CuspAngularCoordinateVanishesOnMarkedFiber G b) :
+    (h : (let _ := G.fiberTopology
+      ∀ x : IntegralSingularHomology 1 G.Fiber,
+        cuspBoundaryAngularHomologyCoordinate W b
+          (integralSingularHomologyMap 1
+            (markedFiberToPuncturedCuspForAngularComparison G) x) = 0)) :
     let _ := G.fiberTopology
     (cuspMappingTorusAngularHomologyCoordinate G b).comp
         (circleMappingTorusHOnePresentation G.clutching).coinvariantsToTotal = 0 := by
@@ -341,23 +335,20 @@ private theorem primitiveWangLift_of_coordinate
   have hn : IsUnit n := IsUnit.of_mul_eq_one k hmul
   simpa only [n] using (Int.isUnit_iff.mp hn)
 
-/-- The precise residual assertion: the killed angular meridian is a primitive Wang lift.
-The disjunction deliberately forgets orientation, which is irrelevant for constructing a
-section. -/
-public def CuspMeridianIsPrimitiveWangLift
-    (G : ActualCuspRadialClutchingData W) (b : PuncturedLocalCuspQuotient W) : Prop :=
-  let _ := G.fiberTopology
-  let P := circleMappingTorusHOnePresentation G.clutching
-  let s := cuspMappingTorusMeridianHomologyClass G b
-  degreeOneWangInvariantEquivInteger G (P.totalToInvariants s) = 1 ∨
-    degreeOneWangInvariantEquivInteger G (P.totalToInvariants s) = -1
-
 /-- If the independent angular coordinate kills the marked fibre, exactness forces the killed
 meridian to be a primitive Wang lift.  The comparison is determined only up to orientation. -/
 public theorem cuspMeridianIsPrimitiveWangLift_of_angularCoordinateVanishesOnMarkedFiber
     (G : ActualCuspRadialClutchingData W) (b : PuncturedLocalCuspQuotient W)
-    (h : CuspAngularCoordinateVanishesOnMarkedFiber G b) :
-    CuspMeridianIsPrimitiveWangLift G b := by
+    (h : (let _ := G.fiberTopology
+      ∀ x : IntegralSingularHomology 1 G.Fiber,
+        cuspBoundaryAngularHomologyCoordinate W b
+          (integralSingularHomologyMap 1
+            (markedFiberToPuncturedCuspForAngularComparison G) x) = 0)) :
+    (let _ := G.fiberTopology
+      let P := circleMappingTorusHOnePresentation G.clutching
+      let s := cuspMappingTorusMeridianHomologyClass G b
+      degreeOneWangInvariantEquivInteger G (P.totalToInvariants s) = 1 ∨
+        degreeOneWangInvariantEquivInteger G (P.totalToInvariants s) = -1) := by
   let _ := G.fiberTopology
   let P := circleMappingTorusHOnePresentation G.clutching
   let e := degreeOneWangInvariantEquivInteger G
@@ -401,7 +392,11 @@ private theorem map_comp_geometricSectionOfPositiveWangLift_eq_zero
 section. -/
 public theorem degreeOne_section_of_cuspMeridianIsPrimitiveWangLift
     (G : ActualCuspRadialClutchingData W) (b : PuncturedLocalCuspQuotient W)
-    (h : CuspMeridianIsPrimitiveWangLift G b) :
+    (h : (let _ := G.fiberTopology
+      let P := circleMappingTorusHOnePresentation G.clutching
+      let s := cuspMappingTorusMeridianHomologyClass G b
+      degreeOneWangInvariantEquivInteger G (P.totalToInvariants s) = 1 ∨
+        degreeOneWangInvariantEquivInteger G (P.totalToInvariants s) = -1)) :
     let _ := G.fiberTopology
     ∃ S : (circleMappingTorusHOnePresentation G.clutching).Section,
       (rawDegreeOneTotalSpecialization G).comp S.lift = 0 := by
@@ -428,7 +423,11 @@ public theorem degreeOne_section_of_cuspMeridianIsPrimitiveWangLift
 section. -/
 public theorem degreeOne_section_of_angularCoordinateVanishesOnMarkedFiber
     (G : ActualCuspRadialClutchingData W) (b : PuncturedLocalCuspQuotient W)
-    (h : CuspAngularCoordinateVanishesOnMarkedFiber G b) :
+    (h : (let _ := G.fiberTopology
+      ∀ x : IntegralSingularHomology 1 G.Fiber,
+        cuspBoundaryAngularHomologyCoordinate W b
+          (integralSingularHomologyMap 1
+            (markedFiberToPuncturedCuspForAngularComparison G) x) = 0)) :
     let _ := G.fiberTopology
     ∃ S : (circleMappingTorusHOnePresentation G.clutching).Section,
       (rawDegreeOneTotalSpecialization G).comp S.lift = 0 :=

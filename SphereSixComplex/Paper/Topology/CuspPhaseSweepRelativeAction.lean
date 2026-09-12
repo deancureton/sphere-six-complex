@@ -5,6 +5,7 @@ public import SphereSixComplex.Prerequisites.Topology.RelativeSingularHomotopy
 
 @[expose] public section
 noncomputable section
+open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 open Set Topology CategoryTheory
 namespace SphereSixComplex.Geometry.CuspCollar
@@ -36,7 +37,7 @@ public theorem phaseSweepCompactAction_zeroSkeleton
   change x.1 ∈ (Topology.RelCWComplex.skeletonLT
     (Set.univ : Set (ActualLocalCuspCentralOrbitQuotient W)) (1 : ℕ∞) : Set _) at hx
   simp only [Topology.RelCWComplex.coe_skeletonLT] at hx
-  change x.1 ∈ (∅ : Set _) ∪ ⋃ (m : ℕ) (_ : m < (1 : ℕ∞)) (j : CuspWCellIndex m),
+  change x.1 ∈ (∅ : Set _) ∪ ⋃ (m : ℕ) (_ : m < (1 : ℕ∞)) (j : CentralFiber.Cell m),
     phaseSweepCellMap W m j '' Metric.closedBall 0 1 at hx
   rcases hx with hx | hx
   · exact False.elim hx
@@ -75,7 +76,7 @@ public theorem phaseSweepCompactAction_oneSkeleton
   change x.1 ∈ (Topology.RelCWComplex.skeletonLT
     (Set.univ : Set (ActualLocalCuspCentralOrbitQuotient W)) (2 : ℕ∞) : Set _) at hx
   simp only [Topology.RelCWComplex.coe_skeletonLT] at hx
-  change x.1 ∈ (∅ : Set _) ∪ ⋃ (m : ℕ) (_ : m < (2 : ℕ∞)) (j : CuspWCellIndex m),
+  change x.1 ∈ (∅ : Set _) ∪ ⋃ (m : ℕ) (_ : m < (2 : ℕ∞)) (j : CentralFiber.Cell m),
     phaseSweepCellMap W m j '' Metric.closedBall 0 1 at hx
   have hxold : x.1 ∈ constructedCentralOneSkeleton W := by
     rcases hx with hx | hx
@@ -94,7 +95,7 @@ public theorem phaseSweepCompactAction_oneSkeleton
     (Set.univ : Set (ActualLocalCuspCentralOrbitQuotient W)) (3 : ℕ∞) :
       Set (ActualLocalCuspCentralOrbitQuotient W))
   simp only [Topology.RelCWComplex.coe_skeletonLT]
-  change _ ∈ (∅ : Set _) ∪ ⋃ (m : ℕ) (_ : m < (3 : ℕ∞)) (j : CuspWCellIndex m),
+  change _ ∈ (∅ : Set _) ∪ ⋃ (m : ℕ) (_ : m < (3 : ℕ∞)) (j : CentralFiber.Cell m),
     phaseSweepCellMap W m j '' Metric.closedBall 0 1
   simp only [phaseSweepCellMap_closedImage]
   apply Or.inr

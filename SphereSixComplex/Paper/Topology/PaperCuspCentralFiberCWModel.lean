@@ -8,6 +8,7 @@ public import SphereSixComplex.Paper.Topology.ToricCellAtlasIncidenceTransport
 
 @[expose] public section
 noncomputable section
+open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 open AlgebraicTopology CategoryTheory Set
 open scoped ContinuousMap
@@ -21,11 +22,11 @@ open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.InfiniteA2Toric
 
 /-- Transport the explicit characteristic maps from the constructed toric model. -/
-public noncomputable def establishedStandardA2ToricCentralOrbitCellAtlas
+public noncomputable def centralOrbitCellAtlas
     {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
-    StandardA2ToricCentralFiberCellAtlas (ActualLocalCuspCentralOrbitQuotient W) := by
+    CentralFiber.CellAtlas (ActualLocalCuspCentralOrbitQuotient W) := by
   let W₀ := Classical.choice
     (SphereSixComplex.Geometry.InfiniteA2Toric.QuantitativeRegions.BoundedPolydiscRegions.exists_actualLocalCuspQuotientWitness
       N Construction.constructedModel)
@@ -34,7 +35,7 @@ public noncomputable def establishedStandardA2ToricCentralOrbitCellAtlas
 
 /-- Transport the orbit-quotient atlas to the radial retraction's concrete central-fibre
 subspace. -/
-public noncomputable def establishedStandardA2ToricCentralFiberCellAtlas
+public noncomputable def centralFiberCellAtlas
     {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
@@ -42,11 +43,11 @@ public noncomputable def establishedStandardA2ToricCentralFiberCellAtlas
     let _ : T2Space (ActualLocalCuspFilling W) :=
       SphereSixComplex.Geometry.AnalyticData.actualLocalCuspFilling_t2 W
     let _ : T2Space (R.quotientCentralFiber W) := inferInstance
-    StandardA2ToricCentralFiberCellAtlas (R.quotientCentralFiber W) := by
+    CentralFiber.CellAtlas (R.quotientCentralFiber W) := by
   let _ : T2Space (ActualLocalCuspFilling W) :=
     SphereSixComplex.Geometry.AnalyticData.actualLocalCuspFilling_t2 W
   let _ : T2Space (R.quotientCentralFiber W) := inferInstance
-  exact (establishedStandardA2ToricCentralOrbitCellAtlas W).transport
+  exact (centralOrbitCellAtlas W).transport
     (actualLocalCuspCentralOrbitCoreHomeomorph W R)
 
 public theorem centralFiber_coordinateBoundary_eq
@@ -57,9 +58,9 @@ public theorem centralFiber_coordinateBoundary_eq
     let _ : T2Space (ActualLocalCuspFilling W) :=
       SphereSixComplex.Geometry.AnalyticData.actualLocalCuspFilling_t2 W
     let _ : T2Space (R.quotientCentralFiber W) := inferInstance
-    ∀ n, standardA2ToricCellularCoordinateBoundary
-        (establishedStandardA2ToricCentralFiberCellAtlas W R).toCWDecomposition n =
-      standardA2ToricCellularBoundary n := by
+    ∀ n, CentralFiber.CWModel.coordinateBoundary
+        (centralFiberCellAtlas W R).toCWModel n =
+      CentralFiber.boundary n := by
   let _ : T2Space (ActualLocalCuspFilling W) :=
     SphereSixComplex.Geometry.AnalyticData.actualLocalCuspFilling_t2 W
   let _ : T2Space (R.quotientCentralFiber W) := inferInstance
@@ -78,10 +79,10 @@ public theorem centralFiber_coordinateBoundary_eq
   let e₂ := actualLocalCuspCentralOrbitCoreHomeomorph W R
   dsimp only
   intro n
-  apply StandardA2ToricCentralFiberCWDecomposition.coordinateBoundary_eq_of_independent
+  apply CentralFiber.CWModel.coordinateBoundary_eq_of_independent
   · intro j i
-    let : DecidableEq (CuspWCellIndex 1) := inferInstanceAs (DecidableEq (Fin 3))
-    change standardA2ToricCellularCoordinateBoundary ((C.transport e₁).transport e₂).toCWDecomposition
+    let : DecidableEq (CentralFiber.Cell 1) := inferInstanceAs (DecidableEq (Fin 3))
+    change CentralFiber.CWModel.coordinateBoundary ((C.transport e₁).transport e₂).toCWModel
       0 (Pi.single j 1 : Fin 3 → ℤ) i = _
     refine ((C.transport e₁).transport_coordinateBoundary_single e₂ 0 j i).symm.trans ?_
     refine (C.transport_coordinateBoundary_single e₁ 0 j i).symm.trans ?_
@@ -89,15 +90,15 @@ public theorem centralFiber_coordinateBoundary_eq
     refine (constructedCentralCellAtlas_edge_attachingDegree W₁ _ j i).trans ?_
     fin_cases i <;> fin_cases j <;> rfl
   · intro j i
-    let : DecidableEq (CuspWCellIndex 2) := inferInstanceAs (DecidableEq (Fin 4))
-    change standardA2ToricCellularCoordinateBoundary ((C.transport e₁).transport e₂).toCWDecomposition
+    let : DecidableEq (CentralFiber.Cell 2) := inferInstanceAs (DecidableEq (Fin 4))
+    change CentralFiber.CWModel.coordinateBoundary ((C.transport e₁).transport e₂).toCWModel
       1 (Pi.single j 1 : Fin 4 → ℤ) i.castSucc = _
     refine ((C.transport e₁).transport_coordinateBoundary_single e₂ 1 j i.castSucc).symm.trans ?_
     refine (C.transport_coordinateBoundary_single e₁ 1 j i.castSucc).symm.trans ?_
     exact twoCell_coordinateBoundary_single_zero W₁ j i.castSucc
   · intro j i
-    let : DecidableEq (CuspWCellIndex 3) := inferInstanceAs (DecidableEq (Fin 2))
-    change standardA2ToricCellularCoordinateBoundary ((C.transport e₁).transport e₂).toCWDecomposition
+    let : DecidableEq (CentralFiber.Cell 3) := inferInstanceAs (DecidableEq (Fin 2))
+    change CentralFiber.CWModel.coordinateBoundary ((C.transport e₁).transport e₂).toCWModel
       2 (Pi.single j 1 : Fin 2 → ℤ) i = 0
     refine ((C.transport e₁).transport_coordinateBoundary_single e₂ 2 j i).symm.trans ?_
     refine (C.transport_coordinateBoundary_single e₁ 2 j i).symm.trans ?_
@@ -105,8 +106,8 @@ public theorem centralFiber_coordinateBoundary_eq
       (threeCell_attachingDegree_zero W₁ _ j i)
   · intro j i
     fin_cases j
-    let : DecidableEq (CuspWCellIndex 4) := inferInstanceAs (DecidableEq (Fin 1))
-    change standardA2ToricCellularCoordinateBoundary ((C.transport e₁).transport e₂).toCWDecomposition
+    let : DecidableEq (CentralFiber.Cell 4) := inferInstanceAs (DecidableEq (Fin 1))
+    change CentralFiber.CWModel.coordinateBoundary ((C.transport e₁).transport e₂).toCWModel
       3 (Pi.single (0 : Fin 1) 1 : Fin 1 → ℤ) i = 0
     refine ((C.transport e₁).transport_coordinateBoundary_single e₂ 3 (0 : Fin 1) i).symm.trans ?_
     refine (C.transport_coordinateBoundary_single e₁ 3 (0 : Fin 1) i).symm.trans ?_
@@ -115,32 +116,30 @@ public theorem centralFiber_coordinateBoundary_eq
 
 /-- The compact periodic `A₂` central fibre has its standard labelled CW realization and exact
 attaching-incidence formula. -/
-public noncomputable def establishedStandardA2ToricCentralFiberCellularRealization
+public noncomputable def centralFiberCellularModel
     {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W) :
-    StandardA2ToricCentralFiberCellularRealization (R.quotientCentralFiber W)
+    CentralFiber.CellularModel (R.quotientCentralFiber W)
     := by
   letI : T2Space (ActualLocalCuspFilling W) :=
     SphereSixComplex.Geometry.AnalyticData.actualLocalCuspFilling_t2 W
   letI : T2Space (R.quotientCentralFiber W) := inferInstance
-  exact (establishedStandardA2ToricCentralFiberCellAtlas W R).toCWDecomposition.toCellularRealization
+  exact (centralFiberCellAtlas W R).toCWModel.toCellularModel
     (centralFiber_coordinateBoundary_eq W R)
 
-/-- Standard toric-orbit CW decomposition for the compact quotient of the periodic `A₂` central
-fibre.  This is the exact general toric-topology boundary absent from Mathlib: it supplies a CW
-realization and labels its cells by the orbit strata, but asserts no homology or Euler value. -/
-public noncomputable def establishedStandardA2ToricCentralFiberCWDecomposition
+/-- The quotient central fibre equipped with its labelled CW model. -/
+public noncomputable def centralFiberCWModel
     {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W) :
-    StandardA2ToricCentralFiberCWDecomposition (R.quotientCentralFiber W) := by
+    CentralFiber.CWModel (R.quotientCentralFiber W) := by
   letI : T2Space (ActualLocalCuspFilling W) :=
     SphereSixComplex.Geometry.AnalyticData.actualLocalCuspFilling_t2 W
   letI : T2Space (R.quotientCentralFiber W) := inferInstance
-  exact (establishedStandardA2ToricCentralFiberCellAtlas W R).toCWDecomposition
+  exact (centralFiberCellAtlas W R).toCWModel
 
 /-- The actual quotient central fibre has the cusp toric cell model required by the local Euler
 calculation. -/
@@ -150,7 +149,7 @@ public noncomputable def actualCuspCentralFiberCellModel
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W) :
     CuspToricCellModel (R.quotientCentralFiber W) :=
-  (establishedStandardA2ToricCentralFiberCWDecomposition W R).toCuspToricCellModel
+  (centralFiberCWModel W R).toCuspToricCellModel
 
 
 end Geometry.CuspCollar

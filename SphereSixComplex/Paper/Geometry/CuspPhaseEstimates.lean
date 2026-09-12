@@ -373,10 +373,28 @@ public abbrev ToricRegionIndex := Bool × ToricLattice
 public def positionL1 (y : Fin 2 → ℝ) : ℝ :=
   |y 0| + |y 1|
 
-/-- The elementary `ℓ¹` size of an integral rank-two vector. -/
-public def latticeL1 (lambda : ParameterLattice) : ℝ :=
-  |(lambda 0 : ℝ)| + |(lambda 1 : ℝ)|
+public theorem positionL1_nonneg (x : Fin 2 → ℝ) : 0 ≤ positionL1 x :=
+  add_nonneg (abs_nonneg _) (abs_nonneg _)
 
+public theorem positionL1_eq_zero_iff (x : Fin 2 → ℝ) : positionL1 x = 0 ↔ x = 0 := by
+  constructor
+  · intro h
+    funext i
+    fin_cases i
+    · have hx : |x 0| = 0 := by
+        simp only [positionL1] at h
+        nlinarith [abs_nonneg (x 0), abs_nonneg (x 1)]
+      simpa using abs_eq_zero.mp hx
+    · have hx : |x 1| = 0 := by
+        simp only [positionL1] at h
+        nlinarith [abs_nonneg (x 0), abs_nonneg (x 1)]
+      simpa using abs_eq_zero.mp hx
+  · rintro rfl
+    simp [positionL1]
+
+@[simp]
+public theorem positionL1_neg (x : Fin 2 → ℝ) : positionL1 (-x) = positionL1 x := by
+  simp [positionL1]
 
 public theorem positionL1_sub_le (y z : Fin 2 → ℝ) :
     positionL1 (y - z) ≤ positionL1 y + positionL1 z := by
@@ -384,8 +402,8 @@ public theorem positionL1_sub_le (y z : Fin 2 → ℝ) :
   linarith [abs_sub (y 0) (z 0), abs_sub (y 1) (z 1)]
 
 /-- An `ℓ¹`-bounded subset of the integral rank-two lattice is finite. -/
-public theorem latticeL1_sublevel_finite (B : ℝ) :
-    {lambda : ParameterLattice | latticeL1 lambda ≤ B}.Finite := by
+public theorem parameterL1_sublevel_finite (B : ℝ) :
+    {lambda : ParameterLattice | parameterL1 lambda ≤ B}.Finite := by
   let n : ℤ := ⌈B⌉
   apply (Set.Finite.pi' fun _ : Fin 2 ↦ Set.finite_Icc (-n) n).subset
   intro lambda hlambda i
@@ -425,7 +443,7 @@ public structure QuantitativeToricRegionCover
     M.t p ≠ 0 → positionL1 (position p) ≤ B
   displacement_lower : ∃ c : ℝ, 0 < c ∧ ∀ lambda (p : localCarrier M r),
     M.t p ≠ 0 →
-      c * latticeL1 lambda ≤ positionL1 (position (C.psiMap lambda p) - position p)
+      c * parameterL1 lambda ≤ positionL1 (position (C.psiMap lambda p) - position p)
 
 namespace QuantitativeToricRegionCover
 
@@ -441,7 +459,7 @@ public theorem chartPairOverlapFinite (Q : QuantitativeToricRegionCover C)
   obtain ⟨A, hA⟩ := Q.region_position_bounded a
   obtain ⟨B, hB⟩ := Q.region_position_bounded b
   obtain ⟨c, hc, hdisplacement⟩ := Q.displacement_lower
-  apply (latticeL1_sublevel_finite ((A + B) / c)).subset
+  apply (parameterL1_sublevel_finite ((A + B) / c)).subset
   intro lambda hoverlap
   obtain ⟨q, ⟨p, hpa, hpq⟩, hqb⟩ := hoverlap
   let U := Q.region a ∩ C.psiMap lambda ⁻¹' Q.region b

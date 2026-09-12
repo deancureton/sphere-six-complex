@@ -31,7 +31,6 @@ public theorem star_hasIntegralHomologyOfSixSphere
       IntegralHomologyFiniteSix (P.openEmbeddingStarData.filling i))
     (hCollarFinite : ∀ i,
       IntegralHomologyFiniteSix (P.openEmbeddingStarData.collarSource i))
-    (hTop : P.openEmbeddingStarData.SectionSevenStageTopDegreeVanishing)
     (hLocal : P.openEmbeddingStarData.sectionSevenLocalEulerExpression = 2) :
     HasIntegralHomologyOfSixSphere
       (GluedSpace P.openEmbeddingStarData.toFourPieceStarGluingData.glueData) := by
@@ -65,31 +64,29 @@ public theorem star_hasIntegralHomologyOfSixSphere
       (A.intersectionGraphConnected P.fourPieceStarGluingData_nonemptyCentralCollar)
   exact H.hasIntegralHomologyOfSixSphere_of_localEulerCalculation
     (A := P.openEmbeddingStarData) hManifold P.compactSpace_starGlued hConnected
-      hCentralFinite hFillingFinite hCollarFinite hTop hLocal
+      hCentralFinite hFillingFinite hCollarFinite hLocal
 
 /-- Geometric local CW, bundle, cover, and retraction models discharge every finiteness and
 Euler-characteristic input in the Section 7 homology calculation. -/
 public theorem star_hasIntegralHomologyOfSixSphere_of_localModels
     (H : P.openEmbeddingStarData.SectionSevenMayerVietorisHomologyAssembly)
-    (M : P.LocalEulerModels)
-    (hTop : P.openEmbeddingStarData.SectionSevenStageTopDegreeVanishing) :
+    (M : P.LocalEulerModels) :
     HasIntegralHomologyOfSixSphere
       (GluedSpace P.openEmbeddingStarData.toFourPieceStarGluingData.glueData) := by
   obtain ⟨hCentral, hFilling, hCollar⟩ := M.localIntegralHomologyFiniteSix
-  exact P.star_hasIntegralHomologyOfSixSphere H hCentral hFilling hCollar hTop
+  exact P.star_hasIntegralHomologyOfSixSphere H hCentral hFilling hCollar
     M.sectionSevenLocalEulerExpression_eq_two
 
 /-- The positive-degree map computation and the proved local models compute the actual
 integral homology of the glued analytic star. -/
 public theorem star_nonempty_homologyEquiv_sixSphere_of_positiveDegree
-    (H : P.PositiveDegreeHomologyAssembly)
-    (hTop : P.openEmbeddingStarData.SectionSevenStageTopDegreeVanishing) :
+    (H : P.PositiveDegreeHomologyAssembly) :
     ∀ k, Nonempty
       (IntegralSingularHomology k
         (GluedSpace P.openEmbeddingStarData.toFourPieceStarGluingData.glueData) ≃+
       IntegralSingularHomology k SixSphere) :=
   P.star_hasIntegralHomologyOfSixSphere_of_localModels
-    H.toSectionSevenMayerVietorisHomologyAssembly P.localEulerModels hTop
+    H.toSectionSevenMayerVietorisHomologyAssembly P.localEulerModels
 
 end AnalyticData
 

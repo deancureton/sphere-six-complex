@@ -448,7 +448,7 @@ compatibility squares. Its fields describe the actual maps; none assumes the com
 homology.
 :::
 
-:::theorem "cusp-filling-homology" (parent := "section-seven-paper-assembly") (lean := "SphereSixComplex.CellularHomology.normalizedModel, SphereSixComplex.Geometry.CuspCollar.establishedStandardA2ToricCentralFiberCWDecomposition, SphereSixComplex.Geometry.CuspCollar.establishedStandardA2ToricCentralFiberCellularIncidence, SphereSixComplex.Geometry.AnalyticData.cuspFillingHomologyOneEquiv, SphereSixComplex.Geometry.AnalyticData.cuspFillingHomologyTwoEquiv")
+:::theorem "cusp-filling-homology" (parent := "section-seven-paper-assembly") (lean := "SphereSixComplex.CellularHomology.normalizedModel, SphereSixComplex.Geometry.CuspCollar.centralFiberCWModel, SphereSixComplex.Geometry.CuspCollar.centralFiber_cellularBoundary_eq, SphereSixComplex.Geometry.AnalyticData.cuspFillingHomologyOneEquiv, SphereSixComplex.Geometry.AnalyticData.cuspFillingHomologyTwoEquiv")
 The cusp filling has homology $`\mathbb Z^2,\mathbb Z^4,\mathbb Z^2,\mathbb Z` in degrees one
 through four. The standard $`A_2` CW decomposition and its incidence formula are proved. The
 retained general cellular-to-singular comparison transfers this cellular calculation to singular

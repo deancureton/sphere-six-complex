@@ -6,6 +6,7 @@ public import SphereSixComplex.Paper.Topology.ToricCellularCoordinateIncidence
 
 @[expose] public section
 noncomputable section
+open SphereSixComplex.Geometry.InfiniteA2Toric
 open Set Topology
 namespace SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 open SphereSixComplex
@@ -32,9 +33,9 @@ public theorem twoCell_attachingDegree_zero
 public theorem twoCell_coordinateBoundary_single_zero
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)] (i : Fin 4) (j : Fin 3) :
-    standardA2ToricCellularCoordinateBoundary (constructedCentralCellAtlas W).toCWDecomposition
+    CentralFiber.CWModel.coordinateBoundary (constructedCentralCellAtlas W).toCWModel
       1 (Pi.single i 1 : Fin 4 → ℤ) j = 0 := by
-  let : DecidableEq (CuspWCellIndex (1 + 1)) := inferInstanceAs (DecidableEq (Fin 4))
+  let : DecidableEq (CentralFiber.Cell (1 + 1)) := inferInstanceAs (DecidableEq (Fin 4))
   exact ((constructedCentralCellAtlas W).coordinateBoundary_single_eq_attachingDegree
     1 i j).trans (twoCell_attachingDegree_zero W _ i j)
 

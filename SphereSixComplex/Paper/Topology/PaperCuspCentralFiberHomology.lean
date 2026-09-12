@@ -18,6 +18,7 @@ No specialization map from a nearby regular fibre is computed here.
 @[expose] public section
 
 noncomputable section
+open SphereSixComplex.Geometry.InfiniteA2Toric
 
 open AlgebraicTopology
 
@@ -30,32 +31,32 @@ open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 
 private theorem standardA2ToricCellularBoundary_eq (n : ℕ)
-    (x : CuspWCellIndex n.succ → ℤ) :
-    standardA2ToricCellularBoundary n x = cuspToricCellularBoundary n x := by
+    (x : CentralFiber.Cell n.succ → ℤ) :
+    CentralFiber.boundary n x = cuspToricCellularBoundary n x := by
   rcases n with _ | n
-  · change standardA2ToricCellularBoundaryOne x = cuspToricCellularBoundaryOne x
+  · change CentralFiber.edgeBoundary x = cuspToricCellularBoundaryOne x
     funext i
     fin_cases i <;>
-      simp [standardA2ToricCellularBoundaryOne, cuspToricCellularBoundaryOne]
+      simp [CentralFiber.edgeBoundary, cuspToricCellularBoundaryOne]
   · rfl
 
 /-- For the standard periodic `A₂` toric decomposition, the cellular attaching maps have the
 incidence formula encoded by `cuspToricCellularBoundary`: the three oriented one-cells run from
 the first vertex to the second, and every higher cellular boundary is zero. -/
-public theorem establishedStandardA2ToricCentralFiberCellularIncidence
+public theorem centralFiber_cellularBoundary_eq
     {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W) :
-    let C := establishedStandardA2ToricCentralFiberCWDecomposition W R
+    let C := centralFiberCWModel W R
     let _ := C.topology
     let _ := C.cwComplex
-    ∀ (n : ℕ) (x : CuspWCellIndex n.succ → ℤ),
+    ∀ (n : ℕ) (x : CentralFiber.Cell n.succ → ℤ),
       C.establishedIntegralCellularChainModel.chainComplex.d n.succ n
           (labelledA2CellBasis C.cellEquiv C.establishedIntegralCellularChainModel n.succ x) =
         labelledA2CellBasis C.cellEquiv C.establishedIntegralCellularChainModel n
           (cuspToricCellularBoundary n x) := by
-  let T := establishedStandardA2ToricCentralFiberCellularRealization W R
+  let T := centralFiberCellularModel W R
   let C := T.decomposition
   let _ := C.topology
   let _ := C.cwComplex
@@ -68,7 +69,7 @@ public theorem establishedStandardA2ToricCentralFiberCellularIncidence
   rw [← standardA2ToricCellularBoundary_eq]
   change C.integralCellularChainModel.chainComplex.d n.succ n
       (C.labelledCellBasis n.succ x) =
-    C.labelledCellBasis n (standardA2ToricCellularBoundary n x)
+    C.labelledCellBasis n (CentralFiber.boundary n x)
   exact T.boundary_eq n x
 
 
@@ -79,11 +80,11 @@ public noncomputable def actualCuspCentralFiberHomologyTwoEquiv
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W) :
     IntegralSingularHomology 2 (R.quotientCentralFiber W) ≃+ (Fin 4 → ℤ) := by
-  let C := establishedStandardA2ToricCentralFiberCWDecomposition W R
+  let C := centralFiberCWModel W R
   letI := C.topology
   exact (integralSingularHomologyEquivOfHomotopyEquiv 2 C.homotopyEquiv).trans
     (C.carrierIntegralSingularHomologyTwoEquiv
-      (establishedStandardA2ToricCentralFiberCellularIncidence W R))
+      (centralFiber_cellularBoundary_eq W R))
 
 
 

@@ -309,18 +309,15 @@ public theorem integralHomologyEulerCharacteristicSeven_eq_localExpression
 
 /-- Six-manifold dimensionality removes the final degree-seven correction from the sound
 Mayer--Vietoris iteration. -/
-public theorem integralHomologyEulerCharacteristicSix_eq_localExpression_of_homologyTheory
-    (T : IntegralPoincareUCTData.Six
-      (GluedSpace A.toFourPieceStarGluingData.glueData))
+public theorem integralHomologyEulerCharacteristicSix_eq_localExpression_of_homologySeven_subsingleton
+    (hSeven : Subsingleton (IntegralSingularHomology 7
+      (GluedSpace A.toFourPieceStarGluingData.glueData)))
     (hCentralFinite : IntegralHomologyFiniteSix A.central)
     (hFillingFinite : ∀ i, IntegralHomologyFiniteSix (A.filling i))
     (hCollarFinite : ∀ i, IntegralHomologyFiniteSix (A.collarSource i)) :
     integralHomologyEulerCharacteristicSix
         (GluedSpace A.toFourPieceStarGluingData.glueData) =
       A.sectionSevenLocalEulerExpression := by
-  have hSeven : Subsingleton (IntegralSingularHomology 7
-      (GluedSpace A.toFourPieceStarGluingData.glueData)) :=
-    T.subsingleton_homology_of_lt 7 (by omega)
   have hTruncation : integralHomologyEulerCharacteristicSeven
       (GluedSpace A.toFourPieceStarGluingData.glueData) =
         integralHomologyEulerCharacteristicSix
@@ -349,7 +346,6 @@ public theorem hasIntegralHomologyOfSixSphere_of_localEulerCalculation
     (hCentralFinite : IntegralHomologyFiniteSix A.central)
     (hFillingFinite : ∀ i, IntegralHomologyFiniteSix (A.filling i))
     (hCollarFinite : ∀ i, IntegralHomologyFiniteSix (A.collarSource i))
-    (_hTop : A.SectionSevenStageTopDegreeVanishing)
     (hLocal : A.sectionSevenLocalEulerExpression = 2) :
     HasIntegralHomologyOfSixSphere (A.SectionSevenMayerVietorisSpace) := by
   let := hManifold
@@ -359,8 +355,9 @@ public theorem hasIntegralHomologyOfSixSphere_of_localEulerCalculation
     (A.SectionSevenMayerVietorisSpace) hManifold hCompact
   have hEuler : integralHomologyEulerCharacteristicSix
       (A.SectionSevenMayerVietorisSpace) = 2 := by
-    rw [A.integralHomologyEulerCharacteristicSix_eq_localExpression_of_homologyTheory
-      T hCentralFinite hFillingFinite hCollarFinite, hLocal]
+    rw [A.integralHomologyEulerCharacteristicSix_eq_localExpression_of_homologySeven_subsingleton
+      (T.subsingleton_homology_of_lt 7 (by omega))
+      hCentralFinite hFillingFinite hCollarFinite, hLocal]
   exact ComplexThreefold.nonempty_homologyEquiv_sixSphere
     (A.SectionSevenMayerVietorisSpace) H.homologyOne_subsingleton H.homologyTwo_subsingleton hEuler
 

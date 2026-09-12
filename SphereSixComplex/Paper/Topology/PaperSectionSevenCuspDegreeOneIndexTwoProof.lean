@@ -27,19 +27,6 @@ variable {A : AnalyticData}
 
 namespace CuspAttachment
 
-/-- The geometric full-iterate relation left by the degree-one cusp calculation. -/
-public def ActualCuspDegreeOneIndexTwoFullIterateRelation
-    (R : A.AffineRadialCompletionInput) : Prop :=
-  let G := A.actualCuspRadialClutchingData
-  let _ := G.fiberTopology
-  (12 : ℤ) •
-      integralSingularHomologyMap 1 R.twoDiscCover.cuspMappingTorusToEllipticInteriorMap
-        (G.geometricWangSections.circleMappingTorusHOneAddEquiv.symm
-          (Pi.single (2 : Fin 3) 1)) =
-    integralSingularHomologyMap 1 R.twoDiscCover.cuspMappingTorusToEllipticInteriorMap
-      (G.geometricWangSections.circleMappingTorusHOneAddEquiv.symm
-        (Pi.single (0 : Fin 3) 1))
-
 /-- The full-iterate relation is exactly equivalent to the remaining scalar equality. -/
 public theorem actualCuspDegreeOneIndexTwo_iff_fullIterateRelation
     (R : A.AffineRadialCompletionInput) :
@@ -50,7 +37,15 @@ public theorem actualCuspDegreeOneIndexTwo_iff_fullIterateRelation
             R.twoDiscCover.cuspMappingTorusToEllipticInteriorMap))
         (G.geometricWangSections.circleMappingTorusHOneAddEquiv.symm
           (Pi.single (2 : Fin 3) 1)) = 1) ↔
-      ActualCuspDegreeOneIndexTwoFullIterateRelation R := by
+      (let G := A.actualCuspRadialClutchingData
+      let _ := G.fiberTopology
+      (12 : ℤ) •
+          integralSingularHomologyMap 1 R.twoDiscCover.cuspMappingTorusToEllipticInteriorMap
+            (G.geometricWangSections.circleMappingTorusHOneAddEquiv.symm
+              (Pi.single (2 : Fin 3) 1)) =
+        integralSingularHomologyMap 1 R.twoDiscCover.cuspMappingTorusToEllipticInteriorMap
+          (G.geometricWangSections.circleMappingTorusHOneAddEquiv.symm
+            (Pi.single (0 : Fin 3) 1))) := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
   let E := R.homologyAlignment.actualHomologyCoordinates

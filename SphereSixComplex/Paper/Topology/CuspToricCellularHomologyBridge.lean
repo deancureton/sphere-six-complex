@@ -19,6 +19,7 @@ Existence of that incidence equation for the toric decomposition is deliberately
 @[expose] public section
 
 noncomputable section
+open SphereSixComplex.Geometry.InfiniteA2Toric
 
 open AlgebraicTopology CategoryTheory Set
 
@@ -26,7 +27,7 @@ namespace SphereSixComplex
 
 /-- The complete cellular differential determined by the cusp incidence calculation. -/
 public def cuspToricCellularBoundary :
-    (n : ℕ) → (CuspWCellIndex n.succ → ℤ) →+ (CuspWCellIndex n → ℤ)
+    (n : ℕ) → (CentralFiber.Cell n.succ → ℤ) →+ (CentralFiber.Cell n → ℤ)
   | 0 => cuspToricCellularBoundaryOne
   | _ + 1 => 0
 
@@ -41,7 +42,7 @@ public theorem cuspToricCellularBoundary_comp (n : ℕ) :
 /-- The explicit integral cellular chain complex predicted by the labelled toric incidence data. -/
 public def cuspToricCellularChainComplex : ChainComplex AddCommGrpCat ℕ :=
   ChainComplex.of
-    (fun n ↦ AddCommGrpCat.of (CuspWCellIndex n → ℤ))
+    (fun n ↦ AddCommGrpCat.of (CentralFiber.Cell n → ℤ))
     (fun n ↦ AddCommGrpCat.ofHom (cuspToricCellularBoundary n))
     (by
       intro n
@@ -66,14 +67,14 @@ public noncomputable def cuspToricCellularChainComplex_homologyTwoEquiv :
 
 
 
-public theorem cuspWCellIndexFinite (n : ℕ) : Finite (CuspWCellIndex n) := by
+public theorem cuspWCellIndexFinite (n : ℕ) : Finite (CentralFiber.Cell n) := by
   rcases n with (_ | _ | _ | _ | _ | n)
-  · simpa [CuspWCellIndex] using (inferInstance : Finite (Fin 2))
-  · simpa [CuspWCellIndex] using (inferInstance : Finite (Fin 3))
-  · simpa [CuspWCellIndex] using (inferInstance : Finite (Fin 4))
-  · simpa [CuspWCellIndex] using (inferInstance : Finite (Fin 2))
-  · simpa [CuspWCellIndex] using (inferInstance : Finite (Fin 1))
-  · simpa [CuspWCellIndex] using (inferInstance : Finite Empty)
+  · simpa [CentralFiber.Cell] using (inferInstance : Finite (Fin 2))
+  · simpa [CentralFiber.Cell] using (inferInstance : Finite (Fin 3))
+  · simpa [CentralFiber.Cell] using (inferInstance : Finite (Fin 4))
+  · simpa [CentralFiber.Cell] using (inferInstance : Finite (Fin 2))
+  · simpa [CentralFiber.Cell] using (inferInstance : Finite (Fin 1))
+  · simpa [CentralFiber.Cell] using (inferInstance : Finite Empty)
 
 /-- Reindex integer-valued coordinates along an equivalence. -/
 public def integerFunctionReindexAddEquiv {I J : Type} (e : I ≃ J) :
@@ -87,10 +88,10 @@ public def integerFunctionReindexAddEquiv {I J : Type} (e : I ≃ J) :
 /-- The cellular basis written in the selected standard `A₂` cell coordinates. -/
 public noncomputable def labelledA2CellBasis
     {Y : Type} [TopologicalSpace Y] [Topology.CWComplex (Set.univ : Set Y)]
-    (e : ∀ n, Topology.CWComplex.cell (Set.univ : Set Y) n ≃ CuspWCellIndex n)
+    (e : ∀ n, Topology.CWComplex.cell (Set.univ : Set Y) n ≃ CentralFiber.Cell n)
     (M : IntegralCWCellularHomologyModel Y) (n : ℕ) :
-    (CuspWCellIndex n → ℤ) ≃+ M.chainComplex.X n := by
-  letI : Finite (CuspWCellIndex n) := cuspWCellIndexFinite n
+    (CentralFiber.Cell n → ℤ) ≃+ M.chainComplex.X n := by
+  letI : Finite (CentralFiber.Cell n) := cuspWCellIndexFinite n
   letI : Finite (Topology.CWComplex.cell (Set.univ : Set Y) n) :=
     Finite.of_equiv _ (e n).symm
   exact
@@ -100,12 +101,12 @@ public noncomputable def labelledA2CellBasis
 namespace CuspToricCellular
 
 variable {Y : Type} [TopologicalSpace Y] [Topology.CWComplex (Set.univ : Set Y)]
-variable {e : ∀ n, Topology.CWComplex.cell (Set.univ : Set Y) n ≃ CuspWCellIndex n}
+variable {e : ∀ n, Topology.CWComplex.cell (Set.univ : Set Y) n ≃ CentralFiber.Cell n}
 variable {M : IntegralCWCellularHomologyModel Y}
 
 /-- Exact incidence formulas identify the explicit cusp complex with the genuine cellular
 complex. -/
-public noncomputable def chainIso (I : ∀ (n : ℕ) (x : CuspWCellIndex n.succ → ℤ),
+public noncomputable def chainIso (I : ∀ (n : ℕ) (x : CentralFiber.Cell n.succ → ℤ),
       M.chainComplex.d n.succ n (labelledA2CellBasis e M n.succ x) =
         labelledA2CellBasis e M n (cuspToricCellularBoundary n x)) :
     cuspToricCellularChainComplex ≅ M.chainComplex :=
@@ -126,7 +127,7 @@ public noncomputable def chainIso (I : ∀ (n : ℕ) (x : CuspWCellIndex n.succ 
 /-- The incidence isomorphism and classical cellular homology identify singular homology with the
 homology of the explicit incidence complex. -/
 public noncomputable def integralSingularHomologyEquiv
-    (I : ∀ (n : ℕ) (x : CuspWCellIndex n.succ → ℤ),
+    (I : ∀ (n : ℕ) (x : CentralFiber.Cell n.succ → ℤ),
       M.chainComplex.d n.succ n (labelledA2CellBasis e M n.succ x) =
         labelledA2CellBasis e M n (cuspToricCellularBoundary n x)) (n : ℕ) :
     IntegralSingularHomology n Y ≃+ cuspToricCellularChainComplex.homology n := by
@@ -139,7 +140,7 @@ public noncomputable def integralSingularHomologyEquiv
 
 /-- The labelled incidence formulas compute the carrier's second singular homology as `ℤ⁴`. -/
 public noncomputable def integralSingularHomologyTwoEquiv
-    (I : ∀ (n : ℕ) (x : CuspWCellIndex n.succ → ℤ),
+    (I : ∀ (n : ℕ) (x : CentralFiber.Cell n.succ → ℤ),
       M.chainComplex.d n.succ n (labelledA2CellBasis e M n.succ x) =
         labelledA2CellBasis e M n (cuspToricCellularBoundary n x)) :
     IntegralSingularHomology 2 Y ≃+ (Fin 4 → ℤ) :=
@@ -150,14 +151,14 @@ public noncomputable def integralSingularHomologyTwoEquiv
 
 end CuspToricCellular
 
-namespace StandardA2ToricCentralFiberCWDecomposition
+namespace Geometry.InfiniteA2Toric.CentralFiber.CWModel
 
 variable {X : Type} [TopologicalSpace X]
 
 /-- The standard cellular chain model selected for the carrier of a geometric toric CW
 decomposition. -/
 public noncomputable def establishedIntegralCellularChainModel
-    (D : StandardA2ToricCentralFiberCWDecomposition X) :
+    (D : CentralFiber.CWModel X) :
     let _ := D.topology
     let _ := D.cwComplex
     IntegralCWCellularHomologyModel D.Carrier := by
@@ -168,9 +169,9 @@ public noncomputable def establishedIntegralCellularChainModel
 
 /-- Conditional on the exact attaching incidences, the CW carrier has second homology `ℤ⁴`. -/
 public noncomputable def carrierIntegralSingularHomologyTwoEquiv
-    (D : StandardA2ToricCentralFiberCWDecomposition X) (I : let _ := D.topology
+    (D : CentralFiber.CWModel X) (I : let _ := D.topology
       let _ := D.cwComplex
-      ∀ (n : ℕ) (x : CuspWCellIndex n.succ → ℤ),
+      ∀ (n : ℕ) (x : CentralFiber.Cell n.succ → ℤ),
         D.establishedIntegralCellularChainModel.chainComplex.d n.succ n
             (labelledA2CellBasis D.cellEquiv D.establishedIntegralCellularChainModel n.succ x) =
           labelledA2CellBasis D.cellEquiv D.establishedIntegralCellularChainModel n
@@ -183,6 +184,6 @@ public noncomputable def carrierIntegralSingularHomologyTwoEquiv
 
 
 
-end StandardA2ToricCentralFiberCWDecomposition
+end Geometry.InfiniteA2Toric.CentralFiber.CWModel
 
 end SphereSixComplex

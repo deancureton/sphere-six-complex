@@ -5,10 +5,11 @@ public import SphereSixComplex.Paper.Topology.CuspPhaseSweepAtlas
 
 @[expose] public section
 noncomputable section
+open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 open Set Topology CategoryTheory CategoryTheory.Limits
 namespace SphereSixComplex.Geometry.CuspCollar
-open SphereSixComplex.Periods StandardA2ToricCentralFiberCellAtlas
+open SphereSixComplex.Periods CentralFiber.CellAtlas
 open InfiniteA2Toric InfiniteA2Toric.Construction
 open InfiniteA2Toric CuspPeriodExpansion
 variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
@@ -35,7 +36,7 @@ public theorem constructedCellAtlas_d_three
     (threeCell_attachingDegree_zero W T)
 
 public theorem phaseSweepCellAtlas_closedImage
-    (W : ActualPuncturedCuspCollarWitness N constructedModel) (n : ℕ) (i : CuspWCellIndex n) :
+    (W : ActualPuncturedCuspCollarWitness N constructedModel) (n : ℕ) (i : CentralFiber.Cell n) :
     (constructedCentralCellAtlas W).cellMap n i '' Metric.closedBall 0 1 =
       (phaseSweepCellAtlas W).cellMap n i '' Metric.closedBall 0 1 :=
   (phaseSweepCellMap_closedImage W n i).symm

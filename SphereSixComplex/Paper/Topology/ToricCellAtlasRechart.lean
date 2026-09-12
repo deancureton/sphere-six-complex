@@ -1,24 +1,25 @@
 module
 
-public import SphereSixComplex.Paper.Topology.PaperCuspCentralFiberCWTypes
+public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.CentralFiber.CellularModel
 
 @[expose] public section
 noncomputable section
+open SphereSixComplex.Geometry.InfiniteA2Toric
 open Set Topology CategoryTheory
 namespace SphereSixComplex
-namespace StandardA2ToricCentralFiberCellAtlas
+namespace Geometry.InfiniteA2Toric.CentralFiber.CellAtlas
 variable {X : Type} [TopologicalSpace X]
 
-public def rechart (A : StandardA2ToricCentralFiberCellAtlas X)
-    (f : (n : ℕ) → CuspWCellIndex n → PartialEquiv (Fin n → ℝ) X)
+public def rechart (A : CentralFiber.CellAtlas X)
+    (f : (n : ℕ) → CentralFiber.Cell n → PartialEquiv (Fin n → ℝ) X)
     (hs : ∀ n i, (f n i).source = Metric.ball 0 1)
     (hc : ∀ n i, ContinuousOn (f n i) (Metric.closedBall 0 1))
     (hi : ∀ n i, ContinuousOn (f n i).symm (f n i).target)
     (ho : ∀ n i, f n i '' Metric.ball 0 1 = A.cellMap n i '' Metric.ball 0 1)
     (hcl : ∀ n i, f n i '' Metric.closedBall 0 1 = A.cellMap n i '' Metric.closedBall 0 1)
     (hb : ∀ n i, MapsTo (f n i) (Metric.sphere 0 1)
-      (⋃ (m < n) (j : CuspWCellIndex m), A.cellMap m j '' Metric.closedBall 0 1)) :
-    StandardA2ToricCentralFiberCellAtlas X where
+      (⋃ (m < n) (j : CentralFiber.Cell m), A.cellMap m j '' Metric.closedBall 0 1)) :
+    CentralFiber.CellAtlas X where
   cellMap := f
   source_eq := hs
   continuousOn := hc
@@ -31,27 +32,27 @@ public def rechart (A : StandardA2ToricCentralFiberCellAtlas X)
   mapsTo := by simpa only [hcl] using hb
   union_eq := by simpa only [hcl] using A.union_eq
 
-public def skeletalSet [T2Space X] (A : StandardA2ToricCentralFiberCellAtlas X) (k : ℕ∞) : Set X := by
+public def skeletalSet [T2Space X] (A : CentralFiber.CellAtlas X) (k : ℕ∞) : Set X := by
   let _ := A.cwComplex
   exact (Topology.RelCWComplex.skeletonLT (Set.univ : Set X) k : Set X)
 
 public theorem skeleton_eq_of_closedCell_eq [T2Space X]
-    (A B : StandardA2ToricCentralFiberCellAtlas X)
+    (A B : CentralFiber.CellAtlas X)
     (h : ∀ n i, A.cellMap n i '' Metric.closedBall 0 1 =
       B.cellMap n i '' Metric.closedBall 0 1) (k : ℕ∞) :
     A.skeletalSet k = B.skeletalSet k := by
   ext x
   simp only [skeletalSet, Topology.RelCWComplex.coe_skeletonLT]
-  change x ∈ (∅ : Set X) ∪ ⋃ (m : ℕ) (_ : m < k) (i : CuspWCellIndex m),
+  change x ∈ (∅ : Set X) ∪ ⋃ (m : ℕ) (_ : m < k) (i : CentralFiber.Cell m),
       A.cellMap m i '' Metric.closedBall 0 1 ↔
-    x ∈ (∅ : Set X) ∪ ⋃ (m : ℕ) (_ : m < k) (i : CuspWCellIndex m),
+    x ∈ (∅ : Set X) ∪ ⋃ (m : ℕ) (_ : m < k) (i : CentralFiber.Cell m),
       B.cellMap m i '' Metric.closedBall 0 1
   simp only [h]
 
 
 
 
-end StandardA2ToricCentralFiberCellAtlas
+end Geometry.InfiniteA2Toric.CentralFiber.CellAtlas
 
 
 end SphereSixComplex

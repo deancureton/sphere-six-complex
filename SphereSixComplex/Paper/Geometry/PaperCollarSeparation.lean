@@ -15,6 +15,8 @@ the selected cusp horodisc, and their images in the Fuchsian base quotient are d
 
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
+open SphereSixComplex.Periods.ExactNormalizedModularJTau (exactNormalizedModularJUniformization)
+
 namespace SphereSixComplex.Geometry
 
 open Set Topology SphereSixComplex.Periods SphereSixComplex.TriangleGroup
@@ -100,11 +102,6 @@ public theorem orderFourCollarToRegular_base
     ActualLocalCuspQuotientWitness A.cuspCoordinate constructedModel :=
   Classical.choice (exists_actualLocalCuspQuotientWitness A.cuspCoordinate constructedModel)
 
-/-- The fixed exact modular uniformization used to control the paper cusp collar. -/
-@[expose] public noncomputable def actualNormalizedModularJUniformization
-    (_A : AnalyticData) : ExactNormalizedModularJUniformization :=
-  SphereSixComplex.Periods.ExactNormalizedModularJTau.exactNormalizedModularJUniformization
-
 /-- Analytic facts retained by the quantitative choice of the actual cusp collar. -/
 public structure ActualCuspCoordinateControl
     (W : ActualPuncturedCuspCollarWitness A.cuspCoordinate constructedModel) : Prop where
@@ -112,22 +109,43 @@ public structure ActualCuspCoordinateControl
     ‖cuspQ s‖ < W.localWitness.radius →
       2 < ‖A.modular.sourceCoordinate.coordinate (A.cuspCoordinate.lift s)‖
   radius_le_cuspUnitRadius :
-    W.localWitness.radius ≤ A.actualNormalizedModularJUniformization.cusp.cuspRadius
-  cuspUnit_ne : ∀ q : ℂ, ‖q‖ < W.localWitness.radius →
-    A.actualNormalizedModularJUniformization.cusp.cuspUnit q ≠ 0
-  cuspUnit_right_sector : ∀ q : ℂ, ‖q‖ < W.localWitness.radius →
-    |(A.actualNormalizedModularJUniformization.cusp.cuspUnit q).im| <
-      (A.actualNormalizedModularJUniformization.cusp.cuspUnit q).re
+    W.localWitness.radius ≤ exactNormalizedModularJUniformization.cusp.cuspRadius
   cuspUnit_narrow_right_sector : ∀ q : ℂ, ‖q‖ < W.localWitness.radius →
-    100 * |(A.actualNormalizedModularJUniformization.cusp.cuspUnit q).im| <
-      (A.actualNormalizedModularJUniformization.cusp.cuspUnit q).re
+    100 * |(exactNormalizedModularJUniformization.cusp.cuspUnit q).im| <
+      (exactNormalizedModularJUniformization.cusp.cuspUnit q).re
   cuspProduct_norm_lt_half : ∀ q : ℂ, ‖q‖ < W.localWitness.radius →
-    ‖q * A.actualNormalizedModularJUniformization.cusp.cuspUnit q‖ < (1 / 2 : ℝ)
+    ‖q * exactNormalizedModularJUniformization.cusp.cuspUnit q‖ < (1 / 2 : ℝ)
   reciprocal_factorization : ∀ s : ℂ,
     s ∈ cuspHalfPlane A.cuspCoordinate.height →
     ‖cuspQ s‖ < W.localWitness.radius →
       (A.modular.sourceCoordinate.coordinate (A.cuspCoordinate.lift s))⁻¹ =
-        cuspQ s * A.actualNormalizedModularJUniformization.cusp.cuspUnit (cuspQ s)
+        cuspQ s * exactNormalizedModularJUniformization.cusp.cuspUnit (cuspQ s)
+
+namespace ActualCuspCoordinateControl
+
+variable {A}
+
+public theorem cuspUnit_right_sector
+    {W : ActualPuncturedCuspCollarWitness A.cuspCoordinate constructedModel}
+    (h : A.ActualCuspCoordinateControl W) (q : ℂ)
+    (hq : ‖q‖ < W.localWitness.radius) :
+    |(exactNormalizedModularJUniformization.cusp.cuspUnit q).im| <
+      (exactNormalizedModularJUniformization.cusp.cuspUnit q).re := by
+  have hn := h.cuspUnit_narrow_right_sector q hq
+  have hi := abs_nonneg
+    (exactNormalizedModularJUniformization.cusp.cuspUnit q).im
+  linarith
+
+public theorem cuspUnit_ne
+    {W : ActualPuncturedCuspCollarWitness A.cuspCoordinate constructedModel}
+    (h : A.ActualCuspCoordinateControl W) (q : ℂ)
+    (hq : ‖q‖ < W.localWitness.radius) :
+    exactNormalizedModularJUniformization.cusp.cuspUnit q ≠ 0 := by
+  intro hz
+  have hs := h.cuspUnit_right_sector q hq
+  simp [hz] at hs
+
+end ActualCuspCoordinateControl
 
 /-- A common-radius cusp witness chosen far enough into the cusp that its quotient coordinate is
 uniformly exterior and its exact reciprocal factorization holds throughout the collar. -/
@@ -135,7 +153,7 @@ public theorem exists_actualPuncturedCuspWitness_coordinate_exterior :
     ∃ W : ActualPuncturedCuspCollarWitness A.cuspCoordinate constructedModel,
       A.ActualCuspCoordinateControl W := by
   let J : ExactNormalizedModularJUniformization :=
-    A.actualNormalizedModularJUniformization
+    exactNormalizedModularJUniformization
   obtain ⟨H, hH⟩ :=
     (eventually_upperHalfPlaneAtInfinity_iff (P := fun z ↦
       (normalizedModularJCoordinate z)⁻¹ =
@@ -186,11 +204,6 @@ public theorem exists_actualPuncturedCuspWitness_coordinate_exterior :
   have hWr : W.localWitness.radius ≤ r := S.radius_le_upper
   have hWJ : W.localWitness.radius ≤ J.cusp.cuspRadius :=
     hWr.trans ((min_le_right _ _).trans ((min_le_right _ _).trans (min_le_left _ _)))
-  have hWunit : ∀ q : ℂ, ‖q‖ < W.localWitness.radius → J.cusp.cuspUnit q ≠ 0 := by
-    intro q hq
-    apply (hδunit ?_).2.1
-    rw [Metric.mem_ball, dist_zero_right]
-    exact hq.trans_le (hWr.trans ((min_le_right _ _).trans (min_le_left _ _)))
   have hWproduct : ∀ q : ℂ, ‖q‖ < W.localWitness.radius →
       ‖q * J.cusp.cuspUnit q‖ < (1 / 2 : ℝ) := by
     intro q hq
@@ -216,13 +229,7 @@ public theorem exists_actualPuncturedCuspWitness_coordinate_exterior :
     apply (hδunit ?_).2.2
     rw [Metric.mem_ball, dist_zero_right]
     exact hq.trans_le (hWr.trans ((min_le_right _ _).trans (min_le_left _ _)))
-  have hWwideSector : ∀ q : ℂ, ‖q‖ < W.localWitness.radius →
-      |(J.cusp.cuspUnit q).im| < (J.cusp.cuspUnit q).re := by
-    intro q hq
-    have h := hWsector q hq
-    have him := abs_nonneg (J.cusp.cuspUnit q).im
-    nlinarith
-  refine ⟨?_, hWJ, hWunit, hWwideSector, hWsector, hWproduct, ?_⟩
+  refine ⟨?_, hWJ, hWsector, hWproduct, ?_⟩
   · intro s hs hq
     have hqr : ‖cuspQ s‖ < r := hq.trans_le hWr
     have hqδ : cuspQ s ∈ Metric.ball (0 : ℂ) δ := by
@@ -326,13 +333,13 @@ public theorem actualPuncturedCuspWitness_coordinate_exterior
 
 public theorem actualPuncturedCuspWitness_radius_le_cuspUnitRadius :
     A.actualPuncturedCuspWitness.localWitness.radius ≤
-      A.actualNormalizedModularJUniformization.cusp.cuspRadius :=
+      exactNormalizedModularJUniformization.cusp.cuspRadius :=
   (Classical.choose_spec
     A.exists_actualPuncturedCuspWitness_coordinate_exterior).radius_le_cuspUnitRadius
 
 public theorem actualPuncturedCuspWitness_cuspUnit_ne
     (q : ℂ) (hq : ‖q‖ < A.actualPuncturedCuspWitness.localWitness.radius) :
-    A.actualNormalizedModularJUniformization.cusp.cuspUnit q ≠ 0 :=
+    exactNormalizedModularJUniformization.cusp.cuspUnit q ≠ 0 :=
   (Classical.choose_spec A.exists_actualPuncturedCuspWitness_coordinate_exterior).cuspUnit_ne q hq
 
 
@@ -342,7 +349,7 @@ public theorem actualPuncturedCuspWitness_reciprocal_factorization
     (s : ℂ) (hs : s ∈ cuspHalfPlane A.cuspCoordinate.height)
     (hq : ‖cuspQ s‖ < A.actualPuncturedCuspWitness.localWitness.radius) :
     (A.modular.sourceCoordinate.coordinate (A.cuspCoordinate.lift s))⁻¹ =
-      cuspQ s * A.actualNormalizedModularJUniformization.cusp.cuspUnit (cuspQ s) :=
+      cuspQ s * exactNormalizedModularJUniformization.cusp.cuspUnit (cuspQ s) :=
   (Classical.choose_spec
     A.exists_actualPuncturedCuspWitness_coordinate_exterior).reciprocal_factorization s hs hq
 

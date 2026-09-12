@@ -174,7 +174,15 @@ public theorem cuspTranslation_ellipticCoordinate
 
 public theorem cuspDegreeOneFullIterateRelation_proved
     (R : A.AffineRadialCompletionInput) :
-    CuspAttachment.ActualCuspDegreeOneIndexTwoFullIterateRelation R := by
+    (let G := A.actualCuspRadialClutchingData
+      let _ := G.fiberTopology
+      (12 : ℤ) •
+          integralSingularHomologyMap 1 R.twoDiscCover.cuspMappingTorusToEllipticInteriorMap
+            (G.geometricWangSections.circleMappingTorusHOneAddEquiv.symm
+              (Pi.single (2 : Fin 3) 1)) =
+        integralSingularHomologyMap 1 R.twoDiscCover.cuspMappingTorusToEllipticInteriorMap
+          (G.geometricWangSections.circleMappingTorusHOneAddEquiv.symm
+            (Pi.single (0 : Fin 3) 1))) := by
   let _ := A.actualCuspRadialClutchingData.fiberTopology
   apply (CuspAttachment.actualCuspDegreeOneIndexTwo_iff_fullIterateRelation R).mp
   let f := R.twoDiscCover.ellipticInteriorDegreeOneCoordinateHom R.homologyAlignment
