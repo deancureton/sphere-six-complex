@@ -1,7 +1,28 @@
 module
 public import SphereSixComplex.Paper.Topology.CuspEllipticHomologyFullIterate
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspMeridianDegreeOneProof
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspDegreeOneIndexTwoProof
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspMeridianWangSectionProof
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineCompletionReduction
+public import SphereSixComplex.Paper.Geometry.CuspCollarPairProperness
+public import SphereSixComplex.Paper.Geometry.RealPeriodTrivialization
+public import SphereSixComplex.Paper.Topology.PaperCuspBoundaryUniversalCover
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspEllipticMarkedCoordinateFromExistingGeometry
+public import SphereSixComplex.Paper.Topology.PaperCuspGeometricSpecialization
+public import SphereSixComplex.Paper.Topology.PaperCuspUnwrappedFillingCover
+public import SphereSixComplex.Prerequisites.Topology.RankOneWangHomologySplitting
+public import Mathlib.Topology.Subpath
+public import SphereSixComplex.Prerequisites.Topology.FirstHurewiczProof
+public import SphereSixComplex.Prerequisites.Topology.CanonicalProductWangBoundaryNaturality
+public import SphereSixComplex.Prerequisites.Topology.IntervalClutchingQuotientCore
+public import Mathlib.Topology.Instances.AddCircle.Real
+public import SphereSixComplex.Prerequisites.Topology.BinaryOpenCoverOrientedRefinementNaturality
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspMarkedConnectingNaturalityProof
+public import SphereSixComplex.Prerequisites.Topology.WangHomologyPresentationProof
+public import SphereSixComplex.Prerequisites.Topology.BinaryOpenCoverAssembly
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspActualCoordinateScalarsFromExistingGeometry
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspWangFullFiberSliceComparisonProof
+import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineMarkedBandSquares
+public import SphereSixComplex.Paper.Topology.PaperRegularFiberTransport
+public import SphereSixComplex.Prerequisites.Topology.RealMappingTorusFiberSlice
 
 @[expose] public section
 noncomputable section
@@ -20,7 +41,7 @@ public theorem loopHomologyClass_eq_of_pointwise {X : Type} [TopologicalSpace X]
 
 namespace Geometry.AnalyticData
 open SphereSixComplex.Topology Hurewicz.Chains
-open CuspCollar CuspCollar.CuspFiberSpecializationNormalization
+open CuspCollar
 variable (A : AnalyticData)
 
 public theorem cuspBridgeMeridian_hurewicz :
@@ -55,26 +76,6 @@ public theorem cuspBridgeMeridian_homology_image
   apply Subtype.ext
   rfl
 
-public theorem cuspRawTwo_homology_image
-    (D : A.EllipticTwoDiscCoverData) :
-    let G := A.actualCuspRadialClutchingData
-    let _ := G.fiberTopology
-    integralSingularHomologyMap 1 D.cuspMappingTorusToEllipticInteriorMap
-      (G.geometricWangSections.circleMappingTorusHOneAddEquiv.symm
-        (Pi.single (2 : Fin 3) 1)) =
-    -integralSingularHomologyMap 1 A.cuspOverlapToEllipticInterior
-      (hurewiczFunction A.cuspOverlapBase A.cuspAffineBridgeMeridian) := by
-  let G := A.actualCuspRadialClutchingData
-  let _ := G.fiberTopology
-  change integralSingularHomologyMap 1 D.cuspMappingTorusToEllipticInteriorMap
-    (G.geometricWangSections.circleMappingTorusHOneAddEquiv.symm
-      (Pi.single (2 : Fin 3) 1)) = _
-  erw [A.cuspRawDegreeOneThirdBasis_eq_selectedPositiveMeridianClass,
-    A.cuspSelectedPositiveMeridianClass_eq_neg_explicit, map_neg,
-    A.cuspMappingTorusMeridianHomologyClass_eq_cuspAngularPuncturedLoop_image,
-    ← D.cuspToEllipticInteriorMap_homology_mappingTorusModel]
-  erw [A.cuspBridgeMeridian_homology_image D]
-  rfl
 
 end Geometry.AnalyticData
 end SphereSixComplex

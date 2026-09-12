@@ -4,11 +4,10 @@ public import SphereSixComplex.Paper.Topology.LatticeWangAlgebra
 public import SphereSixComplex.Paper.Topology.PaperEllipticTorusHomologyBasis
 
 /-!
-# Integral cusp-monodromy algebra in exterior degrees two and three
+# Integral cusp-monodromy algebra in exterior degree two
 
-This module proves the lattice calculations used in Proposition 7.12.  It constructs the
-coinvariant quotients of the actual cusp monodromy in exterior degrees two and three, but makes no
-identification with the homology of the central fibre `W`.
+The coinvariant quotient of the actual exterior-square cusp monodromy is identified with a
+rank-four integer lattice. This calculation makes no identification with central-fiber homology.
 -/
 
 @[expose] public section
@@ -116,8 +115,6 @@ public abbrev MZeroExteriorTwoCoinvariants :=
   ExteriorTwoLattice ⧸ LinearMap.range mZeroExteriorTwoDifference
 
 
-
-
 /-- The second exterior-power coinvariants are free of rank four. -/
 public noncomputable def mZeroExteriorTwoCoinvariantsEquivIntFourth :
     MZeroExteriorTwoCoinvariants ≃ₗ[ℤ] (Fin 4 → ℤ) :=
@@ -125,23 +122,6 @@ public noncomputable def mZeroExteriorTwoCoinvariantsEquivIntFourth :
       (range_mZeroExteriorTwoDifference.trans ker_mZeroExteriorTwoProjection.symm)).trans
     (mZeroExteriorTwoProjection.quotKerEquivOfSurjective
       mZeroExteriorTwoProjection_surjective)
-
-@[simp]
-public theorem mZeroExteriorTwoCoinvariantsEquivIntFourth_mk (x : ExteriorTwoLattice) :
-    mZeroExteriorTwoCoinvariantsEquivIntFourth (Submodule.Quotient.mk x) =
-      mZeroExteriorTwoProjection x := by
-  rfl
-
-
-
-
-
-
-
-
-
-
-
 
 
 end SphereSixComplex.CuspMonodromyCoinvariants

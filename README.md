@@ -19,10 +19,15 @@ and checked by the allowlists in `scripts/`. No paper-specific axioms remain. Th
 in `Challenge.lean` are Comparator challenge declarations and are not imported by the solution.
 
 The former cusp boundary assumption had the two invariant coordinates reversed. It has been
-deleted: the actual boundary is proved to be raw coordinate four, the elliptic splitting is
-normalized by that class, and the final assembly uses the corrected signed cusp basis. The
-explicit fourth-period sweep is also proved equal to normalized raw five. These corrected
-coordinates are used throughout the final assembly.
+deleted: the actual boundary is proved to be raw coordinate four, and the elliptic splitting is
+normalized by that class. The fourth-period sweep gives a unit coefficient for raw five.
+These two classes generate the remaining elliptic coordinates in the kernel of cusp specialization.
+Together with specialization, they prove that the degree-two Mayer–Vietoris difference map is onto.
+
+First homology vanishes directly from the local elliptic and cusp relations. The adjacent
+Mayer–Vietoris map is then a surjection between free abelian groups of the same rank, hence an
+isomorphism; exactness gives vanishing second homology. The geometric Euler calculation,
+Poincaré duality and universal coefficients determine the remaining homology groups.
 
 Finite-fibre specialization is proved in both degrees. In degree two, the actual mixed torus
 columns and the positive projection prove an integral isomorphism. Its inverse defines the

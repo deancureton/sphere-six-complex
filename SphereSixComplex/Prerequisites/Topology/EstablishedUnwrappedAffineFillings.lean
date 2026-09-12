@@ -339,14 +339,7 @@ public theorem fillingDeckMap_kernel (D : UnwrappedToricBoundaryDeckData Λ K G)
   exact QuotientGroup.ker_mk' (N := D.fillingKernel)
 
 
-
 end UnwrappedToricBoundaryDeckData
-
-/-! ### The canonical toric boundary deck group -/
-
-
-
-
 
 
 
@@ -408,11 +401,6 @@ public def toToricFillingCoverModel
   deckMap_surjective := D.fillingDeckMap_surjective
   deckMap_kernel := D.fillingDeckMap_kernel
 
-/-- The standard toric filling computation applied to an unwrapped cusp cover square. -/
-public noncomputable def fundamentalGroupData
-    (U : UnwrappedToricFillingCover Λ K G E E' B N D) :
-    ToricFillingPiOneData U.toToricFillingCoverModel :=
-  toricFillingPiOneData U.toToricFillingCoverModel
 
 end UnwrappedToricFillingCover
 

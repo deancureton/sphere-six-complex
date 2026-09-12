@@ -1,6 +1,9 @@
 module
 
-public import SphereSixComplex.Paper.Geometry.PaperSectionSevenHomology
+public import SphereSixComplex.Paper.Geometry.PaperGluingInstantiation
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenFinalDegreeZero
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenLocalEulerModelAssembly
+public import SphereSixComplex.Paper.Topology.SectionSevenLocalEulerModels
 public import SphereSixComplex.Paper.Topology.PaperActualVanKampenCover
 public import SphereSixComplex.Paper.Topology.EstablishedBasedVanKampen
 

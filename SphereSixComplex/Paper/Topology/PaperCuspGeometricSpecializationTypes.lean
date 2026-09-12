@@ -7,10 +7,9 @@ public import SphereSixComplex.Paper.Topology.PaperCuspRadialClutchingConstructi
 /-!
 # Geometric cusp specialization coordinates
 
-This file fixes the geometric Wang splitting of the radial cusp collar and compares its fibre
-coinvariants with the canonical deck basis in degree one and the labelled cellular basis
-of the standard periodic `A₂` toric central fibre in degree two.
-It then performs the integral basis changes used in the final Section 7 attachment.
+The geometric Wang splitting of the radial cusp collar identifies its fiber coinvariants with
+the canonical deck basis in degree one and the cellular basis of the periodic A₂ central fiber
+in degree two. The normalization fixes the actual specialization maps.
 -/
 
 @[expose] public section
@@ -127,7 +126,6 @@ public noncomputable def totalHomotopyEquiv :
     (openRadialIntervalProdHomotopyEquiv W.localWitness.radius_pos)
 
 
-
 end UnnormalizedCuspRadialClutchingData
 
 namespace ActualCuspRadialClutchingData
@@ -219,48 +217,8 @@ end ActualCuspRadialClutchingData
 
 end Geometry.CuspCollar
 
-/-! ## The integral basis changes used by Section 7 -/
 
-/-- Change from the raw `(coinvariant₀, coinvariant₁, meridian)` basis to the Section 7 cusp
-basis. -/
-public def cuspSectionSevenOneCoordinateChange : (Fin 3 → ℤ) ≃+ (Fin 3 → ℤ) where
-  toFun x := ![-4 * x 2 + x 0 - x 1, -3 * x 2 + x 0 - x 1,
-    -12 * x 2 + 4 * x 0 - 3 * x 1]
-  invFun y := ![-3 * y 0 + y 2, -4 * y 1 + y 2, -y 0 + y 1]
-  map_add' x y := by funext i; fin_cases i <;> simp <;> ring
-  left_inv x := by funext i; fin_cases i <;> simp <;> ring
-  right_inv y := by funext i; fin_cases i <;> simp <;> ring
 
-/-- In the changed degree-one basis, the raw specialization projection is the negative of the
-last two rows of the Section 7 boundary matrix. -/
-public theorem cuspSectionSevenOneCoordinateChange_specialization (x : Fin 3 → ℤ) :
-    (fun i : Fin 2 ↦ x (Fin.castAdd 1 i)) =
-      fun i ↦ -sectionSevenFirstBoundaryHom (cuspSectionSevenOneCoordinateChange x)
-        (Fin.natAdd 1 i) := by
-  funext i
-  fin_cases i <;>
-    simp [cuspSectionSevenOneCoordinateChange, sectionSevenFirstBoundaryHom,
-      sectionSevenFirstBoundaryMatrix, Matrix.mulVec, dotProduct, Fin.sum_univ_succ] <;> ring
-
-/-- Change from the raw four coinvariants followed by two suspension classes to the Section 7
-degree-two cusp basis. -/
-public def cuspSectionSevenTwoCoordinateChange : (Fin 6 → ℤ) ≃+ (Fin 6 → ℤ) where
-  toFun x := ![x 4, x 5, -x 0, -x 1, -x 2, x 3]
-  invFun y := ![-y 2, -y 3, -y 4, y 5, y 0, y 1]
-  map_add' x y := by funext i; fin_cases i <;> simp <;> abel
-  left_inv x := by funext i; fin_cases i <;> simp
-  right_inv y := by funext i; fin_cases i <;> simp
-
-/-- In the changed degree-two basis, the raw specialization projection is the negative of the
-last four rows of the normalized Section 7 map. -/
-public theorem cuspSectionSevenTwoCoordinateChange_specialization (x : Fin 6 → ℤ) :
-    (fun i : Fin 4 ↦ x (Fin.castAdd 2 i)) =
-      fun i ↦ -sectionSevenMayerVietorisFinalTwoHom
-        (cuspSectionSevenTwoCoordinateChange x) (Fin.natAdd 2 i) := by
-  funext i
-  fin_cases i <;>
-    simp [cuspSectionSevenTwoCoordinateChange, sectionSevenMayerVietorisFinalTwoHom,
-      sectionSevenMayerVietorisFinalTwoMatrix, Matrix.mulVec, dotProduct, Fin.sum_univ_succ]
 
 namespace Geometry.AnalyticData
 
@@ -329,7 +287,6 @@ public structure FiniteBasisNaturality (A : AnalyticData)
         SphereSixComplex.Geometry.CuspRadialClutchingConstruction.actualCuspRadialClutchingData
           A.starCuspWitness
       degreeTwoFiberProjection.comp G.geometricHomologyTwoEquiv.toAddMonoidHom
-
 
 
 end CuspSpecialization

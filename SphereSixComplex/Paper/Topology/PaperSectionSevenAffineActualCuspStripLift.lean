@@ -4,11 +4,10 @@ public import SphereSixComplex.Paper.Topology.PaperActualCuspCentralLoopRelation
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineMarkedBandTrivialization
 
 /-!
-# The affine-strip lift pinned by the actual cusp meridian
+# Crossing values of the cusp angular loop
 
-The actual cusp coordinate crosses the middle of the Section 7 affine strip.  Its explicit
-regular-base representative at the selected crossing pins a unique lift of the whole strip through
-the regular-coordinate covering.
+A complex loop whose logarithm makes one full turn meets prescribed real-part levels. Applied
+to the cusp angular coordinate, this gives a crossing of the middle of the affine strip.
 -/
 
 @[expose] public section
@@ -142,17 +141,6 @@ public theorem exists_cuspAngularCoordinateLoop_re_eq_half :
   refine ⟨t, ?_⟩
   rw [← A.cuspAngularZeroRawLog_exp]
   exact ht
-
-/-- The selected middle-strip crossing of the actual cusp meridian. -/
-public noncomputable def affineActualCuspCrossingTime : unitInterval :=
-  Classical.choose A.exists_cuspAngularCoordinateLoop_re_eq_half
-
-
-
-
-
-
-
 
 
 end SphereSixComplex.Geometry.AnalyticData

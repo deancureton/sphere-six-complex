@@ -1,14 +1,17 @@
 module
 
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineCuspFiberPeriodMarking
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspWangOpenCoverChainRealizationEstablished
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineCompletionReduction
+public import SphereSixComplex.Paper.Geometry.CuspCollarPairProperness
+public import SphereSixComplex.Paper.Geometry.RealPeriodTrivialization
+public import SphereSixComplex.Paper.Topology.PaperCuspBoundaryUniversalCover
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspWangFullFiberSliceComparisonProof
+import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineMarkedBandSquares
 
 /-!
-# Finite reduction of the marked cusp connecting square
+# Vanishing of fiber classes under the marked cusp boundary
 
-The Wang side of the marked connecting square is the last raw degree-two coordinate.  On the
-pulled-back Mayer--Vietoris side, the first four raw basis vectors vanish by the explicit cover
-calculation.  Thus the full square follows from two scalar evaluations on the invariant basis.
+The first four raw degree-two basis vectors have zero pulled-back marked boundary, by the
+explicit open-cover calculation.
 -/
 
 @[expose] public section

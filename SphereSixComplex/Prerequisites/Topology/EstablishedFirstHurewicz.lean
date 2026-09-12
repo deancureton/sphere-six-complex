@@ -18,11 +18,6 @@ open scoped ContinuousMap
 
 namespace SphereSixComplex.Hurewicz
 
-/-- The map on abelianized fundamental groups induced by a continuous map. -/
-public def abelianPi1Map {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
-    (f : C(X, Y)) (b : X) : AbelianPi1 X b →ₗ[ℤ] AbelianPi1 Y (f b) :=
-  AddMonoidHom.toIntLinearMap
-    (Abelianization.map (FundamentalGroup.map f b)).toAdditive
 
 /-- The antihomomorphism `unop` becomes a homomorphism after mapping to an abelian group. -/
 public def oppositeToAbelianizationHom (G : Type) [Group G] :
@@ -56,19 +51,11 @@ public def abelianizationMulOppositeEquiv (G : Type) [Group G] :
     rfl
   map_mul' := map_mul _
 
-@[simp]
-public theorem abelianizationMulOppositeEquiv_of_op {G : Type} [Group G] (g : G) :
-    abelianizationMulOppositeEquiv G
-        (Abelianization.of (MulOpposite.op g)) = Abelianization.of g :=
-  rfl
 
 @[simp]
 public theorem abelianizationMulOppositeEquiv_symm_of {G : Type} [Group G] (g : G) :
     (abelianizationMulOppositeEquiv G).symm (Abelianization.of g) =
-      Abelianization.of (MulOpposite.op g) := by
-  apply (abelianizationMulOppositeEquiv G).injective
-  simp
-
+      Abelianization.of (MulOpposite.op g) := rfl
 
 
 /-- The classical first Hurewicz theorem in degree one. -/
@@ -131,51 +118,5 @@ public theorem homologyOneEquivOfPi1Opposite_apply_marked
   rw [homologyOneEquivOfPi1Opposite_apply_loop b e deck loop hmark,
     hhomology]
 
-@[simp]
-public theorem abelianPi1Map_loopClass {X Y : Type} [TopologicalSpace X]
-    [TopologicalSpace Y] (f : C(X, Y)) {b : X} (p : Path b b) :
-    abelianPi1Map f b (loopClass p) = loopClass (p.map f.continuous) := by
-  rfl
-
-/-- Naturality of the first Hurewicz equivalence. -/
-public theorem abelianizationComparison_naturality
-    {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
-    [PathConnectedSpace X] [PathConnectedSpace Y] (f : C(X, Y)) (b : X)
-    (a : AbelianPi1 X b) :
-    (abelianizationComparison Y (f b)).equiv (abelianPi1Map f b a) =
-      integralSingularHomologyMap 1 f
-        ((abelianizationComparison X b).equiv a) := by
-  obtain ⟨p, rfl⟩ := loopClass_surjective a
-  rw [abelianPi1Map_loopClass]
-  rw [(abelianizationComparison Y (f b)).equiv_loopClass]
-  rw [(abelianizationComparison X b).equiv_loopClass]
-  exact
-    (StandardCircleHomologyLiftDegree.integralSingularHomologyMap_loopHomologyClass f p).symm
-
-/-- A surjective group homomorphism remains surjective after abelianization. -/
-public theorem abelianizationMap_surjective {G H : Type*} [Group G] [Group H]
-    (f : G →* H) (hf : Function.Surjective f) :
-    Function.Surjective (Abelianization.map f) := by
-  intro y
-  induction y using Quotient.inductionOn with
-  | _ y =>
-      obtain ⟨x, rfl⟩ := hf y
-      exact ⟨Abelianization.of x, rfl⟩
-
-/-- A map surjective on fundamental groups is surjective on first integral homology. -/
-public theorem homologyOneMap_surjective_of_pi1Map_surjective
-    {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
-    [PathConnectedSpace X] [PathConnectedSpace Y]
-    (f : C(X, Y)) (b : X)
-    (hf : Function.Surjective (FundamentalGroup.map f b)) :
-    Function.Surjective (integralSingularHomologyMap 1 f) := by
-  let HX := abelianizationComparison X b
-  let HY := abelianizationComparison Y (f b)
-  intro y
-  obtain ⟨a, rfl⟩ := HY.equiv.surjective y
-  have hab : Function.Surjective (abelianPi1Map f b) :=
-    abelianizationMap_surjective (FundamentalGroup.map f b) hf
-  obtain ⟨x, rfl⟩ := hab a
-  exact ⟨HX.equiv x, (abelianizationComparison_naturality f b x).symm⟩
 
 end SphereSixComplex.Hurewicz

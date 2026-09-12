@@ -22,7 +22,7 @@ open scoped ContinuousMap
 
 namespace SphereSixComplex
 
-/-! ## Mapping-torus fundamental groups -/
+
 
 
 /-! ## Affine torus-family quotient covers -/
@@ -107,23 +107,6 @@ public theorem QuotientCoverMapData.fundamentalGroupEquiv_natural
     hp.unop_fundamentalGroupToMulOpposite_smul]
   exact (monodromy_naturality hp.isCoveringMap hq.isCoveringMap D.lift D.baseMap D.commutes
     e γ).symm
-
-/-- Naturality with the target cover basepoint replaced by an equal selected lift. -/
-public theorem QuotientCoverMapData.fundamentalGroupEquiv_natural_of_lift_eq
-    {E E' X X' G H : Type*}
-    [TopologicalSpace E] [TopologicalSpace E'] [TopologicalSpace X] [TopologicalSpace X']
-    [Group G] [Group H] [MulAction G E] [MulAction H E']
-    [SimplyConnectedSpace E] [SimplyConnectedSpace E']
-    {p : C(E, X)} {q : C(E', X')}
-    (hp : IsQuotientCoveringMap p G) (hq : IsQuotientCoveringMap q H)
-    (D : QuotientCoverMapData (G := G) (H := H) p q) (e : E) (e' : E')
-    (he' : D.lift e = e') (γ : FundamentalGroup X (p e)) :
-    (MonoidHom.op D.deckMap) (hp.fundamentalGroupEquiv ⟨e, rfl⟩ γ) =
-      hq.fundamentalGroupEquiv ⟨e', rfl⟩
-        (FundamentalGroup.mapOfEq D.baseMap
-          ((D.commutes e).trans (congrArg q he')) γ) := by
-  subst e'
-  exact QuotientCoverMapData.fundamentalGroupEquiv_natural hp hq D e γ
 
 
 /-! ## Algebraic output of an affine torus core -/

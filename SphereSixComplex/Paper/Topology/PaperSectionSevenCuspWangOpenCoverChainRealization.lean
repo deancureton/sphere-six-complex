@@ -1,6 +1,9 @@
 module
 
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspFiberBandTopologicalSquare
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineCompletionReduction
+public import SphereSixComplex.Paper.Geometry.CuspCollarPairProperness
+public import SphereSixComplex.Paper.Geometry.RealPeriodTrivialization
+public import SphereSixComplex.Paper.Topology.PaperCuspBoundaryUniversalCover
 
 /-!
 # Chain realization of the cusp Wang boundary

@@ -3,15 +3,13 @@ module
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineBandTrivialization
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenEllipticBandHomologyAlignment
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspWangNaturalityInterface
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspEllipticInclusionNaturality
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspPullbackWangComparison
 
 /-!
-# Final affine reduction for the Section 7 assembly
+# The affine radial geometry and marked homology data
 
-The concrete affine height split and its central-band equivalence are now fixed.  This module
-packages the exact remaining geometry into the two side equivalences and their compatibility
-homotopies, then packages the remaining homology calculation into the three marked-coordinate
-comparisons.
+The actual height split is fixed. The dependent radial completion input supplies its two-disc
+cover and the compatible marked homology alignment.
 -/
 
 @[expose] public section

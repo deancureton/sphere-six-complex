@@ -150,63 +150,6 @@ public theorem cuspTranslation_homology_eq_band
   conv_lhs => erw [← A.affineNamedStripLift_apply_midpoint]
   exact A.normalizedMarkedPeriodCircle_central n z
 
-public theorem cuspTranslation_ellipticCoordinate
-    (R : A.AffineRadialCompletionInput) (n : IntegerPeriods) :
-    R.twoDiscCover.ellipticInteriorDegreeOneCoordinateHom R.homologyAlignment
-      (integralSingularHomologyMap 1 A.cuspOverlapToEllipticInterior
-        (hurewiczFunction A.cuspOverlapBase
-          (Additive.toMul (A.cuspAffineBridgeTranslation n)))) = 12 * n 0 := by
-  erw [A.cuspTranslation_homology_eq_band R n]
-  let D := R.twoDiscCover
-  let B := R.homologyAlignment.actualHomologyCoordinates
-  let y := integralSingularHomologyMap 1 (normalizedMarkedPeriodBandCircle R n)
-    standardCircleHomologyGenerator
-  let eTop := integralSingularHomologyEquiv 1
-    (topologicalSubsetHomeomorphOfEqUniv (TopCat.of A.ellipticInterior)
-      (D.orderThreeSide ∪ D.orderFourSide) D.sides_cover)
-  change B.normalizedUnionHomologyOneEquiv
-      (eTop.symm (integralSingularHomologyMap 1
-        D.canonicalBandToEllipticInteriorInclusionMap y)) 0 = 12 * n 0
-  erw [D.ellipticInteriorEquiv_symm_bandInclusion,
-    D.actualHomologyCoordinates_normalizedUnionHomologyOneEquiv_canonicalBand_zero]
-  change 12 * EllipticBandHomologyAlignment.bandOne (D := D) y 0 = _
-  erw [normalizedMarkedPeriodBandCircle_bandOne]
-
-public theorem cuspDegreeOneFullIterateRelation_proved
-    (R : A.AffineRadialCompletionInput) :
-    (let G := A.actualCuspRadialClutchingData
-      let _ := G.fiberTopology
-      (12 : ℤ) •
-          integralSingularHomologyMap 1 R.twoDiscCover.cuspMappingTorusToEllipticInteriorMap
-            (G.geometricWangSections.circleMappingTorusHOneAddEquiv.symm
-              (Pi.single (2 : Fin 3) 1)) =
-        integralSingularHomologyMap 1 R.twoDiscCover.cuspMappingTorusToEllipticInteriorMap
-          (G.geometricWangSections.circleMappingTorusHOneAddEquiv.symm
-            (Pi.single (0 : Fin 3) 1))) := by
-  let _ := A.actualCuspRadialClutchingData.fiberTopology
-  apply (CuspAttachment.actualCuspDegreeOneIndexTwo_iff_fullIterateRelation R).mp
-  let f := R.twoDiscCover.ellipticInteriorDegreeOneCoordinateHom R.homologyAlignment
-  let y := integralSingularHomologyMap 1 A.cuspOverlapToEllipticInterior
-    (hurewiczFunction A.cuspOverlapBase
-      (Additive.toMul (A.cuspAffineBridgeTranslation (Pi.single (0 : Fin 4) 1))))
-  have hy : f y = 12 := by
-    exact (A.cuspTranslation_ellipticCoordinate R (Pi.single (0 : Fin 4) 1)).trans
-      (by norm_num)
-  have hm := A.cuspRawTwo_homology_image R.twoDiscCover
-  have hr := (congrArg (fun x ↦ (12 : ℤ) • x) hm).trans
-    A.cuspOverlap_homology_fullIterate
-  have h := congrArg f hr
-  rw [map_zsmul] at h
-  change (12 : ℤ) * f
-    (integralSingularHomologyMap 1 R.twoDiscCover.cuspMappingTorusToEllipticInteriorMap
-      (A.actualCuspRadialClutchingData.geometricWangSections.circleMappingTorusHOneAddEquiv.symm
-        (Pi.single (2 : Fin 3) 1))) = f y at h
-  rw [hy] at h
-  change f
-    (integralSingularHomologyMap 1 R.twoDiscCover.cuspMappingTorusToEllipticInteriorMap
-      (A.actualCuspRadialClutchingData.geometricWangSections.circleMappingTorusHOneAddEquiv.symm
-        (Pi.single (2 : Fin 3) 1))) = 1
-  omega
 
 end SphereSixComplex.Geometry.AnalyticData
 end

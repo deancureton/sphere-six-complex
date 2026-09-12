@@ -3,10 +3,9 @@ module
 public import SphereSixComplex.Paper.Topology.PaperCuspFillingDeckAction
 
 /-!
-# The actual unwrapped cusp filling cover
+# A representative of the cusp boundary basepoint
 
-The normalized additive cusp coordinates and the local infinite `A₂` toric carrier form the
-simply connected cover square used by the toric filling fundamental-group calculation.
+Choose an additive cusp-boundary representative and record its image under the quotient map.
 -/
 
 @[expose] public section
@@ -48,33 +47,6 @@ public theorem additiveCuspBoundaryProjection_basePreimage
   exact Classical.choose_spec
     ((additiveCuspBoundaryProjection_isQuotientCoveringMap W).surjective b)
 
-/-- The actual cusp collar and its toric filling as a simply connected unwrapped cover square. -/
-public noncomputable def paperCuspUnwrappedFillingCover
-    (W : ActualPuncturedCuspCollarWitness N M) (b : PuncturedLocalCuspQuotient W) :
-    letI := paperCuspBoundaryDeckAction W
-    letI := paperCuspFillingDeckAction W
-    UnwrappedToricFillingCover Lattice paperToricSubgroup PaperCuspBoundaryDeck
-      (additiveCuspRadiusCover W.localWitness.radius)
-      (localCarrier M W.localWitness.radius)
-      (PuncturedLocalCuspQuotient W) (ActualLocalCuspFilling W)
-      paperCuspBoundaryDeckData := by
-  let _ := paperCuspBoundaryDeckAction W
-  let _ := paperCuspFillingDeckAction W
-  exact {
-    boundaryProjection := additiveCuspBoundaryProjection W
-    fillingProjection := actualCuspFillingProjection W
-    boundaryQuotient := additiveCuspBoundaryProjection_isQuotientCoveringMap W
-    fillingQuotient := actualCuspFillingProjection_isQuotientCoveringMap_fillingDeck W
-    boundarySimplyConnected := additiveCuspBoundaryCover_simplyConnected W
-    fillingSimplyConnected :=
-      M.localCarrierSimplyConnected W.localWitness.radius W.localWitness.radius_pos
-    lift := additiveCuspFillingLift W
-    baseMap :=
-      ⟨puncturedLocalCuspToFilling W, puncturedLocalCuspToFilling_continuous W⟩
-    commutes := additiveCuspCoverSquare_commutes W
-    equivariant := additiveCuspFillingLift_paperCuspBoundaryDeck_smul W
-    base := paperCuspBoundaryBasePreimage W b
-  }
 
 end Geometry.CuspCollar
 

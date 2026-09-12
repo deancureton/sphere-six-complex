@@ -39,7 +39,6 @@ public noncomputable def cuspFillingTwoReadout (A : AnalyticData) :
     (cuspFillingTwoCoordinateChange A)
 
 
-
 public theorem specializationHomologyOneMap_coinvariantsToTotal_single
     (A : AnalyticData) (j i : Fin 2) :
     let G := CuspRadialClutchingConstruction.actualCuspRadialClutchingData A.starCuspWitness
@@ -212,28 +211,6 @@ public theorem finiteBasisNaturality (A : AnalyticData) :
       Geometry.AnalyticData.cuspCentralFiberRetractionData_eq_radial] using h
 
 
-/-- Cellular-to-singular naturality for the paper's selected periodic `A₂` cusp marking in
-degree one: specialization preserves its two fibre coinvariants and kills the base circle.
-
-The left-hand side does not mention the clutching datum, so this equation is only sound because
-`ActualCuspRadialClutchingData` is *normalized*: `fiberNormalization` pins the fibre marking to
-the collar's own period coordinates.  Do not weaken that field.  If the datum is replaced by the
-un-normalized `UnnormalizedCuspRadialClutchingData`, this equation becomes false — the fibre
-marking may be composed with the hyperelliptic `±1` involution of the torus fibre, which reverses
-exactly the two coordinates pinned here.  The refutation is
-`not_standardA2CuspSpecializationDegreeOneStatement`,
-kept as a permanent regression test in `PaperCuspGeometricSpecializationProof`. -/
-public theorem degreeOne
-    (A : AnalyticData)
-    (x : IntegralSingularHomology 1 (A.openEmbeddingStarData.collarSource 0)) :
-    actualCuspDeckHomologyOneEquiv A.starCuspWitness
-        (integralSingularHomologyMap 1
-          ⟨puncturedLocalCuspToFilling A.starCuspWitness,
-            puncturedLocalCuspToFilling_continuous A.starCuspWitness⟩ x) =
-      fun i ↦ A.actualCuspRadialClutchingData.geometricHomologyOneEquiv x (Fin.castAdd 1 i) := by
-  rw [A.actualCuspRadialClutchingData_eq]
-  exact DFunLike.congr_fun (finiteBasisNaturality A).degreeOne x
-
 public theorem degreeTwo
     (A : AnalyticData)
     (x : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0)) :
@@ -258,16 +235,6 @@ public noncomputable def actualCuspFillingHomologyTwoEquiv :
     IntegralSingularHomology 2 (A.openEmbeddingStarData.filling 0) ≃+ (Fin 4 → ℤ) :=
   CuspSpecialization.cuspFillingTwoReadout A
 
-/-- The corresponding dimensionally correct realization of the paper's cusp collar. -/
-public noncomputable def cuspCollarRadialMappingTorusRealization :
-    A.CuspCollarRadialMappingTorusRealization where
-  radius := A.starCuspWitness.localWitness.radius
-  radius_pos := A.starCuspWitness.localWitness.radius_pos
-  Fiber := A.actualCuspRadialClutchingData.Fiber
-  fiberTopology := A.actualCuspRadialClutchingData.fiberTopology
-  clutching := A.actualCuspRadialClutchingData.clutching
-  totalHomeomorph := A.actualCuspRadialClutchingData.totalHomeomorph
-  monodromyCoordinates := A.actualCuspRadialClutchingData.monodromyCoordinates
 
 /-- Raw geometrically split coordinates on the actual cusp collar. -/
 public noncomputable def cuspRawHomologyOneEquiv :
@@ -278,48 +245,6 @@ public noncomputable def cuspRawHomologyTwoEquiv :
     IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0) ≃+ (Fin 6 → ℤ) := by
   exact A.actualCuspRadialClutchingData.geometricHomologyTwoEquiv
 
-/-- The actual cusp collar bases normalized for the final Section 7 attachment. -/
-public noncomputable def cuspSectionSevenHomologyOneEquiv :
-    IntegralSingularHomology 1 (A.openEmbeddingStarData.collarSource 0) ≃+ (Fin 3 → ℤ) :=
-  A.cuspRawHomologyOneEquiv.trans cuspSectionSevenOneCoordinateChange
-
-public noncomputable def cuspSectionSevenHomologyTwoEquiv :
-    IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0) ≃+ (Fin 6 → ℤ) :=
-  A.cuspRawHomologyTwoEquiv.trans cuspSectionSevenTwoCoordinateChange
-
-/-- Replace only the cusp fields of any local basis package by the controlled geometric bases. -/
-public noncomputable def withActualGeometricCuspBases
-    (B : A.CollarInteriorHomologyBases) :
-    A.CollarInteriorHomologyBases where
-  cuspCollarOne := A.cuspSectionSevenHomologyOneEquiv
-  ellipticInteriorOne := B.ellipticInteriorOne
-  cuspCollarTwo := A.cuspSectionSevenHomologyTwoEquiv
-  cuspFillingTwo := fun _ => A.actualCuspFillingHomologyTwoEquiv
-  ellipticInteriorTwo := B.ellipticInteriorTwo
-
-
-
-/-- The actual cusp inclusion has the degree-one and degree-two coordinates required by the
-final Section 7 attachment. -/
-public theorem cuspFillingInclusionCoordinates
-    (B : A.CollarInteriorHomologyBases) :
-    A.CuspFillingInclusionCoordinates (A.withActualGeometricCuspBases B) where
-  degreeOne x := by
-    change actualCuspDeckHomologyOneEquiv A.starCuspWitness
-          (integralSingularHomologyMap 1
-            ⟨puncturedLocalCuspToFilling A.starCuspWitness,
-              puncturedLocalCuspToFilling_continuous A.starCuspWitness⟩ x) = _
-    rw [CuspSpecialization.degreeOne A x]
-    exact cuspSectionSevenOneCoordinateChange_specialization
-      (A.cuspRawHomologyOneEquiv x)
-  degreeTwo x := by
-    change A.actualCuspFillingHomologyTwoEquiv
-          (integralSingularHomologyMap 2
-            ⟨puncturedLocalCuspToFilling A.starCuspWitness,
-              puncturedLocalCuspToFilling_continuous A.starCuspWitness⟩ x) = _
-    exact (CuspSpecialization.degreeTwo A x).trans
-      (cuspSectionSevenTwoCoordinateChange_specialization
-        (A.cuspRawHomologyTwoEquiv x))
 
 end Geometry.AnalyticData
 

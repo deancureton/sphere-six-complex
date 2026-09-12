@@ -2,7 +2,7 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.IntegralMayerVietorisEuler
 public import SphereSixComplex.Prerequisites.Topology.ComplexThreefoldHomology
-public import SphereSixComplex.Paper.Topology.SectionSevenMayerVietorisHomologyAssembly
+public import SphereSixComplex.Paper.Topology.CuspAttachmentCover
 
 /-!
 # Euler characteristic of the Section 7 four-piece star
@@ -317,38 +317,6 @@ public theorem integralHomologyEulerCharacteristicSix_eq_localExpression_of_homo
     hCentralFinite hFillingFinite hCollarFinite
 
 
-namespace SectionSevenMayerVietorisHomologyAssembly
-
-/-- The local Euler calculation discharges the last numerical hypothesis in the closed complex
-threefold completion theorem. -/
-public theorem hasIntegralHomologyOfSixSphere_of_localEulerCalculation
-    (H : A.SectionSevenMayerVietorisHomologyAssembly)
-    [ChartedSpace ComplexModel (A.SectionSevenMayerVietorisSpace)]
-    [T2Space (A.SectionSevenMayerVietorisSpace)]
-    [SecondCountableTopology (A.SectionSevenMayerVietorisSpace)]
-    (hManifold : IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞
-      (A.SectionSevenMayerVietorisSpace))
-    (hCompact : CompactSpace (A.SectionSevenMayerVietorisSpace))
-    (hConnected : ConnectedSpace (A.SectionSevenMayerVietorisSpace))
-    (hCentralFinite : IntegralHomologyFiniteSix A.central)
-    (hFillingFinite : ∀ i, IntegralHomologyFiniteSix (A.filling i))
-    (hCollarFinite : ∀ i, IntegralHomologyFiniteSix (A.collarSource i))
-    (hLocal : A.sectionSevenLocalEulerExpression = 2) :
-    HasIntegralHomologyOfSixSphere (A.SectionSevenMayerVietorisSpace) := by
-  let := hManifold
-  let := hCompact
-  let := hConnected
-  let T := ComplexThreefold.integralPoincareUCT
-    (A.SectionSevenMayerVietorisSpace) hManifold hCompact
-  have hEuler : integralHomologyEulerCharacteristicSix
-      (A.SectionSevenMayerVietorisSpace) = 2 := by
-    rw [A.integralHomologyEulerCharacteristicSix_eq_localExpression_of_homologySeven_subsingleton
-      (T.subsingleton_homology_of_lt 7 (by omega))
-      hCentralFinite hFillingFinite hCollarFinite, hLocal]
-  exact ComplexThreefold.nonempty_homologyEquiv_sixSphere
-    (A.SectionSevenMayerVietorisSpace) H.homologyOne_subsingleton H.homologyTwo_subsingleton hEuler
-
-end SectionSevenMayerVietorisHomologyAssembly
 
 end OpenEmbeddingStarData
 

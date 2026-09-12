@@ -2,7 +2,8 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.HurewiczWhiteheadStages
 public import SphereSixComplex.Prerequisites.Topology.HigherHurewicz
-public import SphereSixComplex.Prerequisites.Topology.SmoothSixSphereClassification
+public import SphereSixComplex.Prerequisites.Topology.HurewiczWhitehead
+public import Mathlib.Topology.Homotopy.HomotopyGroup
 public import SphereSixComplex.Prerequisites.Topology.SixSphereHomology
 public import SphereSixComplex.Prerequisites.Topology.SmoothTriangulation
 

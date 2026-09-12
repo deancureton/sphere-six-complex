@@ -9,7 +9,6 @@ run_cmd do
   let env ← getEnv
   let mut worklist : Array Name :=
     #[`SphereSixComplex.Geometry.AnalyticData.star_nonempty_homologyEquiv_sixSphere,
-      `SphereSixComplex.Geometry.AnalyticData.star_nonempty_homologyEquiv_sixSphere_of_positiveDegree,
       `SphereSixComplex.Geometry.AnalyticData.star_simplyConnectedSpace,
       `SphereSixComplex.Geometry.AnalyticData.compactComplexStar,
       `SphereSixComplex.exists_complexThreefold_simplyConnected_homologyEquiv_sixSphere]

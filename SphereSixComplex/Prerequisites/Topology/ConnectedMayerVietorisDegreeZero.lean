@@ -6,9 +6,9 @@ public import Mathlib.AlgebraicTopology.SingularHomology.HomologyZero
 /-!
 # Degree-zero Mayer--Vietoris maps for connected spaces
 
-The singular-homology augmentation in degree zero is natural.  Consequently, in the canonical
-augmentation bases `H₀ ≃ ℤ`, the signed Mayer--Vietoris map of three path-connected spaces is the
-integer antidiagonal `x ↦ (x, -x)`.
+Naturality of the singular-homology augmentation implies that every map from a path-connected
+space induces an injection on degree-zero homology. In particular, the Mayer--Vietoris
+difference map is injective whenever the overlap is path-connected.
 -/
 
 @[expose] public section
@@ -70,46 +70,28 @@ public theorem pathConnectedIntegralHomologyZeroEquivInteger_naturality
   ConcreteCategory.congr_hom
     (TopCat.singularHomology₀ε_naturality (TopCat.ofHom f) (AddCommGrpCat.of ℤ)) x
 
-
+/-- A map from a path-connected space induces an injective map on degree-zero homology. -/
+public theorem integralSingularHomologyMap_zero_injective
+    {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
+    [PathConnectedSpace X] (f : C(X, Y)) :
+    Function.Injective (integralSingularHomologyMap 0 f) := by
+  intro x y h
+  apply (pathConnectedIntegralHomologyZeroEquivInteger X).injective
+  have hn := TopCat.singularHomology₀ε_naturality (TopCat.ofHom f) (AddCommGrpCat.of ℤ)
+  have hx := ConcreteCategory.congr_hom hn x
+  have hy := ConcreteCategory.congr_hom hn y
+  exact hx.symm.trans ((congrArg ((TopCat.of Y).singularHomology₀ε
+    (AddCommGrpCat.of ℤ)) h).trans hy)
 
 namespace IntegralMayerVietoris
 
 variable {X : Type} [TopologicalSpace X] (A B : Set X)
-  [PathConnectedSpace A] [PathConnectedSpace B]
   [PathConnectedSpace (A ∩ B : Set X)]
 
-/-- Pointwise degree-zero normal form: the actual inclusion-induced difference map is
-`x ↦ (x, -x)` in the canonical augmentation bases. -/
-public theorem differenceMap_zero_apply_normalForm
-    (x : IntegralSingularHomology 0 (A ∩ B : Set X)) :
-    ((pathConnectedIntegralHomologyZeroEquivInteger A).prodCongr
-      (pathConnectedIntegralHomologyZeroEquivInteger B))
-        (differenceMap A B 0 x) =
-      (pathConnectedIntegralHomologyZeroEquivInteger (A ∩ B : Set X) x,
-        -pathConnectedIntegralHomologyZeroEquivInteger (A ∩ B : Set X) x) := by
-  apply Prod.ext
-  · exact pathConnectedIntegralHomologyZeroEquivInteger_naturality
-      (interToLeft A B) x
-  · change pathConnectedIntegralHomologyZeroEquivInteger B
-        (-(integralSingularHomologyMap 0 (interToRight A B)) x) = _
-    rw [map_neg, pathConnectedIntegralHomologyZeroEquivInteger_naturality]
-
-
-/-- In particular, the actual degree-zero difference map is injective. -/
+/-- A connected overlap makes the degree-zero difference map injective. -/
 public theorem differenceMap_zero_injective : Function.Injective (differenceMap A B 0) := by
   intro x y h
-  apply (pathConnectedIntegralHomologyZeroEquivInteger
-    (A ∩ B : Set X)).injective
-  have h' := congrArg
-    (((pathConnectedIntegralHomologyZeroEquivInteger A).prodCongr
-      (pathConnectedIntegralHomologyZeroEquivInteger B))) h
-  have h'' :
-      (pathConnectedIntegralHomologyZeroEquivInteger (A ∩ B : Set X) x,
-        -pathConnectedIntegralHomologyZeroEquivInteger (A ∩ B : Set X) x) =
-      (pathConnectedIntegralHomologyZeroEquivInteger (A ∩ B : Set X) y,
-        -pathConnectedIntegralHomologyZeroEquivInteger (A ∩ B : Set X) y) := by
-    simpa only [differenceMap_zero_apply_normalForm A B] using h'
-  exact congrArg Prod.fst h''
+  exact integralSingularHomologyMap_zero_injective (interToLeft A B) (congrArg Prod.fst h)
 
 end IntegralMayerVietoris
 

@@ -72,33 +72,6 @@ public noncomputable def normalizedEllipticInteriorHomologyOneEquiv :
       (D.orderThreeSide ∪ D.orderFourSide) D.sides_cover)
   exact eTop.symm.trans (normalizedUnionHomologyOneEquiv B)
 
-/-- Fibre coinvariants have their prescribed scalar coordinate in degree one. -/
-public theorem normalizedUnionHomologyOneEquiv_coinvariantsToTotal
-    (c : (presentationOne (D := D)).Coinvariants) :
-    normalizedUnionHomologyOneEquiv B
-        ((presentationOne (D := D)).coinvariantsToTotal c) =
-      ![degreeOneCoinvariantEquiv B c] := by
-  change intProdFinZeroEquivFinOne
-      ((WangHomologyPresentation.NormalizedSplitting.totalLinearEquivOfEndCoordinates
-        (presentationOne (D := D)) (degreeOneZeroSplitting B) (degreeOneCoinvariantEquiv B)
-        (degreeOneInvariantEquiv B))
-          ((presentationOne (D := D)).coinvariantsToTotal c)) = _
-  rw [show (WangHomologyPresentation.NormalizedSplitting.totalLinearEquivOfEndCoordinates
-        (presentationOne (D := D)) (degreeOneZeroSplitting B) (degreeOneCoinvariantEquiv B)
-        (degreeOneInvariantEquiv B))
-          ((presentationOne (D := D)).coinvariantsToTotal c) =
-      (degreeOneCoinvariantEquiv B c, 0) by
-        change ((degreeOneCoinvariantEquiv B).prodCongr (degreeOneInvariantEquiv B))
-          (WangHomologyPresentation.NormalizedSplitting.totalLinearEquiv
-            (presentationOne (D := D)) (degreeOneZeroSplitting B)
-              ((presentationOne (D := D)).coinvariantsToTotal c)) = _
-        rw [WangHomologyPresentation.NormalizedSplitting.totalLinearEquiv_coinvariantsToTotal]
-        apply Prod.ext
-        · rfl
-        · exact Subsingleton.elim _ _]
-  funext i
-  fin_cases i
-  rfl
 
 /-- The degree-two fibre-cokernel coordinate from the corrected two-disc difference map. -/
 public noncomputable def degreeTwoCoinvariantEquiv :
@@ -156,9 +129,6 @@ public noncomputable def cuspToEllipticUnionHomology
         ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 3))
       (integralSingularHomologyEquiv k
         A.cuspCollarToSectionSevenFinalOverlapHomeomorph x))
-
-
-
 
 
 /-- The degree-two coordinates on the literal union of the two sides, normalized by an explicit

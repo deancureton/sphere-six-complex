@@ -5,12 +5,11 @@ public import SphereSixComplex.Prerequisites.Topology.HomologyToHomotopySixSpher
 public import SphereSixComplex.Prerequisites.Topology.SphereLoopContraction
 
 /-!
-# Established six-sphere recognition inputs
+# Smooth homology six-sphere recognition
 
-This module derives recognition of a smooth integral homology six-sphere from the four exact
-classical inputs isolated in `EstablishedClassicalRecognitionFoundations`: higher Hurewicz,
-compact-manifold CW type, simply connected homological Whitehead, and smooth Poincare in dimension
-six. No paper-specific construction claim is assumed here.
+Higher Hurewicz, compact-manifold CW type and homological Whitehead identify a simply connected
+integral homology six-sphere with the homotopy type of the sphere. The retained smooth Poincare
+theorem then supplies a diffeomorphism for the specified smooth atlas.
 -/
 
 open scoped ContDiff Manifold
@@ -40,19 +39,6 @@ public theorem SmoothSimplyConnectedIntegralHomologySixSphere.nonempty_homotopyE
     sixSpherePositiveHomologyInputs hX.integralHomology hGenerator hCWX hWhitehead
 
 
-/-- Smale's generalized topological Poincare theorem in dimension six. -/
-public theorem SmoothSixSphere.topological_poincare :
-    GeneralizedTopologicalPoincareSix :=
-  generalizedTopologicalPoincareSix_of_smoothPoincareSixStandardModel
-    SmoothSixSphere.poincare
-
-/-- The h-cobordism theorem and the Kervaire--Milnor computation `Theta_6 = 0`, stated as their
-exact consequence for unoriented smooth structures on a topological six-sphere. -/
-public theorem MarkedSmoothSixSphere.subsingleton_diffeomorphismClass :
-    MarkedSmoothSixSphere.DiffeomorphismClassesTrivial :=
-  markedSmoothSixSphereClassesTrivial_of_smoothPoincareSixStandardModel
-    SmoothSixSphere.poincare
-
 /-- The standard-model consequence recovers smooth Poincare in dimension six. -/
 public theorem SmoothHomotopySixSphere.isDiffeomorphic
     {X : Type} [TopologicalSpace X] [T2Space X] [SecondCountableTopology X]
@@ -61,9 +47,7 @@ public theorem SmoothHomotopySixSphere.isDiffeomorphic
   intro hX
   let _ : CompactSpace X := hX.compact
   let _ : IsManifold 𝓘(ℝ, RealModel) ∞ X := hX.isManifold
-  exact smoothPoincareSixStandardModel_of_classicalStages
-    SmoothSixSphere.topological_poincare
-    MarkedSmoothSixSphere.subsingleton_diffeomorphismClass X hX.homotopyEquiv
+  exact SmoothSixSphere.poincare X hX.homotopyEquiv
 
 /-- A compact simply connected smooth six-manifold with the integral homology of the sphere
 is diffeomorphic to the standard six-sphere. -/

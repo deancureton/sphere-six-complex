@@ -83,57 +83,5 @@ public theorem cuspEllipticFiberCoordinate_eq_union {A : AnalyticData}
     (R.homologyAlignment.actualHomologyCoordinates.normalizedUnionHomologyTwoEquiv S)
     (AddEquiv.symm_apply_apply _ _)) 0
 
-public theorem correctedCuspDegreeTwoSplitting_rawFour_fiber {A : AnalyticData}
-    (R : A.AffineRadialCompletionInput) :
-    A.cuspEllipticFiberCoordinate R (correctedCuspDegreeTwoSplitting R)
-      (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) = 0 := by
-  rw [cuspEllipticFiberCoordinate_eq_union, correctedCuspDegreeTwoSplitting_rawFour]
-  rfl
-
-public theorem correctedCuspFiberCoordinate_of_rawFive {A : AnalyticData}
-    (R : A.AffineRadialCompletionInput)
-    (hfive : A.cuspEllipticFiberCoordinate R (correctedCuspDegreeTwoSplitting R)
-      (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) = 1) :
-    A.cuspEllipticFiberCoordinate R (correctedCuspDegreeTwoSplitting R) =
-      12 • coordinateAfterAddEquiv A.cuspRawHomologyTwoEquiv 1 +
-      2 • coordinateAfterAddEquiv A.cuspRawHomologyTwoEquiv 2 +
-      coordinateAfterAddEquiv A.cuspRawHomologyTwoEquiv 5 := by
-  apply SphereSixComplex.addMonoidHom_ext_of_equiv_pi_single_one A.cuspRawHomologyTwoEquiv
-  intro i
-  by_cases hi : i.val < 4
-  · let j : Fin 4 := ⟨i.val, hi⟩
-    have hij : Fin.castAdd 2 j = i := Fin.ext rfl
-    rw [← hij, cuspEllipticFiberCoordinate_raw_fiber]
-    have hk (k : Fin 4) : (![0, 12, 2, 0] : Fin 4 → ℤ) k =
-        (12 • coordinateAfterAddEquiv A.cuspRawHomologyTwoEquiv 1 +
-          2 • coordinateAfterAddEquiv A.cuspRawHomologyTwoEquiv 2 +
-          coordinateAfterAddEquiv A.cuspRawHomologyTwoEquiv 5)
-          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (Fin.castAdd 2 k) 1)) := by
-      fin_cases k <;> simp [coordinateAfterAddEquiv_apply]
-    exact hk j
-  · have hi45 : i = 4 ∨ i = 5 := by omega
-    rcases hi45 with rfl | rfl
-    · rw [correctedCuspDegreeTwoSplitting_rawFour_fiber]
-      simp [coordinateAfterAddEquiv_apply]
-    · rw [hfive]
-      simp [coordinateAfterAddEquiv_apply]
-
-public theorem correctedCuspHomologyTwoCoordinates_of_rawFive {A : AnalyticData}
-    (R : A.AffineRadialCompletionInput)
-    (hfive : A.cuspEllipticFiberCoordinate R (correctedCuspDegreeTwoSplitting R)
-      (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) = 1)
-    (x : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0)) :
-    R.homologyAlignment.actualHomologyCoordinates.normalizedUnionHomologyTwoEquiv
-      (correctedCuspDegreeTwoSplitting R)
-      (cuspToEllipticUnionHomology R.twoDiscCover 2 x) =
-        ![12 * A.cuspRawHomologyTwoEquiv x 1 +
-          2 * A.cuspRawHomologyTwoEquiv x 2 + A.cuspRawHomologyTwoEquiv x 5,
-          A.cuspRawHomologyTwoEquiv x 4] := by
-  funext i
-  fin_cases i
-  · have h := DFunLike.congr_fun (correctedCuspFiberCoordinate_of_rawFive R hfive) x
-    rw [cuspEllipticFiberCoordinate_eq_union] at h
-    simpa [coordinateAfterAddEquiv_apply] using h
-  · exact correctedCuspDegreeTwoSplitting_boundary R x
 
 end SphereSixComplex.Geometry.AnalyticData

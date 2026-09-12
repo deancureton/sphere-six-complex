@@ -4,10 +4,10 @@ public import SphereSixComplex.Paper.Topology.PaperCuspSpecializationAlgebra
 public import SphereSixComplex.Prerequisites.Topology.WangHomologySplitting
 
 /-!
-# Homology bases for a circle mapping torus
+# Marked homology coordinates for cusp mapping tori
 
-This module splits the Wang short exact sequence when its invariant term is projective, then
-specializes the construction to the cusp monodromy matrices in degrees zero, one, and two.
+Fiber markings conjugate the circle monodromy differences to the explicit cusp lattice maps.
+The finite-product coordinate equivalences assemble their invariant and coinvariant terms.
 -/
 
 @[expose] public section
@@ -107,49 +107,6 @@ public theorem degreeTwoDifference_conjugacy (B : CuspMonodromyCoordinates phi) 
   exact circleDifference_conjugacy phi 2 B.degreeTwo.toIntLinearEquiv
     mZeroExteriorTwoMatrix.mulVecLin B.degreeTwo_monodromy
 
-/-- The first homology of the cusp circle mapping torus is free of rank three. -/
-public noncomputable def circleMappingTorusHOneLinearEquiv
-    (B : CuspMonodromyCoordinates phi) :
-    IntegralSingularHomology 1 (CircleMappingTorus phi) ≃ₗ[ℤ] (Fin 3 → ℤ) := by
-  let P := circleMappingTorusHOnePresentation phi
-  let coinvariants :=
-    (coinvariantsEquivOfConjugacy B.degreeOne.toIntLinearEquiv
-      (circleMonodromyDifference phi 1).toIntLinearMap mZeroDifference
-      B.degreeOneDifference_conjugacy).trans mZeroCoinvariantsEquivIntSquared
-  let invariants :=
-    (invariantsEquivOfConjugacy B.degreeZero.toIntLinearEquiv
-      (circleMonodromyDifference phi 0).toIntLinearMap 0
-      B.degreeZeroDifference_conjugacy).trans zeroKernelEquivInt
-  exact (P.linearEquivOfCoordinates coinvariants invariants).trans
-    finTwoProdIntLinearEquiv
-
-/-- The second homology of the cusp circle mapping torus is free of rank six. -/
-public noncomputable def circleMappingTorusHTwoLinearEquiv
-    (B : CuspMonodromyCoordinates phi) :
-    IntegralSingularHomology 2 (CircleMappingTorus phi) ≃ₗ[ℤ] (Fin 6 → ℤ) := by
-  let P := circleMappingTorusHTwoPresentation phi
-  let coinvariants :=
-    (coinvariantsEquivOfConjugacy B.degreeTwo.toIntLinearEquiv
-      (circleMonodromyDifference phi 2).toIntLinearMap mZeroExteriorTwoDifference
-      B.degreeTwoDifference_conjugacy).trans mZeroExteriorTwoCoinvariantsEquivIntFourth
-  let invariants :=
-    (invariantsEquivOfConjugacy B.degreeOne.toIntLinearEquiv
-      (circleMonodromyDifference phi 1).toIntLinearMap mZeroDifference
-      B.degreeOneDifference_conjugacy).trans mZeroInvariantsEquivIntSquared
-  exact (P.linearEquivOfCoordinates coinvariants invariants).trans
-    finFourProdFinTwoLinearEquiv
-
-/-- Additive coordinates on first homology, for direct use with singular homology APIs. -/
-public noncomputable def circleMappingTorusHOneAddEquiv
-    (B : CuspMonodromyCoordinates phi) :
-    IntegralSingularHomology 1 (CircleMappingTorus phi) ≃+ (Fin 3 → ℤ) :=
-  B.circleMappingTorusHOneLinearEquiv.toAddEquiv
-
-/-- Additive coordinates on second homology, for direct use with singular homology APIs. -/
-public noncomputable def circleMappingTorusHTwoAddEquiv
-    (B : CuspMonodromyCoordinates phi) :
-    IntegralSingularHomology 2 (CircleMappingTorus phi) ≃+ (Fin 6 → ℤ) :=
-  B.circleMappingTorusHTwoLinearEquiv.toAddEquiv
 
 end CuspMonodromyCoordinates
 

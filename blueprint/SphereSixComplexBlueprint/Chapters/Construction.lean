@@ -341,7 +341,7 @@ Use {uses "torus-family"}[the torus family] and the invariant twist vectors fixe
 
 :::theorem "compact-complex-threefold" (parent := "construction_spine") (lean := "SphereSixComplex.ComplexThreefold, SphereSixComplex.exists_complexThreefold_simplyConnected_homologyEquiv_sixSphere, SphereSixComplex.CompactComplexStar, SphereSixComplex.Geometry.AnalyticData.compactComplexStar") (priority := "high")
 The global family and the three fillings glue to a compact connected complex threefold $`X`.
-The analytic package, the actual star's van Kampen data, and the positive-degree homology assembly
+The analytic gluing, local filling relations, low-degree homology vanishing and Euler calculation
 are constructed in Lean and combined by `exists_complexThreefold_simplyConnected_homologyEquiv_sixSphere`. No construction-specific axiom or
 unfinished proof is required by this theorem.
 :::
@@ -370,9 +370,10 @@ underlying real atlas follows by restriction of scalars.
 :::
 
 :::theorem "paper-threefold-assembly" (parent := "compact-complex-threefold") (lean := "SphereSixComplex.Geometry.AnalyticData.compactComplexStar, SphereSixComplex.CompactComplexStar.toComplexThreefold, SphereSixComplex.SmoothSixSphere.nonempty_diffeomorph, SphereSixComplex.exists_complexThreefold_simplyConnected_homologyEquiv_sixSphere")
-If that gluing carries the concrete van Kampen generators with no extra relations and the
-four-piece Mayer--Vietoris comparison, the glued threefold is simply connected and has
-degreewise integral homology isomorphic to that of the six-sphere. The recognition theorem
+The local filling relations kill first homology, while the cusp relations independently make
+the fundamental group abelian. First Hurewicz therefore gives simple connectedness. A surjective
+degree-two Mayer--Vietoris map and an equal-rank argument kill second homology; the Euler calculation
+and manifold duality then identify the remaining homology with that of the six-sphere. The recognition theorem
 takes these properties directly and concludes existence of a diffeomorphism.
 :::
 
@@ -386,10 +387,12 @@ Van Kampen makes the core fundamental group surject onto that of
 coordinates; conjugation by the order-three monodromy then kills the second coordinate. The
 remaining lattice translation commutes with both meridians, and the cusp meridian relation makes
 those meridians inverse to one another. Thus the fundamental group is abelian. The first Hurewicz
-theorem and the Mayer--Vietoris calculation of vanishing first homology make it trivial.
+theorem and the direct calculation of vanishing first homology make it trivial.
 
-The first-homology calculation uses the elliptic filling relations directly in homology.
-No nonabelian elliptic presentation is needed.
+In first homology the remaining translation has class $`T`, and the meridians satisfy
+$`3r_1=-T`, $`4r_2=T` and $`r_1+r_2=0`. Thus $`3r_1=4r_1`, which kills both meridians and
+$`T` integrally, without assuming the group is torsion free. No nonabelian elliptic presentation
+is needed.
 :::
 
 :::theorem "fundamental-group-recognition" (parent := "fundamental-group") (lean := "SphereSixComplex.Geometry.AnalyticData.starPiOne_mul_comm, SphereSixComplex.Topology.simplyConnectedSpace_of_mul_comm_of_homologyOne_subsingleton")
@@ -427,8 +430,13 @@ The integral homology of $`X` is the integral homology of $`S^6`.
 :::
 
 :::proof "integral-homology"
-Compute the Mayer--Vietoris sequence of {uses "compact-complex-threefold"}[the same gluing], including
-the integral specialization maps and their saturation.
+First homology vanishes by the local elliptic and cusp relations. For the final two-set cover,
+exactness makes the preceding degree-one difference map surjective between free abelian groups
+of rank three, hence injective as well. The degree-two difference map is onto: cusp specialization
+covers four coordinates, and raw four and raw five lie in its kernel and cover the two remaining
+elliptic coordinates. Mayer--Vietoris exactness therefore kills second homology. The geometric
+Euler characteristic is two; Poincaré duality and universal coefficients on the same compact
+complex threefold determine the remaining groups.
 :::
 
 :::theorem "elliptic-filling-relations" (parent := "integral-homology") (lean := "SphereSixComplex.Geometry.AnalyticData.cuspOverlap_homology_fullIterate")
@@ -454,11 +462,10 @@ The actual inclusion maps and their coordinate comparisons are computed separate
 The two integral relation maps in Lemma 7.13 have images equal to the kernels of their respective coordinate classifiers. These identities give the required exact integral presentations.
 :::
 
-:::definition "section-seven-paper-assembly" (parent := "integral-homology") (lean := "SphereSixComplex.Geometry.AnalyticData.PositiveDegreeHomologyAssembly, SphereSixComplex.Geometry.AnalyticData.PositiveDegreeHomologyAssembly.toSectionSevenMayerVietorisHomologyAssembly")
-For the actual four-piece star, degree zero is proved canonically. The constructed
-`PositiveDegreeHomologyAssembly` records the positive-degree cusp-attachment identifications and
-compatibility squares. Its fields describe the actual maps; none assumes the completed star's
-homology.
+:::theorem "section-seven-paper-assembly" (parent := "integral-homology") (lean := "SphereSixComplex.Geometry.AnalyticData.star_homologyOne_subsingleton, SphereSixComplex.Geometry.AnalyticData.cuspAttachment_differenceMap_two_surjective, SphereSixComplex.Geometry.AnalyticData.star_homologyTwo_subsingleton, SphereSixComplex.Geometry.AnalyticData.star_nonempty_homologyEquiv_sixSphere_of_lowDegrees")
+The actual local relations give vanishing first homology. Two kernel generators and the integral
+specialization map make the degree-two attachment map surjective. Equal-rank exactness gives
+vanishing second homology, and the local Euler models complete the sphere homology calculation.
 :::
 
 :::theorem "cusp-filling-homology" (parent := "section-seven-paper-assembly") (lean := "SphereSixComplex.CellularHomology.normalizedModel, SphereSixComplex.Geometry.CuspCollar.centralFiberCWModel, SphereSixComplex.Geometry.CuspCollar.centralFiber_cellularBoundary_eq, SphereSixComplex.Geometry.AnalyticData.cuspFillingHomologyOneEquiv, SphereSixComplex.Geometry.AnalyticData.cuspFillingHomologyTwoEquiv")

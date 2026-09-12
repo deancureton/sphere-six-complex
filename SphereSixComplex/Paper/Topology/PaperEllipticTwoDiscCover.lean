@@ -2,7 +2,7 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.HurewiczWhitehead
 public import SphereSixComplex.Paper.Topology.PaperEllipticTorusHomologyBasis
-public import SphereSixComplex.Paper.Topology.SectionSevenMayerVietorisHomologyAssembly
+public import SphereSixComplex.Paper.Topology.CuspAttachmentCover
 public import SphereSixComplex.Paper.Geometry.PaperOpenEmbeddingStar
 
 /-!
