@@ -26,7 +26,6 @@ open SphereSixComplex.Geometry.GlobalTorusFamily
 open SphereSixComplex.Geometry.EllipticWholeFiberTrivialization
 open SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient
 open SphereSixComplex.Geometry.EllipticLocalCoordinates
-open SphereSixComplex.Geometry.EllipticLogarithmicGauge
 open SphereSixComplex.Geometry.EquivariantQuotientHomeomorph
 
 noncomputable section

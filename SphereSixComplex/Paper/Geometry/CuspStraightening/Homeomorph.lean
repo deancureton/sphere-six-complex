@@ -23,10 +23,8 @@ namespace SphereSixComplex.Geometry.CuspStraightening
 open SphereSixComplex.Periods
 open CuspFilling CuspFillingRadialCompactness CuspLocalPhaseAction
 open CuspPeriodExpansion CuspCollar
-open CuspStraightening CuspStraightening
 open CuspToricPhaseAction
 open InfiniteA2Toric InfiniteA2Toric.QuantitativeRegions
-open CuspPeriodExpansion
 open CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
 
 /-- The zero fibre contains the origin of every standard affine toric chart. -/

@@ -1481,37 +1481,6 @@ public theorem orderFourOverlapIsHomotopyEquivalence :
       (A.orderFourOverlapCollarHomeomorph.symm_apply_apply u)
 
 
-/-! ## Residual affine overlap data
-
-Both overlap homotopy equivalences of `AffineOverlapCompletionInput` are now proved.
-What remains of that structure is exactly the two marked band square homotopies. -/
-
-/-- The two marked band square homotopies, stated against the *proved* overlap homotopy
-equivalences.  By proof irrelevance the band maps do not depend on which proof is used, so this
-is the exact residue of `AffineOverlapCompletionInput`. -/
-public structure AffineOverlapBandCompatibility where
-  orderThree :
-    (affineOrderThreeBandToReducedFiber
-      (orderThreeOverlapIsHomotopyEquivalence_inclusion
-        A.orderThreeOverlapIsHomotopyEquivalence)).Homotopic
-      (affineBandOrderThreeCoverMap A)
-  orderFour :
-    (affineOrderFourBandToReducedFiber
-      (orderFourOverlapIsHomotopyEquivalence_inclusion
-        A.orderFourOverlapIsHomotopyEquivalence)).Homotopic
-      (affineBandOrderFourCoverMap A)
-
-/-- The full affine overlap completion input, assembled from the two proved overlap homotopy
-equivalences and the residual marked band squares. -/
-public theorem AffineOverlapBandCompatibility.toOverlapCompletionInput
-    (B : A.AffineOverlapBandCompatibility) :
-    A.AffineOverlapCompletionInput where
-  orderThreeOverlap := A.orderThreeOverlapIsHomotopyEquivalence
-  orderFourOverlap := A.orderFourOverlapIsHomotopyEquivalence
-  orderThreeCompatibility := B.orderThree
-  orderFourCompatibility := B.orderFour
-
-
 end SphereSixComplex.Geometry.AnalyticData
 
 end

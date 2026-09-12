@@ -6,12 +6,11 @@ public import SphereSixComplex.Prerequisites.Periods.Uniformization.EstablishedE
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.NormalizedModularJLiftingExistence
 
 /-!
-# Established modular uniformization
+# Normalized Fuchsian modular lift
 
 This file assembles the exact source orbifold uniformization, exact target modular-`j`
 uniformization, and normalized branched-lifting theorem used for the modular parameter in
-Theorem 3.4(i).  The three formerly axiomatized inputs are now kernel-checked theorems, and all
-consequences below are proved from them.
+Theorem 3.4(i).
 
 No additive period function, torus family, filling, gluing, or sphere-recognition statement is
 assumed here.

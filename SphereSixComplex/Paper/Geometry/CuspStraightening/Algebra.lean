@@ -23,7 +23,6 @@ open SphereSixComplex.Periods
 open CuspFilling CuspFillingRadialCompactness CuspLocalPhaseAction
 open CuspPeriodExpansion CuspCollar
 open InfiniteA2Toric InfiniteA2Toric.QuantitativeRegions
-open CuspPeriodExpansion
 open CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
 
 /-- The displacement with the correction matrix frozen at the central parameter. -/

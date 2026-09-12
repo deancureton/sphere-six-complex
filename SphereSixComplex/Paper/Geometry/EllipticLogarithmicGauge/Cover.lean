@@ -21,7 +21,6 @@ namespace SphereSixComplex.Geometry.EllipticLogarithmicGauge
 
 open SphereSixComplex.Geometry.EllipticLocalCoordinates
 open SphereSixComplex.Geometry.EllipticCayleyHomeomorph
-open SphereSixComplex.Geometry.EllipticLogarithmicGauge
 open SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient
 open SphereSixComplex.Geometry.EllipticWholeFiberCompactCover
 open SphereSixComplex.Geometry.GlobalTorusFamily

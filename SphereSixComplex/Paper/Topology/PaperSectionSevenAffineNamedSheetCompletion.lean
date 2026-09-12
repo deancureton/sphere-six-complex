@@ -175,7 +175,7 @@ public theorem affineNamedSheetStabilizingDecks_iff_cayleyBounds
 
 /-- The sharply minimal stabilizing-deck hypothesis supplies both explicit endpoint formulas
 and hence the complete marked affine-band compatibility. -/
-public theorem markedBandHomotopies_of_affineNamedSheetStabilizingDecks
+public theorem homotopic_bandToReducedFiber_coverMap_of_stabilizingDecks
     (A : AnalyticData)
     (h₃ : ∀ x : A.affineMarkedBand, ∃ g : Delta,
       ‖(orderThreeCayleyHomeomorph
@@ -191,14 +191,21 @@ public theorem markedBandHomotopies_of_affineNamedSheetStabilizingDecks
             (A.affineBandStripCoordinate x)).1) : ℂ)‖ <
           A.starSeparation.orderFour.radius ∧
         fuchsianSourceAction g • fuchsianTwoFixedPoint = fuchsianTwoFixedPoint) :
-    A.AffineOverlapBandCompatibility := by
+    (affineOrderThreeBandToReducedFiber
+      (orderThreeOverlapIsHomotopyEquivalence_inclusion
+        A.orderThreeOverlapIsHomotopyEquivalence)).Homotopic
+      (affineBandOrderThreeCoverMap A) ∧
+    (affineOrderFourBandToReducedFiber
+      (orderFourOverlapIsHomotopyEquivalence_inclusion
+        A.orderFourOverlapIsHomotopyEquivalence)).Homotopic
+      (affineBandOrderFourCoverMap A) := by
   have hbounds := (A.affineNamedSheetStabilizingDecks_iff_cayleyBounds).mp ⟨h₃, h₄⟩
   let C₄ : (∀ x : A.affineMarkedBand,
     A.affineOrderFourNamedCollarTotalPoint x ∈
       EllipticVaryingFamilyQuotient.orderFourPuncturedFamilyCollar
         A.periods A.starSeparation.orderFour.radius) :=
     (A.affineOrderFourNamedRadialCollarCompatibility_iff).mpr hbounds.2
-  apply markedBandHomotopies_of_pinnedLiftEndpointGaugeFormulas
+  apply homotopic_bandToReducedFiber_coverMap_of_pinnedLift
     A.affineNamedStripLift
       A.affineNamedStripLift_apply_midpoint
       A.affineOrderThreeEndpointGauge

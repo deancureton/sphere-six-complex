@@ -103,28 +103,4 @@ public theorem compactPhaseOrbit_fiberwise_iff_stabilizerMonotone_of_fundamental
 
 
 
-/-- A positive fundamental domain and stabilizer-monotone retraction imply the full phase
-geometric core. -/
-public theorem polarPhaseGeometricCore_of_fundamentalDomain
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
-    (Q : NormalizedPolarHoneycombConstructionData N M r)
-    (hfundamental : CompactPhaseFundamentalDomain Q.toPolarHoneycombData)
-    (hstabilizer :
-      let P := Q.toPolarHoneycombData
-      letI := P.positiveDeckAction
-      CompactPhaseStabilizerMonotone P P.positiveEquivariantStrongDeformationRetraction) :
-    PolarPhaseGeometricCore M r Q.toPolarHoneycombData := by
-  let P := Q.toPolarHoneycombData
-  let _ := P.positiveDeckAction
-  let R := P.positiveEquivariantStrongDeformationRetraction
-  refine ⟨R, ?_⟩
-  exact (compactPhaseOrbit_fiberwise_iff_stabilizerMonotone_of_fundamentalDomain
-    P hfundamental R).mpr hstabilizer
-
-
-
-
-
-
 end SphereSixComplex.Geometry.InfiniteA2Toric

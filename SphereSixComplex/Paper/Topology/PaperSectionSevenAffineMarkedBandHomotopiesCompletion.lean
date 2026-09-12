@@ -132,7 +132,7 @@ public noncomputable def affineOrderFourGaugeProjectionOfLift
             (A.affineBandFiberCoordinateOfLift L).continuous)⟩
 
 /-- Midpoint-pinned endpoint formulas determine the marked gauge translations. -/
-public noncomputable def affineMarkedEndpointGaugeTranslationOfPinnedLift
+public noncomputable def AffineMarkedEndpointGaugeTranslation.ofPinnedLift
     {A : AnalyticData} (L : A.AffineStripLift)
     (hL : L.lift affineStripMidpoint = A.affineNormalizedMidpoint)
     (g₃ g₄ : C(affineVerticalStrip, AdditiveTorus A.duplicatedSectionSevenBandParameter))
@@ -190,7 +190,7 @@ public noncomputable def affineMarkedEndpointGaugeTranslationOfPinnedLift
     rw [hcoordinate]
 
 /-- Midpoint-pinned endpoint formulas give the marked band homotopies. -/
-public theorem markedBandHomotopies_of_pinnedLiftEndpointGaugeFormulas
+public theorem homotopic_bandToReducedFiber_coverMap_of_pinnedLift
     {A : AnalyticData} (L : A.AffineStripLift)
     (hL : L.lift affineStripMidpoint = A.affineNormalizedMidpoint)
     (g₃ g₄ : C(affineVerticalStrip, AdditiveTorus A.duplicatedSectionSevenBandParameter))
@@ -198,8 +198,15 @@ public theorem markedBandHomotopies_of_pinnedLiftEndpointGaugeFormulas
       A.affineOrderThreeStarEndpoint = A.affineOrderThreeGaugeProjectionOfLift L g₃)
     (h₄ : (orderFourSelectedFillingHomotopyEquivCentralFiber A).toFun.comp
       A.affineOrderFourStarEndpoint = A.affineOrderFourGaugeProjectionOfLift L g₄) :
-    A.AffineOverlapBandCompatibility :=
-  (affineMarkedEndpointGaugeTranslationOfPinnedLift L hL g₃ g₄ h₃ h₄).toBandCompatibility
+    (affineOrderThreeBandToReducedFiber
+      (orderThreeOverlapIsHomotopyEquivalence_inclusion
+        A.orderThreeOverlapIsHomotopyEquivalence)).Homotopic
+      (affineBandOrderThreeCoverMap A) ∧
+    (affineOrderFourBandToReducedFiber
+      (orderFourOverlapIsHomotopyEquivalence_inclusion
+        A.orderFourOverlapIsHomotopyEquivalence)).Homotopic
+      (affineBandOrderFourCoverMap A) :=
+  (AffineMarkedEndpointGaugeTranslation.ofPinnedLift L hL g₃ g₄ h₃ h₄).homotopic_bandToReducedFiber_coverMap
 
 end SphereSixComplex.Geometry.AnalyticData
 

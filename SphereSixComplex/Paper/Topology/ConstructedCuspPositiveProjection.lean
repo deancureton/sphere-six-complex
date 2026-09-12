@@ -20,8 +20,8 @@ public def constructedCuspPolarData
 public def constructedCuspPolarDeckLift
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     PolarPhaseDeckLift N constructedModel W.localWitness.radius (constructedCuspPolarData W) :=
-  PolarPhaseRadialCompatibility.toDeckLift
-    ⟨fun lambda i ↦ norm_normalizedCuspPositiveTwist N lambda i⟩
+  PolarPhaseDeckLift.ofNormEq
+    (fun lambda i ↦ norm_normalizedCuspPositiveTwist N lambda i)
 
 public theorem constructedCuspPolar_modulus_phase
     (W : ActualPuncturedCuspCollarWitness N constructedModel) (k : CompactTorus)

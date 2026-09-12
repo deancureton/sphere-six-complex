@@ -69,6 +69,15 @@ Synchronized factor homotopies retain both equations at the common moving basepo
 `ContinuousMap.Homotopy.hcompLoop` supplies their reusable concatenation in the prerequisite
 library; two unrelated homotopy-existence statements would lose the required synchronization.
 
+The band comparison theorems state the two marked `Homotopic` assertions as a conjunction.
+Phase spreading takes a chosen equivariant strong deformation retraction and the explicit
+orbit-fiber descent equation for that same retraction. The constructed instance supplies its
+canonical retraction directly, rather than selecting one through an intermediate existence record.
+
+Cellular incidence is an equality of boundary homomorphisms in every degree. The calculation
+recovering dependent entries from the chain-complex identity remains an explicit theorem; four
+overlapping records of finite incidence tables are unnecessary.
+
 Integral singular cycles use Mathlib's `cycles` object, `cyclesMap`, `iCycles`, and `homologyπ`
 in every degree. The marked prism comparison still asserts equality of actual chain morphisms,
 not only equality of their homology classes. Quotient retractions specialize the existing

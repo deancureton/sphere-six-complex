@@ -65,15 +65,6 @@ public structure PolarPhaseDeckLift
       phaseEmbedding (N.phaseCoefficient (Multiplicative.toAdd g) 0) *
         denseTorusShear (Multiplicative.toAdd g) (compactTorusEmbedding k)
 
-/-- The radial part of the frozen phase multiplier agrees with the chosen positive deck twist. -/
-public structure PolarPhaseRadialCompatibility
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
-    (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) (r : ℝ)
-    (P : PolarHoneycombData M r) : Prop where
-  norm_positiveTwist : ∀ lambda i,
-    ‖((P.positiveTwist lambda i : ℂˣ) : ℂ)‖ =
-      ‖((phaseEmbedding (N.phaseCoefficient lambda 0) i : ℂˣ) : ℂ)‖
-
 public theorem norm_denseTorusShear_compactTorusEmbedding
     (lambda : ParameterLattice) (k : CompactTorus) (i : Fin 3) :
     ‖((denseTorusShear lambda (compactTorusEmbedding k) i : ℂˣ) : ℂ)‖ = 1 := by
@@ -85,7 +76,9 @@ radial part. -/
 public def radialDeckPhase
     {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
-    {P : PolarHoneycombData M r} (H : PolarPhaseRadialCompatibility N M r P)
+    {P : PolarHoneycombData M r} (hnorm : ∀ lambda i,
+      ‖((P.positiveTwist lambda i : ℂˣ) : ℂ)‖ =
+        ‖((phaseEmbedding (N.phaseCoefficient lambda 0) i : ℂˣ) : ℂ)‖)
     (g : Multiplicative ParameterLattice) (k : CompactTorus) : CompactTorus :=
   fun i ↦ ⟨((phaseEmbedding (N.phaseCoefficient (Multiplicative.toAdd g) 0) *
       denseTorusShear (Multiplicative.toAdd g) (compactTorusEmbedding k)) i /
@@ -97,16 +90,18 @@ public def radialDeckPhase
     rw [mem_sphere_zero_iff_norm, Units.val_div_eq_div_val, norm_div,
       Pi.mul_apply, Units.val_mul, norm_mul,
       norm_denseTorusShear_compactTorusEmbedding, mul_one,
-      H.norm_positiveTwist, div_self]
+      hnorm, div_self]
     exact norm_ne_zero_iff.mpr (Units.ne_zero _ )⟩
 
 @[simp]
 public theorem compactTorusEmbedding_radialDeckPhase_apply
     {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
-    {P : PolarHoneycombData M r} (H : PolarPhaseRadialCompatibility N M r P)
+    {P : PolarHoneycombData M r} (hnorm : ∀ lambda i,
+      ‖((P.positiveTwist lambda i : ℂˣ) : ℂ)‖ =
+        ‖((phaseEmbedding (N.phaseCoefficient lambda 0) i : ℂˣ) : ℂ)‖)
     (g : Multiplicative ParameterLattice) (k : CompactTorus) (i : Fin 3) :
-    compactTorusEmbedding (radialDeckPhase H g k) i =
+    compactTorusEmbedding (radialDeckPhase hnorm g k) i =
       (phaseEmbedding (N.phaseCoefficient (Multiplicative.toAdd g) 0) *
           denseTorusShear (Multiplicative.toAdd g) (compactTorusEmbedding k)) i /
         P.positiveTwist (Multiplicative.toAdd g) i := by
@@ -115,12 +110,14 @@ public theorem compactTorusEmbedding_radialDeckPhase_apply
   rfl
 
 /-- Radial compatibility constructs the exact compact multiplier lift. -/
-public def PolarPhaseRadialCompatibility.toDeckLift
+public def PolarPhaseDeckLift.ofNormEq
     {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
-    {P : PolarHoneycombData M r} (H : PolarPhaseRadialCompatibility N M r P) :
+    {P : PolarHoneycombData M r} (hnorm : ∀ lambda i,
+      ‖((P.positiveTwist lambda i : ℂˣ) : ℂ)‖ =
+        ‖((phaseEmbedding (N.phaseCoefficient lambda 0) i : ℂˣ) : ℂ)‖) :
     PolarPhaseDeckLift N M r P where
-  deckPhase := radialDeckPhase H
+  deckPhase := radialDeckPhase hnorm
   multiplier_identity := by
     intro g k
     ext i
@@ -171,46 +168,6 @@ public theorem PolarPhaseDeckLift.deck_orbit
     _ = _ := by
       rw [← fanShear_torusAction]
 
-/-- The genuinely geometric residue after the deck multiplier calculation: stabilizer
-preservation by the lifted cellular homotopy. -/
-public structure PolarPhaseGeometricCore
-    (M : Model) (r : ℝ) (P : PolarHoneycombData M r) : Prop where
-  exists_positiveRetraction :
-    letI := P.positiveDeckAction
-    ∃ R : EquivariantStrongDeformationRetraction
-        (Multiplicative ParameterLattice) P.positivePart P.central,
-      ∀ s k p l q,
-        compactPhaseOrbit M r P.positivePart (k, p) =
-            compactPhaseOrbit M r P.positivePart (l, q) →
-          compactPhaseOrbit M r P.positivePart (k, R.homotopy (s, p)) =
-            compactPhaseOrbit M r P.positivePart (l, R.homotopy (s, q))
-
-namespace PolarPhaseGeometricCore
-
-public noncomputable def positiveRetraction
-    {M : Model} {r : ℝ} {P : PolarHoneycombData M r}
-    (G : PolarPhaseGeometricCore M r P) :
-    letI := P.positiveDeckAction
-    EquivariantStrongDeformationRetraction
-      (Multiplicative ParameterLattice) P.positivePart P.central := by
-  letI := P.positiveDeckAction
-  exact Classical.choose G.exists_positiveRetraction
-
-public theorem homotopy_fiberwise
-    {M : Model} {r : ℝ} {P : PolarHoneycombData M r}
-    (G : PolarPhaseGeometricCore M r P) :
-    letI := P.positiveDeckAction
-    let R := G.positiveRetraction
-    ∀ s k p l q,
-      compactPhaseOrbit M r P.positivePart (k, p) =
-          compactPhaseOrbit M r P.positivePart (l, q) →
-        compactPhaseOrbit M r P.positivePart (k, R.homotopy (s, p)) =
-          compactPhaseOrbit M r P.positivePart (l, R.homotopy (s, q)) := by
-  letI := P.positiveDeckAction
-  exact Classical.choose_spec G.exists_positiveRetraction
-
-end PolarPhaseGeometricCore
-
 /-- Assemble the phase-spreading interface from its geometric core and the explicit multiplier
 lift.  In particular, the deck-orbit field is a theorem rather than an assumed compatibility. -/
 public def FrozenLocalCuspPhaseSpreadingData.ofPolarPhaseData
@@ -221,12 +178,22 @@ public def FrozenLocalCuspPhaseSpreadingData.ofPolarPhaseData
       (Prod.map (id : unitInterval → unitInterval)
         (compactPhaseOrbit M r P.positivePart)))
     (L : PolarPhaseDeckLift N M r P)
-    (G : PolarPhaseGeometricCore M r P) :
-    FrozenLocalCuspPhaseSpreadingData N M r P where
-  positiveRetraction := G.positiveRetraction
-  phaseOrbit_prod_isQuotientMap := hquot
-  deckPhase := L.deckPhase
-  deck_orbit := L.deck_orbit
-  homotopy_fiberwise := G.homotopy_fiberwise
+    : letI := P.positiveDeckAction
+      (R : EquivariantStrongDeformationRetraction
+        (Multiplicative ParameterLattice) P.positivePart P.central) →
+      (∀ s k p l q,
+        compactPhaseOrbit M r P.positivePart (k, p) =
+          compactPhaseOrbit M r P.positivePart (l, q) →
+        compactPhaseOrbit M r P.positivePart (k, R.homotopy (s, p)) =
+          compactPhaseOrbit M r P.positivePart (l, R.homotopy (s, q))) →
+      FrozenLocalCuspPhaseSpreadingData N M r P := by
+  letI := P.positiveDeckAction
+  intro R hR
+  exact {
+    positiveRetraction := R
+    phaseOrbit_prod_isQuotientMap := hquot
+    deckPhase := L.deckPhase
+    deck_orbit := L.deck_orbit
+    homotopy_fiberwise := hR }
 
 end SphereSixComplex.Geometry.CuspStraighteningRetraction

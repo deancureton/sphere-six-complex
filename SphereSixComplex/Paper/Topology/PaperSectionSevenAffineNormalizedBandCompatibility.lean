@@ -5,9 +5,16 @@ public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineNamedSheetC
 noncomputable section
 namespace SphereSixComplex.Geometry.AnalyticData
 
-public theorem actualMarkedBandHomotopies (A : AnalyticData) :
-    A.AffineOverlapBandCompatibility := by
-  apply A.markedBandHomotopies_of_affineNamedSheetStabilizingDecks
+public theorem homotopic_bandToReducedFiber_coverMap (A : AnalyticData) :
+    (affineOrderThreeBandToReducedFiber
+      (orderThreeOverlapIsHomotopyEquivalence_inclusion
+        A.orderThreeOverlapIsHomotopyEquivalence)).Homotopic
+      (affineBandOrderThreeCoverMap A) ∧
+    (affineOrderFourBandToReducedFiber
+      (orderFourOverlapIsHomotopyEquivalence_inclusion
+        A.orderFourOverlapIsHomotopyEquivalence)).Homotopic
+      (affineBandOrderFourCoverMap A) := by
+  apply A.homotopic_bandToReducedFiber_coverMap_of_stabilizingDecks
   · intro x
     apply (A.exists_orderThree_stabilizingDeck_iff_namedCayley_lt x).mpr
     exact A.affineNormalizedOrderThreeRadialLift_cayley

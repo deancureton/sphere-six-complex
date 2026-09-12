@@ -17,9 +17,7 @@ open SphereSixComplex LatticeData Periods TriangleGroup
 open ComplexTorus TorusFamily GlobalTorusFamily AnalyticTorusFamily
 open EllipticLocalCoordinates EllipticLocalTrivialization EllipticCayleyHomeomorph
 open EllipticWholeFiberCompactCover
-open EllipticVaryingFamilyQuotient EllipticLogarithmicGauge
-open EllipticLogarithmicGauge
-open EllipticLogarithmicGauge EllipticLogarithmicGauge
+open EllipticVaryingFamilyQuotient
 open EquivariantQuotientHomeomorph
 
 universe u v w

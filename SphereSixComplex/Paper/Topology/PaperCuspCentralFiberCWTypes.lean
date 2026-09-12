@@ -310,141 +310,6 @@ public noncomputable def transport {Y : Type} [TopologicalSpace Y]
 
 end StandardA2ToricCentralFiberCellAtlas
 
-/-- The unresolved incidence calculation after constructing the CW structure through Mathlib:
-exactly twenty-eight scalar entries in the characteristic-map coordinates. -/
-public structure StandardA2ToricCentralFiberIncidenceResidual
-    {X : Type} [TopologicalSpace X] [T2Space X]
-    (atlas : StandardA2ToricCentralFiberCellAtlas X) where
-  boundaryZero :
-    let D := atlas.toCWDecomposition
-    let _ := D.topology
-    let _ := D.cwComplex
-    ∀ (j : Fin 3) (i : Fin 2),
-      standardA2ToricCellularCoordinateBoundary D 0
-          (Pi.single j 1 : Fin 3 → ℤ) i =
-        standardA2ToricCellularBoundary 0 (Pi.single j 1 : Fin 3 → ℤ) i
-  boundaryOne :
-    let D := atlas.toCWDecomposition
-    let _ := D.topology
-    let _ := D.cwComplex
-    ∀ (j : Fin 4) (i : Fin 3),
-      standardA2ToricCellularCoordinateBoundary D 1
-          (Pi.single j 1 : Fin 4 → ℤ) i =
-        standardA2ToricCellularBoundary 1 (Pi.single j 1 : Fin 4 → ℤ) i
-  boundaryTwo :
-    let D := atlas.toCWDecomposition
-    let _ := D.topology
-    let _ := D.cwComplex
-    ∀ (j : Fin 2) (i : Fin 4),
-      standardA2ToricCellularCoordinateBoundary D 2
-          (Pi.single j 1 : Fin 2 → ℤ) i =
-        standardA2ToricCellularBoundary 2 (Pi.single j 1 : Fin 2 → ℤ) i
-  boundaryThree :
-    let D := atlas.toCWDecomposition
-    let _ := D.topology
-    let _ := D.cwComplex
-    ∀ (j : Fin 1) (i : Fin 2),
-      standardA2ToricCellularCoordinateBoundary D 3
-          (Pi.single j 1 : Fin 1 → ℤ) i =
-        standardA2ToricCellularBoundary 3 (Pi.single j 1 : Fin 1 → ℤ) i
-
-/-- The ten attaching coefficients in dimensions three and four. -/
-public structure StandardA2ToricCentralFiberHigherIncidenceResidual
-    {X : Type} [TopologicalSpace X] [T2Space X]
-    (atlas : StandardA2ToricCentralFiberCellAtlas X) where
-  boundaryTwo :
-    let D := atlas.toCWDecomposition
-    let _ := D.topology
-    let _ := D.cwComplex
-    ∀ (j : Fin 2) (i : Fin 4),
-      standardA2ToricCellularCoordinateBoundary D 2
-          (Pi.single j 1 : Fin 2 → ℤ) i =
-        standardA2ToricCellularBoundary 2 (Pi.single j 1 : Fin 2 → ℤ) i
-  boundaryThree :
-    let D := atlas.toCWDecomposition
-    let _ := D.topology
-    let _ := D.cwComplex
-    ∀ (j : Fin 1) (i : Fin 2),
-      standardA2ToricCellularCoordinateBoundary D 3
-          (Pi.single j 1 : Fin 1 → ℤ) i =
-        standardA2ToricCellularBoundary 3 (Pi.single j 1 : Fin 1 → ℤ) i
-/-- Twenty-four independent scalar incidence entries.  The four omitted degree-two attaching
-coefficients follow from `d ∘ d = 0` and the degree-one incidence matrix. -/
-public structure StandardA2ToricCentralFiberIndependentIncidenceResidual
-    {X : Type} [TopologicalSpace X] [T2Space X]
-    (atlas : StandardA2ToricCentralFiberCellAtlas X) where
-  boundaryZero :
-    let D := atlas.toCWDecomposition
-    let _ := D.topology
-    let _ := D.cwComplex
-    ∀ (j : Fin 3) (i : Fin 2),
-      standardA2ToricCellularCoordinateBoundary D 0
-          (Pi.single j 1 : Fin 3 → ℤ) i =
-        standardA2ToricCellularBoundary 0 (Pi.single j 1 : Fin 3 → ℤ) i
-  boundaryOneIndependent :
-    let D := atlas.toCWDecomposition
-    let _ := D.topology
-    let _ := D.cwComplex
-    ∀ (j : Fin 4) (i : Fin 2),
-      standardA2ToricCellularCoordinateBoundary D 1
-          (Pi.single j 1 : Fin 4 → ℤ) i.castSucc =
-        standardA2ToricCellularBoundary 1 (Pi.single j 1 : Fin 4 → ℤ) i.castSucc
-  boundaryTwo :
-    let D := atlas.toCWDecomposition
-    let _ := D.topology
-    let _ := D.cwComplex
-    ∀ (j : Fin 2) (i : Fin 4),
-      standardA2ToricCellularCoordinateBoundary D 2
-          (Pi.single j 1 : Fin 2 → ℤ) i =
-        standardA2ToricCellularBoundary 2 (Pi.single j 1 : Fin 2 → ℤ) i
-  boundaryThree :
-    let D := atlas.toCWDecomposition
-    let _ := D.topology
-    let _ := D.cwComplex
-    ∀ (j : Fin 1) (i : Fin 2),
-      standardA2ToricCellularCoordinateBoundary D 3
-          (Pi.single j 1 : Fin 1 → ℤ) i =
-        standardA2ToricCellularBoundary 3 (Pi.single j 1 : Fin 1 → ℤ) i
-
-/-- A labelled standard `A₂` CW decomposition together with the complete finite incidence
-matrix.  There are exactly twenty-eight scalar entries: `3 × 2`, `4 × 3`, `2 × 4`, and
-`1 × 2` in boundary degrees zero through three.  Higher source cell sets are empty. -/
-public structure StandardA2ToricCentralFiberFiniteCellularRealization
-    (X : Type) [TopologicalSpace X] where
-  decomposition : StandardA2ToricCentralFiberCWDecomposition X
-  boundaryZero :
-    let D := decomposition
-    let _ := D.topology
-    let _ := D.cwComplex
-    ∀ (j : Fin 3) (i : Fin 2),
-      standardA2ToricCellularCoordinateBoundary D 0
-          (Pi.single j 1 : Fin 3 → ℤ) i =
-        standardA2ToricCellularBoundary 0 (Pi.single j 1 : Fin 3 → ℤ) i
-  boundaryOne :
-    let D := decomposition
-    let _ := D.topology
-    let _ := D.cwComplex
-    ∀ (j : Fin 4) (i : Fin 3),
-      standardA2ToricCellularCoordinateBoundary D 1
-          (Pi.single j 1 : Fin 4 → ℤ) i =
-        standardA2ToricCellularBoundary 1 (Pi.single j 1 : Fin 4 → ℤ) i
-  boundaryTwo :
-    let D := decomposition
-    let _ := D.topology
-    let _ := D.cwComplex
-    ∀ (j : Fin 2) (i : Fin 4),
-      standardA2ToricCellularCoordinateBoundary D 2
-          (Pi.single j 1 : Fin 2 → ℤ) i =
-        standardA2ToricCellularBoundary 2 (Pi.single j 1 : Fin 2 → ℤ) i
-  boundaryThree :
-    let D := decomposition
-    let _ := D.topology
-    let _ := D.cwComplex
-    ∀ (j : Fin 1) (i : Fin 2),
-      standardA2ToricCellularCoordinateBoundary D 3
-          (Pi.single j 1 : Fin 1 → ℤ) i =
-        standardA2ToricCellularBoundary 3 (Pi.single j 1 : Fin 1 → ℤ) i
-
 private theorem addMonoidHom_ext_pi_single_one
     {H : Type*} [AddCommGroup H] {n : ℕ} (f g : (Fin n → ℤ) →+ H)
     (h : ∀ i, f (Pi.single i 1) = g (Pi.single i 1)) : f = g := by
@@ -488,130 +353,118 @@ private theorem standardA2ToricCellularCoordinateBoundary_comp
   rw [h]
   simp
 
-namespace StandardA2ToricCentralFiberIncidenceResidual
-
-variable {X : Type} [TopologicalSpace X] [T2Space X]
-
-/-- Complete the four dependent degree-two attaching coefficients using the chain-complex
-identity and the already known degree-one incidence matrix. -/
-public theorem ofIndependent
-    {A : StandardA2ToricCentralFiberCellAtlas X}
-    (T : StandardA2ToricCentralFiberIndependentIncidenceResidual A) :
-    StandardA2ToricCentralFiberIncidenceResidual A where
-  boundaryZero := T.boundaryZero
-  boundaryOne := by
-    dsimp only
-    intro j i
-    let _ := (A.toCWDecomposition).topology
-    let _ := (A.toCWDecomposition).cwComplex
-    have hi : i = 0 ∨ i = 1 ∨ i = 2 := by omega
-    rcases hi with rfl | rfl | rfl
-    · exact T.boundaryOneIndependent j 0
-    · exact T.boundaryOneIndependent j 1
-    · have hzero := standardA2ToricCellularCoordinateBoundary_comp A.toCWDecomposition 0
-          (Pi.single j 1 : Fin 4 → ℤ)
-      have hzero0 := congr_fun hzero (show CuspWCellIndex 0 from (0 : Fin 2))
-      have hboundaryZero :
-          standardA2ToricCellularCoordinateBoundary A.toCWDecomposition 0 =
-            standardA2ToricCellularBoundary 0 := by
-        apply addMonoidHom_ext_pi_single_one
-        intro k
-        funext i
-        exact T.boundaryZero k i
-      rw [hboundaryZero] at hzero0
-      have h0 := T.boundaryOneIndependent j 0
-      change standardA2ToricCellularCoordinateBoundary A.toCWDecomposition 1
-          (Pi.single j 1 : Fin 4 → ℤ)
-            (show CuspWCellIndex 1 from (0 : Fin 3)) = 0 at h0
-      have h1 := T.boundaryOneIndependent j 1
-      change standardA2ToricCellularCoordinateBoundary A.toCWDecomposition 1
-          (Pi.single j 1 : Fin 4 → ℤ)
-            (show CuspWCellIndex 1 from (1 : Fin 3)) = 0 at h1
-      change -(standardA2ToricCellularCoordinateBoundary A.toCWDecomposition 1
-          (Pi.single j 1 : Fin 4 → ℤ) (show CuspWCellIndex 1 from (0 : Fin 3)) +
-        standardA2ToricCellularCoordinateBoundary A.toCWDecomposition 1
-          (Pi.single j 1 : Fin 4 → ℤ) (show CuspWCellIndex 1 from (1 : Fin 3)) +
-        standardA2ToricCellularCoordinateBoundary A.toCWDecomposition 1
-          (Pi.single j 1 : Fin 4 → ℤ) (show CuspWCellIndex 1 from (2 : Fin 3))) = 0
-        at hzero0
-      rw [h0, h1] at hzero0
-      simp at hzero0
-      change standardA2ToricCellularCoordinateBoundary A.toCWDecomposition 1
-        (Pi.single j 1 : Fin 4 → ℤ) (show CuspWCellIndex 1 from (2 : Fin 3)) = 0
-      exact hzero0
-  boundaryTwo := T.boundaryTwo
-  boundaryThree := T.boundaryThree
-
-end StandardA2ToricCentralFiberIncidenceResidual
-
-namespace StandardA2ToricCentralFiberFiniteCellularRealization
+namespace StandardA2ToricCentralFiberCWDecomposition
 
 variable {X : Type} [TopologicalSpace X]
 
-/-- Construct the bundled finite realization from the characteristic-map and incidence
-residual. -/
-public noncomputable def ofAtlasAndIncidence [T2Space X]
-    (A : StandardA2ToricCentralFiberCellAtlas X)
-    (T : StandardA2ToricCentralFiberIncidenceResidual A) :
-    StandardA2ToricCentralFiberFiniteCellularRealization X where
-  decomposition := A.toCWDecomposition
-  boundaryZero := T.boundaryZero
-  boundaryOne := T.boundaryOne
-  boundaryTwo := T.boundaryTwo
-  boundaryThree := T.boundaryThree
+/-- The first two rows determine the two-cell boundary, by the chain-complex identity. -/
+public theorem coordinateBoundary_one_eq_of_independent
+    (D : StandardA2ToricCentralFiberCWDecomposition X)
+    (h0 : ∀ (j : Fin 3) (i : Fin 2),
+      standardA2ToricCellularCoordinateBoundary D 0 (Pi.single j 1 : Fin 3 → ℤ) i =
+        standardA2ToricCellularBoundary 0 (Pi.single j 1 : Fin 3 → ℤ) i)
+    (h1 : ∀ (j : Fin 4) (i : Fin 2),
+      standardA2ToricCellularCoordinateBoundary D 1 (Pi.single j 1 : Fin 4 → ℤ) i.castSucc =
+        standardA2ToricCellularBoundary 1 (Pi.single j 1 : Fin 4 → ℤ) i.castSucc) :
+    standardA2ToricCellularCoordinateBoundary D 1 = standardA2ToricCellularBoundary 1 := by
+  apply addMonoidHom_ext_pi_single_one (H := Fin 3 → ℤ)
+  intro j
+  funext i
+  let _ := D.topology
+  let _ := D.cwComplex
+  have hi : i = 0 ∨ i = 1 ∨ i = 2 := by omega
+  rcases hi with rfl | rfl | rfl
+  · exact h1 j 0
+  · exact h1 j 1
+  · have hzero := standardA2ToricCellularCoordinateBoundary_comp D 0
+        (Pi.single j 1 : Fin 4 → ℤ)
+    have hzero0 := congr_fun hzero (show CuspWCellIndex 0 from (0 : Fin 2))
+    have hboundaryZero :
+        standardA2ToricCellularCoordinateBoundary D 0 =
+          standardA2ToricCellularBoundary 0 := by
+      apply addMonoidHom_ext_pi_single_one
+      intro k
+      funext i
+      exact h0 k i
+    rw [hboundaryZero] at hzero0
+    have h0 := h1 j 0
+    change standardA2ToricCellularCoordinateBoundary D 1
+        (Pi.single j 1 : Fin 4 → ℤ)
+          (show CuspWCellIndex 1 from (0 : Fin 3)) = 0 at h0
+    have h1 := h1 j 1
+    change standardA2ToricCellularCoordinateBoundary D 1
+        (Pi.single j 1 : Fin 4 → ℤ)
+          (show CuspWCellIndex 1 from (1 : Fin 3)) = 0 at h1
+    change -(standardA2ToricCellularCoordinateBoundary D 1
+        (Pi.single j 1 : Fin 4 → ℤ) (show CuspWCellIndex 1 from (0 : Fin 3)) +
+      standardA2ToricCellularCoordinateBoundary D 1
+        (Pi.single j 1 : Fin 4 → ℤ) (show CuspWCellIndex 1 from (1 : Fin 3)) +
+      standardA2ToricCellularCoordinateBoundary D 1
+        (Pi.single j 1 : Fin 4 → ℤ) (show CuspWCellIndex 1 from (2 : Fin 3))) = 0
+      at hzero0
+    rw [h0, h1] at hzero0
+    simp at hzero0
+    change standardA2ToricCellularCoordinateBoundary D 1
+      (Pi.single j 1 : Fin 4 → ℤ) (show CuspWCellIndex 1 from (2 : Fin 3)) = 0
+    exact hzero0
 
-/-- Additive extension of the finite incidence matrix gives the genuine cellular boundary on
-every chain.  Above degree four the assertion is automatic because there are no source cells. -/
+/-- The independent finite incidences determine every cellular differential. -/
+public theorem coordinateBoundary_eq_of_independent
+    (D : StandardA2ToricCentralFiberCWDecomposition X)
+    (h0 : ∀ (j : Fin 3) (i : Fin 2),
+      standardA2ToricCellularCoordinateBoundary D 0 (Pi.single j 1 : Fin 3 → ℤ) i =
+        standardA2ToricCellularBoundary 0 (Pi.single j 1 : Fin 3 → ℤ) i)
+    (h1 : ∀ (j : Fin 4) (i : Fin 2),
+      standardA2ToricCellularCoordinateBoundary D 1 (Pi.single j 1 : Fin 4 → ℤ) i.castSucc =
+        standardA2ToricCellularBoundary 1 (Pi.single j 1 : Fin 4 → ℤ) i.castSucc)
+    (h2 : ∀ (j : Fin 2) (i : Fin 4),
+      standardA2ToricCellularCoordinateBoundary D 2 (Pi.single j 1 : Fin 2 → ℤ) i =
+        standardA2ToricCellularBoundary 2 (Pi.single j 1 : Fin 2 → ℤ) i)
+    (h3 : ∀ (j : Fin 1) (i : Fin 2),
+      standardA2ToricCellularCoordinateBoundary D 3 (Pi.single j 1 : Fin 1 → ℤ) i =
+        standardA2ToricCellularBoundary 3 (Pi.single j 1 : Fin 1 → ℤ) i)
+    (n : ℕ) :
+    standardA2ToricCellularCoordinateBoundary D n = standardA2ToricCellularBoundary n := by
+  rcases n with _ | _ | _ | _ | n
+  · apply addMonoidHom_ext_pi_single_one
+    intro j
+    funext i
+    exact h0 j i
+  · exact D.coordinateBoundary_one_eq_of_independent h0 h1
+  · apply addMonoidHom_ext_pi_single_one
+    intro j
+    funext i
+    exact h2 j i
+  · apply addMonoidHom_ext_pi_single_one
+    intro j
+    funext i
+    exact h3 j i
+  · let _ : IsEmpty (CuspWCellIndex (n + 1 + 1 + 1 + 1).succ) :=
+        cuspWCellIndex_isEmpty _ (by omega)
+    apply AddMonoidHom.ext
+    intro x
+    have hx : x = 0 := by
+      funext i
+      exact isEmptyElim i
+    rw [hx, map_zero, map_zero]
+
 public noncomputable def toCellularRealization
-    (T : StandardA2ToricCentralFiberFiniteCellularRealization X) :
+    (D : StandardA2ToricCentralFiberCWDecomposition X)
+    (h : ∀ n, standardA2ToricCellularCoordinateBoundary D n =
+      standardA2ToricCellularBoundary n) :
     StandardA2ToricCentralFiberCellularRealization X where
-  decomposition := T.decomposition
+  decomposition := D
   boundary_eq := by
     dsimp only
     intro n x
-    let D := T.decomposition
     let _ := D.topology
     let _ := D.cwComplex
-    apply (T.decomposition.labelledCellBasis n).symm.injective
+    apply (D.labelledCellBasis n).symm.injective
     rw [AddEquiv.symm_apply_apply]
-    change standardA2ToricCellularCoordinateBoundary T.decomposition n x =
+    change standardA2ToricCellularCoordinateBoundary D n x =
       standardA2ToricCellularBoundary n x
-    rcases n with _ | _ | _ | _ | n
-    · have h : standardA2ToricCellularCoordinateBoundary D 0 =
-          standardA2ToricCellularBoundary 0 := by
-        apply addMonoidHom_ext_pi_single_one
-        intro j
-        funext i
-        exact T.boundaryZero j i
-      exact DFunLike.congr_fun h x
-    · have h : standardA2ToricCellularCoordinateBoundary D 1 =
-          standardA2ToricCellularBoundary 1 := by
-        apply addMonoidHom_ext_pi_single_one
-        intro j
-        funext i
-        exact T.boundaryOne j i
-      exact DFunLike.congr_fun h x
-    · have h : standardA2ToricCellularCoordinateBoundary D 2 =
-          standardA2ToricCellularBoundary 2 := by
-        apply addMonoidHom_ext_pi_single_one
-        intro j
-        funext i
-        exact T.boundaryTwo j i
-      exact DFunLike.congr_fun h x
-    · have h : standardA2ToricCellularCoordinateBoundary D 3 =
-          standardA2ToricCellularBoundary 3 := by
-        apply addMonoidHom_ext_pi_single_one
-        intro j
-        funext i
-        exact T.boundaryThree j i
-      exact DFunLike.congr_fun h x
-    · let _ : IsEmpty (CuspWCellIndex (n + 1 + 1 + 1 + 1).succ) :=
-          cuspWCellIndex_isEmpty _ (by omega)
-      have hx : x = 0 := by
-        funext i
-        exact isEmptyElim i
-      rw [hx, map_zero, map_zero]
+    exact DFunLike.congr_fun (h n) x
 
-end StandardA2ToricCentralFiberFiniteCellularRealization
+end StandardA2ToricCentralFiberCWDecomposition
 
 end SphereSixComplex

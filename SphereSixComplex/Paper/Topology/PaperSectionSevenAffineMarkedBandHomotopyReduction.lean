@@ -81,10 +81,17 @@ private theorem homotopic_to_inverse_comp_implies_forward_comp_homotopic
 
 /-- The two exact side-level contractions imply the paper's residual marked-band assertion,
 with no additional topological assumptions. -/
-public theorem markedBandHomotopies_of_sideContractions
+public theorem homotopic_bandToReducedFiber_coverMap_of_sideContractions
     (A : AnalyticData) (H : A.AffineMarkedBandSideContractions) :
-    A.AffineOverlapBandCompatibility := by
-  refine { orderThree := ?_, orderFour := ?_ }
+    (affineOrderThreeBandToReducedFiber
+      (orderThreeOverlapIsHomotopyEquivalence_inclusion
+        A.orderThreeOverlapIsHomotopyEquivalence)).Homotopic
+      (affineBandOrderThreeCoverMap A) ∧
+    (affineOrderFourBandToReducedFiber
+      (orderFourOverlapIsHomotopyEquivalence_inclusion
+        A.orderFourOverlapIsHomotopyEquivalence)).Homotopic
+      (affineBandOrderFourCoverMap A) := by
+  refine ⟨?_, ?_⟩
   · rw [← affineBandOrderThreeMarkedProjection_eq_coverMap A]
     exact homotopic_to_inverse_comp_implies_forward_comp_homotopic
       (affineOrderThreeSideToReducedFiberHomotopyEquiv A)

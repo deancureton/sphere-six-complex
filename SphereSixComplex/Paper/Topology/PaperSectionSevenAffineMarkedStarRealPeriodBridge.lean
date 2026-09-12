@@ -309,14 +309,21 @@ public structure AffineMarkedEndpointGaugeTranslation
 
 /-- Homotopic disc endpoints suffice for the original marked-band compatibility; literal
 endpoint equality is unnecessary. -/
-public theorem markedBandHomotopies_of_discEndpointHomotopies
+public theorem homotopic_bandToReducedFiber_coverMap_of_discEndpointHomotopies
     {A : AnalyticData}
     (h₃ : (A.orderThreeFillingImageHomotopyEquiv.toFun.comp
       A.affineOrderThreeDiscFillingEndpoint).Homotopic (affineBandOrderThreeMarkedProjection A))
     (h₄ : (A.orderFourFillingImageHomotopyEquiv.toFun.comp
       A.affineOrderFourDiscFillingEndpoint).Homotopic (affineBandOrderFourMarkedProjection A)) :
-    A.AffineOverlapBandCompatibility := by
-  apply markedBandHomotopies_of_sideContractions A
+    (affineOrderThreeBandToReducedFiber
+      (orderThreeOverlapIsHomotopyEquivalence_inclusion
+        A.orderThreeOverlapIsHomotopyEquivalence)).Homotopic
+      (affineBandOrderThreeCoverMap A) ∧
+    (affineOrderFourBandToReducedFiber
+      (orderFourOverlapIsHomotopyEquivalence_inclusion
+        A.orderFourOverlapIsHomotopyEquivalence)).Homotopic
+      (affineBandOrderFourCoverMap A) := by
+  apply homotopic_bandToReducedFiber_coverMap_of_sideContractions A
   refine { orderThree := ?_, orderFour := ?_ }
   · let q := A.affineOrderThreeDiscFillingEndpoint
     let g := A.orderThreeFillingImageHomotopyEquiv
@@ -481,10 +488,17 @@ public theorem AffineMarkedEndpointGaugeTranslation.orderFourEndpointHomotopy
 
 /-- The base-dependent logarithmic-gauge formula implies the original Section Seven marked-band
 compatibility. -/
-public theorem AffineMarkedEndpointGaugeTranslation.toBandCompatibility
+public theorem AffineMarkedEndpointGaugeTranslation.homotopic_bandToReducedFiber_coverMap
     {A : AnalyticData} (G : A.AffineMarkedEndpointGaugeTranslation) :
-    A.AffineOverlapBandCompatibility := by
-  apply markedBandHomotopies_of_discEndpointHomotopies
+    (affineOrderThreeBandToReducedFiber
+      (orderThreeOverlapIsHomotopyEquivalence_inclusion
+        A.orderThreeOverlapIsHomotopyEquivalence)).Homotopic
+      (affineBandOrderThreeCoverMap A) ∧
+    (affineOrderFourBandToReducedFiber
+      (orderFourOverlapIsHomotopyEquivalence_inclusion
+        A.orderFourOverlapIsHomotopyEquivalence)).Homotopic
+      (affineBandOrderFourCoverMap A) := by
+  apply homotopic_bandToReducedFiber_coverMap_of_discEndpointHomotopies
   · rw [affineOrderThreeDiscEndpoint_toFun_eq_starEndpoint]
     exact G.orderThreeEndpointHomotopy
   · rw [affineOrderFourDiscEndpoint_toFun_eq_starEndpoint]

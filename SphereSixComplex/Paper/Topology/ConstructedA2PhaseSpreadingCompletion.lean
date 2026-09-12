@@ -46,13 +46,13 @@ public instance constructedHasCuspPhaseSpreading
     (W : ActualPuncturedCuspCollarWitness N constructedModel) : HasCuspPhaseSpreading W := by
   let Q := constructedPolarHoneycombConstruction W
   let P := Q.toPolarHoneycombData
-  have H : PolarPhaseRadialCompatibility N constructedModel W.localWitness.radius P :=
-    ⟨fun lambda i ↦ norm_normalizedCuspPositiveTwist N lambda i⟩
-  have G : PolarPhaseGeometricCore constructedModel W.localWitness.radius P :=
-    polarPhaseGeometricCore_of_invariantModulus_only Q
-      (constructedLocalModulus_compactPhase W.localWitness.radius)
+  letI := P.positiveDeckAction
+  let R := P.positiveEquivariantStrongDeformationRetraction
   exact ⟨⟨⟨P, FrozenLocalCuspPhaseSpreadingData.ofPolarPhaseData
     (compactPhaseOrbit_prod_isQuotientMap constructedModel W.localWitness.radius P)
-    H.toDeckLift G⟩⟩⟩
+    (PolarPhaseDeckLift.ofNormEq
+      (fun lambda i ↦ norm_normalizedCuspPositiveTwist N lambda i)) R
+    (compactPhaseOrbit_homotopy_eq_of_invariantModulus Q
+      (constructedLocalModulus_compactPhase W.localWitness.radius) R)⟩⟩⟩
 
 end SphereSixComplex.Geometry.InfiniteA2Toric

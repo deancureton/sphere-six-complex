@@ -22,10 +22,9 @@ namespace SphereSixComplex.Geometry.CuspStraightening
 
 open SphereSixComplex.Periods
 open CuspFilling CuspFillingRadialCompactness CuspLocalPhaseAction
-open CuspPeriodExpansion CuspCollar CuspStraightening
+open CuspPeriodExpansion CuspCollar
 open CuspToricPhaseAction
 open InfiniteA2Toric InfiniteA2Toric.QuantitativeRegions
-open CuspPeriodExpansion
 open CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
 
 /-- The vector `B_t⁻¹ y` in the paper's straightening formula. -/
